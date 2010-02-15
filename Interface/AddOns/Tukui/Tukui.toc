@@ -1,0 +1,59 @@
+## Interface: 30300
+## Author: Tukz
+## Version: 9.11
+## Title: |cffC495DDTukui 9.11|r
+## Notes: UI of awesomeness!
+## SavedVariables: tgoldDB
+## SavedVariablesPerCharacter: t9install, tCooldownTracker_Saved, bb08df87101dd7f2161e5b77cf750f753c58ef1b
+## X-oUF: oUF
+
+mods\translate.lua
+tukui.config.lua
+mods\!Tukui.lua
+tukui.aurawatch.lua
+mods\combatfont.lua
+mods\nameplates.lua
+mods\error.lua
+mods\cooldown.lua
+mods\oUF.xml
+mods\plugins\smooth.lua
+mods\plugins\aurawatch.lua
+mods\plugins\debuffhighlight.lua
+mods\plugins\experience.lua
+mods\plugins\moveframe.lua
+mods\plugins\reputation.lua
+mods\plugins\threat.lua
+mods\plugins\trinkets.lua
+mods\plugins\totem.lua
+mods\plugins\readycheck.lua
+mods\plugins\combatfeedback.lua
+mods\tags.lua
+mods\unitframe.lua
+mods\buttonskin.lua
+mods\lootroll.lua
+mods\actionbar.lua
+mods\autoacceptinv.lua
+mods\autoinvite.lua
+mods\autorepair.lua
+mods\selljunk.lua
+mods\buff.lua
+mods\chat.lua
+mods\combo.xml
+mods\enemytracker.lua
+mods\loot.lua
+mods\symbol.lua
+mods\minimap.lua
+mods\panels.lua
+mods\tooltip.lua
+mods\focus.key.lua
+mods\bags.lua
+mods\chattabs.lua
+mods\mirror.lua
+mods\map.lua
+mods\bind.lua
+
+
+
+mods\class\priest.lua
+
+

@@ -1,0 +1,13 @@
+## Interface: 30300
+## Author: Tukz
+## Title: |cffC495DDTukui RAID|r (Dps Layout)
+## Notes: Raid layout for party and raid, DPS/Tank mode.
+## X-Email: flip2k3@globetrotter.net
+## X-Category: UnitFrame
+## RequiredDeps: Tukui
+
+oUF_Tukz_Party.lua
+oUF_Tukz_Raid10.lua
+oUF_Tukz_Raid15.lua
+oUF_Tukz_Raid25.lua
+oUF_Tukz_Raid40.lua
