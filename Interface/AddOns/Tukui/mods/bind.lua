@@ -1,6 +1,4 @@
--- feature offered by Nightcracker !
-
-local bind, localmacros = CreateFrame("Frame", "ncHoverBind", UIParent), 0
+local bind = CreateFrame("Frame", "ncHoverBind", UIParent)
 -- SLASH COMMAND
 SlashCmdList.MOUSEOVERBIND = function()
 	if InCombatLockdown() then print("You can't bind keys in combat.") return end
@@ -75,7 +73,7 @@ SlashCmdList.MOUSEOVERBIND = function()
 			elseif spellmacro=="MACRO" then
 				self.button.id = self.button:GetID()
 				
-				if localmacros==1 then self.button.id = self.button.id + 36 end
+				if floor(.5+select(2,MacroFrameTab1Text:GetTextColor())*10)/10==.8 then self.button.id = self.button.id + 36 end
 				
 				self.button.name = GetMacroInfo(self.button.id)
 				
@@ -186,7 +184,6 @@ SlashCmdList.MOUSEOVERBIND = function()
 			or key == "RALT"
 			or key == "UNKNOWN"
 			or key == "LeftButton"
-			--or key == "MiddleButton"
 			then return end
 			
 			if key == "MiddleButton" then key = "BUTTON3" end
@@ -274,8 +271,6 @@ SlashCmdList.MOUSEOVERBIND = function()
 				local b = _G["MacroButton"..i]
 				b:HookScript("OnEnter", function(self) bind:Update(self, "MACRO") end)
 			end
-			MacroFrameTab1:HookScript("OnMouseUp", function() localmacros = 0 end)
-			MacroFrameTab2:HookScript("OnMouseUp", function() localmacros = 1 end)
 		end
 		
 		if not IsAddOnLoaded("Blizzard_MacroUI") then
