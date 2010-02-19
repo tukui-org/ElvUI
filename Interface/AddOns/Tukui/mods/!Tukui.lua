@@ -1004,3 +1004,15 @@ local function captureupdate()
 	end
 end
 hooksecurefunc("WorldStateAlwaysUpFrame_Update", captureupdate)
+
+----------------------------------------------------------------------------------------
+-- fix the fucking combatlog after a crash (a wow 2.4 and 3.3.2 bug)
+----------------------------------------------------------------------------------------
+
+local function CLFIX()
+	CombatLogClearEntries()
+end
+
+SLASH_CLFIX1 = "/clfix"
+SlashCmdList["CLFIX"] = CLFIX
+
