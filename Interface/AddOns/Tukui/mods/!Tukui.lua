@@ -252,7 +252,9 @@ tukuicheckinstall:SetScript("OnEvent", function()
         tukuicheckinstall:SetScript("OnEvent", nil)
 		
 		--need a.b. to always be enabled
-		SetActionBarToggles( 1, 1, 1, 1, 1 )
+		if TukuiBars == true then
+			SetActionBarToggles( 1, 1, 1, 1, 1 )
+		end
 		
 		-- set default var if tukui not found on that character
         if not (t9install) then
