@@ -224,11 +224,11 @@ local function CreateStyle(self, unit)
 	self.Power.bg:SetAlpha(1)
 	self.Power.bg.multiplier = 0.4
 	
-
-	local name = self.Health:CreateFontString(nil, 'OVERLAY', 'GameFontHighlightLeft')
-	name:SetFont(fontlol, 12, "THINOUTLINE")
-	name:SetPoint('LEFT', 5, 1)
-	self:Tag(name, '[name( )][leader( )]')
+	self.Name = self.Health:CreateFontString(nil, "OVERLAY")
+    self.Name:SetPoint("LEFT", self.Health, 3, 1)
+	self.Name:SetFont(fontlol, 12, "THINOUTLINE")
+	self.Name:SetShadowOffset(1, -1)
+	self:Tag(self.Name, "[NameMedium]")
 	
     self.Leader = self.Health:CreateTexture(nil, "OVERLAY")
     self.Leader:SetHeight(12)
