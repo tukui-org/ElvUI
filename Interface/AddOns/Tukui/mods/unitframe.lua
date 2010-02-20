@@ -836,8 +836,8 @@ local SetStyle = function(self, unit)
 				self.Experience:SetPoint("TOPRIGHT", self.Power, "BOTTOMRIGHT", -2, -3)
 			elseif unit == "pet" then
 				self.Experience:SetHeight(14)
-				self.Experience:SetPoint("TOPLEFT", self, "TOPLEFT", 2, -25)
-				self.Experience:SetPoint("TOPRIGHT", self, "TOPRIGHT", -2, 4)
+				self.Experience:SetPoint("TOPLEFT", self.Power, "BOTTOMLEFT", 2, -3)
+				self.Experience:SetPoint("TOPRIGHT", self.Power, "BOTTOMRIGHT", -2, -3)
 			end
 			self.Experience:SetAlpha(0)
 
