@@ -21,6 +21,12 @@ local Update = function(self, event, unit)
 		self.realUnit = nil
 	end
 
+	-- Update player buff frames
+	if(realUnit == "player") then
+		PlayerFrame.unit = modUnit
+		BuffFrame_Update()
+	end
+
 	-- Refresh the frame
 	return self:PLAYER_ENTERING_WORLD('VehicleSwitch')
 end

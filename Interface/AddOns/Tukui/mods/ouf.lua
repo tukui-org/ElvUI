@@ -161,12 +161,6 @@ local HandleUnit = function(unit, object)
 		PlayerFrame.Show = dummy
 		PlayerFrame:Hide()
 
-		-- For the damn vehicle support:
-		PlayerFrame:RegisterEvent('UNIT_ENTERING_VEHICLE')
-		PlayerFrame:RegisterEvent('UNIT_ENTERED_VEHICLE')
-		PlayerFrame:RegisterEvent('UNIT_EXITING_VEHICLE')
-		PlayerFrame:RegisterEvent('UNIT_EXITED_VEHICLE')
-
 		PlayerFrameHealthBar:UnregisterAllEvents()
 		PlayerFrameManaBar:UnregisterAllEvents()
 	elseif(unit == "pet")then
