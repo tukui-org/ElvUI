@@ -6,7 +6,7 @@ caelNamePlates:SetScript("OnEvent", function(self, event, ...) self[event](self,
 local barTexture = [=[Interface\Addons\Tukui\media\normTex]=]
 local overlayTexture = [=[Interface\Tooltips\Nameplate-Border]=]
 local glowTexture = [=[Interface\Addons\Tukui\media\glowTex]=]
-local font, fontSize, fontOutline = [=[Interface\Addons\Tukui\media\neuropol x cd rg.ttf]=], 9, "OUTLINE"
+local font, fontSize, fontOutline = [=[Fonts\ARIALN.ttf]=], 9, "OUTLINE"
 local backdrop = {
 		edgeFile = glowTexture, edgeSize = 5,
 		insets = {left = 3, right = 3, top = 3, bottom = 3}
