@@ -81,7 +81,6 @@ if (not TukuiBars == true) or (IsAddOnLoaded("Dominos") or IsAddOnLoaded("Barten
   veb:SetHeight(32)
   veb:SetPoint("TOPRIGHT",-14,-184)
   veb:SetFrameStrata("HIGH")
-  veb:SetScale(0.0001)
   veb:RegisterForClicks("AnyUp")
   veb:SetNormalTexture("Interface\\Vehicles\\UI-Vehicles-Button-Exit-Up")
   veb:SetPushedTexture("Interface\\Vehicles\\UI-Vehicles-Button-Exit-Down")
@@ -95,10 +94,8 @@ if (not TukuiBars == true) or (IsAddOnLoaded("Dominos") or IsAddOnLoaded("Barten
     local arg1 = ...;
     if(((event=="UNIT_ENTERING_VEHICLE") or (event=="UNIT_ENTERED_VEHICLE")) and arg1 == "player") then
       veb:SetAlpha(1)
-	  veb:SetScale(1)
     elseif(((event=="UNIT_EXITING_VEHICLE") or (event=="UNIT_EXITED_VEHICLE")) and arg1 == "player") then
       veb:SetAlpha(0)
-	  veb:SetScale(0.0001)
     end
   end)  
   veb:SetAlpha(0)
