@@ -39,6 +39,16 @@ local replaceschan = {
 	['Officer'] = '[O]',
 	['Battleground'] = '[B]',
 	['Battleground Leader'] = '[BL]',
+	['Gilde'] = '[G]',
+	['Gruppe'] = '[Grp]',
+	['Gruppenanführer'] = '[GrpL]',
+	['Dungeonführer'] = '[DF]',
+	['Schlachtzug'] = '[R]',
+	['Schlachtzugsleiter'] = '[RL]',
+	['Schlachtzugswarnung'] = '[RW]',
+	['Offizier'] = '[O]',
+	['Schlachtfeld'] = '[BG]',
+	['Schlachtfeldleiter'] = '[BGL]',
 	['(%d+)%. .-'] = '[%1]',
 }
 
