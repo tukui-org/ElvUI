@@ -171,6 +171,9 @@ end
 local addon = CreateFrame('Frame')
 addon:SetScript('OnEvent', OnEvent)
 addon:RegisterEvent('PLAYER_LOGIN')
+addon:RegisterEvent("PARTY_MEMBERS_CHANGED")
+addon:RegisterEvent("RAID_ROSTER_UPDATE")
+addon:RegisterEvent("WORLD_MAP_UPDATE")
  BlackoutWorld:Hide()
  WorldMapFrame:EnableKeyboard(false)
  WorldMapFrame:EnableMouse(false)
@@ -191,3 +194,27 @@ WorldMapQuestShowObjectives:ClearAllPoints()
 WorldMapQuestShowObjectives:SetPoint("BOTTOMRIGHT",WorldMapPositioningGuide,"BOTTOMRIGHT",-6, 5)
 end
 hooksecurefunc("WorldMap_ToggleSizeUp", corl)
+
+--Update class color of each icon
+local function UpdateIconColor(self, t)
+	color = RAID_CLASS_COLORS[select(2, UnitClass(self.unit))]
+	self.icon:SetVertexColor(color.r, color.g, color.b)
+end
+
+function UpdateParty()
+	for r=1, 40 do
+		if UnitInParty(_G["WorldMapRaid"..r].unit) then
+			_G["WorldMapRaid"..r].icon:SetTexture("Interface\\AddOns\\Tukui\\media\\Party")
+		else
+			_G["WorldMapRaid"..r].icon:SetTexture("Interface\\AddOns\\Tukui\\media\\Raid")
+		end
+		_G["WorldMapRaid"..r]:SetScript("OnUpdate", UpdateIconColor)
+	end
+
+	for p=1, 4 do
+		_G["WorldMapParty"..p].icon:SetTexture("Interface\\AddOns\\Tukui\\media\\Party")
+		_G["WorldMapParty"..p]:SetScript("OnUpdate", UpdateIconColor)
+	end
+end
+
+addon:SetScript("OnEvent", UpdateParty)
