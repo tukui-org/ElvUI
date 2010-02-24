@@ -11,6 +11,8 @@ addon:RegisterEvent('PLAYER_LOGIN')
 addon:RegisterEvent("PARTY_MEMBERS_CHANGED")
 addon:RegisterEvent("RAID_ROSTER_UPDATE")
 addon:RegisterEvent("WORLD_MAP_UPDATE")
+addon:RegisterEvent("PLAYER_REGEN_ENABLED")
+addon:RegisterEvent("PLAYER_REGEN_DISABLED")
 
 -- because smallmap > bigmap by far
 local mapminionlogin = GetCVarBool("miniWorldMap")
@@ -77,6 +79,15 @@ local function UpdateIconColor(self, t)
 end
 
 function UpdateParty()
+	-- fixing a stupid bug error by blizzard on default ui :x
+	if InCombatLockdown() then
+		WorldMapFrameSizeDownButton:Disable() 
+		WorldMapFrameSizeUpButton:Disable()
+	else
+		WorldMapFrameSizeDownButton:Enable()
+		WorldMapFrameSizeUpButton:Enable()
+	end
+	
 	for r=1, 40 do
 		if UnitInParty(_G["WorldMapRaid"..r].unit) then
 			_G["WorldMapRaid"..r].icon:SetTexture("Interface\\AddOns\\Tukui\\media\\Party")
