@@ -13,7 +13,7 @@ addon:RegisterEvent("RAID_ROSTER_UPDATE")
 addon:RegisterEvent("WORLD_MAP_UPDATE")
 
 -- because smallmap > bigmap by far
-mapminionlogin = GetCVarBool("miniWorldMap")
+local mapminionlogin = GetCVarBool("miniWorldMap")
 if mapminionlogin == nil then
 	SetCVar("miniWorldMap", 1);
 end
