@@ -93,10 +93,6 @@ tukuicheck:SetScript("OnEvent", function()
 	-- yeah, because tukui already have this shit so we disable some blizzard ugly frame.
 	SetCVar("showClock", 0)
 	SetCVar("showArenaEnemyFrames", 0)
-	
-	if TukuiMap == true and not IsAddOnLoaded("Mapster") then
-		WorldMap_ToggleSizeDown()
-	end
 			
 	-- we don't need this anymore :)
 	tukuicheck:UnregisterEvent("PLAYER_LOGIN")
