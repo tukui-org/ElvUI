@@ -6,39 +6,44 @@
 
 if not TukuiMap == true or (IsAddOnLoaded("Mapster")) then return end
 
-  -- Settings here
- local smallmapposposition = {x = 0, y = 0, point = "CENTER"} -- Small Map Spawn Position
- local mapscale = 0.8 -- Choose Map Scale
- local mapalpha = 1 -- Optimal Value
- local ft = "Fonts\\skurri.ttf" -- Map font
- local fontsize = 18 -- Map Font Size
- ---------------------
- -- Stttings End --
-  local blanke = BLANK_TEXTURE
-  local glowt = "Interface\\AddOns\\Tukui\\media\\glowTex"
-  local movebutton = CreateFrame ("Frame",nil,WorldMapFrameSizeUpButton)
-  movebutton:SetHeight(32)
-  movebutton:SetWidth(32)
-  movebutton:SetPoint("TOP",WorldMapFrameSizeUpButton,"BOTTOM",-1,4)
-  movebutton:SetBackdrop( { 
-	  bgFile = "Interface\\AddOns\\Tukui\\media\\cross",})
-	WORLDMAP_RATIO_MINI=1
- local qfix = 0
-  function MapShrink()
-	 local ald = CreateFrame ("Frame",nil,WorldMapButton)
+local smallmapposposition = {x = 0, y = 0, point = "CENTER"} -- Small Map Spawn Position
+local mapscale = 0.8 -- Choose Map Scale
+local mapalpha = 1 -- Optimal Value
+local ft = "Fonts\\skurri.ttf" -- Map font
+local fontsize = 18 -- Map Font Size
+ 
+--------------------------------------------
+-- Settings End ----------------------------
+--------------------------------------------
+
+local blanke = BLANK_TEXTURE
+local glowt = "Interface\\AddOns\\Tukui\\media\\glowTex"
+
+local movebutton = CreateFrame ("Frame",nil,WorldMapFrameSizeUpButton)
+	movebutton:SetHeight(32)
+	movebutton:SetWidth(32)
+	movebutton:SetPoint("TOP",WorldMapFrameSizeUpButton,"BOTTOM",-1,4)
+	movebutton:SetBackdrop( { 
+		bgFile = "Interface\\AddOns\\Tukui\\media\\cross",})
+		WORLDMAP_RATIO_MINI=1
+	
+local qfix = 0
+ 
+function MapShrink()
+	local ald = CreateFrame ("Frame",nil,WorldMapButton)
 	ald:SetFrameStrata("TOOLTIP")
     local mapbg = CreateFrame ("Frame",nil, WorldMapDetailFrame)
-	 mapbg:SetBackdrop( { 
-	  bgFile = blanke, 
-	  edgeFile = blanke, 
-	  tile = false, edgeSize = 1, 
-	  insets = { left = -1, right = -1, top = -1, bottom = -1 }
+		mapbg:SetBackdrop( { 
+		bgFile = blanke, 
+		edgeFile = blanke, 
+		tile = false, edgeSize = 1, 
+		insets = { left = -1, right = -1, top = -1, bottom = -1 }
 	})
-	 local mapbgfix = CreateFrame ("Frame",nil, WorldMapDetailFrame)
-	  mapbgfix:SetBackdrop( {  
-	  edgeFile = blanke, 
-	  tile = false, edgeSize = 1, 
-	  insets = { left = -1, right = -1, top = -1, bottom = -1 }
+	local mapbgfix = CreateFrame ("Frame",nil, WorldMapDetailFrame)
+		mapbgfix:SetBackdrop( {  
+		edgeFile = blanke, 
+		tile = false, edgeSize = 1, 
+		insets = { left = -1, right = -1, top = -1, bottom = -1 }
 	})
 	mapbg:SetScale (1/mapscale)
 	mapbgfix:SetScale (1/mapscale)
@@ -49,7 +54,7 @@ if not TukuiMap == true or (IsAddOnLoaded("Mapster")) then return end
 	fb1:SetPoint("TOPLEFT", mapbg , "TOPLEFT", -3.4, 3.4)
 	fb1:SetPoint("BOTTOMRIGHT", mapbg , "BOTTOMRIGHT", 3.2, -3.4)
 	fb1:SetBackdrop {edgeFile = glowt, edgeSize = 3,
-	insets = {left = 0, right = 0, top = 0, bottom = 0}}
+		insets = {left = 0, right = 0, top = 0, bottom = 0}}
 	fb1:SetBackdropBorderColor(0.1, 0.1, 0.1,1)
 	mapbgfix:SetBackdropBorderColor(0/255,15/255,26/255,0.7)
 	mapbg:SetBackdropColor(unpack(TUKUI_BACKDROP_COLOR))
@@ -58,6 +63,8 @@ if not TukuiMap == true or (IsAddOnLoaded("Mapster")) then return end
 	WorldMapDetailFrame:ClearAllPoints()
 	WorldMapDetailFrame:SetPoint(smallmapposposition.point,UIParent,smallmapposposition.point,smallmapposposition.x,smallmapposposition.y)
 	WorldMapFrame:SetFrameStrata("MEDIUM")
+	WorldMapFrame:SetScale(mapscale)
+	WorldMapTooltip:SetScale(1/mapscale)
 	WorldMapDetailFrame:SetFrameStrata("MEDIUM")
 	mapbg:SetFrameStrata("LOW")	
 	mapbgfix:SetFrameStrata("HIGH")
@@ -90,23 +97,29 @@ if not TukuiMap == true or (IsAddOnLoaded("Mapster")) then return end
 	mapbgfix:SetPoint("TOPLEFT", WorldMapDetailFrame, 0, 0)
 	mapbgfix:SetPoint("BOTTOMRIGHT", WorldMapDetailFrame, 0, 0)
 end
+
 WorldMapDetailFrame:SetMovable(true)
+
 local qs = 0
+
 local function OnMouseDown()
 	WorldMapDetailFrame:StartMoving()
 	WorldMapDetailFrame.moving = true
 	qs=1
 end
+
 local function OnMouseUp()
 	WorldMapDetailFrame:StopMovingOrSizing()
 	WorldMapDetailFrame.moving = nil
 	qs=0
 	qfix=1
 end
+
 hooksecurefunc("WorldMap_ToggleSizeDown", function() MapShrink() end)
 movebutton:EnableMouse(true)
 movebutton:SetScript("OnMouseDown",OnMouseDown)
 movebutton:SetScript("OnMouseUp",OnMouseUp)
+
 local function CreateText(offset)
 	local text = WorldMapButton:CreateFontString(nil, 'ARTWORK')
 	text:SetPoint('TOPLEFT', WorldMapDetailFrame, 7 , offset)
@@ -115,6 +128,7 @@ local function CreateText(offset)
 	text:SetJustifyH('LEFT')
 	return text
 end
+
 function MouseXY()
 	local left, top = WorldMapDetailFrame:GetLeft(), WorldMapDetailFrame:GetTop()
 	local width, height = WorldMapDetailFrame:GetWidth(), WorldMapDetailFrame:GetHeight()
@@ -128,6 +142,7 @@ function MouseXY()
 	return cx, cy
 end
 local shown = 0
+
 local function OnUpdate(player, cursor)
 	if shown == 1 then
 	if ( WatchFrame.showObjectives ) and qs == 1 then
@@ -155,6 +170,7 @@ local function OnUpdate(player, cursor)
 		player:SetFormattedText(UnitName("player")..' : %.2d , %.2d', 100 * px, 100 * py)
 	end else return end
 end
+
 local function OnEvent(self)
 		local player = CreateText(-3)
 		local cursor = CreateText((fontsize+5)*(-1))
@@ -168,30 +184,24 @@ local function OnEvent(self)
 			end
 		end)
 end
+
 local addon = CreateFrame('Frame')
 addon:SetScript('OnEvent', OnEvent)
 addon:RegisterEvent('PLAYER_LOGIN')
 addon:RegisterEvent("PARTY_MEMBERS_CHANGED")
 addon:RegisterEvent("RAID_ROSTER_UPDATE")
 addon:RegisterEvent("WORLD_MAP_UPDATE")
- BlackoutWorld:Hide()
- WorldMapFrame:EnableKeyboard(false)
- WorldMapFrame:EnableMouse(false)
- WorldMapFrame:SetAttribute("UIPanelLayout-area", "center")
- WorldMapFrame:SetAttribute("UIPanelLayout-allowOtherPanels", true)
- UIPanelWindows["WorldMapFrame"] = {area = "center"}
-BlackoutWorld.Show = function() UIPanelWindows["WorldMapFrame"] = {area = "center"}
+
 WorldMapFrame:EnableKeyboard(false)
 WorldMapFrame:EnableMouse(false)
-WorldMapFrame:SetAttribute("UIPanelLayout-area", "center")
-WorldMapFrame:SetAttribute("UIPanelLayout-allowOtherPanels", true)
- end
- WorldMapFrame:HookScript("OnShow", function(self) self:SetScale(mapscale) self:SetAlpha(mapalpha) WorldMapTooltip:SetScale(1/mapscale) shown = 1 qfix = 1 end)
- WorldMapFrame:HookScript("OnHide", function(self) shown = 0 WorldMapFrame_UpdateQuests() end)
+
+BlackoutWorld:Hide()
+BlackoutWorld.Show = function() end
+
 corl = function() 
-WorldMapQuestShowObjectives:SetParent(WorldMapPositioningGuide)
-WorldMapQuestShowObjectives:ClearAllPoints()
-WorldMapQuestShowObjectives:SetPoint("BOTTOMRIGHT",WorldMapPositioningGuide,"BOTTOMRIGHT",-6, 5)
+	WorldMapQuestShowObjectives:SetParent(WorldMapPositioningGuide)
+	WorldMapQuestShowObjectives:ClearAllPoints()
+	WorldMapQuestShowObjectives:SetPoint("BOTTOMRIGHT",WorldMapPositioningGuide,"BOTTOMRIGHT",-6, 5)
 end
 hooksecurefunc("WorldMap_ToggleSizeUp", corl)
 
@@ -216,5 +226,4 @@ function UpdateParty()
 		_G["WorldMapParty"..p]:SetScript("OnUpdate", UpdateIconColor)
 	end
 end
-
 addon:SetScript("OnEvent", UpdateParty)
