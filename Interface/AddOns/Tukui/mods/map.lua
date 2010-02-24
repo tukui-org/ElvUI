@@ -28,13 +28,6 @@ function MapShrink()
 		tile = false, edgeSize = 1, 
 		insets = { left = -1, right = -1, top = -1, bottom = -1 }
 	})
-	local mapbgfix = CreateFrame ("Frame",nil, WorldMapDetailFrame)
-		mapbgfix:SetBackdrop( {  
-		edgeFile = blanke, 
-		tile = false, edgeSize = 1, 
-		insets = { left = -1, right = -1, top = -1, bottom = -1 }
-	})
-	mapbgfix:SetFrameLevel(0)
 	local fb1 = CreateFrame("Frame", nil, mapbg )
 	fb1:SetFrameLevel(0)
 	fb1:SetFrameStrata("BACKGROUND")
@@ -43,7 +36,6 @@ function MapShrink()
 	fb1:SetBackdrop {edgeFile = glowt, edgeSize = 3,
 		insets = {left = 0, right = 0, top = 0, bottom = 0}}
 	fb1:SetBackdropBorderColor(0.1, 0.1, 0.1,1)
-	mapbgfix:SetBackdropBorderColor(0/255,15/255,26/255,0.7)
 	mapbg:SetBackdropColor(unpack(TUKUI_BACKDROP_COLOR))
 	mapbg:SetBackdropBorderColor(unpack(TUKUI_BORDER_COLOR))
 	mapbg:SetScale(1/WORLDMAP_RATIO_MINI)
@@ -51,7 +43,6 @@ function MapShrink()
 	WorldMapFrame:SetFrameStrata("MEDIUM")
 	WorldMapDetailFrame:SetFrameStrata("MEDIUM")
 	mapbg:SetFrameStrata("LOW")	
-	mapbgfix:SetFrameStrata("HIGH")
 	WorldMapTitleButton:Show()
 	WorldMapFrameMiniBorderLeft:Hide()
 	WorldMapFrameMiniBorderRight:Hide()
@@ -77,8 +68,6 @@ function MapShrink()
 	WorldMapTooltip:SetFrameStrata("TOOLTIP")
 	mapbg:SetPoint("BOTTOMRIGHT", WorldMapDetailFrame, 1, -1)
 	mapbg:SetPoint("TOPLEFT", WorldMapDetailFrame, -1, 1)
-	mapbgfix:SetPoint("TOPLEFT", WorldMapDetailFrame, 0, 0)
-	mapbgfix:SetPoint("BOTTOMRIGHT", WorldMapDetailFrame, 0, 0)
 end
 hooksecurefunc("WorldMap_ToggleSizeDown", function() MapShrink() end)
 
