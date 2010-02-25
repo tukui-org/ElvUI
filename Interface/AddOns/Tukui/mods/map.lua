@@ -46,7 +46,7 @@ local SmallerMapSkin = function()
 	fb1:SetPoint("TOPLEFT", mapbg , "TOPLEFT", -3.4, 3.4)
 	fb1:SetPoint("BOTTOMRIGHT", mapbg , "BOTTOMRIGHT", 3.4, -3.4)
 	fb1:SetBackdrop {edgeFile = glowt, edgeSize = 3, insets = {left = 0, right = 0, top = 0, bottom = 0}}
-	fb1:SetBackdropBorderColor(0.1, 0.1, 0.1,1)
+	fb1:SetBackdropBorderColor(unpack(TUKUI_BACKDROP_COLOR))
 	
 	-- map border and bg
 	mapbg:SetBackdropColor(unpack(TUKUI_BACKDROP_COLOR))
