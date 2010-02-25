@@ -311,7 +311,7 @@ local PostUpdatePower = function(self, event, unit, bar, min, max)
 		if self.unit == "target" then PostNamePosition(self) end
 	end
 end
-
+--[[
 do
 	local f = CreateFrame("Frame")
 	local entering
@@ -358,7 +358,7 @@ local ExitVehicle = function(self, event)
 		self.Info:Show()
 	end
 end
-
+--]]
 local delay = 0
 local viperAspectName = GetSpellInfo(34074)
 local UpdateManaLevel = function(self, elapsed)
@@ -597,6 +597,24 @@ local PostUpdateThreat = function(self, event, unit, status)
 	end
 end
 
+local PostUpdateCast = function (self, event, unit)
+	if self.Castbar.interrupt then
+		self.Castbar:SetStatusBarColor(1, 0, 0, 0.5)
+	else
+		self.Castbar:SetStatusBarColor(0.31, 0.45, 0.63, 0.5)
+	end
+end
+
+local SpellCastInterruptable = function(self, event, unit)
+	if self.unit ~= unit then return end
+
+	if event == 'UNIT_SPELLCAST_NOT_INTERRUPTABLE' then
+		self.Castbar:SetStatusBarColor(1, 0, 0, 0.5)
+	else
+		self.Castbar:SetStatusBarColor(0,31, 0.45, 0.63, 0.5)
+	end
+end
+
 ------------------------------------------------------------------------
 --	Layout Style
 ------------------------------------------------------------------------
@@ -812,14 +830,14 @@ local SetStyle = function(self, unit)
 	end
 
 	------------------------------------------------------------------------
-	--	Vehicule Swap
+	--	Vehicle Swap
 	------------------------------------------------------------------------
-
+--[[
 	if unit == "pet" then
 		self.PostEnterVehicle = EnterVehicle
 		self.PostExitVehicle = ExitVehicle
 	end
-
+--]]
 	------------------------------------------------------------------------
 	--	Experience / reputation
 	------------------------------------------------------------------------	
@@ -1215,6 +1233,14 @@ local SetStyle = function(self, unit)
 			self.Castbar.SafeZone = self.Castbar:CreateTexture(nil, "ARTWORK")
 			self.Castbar.SafeZone:SetTexture(normTex)
 			self.Castbar.SafeZone:SetVertexColor(0.69, 0.31, 0.31, 0.75)
+		end
+		
+		if unit == 'target' or unit == 'focus' then
+			self.PostCastStart = PostUpdateCast
+			self.PostChannelStart = PostUpdateCast
+
+			self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTABLE', SpellCastInterruptable)
+			self:RegisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTABLE', SpellCastInterruptable)
 		end
 	end
 
