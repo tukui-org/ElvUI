@@ -83,6 +83,11 @@ local SmallerMapSkin = function()
 	WorldMapQuestShowObjectivesText:SetPoint("RIGHT",WorldMapQuestShowObjectives,"LEFT",-4,1)	
 	WorldMapTitleButton:SetFrameStrata("TOOLTIP")
 	WorldMapTooltip:SetFrameStrata("TOOLTIP")
+
+	-- fix tooltip not hidding after leaving quest # tracker icon
+	WorldMapQuestPOI_OnLeave = function()
+		WorldMapTooltip:Hide()
+	end
 end
 hooksecurefunc("WorldMap_ToggleSizeDown", function() SmallerMapSkin() end)
 
