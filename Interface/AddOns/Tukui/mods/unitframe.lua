@@ -311,54 +311,7 @@ local PostUpdatePower = function(self, event, unit, bar, min, max)
 		if self.unit == "target" then PostNamePosition(self) end
 	end
 end
---[[
-do
-	local f = CreateFrame("Frame")
-	local entering
 
-	f:RegisterEvent("UNIT_ENTERED_VEHICLE")
-	f:RegisterEvent("UNIT_EXITED_VEHICLE")
-	
-	local delay = 0.5
-	local OnUpdate = function(self, elapsed)
-		self.elapsed = (self.elapsed or delay) - elapsed
-		if self.elapsed <= 0 then
-			local petframe = oUF_Tukz_pet
-			petframe:PLAYER_ENTERING_WORLD()
-			self:SetScript("OnUpdate", nil)
-			if entering and petframe.PostEnterVehicle then
-				petframe:PostEnterVehicle("enter")
-			elseif not entering and petframe.PostExitVehicle then
-				petframe:PostExitVehicle("exit")
-			end
-		end
-	end
-
-	f:SetScript("OnEvent", function(self, event, unit)
-		if unit == "player" then
-			if event == "UNIT_ENTERED_VEHICLE" then
-				entering = true
-			else
-				entering = false
-			end
-			f.elapsed = delay
-			f:SetScript("OnUpdate", OnUpdate)
-		end
-	end)
-end
-
-local EnterVehicle = function(self, event)
-	if event == "enter" then
-		self.Info:Hide()
-	end
-end
-
-local ExitVehicle = function(self, event)
-	if event == "exit" then
-		self.Info:Show()
-	end
-end
---]]
 local delay = 0
 local viperAspectName = GetSpellInfo(34074)
 local UpdateManaLevel = function(self, elapsed)
@@ -829,15 +782,6 @@ local SetStyle = function(self, unit)
 		end
 	end
 
-	------------------------------------------------------------------------
-	--	Vehicle Swap
-	------------------------------------------------------------------------
---[[
-	if unit == "pet" then
-		self.PostEnterVehicle = EnterVehicle
-		self.PostExitVehicle = ExitVehicle
-	end
---]]
 	------------------------------------------------------------------------
 	--	Experience / reputation
 	------------------------------------------------------------------------	
