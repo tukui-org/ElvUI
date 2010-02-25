@@ -120,6 +120,12 @@ local OnEvent = function()
 		_G["WorldMapParty"..p].icon:SetTexture("Interface\\AddOns\\Tukui\\media\\Party")
 		_G["WorldMapParty"..p]:SetScript("OnUpdate", UpdateIconColor)
 	end
+	
+	if event == "WORLD_MAP_UPDATE" then
+		WatchFrame_GetCurrentMapQuests()
+		WatchFrame_Update()
+		WorldMapFrame_UpdateQuests()
+	end
 end
 addon:SetScript("OnEvent", OnEvent)
 
