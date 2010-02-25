@@ -103,7 +103,7 @@ local function createAuraWatch(self,unit)
 	  else
         icon:SetWidth(8)
         icon:SetHeight(8)
-        local tex = icon:CreateTexture(nil, "BACKGROUND")
+        local tex = icon:CreateTexture(nil, "LOW")
         tex:SetAllPoints(icon)
         tex:SetTexture([=[Interface\AddOns\Tukui\media\indicator]=])
 		if class == "DRUID" then
@@ -128,7 +128,7 @@ local function createAuraWatch(self,unit)
 			 if i==5 then
 				  icon.anyUnit = true
 				  icon:SetPoint("TOPRIGHT",-1,-1)
-				  tex:SetVertexColor(0.7, 0.3, 0.7)
+				  tex:SetVertexColor(1, 0, 0)
 			 elseif i==6 then
 				  icon:SetPoint("BOTTOMRIGHT", -1, 1)
 				  tex:SetVertexColor(0.2, 0.7, 0.2)
@@ -142,7 +142,7 @@ local function createAuraWatch(self,unit)
 			 elseif i == 8 then
 				  icon.anyUnit = true
 				  icon:SetPoint("TOPLEFT", 1, -1)
-				  tex:SetVertexColor(0.7, 0.4, 0)          
+				  tex:SetVertexColor(213/255,220/255,22/255)          
 			 end
 		elseif class == "SHAMAN" then
 			 if i==9 then
