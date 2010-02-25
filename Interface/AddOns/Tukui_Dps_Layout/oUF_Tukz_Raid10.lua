@@ -59,11 +59,17 @@ local function CreateStyle(self, unit)
 	health:SetPoint('CENTER', 0, 1)
 	self:Tag(health, '[dead][offline( )][afk( )]')
 
-	local name = self.Health:CreateFontString(nil, 'OVERLAY', 'GameFontHighlightLeft')
-	name:SetFont(fontlol, 13, "THINOUTLINE")
-	name:SetPoint('LEFT', self, 'RIGHT', 5, 1)
-	self:Tag(name, '[name( )][leader( )]')
-
+	self.Health.name = self.Health:CreateFontString(nil, 'OVERLAY', 'GameFontHighlightLeft')
+	self.Health.name:SetFont(fontlol, 13, "THINOUTLINE")
+	self.Health.name:SetPoint('LEFT', self, 'RIGHT', 5, 1)
+	self:Tag(self.Health.name, '[name( )][leader( )]')
+	
+	if gridaggro == true then
+		table.insert(self.__elements, UpdateThreat)
+		self:RegisterEvent('PLAYER_TARGET_CHANGED', UpdateThreat)
+		self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', UpdateThreat)
+		self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', UpdateThreat)
+	end
 
 	self.DebuffHighlightAlpha = 1
 	self.DebuffHighlightBackdrop = true
