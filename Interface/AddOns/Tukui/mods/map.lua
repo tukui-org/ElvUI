@@ -1,10 +1,21 @@
--- http://www.tukui.org/forum/viewtopic.php?f=17&t=1340&p=7503#p7503
--- credit : Mapster (Nevcairiel), pMap (p3lim), m_Map (Monolit)
+WORLDMAP_RATIO_MINI=0.75
 
-local blanke = BLANK_TEXTURE
+local dummy = function() end
+local Kill = function(object)
+	object.Show = dummy
+	object:Hide()
+end
+
 local glowt = "Interface\\AddOns\\Tukui\\media\\glowTex"
 local ft = "Fonts\\skurri.ttf" -- Map font
 local fontsize = 18 -- Map Font Size
+local mapbg = CreateFrame ("Frame",nil, WorldMapDetailFrame)
+	mapbg:SetBackdrop( { 
+	bgFile = BLANK_TEXTURE, 
+	edgeFile = BLANK_TEXTURE, 
+	tile = false, edgeSize = 1, 
+	insets = { left = -1, right = -1, top = -1, bottom = -1 }
+})
 
 local addon = CreateFrame('Frame')
 addon:RegisterEvent('PLAYER_LOGIN')
@@ -15,37 +26,41 @@ addon:RegisterEvent("PLAYER_REGEN_ENABLED")
 addon:RegisterEvent("PLAYER_REGEN_DISABLED")
 
 -- because smallmap > bigmap by far
-local mapminionlogin = GetCVarBool("miniWorldMap")
-if mapminionlogin == nil then
+local SmallerMap = GetCVarBool("miniWorldMap")
+if SmallerMap == nil then
 	SetCVar("miniWorldMap", 1);
 end
 
-function MapShrink()
+local SmallerMapSkin = function()
+	-- because it cause "action failed" when rescaling smaller map ...
+	Kill(WorldMapBlobFrame)
+	
+	-- new frame to put zone and title text in
 	local ald = CreateFrame ("Frame",nil,WorldMapButton)
 	ald:SetFrameStrata("TOOLTIP")
-    local mapbg = CreateFrame ("Frame",nil, WorldMapDetailFrame)
-		mapbg:SetBackdrop( { 
-		bgFile = blanke, 
-		edgeFile = blanke, 
-		tile = false, edgeSize = 1, 
-		insets = { left = -1, right = -1, top = -1, bottom = -1 }
-	})
+
+	-- map glow
 	local fb1 = CreateFrame("Frame", nil, mapbg )
 	fb1:SetFrameLevel(0)
 	fb1:SetFrameStrata("BACKGROUND")
 	fb1:SetPoint("TOPLEFT", mapbg , "TOPLEFT", -3.4, 3.4)
-	fb1:SetPoint("BOTTOMRIGHT", mapbg , "BOTTOMRIGHT", 3.2, -3.4)
-	fb1:SetBackdrop {edgeFile = glowt, edgeSize = 3,
-		insets = {left = 0, right = 0, top = 0, bottom = 0}}
+	fb1:SetPoint("BOTTOMRIGHT", mapbg , "BOTTOMRIGHT", 3.4, -3.4)
+	fb1:SetBackdrop {edgeFile = glowt, edgeSize = 3, insets = {left = 0, right = 0, top = 0, bottom = 0}}
 	fb1:SetBackdropBorderColor(0.1, 0.1, 0.1,1)
+	
+	-- map border and bg
 	mapbg:SetBackdropColor(unpack(TUKUI_BACKDROP_COLOR))
 	mapbg:SetBackdropBorderColor(unpack(TUKUI_BORDER_COLOR))
 	mapbg:SetScale(1/WORLDMAP_RATIO_MINI)
+	mapbg:SetPoint("BOTTOMRIGHT", WorldMapDetailFrame, 2, -2)
+	mapbg:SetPoint("TOPLEFT", WorldMapDetailFrame, -2, 2)
+	mapbg:SetFrameStrata("LOW")	
+	
+	-- move buttons / texts and hide default border
 	WorldMapButton:SetAllPoints(WorldMapDetailFrame)
 	WorldMapFrame:SetFrameStrata("MEDIUM")
 	WorldMapDetailFrame:SetFrameStrata("MEDIUM")
-	mapbg:SetFrameStrata("LOW")	
-	WorldMapTitleButton:Show()
+	WorldMapTitleButton:Show()	
 	WorldMapFrameMiniBorderLeft:Hide()
 	WorldMapFrameMiniBorderRight:Hide()
 	WorldMapFrameSizeUpButton:Show()
@@ -59,26 +74,25 @@ function MapShrink()
 	WorldMapFrameTitle:ClearAllPoints()
 	WorldMapFrameTitle:SetPoint("BOTTOMLEFT", WorldMapDetailFrame, 9, 5);
 	WorldMapFrameTitle:SetFont(ft,fontsize,"LINE")
-	WorldMapFrameTitle:SetParent(ald)
+	WorldMapFrameTitle:SetParent(ald)	
 	WorldMapQuestShowObjectives:SetParent(ald)
 	WorldMapQuestShowObjectives:ClearAllPoints()
 	WorldMapQuestShowObjectives:SetPoint("BOTTOMRIGHT",WorldMapButton,"BOTTOMRIGHT", 0, -1)
 	WorldMapQuestShowObjectivesText:SetFont(ft,fontsize,"LINE")
 	WorldMapQuestShowObjectivesText:ClearAllPoints()
-	WorldMapQuestShowObjectivesText:SetPoint("RIGHT",WorldMapQuestShowObjectives,"LEFT",-4,1)
+	WorldMapQuestShowObjectivesText:SetPoint("RIGHT",WorldMapQuestShowObjectives,"LEFT",-4,1)	
 	WorldMapTitleButton:SetFrameStrata("TOOLTIP")
 	WorldMapTooltip:SetFrameStrata("TOOLTIP")
-	mapbg:SetPoint("BOTTOMRIGHT", WorldMapDetailFrame, 1, -1)
-	mapbg:SetPoint("TOPLEFT", WorldMapDetailFrame, -1, 1)
 end
-hooksecurefunc("WorldMap_ToggleSizeDown", function() MapShrink() end)
+hooksecurefunc("WorldMap_ToggleSizeDown", function() SmallerMapSkin() end)
 
+-- the classcolor function
 local function UpdateIconColor(self, t)
 	color = RAID_CLASS_COLORS[select(2, UnitClass(self.unit))]
 	self.icon:SetVertexColor(color.r, color.g, color.b)
 end
 
-function UpdateParty()
+local OnEvent = function()
 	-- fixing a stupid bug error by blizzard on default ui :x
 	if InCombatLockdown() then
 		WorldMapFrameSizeDownButton:Disable() 
@@ -102,4 +116,5 @@ function UpdateParty()
 		_G["WorldMapParty"..p]:SetScript("OnUpdate", UpdateIconColor)
 	end
 end
-addon:SetScript("OnEvent", UpdateParty)
+addon:SetScript("OnEvent", OnEvent)
+
