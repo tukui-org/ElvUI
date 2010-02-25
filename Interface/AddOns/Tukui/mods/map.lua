@@ -1,3 +1,6 @@
+if not TukuiMap == true then return end
+if IsAddOnLoaded("Mapster") then return end
+
 WORLDMAP_RATIO_MINI=0.75
 
 local dummy = function() end
