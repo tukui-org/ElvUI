@@ -62,7 +62,7 @@ local function CreateStyle(self, unit)
 	self.Health.name = self.Health:CreateFontString(nil, 'OVERLAY', 'GameFontHighlightLeft')
 	self.Health.name:SetFont(fontlol, 13, "THINOUTLINE")
 	self.Health.name:SetPoint('LEFT', self, 'RIGHT', 5, 1)
-	self:Tag(self.Health.name, '[name( )][leader( )]')
+	self:Tag(self.Health.name, '[NameMedium][leader( )]')
 	
 	if gridaggro == true then
 		table.insert(self.__elements, UpdateThreat)
