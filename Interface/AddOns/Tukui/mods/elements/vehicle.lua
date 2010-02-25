@@ -11,7 +11,7 @@ local Update = function(self, event, unit)
 	end
 
 	-- Avoid unnecessary changes
-	if(modUnit == self.unit) then return end
+	if(unit ~= modUnit and unit ~= realUnit and unit ~= self.unit) then return end
 	
 	-- Update the frame unit properties
 	self.unit = modUnit
