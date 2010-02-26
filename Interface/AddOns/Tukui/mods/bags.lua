@@ -613,11 +613,27 @@ function Stuffing:Layout(lb)
 
 	if lb then
 		bs = BAGS_BANK
-		cols = 10
+		if tinfowidth >= 405 then
+			cols = 11
+		elseif tinfowidth >= 370 and tinfowidth < 405 then
+			cols = 10
+		elseif tinfowidth >= 335 and tinfowidth < 370 then
+			cols = 9
+		else
+			cols = 8
+		end
 		f = self.bankFrame
 	else
 		bs = BAGS_BACKPACK
-		cols = 10
+		if tinfowidth >= 405 then
+			cols = 11
+		elseif tinfowidth >= 370 and tinfowidth < 405 then
+			cols = 10
+		elseif tinfowidth >= 335 and tinfowidth < 370 then
+			cols = 9
+		else
+			cols = 8
+		end
 		f = self.frame
 
 		f.gold:SetText (GetCoinTextureString(GetMoney(), 12))
