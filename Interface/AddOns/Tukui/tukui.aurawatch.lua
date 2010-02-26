@@ -126,10 +126,7 @@ if raidunitdebuffwatch == true then
 		71264, --Swarming Shadows (swirl icon)
 		71807, --Glittering Sparks
 		70873, --Emerald Vigor
-		71738, --Corrosion
-		71733, --Acid Burst
 		71283, --Gut Spray
-		69762, --Unchained Magic
 		69766, --Instability
 		70126, --Frost Beacon
 		70157, --Ice Tomb
