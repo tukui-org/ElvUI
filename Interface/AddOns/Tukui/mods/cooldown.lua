@@ -4,6 +4,8 @@
                 This version should work on absolutely everything, but I've removed pretty much all of the options
 --]]
 
+if IsAddOnLoaded("OmniCC") then return end
+
 local ICON_SIZE = 20 --the normal size for an icon (don't change this)
 local TEXT_FONT = "Interface\\Addons\\Tukui\\media\\Russel Square LT.ttf" --what font to use
 local FONT_SIZE = 22 --the base font size to use at a scale of 1
