@@ -45,7 +45,6 @@ mods\symbol.lua
 mods\minimap.lua
 mods\panels.lua
 mods\tooltip.lua
-mods\focus.key.lua
 mods\bags.lua
 mods\chattabs.lua
 mods\mirror.lua

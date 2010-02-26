@@ -92,13 +92,6 @@ t_arena = true								-- enable arena enemy unitframe, Alpha, feel free to compl
 arenamodifier = "shift" 					-- shift, alt or ctrl
 arenamouseButton = "3" 						-- 1 = left, 2 = right, 3 = middle, 4 and 5 = thumb buttons if there are any
 
--- set focus with a specific key on mouseover (disabled by default because it override spell key)
-if myname == "Tukz" or myname == "Tùkz" then
-	focuskey = true
-else
-	focuskey = false
-end
-
 -------------------------------------------------------------------------------------------------------------------------------
 -- Chat & Panels config (you can't have more than 8 active panels)
 -------------------------------------------------------------------------------------------------------------------------------
