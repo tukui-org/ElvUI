@@ -125,6 +125,23 @@ if raidunitdebuffwatch == true then
 		71267, --Swarming Shadows (black purple icon)
 		71264, --Swarming Shadows (swirl icon)
 		71807, --Glittering Sparks
+		70873, --Emerald Vigor
+		71738, --Corrosion
+		71733, --Acid Burst
+		71283, --Gut Spray
+		69762, --Unchained Magic
+		69766, --Instability
+		70126, --Frost Beacon
+		70157, --Ice Tomb
+		71056, --Frost Breath
+		70106, --Chilled to the Bone
+		70128, --Mystic Buffet
+		73785, --Necrotic Plague
+		73779, --Infest
+		73800, --Soul Shriek
+		73797, --Soul Reaper
+		73708, --Defile
+		74322, --Harvested Soul
 
 		--Other debuff
 		6215,  --Fear
