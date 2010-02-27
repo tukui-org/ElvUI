@@ -48,6 +48,7 @@ lowThreshold = 20 							-- low mana threshold for all mana classes
 highThreshold = 80 							-- high mana treshold for hunters
 targetpowerpvponly = true 					-- mana text on pvp enemy target only
 totdebuffs = false 							-- show tot debuff (if true, you need to move pet frame)
+focusdebuffs = false							-- show focus debuff
 playerdebuffsonly = false 					-- my debuff only on target, arena and bossframe.
 showfocustarget = false 					-- show focus target
 showtotalhpmp = false						-- show total mana / total hp text on player and target.

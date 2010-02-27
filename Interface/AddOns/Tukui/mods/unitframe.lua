@@ -923,7 +923,7 @@ local SetStyle = function(self, unit)
 	--	Auras
 	------------------------------------------------------------------------	
 	
-	if unit == "player" or unit == "target" or unit == "targettarget" or (unit and unit:find("arena%d")) or (unit and unit:find("boss%d")) then
+	if unit == "player" or unit == "focus" or unit == "target" or unit == "targettarget" or (unit and unit:find("arena%d")) or (unit and unit:find("boss%d")) then
 		self.Debuffs = CreateFrame("Frame", nil, self)
 		self.Debuffs:SetHeight(32)
 		self.Debuffs:SetWidth(32*8)
@@ -969,6 +969,19 @@ local SetStyle = function(self, unit)
 				self.Debuffs.numDebuffs = 5
 							
 				self.Debuffs:SetPoint("TOPLEFT", self, "TOPLEFT", -1, 28)
+				self.Debuffs.initialAnchor = "TOPLEFT"
+				self.Debuffs["growth-y"] = "UP"
+			end
+			
+			if unit == "focus" and focusdebuffs == true then
+				self.Debuffs:SetHeight(32)
+				self.Debuffs:SetWidth(tinfowidth - 10)
+				self.Debuffs.size = 32
+				self.Debuffs.spacing = 0
+				self.Debuffs.num = 40
+				self.Debuffs.numDebuffs = 40
+							
+				self.Debuffs:SetPoint("TOPLEFT", self, "TOPLEFT", -4, 38)
 				self.Debuffs.initialAnchor = "TOPLEFT"
 				self.Debuffs["growth-y"] = "UP"
 			end
