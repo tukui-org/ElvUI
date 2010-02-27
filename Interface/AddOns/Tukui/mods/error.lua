@@ -93,6 +93,8 @@ local blacklist = {
 	[SPELL_FAILED_NO_COMBO_POINTS] = true,
 	[SPELL_FAILED_SPELL_IN_PROGRESS] = true,
 	[ERR_SPELL_COOLDOWN] = true,
+	[SPELL_FAILED_INTERRUPTED] = true,
+	[SPELL_FAILED_MOVING] = true,
 }
 
 UIErrorsFrame:UnregisterEvent"UI_ERROR_MESSAGE"
