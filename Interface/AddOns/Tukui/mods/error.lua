@@ -95,6 +95,7 @@ local blacklist = {
 	[ERR_SPELL_COOLDOWN] = true,
 	[SPELL_FAILED_INTERRUPTED] = true,
 	[SPELL_FAILED_MOVING] = true,
+	[SPELL_FAILED_ITEM_NOT_READY] = true,
 }
 
 UIErrorsFrame:UnregisterEvent"UI_ERROR_MESSAGE"
