@@ -262,10 +262,8 @@ local function CreateStyle(self, unit)
 	self.Health:SetStatusBarTexture(normTex)
 	self.Health.colorDisconnected = true
 	self.Health.colorClass = true
-	self.Health.colorClassPet = true
 	self.Health.colorReaction = true
 	 
-
 	self.Health.bg = self.Health:CreateTexture(nil, 'BORDER')
 	self.Health.bg:SetAllPoints(self.Health)
 	self.Health.bg:SetTexture([=[Interface\ChatFrame\ChatFrameBackground]=])

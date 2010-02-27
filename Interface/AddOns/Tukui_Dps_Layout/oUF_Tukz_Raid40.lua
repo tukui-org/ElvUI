@@ -46,7 +46,6 @@ local function CreateStyle(self, unit)
 	self.Health:SetStatusBarTexture([=[Interface\AddOns\Tukui\media\normTex]=])
 	self.Health.colorDisconnected = true
 	self.Health.colorClass = true
-	self.Health.colorClassPet = true
 	self.Health.colorReaction = true
 
 	self.Health.bg = self.Health:CreateTexture(nil, 'BORDER')
