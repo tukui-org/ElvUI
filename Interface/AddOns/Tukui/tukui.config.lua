@@ -60,7 +60,7 @@ raidalphaoor = 0.3							-- set alpha opacity when unit is out of range (between
 
 -- raid layout (healer mode)
 gridposX = 18								-- horizontal unit #1 position value
-gridposY = -290								-- vertical unit #1 position value
+gridposY = -250								-- vertical unit #1 position value
 gridposZ = "TOPLEFT"						-- position grid X,Y values from
 gridonly = false							-- Replace 10, 15 mans default layout by grid layout 
 showsymbols = true 							-- for grid mode only (healer layout only)
