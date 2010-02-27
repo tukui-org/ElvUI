@@ -102,26 +102,26 @@ end
 
 local OnEvent = function()
 	-- fixing a stupid bug error by blizzard on default ui :x
-	if InCombatLockdown() then
+	if event == "PLAYER_REGEN_DISABLED" then
 		WorldMapFrameSizeDownButton:Disable() 
 		WorldMapFrameSizeUpButton:Disable()
-	else
+	elseif event == "PLAYER_REGEN_ENABLED" then
 		WorldMapFrameSizeDownButton:Enable()
 		WorldMapFrameSizeUpButton:Enable()
-	end
-	
-	for r=1, 40 do
-		if UnitInParty(_G["WorldMapRaid"..r].unit) then
-			_G["WorldMapRaid"..r].icon:SetTexture("Interface\\AddOns\\Tukui\\media\\Party")
-		else
-			_G["WorldMapRaid"..r].icon:SetTexture("Interface\\AddOns\\Tukui\\media\\Raid")
+	else
+		for r=1, 40 do
+			if UnitInParty(_G["WorldMapRaid"..r].unit) then
+				_G["WorldMapRaid"..r].icon:SetTexture("Interface\\AddOns\\Tukui\\media\\Party")
+			else
+				_G["WorldMapRaid"..r].icon:SetTexture("Interface\\AddOns\\Tukui\\media\\Raid")
+			end
+			_G["WorldMapRaid"..r]:SetScript("OnUpdate", UpdateIconColor)
 		end
-		_G["WorldMapRaid"..r]:SetScript("OnUpdate", UpdateIconColor)
-	end
 
-	for p=1, 4 do
-		_G["WorldMapParty"..p].icon:SetTexture("Interface\\AddOns\\Tukui\\media\\Party")
-		_G["WorldMapParty"..p]:SetScript("OnUpdate", UpdateIconColor)
+		for p=1, 4 do
+			_G["WorldMapParty"..p].icon:SetTexture("Interface\\AddOns\\Tukui\\media\\Party")
+			_G["WorldMapParty"..p]:SetScript("OnUpdate", UpdateIconColor)
+		end
 	end
 	
 	if event == "WORLD_MAP_UPDATE" then
