@@ -1060,7 +1060,9 @@ end
 local argumentsPattern = "([^,]+),%s*(.+)"
 
 SlashCmdList['MOUNTER'] = function(text, editBox)
-	if not IsMounted() and not InCombatLockdown() then
+	if CanExitVehicle() then
+		VehicleExit()
+	elseif not IsMounted() and not InCombatLockdown() then
 		local groundMount, flyingMount = string.match(text, argumentsPattern)
 		
 		if not groundMount then
@@ -1078,11 +1080,7 @@ SlashCmdList['MOUNTER'] = function(text, editBox)
 			print("Usage: /mounter <Ground mount>[, <Flying mount>]")
 		end
 	else
-		if CanExitVehicle() then 
-			VehicleExit()
-		else
-			Dismount()
-		end
+		Dismount()
 	end
 end
 
