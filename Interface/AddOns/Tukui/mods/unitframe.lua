@@ -728,7 +728,7 @@ local SetStyle = function(self, unit)
 		self.FlashInfo.ManaLevel:SetPoint("CENTER", 0, -32.5)
 				
 		self.Status = SetFontString(self.Power, font, 12)
-		self.Status:SetPoint("CENTER", 0, -14)
+		self.Status:SetPoint("CENTER", 0, -14.5)
 		self.Status:SetTextColor(0.69, 0.31, 0.31, 0)
 		self:Tag(self.Status, "[pvp]")
 	
