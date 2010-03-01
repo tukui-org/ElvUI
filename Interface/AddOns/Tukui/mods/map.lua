@@ -42,6 +42,12 @@ if SmallerMap == nil then
 	SetCVar("miniWorldMap", 1);
 end
 
+-- look if map is not locked
+local MoveMap = GetCVarBool("advancedWorldMap")
+if MoveMap == nil then
+	SetCVar("advancedWorldMap", 1)
+end
+
 local SmallerMapSkin = function()
 	-- because it cause "action failed" when rescaling smaller map ...
 	Kill(WorldMapBlobFrame)
