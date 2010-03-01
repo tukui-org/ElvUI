@@ -155,19 +155,13 @@ hooksecurefunc("DebuffButton_UpdateAnchors", UpdateDebuffAnchors)
 
 -- Change color and format of duration.
 SecondsToTimeAbbrev = function(time)
-    local hr, m, s, text
-    if time <= 0 then text = ""
-    elseif(time < 3600 and time > 60) then
-		hr = floor(time / 3600)
-		m = floor(mod(time, 3600) / 60 + 1)
-		text = format("|cffffffff%dm|r", m)
-    elseif time < 60 then
-		m = floor(time / 60)
-		s = mod(time, 60)
-		text = (m == 0 and format("|cffffffff%ds|r", s))
-    else
-		hr = floor(time / 3600 + 1)
-		text = format("|cffffffff%dh|r", hr)
-    end
-    return text
+	if (time >= 86400) then
+		return "|cffffffff%dd|r", ceil(time / 86400)
+	elseif (time >= 3600) then
+		return "|cffffffff%dh|r", ceil(time / 3600)
+	elseif (time >= 60) then
+		return "|cffffffff%dm|r", ceil(time / 60)
+	else
+		return "|cffffffff%ds|r", time
+	end
 end
