@@ -20,6 +20,14 @@ local mapbg = CreateFrame ("Frame",nil, WorldMapDetailFrame)
 	insets = { left = -1, right = -1, top = -1, bottom = -1 }
 })
 
+local movebutton = CreateFrame ("Frame",nil,WorldMapFrameSizeUpButton)
+movebutton:SetHeight(32)
+movebutton:SetWidth(32)
+movebutton:SetPoint("TOP",WorldMapFrameSizeUpButton,"BOTTOM",-1,4)
+movebutton:SetBackdrop( { 
+	bgFile = "Interface\\AddOns\\Tukui\\media\\cross",
+})
+
 local addon = CreateFrame('Frame')
 addon:RegisterEvent('PLAYER_LOGIN')
 addon:RegisterEvent("PARTY_MEMBERS_CHANGED")
@@ -93,6 +101,23 @@ local SmallerMapSkin = function()
 	end
 end
 hooksecurefunc("WorldMap_ToggleSizeDown", function() SmallerMapSkin() end)
+
+local function OnMouseDown()
+	WorldMapScreenAnchor:ClearAllPoints();
+	WorldMapFrame:ClearAllPoints();
+	WorldMapFrame:StartMoving(); 
+end
+
+local function OnMouseUp()
+	WorldMapFrame:StopMovingOrSizing();
+	WorldMapScreenAnchor:StartMoving();
+	WorldMapScreenAnchor:SetPoint("TOPLEFT", WorldMapFrame);
+	WorldMapScreenAnchor:StopMovingOrSizing();
+end
+
+movebutton:EnableMouse(true)
+movebutton:SetScript("OnMouseDown",OnMouseDown)
+movebutton:SetScript("OnMouseUp",OnMouseUp)
 
 -- the classcolor function
 local function UpdateIconColor(self, t)
