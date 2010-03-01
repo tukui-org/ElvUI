@@ -1,7 +1,7 @@
 ## Interface: 30300
 ## Author: Tukz
-## Version: 9.21
-## Title: |cffC495DDTukui 9.21|r
+## Version: 9.22
+## Title: |cffC495DDTukui 9.22|r
 ## Notes: UI of awesomeness!
 ## SavedVariables: tgoldDB
 ## SavedVariablesPerCharacter: t9install, tCooldownTracker_Saved, bb08df87101dd7f2161e5b77cf750f753c58ef1b
