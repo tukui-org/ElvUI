@@ -59,7 +59,8 @@ local Update = function(self, event, rid, usable)
 	if(rune) then
 		local start, duration, runeReady = GetRuneCooldown(rune:GetID())
 		if(runeReady) then
-			rune:SetValue(duration)
+			rune:SetMinMaxValues(0, 1)
+			rune:SetValue(1)
 			rune:SetScript("OnUpdate", nil)
 		else
 			rune.duration = GetTime() - start
