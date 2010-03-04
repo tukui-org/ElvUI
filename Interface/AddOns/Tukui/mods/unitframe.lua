@@ -651,7 +651,7 @@ local SetStyle = function(self, unit)
 		elseif (self:GetParent():GetName():match"oUF_MainTank" or self:GetParent():GetName():match"oUF_MainAssist") then
 			self.Info = SetFontString(self.Health, font, 12, "OUTLINE")
 			self.Info:SetPoint("CENTER", 0, 1)
-			self:Tag(self.Info, "[GetNameColor][NameLong]")		
+			self:Tag(self.Info, "[GetNameColor][NameShort]")		
 		elseif unit == "pet" then
 			self.Info:SetPoint("CENTER", 0, -23)
 			self:Tag(self.Info, "[GetNameColor][NameLong] [DiffColor][level] [shortclassification]")

@@ -818,7 +818,15 @@ if guild > 0 then
 	local function Update(self, event, ...)	
 		if IsInGuild() then
 			GuildRoster()
-			local numOnline = (GetNumGuildMembers())			
+			local numOnline = (GetNumGuildMembers())            
+			local total = (GetNumGuildMembers())
+			local numOnline = 0
+			for i = 1, total do
+				local _, _, _, _, _, _, _, _, online, _, _ = GetGuildRosterInfo(i)
+				if online then
+					numOnline = numOnline + 1
+				end
+			end 			
 			self:SetAllPoints(Text)
 			Text:SetText(tp_guild .. ": " .. numOnline)
 		else

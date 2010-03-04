@@ -50,6 +50,16 @@ local replaceschan = {
 	['Schlachtfeld'] = '[BG]',
 	['Schlachtfeldleiter'] = '[BGL]',
 	['(%d+)%. .-'] = '[%1]',
+	['Hermandad'] = '[H]',
+	['Grupo'] = '[G]',
+	['Líder del grupo'] = '[LG]',
+	['Guía de mazmorra'] = '[GM]',
+	['Banda'] = '[B]',
+	['Líder de banda'] = '[LB]',
+	['Aviso de banda'] = '[AB]',
+	['Oficial'] = '[O]',
+	['CampoDeBatalla'] = '[CB]',
+	['Líder de batalla'] = '[LdB]',
 }
 
 -- editbox background
