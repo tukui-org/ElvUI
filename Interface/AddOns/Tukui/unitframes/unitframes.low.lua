@@ -360,7 +360,7 @@ local UpdateDruidMana = function(self)
 				self.DruidMana:SetPoint("LEFT", self.Power.value, "RIGHT", 1, 0)
 				self.DruidMana:SetFormattedText("|cffD7BEA5-|r %d%%|r", floor(min / max * 100))
 			else
-				self.DruidMana:SetPoint("LEFT", 4, -17)
+				self.DruidMana:SetPoint("LEFT", self.panel, "LEFT", 4, 1)
 				self.DruidMana:SetFormattedText("%d%%", floor(min / max * 100))
 			end
 		else
