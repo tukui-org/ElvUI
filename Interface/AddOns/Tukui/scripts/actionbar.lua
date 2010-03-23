@@ -1,5 +1,7 @@
 -- credits : Roth, Alza
 
+if TukuiDB["actionbar"].enable ~= true then return end
+
 local db = TukuiDB["actionbar"]
 
 TukuiDB.absettings = {
