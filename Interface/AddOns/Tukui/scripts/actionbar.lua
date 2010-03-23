@@ -466,17 +466,15 @@ if db.rightbarmouseover == true and db.rightbars > 0 then
 		pb:SetAlpha(0)
 		pb:HookScript("OnEnter", function(self) mouseoverpet(1) rightbaralpha(1) end)
 		pb:HookScript("OnLeave", function(self) mouseoverpet(0) rightbaralpha(0) end)
-		if not TukuiDB.lowversion == true then
-			if not (db.rightbars == 1 and db.bottomrows == 2) then
-				local pb = _G["MultiBarBottomLeftButton"..i]
-				pb:SetAlpha(0)
-				pb:HookScript("OnEnter", function(self) mouseoverpet(1) rightbaralpha(1) end)
-				pb:HookScript("OnLeave", function(self) mouseoverpet(0) rightbaralpha(0) end)
-				local pb = _G["MultiBarBottomRightButton"..i]
-				pb:SetAlpha(0)
-				pb:HookScript("OnEnter", function(self) mouseoverpet(1) rightbaralpha(1) end)
-				pb:HookScript("OnLeave", function(self) mouseoverpet(0) rightbaralpha(0) end)
-			end
+		if not (db.rightbars == 1 and db.bottomrows == 2 and TukuiDB.lowversion ~= true) then
+			local pb = _G["MultiBarBottomLeftButton"..i]
+			pb:SetAlpha(0)
+			pb:HookScript("OnEnter", function(self) mouseoverpet(1) rightbaralpha(1) end)
+			pb:HookScript("OnLeave", function(self) mouseoverpet(0) rightbaralpha(0) end)
+			local pb = _G["MultiBarBottomRightButton"..i]
+			pb:SetAlpha(0)
+			pb:HookScript("OnEnter", function(self) mouseoverpet(1) rightbaralpha(1) end)
+			pb:HookScript("OnLeave", function(self) mouseoverpet(0) rightbaralpha(0) end)
 		end
 	end
 	for i=1, NUM_PET_ACTION_SLOTS do
