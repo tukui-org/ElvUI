@@ -581,7 +581,7 @@ local SetStyle = function(self, unit)
 	self.FrameBackdrop:SetBackdropBorderColor(0, 0, 0)
 	self.FrameBackdrop:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 3, -3)
 	
-	self.Health:SetHeight((unit == "player" or unit == "target") and TukuiDB:Scale(26)  
+	self.Health:SetHeight((unit == "player" or unit == "target") and TukuiDB:Scale(20)  
 	or self:GetParent():GetName():match("oUF_Party") and 37
 		or (unit == "focus") and TukuiDB:Scale(19)
 		or (unit == "targettarget" or unit == "focustarget") and TukuiDB:Scale(18)
@@ -1259,7 +1259,7 @@ local SetStyle = function(self, unit)
 	------------------------------------------------------------------------
 
 	if unit == "player" or unit == "target" then
-		self:SetAttribute("initial-height", TukuiDB:Scale(57))
+		self:SetAttribute("initial-height", TukuiDB:Scale(51))
 		self:SetAttribute("initial-width", TukuiDB:Scale(186))
 	elseif unit == "targettarget" or unit == "focustarget" then
 		self:SetAttribute("initial-height", TukuiDB:Scale(18))
