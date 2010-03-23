@@ -1,3 +1,5 @@
+if TukuiDB["chat"].enable ~= true then return end
+
 local AddOn = CreateFrame("Frame")
 local OnEvent = function(self, event, ...) self[event](self, event, ...) end
 AddOn:SetScript("OnEvent", OnEvent)

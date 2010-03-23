@@ -3,8 +3,7 @@
 		all credits of this mod goes to tekhub
 --]]
 
-
-
+if TukuiDB["loot"].lootroll ~= true then return end
 
 local backdrop = {
 	bgFile = TukuiDB["media"].blank, tile = true, tileSize = 0,
