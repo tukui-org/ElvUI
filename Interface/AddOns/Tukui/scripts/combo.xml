@@ -1,0 +1,40 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
+	<Script file="combo.lua"/>
+
+	<Frame name="tComboFrame" parent="UIParent" frameStrata="HIGH" toplevel="true" enableMouse="false">
+		<Size>
+			<AbsDimension x="70" y="70"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER">
+				<Offset>
+					<AbsDimension x="0" y="60"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="BubbleTextString" inherits="ZoneTextFont">
+					<Anchors>
+						<Anchor point="CENTER">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad>
+				tComboFrame_OnLoad();
+			</OnLoad>
+			<OnEvent>
+				tComboFrame_OnEvent(event);
+			</OnEvent>
+			<OnUpdate>
+				tCombo_OnUpdate();
+			</OnUpdate>
+		</Scripts>
+	</Frame>
+</Ui>

@@ -1,0 +1,15 @@
+## Interface: 30300
+## Author: Tukz
+## Title: |cffC495DDTukui RAID|r (Heal Layout)
+## Notes: Raid layout for party and raid, Healer mode.
+## X-Email: flip2k3@globetrotter.net
+## X-Category: UnitFrame
+## RequiredDeps: Tukui
+
+oUF_hTukz_Party.lua
+oUF_hTukz_Raid10.lua
+oUF_hTukz_Raid15.lua
+oUF_hTukz_Raid40.lua
+
+
+

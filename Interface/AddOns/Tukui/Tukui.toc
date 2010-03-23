@@ -1,0 +1,65 @@
+## Interface: 30300
+## Author: Tukz
+## Version: 10.00
+## Title: |cffC495DDTukui|r
+## Notes: UI of awesomeness!
+## SavedVariables: TukuiData, TukuiArena
+## SavedVariablesPerCharacter: t10installed
+## X-oUF: oUF
+
+scripts\init.lua
+
+local\english.lua
+local\french.lua
+local\russian.lua
+local\german.lua
+local\taiwan.lua
+local\spanish.lua
+
+config\config.lua
+config\aurawatch.lua
+
+scripts\core.lua
+scripts\panels.lua
+scripts\minimap.lua
+scripts\chat.lua
+scripts\chattabs.lua
+scripts\datatext.lua
+scripts\tooltip.lua
+scripts\buffs.lua
+scripts\error.lua
+scripts\merchant.lua
+scripts\actionbar.lua
+scripts\buttonstyler.lua
+scripts\cooldown.lua
+scripts\bind.lua
+scripts\combatfont.lua
+scripts\nameplate.lua
+scripts\bags.lua
+scripts\combo.xml
+scripts\arenatrack.lua
+scripts\loot.lua
+scripts\lootroll.lua
+scripts\symbol.lua
+scripts\map.lua
+scripts\focus.lua
+scripts\mirror.lua
+
+libs\oUF\oUF.xml
+
+unitframes\plugins\smooth.lua
+unitframes\plugins\aurawatch.lua
+unitframes\plugins\debuffhighlight.lua
+unitframes\plugins\experience.lua
+unitframes\plugins\moveframe.lua
+unitframes\plugins\reputation.lua
+unitframes\plugins\threat.lua
+unitframes\plugins\trinkets.lua
+unitframes\plugins\totem.lua
+unitframes\plugins\readycheck.lua
+unitframes\plugins\combatfeedback.lua
+unitframes\tags.lua
+unitframes\menu.lua
+unitframes\unitframes.high.lua
+unitframes\unitframes.low.lua
+unitframes\plugins\priest.lua
