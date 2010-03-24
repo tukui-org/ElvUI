@@ -808,14 +808,12 @@ local SetStyle = function(self, unit)
 	------------------------------------------------------------------------	
 
 	if unit == "player" or unit =="pet" then
-			self.Experience = CreateFrame("StatusBar", self:GetName().."_Experience", self)
+			self.Experience = CreateFrame("StatusBar", self:GetName().."_Experience", self.Power)
 			self.Experience:SetStatusBarTexture(normTex)
 			self.Experience:SetStatusBarColor(0.55, 0.57, 0.61)
 			
-			if unit == "player"  or unit == "pet" then
-				self.Experience:SetPoint("TOPLEFT", self.panel, TukuiDB:Scale(2), TukuiDB:Scale(-2))
-				self.Experience:SetPoint("BOTTOMRIGHT", self.panel, TukuiDB:Scale(-2), TukuiDB:Scale(2))
-			end
+			self.Experience:SetPoint("TOPLEFT", self.panel, TukuiDB:Scale(2), TukuiDB:Scale(-2))
+			self.Experience:SetPoint("BOTTOMRIGHT", self.panel, TukuiDB:Scale(-2), TukuiDB:Scale(2))
 			self.Experience:SetAlpha(0)
 
 			self.Experience:HookScript("OnEnter", function(self) self:SetAlpha(1) end)
