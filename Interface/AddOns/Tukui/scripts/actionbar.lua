@@ -3,7 +3,7 @@
 if not TukuiDB["actionbar"].enable == true 
 	or (IsAddOnLoaded("Dominos") 
 	or IsAddOnLoaded("Bartender4") 
-	or IsAddOnLoaded("Macaroon") 
+	or IsAddOnLoaded("Macaroon")) then
 		return 
 end
 
