@@ -77,7 +77,9 @@ local function createAuraWatch(self,unit)
     auras.icons = {}
 	
 	auras.PostCreateIcon = auraIcon
-	auras.hideCooldown = true
+	if TukuiDB["unitframes"].auratimer ~= true then
+		auras.hideCooldown = true
+	end
     
     for i, sid in pairs(debuffs) do
 		local icon = CreateFrame("Frame", nil, auras)	  
