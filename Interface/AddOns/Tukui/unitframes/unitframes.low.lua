@@ -863,7 +863,7 @@ local SetStyle = function(self, unit)
 			self.ThreatBar:SetPoint("TOPLEFT", InfoLeft, TukuiDB:Scale(2), TukuiDB:Scale(-2))
 			self.ThreatBar:SetPoint("BOTTOMRIGHT", InfoLeft, TukuiDB:Scale(-2), TukuiDB:Scale(2))
 		  
-			elf.ThreatBar:SetStatusBarTexture(TukuiDB["media"].blank) -- temp fix for texture resetting
+			self.ThreatBar:SetStatusBarTexture(TukuiDB["media"].blank) -- temp fix for texture resetting
 			self.ThreatBar:SetBackdrop(backdrop)
 			self.ThreatBar:SetBackdropColor(0, 0, 0, 0)
 	   
