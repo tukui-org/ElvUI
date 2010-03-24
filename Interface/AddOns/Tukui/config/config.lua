@@ -148,7 +148,7 @@ TukuiDB["chat"] = {
 	["enable"] = true, -- blah
 	["font"] = [[fonts\ARIALN.ttf]], -- font for chat
 	["fontsize"] = 12, -- font size for chat
-	["chattime"] = true, -- enable chat time on chat
+	["chattime"] = false, -- enable chat time on chat
 }
 
 TukuiDB["panels"] = { 
