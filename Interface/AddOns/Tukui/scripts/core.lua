@@ -239,7 +239,9 @@ TukuiOnLogon:SetScript("OnEvent", function()
 				StaticPopup_Show("DISABLE_UI")
 		else
 			SetCVar("useUiScale", 1)
-			SetMultisampleFormat(1)
+			if TukuiDB["general"].multisampleprotect == true then
+				SetMultisampleFormat(1)
+			end
 			SetCVar("uiScale", TukuiDB["general"].uiscale)
 			if not (t10installed) then
 				-- ugly shit
