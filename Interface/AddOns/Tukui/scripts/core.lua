@@ -714,21 +714,6 @@ hooksecurefunc("QuestLog_Update", update)
 QuestLogScrollFrameScrollBar:HookScript("OnValueChanged", update)
 
 ----------------------------------------------------------------------------------------
--- auto accept LFD because im lazy or i miss it when i'm on windows desktop
-----------------------------------------------------------------------------------------
-
-if TukuiDB["general"].autolfgpress == true then
-	local LFDAutoJoin = CreateFrame('Frame', nil, UIParent)
-
-	LFDAutoJoin:SetScript('OnEvent', function(self, event, ...) self[event](self, ...) end)
-	LFDAutoJoin:RegisterEvent('LFG_PROPOSAL_SHOW')
-
-	function LFDAutoJoin:LFG_PROPOSAL_SHOW()
-		LFDDungeonReadyDialogEnterDungeonButton:Click()
-	end
-end
-
-----------------------------------------------------------------------------------------
 -- fix the fucking combatlog after a crash (a wow 2.4 and 3.3.2 bug)
 ----------------------------------------------------------------------------------------
 
