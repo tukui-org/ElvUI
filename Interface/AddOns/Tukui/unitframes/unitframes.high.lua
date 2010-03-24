@@ -823,8 +823,8 @@ local SetStyle = function(self, unit)
 			self.Experience:SetStatusBarTexture(normTex)
 			self.Experience:SetStatusBarColor(0.55, 0.57, 0.61)
 			
-			self.Experience:SetPoint("TOPLEFT", self.panel, TukuiDB:Scale(2), TukuiDB:Scale(-2))
-			self.Experience:SetPoint("BOTTOMRIGHT", self.panel, TukuiDB:Scale(-2), TukuiDB:Scale(2))
+			self.Experience:SetPoint("TOPLEFT", self, TukuiDB:Scale(2), TukuiDB:Scale(-38))
+			self.Experience:SetPoint("BOTTOMRIGHT", self, TukuiDB:Scale(-2), TukuiDB:Scale(2))
 			self.Experience:SetAlpha(0)
 			
 			self.Experience:HookScript("OnEnter", function(self) self:SetAlpha(1) end)
@@ -845,8 +845,8 @@ local SetStyle = function(self, unit)
 	if unit == "player" then
 		if UnitLevel("player") == MAX_PLAYER_LEVEL then
 			self.Reputation = CreateFrame("StatusBar", self:GetName().."_Reputation", self.Power)
-			self.Reputation:SetPoint("TOPLEFT", self.panel, TukuiDB:Scale(2), TukuiDB:Scale(-2))
-			self.Reputation:SetPoint("BOTTOMRIGHT", self.panel, TukuiDB:Scale(-2), TukuiDB:Scale(2))
+			self.Reputation:SetPoint("TOPLEFT", self, TukuiDB:Scale(2), TukuiDB:Scale(-38))
+			self.Reputation:SetPoint("BOTTOMRIGHT", self, TukuiDB:Scale(-2), TukuiDB:Scale(2))
 			self.Reputation:SetStatusBarTexture(normTex)
 			
 			self.Reputation:SetAlpha(0)
