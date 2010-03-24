@@ -17,9 +17,9 @@ if not TukuiDB["unitframes"].showthreat == true then return end
 	--local numParty = GetNumPartyMembers()
 	--local numRaid = GetNumRaidMembers()
 local aggroColors = {
-	[1] = {0, 1, 0},
-	[2] = {1, 1, 0},
-	[3] = {1, 0, 0},
+	[1] = {12/255, 151/255,  15/255},
+	[2] = {166/255, 171/255,  26/255},
+	[3] = {163/255,  24/255,  24/255},
 }
 
 local function update(self, event, unit)

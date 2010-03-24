@@ -1294,6 +1294,8 @@ local SetStyle = function(self, unit)
 		self.Health:SetPoint("TOPLEFT", InfoRight, TukuiDB:Scale(2), TukuiDB:Scale(-2))
 		self.Health:SetPoint("BOTTOMRIGHT", InfoRight, TukuiDB:Scale(-2), TukuiDB:Scale(2))
 		self.Health:SetStatusBarTexture(TukuiDB["media"].blank) -- temp fix for texture
+		self.Health:SetAlpha(0.7)
+		self.Health.bg.multiplier = 0.2
 		self.Power:Hide()
 	elseif unit == "pet" then
 		self:SetAttribute("initial-height", TukuiDB:Scale(41))
