@@ -933,29 +933,61 @@ SLASH_LUAERROR1 = '/luaerror'
 -- vehicule on mouseover because this shit take too much space on screen
 --------------------------------------------------------------------------
 
+-- note : there is probably a better way to do this but at least it work
+-- this is the only way i found to know how many button we have on VehiculeSeatIndicator :(
+
 local function vehmousebutton(alpha)
-   local numSeat = UnitVehicleSeatCount("player")
-   for i=1, numSeat do
-      local pb = _G["VehicleSeatIndicatorButton"..i]
-      pb:SetAlpha(alpha)
-   end
+	local numSeat
+
+	if VehicleSeatIndicatorButton1 then
+		numSeat = 1
+	elseif VehicleSeatIndicatorButton2 then
+		numSeat = 2
+	elseif VehicleSeatIndicatorButton3 then
+		numseat = 3
+	elseif VehicleSeatIndicatorButton4 then
+		numSeat = 4
+	elseif VehicleSeatIndicatorButton5 then
+		numSeat = 5
+	elseif VehicleSeatIndicatorButton6 then
+		numSeat = 6
+	end
+
+	for i=1, numSeat do
+	local pb = _G["VehicleSeatIndicatorButton"..i]
+		pb:SetAlpha(alpha)
+	end
 end
 
 local function vehmouse()
 	if VehicleSeatIndicator:IsShown() then
-			VehicleSeatIndicator:SetAlpha(0)
-			VehicleSeatIndicator:EnableMouse(true)
-			VehicleSeatIndicator:HookScript("OnEnter", function() VehicleSeatIndicator:SetAlpha(1) vehmousebutton(1) end)
-			VehicleSeatIndicator:HookScript("OnLeave", function() VehicleSeatIndicator:SetAlpha(0) vehmousebutton(0) end)
-			local numSeat = UnitVehicleSeatCount("player")
+		VehicleSeatIndicator:SetAlpha(0)
+		VehicleSeatIndicator:EnableMouse(true)
+		VehicleSeatIndicator:HookScript("OnEnter", function() VehicleSeatIndicator:SetAlpha(1) vehmousebutton(1) end)
+		VehicleSeatIndicator:HookScript("OnLeave", function() VehicleSeatIndicator:SetAlpha(0) vehmousebutton(0) end)
 
-			   for i=1, numSeat do
-				  local pb = _G["VehicleSeatIndicatorButton"..i]
-				  pb:SetAlpha(0)
-				  pb:HookScript("OnEnter", function(self) VehicleSeatIndicator:SetAlpha(1) vehmousebutton(1) end)
-				  pb:HookScript("OnLeave", function(self) VehicleSeatIndicator:SetAlpha(0) vehmousebutton(0) end)
-			   end
+		local numSeat
+
+		if VehicleSeatIndicatorButton1 then
+			numSeat = 1
+		elseif VehicleSeatIndicatorButton2 then
+			numSeat = 2
+		elseif VehicleSeatIndicatorButton3 then
+			numseat = 3
+		elseif VehicleSeatIndicatorButton4 then
+			numSeat = 4
+		elseif VehicleSeatIndicatorButton5 then
+			numSeat = 5
+		elseif VehicleSeatIndicatorButton6 then
+			numSeat = 6
+		end
+
+		for i=1, numSeat do
+			local pb = _G["VehicleSeatIndicatorButton"..i]
+			pb:SetAlpha(0)
+			pb:HookScript("OnEnter", function(self) VehicleSeatIndicator:SetAlpha(1) vehmousebutton(1) end)
+			pb:HookScript("OnLeave", function(self) VehicleSeatIndicator:SetAlpha(0) vehmousebutton(0) end)
+		end
 	end
 end
-
 hooksecurefunc("VehicleSeatIndicator_Update", vehmouse)
