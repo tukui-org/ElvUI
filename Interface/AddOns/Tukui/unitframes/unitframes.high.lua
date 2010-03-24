@@ -874,7 +874,7 @@ local SetStyle = function(self, unit)
 			self.ThreatBar:SetPoint("TOPLEFT", InfoLeft, TukuiDB:Scale(2), TukuiDB:Scale(-2))
 			self.ThreatBar:SetPoint("BOTTOMRIGHT", InfoLeft, TukuiDB:Scale(-2), TukuiDB:Scale(2))
 		  
-			self.ThreatBar:SetStatusBarTexture(normTex)
+			self.ThreatBar:SetStatusBarTexture(TukuiDB["media"].blank) -- temp fix for texture resetting
 			self.ThreatBar:SetBackdrop(backdrop)
 			self.ThreatBar:SetBackdropColor(0, 0, 0, 0)
 	   
@@ -1293,6 +1293,7 @@ local SetStyle = function(self, unit)
 		self:SetPoint("BOTTOMRIGHT", InfoRight, TukuiDB:Scale(-2), TukuiDB:Scale(2))
 		self.Health:SetPoint("TOPLEFT", InfoRight, TukuiDB:Scale(2), TukuiDB:Scale(-2))
 		self.Health:SetPoint("BOTTOMRIGHT", InfoRight, TukuiDB:Scale(-2), TukuiDB:Scale(2))
+		self.Health:SetStatusBarTexture(TukuiDB["media"].blank) -- temp fix for texture
 		self.Power:Hide()
 	elseif unit == "pet" then
 		self:SetAttribute("initial-height", TukuiDB:Scale(41))
