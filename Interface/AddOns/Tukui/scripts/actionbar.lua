@@ -1,6 +1,11 @@
 -- credits : Roth, Alza
 
-if TukuiDB["actionbar"].enable ~= true then return end
+if not TukuiDB["actionbar"].enable == true 
+	or (IsAddOnLoaded("Dominos") 
+	or IsAddOnLoaded("Bartender4") 
+	or IsAddOnLoaded("Macaroon") 
+		return 
+end
 
 local db = TukuiDB["actionbar"]
 
