@@ -188,26 +188,26 @@ if db.rightbars > 0 then
    end
 end
 if db.rightbars > 1 then
+   fbar3:Show()
+   MultiBarBottomRightButton1:ClearAllPoints()
+   MultiBarBottomRightButton1:SetPoint("TOPLEFT", ActionBarBackgroundRight,"TOPLEFT", TukuiDB:Scale(4), TukuiDB:Scale(-4))
+   for i= 2, 12 do
+      local b = _G["MultiBarBottomRightButton"..i]
+      local b2 = _G["MultiBarBottomRightButton"..i-1]
+      b:ClearAllPoints()
+      b:SetPoint("TOP", b2,"BOTTOM", 0, TukuiDB:Scale(-4))
+   end    
+end
+if db.rightbars > 2 then
    fbar5:Show()
    MultiBarLeftButton1:ClearAllPoints()
-   MultiBarLeftButton1:SetPoint("TOPLEFT", ActionBarBackgroundRight,"TOPLEFT", TukuiDB:Scale(4), TukuiDB:Scale(-4))
+   MultiBarLeftButton1:SetPoint("TOP", ActionBarBackgroundRight,"TOP", 0, TukuiDB:Scale(-4))
    for i= 2, 12 do
       local b = _G["MultiBarLeftButton"..i]
       local b2 = _G["MultiBarLeftButton"..i-1]
       b:ClearAllPoints()
       b:SetPoint("TOP", b2,"BOTTOM", 0, TukuiDB:Scale(-4))
    end
-end
-if db.rightbars > 2 then
-   fbar3:Show()
-   MultiBarBottomRightButton1:ClearAllPoints()
-   MultiBarBottomRightButton1:SetPoint("TOP", ActionBarBackgroundRight,"TOP", 0, TukuiDB:Scale(-4))
-   for i= 2, 12 do
-      local b = _G["MultiBarBottomRightButton"..i]
-      local b2 = _G["MultiBarBottomRightButton"..i-1]
-      b:ClearAllPoints()
-      b:SetPoint("TOP", b2,"BOTTOM", 0, TukuiDB:Scale(-4))
-   end         
 end
 
 -- now look for others shit, if found, set bar or override settings bar above.
@@ -428,21 +428,21 @@ local function rightbaralpha(alpha)
 	CubeRightBarUP:SetAlpha(alpha)
 	CubeRightBarDown:SetAlpha(alpha)
 	if db.rightbars > 2 then
-		if MultiBarBottomRight:IsShown() then
-			for i=1, 12 do
-				local pb = _G["MultiBarBottomRightButton"..i]
-				pb:SetAlpha(alpha)
-			end
-			MultiBarBottomRight:SetAlpha(alpha)
-		end
-	end
-	if db.rightbars > 1 then
 		if MultiBarLeft:IsShown() then
 			for i=1, 12 do
 				local pb = _G["MultiBarLeftButton"..i]
 				pb:SetAlpha(alpha)
 			end
 			MultiBarLeft:SetAlpha(alpha)
+		end
+	end
+	if db.rightbars > 1 then
+		if MultiBarBottomRight:IsShown() then
+			for i=1, 12 do
+				local pb = _G["MultiBarBottomRightButton"..i]
+				pb:SetAlpha(alpha)
+			end
+			MultiBarBottomRight:SetAlpha(alpha)
 		end
 	end
 	if db.rightbars > 0 then
