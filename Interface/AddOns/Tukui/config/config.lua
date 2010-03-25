@@ -61,7 +61,7 @@ TukuiDB["unitframes"] = {
 	["aggro"] = true, -- show aggro on all raids layouts
 	["raidunitdebuffwatch"] = true, -- track important spell to watch in pve for healing mode.
 	["gridhealthvertical"] = true, -- enable vertical grow on health bar
-	["showplayerinparty"] = true, -- show my player frame in party
+	["showplayerinparty"] = false, -- show my player frame in party
 	["gridscale"] = 1, -- set the healing grid scaling
 	["gridmaxgroup"] = 8, -- max # of group you want to show on grid layout, between 1 and 8
 
