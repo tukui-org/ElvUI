@@ -177,90 +177,90 @@ fbar5:Hide()
 
 -- look for right bars
 if db.rightbars > 0 then
-	fbar4:Show()
-	MultiBarRightButton1:ClearAllPoints()
-	MultiBarRightButton1:SetPoint("TOPRIGHT", ActionBarBackgroundRight,"TOPRIGHT", TukuiDB:Scale(-4), TukuiDB:Scale(-4))
-	for i= 2, 12 do
-		local b = _G["MultiBarRightButton"..i]
-		local b2 = _G["MultiBarRightButton"..i-1]
-		b:ClearAllPoints()
-		b:SetPoint("TOP", b2,"BOTTOM", 0, TukuiDB:Scale(-4))
-	end
+   fbar4:Show()
+   MultiBarRightButton1:ClearAllPoints()
+   MultiBarRightButton1:SetPoint("TOPRIGHT", ActionBarBackgroundRight,"TOPRIGHT", TukuiDB:Scale(-4), TukuiDB:Scale(-4))
+   for i= 2, 12 do
+      local b = _G["MultiBarRightButton"..i]
+      local b2 = _G["MultiBarRightButton"..i-1]
+      b:ClearAllPoints()
+      b:SetPoint("TOP", b2,"BOTTOM", 0, TukuiDB:Scale(-4))
+   end
 end
 if db.rightbars > 1 then
-	fbar3:Show()
-	MultiBarBottomRightButton1:ClearAllPoints()
-	MultiBarBottomRightButton1:SetPoint("TOPLEFT", ActionBarBackgroundRight,"TOPLEFT", TukuiDB:Scale(4), TukuiDB:Scale(-4))
-	for i= 2, 12 do
-		local b = _G["MultiBarBottomRightButton"..i]
-		local b2 = _G["MultiBarBottomRightButton"..i-1]
-		b:ClearAllPoints()
-		b:SetPoint("TOP", b2,"BOTTOM", 0, TukuiDB:Scale(-4))
-	end
+   fbar5:Show()
+   MultiBarLeftButton1:ClearAllPoints()
+   MultiBarLeftButton1:SetPoint("TOPLEFT", ActionBarBackgroundRight,"TOPLEFT", TukuiDB:Scale(4), TukuiDB:Scale(-4))
+   for i= 2, 12 do
+      local b = _G["MultiBarLeftButton"..i]
+      local b2 = _G["MultiBarLeftButton"..i-1]
+      b:ClearAllPoints()
+      b:SetPoint("TOP", b2,"BOTTOM", 0, TukuiDB:Scale(-4))
+   end
 end
 if db.rightbars > 2 then
-	fbar2:Show()
-	MultiBarBottomLeftButton1:ClearAllPoints()
-	MultiBarBottomLeftButton1:SetPoint("TOP", ActionBarBackgroundRight,"TOP", 0, TukuiDB:Scale(-4))
-	for i= 2, 12 do
-		local b = _G["MultiBarBottomLeftButton"..i]
-		local b2 = _G["MultiBarBottomLeftButton"..i-1]
-		b:ClearAllPoints()
-		b:SetPoint("TOP", b2,"BOTTOM", 0, TukuiDB:Scale(-4))
-	end			
+   fbar3:Show()
+   MultiBarBottomRightButton1:ClearAllPoints()
+   MultiBarBottomRightButton1:SetPoint("TOP", ActionBarBackgroundRight,"TOP", 0, TukuiDB:Scale(-4))
+   for i= 2, 12 do
+      local b = _G["MultiBarBottomRightButton"..i]
+      local b2 = _G["MultiBarBottomRightButton"..i-1]
+      b:ClearAllPoints()
+      b:SetPoint("TOP", b2,"BOTTOM", 0, TukuiDB:Scale(-4))
+   end         
 end
 
 -- now look for others shit, if found, set bar or override settings bar above.
 if TukuiDB.lowversion == true then
-	if db.bottomrows == 2 then
-		fbar5:Show()
-		MultiBarLeftButton1:ClearAllPoints()
-		MultiBarLeftButton1:SetPoint("BOTTOM", ActionButton1, "TOP", 0,TukuiDB:Scale(4))
-		for i=2, 12 do
-			local b = _G["MultiBarLeftButton"..i]
-			local b2 = _G["MultiBarLeftButton"..i-1]
-			b:ClearAllPoints()
-			b:SetPoint("LEFT",b2,"RIGHT", TukuiDB:Scale(4), 0)
-		end	
-	end
+   if db.bottomrows == 2 then
+      fbar2:Show()
+      MultiBarBottomLeftButton1:ClearAllPoints()
+      MultiBarBottomLeftButton1:SetPoint("BOTTOM", ActionButton1, "TOP", 0,TukuiDB:Scale(4))
+      for i=2, 12 do
+         local b = _G["MultiBarBottomLeftButton"..i]
+         local b2 = _G["MultiBarBottomLeftButton"..i-1]
+         b:ClearAllPoints()
+         b:SetPoint("LEFT",b2,"RIGHT", TukuiDB:Scale(4), 0)
+      end   
+   end
 else
-	fbar5:Show()
-	MultiBarLeftButton1:ClearAllPoints()
-	MultiBarLeftButton1:SetPoint("LEFT", ActionButton12, "RIGHT", TukuiDB:Scale(4),0)
-	for i=2, 12 do
-		local b = _G["MultiBarLeftButton"..i]
-		local b2 = _G["MultiBarLeftButton"..i-1]
-		b:ClearAllPoints()
-		b:SetPoint("LEFT",b2,"RIGHT", TukuiDB:Scale(4), 0)
-	end
-	MultiBarLeftButton11:SetAlpha(0)
-	MultiBarLeftButton11:SetScale(0.0001)
-	MultiBarLeftButton12:SetAlpha(0)
-	MultiBarLeftButton12:SetScale(0.0001)	
-	if db.bottomrows == 2 then
-		fbar3:Show()
-		MultiBarBottomLeftButton1:ClearAllPoints()
-		MultiBarBottomLeftButton1:SetPoint("BOTTOM", ActionButton1,"TOP", 0, TukuiDB:Scale(4))
-		for i= 2, 12 do
-			local b = _G["MultiBarBottomLeftButton"..i]
-			local b2 = _G["MultiBarBottomLeftButton"..i-1]
-			b:ClearAllPoints()
-			b:SetPoint("LEFT", b2,"RIGHT", TukuiDB:Scale(4), 0)
-		end
-		fbar2:Show()
-		MultiBarBottomRightButton1:ClearAllPoints()
-		MultiBarBottomRightButton1:SetPoint("LEFT", MultiBarBottomLeftButton12,"RIGHT", TukuiDB:Scale(4), 0)
-		for i= 2, 12 do
-			local b = _G["MultiBarBottomRightButton"..i]
-			local b2 = _G["MultiBarBottomRightButton"..i-1]
-			b:ClearAllPoints()
-			b:SetPoint("LEFT", b2,"RIGHT", TukuiDB:Scale(4), 0)
-		end
-		MultiBarBottomRightButton11:SetScale(0.0001)
-		MultiBarBottomRightButton11:SetAlpha(0)
-		MultiBarBottomRightButton12:SetScale(0.0001)
-		MultiBarBottomRightButton12:SetAlpha(0)
-	end
+   fbar2:Show()
+   MultiBarBottomLeftButton1:ClearAllPoints()
+   MultiBarBottomLeftButton1:SetPoint("LEFT", ActionButton12, "RIGHT", TukuiDB:Scale(4),0)
+   for i=2, 12 do
+      local b = _G["MultiBarBottomLeftButton"..i]
+      local b2 = _G["MultiBarBottomLeftButton"..i-1]
+      b:ClearAllPoints()
+      b:SetPoint("LEFT",b2,"RIGHT", TukuiDB:Scale(4), 0)
+   end
+   MultiBarBottomLeftButton11:SetAlpha(0)
+   MultiBarBottomLeftButton11:SetScale(0.0001)
+   MultiBarBottomLeftButton12:SetAlpha(0)
+   MultiBarBottomLeftButton12:SetScale(0.0001)   
+   if db.bottomrows == 2 then
+      fbar5:Show()
+      MultiBarBottomRightButton1:ClearAllPoints()
+      MultiBarBottomRightButton1:SetPoint("BOTTOM", ActionButton1,"TOP", 0, TukuiDB:Scale(4))
+      for i= 2, 12 do
+         local b = _G["MultiBarBottomRightButton"..i]
+         local b2 = _G["MultiBarBottomRightButton"..i-1]
+         b:ClearAllPoints()
+         b:SetPoint("LEFT", b2,"RIGHT", TukuiDB:Scale(4), 0)
+      end
+      fbar3:Show()
+      MultiBarLeftButton1:ClearAllPoints()
+      MultiBarLeftButton1:SetPoint("LEFT", MultiBarBottomRightButton12,"RIGHT", TukuiDB:Scale(4), 0)
+      for i= 2, 12 do
+         local b = _G["MultiBarLeftButton"..i]
+         local b2 = _G["MultiBarLeftButton"..i-1]
+         b:ClearAllPoints()
+         b:SetPoint("LEFT", b2,"RIGHT", TukuiDB:Scale(4), 0)
+      end
+      MultiBarLeftButton11:SetScale(0.0001)
+      MultiBarLeftButton11:SetAlpha(0)
+      MultiBarLeftButton12:SetScale(0.0001)
+      MultiBarLeftButton12:SetAlpha(0)
+   end
 end
 
 ------------------------------------------------------------------------------------------
@@ -428,21 +428,21 @@ local function rightbaralpha(alpha)
 	CubeRightBarUP:SetAlpha(alpha)
 	CubeRightBarDown:SetAlpha(alpha)
 	if db.rightbars > 2 then
-		if MultiBarBottomLeft:IsShown() then
-			for i=1, 12 do
-				local pb = _G["MultiBarBottomLeftButton"..i]
-				pb:SetAlpha(alpha)
-			end
-			MultiBarBottomLeft:SetAlpha(alpha)
-		end
-	end
-	if db.rightbars > 1 then
 		if MultiBarBottomRight:IsShown() then
 			for i=1, 12 do
 				local pb = _G["MultiBarBottomRightButton"..i]
 				pb:SetAlpha(alpha)
 			end
 			MultiBarBottomRight:SetAlpha(alpha)
+		end
+	end
+	if db.rightbars > 1 then
+		if MultiBarLeft:IsShown() then
+			for i=1, 12 do
+				local pb = _G["MultiBarLeftButton"..i]
+				pb:SetAlpha(alpha)
+			end
+			MultiBarLeft:SetAlpha(alpha)
 		end
 	end
 	if db.rightbars > 0 then
@@ -474,7 +474,7 @@ if db.rightbarmouseover == true and db.rightbars > 0 then
 		pb:HookScript("OnEnter", function(self) mouseoverpet(1) rightbaralpha(1) end)
 		pb:HookScript("OnLeave", function(self) mouseoverpet(0) rightbaralpha(0) end)
 		if not (db.rightbars == 1 and db.bottomrows == 2 and TukuiDB.lowversion ~= true) then
-			local pb = _G["MultiBarBottomLeftButton"..i]
+			local pb = _G["MultiBarLeftButton"..i]
 			pb:SetAlpha(0)
 			pb:HookScript("OnEnter", function(self) mouseoverpet(1) rightbaralpha(1) end)
 			pb:HookScript("OnLeave", function(self) mouseoverpet(0) rightbaralpha(0) end)
