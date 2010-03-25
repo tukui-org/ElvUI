@@ -31,7 +31,7 @@ if not db.fps_ms == nil or db.fps_ms > 0 then
 	local Stat = CreateFrame("Frame")
 
 	local Text  = InfoLeft:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(TukuiDB["media"].font, TukuiDB["datatext"].fontsize)
+	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.fps_ms, Text)
 	Text:SetHeight(TukuiDB:Scale(27))
 
@@ -57,7 +57,7 @@ if not db.mem == nil or db.mem > 0 then
 	Stat:EnableMouse(true)
 
 	local Text  = InfoLeft:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(TukuiDB["media"].font, TukuiDB["datatext"].fontsize)
+	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.mem, Text)
 	Text:SetHeight(TukuiDB:Scale(27))
 
@@ -157,7 +157,7 @@ if not db.guild == nil or db.guild > 0 then
 	local ttsubh = {r=0.75,g=0.9,b=1}
 
 	local Text  = InfoLeft:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(TukuiDB["media"].font, TukuiDB["datatext"].fontsize)
+	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.guild, Text)
 	Text:SetHeight(TukuiDB:Scale(27))
 
@@ -245,7 +245,7 @@ if not db.friends == nil or db.friends > 0 then
 	local ttsubh = {r=0.75,g=0.9,b=1}
 
 	local Text  = InfoLeft:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(TukuiDB["media"].font, TukuiDB["datatext"].fontsize)
+	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.friends, Text)
 	Text:SetHeight(TukuiDB:Scale(27))
 
@@ -306,7 +306,7 @@ if not db.dur == nil or db.dur > 0 then
 	Stat:EnableMouse(true)
 
 	local Text  = InfoLeft:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(TukuiDB["media"].font, TukuiDB["datatext"].fontsize)
+	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.dur, Text)
 	Text:SetHeight(TukuiDB:Scale(27))
 
@@ -368,7 +368,7 @@ if not db.gold == nil or db.gold > 0 then
 	Stat:EnableMouse(true)
 
 	local Text  = InfoLeft:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(TukuiDB["media"].font, TukuiDB["datatext"].fontsize)
+	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.gold, Text)
 	Text:SetHeight(TukuiDB:Scale(27))
 
@@ -488,7 +488,7 @@ if not db.bags == nil or db.bags > 0 then
 	Stat:EnableMouse(true)
 
 	local Text  = InfoLeft:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(TukuiDB["media"].font, TukuiDB["datatext"].fontsize)
+	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.bags, Text)
 	Text:SetHeight(TukuiDB:Scale(27))
 
@@ -517,7 +517,7 @@ if not db.wowtime == nil or db.wowtime > 0 then
 	Stat:EnableMouse(true)
 
 	local Text  = InfoLeft:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(TukuiDB["media"].font, TukuiDB["datatext"].fontsize)
+	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.wowtime, Text)
 	Text:SetHeight(TukuiDB:Scale(27))
 
@@ -683,7 +683,7 @@ if not db.dps_text == nil or db.dps_text > 0 then
 	local pet_id = UnitGUID("pet")
      
 	dText = InfoLeft:CreateFontString(nil, "OVERLAY")
-	dText:SetFont(TukuiDB["media"].font, TukuiDB["datatext"].fontsize)
+	dText:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	dText:SetText("0.0 ",tukuilocal.datatext_dps)
 	dText:SetHeight(TukuiDB:Scale(27))
 
@@ -774,7 +774,7 @@ if not db.hps_text == nil or db.hps_text > 0 then
 	local actual_heals_total, cmbt_time = 0
  
 	hText = InfoLeft:CreateFontString(nil, "OVERLAY")
-	hText:SetFont(TukuiDB["media"].font, TukuiDB["datatext"].fontsize)
+	hText:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	hText:SetText("0.0 ",tukuilocal.datatext_hps)
 	hText:SetHeight(TukuiDB:Scale(27))
  
@@ -855,7 +855,7 @@ if not db.power == nil or db.power > 0 then
 	local Stat = CreateFrame("Frame")
 
 	local Text  = InfoLeft:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(TukuiDB["media"].font, TukuiDB["datatext"].fontsize)
+	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.power, Text)
 	Text:SetHeight(TukuiDB:Scale(27))
 
@@ -909,7 +909,7 @@ if not db.haste == nil or db.haste > 0 then
 	local Stat = CreateFrame("Frame")
 
 	local Text  = InfoLeft:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(TukuiDB["media"].font, TukuiDB["datatext"].fontsize)
+	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.haste, Text)
 	Text:SetHeight(TukuiDB:Scale(27))
 
@@ -948,7 +948,7 @@ if not db.arp == nil or db.arp > 0 then
 	Stat:EnableMouse(true)
 
 	local Text  = InfoLeft:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(TukuiDB["media"].font, TukuiDB["datatext"].fontsize)
+	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.arp, Text)
 	Text:SetHeight(TukuiDB:Scale(27))
    
@@ -974,7 +974,7 @@ if not db.crit == nil or db.crit > 0 then
 	local Stat = CreateFrame("Frame")
 
 	local Text  = InfoLeft:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(TukuiDB["media"].font, TukuiDB["datatext"].fontsize)
+	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.crit, Text)
 	Text:SetHeight(TukuiDB:Scale(27))
 
@@ -1011,7 +1011,7 @@ if not db.avd == nil or db.avd > 0 then
 	Stat:EnableMouse(true)
 
 	local Text  = InfoLeft:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(TukuiDB["media"].font, TukuiDB["datatext"].fontsize)
+	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.avd, Text)
 	Text:SetHeight(TukuiDB:Scale(27))
 
@@ -1093,7 +1093,7 @@ if not db.armor == nil or db.armor > 0 then
 	Stat:EnableMouse(true)
 
 	local Text  = InfoLeft:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(TukuiDB["media"].font, TukuiDB["datatext"].fontsize)
+	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.armor, Text)
 	Text:SetHeight(TukuiDB:Scale(27))
 
