@@ -62,7 +62,7 @@ local function StyleBuffs(buttonName, index, debuff)
 		local panel = CreateFrame("Frame", buttonName..index.."Panel", buff)
 		TukuiDB:CreatePanel(panel, TukuiDB:Scale(30),TukuiDB:Scale(30), "CENTER", buff, "CENTER", 0,0)
 		panel:SetFrameLevel(0)
-		panel:SetFrameStrata("BACKGROUND")
+		panel:SetFrameStrata("LOW")
 
 		--if debuff then
 			--_G[buttonName..index.."Panel"]:SetBackdropBorderColor(134/255, 12/255, 12/255)
@@ -93,7 +93,7 @@ function UpdateBuffAnchors()
 			end
 			buff:ClearAllPoints()
 			_G[buttonName..index.."Panel"]:SetFrameLevel(0)
-			_G[buttonName..index.."Panel"]:SetFrameStrata("BACKGROUND")
+			_G[buttonName..index.."Panel"]:SetFrameStrata("LOW")
 			if ( (index > 1) and (mod(index, BUFFS_PER_ROW) == 1) ) then
 				if ( index == BUFFS_PER_ROW+1 ) then
 					buff:SetPoint("RIGHT", Minimap, "LEFT", TukuiDB:Scale(-16), 0)
@@ -130,7 +130,7 @@ function UpdateDebuffAnchors(buttonName, index)
 	end
 	_G[buttonName..index.."Panel"]:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
 	_G[buttonName..index.."Panel"]:SetFrameLevel(0)
-	_G[buttonName..index.."Panel"]:SetFrameStrata("BACKGROUND")
+	_G[buttonName..index.."Panel"]:SetFrameStrata("LOW")
 	debuff:ClearAllPoints()
 	if index == 1 then
 		debuff:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMLEFT", TukuiDB:Scale(-16), TukuiDB:Scale(-23))

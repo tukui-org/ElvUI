@@ -991,3 +991,10 @@ local function vehmouse()
 	end
 end
 hooksecurefunc("VehicleSeatIndicator_Update", vehmouse)
+
+--------------------------------------------------------------------------
+-- modify the frame strata because of buffs
+--------------------------------------------------------------------------
+
+WorldStateAlwaysUpFrame:SetFrameStrata("BACKGROUND")
+WorldStateAlwaysUpFrame:SetFrameLevel(0)
