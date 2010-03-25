@@ -1264,10 +1264,8 @@ local SetStyle = function(self, unit)
 		self:SetAttribute("initial-width", TukuiDB:Scale(186))
         self.Power:Hide()        
 	elseif unit == "focus" then
-		self:SetPoint("TOPLEFT", InfoRight, TukuiDB:Scale(2), TukuiDB:Scale(-2))
-		self:SetPoint("BOTTOMRIGHT", InfoRight, TukuiDB:Scale(-2), TukuiDB:Scale(2))
-		self.Health:SetPoint("TOPLEFT", InfoRight, TukuiDB:Scale(2), TukuiDB:Scale(-2))
-		self.Health:SetPoint("BOTTOMRIGHT", InfoRight, TukuiDB:Scale(-2), TukuiDB:Scale(2))
+		self:SetAttribute("initial-height", InfoRight:GetHeight() - TukuiDB:Scale(4))
+		self:SetAttribute("initial-width", InfoRight:GetWidth() - TukuiDB:Scale(4))
 		self.Health:SetStatusBarTexture(TukuiDB["media"].blank) -- temp fix for texture
 		self.Health:SetAlpha(0.7)
 		self.Health.bg.multiplier = 0.2
