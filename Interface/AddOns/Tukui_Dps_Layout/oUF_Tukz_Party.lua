@@ -72,7 +72,7 @@ local function CreateStyle(self, unit)
     self.Power:SetHeight(TukuiDB:Scale(3))
     self.Power:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -TukuiDB.mult)
     self.Power:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -TukuiDB.mult)
-    self.Power:SetStatusBarTexture(normTex)
+    self.Power:SetStatusBarTexture(TukuiDB["media"].normTex)
 
     self.Power.colorClass = true	
 
@@ -140,6 +140,7 @@ oUF:SetActiveStyle('Party')
 local party = oUF:Spawn("header", "oUF_Group")
 party:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 15, -399*TukuiDB.raidscale)
 party:SetAttribute("showParty", true)
+party:SetAttribute("showPlayer", TukuiDB["unitframes"].showplayerinparty)
 party:SetAttribute("yOffset", -3)
 
 local partyToggle = CreateFrame("Frame")
