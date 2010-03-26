@@ -810,24 +810,29 @@ local SetStyle = function(self, unit)
 	if unit == "player" or unit =="pet" then
 			self.Experience = CreateFrame("StatusBar", self:GetName().."_Experience", self.Power)
 			self.Experience:SetStatusBarTexture(normTex)
-			self.Experience:SetStatusBarColor(0.55, 0.57, 0.61)
+			self.Experience:SetStatusBarColor(0, 0.4, 1, 0.6)
+			self.Experience:SetBackdrop(backdrop)
+			self.Experience:SetBackdropColor(0.1, 0.1, 0.1)
 			
 			self.Experience:SetPoint("TOPLEFT", self, TukuiDB:Scale(2), TukuiDB:Scale(-38))
 			self.Experience:SetPoint("BOTTOMRIGHT", self, TukuiDB:Scale(-2), TukuiDB:Scale(2))
 			self.Experience:SetAlpha(0)
-
+			
 			self.Experience:HookScript("OnEnter", function(self) self:SetAlpha(1) end)
 			self.Experience:HookScript("OnLeave", function(self) self:SetAlpha(0) end)
 
 			self.Experience.Tooltip = true
 			
-			if unit == "player" and UnitLevel("player") ~= MAX_PLAYER_LEVEL then
-				 self.Resting = self.Experience:CreateTexture(nil, "OVERLAY")
-				 self.Resting:SetHeight(28)
-				 self.Resting:SetWidth(28)
-				 self.Resting:SetPoint("LEFT", -18, 68)
-				 self.Resting:SetTexture([=[Interface\CharacterFrame\UI-StateIcon]=])
-				 self.Resting:SetTexCoord(0, 0.5, 0, 0.421875)
+			if unit == "player" and UnitLevel("player") ~= MAX_PLAYER_LEVEL then			
+				self.Experience.Rested = CreateFrame('StatusBar', nil, self)
+				self.Experience.Rested:SetParent(self.Experience)
+				self.Experience.Rested:SetAllPoints(self.Experience)
+				self.Resting = self.Experience:CreateTexture(nil, "OVERLAY")
+				self.Resting:SetHeight(28)
+				self.Resting:SetWidth(28)
+				self.Resting:SetPoint("LEFT", -18, 68)
+				self.Resting:SetTexture([=[Interface\CharacterFrame\UI-StateIcon]=])
+				self.Resting:SetTexCoord(0, 0.5, 0, 0.421875)
 			end
 	end
 
