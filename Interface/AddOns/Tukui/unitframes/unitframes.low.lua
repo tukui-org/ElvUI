@@ -1010,7 +1010,7 @@ local SetStyle = function(self, unit)
 				self.CPoints = {}
 				self.CPoints.unit = PlayerFrame.unit
 				for i = 1, 5 do
-					self.CPoints[i] = self.Health:CreateTexture(nil, "OVERLAY")
+					self.CPoints[i] = self:CreateTexture(nil, "OVERLAY")
 					self.CPoints[i]:SetHeight(12)
 					self.CPoints[i]:SetWidth(12)
 					self.CPoints[i]:SetTexture(bubbleTex)
