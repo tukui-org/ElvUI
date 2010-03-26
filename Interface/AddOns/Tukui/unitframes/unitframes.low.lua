@@ -839,7 +839,7 @@ local SetStyle = function(self, unit)
 	if unit == "player" then
 		if UnitLevel("player") == MAX_PLAYER_LEVEL then
 			self.Reputation = CreateFrame("StatusBar", self:GetName().."_Reputation", self.Power)
-			self.Reputation:SetPoint("TOPLEFT", self, TukuiDB:Scale(2), TukuiDB:Scale(-38))
+			self.Reputation:SetPoint("TOPLEFT", self, TukuiDB:Scale(2), TukuiDB:Scale(-32))
 			self.Reputation:SetPoint("BOTTOMRIGHT", self, TukuiDB:Scale(-2), TukuiDB:Scale(2))
 			self.Reputation:SetStatusBarTexture(normTex)
 
