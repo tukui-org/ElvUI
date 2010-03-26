@@ -869,7 +869,7 @@ end
 -- Auto invite by whisper (enabling by slash command by foof)
 ------------------------------------------------------------------------
 
-local ainvenabled = true
+local ainvenabled = false
 local ainvkeyword = "invite"
 
 local autoinvite = CreateFrame("frame")
