@@ -814,7 +814,7 @@ local SetStyle = function(self, unit)
 			self.Experience:SetBackdrop(backdrop)
 			self.Experience:SetBackdropColor(0.1, 0.1, 0.1)
 			
-			self.Experience:SetPoint("TOPLEFT", self, TukuiDB:Scale(2), TukuiDB:Scale(-38))
+			self.Experience:SetPoint("TOPLEFT", self, TukuiDB:Scale(2), TukuiDB:Scale(-32))
 			self.Experience:SetPoint("BOTTOMRIGHT", self, TukuiDB:Scale(-2), TukuiDB:Scale(2))
 			self.Experience:SetAlpha(0)
 			
