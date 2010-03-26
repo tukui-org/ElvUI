@@ -812,7 +812,7 @@ local SetStyle = function(self, unit)
 			self.Experience:SetStatusBarTexture(normTex)
 			self.Experience:SetStatusBarColor(0, 0.4, 1, 0.6)
 			self.Experience:SetBackdrop(backdrop)
-			self.Experience:SetBackdropColor(TukuiDB["media"].backdropcolor)
+			self.Experience:SetBackdropColor(.1,.1,.1)
 			
 			self.Experience:SetPoint("TOPLEFT", self, TukuiDB:Scale(2), TukuiDB:Scale(-32))
 			self.Experience:SetPoint("BOTTOMRIGHT", self, TukuiDB:Scale(-2), TukuiDB:Scale(2))
@@ -843,7 +843,7 @@ local SetStyle = function(self, unit)
 			self.Reputation:SetPoint("BOTTOMRIGHT", self, TukuiDB:Scale(-2), TukuiDB:Scale(2))
 			self.Reputation:SetStatusBarTexture(normTex)
 			self.Reputation:SetBackdrop(backdrop)
-			self.Reputation:SetBackdropColor(TukuiDB["media"].backdropcolor)
+			self.Reputation:SetBackdropColor(.1,.1,.1)
 
 			self.Reputation:SetAlpha(0)
 
