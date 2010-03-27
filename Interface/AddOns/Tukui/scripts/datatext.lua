@@ -109,7 +109,7 @@ if not db.mem == nil or db.mem > 0 then
 		self:SetAllPoints(Text)
 		self:SetScript("OnEnter", function()
 			if not InCombatLockdown() then
-				GameTooltip:SetOwner(this, "ANCHOR_TOP");
+				GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB:Scale(6));
 				GameTooltip:ClearAllPoints()
 				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, Stats.TTSpacing)
 				GameTooltip:ClearLines()
@@ -195,7 +195,7 @@ if not db.guild == nil or db.guild > 0 then
 				local online, total, gmotd = 0, GetNumGuildMembers(true), GetGuildRosterMOTD()
 				for i = 0, total do if select(9, GetGuildRosterInfo(i)) then online = online + 1 end end
 				
-				GameTooltip:SetOwner(this, "ANCHOR_TOP");
+				GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB:Scale(6));
 				GameTooltip:ClearAllPoints()
 				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, Stats.TTSpacing)
 				GameTooltip:ClearLines()
@@ -268,7 +268,7 @@ if not db.friends == nil or db.friends > 0 then
 			local name, level, class, zone, connected, status, note, classc, levelc, zone_r, zone_g, zone_b, grouped
 			for i = 0, total do if select(5, GetFriendInfo(i)) then online = online + 1 end end
 			if online > 0 then
-				GameTooltip:SetOwner(this, "ANCHOR_TOP");
+				GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB:Scale(6));
 				GameTooltip:ClearAllPoints()
 				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, Stats.TTSpacing)
 				GameTooltip:ClearLines()
@@ -334,7 +334,7 @@ if not db.dur == nil or db.dur > 0 then
 		self:SetAllPoints(Text)
 		self:SetScript("OnEnter", function()
 			if not InCombatLockdown() then
-				GameTooltip:SetOwner(this, "ANCHOR_TOP");
+				GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB:Scale(6));
 				GameTooltip:ClearAllPoints()
 				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, Stats.TTSpacing)
 				GameTooltip:ClearLines()
@@ -424,7 +424,7 @@ if not db.gold == nil or db.gold > 0 then
 		self:SetScript("OnEnter", function()
 			if not InCombatLockdown() then
 				self.hovered = true 
-				GameTooltip:SetOwner(this, "ANCHOR_TOP");
+				GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB:Scale(6));
 				GameTooltip:ClearAllPoints()
 				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, Stats.TTSpacing)
 				GameTooltip:ClearLines()
@@ -585,7 +585,7 @@ if not db.wowtime == nil or db.wowtime > 0 then
 
 	Stat:SetScript("OnEnter", function(self)
 		OnLoad = function(self) RequestRaidInfo() end,
-		GameTooltip:SetOwner(this, "ANCHOR_TOP");
+		GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB:Scale(6));
 		GameTooltip:ClearAllPoints()
 		GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, Stats.TTSpacing)
 		GameTooltip:ClearLines()
@@ -1055,7 +1055,7 @@ if not db.avd == nil or db.avd > 0 then
 		self:SetAllPoints(Text)
 		self:SetScript("OnEnter", function()
 			if not InCombatLockdown() then
-				GameTooltip:SetOwner(this, "ANCHOR_TOP");
+				GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB:Scale(6));
 				GameTooltip:ClearAllPoints()
 				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, Stats.TTSpacing)
 				GameTooltip:ClearLines()
@@ -1108,7 +1108,7 @@ if not db.armor == nil or db.armor > 0 then
 	self:SetAllPoints(Text)
 	self:SetScript("OnEnter", function()
 		if not InCombatLockdown() then
-			GameTooltip:SetOwner(this, "ANCHOR_TOP");
+			GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB:Scale(6));
 			GameTooltip:ClearAllPoints()
 			GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, Stats.TTSpacing)
 			GameTooltip:ClearLines()
@@ -1175,15 +1175,15 @@ if TukuiDB["datatext"].battleground == true then
 			for i=1, numScores do
 				name, killingBlows, honorKills, deaths, honorGained, faction, rank, race, class, classToken, damageDone, healingDone  = GetBattlefieldScore(i);
 				if healingDone > damageDone then
-					dmgtxt = ("Healing :|r "..healingDone)
+					dmgtxt = (tukuilocal.datatext_healing..healingDone)
 				else
-					dmgtxt = ("Damage :|r "..damageDone)
+					dmgtxt = (tukuilocal.datatext_damage..damageDone)
 				end
 				if ( name ) then
 					if ( name == UnitName("player") ) then
-						Text2:SetText("Honor : |r"..honorGained)
-						Text1:SetText(dmgtxt.." ")
-						Text3:SetText("Killing Blows : |r"..killingBlows)
+						Text2:SetText(tukuilocal.datatext_honor..honorGained)
+						Text1:SetText(dmgtxt)
+						Text3:SetText(tukuilocal.datatext_killingblows..killingBlows)
 					end   
 				end
 			end 

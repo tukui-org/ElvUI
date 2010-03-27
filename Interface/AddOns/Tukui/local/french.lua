@@ -42,6 +42,17 @@ if L == "frFR" then
 	tukuilocal.datatext_servertime = "Heure Serveur: "
 	tukuilocal.datatext_localtime = "Heure Locale: "
 	tukuilocal.datatext_mitigation = "Mitigation par Level: "
+	tukuilocal.datatext_healing = "Soins : "
+	tukuilocal.datatext_damage = "Dégâts : "
+	tukuilocal.datatext_honor = "Honneur : "
+	tukuilocal.datatext_killingblows = "Coups fatals : "
+	tukuilocal.datatext_ttstatsfor = "Statistiques pour "
+	tukuilocal.datatext_ttkillingblows = "Coups fatals:"
+	tukuilocal.datatext_tthonorkills = "Victoires honorables:"
+	tukuilocal.datatext_ttdeaths = "Morts:"
+	tukuilocal.datatext_tthonorgain = "Points d'honneur gagnés:"
+	tukuilocal.datatext_ttdmgdone = "Dégâts effectués:"
+	tukuilocal.datatext_tthealdone = "Soins prodigués:"
 
 	tukuilocal.Slots = {
 	  [1] = {1, "Tête", 1000},

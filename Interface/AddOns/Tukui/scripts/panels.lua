@@ -91,12 +91,12 @@ end)
 
 local minimapstatsleft = CreateFrame("Frame", "MinimapStatsLeft", Minimap)
 TukuiDB:CreatePanel(minimapstatsleft, 1, 1, "TOPLEFT", Minimap, "BOTTOMLEFT", TukuiDB:Scale(-2), TukuiDB:Scale(-4))
-minimapstatsleft:SetWidth(TukuiDB:Scale(73))
+minimapstatsleft:SetWidth(((Minimap:GetWidth() + TukuiDB:Scale(4)) / 2) - TukuiDB:Scale(1))
 minimapstatsleft:SetHeight(TukuiDB:Scale(19))
 
 local minimapstatsright = CreateFrame("Frame", "MinimapStatsRight", Minimap)
 TukuiDB:CreatePanel(minimapstatsright, 1, 1, "TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB:Scale(2), TukuiDB:Scale(-4))
-minimapstatsright:SetWidth(TukuiDB:Scale(73))
+minimapstatsright:SetWidth(((Minimap:GetWidth() + TukuiDB:Scale(4)) / 2) - TukuiDB:Scale(1))
 minimapstatsright:SetHeight(TukuiDB:Scale(19))
 
 --RIGHT BAR BACKGROUND
@@ -161,14 +161,14 @@ if TukuiDB["datatext"].battleground == true then
 				if ( name == UnitName("player") ) then
 					GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT", 0, TukuiDB:Scale(4));
 					GameTooltip:ClearLines()
-					GameTooltip:AddLine("Stats for [|cffCC0033"..name.."|r]")
+					GameTooltip:AddLine(tukuilocal.datatext_ttstatsfor.."[|cffCC0033"..name.."|r]")
 					GameTooltip:AddLine' '
-					GameTooltip:AddDoubleLine("Killing Blows:", killingBlows,1,1,1)
-					GameTooltip:AddDoubleLine("Honor Kills:", honorKills,1,1,1)
-					GameTooltip:AddDoubleLine("Deaths:", deaths,1,1,1)
-					GameTooltip:AddDoubleLine("Honor Gained:", honorGained,1,1,1)
-					GameTooltip:AddDoubleLine("Damage Done:", damageDone,1,1,1)
-					GameTooltip:AddDoubleLine("Healing Done:", healingDone,1,1,1)                  
+					GameTooltip:AddDoubleLine(tukuilocal.datatext_ttkillingblows, killingBlows,1,1,1)
+					GameTooltip:AddDoubleLine(tukuilocal.datatext_tthonorkills, honorKills,1,1,1)
+					GameTooltip:AddDoubleLine(tukuilocal.datatext_ttdeaths, deaths,1,1,1)
+					GameTooltip:AddDoubleLine(tukuilocal.datatext_tthonorgain, honorGained,1,1,1)
+					GameTooltip:AddDoubleLine(tukuilocal.datatext_ttdmgdone, damageDone,1,1,1)
+					GameTooltip:AddDoubleLine(tukuilocal.datatext_tthealdone, healingDone,1,1,1)                  
 					GameTooltip:Show()
 				end
 			end

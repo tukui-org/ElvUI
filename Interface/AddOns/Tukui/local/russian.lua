@@ -43,6 +43,17 @@ if L == "ruRU" then
 	tukuilocal.datatext_servertime = "Серверное время: "
 	tukuilocal.datatext_localtime = "Местное время: "
 	tukuilocal.datatext_mitigation = "Уменьшение по уровню: "
+	tukuilocal.datatext_healing = "Исцеление : "
+	tukuilocal.datatext_damage = "Урон : "
+	tukuilocal.datatext_honor = "Очки чести : "
+	tukuilocal.datatext_killingblows = "Смерт. удары : "
+	tukuilocal.datatext_ttstatsfor = "Статистика по "
+	tukuilocal.datatext_ttkillingblows = "Смерт. удары:"
+	tukuilocal.datatext_tthonorkills = "Почетные победы:"
+	tukuilocal.datatext_ttdeaths = "Смерти:"
+	tukuilocal.datatext_tthonorgain = "Получено чести:"
+	tukuilocal.datatext_ttdmgdone = "Нанесено урона:"
+	tukuilocal.datatext_tthealdone = "Исцелено урона:"
 
 	tukuilocal.Slots = {
 	  [1] = {1, "Голова", 1000},

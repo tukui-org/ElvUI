@@ -42,6 +42,17 @@ if L == "zhTW" then
 	tukuilocal.datatext_servertime = "伺服器時間: "
 	tukuilocal.datatext_localtime = "本地時間: "
 	tukuilocal.datatext_mitigation = "等級緩和: "
+	tukuilocal.datatext_healing = "Healing : "
+	tukuilocal.datatext_damage = "Damage : "
+	tukuilocal.datatext_honor = "Honor : "
+	tukuilocal.datatext_killingblows = "Killing Blows : "
+	tukuilocal.datatext_ttstatsfor = "Stats for "
+	tukuilocal.datatext_ttkillingblows = "Killing Blows:"
+	tukuilocal.datatext_tthonorkills = "Honor Kills:"
+	tukuilocal.datatext_ttdeaths = "Deaths:"
+	tukuilocal.datatext_tthonorgain = "Honor Gained:"
+	tukuilocal.datatext_ttdmgdone = "Damage Done:"
+	tukuilocal.datatext_tthealdone = "Healing Done:"
 
 	tukuilocal.Slots = {
 		[1] = {1, "頭部", 1000},

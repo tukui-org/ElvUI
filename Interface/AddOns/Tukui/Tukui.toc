@@ -20,8 +20,8 @@ config\config.lua
 config\aurawatch.lua
 
 scripts\core.lua
-scripts\panels.lua
 scripts\minimap.lua
+scripts\panels.lua
 scripts\chat.lua
 scripts\chattabs.lua
 scripts\datatext.lua

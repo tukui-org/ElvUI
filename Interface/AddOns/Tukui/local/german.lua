@@ -43,6 +43,17 @@ if L == "deDE" then
 	tukuilocal.datatext_servertime = "Server Zeit: "
 	tukuilocal.datatext_localtime = "Lokale Zeit: "
 	tukuilocal.datatext_mitigation = "Mitigation By Level: "
+	tukuilocal.datatext_healing = "Healing : "
+	tukuilocal.datatext_damage = "Damage : "
+	tukuilocal.datatext_honor = "Honor : "
+	tukuilocal.datatext_killingblows = "Killing Blows : "
+	tukuilocal.datatext_ttstatsfor = "Stats for "
+	tukuilocal.datatext_ttkillingblows = "Killing Blows:"
+	tukuilocal.datatext_tthonorkills = "Honor Kills:"
+	tukuilocal.datatext_ttdeaths = "Deaths:"
+	tukuilocal.datatext_tthonorgain = "Honor Gained:"
+	tukuilocal.datatext_ttdmgdone = "Damage Done:"
+	tukuilocal.datatext_tthealdone = "Healing Done:"
 
 	tukuilocal.Slots = {
 		[1] = {1, "Kopf", 1000},
