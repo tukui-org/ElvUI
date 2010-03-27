@@ -135,3 +135,46 @@ local ltpetbg1 = CreateFrame("Frame", "LineToPetActionBarBackground", petbg)
 TukuiDB:CreatePanel(ltpetbg1, 30, 265, "TOPLEFT", petbg, "TOPRIGHT", 0, -33)
 ltpetbg1:SetFrameLevel(0)
 ltpetbg1:SetAlpha(.8)
+
+--BATTLEGROUND STATS FRAME
+if TukuiDB["datatext"].battleground == true then
+	local bgframe = CreateFrame("Frame", "InfoLeftBattleGround", UIParent)
+	TukuiDB:CreatePanel(bgframe, 1, 1, "TOPLEFT", Minimap, "BOTTOMLEFT", 0, 0)
+	bgframe:SetAllPoints(ileft)
+	bgframe:SetFrameStrata("MEDIUM")
+	bgframe:EnableMouse(true)
+	local function OnEvent(self, event)
+		if event == "PLAYER_ENTERING_WORLD" then
+			inInstance, instanceType = IsInInstance()
+			if inInstance and (instanceType == "pvp") then
+				bgframe:Show()
+			else
+				bgframe:Hide()
+			end
+		end
+	end
+	bgframe:SetScript("OnEnter", function(self)
+	local numScores = GetNumBattlefieldScores()
+		for i=1, numScores do
+			name, killingBlows, honorKills, deaths, honorGained, faction, rank, race, class, classToken, damageDone, healingDone  = GetBattlefieldScore(i);
+			if ( name ) then
+				if ( name == UnitName("player") ) then
+					GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT", 0, TukuiDB:Scale(4));
+					GameTooltip:ClearLines()
+					GameTooltip:AddLine("Stats for [|cffCC0033"..name.."|r]")
+					GameTooltip:AddLine' '
+					GameTooltip:AddDoubleLine("Killing Blows:", killingBlows,1,1,1)
+					GameTooltip:AddDoubleLine("Honor Kills:", honorKills,1,1,1)
+					GameTooltip:AddDoubleLine("Deaths:", deaths,1,1,1)
+					GameTooltip:AddDoubleLine("Honor Gained:", honorGained,1,1,1)
+					GameTooltip:AddDoubleLine("Damage Done:", damageDone,1,1,1)
+					GameTooltip:AddDoubleLine("Healing Done:", healingDone,1,1,1)                  
+					GameTooltip:Show()
+				end
+			end
+		end
+	end) 
+	bgframe:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
+	bgframe:RegisterEvent("PLAYER_ENTERING_WORLD")
+	bgframe:SetScript("OnEvent", OnEvent)
+end
