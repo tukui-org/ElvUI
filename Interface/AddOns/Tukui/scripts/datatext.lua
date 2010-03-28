@@ -1157,7 +1157,7 @@ if TukuiDB["datatext"].battleground == true then
 
 	local Text3  = InfoLeftBattleGround:CreateFontString(nil, "OVERLAY")
 	Text3:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
-	Text3:SetPoint("RIGHT", InfoLeftBattleGround, 30, 0.5)
+	Text3:SetPoint("RIGHT", InfoLeftBattleGround, -30, 0.5)
 	Text3:SetHeight(InfoLeft:GetHeight())
 
 	local int = 1
