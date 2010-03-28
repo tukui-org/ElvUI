@@ -89,10 +89,10 @@ local type = DEFAULT_CHAT_FRAME.editBox:GetAttribute("chatType")
 end)
 
 local minimapstatsleft = CreateFrame("Frame", "MinimapStatsLeft", MapBorder)
-TukuiDB:CreatePanel(minimapstatsleft, ((MapBorder:GetWidth() + 4) / 2) - 1, 18, "TOPLEFT", MapBorder, "BOTTOMLEFT", 0, TukuiDB:Scale(-2))
+TukuiDB:CreatePanel(minimapstatsleft, ((MapBorder:GetWidth() + 4) / 2) - 1, 19, "TOPLEFT", MapBorder, "BOTTOMLEFT", 0, TukuiDB:Scale(-2))
 
 local minimapstatsright = CreateFrame("Frame", "MinimapStatsRight", MapBorder)
-TukuiDB:CreatePanel(minimapstatsright, ((MapBorder:GetWidth() + 4) / 2) -1, 18, "TOPRIGHT", MapBorder, "BOTTOMRIGHT", 0, TukuiDB:Scale(-2))
+TukuiDB:CreatePanel(minimapstatsright, ((MapBorder:GetWidth() + 4) / 2) -1, 19, "TOPRIGHT", MapBorder, "BOTTOMRIGHT", 0, TukuiDB:Scale(-2))
 
 --RIGHT BAR BACKGROUND
 local barbgr = CreateFrame("Frame", "ActionBarBackgroundRight", UIParent)
