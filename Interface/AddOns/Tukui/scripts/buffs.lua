@@ -14,7 +14,7 @@ TemporaryEnchantFrame:SetPoint("TOPRIGHT", Minimap, "TOPRIGHT", 0, TukuiDB:Scale
 TemporaryEnchantFrame.SetPoint = dummy
 
 ConsolidatedBuffs:ClearAllPoints()
-ConsolidatedBuffs:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT",-12,7)
+ConsolidatedBuffs:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", TukuiDB:Scale(-12), TukuiDB:Scale(7))
 ConsolidatedBuffsIcon:SetAlpha(0)
 ConsolidatedBuffs.SetPoint = dummy
 
@@ -60,7 +60,7 @@ local function StyleBuffs(buttonName, index, debuff)
 		count:SetFont(TukuiDB["media"].font, 12, "OUTLINE")
 		
 		local panel = CreateFrame("Frame", buttonName..index.."Panel", buff)
-		TukuiDB:CreatePanel(panel, TukuiDB:Scale(30),TukuiDB:Scale(30), "CENTER", buff, "CENTER", 0,0)
+		TukuiDB:CreatePanel(panel, 30, 30, "CENTER", buff, "CENTER", 0, 0)
 		panel:SetFrameLevel(0)
 		panel:SetFrameStrata("LOW")
 

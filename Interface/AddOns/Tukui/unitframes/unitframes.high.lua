@@ -819,14 +819,16 @@ local SetStyle = function(self, unit)
 	------------------------------------------------------------------------	
 
 	if unit == "player" or unit =="pet" then
-			self.Experience = CreateFrame("StatusBar", self:GetName().."_Experience", self.Power)
+			self.Experience = CreateFrame("StatusBar", self:GetName().."_Experience", self)
 			self.Experience:SetStatusBarTexture(normTex)
-			self.Experience:SetStatusBarColor(0, 0.4, 1, 0.6)
+			self.Experience:SetStatusBarColor(0, 0.4, 1, .8)
 			self.Experience:SetBackdrop(backdrop)
 			self.Experience:SetBackdropColor(unpack(TukuiDB["media"].backdropcolor))
-			
-			self.Experience:SetPoint("TOPLEFT", self, TukuiDB:Scale(2), TukuiDB:Scale(-38))
-			self.Experience:SetPoint("BOTTOMRIGHT", self, TukuiDB:Scale(-2), TukuiDB:Scale(2))
+			self.Experience:SetWidth(self.panel:GetWidth() - TukuiDB:Scale(4))
+			self.Experience:SetHeight(self.panel:GetHeight() - TukuiDB:Scale(4))
+			self.Experience:SetPoint("TOPLEFT", self.panel, TukuiDB:Scale(2), TukuiDB:Scale(-2))
+			self.Experience:SetPoint("BOTTOMRIGHT", self.panel, TukuiDB:Scale(-2), TukuiDB:Scale(2))
+			self.Experience:SetFrameLevel(10)
 			self.Experience:SetAlpha(0)
 			
 			self.Experience:HookScript("OnEnter", function(self) self:SetAlpha(1) end)
@@ -849,13 +851,15 @@ local SetStyle = function(self, unit)
 
 	if unit == "player" then
 		if UnitLevel("player") == MAX_PLAYER_LEVEL then
-			self.Reputation = CreateFrame("StatusBar", self:GetName().."_Reputation", self.Power)
-			self.Reputation:SetPoint("TOPLEFT", self, TukuiDB:Scale(2), TukuiDB:Scale(-38))
-			self.Reputation:SetPoint("BOTTOMRIGHT", self, TukuiDB:Scale(-2), TukuiDB:Scale(2))
+			self.Reputation = CreateFrame("StatusBar", self:GetName().."_Reputation", self)
 			self.Reputation:SetStatusBarTexture(normTex)
 			self.Reputation:SetBackdrop(backdrop)
 			self.Reputation:SetBackdropColor(unpack(TukuiDB["media"].backdropcolor))
-			
+			self.Reputation:SetWidth(self.panel:GetWidth() - TukuiDB:Scale(4))
+			self.Reputation:SetHeight(self.panel:GetHeight() - TukuiDB:Scale(4))
+			self.Reputation:SetPoint("TOPLEFT", self.panel, TukuiDB:Scale(2), TukuiDB:Scale(-2))
+			self.Reputation:SetPoint("BOTTOMRIGHT", self.panel, TukuiDB:Scale(-2), TukuiDB:Scale(2))
+			self.Reputation:SetFrameLevel(10)
 			self.Reputation:SetAlpha(0)
 
 			self.Reputation:HookScript("OnEnter", function(self) self:SetAlpha(1) end)

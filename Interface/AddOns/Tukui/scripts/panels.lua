@@ -10,27 +10,26 @@ TukuiDB:CreatePanel(barbg, 1, 1, "BOTTOM", UIParent, "BOTTOM", 0, TukuiDB:Scale(
 if TukuiDB.lowversion == true then
 	barbg:SetWidth((buttonsize * 12) + (buttonspacing * 13))
 	if TukuiDB["actionbar"].bottomrows == 2 then
-		barbg:SetHeight(buttonsize+buttonsize+buttonspacing+buttonspacing+buttonspacing)
+		barbg:SetHeight((buttonsize * 2) + (buttonspacing * 3))
 	else
-		barbg:SetHeight(buttonsize+buttonspacing+buttonspacing)
+		barbg:SetHeight(buttonsize + (buttonspacing * 2))
 	end
 else
 	barbg:SetWidth((buttonsize * 22) + (buttonspacing * 23))
 	if TukuiDB["actionbar"].bottomrows == 2 then
-		barbg:SetHeight(buttonsize+buttonsize+buttonspacing+buttonspacing+buttonspacing)
+		barbg:SetHeight((buttonsize * 2) + (buttonspacing * 3))
 	else
-		barbg:SetHeight(buttonsize+buttonspacing+buttonspacing)
+		barbg:SetHeight(buttonsize + (buttonspacing * 2))
 	end
 end
 
 -- LEFT VERTICAL LINE
 local ileftlv = CreateFrame("Frame", "InfoLeftLineVertical", barbg)
-TukuiDB:CreatePanel(ileftlv, 2, 130, "BOTTOMLEFT", UIParent, "BOTTOMLEFT", 22, 30)
+TukuiDB:CreatePanel(ileftlv, 2, 130, "BOTTOMLEFT", UIParent, "BOTTOMLEFT", TukuiDB:Scale(22), TukuiDB:Scale(30))
 
 -- RIGHT VERTICAL LINE
 local irightlv = CreateFrame("Frame", "InfoRightLineVertical", barbg)
-TukuiDB:CreatePanel(irightlv, 2, 130, "BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -22, 30)
-irightlv:SetWidth(TukuiDB:Scale(2))
+TukuiDB:CreatePanel(irightlv, 2, 130, "BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", TukuiDB:Scale(-22), TukuiDB:Scale(30))
 
 -- CUBE AT LEFT, WILL ACT AS A BUTTON
 local cubeleft = CreateFrame("Frame", "CubeLeft", barbg)
@@ -45,23 +44,23 @@ local ltoabl = CreateFrame("Frame", "LineToABLeft", barbg)
 TukuiDB:CreatePanel(ltoabl, 5, 2, "BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", 0, 0)
 ltoabl:ClearAllPoints()
 ltoabl:SetPoint("BOTTOMLEFT", ileftlv, "BOTTOMLEFT", 0, 0)
-ltoabl:SetPoint("RIGHT", barbg, "BOTTOMLEFT", TukuiDB:Scale(-1), 17)
+ltoabl:SetPoint("RIGHT", barbg, "BOTTOMLEFT", TukuiDB:Scale(-1), TukuiDB:Scale(17))
 
 -- HORIZONTAL LINE RIGHT
 local ltoabr = CreateFrame("Frame", "LineToABRight", barbg)
 TukuiDB:CreatePanel(ltoabr, 5, 2, "BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", 0, 0)
 ltoabr:ClearAllPoints()
-ltoabr:SetPoint("LEFT", barbg, "BOTTOMRIGHT", TukuiDB:Scale(1), 17)
+ltoabr:SetPoint("LEFT", barbg, "BOTTOMRIGHT", TukuiDB:Scale(1), TukuiDB:Scale(17))
 ltoabr:SetPoint("BOTTOMRIGHT", irightlv, "BOTTOMRIGHT", 0, 0)
 
 -- INFO LEFT (FOR STATS)
 local ileft = CreateFrame("Frame", "InfoLeft", barbg)
-TukuiDB:CreatePanel(ileft, TukuiDB["panels"].tinfowidth, TukuiDB:Scale(23), "LEFT", ltoabl, "LEFT", 14, 0)
+TukuiDB:CreatePanel(ileft, TukuiDB["panels"].tinfowidth, 23, "LEFT", ltoabl, "LEFT", TukuiDB:Scale(14), 0)
 ileft:SetFrameLevel(2)
 
 -- INFO RIGHT (FOR STATS)
 local iright = CreateFrame("Frame", "InfoRight", barbg)
-TukuiDB:CreatePanel(iright, TukuiDB["panels"].tinfowidth, TukuiDB:Scale(23), "RIGHT", ltoabr, "RIGHT", -14, 0)
+TukuiDB:CreatePanel(iright, TukuiDB["panels"].tinfowidth, 23, "RIGHT", ltoabr, "RIGHT", TukuiDB:Scale(-14), 0)
 iright:SetFrameLevel(2)
 
 -- CHAT EDIT BOX
@@ -89,26 +88,21 @@ local type = DEFAULT_CHAT_FRAME.editBox:GetAttribute("chatType")
 	end
 end)
 
-local minimapstatsleft = CreateFrame("Frame", "MinimapStatsLeft", Minimap)
-TukuiDB:CreatePanel(minimapstatsleft, 1, 1, "TOPLEFT", Minimap, "BOTTOMLEFT", TukuiDB:Scale(-2), TukuiDB:Scale(-4))
-minimapstatsleft:SetWidth(((Minimap:GetWidth() + TukuiDB:Scale(4)) / 2) - TukuiDB:Scale(1))
-minimapstatsleft:SetHeight(TukuiDB:Scale(19))
+local minimapstatsleft = CreateFrame("Frame", "MinimapStatsLeft", MapBorder)
+TukuiDB:CreatePanel(minimapstatsleft, ((MapBorder:GetWidth() + 4) / 2) - 1, 18, "TOPLEFT", MapBorder, "BOTTOMLEFT", 0, TukuiDB:Scale(-2))
 
-local minimapstatsright = CreateFrame("Frame", "MinimapStatsRight", Minimap)
-TukuiDB:CreatePanel(minimapstatsright, 1, 1, "TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB:Scale(2), TukuiDB:Scale(-4))
-minimapstatsright:SetWidth(((Minimap:GetWidth() + TukuiDB:Scale(4)) / 2) - TukuiDB:Scale(1))
-minimapstatsright:SetHeight(TukuiDB:Scale(19))
+local minimapstatsright = CreateFrame("Frame", "MinimapStatsRight", MapBorder)
+TukuiDB:CreatePanel(minimapstatsright, ((MapBorder:GetWidth() + 4) / 2) -1, 18, "TOPRIGHT", MapBorder, "BOTTOMRIGHT", 0, TukuiDB:Scale(-2))
 
 --RIGHT BAR BACKGROUND
 local barbgr = CreateFrame("Frame", "ActionBarBackgroundRight", UIParent)
-TukuiDB:CreatePanel(barbgr, 1, 1, "RIGHT", UIParent, "RIGHT", -23, -13.5)
-barbgr:SetHeight((buttonsize * 12) + (buttonspacing * 13))
+TukuiDB:CreatePanel(barbgr, 1, (buttonsize * 12) + (buttonspacing * 13), "RIGHT", UIParent, "RIGHT", TukuiDB:Scale(-23), TukuiDB:Scale(-13.5))
 if TukuiDB["actionbar"].rightbars == 1 then
-	barbgr:SetWidth(buttonsize+buttonspacing+buttonspacing)
+	barbgr:SetWidth(buttonsize + (buttonspacing * 2))
 elseif TukuiDB["actionbar"].rightbars == 2 then
-	barbgr:SetWidth(buttonspacing+buttonsize+buttonspacing+buttonsize+buttonspacing)
+	barbgr:SetWidth((buttonsize * 2) + (buttonspacing * 3))
 elseif TukuiDB["actionbar"].rightbars == 3 then
-	barbgr:SetWidth(buttonspacing+buttonsize+buttonspacing+buttonsize+buttonspacing+buttonsize+buttonspacing)
+	barbgr:SetWidth((buttonsize * 3) + (buttonspacing * 4))
 else
 	barbgr:Hide()
 end
@@ -116,7 +110,7 @@ if TukuiDB["actionbar"].rightbars > 0 then
 	local rbl = CreateFrame("Frame", "RightBarLine", barbg)
 	local crblu = CreateFrame("Frame", "CubeRightBarUP", barbg)
 	local crbld = CreateFrame("Frame", "CubeRightBarDown", barbg)
-	TukuiDB:CreatePanel(rbl, 2, TukuiDB:Scale((buttonsize/2 * 27) + (buttonspacing * 6)), "RIGHT", barbgr, "RIGHT", 1, 0)
+	TukuiDB:CreatePanel(rbl, 2, (buttonsize / 2 * 27) + (buttonspacing * 6), "RIGHT", barbgr, "RIGHT", TukuiDB:Scale(1), 0)
 	rbl:SetWidth(TukuiDB:Scale(2))
 	TukuiDB:CreatePanel(crblu, 10, 10, "BOTTOM", rbl, "TOP", 0, 0)
 	TukuiDB:CreatePanel(crbld, 10, 10, "TOP", rbl, "BOTTOM", 0, 0)
@@ -124,15 +118,13 @@ end
 
 local petbg = CreateFrame("Frame", "PetActionBarBackground", PetActionButton1)
 if TukuiDB["actionbar"].rightbars > 0 then
-	TukuiDB:CreatePanel(petbg, 1, 1, "RIGHT", barbgr, "LEFT", TukuiDB:Scale(-6), 0)
+	TukuiDB:CreatePanel(petbg, petbuttonsize + (petbuttonspacing * 2), (petbuttonsize * 10) + (petbuttonspacing * 11), "RIGHT", barbgr, "LEFT", TukuiDB:Scale(-6), 0)
 else
-	TukuiDB:CreatePanel(petbg, 1, 1, "RIGHT", UIParent, "RIGHT", TukuiDB:Scale(-6), TukuiDB:Scale(-13.5))
+	TukuiDB:CreatePanel(petbg, petbuttonsize + (petbuttonspacing * 2), (petbuttonsize * 10) + (petbuttonspacing * 11), "RIGHT", UIParent, "RIGHT", TukuiDB:Scale(-6), TukuiDB:Scale(-13.5))
 end
-petbg:SetWidth(petbuttonspacing+petbuttonsize+petbuttonspacing)
-petbg:SetHeight((petbuttonsize * 10) + (petbuttonspacing * 11))
 
 local ltpetbg1 = CreateFrame("Frame", "LineToPetActionBarBackground", petbg)
-TukuiDB:CreatePanel(ltpetbg1, 30, 265, "TOPLEFT", petbg, "TOPRIGHT", 0, -33)
+TukuiDB:CreatePanel(ltpetbg1, 30, 265, "TOPLEFT", petbg, "TOPRIGHT", 0, TukuiDB:Scale(-33))
 ltpetbg1:SetFrameLevel(0)
 ltpetbg1:SetAlpha(.8)
 

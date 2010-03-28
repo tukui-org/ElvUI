@@ -18,7 +18,7 @@ local ST_SOULBAG = 2
 local ST_SPECIAL = 3
 local ST_QUIVER = 4
 local bag_bars = 0
-local hide_soulbags = 1
+local hide_soulbag = 1
 local quest_glow = 1
 
 Stuffing = CreateFrame ("Frame", nil, UIParent)
@@ -421,16 +421,16 @@ function Stuffing:CreateBagFrame(w)
 	f:SetFrameLevel(20)
 
 	if w == "Bank" then
-		f:SetPoint("BOTTOMLEFT", InfoLeft, "TOPLEFT", 0, 5)
+		f:SetPoint("BOTTOMLEFT", InfoLeft, "TOPLEFT", 0, TukuiDB:Scale(5))
 	else
-		f:SetPoint("BOTTOMRIGHT", InfoRight, "TOPRIGHT", 0, 5)
+		f:SetPoint("BOTTOMRIGHT", InfoRight, "TOPRIGHT", 0, TukuiDB:Scale(5))
 	end
 	
 	-- close button
 	f.b_close = CreateFrame("Button", "Stuffing_CloseButton" .. w, f, "UIPanelCloseButton")
-	f.b_close:SetWidth(32)
-	f.b_close:SetHeight(32)
-	f.b_close:SetPoint("TOPRIGHT", -3, -3)
+	f.b_close:SetWidth(TukuiDB:Scale(32))
+	f.b_close:SetHeight(TukuiDB:Scale(32))
+	f.b_close:SetPoint("TOPRIGHT", TukuiDB:Scale(-3), TukuiDB:Scale(-3))
 	f.b_close:SetScript("OnClick", function(self, btn)
 		if self:GetParent():GetName() == "StuffingFrameBags" and btn == "RightButton" then
 			if Stuffing_DDMenu.initialize ~= Stuffing.Menu then
@@ -447,7 +447,7 @@ function Stuffing:CreateBagFrame(w)
 
 	-- create the bags frame
 	local fb = CreateFrame ("Frame", n .. "BagsFrame", f)
-	fb:SetPoint("BOTTOMLEFT", f, "TOPLEFT", 0, 2)
+	fb:SetPoint("BOTTOMLEFT", f, "TOPLEFT", 0, TukuiDB:Scale(2))
 	fb:SetFrameStrata("HIGH")
 	f.bags_frame = fb
 
@@ -493,22 +493,22 @@ function Stuffing:InitBags()
 	local editbox = CreateFrame("EditBox", nil, f)
 	editbox:Hide()
 	editbox:SetAutoFocus(true)
-	editbox:SetHeight(32)
+	editbox:SetHeight(TukuiDB:Scale(32))
 
 	local left = editbox:CreateTexture(nil, "BACKGROUND")
-	left:SetWidth(8) left:SetHeight(20)
-	left:SetPoint("LEFT", -5, 0)
+	left:SetWidth(TukuiDB:Scale(8)) left:SetHeight(TukuiDB:Scale(20))
+	left:SetPoint("LEFT", TukuiDB:Scale(-5), 0)
 	left:SetTexture("Interface\\Common\\Common-Input-Border")
 	left:SetTexCoord(0, 0.0625, 0, 0.625)
 
 	local right = editbox:CreateTexture(nil, "BACKGROUND")
-	right:SetWidth(8) right:SetHeight(20)
+	right:SetWidth(TukuiDB:Scale(8)) right:SetHeight(TukuiDB:Scale(20))
 	right:SetPoint("RIGHT", 0, 0)
 	right:SetTexture("Interface\\Common\\Common-Input-Border")
 	right:SetTexCoord(0.9375, 1, 0, 0.625)
 
 	local center = editbox:CreateTexture(nil, "BACKGROUND")
-	center:SetHeight(20)
+	center:SetHeight(TukuiDB:Scale(20))
 	center:SetPoint("RIGHT", right, "LEFT", 0, 0)
 	center:SetPoint("LEFT", left, "RIGHT", 0, 0)
 	center:SetTexture("Interface\\Common\\Common-Input-Border")
@@ -536,15 +536,15 @@ function Stuffing:InitBags()
 
 
 	local detail = f:CreateFontString(nil, "ARTWORK", "GameFontHighlightLarge")
-	detail:SetPoint("TOPLEFT", f, 12, -10)
-	detail:SetPoint("RIGHT", -(16 + 24), 0)
+	detail:SetPoint("TOPLEFT", f, TukuiDB:Scale(12), TukuiDB:Scale(-10))
+	detail:SetPoint("RIGHT", TukuiDB:Scale(-(16 + 24)), 0)
 	detail:SetJustifyH("LEFT")
 	detail:SetText("|cff9999ff" .. "Search")
 	editbox:SetAllPoints(detail)
 
 	local gold = f:CreateFontString(nil, "ARTWORK", "GameFontHighlightLarge")
 	gold:SetJustifyH("RIGHT")
-	gold:SetPoint("RIGHT", f.b_close, "LEFT", -3, 0)
+	gold:SetPoint("RIGHT", f.b_close, "LEFT", TukuiDB:Scale(-3), 0)
 
 	f:SetScript("OnEvent", function (self, e)
 		self.gold:SetText (GetCoinTextureString(GetMoney(), 12))
@@ -641,8 +641,8 @@ function Stuffing:Layout(lb)
 		f.gold:SetFont(BAGSFONT, 12)
 
 		f.detail:ClearAllPoints()
-		f.detail:SetPoint("TOPLEFT", f, 12, -10)
-		f.detail:SetPoint("RIGHT", -(16 + 24), 0)
+		f.detail:SetPoint("TOPLEFT", f, TukuiDB:Scale(12), TukuiDB:Scale(-10))
+		f.detail:SetPoint("RIGHT", TukuiDB:Scale(-(16 + 24)), 0)
 	end
 
 	f:SetClampedToScreen(1)
@@ -676,8 +676,8 @@ function Stuffing:Layout(lb)
 		w = w + ((#bs - 1) * bsize)
 		w = w + (12 * (#bs - 2))
 
-		fb:SetHeight(2 * 12 + bsize)
-		fb:SetWidth(w)
+		fb:SetHeight(TukuiDB:Scale(2 * 12 + bsize))
+		fb:SetWidth(TukuiDB:Scale(w))
 		fb:Show()
 	else
 		fb:Hide()
@@ -699,7 +699,7 @@ function Stuffing:Layout(lb)
 			xoff = xoff + (idx * 4)
 
 			b.frame:ClearAllPoints()
-			b.frame:SetPoint("LEFT", fb, "LEFT", xoff, 0)
+			b.frame:SetPoint("LEFT", fb, "LEFT", TukuiDB:Scale(xoff), 0)
 			b.frame:Show()
 
 
@@ -727,13 +727,8 @@ function Stuffing:Layout(lb)
 		rows = rows + 1
 	end
 
-	f:SetWidth(cols * 31
-			+ (cols - 1) * 4
-			+ 12 * 2)
-
-	f:SetHeight(rows * 31
-			+ (rows - 1) * 4
-			+ off + 12 * 2)
+	f:SetWidth(TukuiDB:Scale(cols * 31 + (cols - 1) * 4 + 12 * 2)) 
+	f:SetHeight(TukuiDB:Scale(rows * 31 + (rows - 1) * 4 + off + 12 * 2))
 
 
 	local idx = 0
@@ -766,14 +761,14 @@ function Stuffing:Layout(lb)
 					yoff = yoff * -1
 
 					b.frame:ClearAllPoints()
-					b.frame:SetPoint("TOPLEFT", f, "TOPLEFT", xoff, yoff)
-					b.frame:SetHeight(31)
-					b.frame:SetWidth(31)
+					b.frame:SetPoint("TOPLEFT", f, "TOPLEFT", TukuiDB:Scale(xoff), TukuiDB:Scale(yoff))
+					b.frame:SetHeight(TukuiDB:Scale(31))
+					b.frame:SetWidth(TukuiDB:Scale(31))
 					b.frame:Show()
 
 					local normalTex = _G[b.frame:GetName() .. "NormalTexture"]
-					normalTex:SetHeight(31 / 37 * 64)
-					normalTex:SetWidth(31 / 37 * 64)
+					normalTex:SetHeight(TukuiDB:Scale(31 / 37 * 64))
+					normalTex:SetWidth(TukuiDB:Scale(31 / 37 * 64))
 					normalTex:Show()
 					b.normalTex = normalTex
 
@@ -793,8 +788,8 @@ function Stuffing:Layout(lb)
 					b.iconTex = iconTex
 
 					if b.Glow then
-						b.Glow:SetWidth(31 / 37 * 65)
-						b.Glow:SetHeight(31 / 37 * 65)
+						b.Glow:SetWidth(TukuiDB:Scale(31 / 37 * 65))
+						b.Glow:SetHeight(TukuiDB:Scale(31 / 37 * 65))
 					end
 
 					idx = idx + 1

@@ -23,10 +23,10 @@ PVP_ENABLED = ""
 
 -- Statusbar
 GameTooltipStatusBar:SetStatusBarTexture(TukuiDB["media"].blank)
-GameTooltipStatusBar:SetHeight(3)
+GameTooltipStatusBar:SetHeight(TukuiDB:Scale(3))
 GameTooltipStatusBar:ClearAllPoints()
-GameTooltipStatusBar:SetPoint("TOPLEFT", GameTooltip, "BOTTOMLEFT", 2, 5)
-GameTooltipStatusBar:SetPoint("TOPRIGHT", GameTooltip, "BOTTOMRIGHT", -2, 5)
+GameTooltipStatusBar:SetPoint("TOPLEFT", GameTooltip, "BOTTOMLEFT", TukuiDB:Scale(2), TukuiDB:Scale(5))
+GameTooltipStatusBar:SetPoint("TOPRIGHT", GameTooltip, "BOTTOMRIGHT", TukuiDB:Scale(-2), TukuiDB:Scale(5))
 
 -- Position default anchor
 local function defaultPosition(tt, parent)
@@ -36,7 +36,7 @@ local function defaultPosition(tt, parent)
 	else
 		tt:ClearAllPoints()
 		tt:SetOwner(parent, "ANCHOR_NONE")
-		tt:SetPoint("BOTTOMRIGHT", InfoRight, "TOPRIGHT", 0, 5)
+		tt:SetPoint("BOTTOMRIGHT", InfoRight, "TOPRIGHT", 0, TukuiDB:Scale(5))
 	end
 end
 hooksecurefunc("GameTooltip_SetDefaultAnchor", defaultPosition)
@@ -45,10 +45,10 @@ local function gtUpdate(self, ...)
 	if self:GetAnchorType() == "ANCHOR_NONE" then
 		if TukuiDB["bags"].enable == true and StuffingFrameBags:IsShown() then
 			self:ClearAllPoints()
-			self:SetPoint("BOTTOMRIGHT",StuffingFrameBags,"TOPRIGHT", 0,4)
+			self:SetPoint("BOTTOMRIGHT",StuffingFrameBags,"TOPRIGHT", 0, TukuiDB:Scale(4))
 		else
 			self:ClearAllPoints()
-			self:SetPoint("BOTTOMRIGHT", InfoRight, "TOPRIGHT", 0, 5)
+			self:SetPoint("BOTTOMRIGHT", InfoRight, "TOPRIGHT", 0, TukuiDB:Scale(5))
 		end
 	end
 end
@@ -111,10 +111,10 @@ end
 
 -- Item Ref icon
 local itemTooltipIcon = CreateFrame("Frame", "ItemRefTooltipIcon", _G["ItemRefTooltip"])
-itemTooltipIcon:SetPoint("TOPRIGHT", _G["ItemRefTooltip"], "TOPLEFT", -2, -5)
+itemTooltipIcon:SetPoint("TOPRIGHT", _G["ItemRefTooltip"], "TOPLEFT", TukuiDB:Scale(-2), TukuiDB:Scale(-5))
 TukuiDB:SetTemplate(itemTooltipIcon)
-itemTooltipIcon:SetHeight(30)
-itemTooltipIcon:SetWidth(30)
+itemTooltipIcon:SetHeight(TukuiDB:Scale(30))
+itemTooltipIcon:SetWidth(TukuiDB:Scale(30))
 
 itemTooltipIcon.texture = itemTooltipIcon:CreateTexture("ItemRefTooltipIcon", "TOOLTIP")
 itemTooltipIcon.texture:SetAllPoints(itemTooltipIcon)

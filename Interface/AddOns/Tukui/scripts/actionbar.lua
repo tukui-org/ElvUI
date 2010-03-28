@@ -24,8 +24,8 @@ local _G = getfenv(0)
 
 local CreateHolder = function(name, width, height, setting, numslots, buttonname)
 	local frame = CreateFrame("Frame", name, UIParent)
-	frame:SetWidth(width)
-	frame:SetHeight(height)
+	frame:SetWidth(TukuiDB:Scale(width))
+	frame:SetHeight(TukuiDB:Scale(height))
 	frame:SetPoint(settings[setting].ma, settings[setting].p, settings[setting].a, settings[setting].x / settings[setting].scale, settings[setting].y / settings[setting].scale)
 
 	return frame
@@ -41,7 +41,7 @@ local fbar3 = CreateHolder("tBar3Holder", 1, 1, "Bar3", 12, "MultiBarBottomRight
 local fbar4 = CreateHolder("tBar4Holder", 1, 1, "Right", 12, "MultiBarRightButton")
 local fbar5 = CreateHolder("tBar5Holder", 1, 1, "Left", 12, "MultiBarLeftButton")
 local fpet = CreateHolder("tPetBarHolder", 1, 1, "Pet", NUM_PET_ACTION_SLOTS, "PetActionButton")
-local fshift = CreateHolder("tShapeShiftHolder", TukuiDB:Scale(29), TukuiDB:Scale(58), "Shapeshift", NUM_SHAPESHIFT_SLOTS, "ShapeshiftButton")
+local fshift = CreateHolder("tShapeShiftHolder", 29, 58, "Shapeshift", NUM_SHAPESHIFT_SLOTS, "ShapeshiftButton")
 
 ------------------------------------------------------------------------------------------
 -- these bars will always exist, on any tukui action bar layout.
@@ -58,7 +58,7 @@ for i=2, 12 do
 	local b = _G["ActionButton"..i]
 	local b2 = _G["ActionButton"..i-1]
 	b:ClearAllPoints()
-	b:SetPoint("LEFT",b2,"RIGHT", TukuiDB:Scale(4), 0)
+	b:SetPoint("LEFT", b2, "RIGHT", TukuiDB:Scale(4), 0)
 end
 
 -- bonus action bar
@@ -72,7 +72,7 @@ for i=2, 12 do
 	local b = _G["BonusActionButton"..i]
 	local b2 = _G["BonusActionButton"..i-1]
 	b:ClearAllPoints()
-	b:SetPoint("LEFT",b2,"RIGHT", TukuiDB:Scale(4), 0)
+	b:SetPoint("LEFT", b2, "RIGHT", TukuiDB:Scale(4), 0)
 end
 
 
@@ -80,52 +80,47 @@ end
 ShapeshiftBarFrame:SetParent(fshift)
 ShapeshiftBarFrame:SetWidth(0.01)
 ShapeshiftButton1:ClearAllPoints()
-ShapeshiftButton1:SetHeight(29)
-ShapeshiftButton1:SetWidth(29)
-ShapeshiftButton1:SetPoint("BOTTOMLEFT",fshift,0,TukuiDB:Scale(29))
+ShapeshiftButton1:SetHeight(TukuiDB:Scale(29))
+ShapeshiftButton1:SetWidth(TukuiDB:Scale(29))
+ShapeshiftButton1:SetPoint("BOTTOMLEFT", fshift, 0, TukuiDB:Scale(29))
 local function rABS_MoveShapeshift()
-	ShapeshiftButton1:SetPoint("BOTTOMLEFT",fshift,0,TukuiDB:Scale(29))
+	ShapeshiftButton1:SetPoint("BOTTOMLEFT", fshift, 0, TukuiDB:Scale(29))
 end
 hooksecurefunc("ShapeshiftBar_Update", rABS_MoveShapeshift)
 for i=2, 10 do
 	local b = _G["ShapeshiftButton"..i]
 	local b2 = _G["ShapeshiftButton"..i-1]
 	b:ClearAllPoints()
-	b:SetPoint("LEFT",b2,"RIGHT", TukuiDB:Scale(4), 0)
+	b:SetPoint("LEFT", b2, "RIGHT", TukuiDB:Scale(4), 0)
 end
 if UnitLevel("player") >= 30 and select(2, UnitClass("Player")) == "SHAMAN" then
 	MultiCastActionBarFrame:SetParent(fshift)
-	MultiCastActionBarFrame:SetWidth(.01)
+	MultiCastActionBarFrame:SetWidth(0.01)
 
 	MultiCastSummonSpellButton:SetParent(fshift)
 	MultiCastSummonSpellButton:ClearAllPoints()
-	MultiCastSummonSpellButton:SetPoint("LEFT",fshift,"RIGHT",10,0)
+	MultiCastSummonSpellButton:SetPoint("BOTTOMLEFT", fshift, 0, TukuiDB:Scale(29))
+
 	for i=1, 4 do
 		_G["MultiCastSlotButton"..i]:SetParent(fshift)
 	end
 	MultiCastSlotButton1:ClearAllPoints()
-	MultiCastSlotButton1:SetPoint("LEFT",MultiCastSummonSpellButton,"RIGHT",2,0)
-	MultiCastRecallSpellButton:ClearAllPoints()
-	MultiCastRecallSpellButton:SetPoint("LEFT",MultiCastActionButton4,"RIGHT",1,0)
+	MultiCastSlotButton1:SetPoint("LEFT", MultiCastSummonSpellButton, "RIGHT", TukuiDB:Scale(2), 0)
 	for i=2, 4 do
 		local b = _G["MultiCastSlotButton"..i]
 		local b2 = _G["MultiCastSlotButton"..i-1]
 		b:ClearAllPoints()
-		b:SetPoint("LEFT",b2,"RIGHT",2,0)
+		b:SetPoint("LEFT", b2, "RIGHT", TukuiDB:Scale(2), 0)
 	end
 		
 	MultiCastRecallSpellButton:ClearAllPoints()
-	MultiCastRecallSpellButton:SetPoint("LEFT",MultiCastSlotButton4,"RIGHT",2,0)
+	MultiCastRecallSpellButton:SetPoint("LEFT", MultiCastSlotButton4, "RIGHT", TukuiDB:Scale(2), 0)
 		
 	for i=1, 12 do
-		local b = _G["MultiCastActionButton"..i], b2
+		local b = _G["MultiCastActionButton"..i]
+		local b2 = _G["MultiCastSlotButton"..(i % 4 == 0 and 4 or i % 4)]
 		b:ClearAllPoints()
-		if i % 4 == 1 then
-			b:SetPoint("CENTER",MultiCastSlotButton1,"CENTER",0,0)
-		else
-			b2 = _G["MultiCastActionButton"..i-1]
-		b:SetPoint("LEFT",b2,"RIGHT",5,0)
-		end
+		b:SetPoint("CENTER", b2, "CENTER", 0, 0)
 	end
 		
 	local dummy = function() return end
@@ -152,7 +147,7 @@ for i=2, 10 do
 	local b = _G["PetActionButton"..i]
 	local b2 = _G["PetActionButton"..i-1]
 	b:ClearAllPoints()
-	b:SetPoint("TOP", b2,"BOTTOM", 0, TukuiDB:Scale(-4))
+	b:SetPoint("TOP", b2, "BOTTOM", 0, TukuiDB:Scale(-4))
 end
 
 ------------------------------------------------------------------------------------------
@@ -179,34 +174,34 @@ fbar5:Hide()
 if db.rightbars > 0 then
    fbar4:Show()
    MultiBarRightButton1:ClearAllPoints()
-   MultiBarRightButton1:SetPoint("TOPRIGHT", ActionBarBackgroundRight,"TOPRIGHT", TukuiDB:Scale(-4), TukuiDB:Scale(-4))
+   MultiBarRightButton1:SetPoint("TOPRIGHT", ActionBarBackgroundRight, "TOPRIGHT", TukuiDB:Scale(-4), TukuiDB:Scale(-4))
    for i= 2, 12 do
       local b = _G["MultiBarRightButton"..i]
       local b2 = _G["MultiBarRightButton"..i-1]
       b:ClearAllPoints()
-      b:SetPoint("TOP", b2,"BOTTOM", 0, TukuiDB:Scale(-4))
+      b:SetPoint("TOP", b2, "BOTTOM", 0, TukuiDB:Scale(-4))
    end
 end
 if db.rightbars > 1 then
    fbar3:Show()
    MultiBarBottomRightButton1:ClearAllPoints()
-   MultiBarBottomRightButton1:SetPoint("TOPLEFT", ActionBarBackgroundRight,"TOPLEFT", TukuiDB:Scale(4), TukuiDB:Scale(-4))
+   MultiBarBottomRightButton1:SetPoint("TOPLEFT", ActionBarBackgroundRight, "TOPLEFT", TukuiDB:Scale(4), TukuiDB:Scale(-4))
    for i= 2, 12 do
       local b = _G["MultiBarBottomRightButton"..i]
       local b2 = _G["MultiBarBottomRightButton"..i-1]
       b:ClearAllPoints()
-      b:SetPoint("TOP", b2,"BOTTOM", 0, TukuiDB:Scale(-4))
+      b:SetPoint("TOP", b2, "BOTTOM", 0, TukuiDB:Scale(-4))
    end    
 end
 if db.rightbars > 2 then
    fbar5:Show()
    MultiBarLeftButton1:ClearAllPoints()
-   MultiBarLeftButton1:SetPoint("TOP", ActionBarBackgroundRight,"TOP", 0, TukuiDB:Scale(-4))
+   MultiBarLeftButton1:SetPoint("TOP", ActionBarBackgroundRight, "TOP", 0, TukuiDB:Scale(-4))
    for i= 2, 12 do
       local b = _G["MultiBarLeftButton"..i]
       local b2 = _G["MultiBarLeftButton"..i-1]
       b:ClearAllPoints()
-      b:SetPoint("TOP", b2,"BOTTOM", 0, TukuiDB:Scale(-4))
+      b:SetPoint("TOP", b2, "BOTTOM", 0, TukuiDB:Scale(-4))
    end
 end
 
@@ -215,23 +210,23 @@ if TukuiDB.lowversion == true then
    if db.bottomrows == 2 then
       fbar2:Show()
       MultiBarBottomLeftButton1:ClearAllPoints()
-      MultiBarBottomLeftButton1:SetPoint("BOTTOM", ActionButton1, "TOP", 0,TukuiDB:Scale(4))
+      MultiBarBottomLeftButton1:SetPoint("BOTTOM", ActionButton1, "TOP", 0, TukuiDB:Scale(4))
       for i=2, 12 do
          local b = _G["MultiBarBottomLeftButton"..i]
          local b2 = _G["MultiBarBottomLeftButton"..i-1]
          b:ClearAllPoints()
-         b:SetPoint("LEFT",b2,"RIGHT", TukuiDB:Scale(4), 0)
+         b:SetPoint("LEFT", b2, "RIGHT", TukuiDB:Scale(4), 0)
       end   
    end
 else
    fbar2:Show()
    MultiBarBottomLeftButton1:ClearAllPoints()
-   MultiBarBottomLeftButton1:SetPoint("LEFT", ActionButton12, "RIGHT", TukuiDB:Scale(4),0)
+   MultiBarBottomLeftButton1:SetPoint("LEFT", ActionButton12, "RIGHT", TukuiDB:Scale(4), 0)
    for i=2, 12 do
       local b = _G["MultiBarBottomLeftButton"..i]
       local b2 = _G["MultiBarBottomLeftButton"..i-1]
       b:ClearAllPoints()
-      b:SetPoint("LEFT",b2,"RIGHT", TukuiDB:Scale(4), 0)
+      b:SetPoint("LEFT", b2, "RIGHT", TukuiDB:Scale(4), 0)
    end
    MultiBarBottomLeftButton11:SetAlpha(0)
    MultiBarBottomLeftButton11:SetScale(0.0001)
@@ -240,21 +235,21 @@ else
    if db.bottomrows == 2 then
       fbar5:Show()
       MultiBarBottomRightButton1:ClearAllPoints()
-      MultiBarBottomRightButton1:SetPoint("BOTTOM", ActionButton1,"TOP", 0, TukuiDB:Scale(4))
+      MultiBarBottomRightButton1:SetPoint("BOTTOM", ActionButton1, "TOP", 0, TukuiDB:Scale(4))
       for i= 2, 12 do
          local b = _G["MultiBarBottomRightButton"..i]
          local b2 = _G["MultiBarBottomRightButton"..i-1]
          b:ClearAllPoints()
-         b:SetPoint("LEFT", b2,"RIGHT", TukuiDB:Scale(4), 0)
+         b:SetPoint("LEFT", b2, "RIGHT", TukuiDB:Scale(4), 0)
       end
       fbar3:Show()
       MultiBarLeftButton1:ClearAllPoints()
-      MultiBarLeftButton1:SetPoint("LEFT", MultiBarBottomRightButton12,"RIGHT", TukuiDB:Scale(4), 0)
+      MultiBarLeftButton1:SetPoint("LEFT", MultiBarBottomRightButton12, "RIGHT", TukuiDB:Scale(4), 0)
       for i= 2, 12 do
          local b = _G["MultiBarLeftButton"..i]
          local b2 = _G["MultiBarLeftButton"..i-1]
          b:ClearAllPoints()
-         b:SetPoint("LEFT", b2,"RIGHT", TukuiDB:Scale(4), 0)
+         b:SetPoint("LEFT", b2, "RIGHT", TukuiDB:Scale(4), 0)
       end
       MultiBarLeftButton11:SetScale(0.0001)
       MultiBarLeftButton11:SetAlpha(0)
@@ -290,9 +285,9 @@ for _, f in pairs(FramesToHide) do
 end
 
 local vehicle = CreateFrame("BUTTON", nil, UIParent, "SecureActionButtonTemplate")
-vehicle:SetWidth(26)
-vehicle:SetHeight(26)
-vehicle:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", 2, -26)
+vehicle:SetWidth(TukuiDB:Scale(26))
+vehicle:SetHeight(TukuiDB:Scale(26))
+vehicle:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB:Scale(2), TukuiDB:Scale(-26))
 
 vehicle:RegisterForClicks("AnyUp")
 vehicle:SetScript("OnClick", function() VehicleExit() end)
@@ -327,7 +322,7 @@ vehicle:SetScript("OnEvent", function(self, event, arg1)
 end)  
 vehicle:SetAlpha(0)
 
-local ssmover = CreateFrame("Frame","ssmoverholder", UIParent)
+local ssmover = CreateFrame("Frame", "ssmoverholder", UIParent)
 ssmover:SetAllPoints(fshift)
 TukuiDB:SetTemplate(ssmover)
 ssmover:SetAlpha(0)
@@ -339,7 +334,7 @@ local function showmovebutton()
 		ssmove = true
 		ssmover:SetAlpha(1)
 		fshift:EnableMouse(true)
-		fshift:RegisterForDrag("LeftButton","RightButton")
+		fshift:RegisterForDrag("LeftButton", "RightButton")
 		fshift:SetScript("OnDragStart", function(self) self:StartMoving() end)
 		fshift:SetScript("OnDragStop", function(self) self:StopMovingOrSizing() end)
 	elseif ssmove == true then
@@ -406,7 +401,7 @@ end
 
 local function mouseoverstance(alpha)
 	if UnitLevel("player") >= 30 and select(2, UnitClass("Player")) == "SHAMAN" then
-		for i=1, 4 do
+		for i=1, 12 do
 			local pb = _G["MultiCastActionButton"..i]
 			pb:SetAlpha(alpha)
 		end

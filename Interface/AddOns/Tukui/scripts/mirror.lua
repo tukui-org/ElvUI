@@ -5,8 +5,8 @@
 local _, settings = ...
 
 local _DEFAULTS = {
-	width = 220,
-	height = 18,
+	width = TukuiDB:Scale(220),
+	height = TukuiDB:Scale(18),
 	texture = TukuiDB["media"].blank,
 
 	position = {
@@ -40,7 +40,7 @@ do
 		local pos = settings.position[self.type]
 		local p1, frame, p2, x, y = strsplit("#", pos)
 
-		return self:SetPoint(p1, frame, p2, x, y)
+		return self:SetPoint(p1, frame, p2, TukuiDB:Scale(x), TukuiDB:Scale(y))
 	end
 
 	local OnUpdate = function(self, elapsed)
@@ -93,7 +93,7 @@ do
 
 		text:SetPoint('LEFT', frame)
 		text:SetPoint('RIGHT', frame)
-		text:SetPoint('TOP', frame, 0, 2)
+		text:SetPoint('TOP', frame, 0, TukuiDB:Scale(2))
 		text:SetPoint('BOTTOM', frame)
 
 		frame:SetSize(settings.width, settings.height)

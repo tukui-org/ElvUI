@@ -17,7 +17,7 @@ end
 local glowt = "Interface\\AddOns\\Tukui\\media\\glowTex"
 local ft = "Fonts\\skurri.ttf" -- Map font
 local fontsize = 18 -- Map Font Size
-local mapbg = CreateFrame ("Frame",nil, WorldMapDetailFrame)
+local mapbg = CreateFrame ("Frame", nil, WorldMapDetailFrame)
 	mapbg:SetBackdrop( { 
 	bgFile = TukuiDB["media"].blank, 
 	edgeFile = TukuiDB["media"].blank, 
@@ -25,10 +25,10 @@ local mapbg = CreateFrame ("Frame",nil, WorldMapDetailFrame)
 	insets = { left = -TukuiDB.mult, right = -TukuiDB.mult, top = -TukuiDB.mult, bottom = -TukuiDB.mult }
 })
 
-local movebutton = CreateFrame ("Frame",nil,WorldMapFrameSizeUpButton)
-movebutton:SetHeight(32)
-movebutton:SetWidth(32)
-movebutton:SetPoint("TOP",WorldMapFrameSizeUpButton,"BOTTOM",-1,4)
+local movebutton = CreateFrame ("Frame", nil, WorldMapFrameSizeUpButton)
+movebutton:SetHeight(TukuiDB:Scale(32))
+movebutton:SetWidth(TukuiDB:Scale(32))
+movebutton:SetPoint("TOP", WorldMapFrameSizeUpButton, "BOTTOM", TukuiDB:Scale(-1), TukuiDB:Scale(4))
 movebutton:SetBackdrop( { 
 	bgFile = "Interface\\AddOns\\Tukui\\media\\cross",
 })
@@ -57,22 +57,22 @@ local SmallerMapSkin = function()
 	Kill(WorldMapBlobFrame)
 	
 	-- new frame to put zone and title text in
-	local ald = CreateFrame ("Frame",nil,WorldMapButton)
+	local ald = CreateFrame ("Frame", nil, WorldMapButton)
 	ald:SetFrameStrata("TOOLTIP")
 
 	-- map glow
 	local fb1 = CreateFrame("Frame", nil, mapbg )
 	fb1:SetFrameLevel(0)
 	fb1:SetFrameStrata("BACKGROUND")
-	fb1:SetPoint("TOPLEFT", mapbg , "TOPLEFT", -3, 3)
-	fb1:SetPoint("BOTTOMRIGHT", mapbg , "BOTTOMRIGHT", 3, -3)
+	fb1:SetPoint("TOPLEFT", mapbg , "TOPLEFT", TukuiDB:Scale(-3), TukuiDB:Scale(3))
+	fb1:SetPoint("BOTTOMRIGHT", mapbg , "BOTTOMRIGHT", TukuiDB:Scale(3), TukuiDB:Scale(-3))
 	fb1:SetBackdrop {edgeFile = glowt, edgeSize = 3, insets = {left = 0, right = 0, top = 0, bottom = 0}}
 	fb1:SetBackdropBorderColor(unpack(TukuiDB["media"].backdropcolor))
 	
 	-- map border and bg
 	mapbg:SetBackdropColor(unpack(TukuiDB["media"].backdropcolor))
 	mapbg:SetBackdropBorderColor(unpack(TukuiDB["media"].bordercolor))
-	mapbg:SetScale(1/WORLDMAP_RATIO_MINI)
+	mapbg:SetScale(1 / WORLDMAP_RATIO_MINI)
 	mapbg:SetPoint("TOPLEFT", WorldMapDetailFrame, TukuiDB:Scale(-2), TukuiDB:Scale(2))
 	mapbg:SetPoint("BOTTOMRIGHT", WorldMapDetailFrame, TukuiDB:Scale(2), TukuiDB:Scale(-2))
 	mapbg:SetFrameStrata("MEDIUM")
@@ -88,21 +88,21 @@ local SmallerMapSkin = function()
 	WorldMapFrameMiniBorderRight:Hide()
 	WorldMapFrameSizeUpButton:Show()
 	WorldMapFrameSizeUpButton:ClearAllPoints()
-	WorldMapFrameSizeUpButton:SetPoint("TOPRIGHT", WorldMapButton, "TOPRIGHT",3,-18)
+	WorldMapFrameSizeUpButton:SetPoint("TOPRIGHT", WorldMapButton, "TOPRIGHT", TukuiDB:Scale(3), TukuiDB:Scale(-18))
 	WorldMapFrameSizeUpButton:SetFrameStrata("HIGH")
 	WorldMapFrameCloseButton:ClearAllPoints()
-	WorldMapFrameCloseButton:SetPoint("TOPRIGHT", WorldMapButton, "TOPRIGHT",3,3)
+	WorldMapFrameCloseButton:SetPoint("TOPRIGHT", WorldMapButton, "TOPRIGHT", TukuiDB:Scale(3), TukuiDB:Scale(3))
 	WorldMapFrameCloseButton:SetFrameStrata("HIGH")
-	WorldMapFrameSizeDownButton:SetPoint("TOPRIGHT", WorldMapFrameMiniBorderRight, "TOPRIGHT", -66, 5)
+	WorldMapFrameSizeDownButton:SetPoint("TOPRIGHT", WorldMapFrameMiniBorderRight, "TOPRIGHT", TukuiDB:Scale(-66), TukuiDB:Scale(5))
 	WorldMapQuestShowObjectives:SetParent(ald)
 	WorldMapQuestShowObjectives:ClearAllPoints()
-	WorldMapQuestShowObjectives:SetPoint("BOTTOMRIGHT",WorldMapButton,"BOTTOMRIGHT", 0, -1)
-	WorldMapQuestShowObjectivesText:SetFont(ft,fontsize,"OUTLINE")
+	WorldMapQuestShowObjectives:SetPoint("BOTTOMRIGHT", WorldMapButton, "BOTTOMRIGHT", 0, TukuiDB:Scale(-1))
+	WorldMapQuestShowObjectivesText:SetFont(ft, fontsize, "OUTLINE")
 	WorldMapQuestShowObjectivesText:ClearAllPoints()
-	WorldMapQuestShowObjectivesText:SetPoint("RIGHT",WorldMapQuestShowObjectives,"LEFT",-4,1)
+	WorldMapQuestShowObjectivesText:SetPoint("RIGHT", WorldMapQuestShowObjectives, "LEFT", TukuiDB:Scale(-4), TukuiDB:Scale(1))
 	WorldMapFrameTitle:ClearAllPoints()
-	WorldMapFrameTitle:SetPoint("BOTTOMLEFT", WorldMapDetailFrame, 9, 5);
-	WorldMapFrameTitle:SetFont(ft,fontsize,"OUTLINE")
+	WorldMapFrameTitle:SetPoint("BOTTOMLEFT", WorldMapDetailFrame, TukuiDB:Scale(9), TukuiDB:Scale(5));
+	WorldMapFrameTitle:SetFont(ft, fontsize, "OUTLINE")
 	WorldMapFrameTitle:SetParent(ald)		
 	WorldMapTitleButton:SetFrameStrata("TOOLTIP")
 	WorldMapTooltip:SetFrameStrata("TOOLTIP")
@@ -139,8 +139,8 @@ local function OnMouseUp()
 end
 
 movebutton:EnableMouse(true)
-movebutton:SetScript("OnMouseDown",OnMouseDown)
-movebutton:SetScript("OnMouseUp",OnMouseUp)
+movebutton:SetScript("OnMouseDown", OnMouseDown)
+movebutton:SetScript("OnMouseUp", OnMouseUp)
 
 -- the classcolor function
 local function UpdateIconColor(self, t)

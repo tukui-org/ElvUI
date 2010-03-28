@@ -148,15 +148,15 @@ local function PLAYER_ENTERING_WORLD()
 	
 	-- Position the general chat frame
 	ChatFrame1:ClearAllPoints()
-	ChatFrame1:SetPoint("BOTTOMLEFT", InfoLeft, "TOPLEFT", -1, 6)
-	ChatFrame1:SetWidth(TukuiDB["panels"].tinfowidth + 1)
-	ChatFrame1:SetHeight(111)
+	ChatFrame1:SetPoint("BOTTOMLEFT", InfoLeft, "TOPLEFT", TukuiDB:Scale(-1), TukuiDB:Scale(6))
+	ChatFrame1:SetWidth(TukuiDB:Scale(TukuiDB["panels"].tinfowidth + 1))
+	ChatFrame1:SetHeight(TukuiDB:Scale(111))
 		
 	-- Position the chatframe 4
 	ChatFrame4:ClearAllPoints()
-	ChatFrame4:SetPoint("BOTTOMRIGHT", InfoRight, "TOPRIGHT", 0, 6)
-	ChatFrame4:SetWidth(TukuiDB["panels"].tinfowidth + 1)
-	ChatFrame4:SetHeight(111)
+	ChatFrame4:SetPoint("BOTTOMRIGHT", InfoRight, "TOPRIGHT", 0, TukuiDB:Scale(6))
+	ChatFrame4:SetWidth(TukuiDB:Scale(TukuiDB["panels"].tinfowidth + 1))
+	ChatFrame4:SetHeight(TukuiDB:Scale(111))
 end
 
 AddOn:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -331,7 +331,7 @@ function ChatFrame_OnHyperlinkShow(self, link, text, button)
             
 		button:ClearAllPoints()
            
-		button:SetPoint("CENTER", editbox, "CENTER", 0, -30)
+		button:SetPoint("CENTER", editbox, "CENTER", 0, TukuiDB:Scale(-30))
 	else
 		f(self, link, text, button)
 	end
@@ -394,19 +394,19 @@ local function CreatCopyFrame()
 	frame:SetBackdropColor(unpack(TukuiDB["media"].backdropcolor))
 	frame:SetBackdropBorderColor(unpack(TukuiDB["media"].bordercolor))
 	if TukuiDB.lowversion == true then
-		frame:SetWidth(410)
+		frame:SetWidth(TukuiDB:Scale(410))
 	else
-		frame:SetWidth(710)
+		frame:SetWidth(TukuiDB:Scale(710))
 	end
-	frame:SetHeight(200)
+	frame:SetHeight(TukuiDB:Scale(200))
 	frame:SetScale(1)
-	frame:SetPoint("BOTTOM", UIParent, "BOTTOM", 0,10)
+	frame:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, TukuiDB:Scale(10))
 	frame:Hide()
 	frame:SetFrameStrata("DIALOG")
 
 	local scrollArea = CreateFrame("ScrollFrame", "CopyScroll", frame, "UIPanelScrollFrameTemplate")
-	scrollArea:SetPoint("TOPLEFT", frame, "TOPLEFT", 8, -30)
-	scrollArea:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -30, 8)
+	scrollArea:SetPoint("TOPLEFT", frame, "TOPLEFT", TukuiDB:Scale(8), TukuiDB:Scale(-30))
+	scrollArea:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", TukuiDB:Scale(-30), TukuiDB:Scale(8))
 
 	editBox = CreateFrame("EditBox", "CopyBox", frame)
 	editBox:SetMultiLine(true)
@@ -415,11 +415,11 @@ local function CreatCopyFrame()
 	editBox:SetAutoFocus(false)
 	editBox:SetFontObject(ChatFontNormal)
 	if TukuiDB.lowversion == true then
-		editBox:SetWidth(410)
+		editBox:SetWidth(TukuiDB:Scale(410))
 	else
-		editBox:SetWidth(710)
+		editBox:SetWidth(TukuiDB:Scale(710))
 	end
-	editBox:SetHeight(200)
+	editBox:SetHeight(TukuiDB:Scale(200))
 	editBox:SetScript("OnEscapePressed", function() frame:Hide() end)
 
 	scrollArea:SetScrollChild(editBox)
@@ -459,8 +459,8 @@ for i = 1, NUM_CHAT_WINDOWS do
 	local cf = _G[format("ChatFrame%d",  i)]
 	local button = CreateFrame("Button", format("ButtonCF%d", i), cf)
 	button:SetPoint("BOTTOMRIGHT", 0, 0)
-	button:SetHeight(20)
-	button:SetWidth(20)
+	button:SetHeight(TukuiDB:Scale(20))
+	button:SetWidth(TukuiDB:Scale(20))
 	button:SetAlpha(0)
 	TukuiDB:SetTemplate(button)
 	button:SetScript("OnClick", function() Copy(cf) end)

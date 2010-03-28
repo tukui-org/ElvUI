@@ -65,7 +65,7 @@ end
 local function StatusUpdate(frame)
 	local t = GetLootRollTimeLeft(frame.parent.rollid)
 	local perc = t / frame.parent.time
-	frame.spark:SetPoint("CENTER", frame, "LEFT", perc * frame:GetWidth(), 0)
+	frame.spark:SetPoint("CENTER", frame, "LEFT", TukuiDB:Scale(perc * frame:GetWidth()), 0)
 	frame:SetValue(t)
 end
 
@@ -73,8 +73,8 @@ end
 local function CreateRollButton(parent, ntex, ptex, htex, rolltype, tiptext, ...)
 	local f = CreateFrame("Button", nil, parent)
 	f:SetPoint(...)
-	f:SetWidth(28)
-	f:SetHeight(28)
+	f:SetWidth(TukuiDB:Scale(28))
+	f:SetHeight(TukuiDB:Scale(28))
 	f:SetNormalTexture(ntex)
 	if ptex then f:SetPushedTexture(ptex) end
 	f:SetHighlightTexture(htex)
@@ -87,15 +87,15 @@ local function CreateRollButton(parent, ntex, ptex, htex, rolltype, tiptext, ...
 	f:SetMotionScriptsWhileDisabled(true)
 	local txt = f:CreateFontString(nil, nil)
 	txt:SetFont(TukuiDB["media"].uffont, 12, "OUTLINE")
-	txt:SetPoint("CENTER", 0, rolltype == 2 and 1 or rolltype == 0 and -1.2 or 0)
+	txt:SetPoint("CENTER", 0, TukuiDB:Scale(rolltype == 2 and 1 or rolltype == 0 and -1.2 or 0))
 	return f, txt
 end
 
 
 local function CreateRollFrame()
 	local frame = CreateFrame("Frame", nil, UIParent)
-	frame:SetWidth(328)
-	frame:SetHeight(22)
+	frame:SetWidth(TukuiDB:Scale(328))
+	frame:SetHeight(TukuiDB:Scale(22))
 	frame:SetBackdrop(backdrop)
 	frame:SetBackdropColor(0.1, 0.1, 0.1, 1)
 	frame:SetScript("OnEvent", OnEvent)
@@ -103,9 +103,9 @@ local function CreateRollFrame()
 	frame:Hide()
 
 	local button = CreateFrame("Button", nil, frame)
-	button:SetPoint("LEFT", -24, 0)
-	button:SetWidth(22)
-	button:SetHeight(22)
+	button:SetPoint("LEFT", TukuiDB:Scale(-24), 0)
+	button:SetWidth(TukuiDB:Scale(22))
+	button:SetHeight(TukuiDB:Scale(22))
 	button:SetScript("OnEnter", SetItemTip)
 	button:SetScript("OnLeave", HideTip2)
 	button:SetScript("OnUpdate", ItemOnUpdate)
@@ -114,15 +114,15 @@ local function CreateRollFrame()
 	frame.button = button
 
 	local buttonborder = CreateFrame("Frame", nil, button)
-	buttonborder:SetWidth(22)
-	buttonborder:SetHeight(22)
+	buttonborder:SetWidth(TukuiDB:Scale(22))
+	buttonborder:SetHeight(TukuiDB:Scale(22))
 	buttonborder:SetPoint("CENTER", button, "CENTER")
 	buttonborder:SetBackdrop(backdrop)
 	buttonborder:SetBackdropColor(1, 1, 1, 0)
 	
 	local buttonborder2 = CreateFrame("Frame", nil, button)
-	buttonborder2:SetWidth(24)
-	buttonborder2:SetHeight(24)
+	buttonborder2:SetWidth(TukuiDB:Scale(24))
+	buttonborder2:SetHeight(TukuiDB:Scale(24))
 	buttonborder2:SetFrameLevel(buttonborder:GetFrameLevel()+1)
 	buttonborder2:SetPoint("CENTER", button, "CENTER")
 	buttonborder2:SetBackdrop(backdrop)
@@ -133,15 +133,15 @@ local function CreateRollFrame()
 	frame.buttonborder = buttonborder
 
 	local tfade = frame:CreateTexture(nil, "BORDER")
-	tfade:SetPoint("TOPLEFT", frame, "TOPLEFT", 4, 0)
-	tfade:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -4, 0)
+	tfade:SetPoint("TOPLEFT", frame, "TOPLEFT", TukuiDB:Scale(4), 0)
+	tfade:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", TukuiDB:Scale(-4), 0)
 	tfade:SetTexture("Interface\\ChatFrame\\ChatFrameBackground")
 	tfade:SetBlendMode("ADD")
 	tfade:SetGradientAlpha("VERTICAL", .1, .1, .1, 0, .1, .1, .1, 0)
 
 	local status = CreateFrame("StatusBar", nil, frame)
-	status:SetWidth(326)
-	status:SetHeight(20)
+	status:SetWidth(TukuiDB:Scale(326))
+	status:SetHeight(TukuiDB:Scale(20))
 	status:SetPoint("CENTER", frame, "CENTER", 0, 0)
 	status:SetScript("OnUpdate", StatusUpdate)
 	status:SetFrameLevel(status:GetFrameLevel()-1)
@@ -151,31 +151,31 @@ local function CreateRollFrame()
 	frame.status = status
 
 	local spark = frame:CreateTexture(nil, "OVERLAY")
-	spark:SetWidth(14)
-	spark:SetHeight(25)
+	spark:SetWidth(TukuiDB:Scale(14))
+	spark:SetHeight(TukuiDB:Scale(25))
 	spark:SetTexture("Interface\\CastingBar\\UI-CastingBar-Spark")
 	spark:SetBlendMode("ADD")
 	status.spark = spark
 
-	local need, needtext = CreateRollButton(frame, "Interface\\Buttons\\UI-GroupLoot-Dice-Up", "Interface\\Buttons\\UI-GroupLoot-Dice-Highlight", "Interface\\Buttons\\UI-GroupLoot-Dice-Down", 1, NEED, "LEFT", frame.button, "RIGHT", 5, -1)
-	local greed, greedtext = CreateRollButton(frame, "Interface\\Buttons\\UI-GroupLoot-Coin-Up", "Interface\\Buttons\\UI-GroupLoot-Coin-Highlight", "Interface\\Buttons\\UI-GroupLoot-Coin-Down", 2, GREED, "LEFT", need, "RIGHT", 0, -1)
+	local need, needtext = CreateRollButton(frame, "Interface\\Buttons\\UI-GroupLoot-Dice-Up", "Interface\\Buttons\\UI-GroupLoot-Dice-Highlight", "Interface\\Buttons\\UI-GroupLoot-Dice-Down", 1, NEED, "LEFT", frame.button, "RIGHT", TukuiDB:Scale(5), TukuiDB:Scale(-1))
+	local greed, greedtext = CreateRollButton(frame, "Interface\\Buttons\\UI-GroupLoot-Coin-Up", "Interface\\Buttons\\UI-GroupLoot-Coin-Highlight", "Interface\\Buttons\\UI-GroupLoot-Coin-Down", 2, GREED, "LEFT", need, "RIGHT", 0, TukuiDB:Scale(-1))
 	local de, detext
-	de, detext = CreateRollButton(frame, "Interface\\Buttons\\UI-GroupLoot-DE-Up", "Interface\\Buttons\\UI-GroupLoot-DE-Highlight", "Interface\\Buttons\\UI-GroupLoot-DE-Down", 3, ROLL_DISENCHANT, "LEFT", greed, "RIGHT", 0, -1)
-	local pass, passtext = CreateRollButton(frame, "Interface\\Buttons\\UI-GroupLoot-Pass-Up", nil, "Interface\\Buttons\\UI-GroupLoot-Pass-Down", 0, PASS, "LEFT", de or greed, "RIGHT", 0, 2.2)
+	de, detext = CreateRollButton(frame, "Interface\\Buttons\\UI-GroupLoot-DE-Up", "Interface\\Buttons\\UI-GroupLoot-DE-Highlight", "Interface\\Buttons\\UI-GroupLoot-DE-Down", 3, ROLL_DISENCHANT, "LEFT", greed, "RIGHT", 0, TukuiDB:Scale(-1))
+	local pass, passtext = CreateRollButton(frame, "Interface\\Buttons\\UI-GroupLoot-Pass-Up", nil, "Interface\\Buttons\\UI-GroupLoot-Pass-Down", 0, PASS, "LEFT", de or greed, "RIGHT", 0, TukuiDB:Scale(2.2))
 	frame.needbutt, frame.greedbutt, frame.disenchantbutt = need, greed, de
 	frame.need, frame.greed, frame.pass, frame.disenchant = needtext, greedtext, passtext, detext
 
 	local bind = frame:CreateFontString()
-	bind:SetPoint("LEFT", pass, "RIGHT", 3, 1)
+	bind:SetPoint("LEFT", pass, "RIGHT", TukuiDB:Scale(3), TukuiDB:Scale(1))
 	bind:SetFont(TukuiDB["media"].uffont, 12, "OUTLINE")
 	frame.fsbind = bind
 
 	local loot = frame:CreateFontString(nil, "ARTWORK")
 	loot:SetFont(TukuiDB["media"].uffont, 12, "OUTLINE")
-	loot:SetPoint("LEFT", bind, "RIGHT", 0, .12)
-	loot:SetPoint("RIGHT", frame, "RIGHT", -5, 0)
-	loot:SetHeight(10)
-	loot:SetWidth(200)
+	loot:SetPoint("LEFT", bind, "RIGHT", 0, TukuiDB:Scale(0.12))
+	loot:SetPoint("RIGHT", frame, "RIGHT", TukuiDB:Scale(-5), 0)
+	loot:SetHeight(TukuiDB:Scale(10))
+	loot:SetWidth(TukuiDB:Scale(200))
 	loot:SetJustifyH("LEFT")
 	frame.fsloot = loot
 
@@ -186,7 +186,7 @@ end
 
 
 local anchor = CreateFrame("Button", nil, UIParent)
-anchor:SetWidth(300) anchor:SetHeight(22)
+anchor:SetWidth(TukuiDB:Scale(300)) anchor:SetHeight(TukuiDB:Scale(22))
 anchor:SetBackdrop(backdrop)
 anchor:SetBackdropColor(0.25, 0.25, 0.25, 1)
 local label = anchor:CreateFontString(nil, "ARTWORK")
@@ -209,7 +209,7 @@ anchor:Hide()
 local frames = {}
 
 local f = CreateRollFrame() -- Create one for good measure
-f:SetPoint("BOTTOMLEFT", next(frames) and frames[#frames] or anchor, "TOPLEFT", 0, 4)
+f:SetPoint("BOTTOMLEFT", next(frames) and frames[#frames] or anchor, "TOPLEFT", 0, TukuiDB:Scale(4))
 table.insert(frames, f)
 
 local function GetFrame()
@@ -218,7 +218,7 @@ local function GetFrame()
 	end
 
 	local f = CreateRollFrame()
-	f:SetPoint("BOTTOMLEFT", next(frames) and frames[#frames] or anchor, "TOPLEFT", 0, 4)
+	f:SetPoint("BOTTOMLEFT", next(frames) and frames[#frames] or anchor, "TOPLEFT", 0, TukuiDB:Scale(4))
 	table.insert(frames, f)
 	return f
 end
@@ -338,5 +338,5 @@ anchor:SetScript("OnEvent", function(frame, event, addon)
 
 	anchor:SetScript("OnEvent", function(frame, event, ...) if event == "CHAT_MSG_LOOT" then return CHAT_MSG_LOOT(...) else return START_LOOT_ROLL(...) end end)
 
-	anchor:SetPoint("CENTER", UIParent, "CENTER", 0, -200)
+	anchor:SetPoint("CENTER", UIParent, "CENTER", 0, TukuiDB:Scale(-200))
 end)

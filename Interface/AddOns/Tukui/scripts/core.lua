@@ -299,8 +299,8 @@ if TukuiDB["watchframe"].movable == true then
 	wf:SetClampedToScreen(false) 
 	wf:ClearAllPoints()
 	wf:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB:Scale(17), TukuiDB:Scale(-80))
-	wf:SetWidth(250)
-	wf:SetHeight(600)
+	wf:SetWidth(TukuiDB:Scale(250))
+	wf:SetHeight(TukuiDB:Scale(600))
 	wf:SetUserPlaced(true)
 	wf.SetPoint = function() end
 	wf.ClearAllPoints = function() end
@@ -328,9 +328,9 @@ hooksecurefunc(DurabilityFrame,"SetPoint",function(self,_,parent) -- durability 
     if (parent == "MinimapCluster") or (parent == _G["MinimapCluster"]) then
         DurabilityFrame:ClearAllPoints();
 		if TukuiDB["actionbar"].bottomrows == true then
-			DurabilityFrame:SetPoint("BOTTOM",UIParent,"BOTTOM",0,228);		
+			DurabilityFrame:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, TukuiDB:Scale(228));		
 		else
-			DurabilityFrame:SetPoint("BOTTOM",UIParent,"BOTTOM",0,200);
+			DurabilityFrame:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, TukuiDB:Scale(200));
 		end
     end
 end);
@@ -339,21 +339,19 @@ hooksecurefunc(VehicleSeatIndicator,"SetPoint",function(_,_,parent) -- vehicle s
     if (parent == "MinimapCluster") or (parent == _G["MinimapCluster"]) then
 		VehicleSeatIndicator:ClearAllPoints();
 		if TukuiDB["actionbar"].bottomrows == true then
-			VehicleSeatIndicator:SetPoint("BOTTOM",UIParent,"BOTTOM",0,228);
+			VehicleSeatIndicator:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, TukuiDB:Scale(228));
 		else
-			VehicleSeatIndicator:SetPoint("BOTTOM",UIParent,"BOTTOM",0,200);
+			VehicleSeatIndicator:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, TukuiDB:Scale(200));
 		end
     end
 end)
 
 local function captureupdate()
-	local nexty = 0
 	for i = 1, NUM_EXTENDED_UI_FRAMES do
 		local cb = _G["WorldStateCaptureBar"..i]
 		if cb and cb:IsShown() then
 			cb:ClearAllPoints()
-			cb:SetPoint("TOP", UIParent, "TOP", 0, -120)
-			nexty = nexty + cb:GetHeight()
+			cb:SetPoint("TOP", UIParent, "TOP", 0, TukuiDB:Scale(-120))
 		end
 	end
 end
@@ -364,7 +362,7 @@ hooksecurefunc("WorldStateAlwaysUpFrame_Update", captureupdate)
 ------------------------------------------------------------------------
 
 TicketStatusFrame:ClearAllPoints()
-TicketStatusFrame:SetPoint("TOPLEFT", 0,0)
+TicketStatusFrame:SetPoint("TOPLEFT", 0, 0)
 
 ------------------------------------------------------------------------
 --	achievement micro fix

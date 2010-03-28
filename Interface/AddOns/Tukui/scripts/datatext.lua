@@ -1,25 +1,33 @@
 Stats = CreateFrame("Frame")
-Stats.TTSpacing = 1
+Stats.TTSpacing = TukuiDB:Scale(1)
 local statColor = { }
 local db = TukuiDB["datatext"]
 
 local function panel_setpoint(p, obj)
 	if p == 1 then
-		obj:SetPoint("LEFT", InfoLeft, "LEFT", 30, .5)
+		obj:SetHeight(InfoLeft:GetHeight())
+		obj:SetPoint("LEFT", InfoLeft, 30, 0.5)
 	elseif p == 2 then
-		obj:SetPoint("CENTER", InfoLeft, "CENTER", 0, .5)
+		obj:SetHeight(InfoLeft:GetHeight())
+		obj:SetPoint("CENTER", InfoLeft, 0, 0.5)
 	elseif p == 3 then
-		obj:SetPoint("RIGHT", InfoLeft, "RIGHT", -30, .5)
+		obj:SetHeight(InfoLeft:GetHeight())
+		obj:SetPoint("RIGHT", InfoLeft, -30, 0.5)
 	elseif p == 4 then
-		obj:SetPoint("LEFT", InfoRight, "LEFT", 30, .5)
+		obj:SetHeight(InfoRight:GetHeight())
+		obj:SetPoint("LEFT", InfoRight, 30, 0.5)
 	elseif p == 5 then
-		obj:SetPoint("CENTER", InfoRight, "CENTER", 0, .5)
+		obj:SetHeight(InfoRight:GetHeight())
+		obj:SetPoint("CENTER", InfoRight, 0, 0.5)
 	elseif p == 6 then
-		obj:SetPoint("RIGHT", InfoRight, "RIGHT", -30, .5)
+		obj:SetHeight(InfoRight:GetHeight())
+		obj:SetPoint("RIGHT", InfoRight, -30, 0.5)
 	elseif p == 7 then
-		obj:SetPoint("CENTER", MinimapStatsLeft, "CENTER", 0, TukuiDB.mult)
+		obj:SetHeight(MinimapStatsLeft:GetHeight())
+		obj:SetPoint("CENTER", MinimapStatsLeft, 0, 1)
 	elseif p == 8 then
-		obj:SetPoint("CENTER", MinimapStatsRight, "CENTER", 0, TukuiDB.mult)
+		obj:SetHeight(MinimapStatsRight:GetHeight())
+		obj:SetPoint("CENTER", MinimapStatsRight, 0, 1)
 	end
 end
 
@@ -33,7 +41,6 @@ if not db.fps_ms == nil or db.fps_ms > 0 then
 	local Text  = InfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.fps_ms, Text)
-	Text:SetHeight(TukuiDB:Scale(19))
 
 	local int = 1
 	local function Update(self, t)
@@ -59,7 +66,6 @@ if not db.mem == nil or db.mem > 0 then
 	local Text  = InfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.mem, Text)
-	Text:SetHeight(TukuiDB:Scale(19))
 
 	local function formatMem(memory, color)
 		if color then
@@ -159,7 +165,6 @@ if not db.guild == nil or db.guild > 0 then
 	local Text  = InfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.guild, Text)
-	Text:SetHeight(TukuiDB:Scale(19))
 
 	local function Update(self, event, ...)	
 		if IsInGuild() then
@@ -247,7 +252,6 @@ if not db.friends == nil or db.friends > 0 then
 	local Text  = InfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.friends, Text)
-	Text:SetHeight(TukuiDB:Scale(19))
 
 	local function Update(self, event)
 			local online, total = 0, GetNumFriends()
@@ -308,7 +312,6 @@ if not db.dur == nil or db.dur > 0 then
 	local Text  = InfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.dur, Text)
-	Text:SetHeight(TukuiDB:Scale(19))
 
 	local Total = 0
 	local current, max
@@ -370,7 +373,6 @@ if not db.gold == nil or db.gold > 0 then
 	local Text  = InfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.gold, Text)
-	Text:SetHeight(TukuiDB:Scale(19))
 
 	local Profit	= 0
 	local Spent		= 0
@@ -490,7 +492,6 @@ if not db.bags == nil or db.bags > 0 then
 	local Text  = InfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.bags, Text)
-	Text:SetHeight(TukuiDB:Scale(19))
 
 	local function OnEvent(self, event, ...)
 		local free, total,used = 0, 0, 0
@@ -519,7 +520,6 @@ if not db.wowtime == nil or db.wowtime > 0 then
 	local Text  = InfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.wowtime, Text)
-	Text:SetHeight(TukuiDB:Scale(19))
 
 	local int = 1
 	local function Update(self, t)
@@ -685,13 +685,13 @@ if not db.dps_text == nil or db.dps_text > 0 then
 	dText = InfoLeft:CreateFontString(nil, "LOW")
 	dText:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	dText:SetText("0.0 ",tukuilocal.datatext_dps)
-	dText:SetHeight(TukuiDB:Scale(19))
+	--dText:SetHeight(TukuiDB:Scale(23))
 
 	panel_setpoint(db.dps_text, dText)
 
 	DPS_FEED:EnableMouse(true)
-	DPS_FEED:SetHeight(20)
-	DPS_FEED:SetWidth(100)
+	DPS_FEED:SetHeight(TukuiDB:Scale(20))
+	DPS_FEED:SetWidth(TukuiDB:Scale(100))
 	DPS_FEED:SetAllPoints(dText)
 
 	DPS_FEED:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
@@ -776,13 +776,13 @@ if not db.hps_text == nil or db.hps_text > 0 then
 	hText = InfoLeft:CreateFontString(nil, "LOW")
 	hText:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	hText:SetText("0.0 ",tukuilocal.datatext_hps)
-	hText:SetHeight(TukuiDB:Scale(19))
+	--hText:SetHeight(TukuiDB:Scale(23))
  
 	panel_setpoint(db.hps_text, hText)
  
 	HPS_FEED:EnableMouse(true)
-	HPS_FEED:SetHeight(20)
-	HPS_FEED:SetWidth(100)
+	HPS_FEED:SetHeight(TukuiDB:Scale(20))
+	HPS_FEED:SetWidth(TukuiDB:Scale(100))
 	HPS_FEED:SetAllPoints(hText)
  
 	HPS_FEED:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
@@ -857,7 +857,6 @@ if not db.power == nil or db.power > 0 then
 	local Text  = InfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.power, Text)
-	Text:SetHeight(TukuiDB:Scale(19))
 
 	local int = 1
 
@@ -911,7 +910,6 @@ if not db.haste == nil or db.haste > 0 then
 	local Text  = InfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.haste, Text)
-	Text:SetHeight(TukuiDB:Scale(19))
 
 	local int = 1
 
@@ -950,7 +948,6 @@ if not db.arp == nil or db.arp > 0 then
 	local Text  = InfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.arp, Text)
-	Text:SetHeight(TukuiDB:Scale(19))
    
 	local int = 1
 
@@ -976,7 +973,6 @@ if not db.crit == nil or db.crit > 0 then
 	local Text  = InfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.crit, Text)
-	Text:SetHeight(TukuiDB:Scale(19))
 
 	local int = 1
 
@@ -1013,7 +1009,6 @@ if not db.avd == nil or db.avd > 0 then
 	local Text  = InfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.avd, Text)
-	Text:SetHeight(TukuiDB:Scale(19))
 
 	local int = 1
 
@@ -1095,7 +1090,6 @@ if not db.armor == nil or db.armor > 0 then
 	local Text  = InfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	panel_setpoint(db.armor, Text)
-	Text:SetHeight(TukuiDB:Scale(19))
 
 	local int = 1
 
@@ -1153,18 +1147,18 @@ if TukuiDB["datatext"].battleground == true then
 	
 	local Text1  = InfoLeftBattleGround:CreateFontString(nil, "OVERLAY")
 	Text1:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
-	Text1:SetPoint("LEFT", InfoLeftBattleGround, "LEFT", 30, .5)
-	Text1:SetHeight(TukuiDB:Scale(19))
+	Text1:SetPoint("LEFT", InfoLeftBattleGround, 30, 0.5)
+	Text1:SetHeight(InfoLeft:GetHeight())
 
 	local Text2  = InfoLeftBattleGround:CreateFontString(nil, "OVERLAY")
 	Text2:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
-	Text2:SetPoint("CENTER", InfoLeftBattleGround, "CENTER", 0, .5)
-	Text2:SetHeight(TukuiDB:Scale(19))
+	Text2:SetPoint("CENTER", InfoLeftBattleGround, 0, 0.5)
+	Text2:SetHeight(InfoLeft:GetHeight())
 
 	local Text3  = InfoLeftBattleGround:CreateFontString(nil, "OVERLAY")
 	Text3:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
-	Text3:SetPoint("RIGHT", InfoLeftBattleGround, "RIGHT", -30, .5)
-	Text3:SetHeight(TukuiDB:Scale(19))
+	Text3:SetPoint("RIGHT", InfoLeftBattleGround, 30, 0.5)
+	Text3:SetHeight(InfoLeft:GetHeight())
 
 	local int = 1
 	local function Update(self, t)

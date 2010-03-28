@@ -39,13 +39,13 @@ MiniMapTracking:Hide()
 
 -- Hide Mail Button
 MiniMapMailFrame:ClearAllPoints()
-MiniMapMailFrame:SetPoint("TOPRIGHT", Minimap, 3, 4)
+MiniMapMailFrame:SetPoint("TOPRIGHT", Minimap, TukuiDB:Scale(3), TukuiDB:Scale(4))
 MiniMapMailBorder:Hide()
 MiniMapMailIcon:SetTexture("Interface\\AddOns\\Tukui\\media\\mail")
 
 -- Move battleground icon
 MiniMapBattlefieldFrame:ClearAllPoints()
-MiniMapBattlefieldFrame:SetPoint("BOTTOMRIGHT", Minimap, 3, 0)
+MiniMapBattlefieldFrame:SetPoint("BOTTOMRIGHT", Minimap, TukuiDB:Scale(3), 0)
 
 -- Hide world map button
 MiniMapWorldMapButton:Hide()
@@ -57,7 +57,7 @@ MiniMapInstanceDifficulty:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 0, 0)
 
 function UpdateLFG()
 	MiniMapLFGFrame:ClearAllPoints()
-	MiniMapLFGFrame:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", 2, 1)
+	MiniMapLFGFrame:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB:Scale(2), TukuiDB:Scale(1))
 end
 hooksecurefunc("MiniMapLFG_UpdateIsShown", UpdateLFG)
 

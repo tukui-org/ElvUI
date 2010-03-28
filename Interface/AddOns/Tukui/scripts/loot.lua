@@ -66,9 +66,9 @@ end
 local createSlot = function(id)
 	local iconsize = iconSize-2
 	local frame = CreateFrame("Button", 'ButsuSlot'..id, addon)
-	frame:SetPoint("LEFT", 8, 0)
-	frame:SetPoint("RIGHT", -8, 0)
-	frame:SetHeight(iconsize)
+	frame:SetPoint("LEFT", TukuiDB:Scale(8), 0)
+	frame:SetPoint("RIGHT", TukuiDB:Scale(-8), 0)
+	frame:SetHeight(TukuiDB:Scale(iconsize))
 	frame:SetID(id)
 
 	frame:RegisterForClicks("LeftButtonUp", "RightButtonUp")
@@ -79,8 +79,8 @@ local createSlot = function(id)
 	frame:SetScript("OnUpdate", OnUpdate)
 
 	local iconFrame = CreateFrame("Frame", nil, frame)
-	iconFrame:SetHeight(iconsize)
-	iconFrame:SetWidth(iconsize)
+	iconFrame:SetHeight(TukuiDB:Scale(iconsize))
+	iconFrame:SetWidth(TukuiDB:Scale(iconsize))
 	iconFrame:ClearAllPoints()
 	iconFrame:SetPoint("RIGHT", frame)
 	
@@ -96,7 +96,7 @@ local createSlot = function(id)
 	local count = iconFrame:CreateFontString(nil, "OVERLAY")
 	count:ClearAllPoints()
 	count:SetJustifyH"RIGHT"
-	count:SetPoint("BOTTOMRIGHT", iconFrame, -1, 2)
+	count:SetPoint("BOTTOMRIGHT", iconFrame, TukuiDB:Scale(-1), TukuiDB:Scale(2))
 	count:SetFont(TukuiDB["media"].uffont, 12, "OUTLINE")
 	count:SetShadowOffset(.8, -.8)
 	count:SetShadowColor(0, 0, 0, 1)
@@ -136,15 +136,15 @@ local anchorSlots = function(self)
 			shownSlots = shownSlots + 1
 
 			-- We don't have to worry about the previous slots as they're already hidden.
-			frame:SetPoint("TOP", addon, 4, (-8+iconsize)-(shownSlots*iconsize))
+			frame:SetPoint("TOP", addon, TukuiDB:Scale(4), TukuiDB:Scale((-8 + iconsize) - (shownSlots * iconsize)))
 		end
 	end
 
-	self:SetHeight(math.max((shownSlots*iconsize)+16), 20)
+	self:SetHeight(TukuiDB:Scale(math.max(shownSlots * iconsize + 16, 20)))
 end
 
 title:SetFont(TukuiDB["media"].uffont, 13, "OUTLINE")
-title:SetPoint("BOTTOMLEFT", addon, "TOPLEFT", 4, 4)
+title:SetPoint("BOTTOMLEFT", addon, "TOPLEFT", TukuiDB:Scale(4), TukuiDB:Scale(4))
 
 addon:SetScript("OnMouseDown", function(self) if(IsAltKeyDown()) then self:StartMoving() end end)
 addon:SetScript("OnMouseUp", function(self) self:StopMovingOrSizing() end)
@@ -157,19 +157,19 @@ addon:RegisterForClicks"anyup"
 
 addon:SetParent(UIParent)
 addon:SetUserPlaced(true)
-addon:SetPoint("TOPLEFT", 0, -104)
+addon:SetPoint("TOPLEFT", 0, TukuiDB:Scale(-104))
 addon:SetBackdrop{
-	bgFile = TukuiDB["media"].blank, tile = true, tileSize = 16,
+	bgFile = TukuiDB["media"].blank, tile = true, tileSize = TukuiDB:Scale(16),
 	edgeFile = TukuiDB["media"].blank, edgeSize = TukuiDB.mult,
 	insets = {left = -TukuiDB.mult, right = -TukuiDB.mult, top = -TukuiDB.mult, bottom = -TukuiDB.mult},
 }
-addon:SetWidth(256)
-addon:SetHeight(64)
+addon:SetWidth(TukuiDB:Scale(256))
+addon:SetHeight(TukuiDB:Scale(64))
 addon:SetBackdropColor(0.1, 0.1, 0.1, 1)
 
 addon:SetClampedToScreen(true)
-addon:SetClampRectInsets(0, 0, 14, 0)
-addon:SetHitRectInsets(0, 0, -14, 0)
+addon:SetClampRectInsets(0, 0, TukuiDB:Scale(14), 0)
+addon:SetHitRectInsets(0, 0, TukuiDB:Scale(-14), 0)
 addon:SetFrameStrata"HIGH"
 addon:SetToplevel(true)
 
@@ -198,7 +198,7 @@ addon.LOOT_OPENED = function(self, event, autoloot)
 		y = y / self:GetEffectiveScale()
 
 		self:ClearAllPoints()
-		self:SetPoint("TOPLEFT", nil, "BOTTOMLEFT", x-40, y+20)
+		self:SetPoint("TOPLEFT", nil, "BOTTOMLEFT", TukuiDB:Scale(x - 40), TukuiDB:Scale(y + 20))
 		self:GetCenter()
 		self:Raise()
 	end
@@ -262,7 +262,7 @@ addon.LOOT_OPENED = function(self, event, autoloot)
 
 	local color = ITEM_QUALITY_COLORS[m]
 	self:SetBackdropBorderColor(color.r, color.g, color.b, .8)
-	self:SetWidth(math.max(w, t))
+	self:SetWidth(TukuiDB:Scale(math.max(w, t)))
 end
 
 addon.LOOT_SLOT_CLEARED = function(self, event, slot)
