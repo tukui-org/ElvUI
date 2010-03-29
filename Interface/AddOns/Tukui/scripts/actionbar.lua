@@ -304,20 +304,8 @@ vehicle:RegisterEvent("UNIT_EXITED_VEHICLE")
 vehicle:SetScript("OnEvent", function(self, event, arg1)
 	if (((event=="UNIT_ENTERING_VEHICLE") or (event=="UNIT_ENTERED_VEHICLE")) and arg1 == "player") then
 		vehicle:SetAlpha(1)
-		if db.rightbars > 0 then
-			ActionBarBackgroundRight:SetAlpha(0)
-			RightBarLine:SetAlpha(0)
-			CubeRightBarUP:SetAlpha(0)
-			CubeRightBarDown:SetAlpha(0)
-		end
 	elseif (((event=="UNIT_EXITING_VEHICLE") or (event=="UNIT_EXITED_VEHICLE")) and arg1 == "player") then
 		vehicle:SetAlpha(0)
-		if db.rightbars > 0 then
-			ActionBarBackgroundRight:SetAlpha(1)
-			RightBarLine:SetAlpha(1)
-			CubeRightBarUP:SetAlpha(1)
-			CubeRightBarDown:SetAlpha(1)
-		end
 	end
 end)  
 vehicle:SetAlpha(0)
