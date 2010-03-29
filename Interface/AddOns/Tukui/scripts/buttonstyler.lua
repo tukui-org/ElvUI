@@ -51,8 +51,6 @@ local function style(self)
 		local panel = CreateFrame("Frame", name.."Panel", self)
 		TukuiDB:CreatePanel(panel, 27, 27, "CENTER", self, "CENTER", 0, 0)
 		panel:SetBackdropColor(0, 0, 0, 0)
-		panel:SetFrameLevel(4)
-		panel:SetFrameStrata("MEDIUM")
 
 		Icon:SetTexCoord(.08, .92, .08, .92)
 		Icon:SetPoint("TOPLEFT", Button, TukuiDB:Scale(2), TukuiDB:Scale(-2))

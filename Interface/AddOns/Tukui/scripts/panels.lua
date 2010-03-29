@@ -95,9 +95,8 @@ local minimapstatsright = CreateFrame("Frame", "MinimapStatsRight", MapBorder)
 TukuiDB:CreatePanel(minimapstatsright, ((MapBorder:GetWidth() + 4) / 2) -1, 19, "TOPRIGHT", MapBorder, "BOTTOMRIGHT", 0, TukuiDB:Scale(-2))
 
 --RIGHT BAR BACKGROUND
-local barbgr = CreateFrame("Frame", "ActionBarBackgroundRight", MultiBarRight)
+local barbgr = CreateFrame("Frame", "ActionBarBackgroundRight", ActionButton1)
 TukuiDB:CreatePanel(barbgr, 1, (buttonsize * 12) + (buttonspacing * 13), "RIGHT", UIParent, "RIGHT", TukuiDB:Scale(-23), TukuiDB:Scale(-13.5))
-barbgr:SetFrameStrata("HIGH")
 if TukuiDB["actionbar"].rightbars == 1 then
 	barbgr:SetWidth(buttonsize + (buttonspacing * 2))
 elseif TukuiDB["actionbar"].rightbars == 2 then
@@ -108,9 +107,9 @@ else
 	barbgr:Hide()
 end
 if TukuiDB["actionbar"].rightbars > 0 then
-	local rbl = CreateFrame("Frame", "RightBarLine", MultiBarRight)
-	local crblu = CreateFrame("Frame", "CubeRightBarUP", MultiBarRight)
-	local crbld = CreateFrame("Frame", "CubeRightBarDown", MultiBarRight)
+	local rbl = CreateFrame("Frame", "RightBarLine", barbgr)
+	local crblu = CreateFrame("Frame", "CubeRightBarUP", barbgr)
+	local crbld = CreateFrame("Frame", "CubeRightBarDown", barbgr)
 	TukuiDB:CreatePanel(rbl, 2, (buttonsize / 2 * 27) + (buttonspacing * 6), "RIGHT", barbgr, "RIGHT", TukuiDB:Scale(1), 0)
 	rbl:SetWidth(TukuiDB:Scale(2))
 	TukuiDB:CreatePanel(crblu, 10, 10, "BOTTOM", rbl, "TOP", 0, 0)

@@ -145,7 +145,7 @@ if select(2, UnitClass("Player")) == "PRIEST" then
 
 	if TukuiDB["unitframes"].if_warning == true then
 		local InnerFire = CreateFrame("Frame", _, UIParent)
-		TukuiDB:CreatePanel(InnerFire, TukuiDB:Scale(40), TukuiDB:Scale(40), "CENTER", UIParent, "CENTER", 0, TukuiDB:Scale(200))
+		TukuiDB:CreatePanel(InnerFire, 40, 40, "CENTER", UIParent, "CENTER", 0, TukuiDB:Scale(200))
 
 		InnerFire.icon = InnerFire:CreateTexture(nil,"LOW")
 		InnerFire.icon:SetTexture("Interface\\AddOns\\Tukui\\media\\innerfire")
