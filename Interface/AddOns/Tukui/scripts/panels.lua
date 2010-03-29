@@ -96,7 +96,7 @@ TukuiDB:CreatePanel(minimapstatsright, ((MapBorder:GetWidth() + 4) / 2) -1, 19, 
 
 --RIGHT BAR BACKGROUND
 if TukuiDB["actionbar"].enable == true or not (IsAddOnLoaded("Dominos") or IsAddOnLoaded("Bartender4") or IsAddOnLoaded("Macaroon")) then
-	local barbgr = CreateFrame("Frame", "ActionBarBackgroundRight", ActionButton1)
+	local barbgr = CreateFrame("Frame", "ActionBarBackgroundRight", MultiBarRight)
 	TukuiDB:CreatePanel(barbgr, 1, (buttonsize * 12) + (buttonspacing * 13), "RIGHT", UIParent, "RIGHT", TukuiDB:Scale(-23), TukuiDB:Scale(-13.5))
 	if TukuiDB["actionbar"].rightbars == 1 then
 		barbgr:SetWidth(buttonsize + (buttonspacing * 2))

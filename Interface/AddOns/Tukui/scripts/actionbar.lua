@@ -172,6 +172,8 @@ fbar5:Hide()
 
 -- look for right bars
 if db.rightbars > 0 then
+   ActionBarBackgroundRight:SetFrameStrata("BACKGROUND")
+   ActionBarBackgroundRight:SetFrameLevel(0)
    fbar4:Show()
    MultiBarRightButton1:ClearAllPoints()
    MultiBarRightButton1:SetPoint("TOPRIGHT", ActionBarBackgroundRight, "TOPRIGHT", TukuiDB:Scale(-4), TukuiDB:Scale(-4))
