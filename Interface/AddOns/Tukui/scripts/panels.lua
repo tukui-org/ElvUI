@@ -95,38 +95,40 @@ local minimapstatsright = CreateFrame("Frame", "MinimapStatsRight", MapBorder)
 TukuiDB:CreatePanel(minimapstatsright, ((MapBorder:GetWidth() + 4) / 2) -1, 19, "TOPRIGHT", MapBorder, "BOTTOMRIGHT", 0, TukuiDB:Scale(-2))
 
 --RIGHT BAR BACKGROUND
-local barbgr = CreateFrame("Frame", "ActionBarBackgroundRight", ActionButton1)
-TukuiDB:CreatePanel(barbgr, 1, (buttonsize * 12) + (buttonspacing * 13), "RIGHT", UIParent, "RIGHT", TukuiDB:Scale(-23), TukuiDB:Scale(-13.5))
-if TukuiDB["actionbar"].rightbars == 1 then
-	barbgr:SetWidth(buttonsize + (buttonspacing * 2))
-elseif TukuiDB["actionbar"].rightbars == 2 then
-	barbgr:SetWidth((buttonsize * 2) + (buttonspacing * 3))
-elseif TukuiDB["actionbar"].rightbars == 3 then
-	barbgr:SetWidth((buttonsize * 3) + (buttonspacing * 4))
-else
-	barbgr:Hide()
-end
-if TukuiDB["actionbar"].rightbars > 0 then
-	local rbl = CreateFrame("Frame", "RightBarLine", barbgr)
-	local crblu = CreateFrame("Frame", "CubeRightBarUP", barbgr)
-	local crbld = CreateFrame("Frame", "CubeRightBarDown", barbgr)
-	TukuiDB:CreatePanel(rbl, 2, (buttonsize / 2 * 27) + (buttonspacing * 6), "RIGHT", barbgr, "RIGHT", TukuiDB:Scale(1), 0)
-	rbl:SetWidth(TukuiDB:Scale(2))
-	TukuiDB:CreatePanel(crblu, 10, 10, "BOTTOM", rbl, "TOP", 0, 0)
-	TukuiDB:CreatePanel(crbld, 10, 10, "TOP", rbl, "BOTTOM", 0, 0)
-end
+if TukuiDB["actionbar"].enable == true or not (IsAddOnLoaded("Dominos") or IsAddOnLoaded("Bartender4") or IsAddOnLoaded("Macaroon")) then
+	local barbgr = CreateFrame("Frame", "ActionBarBackgroundRight", ActionButton1)
+	TukuiDB:CreatePanel(barbgr, 1, (buttonsize * 12) + (buttonspacing * 13), "RIGHT", UIParent, "RIGHT", TukuiDB:Scale(-23), TukuiDB:Scale(-13.5))
+	if TukuiDB["actionbar"].rightbars == 1 then
+		barbgr:SetWidth(buttonsize + (buttonspacing * 2))
+	elseif TukuiDB["actionbar"].rightbars == 2 then
+		barbgr:SetWidth((buttonsize * 2) + (buttonspacing * 3))
+	elseif TukuiDB["actionbar"].rightbars == 3 then
+		barbgr:SetWidth((buttonsize * 3) + (buttonspacing * 4))
+	else
+		barbgr:Hide()
+	end
+	if TukuiDB["actionbar"].rightbars > 0 then
+		local rbl = CreateFrame("Frame", "RightBarLine", barbgr)
+		local crblu = CreateFrame("Frame", "CubeRightBarUP", barbgr)
+		local crbld = CreateFrame("Frame", "CubeRightBarDown", barbgr)
+		TukuiDB:CreatePanel(rbl, 2, (buttonsize / 2 * 27) + (buttonspacing * 6), "RIGHT", barbgr, "RIGHT", TukuiDB:Scale(1), 0)
+		rbl:SetWidth(TukuiDB:Scale(2))
+		TukuiDB:CreatePanel(crblu, 10, 10, "BOTTOM", rbl, "TOP", 0, 0)
+		TukuiDB:CreatePanel(crbld, 10, 10, "TOP", rbl, "BOTTOM", 0, 0)
+	end
 
-local petbg = CreateFrame("Frame", "PetActionBarBackground", PetActionButton1)
-if TukuiDB["actionbar"].rightbars > 0 then
-	TukuiDB:CreatePanel(petbg, petbuttonsize + (petbuttonspacing * 2), (petbuttonsize * 10) + (petbuttonspacing * 11), "RIGHT", barbgr, "LEFT", TukuiDB:Scale(-6), 0)
-else
-	TukuiDB:CreatePanel(petbg, petbuttonsize + (petbuttonspacing * 2), (petbuttonsize * 10) + (petbuttonspacing * 11), "RIGHT", UIParent, "RIGHT", TukuiDB:Scale(-6), TukuiDB:Scale(-13.5))
-end
+	local petbg = CreateFrame("Frame", "PetActionBarBackground", PetActionButton1)
+	if TukuiDB["actionbar"].rightbars > 0 then
+		TukuiDB:CreatePanel(petbg, petbuttonsize + (petbuttonspacing * 2), (petbuttonsize * 10) + (petbuttonspacing * 11), "RIGHT", barbgr, "LEFT", TukuiDB:Scale(-6), 0)
+	else
+		TukuiDB:CreatePanel(petbg, petbuttonsize + (petbuttonspacing * 2), (petbuttonsize * 10) + (petbuttonspacing * 11), "RIGHT", UIParent, "RIGHT", TukuiDB:Scale(-6), TukuiDB:Scale(-13.5))
+	end
 
-local ltpetbg1 = CreateFrame("Frame", "LineToPetActionBarBackground", petbg)
-TukuiDB:CreatePanel(ltpetbg1, 30, 265, "TOPLEFT", petbg, "TOPRIGHT", 0, TukuiDB:Scale(-33))
-ltpetbg1:SetFrameLevel(0)
-ltpetbg1:SetAlpha(.8)
+	local ltpetbg1 = CreateFrame("Frame", "LineToPetActionBarBackground", petbg)
+	TukuiDB:CreatePanel(ltpetbg1, 30, 265, "TOPLEFT", petbg, "TOPRIGHT", 0, TukuiDB:Scale(-33))
+	ltpetbg1:SetFrameLevel(0)
+	ltpetbg1:SetAlpha(.8)
+end
 
 --BATTLEGROUND STATS FRAME
 if TukuiDB["datatext"].battleground == true then
