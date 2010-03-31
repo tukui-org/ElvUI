@@ -155,6 +155,8 @@ if TukuiDB["datatext"].battleground == true then
 				if ( name == UnitName("player") ) then
 					GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT", 0, TukuiDB:Scale(4));
 					GameTooltip:ClearLines()
+					GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB:Scale(1))
+					GameTooltip:ClearLines()
 					GameTooltip:AddLine(tukuilocal.datatext_ttstatsfor.."[|cffCC0033"..name.."|r]")
 					GameTooltip:AddLine' '
 					GameTooltip:AddDoubleLine(tukuilocal.datatext_ttkillingblows, killingBlows,1,1,1)
@@ -162,7 +164,28 @@ if TukuiDB["datatext"].battleground == true then
 					GameTooltip:AddDoubleLine(tukuilocal.datatext_ttdeaths, deaths,1,1,1)
 					GameTooltip:AddDoubleLine(tukuilocal.datatext_tthonorgain, honorGained,1,1,1)
 					GameTooltip:AddDoubleLine(tukuilocal.datatext_ttdmgdone, damageDone,1,1,1)
-					GameTooltip:AddDoubleLine(tukuilocal.datatext_tthealdone, healingDone,1,1,1)                  
+					GameTooltip:AddDoubleLine(tukuilocal.datatext_tthealdone, healingDone,1,1,1)
+					--Add extra statistics to watch based on what BG you are in.
+					if GetRealZoneText() == "Arathi Basin" then --
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
+					elseif GetRealZoneText() == "Warsong Gulch" then --
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_flagsreturned,GetBattlefieldStatData(i, 2),1,1,1)
+					elseif GetRealZoneText() == "Eye of the Storm" then --
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
+					elseif GetRealZoneText() == "Alterac Valley" then
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_graveyardsassaulted,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_graveyardsdefended,GetBattlefieldStatData(i, 2),1,1,1)
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_towersassaulted,GetBattlefieldStatData(i, 3),1,1,1)
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_towersdefended,GetBattlefieldStatData(i, 4),1,1,1)
+					elseif GetRealZoneText() == "Strand of the Ancients" then
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_demolishersdestroyed,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_gatesdestroyed,GetBattlefieldStatData(i, 2),1,1,1)
+					elseif GetRealZoneText() == "Isle of Conquest" then
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
+					end					
 					GameTooltip:Show()
 				end
 			end
@@ -171,4 +194,29 @@ if TukuiDB["datatext"].battleground == true then
 	bgframe:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
 	bgframe:RegisterEvent("PLAYER_ENTERING_WORLD")
 	bgframe:SetScript("OnEvent", OnEvent)
+	
+	-- this part is to enable left cube as a button for battleground stat panel.
+	local function OnEvent(self, event)
+		if event == "ZONE_CHANGED_NEW_AREA" or event == "PLAYER_ENTERING_WORLD" then
+			cubeleft:SetBackdropBorderColor(unpack(TukuiDB["media"].bordercolor))
+			inInstance, instanceType = IsInInstance()
+			if TukuiDB["datatext"].battleground == true and (inInstance and (instanceType == "pvp")) then
+				cubeleft:EnableMouse(true)
+			else
+				cubeleft:EnableMouse(false)
+			end
+		end   
+	end
+	cubeleft:SetScript("OnMouseDown", function()
+		if bgframe:IsShown() then
+			bgframe:Hide()
+			cubeleft:SetBackdropBorderColor(0.78,0.03,0.08)
+		else
+			cubeleft:SetBackdropBorderColor(unpack(TukuiDB["media"].bordercolor))
+			bgframe:Show()
+		end
+	end)
+	cubeleft:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+	cubeleft:RegisterEvent("PLAYER_ENTERING_WORLD")
+	cubeleft:SetScript("OnEvent", OnEvent)
 end

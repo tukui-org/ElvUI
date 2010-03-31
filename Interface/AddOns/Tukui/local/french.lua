@@ -53,6 +53,16 @@ if L == "frFR" then
 	tukuilocal.datatext_tthonorgain = "Points d'honneur gagnés:"
 	tukuilocal.datatext_ttdmgdone = "Dégâts effectués:"
 	tukuilocal.datatext_tthealdone = "Soins prodigués:"
+	tukuilocal.datatext_basesassaulted = "Bases Assaulted:"
+	tukuilocal.datatext_basesdefended = "Bases Defended:"
+	tukuilocal.datatext_towersassaulted = "Towers Assaulted:"
+	tukuilocal.datatext_towersdefended = "Towers Defended:"
+	tukuilocal.datatext_flagscaptured = "Flags Captured:"
+	tukuilocal.datatext_flagsreturned = "Flags Returned:"
+	tukuilocal.datatext_graveyardsassaulted = "Graveyards Assaulted:"
+	tukuilocal.datatext_graveyardsdefended = "Graveyards Defended:"
+	tukuilocal.datatext_demolishersdestroyed = "Demolishers Destroyed:"
+	tukuilocal.datatext_gatesdestroyed = "Gates Destroyed:"
 
 	tukuilocal.Slots = {
 	  [1] = {1, "Tête", 1000},

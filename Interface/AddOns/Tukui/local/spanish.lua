@@ -53,6 +53,17 @@ if L == "esES" then
 	tukuilocal.datatext_tthonorgain = "Honor Ganado :"
 	tukuilocal.datatext_ttdmgdone = "Daño Realizado :"
 	tukuilocal.datatext_tthealdone = "Sanación Realizada :"
+	tukuilocal.datatext_basesassaulted = "Bases Assaulted:"
+	tukuilocal.datatext_basesdefended = "Bases Defended:"
+	tukuilocal.datatext_towersassaulted = "Towers Assaulted:"
+	tukuilocal.datatext_towersdefended = "Towers Defended:"
+	tukuilocal.datatext_flagscaptured = "Flags Captured:"
+	tukuilocal.datatext_flagsreturned = "Flags Returned:"
+	tukuilocal.datatext_graveyardsassaulted = "Graveyards Assaulted:"
+	tukuilocal.datatext_graveyardsdefended = "Graveyards Defended:"
+	tukuilocal.datatext_demolishersdestroyed = "Demolishers Destroyed:"
+	tukuilocal.datatext_gatesdestroyed = "Gates Destroyed:"
+
 
 	tukuilocal.Slots = {
 		[1] = {1, "Cabeza", 1000},

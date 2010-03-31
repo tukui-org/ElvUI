@@ -54,6 +54,17 @@ if L == "deDE" then
 	tukuilocal.datatext_tthonorgain = "Ehre erhalten:"
 	tukuilocal.datatext_ttdmgdone = "Schaden verursacht:"
 	tukuilocal.datatext_tthealdone = "Heilung verursacht:"
+	tukuilocal.datatext_basesassaulted = "Bases Assaulted:"
+	tukuilocal.datatext_basesdefended = "Bases Defended:"
+	tukuilocal.datatext_towersassaulted = "Towers Assaulted:"
+	tukuilocal.datatext_towersdefended = "Towers Defended:"
+	tukuilocal.datatext_flagscaptured = "Flags Captured:"
+	tukuilocal.datatext_flagsreturned = "Flags Returned:"
+	tukuilocal.datatext_graveyardsassaulted = "Graveyards Assaulted:"
+	tukuilocal.datatext_graveyardsdefended = "Graveyards Defended:"
+	tukuilocal.datatext_demolishersdestroyed = "Demolishers Destroyed:"
+	tukuilocal.datatext_gatesdestroyed = "Gates Destroyed:"
+
 
 	tukuilocal.Slots = {
 		[1] = {1, "Kopf", 1000},

@@ -53,6 +53,16 @@ tukuilocal.datatext_ttdeaths = "Deaths:"
 tukuilocal.datatext_tthonorgain = "Honor Gained:"
 tukuilocal.datatext_ttdmgdone = "Damage Done:"
 tukuilocal.datatext_tthealdone = "Healing Done:"
+tukuilocal.datatext_basesassaulted = "Bases Assaulted:"
+tukuilocal.datatext_basesdefended = "Bases Defended:"
+tukuilocal.datatext_towersassaulted = "Towers Assaulted:"
+tukuilocal.datatext_towersdefended = "Towers Defended:"
+tukuilocal.datatext_flagscaptured = "Flags Captured:"
+tukuilocal.datatext_flagsreturned = "Flags Returned:"
+tukuilocal.datatext_graveyardsassaulted = "Graveyards Assaulted:"
+tukuilocal.datatext_graveyardsdefended = "Graveyards Defended:"
+tukuilocal.datatext_demolishersdestroyed = "Demolishers Destroyed:"
+tukuilocal.datatext_gatesdestroyed = "Gates Destroyed:"
 
 tukuilocal.Slots = {
 	[1] = {1, "Head", 1000},
