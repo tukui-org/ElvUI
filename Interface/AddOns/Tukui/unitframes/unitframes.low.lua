@@ -561,6 +561,11 @@ local SetStyle = function(self, unit)
 	self.colors = colors
 	self:RegisterForClicks("AnyUp")
 	self:SetAttribute("type2", "menu")
+	
+	-- Right-click focus on arenaframes
+	if (unit and unit:find("arena%d")) then
+		self:SetAttribute("type2", "focus")
+	end
 
 	self:SetScript("OnEnter", UnitFrame_OnEnter)
 	self:SetScript("OnLeave", UnitFrame_OnLeave)
