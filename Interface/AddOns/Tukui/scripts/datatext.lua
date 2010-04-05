@@ -3,7 +3,7 @@ Stats.TTSpacing = TukuiDB:Scale(1)
 local statColor = { }
 local db = TukuiDB["datatext"]
 
-local function panel_setpoint(p, obj)
+function panel_setpoint(p, obj)
 	if p == 1 then
 		obj:SetHeight(InfoLeft:GetHeight())
 		obj:SetPoint("LEFT", InfoLeft, 30, 0.5)
