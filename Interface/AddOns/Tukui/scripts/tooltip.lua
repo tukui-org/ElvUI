@@ -3,19 +3,22 @@ if not db.enable then return end
 
 -- Texture tooltips
 local tooltips = {
-    "GameTooltip",
-    "ItemRefTooltip",
-    "ShoppingTooltip1",
-    "ShoppingTooltip2",
-    "ShoppingTooltip3",
-    "DropDownList1MenuBackdrop",
-    "DropDownList2MenuBackdrop",
-	"WorldMapTooltip"
+	GameTooltip,
+	ItemRefTooltip,
+	ShoppingTooltip1,
+	ShoppingTooltip2,
+	ShoppingTooltip3,
+	DropDownList1MenuBackdrop,
+	DropDownList2MenuBackdrop,
+	WorldMapTooltip
 }
 
-for i=1, #tooltips do
-		_G[tooltips[i]]:SetBackdrop{bgFile = TukuiDB["media"].blank, edgeFile = TukuiDB["media"].blank, tile = 0, tileSize = 0, edgeSize = TukuiDB.mult, insets = { left = -TukuiDB.mult, right = -TukuiDB.mult, top = -TukuiDB.mult, bottom = -TukuiDB.mult } }
-		_G[tooltips[i]]:SetScript("OnShow", function(self) self:SetBackdropColor(unpack(TukuiDB["media"].backdropcolor)) self:SetBackdropBorderColor(unpack(TukuiDB["media"].bordercolor)) end)
+for _, tt in pairs(tooltips) do
+	TukuiDB:SetTemplate(tt)
+	tt:HookScript("OnShow", function(self)
+		self:SetBackdropColor(unpack(TukuiDB["media"].backdropcolor))
+		self:SetBackdropBorderColor(unpack(TukuiDB["media"].bordercolor))
+	end)
 end
 
 -- Hide PVP text
@@ -45,7 +48,7 @@ local function gtUpdate(self, ...)
 	if self:GetAnchorType() == "ANCHOR_NONE" then
 		if TukuiDB["bags"].enable == true and StuffingFrameBags:IsShown() then
 			self:ClearAllPoints()
-			self:SetPoint("BOTTOMRIGHT",StuffingFrameBags,"TOPRIGHT", 0, TukuiDB:Scale(4))
+			self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", 0, TukuiDB:Scale(4))
 		else
 			self:ClearAllPoints()
 			self:SetPoint("BOTTOMRIGHT", InfoRight, "TOPRIGHT", 0, TukuiDB:Scale(5))
@@ -62,36 +65,37 @@ local OnTooltipSetUnit = function(self)
 	local name, unit = self:GetUnit()
 
 	if not unit then return end
-	
+
 	-- Name text, with level and classification
 	_G["GameTooltipTextLeft1"]:SetText(name)
-	
-	local race				= UnitRace(unit)
-	local level				= UnitLevel(unit)
-	local levelColor		= GetQuestDifficultyColor(level)
-	local classification	= UnitClassification(unit)
-	local creatureType		= UnitCreatureType(unit)
-	
+
+	local level		= UnitLevel(unit)
+	local levelColor	= GetQuestDifficultyColor(level)
+
 	if level == -1 then
 		level = "??"
 		levelColor = { r = 1.00, g = 0.00, b = 0.00 }
 	end
-	
-	if classification == "rareelite" then classification = " R+"
-	elseif classification == "rare"  then classification = " R"
-	elseif classification == "elite" then classification = "+"
-	else classification = "" end
-	
+
 	if UnitIsPlayer(unit) then
+		local race	= UnitRace(unit)
+
 		if GetGuildInfo(unit) then
 			_G["GameTooltipTextLeft2"]:SetFormattedText("<%s>", GetGuildInfo(unit))
 		end
-		
+
 		local n = GetGuildInfo(unit) and 3 or 2
 		--  thx TipTac for the fix above with color blind enabled
 		if GetCVar("colorblindMode") == "1" then n = n + 1 end
-		_G["GameTooltipTextLeft"..n]:SetFormattedText("|cff%02x%02x%02x%s%s|r %s", levelColor.r*255, levelColor.g*255, levelColor.b*255, level, classification, race)
+		_G["GameTooltipTextLeft"..n]:SetFormattedText("|cff%02x%02x%02x%s|r %s", levelColor.r*255, levelColor.g*255, levelColor.b*255, level, race)
 	else
+		local classification	= UnitClassification(unit)
+		local creatureType	= UnitCreatureType(unit)
+
+		classification = (classification == "rareelite" and " R+") or
+			(classification == "rare" and " R") or
+			(classification == "elite" and "+") or ""
+
 		for i = 2, lines do
 			local line = _G["GameTooltipTextLeft"..i]
 			if not line or not line:GetText() then return end
@@ -101,7 +105,7 @@ local OnTooltipSetUnit = function(self)
 			end
 		end
 	end
-	
+
 	-- ToT line
 	if UnitExists(unit.."target") and unit~="player" then
 		local r, g, b = GameTooltip_UnitColor(unit.."target")
@@ -123,11 +127,11 @@ itemTooltipIcon.texture:SetTexCoord(.08, .92, .08, .92)
 local AddItemIcon = function()
 	local frame = _G["ItemRefTooltipIcon"]
 	frame:Hide()
-	
+
 	local _, link = _G["ItemRefTooltip"]:GetItem()
 	local icon = link and GetItemIcon(link)
 	if not icon then return end
-	
+
 	_G["ItemRefTooltipIcon"].texture:SetTexture(icon)
 	frame:Show()
 end
@@ -154,7 +158,7 @@ function GameTooltip_UnitColor(unit)
 	if not c then
 		c = {.5, .5, .5}
 	end
-	
+
     return c[1], c[2], c[3]
 end
 
