@@ -103,9 +103,9 @@ function UpdateBuffAnchors()
 				aboveBuff = buff;
 			elseif ( index == 1 ) then
 				local mainhand, _, _, offhand = GetWeaponEnchantInfo()
-				if mainhand and offhand then
+				if mainhand and offhand and not UnitHasVehicleUI("player") then
 					buff:SetPoint("RIGHT", TempEnchant2, "LEFT", TukuiDB:Scale(-4), 0)
-				elseif (mainhand and not offhand) or (offhand and not mainhand) then
+				elseif ((mainhand and not offhand) or (offhand and not mainhand)) and not UnitHasVehicleUI("player") then
 					buff:SetPoint("RIGHT", TempEnchant1, "LEFT", TukuiDB:Scale(-4), 0)
 				else
 					buff:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", TukuiDB:Scale(-16), TukuiDB:Scale(2))
