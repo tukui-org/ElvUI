@@ -374,10 +374,6 @@ AchievementMicroButton_Update = function() end
 --	commands we need
 ------------------------------------------------------------------------
 
-------------------------------------------------------------------------
---	Game Master command
-------------------------------------------------------------------------
-
 SLASH_GM1 = "/gm"
 SlashCmdList["GM"] = function() ToggleHelpFrame() end
 SlashCmdList.DISABLE_ADDON = function(s) DisableAddOn(s) ReloadUI() end
