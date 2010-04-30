@@ -75,7 +75,7 @@ function TukuiDB:SetTemplate(f)
 	f:SetBackdropBorderColor(unpack(TukuiDB["media"].bordercolor))
 end
 
-local function install()			
+local function install()
 	SetCVar("buffDurations", 1)
 	SetCVar("lootUnderMouse", 1)
 	SetCVar("autoSelfCast", 1)
@@ -244,8 +244,6 @@ TukuiOnLogon:SetScript("OnEvent", function()
 			end
 			SetCVar("uiScale", TukuiDB["general"].uiscale)
 			if not (t10installed) then
-				-- ugly shit
-				SetCVar("alwaysShowActionBars", 0)
 				StaticPopup_Show("INSTALL_UI")
 			end
 		end
@@ -255,6 +253,19 @@ TukuiOnLogon:SetScript("OnEvent", function()
 		end
 		
 		SetCVar("showArenaEnemyFrames", 0)
+		
+		-- force showing grid on all action bars
+		SetCVar("alwaysShowActionBars", 1)
+		ActionButton_HideGrid = function() end
+		for i = 1, 12 do
+			local button = _G[format("ActionButton%d", i)]
+			button:SetAttribute("showgrid", 1)
+			ActionButton_ShowGrid(button)
+
+			button = _G[format("BonusActionButton%d", i)]
+			button:SetAttribute("showgrid", 1)
+			ActionButton_ShowGrid(button)
+		end
 		
 		print(tukuilocal.core_welcome1..tukuiversion)
 		print(tukuilocal.core_welcome2)
