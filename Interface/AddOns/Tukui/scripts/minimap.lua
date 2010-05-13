@@ -116,3 +116,6 @@ end)
 
 -- Set Square Map Mask
 Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
+
+-- For others mods with a minimap button, set minimap buttons position in square mode.
+function GetMinimapShape() return 'SQUARE' end
