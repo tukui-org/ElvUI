@@ -66,11 +66,20 @@ local OnTooltipSetUnit = function(self)
 
 	if not unit then return end
 
-	-- Name text, with level and classification
-	_G["GameTooltipTextLeft1"]:SetText(name)
+	if unitRealm ~= nil and unitRealm == "" then
+		_G["GameTooltipTextLeft1"]:SetText(myName.."(*)")
+	elseif unitRealm ~= nil and unitRealm ~= "" then
+		_G["GameTooltipTextLeft1"]:SetText(myName.." - "..unitRealm)
+	else
+		_G["GameTooltipTextLeft1"]:SetText(myName)
+		_G["GameTooltipTextLeft1"]:SetText(UnitPVPName(unit))
+	end
 
-	local level		= UnitLevel(unit)
-	local levelColor	= GetQuestDifficultyColor(level)
+	local race            = UnitRace(unit)
+	local level            = UnitLevel(unit)
+	local levelColor      = GetQuestDifficultyColor(level)
+	local classification   = UnitClassification(unit)
+	local creatureType      = UnitCreatureType(unit)
 
 	if level == -1 then
 		level = "??"
