@@ -71,9 +71,13 @@ local OnTooltipSetUnit = function(self)
 	local name_and_title = UnitPVPName(unit)
 
 	if not unit then return end
-
-	--_G["GameTooltipTextLeft1"]:SetText(name) -- only name
-	_G["GameTooltipTextLeft1"]:SetText(name_and_title) -- name + title
+	
+	-- UnitPVPName return nothing out of range, we need a condition
+	if not name_and_title then
+		_G["GameTooltipTextLeft1"]:SetText(name) -- only name
+	else
+		_G["GameTooltipTextLeft1"]:SetText(name_and_title) -- name + title
+	end
 
 	local level           = UnitLevel(unit)
 	local levelColor      = GetQuestDifficultyColor(level)
