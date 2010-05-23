@@ -46,12 +46,17 @@ hooksecurefunc("GameTooltip_SetDefaultAnchor", defaultPosition)
 
 local function gtUpdate(self, ...)
 	if self:GetAnchorType() == "ANCHOR_NONE" then
-		if TukuiDB["bags"].enable == true and StuffingFrameBags:IsShown() then
-			self:ClearAllPoints()
-			self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", 0, TukuiDB:Scale(4))
+		if InCombatLockdown() and db.hidecombat == true then
+			self:SetAlpha(0)
 		else
-			self:ClearAllPoints()
-			self:SetPoint("BOTTOMRIGHT", InfoRight, "TOPRIGHT", 0, TukuiDB:Scale(5))
+			self:SetAlpha(1)
+			if TukuiDB["bags"].enable == true and StuffingFrameBags:IsShown() then
+				self:ClearAllPoints()
+				self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", 0, TukuiDB:Scale(4))
+			else
+				self:ClearAllPoints()
+				self:SetPoint("BOTTOMRIGHT", InfoRight, "TOPRIGHT", 0, TukuiDB:Scale(5))
+			end
 		end
 	end
 end
@@ -66,20 +71,11 @@ local OnTooltipSetUnit = function(self)
 
 	if not unit then return end
 
-	if unitRealm ~= nil and unitRealm == "" then
-		_G["GameTooltipTextLeft1"]:SetText(myName.."(*)")
-	elseif unitRealm ~= nil and unitRealm ~= "" then
-		_G["GameTooltipTextLeft1"]:SetText(myName.." - "..unitRealm)
-	else
-		_G["GameTooltipTextLeft1"]:SetText(myName)
-		_G["GameTooltipTextLeft1"]:SetText(UnitPVPName(unit))
-	end
+	_G["GameTooltipTextLeft1"]:SetText(name)
+	_G["GameTooltipTextLeft1"]:SetText(UnitPVPName(unit))
 
-	local race            = UnitRace(unit)
-	local level            = UnitLevel(unit)
+	local level           = UnitLevel(unit)
 	local levelColor      = GetQuestDifficultyColor(level)
-	local classification   = UnitClassification(unit)
-	local creatureType      = UnitCreatureType(unit)
 
 	if level == -1 then
 		level = "??"
