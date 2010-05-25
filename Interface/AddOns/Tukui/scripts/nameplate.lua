@@ -77,13 +77,13 @@ local UpdateFrame = function(self)
 
 	self.healthBar:ClearAllPoints()
 	self.healthBar:SetPoint("CENTER", self.healthBar:GetParent())
-	self.healthBar:SetHeight(TukuiDB:Scale(6))
-	self.healthBar:SetWidth(TukuiDB:Scale(100))
+	self.healthBar:SetHeight(TukuiDB:Scale(8))
+	self.healthBar:SetWidth(TukuiDB:Scale(110))
 
 	self.castBar:ClearAllPoints()
 	self.castBar:SetPoint("TOP", self.healthBar, "BOTTOM", 0, TukuiDB:Scale(-4))
 	self.castBar:SetHeight(TukuiDB:Scale(5))
-	self.castBar:SetWidth(TukuiDB:Scale(100))
+	self.castBar:SetWidth(TukuiDB:Scale(110))
 
 	self.highlight:ClearAllPoints()
 	self.highlight:SetAllPoints(self.healthBar)
