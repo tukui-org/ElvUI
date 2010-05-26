@@ -31,7 +31,6 @@ if not TukuiDB["unitframes"].enable == true or not TukuiDB.lowversion == true th
 ------------------------------------------------------------------------
 --	Textures and Medias
 ------------------------------------------------------------------------
-local L = GetLocale()
 local floor = math.floor
 local format = string.format
 
@@ -44,11 +43,7 @@ local backdrop = {
 	insets = {top = -TukuiDB.mult, left = -TukuiDB.mult, bottom = -TukuiDB.mult, right = -TukuiDB.mult},
 }
 
-if L == "ruRU" then
-	local font = [=[Fonts\ARIALN.ttf]=]
-else
-	local font = TukuiDB["media"].uffont
-end
+local font = TukuiDB["media"].uffont
 local font2 = [=[Fonts\ARIALN.ttf]=]
 local _, class = UnitClass("player")
 
