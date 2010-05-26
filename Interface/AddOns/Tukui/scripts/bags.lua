@@ -1214,7 +1214,7 @@ function Stuffing:SortBags()
 
 				dbag = bs[st_idx]
 
-				if Stuffing:BagType(dbag) == ST_NORMAL or dbag > 4 then
+				if Stuffing:BagType(dbag) == ST_NORMAL or Stuffing:BagType(dbag) == ST_SPECIAL or dbag > 4 then
 					break
 				end
 			end
