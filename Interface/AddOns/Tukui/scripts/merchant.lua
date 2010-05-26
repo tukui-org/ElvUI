@@ -23,17 +23,19 @@ f:SetScript("OnEvent", function()
 			DEFAULT_CHAT_FRAME:AddMessage(tukuilocal.merchant_trashsell.." |cffffffff"..g..tukuilocal.goldabbrev.." |cffffffff"..s..tukuilocal.silverabbrev.." |cffffffff"..c..tukuilocal.copperabbrev..".",255,255,0)
 		end
 	end
-	if CanMerchantRepair() and db.autorepair then
-		cost, possible = GetRepairAllCost()
-		if cost>0 then
-			if possible then
-				RepairAllItems()
-				local c = cost%100
-				local s = math.floor((cost%10000)/100)
-				local g = math.floor(cost/10000)
-				DEFAULT_CHAT_FRAME:AddMessage(tukuilocal.merchant_repaircost.." |cffffffff"..g..tukuilocal.goldabbrev.." |cffffffff"..s..tukuilocal.silverabbrev.." |cffffffff"..c..tukuilocal.copperabbrev..".",255,255,0)
-			else
-				DEFAULT_CHAT_FRAME:AddMessage(tukuilocal.merchant_repairnomoney,255,0,0)
+	if not IsShiftKeyDown() then
+		if CanMerchantRepair() and db.autorepair then
+			cost, possible = GetRepairAllCost()
+			if cost>0 then
+				if possible then
+					RepairAllItems()
+					local c = cost%100
+					local s = math.floor((cost%10000)/100)
+					local g = math.floor(cost/10000)
+					DEFAULT_CHAT_FRAME:AddMessage(tukuilocal.merchant_repaircost.." |cffffffff"..g..tukuilocal.goldabbrev.." |cffffffff"..s..tukuilocal.silverabbrev.." |cffffffff"..c..tukuilocal.copperabbrev..".",255,255,0)
+				else
+					DEFAULT_CHAT_FRAME:AddMessage(tukuilocal.merchant_repairnomoney,255,0,0)
+				end
 			end
 		end
 	end
