@@ -70,9 +70,6 @@ TukuiDB["unitframes"] = {
 	["ws_show_target"] = true, -- show weakened soul bar on target unit
 	["if_warning"] = true, -- show innerfire warning when in combat and not active.
 	
-	--hunter only plugin
-	["aspect_warning"] = true, -- show aspect warning when in combat and not active.
-	
 	-- death knight only plugin
 	["runebar"] = true, -- enable tukui runebar plugin
 	
