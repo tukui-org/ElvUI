@@ -1,10 +1,4 @@
-if not TukuiDB["actionbar"].enable == true 
-	or (IsAddOnLoaded("Dominos") 
-	or IsAddOnLoaded("Bartender4") 
-	or IsAddOnLoaded("Macaroon") 
-	or IsAddOnLoaded("XBar")) then 
-		return 
-end
+if not TukuiDB["actionbar"].enable == true then return end
 
 local _G = _G
 local media = TukuiDB["media"]
@@ -45,11 +39,11 @@ local function style(self)
 	Border:Hide()
 	
 	if not _G[name.."Panel"] then
-		self:SetWidth(TukuiDB:Scale(27))
-		self:SetHeight(TukuiDB:Scale(27))
+		self:SetWidth(TukuiDB.buttonsize)
+		self:SetHeight(TukuiDB.buttonsize)
 		
 		local panel = CreateFrame("Frame", name.."Panel", self)
-		TukuiDB:CreatePanel(panel, 27, 27, "CENTER", self, "CENTER", 0, 0)
+		TukuiDB:CreatePanel(panel, TukuiDB.buttonsize, TukuiDB.buttonsize, "CENTER", self, "CENTER", 0, 0)
 		panel:SetBackdropColor(0, 0, 0, 0)
 
 		Icon:SetTexCoord(.08, .92, .08, .92)
@@ -69,11 +63,11 @@ local function stylesmallbutton(normal, button, icon, name, pet)
 	Flash:SetTexture("")
 	
 	if not _G[name.."Panel"] then
-		button:SetWidth(TukuiDB:Scale(29))
-		button:SetHeight(TukuiDB:Scale(29))
+		button:SetWidth(TukuiDB.petbuttonsize)
+		button:SetHeight(TukuiDB.petbuttonsize)
 		
 		local panel = CreateFrame("Frame", name.."Panel", button)
-		TukuiDB:CreatePanel(panel, 29, 29, "CENTER", button, "CENTER", 0, 0)
+		TukuiDB:CreatePanel(panel, TukuiDB.petbuttonsize, TukuiDB.petbuttonsize, "CENTER", button, "CENTER", 0, 0)
 		panel:SetBackdropColor(unpack(media.backdropcolor))
 
 		icon:SetTexCoord(.08, .92, .08, .92)

@@ -66,7 +66,7 @@ local numberize_raid = function(v)
 	end
 end
 
-local updateHealth = function(self, event, unit, bar, min, max)  
+local updateHealth = function(self, event, unit, bar, min, max)
     local cur, maxhp = min, max
     local missing = maxhp-cur
     
@@ -216,6 +216,11 @@ end
 local function menu(self)
 	if(self.unit:match('party')) then
 		ToggleDropDownMenu(1, nil, _G['PartyMemberFrame'..self.id..'DropDown'], 'cursor')
+	else
+		FriendsDropDown.unit = self.unit
+		FriendsDropDown.id = self.id
+		FriendsDropDown.initialize = RaidFrameDropDown_Initialize
+		ToggleDropDownMenu(1, nil, FriendsDropDown, "cursor")
 	end
 end
 
@@ -273,11 +278,13 @@ local function CreateStyle(self, unit)
 		self.Health.bg:SetVertexColor(.1, .1, .1, 1)
 	end
 	
-	self.Health.value = self.Health:CreateFontString(nil, "OVERLAY")
-	self.Health.value:SetPoint("RIGHT", self.Health, -3, 1)
-	self.Health.value:SetFont(fontlol, 12*TukuiDB.raidscale, "THINOUTLINE")
-	self.Health.value:SetTextColor(1,1,1)
-	self.Health.value:SetShadowOffset(1, -1)
+	if unit ~= "pet" then
+		self.Health.value = self.Health:CreateFontString(nil, "OVERLAY")
+		self.Health.value:SetPoint("RIGHT", self.Health, -3, 1)
+		self.Health.value:SetFont(fontlol, 12*TukuiDB.raidscale, "THINOUTLINE")
+		self.Health.value:SetTextColor(1,1,1)
+		self.Health.value:SetShadowOffset(1, -1)
+	end
 
 	self.Power = CreateFrame("StatusBar", nil, self)
 	self.Power:SetHeight(TukuiDB:Scale(6*TukuiDB.raidscale))
@@ -338,6 +345,14 @@ local function CreateStyle(self, unit)
       self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', UpdateThreat)
       self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', UpdateThreat)
     end
+	
+	if TukuiDB["unitframes"].showsymbols == true then
+		self.RaidIcon = self.Health:CreateTexture(nil, 'OVERLAY')
+		self.RaidIcon:SetHeight(TukuiDB:Scale(18*TukuiDB.raidscale))
+		self.RaidIcon:SetWidth(TukuiDB:Scale(18*TukuiDB.raidscale))
+		self.RaidIcon:SetPoint('CENTER', self, 'TOP')
+		self.RaidIcon:SetTexture('Interface\\TargetingFrame\\UI-RaidTargetingIcons')	
+	end
 
 	self.DebuffHighlightAlpha = 1
 	self.DebuffHighlightBackdrop = true

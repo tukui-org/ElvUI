@@ -1,7 +1,4 @@
-
-local L = GetLocale()
-
-if L == "ruRU" then
+if TukuiDB.client == "ruRU" then
 	tukuilocal.datatext_guild = "Гильдия"
 	tukuilocal.datatext_noguild = "Не в Гильдии"
 	tukuilocal.datatext_bags = "Сумки: "
@@ -64,6 +61,7 @@ if L == "ruRU" then
 	tukuilocal.datatext_graveyardsdefended = "Оборона кладбищ:"
 	tukuilocal.datatext_demolishersdestroyed = "Разрушителей уничтожено:"
 	tukuilocal.datatext_gatesdestroyed = "Врат разрушено:"
+	tukuilocal.datatext_totalmemusage = "Total Memory Usage:"
 
 
 	tukuilocal.Slots = {
@@ -81,7 +79,7 @@ if L == "ruRU" then
 	}
 
 	tukuilocal.popup_disableui = "Tukui не работает на этом разрешении, хотите отключить Tukui? (Отмена если хотите попробовать другое разрешение)"
-	tukuilocal.popup_install = "Это первый запуск Tukui V10 для этого персонажа. Необходимо перезагрузить интерфейс для настройки Панелей, Переменных и Окон Чата."
+	tukuilocal.popup_install = "Это первый запуск Tukui V10.30+ для этого персонажа. Необходимо перезагрузить интерфейс для настройки Панелей, Переменных и Окон Чата."
 	tukuilocal.popup_2raidactive = "Обе рейдовые раскладки активны, пожалуйста, выберите одну."
 
 	tukuilocal.merchant_repairnomoney = "Не достаточно денег на починку!"
@@ -188,5 +186,9 @@ if L == "ruRU" then
 	tukuilocal.bind_instruct = "Наведите указатель мыши на кнопку действия, чтобы назначить клавишу. Нажмите клавишу ESC или правую кнопку мыши чтобы убрать назначение."
 	tukuilocal.bind_save = "Сохранить назначения"
 	tukuilocal.bind_discardbind = "Отменить назначения"
+	
+	tukuilocal.hunter_unhappy = "Your pet is unhappy!"
+	tukuilocal.hunter_content = "Your pet is content!"
+	tukuilocal.hunter_happy = "Your pet is happy!"
 end
 

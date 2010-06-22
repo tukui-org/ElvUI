@@ -1,6 +1,4 @@
-local L = GetLocale()
-
-if L == "zhTW" then
+if TukuiDB.client == "zhTW" then
 	tukuilocal.datatext_guild = "公會"
 	tukuilocal.datatext_noguild = "沒有公會"
 	tukuilocal.datatext_bags = "背包: "
@@ -63,6 +61,7 @@ if L == "zhTW" then
 	tukuilocal.datatext_graveyardsdefended = "墓地防守:"
 	tukuilocal.datatext_demolishersdestroyed = "石毀車摧毀:"
 	tukuilocal.datatext_gatesdestroyed = "大門摧毀:"
+	tukuilocal.datatext_totalmemusage = "Total Memory Usage:"
 
 
 	tukuilocal.Slots = {
@@ -80,7 +79,7 @@ if L == "zhTW" then
 	}
 
 	tukuilocal.popup_disableui = "Tukui並不支援此解析度, 你想要停用Tukui嗎? (若果您想要嘗試其他解析度, 請按取消)"
-	tukuilocal.popup_install = "這個角色首次使用Tukui V10, 您必需先重載介面以完成設定"
+	tukuilocal.popup_install = "這個角色首次使用Tukui V10.30+, 您必需先重載介面以完成設定"
 
 	tukuilocal.merchant_repairnomoney = "您沒有足夠的金錢來修理!"
 	tukuilocal.merchant_repaircost = "您的裝備已修理, 花費了"
@@ -186,4 +185,8 @@ if L == "zhTW" then
 	tukuilocal.bind_instruct = "將滑鼠指向動作列上以綁定快捷鍵, 您可以按ESC或以右鍵點擊快捷列上任何一格以清除該位置的設定"
 	tukuilocal.bind_save = "儲存"
 	tukuilocal.bind_discardbind = "放棄"
+	
+	tukuilocal.hunter_unhappy = "你的寵物感到不高興!"
+	tukuilocal.hunter_content = "你的寵物感到滿足!"
+	tukuilocal.hunter_happy = "你的寵物感到高興!"
 end

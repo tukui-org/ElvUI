@@ -1,3 +1,5 @@
+if not TukuiDB["unitframes"].enable == true then return end
+
 --[[
 
 	Elements handled:
@@ -33,7 +35,6 @@ local function SetTooltip(self)
 
 	local bars = unit == 'pet' and 6 or 20
 
-	GameTooltip:SetOwner(self, 'ANCHOR_NONE')
 	GameTooltip:AddLine(string.format('XP: %d / %d (%d%% - %d bars)', min, max, min/max * 100, bars))
 	GameTooltip:AddLine(string.format('Remaining: %d (%d%% - %d bars)', max - min, (max - min) / max * 100, bars * (max - min) / max))
 
@@ -67,7 +68,7 @@ local function Update(self, event, owner)
 	local unit = self.unit
 	local min, max = GetXP(unit)
 	experience:SetMinMaxValues(0, max)
-	experience:SetValue(UnitXP(unit))
+	experience:SetValue(min)
 	experience:Show()
 
 	if(experience.Text) then

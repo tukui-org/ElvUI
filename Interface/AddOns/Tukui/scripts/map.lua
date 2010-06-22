@@ -1,5 +1,4 @@
 if not TukuiDB["map"].enable == true then return end
-if IsAddOnLoaded("Mapster") then return end
 
 if TukuiDB.lowversion then
 	WORLDMAP_RATIO_MINI = 0.56
@@ -14,8 +13,8 @@ local Kill = function(object)
 	object:Hide()
 end
 
-local glowt = "Interface\\AddOns\\Tukui\\media\\glowTex"
-local ft = "Fonts\\skurri.ttf" -- Map font
+local glowt = TukuiDB["media"].glowTex
+local ft = TukuiDB["media"].uffont -- Map font
 local fontsize = 18 -- Map Font Size
 local mapbg = CreateFrame ("Frame", nil, WorldMapDetailFrame)
 	mapbg:SetBackdrop( { 
@@ -30,7 +29,7 @@ movebutton:SetHeight(TukuiDB:Scale(32))
 movebutton:SetWidth(TukuiDB:Scale(32))
 movebutton:SetPoint("TOP", WorldMapFrameSizeUpButton, "BOTTOM", TukuiDB:Scale(-1), TukuiDB:Scale(4))
 movebutton:SetBackdrop( { 
-	bgFile = "Interface\\AddOns\\Tukui\\media\\cross",
+	bgFile = "Interface\\AddOns\\Tukui\\media\\textures\\cross",
 })
 
 local addon = CreateFrame('Frame')
@@ -143,7 +142,7 @@ movebutton:SetScript("OnMouseDown", OnMouseDown)
 movebutton:SetScript("OnMouseUp", OnMouseUp)
 
 -- the classcolor function
-local function UpdateIconColor(self, t)
+local function UpdateIconColor(self)
 	color = RAID_CLASS_COLORS[select(2, UnitClass(self.unit))]
 	self.icon:SetVertexColor(color.r, color.g, color.b)
 end
@@ -156,18 +155,18 @@ local OnEvent = function()
 	elseif event == "PLAYER_REGEN_ENABLED" then
 		WorldMapFrameSizeDownButton:Enable()
 		WorldMapFrameSizeUpButton:Enable()
-	else
+	elseif event == "RAID_ROSTER_UPDATE" or event == "PARTY_MEMBERS_CHANGED" then
 		for r=1, 40 do
 			if UnitInParty(_G["WorldMapRaid"..r].unit) then
-				_G["WorldMapRaid"..r].icon:SetTexture("Interface\\AddOns\\Tukui\\media\\Party")
+				_G["WorldMapRaid"..r].icon:SetTexture("Interface\\AddOns\\Tukui\\media\\textures\\Party")
 			else
-				_G["WorldMapRaid"..r].icon:SetTexture("Interface\\AddOns\\Tukui\\media\\Raid")
+				_G["WorldMapRaid"..r].icon:SetTexture("Interface\\AddOns\\Tukui\\media\\textures\\Raid")
 			end
 			_G["WorldMapRaid"..r]:SetScript("OnUpdate", UpdateIconColor)
 		end
 
 		for p=1, 4 do
-			_G["WorldMapParty"..p].icon:SetTexture("Interface\\AddOns\\Tukui\\media\\Party")
+			_G["WorldMapParty"..p].icon:SetTexture("Interface\\AddOns\\Tukui\\media\\textures\\Party")
 			_G["WorldMapParty"..p]:SetScript("OnUpdate", UpdateIconColor)
 		end
 	end

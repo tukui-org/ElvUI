@@ -14,8 +14,10 @@
 if not TukuiDB["unitframes"].enable == true then return end
 if not TukuiDB["unitframes"].showthreat == true then return end
 
-	--local numParty = GetNumPartyMembers()
-	--local numRaid = GetNumRaidMembers()
+local ThreatNumParty
+local ThreatNumRaid
+local ThreatPet
+
 local aggroColors = {
 	[1] = {12/255, 151/255,  15/255},
 	[2] = {166/255, 171/255,  26/255},
@@ -45,7 +47,7 @@ local function update(self, event, unit)
 			self:SetStatusBarColor(unpack(self.Colors[3]))
 		end
 				
-		if (threatval > 0) and (ThreatNumRaid > 0 or ThreatNumParty > 0) then
+		if (threatval > 0) and (ThreatNumRaid > 0 or ThreatNumParty > 0 or ThreatPet == 1) then
 			self:SetAlpha(1)
 		else
 			self:SetAlpha(0)
@@ -56,6 +58,7 @@ end
 local function UpdateGroup()
 	ThreatNumParty = GetNumPartyMembers()
 	ThreatNumRaid = GetNumRaidMembers()
+	ThreatPet = select(1, HasPetUI())
 end
 
 local function enable(self)
@@ -70,6 +73,7 @@ local function enable(self)
 		self:RegisterEvent("PLAYER_REGEN_DISABLED", function(self) self.ThreatBar:Show() end)
 		self:RegisterEvent("PARTY_MEMBERS_CHANGED", function() UpdateGroup() end)
 		self:RegisterEvent("RAID_ROSTER_UPDATE", function() UpdateGroup() end)
+		self:RegisterEvent("UNIT_PET", function() UpdateGroup() end)
 		
 		bar:SetScript("OnUpdate", update)
 		

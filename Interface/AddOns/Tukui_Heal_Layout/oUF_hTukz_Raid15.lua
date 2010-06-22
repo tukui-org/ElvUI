@@ -209,10 +209,11 @@ local function UpdateThreat(self, event, unit)
 	end 
 end
 
-local function menu(self)
-	if(self.unit:match('party')) then
-		ToggleDropDownMenu(1, nil, _G['PartyMemberFrame'..self.id..'DropDown'], 'cursor')
-	end
+local Menu = function(self)
+	FriendsDropDown.unit = self.unit
+	FriendsDropDown.id = self.id
+	FriendsDropDown.initialize = RaidFrameDropDown_Initialize
+	ToggleDropDownMenu(1, nil, FriendsDropDown, "cursor")
 end
 
 local function CreateStyle(self, unit)
@@ -335,6 +336,14 @@ local function CreateStyle(self, unit)
       self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', UpdateThreat)
       self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', UpdateThreat)
     end
+	
+	if TukuiDB["unitframes"].showsymbols == true then
+		self.RaidIcon = self.Health:CreateTexture(nil, 'OVERLAY')
+		self.RaidIcon:SetHeight(TukuiDB:Scale(18*TukuiDB.raidscale))
+		self.RaidIcon:SetWidth(TukuiDB:Scale(18*TukuiDB.raidscale))
+		self.RaidIcon:SetPoint('CENTER', self, 'TOP')
+		self.RaidIcon:SetTexture('Interface\\TargetingFrame\\UI-RaidTargetingIcons')	
+	end
 
 	self.DebuffHighlightAlpha = 1
 	self.DebuffHighlightBackdrop = true

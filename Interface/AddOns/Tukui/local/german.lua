@@ -1,7 +1,4 @@
-
-local L = GetLocale()
-
-if L == "deDE" then
+if TukuiDB.client == "deDE" then
 	tukuilocal.datatext_guild = "Gilde"
 	tukuilocal.datatext_noguild = "Keine Gilde"
 	tukuilocal.datatext_bags = "Tasche: "
@@ -64,6 +61,7 @@ if L == "deDE" then
 	tukuilocal.datatext_graveyardsdefended = "Friedhöfe verteidigt:"
 	tukuilocal.datatext_demolishersdestroyed = "Verwüster zerstört:"
 	tukuilocal.datatext_gatesdestroyed = "Tore zerstört:"
+	tukuilocal.datatext_totalmemusage = "Gesamte Speichernutzung:"
 
 
 	tukuilocal.Slots = {
@@ -81,7 +79,7 @@ if L == "deDE" then
 	}
 
 	tukuilocal.popup_disableui = "Tukui funktioniert nicht mit deiner Auflösung, möchtest du Tukui ausschalten? (Drücke Abbrechen, falls du eine andere Auflösung testen willst.)"
-	tukuilocal.popup_install = "Dies ist das erste mal mit Tukui V10 mit diesem Charakter.Du musst dein UI neuladen um Aktionsleisten, Variabeln und den Chat einzustellen."
+	tukuilocal.popup_install = "Dies ist das erste mal mit Tukui V10.30+ mit diesem Charakter.Du musst dein UI neuladen um Aktionsleisten, Variabeln und den Chat einzustellen."
 
 	tukuilocal.merchant_repairnomoney = "Du hast nicht genügend Gold zum reparieren!"
 	tukuilocal.merchant_repaircost = "Deine Rüstung wurde repariert für"
@@ -187,4 +185,8 @@ if L == "deDE" then
 	tukuilocal.bind_instruct = "Bewege deine Maus über jeglichen Aktionbutton um es mit einem Hotkey zu belegen. Drücke Escape oder Rechte-Maustaste um die aktuelle Tastenbelegeung des Buttons zu löschen."
 	tukuilocal.bind_save = "Tastenbelegung speichern"
 	tukuilocal.bind_discardbind = "Tastenbelegung verwerfen"
+	
+	tukuilocal.hunter_unhappy = "Dein Begleiter ist unzufrieden!"
+	tukuilocal.hunter_content = "Dein Begleiter ist zufrieden!"
+	tukuilocal.hunter_happy = "Dein Begleiter ist zufrieden!" 
 end

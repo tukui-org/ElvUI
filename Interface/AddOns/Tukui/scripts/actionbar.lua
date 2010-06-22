@@ -1,27 +1,26 @@
--- credits : Roth, Alza
+-- special thank's to Roth, Alza for their awesome work which helped me to build tukui action bar.
 
-if not TukuiDB["actionbar"].enable == true 
-	or (IsAddOnLoaded("Dominos") 
-	or IsAddOnLoaded("Bartender4") 
-	or IsAddOnLoaded("Macaroon")) then
-		return 
-end
+if not TukuiDB["actionbar"].enable == true then return end
 
 local db = TukuiDB["actionbar"]
 
+-- this thing below is only "invisible" frame holder to setup for action bar. Moving or changing these lines will do nothing visually in-game.
+-- we create invisible bar holder frame to avoid bugs, example, vehicle, seen in the past version of Tukui when showing or hidding bar.
+-- Running our codes via frame holder instead of blizzard default action bar frame name allow us to do what we want with 0 errors/crash.
 TukuiDB.absettings = {
-	["BonusBar"]   = {ma = "BOTTOMLEFT", p = ActionBarBackground, a = "BOTTOMLEFT", x = TukuiDB:Scale(4), y = TukuiDB:Scale(4), scale = 1},
-	["Bar2"]       = {ma = "BOTTOMLEFT", p = ActionBarBackground, a = "BOTTOMLEFT", x = TukuiDB:Scale(4), y = TukuiDB:Scale(4), scale = 1},
-	["Bar3"]       = {ma = "BOTTOMLEFT", p = ActionBarBackground, a = "BOTTOMLEFT", x = TukuiDB:Scale(4), y = TukuiDB:Scale(4), scale = 1},
-	["Right"]      = {ma = "BOTTOMLEFT", p = ActionBarBackground, a = "BOTTOMLEFT", x = TukuiDB:Scale(4), y = TukuiDB:Scale(4), scale = 1},
-	["Left"]       = {ma = "BOTTOMLEFT", p = ActionBarBackground, a = "BOTTOMLEFT", x = TukuiDB:Scale(4), y = TukuiDB:Scale(4), scale = 1},
-	["Pet"]        = {ma = "BOTTOMLEFT", p = ActionBarBackground, a = "BOTTOMLEFT", x = TukuiDB:Scale(4), y = TukuiDB:Scale(4), scale = 1},
+	["BonusBar"]   = {ma = "BOTTOMLEFT", p = TukuiActionBarBackground, a = "BOTTOMLEFT", x = TukuiDB:Scale(4), y = TukuiDB:Scale(4), scale = 1},
+	["Bar2"]       = {ma = "BOTTOMLEFT", p = TukuiActionBarBackground, a = "BOTTOMLEFT", x = TukuiDB:Scale(4), y = TukuiDB:Scale(4), scale = 1},
+	["Bar3"]       = {ma = "BOTTOMLEFT", p = TukuiActionBarBackground, a = "BOTTOMLEFT", x = TukuiDB:Scale(4), y = TukuiDB:Scale(4), scale = 1},
+	["Right"]      = {ma = "BOTTOMLEFT", p = TukuiActionBarBackground, a = "BOTTOMLEFT", x = TukuiDB:Scale(4), y = TukuiDB:Scale(4), scale = 1},
+	["Left"]       = {ma = "BOTTOMLEFT", p = TukuiActionBarBackground, a = "BOTTOMLEFT", x = TukuiDB:Scale(4), y = TukuiDB:Scale(4), scale = 1},
+	["Pet"]        = {ma = "BOTTOMLEFT", p = TukuiActionBarBackground, a = "BOTTOMLEFT", x = TukuiDB:Scale(4), y = TukuiDB:Scale(4), scale = 1},
 	["Shapeshift"] = {ma = "TOPLEFT", p = UIParent, a = "TOPLEFT", x = 0,  y = 0, scale = 1},
 }
 
 local settings = TukuiDB.absettings
 local _G = getfenv(0)
 
+-- invisible frame holder creation and position.
 local CreateHolder = function(name, width, height, setting, numslots, buttonname)
 	local frame = CreateFrame("Frame", name, UIParent)
 	frame:SetWidth(TukuiDB:Scale(width))
@@ -58,7 +57,7 @@ for i=2, 12 do
 	local b = _G["ActionButton"..i]
 	local b2 = _G["ActionButton"..i-1]
 	b:ClearAllPoints()
-	b:SetPoint("LEFT", b2, "RIGHT", TukuiDB:Scale(4), 0)
+	b:SetPoint("LEFT", b2, "RIGHT", TukuiDB.buttonspacing, 0)
 end
 
 -- bonus action bar
@@ -72,7 +71,7 @@ for i=2, 12 do
 	local b = _G["BonusActionButton"..i]
 	local b2 = _G["BonusActionButton"..i-1]
 	b:ClearAllPoints()
-	b:SetPoint("LEFT", b2, "RIGHT", TukuiDB:Scale(4), 0)
+	b:SetPoint("LEFT", b2, "RIGHT", TukuiDB.buttonspacing, 0)
 end
 
 
@@ -91,7 +90,7 @@ for i=2, 10 do
 	local b = _G["ShapeshiftButton"..i]
 	local b2 = _G["ShapeshiftButton"..i-1]
 	b:ClearAllPoints()
-	b:SetPoint("LEFT", b2, "RIGHT", TukuiDB:Scale(4), 0)
+	b:SetPoint("LEFT", b2, "RIGHT", TukuiDB.petbuttonspacing, 0)
 end
 if UnitLevel("player") >= 30 and select(2, UnitClass("Player")) == "SHAMAN" then
 	MultiCastActionBarFrame:SetParent(fshift)
@@ -123,14 +122,13 @@ if UnitLevel("player") >= 30 and select(2, UnitClass("Player")) == "SHAMAN" then
 		b:SetPoint("CENTER", b2, "CENTER", 0, 0)
 	end
 		
-	local dummy = function() return end
 	for i=1, 4 do
 		local b = _G["MultiCastSlotButton"..i]
-		b.SetParent = dummy
-		b.SetPoint = dummy
+		b.SetParent = TukuiDB.dummy
+		b.SetPoint = TukuiDB.dummy
 	end
-	MultiCastRecallSpellButton.SetParent = dummy
-	MultiCastRecallSpellButton.SetPoint = dummy
+	MultiCastRecallSpellButton.SetParent = TukuiDB.dummy
+	MultiCastRecallSpellButton.SetPoint = TukuiDB.dummy
 end
 
 -- possess bar, we don't care about this one, we just hide it.
@@ -142,12 +140,12 @@ PossessBarFrame:SetAlpha(0)
 PetActionBarFrame:SetParent(fpet)
 PetActionBarFrame:SetWidth(0.01)
 PetActionButton1:ClearAllPoints()
-PetActionButton1:SetPoint("TOP", PetActionBarBackground, "TOP", 0, TukuiDB:Scale(-4))
+PetActionButton1:SetPoint("TOP", TukuiPetActionBarBackground, "TOP", 0, TukuiDB:Scale(-4))
 for i=2, 10 do
 	local b = _G["PetActionButton"..i]
 	local b2 = _G["PetActionButton"..i-1]
 	b:ClearAllPoints()
-	b:SetPoint("TOP", b2, "BOTTOM", 0, TukuiDB:Scale(-4))
+	b:SetPoint("TOP", b2, "BOTTOM", 0, -TukuiDB.petbuttonspacing)
 end
 
 ------------------------------------------------------------------------------------------
@@ -172,38 +170,38 @@ fbar5:Hide()
 
 -- look for right bars
 if db.rightbars > 0 then
-   ActionBarBackgroundRight:SetFrameStrata("BACKGROUND")
-   ActionBarBackgroundRight:SetFrameLevel(1)
+   TukuiActionBarBackgroundRight:SetFrameStrata("BACKGROUND")
+   TukuiActionBarBackgroundRight:SetFrameLevel(1)
    fbar4:Show()
    MultiBarRightButton1:ClearAllPoints()
-   MultiBarRightButton1:SetPoint("TOPRIGHT", ActionBarBackgroundRight, "TOPRIGHT", TukuiDB:Scale(-4), TukuiDB:Scale(-4))
+   MultiBarRightButton1:SetPoint("TOPRIGHT", TukuiActionBarBackgroundRight, "TOPRIGHT", TukuiDB:Scale(-4), TukuiDB:Scale(-4))
    for i= 2, 12 do
       local b = _G["MultiBarRightButton"..i]
       local b2 = _G["MultiBarRightButton"..i-1]
       b:ClearAllPoints()
-      b:SetPoint("TOP", b2, "BOTTOM", 0, TukuiDB:Scale(-4))
+      b:SetPoint("TOP", b2, "BOTTOM", 0, -TukuiDB.buttonspacing)
    end
 end
 if db.rightbars > 1 then
    fbar3:Show()
    MultiBarBottomRightButton1:ClearAllPoints()
-   MultiBarBottomRightButton1:SetPoint("TOPLEFT", ActionBarBackgroundRight, "TOPLEFT", TukuiDB:Scale(4), TukuiDB:Scale(-4))
+   MultiBarBottomRightButton1:SetPoint("TOPLEFT", TukuiActionBarBackgroundRight, "TOPLEFT", TukuiDB:Scale(4), TukuiDB:Scale(-4))
    for i= 2, 12 do
       local b = _G["MultiBarBottomRightButton"..i]
       local b2 = _G["MultiBarBottomRightButton"..i-1]
       b:ClearAllPoints()
-      b:SetPoint("TOP", b2, "BOTTOM", 0, TukuiDB:Scale(-4))
+      b:SetPoint("TOP", b2, "BOTTOM", 0, -TukuiDB.buttonspacing)
    end    
 end
 if db.rightbars > 2 then
    fbar5:Show()
    MultiBarLeftButton1:ClearAllPoints()
-   MultiBarLeftButton1:SetPoint("TOP", ActionBarBackgroundRight, "TOP", 0, TukuiDB:Scale(-4))
+   MultiBarLeftButton1:SetPoint("TOP", TukuiActionBarBackgroundRight, "TOP", 0, TukuiDB:Scale(-4))
    for i= 2, 12 do
       local b = _G["MultiBarLeftButton"..i]
       local b2 = _G["MultiBarLeftButton"..i-1]
       b:ClearAllPoints()
-      b:SetPoint("TOP", b2, "BOTTOM", 0, TukuiDB:Scale(-4))
+      b:SetPoint("TOP", b2, "BOTTOM", 0, -TukuiDB.buttonspacing)
    end
 end
 
@@ -217,7 +215,7 @@ if TukuiDB.lowversion == true then
          local b = _G["MultiBarBottomLeftButton"..i]
          local b2 = _G["MultiBarBottomLeftButton"..i-1]
          b:ClearAllPoints()
-         b:SetPoint("LEFT", b2, "RIGHT", TukuiDB:Scale(4), 0)
+         b:SetPoint("LEFT", b2, "RIGHT", TukuiDB.buttonspacing, 0)
       end   
    end
 else
@@ -228,7 +226,7 @@ else
       local b = _G["MultiBarBottomLeftButton"..i]
       local b2 = _G["MultiBarBottomLeftButton"..i-1]
       b:ClearAllPoints()
-      b:SetPoint("LEFT", b2, "RIGHT", TukuiDB:Scale(4), 0)
+      b:SetPoint("LEFT", b2, "RIGHT", TukuiDB.buttonspacing, 0)
    end
    MultiBarBottomLeftButton11:SetAlpha(0)
    MultiBarBottomLeftButton11:SetScale(0.0001)
@@ -242,7 +240,7 @@ else
          local b = _G["MultiBarBottomRightButton"..i]
          local b2 = _G["MultiBarBottomRightButton"..i-1]
          b:ClearAllPoints()
-         b:SetPoint("LEFT", b2, "RIGHT", TukuiDB:Scale(4), 0)
+         b:SetPoint("LEFT", b2, "RIGHT", TukuiDB.buttonspacing, 0)
       end
       fbar3:Show()
       MultiBarLeftButton1:ClearAllPoints()
@@ -251,7 +249,7 @@ else
          local b = _G["MultiBarLeftButton"..i]
          local b2 = _G["MultiBarLeftButton"..i-1]
          b:ClearAllPoints()
-         b:SetPoint("LEFT", b2, "RIGHT", TukuiDB:Scale(4), 0)
+         b:SetPoint("LEFT", b2, "RIGHT", TukuiDB.buttonspacing, 0)
       end
       MultiBarLeftButton11:SetScale(0.0001)
       MultiBarLeftButton11:SetAlpha(0)
@@ -261,9 +259,10 @@ else
 end
 
 ------------------------------------------------------------------------------------------
--- function and others stuff
+-- functions and others stuff
 ------------------------------------------------------------------------------------------
 
+-- bonus bar (vehicle, rogue, etc)
 local function rABS_showhideactionbuttons(alpha)
 	for i = 1, 12 do
 		_G["ActionButton"..i]:SetAlpha(alpha)
@@ -275,6 +274,7 @@ if BonusActionBarFrame:IsShown() then
 	rABS_showhideactionbuttons(0)
 end
 
+-- hide these blizzard frames
 local FramesToHide = {
 	MainMenuBar,
 	VehicleMenuBar,
@@ -286,6 +286,7 @@ for _, f in pairs(FramesToHide) do
 	f:EnableMouse(false)
 end
 
+-- vehicle button under minimap
 local vehicle = CreateFrame("BUTTON", nil, UIParent, "SecureActionButtonTemplate")
 vehicle:SetWidth(TukuiDB:Scale(26))
 vehicle:SetHeight(TukuiDB:Scale(26))
@@ -312,6 +313,7 @@ vehicle:SetScript("OnEvent", function(self, event, arg1)
 end)  
 vehicle:SetAlpha(0)
 
+-- shapeshift command to move it in-game
 local ssmover = CreateFrame("Frame", "ssmoverholder", UIParent)
 ssmover:SetAllPoints(fshift)
 TukuiDB:SetTemplate(ssmover)
@@ -336,53 +338,9 @@ end
 SLASH_SHOWMOVEBUTTON1 = "/mss"
 SlashCmdList["SHOWMOVEBUTTON"] = showmovebutton
 
---[[ Range coloring. This function is taken from nMainBar, so all credits for it go to Neal ]]
-function ActionButton_OnUpdate(self, elapsed)
-    if(ActionButton_IsFlashing(self)) then
-        local flashtime = self.flashtime
-        flashtime = flashtime - elapsed
-
-        if ( flashtime <= 0 ) then
-            local overtime = -flashtime
-            if ( overtime >= ATTACK_BUTTON_FLASH_TIME ) then
-                overtime = 0
-            end
-            flashtime = ATTACK_BUTTON_FLASH_TIME - overtime
-
-            local flashTexture = _G[self:GetName().."Flash"]
-            if (flashTexture:IsShown()) then
-                flashTexture:Hide()
-            else
-                flashTexture:Show()
-            end
-        end
-        
-        self.flashtime = flashtime
-    end
-
-    local rangeTimer = self.rangeTimer
-    if(rangeTimer) then
-        rangeTimer = rangeTimer - elapsed
-        if(rangeTimer<=0) then
-
-            local isInRange = false
-            if(ActionHasRange(self.action) and IsActionInRange(self.action)==0) then
-                _G[self:GetName().."Icon"]:SetVertexColor(0.9, 0.1, 0.1)
-                isInRange = true
-            end
-
-            if (self.isInRange~=isInRange) then
-                self.isInRange = isInRange
-                ActionButton_UpdateUsable(self)
-            end
-            rangeTimer = 0.2
-        end
-        self.rangeTimer = rangeTimer
-    end
-end
-
+-- mouseover option
 local function mouseoverpet(alpha)
-	PetActionBarBackground:SetAlpha(alpha)
+	TukuiPetActionBarBackground:SetAlpha(alpha)
 	for i=1, NUM_PET_ACTION_SLOTS do
 		local pb = _G["PetActionButton"..i]
 		pb:SetAlpha(alpha)
@@ -408,7 +366,7 @@ local function mouseoverstance(alpha)
 end
 
 local function rightbaralpha(alpha)
-	ActionBarBackgroundRight:SetAlpha(alpha)
+	TukuiActionBarBackgroundRight:SetAlpha(alpha)
 	RightBarLine:SetAlpha(alpha)
 	CubeRightBarUP:SetAlpha(alpha)
 	CubeRightBarDown:SetAlpha(alpha)
@@ -445,14 +403,14 @@ if db.rightbarmouseover == true and db.rightbars > 0 then
 	RightBarLine:SetAlpha(0)
 	CubeRightBarUP:SetAlpha(0)
 	CubeRightBarDown:SetAlpha(0)
-	ActionBarBackgroundRight:EnableMouse(true)
-	PetActionBarBackground:EnableMouse(true)
-	ActionBarBackgroundRight:SetAlpha(0)
-	PetActionBarBackground:SetAlpha(0)
-	ActionBarBackgroundRight:SetScript("OnEnter", function(self) mouseoverpet(1) rightbaralpha(1) end)
-	ActionBarBackgroundRight:SetScript("OnLeave", function(self) mouseoverpet(0) rightbaralpha(0) end)
-	PetActionBarBackground:SetScript("OnEnter", function(self) mouseoverpet(1) rightbaralpha(1) end)
-	PetActionBarBackground:SetScript("OnLeave", function(self) mouseoverpet(0) rightbaralpha(0) end)
+	TukuiActionBarBackgroundRight:EnableMouse(true)
+	TukuiPetActionBarBackground:EnableMouse(true)
+	TukuiActionBarBackgroundRight:SetAlpha(0)
+	TukuiPetActionBarBackground:SetAlpha(0)
+	TukuiActionBarBackgroundRight:SetScript("OnEnter", function(self) mouseoverpet(1) rightbaralpha(1) end)
+	TukuiActionBarBackgroundRight:SetScript("OnLeave", function(self) mouseoverpet(0) rightbaralpha(0) end)
+	TukuiPetActionBarBackground:SetScript("OnEnter", function(self) mouseoverpet(1) rightbaralpha(1) end)
+	TukuiPetActionBarBackground:SetScript("OnLeave", function(self) mouseoverpet(0) rightbaralpha(0) end)
 	for i=1, 12 do
 		local pb = _G["MultiBarRightButton"..i]
 		pb:SetAlpha(0)
@@ -514,6 +472,7 @@ if db.shapeshiftmouseover == true then
 	end
 end
 
+-- option to hide shapeshift or totem bar.
 if db.hideshapeshift == true then
 	fshift:Hide()
 end

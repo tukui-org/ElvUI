@@ -1,6 +1,5 @@
-
-
 -- localization for enUS and enGB
+
 tukuilocal.datatext_guild = "Guild"
 tukuilocal.datatext_noguild = "No Guild"
 tukuilocal.datatext_bags = "Bags: "
@@ -63,6 +62,7 @@ tukuilocal.datatext_graveyardsassaulted = "Graveyards Assaulted:"
 tukuilocal.datatext_graveyardsdefended = "Graveyards Defended:"
 tukuilocal.datatext_demolishersdestroyed = "Demolishers Destroyed:"
 tukuilocal.datatext_gatesdestroyed = "Gates Destroyed:"
+tukuilocal.datatext_totalmemusage = "Total Memory Usage:"
 
 tukuilocal.Slots = {
 	[1] = {1, "Head", 1000},
@@ -79,7 +79,7 @@ tukuilocal.Slots = {
 }
 
 tukuilocal.popup_disableui = "Tukui doesn't work for this resolution, do you want to disable Tukui? (Cancel if you want to try another resolution)"
-tukuilocal.popup_install = "First time on Tukui V10 with this Character. You must reload UI to set Action Bars, Variables and Chat Frames."
+tukuilocal.popup_install = "First time on Tukui V10.30+ with this Character. You must reload UI to set Action Bars, Variables and Chat Frames."
 tukuilocal.popup_2raidactive = "2 raid layouts are active, please select a layout."
 
 tukuilocal.merchant_repairnomoney = "You don't have enough money for repair!"
@@ -152,7 +152,7 @@ tukuilocal.core_autoinv_disable = "Autoinvite OFF"
 tukuilocal.core_wf_unlock = "WatchFrame unlock"
 tukuilocal.core_wf_lock = "WatchFrame lock"
 tukuilocal.core_welcome1 = "Welcome on |cffC495DDTukui|r, version "
-tukuilocal.core_welcome2 = "Type |cff00FFFF/uihelp|r for more infos or visit www.tukui.org"
+tukuilocal.core_welcome2 = "Type |cff00FFFF/uihelp|r for more info or visit www.tukui.org"
 
 tukuilocal.core_uihelp1 = "|cff00ff00General Slash Commands|r"
 tukuilocal.core_uihelp2 = "|cffFF0000/tracker|r - Tukui Arena Enemy Cooldown Tracker - Low-memory enemy PVP cooldown tracker. (Icon only)"
@@ -168,7 +168,7 @@ tukuilocal.core_uihelp11 = "|cffFF0000/rd|r - disband raid."
 tukuilocal.core_uihelp12 = "|cffFF0000/wf|r - unlock quest watch frame for dragging."
 tukuilocal.core_uihelp13 = "|cffFF0000/mss|r - Move shapeshift or totem bar."
 tukuilocal.core_uihelp15 = "|cffFF0000/ainv|r - Enable autoinvite via keyword on whisper. You can set your own keyword by typing `/ainv myword`"
-tukuilocal.core_uihelp14 = "(Scroll up for more command ...)"
+tukuilocal.core_uihelp14 = "(Scroll up for more commands ...)"
 
 tukuilocal.symbol_CLEAR = "Clear"
 tukuilocal.symbol_SKULL = "Skull"
@@ -186,3 +186,7 @@ tukuilocal.bind_discard = "All newly set keybindings have been discarded."
 tukuilocal.bind_instruct = "Hover your mouse over any actionbutton to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."
 tukuilocal.bind_save = "Save bindings"
 tukuilocal.bind_discardbind = "Discard bindings"
+
+tukuilocal.hunter_unhappy = "Your pet is unhappy!"
+tukuilocal.hunter_content = "Your pet is content!"
+tukuilocal.hunter_happy = "Your pet is happy!"

@@ -1,5 +1,4 @@
 local mainhand, _, _, offhand = GetWeaponEnchantInfo()
-local dummy = function() return end
 
 BUFF_FLASH_TIME_ON = 0.2;
 BUFF_FLASH_TIME_OFF = 0.1;
@@ -11,12 +10,12 @@ BUFF_ROW_SPACING = 0;
 
 TemporaryEnchantFrame:ClearAllPoints()
 TemporaryEnchantFrame:SetPoint("TOPRIGHT", Minimap, "TOPRIGHT", 0, TukuiDB:Scale(-16))
-TemporaryEnchantFrame.SetPoint = dummy
+TemporaryEnchantFrame.SetPoint = TukuiDB.dummy
 
 ConsolidatedBuffs:ClearAllPoints()
 ConsolidatedBuffs:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", TukuiDB:Scale(-12), TukuiDB:Scale(7))
 ConsolidatedBuffsIcon:SetAlpha(0)
-ConsolidatedBuffs.SetPoint = dummy
+ConsolidatedBuffs.SetPoint = TukuiDB.dummy
 
 TempEnchant1:ClearAllPoints()
 TempEnchant2:ClearAllPoints()
@@ -63,15 +62,11 @@ local function StyleBuffs(buttonName, index, debuff)
 		TukuiDB:CreatePanel(panel, 30, 30, "CENTER", buff, "CENTER", 0, 0)
 		panel:SetFrameLevel(0)
 		panel:SetFrameStrata("LOW")
-
-		--if debuff then
-			--_G[buttonName..index.."Panel"]:SetBackdropBorderColor(134/255, 12/255, 12/255)
-		--end
 	end
 	if border then border:Hide() end
 end
 
-function UpdateBuffAnchors()
+local function UpdateBuffAnchors()
 	buttonName = "BuffButton"
 	local buff, previousBuff, aboveBuff;
 	local numBuffs = 0;
@@ -118,7 +113,7 @@ function UpdateBuffAnchors()
 	end
 end
 
-function UpdateDebuffAnchors(buttonName, index)
+local function UpdateDebuffAnchors(buttonName, index)
 	local debuff = _G[buttonName..index];
 	StyleBuffs(buttonName, index, true)
 	local dtype = select(5, UnitDebuff("player",index))      
@@ -140,7 +135,7 @@ function UpdateDebuffAnchors(buttonName, index)
 end
 
 -- Always color buff's timer in white instead of yellow.
-local function updateTime(button)
+local function UpdateTime(button)
 	local duration = _G[button:GetName().."Duration"]
 	if SHOW_BUFF_DURATIONS == "1" then
 		duration:SetTextColor(1, 1, 1)
@@ -154,4 +149,4 @@ f:RegisterEvent("PLAYER_EVENTERING_WORLD")
 
 hooksecurefunc("BuffFrame_UpdateAllBuffAnchors", UpdateBuffAnchors)
 hooksecurefunc("DebuffButton_UpdateAnchors", UpdateDebuffAnchors)
-hooksecurefunc("AuraButton_UpdateDuration", updateTime)
+hooksecurefunc("AuraButton_UpdateDuration", UpdateTime)

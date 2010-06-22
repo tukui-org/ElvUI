@@ -70,21 +70,6 @@ local function initialize(self, level)
 			info.func = function() LeaveParty() end
 			UIDropDownMenu_AddButton(info, level)
 		end
-
-		if ( IsInLFGDungeon() ) then
-			wipe(info)
-			info.text = TELEPORT_OUT_OF_DUNGEON
-			info.notCheckable = 1
-			info.func = MiniMapLFGFrame_TeleportOut
-			UIDropDownMenu_AddButton(info, level)
-		elseif ((GetNumPartyMembers() > 0) or (GetNumRaidMembers() > 0)) then
-			wipe(info)
-			info.text = TELEPORT_TO_DUNGEON
-			info.notCheckable = 1
-			info.func = MiniMapLFGFrame_TeleportIn
-			UIDropDownMenu_AddButton(info, level)
-		end
-
 	elseif(level == 2) then
 		if(UIDROPDOWNMENU_MENU_VALUE == 'loot') then
 			wipe(info)
@@ -116,3 +101,6 @@ end
 
 menu:SetScript('OnEvent', onEvent)
 menu.initialize = initialize
+
+-- Replace original dropdown with my custom one
+_G['PlayerFrameDropDown'] = menu

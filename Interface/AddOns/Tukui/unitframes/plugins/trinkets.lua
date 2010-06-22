@@ -53,9 +53,9 @@ local Update = function(self, event, ...)
 			if ( UnitExists(unit) and UnitIsPlayer(unit) and arenaUnits[unit].Trinket ) then
 				arenaGUID[UnitGUID(unit)] = unit
 				if ( UnitFactionGroup(unit) == "Horde" ) then
-					arenaUnits[unit].Trinket.Icon:SetTexture(UnitLevel(unit) == 80 and "Interface\\Addons\\Tukui\\media\\INV_Jewelry_Necklace_38" or "Interface\\Addons\\Tukui\\media\\INV_Jewelry_TrinketPVP_02")
+					arenaUnits[unit].Trinket.Icon:SetTexture(UnitLevel(unit) == 80 and "Interface\\AddOns\\Tukui\\media\\textures\\Inv_jewelry_necklace_38" or "Interface\\AddOns\\Tukui\\media\\textures\\Inv_jewelry_trinketpvp_02")
 				else
-					arenaUnits[unit].Trinket.Icon:SetTexture(UnitLevel(unit) == 80 and "Interface\\Addons\\Tukui\\media\\INV_Jewelry_Necklace_37" or "Interface\\Addons\\Tukui\\media\\INV_Jewelry_TrinketPVP_01")
+					arenaUnits[unit].Trinket.Icon:SetTexture(UnitLevel(unit) == 80 and "Interface\\AddOns\\Tukui\\media\\textures\\Inv_jewelry_necklace_37" or "Interface\\AddOns\\Tukui\\media\\textures\\Inv_jewelry_trinketpvp_01")
 				end
 			end
 		end
@@ -78,17 +78,6 @@ frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 frame:RegisterEvent("ARENA_OPPONENT_UPDATE")
 frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 frame:SetScript("OnEvent", Update)
-
-oUF.Tags['[trinket]'] = function(unit)
-	if( usedTrinkets[UnitGUID(unit)] or not UnitIsPlayer(unit) ) then return end
-	local trinketIcon
-	if( UnitFactionGroup(unit) == "Horde" ) then
-		trinketIcon = UnitLevel(unit) == 80 and "Interface\\Icons\\INV_Jewelry_Necklace_38" or "Interface\\Icons\\INV_Jewelry_TrinketPVP_02"
-	else
-		trinketIcon = UnitLevel(unit) == 80 and "Interface\\Icons\\INV_Jewelry_Necklace_37" or "Interface\\Icons\\INV_Jewelry_TrinketPVP_01"
-	end
-	return string.format("|T%s:20:20:0:0|t", trinketIcon)
-end
 
 local Enable = function(self)
 	if ( self.Trinket ) then

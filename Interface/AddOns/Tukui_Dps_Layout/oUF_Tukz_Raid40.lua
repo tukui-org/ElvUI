@@ -9,9 +9,10 @@ local colors = setmetatable({
 }, {__index = oUF.colors})
 
 local function menu(self)
-	if(self.unit:match('party')) then
-		ToggleDropDownMenu(1, nil, _G['PartyMemberFrame'..self.id..'DropDown'], 'cursor')
-	end
+	FriendsDropDown.unit = self.unit
+	FriendsDropDown.id = self.id
+	FriendsDropDown.initialize = RaidFrameDropDown_Initialize
+	ToggleDropDownMenu(1, nil, FriendsDropDown, "cursor")
 end
 
 local function UpdateThreat(self, event, unit)
@@ -42,7 +43,7 @@ local function CreateStyle(self, unit)
 
 	self.Health = CreateFrame('StatusBar', nil, self)
 	self.Health:SetAllPoints(self)
-	self.Health:SetStatusBarTexture([=[Interface\AddOns\Tukui\media\normTex]=])
+	self.Health:SetStatusBarTexture(TukuiDB["media"].normTex)
 
 	self.Health.bg = self.Health:CreateTexture(nil, 'BORDER')
 	self.Health.bg:SetAllPoints(self.Health)
@@ -75,6 +76,14 @@ local function CreateStyle(self, unit)
 	self.Health.name:SetFont(fontlol, 11*TukuiDB.raidscale, "THINOUTLINE")
 	self.Health.name:SetPoint('LEFT', self, 'RIGHT', 5, 1)
 	self:Tag(self.Health.name, '[NameMedium][leader( )]')
+	
+	if TukuiDB["unitframes"].showsymbols == true then
+		self.RaidIcon = self.Health:CreateTexture(nil, 'OVERLAY')
+		self.RaidIcon:SetHeight(TukuiDB:Scale(14*TukuiDB.raidscale))
+		self.RaidIcon:SetWidth(TukuiDB:Scale(14*TukuiDB.raidscale))
+		self.RaidIcon:SetPoint('CENTER', self, 'CENTER')
+		self.RaidIcon:SetTexture('Interface\\TargetingFrame\\UI-RaidTargetingIcons')	
+	end
 	
 	if TukuiDB["unitframes"].aggro == true then
       table.insert(self.__elements, UpdateThreat)

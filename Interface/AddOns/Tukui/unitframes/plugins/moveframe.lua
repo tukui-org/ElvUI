@@ -304,9 +304,16 @@ do
 
 	function frame:VARIABLES_LOADED()
 		-- I honestly don't trust the load order of SVs.
-		if (TukuiData == nil) then TukuiData = {} end
-		_DB = TukuiData.ufpos or {}
-		TukuiData.ufpos = _DB
+		if TukuiDB["unitframes"].positionbychar == true then
+			if (TukuiUFpos == nil) then TukuiUFpos = {} end
+			_DB = TukuiUFpos or {}
+			TukuiUFpos = _DB
+		else
+			if (TukuiData == nil) then TukuiData = {} end
+			_DB = TukuiData.ufpos or {}
+			TukuiData.ufpos = _DB
+		end
+		
 		-- Got to catch them all!
 		for _, obj in next, oUF.objects do
 			restorePosition(obj)
@@ -397,6 +404,17 @@ do
 	end
 end
 
+-- reset data
+local function RESETUF()
+	if TukuiDB["unitframes"].positionbychar == true then
+		TukuiUFpos = {}
+	else
+		TukuiData.ufpos = {}
+	end
+	ReloadUI()
+end
+SLASH_RESETUF1 = "/resetuf"
+SlashCmdList["RESETUF"] = RESETUF
 
 SLASH_OUF_MOVABLEFRAMES1 = '/uf'
 SlashCmdList['OUF_MOVABLEFRAMES'] = function(inp)

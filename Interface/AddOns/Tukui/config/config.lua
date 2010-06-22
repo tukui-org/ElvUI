@@ -1,5 +1,3 @@
-
-
 TukuiDB["general"] = {
 	["autoscale"] = true, -- mainly enabled for users that don't want to mess with the config file
 	["uiscale"] = 0.71, -- set your value (between 0.64 and 1) of your uiscale if autoscale is off
@@ -8,18 +6,18 @@ TukuiDB["general"] = {
 }
 
 TukuiDB["media"] = {
-	["font"] = [[Fonts\FRIZQT__.ttf]], -- general font of tukui
-	["uffont"] = [[Interface\AddOns\Tukui\media\uf_font.ttf]], -- general font of unitframes
-	["dmgfont"] = [[Interface\AddOns\Tukui\media\combat_font.ttf]], -- general font of dmg / sct
-	["normTex"] = [[Interface\Addons\Tukui\media\normTex]], -- texture used for tukui healthbar/powerbar/etc
-	["glowTex"] = [[Interface\Addons\Tukui\media\glowTex]], -- the glow text around some frame.
-	["bubbleTex"] = [[Interface\Addons\Tukui\media\bubbleTex]], -- unitframes combo points
-	["blank"] = [[Interface\AddOns\Tukui\media\blank]], -- the main texture for all borders/panels
+	["font"] = [[fonts\ARIALN.ttf]], -- general font of tukui
+	["uffont"] = [[Interface\AddOns\Tukui\media\fonts\uf_font.ttf]], -- general font of unitframes
+	["dmgfont"] = [[Interface\AddOns\Tukui\media\fonts\combat_font.ttf]], -- general font of dmg / sct
+	["normTex"] = [[Interface\AddOns\Tukui\media\textures\normTex]], -- texture used for tukui healthbar/powerbar/etc
+	["glowTex"] = [[Interface\AddOns\Tukui\media\textures\glowTex]], -- the glow text around some frame.
+	["bubbleTex"] = [[Interface\AddOns\Tukui\media\textures\bubbleTex]], -- unitframes combo points
+	["blank"] = [[Interface\AddOns\Tukui\media\textures\blank]], -- the main texture for all borders/panels
 	["bordercolor"] = { .6,.6,.6,1 }, -- border color of tukui panels
 	["altbordercolor"] = { .4,.4,.4,1 }, -- alternative border color, mainly for unitframes text panels.
 	["backdropcolor"] = { .1,.1,.1,1 }, -- background color of tukui panels
 	["pixelfont"] = [[fonts\ARIALN.ttf]], -- another general font 
-	["buttonhover"] = [[Interface\AddOns\Tukui\media\button_hover]],
+	["buttonhover"] = [[Interface\AddOns\Tukui\media\textures\button_hover]],
 }
 
 TukuiDB["unitframes"] = {
@@ -49,6 +47,7 @@ TukuiDB["unitframes"] = {
 	["combatfeedback"] = true, -- enable combattext on player and target.
 	["classcolor"] = true, -- if set to false, use foof color theme. 
 	["playeraggro"] = false, -- glow border of player frame change color according to your current aggro.
+	["positionbychar"] = false, -- save X, Y position with /uf (movable frame) per character instead of per account.
 
 	-- raid layout
 	["showrange"] = true, -- show range opacity on raidframes
@@ -71,6 +70,9 @@ TukuiDB["unitframes"] = {
 	["ws_show_target"] = true, -- show weakened soul bar on target unit
 	["if_warning"] = true, -- show innerfire warning when in combat and not active.
 	
+	--hunter only plugin
+	["aspect_warning"] = true, -- show aspect warning when in combat and not active.
+	
 	-- death knight only plugin
 	["runebar"] = true, -- enable tukui runebar plugin
 	
@@ -84,7 +86,7 @@ TukuiDB["unitframes"] = {
 
 TukuiDB["arena"] = {
 	["unitframes"] = true, -- enable tukz arena unitframes (requirement : tukui unitframes enabled)
-	["spelltracker"] = true, -- enable tukz enemy spell tracker	
+	["spelltracker"] = true, -- enable tukz enemy spell tracker (an afflicted3 or interruptbar alternative)
 }
 
 TukuiDB["actionbar"] = {
@@ -112,6 +114,7 @@ TukuiDB["map"] = {
 TukuiDB["loot"] = {
 	["lootframe"] = true, -- reskin the loot frame to fit tukui
 	["rolllootframe"] = true, -- reskin the roll frame to fit tukui
+	["autogreed"] = true, -- auto-dez or auto-greed item at max level.
 }
 
 TukuiDB["cooldown"] = {
@@ -148,7 +151,6 @@ TukuiDB["chat"] = {
 	["enable"] = true, -- blah
 	["font"] = [[fonts\ARIALN.ttf]], -- font for chat
 	["fontsize"] = 12, -- font size for chat
-	["chattime"] = false, -- enable chat time on chat
 }
 
 TukuiDB["panels"] = { 
@@ -158,6 +160,8 @@ TukuiDB["panels"] = {
 TukuiDB["tooltip"] = {
 	["enable"] = true, -- true to enable this mod, false to disable
 	["cursor"] = false, -- enable units tooltip on cursor
+	["hidecombat"] = false, -- hide bottom-right tooltip when in combat
+	["hidebuttons"] = false, -- always hide action bar buttons tooltip.
 }
 
 TukuiDB["combatfont"] = {
@@ -181,25 +185,6 @@ TukuiDB["invite"] = {
 	["autoaccept"] = true, -- auto-accept invite from guildmate and friends.
 }
 
-TukuiDB["combo"] = { 
-	["enable"] = true, -- enable middle screen combo text pts.
-}
-
 TukuiDB["watchframe"] = { 
 	["movable"] = true, -- disable this if you run "Who Framed Watcher Wabbit" from seerah.
 }
-
--- an example if you want multiple config
-if TukuiDB.myname == "Tùkz" or TukuiDB.myname == "Tukz" then
-	TukuiDB["focus"] = { 
-		["enable"] = true, -- enable mouseover focus key
-		["arenamodifier"] = "shift", -- modifier to use
-		["arenamouseButton"] = "3", -- mouse button to use
-	}
-else
-	TukuiDB["focus"] = { 
-		["enable"] = false, -- enable mouseover focus key
-		["arenamodifier"] = "shift", -- modifier to use
-		["arenamouseButton"] = "3", -- mouse button to use
-	}
-end

@@ -1,9 +1,8 @@
-
 --------------------------------------------------------------------
 -- MINIMAP BORDER
 --------------------------------------------------------------------
 
-local p = CreateFrame("Frame", "MapBorder", Minimap)
+local p = CreateFrame("Frame", "TukuiMinimap", Minimap)
 TukuiDB:CreatePanel(p, 144, 144, "CENTER", Minimap, "CENTER", -0, 0)
 p:ClearAllPoints()
 p:SetPoint("TOPLEFT", TukuiDB:Scale(-2), TukuiDB:Scale(2))
@@ -41,7 +40,7 @@ MiniMapTracking:Hide()
 MiniMapMailFrame:ClearAllPoints()
 MiniMapMailFrame:SetPoint("TOPRIGHT", Minimap, TukuiDB:Scale(3), TukuiDB:Scale(4))
 MiniMapMailBorder:Hide()
-MiniMapMailIcon:SetTexture("Interface\\AddOns\\Tukui\\media\\mail")
+MiniMapMailIcon:SetTexture("Interface\\AddOns\\Tukui\\media\\textures\\mail")
 
 -- Move battleground icon
 MiniMapBattlefieldFrame:ClearAllPoints()

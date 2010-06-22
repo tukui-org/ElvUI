@@ -11,6 +11,11 @@ local colors = setmetatable({
 local function menu(self)
 	if(self.unit:match('party')) then
 		ToggleDropDownMenu(1, nil, _G['PartyMemberFrame'..self.id..'DropDown'], 'cursor')
+	else
+		FriendsDropDown.unit = self.unit
+		FriendsDropDown.id = self.id
+		FriendsDropDown.initialize = RaidFrameDropDown_Initialize
+		ToggleDropDownMenu(1, nil, FriendsDropDown, "cursor")
 	end
 end
 
@@ -98,6 +103,14 @@ local function CreateStyle(self, unit)
 	self.Health.name:SetFont(fontlol, 13, "THINOUTLINE")
 	self.Health.name:SetPoint('LEFT', self, 'RIGHT', 5, 1)
 	self:Tag(self.Health.name, '[NameMedium][leader( )]')
+	
+	if TukuiDB["unitframes"].showsymbols == true then
+		self.RaidIcon = self.Health:CreateTexture(nil, 'OVERLAY')
+		self.RaidIcon:SetHeight(TukuiDB:Scale(14*TukuiDB.raidscale))
+		self.RaidIcon:SetWidth(TukuiDB:Scale(14*TukuiDB.raidscale))
+		self.RaidIcon:SetPoint('CENTER', self, 'CENTER')
+		self.RaidIcon:SetTexture('Interface\\TargetingFrame\\UI-RaidTargetingIcons')	
+	end
 	
 	if TukuiDB["unitframes"].aggro == true then
       table.insert(self.__elements, UpdateThreat)

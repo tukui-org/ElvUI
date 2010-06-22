@@ -1,6 +1,4 @@
-local L = GetLocale()
-
-if L == "esES" then
+if TukuiDB.client == "esES" then
 	tukuilocal.datatext_guild = "Hermandad"
 	tukuilocal.datatext_noguild = "Sin Hermandad"
 	tukuilocal.datatext_bags = "Bolsas: "
@@ -63,6 +61,7 @@ if L == "esES" then
 	tukuilocal.datatext_graveyardsdefended = "Cementerios Defendidos:"
 	tukuilocal.datatext_demolishersdestroyed = "Catapultas Destruidas:"
 	tukuilocal.datatext_gatesdestroyed = "Puertas Destruidas:"
+	tukuilocal.datatext_totalmemusage = "Memoria Total Usada:"
 
 
 	tukuilocal.Slots = {
@@ -80,7 +79,7 @@ if L == "esES" then
 	}
 
 	tukuilocal.popup_disableui = "Tukui no funciona con esta resolución, ¿Quieres desactivar Tukui? (Pulsa cancelar si quieres probar otra resolución)"
-	tukuilocal.popup_install = "Es la primera vez que usas Tukui V10 con este personaje. Debes recargar la Interfaz para ajustar las barras de acción, las variables y los marcos de chat."
+	tukuilocal.popup_install = "Es la primera vez que usas Tukui V10.30+ con este personaje. Debes recargar la Interfaz para ajustar las barras de acción, las variables y los marcos de chat."
 	tukuilocal.popup_2raidactive = "Hay activos 2 estilos para banda, por favor selecciona uno."
 
 	tukuilocal.merchant_repairnomoney = "¡No tienes suficiente dinero para reparar!"
@@ -187,4 +186,8 @@ if L == "esES" then
 	tukuilocal.bind_instruct = "Coloca el cursor encima de cualquier botón para asignar una tecla. Presiona la tecla ESC o el botón derecho del ratón para quitar la asignación actual."
 	tukuilocal.bind_save = "Guardar los cambios"
 	tukuilocal.bind_discardbind = "Descargar los cambios"
+	
+	tukuilocal.hunter_unhappy = "Tu mascota está descontenta!"
+	tukuilocal.hunter_content = "Tu mascota está contenta!"
+	tukuilocal.hunter_happy = "Tu mascota está feliz!"
 end

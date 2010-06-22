@@ -56,118 +56,109 @@ local UnitClassification = UnitClassification
 local UnitReactionColor = UnitReactionColor
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
-local function auraIcon(self, icon)
+--------------------------------------------------------------------------------------------
+-- THE AURAWATCH FUNCTION ITSELF. HERE BE DRAGONS!
+--------------------------------------------------------------------------------------------
+
+TukuiDB.countOffsets = {
+	TOPLEFT = {6*TukuiDB["unitframes"].gridscale, 1},
+	TOPRIGHT = {-6*TukuiDB["unitframes"].gridscale, 1},
+	BOTTOMLEFT = {6*TukuiDB["unitframes"].gridscale, 1},
+	BOTTOMRIGHT = {-6*TukuiDB["unitframes"].gridscale, 1},
+	LEFT = {6*TukuiDB["unitframes"].gridscale, 1},
+	RIGHT = {-6*TukuiDB["unitframes"].gridscale, 1},
+	TOP = {0, 0},
+	BOTTOM = {0, 0},
+}
+
+function TukuiDB.auraIcon(self, icon)
 	TukuiDB:SetTemplate(icon)
-	icon.icon:SetPoint("TOPLEFT", TukuiDB:Scale(2), TukuiDB:Scale(-2))
-	icon.icon:SetPoint("BOTTOMRIGHT", TukuiDB:Scale(-2), TukuiDB:Scale(2))
+	icon.icon:SetPoint("TOPLEFT", TukuiDB:Scale(1), TukuiDB:Scale(-1))
+	icon.icon:SetPoint("BOTTOMRIGHT", TukuiDB:Scale(-1), TukuiDB:Scale(1))
 	icon.icon:SetTexCoord(.08, .92, .08, .92)
 	icon.icon:SetDrawLayer("ARTWORK")
+	if (icon.cd) then
+		icon.cd:SetReverse()
+	end
 	icon.overlay:SetTexture()
 end
 
-
-local function createAuraWatch(self,unit)
+local _, class = UnitClass("player")
+function TukuiDB.createAuraWatch(self, unit)
 	local auras = CreateFrame("Frame", nil, self)
-    auras:SetAllPoints(self.Health)
+	auras:SetPoint("TOPLEFT", self.Health, 2, -2)
+	auras:SetPoint("BOTTOMRIGHT", self.Health, -2, 2)
+	auras.presentAlpha = 1
+	auras.missingAlpha = 0
+	auras.icons = {}
+	auras.PostCreateIcon = TukuiDB.auraIcon
 	
-	local debuffs = TukuiDB.spellids
-
-    auras.presentAlpha = 1
-    auras.missingAlpha = 0
-    auras.icons = {}
-	
-	auras.PostCreateIcon = auraIcon
-	if TukuiDB["unitframes"].auratimer ~= true then
+	if (not TukuiDB["unitframes"].auratimer) then
 		auras.hideCooldown = true
 	end
-    
-    for i, sid in pairs(debuffs) do
-		local icon = CreateFrame("Frame", nil, auras)	  
-		icon.spellID = sid
-			if i > 16 then
-				icon.anyUnit = true
-				icon:SetWidth(TukuiDB:Scale(22*TukuiDB["unitframes"].gridscale))
-				icon:SetHeight(TukuiDB:Scale(22*TukuiDB["unitframes"].gridscale))
-				icon:SetPoint("CENTER",0,0)	  
-			else
-				icon:SetWidth(TukuiDB:Scale(6*TukuiDB["unitframes"].gridscale))
-				icon:SetHeight(TukuiDB:Scale(6*TukuiDB["unitframes"].gridscale))
-				local tex = icon:CreateTexture(nil, "OVERLAY")
-				tex:SetWidth(6*TukuiDB["unitframes"].gridscale)
-				tex:SetHeight(6*TukuiDB["unitframes"].gridscale)
-				tex:SetPoint("CENTER")
-				tex:SetTexture([=[Interface\AddOns\Tukui\media\blank]=])
-				if class == "DRUID" then
-					if i==1 then
-						icon:SetPoint("TOPRIGHT",-3,-3)
-						tex:SetVertexColor(200/255,100/255,200/255)
-					elseif i==2 then
-						icon:SetPoint("BOTTOMLEFT",3,3)
-						tex:SetVertexColor(50/255,200/255,50/255)
-					elseif i==3 then          
-						icon:SetPoint("TOPLEFT", 3, -3)
-						tex:SetVertexColor(100/255,200/255,50/255)
-					local count = icon:CreateFontString(nil, "OVERLAY")
-						count:SetFont(fontlol, 8, "THINOUTLINE")
-						count:SetPoint("CENTER", 6, 1)
-						icon.count = count
-					elseif i==4 then
-						icon:SetPoint("BOTTOMRIGHT", -3, 3)
-						tex:SetVertexColor(200/255,100/255,0/255)
-				end
-				elseif class == "PRIEST" then
-					if i==5 then
-						icon.anyUnit = true
-						icon:SetPoint("TOPRIGHT",-3,-3)
-						tex:SetVertexColor(1, 0, 0)
-					elseif i==6 then
-						icon:SetPoint("BOTTOMRIGHT", -3, 3)
-						tex:SetVertexColor(0.2, 0.7, 0.2)
-					local count = icon:CreateFontString(nil, "OVERLAY")
-						count:SetFont(fontlol, 8, "THINOUTLINE")
-						count:SetPoint("CENTER", -6, 1)
-						icon.count = count
-					elseif i == 7 then
-						icon:SetPoint("BOTTOMLEFT",3,3)
-						tex:SetVertexColor(0.4, 0.7, 0.2)
-					elseif i == 8 then
-						icon.anyUnit = true
-						icon:SetPoint("TOPLEFT", 3, -3)
-						tex:SetVertexColor(213/255,220/255,22/255)          
-					end
-				elseif class == "SHAMAN" then
-				if i==9 then
-						icon:SetPoint("TOPRIGHT",-3,-3)
-						tex:SetVertexColor(0.7, 0.3, 0.7)
-					elseif i==10 then
-						icon:SetPoint("BOTTOMLEFT",3,3)
-						tex:SetVertexColor(0.2, 0.7, 0.2)
-					elseif i==11 then          
-						icon:SetPoint("TOPLEFT", 3, -3)
-						tex:SetVertexColor(0.4, 0.7, 0.2)
-					elseif i==12 then
-						icon:SetPoint("BOTTOMRIGHT", -3, 3)
-						tex:SetVertexColor(0.7, 0.4, 0)
-				end
-				elseif class == "PALADIN" then
-					if i==13 then
-						icon:SetPoint("TOPRIGHT",-3,-3)
-						tex:SetVertexColor(0.7, 0.3, 0.7)
-					elseif i==14 then          
-						icon:SetPoint("TOPLEFT", 3, -3)
-						tex:SetVertexColor(0.4, 0.7, 0.2)
-					end
-				end
-				if i==15 then
-					icon:SetPoint("RIGHT", -3, 0)
-					tex:SetVertexColor(0, 1, 0)
-				elseif i==16 then
-					icon:SetPoint("LEFT", 3, 0)
-					tex:SetVertexColor(1, 0, 0)
-				end
-			end
-			auras.icons[sid] = icon
+	
+	local buffs = {}
+	local debuffs = TukuiDB.debuffids
+	
+	if (TukuiDB.buffids["ALL"]) then
+		for key, value in pairs(TukuiDB.buffids["ALL"]) do
+			tinsert(buffs, value)
+		end
 	end
+	
+	if (TukuiDB.buffids[class]) then
+		for key, value in pairs(TukuiDB.buffids[class]) do
+			tinsert(buffs, value)
+		end
+	end
+	
+	-- "Cornerbuffs"
+	if (buffs) then
+		for key, spell in pairs(buffs) do
+			local icon = CreateFrame("Frame", nil, auras)	  
+			icon.spellID = spell[1]
+			icon.anyUnit = spell[4]
+			icon:SetWidth(TukuiDB:Scale(6*TukuiDB["unitframes"].gridscale))
+			icon:SetHeight(TukuiDB:Scale(6*TukuiDB["unitframes"].gridscale))
+			icon:SetPoint(spell[2], 0, 0)
+			
+			local tex = icon:CreateTexture(nil, "OVERLAY")
+			tex:SetAllPoints(icon)
+			tex:SetTexture([=[Interface\AddOns\Tukui\media\blank]=])
+			if (spell[3]) then
+				tex:SetVertexColor(unpack(spell[3]))
+			else
+				tex:SetVertexColor(0.8, 0.8, 0.8)
+			end
+			
+			local count = icon:CreateFontString(nil, "OVERLAY")
+			count:SetFont(TukuiDB["media"].uffont, 8*TukuiDB["unitframes"].gridscale, "THINOUTLINE")
+			count:SetPoint("CENTER", unpack(TukuiDB.countOffsets[spell[2]]))
+			icon.count = count
+			
+			auras.icons[spell[1]] = icon
+		end
+	end
+	
+	-- Raid debuffs (Big icon in the middle)
+	if (debuffs) then
+		 for key, spellID in pairs(debuffs) do
+			local icon = CreateFrame("Frame", nil, auras)	  
+			icon.spellID = spellID
+			icon.anyUnit = true
+			icon:SetWidth(TukuiDB:Scale(22*TukuiDB["unitframes"].gridscale))
+			icon:SetHeight(TukuiDB:Scale(22*TukuiDB["unitframes"].gridscale))
+			icon:SetPoint("CENTER", 0, 0)
+			
+			local count = icon:CreateFontString(nil, "OVERLAY")
+			count:SetFont(TukuiDB["media"].uffont, 9*TukuiDB["unitframes"].gridscale, "THINOUTLINE")
+			count:SetPoint("BOTTOMRIGHT", 2, 2)
+			icon.count = count
+			
+			auras.icons[spellID] = icon
+		 end
+	end
+	
 	self.AuraWatch = auras
 end
 
@@ -217,10 +208,11 @@ local updateHealth = function(self, event, unit, bar, min, max)
     end
 end
 
-local function menu(self)
-	if(self.unit:match('party')) then
-		ToggleDropDownMenu(1, nil, _G['PartyMemberFrame'..self.id..'DropDown'], 'cursor')
-	end
+local Menu = function(self)
+	FriendsDropDown.unit = self.unit
+	FriendsDropDown.id = self.id
+	FriendsDropDown.initialize = RaidFrameDropDown_Initialize
+	ToggleDropDownMenu(1, nil, FriendsDropDown, "cursor")
 end
 
 local function CreateStyle(self, unit)
@@ -360,7 +352,7 @@ local function CreateStyle(self, unit)
 	self.PostUpdateHealth = updateHealth
 	
 	if not unit and TukuiDB["unitframes"].raidunitdebuffwatch == true then
-		createAuraWatch(self,unit)
+		TukuiDB.createAuraWatch(self,unit)
     end
 
 end

@@ -1,33 +1,32 @@
 Stats = CreateFrame("Frame")
-Stats.TTSpacing = TukuiDB:Scale(1)
 local statColor = { }
 local db = TukuiDB["datatext"]
 
-function panel_setpoint(p, obj)
+function TukuiDB.PP(p, obj)
 	if p == 1 then
-		obj:SetHeight(InfoLeft:GetHeight())
-		obj:SetPoint("LEFT", InfoLeft, 30, 0.5)
+		obj:SetHeight(TukuiInfoLeft:GetHeight())
+		obj:SetPoint("LEFT", TukuiInfoLeft, 30, 0.5)
 	elseif p == 2 then
-		obj:SetHeight(InfoLeft:GetHeight())
-		obj:SetPoint("CENTER", InfoLeft, 0, 0.5)
+		obj:SetHeight(TukuiInfoLeft:GetHeight())
+		obj:SetPoint("CENTER", TukuiInfoLeft, 0, 0.5)
 	elseif p == 3 then
-		obj:SetHeight(InfoLeft:GetHeight())
-		obj:SetPoint("RIGHT", InfoLeft, -30, 0.5)
+		obj:SetHeight(TukuiInfoLeft:GetHeight())
+		obj:SetPoint("RIGHT", TukuiInfoLeft, -30, 0.5)
 	elseif p == 4 then
-		obj:SetHeight(InfoRight:GetHeight())
-		obj:SetPoint("LEFT", InfoRight, 30, 0.5)
+		obj:SetHeight(TukuiInfoRight:GetHeight())
+		obj:SetPoint("LEFT", TukuiInfoRight, 30, 0.5)
 	elseif p == 5 then
-		obj:SetHeight(InfoRight:GetHeight())
-		obj:SetPoint("CENTER", InfoRight, 0, 0.5)
+		obj:SetHeight(TukuiInfoRight:GetHeight())
+		obj:SetPoint("CENTER", TukuiInfoRight, 0, 0.5)
 	elseif p == 6 then
-		obj:SetHeight(InfoRight:GetHeight())
-		obj:SetPoint("RIGHT", InfoRight, -30, 0.5)
+		obj:SetHeight(TukuiInfoRight:GetHeight())
+		obj:SetPoint("RIGHT", TukuiInfoRight, -30, 0.5)
 	elseif p == 7 then
-		obj:SetHeight(MinimapStatsLeft:GetHeight())
-		obj:SetPoint("CENTER", MinimapStatsLeft, 0, 1)
+		obj:SetHeight(TukuiMinimapStatsLeft:GetHeight())
+		obj:SetPoint("CENTER", TukuiMinimapStatsLeft, 0, 1)
 	elseif p == 8 then
-		obj:SetHeight(MinimapStatsRight:GetHeight())
-		obj:SetPoint("CENTER", MinimapStatsRight, 0, 1)
+		obj:SetHeight(TukuiMinimapStatsRight:GetHeight())
+		obj:SetPoint("CENTER", TukuiMinimapStatsRight, 0, 1)
 	end
 end
 
@@ -35,12 +34,12 @@ end
 -- FPS
 --------------------------------------------------------------------
 
-if not db.fps_ms == nil or db.fps_ms > 0 then
+if db.fps_ms and db.fps_ms > 0 then
 	local Stat = CreateFrame("Frame")
 
-	local Text  = InfoLeft:CreateFontString(nil, "LOW")
+	local Text  = TukuiInfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
-	panel_setpoint(db.fps_ms, Text)
+	TukuiDB.PP(db.fps_ms, Text)
 
 	local int = 1
 	local function Update(self, t)
@@ -59,17 +58,18 @@ end
 -- MEM
 --------------------------------------------------------------------
 
-if not db.mem == nil or db.mem > 0 then
+if db.mem and db.mem > 0 then
 	local Stat = CreateFrame("Frame")
 	Stat:EnableMouse(true)
+	local colorme = string.format("%02x%02x%02x", 1*255, 1*255, 1*255)
 
-	local Text  = InfoLeft:CreateFontString(nil, "LOW")
+	local Text  = TukuiInfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
-	panel_setpoint(db.mem, Text)
+	TukuiDB.PP(db.mem, Text)
 
 	local function formatMem(memory, color)
 		if color then
-			statColor = { "", "" }
+			statColor = { "|cff"..colorme, "|r" }
 		else
 			statColor = { "", "" }
 		end
@@ -117,8 +117,10 @@ if not db.mem == nil or db.mem > 0 then
 			if not InCombatLockdown() then
 				GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB:Scale(6));
 				GameTooltip:ClearAllPoints()
-				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, Stats.TTSpacing)
+				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
 				GameTooltip:ClearLines()
+				GameTooltip:AddDoubleLine(tukuilocal.datatext_totalmemusage,formatMem(Total), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+				GameTooltip:AddLine(" ")
 				for i = 1, #Memory do
 					if Memory[i][3] then 
 						local red = Memory[i][2]/Total*2
@@ -155,16 +157,16 @@ end
 -- GUILD ROSTER
 --------------------------------------------------------------------
 	
-if not db.guild == nil or db.guild > 0 then
+if db.guild and db.guild > 0 then
 	local Stat = CreateFrame("Frame")
 	Stat:EnableMouse(true)
 	
 	local tthead = {r=0.4,g=0.78,b=1}
 	local ttsubh = {r=0.75,g=0.9,b=1}
 
-	local Text  = InfoLeft:CreateFontString(nil, "LOW")
+	local Text  = TukuiInfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
-	panel_setpoint(db.guild, Text)
+	TukuiDB.PP(db.guild, Text)
 
 	local function Update(self, event, ...)	
 		if IsInGuild() then
@@ -202,7 +204,7 @@ if not db.guild == nil or db.guild > 0 then
 				
 				GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB:Scale(6));
 				GameTooltip:ClearAllPoints()
-				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, Stats.TTSpacing)
+				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
 				GameTooltip:ClearLines()
 				GameTooltip:AddDoubleLine(GetGuildInfo'player',format("%s: %d/%d",tukuilocal.datatext_guild,online,total),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
 				GameTooltip:AddLine' '
@@ -242,27 +244,35 @@ end
 -- FRIEND
 --------------------------------------------------------------------
 	
-if not db.friends == nil or db.friends > 0 then
+if db.friends and db.friends > 0 then
 	local Stat = CreateFrame("Frame")
 	Stat:EnableMouse(true)
 	
 	local tthead = {r=0.4,g=0.78,b=1}
 	local ttsubh = {r=0.75,g=0.9,b=1}
 
-	local Text  = InfoLeft:CreateFontString(nil, "LOW")
+	local Text  = TukuiInfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
-	panel_setpoint(db.friends, Text)
+	TukuiDB.PP(db.friends, Text)
 
 	local function Update(self, event)
 			local online, total = 0, GetNumFriends()
+			local BNonline, BNtotal = 0, BNGetNumFriends()
 			for i = 0, total do if select(5, GetFriendInfo(i)) then online = online + 1 end end
-			Text:SetText(tukuilocal.datatext_friends..": "..online)
+			if BNtotal > 0 then
+				for i = 1, BNtotal do if select(7, BNGetFriendInfo(i)) then BNonline = BNonline + 1 end end
+			end
+			local totalonline = online + BNonline
+			Text:SetText(tukuilocal.datatext_friends..": "..totalonline)
 			self:SetAllPoints(Text)
 	end
 
 	Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
 	Stat:RegisterEvent("FRIENDLIST_UPDATE")
-	Stat:RegisterEvent("CHAT_MSG_SYSTEM")
+	Stat:RegisterEvent("BN_FRIEND_ACCOUNT_ONLINE")
+	Stat:RegisterEvent("BN_FRIEND_ACCOUNT_OFFLINE")
+	Stat:RegisterEvent("BN_FRIEND_INVITE_ADDED")
+	Stat:RegisterEvent("BN_FRIEND_INVITE_REMOVED")
 	Stat:SetScript("OnMouseDown", function() ToggleFriendsFrame(1) end)
 	Stat:SetScript("OnEnter", function(self)
 		if not InCombatLockdown() then
@@ -271,29 +281,55 @@ if not db.friends == nil or db.friends > 0 then
 			local online, total = 0, GetNumFriends()
 			local name, level, class, zone, connected, status, note, classc, levelc, zone_r, zone_g, zone_b, grouped
 			for i = 0, total do if select(5, GetFriendInfo(i)) then online = online + 1 end end
-			if online > 0 then
+			local BNonline, BNtotal = 0, BNGetNumFriends()
+			local presenceID, givenName, surname, toonName, toonID, client, isOnline
+			if BNtotal > 0 then
+				for i = 1, BNtotal do if select(7, BNGetFriendInfo(i)) then BNonline = BNonline + 1 end end
+			end
+			local totalonline = online + BNonline
+			local totalfriends = total + BNtotal
+			if online > 0 or BNonline > 0 then
 				GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB:Scale(6));
 				GameTooltip:ClearAllPoints()
-				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, Stats.TTSpacing)
+				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
 				GameTooltip:ClearLines()
-				GameTooltip:AddDoubleLine(tukuilocal.datatext_friendlist, format(tukuilocal.datatext_online .. "%s/%s",online,total),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
-				GameTooltip:AddLine' '
-				-- name, level, class, area, connected, status, note
-				for i = 1, total do
-					name, level, class, zone, connected, status, note = GetFriendInfo(i)
-					if not connected then break end
-					if GetRealZoneText() == zone then zone_r, zone_g, zone_b = 0.3, 1.0, 0.3 else zone_r, zone_g, zone_b = 0.65, 0.65, 0.65 end
-					for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
-					if GetLocale() ~= "enUS" then -- feminine class localization (unsure if it's really needed)
-						for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
+				GameTooltip:AddDoubleLine(tukuilocal.datatext_friendlist, format(tukuilocal.datatext_online .. "%s/%s",totalonline,totalfriends),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
+				if online > 0 then
+					GameTooltip:AddLine' '
+					GameTooltip:AddLine("World of Warcraft")
+					-- name, level, class, area, connected, status, note
+					for i = 1, total do
+						name, level, class, zone, connected, status, note = GetFriendInfo(i)
+						if not connected then break end
+						if GetRealZoneText() == zone then zone_r, zone_g, zone_b = 0.3, 1.0, 0.3 else zone_r, zone_g, zone_b = 0.65, 0.65, 0.65 end
+						for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
+						if GetLocale() ~= "enUS" then -- feminine class localization (unsure if it's really needed)
+							for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
+						end
+						classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[class], GetQuestDifficultyColor(level)
+						if UnitInParty(name) or UnitInRaid(name) then grouped = "|cffaaaaaa*|r" else grouped = "" end
+						GameTooltip:AddDoubleLine(format("|cff%02x%02x%02x%d|r %s%s%s",levelc.r*255,levelc.g*255,levelc.b*255,level,name,grouped," "..status),zone,classc.r,classc.g,classc.b,zone_r,zone_g,zone_b)
+						if self.altdown and note then GameTooltip:AddLine("  "..note,ttsubh.r,ttsubh.g,ttsubh.b,1) end
 					end
-					classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[class], GetQuestDifficultyColor(level)
-					if UnitInParty(name) or UnitInRaid(name) then grouped = "|cffaaaaaa*|r" else grouped = "" end
-					GameTooltip:AddDoubleLine(format("|cff%02x%02x%02x%d|r %s%s%s",levelc.r*255,levelc.g*255,levelc.b*255,level,name,grouped," "..status),zone,classc.r,classc.g,classc.b,zone_r,zone_g,zone_b)
-					if self.altdown and note then GameTooltip:AddLine("  "..note,ttsubh.r,ttsubh.g,ttsubh.b,1) end
+				end
+				if BNonline > 0 then
+					GameTooltip:AddLine' '
+					GameTooltip:AddLine("Battle.net")
+					for i = 1, BNtotal do
+						presenceID, givenName, surname, toonName, toonID, client, isOnline = BNGetFriendInfo(i)
+						if not isOnline then break end
+						if toonID then
+							local hasFocus, toonName, client, realmName, faction, race, class, guild, zoneName, level= BNGetToonInfo(toonID)
+							GameTooltip:AddDoubleLine("|cffeeeeee"..client.." ("..level.." "..toonName..")|r", "|cffeeeeee"..givenName.." "..surname.."|r")
+						else
+							GameTooltip:AddDoubleLine("|cffeeeeee"..client..")|r", "|cffeeeeee"..givenName.." "..surname.."|r")
+						end
+					end
 				end
 				GameTooltip:Show()
-			else GameTooltip:Hide() end
+			else 
+				GameTooltip:Hide() 
+			end
 		end
 	end)
 
@@ -305,13 +341,13 @@ end
 -- DURABILITY
 --------------------------------------------------------------------
 	
-if not db.dur == nil or db.dur > 0 then
+if db.dur and db.dur > 0 then
 	local Stat = CreateFrame("Frame")
 	Stat:EnableMouse(true)
 
-	local Text  = InfoLeft:CreateFontString(nil, "LOW")
+	local Text  = TukuiInfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
-	panel_setpoint(db.dur, Text)
+	TukuiDB.PP(db.dur, Text)
 
 	local Total = 0
 	local current, max
@@ -329,9 +365,9 @@ if not db.dur == nil or db.dur > 0 then
 		table.sort(tukuilocal.Slots, function(a, b) return a[3] < b[3] end)
 		
 		if Total > 0 then
-			Text:SetText(floor(tukuilocal.Slots[1][3]*100).."% |cffffffff"..tukuilocal.datatext_armor.."|r")
+			Text:SetText(floor(tukuilocal.Slots[1][3]*100).."% "..tukuilocal.datatext_armor)
 		else
-			Text:SetText("100% |cffffffff"..tukuilocal.datatext_armor.."|r")
+			Text:SetText("100% "..tukuilocal.datatext_armor)
 		end
 		-- Setup Durability Tooltip
 		self:SetAllPoints(Text)
@@ -339,7 +375,7 @@ if not db.dur == nil or db.dur > 0 then
 			if not InCombatLockdown() then
 				GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB:Scale(6));
 				GameTooltip:ClearAllPoints()
-				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, Stats.TTSpacing)
+				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
 				GameTooltip:ClearLines()
 				for i = 1, 11 do
 					if tukuilocal.Slots[i][3] ~= 1000 then
@@ -366,13 +402,13 @@ end
 -- GOLD
 --------------------------------------------------------------------
 
-if not db.gold == nil or db.gold > 0 then
+if db.gold and db.gold > 0 then
 	local Stat = CreateFrame("Frame")
 	Stat:EnableMouse(true)
 
-	local Text  = InfoLeft:CreateFontString(nil, "LOW")
+	local Text  = TukuiInfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
-	panel_setpoint(db.gold, Text)
+	TukuiDB.PP(db.gold, Text)
 
 	local Profit	= 0
 	local Spent		= 0
@@ -428,7 +464,7 @@ if not db.gold == nil or db.gold > 0 then
 				self.hovered = true 
 				GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB:Scale(6));
 				GameTooltip:ClearAllPoints()
-				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, Stats.TTSpacing)
+				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
 				GameTooltip:ClearLines()
 				GameTooltip:AddLine(tukuilocal.datatext_session)
 				GameTooltip:AddDoubleLine(tukuilocal.datatext_earned, formatMoney(Profit), 1, 1, 1, 1, 1, 1)
@@ -479,19 +515,31 @@ if not db.gold == nil or db.gold > 0 then
 	Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
 	Stat:SetScript("OnMouseDown", function() OpenAllBags() end)
 	Stat:SetScript("OnEvent", OnEvent)
+	
+	-- reset gold data
+	local function RESETGOLD()
+		local myPlayerRealm = GetCVar("realmName");
+		local myPlayerName  = UnitName("player");
+		
+		TukuiData.gold = {}
+		TukuiData.gold[myPlayerRealm]={}
+		TukuiData.gold[myPlayerRealm][myPlayerName] = GetMoney();
+	end
+	SLASH_RESETGOLD1 = "/resetgold"
+	SlashCmdList["RESETGOLD"] = RESETGOLD
 end
 
 --------------------------------------------------------------------
  -- BAGS
 --------------------------------------------------------------------
 
-if not db.bags == nil or db.bags > 0 then
+if db.bags and db.bags > 0 then
 	local Stat = CreateFrame("Frame")
 	Stat:EnableMouse(true)
 
-	local Text  = InfoLeft:CreateFontString(nil, "LOW")
+	local Text  = TukuiInfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
-	panel_setpoint(db.bags, Text)
+	TukuiDB.PP(db.bags, Text)
 
 	local function OnEvent(self, event, ...)
 		local free, total,used = 0, 0, 0
@@ -513,13 +561,13 @@ end
 -- TIME
 --------------------------------------------------------------------
 
-if not db.wowtime == nil or db.wowtime > 0 then
+if db.wowtime and db.wowtime > 0 then
 	local Stat = CreateFrame("Frame")
 	Stat:EnableMouse(true)
 
-	local Text  = InfoLeft:CreateFontString(nil, "LOW")
+	local Text  = TukuiInfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
-	panel_setpoint(db.wowtime, Text)
+	TukuiDB.PP(db.wowtime, Text)
 
 	local int = 1
 	local function Update(self, t)
@@ -563,7 +611,7 @@ if not db.wowtime == nil or db.wowtime > 0 then
 				end
 			else             
 				if Hr>=12 then
-					Hr = Hr-12
+					if not Hr==12 then Hr = Hr-12 end
 					if pendingCalendarInvites > 0 then
 						Text:SetText("|cffFF0000"..Hr..":"..Min.." |cffffffffpm|r")
 					else
@@ -587,7 +635,7 @@ if not db.wowtime == nil or db.wowtime > 0 then
 		OnLoad = function(self) RequestRaidInfo() end,
 		GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB:Scale(6));
 		GameTooltip:ClearAllPoints()
-		GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, Stats.TTSpacing)
+		GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
 		GameTooltip:ClearLines()
 		local wgtime = GetWintergraspWaitTime() or nil
 		inInstance, instanceType = IsInInstance()
@@ -664,7 +712,7 @@ if not db.wowtime == nil or db.wowtime > 0 then
 	Stat:RegisterEvent("CALENDAR_UPDATE_PENDING_INVITES")
 	Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
 	Stat:SetScript("OnUpdate", Update)
-	Stat:RegisterEvent'UPDATE_INSTANCE_INFO'
+	Stat:RegisterEvent("UPDATE_INSTANCE_INFO")
 	Stat:SetScript("OnMouseDown", function() GameTimeFrame:Click() end)
 	Update(Stat, 10)
 end
@@ -673,7 +721,7 @@ end
 -- SUPPORT FOR DPS Feed... 
 --------------------------------------------------------------------
 
-if not db.dps_text == nil or db.dps_text > 0 then
+if db.dps_text and db.dps_text > 0 then
 	local events = {SWING_DAMAGE = true, RANGE_DAMAGE = true, SPELL_DAMAGE = true, SPELL_PERIODIC_DAMAGE = true, DAMAGE_SHIELD = true, DAMAGE_SPLIT = true, SPELL_EXTRA_ATTACKS = true}
 	local DPS_FEED = CreateFrame("Frame")
 	local player_id = UnitGUID("player")
@@ -682,12 +730,11 @@ if not db.dps_text == nil or db.dps_text > 0 then
 
 	local pet_id = UnitGUID("pet")
      
-	dText = InfoLeft:CreateFontString(nil, "LOW")
+	dText = TukuiInfoLeft:CreateFontString(nil, "LOW")
 	dText:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	dText:SetText("0.0 ",tukuilocal.datatext_dps)
-	--dText:SetHeight(TukuiDB:Scale(23))
 
-	panel_setpoint(db.dps_text, dText)
+	TukuiDB.PP(db.dps_text, dText)
 
 	DPS_FEED:EnableMouse(true)
 	DPS_FEED:SetHeight(TukuiDB:Scale(20))
@@ -767,18 +814,17 @@ end
 -- SUPPORT FOR HPS Feed... 
 --------------------------------------------------------------------
 
-if not db.hps_text == nil or db.hps_text > 0 then
+if db.hps_text and db.hps_text > 0 then
 	local events = {SPELL_HEAL = true, SPELL_PERIODIC_HEAL = true}
 	local HPS_FEED = CreateFrame("Frame")
 	local player_id = UnitGUID("player")
 	local actual_heals_total, cmbt_time = 0
  
-	hText = InfoLeft:CreateFontString(nil, "LOW")
+	hText = TukuiInfoLeft:CreateFontString(nil, "LOW")
 	hText:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	hText:SetText("0.0 ",tukuilocal.datatext_hps)
-	--hText:SetHeight(TukuiDB:Scale(23))
  
-	panel_setpoint(db.hps_text, hText)
+	TukuiDB.PP(db.hps_text, hText)
  
 	HPS_FEED:EnableMouse(true)
 	HPS_FEED:SetHeight(TukuiDB:Scale(20))
@@ -851,12 +897,12 @@ end
 -- player power (attackpower or power depending on what you have more of)
 --------------------------------------------------------------------
 
-if not db.power == nil or db.power > 0 then
+if db.power and db.power > 0 then
 	local Stat = CreateFrame("Frame")
 
-	local Text  = InfoLeft:CreateFontString(nil, "LOW")
+	local Text  = TukuiInfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
-	panel_setpoint(db.power, Text)
+	TukuiDB.PP(db.power, Text)
 
 	local int = 1
 
@@ -904,12 +950,12 @@ end
 -- player haste
 --------------------------------------------------------------------
 
-if not db.haste == nil or db.haste > 0 then
+if db.haste and db.haste > 0 then
 	local Stat = CreateFrame("Frame")
 
-	local Text  = InfoLeft:CreateFontString(nil, "LOW")
+	local Text  = TukuiInfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
-	panel_setpoint(db.haste, Text)
+	TukuiDB.PP(db.haste, Text)
 
 	local int = 1
 
@@ -941,13 +987,13 @@ end
 -- player arp
 --------------------------------------------------------------------
 
-if not db.arp == nil or db.arp > 0 then
+if db.arp and db.arp > 0 then
 	local Stat = CreateFrame("Frame")
 	Stat:EnableMouse(true)
 
-	local Text  = InfoLeft:CreateFontString(nil, "LOW")
+	local Text  = TukuiInfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
-	panel_setpoint(db.arp, Text)
+	TukuiDB.PP(db.arp, Text)
    
 	local int = 1
 
@@ -967,12 +1013,12 @@ end
 -- Crit (Spell or Melee.. or ranged)
 --------------------------------------------------------------------
 
-if not db.crit == nil or db.crit > 0 then
+if db.crit and db.crit > 0 then
 	local Stat = CreateFrame("Frame")
 
-	local Text  = InfoLeft:CreateFontString(nil, "LOW")
+	local Text  = TukuiInfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
-	panel_setpoint(db.crit, Text)
+	TukuiDB.PP(db.crit, Text)
 
 	local int = 1
 
@@ -1002,13 +1048,13 @@ end
 -- Player Avoidance
 --------------------------------------------------------------------
 
-if not db.avd == nil or db.avd > 0 then
+if db.avd and db.avd > 0 then
 	local Stat = CreateFrame("Frame")
 	Stat:EnableMouse(true)
 
-	local Text  = InfoLeft:CreateFontString(nil, "LOW")
+	local Text  = TukuiInfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
-	panel_setpoint(db.avd, Text)
+	TukuiDB.PP(db.avd, Text)
 
 	local int = 1
 
@@ -1052,7 +1098,7 @@ if not db.avd == nil or db.avd > 0 then
 			if not InCombatLockdown() then
 				GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB:Scale(6));
 				GameTooltip:ClearAllPoints()
-				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, Stats.TTSpacing)
+				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
 				GameTooltip:ClearLines()
 				if targetlv > 1 then
 					GameTooltip:AddDoubleLine(tukuilocal.datatext_avoidancebreakdown.." ("..tukuilocal.datatext_lvl.." "..targetlv..")")
@@ -1083,13 +1129,13 @@ end
 -- player Armor
 --------------------------------------------------------------------
 
-if not db.armor == nil or db.armor > 0 then
+if db.armor and db.armor > 0 then
 	local Stat = CreateFrame("Frame")
 	Stat:EnableMouse(true)
 
-	local Text  = InfoLeft:CreateFontString(nil, "LOW")
+	local Text  = TukuiInfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
-	panel_setpoint(db.armor, Text)
+	TukuiDB.PP(db.armor, Text)
 
 	local int = 1
 
@@ -1104,7 +1150,7 @@ if not db.armor == nil or db.armor > 0 then
 		if not InCombatLockdown() then
 			GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB:Scale(6));
 			GameTooltip:ClearAllPoints()
-			GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, Stats.TTSpacing)
+			GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
 			GameTooltip:ClearLines()
 			GameTooltip:AddLine(tukuilocal.datatext_mitigation)
 			local lv = 83
@@ -1138,27 +1184,26 @@ end
 
 --------------------------------------------------------------------
 -- BGScore (original feature by elv22, edited by Tukz)
--- http://www.tukui.org/forum/viewtopic.php?f=17&t=2857
 --------------------------------------------------------------------
 
-if TukuiDB["datatext"].battleground == true then
+if db.battleground == true then
 	local Stat = CreateFrame("Frame")
 	Stat:EnableMouse(true)
 	
-	local Text1  = InfoLeftBattleGround:CreateFontString(nil, "OVERLAY")
+	local Text1  = TukuiInfoLeftBattleGround:CreateFontString(nil, "OVERLAY")
 	Text1:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
-	Text1:SetPoint("LEFT", InfoLeftBattleGround, 30, 0.5)
-	Text1:SetHeight(InfoLeft:GetHeight())
+	Text1:SetPoint("LEFT", TukuiInfoLeftBattleGround, 30, 0.5)
+	Text1:SetHeight(TukuiInfoLeft:GetHeight())
 
-	local Text2  = InfoLeftBattleGround:CreateFontString(nil, "OVERLAY")
+	local Text2  = TukuiInfoLeftBattleGround:CreateFontString(nil, "OVERLAY")
 	Text2:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
-	Text2:SetPoint("CENTER", InfoLeftBattleGround, 0, 0.5)
-	Text2:SetHeight(InfoLeft:GetHeight())
+	Text2:SetPoint("CENTER", TukuiInfoLeftBattleGround, 0, 0.5)
+	Text2:SetHeight(TukuiInfoLeft:GetHeight())
 
-	local Text3  = InfoLeftBattleGround:CreateFontString(nil, "OVERLAY")
+	local Text3  = TukuiInfoLeftBattleGround:CreateFontString(nil, "OVERLAY")
 	Text3:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
-	Text3:SetPoint("RIGHT", InfoLeftBattleGround, -30, 0.5)
-	Text3:SetHeight(InfoLeft:GetHeight())
+	Text3:SetPoint("RIGHT", TukuiInfoLeftBattleGround, -30, 0.5)
+	Text3:SetHeight(TukuiInfoLeft:GetHeight())
 
 	local int = 1
 	local function Update(self, t)
