@@ -50,6 +50,7 @@
 	<Script file="scripts\lootroll.lua"/>
 	<Script file="scripts\map.lua"/>
 	<Script file="scripts\mirror.lua"/>
+	<Script file="scripts\reminder.lua"/>
 	
 	<Script file="unitframes\plugins\smooth.lua"/>
 	<Script file="unitframes\plugins\aurawatch.lua"/>

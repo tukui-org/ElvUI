@@ -141,36 +141,3 @@ if (TukuiDB["unitframes"].ws_show_player) then
 	WeakenedPlayerFrame:SetScript("OnEvent", WeakenedPlayerCheck)
 	WeakenedPlayerFrame:RegisterEvent("UNIT_AURA")
 end
-
-if TukuiDB["unitframes"].if_warning == true then
-	local InnerFire = CreateFrame("Frame", _, UIParent)
-	TukuiDB:CreatePanel(InnerFire, 40, 40, "CENTER", UIParent, "CENTER", 0, TukuiDB:Scale(200))
-
-	InnerFire.icon = InnerFire:CreateTexture(nil,"LOW")
-	InnerFire.icon:SetTexture("Interface\\AddOns\\Tukui\\media\\textures\\innerfire")
-	InnerFire.icon:SetPoint("center",InnerFire,"center",0,0)
-	InnerFire.icon:SetWidth(TukuiDB:Scale(38));
-	InnerFire.icon:SetHeight(TukuiDB:Scale(38));
-
-
-	local function InnerFireCheck(self, event, unit, spell)
-		local inCombat = UnitAffectingCombat("player")
-		local hasVehicle = UnitHasVehicleUI("unit")  or UnitHasVehicleUI("name")
-		if UnitLevel("player") == MAX_PLAYER_LEVEL then
-			if not UnitBuff("player", tukuilocal.priest_ifbuff) and inCombat and not hasVehicle then
-				self:Show()
-				PlaySound("RaidWarning")
-			else
-				self:Hide()
-			end
-		else
-			self:Hide()
-		end
-	end
-
-	InnerFire:SetScript("OnEvent", InnerFireCheck)
-	InnerFire:RegisterEvent("UNIT_AURA")
-	InnerFire:RegisterEvent("PLAYER_ENTERING_WORLD")
-	InnerFire:RegisterEvent("PLAYER_REGEN_ENABLED")
-	InnerFire:RegisterEvent("PLAYER_REGEN_DISABLED")
-end

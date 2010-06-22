@@ -68,7 +68,6 @@ TukuiDB["unitframes"] = {
 	["ws_show_time"] = false, -- show time on weakened soul bar
 	["ws_show_player"] = true, -- show weakened soul bar on player unit
 	["ws_show_target"] = true, -- show weakened soul bar on target unit
-	["if_warning"] = true, -- show innerfire warning when in combat and not active.
 	
 	-- death knight only plugin
 	["runebar"] = true, -- enable tukui runebar plugin
@@ -184,4 +183,8 @@ TukuiDB["invite"] = {
 
 TukuiDB["watchframe"] = { 
 	["movable"] = true, -- disable this if you run "Who Framed Watcher Wabbit" from seerah.
+}
+
+TukuiDB["buffreminder"] = {
+	["enable"] = true, -- this is now the new innerfire warning script for all armor/aspect class.
 }
