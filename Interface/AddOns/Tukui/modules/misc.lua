@@ -1,11 +1,6 @@
 -- disable micro button update
 AchievementMicroButton_Update = TukuiDB.dummy
 
-function GameTooltip:FadeOut()
-
-end
-
-
 -- always show worldstate behind buffs
 WorldStateAlwaysUpFrame:SetFrameStrata("BACKGROUND")
 WorldStateAlwaysUpFrame:SetFrameLevel(0)
