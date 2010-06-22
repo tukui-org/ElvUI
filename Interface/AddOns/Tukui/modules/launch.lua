@@ -257,6 +257,11 @@ TukuiOnLogon:SetScript("OnEvent", function()
 		
 		-- force lua error enable for PTR
 		-- SetCVar("scriptErrors", 1)
+		
+		-- force chat CVar to be applied
+		SetCVar("chatStyle", "classic")
+		SetCVar("WholeChatWindowClickable", 0)
+		SetCVar("ConversationMode", "inline")
 				
 		print(tukuilocal.core_welcome1..TukuiDB.version)
 		print(tukuilocal.core_welcome2)
