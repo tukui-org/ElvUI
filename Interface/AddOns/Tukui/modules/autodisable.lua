@@ -29,11 +29,11 @@ end
 -- because users are too lazy to disable feature in config file
 -- adding an auto disable if some mods are loaded
 
-if (IsAddOnLoaded("Stuf") or IsAddOnLoaded("PitBull4") or IsAddOnLoaded("Shadowed Unit Frames") or IsAddOnLoaded("ag_UnitFrames")) then
+if (IsAddOnLoaded("Stuf") or IsAddOnLoaded("PitBull4") or IsAddOnLoaded("ShadowedUnitFrames") or IsAddOnLoaded("ag_UnitFrames")) then
 	TukuiDB["unitframes"].enable = false
 end
 
-if (IsAddOnLoaded("Tidy Plates") or IsAddOnLoaded("Aloft")) then
+if (IsAddOnLoaded("TidyPlates") or IsAddOnLoaded("Aloft")) then
 	TukuiDB["nameplate"].enable = false
 end
 
@@ -49,6 +49,6 @@ if (IsAddOnLoaded("Quartz") or IsAddOnLoaded("AzCastBar") or IsAddOnLoaded("eCas
 	TukuiDB["unitframes"].unitcastbar = false
 end
 
-if (IsAddOnLoaded("Afflicted3") or IsAddOnLoaded("Interrupt Bar")) then
+if (IsAddOnLoaded("Afflicted3") or IsAddOnLoaded("InterruptBar")) then
 	TukuiDB["arena"].spelltracker = false
 end
