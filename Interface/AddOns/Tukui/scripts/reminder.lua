@@ -56,12 +56,10 @@ if (TukuiDB["buffreminder"].enable) then
 					local usable, nomana = IsUsableSpell(name)
 					if (usable or nomana) then
 						self.icon:SetTexture(select(3, GetSpellInfo(buff)))
-						print(self.icon:GetTexture())
 						break
 					end
 				end
 				if (not self.icon:GetTexture() and event == "PLAYER_LOGIN") then
-					print("no tex")
 					self:UnregisterAllEvents()
 					self:RegisterEvent("LEARNED_SPELL_IN_TAB")
 					return
