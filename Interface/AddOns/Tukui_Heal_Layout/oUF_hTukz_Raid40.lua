@@ -124,7 +124,7 @@ function TukuiDB.createAuraWatch(self, unit)
 			
 			local tex = icon:CreateTexture(nil, "OVERLAY")
 			tex:SetAllPoints(icon)
-			tex:SetTexture([=[Interface\AddOns\Tukui\media\blank]=])
+			tex:SetTexture([=[Interface\AddOns\Tukui\media\textures\blank]=])
 			if (spell[3]) then
 				tex:SetVertexColor(unpack(spell[3]))
 			else
