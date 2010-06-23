@@ -2,9 +2,8 @@
 
 if not TukuiDB["nameplate"].enable == true then return end
 
-local _, tNamePlates = ...
-
-tNamePlates.eventFrame = CreateFrame("Frame", nil, UIParent)
+local tNamePlates = CreateFrame("Frame", nil, UIParent)
+tNamePlates:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
 
 local barTexture = TukuiDB["media"].normTex
 local overlayTexture = [=[Interface\Tooltips\Nameplate-Border]=]
@@ -289,7 +288,7 @@ end
 
 local numKids = 0
 local lastUpdate = 0
-tNamePlates.eventFrame:SetScript("OnUpdate", function(self, elapsed)
+tNamePlates:SetScript("OnUpdate", function(self, elapsed)
 	lastUpdate = lastUpdate + elapsed
 
 	if lastUpdate > 0.05 then
