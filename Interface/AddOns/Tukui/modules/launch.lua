@@ -217,17 +217,21 @@ TukuiOnLogon:SetScript("OnEvent", function()
 		if TukuiDB["actionbar"].enable == true then
 			SetActionBarToggles( 1, 1, 1, 1, 0 )
 			
-			-- force showing grid on all action bars
-			SetCVar("alwaysShowActionBars", 1)
-			ActionButton_HideGrid = function() end
-			for i = 1, 12 do
-				local button = _G[format("ActionButton%d", i)]
-				button:SetAttribute("showgrid", 1)
-				ActionButton_ShowGrid(button)
+			if TukuiDB["actionbar"].showgrid == true then
+				-- force showing grid on all action bars
+				SetCVar("alwaysShowActionBars", 1)
+				ActionButton_HideGrid = function() end
+				for i = 1, 12 do
+					local button = _G[format("ActionButton%d", i)]
+					button:SetAttribute("showgrid", 1)
+					ActionButton_ShowGrid(button)
 
-				button = _G[format("BonusActionButton%d", i)]
-				button:SetAttribute("showgrid", 1)
-				ActionButton_ShowGrid(button)
+					button = _G[format("BonusActionButton%d", i)]
+					button:SetAttribute("showgrid", 1)
+					ActionButton_ShowGrid(button)
+				end
+			else
+				SetCVar("alwaysShowActionBars", 0)
 			end
 		end
 	

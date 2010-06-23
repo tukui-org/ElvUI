@@ -93,6 +93,7 @@ TukuiDB["actionbar"] = {
 	["hideshapeshift"] = false, -- hide shapeshift or totembar because it was a lot requested.
 	["bottomrows"] = 1, -- numbers of row you want to show at the bottom (select between 1 and 2 only)
 	["rightbars"] = 0, -- numbers of right bar you want
+	["showgrid"] = true, -- show grid on empty button
 }
 
 TukuiDB["nameplate"] = {
