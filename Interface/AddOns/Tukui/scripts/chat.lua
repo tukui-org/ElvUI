@@ -14,6 +14,7 @@ InterfaceOptionsSocialPanelConversationMode:Hide()
 
 -- disable some chat functions
 FCF_MinimizeFrame = TukuiDB.dummy
+FCF_RestorePositionAndDimensions = TukuiDB.dummy
 
 local replaceschan = {
 	['Гильдия'] = '[Г]',
