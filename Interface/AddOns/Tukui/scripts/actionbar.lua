@@ -367,9 +367,9 @@ end
 
 local function rightbaralpha(alpha)
 	TukuiActionBarBackgroundRight:SetAlpha(alpha)
-	RightBarLine:SetAlpha(alpha)
-	CubeRightBarUP:SetAlpha(alpha)
-	CubeRightBarDown:SetAlpha(alpha)
+	TukuiRightBarLine:SetAlpha(alpha)
+	TukuiCubeRightBarUP:SetAlpha(alpha)
+	TukuiCubeRightBarDown:SetAlpha(alpha)
 	if db.rightbars > 2 then
 		if MultiBarLeft:IsShown() then
 			for i=1, 12 do
@@ -400,9 +400,9 @@ local function rightbaralpha(alpha)
 end
 
 if db.rightbarmouseover == true and db.rightbars > 0 then
-	RightBarLine:SetAlpha(0)
-	CubeRightBarUP:SetAlpha(0)
-	CubeRightBarDown:SetAlpha(0)
+	TukuiRightBarLine:SetAlpha(0)
+	TukuiCubeRightBarUP:SetAlpha(0)
+	TukuiCubeRightBarDown:SetAlpha(0)
 	TukuiActionBarBackgroundRight:EnableMouse(true)
 	TukuiPetActionBarBackground:EnableMouse(true)
 	TukuiActionBarBackgroundRight:SetAlpha(0)

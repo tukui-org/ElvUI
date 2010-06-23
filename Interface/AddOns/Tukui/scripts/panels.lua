@@ -114,8 +114,8 @@ if TukuiDB["actionbar"].enable == true or not (IsAddOnLoaded("Dominos") or IsAdd
 	end
 	if TukuiDB["actionbar"].rightbars > 0 then
 		local rbl = CreateFrame("Frame", "TukuiRightBarLine", barbgr)
-		local crblu = CreateFrame("Frame", "CubeRightBarUP", barbgr)
-		local crbld = CreateFrame("Frame", "CubeRightBarDown", barbgr)
+		local crblu = CreateFrame("Frame", "TukuiCubeRightBarUP", barbgr)
+		local crbld = CreateFrame("Frame", "TukuiCubeRightBarDown", barbgr)
 		TukuiDB:CreatePanel(rbl, 2, (TukuiDB.buttonsize / 2 * 27) + (TukuiDB.buttonspacing * 6), "RIGHT", barbgr, "RIGHT", TukuiDB:Scale(1), 0)
 		rbl:SetWidth(TukuiDB:Scale(2))
 		TukuiDB:CreatePanel(crblu, 10, 10, "BOTTOM", rbl, "TOP", 0, 0)
