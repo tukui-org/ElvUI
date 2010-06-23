@@ -609,15 +609,15 @@ if db.wowtime and db.wowtime > 0 then
 					Text:SetText(Hr..":"..Min.." |cffffffff|r")
 				end
 			else
-				if Hr == 0 then Hr = 12 end
-				if Hr>12 then
-					Hr = Hr-12
+				if Hr>=12 then
+					if Hr>12 then Hr = Hr-12 end
 					if pendingCalendarInvites > 0 then
 						Text:SetText("|cffFF0000"..Hr..":"..Min.." |cffffffffpm|r")
 					else
 						Text:SetText(Hr..":"..Min.." |cffffffffpm|r")
 					end
 				else
+					if Hr == 0 then Hr = 12 end
 					if pendingCalendarInvites > 0 then
 						Text:SetText("|cffFF0000"..Hr..":"..Min.." |cffffffffam|r")
 					else
