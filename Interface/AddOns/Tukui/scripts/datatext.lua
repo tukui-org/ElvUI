@@ -601,17 +601,17 @@ if db.wowtime and db.wowtime > 0 then
 			end
 		else
 			local Hr, Min = GetGameTime()
-			if Hr == 0 then Hr = 12 end
 			if Min<10 then Min = "0"..Min end
-			if TukuiDB["datatext"].time24 == true then 
+			if TukuiDB["datatext"].time24 == true then
 				if pendingCalendarInvites > 0 then			
 					Text:SetText("|cffFF0000"..Hr..":"..Min.." |cffffffff|r")
 				else
 					Text:SetText(Hr..":"..Min.." |cffffffff|r")
 				end
-			else             
-				if Hr>=12 then
-					if not Hr==12 then Hr = Hr-12 end
+			else
+				if Hr == 0 then Hr = 12 end
+				if Hr>12 then
+					Hr = Hr-12
 					if pendingCalendarInvites > 0 then
 						Text:SetText("|cffFF0000"..Hr..":"..Min.." |cffffffffpm|r")
 					else
