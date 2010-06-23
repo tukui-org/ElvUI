@@ -17,7 +17,6 @@ if not TukuiDB["unitframes"].enable == true then return end
 
 local function tooltip(self)
 	local name, id, min, max, value = GetWatchedFactionInfo()
-	GameTooltip:SetOwner(self, 'ANCHOR_NONE')
 	GameTooltip:AddLine(string.format('%s (%s)', name, _G['FACTION_STANDING_LABEL'..id]))
 	GameTooltip:AddLine(string.format('%d / %d (%d%%)', value - min, max - min, (value - min) / (max - min) * 100))
 	GameTooltip:Show()
