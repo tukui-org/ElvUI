@@ -71,54 +71,67 @@ function TukuiDB:SetTemplate(f)
 	f:SetBackdropBorderColor(unpack(TukuiDB["media"].bordercolor))
 end
 
+function TukuiDB.TempChatSkin()
+	if TukuiDB["chat"].enable ~= true then return end
+	local chatFrame, chatTab, conversationIcon
+	for _, chatFrameName in pairs(CHAT_FRAMES) do
+		local frame = _G[chatFrameName]
+		if frame.isTemporary then
+				chatFrame = frame
+				chatTab = _G[chatFrame:GetName().."Tab"]
+				
+				chatTab.noMouseAlpha = 0
+				
+				_G[chatFrame:GetName()]:SetClampRectInsets(0,0,0,0)
+				_G[chatFrame:GetName()]:SetWidth(TukuiDB:Scale(TukuiDB["panels"].tinfowidth + 1))
+				_G[chatFrame:GetName()]:SetHeight(TukuiDB:Scale(111))
 
--- these chatframes are the BN chatframes and are only created when user call it.
--- it is the not the best way at all to do this, but at least for now, it work.
--- this function is temporary, i know this part of code really sux
--- 9 additionnal chatframe should be ok, i don't think we need more.
-function TukuiDB.NumChat()
-	TukuiDB.numChatWindows = NUM_CHAT_WINDOWS
-	
-	-- ok, a note for me, this part of code need to be rewritten later.
-	if ChatFrame11 and not ChatFrame12 then
-		TukuiDB.numChatWindows = NUM_CHAT_WINDOWS + 1
-	end
-	if ChatFrame12 and not ChatFrame13 then
-		TukuiDB.numChatWindows = NUM_CHAT_WINDOWS + 2
-	end
-	if ChatFrame13 and not ChatFrame14 then
-		TukuiDB.numChatWindows = NUM_CHAT_WINDOWS + 3
-	end	
-	if ChatFrame14 and not ChatFrame15 then
-		TukuiDB.numChatWindows = NUM_CHAT_WINDOWS + 4
-	end
-	if ChatFrame15 and not ChatFrame16 then
-		TukuiDB.numChatWindows = NUM_CHAT_WINDOWS + 5
-	end
-	if ChatFrame16 and not ChatFrame17 then
-		TukuiDB.numChatWindows = NUM_CHAT_WINDOWS + 6
-	end
-	if ChatFrame17 and not ChatFrame18 then
-		TukuiDB.numChatWindows = NUM_CHAT_WINDOWS + 7
-	end						
-	if ChatFrame18 and not ChatFrame19 then
-		TukuiDB.numChatWindows = NUM_CHAT_WINDOWS + 8
-	end								
-	if ChatFrame19 then
-		TukuiDB.numChatWindows = NUM_CHAT_WINDOWS + 9
-	end
-	
-	if TukuiDB.SetupChatComplete == true then
-		TukuiDB.SetupChat()
-		TukuiDB.ChannelsEdits()
-		TukuiDB.LinkMeURL()
-		TukuiDB.HyperlinkMouseover()
-		TukuiDB.ChatCopyButtons()
-		TukuiDB.TabsMouseover()
+				_G[chatFrame:GetName().."ButtonFrameUpButton"]:Hide()
+				_G[chatFrame:GetName().."ButtonFrameDownButton"]:Hide()
+				_G[chatFrame:GetName().."ButtonFrameBottomButton"]:Hide()
+				_G[chatFrame:GetName().."ButtonFrameMinimizeButton"]:Hide()
+				_G[chatFrame:GetName().."ResizeButton"]:Hide()
+				_G[chatFrame:GetName().."ButtonFrame"]:Hide()
+
+				_G[chatFrame:GetName().."ButtonFrameUpButton"]:SetScript("OnShow", function(self) self:Hide() end)
+				_G[chatFrame:GetName().."ButtonFrameDownButton"]:SetScript("OnShow", function(self) self:Hide() end)
+				_G[chatFrame:GetName().."ButtonFrameBottomButton"]:SetScript("OnShow", function(self) self:Hide() end)
+				_G[chatFrame:GetName().."ButtonFrameMinimizeButton"]:SetScript("OnShow", function(self) self:Hide() end)
+				_G[chatFrame:GetName().."ResizeButton"]:SetScript("OnShow", function(self) self:Hide() end)
+				_G[chatFrame:GetName().."ButtonFrame"]:SetScript("OnShow", function(self) self:Hide() end)
+
+				_G[chatFrame:GetName().."TabLeft"]:SetTexture(nil)
+				_G[chatFrame:GetName().."TabMiddle"]:SetTexture(nil)
+				_G[chatFrame:GetName().."TabRight"]:SetTexture(nil)
+				
+				_G[chatFrame:GetName().."TabSelectedLeft"]:SetTexture(nil)
+				_G[chatFrame:GetName().."TabSelectedMiddle"]:SetTexture(nil)
+				_G[chatFrame:GetName().."TabSelectedRight"]:SetTexture(nil)
+				
+				_G[chatFrame:GetName().."TabHighlightLeft"]:SetTexture(nil)
+				_G[chatFrame:GetName().."TabHighlightMiddle"]:SetTexture(nil)
+				_G[chatFrame:GetName().."TabHighlightRight"]:SetTexture(nil)
+
+				-- Stop the chat frame from fading out
+				_G[chatFrame:GetName()]:SetFading(false)
+				
+				-- Change the chat frame font 
+				_G[chatFrame:GetName()]:SetFont(TukuiDB["chat"].font, TukuiDB["chat"].fontsize)
+				
+				-- Set random stuff
+				_G[chatFrame:GetName()]:SetFrameStrata("LOW")
+				_G[chatFrame:GetName()]:SetMovable(true)
+				_G[chatFrame:GetName()]:SetUserPlaced(true)
+				
+				-- Hide tab texture
+				for j = 1, #CHAT_FRAME_TEXTURES do
+					_G[chatFrame:GetName()..CHAT_FRAME_TEXTURES[j]]:SetTexture(nil)
+				end
+				break
+		end
 	end
 end
-TukuiDB.NumChat()
-hooksecurefunc("FCF_OpenTemporaryWindow", TukuiDB.NumChat)
+hooksecurefunc("FCF_OpenTemporaryWindow", TukuiDB.TempChatSkin)
 
 
 

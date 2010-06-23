@@ -89,7 +89,7 @@ function TukuiDB.SetupChat()
 	ChatFrameMenuButton:Hide()
 	ChatFrameMenuButton:SetScript("OnShow", function(self) self:Hide() end)
 				
-	for i = 1, TukuiDB.numChatWindows do
+	for i = 1, NUM_CHAT_WINDOWS do
 		_G["ChatFrame"..i]:SetClampRectInsets(0,0,0,0)
 		_G["ChatFrame"..i]:SetWidth(TukuiDB:Scale(TukuiDB["panels"].tinfowidth + 1))
 		_G["ChatFrame"..i]:SetHeight(TukuiDB:Scale(111))
@@ -232,7 +232,7 @@ local function AddMessageHook(frame, text, ...)
 end
 
 function TukuiDB.ChannelsEdits()
-	for i = 1, TukuiDB.numChatWindows do
+	for i = 1, NUM_CHAT_WINDOWS do
 		if ( i ~= 2 ) then
 			local frame = _G["ChatFrame"..i]
 			AddMessageOriginal = frame.AddMessage
@@ -299,7 +299,7 @@ local function hook(self, text, ...)
 end
 
 function TukuiDB.LinkMeURL()
-	for i = 1, TukuiDB.numChatWindows do
+	for i = 1, NUM_CHAT_WINDOWS do
 		if ( i ~= 2 ) then
 			local frame = _G["ChatFrame"..i]
 			frame.f = frame.AddMessage
@@ -355,7 +355,7 @@ end
 
 function TukuiDB.HyperlinkMouseover()
 	local _G = getfenv(0)
-	for i=1, TukuiDB.numChatWindows do
+	for i=1, NUM_CHAT_WINDOWS do
 		if ( i ~= 2 ) then
 			local frame = _G["ChatFrame"..i]
 			orig1[frame] = frame:GetScript("OnHyperlinkEnter")
@@ -449,7 +449,7 @@ local function Copy(cf)
 end
 
 function TukuiDB.ChatCopyButtons()
-	for i = 1, TukuiDB.numChatWindows do
+	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G[format("ChatFrame%d",  i)]
 		local button = CreateFrame("Button", format("ButtonCF%d", i), cf)
 		button:SetPoint("BOTTOMRIGHT", 0, 0)

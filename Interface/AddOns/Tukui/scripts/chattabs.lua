@@ -29,7 +29,7 @@ CHAT_FRAME_TAB_ALERTING_NOMOUSE_ALPHA = 0
 local event = CreateFrame"Frame"
 
 function TukuiDB.TabsMouseover()
-	for i = 1, TukuiDB.numChatWindows do
+	for i = 1, NUM_CHAT_WINDOWS do
 		local chat = _G["ChatFrame"..i]
 		local tab = _G["ChatFrame"..i.."Tab"]
 		local editBox = _G["ChatFrame"..i.."EditBox"]

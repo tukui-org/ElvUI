@@ -71,16 +71,16 @@ local function install()
 	
 	-- Var ok, now setting chat frames.					
 	FCF_ResetChatWindows()
-	FCF_SetLocked(ChatFrame1, 0)
+	FCF_SetLocked(ChatFrame1, 1)
 	FCF_DockFrame(ChatFrame2)
-	FCF_SetLocked(ChatFrame2, 0)
+	FCF_SetLocked(ChatFrame2, 1)
 	FCF_OpenNewWindow("Spam")
-	FCF_SetLocked(ChatFrame3, 0)
+	FCF_SetLocked(ChatFrame3, 1)
 	FCF_DockFrame(ChatFrame3)
 
 	FCF_OpenNewWindow("Loot")
 	FCF_UnDockFrame(ChatFrame4)
-	FCF_SetLocked(ChatFrame4, 0)
+	FCF_SetLocked(ChatFrame4, 1)
 	ChatFrame4:Show();
 			
 	ChatFrame_RemoveAllMessageGroups(ChatFrame1)
