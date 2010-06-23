@@ -213,13 +213,13 @@ TukuiOnLogon:SetScript("OnEvent", function()
         TukuiOnLogon:UnregisterEvent("PLAYER_ENTERING_WORLD")
         TukuiOnLogon:SetScript("OnEvent", nil)
 		
-		--need a.b. to always be enabled
+		--set tukui action bar
 		if TukuiDB["actionbar"].enable == true then
 			SetActionBarToggles( 1, 1, 1, 1, 0 )
+			InterfaceOptionsActionBarsPanelAlwaysShowActionBars:Hide()
+			SetCVar("alwaysShowActionBars", 0)
 			
 			if TukuiDB["actionbar"].showgrid == true then
-				-- force showing grid on all action bars
-				SetCVar("alwaysShowActionBars", 1)
 				ActionButton_HideGrid = function() end
 				for i = 1, 12 do
 					local button = _G[format("ActionButton%d", i)]
@@ -229,9 +229,23 @@ TukuiOnLogon:SetScript("OnEvent", function()
 					button = _G[format("BonusActionButton%d", i)]
 					button:SetAttribute("showgrid", 1)
 					ActionButton_ShowGrid(button)
+					
+					button = _G[format("MultiBarRightButton%d", i)]
+					button:SetAttribute("showgrid", 1)
+					ActionButton_ShowGrid(button)
+
+					button = _G[format("MultiBarBottomRightButton%d", i)]
+					button:SetAttribute("showgrid", 1)
+					ActionButton_ShowGrid(button)
+					
+					button = _G[format("MultiBarLeftButton%d", i)]
+					button:SetAttribute("showgrid", 1)
+					ActionButton_ShowGrid(button)
+					
+					button = _G[format("MultiBarBottomLeftButton%d", i)]
+					button:SetAttribute("showgrid", 1)
+					ActionButton_ShowGrid(button)
 				end
-			else
-				SetCVar("alwaysShowActionBars", 0)
 			end
 		end
 	
