@@ -35,7 +35,7 @@ local function SetTooltip(self)
 
 	local bars = unit == 'pet' and 6 or 20
 
-	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMLEFT', 5, -5)
+	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM', 0, -5)
 	GameTooltip:AddLine(string.format('XP: %d / %d (%d%% - %d bars)', min, max, min/max * 100, bars))
 	GameTooltip:AddLine(string.format('Remaining: %d (%d%% - %d bars)', max - min, (max - min) / max * 100, bars * (max - min) / max))
 
