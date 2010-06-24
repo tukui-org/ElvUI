@@ -4,6 +4,13 @@ if not TukuiDB["actionbar"].enable == true then return end
 
 local db = TukuiDB["actionbar"]
 
+-- hide options that we don't need.
+InterfaceOptionsActionBarsPanelBottomLeft:Hide()
+InterfaceOptionsActionBarsPanelBottomRight:Hide()
+InterfaceOptionsActionBarsPanelRight:Hide()
+InterfaceOptionsActionBarsPanelRightTwo:Hide()
+InterfaceOptionsActionBarsPanelAlwaysShowActionBars:Hide()
+
 -- this thing below is only "invisible" frame holder to setup for action bar. Moving or changing these lines will do nothing visually in-game.
 -- we create invisible bar holder frame to avoid bugs, example, vehicle, seen in the past version of Tukui when showing or hidding bar.
 -- Running our codes via frame holder instead of blizzard default action bar frame name allow us to do what we want with 0 errors/crash.

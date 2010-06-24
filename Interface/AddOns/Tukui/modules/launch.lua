@@ -216,7 +216,6 @@ TukuiOnLogon:SetScript("OnEvent", function()
 		--set tukui action bar
 		if TukuiDB["actionbar"].enable == true then
 			SetActionBarToggles( 1, 1, 1, 1, 0 )
-			InterfaceOptionsActionBarsPanelAlwaysShowActionBars:Hide()
 			SetCVar("alwaysShowActionBars", 0)
 			
 			if TukuiDB["actionbar"].showgrid == true then
