@@ -1,6 +1,6 @@
 ## Interface: 30300
 ## Author: Tukz
-## Version: 10.44
+## Version: 10.45
 ## Title: |cffC495DDTukui|r
 ## Notes: UI of awesomeness!
 ## SavedVariables: TukuiData, TukuiArena
