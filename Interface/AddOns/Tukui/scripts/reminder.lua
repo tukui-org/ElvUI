@@ -48,7 +48,7 @@ TukuiDB["buffreminder"].buffs = {
 	},
 	DEATHKNIGHT = {
 		57330, -- horn of Winter
-	  	8075, -- Shaman Strength of Earth Totem
+		8075, -- Shaman Strength of Earth Totem
 	},
 }
 
