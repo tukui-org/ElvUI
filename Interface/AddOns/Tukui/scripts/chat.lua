@@ -137,7 +137,6 @@ function TukuiDB.SetupChat()
 		editbox:SetAltArrowKeyMode(false)		
 	end
 	
-	-- position chatframe, set sticky and align. This is only executed 1 time on player login.
 	-- Remember last channel
 	ChatTypeInfo.WHISPER.sticky = 1
 	ChatTypeInfo.BN_WHISPER.sticky = 1
