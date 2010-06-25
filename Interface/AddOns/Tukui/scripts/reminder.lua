@@ -43,8 +43,12 @@ TukuiDB["buffreminder"].buffs = {
 		974, -- earth shield
 	},
 	WARRIOR = {
-		47440, -- commanding Shout
-		47436, -- battle Shout
+		469, -- commanding Shout
+		6673, -- battle Shout
+	},
+	DEATHKNIGHT = {
+		57330, -- horn of Winter
+	  	8075, -- Shaman Strength of Earth Totem
 	},
 }
 
