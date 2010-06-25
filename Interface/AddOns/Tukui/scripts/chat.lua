@@ -496,3 +496,15 @@ function FloatingChatFrame_OnMouseScroll(self, delta)
 		end
 	end
 end
+
+------------------------------------------------------------------------
+--	Play sound files system
+------------------------------------------------------------------------
+
+local SoundSys = CreateFrame("Frame")
+SoundSys:RegisterEvent("CHAT_MSG_WHISPER")
+SoundSys:HookScript("OnEvent", function(self, event, ...)
+	if event == "CHAT_MSG_WHISPER" then
+		PlaySoundFile(TukuiDB["media"].whisper)
+	end
+end)

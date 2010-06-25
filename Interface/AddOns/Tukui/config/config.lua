@@ -5,21 +5,6 @@ TukuiDB["general"] = {
 	["multisampleprotect"] = true, -- i don't recommend this because of shitty border but, voila!
 }
 
-TukuiDB["media"] = {
-	["font"] = [[fonts\ARIALN.ttf]], -- general font of tukui
-	["uffont"] = [[Interface\AddOns\Tukui\media\fonts\uf_font.ttf]], -- general font of unitframes
-	["dmgfont"] = [[Interface\AddOns\Tukui\media\fonts\combat_font.ttf]], -- general font of dmg / sct
-	["normTex"] = [[Interface\AddOns\Tukui\media\textures\normTex]], -- texture used for tukui healthbar/powerbar/etc
-	["glowTex"] = [[Interface\AddOns\Tukui\media\textures\glowTex]], -- the glow text around some frame.
-	["bubbleTex"] = [[Interface\AddOns\Tukui\media\textures\bubbleTex]], -- unitframes combo points
-	["blank"] = [[Interface\AddOns\Tukui\media\textures\blank]], -- the main texture for all borders/panels
-	["bordercolor"] = { .6,.6,.6,1 }, -- border color of tukui panels
-	["altbordercolor"] = { .4,.4,.4,1 }, -- alternative border color, mainly for unitframes text panels.
-	["backdropcolor"] = { .1,.1,.1,1 }, -- background color of tukui panels
-	["pixelfont"] = [[fonts\ARIALN.ttf]], -- another general font 
-	["buttonhover"] = [[Interface\AddOns\Tukui\media\textures\button_hover]],
-}
-
 TukuiDB["unitframes"] = {
 	-- general options
 	["enable"] = true, -- -- can i really need to explain this?
@@ -93,7 +78,7 @@ TukuiDB["actionbar"] = {
 	["hideshapeshift"] = false, -- hide shapeshift or totembar because it was a lot requested.
 	["bottomrows"] = 1, -- numbers of row you want to show at the bottom (select between 1 and 2 only)
 	["rightbars"] = 0, -- numbers of right bar you want
-	["showgrid"] = false, -- show grid on empty button
+	["showgrid"] = true, -- show grid on empty button
 }
 
 TukuiDB["nameplate"] = {
