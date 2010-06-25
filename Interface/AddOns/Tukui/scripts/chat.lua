@@ -138,28 +138,23 @@ function TukuiDB.SetupChat()
 	end
 	
 	-- position chatframe, set sticky and align. This is only executed 1 time on player login.
-	if TukuiDB.SetupChatComplete ~= true then
-		-- Remember last channel
-		ChatTypeInfo.WHISPER.sticky = 1
-		ChatTypeInfo.BN_WHISPER.sticky = 1
-		ChatTypeInfo.OFFICER.sticky = 1
-		ChatTypeInfo.RAID_WARNING.sticky = 1
-		ChatTypeInfo.CHANNEL.sticky = 1
-					
-		-- Position the general chat frame
-		ChatFrame1:ClearAllPoints()
-		ChatFrame1:SetPoint("BOTTOMLEFT", TukuiInfoLeft, "TOPLEFT", TukuiDB:Scale(-1), TukuiDB:Scale(6))
-			
-		-- Position the chatframe 4
-		ChatFrame4:ClearAllPoints()
-		ChatFrame4:SetPoint("BOTTOMRIGHT", TukuiInfoRight, "TOPRIGHT", 0, TukuiDB:Scale(6))
+	-- Remember last channel
+	ChatTypeInfo.WHISPER.sticky = 1
+	ChatTypeInfo.BN_WHISPER.sticky = 1
+	ChatTypeInfo.OFFICER.sticky = 1
+	ChatTypeInfo.RAID_WARNING.sticky = 1
+	ChatTypeInfo.CHANNEL.sticky = 1
+				
+	-- Position the general chat frame
+	ChatFrame1:ClearAllPoints()
+	ChatFrame1:SetPoint("BOTTOMLEFT", TukuiInfoLeft, "TOPLEFT", TukuiDB:Scale(-1), TukuiDB:Scale(6))
 		
-		-- Align the text to the right on cf4
-		ChatFrame4:SetJustifyH("RIGHT")
-	end
+	-- Position the chatframe 4
+	ChatFrame4:ClearAllPoints()
+	ChatFrame4:SetPoint("BOTTOMRIGHT", TukuiInfoRight, "TOPRIGHT", 0, TukuiDB:Scale(6))
 	
-	-- tell TukuiDB.NumChat function that chatframes are set
-	TukuiDB.SetupChatComplete = true
+	-- Align the text to the right on cf4
+	ChatFrame4:SetJustifyH("RIGHT")
 end
 AddOn:RegisterEvent("PLAYER_ENTERING_WORLD")
 AddOn["PLAYER_ENTERING_WORLD"] = TukuiDB.SetupChat

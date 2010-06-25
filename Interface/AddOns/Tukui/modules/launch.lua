@@ -62,8 +62,6 @@ local function install()
 		
 		-- setting this for me only, because setting these values on a standard computer is not recommended
 		if TukuiDB.myname == "Tukz" then	
-			SetCVar("gxTextureCacheSize", 512)
-			
 			-- setting this the creator or tukui only, because a lot of people don't like this change.
 			SetCVar("secureAbilityToggle", 0)
 		end
