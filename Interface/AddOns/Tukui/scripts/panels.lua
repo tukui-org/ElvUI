@@ -63,32 +63,34 @@ TukuiDB:CreatePanel(iright, TukuiDB["panels"].tinfowidth, 23, "RIGHT", ltoabr, "
 iright:SetFrameLevel(2)
 
 -- CHAT EDIT BOX
-for i = 1, NUM_CHAT_WINDOWS do
-	ChatFrameEditBox = _G["ChatFrame"..i.."EditBox"]
-	local edit = CreateFrame("Frame", "TukuiChatFrameEditBoxBackground", ChatFrameEditBox)
-	TukuiDB:CreatePanel(edit, 1, 1, "LEFT", "ChatFrameEditBox", "LEFT", 0, 0)
-	edit:ClearAllPoints()
-	edit:SetAllPoints(ileft)
-	edit:SetFrameStrata("HIGH")
-	edit:SetFrameLevel(2)
-	local function colorize(r,g,b)
-		edit:SetBackdropBorderColor(r, g, b)
-	end
-
-	hooksecurefunc("ChatEdit_UpdateHeader", function()
-	local activechat = _G["ChatFrame"..i]
-	local type = activechat.editBox:GetAttribute("chatType")
-		if ( type == "CHANNEL" ) then
-		local id = GetChannelName(activechat.editBox:GetAttribute("channelTarget"))
-			if id == 0 then
-				colorize(0.6,0.6,0.6)
-			else
-				colorize(ChatTypeInfo[type..id].r,ChatTypeInfo[type..id].g,ChatTypeInfo[type..id].b)
-			end
-		else
-			colorize(ChatTypeInfo[type].r,ChatTypeInfo[type].g,ChatTypeInfo[type].b)
+if TukuiDB["chat"].enable == true then
+	for i = 1, NUM_CHAT_WINDOWS do
+		ChatFrameEditBox = _G["ChatFrame"..i.."EditBox"]
+		local edit = CreateFrame("Frame", "TukuiChatFrameEditBoxBackground", ChatFrameEditBox)
+		TukuiDB:CreatePanel(edit, 1, 1, "LEFT", "ChatFrameEditBox", "LEFT", 0, 0)
+		edit:ClearAllPoints()
+		edit:SetAllPoints(ileft)
+		edit:SetFrameStrata("HIGH")
+		edit:SetFrameLevel(2)
+		local function colorize(r,g,b)
+			edit:SetBackdropBorderColor(r, g, b)
 		end
-	end)
+
+		hooksecurefunc("ChatEdit_UpdateHeader", function()
+		local activechat = _G["ChatFrame"..i]
+		local type = activechat.editBox:GetAttribute("chatType")
+			if ( type == "CHANNEL" ) then
+			local id = GetChannelName(activechat.editBox:GetAttribute("channelTarget"))
+				if id == 0 then
+					colorize(0.6,0.6,0.6)
+				else
+					colorize(ChatTypeInfo[type..id].r,ChatTypeInfo[type..id].g,ChatTypeInfo[type..id].b)
+				end
+			else
+				colorize(ChatTypeInfo[type].r,ChatTypeInfo[type].g,ChatTypeInfo[type].b)
+			end
+		end)
+	end
 end
 
 if TukuiMinimap then
