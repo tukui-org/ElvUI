@@ -46,9 +46,6 @@ TukuiDB["buffreminder"].buffs = {
 		47440, -- commanding Shout
 		47436, -- battle Shout
 	},
-	DEATHKNIGHT = {
-		57330, -- horn of Winter
-	},
 }
 
 -- Nasty stuff below. Don't touch.
@@ -78,7 +75,7 @@ if (buffs and buffs[1]) then
 				self:RegisterEvent("PLAYER_REGEN_DISABLED")
 			end
 		end
-		if (UnitAffectingCombat("player") and not (UnitHasVehicleUI("unit") or UnitHasVehicleUI("name"))) then
+		if (UnitAffectingCombat("player") and not UnitInVehicle("player")) then
 			for i, buff in pairs(buffs) do
 				local name = GetSpellInfo(buff)
 				if (name and UnitBuff("player", name)) then
