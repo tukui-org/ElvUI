@@ -141,6 +141,7 @@ function TukuiDB.SetupChat()
 	if TukuiDB.SetupChatComplete ~= true then
 		-- Remember last channel
 		ChatTypeInfo.WHISPER.sticky = 1
+		ChatTypeInfo.BN_WHISPER.sticky = 1
 		ChatTypeInfo.OFFICER.sticky = 1
 		ChatTypeInfo.RAID_WARNING.sticky = 1
 		ChatTypeInfo.CHANNEL.sticky = 1
