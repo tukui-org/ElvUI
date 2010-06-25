@@ -42,6 +42,13 @@ if (TukuiDB["buffreminder"].enable) then
 			324, -- lightning shield
 			974, -- earth shield
 		},
+		WARRIOR = {
+			47440, -- commanding Shout
+			47436, -- battle Shout
+		},
+		DEATHKNIGHT = {
+			57330, -- horn of Winter
+		},
 	}
 
 	-- Nasty stuff below. Don't touch.
