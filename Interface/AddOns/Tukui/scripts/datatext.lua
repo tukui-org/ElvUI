@@ -21,12 +21,16 @@ function TukuiDB.PP(p, obj)
 	elseif p == 6 then
 		obj:SetHeight(TukuiInfoRight:GetHeight())
 		obj:SetPoint("RIGHT", TukuiInfoRight, -30, 0.5)
-	elseif p == 7 then
-		obj:SetHeight(TukuiMinimapStatsLeft:GetHeight())
-		obj:SetPoint("CENTER", TukuiMinimapStatsLeft, 0, 1)
-	elseif p == 8 then
-		obj:SetHeight(TukuiMinimapStatsRight:GetHeight())
-		obj:SetPoint("CENTER", TukuiMinimapStatsRight, 0, 1)
+	end
+	
+	if TukuiMinimap then
+		if p == 7 then
+			obj:SetHeight(TukuiMinimapStatsLeft:GetHeight())
+			obj:SetPoint("CENTER", TukuiMinimapStatsLeft, 0, 1)
+		elseif p == 8 then
+			obj:SetHeight(TukuiMinimapStatsRight:GetHeight())
+			obj:SetPoint("CENTER", TukuiMinimapStatsRight, 0, 1)
+		end
 	end
 end
 
