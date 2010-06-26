@@ -88,7 +88,9 @@ if (buffs and buffs[1]) then
 				end
 			end
 			self:Show()
-			PlaySoundFile(TukuiDB["media"].warning)
+			if TukuiDB["buffreminder"].sound == true then
+				PlaySoundFile(TukuiDB["media"].warning)
+			end
 		else
 			self:Hide()
 		end
