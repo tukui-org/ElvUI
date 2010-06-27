@@ -61,7 +61,7 @@ if TukuiDB.client == "zhTW" then
 	tukuilocal.datatext_graveyardsdefended = "墓地防守:"
 	tukuilocal.datatext_demolishersdestroyed = "石毀車摧毀:"
 	tukuilocal.datatext_gatesdestroyed = "大門摧毀:"
-	tukuilocal.datatext_totalmemusage = "Total Memory Usage:"
+	tukuilocal.datatext_totalmemusage = "總共記憶體使用:"
 
 
 	tukuilocal.Slots = {

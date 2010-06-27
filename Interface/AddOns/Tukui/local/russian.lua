@@ -61,7 +61,7 @@ if TukuiDB.client == "ruRU" then
 	tukuilocal.datatext_graveyardsdefended = "Оборона кладбищ:"
 	tukuilocal.datatext_demolishersdestroyed = "Разрушителей уничтожено:"
 	tukuilocal.datatext_gatesdestroyed = "Врат разрушено:"
-	tukuilocal.datatext_totalmemusage = "Total Memory Usage:"
+	tukuilocal.datatext_totalmemusage = "Общее использование памяти:"
 
 
 	tukuilocal.Slots = {
@@ -187,8 +187,8 @@ if TukuiDB.client == "ruRU" then
 	tukuilocal.bind_save = "Сохранить назначения"
 	tukuilocal.bind_discardbind = "Отменить назначения"
 	
-	tukuilocal.hunter_unhappy = "Your pet is unhappy!"
-	tukuilocal.hunter_content = "Your pet is content!"
-	tukuilocal.hunter_happy = "Your pet is happy!"
+	tukuilocal.hunter_unhappy = "Ваш питомец несчастлив!"
+	tukuilocal.hunter_content = "Ваш питомец доволен!"
+	tukuilocal.hunter_happy = "Ваш питомец счастлив!"
 end
 
