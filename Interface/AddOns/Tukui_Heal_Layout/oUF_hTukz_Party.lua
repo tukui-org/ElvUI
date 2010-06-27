@@ -143,7 +143,7 @@ local function auraIcon(self, button, icons)
 	
 	button.cd.noOCC = true		 	-- hide OmniCC CDs
 	button.cd.noCooldownCount = true	-- hide CDC CDs
-	button.count:SetFont(TukuiDB["media"].pixelfont, TukuiDB:Scale(10), "THINOUTLINE")
+	button.count:SetFont(TukuiDB["media"].font, TukuiDB:Scale(10), "THINOUTLINE")
 	button.count:ClearAllPoints()
 	button.count:SetPoint("BOTTOMRIGHT", 0, 2)
 	TukuiDB:SetTemplate(button)
