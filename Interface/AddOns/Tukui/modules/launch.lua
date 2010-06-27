@@ -245,11 +245,11 @@ TukuiOnLogon:SetScript("OnEvent", function()
 			end
 		end
 	
-		if resolution == "800x600"
-			or resolution == "1024x768"
-			or resolution == "720x576"
-			or resolution == "1024x600" -- eeepc reso
-			or resolution == "1152x864" then
+		if TukuiDB.getscreenresolution == "800x600"
+			or TukuiDB.getscreenresolution == "1024x768"
+			or TukuiDB.getscreenresolution == "720x576"
+			or TukuiDB.getscreenresolution == "1024x600" -- eeepc reso
+			or TukuiDB.getscreenresolution == "1152x864" then
 				SetCVar("useUiScale", 0)
 				StaticPopup_Show("DISABLE_UI")
 		else
