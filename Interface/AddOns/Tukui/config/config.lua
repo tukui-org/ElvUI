@@ -148,6 +148,7 @@ TukuiDB["tooltip"] = {
 	["cursor"] = false, -- enable units tooltip on cursor
 	["hidecombat"] = false, -- hide bottom-right tooltip when in combat
 	["hidebuttons"] = false, -- always hide action bar buttons tooltip.
+	["hideuf"] = false, -- hide tooltip on unitframes
 }
 
 TukuiDB["combatfont"] = {

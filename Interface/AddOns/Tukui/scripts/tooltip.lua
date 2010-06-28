@@ -56,9 +56,9 @@ hooksecurefunc("GameTooltip_SetDefaultAnchor", defaultPosition)
 local function OnUpdate(self, ...)
 	if self:GetAnchorType() == "ANCHOR_NONE" then
 		if InCombatLockdown() and db.hidecombat == true then
-			self:SetAlpha(0)
+			self:Hide()
 		else
-			self:SetAlpha(1)
+			self:Show()
 			if TukuiDB["bags"].enable == true and StuffingFrameBags:IsShown() then
 				self:ClearAllPoints()
 				self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", 0, TukuiDB:Scale(4))
@@ -76,6 +76,7 @@ local OnTooltipSetUnit = function(self)
 	local _, unit = self:GetUnit()
 
 	if(not unit or not UnitExists(unit)) then return end
+	if self:GetOwner() ~= UIParent and db.hideuf == true then self:Hide() return end
 	
 	local level = UnitLevel(unit)
 	local levelColor = GetQuestDifficultyColor(level)
