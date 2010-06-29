@@ -601,6 +601,7 @@ local SetStyle = function(self, unit)
 	self.Health:SetPoint("TOPLEFT")
 	self.Health:SetPoint("TOPRIGHT")
 	self.Health:SetStatusBarTexture(normTex)
+	self.Health:GetStatusBarTexture():SetHorizTile(false)
 
 	self.Health.colorTapping = true
 	self.Health.colorDisconnected = true
@@ -880,7 +881,8 @@ local SetStyle = function(self, unit)
 			self.ThreatBar:SetPoint("TOPLEFT", TukuiInfoLeft, TukuiDB:Scale(2), TukuiDB:Scale(-2))
 			self.ThreatBar:SetPoint("BOTTOMRIGHT", TukuiInfoLeft, TukuiDB:Scale(-2), TukuiDB:Scale(2))
 		  
-			self.ThreatBar:SetStatusBarTexture(TukuiDB["media"].blank) -- temp fix for texture resetting
+			self.ThreatBar:SetStatusBarTexture(normTex)
+			self.ThreatBar:GetStatusBarTexture():SetHorizTile(false)
 			self.ThreatBar:SetBackdrop(backdrop)
 			self.ThreatBar:SetBackdropColor(0, 0, 0, 0)
 	   
@@ -1285,9 +1287,6 @@ local SetStyle = function(self, unit)
 	elseif unit == "focus" then
 		self:SetAttribute("initial-height", TukuiInfoRight:GetHeight() - TukuiDB:Scale(4))
 		self:SetAttribute("initial-width", TukuiInfoRight:GetWidth() - TukuiDB:Scale(4))
-		self.Health:SetStatusBarTexture(TukuiDB["media"].blank) -- temp fix for texture
-		self.Health:SetAlpha(0.7)
-		self.Health.bg.multiplier = 0.2
 		self.Power:Hide()
 	elseif unit == "pet" then
 		self:SetAttribute("initial-height", TukuiDB:Scale(18))
