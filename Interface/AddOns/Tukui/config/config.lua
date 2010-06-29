@@ -11,7 +11,7 @@ TukuiDB["general"] = {
 
 TukuiDB["unitframes"] = {
 	-- general options
-	["enable"] = true, -- -- does i really need to explain this?
+	["enable"] = true, -- -- do i really need to explain this?
 	["unitcastbar"] = true, -- enable tukui castbar
 	["cblatency"] = false, -- enable castbar latency
 	["cbicons"] = true, -- enable icons on castbar
@@ -30,7 +30,7 @@ TukuiDB["unitframes"] = {
 	["showtotalhpmp"] = false, -- change the display of info text on player and target with XXXX/Total.
 	["showsmooth"] = true, -- enable smooth bar
 	["showthreat"] = true, -- enable the threat bar anchored to info left panel.
-	["charportrait"] = false, -- does i really need to explain this?
+	["charportrait"] = false, -- do i really need to explain this?
 	["t_mt"] = false, -- enable maintank and mainassist
 	["t_mt_power"] = false, -- enable power bar on maintank and mainassist because it's not show by default.
 	["combatfeedback"] = true, -- enable combattext on player and target.
@@ -104,7 +104,7 @@ TukuiDB["loot"] = {
 }
 
 TukuiDB["cooldown"] = {
-	["enable"] = true, -- does i really need to explain this?
+	["enable"] = true, -- do i really need to explain this?
 	["treshold"] = 8, -- show decimal under X seconds and text turn red
 }
 
