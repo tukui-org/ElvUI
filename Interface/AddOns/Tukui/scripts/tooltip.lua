@@ -56,9 +56,9 @@ hooksecurefunc("GameTooltip_SetDefaultAnchor", defaultPosition)
 local function OnUpdate(self, ...)
 	if self:GetAnchorType() == "ANCHOR_NONE" then
 		if InCombatLockdown() and db.hidecombat == true then
-			self:Hide()
+			self:SetAlpha(0)
 		else
-			self:Show()
+			self:SetAlpha(1)
 			if TukuiDB["bags"].enable == true and StuffingFrameBags:IsShown() then
 				self:ClearAllPoints()
 				self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", 0, TukuiDB:Scale(4))
