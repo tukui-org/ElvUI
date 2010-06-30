@@ -1060,10 +1060,7 @@ if db.avd and db.avd > 0 then
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	TukuiDB.PP(db.avd, Text)
 
-	local int = 1
-
 	local function Update(self)
-	if int > 0 then
 		local format = string.format
 		local targetlv, playerlv = UnitLevel("target"), UnitLevel("player")
 		if targetlv == -1 then
@@ -1119,7 +1116,6 @@ if db.avd and db.avd > 0 then
 			end
 		end)
 		self:SetScript("OnLeave", function() GameTooltip:Hide() end)
-		end
 	end
 
 	Stat:RegisterEvent("UNIT_AURA")
@@ -1141,43 +1137,39 @@ if db.armor and db.armor > 0 then
 	Text:SetFont(TukuiDB["datatext"].font, TukuiDB["datatext"].fontsize)
 	TukuiDB.PP(db.armor, Text)
 
-	local int = 1
-
 	local function Update(self)
-	if int > 0 then
 		baseArmor , effectiveArmor, armor, posBuff, negBuff = UnitArmor("player");
 		Text:SetText((effectiveArmor).." "..tukuilocal.datatext_armor)
-	end
-	--Setup Armor Tooltip
-	self:SetAllPoints(Text)
-	self:SetScript("OnEnter", function()
-		if not InCombatLockdown() then
-			GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB:Scale(6));
-			GameTooltip:ClearAllPoints()
-			GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
-			GameTooltip:ClearLines()
-			GameTooltip:AddLine(tukuilocal.datatext_mitigation)
-			local lv = 83
-			for i = 1, 4 do
-				local format = string.format
-				local mitigation = (effectiveArmor/(effectiveArmor+(467.5*lv-22167.5)));
-				if mitigation > .75 then
-					mitigation = .75
+		--Setup Armor Tooltip
+		self:SetAllPoints(Text)
+		self:SetScript("OnEnter", function()
+			if not InCombatLockdown() then
+				GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB:Scale(6));
+				GameTooltip:ClearAllPoints()
+				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
+				GameTooltip:ClearLines()
+				GameTooltip:AddLine(tukuilocal.datatext_mitigation)
+				local lv = 83
+				for i = 1, 4 do
+					local format = string.format
+					local mitigation = (effectiveArmor/(effectiveArmor+(467.5*lv-22167.5)));
+					if mitigation > .75 then
+						mitigation = .75
+					end
+					GameTooltip:AddDoubleLine(lv,format("%.2f", mitigation*100) .. "%",1,1,1)
+					lv = lv - 1
 				end
-				GameTooltip:AddDoubleLine(lv,format("%.2f", mitigation*100) .. "%",1,1,1)
-				lv = lv - 1
-			end
-			if UnitLevel("target") > 0 and UnitLevel("target") < UnitLevel("player") then
-				mitigation = (effectiveArmor/(effectiveArmor+(467.5*(UnitLevel("target"))-22167.5)));
-				if mitigation > .75 then
-					mitigation = .75
+				if UnitLevel("target") > 0 and UnitLevel("target") < UnitLevel("player") then
+					mitigation = (effectiveArmor/(effectiveArmor+(467.5*(UnitLevel("target"))-22167.5)));
+					if mitigation > .75 then
+						mitigation = .75
+					end
+					GameTooltip:AddDoubleLine(UnitLevel("target"),format("%.2f", mitigation*100) .. "%",1,1,1)
 				end
-				GameTooltip:AddDoubleLine(UnitLevel("target"),format("%.2f", mitigation*100) .. "%",1,1,1)
+				GameTooltip:Show()
 			end
-			GameTooltip:Show()
-		end
-	end)
-	self:SetScript("OnLeave", function() GameTooltip:Hide() end)
+		end)
+		self:SetScript("OnLeave", function() GameTooltip:Hide() end)
 	end
 
 	Stat:RegisterEvent("UNIT_INVENTORY_CHANGED")
