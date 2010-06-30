@@ -1126,7 +1126,7 @@ if db.avd and db.avd > 0 then
 	Stat:RegisterEvent("UNIT_INVENTORY_CHANGED")
 	Stat:RegisterEvent("PLAYER_TARGET_CHANGED")
 	Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
-	Stat:SetScript("OnUpdate", Update)
+	Stat:SetScript("OnEvent", Update)
 end
 
 --------------------------------------------------------------------
@@ -1183,7 +1183,7 @@ if db.armor and db.armor > 0 then
 	Stat:RegisterEvent("UNIT_INVENTORY_CHANGED")
 	Stat:RegisterEvent("UNIT_AURA")
 	Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
-	Stat:SetScript("OnUpdate", Update)
+	Stat:SetScript("OnEvent", Update)
 end
 
 --------------------------------------------------------------------
