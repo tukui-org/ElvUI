@@ -11,7 +11,7 @@ TukuiDB["general"] = {
 
 TukuiDB["unitframes"] = {
 	-- general options
-	["enable"] = true, -- -- do i really need to explain this?
+	["enable"] = true, -- do i really need to explain this?
 	["unitcastbar"] = true, -- enable tukui castbar
 	["cblatency"] = false, -- enable castbar latency
 	["cbicons"] = true, -- enable icons on castbar
