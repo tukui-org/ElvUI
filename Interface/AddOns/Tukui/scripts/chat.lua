@@ -497,6 +497,7 @@ end
 
 local SoundSys = CreateFrame("Frame")
 SoundSys:RegisterEvent("CHAT_MSG_WHISPER")
+SoundSys:RegisterEvent("CHAT_MSG_BN_WHISPER")
 SoundSys:HookScript("OnEvent", function(self, event, ...)
 	if event == "CHAT_MSG_WHISPER" or "CHAT_MSG_BN_WHISPER" then
 		PlaySoundFile(TukuiDB["media"].whisper)
