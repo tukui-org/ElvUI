@@ -3,6 +3,7 @@ if not TukuiDB["actionbar"].enable == true then return end
 local _G = _G
 local media = TukuiDB["media"]
 local securehandler = CreateFrame("Frame", nil, nil, "SecureHandlerBaseTemplate")
+RANGE_INDICATOR = "" -- fix "?" range indicator when hotkey are enabled.
 
 local function style(self)  
 	local name = self:GetName()
