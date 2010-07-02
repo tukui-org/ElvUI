@@ -173,6 +173,7 @@ local function updatehotkey(self, actionButtonType)
 	text = replace(text, '(Num Pad )', 'N')
 	text = replace(text, '(Page Up)', 'PU')
 	text = replace(text, '(Page Down)', 'PD')
+	text = replace(text, '(Spacebar)', 'SpB')
 	
 	if hotkey:GetText() == _G['RANGE_INDICATOR'] then
 		hotkey:SetText('')
