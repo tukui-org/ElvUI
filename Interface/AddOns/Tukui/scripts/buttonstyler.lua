@@ -161,33 +161,22 @@ local function onupdate(self, elapsed)
 	end
 end
 
--- lazy way to hide RANGE_INDICATOR on action bar without 
--- breaking watchframe quest item. Mwahaha.
 local function updatehotkey(self, actionButtonType)
-	local id
-	if ( not actionButtonType ) then
-		actionButtonType = "ACTIONBUTTON"
-		id = self:GetID()
-	else
-		if ( actionButtonType == "MULTICASTACTIONBUTTON" ) then
-			id = self.buttonIndex
-		else
-			id = self:GetID()
-		end
-	end
-
-	local hotkey = _G[self:GetName().."HotKey"]
-	local key = GetBindingKey(actionButtonType..id) or GetBindingKey("CLICK "..self:GetName()..":LeftButton")
-
-	local text = GetBindingText(key, "KEY_", 1)
-	if ( text == "" ) then
-		hotkey:SetText("")
-		hotkey:SetPoint("TOPRIGHT", 0, TukuiDB:Scale(-2))
-		hotkey:Hide()
+	local hotkey = _G[self:GetName() .. 'HotKey']
+	local text = hotkey:GetText()
+	text = replace(text, '(s%-)', 'S')
+	text = replace(text, '(a%-)', 'A')
+	text = replace(text, '(c%-)', 'C')
+	text = replace(text, '(Mouse Button )', 'M')
+	text = replace(text, '(Middle Mouse)', 'B3')
+	text = replace(text, '(Num Pad )', 'N')
+	text = replace(text, '(Page Up)', 'PU')
+	text = replace(text, '(Page Down)', 'PD')
+	
+	if hotkey:GetText() == _G['RANGE_INDICATOR'] then
+		hotkey:SetText('')
 	else
 		hotkey:SetText(text)
-		hotkey:SetPoint("TOPRIGHT", 0, TukuiDB:Scale(-2))
-		hotkey:Show()
 	end
 end
 
