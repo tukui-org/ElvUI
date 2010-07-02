@@ -165,8 +165,8 @@ end
 -- breaking watchframe quest item. Mwahaha.
 local function updatehotkey(self, actionButtonType)
 	local id
-    if ( not actionButtonType ) then
-        actionButtonType = "ACTIONBUTTON"
+	if ( not actionButtonType ) then
+		actionButtonType = "ACTIONBUTTON"
 		id = self:GetID()
 	else
 		if ( actionButtonType == "MULTICASTACTIONBUTTON" ) then
@@ -174,22 +174,21 @@ local function updatehotkey(self, actionButtonType)
 		else
 			id = self:GetID()
 		end
-    end
+	end
 
-    local hotkey = _G[self:GetName().."HotKey"]
-    local key = GetBindingKey(actionButtonType..id) or
-                GetBindingKey("CLICK "..self:GetName()..":LeftButton")
+	local hotkey = _G[self:GetName().."HotKey"]
+	local key = GetBindingKey(actionButtonType..id) or GetBindingKey("CLICK "..self:GetName()..":LeftButton")
 
 	local text = GetBindingText(key, "KEY_", 1)
-    if ( text == "" ) then
-        hotkey:SetText("")
-        hotkey:SetPoint("TOPRIGHT", 0, TukuiDB:Scale(-2))
-        hotkey:Hide()
-    else
-        hotkey:SetText(text)
-        hotkey:SetPoint("TOPRIGHT", 0, TukuiDB:Scale(-2))
-        hotkey:Show()
-    end
+	if ( text == "" ) then
+		hotkey:SetText("")
+		hotkey:SetPoint("TOPRIGHT", 0, TukuiDB:Scale(-2))
+		hotkey:Hide()
+	else
+		hotkey:SetText(text)
+		hotkey:SetPoint("TOPRIGHT", 0, TukuiDB:Scale(-2))
+		hotkey:Show()
+	end
 end
 
 hooksecurefunc("ActionButton_OnUpdate", onupdate)
