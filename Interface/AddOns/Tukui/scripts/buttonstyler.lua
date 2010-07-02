@@ -161,6 +161,37 @@ local function onupdate(self, elapsed)
 	end
 end
 
+-- lazy way to hide RANGE_INDICATOR on action bar without 
+-- breaking watchframe quest item. Mwahaha.
+local function updatehotkey(self, actionButtonType)
+	local id
+    if ( not actionButtonType ) then
+        actionButtonType = "ACTIONBUTTON"
+		id = self:GetID()
+	else
+		if ( actionButtonType == "MULTICASTACTIONBUTTON" ) then
+			id = self.buttonIndex
+		else
+			id = self:GetID()
+		end
+    end
+
+    local hotkey = _G[self:GetName().."HotKey"]
+    local key = GetBindingKey(actionButtonType..id) or
+                GetBindingKey("CLICK "..self:GetName()..":LeftButton")
+
+	local text = GetBindingText(key, "KEY_", 1)
+    if ( text == "" ) then
+        hotkey:SetText("")
+        hotkey:SetPoint("TOPRIGHT", 0, TukuiDB:Scale(-2))
+        hotkey:Hide()
+    else
+        hotkey:SetText(text)
+        hotkey:SetPoint("TOPRIGHT", 0, TukuiDB:Scale(-2))
+        hotkey:Show()
+    end
+end
+
 hooksecurefunc("ActionButton_OnUpdate", onupdate)
 hooksecurefunc("ActionButton_Update", style)
 hooksecurefunc("ActionButton_UpdateUsable", usable)
@@ -168,3 +199,4 @@ hooksecurefunc("PetActionBar_Update", stylepet)
 hooksecurefunc("ShapeshiftBar_OnLoad", styleshift)
 hooksecurefunc("ShapeshiftBar_Update", styleshift)
 hooksecurefunc("ShapeshiftBar_UpdateState", styleshift)
+hooksecurefunc("ActionButton_UpdateHotkeys", updatehotkey)
