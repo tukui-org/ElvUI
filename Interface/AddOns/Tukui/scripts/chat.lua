@@ -223,6 +223,8 @@ local function AddMessageHook(frame, text, ...)
 	end
 	text = replace(text, "has come online.", "is now |cff298F00online|r !")
 	text = replace(text, "has gone offline.", "is now |cffff0000offline|r !")
+	text = replace(text, "ist jetzt online.", "ist jetzt |cff298F00online|r !")
+	text = replace(text, "ist jetzt offline.", "ist jetzt |cffff0000offline|r !")
 	text = replace(text, "|Hplayer:(.+)|h%[(.+)%]|h has earned", "|Hplayer:%1|h%2|h has earned")
 	text = replace(text, "|Hplayer:(.+):(.+)|h%[(.+)%]|h whispers:", "From [|Hplayer:%1:%2|h%3|h]:")
 	text = replace(text, "|Hplayer:(.+):(.+)|h%[(.+)%]|h says:", "[|Hplayer:%1:%2|h%3|h]:")	
