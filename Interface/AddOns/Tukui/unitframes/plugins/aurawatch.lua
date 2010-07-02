@@ -178,7 +178,8 @@ local function expireIcon(icon, frame)
 	if icon.onlyShowPresent then
 		icon:Hide()
 	else
-		icon.cd:Hide()
+		if (icon.cd) then icon.cd:Hide() end
+		if (icon.count) then icon.count:SetText() end
 		icon.count:SetText()
 		icon:SetAlpha(frame.missingAlpha)
 		if icon.overlay then
