@@ -136,7 +136,6 @@ TukuiDB["datatext"] = {
 TukuiDB["chat"] = {
 	["enable"] = true, -- blah
 	["font"] = [[fonts\ARIALN.ttf]], -- font for chat
-	["fontsize"] = 12, -- font size for chat
 }
 
 TukuiDB["panels"] = { 
