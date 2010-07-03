@@ -79,7 +79,7 @@ if TukuiDB.client == "esES" then
 	}
 
 	tukuilocal.popup_disableui = "Tukui no funciona con esta resolución, ¿Quieres desactivar Tukui? (Pulsa cancelar si quieres probar otra resolución)"
-	tukuilocal.popup_install = "Es la primera vez que usas Tukui V10.30+ con este personaje. Debes recargar la Interfaz para ajustar las barras de acción, las variables y los marcos de chat."
+	tukuilocal.popup_install = "Es la primera vez que usas Tukui V10.60+ con este personaje. Debes recargar la Interfaz para ajustar las barras de acción, las variables y los marcos de chat."
 	tukuilocal.popup_2raidactive = "Hay activos 2 estilos para banda, por favor selecciona uno."
 
 	tukuilocal.merchant_repairnomoney = "¡No tienes suficiente dinero para reparar!"

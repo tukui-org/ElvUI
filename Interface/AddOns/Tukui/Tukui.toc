@@ -4,7 +4,7 @@
 ## Title: |cffC495DDTukui|r
 ## Notes: UI of awesomeness!
 ## SavedVariables: TukuiData, TukuiArena
-## SavedVariablesPerCharacter: TukuiInstallv1030, TukuiUFpos
+## SavedVariablesPerCharacter: TukuiInstallv1060, TukuiUFpos
 ## X-oUF: oUF
 
 libs\oUF\oUF.xml

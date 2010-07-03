@@ -78,7 +78,35 @@ local function install()
 	FCF_OpenNewWindow("Loot")
 	FCF_UnDockFrame(ChatFrame4)
 	FCF_SetLocked(ChatFrame4, 1)
-	ChatFrame4:Show();
+	ChatFrame4:Show()
+	
+	for i = 1, NUM_CHAT_WINDOWS do
+		local chatFrameId = _G["ChatFrame"..i]:GetID()
+		local chatName = FCF_GetChatWindowInfo(chatFrameId)
+		
+		_G["ChatFrame"..i]:SetClampRectInsets(0,0,0,0)
+		_G["ChatFrame"..i]:SetMovable(true)
+		_G["ChatFrame"..i]:SetSize(TukuiDB:Scale(TukuiDB["panels"].tinfowidth + 1), TukuiDB:Scale(111))
+		
+		-- this is the default width and height of tukui chats.
+		SetChatWindowSavedDimensions(chatFrameId, TukuiDB:Scale(TukuiDB["panels"].tinfowidth + 1), TukuiDB:Scale(111))
+		
+		-- move general bottom left or Loot (if found) on right.
+		if i == 1 then
+			_G["ChatFrame"..i]:ClearAllPoints()
+			_G["ChatFrame"..i]:SetPoint("BOTTOMLEFT", TukuiInfoLeft, "TOPLEFT", TukuiDB:Scale(-1), TukuiDB:Scale(6))
+		elseif i == 4 then
+			_G["ChatFrame"..i]:ClearAllPoints()
+			_G["ChatFrame"..i]:SetPoint("BOTTOMRIGHT", TukuiInfoRight, "TOPRIGHT", 0, TukuiDB:Scale(6))
+			_G["ChatFrame"..i]:SetJustifyH("RIGHT")
+		end
+				
+		-- save new default position and dimension
+		FCF_SavePositionAndDimensions(_G["ChatFrame"..i])
+		
+		-- set default tukui font size
+		FCF_SetChatWindowFontSize(nil, _G["ChatFrame"..i], 12)
+	end
 			
 	ChatFrame_RemoveAllMessageGroups(ChatFrame1)
 	ChatFrame_RemoveChannel(ChatFrame1, "Trade")
@@ -156,7 +184,7 @@ local function install()
 	ToggleChatColorNamesByClassGroup(true, "CHANNEL4")
 	ToggleChatColorNamesByClassGroup(true, "CHANNEL5")
 		   
-	TukuiInstallv1030 = true
+	TukuiInstallv1060 = true
 	TukuiData.SetCVar = true
 			
 	ReloadUI()
@@ -185,7 +213,7 @@ StaticPopupDialogs["INSTALL_UI"] = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
     OnAccept = install,
-	OnCancel = function() TukuiInstallv1030 = true TukuiData.SetcVar = true end,
+	OnCancel = function() TukuiInstallv1060 = true TukuiData.SetcVar = true end,
     timeout = 0,
     whileDead = 1,
 }
@@ -258,7 +286,7 @@ TukuiOnLogon:SetScript("OnEvent", function()
 				SetMultisampleFormat(1)
 			end
 			SetCVar("uiScale", TukuiDB["general"].uiscale)
-			if not TukuiInstallv1030 == true then
+			if not TukuiInstallv1060 == true then
 				StaticPopup_Show("INSTALL_UI")
 			end
 		end

@@ -79,7 +79,7 @@ if TukuiDB.client == "zhTW" then
 	}
 
 	tukuilocal.popup_disableui = "Tukui並不支援此解析度, 你想要停用Tukui嗎? (若果您想要嘗試其他解析度, 請按取消)"
-	tukuilocal.popup_install = "這個角色首次使用Tukui V10.30+, 您必需先重載介面以完成設定"
+	tukuilocal.popup_install = "這個角色首次使用Tukui V10.60+, 您必需先重載介面以完成設定"
 
 	tukuilocal.merchant_repairnomoney = "您沒有足夠的金錢來修理!"
 	tukuilocal.merchant_repaircost = "您的裝備已修理, 花費了"

@@ -79,7 +79,7 @@ if TukuiDB.client == "deDE" then
 	}
 
 	tukuilocal.popup_disableui = "Tukui funktioniert nicht mit deiner Auflösung, möchtest du Tukui ausschalten? (Drücke Abbrechen, falls du eine andere Auflösung testen willst.)"
-	tukuilocal.popup_install = "Dies ist das erste mal mit Tukui V10.30+ mit diesem Charakter.Du musst dein UI neuladen um Aktionsleisten, Variabeln und den Chat einzustellen."
+	tukuilocal.popup_install = "Dies ist das erste mal mit Tukui V10.60+ mit diesem Charakter.Du musst dein UI neuladen um Aktionsleisten, Variabeln und den Chat einzustellen."
 
 	tukuilocal.merchant_repairnomoney = "Du hast nicht genügend Gold zum reparieren!"
 	tukuilocal.merchant_repaircost = "Deine Rüstung wurde repariert für"

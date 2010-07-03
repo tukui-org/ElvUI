@@ -79,7 +79,7 @@ tukuilocal.Slots = {
 }
 
 tukuilocal.popup_disableui = "Tukui doesn't work for this resolution, do you want to disable Tukui? (Cancel if you want to try another resolution)"
-tukuilocal.popup_install = "First time on Tukui V10.30+ with this Character. You must reload UI to set Action Bars, Variables and Chat Frames."
+tukuilocal.popup_install = "First time on Tukui V10.60+ with this Character. You must reload UI to set Action Bars, Variables and Chat Frames."
 tukuilocal.popup_2raidactive = "2 raid layouts are active, please select a layout."
 
 tukuilocal.merchant_repairnomoney = "You don't have enough money for repair!"
