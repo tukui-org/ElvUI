@@ -90,7 +90,10 @@ function TukuiDB.SetupChat(self, event, addon)
 	ChatFrameMenuButton:Hide()
 	ChatFrameMenuButton:SetScript("OnShow", function(self) self:Hide() end)
 				
-	for i = 1, NUM_CHAT_WINDOWS do		
+	for i = 1, NUM_CHAT_WINDOWS do
+		local chatFrameId = _G["ChatFrame"..i]:GetID()
+		local chatName = FCF_GetChatWindowInfo(chatFrameId)
+		
 		-- Hide chat buttons
 		_G["ChatFrame"..i.."ButtonFrameUpButton"]:Hide()
 		_G["ChatFrame"..i.."ButtonFrameDownButton"]:Hide()
@@ -124,6 +127,10 @@ function TukuiDB.SetupChat(self, event, addon)
 		editbox:ClearAllPoints();
 		editbox:SetPoint("TOPLEFT", TukuiInfoLeft, TukuiDB:Scale(2), TukuiDB:Scale(-2))
 		editbox:SetPoint("BOTTOMRIGHT", TukuiInfoLeft, TukuiDB:Scale(-2), TukuiDB:Scale(2))
+		
+		if i == 4 and chatName == "Loot" then
+			_G["ChatFrame"..i]:SetJustifyH("RIGHT")
+		end
 		
 		-- Disable alt key usage
 		editbox:SetAltArrowKeyMode(false)		
