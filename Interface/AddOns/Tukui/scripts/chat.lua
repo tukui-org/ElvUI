@@ -94,6 +94,9 @@ function TukuiDB.SetupChat(self, event, addon)
 		local chatFrameId = _G["ChatFrame"..i]:GetID()
 		local chatName = FCF_GetChatWindowInfo(chatFrameId)
 		
+		-- yeah baby
+		_G["ChatFrame"..i]:SetClampRectInsets(0,0,0,0)
+		
 		-- Hide chat buttons
 		_G["ChatFrame"..i.."ButtonFrameUpButton"]:Hide()
 		_G["ChatFrame"..i.."ButtonFrameDownButton"]:Hide()
@@ -128,8 +131,10 @@ function TukuiDB.SetupChat(self, event, addon)
 		editbox:SetPoint("TOPLEFT", TukuiInfoLeft, TukuiDB:Scale(2), TukuiDB:Scale(-2))
 		editbox:SetPoint("BOTTOMRIGHT", TukuiInfoLeft, TukuiDB:Scale(-2), TukuiDB:Scale(2))
 		
-		if i == 4 and chatName == "Loot" then
-			_G["ChatFrame"..i]:SetJustifyH("RIGHT")
+		-- set align to right if a any chatframe is found at right of your screen.
+		local point = GetChatWindowSavedPosition(chatFrameId)
+		if point == "BOTTOMRIGHT" or point == "RIGHT" or point == "TOPRIGHT" then 
+			_G["ChatFrame"..i]:SetJustifyH("RIGHT") 
 		end
 		
 		-- Disable alt key usage

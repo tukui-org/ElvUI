@@ -84,8 +84,6 @@ local function install()
 		local chatFrameId = _G["ChatFrame"..i]:GetID()
 		local chatName = FCF_GetChatWindowInfo(chatFrameId)
 		
-		_G["ChatFrame"..i]:SetClampRectInsets(0,0,0,0)
-		_G["ChatFrame"..i]:SetMovable(true)
 		_G["ChatFrame"..i]:SetSize(TukuiDB:Scale(TukuiDB["panels"].tinfowidth + 1), TukuiDB:Scale(111))
 		
 		-- this is the default width and height of tukui chats.
