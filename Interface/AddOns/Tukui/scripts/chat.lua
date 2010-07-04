@@ -97,19 +97,18 @@ function TukuiDB.SetupChat(self, event, addon)
 		-- yeah baby
 		_G["ChatFrame"..i]:SetClampRectInsets(0,0,0,0)
 		
-		-- Hide chat buttons
+		-- Hide or move chat buttons
 		_G["ChatFrame"..i.."ButtonFrameUpButton"]:Hide()
 		_G["ChatFrame"..i.."ButtonFrameDownButton"]:Hide()
 		_G["ChatFrame"..i.."ButtonFrameBottomButton"]:Hide()
 		_G["ChatFrame"..i.."ButtonFrameMinimizeButton"]:Hide()
-		_G["ChatFrame"..i.."ResizeButton"]:Hide()
+		_G["ChatFrame"..i.."ResizeButton"]:SetPoint("BOTTOMRIGHT",2,-3)
 		_G["ChatFrame"..i.."ButtonFrame"]:Hide()
 
 		_G["ChatFrame"..i.."ButtonFrameUpButton"]:SetScript("OnShow", function(self) self:Hide() end)
 		_G["ChatFrame"..i.."ButtonFrameDownButton"]:SetScript("OnShow", function(self) self:Hide() end)
 		_G["ChatFrame"..i.."ButtonFrameBottomButton"]:SetScript("OnShow", function(self) self:Hide() end)
 		_G["ChatFrame"..i.."ButtonFrameMinimizeButton"]:SetScript("OnShow", function(self) self:Hide() end)
-		_G["ChatFrame"..i.."ResizeButton"]:SetScript("OnShow", function(self) self:Hide() end)
 		_G["ChatFrame"..i.."ButtonFrame"]:SetScript("OnShow", function(self) self:Hide() end)
 		
 		-- Hide chat textures backdrop
@@ -444,7 +443,7 @@ function TukuiDB.ChatCopyButtons()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G[format("ChatFrame%d",  i)]
 		local button = CreateFrame("Button", format("ButtonCF%d", i), cf)
-		button:SetPoint("BOTTOMRIGHT", 0, 0)
+		button:SetPoint("TOPRIGHT", 0, 0)
 		button:SetHeight(TukuiDB:Scale(20))
 		button:SetWidth(TukuiDB:Scale(20))
 		button:SetAlpha(0)
