@@ -85,8 +85,7 @@ GeneralDockManagerOverflowButton:SetScript("OnShow", GeneralDockManagerOverflowB
 GeneralDockManagerOverflowButton:Hide()
 
 -- Player entering the world
-function TukuiDB.SetupChat(self, event, addon)
-	if addon ~= "Tukui" then return end
+function TukuiDB.SetupChat()
 	ChatFrameMenuButton:Hide()
 	ChatFrameMenuButton:SetScript("OnShow", function(self) self:Hide() end)
 				
@@ -147,8 +146,8 @@ function TukuiDB.SetupChat(self, event, addon)
 	ChatTypeInfo.RAID_WARNING.sticky = 1
 	ChatTypeInfo.CHANNEL.sticky = 1
 end
-AddOn:RegisterEvent("ADDON_LOADED")
-AddOn["ADDON_LOADED"] = TukuiDB.SetupChat
+AddOn:RegisterEvent("PLAYER_ENTERING_WORLD")
+AddOn["PLAYER_ENTERING_WORLD"] = TukuiDB.SetupChat
 
 -- Get colors for player classes
 local function ClassColors(class)
