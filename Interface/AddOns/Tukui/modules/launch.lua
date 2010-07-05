@@ -238,8 +238,9 @@ TukuiOnLogon:SetScript("OnEvent", function()
 		
 		--set tukui action bar
 		if TukuiDB["actionbar"].enable == true then
-			SetActionBarToggles( 1, 1, 1, 1, 0 )
-			SetCVar("alwaysShowActionBars", 0)
+			SetActionBarToggles(true, true, true, true, ALWAYS_SHOW_MULTIBARS)
+			MultiActionBar_Update()
+			UIParent_ManageFramePositions()
 			
 			if TukuiDB["actionbar"].showgrid == true then
 				ActionButton_HideGrid = function() end

@@ -14,9 +14,9 @@
 if not TukuiDB["unitframes"].enable == true then return end
 if not TukuiDB["unitframes"].showthreat == true then return end
 
-local ThreatNumParty
-local ThreatNumRaid
-local ThreatPet
+local ThreatNumParty = 0
+local ThreatNumRaid = 0
+local ThreatPet = 0
 
 local aggroColors = {
 	[1] = {12/255, 151/255,  15/255},
@@ -69,11 +69,12 @@ local function enable(self)
 		
 		self:RegisterEvent("PLAYER_ENTERING_WORLD", function() UpdateGroup() end)
 		self:RegisterEvent("PLAYER_LOGIN", function() UpdateGroup() end)
-		self:RegisterEvent("PLAYER_REGEN_ENABLED", function(self) self.ThreatBar:Hide() end)
-		self:RegisterEvent("PLAYER_REGEN_DISABLED", function(self) self.ThreatBar:Show() end)
 		self:RegisterEvent("PARTY_MEMBERS_CHANGED", function() UpdateGroup() end)
 		self:RegisterEvent("RAID_ROSTER_UPDATE", function() UpdateGroup() end)
 		self:RegisterEvent("UNIT_PET", function() UpdateGroup() end)
+		self:RegisterEvent("PLAYER_REGEN_ENABLED", function(self) self.ThreatBar:Hide() end)
+		self:RegisterEvent("PLAYER_REGEN_DISABLED", function(self) self.ThreatBar:Show() end)
+
 		
 		bar:SetScript("OnUpdate", update)
 		
@@ -99,6 +100,7 @@ local function disable(self)
 		bar:UnregisterEvent("PLAYER_REGEN_DISABLED")
 		bar:UnregisterEvent("PARTY_MEMBERS_CHANGED")
 		bar:UnregisterEvent("RAID_ROSTER_UPDATE")
+		bar:UnregisterEvent("UNIT_PET")
 		bar:Hide()
 		bar:SetScript("OnEvent", nil)
 	end
