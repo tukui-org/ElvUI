@@ -96,6 +96,9 @@ function TukuiDB.SetupChat()
 		-- yeah baby
 		_G["ChatFrame"..i]:SetClampRectInsets(0,0,0,0)
 		
+		-- Removes crap from the bottom of the chatbox so it can go to the bottom of the screen.
+		_G["ChatFrame"..i]:SetClampedToScreen(false)
+		
 		-- Hide or move chat buttons
 		_G["ChatFrame"..i.."ButtonFrameUpButton"]:Hide()
 		_G["ChatFrame"..i.."ButtonFrameDownButton"]:Hide()
