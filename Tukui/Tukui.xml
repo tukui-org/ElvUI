@@ -1,0 +1,106 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/">	
+	<Script file="modules\reloadui.lua"/>
+	<Script file="modules\variables.lua"/>
+	
+	<Script file="local\english.lua"/>
+	<Script file="local\french.lua"/>
+	<Script file="local\russian.lua"/>
+	<Script file="local\german.lua"/>
+	<Script file="local\taiwan.lua"/>
+	<Script file="local\spanish.lua"/>
+	<Script file="local\korean.lua"/>
+	<Script file="local\china.lua"/>
+	
+	<Script file="config\config.lua"/>
+	<Script file="config\media.lua"/>
+	
+	<Script file="modules\configui.lua"/>
+	
+	<Script file="config\aurawatch.lua"/>
+	
+	<Include file="libs\oUF\oUF.xml"/>
+	<Script file="libs\oUF_AuraWatch\oUF_AuraWatch.lua"/>
+	<Script file="libs\oUF_CombatFeedback\oUF_CombatFeedback.lua"/>
+	<Script file="libs\oUF_DebuffHighlight\oUF_DebuffHighlight.lua"/>
+	<Script file="libs\oUF_Experience\oUF_Experience.lua"/>
+	<Include file="libs\oUF_HealComm4\oUF_HealComm4.xml"/>
+	<Script file="libs\oUF_HealComm4\oUF_HealComm4.lua"/>
+	<Script file="libs\oUF_MovableFrames\movable.lua"/>
+	<Script file="libs\oUF_ReadyCheck\oUF_ReadyCheck.lua"/>
+	<Script file="libs\oUF_Reputation\oUF_Reputation.lua"/>
+	<Script file="libs\oUF_Smooth\oUF_Smooth.lua"/>
+	<Script file="libs\oUF_ThreatBar\oUF_ThreatBar.lua"/>
+	<Script file="libs\oUF_TotemBar\oUF_TotemBar.lua"/>
+	<Script file="libs\oUF_Trinkets\oUF_Trinkets.lua"/>
+	
+	<Script file="unitframes\colors.lua"/>
+	
+	<Script file="modules\functions.lua"/>
+	<Script file="modules\launch.lua"/>
+	<Script file="modules\autodisable.lua"/>
+	<Script file="modules\watchframe.lua"/>
+	<Script file="modules\durability.lua"/>
+	<Script file="modules\vehicle.lua"/>
+	<Script file="modules\capturebar.lua"/>
+	<Script file="modules\gm.lua"/>
+	<Script file="modules\misc.lua"/>
+	<Script file="modules\quests.lua"/>
+	<Script file="modules\mount.lua"/>
+	<Script file="modules\invite.lua"/>
+	<Script file="modules\autodez.lua"/>
+	<Script file="modules\autorelease.lua"/>
+	<Script file="modules\symbol.lua"/>
+	<Script file="modules\merchant.lua"/>
+	<Script file="modules\error.lua"/>
+	<Script file="modules\bind.lua"/>
+	<Script file="modules\copyurl.lua"/>
+	<Script file="modules\hyperlink.lua"/>
+	<Script file="modules\item.lua"/>
+
+	<Script file="scripts\font.lua"/>
+	<Script file="scripts\buffs.lua"/>
+	<Script file="scripts\minimap.lua"/>
+	<Script file="scripts\panels.lua"/>
+	
+	<Script file="datatext\armor.lua"/>
+	<Script file="datatext\arp.lua"/>
+	<Script file="datatext\avoidance.lua"/>
+	<Script file="datatext\bags.lua"/>
+	<Script file="datatext\battleground.lua"/>
+	<Script file="datatext\crit.lua"/>
+	<Script file="datatext\dps.lua"/>
+	<Script file="datatext\durability.lua"/>
+	<Script file="datatext\fps.lua"/>
+	<Script file="datatext\friend.lua"/>
+	<Script file="datatext\gold.lua"/>
+	<Script file="datatext\guild.lua"/>
+	<Script file="datatext\haste.lua"/>
+	<Script file="datatext\hps.lua"/>
+	<Script file="datatext\mem.lua"/>
+	<Script file="datatext\power.lua"/>
+	<Script file="datatext\time.lua"/>
+		
+	<Script file="scripts\actionbar.lua"/>
+	<Script file="scripts\buttonstyler.lua"/>
+	<Script file="scripts\buttonrange.lua"/>
+	<Script file="scripts\chat.lua"/>
+	<Script file="scripts\tooltip.lua"/>
+	<Script file="scripts\cooldown.lua"/>
+	<Script file="scripts\nameplates.lua"/>
+	<Script file="scripts\bags.lua"/>
+	<Script file="scripts\arenatrack.lua"/>
+	<Script file="scripts\loot.lua"/>
+	<Script file="scripts\lootroll.lua"/>
+	<Script file="scripts\map.lua"/>
+	<Script file="scripts\mirror.lua"/>
+	<Script file="scripts\reminder.lua"/>
+	<Script file="scripts\skin.lua"/>
+	
+	
+	<Include file="unitframes\templates.xml"/>
+	<Script file="unitframes\tags.lua"/>
+	<Script file="unitframes\layout.lua"/>
+		
+	<Script file="class\priest.lua"/>
+	<Script file="class\hunter.lua"/>
+</Ui>
