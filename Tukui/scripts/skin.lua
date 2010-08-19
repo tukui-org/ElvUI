@@ -89,6 +89,9 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		-- reskin battle.net popup
 		TukuiDB.SetTemplate(BNToastFrame)
 		
+		-- reskin gm Ticket
+		TukuiDB.SetTemplate(TicketStatusFrame)
+		
 		-- reskin dropdown list on unitframes
 		TukuiDB.SetTemplate(DropDownList1MenuBackdrop)
 		TukuiDB.SetTemplate(DropDownList2MenuBackdrop)
