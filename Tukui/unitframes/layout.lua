@@ -1328,7 +1328,7 @@ if db.mainassist == true then
 	assist:SetPoint("CENTER", UIParent, "CENTER", 0, -100)
 end
 
-local party = oUF:SpawnHeader("oUF_noParty", nil, "showParty", false)
+local party = oUF:SpawnHeader("oUF_noParty", nil, "party", "showParty", true)
 
 ------------------------------------------------------------------------
 --	Just a command to test buffs/debuffs alignment
