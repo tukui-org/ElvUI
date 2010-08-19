@@ -47,7 +47,7 @@ TukuiDB.remindbuffs = {
 	},
 	DEATHKNIGHT = {
 		57330, -- horn of Winter
-		8075, -- Shaman Strength of Earth Totem
+		31634, -- Shaman Strength of Earth Totem
 	},
 }
 
