@@ -1274,7 +1274,7 @@ if TukuiDB.lowversion then
 	oUF:Spawn("pet", "oUF_Tukz_pet"):SetPoint("BOTTOMLEFT", TukuiActionBarBackground, "TOPLEFT", 0,8)
 else
 	oUF:Spawn('pet', "oUF_Tukz_pet"):SetPoint("BOTTOM", TukuiActionBarBackground, "TOP", 0,49+totdebuffs)
-	oUF:Spawn('targettarget', "oUF_Tukz_target"):SetPoint("BOTTOM", TukuiActionBarBackground, "TOP", 0,8)
+	oUF:Spawn('targettarget', "oUF_Tukz_targettarget"):SetPoint("BOTTOM", TukuiActionBarBackground, "TOP", 0,8)
 end
 if db.showfocustarget == true then oUF:Spawn("focustarget", "oUF_Tukz_focustarget"):SetPoint("BOTTOM", 0, 224) end
 
