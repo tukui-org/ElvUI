@@ -45,6 +45,7 @@ end
 
 -- bonus action bar
 BonusActionBarFrame:SetParent(TukuiBar1)
+BonusActionBarFrame:SetWidth(0.1) -- fix a bug on button 13,14,15,16
 BonusActionBarTexture0:Hide()
 BonusActionBarTexture1:Hide()
 BonusActionButton1:ClearAllPoints()
