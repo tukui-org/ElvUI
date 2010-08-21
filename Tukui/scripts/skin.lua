@@ -1,26 +1,36 @@
-local TukuiSkin = CreateFrame("Frame", nil, UIParent)
-
 -- NOTE: i'm not reskinning everything, too much thing to do and anyway, 80% of all frames are redone for Cataclysm
 -- I don't want to loose my time reskinning all panels/frame, because in a couple of month we need to redo it. :x
 -- thank to karudon for helping me reskinning some elements in default interface.
 
-local function reskin(f)
+local function OnEnter(self)
+	local color = RAID_CLASS_COLORS[TukuiDB.myclass]
+	self:SetBackdropColor(color.r, color.g, color.b, 0.15)
+	self:SetBackdropBorderColor(color.r, color.g, color.b)
+end
+
+local function OnLeave(self)
+	self:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
+	self:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))
+end
+
+local function SkinButton(f)
 	f:SetNormalTexture("")
 	f:SetHighlightTexture("")
 	f:SetPushedTexture("")
 	f:SetDisabledTexture("")
 	TukuiDB.SetTemplate(f)
-    f:HookScript("OnEnter", function(self) self:SetBackdropBorderColor(.69,.31,.31) self:SetBackdropColor(.69,.31,.31,.1) end)
-    f:HookScript("OnLeave", function(self) self:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor)) self:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor)) end)
+	f:HookScript("OnEnter", OnEnter)
+	f:HookScript("OnLeave", OnLeave)
 end
-		
+
+local TukuiSkin = CreateFrame("Frame")
 TukuiSkin:RegisterEvent("ADDON_LOADED")
 TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 	if IsAddOnLoaded("Skinner") then return end
 	
 	-- stuff not in Blizzard load-on-demand
 	if addon == "Tukui" then
-		-- frame (panels) we need to reskin
+		-- Blizzard frame we want to reskin
 		local skins = {
 			"StaticPopup1",
 			"StaticPopup2",
@@ -29,12 +39,18 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"VideoOptionsFrame",
 			"AudioOptionsFrame",
 			"LFDDungeonReadyStatus",
+			"BNToastFrame",
+			"TicketStatusFrame",
+			"DropDownList1MenuBackdrop",
+			"DropDownList2MenuBackdrop",
+			"DropDownList1Backdrop",
+			"DropDownList2Backdrop",
 		}
 		
 		-- reskin popup buttons
 		for i = 1, 2 do
 			for j = 1, 2 do
-				reskin(_G["StaticPopup"..i.."Button"..j])
+				SkinButton(_G["StaticPopup"..i.."Button"..j])
 			end
 		end
 		
@@ -43,60 +59,47 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		end
 		
 		-- reskin all esc/menu buttons
-		local menuButtons = {"Options", "SoundOptions", "UIOptions", "Keybindings", "Macros", "AddOns", "Logout", "Quit", "Continue", "MacOptions"}
-		for i = 1, getn(menuButtons) do
-		local reskinmenubutton = _G["GameMenuButton"..menuButtons[i]]
-			if reskinmenubutton then
-				reskin(reskinmenubutton)
+		local BlizzardMenuButtons = {"Options", "SoundOptions", "UIOptions", "Keybindings", "Macros", "AddOns", "Logout", "Quit", "Continue", "MacOptions"}
+		for i = 1, getn(BlizzardMenuButtons) do
+		local TukuiMenuButtons = _G["GameMenuButton"..BlizzardMenuButtons[i]]
+			if TukuiMenuButtons then
+				SkinButton(TukuiMenuButtons)
 			end
 		end
 		
-		-- hide header textures and move text.
-		local header = {"GameMenuFrame", "InterfaceOptionsFrame", "AudioOptionsFrame", "VideoOptionsFrame"}
-		for i = 1, getn(header) do
-		local title = _G[header[i].."Header"]
+		-- hide header textures and move text/buttons.
+		local BlizzardHeader = {"GameMenuFrame", "InterfaceOptionsFrame", "AudioOptionsFrame", "VideoOptionsFrame"}
+		for i = 1, getn(BlizzardHeader) do
+			local title = _G[BlizzardHeader[i].."Header"]			
 			if title then
 				title:SetTexture("")
 				title:ClearAllPoints()
 				if title == _G["GameMenuFrameHeader"] then
 					title:SetPoint("TOP", GameMenuFrame, 0, 7)
 				else
-					title:SetPoint("TOP", header[i], 0, 0)
+					title:SetPoint("TOP", BlizzardHeader[i], 0, 0)
 				end
 			end
 		end
 		
-		-- here we reskin "normal" buttons
-		local buttons = {"VideoOptionsFrameOkay", "VideoOptionsFrameCancel", "VideoOptionsFrameDefaults", "VideoOptionsFrameApply", "AudioOptionsFrameOkay", "AudioOptionsFrameCancel", 
-		                 "AudioOptionsFrameDefaults", "InterfaceOptionsFrameDefaults", "InterfaceOptionsFrameOkay", "InterfaceOptionsFrameCancel"}
-		for i = 1, getn(buttons) do
-		local reskinbutton = _G[buttons[i]]
-			if reskinbutton then
-				reskin(reskinbutton)
+		-- here we reskin all "normal" buttons
+		local BlizzardButtons = {"VideoOptionsFrameOkay", "VideoOptionsFrameCancel", "VideoOptionsFrameDefaults", "VideoOptionsFrameApply", "AudioOptionsFrameOkay", "AudioOptionsFrameCancel", "AudioOptionsFrameDefaults", "InterfaceOptionsFrameDefaults", "InterfaceOptionsFrameOkay", "InterfaceOptionsFrameCancel"}
+		for i = 1, getn(BlizzardButtons) do
+		local TukuiButtons = _G[BlizzardButtons[i]]
+			if TukuiButtons then
+				SkinButton(TukuiButtons)
 			end
 		end
 		
-		-- if a button position is not really where we want, we move it here	 
+		-- if a button position is not really where we want, we move it here
 		_G["VideoOptionsFrameCancel"]:ClearAllPoints()
 		_G["VideoOptionsFrameCancel"]:SetPoint("RIGHT",_G["VideoOptionsFrameApply"],"LEFT",-4,0)		 
 		_G["VideoOptionsFrameOkay"]:ClearAllPoints()
 		_G["VideoOptionsFrameOkay"]:SetPoint("RIGHT",_G["VideoOptionsFrameCancel"],"LEFT",-4,0)	
 		_G["AudioOptionsFrameOkay"]:ClearAllPoints()
-		_G["AudioOptionsFrameOkay"]:SetPoint("RIGHT",_G["AudioOptionsFrameCancel"],"LEFT",-4,0)		 	 
+		_G["AudioOptionsFrameOkay"]:SetPoint("RIGHT",_G["AudioOptionsFrameCancel"],"LEFT",-4,0)
 		_G["InterfaceOptionsFrameOkay"]:ClearAllPoints()
 		_G["InterfaceOptionsFrameOkay"]:SetPoint("RIGHT",_G["InterfaceOptionsFrameCancel"],"LEFT", -4,0)
-		
-		-- reskin battle.net popup
-		TukuiDB.SetTemplate(BNToastFrame)
-		
-		-- reskin gm Ticket
-		TukuiDB.SetTemplate(TicketStatusFrame)
-		
-		-- reskin dropdown list on unitframes
-		TukuiDB.SetTemplate(DropDownList1MenuBackdrop)
-		TukuiDB.SetTemplate(DropDownList2MenuBackdrop)
-		TukuiDB.SetTemplate(DropDownList1Backdrop)
-		TukuiDB.SetTemplate(DropDownList2Backdrop)
 	end
 	
 	if addon == "Blizzard_BindingUI" then
@@ -116,11 +119,11 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		TukuiDB.SetTemplate(MacOptionsITunesRemote)
  
 		--Skin buttons
-		reskin(_G["MacOptionsFrameCancel"])
-		reskin(_G["MacOptionsFrameOkay"])
-		reskin(_G["MacOptionsButtonKeybindings"])
-		reskin(_G["MacOptionsFrameDefaults"])
-		reskin(_G["MacOptionsButtonCompress"])
+		SkinButton(_G["MacOptionsFrameCancel"])
+		SkinButton(_G["MacOptionsFrameOkay"])
+		SkinButton(_G["MacOptionsButtonKeybindings"])
+		SkinButton(_G["MacOptionsFrameDefaults"])
+		SkinButton(_G["MacOptionsButtonCompress"])
  
 		--Reposition and resize buttons
 		tPoint, tRTo, tRP, tX, tY =  _G["MacOptionsButtonCompress"]:GetPoint()
