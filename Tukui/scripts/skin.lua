@@ -59,7 +59,19 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		end
 		
 		-- reskin all esc/menu buttons
-		local BlizzardMenuButtons = {"Options", "SoundOptions", "UIOptions", "Keybindings", "Macros", "AddOns", "Logout", "Quit", "Continue", "MacOptions"}
+		local BlizzardMenuButtons = {
+			"Options", 
+			"SoundOptions", 
+			"UIOptions", 
+			"Keybindings", 
+			"Macros", 
+			"AddOns", 
+			"Logout", 
+			"Quit", 
+			"Continue", 
+			"MacOptions"
+		}
+		
 		for i = 1, getn(BlizzardMenuButtons) do
 		local TukuiMenuButtons = _G["GameMenuButton"..BlizzardMenuButtons[i]]
 			if TukuiMenuButtons then
@@ -68,7 +80,13 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		end
 		
 		-- hide header textures and move text/buttons.
-		local BlizzardHeader = {"GameMenuFrame", "InterfaceOptionsFrame", "AudioOptionsFrame", "VideoOptionsFrame"}
+		local BlizzardHeader = {
+			"GameMenuFrame", 
+			"InterfaceOptionsFrame", 
+			"AudioOptionsFrame", 
+			"VideoOptionsFrame"
+		}
+		
 		for i = 1, getn(BlizzardHeader) do
 			local title = _G[BlizzardHeader[i].."Header"]			
 			if title then
@@ -83,7 +101,19 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		end
 		
 		-- here we reskin all "normal" buttons
-		local BlizzardButtons = {"VideoOptionsFrameOkay", "VideoOptionsFrameCancel", "VideoOptionsFrameDefaults", "VideoOptionsFrameApply", "AudioOptionsFrameOkay", "AudioOptionsFrameCancel", "AudioOptionsFrameDefaults", "InterfaceOptionsFrameDefaults", "InterfaceOptionsFrameOkay", "InterfaceOptionsFrameCancel"}
+		local BlizzardButtons = {
+			"VideoOptionsFrameOkay", 
+			"VideoOptionsFrameCancel", 
+			"VideoOptionsFrameDefaults", 
+			"VideoOptionsFrameApply", 
+			"AudioOptionsFrameOkay", 
+			"AudioOptionsFrameCancel", 
+			"AudioOptionsFrameDefaults", 
+			"InterfaceOptionsFrameDefaults", 
+			"InterfaceOptionsFrameOkay", 
+			"InterfaceOptionsFrameCancel"
+		}
+		
 		for i = 1, getn(BlizzardButtons) do
 		local TukuiButtons = _G[BlizzardButtons[i]]
 			if TukuiButtons then
