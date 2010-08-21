@@ -19,8 +19,8 @@ local function style(self)
 
 	Flash:SetTexture("")
 
-	Button:SetPushedTexture("media.buttonhover")
-	Button:SetCheckedTexture("media.buttonhover")
+	Button:SetPushedTexture(" ")
+	Button:SetCheckedTexture(" ")
 	Button:SetNormalTexture("")
 	
 	Border:Hide()
@@ -66,9 +66,9 @@ end
 
 local function stylesmallbutton(normal, button, icon, name, pet)
 	local Flash	 = _G[name.."Flash"]
-	button:SetPushedTexture("media.buttonhover")
+	button:SetPushedTexture(" ")
 	button:SetNormalTexture("")
-	button:SetCheckedTexture("media.buttonhover")
+	button:SetCheckedTexture(" ")
 	Flash:SetTexture(media.buttonhover)
 	
 	if not _G[name.."Panel"] then
@@ -97,7 +97,6 @@ local function stylesmallbutton(normal, button, icon, name, pet)
 		end
 	end
 	
-	normal:SetVertexColor(unpack(media.bordercolor))
 	normal:ClearAllPoints()
 	normal:SetPoint("TOPLEFT")
 	normal:SetPoint("BOTTOMRIGHT")
