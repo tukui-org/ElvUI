@@ -686,8 +686,8 @@ function TukuiDB.createAuraWatch(self, unit)
 			local icon = CreateFrame("Frame", nil, auras)
 			icon.spellID = spell[1]
 			icon.anyUnit = spell[4]
-			icon:SetWidth(TukuiDB.Scale(6*TukuiCF["unitframes"].gridscale))
-			icon:SetHeight(TukuiDB.Scale(6*TukuiCF["unitframes"].gridscale))
+			icon:SetWidth(TukuiDB.Scale(7*TukuiCF["unitframes"].gridscale))
+			icon:SetHeight(TukuiDB.Scale(7*TukuiCF["unitframes"].gridscale))
 			icon:SetPoint(spell[2], 0, 0)
 
 			local tex = icon:CreateTexture(nil, "OVERLAY")
