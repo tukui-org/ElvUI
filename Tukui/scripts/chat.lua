@@ -5,37 +5,14 @@ local OnEvent = function(self, event, ...) self[event](self, event, ...) end
 TukuiChat:SetScript("OnEvent", OnEvent)
 
 -----------------------------------------------------------------------
--- OVERWRITE GLOBAL FUNC & VAR FROM BLIZZARD
------------------------------------------------------------------------
-
--- seconds to wait when chatframe fade, default is 2
-CHAT_FRAME_FADE_OUT_TIME = 0
-
--- seconds to wait when tabs are not on mouseover, default is 1
-CHAT_TAB_HIDE_DELAY = 0
-
--- alpha of the current tab, default in 3.3.5 are 1 for mouseover and 0.4 for nomouseover
-CHAT_FRAME_TAB_SELECTED_MOUSEOVER_ALPHA = 1
-CHAT_FRAME_TAB_SELECTED_NOMOUSE_ALPHA = 0
-
--- alpha of non-selected and non-alert tabs, defaut on mouseover is 0.6 and on nomouseover, 0.2
-CHAT_FRAME_TAB_NORMAL_MOUSEOVER_ALPHA = 1
-CHAT_FRAME_TAB_NORMAL_NOMOUSE_ALPHA = 0
-
--- alpha of alerts (example: whisper via another tab)
-CHAT_FRAME_TAB_ALERTING_MOUSEOVER_ALPHA = 1
-CHAT_FRAME_TAB_ALERTING_NOMOUSE_ALPHA = 0
-
--- disable minimize system because we don't use this shit at all on classic chat.
-FCF_MinimizeFrame = TukuiDB.dummy
-
------------------------------------------------------------------------
 -- SETUP TUKUI CHATS
 -----------------------------------------------------------------------
 
 local _G = _G
 local replace = string.gsub
 local find = string.find
+local tabalpha = 1
+local tabnoalpha = 0
 
 local replaceschan = {
 	['Гильдия'] = '[Г]',
@@ -167,14 +144,6 @@ local function SetChatStyle(frame)
 	
 	-- hide edit box every time we click on a tab
 	_G[chat.."Tab"]:HookScript("OnClick", function() _G[chat.."EditBox"]:Hide() end)
-	
-	-- no mouse over alpha
-	_G[chat.."Tab"].noMouseAlpha = 0
-	
-	-- non-docked chat tabs is semi-transparent on login, need to set alpha to 0.
-	if _G[chat.."Tab"].isDocked ~= 1 then
-		_G[chat.."Tab"]:SetAlpha(0)
-	end
 
 	-- rename combag log to log
 	if _G[chat] == _G["ChatFrame2"] then
@@ -207,7 +176,13 @@ local function SetChatStyle(frame)
 		else
 			colorize(ChatTypeInfo[type].r,ChatTypeInfo[type].g,ChatTypeInfo[type].b)
 		end
-	end)	
+	end)
+	
+	hooksecurefunc("FCFTab_UpdateAlpha", function()
+		_G[chat.."Tab"]:SetAlpha(0)
+		_G[chat.."Tab"].mouseOverAlpha = tabalpha
+		_G[chat.."Tab"].noMouseAlpha = tabnoalpha
+	end)
 end
 
 -- Setup chatframes 1 to 10 on login.
@@ -219,6 +194,12 @@ local function SetupChat(self, event, addon)
 		local frame = _G[format("ChatFrame%s", i)]
 		SetChatStyle(frame)
 	end
+
+	-- disable minimize system because we don't use this shit at all on classic chat.
+	FCF_MinimizeFrame = TukuiDB.dummy
+
+	-- New UpdateColors function, stop it!
+	FCFTab_UpdateColors = TukuiDB.dummy
 	
 	-- Remember last channel
 	ChatTypeInfo.WHISPER.sticky = 1
