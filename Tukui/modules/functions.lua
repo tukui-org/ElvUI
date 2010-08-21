@@ -653,6 +653,13 @@ TukuiDB.countOffsets = {
 	BOTTOM = {0, 0},
 }
 
+function TukuiDB.CreateAuraWatchIcon(self, icon)
+	icon.icon:SetTexCoord(.08, .92, .08, .92)
+	if (icon.cd) then
+		icon.cd:SetReverse()
+	end 	
+end
+
 function TukuiDB.createAuraWatch(self, unit)
 	local auras = CreateFrame("Frame", nil, self)
 	auras:SetPoint("TOPLEFT", self.Health, 2, -2)
@@ -660,6 +667,7 @@ function TukuiDB.createAuraWatch(self, unit)
 	auras.presentAlpha = 1
 	auras.missingAlpha = 0
 	auras.icons = {}
+	auras.PostCreateIcon = TukuiDB.CreateAuraWatchIcon
 
 	if (not TukuiCF["unitframes"].auratimer) then
 		auras.hideCooldown = true
@@ -717,7 +725,7 @@ function TukuiDB.createAuraWatch(self, unit)
 			icon:SetWidth(TukuiDB.Scale(22*TukuiCF["unitframes"].gridscale))
 			icon:SetHeight(TukuiDB.Scale(22*TukuiCF["unitframes"].gridscale))
 			icon:SetPoint("CENTER", 0, 0)
-
+						
 			local count = icon:CreateFontString(nil, "OVERLAY")
 			count:SetFont(TukuiCF["media"].uffont, 9*TukuiCF["unitframes"].gridscale, "THINOUTLINE")
 			count:SetPoint("BOTTOMRIGHT", 2, 2)
