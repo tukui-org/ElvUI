@@ -653,19 +653,6 @@ TukuiDB.countOffsets = {
 	BOTTOM = {0, 0},
 }
 
-function TukuiDB.auraIcon(self, icon)
-	TukuiDB.SetTemplate(icon)
-	icon.icon:SetPoint("TOPLEFT", TukuiDB.Scale(1), TukuiDB.Scale(-1))
-	icon.icon:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(-1), TukuiDB.Scale(1))
-	icon.icon:SetTexCoord(.08, .92, .08, .92)
-	icon.icon:SetDrawLayer("ARTWORK")
-	if (icon.cd) then
-		icon.cd:SetReverse()
-	end
-	icon.overlay:SetTexture()
-end
-
-local _, class = UnitClass("player")
 function TukuiDB.createAuraWatch(self, unit)
 	local auras = CreateFrame("Frame", nil, self)
 	auras:SetPoint("TOPLEFT", self.Health, 2, -2)
@@ -673,7 +660,6 @@ function TukuiDB.createAuraWatch(self, unit)
 	auras.presentAlpha = 1
 	auras.missingAlpha = 0
 	auras.icons = {}
-	auras.PostCreateIcon = TukuiDB.auraIcon
 
 	if (not TukuiCF["unitframes"].auratimer) then
 		auras.hideCooldown = true
