@@ -95,7 +95,7 @@
 	<Script file="scripts\mirror.lua"/>
 	<Script file="scripts\reminder.lua"/>
 	<Script file="scripts\skin.lua"/>
-	
+	<Script file="scripts\totemskin.lua"/>
 	
 	<Include file="unitframes\templates.xml"/>
 	<Script file="unitframes\tags.lua"/>
