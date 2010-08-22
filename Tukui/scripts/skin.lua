@@ -45,6 +45,7 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"DropDownList2MenuBackdrop",
 			"DropDownList1Backdrop",
 			"DropDownList2Backdrop",
+			"LFDSearchStatus",
 		}
 		
 		-- reskin popup buttons
