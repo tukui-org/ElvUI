@@ -41,7 +41,7 @@ local UpdateRune = function(self, event, rid)
 	local rune = self.Runes[rid]
 	if(rune) then
 		local start, duration, runeReady = GetRuneCooldown(rune:GetID())
-		if start >= 0 then
+		if(start) then
 			if(runeReady) then
 				rune:SetMinMaxValues(0, 1)
 				rune:SetValue(1)
