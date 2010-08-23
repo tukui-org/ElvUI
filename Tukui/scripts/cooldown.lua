@@ -101,11 +101,11 @@ local function Timer_OnUpdate(self, elapsed)
 end
 
 --returns a new timer object
-local function Timer_Create(cd)
+local function Timer_Create(self)
 	--a frame to watch for OnSizeChanged events
 	--needed since OnSizeChanged has funny triggering if the frame with the handler is not shown
-	local scaler = CreateFrame('Frame', nil, cd)
-	scaler:SetAllPoints(cd)
+	local scaler = CreateFrame('Frame', nil, self)
+	scaler:SetAllPoints(self)
 
 	local timer = CreateFrame('Frame', nil, scaler); timer:Hide()
 	timer:SetAllPoints(scaler)
@@ -119,17 +119,18 @@ local function Timer_Create(cd)
 	Timer_OnSizeChanged(timer, scaler:GetSize())
 	scaler:SetScript('OnSizeChanged', function(self, ...) Timer_OnSizeChanged(timer, ...) end)
 
-	cd.timer = timer
+	self.timer = timer
 	return timer
 end
 
 --hook the SetCooldown method of all cooldown frames
 --ActionButton1Cooldown is used here since its likely to always exist 
 --and I'd rather not create my own cooldown frame to preserve a tiny bit of memory
-hooksecurefunc(getmetatable(ActionButton1Cooldown).__index, 'SetCooldown', function(cd, start, duration)
+hooksecurefunc(getmetatable(ActionButton1Cooldown).__index, 'SetCooldown', function(self, start, duration)
+	if self.noOCC then return end
 	--start timer
 	if start > 0 and duration > MIN_DURATION then
-		local timer = cd.timer or Timer_Create(cd)
+		local timer = self.timer or Timer_Create(self)
 		timer.start = start
 		timer.duration = duration
 		timer.enabled = true
@@ -137,7 +138,7 @@ hooksecurefunc(getmetatable(ActionButton1Cooldown).__index, 'SetCooldown', funct
 		if timer.fontScale >= MIN_SCALE then timer:Show() end
 	--stop timer
 	else
-		local timer = cd.timer
+		local timer = self.timer
 		if timer then
 			Timer_Stop(timer)
 		end
