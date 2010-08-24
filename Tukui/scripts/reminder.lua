@@ -63,7 +63,11 @@ if (buffs and buffs[1]) then
 				local name = GetSpellInfo(buff)
 				local usable, nomana = IsUsableSpell(name)
 				if (usable or nomana) then
-					self.icon:SetTexture(select(3, GetSpellInfo(buff)))
+					if TukuiDB.myclass == "PRIEST" then 
+						self.icon:SetTexture([[Interface\AddOns\Tukui\media\textures\innerarmor]])
+					else
+						self.icon:SetTexture(select(3, GetSpellInfo(buff)))
+					end
 					break
 				end
 			end
@@ -101,13 +105,21 @@ if (buffs and buffs[1]) then
 	end
 	
 	local frame = CreateFrame("Frame", _, UIParent)
-	TukuiDB.CreatePanel(frame, TukuiDB.Scale(40), TukuiDB.Scale(40), "CENTER", UIParent, "CENTER", 0, TukuiDB.Scale(200))
 	
 	frame.icon = frame:CreateTexture(nil, "OVERLAY")
-	frame.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	frame.icon:SetPoint("CENTER")
-	frame.icon:SetWidth(TukuiDB.Scale(36))
-	frame.icon:SetHeight(TukuiDB.Scale(36))
+	if TukuiDB.myclass ~= "PRIEST" then
+		TukuiDB.CreatePanel(frame, TukuiDB.Scale(40), TukuiDB.Scale(40), "CENTER", UIParent, "CENTER", 0, TukuiDB.Scale(200))
+		frame.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+		frame.icon:SetWidth(TukuiDB.Scale(36))
+		frame.icon:SetHeight(TukuiDB.Scale(36))
+	else
+		TukuiDB.CreatePanel(frame, TukuiDB.Scale(96), TukuiDB.Scale(192), "CENTER", UIParent, "CENTER", 0, TukuiDB.Scale(200))
+		frame.icon:SetWidth(TukuiDB.Scale(96))
+		frame.icon:SetHeight(TukuiDB.Scale(192))
+		frame:SetBackdropColor(0, 0, 0, 0)
+		frame:SetBackdropBorderColor(0, 0, 0, 0)
+	end
 	frame:Hide()
 	
 	frame:RegisterEvent("UNIT_AURA")
