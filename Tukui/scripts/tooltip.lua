@@ -239,9 +239,6 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 	
 	-- Sometimes this wasn't getting reset, the fact a cleanup isn't performed at this point, now that it was moved to "OnTooltipCleared" is very bad, so this is a fix
 	self.fadeOut = nil
-	
-	-- need this
-	NeedBackdropBorderRefresh = true
 end)
 
 local BorderColor = function(self)
@@ -287,7 +284,10 @@ local BorderColor = function(self)
 			healthBarBG:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))
 			healthBar:SetStatusBarColor(unpack(TukuiCF["media"].bordercolor))
 		end
-	end	
+	end
+	
+	-- need this
+	NeedBackdropBorderRefresh = true
 end
 
 local SetStyle = function(self)
