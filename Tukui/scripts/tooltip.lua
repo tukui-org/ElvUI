@@ -2,7 +2,6 @@
 
 local db = TukuiCF["tooltip"]
 if not db.enable then return end
-if db.cursor then db.hideuf = true end
 
 local TukuiTooltip = CreateFrame("Frame", nil, UIParent)
 
