@@ -290,6 +290,8 @@ TukuiOnLogon:SetScript("OnEvent", function(self, event)
 		if TukuiCF["general"].multisampleprotect == true then
 			SetMultisampleFormat(1)
 		end
+		if TukuiCF["general"].uiscale > 1 then TukuiCF["general"].uiscale = 1 end
+		if TukuiCF["general"].uiscale < 0.64 then TukuiCF["general"].uiscale = 0.64 end
 		SetCVar("uiScale", TukuiCF["general"].uiscale)
 		if TukuiInstallv1100 ~= true then
 			if (TukuiData == nil) then TukuiData = {} end
