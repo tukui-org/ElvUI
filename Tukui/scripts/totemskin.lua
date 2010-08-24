@@ -164,6 +164,7 @@ function AddOn:PLAYER_ENTERING_WORLD()
 		end
 		MultiCastFlyoutFrame:HookScript("OnShow",SkinFlyoutTray)
 		MultiCastFlyoutFrameOpenButton:HookScript("OnShow", function(self) if MultiCastFlyoutFrame:IsShown() then MultiCastFlyoutFrame:Hide() end SkinFlyoutButton(self) end)
+		MultiCastFlyoutFrame:SetFrameLevel(4)
 	end
 end
 
