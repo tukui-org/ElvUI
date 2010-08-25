@@ -91,6 +91,7 @@ if TukuiDB.myclass == "SHAMAN" then
  
 		MultiCastActionBarFrame.SetParent = TukuiDB.dummy
 		MultiCastActionBarFrame.SetPoint = TukuiDB.dummy
+		MultiCastRecallSpellButton.SetPoint = TukuiDB.dummy -- bug fix, see http://www.tukui.org/v2/forums/topic.php?id=2405
 	end
 end
 
