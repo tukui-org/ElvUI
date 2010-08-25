@@ -26,8 +26,11 @@ local GetTime = GetTime
 
 --returns both what text to display, and how long until the next update
 local function getTimeText(s)
+	-- format text as seconds with decimal at treshold or below
+	if s < db.treshold + 0.51 then
+		return format("%.1f", s), s - format("%.1f", s)
 	--format text as seconds when at 90 seconds or below
-	if s < MINUTEISH then
+	elseif s < MINUTEISH then
 		local seconds = round(s)
 		return seconds, s - (seconds - 0.51)
 	--format text as minutes when below an hour
