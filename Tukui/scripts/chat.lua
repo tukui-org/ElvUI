@@ -448,9 +448,9 @@ local function Copy(cf)
 	local text = table.concat(lines, "\n", 1, lineCt)
 	FCF_SetChatWindowFontSize(cf, cf, size)
 	if not isf then CreatCopyFrame() end
+	if frame:IsShown() then frame:Hide() return end
 	frame:Show()
 	editBox:SetText(text)
-	editBox:HighlightText(0)
 end
 
 function TukuiDB.ChatCopyButtons()
