@@ -8,8 +8,9 @@ TemporaryEnchantFrame:SetPoint("TOPRIGHT", Minimap, "TOPRIGHT", 0, TukuiDB.Scale
 TemporaryEnchantFrame.SetPoint = TukuiDB.dummy
 
 ConsolidatedBuffs:ClearAllPoints()
-ConsolidatedBuffs:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", TukuiDB.Scale(-12), TukuiDB.Scale(7))
-ConsolidatedBuffsIcon:SetAlpha(0)
+ConsolidatedBuffs:SetPoint("LEFT", Minimap, "LEFT", TukuiDB.Scale(0), TukuiDB.Scale(0))
+ConsolidatedBuffs:SetSize(16, 16)
+ConsolidatedBuffsIcon:SetTexture(nil)
 ConsolidatedBuffs.SetPoint = TukuiDB.dummy
 
 TempEnchant1:ClearAllPoints()
