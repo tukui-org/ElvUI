@@ -46,10 +46,6 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"DropDownList1Backdrop",
 			"DropDownList2Backdrop",
 			"LFDSearchStatus",
-			"ChatMenu",
-			"EmoteMenu",
-			"LanguageMenu",
-			"VoiceMacroMenu",
 			"AutoCompleteBox", -- this is the /w *nickname* box, press tab
 		}
 				
@@ -64,24 +60,18 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			TukuiDB.SetTemplate(_G[skins[i]])
 		end
 		
-		-- frame that need a backdrop update when show.
-		local updateskins = {
+		local ChatMenus = {
 			"ChatMenu",
 			"EmoteMenu",
 			"LanguageMenu",
 			"VoiceMacroMenu",
 		}
-		
-		-- update backdrop (OnShow Event) and move it if necessary (needed on some frame)
-		for i = 1, getn(updateskins) do
-			if _G[updateskins[i]] == _G["ChatMenu"] then
-				_G[updateskins[i]]:SetScript("OnShow", function(self)
-					SetOriginalBackdrop(_G[updateskins[i]])
-					self:ClearAllPoints()
-					self:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, TukuiDB.Scale(30))
-				end)
+ 
+		for i = 1, getn(ChatMenus) do
+			if _G[ChatMenus[i]] == _G["ChatMenu"] then
+				_G[ChatMenus[i]]:HookScript("OnShow", function(self) TukuiDB.SetTemplate(self) self:ClearAllPoints() self:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, TukuiDB.Scale(30)) end)
 			else
-				_G[updateskins[i]]:SetScript("OnShow", SetOriginalBackdrop)
+				_G[ChatMenus[i]]:HookScript("OnShow", function(self) TukuiDB.SetTemplate(self) end)
 			end
 		end
 		
