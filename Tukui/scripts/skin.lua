@@ -2,13 +2,13 @@
 -- I don't want to loose my time reskinning all panels/frame, because in a couple of month we need to redo it. :x
 -- thank to karudon for helping me reskinning some elements in default interface.
 
-local function OnEnter(self)
+local function SetModifiedBackdrop(self)
 	local color = RAID_CLASS_COLORS[TukuiDB.myclass]
 	self:SetBackdropColor(color.r, color.g, color.b, 0.15)
 	self:SetBackdropBorderColor(color.r, color.g, color.b)
 end
 
-local function OnLeave(self)
+local function SetOriginalBackdrop(self)
 	self:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
 	self:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))
 end
@@ -19,8 +19,8 @@ local function SkinButton(f)
 	f:SetPushedTexture("")
 	f:SetDisabledTexture("")
 	TukuiDB.SetTemplate(f)
-	f:HookScript("OnEnter", OnEnter)
-	f:HookScript("OnLeave", OnLeave)
+	f:HookScript("OnEnter", SetModifiedBackdrop)
+	f:HookScript("OnLeave", SetOriginalBackdrop)
 end
 
 local TukuiSkin = CreateFrame("Frame")
@@ -46,8 +46,13 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"DropDownList1Backdrop",
 			"DropDownList2Backdrop",
 			"LFDSearchStatus",
+			"ChatMenu",
+			"EmoteMenu",
+			"LanguageMenu",
+			"VoiceMacroMenu",
+			"AutoCompleteBox", -- this is the /w *nickname* box, press tab
 		}
-		
+				
 		-- reskin popup buttons
 		for i = 1, 2 do
 			for j = 1, 2 do
@@ -57,6 +62,27 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		
 		for i = 1, getn(skins) do
 			TukuiDB.SetTemplate(_G[skins[i]])
+		end
+		
+		-- frame that need a backdrop update when show.
+		local updateskins = {
+			"ChatMenu",
+			"EmoteMenu",
+			"LanguageMenu",
+			"VoiceMacroMenu",
+		}
+		
+		-- update backdrop (OnShow Event) and move it if necessary (needed on some frame)
+		for i = 1, getn(updateskins) do
+			if _G[updateskins[i]] == _G["ChatMenu"] then
+				_G[updateskins[i]]:SetScript("OnShow", function(self)
+					SetOriginalBackdrop(_G[updateskins[i]])
+					self:ClearAllPoints()
+					self:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, TukuiDB.Scale(30))
+				end)
+			else
+				_G[updateskins[i]]:SetScript("OnShow", SetOriginalBackdrop)
+			end
 		end
 		
 		-- reskin all esc/menu buttons
