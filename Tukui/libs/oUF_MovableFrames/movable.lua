@@ -309,6 +309,7 @@ do
 			_DB = TukuiUFpos or {}
 			TukuiUFpos = _DB
 		else
+			if (TukuiData == nil) then TukuiData = {} end
 			_DB = TukuiData.ufpos or {}
 			TukuiData.ufpos = _DB
 		end
