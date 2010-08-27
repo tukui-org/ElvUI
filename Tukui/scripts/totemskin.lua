@@ -55,6 +55,8 @@ local function SkinButton(button,colorr, colorg, colorb)
 	TukuiDB.SetTemplate(button)
 	if button.actionButton then
 		TukuiDB.SetTemplate(button.actionButton)
+		button.actionButton:SetPushedTexture("")
+		button.actionButton:SetCheckedTexture("")
 	end
 	button.background:SetDrawLayer("ARTWORK")
 	button.background:ClearAllPoints()
@@ -77,6 +79,8 @@ local function SkinSummonButton(button,colorr, colorg, colorb)
 	select(7,button:GetRegions()):SetTexture(nil)
 	TukuiDB.SetTemplate(button)
 	button:SetSize(buttonsize,buttonsize)
+	button:SetPushedTexture("")
+	button:SetCheckedTexture("")
 end
 
 local function SkinFlyoutTray(tray)
