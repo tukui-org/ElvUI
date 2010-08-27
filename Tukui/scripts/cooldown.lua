@@ -28,24 +28,24 @@ local GetTime = GetTime
 --returns both what text to display, and how long until the next update
 local function getTimeText(s)
 	-- format text as seconds with decimal at treshold or below
-	if s < db.treshold + 0.51 then
-		return format("%.1f", s), s - format("%.1f", s)
+	if s < db.treshold + 0.5 then
+		return format("|cffff0000%.1f|r", s), s - format("%.1f", s)
 	--format text as seconds when at 90 seconds or below
 	elseif s < MINUTEISH then
 		local seconds = round(s)
-		return seconds, s - (seconds - 0.51)
+		return format('|cffffff00%d|r', seconds), s - (seconds - 0.51)
 	--format text as minutes when below an hour
 	elseif s < HOURISH then
 		local minutes = round(s/MINUTE)
-		return minutes .. 'm', minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH)
+		return format('|cffffffff%dm|r', minutes), minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH)
 	--format text as hours when below a day
 	elseif s < DAYISH then
 		local hours = round(s/HOUR)
-		return hours .. 'h', hours > 1 and (s - (hours*HOUR - HALFHOURISH)) or (s - HOURISH)
+		return format('|cffccccff%dh|r', hours), hours > 1 and (s - (hours*HOUR - HALFHOURISH)) or (s - HOURISH)
 	--format text as days
 	else
 		local days = round(s/DAY)
-		return days .. 'd', days > 1 and (s - (days*DAY - HALFDAYISH)) or (s - DAYISH)
+		return format('|cffcccccc%dd|r', days), days > 1 and (s - (days*DAY - HALFDAYISH)) or (s - DAYISH)
 	end
 end
 
@@ -91,11 +91,6 @@ local function Timer_OnUpdate(self, elapsed)
 		local remain = self.duration - (GetTime() - self.start)
 		if round(remain) > 0 then
 			local time, nextUpdate = getTimeText(remain)
-			if round(remain) > db.treshold then
-				self.text:SetTextColor(unpack(FONT_COLOR))
-			else
-				self.text:SetTextColor(1, 0, 0)
-			end
 			self.text:SetText(time)
 			self.nextUpdate = nextUpdate
 		else
