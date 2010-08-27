@@ -1,17 +1,18 @@
 if TukuiCF.chat.enable ~= true then return end
 
 local SetItemRef_orig = SetItemRef
-function ReURL_SetItemRef(link, text, button)
-	local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
+function ReURL_SetItemRef(link, text, button, chatFrame)
 	if (strsub(link, 1, 3) == "url") then
+		local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
 		local url = strsub(link, 5);
 		if (not ChatFrameEditBox:IsShown()) then
 			ChatEdit_ActivateChat(ChatFrameEditBox)
 		end
 		ChatFrameEditBox:Insert(url)
 		ChatFrameEditBox:HighlightText()
+
 	else
-		SetItemRef_orig(link, text, button);
+		SetItemRef_orig(link, text, button, chatFrame)
 	end
 end
 SetItemRef = ReURL_SetItemRef
