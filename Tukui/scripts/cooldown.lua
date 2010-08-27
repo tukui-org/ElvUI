@@ -19,6 +19,7 @@ local DAYISH, HOURISH, MINUTEISH = 3600 * 23.5, 60 * 59.5, 59.5 --used for forma
 local HALFDAYISH, HALFHOURISH, HALFMINUTEISH = DAY/2 + 0.5, HOUR/2 + 0.5, MINUTE/2 + 0.5 --used for calculating next update times
 
 --local bindings!
+local format = string.format
 local floor = math.floor
 local min = math.min
 local round = function(x) return floor(x + 0.5) end
