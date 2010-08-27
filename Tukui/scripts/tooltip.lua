@@ -214,6 +214,7 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 	else
 		for i = 2, lines do
 			if((_G["GameTooltipTextLeft"..i]:GetText():find("^"..LEVEL)) or (crtype and _G["GameTooltipTextLeft"..i]:GetText():find("^"..crtype))) then
+				if level == -1 and classif == "elite" then classif = "worldboss" end
 				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r%s %s", r*255, g*255, b*255, classif ~= "worldboss" and level ~= 0 and level or "", classification[classif] or "", crtype or "")
 				break
 			end
