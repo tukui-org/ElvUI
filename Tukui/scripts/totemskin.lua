@@ -5,6 +5,8 @@
     
 ]]
 
+if not TukuiCF["actionbar"].enable == true then return end
+
 local buttonsize = TukuiDB.Scale(27)
 local flyoutsize = TukuiDB.Scale(24)
 local buttonspacing = TukuiDB.Scale(3)
