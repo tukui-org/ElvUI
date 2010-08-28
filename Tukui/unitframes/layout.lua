@@ -465,6 +465,7 @@ local function Shared(self, unit)
 			-- castbar of player and target
 			local castbar = CreateFrame("StatusBar", self:GetName().."_Castbar", self)
 			castbar:SetStatusBarTexture(normTex)
+			castbar:SetStatusBarColor(0.31, 0.45, 0.63, 0.5)
 			
 			castbar.bg = castbar:CreateTexture(nil, "BORDER")
 			castbar.bg:SetAllPoints(castbar)
@@ -731,6 +732,7 @@ local function Shared(self, unit)
 			-- castbar of player and target
 			local castbar = CreateFrame("StatusBar", self:GetName().."_Castbar", self)
 			castbar:SetStatusBarTexture(normTex)
+			castbar:SetStatusBarColor(0.31, 0.45, 0.63, 0.5)
 			
 			if not TukuiDB.lowversion then
 				castbar.bg = castbar:CreateTexture(nil, "BORDER")
