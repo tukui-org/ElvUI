@@ -47,6 +47,7 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"DropDownList2Backdrop",
 			"LFDSearchStatus",
 			"AutoCompleteBox", -- this is the /w *nickname* box, press tab
+			"ReadyCheckFrame",
 		}
 				
 		-- reskin popup buttons
@@ -128,7 +129,9 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"AudioOptionsFrameDefaults", 
 			"InterfaceOptionsFrameDefaults", 
 			"InterfaceOptionsFrameOkay", 
-			"InterfaceOptionsFrameCancel"
+			"InterfaceOptionsFrameCancel",
+			"ReadyCheckFrameYesButton",
+			"ReadyCheckFrameNoButton",
 		}
 		
 		for i = 1, getn(BlizzardButtons) do
@@ -138,7 +141,7 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			end
 		end
 		
-		-- if a button position is not really where we want, we move it here
+		-- if a button position or text is not really where we want, we move it here
 		_G["VideoOptionsFrameCancel"]:ClearAllPoints()
 		_G["VideoOptionsFrameCancel"]:SetPoint("RIGHT",_G["VideoOptionsFrameApply"],"LEFT",-4,0)		 
 		_G["VideoOptionsFrameOkay"]:ClearAllPoints()
@@ -147,6 +150,16 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		_G["AudioOptionsFrameOkay"]:SetPoint("RIGHT",_G["AudioOptionsFrameCancel"],"LEFT",-4,0)
 		_G["InterfaceOptionsFrameOkay"]:ClearAllPoints()
 		_G["InterfaceOptionsFrameOkay"]:SetPoint("RIGHT",_G["InterfaceOptionsFrameCancel"],"LEFT", -4,0)
+		_G["ReadyCheckFrameYesButton"]:SetParent(_G["ReadyCheckFrame"])
+		_G["ReadyCheckFrameNoButton"]:SetParent(_G["ReadyCheckFrame"]) 
+		_G["ReadyCheckFrameYesButton"]:SetPoint("RIGHT", _G["ReadyCheckFrame"], "CENTER", -1, 0)
+		_G["ReadyCheckFrameNoButton"]:SetPoint("LEFT", _G["ReadyCheckFrameYesButton"], "RIGHT", 3, 0)
+		_G["ReadyCheckFrameText"]:SetParent(_G["ReadyCheckFrame"])	
+		_G["ReadyCheckFrameText"]:ClearAllPoints()
+		_G["ReadyCheckFrameText"]:SetPoint("TOP", 0, -12)
+		
+		-- others
+		_G["ReadyCheckListenerFrame"]:SetAlpha(0)		
 	end
 	
 	if addon == "Blizzard_BindingUI" then
