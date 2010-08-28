@@ -41,8 +41,10 @@ local function Shared(self, unit)
 	TukuiDB.CreateShadow(self)
 	
 	-- rescale backdrop shadow for these class if plugin are loaded
-	if ((unit == "player") and (TukuiDB.myclass == "SHAMAN" and TukuiCF.unitframes.totemtimer) or (TukuiDB.myclass == "DEATHKNIGHT" and TukuiCF.unitframes.runebar)) then
-		self.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(13))
+	if unit == "player" then
+		if (TukuiDB.myclass == "SHAMAN" and TukuiCF.unitframes.totemtimer) or (TukuiDB.myclass == "DEATHKNIGHT" and TukuiCF.unitframes.runebar) then
+			self.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(13))
+		end
 	end
 	------------------------------------------------------------------------
 	--	Player and Target units layout (mostly mirror'd)
