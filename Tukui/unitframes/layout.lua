@@ -859,6 +859,7 @@ local function Shared(self, unit)
 			castbar:SetHeight(TukuiDB.Scale(20))
 			castbar:SetWidth(TukuiDB.Scale(240))
 			castbar:SetStatusBarTexture(normTex)
+			castbar:SetStatusBarColor(0.31, 0.45, 0.63, 0.5)
 			castbar:SetFrameLevel(6)
 			castbar:SetPoint("CENTER", UIParent, "CENTER", 0, 250)		
 			
