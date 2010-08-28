@@ -60,22 +60,6 @@ function TukuiDB.CreatePanel(f, w, h, a1, p, a2, x, y)
 	f:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))
 end
 
-function TukuiDB.SetOverlay(parent)
-	local overlay = CreateFrame("Frame", nil, parent)
-	overlay:SetFrameLevel(parent:GetFrameLevel()+1)
-	overlay:SetFrameStrata(parent:GetFrameStrata())
-	overlay:SetPoint("TOPLEFT", 3, -3)
-	overlay:SetPoint("BOTTOMRIGHT", -3, 3)
-	overlay:SetBackdrop({
-	  bgFile = TukuiCF["media"].blank,
-	  edgeFile = TukuiCF["media"].blank,
-	  tile = false, tileSize = 0, edgeSize = mult,
-	  insets = { left = -mult, right = -mult, top = -mult, bottom = -mult}
-	})
-	overlay:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
-	overlay:SetBackdropBorderColor(0,0,0,0)
-end
-
 function TukuiDB.SetTemplate(f)
 	f:SetBackdrop({
 	  bgFile = TukuiCF["media"].blank, 
@@ -85,6 +69,23 @@ function TukuiDB.SetTemplate(f)
 	})
 	f:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
 	f:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))
+end
+
+function TukuiDB.CreateShadow(f)
+	local shadow = CreateFrame("Frame", nil, f)
+	shadow:SetFrameLevel(1)
+	shadow:SetFrameStrata(f:GetFrameStrata())
+	shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))
+	shadow:SetPoint("BOTTOMLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(-4))
+	shadow:SetPoint("TOPRIGHT", TukuiDB.Scale(4), TukuiDB.Scale(4))
+	shadow:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(4), TukuiDB.Scale(-4))
+	shadow:SetBackdrop( { 
+		edgeFile = TukuiCF["media"].glowTex, edgeSize = TukuiDB.Scale(3),
+		insets = {left = TukuiDB.Scale(5), right = TukuiDB.Scale(5), top = TukuiDB.Scale(5), bottom = TukuiDB.Scale(5)},
+	})
+	shadow:SetBackdropColor(0, 0, 0, 0)
+	shadow:SetBackdropBorderColor(0, 0, 0, 0.5)
+	f.shadow = shadow
 end
 
 function TukuiDB.Kill(object)
