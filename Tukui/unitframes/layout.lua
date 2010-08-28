@@ -40,12 +40,6 @@ local function Shared(self, unit)
 	-- this is the glow border
 	TukuiDB.CreateShadow(self)
 	
-	-- rescale backdrop shadow for these class if plugin are loaded
-	if unit == "player" then
-		if (TukuiDB.myclass == "SHAMAN" and TukuiCF.unitframes.totemtimer) or (TukuiDB.myclass == "DEATHKNIGHT" and TukuiCF.unitframes.runebar) then
-			self.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(13))
-		end
-	end
 	------------------------------------------------------------------------
 	--	Player and Target units layout (mostly mirror'd)
 	------------------------------------------------------------------------
@@ -293,6 +287,10 @@ local function Shared(self, unit)
 				Reputation.PostUpdate = TukuiDB.UpdateReputationColor
 				Reputation.Tooltip = true
 				self.Reputation = Reputation
+			end
+			
+			if (TukuiDB.myclass == "SHAMAN" and TukuiCF.unitframes.totemtimer) or (TukuiDB.myclass == "DEATHKNIGHT" and TukuiCF.unitframes.runebar) then
+				self.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(13))
 			end
 			
 			-- show druid mana when shapeshifted in bear, cat or whatever
