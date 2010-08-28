@@ -289,10 +289,6 @@ local function Shared(self, unit)
 				self.Reputation = Reputation
 			end
 			
-			if (TukuiDB.myclass == "SHAMAN" and TukuiCF.unitframes.totemtimer) or (TukuiDB.myclass == "DEATHKNIGHT" and TukuiCF.unitframes.runebar) then
-				self.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(13))
-			end
-			
 			-- show druid mana when shapeshifted in bear, cat or whatever
 			if TukuiDB.myclass == "DRUID" then
 				CreateFrame("Frame"):SetScript("OnUpdate", function() TukuiDB.UpdateDruidMana(self) end)
@@ -303,6 +299,9 @@ local function Shared(self, unit)
 
 			-- deathknight runes
 			if TukuiDB.myclass == "DEATHKNIGHT" and db.runebar == true then
+				-- rescale top shadow border
+				self.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(13))
+				
 				local Runes = CreateFrame("Frame", nil, self)
 				Runes:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, TukuiDB.Scale(1))
 				Runes:SetHeight(TukuiDB.Scale(8))
@@ -336,6 +335,9 @@ local function Shared(self, unit)
 			
 			-- shaman totem bar
 			if TukuiDB.myclass == "SHAMAN" and db.totemtimer == true then
+				-- rescale top shadow border
+				self.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(13))
+				
 				local TotemBar = {}
 				TotemBar.Destroy = true
 				for i = 1, 4 do
