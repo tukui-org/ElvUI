@@ -498,6 +498,7 @@ local function Shared(self, unit)
 				castbar.button:SetHeight(TukuiDB.Scale(26))
 				castbar.button:SetWidth(TukuiDB.Scale(26))
 				TukuiDB.SetTemplate(castbar.button)
+				TukuiDB.CreateShadow(castbar.button)
 
 				castbar.icon = castbar.button:CreateTexture(nil, "ARTWORK")
 				castbar.icon:SetPoint("TOPLEFT", castbar.button, TukuiDB.Scale(2), TukuiDB.Scale(-2))
@@ -516,7 +517,7 @@ local function Shared(self, unit)
 					else
 						castbar.button:SetPoint("RIGHT", 46.5, 26.5)
 					end					
-				end	
+				end
 			end
 			
 			-- cast bar latency on player
@@ -526,8 +527,6 @@ local function Shared(self, unit)
 				castbar.safezone:SetVertexColor(0.69, 0.31, 0.31, 0.75)
 				castbar.SafeZone = castbar.safezone
 			end
-			
-			TukuiDB.CreateShadow(castbar.button)
 					
 			self.Castbar = castbar
 			self.Castbar.Time = castbar.time
