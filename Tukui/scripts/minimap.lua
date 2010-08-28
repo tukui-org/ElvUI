@@ -169,6 +169,7 @@ m_zone_text:SetPoint("Center",0,0)
 m_zone_text:SetJustifyH("CENTER")
 m_zone_text:SetJustifyV("MIDDLE")
 m_zone_text:SetHeight(TukuiDB.Scale(12))
+m_zone_text:SetWidth(m_zone:GetWidth()-6)
 
 local m_coord = CreateFrame("Frame",nil,UIParent)
 TukuiDB.CreatePanel(m_coord, 40, 20, "BOTTOMLEFT", Minimap, "BOTTOMLEFT", TukuiDB.Scale(2),TukuiDB.Scale(2))
@@ -245,6 +246,8 @@ local zone_Update = function()
 		m_zone_text:SetTextColor(1.0, 0.1, 0.1)
 	elseif pvp == "contested" then
 		m_zone_text:SetTextColor(1.0, 0.7, 0.0)
+	else
+		m_zone_text:SetTextColor(1.0, 1.0, 1.0)
 	end
 end
  
