@@ -1263,7 +1263,7 @@ if not IsAddOnLoaded("Gladius") then
 	end
 end
 
-if not IsAddOnLoaded("DXE") then
+if db.showboss then
 	for i = 1,MAX_BOSS_FRAMES do
 		local t_boss = _G["Boss"..i.."TargetFrame"]
 		t_boss:UnregisterAllEvents()
