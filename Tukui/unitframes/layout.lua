@@ -213,6 +213,7 @@ local function Shared(self, unit)
 			-- the threat bar on info left panel ? :P
 			if (db.showthreat == true) then
 				local ThreatBar = CreateFrame("StatusBar", self:GetName()..'_ThreatBar', TukuiInfoLeft)
+				ThreatBar:SetFrameLevel(5)
 				ThreatBar:SetPoint("TOPLEFT", TukuiInfoLeft, TukuiDB.Scale(2), TukuiDB.Scale(-2))
 				ThreatBar:SetPoint("BOTTOMRIGHT", TukuiInfoLeft, TukuiDB.Scale(-2), TukuiDB.Scale(2))
 			  
