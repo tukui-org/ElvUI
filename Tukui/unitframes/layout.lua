@@ -684,7 +684,7 @@ local function Shared(self, unit)
 		
 		-- health bar
 		local health = CreateFrame('StatusBar', nil, self)
-		health:SetHeight(TukuiDB.Scale(18))
+		health:SetHeight(TukuiDB.Scale(13))
 		health:SetPoint("TOPLEFT")
 		health:SetPoint("TOPRIGHT")
 		health:SetStatusBarTexture(normTex)
@@ -714,11 +714,32 @@ local function Shared(self, unit)
 				health.colorHappiness = true
 			end
 		end
+		
+		-- power
+		local power = CreateFrame('StatusBar', nil, self)
+		power:SetHeight(TukuiDB.Scale(4))
+		power:SetPoint("TOPLEFT", health, "BOTTOMLEFT", 0, -TukuiDB.mult)
+		power:SetPoint("TOPRIGHT", health, "BOTTOMRIGHT", 0, -TukuiDB.mult)
+		power:SetStatusBarTexture(normTex)
+		
+		power.frequentUpdates = true
+		power.colorPower = true
+		if db.showsmooth == true then
+			power.Smooth = true
+		end
+
+		local powerBG = power:CreateTexture(nil, 'BORDER')
+		powerBG:SetAllPoints(power)
+		powerBG:SetTexture(normTex)
+		powerBG.multiplier = 0.3
+				
+		self.Power = power
+		self.Power.bg = powerBG
 				
 		-- Unit name
 		local Name = health:CreateFontString(nil, "OVERLAY")
 		if TukuiDB.lowversion then
-			Name:SetPoint("CENTER", health, "CENTER", 0, TukuiDB.Scale(1))
+			Name:SetPoint("CENTER", self, "CENTER", 0, TukuiDB.Scale(1))
 			Name:SetFont(font1, 12, "OUTLINE")
 		else
 			Name:SetPoint("CENTER", panel, "CENTER", 0, TukuiDB.Scale(1))
