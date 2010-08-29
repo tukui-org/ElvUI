@@ -84,9 +84,6 @@ local function SetChatStyle(frame)
 	-- Stop the chat chat from fading out
 	_G[chat]:SetFading(false)
 	
-	-- set strata to low
-	_G[chat]:SetFrameStrata("LOW")
-	
 	-- move the chat edit box
 	_G[chat.."EditBox"]:ClearAllPoints();
 	_G[chat.."EditBox"]:SetPoint("TOPLEFT", TukuiInfoLeft, TukuiDB.Scale(2), TukuiDB.Scale(-2))
