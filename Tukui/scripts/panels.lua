@@ -119,7 +119,7 @@ if TukuiCF["datatext"].battleground == true then
 	TukuiDB.CreatePanel(bgframe, 1, 1, "TOPLEFT", UIParent, "BOTTOMLEFT", 0, 0)
 	bgframe:SetAllPoints(ileft)
 	bgframe:SetFrameStrata("LOW")
-	bgframe:SetFrameLevel(3)
+	bgframe:SetFrameLevel(0)
 	bgframe:EnableMouse(true)
 	local function OnEvent(self, event)
 		if event == "PLAYER_ENTERING_WORLD" then
