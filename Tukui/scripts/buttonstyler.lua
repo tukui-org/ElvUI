@@ -239,7 +239,6 @@ do
 	end
 end
 
---hooksecurefunc("ActionButton_OnUpdate", onupdate)
 hooksecurefunc("ActionButton_Update", style)
 hooksecurefunc("PetActionBar_Update", stylepet)
 hooksecurefunc("ShapeshiftBar_OnLoad", styleshift)
