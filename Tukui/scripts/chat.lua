@@ -34,6 +34,7 @@ local replaceschan = {
 	['Party'] = '[P]',
 	['Party Leader'] = '[PL]',
 	['Dungeon Guide'] = '[DG]',
+	['Guide du donjon'] = '[GdD]',
 	['Raid'] = '[R]',
 	['Raid Leader'] = '[RL]',
 	['Raid Warning'] = '[RW]',
