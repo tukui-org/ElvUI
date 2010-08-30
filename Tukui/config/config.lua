@@ -92,7 +92,7 @@ TukuiCF["map"] = {
 TukuiCF["loot"] = {
 	["lootframe"] = true,                  -- reskin the loot frame to fit tukui
 	["rolllootframe"] = true,              -- reskin the roll frame to fit tukui
-	["autogreed"] = true,                  -- auto-dez or auto-greed item at max level.
+	["autogreed"] = true,                  -- auto-dez or auto-greed item at max level, auto-greed Frozen orb
 }
 
 TukuiCF["cooldown"] = {
