@@ -468,7 +468,6 @@ local function Shared(self, unit)
 			-- castbar of player and target
 			local castbar = CreateFrame("StatusBar", self:GetName().."_Castbar", self)
 			castbar:SetStatusBarTexture(normTex)
-			castbar:SetStatusBarColor(0.31, 0.45, 0.63, 0.5)
 			
 			castbar.bg = castbar:CreateTexture(nil, "BORDER")
 			castbar.bg:SetAllPoints(castbar)
@@ -480,10 +479,8 @@ local function Shared(self, unit)
 			
 			castbar.CustomTimeText = TukuiDB.CustomCastTimeText
 			castbar.CustomDelayText = TukuiDB.CustomCastDelayText
-			castbar.PostCastStart = TukuiDB.PostCastStart
-			castbar.PostChannelStart = TukuiDB.PostCastStart
-			castbar:RegisterEvent('UNIT_SPELLCAST_INTERRUPTABLE', TukuiDB.SpellCastInterruptable)
-			castbar:RegisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTABLE', TukuiDB.SpellCastInterruptable)
+			castbar.PostCastStart = TukuiDB.CheckCast
+			castbar.PostChannelStart = TukuiDB.CheckChannel
 
 			castbar.time = TukuiDB.SetFontString(castbar, font1, 12)
 			castbar.time:SetPoint("RIGHT", panel, "RIGHT", TukuiDB.Scale(-4), TukuiDB.Scale(1))
@@ -755,7 +752,6 @@ local function Shared(self, unit)
 			-- castbar of player and target
 			local castbar = CreateFrame("StatusBar", self:GetName().."_Castbar", self)
 			castbar:SetStatusBarTexture(normTex)
-			castbar:SetStatusBarColor(0.31, 0.45, 0.63, 0.5)
 			
 			if not TukuiDB.lowversion then
 				castbar.bg = castbar:CreateTexture(nil, "BORDER")
@@ -768,10 +764,8 @@ local function Shared(self, unit)
 				
 				castbar.CustomTimeText = TukuiDB.CustomCastTimeText
 				castbar.CustomDelayText = TukuiDB.CustomCastDelayText
-				castbar.PostCastStart = TukuiDB.PostCastStart
-				castbar.PostChannelStart = TukuiDB.PostCastStart
-				castbar:RegisterEvent('UNIT_SPELLCAST_INTERRUPTABLE', TukuiDB.SpellCastInterruptable)
-				castbar:RegisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTABLE', TukuiDB.SpellCastInterruptable)
+				castbar.PostCastStart = TukuiDB.CheckCast
+				castbar.PostChannelStart = TukuiDB.CheckChannel
 
 				castbar.time = TukuiDB.SetFontString(castbar, font1, 12)
 				castbar.time:SetPoint("RIGHT", panel, "RIGHT", TukuiDB.Scale(-4), TukuiDB.Scale(1))
@@ -882,7 +876,6 @@ local function Shared(self, unit)
 			castbar:SetHeight(TukuiDB.Scale(20))
 			castbar:SetWidth(TukuiDB.Scale(240))
 			castbar:SetStatusBarTexture(normTex)
-			castbar:SetStatusBarColor(0.31, 0.45, 0.63, 0.5)
 			castbar:SetFrameLevel(6)
 			castbar:SetPoint("CENTER", UIParent, "CENTER", 0, 250)		
 			
@@ -904,10 +897,8 @@ local function Shared(self, unit)
 			castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 			
 			castbar.CustomDelayText = TukuiDB.CustomCastDelayText
-			castbar.PostCastStart = TukuiDB.PostCastStart
-			castbar.PostChannelStart = TukuiDB.PostChannelStart
-			castbar:RegisterEvent('UNIT_SPELLCAST_INTERRUPTABLE', TukuiDB.SpellCastInterruptable)
-			castbar:RegisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTABLE', TukuiDB.SpellCastInterruptable)
+			castbar.PostCastStart = TukuiDB.CheckCast
+			castbar.PostChannelStart = TukuiDB.CheckChannel
 			
 			if db.cbicons == true then
 				castbar.button = CreateFrame("Frame", nil, castbar)

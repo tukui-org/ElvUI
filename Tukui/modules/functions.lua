@@ -509,20 +509,22 @@ TukuiDB.HidePortrait = function(self, unit)
 	end
 end
 
-TukuiDB.PostCastStart = function (self, event, unit)
-	if self.interrupt then
-		self:SetStatusBarColor(1, 0, 0, 0.5)
+local CheckInterrupt = function(self, event, unit, interrupt)
+	if unit == "vehicle" then unit = "player" end
+
+	if interrupt and UnitCanAttack("player", unit) then
+		self:SetStatusBarColor(1, 0, 0, 0.5)	
 	else
-		self:SetStatusBarColor(0.31, 0.45, 0.63, 0.5)
+		self:SetStatusBarColor(0.31, 0.45, 0.63, 0.5)		
 	end
 end
 
-TukuiDB.SpellCastInterruptable = function(self, event, unit)
-	if event == 'UNIT_SPELLCAST_NOT_INTERRUPTABLE' then
-		self:SetStatusBarColor(1, 0, 0, 0.5)
-	else
-		self:SetStatusBarColor(0,31, 0.45, 0.63, 0.5)
-	end
+TukuiDB.CheckCast = function(self, event, unit, name, rank, text, castid, interrupt)
+    CheckInterrupt(self, event, unit, interrupt)
+end
+
+TukuiDB.CheckChannel = function(self, event, unit, name, rank, text, interrupt)
+    CheckInterrupt(self, event, unit, interrupt)
 end
 
 TukuiDB.MLAnchorUpdate = function (self)
