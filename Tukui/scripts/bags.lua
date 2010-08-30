@@ -351,11 +351,18 @@ function Stuffing:SearchUpdate(str)
 	str = string.lower(str)
 
 	for _, b in ipairs(self.buttons) do
+		if b.frame and not b.name then
+			b.frame:SetAlpha(.2)
+		end
 		if b.name then
 			if not string.find (string.lower(b.name), str) then
 				SetItemButtonDesaturated(b.frame, 1, 1, 1, 1)
+				b.frame:SetBackdropBorderColor(.5, .5, .5, 1)
+				b.frame:SetAlpha(.2)
 			else
 				SetItemButtonDesaturated(b.frame, 0, 1, 1, 1)
+				b.frame:SetAlpha(1)
+				self:SlotUpdate(b)
 			end
 		end
 	end
@@ -364,7 +371,9 @@ end
 
 function Stuffing:SearchReset()
 	for _, b in ipairs(self.buttons) do
+		b.frame:SetAlpha(1)
 		SetItemButtonDesaturated(b.frame, 0, 1, 1, 1)
+		self:SlotUpdate(b)
 	end
 end
 
