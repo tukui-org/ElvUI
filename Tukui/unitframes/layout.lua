@@ -1243,7 +1243,7 @@ end
 if db.showfocustarget == true then oUF:Spawn("focustarget", "oUF_Tukz_focustarget"):SetPoint("BOTTOM", 0, 224) end
 
 
-if not IsAddOnLoaded("Gladius") then
+if TukuiCF.arena.unitframes then
 	local arena = {}
 	for i = 1, 5 do
 		arena[i] = oUF:Spawn("arena"..i, "oUF_Arena"..i)

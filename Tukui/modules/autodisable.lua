@@ -64,3 +64,7 @@ end
 if (IsAddOnLoaded("TipTac")) then
 	TukuiCF["tooltip"].enable = false
 end
+
+if (IsAddOnLoaded("Gladius")) then
+	TukuiCF["arena"].unitframes = false
+end
