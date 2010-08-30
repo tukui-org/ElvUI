@@ -160,7 +160,7 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		
 		-- others
 		_G["ReadyCheckListenerFrame"]:SetAlpha(0)
-		_G["ReadyCheckFrame"]:HookScript("OnShow", function(self) if self.initiator then self:Hide() end end) -- bug fix, don't show it if initiator
+		_G["ReadyCheckFrame"]:HookScript("OnShow", function(self) if UnitIsUnit("player", self.initiator) then self:Hide() end end) -- bug fix, don't show it if initiator
 	end
 	
 	if addon == "Blizzard_BindingUI" then
