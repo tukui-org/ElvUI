@@ -639,7 +639,7 @@ local function Shared(self, unit)
 		end
 		Name:SetJustifyH("CENTER")
 
-		self:Tag(Name, '[Tukui:getnamecolor][Tukui:namemedium] [Tukui:diffcolor][level]')
+		self:Tag(Name, '[Tukui:getnamecolor][Tukui:namemedium]')
 		self.Name = Name
 		
 		if db.totdebuffs == true and TukuiDB.lowversion ~= true then
