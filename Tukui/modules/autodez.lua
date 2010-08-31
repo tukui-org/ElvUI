@@ -9,7 +9,9 @@ if TukuiCF["loot"].autogreed == true then
 	autogreed:RegisterEvent("START_LOOT_ROLL")
 	autogreed:SetScript("OnEvent", function(self, event, id)
 		local _, name = GetLootRollItemInfo(id)
-		if (name and name == tukuilocal.frozen_orb) then
+		local _, itemLink = GetItemInfo(name)
+		local ItemId = itemLink:match("|Hitem:(%d+)")
+		if (ItemId == 43102) then
 			RollOnLoot(id, 2)
 		end
 		if TukuiDB.level ~= MAX_PLAYER_LEVEL then return end

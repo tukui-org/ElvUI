@@ -175,5 +175,3 @@ tukuilocal.bind_discardbind = "Discard bindings"
 tukuilocal.hunter_unhappy = "Your pet is unhappy!"
 tukuilocal.hunter_content = "Your pet is content!"
 tukuilocal.hunter_happy = "Your pet is happy!"
-
-tukuilocal.frozen_orb = "Frozen Orb"
