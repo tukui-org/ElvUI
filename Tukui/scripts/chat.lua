@@ -336,6 +336,16 @@ local function AddMessageHook(frame, text, ...)
 	text = replace(text, "|Hplayer:(.+):(.+)|h%[(.+)%]|h whispers:", "From [|Hplayer:%1:%2|h%3|h]:")
 	text = replace(text, "|Hplayer:(.+):(.+)|h%[(.+)%]|h says:", "[|Hplayer:%1:%2|h%3|h]:")	
 	text = replace(text, "|Hplayer:(.+):(.+)|h%[(.+)%]|h yells:", "[|Hplayer:%1:%2|h%3|h]:")
+	if find(text, replace(ERR_AUCTION_SOLD_S,'%%s', '')) then	-- "A buyer has been found for your auction of %s."
+		local itemname = text:match(replace(ERR_AUCTION_SOLD_S, '%%s', '(.+)'))
+		text = '|cffef4341AH|r |cffBCD8FFSold:|r '
+		local _, solditem = GetItemInfo(itemname)
+		if solditem then
+			text = text..solditem
+		else
+			text = text..itemname
+		end
+	end 
 	return AddMessageOriginal(frame, text, ...)
 end
 
