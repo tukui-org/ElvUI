@@ -32,7 +32,7 @@ if TukuiCF["datatext"].gold and TukuiCF["datatext"].gold > 0 then
 	local function FormatTooltipMoney(money)
 		local gold, silver, copper = abs(money / 10000), abs(mod(money / 100, 100)), abs(mod(money, 100))
 		local cash = ""
-		cash = format("%d"..tukuilocal.goldabbrev.." %d"..tukuilocal.silverabbrev.." %d"..tukuilocal.copperabbrev, gold, silver, copper)		
+		cash = format("%.2d"..tukuilocal.goldabbrev.." %.2d"..tukuilocal.silverabbrev.." %.2d"..tukuilocal.copperabbrev, gold, silver, copper)		
 		return cash
 	end	
 
