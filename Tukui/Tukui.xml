@@ -32,8 +32,7 @@
 	<Script file="libs\oUF_TotemBar\oUF_TotemBar.lua"/>
 	<Script file="libs\oUF_Trinkets\oUF_Trinkets.lua"/>
 	
-	<Script file="unitframes\colors.lua"/>
-	
+	<Script file="modules\colors.lua"/>	
 	<Script file="modules\functions.lua"/>
 	<Script file="modules\launch.lua"/>
 	<Script file="modules\autodisable.lua"/>

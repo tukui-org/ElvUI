@@ -255,22 +255,14 @@ local BorderColor = function(self)
 
 	if player then
 		local class = select(2, UnitClass(unit))
-		if TukuiCF.unitframes.enable == true then
-			local c = TukuiDB.oUF_colors.class[class]
-			r, g, b = c[1], c[2], c[3]
-		else
-			r, g, b = RAID_CLASS_COLORS[class].r, RAID_CLASS_COLORS[class].g, RAID_CLASS_COLORS[class].b
-		end
+		local c = TukuiDB.oUF_colors.class[class]
+		r, g, b = c[1], c[2], c[3]
 		self:SetBackdropBorderColor(r, g, b)
 		healthBarBG:SetBackdropBorderColor(r, g, b)
 		healthBar:SetStatusBarColor(r, g, b)
 	elseif reaction then
-		if TukuiCF.unitframes.enable == true then
-			local c = TukuiDB.oUF_colors.reaction[reaction]
-			r, g, b = c[1], c[2], c[3]
-		else
-			r, g, b = FACTION_BAR_COLORS[reaction].r, FACTION_BAR_COLORS[reaction].g, FACTION_BAR_COLORS[reaction].b
-		end
+		local c = TukuiDB.oUF_colors.reaction[reaction]
+		r, g, b = c[1], c[2], c[3]
 		self:SetBackdropBorderColor(r, g, b)
 		healthBarBG:SetBackdropBorderColor(r, g, b)
 		healthBar:SetStatusBarColor(r, g, b)
