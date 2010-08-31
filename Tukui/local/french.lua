@@ -174,4 +174,6 @@ if TukuiDB.client == "frFR" then
 	tukuilocal.hunter_unhappy = "Votre familier n'est pas heureux!"
 	tukuilocal.hunter_content = "Votre familier est heureux!"
 	tukuilocal.hunter_happy = "Votre familier est très heureux!"
+	
+	tukuilocal.frozen_orb = "Orbe glacé"
 end

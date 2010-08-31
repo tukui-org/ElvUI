@@ -174,4 +174,6 @@ if TukuiDB.client == "ruRU" then
 	tukuilocal.hunter_unhappy = "Ваш питомец несчастлив!"
 	tukuilocal.hunter_content = "Ваш питомец доволен!"
 	tukuilocal.hunter_happy = "Ваш питомец счастлив!"
+	
+	tukuilocal.frozen_orb = "Ледяной шар"
 end

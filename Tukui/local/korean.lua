@@ -173,4 +173,6 @@ if TukuiDB.client == "koKR" then
 	tukuilocal.hunter_unhappy = "소환수의 만족도가 불만족입니다."
 	tukuilocal.hunter_content = "소환수의 만족도가 만족입니다."
 	tukuilocal.hunter_happy = "소환수의 만족도가 매우 만족입니다."
+	
+	tukuilocal.frozen_orb = "??????????" -- need translation
 end

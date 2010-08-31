@@ -173,4 +173,6 @@ if TukuiDB.client == "deDE" then
 	tukuilocal.hunter_unhappy = "Dein Begleiter ist unzufrieden!"
 	tukuilocal.hunter_content = "Dein Begleiter ist zufrieden!"
 	tukuilocal.hunter_happy = "Dein Begleiter ist glücklich!"  --fix
+	
+	tukuilocal.frozen_orb = "Gefrorene Kugel"
 end
