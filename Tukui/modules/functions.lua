@@ -682,7 +682,6 @@ function TukuiDB.createAuraWatch(self, unit)
 	end
 
 	local buffs = {}
-	local debuffs = TukuiDB.debuffids
 
 	if (TukuiDB.buffids["ALL"]) then
 		for key, value in pairs(TukuiDB.buffids["ALL"]) do
