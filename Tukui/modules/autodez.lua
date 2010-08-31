@@ -8,7 +8,7 @@ if TukuiCF["loot"].autogreed == true then
 	local autogreed = CreateFrame("frame")
 	autogreed:RegisterEvent("START_LOOT_ROLL")
 	autogreed:SetScript("OnEvent", function(self, event, id)
-		if (id == 43102) then
+		if (id and id == 43102) then
 			RollOnLoot(id, 2)
 		end
 		if TukuiDB.level ~= MAX_PLAYER_LEVEL then return end
