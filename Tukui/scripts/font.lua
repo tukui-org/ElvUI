@@ -55,6 +55,11 @@ TukuiFonts:SetScript("OnEvent", function(self, event, addon)
 	SetFont(Tooltip_Med,                        NORMAL, 12)
 	SetFont(Tooltip_Small,                      NORMAL, 12)
 	SetFont(CombatTextFont,                     COMBAT, 100, "OUTLINE") -- number here just increase the font quality.
+	SetFont(SystemFont_Shadow_Huge1,            NORMAL, 20, "THINOUTLINE")
+	SetFont(ZoneTextString,                     NORMAL, 32, "OUTLINE")
+	SetFont(SubZoneTextString,                  NORMAL, 25, "OUTLINE")
+	SetFont(PVPInfoTextString,                  NORMAL, 22, "THINOUTLINE")
+	SetFont(PVPArenaTextString,                 NORMAL, 22, "THINOUTLINE")
 
 	hooksecurefunc("PlayerTitleFrame_UpdateTitles", FixTitleFont)
 	FixTitleFont()
