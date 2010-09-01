@@ -109,3 +109,18 @@ SlashCmdList["GROUPDISBAND"] = function()
 		LeaveParty()
 end
 SLASH_GROUPDISBAND1 = '/rd'
+
+-- hide emotes from showing in chat when in these areas due to these fucking gold spammers
+local emotehider
+local function ToggleEmoteInChat()
+	if GetMinimapZoneText() == "Valley of Strength" or GetMinimapZoneText() == "Trade District" then
+		ChatFrame_RemoveMessageGroup(ChatFrame1, "EMOTE")
+	else
+		ChatFrame_AddMessageGroup(ChatFrame1, "EMOTE")
+	end
+end
+emotehider = CreateFrame("Frame")
+emotehider:RegisterEvent("PLAYER_ENTERING_WORLD")
+emotehider:RegisterEvent("ZONE_CHANGED_INDOORS")
+emotehider:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+emotehider:SetScript("OnEvent", ToggleEmoteInChat)
