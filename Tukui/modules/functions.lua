@@ -558,6 +558,7 @@ TukuiDB.UpdateManaLevel = function(self, elapsed)
 	if self.parent.unit ~= "player" or delay < 0.2 or UnitIsDeadOrGhost("player") or UnitPowerType("player") ~= 0 then return end
 	delay = 0
 
+	local AotV = GetSpellInfo(viperAspectName)
 	local percMana = UnitMana("player") / UnitManaMax("player") * 100
 
 	if AotV then
@@ -573,7 +574,7 @@ TukuiDB.UpdateManaLevel = function(self, elapsed)
 			StopFlash(self)
 		end
 	else
-		if percMana <= 20 then
+		if percMana <= TukuiCF["unitframes"].lowThreshold then
 			self.ManaLevel:SetText("|cffaf5050"..tukuilocal.unitframes_ouf_lowmana.."|r")
 			Flash(self, 0.3)
 		else
