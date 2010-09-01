@@ -165,6 +165,16 @@ local function Shared(self, unit)
 		RaidDebuffs.icon:SetPoint("TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 		RaidDebuffs.icon:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
 		
+		-- just in case someone want to add this feature, uncomment to enable it
+		--[[
+		if TukuiCF["unitframes"].auratimer then
+			RaidDebuffs.cd = CreateFrame('Cooldown', nil, RaidDebuffs)
+			RaidDebuffs.cd:SetPoint("TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+			RaidDebuffs.cd:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
+			RaidDebuffs.cd.noOCC = true -- remove this line if you want cooldown number on it
+		end
+		--]]
+		
 		RaidDebuffs.count = RaidDebuffs:CreateFontString(nil, 'OVERLAY')
 		RaidDebuffs.count:SetFont(TukuiCF["media"].uffont, 9*TukuiCF["unitframes"].gridscale, "THINOUTLINE")
 		RaidDebuffs.count:SetPoint('BOTTOMRIGHT', RaidDebuffs, 'BOTTOMRIGHT', 2, 2)
