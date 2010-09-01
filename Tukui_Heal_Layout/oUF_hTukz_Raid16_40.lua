@@ -162,20 +162,15 @@ local function Shared(self, unit)
 		
 		RaidDebuffs.icon = RaidDebuffs:CreateTexture(nil, 'OVERLAY')
 		RaidDebuffs.icon:SetTexCoord(.1,.9,.1,.9)
-		RaidDebuffs.icon:SetPoint("TOPLEFT", TukuiDB.Scale(1), TukuiDB.Scale(-1))
-		RaidDebuffs.icon:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(-1), TukuiDB.Scale(1))
-		
-		if TukuiCF["unitframes"].auratimer then
-			RaidDebuffs.cd = CreateFrame('Cooldown', nil, RaidDebuffs)
-			RaidDebuffs.cd:SetAllPoints(RaidDebuffs)
-		end
+		RaidDebuffs.icon:SetPoint("TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+		RaidDebuffs.icon:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
 		
 		RaidDebuffs.count = RaidDebuffs:CreateFontString(nil, 'OVERLAY')
 		RaidDebuffs.count:SetFont(TukuiCF["media"].uffont, 9*TukuiCF["unitframes"].gridscale, "THINOUTLINE")
 		RaidDebuffs.count:SetPoint('BOTTOMRIGHT', RaidDebuffs, 'BOTTOMRIGHT', 2, 2)
 		RaidDebuffs.count:SetTextColor(1, .9, 0)
 		
-		RaidDebuffs = self.RaidDebuffs
+		self.RaidDebuffs = RaidDebuffs
     end
 		
 	-- this is needed to be sure vehicle have good health/power color
