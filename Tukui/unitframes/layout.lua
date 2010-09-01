@@ -457,7 +457,6 @@ local function Shared(self, unit)
 			debuffs.initialAnchor = 'TOPRIGHT'
 			debuffs["growth-y"] = "UP"
 			debuffs["growth-x"] = "LEFT"
-			debuffs.onlyShowPlayer = db.playerdebuffsonly
 			debuffs.PostCreateIcon = TukuiDB.PostCreateAura
 			debuffs.PostUpdateIcon = TukuiDB.PostUpdateAura
 			self.Debuffs = debuffs
@@ -1093,7 +1092,6 @@ local function Shared(self, unit)
 		debuffs["growth-x"] = "LEFT"
 		debuffs.PostCreateIcon = TukuiDB.PostCreateAura
 		debuffs.PostUpdateIcon = TukuiDB.PostUpdateAura
-		debuffs.onlyShowPlayer = db.playerdebuffsonly
 		self.Debuffs = debuffs	
 		
 		
@@ -1113,7 +1111,6 @@ local function Shared(self, unit)
 			self.Debuffs["growth-y"] = "DOWN"
 			self.Debuffs:SetHeight(26)
 			self.Debuffs:SetWidth(200)
-			self.Debuffs.onlyShowPlayer = db.playerdebuffsonly
 		end	
 		
 		-- trinket feature via trinket plugin
