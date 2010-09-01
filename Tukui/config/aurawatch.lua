@@ -166,7 +166,6 @@ if TukuiCF["unitframes"].raidunitdebuffwatch == true then
 			74795, --Mark Of Consumption (Soul)
 
 			-- Other debuff
-			6215, -- Fear
 			67479, -- Impale
 			-- 552, -- test with abolish disease
 		}
