@@ -1089,30 +1089,11 @@ local function Shared(self, unit)
 		debuffs.num = 5
 		debuffs.spacing = 2
 		debuffs.initialAnchor = 'LEFT'
-		debuffs["growth-x"] = "LEFT"
+		debuffs["growth-x"] = "RIGHT"
 		debuffs.PostCreateIcon = TukuiDB.PostCreateAura
 		debuffs.PostUpdateIcon = TukuiDB.PostUpdateAura
 		self.Debuffs = debuffs	
-		
-		
-		if (unit and unit:find("arena%d")) or (unit and unit:find("boss%d")) then
-			if (unit and unit:find("boss%d")) then
-				self.Buffs:SetPoint("RIGHT", self, "LEFT", -4, 0)
-				self.Buffs.num = 3
-				self.Buffs.numBuffs = 3
-				self.Buffs.initialAnchor = "RIGHT"
-				self.Buffs["growth-x"] = "LEFT"
-			end
-			self.Debuffs.num = 5
-			self.Debuffs.size = 26
-			self.Debuffs:SetPoint('LEFT', self, 'RIGHT', 4, 0)
-			self.Debuffs.initialAnchor = "LEFT"
-			self.Debuffs["growth-x"] = "RIGHT"
-			self.Debuffs["growth-y"] = "DOWN"
-			self.Debuffs:SetHeight(26)
-			self.Debuffs:SetWidth(200)
-		end	
-		
+				
 		-- trinket feature via trinket plugin
 		if not IsAddOnLoaded("Gladius") then
 			if (unit and unit:find('arena%d')) then
