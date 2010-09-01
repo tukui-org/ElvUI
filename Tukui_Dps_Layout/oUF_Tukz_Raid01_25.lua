@@ -128,7 +128,7 @@ oUF:RegisterStyle('TukuiDpsP05R10R15R25', Shared)
 oUF:Factory(function(self)
 	oUF:SetActiveStyle("TukuiDpsP05R10R15R25")
 
-	local raid = self:SpawnHeader("oUF_TukuiDpsRaid05101525", nil, "custom [@raid26,exists] hide;show", "showParty", true, "showPlayer", TukuiCF["unitframes"].showplayerinparty, "showRaid", true, "yOffset", TukuiDB.Scale(-3))
+	local raid = self:SpawnHeader("oUF_TukuiDpsRaid05101525", nil, "custom [@raid26,exists] hide;show", "showParty", true, "showPlayer", TukuiCF["unitframes"].showplayerinparty, "showRaid", true, "groupFilter", "1,2,3,4,5,6,7,8", "groupingOrder", "1,2,3,4,5,6,7,8", "groupBy", "GROUP", "yOffset", TukuiDB.Scale(-3))
 	raid:SetPoint('TOPLEFT', UIParent, 15, -350*TukuiDB.raidscale)
 	
 	local pets = {} 
