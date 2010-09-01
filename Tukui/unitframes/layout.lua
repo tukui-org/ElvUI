@@ -1095,24 +1095,22 @@ local function Shared(self, unit)
 		self.Debuffs = debuffs	
 				
 		-- trinket feature via trinket plugin
-		if not IsAddOnLoaded("Gladius") then
-			if (unit and unit:find('arena%d')) then
-				local Trinketbg = CreateFrame("Frame", nil, self)
-				Trinketbg:SetHeight(26)
-				Trinketbg:SetWidth(26)
-				Trinketbg:SetPoint("RIGHT", self, "LEFT", -6, 0)				
-				TukuiDB.SetTemplate(Trinketbg)
-				Trinketbg:SetFrameLevel(0)
-				self.Trinketbg = Trinketbg
-				
-				local Trinket = CreateFrame("Frame", nil, Trinketbg)
-				Trinket:SetAllPoints(Trinketbg)
-				Trinket:SetPoint("TOPLEFT", Trinketbg, TukuiDB.Scale(2), TukuiDB.Scale(-2))
-				Trinket:SetPoint("BOTTOMRIGHT", Trinketbg, TukuiDB.Scale(-2), TukuiDB.Scale(2))
-				Trinket:SetFrameLevel(1)
-				Trinket.trinketUseAnnounce = true
-				self.Trinket = Trinket
-			end
+		if (TukuiCF.arena.unitframes) and (unit and unit:find('arena%d')) then
+			local Trinketbg = CreateFrame("Frame", nil, self)
+			Trinketbg:SetHeight(26)
+			Trinketbg:SetWidth(26)
+			Trinketbg:SetPoint("RIGHT", self, "LEFT", -6, 0)				
+			TukuiDB.SetTemplate(Trinketbg)
+			Trinketbg:SetFrameLevel(0)
+			self.Trinketbg = Trinketbg
+			
+			local Trinket = CreateFrame("Frame", nil, Trinketbg)
+			Trinket:SetAllPoints(Trinketbg)
+			Trinket:SetPoint("TOPLEFT", Trinketbg, TukuiDB.Scale(2), TukuiDB.Scale(-2))
+			Trinket:SetPoint("BOTTOMRIGHT", Trinketbg, TukuiDB.Scale(-2), TukuiDB.Scale(2))
+			Trinket:SetFrameLevel(1)
+			Trinket.trinketUseAnnounce = true
+			self.Trinket = Trinket
 		end
 		
 		self:SetAttribute("initial-height", TukuiDB.Scale(29))
