@@ -662,9 +662,6 @@ function TukuiDB.CreateAuraWatchIcon(self, icon)
 	icon.icon:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(-1), TukuiDB.Scale(1))
 	icon.icon:SetTexCoord(.08, .92, .08, .92)
 	icon.icon:SetDrawLayer("ARTWORK")
-	if (icon.cd) then
-		icon.cd:SetReverse()
-	end
 	icon.overlay:SetTexture()
 end
 
