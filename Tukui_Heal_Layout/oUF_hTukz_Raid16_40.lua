@@ -124,9 +124,11 @@ local function Shared(self, unit)
 	ReadyCheck:SetPoint('CENTER') 	
 	self.ReadyCheck = ReadyCheck
 	
-	self.DebuffHighlightAlpha = 1
-	self.DebuffHighlightBackdrop = true
-	self.DebuffHighlightFilter = true
+	if not TukuiCF["unitframes"].raidunitdebuffwatch == true then
+		self.DebuffHighlightAlpha = 1
+		self.DebuffHighlightBackdrop = true
+		self.DebuffHighlightFilter = true
+	end
 	
 	if TukuiCF.unitframes.healcomm then
 		self.HealCommBar = CreateFrame('StatusBar', nil, health)
