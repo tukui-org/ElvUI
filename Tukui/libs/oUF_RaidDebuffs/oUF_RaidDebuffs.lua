@@ -48,7 +48,7 @@ local DispellColor = {
 	['Curse']	= {.6, 0, 1},
 	['Disease']	= {.6, .4, 0},
 	['Poison']	= {0, .6, 0},
-	['none'] = {0, 0, 0},
+	['none'] = {unpack(TukuiCF.media.bordercolor)},
 }
 
 local DispellPriority = {
