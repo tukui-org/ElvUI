@@ -167,7 +167,6 @@ if TukuiCF["unitframes"].raidunitdebuffwatch == true then
 
 			-- Other debuff
 			67479, -- Impale
-			-- 552, -- test with abolish disease
 		}
 		
 		ORD:RegisterDebuffs(TukuiDB.debuffids)
