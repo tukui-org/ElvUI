@@ -145,6 +145,7 @@ movebutton:SetScript("OnMouseUp", OnMouseUp)
 
 -- the classcolor function
 local function UpdateIconColor(self)
+	if not self.unit then return end -- it seem sometime self.unit is not found causing lua error. idn why but anyway.
 	local color = RAID_CLASS_COLORS[select(2, UnitClass(self.unit))]
 	if not color then return end -- sometime color return nil
 	self.icon:SetVertexColor(color.r, color.g, color.b)
