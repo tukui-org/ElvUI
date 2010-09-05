@@ -1,0 +1,9 @@
+## Interface: 30200
+## Author: p3lim
+## Version: 30200.2-Release
+## Title: oUF ReadyCheck
+## Notes: ReadyCheck support for oUF layouts.
+## RequiredDeps: oUF
+
+oUF_ReadyCheck.lua
+

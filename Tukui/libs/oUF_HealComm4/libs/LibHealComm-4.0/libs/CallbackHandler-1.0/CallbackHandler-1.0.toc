@@ -1,0 +1,15 @@
+## Interface: 30200
+## LoadOnDemand: 1
+## Title: Lib: CallbackHandler-1.0
+## Notes: Callback handling Library, normally embedded inside other libraries
+## Author: Ace3 Development Team
+## X-Website: http://www.wowace.com/projects/callbackhandler/
+## X-Category: Library
+## X-License: BSD-2.0
+## X-Curse-Packaged-Version: 1.0.5
+## X-Curse-Project-Name: CallbackHandler-1.0
+## X-Curse-Project-ID: callbackhandler
+## X-Curse-Repository-ID: wow/callbackhandler/mainline
+
+LibStub\LibStub.lua
+CallbackHandler-1.0\CallbackHandler-1.0.xml
