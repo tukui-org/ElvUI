@@ -510,22 +510,22 @@ TukuiDB.HidePortrait = function(self, unit)
 	end
 end
 
-local CheckInterrupt = function(self, event, unit, interrupt)
+local CheckInterrupt = function(self, unit)
 	if unit == "vehicle" then unit = "player" end
 
-	if interrupt and UnitCanAttack("player", unit) then
+	if self.interrupt and UnitCanAttack("player", unit) then
 		self:SetStatusBarColor(1, 0, 0, 0.5)	
 	else
 		self:SetStatusBarColor(0.31, 0.45, 0.63, 0.5)		
 	end
 end
 
-TukuiDB.CheckCast = function(self, event, unit, name, rank, text, castid, interrupt)
-    CheckInterrupt(self, event, unit, interrupt)
+TukuiDB.CheckCast = function(self, unit, name, rank, castid)
+	CheckInterrupt(self, unit)
 end
 
-TukuiDB.CheckChannel = function(self, event, unit, name, rank, text, interrupt)
-    CheckInterrupt(self, event, unit, interrupt)
+TukuiDB.CheckChannel = function(self, unit, name, rank)
+	CheckInterrupt(self, unit)
 end
 
 TukuiDB.MLAnchorUpdate = function (self)
@@ -552,7 +552,6 @@ TukuiDB.UpdatePetInfo = function(self,event)
 end
 
 local delay = 0
-local viperAspectName = GetSpellInfo(34074)
 TukuiDB.UpdateManaLevel = function(self, elapsed)
 	delay = delay + elapsed
 	if self.parent.unit ~= "player" or delay < 0.2 or UnitIsDeadOrGhost("player") or UnitPowerType("player") ~= 0 then return end
@@ -560,26 +559,12 @@ TukuiDB.UpdateManaLevel = function(self, elapsed)
 
 	local percMana = UnitMana("player") / UnitManaMax("player") * 100
 
-	if AotV then
-		local viper = UnitBuff("player", viperAspectName)
-		if percMana >= TukuiCF["unitframes"].highThreshold and viper then
-			self.ManaLevel:SetText("|cffaf5050"..tukuilocal.unitframes_ouf_gohawk.."|r")
-			Flash(self, 0.3)
-		elseif percMana <= TukuiCF["unitframes"].lowThreshold and not viper then
-			self.ManaLevel:SetText("|cffaf5050"..tukuilocal.unitframes_ouf_goviper.."|r")
-			Flash(self, 0.3)
-		else
-			self.ManaLevel:SetText()
-			StopFlash(self)
-		end
+	if percMana <= TukuiCF.unitframes.lowThreshold then
+		self.ManaLevel:SetText("|cffaf5050"..tukuilocal.unitframes_ouf_lowmana.."|r")
+		Flash(self, 0.3)
 	else
-		if percMana <= 20 then
-			self.ManaLevel:SetText("|cffaf5050"..tukuilocal.unitframes_ouf_lowmana.."|r")
-			Flash(self, 0.3)
-		else
-			self.ManaLevel:SetText()
-			StopFlash(self)
-		end
+		self.ManaLevel:SetText()
+		StopFlash(self)
 	end
 end
 

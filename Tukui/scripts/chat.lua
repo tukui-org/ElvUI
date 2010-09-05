@@ -191,12 +191,6 @@ local function SetupChat(self, event, addon)
 		local frame = _G[format("ChatFrame%s", i)]
 		SetChatStyle(frame)
 	end
-
-	-- disable minimize system because we don't use this shit at all on classic chat.
-	FCF_MinimizeFrame = TukuiDB.dummy
-
-	-- New UpdateColors function, stop it!
-	FCFTab_UpdateColors = TukuiDB.dummy
 	
 	-- Remember last channel
 	ChatTypeInfo.WHISPER.sticky = 1
