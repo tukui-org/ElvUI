@@ -1,8 +1,0 @@
-## Interface: 30200
-## Author: p3lim
-## Version: 30200.2-Release
-## Title: oUF Reputation
-## Notes: Reputation Bar support for oUF layouts.
-## RequiredDeps: oUF
-
-oUF_Reputation.lua
