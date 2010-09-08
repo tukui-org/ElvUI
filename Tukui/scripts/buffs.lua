@@ -1,3 +1,9 @@
+ConsolidatedBuffs:ClearAllPoints()
+ConsolidatedBuffs:SetPoint("LEFT", Minimap, "LEFT", TukuiDB.Scale(0), TukuiDB.Scale(0))
+ConsolidatedBuffs:SetSize(16, 16)
+ConsolidatedBuffsIcon:SetTexture(nil)
+ConsolidatedBuffs.SetPoint = TukuiDB.dummy
+
 if TukuiCF.unitframes.playerauras == true then return end
 
 local mainhand, _, _, offhand = GetWeaponEnchantInfo()
@@ -6,12 +12,6 @@ local rowbuffs = 16
 TemporaryEnchantFrame:ClearAllPoints()
 TemporaryEnchantFrame:SetPoint("TOPRIGHT", Minimap, "TOPRIGHT", 0, TukuiDB.Scale(-16))
 TemporaryEnchantFrame.SetPoint = TukuiDB.dummy
-
-ConsolidatedBuffs:ClearAllPoints()
-ConsolidatedBuffs:SetPoint("LEFT", Minimap, "LEFT", TukuiDB.Scale(0), TukuiDB.Scale(0))
-ConsolidatedBuffs:SetSize(16, 16)
-ConsolidatedBuffsIcon:SetTexture(nil)
-ConsolidatedBuffs.SetPoint = TukuiDB.dummy
 
 TempEnchant1:ClearAllPoints()
 TempEnchant2:ClearAllPoints()
