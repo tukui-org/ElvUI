@@ -86,7 +86,7 @@ if TukuiCF["unitframes"].raidunitdebuffwatch == true then
 		
 		ORD.ShowDispelableDebuff = true
 		ORD.FilterDispellableDebuff = true
-		ORD.MatchBySpellName = false
+		ORD.MatchBySpellName = true
 		ORD.SHAMAN_CAN_DECURSE = true
 
 		TukuiDB.debuffids = {
