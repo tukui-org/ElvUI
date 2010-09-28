@@ -330,7 +330,7 @@ local function AddMessageHook(frame, text, ...)
 	text = replace(text, "|Hplayer:(.+):(.+)|h%[(.+)%]|h whispers:", "From [|Hplayer:%1:%2|h%3|h]:")
 	text = replace(text, "|Hplayer:(.+):(.+)|h%[(.+)%]|h says:", "[|Hplayer:%1:%2|h%3|h]:")	
 	text = replace(text, "|Hplayer:(.+):(.+)|h%[(.+)%]|h yells:", "[|Hplayer:%1:%2|h%3|h]:")
-	if find(text, replace(ERR_AUCTION_SOLD_S,'%%s', '')) then	-- "A buyer has been found for your auction of %s."
+	if TukuiDB.client ~= "deDE" and find(text, replace(ERR_AUCTION_SOLD_S,'%%s', '')) then	-- "A buyer has been found for your auction of %s."
 		local itemname = text:match(replace(ERR_AUCTION_SOLD_S, '%%s', '(.+)'))
 		text = "|cffef4341"..BUTTON_LAG_AUCTIONHOUSE.."|r - |cffBCD8FF"..ITEM_SOLD_COLON.."|r "
 		local _, solditem = GetItemInfo(itemname)
