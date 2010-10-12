@@ -121,6 +121,7 @@ local iterateChildren = function(...)
 			local subUnit = conv[unit] or unit
 			units[subUnit] = obj
 			obj.unit = subUnit
+			obj.id = subUnit:match'^.-(%d+)'
 			obj:UpdateAllElements"PLAYER_ENTERING_WORLD"
 		end
 	end
@@ -137,9 +138,11 @@ local OnAttributeChanged = function(self, name, value)
 				iterateChildren(self:GetChildren())
 			end
 
-			self.unit = SecureButton_GetModifiedUnit(self)
-			self.id = value:match"^.-(%d+)"
-			self:UpdateAllElements"PLAYER_ENTERING_WORLD"
+			if(not self:GetAttribute'oUF-onlyProcessChildren') then
+				self.unit = SecureButton_GetModifiedUnit(self)
+				self.id = value:match"^.-(%d+)"
+				self:UpdateAllElements"PLAYER_ENTERING_WORLD"
+			end
 		end
 	end
 end
@@ -254,14 +257,8 @@ for k, v in pairs{
 		local element = elements[name]
 		if(not element) then return end
 
-		local updateFunc = element.update
-		local elementTable = self[name]
-		if(type(elementTable) == 'table' and elementTable.Update) then
-			updateFunc = elementTable.Update
-		end
-
 		if(element.enable(self, unit or self.unit)) then
-			table.insert(self.__elements, updateFunc)
+			table.insert(self.__elements, element.update)
 		end
 	end,
 
@@ -270,14 +267,8 @@ for k, v in pairs{
 		local element = elements[name]
 		if(not element) then return end
 
-		local updateFunc = element.update
-		local elementTable = self[name]
-		if(type(elementTable) == 'table' and elementTable.Update) then
-			updateFunc = elementTable.Update
-		end
-
 		for k, update in next, self.__elements do
-			if(update == updateFunc) then
+			if(update == element.update) then
 				table.remove(self.__elements, k)
 
 				-- We need to run a new update cycle incase we knocked ourself out of sync.
@@ -290,20 +281,6 @@ for k, v in pairs{
 		end
 
 		return element.disable(self)
-	end,
-
-	UpdateElement = function(self, name)
-		argcheck(name, 2, 'string')
-		local element = elements[name]
-		if(not element) then return end
-
-		local updateFunc = element.update
-		local elementTable = self[name]
-		if(type(elementTable) == 'table' and elementTable.Update) then
-			updateFunc = elementTable.Update
-		end
-
-		updateFunc(self, 'UpdateElement', self.unit)
 	end,
 
 	Enable = RegisterUnitWatch,
@@ -411,7 +388,7 @@ end
 frame_metatable.__index.ColorGradient = ColorGradient
 oUF.ColorGradient = ColorGradient
 
-local initObject = function(unit, style, styleFunc, ...)
+local initObject = function(unit, style, styleFunc, header, ...)
 	local num = select('#', ...)
 	for i=1, num do
 		local object = select(i, ...)
@@ -419,22 +396,18 @@ local initObject = function(unit, style, styleFunc, ...)
 		object.__elements = {}
 		object = setmetatable(object, frame_metatable)
 
-		-- Attempt to guess what the header is set to spawn.
-		local parent = object:GetParent()
-		if(not unit) then
-			if(parent:GetAttribute'showRaid') then
-				unit = 'raid'
-			elseif(parent:GetAttribute'showParty') then
-				unit = 'party'
-			end
-		end
-
 		-- Run it before the style function so they can override it.
-		object:SetAttribute("*type1", "target")
+		if(not header) then
+			object:SetAttribute("*type1", "target")
+			object:SetAttribute('*type2', 'menu')
+
+			object:SetAttribute('toggleForVehicle', true)
+		end
 		object.style = style
 
+		local parent = object:GetParent()
 		if(num > 1) then
-			if(i == 1) then
+			if(i == 1 and not parent:GetAttribute'oUF-onlyProcessChildren') then
 				object.hasChildren = true
 			else
 				object.isChild = true
@@ -445,34 +418,14 @@ local initObject = function(unit, style, styleFunc, ...)
 		-- have one.
 		object:RegisterEvent("PLAYER_ENTERING_WORLD", object.UpdateAllElements)
 
-		styleFunc(object, unit)
-
-		local height = object:GetAttribute'initial-height'
-		local width = object:GetAttribute'initial-width'
-		local scale = object:GetAttribute'initial-scale'
-		local suffix = object:GetAttribute'unitsuffix'
-		local combat = InCombatLockdown()
-
-		if(height) then
-			object:SetAttribute('initial-height', height)
-			if(not combat) then object:SetHeight(height) end
-		end
-
-		if(width) then
-			object:SetAttribute("initial-width", width)
-			if(not combat) then object:SetWidth(width) end
-		end
-
-		if(scale) then
-			object:SetAttribute("initial-scale", scale)
-			if(not combat) then object:SetScale(scale) end
-		end
+		styleFunc(object, object:GetAttribute'oUF-guessUnit' or unit, not header)
 
 		local showPlayer
-		if(i == 1) then
-			showPlayer = parent:GetAttribute'showPlayer' or parent:GetAttribute'showSolo'
+		if(header and i == 1) then
+			showPlayer = header:GetAttribute'showPlayer' or header:GetAttribute'showSolo'
 		end
 
+		local suffix = object:GetAttribute'unitsuffix'
 		if(suffix and suffix:match'target' and (i ~= 1 and not showPlayer)) then
 			enableTargetUpdate(object)
 		else
@@ -499,10 +452,19 @@ local initObject = function(unit, style, styleFunc, ...)
 end
 
 local walkObject = function(object, unit)
-	local style = object:GetParent().style or style
+	local parent = object:GetParent()
+	local style = parent.style or style
+	local header = parent.style and parent
 	local styleFunc = styles[style]
 
-	return initObject(unit, style, styleFunc, object, object:GetChildren())
+	-- Check if we should leave the main frame blank.
+	if(object:GetAttribute'oUF-onlyProcessChildren') then
+		object.hasChildren = true
+		object:SetScript('OnAttributeChanged', OnAttributeChanged)
+		return initObject(unit, style, styleFunc, header, object:GetChildren())
+	end
+
+	return initObject(unit, style, styleFunc, header, object, object:GetChildren())
 end
 
 function oUF:RegisterInitCallback(func)
@@ -618,6 +580,9 @@ local generateName = function(unit, ...)
 		name = name .. append
 	end
 
+	-- Change oUF_LilyRaidRaid into oUF_LilyRaid
+	name = name:gsub('(%u%l+)([%u%l]*)%1', '%1')
+
 	local base = name
 	local i = 2
 	while(_G[name]) do
@@ -628,36 +593,98 @@ local generateName = function(unit, ...)
 	return name
 end
 
-function oUF:SpawnHeader(overrideName, template, visibility, ...)
-	if(not style) then return error("Unable to create frame. No styles have been registered.") end
-
-	local name = overrideName or generateName(nil, ...)
-	local header = CreateFrame('Frame', name, UIParent, template or 'SecureGroupHeaderTemplate')
-	header.initialConfigFunction = walkObject
-	header.style = style
-
-	header:SetAttribute("template", "SecureUnitButtonTemplate")
-	for i=1, select("#", ...), 2 do
-		local att, val = select(i, ...)
-		if(not att) then break end
-		header:SetAttribute(att, val)
+do
+	local styleProxy = function(self, frame, ...)
+		return walkObject(_G[frame])
 	end
 
-	if(header:GetAttribute'showParty') then
-		self:DisableBlizzard'party'
-	end
+	-- There has to be an easier way to do this.
+	local initialConfigFunction = [[
+		local header = self:GetParent()
+		local frames = table.new()
+		table.insert(frames, self)
+		self:GetChildList(frames)
+		for i=1, #frames do
+			local frame = frames[i]
+			local unit
+			-- There's no need to do anything on frames with onlyProcessChildren
+			if(not frame:GetAttribute'oUF-onlyProcessChildren') then
+				RegisterUnitWatch(frame)
 
-	if(visibility) then
-		local type, list = string.split(' ', visibility, 2)
-		if(list and type == 'custom') then
-			RegisterStateDriver(header, 'visibility', list)
-		else
-			local condition = getCondition(string.split(',', visibility))
-			RegisterStateDriver(header, 'visibility', condition)
+				-- Attempt to guess what the header is set to spawn.
+				if(header:GetAttribute'showRaid') then
+					unit = 'raid'
+				elseif(header:GetAttribute'showParty') then
+					unit = 'party'
+				end
+
+				local suffix = frame:GetAttribute'unitsuffix'
+				if(unit and suffix) then
+					unit = unit .. suffix
+				end
+
+				frame:SetAttribute('*type1', 'target')
+				frame:SetAttribute('*type2', 'menu')
+				frame:SetAttribute('toggleForVehicle', true)
+				frame:SetAttribute('oUF-guessUnit', unit)
+			end
+
+			local body = header:GetAttribute'oUF-initialConfigFunction'
+			if(body) then
+				frame:Run(body, unit)
+			end
 		end
-	end
 
-	return header
+		header:CallMethod('styleFunction', self:GetName())
+
+		local clique = header:GetFrameRef("clickcast_header")
+		if(clique) then
+			clique:SetAttribute("clickcast_button", self)
+			clique:RunAttribute("clickcast_register")
+		end
+	]]
+
+	function oUF:SpawnHeader(overrideName, template, visibility, ...)
+		if(not style) then return error("Unable to create frame. No styles have been registered.") end
+
+		template = (template or 'SecureGroupHeaderTemplate') .. ',oUF_ClickCastUnitTemplate'
+
+		local name = overrideName or generateName(nil, ...)
+		local header = CreateFrame('Frame', name, UIParent, template)
+
+		header:SetAttribute("template", "SecureUnitButtonTemplate")
+		for i=1, select("#", ...), 2 do
+			local att, val = select(i, ...)
+			if(not att) then break end
+			header:SetAttribute(att, val)
+		end
+
+		header.style = style
+		header.styleFunction = styleProxy
+
+		-- We set it here so layouts can't directly override it.
+		header:SetAttribute('initialConfigFunction', initialConfigFunction)
+
+		if(Clique) then
+			header:SetFrameRef("clickcast_header", Clique.header)
+		end
+
+		if(header:GetAttribute'showParty') then
+			self:DisableBlizzard'party'
+		end
+
+		if(visibility) then
+			local type, list = string.split(' ', visibility, 2)
+			if(list and type == 'custom') then
+				RegisterStateDriver(header, 'visibility', list)
+			else
+				local condition = getCondition(string.split(',', visibility))
+				RegisterStateDriver(header, 'visibility', condition)
+			end
+		end
+
+		return header
+	end
 end
 
 function oUF:Spawn(unit, overrideName)
@@ -734,10 +761,6 @@ oUF.colors = colors
 oUF.error = error
 
 if(global) then
-	if(parent ~= 'oUF' and global == 'oUF' and IsAddOnLoaded'oUF') then
-		error("%s attempted to override oUF's default global with its internal oUF.", parent)
-	else
-		_G[global] = oUF
-	end
+	_G[global] = oUF
 end
 ns.oUF = oUF

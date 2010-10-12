@@ -246,7 +246,7 @@ local tagStrings = {
 		end
 	end]],
 
-	["defict:name"] = [[function(u)
+	["deficit:name"] = [[function(u)
 		local missinghp = _TAGS['missinghp'](u)
 		if(missinghp) then
 			return '-' .. missinghp
@@ -265,6 +265,15 @@ local tagStrings = {
 			elseif(happiness == 3) then
 				return ":D"
 			end
+		end
+	end]],
+
+	['pereclipse'] = [[function(u)
+		local m = UnitPowerMax(u, SPELL_POWER_ECLIPSE)
+		if(m == 0) then
+			return 0
+		else
+			return math.abs(UnitPower(u, SPELL_POWER_ECLIPSE)/m*100)
 		end
 	end]],
 }
@@ -316,22 +325,16 @@ _ENV._TAGS = tags
 
 local tagEvents = {
 	["curhp"]               = "UNIT_HEALTH",
-	["curpp"]               = "UNIT_ENERGY UNIT_FOCUS UNIT_MANA UNIT_RAGE UNIT_RUNIC_POWER",
 	["dead"]                = "UNIT_HEALTH",
 	["leader"]              = "PARTY_LEADER_CHANGED",
 	["leaderlong"]          = "PARTY_LEADER_CHANGED",
 	["level"]               = "UNIT_LEVEL PLAYER_LEVEL_UP",
 	["maxhp"]               = "UNIT_MAXHEALTH",
-	["maxpp"]               = "UNIT_MAXENERGY UNIT_MAXFOCUS UNIT_MAXMANA UNIT_MAXRAGE UNIT_MAXRUNIC_POWER",
 	["missinghp"]           = "UNIT_HEALTH UNIT_MAXHEALTH",
-	["missingpp"]           = "UNIT_MAXENERGY UNIT_MAXFOCUS UNIT_MAXMANA UNIT_MAXRAGE UNIT_ENERGY UNIT_FOCUS UNIT_MANA UNIT_RAGE UNIT_MAXRUNIC_POWER UNIT_RUNIC_POWER",
 	["name"]                = "UNIT_NAME_UPDATE",
-	["offline"]             = "UNIT_HEALTH",
 	["perhp"]               = "UNIT_HEALTH UNIT_MAXHEALTH",
-	["perpp"]               = "UNIT_MAXENERGY UNIT_MAXFOCUS UNIT_MAXMANA UNIT_MAXRAGE UNIT_ENERGY UNIT_FOCUS UNIT_MANA UNIT_RAGE UNIT_MAXRUNIC_POWER UNIT_RUNIC_POWER",
 	["pvp"]                 = "UNIT_FACTION",
 	["resting"]             = "PLAYER_UPDATE_RESTING",
-	["status"]              = "UNIT_HEALTH PLAYER_UPDATE_RESTING",
 	["smartlevel"]          = "UNIT_LEVEL PLAYER_LEVEL_UP UNIT_CLASSIFICATION_CHANGED",
 	["threat"]              = "UNIT_THREAT_SITUATION_UPDATE",
 	["threatcolor"]         = "UNIT_THREAT_SITUATION_UPDATE",
@@ -340,7 +343,14 @@ local tagEvents = {
 	['classification']      = 'UNIT_CLASSIFICATION_CHANGED',
 	['shortclassification'] = 'UNIT_CLASSIFICATION_CHANGED',
 	["group"]               = "RAID_ROSTER_UPDATE",
-	['happiness']           = 'UNIT_HAPPINESS',
+	["curpp"]               = 'UNIT_POWER',
+	["maxpp"]               = 'UNIT_MAXPOWER',
+	["missingpp"]           = 'UNIT_MAXPOWER UNIT_POWER',
+	["perpp"]               = 'UNIT_MAXPOWER UNIT_POWER',
+	['happiness']           = 'UNIT_POWER',
+	["offline"]             = "UNIT_HEALTH UNIT_CONNECTION",
+	["status"]              = "UNIT_HEALTH PLAYER_UPDATE_RESTING UNIT_CONNECTION",
+	["pereclipse"]          = 'UNIT_POWER',
 }
 
 local unitlessEvents = {
@@ -470,7 +480,7 @@ local Tag = function(self, fs, tagstr)
 
 	local func = tagPool[tagstr]
 	if(not func) then
-		local format = tagstr:gsub('%%', '%%%%'):gsub(_PATTERN, '%%s')
+		local format, numTags = tagstr:gsub('%%', '%%%%'):gsub(_PATTERN, '%%s')
 		local args = {}
 
 		for bracket in tagstr:gmatch(_PATTERN) do
@@ -524,16 +534,70 @@ local Tag = function(self, fs, tagstr)
 			end
 		end
 
-		func = function(self)
-			local unit = self.parent.unit
-			local __unit = self.parent.realUnit
+		if(numTags == 1) then
+			func = function(self)
+				local parent = self.parent
+				local realUnit
+				if(self.overrideUnit) then
+					realUnit = parent.realUnit
+				end
 
-			_ENV._COLORS = self.parent.colors
-			for i, func in next, args do
-				tmp[i] = func(unit, __unit) or ''
+				_ENV._COLORS = parent.colors
+				return self:SetFormattedText(
+					format,
+					args[1](parent.unit, realUnit) or ''
+				)
 			end
+		elseif(numTags == 2) then
+			func = function(self)
+				local parent = self.parent
+				local unit = parent.unit
+				local realUnit
+				if(self.overrideUnit) then
+					realUnit = parent.realUnit
+				end
 
-			self:SetFormattedText(format, unpack(tmp))
+				_ENV._COLORS = parent.colors
+				return self:SetFormattedText(
+					format,
+					args[1](unit, realUnit) or '',
+					args[2](unit, realUnit) or ''
+				)
+			end
+		elseif(numTags == 3) then
+			func = function(self)
+				local parent = self.parent
+				local unit = parent.unit
+				local realUnit
+				if(self.overrideUnit) then
+					realUnit = parent.realUnit
+				end
+
+				_ENV._COLORS = parent.colors
+				return self:SetFormattedText(
+					format,
+					args[1](unit, realUnit) or '',
+					args[2](unit, realUnit) or '',
+					args[3](unit, realUnit) or ''
+				)
+			end
+		else
+			func = function(self)
+				local parent = self.parent
+				local unit = parent.unit
+				local realUnit
+				if(self.overrideUnit) then
+					realUnit = parent.realUnit
+				end
+
+				_ENV._COLORS = parent.colors
+				for i, func in next, args do
+					tmp[i] = func(unit, realUnit) or ''
+				end
+
+				-- We do 1, numTags because tmp can hold several unneeded variables.
+				return self:SetFormattedText(format, unpack(tmp, 1, numTags))
+			end
 		end
 
 		tagPool[tagstr] = func

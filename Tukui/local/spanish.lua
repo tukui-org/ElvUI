@@ -1,4 +1,23 @@
 if TukuiDB.client == "esES" then
+
+	tukuilocal.chat_BATTLEGROUND_GET = "[B]"
+	tukuilocal.chat_BATTLEGROUND_LEADER_GET = "[B]"
+	tukuilocal.chat_BN_WHISPER_GET = "From"
+	tukuilocal.chat_GUILD_GET = "[G]"
+	tukuilocal.chat_OFFICER_GET = "[O]"
+	tukuilocal.chat_PARTY_GET = "[P]"
+	tukuilocal.chat_PARTY_GUIDE_GET = "[P]"
+	tukuilocal.chat_PARTY_LEADER_GET = "[P]"
+	tukuilocal.chat_RAID_GET = "[R]"
+	tukuilocal.chat_RAID_LEADER_GET = "[R]"
+	tukuilocal.chat_RAID_WARNING_GET = "[W]"
+	tukuilocal.chat_WHISPER_GET = "From"
+	tukuilocal.chat_FLAG_AFK = "[AFK]"
+	tukuilocal.chat_FLAG_DND = "[DND]"
+	tukuilocal.chat_FLAG_GM = "[GM]"
+	tukuilocal.chat_ERR_FRIEND_ONLINE_SS = "is now |cff298F00online|r"
+	tukuilocal.chat_ERR_FRIEND_OFFLINE_S = "is now |cffff0000offline|r"
+	
 	tukuilocal.disband = "Desacer grupo."
  
 	tukuilocal.datatext_guild = "Hermandad"
@@ -11,7 +30,7 @@ if TukuiDB.client == "esES" then
 	tukuilocal.datatext_spent = "Gastado:"
 	tukuilocal.datatext_deficit = "Balance:"
 	tukuilocal.datatext_profit = "Beneficios:"
-	tukuilocal.datatext_wg = "Tiempo para Conquista De Invierno:"
+	tukuilocal.datatext_timeto = "Time to"
 	tukuilocal.datatext_friendlist = "Lista de Amigos:"
 	tukuilocal.datatext_playersp = "sp"
 	tukuilocal.datatext_playerap = "ap"
@@ -79,7 +98,7 @@ if TukuiDB.client == "esES" then
 	}
  
 	tukuilocal.popup_disableui = "Tukui no funciona con esta resolución, ¿Quieres desactivar Tukui? (Pulsa cancelar si quieres probar otra resolución)"
-	tukuilocal.popup_install = "Es la primera vez que usas Tukui V11 con este personaje. Debes recargar la Interfaz para ajustar las barras de acción, las variables y los marcos de chat."
+	tukuilocal.popup_install = "Es la primera vez que usas Tukui V12 con este personaje. Debes recargar la Interfaz para ajustar las barras de acción, las variables y los marcos de chat."
 	tukuilocal.popup_2raidactive = "Hay activos 2 estilos para banda, por favor selecciona uno."
  
 	tukuilocal.merchant_repairnomoney = "¡No tienes suficiente dinero para reparar!"

@@ -21,6 +21,21 @@
 	<Script file='elements\assistant.lua' />
 	<Script file='elements\runebar.lua' />
 	<Script file='elements\lfdrole.lua' />
+	<Script file='elements\healprediction.lua' />
+	<Script file='elements\holypower.lua' />
+	<Script file='elements\soulshards.lua' />
+	<Script file='elements\picon.lua' />
+	<Script file='elements\readycheck.lua' />
+	<Script file='elements\qicon.lua' />
+	<Script file='elements\eclipsebar.lua' />
+
+	<!-- Clique support -->
+	<Button name="oUF_ClickCastUnitTemplate" virtual="true" inherits="SecureActionButtonTemplate,SecureHandlerEnterLeaveTemplate">
+		<Attributes>
+			<Attribute name="_onenter" type="string" value="local snippet = self:GetAttribute('clickcast_onenter'); if snippet then self:Run(snippet) end"/>
+			<Attribute name="_onleave" type="string" value="local snippet = self:GetAttribute('clickcast_onleave'); if snippet then self:Run(snippet) end"/>
+		</Attributes>
+	</Button>
 
 	<!--
 		This template requires the layout to set the anchoring positions from the

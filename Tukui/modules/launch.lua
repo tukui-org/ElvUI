@@ -6,10 +6,7 @@ local function install()
 	SetCVar("buffDurations", 1)
 	SetCVar("lootUnderMouse", 1)
 	SetCVar("autoSelfCast", 1)
-	SetCVar("showItemLevel", 1)
-	SetCVar("equipmentManager", 1)
 	SetCVar("mapQuestDifficulty", 1)
-	SetCVar("previewTalents", 1)
 	SetCVar("scriptErrors", 1)
 	SetCVar("nameplateShowFriends", 0)
 	SetCVar("nameplateShowFriendlyPets", 0)
@@ -23,8 +20,6 @@ local function install()
 	SetCVar("screenshotQuality", 8)
 	SetCVar("cameraDistanceMax", 50)
 	SetCVar("cameraDistanceMaxFactor", 3.4)
-	SetCVar("showClock", 0)
-	SetCVar("nameplateAllowOverlap", 0)
 	SetCVar("chatMouseScroll", 1)
 	SetCVar("chatStyle", "im")
 	SetCVar("WholeChatWindowClickable", 0)
@@ -33,7 +28,6 @@ local function install()
 	SetCVar("CombatHealing", 1)
 	SetCVar("showTutorials", 0)
 	SetCVar("showNewbieTips", 0)
-	SetCVar("hidePartyInRaid", 1)
 	SetCVar("Maxfps", 120)
 	SetCVar("autoDismountFlying", 1)
 	SetCVar("autoQuestWatch", 1)
@@ -59,6 +53,7 @@ local function install()
 	SetCVar("removeChatDelay", 1)
 	SetCVar("showVKeyCastbar", 1)
 	SetCVar("colorblindMode", 0)
+	SetCVar("bloatthreat", 0)
 	
 	-- setting this the creator or tukui only, because a lot of people don't like this change.		
 	if TukuiDB.myname == "Tukz" then	
@@ -187,7 +182,7 @@ local function install()
 		ToggleChatColorNamesByClassGroup(true, "CHANNEL5")
 	end
 		   
-	TukuiInstallv1100 = true
+	TukuiInstallv1200 = true
 	
 	-- reset unitframe position
 	if TukuiCF["unitframes"].positionbychar == true then
@@ -200,7 +195,7 @@ local function install()
 end
 
 local function DisableTukui()
-	DisableAddOn("Tukui"); 
+	DisableAddOn("Tukui")
 	ReloadUI()
 end
 
@@ -245,39 +240,6 @@ local TukuiOnLogon = CreateFrame("Frame")
 TukuiOnLogon:RegisterEvent("PLAYER_ENTERING_WORLD")
 TukuiOnLogon:SetScript("OnEvent", function(self, event)
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
-	--set tukui action bar
-	if TukuiCF["actionbar"].enable == true then
-		SetActionBarToggles(1, 1, 1, 1, 0)
-		SetCVar("alwaysShowActionBars", 0)	
-		if TukuiCF["actionbar"].showgrid == true then
-			ActionButton_HideGrid = function() end
-			for i = 1, 12 do
-				local button = _G[format("ActionButton%d", i)]
-				button:SetAttribute("showgrid", 1)
-				ActionButton_ShowGrid(button)
-
-				button = _G[format("BonusActionButton%d", i)]
-				button:SetAttribute("showgrid", 1)
-				ActionButton_ShowGrid(button)
-				
-				button = _G[format("MultiBarRightButton%d", i)]
-				button:SetAttribute("showgrid", 1)
-				ActionButton_ShowGrid(button)
-
-				button = _G[format("MultiBarBottomRightButton%d", i)]
-				button:SetAttribute("showgrid", 1)
-				ActionButton_ShowGrid(button)
-				
-				button = _G[format("MultiBarLeftButton%d", i)]
-				button:SetAttribute("showgrid", 1)
-				ActionButton_ShowGrid(button)
-				
-				button = _G[format("MultiBarBottomLeftButton%d", i)]
-				button:SetAttribute("showgrid", 1)
-				ActionButton_ShowGrid(button)
-			end
-		end
-	end
 
 	if TukuiDB.getscreenresolution == "800x600"
 		or TukuiDB.getscreenresolution == "1024x768"
@@ -294,7 +256,7 @@ TukuiOnLogon:SetScript("OnEvent", function(self, event)
 		if TukuiCF["general"].uiscale > 1 then TukuiCF["general"].uiscale = 1 end
 		if TukuiCF["general"].uiscale < 0.64 then TukuiCF["general"].uiscale = 0.64 end
 		SetCVar("uiScale", TukuiCF["general"].uiscale)
-		if TukuiInstallv1100 ~= true then
+		if TukuiInstallv1200 ~= true then
 			if (TukuiData == nil) then TukuiData = {} end
 			StaticPopup_Show("INSTALL_UI")
 		end
@@ -303,12 +265,6 @@ TukuiOnLogon:SetScript("OnEvent", function(self, event)
 	if (IsAddOnLoaded("Tukui_Dps_Layout") and IsAddOnLoaded("Tukui_Heal_Layout")) then
 		StaticPopup_Show("DISABLE_RAID")
 	end
-	
-	SetCVar("showArenaEnemyFrames", 0)
-	
-	-- force chat CVar to be applied
-	SetCVar("WholeChatWindowClickable", 0)
-	SetCVar("ConversationMode", "inline")
 	
 	print(tukuilocal.core_welcome1..TukuiDB.version)
 	print(tukuilocal.core_welcome2)
@@ -332,7 +288,7 @@ local function UIHelp()
 	print(tukuilocal.core_uihelp9)
 	print(tukuilocal.core_uihelp10)
 	print(tukuilocal.core_uihelp11)
-	print(tukuilocal.core_uihelp12)
+	--print(tukuilocal.core_uihelp12)  -- temp disabled, don't know yet if i'll readd this feature
 	print(tukuilocal.core_uihelp13)
 	print(tukuilocal.core_uihelp15)
 	print(" ")

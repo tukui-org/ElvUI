@@ -33,12 +33,11 @@ if TukuiCF["datatext"].guild and TukuiCF["datatext"].guild > 0 then
 			Text:SetText(tukuilocal.datatext_noguild)
 		end
 	end
-		
-	Stat:RegisterEvent("GUILD_ROSTER_SHOW")
-	Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
+	
 	Stat:RegisterEvent("GUILD_ROSTER_UPDATE")
 	Stat:RegisterEvent("PLAYER_GUILD_UPDATE")
-	Stat:RegisterEvent("FRIENDLIST_UPDATE")
+	Stat:RegisterEvent("GUILD_PERK_UPDATE")
+	Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
 	Stat:RegisterEvent("CHAT_MSG_SYSTEM")
 	Stat:SetScript("OnEnter", function(self)
 		if not InCombatLockdown() then
@@ -49,7 +48,7 @@ if TukuiCF["datatext"].guild and TukuiCF["datatext"].guild > 0 then
 				local online, total, gmotd = 0, GetNumGuildMembers(true), GetGuildRosterMOTD()
 				for i = 0, total do if select(9, GetGuildRosterInfo(i)) then online = online + 1 end end
 				
-				GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB.Scale(6));
+				GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, TukuiDB.Scale(6));
 				GameTooltip:ClearAllPoints()
 				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
 				GameTooltip:ClearLines()
@@ -83,6 +82,6 @@ if TukuiCF["datatext"].guild and TukuiCF["datatext"].guild > 0 then
 		end
 	end)
 	Stat:SetScript("OnLeave", function() GameTooltip:Hide() end)
-	Stat:SetScript("OnMouseDown", function() ToggleFriendsFrame(3) end)
+	Stat:SetScript("OnMouseDown", function() if not GuildFrame and IsInGuild() then LoadAddOn("Blizzard_GuildUI") end GuildFrame_Toggle() end)
 	Stat:SetScript("OnEvent", Update)
 end

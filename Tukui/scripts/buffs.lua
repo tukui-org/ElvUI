@@ -18,6 +18,9 @@ TempEnchant2:ClearAllPoints()
 TempEnchant1:SetPoint("TOPRIGHT", UIParent, TukuiDB.Scale(-184), TukuiDB.Scale(-22))
 TempEnchant2:SetPoint("RIGHT", TempEnchant1, "LEFT", TukuiDB.Scale(-4), 0)
 
+WorldStateAlwaysUpFrame:SetFrameStrata("BACKGROUND")
+WorldStateAlwaysUpFrame:SetFrameLevel(0)
+
 for i = 1, 2 do
 	local f = CreateFrame("Frame", nil, _G["TempEnchant"..i])
 	TukuiDB.CreatePanel(f, 30, 30, "CENTER", _G["TempEnchant"..i], "CENTER", 0, 0)	

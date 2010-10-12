@@ -27,12 +27,22 @@ if TukuiCF["datatext"].friends and TukuiCF["datatext"].friends > 0 then
 			self:SetAllPoints(Text)
 	end
 
-	Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
+	Stat:RegisterEvent("FRIENDLIST_SHOW")
 	Stat:RegisterEvent("FRIENDLIST_UPDATE")
-	Stat:RegisterEvent("BN_FRIEND_ACCOUNT_ONLINE")
-	Stat:RegisterEvent("BN_FRIEND_ACCOUNT_OFFLINE")
+	Stat:RegisterEvent("MUTELIST_UPDATE")
+	Stat:RegisterEvent("WHO_LIST_UPDATE")
+	Stat:RegisterEvent("PLAYER_FLAGS_CHANGED")
+	Stat:RegisterEvent("BN_FRIEND_LIST_SIZE_CHANGED")
+	Stat:RegisterEvent("BN_FRIEND_INFO_CHANGED")
+	Stat:RegisterEvent("BN_FRIEND_INVITE_LIST_INITIALIZED")
 	Stat:RegisterEvent("BN_FRIEND_INVITE_ADDED")
 	Stat:RegisterEvent("BN_FRIEND_INVITE_REMOVED")
+	Stat:RegisterEvent("BN_SELF_ONLINE")
+	Stat:RegisterEvent("BN_BLOCK_LIST_UPDATED")
+	Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
+	Stat:RegisterEvent("BN_CONNECTED")
+	Stat:RegisterEvent("BN_DISCONNECTED")
+	Stat:RegisterEvent("CHAT_MSG_SYSTEM")
 	Stat:SetScript("OnMouseDown", function() ToggleFriendsFrame(1) end)
 	Stat:SetScript("OnEnter", function(self)
 		if not InCombatLockdown() then
@@ -49,7 +59,7 @@ if TukuiCF["datatext"].friends and TukuiCF["datatext"].friends > 0 then
 			local totalonline = online + BNonline
 			local totalfriends = total + BNtotal
 			if online > 0 or BNonline > 0 then
-				GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB.Scale(6));
+				GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, TukuiDB.Scale(6));
 				GameTooltip:ClearAllPoints()
 				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
 				GameTooltip:ClearLines()

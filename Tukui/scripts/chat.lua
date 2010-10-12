@@ -1,81 +1,70 @@
 if TukuiCF["chat"].enable ~= true then return end
 
-local TukuiChat = CreateFrame("Frame")
-local OnEvent = function(self, event, ...) self[event](self, event, ...) end
-TukuiChat:SetScript("OnEvent", OnEvent)
-
 -----------------------------------------------------------------------
 -- SETUP TUKUI CHATS
 -----------------------------------------------------------------------
 
-local _G = _G
-local replace = string.gsub
-local find = string.find
+local TukuiChat = CreateFrame("Frame")
 local tabalpha = 1
 local tabnoalpha = 0
+local _G = _G
+local origs = {}
+local type = type
 
-local replaceschan = {
-	['Гильдия'] = '[Г]',
-	['Группа'] = '[Гр]',
-	['Рейд'] = '[Р]',
-	['Лидер рейда'] = '[ЛР]',
-	['Объявление рейду'] = '[ОР]',
-	['Офицер'] = '[О]',
-	['Поле боя'] = '[ПБ]',
-	['Лидер поля боя'] = '[ЛПБ]', 
-	['Guilde'] = '[G]',
-	['Groupe'] = '[GR]',
-	['Chef de raid'] = '[RL]',
-	['Avertissement Raid'] = '[AR]',
-	['Officier'] = '[O]',
-	['Champs de bataille'] = '[CB]',
-	['Chef de bataille'] = '[CDB]',
-	['Guild'] = '[G]',
-	['Party'] = '[P]',
-	['Party Leader'] = '[PL]',
-	['Dungeon Guide'] = '[DG]',
-	['Guide du donjon'] = '[GdD]',
-	['Raid'] = '[R]',
-	['Raid Leader'] = '[RL]',
-	['Raid Warning'] = '[RW]',
-	['Officer'] = '[O]',
-	['Battleground'] = '[B]',
-	['Battleground Leader'] = '[BL]',
-	['Gilde'] = '[G]',
-	['Gruppe'] = '[Grp]',
-	['Gruppenanführer'] = '[GrpL]',
-	['Dungeonführer'] = '[DF]',
-	['Schlachtzug'] = '[R]',
-	['Schlachtzugsleiter'] = '[RL]',
-	['Schlachtzugswarnung'] = '[RW]',
-	['Offizier'] = '[O]',
-	['Schlachtfeld'] = '[BG]',
-	['Schlachtfeldleiter'] = '[BGL]',
-	['Hermandad'] = '[H]',
-	['Grupo'] = '[G]',
-	['Líder del grupo'] = '[LG]',
-	['Guía de mazmorra'] = '[GM]',
-	['Banda'] = '[B]',
-	['Líder de banda'] = '[LB]',
-	['Aviso de banda'] = '[AB]',
-	['Oficial'] = '[O]',
-	['CampoDeBatalla'] = '[CB]',
-	['Líder de batalla'] = '[LdB]',
-	['(%d+)%. .-'] = '[%1]',
-}
+-- function to rename channel and other stuff
+local AddMessage = function(self, text, ...)
+	if(type(text) == "string") then
+		text = text:gsub('|h%[(%d+)%. .-%]|h', '|h[%1]|h')
+	end
+	return origs[self](self, text, ...)
+end
+
+-- localize this later k tukz? DON'T FORGET!
+_G.CHAT_BATTLEGROUND_GET = "|Hchannel:Battleground|h"..tukuilocal.chat_BATTLEGROUND_GET.."|h %s:\32"
+_G.CHAT_BATTLEGROUND_LEADER_GET = "|Hchannel:Battleground|h"..tukuilocal.chat_BATTLEGROUND_LEADER_GET.."|h %s:\32"
+_G.CHAT_BN_WHISPER_GET = tukuilocal.chat_BN_WHISPER_GET.." %s:\32"
+_G.CHAT_GUILD_GET = "|Hchannel:Guild|h"..tukuilocal.chat_GUILD_GET.."|h %s:\32"
+_G.CHAT_OFFICER_GET = "|Hchannel:o|h"..tukuilocal.chat_OFFICER_GET.."|h %s:\32"
+_G.CHAT_PARTY_GET = "|Hchannel:Party|h"..tukuilocal.chat_PARTY_GET.."|h %s:\32"
+_G.CHAT_PARTY_GUIDE_GET = "|Hchannel:party|h"..tukuilocal.chat_PARTY_GUIDE_GET.."|h %s:\32"
+_G.CHAT_PARTY_LEADER_GET = "|Hchannel:party|h"..tukuilocal.chat_PARTY_LEADER_GET.."|h %s:\32"
+_G.CHAT_RAID_GET = "|Hchannel:raid|h"..tukuilocal.chat_RAID_GET.."|h %s:\32"
+_G.CHAT_RAID_LEADER_GET = "|Hchannel:raid|h"..tukuilocal.chat_RAID_LEADER_GET.."|h %s:\32"
+_G.CHAT_RAID_WARNING_GET = tukuilocal.chat_RAID_WARNING_GET.." %s:\32"
+_G.CHAT_SAY_GET = "%s:\32"
+_G.CHAT_WHISPER_GET = tukuilocal.chat_WHISPER_GET.." %s:\32"
+_G.CHAT_YELL_GET = "%s:\32"
+ 
+_G.CHAT_FLAG_AFK = "|cffFF0000"..tukuilocal.chat_FLAG_AFK.."|r "
+_G.CHAT_FLAG_DND = "|cffE7E716"..tukuilocal.chat_FLAG_DND.."|r "
+_G.CHAT_FLAG_GM = "|cff4154F5"..tukuilocal.chat_FLAG_GM.."|r "
+ 
+_G.ERR_FRIEND_ONLINE_SS = "|Hplayer:%s|h[%s]|h "..tukuilocal.chat_ERR_FRIEND_ONLINE_SS.."!"
+_G.ERR_FRIEND_OFFLINE_S = "%s "..tukuilocal.chat_ERR_FRIEND_OFFLINE_S.."!"
 
 -- Hide friends micro button (added in 3.3.5)
-FriendsMicroButton:SetScript("OnShow", FriendsMicroButton.Hide)
-FriendsMicroButton:Hide()
+TukuiDB.Kill(FriendsMicroButton)
 
-GeneralDockManagerOverflowButton:SetScript("OnShow", GeneralDockManagerOverflowButton.Hide)
-GeneralDockManagerOverflowButton:Hide()
+-- hide chat bubble menu button
+TukuiDB.Kill(ChatFrameMenuButton)
 
 -- set the chat style
 local function SetChatStyle(frame)
 	local id = frame:GetID()
 	local chat = frame:GetName()
-
+	local tab = _G[chat.."Tab"]
+	
+	-- always set alpha to 1, don't fade it anymore
+	tab:SetAlpha(1)
+	tab.SetAlpha = UIFrameFadeRemoveFrame
+	
+	-- hide text when setting chat
+	_G[chat.."TabText"]:Hide()
+	
+	-- now show text if mouse is found over tab.
+	tab:HookScript("OnEnter", function() _G[chat.."TabText"]:Show() end)
+	tab:HookScript("OnLeave", function() _G[chat.."TabText"]:Hide() end)
+	
 	-- yeah baby
 	_G[chat]:SetClampRectInsets(0,0,0,0)
 	
@@ -120,7 +109,6 @@ local function SetChatStyle(frame)
 	TukuiDB.Kill(_G[format("ChatFrame%sButtonFrameBottomButton", id)])
 	TukuiDB.Kill(_G[format("ChatFrame%sButtonFrameMinimizeButton", id)])
 	TukuiDB.Kill(_G[format("ChatFrame%sButtonFrame", id)])
-	TukuiDB.Kill(_G["ChatFrameMenuButton"])
 
 	-- Kills off the retarded new circle around the editbox
 	TukuiDB.Kill(_G[format("ChatFrame%sEditBoxFocusLeft", id)])
@@ -135,19 +123,18 @@ local function SetChatStyle(frame)
 	
 	-- hide editbox on login
 	_G[chat.."EditBox"]:Hide()
-	
+
 	-- script to hide editbox instead of fading editbox to 0.35 alpha via IM Style
-	_G[chat.."EditBox"]:HookScript("OnEditFocusGained", function(self) self:Show() end)
 	_G[chat.."EditBox"]:HookScript("OnEditFocusLost", function(self) self:Hide() end)
 	
 	-- hide edit box every time we click on a tab
 	_G[chat.."Tab"]:HookScript("OnClick", function() _G[chat.."EditBox"]:Hide() end)
-
+			
 	-- rename combag log to log
 	if _G[chat] == _G["ChatFrame2"] then
 		FCF_SetWindowName(_G[chat], "Log")
 	end
-
+			
 	-- create our own texture for edit box
 	local EditBoxBackground = CreateFrame("frame", "TukuiChatchatEditBoxBackground", _G[chat.."EditBox"])
 	TukuiDB.CreatePanel(EditBoxBackground, 1, 1, "LEFT", _G[chat.."EditBox"], "LEFT", 0, 0)
@@ -175,40 +162,32 @@ local function SetChatStyle(frame)
 		end
 	end)
 	
-	hooksecurefunc("FCFTab_UpdateAlpha", function()
-		_G[chat.."Tab"]:SetAlpha(0)
-		_G[chat.."Tab"].mouseOverAlpha = tabalpha
-		_G[chat.."Tab"].noMouseAlpha = tabnoalpha
-	end)
+	if _G[chat] ~= _G["ChatFrame2"] then
+		origs[_G[chat]] = _G[chat].AddMessage
+		_G[chat].AddMessage = AddMessage
+	end
 end
 
 -- Setup chatframes 1 to 10 on login.
-local function SetupChat(self, event, addon)
-	if addon ~= "Tukui" then return end
-	self:UnregisterEvent("ADDON_LOADED")
-					
+local function SetupChat(self)	
 	for i = 1, NUM_CHAT_WINDOWS do
 		local frame = _G[format("ChatFrame%s", i)]
 		SetChatStyle(frame)
+		FCFTab_UpdateAlpha(frame)
 	end
-	
+				
 	-- Remember last channel
 	ChatTypeInfo.WHISPER.sticky = 1
 	ChatTypeInfo.BN_WHISPER.sticky = 1
 	ChatTypeInfo.OFFICER.sticky = 1
 	ChatTypeInfo.RAID_WARNING.sticky = 1
 	ChatTypeInfo.CHANNEL.sticky = 1
-	
-	-- hide Blizzard Chat option that we don't need
-	InterfaceOptionsSocialPanelWholeChatWindowClickable:Hide()
-	InterfaceOptionsSocialPanelWholeChatWindowClickable:SetScript("OnShow", function(self) self:Hide() end) 
-	InterfaceOptionsSocialPanelConversationMode:Hide()
 end
 
-local function SetupChatPosAndFont(self)
-	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+local function SetupChatPosAndFont(self)	
 	for i = 1, NUM_CHAT_WINDOWS do
 		local chat = _G[format("ChatFrame%s", i)]
+		local tab = _G[format("ChatFrame%sTab", i)]
 		local id = chat:GetID()
 		local name = FCF_GetChatWindowInfo(id)
 		local point = GetChatWindowSavedPosition(id)
@@ -219,11 +198,6 @@ local function SetupChatPosAndFont(self)
 			FCF_SetChatWindowFontSize(nil, chat, 12)
 		else
 			FCF_SetChatWindowFontSize(nil, chat, fontSize)
-		end
-		
-		-- set font align to right if a any chat is found at right of your screen.		
-		if i == 4 and name == "Loot" and point == "BOTTOMRIGHT" or point == "RIGHT" or point == "TOPRIGHT" then 
-			chat:SetJustifyH("RIGHT") 
 		end
 		
 		-- force chat position on #1 and #4, needed if we change ui scale or resolution
@@ -237,11 +211,12 @@ local function SetupChatPosAndFont(self)
 			if not chat.isDocked then
 				chat:ClearAllPoints()
 				chat:SetPoint("BOTTOMRIGHT", TukuiInfoRight, "TOPRIGHT", 0, TukuiDB.Scale(6))
+				chat:SetJustifyH("RIGHT") 
 				FCF_SavePositionAndDimensions(chat)
 			end
 		end
 	end
-	
+			
 	-- reposition battle.net popup over chat #1
 	BNToastFrame:HookScript("OnShow", function(self)
 		self:ClearAllPoints()
@@ -251,8 +226,19 @@ end
 
 TukuiChat:RegisterEvent("ADDON_LOADED")
 TukuiChat:RegisterEvent("PLAYER_ENTERING_WORLD")
-TukuiChat["ADDON_LOADED"] = SetupChat
-TukuiChat["PLAYER_ENTERING_WORLD"] = SetupChatPosAndFont
+TukuiChat:SetScript("OnEvent", function(self, event, ...)
+	local addon = ...
+	if event == "ADDON_LOADED" then
+		if addon == "Blizzard_CombatLog" then
+			self:UnregisterEvent("ADDON_LOADED")
+			SetupChat(self)
+			--return CombatLogQuickButtonFrame_Custom:SetAlpha(.4)
+		end
+	elseif event == "PLAYER_ENTERING_WORLD" then
+		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+		SetupChatPosAndFont(self)
+	end
+end)
 
 -- Setup temp chat (BN, WHISPER) when needed.
 local function SetupTempChat()
@@ -260,99 +246,6 @@ local function SetupTempChat()
 	SetChatStyle(frame)
 end
 hooksecurefunc("FCF_OpenTemporaryWindow", SetupTempChat)
-
--- Get colors for player classes
-local function ClassColors(class)
-	if not class then return end
-	class = (replace(class, " ", "")):upper()
-	local c = RAID_CLASS_COLORS[class]
-	if c then
-		return string.format("%02x%02x%02x", c.r*255, c.g*255, c.b*255)
-	end
-end
-
--- For Player Logins
-local function CHAT_MSG_SYSTEM(...)
-	local login = select(3, find(arg1, "^|Hplayer:(.+)|h%[(.+)%]|h has come online."))
-	local classColor = "999999"
-	local foundColor = true
-			
-	if login then
-		local found = false
-		if GetNumFriends() > 0 then ShowFriends() end
-		
-		for friendIndex = 1, GetNumFriends() do
-			local friendName, _, class = GetFriendInfo(friendIndex)
-			if friendName == login then
-				classColor = ClassColors(class)
-				found = true
-				break
-			end
-		end
-		
-		if not found then
-			if IsInGuild() then GuildRoster() end
-			for guildIndex = 1, GetNumGuildMembers(true) do
-				local guildMemberName, _, _, _, _, _, _, _, _, _, class = GetGuildRosterInfo(guildIndex)
-				if guildMemberName == login then
-					classColor = ClassColors(class)
-					break
-				end
-			end
-		end
-		
-	end
-	
-	if login then
-		-- Hook the message function
-		local AddMessageOriginal = ChatFrame1.AddMessage
-		local function AddMessageHook(frame, text, ...)
-			text = replace(text, "^|Hplayer:(.+)|h%[(.+)%]|h", "|Hplayer:%1|h|cff"..classColor.."%2|r|h")
-			ChatFrame1.AddMessage = AddMessageOriginal
-			return AddMessageOriginal(frame, text, ...)
-		end
-		ChatFrame1.AddMessage = AddMessageHook
-	end
-end
-TukuiChat:RegisterEvent("CHAT_MSG_SYSTEM")
-TukuiChat["CHAT_MSG_SYSTEM"] = CHAT_MSG_SYSTEM
-
-local function AddMessageHook(frame, text, ...)
-	-- chan text smaller or hidden
-	for k,v in pairs(replaceschan) do
-		text = text:gsub('|h%['..k..'%]|h', '|h'..v..'|h')
-	end
-	text = replace(text, "has come online.", "is now |cff298F00online|r !")
-	text = replace(text, "has gone offline.", "is now |cffff0000offline|r !")
-	text = replace(text, "ist jetzt online.", "ist jetzt |cff298F00online|r !")
-	text = replace(text, "ist jetzt offline.", "ist jetzt |cffff0000offline|r !")
-	text = replace(text, "|Hplayer:(.+)|h%[(.+)%]|h has earned", "|Hplayer:%1|h%2|h has earned")
-	text = replace(text, "|Hplayer:(.+):(.+)|h%[(.+)%]|h whispers:", "From [|Hplayer:%1:%2|h%3|h]:")
-	text = replace(text, "|Hplayer:(.+):(.+)|h%[(.+)%]|h says:", "[|Hplayer:%1:%2|h%3|h]:")	
-	text = replace(text, "|Hplayer:(.+):(.+)|h%[(.+)%]|h yells:", "[|Hplayer:%1:%2|h%3|h]:")
-	if TukuiDB.client ~= "deDE" and find(text, replace(ERR_AUCTION_SOLD_S,'%%s', '')) then	-- "A buyer has been found for your auction of %s."
-		local itemname = text:match(replace(ERR_AUCTION_SOLD_S, '%%s', '(.+)'))
-		text = "|cffef4341"..BUTTON_LAG_AUCTIONHOUSE.."|r - |cffBCD8FF"..ITEM_SOLD_COLON.."|r "
-		local _, solditem = GetItemInfo(itemname)
-		if solditem then
-			text = text..solditem
-		else
-			text = text..itemname
-		end
-	end 
-	return AddMessageOriginal(frame, text, ...)
-end
-
-function TukuiDB.ChannelsEdits()
-	for i = 1, NUM_CHAT_WINDOWS do
-		if ( i ~= 2 ) then
-			local frame = _G["ChatFrame"..i]
-			AddMessageOriginal = frame.AddMessage
-			frame.AddMessage = AddMessageHook
-		end
-	end
-end
-TukuiDB.ChannelsEdits()
 
 -- /tt - tell your current target.
 for i = 1, NUM_CHAT_WINDOWS do
@@ -467,24 +360,17 @@ function TukuiDB.ChatCopyButtons()
 		local buttontext = button:CreateFontString(nil,"OVERLAY",nil)
 		buttontext:SetFont(TukuiCF.media.font,12,"OUTLINE")
 		buttontext:SetText("C")
-		buttontext:SetPoint("CENTER")
+		buttontext:SetPoint("CENTER", TukuiDB.Scale(1), 0)
 		buttontext:SetJustifyH("CENTER")
 		buttontext:SetJustifyV("CENTER")
 				
-		button:SetScript("OnMouseUp", function(self, btn)
-			if i == 1 and btn == "RightButton" then
-				ToggleFrame(ChatMenu)
-			else
-				Copy(cf)
-			end
+		button:SetScript("OnMouseUp", function(self)
+			Copy(cf)
 		end)
 		button:SetScript("OnEnter", function() 
 			button:SetAlpha(1) 
 		end)
 		button:SetScript("OnLeave", function() button:SetAlpha(0) end)
-		local tab = _G[format("ChatFrame%dTab", i)]
-		tab:SetScript("OnShow", function() button:Show() end)
-		tab:SetScript("OnHide", function() button:Hide() end)
 	end
 end
 TukuiDB.ChatCopyButtons()

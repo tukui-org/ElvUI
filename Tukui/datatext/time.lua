@@ -75,37 +75,27 @@ if TukuiCF["datatext"].wowtime and TukuiCF["datatext"].wowtime > 0 then
 
 	Stat:SetScript("OnEnter", function(self)
 		OnLoad = function(self) RequestRaidInfo() end,
-		GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB.Scale(6));
+		GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, TukuiDB.Scale(6));
 		GameTooltip:ClearAllPoints()
 		GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
 		GameTooltip:ClearLines()
-		
-		local wgtime = GetWintergraspWaitTime() or nil
-		local control = QUEUE_TIME_UNAVAILABLE
-		inInstance, instanceType = IsInInstance()
-		if not ( instanceType == "none" ) then
-			wgtime = QUEUE_TIME_UNAVAILABLE
-		elseif wgtime == nil then
-			wgtime = WINTERGRASP_IN_PROGRESS
-		else
-			local hour = tonumber(format("%01.f", floor(wgtime/3600)))
-			local min = format(hour>0 and "%02.f" or "%01.f", floor(wgtime/60 - (hour*60)))
-			local sec = format("%02.f", floor(wgtime - hour*3600 - min *60)) 
-			wgtime = (hour>0 and hour..":" or "")..min..":"..sec
-			SetMapByID(485)
-			for i = 1, GetNumMapLandmarks() do
-				local index = select(3, GetMapLandmarkInfo(i))
-				if index == 46 then
-					control = "|cFF69CCF0"..FACTION_ALLIANCE.."|r"
-				elseif index == 48 then
-					control = "|cFFC41F3B"..FACTION_HORDE.."|r"
-				end
+		local pvp = GetNumWorldPVPAreas()
+		for i=1, pvp do
+			local timeleft = select(5, GetWorldPVPAreaInfo(i))
+			local name = select(2, GetWorldPVPAreaInfo(i))
+			local inprogress = select(3, GetWorldPVPAreaInfo(i))
+			local inInstance, instanceType = IsInInstance()
+			if not ( instanceType == "none" ) then
+				timeleft = QUEUE_TIME_UNAVAILABLE
+			elseif inprogress then
+				timeleft = WINTERGRASP_IN_PROGRESS
+			else
+				local hour = tonumber(format("%01.f", floor(timeleft/3600)))
+				local min = format(hour>0 and "%02.f" or "%01.f", floor(timeleft/60 - (hour*60)))
+				local sec = format("%02.f", floor(timeleft - hour*3600 - min *60)) 
+				timeleft = (hour>0 and hour..":" or "")..min..":"..sec
 			end
-			SetMapToCurrentZone()
-		end
-		GameTooltip:AddDoubleLine(tukuilocal.datatext_wg,wgtime)
-		if TukuiDB.level >= 68 then
-			GameTooltip:AddDoubleLine(tukuilocal.datatext_control, control)
+			GameTooltip:AddDoubleLine(tukuilocal.datatext_timeto.." "..name,timeleft)
 		end
 		GameTooltip:AddLine(" ")
 		

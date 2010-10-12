@@ -1,4 +1,4 @@
-## Interface: 30300
+## Interface: 40000
 ## Author: Tukz
 ## Title: |cffC495DDTukui RAID|r (Dps Layout)
 ## Notes: Raid layout for party and raid, DPS/Tank mode.

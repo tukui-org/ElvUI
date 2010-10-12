@@ -76,9 +76,9 @@ if TukuiCF["datatext"].mem and TukuiCF["datatext"].mem > 0 then
 
 	Stat:SetScript("OnMouseDown", function() collectgarbage("collect") Update(Stat, 20) end)
 	Stat:SetScript("OnUpdate", Update) 
-	Stat:SetScript("OnEnter", function()
+	Stat:SetScript("OnEnter", function(self)
 		if not InCombatLockdown() then
-			GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB.Scale(6));
+			GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, TukuiDB.Scale(6));
 			GameTooltip:ClearAllPoints()
 			GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
 			GameTooltip:ClearLines()

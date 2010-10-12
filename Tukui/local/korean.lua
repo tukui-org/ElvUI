@@ -1,4 +1,23 @@
 if TukuiDB.client == "koKR" then
+
+	tukuilocal.chat_BATTLEGROUND_GET = "[B]"
+	tukuilocal.chat_BATTLEGROUND_LEADER_GET = "[B]"
+	tukuilocal.chat_BN_WHISPER_GET = "From"
+	tukuilocal.chat_GUILD_GET = "[G]"
+	tukuilocal.chat_OFFICER_GET = "[O]"
+	tukuilocal.chat_PARTY_GET = "[P]"
+	tukuilocal.chat_PARTY_GUIDE_GET = "[P]"
+	tukuilocal.chat_PARTY_LEADER_GET = "[P]"
+	tukuilocal.chat_RAID_GET = "[R]"
+	tukuilocal.chat_RAID_LEADER_GET = "[R]"
+	tukuilocal.chat_RAID_WARNING_GET = "[W]"
+	tukuilocal.chat_WHISPER_GET = "From"
+	tukuilocal.chat_FLAG_AFK = "[AFK]"
+	tukuilocal.chat_FLAG_DND = "[DND]"
+	tukuilocal.chat_FLAG_GM = "[GM]"
+	tukuilocal.chat_ERR_FRIEND_ONLINE_SS = "is now |cff298F00online|r"
+	tukuilocal.chat_ERR_FRIEND_OFFLINE_S = "is now |cffff0000offline|r"
+	
 	tukuilocal.disband = "공격대를 해체합니다."
  
 	tukuilocal.datatext_guild = "길드"
@@ -11,7 +30,7 @@ if TukuiDB.client == "koKR" then
 	tukuilocal.datatext_spent = "지출:"
 	tukuilocal.datatext_deficit = "적자:"
 	tukuilocal.datatext_profit = "흑자:"
-	tukuilocal.datatext_wg = "겨울손아귀 전투시간:"
+	tukuilocal.datatext_timeto = "Time to"
 	tukuilocal.datatext_friendlist = "친구 목록:"
 	tukuilocal.datatext_playersp = "주문력"
 	tukuilocal.datatext_playerap = "전투력"

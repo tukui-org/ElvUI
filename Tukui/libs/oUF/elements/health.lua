@@ -3,8 +3,8 @@ local oUF = ns.oUF
 
 oUF.colors.health = {49/255, 207/255, 37/255}
 
-local Update = function(self, event, unit)
-	if(self.unit ~= unit) then return end
+local Update = function(self, event, unit, powerType)
+	if(self.unit ~= unit or (event == 'UNIT_POWER' and powerType ~= 'HAPPINESS')) then return end
 	local health = self.Health
 
 	if(health.PreUpdate) then health:PreUpdate(unit) end
@@ -20,7 +20,6 @@ local Update = function(self, event, unit)
 	end
 
 	health.disconnected = disconnected
-	health.unit = unit
 
 	local r, g, b, t
 	if(health.colorTapping and UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit)) then
@@ -50,8 +49,7 @@ local Update = function(self, event, unit)
 		health:SetStatusBarColor(r, g, b)
 
 		local bg = health.bg
-		if(bg) then
-			local mu = bg.multiplier or 1
+		if(bg) then local mu = bg.multiplier or 1
 			bg:SetVertexColor(r * mu, g * mu, b * mu)
 		end
 	end
@@ -61,17 +59,26 @@ local Update = function(self, event, unit)
 	end
 end
 
+local Path = function(self, ...)
+	return (self.Health.Override or Update) (self, ...)
+end
+
+local ForceUpdate = function(element)
+	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
+end
+
 local OnHealthUpdate
 do
 	local UnitHealth = UnitHealth
 	OnHealthUpdate = function(self)
 		if(self.disconnected) then return end
-		local health = UnitHealth(self.unit)
+		local unit = self.__owner.unit
+		local health = UnitHealth(unit)
 
 		if(health ~= self.min) then
 			self.min = health
 
-			return (self.Update or Update) (self:GetParent(), "OnHealthUpdate", self.unit)
+			return Path(self.__owner, "OnHealthUpdate", unit)
 		end
 	end
 end
@@ -79,27 +86,26 @@ end
 local Enable = function(self, unit)
 	local health = self.Health
 	if(health) then
-		local Update = health.Update or Update
-		if(health.frequentUpdates and (unit and not unit:match'%w+target$')) then
-			-- TODO 1.5: We should do this regardless of frequentUpdates.
-			if(health:GetParent() ~= self) then
-				return oUF.error('Element [%s] is incorrectly parented on [%s]. Expected self, got something else.', 'Health', unit)
-			end
+		health.__owner = self
+		health.ForceUpdate = ForceUpdate
 
+		if(health.frequentUpdates and (unit and not unit:match'%w+target$')) then
 			health:SetScript('OnUpdate', OnHealthUpdate)
 
 			-- The party frames need this to handle disconnect states correctly.
 			if(unit == 'party') then
-				self:RegisterEvent("UNIT_HEALTH", Update)
+				self:RegisterEvent("UNIT_HEALTH", Path)
 			end
 		else
-			self:RegisterEvent("UNIT_HEALTH", Update)
+			self:RegisterEvent("UNIT_HEALTH", Path)
 		end
 
-		self:RegisterEvent("UNIT_MAXHEALTH", Update)
-		self:RegisterEvent('UNIT_HAPPINESS', Update)
+		self:RegisterEvent("UNIT_MAXHEALTH", Path)
+		self:RegisterEvent('UNIT_CONNECTION', Path)
+		self:RegisterEvent('UNIT_POWER', Path)
+
 		-- For tapping.
-		self:RegisterEvent('UNIT_FACTION', Update)
+		self:RegisterEvent('UNIT_FACTION', Path)
 
 		if(not health:GetStatusBarTexture()) then
 			health:SetStatusBarTexture[[Interface\TargetingFrame\UI-StatusBar]]
@@ -112,16 +118,17 @@ end
 local Disable = function(self)
 	local health = self.Health
 	if(health) then
-		local Update = health.Update or Update
 		if(health:GetScript'OnUpdate') then
 			health:SetScript('OnUpdate', nil)
 		end
 
-		self:UnregisterEvent('UNIT_HEALTH', Update)
-		self:UnregisterEvent('UNIT_MAXHEALTH', Update)
-		self:UnregisterEvent('UNIT_HAPPINESS', Update)
-		self:UnregisterEvent('UNIT_FACTION', Update)
+		self:UnregisterEvent('UNIT_HEALTH', Path)
+		self:UnregisterEvent('UNIT_MAXHEALTH', Path)
+		self:UnregisterEvent('UNIT_CONNECTION', Path)
+		self:UnregisterEvent('UNIT_POWER', Path)
+
+		self:UnregisterEvent('UNIT_FACTION', Path)
 	end
 end
 
-oUF:AddElement('Health', Update, Enable, Disable)
+oUF:AddElement('Health', Path, Enable, Disable)

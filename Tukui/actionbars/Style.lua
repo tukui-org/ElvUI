@@ -5,65 +5,73 @@ local media = TukuiCF["media"]
 local securehandler = CreateFrame("Frame", nil, nil, "SecureHandlerBaseTemplate")
 local replace = string.gsub
 
-local function style(self)  
+function style(self)
 	local name = self:GetName()
 	local action = self.action
 	local Button = self
 	local Icon = _G[name.."Icon"]
 	local Count = _G[name.."Count"]
-	local Flash	 = _G[name.."Flash"]	
+	local Flash	 = _G[name.."Flash"]
 	local HotKey = _G[name.."HotKey"]
 	local Border  = _G[name.."Border"]
 	local Btname = _G[name.."Name"]
 	local normal  = _G[name.."NormalTexture"]
-
+ 
 	Flash:SetTexture("")
 	Button:SetNormalTexture("")
-	
+ 
 	Border:Hide()
 	Border = TukuiDB.dummy
-
+ 
 	Count:ClearAllPoints()
 	Count:SetPoint("BOTTOMRIGHT", 0, TukuiDB.Scale(2))
 	Count:SetFont(TukuiCF["media"].font, 12, "OUTLINE")
-	
+ 
+	Btname:SetText("")
+	Btname:Hide()
+	Btname.Show = TukuiDB.dummy
+ 
+	if not _G[name.."Panel"] then
+		self:SetWidth(TukuiDB.buttonsize)
+		self:SetHeight(TukuiDB.buttonsize)
+ 
+		local panel = CreateFrame("Frame", name.."Panel", self)
+		TukuiDB.CreatePanel(panel, TukuiDB.buttonsize, TukuiDB.buttonsize, "CENTER", self, "CENTER", 0, 0)
+ 
+		panel:SetFrameStrata(self:GetFrameStrata())
+		panel:SetFrameLevel(self:GetFrameLevel() - 1)
+ 
+		Icon:SetTexCoord(.08, .92, .08, .92)
+		Icon:SetPoint("TOPLEFT", Button, TukuiDB.Scale(2), TukuiDB.Scale(-2))
+		Icon:SetPoint("BOTTOMRIGHT", Button, TukuiDB.Scale(-2), TukuiDB.Scale(2))
+	end
+
 	HotKey:ClearAllPoints()
-	HotKey:SetPoint("TOPRIGHT", 0, TukuiDB.Scale(-2))
+	HotKey:SetPoint("TOPRIGHT", 0, TukuiDB.Scale(-3))
 	HotKey:SetFont(TukuiCF["media"].font, 12, "OUTLINE")
-	
+	HotKey.ClearAllPoints = TukuiDB.dummy
+	HotKey.SetPoint = TukuiDB.dummy
+ 
 	if not TukuiCF["actionbar"].hotkey == true then
 		HotKey:SetText("")
 		HotKey:Hide()
 		HotKey.Show = TukuiDB.dummy
 	end
-
-	Btname:SetText("")
-	Btname:Hide()
-	Btname.Show = TukuiDB.dummy
-	
-	if not _G[name.."Panel"] then
-		self:SetWidth(TukuiDB.buttonsize)
-		self:SetHeight(TukuiDB.buttonsize)
-		
-		local panel = CreateFrame("Frame", name.."Panel", self)
-		TukuiDB.CreatePanel(panel, TukuiDB.buttonsize, TukuiDB.buttonsize, "CENTER", self, "CENTER", 0, 0)
-		panel:SetBackdropColor(0, 0, 0, 0)
-		panel:SetFrameStrata(self:GetFrameStrata())
-		panel:SetFrameLevel(self:GetFrameLevel() - 1)
-
-		Icon:SetTexCoord(.08, .92, .08, .92)
-		Icon:SetPoint("TOPLEFT", Button, TukuiDB.Scale(2), TukuiDB.Scale(-2))
-		Icon:SetPoint("BOTTOMRIGHT", Button, TukuiDB.Scale(-2), TukuiDB.Scale(2))
+ 
+	if normal then
+		normal:ClearAllPoints()
+		normal:SetPoint("TOPLEFT")
+		normal:SetPoint("BOTTOMRIGHT")
 	end
-	
-	normal:ClearAllPoints()
-	normal:SetPoint("TOPLEFT")
-	normal:SetPoint("BOTTOMRIGHT")
 end
 
 local function stylesmallbutton(normal, button, icon, name, pet)
 	local Flash	 = _G[name.."Flash"]
 	button:SetNormalTexture("")
+	
+	-- another bug fix reported by Affli in t12 beta
+	button.SetNormalTexture = TukuiDB.dummy
+	
 	Flash:SetTexture(media.buttonhover)
 	
 	if not _G[name.."Panel"] then
@@ -97,7 +105,7 @@ local function stylesmallbutton(normal, button, icon, name, pet)
 	normal:SetPoint("BOTTOMRIGHT")
 end
 
-local function styleshift(pet)
+local function styleshift()
 	for i=1, NUM_SHAPESHIFT_SLOTS do
 		local name = "ShapeshiftButton"..i
 		local button  = _G[name]
@@ -107,7 +115,7 @@ local function styleshift(pet)
 	end
 end
 
-local function stylepet()
+function TukuiDB.StylePet()
 	for i=1, NUM_PET_ACTION_SLOTS do
 		local name = "PetActionButton"..i
 		local button  = _G[name]
@@ -117,52 +125,7 @@ local function stylepet()
 	end
 end
 
--- styleButton function authors are Chiril & Karudon.
-local function styleButton(b) 
-    local name = b:GetName()
- 
-    local button          = _G[name]
-    local icon            = _G[name.."Icon"]
-    local count           = _G[name.."Count"]
-    local border          = _G[name.."Border"]
-    local hotkey          = _G[name.."HotKey"]
-    local cooldown        = _G[name.."Cooldown"]
-    local nametext        = _G[name.."Name"]
-    local flash           = _G[name.."Flash"]
-    local normaltexture   = _G[name.."NormalTexture"]
- 
-    local hover = b:CreateTexture("frame", nil, self) -- hover
-    hover:SetTexture(1,1,1,0.3)
-    hover:SetHeight(button:GetHeight())
-    hover:SetWidth(button:GetWidth())
-    hover:SetPoint("TOPLEFT",button,2,-2)
-    hover:SetPoint("BOTTOMRIGHT",button,-2,2)
-    button:SetHighlightTexture(hover)
- 
-    local pushed = b:CreateTexture("frame", nil, self) -- pushed
-    pushed:SetTexture(0.9,0.8,0.1,0.3)
-    pushed:SetHeight(button:GetHeight())
-    pushed:SetWidth(button:GetWidth())
-    pushed:SetPoint("TOPLEFT",button,2,-2)
-    pushed:SetPoint("BOTTOMRIGHT",button,-2,2)
-    button:SetPushedTexture(pushed)
- 
-    local checked = b:CreateTexture("frame", nil, self) -- checked
-    checked:SetTexture(0,1,0,0.3)
-    checked:SetHeight(button:GetHeight())
-    checked:SetWidth(button:GetWidth())
-    checked:SetPoint("TOPLEFT",button,2,-2)
-    checked:SetPoint("BOTTOMRIGHT",button,-2,2)
-    button:SetCheckedTexture(checked)
- 
-    local flasht = b:CreateTexture("frame", nil, self) -- flash (dunno if this is necessary)
-    flasht:SetTexture(1,0,1,0)
-    flasht:SetHeight(button:GetHeight())
-    flasht:SetWidth(button:GetWidth())
-    flasht:SetPoint("TOPLEFT",button,2,-2)
-    flasht:SetPoint("BOTTOMRIGHT",button,-2,2)
-    flash:SetTexture(flasht)
-end
+
 
 local function updatehotkey(self, actionButtonType)
 	local hotkey = _G[self:GetName() .. 'HotKey']
@@ -179,6 +142,7 @@ local function updatehotkey(self, actionButtonType)
 	text = replace(text, '(Spacebar)', 'SpB')
 	text = replace(text, '(Insert)', 'Ins')
 	text = replace(text, '(Home)', 'Hm')
+	text = replace(text, '(Delete)', 'Del')
 	
 	if hotkey:GetText() == _G['RANGE_INDICATOR'] then
 		hotkey:SetText('')
@@ -188,60 +152,137 @@ local function updatehotkey(self, actionButtonType)
 end
 
 -- rescale cooldown spiral to fix texture.
-local buttonNames = { "ActionButton", "MultiBarBottomLeftButton", "MultiBarBottomRightButton", "MultiBarLeftButton", "MultiBarRightButton", "ShapeshiftButton", "PetActionButton" }
+local buttonNames = { "ActionButton",  "MultiBarBottomLeftButton", "MultiBarBottomRightButton", "MultiBarLeftButton", "MultiBarRightButton", "ShapeshiftButton", "PetActionButton"}
 for _, name in ipairs( buttonNames ) do
-	for index = 1, 20 do
+	for index = 1, 12 do
 		local buttonName = name .. tostring(index)
 		local button = _G[buttonName]
 		local cooldown = _G[buttonName .. "Cooldown"]
  
 		if ( button == nil or cooldown == nil ) then
-			break;
+			break
 		end
- 
+		
 		cooldown:ClearAllPoints()
 		cooldown:SetPoint("TOPLEFT", button, "TOPLEFT", 2, -2)
 		cooldown:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", -2, 2)
 	end
 end
 
+local buttons = 0
+local function SetupFlyoutButton()
+	for i=1, buttons do
+		--prevent error if you don't have max ammount of buttons
+		if _G["SpellFlyoutButton"..i] then
+			style(_G["SpellFlyoutButton"..i])
+			TukuiDB.StyleButton(_G["SpellFlyoutButton"..i], true)
+		end
+	end
+end
+SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
+
+-- Reposition flyout buttons depending on what tukui bar the button is parented to
+local function FlyoutButtonPos(self, buttons, direction)
+	for i=1, buttons do
+		local parent = SpellFlyout:GetParent()
+		if not _G["SpellFlyoutButton"..i] then return end
+		
+		if InCombatLockdown() then return end
+ 
+		if direction == "LEFT" then
+			if i == 1 then
+				_G["SpellFlyoutButton"..i]:ClearAllPoints()
+				_G["SpellFlyoutButton"..i]:SetPoint("RIGHT", parent, "LEFT", -4, 0)
+			else
+				_G["SpellFlyoutButton"..i]:ClearAllPoints()
+				_G["SpellFlyoutButton"..i]:SetPoint("RIGHT", _G["SpellFlyoutButton"..i-1], "LEFT", -4, 0)
+			end
+		else
+			if i == 1 then
+				_G["SpellFlyoutButton"..i]:ClearAllPoints()
+				_G["SpellFlyoutButton"..i]:SetPoint("BOTTOM", parent, "TOP", 0, 4)
+			else
+				_G["SpellFlyoutButton"..i]:ClearAllPoints()
+				_G["SpellFlyoutButton"..i]:SetPoint("BOTTOM", _G["SpellFlyoutButton"..i-1], "TOP", 0, 4)
+			end
+		end
+	end
+end
+ 
+--Hide the Mouseover texture and attempt to find the ammount of buttons to be skinned
+local function styleflyout(self)
+	self.FlyoutBorder:SetAlpha(0)
+	self.FlyoutBorderShadow:SetAlpha(0)
+	
+	SpellFlyoutHorizontalBackground:SetAlpha(0)
+	SpellFlyoutVerticalBackground:SetAlpha(0)
+	SpellFlyoutBackgroundEnd:SetAlpha(0)
+	
+	for i=1, GetNumFlyouts() do
+		local x = GetFlyoutID(i)
+		local _, _, numSlots, isKnown = GetFlyoutInfo(x)
+		if isKnown then
+			buttons = numSlots
+			break
+		end
+	end
+	
+	--Change arrow direction depending on what bar the button is on
+	local arrowDistance
+	if ((SpellFlyout and SpellFlyout:IsShown() and SpellFlyout:GetParent() == self) or GetMouseFocus() == self) then
+			arrowDistance = 5
+	else
+			arrowDistance = 2
+	end
+	
+	if (self:GetParent() == MultiBarBottomRight and TukuiCF.actionbar.rightbars > 1) then
+		self.FlyoutArrow:ClearAllPoints()
+		self.FlyoutArrow:SetPoint("LEFT", self, "LEFT", -arrowDistance, 0)
+		SetClampedTextureRotation(self.FlyoutArrow, 270)
+		FlyoutButtonPos(self,buttons,"LEFT")
+	elseif (self:GetParent() == MultiBarLeft and not TukuiDB.lowversion and TukuiCF.actionbar.bottomrows == 2) then
+		self.FlyoutArrow:ClearAllPoints()
+		self.FlyoutArrow:SetPoint("TOP", self, "TOP", 0, arrowDistance)
+		SetClampedTextureRotation(self.FlyoutArrow, 0)
+		FlyoutButtonPos(self,buttons,"UP")	
+	elseif not self:GetParent():GetParent() == "SpellBookSpellIconsFrame" then
+		FlyoutButtonPos(self,buttons,"UP")
+	end
+end
+
 do
 	for i = 1, 12 do
-		styleButton(_G["ActionButton"..i])
+		TukuiDB.StyleButton(_G["ActionButton"..i], true)
 	end
-	 
-	for i=1, 12 do
-		styleButton(_G["BonusActionButton"..i])
+	
+	for i = 1, 12 do
+		TukuiDB.StyleButton(_G["MultiBarBottomLeftButton"..i], true)
+	end
+	
+	for i = 1, 12 do
+		TukuiDB.StyleButton(_G["MultiBarBottomRightButton"..i], true)
+	end
+	
+	for i = 1, 12 do
+		TukuiDB.StyleButton(_G["MultiBarLeftButton"..i], true)
+	end
+	
+	for i = 1, 12 do
+		TukuiDB.StyleButton(_G["MultiBarRightButton"..i], true)
 	end
 	 
 	for i=1, 10 do
-		styleButton(_G["ShapeshiftButton"..i])
+		TukuiDB.StyleButton(_G["ShapeshiftButton"..i], true)
 	end
 	 
 	for i=1, 10 do
-		styleButton(_G["PetActionButton"..i])
-	end
-	 
-	for i= 1, 12 do
-		styleButton(_G["MultiBarRightButton"..i])
-	end
-	 
-	for i= 1, 12 do
-		styleButton(_G["MultiBarBottomRightButton"..i])
-	end  
-	 
-	for i= 1, 12 do
-		styleButton(_G["MultiBarLeftButton"..i])
-	end
-	 
-	for i=1, 12 do
-		styleButton(_G["MultiBarBottomLeftButton"..i])
+		TukuiDB.StyleButton(_G["PetActionButton"..i], true)
 	end
 end
 
 hooksecurefunc("ActionButton_Update", style)
-hooksecurefunc("PetActionBar_Update", stylepet)
+hooksecurefunc("ActionButton_UpdateHotkeys", updatehotkey)
+hooksecurefunc("ActionButton_UpdateFlyout", styleflyout)
 hooksecurefunc("ShapeshiftBar_OnLoad", styleshift)
 hooksecurefunc("ShapeshiftBar_Update", styleshift)
 hooksecurefunc("ShapeshiftBar_UpdateState", styleshift)
-hooksecurefunc("ActionButton_UpdateHotkeys", updatehotkey)

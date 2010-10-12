@@ -93,7 +93,7 @@ do
 
 		text:SetPoint('LEFT', frame)
 		text:SetPoint('RIGHT', frame)
-		text:SetPoint('TOP', frame, 0, TukuiDB.Scale(2))
+		text:SetPoint('TOP', frame)
 		text:SetPoint('BOTTOM', frame)
 
 		frame:SetSize(settings.width, settings.height)

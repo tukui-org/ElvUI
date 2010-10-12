@@ -9,16 +9,26 @@ local Update = function(self, event)
 	end
 end
 
+local Path = function(self, ...)
+	return (self.Combat.Override or Update) (self, ...)
+end
+
+local ForceUpdate = function(element)
+	return Path(element.__owner, 'ForceUpdate')
+end
+
 local Enable = function(self, unit)
 	local combat = self.Combat
 	if(combat and unit == 'player') then
-		local Update = combat.Update or Update
-		self:RegisterEvent("PLAYER_REGEN_DISABLED", Update)
-		self:RegisterEvent("PLAYER_REGEN_ENABLED", Update)
+		combat.__owner = self
+		combat.ForceUpdate = ForceUpdate
 
-		if(self.Combat:IsObjectType"Texture" and not self.Combat:GetTexture()) then
-			self.Combat:SetTexture[[Interface\CharacterFrame\UI-StateIcon]]
-			self.Combat:SetTexCoord(.5, 1, 0, .49)
+		self:RegisterEvent("PLAYER_REGEN_DISABLED", Path)
+		self:RegisterEvent("PLAYER_REGEN_ENABLED", Path)
+
+		if(combat:IsObjectType"Texture" and not combat:GetTexture()) then
+			combat:SetTexture[[Interface\CharacterFrame\UI-StateIcon]]
+			combat:SetTexCoord(.5, 1, 0, .49)
 		end
 
 		return true
@@ -26,12 +36,10 @@ local Enable = function(self, unit)
 end
 
 local Disable = function(self)
-	local combat = self.Combat
-	if(combat) then
-		local Update = combat.Update or Update
-		self:UnregisterEvent("PLAYER_REGEN_DISABLED", Update)
-		self:UnregisterEvent("PLAYER_REGEN_ENABLED", Update)
+	if(self.Combat) then
+		self:UnregisterEvent("PLAYER_REGEN_DISABLED", Path)
+		self:UnregisterEvent("PLAYER_REGEN_ENABLED", Path)
 	end
 end
 
-oUF:AddElement('Combat', Update, Enable, Disable)
+oUF:AddElement('Combat', Path, Enable, Disable)

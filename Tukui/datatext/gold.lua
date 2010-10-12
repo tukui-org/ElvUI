@@ -15,6 +15,7 @@ if TukuiCF["datatext"].gold and TukuiCF["datatext"].gold > 0 then
 	local Profit	= 0
 	local Spent		= 0
 	local OldMoney	= 0
+	local myPlayerRealm = GetCVar("realmName");
 
 	local function formatMoney(money)
 		local gold = floor(math.abs(money) / 10000)
@@ -54,69 +55,12 @@ if TukuiCF["datatext"].gold and TukuiCF["datatext"].gold > 0 then
 		-- Setup Money Tooltip
 		self:SetAllPoints(Text)
 
-		local myPlayerRealm = GetCVar("realmName");
 		local myPlayerName  = UnitName("player");				
 		if (TukuiData == nil) then TukuiData = {}; end
 		if (TukuiData.gold == nil) then TukuiData.gold = {}; end
 		if (TukuiData.gold[myPlayerRealm]==nil) then TukuiData.gold[myPlayerRealm]={}; end
 		TukuiData.gold[myPlayerRealm][myPlayerName] = GetMoney();
-		
-		self:SetScript("OnEnter", function()
-			if not InCombatLockdown() then
-				self.hovered = true 
-				GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB.Scale(6));
-				GameTooltip:ClearAllPoints()
-				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
-				GameTooltip:ClearLines()
-				GameTooltip:AddLine(tukuilocal.datatext_session)
-				GameTooltip:AddDoubleLine(tukuilocal.datatext_earned, formatMoney(Profit), 1, 1, 1, 1, 1, 1)
-				GameTooltip:AddDoubleLine(tukuilocal.datatext_spent, formatMoney(Spent), 1, 1, 1, 1, 1, 1)
-				if Profit < Spent then
-					GameTooltip:AddDoubleLine(tukuilocal.datatext_deficit, formatMoney(Profit-Spent), 1, 0, 0, 1, 1, 1)
-				elseif (Profit-Spent)>0 then
-					GameTooltip:AddDoubleLine(tukuilocal.datatext_profit, formatMoney(Profit-Spent), 0, 1, 0, 1, 1, 1)
-				end				
-				GameTooltip:AddLine' '								
-			
-				local totalGold = 0				
-				GameTooltip:AddLine(tukuilocal.datatext_character)			
-				local thisRealmList = TukuiData.gold[myPlayerRealm];
-				for k,v in pairs(thisRealmList) do
-					GameTooltip:AddDoubleLine(k, FormatTooltipMoney(v), 1, 1, 1, 1, 1, 1)
-					totalGold=totalGold+v;
-				end 
-				GameTooltip:AddLine' '
-				GameTooltip:AddLine(tukuilocal.datatext_server)
-				GameTooltip:AddDoubleLine(tukuilocal.datatext_totalgold, FormatTooltipMoney(totalGold), 1, 1, 1, 1, 1, 1)
-				--[[
-				local numWatched = GetNumWatchedTokens()
-				if numWatched > 0 then
-					GameTooltip:AddLine(" ")
-					GameTooltip:AddLine(tp_currency)
-					
-					for i = 1, numWatched do
-						local name, count, extraCurrencyType, icon, itemID = GetBackpackCurrencyInfo(i)
-						local r, g, b, hex = GetItemQualityColor(select(3, GetItemInfo(itemID)))
-
-						GameTooltip:AddDoubleLine(name, count, r, g, b, 1, 1, 1)
-					end					
-				end
-				--]]
-				for i = 1, MAX_WATCHED_TOKENS do
-					local name, count, extraCurrencyType, icon, itemID = GetBackpackCurrencyInfo(i)
-					if name and i == 1 then
-						GameTooltip:AddLine(" ")
-						GameTooltip:AddLine(CURRENCY)
-					end
-					local r, g, b = 1,1,1
-					if itemID then r, g, b = GetItemQualityColor(select(3, GetItemInfo(itemID))) end
-					if name and count then GameTooltip:AddDoubleLine(name, count, r, g, b, 1, 1, 1) end
-				end
-				GameTooltip:Show()
-			end
-		end)
-		self:SetScript("OnLeave", function() GameTooltip:Hide() end)
-		
+				
 		OldMoney = NewMoney
 	end
 
@@ -128,7 +72,48 @@ if TukuiCF["datatext"].gold and TukuiCF["datatext"].gold > 0 then
 	Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
 	Stat:SetScript("OnMouseDown", function() OpenAllBags() end)
 	Stat:SetScript("OnEvent", OnEvent)
-	
+	Stat:SetScript("OnEnter", function(self)
+		if not InCombatLockdown() then
+			self.hovered = true 
+			GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, TukuiDB.Scale(6));
+			GameTooltip:ClearAllPoints()
+			GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
+			GameTooltip:ClearLines()
+			GameTooltip:AddLine(tukuilocal.datatext_session)
+			GameTooltip:AddDoubleLine(tukuilocal.datatext_earned, formatMoney(Profit), 1, 1, 1, 1, 1, 1)
+			GameTooltip:AddDoubleLine(tukuilocal.datatext_spent, formatMoney(Spent), 1, 1, 1, 1, 1, 1)
+			if Profit < Spent then
+				GameTooltip:AddDoubleLine(tukuilocal.datatext_deficit, formatMoney(Profit-Spent), 1, 0, 0, 1, 1, 1)
+			elseif (Profit-Spent)>0 then
+				GameTooltip:AddDoubleLine(tukuilocal.datatext_profit, formatMoney(Profit-Spent), 0, 1, 0, 1, 1, 1)
+			end				
+			GameTooltip:AddLine' '								
+		
+			local totalGold = 0				
+			GameTooltip:AddLine(tukuilocal.datatext_character)			
+			local thisRealmList = TukuiData.gold[myPlayerRealm];
+			for k,v in pairs(thisRealmList) do
+				GameTooltip:AddDoubleLine(k, FormatTooltipMoney(v), 1, 1, 1, 1, 1, 1)
+				totalGold=totalGold+v;
+			end 
+			GameTooltip:AddLine' '
+			GameTooltip:AddLine(tukuilocal.datatext_server)
+			GameTooltip:AddDoubleLine(tukuilocal.datatext_totalgold, FormatTooltipMoney(totalGold), 1, 1, 1, 1, 1, 1)
+
+			for i = 1, MAX_WATCHED_TOKENS do
+				local name, count, extraCurrencyType, icon, itemID = GetBackpackCurrencyInfo(i)
+				if name and i == 1 then
+					GameTooltip:AddLine(" ")
+					GameTooltip:AddLine(CURRENCY)
+				end
+				local r, g, b = 1,1,1
+				if itemID then r, g, b = GetItemQualityColor(select(3, GetItemInfo(itemID))) end
+				if name and count then GameTooltip:AddDoubleLine(name, count, r, g, b, 1, 1, 1) end
+			end
+			GameTooltip:Show()
+		end
+	end)
+	Stat:SetScript("OnLeave", function() GameTooltip:Hide() end)	
 	-- reset gold data
 	local function RESETGOLD()
 		local myPlayerRealm = GetCVar("realmName");

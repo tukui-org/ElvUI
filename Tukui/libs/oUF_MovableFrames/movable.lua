@@ -6,12 +6,6 @@ local oUF = ns.oUF or oUF
 
 assert(oUF, "oUF_MovableFrames was unable to locate oUF install.")
 
--- The DB is organized as the following:
--- {
---    Lily = {
---       player = "CENTER\031UIParent\0310\031-621",
--- }
---}
 local _DB
 local _LOCK
 
@@ -299,7 +293,7 @@ end
 
 do
 	local frame = CreateFrame"Frame"
-	frame:SetScript("OnEvent", function(self)
+	frame:SetScript("OnEvent", function(self, event)
 		return self[event](self)
 	end)
 

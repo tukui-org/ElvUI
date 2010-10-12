@@ -31,7 +31,7 @@ local function UpdateBar(self)
 		self.Time:SetText(roundedt)
 	end
 
-	if timeLeft < 0 then
+	if timeLeft < 0 or (UnitHasVehicleUI("player") and self.Player) then
 		self.Panel:Hide()
 		self:SetScript("OnUpdate", nil)
 	end
@@ -134,6 +134,7 @@ if (TukuiCF["unitframes"].ws_show_player) then
 				self.EndTime = expirationTime
 				self.Duration = duration
 				self.Panel:Show()
+				self.Player = true
 				self:SetScript("OnUpdate", UpdateBar)
 			end
 		end

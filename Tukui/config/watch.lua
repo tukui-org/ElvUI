@@ -12,23 +12,64 @@
 ]]-- 
 
 --------------------------------------------------------------------------------------------
--- PVP! Enemy cooldown tracker or Spell Alert list
+-- Spells that should be shown with an icon in the middle of the screen when not buffed.
 --------------------------------------------------------------------------------------------
 
+TukuiDB.remindbuffs = {
+	PRIEST = {
+		588, -- inner fire
+		73413, -- inner will
+	},
+	HUNTER = {
+		13165, -- hawk
+		5118, -- cheetah
+		13159, -- pack
+		20043, -- wild
+	},
+	MAGE = {
+		7302, -- frost armor
+		6117, -- mage armor
+		30482, -- molten armor
+	},
+	WARLOCK = {
+		28176, -- fel armor
+		687, -- demon armor
+	},
+	PALADIN = {
+
+	},
+	SHAMAN = {
+		52127, -- water shield
+		324, -- lightning shield
+		974, -- earth shield
+	},
+	WARRIOR = {
+		469, -- commanding Shout
+		6673, -- battle Shout
+	},
+	DEATHKNIGHT = {
+		57330, -- horn of Winter
+		31634, -- Shaman Strength of Earth Totem
+	},
+}
+
+--------------------------------------------------------------------------------------------
 -- the spellIDs to track on screen in arena.
+--------------------------------------------------------------------------------------------
+
 if TukuiCF["arena"].spelltracker == true then
 	TukuiDB.spelltracker = {
 		[1766] = 10, -- kick
 		[6552] = 10, -- pummel
 		[2139] = 24, -- counterspell
 		[19647] = 24, -- spell lock
-		[10890] = 27, -- fear priest
+		[34322] = 27, -- fear priest
 		[47476] = 120, -- strangulate
 		[47528] = 10, -- mindfreeze
 		[29166] = 180, -- innervate
 		[49039] = 120, -- Lichborne
 		[54428] = 60, -- Divine Plea
-		[10278] = 180, -- Hand of Protection
+		[1022] = 180, -- Hand of Protection
 		[16190] = 300, -- Mana Tide Totem
 		[51514] = 45, -- Hex
 		[2094] = 120, -- Blind
@@ -36,7 +77,6 @@ if TukuiCF["arena"].spelltracker == true then
 		[33206] = 144, -- pain sup
 		[15487] = 45, -- silence priest
 		[34490] = 20, -- i hate hunter silencing shot
-		[14311] = 30, -- hunter forst trap shit
 	}
 end
 
@@ -51,28 +91,27 @@ if TukuiCF["unitframes"].raidunitdebuffwatch == true then
 		TukuiDB.buffids = {
 			PRIEST = {
 				{6788, "TOPLEFT", {1, 0, 0}, true}, -- Weakened Soul
-				{48113, "TOPRIGHT", {0.2, 0.7, 0.2}}, -- Prayer of Mending
-				{48068, "BOTTOMLEFT", {0.4, 0.7, 0.2}}, -- Renew
-				{48066, "BOTTOMRIGHT", {0.81, 0.85, 0.1}, true}, -- Power Word: Shield
+				{93092, "TOPRIGHT", {0.2, 0.7, 0.2}}, -- Prayer of Mending
+				{139, "BOTTOMLEFT", {0.4, 0.7, 0.2}}, -- Renew
+				{17, "BOTTOMRIGHT", {0.81, 0.85, 0.1}, true}, -- Power Word: Shield
 			},
 			DRUID = {
-				{48440, "TOPLEFT", {0.8, 0.4, 0.8}}, -- Rejuvenation
-				{48443, "TOPRIGHT", {0.2, 0.8, 0.2}}, -- Regrowth
-				{48450, "BOTTOMLEFT", {0.4, 0.8, 0.2}}, -- Lifebloom
-				{53249, "BOTTOMRIGHT", {0.8, 0.4, 0}}, -- Wild Growth
+				{774, "TOPLEFT", {0.8, 0.4, 0.8}}, -- Rejuvenation
+				{8936, "TOPRIGHT", {0.2, 0.8, 0.2}}, -- Regrowth
+				{33763, "BOTTOMLEFT", {0.4, 0.8, 0.2}}, -- Lifebloom
+				{48438, "BOTTOMRIGHT", {0.8, 0.4, 0}}, -- Wild Growth
 			},
 			PALADIN = {
 				{53563, "TOPLEFT", {0.7, 0.3, 0.7}}, -- Beacon of Light
 				{53601, "TOPRIGHT", {0.4, 0.7, 0.2}}, -- Sacred Shield
 			},
 			SHAMAN = {
-				{61301, "TOPLEFT", {0.7, 0.3, 0.7}}, -- Riptide 
-				{49284, "TOPRIGHT", {0.2, 0.7, 0.2}}, -- Earthliving Weapon
-				{16237, "BOTTOMLEFT", {0.4, 0.7, 0.2}}, -- Ancestral Fortitude
-				{52000, "BOTTOMRIGHT", {0.7, 0.4, 0}}, -- Earthliving
+				{61295, "TOPLEFT", {0.7, 0.3, 0.7}}, -- Riptide 
+				{51730, "TOPRIGHT", {0.2, 0.7, 0.2}}, -- Earthliving Weapon
+				{16177, "BOTTOMLEFT", {0.4, 0.7, 0.2}}, -- Ancestral Fortitude
 			},
 			ALL = {
-				-- {2893, "RIGHT", {0, 1, 0}}, -- Abolish Poison
+				{14253, "RIGHT", {0, 1, 0}}, -- Abolish Poison
 				{23333, "LEFT", {1, 0, 0}}, -- Warsong flag xD
 			},
 		}
@@ -86,7 +125,7 @@ if TukuiCF["unitframes"].raidunitdebuffwatch == true then
 		
 		ORD.ShowDispelableDebuff = true
 		ORD.FilterDispellableDebuff = true
-		ORD.MatchBySpellName = true
+		ORD.MatchBySpellName = false
 		ORD.SHAMAN_CAN_DECURSE = true
 
 		TukuiDB.debuffids = {

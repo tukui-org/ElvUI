@@ -6,15 +6,11 @@ local normTex = TukuiCF["media"].normTex
 
 local function Shared(self, unit)
 	self.colors = TukuiDB.oUF_colors
-	self:RegisterForClicks('AnyUp')
+	self:RegisterForClicks("LeftButtonDown", "RightButtonDown")
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)
 	
 	self.menu = TukuiDB.SpawnMenu
-	self:SetAttribute('type2', 'menu')
-	
-	self:SetAttribute('initial-height', TukuiDB.Scale(32*TukuiDB.raidscale))
-	self:SetAttribute('initial-width', TukuiDB.Scale(150*TukuiDB.raidscale))
 	
 	self:SetBackdrop({bgFile = TukuiCF["media"].blank, insets = {top = -TukuiDB.mult, left = -TukuiDB.mult, bottom = -TukuiDB.mult, right = -TukuiDB.mult}})
 	self:SetBackdropColor(0.1, 0.1, 0.1)
@@ -80,7 +76,7 @@ local function Shared(self, unit)
 	end
 	
 	local name = health:CreateFontString(nil, "OVERLAY")
-    name:SetPoint("LEFT", health, 3, 1)
+    name:SetPoint("LEFT", health, 3, 0)
 	name:SetFont(font2, 12*TukuiDB.raidscale, "THINOUTLINE")
 	name:SetShadowOffset(1, -1)
 	self:Tag(name, "[Tukui:namemedium]")
@@ -122,11 +118,11 @@ local function Shared(self, unit)
 		self.RaidIcon = RaidIcon
 	end
 	
-	local ReadyCheck = self.Power:CreateTexture(nil, "OVERLAY")
-	ReadyCheck:SetHeight(TukuiDB.Scale(12*TukuiDB.raidscale))
-	ReadyCheck:SetWidth(TukuiDB.Scale(12*TukuiDB.raidscale))
-	ReadyCheck:SetPoint('CENTER')
-	self.ReadyCheck = ReadyCheck
+	--local ReadyCheck = self.Power:CreateTexture(nil, "OVERLAY")
+	--ReadyCheck:SetHeight(TukuiDB.Scale(12*TukuiDB.raidscale))
+	--ReadyCheck:SetWidth(TukuiDB.Scale(12*TukuiDB.raidscale))
+	--ReadyCheck:SetPoint('CENTER')
+	--self.ReadyCheck = ReadyCheck
 	
     local debuffs = CreateFrame('Frame', nil, self)
     debuffs:SetPoint('LEFT', self, 'RIGHT', 4, 0)
@@ -144,14 +140,10 @@ local function Shared(self, unit)
 	self.DebuffHighlightBackdrop = true
 	self.DebuffHighlightFilter = true
 	
-	if TukuiCF.unitframes.healcomm then
-		self.HealCommBar = CreateFrame('StatusBar', nil, health)
-		self.HealCommBar:SetAllPoints()
-		self.HealCommBar:SetStatusBarTexture(health:GetStatusBarTexture():GetTexture())
-		self.HealCommBar:SetStatusBarColor(0, 1, 0, 0.50)
-		self.HealCommBar:SetPoint('LEFT', health, 'LEFT')
-		self.allowHealCommOverflow = false
-	end
+	local picon = self.Health:CreateTexture(nil, 'OVERLAY')
+	picon:SetPoint('CENTER', self.Health)
+	picon:SetSize(16, 16)
+	self.PhaseIcon = picon
 	
 	if TukuiCF["unitframes"].showrange == true then
 		local range = {insideAlpha = 1, outsideAlpha = TukuiCF["unitframes"].raidalphaoor}
@@ -163,9 +155,27 @@ local function Shared(self, unit)
 		power.Smooth = true
 	end
 	
-	-- this is needed to be sure vehicle have good health/power color
-	-- aswell to be sure the name is displayed/updated correctly
-	self:RegisterEvent("UNIT_PET", TukuiDB.updateAllElements)
+	if TukuiCF["unitframes"].healcomm then
+		local mhpb = CreateFrame('StatusBar', nil, self.Health)
+		mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
+		mhpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
+		mhpb:SetWidth(150*TukuiDB.raidscale)
+		mhpb:SetStatusBarTexture(normTex)
+		mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
+
+		local ohpb = CreateFrame('StatusBar', nil, self.Health)
+		ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
+		ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
+		ohpb:SetWidth(150*TukuiDB.raidscale)
+		ohpb:SetStatusBarTexture(normTex)
+		ohpb:SetStatusBarColor(0, 1, 0, 0.25)
+
+		self.HealPrediction = {
+			myBar = mhpb,
+			otherBar = ohpb,
+			maxOverflow = 1,
+		}
+	end
 	
 	return self
 end
@@ -174,15 +184,26 @@ oUF:RegisterStyle('TukuiHealR01R15', Shared)
 oUF:Factory(function(self)
 	oUF:SetActiveStyle("TukuiHealR01R15")
 
-	local raid = self:SpawnHeader("oUF_TukuiHealRaid0115", nil, "custom [@raid16,exists] hide;show", "showParty", true, "showPlayer", TukuiCF["unitframes"].showplayerinparty, "showRaid", true, "groupFilter", "1,2,3,4,5,6,7,8", "groupingOrder", "1,2,3,4,5,6,7,8", "groupBy", "GROUP", "yOffset", TukuiDB.Scale(-4))
+	local raid = self:SpawnHeader("oUF_TukuiHealRaid0115", nil, "custom [@raid16,exists] hide;show", 
+	'oUF-initialConfigFunction', [[
+		local header = self:GetParent()
+		self:SetWidth(header:GetAttribute('initial-width'))
+		self:SetHeight(header:GetAttribute('initial-height'))
+		RegisterUnitWatch(self)
+	]],
+	'initial-width', TukuiDB.Scale(150*TukuiDB.raidscale),
+	'initial-height', TukuiDB.Scale(32*TukuiDB.raidscale),	
+	"showParty", true, "showPlayer", TukuiCF["unitframes"].showplayerinparty, "showRaid", true, "groupFilter", "1,2,3,4,5,6,7,8", "groupingOrder", "1,2,3,4,5,6,7,8", "groupBy", "GROUP", "yOffset", TukuiDB.Scale(-4))
 	raid:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 15, -300*TukuiDB.raidscale)
 	
 	local pets = {} 
 		pets[1] = oUF:Spawn('partypet1', 'oUF_TukuiPartyPet1') 
-		pets[1]:SetPoint('TOPLEFT', raid, 'TOPLEFT', 0, -240*TukuiDB.raidscale) 
+		pets[1]:SetPoint('TOPLEFT', raid, 'TOPLEFT', 0, -240*TukuiDB.raidscale)
+		pets[1]:SetSize(TukuiDB.Scale(150*TukuiDB.raidscale), TukuiDB.Scale(32*TukuiDB.raidscale))
 	for i =2, 4 do 
 		pets[i] = oUF:Spawn('partypet'..i, 'oUF_TukuiPartyPet'..i) 
-		pets[i]:SetPoint('TOP', pets[i-1], 'BOTTOM', 0, -8) 
+		pets[i]:SetPoint('TOP', pets[i-1], 'BOTTOM', 0, -8)
+		pets[i]:SetSize(TukuiDB.Scale(150*TukuiDB.raidscale), TukuiDB.Scale(32*TukuiDB.raidscale))
 	end
 		
 	local RaidMove = CreateFrame("Frame")

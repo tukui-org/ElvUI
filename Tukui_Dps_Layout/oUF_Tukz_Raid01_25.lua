@@ -5,15 +5,11 @@ local font1 = TukuiCF["media"].font
 
 local function Shared(self, unit)
 	self.colors = TukuiDB.oUF_colors
-	self:RegisterForClicks('AnyUp')
+	self:RegisterForClicks("LeftButtonDown", "RightButtonDown")
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)
 	
 	self.menu = TukuiDB.SpawnMenu
-	self:SetAttribute('type2', 'menu')
-	
-	self:SetAttribute('initial-height', TukuiDB.Scale(16*TukuiDB.raidscale))
-	self:SetAttribute('initial-width', TukuiDB.Scale(120*TukuiDB.raidscale))
 	
 	self:SetBackdrop({bgFile = TukuiCF["media"].blank, insets = {top = -TukuiDB.mult, left = -TukuiDB.mult, bottom = -TukuiDB.mult, right = -TukuiDB.mult}})
 	self:SetBackdropColor(0.1, 0.1, 0.1)
@@ -32,6 +28,7 @@ local function Shared(self, unit)
 	health.bg.multiplier = (0.3)
 	self.Health.bg = health.bg
 	
+	health.PostUpdate = TukuiDB.PostUpdatePetColor
 	health.frequentUpdates = true
 	
 	if TukuiCF.unitframes.unicolor == true then
@@ -71,7 +68,7 @@ local function Shared(self, unit)
 		
 	local name = health:CreateFontString(nil, 'OVERLAY')
 	name:SetFont(font2, 13*TukuiDB.raidscale, "THINOUTLINE")
-	name:SetPoint("LEFT", self, "RIGHT", TukuiDB.Scale(5), TukuiDB.Scale(1))
+	name:SetPoint("LEFT", self, "RIGHT", TukuiDB.Scale(5), 0)
 	self:Tag(name, '[Tukui:namemedium] [Tukui:dead][Tukui:afk]')
 	self.Name = name
 	
@@ -104,6 +101,11 @@ local function Shared(self, unit)
 	ReadyCheck:SetPoint('CENTER')
 	self.ReadyCheck = ReadyCheck
 	
+	local picon = self.Health:CreateTexture(nil, 'OVERLAY')
+	picon:SetPoint('CENTER', self.Health)
+	picon:SetSize(16, 16)
+	self.PhaseIcon = picon
+	
 	self.DebuffHighlightAlpha = 1
 	self.DebuffHighlightBackdrop = true
 	self.DebuffHighlightFilter = true
@@ -117,10 +119,6 @@ local function Shared(self, unit)
 		self.Range = range
 	end
 	
-	-- this is needed to be sure vehicle have good health/power color
-	-- aswell to be sure the name is displayed/updated correctly
-	self:RegisterEvent("UNIT_PET", TukuiDB.updateAllElements)
-	
 	return self
 end
 
@@ -128,15 +126,27 @@ oUF:RegisterStyle('TukuiDpsP05R10R15R25', Shared)
 oUF:Factory(function(self)
 	oUF:SetActiveStyle("TukuiDpsP05R10R15R25")
 
-	local raid = self:SpawnHeader("oUF_TukuiDpsRaid05101525", nil, "custom [@raid26,exists] hide;show", "showParty", true, "showPlayer", TukuiCF["unitframes"].showplayerinparty, "showRaid", true, "groupFilter", "1,2,3,4,5,6,7,8", "groupingOrder", "1,2,3,4,5,6,7,8", "groupBy", "GROUP", "yOffset", TukuiDB.Scale(-3))
+	local raid = self:SpawnHeader("oUF_TukuiDpsRaid05101525", nil, "custom [@raid26,exists] hide;show", 
+		'oUF-initialConfigFunction', [[
+			local header = self:GetParent()
+			self:SetWidth(header:GetAttribute('initial-width'))
+			self:SetHeight(header:GetAttribute('initial-height'))
+			RegisterUnitWatch(self)
+		]],
+		'initial-width', TukuiDB.Scale(120*TukuiDB.raidscale),
+		'initial-height', TukuiDB.Scale(16*TukuiDB.raidscale),	
+		"showParty", true, "showPlayer", TukuiCF["unitframes"].showplayerinparty, "showRaid", true, "groupFilter", "1,2,3,4,5,6,7,8", "groupingOrder", "1,2,3,4,5,6,7,8", "groupBy", "GROUP", "yOffset", TukuiDB.Scale(-3)
+	)
 	raid:SetPoint('TOPLEFT', UIParent, 15, -350*TukuiDB.raidscale)
 	
 	local pets = {} 
 		pets[1] = oUF:Spawn('partypet1', 'oUF_TukuiPartyPet1') 
-		pets[1]:SetPoint('TOPLEFT', raid, 'TOPLEFT', 0, -120*TukuiDB.raidscale) 
+		pets[1]:SetPoint('TOPLEFT', raid, 'TOPLEFT', 0, -120*TukuiDB.raidscale)
+		pets[1]:SetSize(TukuiDB.Scale(120*TukuiDB.raidscale), TukuiDB.Scale(16*TukuiDB.raidscale))
 	for i =2, 4 do 
 		pets[i] = oUF:Spawn('partypet'..i, 'oUF_TukuiPartyPet'..i) 
-		pets[i]:SetPoint('TOP', pets[i-1], 'BOTTOM', 0, -8) 
+		pets[i]:SetPoint('TOP', pets[i-1], 'BOTTOM', 0, -8)
+		pets[i]:SetSize(TukuiDB.Scale(120*TukuiDB.raidscale), TukuiDB.Scale(16*TukuiDB.raidscale))
 	end
 	
 	local RaidMove = CreateFrame("Frame")

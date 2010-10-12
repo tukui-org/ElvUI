@@ -28,15 +28,15 @@ if TukuiCF["datatext"].battleground == true then
 			RequestBattlefieldScoreData()
 			local numScores = GetNumBattlefieldScores()
 			for i=1, numScores do
-				name, killingBlows, honorKills, deaths, honorGained, faction, rank, race, class, classToken, damageDone, healingDone  = GetBattlefieldScore(i);
+				local name, killingBlows, honorableKills, deaths, honorGained, faction, race, class, classToken, damageDone, healingDone, bgRating, ratingChange = GetBattlefieldScore(i)
 				if healingDone > damageDone then
 					dmgtxt = (tukuilocal.datatext_healing..healingDone)
 				else
 					dmgtxt = (tukuilocal.datatext_damage..damageDone)
 				end
 				if ( name ) then
-					if ( name == UnitName("player") ) then
-						Text2:SetText(tukuilocal.datatext_honor..honorGained)
+					if ( name == TukuiDB.myname ) then
+						Text2:SetText(tukuilocal.datatext_honor..format('%d', honorGained))
 						Text1:SetText(dmgtxt)
 						Text3:SetText(tukuilocal.datatext_killingblows..killingBlows)
 					end   

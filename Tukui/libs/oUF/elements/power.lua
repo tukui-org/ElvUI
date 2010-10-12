@@ -25,7 +25,6 @@ local Update = function(self, event, unit)
 	end
 
 	power.disconnected = disconnected
-	power.unit = unit
 
 	local r, g, b, t
 	if(power.colorTapping and UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit)) then
@@ -71,17 +70,26 @@ local Update = function(self, event, unit)
 	end
 end
 
+local Path = function(self, ...)
+	return (self.Power.Override or Update) (self, ...)
+end
+
+local ForceUpdate = function(element)
+	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
+end
+
 local OnPowerUpdate
 do
 	local UnitPower = UnitPower
 	OnPowerUpdate = function(self)
 		if(self.disconnected) then return end
-		local power = UnitPower(self.unit)
+		local unit = self.__owner.unit
+		local power = UnitPower(unit)
 
 		if(power ~= self.min) then
 			self.min = power
 
-			return (self.Update or Update) (self:GetParent(), 'OnPowerUpdate', self.unit)
+			return Path(self.__owner, 'OnPowerUpdate', unit)
 		end
 	end
 end
@@ -89,31 +97,20 @@ end
 local Enable = function(self, unit)
 	local power = self.Power
 	if(power) then
-		local Update = power.Update or Update
-		if(power.frequentUpdates and (unit == 'player' or unit == 'pet')) then
-			-- TODO 1.5: We should do this regardless of frequentUpdates.
-			if(power:GetParent() ~= self) then
-				return oUF.error('Element [%s] is incorrectly parented on [%s]. Expected self, got something else.', 'Power', unit)
-			end
+		power.__owner = self
+		power.ForceUpdate = ForceUpdate
 
+		if(power.frequentUpdates and (unit == 'player' or unit == 'pet')) then
 			power:SetScript("OnUpdate", OnPowerUpdate)
 		else
-			self:RegisterEvent("UNIT_MANA", Update)
-			self:RegisterEvent("UNIT_RAGE", Update)
-			self:RegisterEvent("UNIT_FOCUS", Update)
-			self:RegisterEvent("UNIT_ENERGY", Update)
-			self:RegisterEvent("UNIT_RUNIC_POWER", Update)
+			self:RegisterEvent('UNIT_POWER', Path)
 		end
-		self:RegisterEvent("UNIT_MAXMANA", Update)
-		self:RegisterEvent("UNIT_MAXRAGE", Update)
-		self:RegisterEvent("UNIT_MAXFOCUS", Update)
-		self:RegisterEvent("UNIT_MAXENERGY", Update)
-		self:RegisterEvent("UNIT_DISPLAYPOWER", Update)
-		self:RegisterEvent("UNIT_MAXRUNIC_POWER", Update)
 
-		self:RegisterEvent('UNIT_HAPPINESS', Update)
+		self:RegisterEvent('UNIT_CONNECTION', Path)
+		self:RegisterEvent('UNIT_MAXPOWER', Path)
+
 		-- For tapping.
-		self:RegisterEvent('UNIT_FACTION', Update)
+		self:RegisterEvent('UNIT_FACTION', Path)
 
 		if(not power:GetStatusBarTexture()) then
 			power:SetStatusBarTexture[[Interface\TargetingFrame\UI-StatusBar]]
@@ -126,26 +123,16 @@ end
 local Disable = function(self)
 	local power = self.Power
 	if(power) then
-		local Update = power.Update or Update
 		if(power:GetScript'OnUpdate') then
 			power:SetScript("OnUpdate", nil)
 		else
-			self:UnregisterEvent("UNIT_MANA", Update)
-			self:UnregisterEvent("UNIT_RAGE", Update)
-			self:UnregisterEvent("UNIT_FOCUS", Update)
-			self:UnregisterEvent("UNIT_ENERGY", Update)
-			self:UnregisterEvent("UNIT_RUNIC_POWER", Update)
+			self:UnregisterEvent('UNIT_POWER', Path)
 		end
-		self:UnregisterEvent("UNIT_MAXMANA", Update)
-		self:UnregisterEvent("UNIT_MAXRAGE", Update)
-		self:UnregisterEvent("UNIT_MAXFOCUS", Update)
-		self:UnregisterEvent("UNIT_MAXENERGY", Update)
-		self:UnregisterEvent("UNIT_DISPLAYPOWER", Update)
-		self:UnregisterEvent("UNIT_MAXRUNIC_POWER", Update)
 
-		self:UnregisterEvent('UNIT_HAPPINESS', Update)
-		self:UnregisterEvent('UNIT_FACTION', Update)
+		self:UnregisterEvent('UNIT_CONNECTION', Path)
+		self:UnregisterEvent('UNIT_MAXPOWER', Path)
+		self:UnregisterEvent('UNIT_FACTION', Path)
 	end
 end
 
-oUF:AddElement('Power', Update, Enable, Disable)
+oUF:AddElement('Power', Path, Enable, Disable)

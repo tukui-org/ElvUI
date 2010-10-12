@@ -256,7 +256,7 @@ local onUpdate = function(self, elapsed)
 			self.casting = nil
 			self:Hide()
 
-			if(self.PostCastStop) then self:PostCastStop(self:GetParent().unit) end
+			if(self.PostCastStop) then self:PostCastStop(self.__owner.unit) end
 			return
 		end
 
@@ -298,7 +298,7 @@ local onUpdate = function(self, elapsed)
 			self.channeling = nil
 			self:Hide()
 
-			if(self.PostChannelStop) then self:PostChannelStop(self:GetParent().unit) end
+			if(self.PostChannelStop) then self:PostChannelStop(self.__owner.unit) end
 			return
 		end
 
@@ -340,10 +340,22 @@ local onUpdate = function(self, elapsed)
 	end
 end
 
+local Update = function(self, ...)
+	UNIT_SPELLCAST_START(self, ...)
+	return UNIT_SPELLCAST_CHANNEL_START(self, ...)
+end
+
+local ForceUpdate = function(element)
+	return Update(element.__owner, 'ForceUpdate', element.__owner.unit)
+end
+
 local Enable = function(object, unit)
 	local castbar = object.Castbar
 
 	if(castbar) then
+		castbar.__owner = object
+		castbar.ForceUpdate = ForceUpdate
+
 		if(not (unit and unit:match'%wtarget$')) then
 			object:RegisterEvent("UNIT_SPELLCAST_START", UNIT_SPELLCAST_START)
 			object:RegisterEvent("UNIT_SPELLCAST_FAILED", UNIT_SPELLCAST_FAILED)
@@ -413,7 +425,4 @@ local Disable = function(object, unit)
 	end
 end
 
-oUF:AddElement('Castbar', function(...)
-	UNIT_SPELLCAST_START(...)
-	return UNIT_SPELLCAST_CHANNEL_START(...)
-end, Enable, Disable)
+oUF:AddElement('Castbar', Update, Enable, Disable)

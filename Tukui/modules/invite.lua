@@ -2,56 +2,49 @@
 -- Auto accept invite
 ------------------------------------------------------------------------
 
-if TukuiCF["invite"].autoaccept == true then
+if TukuiCF["invite"].autoaccept then
 	local tAutoAcceptInvite = CreateFrame("Frame")
-	local OnEvent = function(self, event, ...) self[event](self, event, ...) end
-	tAutoAcceptInvite:SetScript("OnEvent", OnEvent)
-
-	local function PARTY_MEMBERS_CHANGED()
-		StaticPopup_Hide("PARTY_INVITE")
-		tAutoAcceptInvite:UnregisterEvent("PARTY_MEMBERS_CHANGED")
-	end
-
-	local InGroup = false
-	local function PARTY_INVITE_REQUEST()
+	tAutoAcceptInvite:RegisterEvent("PARTY_INVITE_REQUEST")
+	tAutoAcceptInvite:RegisterEvent("PARTY_MEMBERS_CHANGED")
+	
+	local hidestatic -- used to hide static popup when auto-accepting
+	
+	tAutoAcceptInvite:SetScript("OnEvent", function(self, event, ...)
+		arg1 = ...
 		local leader = arg1
-		InGroup = false
+		local ingroup = false
 		
-		-- Update Guild and Freindlist
-		if GetNumFriends() > 0 then ShowFriends() end
-		if IsInGuild() then GuildRoster() end
+		if event == "PARTY_INVITE_REQUEST" then
+			if GetNumPartyMembers() > 0 or GetNumRaidMembers() > 0 then return end
+			hidestatic = true
 		
-		for friendIndex = 1, GetNumFriends() do
-			local friendName = GetFriendInfo(friendIndex)
-			if friendName == leader then
-				AcceptGroup()
-				tAutoAcceptInvite:RegisterEvent("PARTY_MEMBERS_CHANGED")
-				tAutoAcceptInvite["PARTY_MEMBERS_CHANGED"] = PARTY_MEMBERS_CHANGED
-				InGroup = true
-				break
-			end
-		end
-		
-		if not InGroup then
-			for guildIndex = 1, GetNumGuildMembers(true) do
-				local guildMemberName = GetGuildRosterInfo(guildIndex)
-				if guildMemberName == leader then
+			-- Update Guild and Friendlist
+			if GetNumFriends() > 0 then ShowFriends() end
+			if IsInGuild() then GuildRoster() end
+			
+			for friendIndex = 1, GetNumFriends() do
+				local friendName = GetFriendInfo(friendIndex)
+				if friendName == leader then
 					AcceptGroup()
-					tAutoAcceptInvite:RegisterEvent("PARTY_MEMBERS_CHANGED")
-					tAutoAcceptInvite["PARTY_MEMBERS_CHANGED"] = PARTY_MEMBERS_CHANGED
-					InGroup = true
+					ingroup = true
 					break
 				end
 			end
+			
+			if not ingroup then
+				for guildIndex = 1, GetNumGuildMembers(true) do
+					local guildMemberName = GetGuildRosterInfo(guildIndex)
+					if guildMemberName == leader then
+						AcceptGroup()
+						break
+					end
+				end
+			end
+		elseif event == "PARTY_MEMBERS_CHANGED" and hidestatic == true then
+			StaticPopup_Hide("PARTY_INVITE")
+			hidestatic = false
 		end
-		
-		if not InGroup then
-			SendWho(leader)
-		end
-	end
-
-	tAutoAcceptInvite:RegisterEvent("PARTY_INVITE_REQUEST")
-	tAutoAcceptInvite["PARTY_INVITE_REQUEST"] = PARTY_INVITE_REQUEST
+	end)
 end
 
 ------------------------------------------------------------------------

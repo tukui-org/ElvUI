@@ -25,13 +25,12 @@ local function Shared(self, unit)
 	self.colors = TukuiDB.oUF_colors
 	
 	-- register click
-	self:RegisterForClicks('AnyUp')
+	self:RegisterForClicks("LeftButtonDown", "RightButtonDown")
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)
 	
 	-- menu? lol
 	self.menu = TukuiDB.SpawnMenu
-	self:SetAttribute('type2', 'menu')
 
 	-- backdrop for every units
 	self:SetBackdrop(backdrop)
@@ -74,7 +73,7 @@ local function Shared(self, unit)
 		healthBG:SetTexture(.1, .1, .1)
 	
 		health.value = TukuiDB.SetFontString(panel, font1, 12)
-		health.value:SetPoint("RIGHT", panel, "RIGHT", TukuiDB.Scale(-4), TukuiDB.Scale(1))
+		health.value:SetPoint("RIGHT", panel, "RIGHT", TukuiDB.Scale(-4), 0)
 		health.PostUpdate = TukuiDB.PostUpdateHealth
 				
 		self.Health = health
@@ -111,7 +110,7 @@ local function Shared(self, unit)
 		powerBG.multiplier = 0.3
 		
 		power.value = TukuiDB.SetFontString(panel, font1, 12)
-		power.value:SetPoint("LEFT", panel, "LEFT", TukuiDB.Scale(4), TukuiDB.Scale(1))
+		power.value:SetPoint("LEFT", panel, "LEFT", TukuiDB.Scale(4), 0)
 		power.PreUpdate = TukuiDB.PreUpdatePower
 		power.PostUpdate = TukuiDB.PostUpdatePower
 				
@@ -181,19 +180,15 @@ local function Shared(self, unit)
 			FlashInfo:SetToplevel(true)
 			FlashInfo:SetAllPoints(panel)
 			FlashInfo.ManaLevel = TukuiDB.SetFontString(FlashInfo, font1, 12)
-			FlashInfo.ManaLevel:SetPoint("CENTER", panel, "CENTER", 0, 1)
+			FlashInfo.ManaLevel:SetPoint("CENTER", panel, "CENTER", 0, 0)
 			self.FlashInfo = FlashInfo
 			
 			-- pvp status text
 			local status = TukuiDB.SetFontString(panel, font1, 12)
-			status:SetPoint("CENTER", panel, "CENTER", 0, TukuiDB.Scale(1))
+			status:SetPoint("CENTER", panel, "CENTER", 0, 0)
 			status:SetTextColor(0.69, 0.31, 0.31, 0)
 			self.Status = status
 			self:Tag(status, "[pvp]")
-			
-			-- script for pvp status and low mana
-			self:SetScript("OnEnter", function(self) FlashInfo.ManaLevel:Hide() status:SetAlpha(1) UnitFrame_OnEnter(self) end)
-			self:SetScript("OnLeave", function(self) FlashInfo.ManaLevel:Show() status:SetAlpha(0) UnitFrame_OnLeave(self) end)
 			
 			-- leader icon
 			local Leader = health:CreateTexture(nil, "OVERLAY")
@@ -223,11 +218,11 @@ local function Shared(self, unit)
 				ThreatBar:SetBackdropColor(0, 0, 0, 0)
 		   
 				ThreatBar.Text = TukuiDB.SetFontString(ThreatBar, font2, 12)
-				ThreatBar.Text:SetPoint("RIGHT", ThreatBar, "RIGHT", TukuiDB.Scale(-30), 0 )
+				ThreatBar.Text:SetPoint("RIGHT", ThreatBar, "RIGHT", TukuiDB.Scale(-30), 0)
 		
 				ThreatBar.Title = TukuiDB.SetFontString(ThreatBar, font2, 12)
 				ThreatBar.Title:SetText(tukuilocal.unitframes_ouf_threattext)
-				ThreatBar.Title:SetPoint("LEFT", ThreatBar, "LEFT", TukuiDB.Scale(30), 0 )
+				ThreatBar.Title:SetPoint("LEFT", ThreatBar, "LEFT", TukuiDB.Scale(30), 0)
 					  
 				ThreatBar.bg = ThreatBar:CreateTexture(nil, 'BORDER')
 				ThreatBar.bg:SetAllPoints(ThreatBar)
@@ -256,16 +251,17 @@ local function Shared(self, unit)
 				Experience.Rested = CreateFrame('StatusBar', nil, self)
 				Experience.Rested:SetParent(Experience)
 				Experience.Rested:SetAllPoints(Experience)
-				Resting = Experience:CreateTexture(nil, "OVERLAY")
+				local Resting = Experience:CreateTexture(nil, "OVERLAY")
 				Resting:SetHeight(28)
 				Resting:SetWidth(28)
-				if TukuiDB.myclass == "SHAMAN" or TukuiDB.myclass == "DEATHKNIGHT" then
+				if TukuiDB.myclass == "SHAMAN" or TukuiDB.myclass == "DEATHKNIGHT" or TukuiDB.myclass == "PALADIN" or TukuiDB.myclass == "WARLOCK" or TukuiDB.myclass == "DRUID" then
 					Resting:SetPoint("LEFT", -18, 76)
 				else
 					Resting:SetPoint("LEFT", -18, 68)
 				end
 				Resting:SetTexture([=[Interface\CharacterFrame\UI-StateIcon]=])
 				Resting:SetTexCoord(0, 0.5, 0, 0.421875)
+				self.Resting = Resting
 				self.Experience = Experience
 			end
 			
@@ -296,6 +292,105 @@ local function Shared(self, unit)
 				local DruidMana = TukuiDB.SetFontString(health, font1, 12)
 				DruidMana:SetTextColor(1, 0.49, 0.04)
 				self.DruidMana = DruidMana
+				
+				local eclipseBar = CreateFrame('Frame', nil, self)
+				eclipseBar:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, TukuiDB.Scale(1))
+				if TukuiDB.lowversion then
+					eclipseBar:SetSize(TukuiDB.Scale(186), TukuiDB.Scale(8))
+				else
+					eclipseBar:SetSize(TukuiDB.Scale(250), TukuiDB.Scale(8))
+				end
+				eclipseBar:SetFrameStrata("MEDIUM")
+				eclipseBar:SetFrameLevel(8)
+				TukuiDB.SetTemplate(eclipseBar)
+				eclipseBar:SetBackdropBorderColor(0,0,0,0)
+				eclipseBar:SetScript("OnShow", function() TukuiDB.EclipseDisplay(self, false) end)
+				eclipseBar:SetScript("OnUpdate", function() TukuiDB.EclipseDisplay(self, true) end) -- just forcing 1 update on login for buffs/shadow/etc.
+				eclipseBar:SetScript("OnHide", function() TukuiDB.EclipseDisplay(self, false) end)
+				
+				local lunarBar = CreateFrame('StatusBar', nil, eclipseBar)
+				lunarBar:SetPoint('LEFT', eclipseBar, 'LEFT', 0, 0)
+				lunarBar:SetSize(eclipseBar:GetWidth(), eclipseBar:GetHeight())
+				lunarBar:SetStatusBarTexture(normTex)
+				lunarBar:SetStatusBarColor(.30, .52, .90)
+				eclipseBar.LunarBar = lunarBar
+
+				local solarBar = CreateFrame('StatusBar', nil, eclipseBar)
+				solarBar:SetPoint('LEFT', lunarBar:GetStatusBarTexture(), 'RIGHT', 0, 0)
+				solarBar:SetSize(eclipseBar:GetWidth(), eclipseBar:GetHeight())
+				solarBar:SetStatusBarTexture(normTex)
+				solarBar:SetStatusBarColor(.80, .82,  .60)
+				eclipseBar.SolarBar = solarBar
+
+				local eclipseBarText = solarBar:CreateFontString(nil, 'OVERLAY')
+				eclipseBarText:SetPoint('TOP', panel)
+				eclipseBarText:SetPoint('BOTTOM', panel)
+				eclipseBarText:SetFont(font1, 12)
+				eclipseBar.Text = eclipseBarText
+
+				self.EclipseBar = eclipseBar
+			end
+
+			-- set holy power bar or shard bar
+			if (TukuiDB.myclass == "WARLOCK" or TukuiDB.myclass == "PALADIN") then
+				self.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(11))
+	
+				local bars = CreateFrame("Frame", nil, self)
+				bars:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, TukuiDB.Scale(1))
+				if TukuiDB.lowversion then
+					bars:SetWidth(TukuiDB.Scale(186))
+				else
+					bars:SetWidth(TukuiDB.Scale(250))
+				end
+				bars:SetHeight(TukuiDB.Scale(8))
+				TukuiDB.SetTemplate(bars)
+				bars:SetBackdropBorderColor(0,0,0,0)
+				
+				for i = 1, 3 do					
+					bars[i]=CreateFrame("StatusBar", self:GetName().."_Shard"..i, self)
+					bars[i]:SetHeight(TukuiDB.Scale(8))					
+					bars[i]:SetStatusBarTexture(normTex)
+					bars[i]:GetStatusBarTexture():SetHorizTile(false)
+
+					bars[i].bg = bars[i]:CreateTexture(nil, 'BORDER')
+					
+					if TukuiDB.myclass == "WARLOCK" then
+						bars[i]:SetStatusBarColor(255/255,101/255,101/255)
+						bars[i].bg:SetTexture(255/255,101/255,101/255)
+					elseif TukuiDB.myclass == "PALADIN" then
+						bars[i]:SetStatusBarColor(228/255,225/255,16/255)
+						bars[i].bg:SetTexture(228/255,225/255,16/255)
+					end
+					
+					if i == 1 then
+						bars[i]:SetPoint("LEFT", bars)
+						if TukuiDB.lowversion then
+							bars[i]:SetWidth(TukuiDB.Scale(62))
+						else
+							bars[i]:SetWidth(TukuiDB.Scale(82)) -- setting SetWidth here just to fit fit 250 perfectly
+						end
+						bars[i].bg:SetAllPoints(bars[i])
+					else
+						bars[i]:SetPoint("LEFT", bars[i-1], "RIGHT", TukuiDB.Scale(1), 0)
+						if TukuiDB.lowversion then
+							bars[i]:SetWidth(TukuiDB.Scale(61))
+						else
+							bars[i]:SetWidth(TukuiDB.Scale(83)) -- setting SetWidth here just to fit fit 250 perfectly
+						end
+						bars[i].bg:SetAllPoints(bars[i])
+					end
+					
+					bars[i].bg:SetTexture(normTex)					
+					bars[i].bg:SetAlpha(.15)
+				end
+				
+				if TukuiDB.myclass == "WARLOCK" then
+					bars.Override = TukuiDB.UpdateShards				
+					self.SoulShards = bars
+				elseif TukuiDB.myclass == "PALADIN" then
+					bars.Override = TukuiDB.UpdateHoly
+					self.HolyPower = bars
+				end
 			end
 
 			-- deathknight runes
@@ -366,12 +461,20 @@ local function Shared(self, unit)
 				end
 				self.TotemBar = TotemBar
 			end
+			
+			-- script for pvp status and low mana
+			self:SetScript("OnEnter", function(self) 
+				FlashInfo.ManaLevel:Hide() status:SetAlpha(1) UnitFrame_OnEnter(self) 
+			end)
+			self:SetScript("OnLeave", function(self) 
+				FlashInfo.ManaLevel:Show() status:SetAlpha(0) UnitFrame_OnLeave(self) 
+			end)
 		end
 		
 		if (unit == "target") then			
 			-- Unit name on target
 			local Name = health:CreateFontString(nil, "OVERLAY")
-			Name:SetPoint("LEFT", panel, "LEFT", TukuiDB.Scale(4), TukuiDB.Scale(1))
+			Name:SetPoint("LEFT", panel, "LEFT", TukuiDB.Scale(4), 0)
 			Name:SetJustifyH("LEFT")
 			Name:SetFont(font1, 12)
 
@@ -409,7 +512,7 @@ local function Shared(self, unit)
 			local buffs = CreateFrame("Frame", nil, self)
 			local debuffs = CreateFrame("Frame", nil, self)
 			
-			if TukuiDB.myclass == "SHAMAN" or TukuiDB.myclass == "DEATHKNIGHT" and db.playerauras then
+			if (TukuiDB.myclass == "SHAMAN" or TukuiDB.myclass == "DEATHKNIGHT" or TukuiDB.myclass == "PALADIN" or TukuiDB.myclass == "WARLOCK") and (db.playerauras) and (unit == "player") then
 				if TukuiDB.lowversion then
 					buffs:SetPoint("TOPLEFT", self, "TOPLEFT", 0, 34)
 				else
@@ -482,12 +585,12 @@ local function Shared(self, unit)
 			castbar.PostChannelStart = TukuiDB.CheckChannel
 
 			castbar.time = TukuiDB.SetFontString(castbar, font1, 12)
-			castbar.time:SetPoint("RIGHT", panel, "RIGHT", TukuiDB.Scale(-4), TukuiDB.Scale(1))
+			castbar.time:SetPoint("RIGHT", panel, "RIGHT", TukuiDB.Scale(-4), 0)
 			castbar.time:SetTextColor(0.84, 0.75, 0.65)
 			castbar.time:SetJustifyH("RIGHT")
 
 			castbar.Text = TukuiDB.SetFontString(castbar, font1, 12)
-			castbar.Text:SetPoint("LEFT", panel, "LEFT", 4, 1)
+			castbar.Text:SetPoint("LEFT", panel, "LEFT", TukuiDB.Scale(4), 0)
 			castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 			
 			if db.cbicons == true then
@@ -558,24 +661,39 @@ local function Shared(self, unit)
 			self.CombatFeedbackText = CombatFeedbackText
 		end
 		
+		if db.healcomm then
+			local mhpb = CreateFrame('StatusBar', nil, self.Health)
+			mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
+			mhpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
+			if TukuiDB.lowversion then
+				mhpb:SetWidth(186)
+			else
+				mhpb:SetWidth(250)
+			end
+			mhpb:SetStatusBarTexture(normTex)
+			mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
+			mhpb:SetMinMaxValues(0,1)
+
+			local ohpb = CreateFrame('StatusBar', nil, self.Health)
+			ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
+			ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
+			ohpb:SetWidth(250)
+			ohpb:SetStatusBarTexture(normTex)
+			ohpb:SetStatusBarColor(0, 1, 0, 0.25)
+
+			self.HealPrediction = {
+				myBar = mhpb,
+				otherBar = ohpb,
+				maxOverflow = 1,
+			}
+		end
+		
 		-- player aggro
 		if db.playeraggro == true then
 			table.insert(self.__elements, TukuiDB.UpdateThreat)
 			self:RegisterEvent('PLAYER_TARGET_CHANGED', TukuiDB.UpdateThreat)
 			self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', TukuiDB.UpdateThreat)
 			self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', TukuiDB.UpdateThreat)
-		end
-		
-		-- fixing vehicle/player frame when exiting an instance while on a vehicle
-		self:RegisterEvent("UNIT_PET", TukuiDB.updateAllElements)
-					
-		-- set width and height of player and target
-		if TukuiDB.lowversion == true then
-			self:SetAttribute('initial-width', TukuiDB.Scale(186))
-			self:SetAttribute('initial-height', TukuiDB.Scale(51))			
-		else
-			self:SetAttribute('initial-width', TukuiDB.Scale(250))
-			self:SetAttribute('initial-height', TukuiDB.Scale(57))
 		end
 	end
 	
@@ -627,10 +745,10 @@ local function Shared(self, unit)
 		-- Unit name
 		local Name = health:CreateFontString(nil, "OVERLAY")
 		if TukuiDB.lowversion then
-			Name:SetPoint("CENTER", health, "CENTER", 0, TukuiDB.Scale(1))
+			Name:SetPoint("CENTER", health, "CENTER", 0, 0)
 			Name:SetFont(font1, 12, "OUTLINE")
 		else
-			Name:SetPoint("CENTER", panel, "CENTER", 0, TukuiDB.Scale(1))
+			Name:SetPoint("CENTER", panel, "CENTER", 0, 0)
 			Name:SetFont(font1, 12)
 		end
 		Name:SetJustifyH("CENTER")
@@ -652,15 +770,6 @@ local function Shared(self, unit)
 			debuffs.PostCreateIcon = TukuiDB.PostCreateAura
 			debuffs.PostUpdateIcon = TukuiDB.PostUpdateAura
 			self.Debuffs = debuffs
-		end
-		
-		-- width and height of target of target
-		if TukuiDB.lowversion then
-			self:SetAttribute("initial-height", TukuiDB.Scale(18))
-			self:SetAttribute("initial-width", TukuiDB.Scale(186))
-		else
-			self:SetAttribute("initial-height", TukuiDB.Scale(36))
-			self:SetAttribute("initial-width", TukuiDB.Scale(129))
 		end
 	end
 	
@@ -736,10 +845,10 @@ local function Shared(self, unit)
 		-- Unit name
 		local Name = health:CreateFontString(nil, "OVERLAY")
 		if TukuiDB.lowversion then
-			Name:SetPoint("CENTER", self, "CENTER", 0, TukuiDB.Scale(1))
+			Name:SetPoint("CENTER", self, "CENTER", 0, 0)
 			Name:SetFont(font1, 12, "OUTLINE")
 		else
-			Name:SetPoint("CENTER", panel, "CENTER", 0, TukuiDB.Scale(1))
+			Name:SetPoint("CENTER", panel, "CENTER", 0, 0)
 			Name:SetFont(font1, 12)
 		end
 		Name:SetJustifyH("CENTER")
@@ -767,12 +876,12 @@ local function Shared(self, unit)
 				castbar.PostChannelStart = TukuiDB.CheckChannel
 
 				castbar.time = TukuiDB.SetFontString(castbar, font1, 12)
-				castbar.time:SetPoint("RIGHT", panel, "RIGHT", TukuiDB.Scale(-4), TukuiDB.Scale(1))
+				castbar.time:SetPoint("RIGHT", panel, "RIGHT", TukuiDB.Scale(-4), 0)
 				castbar.time:SetTextColor(0.84, 0.75, 0.65)
 				castbar.time:SetJustifyH("RIGHT")
 
 				castbar.Text = TukuiDB.SetFontString(castbar, font1, 12)
-				castbar.Text:SetPoint("LEFT", panel, "LEFT", 4, 1)
+				castbar.Text:SetPoint("LEFT", panel, "LEFT", TukuiDB.Scale(4), 0)
 				castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 				
 				self.Castbar = castbar
@@ -782,15 +891,6 @@ local function Shared(self, unit)
 		
 		-- update pet name, this should fix "UNKNOWN" pet names on pet unit.
 		self:RegisterEvent("UNIT_PET", TukuiDB.UpdatePetInfo)
-		
-		-- width and height of pet
-		if TukuiDB.lowversion then
-			self:SetAttribute("initial-height", TukuiDB.Scale(18))
-			self:SetAttribute("initial-width", TukuiDB.Scale(186))
-		else
-			self:SetAttribute("initial-height", TukuiDB.Scale(36))
-			self:SetAttribute("initial-width", TukuiDB.Scale(129))
-		end
 	end
 
 
@@ -814,7 +914,7 @@ local function Shared(self, unit)
 		healthBG:SetTexture(.1, .1, .1)
 		
 		health.value = TukuiDB.SetFontString(health, font1, 12, "OUTLINE")
-		health.value:SetPoint("RIGHT", health, "RIGHT", TukuiDB.Scale(-4), TukuiDB.Scale(1))
+		health.value:SetPoint("RIGHT", health, "RIGHT", TukuiDB.Scale(-4), 0)
 		health.PostUpdate = TukuiDB.PostUpdateHealth
 		
 		self.Health = health
@@ -838,7 +938,7 @@ local function Shared(self, unit)
 		
 		-- Unit name
 		local Name = health:CreateFontString(nil, "OVERLAY")
-		Name:SetPoint("LEFT", health, "LEFT", TukuiDB.Scale(4), TukuiDB.Scale(1))
+		Name:SetPoint("LEFT", health, "LEFT", TukuiDB.Scale(4), 0)
 		Name:SetJustifyH("LEFT")
 		Name:SetFont(font1, 12, "OUTLINE")
 		Name:SetShadowColor(0, 0, 0)
@@ -846,9 +946,6 @@ local function Shared(self, unit)
 
 		self:Tag(Name, '[Tukui:getnamecolor][Tukui:namelong] [Tukui:diffcolor][level] [shortclassification]')
 		self.Name = Name
-		
-		self:SetAttribute("initial-height", TukuiInfoRight:GetHeight() - TukuiDB.Scale(4))
-		self:SetAttribute("initial-width", TukuiInfoRight:GetWidth() - TukuiDB.Scale(4))
 
 		-- create focus debuff feature
 		if db.focusdebuffs == true then
@@ -886,13 +983,13 @@ local function Shared(self, unit)
 			TukuiDB.CreateShadow(castbar.bg)
 			
 			castbar.time = TukuiDB.SetFontString(castbar, font1, 12)
-			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", TukuiDB.Scale(-4), TukuiDB.Scale(1))
+			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", TukuiDB.Scale(-4), 0)
 			castbar.time:SetTextColor(0.84, 0.75, 0.65)
 			castbar.time:SetJustifyH("RIGHT")
 			castbar.CustomTimeText = CustomCastTimeText
 
 			castbar.Text = TukuiDB.SetFontString(castbar, font1, 12)
-			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 1)
+			castbar.Text:SetPoint("LEFT", castbar, "LEFT", TukuiDB.Scale(4), 0)
 			castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 			
 			castbar.CustomDelayText = TukuiDB.CustomCastDelayText
@@ -924,11 +1021,10 @@ local function Shared(self, unit)
 	--	Focus target unit layout
 	------------------------------------------------------------------------
 
-	-- not done lol?
 	if (unit == "focustarget") then
 		-- create panel if higher version
 		local panel = CreateFrame("Frame", nil, self)
-		TukuiDB.CreatePanel(panel, 129, 17, "BOTTOM", self, "BOTTOM", 0, TukuiDB.Scale(0))
+		TukuiDB.CreatePanel(panel, 129, 17, "BOTTOM", self, "BOTTOM", 0, 0)
 		panel:SetFrameLevel(2)
 		panel:SetFrameStrata("MEDIUM")
 		panel:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))
@@ -966,16 +1062,12 @@ local function Shared(self, unit)
 		
 		-- Unit name
 		local Name = health:CreateFontString(nil, "OVERLAY")
-		Name:SetPoint("CENTER", panel, "CENTER", 0, TukuiDB.Scale(1))
+		Name:SetPoint("CENTER", panel, "CENTER", 0, 0)
 		Name:SetFont(font1, 12)
 		Name:SetJustifyH("CENTER")
 
 		self:Tag(Name, '[Tukui:getnamecolor][Tukui:namemedium] [Tukui:diffcolor][level]')
 		self.Name = Name
-		
-		-- width and height of target of target
-		self:SetAttribute("initial-height", TukuiDB.Scale(36))
-		self:SetAttribute("initial-width", TukuiDB.Scale(129))
 	end
 
 	------------------------------------------------------------------------
@@ -1005,7 +1097,7 @@ local function Shared(self, unit)
 		healthBG:SetTexture(.1, .1, .1)
 
 		health.value = TukuiDB.SetFontString(health, font1,12, "OUTLINE")
-		health.value:SetPoint("LEFT", TukuiDB.Scale(2), TukuiDB.Scale(1))
+		health.value:SetPoint("LEFT", TukuiDB.Scale(2), 0)
 		health.PostUpdate = TukuiDB.PostUpdateHealth
 				
 		self.Health = health
@@ -1046,7 +1138,7 @@ local function Shared(self, unit)
 		powerBG.multiplier = 0.3
 		
 		power.value = TukuiDB.SetFontString(health, font1, 12, "OUTLINE")
-		power.value:SetPoint("RIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(1))
+		power.value:SetPoint("RIGHT", TukuiDB.Scale(-2), 0)
 		power.PreUpdate = TukuiDB.PreUpdatePower
 		power.PostUpdate = TukuiDB.PostUpdatePower
 				
@@ -1055,7 +1147,7 @@ local function Shared(self, unit)
 		
 		-- names
 		local Name = health:CreateFontString(nil, "OVERLAY")
-		Name:SetPoint("CENTER", health, "CENTER", 0, TukuiDB.Scale(1))
+		Name:SetPoint("CENTER", health, "CENTER", 0, 0)
 		Name:SetJustifyH("CENTER")
 		Name:SetFont(font1, 12, "OUTLINE")
 		Name:SetShadowColor(0, 0, 0)
@@ -1112,9 +1204,6 @@ local function Shared(self, unit)
 			Trinket.trinketUseAnnounce = true
 			self.Trinket = Trinket
 		end
-		
-		self:SetAttribute("initial-height", TukuiDB.Scale(29))
-		self:SetAttribute("initial-width", TukuiDB.Scale(200))
 	end
 
 	------------------------------------------------------------------------
@@ -1157,7 +1246,7 @@ local function Shared(self, unit)
 		
 		-- names
 		local Name = health:CreateFontString(nil, "OVERLAY")
-		Name:SetPoint("CENTER", health, "CENTER", 0, TukuiDB.Scale(1))
+		Name:SetPoint("CENTER", health, "CENTER", 0, 0)
 		Name:SetJustifyH("CENTER")
 		Name:SetFont(font1, 12, "OUTLINE")
 		Name:SetShadowColor(0, 0, 0)
@@ -1165,9 +1254,6 @@ local function Shared(self, unit)
 		
 		self:Tag(Name, '[Tukui:getnamecolor][Tukui:nameshort]')
 		self.Name = Name
-			
-		self:SetAttribute("initial-height", TukuiDB.Scale(20))
-		self:SetAttribute("initial-width", TukuiDB.Scale(100))	
 	end
 
 	------------------------------------------------------------------------
@@ -1204,20 +1290,54 @@ if db.totdebuffs then totdebuffs = 24 end
 
 oUF:RegisterStyle('Tukz', Shared)
 
-oUF:SetActiveStyle('Tukz')
-oUF:Spawn('player', "oUF_Tukz_player"):SetPoint("BOTTOMLEFT", TukuiActionBarBackground, "TOPLEFT", 0,8+adjustXY)
-oUF:Spawn('focus', "oUF_Tukz_focus"):SetPoint("CENTER", TukuiInfoRight, "CENTER")
-oUF:Spawn('target', "oUF_Tukz_target"):SetPoint("BOTTOMRIGHT", TukuiActionBarBackground, "TOPRIGHT", 0,8+adjustXY)
-
+-- player
+local player = oUF:Spawn('player', "oUF_Tukz_player")
+player:SetPoint("BOTTOMLEFT", InvTukuiActionBarBackground, "TOPLEFT", 0,8+adjustXY)
 if TukuiDB.lowversion then
-	oUF:Spawn("targettarget", "oUF_Tukz_targettarget"):SetPoint("BOTTOMRIGHT", TukuiActionBarBackground, "TOPRIGHT", 0,8)
-	oUF:Spawn("pet", "oUF_Tukz_pet"):SetPoint("BOTTOMLEFT", TukuiActionBarBackground, "TOPLEFT", 0,8)
+	player:SetSize(TukuiDB.Scale(186), TukuiDB.Scale(51))
 else
-	oUF:Spawn('pet', "oUF_Tukz_pet"):SetPoint("BOTTOM", TukuiActionBarBackground, "TOP", 0,49+totdebuffs)
-	oUF:Spawn('targettarget', "oUF_Tukz_targettarget"):SetPoint("BOTTOM", TukuiActionBarBackground, "TOP", 0,8)
+	player:SetSize(TukuiDB.Scale(250), TukuiDB.Scale(57))
 end
-if db.showfocustarget == true then oUF:Spawn("focustarget", "oUF_Tukz_focustarget"):SetPoint("BOTTOM", 0, 224) end
 
+-- focus
+local focus = oUF:Spawn('focus', "oUF_Tukz_focus")
+focus:SetPoint("CENTER", TukuiInfoRight, "CENTER")
+focus:SetSize(TukuiInfoRight:GetWidth() - TukuiDB.Scale(4), TukuiInfoRight:GetHeight() - TukuiDB.Scale(4))
+
+-- target
+local target = oUF:Spawn('target', "oUF_Tukz_target")
+target:SetPoint("BOTTOMRIGHT", InvTukuiActionBarBackground, "TOPRIGHT", 0,8+adjustXY)
+if TukuiDB.lowversion then
+	target:SetSize(TukuiDB.Scale(186), TukuiDB.Scale(51))
+else
+	target:SetSize(TukuiDB.Scale(250), TukuiDB.Scale(57))
+end
+
+-- tot
+local tot = oUF:Spawn('targettarget', "oUF_Tukz_targettarget")
+if TukuiDB.lowversion then
+	tot:SetPoint("BOTTOMRIGHT", InvTukuiActionBarBackground, "TOPRIGHT", 0,8)
+	tot:SetSize(TukuiDB.Scale(186), TukuiDB.Scale(18))
+else
+	tot:SetPoint("BOTTOM", InvTukuiActionBarBackground, "TOP", 0,8)
+	tot:SetSize(TukuiDB.Scale(129), TukuiDB.Scale(36))
+end
+
+-- pet
+local pet = oUF:Spawn('pet', "oUF_Tukz_pet")
+if TukuiDB.lowversion then
+	pet:SetPoint("BOTTOMLEFT", InvTukuiActionBarBackground, "TOPLEFT", 0,8)
+	pet:SetSize(TukuiDB.Scale(186), TukuiDB.Scale(18))
+else
+	pet:SetPoint("BOTTOM", InvTukuiActionBarBackground, "TOP", 0,49+totdebuffs)
+	pet:SetSize(TukuiDB.Scale(129), TukuiDB.Scale(36))
+end
+
+if db.showfocustarget then 
+	local focustarget = oUF:Spawn("focustarget", "oUF_Tukz_focustarget")
+	focustarget:SetPoint("BOTTOM", 0, 224)
+	focustarget:SetSize(TukuiDB.Scale(129), TukuiDB.Scale(36))
+end
 
 if TukuiCF.arena.unitframes then
 	local arena = {}
@@ -1228,6 +1348,7 @@ if TukuiCF.arena.unitframes then
 		else
 			arena[i]:SetPoint("BOTTOM", arena[i-1], "TOP", 0, 10)
 		end
+		arena[i]:SetSize(TukuiDB.Scale(200), TukuiDB.Scale(29))
 	end
 end
 
@@ -1249,9 +1370,12 @@ if db.showboss then
 		else
 			boss[i]:SetPoint('BOTTOM', boss[i-1], 'TOP', 0, 10)             
 		end
+		boss[i]:SetSize(TukuiDB.Scale(200), TukuiDB.Scale(29))
 	end
 end
 
+-- THIS NEED TO BE UPDATED FOR 4.0.1 BUT I'M RUNNING OUT OF TIME FOR A v12 RELEASE.
+--[[
 if db.maintank == true then
 	local tank = oUF:SpawnHeader("oUF_MainTank", nil, 'raid, party, solo', 
 		"showRaid", true, "groupFilter", "MAINTANK", "yOffset", 5, "point" , "BOTTOM",
@@ -1267,7 +1391,9 @@ if db.mainassist == true then
 	)
 	assist:SetPoint("CENTER", UIParent, "CENTER", 0, -100)
 end
+--]]
 
+-- this is just a fake party to hide Blizzard frame if no Tukui raid layout are loaded.
 local party = oUF:SpawnHeader("oUF_noParty", nil, "party", "showParty", true)
 
 ------------------------------------------------------------------------

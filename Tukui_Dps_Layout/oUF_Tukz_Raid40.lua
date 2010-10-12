@@ -5,15 +5,11 @@ local font1 = TukuiCF["media"].font
 
 local function Shared(self, unit)
 	self.colors = TukuiDB.oUF_colors
-	self:RegisterForClicks('AnyUp')
+	self:RegisterForClicks("LeftButtonDown", "RightButtonDown")
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)
 	
 	self.menu = TukuiDB.SpawnMenu
-	self:SetAttribute('type2', 'menu')
-	
-	self:SetAttribute('initial-height', TukuiDB.Scale(12*TukuiDB.raidscale))
-	self:SetAttribute('initial-width', TukuiDB.Scale(100*TukuiDB.raidscale))
 	
 	self:SetBackdrop({bgFile = TukuiCF["media"].blank, insets = {top = -TukuiDB.mult, left = -TukuiDB.mult, bottom = -TukuiDB.mult, right = -TukuiDB.mult}})
 	self:SetBackdropColor(0.1, 0.1, 0.1)
@@ -31,6 +27,9 @@ local function Shared(self, unit)
 	
 	self.Health.bg = health.bg
 	
+	health.PostUpdate = TukuiDB.PostUpdatePetColor
+	health.frequentUpdates = true
+	
 	if TukuiCF.unitframes.unicolor == true then
 		health.colorDisconnected = false
 		health.colorClass = false
@@ -44,7 +43,7 @@ local function Shared(self, unit)
 		
 	local name = health:CreateFontString(nil, 'OVERLAY')
 	name:SetFont(font2, 13*TukuiDB.raidscale, "THINOUTLINE")
-	name:SetPoint("LEFT", self, "RIGHT", TukuiDB.Scale(5), TukuiDB.Scale(1))
+	name:SetPoint("LEFT", self, "RIGHT", TukuiDB.Scale(5), 0)
 	self:Tag(name, '[Tukui:namemedium] [Tukui:dead][Tukui:afk]')
 	self.Name = name
 	
@@ -64,11 +63,16 @@ local function Shared(self, unit)
 		self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', TukuiDB.UpdateThreat)
     end
 	
-	local ReadyCheck = health:CreateTexture(nil, "OVERLAY")
-	ReadyCheck:SetHeight(TukuiDB.Scale(12*TukuiDB.raidscale))
-	ReadyCheck:SetWidth(TukuiDB.Scale(12*TukuiDB.raidscale))
-	ReadyCheck:SetPoint('CENTER')
-	self.ReadyCheck = ReadyCheck
+	--local ReadyCheck = health:CreateTexture(nil, "OVERLAY")
+	--ReadyCheck:SetHeight(TukuiDB.Scale(12*TukuiDB.raidscale))
+	--ReadyCheck:SetWidth(TukuiDB.Scale(12*TukuiDB.raidscale))
+	--ReadyCheck:SetPoint('CENTER')
+	--self.ReadyCheck = ReadyCheck
+	
+	local picon = self.Health:CreateTexture(nil, 'OVERLAY')
+	picon:SetPoint('CENTER', self.Health)
+	picon:SetSize(16, 16)
+	self.PhaseIcon = picon
 	
 	self.DebuffHighlightAlpha = 1
 	self.DebuffHighlightBackdrop = true
@@ -83,10 +87,6 @@ local function Shared(self, unit)
 		self.Range = range
 	end
 	
-	-- this is needed to be sure vehicle have good health/power color
-	-- aswell to be sure the name is displayed/updated correctly
-	self:RegisterEvent("UNIT_PET", TukuiDB.updateAllElements)
-	
 	return self
 end
 
@@ -94,6 +94,16 @@ oUF:RegisterStyle('TukuiDpsR40', Shared)
 oUF:Factory(function(self)
 	oUF:SetActiveStyle("TukuiDpsR40")
 
-	local raid = self:SpawnHeader("oUF_TukuiDpsRaid40", nil, "custom [@raid26,exists] show;hide", "showRaid", true, "groupFilter", "1,2,3,4,5,6,7,8", "groupingOrder", "1,2,3,4,5,6,7,8", "groupBy", "GROUP", "yOffset", TukuiDB.Scale(-3))
+	local raid = self:SpawnHeader("oUF_TukuiDpsRaid40", nil, "custom [@raid26,exists] show;hide", 
+		'oUF-initialConfigFunction', [[
+			local header = self:GetParent()
+			self:SetWidth(header:GetAttribute('initial-width'))
+			self:SetHeight(header:GetAttribute('initial-height'))
+			RegisterUnitWatch(self)
+		]],
+		'initial-width', TukuiDB.Scale(100*TukuiDB.raidscale),
+		'initial-height', TukuiDB.Scale(12*TukuiDB.raidscale),
+		"showRaid", true, "groupFilter", "1,2,3,4,5,6,7,8", "groupingOrder", "1,2,3,4,5,6,7,8", "groupBy", "GROUP", "yOffset", TukuiDB.Scale(-3)
+	)
 	raid:SetPoint('TOPLEFT', UIParent, 15, -18)
 end)

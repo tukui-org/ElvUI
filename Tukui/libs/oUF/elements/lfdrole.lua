@@ -3,30 +3,35 @@ local oUF = ns.oUF
 
 local Update = function(self, event)
 	local lfdrole = self.LFDRole
-	local isTank, isHealer, isDamage = UnitGroupRolesAssigned(self.unit)
 
-	if(isTank) then
-		lfdrole:SetTexCoord(0, 19/64, 22/64, 41/64)
-		lfdrole:Show()
-	elseif(isHealer) then
-		lfdrole:SetTexCoord(20/64, 39/64, 1/64, 20/64)
-		lfdrole:Show()
-	elseif(isDamage) then
-		lfdrole:SetTexCoord(20/64, 39/64, 22/64, 41/64)
+	local role = UnitGroupRolesAssigned(self.unit)
+
+	if(role == 'TANK' or role == 'HEALER' or role == 'DAMAGER') then
+		lfdrole:SetTexCoord(GetTexCoordsForRoleSmallCircle(role))
 		lfdrole:Show()
 	else
 		lfdrole:Hide()
 	end
 end
 
+local Path = function(self, ...)
+	return (self.LFDRole.Override or Update) (self, ...)
+end
+
+local ForceUpdate = function(element)
+	return Path(element.__owner, 'ForceUpdate')
+end
+
 local Enable = function(self)
 	local lfdrole = self.LFDRole
 	if(lfdrole) then
-		local Update = lfdrole.Update or Update
+		lfdrole.__owner = self
+		lfdrole.ForceUpdate = ForceUpdate
+
 		if(self.unit == "player") then
-			self:RegisterEvent("PLAYER_ROLES_ASSIGNED", Update)
+			self:RegisterEvent("PLAYER_ROLES_ASSIGNED", Path)
 		else
-			self:RegisterEvent("PARTY_MEMBERS_CHANGED", Update)
+			self:RegisterEvent("PARTY_MEMBERS_CHANGED", Path)
 		end
 
 		if(lfdrole:IsObjectType"Texture" and not lfdrole:GetTexture()) then
@@ -40,10 +45,9 @@ end
 local Disable = function(self)
 	local lfdrole = self.LFDRole
 	if(lfdrole) then
-		local Update = lfdrole.Update or Update
-		self:UnregisterEvent("PLAYER_ROLES_ASSIGNED", Update)
-		self:UnregisterEvent("PARTY_MEMBERS_CHANGED", Update)
+		self:UnregisterEvent("PLAYER_ROLES_ASSIGNED", Path)
+		self:UnregisterEvent("PARTY_MEMBERS_CHANGED", Path)
 	end
 end
 
-oUF:AddElement('LFDRole', Update, Enable, Disable)
+oUF:AddElement('LFDRole', Path, Enable, Disable)

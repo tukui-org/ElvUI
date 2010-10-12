@@ -9,10 +9,21 @@ local Update = function(self, event)
 	end
 end
 
+local Path = function(self, ...)
+	return (self.Resting.Override or Update) (self, ...)
+end
+
+local ForceUpdate = function(element)
+	return Path(element.__owner, 'ForceUpdate')
+end
+
 local Enable = function(self, unit)
 	local resting = self.Resting
 	if(resting and unit == 'player') then
-		self:RegisterEvent("PLAYER_UPDATE_RESTING", resting.Update or Update)
+		resting.__owner = self
+		resting.ForceUpdate = ForceUpdate
+
+		self:RegisterEvent("PLAYER_UPDATE_RESTING", Path)
 
 		if(resting:IsObjectType"Texture" and not resting:GetTexture()) then
 			resting:SetTexture[[Interface\CharacterFrame\UI-StateIcon]]
@@ -26,8 +37,8 @@ end
 local Disable = function(self)
 	local resting = self.Resting
 	if(resting) then
-		self:UnregisterEvent("PLAYER_UPDATE_RESTING", resting.Update or Update)
+		self:UnregisterEvent("PLAYER_UPDATE_RESTING", Path)
 	end
 end
 
-oUF:AddElement('Resting', Update, Enable, Disable)
+oUF:AddElement('Resting', Path, Enable, Disable)

@@ -34,23 +34,6 @@ if TukuiCF["datatext"].dur and TukuiCF["datatext"].dur > 0 then
 		end
 		-- Setup Durability Tooltip
 		self:SetAllPoints(Text)
-		self:SetScript("OnEnter", function()
-			if not InCombatLockdown() then
-				GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB.Scale(6));
-				GameTooltip:ClearAllPoints()
-				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
-				GameTooltip:ClearLines()
-				for i = 1, 11 do
-					if tukuilocal.Slots[i][3] ~= 1000 then
-						green = tukuilocal.Slots[i][3]*2
-						red = 1 - green
-						GameTooltip:AddDoubleLine(tukuilocal.Slots[i][2], floor(tukuilocal.Slots[i][3]*100).."%",1 ,1 , 1, red + 1, green, 0)
-					end
-				end
-				GameTooltip:Show()
-			end
-		end)
-		self:SetScript("OnLeave", function() GameTooltip:Hide() end)
 		Total = 0
 	end
 
@@ -59,4 +42,21 @@ if TukuiCF["datatext"].dur and TukuiCF["datatext"].dur > 0 then
 	Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
 	Stat:SetScript("OnMouseDown", function() ToggleCharacter("PaperDollFrame") end)
 	Stat:SetScript("OnEvent", OnEvent)
+	Stat:SetScript("OnEnter", function(self)
+		if not InCombatLockdown() then
+			GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, TukuiDB.Scale(6));
+			GameTooltip:ClearAllPoints()
+			GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
+			GameTooltip:ClearLines()
+			for i = 1, 11 do
+				if tukuilocal.Slots[i][3] ~= 1000 then
+					green = tukuilocal.Slots[i][3]*2
+					red = 1 - green
+					GameTooltip:AddDoubleLine(tukuilocal.Slots[i][2], floor(tukuilocal.Slots[i][3]*100).."%",1 ,1 , 1, red + 1, green, 0)
+				end
+			end
+			GameTooltip:Show()
+		end
+	end)
+	Stat:SetScript("OnLeave", function() GameTooltip:Hide() end)
 end

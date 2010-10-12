@@ -1,4 +1,23 @@
 if TukuiDB.client == "zhTW" then
+
+	tukuilocal.chat_BATTLEGROUND_GET = "[B]"
+	tukuilocal.chat_BATTLEGROUND_LEADER_GET = "[B]"
+	tukuilocal.chat_BN_WHISPER_GET = "From"
+	tukuilocal.chat_GUILD_GET = "[G]"
+	tukuilocal.chat_OFFICER_GET = "[O]"
+	tukuilocal.chat_PARTY_GET = "[P]"
+	tukuilocal.chat_PARTY_GUIDE_GET = "[P]"
+	tukuilocal.chat_PARTY_LEADER_GET = "[P]"
+	tukuilocal.chat_RAID_GET = "[R]"
+	tukuilocal.chat_RAID_LEADER_GET = "[R]"
+	tukuilocal.chat_RAID_WARNING_GET = "[W]"
+	tukuilocal.chat_WHISPER_GET = "From"
+	tukuilocal.chat_FLAG_AFK = "[AFK]"
+	tukuilocal.chat_FLAG_DND = "[DND]"
+	tukuilocal.chat_FLAG_GM = "[GM]"
+	tukuilocal.chat_ERR_FRIEND_ONLINE_SS = "is now |cff298F00online|r"
+	tukuilocal.chat_ERR_FRIEND_OFFLINE_S = "is now |cffff0000offline|r"
+	
 	tukuilocal.disband = "正在解散隊伍."
  
 	tukuilocal.datatext_guild = "公會"
@@ -11,7 +30,7 @@ if TukuiDB.client == "zhTW" then
 	tukuilocal.datatext_spent = "花費:"
 	tukuilocal.datatext_deficit = "赤字:"
 	tukuilocal.datatext_profit = "利潤:"
-	tukuilocal.datatext_wg = "距離下一次冬握湖:"
+	tukuilocal.datatext_timeto = "Time to"
 	tukuilocal.datatext_friendlist = "好友名單:"
 	tukuilocal.datatext_playersp = "法傷"
 	tukuilocal.datatext_playerap = "強度"
@@ -79,7 +98,7 @@ if TukuiDB.client == "zhTW" then
 	}
  
 	tukuilocal.popup_disableui = "Tukui並不支援此解析度, 你想要停用Tukui嗎? (若果您想要嘗試其他解析度, 請按取消)"
-	tukuilocal.popup_install = "這個角色首次使用Tukui V11, 您必需先重載介面以完成設定"
+	tukuilocal.popup_install = "這個角色首次使用Tukui V12, 您必需先重載介面以完成設定"
  
 	tukuilocal.merchant_repairnomoney = "您沒有足夠的金錢來修理!"
 	tukuilocal.merchant_repaircost = "您的裝備已修理, 花費了"

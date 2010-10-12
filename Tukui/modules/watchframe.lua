@@ -1,46 +1,72 @@
-if TukuiCF["watchframe"].movable ~= true then return end
+local TukuiWatchFrame = CreateFrame("Frame", "TukuiWatchFrame", UIParent)
 
-local TukuiWatchFrame = CreateFrame("Frame", nil, UIParent)
-
-TukuiWatchFrame:RegisterEvent("ADDON_LOADED")
-TukuiWatchFrame:SetScript("OnEvent", function(self, event, addon)
-	if (addon == "Tukui") and (not IsAddOnLoaded("Who Framed Watcher Wabbit") or not IsAddOnLoaded("Fux")) then	
-		self:UnregisterEvent("ADDON_LOADED")
-		
-		local wfbutton = CreateFrame("Button", "WatchFrameButton", WatchFrame)
-		TukuiDB.CreatePanel(wfbutton, 40, 10, "BOTTOM", WatchFrame, "TOP", 0, -8)
-		wfbutton:Hide()
-
-		local wf = WatchFrame
-		local wfmove = false 
-
-		wf:SetMovable(true)
-		wf:SetClampedToScreen(false)
-		wf:ClearAllPoints()
-		wf:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", TukuiDB.Scale(-8), TukuiDB.Scale(-230))
-		wf:SetHeight(600)
-		wf:SetUserPlaced(true)
-		wf.SetPoint = TukuiDB.dummy
-		wf.ClearAllPoints = TukuiDB.dummy
-
-		local function WATCHFRAMELOCK()
-			if wfmove == false then
-				wfmove = true
-				print(tukuilocal.core_wf_unlock)
-				wf:EnableMouse(true);
-				wf:RegisterForDrag("LeftButton");
-				wf:SetScript("OnDragStart", wf.StartMoving);
-				wf:SetScript("OnDragStop", wf.StopMovingOrSizing);
-				wfbutton:Show()
-			elseif wfmove == true then
-				wf:EnableMouse(false);
-				wfmove = false
-				wfbutton:Hide()
-				print(tukuilocal.core_wf_lock)
+local function init()
+	TukuiWatchFrame:UnregisterEvent("PLAYER_ENTERING_WORLD")
+	TukuiWatchFrame:RegisterEvent("CVAR_UPDATE")
+	TukuiWatchFrame:SetScript("OnEvent", function(_,_,cvar,value)
+		if cvar == "WATCH_FRAME_WIDTH_TEXT" then
+			if not WatchFrame.userCollapsed then
+				if value == "1" then
+					TukuiWatchFrame:SetWidth(350)
+				else
+					TukuiWatchFrame:SetWidth(250)
+				end
 			end
+			wideFrame = value
 		end
+	end)
+end
 
-		SLASH_WATCHFRAMELOCK1 = "/wf"
-		SlashCmdList["WATCHFRAMELOCK"] = WATCHFRAMELOCK
+local function setup()
+	TukuiWatchFrame:ClearAllPoints()
+	if TukuiCF.actionbar.rightbars == 3 then
+		TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(-180), TukuiDB.Scale(-68))
+	elseif TukuiCF.actionbar.rightbars == 2 then
+		TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(-140), TukuiDB.Scale(-68))
+	elseif TukuiCF.actionbar.rightbars == 1 then
+		TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(-100), TukuiDB.Scale(-68))
+	else
+		TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(12), TukuiDB.Scale(-68))
+	end
+	
+	local screenheight = GetScreenHeight()
+	TukuiWatchFrame:SetSize(1,screenheight / 1.6)
+	
+	-- template was just to help positioning watch frame.
+	-- TukuiDB.SetTemplate(TukuiWatchFrame)
+	
+	if wideFrame == "1" then
+		TukuiWatchFrame:SetWidth(350)
+	else
+		TukuiWatchFrame:SetWidth(250)
+	end
+	
+	WatchFrame:SetParent(TukuiWatchFrame)
+	WatchFrame:SetClampedToScreen(false)
+	WatchFrame:ClearAllPoints()
+	WatchFrame.ClearAllPoints = function() end
+	WatchFrame:SetPoint("TOPLEFT", 32,-2.5)
+	WatchFrame:SetPoint("BOTTOMRIGHT", 4,0)
+	WatchFrame.SetPoint = TukuiDB.dummy
+
+	WatchFrameTitle:SetParent(TukuiWatchFrame)
+	WatchFrameCollapseExpandButton:SetParent(TukuiWatchFrame)
+	WatchFrameTitle:Hide()
+	WatchFrameTitle.Show = TukuiDB.dummy
+	WatchFrameCollapseExpandButton:Hide()
+	WatchFrameCollapseExpandButton.Show = TukuiDB.dummy
+end
+
+TukuiWatchFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+
+local f = CreateFrame("Frame")
+f:Hide()
+f.elapsed = 0
+f:SetScript("OnUpdate", function(self, elapsed)
+	f.elapsed = f.elapsed + elapsed
+	if f.elapsed > .5 then
+		setup()
+		f:Hide()
 	end
 end)
+TukuiWatchFrame:SetScript("OnEvent", function() if not IsAddOnLoaded("Who Framed Watcher Wabbit") or not IsAddOnLoaded("Fux") then init() f:Show() end end)

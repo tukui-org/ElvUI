@@ -48,17 +48,21 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"LFDSearchStatus",
 			"AutoCompleteBox", -- this is the /w *nickname* box, press tab
 			"ReadyCheckFrame",
+			"GhostFrameContentsFrame",
 		}
-				
+
 		-- reskin popup buttons
-		for i = 1, 2 do
-			for j = 1, 2 do
+		for i = 1, 3 do
+			for j = 1, 3 do
 				SkinButton(_G["StaticPopup"..i.."Button"..j])
 			end
 		end
 		
 		for i = 1, getn(skins) do
 			TukuiDB.SetTemplate(_G[skins[i]])
+			if _G[skins[i]] ~= _G["GhostFrameContentsFrame"] and _G[skins[i]] ~= _G["AutoCompleteBox"] then -- frame to blacklist from create shadow function
+				TukuiDB.CreateShadow(_G[skins[i]])
+			end
 		end
 		
 		local ChatMenus = {
@@ -82,7 +86,8 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"SoundOptions", 
 			"UIOptions", 
 			"Keybindings", 
-			"Macros", 
+			"Macros",
+			"Ratings",
 			"AddOns", 
 			"Logout", 
 			"Quit", 
@@ -91,9 +96,12 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		}
 		
 		for i = 1, getn(BlizzardMenuButtons) do
-		local TukuiMenuButtons = _G["GameMenuButton"..BlizzardMenuButtons[i]]
+			local TukuiMenuButtons = _G["GameMenuButton"..BlizzardMenuButtons[i]]
 			if TukuiMenuButtons then
 				SkinButton(TukuiMenuButtons)
+				_G["GameMenuButton"..BlizzardMenuButtons[i].."Left"]:SetAlpha(0)
+				_G["GameMenuButton"..BlizzardMenuButtons[i].."Middle"]:SetAlpha(0)
+				_G["GameMenuButton"..BlizzardMenuButtons[i].."Right"]:SetAlpha(0)
 			end
 		end
 		
@@ -161,10 +169,18 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		-- others
 		_G["ReadyCheckListenerFrame"]:SetAlpha(0)
 		_G["ReadyCheckFrame"]:HookScript("OnShow", function(self) if UnitIsUnit("player", self.initiator) then self:Hide() end end) -- bug fix, don't show it if initiator
-	end
-	
-	if addon == "Blizzard_BindingUI" then
-		-- do stuff, this is just an example if you need to reskin addon that are load-on-demand
+		_G["GhostFrameContentsFrame"]:SetWidth(TukuiDB.Scale(148))
+		_G["GhostFrameContentsFrame"]:ClearAllPoints()
+		_G["GhostFrameContentsFrame"]:SetPoint("CENTER")
+		_G["GhostFrameContentsFrame"].SetPoint = TukuiDB.dummy
+		_G["GhostFrame"]:SetFrameStrata("HIGH")
+		_G["GhostFrame"]:SetFrameLevel(10)
+		_G["GhostFrame"]:ClearAllPoints()
+		_G["GhostFrame"]:SetPoint("TOP", Minimap, "BOTTOM", 0, TukuiDB.Scale(-25))
+		_G["GhostFrameContentsFrameIcon"]:SetAlpha(0)
+		_G["GhostFrameContentsFrameText"]:ClearAllPoints()
+		_G["GhostFrameContentsFrameText"]:SetPoint("CENTER")
+		_G["PlayerPowerBarAlt"]:HookScript("OnShow", function(self) self:ClearAllPoints() self:SetPoint("TOP", 0, -12) end)
 	end
 	
 	-- mac menu/option panel, made by affli.

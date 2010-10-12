@@ -16,10 +16,21 @@ local Update = function(self, event)
 	end
 end
 
+local Path = function(self, ...)
+	return (self.RaidIcon.Override or Update) (self, ...)
+end
+
+local ForceUpdate = function(element)
+	return Path(element.__owner, 'ForceUpdate')
+end
+
 local Enable = function(self)
 	local ricon = self.RaidIcon
 	if(ricon) then
-		self:RegisterEvent("RAID_TARGET_UPDATE", ricon.Update or Update)
+		ricon.__owner = self
+		ricon.ForceUpdate = ForceUpdate
+
+		self:RegisterEvent("RAID_TARGET_UPDATE", Path)
 
 		if(ricon:IsObjectType"Texture" and not ricon:GetTexture()) then
 			ricon:SetTexture[[Interface\TargetingFrame\UI-RaidTargetingIcons]]
@@ -32,8 +43,8 @@ end
 local Disable = function(self)
 	local ricon = self.RaidIcon
 	if(ricon) then
-		self:UnregisterEvent("RAID_TARGET_UPDATE", ricon.Update or Update)
+		self:UnregisterEvent("RAID_TARGET_UPDATE", Path)
 	end
 end
 
-oUF:AddElement('RaidIcon', Update, Enable, Disable)
+oUF:AddElement('RaidIcon', Path, Enable, Disable)

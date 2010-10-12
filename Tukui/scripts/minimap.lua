@@ -2,15 +2,13 @@
 -- MINIMAP BORDER
 --------------------------------------------------------------------
 
-local p = CreateFrame("Frame", "TukuiMinimap", Minimap)
-TukuiDB.CreatePanel(p, 144, 144, "CENTER", Minimap, "CENTER", -0, 0)
-p:ClearAllPoints()
-p:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-p:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+local TukuiMinimap = CreateFrame("Frame", "TukuiMinimap", Minimap)
+TukuiMinimap:RegisterEvent("ADDON_LOADED")
 
---------------------------------------------------------------------
--- MINIMAP ROUND TO SQUARE AND MINIMAP SETTING
---------------------------------------------------------------------
+TukuiDB.CreatePanel(TukuiMinimap, 144, 144, "CENTER", Minimap, "CENTER", -0, 0)
+TukuiMinimap:ClearAllPoints()
+TukuiMinimap:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
+TukuiMinimap:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 
 Minimap:ClearAllPoints()
 Minimap:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", TukuiDB.Scale(-24), TukuiDB.Scale(-24))
@@ -30,14 +28,14 @@ MiniMapVoiceChatFrame:Hide()
 -- Hide North texture at top
 MinimapNorthTag:SetTexture(nil)
 
--- Hide Game Time
-GameTimeFrame:Hide()
-
 -- Hide Zone Frame
 MinimapZoneTextButton:Hide()
 
 -- Hide Tracking Button
 MiniMapTracking:Hide()
+
+-- Hide Calendar Button
+GameTimeFrame:Hide()
 
 -- Hide Mail Button
 MiniMapMailFrame:ClearAllPoints()
@@ -75,6 +73,13 @@ Minimap:SetScript("OnMouseWheel", function(self, d)
 	end
 end)
 
+TukuiMinimap:SetScript("OnEvent", function(self, event, addon)
+	if addon == "Blizzard_TimeManager" then
+		-- Hide Game Time
+		TukuiDB.Kill(TimeManagerClockButton)
+	end
+end)
+
 ----------------------------------------------------------------------------------------
 -- Right click menu
 ----------------------------------------------------------------------------------------
@@ -94,7 +99,9 @@ local menuList = {
     {text = SOCIAL_BUTTON,
     func = function() ToggleFriendsFrame(1) end},
     {text = PLAYER_V_PLAYER,
-    func = function() ToggleFrame(PVPParentFrame) end},
+    func = function() ToggleFrame(PVPFrame) end},
+    {text = ACHIEVEMENTS_GUILD_TAB,
+    func = function() if IsInGuild() then if not GuildFrame then LoadAddOn("Blizzard_GuildUI") end GuildFrame_Toggle() end end},
     {text = LFG_TITLE,
     func = function() ToggleFrame(LFDParentFrame) end},
     {text = L_LFRAID,

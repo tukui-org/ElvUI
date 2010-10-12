@@ -1,4 +1,23 @@
 if TukuiDB.client == "frFR" then
+
+	tukuilocal.chat_BATTLEGROUND_GET = "[BG]"
+	tukuilocal.chat_BATTLEGROUND_LEADER_GET = "[BG]"
+	tukuilocal.chat_BN_WHISPER_GET = "De"
+	tukuilocal.chat_GUILD_GET = "[G]"
+	tukuilocal.chat_OFFICER_GET = "[O]"
+	tukuilocal.chat_PARTY_GET = "[G]"
+	tukuilocal.chat_PARTY_GUIDE_GET = "[G]"
+	tukuilocal.chat_PARTY_LEADER_GET = "[G]"
+	tukuilocal.chat_RAID_GET = "[R]"
+	tukuilocal.chat_RAID_LEADER_GET = "[R]"
+	tukuilocal.chat_RAID_WARNING_GET = "[W]"
+	tukuilocal.chat_WHISPER_GET = "De"
+	tukuilocal.chat_FLAG_AFK = "[AFK]"
+	tukuilocal.chat_FLAG_DND = "[DND]"
+	tukuilocal.chat_FLAG_GM = "[MJ]"
+	tukuilocal.chat_ERR_FRIEND_ONLINE_SS = "est maintenant |cff298F00en ligne|r"
+	tukuilocal.chat_ERR_FRIEND_OFFLINE_S = "est maintenant |cffff0000déconnecté|r"
+
 	tukuilocal.disband = "Dissoudre le groupe"
 
 	tukuilocal.datatext_guild = "Guilde"
@@ -11,7 +30,7 @@ if TukuiDB.client == "frFR" then
 	tukuilocal.datatext_spent = "Depensé:"
 	tukuilocal.datatext_deficit = "Déficit:"
 	tukuilocal.datatext_profit = "Profit:"
-	tukuilocal.datatext_wg = "Prochain Joug-D'hiver:"
+	tukuilocal.datatext_timeto = "Temps restant"
 	tukuilocal.datatext_friendlist = "Liste d'amis:"
 	tukuilocal.datatext_playersp = "sp"
 	tukuilocal.datatext_playerap = "ap"
@@ -79,7 +98,7 @@ if TukuiDB.client == "frFR" then
 	}
 
 	tukuilocal.popup_disableui = "Tukui ne fonctionne pas avec cette résolution, voulez-vous désactiver Tukui? (Annuler si vous souhaitez essayer une autre résolution)"
-	tukuilocal.popup_install = "Première fois sur Tukui V11 avec ce personnage. Vous devez recharger l'interface utilisateur afin de configurer les barres d'action, les variables et les cadres de Chat."
+	tukuilocal.popup_install = "Première fois sur Tukui V12 avec ce personnage. Vous devez recharger l'interface utilisateur afin de configurer les barres d'action, les variables et les cadres de Chat."
 	tukuilocal.popup_2raidactive = "2 modèles de raid sont activés, merci d'en choisir un."
 
 	tukuilocal.merchant_repairnomoney = "Vous n'avez pas assez d'argent pour réparer!"
@@ -105,7 +124,7 @@ if TukuiDB.client == "frFR" then
 	tukuilocal.unitframes_ouf_goviper = "GO VIPÈRE"
 	tukuilocal.unitframes_disconnected = "Déco"
 
-	tukuilocal.tooltip_count = "Count"
+	tukuilocal.tooltip_count = "Total"
 
 	tukuilocal.bags_noslots = "Vous ne pouvez pas acheter plus de place!"
 	tukuilocal.bags_costs = "Prix: %.2f or"

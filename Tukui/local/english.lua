@@ -1,5 +1,23 @@
 -- localization for enUS and enGB
 
+tukuilocal.chat_BATTLEGROUND_GET = "[BG]"
+tukuilocal.chat_BATTLEGROUND_LEADER_GET = "[BG]"
+tukuilocal.chat_BN_WHISPER_GET = "From"
+tukuilocal.chat_GUILD_GET = "[G]"
+tukuilocal.chat_OFFICER_GET = "[O]"
+tukuilocal.chat_PARTY_GET = "[P]"
+tukuilocal.chat_PARTY_GUIDE_GET = "[P]"
+tukuilocal.chat_PARTY_LEADER_GET = "[P]"
+tukuilocal.chat_RAID_GET = "[R]"
+tukuilocal.chat_RAID_LEADER_GET = "[R]"
+tukuilocal.chat_RAID_WARNING_GET = "[W]"
+tukuilocal.chat_WHISPER_GET = "From"
+tukuilocal.chat_FLAG_AFK = "[AFK]"
+tukuilocal.chat_FLAG_DND = "[DND]"
+tukuilocal.chat_FLAG_GM = "[GM]"
+tukuilocal.chat_ERR_FRIEND_ONLINE_SS = "is now |cff298F00online|r"
+tukuilocal.chat_ERR_FRIEND_OFFLINE_S = "is now |cffff0000offline|r"
+
 tukuilocal.disband = "Disbanding group."
 
 tukuilocal.datatext_guild = "Guild"
@@ -12,7 +30,7 @@ tukuilocal.datatext_earned = "Earned:"
 tukuilocal.datatext_spent = "Spent:"
 tukuilocal.datatext_deficit = "Deficit:"
 tukuilocal.datatext_profit = "Profit:"
-tukuilocal.datatext_wg = "Time to Wintergrasp:"
+tukuilocal.datatext_timeto = "Time to"
 tukuilocal.datatext_friendlist = "Friends list:"
 tukuilocal.datatext_playersp = "sp"
 tukuilocal.datatext_playerap = "ap"
@@ -80,7 +98,7 @@ tukuilocal.Slots = {
 }
 
 tukuilocal.popup_disableui = "Tukui doesn't work for this resolution, do you want to disable Tukui? (Cancel if you want to try another resolution)"
-tukuilocal.popup_install = "First time on Tukui V11 with this Character. You must reload UI to set Action Bars, Variables and Chat Frames."
+tukuilocal.popup_install = "First time on Tukui V12 with this Character. You must reload UI to set Action Bars, Variables and Chat Frames."
 tukuilocal.popup_2raidactive = "2 raid layouts are active, please select a layout."
 
 tukuilocal.merchant_repairnomoney = "You don't have enough money for repair!"

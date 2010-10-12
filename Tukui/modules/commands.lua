@@ -1,14 +1,3 @@
--- always show worldstate behind buffs
-WorldStateAlwaysUpFrame:SetFrameStrata("BACKGROUND")
-WorldStateAlwaysUpFrame:SetFrameLevel(0)
-
--- remove uiscale option via blizzard option, users need to set this in the config file
-VideoOptionsResolutionPanelUIScaleSlider:Hide()
-VideoOptionsResolutionPanelUseUIScale:Hide()
-
--- tutorial button shit
-TukuiDB.Kill(TutorialFrameAlertButton)
-
 -- enable or disable an addon via command
 SlashCmdList.DISABLE_ADDON = function(s) DisableAddOn(s) ReloadUI() end
 SLASH_DISABLE_ADDON1 = "/disable"
@@ -17,18 +6,18 @@ SLASH_ENABLE_ADDON1 = "/enable"
 
 -- switch to heal layout via a command
 local function HEAL()
-	DisableAddOn("Tukui_Dps_Layout"); 
-	EnableAddOn("Tukui_Heal_Layout"); 
-	ReloadUI();
+	DisableAddOn("Tukui_Dps_Layout")
+	EnableAddOn("Tukui_Heal_Layout")
+	ReloadUI()
 end
 SLASH_HEAL1 = "/heal"
 SlashCmdList["HEAL"] = HEAL
 
 -- switch to dps layout via a command
 local function DPS()
-	DisableAddOn("Tukui_Heal_Layout"); 
-	EnableAddOn("Tukui_Dps_Layout");
-	ReloadUI();
+	DisableAddOn("Tukui_Heal_Layout");
+	EnableAddOn("Tukui_Dps_Layout")
+	ReloadUI()
 end
 SLASH_DPS1 = "/dps"
 SlashCmdList["DPS"] = DPS
@@ -58,11 +47,13 @@ SlashCmdList["FRAME"] = function(arg)
  
 		ChatFrame1:AddMessage("Width: |cffFFD100"..format("%.2f",arg:GetWidth()))
 		ChatFrame1:AddMessage("Height: |cffFFD100"..format("%.2f",arg:GetHeight()))
+		ChatFrame1:AddMessage("Strata: |cffFFD100"..arg:GetFrameStrata())
+		ChatFrame1:AddMessage("Level: |cffFFD100"..arg:GetFrameLevel())
  
-		if x then
+		if xOfs then
 			ChatFrame1:AddMessage("X: |cffFFD100"..format("%.2f",xOfs))
 		end
-		if y then
+		if yOfs then
 			ChatFrame1:AddMessage("Y: |cffFFD100"..format("%.2f",yOfs))
 		end
 		if relativeTo then
@@ -109,24 +100,3 @@ SlashCmdList["GROUPDISBAND"] = function()
 		LeaveParty()
 end
 SLASH_GROUPDISBAND1 = '/rd'
-
--- hide emotes from showing in chat when in these areas due to gold spammers
-local function CHINESE_FILTER()
-	if GetMinimapZoneText() == "Valley of Strength" or GetMinimapZoneText() == "Trade District" then
-		ChatFrame_AddMessageEventFilter("CHAT_MSG_TEXT_EMOTE", FUCKYOU_GOLDSPAMMERS)
-	else
-		ChatFrame_RemoveMessageEventFilter("CHAT_MSG_TEXT_EMOTE", FUCKYOU_GOLDSPAMMERS)
-	end
-end
-
-function FUCKYOU_GOLDSPAMMERS(self, event, ...)
-    if strfind(arg1, "falls asleep. Zzzzzzz.") then
-	return true
-    end
-end
-
-local CHINESESPAM = CreateFrame("Frame")
-CHINESESPAM:RegisterEvent("PLAYER_ENTERING_WORLD")
-CHINESESPAM:RegisterEvent("ZONE_CHANGED_INDOORS")
-CHINESESPAM:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-CHINESESPAM:SetScript("OnEvent", CHINESE_FILTER)

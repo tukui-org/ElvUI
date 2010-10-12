@@ -18,10 +18,21 @@ local Update = function(self, event, unit)
 	end
 end
 
+local Path = function(self, ...)
+	return (self.PvP.Override or Update) (self, ...)
+end
+
+local ForceUpdate = function(element)
+	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
+end
+
 local Enable = function(self)
 	local pvp = self.PvP
 	if(pvp) then
-		self:RegisterEvent("UNIT_FACTION", pvp.Update or Update)
+		pvp.__owner = self
+		pvp.ForceUpdate = ForceUpdate
+
+		self:RegisterEvent("UNIT_FACTION", Path)
 
 		return true
 	end
@@ -30,8 +41,8 @@ end
 local Disable = function(self)
 	local pvp = self.PvP
 	if(pvp) then
-		self:UnregisterEvent("UNIT_FACTION", pvp.Update or Update)
+		self:UnregisterEvent("UNIT_FACTION", Path)
 	end
 end
 
-oUF:AddElement('PvP', Update, Enable, Disable)
+oUF:AddElement('PvP', Path, Enable, Disable)

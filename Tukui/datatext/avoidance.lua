@@ -11,10 +11,14 @@ if TukuiCF["datatext"].avd and TukuiCF["datatext"].avd > 0 then
 	local Text  = TukuiInfoLeft:CreateFontString(nil, "OVERLAY")
 	Text:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize)
 	TukuiDB.PP(TukuiCF["datatext"].avd, Text)
+	
+	local targetlv
+	local playerlv
 
 	local function Update(self)
 		local format = string.format
-		local targetlv, playerlv = UnitLevel("target"), UnitLevel("player")
+		targetlv, playerlv = UnitLevel("target"), UnitLevel("player")
+		
 		if targetlv == -1 then
 			basemisschance = (5 - (3*.2))  --Boss Value
 			leveldifference = 3
@@ -47,27 +51,6 @@ if TukuiCF["datatext"].avd and TukuiCF["datatext"].avd > 0 then
 
 		--Setup Avoidance Tooltip
 		self:SetAllPoints(Text)
-		self:SetScript("OnEnter", function()
-			if not InCombatLockdown() then
-				GameTooltip:SetOwner(this, "ANCHOR_TOP", 0, TukuiDB.Scale(6));
-				GameTooltip:ClearAllPoints()
-				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
-				GameTooltip:ClearLines()
-				if targetlv > 1 then
-					GameTooltip:AddDoubleLine(tukuilocal.datatext_avoidancebreakdown.." ("..tukuilocal.datatext_lvl.." "..targetlv..")")
-				elseif targetlv == -1 then
-					GameTooltip:AddDoubleLine(tukuilocal.datatext_avoidancebreakdown.." ("..tukuilocal.datatext_boss..")")
-				else
-					GameTooltip:AddDoubleLine(tukuilocal.datatext_avoidancebreakdown.." ("..tukuilocal.datatext_lvl.." "..playerlv..")")
-				end
-				GameTooltip:AddDoubleLine(tukuilocal.datatext_miss,format("%.2f",MissChance) .. "%",1,1,1,  1,1,1)
-				GameTooltip:AddDoubleLine(tukuilocal.datatext_dodge,format("%.2f",dodge) .. "%",1,1,1,  1,1,1)
-				GameTooltip:AddDoubleLine(tukuilocal.datatext_parry,format("%.2f",parry) .. "%",1,1,1,  1,1,1)
-				GameTooltip:AddDoubleLine(tukuilocal.datatext_block,format("%.2f",block) .. "%",1,1,1,  1,1,1)
-				GameTooltip:Show()
-			end
-		end)
-		self:SetScript("OnLeave", function() GameTooltip:Hide() end)
 	end
 
 
@@ -76,4 +59,25 @@ if TukuiCF["datatext"].avd and TukuiCF["datatext"].avd > 0 then
 	Stat:RegisterEvent("PLAYER_TARGET_CHANGED")
 	Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
 	Stat:SetScript("OnEvent", Update)
+	Stat:SetScript("OnEnter", function(self)
+		if not InCombatLockdown() then
+			GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, TukuiDB.Scale(6));
+			GameTooltip:ClearAllPoints()
+			GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
+			GameTooltip:ClearLines()
+			if targetlv > 1 then
+				GameTooltip:AddDoubleLine(tukuilocal.datatext_avoidancebreakdown.." ("..tukuilocal.datatext_lvl.." "..targetlv..")")
+			elseif targetlv == -1 then
+				GameTooltip:AddDoubleLine(tukuilocal.datatext_avoidancebreakdown.." ("..tukuilocal.datatext_boss..")")
+			else
+				GameTooltip:AddDoubleLine(tukuilocal.datatext_avoidancebreakdown.." ("..tukuilocal.datatext_lvl.." "..targetlv..")")
+			end
+			GameTooltip:AddDoubleLine(tukuilocal.datatext_miss,format("%.2f",MissChance) .. "%",1,1,1,  1,1,1)
+			GameTooltip:AddDoubleLine(tukuilocal.datatext_dodge,format("%.2f",dodge) .. "%",1,1,1,  1,1,1)
+			GameTooltip:AddDoubleLine(tukuilocal.datatext_parry,format("%.2f",parry) .. "%",1,1,1,  1,1,1)
+			GameTooltip:AddDoubleLine(tukuilocal.datatext_block,format("%.2f",block) .. "%",1,1,1,  1,1,1)
+			GameTooltip:Show()
+		end
+	end)
+	Stat:SetScript("OnLeave", function() GameTooltip:Hide() end)
 end

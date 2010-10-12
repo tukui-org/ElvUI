@@ -17,13 +17,5 @@ TukuiDB.incombat = UnitAffectingCombat("player")
 TukuiDB.patch = GetBuildInfo()
 TukuiDB.level = UnitLevel("player")
 
-----------------------------------------------------------------
--- BLIZZARD GLOBAL VARS
-----------------------------------------------------------------
-
-CHAT_FLAG_AFK = "|cffFF0000[AFK]|r "
-CHAT_FLAG_DND = "|cffE7E716[DND]|r "
-CHAT_FLAG_GM = "|cff4154F5[GM]|r "
-
 
 

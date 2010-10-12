@@ -52,7 +52,7 @@ function tCooldownTracker.CreateIcon()
 	tCooldownTracker.Icons[i].TimerText:SetTextColor(1,0,0)
 	tCooldownTracker.Icons[i].TimerText:SetShadowColor(0,0,0)
 	tCooldownTracker.Icons[i].TimerText:SetShadowOffset(TukuiDB.mult,-TukuiDB.mult)
-	tCooldownTracker.Icons[i].TimerText:SetPoint("CENTER", tCooldownTracker.Icons[i], "CENTER",0,TukuiDB.mult)
+	tCooldownTracker.Icons[i].TimerText:SetPoint("CENTER", tCooldownTracker.Icons[i], "CENTER",TukuiDB.mult,0)
 	tCooldownTracker.Icons[i].TimerText:SetText(5)
    
 	return i

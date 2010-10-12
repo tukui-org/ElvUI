@@ -328,4 +328,3 @@ end
 StaticPopupDialogs["CONFIRM_LOOT_DISTRIBUTION"].OnAccept = function(self, data)
 	GiveMasterLoot(ss, data)
 end
-

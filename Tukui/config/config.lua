@@ -26,16 +26,16 @@ TukuiCF["unitframes"] = {
 	["showsmooth"] = true,                 -- enable smooth bar
 	["showthreat"] = true,                 -- enable the threat bar anchored to info left panel.
 	["charportrait"] = false,              -- do i really need to explain this?
-	["maintank"] = false,                  -- enable maintank
-	["mainassist"] = false,                -- enable mainassist
+	-- NOT DONE YET ["maintank"] = false,  -- enable maintank
+	-- NOT DONE YET ["mainassist"] = false,-- enable mainassist
 	["unicolor"] = false,                  -- enable unicolor theme
 	["combatfeedback"] = true,             -- enable combattext on player and target.
 	["playeraggro"] = true,                -- color player border to red if you have aggro on current target.
 	["positionbychar"] = true,             -- save X, Y position with /uf (movable frame) per character instead of per account.
+	["healcomm"] = false,                  -- enable healprediction support.
 
 	-- raid layout
 	["showrange"] = true,                  -- show range opacity on raidframes
-	["healcomm"] = false,                  -- enable healcomm4 support on healer layout.
 	["raidalphaoor"] = 0.3,                -- alpha of unitframes when unit is out of range
 	["gridonly"] = false,                  -- enable grid only mode for all healer mode raid layout.
 	["showsymbols"] = true,	               -- show symbol.
@@ -68,8 +68,6 @@ TukuiCF["arena"] = {
 TukuiCF["actionbar"] = {
 	["enable"] = true,                     -- enable tukz action bars
 	["hotkey"] = true,                     -- enable hotkey display because it was a lot requested
-	["rightbarmouseover"] = false,         -- enable right bars on mouse over
-	["shapeshiftmouseover"] = false,       -- enable shapeshift or totembar on mouseover
 	["hideshapeshift"] = false,            -- hide shapeshift or totembar because it was a lot requested.
 	["bottomrows"] = 2,                    -- numbers of row you want to show at the bottom (select between 1 and 2 only)
 	["rightbars"] = 3,                     -- numbers of right bar you want
@@ -82,7 +80,6 @@ TukuiCF["nameplate"] = {
 
 TukuiCF["bags"] = {
 	["enable"] = true,                     -- enable an all in one bag mod that fit tukui perfectly
-	["soulbag"] = true,                    -- show warlock soulbag slot on bag.
 }
 
 TukuiCF["map"] = {
@@ -112,7 +109,6 @@ TukuiCF["datatext"] = {
 	["dps_text"] = 0,                      -- show a dps meter on panels
 	["hps_text"] = 0,                      -- show a heal meter on panels
 	["power"] = 7,                         -- show your attackpower/spellpower/healpower/rangedattackpower whatever stat is higher gets displayed
-	["arp"] = 0,                           -- show your armor penetration rating on panels.
 	["haste"] = 0,                         -- show your haste rating on panels.
 	["crit"] = 0,                          -- show your crit rating on panels.
 	["avd"] = 0,                           -- show your current avoidance against the level of the mob your targeting
@@ -151,10 +147,6 @@ TukuiCF["error"] = {
 
 TukuiCF["invite"] = { 
 	["autoaccept"] = true,                 -- auto-accept invite from guildmate and friends.
-}
-
-TukuiCF["watchframe"] = { 
-	["movable"] = true,                    -- disable this if you run "Who Framed Watcher Wabbit" from seerah.
 }
 
 TukuiCF["buffreminder"] = {

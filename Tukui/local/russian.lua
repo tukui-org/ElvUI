@@ -1,4 +1,23 @@
 if TukuiDB.client == "ruRU" then
+ 
+	tukuilocal.chat_BATTLEGROUND_GET = "[ПБ]"
+	tukuilocal.chat_BATTLEGROUND_LEADER_GET = "[ПБ]"
+	tukuilocal.chat_BN_WHISPER_GET = "От"
+	tukuilocal.chat_GUILD_GET = "[Г]"
+	tukuilocal.chat_OFFICER_GET = "[О]"
+	tukuilocal.chat_PARTY_GET = "[Гр]"
+	tukuilocal.chat_PARTY_GUIDE_GET = "[Гр]"
+	tukuilocal.chat_PARTY_LEADER_GET = "[Гр]"
+	tukuilocal.chat_RAID_GET = "[Р]"
+	tukuilocal.chat_RAID_LEADER_GET = "[Р]"
+	tukuilocal.chat_RAID_WARNING_GET = "[Ш]"
+	tukuilocal.chat_WHISPER_GET = "От"
+	tukuilocal.chat_FLAG_AFK = "[АФК]"
+	tukuilocal.chat_FLAG_DND = "[ДНД]"
+	tukuilocal.chat_FLAG_GM = "[ГМ]"
+	tukuilocal.chat_ERR_FRIEND_ONLINE_SS = "|cff298F00входит|r"
+	tukuilocal.chat_ERR_FRIEND_OFFLINE_S = "|cffff0000выходит|r"
+ 
 	tukuilocal.disband = "Роспуск группы."
  
 	tukuilocal.datatext_guild = "Гильдия"
@@ -11,7 +30,7 @@ if TukuiDB.client == "ruRU" then
 	tukuilocal.datatext_spent = "Потрачено:"
 	tukuilocal.datatext_deficit = "Убыток:"
 	tukuilocal.datatext_profit = "Прибыль:"
-	tukuilocal.datatext_wg = "Время до Озера:"
+	tukuilocal.datatext_timeto = "Времени до"
 	tukuilocal.datatext_friendlist = "Список друзей:"
 	tukuilocal.datatext_playersp = "sp"
 	tukuilocal.datatext_playerap = "ap"
@@ -79,7 +98,7 @@ if TukuiDB.client == "ruRU" then
 	}
  
 	tukuilocal.popup_disableui = "Tukui не работает на этом разрешении, хотите отключить Tukui? (Отмена если хотите попробовать другое разрешение)"
-	tukuilocal.popup_install = "Это первый запуск Tukui V11 для этого персонажа. Необходимо перезагрузить интерфейс для настройки Панелей, Переменных и Окон Чата."
+	tukuilocal.popup_install = "Это первый запуск Tukui V12 для этого персонажа. Необходимо перезагрузить интерфейс для настройки Панелей, Переменных и Окон Чата."
 	tukuilocal.popup_2raidactive = "Обе рейдовые раскладки активны, пожалуйста, выберите одну."
  
 	tukuilocal.merchant_repairnomoney = "Не достаточно денег на починку!"
