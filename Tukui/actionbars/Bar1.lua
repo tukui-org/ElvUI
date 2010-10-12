@@ -89,7 +89,7 @@ bar:SetScript("OnEvent", function(self, event, ...)
 				button:SetPoint("BOTTOMLEFT", TukuiMainMenuBar, TukuiDB.Scale(4), TukuiDB.Scale(4))
 			else
 				local previous = _G["ActionButton"..i-1]
-				button:SetPoint("LEFT", previous, "RIGHT", TukuiDB.Scale(4), 0)
+				button:SetPoint("LEFT", previous, "RIGHT", TukuiDB.buttonspacing, 0)
 			end
 		end
 	elseif event == "PLAYER_TALENT_UPDATE" or event == "ACTIVE_TALENT_GROUP_CHANGED" then
