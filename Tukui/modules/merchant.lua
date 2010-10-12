@@ -45,10 +45,10 @@ f:RegisterEvent("MERCHANT_SHOW")
 local savedMerchantItemButton_OnModifiedClick = MerchantItemButton_OnModifiedClick
 function MerchantItemButton_OnModifiedClick(self, ...)
 	if ( IsAltKeyDown() ) then
-		local maxStack = select(8, GetItemInfo(GetMerchantItemLink(this:GetID())))
-		local name, texture, price, quantity, numAvailable, isUsable, extendedCost = GetMerchantItemInfo(this:GetID())
+		local maxStack = select(8, GetItemInfo(GetMerchantItemLink(self:GetID())))
+		local name, texture, price, quantity, numAvailable, isUsable, extendedCost = GetMerchantItemInfo(self:GetID())
 		if ( maxStack and maxStack > 1 ) then
-			BuyMerchantItem(this:GetID(), floor(maxStack / quantity))
+			BuyMerchantItem(self:GetID(), floor(maxStack / quantity))
 		end
 	end
 	savedMerchantItemButton_OnModifiedClick(self, ...)
