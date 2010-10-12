@@ -60,7 +60,7 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		
 		for i = 1, getn(skins) do
 			TukuiDB.SetTemplate(_G[skins[i]])
-			if _G[skins[i]] ~= _G["GhostFrameContentsFrame"] and _G[skins[i]] ~= _G["AutoCompleteBox"] then -- frame to blacklist from create shadow function
+			if _G[skins[i]] ~= _G["GhostFrameContentsFrame"] and _G[skins[i]] ~= _G["AutoCompleteBox"] and _G[skins[i]] ~= _G["BNToastFrame"] then -- frame to blacklist from create shadow function
 				TukuiDB.CreateShadow(_G[skins[i]])
 			end
 		end
