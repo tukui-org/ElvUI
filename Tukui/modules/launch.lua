@@ -4,6 +4,7 @@
 
 local function install()
 	SetCVar("buffDurations", 1)
+	SetCVar("consolidateBuffs", 0)
 	SetCVar("lootUnderMouse", 1)
 	SetCVar("autoSelfCast", 1)
 	SetCVar("mapQuestDifficulty", 1)
