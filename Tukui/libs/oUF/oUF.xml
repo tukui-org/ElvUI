@@ -25,7 +25,7 @@
 	<Script file='elements\holypower.lua' />
 	<Script file='elements\soulshards.lua' />
 	<Script file='elements\picon.lua' />
-
+	<Script file='elements\readycheck.lua' />
 	<Script file='elements\qicon.lua' />
 	<Script file='elements\eclipsebar.lua' />
 
@@ -38,18 +38,42 @@
 	</Button>
 
 	<!--
-		This template requires the layout to set the anchoring positions from the
-		sub-frame(s). These are feed to the layouts style functions as any other unit
-		spawned by a header. The main difference is that they have the unitsuffix
-		attribute set (and they are parented to their respective owener).
+		Sub-object as a child of the parent unit frame:
 	<Button name="oUF_HeaderTargetTemplate" inherits="SecureUnitButtonTemplate" hidden="true" virtual="true">
 		<Frames>
 			<Button name="$parentTarget" inherits="SecureUnitButtonTemplate">
 				<Attributes>
 					<Attribute name="unitsuffix" type="string" value="target"/>
 					<Attribute name="useparent-unit" type="boolean" value="true"/>
-					<Attribute name="type1" type="string" value="target"/>
-					<Attribute name="initial-unitWatch" type="boolean" value="true"/>
+				</Attributes>
+			</Button>
+		</Frames>
+	</Button>
+
+		Separate unit template example:
+	<Button name="oUF_HeaderSeparateSubOjectsTemplate" inherits="SecureUnitButtonTemplate" hidden="true" virtual="true">
+		<Attributes>
+			<Attribute name="oUF-onlyProcessChildren" type="boolean" value="true"/>
+		</Attributes>
+
+		<Frames>
+			<Button name="$parentUnit" inherits="SecureUnitButtonTemplate">
+				<Attributes>
+					<Attribute name="useparent-unit" type="boolean" value="true"/>
+				</Attributes>
+			</Button>
+
+			<Button name="$parentPet" inherits="SecureUnitButtonTemplate">
+				<Attributes>
+					<Attribute name="unitsuffix" type="string" value="pet"/>
+					<Attribute name="useparent-unit" type="boolean" value="true"/>
+				</Attributes>
+			</Button>
+
+			<Button name="$parentTarget" inherits="SecureUnitButtonTemplate">
+				<Attributes>
+					<Attribute name="unitsuffix" type="string" value="target"/>
+					<Attribute name="useparent-unit" type="boolean" value="true"/>
 				</Attributes>
 			</Button>
 		</Frames>
