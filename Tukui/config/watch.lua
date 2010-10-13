@@ -88,7 +88,7 @@ if TukuiCF["unitframes"].raidunitdebuffwatch == true then
 		TukuiDB.buffids = {
 			PRIEST = {
 				{6788, "TOPLEFT", {1, 0, 0}, true}, -- Weakened Soul
-				{93092, "TOPRIGHT", {0.2, 0.7, 0.2}}, -- Prayer of Mending
+				{33076, "TOPRIGHT", {0.2, 0.7, 0.2}}, -- Prayer of Mending
 				{139, "BOTTOMLEFT", {0.4, 0.7, 0.2}}, -- Renew
 				{17, "BOTTOMRIGHT", {0.81, 0.85, 0.1}, true}, -- Power Word: Shield
 			},
