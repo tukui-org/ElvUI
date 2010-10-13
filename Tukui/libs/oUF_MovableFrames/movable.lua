@@ -341,7 +341,7 @@ do
 
 		local frame = self.header or self.obj
 		frame:ClearAllPoints()
-		frame:SetAllPoints(self);
+		frame:SetAllPoints(self)
 	end
 
 	local OnDragStop = function(self)
