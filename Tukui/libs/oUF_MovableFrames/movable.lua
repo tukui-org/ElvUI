@@ -314,7 +314,6 @@ do
 
 		oUF:RegisterInitCallback(restorePosition)
 		self:UnregisterEvent"VARIABLES_LOADED"
-		self.VARIABLES_LOADED = nil
 	end
 	frame:RegisterEvent"VARIABLES_LOADED"
 
@@ -341,7 +340,7 @@ do
 		self:StartMoving()
 
 		local frame = self.header or self.obj
-		frame:ClearAllPoints();
+		frame:ClearAllPoints()
 		frame:SetAllPoints(self);
 	end
 
