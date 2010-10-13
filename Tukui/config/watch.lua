@@ -103,7 +103,6 @@ if TukuiCF["unitframes"].raidunitdebuffwatch == true then
 			},
 			PALADIN = {
 				{53563, "TOPLEFT", {0.7, 0.3, 0.7}}, -- Beacon of Light
-				{53601, "TOPRIGHT", {0.4, 0.7, 0.2}}, -- Sacred Shield
 			},
 			SHAMAN = {
 				{61295, "TOPLEFT", {0.7, 0.3, 0.7}}, -- Riptide 
