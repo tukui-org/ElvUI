@@ -35,9 +35,6 @@ TukuiDB.remindbuffs = {
 		28176, -- fel armor
 		687, -- demon armor
 	},
-	PALADIN = {
-
-	},
 	SHAMAN = {
 		52127, -- water shield
 		324, -- lightning shield
