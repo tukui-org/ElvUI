@@ -25,7 +25,7 @@
 	<Script file='elements\holypower.lua' />
 	<Script file='elements\soulshards.lua' />
 	<Script file='elements\picon.lua' />
-	<Script file='elements\readycheck.lua' />
+
 	<Script file='elements\qicon.lua' />
 	<Script file='elements\eclipsebar.lua' />
 
