@@ -104,6 +104,7 @@ local function Shared(self, unit)
 	local picon = self.Health:CreateTexture(nil, 'OVERLAY')
 	picon:SetPoint('CENTER', self.Health)
 	picon:SetSize(16, 16)
+	picon.Override = TukuiDB.Phasing
 	self.PhaseIcon = picon
 	
 	self.DebuffHighlightAlpha = 1
