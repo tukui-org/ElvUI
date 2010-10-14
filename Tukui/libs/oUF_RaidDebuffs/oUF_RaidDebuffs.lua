@@ -18,7 +18,6 @@ addon.DebuffData = debuff_data
 addon.ShowDispelableDebuff = true
 addon.FilterDispellableDebuff = true
 addon.MatchBySpellName = true
-addon.SHAMAN_CAN_DECURSE = true
 
 
 addon.priority = 10
@@ -66,19 +65,19 @@ do
 			['Disease'] = true,
 		},
 		['SHAMAN'] = {
-			['Poison'] = true,
-			['Disease'] = true,
-			['Curse'] = SHAMAN_CAN_DECURSE,
+			['Magic'] = false,
+			['Curse'] = true,
 		},
 		['PALADIN'] = {
 			['Poison'] = true,
-			['Magic'] = true,
+			['Magic'] = false,
 			['Disease'] = true,
 		},
 		['MAGE'] = {
 			['Curse'] = true,
 		},
 		['DRUID'] = {
+			['Magic'] = false,
 			['Curse'] = true,
 			['Poison'] = true,
 		},
@@ -86,6 +85,58 @@ do
 	
 	DispellFilter = dispellClasses[select(2, UnitClass('player'))] or {}
 end
+
+-- Return true if the talent matching the name of the spell given by (Credit Pitbull4)
+-- spellid has at least one point spent in it or false otherwise
+local function CheckForKnownTalent(spellid)
+	local wanted_name = GetSpellInfo(spellid)
+	if not wanted_name then return nil end
+	local num_tabs = GetNumTalentTabs()
+	for t=1, num_tabs do
+		local num_talents = GetNumTalents(t)
+		for i=1, num_talents do
+			local name_talent, _, _, _, current_rank = GetTalentInfo(t,i)
+			if name_talent and (name_talent == wanted_name) then
+				if current_rank and (current_rank > 0) then
+					return true
+				else
+					return false
+				end
+			end
+		end
+	end
+	return false
+end
+
+local function CheckSpec(self, event, levels)
+	-- Not interested in gained points from leveling	
+	if event == "CHARACTER_POINTS_CHANGED" and levels > 0 then return end
+	
+	--Check for certain talents to see if we can dispel magic or not
+	if select(2, UnitClass('player')) == "PALADIN" then
+		--Check to see if we have the 'Sacred Cleansing' talent.
+		if CheckForKnownTalent(53551) then
+			DispellFilter.Magic = true
+		else
+			DispellFilter.Magic = false	
+		end
+	elseif select(2, UnitClass('player')) == "SHAMAN" then
+		--Check to see if we have the 'Improved Cleanse Spirit' talent.
+		if CheckForKnownTalent(77130) then
+			DispellFilter.Magic = true
+		else
+			DispellFilter.Magic = false	
+		end
+	elseif select(2, UnitClass('player')) == "DRUID" then
+		--Check to see if we have the 'Nature's Cure' talent.
+		if CheckForKnownTalent(88423) then
+			DispellFilter.Magic = true
+		else
+			DispellFilter.Magic = false	
+		end
+	end
+end
+
 
 local function formatTime(s)
 	if s > 60 then
@@ -189,6 +240,9 @@ local function Enable(self)
 		self:RegisterEvent('UNIT_AURA', Update)
 		return true
 	end
+	--Need to run these always
+	self:RegisterEvent("PLAYER_TALENT_UPDATE", CheckSpec)
+	self:RegisterEvent("CHARACTER_POINTS_CHANGED", CheckSpec)
 end
 
 local function Disable(self)
@@ -196,6 +250,8 @@ local function Disable(self)
 		self:UnregisterEvent('UNIT_AURA', Update)
 		self.RaidDebuffs:Hide()
 	end
+	self:UnregisterEvent("PLAYER_TALENT_UPDATE", CheckSpec)
+	self:UnregisterEvent("CHARACTER_POINTS_CHANGED", CheckSpec)
 end
 
 oUF:AddElement('RaidDebuffs', Update, Enable, Disable)
