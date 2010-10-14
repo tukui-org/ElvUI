@@ -699,10 +699,10 @@ do
 
 		if(inPhase) then
 			picon:Hide()
-			if self.Health.value then self.Health.value:SetAlpha(1) end
+			if self:GetName():match("oUF_TukuiHealRaid2540") then self.Health.value:SetAlpha(1) end
 		else
 			picon:Show()
-			if self.Health.value then self.Health.value:SetAlpha(0) end
+			if self:GetName():match("oUF_TukuiHealRaid2540") then self.Health.value:SetAlpha(0) end
 		end
 	end
 
