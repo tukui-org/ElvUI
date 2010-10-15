@@ -26,7 +26,6 @@ local Page = {
 	["WARRIOR"] = "[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;",
 	["PRIEST"] = "[bonusbar:1] 7;",
 	["ROGUE"] = "[bonusbar:1] 7; [form:3] 6;",
-	["WARLOCK"] = "[form:2] 6;",
 	["DEFAULT"] = "[bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6; [bonusbar:5] 11;",
 }
 
