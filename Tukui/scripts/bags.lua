@@ -853,10 +853,11 @@ function Stuffing:ADDON_LOADED(addon)
 	tinsert(UISpecialFrames,"StuffingFrameBags")
 
 	ToggleBackpack = Stuffing_Toggle
+	ToggleBag = Stuffing_ToggleBag
 	OpenAllBags = Stuffing_Toggle
-	OpenBackpack = Stuffing_Toggle
-	CloseBackpack = Stuffing_Close
+	OpenBackpack = Stuffing_Open
 	CloseAllBags = Stuffing_Close
+	CloseBackpack = Stuffing_Close
 
 	BankFrame:UnregisterAllEvents()
 end
