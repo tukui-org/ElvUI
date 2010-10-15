@@ -3,11 +3,11 @@ if (TukuiDB.myclass ~= "HUNTER") then return end
 local PetHappiness = CreateFrame("Frame")
 PetHappiness.happiness = GetPetHappiness()
 
-local OnEvent = function(self, event, unit)
+local OnEvent = function(self, event, ...)
 	local happiness = GetPetHappiness()
 	local hunterPet = select(2, HasPetUI())
-	
-	if (event == "UNIT_HAPPINESS" and happiness and hunterPet and self.happiness ~= happiness) then
+	local unit, power = ...
+	if (event == "UNIT_POWER" and unit == "pet" and power == "HAPPINESS" and happiness and hunterPet and self.happiness ~= happiness) then
 		-- happiness has changed
 		self.happiness = happiness
 		if (happiness == 1) then
@@ -24,6 +24,6 @@ local OnEvent = function(self, event, unit)
 		end
 	end
 end
-PetHappiness:RegisterEvent('UNIT_HAPPINESS')
+PetHappiness:RegisterEvent('UNIT_POWER')
 PetHappiness:RegisterEvent("UNIT_PET")
 PetHappiness:SetScript("OnEvent", OnEvent)
