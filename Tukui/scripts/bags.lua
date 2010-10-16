@@ -941,6 +941,8 @@ end
 
 
 function Stuffing:BANKFRAME_OPENED()
+	Stuffing_Open()
+	
 	if not self.bankFrame then
 		self:InitBank()
 	end
@@ -950,7 +952,6 @@ function Stuffing:BANKFRAME_OPENED()
 		self:BagSlotUpdate(x)
 	end
 	self.bankFrame:Show()
-	Stuffing_Open()
 end
 
 
