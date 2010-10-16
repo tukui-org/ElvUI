@@ -20,7 +20,7 @@
 	<Script file="libs\oUF_CombatFeedback\oUF_CombatFeedback.lua"/>
 	<Script file="libs\oUF_DebuffHighlight\oUF_DebuffHighlight.lua"/>
 	<Script file="libs\oUF_Experience\oUF_Experience.lua"/>
-	<Script file="libs\oUF_MovableFrames\movable.lua"/>
+
 	<Script file="libs\oUF_Reputation\oUF_Reputation.lua"/>
 	<Script file="libs\oUF_Smooth\oUF_Smooth.lua"/>
 	<Script file="libs\oUF_ThreatBar\oUF_ThreatBar.lua"/>
