@@ -54,7 +54,7 @@ local function install()
 	SetCVar("removeChatDelay", 1)
 	SetCVar("showVKeyCastbar", 1)
 	SetCVar("colorblindMode", 0)
-	SetCVar("bloatthreat", 0)
+	--SetCVar("bloatthreat", 0)
 	
 	-- setting this the creator or tukui only, because a lot of people don't like this change.		
 	if TukuiDB.myname == "Tukz" then	
