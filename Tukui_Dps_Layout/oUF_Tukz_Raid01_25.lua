@@ -133,7 +133,6 @@ oUF:Factory(function(self)
 			local header = self:GetParent()
 			self:SetWidth(header:GetAttribute('initial-width'))
 			self:SetHeight(header:GetAttribute('initial-height'))
-			RegisterUnitWatch(self)
 		]],
 		'initial-width', TukuiDB.Scale(120*TukuiDB.raidscale),
 		'initial-height', TukuiDB.Scale(16*TukuiDB.raidscale),	
