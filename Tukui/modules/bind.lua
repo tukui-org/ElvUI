@@ -50,8 +50,8 @@ SlashCmdList.MOUSEOVERBIND = function()
 			ShoppingTooltip1:Hide()
 			
 			if spellmacro=="SPELL" then
-				self.button.id = SpellBook_GetSpellID(self.button:GetID())
-				self.button.name = GetSpellName(self.button.id, SpellBookFrame.bookType)
+				self.button.id = SpellBook_GetSpellBookSlot(self.button)
+				self.button.name = GetSpellBookItemName(self.button.id, SpellBookFrame.bookType)
 				
 				GameTooltip:AddLine("Trigger")
 				GameTooltip:Show()
