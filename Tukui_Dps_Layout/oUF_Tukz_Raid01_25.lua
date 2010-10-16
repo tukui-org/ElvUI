@@ -95,18 +95,18 @@ local function Shared(self, unit)
 	LFDRole:SetTexture("Interface\\AddOns\\Tukui\\media\\textures\\lfdicons.blp")
 	self.LFDRole = LFDRole
 	
-	local ReadyCheck = health:CreateTexture(nil, "OVERLAY")
-	ReadyCheck:SetHeight(TukuiDB.Scale(12*TukuiDB.raidscale))
-	ReadyCheck:SetWidth(TukuiDB.Scale(12*TukuiDB.raidscale))
-	ReadyCheck:SetPoint('CENTER')
-	self.ReadyCheck = ReadyCheck
+	--local ReadyCheck = health:CreateTexture(nil, "OVERLAY")
+	--ReadyCheck:SetHeight(TukuiDB.Scale(12*TukuiDB.raidscale))
+	--ReadyCheck:SetWidth(TukuiDB.Scale(12*TukuiDB.raidscale))
+	--ReadyCheck:SetPoint('CENTER')
+	--self.ReadyCheck = ReadyCheck
 	
-	local picon = self.Health:CreateTexture(nil, 'OVERLAY')
-	picon:SetPoint('CENTER', self.Health)
-	picon:SetSize(16, 16)
-	picon:SetTexture[[Interface\AddOns\Tukui\media\textures\picon]]
-	picon.Override = TukuiDB.Phasing
-	self.PhaseIcon = picon
+	--local picon = self.Health:CreateTexture(nil, 'OVERLAY')
+	--picon:SetPoint('CENTER', self.Health)
+	--picon:SetSize(16, 16)
+	--picon:SetTexture[[Interface\AddOns\Tukui\media\textures\picon]]
+	--picon.Override = TukuiDB.Phasing
+	--self.PhaseIcon = picon
 	
 	self.DebuffHighlightAlpha = 1
 	self.DebuffHighlightBackdrop = true

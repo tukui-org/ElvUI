@@ -120,12 +120,12 @@ local function Shared(self, unit)
 	--ReadyCheck:SetPoint('CENTER') 	
 	--self.ReadyCheck = ReadyCheck
 	
-	local picon = self.Health:CreateTexture(nil, 'OVERLAY')
-	picon:SetPoint('CENTER', self.Health)
-	picon:SetSize(16, 16)
-	picon:SetTexture[[Interface\AddOns\Tukui\media\textures\picon]]
-	picon.Override = TukuiDB.Phasing
-	self.PhaseIcon = picon
+	--local picon = self.Health:CreateTexture(nil, 'OVERLAY')
+	--picon:SetPoint('CENTER', self.Health)
+	--picon:SetSize(16, 16)
+	--picon:SetTexture[[Interface\AddOns\Tukui\media\textures\picon]]
+	--picon.Override = TukuiDB.Phasing
+	--self.PhaseIcon = picon
 	
 	if not TukuiCF["unitframes"].raidunitdebuffwatch == true then
 		self.DebuffHighlightAlpha = 1
