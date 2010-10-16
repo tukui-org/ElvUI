@@ -714,7 +714,8 @@ function Stuffing:Layout(lb)
 				b.frame:SetNormalTexture("")
 				b.frame:Show()
 				TukuiDB.SetTemplate(b.frame)
-				TukuiDB.StyleButton(b.frame)
+				b.frame:SetBackdropColor(0, 0, 0, 0) -- we just need border with SetTemplate, not the backdrop. Hopefully this will fix invisible item that some users have.
+				TukuiDB.StyleButton(b.frame, false)
 				
 				self:SlotUpdate(b)
 				
@@ -891,6 +892,7 @@ function Stuffing:PLAYER_ENTERING_WORLD()
 			t:SetPoint("TOPLEFT", slot, TukuiDB.Scale(2), TukuiDB.Scale(-2))
 			t:SetPoint("BOTTOMRIGHT", slot, TukuiDB.Scale(-2), TukuiDB.Scale(2))
 			TukuiDB.SetTemplate(slot)
+			slot:SetBackdropColor(0, 0, 0, 0)
 			TukuiDB.StyleButton(slot, false)
 		end
 		self:ClearAllPoints()
