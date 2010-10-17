@@ -104,7 +104,7 @@ if TukuiCF["unitframes"].raidunitdebuffwatch == true then
 			},
 			SHAMAN = {
 				{61295, "TOPLEFT", {0.7, 0.3, 0.7}}, -- Riptide 
-				{51730, "TOPRIGHT", {0.2, 0.7, 0.2}}, -- Earthliving Weapon
+				{51945, "TOPRIGHT", {0.2, 0.7, 0.2}}, -- Earthliving
 				{16177, "BOTTOMLEFT", {0.4, 0.7, 0.2}}, -- Ancestral Fortitude
 				{974, "BOTTOMRIGHT", {0.7, 0.4, 0}}, -- Earth Shield
 			},
