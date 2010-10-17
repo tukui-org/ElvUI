@@ -74,6 +74,7 @@ if TukuiCF["arena"].spelltracker == true then
 		[33206] = 144, -- pain sup
 		[15487] = 45, -- silence priest
 		[34490] = 20, -- i hate hunter silencing shot
+		[85285] = 10, -- paladin got a kick now? lol
 	}
 end
 
