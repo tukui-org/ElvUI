@@ -68,3 +68,12 @@ end
 if (IsAddOnLoaded("Gladius")) then
 	TukuiCF["arena"].unitframes = false
 end
+
+------------------------------------------------------------------------
+-- Others
+------------------------------------------------------------------------
+
+-- auto-disable tooltip on unit frame if tooltip on cursor is enabled.
+if TukuiCF.tooltip.cursor and not TukuiCF.tooltip.hideuf then
+	TukuiCF.tooltip.hideuf = true
+end
