@@ -105,6 +105,7 @@ if TukuiCF["unitframes"].raidunitdebuffwatch == true then
 				{61295, "TOPLEFT", {0.7, 0.3, 0.7}}, -- Riptide 
 				{51730, "TOPRIGHT", {0.2, 0.7, 0.2}}, -- Earthliving Weapon
 				{16177, "BOTTOMLEFT", {0.4, 0.7, 0.2}}, -- Ancestral Fortitude
+				{974, "BOTTOMRIGHT", {0.7, 0.4, 0}}, -- Earth Shield
 			},
 			ALL = {
 				{14253, "RIGHT", {0, 1, 0}}, -- Abolish Poison
