@@ -143,6 +143,44 @@ function TukuiDB.PP(p, obj)
 	end
 end
 
+function TukuiDB.TukuiShiftBarUpdate()
+	local numForms = GetNumShapeshiftForms()
+	local texture, name, isActive, isCastable
+	local button, icon, cooldown
+	local start, duration, enable
+	for i = 1, NUM_SHAPESHIFT_SLOTS do
+		button = _G["ShapeshiftButton"..i]
+		icon = _G["ShapeshiftButton"..i.."Icon"]
+		if i <= numForms then
+			texture, name, isActive, isCastable = GetShapeshiftFormInfo(i)
+			icon:SetTexture(texture)
+			
+			cooldown = _G["ShapeshiftButton"..i.."Cooldown"]
+			if texture then
+				cooldown:SetAlpha(1)
+			else
+				cooldown:SetAlpha(0)
+			end
+			
+			start, duration, enable = GetShapeshiftFormCooldown(i)
+			CooldownFrame_SetTimer(cooldown, start, duration, enable)
+			
+			if isActive then
+				ShapeshiftBarFrame.lastSelected = button:GetID()
+				button:SetChecked(1)
+			else
+				button:SetChecked(0)
+			end
+
+			if isCastable then
+				icon:SetVertexColor(1.0, 1.0, 1.0)
+			else
+				icon:SetVertexColor(0.4, 0.4, 0.4)
+			end
+		end
+	end
+end
+
 function TukuiDB.TukuiPetBarUpdate(self, event)
 	local petActionButton, petActionIcon, petAutoCastableTexture, petAutoCastShine
 	for i=1, NUM_PET_ACTION_SLOTS, 1 do
