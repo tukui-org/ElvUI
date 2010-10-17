@@ -50,6 +50,7 @@ local States = {
 	["DEATHKNIGHT"] = "show",
 	["ROGUE"] = "show,",
 	["PRIEST"] = "show,",
+	["HUNTER"] = "show,",
 }
 
 bar:RegisterEvent("PLAYER_LOGIN")
