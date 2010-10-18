@@ -55,6 +55,12 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 			InterfaceOptionsFrameCategoriesButton9:SetAlpha(0)	
 			InterfaceOptionsFrameCategoriesButton9:SetScale(0.00001)
 			InterfaceOptionsFrameCategoriesButton9:SetAlpha(0)
+			
+			-- it seem that 2 people have problem with RuneFrame.
+			-- Make sure they are not show anymore
+			if TukuiDB.myclass == "DEATHKNIGHT" then
+				k(RuneFrame)
+			end
 		end
 		
 		if TukuiCF.actionbar.enable then
