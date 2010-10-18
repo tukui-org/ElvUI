@@ -717,6 +717,9 @@ function Stuffing:Layout(lb)
 				b.frame:SetBackdropColor(0, 0, 0, 0) -- we just need border with SetTemplate, not the backdrop. Hopefully this will fix invisible item that some users have.
 				TukuiDB.StyleButton(b.frame, false)
 				
+				-- color profession bag slot border ~yellow
+				if bagType == ST_SPECIAL then b.frame:SetBackdropBorderColor(255/255, 243/255,  82/255) b.frame.lock = true end
+				
 				self:SlotUpdate(b)
 				
 				local iconTex = _G[b.frame:GetName() .. "IconTexture"]
