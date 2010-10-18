@@ -196,20 +196,14 @@ Minimap:SetScript("OnEnter",function()
 	m_zone.anim_o:Stop()
 	m_coord.anim_o:Stop()
 	m_zone:Show()
-	local inInstance, instanceType = IsInInstance()
-	if not inInstance then
-		m_coord:Show()
-		m_coord.anim:Play()
-	end
+	m_coord:Show()
+	m_coord.anim:Play()
 	m_zone.anim:Play()
 end)
  
 Minimap:SetScript("OnLeave",function()
-	local inInstance, instanceType = IsInInstance()
-	if not inInstance then
-		m_coord.anim:Stop()
-		m_coord.anim_o:Play()
-	end
+	m_coord.anim:Stop()
+	m_coord.anim_o:Play()
 	m_zone.anim:Stop()
 	m_zone.anim_o:Play()
 end)
