@@ -88,7 +88,7 @@ local getObjectInformation  = function(obj)
 	local isHeader
 	local parent = obj:GetParent()
 
-	if(parent and parent.initialConfigFunction and (parent.SetManyAttributes or parent.style)) then
+	if(parent and parent:GetAttribute'initialConfigFunction' and parent.style) then
 		isHeader = true
 
 		-- These always have a name, so we might as well abuse it.
