@@ -20,6 +20,12 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 			CompactRaidFrameContainer:SetAlpha(0)
 		end	
 	else
+		if addon == "Blizzard_AchievementUI" then
+			if TukuiCF.tooltip.enable then
+				hooksecurefunc("AchievementFrameCategories_DisplayButton", function(button) button.showTooltipFunc = nil end)
+			end
+		end
+		
 		if addon ~= "Tukui" then return end
 		
 		k(StreamingIcon)
