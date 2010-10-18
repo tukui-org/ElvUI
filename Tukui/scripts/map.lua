@@ -148,7 +148,7 @@ local function UpdateIconColor(self)
 	self.icon:SetVertexColor(color.r, color.g, color.b)
 end
 
-local OnEvent = function()
+local OnEvent = function(self, event)
 	-- fixing a stupid bug error by blizzard on default ui :x
 	if event == "PLAYER_REGEN_DISABLED" then
 		WorldMapFrameSizeDownButton:Disable() 
