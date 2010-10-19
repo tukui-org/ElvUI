@@ -88,11 +88,16 @@ local getObjectInformation  = function(obj)
 	local isHeader
 	local parent = obj:GetParent()
 
-	if(parent and parent:GetAttribute'initialConfigFunction' and parent.style) then
-		isHeader = true
+	if(parent) then
+		if(parent:GetAttribute'initialConfigFunction' and parent.style) then
+			isHeader = parent
 
-		-- These always have a name, so we might as well abuse it.
-		identifier = parent:GetName()
+			identifier = parent:GetName()
+		elseif(parent:GetAttribute'oUF-onlyProcessChildren') then
+			isHeader = parent:GetParent()
+
+			identifier = isHeader:GetName()
+		end
 	end
 
 	return style, identifier, isHeader
@@ -115,22 +120,18 @@ local restoreDefaultPosition = function(style, identifier)
 
 	if(obj) then
 		local scale = obj:GetScale()
-		local parent = obj:GetParent()
-		local SetPoint = getmetatable(parent or obj).__index.SetPoint;
+		local target = isHeader or obj
+		local SetPoint = getmetatable(target).__index.SetPoint;
 
-		if(parent == UIParent) then
-			parent = nil
-		end
-
-		(parent or obj):ClearAllPoints()
+		target:ClearAllPoints()
 
 		local point, parentName, x, y = string.split('\031', _DB.__INITIAL[style][identifier])
-		SetPoint(parent or obj, point, parentName, point, x / scale, y / scale)
+		SetPoint(target, point, parentName, point, x / scale, y / scale)
 
-		local backdrop = backdropPool[parent or obj]
+		local backdrop = backdropPool[target]
 		if(backdrop) then
 			backdrop:ClearAllPoints()
-			backdrop:SetAllPoints(parent or obj)
+			backdrop:SetAllPoints(target)
 		end
 
 		-- We don't need this anymore
@@ -148,19 +149,19 @@ local function restorePosition(obj)
 	if(not _DB[style] or not _DB[style][identifier]) then return end
 
 	local scale = obj:GetScale()
-	local parent = (isHeader and obj:GetParent())
-	local SetPoint = getmetatable(parent or obj).__index.SetPoint;
+	local target = isHeader or obj
+	local SetPoint = getmetatable(target).__index.SetPoint;
 
 	-- Hah, a spot you have to use semi-colon!
 	-- Guess I've never experienced that as these are usually wrapped in do end
 	-- statements.
-	(parent or obj).SetPoint = restorePosition;
-	(parent or obj):ClearAllPoints();
+	target.SetPoint = restorePosition;
+	target:ClearAllPoints()
 
 	-- damn it Blizzard, _how_ did you manage to get the input of this function
 	-- reversed. Any sane person would implement this as: split(str, dlm, lim);
 	local point, parentName, x, y = string.split('\031', _DB[style][identifier])
-	SetPoint(parent or obj, point, parentName, point, x / scale, y / scale)
+	SetPoint(target, point, parentName, point, x / scale, y / scale)
 end
 
 local saveDefaultPosition = function(obj)
@@ -176,7 +177,7 @@ local saveDefaultPosition = function(obj)
 	if(not _DB.__INITIAL[style][identifier]) then
 		local point
 		if(isHeader) then
-			point = getPoint(obj:GetParent())
+			point = getPoint(isHeader)
 		else
 			point = getPoint(obj)
 		end
@@ -189,11 +190,7 @@ local savePosition = function(obj, anchor)
 	local style, identifier, isHeader = getObjectInformation(obj)
 	if(not _DB[style]) then _DB[style] = {} end
 
-	if(isHeader) then
-		_DB[style][identifier] = getPoint(obj:GetParent(), anchor)
-	else
-		_DB[style][identifier] = getPoint(obj, anchor)
-	end
+	_DB[style][identifier] = getPoint(isHeader or obj, anchor)
 end
 
 -- Attempt to figure out a more sane name to dispaly.
@@ -329,7 +326,6 @@ do
 	frame:RegisterEvent"PLAYER_REGEN_DISABLED"
 end
 
-local getBackdrop
 do
 	local OnShow = function(self)
 		return self.name:SetText(smartName(self.obj, self.header))
@@ -340,8 +336,8 @@ do
 		self:StartMoving()
 
 		local frame = self.header or self.obj
-		frame:ClearAllPoints()
-		frame:SetAllPoints(self)
+		frame:ClearAllPoints();
+		frame:SetAllPoints(self);
 	end
 
 	local OnDragStop = function(self)
@@ -350,9 +346,9 @@ do
 	end
 
 	getBackdrop = function(obj, isHeader)
-		local header = (isHeader and obj:GetParent())
-		if(not (header or obj):GetCenter()) then return end
-		if(backdropPool[header or obj]) then return backdropPool[header or obj] end
+		local target = isHeader or obj
+		if(not target:GetCenter()) then return end
+		if(backdropPool[target]) then return backdropPool[target] end
 
 		local backdrop = CreateFrame"Frame"
 		backdrop:SetParent(UIParent)
@@ -360,7 +356,7 @@ do
 
 		backdrop:SetBackdrop(_BACKDROP)
 		backdrop:SetFrameStrata"TOOLTIP"
-		backdrop:SetAllPoints(header or obj)
+		backdrop:SetAllPoints(target)
 
 		backdrop:EnableMouse(true)
 		backdrop:SetMovable(true)
@@ -376,21 +372,21 @@ do
 
 		backdrop.name = name
 		backdrop.obj = obj
-		backdrop.header = header
+		backdrop.header = isHeader
 
 		backdrop:SetBackdropBorderColor(0, .9, 0)
 		backdrop:SetBackdropColor(0, .9, 0)
 
 		-- Work around the fact that headers with no units displayed are 0 in height.
-		if(header and math.floor(header:GetHeight()) == 0) then
-			local height = header:GetChildren():GetHeight()
-			header:SetHeight(height)
+		if(isHeader and math.floor(isHeader:GetHeight()) == 0) then
+			local height = isHeader:GetChildren():GetHeight()
+			isHeader:SetHeight(height)
 		end
 
 		backdrop:SetScript("OnDragStart", OnDragStart)
 		backdrop:SetScript("OnDragStop", OnDragStop)
 
-		backdropPool[header or obj] = backdrop
+		backdropPool[target] = backdrop
 
 		return backdrop
 	end
