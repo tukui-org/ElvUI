@@ -12,11 +12,11 @@ local GetTime = GetTime
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
 
-local UNIT_SPELLCAST_START = function(self, event, unit, spell, spellrank)
+local UNIT_SPELLCAST_START = function(self, event, unit, spell)
 	if(self.unit ~= unit) then return end
 
 	local castbar = self.Castbar
-	local name, rank, text, texture, startTime, endTime, _, castid, interrupt = UnitCastingInfo(unit)
+	local name, _, text, texture, startTime, endTime, _, castid, interrupt = UnitCastingInfo(unit)
 	if(not name) then
 		castbar:Hide()
 		return
@@ -55,13 +55,14 @@ local UNIT_SPELLCAST_START = function(self, event, unit, spell, spellrank)
 		sf:SetPoint'BOTTOM'
 	end
 
+	--- XXX: 1.6: Kill the rank field.
 	if(castbar.PostCastStart) then
-		castbar:PostCastStart(unit, name, rank, castid)
+		castbar:PostCastStart(unit, name, nil, castid)
 	end
 	castbar:Show()
 end
 
-local UNIT_SPELLCAST_FAILED = function(self, event, unit, spellname, spellrank, castid)
+local UNIT_SPELLCAST_FAILED = function(self, event, unit, spellname, _, castid)
 	if(self.unit ~= unit) then return end
 
 	local castbar = self.Castbar
@@ -74,12 +75,13 @@ local UNIT_SPELLCAST_FAILED = function(self, event, unit, spellname, spellrank, 
 	castbar:SetValue(0)
 	castbar:Hide()
 
+	--- XXX: 1.6: Kill the rank field.
 	if(castbar.PostCastFailed) then
-		return castbar:PostCastFailed(unit, spellname, spellrank, castid)
+		return castbar:PostCastFailed(unit, spellname, nil, castid)
 	end
 end
 
-local UNIT_SPELLCAST_INTERRUPTED = function(self, event, unit, spellname, spellrank, castid)
+local UNIT_SPELLCAST_INTERRUPTED = function(self, event, unit, spellname, _, castid)
 	if(self.unit ~= unit) then return end
 
 	local castbar = self.Castbar
@@ -92,8 +94,9 @@ local UNIT_SPELLCAST_INTERRUPTED = function(self, event, unit, spellname, spellr
 	castbar:SetValue(0)
 	castbar:Hide()
 
+	--- XXX: 1.6: Kill the rank field.
 	if(castbar.PostCastInterrupted) then
-		return castbar:PostCastInterrupted(unit, spellname, spellrank, castid)
+		return castbar:PostCastInterrupted(unit, spellname, nil, castid)
 	end
 end
 
@@ -125,10 +128,10 @@ local UNIT_SPELLCAST_NOT_INTERRUPTIBLE = function(self, event, unit)
 	end
 end
 
-local UNIT_SPELLCAST_DELAYED = function(self, event, unit, spellname, spellrank, castid)
+local UNIT_SPELLCAST_DELAYED = function(self, event, unit, spellname, _, castid)
 	if(self.unit ~= unit) then return end
 
-	local name, rank, text, texture, startTime, endTime = UnitCastingInfo(unit)
+	local name, _, text, texture, startTime, endTime = UnitCastingInfo(unit)
 	if(not startTime) then return end
 
 	local castbar = self.Castbar
@@ -140,12 +143,13 @@ local UNIT_SPELLCAST_DELAYED = function(self, event, unit, spellname, spellrank,
 
 	castbar:SetValue(duration)
 
+	--- XXX: 1.6: Kill the rank field.
 	if(castbar.PostCastDelayed) then
-		return castbar:PostCastDelayed(unit, name, rank, castid)
+		return castbar:PostCastDelayed(unit, name, nil, castid)
 	end
 end
 
-local UNIT_SPELLCAST_STOP = function(self, event, unit, spellname, spellrank, castid)
+local UNIT_SPELLCAST_STOP = function(self, event, unit, spellname, _, castid)
 	if(self.unit ~= unit) then return end
 
 	local castbar = self.Castbar
@@ -158,16 +162,17 @@ local UNIT_SPELLCAST_STOP = function(self, event, unit, spellname, spellrank, ca
 	castbar:SetValue(0)
 	castbar:Hide()
 
+	--- XXX: 1.6: Kill the rank field.
 	if(castbar.PostCastStop) then
-		return castbar:PostCastStop(unit, spellname, spellrank, castid)
+		return castbar:PostCastStop(unit, spellname, nil, castid)
 	end
 end
 
-local UNIT_SPELLCAST_CHANNEL_START = function(self, event, unit, spellname, spellrank)
+local UNIT_SPELLCAST_CHANNEL_START = function(self, event, unit, spellname)
 	if(self.unit ~= unit) then return end
 
 	local castbar = self.Castbar
-	local name, rank, text, texture, startTime, endTime, isTrade, interrupt = UnitChannelInfo(unit)
+	local name, _, text, texture, startTime, endTime, isTrade, interrupt = UnitChannelInfo(unit)
 	if(not name) then
 		return
 	end
@@ -205,14 +210,15 @@ local UNIT_SPELLCAST_CHANNEL_START = function(self, event, unit, spellname, spel
 		sf:SetPoint'BOTTOM'
 	end
 
-	if(castbar.PostChannelStart) then castbar:PostChannelStart(unit, name, rank) end
+	--- XXX: 1.6: Kill the rank field.
+	if(castbar.PostChannelStart) then castbar:PostChannelStart(unit, name) end
 	castbar:Show()
 end
 
-local UNIT_SPELLCAST_CHANNEL_UPDATE = function(self, event, unit, spellname, spellrank)
+local UNIT_SPELLCAST_CHANNEL_UPDATE = function(self, event, unit, spellname)
 	if(self.unit ~= unit) then return end
 
-	local name, rank, text, texture, startTime, endTime, oldStart = UnitChannelInfo(unit)
+	local name, _, text, texture, startTime, endTime, oldStart = UnitChannelInfo(unit)
 	if(not name) then
 		return
 	end
@@ -227,12 +233,13 @@ local UNIT_SPELLCAST_CHANNEL_UPDATE = function(self, event, unit, spellname, spe
 	castbar:SetMinMaxValues(0, castbar.max)
 	castbar:SetValue(duration)
 
+	--- XXX: 1.6: Kill the rank field.
 	if(castbar.PostChannelUpdate) then
-		return castbar:PostChannelUpdate(unit, name, rank)
+		return castbar:PostChannelUpdate(unit, name)
 	end
 end
 
-local UNIT_SPELLCAST_CHANNEL_STOP = function(self, event, unit, spellname, spellrank)
+local UNIT_SPELLCAST_CHANNEL_STOP = function(self, event, unit, spellname)
 	if(self.unit ~= unit) then return end
 
 	local castbar = self.Castbar
@@ -243,8 +250,9 @@ local UNIT_SPELLCAST_CHANNEL_STOP = function(self, event, unit, spellname, spell
 		castbar:SetValue(castbar.max)
 		castbar:Hide()
 
+		--- XXX: 1.6: Kill the rank field.
 		if(castbar.PostChannelStop) then
-			return castbar:PostChannelStop(unit, spellname, spellrank)
+			return castbar:PostChannelStop(unit, spellname)
 		end
 	end
 end
