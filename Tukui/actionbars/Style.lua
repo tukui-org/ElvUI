@@ -7,6 +7,10 @@ local replace = string.gsub
 
 function style(self)
 	local name = self:GetName()
+	
+	--> fixing a taint issue while changing totem flyout button in combat.
+	if name:match("MultiCastActionButton") then return end 
+	
 	local action = self.action
 	local Button = self
 	local Icon = _G[name.."Icon"]
