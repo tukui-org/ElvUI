@@ -72,6 +72,7 @@ function TukuiDB.SetTemplate(f)
 end
 
 function TukuiDB.CreateShadow(f)
+	if f.shadow then return end -- we seriously don't want to create shadow 2 times in a row on the same frame.
 	local shadow = CreateFrame("Frame", nil, f)
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(f:GetFrameStrata())
