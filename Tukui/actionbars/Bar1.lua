@@ -13,7 +13,7 @@ bar:SetAllPoints(TukuiActionBarBackground)
 --[[ 
 	Bonus bar classes id
 
-	DRUID: Caster: 0, Cat: 1, Tree of Life: 2, Bear: 3, Moonkin: 4
+	DRUID: Caster: 0, Cat: 1, Tree of Life: 0, Bear: 3, Moonkin: 4
 	WARRIOR: Battle Stance: 1, Defensive Stance: 2, Berserker Stance: 3 
 	ROGUE: Normal: 0, Stealthed: 1
 	PRIEST: Normal: 0, Shadowform: 1
@@ -22,7 +22,7 @@ bar:SetAllPoints(TukuiActionBarBackground)
 ]]--
 
 local Page = {
-	["DRUID"] = "[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] %s; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10;",
+	["DRUID"] = "[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10;",
 	["WARRIOR"] = "[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;",
 	["PRIEST"] = "[bonusbar:1] 7;",
 	["ROGUE"] = "[bonusbar:1] 7; [form:3] 7;",
@@ -34,14 +34,6 @@ local function GetBar()
 	local class = TukuiDB.myclass
 	local page = Page[class]
 	if page then
-		if class == "DRUID" then
-			-- Handles prowling, prowling has no real stance, so this is a hack which utilizes the Tree of Life bar for non-resto druids.
-			if IsSpellKnown(33891) then -- Tree of Life form
-				page = page:format(7)
-			else
-				page = page:format(8)
-			end
-		end
 		condition = condition.." "..page
 	end
 	condition = condition.." 1"
