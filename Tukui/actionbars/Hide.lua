@@ -7,8 +7,12 @@ if not TukuiCF["actionbar"].enable == true then return end
 do
 	MainMenuBar:SetScale(0.00001)
 	MainMenuBar:SetAlpha(0)
+	MainMenuBar:EnableMouse(false)
 	VehicleMenuBar:SetScale(0.00001)
 	VehicleMenuBar:SetAlpha(0)
+	VehicleMenuBar:EnableMouse(false)
+	PetActionBarFrame:EnableMouse(false)
+	ShapeshiftBarFrame:EnableMouse(false)
 	
 	local elements = {
 		MainMenuBar, MainMenuBarArtFrame, BonusActionBarFrame, VehicleMenuBar,
