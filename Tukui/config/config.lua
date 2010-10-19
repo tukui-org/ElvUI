@@ -113,6 +113,7 @@ TukuiCF["datatext"] = {
 	["crit"] = 0,                          -- show your crit rating on panels.
 	["avd"] = 0,                           -- show your current avoidance against the level of the mob your targeting
 	["armor"] = 0,                         -- show your armor value against the level mob you are currently targeting
+	["currency"] = 0,                      -- show your tracked currency on panels
 
 	["battleground"] = true,               -- enable 3 stats in battleground only that replace stat1,stat2,stat3.
 	["time24"] = true,                     -- set time to 24h format.
