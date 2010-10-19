@@ -324,10 +324,10 @@ do
 		elseif(self:IsEventRegistered(event)) then
 			return
 		else
-			if(type(func) == 'function') then
+			if(func) then
 				self[event] = func
 			elseif(not self[event]) then
-				return error("Style [%s] attempted to register event [%s] on unit [%s] with a handler that doesn't exist.", self.style, event, self.unit or 'unknown')
+				return error("Handler for event [%s] on unit [%s] does not exist.", event, self.unit or 'unknown')
 			end
 
 			RegisterEvent(self, event)
@@ -618,16 +618,9 @@ do
 					unit = 'party'
 				end
 
-				local headerType = header:GetAttribute'oUF-headerType'
 				local suffix = frame:GetAttribute'unitsuffix'
 				if(unit and suffix) then
-					if(headerType == 'pet' and suffix == 'target') then
-						unit = unit .. headerType .. suffix
-					else
-						unit = unit .. suffix
-					end
-				elseif(unit and headerType == 'pet') then
-					unit = unit .. headerType
+					unit = unit .. suffix
 				end
 
 				frame:SetAttribute('*type1', 'target')
@@ -654,13 +647,12 @@ do
 	function oUF:SpawnHeader(overrideName, template, visibility, ...)
 		if(not style) then return error("Unable to create frame. No styles have been registered.") end
 
-		template = (template or 'SecureGroupHeaderTemplate')
+		template = (template or 'SecureGroupHeaderTemplate') .. ',oUF_ClickCastUnitTemplate'
 
-		local isPetHeader = template:match'PetHeader'
 		local name = overrideName or generateName(nil, ...)
 		local header = CreateFrame('Frame', name, UIParent, template)
 
-		header:SetAttribute("template", "SecureUnitButtonTemplate,oUF_ClickCastUnitTemplate")
+		header:SetAttribute("template", "SecureUnitButtonTemplate")
 		for i=1, select("#", ...), 2 do
 			local att, val = select(i, ...)
 			if(not att) then break end
@@ -672,7 +664,6 @@ do
 
 		-- We set it here so layouts can't directly override it.
 		header:SetAttribute('initialConfigFunction', initialConfigFunction)
-		header:SetAttribute('oUF-headerType', isPetHeader and 'pet' or 'group')
 
 		if(Clique) then
 			header:SetFrameRef("clickcast_header", Clique.header)
