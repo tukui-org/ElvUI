@@ -100,7 +100,7 @@ if TukuiCF["datatext"].gold and TukuiCF["datatext"].gold > 0 then
 			GameTooltip:AddLine(tukuilocal.datatext_server)
 			GameTooltip:AddDoubleLine(tukuilocal.datatext_totalgold, FormatTooltipMoney(totalGold), 1, 1, 1, 1, 1, 1)
 
-			for i = 1, MAX_WATCHED_TOKENS do
+			for i = 1, GetNumWatchedTokens() do
 				local name, count, extraCurrencyType, icon, itemID = GetBackpackCurrencyInfo(i)
 				if name and i == 1 then
 					GameTooltip:AddLine(" ")
