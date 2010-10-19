@@ -24,7 +24,7 @@ tCooldownTracker.Spells = TukuiDB.spelltracker
 SlashCmdList["tCooldownTracker"] = function(msg) tCooldownTracker.SlashHandler(msg) end
 SLASH_tCooldownTracker1 = "/tcdt"
 SLASH_tCooldownTracker2 = "/tracker"
-tCooldownTracker:SetScript("OnEvent", function(this, event, ...) tCooldownTracker[event](...) end)
+tCooldownTracker:SetScript("OnEvent", function(self, event, ...) tCooldownTracker[event](...) end)
 
 tCooldownTracker.Icons = { }
 
@@ -171,7 +171,7 @@ function tCooldownTracker.StartTimer(icon, duration, texture, spellID)
 		TukuiDB.SetTemplate(tCooldownTracker.Icons[(active or icon)])
 	end
 	tCooldownTracker.Reposition()
-	tCooldownTracker:SetScript("OnUpdate", function(this, arg1) tCooldownTracker.OnUpdate(arg1) end)
+	tCooldownTracker:SetScript("OnUpdate", function(self, arg1) tCooldownTracker.OnUpdate(arg1) end)
 end
 
 function tCooldownTracker.StopTimer(icon)

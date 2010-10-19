@@ -1,4 +1,4 @@
-if not TukuiCF["unitframes"].enable == true then return end
+if not TukuiCF["unitframes"].enable == true and not TukuiCF["raidframes"].enable == true then return end
 
 ------------------------------------------------------------------------
 --	Tags
@@ -142,18 +142,4 @@ oUF.TagEvents['Tukui:namelong'] = 'UNIT_NAME_UPDATE'
 oUF.Tags['Tukui:namelong'] = function(unit)
 	local name = UnitName(unit)
 	return utf8sub(name, 20, true)
-end
-
-oUF.TagEvents['Tukui:dead'] = 'UNIT_HEALTH'
-oUF.Tags['Tukui:dead'] = function(unit)
-	if UnitIsDeadOrGhost(unit) then
-		return tukuilocal.unitframes_ouf_deaddps
-	end
-end
-
-oUF.TagEvents['Tukui:afk'] = 'PLAYER_FLAGS_CHANGED'
-oUF.Tags['Tukui:afk'] = function(unit)
-	if UnitIsAFK(unit) then
-		return CHAT_FLAG_AFK
-	end
 end

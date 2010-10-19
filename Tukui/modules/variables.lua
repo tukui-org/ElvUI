@@ -16,6 +16,4 @@ TukuiDB.version = GetAddOnMetadata("Tukui", "Version")
 TukuiDB.incombat = UnitAffectingCombat("player")
 TukuiDB.patch = GetBuildInfo()
 TukuiDB.level = UnitLevel("player")
-
-
-
+TukuiDB.IsElvsEdit = true

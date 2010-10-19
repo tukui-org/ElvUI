@@ -1,5 +1,4 @@
-if not TukuiCF["actionbar"].enable == true then return end
-
+if (not TukuiCF["actionbar"].enable == true) then return end
 ---------------------------------------------------------------------------
 -- Setup Shapeshift Bar
 ---------------------------------------------------------------------------
@@ -10,6 +9,10 @@ TukuiShift:SetPoint("TOPLEFT", 2, -2)
 TukuiShift:SetWidth(29)
 TukuiShift:SetHeight(58)
 
+if TukuiCF["actionbar"].hideshapeshift == true then
+	TukuiShift:Hide()
+end
+
 -- shapeshift command to move totem or shapeshift in-game
 local ssmover = CreateFrame("Frame", "ssmoverholder", UIParent)
 ssmover:SetAllPoints(TukuiShift)
@@ -19,9 +22,7 @@ TukuiShift:SetMovable(true)
 TukuiShift:SetUserPlaced(true)
 local ssmove = false
 local function showmovebutton()
-	-- don't allow moving while in combat
 	if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end
-	
 	if ssmove == false then
 		ssmove = true
 		ssmover:SetAlpha(1)
@@ -103,3 +104,12 @@ bar:SetScript("OnEvent", function(self, event, ...)
 		TukuiDB.TukuiShiftBarUpdate()
 	end
 end)
+
+if TukuiCF["actionbar"].shapeshiftmouseover == true then
+	for i=1, NUM_SHAPESHIFT_SLOTS do
+		local b = _G["ShapeshiftButton"..i]
+		b:SetAlpha(0)
+		b:HookScript("OnEnter", function() ShapeShiftMouseOver(1) end)
+		b:HookScript("OnLeave", function() ShapeShiftMouseOver(0) end)
+	end
+end

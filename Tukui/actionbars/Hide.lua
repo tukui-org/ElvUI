@@ -10,7 +10,6 @@ do
 	MainMenuBar:EnableMouse(false)
 	VehicleMenuBar:SetScale(0.00001)
 	VehicleMenuBar:SetAlpha(0)
-	VehicleMenuBar:EnableMouse(false)
 	PetActionBarFrame:EnableMouse(false)
 	ShapeshiftBarFrame:EnableMouse(false)
 	
@@ -49,3 +48,56 @@ do
 	uiManagedFrames = nil
 end
 
+function RightBarMouseOver(alpha)
+	TukuiActionBarBackgroundRight:SetAlpha(alpha)
+	TukuiPetActionBarBackground:SetAlpha(alpha)
+	if TukuiCF["actionbar"].rightbars > 2 and TukuiCF["actionbar"].splitbar ~= true then
+		if MultiBarLeft:IsShown() then
+			for i=1, 12 do
+				local pb = _G["MultiBarLeftButton"..i]
+				pb:SetAlpha(alpha)
+			end
+			MultiBarLeft:SetAlpha(alpha)
+		end
+	end
+	if TukuiCF["actionbar"].rightbars > 1 then
+		if MultiBarBottomRight:IsShown() then
+			for i=1, 12 do
+				local pb = _G["MultiBarBottomRightButton"..i]
+				pb:SetAlpha(alpha)
+			end
+			MultiBarBottomRight:SetAlpha(alpha)
+		end
+	end
+	if TukuiCF["actionbar"].rightbars > 0 then
+		if MultiBarRight:IsShown() then
+			for i=1, 12 do
+				local pb = _G["MultiBarRightButton"..i]
+				pb:SetAlpha(alpha)
+			end
+			MultiBarRight:SetAlpha(alpha)
+		end
+	end
+	if TukuiPetBar:IsShown() then
+		for i=1, 10 do
+			local pb = _G["PetActionButton"..i]
+			pb:SetAlpha(alpha)
+		end	
+		TukuiPetBar:SetAlpha(alpha)
+	end
+end
+
+function ShapeShiftMouseOver(alpha)
+	for i=1, NUM_SHAPESHIFT_SLOTS do
+		local pb = _G["ShapeshiftButton"..i]
+		pb:SetAlpha(alpha)
+	end
+end
+
+do
+	if TukuiCF["actionbar"].rightbarmouseover == true then
+		TukuiActionBarBackgroundRight:SetAlpha(0)
+		TukuiActionBarBackgroundRight:SetScript("OnEnter", function() RightBarMouseOver(1) end)
+		TukuiActionBarBackgroundRight:SetScript("OnLeave", function() RightBarMouseOver(0) end)
+	end
+end

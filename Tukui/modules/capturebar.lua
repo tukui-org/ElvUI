@@ -10,9 +10,9 @@ local function CaptureUpdate()
 				captureBar:ClearAllPoints()
 				
 				if( i == 1 ) then
-					captureBar:SetPoint("TOP", UIParent, "TOP", 0, TukuiDB.Scale(-120))
+					captureBar:SetPoint("TOP", UIParent, "TOP", 0, TukuiDB.Scale(-170))
 				else
-					captureBar:SetPoint("TOPLEFT", getglobal("WorldStateCaptureBar" .. i - 1 ), "TOPLEFT", 0, TukuiDB.Scale(-25))
+					captureBar:SetPoint("TOPLEFT", getglobal("WorldStateCaptureBar" .. i - 1 ), "TOPLEFT", 0, TukuiDB.Scale(-45))
 				end
 			end	
 		end	

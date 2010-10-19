@@ -81,7 +81,9 @@ function SlashCmdList.LUAERROR(msg, editbox)
 end
 SLASH_LUAERROR1 = '/luaerror'
 
-SlashCmdList["GROUPDISBAND"] = function()
+function DisbandRaidGroup()
+		if InCombatLockdown() then return end -- Prevent user error in combat
+		
 		SendChatMessage(tukuilocal.disband, "RAID" or "PARTY")
 		if UnitInRaid("player") then
 			for i = 1, GetNumRaidMembers() do
@@ -98,5 +100,18 @@ SlashCmdList["GROUPDISBAND"] = function()
 			end
 		end
 		LeaveParty()
+end
+
+StaticPopupDialogs["DISBAND_RAID"] = {
+	text = "Are you sure you want to disband the group?",
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	OnAccept = DisbandRaidGroup,
+	timeout = 0,
+	whileDead = 1,
+}
+
+SlashCmdList["GROUPDISBAND"] = function()
+	StaticPopup_Show("DISBAND_RAID")
 end
 SLASH_GROUPDISBAND1 = '/rd'

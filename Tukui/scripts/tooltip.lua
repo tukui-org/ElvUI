@@ -21,37 +21,76 @@ local classification = {
 	elite = "|cffAF5050+|r",
 	rare = "|cffAF5050Rare|r",
 }
-
+ 	
 local NeedBackdropBorderRefresh = false
+
+local yOffset = 0
+local xOffset = 0
+
+yOffset = yOffset + TukuiCF["tooltip"].yOfs
+xOffset = xOffset + TukuiCF["tooltip"].xOfs
+
+
+--Check if our embed right addon is shown
+local function CheckAddOnShown()
+	if TukuiDB.ChatRightShown == true then
+		return true
+	elseif TukuiCF["general"].embedright == "Omen" and IsAddOnLoaded("Omen") then
+		if OmenAnchor:IsShown() then
+			return true
+		else
+			return false
+		end
+	elseif TukuiCF["general"].embedright == "Recount" and IsAddOnLoaded("Recount") then
+		if Recount_MainWindow:IsShown() then
+			return true
+		else
+			return false
+		end
+	elseif  TukuiCF["general"].embedright ==  "Skada" and IsAddOnLoaded("Skada") then
+		if SkadaBarWindowSkada:IsShown() then
+			return true
+		else
+			return false
+		end
+	else
+		return false
+	end
+end
 
 hooksecurefunc("GameTooltip_SetDefaultAnchor", function(self, parent)
 	if db.cursor == true then
-		self:SetOwner(parent, "ANCHOR_CURSOR")
+		self:SetOwner(parent, "ANCHOR_CURSOR")	
 	else
 		self:SetOwner(parent, "ANCHOR_NONE")
-		self:SetPoint("BOTTOMRIGHT", TukuiInfoRight, "TOPRIGHT", 0, TukuiDB.Scale(5))
+		self:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -15+xOffset, TukuiDB.Scale(42+yOffset))	
 	end
 	self.default = 1
 end)
 
 GameTooltip:HookScript("OnUpdate",function(self, ...)
+	local inInstance, instanceType = IsInInstance()
 	if self:GetAnchorType() == "ANCHOR_CURSOR" and NeedBackdropBorderRefresh == true and db.cursor ~= true then
 		-- h4x for world object tooltip border showing last border color 
 		-- or showing background sometime ~blue :x
 		NeedBackdropBorderRefresh = false
-		self:SetBackdropColor(unpack(TukuiCF.media.backdropcolor))
+		self:SetBackdropColor(unpack(TukuiCF.media.backdropfadecolor))
 		self:SetBackdropBorderColor(unpack(TukuiCF.media.bordercolor))
 	elseif self:GetAnchorType() == "ANCHOR_NONE" then
-		if InCombatLockdown() and db.hidecombat == true then
-			self:SetAlpha(0)
+		self:ClearAllPoints()
+		if InCombatLockdown() and db.hidecombat == true and (TukuiCF["tooltip"].hidecombatraid == true and inInstance and (instanceType == "raid")) then
+			self:Hide()
+		elseif InCombatLockdown() and db.hidecombat == true and TukuiCF["tooltip"].hidecombatraid == false then
+			self:Hide()
 		else
-			self:SetAlpha(1)
-			if TukuiCF["bags"].enable == true and StuffingFrameBags:IsShown() then
-				self:ClearAllPoints()
-				self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", 0, TukuiDB.Scale(4))
+			if TukuiCF["others"].enablebag == true and StuffingFrameBags:IsShown() then
+				self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", -1, TukuiDB.Scale(18))	
 			else
-				self:ClearAllPoints()
-				self:SetPoint("BOTTOMRIGHT", TukuiInfoRight, "TOPRIGHT", 0, TukuiDB.Scale(5))
+				if CheckAddOnShown() == true then
+					self:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", -1, TukuiDB.Scale(18))		
+				else
+					self:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -15+xOffset, TukuiDB.Scale(42+yOffset))	
+				end
 			end
 		end
 	end
@@ -111,7 +150,7 @@ GameTooltipStatusBar:SetScript("OnValueChanged", function(self, value)
 
 	if not self.text then
 		self.text = self:CreateFontString(nil, "OVERLAY")
-		self.text:SetPoint("CENTER", GameTooltipStatusBar, 0, TukuiDB.Scale(6))
+		self.text:SetPoint("CENTER", GameTooltipStatusBar, 0, TukuiDB.Scale(-3))
 		self.text:SetFont(TukuiCF["media"].font, 12, "THINOUTLINE")
 		self.text:Show()
 		if unit then
@@ -130,9 +169,7 @@ GameTooltipStatusBar:SetScript("OnValueChanged", function(self, value)
 			min, max = UnitHealth(unit), UnitHealthMax(unit)
 			self.text:Show()
 			local hp = ShortValue(min).." / "..ShortValue(max)
-			if UnitIsGhost(unit) then
-				self.text:SetText(tukuilocal.unitframes_ouf_ghost)
-			elseif min == 0 or UnitIsDead(unit) or UnitIsGhost(unit) then
+			if min == 0 or min == 1 then
 				self.text:SetText(tukuilocal.unitframes_ouf_dead)
 			else
 				self.text:SetText(hp)
@@ -145,16 +182,18 @@ end)
 
 local healthBar = GameTooltipStatusBar
 healthBar:ClearAllPoints()
-healthBar:SetHeight(TukuiDB.Scale(6))
-healthBar:SetPoint("BOTTOMLEFT", healthBar:GetParent(), "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(5))
-healthBar:SetPoint("BOTTOMRIGHT", healthBar:GetParent(), "TOPRIGHT", -TukuiDB.Scale(2), TukuiDB.Scale(5))
+healthBar:SetHeight(TukuiDB.Scale(5))
+healthBar:SetPoint("TOPLEFT", healthBar:GetParent(), "BOTTOMLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-5))
+healthBar:SetPoint("TOPRIGHT", healthBar:GetParent(), "BOTTOMRIGHT", -TukuiDB.Scale(2), TukuiDB.Scale(-5))
 healthBar:SetStatusBarTexture(TukuiCF.media.normTex)
+
 
 local healthBarBG = CreateFrame("Frame", "StatusBarBG", healthBar)
 healthBarBG:SetFrameLevel(healthBar:GetFrameLevel() - 1)
 healthBarBG:SetPoint("TOPLEFT", -TukuiDB.Scale(2), TukuiDB.Scale(2))
 healthBarBG:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), -TukuiDB.Scale(2))
 TukuiDB.SetTemplate(healthBarBG)
+healthBarBG:SetBackdropColor(unpack(TukuiCF.media.backdropfadecolor))
 
 GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 	local lines = self:NumLines()
@@ -171,6 +210,10 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 	
 	-- for hiding tooltip on unitframes
 	if (self:GetOwner() ~= UIParent and db.hideuf) then self:Hide() return end
+
+	if self:GetOwner() ~= UIParent and CheckAddOnShown() and unit then
+		self:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", -1, TukuiDB.Scale(18))		
+	end
 	
 	-- A "mouseover" unit is better to have as we can then safely say the tip should no longer show when it becomes invalid.
 	if (UnitIsUnit(unit,"mouseover")) then
@@ -201,7 +244,13 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 
 		local offset = 2
 		if guild then
-			_G["GameTooltipTextLeft2"]:SetFormattedText("%s", IsInGuild() and GetGuildInfo("player") == guild and "|cff0090ff"..guild.."|r" or "|cff00ff10"..guild.."|r")
+			local guildName, guildRankName, guildRankIndex = GetGuildInfo(unit);
+			if guildRankName then
+			-- can't use setformated text because some assholes have % signs in their guild ranks
+				_G["GameTooltipTextLeft2"]:SetText("<|cffFFD700"..GetGuildInfo(unit).."|r> [|cffFFD700"..guildRankName.."|r]")
+			else
+				_G["GameTooltipTextLeft2"]:SetFormattedText("<|cffFFD700%s|r>", GetGuildInfo(unit))
+			end
 			offset = offset + 1
 		end
 
@@ -214,7 +263,6 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 	else
 		for i = 2, lines do
 			if((_G["GameTooltipTextLeft"..i]:GetText():find("^"..LEVEL)) or (crtype and _G["GameTooltipTextLeft"..i]:GetText():find("^"..crtype))) then
-				if level == -1 and classif == "elite" then classif = "worldboss" end
 				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r%s %s", r*255, g*255, b*255, classif ~= "worldboss" and level ~= 0 and level or "", classification[classif] or "", crtype or "")
 				break
 			end
@@ -242,7 +290,7 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 	self.fadeOut = nil
 end)
 
-local BorderColor = function(self)
+local Colorize = function(self)
 	local GMF = GetMouseFocus()
 	local unit = (select(2, self:GetUnit())) or (GMF and GMF:GetAttribute("unit"))
 		
@@ -252,17 +300,31 @@ local BorderColor = function(self)
 	local tappedbyme = unit and UnitIsTappedByPlayer(unit)
 	local connected = unit and UnitIsConnected(unit)
 	local dead = unit and UnitIsDead(unit)
+	
 
-	if player then
+	if (reaction) and (tapped and not tappedbyme or not connected or dead) then
+		r, g, b = 0.55, 0.57, 0.61
+		self:SetBackdropBorderColor(r, g, b)
+		healthBarBG:SetBackdropBorderColor(r, g, b)
+		healthBar:SetStatusBarColor(r, g, b)
+	elseif player and not TukuiCF["tooltip"].colorreaction == true then
 		local class = select(2, UnitClass(unit))
-		local c = TukuiDB.oUF_colors.class[class]
-		r, g, b = c[1], c[2], c[3]
+		if TukuiCF.unitframes.enable == true then
+			local c = TukuiDB.oUF_colors.class[class]
+			r, g, b = c[1], c[2], c[3]
+		else
+			r, g, b = RAID_CLASS_COLORS[class].r, RAID_CLASS_COLORS[class].g, RAID_CLASS_COLORS[class].b
+		end
 		self:SetBackdropBorderColor(r, g, b)
 		healthBarBG:SetBackdropBorderColor(r, g, b)
 		healthBar:SetStatusBarColor(r, g, b)
 	elseif reaction then
-		local c = TukuiDB.oUF_colors.reaction[reaction]
-		r, g, b = c[1], c[2], c[3]
+		if TukuiCF.unitframes.enable == true then
+			local c = TukuiDB.oUF_colors.reaction[reaction]
+			r, g, b = c[1], c[2], c[3]
+		else
+			r, g, b = FACTION_BAR_COLORS[reaction].r, FACTION_BAR_COLORS[reaction].g, FACTION_BAR_COLORS[reaction].b
+		end
 		self:SetBackdropBorderColor(r, g, b)
 		healthBarBG:SetBackdropBorderColor(r, g, b)
 		healthBar:SetStatusBarColor(r, g, b)
@@ -277,15 +339,15 @@ local BorderColor = function(self)
 			healthBarBG:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))
 			healthBar:SetStatusBarColor(unpack(TukuiCF["media"].bordercolor))
 		end
-	end
-	
+	end	
 	-- need this
 	NeedBackdropBorderRefresh = true
 end
 
 local SetStyle = function(self)
 	TukuiDB.SetTemplate(self)
-	BorderColor(self)
+	self:SetBackdropColor(unpack(TukuiCF.media.backdropfadecolor))
+	Colorize(self)
 end
 
 TukuiTooltip:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -295,6 +357,22 @@ TukuiTooltip:SetScript("OnEvent", function(self)
 	end
 	
 	TukuiDB.SetTemplate(FriendsTooltip)
+	FriendsTooltip:SetBackdropColor(unpack(TukuiCF.media.backdropfadecolor))
+	TukuiDB.SetTemplate(BNToastFrame)
+	BNToastFrame:SetBackdropColor(unpack(TukuiCF.media.backdropfadecolor))
+	TukuiDB.SetTemplate(DropDownList1MenuBackdrop)
+	DropDownList1MenuBackdrop:SetBackdropColor(unpack(TukuiCF.media.backdropfadecolor))
+	TukuiDB.SetTemplate(DropDownList2MenuBackdrop)
+	DropDownList2MenuBackdrop:SetBackdropColor(unpack(TukuiCF.media.backdropfadecolor))
+	TukuiDB.SetTemplate(DropDownList1Backdrop)
+	DropDownList1Backdrop:SetBackdropColor(unpack(TukuiCF.media.backdropfadecolor))
+	TukuiDB.SetTemplate(DropDownList2Backdrop)
+	DropDownList2Backdrop:SetBackdropColor(unpack(TukuiCF.media.backdropfadecolor))
+	
+	BNToastFrame:HookScript("OnShow", function(self)
+		self:ClearAllPoints()
+		self:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, TukuiDB.Scale(5))
+	end)
 		
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 	self:SetScript("OnEvent", nil)

@@ -1,4 +1,4 @@
-
+if not TukuiCF["unitframes"].enable == true and not TukuiCF["raidframes"].enable == true then return end
 ------------------------------------------------------------------------
 --	Colors
 ------------------------------------------------------------------------
@@ -52,3 +52,19 @@ TukuiDB.oUF_colors = setmetatable({
 		["WARRIOR"]     = { 199/255, 156/255, 110/255 },
 	}, {__index = oUF.colors.class}),
 }, {__index = oUF.colors})
+
+
+--Adjust border color if classcolor theme is on
+if TukuiCF["general"].classcolortheme == true then
+	local _, class = UnitClass("player")
+	local r, g, b = RAID_CLASS_COLORS[class].r, RAID_CLASS_COLORS[class].g, RAID_CLASS_COLORS[class].b
+	TukuiCF["media"].altbordercolor = { r,g,b,1 }
+	TukuiCF["media"].bordercolor = { r,g,b,1 }
+end
+
+
+
+
+
+
+

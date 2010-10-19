@@ -1,4 +1,4 @@
-if not TukuiCF["map"].enable == true then return end
+if not TukuiCF["others"].enablemap == true then return end
 
 local mapscale = WORLDMAP_WINDOWED_SIZE
 
@@ -23,14 +23,13 @@ movebutton:SetBackdrop( {
 })
 
 local addon = CreateFrame('Frame')
-addon:RegisterEvent('PLAYER_LOGIN')
 addon:RegisterEvent("PLAYER_REGEN_ENABLED")
 addon:RegisterEvent("PLAYER_REGEN_DISABLED")
 
 -- because smallmap > bigmap by far
 local SmallerMap = GetCVarBool("miniWorldMap")
 if SmallerMap == nil then
-	SetCVar("miniWorldMap", 1)
+	SetCVar("miniWorldMap", 1);
 end
 
 -- look if map is not locked
@@ -40,12 +39,6 @@ if MoveMap == nil then
 end
 
 local SmallerMapSkin = function()
-	-- because it cause "action failed" when displaying smaller map in combat with quests track ...
-	TukuiDB.Kill(WorldMapBlobFrame)
-	
-	-- don't need this
-	TukuiDB.Kill(WorldMapTrackQuest)
-	
 	-- new frame to put zone and title text in
 	local ald = CreateFrame ("Frame", nil, WorldMapButton)
 	ald:SetFrameStrata("HIGH")
@@ -103,7 +96,7 @@ local SmallerMapSkin = function()
 	
 	-- 3.3.3, hide the dropdown added into this patch
 	WorldMapLevelDropDown:SetAlpha(0)
-	WorldMapLevelDropDown:SetScale(0.00001)
+	WorldMapLevelDropDown:SetScale(0.0001)
 
 	-- fix tooltip not hidding after leaving quest # tracker icon
 	hooksecurefunc("WorldMapQuestPOI_OnLeave", function() WorldMapTooltip:Hide() end)
@@ -120,25 +113,26 @@ hooksecurefunc("WorldMap_ToggleSizeUp", function() BiggerMapSkin() end)
 local function OnMouseDown()
 	local maplock = GetCVar("advancedWorldMap")
 	if maplock ~= "1" then return end
-	WorldMapScreenAnchor:ClearAllPoints()
-	WorldMapFrame:ClearAllPoints()
-	WorldMapFrame:StartMoving();
+	WorldMapScreenAnchor:ClearAllPoints();
+	WorldMapFrame:ClearAllPoints();
+	WorldMapFrame:StartMoving(); 
 end
 
 local function OnMouseUp()
 	local maplock = GetCVar("advancedWorldMap")
 	if maplock ~= "1" then return end
-	WorldMapFrame:StopMovingOrSizing()
-	WorldMapScreenAnchor:StartMoving()
-	WorldMapScreenAnchor:SetPoint("TOPLEFT", WorldMapFrame)
-	WorldMapScreenAnchor:StopMovingOrSizing()
+	WorldMapFrame:StopMovingOrSizing();
+	WorldMapScreenAnchor:StartMoving();
+	WorldMapScreenAnchor:SetPoint("TOPLEFT", WorldMapFrame);
+	WorldMapScreenAnchor:StopMovingOrSizing();
 end
 
 movebutton:EnableMouse(true)
 movebutton:SetScript("OnMouseDown", OnMouseDown)
 movebutton:SetScript("OnMouseUp", OnMouseUp)
 
-local OnEvent = function(self, event)
+
+local OnEvent = function()
 	-- fixing a stupid bug error by blizzard on default ui :x
 	if event == "PLAYER_REGEN_DISABLED" then
 		WorldMapFrameSizeDownButton:Disable() 
@@ -199,10 +193,10 @@ tinymap:SetScript("OnEvent", function(self, event, addon)
 	self:SetScript("OnMouseUp", function(self, btn)
 		if btn == "LeftButton" then
 			self:StopMovingOrSizing()
-			if OpacityFrame:IsShown() then OpacityFrame:Hide() end -- seem to be a bug with default ui in 4.0, we hide it on next click
+			if OpacityFrame:IsShown() then OpacityFrame:Hide() end
 		elseif btn == "RightButton" then
 			ToggleDropDownMenu(1, nil, BattlefieldMinimapTabDropDown, self:GetName(), 0, -4)
-			if OpacityFrame:IsShown() then OpacityFrame:Hide() end -- seem to be a bug with default ui in 4.0, we hide it on next click
+			if OpacityFrame:IsShown() then OpacityFrame:Hide() end
 		end
 	end)
 	

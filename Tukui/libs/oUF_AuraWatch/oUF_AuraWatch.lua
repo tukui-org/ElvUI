@@ -1,4 +1,4 @@
-if TukuiCF.unitframes.enable ~= true or TukuiCF.unitframes.raidunitdebuffwatch ~= true then return end
+if TukuiCF.auras.raidunitbuffwatch ~= true then return end
 if not oUF then return end
 
 --[[------------------------------------------------------------------------------------------------------

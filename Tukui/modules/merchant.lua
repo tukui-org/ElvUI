@@ -2,7 +2,7 @@ local db = TukuiCF["merchant"]
 
 local f = CreateFrame("Frame")
 f:SetScript("OnEvent", function()
-	if db.sellgrays then
+	if TukuiCF["others"].sellgrays then
 		local c = 0
 		for b=0,4 do
 			for s=1,GetContainerNumSlots(b) do
@@ -23,7 +23,7 @@ f:SetScript("OnEvent", function()
 		end
 	end
 	if not IsShiftKeyDown() then
-		if CanMerchantRepair() and db.autorepair then
+		if CanMerchantRepair() and TukuiCF["others"].autorepair then
 			cost, possible = GetRepairAllCost()
 			if cost>0 then
 				if possible then

@@ -1,4 +1,3 @@
--- keybind feature
 local bind = CreateFrame("Frame", "TukuiHoverBind", UIParent)
 -- SLASH COMMAND
 SlashCmdList.MOUSEOVERBIND = function()

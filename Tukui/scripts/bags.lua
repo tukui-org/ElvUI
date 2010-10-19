@@ -4,17 +4,34 @@
 	but I've removed pretty much all of the options.
 	
 	All credits of this bags script is by Stuffing and his author Hungtar.
-	Special Thank's to Hungtar to allow me to use his bag mod for Tukui.
 --]]
 
-if not TukuiCF["bags"].enable == true then return end
+if not TukuiCF["others"].enablebag == true then 
+	local MoveBags = function()
+		ContainerFrame1:ClearAllPoints()
+		ContainerFrame1:SetPoint("BOTTOMRIGHT", RDummyFrame, "BOTTOMRIGHT", 0, TukuiDB.Scale(5))
+		ContainerFrame2:ClearAllPoints()
+		ContainerFrame2:SetPoint("BOTTOM", ContainerFrame1, "TOP", 0, TukuiDB.Scale(5))
+		ContainerFrame3:ClearAllPoints()
+		ContainerFrame3:SetPoint("BOTTOMRIGHT", ContainerFrame1, "BOTTOMLEFT", TukuiDB.Scale(-5), 0)
+		ContainerFrame4:ClearAllPoints()
+		ContainerFrame4:SetPoint("BOTTOM", ContainerFrame3, "TOP", 0, TukuiDB.Scale(5))
+		ContainerFrame5:ClearAllPoints()
+		ContainerFrame5:SetPoint("BOTTOMRIGHT", ContainerFrame4, "BOTTOMLEFT", TukuiDB.Scale(-5), 0)
+	end
+	hooksecurefunc("updateContainerFrameAnchors", MoveBags)
+	return 
+end
 
 local bags_BACKPACK = {0, 1, 2, 3, 4}
 local bags_BANK = {-1, 5, 6, 7, 8, 9, 10, 11}
 local BAGSFONT = TukuiCF["media"].font
 local ST_NORMAL = 1
+local ST_SOULBAG = 2
 local ST_SPECIAL = 3
+local ST_QUIVER = 4
 local bag_bars = 0
+local hide_soulbag = TukuiCF["others"].soulbag
 
 -- hide bags options in default interface
 InterfaceOptionsDisplayPanelShowFreeBagSpace:Hide()
@@ -22,8 +39,8 @@ InterfaceOptionsDisplayPanelShowFreeBagSpace:Hide()
 Stuffing = CreateFrame ("Frame", nil, UIParent)
 Stuffing:RegisterEvent("ADDON_LOADED")
 Stuffing:RegisterEvent("PLAYER_ENTERING_WORLD")
-Stuffing:SetScript("OnEvent", function(this, event, ...)
-	Stuffing[event](this, ...)
+Stuffing:SetScript("OnEvent", function(self, event, ...)
+	Stuffing[event](self, ...)
 end)
 
 -- stub for localization.
@@ -93,10 +110,6 @@ end
 
 
 local function Stuffing_ToggleBag(id)
-	if id == -2 then
-		ToggleKeyRing()
-		return
-	end
 	Stuffing_Toggle()
 end
 
@@ -115,10 +128,9 @@ local StuffingTT = nil
 local QUEST_ITEM_STRING = nil
 
 function Stuffing:SlotUpdate(b)
-	if not StuffingFrameBags:IsShown() then return end -- don't do any slot update if bags are not show
 	local texture, count, locked = GetContainerItemInfo (b.bag, b.slot)
 	local clink = GetContainerItemLink(b.bag, b.slot)
-	
+
 	-- set all slot color to default tukui on update
 	if not b.frame.lock then
 		b.frame:SetBackdropBorderColor(unpack(TukuiCF.media.bordercolor))
@@ -290,13 +302,18 @@ end
 
 
 -- from OneBag
- 
+local BAGTYPE_QUIVER = 0x0001 + 0x0002 
+local BAGTYPE_SOUL = 0x004
 local BAGTYPE_PROFESSION = 0x0008 + 0x0010 + 0x0020 + 0x0040 + 0x0080 + 0x0200 + 0x0400
 
 function Stuffing:BagType(bag)
 	local bagType = select(2, GetContainerNumFreeSlots(bag))
 
-	if bit.band(bagType, BAGTYPE_PROFESSION) > 0 then
+	if bit.band(bagType, BAGTYPE_QUIVER) > 0 then
+		return ST_QUIVER
+	elseif bit.band(bagType, BAGTYPE_SOUL) > 0 then
+		return ST_SOULBAG
+	elseif bit.band(bagType, BAGTYPE_PROFESSION) > 0 then
 		return ST_SPECIAL
 	end
 
@@ -346,16 +363,11 @@ function Stuffing:SearchUpdate(str)
 	str = string.lower(str)
 
 	for _, b in ipairs(self.buttons) do
-		if b.frame and not b.name then
-			b.frame:SetAlpha(.2)
-		end
 		if b.name then
 			if not string.find (string.lower(b.name), str) then
 				SetItemButtonDesaturated(b.frame, 1, 1, 1, 1)
-				b.frame:SetAlpha(.2)
 			else
 				SetItemButtonDesaturated(b.frame, 0, 1, 1, 1)
-				b.frame:SetAlpha(1)
 			end
 		end
 	end
@@ -364,7 +376,6 @@ end
 
 function Stuffing:SearchReset()
 	for _, b in ipairs(self.buttons) do
-		b.frame:SetAlpha(1)
 		SetItemButtonDesaturated(b.frame, 0, 1, 1, 1)
 	end
 end
@@ -389,9 +400,9 @@ function Stuffing:CreateBagFrame(w)
 	f:SetFrameLevel(20)
 
 	if w == "Bank" then
-		f:SetPoint("BOTTOMLEFT", TukuiInfoLeft, "TOPLEFT", 0, TukuiDB.Scale(5))
+		f:SetPoint("BOTTOMLEFT", ChatLBackground, "BOTTOMLEFT")
 	else
-		f:SetPoint("BOTTOMRIGHT", TukuiInfoRight, "TOPRIGHT", 0, TukuiDB.Scale(5))
+		f:SetPoint("BOTTOMRIGHT", RDummyFrame, "BOTTOMRIGHT")
 	end
 	
 	-- close button
@@ -456,7 +467,7 @@ function Stuffing:InitBags()
 	local f = self:CreateBagFrame("Bags")
 	f:SetScript("OnShow", Stuffing_OnShow)
 	f:SetScript("OnHide", Stuffing_OnHide)
-
+	
 	-- search editbox (tekKonfigAboutPanel.lua)
 	local editbox = CreateFrame("EditBox", nil, f)
 	editbox:Hide()
@@ -497,7 +508,7 @@ function Stuffing:InitBags()
 	gold:SetPoint("RIGHT", f.b_close, "LEFT", TukuiDB.Scale(-3), 0)
 
 	f:SetScript("OnEvent", function (self, e)
-		self.gold:SetText(GetMoneyString(GetMoney(), 12))
+		self.gold:SetText (GetCoinTextureString(GetMoney(), 12))
 	end)
 
 	f:RegisterEvent("PLAYER_MONEY")
@@ -562,30 +573,14 @@ function Stuffing:Layout(lb)
 
 	if lb then
 		bs = bags_BANK
-		if TukuiCF["panels"].tinfowidth >= 405 then
-			cols = 11
-		elseif TukuiCF["panels"].tinfowidth >= 370 and TukuiCF["panels"].tinfowidth < 405 then
-			cols = 10
-		elseif TukuiCF["panels"].tinfowidth >= 335 and TukuiCF["panels"].tinfowidth < 370 then
-			cols = 9
-		else
-			cols = 8
-		end
+		cols = (floor(TukuiCF["chat"].chatwidth/370 * 10))
 		f = self.bankFrame
 	else
 		bs = bags_BACKPACK
-		if TukuiCF["panels"].tinfowidth >= 405 then
-			cols = 11
-		elseif TukuiCF["panels"].tinfowidth >= 370 and TukuiCF["panels"].tinfowidth < 405 then
-			cols = 10
-		elseif TukuiCF["panels"].tinfowidth >= 335 and TukuiCF["panels"].tinfowidth < 370 then
-			cols = 9
-		else
-			cols = 8
-		end
+		cols = (floor(TukuiCF["chat"].chatwidth/370 * 10))
 		f = self.frame
 
-		f.gold:SetText(GetMoneyString(GetMoney(), 12))
+		f.gold:SetText (GetCoinTextureString(GetMoney(), 12))
 		f.editbox:SetFont(BAGSFONT, 12)
 		f.detail:SetFont(BAGSFONT, 12)
 		f.gold:SetFont(BAGSFONT, 12)
@@ -602,7 +597,7 @@ function Stuffing:Layout(lb)
 		edgeSize = TukuiDB.mult,
 		insets = {left = -TukuiDB.mult, right = -TukuiDB.mult, top = -TukuiDB.mult, bottom = -TukuiDB.mult}
 	})
-	f:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
+	f:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor))
 	f:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))
 
 
@@ -616,7 +611,7 @@ function Stuffing:Layout(lb)
 			edgeSize = TukuiDB.mult,
 			insets = {left = -TukuiDB.mult, right = -TukuiDB.mult, top = -TukuiDB.mult, bottom = -TukuiDB.mult}
 		})
-		fb:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
+		fb:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor))
 		fb:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))
 
 		local bsize = 30
@@ -665,7 +660,9 @@ function Stuffing:Layout(lb)
 				self.bags[i] = self:BagNew(i, f)
 			end
 
-			slots = slots + GetContainerNumSlots(i)
+			if not (hide_soulbag ~= true and self.bags[i].bagType == ST_SOULBAG) then
+				slots = slots + GetContainerNumSlots(i)
+			end
 		end
 	end
 
@@ -675,9 +672,13 @@ function Stuffing:Layout(lb)
 		rows = rows + 1
 	end
 
-	f:SetWidth(TukuiDB.Scale(cols * 31 + (cols - 1) * 4 + 12 * 2)) 
+	f:SetWidth(TukuiDB.Scale(TukuiCF["chat"].chatwidth))
 	f:SetHeight(TukuiDB.Scale(rows * 31 + (rows - 1) * 4 + off + 12 * 2))
 
+	local bf = CreateFrame("Frame", "BagHolderFrame", f)
+	bf:SetWidth((31 + 2.5) * cols)
+	bf:SetHeight(f:GetHeight() - (6))
+	bf:SetPoint("BOTTOM", f, "BOTTOM")
 
 	local idx = 0
 	for _, i in ipairs(bs) do
@@ -687,50 +688,71 @@ function Stuffing:Layout(lb)
 			self.bags[i] = self:BagNew(i, f)
 			local bagType = self.bags[i].bagType
 
-			self.bags[i]:Show()
-			for j = 1, bag_cnt do
-				local b, isnew = self:SlotNew (i, j)
-				local xoff
-				local yoff
-				local x = (idx % cols)
-				local y = floor(idx / cols)
+			if not (hide_soulbag ~= true and bagType == ST_SOULBAG) then
+				self.bags[i]:Show()
+				--print (i .. ": " .. GetContainerNumSlots(i) .. " slots.")
+			
+				for j = 1, bag_cnt do
+					local b, isnew = self:SlotNew (i, j)
+					local xoff
+					local yoff
+					local x = (idx % cols)
+					local y = floor(idx / cols)
 
-				if isnew then
-					table.insert(self.buttons, idx + 1, b)
+					if isnew then
+						table.insert(self.buttons, idx + 1, b)
+					end
+
+					--xoff = ((f:GetWidth() / cols) / 2) + (x * 31) + (x * 2.5)
+					xoff = (x * 31) + (x * 2.5)
+					
+					yoff = off + 12 + (y * 31) + ((y - 1) * 4)
+					yoff = yoff * -1
+					
+					
+					
+					b.frame:ClearAllPoints()
+					b.frame:SetPoint("TOPLEFT", bf, "TOPLEFT", TukuiDB.Scale(xoff), TukuiDB.Scale(yoff))
+					b.frame:SetHeight(TukuiDB.Scale(31))
+					b.frame:SetWidth(TukuiDB.Scale(31))
+					b.frame:SetPushedTexture("")
+					b.frame:SetNormalTexture("")
+					b.frame:Show()
+					TukuiDB.SetTemplate(b.frame)
+					b.frame:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor))
+					TukuiDB.StyleButton(b.frame)
+					local clink = GetContainerItemLink
+					if (clink and b.rarity and b.rarity > 1) then
+						b.frame:SetBackdropBorderColor(GetItemQualityColor(b.rarity))
+					elseif (clink and b.qitem) then
+						b.frame:SetBackdropBorderColor(1.0, 0.3, 0.3)				
+					elseif bagType == ST_QUIVER then
+						b.frame:SetBackdropBorderColor(0.8, 0.8, 0.2, 1)
+						b.frame.lock = true
+					elseif bagType == ST_SOULBAG then
+						b.frame:SetBackdropBorderColor(0.5, 0.2, 0.2)
+						b.frame.lock = true
+					elseif bagType == ST_SPECIAL then
+						b.frame:SetBackdropBorderColor(0.2, 0.2, 0.8)
+						b.frame.lock = true
+					end
+					
+					-- color profession bag slot border ~yellow
+					if bagType == ST_SPECIAL then b.frame:SetBackdropBorderColor(255/255, 243/255,  82/255) b.frame.lock = true end
+
+					local iconTex = _G[b.frame:GetName() .. "IconTexture"]
+					iconTex:SetTexCoord(.08, .92, .08, .92)
+					iconTex:SetPoint("TOPLEFT", b.frame, TukuiDB.Scale(2), TukuiDB.Scale(-2))
+					iconTex:SetPoint("BOTTOMRIGHT", b.frame, TukuiDB.Scale(-2), TukuiDB.Scale(2))
+
+					iconTex:Show()
+					b.iconTex = iconTex
+					
+					idx = idx + 1
 				end
-
-				xoff = 12 + (x * 31)
-						+ (x * 4)
-
-				yoff = off + 12 + (y * 31)
-						+ ((y - 1) * 4)
-				yoff = yoff * -1
-
-				b.frame:ClearAllPoints()
-				b.frame:SetPoint("TOPLEFT", f, "TOPLEFT", TukuiDB.Scale(xoff), TukuiDB.Scale(yoff))
-				b.frame:SetHeight(TukuiDB.Scale(31))
-				b.frame:SetWidth(TukuiDB.Scale(31))
-				b.frame:SetPushedTexture("")
-				b.frame:SetNormalTexture("")
-				b.frame:Show()
-				TukuiDB.SetTemplate(b.frame)
-				b.frame:SetBackdropColor(0, 0, 0, 0) -- we just need border with SetTemplate, not the backdrop. Hopefully this will fix invisible item that some users have.
-				TukuiDB.StyleButton(b.frame, false)
-				
-				-- color profession bag slot border ~yellow
-				if bagType == ST_SPECIAL then b.frame:SetBackdropBorderColor(255/255, 243/255,  82/255) b.frame.lock = true end
-				
-				self:SlotUpdate(b)
-				
-				local iconTex = _G[b.frame:GetName() .. "IconTexture"]
-				iconTex:SetTexCoord(.08, .92, .08, .92)
-				iconTex:SetPoint("TOPLEFT", b.frame, TukuiDB.Scale(2), TukuiDB.Scale(-2))
-				iconTex:SetPoint("BOTTOMRIGHT", b.frame, TukuiDB.Scale(-2), TukuiDB.Scale(2))
-
-				iconTex:Show()
-				b.iconTex = iconTex
-				
-				idx = idx + 1
+			else
+				-- XXX
+				self.bags[i]:Hide()
 			end
 		end
 	end
@@ -853,12 +875,15 @@ function Stuffing:ADDON_LOADED(addon)
 	SLASH_STUFFING1 = "/bags"
 
 	self:InitBags()
-	
+
 	tinsert(UISpecialFrames,"StuffingFrameBags")
 
+	--
+	-- hook functions
+	--
 	ToggleBackpack = Stuffing_Toggle
 	ToggleBag = Stuffing_ToggleBag
-	OpenAllBags = Stuffing_Toggle
+	OpenAllBags = Stuffing_Toggle --Stuffing_Open
 	OpenBackpack = Stuffing_Open
 	CloseAllBags = Stuffing_Close
 	CloseBackpack = Stuffing_Close
@@ -867,42 +892,42 @@ function Stuffing:ADDON_LOADED(addon)
 end
 
 function Stuffing:PLAYER_ENTERING_WORLD()
-	-- please don't do anything after 1 player_entering_world event.
-	Stuffing:UnregisterEvent("PLAYER_ENTERING_WORLD")
-	
-	-- hooking and setting key ring bag
+	-- setting key ring bag
 	-- this is just a reskin of Blizzard key bag to fit Tukui
-	-- hooking OnShow because sometime key max slot changes.
-	ContainerFrame1:HookScript("OnShow", function(self)
-		local keybackdrop = CreateFrame("Frame", nil, self)
-		keybackdrop:SetPoint("TOPLEFT", TukuiDB.Scale(9), TukuiDB.Scale(-40))
-		keybackdrop:SetPoint("BOTTOMLEFT", 0, 0)
-		keybackdrop:SetSize(TukuiDB.Scale(179),TukuiDB.Scale(215))
-		TukuiDB.SetTemplate(keybackdrop)
-		ContainerFrame1CloseButton:Hide()
-		ContainerFrame1Portrait:Hide()
-		ContainerFrame1Name:Hide()
-		ContainerFrame1BackgroundTop:SetAlpha(0)
-		ContainerFrame1BackgroundMiddle1:SetAlpha(0)
-		ContainerFrame1BackgroundMiddle2:SetAlpha(0)
-		ContainerFrame1BackgroundBottom:SetAlpha(0)
-		for i=1, GetKeyRingSize() do
-			local slot = _G["ContainerFrame1Item"..i]
-			local t = _G["ContainerFrame1Item"..i.."IconTexture"]
-			slot:SetPushedTexture("")
-			slot:SetNormalTexture("")
-			t:SetTexCoord(.08, .92, .08, .92)
-			t:SetPoint("TOPLEFT", slot, TukuiDB.Scale(2), TukuiDB.Scale(-2))
-			t:SetPoint("BOTTOMRIGHT", slot, TukuiDB.Scale(-2), TukuiDB.Scale(2))
-			TukuiDB.SetTemplate(slot)
-			slot:SetBackdropColor(0, 0, 0, 0)
-			TukuiDB.StyleButton(slot, false)
-		end
-		self:ClearAllPoints()
-		self:SetPoint("BOTTOMRIGHT", TukuiInfoRight, "TOPRIGHT", TukuiDB.Scale(4), TukuiDB.Scale(5))
-	end)
-end
 
+	local keybackdrop = CreateFrame("Frame", nil, ContainerFrame1)
+	keybackdrop:SetPoint("TOPLEFT", TukuiDB.Scale(9), TukuiDB.Scale(-40))
+	keybackdrop:SetPoint("BOTTOMLEFT", 0, 0)
+	keybackdrop:SetSize(TukuiDB.Scale(179),TukuiDB.Scale(215))
+	TukuiDB.SetTemplate(keybackdrop)
+	keybackdrop:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor))
+	ContainerFrame1CloseButton:Hide()
+	ContainerFrame1Portrait:Hide()
+	ContainerFrame1Name:Hide()
+	ContainerFrame1BackgroundTop:SetAlpha(0)
+	ContainerFrame1BackgroundMiddle1:SetAlpha(0)
+	ContainerFrame1BackgroundMiddle2:SetAlpha(0)
+	ContainerFrame1BackgroundBottom:SetAlpha(0)
+	for i=1, GetKeyRingSize() do
+		local slot = _G["ContainerFrame1Item"..i]
+		local t = _G["ContainerFrame1Item"..i.."IconTexture"]
+		slot:SetPushedTexture("")
+		slot:SetNormalTexture("")
+		t:SetTexCoord(.08, .92, .08, .92)
+		t:SetPoint("TOPLEFT", slot, TukuiDB.Scale(2), TukuiDB.Scale(-2))
+		t:SetPoint("BOTTOMRIGHT", slot, TukuiDB.Scale(-2), TukuiDB.Scale(2))
+		TukuiDB.SetTemplate(slot)
+		
+		TukuiDB.StyleButton(slot, false)
+	end
+
+
+	ContainerFrame1:HookScript("OnShow", function(self)
+		ContainerFrame1:ClearAllPoints()
+		ContainerFrame1:SetPoint("TOPRIGHT", StuffingFrameBags, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(40))
+	end)
+	ContainerFrame1:SetParent(StuffingFrameBags)
+end
 function Stuffing:PLAYERBANKSLOTS_CHANGED(id)
 	if id > 28 then
 		for _, v in ipairs(self.bagframe_buttons) do
@@ -944,8 +969,6 @@ end
 
 
 function Stuffing:BANKFRAME_OPENED()
-	Stuffing_Open()
-	
 	if not self.bankFrame then
 		self:InitBank()
 	end
@@ -955,6 +978,7 @@ function Stuffing:BANKFRAME_OPENED()
 		self:BagSlotUpdate(x)
 	end
 	self.bankFrame:Show()
+	Stuffing_Open()
 end
 
 
@@ -1153,33 +1177,36 @@ function Stuffing:SortBags()
 	end)
 
 	-- for each button we want to sort, get a destination button
-	local st_idx = #bs
+	local st_idx = 1
 	local dbag = bs[st_idx]
-	local dslot = GetContainerNumSlots(dbag)
- 
+	local dslot = 1
+	local max_dslot = GetContainerNumSlots(dbag)
+
 	for i, v in ipairs (st) do
 		v.dbag = dbag
 		v.dslot = dslot
 		v.dstSlot = self:SlotNew(dbag, dslot)
- 
-		dslot = dslot - 1
- 
-		if dslot == 0 then
+
+		dslot = dslot + 1
+
+		if dslot > max_dslot then
+			dslot = 1
+
 			while true do
-				st_idx = st_idx - 1
- 
-				if st_idx < 0 then
+				st_idx = st_idx + 1
+
+				if st_idx > #bs then
 					break
 				end
- 
+
 				dbag = bs[st_idx]
- 
-				if Stuffing:BagType(dbag) == ST_NORMAL or dbag < 1 then
+
+				if Stuffing:BagType(dbag) == ST_NORMAL or Stuffing:BagType(dbag) == ST_SPECIAL or dbag > 4 then
 					break
 				end
 			end
- 
-			dslot = GetContainerNumSlots(dbag)
+
+			max_dslot = GetContainerNumSlots(dbag)
 		end
 	end
 
@@ -1336,7 +1363,7 @@ function Stuffing.Menu(self, level)
 	info.checked = function()
 		return bag_bars == 1
 	end
-
+	
 	info.func = function()
 		if bag_bars == 1 then
 			bag_bars = 0
@@ -1350,6 +1377,25 @@ function Stuffing.Menu(self, level)
 
 	end
 	UIDropDownMenu_AddButton(info, level)
+	
+	wipe(info)
+	info.text = "Show Keyring"
+	info.checked = function()
+		return key_ring == 1
+	end
+	
+	info.func = function()
+		if key_ring == 1 then
+			key_ring = 0
+		else
+			key_ring = 1
+		end
+		ToggleKeyRing()
+		Stuffing:Layout()
+	end
+	
+	
+	UIDropDownMenu_AddButton(info, level)
 
 	wipe(info)
 	info.disabled = nil
@@ -1359,3 +1405,4 @@ function Stuffing.Menu(self, level)
 	info.tooltipTitle = CLOSE
 	UIDropDownMenu_AddButton(info, level)
 end
+

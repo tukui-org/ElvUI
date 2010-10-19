@@ -2,7 +2,7 @@
 -- Auto accept invite
 ------------------------------------------------------------------------
 
-if TukuiCF["invite"].autoaccept then
+if TukuiCF["others"].autoacceptinv then
 	local tAutoAcceptInvite = CreateFrame("Frame")
 	tAutoAcceptInvite:RegisterEvent("PARTY_INVITE_REQUEST")
 	tAutoAcceptInvite:RegisterEvent("PARTY_MEMBERS_CHANGED")

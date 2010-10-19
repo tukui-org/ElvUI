@@ -4,7 +4,6 @@
 
 local function SetModifiedBackdrop(self)
 	local color = RAID_CLASS_COLORS[TukuiDB.myclass]
-	self:SetBackdropColor(color.r, color.g, color.b, 0.15)
 	self:SetBackdropBorderColor(color.r, color.g, color.b)
 end
 
@@ -46,13 +45,29 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"DropDownList1Backdrop",
 			"DropDownList2Backdrop",
 			"LFDSearchStatus",
-			"AutoCompleteBox", -- this is the /w *nickname* box, press tab
+			"AutoCompleteBox",
+			"ColorPickerFrame",
+			"ConsolidatedBuffsTooltip",
 			"ReadyCheckFrame",
-			"GhostFrameContentsFrame",
 		}
+		
+		local ChatMenus = {
+			"ChatMenu",
+			"EmoteMenu",
+			"LanguageMenu",
+			"VoiceMacroMenu",		
+		}
+		--
+		for i = 1, getn(ChatMenus) do
+			if _G[ChatMenus[i]] == _G["ChatMenu"] then
+				_G[ChatMenus[i]]:HookScript("OnShow", function(self) TukuiDB.SetTemplate(self) self:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor)) self:ClearAllPoints() self:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, TukuiDB.Scale(30)) end)
+			else
+				_G[ChatMenus[i]]:HookScript("OnShow", function(self) TukuiDB.SetTemplate(self) self:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor)) end)
+			end
+		end
 
 		-- reskin popup buttons
-		for i = 1, 3 do
+		for i = 1, 2 do
 			for j = 1, 3 do
 				SkinButton(_G["StaticPopup"..i.."Button"..j])
 			end
@@ -60,24 +75,10 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		
 		for i = 1, getn(skins) do
 			TukuiDB.SetTemplate(_G[skins[i]])
-			if _G[skins[i]] ~= _G["GhostFrameContentsFrame"] and _G[skins[i]] ~= _G["AutoCompleteBox"] and _G[skins[i]] ~= _G["BNToastFrame"] then -- frame to blacklist from create shadow function
+			if _G[skins[i]] ~= _G["GhostFrameContentsFrame"] or _G[skins[i]] ~= _G["AutoCompleteBox"] then -- frame to blacklist from create shadow function
 				TukuiDB.CreateShadow(_G[skins[i]])
 			end
-		end
-		
-		local ChatMenus = {
-			"ChatMenu",
-			"EmoteMenu",
-			"LanguageMenu",
-			"VoiceMacroMenu",
-		}
- 
-		for i = 1, getn(ChatMenus) do
-			if _G[ChatMenus[i]] == _G["ChatMenu"] then
-				_G[ChatMenus[i]]:HookScript("OnShow", function(self) TukuiDB.SetTemplate(self) self:ClearAllPoints() self:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, TukuiDB.Scale(30)) end)
-			else
-				_G[ChatMenus[i]]:HookScript("OnShow", function(self) TukuiDB.SetTemplate(self) end)
-			end
+			_G[skins[i]]:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor))
 		end
 		
 		-- reskin all esc/menu buttons
@@ -105,12 +106,36 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			end
 		end
 		
+		if IsAddOnLoaded("OptionHouse") then
+			SkinButton(GameMenuButtonOptionHouse)
+		end
+		
+		-- skin return to graveyard button
+		SkinButton(GhostFrame)
+		TukuiDB.SetTemplate(GhostFrameContentsFrame)
+		GhostFrame:SetNormalTexture("")
+		GhostFrame:SetHighlightTexture("")
+		GhostFrame:SetPushedTexture("")
+		GhostFrame:SetDisabledTexture("")
+		TukuiDB.SetTemplate(GhostFrame)
+		GhostFrame:HookScript("OnEnter", function(self) 	
+			self:SetBackdropColor(0,0,0,0)
+			self:SetBackdropBorderColor(0,0,0,0)
+		end)
+		GhostFrame:HookScript("OnLeave", function(self) 	
+			self:SetBackdropColor(0,0,0,0)
+			self:SetBackdropBorderColor(0,0,0,0)
+		end)
+		GhostFrame:ClearAllPoints()
+		GhostFrame:SetPoint("TOP", UIParent, "TOP", 0, -150)
+		
 		-- hide header textures and move text/buttons.
 		local BlizzardHeader = {
 			"GameMenuFrame", 
 			"InterfaceOptionsFrame", 
 			"AudioOptionsFrame", 
-			"VideoOptionsFrame"
+			"VideoOptionsFrame",
+			"ColorPickerFrame"
 		}
 		
 		for i = 1, getn(BlizzardHeader) do
@@ -138,6 +163,8 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"InterfaceOptionsFrameDefaults", 
 			"InterfaceOptionsFrameOkay", 
 			"InterfaceOptionsFrameCancel",
+			"ColorPickerOkayButton",
+			"ColorPickerCancelButton",
 			"ReadyCheckFrameYesButton",
 			"ReadyCheckFrameNoButton",
 		}
@@ -149,7 +176,7 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			end
 		end
 		
-		-- if a button position or text is not really where we want, we move it here
+		-- if a button position is not really where we want, we move it here
 		_G["VideoOptionsFrameCancel"]:ClearAllPoints()
 		_G["VideoOptionsFrameCancel"]:SetPoint("RIGHT",_G["VideoOptionsFrameApply"],"LEFT",-4,0)		 
 		_G["VideoOptionsFrameOkay"]:ClearAllPoints()
@@ -158,6 +185,10 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		_G["AudioOptionsFrameOkay"]:SetPoint("RIGHT",_G["AudioOptionsFrameCancel"],"LEFT",-4,0)
 		_G["InterfaceOptionsFrameOkay"]:ClearAllPoints()
 		_G["InterfaceOptionsFrameOkay"]:SetPoint("RIGHT",_G["InterfaceOptionsFrameCancel"],"LEFT", -4,0)
+		_G["ColorPickerCancelButton"]:ClearAllPoints()
+		_G["ColorPickerOkayButton"]:ClearAllPoints()
+		_G["ColorPickerCancelButton"]:SetPoint("BOTTOMRIGHT", ColorPickerFrame, "BOTTOMRIGHT", -6, 6)
+		_G["ColorPickerOkayButton"]:SetPoint("RIGHT",_G["ColorPickerCancelButton"],"LEFT", -4,0)
 		_G["ReadyCheckFrameYesButton"]:SetParent(_G["ReadyCheckFrame"])
 		_G["ReadyCheckFrameNoButton"]:SetParent(_G["ReadyCheckFrame"]) 
 		_G["ReadyCheckFrameYesButton"]:SetPoint("RIGHT", _G["ReadyCheckFrame"], "CENTER", -1, 0)
@@ -169,20 +200,8 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		-- others
 		_G["ReadyCheckListenerFrame"]:SetAlpha(0)
 		_G["ReadyCheckFrame"]:HookScript("OnShow", function(self) if UnitIsUnit("player", self.initiator) then self:Hide() end end) -- bug fix, don't show it if initiator
-		_G["GhostFrameContentsFrame"]:SetWidth(TukuiDB.Scale(148))
-		_G["GhostFrameContentsFrame"]:ClearAllPoints()
-		_G["GhostFrameContentsFrame"]:SetPoint("CENTER")
-		_G["GhostFrameContentsFrame"].SetPoint = TukuiDB.dummy
-		_G["GhostFrame"]:SetFrameStrata("HIGH")
-		_G["GhostFrame"]:SetFrameLevel(10)
-		_G["GhostFrame"]:ClearAllPoints()
-		_G["GhostFrame"]:SetPoint("TOP", Minimap, "BOTTOM", 0, TukuiDB.Scale(-25))
-		_G["GhostFrameContentsFrameIcon"]:SetAlpha(0)
-		_G["GhostFrameContentsFrameText"]:ClearAllPoints()
-		_G["GhostFrameContentsFrameText"]:SetPoint("CENTER")
-		_G["PlayerPowerBarAlt"]:HookScript("OnShow", function(self) self:ClearAllPoints() self:SetPoint("TOP", 0, -12) end)
 	end
-	
+		
 	-- mac menu/option panel, made by affli.
 	if IsMacClient() then
 		-- Skin main frame and reposition the header

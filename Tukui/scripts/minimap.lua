@@ -2,16 +2,20 @@
 -- MINIMAP BORDER
 --------------------------------------------------------------------
 
-local TukuiMinimap = CreateFrame("Frame", "TukuiMinimap", Minimap)
+local p = CreateFrame("Frame", "TukuiMinimap", Minimap)
 TukuiMinimap:RegisterEvent("ADDON_LOADED")
 
-TukuiDB.CreatePanel(TukuiMinimap, 144, 144, "CENTER", Minimap, "CENTER", -0, 0)
-TukuiMinimap:ClearAllPoints()
-TukuiMinimap:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-TukuiMinimap:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+TukuiDB.CreatePanel(p, 144, 144, "CENTER", Minimap, "CENTER", -0, 0)
+p:ClearAllPoints()
+p:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
+p:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+
+--------------------------------------------------------------------
+-- MINIMAP ROUND TO SQUARE AND MINIMAP SETTING
+--------------------------------------------------------------------
 
 Minimap:ClearAllPoints()
-Minimap:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", TukuiDB.Scale(-24), TukuiDB.Scale(-24))
+Minimap:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", TukuiDB.Scale(-5), TukuiDB.Scale(-5))
 Minimap:SetSize(TukuiDB.Scale(144), TukuiDB.Scale(144))
 
 -- Hide Border
@@ -28,14 +32,14 @@ MiniMapVoiceChatFrame:Hide()
 -- Hide North texture at top
 MinimapNorthTag:SetTexture(nil)
 
+-- Hide Game Time
+GameTimeFrame:Hide()
+
 -- Hide Zone Frame
 MinimapZoneTextButton:Hide()
 
 -- Hide Tracking Button
 MiniMapTracking:Hide()
-
--- Hide Calendar Button
-GameTimeFrame:Hide()
 
 -- Hide Mail Button
 MiniMapMailFrame:ClearAllPoints()
@@ -55,6 +59,10 @@ MiniMapWorldMapButton:Hide()
 MiniMapInstanceDifficulty:ClearAllPoints()
 MiniMapInstanceDifficulty:SetParent(Minimap)
 MiniMapInstanceDifficulty:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 0, 0)
+
+GuildInstanceDifficulty:ClearAllPoints()
+GuildInstanceDifficulty:SetParent(Minimap)
+GuildInstanceDifficulty:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 0, 0)
 
 local function UpdateLFG()
 	MiniMapLFGFrame:ClearAllPoints()
@@ -77,13 +85,21 @@ TukuiMinimap:SetScript("OnEvent", function(self, event, addon)
 	if addon == "Blizzard_TimeManager" then
 		-- Hide Game Time
 		TukuiDB.Kill(TimeManagerClockButton)
+		--TukuiDB.Kill(InterfaceOptionsDisplayPanelShowClock)
+	elseif addon == "Blizzard_FeedbackUI" then
+		TukuiDB.Kill(FeedbackUIButton)
 	end
 end)
+
+
+
+if FeedbackUIButton then
+	TukuiDB.Kill(FeedbackUIButton)
+end
 
 ----------------------------------------------------------------------------------------
 -- Right click menu
 ----------------------------------------------------------------------------------------
-
 local menuFrame = CreateFrame("Frame", "MinimapRightClickMenu", UIParent, "UIDropDownMenuTemplate")
 local menuList = {
     {text = CHARACTER_BUTTON,
@@ -135,6 +151,7 @@ function GetMinimapShape() return 'SQUARE' end
 -- reskin LFG dropdown
 TukuiDB.SetTemplate(LFDSearchStatus)
 
+
 ----------------------------------------------------------------------------------------
 -- Animation Coords and Current Zone. Awesome feature by AlleyKat.
 ----------------------------------------------------------------------------------------
@@ -166,27 +183,29 @@ TukuiDB.CreatePanel(m_zone, 0, 20, "TOPLEFT", Minimap, "TOPLEFT", TukuiDB.Scale(
 m_zone:SetFrameLevel(5)
 m_zone:SetFrameStrata("LOW")
 m_zone:SetPoint("TOPRIGHT",Minimap,TukuiDB.Scale(-2),TukuiDB.Scale(-2))
+m_zone:SetBackdropColor(0,0,0,0)
+m_zone:SetBackdropBorderColor(0,0,0,0)
 
 set_anim(m_zone,true,0,TukuiDB.Scale(60))
 m_zone:Hide()
 
 local m_zone_text = m_zone:CreateFontString(nil,"Overlay")
-m_zone_text:SetFont(TukuiCF["media"].font,12)
+m_zone_text:SetFont(TukuiCF["media"].font,13,"OUTLINE")
 m_zone_text:SetPoint("Center",0,0)
 m_zone_text:SetJustifyH("CENTER")
 m_zone_text:SetJustifyV("MIDDLE")
 m_zone_text:SetHeight(TukuiDB.Scale(12))
-m_zone_text:SetWidth(m_zone:GetWidth()-6)
 
 local m_coord = CreateFrame("Frame",nil,UIParent)
 TukuiDB.CreatePanel(m_coord, 40, 20, "BOTTOMLEFT", Minimap, "BOTTOMLEFT", TukuiDB.Scale(2),TukuiDB.Scale(2))
 m_coord:SetFrameStrata("LOW")
-
+m_coord:SetBackdropColor(0,0,0,0)
+m_coord:SetBackdropBorderColor(0,0,0,0)
 set_anim(m_coord,true,TukuiDB.Scale(320),0)
 m_coord:Hide()	
 
 local m_coord_text = m_coord:CreateFontString(nil,"Overlay")
-m_coord_text:SetFont(TukuiCF["media"].font,12)
+m_coord_text:SetFont(TukuiCF["media"].font,13,"OUTLINE")
 m_coord_text:SetPoint("Center",TukuiDB.Scale(-1),0)
 m_coord_text:SetJustifyH("CENTER")
 m_coord_text:SetJustifyV("MIDDLE")
@@ -216,14 +235,17 @@ m_coord.anim:SetScript("OnFinished",function() go = true end)
 m_coord.anim_o:SetScript("OnPlay",function() go = false end)
  
 local coord_Update = function(self,t)
+	local inInstance, _ = IsInInstance()
 	ela = ela - t
 	if ela > 0 or not(go) then return end
 	local x,y = GetPlayerMapPosition("player")
 	local xt,yt
 	x = math.floor(100 * x)
 	y = math.floor(100 * y)
-	if x == 0 and y == 0 then
-		m_coord_text:SetText("X _ X")
+	if x == 0 and y == 0 and not inInstance then
+		SetMapToCurrentZone()
+	elseif x ==0 and y==0 then
+		m_coord_text:SetText(" ")	
 	else
 		if x < 10 then
 			xt = "0"..x
@@ -235,7 +257,7 @@ local coord_Update = function(self,t)
 		else
 			yt = y
 		end
-		m_coord_text:SetText(xt..","..yt)
+		m_coord_text:SetText(xt..valuecolor..",|r"..yt)
 	end
 	ela = .2
 end
@@ -243,18 +265,22 @@ end
 m_coord:SetScript("OnUpdate",coord_Update)
  
 local zone_Update = function()
-	local pvp = GetZonePVPInfo()
-	m_zone_text:SetText(GetMinimapZoneText())
-	if pvp == "friendly" then
-		m_zone_text:SetTextColor(0.1, 1.0, 0.1)
-	elseif pvp == "sanctuary" then
-		m_zone_text:SetTextColor(0.41, 0.8, 0.94)
-	elseif pvp == "arena" or pvp == "hostile" then
-		m_zone_text:SetTextColor(1.0, 0.1, 0.1)
-	elseif pvp == "contested" then
-		m_zone_text:SetTextColor(1.0, 0.7, 0.0)
+	local pvpType = GetZonePVPInfo()
+	m_zone_text:SetText(strsub(GetMinimapZoneText(),1,23))
+	if pvpType == "arena" then
+		m_zone_text:SetTextColor(0.84, 0.03, 0.03)
+	elseif pvpType == "friendly" then
+		m_zone_text:SetTextColor(0.05, 0.85, 0.03)
+	elseif pvpType == "contested" then
+		m_zone_text:SetTextColor(0.9, 0.85, 0.05)
+	elseif pvpType == "hostile" then 
+		m_zone_text:SetTextColor(0.84, 0.03, 0.03)
+	elseif pvpType == "sanctuary" then
+		m_zone_text:SetTextColor(0.0352941, 0.58823529, 0.84705882)
+	elseif pvpType == "combat" then
+		m_zone_text:SetTextColor(0.84, 0.03, 0.03)
 	else
-		m_zone_text:SetTextColor(1.0, 1.0, 1.0)
+		m_zone_text:SetTextColor(0.84, 0.03, 0.03)
 	end
 end
  

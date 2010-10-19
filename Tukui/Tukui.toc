@@ -1,13 +1,12 @@
 ﻿## Interface: 40000
-## Author: Tukz
-## Credits to: Caith, Caellian, Shestak, Haste, Tekkub, Alza, Roth, P3lim, Tulla, Hungtar, hankthetank, Ishtara and others...
-## Special Thanks to: Admins, Moderator and VIP's from tukui.org
-## Version: 12.22
+## Author: Elv, Tukz
+## Version: 2.19
 ## Title: |cffC495DDTukui|r
 ## Notes: UI of awesomeness!
 ## SavedVariables: TukuiData, TukuiArena
-## SavedVariablesPerCharacter: TukuiInstallv1200, TukuiUFpos
-## OptionalDeps: Tukui_ConfigUI, !ClassColors, Clique
+## SavedVariablesPerCharacter: ElvUIInstalled, TukuiUFpos
+## OptionalDeps: Tukui_ConfigUI, Recount, Omen, Skada, DXE, Blizzard_CombatText, OptionHouse, ACP, Stuf, Pitbull4, ShadowedUnitFrames, ag_UnitFrames, TidyPlates, Aloft, Dominos, Bartender4, Macaroon, Mapster, Prat, Chatter, Quartz, AzCastBar, eCastingBar, Afflicted3, InterruptBar, HealBot, Fux, Who Framed Watcher Wabbit, Skinner, OptionHouse, ArkInventory, Clique
 ## X-oUF: oUF
 
 Tukui.xml
+

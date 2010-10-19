@@ -53,7 +53,6 @@ local function setup()
 	WatchFrameCollapseExpandButton:SetParent(TukuiWatchFrame)
 	WatchFrameTitle:Hide()
 	WatchFrameTitle.Show = TukuiDB.dummy
-	WatchFrameCollapseExpandButton:Hide()
 	WatchFrameCollapseExpandButton.Disable = TukuiDB.dummy
 end
 

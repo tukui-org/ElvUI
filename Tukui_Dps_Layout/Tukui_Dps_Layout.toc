@@ -1,10 +1,14 @@
 ## Interface: 40000
 ## Author: Tukz
-## Title: |cffC495DDTukui RAID|r (Dps Layout)
-## Notes: Raid layout for party and raid, DPS/Tank mode.
+## Title: |cffC495DDTukui|r (DPS Layout)
+## Notes: Unitframe layout for party and raid, DPS mode.
 ## X-Email: tukz@tukui.org
 ## X-Category: UnitFrame
 ## RequiredDeps: Tukui
 
-oUF_Tukz_Raid01_25.lua
-oUF_Tukz_Raid40.lua
+layout.lua
+oUF_Tukz_Party.lua
+oUF_Tukz_Raid6_25.lua
+oUF_Tukz_Raid26_40.lua
+
+

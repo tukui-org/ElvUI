@@ -1,23 +1,4 @@
-if TukuiDB.client == "ruRU" then
- 
-	tukuilocal.chat_BATTLEGROUND_GET = "[ПБ]"
-	tukuilocal.chat_BATTLEGROUND_LEADER_GET = "[ПБ]"
-	tukuilocal.chat_BN_WHISPER_GET = "От"
-	tukuilocal.chat_GUILD_GET = "[Г]"
-	tukuilocal.chat_OFFICER_GET = "[О]"
-	tukuilocal.chat_PARTY_GET = "[Гр]"
-	tukuilocal.chat_PARTY_GUIDE_GET = "[Гр]"
-	tukuilocal.chat_PARTY_LEADER_GET = "[Гр]"
-	tukuilocal.chat_RAID_GET = "[Р]"
-	tukuilocal.chat_RAID_LEADER_GET = "[Р]"
-	tukuilocal.chat_RAID_WARNING_GET = "[Ш]"
-	tukuilocal.chat_WHISPER_GET = "От"
-	tukuilocal.chat_FLAG_AFK = "[АФК]"
-	tukuilocal.chat_FLAG_DND = "[ДНД]"
-	tukuilocal.chat_FLAG_GM = "[ГМ]"
-	tukuilocal.chat_ERR_FRIEND_ONLINE_SS = "|cff298F00входит|r"
-	tukuilocal.chat_ERR_FRIEND_OFFLINE_S = "|cffff0000выходит|r"
- 
+﻿if TukuiDB.client == "ruRU" then
 	tukuilocal.disband = "Роспуск группы."
  
 	tukuilocal.datatext_guild = "Гильдия"
@@ -30,7 +11,7 @@ if TukuiDB.client == "ruRU" then
 	tukuilocal.datatext_spent = "Потрачено:"
 	tukuilocal.datatext_deficit = "Убыток:"
 	tukuilocal.datatext_profit = "Прибыль:"
-	tukuilocal.datatext_timeto = "Времени до"
+	tukuilocal.datatext_wg = "Время до Озера:"
 	tukuilocal.datatext_friendlist = "Список друзей:"
 	tukuilocal.datatext_playersp = "sp"
 	tukuilocal.datatext_playerap = "ap"
@@ -82,7 +63,7 @@ if TukuiDB.client == "ruRU" then
 	tukuilocal.datatext_gatesdestroyed = "Врат разрушено:"
 	tukuilocal.datatext_totalmemusage = "Общее использование памяти:"
 	tukuilocal.datatext_control = "Под контролем:"
- 
+	
 	tukuilocal.Slots = {
 	  [1] = {1, "Голова", 1000},
 	  [2] = {3, "Плечо", 1000},
@@ -100,7 +81,8 @@ if TukuiDB.client == "ruRU" then
 	tukuilocal.popup_disableui = "Tukui не работает на этом разрешении, хотите отключить Tukui? (Отмена если хотите попробовать другое разрешение)"
 	tukuilocal.popup_install = "Это первый запуск Tukui V12 для этого персонажа. Необходимо перезагрузить интерфейс для настройки Панелей, Переменных и Окон Чата."
 	tukuilocal.popup_2raidactive = "Обе рейдовые раскладки активны, пожалуйста, выберите одну."
- 
+ 	tukuilocal.popup_clique = "Your clique settings are not setup with Tukui, would you like to set them up?"
+	
 	tukuilocal.merchant_repairnomoney = "Не достаточно денег на починку!"
 	tukuilocal.merchant_repaircost = "Предметы починены за"
 	tukuilocal.merchant_trashsell = "Серые предметы проданы и Вы получили"
@@ -115,9 +97,9 @@ if TukuiDB.client == "ruRU" then
 	tukuilocal.unitframes_ouf_dead = "Труп"
 	tukuilocal.unitframes_ouf_ghost = "Призрак"
 	tukuilocal.unitframes_ouf_lowmana = "МАНА"
-	tukuilocal.unitframes_ouf_threattext = "Угроза на цели:"
+	tukuilocal.unitframes_ouf_threattext = "Угроза:"
 	tukuilocal.unitframes_ouf_offlinedps = "Оффлайн"
-	tukuilocal.unitframes_ouf_deaddps = "|cffff0000[Труп]|r"
+	tukuilocal.unitframes_ouf_deaddps = "Труп"
 	tukuilocal.unitframes_ouf_ghostheal = "ПРИЗРАК"
 	tukuilocal.unitframes_ouf_deadheal = "ТРУП"
 	tukuilocal.unitframes_ouf_gohawk = "Дух Ястреба"
@@ -149,6 +131,20 @@ if TukuiDB.client == "ruRU" then
  
 	tukuilocal.mount_wintergrasp = "Озеро Ледяных Оков"
  
+	tukuilocal.playermenu_freeforall = "Каждый за себя"
+	tukuilocal.playermenu_group = "|cff1eff00Групповая|r"
+	tukuilocal.playermenu_master = "|cff0070ddРаспределяет ответственный|r"
+	tukuilocal.playermenu_global_needbeforegreed = "Добыча: %sПриоритет по нужности|r"
+	tukuilocal.playermenu_global_freeforall = "Добыча: %sКаждый за себя|r"
+	tukuilocal.playermenu_global_group = "Добыча: %sГрупповая|r"
+	tukuilocal.playermenu_global_master = "Добыча: %sРаспределяет ответственный|r"
+	tukuilocal.playermenu_normal = "5 |cffffff50Обычный|r"
+	tukuilocal.playermenu_heroic = "5 |cffff5050Героический|r"
+	tukuilocal.playermenu_raid10 = "10 |cffffff50Обычный|r"
+	tukuilocal.playermenu_raid25 = "25 |cffffff50Обычный|r"
+	tukuilocal.playermenu_raid10h = "10 |cffff5050Героический|r"
+	tukuilocal.playermenu_raid25h = "25 |cffff5050Героический|r"
+ 
 	tukuilocal.core_autoinv_enable = "Автоприглашение ВКЛ: invite"
 	tukuilocal.core_autoinv_enable_c = "Автоприглашение ВКЛ: "
 	tukuilocal.core_autoinv_disable = "Автоприглашение ВЫКЛ"
@@ -168,11 +164,12 @@ if TukuiDB.client == "ruRU" then
 	tukuilocal.core_uihelp9 = "|cffFF0000/bags|r - сортировка, покупка банковских ячеек и складывание предметов в ваших сумках."
 	tukuilocal.core_uihelp10 = "|cffFF0000/resetui|r - сбросить переменные и настройки чата в значения Tukui по умолчанию"
 	tukuilocal.core_uihelp11 = "|cffFF0000/rd|r - распустить рейд."
-	tukuilocal.core_uihelp12 = "|cffFF0000/wf|r - разблокировать окно отслеживания заданий для перемещения."
+	tukuilocal.core_uihelp12 = "|cffFF0000/hb|r - назначить клавиши."
 	tukuilocal.core_uihelp13 = "|cffFF0000/mss|r - передвинуть панель стоек/тотемов."
 	tukuilocal.core_uihelp15 = "|cffFF0000/ainv|r - Включить автоприглашение по слову. Вы можете установить нужное слово, напечатав <code>/ainv слово</code>"
 	tukuilocal.core_uihelp14 = "(Прокрутите вверх, чтобы увидеть больше комманд ...)"
- 
+	tukuilocal.core_uihelp16 = "|cffFF0000/resetgold|r - сбросить статистику золота"
+	
 	tukuilocal.symbol_CLEAR = "Очистить"
 	tukuilocal.symbol_SKULL = "Череп"
 	tukuilocal.symbol_CROSS = "Крест"
@@ -193,4 +190,23 @@ if TukuiDB.client == "ruRU" then
 	tukuilocal.hunter_unhappy = "Ваш питомец несчастлив!"
 	tukuilocal.hunter_content = "Ваш питомец доволен!"
 	tukuilocal.hunter_happy = "Ваш питомец счастлив!"
+	
+	tukuilocal.teleport = "Телепортация: "
+	tukuilocal.portal = "Портал в "
+	
+	tukuilocal.dalaran = "Даларан"
+	tukuilocal.shattrath = "Шаттрат"
+
+	
+	tukuilocal.orgrimmar = "Оргриммар"
+	tukuilocal.undercity = "Подгород"
+	tukuilocal.thunder_bluff = "Громовой Утес"
+	tukuilocal.silvermoon = "Луносвет"
+	tukuilocal.stonard = "Каменор"
+	
+	tukuilocal.ironforge = "Стальгорн"
+	tukuilocal.stormwind = "Штормград"
+	tukuilocal.darnassus = "Дарнас"
+	tukuilocal.exodar = "Экзодар"
+	tukuilocal.theramore = "Терамор"
 end

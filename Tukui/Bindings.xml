@@ -1,0 +1,5 @@
+<Bindings>
+  <Binding name="RAIDMARKER" header="TUKUI" runOnUp="true">
+    RaidMark_HotkeyPressed(keystate)
+  </Binding>
+</Bindings>

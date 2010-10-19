@@ -1,23 +1,4 @@
 if TukuiDB.client == "frFR" then
-
-	tukuilocal.chat_BATTLEGROUND_GET = "[BG]"
-	tukuilocal.chat_BATTLEGROUND_LEADER_GET = "[BG]"
-	tukuilocal.chat_BN_WHISPER_GET = "De"
-	tukuilocal.chat_GUILD_GET = "[G]"
-	tukuilocal.chat_OFFICER_GET = "[O]"
-	tukuilocal.chat_PARTY_GET = "[G]"
-	tukuilocal.chat_PARTY_GUIDE_GET = "[G]"
-	tukuilocal.chat_PARTY_LEADER_GET = "[G]"
-	tukuilocal.chat_RAID_GET = "[R]"
-	tukuilocal.chat_RAID_LEADER_GET = "[R]"
-	tukuilocal.chat_RAID_WARNING_GET = "[W]"
-	tukuilocal.chat_WHISPER_GET = "De"
-	tukuilocal.chat_FLAG_AFK = "[AFK]"
-	tukuilocal.chat_FLAG_DND = "[DND]"
-	tukuilocal.chat_FLAG_GM = "[MJ]"
-	tukuilocal.chat_ERR_FRIEND_ONLINE_SS = "est maintenant |cff298F00en ligne|r"
-	tukuilocal.chat_ERR_FRIEND_OFFLINE_S = "est maintenant |cffff0000déconnecté|r"
-
 	tukuilocal.disband = "Dissoudre le groupe"
 
 	tukuilocal.datatext_guild = "Guilde"
@@ -30,8 +11,10 @@ if TukuiDB.client == "frFR" then
 	tukuilocal.datatext_spent = "Depensé:"
 	tukuilocal.datatext_deficit = "Déficit:"
 	tukuilocal.datatext_profit = "Profit:"
-	tukuilocal.datatext_timeto = "Temps restant"
+	tukuilocal.datatext_wg = "Prochain Joug-D'hiver:"
 	tukuilocal.datatext_friendlist = "Liste d'amis:"
+	tukuilocal.datatext_inprogress = "En cours"
+	tukuilocal.datatext_unavailable = "Indisponible"
 	tukuilocal.datatext_playersp = "sp"
 	tukuilocal.datatext_playerap = "ap"
 	tukuilocal.datatext_playerhaste = "hâte"
@@ -82,7 +65,7 @@ if TukuiDB.client == "frFR" then
 	tukuilocal.datatext_gatesdestroyed = "Portes Détruites:"
 	tukuilocal.datatext_totalmemusage = "Utilisation Totale de la Mémoire:"
 	tukuilocal.datatext_control = "Controllé par:"
-
+	
 	tukuilocal.Slots = {
 	  [1] = {1, "Tête", 1000},
 	  [2] = {3, "Épaule", 1000},
@@ -98,9 +81,10 @@ if TukuiDB.client == "frFR" then
 	}
 
 	tukuilocal.popup_disableui = "Tukui ne fonctionne pas avec cette résolution, voulez-vous désactiver Tukui? (Annuler si vous souhaitez essayer une autre résolution)"
-	tukuilocal.popup_install = "Première fois sur Tukui V12 avec ce personnage. Vous devez recharger l'interface utilisateur afin de configurer les barres d'action, les variables et les cadres de Chat."
+	tukuilocal.popup_install = "Première fois sur Tukui V11 avec ce personnage. Vous devez recharger l'interface utilisateur afin de configurer les barres d'action, les variables et les cadres de Chat."
 	tukuilocal.popup_2raidactive = "2 modèles de raid sont activés, merci d'en choisir un."
-
+	tukuilocal.popup_clique = "Your clique settings are not setup with Tukui, would you like to set them up?"
+	
 	tukuilocal.merchant_repairnomoney = "Vous n'avez pas assez d'argent pour réparer!"
 	tukuilocal.merchant_repaircost = "Tous les objets ont été réparés pour"
 	tukuilocal.merchant_trashsell = "Votre vente d’objets gris a été vendu et vous avez gagné" --
@@ -115,16 +99,16 @@ if TukuiDB.client == "frFR" then
 	tukuilocal.unitframes_ouf_dead = "Mort"
 	tukuilocal.unitframes_ouf_ghost = "Fantome"
 	tukuilocal.unitframes_ouf_lowmana = "MANA FAIBLE"
-	tukuilocal.unitframes_ouf_threattext = "Menace sur la cible actuelle:"
+	tukuilocal.unitframes_ouf_threattext = "Menace:"
 	tukuilocal.unitframes_ouf_offlinedps = "Hors ligne"
-	tukuilocal.unitframes_ouf_deaddps = "|cffff0000[MORT]|r"
+	tukuilocal.unitframes_ouf_deaddps = "Mort"
 	tukuilocal.unitframes_ouf_ghostheal = "FANTOME"
 	tukuilocal.unitframes_ouf_deadheal = "MORT"
 	tukuilocal.unitframes_ouf_gohawk = "GO FAUCON"
 	tukuilocal.unitframes_ouf_goviper = "GO VIPÈRE"
 	tukuilocal.unitframes_disconnected = "Déco"
 
-	tukuilocal.tooltip_count = "Total"
+	tukuilocal.tooltip_count = "Count"
 
 	tukuilocal.bags_noslots = "Vous ne pouvez pas acheter plus de place!"
 	tukuilocal.bags_costs = "Prix: %.2f or"
@@ -143,11 +127,25 @@ if TukuiDB.client == "frFR" then
 	tukuilocal.bags_nothingsort= "Rien à trier."
 	tukuilocal.bags_bids = "Emplacements utilisés: "
 	tukuilocal.bags_stackend = "Empilage terminé."
-	tukuilocal.bags_rightclick_search = "Click-droit pour rechercher."
+	tukuilocal.bags_rightclick_search = "Right-click to search."
 
 	tukuilocal.chat_invalidtarget = "Cible non valide"
 
 	tukuilocal.mount_wintergrasp = "Joug-d'hiver"
+
+	tukuilocal.playermenu_freeforall = "Butin libre"
+	tukuilocal.playermenu_group = "|cff1eff00Butin de groupe|r"
+	tukuilocal.playermenu_master = "|cff0070ddMaître du butin|r"
+	tukuilocal.playermenu_global_needbeforegreed = "Butin: %sBesoin avant cupidité|r"
+	tukuilocal.playermenu_global_freeforall = "Butin: %sButin libre|r"
+	tukuilocal.playermenu_global_group = "Butin: %sButin de groupe|r"
+	tukuilocal.playermenu_global_master = "Butin: %sMaître du butin|r"
+	tukuilocal.playermenu_normal = "5 |cffffff50Normal|r"
+	tukuilocal.playermenu_heroic = "5 |cffff5050Heroïque|r"
+	tukuilocal.playermenu_raid10 = "10 |cffffff50Normal|r"
+	tukuilocal.playermenu_raid25 = "25 |cffffff50Normal|r"
+	tukuilocal.playermenu_raid10h = "10 |cffff5050Heroïque|r"
+	tukuilocal.playermenu_raid25h = "25 |cffff5050Heroïque|r"
 
 	tukuilocal.core_autoinv_enable = "Invitation automatique: invite"
 	tukuilocal.core_autoinv_enable_c = "Invitation automatique activée: "
@@ -168,10 +166,11 @@ if TukuiDB.client == "frFR" then
 	tukuilocal.core_uihelp9 = "|cffFF0000/bags|r - pour trier, achter un slot de banque ou empiler les objets de vos sacs."
 	tukuilocal.core_uihelp10 = "|cffFF0000/resetui|r - Réinitialise cVar et la fenêtre de Chat."
 	tukuilocal.core_uihelp11 = "|cffFF0000/rd|r - Dissoudre le raid."
-	tukuilocal.core_uihelp12 = "|cffFF0000/wf|r - Déverrouille la fenêtre de quêtes."
+	tukuilocal.core_uihelp12 = "|cffFF0000/hb|r - set keybinds to your action buttons."
 	tukuilocal.core_uihelp13 = "|cffFF0000/mss|r - Bouge la bar des auras / Totems"
 	tukuilocal.core_uihelp15 = "|cffFF0000/ainv|r - Active l'invitation automatique via le chuchotement. Vous pouvez personnalisez la commande en tapant `/ainv myword`"
 	tukuilocal.core_uihelp14 = "(Descendez pour afficher plus d'options...)"
+	tukuilocal.core_uihelp16 = "|cffFF0000/resetgold|r - reset the gold datatext"
 	
 	tukuilocal.symbol_CLEAR = "Aucun"
 	tukuilocal.symbol_SKULL = "Crâne"
@@ -193,4 +192,22 @@ if TukuiDB.client == "frFR" then
 	tukuilocal.hunter_unhappy = "Votre familier n'est pas heureux!"
 	tukuilocal.hunter_content = "Votre familier est heureux!"
 	tukuilocal.hunter_happy = "Votre familier est très heureux!"
+	
+	tukuilocal.teleport = "Téléportation : "
+	tukuilocal.portal = "Portail : "
+	
+	tukuilocal.dalaran = "Dalaran"
+	tukuilocal.shattrath = "Shattrath"
+	
+	tukuilocal.orgrimmar = "Orgrimmar"
+	tukuilocal.undercity = "Fossoyeuse"
+	tukuilocal.thunder_bluff = "les Pitons du Tonnerre"
+	tukuilocal.silvermoon = "Lune-d'argent"
+	tukuilocal.stonard = "Pierrêche"
+	
+	tukuilocal.ironforge = "Forgefer"
+	tukuilocal.stormwind = "Hurlevent"
+	tukuilocal.darnassus = "Darnassus"
+	tukuilocal.exodar = "Exodar"
+	tukuilocal.theramore = "Theramore"
 end

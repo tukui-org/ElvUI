@@ -1,0 +1,8 @@
+## Interface: 40000
+## Author: Elv22
+## Version: 0.01
+## Title: oUF ComboBar
+## Notes: Combo bars support for oUF layouts.
+## Dependencies: oUF
+
+oUF_ComboBar.lua

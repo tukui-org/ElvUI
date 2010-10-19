@@ -1,23 +1,4 @@
-if TukuiDB.client == "koKR" then
-
-	tukuilocal.chat_BATTLEGROUND_GET = "[B]"
-	tukuilocal.chat_BATTLEGROUND_LEADER_GET = "[B]"
-	tukuilocal.chat_BN_WHISPER_GET = "From"
-	tukuilocal.chat_GUILD_GET = "[G]"
-	tukuilocal.chat_OFFICER_GET = "[O]"
-	tukuilocal.chat_PARTY_GET = "[P]"
-	tukuilocal.chat_PARTY_GUIDE_GET = "[P]"
-	tukuilocal.chat_PARTY_LEADER_GET = "[P]"
-	tukuilocal.chat_RAID_GET = "[R]"
-	tukuilocal.chat_RAID_LEADER_GET = "[R]"
-	tukuilocal.chat_RAID_WARNING_GET = "[W]"
-	tukuilocal.chat_WHISPER_GET = "From"
-	tukuilocal.chat_FLAG_AFK = "[AFK]"
-	tukuilocal.chat_FLAG_DND = "[DND]"
-	tukuilocal.chat_FLAG_GM = "[GM]"
-	tukuilocal.chat_ERR_FRIEND_ONLINE_SS = "is now |cff298F00online|r"
-	tukuilocal.chat_ERR_FRIEND_OFFLINE_S = "is now |cffff0000offline|r"
-	
+﻿if TukuiDB.client == "koKR" then
 	tukuilocal.disband = "공격대를 해체합니다."
  
 	tukuilocal.datatext_guild = "길드"
@@ -30,7 +11,7 @@ if TukuiDB.client == "koKR" then
 	tukuilocal.datatext_spent = "지출:"
 	tukuilocal.datatext_deficit = "적자:"
 	tukuilocal.datatext_profit = "흑자:"
-	tukuilocal.datatext_timeto = "Time to"
+	tukuilocal.datatext_wg = "겨울손아귀 전투시간:"
 	tukuilocal.datatext_friendlist = "친구 목록:"
 	tukuilocal.datatext_playersp = "주문력"
 	tukuilocal.datatext_playerap = "전투력"
@@ -82,7 +63,7 @@ if TukuiDB.client == "koKR" then
 	tukuilocal.datatext_gatesdestroyed = "파괴한 관문:"
 	tukuilocal.datatext_totalmemusage = "총 메모리 사용량:"
 	tukuilocal.datatext_control = "Controlled by:"
- 
+	
 	tukuilocal.Slots = {
 	  [1] = {1, "머리", 1000},
 	  [2] = {3, "어깨", 1000},
@@ -100,7 +81,8 @@ if TukuiDB.client == "koKR" then
 	tukuilocal.popup_disableui = "Tukui는 현재 해상도에 최적화되어 있지 않습니다. Tukui를 비활성화하시겠습니까? (다른 해상도로 시도해보려면 취소)"
 	tukuilocal.popup_install = "현재 캐릭터는 Tukui를 처음 사용합니다. 행동 단축바, 대화창, 다양한 설정을 위해 UI를 다시 시작하셔야만 합니다."
 	tukuilocal.popup_2raidactive = "2개의 공격대 인터페이스가 사용 중입니다. 한 가지만 사용하셔야 합니다."
- 
+ 	tukuilocal.popup_clique = "Your clique settings are not setup with Tukui, would you like to set them up?"
+	
 	tukuilocal.merchant_repairnomoney = "수리에 필요한 돈이 충분하지 않습니다!"
 	tukuilocal.merchant_repaircost = "모든 아이템이 수리되었습니다: "
 	tukuilocal.merchant_trashsell = "불필요한 아이템이 판매되었습니다: "
@@ -115,9 +97,9 @@ if TukuiDB.client == "koKR" then
 	tukuilocal.unitframes_ouf_dead = "죽음"
 	tukuilocal.unitframes_ouf_ghost = "유령"
 	tukuilocal.unitframes_ouf_lowmana = "마나 적음"
-	tukuilocal.unitframes_ouf_threattext = "현재 대상에 대한 위협수준:"
+	tukuilocal.unitframes_ouf_threattext = "Threat:"
 	tukuilocal.unitframes_ouf_offlinedps = "오프라인"
-	tukuilocal.unitframes_ouf_deaddps = "|cffff0000[죽음]|r"
+	tukuilocal.unitframes_ouf_deaddps = "죽음"
 	tukuilocal.unitframes_ouf_ghostheal = "유령"
 	tukuilocal.unitframes_ouf_deadheal = "죽음"
 	tukuilocal.unitframes_ouf_gohawk = "매의 상으로 전환"
@@ -148,6 +130,20 @@ if TukuiDB.client == "koKR" then
  
 	tukuilocal.mount_wintergrasp = "겨울손아귀"
  
+	tukuilocal.playermenu_freeforall = "자유 획득"
+	tukuilocal.playermenu_group = "|cff1eff00주사위 굴림|r"
+	tukuilocal.playermenu_master = "|cff0070dd담당자 획득|r"
+	tukuilocal.playermenu_global_needbeforegreed = "전리품: %s주사위 굴림 (착용자 우선)|r"
+	tukuilocal.playermenu_global_freeforall = "전리품: %s자유 획득|r"
+	tukuilocal.playermenu_global_group = "전리품: %s주사위 굴림|r"
+	tukuilocal.playermenu_global_master = "전리품: %s담당자 획득|r"
+	tukuilocal.playermenu_normal = "5인 (|cffffff50일반|r)"
+	tukuilocal.playermenu_heroic = "5인 (|cffff5050영웅|r)"
+	tukuilocal.playermenu_raid10 = "10인 (|cffffff50일반|r)"
+	tukuilocal.playermenu_raid25 = "25인 (|cffffff50일반|r)"
+	tukuilocal.playermenu_raid10h = "10인 (|cffff5050영웅|r)"
+	tukuilocal.playermenu_raid25h = "25인 (|cffff5050영웅|r)"
+ 
 	tukuilocal.core_autoinv_enable = "자동초대 활성화: 초대"
 	tukuilocal.core_autoinv_enable_c = "자동초대 활성화: "
 	tukuilocal.core_autoinv_disable = "자동초대 비활성화"
@@ -167,11 +163,12 @@ if TukuiDB.client == "koKR" then
 	tukuilocal.core_uihelp9 = "|cffFF0000/bags|r - 분류, 정리, 가방 보관함을 추가 구입을 할 수 있습니다."
 	tukuilocal.core_uihelp10 = "|cffFF0000/resetui|r - Tukui의 설정을 초기화합니다."
 	tukuilocal.core_uihelp11 = "|cffFF0000/rd|r - 공격대를 해체합니다."
-	tukuilocal.core_uihelp12 = "|cffFF0000/wf|r - 임무 추적기를 이동할 수 있습니다."
+	tukuilocal.core_uihelp12 = "|cffFF0000/hb|r - set keybinds to your action buttons."
 	tukuilocal.core_uihelp13 = "|cffFF0000/mss|r - 특수 기술 단축바를 이동할 수 있습니다."
 	tukuilocal.core_uihelp15 = "|cffFF0000/ainv|r - 자동초대 기능을 사용합니다. '/ainv 단어'를 입력하여 해당 단어가 들어간 귓속말이 올 경우 자동으로 초대를 합니다."
 	tukuilocal.core_uihelp14 = "(위로 올리십시오 ...)"
- 
+	tukuilocal.core_uihelp16 = "|cffFF0000/resetgold|r - reset the gold datatext"
+	
 	tukuilocal.symbol_CLEAR = "초기화"
 	tukuilocal.symbol_SKULL = "해골"
 	tukuilocal.symbol_CROSS = "가위표"
@@ -192,4 +189,24 @@ if TukuiDB.client == "koKR" then
 	tukuilocal.hunter_unhappy = "소환수의 만족도가 불만족입니다."
 	tukuilocal.hunter_content = "소환수의 만족도가 만족입니다."
 	tukuilocal.hunter_happy = "소환수의 만족도가 매우 만족입니다."
+	
+	tukuilocal.teleport = "Teleport: "
+	tukuilocal.portal = "Portal: "
+	
+	tukuilocal.dalaran = "Dalaran"
+	tukuilocal.shattrath = "Shattrath"
+	
+	tukuilocal.orgrimmar = "Orgrimmar"
+	tukuilocal.undercity = "Undercity"
+	tukuilocal.thunder_bluff = "Thunder Bluff"
+	tukuilocal.silvermoon = "Silvermoon"
+	tukuilocal.stonard = "Stonard"
+	
+	tukuilocal.ironforge = "Ironforge"
+	tukuilocal.stormwind = "Stormwind"
+	tukuilocal.darnassus = "Darnassus"
+	tukuilocal.exodar = "Exodar"
+	tukuilocal.theramore = "Theramore"
+	
 end
+

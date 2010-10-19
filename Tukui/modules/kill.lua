@@ -12,14 +12,18 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 		if IsAddOnLoaded("Tukui_Dps_Layout") or IsAddOnLoaded("Tukui_Heal_Layout") then
 			InterfaceOptionsFrameCategoriesButton11:SetScale(0.00001)
 			InterfaceOptionsFrameCategoriesButton11:SetAlpha(0)
-			-- this part of code is temporary until it's included in oUF Framework by Haste.
-			-- It hide Blizzard raid frames.
-			CompactRaidFrameManager:SetScale(0.00001)
-			CompactRaidFrameManager:SetAlpha(0)
-			CompactRaidFrameContainer:SetScale(0.00001)
-			CompactRaidFrameContainer:SetAlpha(0)
+			if TukuiCF["raidframes"].enable == true then
+				TukuiDB.Kill(CompactRaidFrameManager)
+				TukuiDB.Kill(CompactRaidFrameContainer)
+			end
 		end	
+
+
+		if TukuiDB.myclass == "DEATHKNIGHT" then
+			k(RuneFrame)
+		end
 	else
+
 		if addon == "Blizzard_AchievementUI" then
 			if TukuiCF.tooltip.enable then
 				hooksecurefunc("AchievementFrameCategories_DisplayButton", function(button) button.showTooltipFunc = nil end)
@@ -27,7 +31,6 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 		end
 		
 		if addon ~= "Tukui" then return end
-		
 		k(StreamingIcon)
 		k(Advanced_UseUIScale)
 		k(Advanced_UIScaleSlider)
@@ -55,12 +58,6 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 			InterfaceOptionsFrameCategoriesButton9:SetAlpha(0)	
 			InterfaceOptionsFrameCategoriesButton9:SetScale(0.00001)
 			InterfaceOptionsFrameCategoriesButton9:SetAlpha(0)
-			
-			-- it seem that 2 people have problem with RuneFrame.
-			-- Make sure they are not show anymore
-			if TukuiDB.myclass == "DEATHKNIGHT" then
-				k(RuneFrame)
-			end
 		end
 		
 		if TukuiCF.actionbar.enable then

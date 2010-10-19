@@ -48,6 +48,11 @@ TukuiDB.Kill(FriendsMicroButton)
 -- hide chat bubble menu button
 TukuiDB.Kill(ChatFrameMenuButton)
 
+local EditBoxDummy = CreateFrame("Frame", "EditBoxDummy", UIParent)
+EditBoxDummy:SetWidth(TukuiCF["chat"].chatwidth)
+EditBoxDummy:SetHeight(TukuiBottomPanel:GetHeight())
+EditBoxDummy:SetPoint("BOTTOM", ChatFrame1, "TOP", 0, TukuiDB.Scale(5))
+
 -- set the chat style
 local function SetChatStyle(frame)
 	local id = frame:GetID()
@@ -57,14 +62,13 @@ local function SetChatStyle(frame)
 	-- always set alpha to 1, don't fade it anymore
 	tab:SetAlpha(1)
 	tab.SetAlpha = UIFrameFadeRemoveFrame
-	
 	-- hide text when setting chat
 	_G[chat.."TabText"]:Hide()
-	
+
 	-- now show text if mouse is found over tab.
 	tab:HookScript("OnEnter", function() _G[chat.."TabText"]:Show() end)
 	tab:HookScript("OnLeave", function() _G[chat.."TabText"]:Hide() end)
-	
+
 	-- yeah baby
 	_G[chat]:SetClampRectInsets(0,0,0,0)
 	
@@ -72,12 +76,12 @@ local function SetChatStyle(frame)
 	_G[chat]:SetClampedToScreen(false)
 			
 	-- Stop the chat chat from fading out
-	_G[chat]:SetFading(false)
+	_G[chat]:SetFading(TukuiCF["chat"].fadeoutofuse)
 	
 	-- move the chat edit box
 	_G[chat.."EditBox"]:ClearAllPoints();
-	_G[chat.."EditBox"]:SetPoint("TOPLEFT", TukuiInfoLeft, TukuiDB.Scale(2), TukuiDB.Scale(-2))
-	_G[chat.."EditBox"]:SetPoint("BOTTOMRIGHT", TukuiInfoLeft, TukuiDB.Scale(-2), TukuiDB.Scale(2))
+	_G[chat.."EditBox"]:SetPoint("TOPLEFT", EditBoxDummy, TukuiDB.Scale(2), TukuiDB.Scale(-2))
+	_G[chat.."EditBox"]:SetPoint("BOTTOMRIGHT", EditBoxDummy, TukuiDB.Scale(-2), TukuiDB.Scale(2))
 	
 	-- Hide textures
 	for j = 1, #CHAT_FRAME_TEXTURES do
@@ -123,23 +127,21 @@ local function SetChatStyle(frame)
 	
 	-- hide editbox on login
 	_G[chat.."EditBox"]:Hide()
-
+	
 	-- script to hide editbox instead of fading editbox to 0.35 alpha via IM Style
+	_G[chat.."EditBox"]:HookScript("OnEditFocusGained", function(self) self:Show() end)
 	_G[chat.."EditBox"]:HookScript("OnEditFocusLost", function(self) self:Hide() end)
 	
-	-- hide edit box every time we click on a tab
-	_G[chat.."Tab"]:HookScript("OnClick", function() _G[chat.."EditBox"]:Hide() end)
-			
 	-- rename combag log to log
 	if _G[chat] == _G["ChatFrame2"] then
 		FCF_SetWindowName(_G[chat], "Log")
 	end
-			
+
 	-- create our own texture for edit box
 	local EditBoxBackground = CreateFrame("frame", "TukuiChatchatEditBoxBackground", _G[chat.."EditBox"])
 	TukuiDB.CreatePanel(EditBoxBackground, 1, 1, "LEFT", _G[chat.."EditBox"], "LEFT", 0, 0)
 	EditBoxBackground:ClearAllPoints()
-	EditBoxBackground:SetAllPoints(TukuiInfoLeft)
+	EditBoxBackground:SetAllPoints(EditBoxDummy)
 	EditBoxBackground:SetFrameStrata("LOW")
 	EditBoxBackground:SetFrameLevel(1)
 	
@@ -161,7 +163,7 @@ local function SetChatStyle(frame)
 			colorize(ChatTypeInfo[type].r,ChatTypeInfo[type].g,ChatTypeInfo[type].b)
 		end
 	end)
-	
+		
 	if _G[chat] ~= _G["ChatFrame2"] then
 		origs[_G[chat]] = _G[chat].AddMessage
 		_G[chat].AddMessage = AddMessage
@@ -175,24 +177,29 @@ local function SetupChat(self)
 		SetChatStyle(frame)
 		FCFTab_UpdateAlpha(frame)
 	end
-				
+	
+	local var
+	if TukuiCF["chat"].sticky == true then
+		var = 1
+	else
+		var = 0
+	end
 	-- Remember last channel
-	ChatTypeInfo.WHISPER.sticky = 1
-	ChatTypeInfo.BN_WHISPER.sticky = 1
-	ChatTypeInfo.OFFICER.sticky = 1
-	ChatTypeInfo.RAID_WARNING.sticky = 1
-	ChatTypeInfo.CHANNEL.sticky = 1
+	ChatTypeInfo.WHISPER.sticky = var
+	ChatTypeInfo.BN_WHISPER.sticky = var
+	ChatTypeInfo.OFFICER.sticky = var
+	ChatTypeInfo.RAID_WARNING.sticky = var
+	ChatTypeInfo.CHANNEL.sticky = var
 end
 
-local function SetupChatPosAndFont(self)	
+local function SetupChatPosAndFont(self)
 	for i = 1, NUM_CHAT_WINDOWS do
 		local chat = _G[format("ChatFrame%s", i)]
-		local tab = _G[format("ChatFrame%sTab", i)]
 		local id = chat:GetID()
 		local name = FCF_GetChatWindowInfo(id)
 		local point = GetChatWindowSavedPosition(id)
 		local _, fontSize = FCF_GetChatWindowInfo(id)
-		
+
 		-- well... tukui font under fontsize 12 is unreadable.
 		if fontSize < 12 then		
 			FCF_SetChatWindowFontSize(nil, chat, 12)
@@ -201,27 +208,13 @@ local function SetupChatPosAndFont(self)
 		end
 		
 		-- force chat position on #1 and #4, needed if we change ui scale or resolution
-		-- also set original width and height of chatframes 1 and 4 if first time we run tukui.
-		-- doing resize of chat also here for users that hit "cancel" when default installation is show.
 		if i == 1 then
 			chat:ClearAllPoints()
-			chat:SetPoint("BOTTOMLEFT", TukuiInfoLeft, "TOPLEFT", TukuiDB.Scale(-1), TukuiDB.Scale(6))
+			chat:SetPoint("BOTTOMLEFT", ChatLBackground, "BOTTOMLEFT", TukuiDB.Scale(2), TukuiDB.Scale(4))
+			_G["ChatFrame"..i]:SetSize(TukuiDB.Scale(TukuiCF["chat"].chatwidth - 4), TukuiDB.Scale(TukuiCF["chat"].chatheight))
 			FCF_SavePositionAndDimensions(chat)
-		elseif i == 4 and name == "Loot" then
-			if not chat.isDocked then
-				chat:ClearAllPoints()
-				chat:SetPoint("BOTTOMRIGHT", TukuiInfoRight, "TOPRIGHT", 0, TukuiDB.Scale(6))
-				chat:SetJustifyH("RIGHT") 
-				FCF_SavePositionAndDimensions(chat)
-			end
 		end
 	end
-			
-	-- reposition battle.net popup over chat #1
-	BNToastFrame:HookScript("OnShow", function(self)
-		self:ClearAllPoints()
-		self:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, TukuiDB.Scale(5))
-	end)
 end
 
 TukuiChat:RegisterEvent("ADDON_LOADED")
@@ -235,8 +228,8 @@ TukuiChat:SetScript("OnEvent", function(self, event, ...)
 			--return CombatLogQuickButtonFrame_Custom:SetAlpha(.4)
 		end
 	elseif event == "PLAYER_ENTERING_WORLD" then
-		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
-		SetupChatPosAndFont(self)
+			self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+			SetupChatPosAndFont(self)
 	end
 end)
 
@@ -364,8 +357,12 @@ function TukuiDB.ChatCopyButtons()
 		buttontext:SetJustifyH("CENTER")
 		buttontext:SetJustifyV("CENTER")
 				
-		button:SetScript("OnMouseUp", function(self)
-			Copy(cf)
+		button:SetScript("OnMouseUp", function(self, btn)
+			if i == 1 and btn == "RightButton" then
+				ToggleFrame(ChatMenu)
+			else
+				Copy(cf)
+			end
 		end)
 		button:SetScript("OnEnter", function() 
 			button:SetAlpha(1) 

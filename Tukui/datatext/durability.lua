@@ -8,7 +8,7 @@ if TukuiCF["datatext"].dur and TukuiCF["datatext"].dur > 0 then
 	Stat:SetFrameStrata("BACKGROUND")
 	Stat:SetFrameLevel(3)
 
-	local Text  = TukuiInfoLeft:CreateFontString(nil, "OVERLAY")
+	local Text  = TukuiBottomPanel:CreateFontString(nil, "OVERLAY")
 	Text:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize)
 	TukuiDB.PP(TukuiCF["datatext"].dur, Text)
 
@@ -28,12 +28,29 @@ if TukuiCF["datatext"].dur and TukuiCF["datatext"].dur > 0 then
 		table.sort(tukuilocal.Slots, function(a, b) return a[3] < b[3] end)
 		
 		if Total > 0 then
-			Text:SetText(floor(tukuilocal.Slots[1][3]*100).."% "..tukuilocal.datatext_armor)
+			Text:SetText("Durability: "..valuecolor..floor(tukuilocal.Slots[1][3]*100).."%")
 		else
-			Text:SetText("100% "..tukuilocal.datatext_armor)
+			Text:SetText("Durability: 100%")
 		end
 		-- Setup Durability Tooltip
 		self:SetAllPoints(Text)
+		self:SetScript("OnEnter", function()
+			if not InCombatLockdown() then
+				GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, TukuiDB.Scale(6));
+				GameTooltip:ClearAllPoints()
+				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
+				GameTooltip:ClearLines()
+				for i = 1, 11 do
+					if tukuilocal.Slots[i][3] ~= 1000 then
+						green = tukuilocal.Slots[i][3]*2
+						red = 1 - green
+						GameTooltip:AddDoubleLine(tukuilocal.Slots[i][2], floor(tukuilocal.Slots[i][3]*100).."%",1 ,1 , 1, red + 1, green, 0)
+					end
+				end
+				GameTooltip:Show()
+			end
+		end)
+		self:SetScript("OnLeave", function() GameTooltip:Hide() end)
 		Total = 0
 	end
 
@@ -42,21 +59,4 @@ if TukuiCF["datatext"].dur and TukuiCF["datatext"].dur > 0 then
 	Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
 	Stat:SetScript("OnMouseDown", function() ToggleCharacter("PaperDollFrame") end)
 	Stat:SetScript("OnEvent", OnEvent)
-	Stat:SetScript("OnEnter", function(self)
-		if not InCombatLockdown() then
-			GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, TukuiDB.Scale(6));
-			GameTooltip:ClearAllPoints()
-			GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
-			GameTooltip:ClearLines()
-			for i = 1, 11 do
-				if tukuilocal.Slots[i][3] ~= 1000 then
-					green = tukuilocal.Slots[i][3]*2
-					red = 1 - green
-					GameTooltip:AddDoubleLine(tukuilocal.Slots[i][2], floor(tukuilocal.Slots[i][3]*100).."%",1 ,1 , 1, red + 1, green, 0)
-				end
-			end
-			GameTooltip:Show()
-		end
-	end)
-	Stat:SetScript("OnLeave", function() GameTooltip:Hide() end)
 end

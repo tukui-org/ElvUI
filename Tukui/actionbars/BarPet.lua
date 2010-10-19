@@ -55,3 +55,19 @@ bar:SetScript("OnEvent", function(self, event, ...)
 		TukuiDB.StylePet()
 	end
 end)
+
+--Setup Mouseover
+if TukuiCF["actionbar"].rightbarmouseover == true then
+	TukuiPetActionBarBackground:SetAlpha(0)
+	TukuiPetActionBarBackground:SetScript("OnEnter", function() RightBarMouseOver(1) end)
+	TukuiPetActionBarBackground:SetScript("OnLeave", function() RightBarMouseOver(0) end)
+	TukuiLineToPetActionBarBackground:SetScript("OnEnter", function() RightBarMouseOver(1) end)
+	TukuiLineToPetActionBarBackground:SetScript("OnLeave", function() RightBarMouseOver(0) end)
+	
+	for i=1, 10 do
+		local b = _G["PetActionButton"..i]
+		b:SetAlpha(0)
+		b:HookScript("OnEnter", function() RightBarMouseOver(1) end)
+		b:HookScript("OnLeave", function() RightBarMouseOver(0) end)
+	end
+end

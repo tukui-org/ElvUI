@@ -4,7 +4,6 @@
 
 local function install()
 	SetCVar("buffDurations", 1)
-	SetCVar("consolidateBuffs", 0)
 	SetCVar("lootUnderMouse", 1)
 	SetCVar("autoSelfCast", 1)
 	SetCVar("mapQuestDifficulty", 1)
@@ -18,48 +17,25 @@ local function install()
 	SetCVar("nameplateShowEnemyGuardians", 1)
 	SetCVar("nameplateShowEnemyTotems", 1)
 	SetCVar("ShowClassColorInNameplate", 1)
-	SetCVar("screenshotQuality", 8)
+	SetCVar("screenshotQuality", 10)
 	SetCVar("cameraDistanceMax", 50)
 	SetCVar("cameraDistanceMaxFactor", 3.4)
 	SetCVar("chatMouseScroll", 1)
-	SetCVar("chatStyle", "im")
+	SetCVar("chatStyle", "classic")
 	SetCVar("WholeChatWindowClickable", 0)
 	SetCVar("ConversationMode", "inline")
-	SetCVar("CombatDamage", 1)
-	SetCVar("CombatHealing", 1)
 	SetCVar("showTutorials", 0)
 	SetCVar("showNewbieTips", 0)
-	SetCVar("Maxfps", 120)
-	SetCVar("autoDismountFlying", 1)
 	SetCVar("autoQuestWatch", 1)
 	SetCVar("autoQuestProgress", 1)
 	SetCVar("showLootSpam", 1)
 	SetCVar("guildMemberNotify", 1)
-	SetCVar("chatBubblesParty", 0)
-	SetCVar("chatBubbles", 0)	
-	SetCVar("UnitNameOwn", 0)
-	SetCVar("UnitNameNPC", 0)
-	SetCVar("UnitNameNonCombatCreatureName", 0)
-	SetCVar("UnitNamePlayerGuild", 1)
-	SetCVar("UnitNamePlayerPVPTitle", 1)
-	SetCVar("UnitNameFriendlyPlayerName", 0)
-	SetCVar("UnitNameFriendlyPetName", 0)
-	SetCVar("UnitNameFriendlyGuardianName", 0)
-	SetCVar("UnitNameFriendlyTotemName", 0)
-	SetCVar("UnitNameEnemyPlayerName", 1)
-	SetCVar("UnitNameEnemyPetName", 1)
-	SetCVar("UnitNameEnemyGuardianName", 1)
-	SetCVar("UnitNameEnemyTotemName", 1)
+	SetCVar("chatBubblesParty", 1)
+	SetCVar("chatBubbles", 1)	
 	SetCVar("UberTooltips", 1)
 	SetCVar("removeChatDelay", 1)
-	SetCVar("showVKeyCastbar", 1)
-	SetCVar("colorblindMode", 0)
-	--SetCVar("bloatthreat", 0)
-	
-	-- setting this the creator or tukui only, because a lot of people don't like this change.		
-	if TukuiDB.myname == "Tukz" then	
-		SetCVar("secureAbilityToggle", 0)
-	end
+	SetCVar("gxTextureCacheSize", 512)
+	SetCVar("showToastWindow", 0)
 	
 	-- Var ok, now setting chat frames if using Tukui chats.	
 	if (TukuiCF.chat.enable == true) and (not IsAddOnLoaded("Prat") or not IsAddOnLoaded("Chatter")) then					
@@ -67,32 +43,21 @@ local function install()
 		FCF_SetLocked(ChatFrame1, 1)
 		FCF_DockFrame(ChatFrame2)
 		FCF_SetLocked(ChatFrame2, 1)
-		FCF_OpenNewWindow("General")
-		FCF_SetLocked(ChatFrame3, 1)
-		FCF_DockFrame(ChatFrame3)
-
-		FCF_OpenNewWindow("Loot")
-		FCF_UnDockFrame(ChatFrame4)
-		FCF_SetLocked(ChatFrame4, 1)
-		ChatFrame4:Show();
-
+				
 		for i = 1, NUM_CHAT_WINDOWS do
 			local frame = _G[format("ChatFrame%s", i)]
 			local chatFrameId = frame:GetID()
 			local chatName = FCF_GetChatWindowInfo(chatFrameId)
 			
-			frame:SetSize(TukuiDB.Scale(TukuiCF["panels"].tinfowidth + 1), TukuiDB.Scale(111))
+			_G["ChatFrame"..i]:SetSize(TukuiDB.Scale(TukuiCF["chat"].chatwidth - 5), TukuiDB.Scale(TukuiCF["chat"].chatheight))
 			
 			-- this is the default width and height of tukui chats.
-			SetChatWindowSavedDimensions(chatFrameId, TukuiDB.Scale(TukuiCF["panels"].tinfowidth + 1), TukuiDB.Scale(111))
+			SetChatWindowSavedDimensions(chatFrameId, TukuiDB.Scale(TukuiCF["chat"].chatwidth + -4), TukuiDB.Scale(TukuiCF["chat"].chatheight))
 			
-			-- move general bottom left or Loot (if found) on right.
+			-- move general bottom left
 			if i == 1 then
 				frame:ClearAllPoints()
-				frame:SetPoint("BOTTOMLEFT", TukuiInfoLeft, "TOPLEFT", TukuiDB.Scale(-1), TukuiDB.Scale(6))
-			elseif i == 4 and chatName == "Loot" then
-				frame:ClearAllPoints()
-				frame:SetPoint("BOTTOMRIGHT", TukuiInfoRight, "TOPRIGHT", 0, TukuiDB.Scale(6))
+				frame:SetPoint("BOTTOMLEFT", ChatLBackground, "BOTTOMLEFT", TukuiDB.Scale(2), 0)
 			end
 					
 			-- save new default position and dimension
@@ -101,65 +66,65 @@ local function install()
 			-- set default tukui font size
 			FCF_SetChatWindowFontSize(nil, frame, 12)
 			
-			-- rename windows general and combat log
+			-- rename windows general because moved to chat #3
 			if i == 1 then FCF_SetWindowName(frame, "G, S & W") end
 			if i == 2 then FCF_SetWindowName(frame, "Log") end
 		end
 		
-		ChatFrame_RemoveAllMessageGroups(ChatFrame1)
-		ChatFrame_RemoveChannel(ChatFrame1, "Trade")
-		ChatFrame_RemoveChannel(ChatFrame1, "General")
-		ChatFrame_RemoveChannel(ChatFrame1, "LocalDefense")
-		ChatFrame_RemoveChannel(ChatFrame1, "GuildRecruitment")
-		ChatFrame_RemoveChannel(ChatFrame1, "LookingForGroup")
-		ChatFrame_AddMessageGroup(ChatFrame1, "SAY")
-		ChatFrame_AddMessageGroup(ChatFrame1, "EMOTE")
-		ChatFrame_AddMessageGroup(ChatFrame1, "YELL")
-		ChatFrame_AddMessageGroup(ChatFrame1, "GUILD")
-		ChatFrame_AddMessageGroup(ChatFrame1, "OFFICER")
-		ChatFrame_AddMessageGroup(ChatFrame1, "GUILD_ACHIEVEMENT")
-		ChatFrame_AddMessageGroup(ChatFrame1, "WHISPER")
-		ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_SAY")
-		ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_EMOTE")
-		ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_YELL")
-		ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_WHISPER")
-		ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_BOSS_EMOTE")
-		ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_BOSS_WHISPER")
-		ChatFrame_AddMessageGroup(ChatFrame1, "PARTY")
-		ChatFrame_AddMessageGroup(ChatFrame1, "PARTY_LEADER")
-		ChatFrame_AddMessageGroup(ChatFrame1, "RAID")
-		ChatFrame_AddMessageGroup(ChatFrame1, "RAID_LEADER")
-		ChatFrame_AddMessageGroup(ChatFrame1, "RAID_WARNING")
-		ChatFrame_AddMessageGroup(ChatFrame1, "BATTLEGROUND")
-		ChatFrame_AddMessageGroup(ChatFrame1, "BATTLEGROUND_LEADER")
-		ChatFrame_AddMessageGroup(ChatFrame1, "BG_HORDE")
-		ChatFrame_AddMessageGroup(ChatFrame1, "BG_ALLIANCE")
-		ChatFrame_AddMessageGroup(ChatFrame1, "BG_NEUTRAL")
-		ChatFrame_AddMessageGroup(ChatFrame1, "SYSTEM")
-		ChatFrame_AddMessageGroup(ChatFrame1, "ERRORS")
-		ChatFrame_AddMessageGroup(ChatFrame1, "AFK")
-		ChatFrame_AddMessageGroup(ChatFrame1, "DND")
-		ChatFrame_AddMessageGroup(ChatFrame1, "IGNORED")
-		ChatFrame_AddMessageGroup(ChatFrame1, "ACHIEVEMENT")
-		ChatFrame_AddMessageGroup(ChatFrame1, "BN_WHISPER")
-		ChatFrame_AddMessageGroup(ChatFrame1, "BN_CONVERSATION")
-					
-		-- Setup the spam chat frame
-		ChatFrame_RemoveAllMessageGroups(ChatFrame3)
-		ChatFrame_AddChannel(ChatFrame3, "Trade")
-		ChatFrame_AddChannel(ChatFrame3, "General")
-		ChatFrame_AddChannel(ChatFrame3, "LocalDefense")
-		ChatFrame_AddChannel(ChatFrame3, "GuildRecruitment")
-		ChatFrame_AddChannel(ChatFrame3, "LookingForGroup")
-				
-		-- Setup the right chat
-		ChatFrame_RemoveAllMessageGroups(ChatFrame4);
-		ChatFrame_AddMessageGroup(ChatFrame4, "COMBAT_XP_GAIN")
-		ChatFrame_AddMessageGroup(ChatFrame4, "COMBAT_HONOR_GAIN")
-		ChatFrame_AddMessageGroup(ChatFrame4, "COMBAT_FACTION_CHANGE")
-		ChatFrame_AddMessageGroup(ChatFrame4, "LOOT")
-		ChatFrame_AddMessageGroup(ChatFrame4, "MONEY")
-				
+	ChatFrame_RemoveAllMessageGroups(ChatFrame1)
+	ChatFrame_AddChannel(ChatFrame1, "Trade")
+	ChatFrame_AddChannel(ChatFrame1, "General")
+	ChatFrame_AddChannel(ChatFrame1, "LocalDefense")
+	ChatFrame_AddChannel(ChatFrame1, "GuildRecruitment")
+	ChatFrame_AddChannel(ChatFrame1, "LookingForGroup")
+	ChatFrame_AddMessageGroup(ChatFrame1, "SAY")
+	ChatFrame_AddMessageGroup(ChatFrame1, "EMOTE")
+	ChatFrame_AddMessageGroup(ChatFrame1, "YELL")
+	ChatFrame_AddMessageGroup(ChatFrame1, "GUILD")
+	ChatFrame_AddMessageGroup(ChatFrame1, "OFFICER")
+	ChatFrame_AddMessageGroup(ChatFrame1, "GUILD_ACHIEVEMENT")
+	ChatFrame_AddMessageGroup(ChatFrame1, "WHISPER")
+	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_SAY")
+	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_EMOTE")
+	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_YELL")
+	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_WHISPER")
+	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_BOSS_EMOTE")
+	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_BOSS_WHISPER")
+	ChatFrame_AddMessageGroup(ChatFrame1, "PARTY")
+	ChatFrame_AddMessageGroup(ChatFrame1, "PARTY_LEADER")
+	ChatFrame_AddMessageGroup(ChatFrame1, "RAID")
+	ChatFrame_AddMessageGroup(ChatFrame1, "RAID_LEADER")
+	ChatFrame_AddMessageGroup(ChatFrame1, "RAID_WARNING")
+	ChatFrame_AddMessageGroup(ChatFrame1, "BATTLEGROUND")
+	ChatFrame_AddMessageGroup(ChatFrame1, "BATTLEGROUND_LEADER")
+	ChatFrame_AddMessageGroup(ChatFrame1, "BG_HORDE")
+	ChatFrame_AddMessageGroup(ChatFrame1, "BG_ALLIANCE")
+	ChatFrame_AddMessageGroup(ChatFrame1, "BG_NEUTRAL")
+	ChatFrame_AddMessageGroup(ChatFrame1, "SYSTEM")
+	ChatFrame_AddMessageGroup(ChatFrame1, "ERRORS")
+	ChatFrame_AddMessageGroup(ChatFrame1, "AFK")
+	ChatFrame_AddMessageGroup(ChatFrame1, "DND")
+	ChatFrame_AddMessageGroup(ChatFrame1, "IGNORED")
+	ChatFrame_AddMessageGroup(ChatFrame1, "ACHIEVEMENT")
+	ChatFrame_AddMessageGroup(ChatFrame1, "BN_WHISPER")
+	ChatFrame_AddMessageGroup(ChatFrame1, "BN_CONVERSATION")
+	ChatFrame_AddMessageGroup(ChatFrame1, "BN_INLINE_TOAST_ALERT")
+	ChatFrame_AddMessageGroup(ChatFrame1, "COMBAT_XP_GAIN")
+	ChatFrame_AddMessageGroup(ChatFrame1, "COMBAT_HONOR_GAIN")
+	ChatFrame_AddMessageGroup(ChatFrame1, "LOOT")
+	ChatFrame_AddMessageGroup(ChatFrame1, "MONEY")
+	ChatFrame_AddMessageGroup(ChatFrame1, "COMBAT_XP_GAIN")		
+	
+	
+	if TukuiDB.myname == "Elv" then
+		--keep losing my god damn channels everytime i resetui
+		ChatFrame_AddChannel(DEFAULT_CHAT_FRAME, "tystank")
+		ChatFrame_AddChannel(DEFAULT_CHAT_FRAME, "tys")
+		ChatFrame_AddChannel(DEFAULT_CHAT_FRAME, "crusaderaura")
+		ChangeChatColor("CHANNEL5", 147/255, 112/255, 219/255)
+		ChangeChatColor("CHANNEL6", 139/255, 115/255, 85/255)
+		ChangeChatColor("CHANNEL7", RAID_CLASS_COLORS["PALADIN"].r, RAID_CLASS_COLORS["PALADIN"].g, RAID_CLASS_COLORS["PALADIN"].b)
+	end	
 		-- enable classcolor automatically on login and on each character without doing /configure each time.
 		ToggleChatColorNamesByClassGroup(true, "SAY")
 		ToggleChatColorNamesByClassGroup(true, "EMOTE")
@@ -181,22 +146,28 @@ local function install()
 		ToggleChatColorNamesByClassGroup(true, "CHANNEL3")
 		ToggleChatColorNamesByClassGroup(true, "CHANNEL4")
 		ToggleChatColorNamesByClassGroup(true, "CHANNEL5")
+		ToggleChatColorNamesByClassGroup(true, "CHANNEL6")
+		ToggleChatColorNamesByClassGroup(true, "CHANNEL7")
+		ToggleChatColorNamesByClassGroup(true, "CHANNEL8")
+		ToggleChatColorNamesByClassGroup(true, "CHANNEL9")
+		ToggleChatColorNamesByClassGroup(true, "CHANNEL10")
+		ToggleChatColorNamesByClassGroup(true, "CHANNEL11")
 	end
 		   
-	TukuiInstallv1200 = true
-	
+	ElvUIInstalled = true
+
 	-- reset unitframe position
 	if TukuiCF["unitframes"].positionbychar == true then
 		TukuiUFpos = {}
 	else
 		TukuiData.ufpos = {}
 	end
-			
+	
 	ReloadUI()
 end
 
 local function DisableTukui()
-	DisableAddOn("Tukui")
+	DisableAddOn("Tukui"); 
 	ReloadUI()
 end
 
@@ -218,7 +189,7 @@ StaticPopupDialogs["INSTALL_UI"] = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
     OnAccept = install,
-	OnCancel = function() TukuiInstallv1100 = true TukuiData.SetcVar = true end,
+	OnCancel = function() TukuiMinimal = true end,
     timeout = 0,
     whileDead = 1,
 }
@@ -254,11 +225,11 @@ TukuiOnLogon:SetScript("OnEvent", function(self, event)
 		if TukuiCF["general"].multisampleprotect == true then
 			SetMultisampleFormat(1)
 		end
-		if TukuiCF["general"].uiscale > 1 then TukuiCF["general"].uiscale = 1 end
-		if TukuiCF["general"].uiscale < 0.64 then TukuiCF["general"].uiscale = 0.64 end
 		SetCVar("uiScale", TukuiCF["general"].uiscale)
-		if TukuiInstallv1200 ~= true then
-			if (TukuiData == nil) then TukuiData = {} end
+		if (TukuiData == nil) then TukuiData = {} end
+
+		
+		if ElvUIInstalled ~= true then
 			StaticPopup_Show("INSTALL_UI")
 		end
 	end
@@ -267,7 +238,12 @@ TukuiOnLogon:SetScript("OnEvent", function(self, event)
 		StaticPopup_Show("DISABLE_RAID")
 	end
 	
-	print(tukuilocal.core_welcome1..TukuiDB.version)
+	if TukuiCF["arena"].unitframes == true then
+		SetCVar("showArenaEnemyFrames", 0)
+	end
+	-- force lua error enable for BETA
+	SetCVar("scriptErrors", 1)
+		
 	print(tukuilocal.core_welcome2)
 end)
 
@@ -289,9 +265,10 @@ local function UIHelp()
 	print(tukuilocal.core_uihelp9)
 	print(tukuilocal.core_uihelp10)
 	print(tukuilocal.core_uihelp11)
-	--print(tukuilocal.core_uihelp12)  -- temp disabled, don't know yet if i'll readd this feature
+	print(tukuilocal.core_uihelp12)
 	print(tukuilocal.core_uihelp13)
 	print(tukuilocal.core_uihelp15)
+	print(tukuilocal.core_uihelp16)
 	print(" ")
 	print(tukuilocal.core_uihelp14)
 end

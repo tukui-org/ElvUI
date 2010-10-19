@@ -2,7 +2,7 @@ if TukuiCF.tooltip.enable ~= true then return end
 
 GameTooltip:HookScript("OnTooltipCleared", function(self) self.TukuiItemTooltip=nil end)
 GameTooltip:HookScript("OnTooltipSetItem", function(self)
-	if (IsShiftKeyDown() or IsAltKeyDown()) and (TukuiItemTooltip and not self.TukuiItemTooltip and (TukuiItemTooltip.id or TukuiItemTooltip.count)) then
+	if TukuiItemTooltip and not self.TukuiItemTooltip and (TukuiItemTooltip.id or TukuiItemTooltip.count) then
 		local item, link = self:GetItem()
 		local num = GetItemCount(link)
 		local left = ""

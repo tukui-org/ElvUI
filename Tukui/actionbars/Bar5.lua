@@ -8,7 +8,7 @@ local TukuiBar5 = CreateFrame("Frame","TukuiBar5",UIParent) -- MultiBarBottomRig
 TukuiBar5:SetAllPoints(TukuiActionBarBackground)
 MultiBarBottomRight:SetParent(TukuiBar5)
 
-for i= 1, 12 do
+for i=1, 12 do
 	local b = _G["MultiBarBottomRightButton"..i]
 	local b2 = _G["MultiBarBottomRightButton"..i-1]
 	b:ClearAllPoints()
@@ -28,6 +28,16 @@ for i= 1, 12 do
 end
 
 -- hide it if needed
-if (TukuiCF.actionbar.bottomrows == 1 and TukuiCF.actionbar.rightbars < 2) then
+if TukuiCF.actionbar.rightbars < 2 then
 	TukuiBar5:Hide()
+end
+
+--Setup Mouseover
+if TukuiCF["actionbar"].rightbarmouseover == true then
+	for i=1, 12 do
+		local b = _G["MultiBarBottomRightButton"..i]
+		b:SetAlpha(0)
+		b:HookScript("OnEnter", function() RightBarMouseOver(1) end)
+		b:HookScript("OnLeave", function() RightBarMouseOver(0) end)
+	end
 end

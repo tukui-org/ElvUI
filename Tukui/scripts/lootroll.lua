@@ -186,7 +186,8 @@ end
 
 
 local anchor = CreateFrame("Button", nil, UIParent)
-anchor:SetWidth(TukuiDB.Scale(300)) anchor:SetHeight(TukuiDB.Scale(22))
+anchor:SetWidth(TukuiDB.Scale(300)) 
+anchor:SetHeight(TukuiDB.Scale(22))
 anchor:SetBackdrop(backdrop)
 anchor:SetBackdropColor(0.25, 0.25, 0.25, 1)
 local label = anchor:CreateFontString(nil, "ARTWORK")
@@ -209,7 +210,7 @@ anchor:Hide()
 local frames = {}
 
 local f = CreateRollFrame() -- Create one for good measure
-f:SetPoint("BOTTOMLEFT", next(frames) and frames[#frames] or anchor, "TOPLEFT", 0, TukuiDB.Scale(4))
+f:SetPoint("TOPLEFT", next(frames) and frames[#frames] or anchor, "BOTTOMLEFT", 0, TukuiDB.Scale(-4))
 table.insert(frames, f)
 
 local function GetFrame()
@@ -218,7 +219,7 @@ local function GetFrame()
 	end
 
 	local f = CreateRollFrame()
-	f:SetPoint("BOTTOMLEFT", next(frames) and frames[#frames] or anchor, "TOPLEFT", 0, TukuiDB.Scale(4))
+	f:SetPoint("TOPLEFT", next(frames) and frames[#frames] or anchor, "BOTTOMLEFT", 0, TukuiDB.Scale(-4))
 	table.insert(frames, f)
 	return f
 end
@@ -338,5 +339,5 @@ anchor:SetScript("OnEvent", function(frame, event, addon)
 
 	anchor:SetScript("OnEvent", function(frame, event, ...) if event == "CHAT_MSG_LOOT" then return CHAT_MSG_LOOT(...) else return START_LOOT_ROLL(...) end end)
 
-	anchor:SetPoint("CENTER", UIParent, "CENTER", 0, TukuiDB.Scale(-200))
+	anchor:SetPoint("TOP", UIParent, "TOP", 0, TukuiDB.Scale(-200))
 end)

@@ -9,12 +9,16 @@
 	<Script file="local\taiwan.lua"/>
 	<Script file="local\spanish.lua"/>
 	<Script file="local\korean.lua"/>
+	<Script file="local\china.lua"/>
 	
 	<Script file="config\config.lua"/>
 	<Script file="config\media.lua"/>
+	<Script file="config\classtimers.lua"/>
 	
 	<Script file="modules\configui.lua"/>
-
+	
+	<Script file="config\filters.lua"/>
+	
 	<Include file="libs\oUF\oUF.xml"/>
 	<Script file="libs\oUF_AuraWatch\oUF_AuraWatch.lua"/>
 	<Script file="libs\oUF_CombatFeedback\oUF_CombatFeedback.lua"/>
@@ -26,58 +30,53 @@
 	<Script file="libs\oUF_ThreatBar\oUF_ThreatBar.lua"/>
 	<Script file="libs\oUF_TotemBar\oUF_TotemBar.lua"/>
 	<Script file="libs\oUF_Trinkets\oUF_Trinkets.lua"/>
-	<Script file="libs\oUF_RaidDebuffs\oUF_RaidDebuffs.lua"/>	
+	<Script file="libs\oUF_ComboBar\oUF_ComboBar.lua"/>
+	<Script file="libs\LibStub\LibStub.lua"/>
+	<Script file="libs\CallbackHandler-1.0\CallbackHandler-1.0.lua"/>
+	<Include file="libs\LibSharedMedia-3.0\lib.xml"/>
 	
-	<Script file="config\watch.lua"/>
-		
 	<Script file="modules\colors.lua"/>	
+	<Script file="modules\autodisable.lua"/>
 	<Script file="modules\functions.lua"/>
 	<Script file="modules\launch.lua"/>
 	<Script file="modules\temp.lua"/>
-	<Script file="modules\autodisable.lua"/>
 	<Script file="modules\watchframe.lua"/>
 	<Script file="modules\durability.lua"/>
 	<Script file="modules\vehicle.lua"/>
 	<Script file="modules\capturebar.lua"/>
 	<Script file="modules\gm.lua"/>
 	<Script file="modules\commands.lua"/>
+	<Script file="modules\misc.lua"/>
 	<Script file="modules\quests.lua"/>
-	<Script file="modules\mount.lua"/>
 	<Script file="modules\invite.lua"/>
 	<Script file="modules\autodez.lua"/>
 	<Script file="modules\autorelease.lua"/>
-	<Script file="modules\symbol.lua"/>
 	<Script file="modules\merchant.lua"/>
 	<Script file="modules\error.lua"/>
 	<Script file="modules\bind.lua"/>
 	<Script file="modules\copyurl.lua"/>
-	<Script file="modules\hyperlink.lua"/>
 	<Script file="modules\item.lua"/>
+	<Script file="modules\raidmarker.lua"/>
 	<Script file="modules\kill.lua"/>
 	<Script file="modules\spam.lua"/>
+	<Script file="modules\sharedmedia.lua"/>
 	
 	<Script file="scripts\font.lua"/>
 	<Script file="scripts\buffs.lua"/>
 	<Script file="scripts\minimap.lua"/>
 	<Script file="scripts\panels.lua"/>
 	
-	<Script file="datatext\armor.lua"/>
-	<Script file="datatext\avoidance.lua"/>
-	<Script file="datatext\bags.lua"/>
+	
+	<Script file="datatext\stat1.lua"/>
+	<Script file="datatext\stat2.lua"/>
 	<Script file="datatext\battleground.lua"/>
-	<Script file="datatext\crit.lua"/>
-	<Script file="datatext\dps.lua"/>
 	<Script file="datatext\durability.lua"/>
-	<Script file="datatext\fps.lua"/>
+	<Script file="datatext\system.lua"/>
 	<Script file="datatext\friend.lua"/>
 	<Script file="datatext\gold.lua"/>
 	<Script file="datatext\guild.lua"/>
-	<Script file="datatext\haste.lua"/>
-	<Script file="datatext\hps.lua"/>
-	<Script file="datatext\mem.lua"/>
-	<Script file="datatext\power.lua"/>
+	<Script file="datatext\loc.lua"/>
 	<Script file="datatext\time.lua"/>
-	<Script file="datatext\currency.lua"/>
 	
 	<Script file="actionbars\Hide.lua"/>
 	<Script file="actionbars\Bar1.lua"/>
@@ -104,13 +103,15 @@
 	<Script file="scripts\mirror.lua"/>
 	<Script file="scripts\reminder.lua"/>
 	<Script file="scripts\skin.lua"/>
-	<Script file="scripts\totemskin.lua"/>
+	<Script file="scripts\combatText.lua"/>
 	<Script file="scripts\bubbles.lua"/>
+	<Script file="scripts\raidUtility.lua"/>
+	<Script file="scripts\raidBuffReminder.lua"/>
+	<Script file="scripts\classtimer.lua"/>
 	
 	<Include file="unitframes\templates.xml"/>
-	<Script file="unitframes\tags.lua"/>
-	<Script file="unitframes\layout.lua"/>
-			
-	<Script file="class\priest.lua"/>
-	<Script file="class\hunter.lua"/>
+	<Script file="unitframes\tags.lua"/>		
+	<Script file="unitframes\hunter.lua"/>
+	
+	<Include file="addon_skins\AddonSkins.xml"/>
 </Ui>

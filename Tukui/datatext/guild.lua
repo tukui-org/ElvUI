@@ -10,8 +10,21 @@ if TukuiCF["datatext"].guild and TukuiCF["datatext"].guild > 0 then
 	
 	local tthead = {r=0.4,g=0.78,b=1}
 	local ttsubh = {r=0.75,g=0.9,b=1}
-
-	local Text  = TukuiInfoLeft:CreateFontString(nil, "OVERLAY")
+	local yoffset = TukuiDB.Scale(6)
+	local anchor = "TOP"
+	local anchor2 = "ANCHOR_TOP"
+	local yoffset2 = TukuiDB.mult
+	local snapfrom = "BOTTOM"
+	
+	if TukuiCF["datatext"].friends == 8 or TukuiCF["datatext"].friends == 9 then
+		yoffset = TukuiDB.Scale(-6)
+		anchor = "BOTTOM"
+		anchor2 = "ANCHOR_BOTTOM"
+		yoffset2 = TukuiDB.mult
+		snapfrom = "TOP"
+	end
+	
+	local Text  = TukuiBottomPanel:CreateFontString(nil, "OVERLAY")
 	Text:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize)
 	TukuiDB.PP(TukuiCF["datatext"].guild, Text)
 
@@ -28,16 +41,17 @@ if TukuiCF["datatext"].guild and TukuiCF["datatext"].guild > 0 then
 				end
 			end 			
 			self:SetAllPoints(Text)
-			Text:SetText(tukuilocal.datatext_guild .. ": " .. numOnline)
+			Text:SetText(tukuilocal.datatext_guild .. ": " .. valuecolor..numOnline)
 		else
-			Text:SetText(tukuilocal.datatext_noguild)
+			Text:SetText(valuecolor..tukuilocal.datatext_noguild)
 		end
 	end
-	
+		
+	Stat:RegisterEvent("GUILD_ROSTER_SHOW")
+	Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
 	Stat:RegisterEvent("GUILD_ROSTER_UPDATE")
 	Stat:RegisterEvent("PLAYER_GUILD_UPDATE")
-	Stat:RegisterEvent("GUILD_PERK_UPDATE")
-	Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
+	Stat:RegisterEvent("FRIENDLIST_UPDATE")
 	Stat:RegisterEvent("CHAT_MSG_SYSTEM")
 	Stat:SetScript("OnEnter", function(self)
 		if not InCombatLockdown() then
@@ -48,9 +62,9 @@ if TukuiCF["datatext"].guild and TukuiCF["datatext"].guild > 0 then
 				local online, total, gmotd = 0, GetNumGuildMembers(true), GetGuildRosterMOTD()
 				for i = 0, total do if select(9, GetGuildRosterInfo(i)) then online = online + 1 end end
 				
-				GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, TukuiDB.Scale(6));
+				GameTooltip:SetOwner(self, anchor2, 0, yoffset);
 				GameTooltip:ClearAllPoints()
-				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
+				GameTooltip:SetPoint(anchor, self, snapfrom, 0, yoffset2)
 				GameTooltip:ClearLines()
 				GameTooltip:AddDoubleLine(GetGuildInfo'player',format("%s: %d/%d",tukuilocal.datatext_guild,online,total),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
 				GameTooltip:AddLine' '
@@ -82,6 +96,6 @@ if TukuiCF["datatext"].guild and TukuiCF["datatext"].guild > 0 then
 		end
 	end)
 	Stat:SetScript("OnLeave", function() GameTooltip:Hide() end)
-	Stat:SetScript("OnMouseDown", function() if not GuildFrame and IsInGuild() then LoadAddOn("Blizzard_GuildUI") end GuildFrame_Toggle() end)
+	Stat:SetScript("OnMouseDown", function() if not IsAddOnLoaded("Blizzard_GuildUI") then LoadAddOn("Blizzard_GuildUI") end ToggleFrame(GuildFrame) end)
 	Stat:SetScript("OnEvent", Update)
 end
