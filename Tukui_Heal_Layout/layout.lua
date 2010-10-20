@@ -571,6 +571,10 @@ local function Shared(self, unit)
 			Runes.FrameBackdrop:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 			Runes.FrameBackdrop:SetFrameLevel(Runes:GetFrameLevel() - 1)
 			self.Runes = Runes
+			
+			self.Runes:HookScript("OnShow", function()
+				if self.Debuffs then self.Debuffs:ClearAllPoints() self.Debuffs:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(17)) end	
+			end)
 		end
 			
 		-- shaman totem bar
@@ -617,6 +621,9 @@ local function Shared(self, unit)
 			TotemBar.FrameBackdrop:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 			TotemBar.FrameBackdrop:SetFrameLevel(TotemBar:GetFrameLevel() - 1)
 			self.TotemBar = TotemBar
+			self.TotemBar:HookScript("OnShow", function()
+				if self.Debuffs then self.Debuffs:ClearAllPoints() self.Debuffs:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(17)) end	
+			end)
 		end
 				
 		-- auras 

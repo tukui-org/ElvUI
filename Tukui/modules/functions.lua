@@ -996,6 +996,12 @@ TukuiDB.UpdateShards = function(self, event, unit, powerType)
 			self.SoulShards[i]:SetAlpha(.2)
 		end
 	end
+	
+	if self.SoulShards:IsShown() then
+		if self.Debuffs then self.Debuffs:ClearAllPoints() self.Debuffs:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(17)) end	
+	else
+		if self.Debuffs then self.Debuffs:ClearAllPoints() self.Debuffs:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(6)) end	
+	end
 end
 	
 TukuiDB.Phasing = function(self, event)
@@ -1020,6 +1026,12 @@ TukuiDB.UpdateHoly = function(self, event, unit, powerType)
 		else
 			self.HolyPower[i]:SetAlpha(.2)
 		end
+	end
+	
+	if self.HolyPower:IsShown() then
+		if self.Debuffs then self.Debuffs:ClearAllPoints() self.Debuffs:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(17)) end	
+	else
+		if self.Debuffs then self.Debuffs:ClearAllPoints() self.Debuffs:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(6)) end	
 	end
 end
 
