@@ -30,7 +30,6 @@
 	<Script file="libs\oUF_ThreatBar\oUF_ThreatBar.lua"/>
 	<Script file="libs\oUF_TotemBar\oUF_TotemBar.lua"/>
 	<Script file="libs\oUF_Trinkets\oUF_Trinkets.lua"/>
-	<Script file="libs\oUF_ComboBar\oUF_ComboBar.lua"/>
 	<Script file="libs\LibStub\LibStub.lua"/>
 	<Script file="libs\CallbackHandler-1.0\CallbackHandler-1.0.lua"/>
 	<Include file="libs\LibSharedMedia-3.0\lib.xml"/>

@@ -1034,33 +1034,58 @@ TukuiDB.EclipseDisplay = function(self, login)
 		self.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(17))
 		if self.Debuffs then 
 			self.Debuffs:ClearAllPoints()
-			self.Debuffs:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 0, TukuiDB.Scale(6)) 
+			if self.Debuffs then self.Debuffs:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(17)) end	
 		end		
 	else
 		if self.ComboPoint and self.ComboPoint:IsShown() then return end
 		self.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))
 		if self.Debuffs then 
 			self.Debuffs:ClearAllPoints()
-			self.Debuffs:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 0, TukuiDB.Scale(6)) 
+			self.Debuffs:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(6))
 		end	
 	end
 end
 
-TukuiDB.ComboDisplay = function(self, login)
-	local cb = self.ComboPoint
-	local original_height
-	if login then
-		cb:SetScript("OnUpdate", nil)
-		original_height = self:GetHeight()
-	end
+TukuiDB.ComboDisplay = function(self, event, unit)
+	if(unit == 'pet') then return end
 	
-	if cb:IsShown() then
-		self.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(17))
-		if self.Debuffs then self.Debuffs:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 0, TukuiDB.Scale(6)) end	
+	local cpoints = self.CPoints
+	local _, powertype = UnitPowerType("player")
+	if powertype ~= "ENERGY" then 
+		for i=1, MAX_COMBO_POINTS do
+			cpoints[i]:SetAlpha(0.15)
+		end
 	else
+		local cp
+		if(UnitExists'vehicle') then
+			cp = GetComboPoints('vehicle', 'target')
+		else
+			cp = GetComboPoints('player', 'target')
+		end
+
+		for i=1, MAX_COMBO_POINTS do
+			if(i <= cp) then
+				cpoints[i]:SetAlpha(1)
+			else
+				cpoints[i]:SetAlpha(0.15)
+			end
+		end
+	end	
+	
+	if cpoints[1]:GetAlpha() == 1 then
+		for i=1, MAX_COMBO_POINTS do
+			cpoints[i]:Show()
+		end
+		self.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(17))
+		if self.Debuffs then self.Debuffs:ClearAllPoints() self.Debuffs:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(17)) end	
+	else
+		for i=1, MAX_COMBO_POINTS do
+			cpoints[i]:Hide()
+		end
+
 		if self.EclipseBar and self.EclipseBar:IsShown() then return end
 		self.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))	
-		if self.Debuffs then self.Debuffs:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 0, TukuiDB.Scale(6)) end	
+		if self.Debuffs then self.Debuffs:ClearAllPoints() self.Debuffs:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(6)) end	
 	end
 end
 

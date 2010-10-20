@@ -443,9 +443,7 @@ local function Shared(self, unit)
 			bars:SetHeight(TukuiDB.Scale(8))
 			TukuiDB.SetTemplate(bars)
 			bars:SetBackdropBorderColor(0,0,0,0)
-			bars:SetScript("OnShow", function() TukuiDB.ComboDisplay(self, false) end)
-			bars:SetScript("OnUpdate", function() TukuiDB.ComboDisplay(self, true) end) -- just forcing 1 update on login for buffs/shadow/etc.
-			bars:SetScript("OnHide", function() TukuiDB.ComboDisplay(self, false) end)
+			bars:SetBackdropColor(0,0,0,0)
 			
 			for i = 1, 5 do					
 				bars[i] = CreateFrame("StatusBar", self:GetName().."_Combo"..i, self)
@@ -469,13 +467,16 @@ local function Shared(self, unit)
 			bars[5]:SetStatusBarColor(0.33, 0.59, 0.33)
 			
 
-			self.ComboPoint = bars
+			self.CPoints = bars
+			self.CPoints.Override = TukuiDB.ComboDisplay
 			
-			bars.FrameBackdrop = CreateFrame("Frame", nil, bars)
+			bars.FrameBackdrop = CreateFrame("Frame", nil, bars[1])
 			TukuiDB.SetTemplate(bars.FrameBackdrop)
-			bars.FrameBackdrop:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-			bars.FrameBackdrop:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+			bars.FrameBackdrop:SetPoint("TOPLEFT", bars, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
+			bars.FrameBackdrop:SetPoint("BOTTOMRIGHT", bars, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 			bars.FrameBackdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
+			
+			self:RegisterEvent("UNIT_DISPLAYPOWER", TukuiDB.ComboDisplay)
 		end
 		
 		-- set holy power bar or shard bar
@@ -622,10 +623,10 @@ local function Shared(self, unit)
 			local debuffs = CreateFrame("Frame", nil, self)
 
 			debuffs:SetHeight(((26 / original_width) * original_width))
-			debuffs:SetWidth(original_width + 2)
-			debuffs:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", TukuiDB.Scale(-9), 4)
-			debuffs.size = ((26 / original_width) * original_width)
-			debuffs.num = 8
+			debuffs:SetWidth(original_width + TukuiDB.Scale(4))
+			debuffs:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(6))
+			debuffs.size = (debuffs:GetHeight())
+			debuffs.num = (floor(debuffs:GetWidth() / debuffs:GetHeight()))
 			debuffs.spacing = 2
 			debuffs.initialAnchor = 'TOPRIGHT'
 			debuffs["growth-y"] = "UP"
@@ -634,11 +635,11 @@ local function Shared(self, unit)
 			debuffs.PostUpdateIcon = TukuiDB.PostUpdateAura
 			
 			if TukuiCF["auras"].playershowonlydebuffs == false then
-				buffs:SetPoint("BOTTOM", debuffs, "TOP", 0, 2)
-				buffs:SetHeight(((26 / original_width) * original_width))
-				buffs:SetWidth(original_width + 2)
-				buffs.size = ((26 / original_width) * original_width)
-				buffs.num = 8
+				buffs:SetPoint("BOTTOM", debuffs, "TOP", 0, TukuiDB.Scale(2))
+				buffs:SetHeight(debuffs:GetHeight())
+				buffs:SetWidth(debuffs:GetWidth())
+				buffs.size = (debuffs:GetHeight())
+				buffs.num = (floor(debuffs:GetWidth() / debuffs:GetHeight()))
 				buffs.spacing = 2
 				buffs.initialAnchor = 'TOPLEFT'
 				buffs.PostCreateIcon = TukuiDB.PostCreateAura
@@ -671,7 +672,6 @@ local function Shared(self, unit)
 			castbar.bg:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
 			castbar.bg:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 			castbar.bg:SetFrameLevel(5)
-            TukuiDB.CreateShadow(castbar.bg)
  
 			castbar.time = TukuiDB.SetFontString(castbar, font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
 			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", TukuiDB.Scale(-4), TukuiDB.Scale(1))
@@ -904,36 +904,33 @@ local function Shared(self, unit)
 		Name:SetShadowOffset(1.25, -1.25)
 		self:Tag(Name, '[Tukui:getnamecolor][Tukui:namelong] [Tukui:diffcolor][level] [shortclassification]')
 		self.Name = Name
-
+		
 		if TukuiCF["auras"].targetauras then
 			local buffs = CreateFrame("Frame", nil, self)
 			local debuffs = CreateFrame("Frame", nil, self)
 			
-			buffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", TukuiDB.Scale(9), 4)
+			buffs:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(6))
 			buffs:SetHeight(((26 / original_width) * original_width))
-			buffs:SetWidth(original_width + 2)
-			buffs.size = ((26 / original_width) * original_width)
-			buffs.num = 8
-				
-			debuffs:SetHeight(((26 / original_width) * original_width))
-			debuffs:SetWidth(original_width + 2)
-			debuffs:SetPoint("BOTTOM", buffs, "TOP", 0, 2)
-			debuffs.size = ((26 / original_width) * original_width)
-			debuffs.num = 8
-				
+			buffs:SetWidth(original_width + TukuiDB.Scale(4))
+			buffs.size = (buffs:GetHeight())
+			buffs.num = (floor(buffs:GetWidth() / buffs:GetHeight()))
 			buffs.spacing = 2
 			buffs.initialAnchor = 'TOPLEFT'
 			buffs.PostCreateIcon = TukuiDB.PostCreateAura
 			buffs.PostUpdateIcon = TukuiDB.PostUpdateAura
 			self.Buffs = buffs	
-						
+			
+			debuffs:SetHeight(buffs:GetHeight())
+			debuffs:SetWidth(buffs:GetWidth())
+			debuffs:SetPoint("BOTTOM", buffs, "TOP", 0, TukuiDB.Scale(2))
+			debuffs.size = (debuffs:GetHeight())
+			debuffs.num = (floor(debuffs:GetWidth() / debuffs:GetHeight()))
 			debuffs.spacing = 2
 			debuffs.initialAnchor = 'TOPRIGHT'
 			debuffs["growth-y"] = "UP"
 			debuffs["growth-x"] = "LEFT"
 			debuffs.PostCreateIcon = TukuiDB.PostCreateAura
 			debuffs.PostUpdateIcon = TukuiDB.PostUpdateAura
-			
 			self.Debuffs = debuffs
 			
 			-- Debuff Aura Filter
@@ -955,7 +952,7 @@ local function Shared(self, unit)
 			castbar.bg:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
 			castbar.bg:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 			castbar.bg:SetFrameLevel(5)
-            TukuiDB.CreateShadow(castbar.bg)
+
  
 			castbar.time = TukuiDB.SetFontString(castbar, font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
 			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", TukuiDB.Scale(-4), TukuiDB.Scale(1))
@@ -1429,7 +1426,6 @@ local function Shared(self, unit)
 			castbar.bg:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
 			castbar.bg:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 			castbar.bg:SetFrameLevel(5)
-			TukuiDB.CreateShadow(castbar.bg)
 			
 			castbar.time = TukuiDB.SetFontString(castbar, font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
 			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", TukuiDB.Scale(-4), TukuiDB.Scale(1))
@@ -1451,7 +1447,6 @@ local function Shared(self, unit)
 				castbar.button:SetWidth(castbar:GetHeight()+TukuiDB.Scale(4))
 				castbar.button:SetPoint("RIGHT", castbar, "LEFT", TukuiDB.Scale(-4), 0)
 				TukuiDB.SetTemplate(castbar.button)
-				TukuiDB.CreateShadow(castbar.button)
 				castbar.icon = castbar.button:CreateTexture(nil, "ARTWORK")
 				castbar.icon:SetPoint("TOPLEFT", castbar.button, TukuiDB.Scale(2), TukuiDB.Scale(-2))
 				castbar.icon:SetPoint("BOTTOMRIGHT", castbar.button, TukuiDB.Scale(-2), TukuiDB.Scale(2))
@@ -1697,4 +1692,6 @@ if IsAddOnLoaded("Clique") then
 end
 
 --Move threatbar to targetframe
-oUF_Tukz_player.ThreatBar:SetPoint("TOPLEFT", oUF_Tukz_target.Health, "BOTTOMLEFT", 0, TukuiDB.Scale(-14))
+if oUF_Tukz_player.ThreatBar then
+	oUF_Tukz_player.ThreatBar:SetPoint("TOPLEFT", oUF_Tukz_target.Health, "BOTTOMLEFT", 0, TukuiDB.Scale(-14))
+end
