@@ -180,6 +180,10 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 20066 ), -- Repentance
 			CreateSpellEntry( 53563 ), -- Beacon of Light
 			CreateSpellEntry( 853 ), -- Hammer of Justice
+			CreateSpellEntry( 1022 ), -- Hand of Protection
+			CreateSpellEntry( 1044 ), -- Hand of Freedom
+			CreateSpellEntry( 1038 ), -- Hand of Salvation
+			CreateSpellEntry( 6940 ), -- Hand of Sacrifice
 		},
 		player = {
 			CreateSpellEntry( 642 ), -- Divine Shield
@@ -192,12 +196,20 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 85416 ), --Grand Crusader
 			CreateSpellEntry( 70940, true), -- Divine Guardian 
 			CreateSpellEntry( 85696 ), -- Zealotry
+			CreateSpellEntry( 31842 ), -- Divine Favor
+			CreateSpellEntry( 1022 ), -- Hand of Protection
+			CreateSpellEntry( 1044 ), -- Hand of Freedom
+			CreateSpellEntry( 1038 ), -- Hand of Salvation
+			CreateSpellEntry( 6940 ), -- Hand of Sacrifice
+			CreateSpellEntry( 20053 ), -- Conviction
+			CreateSpellEntry( 53657 ), -- Judgements of the Pure
 		},
 		procs = {
 			CreateSpellEntry( 59578 ), -- The Art of War
 			CreateSpellEntry( 90174 ), -- Hand of Light	
 			CreateSpellEntry( 85496 ), -- Speed of Light	
 			CreateSpellEntry( 88819 ), -- Daybreak 
+			CreateSpellEntry( 54149 ), -- Infusion of Light
 		},
 	},
 	PRIEST = { 
