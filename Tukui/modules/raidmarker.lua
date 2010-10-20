@@ -22,7 +22,7 @@ end
 
 
 function RaidMark_HotkeyPressed(keystate)
-	ButtonIsDown = (keystate=="down")and RaidMarkCanMark()
+	ButtonIsDown = (keystate=="down") and RaidMarkCanMark()
 	if ButtonIsDown then
 		RaidMarkShowIcons()
 	else
@@ -61,7 +61,7 @@ local function RaidMarkButton_OnLeave(self)
 end
 
 
-local function RaidMarkButton_OnClick(self)
+local function RaidMarkButton_OnClick(self, arg1)
 	PlaySound("UChatScrollButton")
 	SetRaidTarget("target", (arg1~="RightButton") and self:GetID()or 0)
 	RaidMarkFrame:Hide()
