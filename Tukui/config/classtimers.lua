@@ -273,6 +273,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 52127 ), -- Water Shield
 			CreateSpellEntry( 30823 ), -- Shamanistic Rage
 			CreateSpellEntry( 16166 ), -- Elemental Mastery
+			CreateSpellEntry( 53817 ), -- Maelstrom Weapon
 		},
 		procs = {
 			CreateSpellEntry( 51528 ), -- Maelstrom Weapon

@@ -256,28 +256,19 @@ local function Shared(self, unit)
 		self:RegisterEvent("PARTY_MEMBERS_CHANGED", TukuiDB.MLAnchorUpdate)
 					
 		-- the threat bar below minimap
-		if (db.showthreat == true) and not IsAddOnLoaded("Omen") then
-			local ThreatBar = CreateFrame("StatusBar", self:GetName()..'_ThreatBar', TukuiMinimapStatsLeft)
-			ThreatBar:SetPoint("TOPLEFT", TukuiMinimapStatsLeft, "BOTTOMLEFT",  TukuiDB.Scale(2), TukuiDB.Scale(-5))
-			ThreatBar:SetWidth(TukuiMinimapStatsLeft:GetWidth() * 2)
-			ThreatBar:SetHeight(TukuiMinimapStatsLeft:GetHeight() + TukuiDB.Scale(-2))
-			
+		if db.showthreat == true and not IsAddOnLoaded("Omen") then
+			-- the threat bar
+			local ThreatBar = CreateFrame("StatusBar", self:GetName()..'_ThreatBar', self)
+			ThreatBar:SetWidth(original_width)
+			ThreatBar:SetHeight(TukuiDB.Scale(5))
+			ThreatBar:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, TukuiDB.Scale(-14))
 			ThreatBar:SetStatusBarTexture(normTex)
 			ThreatBar:GetStatusBarTexture():SetHorizTile(false)
 			ThreatBar:SetBackdrop(backdrop)
 			ThreatBar:SetBackdropColor(0, 0, 0, 0)
-	   
-			ThreatBar.Text = TukuiDB.SetFontString(ThreatBar, font2, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
-			ThreatBar.Text:SetPoint("RIGHT", ThreatBar, "RIGHT", TukuiDB.Scale(-5), 0 )
-	
-			ThreatBar.Title = TukuiDB.SetFontString(ThreatBar, font2, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
-			ThreatBar.Title:SetText(tukuilocal.unitframes_ouf_threattext)
-			ThreatBar.Title:SetPoint("LEFT", ThreatBar, "LEFT", TukuiDB.Scale(5), 0 )
-				  
 			ThreatBar.bg = ThreatBar:CreateTexture(nil, 'BORDER')
 			ThreatBar.bg:SetAllPoints(ThreatBar)
 			ThreatBar.bg:SetTexture(0.1,0.1,0.1)
-		
 			ThreatBar.useRawThreat = false
 			self.ThreatBar = ThreatBar
 			
@@ -1669,7 +1660,7 @@ do
 	UnitPopupMenus["PARTY"] = { "MUTE", "UNMUTE", "PARTY_SILENCE", "PARTY_UNSILENCE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "WHISPER", "PROMOTE", "PROMOTE_GUIDE", "LOOT_PROMOTE", "VOTE_TO_KICK", "UNINVITE", "INSPECT", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "RAID_TARGET_ICON", "SELECT_ROLE", "PVP_REPORT_AFK", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL" }
 	UnitPopupMenus["PLAYER"] = { "WHISPER", "INSPECT", "INVITE", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "RAID_TARGET_ICON", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL" }
 	UnitPopupMenus["RAID_PLAYER"] = { "MUTE", "UNMUTE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "WHISPER", "INSPECT", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "RAID_TARGET_ICON", "SELECT_ROLE", "RAID_LEADER", "RAID_PROMOTE", "RAID_DEMOTE", "LOOT_PROMOTE", "RAID_REMOVE", "PVP_REPORT_AFK", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL" };
-	UnitPopupMenus["RAID"] = { "MUTE", "UNMUTE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "RAID_LEADER", "RAID_PROMOTE", "RAID_MAINTANK", "RAID_MAINASSIST", "RAID_TARGET_ICON", "LOOT_PROMOTE", "RAID_DEMOTE", "RAID_REMOVE", "PVP_REPORT_AFK", "CANCEL" };
+	UnitPopupMenus["RAID"] = { "MUTE", "UNMUTE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "RAID_LEADER", "RAID_PROMOTE", "RAID_MAINTANK", "RAID_MAINASSIST", "RAID_TARGET_ICON", "SELECT_ROLE", "LOOT_PROMOTE", "RAID_DEMOTE", "RAID_REMOVE", "PVP_REPORT_AFK", "CANCEL" };
 	UnitPopupMenus["VEHICLE"] = { "RAID_TARGET_ICON", "VEHICLE_LEAVE", "CANCEL" }
 	UnitPopupMenus["TARGET"] = { "RAID_TARGET_ICON", "CANCEL" }
 	UnitPopupMenus["ARENAENEMY"] = { "CANCEL" }
@@ -1699,4 +1690,7 @@ if IsAddOnLoaded("Clique") then
 		end
 	end)
 end
+
+--Move threatbar to targetframe
+oUF_Tukz_player.ThreatBar:SetPoint("TOPLEFT", oUF_Tukz_target.Health, "BOTTOMLEFT", 0, TukuiDB.Scale(-14))
 

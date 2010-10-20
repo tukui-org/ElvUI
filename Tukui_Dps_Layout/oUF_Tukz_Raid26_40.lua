@@ -137,7 +137,7 @@ oUF:Factory(function(self)
 		"groupBy", "GROUP",	
 		"yOffset", TukuiDB.Scale(-6)
 	)	
-	raid:SetPoint("BOTTOMLEFT", ChatLBackground, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(40))
+	raid:SetPoint("BOTTOMLEFT", ChatLBackground, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(35))
 	
 	local raidToggle = CreateFrame("Frame")
 	raidToggle:RegisterEvent("PLAYER_ENTERING_WORLD")

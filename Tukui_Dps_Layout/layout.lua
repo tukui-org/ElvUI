@@ -356,6 +356,29 @@ local function Shared(self, unit)
 			self.Reputation.F:SetFrameLevel(self.Reputation:GetFrameLevel() - 1)
 		end
 		
+		if db.showthreat == true and not IsAddOnLoaded("Omen") then
+			-- the threat bar
+			local ThreatBar = CreateFrame("StatusBar", self:GetName()..'_ThreatBar', self)
+			ThreatBar:SetWidth(original_width)
+			ThreatBar:SetHeight(TukuiDB.Scale(5))
+			ThreatBar:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, TukuiDB.Scale(-14))
+			ThreatBar:SetStatusBarTexture(normTex)
+			ThreatBar:GetStatusBarTexture():SetHorizTile(false)
+			ThreatBar:SetBackdrop(backdrop)
+			ThreatBar:SetBackdropColor(0, 0, 0, 0)
+			ThreatBar.bg = ThreatBar:CreateTexture(nil, 'BORDER')
+			ThreatBar.bg:SetAllPoints(ThreatBar)
+			ThreatBar.bg:SetTexture(0.1,0.1,0.1)
+			ThreatBar.useRawThreat = false
+			self.ThreatBar = ThreatBar
+			
+			self.ThreatBar.F = CreateFrame("Frame", nil, self.ThreatBar)
+			TukuiDB.SetTemplate(self.ThreatBar.F)
+			self.ThreatBar.F:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
+			self.ThreatBar.F:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+			self.ThreatBar.F:SetFrameLevel(self.ThreatBar:GetFrameLevel() - 1)
+		end
+		
 
 		-- show druid mana when shapeshifted in bear, cat or whatever
 		if TukuiDB.myclass == "DRUID" then
@@ -1213,21 +1236,6 @@ local function Shared(self, unit)
 			self.Castbar.Icon = castbar.icon
 		end
 		
-		if unit == "targettarget" and db.showthreat == true then
-			-- the threat bar
-			local ThreatBar = CreateFrame("StatusBar", self:GetName()..'_ThreatBar', TukuiMinimapStatsLeft)
-			ThreatBar:SetAllPoints(self.Health)
-			ThreatBar:SetStatusBarTexture(normTex)
-			ThreatBar:GetStatusBarTexture():SetHorizTile(false)
-			ThreatBar:SetBackdrop(backdrop)
-			ThreatBar:SetBackdropColor(0, 0, 0, 0)
-			ThreatBar.bg = ThreatBar:CreateTexture(nil, 'BORDER')
-			ThreatBar.bg:SetAllPoints(ThreatBar)
-			ThreatBar.bg:SetTexture(0.1,0.1,0.1)
-			ThreatBar.useRawThreat = false
-			self.ThreatBar = ThreatBar
-		end
-		
 		self:RegisterEvent("UNIT_PET", TukuiDB.updateAllElements)	
 	end
 	
@@ -1657,7 +1665,7 @@ do
 	UnitPopupMenus["PARTY"] = { "MUTE", "UNMUTE", "PARTY_SILENCE", "PARTY_UNSILENCE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "WHISPER", "PROMOTE", "PROMOTE_GUIDE", "LOOT_PROMOTE", "VOTE_TO_KICK", "UNINVITE", "INSPECT", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "RAID_TARGET_ICON", "SELECT_ROLE", "PVP_REPORT_AFK", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL" }
 	UnitPopupMenus["PLAYER"] = { "WHISPER", "INSPECT", "INVITE", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "RAID_TARGET_ICON", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL" }
 	UnitPopupMenus["RAID_PLAYER"] = { "MUTE", "UNMUTE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "WHISPER", "INSPECT", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "RAID_TARGET_ICON", "SELECT_ROLE", "RAID_LEADER", "RAID_PROMOTE", "RAID_DEMOTE", "LOOT_PROMOTE", "RAID_REMOVE", "PVP_REPORT_AFK", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL" };
-	UnitPopupMenus["RAID"] = { "MUTE", "UNMUTE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "RAID_LEADER", "RAID_PROMOTE", "RAID_MAINTANK", "RAID_MAINASSIST", "RAID_TARGET_ICON", "LOOT_PROMOTE", "RAID_DEMOTE", "RAID_REMOVE", "PVP_REPORT_AFK", "CANCEL" };
+	UnitPopupMenus["RAID"] = { "MUTE", "UNMUTE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "RAID_LEADER", "RAID_PROMOTE", "RAID_MAINTANK", "RAID_MAINASSIST", "RAID_TARGET_ICON", "SELECT_ROLE", "LOOT_PROMOTE", "RAID_DEMOTE", "RAID_REMOVE", "PVP_REPORT_AFK", "CANCEL" };
 	UnitPopupMenus["VEHICLE"] = { "RAID_TARGET_ICON", "VEHICLE_LEAVE", "CANCEL" }
 	UnitPopupMenus["TARGET"] = { "RAID_TARGET_ICON", "CANCEL" }
 	UnitPopupMenus["ARENAENEMY"] = { "CANCEL" }
@@ -1687,3 +1695,6 @@ if IsAddOnLoaded("Clique") then
 		end
 	end)
 end
+
+--Move threatbar to targetframe
+oUF_Tukz_player.ThreatBar:SetPoint("TOPLEFT", oUF_Tukz_target.Health, "BOTTOMLEFT", 0, TukuiDB.Scale(-14))

@@ -344,7 +344,7 @@ local Colorize = function(self)
 	NeedBackdropBorderRefresh = true
 end
 
-local SetStyle = function(self)
+TukuiDB.SetStyle = function(self)
 	TukuiDB.SetTemplate(self)
 	self:SetBackdropColor(unpack(TukuiCF.media.backdropfadecolor))
 	Colorize(self)
@@ -353,7 +353,7 @@ end
 TukuiTooltip:RegisterEvent("PLAYER_ENTERING_WORLD")
 TukuiTooltip:SetScript("OnEvent", function(self)
 	for _, tt in pairs(Tooltips) do
-		tt:HookScript("OnShow", SetStyle)
+		tt:HookScript("OnShow", TukuiDB.SetStyle)
 	end
 	
 	TukuiDB.SetTemplate(FriendsTooltip)
@@ -390,3 +390,5 @@ TukuiTooltip:SetScript("OnEvent", function(self)
 		hooksecurefunc(GameTooltip, "SetShapeshift", CombatHideActionButtonsTooltip)
 	end
 end)
+
+
