@@ -4,8 +4,8 @@
 local TooltipHider = CreateFrame("Frame")
 TooltipHider:RegisterEvent("PLAYER_ENTERING_WORLD")
 TooltipHider:SetScript("OnEvent", function()
-	local inInstance, _ = IsInInstance()
-	if inInstance then
+	local inInstance, instanceType = IsInInstance()
+	if inInstance and (instanceType == "party" or instanceType == "pvp") then
 		print("|cffC495DDElvUI|r: One-Lined tooltips temporarily disabled while inside instance to prevent client crashes")
 		GameTooltip:SetScript("OnShow", function()
 			if GameTooltip:NumLines() == 1 then
