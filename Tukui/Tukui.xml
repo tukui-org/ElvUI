@@ -58,7 +58,7 @@
 	<Script file="modules\kill.lua"/>
 	<Script file="modules\spam.lua"/>
 	<Script file="modules\sharedmedia.lua"/>
-	<Script file="modules\autobar.lua"/>
+	<Script file="modules\autobutton.lua"/>
 	
 	<Script file="scripts\font.lua"/>
 	<Script file="scripts\buffs.lua"/>
