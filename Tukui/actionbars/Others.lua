@@ -44,7 +44,7 @@ end)
 local vehicle = CreateFrame("BUTTON", nil, UIParent, "SecureActionButtonTemplate")
 vehicle:SetWidth(TukuiDB.Scale(26))
 vehicle:SetHeight(TukuiDB.Scale(26))
-vehicle:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-26))
+vehicle:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-58))
 
 vehicle:RegisterForClicks("AnyUp")
 vehicle:SetScript("OnClick", function() VehicleExit() end)

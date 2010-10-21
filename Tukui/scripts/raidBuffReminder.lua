@@ -8,16 +8,9 @@ end
 local flaskbuffs = BuffReminderRaidBuffs["Flask"]
 local battleelixirbuffs = BuffReminderRaidBuffs["BattleElixir"]
 local guardianelixirbuffs = BuffReminderRaidBuffs["GuardianElixir"]
-local foodbuffs = BuffReminderRaidBuffs["Food"]
-local visible
-local flasked		
+local foodbuffs = BuffReminderRaidBuffs["Food"]	
 local battleelixired	
 local guardianelixired	
-local food		
-local spell3
-local spell4
-local spell5
-local spell6
 
 
 --Setup Caster Buffs
@@ -101,11 +94,9 @@ local function CheckElixir(unit)
 	
 	if guardianelixired == true and battleelixired == true then
 		FlaskFrame:SetAlpha(0.2)
-		flasked = true
 		return
 	else
 		FlaskFrame:SetAlpha(1)
-		flasked = false
 	end
 end
 
@@ -131,7 +122,6 @@ local function OnAuraChange(self, event, arg1, unit)
 			if UnitAura("player", spellname) then
 				FlaskFrame.t:SetTexture(select(3, GetSpellInfo(flaskbuffs)))
 				FlaskFrame:SetAlpha(0.2)
-				flasked = true
 				break
 			else
 				CheckElixir()
@@ -146,11 +136,9 @@ local function OnAuraChange(self, event, arg1, unit)
 			if UnitAura("player", spellname) then
 				FoodFrame:SetAlpha(0.2)
 				FoodFrame.t:SetTexture(select(3, GetSpellInfo(foodbuffs)))
-				food = true
 				break
 			else
 				FoodFrame:SetAlpha(1)
-				food = false
 			end
 		end
 	end
@@ -160,12 +148,10 @@ local function OnAuraChange(self, event, arg1, unit)
 		if UnitAura("player", spellname) then
 			Spell3Frame:SetAlpha(0.2)
 			Spell3Frame.t:SetTexture(select(3, GetSpellInfo(Spell3Buff)))
-			spell3 = true
 			break
 		else
 			Spell3Frame:SetAlpha(1)
 			Spell3Frame.t:SetTexture(select(3, GetSpellInfo(Spell3Buff)))
-			spell3 = false
 		end
 	end
 	
@@ -174,12 +160,10 @@ local function OnAuraChange(self, event, arg1, unit)
 		if UnitAura("player", spellname) then
 			Spell4Frame:SetAlpha(0.2)
 			Spell4Frame.t:SetTexture(select(3, GetSpellInfo(Spell4Buff)))
-			spell4 = true
 			break
 		else
 			Spell4Frame:SetAlpha(1)
 			Spell4Frame.t:SetTexture(select(3, GetSpellInfo(Spell4Buff)))
-			spell4 = false
 		end
 	end
 	
@@ -188,12 +172,10 @@ local function OnAuraChange(self, event, arg1, unit)
 		if UnitAura("player", spellname) then
 			Spell5Frame:SetAlpha(0.2)
 			Spell5Frame.t:SetTexture(select(3, GetSpellInfo(Spell5Buff)))
-			spell5 = true
 			break
 		else
 			Spell5Frame:SetAlpha(1)
 			Spell5Frame.t:SetTexture(select(3, GetSpellInfo(Spell5Buff)))
-			spell5 = false
 		end
 	end	
 
@@ -202,32 +184,10 @@ local function OnAuraChange(self, event, arg1, unit)
 		if UnitAura("player", spellname) then
 			Spell6Frame:SetAlpha(0.2)
 			Spell6Frame.t:SetTexture(select(3, GetSpellInfo(Spell6Buff)))
-			spell6 = true
 			break
 		else
 			Spell6Frame:SetAlpha(1)
 			Spell6Frame.t:SetTexture(select(3, GetSpellInfo(Spell6Buff)))
-			spell6 = false
-		end
-	end
-
-	local inInstance, instanceType = IsInInstance()
-	if not (inInstance and (instanceType == "raid")) then
-		RaidBuffReminder:SetAlpha(0)
-		visible = false
-	elseif flasked == true and food == true and spell3 == true and spell4 == true and spell5 == true and spell6 == true then
-		if not visible then
-			RaidBuffReminder:SetAlpha(0)
-			visible = false
-		end
-		if visible then
-			UIFrameFadeOut(RaidBuffReminder, 0.5)
-			visible = false
-		end
-	else
-		if not visible then
-			UIFrameFadeIn(RaidBuffReminder, 0.5)
-			visible = true
 		end
 	end
 end
