@@ -327,6 +327,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 64382 ), -- Shattering Throw
 			CreateSpellEntry( 58567 ), -- Sunder Armor
 			CreateSpellEntry( 6343 ), -- Thunder Clap
+			CreateSpellEntry( 1715 ), -- Hamstring
 		},
 		player = { 
 			CreateSpellEntry( 469 ), -- Commanding Shout
