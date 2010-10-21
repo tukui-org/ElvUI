@@ -7,7 +7,48 @@ TukuiDB.CreatePanel(RaidUtilityPanel, TukuiDB.Scale(170), (TukuiDB.Scale(5)*4) +
 local r,g,b,_ = TukuiCF["media"].backdropcolor
 RaidUtilityPanel:SetBackdropColor(r,g,b,0.6)
 TukuiDB.CreateShadow(RaidUtilityPanel)
-RaidUtilityPanel:Hide()
+RaidUtilityPanel:SetAlpha(0)
+
+local function UtilToggler()
+	if HiddenToggleButton:GetAlpha() == 0 then
+		--hide
+		RaidUtilityPanel:SetAlpha(0)
+		HiddenToggleButton:SetAlpha(1)
+		HiddenToggleButton:EnableMouse(true)
+		WorldMarkerButton:EnableMouse(false)
+		ShownToggleButton:EnableMouse(false)
+		DisbandRaidButton:EnableMouse(false)
+		RoleCheckButton:EnableMouse(false)
+		ReadyCheckButton:EnableMouse(false)
+		MainTankButton:EnableMouse(false)
+		MainAssistButton:EnableMouse(false)
+		BlueFlare:EnableMouse(false)
+		GreenFlare:EnableMouse(false)
+		PurpleFlare:EnableMouse(false)
+		RedFlare:EnableMouse(false)
+		WhiteFlare:EnableMouse(false)
+		ClearFlare:EnableMouse(false)
+	else
+		--show
+		RaidUtilityPanel:SetAlpha(1)
+		HiddenToggleButton:SetAlpha(0)
+		HiddenToggleButton:EnableMouse(false)
+		WorldMarkerButton:EnableMouse(true)
+		ShownToggleButton:EnableMouse(true)
+		DisbandRaidButton:EnableMouse(true)
+		RoleCheckButton:EnableMouse(true)
+		MainTankButton:EnableMouse(true)
+		ReadyCheckButton:EnableMouse(true)
+		MainAssistButton:EnableMouse(true)
+		BlueFlare:EnableMouse(true)
+		GreenFlare:EnableMouse(true)
+		PurpleFlare:EnableMouse(true)
+		RedFlare:EnableMouse(true)
+		WhiteFlare:EnableMouse(true)
+		ClearFlare:EnableMouse(true)
+	end
+end
+
 
 --Check if We are Raid Leader or Raid Officer
 local function CheckRaidStatus()
@@ -39,7 +80,7 @@ local function CreateButton(name, parent, template, width, height, point, relati
 	b:HookScript("OnEnter", ButtonEnter)
 	b:HookScript("OnLeave", ButtonLeave)
 	TukuiDB.SetTemplate(b)
-	
+	b:EnableMouse(false)
 	if text then
 		local t = b:CreateFontString(nil,"OVERLAY",b)
 		t:SetFont(TukuiCF.media.font,12,"OUTLINE")
@@ -56,16 +97,16 @@ end
 
 --Create button for when frame is hidden
 CreateButton("HiddenToggleButton", UIParent, nil, RaidUtilityPanel:GetWidth() / 1.5, TukuiDB.Scale(18), "TOP", UIParent, "TOP", TukuiDB.Scale(-300), TukuiDB.Scale(-1), "Raid Utility", nil)
+HiddenToggleButton:EnableMouse(true)
+HiddenToggleButton:SetAlpha(1)
 HiddenToggleButton:SetScript("OnMouseUp", function(self)
-	RaidUtilityPanel:Show()
-	HiddenToggleButton:Hide()
+	UtilToggler()
 end)
 
 --Create button for when frame is shown
 CreateButton("ShownToggleButton", RaidUtilityPanel, nil, RaidUtilityPanel:GetWidth() / 2.5, TukuiDB.Scale(18), "TOP", RaidUtilityPanel, "BOTTOM", 0, TukuiDB.Scale(-1), CLOSE, nil)
 ShownToggleButton:SetScript("OnMouseUp", function(self)
-	RaidUtilityPanel:Hide()
-	HiddenToggleButton:Show()
+	UtilToggler()
 end)
 
 --Disband Raid button
@@ -73,8 +114,7 @@ CreateButton("DisbandRaidButton", RaidUtilityPanel, nil, RaidUtilityPanel:GetWid
 DisbandRaidButton:SetScript("OnMouseUp", function(self)
 	if CheckRaidStatus() then
 		StaticPopup_Show("DISBAND_RAID")
-		RaidUtilityPanel:Hide()
-		HiddenToggleButton:Show()
+		UtilToggler()
 	end
 end)
 
@@ -83,8 +123,7 @@ CreateButton("RoleCheckButton", RaidUtilityPanel, nil, RaidUtilityPanel:GetWidth
 RoleCheckButton:SetScript("OnMouseUp", function(self)
 	if CheckRaidStatus() then
 		InitiateRolePoll()
-		RaidUtilityPanel:Hide()
-		HiddenToggleButton:Show()
+		UtilToggler()
 	end
 end)
 
@@ -105,8 +144,7 @@ CreateButton("ReadyCheckButton", RaidUtilityPanel, nil, RoleCheckButton:GetWidth
 ReadyCheckButton:SetScript("OnMouseUp", function(self)
 	if CheckRaidStatus() then
 		DoReadyCheck()
-		RaidUtilityPanel:Hide()
-		HiddenToggleButton:Show()
+		UtilToggler()
 	end
 end)
 
@@ -122,6 +160,7 @@ local function CreateMarkerButton(name, text, point, relativeto, point2)
 	f:SetHeight((MarkerFrame:GetHeight() / 6) + TukuiDB.Scale(-5))
 	f:SetFrameLevel(MarkerFrame:GetFrameLevel() + 1)
 	f:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight")
+	f:EnableMouse(false)
 	
 	local t = f:CreateFontString(nil,"OVERLAY",f)
 	t:SetFont(TukuiCF.media.font,12,"OUTLINE")
@@ -181,11 +220,39 @@ LeadershipCheck:RegisterEvent("RAID_ROSTER_UPDATE")
 LeadershipCheck:RegisterEvent("PLAYER_ENTERING_WORLD")
 LeadershipCheck:SetScript("OnEvent", function(self, event)
 	if CheckRaidStatus() then
-		RaidUtilityPanel:Hide()
-		HiddenToggleButton:Show()
+		RaidUtilityPanel:SetAlpha(0)
+		HiddenToggleButton:SetAlpha(1)
+		HiddenToggleButton:EnableMouse(true)
+		WorldMarkerButton:EnableMouse(false)
+		ShownToggleButton:EnableMouse(false)
+		DisbandRaidButton:EnableMouse(false)
+		RoleCheckButton:EnableMouse(false)
+		ReadyCheckButton:EnableMouse(false)
+		MainTankButton:EnableMouse(false)
+		MainAssistButton:EnableMouse(false)
+		BlueFlare:EnableMouse(false)
+		GreenFlare:EnableMouse(false)
+		PurpleFlare:EnableMouse(false)
+		RedFlare:EnableMouse(false)
+		WhiteFlare:EnableMouse(false)
+		ClearFlare:EnableMouse(false)
 	else
 		--Hide Everything..
-		HiddenToggleButton:Hide()	
-		RaidUtilityPanel:Hide()	
+		RaidUtilityPanel:SetAlpha(0)
+		HiddenToggleButton:SetAlpha(0)
+		HiddenToggleButton:EnableMouse(false)
+		WorldMarkerButton:EnableMouse(false)
+		ShownToggleButton:EnableMouse(false)
+		DisbandRaidButton:EnableMouse(false)
+		RoleCheckButton:EnableMouse(false)
+		MainTankButton:EnableMouse(false)
+		MainAssistButton:EnableMouse(false)
+		ReadyCheckButton:EnableMouse(false)
+		BlueFlare:EnableMouse(false)
+		GreenFlare:EnableMouse(false)
+		PurpleFlare:EnableMouse(false)
+		RedFlare:EnableMouse(false)
+		WhiteFlare:EnableMouse(false)
+		ClearFlare:EnableMouse(false)
 	end
 end)

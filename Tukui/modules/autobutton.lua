@@ -20,9 +20,10 @@ AutoButton:SetWidth(TukuiDB.Scale(40))
 AutoButton:SetHeight(TukuiDB.Scale(40))
 AutoButton:SetPoint("TOPLEFT", Minimap, "BOTTOMLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(-58))
 TukuiDB.SetTemplate(AutoButton)
-AutoButton:Hide()
 TukuiDB.StyleButton(AutoButton, false) 
 AutoButton:SetAttribute("type", "item")
+AutoButton:SetAlpha(0)
+AutoButton:EnableMouse(false)
 
 --Texture for our button
 AutoButton.t = AutoButton:CreateTexture(nil,"OVERLAY",nil)
@@ -46,7 +47,8 @@ local Scanner = CreateFrame("Frame")
 Scanner:RegisterEvent("BAG_UPDATE")
 Scanner:RegisterEvent("UNIT_INVENTORY_CHANGED")
 Scanner:SetScript("OnEvent", function()
-	AutoButton:Hide()
+	AutoButton:SetAlpha(0)
+	AutoButton:EnableMouse(false)
 	--Scan bags for Item matchs
 	for b = 0, NUM_BAG_SLOTS do
 		for s = 1, GetContainerNumSlots(b) do
@@ -75,7 +77,8 @@ Scanner:SetScript("OnEvent", function()
 						local cd_start, cd_finish, cd_enable = GetContainerItemCooldown(b, s)
 						CooldownFrame_SetTimer(AutoButton.Cooldown, cd_start, cd_finish, cd_enable)
 					end)
-					AutoButton:Show()
+					AutoButton:SetAlpha(1)
+					AutoButton:EnableMouse(true)
 				end
 			end
 		end
@@ -87,7 +90,6 @@ Scanner:SetScript("OnEvent", function()
 			if GetInventoryItemID("player", w) == EquipedItems then
 					local itemName, _, _, _, _, _, _, _, _, _, _ = GetItemInfo(EquipedItems) 
 					local itemIcon = GetInventoryItemTexture("player",w)
-				
 					--Set our texture to the item found in bags
 					AutoButton.t:SetTexture(itemIcon)
 					AutoButton.c:SetText("")
@@ -99,7 +101,8 @@ Scanner:SetScript("OnEvent", function()
 						local cd_start, cd_finish, cd_enable = GetInventoryItemCooldown("player",w)
 						CooldownFrame_SetTimer(AutoButton.Cooldown, cd_start, cd_finish, cd_enable)
 					end)
-					AutoButton:Show()
+					AutoButton:SetAlpha(1)
+					AutoButton:EnableMouse(true)
 			end
 		end
 	end
