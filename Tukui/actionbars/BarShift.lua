@@ -55,6 +55,7 @@ local States = {
 	["ROGUE"] = "show,",
 	["PRIEST"] = "show,",
 	["HUNTER"] = "show,",
+	["WARLOCK"] = "show,",
 }
 
 bar:RegisterEvent("PLAYER_LOGIN")
