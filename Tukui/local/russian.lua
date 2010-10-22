@@ -180,4 +180,28 @@
 	tukuilocal.hunter_unhappy = "Ваш питомец несчастлив!"
 	tukuilocal.hunter_content = "Ваш питомец доволен!"
 	tukuilocal.hunter_happy = "Ваш питомец счастлив!"
+
+	function TukuiDB.UpdateHotkey(self, actionButtonType)
+		local hotkey = _G[self:GetName() .. 'HotKey']
+		local text = hotkey:GetText()
+		
+		text = string.gsub(text, '(s%-)', 'S')
+		text = string.gsub(text, '(a%-)', 'A')
+		text = string.gsub(text, '(c%-)', 'C')
+		text = string.gsub(text, '(Кнопка мыши )', 'M')
+		text = string.gsub(text, '(Средняя кнопка мыши)', 'M3')
+		text = string.gsub(text, '(%w+) %(цифр. кл.%)', 'N%1')
+		text = string.gsub(text, '(Прокрутка вверх)', '^^')
+		text = string.gsub(text, '(Прокрутка вниз)', 'vv')
+		text = string.gsub(text, '(Пробел)', 'SpB')
+		text = string.gsub(text, '(Insert)', 'Ins')
+		text = string.gsub(text, '(Home)', 'Hm')
+		text = string.gsub(text, '(Delete)', 'Del')
+		
+		if hotkey:GetText() == _G['RANGE_INDICATOR'] then
+			hotkey:SetText('')
+		else
+			hotkey:SetText(text)
+		end
+	end
 end

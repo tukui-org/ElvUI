@@ -3,7 +3,6 @@ if not TukuiCF["actionbar"].enable == true then return end
 local _G = _G
 local media = TukuiCF["media"]
 local securehandler = CreateFrame("Frame", nil, nil, "SecureHandlerBaseTemplate")
-local replace = string.gsub
 
 function style(self)
 	local name = self:GetName()
@@ -128,30 +127,6 @@ function TukuiDB.StylePet()
 	end
 end
 
-local function updatehotkey(self, actionButtonType)
-	local hotkey = _G[self:GetName() .. 'HotKey']
-	local text = hotkey:GetText()
-	
-	text = replace(text, '(s%-)', 'S')
-	text = replace(text, '(a%-)', 'A')
-	text = replace(text, '(c%-)', 'C')
-	text = replace(text, '(Mouse Button )', 'M')
-	text = replace(text, '(Middle Mouse)', 'M3')
-	text = replace(text, '(Num Pad )', 'N')
-	text = replace(text, '(Page Up)', 'PU')
-	text = replace(text, '(Page Down)', 'PD')
-	text = replace(text, '(Spacebar)', 'SpB')
-	text = replace(text, '(Insert)', 'Ins')
-	text = replace(text, '(Home)', 'Hm')
-	text = replace(text, '(Delete)', 'Del')
-	
-	if hotkey:GetText() == _G['RANGE_INDICATOR'] then
-		hotkey:SetText('')
-	else
-		hotkey:SetText(text)
-	end
-end
-
 -- rescale cooldown spiral to fix texture.
 local buttonNames = { "ActionButton",  "MultiBarBottomLeftButton", "MultiBarBottomRightButton", "MultiBarLeftButton", "MultiBarRightButton", "ShapeshiftButton", "PetActionButton"}
 for _, name in ipairs( buttonNames ) do
@@ -267,7 +242,7 @@ do
 end
 
 hooksecurefunc("ActionButton_Update", style)
-hooksecurefunc("ActionButton_UpdateHotkeys", updatehotkey)
+hooksecurefunc("ActionButton_UpdateHotkeys", TukuiDB.UpdateHotkey)
 hooksecurefunc("ActionButton_UpdateFlyout", styleflyout)
 
 --[[
