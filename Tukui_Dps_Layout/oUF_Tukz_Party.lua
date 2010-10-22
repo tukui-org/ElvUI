@@ -5,7 +5,7 @@ local font1 = TukuiCF["media"].font
 local normTex = TukuiCF["media"].normTex
 
 --Frame Size
-local party_height = TukuiDB.Scale(25)
+local party_height = TukuiDB.Scale(28)
 local party_width = TukuiDB.Scale(130)
 
 local function Shared(self, unit)

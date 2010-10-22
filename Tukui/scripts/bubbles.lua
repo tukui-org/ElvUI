@@ -23,6 +23,7 @@ local function skinbubble(frame)
 	})
 	frame:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))
 	frame:SetBackdropColor(.1, .1, .1, .8)
+	frame:SetClampedToScreen(false)
 	
 	tinsert(bubbles, frame)
 end

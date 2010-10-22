@@ -868,7 +868,7 @@ local function Shared(self, unit)
 			local buffs = CreateFrame("Frame", nil, self)
 			local debuffs = CreateFrame("Frame", nil, self)
 			
-			buffs:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", TukuiDB.Scale(-1), TukuiDB.Scale(6))
+			buffs:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", TukuiDB.Scale(-1), TukuiDB.Scale(4))
 			buffs:SetHeight(((26 / original_width) * original_width))
 			buffs:SetWidth(original_width + TukuiDB.Scale(4))
 			buffs.size = (buffs:GetHeight())

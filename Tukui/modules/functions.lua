@@ -1088,7 +1088,7 @@ TukuiDB.ComboDisplay = function(self, event, unit)
 		end
 
 		self.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))	
-		if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", TukuiDB.Scale(-1), TukuiDB.Scale(6)) end	
+		if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", TukuiDB.Scale(-1), TukuiDB.Scale(4)) end	
 	end
 end
 

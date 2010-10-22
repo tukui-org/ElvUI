@@ -1,7 +1,7 @@
 if TukuiDB.client == "deDE" then
 	tukuilocal.chat_BATTLEGROUND_GET = "[B]"
 	tukuilocal.chat_BATTLEGROUND_LEADER_GET = "[B]"
-	tukuilocal.chat_BN_WHISPER_GET = "From"
+	tukuilocal.chat_BN_WHISPER_GET = "Von"
 	tukuilocal.chat_GUILD_GET = "[G]"
 	tukuilocal.chat_OFFICER_GET = "[O]"
 	tukuilocal.chat_PARTY_GET = "[P]"
@@ -44,16 +44,16 @@ if TukuiDB.client == "deDE" then
 	tukuilocal.datatext_lvl = "lvl"
 	tukuilocal.datatext_boss = "Boss"
 	tukuilocal.datatext_playeravd = "AVD: "
-	tukuilocal.datatext_servertime = "Server Zeit: "
-	tukuilocal.datatext_localtime = "Lokale Zeit: "
-	tukuilocal.datatext_mitigation = "Mitigation By Level: "
+	tukuilocal.datatext_servertime = "Serverzeit: "
+	tukuilocal.datatext_localtime = "Ortszeit: "
+	tukuilocal.datatext_mitigation = "Schadensverringerung nach Level: "
 	tukuilocal.datatext_healing = "Heilung: "
 	tukuilocal.datatext_damage = "Schaden: "
 	tukuilocal.datatext_honor = "Ehre: "
 	tukuilocal.datatext_killingblows = "Todesstöße: "
 	tukuilocal.datatext_ttstatsfor = "Stats für"
 	tukuilocal.datatext_ttkillingblows = "Todesstöße: "
-	tukuilocal.datatext_tthonorkills = "Honorable Kills: "
+	tukuilocal.datatext_tthonorkills = "Ehrenhafte Siege: "
 	tukuilocal.datatext_ttdeaths = "Tode: "
 	tukuilocal.datatext_tthonorgain = "Ehre erhalten: "
 	tukuilocal.datatext_ttdmgdone = "Schaden verursacht: "
@@ -73,41 +73,41 @@ if TukuiDB.client == "deDE" then
  
 	tukuilocal.Slots = {
 		[1] = {1, "Kopf", 1000},
-		[2] = {3, "Schulter", 1000},
+		[2] = {3, "Schultern", 1000},
 		[3] = {5, "Brust", 1000},
-		[4] = {6, "Gürtel", 1000},
+		[4] = {6, "Taille", 1000},
 		[5] = {9, "Handgelenke", 1000},
 		[6] = {10, "Hände", 1000},
 		[7] = {7, "Beine", 1000},
 		[8] = {8, "Füße", 1000},
-		[9] = {16, "Main Hand", 1000},
-		[10] = {17, "Off Hand", 1000},
-		[11] = {18, "Fernkampf", 1000}
+		[9] = {16, "Waffenhand", 1000},
+		[10] = {17, "Schildhand", 1000},
+		[11] = {18, "Distanzwaffe", 1000}
 	}
  
 	tukuilocal.popup_disableui = "Tukui funktioniert nicht mit deiner Auflösung, möchtest du Tukui ausschalten? (Drücke Abbrechen, falls du eine andere Auflösung testen willst.)"
-	tukuilocal.popup_install = "Dies ist das erste mal mit Tukui V11 mit diesem Charakter. Du musst dein UI neuladen um Aktionsleisten, Variabeln und den Chat einzustellen."
+	tukuilocal.popup_install = "Dies ist das erste Mal mit Tukui V11 mit diesem Charakter. Du musst dein UI neu laden, um Aktionsleisten, Variabeln und den Chat einzustellen."
 	tukuilocal.popup_2raidactive = "2 Raid Layouts sind aktiv, wähle bitte eines aus."
  
 	tukuilocal.merchant_repairnomoney = "Du hast nicht genügend Gold zum Reparieren!"
 	tukuilocal.merchant_repaircost = "Deine Rüstung wurde repariert für"
-	tukuilocal.merchant_trashsell = "Dein Trash wurde verkauft und du erhälst"
+	tukuilocal.merchant_trashsell = "Dein Abfall wurde verkauft und du erhältst"
  
 	tukuilocal.goldabbrev = "|cffffd700g|r"
 	tukuilocal.silverabbrev = "|cffc7c7cfs|r"
 	tukuilocal.copperabbrev = "|cffeda55fc|r"
  
-	tukuilocal.error_noerror = "No error yet."
+	tukuilocal.error_noerror = "Keine Fehler bis jetzt."
  
 	tukuilocal.unitframes_ouf_offline = "Offline"
-	tukuilocal.unitframes_ouf_dead = "Tod"
+	tukuilocal.unitframes_ouf_dead = "tot"
 	tukuilocal.unitframes_ouf_ghost = "Geist"
 	tukuilocal.unitframes_ouf_lowmana = "WENIG MANA"
 	tukuilocal.unitframes_ouf_threattext = "Bedrohung:"
 	tukuilocal.unitframes_ouf_offlinedps = "Offline"
-	tukuilocal.unitframes_ouf_deaddps = "TOD"
+	tukuilocal.unitframes_ouf_deaddps = "TOT"
 	tukuilocal.unitframes_ouf_ghostheal = "GEIST"
-	tukuilocal.unitframes_ouf_deadheal = "TOD"
+	tukuilocal.unitframes_ouf_deadheal = "TOT"
 	tukuilocal.unitframes_ouf_gohawk = "GO FALKE"
 	tukuilocal.unitframes_ouf_goviper = "GO VIPER"
 	tukuilocal.unitframes_disconnected = "D/C"
@@ -131,7 +131,7 @@ if TukuiDB.client == "deDE" then
 	tukuilocal.bags_nothingsort= "Nichts zu sortieren."
 	tukuilocal.bags_bids = "Benutze Taschen: "
 	tukuilocal.bags_stackend = "Neu stapeln abgeschlossen."
-	tukuilocal.bags_rightclick_search = "Rechtsklick um zu suchen."
+	tukuilocal.bags_rightclick_search = "Rechtsklick, um zu suchen."
  
 	tukuilocal.chat_invalidtarget = "Falsches Ziel"
  
@@ -148,20 +148,20 @@ if TukuiDB.client == "deDE" then
 	tukuilocal.core_uihelp5 = "|cffFF0000/frame|r - Zeigt im Chat den Namen des Fensters über dem sich die Maus befindet. (Hilfreich für Lua Editoren)"
 	tukuilocal.core_uihelp6 = "|cffFF0000/heal|r - Aktiviert Heiler Raid Layout."
 	tukuilocal.core_uihelp7 = "|cffFF0000/dps|r - Aktiviert DPS/Tank Raid Layout."
-	tukuilocal.core_uihelp8 = "|cffFF0000/uf|r - Aktiviert oder Deaktiviert das Bewegen der Einheitenfenster."
+	tukuilocal.core_uihelp8 = "|cffFF0000/uf|r - Aktiviert oder deaktiviert das Bewegen der Einheitenfenster."
 	tukuilocal.core_uihelp9 = "|cffFF0000/bags|r - Zum Sortieren, Kaufen von Bankplätzen oder neu Stapeln von Gegenständen in deiner Tasche."
 	tukuilocal.core_uihelp10 = "|cffFF0000/resetui|r - Wiederherstellung der ursprünglichen Tukui Einstellungen."
 	tukuilocal.core_uihelp11 = "|cffFF0000/rd|r - Raid auflösen."
 	tukuilocal.core_uihelp12 = "|cffFF0000/hb|r - Setzte Tastaturbelegung auf die Aktionsleisten"
-	tukuilocal.core_uihelp13 = "|cffFF0000/mss|r - Befehl um die Haltungs-(Krieger), Präsenz-(Todesritter), Auren-(Paladin), Formen-(Druide), Schattengestalt-(Priester) und Totem-(Schamane) Leisten zu bewegen."
+	tukuilocal.core_uihelp13 = "|cffFF0000/mss|r - Befehl, um die Haltungs-(Krieger), Präsenz-(Todesritter), Auren-(Paladin), Formen-(Druide), Schattengestalt-(Priester) und Totem-(Schamane) Leisten zu bewegen."
 	tukuilocal.core_uihelp15 = "|cffFF0000/ainv|r - Aktiviere autoinvite per Flüsterschlüsselwort. Du kannst durch Tippen von <code>/ainv meinwort</code> dein eigenes Schlüsselwort setzen."
 	tukuilocal.core_uihelp16 = "|cffFF0000/resetgold|r - Gold im Infotext zuruecksetzen"
 	tukuilocal.core_uihelp14 = "Scrolle hoch für mehr Befehle ...)"
  
 	tukuilocal.bind_combat = "Du kannst keine Tasten im Kampf belegen."
 	tukuilocal.bind_saved = "Alle Tastenbelegungen wurden gespeichert."
-	tukuilocal.bind_discard = "Alle grade neu belegten Tastenbelegungen wurden verworfen."
-	tukuilocal.bind_instruct = "Bewege deine Maus über einen Aktionsbutton um ihn mit einem Hotkey zu belegen. Drücke Escape oder Rechte Maustaste um die aktuelle Tastenbelegeung des Buttons zu löschen."
+	tukuilocal.bind_discard = "Alle gerade neu belegten Tastenbelegungen wurden verworfen."
+	tukuilocal.bind_instruct = "Bewege deine Maus über einen Aktionsbutton, um ihn mit einem Hotkey zu belegen. Drücke Escape oder Rechte Maustaste, um die aktuelle Tastenbelegung des Buttons zu löschen."
 	tukuilocal.bind_save = "Tastenbelegung speichern"
 	tukuilocal.bind_discardbind = "Tastenbelegung verwerfen"
  
@@ -171,30 +171,30 @@ if TukuiDB.client == "deDE" then
 	tukuilocal.core_raidutil_green = "Grün"
 	tukuilocal.core_raidutil_purple = "Lila"
 	tukuilocal.core_raidutil_red = "Rot"
-	tukuilocal.core_raidutil_white = "Weis"
-	tukuilocal.core_raidutil_clear = "zurücksetzen"
+	tukuilocal.core_raidutil_white = "Weiß"
+	tukuilocal.core_raidutil_clear = "Zurücksetzen"
  
 	tukuilocal.hunter_unhappy = "Dein Begleiter ist unzufrieden!"
 	tukuilocal.hunter_content = "Dein Begleiter ist zufrieden!"
 	tukuilocal.hunter_happy = "Dein Begleiter ist glücklich!"
-	
+ 
 	function TukuiDB.UpdateHotkey(self, actionButtonType)
-		local hotkey = _G[self:GetName() .. 'HotKey']
+		local hotkey = _G[self:GetName() .. 'Hotkey']
 		local text = hotkey:GetText()
-		
+ 
 		text = string.gsub(text, '(s%-)', 'S')
 		text = string.gsub(text, '(a%-)', 'A')
 		text = string.gsub(text, '(c%-)', 'C')
-		text = string.gsub(text, '(Maus Taste)', 'M')
+		text = string.gsub(text, '(Maustaste)', 'M')
 		text = string.gsub(text, '(Mittlere Maustaste)', 'M3')
 		text = string.gsub(text, '(Nummernblock )', 'N')
 		text = string.gsub(text, '(Bild hoch)', 'BH')
 		text = string.gsub(text, '(Bild runter)', 'BR')
 		text = string.gsub(text, '(Leertaste)', 'SpB')
-		text = string.gsub(text, '(EinfÃ¼gen)', 'Ins')
+		text = string.gsub(text, '(Einfügen)', 'Ins')
 		text = string.gsub(text, '(Startseite)', 'Hm')
-		text = string.gsub(text, '(LÃ¼schen)', 'Del')
-		
+		text = string.gsub(text, '(Löschen)', 'Del')
+ 
 		if hotkey:GetText() == _G['RANGE_INDICATOR'] then
 			hotkey:SetText('')
 		else
