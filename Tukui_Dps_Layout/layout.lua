@@ -1654,8 +1654,10 @@ if TukuiCF["raidframes"].mainassist == true then
 end
 
 local party
-if TukuiCF["raidframes"].enable == true then
+if TukuiCF["raidframes"].disableblizz == true then --seriosly lazy addon authors can suck my dick
 	party = oUF:SpawnHeader("oUF_noParty", nil, "party", "showParty", true)
+	TukuiDB.Kill(CompactRaidFrameManager)
+	TukuiDB.Kill(CompactRaidFrameContainer)
 end
 ------------------------------------------------------------------------
 --	Right-Click on unit frames menu.
@@ -1673,29 +1675,6 @@ do
 	UnitPopupMenus["ARENAENEMY"] = { "CANCEL" }
 	UnitPopupMenus["FOCUS"] = { "RAID_TARGET_ICON", "CANCEL" }
 	UnitPopupMenus["BOSS"] = { "RAID_TARGET_ICON", "CANCEL" }
-end
-
---Force a clique option if not set
-if IsAddOnLoaded("Clique") then
-	local CliquePath = CliqueDB3["char"][TukuiDB.myname.." - "..GetRealmName()]["downclick"]	
-	StaticPopupDialogs["SETUP_CLIQUE"] = {
-		text = tukuilocal.popup_clique,
-		button1 = ACCEPT,
-		button2 = CANCEL,
-		OnAccept = function() 
-			CliqueDB3["char"][TukuiDB.myname.." - "..GetRealmName()]["downclick"] = true 
-			ReloadUI() 
-		end,
-		timeout = 0,
-		whileDead = 1,
-	}
-	local CliqueCheck = CreateFrame("Frame")
-	CliqueCheck:RegisterEvent("PLAYER_ENTERING_WORLD")
-	CliqueCheck:SetScript("OnEvent", function()
-		if CliquePath ~= true then
-			StaticPopup_Show("SETUP_CLIQUE")
-		end
-	end)
 end
 
 --Move threatbar to targetframe

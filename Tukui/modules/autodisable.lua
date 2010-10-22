@@ -66,6 +66,10 @@ if IsAddOnLoaded("ArkInventory") then
 	TukuiCF["others"].enablebag = false
 end
 
+if IsAddOnLoaded("TipTac") or IsAddOnLoaded("TipTop") then
+	TukuiCF["tooltip"].enable = false
+end
+
 ------------------------
 -- Keep tukui config nice and clean if we disable something
 ------------------------
@@ -88,7 +92,6 @@ do
 	
 	if TukuiCF["unitframes"].enable ~= true then
 		TukuiCF["unitframes"]["fontsize"] = nil						-- default font height for unitframes
-		TukuiCF["unitframes"]["highThreshold"] = nil                -- hunter high threshold
 		TukuiCF["unitframes"]["lowThreshold"] = nil                 -- global low threshold for low mana warning.
 		TukuiCF["unitframes"]["targetpowerpvponly"] = nil         -- enable power text on pvp target only
 		TukuiCF["unitframes"]["showfocustarget"] = nil           -- show focus's target
@@ -177,12 +180,6 @@ do
 		TukuiCF["actionbar"]["sixbuttons"] = nil  
 	end
 	
-	--[[if TukuiCF["raidbuffreminder"].enable ~= true then
-		TukuiCF["raidbuffreminder"]["alwaysshow_watch"] = nil
-		TukuiCF["raidbuffreminder"]["raidbuff_yOffset"] = nil
-		TukuiCF["raidbuffreminder"]["buff_fadealpha"] = nil	
-	end]]
-	
 	if TukuiCF["buffreminder"].enable ~= true then
 		TukuiCF["buffreminder"]["sound"] = nil
 	end
@@ -207,6 +204,3 @@ end
 if TukuiCF.tooltip.cursor and not TukuiCF.tooltip.hideuf then
 	TukuiCF.tooltip.hideuf = true
 end
-
-
-

@@ -1,5 +1,5 @@
 --Raid Utility by Elv22
-if TukuiCF["raidframes"].enable ~= true then return end
+if TukuiCF["raidframes"].disableblizz ~= true then return end
 
 --Create main frame
 local RaidUtilityPanel = CreateFrame("Frame", "RaidUtilityPanel", UIParent)
@@ -96,7 +96,7 @@ local function CreateButton(name, parent, template, width, height, point, relati
 end
 
 --Create button for when frame is hidden
-CreateButton("HiddenToggleButton", UIParent, nil, RaidUtilityPanel:GetWidth() / 1.5, TukuiDB.Scale(18), "TOP", UIParent, "TOP", TukuiDB.Scale(-300), TukuiDB.Scale(-1), "Raid Utility", nil)
+CreateButton("HiddenToggleButton", UIParent, nil, RaidUtilityPanel:GetWidth() / 1.5, TukuiDB.Scale(18), "TOP", UIParent, "TOP", TukuiDB.Scale(-300), TukuiDB.Scale(-1), tukuilocal.core_raidutil, nil)
 HiddenToggleButton:EnableMouse(true)
 HiddenToggleButton:SetAlpha(1)
 HiddenToggleButton:SetScript("OnMouseUp", function(self)
@@ -110,7 +110,7 @@ ShownToggleButton:SetScript("OnMouseUp", function(self)
 end)
 
 --Disband Raid button
-CreateButton("DisbandRaidButton", RaidUtilityPanel, nil, RaidUtilityPanel:GetWidth() * 0.8, TukuiDB.Scale(18), "TOP", RaidUtilityPanel, "TOP", 0, TukuiDB.Scale(-5), "Disband Group", nil)
+CreateButton("DisbandRaidButton", RaidUtilityPanel, nil, RaidUtilityPanel:GetWidth() * 0.8, TukuiDB.Scale(18), "TOP", RaidUtilityPanel, "TOP", 0, TukuiDB.Scale(-5), tukuilocal.core_raidutil_disbandgroup, nil)
 DisbandRaidButton:SetScript("OnMouseUp", function(self)
 	if CheckRaidStatus() then
 		StaticPopup_Show("DISBAND_RAID")
@@ -182,32 +182,32 @@ MarkerFrame:SetPoint("TOPLEFT", WorldMarkerButton, "BOTTOMRIGHT", TukuiDB.Scale(
 MarkerFrame:Hide()
 
 --Setup Secure Buttons
-CreateMarkerButton("BlueFlare", "|cff519AE8Blue|r", "TOPLEFT", MarkerFrame, "TOPLEFT")
+CreateMarkerButton("BlueFlare", "|cff519AE8"..tukuilocal.core_raidutil_blue.."|r", "TOPLEFT", MarkerFrame, "TOPLEFT")
 BlueFlare:SetAttribute("macrotext", [[
 /click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
 /click DropDownList1Button1
 ]])
-CreateMarkerButton("GreenFlare", "|cff24B358Green|r", "TOPLEFT", BlueFlare, "BOTTOMLEFT")
+CreateMarkerButton("GreenFlare", "|cff24B358"..tukuilocal.core_raidutil_green.."|r", "TOPLEFT", BlueFlare, "BOTTOMLEFT")
 GreenFlare:SetAttribute("macrotext", [[
 /click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
 /click DropDownList1Button2
 ]])
-CreateMarkerButton("PurpleFlare", "|cff852096Purple|r", "TOPLEFT", GreenFlare, "BOTTOMLEFT")
+CreateMarkerButton("PurpleFlare", "|cff852096"..tukuilocal.core_raidutil_purple.."|r", "TOPLEFT", GreenFlare, "BOTTOMLEFT")
 PurpleFlare:SetAttribute("macrotext", [[
 /click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
 /click DropDownList1Button3
 ]])
-CreateMarkerButton("RedFlare", "|cffD60629Red|r", "TOPLEFT", PurpleFlare, "BOTTOMLEFT")
+CreateMarkerButton("RedFlare", "|cffD60629"..tukuilocal.core_raidutil_red.."|r", "TOPLEFT", PurpleFlare, "BOTTOMLEFT")
 RedFlare:SetAttribute("macrotext", [[
 /click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
 /click DropDownList1Button4
 ]])
-CreateMarkerButton("WhiteFlare", "White", "TOPLEFT", RedFlare, "BOTTOMLEFT")
+CreateMarkerButton("WhiteFlare", tukuilocal.core_raidutil_white, "TOPLEFT", RedFlare, "BOTTOMLEFT")
 WhiteFlare:SetAttribute("macrotext", [[
 /click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
 /click DropDownList1Button5
 ]])
-CreateMarkerButton("ClearFlare", "Clear", "TOPLEFT", WhiteFlare, "BOTTOMLEFT")
+CreateMarkerButton("ClearFlare", tukuilocal.core_raidutil_clear, "TOPLEFT", WhiteFlare, "BOTTOMLEFT")
 ClearFlare:SetAttribute("macrotext", [[
 /click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
 /click DropDownList1Button6

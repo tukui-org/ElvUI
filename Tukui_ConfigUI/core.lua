@@ -2,7 +2,6 @@
 local myPlayerRealm = GetCVar("realmName");
 local myPlayerName  = UnitName("player");
 
-
 ALLOWED_GROUPS = {
 	["general"]=1,
 	["media"]=1,
@@ -18,14 +17,12 @@ ALLOWED_GROUPS = {
 	["tooltip"]=1,
 	["buffreminder"]=1,
 	["others"]=1,
-	--["raidbuffreminder"]=1,
 	["classtimer"]=1,
 	["skin"]=1,
 	["castbar"]=1,
 	["raidframes"]=1,
 	["auras"]=1,
 }
-
 
 local function Local(o)
 	-- general
@@ -37,7 +34,6 @@ local function Local(o)
 	if o == "TukuiConfigUIgeneralrecountscript" then o = TukuiL.option_general_recountscript end
 	if o == "TukuiConfigUIgeneralembedright" then o = TukuiL.option_general_embedright end
 	if o == "TukuiConfigUIgeneralclasscolortheme" then o = TukuiL.option_general_classtheme end
-	if o == "TukuiConfigUIgeneralminimalistic" then o = TukuiL.option_general_minimalistic end
 	
 	--Media
 	if o =="TukuiConfigUImedia" then o = TukuiL.option_media end
@@ -60,22 +56,17 @@ local function Local(o)
 
 	--Skin
 	if o =="TukuiConfigUIskin" then o = TukuiL.option_skin end
-	if o =="TukuiConfigUIskinarkinventory" then o = TukuiL.option_skin_arkinventory end
 	if o =="TukuiConfigUIskindxe" then o = TukuiL.option_skin_dxe end
 	if o =="TukuiConfigUIskinomen" then o = TukuiL.option_skin_omen end
-	if o =="TukuiConfigUIskinpallypower" then o = TukuiL.option_skin_pallypower end
-	if o =="TukuiConfigUIskinqbar" then o = TukuiL.option_skin_qbar end
-	if o =="TukuiConfigUIskinquartz" then o = TukuiL.option_skin_quartz end
 	if o =="TukuiConfigUIskinrecount" then o = TukuiL.option_skin_recount end
-	if o =="TukuiConfigUIskinsexycooldown" then o = TukuiL.option_skin_sexycooldown end
 	if o =="TukuiConfigUIskinskada" then o = TukuiL.option_skin_skada end
-	if o =="TukuiConfigUIskinclcret" then o = TukuiL.option_skin_clcret end
 	
+	--Combat Text
 	if o == "TukuiConfigUIcombattext" then o = TukuiL.option_combattext end
 	if o == "TukuiConfigUIcombattextshowoverheal" then o = TukuiL.option_combattext_showoverheal end
-	if o == "TukuiConfigUIcombattextfontsize" then o = TukuiL.option_combattext_fontsize end
 	if o == "TukuiConfigUIcombattextshowhots" then o = TukuiL.option_combattext_showhots end
 	
+	--Classtimers
 	if o == "TukuiConfigUIclasstimer" then o = TukuiL.option_classtimer end
 	if o == "TukuiConfigUIclasstimerenable" then o = TukuiL.option_classtimer_enable end
 	if o == "TukuiConfigUIclasstimerbar_height" then o = TukuiL.option_classtimer_bar_height end
@@ -89,18 +80,11 @@ local function Local(o)
 	if o == "TukuiConfigUIclasstimerbuffcolor" then o = TukuiL.option_classtimer_buffcolor end
 	if o == "TukuiConfigUIclasstimerproccolor" then o = TukuiL.option_classtimer_proccolor end
 	
-	if o == "TukuiConfigUIraidbuffreminder" then o = TukuiL.option_raidbuffreminder end
-	if o == "TukuiConfigUIraidbuffreminderenable" then o = TukuiL.option_raidbuffreminder_enable end
-	if o == "TukuiConfigUIraidbuffreminderalwaysshow_watch" then o = TukuiL.option_raidbuffreminder_alwaysshow_watch end
-	if o == "TukuiConfigUIraidbuffreminderraidbuff_yOffset" then o = TukuiL.option_raidbuffreminder_raidbuff_yOffset end
-	if o == "TukuiConfigUIraidbuffreminderbuff_fadealpha" then o = TukuiL.option_raidbuffreminder_buff_fadealpha end
-	
 	-- nameplate
 	if o == "TukuiConfigUInameplate" then o = TukuiL.option_nameplates end
 	if o == "TukuiConfigUInameplateenable" then o = TukuiL.option_nameplates_enable end
 	if o == "TukuiConfigUInameplateshowhealth" then o = TukuiL.option_nameplates_showhealth end
 	if o == "TukuiConfigUInameplateenhancethreat" then o = TukuiL.option_nameplates_enhancethreat end
-	if o == "TukuiConfigUInameplateshowcombo" then o = TukuiL.option_nameplates_showcombo end
 	if o == "TukuiConfigUInameplateoverlap" then o = UNIT_NAMEPLATES_ALLOW_OVERLAP end
 	
 	-- datatext
@@ -108,27 +92,16 @@ local function Local(o)
 	if o == "TukuiConfigUIdatatexttime24" then o = TukuiL.option_datatext_24h end
 	if o == "TukuiConfigUIdatatextlocaltime" then o = TukuiL.option_datatext_localtime end
 	if o == "TukuiConfigUIdatatextbattleground" then o = TukuiL.option_datatext_bg end
-	if o == "TukuiConfigUIdatatexthps_text" then o = TukuiL.option_datatext_hps end
 	if o == "TukuiConfigUIdatatextguild" then o = TukuiL.option_datatext_guild end
-	if o == "TukuiConfigUIdatatextarp" then o = TukuiL.option_datatext_arp end
 	if o == "TukuiConfigUIdatatextmem" then o = TukuiL.option_datatext_mem end
-	if o == "TukuiConfigUIdatatextbags" then o = TukuiL.option_datatext_bags end
 	if o == "TukuiConfigUIdatatextfontsize" then o = TukuiL.option_datatext_fontsize end
 	if o == "TukuiConfigUIdatatextsystem" then o = TukuiL.option_datatext_system end
-	if o == "TukuiConfigUIdatatextarmor" then o = TukuiL.option_datatext_armor end
-	if o == "TukuiConfigUIdatatextavd" then o = TukuiL.option_datatext_avd end
-	if o == "TukuiConfigUIdatatextpower" then o = TukuiL.option_datatext_power end
-	if o == "TukuiConfigUIdatatexthaste" then o = TukuiL.option_datatext_haste end
 	if o == "TukuiConfigUIdatatextfriends" then o = TukuiL.option_datatext_friend end
 	if o == "TukuiConfigUIdatatextwowtime" then o = TukuiL.option_datatext_time end
 	if o == "TukuiConfigUIdatatextgold" then o = TukuiL.option_datatext_gold end
-	if o == "TukuiConfigUIdatatextdps_text" then o = TukuiL.option_datatext_dps end
-	if o == "TukuiConfigUIdatatexttps_text" then o = TukuiL.option_datatext_tps end
-	if o == "TukuiConfigUIdatatextcrit" then o = TukuiL.option_datatext_crit end	
 	if o == "TukuiConfigUIdatatextdur" then o = TukuiL.option_datatext_dur end	
 	if o == "TukuiConfigUIdatatextstat1" then o = TukuiL.option_datatext_stat1 end
 	if o == "TukuiConfigUIdatatextstat2" then o = TukuiL.option_datatext_stat2 end
-	if o == "TukuiConfigUIdatatextloc" then o = TukuiL.option_datatext_loc end
 	
 	--auras
 	if o == "TukuiConfigUIauras" then o = TukuiL.option_auras end
@@ -171,6 +144,7 @@ local function Local(o)
 	if o == "TukuiConfigUIraidframeshidenonmana" then o = TukuiL.option_raidframes_hidenonmana end 
 	if o == "TukuiConfigUIraidframesfontsize" then o = TukuiL.option_raidframes_fontsize end 
 	if o == "TukuiConfigUIraidframesscale" then o = TukuiL.option_raidframes_scale end 
+	if o == "TukuiConfigUIraidframesdisableblizz" then o = TukuiL.option_raidframes_disableblizz end
 	
 	-- unit frames
 	if o == "TukuiConfigUIunitframes" then o = TukuiL.option_unitframes_unitframes end
@@ -193,7 +167,6 @@ local function Local(o)
 	if o == "TukuiConfigUIunitframesshowsymbols" then o = TukuiL.option_unitframes_symbol end
 	if o == "TukuiConfigUIunitframesshowthreat" then o = TukuiL.option_unitframes_threatbar end
 	if o == "TukuiConfigUIunitframesshowfocustarget" then o = TukuiL.option_unitframes_focus end
-	if o == "TukuiConfigUIunitframeshighThreshold" then o = TukuiL.option_unitframes_manahigh end
 	if o == "TukuiConfigUIunitframeslowThreshold" then o = TukuiL.option_unitframes_manalow end
 	if o == "TukuiConfigUIunitframesclasscolor" then o = TukuiL.option_unitframes_classcolor end
 	if o == "TukuiConfigUIunitframesComboHideOOC" then o = TukuiL.option_unitframes_ComboHideOOC end
@@ -241,6 +214,7 @@ local function Local(o)
 	if o == "TukuiConfigUIbuffreminder" then o = TukuiL.option_reminder end
 	if o == "TukuiConfigUIbuffreminderenable" then o = TukuiL.option_reminder_enable end
 	if o == "TukuiConfigUIbuffremindersound" then o = TukuiL.option_reminder_sound end
+	if o == "TukuiConfigUIbuffreminderraidbuffreminder" then o = TukuiL.option_reminder_RaidBuffReminder end
 	
 	-- action bar
 	if o == "TukuiConfigUIactionbar" then o = TukuiL.option_actionbar end
@@ -271,6 +245,7 @@ local function Local(o)
 	
 	-- chat
 	if o == "TukuiConfigUIchat" then o = TukuiL.option_chat end
+	if o == "TukuiConfigUIchatbubbles" then o = TukuiL.option_chat_bubbles end
 	if o == "TukuiConfigUIchatenable" then o = TukuiL.option_chat_enable end
 	if o == "TukuiConfigUIchatwhispersound" then o = TukuiL.option_chat_whispersound end
 	if o == "TukuiConfigUIchatchatwidth" then o = TukuiL_option_chat_chatwidth end
@@ -294,8 +269,6 @@ local NewButton = function(text,parent)
 	return result
 end
 
-
-
 local login = CreateFrame("Frame")
 login:RegisterEvent("PLAYER_ENTERING_WORLD")
 login:SetScript("OnEvent", function(self)
@@ -307,7 +280,6 @@ login:SetScript("OnEvent", function(self)
 		print(tukuilocal.core_welcome1..TukuiDB.version.." (Loaded default settings)")
 	end
 end)
-
 
 StaticPopupDialogs["PERCHAR"] = {
 	text = TukuiL_option_perchar,
@@ -393,8 +365,6 @@ local function SetValue(group,option,value)
 	end
 end
 
-
-
 local VISIBLE_GROUP = nil
 local function ShowGroup(group)	
 	if(VISIBLE_GROUP) then
@@ -440,8 +410,6 @@ local function ShowGroup(group)
 		VISIBLE_GROUP = group
 	end
 end
-
-
 
 local function CreateTukuiConfigUI()
 	if TukuiConfigUI then
@@ -541,7 +509,6 @@ local function CreateTukuiConfigUI()
 		end
 	end)
 
-	
 	-- GROUP SCROLLFRAME ( RIGHT SIDE)
 	local group = CreateFrame("ScrollFrame", "TukuiConfigUIGroup", TukuiConfigUI)
 	group:SetPoint("TOPLEFT",0,5)
@@ -576,8 +543,6 @@ local function CreateTukuiConfigUI()
 				button:SetChecked(value)
 				button:SetScript("OnClick", function(self) SetValue(group,option,(self:GetChecked() and true or false)) end)
 				button:SetPoint("TOPLEFT", 5, -(offset))
-
-
 				offset = offset+25
 			elseif type(value) == "number" or type(value) == "string" then
 				local label = frame:CreateFontString(nil,"OVERLAY",nil)
@@ -589,7 +554,6 @@ local function CreateTukuiConfigUI()
 				label:SetHeight(20)
 				label:SetJustifyH("LEFT")
 				label:SetPoint("TOPLEFT", 5, -(offset))
-				
 				local editbox = CreateFrame("EditBox", nil, frame)
 				editbox:SetAutoFocus(false)
 				editbox:SetMultiLine(false)
@@ -606,9 +570,7 @@ local function CreateTukuiConfigUI()
 				editbox:SetFontObject(GameFontHighlight)
 				editbox:SetPoint("TOPLEFT", 5, -(offset+20))
 				editbox:SetText(value)
-				
-				TukuiDB.SetTemplate(editbox)
-				
+				TukuiDB.SetTemplate(editbox)	
 				local okbutton = CreateFrame("Button", nil, frame)
 				okbutton:SetHeight(editbox:GetHeight())
 				okbutton:SetWidth(editbox:GetHeight())

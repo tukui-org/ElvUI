@@ -7,7 +7,7 @@
 	["classcolortheme"] = false,			--class colored theme for panels
 }
 
-TukuiCF["skin"] = {	--Skin addons by Darth Android, and Mr.Ruben5
+TukuiCF["skin"] = {	--Skin addons by Darth Android
 	["recount"] = true,
 	["skada"] = true,
 	["dxe"] = true,
@@ -18,7 +18,6 @@ TukuiCF["unitframes"] = {
 	-- general options
 	["enable"] = true,                     -- do i really need to explain this?
 	["fontsize"] = 12,						-- default font height for unitframes
-	["highThreshold"] = 80,                -- hunter high threshold
 	["lowThreshold"] = 20,                 -- global low threshold, for low mana warning.
 	["targetpowerpvponly"] = true,         -- enable power text on pvp target only
 	["showfocustarget"] = false,           -- show focus's target
@@ -31,12 +30,10 @@ TukuiCF["unitframes"] = {
 	["combatfeedback"] = true,             -- enable combattext on player and target.
 	["playeraggro"] = true,                -- color player border to red if you have aggro on current target.
 	["positionbychar"] = true,             -- save X, Y position with /uf (movable frame) per character instead of per account.
-	["ComboHideOOC"] = false,				-- hide combo bar out of combat
-	["ComboHideNoEnergy"] = true,			-- hide if you don't have energy
 	["swingbar"] = false,					--enables swingbar (dps layout only)
 	["debuffhighlight"] = true,				--highlight frame with the debuff color if the frame is dispellable
 	["showsymbols"] = true,	               -- show symbol.
-	["aggro"] = true,                      -- show aggro on all raids layouts
+	["aggro"] = true,                      -- show aggro
 	
 	-- hunter only plugin
 	["mendpet"] = true,						--mend pet duration overlay on pet frame
@@ -62,6 +59,7 @@ TukuiCF["raidframes"] = {
 	["maintank"] = true,                  -- enable maintank
 	["mainassist"] = true,                -- enable mainassist
 	["showboss"] = true,                   -- enable boss unit frames for PVELOL encounters.
+	["disableblizz"] = true,				-- fuck fuck fuckin fuck
 }
 
 TukuiCF["auras"] = {
@@ -129,7 +127,6 @@ TukuiCF["nameplate"] = {
 	["enable"] = true,                     -- enable nice skinned nameplates that fit into tukui
 		["showhealth"] = true,					-- show health text on nameplate
 		["enhancethreat"] = true,				-- threat features based on if your a tank or not
-		["showcombo"] = true,					-- show combo points on nameplate
 		["overlap"] = false,				--allow nameplates to overlap
 }
 
@@ -173,6 +170,7 @@ TukuiCF["chat"] = {
 		["chatheight"] = 111,					-- height of chat frame
 		["fadeoutofuse"] = true,				-- fade chat text when out of use
 		["sticky"] = true,						-- when opening the chat edit box resort to previous channel
+	["bubbles"] = true,							--skin blizzard chat bubbles
 }
 
 TukuiCF["tooltip"] = {
@@ -190,6 +188,7 @@ TukuiCF["tooltip"] = {
 TukuiCF["buffreminder"] = {
 	["enable"] = true,                     -- this is now the new innerfire warning script for all armor/aspect class.
 		["sound"] = true,                      -- enable warning sound notification for reminder.
+		["raidbuffreminder"] = true,			-- buffbar below the minimap, important missing buffs
 }
 
 TukuiCF["others"] = {

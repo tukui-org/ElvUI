@@ -35,19 +35,19 @@ xOffset = xOffset + TukuiCF["tooltip"].xOfs
 local function CheckAddOnShown()
 	if TukuiDB.ChatRightShown == true then
 		return true
-	elseif TukuiCF["general"].embedright == "Omen" and IsAddOnLoaded("Omen") then
+	elseif TukuiCF["general"].embedright == "Omen" and IsAddOnLoaded("Omen") and OmenAnchor then
 		if OmenAnchor:IsShown() then
 			return true
 		else
 			return false
 		end
-	elseif TukuiCF["general"].embedright == "Recount" and IsAddOnLoaded("Recount") then
+	elseif TukuiCF["general"].embedright == "Recount" and IsAddOnLoaded("Recount") and Recount_MainWindow then
 		if Recount_MainWindow:IsShown() then
 			return true
 		else
 			return false
 		end
-	elseif  TukuiCF["general"].embedright ==  "Skada" and IsAddOnLoaded("Skada") then
+	elseif  TukuiCF["general"].embedright ==  "Skada" and IsAddOnLoaded("Skada") and SkadaBarWindowSkada then
 		if SkadaBarWindowSkada:IsShown() then
 			return true
 		else

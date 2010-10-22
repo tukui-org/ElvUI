@@ -7,7 +7,6 @@ TukuiL.option_general_customuiscale = "UI Scale (if auto-scale is disabled)"
 TukuiL.option_general_recountscript = "Recount Show When (0-off, 1-combat, 2-nocombat)"
 TukuiL.option_general_embedright = "Addon to embed to right chat panel (Recount, Omen, Skada)"
 TukuiL.option_general_classtheme = "Color border colors to your class"
-TukuiL.option_general_minimalistic = "Make UI look more minimalistic"
 
 --Media
 TukuiL.option_media = "Media"
@@ -26,27 +25,20 @@ TukuiL.option_media_buttonhover = "Texture file path for Button Hover texture on
 TukuiL.option_media_valuecolor = "Color of Datatext values"
 TukuiL.option_media_raidicons = "Texture file path for raid icons"
 TukuiL.option_media_whisper = "Sound file path for whisper sound"
-TukuiL.option_media_warning = "Sound file path for warning sound"
+TukuiL.option_media_warning = "Warning sound"
 	
 -- nameplate
 TukuiL.option_nameplates = "Nameplates"
 TukuiL.option_nameplates_enable = "Enable Nameplates"
 TukuiL.option_nameplates_enhancethreat = "Enable threat feature, automatically changes by your roll: \n Tank - Green (aggro) Red (noaggro) DPS - Green (noaggro) Red (aggro)"
 TukuiL.option_nameplates_showhealth = "Show health on nameplate"
-TukuiL.option_nameplates_showcombo = "Show combo points on targetted nameplate"
 
 -- addon skins
 TukuiL.option_skin = "Addon Skins"
-TukuiL.option_skin_arkinventory = "Ark Inventory"
 TukuiL.option_skin_dxe = "Deus Vox Encounters"
 TukuiL.option_skin_omen = "Omen"
-TukuiL.option_skin_pallypower = "PallyPower"
-TukuiL.option_skin_qbar = "Qbar"
-TukuiL.option_skin_quartz = "Quartz"
 TukuiL.option_skin_recount = "Recount"
-TukuiL.option_skin_sexycooldown = "Sexy Cooldown"
 TukuiL.option_skin_skada = "Skada"
-TukuiL.option_skin_clcret = "CLCRet"
 
 -- combat text
 TukuiL.option_combattext = "Combat Text"
@@ -68,40 +60,22 @@ TukuiL.option_classtimer_debuffcolor = "Debuff Bar Color"
 TukuiL.option_classtimer_buffcolor = "Buff Bar Color"
 TukuiL.option_classtimer_proccolor = "Trinket/Proc Bar Color"
 
--- raid buff reminder
-TukuiL.option_raidbuffreminder = "Raid Buff Reminder"
-TukuiL.option_raidbuffreminder_enable = "Enable Raid Buff Reminder"
-TukuiL.option_raidbuffreminder_alwaysshow_watch = "Always show, uncheck for only inside instance"
-TukuiL.option_raidbuffreminder_raidbuff_yOffset = "Y-Offset of the frame"
-TukuiL.option_raidbuffreminder_buff_fadealpha = "Fade to this when you have buff"
-
-
 -- datatext
 TukuiL.option_datatext = "Data Text"
 TukuiL.option_datatext_24h = "Enable 24h time"
 TukuiL.option_datatext_localtime = "Use Local Time instead of Server Time"
 TukuiL.option_datatext_bg = "Enable Battleground Stats"
-TukuiL.option_datatext_hps = "Heal per second position (0 for disabled)"
 TukuiL.option_datatext_guild = "Guild position (0 for disabled)"
-TukuiL.option_datatext_arp = "Armor penetration position (0 for disabled)"
 TukuiL.option_datatext_mem = "Memory position (0 for disabled)"
 TukuiL.option_datatext_bags = "Bags position (0 for disabled)"
 TukuiL.option_datatext_fontsize = "Font size of text"
 TukuiL.option_datatext_system = "Latency and FPS position (0 for disabled)"
-TukuiL.option_datatext_armor = "Armor Position (0 for disabled)"
-TukuiL.option_datatext_avd = "Avoidance position (0 for disabled)"
-TukuiL.option_datatext_power = "Power position (0 for disabled)"
-TukuiL.option_datatext_haste = "Haste position (0 for disabled)"
 TukuiL.option_datatext_friend = "Friends position (0 for disabled)"
 TukuiL.option_datatext_time = "Time position (0 for disabled)"
 TukuiL.option_datatext_gold = "Gold position (0 for disabled)"
-TukuiL.option_datatext_dps = "Damage per second position (0 for disabled)"
-TukuiL.option_datatext_crit = "Crit % position (0 for disabled)"
 TukuiL.option_datatext_dur = "Durability position (0 for disabled)"	
 TukuiL.option_datatext_stat1 = "Stat 1 for your role's position"
 TukuiL.option_datatext_stat2 = "Stat 2 for your role's position"
-TukuiL.option_datatext_loc = "Location position (0 for disabled)"
-TukuiL.option_datatext_tps = "Threat per second position (0 for disabled)"
 
 -- auras
 TukuiL.option_auras = "Auras"
@@ -123,18 +97,16 @@ TukuiL.option_raidframes_enable = "Enable Raid Frames"
 TukuiL.option_raidframes_gridonly = "Use 25 man raid frames in party"
 TukuiL.option_raidframes_healcomm = "Enable HealComm (Healer Layout Only)"
 TukuiL.option_raidframes_boss = "Enable Boss Unit Frames"
-TukuiL.option_raidframes_hpvertical = "Show health bar vertically for Grid layout"
+TukuiL.option_raidframes_hpvertical = "Show health bar vertically for Grid layout (Healer Layout Only)"
 TukuiL.option_raidframes_enablerange = "Enable party/raid Range alpha display"
 TukuiL.option_raidframes_range = "Alpha on Party/Raid unit out of range"
 TukuiL.option_raidframes_maintank = "Enable Main Tank"
 TukuiL.option_raidframes_mainassist = "Enable Main Assist"
-TukuiL.option_raidframes_NoGridDps = "Vertical DPS 25 man Layout"
-TukuiL.option_raidframes_CenterHealLayout = "Setup the healer layout around the center of the screen"
 TukuiL.option_raidframes_playerparty = "Show yourself in party"
-TukuiL.option_raidframes_hidenonmana = "Only show powerbar if unit has mana"
+TukuiL.option_raidframes_hidenonmana = "Only show powerbar if unit has mana (Not Party Frames)"
 TukuiL.option_raidframes_fontsize = "Font size on raidframes"
 TukuiL.option_raidframes_scale = "Scale of raidframes (use decimals ex: 0.96)"
-
+TukuiL.option_raidframes_disableblizz = "Disable blizzard default party and raid frames"
 
 -- castbar
 TukuiL.option_castbar = "Castbar"
@@ -153,25 +125,19 @@ TukuiL.option_unitframes_combatfeedback = "Combat Feedback on player and target"
 TukuiL.option_unitframes_runebar = "Enable rune bar for Death Knight"
 TukuiL.option_unitframes_totembar = "Enable totem bar for Shaman"
 TukuiL.option_unitframes_totalhpmp = "Display total on health/power"
-TukuiL.option_unitframes_aurawatch = "Enable Buff Watch (Show important buffs on frames)"
+TukuiL.option_unitframes_aurawatch = "Show buffs in corners"
 TukuiL.option_unitframes_saveperchar = "Save unit frames position per character"
-TukuiL.option_unitframes_wstimer = "Enable Weakened soul bar timer (priest only)"
 TukuiL.option_unitframes_playeraggro = "Enable aggro display on yourself"
 TukuiL.option_unitframes_smooth = "Enable smooth bar"
 TukuiL.option_unitframes_portrait = "Enable portraits on player and target"
 TukuiL.option_unitframes_enable = "Enable Tukui Unit Frames"
-TukuiL.option_unitframes_wstarget = "Enable Weakened Soul bar on target (Priest only)"
 TukuiL.option_unitframes_enemypower = "Enable Power display on enemy only"
-TukuiL.option_unitframes_wsplayer = "Enable Weakened Soul bar on yourself"
 TukuiL.option_unitframes_raidaggro = "Enable aggro display"
 TukuiL.option_unitframes_symbol = "Show symbols on party/raid"
 TukuiL.option_unitframes_threatbar = "Enable threat bar"
 TukuiL.option_unitframes_focus = "Enable Focus target"
-TukuiL.option_unitframes_manahigh = "High mana indicator (For Hunters)"
-TukuiL.option_unitframes_manalow = "Low mana indicator (All mana class)"
+TukuiL.option_unitframes_manalow = "Low mana indicator"
 TukuiL.option_unitframes_classcolor = "Color unitframes by class"
-TukuiL.option_unitframes_ComboHideOOC = "Hide combobar out of combat"
-TukuiL.option_unitframes_ComboHideNoEnergy = "Hide combobar if you don't have energy"
 TukuiL.option_unitframes_SwingBar = "Enable swing bar (DPS Layout Only)"
 TukuiL.option_unitframes_DebuffHighlight = "Color frames by debuff type if dispellable"
 TukuiL.option_unitframes_mendpet = "Show Mend Pet bar on PetFrame (DPS LAYOUT)"
@@ -195,7 +161,6 @@ TukuiL.option_tooltip_colorreaction = "Always color tooltip border and healthbar
 TukuiL.option_tooltip_xOfs = "X-Offset of the tooltip (-x = Left, +x = Right)"
 TukuiL.option_tooltip_yOfs = "Y-Offset of the tooltip (-y = Down, +y = Up)"
 
-
 -- others
 TukuiL.option_others = "Others"
 TukuiL.option_others_bg = "Enable Auto-Release in battleground"
@@ -203,21 +168,17 @@ TukuiL.option_others_autosell = "Auto sell gray items"
 TukuiL.option_others_autorepair = "Auto Repair items"
 TukuiL.option_others_autoinvite = "Enable Auto-Invite (Friends and Guildmates)"
 TukuiL.option_others_enablemap = "Enable Map"
-TukuiL.option_others_questmovable = "Quest Watch frame movable"
 TukuiL.option_others_errorhide = "Hide spamming error at the middle of your screen"
 TukuiL.option_others_totembardirection = "Direction the totembar opens at (UP/DOWN)"
-TukuiL.option_others_portals = "Enable mage portal module"
 TukuiL.option_others_spincam = "Spin camera while AFK"
 TukuiL.option_others_bagenable = "Enable all in one bag"
-TukuiL.option_others_soulbag = "Show soul bag in bags"
-
-
 
 -- reminder
 TukuiL.option_reminder = "Aura Warning"
 TukuiL.option_reminder_enable = "Enable player aura warning"
 TukuiL.option_reminder_sound = "Enable a warning sound for aura warning"
- 
+TukuiL.option_reminder_RaidBuffReminder = "Enable RaidBuffReminder Bar below minimap"
+
 -- action bar
 TukuiL.option_actionbar = "Action Bars"
 TukuiL.option_actionbar_hidess = "Hide Shapeshift bar or Totem bar"
@@ -248,6 +209,7 @@ TukuiL.option_cooldown_dayscolor = "Days Color"
 
 -- chat
 TukuiL.option_chat = "Chat"
+TukuiL.option_chat_bubbles = "Skin Chat Bubbles"
 TukuiL.option_chat_enable = "Enable Tukui Chat"
 TukuiL.option_chat_whispersound = "Play sound when receiving private message"
 TukuiL_option_chat_chatwidth = "Width of the chat windows"
@@ -255,7 +217,6 @@ TukuiL_option_chat_backdrop = "Show backdrop behind chat window"
 TukuiL_option_chat_chatheight = "Height of chat frames"
 TukuiL_option_chat_fadeoutofuse = "Fade chat text when not in use"
 TukuiL_option_chat_sticky = "Sticky some chat channels when opening new chat edit"
-
 
 -- buttons
 TukuiL.option_button_reset = "Reset UI"

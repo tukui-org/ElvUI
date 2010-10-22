@@ -252,52 +252,6 @@ local updatePlate = function(self)
 	end
 end
 
-
-local updateCombos = function(self)
-	if TukuiCF["nameplate"].showcombo == true then
-		if self:GetAlpha() == 1 and self.name:GetText() == UnitName("target") then
-			if GetComboPoints("player", "target") == 5 then
-				for i=1, 5 do
-					self.CPoints[i]:Show()
-				end
-			elseif GetComboPoints("player", "target") == 4 then
-				self.CPoints[1]:Show()
-				self.CPoints[2]:Show()
-				self.CPoints[3]:Show()
-				self.CPoints[4]:Show()
-				self.CPoints[5]:Hide()
-			elseif GetComboPoints("player", "target") == 3 then
-				self.CPoints[1]:Show()
-				self.CPoints[2]:Show()
-				self.CPoints[3]:Show()
-				self.CPoints[4]:Hide()
-				self.CPoints[5]:Hide()
-			elseif GetComboPoints("player", "target") == 2 then
-				self.CPoints[1]:Show()
-				self.CPoints[2]:Show()
-				self.CPoints[3]:Hide()
-				self.CPoints[4]:Hide()
-				self.CPoints[5]:Hide()		
-			elseif GetComboPoints("player", "target") == 1 then
-				self.CPoints[1]:Show()
-				self.CPoints[2]:Hide()
-				self.CPoints[3]:Hide()
-				self.CPoints[4]:Hide()
-				self.CPoints[5]:Hide()	
-			else
-				for i=1, 5 do
-					self.CPoints[i]:Hide()
-				end
-			end
-		else
-			for i=1, 5 do
-				self.CPoints[i]:Hide()
-			end
-		end
-	end
-end
-
-
 local fixCastbar = function(self)
 	self.castbarOverlay:Hide()
 
@@ -348,12 +302,6 @@ local onEvent = function(self, event, unit)
 	end
 end
 
-
-local function NameplateOnEvent(frame, event, ...)
-	updateCombos(frame)
-end
-
-
 local createPlate = function(frame)
 	if frame.done then return end
 		
@@ -383,11 +331,7 @@ local createPlate = function(frame)
 	healthBar.hpBackground:SetAllPoints(healthBar)
 	healthBar.hpBackground:SetTexture(TukuiCF["media"].blank)
 	healthBar.hpBackground:SetVertexColor(0.15, 0.15, 0.15)
-	
-	frame:RegisterEvent("PLAYER_TARGET_CHANGED")
-	frame:RegisterEvent("UNIT_COMBO_POINTS")
-	frame:SetScript("OnEvent", NameplateOnEvent)
-	
+		
 	healthBar.hpGlow = CreateFrame("Frame", nil, healthBar)
 	healthBar.hpGlow:SetFrameLevel(healthBar:GetFrameLevel() -1 > 0 and healthBar:GetFrameLevel() -1 or 0)
 	healthBar.hpGlow:SetPoint("TOPLEFT", healthBar, "TOPLEFT", TukuiDB.Scale(-3), TukuiDB.Scale(3))
@@ -404,29 +348,7 @@ local createPlate = function(frame)
 		healthBar.percent:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
 		healthBar.percent:SetJustifyH("CENTER")	
 	end
-	
-	if TukuiCF["nameplate"].showcombo == true then
-		local CPoints = {}
-		for i = 1, 5 do
-			CPoints[i] = healthBar:CreateTexture(nil, "OVERLAY")
-			CPoints[i]:SetHeight(TukuiDB.Scale(10))
-			CPoints[i]:SetWidth(TukuiDB.Scale(10))
-			CPoints[i]:SetTexture(TukuiCF["media"].bubbleTex)
-			if i == 1 then
-				CPoints[i]:SetPoint("CENTER", healthBar, "BOTTOM", TukuiDB.Scale(-20), TukuiDB.Scale(-2))
-			else
-				CPoints[i]:SetPoint("LEFT", CPoints[i-1], "RIGHT")
-			end
-			CPoints[i]:Hide()
-		end
-		CPoints[1]:SetVertexColor(0.69, 0.31, 0.31)
-		CPoints[2]:SetVertexColor(0.69, 0.31, 0.31)
-		CPoints[3]:SetVertexColor(0.65, 0.63, 0.35)
-		CPoints[4]:SetVertexColor(0.65, 0.63, 0.35)
-		CPoints[5]:SetVertexColor(0.33, 0.59, 0.33)
-		frame.CPoints = CPoints
-	end
-	
+		
 	castBar.castbarOverlay = castbarOverlay
 	castBar.healthBar = healthBar
 	castBar.shieldedRegion = shieldedRegion
@@ -522,11 +444,7 @@ local createPlate = function(frame)
 
 	updatePlate(frame)
 	frame:SetScript("OnShow", updatePlate)
-	
-	if TukuiCF["nameplate"].showcombo == true then
-		frame:HookScript("OnShow", updateCombos)
-	end
-	
+		
 	frame:SetScript("OnHide", onHide)
 
 	frame.elapsed = 0

@@ -1124,7 +1124,6 @@ TukuiDB.UpdateReputationColor = function(self, event, unit, bar)
 end
 
 local delay = 0
-local viperAspectName = GetSpellInfo(34074)
 TukuiDB.UpdateManaLevel = function(self, elapsed)
 	delay = delay + elapsed
 	if self.parent.unit ~= "player" or delay < 0.2 or UnitIsDeadOrGhost("player") or UnitPowerType("player") ~= 0 then return end
@@ -1132,26 +1131,12 @@ TukuiDB.UpdateManaLevel = function(self, elapsed)
 
 	local percMana = UnitMana("player") / UnitManaMax("player") * 100
 
-	if AotV then
-		local viper = UnitBuff("player", viperAspectName)
-		if percMana >= TukuiCF["unitframes"].highThreshold and viper then
-			self.ManaLevel:SetText("|cffaf5050"..tukuilocal.unitframes_ouf_gohawk.."|r")
-			Flash(self, 0.3)
-		elseif percMana <= TukuiCF["unitframes"].lowThreshold and not viper then
-			self.ManaLevel:SetText("|cffaf5050"..tukuilocal.unitframes_ouf_goviper.."|r")
-			Flash(self, 0.3)
-		else
-			self.ManaLevel:SetText()
-			StopFlash(self)
-		end
+	if percMana <= 20 then
+		self.ManaLevel:SetText("|cffaf5050"..tukuilocal.unitframes_ouf_lowmana.."|r")
+		Flash(self, 0.3)
 	else
-		if percMana <= 20 then
-			self.ManaLevel:SetText("|cffaf5050"..tukuilocal.unitframes_ouf_lowmana.."|r")
-			Flash(self, 0.3)
-		else
-			self.ManaLevel:SetText()
-			StopFlash(self)
-		end
+		self.ManaLevel:SetText()
+		StopFlash(self)
 	end
 end
 

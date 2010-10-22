@@ -12,10 +12,6 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 		if IsAddOnLoaded("Tukui_Dps_Layout") or IsAddOnLoaded("Tukui_Heal_Layout") then
 			InterfaceOptionsFrameCategoriesButton11:SetScale(0.00001)
 			InterfaceOptionsFrameCategoriesButton11:SetAlpha(0)
-			if TukuiCF["raidframes"].enable == true then
-				TukuiDB.Kill(CompactRaidFrameManager)
-				TukuiDB.Kill(CompactRaidFrameContainer)
-			end
 		end	
 
 

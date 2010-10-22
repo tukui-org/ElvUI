@@ -4,6 +4,7 @@
 local TooltipHider = CreateFrame("Frame")
 TooltipHider:RegisterEvent("PLAYER_ENTERING_WORLD")
 TooltipHider:SetScript("OnEvent", function()
+	if not TukuiCF["tooltip"].enable then return end
 	local inInstance, instanceType = IsInInstance()
 	if inInstance and (instanceType == "party" or instanceType == "pvp") then
 		print("|cffC495DDElvUI|r: One-Lined tooltips temporarily disabled while inside instance to prevent client crashes")
