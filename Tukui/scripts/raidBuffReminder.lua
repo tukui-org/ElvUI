@@ -1,4 +1,4 @@
-if TukuiCF["auras"].raidbuffreminder ~= true then return end
+if TukuiCF["buffreminder"].raidbuffreminder ~= true then return end
 
 --Locals
 local flaskbuffs = BuffReminderRaidBuffs["Flask"]

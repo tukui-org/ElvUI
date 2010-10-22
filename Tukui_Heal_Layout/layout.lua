@@ -429,56 +429,6 @@ local function Shared(self, unit)
 				eclipseBar.FrameBackdrop:SetPoint("BOTTOMRIGHT", lunarBar, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 				eclipseBar.FrameBackdrop:SetFrameLevel(eclipseBar:GetFrameLevel() - 1)
 		end
-		
-		-- set combobar for rogue/druid
-		if (TukuiDB.myclass == "ROGUE" or TukuiDB.myclass == "DRUID") then
-			if TukuiDB.myclass == "ROGUE" then
-				--ReAdjust main background (this is invisible.. we need to adjust this so buffs appear above the unitframe correctly.. and so we can click this module to target ourselfs)
-				self.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(17))
-				player_height = player_height + TukuiDB.Scale(14)
-			end
-			
-			local bars = CreateFrame("Frame", nil, self)
-			bars:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 0, TukuiDB.Scale(5))
-			bars:SetWidth(original_width)
-			bars:SetHeight(TukuiDB.Scale(8))
-			TukuiDB.SetTemplate(bars)
-			bars:SetBackdropBorderColor(0,0,0,0)
-			bars:SetBackdropColor(0,0,0,0)
-			
-			for i = 1, 5 do					
-				bars[i] = CreateFrame("StatusBar", self:GetName().."_Combo"..i, self)
-				bars[i]:SetHeight(TukuiDB.Scale(8))					
-				bars[i]:SetStatusBarTexture(normTex)
-				bars[i]:GetStatusBarTexture():SetHorizTile(false)
-								
-				if i == 1 then
-					bars[i]:SetPoint("LEFT", bars)
-				else
-					bars[i]:SetPoint("LEFT", bars[i-1], "RIGHT", TukuiDB.Scale(1), 0)
-				end
-				bars[i]:SetAlpha(0.15)
-				bars[i]:SetWidth(TukuiDB.Scale(original_width - 2)/5)
-			end
-			
-			bars[1]:SetStatusBarColor(0.69, 0.31, 0.31)		
-			bars[2]:SetStatusBarColor(0.69, 0.31, 0.31)
-			bars[3]:SetStatusBarColor(0.65, 0.63, 0.35)
-			bars[4]:SetStatusBarColor(0.65, 0.63, 0.35)
-			bars[5]:SetStatusBarColor(0.33, 0.59, 0.33)
-			
-
-			self.CPoints = bars
-			self.CPoints.Override = TukuiDB.ComboDisplay
-			
-			bars.FrameBackdrop = CreateFrame("Frame", nil, bars[1])
-			TukuiDB.SetTemplate(bars.FrameBackdrop)
-			bars.FrameBackdrop:SetPoint("TOPLEFT", bars, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-			bars.FrameBackdrop:SetPoint("BOTTOMRIGHT", bars, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
-			bars.FrameBackdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
-			
-			self:RegisterEvent("UNIT_DISPLAYPOWER", TukuiDB.ComboDisplay)
-		end
 
 		-- set holy power bar or shard bar
 		if (TukuiDB.myclass == "WARLOCK" or TukuiDB.myclass == "PALADIN") then
@@ -918,7 +868,7 @@ local function Shared(self, unit)
 			local buffs = CreateFrame("Frame", nil, self)
 			local debuffs = CreateFrame("Frame", nil, self)
 			
-			buffs:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(6))
+			buffs:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", TukuiDB.Scale(-1), TukuiDB.Scale(6))
 			buffs:SetHeight(((26 / original_width) * original_width))
 			buffs:SetWidth(original_width + TukuiDB.Scale(4))
 			buffs.size = (buffs:GetHeight())
@@ -1023,7 +973,53 @@ local function Shared(self, unit)
 			}
 			self.CombatFeedbackText = CombatFeedbackText
 		end
+		
+		-- Setup ComboBar
+		--We only need to change the target height for these classes, because no one else will see it but rarely if they are in a vehicle
+		if TukuiDB.myclass == "DRUID" or TukuiDB.myclass == "ROGUE" then
+			target_height = target_height + TukuiDB.Scale(14)
+		end
+		
+		local bars = CreateFrame("Frame", nil, self)
+		bars:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 0, TukuiDB.Scale(5))
+		bars:SetWidth(original_width)
+		bars:SetHeight(TukuiDB.Scale(8))
+		TukuiDB.SetTemplate(bars)
+		bars:SetBackdropBorderColor(0,0,0,0)
+		bars:SetBackdropColor(0,0,0,0)
+		
+		for i = 1, 5 do					
+			bars[i] = CreateFrame("StatusBar", self:GetName().."_Combo"..i, self)
+			bars[i]:SetHeight(TukuiDB.Scale(8))					
+			bars[i]:SetStatusBarTexture(normTex)
+			bars[i]:GetStatusBarTexture():SetHorizTile(false)
+							
+			if i == 1 then
+				bars[i]:SetPoint("LEFT", bars)
+			else
+				bars[i]:SetPoint("LEFT", bars[i-1], "RIGHT", TukuiDB.Scale(1), 0)
+			end
+			bars[i]:SetAlpha(0.15)
+			bars[i]:SetWidth(TukuiDB.Scale(original_width - 4)/5)
+		end
+		
+		bars[1]:SetStatusBarColor(0.69, 0.31, 0.31)		
+		bars[2]:SetStatusBarColor(0.69, 0.31, 0.31)
+		bars[3]:SetStatusBarColor(0.65, 0.63, 0.35)
+		bars[4]:SetStatusBarColor(0.65, 0.63, 0.35)
+		bars[5]:SetStatusBarColor(0.33, 0.59, 0.33)
+		
 
+		self.CPoints = bars
+		self.CPoints.Override = TukuiDB.ComboDisplay
+		
+		bars.FrameBackdrop = CreateFrame("Frame", nil, bars[1])
+		TukuiDB.SetTemplate(bars.FrameBackdrop)
+		bars.FrameBackdrop:SetPoint("TOPLEFT", bars, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
+		bars.FrameBackdrop:SetPoint("BOTTOMRIGHT", bars, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+		bars.FrameBackdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
+		self:RegisterEvent("UNIT_DISPLAYPOWER", TukuiDB.ComboDisplay)
+		
 	end
 	
 	------------------------------------------------------------------------
