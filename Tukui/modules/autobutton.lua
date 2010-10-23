@@ -14,6 +14,42 @@ local EquipedItems = {
 	--50356, -- Corroded Skeleton Key (Test)
 }
 
+local function AutoButtonHide()
+	AutoButton:SetAlpha(0)
+	if not InCombatLockdown() then
+		AutoButton:EnableMouse(false)
+	else
+		AutoButton:RegisterEvent("PLAYER_REGEN_ENABLED")
+		AutoButton:SetScript("OnEvent", function(self, event) 
+			if event == "PLAYER_REGEN_ENABLED" then
+				AutoButton:EnableMouse(false) 
+				AutoButton:UnregisterEvent("PLAYER_REGEN_ENABLED") 
+			end
+		end)
+	end
+end
+
+local function AutoButtonShow(item)
+	AutoButton:SetAlpha(1)
+	if not InCombatLockdown() then
+		AutoButton:EnableMouse(true)
+		if item then
+			AutoButton:SetAttribute("item", item)
+		end
+	else
+		AutoButton:RegisterEvent("PLAYER_REGEN_ENABLED")
+		AutoButton:SetScript("OnEvent", function(self, event) 
+			if event == "PLAYER_REGEN_ENABLED" then
+				AutoButton:EnableMouse(true) 
+				if item then
+					AutoButton:SetAttribute("item", item)
+				end
+				AutoButton:UnregisterEvent("PLAYER_REGEN_ENABLED") 
+			end
+		end)
+	end
+end
+
 --Create our Button
 local AutoButton = CreateFrame("Button", "AutoButton", UIParent, "SecureActionButtonTemplate")
 AutoButton:SetWidth(TukuiDB.Scale(40))
@@ -22,8 +58,7 @@ AutoButton:SetPoint("TOPLEFT", Minimap, "BOTTOMLEFT", TukuiDB.Scale(-2), TukuiDB
 TukuiDB.SetTemplate(AutoButton)
 TukuiDB.StyleButton(AutoButton, false) 
 AutoButton:SetAttribute("type", "item")
-AutoButton:SetAlpha(0)
-AutoButton:EnableMouse(false)
+AutoButtonHide()
 
 --Texture for our button
 AutoButton.t = AutoButton:CreateTexture(nil,"OVERLAY",nil)
@@ -47,8 +82,7 @@ local Scanner = CreateFrame("Frame")
 Scanner:RegisterEvent("BAG_UPDATE")
 Scanner:RegisterEvent("UNIT_INVENTORY_CHANGED")
 Scanner:SetScript("OnEvent", function()
-	AutoButton:SetAlpha(0)
-	AutoButton:EnableMouse(false)
+	AutoButtonHide()
 	--Scan bags for Item matchs
 	for b = 0, NUM_BAG_SLOTS do
 		for s = 1, GetContainerNumSlots(b) do
@@ -70,15 +104,11 @@ Scanner:SetScript("OnEvent", function()
 						AutoButton.c:SetText("")
 					end
 					
-					--Make button use the set item when clicked
-					AutoButton:SetAttribute("item", itemName)
-					
 					AutoButton:SetScript("OnUpdate", function(self, elapsed)
 						local cd_start, cd_finish, cd_enable = GetContainerItemCooldown(b, s)
 						CooldownFrame_SetTimer(AutoButton.Cooldown, cd_start, cd_finish, cd_enable)
 					end)
-					AutoButton:SetAlpha(1)
-					AutoButton:EnableMouse(true)
+					AutoButtonShow(itemName)
 				end
 			end
 		end
@@ -88,21 +118,17 @@ Scanner:SetScript("OnEvent", function()
 	for w = 1, 19 do
 		for e, EquipedItems in pairs(EquipedItems) do
 			if GetInventoryItemID("player", w) == EquipedItems then
-					local itemName, _, _, _, _, _, _, _, _, _, _ = GetItemInfo(EquipedItems) 
-					local itemIcon = GetInventoryItemTexture("player",w)
-					--Set our texture to the item found in bags
-					AutoButton.t:SetTexture(itemIcon)
-					AutoButton.c:SetText("")
-					
-					--Make button use the set item when clicked
-					AutoButton:SetAttribute("item", itemName)
-					
-					AutoButton:SetScript("OnUpdate", function(self, elapsed)
-						local cd_start, cd_finish, cd_enable = GetInventoryItemCooldown("player",w)
-						CooldownFrame_SetTimer(AutoButton.Cooldown, cd_start, cd_finish, cd_enable)
-					end)
-					AutoButton:SetAlpha(1)
-					AutoButton:EnableMouse(true)
+				local itemName, _, _, _, _, _, _, _, _, _, _ = GetItemInfo(EquipedItems) 
+				local itemIcon = GetInventoryItemTexture("player",w)
+				--Set our texture to the item found in bags
+				AutoButton.t:SetTexture(itemIcon)
+				AutoButton.c:SetText("")
+				
+				AutoButton:SetScript("OnUpdate", function(self, elapsed)
+					local cd_start, cd_finish, cd_enable = GetInventoryItemCooldown("player",w)
+					CooldownFrame_SetTimer(AutoButton.Cooldown, cd_start, cd_finish, cd_enable)
+				end)
+				AutoButtonShow(itemName)
 			end
 		end
 	end

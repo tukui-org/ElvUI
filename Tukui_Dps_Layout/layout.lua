@@ -285,7 +285,7 @@ local function Shared(self, unit)
 			Experience:SetStatusBarColor(0, 0.4, 1, .8)
 			Experience:SetWidth(original_width)
 			Experience:SetHeight(TukuiDB.Scale(5))
-			Experience:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, TukuiDB.Scale(-14))
+			Experience:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
 			Experience.noTooltip = true
 			Experience:EnableMouse(true)
 			self.Experience = Experience
@@ -334,7 +334,7 @@ local function Shared(self, unit)
 			Reputation:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
 			Reputation:SetWidth(original_width)
 			Reputation:SetHeight(TukuiDB.Scale(5))
-			Reputation:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, TukuiDB.Scale(-14))
+			Reputation:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
 			Reputation.Tooltip = true
 
 			Reputation:HookScript("OnEnter", function(self)
@@ -360,11 +360,11 @@ local function Shared(self, unit)
 		end
 		
 		if db.showthreat == true and not IsAddOnLoaded("Omen") then
-			-- the threat bar
+			-- the threat bar, we move this to targetframe at bottom of file
 			local ThreatBar = CreateFrame("StatusBar", self:GetName()..'_ThreatBar', self)
 			ThreatBar:SetWidth(original_width)
 			ThreatBar:SetHeight(TukuiDB.Scale(5))
-			ThreatBar:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, TukuiDB.Scale(-14))
+			ThreatBar:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
 			ThreatBar:SetStatusBarTexture(normTex)
 			ThreatBar:GetStatusBarTexture():SetHorizTile(false)
 			ThreatBar:SetBackdrop(backdrop)
@@ -620,7 +620,7 @@ local function Shared(self, unit)
 				castbar:SetPoint("BOTTOMRIGHT", TukuiActionBarBackground, "TOPRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(5))
 			else
 				castbar:SetWidth(original_width)
-				castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, TukuiDB.Scale(-14))
+				castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -powerbar_offset + -TukuiDB.Scale(5))
 			end
  
 			castbar:SetHeight(TukuiDB.Scale(20))
@@ -901,7 +901,7 @@ local function Shared(self, unit)
 		if TukuiCF["castbar"].unitcastbar == true then
 			local castbar = CreateFrame("StatusBar", self:GetName().."_Castbar", self)
 			castbar:SetWidth(original_width)
-			castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, TukuiDB.Scale(-14))
+			castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -powerbar_offset + -TukuiDB.Scale(5))
  
 			castbar:SetHeight(TukuiDB.Scale(20))
 			castbar:SetStatusBarTexture(normTex)
@@ -1678,5 +1678,5 @@ end
 
 --Move threatbar to targetframe
 if oUF_Tukz_player.ThreatBar then
-	oUF_Tukz_player.ThreatBar:SetPoint("TOPLEFT", oUF_Tukz_target.Health, "BOTTOMLEFT", 0, TukuiDB.Scale(-14))
+	oUF_Tukz_player.ThreatBar:SetPoint("TOPLEFT", oUF_Tukz_target.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
 end

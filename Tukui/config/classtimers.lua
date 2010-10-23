@@ -48,6 +48,15 @@ TRINKET_FILTER = {
     CreateSpellEntry( 67708 ), -- Paragon Strength (Death's Verdict/Choice)
     CreateSpellEntry( 67772 ), -- Paragon Agility (Death's Verdict/Choice Heroic)
     CreateSpellEntry( 67773 ), -- Paragon Strength (Death's Verdict/Choice Heroic)
+	CreateSpellEntry( 71579 ), -- Elusive Power (Maghia's Misguided Quill)
+	CreateSpellEntry( 67669 ), -- Elusive Power (Abyssal Rune)
+	CreateSpellEntry( 72416 ), -- Frostforged Sage (Ashen Band of Unmatched/Endless Destruction)
+	CreateSpellEntry( 67684 ), -- Hospitality (Talisman of Resurgence)
+	CreateSpellEntry( 71584 ), -- Revitalized (Purified Lunar Dust)
+	CreateSpellEntry( 53909 ), -- Potion of Wild Magic
+	CreateSpellEntry( 53908 ), -- Potion of Speed
+	CreateSpellEntry( 59545 ), CreateSpellEntry( 59543 ), CreateSpellEntry( 59548 ), CreateSpellEntry( 59542 ), CreateSpellEntry( 59544 ), CreateSpellEntry( 59547 ), CreateSpellEntry( 28880 ), -- Gift of the Naaru
+	CreateSpellEntry( 55503 ), CreateSpellEntry( 55502 ), CreateSpellEntry( 55501 ), CreateSpellEntry( 55500 ), CreateSpellEntry( 55480 ), CreateSpellEntry( 55428 ), -- Lifeblood
 };
 
 --[[ Configuration functions
@@ -276,20 +285,32 @@ CLASS_FILTERS = {
     },
 	SHAMAN = {
 		target = { 
-			CreateSpellEntry( 8042 ), -- Earth Shield
+			CreateSpellEntry( 8042 ), -- Earth Shock
 			CreateSpellEntry( 8050 ), -- Flame Shock
 			CreateSpellEntry( 8056 ), -- Frost Shock
+			CreateSpellEntry( 51514 ), -- Hex
+			CreateSpellEntry( 76780 ), -- Bind Elemental
+			CreateSpellEntry( 974 ), -- Earth Shield
+			CreateSpellEntry( 51945 ), -- Earthliving Weapon Effect
 		},
 		player = { 
+			CreateSpellEntry( 974 ), -- Earth Shield
 			CreateSpellEntry( 324 ), -- Lightning Shield
 			CreateSpellEntry( 52127 ), -- Water Shield
 			CreateSpellEntry( 30823 ), -- Shamanistic Rage
 			CreateSpellEntry( 16166 ), -- Elemental Mastery
 			CreateSpellEntry( 53817 ), -- Maelstrom Weapon
+			CreateSpellEntry( 79206 ), -- Spiritwalker's Grace
+			CreateSpellEntry( 73684 ), -- Unleash Earth
+			CreateSpellEntry( 73683 ), -- Unleash Flame
+			CreateSpellEntry( 73682 ), -- Unleash Frost
+			CreateSpellEntry( 73685 ), -- Unleash Life
+			CreateSpellEntry( 73681 ), -- Unleash Wind
 		},
 		procs = {
 			CreateSpellEntry( 51528 ), -- Maelstrom Weapon
-			CreateSpellEntry( 51562 ), -- Tidal Waves 
+			CreateSpellEntry( 51562 ), -- Tidal Waves
+			CreateSpellEntry( 16246 ), -- Clearcasting
 		},
 	},
 	WARLOCK = { 
