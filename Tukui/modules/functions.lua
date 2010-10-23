@@ -1239,8 +1239,9 @@ TukuiDB.updateAllElementsRaid = function(frame)
 end
 
 function TukuiDB.ExperienceText(self, unit, min, max)
-	if self.exhaustion then 
-		self.Text:SetFormattedText('XP: '..ShortValue(min)..' / '..ShortValue(max)..' <%d%%>  R: +'..ShortValue(self.exhaustion)..' <%d%%>', min / max * 100, self.exhaustion / max * 100)
+	local rested = GetXPExhaustion()
+	if rested then 
+		self.Text:SetFormattedText('XP: '..ShortValue(min)..' / '..ShortValue(max)..' <%d%%>  R: +'..ShortValue(rested)..' <%d%%>', min / max * 100, rested / max * 100)
 	else
 		self.Text:SetFormattedText('XP: '..ShortValue(min)..' / '..ShortValue(max)..' <%d%%>', min / max * 100)
 	end
