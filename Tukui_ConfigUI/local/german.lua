@@ -11,14 +11,14 @@
 	--Media
 	TukuiL.option_media = "Media"
 	TukuiL.option_media_font = "Dateipfad für die Hauptschriftart"
-	TukuiL.option_media_uffont = "Dateipfad für die Unitframe Schrift"
+	TukuiL.option_media_uffont = "Dateipfad für die Einheitenfenster Schrift"
 	TukuiL.option_media_dmgfont = "Dateipfad für die DMG Schrift (benötigt Neustart)"
 	TukuiL.option_media_normTex = "Texturpfad für die Unitframes Leben/Mana Textur"
 	TukuiL.option_media_glowTex = "Texturpfad für die hervorgehobenen Texturen"
 	TukuiL.option_media_bubbleTex = "Texturpfad für die Kombopunkte Textur (Namensplaketten)"
 	TukuiL.option_media_blank = "Texturpfad für die Haupt Interface Textur"
-	TukuiL.option_media_bordercolor = "Farbe der nicht-Unitframe Rahmen"
-	TukuiL.option_media_altbordercolor = "Farbe der Unitframe Rahmen"
+	TukuiL.option_media_bordercolor = "Farbe der nicht-Einheitenfenster Rahmen"
+	TukuiL.option_media_altbordercolor = "Farbe der Einheitenfenster Rahmen"
 	TukuiL.option_media_backdropcolor = "Hintergrundfarbe für alle Frames"
 	TukuiL.option_media_backdropfadecolor = "Farbe für verlassende Hintergründe bei Frames"
 	TukuiL.option_media_buttonhover = "Texturpfad für Button Hover Textur auf den Aktionsleisten"
@@ -84,7 +84,7 @@
 	TukuiL.option_auras_auratimer = "Aktiviere Dauer auf Stärkungs- und Schwächungszaubern"
 	TukuiL.option_auras_targetaura = "Aktiviere Stärkungs- und Schwächungszauber auf dem Ziel"
 	TukuiL.option_auras_focusdebuff = "Aktiviere Schwächungszauber auf dem Fokusziel"
-	TukuiL.option_auras_playeraura = "Aktiviere Stärkungs- und Schwächungszauber auf dem Spieler"
+	TukuiL.option_auras_playeraura = "Aktiviere Stärkungs- und Schwächungszauber auf dem Spieler Einheitenfenster"
 	TukuiL.option_auras_aurascale = "Text-Skalierung auf  Stärkungs-/Schwächungszaubern"
 	TukuiL.option_auras_totdebuffs = "Aktiviere Ziel vom Ziel Schwächungszauber"
 	TukuiL.option_auras_playershowonlydebuffs = "Only show debuffs on playerframe (Must have show aura on playerframe)"
@@ -119,34 +119,34 @@
 	TukuiL.option_castbar_classcolor = "Zauberleistenfarbe nach Klasse färben"
  
 	-- unit frames
-	TukuiL.option_unitframes_unitframes = "Unitframes"
+	TukuiL.option_unitframes_unitframes = "Einheitenfenster"
 	TukuiL.option_unitframes_healthcolor = "Farbe der Lebensleiste"
 	TukuiL.option_unitframes_combatfeedback = "Kampfmeldungen auf Spieler und Ziel"
 	TukuiL.option_unitframes_runebar = "Aktiviere Runenleiste für Todesritter"
 	TukuiL.option_unitframes_totembar = "Aktiviere Totemleiste für Schamanen"
 	TukuiL.option_unitframes_totalhpmp = "Zeige gesamtes Leben/Mana an"
 	TukuiL.option_unitframes_aurawatch = "Zeige Stärkungszauber in den Ecken"
-	TukuiL.option_unitframes_saveperchar = "Speichere Unitframe Position für jeden Charakter"
+	TukuiL.option_unitframes_saveperchar = "Speichere Einheitenfenster Position für jeden Charakter"
 	TukuiL.option_unitframes_playeraggro = "Aktiviere Bedrohungsanzeige auf dir selbst"
 	TukuiL.option_unitframes_smooth = "Aktiviere flüssigere Leistenänderungen"
 	TukuiL.option_unitframes_portrait = "Zeige Portraits für Spieler und Ziel an"
-	TukuiL.option_unitframes_enable = "Aktiviere Tukui Unitframes"
+	TukuiL.option_unitframes_enable = "Aktiviere Tukui Einheitenfenster"
 	TukuiL.option_unitframes_enemypower = "Aktiviere Manaanzeige nur bei Gegnern"
 	TukuiL.option_unitframes_raidaggro = "Aktiviere Bedrohungsanzeige auf Raidframes"
 	TukuiL.option_unitframes_symbol = "Zeige Symbole auf Gruppen und Raidframes"
 	TukuiL.option_unitframes_threatbar = "Aktiviere Bedrohungsleiste"
 	TukuiL.option_unitframes_focus = "Aktiviere Fokus Ziel"
 	TukuiL.option_unitframes_manalow = "Wenig Mana Indikator"
-	TukuiL.option_unitframes_classcolor = "Farbe der Unitframes nach Klassenfarbe"
+	TukuiL.option_unitframes_classcolor = "Farbe der Einheitenfenster nach Klassenfarbe"
 	TukuiL.option_unitframes_SwingBar = "Aktiviere Schlagtimer (Nur DPS Layout)"
-	TukuiL.option_unitframes_DebuffHighlight = "Unitframes nach Schwächungszauberfarbe färben"
+	TukuiL.option_unitframes_DebuffHighlight = "Einheitenfenster nach Schwächungszauberfarbe färben"
 	TukuiL.option_unitframes_mendpet = "Zeige Tier Heilen auf Begleiter Frame (DPS Layout)"
 	TukuiL.option_unitframes_fontsize = "Schriftgröße"
  
 	-- loot
 	TukuiL.option_loot = "Beute"
 	TukuiL.option_loot_enableloot = "Aktiviere Beutefenster"
-	TukuiL.option_loot_autogreed = "Aktiviere automatisch Gier für grüne Gegenstände auf Maximalen Level"
+	TukuiL.option_loot_autogreed = "Aktiviere automatischen Gier-Wurf für grüne Gegenstände auf Maximalen Level"
 	TukuiL.option_loot_enableroll = "Aktiviere Würfelfenster"
  
 	-- tooltip
@@ -154,7 +154,7 @@
 	TukuiL.option_tooltip_enable = "Aktiviere Tooltip"
 	TukuiL.option_tooltip_hidecombat = "Verstecke unteren rechten Tooltip im Kampf"
 	TukuiL.option_tooltip_hidebutton = "Verstecke Tooltips auf Aktionsleisten"
-	TukuiL.option_tooltip_hideuf = "Verstecke Tooltips auf Unitframes"
+	TukuiL.option_tooltip_hideuf = "Verstecke Tooltips auf Einheitenfenster"
 	TukuiL.option_tooltip_cursor = "Tooltip am Mauszeiger anzeigen"
 	TukuiL.option_tooltip_combatraid = "Verstecke Tooltip im Raid während des Kampfes"
 	TukuiL.option_tooltip_colorreaction = "Tooltip Rand/Gesundheits Farbe nach Reaktion"
@@ -194,8 +194,8 @@
  
 	-- arena
 	TukuiL.option_arena = "Arena"
-	TukuiL.option_arena_st = "Aktiviere Tracker für gegnerische Zauber"
-	TukuiL.option_arena_uf = "Aktiviere Tukui Arena Unitframes"
+	TukuiL.option_arena_st = "Aktiviere Tukui-Arena Gegner Abklingzeiten Anzeige"
+	TukuiL.option_arena_uf = "Aktiviere Tukui-Arena Einheitenfenster"
  
 	-- cooldowns
 	TukuiL.option_cooldown = "Abklingzeiten"
@@ -216,7 +216,7 @@
 	TukuiL_option_chat_backdrop = "Zeige Hintergrund hinter dem Chat"
 	TukuiL_option_chat_chatheight = "Höhe der Chat Fenster"
 	TukuiL_option_chat_fadeoutofuse = "Chat Text verblassen lassen"
-	TukuiL_option_chat_sticky = "Sticky einige Chatchannel wenn ein neuer Chat eröffnet wird"
+	TukuiL_option_chat_sticky = "Behalte einige Chatchannel wenn ein neuer Chat eröffnet wird"
  
 	-- buttons
 	TukuiL.option_button_reset = "Zurücksetzen"

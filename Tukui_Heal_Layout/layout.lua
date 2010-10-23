@@ -317,12 +317,12 @@ local function Shared(self, unit)
 			Experience.Text:SetPoint('CENTER', self.Experience)
 			Experience.Text:Hide()
 			self.Experience.Text = Experience.Text
-			self.Experience.OverrideText = TukuiDB.ExperienceText
+			self.Experience.PostUpdate = TukuiDB.ExperienceText
 			
 			Experience:SetScript("OnEnter", function(self) if not InCombatLockdown() then Experience:SetHeight(TukuiDB.Scale(20)) Experience.Text:Show() end end)
 			Experience:SetScript("OnLeave", function(self) if not InCombatLockdown() then Experience:SetHeight(TukuiDB.Scale(5)) Experience.Text:Hide() end end)
 			
-			self.Experience.Rested = CreateFrame('StatusBar', nil, self)
+			self.Experience.Rested = CreateFrame('StatusBar', nil, self.Experience)
 			self.Experience.Rested:SetAllPoints(self.Experience)
 			self.Experience.Rested:SetStatusBarTexture(normTex)
 			self.Experience.Rested:SetStatusBarColor(1, 0, 1, 0.2)

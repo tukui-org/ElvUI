@@ -65,7 +65,7 @@ end
 -- RIGHT BAR
 if TukuiCF["actionbar"].enable == true then
 	local barbgr = CreateFrame("Frame", "TukuiActionBarBackgroundRight", UIParent)
-	TukuiDB.CreatePanel(barbgr, 1, (TukuiDB.buttonsize * 12) + (TukuiDB.buttonspacing * 13), "RIGHT", UIParent, "RIGHT", TukuiDB.Scale(-4), TukuiDB.Scale(8))
+	TukuiDB.CreatePanel(barbgr, 1, (TukuiDB.buttonsize * 12) + (TukuiDB.buttonspacing * 13), "RIGHT", UIParent, "RIGHT", TukuiDB.Scale(-4), TukuiDB.Scale(-8))
 	if TukuiCF["actionbar"].rightbars == 1 then
 		barbgr:SetWidth(TukuiDB.buttonsize + (TukuiDB.buttonspacing * 2))
 	elseif TukuiCF["actionbar"].rightbars == 2 then

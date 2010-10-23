@@ -20,17 +20,17 @@ end
 local function setup()
 	TukuiWatchFrame:ClearAllPoints()
 	if TukuiCF.actionbar.rightbars == 3 then
-		TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(-180), TukuiDB.Scale(-68))
+		TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(-180), TukuiDB.Scale(-115))
 	elseif TukuiCF.actionbar.rightbars == 2 then
-		TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(-140), TukuiDB.Scale(-68))
+		TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(-140), TukuiDB.Scale(-115))
 	elseif TukuiCF.actionbar.rightbars == 1 then
-		TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(-100), TukuiDB.Scale(-68))
+		TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(-100), TukuiDB.Scale(-115))
 	else
-		TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(30), TukuiDB.Scale(-68))
+		TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(-30), TukuiDB.Scale(-115))
 	end
 	
 	local screenheight = GetScreenHeight()
-	TukuiWatchFrame:SetSize(1,screenheight / 1.6)
+	TukuiWatchFrame:SetSize(1,screenheight / 2)
 	
 	-- template was just to help positioning watch frame.
 	-- TukuiDB.SetTemplate(TukuiWatchFrame)

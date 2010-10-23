@@ -1,184 +1,179 @@
 if TukuiDB.client == "frFR" then
 	tukuilocal.chat_BATTLEGROUND_GET = "[B]"
 	tukuilocal.chat_BATTLEGROUND_LEADER_GET = "[B]"
-	tukuilocal.chat_BN_WHISPER_GET = "From"
+	tukuilocal.chat_BN_WHISPER_GET = "De"
 	tukuilocal.chat_GUILD_GET = "[G]"
 	tukuilocal.chat_OFFICER_GET = "[O]"
-	tukuilocal.chat_PARTY_GET = "[P]"
-	tukuilocal.chat_PARTY_GUIDE_GET = "[P]"
-	tukuilocal.chat_PARTY_LEADER_GET = "[P]"
+	tukuilocal.chat_PARTY_GET = "[Gr]"
+	tukuilocal.chat_PARTY_GUIDE_GET = "[Gr]"
+	tukuilocal.chat_PARTY_LEADER_GET = "[Gr]"
 	tukuilocal.chat_RAID_GET = "[R]"
 	tukuilocal.chat_RAID_LEADER_GET = "[R]"
 	tukuilocal.chat_RAID_WARNING_GET = "[W]"
-	tukuilocal.chat_WHISPER_GET = "From"
+	tukuilocal.chat_WHISPER_GET = "De"
 	tukuilocal.chat_FLAG_AFK = "[AFK]"
-	tukuilocal.chat_FLAG_DND = "[DND]"
+	tukuilocal.chat_FLAG_DND = "[NPD]"
 	tukuilocal.chat_FLAG_GM = "[GM]"
-	tukuilocal.chat_ERR_FRIEND_ONLINE_SS = "is now |cff298F00online|r"
-	tukuilocal.chat_ERR_FRIEND_OFFLINE_S = "is now |cffff0000offline|r"
-
-	tukuilocal.disband = "Disbanding group."
-
-	tukuilocal.datatext_guild = "Guild"
-	tukuilocal.datatext_noguild = "No Guild"
-	tukuilocal.datatext_bags = "Bags: "
-	tukuilocal.datatext_friends = "Friends"
-	tukuilocal.datatext_online = "Online: "	
-	tukuilocal.datatext_earned = "Earned:"
-	tukuilocal.datatext_spent = "Spent:"
-	tukuilocal.datatext_deficit = "Deficit:"
+	tukuilocal.chat_ERR_FRIEND_ONLINE_SS = "est maintenant |cff298F00en ligne|r"
+	tukuilocal.chat_ERR_FRIEND_OFFLINE_S = "est maintenant |cffff0000hors ligne|r"
+ 
+	tukuilocal.disband = "FIN DU GROUPE."
+ 
+	tukuilocal.datatext_guild = "Guilde"
+	tukuilocal.datatext_noguild = "Pas de guilde"
+	tukuilocal.datatext_bags = "Sacs: "
+	tukuilocal.datatext_friends = "Amis"
+	tukuilocal.datatext_online = "En line: "
+	tukuilocal.datatext_earned = "Gagné:"
+	tukuilocal.datatext_spent = "Dépensé:"
+	tukuilocal.datatext_deficit = "Déficit:"
 	tukuilocal.datatext_profit = "Profit:"
-	tukuilocal.datatext_wg = "Time to:"
-	tukuilocal.datatext_friendlist = "Friends list:"
+	tukuilocal.datatext_wg = "Temps avant:"
+	tukuilocal.datatext_friendlist = "Liste d'amis:"
 	tukuilocal.datatext_playersp = "SP: "
 	tukuilocal.datatext_playerap = "AP: "
 	tukuilocal.datatext_session = "Session: "
 	tukuilocal.datatext_character = "Character: "
-	tukuilocal.datatext_server = "Server: "
+	tukuilocal.datatext_server = "Serveur: "
 	tukuilocal.datatext_totalgold = "Total: "
-	tukuilocal.datatext_savedraid = "Saved Raid(s)"
-	tukuilocal.datatext_currency = "Currency:"
+	tukuilocal.datatext_savedraid = "Raid(s) vérouillé(s)"
+	tukuilocal.datatext_currency = "Monnaie:"
 	tukuilocal.datatext_playercrit = "Crit: "
-	tukuilocal.datatext_playerheal = "Heal"
+	tukuilocal.datatext_playerheal = "Soin"
 	tukuilocal.datatext_avoidancebreakdown = "Avoidance Breakdown"
 	tukuilocal.datatext_lvl = "lvl"
 	tukuilocal.datatext_boss = "Boss"
 	tukuilocal.datatext_playeravd = "AVD: "
-	tukuilocal.datatext_servertime = "Server Time: "
-	tukuilocal.datatext_localtime = "Local Time: "
+	tukuilocal.datatext_servertime = "Heure Serveur: "
+	tukuilocal.datatext_localtime = "Heure Locale: "
 	tukuilocal.datatext_mitigation = "Mitigation By Level: "
-	tukuilocal.datatext_healing = "Healing: "
-	tukuilocal.datatext_damage = "Damage: "
-	tukuilocal.datatext_honor = "Honor: "
-	tukuilocal.datatext_killingblows = "Killing Blows: "
-	tukuilocal.datatext_ttstatsfor = "Stats for"
-	tukuilocal.datatext_ttkillingblows = "Killing Blows: "
-	tukuilocal.datatext_tthonorkills = "Honorable Kills: "
-	tukuilocal.datatext_ttdeaths = "Deaths: "
-	tukuilocal.datatext_tthonorgain = "Honor Gained: "
-	tukuilocal.datatext_ttdmgdone = "Damage Done: "
-	tukuilocal.datatext_tthealdone = "Healing Done :"
-	tukuilocal.datatext_basesassaulted = "Bases Assaulted:"
-	tukuilocal.datatext_basesdefended = "Bases Defended:"
-	tukuilocal.datatext_towersassaulted = "Towers Assaulted:"
-	tukuilocal.datatext_towersdefended = "Towers Defended:"
-	tukuilocal.datatext_flagscaptured = "Flags Captured:"
-	tukuilocal.datatext_flagsreturned = "Flags Returned:"
-	tukuilocal.datatext_graveyardsassaulted = "Graveyards Assaulted:"
-	tukuilocal.datatext_graveyardsdefended = "Graveyards Defended:"
-	tukuilocal.datatext_demolishersdestroyed = "Demolishers Destroyed:"
-	tukuilocal.datatext_gatesdestroyed = "Gates Destroyed:"
-	tukuilocal.datatext_totalmemusage = "Total Memory Usage:"
-	tukuilocal.datatext_control = "Controlled by:"
-
+	tukuilocal.datatext_healing = "Soins: "
+	tukuilocal.datatext_damage = "Dégâts: "
+	tukuilocal.datatext_honor = "Honneur: "
+	tukuilocal.datatext_killingblows = "Coups Fatals: "
+	tukuilocal.datatext_ttstatsfor = "Stats pour"
+	tukuilocal.datatext_ttkillingblows = "Coups Fatals: "
+	tukuilocal.datatext_tthonorkills = "Victoire Honorable: "
+	tukuilocal.datatext_ttdeaths = "Morts: "
+	tukuilocal.datatext_tthonorgain = "Honneur Gagné: "
+	tukuilocal.datatext_ttdmgdone = "Dégâts faits: "
+	tukuilocal.datatext_tthealdone = "Soins prodigués:"
+	tukuilocal.datatext_basesassaulted = "Bases Attaquées:"
+	tukuilocal.datatext_basesdefended = "Bases Défendues:"
+	tukuilocal.datatext_towersassaulted = "Tours Attaqueés:"
+	tukuilocal.datatext_towersdefended = "Tours Défendues:"
+	tukuilocal.datatext_flagscaptured = "Drapeaux Capturés:"
+	tukuilocal.datatext_flagsreturned = "Drapeux Retournés:"
+	tukuilocal.datatext_graveyardsassaulted = "Cimetières Attaqués:"
+	tukuilocal.datatext_graveyardsdefended = "Cimetières Défendus:"
+	tukuilocal.datatext_demolishersdestroyed = "Demolisseurs Détruits:"
+	tukuilocal.datatext_gatesdestroyed = "Portes Détruites:"
+	tukuilocal.datatext_totalmemusage = "Mémoire Totale Utilisée:"
+	tukuilocal.datatext_control = "Controllé par:"
+ 
 	tukuilocal.Slots = {
-		[1] = {1, "Head", 1000},
-		[2] = {3, "Shoulder", 1000},
-		[3] = {5, "Chest", 1000},
-		[4] = {6, "Waist", 1000},
-		[5] = {9, "Wrist", 1000},
-		[6] = {10, "Hands", 1000},
-		[7] = {7, "Legs", 1000},
-		[8] = {8, "Feet", 1000},
-		[9] = {16, "Main Hand", 1000},
-		[10] = {17, "Off Hand", 1000},
-		[11] = {18, "Ranged", 1000}
+		[1] = {1, "Tête", 1000},
+		[2] = {3, "Epaule", 1000},
+		[3] = {5, "Torse", 1000},
+		[4] = {6, "Ceinture", 1000},
+		[5] = {9, "Poignets", 1000},
+		[6] = {10, "Main", 1000},
+		[7] = {7, "Jambes", 1000},
+		[8] = {8, "Pieds", 1000},
+		[9] = {16, "Main droite", 1000},
+		[10] = {17, "Main gauche", 1000},
+		[11] = {18, "Distance", 1000}
 	}
-
-	tukuilocal.popup_disableui = "Tukui doesn't work for this resolution, do you want to disable Tukui? (Cancel if you want to try another resolution)"
-	tukuilocal.popup_install = "First time running Tukui on this character, you need to setup chat windows and actionbars."
-	tukuilocal.popup_2raidactive = "2 raid layouts are active, please select a layout."
-
-	tukuilocal.merchant_repairnomoney = "You don't have enough money for repair!"
-	tukuilocal.merchant_repaircost = "Your items have been repaired for"
-	tukuilocal.merchant_trashsell = "Your vendor trash has been sold and you earned"
-
-	tukuilocal.goldabbrev = "|cffffd700g|r"
-	tukuilocal.silverabbrev = "|cffc7c7cfs|r"
+ 
+	tukuilocal.popup_disableui = "Tukui ne fonctionne pas avec cette résolution, voulez vous désactiver Tukui? (Annulez si vous voulez essayer une autre résolution)" --"Tukui doesn't work for this resolution, do you want to disable Tukui? (Cancel if you want to try another resolution)"
+	tukuilocal.popup_install = "C'est la première fois que vous lancez Tukui sur ce personnage, vous devez paramétrer les fenêtres de discussions et les barres d'actions." --"First time running Tukui on this character, you need to setup chat windows and actionbars."
+	tukuilocal.popup_2raidactive = "2 interfaces sont actives, s'il vous plait choissez une interface" --"2 raid layouts are active, please select a layout."
+ 
+	tukuilocal.merchant_repairnomoney = "Vous n'avez pas assez d'argent pour réparer !"
+	tukuilocal.merchant_repaircost = "Vos objets ont été réparés pour"
+	tukuilocal.merchant_trashsell = "Vos objets gris ont été vendus et vous avez gagné"
+ 
+	tukuilocal.goldabbrev = "|cffffd700po|r"
+	tukuilocal.silverabbrev = "|cffc7c7cfa|r"
 	tukuilocal.copperabbrev = "|cffeda55fc|r"
-
-	tukuilocal.error_noerror = "No error yet."
-
-	tukuilocal.unitframes_ouf_offline = "Offline"
-	tukuilocal.unitframes_ouf_dead = "Dead"
-	tukuilocal.unitframes_ouf_ghost = "Ghost"
-	tukuilocal.unitframes_ouf_lowmana = "LOW MANA"
-	tukuilocal.unitframes_ouf_threattext = "Threat:"
-	tukuilocal.unitframes_ouf_offlinedps = "Offline"
-	tukuilocal.unitframes_ouf_deaddps = "Dead"
-	tukuilocal.unitframes_ouf_ghostheal = "GHOST"
-	tukuilocal.unitframes_ouf_deadheal = "DEAD"
-	tukuilocal.unitframes_ouf_gohawk = "GO HAWK"
-	tukuilocal.unitframes_ouf_goviper = "GO VIPER"
+ 
+	tukuilocal.error_noerror = "Pas d'erreur encore."
+ 
+	tukuilocal.unitframes_ouf_offline = "Hors ligne"
+	tukuilocal.unitframes_ouf_dead = "Mort"
+	tukuilocal.unitframes_ouf_ghost = "Fantome"
+	tukuilocal.unitframes_ouf_lowmana = "MANA FAIBLE"
+	tukuilocal.unitframes_ouf_threattext = "Menace:"
+	tukuilocal.unitframes_ouf_offlinedps = "Hors ligne"
+	tukuilocal.unitframes_ouf_deaddps = "MORT"
+	tukuilocal.unitframes_ouf_ghostheal = "Fantome"
+	tukuilocal.unitframes_ouf_deadheal = "MORT"
+	tukuilocal.unitframes_ouf_gohawk = "PASSEZ EN FAUCON"
+	tukuilocal.unitframes_ouf_goviper = "PASSEZ EN VIPERE"
 	tukuilocal.unitframes_disconnected = "D/C"
-
-	tukuilocal.tooltip_count = "Count"
-
-	tukuilocal.bags_noslots = "Can't buy anymore slots!"
-	tukuilocal.bags_costs = "Cost: %.2f gold"
-	tukuilocal.bags_buyslots = "Buy new slot with /bags purchase yes"
-	tukuilocal.bags_openbank = "You need to open your bank first."
-	tukuilocal.bags_sort = "Sort your bags or your bank, if open."
-	tukuilocal.bags_stack = "Fill up partial stacks in your bags or bank, if open."
-	tukuilocal.bags_buybankslot = "Buy bank slot. (need to have bank open)"
-	tukuilocal.bags_search = "Search"
-	tukuilocal.bags_sortmenu = "Sort"
-	tukuilocal.bags_sortspecial = "Sort Special"
-	tukuilocal.bags_stackmenu = "Stack"
-	tukuilocal.bags_stackspecial = "Stack Special"
-	tukuilocal.bags_showbags = "Show Bags"
-	tukuilocal.bags_sortingbags = "Sorting finished."
-	tukuilocal.bags_nothingsort= "Nothing to sort."
-	tukuilocal.bags_bids = "Using bags: "
-	tukuilocal.bags_stackend = "Restacking finished."
-	tukuilocal.bags_rightclick_search = "Right-click to search."
-
-	tukuilocal.chat_invalidtarget = "Invalid Target"
-
-	
-
+ 
+	tukuilocal.tooltip_count = "Compte"
+ 
+	tukuilocal.bags_noslots = "Ne peut pas acheter plus de place!"
+	tukuilocal.bags_costs = "Coût: %.2f or"
+	tukuilocal.bags_buyslots = "Acheter une nouvelle place avec /bags purchase yes"
+	tukuilocal.bags_openbank = "Vous devez ouvrir votre banque d'abord en premier."
+	tukuilocal.bags_sort = "Trie vos sacs ou votre banque, si elle est ouverte."
+	tukuilocal.bags_stack = "Remplit les piles incompletes dans vos sacs ou banque, si elle est ouverte."
+	tukuilocal.bags_buybankslot = "Acheter une place de banque. (Requiert d'avoir la banque ouverte)"
+	tukuilocal.bags_search = "Recherche"
+	tukuilocal.bags_sortmenu = "Tri"
+	tukuilocal.bags_sortspecial = "Tri Special"
+	tukuilocal.bags_stackmenu = "Empile"
+	tukuilocal.bags_stackspecial = "Empile Special"
+	tukuilocal.bags_showbags = "Montrer les sacs"
+	tukuilocal.bags_sortingbags = "Tri terminé."
+	tukuilocal.bags_nothingsort= "Rien à trier."
+	tukuilocal.bags_bids = "Sacs utilisés: "
+	tukuilocal.bags_stackend = "Empilement terminé."
+	tukuilocal.bags_rightclick_search = "Clic-droit pour rechercher."
+ 
+	tukuilocal.chat_invalidtarget = "Cible invalide"
+ 
 	tukuilocal.core_autoinv_enable = "Autoinvite ON: invite"
 	tukuilocal.core_autoinv_enable_c = "Autoinvite ON: "
 	tukuilocal.core_autoinv_disable = "Autoinvite OFF"
-	tukuilocal.core_welcome1 = "Welcome to |cffC495DDElv's Edit of Tukui|r, version "
-	tukuilocal.core_welcome2 = "Type |cff00FFFF/uihelp|r for more info, type |cff00FFFF/tukui|r to config, or visit http://www.tukui.org/v2/forums/topic.php?id=1235"
-
-	tukuilocal.core_uihelp1 = "|cff00ff00General Slash Commands|r"
-	tukuilocal.core_uihelp2 = "|cffFF0000/tracker|r - Tukui Arena Enemy Cooldown Tracker - Low-memory enemy PVP cooldown tracker. (Icon only)"
-	tukuilocal.core_uihelp3 = "|cffFF0000/rl|r - Reloads your User Interface."
-	tukuilocal.core_uihelp4 = "|cffFF0000/gm|r - Send GM tickets or show WoW in-game help."
-	tukuilocal.core_uihelp5 = "|cffFF0000/frame|r - Detect frame name you currently mouseover. (very useful for lua editor)"
-	tukuilocal.core_uihelp6 = "|cffFF0000/heal|r - Enable healing raid layout."
-	tukuilocal.core_uihelp7 = "|cffFF0000/dps|r - Enable Dps/Tank raid layout."
-	tukuilocal.core_uihelp8 = "|cffFF0000/uf|r - Enable or disable moving unit frames."
-	tukuilocal.core_uihelp9 = "|cffFF0000/bags|r - for sorting, buying bank slot or stacking items in your bags."
-	tukuilocal.core_uihelp10 = "|cffFF0000/resetui|r - reset cVar and Chat Frames to tukz default."
-	tukuilocal.core_uihelp11 = "|cffFF0000/rd|r - disband raid."
-	tukuilocal.core_uihelp12 = "|cffFF0000/hb|r - set keybinds to your action buttons."
-	tukuilocal.core_uihelp13 = "|cffFF0000/mss|r - Move shapeshift or totem bar."
-	tukuilocal.core_uihelp15 = "|cffFF0000/ainv|r - Enable autoinvite via keyword on whisper. You can set your own keyword by typing `/ainv myword`"
-	tukuilocal.core_uihelp16 = "|cffFF0000/resetgold|r - reset the gold datatext"
-	tukuilocal.core_uihelp14 = "(Scroll up for more commands ...)"
-
-	tukuilocal.bind_combat = "You can't bind keys in combat."
-	tukuilocal.bind_saved = "All keybindings have been saved."
-	tukuilocal.bind_discard = "All newly set keybindings have been discarded."
-	tukuilocal.bind_instruct = "Hover your mouse over any actionbutton to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."
-	tukuilocal.bind_save = "Save bindings"
-	tukuilocal.bind_discardbind = "Discard bindings"
-
-	tukuilocal.core_raidutil = "Raid Utility"
-	tukuilocal.core_raidutil_disbandgroup = "Disband Group"
-	tukuilocal.core_raidutil_blue = "Blue"
-	tukuilocal.core_raidutil_green = "Green"
-	tukuilocal.core_raidutil_purple = "Purple"
-	tukuilocal.core_raidutil_red = "Red"
-	tukuilocal.core_raidutil_white = "White"
-	tukuilocal.core_raidutil_clear = "Clear"
-
-	tukuilocal.hunter_unhappy = "Your pet is unhappy!"
-	tukuilocal.hunter_content = "Your pet is content!"
-	tukuilocal.hunter_happy = "Your pet is happy!"
+	tukuilocal.core_welcome1 = "Bienvenue sur |cffC495DDElv's Edit de Tukui|r, version "
+	tukuilocal.core_welcome2 = "Tappez |cff00FFFF/uihelp|r pour plus d'info, tappez |cff00FFFF/tukui|r pour configurer, ou visitez http://www.tukui.org/v2/forums/topic.php?id=1235"
+ 
+	tukuilocal.core_uihelp1 = "|cff00ff00Commandes Génerales |r"
+	tukuilocal.core_uihelp2 = "|cffFF0000/tracker|r - Tukui Arena Enemy Cooldown Tracker - Tracker PVP à faible coût en mémoire. (Icon seulement)"
+	tukuilocal.core_uihelp3 = "|cffFF0000/rl|r - Recharge votre interface utilisateur."
+	tukuilocal.core_uihelp4 = "|cffFF0000/gm|r - Envoyer une requete MJ ou voir l'aide dans le jeu."
+	tukuilocal.core_uihelp5 = "|cffFF0000/frame|r - Détecte le nom du cadre sur lequel votre souris est actuellement positionnée. (Très utilie pour les éditeurs lua)"
+	tukuilocal.core_uihelp6 = "|cffFF0000/heal|r - Activer l'interface heal."
+	tukuilocal.core_uihelp7 = "|cffFF0000/dps|r - Activer l'interface Tank/DPS."
+	tukuilocal.core_uihelp8 = "|cffFF0000/uf|r - Activer ou désactivez le mode de déplacement des cadres."
+	tukuilocal.core_uihelp9 = "|cffFF0000/bags|r - pour trier, acheter des places en banque ou empiler des objets dans vos sacs."
+	tukuilocal.core_uihelp10 = "|cffFF0000/resetui|r - Réinitialiser cVar et Chat Frames pour le profil par default."
+	tukuilocal.core_uihelp11 = "|cffFF0000/rd|r - fin du raid."
+	tukuilocal.core_uihelp12 = "|cffFF0000/hb|r - assigner des bind à vos boutons d'actions."
+	tukuilocal.core_uihelp13 = "|cffFF0000/mss|r - Déplacer la barre de changeforme / totem."
+	tukuilocal.core_uihelp15 = "|cffFF0000/ainv|r - Activer l'invitation automatique par mot clé en chuchoter. Vous pouvez choisir votre mot clé en tapant <code>/ainv monmotclé</code>"
+	tukuilocal.core_uihelp16 = "|cffFF0000/resetgold|r - Réinitialiser les informations relatives à l'or"
+	tukuilocal.core_uihelp14 = "(Molette haut pour plus de commandes ...)"
+ 
+	tukuilocal.bind_combat = "Vous ne pouvez pas binder de sorts en combat."
+	tukuilocal.bind_saved = "Tous les raccourcis ont été enregistrés."
+	tukuilocal.bind_discard = "Tous les raccourcis récement ajoutés ont été supprimés."
+	tukuilocal.bind_instruct = "Survoler le bouton d'action avec votre souris pour le bindé. Appuyer sur Echap ou clic droit pour supprimer le bind actuel."
+	tukuilocal.bind_save = "Sauvegarder les raccourcis"
+	tukuilocal.bind_discardbind = "Oublier les raccourcis"
+ 
+	tukuilocal.core_raidutil = "Outils de raids"
+	tukuilocal.core_raidutil_disbandgroup = "Fin du raid"
+	tukuilocal.core_raidutil_blue = "Bleu"
+	tukuilocal.core_raidutil_green = "Vert"
+	tukuilocal.core_raidutil_purple = "Violet"
+	tukuilocal.core_raidutil_red = "Rouge"
+	tukuilocal.core_raidutil_white = "Blanc"
+	tukuilocal.core_raidutil_clear = "Effacer"
+	
 	function TukuiDB.UpdateHotkey(self, actionButtonType)
 		local hotkey = _G[self:GetName() .. 'HotKey']
 		local text = hotkey:GetText()
@@ -187,14 +182,16 @@ if TukuiDB.client == "frFR" then
 		text = string.gsub(text, '(a%-)', 'A')
 		text = string.gsub(text, '(c%-)', 'C')
 		text = string.gsub(text, '(Mouse Button )', 'M')
-		text = string.gsub(text, '(Middle Mouse)', 'M3')
+		text = string.gsub(text, KEY_BUTTON3, 'M3')
 		text = string.gsub(text, '(Num Pad )', 'N')
-		text = string.gsub(text, '(Page Up)', 'PU')
-		text = string.gsub(text, '(Page Down)', 'PD')
-		text = string.gsub(text, '(Spacebar)', 'SpB')
-		text = string.gsub(text, '(Insert)', 'Ins')
-		text = string.gsub(text, '(Home)', 'Hm')
-		text = string.gsub(text, '(Delete)', 'Del')
+		text = string.gsub(text, KEY_PAGEUP, 'PU')
+		text = string.gsub(text, KEY_PAGEDOWN, 'PD')
+		text = string.gsub(text, KEY_SPACE, 'SpB')
+		text = string.gsub(text, KEY_INSERT, 'Ins')
+		text = string.gsub(text, KEY_HOME, 'Hm')
+		text = string.gsub(text, KEY_DELETE, 'Del')
+		text = string.gsub(text, KEY_MOUSEWHEELUP, 'MwU')
+		text = string.gsub(text, KEY_MOUSEWHEELDOWN, 'MwD')
 		
 		if hotkey:GetText() == _G['RANGE_INDICATOR'] then
 			hotkey:SetText('')
@@ -202,4 +199,8 @@ if TukuiDB.client == "frFR" then
 			hotkey:SetText(text)
 		end
 	end
+	
+	tukuilocal.hunter_unhappy = "Votre familier est malheureux !"
+	tukuilocal.hunter_content = "Votre familier est content!"
+	tukuilocal.hunter_happy = "Votre familier est heureux!"
 end
