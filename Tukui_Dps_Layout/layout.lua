@@ -1657,6 +1657,7 @@ if TukuiCF["raidframes"].disableblizz == true then --seriosly lazy addon authors
 	party = oUF:SpawnHeader("oUF_noParty", nil, "party", "showParty", true)
 	TukuiDB.Kill(CompactRaidFrameManager)
 	TukuiDB.Kill(CompactRaidFrameContainer)
+	TukuiDB.Kill(CompactPartyFrame)
 end
 ------------------------------------------------------------------------
 --	Right-Click on unit frames menu.
