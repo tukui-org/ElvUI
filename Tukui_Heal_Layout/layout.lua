@@ -34,6 +34,9 @@ local arenaboss_height = TukuiDB.Scale(23)
 local assisttank_width = TukuiDB.Scale(100)
 local assisttank_height = TukuiDB.Scale(20)
 
+--Offset of PowerBar for Player/Target
+local powerbar_offset = TukuiDB.Scale(15)
+
 ------------------------------------------------------------------------
 --	Layout
 ------------------------------------------------------------------------
@@ -83,7 +86,7 @@ local function Shared(self, unit)
 		local health = CreateFrame('StatusBar', nil, self)
 		health:SetWidth(original_width)
 		health:SetHeight(original_height)
-		health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", TukuiDB.Scale(-9), TukuiDB.Scale(9))
+		health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -powerbar_offset, powerbar_offset)
 		health:SetStatusBarTexture(normTex)
 		self.health = health
 		
@@ -132,7 +135,7 @@ local function Shared(self, unit)
 		PowerFrame:SetHeight(original_height)
 		PowerFrame:SetWidth(original_width)
 		PowerFrame:SetFrameLevel(self:GetFrameLevel() - 1)
-		PowerFrame:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMRIGHT", TukuiDB.Scale(9), TukuiDB.Scale(-9))
+		PowerFrame:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMRIGHT", powerbar_offset, -powerbar_offset)
 
 		TukuiDB.SetTemplate(PowerFrame)
 		PowerFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))	
@@ -157,8 +160,8 @@ local function Shared(self, unit)
 		power.PostUpdate = TukuiDB.PostUpdatePower
 		
 		--Adjust player frame size
-		player_width = player_width + TukuiDB.Scale(9)
-		player_height = player_height + TukuiDB.Scale(9)
+		player_width = player_width + powerbar_offset
+		player_height = player_height + powerbar_offset
 		
 		self.Power = power
 		self.Power.bg = powerBG
@@ -729,7 +732,7 @@ local function Shared(self, unit)
 		local health = CreateFrame('StatusBar', nil, self)
 		health:SetWidth(original_width)
 		health:SetHeight(original_height)
-		health:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", TukuiDB.Scale(9), TukuiDB.Scale(9))
+		health:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", powerbar_offset, powerbar_offset)
 		health:SetStatusBarTexture(normTex)
 		self.health = health
 		
@@ -779,7 +782,7 @@ local function Shared(self, unit)
 		PowerFrame:SetHeight(original_height)
 		PowerFrame:SetWidth(original_width)
 		PowerFrame:SetFrameLevel(self:GetFrameLevel() - 1)
-		PowerFrame:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMLEFT", TukuiDB.Scale(-9), TukuiDB.Scale(-9))
+		PowerFrame:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMLEFT", -powerbar_offset, -powerbar_offset)
 		TukuiDB.SetTemplate(PowerFrame)
 		PowerFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))	
 		self.PowerFrame = PowerFrame
@@ -801,8 +804,8 @@ local function Shared(self, unit)
 		power.value:SetPoint("LEFT", health, "LEFT", TukuiDB.Scale(4), TukuiDB.Scale(1))
 		power.PreUpdate = TukuiDB.PreUpdatePower
 		power.PostUpdate = TukuiDB.PostUpdatePower
-		target_width = target_width + TukuiDB.Scale(9)
-		target_height = target_height + TukuiDB.Scale(9)
+		target_width = target_width + powerbar_offset
+		target_height = target_height + powerbar_offset
 		
 		self.Power = power
 		self.Power.bg = powerBG

@@ -27,7 +27,7 @@ local OnEvent = function(self, event, ...)
 		end
 	end
 end
-PetHappiness:RegisterEvent('UNIT_POWER')
+PetHappiness:RegisterEvent('UNIT_HAPPINESS')
 PetHappiness:RegisterEvent("UNIT_PET")
 PetHappiness:SetScript("OnEvent", OnEvent)
 
