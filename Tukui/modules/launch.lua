@@ -241,8 +241,12 @@ TukuiOnLogon:SetScript("OnEvent", function(self, event)
 	if TukuiCF["arena"].unitframes == true then
 		SetCVar("showArenaEnemyFrames", 0)
 	end
-	-- force lua error enable for BETA
-	SetCVar("scriptErrors", 1)
+
+	if TukuiDB.myname ~= "Elv" then
+		SetCVar("scriptErrors", 0)
+	else
+		SetCVar("scriptErrors", 1)
+	end
 		
 	print(tukuilocal.core_welcome2)
 end)

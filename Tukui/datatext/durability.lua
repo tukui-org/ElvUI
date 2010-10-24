@@ -28,9 +28,9 @@ if TukuiCF["datatext"].dur and TukuiCF["datatext"].dur > 0 then
 		table.sort(tukuilocal.Slots, function(a, b) return a[3] < b[3] end)
 		
 		if Total > 0 then
-			Text:SetText("Durability: "..valuecolor..floor(tukuilocal.Slots[1][3]*100).."%")
+			Text:SetText(DURABILITY..": "..valuecolor..floor(tukuilocal.Slots[1][3]*100).."%")
 		else
-			Text:SetText("Durability: 100%")
+			Text:SetText(DURABILITY..": 100%")
 		end
 		-- Setup Durability Tooltip
 		self:SetAllPoints(Text)

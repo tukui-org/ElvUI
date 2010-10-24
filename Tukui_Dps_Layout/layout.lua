@@ -1020,8 +1020,6 @@ local function Shared(self, unit)
 		bars.FrameBackdrop:SetPoint("TOPLEFT", bars, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
 		bars.FrameBackdrop:SetPoint("BOTTOMRIGHT", bars, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 		bars.FrameBackdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
-		self:RegisterEvent("UNIT_DISPLAYPOWER", TukuiDB.ComboDisplay)
-
 	end
 	
 	------------------------------------------------------------------------
@@ -1655,9 +1653,15 @@ end
 local party
 if TukuiCF["raidframes"].disableblizz == true then --seriosly lazy addon authors can suck my dick
 	party = oUF:SpawnHeader("oUF_noParty", nil, "party", "showParty", true)
-	TukuiDB.Kill(CompactRaidFrameManager)
-	TukuiDB.Kill(CompactRaidFrameContainer)
-	TukuiDB.Kill(CompactPartyFrame)
+	local blizzloader = CreateFrame("Frame")
+	blizzloader:RegisterEvent("ADDON_LOADED")
+	blizzloader:SetScript("OnEvent", function(self, event, addon)
+		if addon == "Tukui_Dps_Layout" then 
+			TukuiDB.Kill(CompactRaidFrameManager)
+			TukuiDB.Kill(CompactRaidFrameContainer)
+			TukuiDB.Kill(CompactPartyFrame)
+		end
+	end)
 end
 ------------------------------------------------------------------------
 --	Right-Click on unit frames menu.
