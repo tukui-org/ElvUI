@@ -25,7 +25,7 @@ if TukuiCF["datatext"].guild and TukuiCF["datatext"].guild > 0 then
 	end
 	
 	local Text  = TukuiBottomPanel:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize)
+	Text:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
 	TukuiDB.PP(TukuiCF["datatext"].guild, Text)
 
 	local function Update(self, event, ...)	

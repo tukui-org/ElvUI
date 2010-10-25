@@ -9,6 +9,14 @@ local bottompanel = CreateFrame("Frame", "TukuiBottomPanel", UIParent)
 TukuiDB.CreatePanel(bottompanel, UIParent:GetWidth() + (TukuiDB.mult * 2), 23, "BOTTOMLEFT", UIParent, "BOTTOMLEFT", -TukuiDB.mult, -TukuiDB.mult)
 bottompanel:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", TukuiDB.mult, -TukuiDB.mult)
 bottompanel:SetFrameLevel(1)
+bottompanel:SetBackdrop({
+  bgFile = TukuiCF["media"].normTex, 
+  edgeFile = TukuiCF["media"].blank, 
+  tile = false, tileSize = 0, edgeSize = TukuiDB.mult, 
+  insets = { left = -TukuiDB.mult, right = -TukuiDB.mult, top = -TukuiDB.mult, bottom = -TukuiDB.mult}
+})
+bottompanel:SetBackdropColor(unpack(TukuiCF["media"].bordercolor))
+bottompanel:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))
 TukuiDB.CreateShadow(bottompanel)
 
 --Battleground Support for Bottom Frame
@@ -153,6 +161,14 @@ if TukuiCF["datatext"].battleground == true then
 	bgframe:SetAllPoints(TukuiBottomPanel)
 	bgframe:SetFrameLevel(TukuiBottomPanel:GetFrameLevel() + 1)
 	bgframe:SetFrameStrata("LOW")
+	bgframe:SetBackdrop({
+	  bgFile = TukuiCF["media"].normTex, 
+	  edgeFile = TukuiCF["media"].blank, 
+	  tile = false, tileSize = 0, edgeSize = TukuiDB.mult, 
+	  insets = { left = -TukuiDB.mult, right = -TukuiDB.mult, top = -TukuiDB.mult, bottom = -TukuiDB.mult}
+	})
+	bgframe:SetBackdropColor(unpack(TukuiCF["media"].bordercolor))
+	bgframe:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))
 	bgframe:SetScript("OnEnter", function(self)
 		local numScores = GetNumBattlefieldScores()
 		for i=1, numScores do

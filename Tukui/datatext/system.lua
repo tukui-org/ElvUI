@@ -9,7 +9,7 @@ if TukuiCF["datatext"].system and TukuiCF["datatext"].system > 0 then
 	Stat:EnableMouse(true)
 	
 	local Text  = TukuiBottomPanel:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize)
+	Text:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
 	TukuiDB.PP(TukuiCF["datatext"].system, Text)
 	local colorme = string.format("%02x%02x%02x", 1*255, 1*255, 1*255)
 	

@@ -9,7 +9,6 @@ local font1 = TukuiCF["media"].uffont
 local font2 = TukuiCF["media"].font
 local normTex = TukuiCF["media"].normTex
 local glowTex = TukuiCF["media"].glowTex
-local bubbleTex = TukuiCF["media"].bubbleTex
 
 local backdrop = {
 	bgFile = TukuiCF["media"].blank,

@@ -180,7 +180,6 @@
 	tukuilocal.hunter_content = "你的寵物感到滿足!"
 	tukuilocal.hunter_happy = "你的寵物感到高興!"
 
---I don't know what these codes are? Do thet need to be localized?
 	function TukuiDB.UpdateHotkey(self, actionButtonType)
 		local hotkey = _G[self:GetName() .. 'HotKey']
 		local text = hotkey:GetText()

@@ -6,7 +6,5 @@ LSM:Register("statusbar","TukUI Bar", [[Interface\AddOns\Tukui\media\textures\no
 LSM:Register("background","TukUI", [[Interface\AddOns\Tukui\media\textures\blank.tga]])
 LSM:Register("border", "TukUI Border", [[Interface\AddOns\Tukui\media\textures\glowTex.tga]])
 LSM:Register("font","TukUI", [[Interface\AddOns\Tukui\media\fonts\arial.ttf]])
-LSM:Register("font","TukUI UF", [[Interface\AddOns\Tukui\media\fonts\uf_font.ttf]])
-LSM:Register("font","TukUI Damage", [[Interface\AddOns\Tukui\media\fonts\combat_font.ttf]])
 LSM:Register("sound","TukUI Warning", [[Interface\AddOns\Tukui\media\sounds\warning.mp3]])
 LSM:Register("sound","TukUI Whisper", [[Interface\AddOns\Tukui\media\sounds\whisper.mp3]])
