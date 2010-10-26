@@ -12,6 +12,7 @@ local SpamList = {
 	"SusanExpress",
 	"recruiting",
 	"Discount",
+	"discount",
 }
 local function TRADE_FILTER(self, event, arg1)
 	if (SpamList and SpamList[1]) then

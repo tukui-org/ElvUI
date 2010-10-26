@@ -26,7 +26,8 @@
 	TukuiL.option_media_raidicons = "Texturpfad für die Raid Icons"
 	TukuiL.option_media_whisper = "Soundpfad für den Flüstersound"
 	TukuiL.option_media_warning = "Warnungssound"
- 
+	TukuiL.option_media_glossy = "Glossy Bar Texture"
+	
 	-- nameplate
 	TukuiL.option_nameplates = "Namensplaketten"
 	TukuiL.option_nameplates_enable = "Aktiviere Namensplaketten"

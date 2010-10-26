@@ -26,7 +26,8 @@
 	TukuiL.option_media_raidicons = "Dossier des textures pour les icones de raid" --"Texture file path for raid icons"
 	TukuiL.option_media_whisper = "Chemin du son pour les chuchoter" --"Sound file path for whisper sound"
 	TukuiL.option_media_warning = "Son d'avertissement" --"Warning sound"
- 
+	TukuiL.option_media_glossy = "Glossy Bar Texture"
+	
 	-- nameplate
 	TukuiL.option_nameplates = "Barres de vies" --"Nameplates"
 	TukuiL.option_nameplates_enable = "Activer les barres de vies" --"Enable Nameplates"

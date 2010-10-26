@@ -204,3 +204,7 @@ end
 if TukuiCF.tooltip.cursor and not TukuiCF.tooltip.hideuf then
 	TukuiCF.tooltip.hideuf = true
 end
+
+if TukuiCF["media"].glossyTexture ~= true then
+	TukuiCF["media"].normTex = [[Interface\AddOns\Tukui\media\textures\normTex2]]
+end

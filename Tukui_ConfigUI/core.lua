@@ -53,7 +53,8 @@ local function Local(o)
 	if o =="TukuiConfigUImediaraidicons" then o = TukuiL.option_media_raidicons end
 	if o =="TukuiConfigUImediawhisper" then o = TukuiL.option_media_whisper end
 	if o =="TukuiConfigUImediawarning" then o = TukuiL.option_media_warning end
-
+	if o =="TukuiConfigUImediaglossyTexture" then o = TukuiL.option_media_glossy end
+	
 	--Skin
 	if o =="TukuiConfigUIskin" then o = TukuiL.option_skin end
 	if o =="TukuiConfigUIskindxe" then o = TukuiL.option_skin_dxe end

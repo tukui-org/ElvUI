@@ -26,7 +26,8 @@
 	TukuiL.option_media_raidicons = "團隊圖標材質路徑"
 	TukuiL.option_media_whisper = "收到密語提示音效路徑"
 	TukuiL.option_media_warning = "警告音效路徑"
- 
+	TukuiL.option_media_glossy = "Glossy Bar Texture"
+	
 	-- nameplate
 	TukuiL.option_nameplates = "名條"
 	TukuiL.option_nameplates_enable = "啟用名條模組"

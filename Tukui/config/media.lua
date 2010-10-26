@@ -18,8 +18,5 @@ TukuiCF["media"] = {
 	-- sound
 	["whisper"] = [[Interface\AddOns\Tukui\media\sounds\whisper.mp3]],
 	["warning"] = [[Interface\AddOns\Tukui\media\sounds\warning.mp3]],
+	["glossyTexture"] = true,	-- Use a glossy texture for all frames
 }
-
-
-
-

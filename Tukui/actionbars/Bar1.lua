@@ -42,8 +42,6 @@ end
 
 bar:RegisterEvent("PLAYER_LOGIN")
 bar:RegisterEvent("PLAYER_ENTERING_WORLD")
-bar:RegisterEvent("PLAYER_TALENT_UPDATE")
-bar:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 bar:RegisterEvent("KNOWN_CURRENCY_TYPES_UPDATE")
 bar:RegisterEvent("CURRENCY_DISPLAY_UPDATE")
 bar:RegisterEvent("BAG_UPDATE")
@@ -82,24 +80,6 @@ bar:SetScript("OnEvent", function(self, event, ...)
 			else
 				local previous = _G["ActionButton"..i-1]
 				button:SetPoint("LEFT", previous, "RIGHT", TukuiDB.buttonspacing, 0)
-			end
-		end
-	elseif event == "PLAYER_TALENT_UPDATE" or event == "ACTIVE_TALENT_GROUP_CHANGED" then
-		if not InCombatLockdown() then -- Just to be safe
-			RegisterStateDriver(self, "page", GetBar())
-			-- Due to some odd reason these bars (MultiBarRight, MultiBarLeft) are changing position after you spent a talent point, and switch spec,
-			-- I couldn't watch the exact event that does it even by using ':RegisterAllEvents()', until I'll figure it out, here is an awful hack. 
-			if event == "ACTIVE_TALENT_GROUP_CHANGED" then 
-				local t = 0
-				self:SetScript("OnUpdate", function(self, elapsed)
-					t = t + elapsed
-					MainMenuBar:Hide()
-					UIParent_ManageFramePositions()
-					if t > 5 then
-						t = 0
-						self:SetScript("OnUpdate", nil)
-					end
-				end)
 			end
 		end
 	else

@@ -1,5 +1,5 @@
 ﻿if TukuiDB.client == "koKR" then
-	tukuilocal.chat_BATTLEGROUND_GET = "[B]"
+    tukuilocal.chat_BATTLEGROUND_GET = "[B]"
 	tukuilocal.chat_BATTLEGROUND_LEADER_GET = "[B]"
 	tukuilocal.chat_BN_WHISPER_GET = "From"
 	tukuilocal.chat_GUILD_GET = "[G]"
@@ -16,169 +16,159 @@
 	tukuilocal.chat_FLAG_GM = "[GM]"
 	tukuilocal.chat_ERR_FRIEND_ONLINE_SS = "is now |cff298F00online|r"
 	tukuilocal.chat_ERR_FRIEND_OFFLINE_S = "is now |cffff0000offline|r"
-
-	tukuilocal.disband = "Disbanding group."
-
-	tukuilocal.datatext_guild = "Guild"
-	tukuilocal.datatext_noguild = "No Guild"
-	tukuilocal.datatext_bags = "Bags: "
-	tukuilocal.datatext_friends = "Friends"
-	tukuilocal.datatext_online = "Online: "	
-	tukuilocal.datatext_earned = "Earned:"
-	tukuilocal.datatext_spent = "Spent:"
-	tukuilocal.datatext_deficit = "Deficit:"
-	tukuilocal.datatext_profit = "Profit:"
-	tukuilocal.datatext_wg = "Time to:"
-	tukuilocal.datatext_friendlist = "Friends list:"
-	tukuilocal.datatext_playersp = "SP: "
-	tukuilocal.datatext_playerap = "AP: "
-	tukuilocal.datatext_session = "Session: "
-	tukuilocal.datatext_character = "Character: "
-	tukuilocal.datatext_server = "Server: "
-	tukuilocal.datatext_totalgold = "Total: "
-	tukuilocal.datatext_savedraid = "Saved Raid(s)"
-	tukuilocal.datatext_currency = "Currency:"
-	tukuilocal.datatext_playercrit = "Crit: "
-	tukuilocal.datatext_playerheal = "Heal"
-	tukuilocal.datatext_avoidancebreakdown = "Avoidance Breakdown"
-	tukuilocal.datatext_lvl = "lvl"
-	tukuilocal.datatext_boss = "Boss"
-	tukuilocal.datatext_playeravd = "AVD: "
-	tukuilocal.datatext_servertime = "Server Time: "
-	tukuilocal.datatext_localtime = "Local Time: "
-	tukuilocal.datatext_mitigation = "Mitigation By Level: "
-	tukuilocal.datatext_healing = "Healing: "
-	tukuilocal.datatext_damage = "Damage: "
-	tukuilocal.datatext_honor = "Honor: "
-	tukuilocal.datatext_killingblows = "Killing Blows: "
-	tukuilocal.datatext_ttstatsfor = "Stats for"
-	tukuilocal.datatext_ttkillingblows = "Killing Blows: "
-	tukuilocal.datatext_tthonorkills = "Honorable Kills: "
-	tukuilocal.datatext_ttdeaths = "Deaths: "
-	tukuilocal.datatext_tthonorgain = "Honor Gained: "
-	tukuilocal.datatext_ttdmgdone = "Damage Done: "
-	tukuilocal.datatext_tthealdone = "Healing Done :"
-	tukuilocal.datatext_basesassaulted = "Bases Assaulted:"
-	tukuilocal.datatext_basesdefended = "Bases Defended:"
-	tukuilocal.datatext_towersassaulted = "Towers Assaulted:"
-	tukuilocal.datatext_towersdefended = "Towers Defended:"
-	tukuilocal.datatext_flagscaptured = "Flags Captured:"
-	tukuilocal.datatext_flagsreturned = "Flags Returned:"
-	tukuilocal.datatext_graveyardsassaulted = "Graveyards Assaulted:"
-	tukuilocal.datatext_graveyardsdefended = "Graveyards Defended:"
-	tukuilocal.datatext_demolishersdestroyed = "Demolishers Destroyed:"
-	tukuilocal.datatext_gatesdestroyed = "Gates Destroyed:"
-	tukuilocal.datatext_totalmemusage = "Total Memory Usage:"
-	tukuilocal.datatext_control = "Controlled by:"
-
-	tukuilocal.Slots = {
-		[1] = {1, "Head", 1000},
-		[2] = {3, "Shoulder", 1000},
-		[3] = {5, "Chest", 1000},
-		[4] = {6, "Waist", 1000},
-		[5] = {9, "Wrist", 1000},
-		[6] = {10, "Hands", 1000},
-		[7] = {7, "Legs", 1000},
-		[8] = {8, "Feet", 1000},
-		[9] = {16, "Main Hand", 1000},
-		[10] = {17, "Off Hand", 1000},
-		[11] = {18, "Ranged", 1000}
-	}
-
-	tukuilocal.popup_disableui = "Tukui doesn't work for this resolution, do you want to disable Tukui? (Cancel if you want to try another resolution)"
-	tukuilocal.popup_install = "First time running Tukui on this character, you need to setup chat windows and actionbars."
-	tukuilocal.popup_2raidactive = "2 raid layouts are active, please select a layout."
-
-	tukuilocal.merchant_repairnomoney = "You don't have enough money for repair!"
-	tukuilocal.merchant_repaircost = "Your items have been repaired for"
-	tukuilocal.merchant_trashsell = "Your vendor trash has been sold and you earned"
-
-	tukuilocal.goldabbrev = "|cffffd700g|r"
-	tukuilocal.silverabbrev = "|cffc7c7cfs|r"
-	tukuilocal.copperabbrev = "|cffeda55fc|r"
-
-	tukuilocal.error_noerror = "No error yet."
-
-	tukuilocal.unitframes_ouf_offline = "Offline"
-	tukuilocal.unitframes_ouf_dead = "Dead"
-	tukuilocal.unitframes_ouf_ghost = "Ghost"
-	tukuilocal.unitframes_ouf_lowmana = "LOW MANA"
-	tukuilocal.unitframes_ouf_threattext = "Threat:"
-	tukuilocal.unitframes_ouf_offlinedps = "Offline"
-	tukuilocal.unitframes_ouf_deaddps = "Dead"
-	tukuilocal.unitframes_ouf_ghostheal = "GHOST"
-	tukuilocal.unitframes_ouf_deadheal = "DEAD"
-	tukuilocal.unitframes_ouf_gohawk = "GO HAWK"
-	tukuilocal.unitframes_ouf_goviper = "GO VIPER"
-	tukuilocal.unitframes_disconnected = "D/C"
-
-	tukuilocal.tooltip_count = "Count"
-
-	tukuilocal.bags_noslots = "Can't buy anymore slots!"
-	tukuilocal.bags_costs = "Cost: %.2f gold"
-	tukuilocal.bags_buyslots = "Buy new slot with /bags purchase yes"
-	tukuilocal.bags_openbank = "You need to open your bank first."
-	tukuilocal.bags_sort = "Sort your bags or your bank, if open."
-	tukuilocal.bags_stack = "Fill up partial stacks in your bags or bank, if open."
-	tukuilocal.bags_buybankslot = "Buy bank slot. (need to have bank open)"
-	tukuilocal.bags_search = "Search"
-	tukuilocal.bags_sortmenu = "Sort"
-	tukuilocal.bags_sortspecial = "Sort Special"
-	tukuilocal.bags_stackmenu = "Stack"
-	tukuilocal.bags_stackspecial = "Stack Special"
-	tukuilocal.bags_showbags = "Show Bags"
-	tukuilocal.bags_sortingbags = "Sorting finished."
-	tukuilocal.bags_nothingsort= "Nothing to sort."
-	tukuilocal.bags_bids = "Using bags: "
-	tukuilocal.bags_stackend = "Restacking finished."
-	tukuilocal.bags_rightclick_search = "Right-click to search."
-
-	tukuilocal.chat_invalidtarget = "Invalid Target"
-
 	
+	tukuilocal.disband = "공격대를 해체합니다."
+ 
+	tukuilocal.datatext_guild = "길드"
+	tukuilocal.datatext_noguild = "길드 없음"
+	tukuilocal.datatext_bags = "가방: "
+	tukuilocal.datatext_friends = "친구"
+	tukuilocal.datatext_online = "온라인: "
+	tukuilocal.datatext_earned = "수입:"
+	tukuilocal.datatext_spent = "지출:"
+	tukuilocal.datatext_deficit = "적자:"
+	tukuilocal.datatext_profit = "흑자:"
+	tukuilocal.datatext_wg = "Time to"
+	tukuilocal.datatext_friendlist = "친구 목록:"
+	tukuilocal.datatext_playersp = "주문력"
+	tukuilocal.datatext_playerap = "전투력"
+	tukuilocal.datatext_session = "세션: "
+	tukuilocal.datatext_character = "캐릭터: "
+	tukuilocal.datatext_server = "서버: "
+	tukuilocal.datatext_totalgold = "전체: "
+	tukuilocal.datatext_savedraid = "귀속된 던전"
+	tukuilocal.datatext_currency = "화폐:"
+	tukuilocal.datatext_playercrit = " 치명타율"
+	tukuilocal.datatext_playerheal = " 극대화율"
+	tukuilocal.datatext_avoidancebreakdown = "회피 내역"
+	tukuilocal.datatext_lvl = "레벨"
+	tukuilocal.datatext_boss = "우두머리"
+	tukuilocal.datatext_playeravd = "완방: "
+	tukuilocal.datatext_servertime = "서버 시간: "
+	tukuilocal.datatext_localtime = "지역 시간: "
+	tukuilocal.datatext_mitigation = "레벨에 따른 경감수준: "
+	tukuilocal.datatext_healing = "치유량 : "
+	tukuilocal.datatext_damage = "피해량 : "
+	tukuilocal.datatext_honor = "명예 점수 : "
+	tukuilocal.datatext_killingblows = "결정타 : "
+	tukuilocal.datatext_ttstatsfor = "점수 : "
+	tukuilocal.datatext_ttkillingblows = "결정타:"
+	tukuilocal.datatext_tthonorkills = "명예 승수:"
+	tukuilocal.datatext_ttdeaths = "죽은 수:"
+	tukuilocal.datatext_tthonorgain = "획득한 명예:"
+	tukuilocal.datatext_ttdmgdone = "피해량:"
+	tukuilocal.datatext_tthealdone = "치유량:"
+	tukuilocal.datatext_basesassaulted = "거점 공격:"
+	tukuilocal.datatext_basesdefended = "거점 방어:"
+	tukuilocal.datatext_towersassaulted = "경비탑 점령:"
+	tukuilocal.datatext_towersdefended = "경비탑 방어:"
+	tukuilocal.datatext_flagscaptured = "깃발 쟁탈:"
+	tukuilocal.datatext_flagsreturned = "깃발 반환:"
+	tukuilocal.datatext_graveyardsassaulted = "무덤 점령:"
+	tukuilocal.datatext_graveyardsdefended = "무덤 방어:"
+	tukuilocal.datatext_demolishersdestroyed = "파괴한 파괴전차:"
+	tukuilocal.datatext_gatesdestroyed = "파괴한 관문:"
+	tukuilocal.datatext_totalmemusage = "총 메모리 사용량:"
+	tukuilocal.datatext_control = "Controlled by:"
+ 
+	tukuilocal.Slots = {
+	  [1] = {1, "머리", 1000},
+	  [2] = {3, "어깨", 1000},
+	  [3] = {5, "가슴", 1000},
+	  [4] = {6, "허리", 1000},
+	  [5] = {9, "손목", 1000},
+	  [6] = {10, "손", 1000},
+	  [7] = {7, "다리", 1000},
+	  [8] = {8, "발", 1000},
+	  [9] = {16, "주장비", 1000},
+	  [10] = {17, "보조장비", 1000},
+	  [11] = {18, "원거리", 1000}
+	}
+ 
+	tukuilocal.popup_disableui = "Tukui는 현재 해상도에 최적화되어 있지 않습니다. Tukui를 비활성화하시겠습니까? (다른 해상도로 시도해보려면 취소)"
+	tukuilocal.popup_install = "현재 캐릭터는 Tukui를 처음 사용합니다. 행동 단축바, 대화창, 다양한 설정을 위해 UI를 다시 시작하셔야만 합니다."
+	tukuilocal.popup_2raidactive = "2개의 공격대 인터페이스가 사용 중입니다. 한 가지만 사용하셔야 합니다."
+ 
+	tukuilocal.merchant_repairnomoney = "수리에 필요한 돈이 충분하지 않습니다!"
+	tukuilocal.merchant_repaircost = "모든 아이템이 수리되었습니다: "
+	tukuilocal.merchant_trashsell = "불필요한 아이템이 판매되었습니다: "
+ 
+	tukuilocal.goldabbrev = "|cffffd700골|r"
+	tukuilocal.silverabbrev = "|cffc7c7cf실|r"
+	tukuilocal.copperabbrev = "|cffeda55f코|r"
+ 
+	tukuilocal.error_noerror = "오류가 발견되지 않았습니다."
+ 
+	tukuilocal.unitframes_ouf_offline = "오프라인"
+	tukuilocal.unitframes_ouf_dead = "죽음"
+	tukuilocal.unitframes_ouf_ghost = "유령"
+	tukuilocal.unitframes_ouf_lowmana = "마나 적음"
+	tukuilocal.unitframes_ouf_threattext = "현재 대상에 대한 위협수준:"
+	tukuilocal.unitframes_ouf_offlinedps = "오프라인"
+	tukuilocal.unitframes_ouf_deaddps = "|cffff0000[죽음]|r"
+	tukuilocal.unitframes_ouf_ghostheal = "유령"
+	tukuilocal.unitframes_ouf_deadheal = "죽음"
+	tukuilocal.unitframes_ouf_gohawk = "매의 상으로 전환"
+	tukuilocal.unitframes_ouf_goviper = "독사의 상으로 전환"
+	tukuilocal.unitframes_disconnected = "연결끊김"
+ 
+	tukuilocal.tooltip_count = "수치"
+ 
+	tukuilocal.bags_noslots = "소지품이 가득 찼습니다."
+	tukuilocal.bags_costs = "가격: %.2f 골"
+	tukuilocal.bags_buyslots = "가방 보관함을 추가로 구입하시기 위해서는 /bags를 입력해주세요."
+	tukuilocal.bags_openbank = "먼저 은행을 열어야 합니다."
+	tukuilocal.bags_sort = "열려있는 가방이나 은행에 있는 아이템을 정리합니다."
+	tukuilocal.bags_stack = "띄엄띄엄 있는 아이템을 정리합니다."
+	tukuilocal.bags_buybankslot = "가방 보관함을 추가로 구입합니다."
+	tukuilocal.bags_search = "검색"
+	tukuilocal.bags_sortmenu = "분류"
+	tukuilocal.bags_sortspecial = "특수물품 분류"
+	tukuilocal.bags_stackmenu = "정리"
+	tukuilocal.bags_stackspecial = "특수물품 정리"
+	tukuilocal.bags_showbags = "가방 보기"
+	tukuilocal.bags_sortingbags = "분류 완료."
+	tukuilocal.bags_nothingsort= "분류할 것이 없습니다."
+	tukuilocal.bags_bids = "사용 중인 가방: "
+	tukuilocal.bags_stackend = "재정리 완료."
+	tukuilocal.bags_rightclick_search = "마우스 오른쪽 단추로 검색을 클릭합니다."
+	
+	tukuilocal.chat_invalidtarget = "잘못된 대상"
+ 
 
-	tukuilocal.core_autoinv_enable = "Autoinvite ON: invite"
-	tukuilocal.core_autoinv_enable_c = "Autoinvite ON: "
-	tukuilocal.core_autoinv_disable = "Autoinvite OFF"
-	tukuilocal.core_welcome1 = "Welcome to |cffC495DDElv's Edit of Tukui|r, version "
-	tukuilocal.core_welcome2 = "Type |cff00FFFF/uihelp|r for more info, type |cff00FFFF/tukui|r to config, or visit http://www.tukui.org/v2/forums/topic.php?id=1235"
-
-	tukuilocal.core_uihelp1 = "|cff00ff00General Slash Commands|r"
-	tukuilocal.core_uihelp2 = "|cffFF0000/tracker|r - Tukui Arena Enemy Cooldown Tracker - Low-memory enemy PVP cooldown tracker. (Icon only)"
-	tukuilocal.core_uihelp3 = "|cffFF0000/rl|r - Reloads your User Interface."
-	tukuilocal.core_uihelp4 = "|cffFF0000/gm|r - Send GM tickets or show WoW in-game help."
-	tukuilocal.core_uihelp5 = "|cffFF0000/frame|r - Detect frame name you currently mouseover. (very useful for lua editor)"
-	tukuilocal.core_uihelp6 = "|cffFF0000/heal|r - Enable healing raid layout."
-	tukuilocal.core_uihelp7 = "|cffFF0000/dps|r - Enable Dps/Tank raid layout."
-	tukuilocal.core_uihelp8 = "|cffFF0000/uf|r - Enable or disable moving unit frames."
-	tukuilocal.core_uihelp9 = "|cffFF0000/bags|r - for sorting, buying bank slot or stacking items in your bags."
-	tukuilocal.core_uihelp10 = "|cffFF0000/resetui|r - reset cVar and Chat Frames to tukz default."
-	tukuilocal.core_uihelp11 = "|cffFF0000/rd|r - disband raid."
-	tukuilocal.core_uihelp12 = "|cffFF0000/hb|r - set keybinds to your action buttons."
-	tukuilocal.core_uihelp13 = "|cffFF0000/mss|r - Move shapeshift or totem bar."
-	tukuilocal.core_uihelp15 = "|cffFF0000/ainv|r - Enable autoinvite via keyword on whisper. You can set your own keyword by typing `/ainv myword`"
-	tukuilocal.core_uihelp16 = "|cffFF0000/resetgold|r - reset the gold datatext"
-	tukuilocal.core_uihelp14 = "(Scroll up for more commands ...)"
-
-	tukuilocal.bind_combat = "You can't bind keys in combat."
-	tukuilocal.bind_saved = "All keybindings have been saved."
-	tukuilocal.bind_discard = "All newly set keybindings have been discarded."
-	tukuilocal.bind_instruct = "Hover your mouse over any actionbutton to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."
-	tukuilocal.bind_save = "Save bindings"
-	tukuilocal.bind_discardbind = "Discard bindings"
-
-	tukuilocal.core_raidutil = "Raid Utility"
-	tukuilocal.core_raidutil_disbandgroup = "Disband Group"
-	tukuilocal.core_raidutil_blue = "Blue"
-	tukuilocal.core_raidutil_green = "Green"
-	tukuilocal.core_raidutil_purple = "Purple"
-	tukuilocal.core_raidutil_red = "Red"
-	tukuilocal.core_raidutil_white = "White"
-	tukuilocal.core_raidutil_clear = "Clear"
-
-	tukuilocal.hunter_unhappy = "Your pet is unhappy!"
-	tukuilocal.hunter_content = "Your pet is content!"
-	tukuilocal.hunter_happy = "Your pet is happy!"
+ 
+	tukuilocal.core_autoinv_enable = "자동초대 활성화: 초대"
+	tukuilocal.core_autoinv_enable_c = "자동초대 활성화: "
+	tukuilocal.core_autoinv_disable = "자동초대 비활성화"
+	tukuilocal.core_welcome1 = "|cffC495DDTukui|r를 사용해주셔서 감사합니다. 버전 "
+	tukuilocal.core_welcome2 = "자세한 사항은 |cff00FFFF/uihelp|r를 입력하거나 www.tukui.org 에 방문하시면 확인 가능합니다."
+ 
+	tukuilocal.core_uihelp1 = "|cff00ff00일반적인 명령어|r"
+	tukuilocal.core_uihelp2 = "|cffFF0000/tracker|r - Tukui 투기장 애드온 - 가벼운 투기장 애드온입니다."
+	tukuilocal.core_uihelp3 = "|cffFF0000/rl|r - UI를 재시작합니다."
+	tukuilocal.core_uihelp4 = "|cffFF0000/gm|r - 도움 요청(지식 열람실, GM 요청하기) 창을 엽니다."
+	tukuilocal.core_uihelp5 = "|cffFF0000/frame|r - 커서가 위치한 창의 이름을 보여줍니다. (lua 편집 시 매우 유용)"
+	tukuilocal.core_uihelp6 = "|cffFF0000/heal|r - 힐러용 공격대 인터페이스를 사용합니다."
+	tukuilocal.core_uihelp7 = "|cffFF0000/dps|r - 딜러/탱커용 공격대 인터페이스를 사용합니다."
+	tukuilocal.core_uihelp8 = "|cffFF0000/uf|r - 개체창을 이동할 수 있습니다."
+	tukuilocal.core_uihelp9 = "|cffFF0000/bags|r - 분류, 정리, 가방 보관함을 추가 구입을 할 수 있습니다."
+	tukuilocal.core_uihelp10 = "|cffFF0000/resetui|r - Tukui의 설정을 초기화합니다."
+	tukuilocal.core_uihelp11 = "|cffFF0000/rd|r - 공격대를 해체합니다."
+	tukuilocal.core_uihelp12 = "|cffFF0000/wf|r - 임무 추적기를 이동할 수 있습니다."
+	tukuilocal.core_uihelp13 = "|cffFF0000/mss|r - 특수 기술 단축바를 이동할 수 있습니다."
+	tukuilocal.core_uihelp15 = "|cffFF0000/ainv|r - 자동초대 기능을 사용합니다. '/ainv 단어'를 입력하여 해당 단어가 들어간 귓속말이 올 경우 자동으로 초대를 합니다."
+	tukuilocal.core_uihelp14 = "(위로 올리십시오 ...)"
+ 
+	tukuilocal.bind_combat = "전투 중에는 단축키를 지정할 수 없습니다."
+	tukuilocal.bind_saved = "새로 지정한 모든 단축키가 저장되었습니다."
+	tukuilocal.bind_discard = "새로 지정한 모든 단축키가 저장되지 않았습니다."
+	tukuilocal.bind_instruct = "커서가 위치한 단축버튼에 단축키를 지정할 수 있습니다. 오른쪽 클릭으로 해당 단축버튼의 단축키를 초기화할 수 있습니다."
+	tukuilocal.bind_save = "저장"
+	tukuilocal.bind_discardbind = "취소"
+ 
+	tukuilocal.hunter_unhappy = "소환수의 만족도가 불만족입니다."
+	tukuilocal.hunter_content = "소환수의 만족도가 만족입니다."
+	tukuilocal.hunter_happy = "소환수의 만족도가 매우 만족입니다."
 	
 	function TukuiDB.UpdateHotkey(self, actionButtonType)
 		local hotkey = _G[self:GetName() .. 'HotKey']

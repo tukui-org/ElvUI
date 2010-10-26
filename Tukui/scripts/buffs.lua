@@ -76,6 +76,7 @@ local function UpdateBuffAnchors()
 	buttonName = "BuffButton"
 	local buff, previousBuff, aboveBuff;
 	local numBuffs = 0;
+	local index;
 	for index=1, BUFF_ACTUAL_DISPLAY do
 		local buff = _G[buttonName..index]
 		StyleBuffs(buttonName, index, false)
