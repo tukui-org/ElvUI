@@ -211,9 +211,13 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 	-- for hiding tooltip on unitframes
 	if (self:GetOwner() ~= UIParent and db.hideuf) then self:Hide() return end
 
-	if self:GetOwner() ~= UIParent and CheckAddOnShown() and unit then
-		self:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", -1, TukuiDB.Scale(18))		
-	end
+	if self:GetOwner() ~= UIParent and (CheckAddOnShown() or (TukuiCF["others"].enablebag == true and StuffingFrameBags:IsShown())) and unit then
+		if TukuiCF["others"].enablebag == true and StuffingFrameBags:IsShown() then
+			self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", -1, TukuiDB.Scale(18))	
+		else
+			self:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", -1, TukuiDB.Scale(18))		
+		end
+	end	
 	
 	-- A "mouseover" unit is better to have as we can then safely say the tip should no longer show when it becomes invalid.
 	if (UnitIsUnit(unit,"mouseover")) then
@@ -344,7 +348,7 @@ local Colorize = function(self)
 	NeedBackdropBorderRefresh = true
 end
 
-TukuiDB.SetStyle = function(self)
+local SetStyle = function(self)
 	TukuiDB.SetTemplate(self)
 	self:SetBackdropColor(unpack(TukuiCF.media.backdropfadecolor))
 	Colorize(self)
@@ -353,7 +357,7 @@ end
 TukuiTooltip:RegisterEvent("PLAYER_ENTERING_WORLD")
 TukuiTooltip:SetScript("OnEvent", function(self)
 	for _, tt in pairs(Tooltips) do
-		tt:HookScript("OnShow", TukuiDB.SetStyle)
+		tt:HookScript("OnShow", SetStyle)
 	end
 	
 	TukuiDB.SetTemplate(FriendsTooltip)

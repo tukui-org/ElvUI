@@ -76,7 +76,7 @@ Mod_AddonSkins:RegisterSkin("Skada",function(Skin,skin,Layout,layout,config)
 	barmod.ApplySettings = function(self, win)
 		if TukuiCF["general"].embedright == "Skada" then
 			win.db.barwidth = (TukuiCF["chat"].chatwidth - 4)
-			win.db.barheight = 15
+			win.db.barheight = (TukuiCF["chat"].chatheight*0.965) / 8
 			win.db.barmax = (math.floor(TukuiCF["chat"].chatheight / win.db.barheight) - 1)
 			win.db.background.height = 1
 			win.db.spark = false

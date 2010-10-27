@@ -4,7 +4,7 @@ if not TukuiCF["nameplate"].enable == true then return end
 local tNamePlates = CreateFrame("Frame", nil, UIParent)
 tNamePlates:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
 SetCVar("bloatthreat", 0) -- stop resizing nameplate according to threat level.
-SetCVar("bloattest", 1)
+SetCVar("bloattest", 0)
 if TukuiCF["nameplate"].overlap == true then
 	SetCVar("spreadnameplates", "0")
 else
@@ -152,13 +152,6 @@ local threatUpdate = function(self, elapsed)
 				self.healthBar.percent:SetText(ShortValue(valueHealth).." - "..(string.format("%d%%", math.floor((valueHealth/maxHealth)*100))))
 			end
 			
-			if TukuiCF["nameplate"].showhealth == true then
-				self.healthBar:SetHeight(TukuiDB.Scale(12))
-			else
-				self.healthBar:SetHeight(TukuiDB.Scale(9))
-			end
-			self.healthBar:SetWidth(TukuiDB.Scale(110))
-
 			if CheckTarget(self) then
 				self.healthBar.hpGlow:SetBackdropBorderColor(0.95, 0.95, 0.95)
 				self.name:SetTextColor(1, 1, 0)

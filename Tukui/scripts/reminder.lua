@@ -122,7 +122,7 @@ local tankbuffs = TukuiDB.tankremindbuffs[class]
 local tanksound
 if (tankbuffs and tankbuffs[1]) then
 	local function OnEvent(self, event)	
-		if (event == "PLAYER_LOGIN" or event == "LEARNED_SPELL_IN_TAB") then
+		if (event == "PLAYER_ENTERING_WORLD" or event == "ZONE_CHANGED_NEW_AREA" or event == "LEARNED_SPELL_IN_TAB") then
 			for i, tankbuffs in pairs(tankbuffs) do
 				local name = GetSpellInfo(tankbuffs)
 				local usable, nomana = IsUsableSpell(name)
@@ -131,21 +131,20 @@ if (tankbuffs and tankbuffs[1]) then
 					break
 				end
 			end
-			if (not self.icon:GetTexture() and event == "PLAYER_LOGIN") then
+			if (not self.icon:GetTexture() and event == "PLAYER_ENTERING_WORLD") then
 				self:UnregisterAllEvents()
 				self:RegisterEvent("LEARNED_SPELL_IN_TAB")
 				return
 			elseif (self.icon:GetTexture() and event == "LEARNED_SPELL_IN_TAB") then
 				self:UnregisterAllEvents()
 				self:RegisterEvent("UNIT_AURA")
-				self:RegisterEvent("PLAYER_LOGIN")
-				self:RegisterEvent("PLAYER_REGEN_ENABLED")
-				self:RegisterEvent("PLAYER_REGEN_DISABLED")
+				self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+				self:RegisterEvent("PLAYER_ENTERING_WORLD")
 			end
 		end
 		local inInstance, instanceType = IsInInstance()	
 		--check aura
-		if (UnitAffectingCombat("player") and not UnitInVehicle("player")) and (inInstance and (instanceType == "raid" or instanceType == "party")) and TukuiDB.Role == "Tank" then
+		if (not UnitInVehicle("player")) and (inInstance and (instanceType == "raid" or instanceType == "party")) and TukuiDB.Role == "Tank" then
 			for i, tankbuffs in pairs(tankbuffs) do
 				local name = GetSpellInfo(tankbuffs)
 				if (name and UnitBuff("player", name)) then
@@ -176,9 +175,8 @@ if (tankbuffs and tankbuffs[1]) then
 	frame:Hide()
 	
 	frame:RegisterEvent("UNIT_AURA")
-	frame:RegisterEvent("PLAYER_LOGIN")
-	frame:RegisterEvent("PLAYER_REGEN_ENABLED")
-	frame:RegisterEvent("PLAYER_REGEN_DISABLED")
+	frame:RegisterEvent("PLAYER_ENTERING_WORLD")
+	frame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 	frame:RegisterEvent("UNIT_ENTERING_VEHICLE")
 	frame:RegisterEvent("UNIT_ENTERED_VEHICLE")
 	frame:RegisterEvent("UNIT_EXITING_VEHICLE")
