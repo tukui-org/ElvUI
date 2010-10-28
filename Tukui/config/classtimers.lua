@@ -292,6 +292,9 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 76780 ), -- Bind Elemental
 			CreateSpellEntry( 974 ), -- Earth Shield
 			CreateSpellEntry( 51945 ), -- Earthliving Weapon Effect
+			CreateSpellEntry( 61295 ), -- Riptide
+			CreateSpellEntry( 16236 ), -- Ancestral Fortitude
+            CreateSpellEntry( 974 ), -- Earth Shield
 		},
 		player = { 
 			CreateSpellEntry( 974 ), -- Earth Shield
@@ -306,6 +309,8 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 73682 ), -- Unleash Frost
 			CreateSpellEntry( 73685 ), -- Unleash Life
 			CreateSpellEntry( 73681 ), -- Unleash Wind
+			CreateSpellEntry( 53390 ), -- Tidal Waves
+			CreateSpellEntry( 70806 ), -- Rapid Currents
 		},
 		procs = {
 			CreateSpellEntry( 51528 ), -- Maelstrom Weapon

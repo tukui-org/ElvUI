@@ -134,7 +134,6 @@ do
 		TukuiCF["raidframes"]["scale"] = nil							-- for smaller use a number less than one (0.73) for higher use a number larger than one
 		TukuiCF["raidframes"]["showrange"] = nil                  -- show range opacity on raidframes
 		TukuiCF["raidframes"]["hidenonmana"] = nil					-- hide non mana on party/raid frames
-		TukuiCF["raidframes"]["healcomm"] = nil                  -- enable healcomm4 support on healer layout.
 		TukuiCF["raidframes"]["raidalphaoor"] = nil                -- alpha of raidframes when unit is out of range
 		TukuiCF["raidframes"]["gridonly"] = nil                 -- enable grid only mode for all raid layout.
 		TukuiCF["raidframes"]["gridhealthvertical"] = nil         -- enable vertical grow on health bar for healer layout

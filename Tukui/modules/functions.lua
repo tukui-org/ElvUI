@@ -996,25 +996,6 @@ TukuiDB.UpdateShards = function(self, event, unit, powerType)
 			self.SoulShards[i]:SetAlpha(.2)
 		end
 	end
-	
-	if self.SoulShards:IsShown() then
-		if self.Debuffs then self.Debuffs:ClearAllPoints() self.Debuffs:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(17)) end	
-	else
-		if self.Debuffs then self.Debuffs:ClearAllPoints() self.Debuffs:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(6)) end	
-	end
-end
-	
-TukuiDB.Phasing = function(self, event)
-	local inPhase = UnitInPhase(self.unit)
-	local picon = self.PhaseIcon
-
-	if(inPhase) then
-		picon:Hide()
-		if self.Health.value then self.Health.value:SetAlpha(1) end
-	else
-		picon:Show()
-		if self.Health.value then self.Health.value:SetAlpha(0) end
-	end
 end
 
 TukuiDB.UpdateHoly = function(self, event, unit, powerType)
@@ -1027,33 +1008,39 @@ TukuiDB.UpdateHoly = function(self, event, unit, powerType)
 			self.HolyPower[i]:SetAlpha(.2)
 		end
 	end
+end
+
+TukuiDB.MoveBuffs = function(self, login)
+	local parent = self:GetParent()
+	if login then
+		self:SetScript("OnUpdate", nil)
+	end
 	
-	if self.HolyPower:IsShown() then
-		if self.Debuffs then self.Debuffs:ClearAllPoints() self.Debuffs:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(17)) end	
+	if self:IsShown() then
+		parent.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(17))
+		if parent.Debuffs then 
+			parent.Debuffs:ClearAllPoints()
+			if parent.Debuffs then parent.Debuffs:SetPoint("BOTTOMRIGHT", parent.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(17)) end	
+		end		
 	else
-		if self.Debuffs then self.Debuffs:ClearAllPoints() self.Debuffs:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(6)) end	
+		parent.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))
+		if parent.Debuffs then 
+			parent.Debuffs:ClearAllPoints()
+			parent.Debuffs:SetPoint("BOTTOMRIGHT", parent.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(6))
+		end	
 	end
 end
 
-TukuiDB.EclipseDisplay = function(self, login)
-	local eb = self.EclipseBar
+TukuiDB.ToggleBars = function(self)
+	local parent = self:GetParent()
+	local unit = parent.unit
+	if unit == "vehicle" then unit = "player" end
+	if unit ~= "player" then return end
 
-	if login then
-		eb:SetScript("OnUpdate", nil)
-	end
-		
-	if eb:IsShown() then
-		self.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(17))
-		if self.Debuffs then 
-			self.Debuffs:ClearAllPoints()
-			if self.Debuffs then self.Debuffs:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(17)) end	
-		end		
-	else
-		self.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))
-		if self.Debuffs then 
-			self.Debuffs:ClearAllPoints()
-			self.Debuffs:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(6))
-		end	
+	if UnitHasVehicleUI("player") then
+		self:Hide()
+	else	
+		self:Show()
 	end
 end
 

@@ -153,14 +153,6 @@ if TukuiCF["datatext"].battleground == true then
 	bgframe:SetAllPoints(TukuiBottomPanel)
 	bgframe:SetFrameLevel(TukuiBottomPanel:GetFrameLevel() + 1)
 	bgframe:SetFrameStrata("LOW")
-	bgframe:SetBackdrop({
-	  bgFile = TukuiCF["media"].normTex, 
-	  edgeFile = TukuiCF["media"].blank, 
-	  tile = false, tileSize = 0, edgeSize = TukuiDB.mult, 
-	  insets = { left = -TukuiDB.mult, right = -TukuiDB.mult, top = -TukuiDB.mult, bottom = -TukuiDB.mult}
-	})
-	bgframe:SetBackdropColor(unpack(TukuiCF["media"].bordercolor))
-	bgframe:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))
 	bgframe:SetScript("OnEnter", function(self)
 		local numScores = GetNumBattlefieldScores()
 		for i=1, numScores do

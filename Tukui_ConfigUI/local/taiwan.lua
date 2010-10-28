@@ -7,7 +7,7 @@
 	TukuiL.option_general_recountscript = "顯示Recount設定(0-關閉, 1-戰鬥時顯示, 2-非戰鬥時顯示)"
 	TukuiL.option_general_embedright = "將插件綁定於右邊對話框架(Recount, Omen, Skada)"
 	TukuiL.option_general_classtheme = "框架邊緣使用職業顏色"
- 
+	 
 	--Media
 	TukuiL.option_media = "材質&音效"
 	TukuiL.option_media_font = "主要字型檔案路徑"
@@ -27,26 +27,26 @@
 	TukuiL.option_media_whisper = "收到密語提示音效路徑"
 	TukuiL.option_media_warning = "警告音效路徑"
 	TukuiL.option_media_glossy = "Glossy Bar Texture"
-	
+	 
 	-- nameplate
 	TukuiL.option_nameplates = "名條"
 	TukuiL.option_nameplates_enable = "啟用名條模組"
 	TukuiL.option_nameplates_enhancethreat = "啟用仇恨上色模式, 依照你的角色決定: 坦克 - 綠色 (獲得仇恨) 紅色 (失去仇恨) DPS - 綠色 (失去仇恨) 紅色 (獲得仇恨)"
 	TukuiL.option_nameplates_showhealth = "在名條上顯示生命"
- 
+	 
 	-- addon skins
 	TukuiL.option_skin = "插件外皮"
 	TukuiL.option_skin_dxe = "Deus Vox Encounters"
 	TukuiL.option_skin_omen = "Omen"
 	TukuiL.option_skin_recount = "Recount"
 	TukuiL.option_skin_skada = "Skada"
- 
+	 
 	-- combat text
 	TukuiL.option_combattext = "戰鬥文字"
 	TukuiL.option_combattext_showoverheal = "顯示過量治療"
 	TukuiL.option_combattext_fontsize = "字體大小"
 	TukuiL.option_combattext_showhots = "顯示HOTs"
- 
+	 
 	-- classtimer
 	TukuiL.option_classtimer = "職業計時條"
 	TukuiL.option_classtimer_enable = "啟動職業計時條模組"
@@ -60,7 +60,7 @@
 	TukuiL.option_classtimer_debuffcolor = " DEBUFF計時條顏色"
 	TukuiL.option_classtimer_buffcolor = " BUFF計時條顏色"
 	TukuiL.option_classtimer_proccolor = "飾品效果發動計時條顏色"
- 
+	 
 	-- datatext
 	TukuiL.option_datatext = "訊息文字"
 	TukuiL.option_datatext_24h = "使用24小時制"
@@ -77,7 +77,7 @@
 	TukuiL.option_datatext_dur = "裝備耐久顯示位置 (輸入0為關閉)"
 	TukuiL.option_datatext_stat1 = "角色主要能力顯示位置"
 	TukuiL.option_datatext_stat2 = "角色次要能力顯示位置"
- 
+	 
 	-- auras
 	TukuiL.option_auras = "光環"
 	TukuiL.option_auras_minimapauras = "啟用小地圖旁狀態光環"
@@ -91,7 +91,7 @@
 	TukuiL.option_auras_playershowonlydebuffs = "只在玩家單位框架顯示debuffs (限開啟玩家單位框架光環下使用)"
 	TukuiL.option_auras_playerdebuffsonly = "只顯示玩家DEBUFF於目標單位框架(可於auraFilter.lua設定)"
 	TukuiL.option_auras_RaidUnitBuffWatch = "開啟團隊buff監視"
- 
+	 
 	-- raidframes
 	TukuiL.option_raidframes = "團隊框架"
 	TukuiL.option_raidframes_enable = "啟用團隊框架模組"
@@ -108,7 +108,7 @@
 	TukuiL.option_raidframes_fontsize = "團隊框架字體大小"
 	TukuiL.option_raidframes_scale = "團隊單位框架比例 (用小數 例: 0.96)"
 	TukuiL.option_raidframes_disableblizz = "關閉WOW內建團隊框架"
- 
+	 
 	-- castbar
 	TukuiL.option_castbar = "施法條"
 	TukuiL.option_castbar_nointerruptcolor = "無法中斷的法術施法條顏色"
@@ -118,7 +118,7 @@
 	TukuiL.option_castbar_icon = "顯示法術圖示"
 	TukuiL.option_castbar_castermode = "啟用大型施法條 "
 	TukuiL.option_castbar_classcolor = "施法條使用玩家職業顏色"
- 
+	 
 	-- unit frames
 	TukuiL.option_unitframes_unitframes = "單位框架"
 	TukuiL.option_unitframes_healthcolor = "生命條顏色"
@@ -127,7 +127,7 @@
 	TukuiL.option_unitframes_totembar = "啟用頭像薩滿圖騰列"
 	TukuiL.option_unitframes_totalhpmp = "顯示總生命/能量值"
 	TukuiL.option_unitframes_aurawatch = "啟用Buff監視"
-	TukuiL.option_unitframes_saveperchar = "依角色儲存單位框架位置"	
+	TukuiL.option_unitframes_saveperchar = "依角色儲存單位框架位置"
 	TukuiL.option_unitframes_playeraggro = "啟用玩家仇恨顯示"
 	TukuiL.option_unitframes_smooth = "啟用smooth bar"
 	TukuiL.option_unitframes_portrait = "啟用玩家及目標動態頭像"
@@ -143,13 +143,13 @@
 	TukuiL.option_unitframes_DebuffHighlight = "單位框架依可驅散DEBUFF上色"
 	TukuiL.option_unitframes_mendpet = "於寵物框架顯示Mend Pet狀態條 (限DPS配置)"
 	TukuiL.option_unitframes_fontsize = "字體大小"
- 
+	 
 	-- loot
 	TukuiL.option_loot = "拾取"
 	TukuiL.option_loot_enableloot = "啟用戰利品視窗"
 	TukuiL.option_loot_autogreed = "最高等級時自動分解/貪婪綠裝"
 	TukuiL.option_loot_enableroll = "啟用骰裝視窗"
- 
+	 
 	-- tooltip
 	TukuiL.option_tooltip = "提示訊息"
 	TukuiL.option_tooltip_enable = "啟用提示訊息模組"
@@ -161,7 +161,7 @@
 	TukuiL.option_tooltip_colorreaction = "提示訊息及生命條依照敵對狀態上色"
 	TukuiL.option_tooltip_xOfs = "提示訊息X-軸位子調整 (-x = 左, +x = 右)"
 	TukuiL.option_tooltip_yOfs = "提示訊息Y-軸位子調整 (-y = 下, +y = 上)"
- 
+	 
 	-- others
 	TukuiL.option_others = "其它功能"
 	TukuiL.option_others_bg = "戰場中死亡自動放魂"
@@ -173,13 +173,13 @@
 	TukuiL.option_others_totembardirection = "圖騰列開啟方向上/下 (填入UP/DOWN)"
 	TukuiL.option_others_spincam = "暫離時旋轉鏡頭"
 	TukuiL.option_others_bagenable = "啟用整合背包模組"
- 
+	 
 	-- reminder
 	TukuiL.option_reminder = "光環警告"
 	TukuiL.option_reminder_enable = "啟用玩家光環警告"
 	TukuiL.option_reminder_sound = "啟用光環警告音效"
-	TukuiL.option_reminder_RaidBuffReminder = "Enable RaidBuffReminder Bar below minimap"
- 
+	TukuiL.option_reminder_RaidBuffReminder = "啟用小地圖下方的團隊buff提醒"
+	 
 	-- action bar
 	TukuiL.option_actionbar = "動作條 "
 	TukuiL.option_actionbar_hidess = "隱藏變身及圖騰條"
@@ -192,12 +192,12 @@
 	TukuiL.option_actionbar_rbn2 = "底部動作條數量 (1, 1.5, 或 2)"
 	TukuiL.option_actionbar_rn = "右方動作條數量 (1, 2 或 3)"
 	TukuiL.option_actionbar_splitbar = "啟用分割動作條"
- 
+	 
 	-- arena
 	TukuiL.option_arena = "競技場"
 	TukuiL.option_arena_st = "競技場中啟用敵方法術追蹤"
 	TukuiL.option_arena_uf = "啟用競技場單位框架"
- 
+	 
 	-- cooldowns
 	TukuiL.option_cooldown = "冷卻"
 	TukuiL.option_cooldown_enable = "啟用按鍵上冷卻倒數文字"
@@ -207,7 +207,7 @@
 	TukuiL.option_cooldown_minutescolor = "分鐘文字顏色"
 	TukuiL.option_cooldown_hourscolor = "小時文字顏色"
 	TukuiL.option_cooldown_dayscolor = "天數文字顏色"
- 
+	 
 	-- chat
 	TukuiL.option_chat = "聊天"
 	TukuiL.option_chat_bubbles = "對話泡泡外皮"
@@ -218,7 +218,7 @@
 	TukuiL_option_chat_chatheight = "對話框高度"
 	TukuiL_option_chat_fadeoutofuse = "不使用時使文字淡出"
 	TukuiL_option_chat_sticky = "開啟新對話框時預設某些重要頻道"
- 
+	 
 	-- buttons
 	TukuiL.option_button_reset = "重置UI"
 	TukuiL.option_button_load = "套用設定"

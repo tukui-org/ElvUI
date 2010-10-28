@@ -400,9 +400,15 @@ local function Shared(self, unit)
 				eclipseBar:SetFrameLevel(8)
 				TukuiDB.SetTemplate(eclipseBar)
 				eclipseBar:SetBackdropBorderColor(0,0,0,0)
-				eclipseBar:SetScript("OnShow", function() TukuiDB.EclipseDisplay(self, false) end)
-				eclipseBar:SetScript("OnUpdate", function() TukuiDB.EclipseDisplay(self, true) end) -- just forcing 1 update on login for buffs/shadow/etc.
-				eclipseBar:SetScript("OnHide", function() TukuiDB.EclipseDisplay(self, false) end)
+				eclipseBar:SetScript("OnShow", function() TukuiDB.EclipseDisplay(self.EclipseBar, false) end)
+				eclipseBar:SetScript("OnUpdate", function() TukuiDB.EclipseDisplay(self.EclipseBar, true) end) -- just forcing 1 update on login for buffs/shadow/etc.
+				eclipseBar:SetScript("OnHide", function() TukuiDB.EclipseDisplay(self.EclipseBar, false) end)
+				
+				-- show/hide bars on entering/leaving vehicle
+				self:RegisterEvent("UNIT_ENTERING_VEHICLE", function() TukuiDB.ToggleBars(self.EclipseBar) end)
+				self:RegisterEvent("UNIT_ENTERED_VEHICLE", function() TukuiDB.ToggleBars(self.EclipseBar) end)
+				self:RegisterEvent("UNIT_EXITING_VEHICLE", function() TukuiDB.ToggleBars(self.EclipseBar) end)
+				self:RegisterEvent("UNIT_EXITED_VEHICLE", function() TukuiDB.ToggleBars(self.EclipseBar) end)
 				
 				local lunarBar = CreateFrame('StatusBar', nil, eclipseBar)
 				lunarBar:SetPoint('LEFT', eclipseBar, 'LEFT', 0, 0)
@@ -446,7 +452,7 @@ local function Shared(self, unit)
 			bars:SetBackdropBorderColor(0,0,0,0)
 			
 			for i = 1, 3 do					
-				bars[i]=CreateFrame("StatusBar", self:GetName().."_Shard"..i, self)
+				bars[i]=CreateFrame("StatusBar", self:GetName().."_Shard"..i, bars)
 				bars[i]:SetHeight(TukuiDB.Scale(8))					
 				bars[i]:SetStatusBarTexture(normTex)
 				bars[i]:GetStatusBarTexture():SetHorizTile(false)
@@ -478,9 +484,25 @@ local function Shared(self, unit)
 			if TukuiDB.myclass == "WARLOCK" then
 				bars.Override = TukuiDB.UpdateShards				
 				self.SoulShards = bars
+				self.SoulShards:SetScript("OnShow", function() TukuiDB.MoveBuffs(self.SoulShards, false) end)
+				self.SoulShards:SetScript("OnUpdate", function() TukuiDB.MoveBuffs(self.SoulShards, true) end) -- just forcing 1 update on login for buffs/shadow/etc.
+				self.SoulShards:SetScript("OnHide", function() TukuiDB.MoveBuffs(self.SoulShards, false) end)	
+				-- show/hide bars on entering/leaving vehicle
+				self:RegisterEvent("UNIT_ENTERING_VEHICLE", function() TukuiDB.ToggleBars(self.SoulShards) end)
+				self:RegisterEvent("UNIT_ENTERED_VEHICLE", function() TukuiDB.ToggleBars(self.SoulShards) end)
+				self:RegisterEvent("UNIT_EXITING_VEHICLE", function() TukuiDB.ToggleBars(self.SoulShards) end)
+				self:RegisterEvent("UNIT_EXITED_VEHICLE", function() TukuiDB.ToggleBars(self.SoulShards) end)
 			elseif TukuiDB.myclass == "PALADIN" then
 				bars.Override = TukuiDB.UpdateHoly
 				self.HolyPower = bars
+				self.HolyPower:SetScript("OnShow", function() TukuiDB.MoveBuffs(self.HolyPower, false) end)
+				self.HolyPower:SetScript("OnUpdate", function() TukuiDB.MoveBuffs(self.HolyPower, true) end) -- just forcing 1 update on login for buffs/shadow/etc.
+				self.HolyPower:SetScript("OnHide", function() TukuiDB.MoveBuffs(self.HolyPower, false) end)	
+				-- show/hide bars on entering/leaving vehicle
+				self:RegisterEvent("UNIT_ENTERING_VEHICLE", function() TukuiDB.ToggleBars(self.HolyPower) end)
+				self:RegisterEvent("UNIT_ENTERED_VEHICLE", function() TukuiDB.ToggleBars(self.HolyPower) end)
+				self:RegisterEvent("UNIT_EXITING_VEHICLE", function() TukuiDB.ToggleBars(self.HolyPower) end)
+				self:RegisterEvent("UNIT_EXITED_VEHICLE", function() TukuiDB.ToggleBars(self.HolyPower) end)
 			end
 			bars.FrameBackdrop = CreateFrame("Frame", nil, bars)
 			TukuiDB.SetTemplate(bars.FrameBackdrop)
@@ -504,7 +526,7 @@ local function Shared(self, unit)
 			Runes:SetBackdropColor(0, 0, 0)
 
 			for i = 1, 6 do
-				Runes[i] = CreateFrame("StatusBar", self:GetName().."_Runes"..i, self)
+				Runes[i] = CreateFrame("StatusBar", self:GetName().."_Runes"..i, Runes)
 				Runes[i]:SetHeight(TukuiDB.Scale(8))
 				Runes[i]:SetWidth((original_width - 5) / 6)
 
@@ -524,9 +546,14 @@ local function Shared(self, unit)
 			Runes.FrameBackdrop:SetFrameLevel(Runes:GetFrameLevel() - 1)
 			self.Runes = Runes
 			
-			self.Runes:HookScript("OnShow", function()
-				if self.Debuffs then self.Debuffs:ClearAllPoints() self.Debuffs:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(17)) end	
-			end)
+			self.Runes:SetScript("OnShow", function() TukuiDB.MoveBuffs(self.Runes, false) end)
+			self.Runes:SetScript("OnUpdate", function() TukuiDB.MoveBuffs(self.Runes, true) end) -- just forcing 1 update on login for buffs/shadow/etc.
+			self.Runes:SetScript("OnHide", function() TukuiDB.MoveBuffs(self.Runes, false) end)	
+			-- show/hide bars on entering/leaving vehicle
+			self:RegisterEvent("UNIT_ENTERING_VEHICLE", function() TukuiDB.ToggleBars(self.Runes) end)
+			self:RegisterEvent("UNIT_ENTERED_VEHICLE", function() TukuiDB.ToggleBars(self.Runes) end)
+			self:RegisterEvent("UNIT_EXITING_VEHICLE", function() TukuiDB.ToggleBars(self.Runes) end)
+			self:RegisterEvent("UNIT_EXITED_VEHICLE", function() TukuiDB.ToggleBars(self.Runes) end)			
 		end
 			
 		-- shaman totem bar
@@ -545,7 +572,7 @@ local function Shared(self, unit)
 			TotemBar:SetBackdropColor(0, 0, 0)
 
 			for i = 1, 4 do
-				TotemBar[i] = CreateFrame("StatusBar", self:GetName().."_TotemBar"..i, self)
+				TotemBar[i] = CreateFrame("StatusBar", self:GetName().."_TotemBar"..i, TotemBar)
 				TotemBar[i]:SetHeight(TukuiDB.Scale(8))
 				TotemBar[i]:SetWidth((original_width - 3) / 4)
 
@@ -573,9 +600,16 @@ local function Shared(self, unit)
 			TotemBar.FrameBackdrop:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 			TotemBar.FrameBackdrop:SetFrameLevel(TotemBar:GetFrameLevel() - 1)
 			self.TotemBar = TotemBar
-			self.TotemBar:HookScript("OnShow", function()
-				if self.Debuffs then self.Debuffs:ClearAllPoints() self.Debuffs:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(17)) end	
-			end)
+			
+			self.TotemBar:SetScript("OnShow", function() TukuiDB.MoveBuffs(self.TotemBar, false) end)
+			self.TotemBar:SetScript("OnUpdate", function() TukuiDB.MoveBuffs(self.TotemBar, true) end) -- just forcing 1 update on login for buffs/shadow/etc.
+			self.TotemBar:SetScript("OnHide", function() TukuiDB.MoveBuffs(self.TotemBar, false) end)	
+		
+		-- show/hide bars on entering/leaving vehicle
+			self:RegisterEvent("UNIT_ENTERING_VEHICLE", function() TukuiDB.ToggleBars(self.TotemBar) end)
+			self:RegisterEvent("UNIT_ENTERED_VEHICLE", function() TukuiDB.ToggleBars(self.TotemBar) end)
+			self:RegisterEvent("UNIT_EXITING_VEHICLE", function() TukuiDB.ToggleBars(self.TotemBar) end)
+			self:RegisterEvent("UNIT_EXITED_VEHICLE", function() TukuiDB.ToggleBars(self.TotemBar) end)			
 		end
 				
 		-- auras 
@@ -613,7 +647,7 @@ local function Shared(self, unit)
 			self.Debuffs.CustomFilter = TukuiDB.AuraFilter
 		end
 			
-		-- cast bar for player and target
+		-- cast bar for player
 		if TukuiCF["castbar"].unitcastbar == true then
 			local castbar = CreateFrame("StatusBar", self:GetName().."_Castbar", self)
 			if TukuiCF["castbar"].castermode == true then
@@ -716,8 +750,28 @@ local function Shared(self, unit)
 			self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', TukuiDB.UpdateThreat)
 		end
 		
-		-- update all frames when changing area, to fix exiting instance while in vehicle
-		self:RegisterEvent("ZONE_CHANGED_NEW_AREA", TukuiDB.updateAllElements)
+		--Heal Comm
+		if TukuiCF["raidframes"].healcomm == true then
+			local mhpb = CreateFrame('StatusBar', nil, self.Health)
+			mhpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
+			mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)	
+			mhpb:SetWidth(original_width)
+			mhpb:SetStatusBarTexture(TukuiCF["media"].normTex)
+			mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
+
+			local ohpb = CreateFrame('StatusBar', nil, self.Health)
+			ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
+			ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)		
+			ohpb:SetWidth(original_width)
+			ohpb:SetStatusBarTexture(TukuiCF["media"].normTex)
+			ohpb:SetStatusBarColor(0, 1, 0, 0.25)
+
+			self.HealPrediction = {
+				myBar = mhpb,
+				otherBar = ohpb,
+				maxOverflow = 1,
+			}
+		end
 	end
 	
 	------------------------------------------------------------------------
@@ -1020,6 +1074,29 @@ local function Shared(self, unit)
 		bars.FrameBackdrop:SetPoint("TOPLEFT", bars, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
 		bars.FrameBackdrop:SetPoint("BOTTOMRIGHT", bars, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 		bars.FrameBackdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
+		
+		--Heal Comm
+		if TukuiCF["raidframes"].healcomm == true then
+			local mhpb = CreateFrame('StatusBar', nil, self.Health)
+			mhpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
+			mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)	
+			mhpb:SetWidth(original_width)
+			mhpb:SetStatusBarTexture(TukuiCF["media"].normTex)
+			mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
+
+			local ohpb = CreateFrame('StatusBar', nil, self.Health)
+			ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
+			ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)		
+			ohpb:SetWidth(original_width)
+			ohpb:SetStatusBarTexture(TukuiCF["media"].normTex)
+			ohpb:SetStatusBarColor(0, 1, 0, 0.25)
+
+			self.HealPrediction = {
+				myBar = mhpb,
+				otherBar = ohpb,
+				maxOverflow = 1,
+			}
+		end		
 		
 	end
 	
