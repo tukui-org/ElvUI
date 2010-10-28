@@ -399,10 +399,7 @@ local function Shared(self, unit)
 				eclipseBar:SetFrameLevel(8)
 				TukuiDB.SetTemplate(eclipseBar)
 				eclipseBar:SetBackdropBorderColor(0,0,0,0)
-				eclipseBar:SetScript("OnShow", function() TukuiDB.EclipseDisplay(self.EclipseBar, false) end)
-				eclipseBar:SetScript("OnUpdate", function() TukuiDB.EclipseDisplay(self.EclipseBar, true) end) -- just forcing 1 update on login for buffs/shadow/etc.
-				eclipseBar:SetScript("OnHide", function() TukuiDB.EclipseDisplay(self.EclipseBar, false) end)
-				
+
 				local lunarBar = CreateFrame('StatusBar', nil, eclipseBar)
 				lunarBar:SetPoint('LEFT', eclipseBar, 'LEFT', 0, 0)
 				lunarBar:SetSize(eclipseBar:GetWidth(), eclipseBar:GetHeight())
@@ -423,12 +420,16 @@ local function Shared(self, unit)
 				eclipseBar.Text = eclipseBarText
 
 				self.EclipseBar = eclipseBar
-				
+		
 				eclipseBar.FrameBackdrop = CreateFrame("Frame", nil, eclipseBar)
 				TukuiDB.SetTemplate(eclipseBar.FrameBackdrop)
 				eclipseBar.FrameBackdrop:SetPoint("TOPLEFT", eclipseBar, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
 				eclipseBar.FrameBackdrop:SetPoint("BOTTOMRIGHT", lunarBar, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 				eclipseBar.FrameBackdrop:SetFrameLevel(eclipseBar:GetFrameLevel() - 1)
+				
+				self.EclipseBar:SetScript("OnShow", function() TukuiDB.MoveBuffs(self.EclipseBar, false) end)
+				self.EclipseBar:SetScript("OnUpdate", function() TukuiDB.MoveBuffs(self.EclipseBar, true) end) -- just forcing 1 update on login for buffs/shadow/etc.
+				self.EclipseBar:SetScript("OnHide", function() TukuiDB.MoveBuffs(self.EclipseBar, false) end)
 				
 				-- show/hide bars on entering/leaving vehicle
 				self:RegisterEvent("UNIT_ENTERING_VEHICLE", function() TukuiDB.ToggleBars(self.EclipseBar) end)
