@@ -139,7 +139,7 @@ if TukuiDB.client == "esES" then
 	tukuilocal.core_autoinv_enable_c = "Autoinvitar ON: "
 	tukuilocal.core_autoinv_disable = "Autoinvitar OFF"
 	tukuilocal.core_welcome1 = "Bienvenido a la edición de |cffC495DDElv of Tukui|r, versión "
-	tukuilocal.core_welcome2 = "Escribe |cff00FFFF/uihelp|r para más ayuda, escribe |cff00FFFF/tukui|r para configurar, o visit http://www.tukui.org/v2/forums/topic.php?id=1235"
+	tukuilocal.core_welcome2 = "Escribe |cff00FFFF/uihelp|r para más ayuda, escribe |cff00FFFF/tukui|r para configurar, o visit http://www.tukui.org/v2/forums/topic.php?id=3557"
  
 	tukuilocal.core_uihelp1 = "|cff00ff00Comandos Generales|r"
 	tukuilocal.core_uihelp2 = "|cffFF0000/tracker|r - Tukui Arena Enemy Cooldown Tracker - Low-memory enemy PVP cooldown tracker. (Solo Iconos)"

@@ -142,7 +142,7 @@ tukuilocal.core_autoinv_enable = "Autoinvite ON: invite"
 tukuilocal.core_autoinv_enable_c = "Autoinvite ON: "
 tukuilocal.core_autoinv_disable = "Autoinvite OFF"
 tukuilocal.core_welcome1 = "Welcome to |cffC495DDElv's Edit of Tukui|r, version "
-tukuilocal.core_welcome2 = "Type |cff00FFFF/uihelp|r for more info, type |cff00FFFF/tukui|r to config, or visit http://www.tukui.org/v2/forums/topic.php?id=1235"
+tukuilocal.core_welcome2 = "Type |cff00FFFF/uihelp|r for more info, type |cff00FFFF/tukui|r to config, or visit http://www.tukui.org/v2/forums/topic.php?id=3557"
 
 tukuilocal.core_uihelp1 = "|cff00ff00General Slash Commands|r"
 tukuilocal.core_uihelp2 = "|cffFF0000/tracker|r - Tukui Arena Enemy Cooldown Tracker - Low-memory enemy PVP cooldown tracker. (Icon only)"

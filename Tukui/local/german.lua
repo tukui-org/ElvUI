@@ -139,7 +139,7 @@ if TukuiDB.client == "deDE" then
 	tukuilocal.core_autoinv_enable_c = "Autoinvite AN: "
 	tukuilocal.core_autoinv_disable = "Autoinvite AUS"
 	tukuilocal.core_welcome1 = "Willkommen zu |cffC495DDElv's Edit von Tukui|r, version "
-	tukuilocal.core_welcome2 = "Tippe |cff00FFFF/uihelp|r für mehr Informationen, Tippe |cff00FFFF/tukui|r zum Konfigurieren, oder besuche http://www.tukui.org/v2/forums/topic.php?id=1235"
+	tukuilocal.core_welcome2 = "Tippe |cff00FFFF/uihelp|r für mehr Informationen, Tippe |cff00FFFF/tukui|r zum Konfigurieren, oder besuche http://www.tukui.org/v2/forums/topic.php?id=3557"
  
 	tukuilocal.core_uihelp1 = "|cff00ff00Allgemeine Slash Befehle|r"
 	tukuilocal.core_uihelp2 = "|cffFF0000/tracker|r - Tukui Arena Gegner Abklingzeiten Anzeige - Low-memory Gegner PVP Abkling Anzeige. (Nur Icons)"

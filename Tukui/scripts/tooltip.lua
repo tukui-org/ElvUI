@@ -211,11 +211,24 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 	-- for hiding tooltip on unitframes
 	if (self:GetOwner() ~= UIParent and db.hideuf) then self:Hide() return end
 
-	if self:GetOwner() ~= UIParent and (CheckAddOnShown() or (TukuiCF["others"].enablebag == true and StuffingFrameBags:IsShown())) and unit then
-		if TukuiCF["others"].enablebag == true and StuffingFrameBags:IsShown() then
-			self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", -1, TukuiDB.Scale(18))	
+	if self:GetOwner() ~= UIParent and unit then
+		self:ClearAllPoints()
+		if InCombatLockdown() and db.hidecombat == true and (TukuiCF["tooltip"].hidecombatraid == true and inInstance and (instanceType == "raid")) then
+			self:Hide()
+			return
+		elseif InCombatLockdown() and db.hidecombat == true and TukuiCF["tooltip"].hidecombatraid == false then
+			self:Hide()
+			return
 		else
-			self:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", -1, TukuiDB.Scale(18))		
+			if TukuiCF["others"].enablebag == true and StuffingFrameBags:IsShown() then
+				self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", -1, TukuiDB.Scale(18))	
+			else
+				if CheckAddOnShown() == true then
+					self:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", -1, TukuiDB.Scale(18))		
+				else
+					self:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -15+xOffset, TukuiDB.Scale(42+yOffset))	
+				end
+			end
 		end
 	end	
 	

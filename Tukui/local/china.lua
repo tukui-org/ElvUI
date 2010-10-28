@@ -141,7 +141,7 @@ if TukuiDB.client == "zhCN" then
 	tukuilocal.core_autoinv_enable_c = "自动邀请功能已启用 "
 	tukuilocal.core_autoinv_disable = "自动邀请功能已关闭"
 	tukuilocal.core_welcome1 = "欢迎使用 |cffC495DDElv's Edit of Tukui|r, version "
-	tukuilocal.core_welcome2 = "输入|cff00FFFF/uihelp|r 以获得更多信息, 输入 |cff00FFFF/tukui|r 进入设置模式, 更多信息请访问 http://www.tukui.org/v2/forums/topic.php?id=1235"
+	tukuilocal.core_welcome2 = "输入|cff00FFFF/uihelp|r 以获得更多信息, 输入 |cff00FFFF/tukui|r 进入设置模式, 更多信息请访问 http://www.tukui.org/v2/forums/topic.php?id=3557"
 
 	tukuilocal.core_uihelp1 = "|cff00ff00General 基本指令|r"
 	tukuilocal.core_uihelp2 = "|cffFF0000/tracker|r - 竞技场敌方冷却监视器 - 一个精简的PvP冷却监视器 (Icon only)"
