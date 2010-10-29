@@ -135,7 +135,7 @@ if TukuiCF["auras"].raidunitbuffwatch == true then
 			{61295, "TOPLEFT", {0.7, 0.3, 0.7}}, -- Riptide 
 			{16236, "BOTTOMLEFT", {0.4, 0.7, 0.2}}, -- Ancestral Fortitude
 			{51945, "BOTTOMRIGHT", {0.7, 0.4, 0}}, -- Earthliving
-			{974, "TOPRIGHT", {221/255, 117/255, 0}}, -- Earth Shield
+			{974, "TOPRIGHT", {221/255, 117/255, 0}, true}, -- Earth Shield
 		},
 		ALL = {
 			{23333, "LEFT", {1, 0, 0}}, -- Warsong Flag
