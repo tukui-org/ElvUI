@@ -1036,7 +1036,22 @@ TukuiDB.ToggleBars = function(self)
 	local unit = parent.unit
 	if unit == "vehicle" then unit = "player" end
 	if unit ~= "player" then return end
-
+	
+	if self == oUF_Tukz_player.EclipseBar and (UnitHasVehicleUI("player") or UnitHasVehicleUI("vehicle")) then 
+		oUF_Tukz_player.EclipseBar:SetScript("OnUpdate", function() 
+			if (UnitHasVehicleUI("player") or UnitHasVehicleUI("vehicle")) then
+				if oUF_Tukz_player.EclipseBar:IsShown() then
+					oUF_Tukz_player.EclipseBar:Hide()
+					oUF_Tukz_player.EclipseBar:SetScript("OnUpdate", nil)
+				end
+			else
+				oUF_Tukz_player.EclipseBar:Show()
+				oUF_Tukz_player.EclipseBar:SetScript("OnUpdate", nil)			
+			end
+		end) 
+		return 
+	end
+	
 	if UnitHasVehicleUI("player") then
 		self:Hide()
 	else	
