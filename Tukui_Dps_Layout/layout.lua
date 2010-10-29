@@ -751,6 +751,9 @@ local function Shared(self, unit)
 			self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', TukuiDB.UpdateThreat)
 			self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', TukuiDB.UpdateThreat)
 		end
+		
+		-- update all frames when changing area, to fix exiting instance while in vehicle
+		self:RegisterEvent("ZONE_CHANGED_NEW_AREA", TukuiDB.updateAllElements)
 	end
 	
 	------------------------------------------------------------------------

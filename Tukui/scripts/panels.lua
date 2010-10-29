@@ -48,6 +48,21 @@ if TukuiCF["actionbar"].bottomrows == 2 then
 else
 	barbg:SetHeight(TukuiDB.buttonsize + (TukuiDB.buttonspacing * 2))
 end
+TukuiDB.CreateShadow(barbg)
+barbg.shadow:SetFrameStrata("BACKGROUND")
+barbg.shadow:SetFrameLevel(bottompanel:GetFrameLevel()-1)
+
+-- VEHICLE BAR
+local vbarbg = CreateFrame("Frame", "TukuiVehicleBarBackground", UIParent)
+TukuiDB.CreatePanel(vbarbg, 1, 1, "BOTTOM", UIParent, "BOTTOM", 0, TukuiDB.Scale(4))
+vbarbg:SetWidth(((TukuiDB.buttonsize * 11) + (TukuiDB.buttonspacing * 12))*1.2)
+vbarbg:SetHeight((TukuiDB.buttonsize + (TukuiDB.buttonspacing * 2))*1.2)
+vbarbg:SetFrameLevel(bottompanel:GetFrameLevel() + 2)
+vbarbg:SetFrameStrata("LOW")
+TukuiDB.CreateShadow(vbarbg)
+vbarbg.shadow:SetFrameStrata("BACKGROUND")
+vbarbg.shadow:SetFrameLevel(bottompanel:GetFrameLevel()-1)
+
 
 --SPLIT BAR PANELS
 if TukuiCF["actionbar"].splitbar == true then
@@ -60,11 +75,19 @@ if TukuiCF["actionbar"].splitbar == true then
 	TukuiDB.CreatePanel(splitright, (TukuiDB.buttonsize * 3) + (TukuiDB.buttonspacing * 4), TukuiActionBarBackground:GetHeight(), "LEFT", TukuiActionBarBackground, "RIGHT", TukuiDB.Scale(4), 0)
 	splitright:SetFrameLevel(TukuiActionBarBackground:GetFrameLevel())
 	splitright:SetFrameStrata(TukuiActionBarBackground:GetFrameStrata())
+	
+	TukuiDB.CreateShadow(splitleft)
+	splitleft.shadow:SetFrameStrata("BACKGROUND")
+	splitleft.shadow:SetFrameLevel(bottompanel:GetFrameLevel()-1)
+	
+	TukuiDB.CreateShadow(splitright)
+	splitright.shadow:SetFrameStrata("BACKGROUND")
+	splitright.shadow:SetFrameLevel(bottompanel:GetFrameLevel()-1)
 end
 
 -- RIGHT BAR
 if TukuiCF["actionbar"].enable == true then
-	local barbgr = CreateFrame("Frame", "TukuiActionBarBackgroundRight", UIParent)
+	local barbgr = CreateFrame("Frame", "TukuiActionBarBackgroundRight", TukuiActionBarBackground)
 	TukuiDB.CreatePanel(barbgr, 1, (TukuiDB.buttonsize * 12) + (TukuiDB.buttonspacing * 13), "RIGHT", UIParent, "RIGHT", TukuiDB.Scale(-4), TukuiDB.Scale(-8))
 	if TukuiCF["actionbar"].rightbars == 1 then
 		barbgr:SetWidth(TukuiDB.buttonsize + (TukuiDB.buttonspacing * 2))
@@ -87,6 +110,14 @@ if TukuiCF["actionbar"].enable == true then
 	TukuiDB.CreatePanel(ltpetbg1, 30, 265, "LEFT", petbg, "RIGHT", 0, 0)
 	ltpetbg1:SetFrameLevel(0)
 	ltpetbg1:SetAlpha(.8)
+	
+	TukuiDB.CreateShadow(barbgr)
+	barbgr.shadow:SetFrameStrata("BACKGROUND")
+	barbgr.shadow:SetFrameLevel(bottompanel:GetFrameLevel()-1)
+	
+	TukuiDB.CreateShadow(petbg)
+	petbg.shadow:SetFrameStrata("BACKGROUND")
+	petbg.shadow:SetFrameLevel(bottompanel:GetFrameLevel()-1)
 end
 
 -- CHAT BACKGROUND LEFT

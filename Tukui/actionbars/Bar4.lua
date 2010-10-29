@@ -4,7 +4,7 @@ if not TukuiCF["actionbar"].enable == true then return end
 -- setup MultiBarRight as bar #4
 ---------------------------------------------------------------------------
 
-local TukuiBar4 = CreateFrame("Frame","TukuiBar4",UIParent) -- bottomrightbar
+local TukuiBar4 = CreateFrame("Frame","TukuiBar4",TukuiActionBarBackground) -- bottomrightbar
 TukuiBar4:SetAllPoints(TukuiActionBarBackground)
 MultiBarRight:SetParent(TukuiBar4)
 

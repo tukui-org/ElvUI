@@ -86,6 +86,7 @@
 	<Script file="actionbars\BarPet.lua"/>
 	<Script file="actionbars\BarShift.lua"/>
 	<Script file="actionbars\BarTotem.lua"/>
+	<Script file="actionbars\BarVehicle.lua"/>
 	<Script file="actionbars\Style.lua"/>
 	<Script file="actionbars\Range.lua"/>
 	<Script file="actionbars\Others.lua"/>

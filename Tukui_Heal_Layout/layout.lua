@@ -773,6 +773,9 @@ local function Shared(self, unit)
 				maxOverflow = 1,
 			}
 		end
+		
+		-- update all frames when changing area, to fix exiting instance while in vehicle
+		self:RegisterEvent("ZONE_CHANGED_NEW_AREA", TukuiDB.updateAllElements)
 	end
 	
 	------------------------------------------------------------------------

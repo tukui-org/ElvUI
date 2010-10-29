@@ -4,7 +4,7 @@ if not TukuiCF["actionbar"].enable == true then return end
 -- setup MultiBarBottomLeft as bar #2
 ---------------------------------------------------------------------------
 
-local TukuiBar2 = CreateFrame("Frame","TukuiBar2",UIParent)
+local TukuiBar2 = CreateFrame("Frame","TukuiBar2",TukuiActionBarBackground)
 TukuiBar2:SetAllPoints(TukuiActionBarBackground)
 MultiBarBottomLeft:SetParent(TukuiBar2)
 

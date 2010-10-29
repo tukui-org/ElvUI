@@ -4,7 +4,7 @@ if not TukuiCF["actionbar"].enable == true then return end
 -- setup PetActionBar
 ---------------------------------------------------------------------------
 
-local bar = CreateFrame("Frame", "TukuiPetBar", UIParent, "SecureHandlerStateTemplate")
+local bar = CreateFrame("Frame", "TukuiPetBar", TukuiActionBarBackground, "SecureHandlerStateTemplate")
 bar:ClearAllPoints()
 bar:SetAllPoints(TukuiPetActionBarBackground)
 	

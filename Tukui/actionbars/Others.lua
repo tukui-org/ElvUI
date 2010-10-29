@@ -54,15 +54,30 @@ vehicle:SetPushedTexture("Interface\\AddOns\\Tukui\\media\\textures\\vehicleexit
 vehicle:SetHighlightTexture("Interface\\AddOns\\Tukui\\media\\textures\\vehicleexit")
 TukuiDB.SetTemplate(vehicle)
 
+-- vehicle on vehicle bar
+local vehicle2 = CreateFrame("BUTTON", nil, TukuiVehicleBarBackground, "SecureActionButtonTemplate")
+vehicle2:SetWidth(TukuiDB.buttonsize*1.2)
+vehicle2:SetHeight(TukuiDB.buttonsize*1.2)
+vehicle2:SetPoint("RIGHT", TukuiVehicleBarBackground, "RIGHT", -TukuiDB.buttonspacing*1.2, 0)
+
+vehicle2:RegisterForClicks("AnyUp")
+vehicle2:SetScript("OnClick", function() VehicleExit() end)
+
+vehicle2:SetNormalTexture("Interface\\AddOns\\Tukui\\media\\textures\\vehicleexit")
+vehicle2:SetPushedTexture("Interface\\AddOns\\Tukui\\media\\textures\\vehicleexit")
+vehicle2:SetHighlightTexture("Interface\\AddOns\\Tukui\\media\\textures\\vehicleexit")
+TukuiDB.SetTemplate(vehicle2)
+
 vehicle:RegisterEvent("UNIT_ENTERING_VEHICLE")
 vehicle:RegisterEvent("UNIT_ENTERED_VEHICLE")
 vehicle:RegisterEvent("UNIT_EXITING_VEHICLE")
 vehicle:RegisterEvent("UNIT_EXITED_VEHICLE")
 vehicle:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 vehicle:SetScript("OnEvent", function(self, event, arg1)
+	if UnitHasVehicleUI("player") then vehicle:SetAlpha(0) return end
 	if (((event=="UNIT_ENTERING_VEHICLE") or (event=="UNIT_ENTERED_VEHICLE")) and arg1 == "player") then
 		vehicle:SetAlpha(1)
-	elseif (((event=="UNIT_EXITING_VEHICLE") or (event=="UNIT_EXITED_VEHICLE")) and arg1 == "player") or (event=="ZONE_CHANGED_NEW_AREA" and not UnitHasVehicleUI("player")) then
+	elseif (((event=="UNIT_EXITING_VEHICLE") or (event=="UNIT_EXITED_VEHICLE")) and arg1 == "player") or event=="ZONE_CHANGED_NEW_AREA" then
 		vehicle:SetAlpha(0)
 	end
 end)  

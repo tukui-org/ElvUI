@@ -4,7 +4,7 @@ local _G = _G
 local media = TukuiCF["media"]
 local securehandler = CreateFrame("Frame", nil, nil, "SecureHandlerBaseTemplate")
 
-function style(self)
+function style(self, vehicle)
 	local name = self:GetName()
 	
 	if name:match("MultiCastActionButton") then return end 
@@ -38,8 +38,11 @@ function style(self)
 		self:SetHeight(TukuiDB.buttonsize)
  
 		local panel = CreateFrame("Frame", name.."Panel", self)
-		TukuiDB.CreatePanel(panel, TukuiDB.buttonsize, TukuiDB.buttonsize, "CENTER", self, "CENTER", 0, 0)
- 
+		if vehicle then
+			TukuiDB.CreatePanel(panel, TukuiDB.buttonsize*1.2, TukuiDB.buttonsize*1.2, "CENTER", self, "CENTER", 0, 0)
+		else
+			TukuiDB.CreatePanel(panel, TukuiDB.buttonsize, TukuiDB.buttonsize, "CENTER", self, "CENTER", 0, 0)
+		end
 		panel:SetFrameStrata(self:GetFrameStrata())
 		panel:SetFrameLevel(self:GetFrameLevel() - 1)
  
@@ -150,7 +153,7 @@ local function SetupFlyoutButton()
 	for i=1, buttons do
 		--prevent error if you don't have max ammount of buttons
 		if _G["SpellFlyoutButton"..i] then
-			style(_G["SpellFlyoutButton"..i])
+			style(_G["SpellFlyoutButton"..i], false)
 			TukuiDB.StyleButton(_G["SpellFlyoutButton"..i], true)
 		end
 	end
@@ -238,6 +241,11 @@ do
 	for i=1, 10 do
 		TukuiDB.StyleButton(_G["ShapeshiftButton"..i], true)
 		TukuiDB.StyleButton(_G["PetActionButton"..i], true)	
+	end
+	
+	for i=1, 6 do
+		TukuiDB.StyleButton(_G["VehicleMenuBarActionButton"..i], true)
+		style(_G["VehicleMenuBarActionButton"..i], true)
 	end
 end
 
@@ -414,7 +422,7 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			self:SkinButton(button)
 			self:SkinBackgroundFrame(button)
 			TukuiDB.StyleButton(button)
-			style(button)
+			style(button, false)
 			button:SetBackdropBorderColor(unpack(bordercolors[((index-1)%5)+1]))
 			if not InCombatLockdown() then button:SetSize(config.buttonSize, config.buttonSize) end
 			_G[button:GetName().."Highlight"]:SetTexture(nil)
