@@ -37,7 +37,7 @@ vbar:SetScript("OnEvent", function(self, event, ...)
 			end
 		]])
 		
-		RegisterStateDriver(self, "vehicleupdate", "[target=vehicle,exists]s1;s2")
+		RegisterStateDriver(self, "vehicleupdate", "[vehicleui]s1;s2")
 	elseif event == "PLAYER_ENTERING_WORLD" then
 		local button
 		for i = 1, VEHICLE_MAX_ACTIONBUTTONS do

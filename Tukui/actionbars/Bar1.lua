@@ -66,17 +66,17 @@ bar:SetScript("OnEvent", function(self, event, ...)
 		]])
 
 		self:SetAttribute("_onstate-vehicleupdate", [[
-			if newstate == "s1" then
-				self:Show()
-				self:GetParent():Show()
-			else
+			if newstate == "s2" then
 				self:Hide()
 				self:GetParent():Hide()
+			else
+				self:Show()
+				self:GetParent():Show()
 			end
 		]])
 		
 		RegisterStateDriver(self, "page", GetBar())
-		RegisterStateDriver(self, "vehicleupdate", "[target=vehicle,exists]s2;s1")
+		RegisterStateDriver(self, "vehicleupdate", "[vehicleui]s2;s1")
 	elseif event == "PLAYER_ENTERING_WORLD" then
 		MainMenuBar_UpdateKeyRing()
 		local button
