@@ -430,12 +430,6 @@ local function Shared(self, unit)
 				self.EclipseBar:SetScript("OnShow", function() TukuiDB.MoveBuffs(self.EclipseBar, false) end)
 				self.EclipseBar:SetScript("OnUpdate", function() TukuiDB.MoveBuffs(self.EclipseBar, true) end) -- just forcing 1 update on login for buffs/shadow/etc.
 				self.EclipseBar:SetScript("OnHide", function() TukuiDB.MoveBuffs(self.EclipseBar, false) end)
-				
-				-- show/hide bars on entering/leaving vehicle
-				self:RegisterEvent("UNIT_ENTERING_VEHICLE", function() TukuiDB.ToggleBars(self.EclipseBar) end)
-				self:RegisterEvent("UNIT_ENTERED_VEHICLE", function() TukuiDB.ToggleBars(self.EclipseBar) end)
-				self:RegisterEvent("UNIT_EXITING_VEHICLE", function() TukuiDB.ToggleBars(self.EclipseBar) end)
-				self:RegisterEvent("UNIT_EXITED_VEHICLE", function() TukuiDB.ToggleBars(self.EclipseBar) end)
 		end
 		
 		-- set holy power bar or shard bar
@@ -1695,11 +1689,8 @@ if TukuiCF["raidframes"].disableblizz == true then --seriosly lazy addon authors
 	blizzloader:SetScript("OnEvent", function(self, event, addon)
 		if addon == "Tukui_Dps_Layout" then 
 			TukuiDB.Kill(CompactRaidFrameManager)
-			CompactRaidFrameManager:UnregisterAllEvents()
 			TukuiDB.Kill(CompactRaidFrameContainer)
-			CompactRaidFrameContainer:UnregisterAllEvents()
 			TukuiDB.Kill(CompactPartyFrame)
-			CompactPartyFrame:UnregisterAllEvents()
 		end
 	end)
 end

@@ -1732,11 +1732,8 @@ if TukuiCF["raidframes"].disableblizz == true then --seriosly lazy addon authors
 	blizzloader:SetScript("OnEvent", function(self, event, addon)
 		if addon == "Tukui_Heal_Layout" then 
 			TukuiDB.Kill(CompactRaidFrameManager)
-			CompactRaidFrameManager:UnregisterAllEvents()
 			TukuiDB.Kill(CompactRaidFrameContainer)
-			CompactRaidFrameContainer:UnregisterAllEvents()
 			TukuiDB.Kill(CompactPartyFrame)
-			CompactPartyFrame:UnregisterAllEvents()
 		end
 	end)
 end

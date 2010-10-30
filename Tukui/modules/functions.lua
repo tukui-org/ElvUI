@@ -84,6 +84,9 @@ end
 function TukuiDB.Kill(object)
 	object.Show = TukuiDB.dummy
 	object:Hide()
+	if object:IsObjectType("Frame") or object:IsObjectType("Button") then
+		object:UnregisterAllEvents()
+	end
 end
 
 function round(number, decimals)
