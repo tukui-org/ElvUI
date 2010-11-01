@@ -8,6 +8,7 @@ tukuilocal = { }
 
 TukuiDB.dummy = function() return end
 TukuiDB.myname, _ = UnitName("player")
+TukuiDB.myrealm = GetRealmName()
 _, TukuiDB.myclass = UnitClass("player") 
 TukuiDB.client = GetLocale() 
 TukuiDB.resolution = GetCurrentResolution()
