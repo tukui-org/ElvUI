@@ -57,20 +57,24 @@ local function SetChatStyle(frame)
 	local chat = frame:GetName()
 	local tab = _G[chat.."Tab"]
 	
-	-- always set alpha to 1, don't fade it anymore
 	tab:SetAlpha(1)
-	tab.SetAlpha = UIFrameFadeRemoveFrame
-	
-	-- hide text when setting chat
-	_G[chat.."TabText"]:Hide()
+	tab.SetAlpha = UIFrameFadeRemoveFrame	
+	-- always set alpha to 1, don't fade it anymore
+	if TukuiCF["chat"].showbackdrop ~= true then
+		-- hide text when setting chat
+		_G[chat.."TabText"]:Hide()
 
-	-- now show text if mouse is found over tab.
-	tab:HookScript("OnEnter", function() _G[chat.."TabText"]:Show() end)
-	tab:HookScript("OnLeave", function() _G[chat.."TabText"]:Hide() end)
+		-- now show text if mouse is found over tab.
+		tab:HookScript("OnEnter", function() _G[chat.."TabText"]:Show() end)
+		tab:HookScript("OnLeave", function() _G[chat.."TabText"]:Hide() end)
+	end
 	_G[chat.."TabText"]:SetTextColor(unpack(TukuiCF["media"].valuecolor))
 	_G[chat.."TabText"]:SetFont(TukuiCF.media.font,12,"THINOUTLINE")
 	_G[chat.."TabText"].SetTextColor = TukuiDB.dummy
+	local originalpoint = select(2, _G[chat.."TabText"]:GetPoint())
+	_G[chat.."TabText"]:SetPoint("LEFT", originalpoint, "RIGHT", 0, -TukuiDB.mult*2)
 	
+		
 	-- yeah baby
 	_G[chat]:SetClampRectInsets(0,0,0,0)
 	
@@ -338,11 +342,21 @@ function TukuiDB.ChatCopyButtons()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G[format("ChatFrame%d",  i)]
 		local button = CreateFrame("Button", format("ButtonCF%d", i), cf)
-		button:SetHeight(TukuiDB.Scale(20))
+		button:SetHeight(TukuiDB.Scale(22))
 		button:SetWidth(TukuiDB.Scale(20))
-		button:SetAlpha(0)
-		button:SetPoint("TOPRIGHT", 0, 0)
-		TukuiDB.SetTemplate(button)
+		if TukuiCF["chat"].showbackdrop ~= true then
+			button:SetAlpha(0)
+			button:SetPoint("TOPRIGHT", 0, 0)
+		else
+			if i ~= 2 then
+				button:SetPoint("BOTTOMRIGHT", cf, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(5))
+			else
+				button:SetPoint("BOTTOMRIGHT", cf, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(29))
+			end
+		end
+		TukuiDB.SetTransparentTemplate(button)
+		button:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
+		TukuiDB.CreateShadow(button)
 		
 		local buttontext = button:CreateFontString(nil,"OVERLAY",nil)
 		buttontext:SetFont(TukuiCF.media.font,12,"OUTLINE")
@@ -351,6 +365,7 @@ function TukuiDB.ChatCopyButtons()
 		buttontext:SetJustifyH("CENTER")
 		buttontext:SetJustifyV("CENTER")
 		buttontext:SetTextColor(unpack(TukuiCF["media"].valuecolor))
+		
 				
 		button:SetScript("OnMouseUp", function(self, btn)
 			if i == 1 and btn == "RightButton" then
@@ -360,10 +375,12 @@ function TukuiDB.ChatCopyButtons()
 			end
 		end)
 		
-		button:SetScript("OnEnter", function() 
-			button:SetAlpha(1) 
-		end)
-		button:SetScript("OnLeave", function() button:SetAlpha(0) end)
+		if TukuiCF["chat"].showbackdrop ~= true then
+			button:SetScript("OnEnter", function() 
+				button:SetAlpha(1) 
+			end)
+			button:SetScript("OnLeave", function() button:SetAlpha(0) end)
+		end
 	end
 end
 TukuiDB.ChatCopyButtons()

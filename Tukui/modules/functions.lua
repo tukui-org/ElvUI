@@ -89,6 +89,31 @@ function TukuiDB.Kill(object)
 	object:Hide()
 end
 
+function TukuiDB.SetTransparentTemplate(f)
+    f:SetFrameLevel(1)
+    f:SetFrameStrata("BACKGROUND")
+    f:SetBackdrop({
+      bgFile = TukuiCF["media"].blank,
+      edgeFile = TukuiCF["media"].blank,
+      tile = false, tileSize = 0, edgeSize = mult,
+      insets = { left = TukuiDB.Scale(2), right = TukuiDB.Scale(2), top = TukuiDB.Scale(2), bottom = TukuiDB.Scale(2)}
+    })
+    f:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor))
+    f:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))
+ 
+    local border = CreateFrame("Frame", nil, f)
+    border:SetFrameLevel(0)
+    border:SetPoint("TOPLEFT", f, "TOPLEFT", TukuiDB.Scale(-1), TukuiDB.Scale(1))
+    border:SetFrameStrata("BACKGROUND")
+    border:SetBackdrop {
+        edgeFile = TukuiCF["media"].blank, edgeSize = TukuiDB.Scale(3),
+        insets = {left = 0, right = 0, top = 0, bottom = 0}
+    }
+    border:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
+    border:SetBackdropBorderColor(unpack(TukuiCF["media"].backdropcolor))
+    border:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(-1))
+end
+
 function round(number, decimals)
     return (("%%.%df"):format(decimals)):format(number)
 end

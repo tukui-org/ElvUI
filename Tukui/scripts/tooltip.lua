@@ -87,7 +87,11 @@ GameTooltip:HookScript("OnUpdate",function(self, ...)
 				self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", -1, TukuiDB.Scale(18))	
 			else
 				if CheckAddOnShown() == true then
-					self:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", -1, TukuiDB.Scale(18))		
+					if TukuiCF["chat"].showbackdrop == true then
+						self:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", -1, TukuiDB.Scale(42))	
+					else
+						self:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", -1, TukuiDB.Scale(18))		
+					end	
 				else
 					self:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -15+xOffset, TukuiDB.Scale(42+yOffset))	
 				end
@@ -224,7 +228,11 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 				self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", -1, TukuiDB.Scale(18))	
 			else
 				if CheckAddOnShown() == true then
-					self:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", -1, TukuiDB.Scale(18))		
+					if TukuiCF["chat"].showbackdrop == true then
+						self:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", -1, TukuiDB.Scale(42))	
+					else
+						self:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", -1, TukuiDB.Scale(18))		
+					end
 				else
 					self:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -15+xOffset, TukuiDB.Scale(42+yOffset))	
 				end

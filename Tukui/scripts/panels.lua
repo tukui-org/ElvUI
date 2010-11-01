@@ -135,25 +135,45 @@ rdummyframe:SetPoint("BOTTOMRIGHT", TukuiBottomPanel, "TOPRIGHT", TukuiDB.Scale(
 TukuiDB.ChatRightShown = false
 if TukuiCF["chat"].showbackdrop == true then
 	local chatlbg = CreateFrame("Frame", nil, GeneralDockManager)
+	TukuiDB.SetTransparentTemplate(chatlbg)
 	chatlbg:SetAllPoints(chatlbgdummy)
-	TukuiDB.SetTemplate(chatlbg)
 	chatlbg:SetFrameStrata("BACKGROUND")
-	chatlbg:SetFrameLevel(0)
-	chatlbg:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor))
+	
+	local chatltbg = CreateFrame("Frame", nil, chatlbg)
+	TukuiDB.SetTransparentTemplate(chatltbg)
+	chatltbg:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
+	chatltbg:SetPoint("BOTTOMLEFT", chatlbg, "TOPLEFT", 0, TukuiDB.Scale(3))
+	chatltbg:SetPoint("BOTTOMRIGHT", chatlbg, "TOPRIGHT", TukuiDB.Scale(-25), TukuiDB.Scale(3))
+	chatltbg:SetHeight(TukuiDB.Scale(22))
+	chatltbg:SetFrameStrata("BACKGROUND")
+	
+	TukuiDB.CreateShadow(chatlbg)
+	TukuiDB.CreateShadow(chatltbg)
 end
 
 --This was requested a lot.. and probably is a better way to do this but whatever this will work.
 local chatrbg = CreateFrame("Frame", nil, GeneralDockManager)
 chatrbg:SetAllPoints(rdummyframe)
-TukuiDB.SetTemplate(chatrbg)
+TukuiDB.SetTransparentTemplate(chatrbg)
 chatrbg:SetFrameStrata("BACKGROUND")
-chatrbg:SetFrameLevel(0)
 chatrbg:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor))
 chatrbg:SetAlpha(0)
+
+local chatrtbg = CreateFrame("Frame", nil, chatrbg)
+TukuiDB.SetTransparentTemplate(chatrtbg)
+chatrtbg:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
+chatrtbg:SetPoint("BOTTOMLEFT", chatrbg, "TOPLEFT", 0, TukuiDB.Scale(3))
+chatrtbg:SetPoint("BOTTOMRIGHT", chatrbg, "TOPRIGHT", TukuiDB.Scale(-25), TukuiDB.Scale(3))
+chatrtbg:SetHeight(TukuiDB.Scale(22))
+chatrtbg:SetFrameStrata("BACKGROUND")
+
+TukuiDB.CreateShadow(chatrbg)
+TukuiDB.CreateShadow(chatrtbg)
+	
 local t = 0
 chatrbg:SetScript("OnUpdate", function(self, elapsed)
 	t = t + 1
-	if t == 30 then
+	if t == 100 then
 		for i = 1, NUM_CHAT_WINDOWS do
 			local chat = _G[format("ChatFrame%s", i)]
 			local id = chat:GetID()
@@ -165,6 +185,12 @@ chatrbg:SetScript("OnUpdate", function(self, elapsed)
 					chatrbg:SetAlpha(1)
 				end
 				TukuiDB.ChatRightShown = true
+				if not InCombatLockdown() then
+					SetChatWindowSavedDimensions(id, TukuiDB.Scale(TukuiCF["chat"].chatwidth + -4), TukuiDB.Scale(TukuiCF["chat"].chatheight))
+					chat:ClearAllPoints()
+					chat:SetPoint("BOTTOMLEFT", RDummyFrame, "BOTTOMLEFT", TukuiDB.Scale(2), TukuiDB.Scale(4))
+					FCF_SavePositionAndDimensions(chat)
+				end
 				break
 			else
 				if TukuiCF["chat"].showbackdrop == true then
