@@ -141,7 +141,7 @@
 	tukuilocal.core_autoinv_enable_c = "Автоприглашение ВКЛ: "
 	tukuilocal.core_autoinv_disable = "Автоприглашение ВЫКЛ"
 	tukuilocal.core_welcome1 = "Добро пожаловать в |cffC495DDTukui редакции Elv|r, версии "
-	tukuilocal.core_welcome2 = "Напечатайте |cff00FFFF/uihelp|r для получения доп. информации или зайдите по адресу http://www.tukui.org/v2/forums/topic.php?id=3557"
+	tukuilocal.core_welcome2 = "Напечатайте |cff00FFFF/uihelp|r для получения доп. информации или зайдите по адресу http://www.tukui.org/v2/forums/forum.php?id=31"
 
 	tukuilocal.core_uihelp1 = "|cff00ff00Общие комманды|r"
 	tukuilocal.core_uihelp2 = "|cffFF0000/tracker|r - Tukui Arena Enemy Cooldown Tracker - PVP-таймер вражеских перезарядок . (только иконка)"

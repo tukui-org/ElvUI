@@ -141,7 +141,7 @@
 	tukuilocal.core_autoinv_enable_c = "자동초대 활성화: "
 	tukuilocal.core_autoinv_disable = "자동초대 비활성화"
 	tukuilocal.core_welcome1 = "|cffC495DDTukui|r를 사용해주셔서 감사합니다. 버전 "
-	tukuilocal.core_welcome2 = "자세한 사항은 |cff00FFFF/uihelp|r를 입력하거나 http://www.tukui.org/v2/forums/topic.php?id=3557 에 방문하시면 확인 가능합니다."
+	tukuilocal.core_welcome2 = "자세한 사항은 |cff00FFFF/uihelp|r를 입력하거나 http://www.tukui.org/v2/forums/forum.php?id=31 에 방문하시면 확인 가능합니다."
  
 	tukuilocal.core_uihelp1 = "|cff00ff00일반적인 명령어|r"
 	tukuilocal.core_uihelp2 = "|cffFF0000/tracker|r - Tukui 투기장 애드온 - 가벼운 투기장 애드온입니다."

@@ -368,7 +368,7 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			button:GetNormalTexture():SetTexture(nil)
 			button:SetHeight(config.buttonSpacing*3)
 			button:ClearAllPoints()
-			if point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" then
+			if point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" or point == "BOTTOM" then
 				button:SetPoint("BOTTOMLEFT", parent, "TOPLEFT")
 				button:SetPoint("BOTTOMRIGHT", parent, "TOPRIGHT")
 			else

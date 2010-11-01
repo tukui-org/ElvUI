@@ -141,7 +141,7 @@
 	tukuilocal.core_autoinv_enable_c = "自動邀請功能已啟用: "
 	tukuilocal.core_autoinv_disable = "自動邀請功能已關閉"
 	tukuilocal.core_welcome1 = "歡迎使用 |cffC495DDElv's Edit of Tukui|r, 版本號 "
-	tukuilocal.core_welcome2 = "輸入 |cff00FFFF/uihelp|r 以獲得更多資訊, 輸入 |cff00FFFF/tukui|r 進行設置, 或訪問 http://www.tukui.org/v2/forums/topic.php?id=3557"
+	tukuilocal.core_welcome2 = "輸入 |cff00FFFF/uihelp|r 以獲得更多資訊, 輸入 |cff00FFFF/tukui|r 進行設置, 或訪問 http://www.tukui.org/v2/forums/forum.php?id=31"
 
 	tukuilocal.core_uihelp1 = "|cff00ff00基本指令|r"
 	tukuilocal.core_uihelp2 = "|cffFF0000/tracker|r - Tukui 競技場敵方冷卻監視器 - 一個精簡的PvP冷卻監視器 (Icon only)"
