@@ -170,7 +170,6 @@
 	TukuiL.option_others_autoinvite = "Enable Auto-Invite (Friends and Guildmates)"
 	TukuiL.option_others_enablemap = "Enable Map"
 	TukuiL.option_others_errorhide = "Hide spamming error at the middle of your screen"
-	TukuiL.option_others_totembardirection = "Direction the totembar opens at (UP/DOWN)"
 	TukuiL.option_others_spincam = "Spin camera while AFK"
 	TukuiL.option_others_bagenable = "Enable all in one bag"
 

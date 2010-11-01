@@ -170,7 +170,6 @@ if GetLocale() == "frFR" then
 	TukuiL.option_others_autoinvite = "Activer l'auto-invite (Amis et guilde)" --"Enable Auto-Invite (Friends and Guildmates)"
 	TukuiL.option_others_enablemap = "Activer la carte" --"Enable Map"
 	TukuiL.option_others_errorhide = "Masquer les erreurs au milieu de l'écran" --"Hide spamming error at the middle of your screen"
-	TukuiL.option_others_totembardirection = "Ouverture de la barre de totem en (Haut/Bas)" --"Direction the totembar opens at (Haut/Bas)"
 	TukuiL.option_others_spincam = "Faire pivoter la camera quand absent" --"Spin camera while AFK"
 	TukuiL.option_others_bagenable = "Activer les sacs Tukui" --"Enable all in one bag"
  

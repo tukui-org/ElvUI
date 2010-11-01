@@ -4,5 +4,4 @@
 	<Script file='skins\Omen.lua' />
 	<Script file='skins\Recount.lua' />
 	<Script file='skins\Skada.lua' />
-	<Script file='skins\Quartz.lua' />
 </Ui>

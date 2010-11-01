@@ -199,6 +199,5 @@ TukuiCF["others"] = {
 	["autoacceptinv"] = true,                 -- auto-accept invite from guildmate and friends.
 	["enablemap"] = true,                     -- reskin the map to fit tukui
 	["enablebag"] = true,                     -- enable an all in one bag mod that fit tukui perfectly
-	["totembardirection"] = "UP",			-- set to up or down
 	["spincam"] = true,						-- spin camera while afk
 }

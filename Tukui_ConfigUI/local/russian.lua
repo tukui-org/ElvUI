@@ -170,7 +170,6 @@
 	TukuiL.option_others_autoinvite = "Включить автоприглашение(Друзья и Согильдийцы)"
 	TukuiL.option_others_enablemap = "Включить карту"
 	TukuiL.option_others_errorhide = "Прятать назойливые ошибки в центре экрана"
-	TukuiL.option_others_totembardirection = " Направление открытия панели тотемов(UP/DOWN)"
 	TukuiL.option_others_spincam = "Крутить камеру при режиме Отошел"
 	TukuiL.option_others_bagenable = "Включить единую сумку"
 

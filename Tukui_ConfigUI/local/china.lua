@@ -170,7 +170,6 @@
 	TukuiL.option_others_autoinvite = "开启自动邀请及接受邀请 (限好友及公会会员)"
 	TukuiL.option_others_enablemap = "开启Tukui地图"
 	TukuiL.option_others_errorhide = "隐藏屏幕中央错误讯息"
-	TukuiL.option_others_totembardirection = "图腾裂开启方向 (上/下)"
 	TukuiL.option_others_spincam = "AFK时旋转视角"
 	TukuiL.option_others_bagenable = "使用整合背包"
 

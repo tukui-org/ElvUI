@@ -170,7 +170,6 @@
 	TukuiL.option_others_autoinvite = "Einladungen von Freunden und Gildenmitgliedern automatisch annehmen"
 	TukuiL.option_others_enablemap = "Aktiviere Karte"
 	TukuiL.option_others_errorhide = "Verstecke Fehler Meldungen in der Mitte des Bildschirms"
-	TukuiL.option_others_totembardirection = "Aufbau der Totemleiste (UP/DOWN)"
 	TukuiL.option_others_spincam = "Aktiviert die Spincam während man AFK ist"
 	TukuiL.option_others_bagenable = "Aktiviere All-in-one Tasche"
  

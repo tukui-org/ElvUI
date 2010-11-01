@@ -7,7 +7,7 @@ local function install()
 	SetCVar("lootUnderMouse", 1)
 	SetCVar("autoSelfCast", 1)
 	SetCVar("mapQuestDifficulty", 1)
-	SetCVar("scriptErrors", 1)
+	SetCVar("scriptErrors", 0)
 	SetCVar("nameplateShowFriends", 0)
 	SetCVar("nameplateShowFriendlyPets", 0)
 	SetCVar("nameplateShowFriendlyGuardians", 0)
@@ -124,6 +124,7 @@ local function install()
 		ChangeChatColor("CHANNEL5", 147/255, 112/255, 219/255)
 		ChangeChatColor("CHANNEL6", 139/255, 115/255, 85/255)
 		ChangeChatColor("CHANNEL7", RAID_CLASS_COLORS["PALADIN"].r, RAID_CLASS_COLORS["PALADIN"].g, RAID_CLASS_COLORS["PALADIN"].b)
+		SetCVar("scriptErrors", 1)
 	end	
 		-- enable classcolor automatically on login and on each character without doing /configure each time.
 		ToggleChatColorNamesByClassGroup(true, "SAY")
@@ -242,12 +243,6 @@ TukuiOnLogon:SetScript("OnEvent", function(self, event)
 		SetCVar("showArenaEnemyFrames", 0)
 	end
 
-	if TukuiDB.myname ~= "Elv" then
-		SetCVar("scriptErrors", 0)
-	else
-		SetCVar("scriptErrors", 1)
-	end
-		
 	print(tukuilocal.core_welcome2)
 end)
 

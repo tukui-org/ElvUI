@@ -170,7 +170,6 @@
 	TukuiL.option_others_autoinvite = "啟用自動邀請及接受邀請 (限好友及公會會員)"
 	TukuiL.option_others_enablemap = "啟用小地圖模組"
 	TukuiL.option_others_errorhide = "隱藏螢幕中央錯誤訊息"
-	TukuiL.option_others_totembardirection = "圖騰列開啟方向上/下 (填入UP/DOWN)"
 	TukuiL.option_others_spincam = "暫離時旋轉鏡頭"
 	TukuiL.option_others_bagenable = "啟用整合背包模組"
 	 

@@ -18,21 +18,28 @@ function style(self, vehicle)
 	local Border  = _G[name.."Border"]
 	local Btname = _G[name.."Name"]
 	local normal  = _G[name.."NormalTexture"]
- 
-	Flash:SetTexture("")
+	
+	if Flash then
+		Flash:SetTexture("")
+	end
 	Button:SetNormalTexture("")
- 
-	Border:Hide()
-	Border = TukuiDB.dummy
- 
-	Count:ClearAllPoints()
-	Count:SetPoint("BOTTOMRIGHT", 0, TukuiDB.Scale(2))
-	Count:SetFont(TukuiCF["media"].font, 12, "OUTLINE")
- 
-	Btname:SetText("")
-	Btname:Hide()
-	Btname.Show = TukuiDB.dummy
- 
+	
+	if Border then
+		Border:Hide()
+		Border = TukuiDB.dummy
+	end
+	
+	if Count then
+		Count:ClearAllPoints()
+		Count:SetPoint("BOTTOMRIGHT", 0, TukuiDB.Scale(2))
+		Count:SetFont(TukuiCF["media"].font, 12, "OUTLINE")
+	end
+	if Btname then
+		Btname:SetText("")
+		Btname:Hide()
+		Btname.Show = TukuiDB.dummy
+	end
+	
 	if not _G[name.."Panel"] then
 		self:SetWidth(TukuiDB.buttonsize)
 		self:SetHeight(TukuiDB.buttonsize)
@@ -45,24 +52,27 @@ function style(self, vehicle)
 		end
 		panel:SetFrameStrata(self:GetFrameStrata())
 		panel:SetFrameLevel(self:GetFrameLevel() - 1)
- 
-		Icon:SetTexCoord(.08, .92, .08, .92)
-		Icon:SetPoint("TOPLEFT", Button, TukuiDB.Scale(2), TukuiDB.Scale(-2))
-		Icon:SetPoint("BOTTOMRIGHT", Button, TukuiDB.Scale(-2), TukuiDB.Scale(2))
+		
+		if Icon then
+			Icon:SetTexCoord(.08, .92, .08, .92)
+			Icon:SetPoint("TOPLEFT", Button, TukuiDB.Scale(2), TukuiDB.Scale(-2))
+			Icon:SetPoint("BOTTOMRIGHT", Button, TukuiDB.Scale(-2), TukuiDB.Scale(2))
+		end
 	end
-
-	HotKey:ClearAllPoints()
-	HotKey:SetPoint("TOPRIGHT", 0, TukuiDB.Scale(-3))
-	HotKey:SetFont(TukuiCF["media"].font, 12, "OUTLINE")
-	HotKey.ClearAllPoints = TukuiDB.dummy
-	HotKey.SetPoint = TukuiDB.dummy
- 
-	if not TukuiCF["actionbar"].hotkey == true then
-		HotKey:SetText("")
-		HotKey:Hide()
-		HotKey.Show = TukuiDB.dummy
+	
+	if HotKey then
+		HotKey:ClearAllPoints()
+		HotKey:SetPoint("TOPRIGHT", 0, TukuiDB.Scale(-3))
+		HotKey:SetFont(TukuiCF["media"].font, 12, "OUTLINE")
+		HotKey.ClearAllPoints = TukuiDB.dummy
+		HotKey.SetPoint = TukuiDB.dummy
+		if not TukuiCF["actionbar"].hotkey == true then
+			HotKey:SetText("")
+			HotKey:Hide()
+			HotKey.Show = TukuiDB.dummy
+		end
 	end
- 
+	
 	if normal then
 		normal:ClearAllPoints()
 		normal:SetPoint("TOPLEFT")
@@ -291,10 +301,6 @@ SLOT_EMPTY_TCOORDS = {
 	},
 }
 
-function quickTest()
-	MultiCastActionBarFrame:ClearAllPoints()
-	MultiCastActionBarFrame:SetPoint("CENTER",UIParent,"CENTER")
-end
 local AddOn_Loaded = CreateFrame("Frame")
 AddOn_Loaded:RegisterEvent("ADDON_LOADED")
 AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
@@ -302,7 +308,8 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 
 	Mod_AddonSkins:RegisterSkin("Blizzard_TotemBar",function(Skin,skin,Layout,layout,config)
 		-- Skin Flyout
-		function Skin:SkinMCABFlyoutFrame(flyout)
+		function Skin:SkinMCABFlyoutFrame(flyout, type, parent)
+			local point, _, _, _, _ = TukuiShiftBar:GetPoint()
 			flyout.top:SetTexture(nil)
 			flyout.middle:SetTexture(nil)
 			self:SkinFrame(flyout)
@@ -312,50 +319,56 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			local last = nil
 			for _,button in ipairs(flyout.buttons) do
 				self:SkinButton(button)
-				TukuiDB.StyleButton(button)
-				button:SetBackdropBorderColor(select(2, flyout:GetPoint()):GetBackdropBorderColor())
 				if not InCombatLockdown() then
 					button:SetSize(config.buttonSize,config.buttonSize)
 					button:ClearAllPoints()
 					button:SetPoint("BOTTOM",last,"TOP",0,config.borderWidth)
 				end			
 				if button:IsVisible() then last = button end
+				button:SetBackdropBorderColor(parent:GetBackdropBorderColor())
 			end
-			
 			flyout.buttons[1]:SetPoint("BOTTOM",flyout,"BOTTOM")
-			if flyout.type == "slot" then
+			if type == "slot" then
 				local tcoords = SLOT_EMPTY_TCOORDS[flyout.parent:GetID()]
 				flyout.buttons[1].icon:SetTexCoord(tcoords.left,tcoords.right,tcoords.top,tcoords.bottom)
 			end
 			-- Skin Close button
 			local close = MultiCastFlyoutFrameCloseButton
 			self:SkinButton(close)
-			close:SetBackdropBorderColor(select(2, flyout:GetPoint()):GetBackdropBorderColor())
 			
 			close:GetHighlightTexture():SetTexture([[Interface\Buttons\ButtonHilight-Square]])
 			close:GetHighlightTexture():SetPoint("TOPLEFT",close,"TOPLEFT",config.borderWidth,-config.borderWidth)
 			close:GetHighlightTexture():SetPoint("BOTTOMRIGHT",close,"BOTTOMRIGHT",-config.borderWidth,config.borderWidth)
 			close:GetNormalTexture():SetTexture(nil)
 			close:ClearAllPoints()
-			close:SetPoint("BOTTOMLEFT",last,"TOPLEFT",0,config.buttonSpacing)
-			close:SetPoint("BOTTOMRIGHT",last,"TOPRIGHT",0,config.buttonSpacing)
-			close:SetHeight(config.buttonSpacing*2)
-			
-			flyout:ClearAllPoints()
-			if TukuiCF["others"].totembardirection == "UP" then
-				flyout:SetPoint("BOTTOM",flyout.parent,"TOP",0,config.buttonSpacing)
+			if point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" or point == "BOTTOM" then
+				close:SetPoint("BOTTOMLEFT",last,"TOPLEFT",0,config.buttonSpacing)
+				close:SetPoint("BOTTOMRIGHT",last,"TOPRIGHT",0,config.buttonSpacing)
 			else
-				flyout:SetPoint("TOP",flyout.parent,"BOTTOM",0,config.buttonSpacing)
+				if last then
+					close:SetWidth(last:GetWidth())
+				end
+				close:SetPoint("TOP",flyout,"BOTTOM",0,-config.buttonSpacing)		
 			end
+			close:SetHeight(config.buttonSpacing*2)
+			close:SetBackdropBorderColor(parent:GetBackdropBorderColor())
+			flyout:ClearAllPoints()
+			if point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" or point == "BOTTOM" then
+				flyout:SetPoint("BOTTOM",parent,"TOP",0,config.buttonSpacing)
+			else
+				flyout:SetPoint("TOP",parent,"BOTTOM",0,-config.buttonSpacing/2)
+			end
+			MultiCastFlyoutFrameOpenButton:Hide()
 		end
-		hooksecurefunc("MultiCastFlyoutFrame_ToggleFlyout",function(self) skin:SkinMCABFlyoutFrame(self) end)
+		hooksecurefunc("MultiCastFlyoutFrame_ToggleFlyout",function(self, type, parent) skin:SkinMCABFlyoutFrame(self, type, parent) end)
 		
 		function Skin:SkinMCABFlyoutOpenButton(button, parent)
+			local point, _, _, _, _ = TukuiShiftBar:GetPoint()
 			button:GetHighlightTexture():SetTexture(nil)
 			button:GetNormalTexture():SetTexture(nil)
 			button:SetHeight(config.buttonSpacing*3)
 			button:ClearAllPoints()
-			if TukuiCF["others"].totembardirection == "UP" then
+			if point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" then
 				button:SetPoint("BOTTOMLEFT", parent, "TOPLEFT")
 				button:SetPoint("BOTTOMRIGHT", parent, "TOPRIGHT")
 			else
@@ -367,35 +380,31 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			if not button.visibleBut then
 				button.visibleBut = CreateFrame("Frame",nil,button)
 				button.visibleBut:SetHeight(config.buttonSpacing*2)
-				button.visibleBut:SetPoint("TOPLEFT")
-				button.visibleBut:SetPoint("TOPRIGHT")
-				button.visibleBut.highlight = button.visibleBut:CreateTexture(nil,"HIGHLIGHT")
-				button.visibleBut.highlight:SetTexture([[Interface\Buttons\ButtonHilight-Square]])
-				if TukuiCF["others"].totembardirection == "UP" then
-					button.visibleBut.highlight:SetPoint("TOPLEFT",button.visibleBut,"TOPLEFT",config.borderWidth,-config.borderWidth)
-					button.visibleBut.highlight:SetPoint("BOTTOMRIGHT",button.visibleBut,"BOTTOMRIGHT",-config.borderWidth,config.borderWidth)
+				if point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" or point == "BOTTOM" then
+					button.visibleBut:SetPoint("TOPLEFT")
+					button.visibleBut:SetPoint("TOPRIGHT")
 				else
-					button.visibleBut.highlight:SetPoint("BOTTOMLEFT",button.visibleBut,"BOTTOMLEFT",config.borderWidth,-config.borderWidth)
-					button.visibleBut.highlight:SetPoint("TOPRIGHT",button.visibleBut,"TOPRIGHT",-config.borderWidth,config.borderWidth)				
+					button.visibleBut:SetPoint("BOTTOMLEFT")
+					button.visibleBut:SetPoint("BOTTOMRIGHT")				
 				end
 				self:SkinFrame(button.visibleBut)
-				button.visibleBut:SetBackdropBorderColor(parent:GetBackdropBorderColor())
 			end
+
+			button.visibleBut:SetBackdropBorderColor(parent:GetBackdropBorderColor())
 		end
 		hooksecurefunc("MultiCastFlyoutFrameOpenButton_Show",function(button,_, parent) skin:SkinMCABFlyoutOpenButton(button, parent) end)
 		
 		local bordercolors = {
-			{.23,.45,.13},    -- Earth
 			{.58,.23,.10},    -- Fire
+			{.23,.45,.13},    -- Earth
 			{.19,.48,.60},   -- Water
 			{.42,.18,.74},   -- Air
 			{.39,.39,.12}    -- Summon / Recall
 		}
 		
 		function Skin:SkinMCABSlotButton(button, index)
-			self:SkinFrame(button)
-			TukuiDB.StyleButton(button)
-			
+			self:SkinButton(button)
+			if _G[button:GetName().."Panel"] then _G[button:GetName().."Panel"]:Hide() end
 			button.overlayTex:SetTexture(nil)
 			button.background:SetDrawLayer("ARTWORK")
 			button.background:ClearAllPoints()
@@ -403,16 +412,37 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			button.background:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-config.borderWidth,config.borderWidth)
 			button:SetSize(config.buttonSize, config.buttonSize)
 			button:SetBackdropBorderColor(unpack(bordercolors[((index-1) % 4) + 1]))
+			style(button)
+			TukuiDB.StyleButton(button, false)
 		end
 		hooksecurefunc("MultiCastSlotButton_Update",function(self, slot) skin:SkinMCABSlotButton(self, slot) end)
 		
 		-- Skin the actual totem buttons
 		function Skin:SkinMCABActionButton(button, index)
+			for i=1, button:GetNumRegions() do
+				local region = select(i, button:GetRegions())
+				if region:GetObjectType() == "Texture" then
+					if region:GetDrawLayer() == "BACKGROUND" then
+						region:SetTexCoord(0.1, 0.1, 0.1, 0.9, 0.9, 0.1, 0.9, 0.9)
+						if not InCombatLockdown() then
+							region:ClearAllPoints()
+							region:SetPoint("TOPLEFT", button.slotButton, "TOPLEFT", config.borderWidth, -config.borderWidth)
+							region:SetPoint("BOTTOMRIGHT", button.slotButton, "BOTTOMRIGHT", -config.borderWidth, config.borderWidth)
+						end
+					end
+				end
+			end
 			button.overlayTex:SetTexture(nil)
 			button.overlayTex:Hide()
+			button:GetNormalTexture():SetTexture(nil)
+			button:GetNormalTexture():Hide()
+			button:GetNormalTexture().Show = TukuiDB.dummy
+			if _G[button:GetName().."Panel"] then _G[button:GetName().."Panel"]:Hide() end
 			if not InCombatLockdown() then button:SetAllPoints(button.slotButton) end
 			button:SetBackdropBorderColor(unpack(bordercolors[((index-1) % 4) + 1]))
 			button:SetBackdropColor(0,0,0,0)
+			style(button)
+			TukuiDB.StyleButton(button, false)
 		end
 		hooksecurefunc("MultiCastActionButton_Update",function(actionButton, actionId, actionIndex, slot) skin:SkinMCABActionButton(actionButton,actionIndex) end)
 		
@@ -420,13 +450,14 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 		function Skin:SkinMCABSpellButton(button, index)
 			if not button then return end
 			self:SkinButton(button)
+			button:GetNormalTexture():SetTexture(nil)
 			self:SkinBackgroundFrame(button)
-			TukuiDB.StyleButton(button)
-			style(button, false)
 			button:SetBackdropBorderColor(unpack(bordercolors[((index-1)%5)+1]))
 			if not InCombatLockdown() then button:SetSize(config.buttonSize, config.buttonSize) end
 			_G[button:GetName().."Highlight"]:SetTexture(nil)
 			_G[button:GetName().."NormalTexture"]:SetTexture(nil)
+			style(button)
+			TukuiDB.StyleButton(button, false)
 		end
 		hooksecurefunc("MultiCastSummonSpellButton_Update", function(self) skin:SkinMCABSpellButton(self,0) end)
 		hooksecurefunc("MultiCastRecallSpellButton_Update", function(self) skin:SkinMCABSpellButton(self,5) end)

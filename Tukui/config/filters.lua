@@ -209,6 +209,7 @@ ArenaBuffWhiteList = {
 DebuffBlacklist = {
 	[GetSpellInfo(57724)] = true, --Sated
 	[GetSpellInfo(25771)] = true, --forbearance
+	[GetSpellInfo(57723)] = true, --Exhaustion
 	[GetSpellInfo(36032)] = true, --arcane blast
 	[GetSpellInfo(58539)] = true, --watchers corpse
 	[GetSpellInfo(26013)] = true, --deserter
