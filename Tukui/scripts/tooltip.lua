@@ -87,7 +87,7 @@ GameTooltip:HookScript("OnUpdate",function(self, ...)
 				self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", -1, TukuiDB.Scale(18))	
 			else
 				if CheckAddOnShown() == true then
-					if TukuiCF["chat"].showbackdrop == true then
+					if TukuiCF["chat"].showbackdrop == true and TukuiDB.ChatRightShown == true then
 						self:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", -1, TukuiDB.Scale(42))	
 					else
 						self:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", -1, TukuiDB.Scale(18))		
@@ -112,7 +112,7 @@ local function GetColor(unit)
 		local r,g,b = color.r, color.g, color.b
 		return Hex(color), r, g, b	
 	else
-		local color = FACTION_BAR_COLORS[UnitReaction("player", unit)]
+		local color = FACTION_BAR_COLORS[UnitReaction(unit, "player")]
 		if not color then return end -- sometime unit too far away return nil for color :(
 		local r,g,b = color.r, color.g, color.b		
 		return Hex(color), r, g, b		
@@ -227,7 +227,7 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 			if TukuiCF["others"].enablebag == true and StuffingFrameBags:IsShown() then
 				self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", -1, TukuiDB.Scale(18))	
 			else
-				if CheckAddOnShown() == true then
+				if CheckAddOnShown() == true and TukuiDB.ChatRightShown == true then
 					if TukuiCF["chat"].showbackdrop == true then
 						self:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", -1, TukuiDB.Scale(42))	
 					else
@@ -319,7 +319,7 @@ local Colorize = function(self)
 	local GMF = GetMouseFocus()
 	local unit = (select(2, self:GetUnit())) or (GMF and GMF:GetAttribute("unit"))
 		
-	local reaction = unit and UnitReaction("player", unit)
+	local reaction = unit and UnitReaction(unit, "player")
 	local player = unit and UnitIsPlayer(unit)
 	local tapped = unit and UnitIsTapped(unit)
 	local tappedbyme = unit and UnitIsTappedByPlayer(unit)
