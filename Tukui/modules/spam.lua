@@ -62,5 +62,18 @@ GOLDSPAM:RegisterEvent("ZONE_CHANGED_INDOORS")
 GOLDSPAM:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 GOLDSPAM:SetScript("OnEvent", GOLDSPAM_FILTER)
 
+----------------------------------------------------------------------------------
+-- Report AFKer's to RaidWarning
+----------------------------------------------------------------------------------
+
+local function SPELL_FILTER(self, event, arg1)
+    if strfind(arg1,"is not ready") or strfind(arg1,"The following players are Away") then
+        SendChatMessage(arg1, "RAID_WARNING", nil ,nil)
+    end
+end
+ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", SPELL_FILTER)
+
+
+
 
 

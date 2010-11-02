@@ -196,6 +196,8 @@ chatrbg:SetScript("OnUpdate", function(self, elapsed)
 				TukuiDB.ChatRightShown = true
 				if not InCombatLockdown() then
 					SetChatWindowSavedDimensions(id, TukuiDB.Scale(TukuiCF["chat"].chatwidth + -4), TukuiDB.Scale(TukuiCF["chat"].chatheight))
+					chat:SetWidth(TukuiCF["chat"].chatwidth + -4)
+					chat:SetHeight(TukuiCF["chat"].chatheight)
 					chat:ClearAllPoints()
 					chat:SetPoint("BOTTOMLEFT", RDummyFrame, "BOTTOMLEFT", TukuiDB.Scale(2), TukuiDB.Scale(4))
 					FCF_SavePositionAndDimensions(chat)
