@@ -180,6 +180,8 @@ TukuiDB.CreateShadow(chatrbg)
 TukuiDB.CreateShadow(chatrtbg)
 	
 local t = 0
+local bottomrightframe
+local dragging
 chatrbg:SetScript("OnUpdate", function(self, elapsed)
 	t = t + 1
 	if t == 100 then
@@ -188,20 +190,30 @@ chatrbg:SetScript("OnUpdate", function(self, elapsed)
 			local id = chat:GetID()
 			local point = GetChatWindowSavedPosition(id)
 			local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
+			local tab = _G[chat:GetName().."Tab"]
 			
 			if point == "BOTTOMRIGHT" and chat:IsShown() and docked == nil then
-				if TukuiCF["chat"].showbackdrop == true then
-					chatrbg:SetAlpha(1)
+				bottomrightframe = tab
+				if dragging ~= true then
+					if TukuiCF["chat"].showbackdrop == true then
+						chatrbg:SetAlpha(1)
+					end
+					TukuiDB.ChatRightShown = true
+					if not InCombatLockdown() then
+						SetChatWindowSavedDimensions(id, TukuiDB.Scale(TukuiCF["chat"].chatwidth + -4), TukuiDB.Scale(TukuiCF["chat"].chatheight))
+						chat:SetWidth(TukuiCF["chat"].chatwidth + -4)
+						chat:SetHeight(TukuiCF["chat"].chatheight)
+						chat:ClearAllPoints()
+						chat:SetPoint("BOTTOMLEFT", RDummyFrame, "BOTTOMLEFT", TukuiDB.Scale(2), TukuiDB.Scale(4))
+						FCF_SavePositionAndDimensions(chat)
+					end
 				end
-				TukuiDB.ChatRightShown = true
-				if not InCombatLockdown() then
-					SetChatWindowSavedDimensions(id, TukuiDB.Scale(TukuiCF["chat"].chatwidth + -4), TukuiDB.Scale(TukuiCF["chat"].chatheight))
-					chat:SetWidth(TukuiCF["chat"].chatwidth + -4)
-					chat:SetHeight(TukuiCF["chat"].chatheight)
-					chat:ClearAllPoints()
-					chat:SetPoint("BOTTOMLEFT", RDummyFrame, "BOTTOMLEFT", TukuiDB.Scale(2), TukuiDB.Scale(4))
-					FCF_SavePositionAndDimensions(chat)
-				end
+				bottomrightframe:HookScript("OnDragStart", function(self)
+					dragging = true
+				end)
+				bottomrightframe:HookScript("OnDragStop", function(self)
+					dragging = nil
+				end)
 				break
 			else
 				if TukuiCF["chat"].showbackdrop == true then
