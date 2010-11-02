@@ -214,15 +214,20 @@ oUF:Factory(function(self)
 	local partyToggle = CreateFrame("Frame")
 	partyToggle:RegisterEvent("PLAYER_ENTERING_WORLD")
 	partyToggle:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-	partyToggle:SetScript("OnEvent", function(self)
+	partyToggle:SetScript("OnEvent", function(self, event)
 		local inInstance, instanceType = IsInInstance()
 		local _, _, _, _, maxPlayers, _, _ = GetInstanceInfo()
-		if inInstance and instanceType == "raid" and maxPlayers ~= 40 then
-			oUF_TukuiDPSParty:SetAttribute("showRaid", false)
-			oUF_TukuiDPSParty:SetAttribute("showParty", false)			
+		if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
+		if not InCombatLockdown() then
+			if inInstance and instanceType == "raid" and maxPlayers ~= 40 then
+				oUF_TukuiDPSParty:SetAttribute("showRaid", false)
+				oUF_TukuiDPSParty:SetAttribute("showParty", false)			
+			else
+				oUF_TukuiDPSParty:SetAttribute("showParty", true)
+				oUF_TukuiDPSParty:SetAttribute("showRaid", true)
+			end
 		else
-			oUF_TukuiDPSParty:SetAttribute("showParty", true)
-			oUF_TukuiDPSParty:SetAttribute("showRaid", true)
+			self:RegisterEvent("PLAYER_REGEN_ENABLED")
 		end
 	end)
 end)

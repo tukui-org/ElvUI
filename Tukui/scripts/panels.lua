@@ -17,14 +17,23 @@ if TukuiCF["datatext"].battleground == true then
 	bottompanel:RegisterEvent("PLAYER_ENTERING_WORLD")
 	bottompanel:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 	bottompanel:SetScript("OnEvent", function(self, event)
+		if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
 		local inInstance, instanceType = IsInInstance()
 		if (inInstance and (instanceType == "pvp")) then
-			TukuiInfoBattleGround:Show()
-			TukuiBottomPanel:EnableMouse(true)
-		else
-			TukuiInfoBattleGround:Hide()
-			TukuiBottomPanel:EnableMouse(false)
+			if not InCombatLockdown() then
+				TukuiBottomPanel:EnableMouse(true)
+				TukuiInfoBattleGround:Show()
+			else
+				self:RegisterEvent("PLAYER_REGEN_ENABLED")
 			end
+		else
+			if not InCombatLockdown() then
+				TukuiBottomPanel:EnableMouse(false)
+				TukuiInfoBattleGround:Hide()
+			else
+				self:RegisterEvent("PLAYER_REGEN_ENABLED")
+			end
+		end
 	end)
 end
 
@@ -143,7 +152,7 @@ if TukuiCF["chat"].showbackdrop == true then
 	TukuiDB.SetTransparentTemplate(chatltbg)
 	chatltbg:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
 	chatltbg:SetPoint("BOTTOMLEFT", chatlbg, "TOPLEFT", 0, TukuiDB.Scale(3))
-	chatltbg:SetPoint("BOTTOMRIGHT", chatlbg, "TOPRIGHT", TukuiDB.Scale(-25), TukuiDB.Scale(3))
+	chatltbg:SetPoint("BOTTOMRIGHT", chatlbg, "TOPRIGHT", TukuiDB.Scale(-24), TukuiDB.Scale(3))
 	chatltbg:SetHeight(TukuiDB.Scale(22))
 	chatltbg:SetFrameStrata("BACKGROUND")
 	
@@ -163,7 +172,7 @@ local chatrtbg = CreateFrame("Frame", nil, chatrbg)
 TukuiDB.SetTransparentTemplate(chatrtbg)
 chatrtbg:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
 chatrtbg:SetPoint("BOTTOMLEFT", chatrbg, "TOPLEFT", 0, TukuiDB.Scale(3))
-chatrtbg:SetPoint("BOTTOMRIGHT", chatrbg, "TOPRIGHT", TukuiDB.Scale(-25), TukuiDB.Scale(3))
+chatrtbg:SetPoint("BOTTOMRIGHT", chatrbg, "TOPRIGHT", TukuiDB.Scale(-24), TukuiDB.Scale(3))
 chatrtbg:SetHeight(TukuiDB.Scale(22))
 chatrtbg:SetFrameStrata("BACKGROUND")
 
@@ -256,11 +265,19 @@ if TukuiCF["datatext"].battleground == true then
 	bgframe:SetScript("OnEvent", function(self, event)
 		local inInstance, instanceType = IsInInstance()
 		if (inInstance and (instanceType == "pvp")) then
-			bgframe:Show()
-			TukuiBottomPanel:EnableMouse(true)
+			if not InCombatLockdown() then
+				TukuiInfoBattleGround:Show()
+				TukuiBottomPanel:EnableMouse(true)
+			else
+				self:RegisterEvent("PLAYER_REGEN_ENABLED")
+			end
 		else
-			bgframe:Hide()
-			TukuiBottomPanel:EnableMouse(false)
+			if not InCombatLockdown() then
+				TukuiInfoBattleGround:Hide()
+				TukuiBottomPanel:EnableMouse(false)
+			else
+				self:RegisterEvent("PLAYER_REGEN_ENABLED")
+			end
 		end
 	end)
 end

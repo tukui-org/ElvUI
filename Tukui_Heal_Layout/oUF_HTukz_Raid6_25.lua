@@ -256,14 +256,19 @@ oUF:Factory(function(self)
 	raidToggle:SetScript("OnEvent", function(self)
 		local inInstance, instanceType = IsInInstance()
 		local _, _, _, _, maxPlayers, _, _ = GetInstanceInfo()
-		if inInstance and instanceType == "raid" and maxPlayers ~= 40 then
-			ChangeVisibility("custom [group:party,nogroup:raid][group:raid] show;hide")
-		else
-			if TukuiCF["raidframes"].gridonly == true then
-				ChangeVisibility("custom [@raid26,exists] hide;show")
+		if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
+		if not InCombatLockdown() then
+			if inInstance and instanceType == "raid" and maxPlayers ~= 40 then
+				ChangeVisibility("custom [group:party,nogroup:raid][group:raid] show;hide")
 			else
-				ChangeVisibility("custom [@raid6,noexists][@raid26,exists] hide;show")
+				if TukuiCF["raidframes"].gridonly == true then
+					ChangeVisibility("custom [@raid26,exists] hide;show")
+				else
+					ChangeVisibility("custom [@raid6,noexists][@raid26,exists] hide;show")
+				end
 			end
+		else
+			self:RegisterEvent("PLAYER_REGEN_ENABLED")
 		end
 	end)
 end)

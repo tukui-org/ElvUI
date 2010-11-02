@@ -74,7 +74,21 @@ local function SetChatStyle(frame)
 	local originalpoint = select(2, _G[chat.."TabText"]:GetPoint())
 	_G[chat.."TabText"]:SetPoint("LEFT", originalpoint, "RIGHT", 0, -TukuiDB.mult*2)
 	
-		
+	--Reposition the "New Message" orange glow so its aligned with the bottom of the chat tab
+	for i=1, tab:GetNumRegions() do
+		local region = select(i, tab:GetRegions())
+		if region:GetObjectType() == "Texture" then
+			if region:GetTexture() == "Interface\\ChatFrame\\ChatFrameTab-NewMessage" then
+				if TukuiCF["chat"].showbackdrop == true then
+					region:ClearAllPoints()
+					region:SetPoint("BOTTOMLEFT", 0, TukuiDB.Scale(4))
+					region:SetPoint("BOTTOMRIGHT", 0, TukuiDB.Scale(4))
+				else
+					TukuiDB.Kill(region)
+				end
+			end
+		end
+	end
 	-- yeah baby
 	_G[chat]:SetClampRectInsets(0,0,0,0)
 	
@@ -349,9 +363,9 @@ function TukuiDB.ChatCopyButtons()
 			button:SetPoint("TOPRIGHT", 0, 0)
 		else
 			if i ~= 2 then
-				button:SetPoint("BOTTOMRIGHT", cf, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(5))
+				button:SetPoint("BOTTOMRIGHT", cf, "TOPRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(5))
 			else
-				button:SetPoint("BOTTOMRIGHT", cf, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(29))
+				button:SetPoint("BOTTOMRIGHT", cf, "TOPRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(29))
 			end
 		end
 		TukuiDB.SetTransparentTemplate(button)
