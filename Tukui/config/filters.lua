@@ -1,3 +1,8 @@
+local function SpellName(id)
+	local name, _, _, _, _, _, _, _, _ = GetSpellInfo(id)
+	return name
+end
+
 -- List of nameplate names we want to hide nameplates of
 TukuiDB.NPCList = {
 	--Gundrak
@@ -172,32 +177,32 @@ end
 --List of buffs to watch for on arena frames
 ArenaBuffWhiteList = {
 	-- Buffs
-		[GetSpellInfo(1022)] = true, --hop
-		[GetSpellInfo(12051)] = true, --evoc
-		[GetSpellInfo(2825)] = true, --BL
-		[GetSpellInfo(32182)] = true, --Heroism
-		[GetSpellInfo(33206)] = true, --Pain Suppression
-		[GetSpellInfo(29166)] = true, --Innervate
-		[GetSpellInfo(18708)] = true, --"Fel Domination"
-		[GetSpellInfo(54428)] = true, --divine plea
-		[GetSpellInfo(31821)] = true, -- aura mastery
+		[SpellName(1022)] = true, --hop
+		[SpellName(12051)] = true, --evoc
+		[SpellName(2825)] = true, --BL
+		[SpellName(32182)] = true, --Heroism
+		[SpellName(33206)] = true, --Pain Suppression
+		[SpellName(29166)] = true, --Innervate
+		[SpellName(18708)] = true, --"Fel Domination"
+		[SpellName(54428)] = true, --divine plea
+		[SpellName(31821)] = true, -- aura mastery
 
 	-- Turtling abilities
-		[GetSpellInfo(871)] = true, --Shield Wall
-		[GetSpellInfo(48707)] = true, --"Anti-Magic Shell"
-		[GetSpellInfo(31224)] = true, -- cloak of shadows
-		[GetSpellInfo(19263)] = true, -- deterance
-		[GetSpellInfo(47585)] = true, --  Dispersion
+		[SpellName(871)] = true, --Shield Wall
+		[SpellName(48707)] = true, --"Anti-Magic Shell"
+		[SpellName(31224)] = true, -- cloak of shadows
+		[SpellName(19263)] = true, -- deterance
+		[SpellName(47585)] = true, --  Dispersion
 
 	-- Immunities
-		[GetSpellInfo(45438)] = true, -- ice Brock
-		[GetSpellInfo(642)] = true, -- pally bubble from hell
+		[SpellName(45438)] = true, -- ice Brock
+		[SpellName(642)] = true, -- pally bubble from hell
 		
 	-- Offensive Shit
-		[GetSpellInfo(31884)] = true, -- Avenging Wrath
-		[GetSpellInfo(34471)] = true, -- beast within
-		[GetSpellInfo(85696)] = true, -- Zealotry
-		[GetSpellInfo(467)] = true, -- Thorns
+		[SpellName(31884)] = true, -- Avenging Wrath
+		[SpellName(34471)] = true, -- beast within
+		[SpellName(85696)] = true, -- Zealotry
+		[SpellName(467)] = true, -- Thorns
 }
 
 -------------------------------------------------------------
@@ -207,201 +212,197 @@ ArenaBuffWhiteList = {
 -- Debuffs to always hide
 -- Raid frames use this when not inside a BG/Arena. Player, TargetTarget, Focus always use it.
 DebuffBlacklist = {
-	[GetSpellInfo(57724)] = true, --Sated
-	[GetSpellInfo(25771)] = true, --forbearance
-	[GetSpellInfo(57723)] = true, --Exhaustion
-	[GetSpellInfo(36032)] = true, --arcane blast
-	[GetSpellInfo(58539)] = true, --watchers corpse
-	[GetSpellInfo(26013)] = true, --deserter
-	[GetSpellInfo(6788)] = true, --weakended soul
-	[GetSpellInfo(71041)] = true, --dungeon deserter
-	[GetSpellInfo(41425)] = true, --"Hypothermia"
-	[GetSpellInfo(55711)] = true, --Weakened Heart
-	[GetSpellInfo(28531)] = true, --frost aura (naxx)
-	[GetSpellInfo(67604)] = true, --Powering Up toc
-	[GetSpellInfo(8326)] = true, --ghost
-	[GetSpellInfo(20584)] = true, --ghost
-	[GetSpellInfo(23445)] = true, --evil twin
-	[GetSpellInfo(24755)] = true, --gay homosexual tricked or treated debuff
-	[GetSpellInfo(25163)] = true, --fucking annoying pet debuff oozeling disgusting aura
+	[SpellName(57724)] = true, --Sated
+	[SpellName(25771)] = true, --forbearance
+	[SpellName(57723)] = true, --Exhaustion
+	[SpellName(36032)] = true, --arcane blast
+	[SpellName(58539)] = true, --watchers corpse
+	[SpellName(26013)] = true, --deserter
+	[SpellName(6788)] = true, --weakended soul
+	[SpellName(71041)] = true, --dungeon deserter
+	[SpellName(41425)] = true, --"Hypothermia"
+	[SpellName(55711)] = true, --Weakened Heart
+	[SpellName(28531)] = true, --frost aura (naxx)
+	[SpellName(67604)] = true, --Powering Up toc
+	[SpellName(8326)] = true, --ghost
+	[SpellName(20584)] = true, --ghost
+	[SpellName(23445)] = true, --evil twin
+	[SpellName(24755)] = true, --gay homosexual tricked or treated debuff
+	[SpellName(25163)] = true, --fucking annoying pet debuff oozeling disgusting aura
 	
 	--Blood Princes
-	[GetSpellInfo(71911)] = true, --shadow resonance
+	[SpellName(71911)] = true, --shadow resonance
 	
 	--Festergut
-	[GetSpellInfo(72144)] = true, --"Orange Blight Residue"
-	[GetSpellInfo(73034)] = true, --Blighted Spores
-	[GetSpellInfo(70852)] = true, --Malleable Goo
+	[SpellName(72144)] = true, --"Orange Blight Residue"
+	[SpellName(73034)] = true, --Blighted Spores
+	[SpellName(70852)] = true, --Malleable Goo
 	
 	--Rotface
-	[GetSpellInfo(72145)] = true, --"Green Blight Residue"
+	[SpellName(72145)] = true, --"Green Blight Residue"
 	
 	--Putricide
-	[GetSpellInfo(72511)] = true, --Mutated Transformation
+	[SpellName(72511)] = true, --Mutated Transformation
 	
-	[GetSpellInfo(72460)] = true, --Choking Gas
+	[SpellName(72460)] = true, --Choking Gas
 }
 
 -- Debuffs to Show
 -- Only works on raid frames when inside a BG/Arena. Target frame will always show these
 DebuffWhiteList = {
 	-- Death Knight
-		[GetSpellInfo(51209)] = true, --hungering cold
-		[GetSpellInfo(47476)] = true, --strangulate
+		[SpellName(51209)] = true, --hungering cold
+		[SpellName(47476)] = true, --strangulate
 	-- Druid
-		[GetSpellInfo(33786)] = true, --Cyclone
-		[GetSpellInfo(2637)] = true, --Hibernate
-		[GetSpellInfo(339)] = true, --Entangling Roots
-		[GetSpellInfo(80964)] = true, --Skull Bash Bear
-		[GetSpellInfo(80965)] = true, --Skull Bash Cat
+		[SpellName(33786)] = true, --Cyclone
+		[SpellName(2637)] = true, --Hibernate
+		[SpellName(339)] = true, --Entangling Roots
+		[SpellName(80964)] = true, --Skull Bash
 	-- Hunter
-		[GetSpellInfo(3355)] = true, --Freezing Trap Effect
-		--[GetSpellInfo(60210)] = true, --Freezing Arrow Effect
-		[GetSpellInfo(1513)] = true, --scare beast
-		[GetSpellInfo(19503)] = true, --scatter shot
-		[GetSpellInfo(34490)] = true, --silence shot
+		[SpellName(3355)] = true, --Freezing Trap Effect
+		--[SpellName(60210)] = true, --Freezing Arrow Effect
+		[SpellName(1513)] = true, --scare beast
+		[SpellName(19503)] = true, --scatter shot
+		[SpellName(34490)] = true, --silence shot
 	-- Mage
-		[GetSpellInfo(31661)] = true, --Dragon's Breath
-		[GetSpellInfo(61305)] = true, --Polymorph
-		[GetSpellInfo(31589)] = true, --Slow
-		[GetSpellInfo(18469)] = true, --Silenced - Improved Counterspell
-		[GetSpellInfo(122)] = true, --Frost Nova
-		[GetSpellInfo(55080)] = true, --Shattered Barrier
+		[SpellName(31661)] = true, --Dragon's Breath
+		[SpellName(61305)] = true, --Polymorph
+		[SpellName(31589)] = true, --Slow
+		[SpellName(18469)] = true, --Silenced - Improved Counterspell
+		[SpellName(122)] = true, --Frost Nova
+		[SpellName(55080)] = true, --Shattered Barrier
 	-- Paladin
-		[GetSpellInfo(20066)] = true, --Repentance
-		[GetSpellInfo(10326)] = true, --Turn Evil
-		[GetSpellInfo(853)] = true, --Hammer of Justice
+		[SpellName(20066)] = true, --Repentance
+		[SpellName(10326)] = true, --Turn Evil
+		[SpellName(853)] = true, --Hammer of Justice
 	-- Priest
-		[GetSpellInfo(605)] = true, --Mind Control
-		[GetSpellInfo(64044)] = true, --Psychic Horror
-		[GetSpellInfo(8122)] = true, --Psychic Scream
-		[GetSpellInfo(9484)] = true, --Shackle Undead
-		[GetSpellInfo(15487)] = true, --Silence
+		[SpellName(605)] = true, --Mind Control
+		[SpellName(64044)] = true, --Psychic Horror
+		[SpellName(8122)] = true, --Psychic Scream
+		[SpellName(9484)] = true, --Shackle Undead
+		[SpellName(15487)] = true, --Silence
 	-- Rogue
-		[GetSpellInfo(2094)] = true, --Blind
-		[GetSpellInfo(1776)] = true, --Gouge
-		[GetSpellInfo(6770)] = true, --Sap
-		[GetSpellInfo(18425)] = true, --Silenced - Improved Kick
+		[SpellName(2094)] = true, --Blind
+		[SpellName(1776)] = true, --Gouge
+		[SpellName(6770)] = true, --Sap
+		[SpellName(18425)] = true, --Silenced - Improved Kick
 	-- Shaman
-		[GetSpellInfo(51514)] = true, --Hex
-		[GetSpellInfo(3600)] = true, --Earthbind
-		[GetSpellInfo(8056)] = true, --Frost Shock
-		[GetSpellInfo(63685)] = true, --Freeze
-		[GetSpellInfo(39796)] = true, --Stoneclaw Stun
+		[SpellName(51514)] = true, --Hex
+		[SpellName(3600)] = true, --Earthbind
+		[SpellName(8056)] = true, --Frost Shock
+		[SpellName(63685)] = true, --Freeze
+		[SpellName(39796)] = true, --Stoneclaw Stun
 	-- Warlock
-		[GetSpellInfo(710)] = true, --Banish
-		[GetSpellInfo(6789)] = true, --Death Coil
-		[GetSpellInfo(5782)] = true, --Fear
-		[GetSpellInfo(5484)] = true, --Howl of Terror
-		[GetSpellInfo(6358)] = true, --Seduction
-		[GetSpellInfo(30283)] = true, --Shadowfury
-		[GetSpellInfo(89605)] = true, --Aura of Foreboding
+		[SpellName(710)] = true, --Banish
+		[SpellName(6789)] = true, --Death Coil
+		[SpellName(5782)] = true, --Fear
+		[SpellName(5484)] = true, --Howl of Terror
+		[SpellName(6358)] = true, --Seduction
+		[SpellName(30283)] = true, --Shadowfury
+		[SpellName(89605)] = true, --Aura of Foreboding
 	-- Warrior
-		[GetSpellInfo(20511)] = true, --Intimidating Shout
+		[SpellName(20511)] = true, --Intimidating Shout
 	-- Racial
-		[GetSpellInfo(25046)] = true, --Arcane Torrent
+		[SpellName(25046)] = true, --Arcane Torrent
 		
 	--PVE Debuffs
 		
 	-- Lich King
-		[GetSpellInfo(73787)] = true, --Necrotic Plague
+		[SpellName(73787)] = true, --Necrotic Plague
 }
 
 --List of debuffs for targetframe for pvp only (when inside a bg/arena
 --We do this because in PVE Situations we don't want to see these debuffs on our target frame
 TargetPVPOnly = {
-	[GetSpellInfo(34438)] = true, --UA
-	[GetSpellInfo(34914)] = true, --VT
-	[GetSpellInfo(31935)] = true, --avengers shield
-	[GetSpellInfo(63529)] = true, --shield of the templar
-	[GetSpellInfo(19386)] = true, --wyvern sting
-	[GetSpellInfo(116)] = true, --frostbolt
-	[GetSpellInfo(58179)] = true, --infected wounds
-	[GetSpellInfo(18223)] = true, -- curse of exhaustion
-	[GetSpellInfo(18118)] = true, --aftermath
+	[SpellName(34438)] = true, --UA
+	[SpellName(34914)] = true, --VT
+	[SpellName(31935)] = true, --avengers shield
+	[SpellName(63529)] = true, --shield of the templar
+	[SpellName(19386)] = true, --wyvern sting
+	[SpellName(116)] = true, --frostbolt
+	[SpellName(58179)] = true, --infected wounds
+	[SpellName(18223)] = true, -- curse of exhaustion
+	[SpellName(18118)] = true, --aftermath
 	--not sure if this one belongs here but i do know frost pve uses this
-	[GetSpellInfo(44572)] = true, --deep freeze
+	[SpellName(44572)] = true, --deep freeze
 }
 
 --This list is used by the healerlayout when center layout is true (When not inside a bg/arena)
 DebuffHealerWhiteList = {
 	-- Naxxramas
-		[GetSpellInfo(27808)] = true, -- Frost Blast
-		[GetSpellInfo(32407)] = true, -- Strange Aura
-		[GetSpellInfo(28408)] = true, -- Chains of Kel'Thuzad
+		[SpellName(27808)] = true, -- Frost Blast
+		[SpellName(32407)] = true, -- Strange Aura
+		[SpellName(28408)] = true, -- Chains of Kel'Thuzad
 
 	-- Ulduar
-		[GetSpellInfo(66313)] = true, -- Fire Bomb
-		[GetSpellInfo(63134)] = true, -- Sara's Blessing
-		[GetSpellInfo(62717)] = true, -- Slag Pot
-		[GetSpellInfo(63018)] = true, -- Searing Light
-		[GetSpellInfo(64233)] = true, -- Gravity Bomb
-		[GetSpellInfo(63495)] = true, -- Static Disruption
+		[SpellName(66313)] = true, -- Fire Bomb
+		[SpellName(63134)] = true, -- Sara's Blessing
+		[SpellName(62717)] = true, -- Slag Pot
+		[SpellName(63018)] = true, -- Searing Light
+		[SpellName(64233)] = true, -- Gravity Bomb
+		[SpellName(63495)] = true, -- Static Disruption
 
 	-- Trial of the Crusader
-		[GetSpellInfo(66406)] = true, -- Snobolled!
-		[GetSpellInfo(67574)] = true, -- Pursued by Anub'arak
-		[GetSpellInfo(68509)] = true, -- Penetrating Cold
-		[GetSpellInfo(67651)] = true, -- Arctic Breath
-		[GetSpellInfo(68127)] = true, -- Legion Flame
-		[GetSpellInfo(67049)] = true, -- Incinerate Flesh
-		[GetSpellInfo(66869)] = true, -- Burning Bile
-		[GetSpellInfo(66823)] = true, -- Paralytic Toxin
+		[SpellName(66406)] = true, -- Snobolled!
+		[SpellName(67574)] = true, -- Pursued by Anub'arak
+		[SpellName(68509)] = true, -- Penetrating Cold
+		[SpellName(67651)] = true, -- Arctic Breath
+		[SpellName(68127)] = true, -- Legion Flame
+		[SpellName(67049)] = true, -- Incinerate Flesh
+		[SpellName(66869)] = true, -- Burning Bile
+		[SpellName(66823)] = true, -- Paralytic Toxin
 
 	-- Icecrown Citadel
-		[GetSpellInfo(71224)] = true, -- Mutated Infection
-		[GetSpellInfo(71822)] = true, -- Shadow Resonance
-		[GetSpellInfo(70447)] = true, -- Volatile Ooze Adhesive
-		[GetSpellInfo(72293)] = true, -- Mark of the Fallen Champion
-		[GetSpellInfo(72448)] = true, -- Rune of Blood
-		[GetSpellInfo(71473)] = true, -- Essence of the Blood Queen
-		[GetSpellInfo(71624)] = true, -- Delirious Slash
-		[GetSpellInfo(70923)] = true, -- Uncontrollable Frenzy
-		[GetSpellInfo(70588)] = true, -- Suppression
-		[GetSpellInfo(71738)] = true, -- Corrosion
-		[GetSpellInfo(71733)] = true, -- Acid Burst
-		[GetSpellInfo(72108)] = true, -- Death and Decay
-		[GetSpellInfo(71289)] = true, -- Dominate Mind
-		[GetSpellInfo(69762)] = true, -- Unchained Magic
-		[GetSpellInfo(69651)] = true, -- Wounding Strike
-		[GetSpellInfo(69065)] = true, -- Impaled
-		[GetSpellInfo(71218)] = true, -- Vile Gas
-		[GetSpellInfo(72442)] = true, -- Boiling Blood
-		[GetSpellInfo(72769)] = true, -- Scent of Blood (heroic)
-		[GetSpellInfo(69279)] = true, -- Gas Spore
-		[GetSpellInfo(70949)] = true, -- Essence of the Blood Queen (hand icon)
-		[GetSpellInfo(72151)] = true, -- Frenzied Bloodthirst (bite icon)
-		[GetSpellInfo(71474)] = true, -- Frenzied Bloodthirst (red bite icon)
-		[GetSpellInfo(71340)] = true, -- Pact of the Darkfallen
-		[GetSpellInfo(72985)] = true, -- Swarming Shadows (pink icon)
-		[GetSpellInfo(71267)] = true, -- Swarming Shadows (black purple icon)
-		[GetSpellInfo(71264)] = true, -- Swarming Shadows (swirl icon)
-		[GetSpellInfo(71807)] = true, -- Glittering Sparks
-		[GetSpellInfo(70873)] = true, -- Emerald Vigor
-		[GetSpellInfo(71283)] = true, -- Gut Spray
-		[GetSpellInfo(69766)] = true, -- Instability
-		[GetSpellInfo(70126)] = true, -- Frost Beacon
-		[GetSpellInfo(70157)] = true, -- Ice Tomb
-		[GetSpellInfo(71056)] = true, -- Frost Breath
-		[GetSpellInfo(70106)] = true, -- Chilled to the Bone
-		[GetSpellInfo(70128)] = true, -- Mystic Buffet
-		[GetSpellInfo(73785)] = true, -- Necrotic Plague
-		[GetSpellInfo(73779)] = true, -- Infest
-		[GetSpellInfo(73800)] = true, -- Soul Shriek
-		[GetSpellInfo(73797)] = true, -- Soul Reaper
-		[GetSpellInfo(73708)] = true, -- Defile
-		[GetSpellInfo(74322)] = true, -- Harvested Soul
+		[SpellName(71224)] = true, -- Mutated Infection
+		[SpellName(71822)] = true, -- Shadow Resonance
+		[SpellName(70447)] = true, -- Volatile Ooze Adhesive
+		[SpellName(72293)] = true, -- Mark of the Fallen Champion
+		[SpellName(72448)] = true, -- Rune of Blood
+		[SpellName(71473)] = true, -- Essence of the Blood Queen
+		[SpellName(71624)] = true, -- Delirious Slash
+		[SpellName(70923)] = true, -- Uncontrollable Frenzy
+		[SpellName(70588)] = true, -- Suppression
+		[SpellName(71738)] = true, -- Corrosion
+		[SpellName(71733)] = true, -- Acid Burst
+		[SpellName(72108)] = true, -- Death and Decay
+		[SpellName(71289)] = true, -- Dominate Mind
+		[SpellName(69762)] = true, -- Unchained Magic
+		[SpellName(69651)] = true, -- Wounding Strike
+		[SpellName(69065)] = true, -- Impaled
+		[SpellName(71218)] = true, -- Vile Gas
+		[SpellName(72442)] = true, -- Boiling Blood
+		[SpellName(72769)] = true, -- Scent of Blood (heroic)
+		[SpellName(69279)] = true, -- Gas Spore
+		[SpellName(70949)] = true, -- Essence of the Blood Queen (hand icon)
+		[SpellName(72151)] = true, -- Frenzied Bloodthirst (bite icon)
+		[SpellName(71340)] = true, -- Pact of the Darkfallen
+		[SpellName(72985)] = true, -- Swarming Shadows (pink icon)
+		[SpellName(71807)] = true, -- Glittering Sparks
+		[SpellName(70873)] = true, -- Emerald Vigor
+		[SpellName(71283)] = true, -- Gut Spray
+		[SpellName(69766)] = true, -- Instability
+		[SpellName(70126)] = true, -- Frost Beacon
+		[SpellName(70157)] = true, -- Ice Tomb
+		[SpellName(71056)] = true, -- Frost Breath
+		[SpellName(70106)] = true, -- Chilled to the Bone
+		[SpellName(70128)] = true, -- Mystic Buffet
+		[SpellName(73785)] = true, -- Necrotic Plague
+		[SpellName(73779)] = true, -- Infest
+		[SpellName(73800)] = true, -- Soul Shriek
+		[SpellName(73797)] = true, -- Soul Reaper
+		[SpellName(73708)] = true, -- Defile
+		[SpellName(74322)] = true, -- Harvested Soul
 			
 	--Ruby Sanctum
-		[GetSpellInfo(74502)] = true, --Enervating Brand
-		[GetSpellInfo(75887)] = true, --Blazing Aura  
-		[GetSpellInfo(74562)] = true, --Fiery Combustion
-		[GetSpellInfo(74567)] = true, --Mark of Combustion (Fire)
-		[GetSpellInfo(74792)] = true, --Soul Consumption
-		[GetSpellInfo(74795)] = true, --Mark Of Consumption (Soul)
+		[SpellName(74502)] = true, --Enervating Brand
+		[SpellName(75887)] = true, --Blazing Aura  
+		[SpellName(74562)] = true, --Fiery Combustion
+		[SpellName(74567)] = true, --Mark of Combustion (Fire)
+		[SpellName(74792)] = true, --Soul Consumption
+		[SpellName(74795)] = true, --Mark Of Consumption (Soul)
 
 	-- Other debuff
-		[GetSpellInfo(67479)] = true, -- Impale
+		[SpellName(67479)] = true, -- Impale
 }
 
 --------------------------------------------------------------------------------------------
