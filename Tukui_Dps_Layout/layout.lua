@@ -85,7 +85,11 @@ local function Shared(self, unit)
 		local health = CreateFrame('StatusBar', nil, self)
 		health:SetWidth(original_width)
 		health:SetHeight(original_height)
-		health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -powerbar_offset, powerbar_offset)
+		if powerbar_offset ~= 0 then
+			health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -powerbar_offset, powerbar_offset)
+		else
+			health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -powerbar_offset, original_height * 0.35)	
+		end
 		health:SetStatusBarTexture(normTex)
 		self.health = health
 		
@@ -128,14 +132,21 @@ local function Shared(self, unit)
 			health.colorReaction = true			
 		end
 		health.colorDisconnected = false
-		
+
 		-- Power Frame Border
 		local PowerFrame = CreateFrame("Frame", nil, self)
-		PowerFrame:SetHeight(original_height)
-		PowerFrame:SetWidth(original_width)
-		PowerFrame:SetFrameLevel(self:GetFrameLevel() - 1)
-		PowerFrame:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMRIGHT", powerbar_offset, -powerbar_offset)
-
+		if powerbar_offset ~= 0 then
+			PowerFrame:SetHeight(original_height)
+			PowerFrame:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMRIGHT", powerbar_offset, -powerbar_offset)
+			PowerFrame:SetWidth(original_width)
+			PowerFrame:SetFrameLevel(self:GetFrameLevel() - 1)
+		else
+			PowerFrame:SetHeight(original_height * 0.35)
+			PowerFrame:SetPoint("TOP", self.Health, "BOTTOM", 0, -TukuiDB.mult*3)
+			PowerFrame:SetWidth(original_width + TukuiDB.mult*4)
+		end
+		
+	
 		TukuiDB.SetTemplate(PowerFrame)
 		PowerFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))	
 		self.PowerFrame = PowerFrame
@@ -160,7 +171,11 @@ local function Shared(self, unit)
 		
 		--Adjust player frame size
 		player_width = player_width + powerbar_offset
-		player_height = player_height + powerbar_offset
+		if powerbar_offset ~= 0 then
+			player_height = player_height + powerbar_offset
+		else
+			player_height = player_height + PowerFrame:GetHeight()
+		end
 		
 		self.Power = power
 		self.Power.bg = powerBG
@@ -194,9 +209,16 @@ local function Shared(self, unit)
 		-- Portraits
 		if (db.charportrait == true) then
 			local PFrame = CreateFrame("Frame", nil, self)
-			PFrame:SetPoint('TOPRIGHT', self.Health,'TOPLEFT', TukuiDB.Scale(-6), TukuiDB.Scale(2))
-			PFrame:SetWidth(original_width/5)
-			PFrame:SetHeight(original_height+ TukuiDB.Scale(11))
+			if powerbar_offset ~= 0 then
+				PFrame:SetPoint('TOPRIGHT', self.Health,'TOPLEFT', TukuiDB.Scale(-6), TukuiDB.Scale(2))
+				PFrame:SetPoint('BOTTOMRIGHT', self.Health,'BOTTOMLEFT', TukuiDB.Scale(-6) - powerbar_offset, -powerbar_offset)
+				PFrame:SetWidth(original_width/5)
+			else
+				PFrame:SetPoint('TOPRIGHT', self.Health,'TOPLEFT', TukuiDB.Scale(-6), TukuiDB.Scale(2))
+				PFrame:SetPoint('BOTTOMRIGHT', self.Health,'BOTTOMLEFT', TukuiDB.Scale(-6), TukuiDB.Scale(-3) + -(original_height * 0.35))
+				PFrame:SetWidth(original_width/5)
+	
+			end
 			TukuiDB.SetTemplate(PFrame)
 			PFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))
 			self.PFrame = PFrame
@@ -284,7 +306,11 @@ local function Shared(self, unit)
 			Experience:SetStatusBarColor(0, 0.4, 1, .8)
 			Experience:SetWidth(original_width)
 			Experience:SetHeight(TukuiDB.Scale(5))
-			Experience:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+			if powerbar_offset ~= 0 then
+				Experience:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+			else	
+				Experience:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -TukuiDB.Scale(8))
+			end
 			Experience.noTooltip = true
 			Experience:EnableMouse(true)
 			self.Experience = Experience
@@ -333,7 +359,11 @@ local function Shared(self, unit)
 			Reputation:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
 			Reputation:SetWidth(original_width)
 			Reputation:SetHeight(TukuiDB.Scale(5))
-			Reputation:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+			if powerbar_offset ~= 0 then
+				Reputation:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+			else
+				Reputation:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -TukuiDB.Scale(8))
+			end
 			Reputation.Tooltip = true
 
 			Reputation:HookScript("OnEnter", function(self)
@@ -363,7 +393,11 @@ local function Shared(self, unit)
 			local ThreatBar = CreateFrame("StatusBar", self:GetName()..'_ThreatBar', self)
 			ThreatBar:SetWidth(original_width)
 			ThreatBar:SetHeight(TukuiDB.Scale(5))
-			ThreatBar:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+			if powerbar_offset ~= 0 then
+				ThreatBar:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+			else
+				ThreatBar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -TukuiDB.Scale(8))
+			end
 			ThreatBar:SetStatusBarTexture(normTex)
 			ThreatBar:GetStatusBarTexture():SetHorizTile(false)
 			ThreatBar:SetBackdrop(backdrop)
@@ -643,7 +677,7 @@ local function Shared(self, unit)
 			self.Debuffs.CustomFilter = TukuiDB.AuraFilter
 		end
 			
-		-- cast bar for player and target
+		-- cast bar for player
 		if TukuiCF["castbar"].unitcastbar == true then
 			local castbar = CreateFrame("StatusBar", self:GetName().."_Castbar", self)
 			if TukuiCF["castbar"].castermode == true then
@@ -651,7 +685,11 @@ local function Shared(self, unit)
 				castbar:SetPoint("BOTTOMRIGHT", TukuiActionBarBackground, "TOPRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(5))
 			else
 				castbar:SetWidth(original_width)
-				castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+				if powerbar_offset ~= 0 then
+					castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+				else
+					castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -TukuiDB.Scale(8))
+				end
 			end
  
 			castbar:SetHeight(TukuiDB.Scale(20))
@@ -761,7 +799,11 @@ local function Shared(self, unit)
 		local health = CreateFrame('StatusBar', nil, self)
 		health:SetWidth(original_width)
 		health:SetHeight(original_height)
-		health:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", powerbar_offset, powerbar_offset)
+		if powerbar_offset ~= 0 then
+			health:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", powerbar_offset, powerbar_offset)
+		else
+			health:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", powerbar_offset, original_height * 0.35)	
+		end
 		health:SetStatusBarTexture(normTex)
 		self.health = health
 		
@@ -808,10 +850,17 @@ local function Shared(self, unit)
 		
 		-- Power Frame Border
 		local PowerFrame = CreateFrame("Frame", nil, self)
-		PowerFrame:SetHeight(original_height)
-		PowerFrame:SetWidth(original_width)
-		PowerFrame:SetFrameLevel(self:GetFrameLevel() - 1)
-		PowerFrame:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMLEFT", -powerbar_offset, -powerbar_offset)
+		if powerbar_offset ~= 0 then
+			PowerFrame:SetHeight(original_height)
+			PowerFrame:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMLEFT", -powerbar_offset, -powerbar_offset)
+			PowerFrame:SetWidth(original_width)
+			PowerFrame:SetFrameLevel(self:GetFrameLevel() - 1)
+		else
+			PowerFrame:SetHeight(original_height * 0.35)
+			PowerFrame:SetPoint("TOP", self.Health, "BOTTOM", 0, -TukuiDB.mult*3)
+			PowerFrame:SetWidth(original_width + TukuiDB.mult*4)
+		end
+		
 		TukuiDB.SetTemplate(PowerFrame)
 		PowerFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))	
 		self.PowerFrame = PowerFrame
@@ -833,8 +882,13 @@ local function Shared(self, unit)
 		power.value:SetPoint("LEFT", health, "LEFT", TukuiDB.Scale(4), TukuiDB.Scale(1))
 		power.PreUpdate = TukuiDB.PreUpdatePower
 		power.PostUpdate = TukuiDB.PostUpdatePower
+		
 		target_width = target_width + powerbar_offset
-		target_height = target_height + powerbar_offset
+		if powerbar_offset ~= 0 then
+			target_height = target_height + powerbar_offset
+		else
+			target_height = target_height + PowerFrame:GetHeight()
+		end
 		
 		self.Power = power
 		self.Power.bg = powerBG
@@ -866,11 +920,17 @@ local function Shared(self, unit)
 		end
 		
 		-- Portraits
-		if (db.charportrait == true) then
+		if (db.charportrait == true) then			
 			local PFrame = CreateFrame("Frame", nil, self)
-			PFrame:SetPoint('TOPLEFT', self.Health,'TOPRIGHT', TukuiDB.Scale(6), TukuiDB.Scale(2))
-			PFrame:SetWidth(original_width/5)
-			PFrame:SetHeight(original_height+ TukuiDB.Scale(11))
+			if powerbar_offset ~= 0 then
+				PFrame:SetPoint('TOPLEFT', self.Health,'TOPRIGHT', TukuiDB.Scale(6), TukuiDB.Scale(2))
+				PFrame:SetPoint('BOTTOMLEFT', self.Health,'BOTTOMRIGHT', TukuiDB.Scale(6) + powerbar_offset, -powerbar_offset)
+				PFrame:SetWidth(original_width/5)
+			else
+				PFrame:SetPoint('TOPLEFT', self.Health,'TOPRIGHT', TukuiDB.Scale(6), TukuiDB.Scale(2))
+				PFrame:SetPoint('BOTTOMLEFT', self.Health,'BOTTOMRIGHT', TukuiDB.Scale(6), TukuiDB.Scale(-3) + -(original_height * 0.35))
+				PFrame:SetWidth(original_width/5)
+			end
 			TukuiDB.SetTemplate(PFrame)
 			PFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))
 			self.PFrame = PFrame
@@ -878,6 +938,7 @@ local function Shared(self, unit)
 			local portrait = CreateFrame("PlayerModel", nil, PFrame)
 			portrait:SetFrameLevel(2)
 			
+			--dont ask me why but the playerframe looks completely fucked when i set it how it should be..
 			portrait:SetPoint('BOTTOMLEFT', PFrame, 'BOTTOMLEFT', TukuiDB.Scale(2), TukuiDB.Scale(2))		
 			portrait:SetPoint('TOPRIGHT', PFrame, 'TOPRIGHT', TukuiDB.Scale(-2), TukuiDB.Scale(-2))		
 			table.insert(self.__elements, TukuiDB.HidePortrait)
@@ -932,7 +993,11 @@ local function Shared(self, unit)
 		if TukuiCF["castbar"].unitcastbar == true then
 			local castbar = CreateFrame("StatusBar", self:GetName().."_Castbar", self)
 			castbar:SetWidth(original_width)
-			castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+			if powerbar_offset ~= 0 then
+				castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+			else
+				castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -TukuiDB.Scale(8))
+			end
  
 			castbar:SetHeight(TukuiDB.Scale(20))
 			castbar:SetStatusBarTexture(normTex)
@@ -1058,6 +1123,13 @@ local function Shared(self, unit)
 	------------------------------------------------------------------------
 	
 	if (unit == "targettarget" or unit == "pet" or unit == "focustarget" or unit == "focus") then
+		local smallpowerbar_offset
+		if powerbar_offset ~= 0 then
+			smallpowerbar_offset = powerbar_offset*(7/9)
+		else
+			smallpowerbar_offset = TukuiDB.Scale(7)
+		end
+		
 		-- health bar
 		local health = CreateFrame('StatusBar', nil, self)
 		health:SetPoint("TOPLEFT")
@@ -1090,15 +1162,21 @@ local function Shared(self, unit)
 		
 		-- power frame
 		local PowerFrame = CreateFrame("Frame", nil, self)
-		PowerFrame:SetHeight(smallframe_height)
-		PowerFrame:SetWidth(smallframe_width)
-		PowerFrame:SetFrameLevel(self:GetFrameLevel() - 1)
-		if unit == "focus" or unit == "focustarget" then
-			PowerFrame:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", TukuiDB.Scale(7), TukuiDB.Scale(-7))
-		elseif unit == "targettarget" or unit == "pet" then
-			PowerFrame:SetPoint("TOPLEFT", self, "TOPLEFT", TukuiDB.Scale(-7), 0)
-			PowerFrame:SetPoint("TOPRIGHT", self, "TOPRIGHT", TukuiDB.Scale(7), 0)
-			PowerFrame:SetPoint("BOTTOM", self, "BOTTOM", 0, TukuiDB.Scale(-7))
+		if powerbar_offset ~= 0 then
+			PowerFrame:SetWidth(smallframe_width)
+			PowerFrame:SetHeight(smallframe_height)
+			PowerFrame:SetFrameLevel(self:GetFrameLevel() - 1)
+			if unit == "focus" or unit == "focustarget" then
+				PowerFrame:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", smallpowerbar_offset, -smallpowerbar_offset)	
+			elseif unit == "targettarget" or unit == "pet" then
+				PowerFrame:SetPoint("TOPLEFT", self, "TOPLEFT", -smallpowerbar_offset, 0)
+				PowerFrame:SetPoint("TOPRIGHT", self, "TOPRIGHT", smallpowerbar_offset, 0)
+				PowerFrame:SetPoint("BOTTOM", self, "BOTTOM", 0, -smallpowerbar_offset)
+			end
+		else
+			PowerFrame:SetWidth(smallframe_width + TukuiDB.Scale(4))
+			PowerFrame:SetHeight(smallframe_height * 0.3)
+			PowerFrame:SetPoint("TOP", self, "BOTTOM", 0,-TukuiDB.Scale(3))
 		end
 		PowerFrame:SetFrameStrata("LOW")
 		TukuiDB.SetTemplate(PowerFrame)
@@ -1161,8 +1239,12 @@ local function Shared(self, unit)
 			debuffs.size = ((20 / smallframe_width) * smallframe_width)
 			debuffs.spacing = 2
 			debuffs.num = 4
-
-			debuffs:SetPoint("TOP", self, "BOTTOM", TukuiDB.Scale(7), -TukuiDB.Scale(10))
+			
+			if powerbar_offset ~= 0 then
+				debuffs:SetPoint("TOP", self, "BOTTOM", smallpowerbar_offset, -TukuiDB.Scale(10))
+			else
+				debuffs:SetPoint("TOP", self, "BOTTOM", 0, -TukuiDB.Scale(12))
+			end
 			debuffs.initialAnchor = "TOPLEFT"
 			debuffs["growth-y"] = "UP"
 			debuffs.PostCreateIcon = TukuiDB.PostCreateAuraSmall
@@ -1179,8 +1261,13 @@ local function Shared(self, unit)
 			debuffs.size = ((20 / smallframe_width) * smallframe_width)
 			debuffs.spacing = 2
 			debuffs.num = 4
-
-			debuffs:SetPoint("TOP", self, "BOTTOM", TukuiDB.Scale(7), -TukuiDB.Scale(10))
+			
+			if powerbar_offset ~= 0 then
+				debuffs:SetPoint("TOP", self, "BOTTOM", smallpowerbar_offset, -TukuiDB.Scale(10))
+			else
+				debuffs:SetPoint("TOP", self, "BOTTOM", 0, -TukuiDB.Scale(12))
+			end
+			
 			debuffs.initialAnchor = "TOPLEFT"
 			debuffs["growth-y"] = "UP"
 			debuffs.PostCreateIcon = TukuiDB.PostCreateAuraSmall
@@ -1276,6 +1363,13 @@ local function Shared(self, unit)
 	------------------------------------------------------------------------
 	
 	if (unit and unit:find("arena%d") and TukuiCF["arena"].unitframes == true) or (unit and unit:find("boss%d") and TukuiCF["raidframes"].showboss == true) then
+		local arenapowerbar_offset
+		if powerbar_offset ~= 0 then
+			arenapowerbar_offset = powerbar_offset*(7/9)
+		else
+			arenapowerbar_offset = TukuiDB.Scale(7)
+		end		
+		
 		-- Right-click focus on arena or boss units
 		self:SetAttribute("type2", "focus")
 		
@@ -1325,11 +1419,16 @@ local function Shared(self, unit)
 		
 		-- power frame
 		local PowerFrame = CreateFrame("Frame", nil, self)
-		PowerFrame:SetHeight(arenaboss_height)
-		PowerFrame:SetWidth(arenaboss_width)
-		PowerFrame:SetFrameLevel(self:GetFrameLevel() - 1)
-		PowerFrame:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", TukuiDB.Scale(7), TukuiDB.Scale(-7))
-		
+		if powerbar_offset ~= 0 then
+			PowerFrame:SetHeight(arenaboss_height)
+			PowerFrame:SetWidth(arenaboss_width)
+			PowerFrame:SetFrameLevel(self:GetFrameLevel() - 1)
+			PowerFrame:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", arenapowerbar_offset, -arenapowerbar_offset)
+		else
+			PowerFrame:SetWidth(arenaboss_width + TukuiDB.Scale(4))
+			PowerFrame:SetHeight(arenaboss_height * 0.25)
+			PowerFrame:SetPoint("BOTTOM", self, "BOTTOM", 0, -arenapowerbar_offset - TukuiDB.Scale(3))		
+		end
 		TukuiDB.SetTemplate(PowerFrame)
 		PowerFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))	
 		TukuiDB.CreateShadow(PowerFrame)
@@ -1714,5 +1813,9 @@ end
 
 --Move threatbar to targetframe
 if oUF_Tukz_player.ThreatBar then
-	oUF_Tukz_player.ThreatBar:SetPoint("TOPLEFT", oUF_Tukz_target.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+	if powerbar_offset ~= 0 then
+		oUF_Tukz_player.ThreatBar:SetPoint("TOPLEFT", oUF_Tukz_target.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+	else
+		oUF_Tukz_player.ThreatBar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -TukuiDB.Scale(8))
+	end
 end

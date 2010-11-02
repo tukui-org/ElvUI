@@ -19,13 +19,13 @@ local backdrop = {
 -- Frame Sizes
 ------------------------------------------------------------------------
 local player_width = TukuiDB.Scale(220)
-local player_height = TukuiDB.Scale(40)
+local player_height = TukuiDB.Scale(28)
 
 local target_width = TukuiDB.Scale(220)
-local target_height = TukuiDB.Scale(40)
+local target_height = TukuiDB.Scale(28)
 
-local smallframe_width = TukuiDB.Scale(95)
-local smallframe_height = TukuiDB.Scale(30)
+local smallframe_width = TukuiDB.Scale(100)
+local smallframe_height = TukuiDB.Scale(23)
 
 local arenaboss_width = TukuiDB.Scale(180)
 local arenaboss_height = TukuiDB.Scale(23)
@@ -85,7 +85,11 @@ local function Shared(self, unit)
 		local health = CreateFrame('StatusBar', nil, self)
 		health:SetWidth(original_width)
 		health:SetHeight(original_height)
-		health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -powerbar_offset, powerbar_offset)
+		if powerbar_offset ~= 0 then
+			health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -powerbar_offset, powerbar_offset)
+		else
+			health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -powerbar_offset, original_height * 0.35)	
+		end
 		health:SetStatusBarTexture(normTex)
 		self.health = health
 		
@@ -128,14 +132,21 @@ local function Shared(self, unit)
 			health.colorReaction = true			
 		end
 		health.colorDisconnected = false
-		
+
 		-- Power Frame Border
 		local PowerFrame = CreateFrame("Frame", nil, self)
-		PowerFrame:SetHeight(original_height)
-		PowerFrame:SetWidth(original_width)
-		PowerFrame:SetFrameLevel(self:GetFrameLevel() - 1)
-		PowerFrame:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMRIGHT", powerbar_offset, -powerbar_offset)
-
+		if powerbar_offset ~= 0 then
+			PowerFrame:SetHeight(original_height)
+			PowerFrame:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMRIGHT", powerbar_offset, -powerbar_offset)
+			PowerFrame:SetWidth(original_width)
+			PowerFrame:SetFrameLevel(self:GetFrameLevel() - 1)
+		else
+			PowerFrame:SetHeight(original_height * 0.35)
+			PowerFrame:SetPoint("TOP", self.Health, "BOTTOM", 0, -TukuiDB.mult*3)
+			PowerFrame:SetWidth(original_width + TukuiDB.mult*4)
+		end
+		
+	
 		TukuiDB.SetTemplate(PowerFrame)
 		PowerFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))	
 		self.PowerFrame = PowerFrame
@@ -160,7 +171,11 @@ local function Shared(self, unit)
 		
 		--Adjust player frame size
 		player_width = player_width + powerbar_offset
-		player_height = player_height + powerbar_offset
+		if powerbar_offset ~= 0 then
+			player_height = player_height + powerbar_offset
+		else
+			player_height = player_height + PowerFrame:GetHeight()
+		end
 		
 		self.Power = power
 		self.Power.bg = powerBG
@@ -194,9 +209,16 @@ local function Shared(self, unit)
 		-- Portraits
 		if (db.charportrait == true) then
 			local PFrame = CreateFrame("Frame", nil, self)
-			PFrame:SetPoint('TOPRIGHT', self.Health,'TOPLEFT', TukuiDB.Scale(-6), TukuiDB.Scale(2))
-			PFrame:SetWidth(original_width/5)
-			PFrame:SetHeight(original_height+ TukuiDB.Scale(11))
+			if powerbar_offset ~= 0 then
+				PFrame:SetPoint('TOPRIGHT', self.Health,'TOPLEFT', TukuiDB.Scale(-6), TukuiDB.Scale(2))
+				PFrame:SetPoint('BOTTOMRIGHT', self.Health,'BOTTOMLEFT', TukuiDB.Scale(-6) - powerbar_offset, -powerbar_offset)
+				PFrame:SetWidth(original_width/5)
+			else
+				PFrame:SetPoint('TOPRIGHT', self.Health,'TOPLEFT', TukuiDB.Scale(-6), TukuiDB.Scale(2))
+				PFrame:SetPoint('BOTTOMRIGHT', self.Health,'BOTTOMLEFT', TukuiDB.Scale(-6), TukuiDB.Scale(-3) + -(original_height * 0.35))
+				PFrame:SetWidth(original_width/5)
+	
+			end
 			TukuiDB.SetTemplate(PFrame)
 			PFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))
 			self.PFrame = PFrame
@@ -256,50 +278,6 @@ local function Shared(self, unit)
 		self.MasterLooter = MasterLooter
 		self:RegisterEvent("PARTY_LEADER_CHANGED", TukuiDB.MLAnchorUpdate)
 		self:RegisterEvent("PARTY_MEMBERS_CHANGED", TukuiDB.MLAnchorUpdate)
-					
-		-- the threat bar below minimap
-		if db.showthreat == true and not IsAddOnLoaded("Omen") then
-			-- the threat bar
-			local ThreatBar = CreateFrame("StatusBar", self:GetName()..'_ThreatBar', self)
-			ThreatBar:SetWidth(original_width)
-			ThreatBar:SetHeight(TukuiDB.Scale(5))
-			ThreatBar:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
-			ThreatBar:SetStatusBarTexture(normTex)
-			ThreatBar:GetStatusBarTexture():SetHorizTile(false)
-			ThreatBar:SetBackdrop(backdrop)
-			ThreatBar:SetBackdropColor(0, 0, 0, 0)
-			ThreatBar.bg = ThreatBar:CreateTexture(nil, 'BORDER')
-			ThreatBar.bg:SetAllPoints(ThreatBar)
-			ThreatBar.bg:SetTexture(0.1,0.1,0.1)
-			ThreatBar.useRawThreat = false
-			self.ThreatBar = ThreatBar
-			
-			self.ThreatBar.F = CreateFrame("Frame", nil, self.ThreatBar)
-			TukuiDB.SetTemplate(self.ThreatBar.F)
-			self.ThreatBar.F:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-			self.ThreatBar.F:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
-			self.ThreatBar.F:SetFrameLevel(self.ThreatBar:GetFrameLevel() - 1)
-		end
-		
-		-- swingbar
-		if db.swingbar == true then
-			local Swing = CreateFrame("StatusBar", self:GetName().."_SwingBar", TukuiActionBarBackground)
-			Swing:SetStatusBarTexture(normTex)
-			Swing:SetStatusBarColor(unpack(TukuiCF["media"].bordercolor))
-			Swing:GetStatusBarTexture():SetHorizTile(false)
-			self.Swing = Swing
-			
-			self.Swing:SetHeight(TukuiDB.Scale(4))
-			self.Swing:SetWidth(TukuiActionBarBackground:GetWidth()-TukuiDB.Scale(4))
-			self.Swing:SetPoint("BOTTOM", TukuiActionBarBackground, "TOP", 0, TukuiDB.Scale(4))
-			
-			self.Swing.bg = CreateFrame("Frame", nil, self.Swing)
-			self.Swing.bg:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-			self.Swing.bg:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
-			self.Swing.bg:SetFrameStrata("BACKGROUND")
-			self.Swing.bg:SetFrameLevel(self.Swing:GetFrameLevel() - 1)
-			TukuiDB.SetTemplate(self.Swing.bg)
-		end
 		
 		-- experience bar on player via mouseover for player currently levelling a character
 		if TukuiDB.level ~= MAX_PLAYER_LEVEL then
@@ -308,7 +286,11 @@ local function Shared(self, unit)
 			Experience:SetStatusBarColor(0, 0.4, 1, .8)
 			Experience:SetWidth(original_width)
 			Experience:SetHeight(TukuiDB.Scale(5))
-			Experience:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+			if powerbar_offset ~= 0 then
+				Experience:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+			else	
+				Experience:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -TukuiDB.Scale(8))
+			end
 			Experience.noTooltip = true
 			Experience:EnableMouse(true)
 			self.Experience = Experience
@@ -357,7 +339,11 @@ local function Shared(self, unit)
 			Reputation:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
 			Reputation:SetWidth(original_width)
 			Reputation:SetHeight(TukuiDB.Scale(5))
-			Reputation:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+			if powerbar_offset ~= 0 then
+				Reputation:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+			else
+				Reputation:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -TukuiDB.Scale(8))
+			end
 			Reputation.Tooltip = true
 
 			Reputation:HookScript("OnEnter", function(self)
@@ -382,6 +368,33 @@ local function Shared(self, unit)
 			self.Reputation.F:SetFrameLevel(self.Reputation:GetFrameLevel() - 1)
 		end
 		
+		if db.showthreat == true and not IsAddOnLoaded("Omen") then
+			-- the threat bar, we move this to targetframe at bottom of file
+			local ThreatBar = CreateFrame("StatusBar", self:GetName()..'_ThreatBar', self)
+			ThreatBar:SetWidth(original_width)
+			ThreatBar:SetHeight(TukuiDB.Scale(5))
+			if powerbar_offset ~= 0 then
+				ThreatBar:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+			else
+				ThreatBar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -TukuiDB.Scale(8))
+			end
+			ThreatBar:SetStatusBarTexture(normTex)
+			ThreatBar:GetStatusBarTexture():SetHorizTile(false)
+			ThreatBar:SetBackdrop(backdrop)
+			ThreatBar:SetBackdropColor(0, 0, 0, 0)
+			ThreatBar.bg = ThreatBar:CreateTexture(nil, 'BORDER')
+			ThreatBar.bg:SetAllPoints(ThreatBar)
+			ThreatBar.bg:SetTexture(0.1,0.1,0.1)
+			ThreatBar.useRawThreat = false
+			self.ThreatBar = ThreatBar
+			
+			self.ThreatBar.F = CreateFrame("Frame", nil, self.ThreatBar)
+			TukuiDB.SetTemplate(self.ThreatBar.F)
+			self.ThreatBar.F:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
+			self.ThreatBar.F:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+			self.ThreatBar.F:SetFrameLevel(self.ThreatBar:GetFrameLevel() - 1)
+		end
+		
 
 		-- show druid mana when shapeshifted in bear, cat or whatever
 		if TukuiDB.myclass == "DRUID" then
@@ -400,7 +413,7 @@ local function Shared(self, unit)
 				eclipseBar:SetFrameLevel(8)
 				TukuiDB.SetTemplate(eclipseBar)
 				eclipseBar:SetBackdropBorderColor(0,0,0,0)
-					
+
 				local lunarBar = CreateFrame('StatusBar', nil, eclipseBar)
 				lunarBar:SetPoint('LEFT', eclipseBar, 'LEFT', 0, 0)
 				lunarBar:SetSize(eclipseBar:GetWidth(), eclipseBar:GetHeight())
@@ -421,24 +434,18 @@ local function Shared(self, unit)
 				eclipseBar.Text = eclipseBarText
 
 				self.EclipseBar = eclipseBar
-				
-				self.EclipseBar:SetScript("OnShow", function() TukuiDB.MoveBuffs(self.EclipseBar, false) end)
-				self.EclipseBar:SetScript("OnUpdate", function() TukuiDB.MoveBuffs(self.EclipseBar, true) end) -- just forcing 1 update on login for buffs/shadow/etc.
-				self.EclipseBar:SetScript("OnHide", function() TukuiDB.MoveBuffs(self.EclipseBar, false) end)		
-				
+		
 				eclipseBar.FrameBackdrop = CreateFrame("Frame", nil, eclipseBar)
 				TukuiDB.SetTemplate(eclipseBar.FrameBackdrop)
 				eclipseBar.FrameBackdrop:SetPoint("TOPLEFT", eclipseBar, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
 				eclipseBar.FrameBackdrop:SetPoint("BOTTOMRIGHT", lunarBar, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 				eclipseBar.FrameBackdrop:SetFrameLevel(eclipseBar:GetFrameLevel() - 1)
-	
-				-- show/hide bars on entering/leaving vehicle
-				self:RegisterEvent("UNIT_ENTERING_VEHICLE", function() TukuiDB.ToggleBars(self.EclipseBar) end)
-				self:RegisterEvent("UNIT_ENTERED_VEHICLE", function() TukuiDB.ToggleBars(self.EclipseBar) end)
-				self:RegisterEvent("UNIT_EXITING_VEHICLE", function() TukuiDB.ToggleBars(self.EclipseBar) end)
-				self:RegisterEvent("UNIT_EXITED_VEHICLE", function() TukuiDB.ToggleBars(self.EclipseBar) end)
+				
+				self.EclipseBar:SetScript("OnShow", function() TukuiDB.MoveBuffs(self.EclipseBar, false) end)
+				self.EclipseBar:SetScript("OnUpdate", function() TukuiDB.MoveBuffs(self.EclipseBar, true) end) -- just forcing 1 update on login for buffs/shadow/etc.
+				self.EclipseBar:SetScript("OnHide", function() TukuiDB.MoveBuffs(self.EclipseBar, false) end)
 		end
-
+		
 		-- set holy power bar or shard bar
 		if (TukuiDB.myclass == "WARLOCK" or TukuiDB.myclass == "PALADIN") then
 			--ReAdjust main background (this is invisible.. we need to adjust this so buffs appear above the unitframe correctly.. and so we can click this module to target ourselfs)
@@ -481,13 +488,13 @@ local function Shared(self, unit)
 				bars[i].bg:SetAlpha(.15)
 			end
 			
-			
 			if TukuiDB.myclass == "WARLOCK" then
 				bars.Override = TukuiDB.UpdateShards				
 				self.SoulShards = bars
 				self.SoulShards:SetScript("OnShow", function() TukuiDB.MoveBuffs(self.SoulShards, false) end)
 				self.SoulShards:SetScript("OnUpdate", function() TukuiDB.MoveBuffs(self.SoulShards, true) end) -- just forcing 1 update on login for buffs/shadow/etc.
 				self.SoulShards:SetScript("OnHide", function() TukuiDB.MoveBuffs(self.SoulShards, false) end)	
+				
 				-- show/hide bars on entering/leaving vehicle
 				self:RegisterEvent("UNIT_ENTERING_VEHICLE", function() TukuiDB.ToggleBars(self.SoulShards) end)
 				self:RegisterEvent("UNIT_ENTERED_VEHICLE", function() TukuiDB.ToggleBars(self.SoulShards) end)
@@ -499,6 +506,7 @@ local function Shared(self, unit)
 				self.HolyPower:SetScript("OnShow", function() TukuiDB.MoveBuffs(self.HolyPower, false) end)
 				self.HolyPower:SetScript("OnUpdate", function() TukuiDB.MoveBuffs(self.HolyPower, true) end) -- just forcing 1 update on login for buffs/shadow/etc.
 				self.HolyPower:SetScript("OnHide", function() TukuiDB.MoveBuffs(self.HolyPower, false) end)	
+	
 				-- show/hide bars on entering/leaving vehicle
 				self:RegisterEvent("UNIT_ENTERING_VEHICLE", function() TukuiDB.ToggleBars(self.HolyPower) end)
 				self:RegisterEvent("UNIT_ENTERED_VEHICLE", function() TukuiDB.ToggleBars(self.HolyPower) end)
@@ -511,7 +519,7 @@ local function Shared(self, unit)
 			bars.FrameBackdrop:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 			bars.FrameBackdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
 		end
-
+		
 		-- deathknight runes
 		if TukuiDB.myclass == "DEATHKNIGHT" and db.runebar == true then
 			--ReAdjust main background (this is invisible.. we need to adjust this so buffs appear above the unitframe correctly.. and so we can click this module to target ourselfs)
@@ -550,11 +558,12 @@ local function Shared(self, unit)
 			self.Runes:SetScript("OnShow", function() TukuiDB.MoveBuffs(self.Runes, false) end)
 			self.Runes:SetScript("OnUpdate", function() TukuiDB.MoveBuffs(self.Runes, true) end) -- just forcing 1 update on login for buffs/shadow/etc.
 			self.Runes:SetScript("OnHide", function() TukuiDB.MoveBuffs(self.Runes, false) end)	
+
 			-- show/hide bars on entering/leaving vehicle
 			self:RegisterEvent("UNIT_ENTERING_VEHICLE", function() TukuiDB.ToggleBars(self.Runes) end)
 			self:RegisterEvent("UNIT_ENTERED_VEHICLE", function() TukuiDB.ToggleBars(self.Runes) end)
 			self:RegisterEvent("UNIT_EXITING_VEHICLE", function() TukuiDB.ToggleBars(self.Runes) end)
-			self:RegisterEvent("UNIT_EXITED_VEHICLE", function() TukuiDB.ToggleBars(self.Runes) end)			
+			self:RegisterEvent("UNIT_EXITED_VEHICLE", function() TukuiDB.ToggleBars(self.Runes) end)
 		end
 			
 		-- shaman totem bar
@@ -605,12 +614,12 @@ local function Shared(self, unit)
 			self.TotemBar:SetScript("OnShow", function() TukuiDB.MoveBuffs(self.TotemBar, false) end)
 			self.TotemBar:SetScript("OnUpdate", function() TukuiDB.MoveBuffs(self.TotemBar, true) end) -- just forcing 1 update on login for buffs/shadow/etc.
 			self.TotemBar:SetScript("OnHide", function() TukuiDB.MoveBuffs(self.TotemBar, false) end)	
-		
-		-- show/hide bars on entering/leaving vehicle
+			
+			-- show/hide bars on entering/leaving vehicle
 			self:RegisterEvent("UNIT_ENTERING_VEHICLE", function() TukuiDB.ToggleBars(self.TotemBar) end)
 			self:RegisterEvent("UNIT_ENTERED_VEHICLE", function() TukuiDB.ToggleBars(self.TotemBar) end)
 			self:RegisterEvent("UNIT_EXITING_VEHICLE", function() TukuiDB.ToggleBars(self.TotemBar) end)
-			self:RegisterEvent("UNIT_EXITED_VEHICLE", function() TukuiDB.ToggleBars(self.TotemBar) end)			
+			self:RegisterEvent("UNIT_EXITED_VEHICLE", function() TukuiDB.ToggleBars(self.TotemBar) end)
 		end
 				
 		-- auras 
@@ -656,7 +665,11 @@ local function Shared(self, unit)
 				castbar:SetPoint("BOTTOMRIGHT", TukuiActionBarBackground, "TOPRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(5))
 			else
 				castbar:SetWidth(original_width)
-				castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+				if powerbar_offset ~= 0 then
+					castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+				else
+					castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -TukuiDB.Scale(8))
+				end
 			end
  
 			castbar:SetHeight(TukuiDB.Scale(20))
@@ -789,7 +802,11 @@ local function Shared(self, unit)
 		local health = CreateFrame('StatusBar', nil, self)
 		health:SetWidth(original_width)
 		health:SetHeight(original_height)
-		health:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", powerbar_offset, powerbar_offset)
+		if powerbar_offset ~= 0 then
+			health:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", powerbar_offset, powerbar_offset)
+		else
+			health:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", powerbar_offset, original_height * 0.35)	
+		end
 		health:SetStatusBarTexture(normTex)
 		self.health = health
 		
@@ -836,10 +853,17 @@ local function Shared(self, unit)
 		
 		-- Power Frame Border
 		local PowerFrame = CreateFrame("Frame", nil, self)
-		PowerFrame:SetHeight(original_height)
-		PowerFrame:SetWidth(original_width)
-		PowerFrame:SetFrameLevel(self:GetFrameLevel() - 1)
-		PowerFrame:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMLEFT", -powerbar_offset, -powerbar_offset)
+		if powerbar_offset ~= 0 then
+			PowerFrame:SetHeight(original_height)
+			PowerFrame:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMLEFT", -powerbar_offset, -powerbar_offset)
+			PowerFrame:SetWidth(original_width)
+			PowerFrame:SetFrameLevel(self:GetFrameLevel() - 1)
+		else
+			PowerFrame:SetHeight(original_height * 0.35)
+			PowerFrame:SetPoint("TOP", self.Health, "BOTTOM", 0, -TukuiDB.mult*3)
+			PowerFrame:SetWidth(original_width + TukuiDB.mult*4)
+		end
+		
 		TukuiDB.SetTemplate(PowerFrame)
 		PowerFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))	
 		self.PowerFrame = PowerFrame
@@ -861,8 +885,13 @@ local function Shared(self, unit)
 		power.value:SetPoint("LEFT", health, "LEFT", TukuiDB.Scale(4), TukuiDB.Scale(1))
 		power.PreUpdate = TukuiDB.PreUpdatePower
 		power.PostUpdate = TukuiDB.PostUpdatePower
+		
 		target_width = target_width + powerbar_offset
-		target_height = target_height + powerbar_offset
+		if powerbar_offset ~= 0 then
+			target_height = target_height + powerbar_offset
+		else
+			target_height = target_height + PowerFrame:GetHeight()
+		end
 		
 		self.Power = power
 		self.Power.bg = powerBG
@@ -894,11 +923,17 @@ local function Shared(self, unit)
 		end
 		
 		-- Portraits
-		if (db.charportrait == true) then
+		if (db.charportrait == true) then			
 			local PFrame = CreateFrame("Frame", nil, self)
-			PFrame:SetPoint('TOPLEFT', self.Health,'TOPRIGHT', TukuiDB.Scale(6), TukuiDB.Scale(2))
-			PFrame:SetWidth(original_width/5)
-			PFrame:SetHeight(original_height+ TukuiDB.Scale(11))
+			if powerbar_offset ~= 0 then
+				PFrame:SetPoint('TOPLEFT', self.Health,'TOPRIGHT', TukuiDB.Scale(6), TukuiDB.Scale(2))
+				PFrame:SetPoint('BOTTOMLEFT', self.Health,'BOTTOMRIGHT', TukuiDB.Scale(6) + powerbar_offset, -powerbar_offset)
+				PFrame:SetWidth(original_width/5)
+			else
+				PFrame:SetPoint('TOPLEFT', self.Health,'TOPRIGHT', TukuiDB.Scale(6), TukuiDB.Scale(2))
+				PFrame:SetPoint('BOTTOMLEFT', self.Health,'BOTTOMRIGHT', TukuiDB.Scale(6), TukuiDB.Scale(-3) + -(original_height * 0.35))
+				PFrame:SetWidth(original_width/5)
+			end
 			TukuiDB.SetTemplate(PFrame)
 			PFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))
 			self.PFrame = PFrame
@@ -906,6 +941,7 @@ local function Shared(self, unit)
 			local portrait = CreateFrame("PlayerModel", nil, PFrame)
 			portrait:SetFrameLevel(2)
 			
+			--dont ask me why but the playerframe looks completely fucked when i set it how it should be..
 			portrait:SetPoint('BOTTOMLEFT', PFrame, 'BOTTOMLEFT', TukuiDB.Scale(2), TukuiDB.Scale(2))		
 			portrait:SetPoint('TOPRIGHT', PFrame, 'TOPRIGHT', TukuiDB.Scale(-2), TukuiDB.Scale(-2))		
 			table.insert(self.__elements, TukuiDB.HidePortrait)
@@ -923,7 +959,7 @@ local function Shared(self, unit)
 		Name:SetShadowOffset(1.25, -1.25)
 		self:Tag(Name, '[Tukui:getnamecolor][Tukui:namelong] [Tukui:diffcolor][level] [shortclassification]')
 		self.Name = Name
-
+		
 		if TukuiCF["auras"].targetauras then
 			local buffs = CreateFrame("Frame", nil, self)
 			local debuffs = CreateFrame("Frame", nil, self)
@@ -960,7 +996,11 @@ local function Shared(self, unit)
 		if TukuiCF["castbar"].unitcastbar == true then
 			local castbar = CreateFrame("StatusBar", self:GetName().."_Castbar", self)
 			castbar:SetWidth(original_width)
-			castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+			if powerbar_offset ~= 0 then
+				castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+			else
+				castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -TukuiDB.Scale(8))
+			end
  
 			castbar:SetHeight(TukuiDB.Scale(20))
 			castbar:SetStatusBarTexture(normTex)
@@ -971,6 +1011,7 @@ local function Shared(self, unit)
 			castbar.bg:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
 			castbar.bg:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 			castbar.bg:SetFrameLevel(5)
+
  
 			castbar.time = TukuiDB.SetFontString(castbar, font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
 			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", TukuiDB.Scale(-4), TukuiDB.Scale(1))
@@ -1049,7 +1090,7 @@ local function Shared(self, unit)
 		bars:SetBackdropColor(0,0,0,0)
 		
 		for i = 1, 5 do					
-			bars[i] = CreateFrame("StatusBar", self:GetName().."_Combo"..i, self)
+			bars[i] = CreateFrame("StatusBar", self:GetName().."_Combo"..i, bars)
 			bars[i]:SetHeight(TukuiDB.Scale(8))					
 			bars[i]:SetStatusBarTexture(normTex)
 			bars[i]:GetStatusBarTexture():SetHorizTile(false)
@@ -1109,6 +1150,13 @@ local function Shared(self, unit)
 	------------------------------------------------------------------------
 	
 	if (unit == "targettarget" or unit == "pet" or unit == "focustarget" or unit == "focus") then
+		local smallpowerbar_offset
+		if powerbar_offset ~= 0 then
+			smallpowerbar_offset = powerbar_offset*(7/9)
+		else
+			smallpowerbar_offset = TukuiDB.Scale(7)
+		end
+		
 		-- health bar
 		local health = CreateFrame('StatusBar', nil, self)
 		health:SetPoint("TOPLEFT")
@@ -1141,13 +1189,21 @@ local function Shared(self, unit)
 		
 		-- power frame
 		local PowerFrame = CreateFrame("Frame", nil, self)
-		PowerFrame:SetHeight(smallframe_height)
-		PowerFrame:SetWidth(smallframe_width)
-		PowerFrame:SetFrameLevel(self:GetFrameLevel() - 1)
-		if unit == "focustarget" or unit == "targettarget" then
-			PowerFrame:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", TukuiDB.Scale(7), TukuiDB.Scale(-7))
-		elseif unit == "focus" or unit == "pet" then
-			PowerFrame:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", TukuiDB.Scale(-7), TukuiDB.Scale(-7))
+		if powerbar_offset ~= 0 then
+			PowerFrame:SetWidth(smallframe_width)
+			PowerFrame:SetHeight(smallframe_height)
+			PowerFrame:SetFrameLevel(self:GetFrameLevel() - 1)
+			if unit == "focus" or unit == "focustarget" then
+				PowerFrame:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", smallpowerbar_offset, -smallpowerbar_offset)	
+			elseif unit == "targettarget" or unit == "pet" then
+				PowerFrame:SetPoint("TOPLEFT", self, "TOPLEFT", -smallpowerbar_offset, 0)
+				PowerFrame:SetPoint("TOPRIGHT", self, "TOPRIGHT", smallpowerbar_offset, 0)
+				PowerFrame:SetPoint("BOTTOM", self, "BOTTOM", 0, -smallpowerbar_offset)
+			end
+		else
+			PowerFrame:SetWidth(smallframe_width + TukuiDB.Scale(4))
+			PowerFrame:SetHeight(smallframe_height * 0.3)
+			PowerFrame:SetPoint("TOP", self, "BOTTOM", 0, -TukuiDB.Scale(3))
 		end
 		PowerFrame:SetFrameStrata("LOW")
 		TukuiDB.SetTemplate(PowerFrame)
@@ -1210,8 +1266,12 @@ local function Shared(self, unit)
 			debuffs.size = ((20 / smallframe_width) * smallframe_width)
 			debuffs.spacing = 2
 			debuffs.num = 4
-
-			debuffs:SetPoint("TOP", self, "BOTTOM", TukuiDB.Scale(7), -TukuiDB.Scale(10))
+			
+			if powerbar_offset ~= 0 then
+				debuffs:SetPoint("TOP", self, "BOTTOM", smallpowerbar_offset, -TukuiDB.Scale(10))
+			else
+				debuffs:SetPoint("TOP", self, "BOTTOM", 0, -TukuiDB.Scale(12))
+			end
 			debuffs.initialAnchor = "TOPLEFT"
 			debuffs["growth-y"] = "UP"
 			debuffs.PostCreateIcon = TukuiDB.PostCreateAuraSmall
@@ -1228,8 +1288,13 @@ local function Shared(self, unit)
 			debuffs.size = ((20 / smallframe_width) * smallframe_width)
 			debuffs.spacing = 2
 			debuffs.num = 4
-
-			debuffs:SetPoint("TOP", self, "BOTTOM", TukuiDB.Scale(7), -TukuiDB.Scale(10))
+			
+			if powerbar_offset ~= 0 then
+				debuffs:SetPoint("TOP", self, "BOTTOM", smallpowerbar_offset, -TukuiDB.Scale(10))
+			else
+				debuffs:SetPoint("TOP", self, "BOTTOM", 0, -TukuiDB.Scale(12))
+			end
+			
 			debuffs.initialAnchor = "TOPLEFT"
 			debuffs["growth-y"] = "UP"
 			debuffs.PostCreateIcon = TukuiDB.PostCreateAuraSmall
@@ -1325,6 +1390,13 @@ local function Shared(self, unit)
 	------------------------------------------------------------------------
 	
 	if (unit and unit:find("arena%d") and TukuiCF["arena"].unitframes == true) or (unit and unit:find("boss%d") and TukuiCF["raidframes"].showboss == true) then
+		local arenapowerbar_offset
+		if powerbar_offset ~= 0 then
+			arenapowerbar_offset = powerbar_offset*(7/9)
+		else
+			arenapowerbar_offset = TukuiDB.Scale(7)
+		end		
+		
 		-- Right-click focus on arena or boss units
 		self:SetAttribute("type2", "focus")
 		
@@ -1374,11 +1446,16 @@ local function Shared(self, unit)
 		
 		-- power frame
 		local PowerFrame = CreateFrame("Frame", nil, self)
-		PowerFrame:SetHeight(arenaboss_height)
-		PowerFrame:SetWidth(arenaboss_width)
-		PowerFrame:SetFrameLevel(self:GetFrameLevel() - 1)
-		PowerFrame:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", TukuiDB.Scale(7), TukuiDB.Scale(-7))
-		
+		if powerbar_offset ~= 0 then
+			PowerFrame:SetHeight(arenaboss_height)
+			PowerFrame:SetWidth(arenaboss_width)
+			PowerFrame:SetFrameLevel(self:GetFrameLevel() - 1)
+			PowerFrame:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", arenapowerbar_offset, -arenapowerbar_offset)
+		else
+			PowerFrame:SetWidth(arenaboss_width + TukuiDB.Scale(4))
+			PowerFrame:SetHeight(arenaboss_height * 0.25)
+			PowerFrame:SetPoint("BOTTOM", self, "BOTTOM", 0, -arenapowerbar_offset - TukuiDB.Scale(3))		
+		end
 		TukuiDB.SetTemplate(PowerFrame)
 		PowerFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))	
 		TukuiDB.CreateShadow(PowerFrame)
@@ -1633,7 +1710,11 @@ target:SetSize(target_width, target_height)
 
 -- Focus
 local focus = oUF:Spawn('focus', "oUF_Tukz_focus")
-focus:SetPoint("TOPLEFT", oUF_Tukz_target, "BOTTOMLEFT", TukuiDB.Scale(9),TukuiDB.Scale(-42))
+if powerbar_offset ~= 0 then
+	focus:SetPoint("TOPLEFT", oUF_Tukz_target, "BOTTOMLEFT", TukuiDB.Scale(9),TukuiDB.Scale(-42))
+else
+	focus:SetPoint("TOPLEFT", oUF_Tukz_target, "BOTTOMLEFT", 0,TukuiDB.Scale(-42))
+end
 focus:SetSize(smallframe_width, smallframe_height)
 
 -- Target's Target
@@ -1758,5 +1839,9 @@ end
 
 --Move threatbar to targetframe
 if oUF_Tukz_player.ThreatBar then
-	oUF_Tukz_player.ThreatBar:SetPoint("TOPLEFT", oUF_Tukz_target.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+	if powerbar_offset ~= 0 then
+		oUF_Tukz_player.ThreatBar:SetPoint("TOPLEFT", oUF_Tukz_target.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+	else
+		oUF_Tukz_player.ThreatBar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -TukuiDB.Scale(8))
+	end
 end
