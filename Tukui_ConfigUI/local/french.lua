@@ -144,7 +144,9 @@ if GetLocale() == "frFR" then
 	TukuiL.option_unitframes_mendpet = "Montrer la barre de soin du familier (Interface DPS)" --"Show Mend Pet bar on PetFrame (DPS LAYOUT)"
 	TukuiL.option_unitframes_fontsize = "Taille de la police" --"Font Size"
  
-	-- loot
+	TukuiL.option_unitframes_unitframes_poweroffset = "Offset of the powerbar on the frame (0 for no offset)"
+
+-- loot
 	TukuiL.option_loot = "Loot"
 	TukuiL.option_loot_enableloot = "Activer la fenêtre de loot" --"Enable loot window"
 	TukuiL.option_loot_autogreed = "Auto-cupidité pour les item verts au niveau maximum" --"Enable auto-greed for green item at max level"

@@ -144,7 +144,9 @@
 	TukuiL.option_unitframes_mendpet = "於寵物框架顯示Mend Pet狀態條 (限DPS配置)"
 	TukuiL.option_unitframes_fontsize = "字體大小"
 	 
-	-- loot
+	TukuiL.option_unitframes_unitframes_poweroffset = "Offset of the powerbar on the frame (0 for no offset)"
+
+-- loot
 	TukuiL.option_loot = "拾取"
 	TukuiL.option_loot_enableloot = "啟用戰利品視窗"
 	TukuiL.option_loot_autogreed = "最高等級時自動分解/貪婪綠裝"

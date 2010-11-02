@@ -144,7 +144,9 @@
 	TukuiL.option_unitframes_mendpet = "开启玩家宠物动作条于宠物头像(限DPS配置)"
 	TukuiL.option_unitframes_fontsize = "单位窗口文字大小"
 
-	-- loot
+	TukuiL.option_unitframes_unitframes_poweroffset = "Offset of the powerbar on the frame (0 for no offset)"
+
+-- loot
 	TukuiL.option_loot = "战利品"
 	TukuiL.option_loot_enableloot = "开启战力品窗口"
 	TukuiL.option_loot_autogreed = "开启最高等级时自动贪婪绿色等级装备"

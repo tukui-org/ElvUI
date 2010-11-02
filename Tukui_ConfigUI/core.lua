@@ -176,6 +176,7 @@ local function Local(o)
 	if o == "TukuiConfigUIunitframesdebuffhighlight" then o = TukuiL.option_unitframes_DebuffHighlight end
 	if o == "TukuiConfigUIunitframesfontsize" then o = TukuiL.option_unitframes_fontsize end
 	if o == "TukuiConfigUIunitframesmendpet" then o = TukuiL.option_unitframes_mendpet end
+	if o == "TukuiConfigUIunitframespoweroffset" then o = TukuiL.option_unitframes_unitframes_poweroffset end
 	
 	-- loot
 	if o == "TukuiConfigUIloot" then o = TukuiL.option_loot end

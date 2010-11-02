@@ -144,7 +144,9 @@
 	TukuiL.option_unitframes_mendpet = "Показывать панель Лечение питомца (DPS раскладка)"
 	TukuiL.option_unitframes_fontsize = "Размер шрифта"
 
-	-- loot
+	TukuiL.option_unitframes_unitframes_poweroffset = "Offset of the powerbar on the frame (0 for no offset)"
+
+-- loot
 	TukuiL.option_loot = "Добыча"
 	TukuiL.option_loot_enableloot = "Включить окно добычи"
 	TukuiL.option_loot_autogreed = "Автоматически нажимать не откажусь для зеленых предметов на макс. уровне"

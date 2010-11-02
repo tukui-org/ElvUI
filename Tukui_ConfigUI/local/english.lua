@@ -143,6 +143,7 @@ TukuiL.option_unitframes_SwingBar = "Enable swing bar (DPS Layout Only)"
 TukuiL.option_unitframes_DebuffHighlight = "Color frames by debuff type if dispellable"
 TukuiL.option_unitframes_mendpet = "Show Mend Pet bar on PetFrame (DPS LAYOUT)"
 TukuiL.option_unitframes_fontsize = "Font Size"
+TukuiL.option_unitframes_unitframes_poweroffset = "Offset of the powerbar on the frame (0 for no offset)"
 
 -- loot
 TukuiL.option_loot = "Loot"

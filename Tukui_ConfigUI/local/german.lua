@@ -144,7 +144,9 @@
 	TukuiL.option_unitframes_mendpet = "Zeige Tier Heilen auf Begleiter Frame (DPS Layout)"
 	TukuiL.option_unitframes_fontsize = "Schriftgröße"
  
-	-- loot
+	TukuiL.option_unitframes_unitframes_poweroffset = "Offset of the powerbar on the frame (0 for no offset)"
+
+-- loot
 	TukuiL.option_loot = "Beute"
 	TukuiL.option_loot_enableloot = "Aktiviere Beutefenster"
 	TukuiL.option_loot_autogreed = "Aktiviere automatischen Gier-Wurf für grüne Gegenstände auf Maximalen Level"

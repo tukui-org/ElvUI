@@ -34,6 +34,7 @@ TukuiCF["unitframes"] = {
 	["debuffhighlight"] = true,				--highlight frame with the debuff color if the frame is dispellable
 	["showsymbols"] = true,	               -- show symbol.
 	["aggro"] = true,                      -- show aggro
+	["poweroffset"] = 9,					--powerbar offset
 	
 	-- hunter only plugin
 	["mendpet"] = true,						--mend pet duration overlay on pet frame

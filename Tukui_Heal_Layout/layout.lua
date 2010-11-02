@@ -34,7 +34,7 @@ local assisttank_width = TukuiDB.Scale(100)
 local assisttank_height = TukuiDB.Scale(20)
 
 --Offset of PowerBar for Player/Target
-local powerbar_offset = TukuiDB.Scale(11)
+local powerbar_offset = TukuiDB.Scale(TukuiCF["unitframes"].poweroffset)
 
 ------------------------------------------------------------------------
 --	Layout
