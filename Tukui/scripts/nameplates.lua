@@ -84,13 +84,13 @@ local threatUpdate = function(self, elapsed)
 	self.elapsed = self.elapsed + elapsed
 	if self.elapsed >= 0.2 then
 		--Filter Nameplates
-		if TukuiDB.NPCList[self.oldname:GetText()] then
+		--[[if TukuiDB.NPCList[self.oldname:GetText()] then
 			self:SetAlpha(0)
 			if not InCombatLockdown() then
 				self:SetScale(0.00001)
 			end
 			return
-		else
+		else]]
 			if not InCombatLockdown() then self:SetScale(1) end
 			if TukuiCF["nameplate"].enhancethreat == true then
 				if not self.oldglow:IsShown() then
@@ -172,17 +172,17 @@ local threatUpdate = function(self, elapsed)
 					end
 				end
 			end	
-		end
+		--end
 		self.elapsed = 0
 	end
 end
 
 local updatePlate = function(self)
 	--Filter Nameplates
-	if TukuiDB.NPCList[self.oldname:GetText()] and not InCombatLockdown() then
+	--[[if TukuiDB.NPCList[self.oldname:GetText()] and not InCombatLockdown() then
 		self:Hide()
 		return
-	else
+	else]]
 		if not InCombatLockdown() then self:Show() end
 		local r, g, b = self.healthBar:GetStatusBarColor()
 		local newr, newg, newb
@@ -242,7 +242,7 @@ local updatePlate = function(self)
 		else
 			self.level:SetText(level..(elite and "+" or ""))
 		end
-	end
+	--end
 end
 
 local fixCastbar = function(self)
