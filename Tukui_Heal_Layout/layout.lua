@@ -1893,6 +1893,6 @@ if oUF_Tukz_player.ThreatBar then
 	if powerbar_offset ~= 0 then
 		oUF_Tukz_player.ThreatBar:SetPoint("TOPLEFT", oUF_Tukz_target.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
 	else
-		oUF_Tukz_player.ThreatBar:SetPoint("TOPRIGHT", oUF_Tukz_target.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -TukuiDB.Scale(8))
+		oUF_Tukz_player.ThreatBar:SetPoint("TOPRIGHT", oUF_Tukz_target.Health, "BOTTOMRIGHT", 0, -(oUF_Tukz_target.Health:GetHeight * 0.35) + -TukuiDB.Scale(8))
 	end
 end
