@@ -15,23 +15,16 @@ local backdrop = {
 	insets = {top = -TukuiDB.mult, left = -TukuiDB.mult, bottom = -TukuiDB.mult, right = -TukuiDB.mult},
 }
 
-------------------------------------------------------------------------
--- Frame Sizes
-------------------------------------------------------------------------
-local player_width = TukuiDB.Scale(220)
-local player_height = TukuiDB.Scale(28)
-
-local target_width = TukuiDB.Scale(220)
-local target_height = TukuiDB.Scale(28)
-
-local smallframe_width = TukuiDB.Scale(100)
-local smallframe_height = TukuiDB.Scale(23)
-
-local arenaboss_width = TukuiDB.Scale(180)
-local arenaboss_height = TukuiDB.Scale(23)
-
-local assisttank_width = TukuiDB.Scale(100)
-local assisttank_height = TukuiDB.Scale(20)
+local player_width
+local player_height
+local target_width
+local target_height
+local smallframe_width
+local smallframe_height
+local arenaboss_width
+local arenaboss_height
+local assisttank_width
+local assisttank_height
 
 --Offset of PowerBar for Player/Target
 local powerbar_offset = TukuiDB.Scale(TukuiCF["unitframes"].poweroffset)
@@ -41,6 +34,22 @@ local powerbar_offset = TukuiDB.Scale(TukuiCF["unitframes"].poweroffset)
 ------------------------------------------------------------------------
 
 local function Shared(self, unit)
+	--Set Sizes
+	player_width = TukuiDB.Scale(220)
+	player_height = TukuiDB.Scale(28)
+
+	target_width = TukuiDB.Scale(220)
+	target_height = TukuiDB.Scale(28)
+
+	smallframe_width = TukuiDB.Scale(100)
+	smallframe_height = TukuiDB.Scale(23)
+
+	arenaboss_width = TukuiDB.Scale(180)
+	arenaboss_height = TukuiDB.Scale(23)
+
+	assisttank_width = TukuiDB.Scale(100)
+	assisttank_height = TukuiDB.Scale(20)
+	
 	-- Set Colors
 	self.colors = TukuiDB.oUF_colors
 	
@@ -59,21 +68,6 @@ local function Shared(self, unit)
 	--[[self:SetBackdrop(backdrop)
 	self:SetBackdropColor(0, 0, 0)]]
 	
-	-- Border for non Player/Target frames
-	if not (unit == "player" or unit == "target") then
-		local FrameBorder = CreateFrame("Frame", nil, self)
-		FrameBorder:SetPoint("TOPLEFT", self, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-		FrameBorder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
-		TukuiDB.SetTemplate(FrameBorder)
-		FrameBorder:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))
-		FrameBorder:SetFrameLevel(2)
-		self.FrameBorder = FrameBorder
-		
-		TukuiDB.CreateShadow(self.FrameBorder)
-		self.FrameBorder.shadow:SetFrameLevel(0)
-		self.FrameBorder.shadow:SetFrameStrata("BACKGROUND")
-	end
-		
 	------------------------------------------------------------------------
 	--	Player
 	------------------------------------------------------------------------
@@ -1150,17 +1144,25 @@ local function Shared(self, unit)
 	------------------------------------------------------------------------
 	
 	if (unit == "targettarget" or unit == "pet" or unit == "focustarget" or unit == "focus") then
+		local original_width = smallframe_width
+		local original_height = smallframe_height
+		
 		local smallpowerbar_offset
 		if powerbar_offset ~= 0 then
 			smallpowerbar_offset = powerbar_offset*(7/9)
 		else
 			smallpowerbar_offset = TukuiDB.Scale(7)
 		end
-		
+
 		-- health bar
 		local health = CreateFrame('StatusBar', nil, self)
-		health:SetPoint("TOPLEFT")
-		health:SetPoint("BOTTOMRIGHT")
+		if unit == "focus" or unit == "focustarget" then
+			health:SetPoint("TOPLEFT", self, "TOPLEFT")
+		else
+			health:SetPoint("TOP", self, "TOP")
+		end
+		health:SetWidth(original_width)
+		health:SetHeight(original_height)
 		health:SetStatusBarTexture(normTex)
 		
 		local healthBG = health:CreateTexture(nil, 'BORDER')
@@ -1169,11 +1171,21 @@ local function Shared(self, unit)
 		
 		self.Health = health
 		self.Health.bg = healthBG
-				
 		health.frequentUpdates = true
 		if db.showsmooth == true then
 			health.Smooth = true
 		end
+		
+		local FrameBorder = CreateFrame("Frame", nil, self)
+		FrameBorder:SetPoint("TOPLEFT", self.Health, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
+		FrameBorder:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+		TukuiDB.SetTemplate(FrameBorder)
+		FrameBorder:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))
+		FrameBorder:SetFrameLevel(2)
+		self.FrameBorder = FrameBorder
+		TukuiDB.CreateShadow(self.FrameBorder)
+		self.FrameBorder.shadow:SetFrameLevel(0)
+		self.FrameBorder.shadow:SetFrameStrata("BACKGROUND")
 		
 		if db.classcolor ~= true then
 			health.colorTapping = false
@@ -1190,20 +1202,25 @@ local function Shared(self, unit)
 		-- power frame
 		local PowerFrame = CreateFrame("Frame", nil, self)
 		if powerbar_offset ~= 0 then
-			PowerFrame:SetWidth(smallframe_width)
-			PowerFrame:SetHeight(smallframe_height)
+			PowerFrame:SetWidth(original_width)
+			PowerFrame:SetHeight(original_height)
 			PowerFrame:SetFrameLevel(self:GetFrameLevel() - 1)
 			if unit == "focus" or unit == "focustarget" then
-				PowerFrame:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", smallpowerbar_offset, -smallpowerbar_offset)	
+				PowerFrame:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMRIGHT", smallpowerbar_offset, -smallpowerbar_offset)
+				smallframe_width = smallframe_width + smallpowerbar_offset			
+				smallframe_height = smallframe_height + smallpowerbar_offset	
 			elseif unit == "targettarget" or unit == "pet" then
-				PowerFrame:SetPoint("TOPLEFT", self, "TOPLEFT", -smallpowerbar_offset, 0)
-				PowerFrame:SetPoint("TOPRIGHT", self, "TOPRIGHT", smallpowerbar_offset, 0)
-				PowerFrame:SetPoint("BOTTOM", self, "BOTTOM", 0, -smallpowerbar_offset)
+				PowerFrame:SetPoint("TOPLEFT", self.Health, "TOPLEFT", -smallpowerbar_offset, 0)
+				PowerFrame:SetPoint("TOPRIGHT", self.Health, "TOPRIGHT", smallpowerbar_offset, 0)
+				PowerFrame:SetPoint("BOTTOM", self.Health, "BOTTOM", 0, -smallpowerbar_offset)
+				smallframe_width = smallframe_width + smallpowerbar_offset*2
+				smallframe_height = smallframe_height + smallpowerbar_offset
 			end
 		else
-			PowerFrame:SetWidth(smallframe_width + TukuiDB.Scale(4))
-			PowerFrame:SetHeight(smallframe_height * 0.3)
-			PowerFrame:SetPoint("TOP", self, "BOTTOM", 0, -TukuiDB.Scale(3))
+			PowerFrame:SetWidth(original_width + TukuiDB.Scale(4))
+			PowerFrame:SetHeight(original_height * 0.3)
+			PowerFrame:SetPoint("TOP", self.Health, "BOTTOM", 0,-TukuiDB.Scale(3))
+			smallframe_height = smallframe_height + (original_height * 0.3)
 		end
 		PowerFrame:SetFrameStrata("LOW")
 		TukuiDB.SetTemplate(PowerFrame)
@@ -1261,17 +1278,13 @@ local function Shared(self, unit)
 		
 		if unit == "targettarget" and TukuiCF["auras"].totdebuffs == true then
 			local debuffs = CreateFrame("Frame", nil, health)
-			debuffs:SetHeight((20 / smallframe_width) * smallframe_width)
-			debuffs:SetWidth(smallframe_width)
-			debuffs.size = ((20 / smallframe_width) * smallframe_width)
+			debuffs:SetHeight((20 / original_width) * original_width)
+			debuffs:SetWidth(original_width)
+			debuffs.size = ((20 / original_width) * original_width)
 			debuffs.spacing = 2
 			debuffs.num = 4
 			
-			if powerbar_offset ~= 0 then
-				debuffs:SetPoint("TOP", self, "BOTTOM", smallpowerbar_offset, -TukuiDB.Scale(10))
-			else
-				debuffs:SetPoint("TOP", self, "BOTTOM", 0, -TukuiDB.Scale(12))
-			end
+			debuffs:SetPoint("TOP", self, "BOTTOM", 0, -TukuiDB.Scale(3))
 			debuffs.initialAnchor = "TOPLEFT"
 			debuffs["growth-y"] = "UP"
 			debuffs.PostCreateIcon = TukuiDB.PostCreateAuraSmall
@@ -1283,17 +1296,13 @@ local function Shared(self, unit)
 		
 		if unit == "focus" and TukuiCF["auras"].focusdebuffs == true then
 			local debuffs = CreateFrame("Frame", nil, health)
-			debuffs:SetHeight((20 / smallframe_width) * smallframe_width)
-			debuffs:SetWidth(smallframe_width)
-			debuffs.size = ((20 / smallframe_width) * smallframe_width)
+			debuffs:SetHeight((20 / original_width) * original_width)
+			debuffs:SetWidth(original_width)
+			debuffs.size = ((20 / original_width) * original_width)
 			debuffs.spacing = 2
 			debuffs.num = 4
 			
-			if powerbar_offset ~= 0 then
-				debuffs:SetPoint("TOP", self, "BOTTOM", smallpowerbar_offset, -TukuiDB.Scale(10))
-			else
-				debuffs:SetPoint("TOP", self, "BOTTOM", 0, -TukuiDB.Scale(12))
-			end
+			debuffs:SetPoint("TOP", self, "BOTTOM", 0, -TukuiDB.Scale(3))
 			
 			debuffs.initialAnchor = "TOPLEFT"
 			debuffs["growth-y"] = "UP"
@@ -1390,6 +1399,9 @@ local function Shared(self, unit)
 	------------------------------------------------------------------------
 	
 	if (unit and unit:find("arena%d") and TukuiCF["arena"].unitframes == true) or (unit and unit:find("boss%d") and TukuiCF["raidframes"].showboss == true) then
+		local original_height = arenaboss_height
+		local original_width = arenaboss_width
+		
 		local arenapowerbar_offset
 		if powerbar_offset ~= 0 then
 			arenapowerbar_offset = powerbar_offset*(7/9)
@@ -1405,9 +1417,9 @@ local function Shared(self, unit)
 		health:SetHeight(arenaboss_height)
 		health:SetPoint("TOPLEFT")
 		if (unit and unit:find('arena%d')) then
-			health:SetPoint("TOPRIGHT", -arenaboss_height*.80, 0)
+			health:SetWidth(arenaboss_width - (arenaboss_height*.80) - TukuiDB.Scale(6))
 		else
-			health:SetPoint("TOPRIGHT")
+			health:SetWidth(arenaboss_width)
 		end
 		health:SetStatusBarTexture(normTex)
 
@@ -1444,18 +1456,35 @@ local function Shared(self, unit)
 		health.colorDisconnected = false
 		healthBG.multiplier = 0.3
 		
+		local FrameBorder = CreateFrame("Frame", nil, self)
+		FrameBorder:SetPoint("TOPLEFT", self.Health, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
+		if (unit and unit:find('arena%d')) then
+			FrameBorder:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMRIGHT", TukuiDB.Scale(2) + arenaboss_height*.80 + TukuiDB.Scale(6), TukuiDB.Scale(-2))
+		else
+			FrameBorder:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+		end
+		TukuiDB.SetTemplate(FrameBorder)
+		FrameBorder:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))
+		FrameBorder:SetFrameLevel(2)
+		self.FrameBorder = FrameBorder
+		TukuiDB.CreateShadow(self.FrameBorder)
+		self.FrameBorder.shadow:SetFrameLevel(0)
+		self.FrameBorder.shadow:SetFrameStrata("BACKGROUND")
+		
 		-- power frame
 		local PowerFrame = CreateFrame("Frame", nil, self)
 		if powerbar_offset ~= 0 then
 			PowerFrame:SetHeight(arenaboss_height)
 			PowerFrame:SetWidth(arenaboss_width)
 			PowerFrame:SetFrameLevel(self:GetFrameLevel() - 1)
-			PowerFrame:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", arenapowerbar_offset, -arenapowerbar_offset)
+			PowerFrame:SetPoint("TOPLEFT", self.Health, "TOPLEFT", arenapowerbar_offset, -arenapowerbar_offset)
 		else
 			PowerFrame:SetWidth(arenaboss_width + TukuiDB.Scale(4))
-			PowerFrame:SetHeight(arenaboss_height * 0.25)
-			PowerFrame:SetPoint("BOTTOM", self, "BOTTOM", 0, -arenapowerbar_offset - TukuiDB.Scale(3))		
+			PowerFrame:SetHeight(arenaboss_height * 0.3)
+			PowerFrame:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", -TukuiDB.Scale(2), -TukuiDB.Scale(3))		
 		end
+		arenaboss_height = arenaboss_height + arenapowerbar_offset
+		arenaboss_width = arenaboss_width + arenapowerbar_offset
 		TukuiDB.SetTemplate(PowerFrame)
 		PowerFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))	
 		TukuiDB.CreateShadow(PowerFrame)
@@ -1521,9 +1550,9 @@ local function Shared(self, unit)
 		if not IsAddOnLoaded("Gladius") then
 			if (unit and unit:find('arena%d')) then
 				local Trinketbg = CreateFrame("Frame", nil, self)
-				Trinketbg:SetHeight(arenaboss_height)
-				Trinketbg:SetWidth(arenaboss_height)
-				Trinketbg:SetPoint("TOPRIGHT", self, "TOPRIGHT")				
+				Trinketbg:SetHeight(original_height)
+				Trinketbg:SetWidth(original_height)
+				Trinketbg:SetPoint("RIGHT", self.FrameBorder, "RIGHT",TukuiDB.Scale(-2), 0)				
 				TukuiDB.SetTemplate(Trinketbg)
 				Trinketbg:SetFrameLevel(self.Health:GetFrameLevel()+1)
 				self.Trinketbg = Trinketbg
@@ -1576,7 +1605,7 @@ local function Shared(self, unit)
 		if TukuiCF["castbar"].unitcastbar == true then
 			local castbar = CreateFrame("StatusBar", self:GetName().."_Castbar", self)
 			castbar:SetWidth(arenaboss_width)
-			castbar:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, TukuiDB.Scale(-12))		
+			castbar:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -arenapowerbar_offset)		
 			
 			castbar:SetHeight(TukuiDB.Scale(14))
 			castbar:SetStatusBarTexture(normTex)
@@ -1724,7 +1753,7 @@ tot:SetSize(smallframe_width, smallframe_height)
 
 -- Player's Pet
 local pet = oUF:Spawn('pet', "oUF_Tukz_pet")
-pet:SetPoint("TOPLEFT", oUF_Tukz_player, "BOTTOMLEFT", 0,TukuiDB.Scale(-42))
+pet:SetPoint("TOPRIGHT", oUF_Tukz_player, "BOTTOMRIGHT", 0,TukuiDB.Scale(-42))
 pet:SetSize(smallframe_width, smallframe_height)
 
 -- Focus's target
