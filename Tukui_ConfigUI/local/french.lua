@@ -123,8 +123,6 @@ if GetLocale() == "frFR" then
 	TukuiL.option_unitframes_unitframes = "Cadre d'unité" --"Unit Frames"
 	TukuiL.option_unitframes_healthcolor = "Couleur de la barre de vie" --"Color of Health Bars"
 	TukuiL.option_unitframes_combatfeedback = "Textes de combat sur le joueur et la cible" --"Combat Feedback on player and target"
-	TukuiL.option_unitframes_runebar = "Activer la barre de runes pour les DK" --"Enable rune bar for Death Knight"
-	TukuiL.option_unitframes_totembar = "Activer la barre de totem pour les Chamans" --"Enable totem bar for Shaman"
 	TukuiL.option_unitframes_totalhpmp = "Afficher la vie/puissance totale" --"Display total on health/power"
 	TukuiL.option_unitframes_aurawatch = "Montrer les buffs dans les coins" --"Show buffs in corners"
 	TukuiL.option_unitframes_saveperchar = "Mémoriser la position des cadres par personnage" --"Save unit frames position per character"
@@ -143,10 +141,10 @@ if GetLocale() == "frFR" then
 	TukuiL.option_unitframes_DebuffHighlight = "Colorier les cadres par type de débuff si dissipable" --"Color frames by debuff type if dispellable"
 	TukuiL.option_unitframes_mendpet = "Montrer la barre de soin du familier (Interface DPS)" --"Show Mend Pet bar on PetFrame (DPS LAYOUT)"
 	TukuiL.option_unitframes_fontsize = "Taille de la police" --"Font Size"
- 
 	TukuiL.option_unitframes_unitframes_poweroffset = "Offset of the powerbar on the frame (0 for no offset)"
-
--- loot
+	TukuiL.option_unitframes_classbar = "Enable Classbar (TotemBar, RuneBar, HolyBar, SoulshardBar, EclipseBar)"
+	
+	-- loot
 	TukuiL.option_loot = "Loot"
 	TukuiL.option_loot_enableloot = "Activer la fenêtre de loot" --"Enable loot window"
 	TukuiL.option_loot_autogreed = "Auto-cupidité pour les item verts au niveau maximum" --"Enable auto-greed for green item at max level"

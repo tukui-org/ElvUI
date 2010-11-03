@@ -123,8 +123,6 @@ TukuiL.option_castbar_classcolor = "Color player's castbar by classcolor"
 TukuiL.option_unitframes_unitframes = "Unit Frames"
 TukuiL.option_unitframes_healthcolor = "Color of Health Bars"
 TukuiL.option_unitframes_combatfeedback = "Combat Feedback on player and target"
-TukuiL.option_unitframes_runebar = "Enable rune bar for Death Knight"
-TukuiL.option_unitframes_totembar = "Enable totem bar for Shaman"
 TukuiL.option_unitframes_totalhpmp = "Display total on health/power"
 TukuiL.option_unitframes_aurawatch = "Show buffs in corners"
 TukuiL.option_unitframes_saveperchar = "Save unit frames position per character"
@@ -144,6 +142,7 @@ TukuiL.option_unitframes_DebuffHighlight = "Color frames by debuff type if dispe
 TukuiL.option_unitframes_mendpet = "Show Mend Pet bar on PetFrame (DPS LAYOUT)"
 TukuiL.option_unitframes_fontsize = "Font Size"
 TukuiL.option_unitframes_unitframes_poweroffset = "Offset of the powerbar on the frame (0 for no offset)"
+TukuiL.option_unitframes_classbar = "Enable Classbar (TotemBar, RuneBar, HolyBar, SoulshardBar, EclipseBar)"
 
 -- loot
 TukuiL.option_loot = "Loot"

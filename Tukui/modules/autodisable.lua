@@ -111,8 +111,7 @@ do
 		TukuiCF["unitframes"]["ws_show_time"] = nil              -- show time on weakened soul bar
 		TukuiCF["unitframes"]["ws_show_player"] = nil             -- show weakened soul bar on player unit
 		TukuiCF["unitframes"]["ws_show_target"] = nil            -- show weakened soul bar on target unit
-		TukuiCF["unitframes"]["runebar"] = nil                    -- enable tukui runebar plugin
-		TukuiCF["unitframes"]["totemtimer"] = nil                -- enable tukui totem timer plugin	
+		TukuiCF["unitframes"]["classbar"] = nil
 		TukuiCF["unitframes"]["mendpet"] = nil                  -- enable maintank
 		
 		--kill an entire catagory

@@ -151,8 +151,6 @@ local function Local(o)
 	if o == "TukuiConfigUIunitframes" then o = TukuiL.option_unitframes_unitframes end
 	if o == "TukuiConfigUIunitframeshealthcolor" then o = TukuiL.option_unitframes_healthcolor end
 	if o == "TukuiConfigUIunitframescombatfeedback" then o = TukuiL.option_unitframes_combatfeedback end
-	if o == "TukuiConfigUIunitframesrunebar" then o = TukuiL.option_unitframes_runebar end
-	if o == "TukuiConfigUIunitframestotemtimer" then o = TukuiL.option_unitframes_totembar end
 	if o == "TukuiConfigUIunitframesshowtotalhpmp" then o = TukuiL.option_unitframes_totalhpmp end
 	if o == "TukuiConfigUIunitframesshowplayerinparty" then o = TukuiL.option_unitframes_playerparty end
 	if o == "TukuiConfigUIunitframespositionbychar" then o = TukuiL.option_unitframes_saveperchar end
@@ -177,6 +175,7 @@ local function Local(o)
 	if o == "TukuiConfigUIunitframesfontsize" then o = TukuiL.option_unitframes_fontsize end
 	if o == "TukuiConfigUIunitframesmendpet" then o = TukuiL.option_unitframes_mendpet end
 	if o == "TukuiConfigUIunitframespoweroffset" then o = TukuiL.option_unitframes_unitframes_poweroffset end
+	if o == "TukuiConfigUIunitframesclassbar" then o = TukuiL.option_unitframes_classbar end
 	
 	-- loot
 	if o == "TukuiConfigUIloot" then o = TukuiL.option_loot end
@@ -423,14 +422,14 @@ local function CreateTukuiConfigUI()
 	-- MAIN FRAME
 	local TukuiConfigUI = CreateFrame("Frame","TukuiConfigUI",UIParent)
 	TukuiConfigUI:SetPoint("CENTER", UIParent, "CENTER", 90, 0)
-	TukuiConfigUI:SetWidth(400)
+	TukuiConfigUI:SetWidth(550)
 	TukuiConfigUI:SetHeight(300)
 	TukuiConfigUI:SetFrameStrata("DIALOG")
 	TukuiConfigUI:SetFrameLevel(20)
 	
 	-- TITLE 2
 	local TukuiConfigUITitleBox = CreateFrame("Frame","TukuiConfigUI",TukuiConfigUI)
-	TukuiConfigUITitleBox:SetWidth(420)
+	TukuiConfigUITitleBox:SetWidth(570)
 	TukuiConfigUITitleBox:SetHeight(24)
 	TukuiConfigUITitleBox:SetPoint("TOPLEFT", -10, 42)
 	TukuiDB.SetTemplate(TukuiConfigUITitleBox)
@@ -514,7 +513,7 @@ local function CreateTukuiConfigUI()
 	-- GROUP SCROLLFRAME ( RIGHT SIDE)
 	local group = CreateFrame("ScrollFrame", "TukuiConfigUIGroup", TukuiConfigUI)
 	group:SetPoint("TOPLEFT",0,5)
-	group:SetWidth(400)
+	group:SetWidth(550)
 	group:SetHeight(300)
 	local slider = CreateFrame("Slider", "TukuiConfigUIGroupSlider", group)
 	slider:SetPoint("TOPRIGHT",0,0)
@@ -531,7 +530,7 @@ local function CreateTukuiConfigUI()
 	for group in pairs(ALLOWED_GROUPS) do
 		local frame = CreateFrame("Frame","TukuiConfigUI"..group,TukuiConfigUIGroup)
 		frame:SetPoint("TOPLEFT")
-		frame:SetWidth(225)
+		frame:SetWidth(325)
 
 		local offset=5
 		for option,value in pairs(TukuiCF[group]) do
@@ -552,14 +551,14 @@ local function CreateTukuiConfigUI()
 				local o = "TukuiConfigUI"..group..option
 				Local(o)
 				label:SetText(TukuiDB.option)
-				label:SetWidth(280)
+				label:SetWidth(420)
 				label:SetHeight(20)
 				label:SetJustifyH("LEFT")
 				label:SetPoint("TOPLEFT", 5, -(offset))
 				local editbox = CreateFrame("EditBox", nil, frame)
 				editbox:SetAutoFocus(false)
 				editbox:SetMultiLine(false)
-				editbox:SetWidth(220)
+				editbox:SetWidth(280)
 				editbox:SetHeight(20)
 				editbox:SetMaxLetters(255)
 				editbox:SetTextInsets(3,0,0,0)
@@ -604,7 +603,7 @@ local function CreateTukuiConfigUI()
 				local o = "TukuiConfigUI"..group..option
 				Local(o)
 				label:SetText(TukuiDB.option)
-				label:SetWidth(280)
+				label:SetWidth(420)
 				label:SetHeight(20)
 				label:SetJustifyH("LEFT")
 				label:SetPoint("TOPLEFT", 5, -(offset))

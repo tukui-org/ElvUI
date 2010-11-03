@@ -123,8 +123,6 @@
 	TukuiL.option_unitframes_unitframes = "Einheitenfenster"
 	TukuiL.option_unitframes_healthcolor = "Farbe der Lebensleiste"
 	TukuiL.option_unitframes_combatfeedback = "Kampfmeldungen auf Spieler und Ziel"
-	TukuiL.option_unitframes_runebar = "Aktiviere Runenleiste für Todesritter"
-	TukuiL.option_unitframes_totembar = "Aktiviere Totemleiste für Schamanen"
 	TukuiL.option_unitframes_totalhpmp = "Zeige gesamtes Leben/Mana an"
 	TukuiL.option_unitframes_aurawatch = "Zeige Stärkungszauber in den Ecken"
 	TukuiL.option_unitframes_saveperchar = "Speichere Einheitenfenster Position für jeden Charakter"
@@ -143,10 +141,10 @@
 	TukuiL.option_unitframes_DebuffHighlight = "Einheitenfenster nach Schwächungszauberfarbe färben"
 	TukuiL.option_unitframes_mendpet = "Zeige Tier Heilen auf Begleiter Frame (DPS Layout)"
 	TukuiL.option_unitframes_fontsize = "Schriftgröße"
- 
 	TukuiL.option_unitframes_unitframes_poweroffset = "Offset of the powerbar on the frame (0 for no offset)"
-
--- loot
+	TukuiL.option_unitframes_classbar = "Enable Classbar (TotemBar, RuneBar, HolyBar, SoulshardBar, EclipseBar)"
+	
+	-- loot
 	TukuiL.option_loot = "Beute"
 	TukuiL.option_loot_enableloot = "Aktiviere Beutefenster"
 	TukuiL.option_loot_autogreed = "Aktiviere automatischen Gier-Wurf für grüne Gegenstände auf Maximalen Level"

@@ -123,8 +123,6 @@
 	TukuiL.option_unitframes_unitframes = "單位框架"
 	TukuiL.option_unitframes_healthcolor = "生命條顏色"
 	TukuiL.option_unitframes_combatfeedback = "玩家及目標單位框架戰鬥回報"
-	TukuiL.option_unitframes_runebar = "啟用頭像DK符文列"
-	TukuiL.option_unitframes_totembar = "啟用頭像薩滿圖騰列"
 	TukuiL.option_unitframes_totalhpmp = "顯示總生命/能量值"
 	TukuiL.option_unitframes_aurawatch = "啟用Buff監視"
 	TukuiL.option_unitframes_saveperchar = "依角色儲存單位框架位置"
@@ -143,10 +141,10 @@
 	TukuiL.option_unitframes_DebuffHighlight = "單位框架依可驅散DEBUFF上色"
 	TukuiL.option_unitframes_mendpet = "於寵物框架顯示Mend Pet狀態條 (限DPS配置)"
 	TukuiL.option_unitframes_fontsize = "字體大小"
-	 
 	TukuiL.option_unitframes_unitframes_poweroffset = "Offset of the powerbar on the frame (0 for no offset)"
-
--- loot
+	TukuiL.option_unitframes_classbar = "Enable Classbar (TotemBar, RuneBar, HolyBar, SoulshardBar, EclipseBar)"
+	
+	-- loot
 	TukuiL.option_loot = "拾取"
 	TukuiL.option_loot_enableloot = "啟用戰利品視窗"
 	TukuiL.option_loot_autogreed = "最高等級時自動分解/貪婪綠裝"

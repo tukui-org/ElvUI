@@ -123,8 +123,6 @@
 	TukuiL.option_unitframes_unitframes = "Рамки юнитов"
 	TukuiL.option_unitframes_healthcolor = "Цвет полос здоровья"
 	TukuiL.option_unitframes_combatfeedback = "Отклик боя на фрейме игрока и цели"
-	TukuiL.option_unitframes_runebar = "Включить панель рун для рыцарей смерти"
-	TukuiL.option_unitframes_totembar = "Включить панель тотемов для шаманов"
 	TukuiL.option_unitframes_totalhpmp = "Отображать общий запас здоровья/маны"
 	TukuiL.option_unitframes_aurawatch = "Отображать положительные эффекты в углах"
 	TukuiL.option_unitframes_saveperchar = "Сохранять позиции фреймов для каждого персонажа отдельно"
@@ -143,10 +141,10 @@
 	TukuiL.option_unitframes_DebuffHighlight = "Окрасить иконки вредоносных эффектов по типу (при возможности снятия)"
 	TukuiL.option_unitframes_mendpet = "Показывать панель Лечение питомца (DPS раскладка)"
 	TukuiL.option_unitframes_fontsize = "Размер шрифта"
-
 	TukuiL.option_unitframes_unitframes_poweroffset = "Offset of the powerbar on the frame (0 for no offset)"
-
--- loot
+	TukuiL.option_unitframes_classbar = "Enable Classbar (TotemBar, RuneBar, HolyBar, SoulshardBar, EclipseBar)"
+	
+	-- loot
 	TukuiL.option_loot = "Добыча"
 	TukuiL.option_loot_enableloot = "Включить окно добычи"
 	TukuiL.option_loot_autogreed = "Автоматически нажимать не откажусь для зеленых предметов на макс. уровне"

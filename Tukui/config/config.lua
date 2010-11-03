@@ -35,15 +35,10 @@ TukuiCF["unitframes"] = {
 	["showsymbols"] = true,	               -- show symbol.
 	["aggro"] = true,                      -- show aggro
 	["poweroffset"] = 9,					--powerbar offset
+	["classbar"] = true,                    -- enable runebar/totembar/holypowerbar/soulshardbar/eclipsebar
 	
 	-- hunter only plugin
 	["mendpet"] = true,						--mend pet duration overlay on pet frame
-	
-	-- death knight only plugin
-	["runebar"] = true,                    -- enable tukui runebar plugin
-	
-	-- shaman only plugin
-	["totemtimer"] = true,                 -- enable tukui totem timer plugin
 }
 
 TukuiCF["raidframes"] = {
