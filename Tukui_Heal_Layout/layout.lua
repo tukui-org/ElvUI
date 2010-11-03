@@ -400,44 +400,47 @@ local function Shared(self, unit)
 			local DruidMana = TukuiDB.SetFontString(health, font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
 			DruidMana:SetTextColor(1, 0.49, 0.04)
 			self.DruidMana = DruidMana
-				local eclipseBar = CreateFrame('Frame', nil, self)
-				eclipseBar:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 0, TukuiDB.Scale(5))
-				eclipseBar:SetSize(original_width, TukuiDB.Scale(8))
-				eclipseBar:SetFrameStrata("MEDIUM")
-				eclipseBar:SetFrameLevel(8)
-				TukuiDB.SetTemplate(eclipseBar)
-				eclipseBar:SetBackdropBorderColor(0,0,0,0)
+			local eclipseBar = CreateFrame('Frame', nil, self)
+			eclipseBar:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 0, TukuiDB.Scale(5))
+			eclipseBar:SetSize(original_width, TukuiDB.Scale(8))
+			eclipseBar:SetFrameStrata("MEDIUM")
+			eclipseBar:SetFrameLevel(8)
+			TukuiDB.SetTemplate(eclipseBar)
+			eclipseBar:SetBackdropBorderColor(0,0,0,0)
 
-				local lunarBar = CreateFrame('StatusBar', nil, eclipseBar)
-				lunarBar:SetPoint('LEFT', eclipseBar, 'LEFT', 0, 0)
-				lunarBar:SetSize(eclipseBar:GetWidth(), eclipseBar:GetHeight())
-				lunarBar:SetStatusBarTexture(normTex)
-				lunarBar:SetStatusBarColor(.30, .52, .90)
-				eclipseBar.LunarBar = lunarBar
+			local lunarBar = CreateFrame('StatusBar', nil, eclipseBar)
+			lunarBar:SetPoint('LEFT', eclipseBar, 'LEFT', 0, 0)
+			lunarBar:SetSize(eclipseBar:GetWidth(), eclipseBar:GetHeight())
+			lunarBar:SetStatusBarTexture(normTex)
+			lunarBar:SetStatusBarColor(.30, .52, .90)
+			eclipseBar.LunarBar = lunarBar
 
-				local solarBar = CreateFrame('StatusBar', nil, eclipseBar)
-				solarBar:SetPoint('LEFT', lunarBar:GetStatusBarTexture(), 'RIGHT', 0, 0)
-				solarBar:SetSize(eclipseBar:GetWidth(), eclipseBar:GetHeight())
-				solarBar:SetStatusBarTexture(normTex)
-				solarBar:SetStatusBarColor(.80, .82,  .60)
-				eclipseBar.SolarBar = solarBar
+			local solarBar = CreateFrame('StatusBar', nil, eclipseBar)
+			solarBar:SetPoint('LEFT', lunarBar:GetStatusBarTexture(), 'RIGHT', 0, 0)
+			solarBar:SetSize(eclipseBar:GetWidth(), eclipseBar:GetHeight())
+			solarBar:SetStatusBarTexture(normTex)
+			solarBar:SetStatusBarColor(.80, .82,  .60)
+			eclipseBar.SolarBar = solarBar
 
-				local eclipseBarText = solarBar:CreateFontString(nil, 'OVERLAY')
-				eclipseBarText:SetPoint("CENTER", self.Health, "CENTER", TukuiDB.Scale(1), TukuiDB.Scale(-5))
-				eclipseBarText:SetFont(font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
-				eclipseBar.Text = eclipseBarText
-
-				self.EclipseBar = eclipseBar
+			local eclipseBarText = solarBar:CreateFontString(nil, 'OVERLAY')
+			eclipseBarText:SetPoint("CENTER", self.Health, "CENTER", TukuiDB.Scale(1), TukuiDB.Scale(-5))
+			eclipseBarText:SetFont(font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
+			eclipseBar.Text = eclipseBarText
 		
-				eclipseBar.FrameBackdrop = CreateFrame("Frame", nil, eclipseBar)
-				TukuiDB.SetTemplate(eclipseBar.FrameBackdrop)
-				eclipseBar.FrameBackdrop:SetPoint("TOPLEFT", eclipseBar, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-				eclipseBar.FrameBackdrop:SetPoint("BOTTOMRIGHT", lunarBar, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
-				eclipseBar.FrameBackdrop:SetFrameLevel(eclipseBar:GetFrameLevel() - 1)
-				
-				self.EclipseBar:SetScript("OnShow", function() TukuiDB.MoveBuffs(self.EclipseBar, false) end)
-				self.EclipseBar:SetScript("OnUpdate", function() TukuiDB.MoveBuffs(self.EclipseBar, true) end) -- just forcing 1 update on login for buffs/shadow/etc.
-				self.EclipseBar:SetScript("OnHide", function() TukuiDB.MoveBuffs(self.EclipseBar, false) end)
+
+			self.EclipseBar = eclipseBar
+			
+			self.EclipseBar.PostUpdatePower = TukuiDB.EclipseDirection
+	
+			eclipseBar.FrameBackdrop = CreateFrame("Frame", nil, eclipseBar)
+			TukuiDB.SetTemplate(eclipseBar.FrameBackdrop)
+			eclipseBar.FrameBackdrop:SetPoint("TOPLEFT", eclipseBar, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
+			eclipseBar.FrameBackdrop:SetPoint("BOTTOMRIGHT", lunarBar, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+			eclipseBar.FrameBackdrop:SetFrameLevel(eclipseBar:GetFrameLevel() - 1)
+			
+			self.EclipseBar:SetScript("OnShow", function() TukuiDB.MoveBuffs(self.EclipseBar, false) end)
+			self.EclipseBar:SetScript("OnUpdate", function() TukuiDB.MoveBuffs(self.EclipseBar, true) end) -- just forcing 1 update on login for buffs/shadow/etc.
+			self.EclipseBar:SetScript("OnHide", function() TukuiDB.MoveBuffs(self.EclipseBar, false) end)
 		end
 		
 		-- set holy power bar or shard bar

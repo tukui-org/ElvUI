@@ -1045,17 +1045,38 @@ TukuiDB.MoveBuffs = function(self, login)
 	end
 	
 	if self:IsShown() then
+		if self == parent.EclipseBar then
+			parent.FlashInfo:Hide()
+			parent.Status:Hide()
+		end
 		parent.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(17))
 		if parent.Debuffs then 
 			parent.Debuffs:ClearAllPoints()
 			if parent.Debuffs then parent.Debuffs:SetPoint("BOTTOMRIGHT", parent.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(17)) end	
 		end		
 	else
+		if self == parent.EclipseBar then
+			parent.FlashInfo:Show()
+			parent.Status:Show()
+		end
 		parent.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))
 		if parent.Debuffs then 
 			parent.Debuffs:ClearAllPoints()
 			parent.Debuffs:SetPoint("BOTTOMRIGHT", parent.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(6))
 		end	
+	end
+end
+
+local starfirename = select(1, GetSpellInfo(2912))
+TukuiDB.EclipseDirection = function(self)
+	if ( GetEclipseDirection() == "sun" ) then
+		self.Text:SetText(starfirename.."!")
+		self.Text:SetTextColor(.2,.2,1,1)
+	elseif ( GetEclipseDirection() == "moon" ) then
+		self.Text:SetText(POWER_TYPE_WRATH.."!")
+		self.Text:SetTextColor(1,1,.3, 1)
+	else
+		self.Text:SetText("")
 	end
 end
 
