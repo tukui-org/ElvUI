@@ -31,7 +31,7 @@
 	-- nameplate
 	TukuiL.option_nameplates = "Nameplates"
 	TukuiL.option_nameplates_enable = "Enable Nameplates"
-	TukuiL.option_nameplates_enhancethreat = "Enable threat feature, automatically changes by your roll: \n Tank - Green (aggro) Red (noaggro) DPS - Green (noaggro) Red (aggro)"
+	TukuiL.option_nameplates_enhancethreat = "Enable threat feature, automatically changes by your roll"
 	TukuiL.option_nameplates_showhealth = "Show health on nameplate"
 
 	-- addon skins
@@ -81,7 +81,7 @@
 	-- auras
 	TukuiL.option_auras = "Auras"
 	TukuiL.option_auras_minimapauras = "Enable auras by the minimap"
-	TukuiL.option_auras_arenadebuffs = "Show only important debuffs inside arena/bg\non party and raid frames"
+	TukuiL.option_auras_arenadebuffs = "Show only important debuffs inside arena/bgon party and raid frames"
 	TukuiL.option_auras_auratimer = "Enable timer on auras"
 	TukuiL.option_auras_targetaura = "Enable target auras"
 	TukuiL.option_auras_focusdebuff = "Enable Focus debuffs"
@@ -89,9 +89,12 @@
 	TukuiL.option_auras_aurascale = "Aura text scale on auras"
 	TukuiL.option_auras_totdebuffs = "Enable Target of Target debuffs"
 	TukuiL.option_auras_playershowonlydebuffs = "Only show debuffs on playerframe (Must have show aura on playerframe)"
-	TukuiL.option_auras_playerdebuffsonly = "Show only your debuffs, and CC debuffs on target \n (inside auraFilter.lua to config)"
+	TukuiL.option_auras_playerdebuffsonly = "Show only your debuffs, and CC debuffs on target  (inside auraFilter.lua to config)"
 	TukuiL.option_auras_RaidUnitBuffWatch = "Enable buff watch on raid frames"
 
+	TukuiL.option_auras_playtarbuffperrow = "Amount of Buffs/Debuffs in a row on the Player/Target frames"
+	TukuiL.option_auras_smallbuffperrow = "Amount of Debuffs in a row on the TargetTarget/Focus frames"
+	
 	-- raidframes
 	TukuiL.option_raidframes = "Raid Frames"
 	TukuiL.option_raidframes_enable = "Enable Raid Frames"

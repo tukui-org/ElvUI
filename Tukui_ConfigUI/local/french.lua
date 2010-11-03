@@ -31,7 +31,7 @@ if GetLocale() == "frFR" then
 	-- nameplate
 	TukuiL.option_nameplates = "Barres de vies" --"Nameplates"
 	TukuiL.option_nameplates_enable = "Activer les barres de vies" --"Enable Nameplates"
-	TukuiL.option_nameplates_enhancethreat = "Activer la gestion d'aggro, change automatiquement selon votre role : \n Tank - Vert(aggro) Rouge(perte d'aggro) DPS - Vert(pas d'aggro) Rouge(aggro)" --"Enable threat feature, automatically changes by your roll: \n Tank - Green (aggro) Red (noaggro) DPS - Green (noaggro) Red (aggro)"
+	TukuiL.option_nameplates_enhancethreat = "Activer la gestion d'aggro, change automatiquement selon votre role:" --"Enable threat feature, automatically changes by your roll:  Tank - Green (aggro) Red (noaggro) DPS - Green (noaggro) Red (aggro)"
 	TukuiL.option_nameplates_showhealth = "Montrer la vie sur les barres de vies" --"Show health on nameplate"
  
 	-- addon skins
@@ -81,7 +81,7 @@ if GetLocale() == "frFR" then
 	-- auras
 	TukuiL.option_auras = "Auras"
 	TukuiL.option_auras_minimapauras = "Activer les auras à coté de la minimap" --"Enable auras by the minimap"
-	TukuiL.option_auras_arenadebuffs = "Montrer seulement les debuffs importants en arene/bg" --"Show only important debuffs inside arena/bg\non party and raid frames"
+	TukuiL.option_auras_arenadebuffs = "Montrer seulement les debuffs importants en arene/bg" --"Show only important debuffs inside arena/bgon party and raid frames"
 	TukuiL.option_auras_auratimer = "Activer les timers des auras" --"Enable timer on auras"
 	TukuiL.option_auras_targetaura = "Activer les auras de la cible" --"Enable target auras"
 	TukuiL.option_auras_focusdebuff = "Activer les debuffs du focus" --"Enable Focus debuffs"
@@ -89,9 +89,12 @@ if GetLocale() == "frFR" then
 	TukuiL.option_auras_aurascale = "Taille du texte des auras" --"Aura text scale on auras"
 	TukuiL.option_auras_totdebuffs = "Activer les debuffs de la cible de la cible" --"Enable Target of Target debuffs"
 	TukuiL.option_auras_playershowonlydebuffs = "Montrer uniquement les debuffs sur le cadre du joueur (nécessite d'avoir les auras d'activées sur le cadre du joueur)" --"Only show debuffs on playerframe (Must have show aura on playerframe)"
-	TukuiL.option_auras_playerdebuffsonly = "Montrer seulement vos debuffs et les CC sur la cible \n (configuration dans auraFilter.lua)" --"Show only your debuffs, and CC debuffs on target \n (inside auraFilter.lua to config)"
+	TukuiL.option_auras_playerdebuffsonly = "Montrer seulement vos debuffs et les CC sur la cible  (configuration dans auraFilter.lua)" --"Show only your debuffs, and CC debuffs on target  (inside auraFilter.lua to config)"
 	TukuiL.option_auras_RaidUnitBuffWatch = "Activer l'affichage des buffs sur l'interface de raid." --"Enable buff watch on raid frames"
  
+	TukuiL.option_auras_playtarbuffperrow = "Amount of Buffs/Debuffs in a row on the Player/Target frames"
+	TukuiL.option_auras_smallbuffperrow = "Amount of Debuffs in a row on the TargetTarget/Focus frames"
+	
 	-- raidframes
 	TukuiL.option_raidframes = "Interface de raid" --"Raid Frames"
 	TukuiL.option_raidframes_enable = "Activer l'interface de raid" --"Enable Raid Frames"

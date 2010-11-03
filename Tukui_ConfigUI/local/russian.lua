@@ -29,9 +29,9 @@
 	TukuiL.option_media_glossy = "Путь к файлу глянцевой текстуры"
 
 	-- nameplate
-	TukuiL.option_nameplates = "Индикаторы\nздоровья"
+	TukuiL.option_nameplates = "Индикаторыздоровья"
 	TukuiL.option_nameplates_enable = "Включить индикаторы здоровья"
-	TukuiL.option_nameplates_enhancethreat = "Включить поддержку угрозы, зависит от Вашей роли: \n Танк - Зеленые (aggro) Красные (noaggro) Боец - Зеленые (noaggro) Красные (aggro)"
+	TukuiL.option_nameplates_enhancethreat = "Включить поддержку угрозы, зависит от Вашей роли"
 	TukuiL.option_nameplates_showhealth = "Показывать здоровье на индикаторе"
 
 	-- addon skins
@@ -81,7 +81,7 @@
 	-- auras
 	TukuiL.option_auras = "Ауры"
 	TukuiL.option_auras_minimapauras = "Ауры около миникарты"
-	TukuiL.option_auras_arenadebuffs = "Отображать только важные вредоносные эффекты на арене или полях боя\n на фреймах группы или рейда"
+	TukuiL.option_auras_arenadebuffs = "Отображать только важные вредоносные эффекты на арене или полях боя на фреймах группы или рейда"
 	TukuiL.option_auras_auratimer = "Таймер на аурах"
 	TukuiL.option_auras_targetaura = "Ауры цели"
 	TukuiL.option_auras_focusdebuff = "Дебаффы фокуса"
@@ -89,9 +89,12 @@
 	TukuiL.option_auras_aurascale = "Масштаб текста на аурах"
 	TukuiL.option_auras_totdebuffs = "Дебаффы цели вашей цели"
 	TukuiL.option_auras_playershowonlydebuffs = "Отображать только дебаффы на рамке игрока (Ауры на рамке игрока должны быть включены)"
-	TukuiL.option_auras_playerdebuffsonly = "Отображать только свои эффекты и эффекты контроля \n (настраивается в auraFilter.lua)"
+	TukuiL.option_auras_playerdebuffsonly = "Отображать только свои эффекты и эффекты контроля  (настраивается в auraFilter.lua)"
 	TukuiL.option_auras_RaidUnitBuffWatch = "Отображать баффы на рейдовых фреймах"
 
+	TukuiL.option_auras_playtarbuffperrow = "Amount of Buffs/Debuffs in a row on the Player/Target frames"
+	TukuiL.option_auras_smallbuffperrow = "Amount of Debuffs in a row on the TargetTarget/Focus frames"
+	
 	-- raidframes
 	TukuiL.option_raidframes = "Рейдовые фреймы"
 	TukuiL.option_raidframes_enable = "Включить"

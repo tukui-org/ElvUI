@@ -31,7 +31,7 @@
 	-- nameplate
 	TukuiL.option_nameplates = "名條"
 	TukuiL.option_nameplates_enable = "啟用名條模組"
-	TukuiL.option_nameplates_enhancethreat = "啟用仇恨上色模式, 依照你的角色決定: 坦克 - 綠色 (獲得仇恨) 紅色 (失去仇恨) DPS - 綠色 (失去仇恨) 紅色 (獲得仇恨)"
+	TukuiL.option_nameplates_enhancethreat = "啟用仇恨上色模式, 依照你的角色決定"
 	TukuiL.option_nameplates_showhealth = "在名條上顯示生命"
 	 
 	-- addon skins
@@ -92,6 +92,9 @@
 	TukuiL.option_auras_playerdebuffsonly = "只顯示玩家DEBUFF於目標單位框架(可於auraFilter.lua設定)"
 	TukuiL.option_auras_RaidUnitBuffWatch = "開啟團隊buff監視"
 	 
+	TukuiL.option_auras_playtarbuffperrow = "Amount of Buffs/Debuffs in a row on the Player/Target frames"
+	TukuiL.option_auras_smallbuffperrow = "Amount of Debuffs in a row on the TargetTarget/Focus frames"
+	
 	-- raidframes
 	TukuiL.option_raidframes = "團隊框架"
 	TukuiL.option_raidframes_enable = "啟用團隊框架模組"

@@ -102,17 +102,14 @@ do
 		TukuiCF["unitframes"]["combatfeedback"] = nil             -- enable combattext on player and target.
 		TukuiCF["unitframes"]["playeraggro"] = nil                -- color player border to red if you have aggro on current target.
 		TukuiCF["unitframes"]["positionbychar"] = nil             -- save X Y position with /uf (movable frame) per character instead of per account.
-		TukuiCF["unitframes"]["ComboHideOOC"] = nil				-- hide combo bar out of combat
-		TukuiCF["unitframes"]["ComboHideNoEnergy"] = nil			-- hide if you don't have energy
 		TukuiCF["unitframes"]["swingbar"] = nil					--enables swingbar (dps layout only)
 		TukuiCF["unitframes"]["debuffhighlight"] = nil			--highlight frame with the debuff color if the frame is dispellable
 		TukuiCF["unitframes"]["showsymbols"] = nil	               -- show symbol.
 		TukuiCF["unitframes"]["aggro"] = nil                      -- show aggro on all raids layouts
-		TukuiCF["unitframes"]["ws_show_time"] = nil              -- show time on weakened soul bar
-		TukuiCF["unitframes"]["ws_show_player"] = nil             -- show weakened soul bar on player unit
-		TukuiCF["unitframes"]["ws_show_target"] = nil            -- show weakened soul bar on target unit
 		TukuiCF["unitframes"]["classbar"] = nil
 		TukuiCF["unitframes"]["mendpet"] = nil                  -- enable maintank
+		TukuiCF["auras"]["playtarbuffperrow"] = nil
+		TukuiCF["auras"]["smallbuffperrow"] = nil
 		
 		--kill an entire catagory
 		ALLOWED_GROUPS.castbar = nil

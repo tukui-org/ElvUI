@@ -645,7 +645,7 @@ local function Shared(self, unit)
 			local buffs = CreateFrame("Frame", nil, self)
 			local debuffs = CreateFrame("Frame", nil, self)
 
-			debuffs.num = 8
+			debuffs.num = TukuiCF["auras"].playtarbuffperrow
 			debuffs:SetWidth(original_width + TukuiDB.Scale(4))
 			debuffs.spacing = TukuiDB.Scale(2)
 			debuffs.size = (((original_width + TukuiDB.Scale(4)) - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)
@@ -658,7 +658,7 @@ local function Shared(self, unit)
 			debuffs.PostUpdateIcon = TukuiDB.PostUpdateAura
 			
 			if TukuiCF["auras"].playershowonlydebuffs == false then
-				buffs.num = 8
+				buffs.num = TukuiCF["auras"].playtarbuffperrow
 				buffs:SetWidth(debuffs:GetWidth())
 				buffs.spacing = TukuiDB.Scale(2)
 				buffs.size = ((((original_width + TukuiDB.Scale(4)) - (buffs.spacing*(buffs.num - 1))) / buffs.num))
@@ -961,7 +961,7 @@ local function Shared(self, unit)
 			local buffs = CreateFrame("Frame", nil, self)
 			local debuffs = CreateFrame("Frame", nil, self)
 			
-			buffs.num = 8
+			buffs.num = TukuiCF["auras"].playtarbuffperrow
 			buffs:SetWidth(original_width + TukuiDB.Scale(4))
 			buffs.spacing = TukuiDB.Scale(2)
 			buffs.size = (((original_width + TukuiDB.Scale(4)) - (buffs.spacing*(buffs.num - 1))) / buffs.num)
@@ -974,7 +974,7 @@ local function Shared(self, unit)
 			buffs.PostUpdateIcon = TukuiDB.PostUpdateAura
 			self.Buffs = buffs	
 			
-			debuffs.num = 8
+			debuffs.num = TukuiCF["auras"].playtarbuffperrow
 			debuffs:SetWidth(original_width + TukuiDB.Scale(4))
 			debuffs.spacing = TukuiDB.Scale(2)
 			debuffs.size = (((original_width + TukuiDB.Scale(4)) - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)
@@ -1259,7 +1259,7 @@ local function Shared(self, unit)
 		
 		if unit == "targettarget" and TukuiCF["auras"].totdebuffs == true then
 			local debuffs = CreateFrame("Frame", nil, health)			
-			debuffs.num = 4
+			debuffs.num = TukuiCF["auras"].smallbuffperrow
 			debuffs:SetWidth(original_width + TukuiDB.Scale(4))
 			debuffs.spacing = TukuiDB.Scale(2)
 			debuffs.size = (((original_width + TukuiDB.Scale(4)) - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)
@@ -1278,7 +1278,7 @@ local function Shared(self, unit)
 		
 		if unit == "focus" and TukuiCF["auras"].focusdebuffs == true then
 			local debuffs = CreateFrame("Frame", nil, health)			
-			debuffs.num = 4
+			debuffs.num = TukuiCF["auras"].smallbuffperrow
 			debuffs:SetWidth(original_width + TukuiDB.Scale(4))
 			debuffs.spacing = TukuiDB.Scale(2)
 			debuffs.size = (((original_width + TukuiDB.Scale(4)) - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)
@@ -1866,6 +1866,6 @@ if oUF_Tukz_player.ThreatBar then
 	if powerbar_offset ~= 0 then
 		oUF_Tukz_player.ThreatBar:SetPoint("TOPLEFT", oUF_Tukz_target.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
 	else
-		oUF_Tukz_player.ThreatBar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -TukuiDB.Scale(8))
+		oUF_Tukz_player.ThreatBar:SetPoint("TOPRIGHT", oUF_Tukz_target.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -TukuiDB.Scale(8))
 	end
 end

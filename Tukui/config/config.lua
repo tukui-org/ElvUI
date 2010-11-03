@@ -70,6 +70,8 @@ TukuiCF["auras"] = {
 	["raidunitbuffwatch"] = true,       -- track important spell to watch in pve for grid mode.
 	["totdebuffs"] = true,                -- enable tot debuffs (high reso only)
 	["focusdebuffs"] = true,              -- enable focus debuffs 
+	["playtarbuffperrow"] = 8,				-- buffs/debuffs per row on player/target frames
+	["smallbuffperrow"] = 4,				-- debuffs per row on targettarget/focus frames
 }
 
 TukuiCF["castbar"] = {

@@ -117,6 +117,8 @@ local function Local(o)
 	if o == "TukuiConfigUIaurasplayerdebuffsonly" then o = TukuiL.option_auras_playerdebuffsonly end
 	if o == "TukuiConfigUIaurasfocusdebuffs" then o = TukuiL.option_auras_focusdebuff end
 	if o == "TukuiConfigUIaurasraidunitbuffwatch" then o = TukuiL.option_auras_RaidUnitBuffWatch end
+	if o == "TukuiConfigUIaurasplaytarbuffperrow" then o = TukuiL.option_auras_playtarbuffperrow end
+	if o == "TukuiConfigUIaurassmallbuffperrow" then o = TukuiL.option_auras_smallbuffperrow end
 	
 	--castbars
 	if o == "TukuiConfigUIcastbar" then o = TukuiL.option_castbar end

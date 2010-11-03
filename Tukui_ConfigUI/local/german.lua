@@ -31,7 +31,7 @@
 	-- nameplate
 	TukuiL.option_nameplates = "Namensplaketten"
 	TukuiL.option_nameplates_enable = "Aktiviere Namensplaketten"
-	TukuiL.option_nameplates_enhancethreat = "Aktiviere Bedrohungsanzeige, anpassung an deine Rolle: \n Tank -Grün (aggro) Rot (sicher) DPS - Grün (sicher) Rot (aggro)"
+	TukuiL.option_nameplates_enhancethreat = "Aktiviere Bedrohungsanzeige, anpassung an deine Rolle"
 	TukuiL.option_nameplates_showhealth = "Zeige Leben auf den Namensplaketten"
  
 	-- addon skins
@@ -81,7 +81,7 @@
 	-- auras
 	TukuiL.option_auras = "Stärkungszauber"
 	TukuiL.option_auras_minimapauras = "Aktiviere Stärkungs- und Schwächungszauber an der Minimap"
-	TukuiL.option_auras_arenadebuffs = "Zeige nur wichtige Schwächungszauber in Arena/Schlachtfeldern\nicht in der Gruppe und im Raid"
+	TukuiL.option_auras_arenadebuffs = "Zeige nur wichtige Schwächungszauber in Arena/Schlachtfeldernicht in der Gruppe und im Raid"
 	TukuiL.option_auras_auratimer = "Aktiviere Dauer auf Stärkungs- und Schwächungszaubern"
 	TukuiL.option_auras_targetaura = "Aktiviere Stärkungs- und Schwächungszauber auf dem Ziel"
 	TukuiL.option_auras_focusdebuff = "Aktiviere Schwächungszauber auf dem Fokusziel"
@@ -89,9 +89,12 @@
 	TukuiL.option_auras_aurascale = "Text-Skalierung auf  Stärkungs-/Schwächungszaubern"
 	TukuiL.option_auras_totdebuffs = "Aktiviere Ziel vom Ziel Schwächungszauber"
 	TukuiL.option_auras_playershowonlydebuffs = "Only show debuffs on playerframe (Must have show aura on playerframe)"
-	TukuiL.option_auras_playerdebuffsonly = "Show only your debuffs, and CC debuffs on target \n (inside auraFilter.lua to config)"
+	TukuiL.option_auras_playerdebuffsonly = "Show only your debuffs, and CC debuffs on target  (inside auraFilter.lua to config)"
 	TukuiL.option_auras_RaidUnitBuffWatch = "Aktiviere die Anzeige für Stärkungszauber auf den Raidframes"
  
+	TukuiL.option_auras_playtarbuffperrow = "Amount of Buffs/Debuffs in a row on the Player/Target frames"
+	TukuiL.option_auras_smallbuffperrow = "Amount of Debuffs in a row on the TargetTarget/Focus frames"
+	
 	-- raidframes
 	TukuiL.option_raidframes = "Raidframes"
 	TukuiL.option_raidframes_enable = "Aktiviere Raidframes"
