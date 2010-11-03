@@ -156,28 +156,31 @@ local function Local(o)
 	if o == "TukuiConfigUIunitframesshowtotalhpmp" then o = TukuiL.option_unitframes_totalhpmp end
 	if o == "TukuiConfigUIunitframesshowplayerinparty" then o = TukuiL.option_unitframes_playerparty end
 	if o == "TukuiConfigUIunitframespositionbychar" then o = TukuiL.option_unitframes_saveperchar end
-	if o == "TukuiConfigUIunitframesws_show_time" then o = TukuiL.option_unitframes_wstimer end
 	if o == "TukuiConfigUIunitframesplayeraggro" then o = TukuiL.option_unitframes_playeraggro end
 	if o == "TukuiConfigUIunitframesshowsmooth" then o = TukuiL.option_unitframes_smooth end
 	if o == "TukuiConfigUIunitframescharportrait" then o = TukuiL.option_unitframes_portrait end
 	if o == "TukuiConfigUIunitframesenable" then o = TukuiL.option_unitframes_enable end
-	if o == "TukuiConfigUIunitframesws_show_target" then o = TukuiL.option_unitframes_wstarget end
 	if o == "TukuiConfigUIunitframestargetpowerpvponly" then o = TukuiL.option_unitframes_enemypower end
-	if o == "TukuiConfigUIunitframesws_show_player" then o = TukuiL.option_unitframes_wsplayer end
 	if o == "TukuiConfigUIunitframesaggro" then o = TukuiL.option_unitframes_raidaggro end
 	if o == "TukuiConfigUIunitframesshowsymbols" then o = TukuiL.option_unitframes_symbol end
 	if o == "TukuiConfigUIunitframesshowthreat" then o = TukuiL.option_unitframes_threatbar end
 	if o == "TukuiConfigUIunitframesshowfocustarget" then o = TukuiL.option_unitframes_focus end
 	if o == "TukuiConfigUIunitframeslowThreshold" then o = TukuiL.option_unitframes_manalow end
 	if o == "TukuiConfigUIunitframesclasscolor" then o = TukuiL.option_unitframes_classcolor end
-	if o == "TukuiConfigUIunitframesComboHideOOC" then o = TukuiL.option_unitframes_ComboHideOOC end
-	if o == "TukuiConfigUIunitframesComboHideNoEnergy" then o = TukuiL.option_unitframes_ComboHideNoEnergy end
 	if o == "TukuiConfigUIunitframesswingbar" then o = TukuiL.option_unitframes_SwingBar end
 	if o == "TukuiConfigUIunitframesdebuffhighlight" then o = TukuiL.option_unitframes_DebuffHighlight end
 	if o == "TukuiConfigUIunitframesfontsize" then o = TukuiL.option_unitframes_fontsize end
 	if o == "TukuiConfigUIunitframesmendpet" then o = TukuiL.option_unitframes_mendpet end
 	if o == "TukuiConfigUIunitframespoweroffset" then o = TukuiL.option_unitframes_unitframes_poweroffset end
 	if o == "TukuiConfigUIunitframesclassbar" then o = TukuiL.option_unitframes_classbar end
+	if o == "TukuiConfigUIunitframesplaytarwidth" then o = TukuiL.option_unitframes_playtarwidth end
+	if o == "TukuiConfigUIunitframesplaytarheight" then o = TukuiL.option_unitframes_playtarheight end
+	if o == "TukuiConfigUIunitframessmallwidth" then o = TukuiL.option_unitframes_smallwidth end
+	if o == "TukuiConfigUIunitframessmallheight" then o = TukuiL.option_unitframes_smallheight end
+	if o == "TukuiConfigUIunitframesarenabosswidth" then o = TukuiL.option_unitframes_arenabosswidth end
+	if o == "TukuiConfigUIunitframesarenabossheight" then o = TukuiL.option_unitframes_arenabossheight end
+	if o == "TukuiConfigUIunitframesassisttankwidth" then o = TukuiL.option_unitframes_assisttankwidth end
+	if o == "TukuiConfigUIunitframesassisttankheight" then o = TukuiL.option_unitframes_assisttankheight end
 	
 	-- loot
 	if o == "TukuiConfigUIloot" then o = TukuiL.option_loot end

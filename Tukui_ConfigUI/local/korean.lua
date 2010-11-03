@@ -91,9 +91,8 @@
 	TukuiL.option_auras_playershowonlydebuffs = "Only show debuffs on playerframe (Must have show aura on playerframe)"
 	TukuiL.option_auras_playerdebuffsonly = "Show only your debuffs, and CC debuffs on target  (inside auraFilter.lua to config)"
 	TukuiL.option_auras_RaidUnitBuffWatch = "Enable buff watch on raid frames"
-
-	TukuiL.option_auras_playtarbuffperrow = "Amount of Buffs/Debuffs in a row on the Player/Target frames"
-	TukuiL.option_auras_smallbuffperrow = "Amount of Debuffs in a row on the TargetTarget/Focus frames"
+	TukuiL.option_auras_playtarbuffperrow = "플레이어 / 대상에서 프레임을 연속으로 Buffs / Debuffs을 금액"
+	TukuiL.option_auras_smallbuffperrow = "포커스TargetTarget / 프레임을 연속으로 Debuffs 금액"
 	
 	-- raidframes
 	TukuiL.option_raidframes = "Raid Frames"
@@ -144,8 +143,16 @@
 	TukuiL.option_unitframes_DebuffHighlight = "Color frames by debuff type if dispellable"
 	TukuiL.option_unitframes_mendpet = "Show Mend Pet bar on PetFrame (DPS LAYOUT)"
 	TukuiL.option_unitframes_fontsize = "Font Size"
-	TukuiL.option_unitframes_unitframes_poweroffset = "Offset of the powerbar on the frame (0 for no offset)"
-	TukuiL.option_unitframes_classbar = "Enable Classbar (TotemBar, RuneBar, HolyBar, SoulshardBar, EclipseBar)"
+	TukuiL.option_unitframes_unitframes_poweroffset = "오프셋의powerbar프레임에서(오프셋 아무 용 0)"
+	TukuiL.option_unitframes_classbar =  "활성화 Classbar (TotemBar, RuneBar, HolyBar, SoulshardBar, EclipseBar)"
+	TukuiL.option_unitframes_playtarwidth = "Width of the Player/Target frames"
+	TukuiL.option_unitframes_playtarheight = "Height of the Player/Target frames"
+	TukuiL.option_unitframes_smallwidth = "Width of the TargetTarget/Focus/FocusTarget/PlayersPet frames"
+	TukuiL.option_unitframes_smallheight = "Height of the TargetTarget/Focus/FocusTarget/PlayersPet frames"
+	TukuiL.option_unitframes_arenabosswidth = "Width of the Arena/Boss frames"
+	TukuiL.option_unitframes_arenabossheight = "Height of the Arena/Boss frames"
+	TukuiL.option_unitframes_assisttankwidth = "Width of the MainTank/MainAssist frames"
+	TukuiL.option_unitframes_assisttankheight = "Height of the MainTank/MainAssist frames"
 	
 	-- loot
 	TukuiL.option_loot = "Loot"

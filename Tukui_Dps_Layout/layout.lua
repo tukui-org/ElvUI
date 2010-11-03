@@ -35,20 +35,20 @@ local powerbar_offset = TukuiDB.Scale(TukuiCF["unitframes"].poweroffset)
 
 local function Shared(self, unit)
 	--Set Sizes
-	player_width = TukuiDB.Scale(220)
-	player_height = TukuiDB.Scale(28)
+	player_width = TukuiDB.Scale(TukuiCF["unitframes"].playtarwidth)
+	player_height = TukuiDB.Scale(TukuiCF["unitframes"].playtarheight)
 
-	target_width = TukuiDB.Scale(220)
-	target_height = TukuiDB.Scale(28)
+	target_width = TukuiDB.Scale(TukuiCF["unitframes"].playtarwidth)
+	target_height = TukuiDB.Scale(TukuiCF["unitframes"].playtarheight)
 
-	smallframe_width = TukuiDB.Scale(100)
-	smallframe_height = TukuiDB.Scale(23)
+	smallframe_width = TukuiDB.Scale(TukuiCF["unitframes"].smallwidth)
+	smallframe_height = TukuiDB.Scale(TukuiCF["unitframes"].smallheight)
 
-	arenaboss_width = TukuiDB.Scale(180)
-	arenaboss_height = TukuiDB.Scale(23)
+	arenaboss_width = TukuiDB.Scale(TukuiCF["unitframes"].arenabosswidth)
+	arenaboss_height = TukuiDB.Scale(TukuiCF["unitframes"].arenabossheight)
 
-	assisttank_width = TukuiDB.Scale(100)
-	assisttank_height = TukuiDB.Scale(20)
+	assisttank_width = TukuiDB.Scale(TukuiCF["unitframes"].assisttankwidth)
+	assisttank_height = TukuiDB.Scale(TukuiCF["unitframes"].assisttankheight)
 
 	-- Set Colors
 	self.colors = TukuiDB.oUF_colors
