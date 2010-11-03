@@ -1697,6 +1697,18 @@ local function Shared(self, unit)
 		health.colorDisconnected = false
 		healthBG.multiplier = 0.3
 		
+		-- Border for HealthBar
+		local FrameBorder = CreateFrame("Frame", nil, health)
+		FrameBorder:SetPoint("TOPLEFT", health, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
+		FrameBorder:SetPoint("BOTTOMRIGHT", health, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+		TukuiDB.SetTemplate(FrameBorder)
+		FrameBorder:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))
+		FrameBorder:SetFrameLevel(2)
+		self.FrameBorder = FrameBorder
+		TukuiDB.CreateShadow(self.FrameBorder)
+		self.FrameBorder.shadow:SetFrameLevel(0)
+		self.FrameBorder.shadow:SetFrameStrata("BACKGROUND")
+		
 		-- names
 		local Name = health:CreateFontString(nil, "OVERLAY")
 		Name:SetPoint("CENTER", health, "CENTER", 0, TukuiDB.Scale(1))
