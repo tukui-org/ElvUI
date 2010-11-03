@@ -55,8 +55,8 @@ function TukuiDB.CreateShadow(f)
 	local shadow = CreateFrame("Frame", nil, f)
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(f:GetFrameStrata())
-	shadow:SetPoint("TOPLEFT", -3.7, 3.7)
-	shadow:SetPoint("BOTTOMRIGHT", 3.7, -3.7)
+	shadow:SetPoint("TOPLEFT", -TukuiDB.Scale(4), TukuiDB.Scale(4))
+	shadow:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(4), TukuiDB.Scale(-4))
 	shadow:SetBackdrop(shadows)
 	shadow:SetBackdropColor(0, 0, 0, 0)
 	shadow:SetBackdropBorderColor(0, 0, 0, .75)
@@ -1224,9 +1224,8 @@ function TukuiDB.UpdateThreat(self, event, unit)
 		local r, g, b = GetThreatStatusColor(threat)
 		if self.FrameBorder.shadow then
 			self.FrameBorder.shadow:SetBackdropBorderColor(r,g,b,0.85)
-			self.PowerFrame.shadow:SetBackdropBorderColor(r,g,b,0.85)
-			if self.PFrame then
-				self.PFrame.shadow:SetBackdropBorderColor(r,g,b,0.85)
+			if self.PowerFrame and self.PowerFrame.shadow then
+				self.PowerFrame.shadow:SetBackdropBorderColor(r,g,b,0.85)
 			end
 		else
 			if self.HealthBorder then
@@ -1240,9 +1239,8 @@ function TukuiDB.UpdateThreat(self, event, unit)
 	else
 		if self.FrameBorder.shadow then
 			self.FrameBorder.shadow:SetBackdropBorderColor(0,0,0,0.75)
-			self.PowerFrame.shadow:SetBackdropBorderColor(0,0,0,0.75)	
-			if self.PFrame then
-				self.PFrame.shadow:SetBackdropBorderColor(0,0,0,0.75)	
+			if self.PowerFrame and self.PowerFrame.shadow then
+				self.PowerFrame.shadow:SetBackdropBorderColor(0,0,0,0.75)
 			end
 		else
 			self.FrameBorder:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))

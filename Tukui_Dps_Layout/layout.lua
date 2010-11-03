@@ -144,7 +144,11 @@ local function Shared(self, unit)
 		TukuiDB.SetTemplate(PowerFrame)
 		PowerFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))	
 		self.PowerFrame = PowerFrame
-		TukuiDB.CreateShadow(self.PowerFrame)
+		if powerbar_offset ~= 0 then
+			TukuiDB.CreateShadow(self.PowerFrame)
+		else
+			self.FrameBorder.shadow:SetPoint("BOTTOMLEFT", self.PowerFrame, "BOTTOMLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(-4))
+		end
 		
 		-- Power Bar (Last because we change width of frame, and i don't want to fuck up everything else
 		local power = CreateFrame('StatusBar', nil, self)
@@ -864,7 +868,11 @@ local function Shared(self, unit)
 		TukuiDB.SetTemplate(PowerFrame)
 		PowerFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))	
 		self.PowerFrame = PowerFrame
-		TukuiDB.CreateShadow(self.PowerFrame)
+		if powerbar_offset ~= 0 then
+			TukuiDB.CreateShadow(self.PowerFrame)
+		else
+			self.FrameBorder.shadow:SetPoint("BOTTOMLEFT", self.PowerFrame, "BOTTOMLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(-4))
+		end
 		
 		-- Power Bar
 		local power = CreateFrame('StatusBar', nil, self)
@@ -1206,7 +1214,11 @@ local function Shared(self, unit)
 		PowerFrame:SetFrameStrata("LOW")
 		TukuiDB.SetTemplate(PowerFrame)
 		PowerFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))	
-		TukuiDB.CreateShadow(PowerFrame)
+		if powerbar_offset ~= 0 then
+			TukuiDB.CreateShadow(PowerFrame)
+		else
+			self.FrameBorder.shadow:SetPoint("BOTTOMLEFT", PowerFrame, "BOTTOMLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(-4))
+		end
 		
 		-- power
 		local power = CreateFrame('StatusBar', nil, self)
@@ -1469,7 +1481,11 @@ local function Shared(self, unit)
 		arenaboss_width = arenaboss_width + arenapowerbar_offset
 		TukuiDB.SetTemplate(PowerFrame)
 		PowerFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))	
-		TukuiDB.CreateShadow(PowerFrame)
+		if powerbar_offset ~= 0 then
+			TukuiDB.CreateShadow(PowerFrame)
+		else
+			self.FrameBorder.shadow:SetPoint("BOTTOMLEFT", PowerFrame, "BOTTOMLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(-4))
+		end
 		
 		-- power
 		local power = CreateFrame('StatusBar', nil, self)
