@@ -1052,7 +1052,7 @@ TukuiDB.MoveBuffs = function(self, login)
 		parent.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(17))
 		if parent.Debuffs then 
 			parent.Debuffs:ClearAllPoints()
-			if parent.Debuffs then parent.Debuffs:SetPoint("BOTTOMRIGHT", parent.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(17)) end	
+			if parent.Debuffs then parent.Debuffs:SetPoint("BOTTOM", parent.Health, "TOP", 0, TukuiDB.Scale(17)) end	
 		end		
 	else
 		if self == parent.EclipseBar then
@@ -1062,7 +1062,7 @@ TukuiDB.MoveBuffs = function(self, login)
 		parent.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))
 		if parent.Debuffs then 
 			parent.Debuffs:ClearAllPoints()
-			parent.Debuffs:SetPoint("BOTTOMRIGHT", parent.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(6))
+			parent.Debuffs:SetPoint("BOTTOM", parent.Health, "TOP", 0, TukuiDB.Scale(6))
 		end	
 	end
 end
@@ -1132,14 +1132,14 @@ TukuiDB.ComboDisplay = function(self, event, unit)
 			cpoints[i]:Show()
 		end
 		self.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(17))
-		if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", TukuiDB.Scale(-1), TukuiDB.Scale(17)) end	
+		if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOM", self.Health, "TOP", 0, TukuiDB.Scale(17)) end	
 	else
 		for i=1, MAX_COMBO_POINTS do
 			cpoints[i]:Hide()
 		end
 
 		self.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))	
-		if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", TukuiDB.Scale(-1), TukuiDB.Scale(4)) end	
+		if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOM", self.Health, "TOP", 0, TukuiDB.Scale(4)) end	
 	end
 end
 

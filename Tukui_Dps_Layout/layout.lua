@@ -644,26 +644,28 @@ local function Shared(self, unit)
 			local buffs = CreateFrame("Frame", nil, self)
 			local debuffs = CreateFrame("Frame", nil, self)
 
-			debuffs:SetHeight(((26 / original_width) * original_width))
+			debuffs.num = 8
 			debuffs:SetWidth(original_width + TukuiDB.Scale(4))
-			debuffs:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", TukuiDB.Scale(1), TukuiDB.Scale(6))
-			debuffs.size = (debuffs:GetHeight())
-			debuffs.num = (floor(debuffs:GetWidth() / debuffs:GetHeight()))
-			debuffs.spacing = 2
-			debuffs.initialAnchor = 'TOPRIGHT'
+			debuffs.spacing = TukuiDB.Scale(2)
+			debuffs.size = (((original_width + TukuiDB.Scale(4)) - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)
+			debuffs:SetHeight(debuffs.size)
+			debuffs:SetPoint("BOTTOM", self.Health, "TOP", 0, TukuiDB.Scale(6))	
+			debuffs.initialAnchor = 'BOTTOMRIGHT'
 			debuffs["growth-y"] = "UP"
 			debuffs["growth-x"] = "LEFT"
 			debuffs.PostCreateIcon = TukuiDB.PostCreateAura
 			debuffs.PostUpdateIcon = TukuiDB.PostUpdateAura
 			
 			if TukuiCF["auras"].playershowonlydebuffs == false then
+				buffs.num = 8
+				buffs:SetWidth(debuffs:GetWidth())
+				buffs.spacing = TukuiDB.Scale(2)
+				buffs.size = ((((original_width + TukuiDB.Scale(4)) - (buffs.spacing*(buffs.num - 1))) / buffs.num))
 				buffs:SetPoint("BOTTOM", debuffs, "TOP", 0, TukuiDB.Scale(2))
 				buffs:SetHeight(debuffs:GetHeight())
-				buffs:SetWidth(debuffs:GetWidth())
-				buffs.size = (debuffs:GetHeight())
-				buffs.num = (floor(debuffs:GetWidth() / debuffs:GetHeight()))
-				buffs.spacing = 2
-				buffs.initialAnchor = 'TOPLEFT'
+				buffs.initialAnchor = 'BOTTOMLEFT'
+				buffs["growth-y"] = "UP"	
+				buffs["growth-x"] = "RIGHT"
 				buffs.PostCreateIcon = TukuiDB.PostCreateAura
 				buffs.PostUpdateIcon = TukuiDB.PostUpdateAura
 				self.Buffs = buffs	
@@ -958,24 +960,26 @@ local function Shared(self, unit)
 			local buffs = CreateFrame("Frame", nil, self)
 			local debuffs = CreateFrame("Frame", nil, self)
 			
-			buffs:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", TukuiDB.Scale(-1), TukuiDB.Scale(4))
-			buffs:SetHeight(((26 / original_width) * original_width))
+			buffs.num = 8
 			buffs:SetWidth(original_width + TukuiDB.Scale(4))
-			buffs.size = (buffs:GetHeight())
-			buffs.num = (floor(buffs:GetWidth() / buffs:GetHeight()))
-			buffs.spacing = 2
-			buffs.initialAnchor = 'TOPLEFT'
+			buffs.spacing = TukuiDB.Scale(2)
+			buffs.size = (((original_width + TukuiDB.Scale(4)) - (buffs.spacing*(buffs.num - 1))) / buffs.num)
+			buffs:SetHeight(buffs.size)
+			buffs:SetPoint("BOTTOM", self.Health, "TOP", 0, TukuiDB.Scale(6))	
+			buffs.initialAnchor = 'BOTTOMLEFT'
+			buffs["growth-y"] = "UP"
+			buffs["growth-x"] = "RIGHT"
 			buffs.PostCreateIcon = TukuiDB.PostCreateAura
 			buffs.PostUpdateIcon = TukuiDB.PostUpdateAura
 			self.Buffs = buffs	
 			
-			debuffs:SetHeight(buffs:GetHeight())
-			debuffs:SetWidth(buffs:GetWidth())
+			debuffs.num = 8
+			debuffs:SetWidth(original_width + TukuiDB.Scale(4))
+			debuffs.spacing = TukuiDB.Scale(2)
+			debuffs.size = (((original_width + TukuiDB.Scale(4)) - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)
+			debuffs:SetHeight(debuffs.size)
 			debuffs:SetPoint("BOTTOM", buffs, "TOP", 0, TukuiDB.Scale(2))
-			debuffs.size = (debuffs:GetHeight())
-			debuffs.num = (floor(debuffs:GetWidth() / debuffs:GetHeight()))
-			debuffs.spacing = 2
-			debuffs.initialAnchor = 'TOPRIGHT'
+			debuffs.initialAnchor = 'BOTTOMRIGHT'
 			debuffs["growth-y"] = "UP"
 			debuffs["growth-x"] = "LEFT"
 			debuffs.PostCreateIcon = TukuiDB.PostCreateAura
@@ -1253,38 +1257,39 @@ local function Shared(self, unit)
 		self.Name = Name
 		
 		if unit == "targettarget" and TukuiCF["auras"].totdebuffs == true then
-			local debuffs = CreateFrame("Frame", nil, health)
-			debuffs:SetHeight((20 / original_width) * original_width)
-			debuffs:SetWidth(original_width)
-			debuffs.size = ((20 / original_width) * original_width)
-			debuffs.spacing = 2
+			local debuffs = CreateFrame("Frame", nil, health)			
 			debuffs.num = 4
-			
+			debuffs:SetWidth(original_width + TukuiDB.Scale(4))
+			debuffs.spacing = TukuiDB.Scale(2)
+			debuffs.size = (((original_width + TukuiDB.Scale(4)) - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)
+			debuffs:SetHeight(debuffs.size)
 			debuffs:SetPoint("TOP", self, "BOTTOM", 0, -TukuiDB.Scale(3))
-			debuffs.initialAnchor = "TOPLEFT"
-			debuffs["growth-y"] = "UP"
+			debuffs.initialAnchor = 'TOPLEFT'
+			debuffs["growth-y"] = "DOWN"
+			debuffs["growth-x"] = "RIGHT"
 			debuffs.PostCreateIcon = TukuiDB.PostCreateAuraSmall
 			debuffs.PostUpdateIcon = TukuiDB.PostUpdateAura
-			self.Debuffs = debuffs
+			self.Debuffs = debuffs	
+			
 			-- Debuff Aura Filter
 			self.Debuffs.CustomFilter = TukuiDB.AuraFilter
 		end
 		
 		if unit == "focus" and TukuiCF["auras"].focusdebuffs == true then
-			local debuffs = CreateFrame("Frame", nil, health)
-			debuffs:SetHeight((20 / original_width) * original_width)
-			debuffs:SetWidth(original_width)
-			debuffs.size = ((20 / original_width) * original_width)
-			debuffs.spacing = 2
+			local debuffs = CreateFrame("Frame", nil, health)			
 			debuffs.num = 4
-			
+			debuffs:SetWidth(original_width + TukuiDB.Scale(4))
+			debuffs.spacing = TukuiDB.Scale(2)
+			debuffs.size = (((original_width + TukuiDB.Scale(4)) - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)
+			debuffs:SetHeight(debuffs.size)
 			debuffs:SetPoint("TOP", self, "BOTTOM", 0, -TukuiDB.Scale(3))
-			
-			debuffs.initialAnchor = "TOPLEFT"
-			debuffs["growth-y"] = "UP"
+			debuffs.initialAnchor = 'TOPLEFT'
+			debuffs["growth-y"] = "DOWN"
+			debuffs["growth-x"] = "RIGHT"
 			debuffs.PostCreateIcon = TukuiDB.PostCreateAuraSmall
 			debuffs.PostUpdateIcon = TukuiDB.PostUpdateAura
-			self.Debuffs = debuffs
+			self.Debuffs = debuffs	
+			
 			-- Debuff Aura Filter
 			self.Debuffs.CustomFilter = TukuiDB.AuraFilter
 		end
