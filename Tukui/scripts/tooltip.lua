@@ -86,7 +86,7 @@ GameTooltip:HookScript("OnUpdate",function(self, ...)
 			if TukuiCF["others"].enablebag == true and StuffingFrameBags:IsShown() then
 				self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", -1, TukuiDB.Scale(18))	
 			else
-				if CheckAddOnShown() == true then
+				if CheckAddOnShown() == true and xOffset == 0 and yOffset == 0 then
 					if TukuiCF["chat"].showbackdrop == true and TukuiDB.ChatRightShown == true then
 						self:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", -1, TukuiDB.Scale(42))	
 					else
@@ -227,7 +227,7 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 			if TukuiCF["others"].enablebag == true and StuffingFrameBags:IsShown() then
 				self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", -1, TukuiDB.Scale(18))	
 			else
-				if CheckAddOnShown() == true then
+				if CheckAddOnShown() == true and xOffset == 0 and yOffset == 0 then
 					if TukuiCF["chat"].showbackdrop == true and TukuiDB.ChatRightShown == true then
 						self:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", -1, TukuiDB.Scale(42))	
 					else
