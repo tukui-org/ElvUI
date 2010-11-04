@@ -184,14 +184,14 @@ local bottomrightframe
 local dragging
 chatrbg:SetScript("OnUpdate", function(self, elapsed)
 	t = t + 1
-	if t == 100 then
+	if t == 15 then
 		for i = 1, NUM_CHAT_WINDOWS do
 			local chat = _G[format("ChatFrame%s", i)]
 			local id = chat:GetID()
 			local point = GetChatWindowSavedPosition(id)
 			local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
 			local tab = _G[chat:GetName().."Tab"]
-			
+			local button = _G[format("ButtonCF%d", i)]
 			if point == "BOTTOMRIGHT" and chat:IsShown() and docked == nil then
 				bottomrightframe = tab
 				if dragging ~= true then
@@ -205,6 +205,8 @@ chatrbg:SetScript("OnUpdate", function(self, elapsed)
 						chat:SetHeight(TukuiCF["chat"].chatheight)
 						chat:ClearAllPoints()
 						chat:SetPoint("BOTTOMLEFT", RDummyFrame, "BOTTOMLEFT", TukuiDB.Scale(2), TukuiDB.Scale(4))
+						button:ClearAllPoints()
+						button:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", 0, TukuiDB.Scale(3))
 						FCF_SavePositionAndDimensions(chat)
 					end
 				end
@@ -218,6 +220,10 @@ chatrbg:SetScript("OnUpdate", function(self, elapsed)
 			else
 				if TukuiCF["chat"].showbackdrop == true then
 					chatrbg:SetAlpha(0)
+				end
+				if not InCombatLockdown() then
+					button:ClearAllPoints()
+					button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))				
 				end
 				TukuiDB.ChatRightShown = false
 			end

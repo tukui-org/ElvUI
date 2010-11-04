@@ -362,11 +362,7 @@ function TukuiDB.ChatCopyButtons()
 			button:SetAlpha(0)
 			button:SetPoint("TOPRIGHT", 0, 0)
 		else
-			if i ~= 2 then
-				button:SetPoint("BOTTOMRIGHT", cf, "TOPRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(5))
-			else
-				button:SetPoint("BOTTOMRIGHT", cf, "TOPRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(29))
-			end
+			button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))
 		end
 		TukuiDB.SetTransparentTemplate(button)
 		button:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
