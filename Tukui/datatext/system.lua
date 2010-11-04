@@ -93,10 +93,16 @@ if TukuiCF["datatext"].system and TukuiCF["datatext"].system > 0 then
 	Stat:SetScript("OnMouseDown", function () collectgarbage("collect") Update(Stat, 20) end)
 	Stat:SetScript("OnEnter", function(self)
 		if not InCombatLockdown() then
+			local bandwidth = GetAvailableBandwidth()
 			GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, TukuiDB.Scale(6));
 			GameTooltip:ClearAllPoints()
 			GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
 			GameTooltip:ClearLines()
+			if bandwidth ~= 0 then
+				GameTooltip:AddDoubleLine(tukuilocal.datatext_bandwidth,format("%s ".."Mbps",bandwidth),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+				GameTooltip:AddDoubleLine(tukuilocal.datatext_download,format("%s%%", floor(GetDownloadedPercentage()*100+0.5)),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
+				GameTooltip:AddLine(" ")
+			end
 			GameTooltip:AddDoubleLine(tukuilocal.datatext_totalmemusage,formatMem(Total), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 			GameTooltip:AddLine(" ")
 			for i = 1, #Memory do

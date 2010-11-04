@@ -19,6 +19,8 @@
 
 	tukuilocal.disband = "Роспуск группы."
 
+	tukuilocal.datatext_download = "Download: "
+	tukuilocal.datatext_bandwidth = "Bandwidth: "
 	tukuilocal.datatext_guild = "Гильдия"
 	tukuilocal.datatext_noguild = "Не в Гильдии"
 	tukuilocal.datatext_bags = "Сумки: "

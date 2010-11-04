@@ -19,6 +19,8 @@ if TukuiDB.client == "esES" then
  
 	tukuilocal.disband = "Disolviendo grupo."
  
+	tukuilocal.datatext_download = "Download: "
+	tukuilocal.datatext_bandwidth = "Bandwidth: "
 	tukuilocal.datatext_guild = "Hermandad"
 	tukuilocal.datatext_noguild = "Sin hermandad"
 	tukuilocal.datatext_bags = "Bolsas: "

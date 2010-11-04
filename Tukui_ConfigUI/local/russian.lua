@@ -92,8 +92,8 @@
 	TukuiL.option_auras_playerdebuffsonly = "Отображать только свои эффекты и эффекты контроля  (настраивается в auraFilter.lua)"
 	TukuiL.option_auras_RaidUnitBuffWatch = "Отображать баффы на рейдовых фреймах"
 
-	TukuiL.option_auras_playtarbuffperrow = "Amount of Buffs/Debuffs in a row on the Player/Target frames"
-	TukuiL.option_auras_smallbuffperrow = "Amount of Debuffs in a row on the TargetTarget/Focus frames"
+	TukuiL.option_auras_playtarbuffperrow = "Кол-во Баффов/Дебаффов в ряду на фрейме Игрока/Цели"
+	TukuiL.option_auras_smallbuffperrow = "Кол-во Дебаффов в ряду на фрейме ЦелиЦели/Фокуса"
 	
 	-- raidframes
 	TukuiL.option_raidframes = "Рейдовые фреймы"
@@ -144,16 +144,16 @@
 	TukuiL.option_unitframes_DebuffHighlight = "Окрасить иконки вредоносных эффектов по типу (при возможности снятия)"
 	TukuiL.option_unitframes_mendpet = "Показывать панель Лечение питомца (DPS раскладка)"
 	TukuiL.option_unitframes_fontsize = "Размер шрифта"
-	TukuiL.option_unitframes_unitframes_poweroffset = "Offset of the powerbar on the frame (0 for no offset)"
-	TukuiL.option_unitframes_classbar = "Enable Classbar (TotemBar, RuneBar, HolyBar, SoulshardBar, EclipseBar)"
-	TukuiL.option_unitframes_playtarwidth = "Width of the Player/Target frames"
-	TukuiL.option_unitframes_playtarheight = "Height of the Player/Target frames"
-	TukuiL.option_unitframes_smallwidth = "Width of the TargetTarget/Focus/FocusTarget/PlayersPet frames"
-	TukuiL.option_unitframes_smallheight = "Height of the TargetTarget/Focus/FocusTarget/PlayersPet frames"
-	TukuiL.option_unitframes_arenabosswidth = "Width of the Arena/Boss frames"
-	TukuiL.option_unitframes_arenabossheight = "Height of the Arena/Boss frames"
-	TukuiL.option_unitframes_assisttankwidth = "Width of the MainTank/MainAssist frames"
-	TukuiL.option_unitframes_assisttankheight = "Height of the MainTank/MainAssist frames"
+	TukuiL.option_unitframes_unitframes_poweroffset = "Отступ полосы энергии(0 для отключения отступа)"
+	TukuiL.option_unitframes_classbar = "Классовая полоса(Полоса тотемов, Полоса рун, Полоса силы света, Полоса осколков, Полоса затмения)"
+	TukuiL.option_unitframes_playtarwidth = "Ширина фрейма Игрока/Цели"
+	TukuiL.option_unitframes_playtarheight = "Высота фрейма Игрока/Цели"
+	TukuiL.option_unitframes_smallwidth = "Ширина фрейма ЦелиЦели/Фокусу/ЦелиФокуса/Питомца"
+	TukuiL.option_unitframes_smallheight = "Высота ЦелиЦели/Фокусу/ЦелиФокуса/Питомца"
+	TukuiL.option_unitframes_arenabosswidth = "Ширина фреймов Арены/Босса"
+	TukuiL.option_unitframes_arenabossheight = "Высриа фреймов Арены/Босса"
+	TukuiL.option_unitframes_assisttankwidth = "Ширина фреймов Танка/Наводчика"
+	TukuiL.option_unitframes_assisttankheight = "Высота фреймов Танка/Наводчика"
 	
 	-- loot
 	TukuiL.option_loot = "Добыча"

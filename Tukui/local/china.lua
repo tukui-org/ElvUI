@@ -18,7 +18,9 @@ if TukuiDB.client == "zhCN" then
 	tukuilocal.chat_ERR_FRIEND_OFFLINE_S = "is now |cffff0000offline|r"
 
 	tukuilocal.disband = "正在解散队伍."
-
+	
+	tukuilocal.datatext_download = "Download: "
+	tukuilocal.datatext_bandwidth = "Bandwidth: "
 	tukuilocal.datatext_guild = "工会"
 	tukuilocal.datatext_noguild = "没有工会"
 	tukuilocal.datatext_bags = "背包： "

@@ -19,6 +19,8 @@
 
 	tukuilocal.disband = "正在解散隊伍."
 
+	tukuilocal.datatext_download = "Download: "
+	tukuilocal.datatext_bandwidth = "Bandwidth: "
 	tukuilocal.datatext_guild = "公會"
 	tukuilocal.datatext_noguild = "無公會"
 	tukuilocal.datatext_bags = "背包: "

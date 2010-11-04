@@ -91,9 +91,8 @@ if GetLocale() == "frFR" then
 	TukuiL.option_auras_playershowonlydebuffs = "Montrer uniquement les debuffs sur le cadre du joueur (nécessite d'avoir les auras d'activées sur le cadre du joueur)" --"Only show debuffs on playerframe (Must have show aura on playerframe)"
 	TukuiL.option_auras_playerdebuffsonly = "Montrer seulement vos debuffs et les CC sur la cible  (configuration dans auraFilter.lua)" --"Show only your debuffs, and CC debuffs on target  (inside auraFilter.lua to config)"
 	TukuiL.option_auras_RaidUnitBuffWatch = "Activer l'affichage des buffs sur l'interface de raid." --"Enable buff watch on raid frames"
- 
-	TukuiL.option_auras_playtarbuffperrow = "Amount of Buffs/Debuffs in a row on the Player/Target frames"
-	TukuiL.option_auras_smallbuffperrow = "Amount of Debuffs in a row on the TargetTarget/Focus frames"
+	TukuiL.option_auras_playtarbuffperrow = "Nombre de Buffs/Debuffs sur une ligne au dessus des portraits du Joueur/de la Cible"
+	TukuiL.option_auras_smallbuffperrow = "Nombre de Buffs/Debuffs sur une ligne au dessus des portraits de la Cible de la Cible/du Focus"
 	
 	-- raidframes
 	TukuiL.option_raidframes = "Interface de raid" --"Raid Frames"
@@ -145,14 +144,14 @@ if GetLocale() == "frFR" then
 	TukuiL.option_unitframes_mendpet = "Montrer la barre de soin du familier (Interface DPS)" --"Show Mend Pet bar on PetFrame (DPS LAYOUT)"
 	TukuiL.option_unitframes_fontsize = "Taille de la police" --"Font Size"
 	TukuiL.option_unitframes_unitframes_poweroffset = "Offset of the powerbar on the frame (0 for no offset)"
-	TukuiL.option_unitframes_classbar = "Enable Classbar (TotemBar, RuneBar, HolyBar, SoulshardBar, EclipseBar)"
-	TukuiL.option_unitframes_playtarwidth = "Width of the Player/Target frames"
-	TukuiL.option_unitframes_playtarheight = "Height of the Player/Target frames"
-	TukuiL.option_unitframes_smallwidth = "Width of the TargetTarget/Focus/FocusTarget/PlayersPet frames"
-	TukuiL.option_unitframes_smallheight = "Height of the TargetTarget/Focus/FocusTarget/PlayersPet frames"
-	TukuiL.option_unitframes_arenabosswidth = "Width of the Arena/Boss frames"
-	TukuiL.option_unitframes_arenabossheight = "Height of the Arena/Boss frames"
-	TukuiL.option_unitframes_assisttankwidth = "Width of the MainTank/MainAssist frames"
+	TukuiL.option_unitframes_classbar = "Active les barres de classes (Barre de totem, Barre de pouvoir runique, Barre Sacrée, Barre des fragments d'âme, Barre d'Eclipse)"
+	TukuiL.option_unitframes_playtarwidth = "Largeur des portraits du Joueur/de la Cible"
+	TukuiL.option_unitframes_playtarheight = "Hauteur des portraits du Joueur/de la Cible"
+	TukuiL.option_unitframes_smallwidth = "Largeur des portraits de la Cible de la Cible/du Focus/de la Cible du Focus/du Familier du Joueur"
+	TukuiL.option_unitframes_smallheight = "Hauteur des portraits de la Cible de la Cible/du Focus/de la Cible du Focus/du Familier du Joueur"
+	TukuiL.option_unitframes_arenabosswidth = "Largeur des portraits d'Arène/des Boss"
+	TukuiL.option_unitframes_arenabossheight = "Hauteur des portraits d'Arène/des Boss"
+	TukuiL.option_unitframes_assisttankwidth = "Largeur des portraits des Tanks Principaux/des Assists Principaux"
 	TukuiL.option_unitframes_assisttankheight = "Height of the MainTank/MainAssist frames"
 	
 	-- loot
