@@ -210,6 +210,24 @@ local function UpdateObjects(frame)
 	--create variable for original colors
 	frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = frame.hp:GetStatusBarColor()
 	
+	--Setup level text
+	local level, elite, mylevel = tonumber(frame.level:GetText()), frame.elite:IsShown(), UnitLevel("player")
+	frame.level:ClearAllPoints()
+	if TukuiCF["nameplate"].showhealth == true then
+		frame.level:SetPoint("RIGHT", frame.hp, "RIGHT", 2, 0)
+	else
+		frame.level:SetPoint("RIGHT", frame.hp, "LEFT", -1, 0)
+	end
+	if frame.boss:IsShown() then
+		frame.level:SetText("B")
+		frame.level:SetTextColor(0.8, 0.05, 0)
+		frame.level:Show()
+	elseif not elite and level == mylevel then
+		frame.level:Hide()
+	else
+		frame.level:SetText(level..(elite and "+" or ""))
+	end
+	
 	HideObjects(frame)
 end
 
@@ -286,8 +304,12 @@ local function SkinObjects(frame)
 	--Need to Reposition the overlay with the health
 	frame.overlay = overlay
 	
-	--Level
+	--Needed for level text
 	frame.level = level
+	frame.boss = bossicon
+	frame.elite = elite
+	frame.level:SetFont(FONT, FONTSIZE, FONTFLAG)
+	frame.level:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
 	
 	--Create Health Text
 	if TukuiCF["nameplate"].showhealth == true then
@@ -393,10 +415,9 @@ local function SkinObjects(frame)
 	QueueObject(frame, cbshield)
 	QueueObject(frame, cbborder)
 	QueueObject(frame, oldname)
-	QueueObject(frame, level)
 	QueueObject(frame, bossicon)
 	QueueObject(frame, elite)
-
+	
 	UpdateObjects(hp)
 	UpdateCastbar(cb)
 		
