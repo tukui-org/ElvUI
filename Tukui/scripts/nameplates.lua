@@ -126,15 +126,17 @@ local function UpdateThreat(frame)
 	end
 	
 	--Setup frame shadow to change depending on mobs health, also setup targetted unit to have white shadow
-	if(d <= 35 and d >= 20) then
-		frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 1, 0)
-	elseif(d < 20) then
-		frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 0, 0)
-	else
-		if UnitName("target") == frame.oldname:GetText() and frame:GetAlpha() == 1 then	
-			frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 1, 1)
+	if TukuiCF["nameplate"].enhancethreat == true then
+		if(d <= 35 and d >= 20) then
+			frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 1, 0)
+		elseif(d < 20) then
+			frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 0, 0)
 		else
-			frame.healthbackdrop.shadow:SetBackdropBorderColor(0, 0, 0)
+			if UnitName("target") == frame.oldname:GetText() and frame:GetAlpha() == 1 then	
+				frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 1, 1)
+			else
+				frame.healthbackdrop.shadow:SetBackdropBorderColor(0, 0, 0)
+			end
 		end
 	end
 	
