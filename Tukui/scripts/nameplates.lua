@@ -124,18 +124,7 @@ local function UpdateThreat(frame)
 	if TukuiCF["nameplate"].showhealth == true then
 		frame.hp.value:SetText(ShortValue(valueHealth).." - "..(string.format("%d%%", math.floor((valueHealth/maxHealth)*100))))
 	end
-	
-	--Setup frame shadow to change depending on enemy players health, also setup targetted unit to have white shadow
-	if frame.hasclass == true then
-		if(d <= 35 and d >= 20) then
-			frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 1, 0)
-		elseif(d < 20) then
-			frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 0, 0)
-		else
-			frame.healthbackdrop.shadow:SetBackdropBorderColor(0, 0, 0)
-		end
-	end
-	
+		
 	--Change frame style if the frame is our target or not
 	if UnitName("target") == frame.name:GetText() and frame:GetAlpha() == 1 then
 		--Targetted Unit
@@ -154,6 +143,21 @@ local function UpdateThreat(frame)
 			frame.healthbackdrop:SetBackdropBorderColor(0.6, 0.6, 0.6)
 		else
 			if frame.hasclass ~= true then
+				frame.healthbackdrop.shadow:SetBackdropBorderColor(0, 0, 0)
+			end
+		end
+	end
+	
+	--Setup frame shadow to change depending on enemy players health, also setup targetted unit to have white shadow
+	if frame.hasclass == true then
+		if(d <= 35 and d >= 20) then
+			frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 1, 0)
+		elseif(d < 20) then
+			frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 0, 0)
+		else
+			if UnitName("target") == frame.name:GetText() and frame:GetAlpha() == 1 then
+				frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 1, 1)	
+			else
 				frame.healthbackdrop.shadow:SetBackdropBorderColor(0, 0, 0)
 			end
 		end
@@ -397,14 +401,14 @@ local function SkinObjects(frame)
 	
 	--Reposition and Resize RaidIcon
 	raidicon:ClearAllPoints()
-	raidicon:SetParent(hp)	
 	raidicon:SetPoint("BOTTOM", hp, "TOP", 0, 16)
 	raidicon:SetSize(iconSize*1.4, iconSize*1.4)
 	raidicon:SetTexture(TukuiCF["media"].raidicons)	
-
+	frame.raidicon = raidicon
+	
 	--Create Class Icon
 	local cIconTex = hp:CreateTexture(nil, "OVERLAY")
-	cIconTex:SetPoint("TOPRIGHT", hp, "TOPLEFT", -8, 8)	
+	cIconTex:SetPoint("BOTTOM", hp, "TOP", 0, 16)
 	cIconTex:SetTexture("Interface\\WorldStateFrame\\Icons-Classes")
 	cIconTex:SetSize(iconSize, iconSize)
 	frame.class = cIconTex
