@@ -1716,7 +1716,7 @@ local function Shared(self, unit)
 	-- here we create an invisible frame for all element we want to show over health/power.
 	-- because we can only use self here, and self is under all elements.
 	local InvFrame = CreateFrame("Frame", nil, self)
-	InvFrame:SetFrameStrata("HIGH")
+	InvFrame:SetFrameStrata("MEDIUM")
 	InvFrame:SetFrameLevel(5)
 	InvFrame:SetAllPoints(self.Health)
 	
