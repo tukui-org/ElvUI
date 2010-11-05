@@ -3,41 +3,6 @@ local function SpellName(id)
 	return name
 end
 
--- List of nameplate names we want to hide nameplates of
-TukuiDB.NPCList = {
-	--Gundrak
-	["Fanged Pit Viper"] = true,
-	["Crafty Snake"] = true,
-	
-	--Shaman Totems
-	["Earth Elemental Totem"] = true, 
-	["Fire Elemental Totem"] = true, 
-	["Fire Resistance Totem"] = true, 
-	["Flametongue Totem"] = true, 
-	["Frost Resistance Totem"] = true, 
-	["Healing Stream Totem"] = true, 
-	["Magma Totem"] = true, 
-	["Mana Spring Totem"] = true, 
-	["Nature Resistance Totem"] = true, 
-	["Searing Totem"] = true,
-	["Stoneclaw Totem"] = true,
-	["Stoneskin Totem"] = true,
-	["Strength of Earth Totem"] = true,
-	["Windfury Totem"] = true,
-	["Totem of Wrath"] = true,
-	["Wrath of Air Totem"] = true,
-	
-	--The gayest ability in the game
-	["Army of the Dead Ghoul"] = true,
-	
-	--Hunter Trap
-	["Venomous Snake"] = true,
-	["Viper"] = true,
-	
-	--Test
-	--["Unbound Seer"] = true,  
-}
-
 --[[
 		This portion of the file is for adding of deleting a spellID for a specific encounter on Grid layout
 		or enemy cooldown in Arena displayed on screen.
@@ -212,6 +177,7 @@ ArenaBuffWhiteList = {
 -- Debuffs to always hide
 -- Raid frames use this when not inside a BG/Arena. Player, TargetTarget, Focus always use it.
 DebuffBlacklist = {
+	[SpellName(8733)] = true, --Blessing of Blackfathom
 	[SpellName(57724)] = true, --Sated
 	[SpellName(25771)] = true, --forbearance
 	[SpellName(57723)] = true, --Exhaustion
