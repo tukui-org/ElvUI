@@ -134,6 +134,7 @@ TukuiCF["nameplate"] = {
 		["showhealth"] = true,					-- show health text on nameplate
 		["enhancethreat"] = true,				-- threat features based on if your a tank or not
 		["overlap"] = false,				--allow nameplates to overlap
+		["combat"] = false,					--only show enemy nameplates in-combat.
 }
 
 TukuiCF["loot"] = {

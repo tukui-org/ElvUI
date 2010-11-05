@@ -86,10 +86,10 @@ local function UpdateThreat(frame)
 				--No Threat
 				if TukuiDB.Role == "Tank" then
 					frame.hp:SetStatusBarColor(1, 0, 0)
-					frame.hp.hpbg:SetVertexColor(1, 0, 0, 0.3)
+					frame.hp.hpbg:SetVertexColor(1, 0, 0, 0.4)
 				else
 					frame.hp:SetStatusBarColor(0, 1, 0)
-					frame.hp.hpbg:SetVertexColor(0, 1, 0, 0.3)
+					frame.hp.hpbg:SetVertexColor(0, 1, 0, 0.35)
 				end			
 			else
 				--Set colors to their original, not in combat
@@ -103,15 +103,15 @@ local function UpdateThreat(frame)
 				--Have Threat
 				if TukuiDB.Role == "Tank" then
 					frame.hp:SetStatusBarColor(0, 1, 0)
-					frame.hp.hpbg:SetVertexColor(0, 1, 0, 0.3)
+					frame.hp.hpbg:SetVertexColor(0, 1, 0, 0.35)
 				else
 					frame.hp:SetStatusBarColor(1, 0, 0)
-					frame.hp.hpbg:SetVertexColor(1, 0, 0, 0.3)
+					frame.hp.hpbg:SetVertexColor(1, 0, 0, 0.4)
 				end
 			else
 				--Losing/Gaining Threat
 				frame.hp:SetStatusBarColor(1, 1, 0)
-				frame.hp.hpbg:SetVertexColor(1, 1, 0, 0.3)
+				frame.hp.hpbg:SetVertexColor(1, 1, 0, 0.4)
 			end
 		end
 	end
@@ -125,28 +125,38 @@ local function UpdateThreat(frame)
 		frame.hp.value:SetText(ShortValue(valueHealth).." - "..(string.format("%d%%", math.floor((valueHealth/maxHealth)*100))))
 	end
 	
-	--Setup frame shadow to change depending on mobs health, also setup targetted unit to have white shadow
-	if TukuiCF["nameplate"].enhancethreat == true then
+	--Setup frame shadow to change depending on enemy players health, also setup targetted unit to have white shadow
+	if frame.hasclass == true then
 		if(d <= 35 and d >= 20) then
 			frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 1, 0)
 		elseif(d < 20) then
 			frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 0, 0)
 		else
-			if UnitName("target") == frame.oldname:GetText() and frame:GetAlpha() == 1 then	
-				frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 1, 1)
-			else
-				frame.healthbackdrop.shadow:SetBackdropBorderColor(0, 0, 0)
-			end
+			frame.healthbackdrop.shadow:SetBackdropBorderColor(0, 0, 0)
 		end
 	end
 	
 	--Change frame style if the frame is our target or not
-	if UnitName("target") == frame.oldname:GetText() and frame:GetAlpha() == 1 then
+	if UnitName("target") == frame.name:GetText() and frame:GetAlpha() == 1 then
 		--Targetted Unit
 		frame.name:SetTextColor(1, 1, 0)
+		
+		if TukuiCF["nameplate"].enhancethreat == true then
+			frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 1, 1)
+		else
+			frame.healthbackdrop:SetBackdropBorderColor(1, 1, 1)
+		end
 	else
 		--Not Targetted
 		frame.name:SetTextColor(1, 1, 1)
+		
+		if TukuiCF["nameplate"].enhancethreat ~= true then
+			frame.healthbackdrop:SetBackdropBorderColor(0.6, 0.6, 0.6)
+		else
+			if frame.hasclass ~= true then
+				frame.healthbackdrop.shadow:SetBackdropBorderColor(0, 0, 0)
+			end
+		end
 	end
 end
 
@@ -195,7 +205,7 @@ local function UpdateObjects(frame)
 	
 	-- color hp bg dependend on hp color
     local BGr, BGg, BGb = frame.hp:GetStatusBarColor()
-	frame.hp.hpbg:SetVertexColor(BGr*0.36, BGg*0.36, BGb*0.36, 0.3)
+	frame.hp.hpbg:SetVertexColor(BGr*0.36, BGg*0.36, BGb*0.36, 0.35)
 	
 	--create variable for original colors
 	frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = frame.hp:GetStatusBarColor()
@@ -271,7 +281,7 @@ local function SkinObjects(frame)
 	--Actual Background for the Healthbar
 	hp.hpbg = hp:CreateTexture(nil, 'BORDER')
 	hp.hpbg:SetAllPoints(hp)
-	hp.hpbg:SetTexture(1,1,1,0.3)	
+	hp.hpbg:SetTexture(1,1,1,0.4)	
 	
 	--Need to Reposition the overlay with the health
 	frame.overlay = overlay
@@ -423,3 +433,24 @@ CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
 		self.elapsed = (self.elapsed or 0) + elapsed
 	end
 end)
+
+if TukuiCF["nameplate"].combat == true then
+	NamePlates:RegisterEvent("PLAYER_REGEN_ENABLED")
+	NamePlates:RegisterEvent("PLAYER_REGEN_DISABLED")
+	NamePlates:RegisterEvent("PLAYER_ENTERING_WORLD")
+	function NamePlates:PLAYER_REGEN_ENABLED()
+		SetCVar("nameplateShowEnemies", 0)
+	end
+	
+	function NamePlates:PLAYER_REGEN_DISABLED()
+		SetCVar("nameplateShowEnemies", 1)
+	end
+	
+	function NamePlates:PLAYER_ENTERING_WORLD()
+		if InCombatLockdown() then
+			SetCVar("nameplateShowEnemies", 1)
+		else
+			SetCVar("nameplateShowEnemies", 0)
+		end
+	end
+end

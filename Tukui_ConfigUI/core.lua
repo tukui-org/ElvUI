@@ -87,6 +87,7 @@ local function Local(o)
 	if o == "TukuiConfigUInameplateshowhealth" then o = TukuiL.option_nameplates_showhealth end
 	if o == "TukuiConfigUInameplateenhancethreat" then o = TukuiL.option_nameplates_enhancethreat end
 	if o == "TukuiConfigUInameplateoverlap" then o = UNIT_NAMEPLATES_ALLOW_OVERLAP end
+	if o == "TukuiConfigUInameplatecombat" then o = TukuiL.option_nameplates_combat end
 	
 	-- datatext
 	if o == "TukuiConfigUIdatatext" then o = TukuiL.option_datatext end

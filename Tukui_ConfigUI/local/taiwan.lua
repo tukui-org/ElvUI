@@ -33,7 +33,8 @@
 	TukuiL.option_nameplates_enable = "啟用名條模組"
 	TukuiL.option_nameplates_enhancethreat = "啟用仇恨上色模式, 依照你的角色決定"
 	TukuiL.option_nameplates_showhealth = "在名條上顯示生命"
-	 
+	 	TukuiL.option_nameplates_combat = "Only show enemy nameplates in-combat"
+	
 	-- addon skins
 	TukuiL.option_skin = "插件外皮"
 	TukuiL.option_skin_dxe = "Deus Vox Encounters"

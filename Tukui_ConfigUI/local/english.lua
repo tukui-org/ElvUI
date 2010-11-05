@@ -33,6 +33,7 @@ TukuiL.option_nameplates = "Nameplates"
 TukuiL.option_nameplates_enable = "Enable Nameplates"
 TukuiL.option_nameplates_enhancethreat = "Enable threat feature, automatically changes by your roll"
 TukuiL.option_nameplates_showhealth = "Show health on nameplate"
+TukuiL.option_nameplates_combat = "Only show enemy nameplates in-combat"
 
 -- addon skins
 TukuiL.option_skin = "Addon Skins"

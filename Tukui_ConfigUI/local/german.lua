@@ -33,7 +33,8 @@
 	TukuiL.option_nameplates_enable = "Aktiviere Namensplaketten"
 	TukuiL.option_nameplates_enhancethreat = "Aktiviere Bedrohungsanzeige, anpassung an deine Rolle"
 	TukuiL.option_nameplates_showhealth = "Zeige Leben auf den Namensplaketten"
- 
+ 	TukuiL.option_nameplates_combat = "Only show enemy nameplates in-combat"
+	
 	-- addon skins
 	TukuiL.option_skin = "Addon-Skins"
 	TukuiL.option_skin_dxe = "Deus Vox Encounters"

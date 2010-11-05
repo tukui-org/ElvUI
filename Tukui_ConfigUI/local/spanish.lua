@@ -33,7 +33,8 @@
 	TukuiL.option_nameplates_enable = "Activar placas de nombre"
 	TukuiL.option_nameplates_enhancethreat = "Activar visor de amenaza, cambia automáticamente según tu rol: \n Tanque - Verde (aggro) Rojo (noaggro) DPS - Verde (noaggro) Rojo (aggro)"
 	TukuiL.option_nameplates_showhealth = "Mostrar vida en las placas de nombre"
- 
+ 	TukuiL.option_nameplates_combat = "Only show enemy nameplates in-combat"
+	
 	-- addon skins
 	TukuiL.option_skin = "Pieles de addons"
 	TukuiL.option_skin_dxe = "Deus Vox Encounters"

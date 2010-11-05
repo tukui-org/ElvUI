@@ -33,7 +33,8 @@ if GetLocale() == "frFR" then
 	TukuiL.option_nameplates_enable = "Activer les barres de vies" --"Enable Nameplates"
 	TukuiL.option_nameplates_enhancethreat = "Activer la gestion d'aggro, change automatiquement selon votre role:" --"Enable threat feature, automatically changes by your roll:  Tank - Green (aggro) Red (noaggro) DPS - Green (noaggro) Red (aggro)"
 	TukuiL.option_nameplates_showhealth = "Montrer la vie sur les barres de vies" --"Show health on nameplate"
- 
+ 	TukuiL.option_nameplates_combat = "Only show enemy nameplates in-combat"
+	
 	-- addon skins
 	TukuiL.option_skin = "Skin d'addon" --"Addon Skins"
 	TukuiL.option_skin_dxe = "Deus Vox Encounters"
