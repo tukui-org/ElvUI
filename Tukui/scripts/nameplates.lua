@@ -164,11 +164,8 @@ local function UpdateThreat(frame)
 	end
 end
 
-local id = 0
 local function UpdateObjects(frame)
 	frame = frame:GetParent()
-	id = id + 1
-	frame:SetID(id)
 	
 	local r, g, b = frame.hp:GetStatusBarColor()
 	local r, g, b = floor(r*100+.5)/100, floor(g*100+.5)/100, floor(b*100+.5)/100
