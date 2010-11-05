@@ -25,7 +25,7 @@ end
 local TukuiSkin = CreateFrame("Frame")
 TukuiSkin:RegisterEvent("ADDON_LOADED")
 TukuiSkin:SetScript("OnEvent", function(self, event, addon)
-	if IsAddOnLoaded("Skinner") then return end
+	if IsAddOnLoaded("Skinner") or IsAddOnLoaded("Aurora") then return end
 	
 	-- stuff not in Blizzard load-on-demand
 	if addon == "Tukui" then

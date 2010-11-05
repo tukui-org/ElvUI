@@ -1,22 +1,26 @@
+--Base code by Dawn (dNameplates)
 if not TukuiCF["nameplate"].enable == true then return end
 
 local TEXTURE = TukuiCF["media"].normTex
 local FONT = TukuiCF["media"].font
-local FONTSIZE = 12
-local FONTFLAG = "THINOUTLINE"			-- "THINOUTLINE", "OUTLINE MONOCHROME", "OUTLINE" or nil (no outline)
-local hpHeight = 13
-
+local FONTSIZE = 11
+local FONTFLAG = "THINOUTLINE"
+local hpHeight = 12
 local hpWidth = 110
-local cbIconSize = 26
+local iconSize = 25		--Size of all Icons, RaidIcon/ClassIcon/Castbar Icon
 local cbHeight = 5
 local cbWidth = 110
-
 local blankTex = TukuiCF["media"].blank
 local OVERLAY = [=[Interface\TargetingFrame\UI-TargetingFrame-Flash]=]
-
 local numChildren = -1
 local frames = {}
 local noscalemult = TukuiDB.mult * TukuiCF["general"].uiscale
+
+--Change defaults if we are showing health text or not
+if TukuiCF["nameplate"].showhealth ~= true then
+	hpHeight = 7
+	iconSize = 20
+end
 
 local NamePlates = CreateFrame("Frame", nil, UIParent)
 NamePlates:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
@@ -29,7 +33,7 @@ else
 end
 
 -- format numbers
-function round(num, idp)
+local function round(num, idp)
   if idp and idp > 0 then
     local mult = 10^idp
     return math.floor(num * mult + 0.5) / mult
@@ -37,7 +41,7 @@ function round(num, idp)
   return math.floor(num + 0.5)
 end
 
-function ShortValue(num)
+local function ShortValue(num)
 	if(num >= 1e6) then
 		return round(num/1e6,1).."m"
 	elseif(num >= 1e3) then
@@ -210,10 +214,13 @@ end
 
 local function UpdateCastText(frame, curValue)
 	local minValue, maxValue = frame:GetMinMaxValues()
-	if frame.channeling then
+	
+	if UnitChannelInfo("target") then
 		frame.time:SetFormattedText("%.1f ", curValue)
 		frame.name:SetText(select(1, (UnitChannelInfo("target"))))
-	else
+	end
+	
+	if UnitCastingInfo("target") then
 		frame.time:SetFormattedText("%.1f ", maxValue - curValue)
 		frame.name:SetText(select(1, (UnitCastingInfo("target"))))
 	end
@@ -301,7 +308,7 @@ local function SkinObjects(frame)
 	--Setup CastBar Icon
 	cbicon:ClearAllPoints()
 	cbicon:SetPoint("TOPLEFT", hp, "TOPRIGHT", 8, 0)		
-	cbicon:SetSize(cbIconSize, cbIconSize)
+	cbicon:SetSize(iconSize, iconSize)
 	cbicon:SetTexCoord(.07, .93, .07, .93)
 
 	-- Create Cast Icon Backdrop frame
@@ -325,7 +332,7 @@ local function SkinObjects(frame)
 	
 	--Create Cast Time Text
 	cb.time = cb:CreateFontString(nil, "ARTWORK")
-	cb.time:SetPoint("RIGHT", cb, "LEFT", -8, 0)
+	cb.time:SetPoint("RIGHT", cb, "LEFT", -1, 0)
 	cb.time:SetFont(FONT, FONTSIZE, FONTFLAG)
 	cb.time:SetTextColor(1, 1, 1)
 	cb.time:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
@@ -358,14 +365,14 @@ local function SkinObjects(frame)
 	raidicon:ClearAllPoints()
 	raidicon:SetParent(hp)	
 	raidicon:SetPoint("BOTTOM", hp, "TOP", 0, 16)
-	raidicon:SetSize(cbIconSize*1.4, cbIconSize*1.4)
+	raidicon:SetSize(iconSize*1.4, iconSize*1.4)
 	raidicon:SetTexture(TukuiCF["media"].raidicons)	
 
 	--Create Class Icon
 	local cIconTex = hp:CreateTexture(nil, "OVERLAY")
 	cIconTex:SetPoint("TOPRIGHT", hp, "TOPLEFT", -8, 8)	
 	cIconTex:SetTexture("Interface\\WorldStateFrame\\Icons-Classes")
-	cIconTex:SetSize(cbIconSize, cbIconSize)
+	cIconTex:SetSize(iconSize, iconSize)
 	frame.class = cIconTex
 		
 	--Hide Old Stuff
