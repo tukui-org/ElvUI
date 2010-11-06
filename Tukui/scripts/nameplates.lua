@@ -286,8 +286,13 @@ local function SkinObjects(frame)
 	healthbackdrop:SetBackdropColor(0.1, 0.1, 0.1, 1)
 	healthbackdrop:SetPoint("TOPLEFT", hp, "TOPLEFT", -noscalemult*2, noscalemult*2)
 	healthbackdrop:SetPoint("BOTTOMRIGHT", hp, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
-	healthbackdrop:SetFrameLevel(1)
-	healthbackdrop:SetFrameStrata("WORLD")
+	if (hp:GetFrameLevel() - 1) > 0 then
+		healthbackdrop:SetFrameLevel(hp:GetFrameLevel() - 1)
+	else
+		hp:SetFrameLevel(9)
+		healthbackdrop:SetFrameLevel(hp:GetFrameLevel() - 1)
+	end
+	healthbackdrop:SetFrameStrata(hp:GetFrameStrata())
 	frame.healthbackdrop = healthbackdrop
 	
 	hp:HookScript('OnShow', UpdateObjects)
@@ -333,8 +338,13 @@ local function SkinObjects(frame)
 	castbackdrop:SetBackdropColor(0.1, 0.1, 0.1, 1)
 	castbackdrop:SetPoint("TOPLEFT", cb, "TOPLEFT", -noscalemult*2, noscalemult*2)
 	castbackdrop:SetPoint("BOTTOMRIGHT", cb, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
-	castbackdrop:SetFrameLevel(1)
-	castbackdrop:SetFrameStrata("WORLD")
+	castbackdrop:SetFrameStrata(cb:GetFrameStrata())
+	if (cb:GetFrameLevel() - 1) > 0 then
+		castbackdrop:SetFrameLevel(cb:GetFrameLevel() - 1)
+	else
+		cb:SetFrameLevel(9)
+		castbackdrop:SetFrameLevel(cb:GetFrameLevel() - 1)
+	end
 	frame.castbackdrop = castbackdrop
 
 	--Create Shadow for Healthbar
@@ -358,8 +368,8 @@ local function SkinObjects(frame)
 	casticonbackdrop:SetBackdropColor(0.1, 0.1, 0.1, 1)
 	casticonbackdrop:SetPoint("TOPLEFT", cbicon, "TOPLEFT", -noscalemult*2, noscalemult*2)
 	casticonbackdrop:SetPoint("BOTTOMRIGHT", cbicon, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
-	casticonbackdrop:SetFrameLevel(1)
-	casticonbackdrop:SetFrameStrata("WORLD")
+	casticonbackdrop:SetFrameLevel(hp:GetFrameLevel() - 1)
+	casticonbackdrop:SetFrameStrata(hp:GetFrameStrata())
 	frame.casticonbackdrop = casticonbackdrop
 	
 	--Create Shadow for Cast Icon
