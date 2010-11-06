@@ -265,6 +265,10 @@ TukuiOnLogon:SetScript("OnEvent", function(self, event)
 		SetCVar("showArenaEnemyFrames", 0)
 	end
 
+	--Attempt to fix spellbook taint
+	ToggleSpellBook("spell")
+	ToggleSpellBook("spell")
+	
 	print(tukuilocal.core_welcome2)
 end)
 

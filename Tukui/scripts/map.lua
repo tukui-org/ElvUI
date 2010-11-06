@@ -23,13 +23,14 @@ movebutton:SetBackdrop( {
 })
 
 local addon = CreateFrame('Frame')
+addon:RegisterEvent('PLAYER_ENTERING_WORLD')
 addon:RegisterEvent("PLAYER_REGEN_ENABLED")
 addon:RegisterEvent("PLAYER_REGEN_DISABLED")
 
 -- because smallmap > bigmap by far
 local SmallerMap = GetCVarBool("miniWorldMap")
 if SmallerMap == nil then
-	SetCVar("miniWorldMap", 1);
+	SetCVar("miniWorldMap", 1)
 end
 
 -- look if map is not locked
@@ -39,6 +40,9 @@ if MoveMap == nil then
 end
 
 local SmallerMapSkin = function()
+	-- don't need this
+	TukuiDB.Kill(WorldMapTrackQuest)
+	
 	-- new frame to put zone and title text in
 	local ald = CreateFrame ("Frame", nil, WorldMapButton)
 	ald:SetFrameStrata("HIGH")
@@ -96,7 +100,7 @@ local SmallerMapSkin = function()
 	
 	-- 3.3.3, hide the dropdown added into this patch
 	WorldMapLevelDropDown:SetAlpha(0)
-	WorldMapLevelDropDown:SetScale(0.0001)
+	WorldMapLevelDropDown:SetScale(0.00001)
 
 	-- fix tooltip not hidding after leaving quest # tracker icon
 	hooksecurefunc("WorldMapQuestPOI_OnLeave", function() WorldMapTooltip:Hide() end)
@@ -113,33 +117,64 @@ hooksecurefunc("WorldMap_ToggleSizeUp", function() BiggerMapSkin() end)
 local function OnMouseDown()
 	local maplock = GetCVar("advancedWorldMap")
 	if maplock ~= "1" then return end
-	WorldMapScreenAnchor:ClearAllPoints();
-	WorldMapFrame:ClearAllPoints();
-	WorldMapFrame:StartMoving(); 
+	WorldMapScreenAnchor:ClearAllPoints()
+	WorldMapFrame:ClearAllPoints()
+	WorldMapFrame:StartMoving();
 end
 
 local function OnMouseUp()
 	local maplock = GetCVar("advancedWorldMap")
 	if maplock ~= "1" then return end
-	WorldMapFrame:StopMovingOrSizing();
-	WorldMapScreenAnchor:StartMoving();
-	WorldMapScreenAnchor:SetPoint("TOPLEFT", WorldMapFrame);
-	WorldMapScreenAnchor:StopMovingOrSizing();
+	WorldMapFrame:StopMovingOrSizing()
+	WorldMapScreenAnchor:StartMoving()
+	WorldMapScreenAnchor:SetPoint("TOPLEFT", WorldMapFrame)
+	WorldMapScreenAnchor:StopMovingOrSizing()
 end
 
 movebutton:EnableMouse(true)
 movebutton:SetScript("OnMouseDown", OnMouseDown)
 movebutton:SetScript("OnMouseUp", OnMouseUp)
 
-
-local OnEvent = function()
-	-- fixing a stupid bug error by blizzard on default ui :x
-	if event == "PLAYER_REGEN_DISABLED" then
+local OnEvent = function(self, event)
+	if event == "PLAYER_ENTERING_WORLD" then
+		ShowUIPanel(WorldMapFrame)
+		HideUIPanel(WorldMapFrame)
+	elseif event == "PLAYER_REGEN_DISABLED" then
 		WorldMapFrameSizeDownButton:Disable() 
 		WorldMapFrameSizeUpButton:Disable()
+		HideUIPanel(WorldMapFrame)
+		WorldMap_ToggleSizeDown()
+		WatchFrame.showObjectives = nil
+		WorldMapQuestShowObjectives:SetChecked(false)
+		WorldMapQuestShowObjectives:Hide()
+		WorldMapTitleButton:Hide()
+		WorldMapBlobFrame:Hide()
+		WorldMapPOIFrame:Hide()
+
+		WorldMapQuestShowObjectives.Show = TukuiDB.dummy
+		WorldMapTitleButton.Show = TukuiDB.dummy
+		WorldMapBlobFrame.Show = TukuiDB.dummy
+		WorldMapPOIFrame.Show = TukuiDB.dummy       
+
+		WatchFrame_Update()
 	elseif event == "PLAYER_REGEN_ENABLED" then
 		WorldMapFrameSizeDownButton:Enable()
 		WorldMapFrameSizeUpButton:Enable()
+		WorldMapQuestShowObjectives.Show = WorldMapQuestShowObjectives:Show()
+		WorldMapTitleButton.Show = WorldMapTitleButton:Show()
+		WorldMapBlobFrame.Show = WorldMapBlobFrame:Show()
+		WorldMapPOIFrame.Show = WorldMapPOIFrame:Show()
+
+		WorldMapQuestShowObjectives:Show()
+		WorldMapTitleButton:Show()
+
+		WatchFrame.showObjectives = true
+		WorldMapQuestShowObjectives:SetChecked(true)
+
+		WorldMapBlobFrame:Show()
+		WorldMapPOIFrame:Show()
+
+		WatchFrame_Update()
 	end
 end
 addon:SetScript("OnEvent", OnEvent)
@@ -193,10 +228,10 @@ tinymap:SetScript("OnEvent", function(self, event, addon)
 	self:SetScript("OnMouseUp", function(self, btn)
 		if btn == "LeftButton" then
 			self:StopMovingOrSizing()
-			if OpacityFrame:IsShown() then OpacityFrame:Hide() end
+			if OpacityFrame:IsShown() then OpacityFrame:Hide() end -- seem to be a bug with default ui in 4.0, we hide it on next click
 		elseif btn == "RightButton" then
 			ToggleDropDownMenu(1, nil, BattlefieldMinimapTabDropDown, self:GetName(), 0, -4)
-			if OpacityFrame:IsShown() then OpacityFrame:Hide() end
+			if OpacityFrame:IsShown() then OpacityFrame:Hide() end -- seem to be a bug with default ui in 4.0, we hide it on next click
 		end
 	end)
 	
@@ -210,4 +245,3 @@ tinymap:SetScript("OnEvent", function(self, event, addon)
 		end
 	end)
 end)
-
