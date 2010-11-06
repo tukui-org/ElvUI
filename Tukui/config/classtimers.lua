@@ -278,6 +278,8 @@ CLASS_FILTERS = {
             CreateSpellEntry( 13750 ), -- Adrenaline Rush
             CreateSpellEntry( 13877 ), -- Blade Flurry
             CreateSpellEntry( 73651 ), -- Recuperate
+			CreateSpellEntry( 1784 ), -- Stealth
+			CreateSpellEntry( 2983 ), -- Sprint
         },
         procs = {
 

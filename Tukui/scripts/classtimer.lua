@@ -929,13 +929,8 @@ local function OnUnitFramesLoad(self, event, addon)
 				playerFrame:SetPoint( "BOTTOMLEFT", oUF_Tukz_player.TotemBar, "TOPLEFT", xOffset1, yOffset );
 				playerFrame:SetPoint( "BOTTOMRIGHT", oUF_Tukz_player.TotemBar, "TOPRIGHT", xOffset2, yOffset );								
 			else
-				if TukuiDB.myclass == "DRUID" or TukuiDB.myclass == "ROGUE" then
-					playerFrame:SetPoint( "BOTTOMLEFT", oUF_Tukz_player.Health, "TOPLEFT", xOffset1, yOffset + 14 );
-					playerFrame:SetPoint( "BOTTOMRIGHT", oUF_Tukz_player.Health, "TOPRIGHT", xOffset2, yOffset + 14 );				
-				else
 					playerFrame:SetPoint( "BOTTOMLEFT", oUF_Tukz_player.Health, "TOPLEFT", xOffset1, yOffset );
 					playerFrame:SetPoint( "BOTTOMRIGHT", oUF_Tukz_player.Health, "TOPRIGHT", xOffset2, yOffset );	
-				end
 			end
 		end
 		playerFrame:Show();
@@ -952,8 +947,13 @@ local function OnUnitFramesLoad(self, event, addon)
 			targetFrame:SetPoint( "BOTTOMLEFT", oUF_Tukz_target.Debuffs, "TOPLEFT", xOffset1, yOffset );
 			targetFrame:SetPoint( "BOTTOMRIGHT", oUF_Tukz_target.Debuffs, "TOPRIGHT", xOffset2, yOffset );
 		else
-			targetFrame:SetPoint( "BOTTOMLEFT", oUF_Tukz_target.Health, "TOPLEFT", xOffset1, yOffset );
-			targetFrame:SetPoint( "BOTTOMRIGHT", oUF_Tukz_target.Health, "TOPRIGHT", xOffset2, yOffset );
+			if TukuiDB.myclass == "DRUID" or TukuiDB.myclass == "ROGUE" then
+				targetFrame:SetPoint( "BOTTOMLEFT", oUF_Tukz_target.Health, "TOPLEFT", xOffset1, yOffset + 14 );
+				targetFrame:SetPoint( "BOTTOMRIGHT", oUF_Tukz_target.Health, "TOPRIGHT", xOffset2, yOffset + 14 );				
+			else
+				targetFrame:SetPoint( "BOTTOMLEFT", oUF_Tukz_target.Health, "TOPLEFT", xOffset1, yOffset );
+				targetFrame:SetPoint( "BOTTOMRIGHT", oUF_Tukz_target.Health, "TOPRIGHT", xOffset2, yOffset );	
+			end
 		end
 		targetFrame:Show();
 	else
