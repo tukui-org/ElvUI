@@ -33,7 +33,7 @@
 	TukuiL.option_nameplates_enable = "Включить индикаторы здоровья"
 	TukuiL.option_nameplates_enhancethreat = "Включить поддержку угрозы, зависит от Вашей роли"
 	TukuiL.option_nameplates_showhealth = "Показывать здоровье на индикаторе"
-	TukuiL.option_nameplates_combat = "Only show enemy nameplates in-combat"
+	TukuiL.option_nameplates_combat = "Отображать индикаторы противников только в бою"
 	
 	-- addon skins
 	TukuiL.option_skin = "Скины аддонов"

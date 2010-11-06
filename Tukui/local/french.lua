@@ -19,8 +19,8 @@ if TukuiDB.client == "frFR" then
  
 	tukuilocal.disband = "GROUPE DISSOUT."
  
-	tukuilocal.datatext_download = "Download: "
-	tukuilocal.datatext_bandwidth = "Bandwidth: "
+	tukuilocal.datatext_download = "Téléchargement: "
+	tukuilocal.datatext_bandwidth = "Bande passante: "
 	tukuilocal.datatext_guild = "Guilde"
 	tukuilocal.datatext_noguild = "Pas de guilde"
 	tukuilocal.datatext_bags = "Sacs: "
