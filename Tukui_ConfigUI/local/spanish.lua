@@ -192,7 +192,8 @@
 	TukuiL.option_actionbar_rbn2 = "Número de barras de acción inferiores (1, 1.5, o 2)"
 	TukuiL.option_actionbar_rn = "Número de barras de acción en la derecha (1, 2 o 3)"
 	TukuiL.option_actionbar_splitbar = "Activar las barras de acción partidas"
- 
+	TukuiL.option_actionbar_bottompetbar = "Position pet bar below the main actionbar, moves main actionbar up"
+	
 	-- arena
 	TukuiL.option_arena = "Arena"
 	TukuiL.option_arena_st = "Activar seguimiento de hechizos del enemigo en arenas"

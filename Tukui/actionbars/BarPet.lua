@@ -31,13 +31,16 @@ bar:SetScript("OnEvent", function(self, event, ...)
 			button:ClearAllPoints()
 			button:SetParent(TukuiPetBar)
 			TukuiPetActionBarBackground:SetParent(TukuiPetBar)
-			TukuiPetActionBarBackground:SetFrameStrata("BACKGROUND")
-			TukuiPetActionBarBackground:SetFrameLevel(1)
+			button:SetFrameStrata("MEDIUM")
 			button:SetSize(TukuiDB.petbuttonsize, TukuiDB.petbuttonsize)
 			if i == 1 then
-				button:SetPoint("TOPLEFT", TukuiDB.Scale(4),TukuiDB.Scale(-4))
+				button:SetPoint("TOPLEFT", TukuiDB.buttonspacing, -TukuiDB.buttonspacing)
 			else
-				button:SetPoint("TOP", _G["PetActionButton"..(i - 1)], "BOTTOM", 0, TukuiDB.Scale(-4))
+				if TukuiCF["actionbar"].bottompetbar ~= true then
+					button:SetPoint("TOP", _G["PetActionButton"..(i - 1)], "BOTTOM", 0, -TukuiDB.buttonspacing)
+				else
+					button:SetPoint("LEFT", _G["PetActionButton"..(i - 1)], "RIGHT", TukuiDB.buttonspacing, 0)
+				end	
 			end
 			button:Show()
 			self:SetAttribute("addchild", button)
@@ -56,7 +59,7 @@ bar:SetScript("OnEvent", function(self, event, ...)
 end)
 
 --Setup Mouseover
-if TukuiCF["actionbar"].rightbarmouseover == true then
+if TukuiCF["actionbar"].rightbarmouseover == true and TukuiCF["actionbar"].bottompetbar ~= true then
 	TukuiPetActionBarBackground:SetAlpha(0)
 	TukuiPetActionBarBackground:SetScript("OnEnter", function() RightBarMouseOver(1) end)
 	TukuiPetActionBarBackground:SetScript("OnLeave", function() RightBarMouseOver(0) end)

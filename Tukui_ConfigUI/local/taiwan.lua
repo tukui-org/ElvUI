@@ -203,7 +203,8 @@
 	TukuiL.option_actionbar_rbn2 = "底部動作條數量 (1, 1.5, 或 2)"
 	TukuiL.option_actionbar_rn = "右方動作條數量 (1, 2 或 3)"
 	TukuiL.option_actionbar_splitbar = "啟用分割動作條"
-	 
+	TukuiL.option_actionbar_bottompetbar = "Position pet bar below the main actionbar, moves main actionbar up"
+
 	-- arena
 	TukuiL.option_arena = "競技場"
 	TukuiL.option_arena_st = "競技場中啟用敵方法術追蹤"

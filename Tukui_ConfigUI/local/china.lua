@@ -193,7 +193,7 @@
 	TukuiL.option_reminder_RaidBuffReminder = "在小地图下开启团队BUFF提醒框架"
 
 	-- action bar
-  TukuiL.option_actionbar = "动作条"
+	TukuiL.option_actionbar = "动作条"
 	TukuiL.option_actionbar_hidess = "隐藏变身及图腾条"
 	TukuiL.option_actionbar_showgrid = "永远显示动作条格位"
 	TukuiL.option_actionbar_enable = "开启Tukui动作条"
@@ -204,7 +204,8 @@
 	TukuiL.option_actionbar_rbn2 = "底部动作条数量 (1, 1.5, 或 2)"
 	TukuiL.option_actionbar_rn = "右方动作条数量 (1, 2 或 3)"
 	TukuiL.option_actionbar_splitbar = "开启分割动作条"
-	 
+	TukuiL.option_actionbar_bottompetbar = "Position pet bar below the main actionbar, moves main actionbar up"
+	
 	-- arena
 	TukuiL.option_arena = "竞技场"
 	TukuiL.option_arena_st = "竞技场中开启敌方法术追踪"

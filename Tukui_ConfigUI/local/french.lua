@@ -202,7 +202,8 @@ if GetLocale() == "frFR" then
 	TukuiL.option_actionbar_rbn2 = "Nombre de barre d'actions en bas (1, 1.5 ou 2)" --"Number of action bars on the bottom (1, 1.5, or 2)"
 	TukuiL.option_actionbar_rn = "Nombre de barre d'actions à droite (1, 2 ou 3)" --"Number of action bars on right (1, 2 or 3)"
 	TukuiL.option_actionbar_splitbar = "Activer la splitbar." --"Enable split actionbar"
- 
+	TukuiL.option_actionbar_bottompetbar = "Position pet bar below the main actionbar, moves main actionbar up"
+	
 	-- arena
 	TukuiL.option_arena = "Arène" --"Arena"
 	TukuiL.option_arena_st = "Activer le tracker des sorts ennemis" --"Enable enemy spell tracker in arena"

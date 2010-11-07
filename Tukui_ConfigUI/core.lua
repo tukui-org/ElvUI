@@ -234,6 +234,7 @@ local function Local(o)
 	if o == "TukuiConfigUIactionbarbottomrows" then o = TukuiL.option_actionbar_rbn end
 	if o == "TukuiConfigUIactionbarrightbars" then o = TukuiL.option_actionbar_rn end
 	if o == "TukuiConfigUIactionbarsplitbar" then o = TukuiL.option_actionbar_splitbar end
+	if o == "TukuiConfigUIactionbarbottompetbar" then o = TukuiL.option_actionbar_bottompetbar end
 	
 	-- arena
 	if o == "TukuiConfigUIarena" then o = TukuiL.option_arena end

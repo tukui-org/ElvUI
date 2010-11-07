@@ -48,7 +48,11 @@ end
 
 -- MAIN ACTION BAR
 local barbg = CreateFrame("Frame", "TukuiActionBarBackground", UIParent)
-TukuiDB.CreatePanel(barbg, 1, 1, "BOTTOM", UIParent, "BOTTOM", 0, TukuiDB.Scale(4))
+if TukuiCF["actionbar"].bottompetbar ~= true then
+	TukuiDB.CreatePanel(barbg, 1, 1, "BOTTOM", UIParent, "BOTTOM", 0, TukuiDB.Scale(4))
+else
+	TukuiDB.CreatePanel(barbg, 1, 1, "BOTTOM", UIParent, "BOTTOM", 0, (TukuiDB.buttonsize + (TukuiDB.buttonspacing * 2)) + TukuiDB.Scale(8))
+end
 barbg:SetWidth(((TukuiDB.buttonsize * 12) + (TukuiDB.buttonspacing * 13)))
 barbg:SetFrameLevel(bottompanel:GetFrameLevel() + 2)
 barbg:SetFrameStrata("LOW")
@@ -109,14 +113,24 @@ if TukuiCF["actionbar"].enable == true then
 	end
 
 	local petbg = CreateFrame("Frame", "TukuiPetActionBarBackground", UIParent)
-	if TukuiCF["actionbar"].rightbars > 0 then
-		TukuiDB.CreatePanel(petbg, TukuiDB.petbuttonsize + (TukuiDB.petbuttonspacing * 2), (TukuiDB.petbuttonsize * 10) + (TukuiDB.petbuttonspacing * 11), "RIGHT", barbgr, "LEFT", TukuiDB.Scale(-6), 0)
+	if TukuiCF["actionbar"].bottompetbar ~= true then
+		if TukuiCF["actionbar"].rightbars > 0 then
+			TukuiDB.CreatePanel(petbg, TukuiDB.petbuttonsize + (TukuiDB.petbuttonspacing * 2), (TukuiDB.petbuttonsize * 10) + (TukuiDB.petbuttonspacing * 11), "RIGHT", barbgr, "LEFT", TukuiDB.Scale(-6), 0)
+		else
+			TukuiDB.CreatePanel(petbg, TukuiDB.petbuttonsize + (TukuiDB.petbuttonspacing * 2), (TukuiDB.petbuttonsize * 10) + (TukuiDB.petbuttonspacing * 11), "RIGHT", UIParent, "RIGHT", TukuiDB.Scale(-6), TukuiDB.Scale(-13.5))
+		end
 	else
-		TukuiDB.CreatePanel(petbg, TukuiDB.petbuttonsize + (TukuiDB.petbuttonspacing * 2), (TukuiDB.petbuttonsize * 10) + (TukuiDB.petbuttonspacing * 11), "RIGHT", UIParent, "RIGHT", TukuiDB.Scale(-6), TukuiDB.Scale(-13.5))
+		TukuiDB.CreatePanel(petbg, (TukuiDB.petbuttonsize * 10) + (TukuiDB.petbuttonspacing * 11), TukuiDB.petbuttonsize + (TukuiDB.petbuttonspacing * 2), "BOTTOM", UIParent, "BOTTOM", 0, TukuiDB.Scale(4))
+		petbg:SetFrameLevel(bottompanel:GetFrameLevel() + 2)
+		petbg:SetFrameStrata("LOW")
 	end
 	
 	local ltpetbg1 = CreateFrame("Frame", "TukuiLineToPetActionBarBackground", petbg)
-	TukuiDB.CreatePanel(ltpetbg1, 30, 265, "LEFT", petbg, "RIGHT", 0, 0)
+	if TukuiCF["actionbar"].bottompetbar ~= true then
+		TukuiDB.CreatePanel(ltpetbg1, 30, 265, "LEFT", petbg, "RIGHT", 0, 0)
+	else
+		TukuiDB.CreatePanel(ltpetbg1, 265, 30, "BOTTOM", petbg, "TOP", 0, 0)
+	end
 	ltpetbg1:SetFrameLevel(0)
 	ltpetbg1:SetAlpha(.8)
 	

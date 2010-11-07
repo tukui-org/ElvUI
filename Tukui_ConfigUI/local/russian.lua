@@ -203,7 +203,8 @@
 	TukuiL.option_actionbar_rbn2 = "Количество панелей внизу (1, 1.5, или 2)"
 	TukuiL.option_actionbar_rn = "Количество панелей справа (1, 2 or 3)"
 	TukuiL.option_actionbar_splitbar = "Включить раздельную панель"
-
+	TukuiL.option_actionbar_bottompetbar = "Position pet bar below the main actionbar, moves main actionbar up"
+	
 	-- arena
 	TukuiL.option_arena = "Арена"
 	TukuiL.option_arena_st = "Включить отслеживание вражеских перезарядок на арене"

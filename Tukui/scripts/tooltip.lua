@@ -336,7 +336,9 @@ local Colorize = function(self)
 		local class = select(2, UnitClass(unit))
 		if TukuiCF.unitframes.enable == true then
 			local c = TukuiDB.oUF_colors.class[class]
-			r, g, b = c[1], c[2], c[3]
+			if c then
+				r, g, b = c[1], c[2], c[3]
+			end
 		else
 			r, g, b = RAID_CLASS_COLORS[class].r, RAID_CLASS_COLORS[class].g, RAID_CLASS_COLORS[class].b
 		end

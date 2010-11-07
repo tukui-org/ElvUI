@@ -20,13 +20,29 @@ end
 local function setup()
 	TukuiWatchFrame:ClearAllPoints()
 	if TukuiCF.actionbar.rightbars == 3 then
-		TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(-180), TukuiDB.Scale(-115))
+		if TukuiCF["actionbar"].bottompetbar ~= true then
+			TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(-180), TukuiDB.Scale(-115))
+		else
+			TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(-115), TukuiDB.Scale(-115))
+		end
 	elseif TukuiCF.actionbar.rightbars == 2 then
-		TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(-140), TukuiDB.Scale(-115))
+		if TukuiCF["actionbar"].bottompetbar ~= true then
+			TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(-140), TukuiDB.Scale(-115))
+		else
+			TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(-75), TukuiDB.Scale(-115))
+		end
 	elseif TukuiCF.actionbar.rightbars == 1 then
-		TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(-100), TukuiDB.Scale(-115))
+		if TukuiCF["actionbar"].bottompetbar ~= true then
+			TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(-100), TukuiDB.Scale(-115))
+		else
+			TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(-45), TukuiDB.Scale(-115))
+		end
 	else
-		TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(-30), TukuiDB.Scale(-115))
+		if TukuiCF["actionbar"].bottompetbar ~= true then
+			TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", TukuiDB.Scale(-30), TukuiDB.Scale(-115))
+		else
+			TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", 0, TukuiDB.Scale(-115))
+		end
 	end
 	
 	local screenheight = GetScreenHeight()

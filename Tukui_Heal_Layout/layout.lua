@@ -1304,7 +1304,7 @@ local function Shared(self, unit)
 			debuffs.spacing = TukuiDB.Scale(2)
 			debuffs.size = (((original_width + TukuiDB.Scale(4)) - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)
 			debuffs:SetHeight(debuffs.size)
-			debuffs:SetPoint("TOP", self, "BOTTOM", 0, -TukuiDB.Scale(3))
+			debuffs:SetPoint("TOP", self, "BOTTOM", 0, -TukuiDB.Scale(5))
 			debuffs.initialAnchor = 'TOPLEFT'
 			debuffs["growth-y"] = "DOWN"
 			debuffs["growth-x"] = "RIGHT"
@@ -1323,7 +1323,7 @@ local function Shared(self, unit)
 			debuffs.spacing = TukuiDB.Scale(2)
 			debuffs.size = (((original_width + TukuiDB.Scale(4)) - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)
 			debuffs:SetHeight(debuffs.size)
-			debuffs:SetPoint("TOP", self, "BOTTOM", 0, -TukuiDB.Scale(3))
+			debuffs:SetPoint("TOP", self, "BOTTOM", 0, -TukuiDB.Scale(5))
 			debuffs.initialAnchor = 'TOPLEFT'
 			debuffs["growth-y"] = "DOWN"
 			debuffs["growth-x"] = "RIGHT"
