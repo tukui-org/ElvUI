@@ -146,14 +146,17 @@
 	TukuiL.option_unitframes_fontsize = "Schriftgröße"
 	TukuiL.option_unitframes_unitframes_poweroffset = "Versetzung der Power-Leiste zum Einheitenfenster (0 für keine Versetzung)"
 	TukuiL.option_unitframes_classbar = "Aktiviere Klassenleiste (Totemleiste, Runenleiste, Heiligleiste, Seelensplitterleiste, Finsternisleiste)"
-	TukuiL.option_unitframes_playtarwidth = "Breite der Spieler/Ziel Einheitenfenster"
-	TukuiL.option_unitframes_playtarheight = "Höhe der Spieler/Ziel Einheitenfenster"
-	TukuiL.option_unitframes_smallwidth = "Breite der Ziel des Ziels/Fokus/Fokus Ziel/Spieler Begleiter Einheitenfenster"
-	TukuiL.option_unitframes_smallheight = "Höhe der Ziel des Ziels/Fokus/Fokus Ziel/Spieler Begleiter Einheitenfenster"
-	TukuiL.option_unitframes_arenabosswidth = "Breite der Arena/Boss Einheitenfenster"
-	TukuiL.option_unitframes_arenabossheight = "Höhe der Arena/Boss Einheitenfenster"
-	TukuiL.option_unitframes_assisttankwidth = "Breite der Haupttank/Hauptassistent Einheitenfenster"
-	TukuiL.option_unitframes_assisttankheight = "Höhe der Haupttank/Hauptassistent Einheitenfenster"
+	
+	-- frame sizes
+	TukuiL.option_framesizes = "UnitFrame Sizes"		
+	TukuiL.option_framesizes_playtarwidth = "Breite der Spieler/Ziel Einheitenfenster"
+	TukuiL.option_framesizes_playtarheight = "Höhe der Spieler/Ziel Einheitenfenster"
+	TukuiL.option_framesizes_smallwidth = "Breite der Ziel des Ziels/Fokus/Fokus Ziel/Spieler Begleiter Einheitenfenster"
+	TukuiL.option_framesizes_smallheight = "Höhe der Ziel des Ziels/Fokus/Fokus Ziel/Spieler Begleiter Einheitenfenster"
+	TukuiL.option_framesizes_arenabosswidth = "Breite der Arena/Boss Einheitenfenster"
+	TukuiL.option_framesizes_arenabossheight = "Höhe der Arena/Boss Einheitenfenster"
+	TukuiL.option_framesizes_assisttankwidth = "Breite der Haupttank/Hauptassistent Einheitenfenster"
+	TukuiL.option_framesizes_assisttankheight = "Höhe der Haupttank/Hauptassistent Einheitenfenster"
 	
 	-- loot
 	TukuiL.option_loot = "Beute"

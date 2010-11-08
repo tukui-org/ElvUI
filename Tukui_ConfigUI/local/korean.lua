@@ -146,14 +146,17 @@
 	TukuiL.option_unitframes_fontsize = "Font Size"
 	TukuiL.option_unitframes_unitframes_poweroffset = "파워바 오프셋 (0은 오프셋 없음)"
 	TukuiL.option_unitframes_classbar = "직업 바 활성화 (토템바, 룬바, 신성력바, 영혼석바, 일월식바)"
-	TukuiL.option_unitframes_playtarwidth = "플레이어/대상 창 너비"
-	TukuiL.option_unitframes_playtarheight = "플레이어/대상 창 높이"
-	TukuiL.option_unitframes_smallwidth = "대상의 대상/주시대상/주시대상의 대상/소환수 창 너비"
-	TukuiL.option_unitframes_smallheight = "대상의 대상/주시대상/주시대상의 대상/소환수 창 높이"
-	TukuiL.option_unitframes_arenabosswidth = "투기장/우두머리 창 너비"
-	TukuiL.option_unitframes_arenabossheight = "투기장/우두머리 창 높이"
-	TukuiL.option_unitframes_assisttankwidth = "방어/지원공격 전담 창 너비"
-	TukuiL.option_unitframes_assisttankheight = "방어/지원공격 전담 창 높이"
+	
+	-- frame sizes
+	TukuiL.option_framesizes = "UnitFrame Sizes"		
+	TukuiL.option_framesizes_playtarwidth = "플레이어/대상 창 너비"
+	TukuiL.option_framesizes_playtarheight = "플레이어/대상 창 높이"
+	TukuiL.option_framesizes_smallwidth = "대상의 대상/주시대상/주시대상의 대상/소환수 창 너비"
+	TukuiL.option_framesizes_smallheight = "대상의 대상/주시대상/주시대상의 대상/소환수 창 높이"
+	TukuiL.option_framesizes_arenabosswidth = "투기장/우두머리 창 너비"
+	TukuiL.option_framesizes_arenabossheight = "투기장/우두머리 창 높이"
+	TukuiL.option_framesizes_assisttankwidth = "방어/지원공격 전담 창 너비"
+	TukuiL.option_framesizes_assisttankheight = "방어/지원공격 전담 창 높이"
 	
 	-- loot
 	TukuiL.option_loot = "Loot"

@@ -147,14 +147,17 @@
 	TukuiL.option_unitframes_fontsize = "字體大小"
 	TukuiL.option_unitframes_unitframes_poweroffset = "將能量條並排於單位框架 (0 以並排)"
 	TukuiL.option_unitframes_classbar = "啟用職業條 (圖騰列, 符文列, 神聖能量列, 靈魂裂片列, 日/月蝕列)"
-    TukuiL.option_unitframes_playtarwidth = "玩家/目標單位框架的闊度"
-    TukuiL.option_unitframes_playtarheight = "玩家/目標單位框架的高度"
-    TukuiL.option_unitframes_smallwidth = "目標的目標/專注/專注目標及玩家寵物單位框架的闊度"
-    TukuiL.option_unitframes_smallheight = "目標的目標/專注/專注目標及玩家寵物單位框架的高度"
-    TukuiL.option_unitframes_arenabosswidth = "競技場/首領單位框架的闊度"
-    TukuiL.option_unitframes_arenabossheight = "競技場/首領單位框架的高度"
-    TukuiL.option_unitframes_assisttankwidth = "主坦克/助手單位框架的闊度"
-    TukuiL.option_unitframes_assisttankheight = "主坦克/助手單位框架的高度"
+    
+	 -- frame sizes
+	TukuiL.option_framesizes = "UnitFrame Sizes"	
+	TukuiL.option_framesizes_playtarwidth = "玩家/目標單位框架的闊度"
+    TukuiL.option_framesizes_playtarheight = "玩家/目標單位框架的高度"
+    TukuiL.option_framesizes_smallwidth = "目標的目標/專注/專注目標及玩家寵物單位框架的闊度"
+    TukuiL.option_framesizes_smallheight = "目標的目標/專注/專注目標及玩家寵物單位框架的高度"
+    TukuiL.option_framesizes_arenabosswidth = "競技場/首領單位框架的闊度"
+    TukuiL.option_framesizes_arenabossheight = "競技場/首領單位框架的高度"
+    TukuiL.option_framesizes_assisttankwidth = "主坦克/助手單位框架的闊度"
+    TukuiL.option_framesizes_assisttankheight = "主坦克/助手單位框架的高度"
 	
 	-- loot
 	TukuiL.option_loot = "拾取"

@@ -92,7 +92,6 @@
 	TukuiL.option_auras_playershowonlydebuffs = "Отображать только дебаффы на рамке игрока (Ауры на рамке игрока должны быть включены)"
 	TukuiL.option_auras_playerdebuffsonly = "Отображать только свои эффекты и эффекты контроля  (настраивается в auraFilter.lua)"
 	TukuiL.option_auras_RaidUnitBuffWatch = "Отображать баффы на рейдовых фреймах"
-
 	TukuiL.option_auras_playtarbuffperrow = "Кол-во Баффов/Дебаффов в ряду на фрейме Игрока/Цели"
 	TukuiL.option_auras_smallbuffperrow = "Кол-во Дебаффов в ряду на фрейме ЦелиЦели/Фокуса"
 	
@@ -147,14 +146,17 @@
 	TukuiL.option_unitframes_fontsize = "Размер шрифта"
 	TukuiL.option_unitframes_unitframes_poweroffset = "Отступ полосы энергии(0 для отключения отступа)"
 	TukuiL.option_unitframes_classbar = "Классовая полоса(Полоса тотемов, Полоса рун, Полоса силы света, Полоса осколков, Полоса затмения)"
-	TukuiL.option_unitframes_playtarwidth = "Ширина фрейма Игрока/Цели"
-	TukuiL.option_unitframes_playtarheight = "Высота фрейма Игрока/Цели"
-	TukuiL.option_unitframes_smallwidth = "Ширина фрейма ЦелиЦели/Фокусу/ЦелиФокуса/Питомца"
-	TukuiL.option_unitframes_smallheight = "Высота ЦелиЦели/Фокусу/ЦелиФокуса/Питомца"
-	TukuiL.option_unitframes_arenabosswidth = "Ширина фреймов Арены/Босса"
-	TukuiL.option_unitframes_arenabossheight = "Высриа фреймов Арены/Босса"
-	TukuiL.option_unitframes_assisttankwidth = "Ширина фреймов Танка/Наводчика"
-	TukuiL.option_unitframes_assisttankheight = "Высота фреймов Танка/Наводчика"
+	
+	-- frame sizes
+	TukuiL.option_framesizes = "UnitFrame Sizes"		
+	TukuiL.option_framesizes_playtarwidth = "Ширина фрейма Игрока/Цели"
+	TukuiL.option_framesizes_playtarheight = "Высота фрейма Игрока/Цели"
+	TukuiL.option_framesizes_smallwidth = "Ширина фрейма ЦелиЦели/Фокусу/ЦелиФокуса/Питомца"
+	TukuiL.option_framesizes_smallheight = "Высота ЦелиЦели/Фокусу/ЦелиФокуса/Питомца"
+	TukuiL.option_framesizes_arenabosswidth = "Ширина фреймов Арены/Босса"
+	TukuiL.option_framesizes_arenabossheight = "Высриа фреймов Арены/Босса"
+	TukuiL.option_framesizes_assisttankwidth = "Ширина фреймов Танка/Наводчика"
+	TukuiL.option_framesizes_assisttankheight = "Высота фреймов Танка/Наводчика"
 	
 	-- loot
 	TukuiL.option_loot = "Добыча"

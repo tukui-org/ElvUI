@@ -22,6 +22,7 @@ ALLOWED_GROUPS = {
 	["castbar"]=1,
 	["raidframes"]=1,
 	["auras"]=1,
+	["framesizes"]=1,
 }
 
 local function Local(o)
@@ -174,14 +175,17 @@ local function Local(o)
 	if o == "TukuiConfigUIunitframesmendpet" then o = TukuiL.option_unitframes_mendpet end
 	if o == "TukuiConfigUIunitframespoweroffset" then o = TukuiL.option_unitframes_unitframes_poweroffset end
 	if o == "TukuiConfigUIunitframesclassbar" then o = TukuiL.option_unitframes_classbar end
-	if o == "TukuiConfigUIunitframesplaytarwidth" then o = TukuiL.option_unitframes_playtarwidth end
-	if o == "TukuiConfigUIunitframesplaytarheight" then o = TukuiL.option_unitframes_playtarheight end
-	if o == "TukuiConfigUIunitframessmallwidth" then o = TukuiL.option_unitframes_smallwidth end
-	if o == "TukuiConfigUIunitframessmallheight" then o = TukuiL.option_unitframes_smallheight end
-	if o == "TukuiConfigUIunitframesarenabosswidth" then o = TukuiL.option_unitframes_arenabosswidth end
-	if o == "TukuiConfigUIunitframesarenabossheight" then o = TukuiL.option_unitframes_arenabossheight end
-	if o == "TukuiConfigUIunitframesassisttankwidth" then o = TukuiL.option_unitframes_assisttankwidth end
-	if o == "TukuiConfigUIunitframesassisttankheight" then o = TukuiL.option_unitframes_assisttankheight end
+
+	-- frame sizes
+	if o == "TukuiConfigUIframesizes" then o = TukuiL.option_framesizes end
+	if o == "TukuiConfigUIframesizesplaytarwidth" then o = TukuiL.option_framesizes_playtarwidth end
+	if o == "TukuiConfigUIframesizesplaytarheight" then o = TukuiL.option_framesizes_playtarheight end
+	if o == "TukuiConfigUIframesizessmallwidth" then o = TukuiL.option_framesizes_smallwidth end
+	if o == "TukuiConfigUIframesizessmallheight" then o = TukuiL.option_framesizes_smallheight end
+	if o == "TukuiConfigUIframesizesarenabosswidth" then o = TukuiL.option_framesizes_arenabosswidth end
+	if o == "TukuiConfigUIframesizesarenabossheight" then o = TukuiL.option_framesizes_arenabossheight end
+	if o == "TukuiConfigUIframesizesassisttankwidth" then o = TukuiL.option_framesizes_assisttankwidth end
+	if o == "TukuiConfigUIframesizesassisttankheight" then o = TukuiL.option_framesizes_assisttankheight end
 	
 	-- loot
 	if o == "TukuiConfigUIloot" then o = TukuiL.option_loot end

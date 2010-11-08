@@ -146,14 +146,17 @@ if GetLocale() == "frFR" then
 	TukuiL.option_unitframes_fontsize = "Taille de la police" --"Font Size"
 	TukuiL.option_unitframes_unitframes_poweroffset = "Offset of the powerbar on the frame (0 for no offset)"
 	TukuiL.option_unitframes_classbar = "Active les barres de classes (Barre de totem, Barre de pouvoir runique, Barre Sacrée, Barre des fragments d'âme, Barre d'Eclipse)"
-	TukuiL.option_unitframes_playtarwidth = "Largeur des portraits du Joueur/de la Cible"
-	TukuiL.option_unitframes_playtarheight = "Hauteur des portraits du Joueur/de la Cible"
-	TukuiL.option_unitframes_smallwidth = "Largeur des portraits de la Cible de la Cible/du Focus/de la Cible du Focus/du Familier du Joueur"
-	TukuiL.option_unitframes_smallheight = "Hauteur des portraits de la Cible de la Cible/du Focus/de la Cible du Focus/du Familier du Joueur"
-	TukuiL.option_unitframes_arenabosswidth = "Largeur des portraits d'Arène/des Boss"
-	TukuiL.option_unitframes_arenabossheight = "Hauteur des portraits d'Arène/des Boss"
-	TukuiL.option_unitframes_assisttankwidth = "Largeur des portraits des Tanks Principaux/des Assists Principaux"
-	TukuiL.option_unitframes_assisttankheight = "Height of the MainTank/MainAssist frames"
+	
+	-- frame sizes
+	TukuiL.option_framesizes = "UnitFrame Sizes"	
+	TukuiL.option_framesizes_playtarwidth = "Largeur des portraits du Joueur/de la Cible"
+	TukuiL.option_framesizes_playtarheight = "Hauteur des portraits du Joueur/de la Cible"
+	TukuiL.option_framesizes_smallwidth = "Largeur des portraits de la Cible de la Cible/du Focus/de la Cible du Focus/du Familier du Joueur"
+	TukuiL.option_framesizes_smallheight = "Hauteur des portraits de la Cible de la Cible/du Focus/de la Cible du Focus/du Familier du Joueur"
+	TukuiL.option_framesizes_arenabosswidth = "Largeur des portraits d'Arène/des Boss"
+	TukuiL.option_framesizes_arenabossheight = "Hauteur des portraits d'Arène/des Boss"
+	TukuiL.option_framesizes_assisttankwidth = "Largeur des portraits des Tanks Principaux/des Assists Principaux"
+	TukuiL.option_framesizes_assisttankheight = "Height of the MainTank/MainAssist frames"
 	
 	-- loot
 	TukuiL.option_loot = "Loot"

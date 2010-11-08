@@ -148,14 +148,17 @@
 	TukuiL.option_unitframes_fontsize = "单位窗口文字大小"
 	TukuiL.option_unitframes_unitframes_poweroffset = "Offset of the powerbar on the frame (0 for no offset)"
 	TukuiL.option_unitframes_classbar = "Enable Classbar (TotemBar, RuneBar, HolyBar, SoulshardBar, EclipseBar)"
-	TukuiL.option_unitframes_playtarwidth = "Width of the Player/Target frames"
-	TukuiL.option_unitframes_playtarheight = "Height of the Player/Target frames"
-	TukuiL.option_unitframes_smallwidth = "Width of the TargetTarget/Focus/FocusTarget/PlayersPet frames"
-	TukuiL.option_unitframes_smallheight = "Height of the TargetTarget/Focus/FocusTarget/PlayersPet frames"
-	TukuiL.option_unitframes_arenabosswidth = "Width of the Arena/Boss frames"
-	TukuiL.option_unitframes_arenabossheight = "Height of the Arena/Boss frames"
-	TukuiL.option_unitframes_assisttankwidth = "Width of the MainTank/MainAssist frames"
-	TukuiL.option_unitframes_assisttankheight = "Height of the MainTank/MainAssist frames"
+
+	-- frame sizes
+	TukuiL.option_framesizes = "UnitFrame Sizes"
+	TukuiL.option_framesizes_playtarwidth = "Width of the Player/Target frames"
+	TukuiL.option_framesizes_playtarheight = "Height of the Player/Target frames"
+	TukuiL.option_framesizes_smallwidth = "Width of the TargetTarget/Focus/FocusTarget/PlayersPet frames"
+	TukuiL.option_framesizes_smallheight = "Height of the TargetTarget/Focus/FocusTarget/PlayersPet frames"
+	TukuiL.option_framesizes_arenabosswidth = "Width of the Arena/Boss frames"
+	TukuiL.option_framesizes_arenabossheight = "Height of the Arena/Boss frames"
+	TukuiL.option_framesizes_assisttankwidth = "Width of the MainTank/MainAssist frames"
+	TukuiL.option_framesizes_assisttankheight = "Height of the MainTank/MainAssist frames"
 	
 	-- loot
 	TukuiL.option_loot = "战利品"

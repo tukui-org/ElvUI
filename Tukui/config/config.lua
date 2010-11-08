@@ -36,6 +36,12 @@ TukuiCF["unitframes"] = {
 	["aggro"] = true,                      -- show aggro
 	["poweroffset"] = 9,					--powerbar offset
 	["classbar"] = true,                    -- enable runebar/totembar/holypowerbar/soulshardbar/eclipsebar
+
+	-- hunter only plugin
+	["mendpet"] = true,						--mend pet duration overlay on pet frame
+}
+
+TukuiCF["framesizes"] = {
 	["playtarwidth"] = 220,					--width of player/target frame
 	["playtarheight"] = 28,					--height of player/target frame
 	["smallwidth"] = 100,					--Width of TargetTarget, Focus, FocusTarget, Player's Pet frames
@@ -44,9 +50,6 @@ TukuiCF["unitframes"] = {
 	["arenabossheight"] = 23,				--Height of Arena/Boss Frames
 	["assisttankwidth"] = 100,				--Width of MainTank/MainAssist frames
 	["assisttankheight"] = 20,				--Height of MainTank/MainAssist frames
-	
-	-- hunter only plugin
-	["mendpet"] = true,						--mend pet duration overlay on pet frame
 }
 
 TukuiCF["raidframes"] = {
