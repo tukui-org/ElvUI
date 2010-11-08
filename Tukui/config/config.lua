@@ -130,7 +130,7 @@ TukuiCF["actionbar"] = {
 		["rightbars"] = 0,                     -- numbers of right bar you want
 		["splitbar"] = true,					-- split the third right actionbar into two rows of 3 on the left and right side of the main actionbar
 		["showgrid"] = true,                   -- show grid on empty button
-		["bottompetbar"] = true,				-- position petbar below the actionbars instead of the right side
+		["bottompetbar"] = false,				-- position petbar below the actionbars instead of the right side
 }
 
 TukuiCF["nameplate"] = {
