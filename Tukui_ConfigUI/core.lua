@@ -639,41 +639,42 @@ local function CreateTukuiConfigUI()
 				end	
 				
 				colorbutton:SetScript("OnMouseDown", function(self) 
-					local button = _G[self:GetName()]
-					local r,g,b,a = button:GetBackdropBorderColor();
+					if ColorPickerFrame:IsShown() then return end
+					local newR, newG, newB, newA
+					local fired = 0
+					
+					local r,g,b,a = self:GetBackdropBorderColor();
 					r,g,b,a = round(r, 2),round(g, 2),round(b, 2),round(a, 2)
 					local originalR,originalG,originalB,originalA = r,g,b,a
-
+					
 					local function ShowColorPicker(r, g, b, a, changedCallback)
 						ColorPickerFrame:SetColorRGB(r,g,b)
-						ColorPickerFrame.hasOpacity = false
+						a = tonumber(a)
+						ColorPickerFrame.hasOpacity = (a ~= nil and a ~= 1)
+						ColorPickerFrame.opacity = a
 						ColorPickerFrame.previousValues = {originalR,originalG,originalB,originalA}
-						ColorPickerFrame.func, ColorPickerFrame.cancelFunc = changedCallback, changedCallback
+						ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = changedCallback, changedCallback, changedCallback;
 						ColorPickerFrame:Hide()
 						ColorPickerFrame:Show()
 					end
 										
 					local function myColorCallback(restore)
-						local newR, newG, newB, newA
-						if restore then
+						fired = fired + 1
+						if restore ~= nil then
 							-- The user bailed, we extract the old color from the table created by ShowColorPicker.
 							newR, newG, newB, newA = unpack(restore)
-							button:SetBackdropBorderColor(newR, newG, newB, newA)
-							value = oldvalue
-							if self == button then
-								SetValue(group,option,(oldvalue)) 
-							end
 						else
 							-- Something changed
 							newA, newR, newG, newB = OpacitySliderFrame:GetValue(), ColorPickerFrame:GetColorRGB()
+						end
+						
+						--Kinda a cheesy way to fix setting the value in the wrong place.. oh well
+						if fired > 3 then
 							value = { newR, newG, newB, newA }
-							if self == button then
-								SetValue(group,option,(value)) 
-							end
-						button:SetBackdropBorderColor(unpack(value))
-					end
-
-					r, g, b, a = newR, newG, newB, newA
+							SetValue(group,option,(value)) 
+							self:SetBackdropBorderColor(newR, newG, newB, newA)
+							fired = 0
+						end
 					end
 										
 					ShowColorPicker(originalR, originalG, originalB, originalA, myColorCallback)
