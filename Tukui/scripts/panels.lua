@@ -193,7 +193,7 @@ chatrtbg:SetFrameStrata("BACKGROUND")
 TukuiDB.CreateShadow(chatrbg)
 TukuiDB.CreateShadow(chatrtbg)
 	
-local t = 0
+local t = 14
 local bottomrightframe
 local dragging
 chatrbg:SetScript("OnUpdate", function(self, elapsed)

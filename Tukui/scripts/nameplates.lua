@@ -68,99 +68,103 @@ local function HideObjects(parent)
 	end
 end
 
-local function UpdateThreat(frame)	
-	if TukuiCF["nameplate"].enhancethreat ~= true then
-		if(frame.region:IsShown()) then
-			local _, val = frame.region:GetVertexColor()
-			if(val > 0.7) then
-				frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 1, 0)
-			else
-				frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 0, 0)
-			end
-		else
-			frame.healthbackdrop.shadow:SetBackdropBorderColor(0, 0, 0)
-		end
-	else
-		if not frame.region:IsShown() then
-			if InCombatLockdown() and frame.hasclass ~= true then
-				--No Threat
-				if TukuiDB.Role == "Tank" then
-					frame.hp:SetStatusBarColor(1, 0, 0)
-					frame.hp.hpbg:SetVertexColor(1, 0, 0, 0.4)
+local function UpdateThreat(frame, elapsed)	
+	frame.elapsed = frame.elapsed + elapsed
+	if frame.elapsed >= 0.2 then
+		if TukuiCF["nameplate"].enhancethreat ~= true then
+			if(frame.region:IsShown()) then
+				local _, val = frame.region:GetVertexColor()
+				if(val > 0.7) then
+					frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 1, 0)
 				else
-					frame.hp:SetStatusBarColor(0, 1, 0)
-					frame.hp.hpbg:SetVertexColor(0, 1, 0, 0.35)
-				end			
-			else
-				--Set colors to their original, not in combat
-				frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
-				frame.hp.hpbg:SetVertexColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
-			end
-		else
-			--Ok we either have threat or we're losing/gaining it
-			local r, g, b = frame.region:GetVertexColor()
-			if g + b == 0 then
-				--Have Threat
-				if TukuiDB.Role == "Tank" then
-					frame.hp:SetStatusBarColor(0, 1, 0)
-					frame.hp.hpbg:SetVertexColor(0, 1, 0, 0.35)
-				else
-					frame.hp:SetStatusBarColor(1, 0, 0)
-					frame.hp.hpbg:SetVertexColor(1, 0, 0, 0.4)
+					frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 0, 0)
 				end
 			else
-				--Losing/Gaining Threat
-				frame.hp:SetStatusBarColor(1, 1, 0)
-				frame.hp.hpbg:SetVertexColor(1, 1, 0, 0.4)
-			end
-		end
-	end
-	
-	-- show current health value
-    local minHealth, maxHealth = frame.healthOriginal:GetMinMaxValues()
-    local valueHealth = frame.healthOriginal:GetValue()
-	local d =(valueHealth/maxHealth)*100
-	
-	if TukuiCF["nameplate"].showhealth == true then
-		frame.hp.value:SetText(ShortValue(valueHealth).." - "..(string.format("%d%%", math.floor((valueHealth/maxHealth)*100))))
-	end
-		
-	--Change frame style if the frame is our target or not
-	if UnitName("target") == frame.name:GetText() and frame:GetAlpha() == 1 then
-		--Targetted Unit
-		frame.name:SetTextColor(1, 1, 0)
-		
-		if TukuiCF["nameplate"].enhancethreat == true then
-			frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 1, 1)
-		else
-			frame.healthbackdrop:SetBackdropBorderColor(1, 1, 1)
-		end
-	else
-		--Not Targetted
-		frame.name:SetTextColor(1, 1, 1)
-		
-		if TukuiCF["nameplate"].enhancethreat ~= true then
-			frame.healthbackdrop:SetBackdropBorderColor(0.6, 0.6, 0.6)
-		else
-			if frame.hasclass ~= true then
 				frame.healthbackdrop.shadow:SetBackdropBorderColor(0, 0, 0)
 			end
-		end
-	end
-	
-	--Setup frame shadow to change depending on enemy players health, also setup targetted unit to have white shadow
-	if frame.hasclass == true then
-		if(d <= 35 and d >= 20) then
-			frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 1, 0)
-		elseif(d < 20) then
-			frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 0, 0)
 		else
-			if UnitName("target") == frame.name:GetText() and frame:GetAlpha() == 1 then
-				frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 1, 1)	
+			if not frame.region:IsShown() then
+				if InCombatLockdown() and frame.hasclass ~= true then
+					--No Threat
+					if TukuiDB.Role == "Tank" then
+						frame.hp:SetStatusBarColor(1, 0, 0)
+						frame.hp.hpbg:SetVertexColor(1, 0, 0, 0.4)
+					else
+						frame.hp:SetStatusBarColor(0, 1, 0)
+						frame.hp.hpbg:SetVertexColor(0, 1, 0, 0.35)
+					end			
+				else
+					--Set colors to their original, not in combat
+					frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
+					frame.hp.hpbg:SetVertexColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
+				end
 			else
-				frame.healthbackdrop.shadow:SetBackdropBorderColor(0, 0, 0)
+				--Ok we either have threat or we're losing/gaining it
+				local r, g, b = frame.region:GetVertexColor()
+				if g + b == 0 then
+					--Have Threat
+					if TukuiDB.Role == "Tank" then
+						frame.hp:SetStatusBarColor(0, 1, 0)
+						frame.hp.hpbg:SetVertexColor(0, 1, 0, 0.35)
+					else
+						frame.hp:SetStatusBarColor(1, 0, 0)
+						frame.hp.hpbg:SetVertexColor(1, 0, 0, 0.4)
+					end
+				else
+					--Losing/Gaining Threat
+					frame.hp:SetStatusBarColor(1, 1, 0)
+					frame.hp.hpbg:SetVertexColor(1, 1, 0, 0.4)
+				end
 			end
 		end
+		
+		-- show current health value
+		local minHealth, maxHealth = frame.healthOriginal:GetMinMaxValues()
+		local valueHealth = frame.healthOriginal:GetValue()
+		local d =(valueHealth/maxHealth)*100
+		
+		if TukuiCF["nameplate"].showhealth == true then
+			frame.hp.value:SetText(ShortValue(valueHealth).." - "..(string.format("%d%%", math.floor((valueHealth/maxHealth)*100))))
+		end
+			
+		--Change frame style if the frame is our target or not
+		if UnitName("target") == frame.name:GetText() and frame:GetAlpha() == 1 then
+			--Targetted Unit
+			frame.name:SetTextColor(1, 1, 0)
+			
+			if TukuiCF["nameplate"].enhancethreat == true then
+				frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 1, 1)
+			else
+				frame.healthbackdrop:SetBackdropBorderColor(1, 1, 1)
+			end
+		else
+			--Not Targetted
+			frame.name:SetTextColor(1, 1, 1)
+			
+			if TukuiCF["nameplate"].enhancethreat ~= true then
+				frame.healthbackdrop:SetBackdropBorderColor(0.6, 0.6, 0.6)
+			else
+				if frame.hasclass ~= true then
+					frame.healthbackdrop.shadow:SetBackdropBorderColor(0, 0, 0)
+				end
+			end
+		end
+		
+		--Setup frame shadow to change depending on enemy players health, also setup targetted unit to have white shadow
+		if frame.hasclass == true then
+			if(d <= 35 and d >= 20) then
+				frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 1, 0)
+			elseif(d < 20) then
+				frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 0, 0)
+			else
+				if UnitName("target") == frame.name:GetText() and frame:GetAlpha() == 1 then
+					frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 1, 1)	
+				else
+					frame.healthbackdrop.shadow:SetBackdropBorderColor(0, 0, 0)
+				end
+			end
+		end
+		frame.elapsed = 0
 	end
 end
 
@@ -419,7 +423,10 @@ local function SkinObjects(frame)
 	cIconTex:SetTexture("Interface\\WorldStateFrame\\Icons-Classes")
 	cIconTex:SetSize(iconSize, iconSize)
 	frame.class = cIconTex
-		
+	
+	--Set update variable
+	frame.elapsed = 0
+	
 	--Hide Old Stuff
 	QueueObject(frame, threat)
 	QueueObject(frame, hpborder)
@@ -457,7 +464,7 @@ CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
 
 	if(self.elapsed and self.elapsed > 0.1) then
 		for frame in pairs(frames) do
-			UpdateThreat(frame)
+			UpdateThreat(frame, self.elapsed)
 		end
 
 		self.elapsed = 0
