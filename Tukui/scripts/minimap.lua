@@ -5,7 +5,7 @@
 local p = CreateFrame("Frame", "TukuiMinimap", Minimap)
 TukuiMinimap:RegisterEvent("ADDON_LOADED")
 
-TukuiDB.CreatePanel(p, 144, 144, "CENTER", Minimap, "CENTER", -0, 0)
+TukuiDB.CreatePanel(p, TukuiDB.Scale(144 + 4), TukuiDB.Scale(144 + 4), "CENTER", Minimap, "CENTER", -0, 0)
 p:ClearAllPoints()
 p:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
 p:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))

@@ -50,9 +50,10 @@ local function SetBuffs()
 		1459, --"Arcane Brilliance"
 	}
 	Spell6Buff = { --Total AP
+		19740, --"Blessing of Might" placing it twice because i like the icon better :D code will stop after this one is read, we want this first 
+		30808, --"Unleashed Rage"
 		53138, --Abom Might
 		19506, --Trushot
-		30808, --"Unleashed Rage"
 		19740, --"Blessing of Might"
 	}
 end
@@ -188,9 +189,12 @@ local function OnAuraChange(self, event, arg1, unit)
 	end
 end
 
+local bsize = (((TukuiMinimap:GetWidth()) - (TukuiDB.Scale(4) * 7)) / 6)
+
+
 --Create the Main bar
 local raidbuff_reminder = CreateFrame("Frame", "RaidBuffReminder", TukuiMinimap)
-TukuiDB.CreatePanel(raidbuff_reminder, (TukuiMinimap:GetWidth() + TukuiDB.Scale(4)), TukuiDB.Scale(28), "TOPLEFT", TukuiMinimapStatsLeft, "BOTTOMLEFT", 0, TukuiDB.Scale(-3))
+TukuiDB.CreatePanel(raidbuff_reminder, TukuiMinimap:GetWidth(), bsize + TukuiDB.Scale(8), "TOPLEFT", TukuiMinimapStatsLeft, "BOTTOMLEFT", 0, TukuiDB.Scale(-3))
 raidbuff_reminder:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 raidbuff_reminder:RegisterEvent("UNIT_INVENTORY_CHANGED")
 raidbuff_reminder:RegisterEvent("UNIT_AURA")
@@ -200,13 +204,14 @@ raidbuff_reminder:RegisterEvent("CHARACTER_POINTS_CHANGED")
 raidbuff_reminder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 raidbuff_reminder:SetScript("OnEvent", OnAuraChange)
 
+
 --Function to create buttons
 local function CreateButton(name, relativeTo, firstbutton)
 	local button = CreateFrame("Frame", name, RaidBuffReminder)
 	if firstbutton == true then
-		TukuiDB.CreatePanel(button, TukuiDB.Scale(20), TukuiDB.Scale(20), "BOTTOMLEFT", relativeTo, "BOTTOMLEFT", TukuiDB.Scale(4), TukuiDB.Scale(4))
+		TukuiDB.CreatePanel(button, bsize, bsize, "LEFT", relativeTo, "LEFT", TukuiDB.Scale(4), 0)
 	else
-		TukuiDB.CreatePanel(button, TukuiDB.Scale(20), TukuiDB.Scale(20), "LEFT", relativeTo, "RIGHT", TukuiDB.Scale(4), 0)
+		TukuiDB.CreatePanel(button, bsize, bsize, "LEFT", relativeTo, "RIGHT", TukuiDB.Scale(4), 0)
 	end
 	button:SetFrameLevel(RaidBuffReminder:GetFrameLevel() + 2)
 	button:SetBackdropBorderColor(0,0,0,0)
@@ -216,7 +221,6 @@ local function CreateButton(name, relativeTo, firstbutton)
 	button.FrameBackdrop:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
 	button.FrameBackdrop:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 	button.FrameBackdrop:SetFrameLevel(button:GetFrameLevel() - 1)	
-	
 	button.t = button:CreateTexture(name..".t", "OVERLAY")
 	button.t:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	button.t:SetAllPoints(button)
