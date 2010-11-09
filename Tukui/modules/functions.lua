@@ -128,27 +128,27 @@ end
 
 --Set Datatext Postitions
 function TukuiDB.PP(p, obj)
-	local x = TukuiDB.Scale(((UIParent:GetWidth() / 3) / 3))
+	local x = TukuiDB.Scale(((string.match(GetCVar("gxResolution"), "(%d+)x%d+") / 3) / 3))
 	if p == 1 then
 		obj:SetHeight(TukuiBottomPanel:GetHeight())
-		obj:SetPoint("BOTTOM", UIParent, "BOTTOMLEFT", (x*p)-x/2, -TukuiDB.mult)
+		obj:SetPoint("BOTTOM", UIParent, "BOTTOMLEFT", (x*p)-x/1.6, -TukuiDB.mult)
 	elseif p == 2 then
 		obj:SetHeight(TukuiBottomPanel:GetHeight())
-		obj:SetPoint("BOTTOM", UIParent, "BOTTOMLEFT", (x*p)-x/2, -TukuiDB.mult)
+		obj:SetPoint("BOTTOM", UIParent, "BOTTOMLEFT", (x*p)-x/1.3, -TukuiDB.mult)
 	elseif p == 3 then
 		obj:SetHeight(TukuiBottomPanel:GetHeight())
-		obj:SetPoint("BOTTOM", UIParent, "BOTTOMLEFT", (x*p)-x/2, -TukuiDB.mult)
+		obj:SetPoint("BOTTOM", UIParent, "BOTTOMLEFT", (x*p)-x, -TukuiDB.mult)
 	elseif p == 4 then
 		obj:SetHeight(TukuiBottomPanel:GetHeight())
 		local p = 6 --Swap these so its like how its always been..
-		obj:SetPoint("BOTTOM", UIParent,"BOTTOMRIGHT", -(x*(p-3))+x/2, -TukuiDB.mult)
+		obj:SetPoint("BOTTOM", UIParent,"BOTTOMRIGHT", -(x*(p-3))+x, -TukuiDB.mult)
 	elseif p == 5 then
 		obj:SetHeight(TukuiBottomPanel:GetHeight())
-		obj:SetPoint("BOTTOM", UIParent,"BOTTOMRIGHT", -(x*(p-3))+x/2, -TukuiDB.mult)
+		obj:SetPoint("BOTTOM", UIParent,"BOTTOMRIGHT", -(x*(p-3))+x/1.3, -TukuiDB.mult)
 	elseif p == 6 then
 		obj:SetHeight(TukuiBottomPanel:GetHeight())
 		local p = 4 --Swap these so its like how its always been..
-		obj:SetPoint("BOTTOM", UIParent,"BOTTOMRIGHT", -(x*(p-3))+x/2, -TukuiDB.mult)
+		obj:SetPoint("BOTTOM", UIParent,"BOTTOMRIGHT", -(x*(p-3))+x/1.6, -TukuiDB.mult)
 	end
 	
 	if TukuiMinimap then
