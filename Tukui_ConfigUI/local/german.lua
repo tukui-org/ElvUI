@@ -78,7 +78,9 @@
 	TukuiL.option_datatext_dur = "Haltbarkeit Position"
 	TukuiL.option_datatext_stat1 = "Stat 1 für deine momentane Skillung"
 	TukuiL.option_datatext_stat2 = "Stat 2 für deine momentane Skillung"
- 
+	TukuiL.option_datatext_dps = "Schaden pro Sekunde Position"
+	TukuiL.option_datatext_hps = "Heilung pro Sekunde Position"
+	
 	-- auras
 	TukuiL.option_auras = "Stärkungszauber"
 	TukuiL.option_auras_minimapauras = "Aktiviere Stärkungs- und Schwächungszauber an der Minimap"

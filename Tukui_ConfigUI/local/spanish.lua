@@ -78,7 +78,9 @@
 	TukuiL.option_datatext_dur = "Posición de la durabilidad (0 for disabled)"
 	TukuiL.option_datatext_stat1 = "Posición de la estadística 1"
 	TukuiL.option_datatext_stat2 = "Posición de la estadística 2"
- 
+	TukuiL.option_datatext_dps = "Posicion de Daño por segundo"
+	TukuiL.option_datatext_hps = "Posicion de Curas por Segundo"
+	
 	-- auras
 	TukuiL.option_auras = "Auras"
 	TukuiL.option_auras_minimapauras = "Auras al lado del minimapa"

@@ -78,7 +78,9 @@
 	TukuiL.option_datatext_dur = "裝備耐久顯示位置 (輸入0為關閉)"
 	TukuiL.option_datatext_stat1 = "角色主要能力顯示位置"
 	TukuiL.option_datatext_stat2 = "角色次要能力顯示位置"
-	 
+	TukuiL.option_datatext_dps = "每秒傷害"
+	TukuiL.option_datatext_hps = "每秒治療"
+	
 	-- auras
 	TukuiL.option_auras = "光環"
 	TukuiL.option_auras_minimapauras = "啟用小地圖旁狀態光環"

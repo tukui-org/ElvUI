@@ -78,7 +78,9 @@ if GetLocale() == "frFR" then
 	TukuiL.option_datatext_dur = "Position de la durabilité (0 pour désactiver)" --"Durability position (0 for disabled)"
 	TukuiL.option_datatext_stat1 = "Position de la statistique principale" --"Stat 1 for your role's position"
 	TukuiL.option_datatext_stat2 = "Position de la statistique secondaire" --"Stat 2 for your role's position"
- 
+	TukuiL.option_datatext_dps = "Position Dégâts par seconde"
+	TukuiL.option_datatext_hps = "Position Heal par seconde"
+	
 	-- auras
 	TukuiL.option_auras = "Auras"
 	TukuiL.option_auras_minimapauras = "Activer les auras à coté de la minimap" --"Enable auras by the minimap"

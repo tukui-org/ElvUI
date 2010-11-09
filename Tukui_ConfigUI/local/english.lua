@@ -78,6 +78,8 @@ TukuiL.option_datatext_gold = "Gold position (0 for disabled)"
 TukuiL.option_datatext_dur = "Durability position (0 for disabled)"	
 TukuiL.option_datatext_stat1 = "Stat 1 for your role's position"
 TukuiL.option_datatext_stat2 = "Stat 2 for your role's position"
+TukuiL.option_datatext_hps = "Heal per second position (0 for disabled)"
+TukuiL.option_datatext_dps = "Damage per second position (0 for disabled)"
 
 -- auras
 TukuiL.option_auras = "Auras"

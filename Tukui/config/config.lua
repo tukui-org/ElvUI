@@ -168,6 +168,8 @@ TukuiCF["datatext"] = {
 	["guild"] = 7,                         -- show number on guildmate connected on panels
 	["friends"] = 8,                       -- show number of friends connected.
 	["bags"] = 0,							-- show ammount of bag space available
+	["dps_text"] = 0,						-- show current dps
+	["hps_text"] = 0,						-- show current hps
 	
 	["battleground"] = true,               -- enable 3 stats in battleground only that replace stat1,stat2,stat3.
 	["time24"] = false,                     -- set time to 24h format.

@@ -106,6 +106,8 @@ local function Local(o)
 	if o == "TukuiConfigUIdatatextstat1" then o = TukuiL.option_datatext_stat1 end
 	if o == "TukuiConfigUIdatatextstat2" then o = TukuiL.option_datatext_stat2 end
 	if o == "TukuiConfigUIdatatextbags" then o = TukuiL.option_datatext_bags end
+	if o == "TukuiConfigUIdatatexthps_text" then o = TukuiL.option_datatext_hps end
+	if o == "TukuiConfigUIdatatextdps_text" then o = TukuiL.option_datatext_dps end
 	
 	--auras
 	if o == "TukuiConfigUIauras" then o = TukuiL.option_auras end

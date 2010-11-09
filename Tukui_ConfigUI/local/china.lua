@@ -78,7 +78,9 @@
 	TukuiL.option_datatext_dur = "耐久值 (0 - 关闭)"	
 	TukuiL.option_datatext_stat1 = "依职业天赋决定显示属性1"
 	TukuiL.option_datatext_stat2 = "依职业天赋决定显示属性2"
-
+	TukuiL.option_datatext_dps = "每秒伤害"
+	TukuiL.option_datatext_hps = "每秒治疗"
+	
 	-- auras
 	TukuiL.option_auras = "光环"
 	TukuiL.option_auras_minimapauras = "开启小地图旁状态光环"

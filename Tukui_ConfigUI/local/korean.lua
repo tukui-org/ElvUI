@@ -78,7 +78,9 @@
 	TukuiL.option_datatext_dur = "Durability position (0 for disabled)"	
 	TukuiL.option_datatext_stat1 = "Stat 1 for your role's position"
 	TukuiL.option_datatext_stat2 = "Stat 2 for your role's position"
-
+	TukuiL.option_datatext_dps = "초당 피해량"
+	TukuiL.option_datatext_hps = "초당 치유량"
+	
 	-- auras
 	TukuiL.option_auras = "Auras"
 	TukuiL.option_auras_minimapauras = "Enable auras by the minimap"

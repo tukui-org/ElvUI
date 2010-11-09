@@ -78,7 +78,9 @@
 	TukuiL.option_datatext_dur = "Прочность (0 что бы отключить)"	
 	TukuiL.option_datatext_stat1 = "Хар-ка 1 (зависит от Вашей роли)"
 	TukuiL.option_datatext_stat2 = "Хар-ка 2 (зависит от Вашей роли)"
-
+	TukuiL.option_datatext_dps = "УВС"
+	TukuiL.option_datatext_hps = "ИВС"
+	
 	-- auras
 	TukuiL.option_auras = "Ауры"
 	TukuiL.option_auras_minimapauras = "Ауры около миникарты"
