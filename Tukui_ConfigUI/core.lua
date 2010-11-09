@@ -136,7 +136,7 @@ local function Local(o)
 	if o == "TukuiConfigUIraidframes" then o = TukuiL.option_raidframes end
 	if o == "TukuiConfigUIraidframesenable" then o = TukuiL.option_raidframes_enable end
 	if o == "TukuiConfigUIraidframesgridonly" then o = TukuiL.option_raidframes_gridonly end
-	if o == "TukuiConfigUIraidframeshealcomm" then o = TukuiL.option_raidframes_healcomm end
+	if o == "TukuiConfigUIraidframeshealcomm" then o = DISPLAY_INCOMING_HEALS end
 	if o == "TukuiConfigUIraidframesshowboss" then o = TukuiL.option_raidframes_boss end
 	if o == "TukuiConfigUIraidframesgridhealthvertical" then o = TukuiL.option_raidframes_hpvertical end
 	if o == "TukuiConfigUIraidframesshowrange" then o = TukuiL.option_raidframes_enablerange end
@@ -150,6 +150,7 @@ local function Local(o)
 	if o == "TukuiConfigUIraidframesfontsize" then o = TukuiL.option_raidframes_fontsize end 
 	if o == "TukuiConfigUIraidframesscale" then o = TukuiL.option_raidframes_scale end 
 	if o == "TukuiConfigUIraidframesdisableblizz" then o = TukuiL.option_raidframes_disableblizz end
+	if o == "TukuiConfigUIraidframespartypets" then o = DISPLAY_RAID_PETS.." ("..HEALER.." "..PARTY..")" end
 	
 	-- unit frames
 	if o == "TukuiConfigUIunitframes" then o = TukuiL.option_unitframes_unitframes end

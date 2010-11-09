@@ -1765,12 +1765,12 @@ oUF:RegisterStyle('Tukz', Shared)
 
 -- Player
 local player = oUF:Spawn('player', "oUF_Tukz_player")
-player:SetPoint("BOTTOMRIGHT", TukuiActionBarBackground, "TOPLEFT", TukuiDB.Scale(-15),TukuiDB.Scale(185))
+player:SetPoint("BOTTOMRIGHT", TukuiActionBarBackground, "TOPLEFT", TukuiDB.Scale(-15),TukuiDB.Scale(195))
 player:SetSize(player_width, player_height)
 
 -- Target
 local target = oUF:Spawn('target', "oUF_Tukz_target")
-target:SetPoint("BOTTOMLEFT", TukuiActionBarBackground, "TOPRIGHT", TukuiDB.Scale(15),TukuiDB.Scale(185))
+target:SetPoint("BOTTOMLEFT", TukuiActionBarBackground, "TOPRIGHT", TukuiDB.Scale(15),TukuiDB.Scale(195))
 target:SetSize(target_width, target_height)
 
 -- Focus

@@ -66,6 +66,7 @@ TukuiCF["raidframes"] = {
 	["maintank"] = true,                  -- enable maintank
 	["mainassist"] = true,                -- enable mainassist
 	["showboss"] = true,                   -- enable boss unit frames for PVELOL encounters.
+	["partypets"] = true,					-- enable party pets for the healer layout
 	["disableblizz"] = true,				-- fuck fuck fuckin fuck
 }
 
