@@ -1227,6 +1227,9 @@ function TukuiDB.UpdateThreat(self, event, unit)
 			if self.PowerFrame and self.PowerFrame.shadow then
 				self.PowerFrame.shadow:SetBackdropBorderColor(r,g,b,0.85)
 			end
+			if self.PFrame and self.PFrame.shadow then
+				self.PFrame.shadow:SetBackdropBorderColor(r, g, b, 1)
+			end
 		else
 			if self.HealthBorder then
 				self.HealthBorder:SetBackdropBorderColor(r, g, b, 1)
@@ -1241,6 +1244,9 @@ function TukuiDB.UpdateThreat(self, event, unit)
 			self.FrameBorder.shadow:SetBackdropBorderColor(0,0,0,0.75)
 			if self.PowerFrame and self.PowerFrame.shadow then
 				self.PowerFrame.shadow:SetBackdropBorderColor(0,0,0,0.75)
+			end
+			if self.PFrame and self.PFrame.shadow then
+				self.PFrame.shadow:SetBackdropBorderColor(0, 0, 0, 1)
 			end
 		else
 			self.FrameBorder:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))
