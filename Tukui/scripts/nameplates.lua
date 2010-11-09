@@ -466,7 +466,7 @@ CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
 		for frame in pairs(frames) do
 			UpdateThreat(frame, self.elapsed)
 		end
-
+		
 		self.elapsed = 0
 	else
 		self.elapsed = (self.elapsed or 0) + elapsed

@@ -108,12 +108,14 @@ do
 		TukuiCF["unitframes"]["aggro"] = nil                      -- show aggro on all raids layouts
 		TukuiCF["unitframes"]["classbar"] = nil
 		TukuiCF["unitframes"]["mendpet"] = nil                  -- enable maintank
+		TukuiCF["unitframes"]["poweroffset"] = nil
 		TukuiCF["auras"]["playtarbuffperrow"] = nil
 		TukuiCF["auras"]["smallbuffperrow"] = nil
-		
+
 		--kill an entire catagory
 		ALLOWED_GROUPS.castbar = nil
 		ALLOWED_GROUPS.arena = nil
+		ALLOWED_GROUPS.framesizes = nil
 	end
 	
 	if TukuiCF["castbar"].unitcastbar ~= true then
