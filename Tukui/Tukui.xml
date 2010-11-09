@@ -76,6 +76,7 @@
 	<Script file="datatext\guild.lua"/>
 	<Script file="datatext\loc.lua"/>
 	<Script file="datatext\time.lua"/>
+	<Script file="datatext\bags.lua"/>
 	
 	<Script file="actionbars\Hide.lua"/>
 	<Script file="actionbars\Bar1.lua"/>

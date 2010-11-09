@@ -160,13 +160,14 @@ TukuiCF["cooldown"] = {
 
 TukuiCF["datatext"] = {
 	["stat1"] = 1,						   -- Stat Based on your Role (Avoidance-Tank, AP-Melee, SP/HP-Caster)
-	["dur"] = 2,                           -- show your equipment durability on panels.
+	["dur"] = 0,                           -- show your equipment durability on panels.
 	["stat2"] = 3, 						   -- Stat Based on your Role (Armor-Tank, Crit-Melee, Crit-Caster)
 	["system"] = 4,                        -- show fps and ms on panels, and total addon memory in tooltip
 	["wowtime"] = 5,                       -- show time on panels
 	["gold"] = 6,                          -- show your current gold on panels
 	["guild"] = 7,                         -- show number on guildmate connected on panels
 	["friends"] = 8,                       -- show number of friends connected.
+	["bags"] = 2,							-- show ammount of bag space available
 	
 	["battleground"] = true,               -- enable 3 stats in battleground only that replace stat1,stat2,stat3.
 	["time24"] = false,                     -- set time to 24h format.
