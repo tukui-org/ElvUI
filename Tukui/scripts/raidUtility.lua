@@ -5,7 +5,7 @@ local panel_height = ((TukuiDB.Scale(5)*4) + (TukuiDB.Scale(20)*4))
 
 --Create main frame
 local RaidUtilityPanel = CreateFrame("Frame", "RaidUtilityPanel", UIParent)
-TukuiDB.CreatePanel(RaidUtilityPanel, TukuiDB.Scale(170), panel_height, "TOP", UIParent, "TOP", -300, panel_height + 2)
+TukuiDB.CreatePanel(RaidUtilityPanel, TukuiDB.Scale(170), panel_height, "TOP", UIParent, "TOP", -300, panel_height + 15)
 local r,g,b,_ = TukuiCF["media"].backdropcolor
 RaidUtilityPanel:SetBackdropColor(r,g,b,0.6)
 TukuiDB.CreateShadow(RaidUtilityPanel)
