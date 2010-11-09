@@ -3,7 +3,6 @@
 	["uiscale"] = 0.78,                    -- set your value (between 0.64 and 1) of your uiscale if autoscale is off
 	["multisampleprotect"] = true,         -- i don't recommend this because of shitty border but, voila!
 	["embedright"] = "NONE",				-- Addon to embed to the right frame ("Omen", "Recount", "Skada")
-	["recountscript"] = nil, 	--TEMP				--0 = off, 1 = shows recount when in-combat(in party or raid instance), 2 = shows recount when out of combat, hides when in-combat(in party or raid instance)
 	["classcolortheme"] = false,			--class colored theme for panels
 }
 
@@ -132,6 +131,10 @@ TukuiCF["actionbar"] = {
 		["splitbar"] = true,					-- split the third right actionbar into two rows of 3 on the left and right side of the main actionbar
 		["showgrid"] = true,                   -- show grid on empty button
 		["bottompetbar"] = false,				-- position petbar below the actionbars instead of the right side
+		["buttonsize"] = 27,					--size of action buttons
+		["buttonspacing"] = 4,					--spacing of action buttons
+		["petbuttonsize"] = 25,					--size of pet/stance buttons
+		["petbuttonspacing"] = 4,				--spacing of pet/stance buttons
 }
 
 TukuiCF["nameplate"] = {

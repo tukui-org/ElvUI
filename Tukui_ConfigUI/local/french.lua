@@ -4,7 +4,6 @@ if GetLocale() == "frFR" then
 	TukuiL.option_general_uiscale = "Echelle automatique de l'UI" --"Auto UI Scale"
 	TukuiL.option_general_multisample = "Protection multicouche (bordure propre de 1px)" --"Multisample protection (clean 1px border)"
 	TukuiL.option_general_customuiscale = "Echelle de l'UI (si l'échelle automatique est désactivée)" --"UI Scale (if auto-scale is disabled)"
-	TukuiL.option_general_recountscript = "Montrer Recount quand (0-jamais, 1-en combat, 2- hors combat)" --"Recount Show When (0-off, 1-combat, 2-nocombat)"
 	TukuiL.option_general_embedright = "Addon placé dans le panneau de discussion droit (Recount, Omen, Skada)" --"Addon to embed to right chat panel (Recount, Omen, Skada)"
 	TukuiL.option_general_classtheme = "Bordure de couleur de classe." --"Color border colors to your class"
  

@@ -250,33 +250,6 @@ RoleUpdater:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
 RoleUpdater:SetScript("OnEvent", CheckRole)
 CheckRole()
 
-if IsAddOnLoaded("Recount") then
-	if (TukuiCF["general"].recountscript == 1 or TukuiCF["general"].recountscript == 2) and IsAddOnLoaded("Recount") then
-		local recounttoggler = CreateFrame("Frame", nil, UIParent)
-		local function OnEvent()
-		local inInstance, instanceType = IsInInstance()
-			if inInstance and (instanceType == "raid" or instanceType == "party") then
-					if TukuiCF["general"].recountscript == 1 then
-						if InCombatLockdown() then
-							Recount_MainWindow:Show()
-						end
-					elseif TukuiCF["general"].recountscript == 2 then
-						if InCombatLockdown() then
-							Recount_MainWindow:Hide()
-						else
-							Recount_MainWindow:Show()
-						end				
-					end
-			end
-		end
-		recounttoggler:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-		recounttoggler:RegisterEvent("PLAYER_ENTERING_WORLD")
-		recounttoggler:RegisterEvent("PLAYER_REGEN_ENABLED")
-		recounttoggler:RegisterEvent("PLAYER_REGEN_DISABLED")
-		recounttoggler:SetScript("OnEvent", OnEvent)
-	end
-end
-
 ------------------------------------------------------------------------
 --	ActionBar Functions
 ------------------------------------------------------------------------

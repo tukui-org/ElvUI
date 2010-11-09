@@ -32,7 +32,6 @@ local function Local(o)
 	if o == "TukuiConfigUIgeneraloverridelowtohigh" then o = TukuiL.option_general_override end
 	if o == "TukuiConfigUIgeneralmultisampleprotect" then o = TukuiL.option_general_multisample end
 	if o == "TukuiConfigUIgeneraluiscale" then o = TukuiL.option_general_customuiscale end
-	if o == "TukuiConfigUIgeneralrecountscript" then o = TukuiL.option_general_recountscript end
 	if o == "TukuiConfigUIgeneralembedright" then o = TukuiL.option_general_embedright end
 	if o == "TukuiConfigUIgeneralclasscolortheme" then o = TukuiL.option_general_classtheme end
 	

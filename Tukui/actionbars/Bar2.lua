@@ -14,7 +14,7 @@ for i=1, 12 do
 	b:ClearAllPoints()
 	if i == 1 then
 		if TukuiCF.actionbar.bottomrows == 2 then
-			b:SetPoint("BOTTOM", ActionButton1, "TOP", 0, TukuiDB.Scale(4))
+			b:SetPoint("BOTTOM", ActionButton1, "TOP", 0, TukuiDB.buttonspacing)
 		end
 	else
 		b:SetPoint("LEFT", b2, "RIGHT", TukuiDB.buttonspacing, 0)

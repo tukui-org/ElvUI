@@ -13,7 +13,7 @@ for i= 1, 12 do
 	local b2 = _G["MultiBarRightButton"..i-1]
 	b:ClearAllPoints()
 	if i == 1 then
-		b:SetPoint("TOPRIGHT", TukuiActionBarBackgroundRight, "TOPRIGHT", TukuiDB.Scale(-4), TukuiDB.Scale(-4))
+		b:SetPoint("TOPRIGHT", TukuiActionBarBackgroundRight, "TOPRIGHT", -TukuiDB.buttonspacing, -TukuiDB.buttonspacing)
 	else
 		b:SetPoint("TOP", b2, "BOTTOM", 0, -TukuiDB.buttonspacing)
 	end	

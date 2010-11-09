@@ -4,7 +4,6 @@
 	TukuiL.option_general_uiscale = "Escala automática de la interfaz"
 	TukuiL.option_general_multisample = "Protección frente al multimuestreo (borde de 1px limpio)"
 	TukuiL.option_general_customuiscale = "Escala de la interfaz (si la escala automática está desactivada)"
-	TukuiL.option_general_recountscript = "Mostrar Recount cuando (0-nunca, 1-combate, 2-sin combate)"
 	TukuiL.option_general_embedright = "Addon que se ajustará en el panel de chat derecho (Recount, Omen, Skada)"
 	TukuiL.option_general_classtheme = "Colorear los bordes del color de tu clase"
  

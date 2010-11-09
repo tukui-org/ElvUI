@@ -34,12 +34,12 @@ bar:SetScript("OnEvent", function(self, event, ...)
 			button:SetFrameStrata("MEDIUM")
 			button:SetSize(TukuiDB.petbuttonsize, TukuiDB.petbuttonsize)
 			if i == 1 then
-				button:SetPoint("TOPLEFT", TukuiDB.buttonspacing, -TukuiDB.buttonspacing)
+				button:SetPoint("TOPLEFT", TukuiDB.petbuttonspacing, -TukuiDB.petbuttonspacing)
 			else
 				if TukuiCF["actionbar"].bottompetbar ~= true then
-					button:SetPoint("TOP", _G["PetActionButton"..(i - 1)], "BOTTOM", 0, -TukuiDB.buttonspacing)
+					button:SetPoint("TOP", _G["PetActionButton"..(i - 1)], "BOTTOM", 0, -TukuiDB.petbuttonspacing)
 				else
-					button:SetPoint("LEFT", _G["PetActionButton"..(i - 1)], "RIGHT", TukuiDB.buttonspacing, 0)
+					button:SetPoint("LEFT", _G["PetActionButton"..(i - 1)], "RIGHT", TukuiDB.petbuttonspacing, 0)
 				end	
 			end
 			button:Show()

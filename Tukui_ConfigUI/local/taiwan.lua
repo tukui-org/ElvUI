@@ -4,7 +4,6 @@
 	TukuiL.option_general_uiscale = "自動調整UI比例"
 	TukuiL.option_general_multisample = "多重採樣保護"
 	TukuiL.option_general_customuiscale = " UI比例 (當自動調整關閉時)"
-	TukuiL.option_general_recountscript = "顯示Recount設定(0-關閉, 1-戰鬥時顯示, 2-非戰鬥時顯示)"
 	TukuiL.option_general_embedright = "將插件綁定於右邊對話框架(Recount, Omen, Skada)"
 	TukuiL.option_general_classtheme = "框架邊緣使用職業顏色"
 	 

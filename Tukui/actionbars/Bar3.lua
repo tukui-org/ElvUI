@@ -14,7 +14,7 @@ for i= 1, 12 do
 	b:ClearAllPoints()
 	if TukuiCF["actionbar"].splitbar ~= true then
 		if i == 1 then
-			b:SetPoint("TOP", TukuiActionBarBackgroundRight, "TOP", 0, TukuiDB.Scale(-4))
+			b:SetPoint("TOP", TukuiActionBarBackgroundRight, "TOP", 0, -TukuiDB.buttonspacing)
 		else
 			b:SetPoint("TOP", b2, "BOTTOM", 0, -TukuiDB.buttonspacing)
 		end	

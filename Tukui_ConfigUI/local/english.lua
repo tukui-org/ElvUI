@@ -4,7 +4,6 @@ TukuiL.option_general = "General"
 TukuiL.option_general_uiscale = "Auto UI Scale"
 TukuiL.option_general_multisample = "Multisample protection (clean 1px border)"
 TukuiL.option_general_customuiscale = "UI Scale (if auto-scale is disabled)"
-TukuiL.option_general_recountscript = "Recount Show When (0-off, 1-combat, 2-nocombat)"
 TukuiL.option_general_embedright = "Addon to embed to right chat panel (Recount, Omen, Skada)"
 TukuiL.option_general_classtheme = "Color border colors to your class"
 

@@ -4,7 +4,6 @@
 	TukuiL.option_general_uiscale = "Автоматически масштабировать интерфейс"
 	TukuiL.option_general_multisample = "Мультисемплинг (ровные края шириной 1 пиксель)"
 	TukuiL.option_general_customuiscale = "Масштаб интерфейса (если автомасштабирование отключено)"
-	TukuiL.option_general_recountscript = "Показывать (0-выкл, 1-в бою, 2-вне боя)"
 	TukuiL.option_general_embedright = "Аддон правой панели(Recount, Omen, Skada)"
 	TukuiL.option_general_classtheme = "Окрасить края рамок в соответствии с Вашим классом"
 

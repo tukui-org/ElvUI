@@ -4,7 +4,6 @@
 	TukuiL.option_general_uiscale = "Automatische Interface Skalierung"
 	TukuiL.option_general_multisample = "Multisample Schutz (Saubere 1px Ränder)"
 	TukuiL.option_general_customuiscale = "Interface Skalierung (falls Automatische Interface Skalierung deaktiviert ist)"
-	TukuiL.option_general_recountscript = "Recount anzeigen (0-aus, 1-Kampf, 2-außerhalb des Kampfes)"
 	TukuiL.option_general_embedright = "Addon in den rechten unterem Chat einfügen (Recount, Omen, Skada)"
 	TukuiL.option_general_classtheme = "Rahmenfarbe nach Klasse färben"
  

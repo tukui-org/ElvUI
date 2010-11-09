@@ -14,9 +14,9 @@ for i=1, 12 do
 	b:ClearAllPoints()
 	if i == 1 then
 		if TukuiCF.actionbar.rightbars > 1 then
-			b:SetPoint("TOPLEFT", TukuiActionBarBackgroundRight, "TOPLEFT", TukuiDB.Scale(4), TukuiDB.Scale(-4))
+			b:SetPoint("TOPLEFT", TukuiActionBarBackgroundRight, "TOPLEFT", TukuiDB.buttonspacing, -TukuiDB.buttonspacing)
 		else
-			b:SetPoint("BOTTOM", ActionButton1, "TOP", 0, TukuiDB.Scale(4))
+			b:SetPoint("BOTTOM", ActionButton1, "TOP", 0, TukuiDB.buttonspacing)
 		end
 	else
 		if TukuiCF.actionbar.rightbars > 1 then
