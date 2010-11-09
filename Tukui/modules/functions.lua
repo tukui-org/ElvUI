@@ -134,27 +134,48 @@ end
 
 --Set Datatext Postitions
 function TukuiDB.PP(p, obj)
-	local x = TukuiDB.Scale(((string.match(GetCVar("gxResolution"), "(%d+)x%d+") / 3) / 3))
-	if p == 1 then
+	if TukuiDB.lowversion == true then
+		local x = TukuiDB.Scale(((string.match(GetCVar("gxResolution"), "(%d+)x%d+") / 3) / 3))
 		obj:SetHeight(TukuiBottomPanel:GetHeight())
-		obj:SetPoint("BOTTOM", UIParent, "BOTTOMLEFT", (x*p)-x/1.6, -TukuiDB.mult)
-	elseif p == 2 then
+		if p == 1 then
+			obj:SetPoint("BOTTOM", UIParent, "BOTTOMLEFT", (x*p)-x/1.6, -TukuiDB.mult)
+		elseif p == 2 then
+			obj:SetPoint("BOTTOM", UIParent, "BOTTOMLEFT", (x*p)-x/1.2, -TukuiDB.mult)
+		elseif p == 3 then
+			obj:SetPoint("BOTTOM", UIParent, "BOTTOMLEFT", (x*p)-x, -TukuiDB.mult)
+		elseif p == 4 then
+			local p = 6 --Swap these so its like how its always been..
+			obj:SetPoint("BOTTOM", UIParent,"BOTTOMRIGHT", -(x*(p-3))+x, -TukuiDB.mult)
+		elseif p == 5 then
+			obj:SetPoint("BOTTOM", UIParent,"BOTTOMRIGHT", -(x*(p-3))+x/1.3, -TukuiDB.mult)
+		elseif p == 6 then
+			local p = 4 --Swap these so its like how its always been..
+			obj:SetPoint("BOTTOM", UIParent,"BOTTOMRIGHT", -(x*(p-3))+x/1.6, -TukuiDB.mult)
+		end
+	else
+		local x = TukuiDB.Scale(((string.match(GetCVar("gxResolution"), "(%d+)x%d+") / 3) / 3.2))
 		obj:SetHeight(TukuiBottomPanel:GetHeight())
-		obj:SetPoint("BOTTOM", UIParent, "BOTTOMLEFT", (x*p)-x/1.3, -TukuiDB.mult)
-	elseif p == 3 then
-		obj:SetHeight(TukuiBottomPanel:GetHeight())
-		obj:SetPoint("BOTTOM", UIParent, "BOTTOMLEFT", (x*p)-x, -TukuiDB.mult)
-	elseif p == 4 then
-		obj:SetHeight(TukuiBottomPanel:GetHeight())
-		local p = 6 --Swap these so its like how its always been..
-		obj:SetPoint("BOTTOM", UIParent,"BOTTOMRIGHT", -(x*(p-3))+x, -TukuiDB.mult)
-	elseif p == 5 then
-		obj:SetHeight(TukuiBottomPanel:GetHeight())
-		obj:SetPoint("BOTTOM", UIParent,"BOTTOMRIGHT", -(x*(p-3))+x/1.3, -TukuiDB.mult)
-	elseif p == 6 then
-		obj:SetHeight(TukuiBottomPanel:GetHeight())
-		local p = 4 --Swap these so its like how its always been..
-		obj:SetPoint("BOTTOM", UIParent,"BOTTOMRIGHT", -(x*(p-3))+x/1.6, -TukuiDB.mult)
+		if p == 1 then
+			obj:SetPoint("BOTTOM", UIParent, "BOTTOMLEFT", (x*p)-x/1.6, -TukuiDB.mult)
+		elseif p == 2 then
+			obj:SetPoint("BOTTOM", UIParent, "BOTTOMLEFT", (x*p)-x/1.1, -TukuiDB.mult)
+		elseif p == 3 then
+			obj:SetPoint("BOTTOM", UIParent, "BOTTOMLEFT", (x*p)-x/0.9, -TukuiDB.mult)
+		elseif p == 4 then
+			local p = 6 --Swap these so its like how its always been..
+			obj:SetPoint("BOTTOM", UIParent,"BOTTOMRIGHT", -(x*(p-3))+x/0.8, -TukuiDB.mult)
+		elseif p == 5 then
+			obj:SetPoint("BOTTOM", UIParent,"BOTTOMRIGHT", -(x*(p-3))+x/1.1, -TukuiDB.mult)
+		elseif p == 6 then
+			local p = 4 --Swap these so its like how its always been..
+			obj:SetPoint("BOTTOM", UIParent,"BOTTOMRIGHT", -(x*(p-3))+x/1.6, -TukuiDB.mult)
+		elseif p == 9 then
+			local p = 10
+			obj:SetPoint("BOTTOM", UIParent,"BOTTOMRIGHT", -(x*(p-3))-x/20, -TukuiDB.mult)
+		elseif p == 10 then
+			local p = 9
+			obj:SetPoint("BOTTOM", UIParent, "BOTTOMLEFT", (x*p)-x/0.53, -TukuiDB.mult)
+		end	
 	end
 	
 	if TukuiMinimap then
