@@ -109,6 +109,7 @@ local function Local(o)
 	if o == "TukuiConfigUIdatatexthps_text" then o = TukuiL.option_datatext_hps end
 	if o == "TukuiConfigUIdatatextdps_text" then o = TukuiL.option_datatext_dps end
 	if o == "TukuiConfigUIdatatexthaste" then o = SPELL_HASTE_ABBR end
+	if o == "TukuiConfigUIdatatextcurrency" then o = CURRENCY end
 	
 	--auras
 	if o == "TukuiConfigUIauras" then o = TukuiL.option_auras end
