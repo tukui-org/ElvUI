@@ -79,6 +79,7 @@
 	<Script file="datatext\bags.lua"/>
 	<Script file="datatext\dps.lua"/>
 	<Script file="datatext\hps.lua"/>
+	<Script file="datatext\haste.lua"/>
 	
 	<Script file="actionbars\Hide.lua"/>
 	<Script file="actionbars\Bar1.lua"/>

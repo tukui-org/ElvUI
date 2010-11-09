@@ -170,6 +170,7 @@ TukuiCF["datatext"] = {
 	["bags"] = 0,							-- show ammount of bag space available
 	["dps_text"] = 0,						-- show current dps
 	["hps_text"] = 0,						-- show current hps
+	["haste"] = 0,							-- show current haste
 	
 	["battleground"] = true,               -- enable 3 stats in battleground only that replace stat1,stat2,stat3.
 	["time24"] = false,                     -- set time to 24h format.
