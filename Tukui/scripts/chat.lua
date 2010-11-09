@@ -251,6 +251,41 @@ TukuiChat:SetScript("OnEvent", function(self, event, ...)
 			self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 			SetupChatPosAndFont(self)
 	end
+	
+	for i = 1, NUM_CHAT_WINDOWS do
+		local chat = _G[format("ChatFrame%s", i)]
+		local id = chat:GetID()
+		local point = GetChatWindowSavedPosition(id)
+		local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
+		local tab = _G[chat:GetName().."Tab"]
+		local button = _G[format("ButtonCF%d", i)]
+		if point == "BOTTOMRIGHT" and chat:IsShown() and docked == nil then
+			if TukuiCF["chat"].showbackdrop == true then
+				ChatRBG:SetAlpha(1)
+			end
+			TukuiDB.ChatRightShown = true
+			if not InCombatLockdown() then
+				SetChatWindowSavedDimensions(id, TukuiDB.Scale(TukuiCF["chat"].chatwidth + -4), TukuiDB.Scale(TukuiCF["chat"].chatheight))
+				chat:SetWidth(TukuiCF["chat"].chatwidth + -4)
+				chat:SetHeight(TukuiCF["chat"].chatheight)
+				chat:ClearAllPoints()
+				chat:SetPoint("BOTTOMLEFT", RDummyFrame, "BOTTOMLEFT", TukuiDB.Scale(2), TukuiDB.Scale(4))
+				button:ClearAllPoints()
+				button:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", 0, TukuiDB.Scale(3))
+				FCF_SavePositionAndDimensions(chat)
+			end
+			break
+		else
+			if TukuiCF["chat"].showbackdrop == true then
+				ChatRBG:SetAlpha(0)
+			end
+			if not InCombatLockdown() then
+				button:ClearAllPoints()
+				button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))				
+			end
+			TukuiDB.ChatRightShown = false
+		end
+	end
 end)
 
 -- Setup temp chat (BN, WHISPER) when needed.
