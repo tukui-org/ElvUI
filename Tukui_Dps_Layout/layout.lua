@@ -685,7 +685,7 @@ local function Shared(self, unit)
 		if TukuiCF["castbar"].unitcastbar == true then
 			local castbar = CreateFrame("StatusBar", self:GetName().."_Castbar", self)
 			if TukuiCF["castbar"].castermode == true then
-				castbar:SetWidth(TukuiActionBarBackground:GetWidth() - TukuiDB.Scale(2))
+				castbar:SetWidth(TukuiActionBarBackground:GetWidth() - TukuiDB.Scale(4))
 				castbar:SetPoint("BOTTOMRIGHT", TukuiActionBarBackground, "TOPRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(5))
 			else
 				castbar:SetWidth(original_width)
