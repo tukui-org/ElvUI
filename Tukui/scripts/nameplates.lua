@@ -177,7 +177,7 @@ local function UpdateObjects(frame)
 	
 	frame.hp:ClearAllPoints()
 	frame.hp:SetSize(hpWidth, hpHeight)	
-	frame.hp:SetPoint('CENTER', frame, 0, 10)
+	frame.hp:SetPoint('CENTER', frame, 0, -10)
 	frame.hp:GetStatusBarTexture():SetHorizTile(true)
 	
 	--Class Icons
