@@ -1,8 +1,8 @@
 -- BUTTON SIZES
-TukuiDB.buttonsize = TukuiDB.Scale(27)
-TukuiDB.buttonspacing = TukuiDB.Scale(4)
-TukuiDB.petbuttonsize = TukuiDB.Scale(25)
-TukuiDB.petbuttonspacing = TukuiDB.Scale(4)
+TukuiDB.buttonsize = TukuiDB.Scale(TukuiCF["actionbar"].buttonsize)
+TukuiDB.buttonspacing = TukuiDB.Scale(TukuiCF["actionbar"].buttonspacing)
+TukuiDB.petbuttonsize = TukuiDB.Scale(TukuiCF["actionbar"].petbuttonsize)
+TukuiDB.petbuttonspacing = TukuiDB.Scale(TukuiCF["actionbar"].petbuttonspacing)
 
 --BOTTOM FRAME (For Stats)
 local bottompanel = CreateFrame("Frame", "TukuiBottomPanel", UIParent)

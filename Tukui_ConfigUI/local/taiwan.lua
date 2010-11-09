@@ -208,7 +208,11 @@
 	TukuiL.option_actionbar_rn = "右方動作條數量 (1, 2 或 3)"
 	TukuiL.option_actionbar_splitbar = "啟用分割動作條"
 	TukuiL.option_actionbar_bottompetbar = "Position pet bar below the main actionbar, moves main actionbar up"
-
+	TukuiL.option_actionbar_buttonsize = "Size of the main action buttons"
+	TukuiL.option_actionbar_buttonspacing = "Spacing of the main action buttons"
+	TukuiL.option_actionbar_petbuttonsize = "Size of the pet/stance/totem action buttons"
+	TukuiL.option_actionbar_petbuttonspacing = "Spacing of the pet/stance/totem action buttons"
+	
 	-- arena
 	TukuiL.option_arena = "競技場"
 	TukuiL.option_arena_st = "競技場中啟用敵方法術追蹤"

@@ -207,6 +207,10 @@
 	TukuiL.option_actionbar_rn = "Anzahl der Aktionsleisten rechts (1, 2 oder 3)"
 	TukuiL.option_actionbar_splitbar = "Aktviert die geteilte Leiste um die untere Aktionsleiste"
 	TukuiL.option_actionbar_bottompetbar = "Position pet bar below the main actionbar, moves main actionbar up"
+	TukuiL.option_actionbar_buttonsize = "Size of the main action buttons"
+	TukuiL.option_actionbar_buttonspacing = "Spacing of the main action buttons"
+	TukuiL.option_actionbar_petbuttonsize = "Size of the pet/stance/totem action buttons"
+	TukuiL.option_actionbar_petbuttonspacing = "Spacing of the pet/stance/totem action buttons"
 	
 	-- arena
 	TukuiL.option_arena = "Arena"

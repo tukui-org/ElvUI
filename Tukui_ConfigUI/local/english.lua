@@ -207,7 +207,11 @@ TukuiL.option_actionbar_rbn2 = "Number of action bars on the bottom (1, 1.5, or 
 TukuiL.option_actionbar_rn = "Number of action bars on right (1, 2 or 3)"
 TukuiL.option_actionbar_splitbar = "Enable split actionbar"
 TukuiL.option_actionbar_bottompetbar = "Position pet bar below the main actionbar, moves main actionbar up"
-
+TukuiL.option_actionbar_buttonsize = "Size of the main action buttons"
+TukuiL.option_actionbar_buttonspacing = "Spacing of the main action buttons"
+TukuiL.option_actionbar_petbuttonsize = "Size of the pet/stance/totem action buttons"
+TukuiL.option_actionbar_petbuttonspacing = "Spacing of the pet/stance/totem action buttons"
+	
 -- arena
 TukuiL.option_arena = "Arena"
 TukuiL.option_arena_st = "Enable enemy spell tracker in arena"

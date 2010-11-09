@@ -205,6 +205,10 @@
 	TukuiL.option_actionbar_rn = "Número de barras de acción en la derecha (1, 2 o 3)"
 	TukuiL.option_actionbar_splitbar = "Activar las barras de acción partidas"
 	TukuiL.option_actionbar_bottompetbar = "Position pet bar below the main actionbar, moves main actionbar up"
+	TukuiL.option_actionbar_buttonsize = "Size of the main action buttons"
+	TukuiL.option_actionbar_buttonspacing = "Spacing of the main action buttons"
+	TukuiL.option_actionbar_petbuttonsize = "Size of the pet/stance/totem action buttons"
+	TukuiL.option_actionbar_petbuttonspacing = "Spacing of the pet/stance/totem action buttons"
 	
 	-- arena
 	TukuiL.option_arena = "Arena"
