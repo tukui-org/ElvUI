@@ -149,7 +149,7 @@
 	TukuiL.option_unitframes_classbar = "Aktiviere Klassenleiste (Totemleiste, Runenleiste, Heiligleiste, Seelensplitterleiste, Finsternisleiste)"
 	
 	-- frame sizes
-	TukuiL.option_framesizes = "UnitFrame Sizes"		
+	TukuiL.option_framesizes = "Einheitenfenstergröße"		
 	TukuiL.option_framesizes_playtarwidth = "Breite der Spieler/Ziel Einheitenfenster"
 	TukuiL.option_framesizes_playtarheight = "Höhe der Spieler/Ziel Einheitenfenster"
 	TukuiL.option_framesizes_smallwidth = "Breite der Ziel des Ziels/Fokus/Fokus Ziel/Spieler Begleiter Einheitenfenster"
@@ -206,7 +206,7 @@
 	TukuiL.option_actionbar_rbn2 = "Anzahl der Aktionsleisten unten (1, 1.5, oder 2)"
 	TukuiL.option_actionbar_rn = "Anzahl der Aktionsleisten rechts (1, 2 oder 3)"
 	TukuiL.option_actionbar_splitbar = "Aktviert die geteilte Leiste um die untere Aktionsleiste"
-	TukuiL.option_actionbar_bottompetbar = "Position pet bar below the main actionbar, moves main actionbar up"
+	TukuiL.option_actionbar_bottompetbar = "Setzt die Begleiterleiste unter die Aktionsleiste 1 und schiebt diese nach oben"
 	TukuiL.option_actionbar_buttonsize = "Size of the main action buttons"
 	TukuiL.option_actionbar_buttonspacing = "Spacing of the main action buttons"
 	TukuiL.option_actionbar_petbuttonsize = "Size of the pet/stance/totem action buttons"

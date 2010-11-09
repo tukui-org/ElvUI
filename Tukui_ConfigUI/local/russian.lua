@@ -149,7 +149,7 @@
 	TukuiL.option_unitframes_classbar = "Классовая полоса(Полоса тотемов, Полоса рун, Полоса силы света, Полоса осколков, Полоса затмения)"
 	
 	-- frame sizes
-	TukuiL.option_framesizes = "UnitFrame Sizes"		
+	TukuiL.option_framesizes = "Размеры фреймов"	
 	TukuiL.option_framesizes_playtarwidth = "Ширина фрейма Игрока/Цели"
 	TukuiL.option_framesizes_playtarheight = "Высота фрейма Игрока/Цели"
 	TukuiL.option_framesizes_smallwidth = "Ширина фрейма ЦелиЦели/Фокусу/ЦелиФокуса/Питомца"
@@ -171,7 +171,7 @@
 	TukuiL.option_tooltip_hidecombat = "Прятать подсказку в бою"
 	TukuiL.option_tooltip_hidebutton = "Отключить подсказку для кнопок панели действий"
 	TukuiL.option_tooltip_hideuf = "Отключить подсказку для юнитфреймов"
-	TukuiL.option_tooltip_cursor = "Enable cursor tooltip"
+	TukuiL.option_tooltip_cursor = "Включить подсказку под указателем"
 	TukuiL.option_tooltip_combatraid = "Прятать в бою только в рейде"
 	TukuiL.option_tooltip_colorreaction = "Всегда окрашивать рамку и полосу здоровья в зависимости от отношения"
 	TukuiL.option_tooltip_xOfs = "X-Отступ подсказки (-x = Лево, +x = Право)"
@@ -206,7 +206,7 @@
 	TukuiL.option_actionbar_rbn2 = "Количество панелей внизу (1, 1.5, или 2)"
 	TukuiL.option_actionbar_rn = "Количество панелей справа (1, 2 or 3)"
 	TukuiL.option_actionbar_splitbar = "Включить раздельную панель"
-	TukuiL.option_actionbar_bottompetbar = "Position pet bar below the main actionbar, moves main actionbar up"
+	TukuiL.option_actionbar_bottompetbar = "Переместить панель питомца под главную панель заклинаний"
 	TukuiL.option_actionbar_buttonsize = "Size of the main action buttons"
 	TukuiL.option_actionbar_buttonspacing = "Spacing of the main action buttons"
 	TukuiL.option_actionbar_petbuttonsize = "Size of the pet/stance/totem action buttons"
