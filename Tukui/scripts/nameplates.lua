@@ -137,6 +137,7 @@ local function UpdateThreat(frame, elapsed)
 			else
 				frame.healthbackdrop:SetBackdropBorderColor(1, 1, 1)
 			end
+			if frame.overlay:IsShown() then frame.overlay:Hide() end
 		else
 			--Not Targetted
 			frame.name:SetTextColor(1, 1, 1)
