@@ -264,10 +264,6 @@ TukuiOnLogon:SetScript("OnEvent", function(self, event)
 	if TukuiCF["arena"].unitframes == true then
 		SetCVar("showArenaEnemyFrames", 0)
 	end
-
-	--Attempt to fix spellbook taint
-	ToggleSpellBook("spell")
-	ToggleSpellBook("spell")
 	
 	print(tukuilocal.core_welcome2)
 end)
