@@ -134,7 +134,7 @@ if GetLocale() == "frFR" then
 	TukuiL.option_unitframes_smooth = "Activer l'effet smooth" --"Enable smooth bar"
 	TukuiL.option_unitframes_portrait = "Activer les portraits sur le joueur et la cible" --"Enable portraits on player and target"
 	TukuiL.option_unitframes_enable = "Activer les cadres d'unités de Tukui" --"Enable Tukui Unit Frames"
-	TukuiL.option_unitframes_enemypower = "Montrer la puissance sur les ennemis uniquement" --"Enable Power display on enemy only"
+	TukuiL.option_unitframes_enemypower = "Enable Power display on player only" --"Enable Power display on enemy only"
 	TukuiL.option_unitframes_raidaggro = "Activer l'affichage de l'aggro" --"Enable aggro display"
 	TukuiL.option_unitframes_symbol = "Montrer les symboles sur le groupe/raid" --"Show symbols on party/raid"
 	TukuiL.option_unitframes_threatbar = "Activer la barre de menace" --"Enable threat bar"

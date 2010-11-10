@@ -134,7 +134,7 @@
 	TukuiL.option_unitframes_smooth = "Сглаживать анимацию полос"
 	TukuiL.option_unitframes_portrait = "Включить портреты для игрока и цели"
 	TukuiL.option_unitframes_enable = "Включить фреймы Tukui"
-	TukuiL.option_unitframes_enemypower = "Отображение полосы энегрии только на враждебных целях"
+	TukuiL.option_unitframes_enemypower = "Enable Power display on player only"
 	TukuiL.option_unitframes_raidaggro = "Включить отображение аггро"
 	TukuiL.option_unitframes_symbol = "Отображать метки на рейде/группе"
 	TukuiL.option_unitframes_threatbar = "Включить панель угрозы"

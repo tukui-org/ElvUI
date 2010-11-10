@@ -134,7 +134,7 @@
 	TukuiL.option_unitframes_smooth = "Enable smooth bar"
 	TukuiL.option_unitframes_portrait = "Enable portraits on player and target"
 	TukuiL.option_unitframes_enable = "Enable Tukui Unit Frames"
-	TukuiL.option_unitframes_enemypower = "Enable Power display on enemy only"
+	TukuiL.option_unitframes_enemypower = "Enable Power display on player only"
 	TukuiL.option_unitframes_raidaggro = "Enable aggro display"
 	TukuiL.option_unitframes_symbol = "Show symbols on party/raid"
 	TukuiL.option_unitframes_threatbar = "Enable threat bar"

@@ -132,7 +132,7 @@
 	TukuiL.option_unitframes_smooth = "Activar barras suaves"
 	TukuiL.option_unitframes_portrait = "Activar retratos en los marcos de jugador y objetivo"
 	TukuiL.option_unitframes_enable = "Activar los marcos de unidades Tukui"
-	TukuiL.option_unitframes_enemypower = "Activar la barra de poder sólo en el objetivo"
+	TukuiL.option_unitframes_enemypower = "Enable Power display on player only"
 	TukuiL.option_unitframes_raidaggro = "Mostrar alerta de amenaza"
 	TukuiL.option_unitframes_symbol = "Mostrar símbolos en banda/grupo"
 	TukuiL.option_unitframes_threatbar = "Activar barra de amenaza"

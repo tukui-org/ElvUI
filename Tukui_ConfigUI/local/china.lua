@@ -136,7 +136,7 @@
 	TukuiL.option_unitframes_smooth = "开启smooth bar插件"
 	TukuiL.option_unitframes_portrait = "开启玩家及目标头像"
 	TukuiL.option_unitframes_enable = "开启Tukui单位窗口"
-	TukuiL.option_unitframes_enemypower = "开启只于敌对玩家显示目标能量值"
+	TukuiL.option_unitframes_enemypower = "Enable Power display on player only"
 	TukuiL.option_unitframes_raidaggro = "开启仇恨显示"
 	TukuiL.option_unitframes_symbol = "显示队伍/团队标计"
 	TukuiL.option_unitframes_threatbar = "开启仇恨条"

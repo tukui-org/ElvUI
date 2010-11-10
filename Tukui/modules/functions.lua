@@ -693,7 +693,7 @@ end
 
 TukuiDB.PostNamePosition = function(self)
 	self.Name:ClearAllPoints()
-	if (self.Power.value:GetText() and UnitIsEnemy("player", "target") and TukuiCF["unitframes"].targetpowerpvponly == true) or (self.Power.value:GetText() and TukuiCF["unitframes"].targetpowerpvponly == false) then
+	if (self.Power.value:GetText() and UnitIsPlayer("target") and TukuiCF["unitframes"].targetpowerplayeronly == true) or (self.Power.value:GetText() and TukuiCF["unitframes"].targetpowerplayeronly == false) then
 		self.Name:SetPoint("CENTER", self.health, "CENTER", 0, 1)
 	else
 		self.Power.value:SetAlpha(0)

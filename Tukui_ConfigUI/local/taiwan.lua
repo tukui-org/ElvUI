@@ -135,7 +135,7 @@
 	TukuiL.option_unitframes_smooth = "啟用smooth bar"
 	TukuiL.option_unitframes_portrait = "啟用玩家及目標動態頭像"
 	TukuiL.option_unitframes_enable = "啟用TUKUI團隊框架模組"
-	TukuiL.option_unitframes_enemypower = "啟用只對敵對玩家顯示目標能量值"
+	TukuiL.option_unitframes_enemypower = "Enable Power display on player only"
 	TukuiL.option_unitframes_raidaggro = "啟用仇恨顯示"
 	TukuiL.option_unitframes_symbol = "顯示隊伍/團隊標記"
 	TukuiL.option_unitframes_threatbar = "啟用仇恨條"

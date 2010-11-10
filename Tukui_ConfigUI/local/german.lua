@@ -134,7 +134,7 @@
 	TukuiL.option_unitframes_smooth = "Aktiviere flüssigere Leistenänderungen"
 	TukuiL.option_unitframes_portrait = "Zeige Portraits für Spieler und Ziel an"
 	TukuiL.option_unitframes_enable = "Aktiviere Tukui Einheitenfenster"
-	TukuiL.option_unitframes_enemypower = "Aktiviere Manaanzeige nur bei Gegnern"
+	TukuiL.option_unitframes_enemypower = "Enable Power display on player only"
 	TukuiL.option_unitframes_raidaggro = "Aktiviere Bedrohungsanzeige auf Raidframes"
 	TukuiL.option_unitframes_symbol = "Zeige Symbole auf Gruppen und Raidframes"
 	TukuiL.option_unitframes_threatbar = "Aktiviere Bedrohungsleiste"

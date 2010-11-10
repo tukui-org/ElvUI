@@ -93,7 +93,7 @@ do
 	if TukuiCF["unitframes"].enable ~= true then
 		TukuiCF["unitframes"]["fontsize"] = nil						-- default font height for unitframes
 		TukuiCF["unitframes"]["lowThreshold"] = nil                 -- global low threshold for low mana warning.
-		TukuiCF["unitframes"]["targetpowerpvponly"] = nil         -- enable power text on pvp target only
+		TukuiCF["unitframes"]["targetpowerplayeronly"] = nil         -- enable power text on pvp target only
 		TukuiCF["unitframes"]["showfocustarget"] = nil           -- show focus's target
 		TukuiCF["unitframes"]["showtotalhpmp"] = nil             -- change the display of info text on player and target with XXXX/Total.
 		TukuiCF["unitframes"]["showsmooth"] = nil                 -- enable smooth bar

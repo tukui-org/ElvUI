@@ -167,7 +167,7 @@ local function Local(o)
 	if o == "TukuiConfigUIunitframesshowsmooth" then o = TukuiL.option_unitframes_smooth end
 	if o == "TukuiConfigUIunitframescharportrait" then o = TukuiL.option_unitframes_portrait end
 	if o == "TukuiConfigUIunitframesenable" then o = TukuiL.option_unitframes_enable end
-	if o == "TukuiConfigUIunitframestargetpowerpvponly" then o = TukuiL.option_unitframes_enemypower end
+	if o == "TukuiConfigUIunitframestargetpowerplayeronly" then o = TukuiL.option_unitframes_enemypower end
 	if o == "TukuiConfigUIunitframesaggro" then o = TukuiL.option_unitframes_raidaggro end
 	if o == "TukuiConfigUIunitframesshowsymbols" then o = TukuiL.option_unitframes_symbol end
 	if o == "TukuiConfigUIunitframesshowthreat" then o = TukuiL.option_unitframes_threatbar end
