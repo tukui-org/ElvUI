@@ -147,6 +147,7 @@
 	TukuiL.option_unitframes_fontsize = "Schriftgröße"
 	TukuiL.option_unitframes_unitframes_poweroffset = "Versetzung der Power-Leiste zum Einheitenfenster (0 für keine Versetzung)"
 	TukuiL.option_unitframes_classbar = "Aktiviere Klassenleiste (Totemleiste, Runenleiste, Heiligleiste, Seelensplitterleiste, Finsternisleiste)"
+		TukuiL.option_unitframes_healthbackdropcolor = "Backdrop color of health on all unitframes"
 	
 	-- frame sizes
 	TukuiL.option_framesizes = "Einheitenfenstergröße"		

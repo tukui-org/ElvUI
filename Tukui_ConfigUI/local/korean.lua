@@ -147,6 +147,7 @@
 	TukuiL.option_unitframes_fontsize = "Font Size"
 	TukuiL.option_unitframes_unitframes_poweroffset = "파워바 오프셋 (0은 오프셋 없음)"
 	TukuiL.option_unitframes_classbar = "직업 바 활성화 (토템바, 룬바, 신성력바, 영혼석바, 일월식바)"
+		TukuiL.option_unitframes_healthbackdropcolor = "Backdrop color of health on all unitframes"
 	
 	-- frame sizes
 	TukuiL.option_framesizes = "UnitFrame Sizes"		

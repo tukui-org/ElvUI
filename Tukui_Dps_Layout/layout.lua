@@ -102,7 +102,6 @@ local function Shared(self, unit)
 		-- Health Bar Background
 		local healthBG = health:CreateTexture(nil, 'BORDER')
 		healthBG:SetAllPoints()
-		healthBG:SetTexture(.1, .1, .1)
 		health.value = TukuiDB.SetFontString(health, font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
 		health.value:SetPoint("RIGHT", health, "RIGHT", TukuiDB.Scale(-4), TukuiDB.Scale(1))
 		health.PostUpdate = TukuiDB.PostUpdateHealth
@@ -120,10 +119,12 @@ local function Shared(self, unit)
 			health.colorTapping = false
 			health.colorClass = false
 			health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor))	
+			healthBG:SetTexture(unpack(TukuiCF["unitframes"].healthbackdropcolor))
 		else
 			health.colorTapping = true	
 			health.colorClass = true
-			health.colorReaction = true			
+			health.colorReaction = true		
+			health.bg.multiplier = 0.3
 		end
 		health.colorDisconnected = false
 
@@ -826,7 +827,6 @@ local function Shared(self, unit)
 		-- Health Bar Background
 		local healthBG = health:CreateTexture(nil, 'BORDER')
 		healthBG:SetAllPoints()
-		healthBG:SetTexture(.1, .1, .1)
 		health.value = TukuiDB.SetFontString(health, font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
 		health.value:SetPoint("RIGHT", health, "RIGHT", TukuiDB.Scale(-4), TukuiDB.Scale(1))
 		health.PostUpdate = TukuiDB.PostUpdateHealth
@@ -844,10 +844,12 @@ local function Shared(self, unit)
 			health.colorTapping = false
 			health.colorClass = false
 			health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor))	
+			healthBG:SetTexture(unpack(TukuiCF["unitframes"].healthbackdropcolor))
 		else
 			health.colorTapping = true	
 			health.colorClass = true
-			health.colorReaction = true			
+			health.colorReaction = true		
+			health.bg.multiplier = 0.3				
 		end
 		health.colorDisconnected = false
 		
@@ -1156,7 +1158,6 @@ local function Shared(self, unit)
 		
 		local healthBG = health:CreateTexture(nil, 'BORDER')
 		healthBG:SetAllPoints()
-		healthBG:SetTexture(.1, .1, .1)
 		
 		self.Health = health
 		self.Health.bg = healthBG
@@ -1180,13 +1181,14 @@ local function Shared(self, unit)
 			health.colorTapping = false
 			health.colorClass = false
 			health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor))	
+			healthBG:SetTexture(unpack(TukuiCF["unitframes"].healthbackdropcolor))
 		else
 			health.colorTapping = true	
 			health.colorClass = true
-			health.colorReaction = true			
+			health.colorReaction = true		
+			healthBG.multiplier = 0.3
 		end
 		health.colorDisconnected = false
-		healthBG.multiplier = 0.3
 		
 		-- power frame
 		local PowerFrame = CreateFrame("Frame", nil, self)
@@ -1424,7 +1426,6 @@ local function Shared(self, unit)
 		
 		local healthBG = health:CreateTexture(nil, 'BORDER')
 		healthBG:SetAllPoints()
-		healthBG:SetTexture(.1, .1, .1)
 
 		health.value = TukuiDB.SetFontString(health, font1,TukuiCF["unitframes"].fontsize, "OUTLINE")
 		health.value:SetPoint("LEFT", TukuiDB.Scale(2), TukuiDB.Scale(1))
@@ -1442,13 +1443,14 @@ local function Shared(self, unit)
 			health.colorTapping = false
 			health.colorClass = false
 			health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor))	
+			healthBG:SetTexture(unpack(TukuiCF["unitframes"].healthbackdropcolor))
 		else
 			health.colorTapping = true	
 			health.colorClass = true
-			health.colorReaction = true			
+			health.colorReaction = true		
+			healthBG.multiplier = 0.3
 		end
 		health.colorDisconnected = false
-		healthBG.multiplier = 0.3
 		
 		local FrameBorder = CreateFrame("Frame", nil, self)
 		FrameBorder:SetPoint("TOPLEFT", self.Health, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
@@ -1663,7 +1665,6 @@ local function Shared(self, unit)
 		
 		local healthBG = health:CreateTexture(nil, 'BORDER')
 		healthBG:SetAllPoints()
-		healthBG:SetTexture(.1, .1, .1)
 				
 		self.Health = health
 		self.Health.bg = healthBG
@@ -1677,13 +1678,14 @@ local function Shared(self, unit)
 			health.colorTapping = false
 			health.colorClass = false
 			health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor))	
+			healthBG:SetTexture(unpack(TukuiCF["unitframes"].healthbackdropcolor))
 		else
 			health.colorTapping = true	
 			health.colorClass = true
-			health.colorReaction = true			
+			health.colorReaction = true	
+			healthBG.multiplier = 0.3
 		end
 		health.colorDisconnected = false
-		healthBG.multiplier = 0.3
 		
 		-- Border for HealthBar
 		local FrameBorder = CreateFrame("Frame", nil, health)

@@ -23,8 +23,6 @@ local function Shared(self, unit)
 	
 	health.bg = health:CreateTexture(nil, 'BORDER')
 	health.bg:SetAllPoints(health)
-	health.bg:SetTexture(TukuiCF["media"].normTex)
-	health.bg:SetTexture(0.1, 0.1, 0.1)
 	
 	self.Health.bg = health.bg
 	
@@ -41,12 +39,13 @@ local function Shared(self, unit)
 	if TukuiCF.unitframes.classcolor ~= true then
 		health.colorClass = false
 		health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor))
+		health.bg:SetTexture(unpack(TukuiCF["unitframes"].healthbackdropcolor))
 	else
 		health.colorClass = true
-		health.colorReaction = true			
+		health.colorReaction = true	
+		health.bg.multiplier = 0.3		
 	end
-	health.colorDisconnected = false
-	health.bg.multiplier = 0.3	
+	health.colorDisconnected = false	
 	
 	-- border for all frames
 	local FrameBorder = CreateFrame("Frame", nil, self)

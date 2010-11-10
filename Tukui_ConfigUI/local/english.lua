@@ -147,6 +147,7 @@ TukuiL.option_unitframes_mendpet = "Show Mend Pet bar on PetFrame (DPS LAYOUT)"
 TukuiL.option_unitframes_fontsize = "Font Size"
 TukuiL.option_unitframes_unitframes_poweroffset = "Offset of the powerbar on the frame (0 for no offset)"
 TukuiL.option_unitframes_classbar = "Enable Classbar (TotemBar, RuneBar, HolyBar, SoulshardBar, EclipseBar)"
+TukuiL.option_unitframes_healthbackdropcolor = "Backdrop color of health on all unitframes"
 
 -- frame sizes
 TukuiL.option_framesizes = "UnitFrame Sizes"

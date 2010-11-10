@@ -180,7 +180,8 @@ local function Local(o)
 	if o == "TukuiConfigUIunitframesmendpet" then o = TukuiL.option_unitframes_mendpet end
 	if o == "TukuiConfigUIunitframespoweroffset" then o = TukuiL.option_unitframes_unitframes_poweroffset end
 	if o == "TukuiConfigUIunitframesclassbar" then o = TukuiL.option_unitframes_classbar end
-
+	if o == "TukuiConfigUIunitframeshealthbackdropcolor" then o = TukuiL.option_unitframes_healthbackdropcolor end
+	
 	-- frame sizes
 	if o == "TukuiConfigUIframesizes" then o = TukuiL.option_framesizes end
 	if o == "TukuiConfigUIframesizesplaytarwidth" then o = TukuiL.option_framesizes_playtarwidth end

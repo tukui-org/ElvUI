@@ -29,7 +29,6 @@ local function Shared(self, unit)
 	health.bg = health:CreateTexture(nil, 'BORDER')
 	health.bg:SetAllPoints(health)
 	health.bg:SetTexture(TukuiCF["media"].normTex)
-	health.bg:SetTexture(0.1, 0.1, 0.1)
 	
 	self.Health.bg = health.bg
 	
@@ -43,14 +42,17 @@ local function Shared(self, unit)
 	health.PostUpdate = TukuiDB.PostUpdateHealthRaid
 	health.frequentUpdates = true
 	
+	-- Setup Colors
 	if TukuiCF["unitframes"].classcolor ~= true then
 		health.colorTapping = false
 		health.colorClass = false
 		health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor))	
+		healthBG:SetTexture(unpack(TukuiCF["unitframes"].healthbackdropcolor))
 	else
 		health.colorTapping = true	
 		health.colorClass = true
-		health.colorReaction = true			
+		health.colorReaction = true		
+		health.bg.multiplier = 0.3				
 	end
 	health.colorDisconnected = false
 	
