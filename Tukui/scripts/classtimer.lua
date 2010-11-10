@@ -6,52 +6,61 @@ local CreateColor = function( red, green, blue, alpha )
 end
 
 -- Configuration starts here:
-	if TukuiCF["classtimer"].enable == false then return end
-	
-	BAR_HEIGHT = TukuiCF["classtimer"].bar_height;
-	BAR_SPACING = TukuiCF["classtimer"].bar_spacing;
-	LAYOUT = TukuiCF["classtimer"].layout;
-	ICON_POSITION = TukuiCF["classtimer"].icon_position;
-	ICON_COLOR = { unpack(TukuiCF["media"].altbordercolor) };
-	SPARK = TukuiCF["classtimer"].showspark;
-	CAST_SEPARATOR = TukuiCF["classtimer"].cast_suparator;
-	CAST_SEPARATOR_COLOR = CreateColor( 0, 0, 0, 0.5 );
-	TEXT_MARGIN = 5;
+if TukuiCF["classtimer"].enable == false then return end
 
-	if ( TukuiDB and TukuiCF["media"] and TukuiCF["media"]["uffont"] ) then
-		-- Sets font for all texts
-		MASTER_FONT = { TukuiCF["media"]["uffont"], 12, "OUTLINE" };
+BAR_HEIGHT = TukuiCF["classtimer"].bar_height;
+BAR_SPACING = TukuiCF["classtimer"].bar_spacing;
+LAYOUT = TukuiCF["classtimer"].layout;
+ICON_POSITION = TukuiCF["classtimer"].icon_position;
+ICON_COLOR = { unpack(TukuiCF["media"].altbordercolor) };
+SPARK = TukuiCF["classtimer"].showspark;
+CAST_SEPARATOR = TukuiCF["classtimer"].cast_suparator;
+CAST_SEPARATOR_COLOR = CreateColor( 0, 0, 0, 0.5 );
+TEXT_MARGIN = 5;
 
-		-- Sets font for stack count
-		STACKS_FONT = { TukuiCF["media"]["uffont"], 11, "OUTLINE" };
-	else
-		-- Sets font for all texts
-		MASTER_FONT = { [=[Interface\Addons\Tukui\media\Russel Square LT.ttf]=], 12, "OUTLINE" };
+if ( TukuiDB and TukuiCF["media"] and TukuiCF["media"]["uffont"] ) then
+	-- Sets font for all texts
+	MASTER_FONT = { TukuiCF["media"]["uffont"], 12, "OUTLINE" };
 
-		-- Sets font for stack count
-		STACKS_FONT = { [=[Interface\Addons\Tukui\media\Russel Square LT.ttf]=], 11, "OUTLINE" };
-	end
-	PERMANENT_AURA_VALUE = 1;
-	if TukuiCF["classtimer"].classcolor == false then
-		PLAYER_BAR_COLOR = { unpack(TukuiCF["classtimer"]["buffcolor"]) };
-		TARGET_BAR_COLOR = { unpack(TukuiCF["classtimer"]["buffcolor"]) };
-		TARGET_DEBUFF_COLOR = { unpack(TukuiCF["classtimer"]["debuffcolor"]) };
-		TRINKET_BAR_COLOR = { unpack(TukuiCF["classtimer"]["proccolor"]) };
-		PLAYER_DEBUFF_COLOR = nil
-	else
-		classcolor = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[select(2,UnitClass("player"))];
-		PLAYER_BAR_COLOR = {classcolor.r, classcolor.g, classcolor.b, 1};
-		TARGET_BAR_COLOR = {classcolor.r, classcolor.g, classcolor.b, 1};
-		TARGET_DEBUFF_COLOR = {classcolor.r, classcolor.g, classcolor.b, 1};
-		TRINKET_BAR_COLOR = {classcolor.r, classcolor.g, classcolor.b, 1};
-		PLAYER_DEBUFF_COLOR = nil
-	end
-	PLAYER_DEBUFF_COLOR = nil;
-	SORT_DIRECTION = true;
-	TENTHS_TRESHOLD = 1
+	-- Sets font for stack count
+	STACKS_FONT = { TukuiCF["media"]["uffont"], 11, "OUTLINE" };
+else
+	-- Sets font for all texts
+	MASTER_FONT = { [=[Interface\Addons\Tukui\media\Russel Square LT.ttf]=], 12, "OUTLINE" };
+
+	-- Sets font for stack count
+	STACKS_FONT = { [=[Interface\Addons\Tukui\media\Russel Square LT.ttf]=], 11, "OUTLINE" };
+end
+PERMANENT_AURA_VALUE = 1;
+if TukuiCF["classtimer"].classcolor == false then
+	PLAYER_BAR_COLOR = { unpack(TukuiCF["classtimer"]["buffcolor"]) };
+	TARGET_BAR_COLOR = { unpack(TukuiCF["classtimer"]["buffcolor"]) };
+	TARGET_DEBUFF_COLOR = { unpack(TukuiCF["classtimer"]["debuffcolor"]) };
+	TRINKET_BAR_COLOR = { unpack(TukuiCF["classtimer"]["proccolor"]) };
+	PLAYER_DEBUFF_COLOR = nil
+else
+	classcolor = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[select(2,UnitClass("player"))];
+	PLAYER_BAR_COLOR = {classcolor.r, classcolor.g, classcolor.b, 1};
+	TARGET_BAR_COLOR = {classcolor.r, classcolor.g, classcolor.b, 1};
+	TARGET_DEBUFF_COLOR = {classcolor.r, classcolor.g, classcolor.b, 1};
+	TRINKET_BAR_COLOR = {classcolor.r, classcolor.g, classcolor.b, 1};
+	PLAYER_DEBUFF_COLOR = nil
+end
+PLAYER_DEBUFF_COLOR = nil;
+SORT_DIRECTION = true;
+TENTHS_TRESHOLD = 1
 	
 local function OnUnitFramesLoad(self, event, addon)
 	if not (addon == "Tukui_Dps_Layout" or addon == "Tukui_Heal_Layout") then return end
+	
+	if IsAddOnLoaded("Tukui_Dps_Layout") then
+		oUF_Tukz_player = oUF_TukzDPS_player
+		oUF_Tukz_target = oUF_TukzDPS_target
+	elseif IsAddOnLoaded("Tukui_Heal_Layout") then
+		oUF_Tukz_player = oUF_TukzHeal_player
+		oUF_Tukz_target = oUF_TukzHeal_target
+	end
+	
 	self:UnregisterEvent("ADDON_LOADED")
 	
 	local CreateUnitAuraDataSource;

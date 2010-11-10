@@ -1086,6 +1086,12 @@ TukuiDB.ToggleBars = function(self)
 	if unit == "vehicle" then unit = "player" end
 	if unit ~= "player" then return end
 	
+	if IsAddOnLoaded("Tukui_Dps_Layout") then
+		oUF_Tukz_player = oUF_TukzDPS_player
+	elseif IsAddOnLoaded("Tukui_Heal_Layout") then
+		oUF_Tukz_player = oUF_TukzHeal_player
+	end
+	
 	if self == oUF_Tukz_player.EclipseBar and (UnitHasVehicleUI("player") or UnitHasVehicleUI("vehicle")) then 
 		oUF_Tukz_player.EclipseBar:SetScript("OnUpdate", function() 
 			if (UnitHasVehicleUI("player") or UnitHasVehicleUI("vehicle")) then

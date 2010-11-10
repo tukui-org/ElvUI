@@ -1680,7 +1680,7 @@ local function Shared(self, unit)
 	--	Main tanks and Main Assists layout (both mirror'd)
 	------------------------------------------------------------------------
 	
-	if(self:GetParent():GetName():match"oUF_MainTank" or self:GetParent():GetName():match"oUF_MainAssist") then
+	if(self:GetParent():GetName():match"oUF_TukzHealMainTank" or self:GetParent():GetName():match"oUF_TukzHealMainAssist") then
 		-- Right-click focus on maintank or mainassist units
 		self:SetAttribute("type2", "focus")
 		
@@ -1764,38 +1764,38 @@ oUF:RegisterStyle('Tukz', Shared)
 
 
 -- Player
-local player = oUF:Spawn('player', "oUF_Tukz_player")
+local player = oUF:Spawn('player', "oUF_TukzHeal_player")
 player:SetPoint("BOTTOMRIGHT", TukuiActionBarBackground, "TOPLEFT", TukuiDB.Scale(-15),TukuiDB.Scale(195))
 player:SetSize(player_width, player_height)
 
 -- Target
-local target = oUF:Spawn('target', "oUF_Tukz_target")
+local target = oUF:Spawn('target', "oUF_TukzHeal_target")
 target:SetPoint("BOTTOMLEFT", TukuiActionBarBackground, "TOPRIGHT", TukuiDB.Scale(15),TukuiDB.Scale(195))
 target:SetSize(target_width, target_height)
 
 -- Focus
-local focus = oUF:Spawn('focus', "oUF_Tukz_focus")
+local focus = oUF:Spawn('focus', "oUF_TukzHeal_focus")
 if powerbar_offset ~= 0 then
-	focus:SetPoint("TOPLEFT", oUF_Tukz_target, "BOTTOMLEFT", TukuiDB.Scale(9),TukuiDB.Scale(-42))
+	focus:SetPoint("TOPLEFT", oUF_TukzHeal_target, "BOTTOMLEFT", TukuiDB.Scale(9),TukuiDB.Scale(-42))
 else
-	focus:SetPoint("TOPLEFT", oUF_Tukz_target, "BOTTOMLEFT", 0,TukuiDB.Scale(-42))
+	focus:SetPoint("TOPLEFT", oUF_TukzHeal_target, "BOTTOMLEFT", 0,TukuiDB.Scale(-42))
 end
 focus:SetSize(smallframe_width, smallframe_height)
 
 -- Target's Target
-local tot = oUF:Spawn('targettarget', "oUF_Tukz_targettarget")
-tot:SetPoint("TOPRIGHT", oUF_Tukz_target, "BOTTOMRIGHT", 0,TukuiDB.Scale(-42))
+local tot = oUF:Spawn('targettarget', "oUF_TukzHeal_targettarget")
+tot:SetPoint("TOPRIGHT", oUF_TukzHeal_target, "BOTTOMRIGHT", 0,TukuiDB.Scale(-42))
 tot:SetSize(smallframe_width, smallframe_height)
 
 -- Player's Pet
-local pet = oUF:Spawn('pet', "oUF_Tukz_pet")
-pet:SetPoint("TOPRIGHT", oUF_Tukz_player, "BOTTOMRIGHT", 0,TukuiDB.Scale(-42))
+local pet = oUF:Spawn('pet', "oUF_TukzHeal_pet")
+pet:SetPoint("TOPRIGHT", oUF_TukzHeal_player, "BOTTOMRIGHT", 0,TukuiDB.Scale(-42))
 pet:SetSize(smallframe_width, smallframe_height)
 
 -- Focus's target
 if db.showfocustarget == true then
-	local focustarget = oUF:Spawn('focustarget', "oUF_Tukz_focustarget")
-	focustarget:SetPoint("TOP", oUF_Tukz_focus, "BOTTOM", 0,TukuiDB.Scale(-32))
+	local focustarget = oUF:Spawn('focustarget', "oUF_TukzHeal_focustarget")
+	focustarget:SetPoint("TOP", oUF_TukzHeal_focus, "BOTTOM", 0,TukuiDB.Scale(-32))
 	focustarget:SetSize(smallframe_width, smallframe_height)
 end
 
@@ -1803,7 +1803,7 @@ end
 if TukuiCF.arena.unitframes then
 	local arena = {}
 	for i = 1, 5 do
-		arena[i] = oUF:Spawn("arena"..i, "oUF_Arena"..i)
+		arena[i] = oUF:Spawn("arena"..i, "oUF_TukzHealArena"..i)
 		if i == 1 then
 			arena[i]:SetPoint("BOTTOMLEFT", RDummyFrame, "TOPLEFT", -80, 285)
 		else
@@ -1825,7 +1825,7 @@ if TukuiCF.raidframes.showboss then
 
 	local boss = {}
 	for i = 1, MAX_BOSS_FRAMES do
-		boss[i] = oUF:Spawn("boss"..i, "oUF_Boss"..i)
+		boss[i] = oUF:Spawn("boss"..i, "oUF_TukzHealBoss"..i)
 		if i == 1 then
 			boss[i]:SetPoint("BOTTOMLEFT", RDummyFrame, "TOPLEFT", -80, 285)
 		else
@@ -1837,7 +1837,7 @@ end
 
 
 if TukuiCF["raidframes"].maintank == true then
-	local tank = oUF:SpawnHeader('oUF_MainTank', nil, 'raid', 
+	local tank = oUF:SpawnHeader('oUF_TukzHealMainTank', nil, 'raid', 
 		'oUF-initialConfigFunction', ([[
 			self:SetWidth(%d)
 			self:SetHeight(%d)
@@ -1852,7 +1852,7 @@ if TukuiCF["raidframes"].maintank == true then
 end
 
 if TukuiCF["raidframes"].mainassist == true then
-	local assist = oUF:SpawnHeader("oUF_MainAssist", nil, 'raid', 
+	local assist = oUF:SpawnHeader("oUF_TukzHealMainAssist", nil, 'raid', 
 		'oUF-initialConfigFunction', ([[
 			self:SetWidth(%d)
 			self:SetHeight(%d)
@@ -1864,7 +1864,7 @@ if TukuiCF["raidframes"].mainassist == true then
 		'template', 'oUF_tukzMtt'
 	)
 	if TukuiCF["raidframes"].maintank == true then 
-		assist:SetPoint("TOPLEFT", oUF_MainTank, "BOTTOMLEFT", 2, -50)
+		assist:SetPoint("TOPLEFT", oUF_TukzHealMainTank, "BOTTOMLEFT", 2, -50)
 	else
 		assist:SetPoint("BOTTOM", ChatLBackground, "TOP", -42, 450)
 	end
@@ -1903,10 +1903,10 @@ do
 end
 
 --Move threatbar to targetframe
-if oUF_Tukz_player.ThreatBar then
+if oUF_TukzHeal_player.ThreatBar then
 	if powerbar_offset ~= 0 then
-		oUF_Tukz_player.ThreatBar:SetPoint("TOPLEFT", oUF_Tukz_target.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+		oUF_Tukz_player.ThreatBar:SetPoint("TOPLEFT", oUF_TukzHeal_target.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
 	else
-		oUF_Tukz_player.ThreatBar:SetPoint("TOPRIGHT", oUF_Tukz_target.Health, "BOTTOMRIGHT", 0, -(oUF_Tukz_target.Health:GetHeight() * 0.35) + -TukuiDB.Scale(8))
+		oUF_Tukz_player.ThreatBar:SetPoint("TOPRIGHT", oUF_TukzHeal_target.Health, "BOTTOMRIGHT", 0, -(oUF_TukzHeal_target.Health:GetHeight() * 0.35) + -TukuiDB.Scale(8))
 	end
 end

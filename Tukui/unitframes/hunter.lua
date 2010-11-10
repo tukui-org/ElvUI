@@ -106,7 +106,12 @@ if TukuiCF["unitframes"].mendpet == true then
 	MendPetLoader:SetScript("OnEvent", function(self, event, addon)
 		if not (addon == "Tukui_Dps_Layout" or (addon == "Tukui_Heal_Layout" and not TukuiCF["raidframes"].centerheallayout == true)) then return end
 		
-
+		if IsAddOnLoaded("Tukui_Dps_Layout") then
+			oUF_Tukz_pet = oUF_TukzDPS_pet
+		elseif IsAddOnLoaded("Tukui_Heal_Layout") then
+			oUF_Tukz_pet = oUF_TukzHeal_pet
+		end
+	
 		-- MendPet bar on pet frame when active.
 		local MendPetPlayerFrame = CreateFrame("Frame", _, oUF_Tukz_pet)
 		MendPetPlayerFrame.Panel = BarPanel(oUF_Tukz_pet:GetHeight(), oUF_Tukz_pet:GetWidth(), 0, 0, "CENTER", "CENTER", oUF_Tukz_pet, oUF_Tukz_pet:GetFrameLevel() + 1, MendPetPlayerFrame, "MEDIUM")
