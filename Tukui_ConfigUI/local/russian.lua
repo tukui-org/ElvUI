@@ -208,10 +208,10 @@
 	TukuiL.option_actionbar_rn = "Количество панелей справа (1, 2 or 3)"
 	TukuiL.option_actionbar_splitbar = "Включить раздельную панель"
 	TukuiL.option_actionbar_bottompetbar = "Переместить панель питомца под главную панель заклинаний"
-	TukuiL.option_actionbar_buttonsize = "Size of the main action buttons"
-	TukuiL.option_actionbar_buttonspacing = "Spacing of the main action buttons"
-	TukuiL.option_actionbar_petbuttonsize = "Size of the pet/stance/totem action buttons"
-	TukuiL.option_actionbar_petbuttonspacing = "Spacing of the pet/stance/totem action buttons"
+	TukuiL.option_actionbar_buttonsize = "Размер кнопок панели действий"
+	TukuiL.option_actionbar_buttonspacing = "Промежуток между кнопками панели действий"
+	TukuiL.option_actionbar_petbuttonsize = "Размер кнопок панели действий для питомца/стоек/тотемов"
+	TukuiL.option_actionbar_petbuttonspacing = "Промежуток между кнопками панели действий для питомца/стоек/тотемов"
 	
 	-- arena
 	TukuiL.option_arena = "Арена"
