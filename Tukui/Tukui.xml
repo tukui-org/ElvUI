@@ -11,8 +11,8 @@
 	<Script file="local\korean.lua"/>
 	<Script file="local\china.lua"/>
 	
-	<Script file="config\config.lua"/>
 	<Script file="config\media.lua"/>
+	<Script file="config\config.lua"/>
 	<Script file="config\classtimers.lua"/>
 	<Script file="config\filters.lua"/>
 	
