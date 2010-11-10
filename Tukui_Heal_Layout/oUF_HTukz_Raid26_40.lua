@@ -45,7 +45,7 @@ local function Shared(self, unit)
 		health.colorTapping = false
 		health.colorClass = false
 		health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor))	
-		healthBG:SetTexture(unpack(TukuiCF["unitframes"].healthbackdropcolor))
+		self.Health.bg:SetTexture(unpack(TukuiCF["unitframes"].healthbackdropcolor))
 	else
 		health.colorTapping = true	
 		health.colorClass = true
