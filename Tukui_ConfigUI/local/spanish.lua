@@ -132,7 +132,7 @@
 	TukuiL.option_unitframes_smooth = "Activar barras suaves"
 	TukuiL.option_unitframes_portrait = "Activar retratos en los marcos de jugador y objetivo"
 	TukuiL.option_unitframes_enable = "Activar los marcos de unidades Tukui"
-	TukuiL.option_unitframes_enemypower = "Enable Power display on player only"
+	TukuiL.option_unitframes_enemypower = "Activar la barra de poder (maná, ira...) sólo en el jugador"
 	TukuiL.option_unitframes_raidaggro = "Mostrar alerta de amenaza"
 	TukuiL.option_unitframes_symbol = "Mostrar símbolos en banda/grupo"
 	TukuiL.option_unitframes_threatbar = "Activar barra de amenaza"
@@ -145,7 +145,7 @@
 	TukuiL.option_unitframes_fontsize = "Tamaño de la fuente"
 	TukuiL.option_unitframes_unitframes_poweroffset = "Compensación de la barra de poder dentro del marco de unidad (0 para no usar compensación)"
 	TukuiL.option_unitframes_classbar = "Activar la barra de clase (Totems, Runas, poder sagrado, almas, Eclipse)"
-	TukuiL.option_unitframes_healthbackdropcolor = "Backdrop color of health on all unitframes"
+	TukuiL.option_unitframes_healthbackdropcolor = "Color de fondo de la barra de vida para todas las unidades"
 	
 	 -- frame sizes
 	TukuiL.option_framesizes = "Tamaño de los marcos de unidad"
@@ -206,10 +206,10 @@
 	TukuiL.option_actionbar_rn = "Número de barras de acción en la derecha (1, 2 o 3)"
 	TukuiL.option_actionbar_splitbar = "Activar las barras de acción partidas"
 	TukuiL.option_actionbar_bottompetbar = "Posicionar la barra de mascota bajo la barra principal de acción, la barra de acción principal se desplazará hacia arriba"
-	TukuiL.option_actionbar_buttonsize = "Size of the main action buttons"
-	TukuiL.option_actionbar_buttonspacing = "Spacing of the main action buttons"
-	TukuiL.option_actionbar_petbuttonsize = "Size of the pet/stance/totem action buttons"
-	TukuiL.option_actionbar_petbuttonspacing = "Spacing of the pet/stance/totem action buttons"
+	TukuiL.option_actionbar_buttonsize = "Tamaño de los botones de la barra principal"
+	TukuiL.option_actionbar_buttonspacing = "Espacio entre los botones de la barra principal"
+	TukuiL.option_actionbar_petbuttonsize = "Tamaño de los botones de la barra de mascota/estancia/tótems"
+	TukuiL.option_actionbar_petbuttonspacing = "Espacio entre los botones de la barra de mascota/estancia/tótems"
 	
 	-- arena
 	TukuiL.option_arena = "Arena"

@@ -208,10 +208,10 @@ if GetLocale() == "frFR" then
 	TukuiL.option_actionbar_rn = "Nombre de barre d'actions à droite (1, 2 ou 3)" --"Number of action bars on right (1, 2 or 3)"
 	TukuiL.option_actionbar_splitbar = "Activer la splitbar." --"Enable split actionbar"
 	TukuiL.option_actionbar_bottompetbar = "Positionner la barre de familier sous la barre d'action principale, ceci déplace la barre d'action principale vers le haut"
-	TukuiL.option_actionbar_buttonsize = "Size of the main action buttons"
-	TukuiL.option_actionbar_buttonspacing = "Spacing of the main action buttons"
-	TukuiL.option_actionbar_petbuttonsize = "Size of the pet/stance/totem action buttons"
-	TukuiL.option_actionbar_petbuttonspacing = "Spacing of the pet/stance/totem action buttons"
+	TukuiL.option_actionbar_buttonsize = "Taille des boutons de la barre d'action"
+	TukuiL.option_actionbar_buttonspacing = "Espace entre les boutons de la barre d'action"
+	TukuiL.option_actionbar_petbuttonsize = "Taille de la barre d'action du familier / de position / du totem"
+	TukuiL.option_actionbar_petbuttonspacing = "Espace entre les boutons de la barre d'action du familier / de position / du totem"
 	
 	-- arena
 	TukuiL.option_arena = "Arène" --"Arena"

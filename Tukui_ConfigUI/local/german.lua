@@ -134,7 +134,7 @@
 	TukuiL.option_unitframes_smooth = "Aktiviere flüssigere Leistenänderungen"
 	TukuiL.option_unitframes_portrait = "Zeige Portraits für Spieler und Ziel an"
 	TukuiL.option_unitframes_enable = "Aktiviere Tukui Einheitenfenster"
-	TukuiL.option_unitframes_enemypower = "Enable Power display on player only"
+	TukuiL.option_unitframes_enemypower = "Aktiviere Poweranzeige nur beim Spieler"
 	TukuiL.option_unitframes_raidaggro = "Aktiviere Bedrohungsanzeige auf Raidframes"
 	TukuiL.option_unitframes_symbol = "Zeige Symbole auf Gruppen und Raidframes"
 	TukuiL.option_unitframes_threatbar = "Aktiviere Bedrohungsleiste"
@@ -147,7 +147,7 @@
 	TukuiL.option_unitframes_fontsize = "Schriftgröße"
 	TukuiL.option_unitframes_unitframes_poweroffset = "Versetzung der Power-Leiste zum Einheitenfenster (0 für keine Versetzung)"
 	TukuiL.option_unitframes_classbar = "Aktiviere Klassenleiste (Totemleiste, Runenleiste, Heiligleiste, Seelensplitterleiste, Finsternisleiste)"
-		TukuiL.option_unitframes_healthbackdropcolor = "Backdrop color of health on all unitframes"
+	TukuiL.option_unitframes_healthbackdropcolor = "Hintergrundfarbe der Gesundheitsleiste aller Einheitenfenster"
 	
 	-- frame sizes
 	TukuiL.option_framesizes = "Einheitenfenstergröße"		
@@ -208,10 +208,10 @@
 	TukuiL.option_actionbar_rn = "Anzahl der Aktionsleisten rechts (1, 2 oder 3)"
 	TukuiL.option_actionbar_splitbar = "Aktviert die geteilte Leiste um die untere Aktionsleiste"
 	TukuiL.option_actionbar_bottompetbar = "Setzt die Begleiterleiste unter die Aktionsleiste 1 und schiebt diese nach oben"
-	TukuiL.option_actionbar_buttonsize = "Size of the main action buttons"
-	TukuiL.option_actionbar_buttonspacing = "Spacing of the main action buttons"
-	TukuiL.option_actionbar_petbuttonsize = "Size of the pet/stance/totem action buttons"
-	TukuiL.option_actionbar_petbuttonspacing = "Spacing of the pet/stance/totem action buttons"
+	TukuiL.option_actionbar_buttonsize = "Größe der Aktionsleisten Buttons"
+	TukuiL.option_actionbar_buttonspacing = "Abstand der Aktionsleisten Buttons"
+	TukuiL.option_actionbar_petbuttonsize = "Größe der Begleiter/Haltungs/Totems Aktionsleisten Buttons"
+	TukuiL.option_actionbar_petbuttonspacing = "Größe der Begleiter/Haltungs/Totems Aktionsleisten Buttons"
 	
 	-- arena
 	TukuiL.option_arena = "Arena"
