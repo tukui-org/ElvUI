@@ -44,6 +44,8 @@ bar:RegisterEvent("PLAYER_ENTERING_WORLD")
 bar:RegisterEvent("KNOWN_CURRENCY_TYPES_UPDATE")
 bar:RegisterEvent("CURRENCY_DISPLAY_UPDATE")
 bar:RegisterEvent("BAG_UPDATE")
+bar:RegisterEvent("PLAYER_TALENT_UPDATE")
+bar:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 bar:SetScript("OnEvent", function(self, event, ...)
 	if event == "PLAYER_LOGIN" then
 		local button
@@ -91,6 +93,10 @@ bar:SetScript("OnEvent", function(self, event, ...)
 				local previous = _G["ActionButton"..i-1]
 				button:SetPoint("LEFT", previous, "RIGHT", TukuiDB.buttonspacing, 0)
 			end
+		end
+	elseif event == "PLAYER_TALENT_UPDATE" or event == "ACTIVE_TALENT_GROUP_CHANGED" then
+		if not InCombatLockdown() then -- Just to be safe
+			RegisterStateDriver(self, "page", GetBar())
 		end
 	else
 		MainMenuBar_OnEvent(self, event, ...)
