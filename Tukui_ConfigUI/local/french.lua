@@ -28,11 +28,11 @@ if GetLocale() == "frFR" then
 	TukuiL.option_media_glossy = "Glossy Bar Texture"
 	
 	-- nameplate
-	TukuiL.option_nameplates = "Barres de vies" --"Nameplates"
-	TukuiL.option_nameplates_enable = "Activer les barres de vies" --"Enable Nameplates"
+	TukuiL.option_nameplates = "Barres d'info" --"Nameplates"
+	TukuiL.option_nameplates_enable = "Activer les barres d'info des ennemis" --"Enable Nameplates"
 	TukuiL.option_nameplates_enhancethreat = "Activer la gestion d'aggro, change automatiquement selon votre role:" --"Enable threat feature, automatically changes by your roll:  Tank - Green (aggro) Red (noaggro) DPS - Green (noaggro) Red (aggro)"
-	TukuiL.option_nameplates_showhealth = "Montrer la vie sur les barres de vies" --"Show health on nameplate"
- 	TukuiL.option_nameplates_combat = "Afficher les nameplates des ennemis seulement en combat"
+	TukuiL.option_nameplates_showhealth = "Montrer la vie sur les barres d'info des ennemis" --"Show health on nameplate"
+ 	TukuiL.option_nameplates_combat = "Afficher les barres d'infos des ennemis seulement en combat"
 	
 	-- addon skins
 	TukuiL.option_skin = "Skin d'addon" --"Addon Skins"
