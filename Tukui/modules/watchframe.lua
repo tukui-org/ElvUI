@@ -1,5 +1,7 @@
 local TukuiWatchFrame = CreateFrame("Frame", "TukuiWatchFrame", UIParent)
 
+local wideFrame = GetCVar("watchFrameWidth")
+
 local function init()
 	TukuiWatchFrame:UnregisterEvent("PLAYER_ENTERING_WORLD")
 	TukuiWatchFrame:RegisterEvent("CVAR_UPDATE")
