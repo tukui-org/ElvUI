@@ -6,22 +6,7 @@
 	All credits of this bags script is by Stuffing and his author Hungtar.
 --]]
 
-if not TukuiCF["others"].enablebag == true then 
-	local MoveBags = function()
-		ContainerFrame1:ClearAllPoints()
-		ContainerFrame1:SetPoint("BOTTOMRIGHT", RDummyFrame, "BOTTOMRIGHT", 0, TukuiDB.Scale(5))
-		ContainerFrame2:ClearAllPoints()
-		ContainerFrame2:SetPoint("BOTTOM", ContainerFrame1, "TOP", 0, TukuiDB.Scale(5))
-		ContainerFrame3:ClearAllPoints()
-		ContainerFrame3:SetPoint("BOTTOMRIGHT", ContainerFrame1, "BOTTOMLEFT", TukuiDB.Scale(-5), 0)
-		ContainerFrame4:ClearAllPoints()
-		ContainerFrame4:SetPoint("BOTTOM", ContainerFrame3, "TOP", 0, TukuiDB.Scale(5))
-		ContainerFrame5:ClearAllPoints()
-		ContainerFrame5:SetPoint("BOTTOMRIGHT", ContainerFrame4, "BOTTOMLEFT", TukuiDB.Scale(-5), 0)
-	end
-	hooksecurefunc("updateContainerFrameAnchors", MoveBags)
-	return 
-end
+if not TukuiCF["others"].enablebag == true then return end
 
 local bags_BACKPACK = {0, 1, 2, 3, 4}
 local bags_BANK = {-1, 5, 6, 7, 8, 9, 10, 11}
