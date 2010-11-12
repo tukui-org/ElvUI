@@ -47,6 +47,41 @@ if TukuiCF["datatext"].guild and TukuiCF["datatext"].guild > 0 then
 		end
 	end
 		
+	local menuFrame = CreateFrame("Frame", "TukuiGuildRightClickMenu", UIParent, "UIDropDownMenuTemplate")
+	local menuList = {
+		{ text = "Select an Option", isTitle = true,notCheckable=true},
+		{ text = "Invite", hasArrow = true,notCheckable=true,
+			menuList = {
+				{ text = "Option 3", func = function() print("You've chosen option 3"); end }
+			}
+		},
+		{ text = "Whisper", hasArrow = true,notCheckable=true,
+			menuList = {
+				{ text = "Option 4", func = function() print("You've chosen option 4"); end }
+			}
+		}
+	}
+ 
+	local function inviteClick(self, arg1, arg2, checked)
+		menuFrame:Hide()
+		InviteUnit(arg1)
+	end
+ 
+	local function whisperClick(self,arg1,arg2,checked)
+		menuFrame:Hide()
+		SetItemRef( "player:"..arg1, ("|Hplayer:%1$s|h[%1$s]|h"):format(arg1), "LeftButton" )
+	end
+ 
+	local menuCountWhispers = 0
+	local menuCountInvites = 0
+ 
+	Stat:SetScript("OnMouseUp", function(self, btn)
+		if btn == "RightButton" then
+			GameTooltip:Hide()
+			EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
+		end
+	end)
+	
 	Stat:RegisterEvent("GUILD_ROSTER_SHOW")
 	Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
 	Stat:RegisterEvent("GUILD_ROSTER_UPDATE")
@@ -56,7 +91,11 @@ if TukuiCF["datatext"].guild and TukuiCF["datatext"].guild > 0 then
 	Stat:SetScript("OnEnter", function(self)
 		if not InCombatLockdown() then
 			if IsInGuild() then
-				self.hovered = true
+				menuCountWhispers = 0
+				menuCountInvites = 0
+ 
+				menuList[2].menuList = {}
+				menuList[3].menuList = {}
 				GuildRoster()
 				local name, rank, level, zone, note, officernote, connected, status, class, zone_r, zone_g, zone_b, classc, levelc
 				local online, total, gmotd = 0, GetNumGuildMembers(true), GetGuildRosterMOTD()
@@ -88,6 +127,16 @@ if TukuiCF["datatext"].guild and TukuiCF["datatext"].guild > 0 then
 							else
 								GameTooltip:AddDoubleLine(format("|cff%02x%02x%02x%d|r %s%s",levelc.r*255,levelc.g*255,levelc.b*255,level,name,' '..status),zone,classc.r,classc.g,classc.b,zone_r,zone_g,zone_b)
 							end
+							
+							if UnitInParty(name) or UnitInRaid(name) then
+								grouped = "|cffaaaaaa*|r"
+							else
+								menuCountInvites = menuCountInvites +1
+								grouped = ""
+								menuList[2].menuList[menuCountInvites] = {text = format("|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r",levelc.r*255,levelc.g*255,levelc.b*255,level,classc.r*255,classc.g*255,classc.b*255,name), arg1 = name,notCheckable=true, func = inviteClick}
+							end
+							menuCountWhispers = menuCountWhispers + 1
+							menuList[3].menuList[menuCountWhispers] = {text = format("|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r",levelc.r*255,levelc.g*255,levelc.b*255,level,classc.r*255,classc.g*255,classc.b*255,name), arg1 = name,notCheckable=true, func = whisperClick}	
 						end
 					end
 				end
@@ -96,6 +145,11 @@ if TukuiCF["datatext"].guild and TukuiCF["datatext"].guild > 0 then
 		end
 	end)
 	Stat:SetScript("OnLeave", function() GameTooltip:Hide() end)
-	Stat:SetScript("OnMouseDown", function() if not IsAddOnLoaded("Blizzard_GuildUI") then LoadAddOn("Blizzard_GuildUI") end ToggleFrame(GuildFrame) end)
+	Stat:SetScript("OnMouseDown", function(self, btn) 
+		if btn == "LeftButton" then
+			if not GuildFrame and IsInGuild() then LoadAddOn("Blizzard_GuildUI") end
+			GuildFrame_Toggle() 
+		end	
+	end)
 	Stat:SetScript("OnEvent", Update)
 end
