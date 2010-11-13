@@ -26,6 +26,11 @@ do
 		element:SetAlpha(0)
 	end
 	elements = nil
+
+	-- fix main bar keybind not working after a talent switch. :X
+	hooksecurefunc('TalentFrame_LoadUI', function()
+		PlayerTalentFrame:UnregisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
+	end)
 end
 
 do
