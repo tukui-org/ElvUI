@@ -7,8 +7,6 @@ PetHappiness.happiness = GetPetHappiness()
 local OnEvent = function(self, event, ...)
 	local happiness = GetPetHappiness()
 	local hunterPet = select(2, HasPetUI())
-	
-
 	local unit, power = ...
 	if (event == "UNIT_POWER" and unit == "pet" and power == "HAPPINESS" and happiness and hunterPet and self.happiness ~= happiness) then
 		-- happiness has changed
@@ -27,7 +25,7 @@ local OnEvent = function(self, event, ...)
 		end
 	end
 end
-PetHappiness:RegisterEvent('UNIT_HAPPINESS')
+PetHappiness:RegisterEvent('UNIT_POWER')
 PetHappiness:RegisterEvent("UNIT_PET")
 PetHappiness:SetScript("OnEvent", OnEvent)
 

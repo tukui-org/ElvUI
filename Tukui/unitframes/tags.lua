@@ -109,7 +109,7 @@ local utf8sub = function(string, i, dots)
 end
 
 
-oUF.TagEvents['Tukui:getnamecolor'] = 'UNIT_HAPPINESS'
+oUF.TagEvents['Tukui:getnamecolor'] = 'UNIT_POWER'
 oUF.Tags['Tukui:getnamecolor'] = function(unit)
 	local reaction = UnitReaction(unit, 'player')
 	if (unit == 'pet' and GetPetHappiness()) then
