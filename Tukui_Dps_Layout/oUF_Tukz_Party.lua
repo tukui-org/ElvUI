@@ -41,7 +41,7 @@ local function Shared(self, unit)
 	health.value:SetShadowOffset(1, -1)
 	self.Health.value = health.value
 	
-	health.PostUpdate = TukuiDB.PostUpdateHealthParty
+	health.PostUpdate = TukuiDB.PostUpdateHealth
 	health.frequentUpdates = true
 	
 	if TukuiCF.unitframes.classcolor ~= true then

@@ -37,7 +37,7 @@ local function Shared(self, unit)
 	health.value:SetShadowOffset(1, -1)
 	self.Health.value = health.value		
 	
-	health.PostUpdate = TukuiDB.PostUpdateHealthRaid
+	health.PostUpdate = TukuiDB.PostUpdateHealth
 	health.frequentUpdates = true
 	
 	-- Setup Colors

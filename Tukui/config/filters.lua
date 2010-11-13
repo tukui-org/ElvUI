@@ -175,7 +175,7 @@ ArenaBuffWhiteList = {
 -------------------------------------------------------------
 
 -- Debuffs to always hide
--- Raid frames use this when not inside a BG/Arena. Player, TargetTarget, Focus always use it.
+-- DPS Raid frames use this when not inside a BG/Arena. Player, TargetTarget, Focus always use it.
 DebuffBlacklist = {
 	[SpellName(8733)] = true, --Blessing of Blackfathom
 	[SpellName(57724)] = true, --Sated
@@ -233,7 +233,6 @@ DebuffWhiteList = {
 	-- Mage
 		[SpellName(31661)] = true, --Dragon's Breath
 		[SpellName(61305)] = true, --Polymorph
-		[SpellName(31589)] = true, --Slow
 		[SpellName(18469)] = true, --Silenced - Improved Counterspell
 		[SpellName(122)] = true, --Frost Nova
 		[SpellName(55080)] = true, --Shattered Barrier
@@ -289,11 +288,12 @@ TargetPVPOnly = {
 	[SpellName(58179)] = true, --infected wounds
 	[SpellName(18223)] = true, -- curse of exhaustion
 	[SpellName(18118)] = true, --aftermath
+	[SpellName(31589)] = true, --Slow
 	--not sure if this one belongs here but i do know frost pve uses this
 	[SpellName(44572)] = true, --deep freeze
 }
 
---This list is used by the healerlayout when center layout is true (When not inside a bg/arena)
+--This list is used by the healerlayout (When not inside a bg/arena)
 DebuffHealerWhiteList = {
 	-- Naxxramas
 		[SpellName(27808)] = true, -- Frost Blast

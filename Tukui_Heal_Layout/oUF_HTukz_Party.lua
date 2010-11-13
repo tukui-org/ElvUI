@@ -134,7 +134,7 @@ local function Shared(self, unit)
 		health.value:SetShadowOffset(1, -1)
 		self.Health.value = health.value
 		
-		health.PostUpdate = TukuiDB.PostUpdateHealthParty
+		health.PostUpdate = TukuiDB.PostUpdateHealth
 		
 		health.frequentUpdates = true
 		
@@ -252,7 +252,7 @@ local function Shared(self, unit)
 		debuffs.spacing = 2
 		debuffs.initialAnchor = 'LEFT'
 		debuffs.num = 3
-		debuffs.PostCreateIcon = TukuiDB.PostCreateAuraSmall
+		debuffs.PostCreateIcon = TukuiDB.PostCreateAura
 		debuffs.PostUpdateIcon = TukuiDB.PostUpdateAura
 		self.Debuffs = debuffs	
 		

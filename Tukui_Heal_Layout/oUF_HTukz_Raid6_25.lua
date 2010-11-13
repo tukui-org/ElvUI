@@ -11,7 +11,7 @@ local function Shared(self, unit)
 	self.menu = TukuiDB.SpawnMenu
 
 	-- an update script to all elements
-	self:HookScript("OnShow", TukuiDB.updateAllElementsRaid)
+	self:HookScript("OnShow", TukuiDB.updateAllElements)
 
 	self:SetBackdrop({bgFile = TukuiCF["media"].blank, insets = {top = -TukuiDB.mult, left = -TukuiDB.mult, bottom = -TukuiDB.mult, right = -TukuiDB.mult}})
 	self:SetBackdropColor(0.1, 0.1, 0.1)
@@ -39,7 +39,7 @@ local function Shared(self, unit)
 	health.value:SetShadowOffset(1, -1)
 	self.Health.value = health.value		
 	
-	health.PostUpdate = TukuiDB.PostUpdateHealthRaid
+	health.PostUpdate = TukuiDB.PostUpdateHealth
 	health.frequentUpdates = true
 	
 	-- Setup Colors
@@ -74,7 +74,7 @@ local function Shared(self, unit)
 	power:SetStatusBarTexture(TukuiCF["media"].normTex)
 	self.Power = power
 	if TukuiCF["raidframes"].hidenonmana == true then
-		power.PostUpdate = TukuiDB.PostUpdatePowerRaid
+		power.PostUpdate = TukuiDB.PostUpdatePower
 	end
 	-- border between health and power
 	self.HealthBorder = CreateFrame("Frame", nil, power)
@@ -181,10 +181,10 @@ local function Shared(self, unit)
 	debuffs.spacing = 0
 	debuffs.initialAnchor = 'CENTER'
 	debuffs.num = 1
-	debuffs.PostCreateIcon = TukuiDB.PostCreateAuraSmallHealer25
+	debuffs.PostCreateIcon = TukuiDB.PostCreateAura
 	debuffs.PostUpdateIcon = TukuiDB.PostUpdateAura
 	self.Debuffs = debuffs
-	self.Debuffs.CustomFilter = TukuiDB.HealerFilter
+	self.Debuffs.CustomFilter = TukuiDB.AuraFilter
 
 			
 	if TukuiCF["raidframes"].showrange == true then
@@ -204,9 +204,9 @@ local function Shared(self, unit)
     end
 	
 	if TukuiCF["raidframes"].hidenonmana == true then
-		self:RegisterEvent("UNIT_DISPLAYPOWER", TukuiDB.CheckPowerRaid)	
+		self:RegisterEvent("UNIT_DISPLAYPOWER", TukuiDB.CheckPower)	
 	end
-	self:RegisterEvent("UNIT_PET", TukuiDB.updateAllElementsRaid)
+	self:RegisterEvent("UNIT_PET", TukuiDB.updateAllElements)
 	
 	return self
 end

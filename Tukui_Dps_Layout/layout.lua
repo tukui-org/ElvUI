@@ -1282,7 +1282,7 @@ local function Shared(self, unit)
 			debuffs.initialAnchor = 'TOPLEFT'
 			debuffs["growth-y"] = "DOWN"
 			debuffs["growth-x"] = "RIGHT"
-			debuffs.PostCreateIcon = TukuiDB.PostCreateAuraSmall
+			debuffs.PostCreateIcon = TukuiDB.PostCreateAura
 			debuffs.PostUpdateIcon = TukuiDB.PostUpdateAura
 			self.Debuffs = debuffs	
 			
@@ -1301,7 +1301,7 @@ local function Shared(self, unit)
 			debuffs.initialAnchor = 'TOPLEFT'
 			debuffs["growth-y"] = "DOWN"
 			debuffs["growth-x"] = "RIGHT"
-			debuffs.PostCreateIcon = TukuiDB.PostCreateAuraSmall
+			debuffs.PostCreateIcon = TukuiDB.PostCreateAura
 			debuffs.PostUpdateIcon = TukuiDB.PostUpdateAura
 			self.Debuffs = debuffs	
 			
@@ -1597,8 +1597,8 @@ local function Shared(self, unit)
 			self.Debuffs = debuffs
 			
 			--set filter for buffs/debuffs
-			self.Buffs.CustomFilter = TukuiDB.ArenaBuffFilter
-			self.Debuffs.CustomFilter = TukuiDB.ArenaDebuffFilter
+			self.Buffs.CustomFilter = TukuiDB.AuraFilter
+			self.Debuffs.CustomFilter = TukuiDB.AuraFilter
 		end
 		
 		
