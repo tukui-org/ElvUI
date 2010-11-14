@@ -1128,6 +1128,7 @@ local function Shared(self, unit)
 		bars.FrameBackdrop:SetPoint("TOPLEFT", bars, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
 		bars.FrameBackdrop:SetPoint("BOTTOMRIGHT", bars, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 		bars.FrameBackdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
+		
 	end
 	
 	------------------------------------------------------------------------
