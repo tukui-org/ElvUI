@@ -137,6 +137,17 @@ if TukuiCF["auras"].raidunitbuffwatch == true then
 			{23333, "LEFT", {1, 0, 0}}, -- Warsong flag
 		},
 	}
+	
+	--Layout for pets
+	TukuiDB.PetBuffs = {
+		HUNTER = {
+			{136, "TOPRIGHT", {0.2, 0.8, 0.2}}, -- Mend Pet
+		},
+		DEATHKNIGHT = {
+			{91342, "TOPRIGHT", {0.2, 0.8, 0.2}}, -- Shadow Infusion
+			{63560, "TOPLEFT", {227/255, 23/255, 13/255}}, --Dark Transformation
+		},
+	}
 end
 
 --List of buffs to watch for on arena frames

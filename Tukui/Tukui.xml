@@ -113,10 +113,6 @@
 	<Script file="scripts\raidUtility.lua"/>
 	<Script file="scripts\raidBuffReminder.lua"/>
 	<Script file="scripts\classtimer.lua"/>
-	
-	<Include file="unitframes\templates.xml"/>
-	<Script file="unitframes\tags.lua"/>		
-	<Script file="unitframes\hunter.lua"/>
-	
+		
 	<Include file="addon_skins\AddonSkins.xml"/>
 </Ui>

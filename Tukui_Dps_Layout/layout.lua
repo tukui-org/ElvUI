@@ -1316,6 +1316,9 @@ local function Shared(self, unit)
 				castbar:SetStatusBarTexture(normTex)
 				self.Castbar = castbar
 			end
+			if TukuiCF["auras"].raidunitbuffwatch == true then
+				TukuiDB.createAuraWatch(self,unit)
+			end
 		end
 		
 		if TukuiCF["castbar"].unitcastbar == true and unit == "focus" then

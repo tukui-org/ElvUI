@@ -6,10 +6,9 @@
 ## X-Category: UnitFrame
 ## RequiredDeps: Tukui
 
+templates.xml
+tags.lua
 layout.lua
 oUF_HTukz_Party.lua
 oUF_HTukz_Raid6_25.lua
 oUF_HTukz_Raid26_40.lua
-
-
-
