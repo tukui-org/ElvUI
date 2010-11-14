@@ -119,21 +119,6 @@ local function GetColor(unit)
 	end
 end
 
--- function to short-display HP value on StatusBar
-local function ShortValue(value)
-	if value >= 1e7 then
-		return ('%.1fm'):format(value / 1e6):gsub('%.?0+([km])$', '%1')
-	elseif value >= 1e6 then
-		return ('%.2fm'):format(value / 1e6):gsub('%.?0+([km])$', '%1')
-	elseif value >= 1e5 then
-		return ('%.0fk'):format(value / 1e3)
-	elseif value >= 1e3 then
-		return ('%.1fk'):format(value / 1e3):gsub('%.?0+([km])$', '%1')
-	else
-		return value
-	end
-end
-
 -- update HP value on status bar
 GameTooltipStatusBar:SetScript("OnValueChanged", function(self, value)
 	if not value then
@@ -159,7 +144,7 @@ GameTooltipStatusBar:SetScript("OnValueChanged", function(self, value)
 		self.text:Show()
 		if unit then
 			min, max = UnitHealth(unit), UnitHealthMax(unit)
-			local hp = ShortValue(min).." / "..ShortValue(max)
+			local hp = TukuiDB.ShortValue(min).." / "..TukuiDB.ShortValue(max)
 			if UnitIsGhost(unit) then
 				self.text:SetText(tukuilocal.unitframes_ouf_ghost)
 			elseif min == 0 or UnitIsDead(unit) or UnitIsGhost(unit) then
@@ -172,7 +157,7 @@ GameTooltipStatusBar:SetScript("OnValueChanged", function(self, value)
 		if unit then
 			min, max = UnitHealth(unit), UnitHealthMax(unit)
 			self.text:Show()
-			local hp = ShortValue(min).." / "..ShortValue(max)
+			local hp = TukuiDB.ShortValue(min).." / "..TukuiDB.ShortValue(max)
 			if min == 0 or min == 1 then
 				self.text:SetText(tukuilocal.unitframes_ouf_dead)
 			else

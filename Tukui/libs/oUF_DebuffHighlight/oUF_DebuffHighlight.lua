@@ -26,6 +26,28 @@ local function GetDebuffType(unit, filter)
 		i = i + 1
 	end
 end
+
+-- Return true if the talent matching the name of the spell given by (Credit Pitbull4)
+-- spellid has at least one point spent in it or false otherwise
+function CheckForKnownTalent(spellid)
+	local wanted_name = GetSpellInfo(spellid)
+	if not wanted_name then return nil end
+	local num_tabs = GetNumTalentTabs()
+	for t=1, num_tabs do
+		local num_talents = GetNumTalents(t)
+		for i=1, num_talents do
+			local name_talent, _, _, _, current_rank = GetTalentInfo(t,i)
+			if name_talent and (name_talent == wanted_name) then
+				if current_rank and (current_rank > 0) then
+					return true
+				else
+					return false
+				end
+			end
+		end
+	end
+	return false
+end
  
 local function CheckSpec(self, event, levels)
 	-- Not interested in gained points from leveling	

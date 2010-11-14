@@ -32,25 +32,6 @@ else
 	SetCVar("spreadnameplates", "1")
 end
 
--- format numbers
-local function round(num, idp)
-  if idp and idp > 0 then
-    local mult = 10^idp
-    return math.floor(num * mult + 0.5) / mult
-  end
-  return math.floor(num + 0.5)
-end
-
-local function ShortValue(num)
-	if(num >= 1e6) then
-		return round(num/1e6,1).."m"
-	elseif(num >= 1e3) then
-		return round(num/1e3,1).."k"
-	else
-		return num
-	end
-end
-
 local function QueueObject(parent, object)
 	parent.queue = parent.queue or {}
 	parent.queue[object] = true
@@ -124,7 +105,7 @@ local function UpdateThreat(frame, elapsed)
 		local d =(valueHealth/maxHealth)*100
 		
 		if TukuiCF["nameplate"].showhealth == true then
-			frame.hp.value:SetText(ShortValue(valueHealth).." - "..(string.format("%d%%", math.floor((valueHealth/maxHealth)*100))))
+			frame.hp.value:SetText(TukuiDB.ShortValue(valueHealth).." - "..(string.format("%d%%", math.floor((valueHealth/maxHealth)*100))))
 		end
 			
 		--Change frame style if the frame is our target or not
