@@ -1,3 +1,5 @@
+if not TukuiCF["unitframes"].enable == true then return end
+
 local Frames = {}
 local FramesDefault = {}
 
