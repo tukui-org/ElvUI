@@ -326,7 +326,7 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			for _,button in ipairs(flyout.buttons) do
 				self:SkinButton(button)
 				if not InCombatLockdown() then
-					button:SetSize(config.buttonSize,config.buttonSize)
+					button:SetSize(TukuiDB.petbuttonsize,TukuiDB.petbuttonsize)
 					button:ClearAllPoints()
 					button:SetPoint("BOTTOM",last,"TOP",0,config.borderWidth)
 				end			
@@ -385,7 +385,7 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			button:SetBackdropBorderColor(0,0,0,0)
 			if not button.visibleBut then
 				button.visibleBut = CreateFrame("Frame",nil,button)
-				button.visibleBut:SetHeight(config.buttonSpacing*2)
+				button.visibleBut:SetHeight(TukuiDB.petbuttonspacing*2)
 				if point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" or point == "BOTTOM" then
 					button.visibleBut:SetPoint("TOPLEFT")
 					button.visibleBut:SetPoint("TOPRIGHT")
@@ -416,7 +416,7 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			button.background:ClearAllPoints()
 			button.background:SetPoint("TOPLEFT",button,"TOPLEFT",config.borderWidth,-config.borderWidth)
 			button.background:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-config.borderWidth,config.borderWidth)
-			button:SetSize(config.buttonSize, config.buttonSize)
+			button:SetSize(TukuiDB.petbuttonsize, TukuiDB.petbuttonsize)
 			button:SetBackdropBorderColor(unpack(bordercolors[((index-1) % 4) + 1]))
 			style(button)
 			TukuiDB.StyleButton(button, false)
@@ -459,7 +459,7 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			button:GetNormalTexture():SetTexture(nil)
 			self:SkinBackgroundFrame(button)
 			button:SetBackdropBorderColor(unpack(bordercolors[((index-1)%5)+1]))
-			if not InCombatLockdown() then button:SetSize(config.buttonSize, config.buttonSize) end
+			if not InCombatLockdown() then button:SetSize(TukuiDB.petbuttonsize, TukuiDB.petbuttonsize) end
 			_G[button:GetName().."Highlight"]:SetTexture(nil)
 			_G[button:GetName().."NormalTexture"]:SetTexture(nil)
 			style(button)
