@@ -147,6 +147,9 @@ if TukuiCF["auras"].raidunitbuffwatch == true then
 			{91342, "TOPRIGHT", {0.2, 0.8, 0.2}}, -- Shadow Infusion
 			{63560, "TOPLEFT", {227/255, 23/255, 13/255}}, --Dark Transformation
 		},
+		WARLOCK = {
+			{47193, "TOPRIGHT", {227/255, 23/255, 13/255}}, --Demonic Empowerment
+		},
 	}
 end
 
