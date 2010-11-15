@@ -160,6 +160,8 @@ if TukuiDB.client == "zhCN" then
 	tukuilocal.core_uihelp13 = "|cffFF0000/mss|r - 移动变形列和图腾列"
 	tukuilocal.core_uihelp15 = "|cffFF0000/ainv|r - 输入关键词(预设:/ainv)以启用密语自动邀请, 您可以自行设定关键词, 指令为/ainv 关键词"
 	tukuilocal.core_uihelp16 = "|cffFF0000/resetgold|r - 重置你的金钱计数"
+	tukuilocal.core_uihelp17 = "|cffFF0000/moveele|r - Toggles the unlocking of various unitframe elements."
+	tukuilocal.core_uihelp18 = "|cffFF0000/resetele|r - Resets all elements to their default position. You can also just reset a specific element by typing /resetele <elementname>."
 	tukuilocal.core_uihelp14 = "(向上滚动以获得更多命令...)"
 
 	tukuilocal.bind_combat = "您不能在战斗中设定快捷键"

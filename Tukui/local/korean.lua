@@ -159,6 +159,8 @@
 	tukuilocal.core_uihelp12 = "|cffFF0000/wf|r - 임무 추적기를 이동할 수 있습니다."
 	tukuilocal.core_uihelp13 = "|cffFF0000/mss|r - 특수 기술 단축바를 이동할 수 있습니다."
 	tukuilocal.core_uihelp15 = "|cffFF0000/ainv|r - 자동초대 기능을 사용합니다. '/ainv 단어'를 입력하여 해당 단어가 들어간 귓속말이 올 경우 자동으로 초대를 합니다."
+	tukuilocal.core_uihelp17 = "|cffFF0000/moveele|r - Toggles the unlocking of various unitframe elements."
+	tukuilocal.core_uihelp18 = "|cffFF0000/resetele|r - Resets all elements to their default position. You can also just reset a specific element by typing /resetele <elementname>."
 	tukuilocal.core_uihelp14 = "(위로 올리십시오 ...)"
  
 	tukuilocal.bind_combat = "전투 중에는 단축키를 지정할 수 없습니다."

@@ -290,6 +290,8 @@ local function UIHelp()
 	print(tukuilocal.core_uihelp13)
 	print(tukuilocal.core_uihelp15)
 	print(tukuilocal.core_uihelp16)
+	print(tukuilocal.core_uihelp17)
+	print(tukuilocal.core_uihelp18)
 	print(" ")
 	print(tukuilocal.core_uihelp14)
 end
