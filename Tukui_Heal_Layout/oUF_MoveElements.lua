@@ -47,13 +47,14 @@ local function CreateFrameOverlay(parent, name)
 		self:StopMovingOrSizing() 
 		HealElementsCharPos[name] = true
 	end)
-		
-	if not FramesDefault[name] then FramesDefault[name] = { } end
-	if not FramesDefault[name]["p"] then FramesDefault[name]["p"] = p end
-	if not FramesDefault[name]["p2"] then FramesDefault[name]["p2"] = p2 end
-	if not FramesDefault[name]["p3"] then FramesDefault[name]["p3"] = p3 end
-	if not FramesDefault[name]["p4"] then FramesDefault[name]["p4"] = p4 end
-	if not FramesDefault[name]["p5"] then FramesDefault[name]["p5"] = p5 end
+	
+	local x = tostring(name)
+	if not FramesDefault[x] then FramesDefault[x] = { } end
+	if not FramesDefault[x]["p"] then FramesDefault[x]["p"] = p end
+	if not FramesDefault[x]["p2"] then FramesDefault[x]["p2"] = p2 end
+	if not FramesDefault[x]["p3"] then FramesDefault[x]["p3"] = p3 end
+	if not FramesDefault[x]["p4"] then FramesDefault[x]["p4"] = p4 end
+	if not FramesDefault[x]["p5"] then FramesDefault[x]["p5"] = p5 end
 
 	f:SetAlpha(0)
 	f:SetMovable(true)
@@ -81,7 +82,18 @@ do
 	CreateFrameOverlay(oUF_TukzHeal_target.Buffs, "TargetBuffs")
 	CreateFrameOverlay(oUF_TukzHeal_player.Debuffs, "PlayerDebuffs")
 	CreateFrameOverlay(oUF_TukzHeal_target.Debuffs, "TargetDebuffs")
+	CreateFrameOverlay(oUF_TukzHeal_focus.Debuffs, "FocusDebuffs")
+	CreateFrameOverlay(oUF_TukzHeal_targettarget.Debuffs, "TargetTargetDebuffs")
 end
+
+StaticPopupDialogs["RELOAD"] = {
+	text = SLASH_RELOAD1.."?",
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	OnAccept = function() ReloadUI() end,
+	timeout = 0,
+	whileDead = 1,
+}
 
 local function ShowCBOverlay()
 	if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end
@@ -110,8 +122,8 @@ local function ResetElements(arg1)
 			_G[Frames]:ClearAllPoints()
 			_G[Frames]:SetPoint(FramesDefault[name]["p"], FramesDefault[name]["p2"], FramesDefault[name]["p3"], FramesDefault[name]["p4"], FramesDefault[name]["p5"])
 			HealElementsCharPos[name] = false
-			ReloadUI()
 		end
+		StaticPopup_Show("RELOAD")
 	else
 		if not _G[arg1] then return end
 		for i, Frames in pairs(Frames) do
@@ -123,6 +135,7 @@ local function ResetElements(arg1)
 				ReloadUI()
 			end
 		end
+		StaticPopup_Show("RELOAD")
 	end
 end
 SLASH_RESETELEMENTS1 = "/resetele"
