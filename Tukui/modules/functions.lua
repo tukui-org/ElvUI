@@ -937,6 +937,12 @@ TukuiDB.MoveBuffs = function(self, login)
 			parent.Status:Hide()
 		end
 		parent.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(17))
+		
+		if (IsAddOnLoaded("Tukui_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["PlayerBuffs"] == true) then return end
+		if (IsAddOnLoaded("Tukui_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["PlayerBuffs"] == true) then return end
+		if (IsAddOnLoaded("Tukui_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["PlayerDebuffs"] == true) then return end
+		if (IsAddOnLoaded("Tukui_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["PlayerDebuffs"] == true) then return end
+		
 		if parent.Debuffs then 
 			parent.Debuffs:ClearAllPoints()
 			if parent.Debuffs then parent.Debuffs:SetPoint("BOTTOM", parent.Health, "TOP", 0, TukuiDB.Scale(17)) end	
@@ -947,6 +953,12 @@ TukuiDB.MoveBuffs = function(self, login)
 			parent.Status:Show()
 		end
 		parent.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))
+		
+		if (IsAddOnLoaded("Tukui_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["PlayerBuffs"] == true) then return end
+		if (IsAddOnLoaded("Tukui_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["PlayerBuffs"] == true) then return end
+		if (IsAddOnLoaded("Tukui_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["PlayerDebuffs"] == true) then return end
+		if (IsAddOnLoaded("Tukui_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["PlayerDebuffs"] == true) then return end
+		
 		if parent.Debuffs then 
 			parent.Debuffs:ClearAllPoints()
 			parent.Debuffs:SetPoint("BOTTOM", parent.Health, "TOP", 0, TukuiDB.Scale(6))

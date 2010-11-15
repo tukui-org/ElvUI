@@ -9,6 +9,8 @@ end
 
 local function CreateFrameOverlay(parent, name)
 	if not parent then return end
+	if name == "PlayerCastBar" and TukuiCF["castbar"].castermode == true then return end
+	
 	--Setup Variables
 	if not DPSElementsCharPos[name] then DPSElementsCharPos[name] = false end
 	
@@ -70,16 +72,16 @@ local function CreateFrameOverlay(parent, name)
 	fs:SetText(name)
 end
 
-
-CreateFrameOverlay(oUF_TukzDPS_player.Castbar, "PlayerCastBar")
-CreateFrameOverlay(oUF_TukzDPS_target.Castbar, "TargetCastBar")
-CreateFrameOverlay(oUF_TukzDPS_focus.Castbar, "FocusCastBar")
-CreateFrameOverlay(oUF_TukzDPS_target.CPoints, "ComboBar")
---Not doing this, idk if i will would require a lot of modifications inside functions.lua
---[[CreateFrameOverlay(oUF_TukzDPS_player.Buffs, "PlayerBuffs")
-CreateFrameOverlay(oUF_TukzDPS_target.Buffs, "TargetBuffs")
-CreateFrameOverlay(oUF_TukzDPS_player.Debuffs, "PlayerDebuffs")
-CreateFrameOverlay(oUF_TukzDPS_target.Debuffs, "TargetDebuffs")]]
+do 
+	CreateFrameOverlay(oUF_TukzDPS_player.Castbar, "PlayerCastBar")
+	CreateFrameOverlay(oUF_TukzDPS_target.Castbar, "TargetCastBar")
+	CreateFrameOverlay(oUF_TukzDPS_focus.Castbar, "FocusCastBar")
+	CreateFrameOverlay(oUF_TukzDPS_target.CPoints, "ComboBar")
+	CreateFrameOverlay(oUF_TukzDPS_player.Buffs, "PlayerBuffs")
+	CreateFrameOverlay(oUF_TukzDPS_target.Buffs, "TargetBuffs")
+	CreateFrameOverlay(oUF_TukzDPS_player.Debuffs, "PlayerDebuffs")
+	CreateFrameOverlay(oUF_TukzDPS_target.Debuffs, "TargetDebuffs")
+end
 
 local function ShowCBOverlay()
 	if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end
@@ -93,6 +95,7 @@ local function ShowCBOverlay()
 			_G[Frames.."Move"] = false
 			_G[Frames]:SetAlpha(0)
 			_G[Frames]:EnableMouse(false)	
+			ReloadUI()
 		end
 	end
 end
@@ -107,6 +110,7 @@ local function ResetElements(arg1)
 			_G[Frames]:ClearAllPoints()
 			_G[Frames]:SetPoint(FramesDefault[name]["p"], FramesDefault[name]["p2"], FramesDefault[name]["p3"], FramesDefault[name]["p4"], FramesDefault[name]["p5"])
 			DPSElementsCharPos[name] = false
+			ReloadUI()
 		end
 	else
 		if not _G[arg1] then return end
@@ -115,8 +119,8 @@ local function ResetElements(arg1)
 				local name = _G[arg1]:GetName()
 				_G[arg1]:ClearAllPoints()
 				_G[arg1]:SetPoint(FramesDefault[name]["p"], FramesDefault[name]["p2"], FramesDefault[name]["p3"], FramesDefault[name]["p4"], FramesDefault[name]["p5"])	
-				DPSElementsCharPos[name] = false		
-				break
+				DPSElementsCharPos[name] = false	
+				ReloadUI()		
 			end
 		end
 	end

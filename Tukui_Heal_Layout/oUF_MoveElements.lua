@@ -9,6 +9,8 @@ end
 
 local function CreateFrameOverlay(parent, name)
 	if not parent then return end
+	if name == "PlayerCastBar" and TukuiCF["castbar"].castermode == true then return end
+	
 	--Setup Variables
 	if not HealElementsCharPos[name] then HealElementsCharPos[name] = false end
 	
@@ -70,16 +72,16 @@ local function CreateFrameOverlay(parent, name)
 	fs:SetText(name)
 end
 
-
-CreateFrameOverlay(oUF_TukzHeal_player.Castbar, "PlayerCastBar")
-CreateFrameOverlay(oUF_TukzHeal_target.Castbar, "TargetCastBar")
-CreateFrameOverlay(oUF_TukzHeal_focus.Castbar, "FocusCastBar")
-CreateFrameOverlay(oUF_TukzHeal_target.CPoints, "ComboBar")
---Not doing this, idk if i will would require a lot of modifications inside functions.lua
---[[CreateFrameOverlay(oUF_TukzHeal_player.Buffs, "PlayerBuffs")
-CreateFrameOverlay(oUF_TukzHeal_target.Buffs, "TargetBuffs")
-CreateFrameOverlay(oUF_TukzHeal_player.Debuffs, "PlayerDebuffs")
-CreateFrameOverlay(oUF_TukzHeal_target.Debuffs, "TargetDebuffs")]]
+do
+	CreateFrameOverlay(oUF_TukzHeal_player.Castbar, "PlayerCastBar")
+	CreateFrameOverlay(oUF_TukzHeal_target.Castbar, "TargetCastBar")
+	CreateFrameOverlay(oUF_TukzHeal_focus.Castbar, "FocusCastBar")
+	CreateFrameOverlay(oUF_TukzHeal_target.CPoints, "ComboBar")
+	CreateFrameOverlay(oUF_TukzHeal_player.Buffs, "PlayerBuffs")
+	CreateFrameOverlay(oUF_TukzHeal_target.Buffs, "TargetBuffs")
+	CreateFrameOverlay(oUF_TukzHeal_player.Debuffs, "PlayerDebuffs")
+	CreateFrameOverlay(oUF_TukzHeal_target.Debuffs, "TargetDebuffs")
+end
 
 local function ShowCBOverlay()
 	if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end
@@ -93,6 +95,7 @@ local function ShowCBOverlay()
 			_G[Frames.."Move"] = false
 			_G[Frames]:SetAlpha(0)
 			_G[Frames]:EnableMouse(false)	
+			ReloadUI()
 		end
 	end
 end
@@ -107,6 +110,7 @@ local function ResetElements(arg1)
 			_G[Frames]:ClearAllPoints()
 			_G[Frames]:SetPoint(FramesDefault[name]["p"], FramesDefault[name]["p2"], FramesDefault[name]["p3"], FramesDefault[name]["p4"], FramesDefault[name]["p5"])
 			HealElementsCharPos[name] = false
+			ReloadUI()
 		end
 	else
 		if not _G[arg1] then return end
@@ -116,7 +120,7 @@ local function ResetElements(arg1)
 				_G[arg1]:ClearAllPoints()
 				_G[arg1]:SetPoint(FramesDefault[name]["p"], FramesDefault[name]["p2"], FramesDefault[name]["p3"], FramesDefault[name]["p4"], FramesDefault[name]["p5"])	
 				HealElementsCharPos[name] = false		
-				break
+				ReloadUI()
 			end
 		end
 	end
