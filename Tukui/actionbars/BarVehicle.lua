@@ -20,19 +20,10 @@ vbar:SetScript("OnEvent", function(self, event, ...)
 			self:SetFrameRef("VehicleMenuBarActionButton"..i, button)
 		end	
 
-		self:Execute([[
-			buttons = table.new()
-			for i = 1, 6 do
-				table.insert(buttons, self:GetFrameRef("VehicleMenuBarActionButton"..i))
-			end
-		]])
-
 		self:SetAttribute("_onstate-vehicleupdate", [[
 			if newstate == "s1" then
-				self:Show()
 				self:GetParent():Show()
 			else
-				self:Hide()
 				self:GetParent():Hide()
 			end
 		]])

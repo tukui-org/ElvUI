@@ -5,6 +5,7 @@
 ## X-Email: tukz@tukui.org
 ## X-Category: UnitFrame
 ## RequiredDeps: Tukui
+## SavedVariablesPerCharacter: DPSElementsCharPos
 
 templates.xml
 tags.lua
@@ -12,3 +13,5 @@ layout.lua
 oUF_Tukz_Party.lua
 oUF_Tukz_Raid6_25.lua
 oUF_Tukz_Raid26_40.lua
+
+oUF_MoveElements.lua

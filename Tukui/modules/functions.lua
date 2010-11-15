@@ -125,7 +125,7 @@ TukuiDB.SetFontString = function(parent, fontName, fontHeight, fontStyle)
 	fs:SetFont(fontName, fontHeight, fontStyle)
 	fs:SetJustifyH("LEFT")
 	fs:SetShadowColor(0, 0, 0)
-	fs:SetShadowOffset(1.25, -1.25)
+	fs:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
 	return fs
 end
 
@@ -241,7 +241,7 @@ local function CheckRole(self, event, unit)
 		local base, posBuff, negBuff = UnitAttackPower("player");
 		local playerap = base + posBuff + negBuff;
 
-		if ((playerap > playerint) or (playeragi > playerint)) and not (UnitBuff("player", GetSpellInfo(24858)) or UnitBuff("player", GetSpellInfo(65139))) then
+		if (((playerap > playerint) or (playeragi > playerint)) and not (UnitBuff("player", GetSpellInfo(24858)) or UnitBuff("player", GetSpellInfo(65139)))) or TukuiDB.myclass == "ROGUE" or TukuiDB.myclass == "HUNTER" then
 			TukuiDB.Role = "Melee"
 		else
 			TukuiDB.Role = "Caster"
@@ -883,7 +883,7 @@ TukuiDB.PostCastStart = function(self, unit, name, rank, castid)
 	if unit == "vehicle" then unit = "player" end
 	--Fix blank castbar with opening text
 	if name == "Opening" then
-		self.Text:SetText("Opening")
+		self.Text:SetText(OPENING)
 	end
 	
 	if self.interrupt and unit ~= "player" then
@@ -1024,13 +1024,16 @@ TukuiDB.ComboDisplay = function(self, event, unit)
 		for i=1, MAX_COMBO_POINTS do
 			cpoints[i]:Show()
 		end
+		if (IsAddOnLoaded("Tukui_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["ComboBar"] == true) then return end
+		if (IsAddOnLoaded("Tukui_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["ComboBar"] == true) then return end
 		self.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(17))
 		if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOM", self.Health, "TOP", 0, TukuiDB.Scale(17)) end	
 	else
 		for i=1, MAX_COMBO_POINTS do
 			cpoints[i]:Hide()
 		end
-
+		if (IsAddOnLoaded("Tukui_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["ComboBar"] == true) then return end
+		if (IsAddOnLoaded("Tukui_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["ComboBar"] == true) then return end
 		self.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))	
 		if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOM", self.Health, "TOP", 0, TukuiDB.Scale(4)) end	
 	end
