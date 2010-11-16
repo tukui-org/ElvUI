@@ -160,7 +160,7 @@ oUF:RegisterStyle('TukuiHealR26R40', Shared)
 oUF:Factory(function(self)
 	oUF:SetActiveStyle("TukuiHealR26R40")	
 	local yOffset = 0
-	if TukuiCF["castbar"].castermode == true then
+	if TukuiCF["castbar"].castermode == true and (HealElementsCharPos and HealElementsCharPos["PlayerCastBar"] ~= true) then
 		yOffset = yOffset + 28
 	end
 	local raid = self:SpawnHeader("oUF_TukuiHealR26R40", nil, "custom [@raid26,exists] show;hide",

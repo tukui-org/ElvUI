@@ -9,7 +9,6 @@ end
 
 local function CreateFrameOverlay(parent, name)
 	if not parent then return end
-	if name == "PlayerCastBar" and TukuiCF["castbar"].castermode == true then return end
 	
 	--Setup Variables
 	if not HealElementsCharPos[name] then HealElementsCharPos[name] = false end
@@ -107,7 +106,6 @@ local function ShowCBOverlay()
 			_G[Frames.."Move"] = false
 			_G[Frames]:SetAlpha(0)
 			_G[Frames]:EnableMouse(false)	
-			ReloadUI()
 		end
 	end
 end
@@ -132,7 +130,6 @@ local function ResetElements(arg1)
 				_G[arg1]:ClearAllPoints()
 				_G[arg1]:SetPoint(FramesDefault[name]["p"], FramesDefault[name]["p2"], FramesDefault[name]["p3"], FramesDefault[name]["p4"], FramesDefault[name]["p5"])	
 				HealElementsCharPos[name] = false		
-				ReloadUI()
 			end
 		end
 		StaticPopup_Show("RELOAD")

@@ -331,7 +331,7 @@ oUF:RegisterStyle('TukuiHealParty', Shared)
 oUF:Factory(function(self)
 	oUF:SetActiveStyle("TukuiHealParty")
 	local yOffset = 0
-	if TukuiCF["castbar"].castermode == true then
+	if TukuiCF["castbar"].castermode == true and (HealElementsCharPos and HealElementsCharPos["PlayerCastBar"] ~= true) then
 		yOffset = yOffset + 28
 	end
 	

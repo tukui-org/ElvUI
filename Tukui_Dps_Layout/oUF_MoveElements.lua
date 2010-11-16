@@ -9,7 +9,6 @@ end
 
 local function CreateFrameOverlay(parent, name)
 	if not parent then return end
-	if name == "PlayerCastBar" and TukuiCF["castbar"].castermode == true then return end
 	
 	--Setup Variables
 	if not DPSElementsCharPos[name] then DPSElementsCharPos[name] = false end
