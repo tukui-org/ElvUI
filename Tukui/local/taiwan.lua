@@ -160,8 +160,8 @@
 	tukuilocal.core_uihelp13 = "|cffFF0000/mss|r - 移動姿態/變形列和圖騰列"
 	tukuilocal.core_uihelp15 = "|cffFF0000/ainv|r - 輸入關鍵字(預設:/ainv)以啟用密語自動邀請, 您可以自行設定關鍵字, 指令為/ainv 關鍵字"
 	tukuilocal.core_uihelp16 = "|cffFF0000/resetgold|r - 重置金錢記錄"
-	tukuilocal.core_uihelp17 = "|cffFF0000/moveele|r - Toggles the unlocking of various unitframe elements."
-	tukuilocal.core_uihelp18 = "|cffFF0000/resetele|r - Resets all elements to their default position. You can also just reset a specific element by typing /resetele <elementname>."
+	tukuilocal.core_uihelp17 = "|cffFF0000/moveele|r - 解鎖單位視窗可移動部位"
+	tukuilocal.core_uihelp18 = "|cffFF0000/resetele|r - 將所有可移動部位重置回預設位置，重置單一部位請用/resetele <部位名稱>。"
 	tukuilocal.core_uihelp14 = "(向上滾動以獲得更多命令 ...)"
 
 	tukuilocal.bind_combat = "您不能在戰鬥中設定快捷鍵"

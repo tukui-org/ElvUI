@@ -6,7 +6,8 @@
 	TukuiL.option_general_customuiscale = "Escala de la interfaz (si la escala automática está desactivada)"
 	TukuiL.option_general_embedright = "Addon que se ajustará en el panel de chat derecho (Recount, Omen, Skada)"
 	TukuiL.option_general_classtheme = "Colorear los bordes del color de tu clase"
- 
+	TukuiL.option_general_autocustomlagtolerance = "Automatically update the Blizzard Custom Lag Tolerance option to your latency."
+	 
 	--Media
 	TukuiL.option_media = "Medios"
 	TukuiL.option_media_font = "Ruta de la fuente que será usada como fuente principal"

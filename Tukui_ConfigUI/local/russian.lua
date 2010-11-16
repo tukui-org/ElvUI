@@ -6,7 +6,8 @@
 	TukuiL.option_general_customuiscale = "Масштаб интерфейса (если автомасштабирование отключено)"
 	TukuiL.option_general_embedright = "Аддон правой панели(Recount, Omen, Skada)"
 	TukuiL.option_general_classtheme = "Окрасить края рамок в соответствии с Вашим классом"
-
+	TukuiL.option_general_autocustomlagtolerance = "Automatically update the Blizzard Custom Lag Tolerance option to your latency."
+	
 	--Media
 	TukuiL.option_media = "Медиа"
 	TukuiL.option_media_font = "Путь к файлу основного шрифта"

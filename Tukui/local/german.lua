@@ -158,8 +158,8 @@ if TukuiDB.client == "deDE" then
 	tukuilocal.core_uihelp13 = "|cffFF0000/mss|r - Befehl, um die Haltungs-(Krieger), Präsenz-(Todesritter), Auren-(Paladin), Formen-(Druide), Schattengestalt-(Priester) und Totem-(Schamane) Leisten zu bewegen."
 	tukuilocal.core_uihelp15 = "|cffFF0000/ainv|r - Aktiviere autoinvite per Flüsterschlüsselwort. Du kannst durch Tippen von <code>/ainv meinwort</code> dein eigenes Schlüsselwort setzen."
 	tukuilocal.core_uihelp16 = "|cffFF0000/resetgold|r - Gold im Infotext zurücksetzen"
-	tukuilocal.core_uihelp17 = "|cffFF0000/moveele|r - Toggles the unlocking of various unitframe elements."
-	tukuilocal.core_uihelp18 = "|cffFF0000/resetele|r - Resets all elements to their default position. You can also just reset a specific element by typing /resetele <elementname>."
+	tukuilocal.core_uihelp17 = "|cffFF0000/moveele|r - Entsperrt diverse Einheitenfeatures(Castbars/Buffs/Debuffs/ComboBar)."
+	tukuilocal.core_uihelp18 = "|cffFF0000/resetele|r -  Resettet alle geänderten Einheitenfeatures(Castbars/Buffs/Debuffs/ComboBar). Ein bestimmtes Element kann man mit dem Befehl /resetele <elementname> resetten."
 	tukuilocal.core_uihelp14 = "Scrolle hoch für mehr Befehle ...)"
  
 	tukuilocal.bind_combat = "Du kannst keine Tasten im Kampf belegen."

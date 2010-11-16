@@ -34,6 +34,7 @@ local function Local(o)
 	if o == "TukuiConfigUIgeneraluiscale" then o = TukuiL.option_general_customuiscale end
 	if o == "TukuiConfigUIgeneralembedright" then o = TukuiL.option_general_embedright end
 	if o == "TukuiConfigUIgeneralclasscolortheme" then o = TukuiL.option_general_classtheme end
+	if o == "TukuiConfigUIgeneralautocustomlagtolerance" then o = TukuiL.option_general_autocustomlagtolerance end
 	
 	--Media
 	if o =="TukuiConfigUImedia" then o = TukuiL.option_media end

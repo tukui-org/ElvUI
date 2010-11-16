@@ -4,6 +4,7 @@
 	["multisampleprotect"] = true,         -- i don't recommend this because of shitty border but, voila!
 	["embedright"] = "NONE",				-- Addon to embed to the right frame ("Omen", "Recount", "Skada")
 	["classcolortheme"] = false,			--class colored theme for panels
+	["autocustomlagtolerance"] = true,		--set custom lag tollerance to your latency
 }
 
 TukuiCF["skin"] = {	--Skin addons by Darth Android

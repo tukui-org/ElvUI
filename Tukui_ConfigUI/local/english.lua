@@ -6,6 +6,7 @@ TukuiL.option_general_multisample = "Multisample protection (clean 1px border)"
 TukuiL.option_general_customuiscale = "UI Scale (if auto-scale is disabled)"
 TukuiL.option_general_embedright = "Addon to embed to right chat panel (Recount, Omen, Skada)"
 TukuiL.option_general_classtheme = "Color border colors to your class"
+TukuiL.option_general_autocustomlagtolerance = "Automatically update the Blizzard Custom Lag Tolerance option to your latency."
 
 --Media
 TukuiL.option_media = "Media"

@@ -54,3 +54,23 @@ if TukuiCF["others"].spincam == true then
 		MoveViewRightStop()
 	end
 end
+
+--Custom Lag Tolerance 
+if TukuiCF["general"].autocustomlagtolerance == true then
+	InterfaceOptionsCombatPanelMaxSpellStartRecoveryOffset:Hide()
+	
+	local customlag = CreateFrame("Frame")
+	local int = 5
+	local LatencyUpdate = function(self, elapsed)
+		int = int - elapsed
+		if int < 0 then
+			if GetCVar("reducedLagTolerance") ~= tostring(1) then return end
+			if select(3, GetNetStats()) ~= 0 and select(3, GetNetStats()) <= 400 then
+				SetCVar("maxSpellStartRecoveryOffset", tostring(select(3, GetNetStats())))
+			end
+			int = 5
+		end
+	end
+	customlag:SetScript("OnUpdate", LatencyUpdate)
+	LatencyUpdate(customlag, 10)
+end

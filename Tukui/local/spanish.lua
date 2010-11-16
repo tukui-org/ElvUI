@@ -158,8 +158,8 @@ if TukuiDB.client == "esES" then
 	tukuilocal.core_uihelp13 = "|cffFF0000/mss|r - Mover la barra de cambio de forma o totem."
 	tukuilocal.core_uihelp15 = "|cffFF0000/ainv|r - Activar autoinvitar via palabra clave en susurros. Puedes asignar tu propia palabra clave escrubiendo <code>/ainv mipalabra</code>"
 	tukuilocal.core_uihelp16 = "|cffFF0000/resetgold|r - reinicia el texto de datos de oro"
-	tukuilocal.core_uihelp17 = "|cffFF0000/moveele|r - Toggles the unlocking of various unitframe elements."
-	tukuilocal.core_uihelp18 = "|cffFF0000/resetele|r - Resets all elements to their default position. You can also just reset a specific element by typing /resetele <elementname>."
+	tukuilocal.core_uihelp17 = "|cffFF0000/moveele|r - Desbloquea ciertos marcos de unidades para poder moverlos."
+	tukuilocal.core_uihelp18 = "|cffFF0000/resetele|r - Reinicia todos los elementos a su posición inicial. También puedes reiniciar un elemento concreto poniendo /resetele <nombrelemento>."
 	tukuilocal.core_uihelp14 = "(Sube para más comandos ...)"
  
 	tukuilocal.bind_combat = "No puedes vincular teclas en combate."
