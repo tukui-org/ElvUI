@@ -343,13 +343,11 @@ oUF:Factory(function(self)
 				local pet = header:GetChildren():GetName()
 				self:SetWidth(%d)
 				self:SetHeight(%d)
-				if pet == "oUF_TukuiHealPartyUnitButton1Pet" or 
-				pet == "oUF_TukuiHealPartyUnitButton2Pet" or 
-				pet == "oUF_TukuiHealPartyUnitButton3Pet" or 
-				pet == "oUF_TukuiHealPartyUnitButton4Pet" or 
-				pet == "oUF_TukuiHealPartyUnitButton5Pet" then
-					header:GetChildren():SetWidth(%d)
-					header:GetChildren():SetHeight(%d)
+				for i = 1, 5 do
+					if pet == "oUF_TukuiHealPartyUnitButton"..i.."Pet" then
+						header:GetChildren():SetWidth(%d)
+						header:GetChildren():SetHeight(%d)		
+					end
 				end
 			]]):format(party_width, party_height, pet_width, pet_height),	
 			"showRaid", true, 

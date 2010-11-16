@@ -179,6 +179,7 @@
 	TukuiL.option_tooltip_xOfs = "提示訊息X-軸位子調整 (-x = 左, +x = 右)"
 	TukuiL.option_tooltip_yOfs = "提示訊息Y-軸位子調整 (-y = 下, +y = 上)"
 	 
+	
 	-- others
 	TukuiL.option_others = "其它功能"
 	TukuiL.option_others_bg = "戰場中死亡自動放魂"

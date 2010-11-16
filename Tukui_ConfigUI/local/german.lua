@@ -178,6 +178,7 @@
 	TukuiL.option_tooltip_xOfs = "X-Richtung des Tooltips (-x = Links, +x = Rechts)"
 	TukuiL.option_tooltip_yOfs = "Y-Richtung des Tooltips (-y = Unten, +y = Oben)"
  
+	
 	-- others
 	TukuiL.option_others = "Sonstiges"
 	TukuiL.option_others_bg = "Aktiviere automisches Freilassen im Schlachtfeld"

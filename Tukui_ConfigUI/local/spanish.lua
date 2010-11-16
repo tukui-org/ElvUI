@@ -176,6 +176,7 @@
 	TukuiL.option_tooltip_xOfs = "Compensación en el eje X del tooltip (-x = Izquierda, +x = Derecha)"
 	TukuiL.option_tooltip_yOfs = "Compensación en el eje Ydel tooltip (-y = Izquierda, +y = Arriba)"
  
+	
 	-- others
 	TukuiL.option_others = "Otros"
 	TukuiL.option_others_bg = "Activar la liberación automática del cadáver en los campos de batalla"

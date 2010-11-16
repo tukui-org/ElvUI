@@ -178,6 +178,7 @@
 	TukuiL.option_tooltip_xOfs = "X-Отступ подсказки (-x = Лево, +x = Право)"
 	TukuiL.option_tooltip_yOfs = "Y-Отступ подсказки (-y = Низ, +y = Верх)"
 
+	
 	-- others
 	TukuiL.option_others = "Прочее"
 	TukuiL.option_others_bg = "Автоматически отпускать дух из тела на полях боя"

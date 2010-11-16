@@ -178,6 +178,7 @@ if GetLocale() == "frFR" then
 	TukuiL.option_tooltip_xOfs = "X-Offset de l'infobulle (-x = gauche, +x = droite)" --"X-Offset of the tooltip (-x = Left, +x = Right)"
 	TukuiL.option_tooltip_yOfs = "Y-Offset de l'infobulle (-y = descendre, +y = monter)" --"Y-Offset of the tooltip (-y = Down, +y = Up)"
  
+	
 	-- others
 	TukuiL.option_others = "Divers" --"Others"
 	TukuiL.option_others_bg = "Libérer automatiquement en BG" --"Enable Auto-Release in battleground"

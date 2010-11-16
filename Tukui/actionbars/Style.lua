@@ -4,7 +4,7 @@ local _G = _G
 local media = TukuiCF["media"]
 local securehandler = CreateFrame("Frame", nil, nil, "SecureHandlerBaseTemplate")
 
-function style(self, vehicle)
+function style(self, vehicle, totem)
 	local name = self:GetName()
 	
 	if name:match("MultiCastActionButton") then return end 
@@ -41,17 +41,19 @@ function style(self, vehicle)
 	end
 	
 	if not _G[name.."Panel"] then
-		self:SetWidth(TukuiDB.buttonsize)
-		self:SetHeight(TukuiDB.buttonsize)
+		if not totem then
+			self:SetWidth(TukuiDB.buttonsize)
+			self:SetHeight(TukuiDB.buttonsize)
  
-		local panel = CreateFrame("Frame", name.."Panel", self)
-		if vehicle then
-			TukuiDB.CreatePanel(panel, TukuiDB.buttonsize*1.2, TukuiDB.buttonsize*1.2, "CENTER", self, "CENTER", 0, 0)
-		else
-			TukuiDB.CreatePanel(panel, TukuiDB.buttonsize, TukuiDB.buttonsize, "CENTER", self, "CENTER", 0, 0)
+			local panel = CreateFrame("Frame", name.."Panel", self)
+			if vehicle then
+				TukuiDB.CreatePanel(panel, TukuiDB.buttonsize*1.2, TukuiDB.buttonsize*1.2, "CENTER", self, "CENTER", 0, 0)
+			else
+				TukuiDB.CreatePanel(panel, TukuiDB.buttonsize, TukuiDB.buttonsize, "CENTER", self, "CENTER", 0, 0)
+			end
+			panel:SetFrameStrata(self:GetFrameStrata())
+			panel:SetFrameLevel(self:GetFrameLevel() - 1)
 		end
-		panel:SetFrameStrata(self:GetFrameStrata())
-		panel:SetFrameLevel(self:GetFrameLevel() - 1)
 		
 		if Icon then
 			Icon:SetTexCoord(.08, .92, .08, .92)
@@ -362,8 +364,9 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			if point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" or point == "BOTTOM" then
 				flyout:SetPoint("BOTTOM",parent,"TOP",0,config.buttonSpacing)
 			else
-				flyout:SetPoint("TOP",parent,"BOTTOM",0,-config.buttonSpacing/2)
+				flyout:SetPoint("TOP",parent,"BOTTOM",0,-config.buttonSpacing)
 			end
+			
 			MultiCastFlyoutFrameOpenButton:Hide()
 		end
 		hooksecurefunc("MultiCastFlyoutFrame_ToggleFlyout",function(self, type, parent) skin:SkinMCABFlyoutFrame(self, type, parent) end)
@@ -418,7 +421,7 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			button.background:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-config.borderWidth,config.borderWidth)
 			button:SetSize(TukuiDB.petbuttonsize, TukuiDB.petbuttonsize)
 			button:SetBackdropBorderColor(unpack(bordercolors[((index-1) % 4) + 1]))
-			style(button)
+			style(button, false, true)
 			TukuiDB.StyleButton(button, false)
 		end
 		hooksecurefunc("MultiCastSlotButton_Update",function(self, slot) skin:SkinMCABSlotButton(self, slot) end)
@@ -447,7 +450,7 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			if not InCombatLockdown() then button:SetAllPoints(button.slotButton) end
 			button:SetBackdropBorderColor(unpack(bordercolors[((index-1) % 4) + 1]))
 			button:SetBackdropColor(0,0,0,0)
-			style(button)
+			style(button, false, true)
 			TukuiDB.StyleButton(button, false)
 		end
 		hooksecurefunc("MultiCastActionButton_Update",function(actionButton, actionId, actionIndex, slot) skin:SkinMCABActionButton(actionButton,actionIndex) end)
@@ -462,8 +465,14 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			if not InCombatLockdown() then button:SetSize(TukuiDB.petbuttonsize, TukuiDB.petbuttonsize) end
 			_G[button:GetName().."Highlight"]:SetTexture(nil)
 			_G[button:GetName().."NormalTexture"]:SetTexture(nil)
-			style(button)
+			style(button, false, true)
 			TukuiDB.StyleButton(button, false)
+			if index == 0 then
+				button:ClearAllPoints() 
+				button:SetPoint("RIGHT", MultiCastActionButton1, "LEFT", -TukuiDB.petbuttonspacing*2, 0)
+			else
+			
+			end
 		end
 		hooksecurefunc("MultiCastSummonSpellButton_Update", function(self) skin:SkinMCABSpellButton(self,0) end)
 		hooksecurefunc("MultiCastRecallSpellButton_Update", function(self) skin:SkinMCABSpellButton(self,5) end)
