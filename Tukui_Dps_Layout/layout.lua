@@ -723,7 +723,7 @@ local function Shared(self, unit)
  
 			-- cast bar latency on player
 			if TukuiCF["castbar"].cblatency == true then
-				castbar.safezone = castbar:CreateTexture(nil, "ARTWORK")
+				castbar.safezone = castbar:CreateTexture(nil, "OVERLAY")
 				castbar.safezone:SetTexture(normTex)
 				castbar.safezone:SetVertexColor(0.69, 0.31, 0.31, 0.75)
 				castbar.SafeZone = castbar.safezone

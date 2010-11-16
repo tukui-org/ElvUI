@@ -372,3 +372,28 @@ CLASS_FILTERS = {
 		},
 	},
 };
+
+if TukuiDB.myname == "Evelyne" then
+	TRINKET_FILTER = {
+		CreateSpellEntry( 32182, true ), -- Bloodlust
+	}
+	CLASS_FILTERS = {
+		MAGE = {
+			target = { 
+				CreateSpellEntry( 44457 ), -- Living Bomb
+			},
+			player = {
+				CreateSpellEntry( 36032 ), -- Arcane Blast
+				CreateSpellEntry( 1463 ), -- Mana Shield
+				CreateSpellEntry( 11426 ), -- Ice Barrier
+				CreateSpellEntry( 543 ), -- Mage Ward 
+				CreateSpellEntry( 12472 ), -- Icy Veins
+				CreateSpellEntry( 48108 ), -- Hot Streak
+			},
+			procs = {
+				CreateSpellEntry( 44544 ), -- Fingers of Frost		
+				CreateSpellEntry( 57761 ), -- Brain Frezze	
+			},
+		},
+	}
+end

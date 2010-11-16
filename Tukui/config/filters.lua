@@ -227,6 +227,7 @@ DebuffBlacklist = {
 	[SpellName(72460)] = true, --Choking Gas
 }
 
+
 -- Debuffs to Show
 -- Only works on raid frames when inside a BG/Arena. Target frame will always show these
 DebuffWhiteList = {
