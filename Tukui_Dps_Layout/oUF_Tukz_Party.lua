@@ -188,6 +188,8 @@ local function Shared(self, unit)
 	
 	self:Hide()
 	
+	self:RegisterEvent("PARTY_MEMBERS_CHANGED", TukuiDB.updateAllElements)
+	self:RegisterEvent("RAID_ROSTER_UPDATE", TukuiDB.updateAllElements)	
 	return self
 end
 

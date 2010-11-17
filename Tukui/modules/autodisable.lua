@@ -15,18 +15,6 @@ if TukuiCF["actionbar"].rightbars > 2 and TukuiCF["actionbar"].splitbar == true 
 end
 
 ------------------------------------------------------------------------
--- overwrite font for some language
-------------------------------------------------------------------------
-
-if TukuiDB.client == "ruRU" then
-	TukuiCF["media"].uffont = [[fonts\ARIALN.ttf]]
-elseif TukuiDB.client == "zhTW" or TukuiDB.client == "zhCN" then
-	TukuiCF["media"].uffont = [[fonts\bLEI00D.ttf]]
-	TukuiCF["media"].font = [[fonts\bLEI00D.ttf]]
-	TukuiCF["media"].dmgfont = [[fonts\bLEI00D.ttf]]
-end
-
-------------------------------------------------------------------------
 -- auto-overwrite script config is X mod is found
 ------------------------------------------------------------------------
 
