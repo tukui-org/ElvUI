@@ -98,7 +98,7 @@ if TukuiCF["datatext"].system and TukuiCF["datatext"].system > 0 then
 			GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
 			GameTooltip:ClearLines()
 			if bandwidth ~= 0 then
-				GameTooltip:AddDoubleLine(tukuilocal.datatext_bandwidth,format("%s ".."Mbps",bandwidth),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+				GameTooltip:AddDoubleLine(tukuilocal.datatext_bandwidth,format("%s ".."Mbps",TukuiDB.Round(bandwidth, 2)),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 				GameTooltip:AddDoubleLine(tukuilocal.datatext_download,format("%s%%", floor(GetDownloadedPercentage()*100+0.5)),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
 				GameTooltip:AddLine(" ")
 			end
