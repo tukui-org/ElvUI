@@ -64,7 +64,7 @@ if TukuiCF["general"].autocustomlagtolerance == true then
 	local LatencyUpdate = function(self, elapsed)
 		int = int - elapsed
 		if int < 0 then
-			if GetCVar("reducedLagTolerance") ~= tostring(1) then return end
+			if GetCVar("reducedLagTolerance") ~= tostring(1) then SetCVar("reducedLagTolerance", tostring(1)) end
 			if select(3, GetNetStats()) ~= 0 and select(3, GetNetStats()) <= 400 then
 				SetCVar("maxSpellStartRecoveryOffset", tostring(select(3, GetNetStats())))
 			end
