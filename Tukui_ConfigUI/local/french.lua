@@ -149,6 +149,7 @@ if GetLocale() == "frFR" then
 	TukuiL.option_unitframes_unitframes_poweroffset = "Offset of the powerbar on the frame (0 for no offset)"
 	TukuiL.option_unitframes_classbar = "Active les barres de classes (Barre de totem, Barre de pouvoir runique, Barre Sacrée, Barre des fragments d'âme, Barre d'Eclipse)"
 	TukuiL.option_unitframes_healthbackdropcolor = "Backdrop color of health on all unitframes"
+	TukuiL.option_unitframes_healthcolorbyvalue = "Color Healthbars by Health Remaining"
 	
 	-- frame sizes
 	TukuiL.option_framesizes = "Taille des portraits d'unité"

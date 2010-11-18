@@ -148,8 +148,9 @@
 	TukuiL.option_unitframes_fontsize = "Размер шрифта"
 	TukuiL.option_unitframes_unitframes_poweroffset = "Отступ полосы энергии(0 для отключения отступа)"
 	TukuiL.option_unitframes_classbar = "Классовая полоса(Полоса тотемов, Полоса рун, Полоса силы света, Полоса осколков, Полоса затмения)"
-		TukuiL.option_unitframes_healthbackdropcolor = "Backdrop color of health on all unitframes"
-	
+	TukuiL.option_unitframes_healthbackdropcolor = "Backdrop color of health on all unitframes"
+	TukuiL.option_unitframes_healthcolorbyvalue = "Color Healthbars by Health Remaining"
+		
 	-- frame sizes
 	TukuiL.option_framesizes = "Размеры фреймов"	
 	TukuiL.option_framesizes_playtarwidth = "Ширина фрейма Игрока/Цели"

@@ -150,7 +150,8 @@
 	TukuiL.option_unitframes_unitframes_poweroffset = "將能量條並排於單位框架 (0 以並排)"
 	TukuiL.option_unitframes_classbar = "啟用職業條 (圖騰列, 符文列, 神聖能量列, 靈魂裂片列, 日/月蝕列)"
     TukuiL.option_unitframes_healthbackdropcolor = "全部單位視窗生命條使用背景顏色"
-	
+	TukuiL.option_unitframes_healthcolorbyvalue = "Color Healthbars by Health Remaining"
+		
 	 -- frame sizes
 	TukuiL.option_framesizes = "單位視窗大小"
 	TukuiL.option_framesizes_playtarwidth = "玩家/目標單位框架的闊度"

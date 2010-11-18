@@ -149,7 +149,8 @@
 	TukuiL.option_unitframes_unitframes_poweroffset = "파워바 오프셋 (0은 오프셋 없음)"
 	TukuiL.option_unitframes_classbar = "직업 바를 사용"
 	TukuiL.option_unitframes_healthbackdropcolor = "생명령 바의 배경 색상"
- 
+ 	TukuiL.option_unitframes_healthcolorbyvalue = "Color Healthbars by Health Remaining"
+	
 	-- 창 크기
 	TukuiL.option_framesizes = "개체창 크기"
 	TukuiL.option_framesizes_playtarwidth = "플레이어/대상 창 너비"

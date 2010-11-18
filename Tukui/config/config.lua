@@ -28,6 +28,7 @@ TukuiCF["unitframes"] = {
 	["classcolor"] = false,                  -- color unitframes by class
 	["healthcolor"] = TukuiCF["media"].bordercolor, --color of the unitfram
 	["healthbackdropcolor"] = TukuiCF["media"].backdropcolor, --backdropcolor of the unitframe
+	["healthcolorbyvalue"] = true,			-- color health by current health remaining
 	["combatfeedback"] = true,             -- enable combattext on player and target.
 	["playeraggro"] = true,                -- color player border to red if you have aggro on current target.
 	["positionbychar"] = true,             -- save X, Y position with /uf (movable frame) per character instead of per account.

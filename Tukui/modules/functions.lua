@@ -545,6 +545,25 @@ end
 
 TukuiDB.PostUpdateHealth = function(health, unit, min, max)
 	local header = health:GetParent():GetParent():GetName()
+	
+	--Setup color health by value option
+	if TukuiCF["unitframes"].healthcolorbyvalue == true then
+		local perc = (min/max)*100
+		if(perc <= 50 and perc >= 26) then
+			health:SetStatusBarColor(224/255, 221/255, 9/255, 1)
+			health.bg:SetTexture(224/255, 221/255, 9/255, 0.1)
+		elseif(perc < 26) then
+			health:SetStatusBarColor(255/255, 13/255, 9/255, 1)
+			health.bg:SetTexture(255/255, 13/255, 9/255, 0.1)
+		else
+			health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor))
+			health.bg:SetTexture(unpack(TukuiCF["unitframes"].healthbackdropcolor))		
+		end
+	end
+	
+	--Small frames don't have health value display
+	if not health.value then return end
+	
 	if header == "oUF_TukuiHealParty" or header == "oUF_TukuiDPSParty" or header == "oUF_TukuiHealR6R25" or header == "oUF_TukuiDPSR6R25" or header == "oUF_TukuiHealR26R40" or header == "oUF_TukuiDPSR26R40" then --Raid/Party Layouts
 		if not UnitIsConnected(unit) or UnitIsDead(unit) or UnitIsGhost(unit) then
 			if not UnitIsConnected(unit) then

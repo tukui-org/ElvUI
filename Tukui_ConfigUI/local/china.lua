@@ -151,6 +151,7 @@
 	TukuiL.option_unitframes_unitframes_poweroffset = "Offset of the powerbar on the frame (0 for no offset)"
 	TukuiL.option_unitframes_classbar = "Enable Classbar (TotemBar, RuneBar, HolyBar, SoulshardBar, EclipseBar)"
 	TukuiL.option_unitframes_healthbackdropcolor = "Backdrop color of health on all unitframes"
+	TukuiL.option_unitframes_healthcolorbyvalue = "Color Healthbars by Health Remaining"
 	
 	-- frame sizes
 	TukuiL.option_framesizes = "UnitFrame Sizes"
