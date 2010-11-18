@@ -14,6 +14,10 @@ if TukuiCF["actionbar"].rightbars > 2 and TukuiCF["actionbar"].splitbar == true 
 	TukuiCF["actionbar"].rightbars = 2
 end
 
+if TukuiCF["unitframes"].classcolor == true then
+	TukuiCF["unitframes"].healthcolorbyvalue = false
+end
+
 ------------------------------------------------------------------------
 -- auto-overwrite script config is X mod is found
 ------------------------------------------------------------------------
