@@ -6,7 +6,7 @@
 	TukuiL.option_general_customuiscale = " UI比例 (當自動調整關閉時)"
 	TukuiL.option_general_embedright = "將插件綁定於右邊對話框架(Recount, Omen, Skada)"
 	TukuiL.option_general_classtheme = "框架邊緣使用職業顏色"
-	TukuiL.option_general_autocustomlagtolerance = "Automatically update the Blizzard Custom Lag Tolerance option to your latency."
+	TukuiL.option_general_autocustomlagtolerance = "自動更新自訂延遲容許值"
 		 
 	--Media
 	TukuiL.option_media = "材質&音效"

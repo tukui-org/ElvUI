@@ -6,8 +6,8 @@
 	TukuiL.option_general_customuiscale = "Interface Skalierung (falls Automatische Interface Skalierung deaktiviert ist)"
 	TukuiL.option_general_embedright = "Addon in den rechten unterem Chat einfügen (Recount, Omen, Skada)"
 	TukuiL.option_general_classtheme = "Rahmenfarbe nach Klasse färben"
-	TukuiL.option_general_autocustomlagtolerance = "Automatically update the Blizzard Custom Lag Tolerance option to your latency."
-	
+	TukuiL.option_general_autocustomlagtolerance = "Automatische Anpassung der Blizzard Custom Lag Toleranz an deine Latenz."
+ 
 	--Media
 	TukuiL.option_media = "Media"
 	TukuiL.option_media_font = "Dateipfad für die Hauptschriftart"
@@ -27,14 +27,14 @@
 	TukuiL.option_media_whisper = "Soundpfad für den Flüstersound"
 	TukuiL.option_media_warning = "Warnungssound"
 	TukuiL.option_media_glossy = "Glossy Bar Texture"
-	
+ 
 	-- nameplate
 	TukuiL.option_nameplates = "Namensplaketten"
 	TukuiL.option_nameplates_enable = "Aktiviere Namensplaketten"
 	TukuiL.option_nameplates_enhancethreat = "Aktiviere Bedrohungsanzeige, anpassung an deine Rolle"
 	TukuiL.option_nameplates_showhealth = "Zeige Leben auf den Namensplaketten"
- 	TukuiL.option_nameplates_combat = "Only show enemy nameplates in-combat"
-	
+ 	TukuiL.option_nameplates_combat = "Zeige die Gegner Namensplaketten nur im Kampf"
+ 
 	-- addon skins
 	TukuiL.option_skin = "Addon-Skins"
 	TukuiL.option_skin_dxe = "Deus Vox Encounters"
@@ -80,7 +80,7 @@
 	TukuiL.option_datatext_stat2 = "Stat 2 für deine momentane Skillung"
 	TukuiL.option_datatext_dps = "Schaden pro Sekunde Position"
 	TukuiL.option_datatext_hps = "Heilung pro Sekunde Position"
-	
+ 
 	-- auras
 	TukuiL.option_auras = "Stärkungszauber"
 	TukuiL.option_auras_minimapauras = "Aktiviere Stärkungs- und Schwächungszauber an der Minimap"
@@ -91,12 +91,12 @@
 	TukuiL.option_auras_playeraura = "Aktiviere Stärkungs- und Schwächungszauber auf dem Spieler Einheitenfenster"
 	TukuiL.option_auras_aurascale = "Text-Skalierung auf  Stärkungs-/Schwächungszaubern"
 	TukuiL.option_auras_totdebuffs = "Aktiviere Ziel vom Ziel Schwächungszauber"
-	TukuiL.option_auras_playershowonlydebuffs = "Only show debuffs on playerframe (Must have show aura on playerframe)"
-	TukuiL.option_auras_playerdebuffsonly = "Show only your debuffs, and CC debuffs on target  (inside auraFilter.lua to config)"
+	TukuiL.option_auras_playershowonlydebuffs = "Zeige Debuffs nur auf dem Spielerframe (Benötigt Auraanzeige auf Spielerframe)"
+	TukuiL.option_auras_playerdebuffsonly = "Zeige nur deine und CC Debuffs auf dem Ziel (Konfiguration in der auraFilter.lua)"
 	TukuiL.option_auras_RaidUnitBuffWatch = "Aktiviere die Anzeige für Stärkungszauber auf den Raidframes"
 	TukuiL.option_auras_playtarbuffperrow = "Anzahl von Stärkungs/Schwächungszauber in einer Reihe auf dem Spieler/Ziel Einheitenfenster"
 	TukuiL.option_auras_smallbuffperrow = "Anzahl von Stärkungs/Schwächungszauber in einer Reihe auf dem Ziel des Ziels/Fokus Einheitenfenster"
-	
+ 
 	-- raidframes
 	TukuiL.option_raidframes = "Raidframes"
 	TukuiL.option_raidframes_enable = "Aktiviere Raidframes"
@@ -115,7 +115,7 @@
 	TukuiL.option_raidframes_disableblizz = "Deaktiviere Standart Blizzard Gruppen und Raidanzeige"
  
 	-- castbar
-	TukuiL.option_castbar = "Zauberleister"
+	TukuiL.option_castbar = "Zauberleiste"
 	TukuiL.option_castbar_nointerruptcolor = "Farbe der Zauberleiste wenn nicht unterbrechbar"
 	TukuiL.option_castbar_castbarcolor = "Farbe für die Zauberleiste"
 	TukuiL.option_castbar_castbar = "Aktiviere Zauberleiste"
@@ -149,9 +149,9 @@
 	TukuiL.option_unitframes_unitframes_poweroffset = "Versetzung der Power-Leiste zum Einheitenfenster (0 für keine Versetzung)"
 	TukuiL.option_unitframes_classbar = "Aktiviere Klassenleiste (Totemleiste, Runenleiste, Heiligleiste, Seelensplitterleiste, Finsternisleiste)"
 	TukuiL.option_unitframes_healthbackdropcolor = "Hintergrundfarbe der Gesundheitsleiste aller Einheitenfenster"
-	
+ 
 	-- frame sizes
-	TukuiL.option_framesizes = "Einheitenfenstergröße"		
+	TukuiL.option_framesizes = "Einheitenfenstergröße"
 	TukuiL.option_framesizes_playtarwidth = "Breite der Spieler/Ziel Einheitenfenster"
 	TukuiL.option_framesizes_playtarheight = "Höhe der Spieler/Ziel Einheitenfenster"
 	TukuiL.option_framesizes_smallwidth = "Breite der Ziel des Ziels/Fokus/Fokus Ziel/Spieler Begleiter Einheitenfenster"
@@ -160,7 +160,7 @@
 	TukuiL.option_framesizes_arenabossheight = "Höhe der Arena/Boss Einheitenfenster"
 	TukuiL.option_framesizes_assisttankwidth = "Breite der Haupttank/Hauptassistent Einheitenfenster"
 	TukuiL.option_framesizes_assisttankheight = "Höhe der Haupttank/Hauptassistent Einheitenfenster"
-	
+ 
 	-- loot
 	TukuiL.option_loot = "Beute"
 	TukuiL.option_loot_enableloot = "Aktiviere Beutefenster"
@@ -179,7 +179,6 @@
 	TukuiL.option_tooltip_xOfs = "X-Richtung des Tooltips (-x = Links, +x = Rechts)"
 	TukuiL.option_tooltip_yOfs = "Y-Richtung des Tooltips (-y = Unten, +y = Oben)"
  
-	
 	-- others
 	TukuiL.option_others = "Sonstiges"
 	TukuiL.option_others_bg = "Aktiviere automisches Freilassen im Schlachtfeld"
@@ -214,7 +213,7 @@
 	TukuiL.option_actionbar_buttonspacing = "Abstand der Aktionsleisten Buttons"
 	TukuiL.option_actionbar_petbuttonsize = "Größe der Begleiter/Haltungs/Totems Aktionsleisten Buttons"
 	TukuiL.option_actionbar_petbuttonspacing = "Abstand der Begleiter/Haltungs/Totems Aktionsleisten Buttons"
-
+ 
 	-- arena
 	TukuiL.option_arena = "Arena"
 	TukuiL.option_arena_st = "Aktiviere Tukui-Arena Gegner Abklingzeiten Anzeige"
