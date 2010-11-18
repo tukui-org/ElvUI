@@ -179,7 +179,7 @@ if GetLocale() == "frFR" then
 	TukuiL.option_tooltip_colorreaction = "Toujours colorier la bordure de l'infobulle et la barre de vie par réaction" --"Always color tooltip border and healthbar by reaction"
 	TukuiL.option_tooltip_xOfs = "X-Offset de l'infobulle (-x = gauche, +x = droite)" --"X-Offset of the tooltip (-x = Left, +x = Right)"
 	TukuiL.option_tooltip_yOfs = "Y-Offset de l'infobulle (-y = descendre, +y = monter)" --"Y-Offset of the tooltip (-y = Down, +y = Up)"
- 
+	TukuiL.option_tooltip_itemid = "Display Item ID"
 	
 	-- others
 	TukuiL.option_others = "Divers" --"Others"

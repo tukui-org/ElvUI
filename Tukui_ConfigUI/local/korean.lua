@@ -179,7 +179,8 @@
 	TukuiL.option_tooltip_colorreaction = "툴팁 선과 생명력 바 색상"
 	TukuiL.option_tooltip_xOfs = "툴팁의 X 좌표 (-x = 좌측으로, +x = 우측으로)"
 	TukuiL.option_tooltip_yOfs = "툴팁의 Y 좌표 (-y = 아래로, +y = 위로)"
- 
+	TukuiL.option_tooltip_itemid = "Display Item ID"
+	
 	-- 기타
 	TukuiL.option_others = "기타"
 	TukuiL.option_others_bg = "전장에서 자동부활을 사용"

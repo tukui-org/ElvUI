@@ -207,6 +207,7 @@ TukuiCF["tooltip"] = {
 		["colorreaction"] = false,				-- always color border of tooltip by unit reaction
 		["xOfs"] = 0,							--X offset
 		["yOfs"] = 0,							--Y offset
+		["itemid"] = true,						--display itemid on item tooltips 
 }
 
 TukuiCF["buffreminder"] = {

@@ -179,6 +179,7 @@ TukuiL.option_tooltip_combatraid = "Only hide in combat when in a raid"
 TukuiL.option_tooltip_colorreaction = "Always color tooltip border and healthbar by reaction"
 TukuiL.option_tooltip_xOfs = "X-Offset of the tooltip (-x = Left, +x = Right)"
 TukuiL.option_tooltip_yOfs = "Y-Offset of the tooltip (-y = Down, +y = Up)"
+TukuiL.option_tooltip_itemid = "Display Item ID"
 
 -- others
 TukuiL.option_others = "Others"

@@ -28,5 +28,5 @@ f:SetScript("OnEvent", function(_, _, name)
 	if name ~= "Tukui" then return end
 	f:UnregisterEvent("ADDON_LOADED")
 	f:SetScript("OnEvent", nil)
-	TukuiItemTooltip = TukuiItemTooltip or {count=true,id=true}
+	TukuiItemTooltip = TukuiItemTooltip or {count=true,id=TukuiCF["tooltip"].itemid}
 end)

@@ -179,7 +179,7 @@
 	TukuiL.option_tooltip_colorreaction = "Всегда окрашивать рамку и полосу здоровья в зависимости от отношения"
 	TukuiL.option_tooltip_xOfs = "X-Отступ подсказки (-x = Лево, +x = Право)"
 	TukuiL.option_tooltip_yOfs = "Y-Отступ подсказки (-y = Низ, +y = Верх)"
-
+	TukuiL.option_tooltip_itemid = "Display Item ID"
 	
 	-- others
 	TukuiL.option_others = "Прочее"

@@ -177,7 +177,7 @@
 	TukuiL.option_tooltip_colorreaction = "Colorear el borde y la barra de vida del tooltip según la reacción"
 	TukuiL.option_tooltip_xOfs = "Compensación en el eje X del tooltip (-x = Izquierda, +x = Derecha)"
 	TukuiL.option_tooltip_yOfs = "Compensación en el eje Ydel tooltip (-y = Izquierda, +y = Arriba)"
- 
+	TukuiL.option_tooltip_itemid = "Display Item ID"
 	
 	-- others
 	TukuiL.option_others = "Otros"

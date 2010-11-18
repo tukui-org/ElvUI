@@ -180,7 +180,7 @@
 	TukuiL.option_tooltip_colorreaction = "提示訊息及生命條依照敵對狀態上色"
 	TukuiL.option_tooltip_xOfs = "提示訊息X-軸位子調整 (-x = 左, +x = 右)"
 	TukuiL.option_tooltip_yOfs = "提示訊息Y-軸位子調整 (-y = 下, +y = 上)"
-	 
+	TukuiL.option_tooltip_itemid = "Display Item ID"
 	
 	-- others
 	TukuiL.option_others = "其它功能"
