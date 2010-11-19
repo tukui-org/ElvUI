@@ -809,6 +809,7 @@ local function Shared(self, unit)
 			self:RegisterEvent("PLAYER_REGEN_DISABLED", TukuiDB.Fader)
 			self:RegisterEvent("PLAYER_TARGET_CHANGED", TukuiDB.Fader)
 			self:RegisterEvent("PLAYER_FOCUS_CHANGED", TukuiDB.Fader)
+			self:RegisterEvent("UNIT_HEALTH", TukuiDB.Fader)
 			self:HookScript("OnEnter", function(self) TukuiDB.Fader(self, true) end)
 			self:HookScript("OnLeave", function(self) TukuiDB.Fader(self, false) end)
 		end

@@ -483,22 +483,30 @@ local function FadeFramesInOut(fade)
 	end
 end
 
-TukuiDB.Fader = function(self, mouse, module)	
+TukuiDB.Fader = function(self, arg1, arg2)	
+	if arg1 == "UNIT_HEALTH" and self.unit ~= arg2 then return end
+	
 	local unit = self.unit
-	if module == true then self = self:GetParent() end
+	if arg2 == true then self = self:GetParent() end
 	if not unitlist[tostring(self:GetName())] then tinsert(unitlist, tostring(self:GetName())) end
 	
-	if (UnitExists("target") or UnitExists("focus")) and frameshown ~= true then
+	local cur = UnitHealth("player")
+	local max = UnitHealthMax("player")
+	
+	if cur ~= max and frameshown ~= true then
 		FadeFramesInOut(true)
 		frameshown = true	
-	elseif mouse == true and frameshown ~= true then
+	elseif (UnitExists("target") or UnitExists("focus")) and frameshown ~= true then
+		FadeFramesInOut(true)
+		frameshown = true	
+	elseif arg1 == true and frameshown ~= true then
 		FadeFramesInOut(true)
 		frameshown = true
 	else
 		if InCombatLockdown() and frameshown ~= true then
 			FadeFramesInOut(true)
 			frameshown = true	
-		elseif not UnitExists("target") and not InCombatLockdown() and not UnitExists("focus") then
+		elseif not UnitExists("target") and not InCombatLockdown() and not UnitExists("focus") and (cur == max) then
 			FadeFramesInOut(false)
 			frameshown = false
 		end
