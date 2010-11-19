@@ -209,7 +209,7 @@
 	TukuiL.option_actionbar_hk = "顯示熱鍵文字"
 	TukuiL.option_actionbar_ssmo = "啟用當滑鼠移動至變身及圖騰條時顯示"
 	TukuiL.option_actionbar_rbn = "底部動作條數量 (1 或 2)"
-	TukuiL.option_actionbar_rbn2 = "底部動作條數量 (1, 1.5, 或 2)"
+	TukuiL.option_actionbar_rbn2 = "底部動作條數量 (1, 2, 或 3)"
 	TukuiL.option_actionbar_rn = "右方動作條數量 (1, 2 或 3)"
 	TukuiL.option_actionbar_splitbar = "啟用分割動作條"
 	TukuiL.option_actionbar_bottompetbar = "將主動作條向上移動並將寵物動作條移至主動作條下方"

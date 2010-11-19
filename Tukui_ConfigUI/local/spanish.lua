@@ -206,7 +206,7 @@
 	TukuiL.option_actionbar_hk = "Mostrar los atajos en los botones"
 	TukuiL.option_actionbar_ssmo = "Mostrar la barra de cambio de forma y/o totems al pasar el ratón"
 	TukuiL.option_actionbar_rbn = "Número de barras de acción inferiores (1 o 2)"
-	TukuiL.option_actionbar_rbn2 = "Número de barras de acción inferiores (1, 1.5, o 2)"
+	TukuiL.option_actionbar_rbn2 = "Número de barras de acción inferiores (1, 2, o 3)"
 	TukuiL.option_actionbar_rn = "Número de barras de acción en la derecha (1, 2 o 3)"
 	TukuiL.option_actionbar_splitbar = "Activar las barras de acción partidas"
 	TukuiL.option_actionbar_bottompetbar = "Posicionar la barra de mascota bajo la barra principal de acción, la barra de acción principal se desplazará hacia arriba"

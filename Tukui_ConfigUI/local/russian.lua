@@ -208,7 +208,7 @@
 	TukuiL.option_actionbar_hk = "Отображать горяжие клавиши на кнопках"
 	TukuiL.option_actionbar_ssmo = "Панель стоек/тотемов при наведении мыши"
 	TukuiL.option_actionbar_rbn = "Количество панелей внизу (1 or 2)"
-	TukuiL.option_actionbar_rbn2 = "Количество панелей внизу (1, 1.5, или 2)"
+	TukuiL.option_actionbar_rbn2 = "Количество панелей внизу (1, 2, или 3)"
 	TukuiL.option_actionbar_rn = "Количество панелей справа (1, 2 or 3)"
 	TukuiL.option_actionbar_splitbar = "Включить раздельную панель"
 	TukuiL.option_actionbar_bottompetbar = "Переместить панель питомца под главную панель заклинаний"

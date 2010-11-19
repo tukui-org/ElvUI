@@ -209,7 +209,7 @@ if GetLocale() == "frFR" then
 	TukuiL.option_actionbar_hk = "Montrer les raccourcis" --"Show hotkey on buttons"
 	TukuiL.option_actionbar_ssmo = "Barre de changeforme et de totem en mouseover" --"Shapeshift bar or Totem bar on mouseover"
 	TukuiL.option_actionbar_rbn = "Nombre de barre d'actions en bas (1 ou 2)" --"Number of action bars on the bottom (1 or 2)"
-	TukuiL.option_actionbar_rbn2 = "Nombre de barre d'actions en bas (1, 1.5 ou 2)" --"Number of action bars on the bottom (1, 1.5, or 2)"
+	TukuiL.option_actionbar_rbn2 = "Nombre de barre d'actions en bas (1, 2 ou 3)" --"Number of action bars on the bottom (1, 1.5, or 2)"
 	TukuiL.option_actionbar_rn = "Nombre de barre d'actions à droite (1, 2 ou 3)" --"Number of action bars on right (1, 2 or 3)"
 	TukuiL.option_actionbar_splitbar = "Activer la splitbar." --"Enable split actionbar"
 	TukuiL.option_actionbar_bottompetbar = "Positionner la barre de familier sous la barre d'action principale, ceci déplace la barre d'action principale vers le haut"

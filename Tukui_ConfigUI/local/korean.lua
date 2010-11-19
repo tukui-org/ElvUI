@@ -208,7 +208,7 @@
 	TukuiL.option_actionbar_hk = "단축키를 표시"
 	TukuiL.option_actionbar_ssmo = "커서가 위치할 때만 특수 기술 단축바를 표시"
 	TukuiL.option_actionbar_rbn = "하단 단축바 줄의 수 (1, 2)"
-	TukuiL.option_actionbar_rbn2 = "하단 단축바 줄의 수 (1, 1.5, 2)"
+	TukuiL.option_actionbar_rbn2 = "하단 단축바 줄의 수 (1, 2, 3)"
 	TukuiL.option_actionbar_rn = "우측 단축바 줄의 수"
 	TukuiL.option_actionbar_splitbar = "스플릿 단축바를 사용"
 	TukuiL.option_actionbar_bottompetbar = "펫 기술 단축바를 하단 단축바 아래에 표시"

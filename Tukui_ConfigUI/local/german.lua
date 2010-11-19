@@ -208,7 +208,7 @@
 	TukuiL.option_actionbar_hk = "Zeige Tastenbelegung auf den Buttons"
 	TukuiL.option_actionbar_ssmo = "Gestaltenwandler- oder Totemleiste nur bei Mouseover anzeigen"
 	TukuiL.option_actionbar_rbn = "Anzahl der Aktionsleisten unten (1 oder 2)"
-	TukuiL.option_actionbar_rbn2 = "Anzahl der Aktionsleisten unten (1, 1.5, oder 2)"
+	TukuiL.option_actionbar_rbn2 = "Anzahl der Aktionsleisten unten (1, 2, oder 3)"
 	TukuiL.option_actionbar_rn = "Anzahl der Aktionsleisten rechts (1, 2 oder 3)"
 	TukuiL.option_actionbar_splitbar = "Aktviert die geteilte Leiste um die untere Aktionsleiste"
 	TukuiL.option_actionbar_bottompetbar = "Setzt die Begleiterleiste unter die Aktionsleiste 1 und schiebt diese nach oben"

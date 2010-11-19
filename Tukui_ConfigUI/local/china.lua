@@ -210,7 +210,7 @@
 	TukuiL.option_actionbar_hk = "显示热键文字"
 	TukuiL.option_actionbar_ssmo = "开启当鼠标移动至变身及图腾条时显示"
 	TukuiL.option_actionbar_rbn = "底部动作条数量 (1 或 2)"
-	TukuiL.option_actionbar_rbn2 = "底部动作条数量 (1, 1.5, 或 2)"
+	TukuiL.option_actionbar_rbn2 = "底部动作条数量 (1, 2, 或 3)"
 	TukuiL.option_actionbar_rn = "右方动作条数量 (1, 2 或 3)"
 	TukuiL.option_actionbar_splitbar = "开启分割动作条"
 	TukuiL.option_actionbar_bottompetbar = "Position pet bar below the main actionbar, moves main actionbar up"
