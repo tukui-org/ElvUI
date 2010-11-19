@@ -113,7 +113,8 @@
 	TukuiL.option_raidframes_fontsize = "团队单位窗口文字大小"
 	TukuiL.option_raidframes_scale = "团队单位窗口比例 (用小数 例: 0.96)"
 	TukuiL.option_raidframes_disableblizz = "关闭暴雪默认小队团队框架"
-
+	TukuiL.option_raidframes_griddps = "Display the DPS Layout in grid layout instead of a vertical layout (Not Party)"
+	
 	-- castbar
 	TukuiL.option_castbar = "施法条"
 	TukuiL.option_castbar_nointerruptcolor = "无法中断法术施法条颜色"

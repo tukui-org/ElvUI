@@ -113,7 +113,8 @@ if GetLocale() == "frFR" then
 	TukuiL.option_raidframes_fontsize = "Taille de la police de l'interface de raid" --"Font size on raidframes"
 	TukuiL.option_raidframes_scale = "Echelle de l'interface raid (utiliser des décimaux ex: 0.96)" --"Scale of raidframes (use decimals ex: 0.96)"
 	TukuiL.option_raidframes_disableblizz = "Désactiver l'interface de groupe/raid par défaut de blizzard" --"Disable blizzard default party and raid frames"
- 
+ 	TukuiL.option_raidframes_griddps = "Display the DPS Layout in grid layout instead of a vertical layout (Not Party)"
+	
 	-- castbar
 	TukuiL.option_castbar = "Barre de sort" --"Castbar"
 	TukuiL.option_castbar_nointerruptcolor = "Couleur de la barre de sort si non interruptible" --"Color for castbar if you cannot interrupt"

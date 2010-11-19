@@ -146,6 +146,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 33763 ), -- Lifebloom
 			CreateSpellEntry( 467 ), -- Thorns
 			CreateSpellEntry( 80951 ), -- Pulverize
+			CreateSpellEntry( 62600 ), --[[ Savage Defense]] CreateSpellEntry( 62606 ), -- Savage Defense
 		},
 		procs = {
 			CreateSpellEntry( 16870 ), -- Clearcasting
@@ -248,7 +249,6 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 498 ), -- Divine Protection
 			CreateSpellEntry( 31884 ), -- Avenging Wrath
 			CreateSpellEntry( 85696 ), -- Zealotry
-			CreateSpellEntry( 25771 ), -- Debuff: Forbearance
 			CreateSpellEntry( 1044 ), -- Hand of Freedom
 			CreateSpellEntry( 1022 ), -- Hand of Protection
 			CreateSpellEntry( 1038 ), -- Hand of Salvation

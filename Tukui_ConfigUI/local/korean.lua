@@ -113,7 +113,8 @@
 	TukuiL.option_raidframes_fontsize = "공격대창의 글꼴크기"
 	TukuiL.option_raidframes_scale = "공격대창의 크기"
 	TukuiL.option_raidframes_disableblizz = "블리자드 기본 파티창 및 공격대창을 비활성화"
- 
+	TukuiL.option_raidframes_griddps = "Display the DPS Layout in grid layout instead of a vertical layout (Not Party)"
+	
 	-- 시전바
 	TukuiL.option_castbar = "시전바"
 	TukuiL.option_castbar_nointerruptcolor = "방해받지 않을 때 바의 색"

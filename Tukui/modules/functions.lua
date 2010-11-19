@@ -518,7 +518,7 @@ TukuiDB.AuraFilter = function(icons, unit, icon, name, rank, texture, count, dty
 	local inInstance, instanceType = IsInInstance()
 	icon.owner = caster
 	icon.isStealable = isStealable
-	if header == "oUF_TukuiHealR6R25" then --Healer 25 Layout only
+	if header == "oUF_TukuiHealR6R25" or (TukuiCF["raidframes"].griddps == true and header == "oUF_TukuiDPSR6R25") then 
 		if inInstance and (instanceType == "pvp" or instanceType == "arena") then
 			if DebuffWhiteList[name] or TargetPVPOnly[name] then
 				return true
@@ -631,7 +631,11 @@ TukuiDB.PostUpdateHealth = function(health, unit, min, max)
 				if header == "oUF_TukuiHealR6R25" then
 					health:SetHeight(health:GetParent():GetHeight() * 0.85)
 				elseif header == "oUF_TukuiDPSR6R25" then
-					health:SetHeight(health:GetParent():GetHeight() * 0.75)
+					if TukuiCF["raidframes"].griddps ~= true then
+						health:SetHeight(health:GetParent():GetHeight() * 0.75)
+					else
+						health:SetHeight(health:GetParent():GetHeight() * 0.83)
+					end
 				else
 					health:SetHeight(health:GetParent():GetHeight())	
 				end
@@ -692,7 +696,11 @@ TukuiDB.CheckPower = function(self, event)
 		if IsAddOnLoaded("Tukui_Heal_Layout") and self:GetParent():GetName() == "oUF_TukuiHealR6R25" then
 				self.Health:SetHeight(self.Health:GetParent():GetHeight() * 0.85)
 		elseif self:GetParent():GetName() == "oUF_TukuiDPSR6R25" then
-			self.Health:SetHeight(self.Health:GetParent():GetHeight() * 0.75)
+			if TukuiCF["raidframes"].griddps ~= true then
+				self.Health:SetHeight(self.Health:GetParent():GetHeight() * 0.75)
+			else
+				self.Health:SetHeight(self.Health:GetParent():GetHeight() * 0.83)
+			end
 		else
 			self.Health:SetHeight(self.Health:GetParent():GetHeight())	
 		end
@@ -843,7 +851,7 @@ function TukuiDB.PostCreateAura(element, button)
 	local unit = button:GetParent():GetParent().unit
 	local header = button:GetParent():GetParent():GetParent():GetName()
 	
-	if header == "oUF_TukuiHealR6R25" then
+	if header == "oUF_TukuiHealR6R25" or (header == "oUF_TukuiDPSR6R25" and TukuiCF["raidframes"].griddps == true) then
 		button:EnableMouse(false)
 		button:SetFrameLevel(button:GetParent():GetParent().Power:GetFrameLevel() + 4)
 	end
@@ -1246,7 +1254,11 @@ TukuiDB.updateAllElements = function(frame)
 			if IsAddOnLoaded("Tukui_Heal_Layout") and frame:GetParent():GetName() == "oUF_TukuiHealR6R25" then
 				frame.Health:SetHeight(frame.Health:GetParent():GetHeight() * 0.85)
 			elseif frame:GetParent():GetName() == "oUF_TukuiDPSR6R25" then
-				frame.Health:SetHeight(frame.Health:GetParent():GetHeight() * 0.75)
+				if TukuiCF["raidframes"].griddps ~= true then
+					frame.Health:SetHeight(frame.Health:GetParent():GetHeight() * 0.75)
+				else
+					frame.Health:SetHeight(frame.Health:GetParent():GetHeight() * 0.83)
+				end
 			else
 				frame.Health:SetHeight(frame.Health:GetParent():GetHeight())	
 			end

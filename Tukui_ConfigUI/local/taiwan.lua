@@ -114,7 +114,8 @@
 	TukuiL.option_raidframes_fontsize = "團隊框架字體大小"
 	TukuiL.option_raidframes_scale = "團隊單位框架比例 (用小數 例: 0.96)"
 	TukuiL.option_raidframes_disableblizz = "關閉WOW內建團隊框架"
-	 
+	 	TukuiL.option_raidframes_griddps = "Display the DPS Layout in grid layout instead of a vertical layout (Not Party)"
+	
 	-- castbar
 	TukuiL.option_castbar = "施法條"
 	TukuiL.option_castbar_nointerruptcolor = "無法中斷的法術施法條顏色"

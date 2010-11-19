@@ -157,6 +157,7 @@ local function Local(o)
 	if o == "TukuiConfigUIraidframesdisableblizz" then o = TukuiL.option_raidframes_disableblizz end
 	if o == "TukuiConfigUIraidframespartypets" then o = DISPLAY_RAID_PETS.." ("..HEALER.." "..PARTY..")" end
 	if o == "TukuiConfigUIraidframeshealthdeficit" then o = SHOW.." "..RAID_HEALTH_TEXT_LOSTHEALTH end
+	if o == "TukuiConfigUIraidframesgriddps" then o = TukuiL.option_raidframes_griddps end
 	
 	-- unit frames
 	if o == "TukuiConfigUIunitframes" then o = TukuiL.option_unitframes_unitframes end

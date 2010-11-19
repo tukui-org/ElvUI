@@ -72,6 +72,7 @@ TukuiCF["raidframes"] = {
 	["partypets"] = true,					-- enable party pets for the healer layout
 	["disableblizz"] = true,				-- fuck fuck fuckin fuck
 	["healthdeficit"] = false,			-- show the health deficit on the raidframes
+	["griddps"] = true,					-- show dps layout in grid style
 }
 
 TukuiCF["auras"] = {

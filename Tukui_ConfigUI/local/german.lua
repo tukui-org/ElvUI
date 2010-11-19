@@ -113,7 +113,8 @@
 	TukuiL.option_raidframes_fontsize = "Schriftgröße für Raidframess"
 	TukuiL.option_raidframes_scale = "Skalierung der Raidframes (benutze Dezimalstellen zB: 0.96)"
 	TukuiL.option_raidframes_disableblizz = "Deaktiviere Standart Blizzard Gruppen und Raidanzeige"
- 
+ 	TukuiL.option_raidframes_griddps = "Display the DPS Layout in grid layout instead of a vertical layout (Not Party)"
+	
 	-- castbar
 	TukuiL.option_castbar = "Zauberleiste"
 	TukuiL.option_castbar_nointerruptcolor = "Farbe der Zauberleiste wenn nicht unterbrechbar"

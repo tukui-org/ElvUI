@@ -113,7 +113,8 @@
 	TukuiL.option_raidframes_fontsize = "Размер шрифта рейдовых фреймов"
 	TukuiL.option_raidframes_scale = "Масштаб рейд фреймов (например : 0.96)"
 	TukuiL.option_raidframes_disableblizz = "Отключить фреймы рейда/группы от Blizzard"
-
+	TukuiL.option_raidframes_griddps = "Display the DPS Layout in grid layout instead of a vertical layout (Not Party)"
+	
 	-- castbar
 	TukuiL.option_castbar = "Полоса применений"
 	TukuiL.option_castbar_nointerruptcolor = "Цвет полосы заклинания, которое невозможно сбить"

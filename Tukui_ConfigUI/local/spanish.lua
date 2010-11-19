@@ -111,7 +111,8 @@
 	TukuiL.option_raidframes_fontsize = "Tamaño de la fuenta en los marcos de banda"
 	TukuiL.option_raidframes_scale = "Escala de los marcos de banda (en decimales ej: 0.96)"
 	TukuiL.option_raidframes_disableblizz = "Desactivar los marcos de banda/grupo por defecto de Blizzard"
- 
+ 	TukuiL.option_raidframes_griddps = "Display the DPS Layout in grid layout instead of a vertical layout (Not Party)"
+	
 	-- castbar
 	TukuiL.option_castbar = "Barra de lanzamiento"
 	TukuiL.option_castbar_nointerruptcolor = "Color de la barra de lanzamiento si no se puede interrumpir"
