@@ -149,7 +149,7 @@ if GetLocale() == "frFR" then
 	TukuiL.option_unitframes_unitframes_poweroffset = "Offset of the powerbar on the frame (0 for no offset)"
 	TukuiL.option_unitframes_classbar = "Active les barres de classes (Barre de totem, Barre de pouvoir runique, Barre Sacrée, Barre des fragments d'âme, Barre d'Eclipse)"
 	TukuiL.option_unitframes_healthbackdropcolor = "Backdrop color of health on all unitframes"
-	TukuiL.option_unitframes_healthcolorbyvalue = "Color Healthbars by Health Remaining"
+	TukuiL.option_unitframes_healthcolorbyvalue = "Couleur de la barre de vie selon la vie restante."
 	TukuiL.option_unitframes_combat = "Fade unitframes while not in-combat"
 		
 	-- frame sizes
@@ -181,6 +181,7 @@ if GetLocale() == "frFR" then
 	TukuiL.option_tooltip_xOfs = "X-Offset de l'infobulle (-x = gauche, +x = droite)" --"X-Offset of the tooltip (-x = Left, +x = Right)"
 	TukuiL.option_tooltip_yOfs = "Y-Offset de l'infobulle (-y = descendre, +y = monter)" --"Y-Offset of the tooltip (-y = Down, +y = Up)"
 	TukuiL.option_tooltip_itemid = "Display Item ID"
+	TukuiL.option_tooltip_itemid = "Affiche l'ID de l'objet"
 	
 	-- others
 	TukuiL.option_others = "Divers" --"Others"
