@@ -965,6 +965,64 @@ local function OnUnitFramesLoad(self, event, addon)
 			end
 		end
 		targetFrame:Show();
+	elseif ( LAYOUT == 5 ) then
+		local yOffset = 6;
+		local xOffset1 = 0
+		local xOffset2 = 0
+		if ICON_POSITION == 2 then
+			xOffset1 = xOffset1 + BAR_HEIGHT+6
+		end
+		if ICON_POSITION == 3 then
+			xOffset2 = xOffset2 - (BAR_HEIGHT+6)
+		end
+		local playerDataSource = CreateUnitAuraDataSource( "player" );
+		local trinketDataSource = CreateUnitAuraDataSource( "player" );
+		
+		playerDataSource:SetSortDirection( SORT_DIRECTION );
+		trinketDataSource:SetSortDirection( SORT_DIRECTION );
+		
+		if ( classFilter ) then
+			playerDataSource:AddFilter( classFilter.player, PLAYER_BAR_COLOR, PLAYER_DEBUFF_COLOR );
+			trinketDataSource:AddFilter( classFilter.procs, TRINKET_BAR_COLOR );
+		end
+		trinketDataSource:AddFilter( TRINKET_FILTER, TRINKET_BAR_COLOR );
+
+		local playerFrame = CreateAuraBarFrame( playerDataSource, oUF_Tukz_player );
+		playerFrame:SetHiddenHeight( -yOffset );
+		if TukuiCF["auras"].playerauras == true then
+			if TukuiCF["auras"].playershowonlydebuffs == true then
+				playerFrame:SetPoint( "BOTTOMLEFT", oUF_Tukz_player.Debuffs, "TOPLEFT", xOffset1, yOffset );
+				playerFrame:SetPoint( "BOTTOMRIGHT", oUF_Tukz_player.Debuffs, "TOPRIGHT", xOffset2, yOffset );
+			else
+				playerFrame:SetPoint( "BOTTOMLEFT", oUF_Tukz_player.Buffs, "TOPLEFT", xOffset1, yOffset );
+				playerFrame:SetPoint( "BOTTOMRIGHT", oUF_Tukz_player.Buffs, "TOPRIGHT", xOffset2, yOffset );
+			end
+		else
+			if oUF_Tukz_player.HolyPower then
+				playerFrame:SetPoint( "BOTTOMLEFT", oUF_Tukz_player.HolyPower, "TOPLEFT", xOffset1, yOffset );
+				playerFrame:SetPoint( "BOTTOMRIGHT", oUF_Tukz_player.HolyPower, "TOPRIGHT", xOffset2, yOffset );		
+			elseif oUF_Tukz_player.SoulShards then
+				playerFrame:SetPoint( "BOTTOMLEFT", oUF_Tukz_player.SoulShards, "TOPLEFT", xOffset1, yOffset );
+				playerFrame:SetPoint( "BOTTOMRIGHT", oUF_Tukz_player.SoulShards, "TOPRIGHT", xOffset2, yOffset );				
+			elseif oUF_Tukz_player.Runes then
+				playerFrame:SetPoint( "BOTTOMLEFT", oUF_Tukz_player.Runes, "TOPLEFT", xOffset1, yOffset );
+				playerFrame:SetPoint( "BOTTOMRIGHT", oUF_Tukz_player.Runes, "TOPRIGHT", xOffset2, yOffset );				
+			elseif oUF_Tukz_player.TotemBar then
+				playerFrame:SetPoint( "BOTTOMLEFT", oUF_Tukz_player.TotemBar, "TOPLEFT", xOffset1, yOffset );
+				playerFrame:SetPoint( "BOTTOMRIGHT", oUF_Tukz_player.TotemBar, "TOPRIGHT", xOffset2, yOffset );								
+			else
+					playerFrame:SetPoint( "BOTTOMLEFT", oUF_Tukz_player.Health, "TOPLEFT", xOffset1, yOffset );
+					playerFrame:SetPoint( "BOTTOMRIGHT", oUF_Tukz_player.Health, "TOPRIGHT", xOffset2, yOffset );	
+			end
+		end
+		playerFrame:Show();
+
+
+		local trinketFrame = CreateAuraBarFrame( trinketDataSource, oUF_Tukz_player );
+		trinketFrame:SetHiddenHeight( -yOffset );
+		trinketFrame:SetPoint( "BOTTOMLEFT", playerFrame, "TOPLEFT", 0, yOffset );
+		trinketFrame:SetPoint( "BOTTOMRIGHT", playerFrame, "TOPRIGHT", 0, yOffset );
+		trinketFrame:Show();
 	else
 		error( "Undefined layout " .. tostring( LAYOUT ) );
 	end

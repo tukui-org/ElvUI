@@ -54,7 +54,7 @@
 	TukuiL.option_classtimer_bar_height = "計時條高度"
 	TukuiL.option_classtimer_bar_spacing = "計時條間距"
 	TukuiL.option_classtimer_icon_position = "圖示位置 (0-左邊,1-右邊,2-外面左邊,3-外面右邊)"
-	TukuiL.option_classtimer_layout = "樣式配置 (1-4)"
+	TukuiL.option_classtimer_layout = "樣式配置 (1-5)"
 	TukuiL.option_classtimer_showspark = "顯示閃光"
 	TukuiL.option_classtimer_cast_suparator = "Cast Seperator"
 	TukuiL.option_classtimer_classcolor = "職業上色"

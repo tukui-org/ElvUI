@@ -54,7 +54,7 @@ if GetLocale() == "frFR" then
 	TukuiL.option_classtimer_bar_height = "Hauteur de la barre" --"Bar Height"
 	TukuiL.option_classtimer_bar_spacing = "Espacement entre les barres" --"Bar Spacing"
 	TukuiL.option_classtimer_icon_position = "Position de l'icone (0-gauche, 1-droite, 2-extérieur gauche, 3-extérieur droit" --"Icon Position (0-Left,1-Right,2-Outside Left,3-Outside Right)"
-	TukuiL.option_classtimer_layout = "Mode (1-4)" --"Layout (1-4)"
+	TukuiL.option_classtimer_layout = "Mode (1-5)" --"Layout (1-5)"
 	TukuiL.option_classtimer_showspark = "Montrer une lueur" --"Show Spark"
 	TukuiL.option_classtimer_cast_suparator = "Séparateur de cast" --"Cast Seperator"
 	TukuiL.option_classtimer_classcolor = "Couleur de classe" --"Class Color"

@@ -54,7 +54,7 @@
 	TukuiL.option_classtimer_bar_height = "Anchura de la barra"
 	TukuiL.option_classtimer_bar_spacing = "Espaciado entre barras"
 	TukuiL.option_classtimer_icon_position = "Posición el icono (0-Izquierda,1-Derecha,2-Izquierda fuera,3-Derecha fuera)"
-	TukuiL.option_classtimer_layout = "Estilo (1-4)"
+	TukuiL.option_classtimer_layout = "Estilo (1-5)"
 	TukuiL.option_classtimer_showspark = "Mostrar chispa"
 	TukuiL.option_classtimer_cast_suparator = "Separador de lanzamiento"
 	TukuiL.option_classtimer_classcolor = "Color de clase"

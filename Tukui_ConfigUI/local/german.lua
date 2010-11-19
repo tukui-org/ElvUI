@@ -54,7 +54,7 @@
 	TukuiL.option_classtimer_bar_height = "Leisten Höhe"
 	TukuiL.option_classtimer_bar_spacing = "Leisten Abstand"
 	TukuiL.option_classtimer_icon_position = "Symbol Position (0-Links,1-Rechts,2-Außen Links,3-Außen Rechts)"
-	TukuiL.option_classtimer_layout = "Layout (1-4)"
+	TukuiL.option_classtimer_layout = "Layout (1-5)"
 	TukuiL.option_classtimer_showspark = "Zeige Funke"
 	TukuiL.option_classtimer_cast_suparator = "Zauber Seperator"
 	TukuiL.option_classtimer_classcolor = "Klassenfarbe"

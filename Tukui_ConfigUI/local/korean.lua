@@ -54,7 +54,7 @@
 	TukuiL.option_classtimer_bar_height = "바 높이"
 	TukuiL.option_classtimer_bar_spacing = "바 간격"
 	TukuiL.option_classtimer_icon_position = "아이콘 위치 (0-좌측,1-우측,2-좌측 바깥쪽,3-우측 바깥쪽)"
-	TukuiL.option_classtimer_layout = "배열 (1-4)"
+	TukuiL.option_classtimer_layout = "배열 (1-5)"
 	TukuiL.option_classtimer_showspark = "스파크를 표시"
 	TukuiL.option_classtimer_cast_suparator = "시전 분리기를 표시"
 	TukuiL.option_classtimer_classcolor = "직업색상을 사용"
