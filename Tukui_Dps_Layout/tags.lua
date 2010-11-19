@@ -126,19 +126,19 @@ oUF.Tags['Tukui:getnamecolor'] = function(unit)
 	end
 end
 
-oUF.TagEvents['Tukui:nameshort'] = 'UNIT_NAME_UPDATE'
+oUF.TagEvents['Tukui:nameshort'] = 'UNIT_NAME_UPDATE UNIT_HEALTH UNIT_MAXHEALTH'
 oUF.Tags['Tukui:nameshort'] = function(unit)
 	local name = UnitName(unit)
 	return utf8sub(name, 10, false)
 end
 
-oUF.TagEvents['Tukui:namemedium'] = 'UNIT_NAME_UPDATE'
+oUF.TagEvents['Tukui:namemedium'] = 'UNIT_NAME_UPDATE UNIT_HEALTH UNIT_MAXHEALTH'
 oUF.Tags['Tukui:namemedium'] = function(unit)
 	local name = UnitName(unit)
 	return utf8sub(name, 15, true)
 end
 
-oUF.TagEvents['Tukui:namelong'] = 'UNIT_NAME_UPDATE'
+oUF.TagEvents['Tukui:namelong'] = 'UNIT_NAME_UPDATE UNIT_HEALTH UNIT_MAXHEALTH'
 oUF.Tags['Tukui:namelong'] = function(unit)
 	local name = UnitName(unit)
 	return utf8sub(name, 20, true)

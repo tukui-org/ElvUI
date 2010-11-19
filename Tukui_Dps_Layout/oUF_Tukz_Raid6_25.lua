@@ -93,6 +93,7 @@ local function Shared(self, unit)
 	name:SetPoint("LEFT", health, "LEFT", TukuiDB.Scale(2), TukuiDB.Scale(1))
 	name:SetFont(TukuiCF["media"].uffont, TukuiCF["raidframes"].fontsize*TukuiCF["raidframes"].scale, "THINOUTLINE")
 	name:SetShadowOffset(1, -1)
+	name.frequentUpdates = 0.2
 	self:Tag(name, "[Tukui:getnamecolor][Tukui:nameshort]")
 	self.Name = name
 	
@@ -164,9 +165,8 @@ local function Shared(self, unit)
 	if TukuiCF["raidframes"].hidenonmana == true then
 		self:RegisterEvent("UNIT_DISPLAYPOWER", TukuiDB.CheckPower)	
 	end
-	self:RegisterEvent("UNIT_PET", TukuiDB.updateAllElements)
-	self:RegisterEvent("PARTY_MEMBERS_CHANGED", TukuiDB.updateAllElements)
-	self:RegisterEvent("RAID_ROSTER_UPDATE", TukuiDB.updateAllElements)		
+
+	
 	return self
 end
 
