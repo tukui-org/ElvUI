@@ -42,7 +42,7 @@ for i= 1, 12 do
 end
 
 -- hide it if needed
-if TukuiCF.actionbar.rightbars < 1 and not (((TukuiCF.actionbar.bottomrows == 3) or (TukuiCF.actionbar.bottomrows ~= 3 and TukuiCF.actionbar.rightbars > 1)) or (TukuiCF["actionbar"].bottomrows == 2 and TukuiCF["actionbar"].rightbars == 2) or (TukuiCF["actionbar"].rightbar == 2 and TukuiCF["actionbar"].bottomrows > 1 and TukuiCF["actionbar"].splitbar == true)) then
+if TukuiCF.actionbar.rightbars < 1 and not (((TukuiCF.actionbar.bottomrows == 3) or (TukuiCF.actionbar.bottomrows ~= 3 and TukuiCF.actionbar.rightbars > 1)) or (TukuiCF["actionbar"].bottomrows == 2 and TukuiCF["actionbar"].rightbars == 2) or (TukuiCF["actionbar"].rightbar == 2 and TukuiCF["actionbar"].bottomrows > 1 and TukuiCF["actionbar"].splitbar == true)) or (TukuiCF["actionbar"].bottomrows == 2 and TukuiCF["actionbar"].rightbars == 2 and TukuiCF["actionbar"].splitbar ~= true) then
 	TukuiBar4:Hide()
 end
 

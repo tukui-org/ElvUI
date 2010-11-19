@@ -61,11 +61,13 @@ if ((TukuiCF.actionbar.rightbars < 3 and TukuiCF["actionbar"].splitbar ~= true a
 end
 
 --Setup Mouseover
-if TukuiCF["actionbar"].rightbarmouseover == true and (TukuiCF["actionbar"].splitbar ~= true and TukuiCF.actionbar.bottomrows ~= 3) or (TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].rightbars ~= 0) then
-	for i=1, 12 do
-		local b = _G["MultiBarLeftButton"..i]
-		b:SetAlpha(0)
-		b:HookScript("OnEnter", function() RightBarMouseOver(1) end)
-		b:HookScript("OnLeave", function() RightBarMouseOver(0) end)
+if TukuiCF["actionbar"].rightbarmouseover == true then
+	if (TukuiCF["actionbar"].splitbar ~= true and TukuiCF.actionbar.bottomrows ~= 3) or (TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].rightbars ~= 0) then
+		for i=1, 12 do
+			local b = _G["MultiBarLeftButton"..i]
+			b:SetAlpha(0)
+			b:HookScript("OnEnter", function() RightBarMouseOver(1) end)
+			b:HookScript("OnLeave", function() RightBarMouseOver(0) end)
+		end
 	end
 end
