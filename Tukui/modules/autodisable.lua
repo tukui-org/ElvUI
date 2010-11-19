@@ -18,17 +18,19 @@ if TukuiCF["unitframes"].classcolor == true then
 	TukuiCF["unitframes"].healthcolorbyvalue = false
 end
 
-if TukuiCF["actionbar"].bottomrows ~= 2 then
+if TukuiCF["actionbar"].bottomrows < 2 then
 	TukuiCF["actionbar"].swaptopbottombar = nil
 end
 
-if TukuiCF["actionbar"].bottomrows == 3 then
-	TukuiCF["actionbar"].splitbar = false
+if TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].rightbars ~= 0 and TukuiCF["actionbar"].splitbar == true then
+	TukuiCF["actionbar"].rightbars = 0
 end
 
-if TukuiCF["actionbar"].splitbar ~= true then
-	TukuiL.option_actionbar_rbn = TukuiL.option_actionbar_rbn2
+if TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].rightbars > 2 then
+	TukuiCF["actionbar"].rightbars = 2
 end
+
+TukuiL.option_actionbar_rbn = TukuiL.option_actionbar_rbn2
 
 ------------------------------------------------------------------------
 -- auto-overwrite script config is X mod is found

@@ -12,28 +12,34 @@ for i=1, 12 do
 	local b = _G["MultiBarBottomRightButton"..i]
 	local b2 = _G["MultiBarBottomRightButton"..i-1]
 	b:ClearAllPoints()
-	if i == 1 then
-		if TukuiCF.actionbar.rightbars > 1 then
+	if TukuiCF["actionbar"].rightbars > 1 then
+		if i == 1 then
 			b:SetPoint("TOPLEFT", TukuiActionBarBackgroundRight, "TOPLEFT", TukuiDB.buttonspacing, -TukuiDB.buttonspacing)
 		else
-			b:SetPoint("BOTTOM", ActionButton1, "TOP", 0, TukuiDB.buttonspacing)
-		end
-	else
-		if TukuiCF.actionbar.rightbars > 1 then
 			b:SetPoint("TOP", b2, "BOTTOM", 0, -TukuiDB.buttonspacing)
-		else
+		end
+	elseif TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].splitbar == true then
+		if i == 1 then
+			b:SetPoint("TOP", MultiBarLeftButton4, "BOTTOM", 0, -TukuiDB.buttonspacing)
+		elseif i < 4 then
 			b:SetPoint("LEFT", b2, "RIGHT", TukuiDB.buttonspacing, 0)
+		elseif i == 4 then
+			b:SetPoint("TOP", MultiBarLeftButton10, "BOTTOM", 0, -TukuiDB.buttonspacing)
+		elseif i > 4 and i < 7 then
+			b:SetPoint("LEFT", b2, "RIGHT", TukuiDB.buttonspacing, 0)
+		else
+			b:Hide()
 		end
 	end
 end
 
 -- hide it if needed
-if TukuiCF.actionbar.rightbars < 2 then
+if not ((TukuiCF["actionbar"].rightbars > 1) or (TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].splitbar == true)) then
 	TukuiBar5:Hide()
 end
 
 --Setup Mouseover
-if TukuiCF["actionbar"].rightbarmouseover == true then
+if TukuiCF["actionbar"].rightbarmouseover == true and not (TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].splitbar == true) then
 	for i=1, 12 do
 		local b = _G["MultiBarBottomRightButton"..i]
 		b:SetAlpha(0)

@@ -58,7 +58,7 @@ function RightBarMouseOver(alpha)
 	if TukuiCF["actionbar"].bottompetbar ~= true then
 		TukuiPetActionBarBackground:SetAlpha(alpha)
 	end
-	if TukuiCF["actionbar"].rightbars > 2 and TukuiCF["actionbar"].splitbar ~= true then
+	if (TukuiCF["actionbar"].rightbars ~= 0 and TukuiCF["actionbar"].splitbar ~= true) then
 		if MultiBarLeft:IsShown() then
 			for i=1, 12 do
 				local pb = _G["MultiBarLeftButton"..i]
@@ -76,7 +76,7 @@ function RightBarMouseOver(alpha)
 			MultiBarBottomRight:SetAlpha(alpha)
 		end
 	end
-	if TukuiCF["actionbar"].rightbars > 0 then
+	if TukuiCF["actionbar"].bottomrows ~= 3 then
 		if MultiBarRight:IsShown() then
 			for i=1, 12 do
 				local pb = _G["MultiBarRightButton"..i]
