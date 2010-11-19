@@ -40,7 +40,7 @@ end
 
 --Setup Mouseover
 if TukuiCF["actionbar"].rightbarmouseover == true then 
-	if (not TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].splitbar == true) or (TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].rightbars == 2 and TukuiCF["actionbar"].splitbar ~= true) then
+	if (not TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].splitbar == true) or (TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].rightbars == 2 and TukuiCF["actionbar"].splitbar ~= true) or (TukuiCF["actionbar"].rightbars > 1) then
 		for i=1, 12 do
 			local b = _G["MultiBarBottomRightButton"..i]
 			b:SetAlpha(0)
