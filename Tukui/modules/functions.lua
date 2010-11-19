@@ -470,6 +470,41 @@ function TukuiDB.SpawnMenu(self)
 	end
 end
 
+local frameshown = true
+local unitlist = {}
+local function FadeFramesInOut(fade)
+	for frames, unitlist in pairs(unitlist) do
+		if not UnitExists(_G[unitlist].unit) then return end
+		if fade == true then
+			UIFrameFadeIn(_G[unitlist], 0.15)
+		else
+			UIFrameFadeOut(_G[unitlist], 0.15)
+		end
+	end
+end
+
+TukuiDB.Fader = function(self, mouse, module)	
+	local unit = self.unit
+	if module == true then self = self:GetParent() end
+	if not unitlist[tostring(self:GetName())] then tinsert(unitlist, tostring(self:GetName())) end
+	
+	if (UnitExists("target") or UnitExists("focus")) and frameshown ~= true then
+		FadeFramesInOut(true)
+		frameshown = true	
+	elseif mouse == true and frameshown ~= true then
+		FadeFramesInOut(true)
+		frameshown = true
+	else
+		if InCombatLockdown() and frameshown ~= true then
+			FadeFramesInOut(true)
+			frameshown = true	
+		elseif not UnitExists("target") and not InCombatLockdown() and not UnitExists("focus") then
+			FadeFramesInOut(false)
+			frameshown = false
+		end
+	end
+end
+
 TukuiDB.AuraFilter = function(icons, unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID)	
 	local header = icon:GetParent():GetParent():GetParent():GetName()
 	local inInstance, instanceType = IsInInstance()

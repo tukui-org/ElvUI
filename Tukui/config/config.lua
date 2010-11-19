@@ -38,6 +38,7 @@ TukuiCF["unitframes"] = {
 	["aggro"] = true,                      -- show aggro
 	["poweroffset"] = 9,					--powerbar offset
 	["classbar"] = true,                    -- enable runebar/totembar/holypowerbar/soulshardbar/eclipsebar
+	["combat"] = false,						-- only show main unitframes when in combat/havetarget/or mouseover
 
 	-- hunter only plugin
 	["mendpet"] = true,						--mend pet duration overlay on pet frame

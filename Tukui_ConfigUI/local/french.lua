@@ -150,7 +150,8 @@ if GetLocale() == "frFR" then
 	TukuiL.option_unitframes_classbar = "Active les barres de classes (Barre de totem, Barre de pouvoir runique, Barre Sacrée, Barre des fragments d'âme, Barre d'Eclipse)"
 	TukuiL.option_unitframes_healthbackdropcolor = "Backdrop color of health on all unitframes"
 	TukuiL.option_unitframes_healthcolorbyvalue = "Color Healthbars by Health Remaining"
-	
+	TukuiL.option_unitframes_combat = "Fade unitframes while not in-combat"
+		
 	-- frame sizes
 	TukuiL.option_framesizes = "Taille des portraits d'unité"
 	TukuiL.option_framesizes_playtarwidth = "Largeur des portraits du Joueur/de la Cible"

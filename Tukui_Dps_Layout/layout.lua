@@ -324,6 +324,10 @@ local function Shared(self, unit)
 			
 			Experience:SetScript("OnEnter", function(self) if not InCombatLockdown() then Experience:SetHeight(TukuiDB.Scale(20)) Experience.Text:Show() end end)
 			Experience:SetScript("OnLeave", function(self) if not InCombatLockdown() then Experience:SetHeight(TukuiDB.Scale(5)) Experience.Text:Hide() end end)
+			if TukuiCF["unitframes"].combat == true then
+				Experience:HookScript("OnEnter", function(self) TukuiDB.Fader(self, true, true) end)
+				Experience:HookScript("OnLeave", function(self) TukuiDB.Fader(self, false, true) end)
+			end
 			
 			self.Experience.Rested = CreateFrame('StatusBar', nil, self.Experience)
 			self.Experience.Rested:SetAllPoints(self.Experience)
@@ -365,17 +369,23 @@ local function Shared(self, unit)
 			end
 			Reputation.Tooltip = true
 
-			Reputation:HookScript("OnEnter", function(self)
+			Reputation:SetScript("OnEnter", function(self)
 				if not InCombatLockdown() then
 						Reputation:SetHeight(TukuiDB.Scale(20))
 				end
 			end)
 			
-			Reputation:HookScript("OnLeave", function(self)
+			Reputation:SetScript("OnLeave", function(self)
 				if not InCombatLockdown() then
 						Reputation:SetHeight(TukuiDB.Scale(5))
 				end
 			end)
+			
+			if TukuiCF["unitframes"].combat == true then
+				Reputation:HookScript("OnEnter", function(self) TukuiDB.Fader(self, true, true) end)
+				Reputation:HookScript("OnLeave", function(self) TukuiDB.Fader(self, false, true) end)
+			end			
+
 
 			Reputation.PostUpdate = TukuiDB.UpdateReputationColor
 			
@@ -791,6 +801,17 @@ local function Shared(self, unit)
 		
 		-- update all frames when changing area, to fix exiting instance while in vehicle
 		self:RegisterEvent("ZONE_CHANGED_NEW_AREA", TukuiDB.updateAllElements)
+		
+		--Autohide in combat
+		if TukuiCF["unitframes"].combat == true then
+			self:RegisterEvent("PLAYER_ENTERING_WORLD", TukuiDB.Fader)
+			self:RegisterEvent("PLAYER_REGEN_ENABLED", TukuiDB.Fader)
+			self:RegisterEvent("PLAYER_REGEN_DISABLED", TukuiDB.Fader)
+			self:RegisterEvent("PLAYER_TARGET_CHANGED", TukuiDB.Fader)
+			self:RegisterEvent("PLAYER_FOCUS_CHANGED", TukuiDB.Fader)
+			self:HookScript("OnEnter", function(self) TukuiDB.Fader(self, true) end)
+			self:HookScript("OnLeave", function(self) TukuiDB.Fader(self, false) end)
+		end
 	end
 	
 	------------------------------------------------------------------------
@@ -1319,6 +1340,12 @@ local function Shared(self, unit)
 			if TukuiCF["auras"].raidunitbuffwatch == true then
 				TukuiDB.createAuraWatch(self,unit)
 			end
+			
+			--Autohide in combat
+			if TukuiCF["unitframes"].combat == true then
+				self:HookScript("OnEnter", function(self) TukuiDB.Fader(self, true) end)
+				self:HookScript("OnLeave", function(self) TukuiDB.Fader(self, false) end)
+			end
 		end
 		
 		if TukuiCF["castbar"].unitcastbar == true and unit == "focus" then
@@ -1390,7 +1417,7 @@ local function Shared(self, unit)
 			self.Castbar.Time = castbar.time
 			self.Castbar.Icon = castbar.icon
 		end
-		
+						
 		self:RegisterEvent("UNIT_PET", TukuiDB.updateAllElements)	
 	end
 	
@@ -1735,6 +1762,7 @@ local function Shared(self, unit)
 		RaidIcon:SetPoint("TOP", 0, 8)
 		self.RaidIcon = RaidIcon
 	end
+		
 	return self
 end
 
@@ -1775,6 +1803,7 @@ tot:SetSize(smallframe_width, smallframe_height)
 local pet = oUF:Spawn('pet', "oUF_TukzDPS_pet")
 pet:SetPoint("BOTTOM", oUF_TukzDPS_targettarget, "TOP", 0,TukuiDB.Scale(15))
 pet:SetSize(smallframe_width, smallframe_height)
+pet:SetParent(player)
 
 -- Focus's target
 if db.showfocustarget == true then

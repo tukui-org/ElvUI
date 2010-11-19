@@ -150,6 +150,7 @@
 	TukuiL.option_unitframes_classbar = "직업 바를 사용"
 	TukuiL.option_unitframes_healthbackdropcolor = "생명령 바의 배경 색상"
  	TukuiL.option_unitframes_healthcolorbyvalue = "Color Healthbars by Health Remaining"
+	TukuiL.option_unitframes_combat = "Fade unitframes while not in-combat"
 	
 	-- 창 크기
 	TukuiL.option_framesizes = "개체창 크기"

@@ -150,6 +150,7 @@
 	TukuiL.option_unitframes_classbar = "Классовая полоса(Полоса тотемов, Полоса рун, Полоса силы света, Полоса осколков, Полоса затмения)"
 	TukuiL.option_unitframes_healthbackdropcolor = "Backdrop color of health on all unitframes"
 	TukuiL.option_unitframes_healthcolorbyvalue = "Color Healthbars by Health Remaining"
+	TukuiL.option_unitframes_combat = "Fade unitframes while not in-combat"
 		
 	-- frame sizes
 	TukuiL.option_framesizes = "Размеры фреймов"	
