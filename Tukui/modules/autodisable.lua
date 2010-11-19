@@ -30,8 +30,6 @@ if TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].rightbars > 2 t
 	TukuiCF["actionbar"].rightbars = 2
 end
 
-TukuiL.option_actionbar_rbn = TukuiL.option_actionbar_rbn2
-
 ------------------------------------------------------------------------
 -- auto-overwrite script config is X mod is found
 ------------------------------------------------------------------------

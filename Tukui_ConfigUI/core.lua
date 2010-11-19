@@ -246,7 +246,7 @@ local function Local(o)
 	if o == "TukuiConfigUIactionbarrightbarmouseover" then o = TukuiL.option_actionbar_rb end
 	if o == "TukuiConfigUIactionbarhotkey" then o = TukuiL.option_actionbar_hk end
 	if o == "TukuiConfigUIactionbarshapeshiftmouseover" then o = TukuiL.option_actionbar_ssmo end
-	if o == "TukuiConfigUIactionbarbottomrows" then o = TukuiL.option_actionbar_rbn end
+	if o == "TukuiConfigUIactionbarbottomrows" then o = TukuiL.option_actionbar_rbn2 end
 	if o == "TukuiConfigUIactionbarrightbars" then o = TukuiL.option_actionbar_rn end
 	if o == "TukuiConfigUIactionbarsplitbar" then o = TukuiL.option_actionbar_splitbar end
 	if o == "TukuiConfigUIactionbarbottompetbar" then o = TukuiL.option_actionbar_bottompetbar end
