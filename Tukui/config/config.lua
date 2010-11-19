@@ -140,6 +140,7 @@ TukuiCF["actionbar"] = {
 		["buttonspacing"] = 4,					--spacing of action buttons
 		["petbuttonsize"] = 25,					--size of pet/stance buttons
 		["petbuttonspacing"] = 4,				--spacing of pet/stance buttons
+		["swaptopbottombar"] = false,			--swap the main actionbar position with the bottom actionbar
 }
 
 TukuiCF["nameplate"] = {

@@ -216,6 +216,7 @@ if GetLocale() == "frFR" then
 	TukuiL.option_actionbar_buttonspacing = "Espace entre les boutons de la barre d'action"
 	TukuiL.option_actionbar_petbuttonsize = "Taille de la barre d'action du familier / de position / du totem"
 	TukuiL.option_actionbar_petbuttonspacing = "Espace entre les boutons de la barre d'action du familier / de position / du totem"
+	TukuiL.option_actionbar_swaptopbottombar = "Swap the top and bottom actionbar positions"
 	
 	-- arena
 	TukuiL.option_arena = "Arène" --"Arena"

@@ -13,7 +13,9 @@ for i=1, 12 do
 	local b2 = _G["MultiBarBottomLeftButton"..i-1]
 	b:ClearAllPoints()
 	if i == 1 then
-		if TukuiCF.actionbar.bottomrows == 2 then
+		if TukuiCF["actionbar"].swaptopbottombar == true then
+			b:SetPoint("TOP", ActionButton1, "BOTTOM", 0, -TukuiDB.buttonspacing)
+		else
 			b:SetPoint("BOTTOM", ActionButton1, "TOP", 0, TukuiDB.buttonspacing)
 		end
 	else

@@ -18,6 +18,10 @@ if TukuiCF["unitframes"].classcolor == true then
 	TukuiCF["unitframes"].healthcolorbyvalue = false
 end
 
+if TukuiCF["actionbar"].bottomrows ~= 2 then
+	TukuiCF["actionbar"].swaptopbottombar = nil
+end
+
 ------------------------------------------------------------------------
 -- auto-overwrite script config is X mod is found
 ------------------------------------------------------------------------

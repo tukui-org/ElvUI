@@ -216,6 +216,7 @@
 	TukuiL.option_actionbar_buttonspacing = "Промежуток между кнопками панели действий"
 	TukuiL.option_actionbar_petbuttonsize = "Размер кнопок панели действий для питомца/стоек/тотемов"
 	TukuiL.option_actionbar_petbuttonspacing = "Промежуток между кнопками панели действий для питомца/стоек/тотемов"
+	TukuiL.option_actionbar_swaptopbottombar = "Swap the top and bottom actionbar positions"
 	
 	-- arena
 	TukuiL.option_arena = "Арена"

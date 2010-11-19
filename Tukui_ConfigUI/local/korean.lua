@@ -216,7 +216,8 @@
 	TukuiL.option_actionbar_buttonspacing = "행동 단축버튼의 간격"
 	TukuiL.option_actionbar_petbuttonsize = "특수 기술 단축버튼의 크기"
 	TukuiL.option_actionbar_petbuttonspacing = "특수 기술 단축버튼의 간격"
- 
+	TukuiL.option_actionbar_swaptopbottombar = "Swap the top and bottom actionbar positions"
+	
 	-- 투기장
 	TukuiL.option_arena = "투기장"
 	TukuiL.option_arena_st = "상대 플레이어 주문 추적을 사용"

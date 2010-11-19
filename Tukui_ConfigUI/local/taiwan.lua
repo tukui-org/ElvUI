@@ -218,6 +218,7 @@
 	TukuiL.option_actionbar_petbuttonsize = "寵物/姿態/圖騰熱鍵大小"
 	TukuiL.option_actionbar_petbuttonspacing = "寵物/姿態/圖騰熱鍵鍵格距離"
 
+	TukuiL.option_actionbar_swaptopbottombar = "Swap the top and bottom actionbar positions"
 	
 	-- arena
 	TukuiL.option_arena = "競技場"

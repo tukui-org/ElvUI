@@ -216,6 +216,7 @@ TukuiL.option_actionbar_buttonsize = "Size of the main action buttons"
 TukuiL.option_actionbar_buttonspacing = "Spacing of the main action buttons"
 TukuiL.option_actionbar_petbuttonsize = "Size of the pet/stance/totem action buttons"
 TukuiL.option_actionbar_petbuttonspacing = "Spacing of the pet/stance/totem action buttons"
+TukuiL.option_actionbar_swaptopbottombar = "Swap the top and bottom actionbar positions"
 	
 -- arena
 TukuiL.option_arena = "Arena"
