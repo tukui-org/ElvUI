@@ -153,8 +153,8 @@
 	TukuiL.option_unitframes_unitframes_poweroffset = "Versetzung der Power-Leiste zum Einheitenfenster (0 für keine Versetzung)"
 	TukuiL.option_unitframes_classbar = "Aktiviere Klassenleiste (Totemleiste, Runenleiste, Heiligleiste, Seelensplitterleiste, Finsternisleiste)"
 	TukuiL.option_unitframes_healthbackdropcolor = "Hintergrundfarbe der Gesundheitsleiste aller Einheitenfenster"
- 	TukuiL.option_unitframes_healthcolorbyvalue = "Color Healthbars by Health Remaining"
-	TukuiL.option_unitframes_combat = "Fade unitframes while not in-combat"
+ 	TukuiL.option_unitframes_healthcolorbyvalue = "Färbe den Lebensbalken nach verbleibenden Leben"
+	TukuiL.option_unitframes_combat = "Einheitenfenster ausblenden, wenn nicht im Kampf"
 		
 	-- frame sizes
 	TukuiL.option_framesizes = "Einheitenfenstergröße"
@@ -184,7 +184,7 @@
 	TukuiL.option_tooltip_colorreaction = "Tooltip Rand/Gesundheits Farbe nach Reaktion"
 	TukuiL.option_tooltip_xOfs = "X-Richtung des Tooltips (-x = Links, +x = Rechts)"
 	TukuiL.option_tooltip_yOfs = "Y-Richtung des Tooltips (-y = Unten, +y = Oben)"
-	TukuiL.option_tooltip_itemid = "Display Item ID"
+	TukuiL.option_tooltip_itemid = "Anzeige der Item ID"
 	
 	-- others
 	TukuiL.option_others = "Sonstiges"
@@ -220,7 +220,7 @@
 	TukuiL.option_actionbar_buttonspacing = "Abstand der Aktionsleisten Buttons"
 	TukuiL.option_actionbar_petbuttonsize = "Größe der Begleiter/Haltungs/Totems Aktionsleisten Buttons"
 	TukuiL.option_actionbar_petbuttonspacing = "Abstand der Begleiter/Haltungs/Totems Aktionsleisten Buttons"
-	TukuiL.option_actionbar_swaptopbottombar = "Swap the top and bottom actionbar positions"
+	TukuiL.option_actionbar_swaptopbottombar = "Tausche die untere und obere Aktionsleiste"
 	
 	-- arena
 	TukuiL.option_arena = "Arena"

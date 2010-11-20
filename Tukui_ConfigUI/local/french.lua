@@ -154,7 +154,7 @@ if GetLocale() == "frFR" then
 	TukuiL.option_unitframes_classbar = "Active les barres de classes (Barre de totem, Barre de pouvoir runique, Barre Sacrée, Barre des fragments d'âme, Barre d'Eclipse)"
 	TukuiL.option_unitframes_healthbackdropcolor = "Backdrop color of health on all unitframes"
 	TukuiL.option_unitframes_healthcolorbyvalue = "Couleur de la barre de vie selon la vie restante."
-	TukuiL.option_unitframes_combat = "Fade unitframes while not in-combat"
+	TukuiL.option_unitframes_combat = "Estomper les portraits d'unités hors-combat"
 		
 	-- frame sizes
 	TukuiL.option_framesizes = "Taille des portraits d'unité"
@@ -221,7 +221,7 @@ if GetLocale() == "frFR" then
 	TukuiL.option_actionbar_buttonspacing = "Espace entre les boutons de la barre d'action"
 	TukuiL.option_actionbar_petbuttonsize = "Taille de la barre d'action du familier / de position / du totem"
 	TukuiL.option_actionbar_petbuttonspacing = "Espace entre les boutons de la barre d'action du familier / de position / du totem"
-	TukuiL.option_actionbar_swaptopbottombar = "Swap the top and bottom actionbar positions"
+	TukuiL.option_actionbar_swaptopbottombar = "Intervertir les positions des 2 barres d'actions en bas."
 	
 	-- arena
 	TukuiL.option_arena = "Arène" --"Arena"
