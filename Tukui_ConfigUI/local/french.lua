@@ -34,9 +34,9 @@ if GetLocale() == "frFR" then
 	TukuiL.option_nameplates_enhancethreat = "Activer la gestion d'aggro, change automatiquement selon votre role:" --"Enable threat feature, automatically changes by your roll:  Tank - Green (aggro) Red (noaggro) DPS - Green (noaggro) Red (aggro)"
 	TukuiL.option_nameplates_showhealth = "Montrer la vie sur les barres d'info des ennemis" --"Show health on nameplate"
  	TukuiL.option_nameplates_combat = "Afficher les barres d'infos des ennemis seulement en combat"
-	TukuiL.option_nameplates_goodcolor = "Good threat color, varies depending if your a tank or dps/heal"
-	TukuiL.option_nameplates_badcolor = "Bad threat color, varies depending if your a tank or dps/heal"
-	TukuiL.option_nameplates_transitioncolor = "Losing/Gaining threat color"
+ 	TukuiL.option_nameplates_goodcolor = "Bonne couleur de menace, dépend de si vous êtes un tank ou dps / heal"
+	TukuiL.option_nameplates_badcolor = "Mauvaise couleur de menace, dépend de si vous êtes un tank ou dps / heal"
+	TukuiL.option_nameplates_transitioncolor = "Perte / Gain de couleur de menace"
 	
 	-- addon skins
 	TukuiL.option_skin = "Skin d'addon" --"Addon Skins"
@@ -116,7 +116,7 @@ if GetLocale() == "frFR" then
 	TukuiL.option_raidframes_fontsize = "Taille de la police de l'interface de raid" --"Font size on raidframes"
 	TukuiL.option_raidframes_scale = "Echelle de l'interface raid (utiliser des décimaux ex: 0.96)" --"Scale of raidframes (use decimals ex: 0.96)"
 	TukuiL.option_raidframes_disableblizz = "Désactiver l'interface de groupe/raid par défaut de blizzard" --"Disable blizzard default party and raid frames"
- 	TukuiL.option_raidframes_griddps = "Display the DPS Layout in grid layout instead of a vertical layout (Not Party)"
+ 	TukuiL.option_raidframes_griddps = "Affiche l'interface Heal (en rectangle) au lieu de l'interface DPS ( en ligne). Seulement en mode Raid."
 	
 	-- castbar
 	TukuiL.option_castbar = "Barre de sort" --"Castbar"
