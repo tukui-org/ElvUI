@@ -6,9 +6,11 @@ if TukuiCF["raidframes"].griddps ~= true then
 	raidframe_width = TukuiDB.Scale(110)*TukuiCF["raidframes"].scale
 	raidframe_height = TukuiDB.Scale(21)*TukuiCF["raidframes"].scale
 else
-	raidframe_width = ((TukuiCF["chat"].chatwidth / 5) - 7)*TukuiCF["raidframes"].scale
+	raidframe_width = TukuiDB.Scale(64.222)*TukuiCF["raidframes"].scale
 	raidframe_height = TukuiDB.Scale(37)*TukuiCF["raidframes"].scale
 end
+
+
 
 local function Shared(self, unit)
 	self.colors = TukuiDB.oUF_colors
@@ -164,10 +166,10 @@ local function Shared(self, unit)
 		debuffs.num = 5
 		debuffs.spacing = 2
 	else
-		debuffs:SetPoint('CENTER', self.Health, 'CENTER', 0, -2)
-		debuffs:SetHeight(raidframe_height)
-		debuffs:SetWidth(raidframe_height)
-		debuffs.size = (raidframe_height)
+		debuffs:SetPoint('BOTTOM', self, 'BOTTOM', 0, 1)
+		debuffs:SetHeight(raidframe_height*0.6)
+		debuffs:SetWidth(raidframe_height*0.6)
+		debuffs.size = (raidframe_height*0.6)
 		debuffs.num = 1
 		debuffs.spacing = 0	
 	end
@@ -248,7 +250,7 @@ oUF:Factory(function(self)
 			"maxColumns", 5,
 			"unitsPerColumn", 5,
 			"columnSpacing", TukuiDB.Scale(6),
-			"columnAnchorPoint", "LEFT"
+			"columnAnchorPoint", "TOP"		
 		)	
 		raid:SetPoint("BOTTOMLEFT", ChatLBackground, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(35))	
 	end
@@ -276,7 +278,7 @@ oUF:Factory(function(self)
 				if TukuiCF["raidframes"].gridonly == true then
 					ChangeVisibility("custom [@raid26,exists] hide;show")
 				else
-					ChangeVisibility("custom [@raid6,noexists][@raid26,exists] hide;show")
+					ChangeVisibility("custom [@raid6,noexists][@raid26,exists] hide;hide")
 				end
 			end
 		else

@@ -7,7 +7,7 @@ if TukuiCF["raidframes"].griddps ~= true then
 	raid_width = TukuiDB.Scale(95)*TukuiCF["raidframes"].scale
 	raid_height = TukuiDB.Scale(11)*TukuiCF["raidframes"].scale
 else
-	raid_width = ((TukuiCF["chat"].chatwidth / 5) - 7)*TukuiCF["raidframes"].scale
+	raid_width = TukuiDB.Scale(64.222)*TukuiCF["raidframes"].scale
 	raid_height = TukuiDB.Scale(30)*TukuiCF["raidframes"].scale
 end
 
@@ -159,7 +159,7 @@ oUF:Factory(function(self)
 		)	
 		raid:SetPoint("BOTTOMLEFT", ChatLBackground, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(35))
 	else
-		raid = self:SpawnHeader("oUF_TukuiDPSR26R40", nil, "custom [@raid26,exists] show;hide",
+		raid = self:SpawnHeader("oUF_TukuiDPSR26R40", nil, "custom [@raid26,exists] show;show",
 			'oUF-initialConfigFunction', [[
 				local header = self:GetParent()
 				self:SetWidth(header:GetAttribute('initial-width'))
@@ -169,17 +169,17 @@ oUF:Factory(function(self)
 			'initial-height', raid_height,	
 			"showRaid", true, 
 			"showParty", true,
-			"showSolo", false,
+			"showPlayer", TukuiCF["raidframes"].showplayerinparty,
 			"xoffset", TukuiDB.Scale(6),
 			"yOffset", TukuiDB.Scale(-6),
 			"point", "LEFT",
 			"groupFilter", "1,2,3,4,5,6,7,8",
 			"groupingOrder", "1,2,3,4,5,6,7,8",
 			"groupBy", "GROUP",
-			"maxColumns", 8,
+			"maxColumns", 5,
 			"unitsPerColumn", 5,
 			"columnSpacing", TukuiDB.Scale(6),
-			"columnAnchorPoint", "LEFT"		
+			"columnAnchorPoint", "TOP"		
 		)		
 		raid:SetPoint("BOTTOMLEFT", ChatLBackground, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(35))
 	end
