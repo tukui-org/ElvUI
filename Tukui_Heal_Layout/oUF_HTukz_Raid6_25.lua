@@ -105,7 +105,7 @@ local function Shared(self, unit)
 	self:Tag(name, "[Tukui:getnamecolor][Tukui:nameshort]")
 	self.Name = name
 	
-	if TukuiCF["raidframe"].role == true then
+	if TukuiCF["raidframes"].role == true then
 		local LFDRole = self.Health:CreateTexture(nil, "OVERLAY")
 		LFDRole:SetHeight(TukuiDB.Scale(6))
 		LFDRole:SetWidth(TukuiDB.Scale(6))
