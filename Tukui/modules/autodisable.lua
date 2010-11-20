@@ -30,6 +30,12 @@ if TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].rightbars > 2 t
 	TukuiCF["actionbar"].rightbars = 2
 end
 
+if TukuiDB.client == "zhTW" or TukuiDB.client == "zhCN" then
+	TukuiCF["media"].uffont = [[fonts\bLEI00D.ttf]]
+	TukuiCF["media"].font = [[fonts\bLEI00D.ttf]]
+	TukuiCF["media"].dmgfont = [[fonts\bLEI00D.ttf]]
+end
+
 ------------------------------------------------------------------------
 -- auto-overwrite script config is X mod is found
 ------------------------------------------------------------------------
