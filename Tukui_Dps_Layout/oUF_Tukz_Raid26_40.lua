@@ -159,7 +159,7 @@ oUF:Factory(function(self)
 		)	
 		raid:SetPoint("BOTTOMLEFT", ChatLBackground, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(35))
 	else
-		raid = self:SpawnHeader("oUF_TukuiDPSR26R40", nil, "custom [@raid26,exists] show;show",
+		raid = self:SpawnHeader("oUF_TukuiDPSR26R40", nil, "custom [@raid26,exists] show;hide",
 			'oUF-initialConfigFunction', [[
 				local header = self:GetParent()
 				self:SetWidth(header:GetAttribute('initial-width'))

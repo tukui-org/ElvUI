@@ -278,7 +278,7 @@ oUF:Factory(function(self)
 				if TukuiCF["raidframes"].gridonly == true then
 					ChangeVisibility("custom [@raid26,exists] hide;show")
 				else
-					ChangeVisibility("custom [@raid6,noexists][@raid26,exists] hide;hide")
+					ChangeVisibility("custom [@raid6,noexists][@raid26,exists] hide;show")
 				end
 			end
 		else
