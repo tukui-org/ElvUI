@@ -176,7 +176,7 @@ oUF:Factory(function(self)
 			"groupFilter", "1,2,3,4,5,6,7,8",
 			"groupingOrder", "1,2,3,4,5,6,7,8",
 			"groupBy", "GROUP",
-			"maxColumns", 5,
+			"maxColumns", 8,
 			"unitsPerColumn", 5,
 			"columnSpacing", TukuiDB.Scale(6),
 			"columnAnchorPoint", "TOP"		
