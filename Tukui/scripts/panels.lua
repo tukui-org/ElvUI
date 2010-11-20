@@ -91,6 +91,11 @@ if TukuiCF["actionbar"].splitbar == true then
 	splitright:SetFrameLevel(TukuiActionBarBackground:GetFrameLevel())
 	splitright:SetFrameStrata(TukuiActionBarBackground:GetFrameStrata())
 	
+	if TukuiCF["actionbar"].bottomrows == 3 then
+		splitleft:SetWidth((TukuiDB.buttonsize * 4) + (TukuiDB.buttonspacing * 5))
+		splitright:SetWidth((TukuiDB.buttonsize * 4) + (TukuiDB.buttonspacing * 5))
+	end
+	
 	TukuiDB.CreateShadow(splitleft)
 	splitleft.shadow:SetFrameStrata("BACKGROUND")
 	splitleft.shadow:SetFrameLevel(bottompanel:GetFrameLevel()-1)

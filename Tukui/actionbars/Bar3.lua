@@ -39,7 +39,7 @@ for i= 1, 12 do
 			else
 				b:SetPoint("LEFT", b2, "RIGHT", TukuiDB.buttonspacing, 0)
 			end		
-		else
+		elseif TukuiCF.actionbar.bottomrows == 2 then
 			if i == 1 then
 				b:SetPoint("TOPLEFT", TukuiSplitActionBarLeftBackground, "TOPLEFT", TukuiDB.buttonspacing, -TukuiDB.buttonspacing)
 			elseif i == 4 then
@@ -50,13 +50,27 @@ for i= 1, 12 do
 				b:SetPoint("TOP", _G["MultiBarLeftButton"..i-3], "BOTTOM", 0, -TukuiDB.buttonspacing)
 			else
 				b:SetPoint("LEFT", b2, "RIGHT", TukuiDB.buttonspacing, 0)
-			end				
+			end	
+		else
+			if i == 1 then
+				b:SetPoint("TOPLEFT", TukuiSplitActionBarLeftBackground, "TOPLEFT", (TukuiDB.buttonsize * 1) + (TukuiDB.buttonspacing * 2), -TukuiDB.buttonspacing)
+			elseif i == 4 then
+				b:SetPoint("TOP", _G["MultiBarLeftButton"..i-3], "BOTTOM", 0, -TukuiDB.buttonspacing)
+			elseif i == 7 then
+				b:SetPoint("TOPLEFT", TukuiSplitActionBarRightBackground, "TOPLEFT", TukuiDB.buttonspacing, -TukuiDB.buttonspacing)
+			elseif i == 10 then
+				b:SetPoint("TOP", _G["MultiBarLeftButton"..i-3], "BOTTOM", 0, -TukuiDB.buttonspacing)
+			else
+				b:SetPoint("LEFT", b2, "RIGHT", TukuiDB.buttonspacing, 0)
+			end  		
 		end
 	end
 end
 
 -- hide it if needed
-if ((TukuiCF.actionbar.rightbars < 3 and TukuiCF["actionbar"].splitbar ~= true and TukuiCF.actionbar.bottomrows ~= 3) and not (TukuiCF["actionbar"].splitbar ~= true and TukuiCF["actionbar"].bottomrows == 2 and TukuiCF["actionbar"].rightbars == 2)) or (TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].splitbar ~= true and TukuiCF["actionbar"].rightbars == 0) then
+if ((TukuiCF.actionbar.rightbars < 3 and TukuiCF["actionbar"].splitbar ~= true and TukuiCF.actionbar.bottomrows ~= 3) and not 
+(TukuiCF["actionbar"].splitbar ~= true and TukuiCF["actionbar"].bottomrows == 2 and TukuiCF["actionbar"].rightbars == 2)) or 
+(TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].splitbar ~= true and TukuiCF["actionbar"].rightbars == 0) then
 	TukuiBar3:Hide()
 end
 

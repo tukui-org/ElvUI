@@ -27,6 +27,14 @@ for i=1, 12 do
 			b:SetPoint("TOP", MultiBarLeftButton10, "BOTTOM", 0, -TukuiDB.buttonspacing)
 		elseif i > 4 and i < 7 then
 			b:SetPoint("LEFT", b2, "RIGHT", TukuiDB.buttonspacing, 0)
+		elseif i == 7 then
+			b:SetPoint("RIGHT", MultiBarLeftButton1, "LEFT", -TukuiDB.buttonspacing, 0)
+		elseif i > 7 and i < 10 then
+			b:SetPoint("TOP", b2, "BOTTOM", 0, -TukuiDB.buttonspacing)
+		elseif i == 10 then
+			b:SetPoint("LEFT", MultiBarLeftButton9, "RIGHT", TukuiDB.buttonspacing, 0)
+		elseif i > 10 then
+			b:SetPoint("TOP", b2, "BOTTOM", 0, -TukuiDB.buttonspacing)
 		else
 			b:Hide()
 		end
