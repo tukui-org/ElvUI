@@ -137,9 +137,9 @@ local function UpdateThreat(frame, elapsed)
 		
 		--Setup frame shadow to change depending on enemy players health, also setup targetted unit to have white shadow
 		if frame.hasclass == true then
-			if(d <= 50 and d >= 26) then
+			if(d <= 50 and d >= 21) then
 				frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 1, 0)
-			elseif(d < 26) then
+			elseif(d < 21) then
 				frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 0, 0)
 			else
 				if UnitName("target") == frame.name:GetText() and frame:GetAlpha() == 1 then
