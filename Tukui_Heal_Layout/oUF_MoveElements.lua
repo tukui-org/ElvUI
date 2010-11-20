@@ -83,6 +83,7 @@ do
 	CreateFrameOverlay(oUF_TukzHeal_target.Debuffs, "TargetDebuffs")
 	CreateFrameOverlay(oUF_TukzHeal_focus.Debuffs, "FocusDebuffs")
 	CreateFrameOverlay(oUF_TukzHeal_targettarget.Debuffs, "TargetTargetDebuffs")
+	CreateFrameOverlay(AutoButton, "Auto_Button")
 end
 
 StaticPopupDialogs["RELOAD"] = {
