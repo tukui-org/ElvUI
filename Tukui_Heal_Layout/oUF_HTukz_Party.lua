@@ -212,7 +212,7 @@ local function Shared(self, unit)
 		local LFDRole = health:CreateTexture(nil, "OVERLAY")
 		LFDRole:SetHeight(TukuiDB.Scale(6))
 		LFDRole:SetWidth(TukuiDB.Scale(6))
-		LFDRole:SetPoint("TOPRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(-2))
+		LFDRole:SetPoint("TOP", self.Name, "BOTTOM", 0, TukuiDB.Scale(-2))
 		LFDRole:SetTexture("Interface\\AddOns\\Tukui\\media\\textures\\lfdicons.blp")
 		self.LFDRole = LFDRole
 		

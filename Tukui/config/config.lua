@@ -73,6 +73,7 @@ TukuiCF["raidframes"] = {
 	["disableblizz"] = true,				-- fuck fuck fuckin fuck
 	["healthdeficit"] = false,			-- show the health deficit on the raidframes
 	["griddps"] = true,					-- show dps layout in grid style
+	["role"] = false,					--display role on raidframe
 }
 
 TukuiCF["auras"] = {

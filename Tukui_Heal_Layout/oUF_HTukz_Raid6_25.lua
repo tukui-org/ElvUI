@@ -105,6 +105,15 @@ local function Shared(self, unit)
 	self:Tag(name, "[Tukui:getnamecolor][Tukui:nameshort]")
 	self.Name = name
 	
+	if TukuiCF["raidframe"].role == true then
+		local LFDRole = self.Health:CreateTexture(nil, "OVERLAY")
+		LFDRole:SetHeight(TukuiDB.Scale(6))
+		LFDRole:SetWidth(TukuiDB.Scale(6))
+		LFDRole:SetPoint("TOP", self.Name, "BOTTOM", 0, TukuiDB.Scale(-2))
+		LFDRole:SetTexture("Interface\\AddOns\\Tukui\\media\\textures\\lfdicons.blp")
+		self.LFDRole = LFDRole
+	end
+	
     if TukuiCF["unitframes"].aggro == true then
 		table.insert(self.__elements, TukuiDB.UpdateThreat)
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', TukuiDB.UpdateThreat)
