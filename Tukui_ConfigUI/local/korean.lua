@@ -34,6 +34,9 @@
 	TukuiL.option_nameplates_enhancethreat = "위협수준 기능 사용, 당신의 역할에 따라 자동적으로 변경됨"
 	TukuiL.option_nameplates_showhealth = "생명력을 표시"
 	TukuiL.option_nameplates_combat = "전투 중에만 표시"
+	TukuiL.option_nameplates_goodcolor = "Good threat color, varies depending if your a tank or dps/heal"
+	TukuiL.option_nameplates_badcolor = "Bad threat color, varies depending if your a tank or dps/heal"
+	TukuiL.option_nameplates_transitioncolor = "Losing/Gaining threat color"
  
 	-- 애드온 스킨
 	TukuiL.option_skin = "애드온 스킨"

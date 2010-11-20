@@ -34,6 +34,9 @@
 	TukuiL.option_nameplates_enhancethreat = "Activar visor de amenaza, cambia automáticamente según tu rol: \n Tanque - Verde (aggro) Rojo (noaggro) DPS - Verde (noaggro) Rojo (aggro)"
 	TukuiL.option_nameplates_showhealth = "Mostrar vida en las placas de nombre"
  	TukuiL.option_nameplates_combat = "Mostrar las chapas de nombre de los enemigos sólo en combate"
+	TukuiL.option_nameplates_goodcolor = "Good threat color, varies depending if your a tank or dps/heal"
+	TukuiL.option_nameplates_badcolor = "Bad threat color, varies depending if your a tank or dps/heal"
+	TukuiL.option_nameplates_transitioncolor = "Losing/Gaining threat color"
 	
 	-- addon skins
 	TukuiL.option_skin = "Pieles de addons"

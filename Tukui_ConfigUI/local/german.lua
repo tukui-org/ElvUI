@@ -34,7 +34,10 @@
 	TukuiL.option_nameplates_enhancethreat = "Aktiviere Bedrohungsanzeige, anpassung an deine Rolle"
 	TukuiL.option_nameplates_showhealth = "Zeige Leben auf den Namensplaketten"
  	TukuiL.option_nameplates_combat = "Zeige die Gegner Namensplaketten nur im Kampf"
- 
+ 	TukuiL.option_nameplates_goodcolor = "Good threat color, varies depending if your a tank or dps/heal"
+	TukuiL.option_nameplates_badcolor = "Bad threat color, varies depending if your a tank or dps/heal"
+	TukuiL.option_nameplates_transitioncolor = "Losing/Gaining threat color"
+
 	-- addon skins
 	TukuiL.option_skin = "Addon-Skins"
 	TukuiL.option_skin_dxe = "Deus Vox Encounters"

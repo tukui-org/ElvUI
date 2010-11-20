@@ -49,6 +49,9 @@ local function HideObjects(parent)
 	end
 end
 
+local goodR, goodG, goodB = unpack(TukuiCF["nameplate"].goodcolor)
+local badR, badG, badB = unpack(TukuiCF["nameplate"].badcolor)
+local transitionR, transitionG, transitionB = unpack(TukuiCF["nameplate"].transitioncolor)
 local function UpdateThreat(frame, elapsed)	
 	frame.elapsed = frame.elapsed + elapsed
 	if frame.elapsed >= 0.2 then
@@ -68,12 +71,12 @@ local function UpdateThreat(frame, elapsed)
 				if InCombatLockdown() and frame.hasclass ~= true then
 					--No Threat
 					if TukuiDB.Role == "Tank" then
-						frame.hp:SetStatusBarColor(1, 0, 0)
-						frame.hp.hpbg:SetVertexColor(1, 0, 0, 0.4)
+						frame.hp:SetStatusBarColor(badR, badG, badB)
+						frame.hp.hpbg:SetVertexColor(badR, badG, badB, 0.4)
 					else
-						frame.hp:SetStatusBarColor(0, 1, 0)
-						frame.hp.hpbg:SetVertexColor(0, 1, 0, 0.35)
-					end			
+						frame.hp:SetStatusBarColor(goodR, goodG, goodB)
+						frame.hp.hpbg:SetVertexColor(goodR, goodG, goodB, 0.35)
+					end		
 				else
 					--Set colors to their original, not in combat
 					frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
@@ -85,16 +88,16 @@ local function UpdateThreat(frame, elapsed)
 				if g + b == 0 then
 					--Have Threat
 					if TukuiDB.Role == "Tank" then
-						frame.hp:SetStatusBarColor(0, 1, 0)
-						frame.hp.hpbg:SetVertexColor(0, 1, 0, 0.35)
+						frame.hp:SetStatusBarColor(goodR, goodG, goodB)
+						frame.hp.hpbg:SetVertexColor(goodR, goodG, goodB, 0.35)
 					else
-						frame.hp:SetStatusBarColor(1, 0, 0)
-						frame.hp.hpbg:SetVertexColor(1, 0, 0, 0.4)
+						frame.hp:SetStatusBarColor(badR, badG, badB)
+						frame.hp.hpbg:SetVertexColor(badR, badG, badB, 0.4)
 					end
 				else
 					--Losing/Gaining Threat
-					frame.hp:SetStatusBarColor(1, 1, 0)
-					frame.hp.hpbg:SetVertexColor(1, 1, 0, 0.4)
+					frame.hp:SetStatusBarColor(transitionR, transitionG, transitionB)
+					frame.hp.hpbg:SetVertexColor(transitionR, transitionG, transitionB, 0.35)					
 				end
 			end
 		end

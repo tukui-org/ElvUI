@@ -34,6 +34,9 @@ if GetLocale() == "frFR" then
 	TukuiL.option_nameplates_enhancethreat = "Activer la gestion d'aggro, change automatiquement selon votre role:" --"Enable threat feature, automatically changes by your roll:  Tank - Green (aggro) Red (noaggro) DPS - Green (noaggro) Red (aggro)"
 	TukuiL.option_nameplates_showhealth = "Montrer la vie sur les barres d'info des ennemis" --"Show health on nameplate"
  	TukuiL.option_nameplates_combat = "Afficher les barres d'infos des ennemis seulement en combat"
+	TukuiL.option_nameplates_goodcolor = "Good threat color, varies depending if your a tank or dps/heal"
+	TukuiL.option_nameplates_badcolor = "Bad threat color, varies depending if your a tank or dps/heal"
+	TukuiL.option_nameplates_transitioncolor = "Losing/Gaining threat color"
 	
 	-- addon skins
 	TukuiL.option_skin = "Skin d'addon" --"Addon Skins"

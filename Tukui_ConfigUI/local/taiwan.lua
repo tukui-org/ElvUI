@@ -34,6 +34,9 @@
 	TukuiL.option_nameplates_enhancethreat = "啟用仇恨上色模式, 依照你的角色決定"
 	TukuiL.option_nameplates_showhealth = "在名條上顯示生命"
 	TukuiL.option_nameplates_combat = "只在戰鬥中顯示敵人名條"
+	TukuiL.option_nameplates_goodcolor = "Good threat color, varies depending if your a tank or dps/heal"
+	TukuiL.option_nameplates_badcolor = "Bad threat color, varies depending if your a tank or dps/heal"
+	TukuiL.option_nameplates_transitioncolor = "Losing/Gaining threat color"
 	
 	-- addon skins
 	TukuiL.option_skin = "插件外皮"
