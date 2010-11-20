@@ -191,7 +191,7 @@ end
 oUF:RegisterStyle('TukuiDPSParty', Shared)
 oUF:Factory(function(self)
 	oUF:SetActiveStyle("TukuiDPSParty")
-	local party = self:SpawnHeader("oUF_TukuiDPSParty", nil, "custom [@raid6,exists] hide;hide", 
+	local party = self:SpawnHeader("oUF_TukuiDPSParty", nil, "custom [@raid6,exists] hide;show", 
 		'oUF-initialConfigFunction', [[
 			local header = self:GetParent()
 			self:SetWidth(header:GetAttribute('initial-width'))
