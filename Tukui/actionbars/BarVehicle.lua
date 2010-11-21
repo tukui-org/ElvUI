@@ -19,7 +19,7 @@ vbar:SetScript("OnEvent", function(self, event, ...)
 			button = _G["VehicleMenuBarActionButton"..i]
 			self:SetFrameRef("VehicleMenuBarActionButton"..i, button)
 		end	
-
+		
 		self:SetAttribute("_onstate-vehicleupdate", [[
 			if newstate == "s1" then
 				self:GetParent():Show()

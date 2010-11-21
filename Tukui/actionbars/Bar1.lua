@@ -65,14 +65,19 @@ bar:SetScript("OnEvent", function(self, event, ...)
 			end
 		]])
 
-		self:SetAttribute("_onstate-vehicleupdate", [[
+		self:SetAttribute("_onstate-vehicleupdate", [[		
 			if newstate == "s2" then
-				self:Hide()
 				self:GetParent():Hide()
+				for i, button in ipairs(buttons) do
+					oldpage = button:GetAttribute("actionpage")
+					button:SetAttribute("actionpage", 11)
+				end
 			else
-				self:Show()
 				self:GetParent():Show()
-			end
+				for i, button in ipairs(buttons) do
+					button:SetAttribute("actionpage", oldpage)
+				end
+			end	
 		]])
 		
 		RegisterStateDriver(self, "page", GetBar())
