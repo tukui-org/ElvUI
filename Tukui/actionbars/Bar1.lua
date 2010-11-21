@@ -82,7 +82,7 @@ bar:SetScript("OnEvent", function(self, event, ...)
 				end
 			else
 				self:GetParent():Show()
-				if firedonce == false then firedonce = true return end
+				if (firedonce == false) or (not oldpage) then firedonce = true return end
 				for i, button in ipairs(buttons) do
 					button:SetAttribute("actionpage", oldpage)
 				end
