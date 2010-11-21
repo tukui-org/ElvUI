@@ -205,13 +205,6 @@ StaticPopupDialogs["DISABLE_RAID"] = {
 	whileDead = 1,
 }
 
-StaticPopupDialogs["UPDATE_CLIQUE"] = {
-	text = CALENDAR_UPDATE.." Clique",
-	button1 = ACCEPT,
-	timeout = 0,
-	whileDead = 1,
-}
-
 ------------------------------------------------------------------------
 --	On login function, look for some infos!
 ------------------------------------------------------------------------
@@ -245,22 +238,7 @@ TukuiOnLogon:SetScript("OnEvent", function(self, event)
 	if (IsAddOnLoaded("Tukui_Dps_Layout") and IsAddOnLoaded("Tukui_Heal_Layout")) then
 		StaticPopup_Show("DISABLE_RAID")
 	end
-	
-	if IsAddOnLoaded("Clique") and TukuiCF["raidframes"].enable == true then
-		if CliqueDB3 then
-			if CliqueDB3["char"] then
-				if CliqueDB3["char"][TukuiDB.myname.." - "..TukuiDB.myrealm] then
-					if CliqueDB3["char"][TukuiDB.myname.." - "..TukuiDB.myrealm]["downclick"] ~= true then
-						CliqueDB3["char"][TukuiDB.myname.." - "..TukuiDB.myrealm]["downclick"] = true
-						StaticPopup_Show("CLIENT_LOGOUT_ALERT")
-					end		
-				end
-			end
-		else
-			StaticPopup_Show("UPDATE_CLIQUE")
-		end
-	end
-	
+		
 	if TukuiCF["arena"].unitframes == true then
 		SetCVar("showArenaEnemyFrames", 0)
 	end

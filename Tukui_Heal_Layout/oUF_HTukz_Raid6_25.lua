@@ -4,7 +4,7 @@ local raid_width = TukuiDB.Scale((TukuiActionBarBackground:GetWidth() / 5) - 7)*
 local raid_height = TukuiDB.Scale(42)*TukuiCF["raidframes"].scale
 local function Shared(self, unit)
 	self.colors = TukuiDB.oUF_colors
-	self:RegisterForClicks("LeftButtonDown", "RightButtonDown")
+	self:RegisterForClicks("AnyUp")
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)
 	

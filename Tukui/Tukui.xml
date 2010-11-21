@@ -43,6 +43,7 @@
 	<Script file="modules\durability.lua"/>
 	<Script file="modules\vehicle.lua"/>
 	<Script file="modules\capturebar.lua"/>
+	<Script file="modules\altpowerbar.lua"/>
 	<Script file="modules\gm.lua"/>
 	<Script file="modules\commands.lua"/>
 	<Script file="modules\misc.lua"/>
