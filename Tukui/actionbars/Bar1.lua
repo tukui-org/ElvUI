@@ -89,6 +89,13 @@ bar:SetScript("OnEvent", function(self, event, ...)
 			end	
 		]])
 		
+		self:SetAttribute("_onstate-bonus", [[
+			for i, button in ipairs(buttons) do
+				button:SetAttribute("actionpage", tonumber(newstate))
+			end
+		]])
+		RegisterStateDriver(self, "bonus", "[bonusbar:5] 11;")	
+		
 		RegisterStateDriver(self, "page", GetBar())
 		RegisterStateDriver(self, "vehicleupdate", "[vehicleui]s2;s1")
 	elseif event == "PLAYER_ENTERING_WORLD" then
