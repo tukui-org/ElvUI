@@ -469,9 +469,7 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			TukuiDB.StyleButton(button, false)
 			if index == 0 then
 				button:ClearAllPoints() 
-				button:SetPoint("RIGHT", MultiCastActionButton1, "LEFT", -TukuiDB.petbuttonspacing*2, 0)
-			else
-			
+				button:SetPoint("RIGHT", MultiCastActionButton1, "LEFT", -TukuiDB.petbuttonspacing*2, 0)	
 			end
 		end
 		hooksecurefunc("MultiCastSummonSpellButton_Update", function(self) skin:SkinMCABSpellButton(self,0) end)

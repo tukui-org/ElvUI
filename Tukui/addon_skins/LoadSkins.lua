@@ -5,11 +5,16 @@
 Mod_AddonSkins = CreateFrame("Frame")
 local Mod_AddonSkins = Mod_AddonSkins
 
+local tukskin = TukuiDB.SetTemplate
 local function skinFrame(self, frame)
-	TukuiDB.SetTransparentTemplate(frame)
+	if frame:GetName() == "OmenBarList" or frame:GetName() == "OmenTitle" or frame:GetName() == "DXEPane" or frame:GetName() == "SkadaBG" or frame:GetName() == nil then
+		TukuiDB.SetTransparentTemplate(frame)
+	else
+		tukskin(frame,frame)
+	end
 end
 local function skinButton(self, button)
-	TukuiDB.SetTemplate(button)
+	skinFrame(self, button)
 	-- Crazy hacks which only work because self = Skin *AND* self = config
 	local name = button:GetName()
 	local icon = _G[name.."Icon"]
