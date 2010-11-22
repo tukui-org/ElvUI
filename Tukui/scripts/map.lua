@@ -4,7 +4,7 @@ local mapscale = WORLDMAP_WINDOWED_SIZE
 
 local glowt = TukuiCF["media"].glowTex
 local ft = TukuiCF["media"].uffont -- Map font
-local fontsize = 18 -- Map Font Size
+local fontsize = 22 -- Map Font Size
 
 local mapbg = CreateFrame("Frame", nil, WorldMapDetailFrame)
 	mapbg:SetBackdrop( { 
@@ -49,13 +49,7 @@ local SmallerMapSkin = function()
 	ald:SetFrameLevel(0)
 
 	-- map glow
-	local fb1 = CreateFrame("Frame", nil, mapbg )
-	fb1:SetFrameLevel(0)
-	fb1:SetFrameStrata("BACKGROUND")
-	fb1:SetPoint("TOPLEFT", mapbg , "TOPLEFT", TukuiDB.Scale(-3), TukuiDB.Scale(3))
-	fb1:SetPoint("BOTTOMRIGHT", mapbg , "BOTTOMRIGHT", TukuiDB.Scale(3), TukuiDB.Scale(-3))
-	fb1:SetBackdrop {edgeFile = glowt, edgeSize = 3, insets = {left = 0, right = 0, top = 0, bottom = 0}}
-	fb1:SetBackdropBorderColor(unpack(TukuiCF["media"].backdropcolor))
+	TukuiDB.CreateShadow(mapbg)
 	
 	-- map border and bg
 	mapbg:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
@@ -83,20 +77,26 @@ local SmallerMapSkin = function()
 	WorldMapFrameCloseButton:SetPoint("TOPRIGHT", WorldMapButton, "TOPRIGHT", TukuiDB.Scale(3), TukuiDB.Scale(3))
 	WorldMapFrameCloseButton:SetFrameStrata("HIGH")
 	WorldMapFrameCloseButton:SetFrameLevel(18)
-	WorldMapFrameSizeDownButton:SetPoint("TOPRIGHT", WorldMapFrameMiniBorderRight, "TOPRIGHT", TukuiDB.Scale(-66), TukuiDB.Scale(5))
+	WorldMapFrameSizeDownButton:SetPoint("TOPRIGHT", WorldMapFrameMiniBorderRight, "TOPRIGHT", TukuiDB.Scale(-66), TukuiDB.Scale(7))
 	WorldMapQuestShowObjectives:SetParent(ald)
 	WorldMapQuestShowObjectives:ClearAllPoints()
-	WorldMapQuestShowObjectives:SetPoint("BOTTOMRIGHT", WorldMapButton, "BOTTOMRIGHT", 0, TukuiDB.Scale(-1))
+	WorldMapQuestShowObjectives:SetPoint("BOTTOMRIGHT", WorldMapButton, "BOTTOMRIGHT", 0, TukuiDB.Scale(10))
 	WorldMapQuestShowObjectives:SetFrameStrata("HIGH")
-	WorldMapQuestShowObjectivesText:SetFont(ft, fontsize, "OUTLINE")
+	WorldMapQuestShowObjectivesText:SetFont(ft, fontsize, "THINOUTLINE")
+	WorldMapQuestShowObjectivesText:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
 	WorldMapQuestShowObjectivesText:ClearAllPoints()
 	WorldMapQuestShowObjectivesText:SetPoint("RIGHT", WorldMapQuestShowObjectives, "LEFT", TukuiDB.Scale(-4), TukuiDB.Scale(1))
 	WorldMapFrameTitle:ClearAllPoints()
-	WorldMapFrameTitle:SetPoint("BOTTOMLEFT", WorldMapDetailFrame, TukuiDB.Scale(9), TukuiDB.Scale(5))
+	WorldMapFrameTitle:SetPoint("BOTTOMLEFT", WorldMapDetailFrame, TukuiDB.Scale(9), TukuiDB.Scale(10))
 	WorldMapFrameTitle:SetFont(ft, fontsize, "OUTLINE")
+	WorldMapFrameTitle:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
 	WorldMapFrameTitle:SetParent(ald)		
 	WorldMapTitleButton:SetFrameStrata("MEDIUM")
 	WorldMapTooltip:SetFrameStrata("TOOLTIP")
+	
+	WorldMapFrameAreaLabel:SetFont(ft, fontsize*3, "OUTLINE")
+	WorldMapFrameAreaLabel:SetShadowOffset(2, -2)
+	WorldMapFrameAreaLabel:SetTextColor(0.90, 0.8294, 0.6407)
 	
 	-- 3.3.3, hide the dropdown added into this patch
 	WorldMapLevelDropDown:SetAlpha(0)
@@ -244,4 +244,50 @@ tinymap:SetScript("OnEvent", function(self, event, addon)
 			end
 		end
 	end)
+end)
+
+
+local coords = CreateFrame("Frame", "CoordsFrame", WorldMapFrame)
+coords.PlayerText = TukuiDB.SetFontString(CoordsFrame, TukuiCF["media"].font, 12, "THINOUTLINE")
+coords.MouseText = TukuiDB.SetFontString(CoordsFrame, TukuiCF["media"].font, 12, "THINOUTLINE")
+coords.PlayerText:SetTextColor(WorldMapQuestShowObjectivesText:GetTextColor())
+coords.MouseText:SetTextColor(WorldMapQuestShowObjectivesText:GetTextColor())
+coords.PlayerText:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", 15, -35)
+coords.PlayerText:SetText("Player:   0, 0")
+coords.MouseText:SetPoint("TOPLEFT", coords.PlayerText, "BOTTOMLEFT", 0, -5)
+coords.MouseText:SetText("Mouse:   0, 0")
+
+local int = 0
+coords:SetScript("OnUpdate", function(self, elapsed)
+	int = int + 1
+	
+	if int >= 3 then
+		local inInstance, _ = IsInInstance()
+		local x,y = GetPlayerMapPosition("player")
+		x = math.floor(100 * x)
+		y = math.floor(100 * y)
+		if x ~= 0 and y ~= 0 then
+			self.PlayerText:SetText(PLAYER..":   "..x..", "..y)
+		else
+			self.PlayerText:SetText(" ")
+		end
+
+		local scale = WorldMapDetailFrame:GetEffectiveScale()
+		local width = WorldMapDetailFrame:GetWidth()
+		local height = WorldMapDetailFrame:GetHeight()
+		local centerX, centerY = WorldMapDetailFrame:GetCenter()
+		local x, y = GetCursorPosition()
+		local adjustedX = (x / scale - (centerX - (width/2))) / width
+		local adjustedY = (centerY + (height/2) - y / scale) / height	
+		
+		if (adjustedX >= 0  and adjustedY >= 0 and adjustedX <= 1 and adjustedY <= 1) then
+			adjustedX = math.floor(100 * adjustedX)
+			adjustedY = math.floor(100 * adjustedY)
+			coords.MouseText:SetText(MOUSE_LABEL..":   "..adjustedX..", "..adjustedY)
+		else
+			coords.MouseText:SetText(" ")
+		end
+		
+		int = 0
+	end
 end)
