@@ -2,51 +2,61 @@ CreateSpellEntry = function( id, castByAnyone, color, unitType, castSpellId )
 	return { id = id, castByAnyone = castByAnyone, color = color, unitType = unitType or 0, castSpellId = castSpellId };
 end
 
+
+
+
 TRINKET_FILTER = {
+	CreateSpellEntry( 75477 ), -- Scaly Nimbleness [Petrified Twilight Scale] 271
+	CreateSpellEntry( 75480 ), -- Scaly Nimbleness [Petrified Twilight Scale] 285
+	CreateSpellEntry( 71432 ), -- Tiny Abom in a jar (Mote of Anger)
+	CreateSpellEntry( 73422 ), -- Chaos Bane
+	CreateSpellEntry( 71905 ), -- Soul Fragment
 	CreateSpellEntry( 67671 ), -- Fury(Banner of Victory)
-	CreateSpellEntry( 71564 ), -- Deadly Precision (Nevermelting Ice Crystal)
-	CreateSpellEntry( 67669 ), -- Elusive Power (Abyssal Rune)
-
-	CreateSpellEntry( 60229 ), -- Greatness (Greatness - Strength)
-	CreateSpellEntry( 60233 ), -- Greatness (Greatness - Agility)
-	CreateSpellEntry( 60234 ), -- Greatness (Greatness - Intellect)
-	CreateSpellEntry( 60235 ), -- Greatness (Greatness - Spirit)
-
-	CreateSpellEntry( 67703 ), CreateSpellEntry( 67708 ), CreateSpellEntry( 67772 ), CreateSpellEntry( 67773 ), -- Paragon (Death Choice)
-	CreateSpellEntry( 67684 ), -- Hospitality (Talisman of Resurgence)
-
-	CreateSpellEntry( 71432 ), -- Mote of Anger (Tiny Abomination in a Jar)	
-	CreateSpellEntry( 71485 ), CreateSpellEntry( 71556 ), -- Agility of the Vrykul (Deathbringer's Will)
-	CreateSpellEntry( 71492 ), CreateSpellEntry( 71560 ), -- Speed of the Vrykul (Deathbringer's Will)
-	CreateSpellEntry( 71487 ), CreateSpellEntry( 71557 ), -- Precision of the Iron Dwarves (Deathbringer's Will)
-	CreateSpellEntry( 71491 ), CreateSpellEntry( 71559 ), -- Aim of the Iron Dwarves (Deathbringer's Will)
-	CreateSpellEntry( 71486 ), CreateSpellEntry( 71558 ), -- Power of the Taunka (Deathbringer's Will)
-	CreateSpellEntry( 71484 ), CreateSpellEntry( 71561 ), -- Strength of the Taunka (Deathbringer's Will)
-	CreateSpellEntry( 71570 ), CreateSpellEntry( 71572 ), -- Cultivated Power (Muradin's Spyglass)
-	CreateSpellEntry( 71605 ), CreateSpellEntry( 71636 ), -- Phylactery of the Nameless Lich
-	CreateSpellEntry( 71401 ), CreateSpellEntry( 71541 ), -- Icy Rage (Whispering Fanged Skull)
-	CreateSpellEntry( 71396 ), -- Herkuml War Token
-	CreateSpellEntry( 72412 ), -- Frostforged Champion (Ashen Band of Unmatched/Endless Might/Vengeance)
-	CreateSpellEntry( 72414 ), -- Frostforged Defender (Ashen Band of Courage)
-	CreateSpellEntry( 72416 ), -- Frostforged Sage (Ashen Band of Destruction/Wisdom)
-
-	CreateSpellEntry( 59626 ), -- Black Magic
 	CreateSpellEntry( 54758 ), -- Hyperspeed Acceleration (Hyperspeed Accelerators)
 	CreateSpellEntry( 55637 ), -- Lightweave
-	CreateSpellEntry( 59620 ), -- Berserking
-
-	CreateSpellEntry( 2825, true ), CreateSpellEntry( 32182, true ), -- Bloodlust/Heroism
-	CreateSpellEntry( 90355, true ), -- Ancient Hysteria, bloodlust from hunters pet
+	CreateSpellEntry( 71635 ), -- Aegis of Dalaran 264
+	CreateSpellEntry( 71638 ), -- Aegis of Dalaran 272
+	CreateSpellEntry( 71586 ), -- Hardened Skin	
+	CreateSpellEntry( 2825, true ), --Heroism
+	CreateSpellEntry( 32182, true ), -- Bloodlust
+	CreateSpellEntry( 80353 ), -- Time Warp 
 	CreateSpellEntry( 26297 ), -- Berserking (troll racial)
 	CreateSpellEntry( 33702 ), CreateSpellEntry( 33697 ), CreateSpellEntry( 20572 ), -- Blood Fury (orc racial)
-	CreateSpellEntry( 57933 ), -- Tricks of Trade (15% dmg buff)
+	CreateSpellEntry( 57933, true ), -- Tricks of Trade (15% dmg buff)
+    CreateSpellEntry( 71403 ), -- Fatal Flaws (Needle-Encrusted Scorpion)
+    CreateSpellEntry( 71396 ), -- Rage of the Fallen (Herkuml War Token)
+    CreateSpellEntry( 67695 ), -- Rage (Mark of Supremacy)
+    CreateSpellEntry( 59620 ), -- Berserk (Weapon Enchant Berserking)
+    CreateSpellEntry( 28093 ), -- Lightning Speed (Weapon Enchant Mongoose)
+    CreateSpellEntry( 71491 ), -- Aim of the Iron Dwarves (Deathbringer's Will)
+    CreateSpellEntry( 71486 ), -- Power of the Taunka (Deathbringer's Will)
+    CreateSpellEntry( 71487 ), -- Precision of the Iron Dwarves (Deathbringer's Will)
+    CreateSpellEntry( 71492 ), -- Speed of the Vrykul (Deathbringer's Will)
+    CreateSpellEntry( 71484 ), -- Strength of the Taunka (Deathbringer's Will)
+    CreateSpellEntry( 71485 ), -- Agility of the Vrykul (Deathbringer's Will)
+    CreateSpellEntry( 71559 ), -- Aim of the Iron Dwarves (Deathbringer's Will Heroic)
+    CreateSpellEntry( 71558 ), -- Power of the Taunka (Deathbringer's Will Heroic)
+    CreateSpellEntry( 71557 ), -- Precision of the Iron Dwarves (Deathbringer's Will Heroic)
+    CreateSpellEntry( 71560 ), -- Speed of the Vrykul (Deathbringer's Will Heroic)
+    CreateSpellEntry( 71561 ), -- Strength of the Taunka (Deathbringer's Will Heroic)
+    CreateSpellEntry( 71556 ), -- Agility of the Vrykul (Deathbringer's Will Heroic)
+    CreateSpellEntry( 71401 ), -- Icy Rage (Whispering Fanged Skull)
+    CreateSpellEntry( 71541 ), -- Icy Rage (Whispering Fanged Skull Heroic)
+    CreateSpellEntry( 75458 ), -- Piercing Twilight (Sharpened Twilight Scale)
+    CreateSpellEntry( 75456 ), -- Piercing Twilight (Sharpened Twilight Scale Heroic)
+    CreateSpellEntry( 67703 ), -- Paragon Agility (Death's Verdict/Choice)
+    CreateSpellEntry( 67708 ), -- Paragon Strength (Death's Verdict/Choice)
+    CreateSpellEntry( 67772 ), -- Paragon Agility (Death's Verdict/Choice Heroic)
+    CreateSpellEntry( 67773 ), -- Paragon Strength (Death's Verdict/Choice Heroic)
+	CreateSpellEntry( 71579 ), -- Elusive Power (Maghia's Misguided Quill)
+	CreateSpellEntry( 67669 ), -- Elusive Power (Abyssal Rune)
 
-	CreateSpellEntry( 67694 ), -- Defensive Tactics (Glyph of Indomitability)
-	CreateSpellEntry( 67699 ), CreateSpellEntry( 67753 ), -- Fortitude (Juggernaut's Vitality/Satrina's Impeding Scarab)
-	CreateSpellEntry( 71586 ), -- Hardened Skin (Corroded Skeleton Key)
-
-	CreateSpellEntry( 75465 ), CreateSpellEntry( 75474 ), -- Twilight Flames (Charred Twilight Scale)
-	CreateSpellEntry( 71602 ), CreateSpellEntry( 71645 ), -- Surge of Power (Dislodged Foreign Object)
+	CreateSpellEntry( 67684 ), -- Hospitality (Talisman of Resurgence)
+	CreateSpellEntry( 71584 ), -- Revitalized (Purified Lunar Dust)
+	CreateSpellEntry( 53909 ), -- Potion of Wild Magic
+	CreateSpellEntry( 53908 ), -- Potion of Speed
+	CreateSpellEntry( 59545 ), CreateSpellEntry( 59543 ), CreateSpellEntry( 59548 ), CreateSpellEntry( 59542 ), CreateSpellEntry( 59544 ), CreateSpellEntry( 59547 ), CreateSpellEntry( 28880 ), -- Gift of the Naaru
+	CreateSpellEntry( 55503 ), CreateSpellEntry( 55502 ), CreateSpellEntry( 55501 ), CreateSpellEntry( 55500 ), CreateSpellEntry( 55480 ), CreateSpellEntry( 55428 ), -- Lifeblood
 };
 
 --[[ Configuration functions
@@ -91,6 +101,8 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 70657 ), -- Advantage
 			CreateSpellEntry( 81340 ), -- Sudden Doom
 		}		},
+
+
 	DRUID = { 
 		target = { 
 			CreateSpellEntry( 48438 ), -- Wild Growth
@@ -99,8 +111,10 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 33763 ), -- Lifebloom
 			CreateSpellEntry( 5570 ), -- Insect Swarm
 			CreateSpellEntry( 8921 ), -- Moonfire
+
 			CreateSpellEntry( 339 ), -- Entangling Roots
 			CreateSpellEntry( 33786 ), -- Cyclone
+
 			CreateSpellEntry( 2637 ), -- Hibernate
 			CreateSpellEntry( 2908 ), -- Soothe
 			CreateSpellEntry( 50259 ), -- Feral Charge (Cat) - daze
@@ -187,6 +201,9 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 53220 ), -- Improved Steadyshot
 			CreateSpellEntry( 70728 ), -- Exploit Weakness (2pc t10)
 			CreateSpellEntry( 71007 ), -- Stinger (4pc t10)
+
+
+
 		},
 	},
 	MAGE = {
@@ -215,23 +232,25 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 543 ), -- Mage Ward
 			CreateSpellEntry( 11426 ), -- Ice Barrier
 			CreateSpellEntry( 45438 ), -- Ice Block
+
 			CreateSpellEntry( 12472 ), -- Icy Veins
 			CreateSpellEntry( 130 ), -- Slow Fall
 			CreateSpellEntry( 57761 ), -- Brain Freeze
+
+
 		},
 		procs = {
 			CreateSpellEntry( 44544 ), -- Fingers of Frost
 			CreateSpellEntry( 79683 ), -- Arcane Missiles!
 			CreateSpellEntry( 48108 ), -- Hot Streak
 			CreateSpellEntry( 64343 ), -- Impact
-			CreateSpellEntry( 70753 ), -- Pushing the Limit (2pc t10)
-			CreateSpellEntry( 70747 ), -- Quad Core (4pc t10)
 		},
 	},
 	PALADIN = { 
 		target = {
 			CreateSpellEntry( 31803 ), -- Censure 
 			CreateSpellEntry( 20066 ), -- Repentance 
+
 			CreateSpellEntry( 853 ), -- Hammer of Justice 
 			CreateSpellEntry( 31935 ), -- Avenger's Shield 
 			CreateSpellEntry( 20170 ), -- Seal of Justice 
@@ -240,6 +259,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 86273 ), -- Illuminated Healing
 			CreateSpellEntry( 1044 ), -- Hand of Freedom
 			CreateSpellEntry( 1022 ), -- Hand of Protection
+
 			CreateSpellEntry( 1038 ), -- Hand of Salvation
 			CreateSpellEntry( 6940 ), -- Hand of Sacrifice
 		},
@@ -247,17 +267,26 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 642 ), -- Divine Shield
 			CreateSpellEntry( 31850 ), -- Ardent Defender
 			CreateSpellEntry( 498 ), -- Divine Protection
+
 			CreateSpellEntry( 31884 ), -- Avenging Wrath
+			CreateSpellEntry( 87342 ), -- Holy Shield
+			CreateSpellEntry( 85433 ), -- Sacred Duty
+			CreateSpellEntry( 85416 ), --Grand Crusader
+			CreateSpellEntry( 20053 ), -- Conviction
+
 			CreateSpellEntry( 85696 ), -- Zealotry
 			CreateSpellEntry( 1044 ), -- Hand of Freedom
 			CreateSpellEntry( 1022 ), -- Hand of Protection
+
 			CreateSpellEntry( 1038 ), -- Hand of Salvation
 			CreateSpellEntry( 6940 ), -- Hand of Sacrifice
+
 			CreateSpellEntry( 53657 ), -- Judgements of the Pure
 			CreateSpellEntry( 53563 ), -- Beacon of Light
 			CreateSpellEntry( 31821 ), -- Aura Mastery
 			CreateSpellEntry( 54428 ), -- Divine Plea
 			CreateSpellEntry( 31482 ), -- Divine Favor
+			CreateSpellEntry( 70940, true), -- Divine Guardian 
 		},
 		procs = {
 			CreateSpellEntry( 59578 ), -- The Art of War
@@ -267,6 +296,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 85496 ), -- Speed of Light
 			CreateSpellEntry( 88819 ), -- Daybreak
 			CreateSpellEntry( 20050 ), CreateSpellEntry( 20052 ), CreateSpellEntry( 20053 ), -- Conviction (Rank1/Rank2/Rank3)
+
 		},
 	},
 	PRIEST = { 
@@ -287,12 +317,17 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 10060 ), -- Power Infusion
 			CreateSpellEntry( 588 ), -- Inner Fire
 			CreateSpellEntry( 47585 ), -- Dispersion
+
+
+
+
 			CreateSpellEntry( 81700 ), -- Archangel
 			CreateSpellEntry( 14751 ), -- Chakra
 			CreateSpellEntry( 81208 ), -- Chakra Heal
 			CreateSpellEntry( 81207 ), -- Chakra Renew
 			CreateSpellEntry( 81209 ), -- Chakra Smite
 			CreateSpellEntry( 81206 ), -- Prayer of Healing
+
 		},
 		procs = {
 			CreateSpellEntry( 63735 ), -- Serendipity
@@ -319,6 +354,8 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 6770 ), -- Sap
 			CreateSpellEntry( 1943 ), -- Rupture --
 			CreateSpellEntry( 703 ), -- Garrote --
+
+
 			CreateSpellEntry( 79140 ), -- vendetta
 			CreateSpellEntry( 16511 ), -- Hemorrhage
 		},
@@ -333,9 +370,17 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 5171 ), -- Slice and Dice
 			CreateSpellEntry( 55503 ), -- Lifeblood --
 			CreateSpellEntry( 13877 ), -- Blade Flurry --
+
+
+
+
+
+
+
 		},
 		procs = {
 			CreateSpellEntry( 71396 ), -- Rage of the Fallen
+
 		},
 	},
 	SHAMAN = {
@@ -344,21 +389,36 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 8050), -- Flame Shock
 			CreateSpellEntry( 8056 ), -- Frost Shock
 			CreateSpellEntry( 17364 ), -- Storm Strike
+
+
+
 			CreateSpellEntry( 61295 ), -- Riptide
 			CreateSpellEntry( 51945 ), -- Earthliving
 			CreateSpellEntry( 77657 ), -- Searing Flames
 		},
 			player = {
+
 			CreateSpellEntry( 324 ), -- Lightning Shield
 			CreateSpellEntry( 52127 ), -- Water Shield
 			CreateSpellEntry( 974 ), -- Earth Shield
 			CreateSpellEntry( 30823 ), -- Shamanistic Rage
 			CreateSpellEntry( 55198 ), -- Tidal Force
+
+
+
+
+
+
+
+
 			CreateSpellEntry( 61295 ), -- Riptide
 
 		},
 		procs = {
 			CreateSpellEntry( 53817 ), -- Maelstrom Weapon			
+
+
+
 		},
 	},
 	WARLOCK = { 
@@ -369,10 +429,12 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 30108, false, nil, nil, 30108 ), -- Unstable Affliction
 			CreateSpellEntry( 603 ), -- Curse of Doom
 			CreateSpellEntry( 980 ), -- Curse of Agony
+
 			CreateSpellEntry( 1490 ), -- Curse of the Elements 
 			CreateSpellEntry( 17962 ), -- Conflagration
 			CreateSpellEntry( 348, false, nil, nil, 348 ), -- Immolate
 			CreateSpellEntry( 27243, false, nil, nil, 27243 ), -- Seed of Corruption
+
 		},
 			player = {            
 			CreateSpellEntry( 17941 ), -- Shadow trance 
@@ -381,8 +443,12 @@ CLASS_FILTERS = {
 		procs = {
 			CreateSpellEntry( 86121 ), -- Soul Swap
 			CreateSpellEntry( 54276 ), -- Backdraft
+
 			CreateSpellEntry( 71165 ), -- Molten Cor
 			CreateSpellEntry( 63167 ), -- Decimation
+
+
+
 
 		},
 	},
