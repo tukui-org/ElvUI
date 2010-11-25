@@ -372,7 +372,7 @@ DebuffHealerWhiteList = {
 		[SpellName(73800)] = true, -- Soul Shriek
 		[SpellName(73797)] = true, -- Soul Reaper
 		[SpellName(73708)] = true, -- Defile
-		[SpellName(74322)] = true, -- Harvested Soul
+		[SpellName(74327)] = true, -- Harvest Soul
 			
 	--Ruby Sanctum
 		[SpellName(74502)] = true, --Enervating Brand
@@ -433,7 +433,7 @@ DebuffDPSWhiteList = {
 		[SpellName(73800)] = true, -- Soul Shriek
 		[SpellName(73797)] = true, -- Soul Reaper
 		[SpellName(73708)] = true, -- Defile
-		[SpellName(74322)] = true, -- Harvested Soul
+		[SpellName(74327)] = true, -- Harvest Soul
 		[SpellName(72553)] = true, -- Gastric Bloat
 		[SpellName(72672)] = true, -- Mutated Plague
 			
