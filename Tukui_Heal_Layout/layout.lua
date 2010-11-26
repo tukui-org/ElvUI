@@ -1380,7 +1380,7 @@ local function Shared(self, unit)
 			end
 			
 			-- update pet name, this should fix "UNKNOWN" pet names on pet unit.
-			self:RegisterEvent("UNIT_PET", TukuiDB.UpdatePetInfo)
+			self:RegisterEvent("UNIT_PET", TukuiDB.updateAllElements)
 		end
 		
 		if TukuiCF["castbar"].unitcastbar == true and unit == "focus" then
