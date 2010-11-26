@@ -97,7 +97,7 @@ local function Shared(self, unit)
     name:SetPoint("LEFT", health, 3, 1)
 	name:SetFont(font2, TukuiCF["raidframes"].fontsize, "THINOUTLINE")
 	name:SetShadowOffset(1, -1)
-	name.frequentUpdates = 0.2
+	
 	self:Tag(name, "[Tukui:getnamecolor][Tukui:namelong]")
 	self.Name = name
 	
@@ -184,7 +184,12 @@ local function Shared(self, unit)
 		TukuiDB.createAuraWatch(self,unit)
     end
 
-	self:Hide()
+	
+	-- execute an update on every raids unit if party or raid member changed
+	-- should fix issues with names/symbols/etc not updating introduced with 4.0.3 patch
+	self:RegisterEvent("PARTY_MEMBERS_CHANGED", TukuiDB.updateAllElements)
+	self:RegisterEvent("RAID_ROSTER_UPDATE", TukuiDB.updateAllElements)
+	
 	return self
 end
 

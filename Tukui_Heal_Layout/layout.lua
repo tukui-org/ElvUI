@@ -1378,6 +1378,9 @@ local function Shared(self, unit)
 				self:HookScript("OnEnter", function(self) TukuiDB.Fader(self, true) end)
 				self:HookScript("OnLeave", function(self) TukuiDB.Fader(self, false) end)
 			end
+			
+			-- update pet name, this should fix "UNKNOWN" pet names on pet unit.
+			self:RegisterEvent("UNIT_PET", TukuiDB.UpdatePetInfo)
 		end
 		
 		if TukuiCF["castbar"].unitcastbar == true and unit == "focus" then
