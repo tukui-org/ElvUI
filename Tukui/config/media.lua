@@ -1,8 +1,8 @@
 TukuiCF["media"] = {
 	-- fonts
-	["font"] = [=[Interface\Addons\Tukui\media\fonts\Myriad.ttf]=], -- general font of tukui
-	["uffont"] = [[Interface\AddOns\Tukui\media\fonts\Myriad.ttf]], -- general font of unitframes
-	["dmgfont"] = [[Interface\AddOns\Tukui\media\fonts\combat_font.ttf]], -- general font of dmg / sct
+	["font"] = [=[Interface\Addons\Tukui\media\fonts\PT_Sans_Normal.ttf]=], -- general font of tukui
+	["uffont"] = [[Interface\AddOns\Tukui\media\fonts\PT_Sans_Normal.ttf]], -- general font of unitframes
+	["dmgfont"] = [[Interface\AddOns\Tukui\media\fonts\Diediedie.ttf]], -- general font of dmg / sct
 	
 	-- textures
 	["normTex"] = [[Interface\AddOns\Tukui\media\textures\normTex]], -- texture used for tukui healthbar/powerbar/etc
