@@ -257,9 +257,9 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 			local guildName, guildRankName, guildRankIndex = GetGuildInfo(unit);
 			if guildRankName then
 			-- can't use setformated text because some assholes have % signs in their guild ranks
-				_G["GameTooltipTextLeft2"]:SetText("<|cffFFD700"..GetGuildInfo(unit).."|r> [|cffFFD700"..guildRankName.."|r]")
+				_G["GameTooltipTextLeft2"]:SetText("<|cff00ff10"..GetGuildInfo(unit).."|r> [|cff00ff10"..guildRankName.."|r]")
 			else
-				_G["GameTooltipTextLeft2"]:SetFormattedText("<|cffFFD700%s|r>", GetGuildInfo(unit))
+				_G["GameTooltipTextLeft2"]:SetFormattedText("<|cff00ff10%s|r>", GetGuildInfo(unit))
 			end
 			offset = offset + 1
 		end
