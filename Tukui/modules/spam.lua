@@ -15,12 +15,10 @@ local SpamList = {
 	"discount",
 }
 
---Removing "recruiting" from table if your name isn't Elv
-if TukuiDB.myname ~= "Elv" then tremove(SpamList, 3) end
-
-local function TRADE_FILTER(self, event, arg1)
+local function TRADE_FILTER(self, event, arg1, arg2)
 	if (SpamList and SpamList[1]) then
 		for i, SpamList in pairs(SpamList) do
+			if arg2 == TukuiDB.myname then return end
 			if (strfind(arg1, SpamList)) then
 				return true
 			end
