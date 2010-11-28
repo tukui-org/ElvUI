@@ -1,5 +1,6 @@
 if not TukuiCF["others"].enablemap == true then return end
 
+WORLDMAP_WINDOWED_SIZE = 0.65
 local mapscale = WORLDMAP_WINDOWED_SIZE
 
 local glowt = TukuiCF["media"].glowTex
@@ -94,6 +95,8 @@ local SmallerMapSkin = function()
 	WorldMapTitleButton:SetFrameStrata("MEDIUM")
 	WorldMapTooltip:SetFrameStrata("TOOLTIP")
 	
+	WorldMapFrameAreaFrame:SetFrameStrata("DIALOG")
+	WorldMapFrameAreaFrame:SetFrameLevel(20)
 	WorldMapFrameAreaLabel:SetFont(ft, fontsize*3, "OUTLINE")
 	WorldMapFrameAreaLabel:SetShadowOffset(2, -2)
 	WorldMapFrameAreaLabel:SetTextColor(0.90, 0.8294, 0.6407)
@@ -111,6 +114,7 @@ local BiggerMapSkin = function()
 	-- 3.3.3, show the dropdown added into this patch
 	WorldMapLevelDropDown:SetAlpha(1)
 	WorldMapLevelDropDown:SetScale(1)
+	
 end
 hooksecurefunc("WorldMap_ToggleSizeUp", function() BiggerMapSkin() end)
 
@@ -247,12 +251,13 @@ tinymap:SetScript("OnEvent", function(self, event, addon)
 end)
 
 
-local coords = CreateFrame("Frame", "CoordsFrame", WorldMapFrame)
-coords.PlayerText = TukuiDB.SetFontString(CoordsFrame, TukuiCF["media"].font, 12, "THINOUTLINE")
-coords.MouseText = TukuiDB.SetFontString(CoordsFrame, TukuiCF["media"].font, 12, "THINOUTLINE")
+coords = CreateFrame("Frame", "CoordsFrame", WorldMapFrame)
+local fontheight = select(2, WorldMapQuestShowObjectivesText:GetFont())*1.1
+coords.PlayerText = TukuiDB.SetFontString(CoordsFrame, TukuiCF["media"].font, fontheight, "THINOUTLINE")
+coords.MouseText = TukuiDB.SetFontString(CoordsFrame, TukuiCF["media"].font, fontheight, "THINOUTLINE")
 coords.PlayerText:SetTextColor(WorldMapQuestShowObjectivesText:GetTextColor())
 coords.MouseText:SetTextColor(WorldMapQuestShowObjectivesText:GetTextColor())
-coords.PlayerText:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", 15, -35)
+coords.PlayerText:SetPoint("TOPLEFT", WorldMapButton, "TOPLEFT", 5, -5)
 coords.PlayerText:SetText("Player:   0, 0")
 coords.MouseText:SetPoint("TOPLEFT", coords.PlayerText, "BOTTOMLEFT", 0, -5)
 coords.MouseText:SetText("Mouse:   0, 0")
