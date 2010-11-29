@@ -257,6 +257,8 @@ TukuiOnLogon:SetScript("OnEvent", function(self, event)
 		SetCVar("showArenaEnemyFrames", 0)
 	end
 	
+	if TukuiChatIn == nil then TukuiChatIn = true end
+	
 	print(tukuilocal.core_welcome2)
 end)
 
