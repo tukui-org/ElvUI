@@ -397,9 +397,9 @@ function Stuffing:CreateBagFrame(w)
 	f:SetFrameLevel(20)
 
 	if w == "Bank" then
-		f:SetPoint("BOTTOMLEFT", ChatLBackground, "BOTTOMLEFT")
+		f:SetPoint("BOTTOMLEFT", ChatLBackground2, "BOTTOMLEFT")
 	else
-		f:SetPoint("BOTTOMRIGHT", RDummyFrame, "BOTTOMRIGHT")
+		f:SetPoint("BOTTOMRIGHT", ChatRBackground2, "BOTTOMRIGHT")
 	end
 	
 	-- close button

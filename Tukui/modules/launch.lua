@@ -53,7 +53,7 @@ local function install()
 				frame:SetPoint("BOTTOMLEFT", ChatLBackground, "BOTTOMLEFT", TukuiDB.Scale(2), 0)
 			elseif i == 3 and TukuiCF["chat"].rightchat == true then
 				frame:ClearAllPoints()
-				frame:SetPoint("BOTTOMLEFT", RDummyFrame, "BOTTOMLEFT", TukuiDB.Scale(2), 0)			
+				frame:SetPoint("BOTTOMLEFT", ChatRBackground, "BOTTOMLEFT", TukuiDB.Scale(2), 0)			
 			end
 					
 			-- save new default position and dimension

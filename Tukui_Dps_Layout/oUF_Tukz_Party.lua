@@ -210,7 +210,7 @@ oUF:Factory(function(self)
 		"showSolo", false,
 		"yOffset", TukuiDB.Scale(-8)
 	)
-	party:SetPoint("BOTTOMLEFT", ChatLBackground, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(40))
+	party:SetPoint("BOTTOMLEFT", ChatLBackground2, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(40))
 	
 	local partyToggle = CreateFrame("Frame")
 	partyToggle:RegisterEvent("PLAYER_ENTERING_WORLD")

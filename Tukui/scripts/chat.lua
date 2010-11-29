@@ -245,11 +245,11 @@ local function SetupChatPosAndFont(self)
 			chatrightfound = true
 			TukuiDB.ChatRightShown = true
 			chat:ClearAllPoints()
-			chat:SetPoint("BOTTOMLEFT", RDummyFrame, "BOTTOMLEFT", TukuiDB.Scale(2), TukuiDB.Scale(4))
+			chat:SetPoint("BOTTOMLEFT", ChatRBackground, "BOTTOMLEFT", TukuiDB.Scale(2), TukuiDB.Scale(4))
 			_G["ChatFrame"..i]:SetSize(TukuiDB.Scale(TukuiCF["chat"].chatwidth - 4), TukuiDB.Scale(TukuiCF["chat"].chatheight))
 			FCF_SavePositionAndDimensions(chat)
 			button:ClearAllPoints()
-			button:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", 0, TukuiDB.Scale(3))
+			button:SetPoint("BOTTOMRIGHT", ChatRBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))
 		else
 			if button then
 				button:ClearAllPoints()

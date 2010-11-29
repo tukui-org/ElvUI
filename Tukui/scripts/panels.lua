@@ -4,13 +4,12 @@ TukuiDB.buttonspacing = TukuiDB.Scale(TukuiCF["actionbar"].buttonspacing)
 TukuiDB.petbuttonsize = TukuiDB.Scale(TukuiCF["actionbar"].petbuttonsize)
 TukuiDB.petbuttonspacing = TukuiDB.Scale(TukuiCF["actionbar"].petbuttonspacing)
 
---BOTTOM FRAME (For Stats)
+--BOTTOM DUMMY FRAME DOES NOTHING BUT HOLDS FRAME POSITIONS
 local bottompanel = CreateFrame("Frame", "TukuiBottomPanel", UIParent)
-TukuiDB.CreatePanel(bottompanel, UIParent:GetWidth() + (TukuiDB.mult * 2), 23, "BOTTOMLEFT", UIParent, "BOTTOMLEFT", -TukuiDB.mult, -TukuiDB.mult)
+bottompanel:SetHeight(23)
+bottompanel:SetWidth(UIParent:GetWidth() + (TukuiDB.mult * 2))
+bottompanel:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", -TukuiDB.mult, -TukuiDB.mult)
 bottompanel:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", TukuiDB.mult, -TukuiDB.mult)
-bottompanel:SetFrameLevel(1)
-TukuiDB.CreateShadow(bottompanel)
-bottompanel:Hide()
 
 --Battleground Support for Bottom Frame
 if TukuiCF["datatext"].battleground == true then
@@ -56,7 +55,6 @@ else
 	TukuiDB.CreatePanel(barbg, 1, 1, "BOTTOM", UIParent, "BOTTOM", 0, (TukuiDB.buttonsize + (TukuiDB.buttonspacing * 2)) + TukuiDB.Scale(8))
 end
 barbg:SetWidth(((TukuiDB.buttonsize * 12) + (TukuiDB.buttonspacing * 13)))
-barbg:SetFrameLevel(bottompanel:GetFrameLevel() + 2)
 barbg:SetFrameStrata("LOW")
 if TukuiCF["actionbar"].bottomrows == 3 then
 	barbg:SetHeight((TukuiDB.buttonsize * 3) + (TukuiDB.buttonspacing * 4))
@@ -66,8 +64,6 @@ else
 	barbg:SetHeight(TukuiDB.buttonsize + (TukuiDB.buttonspacing * 2))
 end
 TukuiDB.CreateShadow(barbg)
-barbg.shadow:SetFrameStrata("BACKGROUND")
-barbg.shadow:SetFrameLevel(bottompanel:GetFrameLevel()-1)
 
 if TukuiCF["actionbar"].enable ~= true then
 	barbg:SetAlpha(0)
@@ -90,12 +86,8 @@ if TukuiCF["actionbar"].bottomrows == 3 then
 end
 
 TukuiDB.CreateShadow(splitleft)
-splitleft.shadow:SetFrameStrata("BACKGROUND")
-splitleft.shadow:SetFrameLevel(bottompanel:GetFrameLevel()-1)
-
 TukuiDB.CreateShadow(splitright)
-splitright.shadow:SetFrameStrata("BACKGROUND")
-splitright.shadow:SetFrameLevel(bottompanel:GetFrameLevel()-1)
+
 
 if TukuiCF["actionbar"].splitbar ~= true then
 	TukuiSplitActionBarLeftBackground:Hide()
@@ -125,26 +117,19 @@ if TukuiCF["actionbar"].enable == true then
 		end
 	else
 		TukuiDB.CreatePanel(petbg, (TukuiDB.petbuttonsize * 10) + (TukuiDB.petbuttonspacing * 11), TukuiDB.petbuttonsize + (TukuiDB.petbuttonspacing * 2), "BOTTOM", UIParent, "BOTTOM", 0, TukuiDB.Scale(4))
-		petbg:SetFrameLevel(bottompanel:GetFrameLevel() + 2)
-		petbg:SetFrameStrata("LOW")
 	end
 	
-	local ltpetbg1 = CreateFrame("Frame", "TukuiLineToPetActionBarBackground", petbg)
+	local ltpetbg = CreateFrame("Frame", "TukuiLineToPetActionBarBackground", petbg)
 	if TukuiCF["actionbar"].bottompetbar ~= true then
-		TukuiDB.CreatePanel(ltpetbg1, 30, 265, "LEFT", petbg, "RIGHT", 0, 0)
+		TukuiDB.CreatePanel(ltpetbg, 30, 265, "LEFT", petbg, "RIGHT", 0, 0)
 	else
-		TukuiDB.CreatePanel(ltpetbg1, 265, 30, "BOTTOM", petbg, "TOP", 0, 0)
+		TukuiDB.CreatePanel(ltpetbg, 265, 30, "BOTTOM", petbg, "TOP", 0, 0)
 	end
-	ltpetbg1:SetFrameLevel(0)
-	ltpetbg1:SetAlpha(.8)
+	ltpetbg:SetFrameLevel(0)
+	ltpetbg:SetAlpha(.8)
 	
 	TukuiDB.CreateShadow(barbgr)
-	barbgr.shadow:SetFrameStrata("BACKGROUND")
-	barbgr.shadow:SetFrameLevel(bottompanel:GetFrameLevel()-1)
-	
 	TukuiDB.CreateShadow(petbg)
-	petbg.shadow:SetFrameStrata("BACKGROUND")
-	petbg.shadow:SetFrameLevel(bottompanel:GetFrameLevel()-1)
 end
 
 -- VEHICLE BAR
@@ -152,23 +137,31 @@ local vbarbg = CreateFrame("Frame", "TukuiVehicleBarBackground", UIParent)
 TukuiDB.CreatePanel(vbarbg, 1, 1, "BOTTOM", UIParent, "BOTTOM", 0, TukuiDB.Scale(4))
 vbarbg:SetWidth(((TukuiDB.buttonsize * 11) + (TukuiDB.buttonspacing * 12))*1.2)
 vbarbg:SetHeight((TukuiDB.buttonsize + (TukuiDB.buttonspacing * 2))*1.2)
-vbarbg:SetFrameLevel(bottompanel:GetFrameLevel() + 2)
-vbarbg:SetFrameStrata("LOW")
 TukuiDB.CreateShadow(vbarbg)
-vbarbg.shadow:SetFrameStrata("BACKGROUND")
-vbarbg.shadow:SetFrameLevel(bottompanel:GetFrameLevel()-1)
 
--- CHAT BACKGROUND LEFT
+-- CHAT BACKGROUND LEFT (MOVES)
 local chatlbgdummy = CreateFrame("Frame", "ChatLBackground", UIParent)
 chatlbgdummy:SetWidth(TukuiCF["chat"].chatwidth)
 chatlbgdummy:SetHeight(TukuiCF["chat"].chatheight+6)
 chatlbgdummy:SetPoint("BOTTOMLEFT", TukuiBottomPanel, "TOPLEFT", TukuiDB.Scale(4),  TukuiDB.Scale(7))
 
---Create Template frame for addon embedding
-local rdummyframe = CreateFrame("Frame", "RDummyFrame", UIParent)
-rdummyframe:SetWidth(TukuiCF["chat"].chatwidth)
-rdummyframe:SetHeight(TukuiCF["chat"].chatheight+6)
-rdummyframe:SetPoint("BOTTOMRIGHT", TukuiBottomPanel, "TOPRIGHT", TukuiDB.Scale(-4),  TukuiDB.Scale(7))
+-- CHAT BACKGROUND LEFT (DOESN'T MOVE THIS IS WHAT WE ATTACH FRAMES TO)
+local chatlbgdummy2 = CreateFrame("Frame", "ChatLBackground2", UIParent)
+chatlbgdummy2:SetWidth(TukuiCF["chat"].chatwidth)
+chatlbgdummy2:SetHeight(TukuiCF["chat"].chatheight+6)
+chatlbgdummy2:SetPoint("BOTTOMLEFT", TukuiBottomPanel, "TOPLEFT", TukuiDB.Scale(4),  TukuiDB.Scale(7))
+
+-- CHAT BACKGROUND RIGHT (MOVES)
+local chatrbgdummy = CreateFrame("Frame", "ChatRBackground", UIParent)
+chatrbgdummy:SetWidth(TukuiCF["chat"].chatwidth)
+chatrbgdummy:SetHeight(TukuiCF["chat"].chatheight+6)
+chatrbgdummy:SetPoint("BOTTOMRIGHT", TukuiBottomPanel, "TOPRIGHT", TukuiDB.Scale(-4),  TukuiDB.Scale(7))
+
+-- CHAT BACKGROUND RIGHT (DOESN'T MOVE THIS IS WHAT WE ATTACH FRAMES TO)
+local chatrbgdummy2 = CreateFrame("Frame", "ChatRBackground2", UIParent)
+chatrbgdummy2:SetWidth(TukuiCF["chat"].chatwidth)
+chatrbgdummy2:SetHeight(TukuiCF["chat"].chatheight+6)
+chatrbgdummy2:SetPoint("BOTTOMRIGHT", TukuiBottomPanel, "TOPRIGHT", TukuiDB.Scale(-4),  TukuiDB.Scale(7))
 
 TukuiDB.ChatRightShown = false
 if TukuiCF["chat"].showbackdrop == true then
@@ -189,9 +182,8 @@ if TukuiCF["chat"].showbackdrop == true then
 	TukuiDB.CreateShadow(chatltbg)
 end
 
---This was requested a lot.. and probably is a better way to do this but whatever this will work.
 local chatrbg = CreateFrame("Frame", "ChatRBG", GeneralDockManager)
-chatrbg:SetAllPoints(rdummyframe)
+chatrbg:SetAllPoints(chatrbgdummy)
 TukuiDB.SetTransparentTemplate(chatrbg)
 chatrbg:SetFrameStrata("BACKGROUND")
 chatrbg:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor))
@@ -204,7 +196,6 @@ chatrtbg:SetPoint("BOTTOMLEFT", chatrbg, "TOPLEFT", 0, TukuiDB.Scale(3))
 chatrtbg:SetPoint("BOTTOMRIGHT", chatrbg, "TOPRIGHT", TukuiDB.Scale(-24), TukuiDB.Scale(3))
 chatrtbg:SetHeight(TukuiDB.Scale(22))
 chatrtbg:SetFrameStrata("BACKGROUND")
-
 TukuiDB.CreateShadow(chatrbg)
 TukuiDB.CreateShadow(chatrtbg)
 
@@ -212,20 +203,20 @@ TukuiDB.CreateShadow(chatrtbg)
 local infoleft = CreateFrame("Frame", "TukuiInfoLeft", UIParent)
 TukuiDB.SetTemplate(infoleft)
 TukuiDB.CreateShadow(infoleft)
-infoleft:SetPoint("TOPLEFT", chatlbgdummy, "BOTTOMLEFT", TukuiDB.Scale(17), TukuiDB.Scale(-4))
-infoleft:SetPoint("BOTTOMRIGHT", chatlbgdummy, "BOTTOMRIGHT", TukuiDB.Scale(-17), TukuiDB.Scale(-26))
+infoleft:SetPoint("TOPLEFT", chatlbgdummy2, "BOTTOMLEFT", TukuiDB.Scale(17), TukuiDB.Scale(-4))
+infoleft:SetPoint("BOTTOMRIGHT", chatlbgdummy2, "BOTTOMRIGHT", TukuiDB.Scale(-17), TukuiDB.Scale(-26))
 
 --INFOLEFT L BUTTON
 local infoleftLbutton = CreateFrame("Button", "TukuiInfoLeftLButton", TukuiInfoLeft)
 TukuiDB.SetTemplate(infoleftLbutton)
 infoleftLbutton:SetPoint("TOPRIGHT", infoleft, "TOPLEFT", TukuiDB.Scale(-2), 0)
-infoleftLbutton:SetPoint("BOTTOMLEFT", chatlbgdummy, "BOTTOMLEFT", 0, TukuiDB.Scale(-26))
+infoleftLbutton:SetPoint("BOTTOMLEFT", chatlbgdummy2, "BOTTOMLEFT", 0, TukuiDB.Scale(-26))
 
 --INFOLEFT R BUTTON
 local infoleftRbutton = CreateFrame("Button", "TukuiInfoLeftRButton", TukuiInfoLeft)
 TukuiDB.SetTemplate(infoleftRbutton)
 infoleftRbutton:SetPoint("TOPLEFT", infoleft, "TOPRIGHT", TukuiDB.Scale(2), 0)
-infoleftRbutton:SetPoint("BOTTOMRIGHT", chatlbgdummy, "BOTTOMRIGHT", 0, TukuiDB.Scale(-26))
+infoleftRbutton:SetPoint("BOTTOMRIGHT", chatlbgdummy2, "BOTTOMRIGHT", 0, TukuiDB.Scale(-26))
 
 infoleft.shadow:SetPoint("TOPLEFT", infoleftLbutton, "TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))
 infoleft.shadow:SetPoint("BOTTOMRIGHT", infoleftRbutton, "BOTTOMRIGHT", TukuiDB.Scale(4), TukuiDB.Scale(-4))
@@ -242,20 +233,20 @@ infoleftRbutton.Text:SetPoint("CENTER")
 local inforight = CreateFrame("Frame", "TukuiInfoRight", UIParent)
 TukuiDB.SetTemplate(inforight)
 TukuiDB.CreateShadow(inforight)
-inforight:SetPoint("TOPLEFT", rdummyframe, "BOTTOMLEFT", TukuiDB.Scale(17), TukuiDB.Scale(-4))
-inforight:SetPoint("BOTTOMRIGHT", rdummyframe, "BOTTOMRIGHT", TukuiDB.Scale(-17), TukuiDB.Scale(-26))
+inforight:SetPoint("TOPLEFT", chatrbgdummy2, "BOTTOMLEFT", TukuiDB.Scale(17), TukuiDB.Scale(-4))
+inforight:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", TukuiDB.Scale(-17), TukuiDB.Scale(-26))
 
 --INFORIGHT L BUTTON
 local inforightLbutton = CreateFrame("Button", "TukuiInfoRightLButton", TukuiInfoRight)
 TukuiDB.SetTemplate(inforightLbutton)
 inforightLbutton:SetPoint("TOPRIGHT", inforight, "TOPLEFT", TukuiDB.Scale(-2), 0)
-inforightLbutton:SetPoint("BOTTOMLEFT", rdummyframe, "BOTTOMLEFT", 0, TukuiDB.Scale(-26))
+inforightLbutton:SetPoint("BOTTOMLEFT", chatrbgdummy2, "BOTTOMLEFT", 0, TukuiDB.Scale(-26))
 
 --INFORIGHT R BUTTON
 local inforightRbutton = CreateFrame("Button", "TukuiInfoRightRButton", TukuiInfoRight)
 TukuiDB.SetTemplate(inforightRbutton)
 inforightRbutton:SetPoint("TOPLEFT", inforight, "TOPRIGHT", TukuiDB.Scale(2), 0)
-inforightRbutton:SetPoint("BOTTOMRIGHT", rdummyframe, "BOTTOMRIGHT", 0, TukuiDB.Scale(-26))
+inforightRbutton:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", 0, TukuiDB.Scale(-26))
 
 inforight.shadow:SetPoint("TOPLEFT", inforightLbutton, "TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))
 inforight.shadow:SetPoint("BOTTOMRIGHT", inforightRbutton, "BOTTOMRIGHT", TukuiDB.Scale(4), TukuiDB.Scale(-4))

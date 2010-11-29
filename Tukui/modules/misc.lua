@@ -7,7 +7,7 @@ WorldStateAlwaysUpFrame:SetPoint("TOP", TukuiDB.Scale(-35), TukuiDB.Scale(-75))
 
 
 if TukuiCF["general"].embedright == "Skada" and IsAddOnLoaded("Skada") then
-	SkadaBarWindowSkada:SetAllPoints(RDummyFrame)
+	SkadaBarWindowSkada:SetAllPoints(ChatRBackground)
 end
 
 -- convert datatext valuecolor from rgb decimal to hex

@@ -88,9 +88,9 @@ GameTooltip:HookScript("OnUpdate",function(self, ...)
 			else
 				if CheckAddOnShown() == true and xOffset == 0 and yOffset == 0 then
 					if TukuiCF["chat"].showbackdrop == true and TukuiDB.ChatRightShown == true then
-						self:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", -1, TukuiDB.Scale(42))	
+						self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", -1, TukuiDB.Scale(42))	
 					else
-						self:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", -1, TukuiDB.Scale(18))		
+						self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", -1, TukuiDB.Scale(18))		
 					end	
 				else
 					self:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -15+xOffset, TukuiDB.Scale(42+yOffset))	
@@ -214,9 +214,9 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 			else
 				if CheckAddOnShown() == true and xOffset == 0 and yOffset == 0 then
 					if TukuiCF["chat"].showbackdrop == true and TukuiDB.ChatRightShown == true then
-						self:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", -1, TukuiDB.Scale(42))	
+						self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", -1, TukuiDB.Scale(42))	
 					else
-						self:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", -1, TukuiDB.Scale(18))		
+						self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", -1, TukuiDB.Scale(18))		
 					end
 				else
 					self:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -15+xOffset, TukuiDB.Scale(42+yOffset))	

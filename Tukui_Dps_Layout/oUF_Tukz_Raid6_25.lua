@@ -6,7 +6,7 @@ if TukuiCF["raidframes"].griddps ~= true then
 	raidframe_width = TukuiDB.Scale(110)*TukuiCF["raidframes"].scale
 	raidframe_height = TukuiDB.Scale(21)*TukuiCF["raidframes"].scale
 else
-	raidframe_width = (ChatLBackground:GetWidth() / 5) - (TukuiDB.Scale(7) - TukuiDB.Scale(1))
+	raidframe_width = (ChatLBackground2:GetWidth() / 5) - (TukuiDB.Scale(7) - TukuiDB.Scale(1))
 	raidframe_height = TukuiDB.Scale(37)
 end
 
@@ -249,7 +249,7 @@ oUF:Factory(function(self)
 			"groupBy", "GROUP",	
 			"yOffset", TukuiDB.Scale(6)
 		)	
-		raid:SetPoint("BOTTOMLEFT", ChatLBackground, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(40))
+		raid:SetPoint("BOTTOMLEFT", ChatLBackground2, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(40))
 	else
 		raid = self:SpawnHeader("oUF_TukuiDPSR6R25", nil, "custom [@raid6,noexists][@raid26,exists] hide;show",
 			'oUF-initialConfigFunction', [[
@@ -273,7 +273,7 @@ oUF:Factory(function(self)
 			"columnSpacing", TukuiDB.Scale(6),
 			"columnAnchorPoint", "TOP"		
 		)	
-		raid:SetPoint("BOTTOMLEFT", ChatLBackground, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(35))	
+		raid:SetPoint("BOTTOMLEFT", ChatLBackground2, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(35))	
 	end
 	
 	local function ChangeVisibility(visibility)

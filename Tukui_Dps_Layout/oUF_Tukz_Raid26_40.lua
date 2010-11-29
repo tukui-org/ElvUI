@@ -7,7 +7,7 @@ if TukuiCF["raidframes"].griddps ~= true then
 	raid_width = TukuiDB.Scale(95)*TukuiCF["raidframes"].scale
 	raid_height = TukuiDB.Scale(11)*TukuiCF["raidframes"].scale
 else
-	raid_width = (ChatLBackground:GetWidth() / 5) - (TukuiDB.Scale(7) - TukuiDB.Scale(1))
+	raid_width = (ChatLBackground2:GetWidth() / 5) - (TukuiDB.Scale(7) - TukuiDB.Scale(1))
 	raid_height = TukuiDB.Scale(30)
 end
 
@@ -166,7 +166,7 @@ oUF:Factory(function(self)
 			"groupBy", "GROUP",	
 			"yOffset", TukuiDB.Scale(-6)
 		)	
-		raid:SetPoint("BOTTOMLEFT", ChatLBackground, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(35))
+		raid:SetPoint("BOTTOMLEFT", ChatLBackground2, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(35))
 	else
 		raid = self:SpawnHeader("oUF_TukuiDPSR26R40", nil, "custom [@raid26,exists] show;hide",
 			'oUF-initialConfigFunction', [[
@@ -190,7 +190,7 @@ oUF:Factory(function(self)
 			"columnSpacing", TukuiDB.Scale(6),
 			"columnAnchorPoint", "TOP"		
 		)		
-		raid:SetPoint("BOTTOMLEFT", ChatLBackground, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(35))
+		raid:SetPoint("BOTTOMLEFT", ChatLBackground2, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(35))
 	end
 	
 	local raidToggle = CreateFrame("Frame")
