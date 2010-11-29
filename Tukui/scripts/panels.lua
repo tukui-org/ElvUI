@@ -69,6 +69,10 @@ TukuiDB.CreateShadow(barbg)
 barbg.shadow:SetFrameStrata("BACKGROUND")
 barbg.shadow:SetFrameLevel(bottompanel:GetFrameLevel()-1)
 
+if TukuiCF["actionbar"].enable ~= true then
+	barbg:SetAlpha(0)
+end
+
 --SPLIT BAR PANELS
 local splitleft = CreateFrame("Frame", "TukuiSplitActionBarLeftBackground", TukuiActionBarBackground)
 TukuiDB.CreatePanel(splitleft, (TukuiDB.buttonsize * 3) + (TukuiDB.buttonspacing * 4), TukuiActionBarBackground:GetHeight(), "RIGHT", TukuiActionBarBackground, "LEFT", TukuiDB.Scale(-4), 0)
