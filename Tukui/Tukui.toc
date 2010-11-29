@@ -5,7 +5,7 @@
 ## Notes: UI of awesomeness!
 ## SavedVariables: TukuiData, TukuiArena
 ## SavedVariablesPerCharacter: ElvUIInstalled, TukuiUFpos
-## OptionalDeps: Tukui_ConfigUI, Recount, Omen, Skada, DXE, Blizzard_CombatText, OptionHouse, ACP, Stuf, Pitbull4, ShadowedUnitFrames, ag_UnitFrames, TidyPlates, Aloft, Dominos, Bartender4, Macaroon, Mapster, Prat, Chatter, Quartz, AzCastBar, eCastingBar, Afflicted3, InterruptBar, HealBot, Fux, Who Framed Watcher Wabbit, Skinner, OptionHouse, ArkInventory, Clique, Grid, TipTac, TipTop
+## OptionalDeps: Tukui_ConfigUI, Recount, Omen, Skada, DXE, Blizzard_CombatText, OptionHouse, ACP, Who Framed Watcher Wabbit, Skinner, Aurora, !ClassColors, HealBot, Fux, OmniCC, ncCooldown,
 ## X-oUF: oUF
 
 Tukui.xml
