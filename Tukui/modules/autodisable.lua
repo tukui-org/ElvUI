@@ -14,8 +14,12 @@ if TukuiCF["actionbar"].rightbars > 2 and TukuiCF["actionbar"].splitbar == true 
 	TukuiCF["actionbar"].rightbars = 2
 end
 
+if TukuiCF["unitframes"].classcolor == true then
+	TukuiCF["unitframes"].healthcolorbyvalue = false
+end
+
 if TukuiCF["actionbar"].bottomrows < 2 then
-	TukuiCF["actionbar"].swaptopbottombar = false
+	TukuiCF["actionbar"].swaptopbottombar = nil
 end
 
 if TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].rightbars ~= 0 and TukuiCF["actionbar"].splitbar == true then
@@ -24,10 +28,6 @@ end
 
 if TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].rightbars > 2 then
 	TukuiCF["actionbar"].rightbars = 2
-end
-
-if TukuiCF["unitframes"].classcolor == true then
-	TukuiCF["unitframes"].healthcolorbyvalue = false
 end
 
 if TukuiDB.client == "zhTW" or TukuiDB.client == "zhCN" then

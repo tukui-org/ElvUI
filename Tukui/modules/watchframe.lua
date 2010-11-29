@@ -19,7 +19,7 @@ local function init()
 	end)
 end
 
-function PositionWatchFrame()
+local function setup()
 	TukuiWatchFrame:ClearAllPoints()
 	if TukuiCF.actionbar.rightbars == 3 then
 		if TukuiCF["actionbar"].bottompetbar ~= true then
@@ -46,10 +46,6 @@ function PositionWatchFrame()
 			TukuiWatchFrame:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", 0, TukuiDB.Scale(-115))
 		end
 	end
-end
-
-local function setup()
-	PositionWatchFrame()
 	
 	local screenheight = GetScreenHeight()
 	TukuiWatchFrame:SetSize(1,screenheight / 2)
