@@ -211,6 +211,15 @@ StaticPopupDialogs["DISABLE_RAID"] = {
 	whileDead = 1,
 }
 
+StaticPopupDialogs["CHAT_WARN"] = {
+	text = tukuilocal.popup_rightchatwarn,
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	OnAccept = install,
+	timeout = 0,
+	whileDead = 1,
+}
+
 ------------------------------------------------------------------------
 --	On login function, look for some infos!
 ------------------------------------------------------------------------

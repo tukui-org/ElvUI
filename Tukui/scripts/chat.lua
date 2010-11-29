@@ -263,9 +263,8 @@ local function SetupChatPosAndFont(self)
 			ChatRBG:SetAlpha(1)
 		end
 		
-		if i == NUM_CHAT_WINDOWS and chatrightfound == false then
-			print("Missing right chat window, Tukui is dependent on this, please disable right chat window in config, otherwise hit yes to continue")
-			StaticPopup_Show("INSTALL_UI")	
+		if i == NUM_CHAT_WINDOWS and chatrightfound == false and not StaticPopup1:IsShown() then
+			StaticPopup_Show("CHAT_WARN")
 		end
 	end
 end
