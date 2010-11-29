@@ -39,6 +39,28 @@ local function GetBar()
 	return condition
 end
 
+function PositionMainBar()
+	MainMenuBar_UpdateKeyRing()
+	local button
+	for i = 1, 12 do
+		button = _G["ActionButton"..i]
+		button:SetSize(TukuiDB.buttonsize, TukuiDB.buttonsize)
+		button:SetParent(TukuiMainMenuBar)
+		button:ClearAllPoints()
+		
+		if i == 1 then
+			if TukuiCF["actionbar"].swaptopbottombar == true then
+				button:SetPoint("TOPLEFT", TukuiMainMenuBar, TukuiDB.buttonspacing, -TukuiDB.buttonspacing)
+			else
+				button:SetPoint("BOTTOMLEFT", TukuiMainMenuBar, TukuiDB.buttonspacing, TukuiDB.buttonspacing)
+			end
+		else
+			local previous = _G["ActionButton"..i-1]
+			button:SetPoint("LEFT", previous, "RIGHT", TukuiDB.buttonspacing, 0)
+		end
+	end
+end
+
 bar:RegisterEvent("PLAYER_LOGIN")
 bar:RegisterEvent("PLAYER_ENTERING_WORLD")
 bar:RegisterEvent("KNOWN_CURRENCY_TYPES_UPDATE")
@@ -77,24 +99,7 @@ bar:SetScript("OnEvent", function(self, event, ...)
 		RegisterStateDriver(self, "page", GetBar())
 		RegisterStateDriver(self, "vehicleupdate", "[vehicleui] s2;s1")
 	elseif event == "PLAYER_ENTERING_WORLD" then
-		MainMenuBar_UpdateKeyRing()
-		local button
-		for i = 1, 12 do
-			button = _G["ActionButton"..i]
-			button:SetSize(TukuiDB.buttonsize, TukuiDB.buttonsize)
-			button:ClearAllPoints()
-			button:SetParent(TukuiMainMenuBar)
-			if i == 1 then
-				if TukuiCF["actionbar"].swaptopbottombar == true then
-					button:SetPoint("TOPLEFT", TukuiMainMenuBar, TukuiDB.buttonspacing, -TukuiDB.buttonspacing)
-				else
-					button:SetPoint("BOTTOMLEFT", TukuiMainMenuBar, TukuiDB.buttonspacing, TukuiDB.buttonspacing)
-				end
-			else
-				local previous = _G["ActionButton"..i-1]
-				button:SetPoint("LEFT", previous, "RIGHT", TukuiDB.buttonspacing, 0)
-			end
-		end
+		PositionMainBar()
 	else
 		MainMenuBar_OnEvent(self, event, ...)
 	end

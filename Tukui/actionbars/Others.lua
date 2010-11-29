@@ -39,3 +39,37 @@ TukuiOnLogon:SetScript("OnEvent", function(self, event)
 		end
 	end
 end)
+
+function PositionAllBars()
+	if TukuiCF["actionbar"].rightbars > 2 and TukuiCF["actionbar"].splitbar == true then
+		TukuiCF["actionbar"].rightbars = 2
+	end
+
+	if TukuiCF["actionbar"].bottomrows < 2 then
+		TukuiCF["actionbar"].swaptopbottombar = false
+	end
+
+	if TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].rightbars ~= 0 and TukuiCF["actionbar"].splitbar == true then
+		TukuiCF["actionbar"].rightbars = 0
+		RightBarBig:Show()
+	end
+
+	if TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].rightbars > 2 then
+		TukuiCF["actionbar"].rightbars = 2
+	end
+	
+	if TukuiCF["actionbar"].rightbars ~= 0 or (TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].splitbar == true) then
+		RightBarBig:Hide()
+	else
+		RightBarBig:Show()
+	end
+	
+	PositionAllPanels()
+	PositionMainBar()
+	PositionBar2()
+	PositionBar3()
+	PositionBar4()
+	PositionBar5()
+	PositionBarPet(TukuiPetBar)
+	PositionWatchFrame()
+end
