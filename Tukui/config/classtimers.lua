@@ -272,7 +272,6 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 87342 ), -- Holy Shield
 			CreateSpellEntry( 85433 ), -- Sacred Duty
 			CreateSpellEntry( 85416 ), --Grand Crusader
-			CreateSpellEntry( 20053 ), -- Conviction
 
 			CreateSpellEntry( 85696 ), -- Zealotry
 			CreateSpellEntry( 1044 ), -- Hand of Freedom
