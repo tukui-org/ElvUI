@@ -24,7 +24,7 @@ TukuiCF["unitframes"] = {
 	["showtotalhpmp"] = false,             -- change the display of info text on player and target with XXXX/Total.
 	["showsmooth"] = true,                 -- enable smooth bar
 	["showthreat"] = true,                 -- enable the threat bar anchored to info left panel.
-	["charportrait"] = true,              -- enable character portrait
+	["charportrait"] = false,              -- enable character portrait
 	["classcolor"] = false,                  -- color unitframes by class
 	["healthcolor"] = TukuiCF["media"].bordercolor, --color of the unitfram
 	["healthbackdropcolor"] = TukuiCF["media"].backdropcolor, --backdropcolor of the unitframe
@@ -36,7 +36,7 @@ TukuiCF["unitframes"] = {
 	["debuffhighlight"] = true,				--highlight frame with the debuff color if the frame is dispellable
 	["showsymbols"] = true,	               -- show symbol.
 	["aggro"] = true,                      -- show aggro
-	["poweroffset"] = 9,					--powerbar offset
+	["poweroffset"] = 0,					--powerbar offset
 	["classbar"] = true,                    -- enable runebar/totembar/holypowerbar/soulshardbar/eclipsebar
 	["combat"] = false,						-- only show main unitframes when in combat/havetarget/or mouseover
 }
@@ -130,9 +130,9 @@ TukuiCF["actionbar"] = {
 		["rightbarmouseover"] = false,         -- enable right bars on mouse over
 		["shapeshiftmouseover"] = false,       -- enable shapeshift or totembar on mouseover
 		["hideshapeshift"] = false,            -- hide shapeshift or totembar because it was a lot requested.
-		["bottomrows"] = 2,                    -- numbers of row you want to show at the bottom (select between 1, 1.5, 2 only)
+		["bottomrows"] = 1,                    -- numbers of row you want to show at the bottom (select between 1, 1.5, 2 only)
 		["rightbars"] = 0,                     -- numbers of right bar you want
-		["splitbar"] = true,					-- split the third right actionbar into two rows of 3 on the left and right side of the main actionbar
+		["splitbar"] = false,					-- split the third right actionbar into two rows of 3 on the left and right side of the main actionbar
 		["showgrid"] = true,                   -- show grid on empty button
 		["bottompetbar"] = false,				-- position petbar below the actionbars instead of the right side
 		["buttonsize"] = 27,					--size of action buttons
@@ -198,6 +198,7 @@ TukuiCF["chat"] = {
 		["chatheight"] = 111,					-- height of chat frame
 		["fadeoutofuse"] = true,				-- fade chat text when out of use
 		["sticky"] = true,						-- when opening the chat edit box resort to previous channel
+		["rightchat"] = true,					-- enable chat frame on right
 	["bubbles"] = true,							--skin blizzard chat bubbles
 }
 

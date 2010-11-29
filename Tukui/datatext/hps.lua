@@ -8,7 +8,7 @@ if TukuiCF["datatext"].hps_text and TukuiCF["datatext"].hps_text > 0 then
 	local player_id = UnitGUID("player")
 	local actual_heals_total, cmbt_time = 0
  
-	hText = TukuiBottomPanel:CreateFontString(nil, "OVERLAY")
+	hText = TukuiInfoLeft:CreateFontString(nil, "OVERLAY")
 	hText:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
 	hText:SetText("HPS: "..valuecolor.."0.0")
  

@@ -24,7 +24,7 @@ if TukuiCF["datatext"].guild and TukuiCF["datatext"].guild > 0 then
 		snapfrom = "TOP"
 	end
 	
-	local Text  = TukuiBottomPanel:CreateFontString(nil, "OVERLAY")
+	local Text  = TukuiInfoLeft:CreateFontString(nil, "OVERLAY")
 	Text:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
 	TukuiDB.PP(TukuiCF["datatext"].guild, Text)
 

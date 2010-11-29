@@ -10,6 +10,7 @@ TukuiDB.CreatePanel(bottompanel, UIParent:GetWidth() + (TukuiDB.mult * 2), 23, "
 bottompanel:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", TukuiDB.mult, -TukuiDB.mult)
 bottompanel:SetFrameLevel(1)
 TukuiDB.CreateShadow(bottompanel)
+bottompanel:Hide()
 
 --Battleground Support for Bottom Frame
 if TukuiCF["datatext"].battleground == true then
@@ -46,6 +47,7 @@ if TukuiMinimap then
 	TukuiDB.CreatePanel(minimapstatsright, (TukuiMinimap:GetWidth() / 2) -2, 19, "TOPRIGHT", TukuiMinimap, "BOTTOMRIGHT", 0, TukuiDB.Scale(-3))
 end
 
+
 -- MAIN ACTION BAR
 local barbg = CreateFrame("Frame", "TukuiActionBarBackground", UIParent)
 if TukuiCF["actionbar"].bottompetbar ~= true then
@@ -67,42 +69,33 @@ TukuiDB.CreateShadow(barbg)
 barbg.shadow:SetFrameStrata("BACKGROUND")
 barbg.shadow:SetFrameLevel(bottompanel:GetFrameLevel()-1)
 
--- VEHICLE BAR
-local vbarbg = CreateFrame("Frame", "TukuiVehicleBarBackground", UIParent)
-TukuiDB.CreatePanel(vbarbg, 1, 1, "BOTTOM", UIParent, "BOTTOM", 0, TukuiDB.Scale(4))
-vbarbg:SetWidth(((TukuiDB.buttonsize * 11) + (TukuiDB.buttonspacing * 12))*1.2)
-vbarbg:SetHeight((TukuiDB.buttonsize + (TukuiDB.buttonspacing * 2))*1.2)
-vbarbg:SetFrameLevel(bottompanel:GetFrameLevel() + 2)
-vbarbg:SetFrameStrata("LOW")
-TukuiDB.CreateShadow(vbarbg)
-vbarbg.shadow:SetFrameStrata("BACKGROUND")
-vbarbg.shadow:SetFrameLevel(bottompanel:GetFrameLevel()-1)
-
-
 --SPLIT BAR PANELS
-if TukuiCF["actionbar"].splitbar == true then
-	local splitleft = CreateFrame("Frame", "TukuiSplitActionBarLeftBackground", TukuiActionBarBackground)
-	TukuiDB.CreatePanel(splitleft, (TukuiDB.buttonsize * 3) + (TukuiDB.buttonspacing * 4), TukuiActionBarBackground:GetHeight(), "RIGHT", TukuiActionBarBackground, "LEFT", TukuiDB.Scale(-4), 0)
-	splitleft:SetFrameLevel(TukuiActionBarBackground:GetFrameLevel())
-	splitleft:SetFrameStrata(TukuiActionBarBackground:GetFrameStrata())
-	
-	local splitright = CreateFrame("Frame", "TukuiSplitActionBarRightBackground", TukuiActionBarBackground)
-	TukuiDB.CreatePanel(splitright, (TukuiDB.buttonsize * 3) + (TukuiDB.buttonspacing * 4), TukuiActionBarBackground:GetHeight(), "LEFT", TukuiActionBarBackground, "RIGHT", TukuiDB.Scale(4), 0)
-	splitright:SetFrameLevel(TukuiActionBarBackground:GetFrameLevel())
-	splitright:SetFrameStrata(TukuiActionBarBackground:GetFrameStrata())
-	
-	if TukuiCF["actionbar"].bottomrows == 3 then
-		splitleft:SetWidth((TukuiDB.buttonsize * 4) + (TukuiDB.buttonspacing * 5))
-		splitright:SetWidth((TukuiDB.buttonsize * 4) + (TukuiDB.buttonspacing * 5))
-	end
-	
-	TukuiDB.CreateShadow(splitleft)
-	splitleft.shadow:SetFrameStrata("BACKGROUND")
-	splitleft.shadow:SetFrameLevel(bottompanel:GetFrameLevel()-1)
-	
-	TukuiDB.CreateShadow(splitright)
-	splitright.shadow:SetFrameStrata("BACKGROUND")
-	splitright.shadow:SetFrameLevel(bottompanel:GetFrameLevel()-1)
+local splitleft = CreateFrame("Frame", "TukuiSplitActionBarLeftBackground", TukuiActionBarBackground)
+TukuiDB.CreatePanel(splitleft, (TukuiDB.buttonsize * 3) + (TukuiDB.buttonspacing * 4), TukuiActionBarBackground:GetHeight(), "RIGHT", TukuiActionBarBackground, "LEFT", TukuiDB.Scale(-4), 0)
+splitleft:SetFrameLevel(TukuiActionBarBackground:GetFrameLevel())
+splitleft:SetFrameStrata(TukuiActionBarBackground:GetFrameStrata())
+
+local splitright = CreateFrame("Frame", "TukuiSplitActionBarRightBackground", TukuiActionBarBackground)
+TukuiDB.CreatePanel(splitright, (TukuiDB.buttonsize * 3) + (TukuiDB.buttonspacing * 4), TukuiActionBarBackground:GetHeight(), "LEFT", TukuiActionBarBackground, "RIGHT", TukuiDB.Scale(4), 0)
+splitright:SetFrameLevel(TukuiActionBarBackground:GetFrameLevel())
+splitright:SetFrameStrata(TukuiActionBarBackground:GetFrameStrata())
+
+if TukuiCF["actionbar"].bottomrows == 3 then
+	splitleft:SetWidth((TukuiDB.buttonsize * 4) + (TukuiDB.buttonspacing * 5))
+	splitright:SetWidth((TukuiDB.buttonsize * 4) + (TukuiDB.buttonspacing * 5))
+end
+
+TukuiDB.CreateShadow(splitleft)
+splitleft.shadow:SetFrameStrata("BACKGROUND")
+splitleft.shadow:SetFrameLevel(bottompanel:GetFrameLevel()-1)
+
+TukuiDB.CreateShadow(splitright)
+splitright.shadow:SetFrameStrata("BACKGROUND")
+splitright.shadow:SetFrameLevel(bottompanel:GetFrameLevel()-1)
+
+if TukuiCF["actionbar"].splitbar ~= true then
+	TukuiSplitActionBarLeftBackground:Hide()
+	TukuiSplitActionBarRightBackground:Hide()
 end
 
 -- RIGHT BAR
@@ -150,17 +143,28 @@ if TukuiCF["actionbar"].enable == true then
 	petbg.shadow:SetFrameLevel(bottompanel:GetFrameLevel()-1)
 end
 
+-- VEHICLE BAR
+local vbarbg = CreateFrame("Frame", "TukuiVehicleBarBackground", UIParent)
+TukuiDB.CreatePanel(vbarbg, 1, 1, "BOTTOM", UIParent, "BOTTOM", 0, TukuiDB.Scale(4))
+vbarbg:SetWidth(((TukuiDB.buttonsize * 11) + (TukuiDB.buttonspacing * 12))*1.2)
+vbarbg:SetHeight((TukuiDB.buttonsize + (TukuiDB.buttonspacing * 2))*1.2)
+vbarbg:SetFrameLevel(bottompanel:GetFrameLevel() + 2)
+vbarbg:SetFrameStrata("LOW")
+TukuiDB.CreateShadow(vbarbg)
+vbarbg.shadow:SetFrameStrata("BACKGROUND")
+vbarbg.shadow:SetFrameLevel(bottompanel:GetFrameLevel()-1)
+
 -- CHAT BACKGROUND LEFT
 local chatlbgdummy = CreateFrame("Frame", "ChatLBackground", UIParent)
 chatlbgdummy:SetWidth(TukuiCF["chat"].chatwidth)
 chatlbgdummy:SetHeight(TukuiCF["chat"].chatheight+6)
-chatlbgdummy:SetPoint("BOTTOMLEFT", TukuiBottomPanel, "TOPLEFT", TukuiDB.Scale(4),  TukuiDB.Scale(4))
+chatlbgdummy:SetPoint("BOTTOMLEFT", TukuiBottomPanel, "TOPLEFT", TukuiDB.Scale(4),  TukuiDB.Scale(7))
 
 --Create Template frame for addon embedding
 local rdummyframe = CreateFrame("Frame", "RDummyFrame", UIParent)
 rdummyframe:SetWidth(TukuiCF["chat"].chatwidth)
 rdummyframe:SetHeight(TukuiCF["chat"].chatheight+6)
-rdummyframe:SetPoint("BOTTOMRIGHT", TukuiBottomPanel, "TOPRIGHT", TukuiDB.Scale(-4),  TukuiDB.Scale(4))
+rdummyframe:SetPoint("BOTTOMRIGHT", TukuiBottomPanel, "TOPRIGHT", TukuiDB.Scale(-4),  TukuiDB.Scale(7))
 
 TukuiDB.ChatRightShown = false
 if TukuiCF["chat"].showbackdrop == true then
@@ -199,6 +203,51 @@ chatrtbg:SetFrameStrata("BACKGROUND")
 
 TukuiDB.CreateShadow(chatrbg)
 TukuiDB.CreateShadow(chatrtbg)
+
+--INFO LEFT
+local infoleft = CreateFrame("Frame", "TukuiInfoLeft", UIParent)
+TukuiDB.SetTemplate(infoleft)
+TukuiDB.CreateShadow(infoleft)
+infoleft:SetPoint("TOPLEFT", chatlbgdummy, "BOTTOMLEFT", TukuiDB.Scale(13), TukuiDB.Scale(-4))
+infoleft:SetPoint("BOTTOMRIGHT", chatlbgdummy, "BOTTOMRIGHT", TukuiDB.Scale(-13), TukuiDB.Scale(-26))
+
+--INFOLEFT L BUTTON
+local infoleftLbutton = CreateFrame("Button", "TukuiInfoLeftLButton", TukuiInfoLeft)
+TukuiDB.SetTemplate(infoleftLbutton)
+infoleftLbutton:SetPoint("TOPRIGHT", infoleft, "TOPLEFT", TukuiDB.Scale(-2), 0)
+infoleftLbutton:SetPoint("BOTTOMLEFT", chatlbgdummy, "BOTTOMLEFT", 0, TukuiDB.Scale(-26))
+
+--INFOLEFT R BUTTON
+local infoleftRbutton = CreateFrame("Button", "TukuiInfoLeftRButton", TukuiInfoLeft)
+TukuiDB.SetTemplate(infoleftRbutton)
+infoleftRbutton:SetPoint("TOPLEFT", infoleft, "TOPRIGHT", TukuiDB.Scale(2), 0)
+infoleftRbutton:SetPoint("BOTTOMRIGHT", chatlbgdummy, "BOTTOMRIGHT", 0, TukuiDB.Scale(-26))
+
+infoleft.shadow:SetPoint("TOPLEFT", infoleftLbutton, "TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))
+infoleft.shadow:SetPoint("BOTTOMRIGHT", infoleftRbutton, "BOTTOMRIGHT", TukuiDB.Scale(4), TukuiDB.Scale(-4))
+
+--INFO RIGHT
+local inforight = CreateFrame("Frame", "TukuiInfoRight", UIParent)
+TukuiDB.SetTemplate(inforight)
+TukuiDB.CreateShadow(inforight)
+inforight:SetPoint("TOPLEFT", rdummyframe, "BOTTOMLEFT", TukuiDB.Scale(13), TukuiDB.Scale(-4))
+inforight:SetPoint("BOTTOMRIGHT", rdummyframe, "BOTTOMRIGHT", TukuiDB.Scale(-13), TukuiDB.Scale(-26))
+
+--INFORIGHT L BUTTON
+local inforightLbutton = CreateFrame("Button", "TukuiInfoRightLButton", TukuiInfoRight)
+TukuiDB.SetTemplate(inforightLbutton)
+inforightLbutton:SetPoint("TOPRIGHT", inforight, "TOPLEFT", TukuiDB.Scale(-2), 0)
+inforightLbutton:SetPoint("BOTTOMLEFT", rdummyframe, "BOTTOMLEFT", 0, TukuiDB.Scale(-26))
+
+--INFORIGHT R BUTTON
+local inforightRbutton = CreateFrame("Button", "TukuiInfoRightRButton", TukuiInfoRight)
+TukuiDB.SetTemplate(inforightRbutton)
+inforightRbutton:SetPoint("TOPLEFT", inforight, "TOPRIGHT", TukuiDB.Scale(2), 0)
+inforightRbutton:SetPoint("BOTTOMRIGHT", rdummyframe, "BOTTOMRIGHT", 0, TukuiDB.Scale(-26))
+
+inforight.shadow:SetPoint("TOPLEFT", inforightLbutton, "TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))
+inforight.shadow:SetPoint("BOTTOMRIGHT", inforightRbutton, "BOTTOMRIGHT", TukuiDB.Scale(4), TukuiDB.Scale(-4))
+
 
 -- BATTLEGROUND STATS FRAME
 if TukuiCF["datatext"].battleground == true then
@@ -270,4 +319,64 @@ if TukuiCF["datatext"].battleground == true then
 	end)
 end
 
-
+function PositionAllPanels()
+	TukuiActionBarBackground:ClearAllPoints()
+	TukuiPetActionBarBackground:ClearAllPoints()
+	TukuiLineToPetActionBarBackground:ClearAllPoints()
+	
+	if TukuiCF["actionbar"].bottompetbar ~= true then
+		TukuiActionBarBackground:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, TukuiDB.Scale(4))
+		if TukuiCF["actionbar"].rightbars > 0 then
+			TukuiPetActionBarBackground:SetPoint("RIGHT", TukuiActionBarBackgroundRight, "LEFT", TukuiDB.Scale(-6), 0)
+		else
+			TukuiPetActionBarBackground:SetPoint("RIGHT", UIParent, "RIGHT", TukuiDB.Scale(-6), TukuiDB.Scale(-13.5))
+		end
+		TukuiPetActionBarBackground:SetSize(TukuiDB.petbuttonsize + (TukuiDB.petbuttonspacing * 2), (TukuiDB.petbuttonsize * 10) + (TukuiDB.petbuttonspacing * 11))
+		TukuiLineToPetActionBarBackground:SetSize(30, 265)
+		TukuiLineToPetActionBarBackground:SetPoint("LEFT", TukuiPetActionBarBackground, "RIGHT", 0, 0)
+	else
+		TukuiActionBarBackground:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, (TukuiDB.buttonsize + (TukuiDB.buttonspacing * 2)) + TukuiDB.Scale(8))	
+		TukuiPetActionBarBackground:SetSize((TukuiDB.petbuttonsize * 10) + (TukuiDB.petbuttonspacing * 11), TukuiDB.petbuttonsize + (TukuiDB.petbuttonspacing * 2))
+		TukuiPetActionBarBackground:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, TukuiDB.Scale(4))
+		TukuiLineToPetActionBarBackground:SetSize(265, 30)
+		TukuiLineToPetActionBarBackground:SetPoint("BOTTOM", TukuiPetActionBarBackground, "TOP", 0, 0)
+	end
+	
+	if TukuiCF["actionbar"].bottomrows == 3 then
+		TukuiActionBarBackground:SetHeight((TukuiDB.buttonsize * 3) + (TukuiDB.buttonspacing * 4))
+	elseif TukuiCF["actionbar"].bottomrows == 2 then
+		TukuiActionBarBackground:SetHeight((TukuiDB.buttonsize * 2) + (TukuiDB.buttonspacing * 3))
+	else
+		TukuiActionBarBackground:SetHeight(TukuiDB.buttonsize + (TukuiDB.buttonspacing * 2))
+	end
+	
+	--SplitBar
+	if TukuiCF["actionbar"].splitbar == true then
+		if TukuiCF["actionbar"].bottomrows == 3 then
+			TukuiSplitActionBarLeftBackground:SetWidth((TukuiDB.buttonsize * 4) + (TukuiDB.buttonspacing * 5))
+			TukuiSplitActionBarRightBackground:SetWidth((TukuiDB.buttonsize * 4) + (TukuiDB.buttonspacing * 5))
+		else
+			TukuiSplitActionBarLeftBackground:SetWidth((TukuiDB.buttonsize * 3) + (TukuiDB.buttonspacing * 4))
+			TukuiSplitActionBarRightBackground:SetWidth((TukuiDB.buttonsize * 3) + (TukuiDB.buttonspacing * 4))	
+		end
+		TukuiSplitActionBarLeftBackground:Show()
+		TukuiSplitActionBarRightBackground:Show()
+		TukuiSplitActionBarLeftBackground:SetHeight(TukuiActionBarBackground:GetHeight())
+		TukuiSplitActionBarRightBackground:SetHeight(TukuiActionBarBackground:GetHeight())
+	else
+		TukuiSplitActionBarLeftBackground:Hide()
+		TukuiSplitActionBarRightBackground:Hide()	
+	end
+	
+	--RightBar
+	TukuiActionBarBackgroundRight:Show()
+	if TukuiCF["actionbar"].rightbars == 1 then
+		TukuiActionBarBackgroundRight:SetWidth(TukuiDB.buttonsize + (TukuiDB.buttonspacing * 2))
+	elseif TukuiCF["actionbar"].rightbars == 2 then
+		TukuiActionBarBackgroundRight:SetWidth((TukuiDB.buttonsize * 2) + (TukuiDB.buttonspacing * 3))
+	elseif TukuiCF["actionbar"].rightbars == 3 then
+		TukuiActionBarBackgroundRight:SetWidth((TukuiDB.buttonsize * 3) + (TukuiDB.buttonspacing * 4))
+	else
+		TukuiActionBarBackgroundRight:Hide()
+	end	
+end

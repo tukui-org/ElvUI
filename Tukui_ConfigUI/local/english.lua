@@ -247,6 +247,7 @@ TukuiL_option_chat_backdrop = "Show backdrop behind chat window"
 TukuiL_option_chat_chatheight = "Height of chat frames"
 TukuiL_option_chat_fadeoutofuse = "Fade chat text when not in use"
 TukuiL_option_chat_sticky = "Sticky some chat channels when opening new chat edit"
+TukuiL_option_chat_rightchat = "Display right chat window"
 
 -- buttons
 TukuiL.option_button_reset = "Reset UI"

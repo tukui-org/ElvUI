@@ -212,14 +212,19 @@ local function SetupChat(self)
 	ChatTypeInfo.CHANNEL.sticky = var
 end
 
+
 local function SetupChatPosAndFont(self)
+	local chatrightfound = false
+	local lastseen
 	for i = 1, NUM_CHAT_WINDOWS do
 		local chat = _G[format("ChatFrame%s", i)]
 		local id = chat:GetID()
 		local name = FCF_GetChatWindowInfo(id)
 		local point = GetChatWindowSavedPosition(id)
 		local _, fontSize = FCF_GetChatWindowInfo(id)
-
+		local button = _G[format("ButtonCF%d", i)]
+		local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
+		
 		-- well... tukui font under fontsize 12 is unreadable.
 		if fontSize < 12 then		
 			FCF_SetChatWindowFontSize(nil, chat, 12)
@@ -227,12 +232,40 @@ local function SetupChatPosAndFont(self)
 			FCF_SetChatWindowFontSize(nil, chat, fontSize)
 		end
 		
+		
 		-- force chat position on #1 and #4, needed if we change ui scale or resolution
 		if i == 1 then
 			chat:ClearAllPoints()
 			chat:SetPoint("BOTTOMLEFT", ChatLBackground, "BOTTOMLEFT", TukuiDB.Scale(2), TukuiDB.Scale(4))
 			_G["ChatFrame"..i]:SetSize(TukuiDB.Scale(TukuiCF["chat"].chatwidth - 4), TukuiDB.Scale(TukuiCF["chat"].chatheight))
 			FCF_SavePositionAndDimensions(chat)
+			button:ClearAllPoints()
+			button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))
+		elseif point == "BOTTOMRIGHT" and TukuiCF["chat"].rightchat == true and chat:IsShown() and docked == nil then
+			chatrightfound = true
+			TukuiDB.ChatRightShown = true
+			chat:ClearAllPoints()
+			chat:SetPoint("BOTTOMLEFT", RDummyFrame, "BOTTOMLEFT", TukuiDB.Scale(2), TukuiDB.Scale(4))
+			_G["ChatFrame"..i]:SetSize(TukuiDB.Scale(TukuiCF["chat"].chatwidth - 4), TukuiDB.Scale(TukuiCF["chat"].chatheight))
+			FCF_SavePositionAndDimensions(chat)
+			button:ClearAllPoints()
+			button:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", 0, TukuiDB.Scale(3))
+		else
+			if button then
+				button:ClearAllPoints()
+				button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))
+			end
+		end
+		
+		if TukuiCF["chat"].rightchat ~= true then
+			chatrightfound = true
+		else
+			ChatRBG:SetAlpha(1)
+		end
+		
+		if i == NUM_CHAT_WINDOWS and chatrightfound == false then
+			print("Missing right chat window, Tukui is dependent on this, please disable right chat window in config, otherwise hit yes to continue")
+			StaticPopup_Show("INSTALL_UI")	
 		end
 	end
 end
@@ -250,41 +283,6 @@ TukuiChat:SetScript("OnEvent", function(self, event, ...)
 	elseif event == "PLAYER_ENTERING_WORLD" then
 			self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 			SetupChatPosAndFont(self)
-	end
-	
-	for i = 1, NUM_CHAT_WINDOWS do
-		local chat = _G[format("ChatFrame%s", i)]
-		local id = chat:GetID()
-		local point = GetChatWindowSavedPosition(id)
-		local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
-		local tab = _G[chat:GetName().."Tab"]
-		local button = _G[format("ButtonCF%d", i)]
-		if point == "BOTTOMRIGHT" and chat:IsShown() and docked == nil then
-			if TukuiCF["chat"].showbackdrop == true then
-				ChatRBG:SetAlpha(1)
-			end
-			TukuiDB.ChatRightShown = true
-			if not InCombatLockdown() then
-				SetChatWindowSavedDimensions(id, TukuiDB.Scale(TukuiCF["chat"].chatwidth + -4), TukuiDB.Scale(TukuiCF["chat"].chatheight))
-				chat:SetWidth(TukuiCF["chat"].chatwidth + -4)
-				chat:SetHeight(TukuiCF["chat"].chatheight)
-				chat:ClearAllPoints()
-				chat:SetPoint("BOTTOMLEFT", RDummyFrame, "BOTTOMLEFT", TukuiDB.Scale(2), TukuiDB.Scale(4))
-				button:ClearAllPoints()
-				button:SetPoint("BOTTOMRIGHT", RDummyFrame, "TOPRIGHT", 0, TukuiDB.Scale(3))
-				FCF_SavePositionAndDimensions(chat)
-			end
-			break
-		else
-			if TukuiCF["chat"].showbackdrop == true then
-				ChatRBG:SetAlpha(0)
-			end
-			if not InCombatLockdown() then
-				button:ClearAllPoints()
-				button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))				
-			end
-			TukuiDB.ChatRightShown = false
-		end
 	end
 end)
 

@@ -164,48 +164,40 @@ end
 
 --Set Datatext Postitions
 function TukuiDB.PP(p, obj)
-	if TukuiDB.lowversion == true then
-		local x = TukuiDB.Scale(((string.match(GetCVar("gxResolution"), "(%d+)x%d+") / 3) / 3))
-		obj:SetHeight(TukuiBottomPanel:GetHeight())
-		if p == 1 then
-			obj:SetPoint("BOTTOM", UIParent, "BOTTOMLEFT", (x*p)-x/1.6, -TukuiDB.mult)
-		elseif p == 2 then
-			obj:SetPoint("BOTTOM", UIParent, "BOTTOMLEFT", (x*p)-x/1.2, -TukuiDB.mult)
-		elseif p == 3 then
-			obj:SetPoint("BOTTOM", UIParent, "BOTTOMLEFT", (x*p)-x, -TukuiDB.mult)
-		elseif p == 4 then
-			local p = 6 --Swap these so its like how its always been..
-			obj:SetPoint("BOTTOM", UIParent,"BOTTOMRIGHT", -(x*(p-3))+x, -TukuiDB.mult)
-		elseif p == 5 then
-			obj:SetPoint("BOTTOM", UIParent,"BOTTOMRIGHT", -(x*(p-3))+x/1.3, -TukuiDB.mult)
-		elseif p == 6 then
-			local p = 4 --Swap these so its like how its always been..
-			obj:SetPoint("BOTTOM", UIParent,"BOTTOMRIGHT", -(x*(p-3))+x/1.6, -TukuiDB.mult)
-		end
-	else
-		local x = TukuiDB.Scale(((string.match(GetCVar("gxResolution"), "(%d+)x%d+") / 3) / 3.2))
-		obj:SetHeight(TukuiBottomPanel:GetHeight())
-		if p == 1 then
-			obj:SetPoint("BOTTOM", UIParent, "BOTTOMLEFT", (x*p)-x/1.6, -TukuiDB.mult)
-		elseif p == 2 then
-			obj:SetPoint("BOTTOM", UIParent, "BOTTOMLEFT", (x*p)-x/1.1, -TukuiDB.mult)
-		elseif p == 3 then
-			obj:SetPoint("BOTTOM", UIParent, "BOTTOMLEFT", (x*p)-x/0.9, -TukuiDB.mult)
-		elseif p == 4 then
-			local p = 6 --Swap these so its like how its always been..
-			obj:SetPoint("BOTTOM", UIParent,"BOTTOMRIGHT", -(x*(p-3))+x/0.8, -TukuiDB.mult)
-		elseif p == 5 then
-			obj:SetPoint("BOTTOM", UIParent,"BOTTOMRIGHT", -(x*(p-3))+x/1.1, -TukuiDB.mult)
-		elseif p == 6 then
-			local p = 4 --Swap these so its like how its always been..
-			obj:SetPoint("BOTTOM", UIParent,"BOTTOMRIGHT", -(x*(p-3))+x/1.6, -TukuiDB.mult)
-		elseif p == 9 then
-			local p = 10
-			obj:SetPoint("BOTTOM", UIParent,"BOTTOMRIGHT", -(x*(p-3))-x/20, -TukuiDB.mult)
-		elseif p == 10 then
-			local p = 9
-			obj:SetPoint("BOTTOM", UIParent, "BOTTOMLEFT", (x*p)-x/0.53, -TukuiDB.mult)
-		end	
+	obj:SetHeight(TukuiDB.Scale(15))
+	local left = TukuiInfoLeft
+	local right = TukuiInfoRight
+	local mapleft = TukuiMinimapStatsLeft
+	local mapright = TukuiMinimapStatsRight
+	
+	if p == 1 then
+		obj:SetHeight(left:GetHeight())
+		obj:SetPoint("LEFT", left, 30, 0)
+		obj:SetPoint('TOP', left)
+		obj:SetPoint('BOTTOM', left)
+	elseif p == 2 then
+		obj:SetHeight(left:GetHeight())
+		obj:SetPoint('TOP', left)
+		obj:SetPoint('BOTTOM', left)
+	elseif p == 3 then
+		obj:SetHeight(left:GetHeight())
+		obj:SetPoint("RIGHT", left, -30, 0)
+		obj:SetPoint('TOP', left)
+		obj:SetPoint('BOTTOM', left)
+	elseif p == 4 then
+		obj:SetHeight(right:GetHeight())
+		obj:SetPoint("LEFT", right, 30, 0)
+		obj:SetPoint('TOP', right)
+		obj:SetPoint('BOTTOM', right)
+	elseif p == 5 then
+		obj:SetHeight(right:GetHeight())
+		obj:SetPoint('TOP', right)
+		obj:SetPoint('BOTTOM', right)
+	elseif p == 6 then
+		obj:SetHeight(right:GetHeight())
+		obj:SetPoint("RIGHT", right, -30, 0)
+		obj:SetPoint('TOP', right)
+		obj:SetPoint('BOTTOM', right)
 	end
 	
 	if TukuiMinimap then

@@ -138,7 +138,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 770, true ), -- Farie Fire
 			CreateSpellEntry( 467 ), -- Thorns
 			CreateSpellEntry( 78675 ), -- Solar Beam
-			CreateSpellEntry( 93401 ), -- Sunfire
+			CreateSpellEntry( 93402 ), -- Sunfire
 		},
 		player = {
 			CreateSpellEntry( 48505 ), -- Starfall

@@ -8,7 +8,7 @@ if TukuiCF["datatext"].wowtime and TukuiCF["datatext"].wowtime > 0 then
 	Stat:SetFrameLevel(3)
 	
 	local Text
-	Text = TukuiBottomPanel:CreateFontString(nil, "OVERLAY")
+	Text = TukuiInfoLeft:CreateFontString(nil, "OVERLAY")
 	Text:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
 	TukuiDB.PP(TukuiCF["datatext"].wowtime, Text)
 

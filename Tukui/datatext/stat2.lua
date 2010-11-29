@@ -8,7 +8,7 @@ if TukuiCF["datatext"].stat2 and TukuiCF["datatext"].stat2 > 0 then
 	Stat:SetFrameStrata("BACKGROUND")
 	Stat:SetFrameLevel(3)
 
-	local Text  = TukuiBottomPanel:CreateFontString(nil, "LOW")
+	local Text  = TukuiInfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
 	TukuiDB.PP(TukuiCF["datatext"].stat2, Text)
 	
