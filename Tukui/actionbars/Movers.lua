@@ -1,5 +1,5 @@
 --Create interactable actionbars
-if not IsAddOnLoaded("Tukui_ConfigUI") or not TukuiCF["actionbar"].enable == true then return end
+if not IsAddOnLoaded("Tukui_ConfigUI") or not TukuiCF["actionbar"].enable == true or TukuiCF["actionbar"].rightbarmouseover == true then return end
 local TukuiDB = TukuiDB
 
 
@@ -107,10 +107,10 @@ barloader:SetScript("OnEvent", function(self)
 	--Disable some default button stuff
 	RightBarInc:SetScript("OnEnter", function() end)
 	RightBarInc:SetScript("OnLeave", function() end)
-	RightBarInc:SetAlpha(1)
 	RightBarDec:SetScript("OnEnter", function() end)
 	RightBarDec:SetScript("OnLeave", function() end)
 	RightBarDec:SetAlpha(1)
+	RightBarInc:SetAlpha(1)
 	
 	RightBarInc:SetPoint("TOPLEFT", TukuiActionBarBackgroundRight, "BOTTOMLEFT", 0, TukuiDB.Scale(-4))
 	RightBarInc:SetPoint("BOTTOMRIGHT", TukuiActionBarBackgroundRight, "BOTTOM", TukuiDB.Scale(-2), TukuiDB.Scale(-19))

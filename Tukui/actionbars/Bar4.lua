@@ -48,18 +48,18 @@ function PositionBar4()
 	else
 		TukuiBar4:Show()
 	end
-	
-	--Setup Mouseover
-	if TukuiCF["actionbar"].rightbarmouseover == true and not (TukuiCF.actionbar.bottomrows == 3) then
-		for i=1, 12 do
-			local b = _G["MultiBarRightButton"..i]
-			b:SetAlpha(0)
-			b:HookScript("OnEnter", function() RightBarMouseOver(1) end)
-			b:HookScript("OnLeave", function() RightBarMouseOver(0) end)
-		end
-	end
 end
 
 do
 	PositionBar4()
+end
+
+--Setup Mouseover
+if TukuiCF["actionbar"].rightbarmouseover == true and not (TukuiCF.actionbar.bottomrows == 3) then
+	for i=1, 12 do
+		local b = _G["MultiBarRightButton"..i]
+		b:SetAlpha(0)
+		b:HookScript("OnEnter", function() RightBarMouseOver(1) end)
+		b:HookScript("OnLeave", function() RightBarMouseOver(0) end)
+	end	
 end
