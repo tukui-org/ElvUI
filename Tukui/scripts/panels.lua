@@ -208,8 +208,8 @@ TukuiDB.CreateShadow(chatrtbg)
 local infoleft = CreateFrame("Frame", "TukuiInfoLeft", UIParent)
 TukuiDB.SetTemplate(infoleft)
 TukuiDB.CreateShadow(infoleft)
-infoleft:SetPoint("TOPLEFT", chatlbgdummy, "BOTTOMLEFT", TukuiDB.Scale(13), TukuiDB.Scale(-4))
-infoleft:SetPoint("BOTTOMRIGHT", chatlbgdummy, "BOTTOMRIGHT", TukuiDB.Scale(-13), TukuiDB.Scale(-26))
+infoleft:SetPoint("TOPLEFT", chatlbgdummy, "BOTTOMLEFT", TukuiDB.Scale(17), TukuiDB.Scale(-4))
+infoleft:SetPoint("BOTTOMRIGHT", chatlbgdummy, "BOTTOMRIGHT", TukuiDB.Scale(-17), TukuiDB.Scale(-26))
 
 --INFOLEFT L BUTTON
 local infoleftLbutton = CreateFrame("Button", "TukuiInfoLeftLButton", TukuiInfoLeft)
@@ -226,12 +226,20 @@ infoleftRbutton:SetPoint("BOTTOMRIGHT", chatlbgdummy, "BOTTOMRIGHT", 0, TukuiDB.
 infoleft.shadow:SetPoint("TOPLEFT", infoleftLbutton, "TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))
 infoleft.shadow:SetPoint("BOTTOMRIGHT", infoleftRbutton, "BOTTOMRIGHT", TukuiDB.Scale(4), TukuiDB.Scale(-4))
 
+infoleftLbutton.Text = TukuiDB.SetFontString(TukuiInfoLeftLButton, TukuiCF["media"].font, 12, "THINOUTLINE")
+infoleftLbutton.Text:SetText("<")
+infoleftLbutton.Text:SetPoint("CENTER")
+
+infoleftRbutton.Text = TukuiDB.SetFontString(TukuiInfoLeftRButton, TukuiCF["media"].font, 12, "THINOUTLINE")
+infoleftRbutton.Text:SetText("L")
+infoleftRbutton.Text:SetPoint("CENTER")
+
 --INFO RIGHT
 local inforight = CreateFrame("Frame", "TukuiInfoRight", UIParent)
 TukuiDB.SetTemplate(inforight)
 TukuiDB.CreateShadow(inforight)
-inforight:SetPoint("TOPLEFT", rdummyframe, "BOTTOMLEFT", TukuiDB.Scale(13), TukuiDB.Scale(-4))
-inforight:SetPoint("BOTTOMRIGHT", rdummyframe, "BOTTOMRIGHT", TukuiDB.Scale(-13), TukuiDB.Scale(-26))
+inforight:SetPoint("TOPLEFT", rdummyframe, "BOTTOMLEFT", TukuiDB.Scale(17), TukuiDB.Scale(-4))
+inforight:SetPoint("BOTTOMRIGHT", rdummyframe, "BOTTOMRIGHT", TukuiDB.Scale(-17), TukuiDB.Scale(-26))
 
 --INFORIGHT L BUTTON
 local inforightLbutton = CreateFrame("Button", "TukuiInfoRightLButton", TukuiInfoRight)
@@ -247,6 +255,14 @@ inforightRbutton:SetPoint("BOTTOMRIGHT", rdummyframe, "BOTTOMRIGHT", 0, TukuiDB.
 
 inforight.shadow:SetPoint("TOPLEFT", inforightLbutton, "TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))
 inforight.shadow:SetPoint("BOTTOMRIGHT", inforightRbutton, "BOTTOMRIGHT", TukuiDB.Scale(4), TukuiDB.Scale(-4))
+
+inforightLbutton.Text = TukuiDB.SetFontString(TukuiInfoRightLButton, TukuiCF["media"].font, 12, "THINOUTLINE")
+inforightLbutton.Text:SetText("R")
+inforightLbutton.Text:SetPoint("CENTER")
+
+inforightRbutton.Text = TukuiDB.SetFontString(TukuiInfoRightRButton, TukuiCF["media"].font, 12, "THINOUTLINE")
+inforightRbutton.Text:SetText(">")
+inforightRbutton.Text:SetPoint("CENTER")
 
 
 -- BATTLEGROUND STATS FRAME

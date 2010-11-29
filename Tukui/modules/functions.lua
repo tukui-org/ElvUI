@@ -172,7 +172,7 @@ function TukuiDB.PP(p, obj)
 	
 	if p == 1 then
 		obj:SetHeight(left:GetHeight())
-		obj:SetPoint("LEFT", left, 30, 0)
+		obj:SetPoint("LEFT", left, 15, 0)
 		obj:SetPoint('TOP', left)
 		obj:SetPoint('BOTTOM', left)
 	elseif p == 2 then
@@ -181,12 +181,12 @@ function TukuiDB.PP(p, obj)
 		obj:SetPoint('BOTTOM', left)
 	elseif p == 3 then
 		obj:SetHeight(left:GetHeight())
-		obj:SetPoint("RIGHT", left, -30, 0)
+		obj:SetPoint("RIGHT", left, -15, 0)
 		obj:SetPoint('TOP', left)
 		obj:SetPoint('BOTTOM', left)
 	elseif p == 4 then
 		obj:SetHeight(right:GetHeight())
-		obj:SetPoint("LEFT", right, 30, 0)
+		obj:SetPoint("LEFT", right, 15, 0)
 		obj:SetPoint('TOP', right)
 		obj:SetPoint('BOTTOM', right)
 	elseif p == 5 then
@@ -195,7 +195,7 @@ function TukuiDB.PP(p, obj)
 		obj:SetPoint('BOTTOM', right)
 	elseif p == 6 then
 		obj:SetHeight(right:GetHeight())
-		obj:SetPoint("RIGHT", right, -30, 0)
+		obj:SetPoint("RIGHT", right, -15, 0)
 		obj:SetPoint('TOP', right)
 		obj:SetPoint('BOTTOM', right)
 	end

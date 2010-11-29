@@ -69,6 +69,7 @@ function ToggleABLock()
 		if TukuiABLock == false then
 			_G[btnnames]:EnableMouse(false)
 			_G[btnnames]:Hide()
+			TukuiInfoLeftRButton.Text:SetTextColor(1,1,1)
 		else
 			_G[btnnames]:EnableMouse(true)
 			if btnnames == "RightBarBig" and not (TukuiCF["actionbar"].rightbars ~= 0 or (TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].splitbar == true)) then
@@ -76,6 +77,7 @@ function ToggleABLock()
 			elseif btnnames ~= "RightBarBig" then
 				_G[btnnames]:Show()
 			end
+			TukuiInfoLeftRButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))
 		end
 	end
 end
@@ -150,6 +152,7 @@ barloader:SetScript("OnEvent", function(self)
 		if TukuiABLock == false then
 			_G[btnnames]:EnableMouse(false)
 			_G[btnnames]:Hide()
+			TukuiInfoLeftRButton.Text:SetTextColor(1,1,1)
 		else
 			_G[btnnames]:EnableMouse(true)
 			if btnnames == "RightBarBig" and not (TukuiCF["actionbar"].rightbars ~= 0 or (TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].splitbar == true)) then
@@ -157,6 +160,7 @@ barloader:SetScript("OnEvent", function(self)
 			elseif btnnames ~= "RightBarBig" then
 				_G[btnnames]:Show()
 			end
+			TukuiInfoLeftRButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))
 		end
 	end
 end)
@@ -268,5 +272,41 @@ do
 		elseif TukuiCF["actionbar"].rightbars == 3 then
 			SaveBars("rightbars", 2)
 		end		
+	end)
+	
+	--Toggle lock button
+	TukuiInfoLeftRButton:SetScript("OnMouseDown", function(self)
+		if InCombatLockdown() then return end
+		ToggleABLock()	
+		
+		if TukuiInfoLeftRButton.hovered == true then
+			GameTooltip:ClearLines()
+			if TukuiABLock == false then
+				GameTooltip:AddDoubleLine(ACTIONBAR_LABEL..":", LOCKED,1,1,1,unpack(TukuiCF["media"].valuecolor))
+			else
+				GameTooltip:AddDoubleLine(ACTIONBAR_LABEL..":", UNLOCK,1,1,1,unpack(TukuiCF["media"].valuecolor))
+			end
+		end
+	end)
+	
+	TukuiInfoLeftRButton:SetScript("OnEnter", function(self)
+		TukuiInfoLeftRButton.hovered = true
+		if InCombatLockdown() then return end
+		GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, TukuiDB.Scale(6));
+		GameTooltip:ClearAllPoints()
+		GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
+		GameTooltip:ClearLines()
+		
+		if TukuiABLock == false then
+			GameTooltip:AddDoubleLine(ACTIONBAR_LABEL..":", LOCKED,1,1,1,unpack(TukuiCF["media"].valuecolor))
+		else
+			GameTooltip:AddDoubleLine(ACTIONBAR_LABEL..":", UNLOCK,1,1,1,unpack(TukuiCF["media"].valuecolor))
+		end
+		GameTooltip:Show()
+	end)
+	
+	TukuiInfoLeftRButton:SetScript("OnLeave", function(self)
+		TukuiInfoLeftRButton.hovered = false
+		GameTooltip:Hide()
 	end)
 end
