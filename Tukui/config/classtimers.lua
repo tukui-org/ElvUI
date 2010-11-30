@@ -367,15 +367,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 1966 ), -- Feint --
 			CreateSpellEntry( 73651 ), -- Recuperate --
 			CreateSpellEntry( 5171 ), -- Slice and Dice
-			CreateSpellEntry( 55503 ), -- Lifeblood --
 			CreateSpellEntry( 13877 ), -- Blade Flurry --
-
-
-
-
-
-
-
 		},
 		procs = {
 			CreateSpellEntry( 71396 ), -- Rage of the Fallen
