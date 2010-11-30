@@ -99,6 +99,8 @@ end
 
 
 --Main Script
+
+RaidReminderShown = true
 local function OnAuraChange(self, event, arg1, unit)
 	if (event == "UNIT_AURA" and arg1 ~= "player") then 
 		return
@@ -187,6 +189,19 @@ local function OnAuraChange(self, event, arg1, unit)
 			Spell6Frame.t:SetTexture(select(3, GetSpellInfo(Spell6Buff)))
 		end
 	end
+	
+	local inInstance, instanceType = IsInInstance()
+	if inInstance and (instanceType ==  "party" or instanceType == "raid") then
+		if RaidReminderShown == true then return end
+		UIFrameFadeIn(self, 0.4)
+		TukuiInfoRightLButton.Text:SetTextColor(1,1,1)
+		RaidReminderShown = true
+	else
+		if RaidReminderShown == false then return end
+		TukuiInfoRightLButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))
+		UIFrameFadeOut(self, 0.4)
+		RaidReminderShown = false
+	end
 end
 
 local bsize = (((TukuiMinimap:GetWidth()) - (TukuiDB.Scale(4) * 7)) / 6)
@@ -234,4 +249,48 @@ do
 	CreateButton("Spell4Frame", Spell3Frame, false)
 	CreateButton("Spell5Frame", Spell4Frame, false)
 	CreateButton("Spell6Frame", Spell5Frame, false)
+end
+
+--Setup toggle button
+do
+	--Toggle lock button
+	TukuiInfoRightLButton.hovered = false
+	TukuiInfoRightLButton:SetScript("OnMouseDown", function(self)
+		
+		if TukuiInfoRightLButton.hovered == true then
+			GameTooltip:ClearLines()
+			if RaidReminderShown == true then
+				GameTooltip:AddDoubleLine(tukuilocal.raidbufftoggler, HIDE,1,1,1,unpack(TukuiCF["media"].valuecolor))
+				TukuiInfoRightLButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))
+				UIFrameFadeOut(RaidBuffReminder, 0.4)
+				RaidReminderShown = false
+			else
+				GameTooltip:AddDoubleLine(tukuilocal.raidbufftoggler, SHOW,1,1,1,unpack(TukuiCF["media"].valuecolor))
+				TukuiInfoRightLButton.Text:SetTextColor(1,1,1)
+				UIFrameFadeIn(RaidBuffReminder, 0.4)
+				RaidReminderShown = true
+			end
+		end
+	end)
+		
+	TukuiInfoRightLButton:SetScript("OnEnter", function(self)
+		TukuiInfoRightLButton.hovered = true
+		if InCombatLockdown() then return end
+		GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, TukuiDB.Scale(6));
+		GameTooltip:ClearAllPoints()
+		GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, TukuiDB.mult)
+		GameTooltip:ClearLines()
+		
+		if RaidReminderShown == true then
+			GameTooltip:AddDoubleLine(tukuilocal.raidbufftoggler, SHOW,1,1,1,unpack(TukuiCF["media"].valuecolor))
+		else
+			GameTooltip:AddDoubleLine(tukuilocal.raidbufftoggler, HIDE,1,1,1,unpack(TukuiCF["media"].valuecolor))
+		end
+		GameTooltip:Show()
+	end)
+	
+	TukuiInfoRightLButton:SetScript("OnLeave", function(self)
+		TukuiInfoRightLButton.hovered = false
+		GameTooltip:Hide()
+	end)
 end

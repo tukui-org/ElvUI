@@ -17,6 +17,7 @@ tukuilocal.chat_FLAG_DND = "[DND]"
 tukuilocal.chat_FLAG_GM = "[GM]"
 tukuilocal.chat_ERR_FRIEND_ONLINE_SS = "is now |cff298F00online|r"
 tukuilocal.chat_ERR_FRIEND_OFFLINE_S = "is now |cffff0000offline|r"
+tukuilocal.raidbufftoggler = "Raid Buff Reminder: "
 
 tukuilocal.disband = "Disbanding group."
 

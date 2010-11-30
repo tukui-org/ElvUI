@@ -158,6 +158,7 @@ local function SetChatStyle(frame)
 	-- create our own texture for edit box
 	local EditBoxBackground = CreateFrame("frame", "TukuiChatchatEditBoxBackground", _G[chat.."EditBox"])
 	TukuiDB.CreatePanel(EditBoxBackground, 1, 1, "LEFT", _G[chat.."EditBox"], "LEFT", 0, 0)
+	TukuiDB.SetNormTexTemplate(EditBoxBackground)
 	EditBoxBackground:ClearAllPoints()
 	EditBoxBackground:SetAllPoints(EditBoxDummy)
 	EditBoxBackground:SetFrameStrata("LOW")
