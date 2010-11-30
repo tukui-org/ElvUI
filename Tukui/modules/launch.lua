@@ -291,6 +291,19 @@ TukuiOnLogon:SetScript("OnEvent", function(self, event)
 	print(tukuilocal.core_welcome2)
 end)
 
+local eventcount = 0
+local TukuiInGame = CreateFrame("Frame")
+TukuiInGame:RegisterAllEvents()
+TukuiInGame:SetScript("OnEvent", function(self, event)
+	eventcount = eventcount + 1
+	if eventcount == 250 then
+		self:UnregisterAllEvents()
+		eventcount = nil
+		collectgarbage("collect")
+		return
+	end
+end)
+
 ------------------------------------------------------------------------
 --	UI HELP
 ------------------------------------------------------------------------
