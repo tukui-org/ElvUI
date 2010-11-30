@@ -47,9 +47,7 @@ TukuiDB.Kill(FriendsMicroButton)
 TukuiDB.Kill(ChatFrameMenuButton)
 
 local EditBoxDummy = CreateFrame("Frame", "EditBoxDummy", UIParent)
-EditBoxDummy:SetWidth(TukuiCF["chat"].chatwidth)
-EditBoxDummy:SetHeight(TukuiBottomPanel:GetHeight())
-EditBoxDummy:SetPoint("BOTTOM", ChatFrame1, "TOP", 0, TukuiDB.Scale(5))
+EditBoxDummy:SetAllPoints(TukuiInfoLeft)
 
 -- set the chat style
 local function SetChatStyle(frame)
@@ -260,7 +258,9 @@ local function SetupChatPosAndFont(self)
 		if TukuiCF["chat"].rightchat ~= true then
 			chatrightfound = true
 		else
-			ChatRBG:SetAlpha(1)
+			if ChatRBG then
+				ChatRBG:SetAlpha(1)
+			end
 		end
 		
 		if i == NUM_CHAT_WINDOWS and chatrightfound == false and not StaticPopup1:IsShown() then
@@ -387,10 +387,18 @@ end
 function TukuiDB.ChatCopyButtons()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G[format("ChatFrame%d",  i)]
+		local tab = _G[format("ChatFrame%dTab", i)]
 		local button = CreateFrame("Button", format("ButtonCF%d", i), cf)
+		local id = cf:GetID()
+		local name = FCF_GetChatWindowInfo(id)
+		local point = GetChatWindowSavedPosition(id)
+		local _, fontSize = FCF_GetChatWindowInfo(id)
+		local button = _G[format("ButtonCF%d", i)]
+		local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
+		
 		button:SetHeight(TukuiDB.Scale(22))
 		button:SetWidth(TukuiDB.Scale(20))
-		if TukuiCF["chat"].showbackdrop ~= true then
+		if TukuiCF["chat"].showbackdrop ~= true or (TukuiCF["chat"].rightchat ~= true and docked == nil) then
 			button:SetAlpha(0)
 			button:SetPoint("TOPRIGHT", 0, 0)
 		else
@@ -467,3 +475,71 @@ if TukuiCF.chat.whispersound then
 		end
 	end)
 end
+
+----------------------------------------------------------------------
+-- Setup animating chat during combat
+----------------------------------------------------------------------
+
+local ChatCombatHider = CreateFrame("Frame")
+ChatCombatHider:RegisterEvent("PLAYER_REGEN_ENABLED")
+ChatCombatHider:RegisterEvent("PLAYER_REGEN_DISABLED")
+ChatCombatHider:SetScript("OnEvent", function(self, event)
+	if TukuiCF["chat"].combathide ~= "Left" and TukuiCF["chat"].combathide ~= "Right" and TukuiCF["chat"].combathide ~= "Both" then self:UnregisterAllEvents() return end
+	if (TukuiCF["chat"].combathide == "Right" or TukuiCF["chat"].combathide == "Both") and TukuiCF["chat"].rightchat ~= true then return end
+	
+	if event == "PLAYER_REGEN_DISABLED" then
+		if TukuiCF["chat"].combathide == "Both" then	
+			if TukuiChatRIn ~= false then
+				SlideOut(ChatRBackground)		
+				TukuiDB.ChatRightShown = false
+				TukuiChatRIn = false
+				TukuiInfoRightRButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))			
+			end
+			if TukuiChatLIn ~= false then
+				SlideOut(ChatLBackground)
+				TukuiChatLIn = false
+				TukuiInfoLeftLButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))
+			end
+		elseif TukuiCF["chat"].combathide == "Right" then
+			if TukuiChatRIn ~= false then
+				SlideOut(ChatRBackground)		
+				TukuiDB.ChatRightShown = false
+				TukuiChatRIn = false
+				TukuiInfoRightRButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))			
+			end		
+		elseif TukuiCF["chat"].combathide == "Left" then
+			if TukuiChatLIn ~= false then
+				SlideOut(ChatLBackground)
+				TukuiChatLIn = false
+				TukuiInfoLeftLButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))
+			end		
+		end
+	else
+		if TukuiCF["chat"].combathide == "Both" then
+			if TukuiChatRIn ~= true then
+				SlideIn(ChatRBackground)		
+				TukuiDB.ChatRightShown = true
+				TukuiChatRIn = true
+				TukuiInfoRightRButton.Text:SetTextColor(1,1,1)			
+			end
+			if TukuiChatLIn ~= true then
+				SlideIn(ChatLBackground)
+				TukuiChatLIn = true
+				TukuiInfoLeftLButton.Text:SetTextColor(1,1,1)
+			end
+		elseif TukuiCF["chat"].combathide == "Right" then
+			if TukuiChatRIn ~= true then
+				SlideIn(ChatRBackground)		
+				TukuiDB.ChatRightShown = true
+				TukuiChatRIn = true
+				TukuiInfoRightRButton.Text:SetTextColor(1,1,1)			
+			end		
+		elseif TukuiCF["chat"].combathide == "Left" then
+			if TukuiChatLIn ~= true then
+				SlideIn(ChatLBackground)
+				TukuiChatLIn = true
+				TukuiInfoLeftLButton.Text:SetTextColor(1,1,1)
+			end		
+		end	
+	end
+end)

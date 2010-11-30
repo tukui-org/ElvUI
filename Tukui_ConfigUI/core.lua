@@ -287,6 +287,7 @@ local function Local(o)
 	if o == "TukuiConfigUIchatchatheight" then o = TukuiL_option_chat_chatheight end
 	if o == "TukuiConfigUIchatsticky" then o = TukuiL_option_chat_sticky end
 	if o == "TukuiConfigUIchatrightchat" then o = TukuiL_option_chat_rightchat end
+	if o == "TukuiConfigUIchatcombathide" then o = TukuiL_option_chat_combathide end
 	
 	TukuiDB.option = o
 end

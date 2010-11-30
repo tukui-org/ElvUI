@@ -199,6 +199,7 @@ TukuiCF["chat"] = {
 		["fadeoutofuse"] = true,				-- fade chat text when out of use
 		["sticky"] = true,						-- when opening the chat edit box resort to previous channel
 		["rightchat"] = true,					-- enable chat frame on right
+		["combathide"] = "NONE",			-- Set to "Left", "Right", "Both", or "NONE"
 	["bubbles"] = true,							--skin blizzard chat bubbles
 }
 

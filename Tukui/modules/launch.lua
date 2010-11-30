@@ -257,7 +257,36 @@ TukuiOnLogon:SetScript("OnEvent", function(self, event)
 		SetCVar("showArenaEnemyFrames", 0)
 	end
 	
-	if TukuiChatIn == nil then TukuiChatIn = true end
+	TukuiChatLIn = true
+	TukuiChatRIn = true
+	
+
+	
+	for i = 1, NUM_CHAT_WINDOWS do
+		local chat = _G[format("ChatFrame%s", i)]
+		local tab = _G[format("ChatFrame%sTab", i)]
+		local id = chat:GetID()
+		local name = FCF_GetChatWindowInfo(id)
+		local point = GetChatWindowSavedPosition(id)
+		local _, fontSize = FCF_GetChatWindowInfo(id)
+		local button = _G[format("ButtonCF%d", i)]
+		local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
+		
+		if point == "BOTTOMRIGHT" and TukuiCF["chat"].rightchat == true and chat:IsShown() and docked == nil then
+			tab:SetParent(ChatRBackground)
+		end
+		chat:SetParent(tab)
+	end
+	GeneralDockManager:SetParent(ChatLBackground)
+	
+	--Fixing fucked up border on right chat button, really do not understand why this is happening
+	if TukuiCF["chat"].rightchat == true and TukuiCF["chat"].showbackdrop == true then
+		if not ButtonCF3 then return end
+		local x = CreateFrame("Frame", nil, ChatFrame3Tab)
+		x:SetAllPoints(ButtonCF3)
+		TukuiDB.SetTemplate(x)
+		x:SetBackdropColor(0,0,0,0)
+	end
 	
 	print(tukuilocal.core_welcome2)
 end)

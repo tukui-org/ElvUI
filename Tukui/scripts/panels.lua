@@ -163,9 +163,12 @@ chatrbgdummy2:SetWidth(TukuiCF["chat"].chatwidth)
 chatrbgdummy2:SetHeight(TukuiCF["chat"].chatheight+6)
 chatrbgdummy2:SetPoint("BOTTOMRIGHT", TukuiBottomPanel, "TOPRIGHT", TukuiDB.Scale(-4),  TukuiDB.Scale(7))
 
+AnimGroup(ChatLBackground, TukuiDB.Scale(-375), 0, 0.4)
+AnimGroup(ChatRBackground, TukuiDB.Scale(375), 0, 0.4)
+
 TukuiDB.ChatRightShown = false
 if TukuiCF["chat"].showbackdrop == true then
-	local chatlbg = CreateFrame("Frame", nil, GeneralDockManager)
+	local chatlbg = CreateFrame("Frame", nil, ChatLBackground)
 	TukuiDB.SetTransparentTemplate(chatlbg)
 	chatlbg:SetAllPoints(chatlbgdummy)
 	chatlbg:SetFrameStrata("BACKGROUND")
@@ -182,22 +185,24 @@ if TukuiCF["chat"].showbackdrop == true then
 	TukuiDB.CreateShadow(chatltbg)
 end
 
-local chatrbg = CreateFrame("Frame", "ChatRBG", GeneralDockManager)
-chatrbg:SetAllPoints(chatrbgdummy)
-TukuiDB.SetTransparentTemplate(chatrbg)
-chatrbg:SetFrameStrata("BACKGROUND")
-chatrbg:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor))
-chatrbg:SetAlpha(0)
+if TukuiCF["chat"].showbackdrop == true then
+	local chatrbg = CreateFrame("Frame", "ChatRBG", ChatRBackground)
+	chatrbg:SetAllPoints(chatrbgdummy)
+	TukuiDB.SetTransparentTemplate(chatrbg)
+	chatrbg:SetFrameStrata("BACKGROUND")
+	chatrbg:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor))
+	chatrbg:SetAlpha(0)
 
-local chatrtbg = CreateFrame("Frame", nil, chatrbg)
-TukuiDB.SetTransparentTemplate(chatrtbg)
-chatrtbg:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
-chatrtbg:SetPoint("BOTTOMLEFT", chatrbg, "TOPLEFT", 0, TukuiDB.Scale(3))
-chatrtbg:SetPoint("BOTTOMRIGHT", chatrbg, "TOPRIGHT", TukuiDB.Scale(-24), TukuiDB.Scale(3))
-chatrtbg:SetHeight(TukuiDB.Scale(22))
-chatrtbg:SetFrameStrata("BACKGROUND")
-TukuiDB.CreateShadow(chatrbg)
-TukuiDB.CreateShadow(chatrtbg)
+	local chatrtbg = CreateFrame("Frame", nil, chatrbg)
+	TukuiDB.SetTransparentTemplate(chatrtbg)
+	chatrtbg:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
+	chatrtbg:SetPoint("BOTTOMLEFT", chatrbg, "TOPLEFT", 0, TukuiDB.Scale(3))
+	chatrtbg:SetPoint("BOTTOMRIGHT", chatrbg, "TOPRIGHT", TukuiDB.Scale(-24), TukuiDB.Scale(3))
+	chatrtbg:SetHeight(TukuiDB.Scale(22))
+	chatrtbg:SetFrameStrata("BACKGROUND")
+	TukuiDB.CreateShadow(chatrbg)
+	TukuiDB.CreateShadow(chatrtbg)
+end
 
 --INFO LEFT
 local infoleft = CreateFrame("Frame", "TukuiInfoLeft", UIParent)
@@ -391,3 +396,73 @@ function PositionAllPanels()
 		TukuiActionBarBackgroundRight:Hide()
 	end	
 end
+
+
+--Setup Button Scripts
+
+infoleftLbutton:SetScript("OnMouseDown", function(self, btn)
+	if btn == "RightButton" then
+		if TukuiChatLIn == true then
+			SlideOut(ChatLBackground)
+			SlideOut(ChatRBackground)		
+			TukuiDB.ChatRightShown = false
+			TukuiChatLIn = false
+			TukuiChatRIn = false
+			TukuiInfoLeftLButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))
+			TukuiInfoRightRButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))
+		else
+			SlideIn(ChatLBackground)
+			SlideIn(ChatRBackground)
+			TukuiDB.ChatRightShown = true
+			TukuiChatLIn = true
+			TukuiChatRIn = true
+			TukuiInfoLeftLButton.Text:SetTextColor(1,1,1,1)
+			TukuiInfoRightRButton.Text:SetTextColor(1,1,1,1)
+		end	
+	else
+		if TukuiChatLIn == true then
+			SlideOut(ChatLBackground)	
+			TukuiChatLIn = false
+			TukuiInfoLeftLButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))
+		else
+			SlideIn(ChatLBackground)
+			TukuiChatLIn = true
+			TukuiInfoLeftLButton.Text:SetTextColor(1,1,1,1)
+		end		
+	end
+end)
+
+inforightRbutton:SetScript("OnMouseDown", function(self, btn)
+	if TukuiCF["chat"].rightchat ~= true then self:EnableMouse(false) return end
+	if btn == "RightButton" then
+		if TukuiChatRIn == true then
+			SlideOut(ChatLBackground)
+			SlideOut(ChatRBackground)		
+			TukuiDB.ChatRightShown = false
+			TukuiChatLIn = false
+			TukuiChatRIn = false
+			TukuiInfoLeftLButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))
+			TukuiInfoRightRButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))
+		else
+			SlideIn(ChatLBackground)
+			SlideIn(ChatRBackground)
+			TukuiDB.ChatRightShown = true
+			TukuiChatLIn = true
+			TukuiChatRIn = true
+			TukuiInfoLeftLButton.Text:SetTextColor(1,1,1,1)
+			TukuiInfoRightRButton.Text:SetTextColor(1,1,1,1)
+		end	
+	else
+		if TukuiChatRIn == true then
+			SlideOut(ChatRBackground)	
+			TukuiChatRIn = false
+			TukuiDB.ChatRightShown = false
+			TukuiInfoRightRButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))
+		else
+			SlideIn(ChatRBackground)
+			TukuiChatRIn = true
+			TukuiDB.ChatRightShown = true
+			TukuiInfoRightRButton.Text:SetTextColor(1,1,1,1)
+		end		
+	end
+end)

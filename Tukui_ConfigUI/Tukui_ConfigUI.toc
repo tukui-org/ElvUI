@@ -4,7 +4,7 @@
 ## Author: Tohveli
 ## Editor: Tukz
 ## SavedVariables: TukuiConfigAll, TukuiConfigSettings
-## SavedVariablesPerCharacter: TukuiConfig, TukuiABLock, TukuiChatIn
+## SavedVariablesPerCharacter: TukuiConfig, TukuiABLock
 ## RequiredDeps: Tukui
 
 local\english.lua
