@@ -340,6 +340,7 @@ if TukuiCF["datatext"].battleground == true then
 	end)
 end
 
+--Mover buttons uses this
 function PositionAllPanels()
 	TukuiActionBarBackground:ClearAllPoints()
 	TukuiPetActionBarBackground:ClearAllPoints()
@@ -481,6 +482,8 @@ inforightRbutton:SetScript("OnMouseDown", function(self, btn)
 	end
 end)
 
+
+--Fixes chat windows not displaying
 ChatLBackground.anim_o:HookScript("OnFinished", function()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local chat = _G[format("ChatFrame%s", i)]

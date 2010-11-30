@@ -13,6 +13,8 @@ function PositionBar4()
 		local b = _G["MultiBarRightButton"..i]
 		local b2 = _G["MultiBarRightButton"..i-1]
 		b:ClearAllPoints()
+		b:SetAlpha(1)
+		b:Show()
 		TukuiBar4:SetParent(TukuiActionBarBackgroundRight)
 		if TukuiCF.actionbar.bottomrows == 3 then
 			if i == 1 then
@@ -42,6 +44,13 @@ function PositionBar4()
 				b:SetPoint("TOP", b2, "BOTTOM", 0, -TukuiDB.buttonspacing)
 			end	
 		end
+		
+		--Setup Mouseover
+		if TukuiCF["actionbar"].rightbarmouseover == true and not (TukuiCF.actionbar.bottomrows == 3) then
+			b:SetAlpha(0)
+			b:HookScript("OnEnter", function() RightBarMouseOver(1) end)
+			b:HookScript("OnLeave", function() RightBarMouseOver(0) end)
+		end
 	end
 
 	-- hide it if needed
@@ -54,14 +63,4 @@ end
 
 do
 	PositionBar4()
-end
-
---Setup Mouseover
-if TukuiCF["actionbar"].rightbarmouseover == true and not (TukuiCF.actionbar.bottomrows == 3) then
-	for i=1, 12 do
-		local b = _G["MultiBarRightButton"..i]
-		b:SetAlpha(0)
-		b:HookScript("OnEnter", function() RightBarMouseOver(1) end)
-		b:HookScript("OnLeave", function() RightBarMouseOver(0) end)
-	end	
 end

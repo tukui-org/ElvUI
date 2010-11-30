@@ -21,6 +21,7 @@ function PositionBar3()
 		b:ClearAllPoints()
 		b:SetParent(MultiBarLeft)
 		b:Show()
+		b:SetAlpha(1)
 		if TukuiCF["actionbar"].splitbar ~= true then
 			if TukuiCF["actionbar"].rightbars > 1 then
 				if i == 1 then
@@ -75,6 +76,20 @@ function PositionBar3()
 				end  		
 			end
 		end
+		--Setup Mouseover
+		if TukuiCF["actionbar"].rightbarmouseover == true and not (TukuiCF.actionbar.bottomrows == 3) and TukuiCF["actionbar"].splitbar ~= true then
+			b:SetAlpha(0)
+			b:HookScript("OnEnter", function() 
+				if not (TukuiCF.actionbar.bottomrows == 3) and TukuiCF["actionbar"].splitbar ~= true then
+					RightBarMouseOver(1) 
+				end
+			end)
+			b:HookScript("OnLeave", function() 
+				if not (TukuiCF.actionbar.bottomrows == 3) and TukuiCF["actionbar"].splitbar ~= true then
+					RightBarMouseOver(0) 
+				end
+			end)
+		end
 	end
 
 	-- hide it if needed
@@ -89,16 +104,4 @@ end
 
 do
 	PositionBar3()
-end
-
---Setup Mouseover
-if TukuiCF["actionbar"].rightbarmouseover == true then
-	if (TukuiCF["actionbar"].splitbar ~= true and TukuiCF.actionbar.bottomrows ~= 3) or (TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].rightbars ~= 0) then
-		for i=1, 12 do
-			local b = _G["MultiBarLeftButton"..i]
-			b:SetAlpha(0)
-			b:SetScript("OnEnter", function() RightBarMouseOver(1) end)
-			b:SetScript("OnLeave", function() RightBarMouseOver(0) end)
-		end
-	end
 end

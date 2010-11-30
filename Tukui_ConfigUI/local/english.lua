@@ -31,7 +31,7 @@ TukuiL.option_media_glossy = "Glossy Bar Texture"
 -- nameplate
 TukuiL.option_nameplates = "Nameplates"
 TukuiL.option_nameplates_enable = "Enable Nameplates"
-TukuiL.option_nameplates_enhancethreat = "Enable threat feature, automatically changes by your roll"
+TukuiL.option_nameplates_enhancethreat = "Enable threat feature, automatically changes by your role"
 TukuiL.option_nameplates_showhealth = "Show health on nameplate"
 TukuiL.option_nameplates_combat = "Only show enemy nameplates in-combat"
 TukuiL.option_nameplates_goodcolor = "Good threat color, varies depending if your a tank or dps/heal"

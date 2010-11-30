@@ -123,8 +123,13 @@ barloader:SetScript("OnEvent", function(self)
 	TopMainBar:SetPoint("BOTTOMLEFT", TukuiMainMenuBar, "TOPLEFT", 0, TukuiDB.Scale(4))
 	TopMainBar:SetPoint("TOPRIGHT", TukuiMainMenuBar, "TOPRIGHT", 0, TukuiDB.Scale(19))
 	
-	RightBarBig:SetPoint("TOPRIGHT", UIParent, "RIGHT", TukuiDB.Scale(-1), (TukuiActionBarBackgroundRight:GetHeight() * 0.2))
-	RightBarBig:SetPoint("BOTTOMLEFT", UIParent, "RIGHT", TukuiDB.Scale(-16), -(TukuiActionBarBackgroundRight:GetHeight() * 0.2))
+	if TukuiPetBar:IsShown() then
+		RightBarBig:SetPoint("TOPRIGHT", TukuiPetBar, "LEFT", TukuiDB.Scale(-3), (TukuiActionBarBackgroundRight:GetHeight() * 0.2))
+		RightBarBig:SetPoint("BOTTOMLEFT", TukuiPetBar, "LEFT", TukuiDB.Scale(-19), -(TukuiActionBarBackgroundRight:GetHeight() * 0.2))			
+	else
+		RightBarBig:SetPoint("TOPRIGHT", UIParent, "RIGHT", TukuiDB.Scale(-1), (TukuiActionBarBackgroundRight:GetHeight() * 0.2))
+		RightBarBig:SetPoint("BOTTOMLEFT", UIParent, "RIGHT", TukuiDB.Scale(-16), -(TukuiActionBarBackgroundRight:GetHeight() * 0.2))		
+	end
 	
 	TukuiPetBar:HookScript("OnShow", function(self)
 		if InCombatLockdown() then return end
@@ -160,10 +165,18 @@ barloader:SetScript("OnEvent", function(self)
 	RightBarDec:SetParent(TukuiActionBarBackgroundRight)
 	
 	--Disable some default button stuff
-	RightBarInc:SetScript("OnEnter", function() end)
-	RightBarInc:SetScript("OnLeave", function() end)
-	RightBarDec:SetScript("OnEnter", function() end)
-	RightBarDec:SetScript("OnLeave", function() end)
+	if TukuiCF["actionbar"].rightbarmouseover == true then
+		RightBarInc:SetScript("OnEnter", function() RightBarMouseOver(1) end)
+		RightBarInc:SetScript("OnLeave", function() RightBarMouseOver(0) end)
+		RightBarDec:SetScript("OnEnter", function() RightBarMouseOver(1) end)
+		RightBarDec:SetScript("OnLeave", function() RightBarMouseOver(0) end)	
+	else
+		RightBarInc:SetScript("OnEnter", function() end)
+		RightBarInc:SetScript("OnLeave", function() end)
+		RightBarDec:SetScript("OnEnter", function() end)
+		RightBarDec:SetScript("OnLeave", function() end)	
+	end
+
 	RightBarDec:SetAlpha(1)
 	RightBarInc:SetAlpha(1)
 	
@@ -271,7 +284,11 @@ do
 	
 	RightBarBig:SetScript("OnMouseDown", function(self)
 		if InCombatLockdown() then return end
-		SlideIn(TukuiActionBarBackgroundRight)
+		if TukuiCF["actionbar"].rightbarmouseover ~= true then 
+			SlideIn(TukuiActionBarBackgroundRight)
+		else
+			TukuiActionBarBackgroundRight:SetAlpha(0)
+		end
 		SaveBars("rightbars", 1)
 		self:Hide()
 	end)
@@ -286,7 +303,18 @@ do
 		elseif TukuiCF["actionbar"].rightbars == 3 then
 			SaveBars("rightbars", 0)
 			RightBarBig:Show()
+			RightBarBig:ClearAllPoints()
+			if TukuiPetBar:IsShown() then
+				RightBarBig:SetPoint("TOPRIGHT", TukuiPetBar, "LEFT", TukuiDB.Scale(-3), (TukuiActionBarBackgroundRight:GetHeight() * 0.2))
+				RightBarBig:SetPoint("BOTTOMLEFT", TukuiPetBar, "LEFT", TukuiDB.Scale(-19), -(TukuiActionBarBackgroundRight:GetHeight() * 0.2))			
+			else
+				RightBarBig:SetPoint("TOPRIGHT", UIParent, "RIGHT", TukuiDB.Scale(-1), (TukuiActionBarBackgroundRight:GetHeight() * 0.2))
+				RightBarBig:SetPoint("BOTTOMLEFT", UIParent, "RIGHT", TukuiDB.Scale(-16), -(TukuiActionBarBackgroundRight:GetHeight() * 0.2))		
+			end			
 		end		
+		if TukuiCF["actionbar"].rightbarmouseover == true then 
+			RightBarMouseOver(1)
+		end
 	end)
 	
 	RightBarDec:SetScript("OnMouseDown", function(self)
@@ -295,11 +323,23 @@ do
 		if TukuiCF["actionbar"].rightbars == 1 then
 			SaveBars("rightbars", 0)
 			RightBarBig:Show()
+			RightBarBig:ClearAllPoints()
+			if TukuiPetBar:IsShown() then
+				RightBarBig:SetPoint("TOPRIGHT", TukuiPetBar, "LEFT", TukuiDB.Scale(-3), (TukuiActionBarBackgroundRight:GetHeight() * 0.2))
+				RightBarBig:SetPoint("BOTTOMLEFT", TukuiPetBar, "LEFT", TukuiDB.Scale(-19), -(TukuiActionBarBackgroundRight:GetHeight() * 0.2))			
+			else
+				RightBarBig:SetPoint("TOPRIGHT", UIParent, "RIGHT", TukuiDB.Scale(-1), (TukuiActionBarBackgroundRight:GetHeight() * 0.2))
+				RightBarBig:SetPoint("BOTTOMLEFT", UIParent, "RIGHT", TukuiDB.Scale(-16), -(TukuiActionBarBackgroundRight:GetHeight() * 0.2))		
+			end
 		elseif TukuiCF["actionbar"].rightbars == 2 then
 			SaveBars("rightbars", 1)
 		elseif TukuiCF["actionbar"].rightbars == 3 then
 			SaveBars("rightbars", 2)
 		end		
+		
+		if TukuiCF["actionbar"].rightbarmouseover == true then 
+			RightBarMouseOver(1)
+		end
 	end)
 	
 	--Toggle lock button
@@ -337,4 +377,5 @@ do
 		TukuiInfoLeftRButton.hovered = false
 		GameTooltip:Hide()
 	end)
+	
 end
