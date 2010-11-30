@@ -223,9 +223,9 @@ local function SetupChatPosAndFont(self)
 		local button = _G[format("ButtonCF%d", i)]
 		local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
 		
-		-- well... tukui font under fontsize 12 is unreadable.
-		if fontSize < 12 then		
-			FCF_SetChatWindowFontSize(nil, chat, 12)
+		-- well... tukui font under fontsize 10 is unreadable.
+		if fontSize < 10 then		
+			FCF_SetChatWindowFontSize(nil, chat, 10)
 		else
 			FCF_SetChatWindowFontSize(nil, chat, fontSize)
 		end
@@ -249,10 +249,8 @@ local function SetupChatPosAndFont(self)
 			button:ClearAllPoints()
 			button:SetPoint("BOTTOMRIGHT", ChatRBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))
 		else
-			if button then
-				button:ClearAllPoints()
-				button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))
-			end
+			button:ClearAllPoints()
+			button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))
 		end
 		
 		if TukuiCF["chat"].rightchat ~= true then

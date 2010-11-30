@@ -126,6 +126,32 @@ barloader:SetScript("OnEvent", function(self)
 	RightBarBig:SetPoint("TOPRIGHT", UIParent, "RIGHT", TukuiDB.Scale(-1), (TukuiActionBarBackgroundRight:GetHeight() * 0.2))
 	RightBarBig:SetPoint("BOTTOMLEFT", UIParent, "RIGHT", TukuiDB.Scale(-16), -(TukuiActionBarBackgroundRight:GetHeight() * 0.2))
 	
+	TukuiPetBar:HookScript("OnShow", function(self)
+		if InCombatLockdown() then return end
+		RightBarBig:ClearAllPoints()
+		RightBarBig:SetPoint("TOPRIGHT", TukuiPetBar, "LEFT", TukuiDB.Scale(-3), (TukuiActionBarBackgroundRight:GetHeight() * 0.2))
+		RightBarBig:SetPoint("BOTTOMLEFT", TukuiPetBar, "LEFT", TukuiDB.Scale(-19), -(TukuiActionBarBackgroundRight:GetHeight() * 0.2))	
+	end)
+	
+	TukuiPetBar:HookScript("OnHide", function(self)
+		if InCombatLockdown() then return end
+		RightBarBig:ClearAllPoints()
+		RightBarBig:SetPoint("TOPRIGHT", UIParent, "RIGHT", TukuiDB.Scale(-1), (TukuiActionBarBackgroundRight:GetHeight() * 0.2))
+		RightBarBig:SetPoint("BOTTOMLEFT", UIParent, "RIGHT", TukuiDB.Scale(-16), -(TukuiActionBarBackgroundRight:GetHeight() * 0.2))
+	end)
+	
+	RightBarBig:HookScript("OnEnter", function()
+		if InCombatLockdown() then return end
+		RightBarBig:ClearAllPoints()
+		if TukuiPetBar:IsShown() then
+			RightBarBig:SetPoint("TOPRIGHT", TukuiPetBar, "LEFT", TukuiDB.Scale(-3), (TukuiActionBarBackgroundRight:GetHeight() * 0.2))
+			RightBarBig:SetPoint("BOTTOMLEFT", TukuiPetBar, "LEFT", TukuiDB.Scale(-19), -(TukuiActionBarBackgroundRight:GetHeight() * 0.2))			
+		else
+			RightBarBig:SetPoint("TOPRIGHT", UIParent, "RIGHT", TukuiDB.Scale(-1), (TukuiActionBarBackgroundRight:GetHeight() * 0.2))
+			RightBarBig:SetPoint("BOTTOMLEFT", UIParent, "RIGHT", TukuiDB.Scale(-16), -(TukuiActionBarBackgroundRight:GetHeight() * 0.2))		
+		end
+	end)
+	
 	if TukuiCF["actionbar"].rightbars ~= 0 or (TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].splitbar == true) then
 		RightBarBig:Hide()
 	end
@@ -163,6 +189,7 @@ barloader:SetScript("OnEvent", function(self)
 			TukuiInfoLeftRButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))
 		end
 	end
+
 end)
 
 --Setup button clicks

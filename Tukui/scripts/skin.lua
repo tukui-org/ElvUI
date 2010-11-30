@@ -17,7 +17,7 @@ local function SkinButton(f)
 	f:SetHighlightTexture("")
 	f:SetPushedTexture("")
 	f:SetDisabledTexture("")
-	TukuiDB.SetTemplate(f)
+	TukuiDB.SetNormTexTemplate(f)
 	f:HookScript("OnEnter", SetModifiedBackdrop)
 	f:HookScript("OnLeave", SetOriginalBackdrop)
 end
@@ -60,9 +60,9 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		--
 		for i = 1, getn(ChatMenus) do
 			if _G[ChatMenus[i]] == _G["ChatMenu"] then
-				_G[ChatMenus[i]]:HookScript("OnShow", function(self) TukuiDB.SetTemplate(self) self:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor)) self:ClearAllPoints() self:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, TukuiDB.Scale(30)) end)
+				_G[ChatMenus[i]]:HookScript("OnShow", function(self) TukuiDB.SetNormTexTemplate(self) self:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor)) self:ClearAllPoints() self:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, TukuiDB.Scale(30)) end)
 			else
-				_G[ChatMenus[i]]:HookScript("OnShow", function(self) TukuiDB.SetTemplate(self) self:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor)) end)
+				_G[ChatMenus[i]]:HookScript("OnShow", function(self) TukuiDB.SetNormTexTemplate(self) self:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor)) end)
 			end
 		end
 
@@ -74,7 +74,7 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		end
 		
 		for i = 1, getn(skins) do
-			TukuiDB.SetTemplate(_G[skins[i]])
+			TukuiDB.SetNormTexTemplate(_G[skins[i]])
 			if _G[skins[i]] ~= _G["GhostFrameContentsFrame"] or _G[skins[i]] ~= _G["AutoCompleteBox"] then -- frame to blacklist from create shadow function
 				TukuiDB.CreateShadow(_G[skins[i]])
 			end
@@ -112,12 +112,12 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		
 		-- skin return to graveyard button
 		SkinButton(GhostFrame)
-		TukuiDB.SetTemplate(GhostFrameContentsFrame)
+		TukuiDB.SetNormTexTemplate(GhostFrameContentsFrame)
 		GhostFrame:SetNormalTexture("")
 		GhostFrame:SetHighlightTexture("")
 		GhostFrame:SetPushedTexture("")
 		GhostFrame:SetDisabledTexture("")
-		TukuiDB.SetTemplate(GhostFrame)
+		TukuiDB.SetNormTexTemplate(GhostFrame)
 		GhostFrame:HookScript("OnEnter", function(self) 	
 			self:SetBackdropColor(0,0,0,0)
 			self:SetBackdropBorderColor(0,0,0,0)
@@ -205,44 +205,44 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 	-- mac menu/option panel, made by affli.
 	if IsMacClient() then
 		-- Skin main frame and reposition the header
-		TukuiDB.SetTemplate(MacOptionsFrame)
+		TukuiDB.SetNormTexTemplate(MacOptionsFrame)
 		MacOptionsFrameHeader:SetTexture("")
 		MacOptionsFrameHeader:ClearAllPoints()
 		MacOptionsFrameHeader:SetPoint("TOP", MacOptionsFrame, 0, 0)
-
+ 
 		--Skin internal frames
-		TukuiDB.SetTemplate(MacOptionsFrameMovieRecording)
-		TukuiDB.SetTemplate(MacOptionsITunesRemote)
-
+		TukuiDB.SetNormTexTemplate(MacOptionsFrameMovieRecording)
+		TukuiDB.SetNormTexTemplate(MacOptionsITunesRemote)
+ 
 		--Skin buttons
 		SkinButton(_G["MacOptionsFrameCancel"])
 		SkinButton(_G["MacOptionsFrameOkay"])
 		SkinButton(_G["MacOptionsButtonKeybindings"])
 		SkinButton(_G["MacOptionsFrameDefaults"])
 		SkinButton(_G["MacOptionsButtonCompress"])
-
+ 
 		--Reposition and resize buttons
-		tPoint, tRTo, tRP, tX, tY =  _G["MacOptionsButtonCompress"]:GetPoint()
+		local tPoint, tRTo, tRP, tX, tY =  _G["MacOptionsButtonCompress"]:GetPoint()
 		_G["MacOptionsButtonCompress"]:SetWidth(136)
 		_G["MacOptionsButtonCompress"]:ClearAllPoints()
-		_G["MacOptionsButtonCompress"]:SetPoint(tPoint, tRTo, tRP, tX+4, tY)
-
+		_G["MacOptionsButtonCompress"]:SetPoint(tPoint, tRTo, tRP, TukuiDB.Scale(4), tY)
+ 
 		_G["MacOptionsFrameCancel"]:SetWidth(96)
 		_G["MacOptionsFrameCancel"]:SetHeight(22)
 		tPoint, tRTo, tRP, tX, tY =  _G["MacOptionsFrameCancel"]:GetPoint()
 		_G["MacOptionsFrameCancel"]:ClearAllPoints()
-		_G["MacOptionsFrameCancel"]:SetPoint(tPoint, tRTo, tRP, tX-2, tY)
-
+		_G["MacOptionsFrameCancel"]:SetPoint(tPoint, tRTo, tRP, TukuiDB.Scale(-14), tY)
+ 
 		_G["MacOptionsFrameOkay"]:ClearAllPoints()
 		_G["MacOptionsFrameOkay"]:SetWidth(96)
 		_G["MacOptionsFrameOkay"]:SetHeight(22)
-		_G["MacOptionsFrameOkay"]:SetPoint("LEFT",_G["MacOptionsFrameCancel"],-99,0)
-
+		_G["MacOptionsFrameOkay"]:SetPoint("LEFT",_G["MacOptionsFrameCancel"],TukuiDB.Scale(-99),0)
+ 
 		_G["MacOptionsButtonKeybindings"]:ClearAllPoints()
 		_G["MacOptionsButtonKeybindings"]:SetWidth(96)
 		_G["MacOptionsButtonKeybindings"]:SetHeight(22)
-		_G["MacOptionsButtonKeybindings"]:SetPoint("LEFT",_G["MacOptionsFrameOkay"],-99,0)
-
+		_G["MacOptionsButtonKeybindings"]:SetPoint("LEFT",_G["MacOptionsFrameOkay"],TukuiDB.Scale(-99),0)
+ 
 		_G["MacOptionsFrameDefaults"]:SetWidth(96)
 		_G["MacOptionsFrameDefaults"]:SetHeight(22)
 

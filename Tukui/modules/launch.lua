@@ -275,7 +275,7 @@ TukuiOnLogon:SetScript("OnEvent", function(self, event)
 		if point == "BOTTOMRIGHT" and TukuiCF["chat"].rightchat == true and chat:IsShown() and docked == nil then
 			tab:SetParent(ChatRBackground)
 		end
-		chat:SetParent(tab)
+		--chat:SetParent(tab)
 	end
 	GeneralDockManager:SetParent(ChatLBackground)
 	

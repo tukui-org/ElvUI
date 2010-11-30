@@ -128,8 +128,12 @@ if TukuiCF["actionbar"].enable == true then
 	else
 		TukuiDB.CreatePanel(ltpetbg, 265, 30, "BOTTOM", petbg, "TOP", 0, 0)
 	end
-	ltpetbg:SetFrameLevel(0)
-	ltpetbg:SetAlpha(.8)
+	
+	ltpetbg:SetScript("OnShow", function(self)
+		self:SetFrameStrata("BACKGROUND")
+		self:SetFrameLevel(0)
+	end)
+
 	
 	TukuiDB.CreateShadow(barbgr)
 	TukuiDB.CreateShadow(petbg)
@@ -400,10 +404,14 @@ end
 
 
 --Setup Button Scripts
-
 infoleftLbutton:SetScript("OnMouseDown", function(self, btn)
 	if btn == "RightButton" then
 		if TukuiChatLIn == true then
+			for i = 1, NUM_CHAT_WINDOWS do
+				local chat = _G[format("ChatFrame%s", i)]
+				local tab = _G[format("ChatFrame%sTab", i)]
+				chat:SetParent(tab)
+			end
 			SlideOut(ChatLBackground)
 			SlideOut(ChatRBackground)		
 			TukuiDB.ChatRightShown = false
@@ -422,6 +430,11 @@ infoleftLbutton:SetScript("OnMouseDown", function(self, btn)
 		end	
 	else
 		if TukuiChatLIn == true then
+			for i = 1, NUM_CHAT_WINDOWS do
+				local chat = _G[format("ChatFrame%s", i)]
+				local tab = _G[format("ChatFrame%sTab", i)]
+				chat:SetParent(tab)
+			end
 			SlideOut(ChatLBackground)	
 			TukuiChatLIn = false
 			TukuiInfoLeftLButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))
@@ -467,3 +480,34 @@ inforightRbutton:SetScript("OnMouseDown", function(self, btn)
 		end		
 	end
 end)
+
+ChatLBackground.anim_o:HookScript("OnFinished", function()
+	for i = 1, NUM_CHAT_WINDOWS do
+		local chat = _G[format("ChatFrame%s", i)]
+		local tab = _G[format("ChatFrame%sTab", i)]
+		local id = chat:GetID()
+		local point = GetChatWindowSavedPosition(id)
+		local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
+		chat:SetParent(tab)
+	end
+end)
+
+ChatLBackground.anim:HookScript("OnFinished", function()
+	for i = 1, NUM_CHAT_WINDOWS do
+		local chat = _G[format("ChatFrame%s", i)]
+		local id = chat:GetID()
+		local point = GetChatWindowSavedPosition(id)
+		local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
+		chat:SetParent(UIParent)
+	end
+end)
+
+if TukuiCF["chat"].rightchat == true then
+	ChatRBackground.anim_o:HookScript("OnPlay", function()
+		ChatFrame3:SetParent(ChatFrame3Tab)
+	end)
+
+	ChatRBackground.anim:HookScript("OnFinished", function()
+		ChatFrame3:SetParent(UIParent)
+	end)
+end
