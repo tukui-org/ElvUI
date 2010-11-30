@@ -357,7 +357,7 @@ local Colorize = function(self)
 end
 
 local SetStyle = function(self)
-	TukuiDB.SetTemplate(self)
+	TukuiDB.SetNormTexTemplate(self)
 	self:SetBackdropColor(unpack(TukuiCF.media.backdropfadecolor))
 	Colorize(self)
 end

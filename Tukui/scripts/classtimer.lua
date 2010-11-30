@@ -671,7 +671,7 @@ local function OnUnitFramesLoad(self, event, addon)
 				border:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
 				border:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 				border:SetFrameLevel(result:GetFrameLevel() - 1)
-				border:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
+				border:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor))
 			result.border = border;		
 			
 			result:RegisterEvent( "PLAYER_ENTERING_WORLD" );

@@ -51,6 +51,7 @@ function style(self, vehicle, totem)
 			else
 				TukuiDB.CreatePanel(panel, TukuiDB.buttonsize, TukuiDB.buttonsize, "CENTER", self, "CENTER", 0, 0)
 			end
+			TukuiDB.SetNormTexTemplate(panel)
 			panel:SetFrameStrata(self:GetFrameStrata())
 			panel:SetFrameLevel(self:GetFrameLevel() - 1)
 		end

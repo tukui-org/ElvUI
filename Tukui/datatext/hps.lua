@@ -10,6 +10,7 @@ if TukuiCF["datatext"].hps_text and TukuiCF["datatext"].hps_text > 0 then
  
 	hText = TukuiInfoLeft:CreateFontString(nil, "OVERLAY")
 	hText:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
+	hText:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
 	hText:SetText("HPS: "..valuecolor.."0.0")
  
 	TukuiDB.PP(TukuiCF["datatext"].hps_text, hText)

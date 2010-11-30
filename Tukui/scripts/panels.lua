@@ -44,6 +44,8 @@ if TukuiMinimap then
 
 	local minimapstatsright = CreateFrame("Frame", "TukuiMinimapStatsRight", TukuiMinimap)
 	TukuiDB.CreatePanel(minimapstatsright, (TukuiMinimap:GetWidth() / 2) -2, 19, "TOPRIGHT", TukuiMinimap, "BOTTOMRIGHT", 0, TukuiDB.Scale(-3))
+	TukuiDB.SetNormTexTemplate(TukuiMinimapStatsLeft)
+	TukuiDB.SetNormTexTemplate(TukuiMinimapStatsRight)
 end
 
 
@@ -107,6 +109,7 @@ if TukuiCF["actionbar"].enable == true then
 	else
 		barbgr:Hide()
 	end
+	AnimGroup(TukuiActionBarBackgroundRight, TukuiDB.Scale(350), 0, 0.4)
 
 	local petbg = CreateFrame("Frame", "TukuiPetActionBarBackground", UIParent)
 	if TukuiCF["actionbar"].bottompetbar ~= true then
@@ -174,8 +177,7 @@ if TukuiCF["chat"].showbackdrop == true then
 	chatlbg:SetFrameStrata("BACKGROUND")
 	
 	local chatltbg = CreateFrame("Frame", nil, chatlbg)
-	TukuiDB.SetTransparentTemplate(chatltbg)
-	chatltbg:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
+	TukuiDB.SetNormTexTemplate(chatltbg)
 	chatltbg:SetPoint("BOTTOMLEFT", chatlbg, "TOPLEFT", 0, TukuiDB.Scale(3))
 	chatltbg:SetPoint("BOTTOMRIGHT", chatlbg, "TOPRIGHT", TukuiDB.Scale(-24), TukuiDB.Scale(3))
 	chatltbg:SetHeight(TukuiDB.Scale(22))
@@ -194,8 +196,7 @@ if TukuiCF["chat"].showbackdrop == true then
 	chatrbg:SetAlpha(0)
 
 	local chatrtbg = CreateFrame("Frame", nil, chatrbg)
-	TukuiDB.SetTransparentTemplate(chatrtbg)
-	chatrtbg:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
+	TukuiDB.SetNormTexTemplate(chatrtbg)
 	chatrtbg:SetPoint("BOTTOMLEFT", chatrbg, "TOPLEFT", 0, TukuiDB.Scale(3))
 	chatrtbg:SetPoint("BOTTOMRIGHT", chatrbg, "TOPRIGHT", TukuiDB.Scale(-24), TukuiDB.Scale(3))
 	chatrtbg:SetHeight(TukuiDB.Scale(22))
@@ -206,20 +207,20 @@ end
 
 --INFO LEFT
 local infoleft = CreateFrame("Frame", "TukuiInfoLeft", UIParent)
-TukuiDB.SetTemplate(infoleft)
+TukuiDB.SetNormTexTemplate(infoleft)
 TukuiDB.CreateShadow(infoleft)
 infoleft:SetPoint("TOPLEFT", chatlbgdummy2, "BOTTOMLEFT", TukuiDB.Scale(17), TukuiDB.Scale(-4))
 infoleft:SetPoint("BOTTOMRIGHT", chatlbgdummy2, "BOTTOMRIGHT", TukuiDB.Scale(-17), TukuiDB.Scale(-26))
 
 --INFOLEFT L BUTTON
 local infoleftLbutton = CreateFrame("Button", "TukuiInfoLeftLButton", TukuiInfoLeft)
-TukuiDB.SetTemplate(infoleftLbutton)
+TukuiDB.SetNormTexTemplate(infoleftLbutton)
 infoleftLbutton:SetPoint("TOPRIGHT", infoleft, "TOPLEFT", TukuiDB.Scale(-2), 0)
 infoleftLbutton:SetPoint("BOTTOMLEFT", chatlbgdummy2, "BOTTOMLEFT", 0, TukuiDB.Scale(-26))
 
 --INFOLEFT R BUTTON
 local infoleftRbutton = CreateFrame("Button", "TukuiInfoLeftRButton", TukuiInfoLeft)
-TukuiDB.SetTemplate(infoleftRbutton)
+TukuiDB.SetNormTexTemplate(infoleftRbutton)
 infoleftRbutton:SetPoint("TOPLEFT", infoleft, "TOPRIGHT", TukuiDB.Scale(2), 0)
 infoleftRbutton:SetPoint("BOTTOMRIGHT", chatlbgdummy2, "BOTTOMRIGHT", 0, TukuiDB.Scale(-26))
 
@@ -236,20 +237,20 @@ infoleftRbutton.Text:SetPoint("CENTER")
 
 --INFO RIGHT
 local inforight = CreateFrame("Frame", "TukuiInfoRight", UIParent)
-TukuiDB.SetTemplate(inforight)
+TukuiDB.SetNormTexTemplate(inforight)
 TukuiDB.CreateShadow(inforight)
 inforight:SetPoint("TOPLEFT", chatrbgdummy2, "BOTTOMLEFT", TukuiDB.Scale(17), TukuiDB.Scale(-4))
 inforight:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", TukuiDB.Scale(-17), TukuiDB.Scale(-26))
 
 --INFORIGHT L BUTTON
 local inforightLbutton = CreateFrame("Button", "TukuiInfoRightLButton", TukuiInfoRight)
-TukuiDB.SetTemplate(inforightLbutton)
+TukuiDB.SetNormTexTemplate(inforightLbutton)
 inforightLbutton:SetPoint("TOPRIGHT", inforight, "TOPLEFT", TukuiDB.Scale(-2), 0)
 inforightLbutton:SetPoint("BOTTOMLEFT", chatrbgdummy2, "BOTTOMLEFT", 0, TukuiDB.Scale(-26))
 
 --INFORIGHT R BUTTON
 local inforightRbutton = CreateFrame("Button", "TukuiInfoRightRButton", TukuiInfoRight)
-TukuiDB.SetTemplate(inforightRbutton)
+TukuiDB.SetNormTexTemplate(inforightRbutton)
 inforightRbutton:SetPoint("TOPLEFT", inforight, "TOPRIGHT", TukuiDB.Scale(2), 0)
 inforightRbutton:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", 0, TukuiDB.Scale(-26))
 

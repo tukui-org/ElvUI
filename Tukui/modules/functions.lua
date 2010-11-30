@@ -87,6 +87,23 @@ function TukuiDB.SetTemplate(f)
 	end
 end
 
+function TukuiDB.SetNormTexTemplate(f)
+	local _, class = UnitClass("player")
+	local r, g, b = RAID_CLASS_COLORS[class].r, RAID_CLASS_COLORS[class].g, RAID_CLASS_COLORS[class].b
+	f:SetBackdrop({
+	  bgFile = TukuiCF["media"].normTex, 
+	  edgeFile = TukuiCF["media"].blank, 
+	  tile = false, tileSize = 0, edgeSize = mult, 
+	  insets = { left = -mult, right = -mult, top = -mult, bottom = -mult}
+	})
+	f:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
+	if TukuiCF["general"].classcolortheme == true then
+		f:SetBackdropBorderColor(r, g, b)
+	else
+		f:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))
+	end
+end
+
 function TukuiDB.Kill(object)
 	if object.UnregisterAllEvents then
 		object:UnregisterAllEvents()

@@ -418,8 +418,7 @@ function TukuiDB.ChatCopyButtons()
 		else
 			button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))
 		end
-		TukuiDB.SetTransparentTemplate(button)
-		button:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
+		TukuiDB.SetNormTexTemplate(button)
 		TukuiDB.CreateShadow(button)
 		
 		local buttontext = button:CreateFontString(nil,"OVERLAY",nil)

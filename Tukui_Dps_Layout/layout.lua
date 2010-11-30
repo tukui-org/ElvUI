@@ -1787,12 +1787,20 @@ end
 
 -- Player
 local player = oUF:Spawn('player', "oUF_TukzDPS_player")
-player:SetPoint("BOTTOM", TukuiActionBarBackground, "TOPLEFT", TukuiDB.Scale(-20),TukuiDB.Scale(40+yOffset))
+if powerbar_offset ~= 0 then
+	player:SetPoint("BOTTOM", TukuiActionBarBackground, "TOPLEFT", TukuiDB.Scale(-20),TukuiDB.Scale(40+yOffset))
+else
+	player:SetPoint("BOTTOMLEFT", TukuiSplitActionBarLeftBackground, "TOPLEFT", 0,TukuiDB.Scale(40+yOffset))
+end
 player:SetSize(player_width, player_height)
 
 -- Target
 local target = oUF:Spawn('target', "oUF_TukzDPS_target")
-target:SetPoint("BOTTOM", TukuiActionBarBackground, "TOPRIGHT", TukuiDB.Scale(20),TukuiDB.Scale(40+yOffset))
+if powerbar_offset ~= 0 then
+	target:SetPoint("BOTTOM", TukuiActionBarBackground, "TOPRIGHT", TukuiDB.Scale(20),TukuiDB.Scale(40+yOffset))
+else
+	target:SetPoint("BOTTOMRIGHT", TukuiSplitActionBarRightBackground, "TOPRIGHT", 0,TukuiDB.Scale(40+yOffset))
+end
 target:SetSize(target_width, target_height)
 
 -- Focus

@@ -18,7 +18,7 @@ local btnnames = {}
 
 local function CreateMoverButton(name, text)
 	local b = CreateFrame("Button", name, UIParent)
-	TukuiDB.SetTemplate(b)
+	TukuiDB.SetNormTexTemplate(b)
 	b:SetScript("OnEnter", Button_OnEnter)
 	b:SetScript("OnLeave", Button_OnLeave)
 	b:EnableMouse(true)
@@ -244,6 +244,7 @@ do
 	
 	RightBarBig:SetScript("OnMouseDown", function(self)
 		if InCombatLockdown() then return end
+		SlideIn(TukuiActionBarBackgroundRight)
 		SaveBars("rightbars", 1)
 		self:Hide()
 	end)

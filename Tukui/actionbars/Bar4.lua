@@ -13,6 +13,7 @@ function PositionBar4()
 		local b = _G["MultiBarRightButton"..i]
 		local b2 = _G["MultiBarRightButton"..i-1]
 		b:ClearAllPoints()
+		TukuiBar4:SetParent(TukuiActionBarBackgroundRight)
 		if TukuiCF.actionbar.bottomrows == 3 then
 			if i == 1 then
 				if TukuiCF["actionbar"].swaptopbottombar == true then
@@ -23,6 +24,7 @@ function PositionBar4()
 			else
 				b:SetPoint("LEFT", b2, "RIGHT", TukuiDB.buttonspacing, 0)
 			end
+			TukuiBar4:SetParent(TukuiActionBarBackground)
 		elseif TukuiCF.actionbar.bottomrows ~= 3 and TukuiCF.actionbar.rightbars > 1 then
 			if i == 1 then
 				if TukuiCF.actionbar.rightbars == 2 then
