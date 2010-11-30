@@ -502,6 +502,10 @@ ChatLBackground.anim:HookScript("OnFinished", function()
 		local point = GetChatWindowSavedPosition(id)
 		local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
 		chat:SetParent(UIParent)
+		
+		if TukuiCF["chat"].rightchat == true then
+			ChatFrame3:SetParent(ChatFrame3Tab)
+		end
 	end
 end)
 
