@@ -330,12 +330,16 @@ local function CreatCopyFrame()
 	})
 	frame:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
 	frame:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))
-	frame:SetWidth(TukuiDB.Scale(710))
 	frame:SetHeight(TukuiDB.Scale(200))
 	frame:SetScale(1)
-	frame:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, TukuiDB.Scale(10))
+	frame:SetPoint("BOTTOMLEFT", TukuiSplitActionBarLeftBackground, "BOTTOMLEFT", 0, 0)
+	frame:SetPoint("BOTTOMRIGHT", TukuiSplitActionBarRightBackground, "BOTTOMRIGHT", 0, 0)
 	frame:Hide()
+	frame:EnableMouse(true)
 	frame:SetFrameStrata("DIALOG")
+
+	
+	AnimGroup(frame, 0, TukuiDB.Scale(-220), 0.4)
 
 	local scrollArea = CreateFrame("ScrollFrame", "CopyScroll", frame, "UIPanelScrollFrameTemplate")
 	scrollArea:SetPoint("TOPLEFT", frame, "TOPLEFT", TukuiDB.Scale(8), TukuiDB.Scale(-30))
@@ -349,14 +353,24 @@ local function CreatCopyFrame()
 	editBox:SetFontObject(ChatFontNormal)
 	editBox:SetWidth(TukuiDB.Scale(710))
 	editBox:SetHeight(TukuiDB.Scale(200))
-	editBox:SetScript("OnEscapePressed", function() frame:Hide() end)
+	editBox:SetScript("OnEscapePressed", function()
+		SlideOut(frame)
+	end)
 
 	scrollArea:SetScrollChild(editBox)
 
 	local close = CreateFrame("Button", "CopyCloseButton", frame, "UIPanelCloseButton")
 	close:SetPoint("TOPRIGHT", frame, "TOPRIGHT")
-
+	close:EnableMouse(true)
+	close:SetScript("OnMouseDown", function()
+		SlideOut(frame)
+	end)
+	
 	isf = true
+	
+	frame:HookScript("OnShow", function(self, ...)
+		SlideIn(frame)
+	end)
 end
 
 local function GetLines(...)
@@ -379,7 +393,7 @@ local function Copy(cf)
 	local text = table.concat(lines, "\n", 1, lineCt)
 	FCF_SetChatWindowFontSize(cf, cf, size)
 	if not isf then CreatCopyFrame() end
-	if frame:IsShown() then frame:Hide() return end
+	if frame:IsShown() then SlideOut(frame) return end
 	frame:Show()
 	editBox:SetText(text)
 end
