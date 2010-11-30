@@ -495,6 +495,16 @@ ChatLBackground.anim_o:HookScript("OnFinished", function()
 	end
 end)
 
+ChatLBackground.anim_o:HookScript("OnPlay", function()
+	if TukuiChatLIn == true then
+		for i = 1, NUM_CHAT_WINDOWS do
+			local chat = _G[format("ChatFrame%s", i)]
+			local tab = _G[format("ChatFrame%sTab", i)]
+			chat:SetParent(tab)
+		end		
+	end
+end)
+
 ChatLBackground.anim:HookScript("OnFinished", function()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local chat = _G[format("ChatFrame%s", i)]
