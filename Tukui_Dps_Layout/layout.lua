@@ -1831,7 +1831,7 @@ if TukuiCF.arena.unitframes then
 	for i = 1, 5 do
 		arena[i] = oUF:Spawn("arena"..i, "oUF_TukzDPSArena"..i)
 		if i == 1 then
-			arena[i]:SetPoint("BOTTOMLEFT", RDummyFrame, "TOPLEFT", -80, 185)
+			arena[i]:SetPoint("BOTTOMLEFT", ChatRBackground, "TOPLEFT", -80, 185)
 		else
 			arena[i]:SetPoint("BOTTOM", arena[i-1], "TOP", 0, 34)
 		end
@@ -1844,7 +1844,7 @@ if TukuiCF.raidframes.showboss then
 	for i = 1, MAX_BOSS_FRAMES do
 		boss[i] = oUF:Spawn("boss"..i, "oUF_TukzDPSBoss"..i)
 		if i == 1 then
-			boss[i]:SetPoint("BOTTOMLEFT", RDummyFrame, "TOPLEFT", -80, 185)
+			boss[i]:SetPoint("BOTTOMLEFT", ChatRBackground, "TOPLEFT", -80, 185)
 		else
 			boss[i]:SetPoint('BOTTOM', boss[i-1], 'TOP', 0, 34)             
 		end
@@ -1865,7 +1865,7 @@ if TukuiCF["raidframes"].maintank == true then
 		'point' , 'BOTTOM',
 		'template', 'oUF_tukzMtt'
 	)
-	tank:SetPoint("BOTTOMLEFT", RDummyFrame, "TOPLEFT", -42, 450)
+	tank:SetPoint("BOTTOMLEFT", ChatRBackground, "TOPLEFT", -42, 450)
 end
 
 if TukuiCF["raidframes"].mainassist == true then
@@ -1883,7 +1883,7 @@ if TukuiCF["raidframes"].mainassist == true then
 	if TukuiCF["raidframes"].maintank == true then 
 		assist:SetPoint("TOPLEFT", oUF_TukzDPSMainTank, "BOTTOMLEFT", 2, -50)
 	else
-		assist:SetPoint("BOTTOMLEFT", RDummyFrame, "TOPLEFT", -42, 450)
+		assist:SetPoint("BOTTOMLEFT", ChatRBackground, "TOPLEFT", -42, 450)
 	end
 end
 
