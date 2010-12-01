@@ -34,10 +34,13 @@ function style(self, vehicle, totem)
 		Count:SetPoint("BOTTOMRIGHT", 0, TukuiDB.Scale(2))
 		Count:SetFont(TukuiCF["media"].font, 12, "OUTLINE")
 	end
+	
 	if Btname then
-		Btname:SetText("")
-		Btname:Hide()
-		Btname.Show = TukuiDB.dummy
+		if TukuiCF["actionbar"].macrotext ~= true then
+			Btname:SetText("")
+			Btname:Hide()
+			Btname.Show = TukuiDB.dummy
+		end
 	end
 	
 	if not _G[name.."Panel"] then
