@@ -217,6 +217,7 @@ local function SetupChatPosAndFont(self)
 	local lastseen
 	for i = 1, NUM_CHAT_WINDOWS do
 		local chat = _G[format("ChatFrame%s", i)]
+		local tab = _G[format("ChatFrame%sTab", i)]
 		local id = chat:GetID()
 		local name = FCF_GetChatWindowInfo(id)
 		local point = GetChatWindowSavedPosition(id)
@@ -232,14 +233,12 @@ local function SetupChatPosAndFont(self)
 		end
 		
 		
-		-- force chat position on #1 and #4, needed if we change ui scale or resolution
+		-- force chat position on #1 and #3, needed if we change ui scale or resolution
 		if i == 1 then
 			chat:ClearAllPoints()
 			chat:SetPoint("BOTTOMLEFT", ChatLBackground, "BOTTOMLEFT", TukuiDB.Scale(2), TukuiDB.Scale(4))
 			_G["ChatFrame"..i]:SetSize(TukuiDB.Scale(TukuiCF["chat"].chatwidth - 4), TukuiDB.Scale(TukuiCF["chat"].chatheight))
 			FCF_SavePositionAndDimensions(chat)
-			button:ClearAllPoints()
-			button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))
 		elseif point == "BOTTOMRIGHT" and TukuiCF["chat"].rightchat == true and chat:IsShown() and docked == nil then
 			chatrightfound = true
 			TukuiDB.ChatRightShown = true
@@ -247,11 +246,6 @@ local function SetupChatPosAndFont(self)
 			chat:SetPoint("BOTTOMLEFT", ChatRBackground, "BOTTOMLEFT", TukuiDB.Scale(2), TukuiDB.Scale(4))
 			_G["ChatFrame"..i]:SetSize(TukuiDB.Scale(TukuiCF["chat"].chatwidth - 4), TukuiDB.Scale(TukuiCF["chat"].chatheight))
 			FCF_SavePositionAndDimensions(chat)
-			button:ClearAllPoints()
-			button:SetPoint("BOTTOMRIGHT", ChatRBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))
-		else
-			button:ClearAllPoints()
-			button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))
 		end
 		
 		if TukuiCF["chat"].rightchat ~= true then
@@ -265,8 +259,82 @@ local function SetupChatPosAndFont(self)
 		if i == NUM_CHAT_WINDOWS and chatrightfound == false and not StaticPopup1:IsShown() then
 			StaticPopup_Show("CHAT_WARN")
 		end
+		
+		if not docked and (chat:GetName() == "ChatFrame3" and TukuiCF["chat"].rightchat == true) then
+			button:ClearAllPoints()
+			button:SetAlpha(1)
+			button:SetPoint("BOTTOMRIGHT", ChatRBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))
+			button:SetScript("OnEnter", function() end)
+			button:SetScript("OnLeave", function() end)
+		elseif not docked and not (chat:GetName() == "ChatFrame3" and TukuiCF["chat"].rightchat == true) then
+			button:ClearAllPoints()
+			button:SetAlpha(0)
+			button:SetPoint("TOPRIGHT", chat, "TOPRIGHT", 0, 0)
+			button:SetScript("OnEnter", function() button:SetAlpha(1) end)
+			button:SetScript("OnLeave", function() button:SetAlpha(0) end)
+		elseif docked then
+			button:ClearAllPoints()
+			button:SetAlpha(1)
+			button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))
+			button:SetScript("OnEnter", function() end)
+			button:SetScript("OnLeave", function() end)
+		end
+		
+		tab:HookScript("OnDragStop", function(self)
+			local id = self:GetID()
+			local chat = _G[format("ChatFrame%d", id)]
+			local button = _G[format("ButtonCF%d", id)]
+			local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
+			if not docked and (chat:GetName() == "ChatFrame3" and TukuiCF["chat"].rightchat == true) then
+				button:ClearAllPoints()
+				button:SetAlpha(1)
+				button:SetPoint("BOTTOMRIGHT", ChatRBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))
+				button:SetScript("OnEnter", function() end)
+				button:SetScript("OnLeave", function() end)
+			elseif not docked and not (chat:GetName() == "ChatFrame3" and TukuiCF["chat"].rightchat == true) then
+				button:ClearAllPoints()
+				button:SetAlpha(0)
+				button:SetPoint("TOPRIGHT", chat, "TOPRIGHT", 0, 0)
+				button:SetScript("OnEnter", function() button:SetAlpha(1) end)
+				button:SetScript("OnLeave", function() button:SetAlpha(0) end)
+			elseif docked then
+				button:ClearAllPoints()
+				button:SetAlpha(1)
+				button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))
+				button:SetScript("OnEnter", function() end)
+				button:SetScript("OnLeave", function() end)
+			end
+		end)
+		
+		tab:HookScript("OnDragStart", function(self)
+			local id = self:GetID()
+			local chat = _G[format("ChatFrame%d", id)]
+			local button = _G[format("ButtonCF%d", id)]
+			local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
+			if not docked and (chat:GetName() == "ChatFrame3" and TukuiCF["chat"].rightchat == true) then
+				button:ClearAllPoints()
+				button:SetAlpha(1)
+				button:SetPoint("BOTTOMRIGHT", ChatRBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))
+				button:SetScript("OnEnter", function() end)
+				button:SetScript("OnLeave", function() end)
+			elseif not docked and not (chat:GetName() == "ChatFrame3" and TukuiCF["chat"].rightchat == true) then
+				button:ClearAllPoints()
+				button:SetAlpha(0)
+				button:SetPoint("TOPRIGHT", chat, "TOPRIGHT", 0, 0)
+				button:SetScript("OnEnter", function() button:SetAlpha(1) end)
+				button:SetScript("OnLeave", function() button:SetAlpha(0) end)
+			elseif docked then
+				button:ClearAllPoints()
+				button:SetAlpha(1)
+				button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))
+				button:SetScript("OnEnter", function() end)
+				button:SetScript("OnLeave", function() end)
+			end
+		end)
 	end
 end
+hooksecurefunc("FCF_OpenNewWindow", SetupChatPosAndFont)
+hooksecurefunc("FCF_DockFrame", SetupChatPosAndFont)
 
 TukuiChat:RegisterEvent("ADDON_LOADED")
 TukuiChat:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -446,7 +514,6 @@ function TukuiDB.ChatCopyButtons()
 	end
 end
 TukuiDB.ChatCopyButtons()
-
 
 ------------------------------------------------------------------------
 --	Enhance/rewrite a Blizzard feature, chatframe mousewheel.
