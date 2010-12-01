@@ -8,7 +8,7 @@ if TukuiCF["datatext"].system and TukuiCF["datatext"].system > 0 then
 	Stat:SetFrameLevel(3)
 	Stat:EnableMouse(true)
 	
-	local Text  = TukuiInfoLeft:CreateFontString(nil, "OVERLAY")
+	local Text  = TukuiInfoOverlay:CreateFontString(nil, "OVERLAY")
 		Text:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
 	Text:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
 	TukuiDB.PP(TukuiCF["datatext"].system, Text)

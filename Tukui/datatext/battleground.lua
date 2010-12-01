@@ -5,27 +5,27 @@ if TukuiCF["datatext"].battleground == true then
 	local Stat = CreateFrame("Frame")
 	Stat:EnableMouse(true)
 	
-	local Text1  = TukuiInfoBattleGround:CreateFontString(nil, "OVERLAY")
+	local Text1  = TukuiInfoBattleGroundL:CreateFontString(nil, "OVERLAY")
 	Text1:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
 	TukuiDB.PP(1, Text1)
 
-	local Text2  = TukuiInfoBattleGround:CreateFontString(nil, "OVERLAY")
+	local Text2  = TukuiInfoBattleGroundL:CreateFontString(nil, "OVERLAY")
 	Text2:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
 	TukuiDB.PP(2, Text2)
 
-	local Text3  = TukuiInfoBattleGround:CreateFontString(nil, "OVERLAY")
+	local Text3  = TukuiInfoBattleGroundL:CreateFontString(nil, "OVERLAY")
 	Text3:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
 	TukuiDB.PP(3, Text3)
 	
-	local Text4  = TukuiInfoBattleGround:CreateFontString(nil, "OVERLAY")
+	local Text4  = TukuiInfoBattleGroundR:CreateFontString(nil, "OVERLAY")
 	Text4:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
-	TukuiDB.PP(4, Text4)
+	TukuiDB.PP(5, Text4)
 
-	local Text5  = TukuiInfoBattleGround:CreateFontString(nil, "OVERLAY")
+	local Text5  = TukuiInfoBattleGroundR:CreateFontString(nil, "OVERLAY")
 	Text5:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
-	TukuiDB.PP(5, Text5)
+	TukuiDB.PP(4, Text5)
 
-	local Text6  = TukuiInfoBattleGround:CreateFontString(nil, "OVERLAY")
+	local Text6  = TukuiInfoBattleGroundR:CreateFontString(nil, "OVERLAY")
 	Text6:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
 	TukuiDB.PP(6, Text6)
 

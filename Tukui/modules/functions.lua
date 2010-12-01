@@ -583,6 +583,8 @@ TukuiDB.AuraFilter = function(icons, unit, icon, name, rank, texture, count, dty
 			if header == "oUF_TukuiHealR6R25" and DebuffHealerWhiteList[name] then
 				return true
 			elseif header == "oUF_TukuiDPSR6R25" and DebuffDPSWhiteList[name] then
+				return true
+			else
 				return false
 			end
 		end	

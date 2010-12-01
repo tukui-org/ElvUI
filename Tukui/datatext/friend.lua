@@ -24,7 +24,7 @@ if TukuiCF["datatext"].friends and TukuiCF["datatext"].friends > 0 then
 		snapfrom = "TOP"
 	end
 
-	local Text  = TukuiInfoLeft:CreateFontString(nil, "OVERLAY")
+	local Text  = TukuiInfoOverlay:CreateFontString(nil, "OVERLAY")
 		Text:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
 	Text:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
 	TukuiDB.PP(TukuiCF["datatext"].friends, Text)

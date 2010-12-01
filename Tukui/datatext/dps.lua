@@ -11,7 +11,7 @@ if TukuiCF["datatext"].dps_text and TukuiCF["datatext"].dps_text > 0 then
 
 	local pet_id = UnitGUID("pet")
      
-	dText = TukuiInfoLeft:CreateFontString(nil, "OVERLAY")
+	dText = TukuiInfoOverlay:CreateFontString(nil, "OVERLAY")
 	dText:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
 	dText:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
 	dText:SetText("DPS: "..valuecolor.."0.0|r")

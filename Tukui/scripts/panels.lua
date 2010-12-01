@@ -11,32 +11,6 @@ bottompanel:SetWidth(UIParent:GetWidth() + (TukuiDB.mult * 2))
 bottompanel:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", -TukuiDB.mult, -TukuiDB.mult)
 bottompanel:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", TukuiDB.mult, -TukuiDB.mult)
 
---Battleground Support for Bottom Frame
-if TukuiCF["datatext"].battleground == true then
-	bottompanel:SetScript("OnMouseDown", function(self) ToggleFrame(TukuiInfoBattleGround) end)
-	bottompanel:RegisterEvent("PLAYER_ENTERING_WORLD")
-	bottompanel:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-	bottompanel:SetScript("OnEvent", function(self, event)
-		if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
-		local inInstance, instanceType = IsInInstance()
-		if (inInstance and (instanceType == "pvp")) then
-			if not InCombatLockdown() then
-				TukuiBottomPanel:EnableMouse(true)
-				TukuiInfoBattleGround:Show()
-			else
-				self:RegisterEvent("PLAYER_REGEN_ENABLED")
-			end
-		else
-			if not InCombatLockdown() then
-				TukuiBottomPanel:EnableMouse(false)
-				TukuiInfoBattleGround:Hide()
-			else
-				self:RegisterEvent("PLAYER_REGEN_ENABLED")
-			end
-		end
-	end)
-end
-
 -- MINIMAP STAT FRAMES
 if TukuiMinimap then
 	local minimapstatsleft = CreateFrame("Frame", "TukuiMinimapStatsLeft", TukuiMinimap)
@@ -47,7 +21,6 @@ if TukuiMinimap then
 	TukuiDB.SetNormTexTemplate(TukuiMinimapStatsLeft)
 	TukuiDB.SetNormTexTemplate(TukuiMinimapStatsRight)
 end
-
 
 -- MAIN ACTION BAR
 local barbg = CreateFrame("Frame", "TukuiActionBarBackground", UIParent)
@@ -216,6 +189,12 @@ TukuiDB.CreateShadow(infoleft)
 infoleft:SetPoint("TOPLEFT", chatlbgdummy2, "BOTTOMLEFT", TukuiDB.Scale(17), TukuiDB.Scale(-4))
 infoleft:SetPoint("BOTTOMRIGHT", chatlbgdummy2, "BOTTOMRIGHT", TukuiDB.Scale(-17), TukuiDB.Scale(-26))
 
+--Parent texts go to this
+local infoo = CreateFrame("Frame", "TukuiInfoOverlay", infoleft)
+infoo:SetAllPoints(infoleft)
+infoo:SetFrameStrata(infoleft:GetFrameStrata())
+infoo:SetFrameLevel(infoleft:GetFrameLevel() + 1)
+
 --INFOLEFT L BUTTON
 local infoleftLbutton = CreateFrame("Button", "TukuiInfoLeftLButton", TukuiInfoLeft)
 TukuiDB.SetNormTexTemplate(infoleftLbutton)
@@ -246,6 +225,7 @@ TukuiDB.CreateShadow(inforight)
 inforight:SetPoint("TOPLEFT", chatrbgdummy2, "BOTTOMLEFT", TukuiDB.Scale(17), TukuiDB.Scale(-4))
 inforight:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", TukuiDB.Scale(-17), TukuiDB.Scale(-26))
 
+
 --INFORIGHT L BUTTON
 local inforightLbutton = CreateFrame("Button", "TukuiInfoRightLButton", TukuiInfoRight)
 TukuiDB.SetNormTexTemplate(inforightLbutton)
@@ -269,15 +249,87 @@ inforightRbutton.Text = TukuiDB.SetFontString(TukuiInfoRightRButton, TukuiCF["me
 inforightRbutton.Text:SetText(">")
 inforightRbutton.Text:SetPoint("CENTER")
 
-
 -- BATTLEGROUND STATS FRAME
+local shownbg = true
 if TukuiCF["datatext"].battleground == true then
-	local bgframe = CreateFrame("Frame", "TukuiInfoBattleGround", UIParent)
-	TukuiDB.CreatePanel(bgframe, 1, 1, "TOPLEFT", UIParent, "BOTTOMLEFT", 0, 0)
-	bgframe:SetAllPoints(TukuiBottomPanel)
-	bgframe:SetFrameLevel(TukuiBottomPanel:GetFrameLevel() + 1)
-	bgframe:SetFrameStrata("LOW")
-	bgframe:SetScript("OnEnter", function(self)
+	infoleft:SetScript("OnMouseDown", function(self) 
+		if shownbg == true then 
+			SlideOut(TukuiInfoBattleGroundL) 
+			SlideOut(TukuiInfoBattleGroundR) 
+			shownbg = false 
+		else 
+			SlideIn(TukuiInfoBattleGroundL) 
+			SlideIn(TukuiInfoBattleGroundR) 
+			shownbg = true 
+		end 
+	end)
+	infoleft:RegisterEvent("PLAYER_ENTERING_WORLD")
+	infoleft:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+	infoleft:SetScript("OnEvent", function(self, event)
+		if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
+		local inInstance, instanceType = IsInInstance()
+		if (inInstance and (instanceType == "pvp")) then
+			if not InCombatLockdown() then
+				infoleft:EnableMouse(true)
+				TukuiInfoBattleGroundL:Show()
+			else
+				self:RegisterEvent("PLAYER_REGEN_ENABLED")
+			end
+		else
+			if not InCombatLockdown() then
+				infoleft:EnableMouse(false)
+				TukuiInfoBattleGroundL:Hide()
+			else
+				self:RegisterEvent("PLAYER_REGEN_ENABLED")
+			end
+		end
+		shownbg = true
+	end)
+	
+
+
+	inforight:SetScript("OnMouseDown", function(self) 
+		if shownbg == true then 
+			SlideOut(TukuiInfoBattleGroundL) 
+			SlideOut(TukuiInfoBattleGroundR) 
+			shownbg = false 
+		else 
+			SlideIn(TukuiInfoBattleGroundL) 
+			SlideIn(TukuiInfoBattleGroundR) 
+			shownbg = true 
+		end 
+	end)
+	inforight:RegisterEvent("PLAYER_ENTERING_WORLD")
+	inforight:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+	inforight:SetScript("OnEvent", function(self, event)
+		if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
+		local inInstance, instanceType = IsInInstance()
+		if (inInstance and (instanceType == "pvp")) then
+			if not InCombatLockdown() then
+				inforight:EnableMouse(true)
+				TukuiInfoBattleGroundR:Show()
+			else
+				self:RegisterEvent("PLAYER_REGEN_ENABLED")
+			end
+		else
+			if not InCombatLockdown() then
+				inforight:EnableMouse(false)
+				TukuiInfoBattleGroundR:Hide()
+			else
+				self:RegisterEvent("PLAYER_REGEN_ENABLED")
+			end
+		end
+		shownbg = true
+	end)
+
+
+	local bgframeL = CreateFrame("Frame", "TukuiInfoBattleGroundL", UIParent)
+	TukuiDB.CreatePanel(bgframeL, 1, 1, "TOPLEFT", UIParent, "BOTTOMLEFT", 0, 0)
+	bgframeL:SetAllPoints(TukuiInfoLeft)
+	bgframeL:SetFrameLevel(TukuiInfoLeft:GetFrameLevel() + 1)
+	TukuiDB.SetNormTexTemplate(bgframeL)
+	bgframeL:SetFrameStrata("HIGH")
+	bgframeL:SetScript("OnEnter", function(self)
 		local numScores = GetNumBattlefieldScores()
 		for i=1, numScores do
 			local name, killingBlows, honorableKills, deaths, honorGained, faction, race, class, classToken, damageDone, healingDone, bgRating, ratingChange = GetBattlefieldScore(i)
@@ -315,28 +367,121 @@ if TukuiCF["datatext"].battleground == true then
 			end
 		end
 	end) 
+	
+	local bgframeR = CreateFrame("Frame", "TukuiInfoBattleGroundR", UIParent)
+	TukuiDB.CreatePanel(bgframeR, 1, 1, "TOPLEFT", UIParent, "BOTTOMLEFT", 0, 0)
+	TukuiDB.SetNormTexTemplate(bgframeR)
+	bgframeR:SetAllPoints(TukuiInfoRight)
+	bgframeR:SetFrameLevel(TukuiInfoRight:GetFrameLevel() + 1)
+	bgframeR:SetFrameStrata("HIGH")
+	bgframeR:SetScript("OnEnter", function(self)
+		local numScores = GetNumBattlefieldScores()
+		for i=1, numScores do
+			local name, killingBlows, honorableKills, deaths, honorGained, faction, race, class, classToken, damageDone, healingDone, bgRating, ratingChange = GetBattlefieldScore(i)
+			if name then
+				if name == TukuiDB.myname then
+					local color = RAID_CLASS_COLORS[select(2, UnitClass("player"))]
+					local classcolor = ("|cff%.2x%.2x%.2x"):format(color.r * 255, color.g * 255, color.b * 255)
+					GameTooltip:SetOwner(self, "ANCHOR_CURSOR")
+					GameTooltip:ClearLines()
+					GameTooltip:AddDoubleLine(tukuilocal.datatext_ttstatsfor, classcolor..name.."|r")
+					GameTooltip:AddLine' '
+					--Add extra statistics to watch based on what BG you are in.
+					if GetRealZoneText() == "Arathi Basin" then --
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
+					elseif GetRealZoneText() == "Warsong Gulch" then --
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_flagsreturned,GetBattlefieldStatData(i, 2),1,1,1)
+					elseif GetRealZoneText() == "Eye of the Storm" then --
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
+					elseif GetRealZoneText() == "Alterac Valley" then
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_graveyardsassaulted,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_graveyardsdefended,GetBattlefieldStatData(i, 2),1,1,1)
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_towersassaulted,GetBattlefieldStatData(i, 3),1,1,1)
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_towersdefended,GetBattlefieldStatData(i, 4),1,1,1)
+					elseif GetRealZoneText() == "Strand of the Ancients" then
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_demolishersdestroyed,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_gatesdestroyed,GetBattlefieldStatData(i, 2),1,1,1)
+					elseif GetRealZoneText() == "Isle of Conquest" then
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(tukuilocal.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
+					end			
+					GameTooltip:Show()
+				end
+			end
+		end
+	end)
+	
+	AnimGroup(TukuiInfoBattleGroundL, 0, TukuiDB.Scale(-150), 0.4)
+	AnimGroup(TukuiInfoBattleGroundR, 0, TukuiDB.Scale(-150), 0.4)
 
-	bgframe:SetScript("OnMouseDown", function(self) ToggleFrame(TukuiInfoBattleGround) end)
-	bgframe:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
-	bgframe:RegisterEvent("PLAYER_ENTERING_WORLD")
-	bgframe:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-	bgframe:SetScript("OnEvent", function(self, event)
+	bgframeL:SetScript("OnMouseDown", function(self) 
+		if shownbg == true then 
+			SlideOut(TukuiInfoBattleGroundL) 
+			SlideOut(TukuiInfoBattleGroundR) 
+			shownbg = false 
+		else 
+			SlideIn(TukuiInfoBattleGroundL) 
+			SlideIn(TukuiInfoBattleGroundR) 
+			shownbg = true 
+		end 
+	end)
+	bgframeL:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
+	bgframeL:RegisterEvent("PLAYER_ENTERING_WORLD")
+	bgframeL:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+	bgframeL:SetScript("OnEvent", function(self, event)
 		local inInstance, instanceType = IsInInstance()
 		if (inInstance and (instanceType == "pvp")) then
 			if not InCombatLockdown() then
-				TukuiInfoBattleGround:Show()
-				TukuiBottomPanel:EnableMouse(true)
+				TukuiInfoBattleGroundL:Show()
+				TukuiInfoLeft:EnableMouse(true)
 			else
 				self:RegisterEvent("PLAYER_REGEN_ENABLED")
 			end
 		else
 			if not InCombatLockdown() then
-				TukuiInfoBattleGround:Hide()
-				TukuiBottomPanel:EnableMouse(false)
+				TukuiInfoBattleGroundL:Hide()
+				TukuiInfoLeft:EnableMouse(false)
 			else
 				self:RegisterEvent("PLAYER_REGEN_ENABLED")
 			end
 		end
+		shownbg = true
+	end)
+	
+	bgframeR:SetScript("OnMouseDown", function(self) 
+		if shownbg == true then 
+			SlideOut(TukuiInfoBattleGroundL) 
+			SlideOut(TukuiInfoBattleGroundR) 
+			shownbg = false 
+		else 
+			SlideIn(TukuiInfoBattleGroundL) 
+			SlideIn(TukuiInfoBattleGroundR) 
+			shownbg = true 
+		end 
+	end)
+	bgframeR:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
+	bgframeR:RegisterEvent("PLAYER_ENTERING_WORLD")
+	bgframeR:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+	bgframeR:SetScript("OnEvent", function(self, event)
+		local inInstance, instanceType = IsInInstance()
+		if (inInstance and (instanceType == "pvp")) then
+			if not InCombatLockdown() then
+				TukuiInfoBattleGroundR:Show()
+				TukuiInfoRight:EnableMouse(true)
+			else
+				self:RegisterEvent("PLAYER_REGEN_ENABLED")
+			end
+		else
+			if not InCombatLockdown() then
+				TukuiInfoBattleGroundR:Hide()
+				TukuiInfoRight:EnableMouse(false)
+			else
+				self:RegisterEvent("PLAYER_REGEN_ENABLED")
+			end
+		end
+		shownbg = true
 	end)
 end
 
