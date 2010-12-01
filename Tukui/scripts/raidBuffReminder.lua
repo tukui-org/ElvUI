@@ -97,10 +97,14 @@ local function CheckElixir(unit)
 	end
 end
 
+local function Pulse(self)
+	Flash(self, 0.3)
+end
+
 
 --Main Script
-
 RaidReminderShown = true
+local t = 0
 local function OnAuraChange(self, event, arg1, unit)
 	if (event == "UNIT_AURA" and arg1 ~= "player") then 
 		return
@@ -190,18 +194,39 @@ local function OnAuraChange(self, event, arg1, unit)
 		end
 	end
 	
+	
 	local inInstance, instanceType = IsInInstance()
 	if inInstance and (instanceType ==  "party" or instanceType == "raid") then
-		if RaidReminderShown == true then return end
-		UIFrameFadeIn(self, 0.4)
-		TukuiInfoRightLButton.Text:SetTextColor(1,1,1)
-		RaidReminderShown = true
+		if RaidReminderShown ~= true then
+			UIFrameFadeIn(self, 0.4)
+			TukuiInfoRightLButton.Text:SetTextColor(1,1,1)
+			RaidReminderShown = true
+		end
 	else
-		if RaidReminderShown == false then return end
-		TukuiInfoRightLButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))
-		UIFrameFadeOut(self, 0.4)
-		RaidReminderShown = false
+		if RaidReminderShown ~= false then 
+			TukuiInfoRightLButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))
+			UIFrameFadeOut(self, 0.4)
+			RaidReminderShown = false
+		end
 	end
+	
+	--Check if your incombat and are missing a buff
+	
+	if RaidReminderShown == true and inInstance and (instanceType == "raid") and InCombatLockdown() and (FlaskFrame:GetAlpha() == 1 or Spell3Frame:GetAlpha() == 1 or Spell4Frame:GetAlpha() == 1 or Spell5Frame:GetAlpha() == 1 or Spell6Frame:GetAlpha() == 1) then
+		self:SetScript("OnUpdate", function(self)
+			t = t + 1
+			if t == 45 then
+				Pulse(self)
+				t = 0
+			end
+		end)
+	else
+		self:SetScript("OnUpdate", function() end)
+		StopFlash(self)
+		t = 0
+	end
+	
+	
 end
 
 local bsize = (((TukuiMinimap:GetWidth()) - (TukuiDB.Scale(4) * 7)) / 6)
@@ -213,11 +238,15 @@ TukuiDB.CreatePanel(raidbuff_reminder, TukuiMinimap:GetWidth(), bsize + TukuiDB.
 raidbuff_reminder:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 raidbuff_reminder:RegisterEvent("UNIT_INVENTORY_CHANGED")
 raidbuff_reminder:RegisterEvent("UNIT_AURA")
+raidbuff_reminder:RegisterEvent("PLAYER_REGEN_ENABLED")
+raidbuff_reminder:RegisterEvent("PLAYER_REGEN_DISABLED")
 raidbuff_reminder:RegisterEvent("PLAYER_ENTERING_WORLD")
 raidbuff_reminder:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
 raidbuff_reminder:RegisterEvent("CHARACTER_POINTS_CHANGED")
 raidbuff_reminder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 raidbuff_reminder:SetScript("OnEvent", OnAuraChange)
+SetUpAnimGroup(RaidBuffReminder)
+
 
 
 --Function to create buttons
