@@ -84,7 +84,7 @@ do
 		border:SetFrameLevel(0)
 
 		local text = frame:CreateFontString(nil, 'OVERLAY')
-		text:SetFont(TukuiCF["media"].uffont, 12, "THINOUTLINE")
+		text:SetFont(TukuiCF["media"].uffont, TukuiCF["general"].fontscale, "THINOUTLINE")
 		text:SetShadowOffset(.8, -.8)
 		text:SetShadowColor(0, 0, 0, 1)
 

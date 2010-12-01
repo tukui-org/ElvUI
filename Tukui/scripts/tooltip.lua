@@ -140,7 +140,7 @@ GameTooltipStatusBar:SetScript("OnValueChanged", function(self, value)
 	if not self.text then
 		self.text = self:CreateFontString(nil, "OVERLAY")
 		self.text:SetPoint("CENTER", GameTooltipStatusBar, 0, TukuiDB.Scale(-3))
-		self.text:SetFont(TukuiCF["media"].font, 12, "THINOUTLINE")
+		self.text:SetFont(TukuiCF["media"].font, TukuiCF["general"].fontscale, "THINOUTLINE")
 		self.text:Show()
 		if unit then
 			min, max = UnitHealth(unit), UnitHealthMax(unit)

@@ -1,6 +1,7 @@
 ﻿------------------------------------------------------------------------
 --	First Time Launch and On Login file
 ------------------------------------------------------------------------
+BINDING_HEADER_TUKUI = GetAddOnMetadata("Tukui", "Title") --Header name inside keybinds menu
 
 local function install()
 	SetCVar("buffDurations", 1)

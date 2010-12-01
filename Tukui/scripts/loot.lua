@@ -93,7 +93,7 @@ local createSlot = function(id)
 	count:ClearAllPoints()
 	count:SetJustifyH"RIGHT"
 	count:SetPoint("BOTTOMRIGHT", iconFrame, TukuiDB.Scale(-1), TukuiDB.Scale(2))
-	count:SetFont(TukuiCF["media"].font, 12, "OUTLINE")
+	count:SetFont(TukuiCF["media"].font, TukuiCF["general"].fontscale, "OUTLINE")
 	count:SetShadowOffset(.8, -.8)
 	count:SetShadowColor(0, 0, 0, 1)
 	count:SetText(1)
@@ -105,7 +105,7 @@ local createSlot = function(id)
 	name:SetPoint("LEFT", frame)
 	name:SetPoint("RIGHT", icon, "LEFT")
 	name:SetNonSpaceWrap(true)
-	name:SetFont(TukuiCF["media"].font, 13, "OUTLINE")
+	name:SetFont(TukuiCF["media"].font, TukuiCF["general"].fontscale, "OUTLINE")
 	name:SetShadowOffset(.8, -.8)
 	name:SetShadowColor(0, 0, 0, 1)
 	frame.name = name
@@ -139,7 +139,7 @@ local anchorSlots = function(self)
 	self:SetHeight(TukuiDB.Scale(math.max(shownSlots * iconsize + 16, 20)))
 end
 
-title:SetFont(TukuiCF["media"].font, 13, "OUTLINE")
+title:SetFont(TukuiCF["media"].font, TukuiCF["general"].fontscale, "OUTLINE")
 title:SetPoint("BOTTOMLEFT", addon, "TOPLEFT", TukuiDB.Scale(4), TukuiDB.Scale(4))
 
 addon:SetScript("OnMouseDown", function(self) if(IsAltKeyDown()) then self:StartMoving() end end)

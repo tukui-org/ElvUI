@@ -578,10 +578,10 @@ function Stuffing:Layout(lb)
 		cols = (floor(TukuiCF["chat"].chatwidth/370 * 10))
 		f = self.frame
 
-		f.gold:SetText (GetCoinTextureString(GetMoney(), 12))
-		f.editbox:SetFont(BAGSFONT, 12)
-		f.detail:SetFont(BAGSFONT, 12)
-		f.gold:SetFont(BAGSFONT, 12)
+		f.gold:SetText (GetCoinTextureString(GetMoney(), TukuiCF["general"].fontscale))
+		f.editbox:SetFont(BAGSFONT, TukuiCF["general"].fontscale)
+		f.detail:SetFont(BAGSFONT, TukuiCF["general"].fontscale)
+		f.gold:SetFont(BAGSFONT, TukuiCF["general"].fontscale)
 
 		f.detail:ClearAllPoints()
 		f.detail:SetPoint("TOPLEFT", f, TukuiDB.Scale(12), TukuiDB.Scale(-10))

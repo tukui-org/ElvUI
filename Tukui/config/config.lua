@@ -5,6 +5,7 @@
 	["embedright"] = "NONE",				-- Addon to embed to the right frame ("Omen", "Recount", "Skada")
 	["classcolortheme"] = false,			--class colored theme for panels
 	["autocustomlagtolerance"] = true,		--set custom lag tollerance to your latency
+	["fontscale"] = 12,					--Master font
 }
 
 TukuiCF["skin"] = {	--Skin addons by Darth Android

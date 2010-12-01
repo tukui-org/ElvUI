@@ -67,7 +67,7 @@ local function SetChatStyle(frame)
 		tab:HookScript("OnLeave", function() _G[chat.."TabText"]:Hide() end)
 	end
 	_G[chat.."TabText"]:SetTextColor(unpack(TukuiCF["media"].valuecolor))
-	_G[chat.."TabText"]:SetFont(TukuiCF.media.font,12,"THINOUTLINE")
+	_G[chat.."TabText"]:SetFont(TukuiCF.media.font,TukuiCF["general"].fontscale,"THINOUTLINE")
 	_G[chat.."TabText"].SetTextColor = TukuiDB.dummy
 	local originalpoint = select(2, _G[chat.."TabText"]:GetPoint())
 	_G[chat.."TabText"]:SetPoint("LEFT", originalpoint, "RIGHT", 0, -TukuiDB.mult*2)
@@ -421,7 +421,7 @@ function TukuiDB.ChatCopyButtons()
 		TukuiDB.CreateShadow(button)
 		
 		local buttontext = button:CreateFontString(nil,"OVERLAY",nil)
-		buttontext:SetFont(TukuiCF.media.font,12,"OUTLINE")
+		buttontext:SetFont(TukuiCF.media.font,TukuiCF["general"].fontscale,"OUTLINE")
 		buttontext:SetText("C")
 		buttontext:SetPoint("CENTER", TukuiDB.Scale(1), 0)
 		buttontext:SetJustifyH("CENTER")

@@ -3,7 +3,7 @@ if not TukuiCF["nameplate"].enable == true then return end
 
 local TEXTURE = TukuiCF["media"].normTex
 local FONT = TukuiCF["media"].font
-local FONTSIZE = 11
+local FONTSIZE = TukuiCF["general"].fontscale*0.9
 local FONTFLAG = "THINOUTLINE"
 local hpHeight = 12
 local hpWidth = 110

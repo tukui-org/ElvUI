@@ -43,7 +43,7 @@ local function CreateButton(name, parent, template, width, height, point, relati
 	TukuiDB.SetTemplate(b)
 	if text then
 		local t = b:CreateFontString(nil,"OVERLAY",b)
-		t:SetFont(TukuiCF.media.font,12,"OUTLINE")
+		t:SetFont(TukuiCF.media.font,TukuiCF["general"].fontscale,"OUTLINE")
 		t:SetPoint("CENTER")
 		t:SetJustifyH("CENTER")
 		t:SetText(text)
@@ -127,7 +127,7 @@ local function CreateMarkerButton(name, text, point, relativeto, point2)
 	f:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight")
 	
 	local t = f:CreateFontString(nil,"OVERLAY",f)
-	t:SetFont(TukuiCF.media.font,12,"OUTLINE")
+	t:SetFont(TukuiCF.media.font,TukuiCF["general"].fontscale,"OUTLINE")
 	t:SetText(text)
 	t:SetPoint("CENTER")
 	t:SetJustifyH("CENTER")	

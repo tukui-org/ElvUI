@@ -30,7 +30,7 @@ for i = 1, 3 do
 	_G["TempEnchant"..i]:SetWidth(TukuiDB.Scale(30))	
 	_G["TempEnchant"..i.."Duration"]:ClearAllPoints()
 	_G["TempEnchant"..i.."Duration"]:SetPoint("BOTTOM", 0, TukuiDB.Scale(-13))
-	_G["TempEnchant"..i.."Duration"]:SetFont(TukuiCF["media"].font, 12, "THINOUTLINE")
+	_G["TempEnchant"..i.."Duration"]:SetFont(TukuiCF["media"].font, TukuiCF["general"].fontscale, "THINOUTLINE")
 end
 
 local function StyleBuffs(buttonName, index, debuff)
@@ -53,7 +53,7 @@ local function StyleBuffs(buttonName, index, debuff)
 		
 		count:ClearAllPoints()
 		count:SetPoint("TOPLEFT", TukuiDB.Scale(1), TukuiDB.Scale(-2))
-		count:SetFont(TukuiCF["media"].font, 12, "OUTLINE")
+		count:SetFont(TukuiCF["media"].font, TukuiCF["general"].fontscale, "OUTLINE")
 		
 		local panel = CreateFrame("Frame", buttonName..index.."Panel", buff)
 		TukuiDB.CreatePanel(panel, 30, 30, "CENTER", buff, "CENTER", 0, 0)
