@@ -673,3 +673,63 @@ if TukuiCF["chat"].rightchat == true then
 		ChatFrame3:SetParent(UIParent)
 	end)
 end
+
+--Bindings For Chat Sliders
+function ChatLeft_HotkeyPressed(keystate)
+	if keystate == "up" then return end
+	if TukuiChatLIn == true then
+		for i = 1, NUM_CHAT_WINDOWS do
+			local chat = _G[format("ChatFrame%s", i)]
+			local tab = _G[format("ChatFrame%sTab", i)]
+			chat:SetParent(tab)
+		end
+		SlideOut(ChatLBackground)	
+		TukuiChatLIn = false
+		TukuiInfoLeftLButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))
+	else
+		SlideIn(ChatLBackground)
+		TukuiChatLIn = true
+		TukuiInfoLeftLButton.Text:SetTextColor(1,1,1,1)
+	end		
+end
+
+function ChatRight_HotkeyPressed(keystate)
+	if keystate == "up" then return end
+	if TukuiChatRIn == true then
+		SlideOut(ChatRBackground)	
+		TukuiChatRIn = false
+		TukuiDB.ChatRightShown = false
+		TukuiInfoRightRButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))
+	else
+		SlideIn(ChatRBackground)
+		TukuiChatRIn = true
+		TukuiDB.ChatRightShown = true
+		TukuiInfoRightRButton.Text:SetTextColor(1,1,1,1)
+	end		
+end
+
+function ChatBoth_HotkeyPressed(keystate)
+	if keystate == "up" then return end
+	if TukuiChatLIn == true then
+		for i = 1, NUM_CHAT_WINDOWS do
+			local chat = _G[format("ChatFrame%s", i)]
+			local tab = _G[format("ChatFrame%sTab", i)]
+			chat:SetParent(tab)
+		end
+		SlideOut(ChatLBackground)
+		SlideOut(ChatRBackground)		
+		TukuiDB.ChatRightShown = false
+		TukuiChatLIn = false
+		TukuiChatRIn = false
+		TukuiInfoLeftLButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))
+		TukuiInfoRightRButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))
+	else
+		SlideIn(ChatLBackground)
+		SlideIn(ChatRBackground)
+		TukuiDB.ChatRightShown = true
+		TukuiChatLIn = true
+		TukuiChatRIn = true
+		TukuiInfoLeftLButton.Text:SetTextColor(1,1,1,1)
+		TukuiInfoRightRButton.Text:SetTextColor(1,1,1,1)
+	end
+end

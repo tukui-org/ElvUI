@@ -1,5 +1,14 @@
 <Bindings>
-  <Binding name="RAIDMARKER" header="TUKUI" runOnUp="true">
+  <Binding name="Tukui Raid Marker" header="TUKUI" runOnUp="true">
     RaidMark_HotkeyPressed(keystate)
+  </Binding>
+  <Binding name="Tukui Chat Left Slider" header="TUKUI" runOnUp="true">
+	ChatLeft_HotkeyPressed(keystate)
+  </Binding>
+  <Binding name="Tukui Chat Right Slider" header="TUKUI" runOnUp="true">
+	ChatRight_HotkeyPressed(keystate)
+  </Binding>
+  <Binding name="Tukui Chat Both Sliders" header="TUKUI" runOnUp="true">
+	ChatBoth_HotkeyPressed(keystate)
   </Binding>
 </Bindings>
