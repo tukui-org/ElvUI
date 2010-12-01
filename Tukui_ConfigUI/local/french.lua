@@ -49,7 +49,7 @@ if GetLocale() == "frFR" then
 	TukuiL.option_combattext = "Textes de combats" --"Combat Text"
 	TukuiL.option_combattext_showoverheal = "Montrer les soins en trop" --"Show Overhealing"
 	TukuiL.option_combattext_fontsize = "Taille de la police" --"Font Size"
-	TukuiL.option_combattext_showhots = "Montrer les soins sur la durée" --"Show Hots"
+	TukuiL.option_unitframes_combat = "Estomper les barres d'unités hors-combat" --"Show Hots"
  
 	-- classtimer
 	TukuiL.option_classtimer = "Class Timer"
@@ -97,8 +97,8 @@ if GetLocale() == "frFR" then
 	TukuiL.option_auras_playershowonlydebuffs = "Montrer uniquement les debuffs sur le cadre du joueur (nécessite d'avoir les auras d'activées sur le cadre du joueur)" --"Only show debuffs on playerframe (Must have show aura on playerframe)"
 	TukuiL.option_auras_playerdebuffsonly = "Montrer seulement vos debuffs et les CC sur la cible  (configuration dans auraFilter.lua)" --"Show only your debuffs, and CC debuffs on target  (inside auraFilter.lua to config)"
 	TukuiL.option_auras_RaidUnitBuffWatch = "Activer l'affichage des buffs sur l'interface de raid." --"Enable buff watch on raid frames"
-	TukuiL.option_auras_playtarbuffperrow = "Nombre de Buffs/Debuffs sur une ligne au dessus des portraits du Joueur/de la Cible"
-	TukuiL.option_auras_smallbuffperrow = "Nombre de Buffs/Debuffs sur une ligne au dessus des portraits de la Cible de la Cible/du Focus"
+	TukuiL.option_auras_playtarbuffperrow = "Nombre de Buffs/Debuffs sur une ligne au dessus des barres d'unités du Joueur/de la Cible"
+	TukuiL.option_auras_smallbuffperrow = "Nombre de Buffs/Debuffs sur une ligne au dessus des barres d'unités de la Cible de la Cible/du Focus"
 	
 	-- raidframes
 	TukuiL.option_raidframes = "Interface de raid" --"Raid Frames"
@@ -110,7 +110,7 @@ if GetLocale() == "frFR" then
 	TukuiL.option_raidframes_enablerange = "Activer l'affichage des portées via transparence" --"Enable party/raid Range alpha display"
 	TukuiL.option_raidframes_range = "Transparence sur les unités du groupe/raid hors portée" --"Alpha on Party/Raid unit out of range"
 	TukuiL.option_raidframes_maintank = "Activer les tanks principaux" --"Enable Main Tank"
-	TukuiL.option_raidframes_mainassist = "Activer tanks secondaires" --"Enable Main Assist"
+	TukuiL.option_raidframes_mainassist = "Activer Soigneurs principaux" --"Enable Main Assist"
 	TukuiL.option_raidframes_playerparty = "Se montrer dans les cadres de groupe" --"Show yourself in party"
 	TukuiL.option_raidframes_hidenonmana = "Montrer la barre de puissance si l'unité à de la mana (pas sur l'interface de groupe)" --"Only show powerbar if unit has mana (Not Party Frames)"
 	TukuiL.option_raidframes_fontsize = "Taille de la police de l'interface de raid" --"Font size on raidframes"
@@ -150,22 +150,22 @@ if GetLocale() == "frFR" then
 	TukuiL.option_unitframes_DebuffHighlight = "Colorier les cadres par type de débuff si dissipable" --"Color frames by debuff type if dispellable"
 	TukuiL.option_unitframes_mendpet = "Montrer la barre de soin du familier (Interface DPS)" --"Show Mend Pet bar on PetFrame (DPS LAYOUT)"
 	TukuiL.option_unitframes_fontsize = "Taille de la police" --"Font Size"
-	TukuiL.option_unitframes_unitframes_poweroffset = "Offset of the powerbar on the frame (0 for no offset)"
+	TukuiL.option_unitframes_unitframes_poweroffset = "Décalage de la barre de pouvoir par rapport à la barre d'unité" --"Offset of the powerbar on the frame (0 for no offset)"
 	TukuiL.option_unitframes_classbar = "Active les barres de classes (Barre de totem, Barre de pouvoir runique, Barre Sacrée, Barre des fragments d'âme, Barre d'Eclipse)"
-	TukuiL.option_unitframes_healthbackdropcolor = "Backdrop color of health on all unitframes"
+	TukuiL.option_unitframes_healthbackdropcolor = "Couleur de fond de toutes les barres d'unités" --"Backdrop color of health on all unitframes"
 	TukuiL.option_unitframes_healthcolorbyvalue = "Couleur de la barre de vie selon la vie restante."
 	TukuiL.option_unitframes_combat = "Estomper les portraits d'unités hors-combat"
 		
 	-- frame sizes
-	TukuiL.option_framesizes = "Taille des portraits d'unité"
-	TukuiL.option_framesizes_playtarwidth = "Largeur des portraits du Joueur/de la Cible"
-	TukuiL.option_framesizes_playtarheight = "Hauteur des portraits du Joueur/de la Cible"
-	TukuiL.option_framesizes_smallwidth = "Largeur des portraits de la Cible de la Cible/du Focus/de la Cible du Focus/du Familier du Joueur"
-	TukuiL.option_framesizes_smallheight = "Hauteur des portraits de la Cible de la Cible/du Focus/de la Cible du Focus/du Familier du Joueur"
-	TukuiL.option_framesizes_arenabosswidth = "Largeur des portraits d'Arène/des Boss"
-	TukuiL.option_framesizes_arenabossheight = "Hauteur des portraits d'Arène/des Boss"
-	TukuiL.option_framesizes_assisttankwidth = "Largeur des portraits des Tanks Principaux/des Assists Principaux"
-	TukuiL.option_framesizes_assisttankheight = "Height of the MainTank/MainAssist frames"
+	TukuiL.option_framesizes = "Taille des barres d'unités"
+	TukuiL.option_framesizes_playtarwidth = "Largeur des barres d'unités du Joueur/de la Cible"
+	TukuiL.option_framesizes_playtarheight = "Hauteur des barres d'unités du Joueur/de la Cible"
+	TukuiL.option_framesizes_smallwidth = "Largeur des barres d'unités de la Cible de la Cible/du Focus/de la Cible du Focus/du Familier du Joueur"
+	TukuiL.option_framesizes_smallheight = "Hauteur des barres d'unités de la Cible de la Cible/du Focus/de la Cible du Focus/du Familier du Joueur"
+	TukuiL.option_framesizes_arenabosswidth = "Largeur des barres d'unités d'Arène/des Boss"
+	TukuiL.option_framesizes_arenabossheight = "Hauteur des barres d'unités d'Arène/des Boss"
+	TukuiL.option_framesizes_assisttankwidth = "Largeur des barres d'unités des Tanks Principaux/des Assists Principaux"
+	TukuiL.option_framesizes_assisttankheight = "Hauteur des barres d'unités des Tanks et des Soigneurs principaux" --"Height of the MainTank/MainAssist frames"
 	
 	-- loot
 	TukuiL.option_loot = "Loot"
