@@ -236,7 +236,6 @@ local function Local(o)
 	if o == "TukuiConfigUIotherstotembardirection" then o = TukuiL.option_others_totembardirection end
 	if o == "TukuiConfigUIothersportals" then o = TukuiL.option_others_portals end
 	if o == "TukuiConfigUIothersspincam" then o = TukuiL.option_others_spincam end
-	if o == "TukuiConfigUIothersmendpet" then o = TukuiL.option_others_mendpet end
 	
 	-- reminder
 	if o == "TukuiConfigUIbuffreminder" then o = TukuiL.option_reminder end
@@ -261,6 +260,7 @@ local function Local(o)
 	if o == "TukuiConfigUIactionbarpetbuttonsize" then o = TukuiL.option_actionbar_petbuttonsize end
 	if o == "TukuiConfigUIactionbarpetbuttonspacing" then o = TukuiL.option_actionbar_petbuttonspacing end
 	if o == "TukuiConfigUIactionbarswaptopbottombar" then o = TukuiL.option_actionbar_swaptopbottombar end
+	if o == "TukuiConfigUIactionbarmacrotext" then o = TukuiL.option_actionbar_macrotext end
 	
 	-- arena
 	if o == "TukuiConfigUIarena" then o = TukuiL.option_arena end

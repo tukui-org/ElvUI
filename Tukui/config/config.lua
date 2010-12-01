@@ -141,6 +141,7 @@ TukuiCF["actionbar"] = {
 		["petbuttonsize"] = 25,					--size of pet/stance buttons
 		["petbuttonspacing"] = 4,				--spacing of pet/stance buttons
 		["swaptopbottombar"] = false,			--swap the main actionbar position with the bottom actionbar
+		["macrotext"] = false,					--show macro text on actionbuttons
 }
 
 TukuiCF["nameplate"] = {
