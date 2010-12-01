@@ -445,7 +445,7 @@ CLASS_FILTERS = {
 	},
 	WARRIOR = { 
 		target = {
-			CreateSpellEntry( 772 ), -- Rend
+			CreateSpellEntry( 94009 ), -- Rend
 			CreateSpellEntry( 12294 ), -- Mortal Strike
 			CreateSpellEntry( 1160 ), -- Demoralizing Shout
 			CreateSpellEntry( 64382 ), -- Shattering Throw
