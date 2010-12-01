@@ -11,7 +11,7 @@ if TukuiCF["datatext"].dps_text and TukuiCF["datatext"].dps_text > 0 then
 
 	local pet_id = UnitGUID("pet")
      
-	dText = TukuiInfoOverlay:CreateFontString(nil, "OVERLAY")
+	dText = TukuiInfoLeft:CreateFontString(nil, "OVERLAY")
 	dText:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
 	dText:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
 	dText:SetText("DPS: "..valuecolor.."0.0|r")
@@ -19,7 +19,7 @@ if TukuiCF["datatext"].dps_text and TukuiCF["datatext"].dps_text > 0 then
 	TukuiDB.PP(TukuiCF["datatext"].dps_text, dText)
 
 	DPS_FEED:EnableMouse(true)
-	DPS_FEED:SetFrameStrata("BACKGROUND")
+	DPS_FEED:SetFrameStrata("MEDIUM")
 	DPS_FEED:SetFrameLevel(3)
 	DPS_FEED:SetHeight(TukuiDB.Scale(20))
 	DPS_FEED:SetWidth(TukuiDB.Scale(100))

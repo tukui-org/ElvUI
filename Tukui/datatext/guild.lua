@@ -5,7 +5,7 @@
 if TukuiCF["datatext"].guild and TukuiCF["datatext"].guild > 0 then
 	local Stat = CreateFrame("Frame")
 	Stat:EnableMouse(true)
-	Stat:SetFrameStrata("BACKGROUND")
+	Stat:SetFrameStrata("MEDIUM")
 	Stat:SetFrameLevel(3)
 	
 	local tthead = {r=0.4,g=0.78,b=1}
@@ -24,7 +24,7 @@ if TukuiCF["datatext"].guild and TukuiCF["datatext"].guild > 0 then
 		snapfrom = "TOP"
 	end
 	
-	local Text  = TukuiInfoOverlay:CreateFontString(nil, "OVERLAY")
+	local Text  = TukuiInfoLeft:CreateFontString(nil, "OVERLAY")
 		Text:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
 	Text:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
 	TukuiDB.PP(TukuiCF["datatext"].guild, Text)

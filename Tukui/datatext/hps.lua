@@ -8,7 +8,7 @@ if TukuiCF["datatext"].hps_text and TukuiCF["datatext"].hps_text > 0 then
 	local player_id = UnitGUID("player")
 	local actual_heals_total, cmbt_time = 0
  
-	hText = TukuiInfoOverlay:CreateFontString(nil, "OVERLAY")
+	hText = TukuiInfoLeft:CreateFontString(nil, "OVERLAY")
 	hText:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
 	hText:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
 	hText:SetText("HPS: "..valuecolor.."0.0")
@@ -16,7 +16,7 @@ if TukuiCF["datatext"].hps_text and TukuiCF["datatext"].hps_text > 0 then
 	TukuiDB.PP(TukuiCF["datatext"].hps_text, hText)
  
 	HPS_FEED:EnableMouse(true)
-	HPS_FEED:SetFrameStrata("BACKGROUND")
+	HPS_FEED:SetFrameStrata("MEDIUM")
 	HPS_FEED:SetFrameLevel(3)
 	HPS_FEED:SetHeight(TukuiDB.Scale(20))
 	HPS_FEED:SetWidth(TukuiDB.Scale(100))

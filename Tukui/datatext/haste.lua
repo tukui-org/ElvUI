@@ -4,10 +4,10 @@
 
 if TukuiCF["datatext"].haste and TukuiCF["datatext"].haste > 0 then
 	local Stat = CreateFrame("Frame")
-	Stat:SetFrameStrata("BACKGROUND")
+	Stat:SetFrameStrata("MEDIUM")
 	Stat:SetFrameLevel(3)
 
-	local Text  = TukuiInfoOverlay:CreateFontString(nil, "OVERLAY")
+	local Text  = TukuiInfoLeft:CreateFontString(nil, "OVERLAY")
 		Text:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
 	Text:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
 	TukuiDB.PP(TukuiCF["datatext"].haste, Text)
