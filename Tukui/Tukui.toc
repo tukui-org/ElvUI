@@ -4,7 +4,7 @@
 ## Title: |cffC495DDTukui|r
 ## Notes: UI of awesomeness!
 ## SavedVariables: TukuiData, TukuiArena
-## SavedVariablesPerCharacter: ElvUIInstalled, TukuiUFpos
+## SavedVariablesPerCharacter: ElvUIInstalled, TukuiUFpos, RightChatVarChanged
 ## OptionalDeps: Tukui_ConfigUI, Recount, Omen, Skada, DXE, Blizzard_CombatText, OptionHouse, ACP, Who Framed Watcher Wabbit, Skinner, Aurora, !ClassColors, HealBot, Fux, OmniCC, ncCooldown,
 ## X-oUF: oUF
 

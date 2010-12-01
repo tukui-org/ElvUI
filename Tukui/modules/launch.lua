@@ -1,7 +1,6 @@
 ﻿------------------------------------------------------------------------
 --	First Time Launch and On Login file
 ------------------------------------------------------------------------
-BINDING_HEADER_TUKUI = GetAddOnMetadata("Tukui", "Title") --Header name inside keybinds menu
 
 local function install()
 	SetCVar("buffDurations", 1)
@@ -163,6 +162,8 @@ local function install()
 	end
 		   
 	ElvUIInstalled = true
+	
+	RightChatVarChanged = TukuiCF["chat"].rightchat
 
 	-- reset unitframe position
 	if TukuiCF["unitframes"].positionbychar == true then
@@ -287,6 +288,10 @@ TukuiOnLogon:SetScript("OnEvent", function(self, event)
 		x:SetAllPoints(ButtonCF3)
 		TukuiDB.SetTemplate(x)
 		x:SetBackdropColor(0,0,0,0)
+	end
+	
+	if RightChatVarChanged ~= TukuiCF["chat"].rightchat then
+		StaticPopup_Show("INSTALL_UI")
 	end
 	
 	print(tukuilocal.core_welcome2)
