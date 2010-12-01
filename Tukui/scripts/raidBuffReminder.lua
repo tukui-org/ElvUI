@@ -104,14 +104,14 @@ end
 
 --Main Script
 RaidReminderShown = true
-local t = 0
+local t = 44
 local function OnAuraChange(self, event, arg1, unit)
 	if (event == "UNIT_AURA" and arg1 ~= "player") then 
 		return
 	end
 	
 	--If We're a caster we may want to see differant buffs
-	if TukuiDB.Roll == "Caster" then 
+	if TukuiDB.Role == "Caster" then 
 		SetCasterOnlyBuffs() 
 	else
 		SetBuffs()
@@ -217,7 +217,7 @@ local function OnAuraChange(self, event, arg1, unit)
 			t = t + 1
 			if t == 45 then
 				Pulse(self)
-				t = 0
+				t = 4
 			end
 		end)
 	else
@@ -230,7 +230,6 @@ local function OnAuraChange(self, event, arg1, unit)
 end
 
 local bsize = (((TukuiMinimap:GetWidth()) - (TukuiDB.Scale(4) * 7)) / 6)
-
 
 --Create the Main bar
 local raidbuff_reminder = CreateFrame("Frame", "RaidBuffReminder", TukuiMinimap)
