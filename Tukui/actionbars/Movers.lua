@@ -123,7 +123,7 @@ barloader:SetScript("OnEvent", function(self)
 	TopMainBar:SetPoint("BOTTOMLEFT", TukuiMainMenuBar, "TOPLEFT", 0, TukuiDB.Scale(4))
 	TopMainBar:SetPoint("TOPRIGHT", TukuiMainMenuBar, "TOPRIGHT", 0, TukuiDB.Scale(19))
 	
-	if TukuiPetBar:IsShown() then
+	if TukuiPetBar:IsShown() and not TukuiCF["actionbar"].bottompetbar == true then
 		RightBarBig:SetPoint("TOPRIGHT", TukuiPetBar, "LEFT", TukuiDB.Scale(-3), (TukuiActionBarBackgroundRight:GetHeight() * 0.2))
 		RightBarBig:SetPoint("BOTTOMLEFT", TukuiPetBar, "LEFT", TukuiDB.Scale(-19), -(TukuiActionBarBackgroundRight:GetHeight() * 0.2))			
 	else
@@ -132,6 +132,7 @@ barloader:SetScript("OnEvent", function(self)
 	end
 	
 	TukuiPetBar:HookScript("OnShow", function(self)
+		if TukuiCF["actionbar"].bottompetbar == true then return end
 		if InCombatLockdown() then return end
 		RightBarBig:ClearAllPoints()
 		RightBarBig:SetPoint("TOPRIGHT", TukuiPetBar, "LEFT", TukuiDB.Scale(-3), (TukuiActionBarBackgroundRight:GetHeight() * 0.2))
@@ -140,6 +141,7 @@ barloader:SetScript("OnEvent", function(self)
 	
 	TukuiPetBar:HookScript("OnHide", function(self)
 		if InCombatLockdown() then return end
+		if TukuiCF["actionbar"].bottompetbar == true then return end
 		RightBarBig:ClearAllPoints()
 		RightBarBig:SetPoint("TOPRIGHT", UIParent, "RIGHT", TukuiDB.Scale(-1), (TukuiActionBarBackgroundRight:GetHeight() * 0.2))
 		RightBarBig:SetPoint("BOTTOMLEFT", UIParent, "RIGHT", TukuiDB.Scale(-16), -(TukuiActionBarBackgroundRight:GetHeight() * 0.2))
@@ -148,7 +150,7 @@ barloader:SetScript("OnEvent", function(self)
 	RightBarBig:HookScript("OnEnter", function()
 		if InCombatLockdown() then return end
 		RightBarBig:ClearAllPoints()
-		if TukuiPetBar:IsShown() then
+		if TukuiPetBar:IsShown() and not TukuiCF["actionbar"].bottompetbar == true then
 			RightBarBig:SetPoint("TOPRIGHT", TukuiPetBar, "LEFT", TukuiDB.Scale(-3), (TukuiActionBarBackgroundRight:GetHeight() * 0.2))
 			RightBarBig:SetPoint("BOTTOMLEFT", TukuiPetBar, "LEFT", TukuiDB.Scale(-19), -(TukuiActionBarBackgroundRight:GetHeight() * 0.2))			
 		else
@@ -304,7 +306,7 @@ do
 			SaveBars("rightbars", 0)
 			RightBarBig:Show()
 			RightBarBig:ClearAllPoints()
-			if TukuiPetBar:IsShown() then
+			if TukuiPetBar:IsShown() and not TukuiCF["actionbar"].bottompetbar == true then
 				RightBarBig:SetPoint("TOPRIGHT", TukuiPetBar, "LEFT", TukuiDB.Scale(-3), (TukuiActionBarBackgroundRight:GetHeight() * 0.2))
 				RightBarBig:SetPoint("BOTTOMLEFT", TukuiPetBar, "LEFT", TukuiDB.Scale(-19), -(TukuiActionBarBackgroundRight:GetHeight() * 0.2))			
 			else
@@ -324,7 +326,7 @@ do
 			SaveBars("rightbars", 0)
 			RightBarBig:Show()
 			RightBarBig:ClearAllPoints()
-			if TukuiPetBar:IsShown() then
+			if TukuiPetBar:IsShown() and not TukuiCF["actionbar"].bottompetbar == true then
 				RightBarBig:SetPoint("TOPRIGHT", TukuiPetBar, "LEFT", TukuiDB.Scale(-3), (TukuiActionBarBackgroundRight:GetHeight() * 0.2))
 				RightBarBig:SetPoint("BOTTOMLEFT", TukuiPetBar, "LEFT", TukuiDB.Scale(-19), -(TukuiActionBarBackgroundRight:GetHeight() * 0.2))			
 			else
