@@ -9,7 +9,7 @@ if TukuiCF["datatext"].currency and TukuiCF["datatext"].currency > 0 then
 	Stat:SetFrameLevel(3)
 
 	local Text  = TukuiInfoLeft:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
+		Text:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
 	Text:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
 	TukuiDB.PP(TukuiCF["datatext"].currency, Text)
 	
