@@ -213,8 +213,6 @@ end
 
 
 local function SetupChatPosAndFont(self)
-	local chatrightfound = false
-	local lastseen
 	for i = 1, NUM_CHAT_WINDOWS do
 		local chat = _G[format("ChatFrame%s", i)]
 		local tab = _G[format("ChatFrame%sTab", i)]
@@ -241,7 +239,7 @@ local function SetupChatPosAndFont(self)
 			chat:SetPoint("BOTTOMLEFT", ChatLBackground, "BOTTOMLEFT", TukuiDB.Scale(2), TukuiDB.Scale(4))
 			_G["ChatFrame"..i]:SetSize(TukuiDB.Scale(TukuiCF["chat"].chatwidth - 4), TukuiDB.Scale(TukuiCF["chat"].chatheight))
 			FCF_SavePositionAndDimensions(chat)
-		elseif point == "BOTTOMRIGHT" and TukuiCF["chat"].rightchat == true and chat:IsShown() and docked == nil then
+		elseif point == "BOTTOMRIGHT" and TukuiCF["chat"].rightchat == true and ChatFrame3:IsShown() then
 			chatrightfound = true
 			TukuiDB.ChatRightShown = true
 			chat:ClearAllPoints()
@@ -250,18 +248,12 @@ local function SetupChatPosAndFont(self)
 			FCF_SavePositionAndDimensions(chat)
 		end
 		
-		if TukuiCF["chat"].rightchat ~= true then
-			chatrightfound = true
-		else
+		if TukuiCF["chat"].rightchat == true then
 			if ChatRBG then
 				ChatRBG:SetAlpha(1)
 			end
 		end
-		
-		if i == NUM_CHAT_WINDOWS and chatrightfound == false and not StaticPopup1:IsShown() then
-			StaticPopup_Show("CHAT_WARN")
-		end
-		
+				
 		if not docked and (chat:GetName() == "ChatFrame3" and TukuiCF["chat"].rightchat == true) then
 			button:ClearAllPoints()
 			button:SetAlpha(1)

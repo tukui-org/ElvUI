@@ -261,7 +261,7 @@ TukuiOnLogon:SetScript("OnEvent", function(self, event)
 	TukuiChatRIn = true
 	
 
-	
+	local chatrightfound = false
 	for i = 1, NUM_CHAT_WINDOWS do
 		local chat = _G[format("ChatFrame%s", i)]
 		local tab = _G[format("ChatFrame%sTab", i)]
@@ -273,9 +273,16 @@ TukuiOnLogon:SetScript("OnEvent", function(self, event)
 		local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
 		
 		if point == "BOTTOMRIGHT" and TukuiCF["chat"].rightchat == true and chat:IsShown() and docked == nil then
+			chatrightfound = true
 			tab:SetParent(ChatRBackground)
 		end
-		--chat:SetParent(tab)
+		
+		if TukuiCF["chat"].rightchat ~= true then chatrightfound = true end
+		
+		if i == NUM_CHAT_WINDOWS and chatrightfound == false and not StaticPopup1:IsShown() then
+			StaticPopup_Show("CHAT_WARN")
+		end
+
 	end
 	GeneralDockManager:SetParent(ChatLBackground)
 	
