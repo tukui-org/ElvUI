@@ -218,6 +218,11 @@ local function Shared(self, unit)
 		self:RegisterEvent("UNIT_DISPLAYPOWER", TukuiDB.CheckPower)	
 	end
 
+	-- execute an update on every raids unit if party or raid member changed
+	-- should fix issues with names/symbols/etc not updating introduced with 4.0.3 patch
+	self:RegisterEvent("PARTY_MEMBERS_CHANGED", TukuiDB.updateAllElements)
+	self:RegisterEvent("RAID_ROSTER_UPDATE", TukuiDB.updateAllElements)
+	
 	return self
 end
 

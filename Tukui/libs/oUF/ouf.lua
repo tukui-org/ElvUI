@@ -86,21 +86,24 @@ local conv = {
 }
 local elements = {}
 
--- updating of "invalid" units.
 local enableTargetUpdate = function(object)
-	local total = 0
-	object.onUpdateFrequency = object.onUpdateFrequency or .5
+	-- updating of "invalid" units.
+	local OnTargetUpdate
+	do
+		local timer = 0
+		OnTargetUpdate = function(self, elapsed)
+			if(not self.unit) then
+				return
+			elseif(timer >= .5) then
+				self:UpdateAllElements'OnTargetUpdate'
+				timer = 0
+			end
 
-	object:SetScript('OnUpdate', function(self, elapsed)
-		if(not self.unit) then
-			return
-		elseif(total > self.onUpdateFrequency) then
-			self:UpdateAllElements'OnUpdate'
-			total = 0
+			timer = timer + elapsed
 		end
+	end
 
-		total = total + elapsed
-	end)
+	object:SetScript("OnUpdate", OnTargetUpdate)
 end
 
 -- Events
