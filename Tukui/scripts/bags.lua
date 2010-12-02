@@ -471,7 +471,7 @@ function Stuffing:InitBags()
 	editbox:Hide()
 	editbox:SetAutoFocus(true)
 	editbox:SetHeight(TukuiDB.Scale(32))
-	TukuiDB.SetTemplate(editbox)
+	TukuiDB.SetNormTexTemplate(editbox)
 
 	local resetAndClear = function (self)
 		self:GetParent().detail:Show()
@@ -716,8 +716,8 @@ function Stuffing:Layout(lb)
 					b.frame:SetPushedTexture("")
 					b.frame:SetNormalTexture("")
 					b.frame:Show()
-					TukuiDB.SetTemplate(b.frame)
-					b.frame:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor))
+					TukuiDB.SetNormTexTemplate(b.frame)
+					--b.frame:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor))
 					TukuiDB.StyleButton(b.frame)
 					local clink = GetContainerItemLink
 					if (clink and b.rarity and b.rarity > 1) then
@@ -914,7 +914,7 @@ function Stuffing:PLAYER_ENTERING_WORLD()
 		t:SetTexCoord(.08, .92, .08, .92)
 		t:SetPoint("TOPLEFT", slot, TukuiDB.Scale(2), TukuiDB.Scale(-2))
 		t:SetPoint("BOTTOMRIGHT", slot, TukuiDB.Scale(-2), TukuiDB.Scale(2))
-		TukuiDB.SetTemplate(slot)
+		TukuiDB.SetNormTexTemplate(slot)
 		
 		TukuiDB.StyleButton(slot, false)
 	end

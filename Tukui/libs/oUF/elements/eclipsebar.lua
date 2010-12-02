@@ -37,9 +37,9 @@ local UPDATE_VISIBILITY = function(self, event)
 	-- check form/mastery
 	local showBar
 	local form = GetShapeshiftFormID()
-	if UnitHasVehicleUI("player") then
-		showBar = false
-	elseif(not form) then
+-	if UnitHasVehicleUI("player") then
+-		showBar = false
+-	elseif(not form) then
 		local ptt = GetPrimaryTalentTree()
 		if(ptt and ptt == 1) then -- player has balance spec
 			showBar = true
