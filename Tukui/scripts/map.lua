@@ -28,12 +28,6 @@ addon:RegisterEvent('PLAYER_ENTERING_WORLD')
 addon:RegisterEvent("PLAYER_REGEN_ENABLED")
 addon:RegisterEvent("PLAYER_REGEN_DISABLED")
 
--- because smallmap > bigmap by far
-local SmallerMap = GetCVarBool("miniWorldMap")
-if SmallerMap == nil then
-	SetCVar("miniWorldMap", 1)
-end
-
 -- look if map is not locked
 local MoveMap = GetCVarBool("advancedWorldMap")
 if MoveMap == nil then
