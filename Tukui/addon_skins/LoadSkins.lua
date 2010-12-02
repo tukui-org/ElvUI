@@ -74,12 +74,19 @@ Mod_AddonSkins:SetScript("OnEvent",function(self, event, addon)
 
 	-- Embed Right
 	if TukuiCF["general"].embedright == "Skada" and IsAddOnLoaded("Skada") then
+		if IsAddOnLoaded("Skada") then
+			if SkadaBG then
+				SkadaBG:SetFrameStrata("HIGH")	
+				SkadaBG:ClearAllPoints()
+				SkadaBG:SetAllPoints(ChatRBackground2)
+			end		
+		end
 		SkadaBarWindowSkada:ClearAllPoints()
 		SkadaBarWindowSkada:SetPoint("TOPRIGHT", ChatRBackground2, "TOPRIGHT", -2, -2)
 		local function AdjustSkadaFrameLevels()
 			SkadaBarWindowSkada:SetFrameLevel(ChatFrame3:GetFrameLevel() + 2)
 			if SkadaBG then
-				SkadaBG:SetFrameStrata("MEDIUM")	
+				SkadaBG:SetFrameStrata("HIGH")	
 				SkadaBG:ClearAllPoints()
 				SkadaBG:SetAllPoints(ChatRBackground2)
 			end
@@ -91,12 +98,18 @@ Mod_AddonSkins:SetScript("OnEvent",function(self, event, addon)
 		SkadaBarWindowSkada:Show()
 	end
 	if TukuiCF["general"].embedright == "Recount" and IsAddOnLoaded("Recount") then
+		if IsAddOnLoaded("Recount") then
+			Recount_MainWindow:SetFrameStrata("HIGH")
+		end
 		Recount_MainWindow:ClearAllPoints()
 		Recount_MainWindow:SetPoint("TOPLEFT", ChatRBackground2,"TOPLEFT", 0, 7)
 		Recount_MainWindow:SetPoint("BOTTOMRIGHT", ChatRBackground2,"BOTTOMRIGHT", 0, 0)
 		Recount.db.profile.MainWindowWidth = (TukuiCF["chat"].chatwidth - 4)
 	end
 	if TukuiCF["general"].embedright == "Omen" and IsAddOnLoaded("Omen") then
+		if IsAddOnLoaded("Omen") then
+			OmenBarList:SetFrameStrata("HIGH")
+		end
 		OmenBarList:SetAllPoints(ChatRBackground2)
 	end
 end)

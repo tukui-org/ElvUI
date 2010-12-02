@@ -225,6 +225,8 @@ local function SetupChatPosAndFont(self)
 		local button = _G[format("ButtonCF%d", i)]
 		local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
 		
+		chat:SetFrameStrata("LOW")
+		
 		-- well... tukui font under fontsize 10 is unreadable.
 		if fontSize < 10 then		
 			FCF_SetChatWindowFontSize(nil, chat, 10)
