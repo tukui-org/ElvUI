@@ -34,7 +34,14 @@ local function install()
 			FCF_OpenNewWindow(LOOT)
 			FCF_UnDockFrame(ChatFrame3)
 			FCF_SetLocked(ChatFrame3, 1)
-			ChatFrame3:Show()		
+			ChatFrame3:Show()	
+			FCF_OpenNewWindow(WHISPER)
+			FCF_SetLocked(ChatFrame4, 1)
+			FCF_DockFrame(ChatFrame4)			
+		else
+			FCF_OpenNewWindow(WHISPER)
+			FCF_SetLocked(ChatFrame3, 1)
+			FCF_DockFrame(ChatFrame3)			
 		end
 				
 		for i = 1, NUM_CHAT_WINDOWS do
@@ -63,75 +70,103 @@ local function install()
 			FCF_SetChatWindowFontSize(nil, frame, 12)
 			
 			-- rename windows general because moved to chat #3
-			if i == 1 then FCF_SetWindowName(frame, "G, S & W") end
-			if i == 2 then FCF_SetWindowName(frame, "Log") end
-			if i == 3 then FCF_SetWindowName(frame, LOOT.." / "..WHISPER) end
+			if i == 1 then
+				FCF_SetWindowName(frame, GENERAL)
+			elseif i == 2 then
+				FCF_SetWindowName(frame, GUILD_EVENT_LOG)
+			elseif i == 3 and TukuiCF["chat"].rightchat == true then 
+				FCF_SetWindowName(frame, LOOT.." / "..TRADE) 
+			elseif i == 3 and TukuiCF["chat"].rightchat ~= true then
+				FCF_SetWindowName(frame, WHISPER)
+			elseif i == 4 and TukuiCF["chat"].rightchat == true then
+				FCF_SetWindowName(frame, WHISPER)
+			end
 		end
 		
-	ChatFrame_RemoveAllMessageGroups(ChatFrame1)
-	ChatFrame_AddChannel(ChatFrame1, "Trade")
-	ChatFrame_AddChannel(ChatFrame1, "General")
-	ChatFrame_AddChannel(ChatFrame1, "LocalDefense")
-	ChatFrame_AddChannel(ChatFrame1, "GuildRecruitment")
-	ChatFrame_AddChannel(ChatFrame1, "LookingForGroup")
-	ChatFrame_AddMessageGroup(ChatFrame1, "SAY")
-	ChatFrame_AddMessageGroup(ChatFrame1, "EMOTE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "YELL")
-	ChatFrame_AddMessageGroup(ChatFrame1, "GUILD")
-	ChatFrame_AddMessageGroup(ChatFrame1, "OFFICER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "GUILD_ACHIEVEMENT")
-	ChatFrame_AddMessageGroup(ChatFrame1, "WHISPER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_SAY")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_EMOTE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_YELL")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_WHISPER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_BOSS_EMOTE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_BOSS_WHISPER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "PARTY")
-	ChatFrame_AddMessageGroup(ChatFrame1, "PARTY_LEADER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "RAID")
-	ChatFrame_AddMessageGroup(ChatFrame1, "RAID_LEADER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "RAID_WARNING")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BATTLEGROUND")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BATTLEGROUND_LEADER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BG_HORDE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BG_ALLIANCE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BG_NEUTRAL")
-	ChatFrame_AddMessageGroup(ChatFrame1, "SYSTEM")
-	ChatFrame_AddMessageGroup(ChatFrame1, "ERRORS")
-	ChatFrame_AddMessageGroup(ChatFrame1, "AFK")
-	ChatFrame_AddMessageGroup(ChatFrame1, "DND")
-	ChatFrame_AddMessageGroup(ChatFrame1, "IGNORED")
-	ChatFrame_AddMessageGroup(ChatFrame1, "ACHIEVEMENT")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BN_WHISPER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BN_CONVERSATION")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BN_INLINE_TOAST_ALERT")
-	ChatFrame_AddMessageGroup(ChatFrame1, "COMBAT_XP_GAIN")
-	ChatFrame_AddMessageGroup(ChatFrame1, "COMBAT_HONOR_GAIN")
-	ChatFrame_AddMessageGroup(ChatFrame1, "COMBAT_XP_GAIN")
-	
-	if TukuiCF["chat"].rightchat == true then
-		ChatFrame_RemoveAllMessageGroups(ChatFrame3)	
-		ChatFrame_AddMessageGroup(ChatFrame3, "LOOT")
-		ChatFrame_AddMessageGroup(ChatFrame3, "MONEY")
-		ChatFrame_AddMessageGroup(ChatFrame3, "WHISPER")
-		ChatFrame_AddMessageGroup(ChatFrame3, "BN_WHISPER")
-	else
-		ChatFrame_AddMessageGroup(ChatFrame1, "LOOT")
-		ChatFrame_AddMessageGroup(ChatFrame1, "MONEY")	
-	end
-	
-	
-	if TukuiDB.myname == "Elv" then
-		--keep losing my god damn channels everytime i resetui
-		ChatFrame_AddChannel(DEFAULT_CHAT_FRAME, "tystank")
-		ChatFrame_AddChannel(DEFAULT_CHAT_FRAME, "tys")
-		ChatFrame_AddChannel(DEFAULT_CHAT_FRAME, "crusaderaura")
-		ChangeChatColor("CHANNEL5", 147/255, 112/255, 219/255)
-		ChangeChatColor("CHANNEL6", 139/255, 115/255, 85/255)
-		ChangeChatColor("CHANNEL7", RAID_CLASS_COLORS["PALADIN"].r, RAID_CLASS_COLORS["PALADIN"].g, RAID_CLASS_COLORS["PALADIN"].b)
-		SetCVar("scriptErrors", 1)
-	end	
+		ChatFrame_RemoveAllMessageGroups(ChatFrame1)
+		ChatFrame_AddMessageGroup(ChatFrame1, "SAY")
+		ChatFrame_AddMessageGroup(ChatFrame1, "EMOTE")
+		ChatFrame_AddMessageGroup(ChatFrame1, "YELL")
+		ChatFrame_AddMessageGroup(ChatFrame1, "GUILD")
+		ChatFrame_AddMessageGroup(ChatFrame1, "OFFICER")
+		ChatFrame_AddMessageGroup(ChatFrame1, "GUILD_ACHIEVEMENT")
+		ChatFrame_AddMessageGroup(ChatFrame1, "WHISPER")
+		ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_SAY")
+		ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_EMOTE")
+		ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_YELL")
+		ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_BOSS_EMOTE")
+		ChatFrame_AddMessageGroup(ChatFrame1, "PARTY")
+		ChatFrame_AddMessageGroup(ChatFrame1, "PARTY_LEADER")
+		ChatFrame_AddMessageGroup(ChatFrame1, "RAID")
+		ChatFrame_AddMessageGroup(ChatFrame1, "RAID_LEADER")
+		ChatFrame_AddMessageGroup(ChatFrame1, "RAID_WARNING")
+		ChatFrame_AddMessageGroup(ChatFrame1, "BATTLEGROUND")
+		ChatFrame_AddMessageGroup(ChatFrame1, "BATTLEGROUND_LEADER")
+		ChatFrame_AddMessageGroup(ChatFrame1, "BG_HORDE")
+		ChatFrame_AddMessageGroup(ChatFrame1, "BG_ALLIANCE")
+		ChatFrame_AddMessageGroup(ChatFrame1, "BG_NEUTRAL")
+		ChatFrame_AddMessageGroup(ChatFrame1, "SYSTEM")
+		ChatFrame_AddMessageGroup(ChatFrame1, "ERRORS")
+		ChatFrame_AddMessageGroup(ChatFrame1, "AFK")
+		ChatFrame_AddMessageGroup(ChatFrame1, "DND")
+		ChatFrame_AddMessageGroup(ChatFrame1, "IGNORED")
+		ChatFrame_AddMessageGroup(ChatFrame1, "ACHIEVEMENT")
+		ChatFrame_AddMessageGroup(ChatFrame1, "BN_WHISPER")
+		ChatFrame_AddMessageGroup(ChatFrame1, "BN_CONVERSATION")
+		ChatFrame_AddMessageGroup(ChatFrame1, "BN_INLINE_TOAST_ALERT")
+		
+		if TukuiCF["chat"].rightchat == true then
+			ChatFrame_RemoveAllMessageGroups(ChatFrame3)	
+			ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_FACTION_CHANGE")
+			ChatFrame_AddMessageGroup(ChatFrame3, "SKILL")
+			ChatFrame_AddMessageGroup(ChatFrame3, "LOOT")
+			ChatFrame_AddMessageGroup(ChatFrame3, "MONEY")
+			ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_XP_GAIN")
+			ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_HONOR_GAIN")
+			ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_GUILD_XP_GAIN")
+			ChatFrame_AddChannel(ChatFrame1, "General")
+			ChatFrame_RemoveChannel(ChatFrame1, "Trade")
+			ChatFrame_AddChannel(ChatFrame3, "Trade")
+			ChatFrame_AddChannel(ChatFrame1, "LocalDefense")
+			ChatFrame_AddChannel(ChatFrame1, "GuildRecruitment")
+			ChatFrame_AddChannel(ChatFrame1, "LookingForGroup")
+			ChatFrame_RemoveAllMessageGroups(ChatFrame4)
+			ChatFrame_AddMessageGroup(ChatFrame4, "WHISPER")
+			ChatFrame_AddMessageGroup(ChatFrame4, "BN_WHISPER")	
+			ChatFrame_AddMessageGroup(ChatFrame4, "MONSTER_WHISPER")
+			ChatFrame_AddMessageGroup(ChatFrame4, "MONSTER_BOSS_WHISPER")
+		else
+			ChatFrame_AddMessageGroup(ChatFrame1, "LOOT")
+			ChatFrame_AddMessageGroup(ChatFrame1, "MONEY")	
+			ChatFrame_AddMessageGroup(ChatFrame1, "SKILL")
+			ChatFrame_AddMessageGroup(ChatFrame1, "COMBAT_XP_GAIN")
+			ChatFrame_AddMessageGroup(ChatFrame1, "COMBAT_GUILD_XP_GAIN")
+			ChatFrame_AddMessageGroup(ChatFrame1, "COMBAT_HONOR_GAIN")
+			ChatFrame_AddMessageGroup(ChatFrame1, "COMBAT_FACTION_CHANGE")
+			ChatFrame_AddChannel(ChatFrame1, "General")
+			ChatFrame_RemoveChannel(ChatFrame3, "Trade")
+			ChatFrame_AddChannel(ChatFrame1, "Trade")
+			ChatFrame_AddChannel(ChatFrame1, "LocalDefense")
+			ChatFrame_AddChannel(ChatFrame1, "GuildRecruitment")
+			ChatFrame_AddChannel(ChatFrame1, "LookingForGroup")
+			ChatFrame_RemoveAllMessageGroups(ChatFrame3)
+			ChatFrame_AddMessageGroup(ChatFrame3, "WHISPER")
+			ChatFrame_AddMessageGroup(ChatFrame3, "BN_WHISPER")	
+			ChatFrame_AddMessageGroup(ChatFrame3, "MONSTER_WHISPER")
+			ChatFrame_AddMessageGroup(ChatFrame3, "MONSTER_BOSS_WHISPER")
+		end
+		
+		if TukuiDB.myname == "Elv" then
+			--keep losing my god damn channels everytime i resetui
+			ChatFrame_AddChannel(DEFAULT_CHAT_FRAME, "tystank")
+			ChatFrame_AddChannel(DEFAULT_CHAT_FRAME, "tys")
+			ChatFrame_AddChannel(DEFAULT_CHAT_FRAME, "crusaderaura")
+			ChangeChatColor("CHANNEL5", 147/255, 112/255, 219/255)
+			ChangeChatColor("CHANNEL6", 139/255, 115/255, 85/255)
+			ChangeChatColor("CHANNEL7", RAID_CLASS_COLORS["PALADIN"].r, RAID_CLASS_COLORS["PALADIN"].g, RAID_CLASS_COLORS["PALADIN"].b)
+			SetCVar("scriptErrors", 1)
+		end	
+		
 		-- enable classcolor automatically on login and on each character without doing /configure each time.
 		ToggleChatColorNamesByClassGroup(true, "SAY")
 		ToggleChatColorNamesByClassGroup(true, "EMOTE")
@@ -159,6 +194,14 @@ local function install()
 		ToggleChatColorNamesByClassGroup(true, "CHANNEL9")
 		ToggleChatColorNamesByClassGroup(true, "CHANNEL10")
 		ToggleChatColorNamesByClassGroup(true, "CHANNEL11")
+		
+		--Adjust Chat Colors
+			--General
+			ChangeChatColor("CHANNEL1", 195/255, 230/255, 232/255)
+			--Trade
+			ChangeChatColor("CHANNEL2", 232/255, 158/255, 121/255)
+			--Local Defense
+			ChangeChatColor("CHANNEL3", 232/255, 228/255, 121/255)
 	end
 		   
 	ElvUIInstalled = true
