@@ -157,7 +157,7 @@ TukuiL.option_unitframes_classbar = "Enable Classbar (TotemBar, RuneBar, HolyBar
 TukuiL.option_unitframes_healthbackdropcolor = "Backdrop color of health on all unitframes"
 TukuiL.option_unitframes_healthcolorbyvalue = "Color Healthbars by Health Remaining"
 TukuiL.option_unitframes_combat = "Fade unitframes while not in-combat"
-TukuiL.option_unitframes_pettarget = "Display your pet's target"
+TukuiL.option_unitframes_pettarget = "Display your pet's target (DPS Only)"
 
 -- frame sizes
 TukuiL.option_framesizes = "UnitFrame Sizes"

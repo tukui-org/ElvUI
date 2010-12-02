@@ -19,6 +19,7 @@ local function skinFrame(self, frame)
 	else
 		tukskin(frame,frame)
 	end
+	frame:SetFrameStrata("MEDIUM")
 end
 local function skinButton(self, button)
 	skinFrame(self, button)

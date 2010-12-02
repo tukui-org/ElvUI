@@ -660,10 +660,12 @@ end)
 if TukuiCF["chat"].rightchat == true then
 	ChatRBackground.anim_o:HookScript("OnPlay", function()
 		ChatFrame3:SetParent(ChatFrame3Tab)
+		ChatFrame3:SetFrameStrata("LOW")
 	end)
 
 	ChatRBackground.anim:HookScript("OnFinished", function()
 		ChatFrame3:SetParent(UIParent)
+		ChatFrame3:SetFrameStrata("LOW")
 	end)
 end
 
