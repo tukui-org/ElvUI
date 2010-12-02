@@ -83,6 +83,7 @@ do
 	CreateFrameOverlay(oUF_TukzDPS_target.Debuffs, "TargetDebuffs")
 	CreateFrameOverlay(oUF_TukzDPS_focus.Debuffs, "FocusDebuffs")
 	CreateFrameOverlay(oUF_TukzDPS_targettarget.Debuffs, "TargetTargetDebuffs")
+	CreateFrameOverlay(oUF_TukzDPS_player.Swing, "SwingBar")
 	CreateFrameOverlay(AutoButton, "Auto_Button")
 end
 

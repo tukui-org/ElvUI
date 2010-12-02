@@ -278,26 +278,6 @@ local function Shared(self, unit)
 		self:RegisterEvent("PARTY_LEADER_CHANGED", TukuiDB.MLAnchorUpdate)
 		self:RegisterEvent("PARTY_MEMBERS_CHANGED", TukuiDB.MLAnchorUpdate)
 							
-		-- swingbar
-		if db.swingbar == true then
-			local Swing = CreateFrame("StatusBar", self:GetName().."_SwingBar", TukuiActionBarBackground)
-			Swing:SetStatusBarTexture(normTex)
-			Swing:SetStatusBarColor(unpack(TukuiCF["media"].bordercolor))
-			Swing:GetStatusBarTexture():SetHorizTile(false)
-			self.Swing = Swing
-			
-			self.Swing:SetHeight(TukuiDB.Scale(4))
-			self.Swing:SetWidth(TukuiActionBarBackground:GetWidth()-TukuiDB.Scale(4))
-			self.Swing:SetPoint("BOTTOM", TukuiActionBarBackground, "TOP", 0, TukuiDB.Scale(4))
-			
-			self.Swing.bg = CreateFrame("Frame", nil, self.Swing)
-			self.Swing.bg:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-			self.Swing.bg:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
-			self.Swing.bg:SetFrameStrata("BACKGROUND")
-			self.Swing.bg:SetFrameLevel(self.Swing:GetFrameLevel() - 1)
-			TukuiDB.SetTemplate(self.Swing.bg)
-		end
-		
 		-- experience bar on player via mouseover for player currently levelling a character
 		if TukuiDB.level ~= MAX_PLAYER_LEVEL then
 			local Experience = CreateFrame("StatusBar", self:GetName().."_Experience", self)
@@ -697,7 +677,11 @@ local function Shared(self, unit)
 			local castbar = CreateFrame("StatusBar", self:GetName().."_Castbar", self)
 			if TukuiCF["castbar"].castermode == true then
 				castbar:SetWidth(TukuiActionBarBackground:GetWidth() - TukuiDB.Scale(4))
-				castbar:SetPoint("BOTTOMRIGHT", TukuiActionBarBackground, "TOPRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(5))
+				if db.swingbar ~= true then
+					castbar:SetPoint("BOTTOMRIGHT", TukuiActionBarBackground, "TOPRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(5))
+				else
+					castbar:SetPoint("BOTTOMRIGHT", TukuiActionBarBackground, "TOPRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(14))
+				end
 			else
 				castbar:SetWidth(original_width)
 				if powerbar_offset ~= 0 then
@@ -760,6 +744,39 @@ local function Shared(self, unit)
 			self.Castbar = castbar
 			self.Castbar.Time = castbar.time
 			self.Castbar.Icon = castbar.icon
+		end
+		
+		-- swingbar
+		if db.swingbar == true then
+			local Swing = CreateFrame("StatusBar", self:GetName().."_SwingBar", TukuiActionBarBackground)
+			Swing:SetStatusBarTexture(normTex)
+			Swing:SetStatusBarColor(unpack(TukuiCF["media"].bordercolor))
+			Swing:GetStatusBarTexture():SetHorizTile(false)
+			self.Swing = Swing
+			if TukuiCF["castbar"].castermode == true then
+				self.Swing:SetWidth(TukuiActionBarBackground:GetWidth()-TukuiDB.Scale(4))
+				self.Swing:SetPoint("BOTTOM", TukuiActionBarBackground, "TOP", 0, TukuiDB.Scale(4))
+			else
+				self.Swing:SetWidth(original_width)
+				if self.Castbar then
+					self.Swing:SetPoint("TOPRIGHT", self.Castbar, "BOTTOMRIGHT", 0, TukuiDB.Scale(-6))	
+				else
+					if powerbar_offset ~= 0 then
+						self.Swing:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+					else
+						self.Swing:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -TukuiDB.Scale(8))
+					end							
+				end
+			end
+			
+			self.Swing:SetHeight(TukuiDB.Scale(4))
+			
+			self.Swing.bg = CreateFrame("Frame", nil, self.Swing)
+			self.Swing.bg:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
+			self.Swing.bg:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+			self.Swing.bg:SetFrameStrata("BACKGROUND")
+			self.Swing.bg:SetFrameLevel(self.Swing:GetFrameLevel() - 1)
+			TukuiDB.SetTemplate(self.Swing.bg)
 		end
 		
 		-- add combat feedback support
