@@ -1215,6 +1215,7 @@ local function Shared(self, unit)
 		self.Health = health
 		self.Health.bg = healthBG
 		health.frequentUpdates = true
+		health.PostUpdate = TukuiDB.PostUpdateHealth
 		if db.showsmooth == true then
 			health.Smooth = true
 		end
@@ -1803,15 +1804,20 @@ end
 ------------------------------------------------------------------------
 oUF:RegisterStyle('Tukz', Shared)
 
+local yoffset = 0
+
+if TukuiCF["actionbar"].bottomrows == 1 then
+	yoffset = yoffset + 30
+end
 
 -- Player
 local player = oUF:Spawn('player', "oUF_TukzHeal_player")
-player:SetPoint("BOTTOMRIGHT", TukuiActionBarBackground, "TOPLEFT", TukuiDB.Scale(-15),TukuiDB.Scale(195))
+player:SetPoint("BOTTOMRIGHT", TukuiActionBarBackground, "TOPLEFT", TukuiDB.Scale(-15),TukuiDB.Scale(205) + yoffset)
 player:SetSize(player_width, player_height)
 
 -- Target
 local target = oUF:Spawn('target', "oUF_TukzHeal_target")
-target:SetPoint("BOTTOMLEFT", TukuiActionBarBackground, "TOPRIGHT", TukuiDB.Scale(15),TukuiDB.Scale(195))
+target:SetPoint("BOTTOMLEFT", TukuiActionBarBackground, "TOPRIGHT", TukuiDB.Scale(15),TukuiDB.Scale(205) + yoffset)
 target:SetSize(target_width, target_height)
 
 -- Focus

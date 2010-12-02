@@ -19,7 +19,7 @@
 		</Frames>
 	</Button>
 	
-	<Button name="oUF_HealerParty" inherits="SecureUnitButtonTemplate" hidden="true" virtual="true">
+	<Button name="oUF_HealerPartyPets" inherits="SecureUnitButtonTemplate" hidden="true" virtual="true">
 		<Frames>
 			<Button name="$parentPet" inherits="SecureUnitButtonTemplate">	
 				<Anchors>

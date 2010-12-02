@@ -363,7 +363,7 @@ oUF:Factory(function(self)
 			"unitsPerColumn", 5,
 			"showPlayer", TukuiCF["raidframes"].showplayerinparty,
 			"xoffset", TukuiDB.Scale(6),
-			'template', 'oUF_HealerParty'
+			'template', 'oUF_HealerPartyPets'
 		)	
 	else
 		party = self:SpawnHeader("oUF_TukuiHealParty", nil, "custom [@raid6,exists] hide;show", 

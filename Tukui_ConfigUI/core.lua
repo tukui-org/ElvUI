@@ -163,6 +163,7 @@ local function Local(o)
 	if o == "TukuiConfigUIraidframeshealthdeficit" then o = SHOW.." "..RAID_HEALTH_TEXT_LOSTHEALTH end
 	if o == "TukuiConfigUIraidframesgriddps" then o = TukuiL.option_raidframes_griddps end
 	if o == "TukuiConfigUIraidframesrole" then o = TRACKER_FILTER_LABEL.." "..RAID_SORT_GROUP.." "..RAID_SORT_ROLE end
+	if o == "TukuiConfigUIraidframespartytarget" then o = TukuiL.option_raidframes_partytarget end
 	
 	-- unit frames
 	if o == "TukuiConfigUIunitframes" then o = TukuiL.option_unitframes_unitframes end
@@ -191,6 +192,7 @@ local function Local(o)
 	if o == "TukuiConfigUIunitframeshealthbackdropcolor" then o = TukuiL.option_unitframes_healthbackdropcolor end
 	if o == "TukuiConfigUIunitframeshealthcolorbyvalue" then o = TukuiL.option_unitframes_healthcolorbyvalue end
 	if o == "TukuiConfigUIunitframescombat" then o = TukuiL.option_unitframes_combat end
+	if o == "TukuiConfigUIunitframespettarget" then o = TukuiL.option_unitframes_pettarget end
 	
 	-- frame sizes
 	if o == "TukuiConfigUIframesizes" then o = TukuiL.option_framesizes end

@@ -22,6 +22,7 @@ TukuiCF["unitframes"] = {
 	["lowThreshold"] = 20,                 -- global low threshold, for low mana warning.
 	["targetpowerplayeronly"] = true,         -- enable power text on pvp target only
 	["showfocustarget"] = false,           -- show focus's target
+	["pettarget"] = true,					-- show player's pet's target (DPS)
 	["showtotalhpmp"] = false,             -- change the display of info text on player and target with XXXX/Total.
 	["showsmooth"] = true,                 -- enable smooth bar
 	["showthreat"] = true,                 -- enable the threat bar anchored to info left panel.
@@ -72,6 +73,7 @@ TukuiCF["raidframes"] = {
 	["healthdeficit"] = false,			-- show the health deficit on the raidframes
 	["griddps"] = true,					-- show dps layout in grid style
 	["role"] = false,					--display role on raidframe
+	["partytarget"]	= false,				--display party members targets (DPS ONLY)
 }
 
 TukuiCF["auras"] = {

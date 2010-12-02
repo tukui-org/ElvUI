@@ -118,6 +118,7 @@ TukuiL.option_raidframes_fontsize = "Font size on raidframes"
 TukuiL.option_raidframes_scale = "Scale of raidframes (use decimals ex: 0.96)"
 TukuiL.option_raidframes_disableblizz = "Disable blizzard default party and raid frames"
 TukuiL.option_raidframes_griddps = "Display the DPS Layout in grid layout instead of a vertical layout (Not Party)"
+TukuiL.option_raidframes_partytarget = "Display party members target's (DPS Only)"
 
 -- castbar
 TukuiL.option_castbar = "Castbar"
@@ -156,6 +157,7 @@ TukuiL.option_unitframes_classbar = "Enable Classbar (TotemBar, RuneBar, HolyBar
 TukuiL.option_unitframes_healthbackdropcolor = "Backdrop color of health on all unitframes"
 TukuiL.option_unitframes_healthcolorbyvalue = "Color Healthbars by Health Remaining"
 TukuiL.option_unitframes_combat = "Fade unitframes while not in-combat"
+TukuiL.option_unitframes_pettarget = "Display your pet's target"
 
 -- frame sizes
 TukuiL.option_framesizes = "UnitFrame Sizes"
