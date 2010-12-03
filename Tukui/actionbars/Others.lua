@@ -45,10 +45,6 @@ function PositionAllBars()
 		TukuiCF["actionbar"].rightbars = 2
 	end
 
-	if TukuiCF["actionbar"].bottomrows < 2 then
-		TukuiCF["actionbar"].swaptopbottombar = false
-	end
-
 	if TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].rightbars ~= 0 and TukuiCF["actionbar"].splitbar == true then
 		TukuiCF["actionbar"].rightbars = 0
 		RightBarBig:Show()
