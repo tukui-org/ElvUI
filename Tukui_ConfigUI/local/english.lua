@@ -100,6 +100,7 @@ TukuiL.option_auras_playerdebuffsonly = "Show only your debuffs, and CC debuffs 
 TukuiL.option_auras_RaidUnitBuffWatch = "Enable buff watch on raid frames"
 TukuiL.option_auras_playtarbuffperrow = "Amount of Buffs/Debuffs in a row on the Player/Target frames"
 TukuiL.option_auras_smallbuffperrow = "Amount of Debuffs in a row on the TargetTarget/Focus frames"
+TukuiL.option_auras_buffindicatorsize = "Size of buff indicator icons on party/raid frames"
 
 -- raidframes
 TukuiL.option_raidframes = "Raid Frames"

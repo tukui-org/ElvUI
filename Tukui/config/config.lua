@@ -90,6 +90,7 @@ TukuiCF["auras"] = {
 	["focusdebuffs"] = true,              -- enable focus debuffs 
 	["playtarbuffperrow"] = 8,				-- buffs/debuffs per row on player/target frames
 	["smallbuffperrow"] = 4,				-- debuffs per row on targettarget/focus frames
+	["buffindicatorsize"] = 6,				-- size of the buff indicator on raid/party frames
 }
 
 TukuiCF["castbar"] = {

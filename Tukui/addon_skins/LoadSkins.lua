@@ -70,48 +70,50 @@ function Mod_AddonSkins:RegisterSkin(name, initFunc)
 end
 
 Mod_AddonSkins:RegisterEvent("PLAYER_LOGIN")
+Mod_AddonSkins:RegisterEvent("PLAYER_ENTERING_WORLD")
 Mod_AddonSkins:SetScript("OnEvent",function(self, event, addon)
-	self:SetScript("OnEvent",nil)
 	if event == "PLAYER_LOGIN" then
 		-- Initialize all skins
 		for name, func in pairs(self.skins) do
 			func(self,self,self,self,self) -- Mod_AddonSkins functions as skin, layout, and config.
 		end
 		self:UnregisterEvent("PLAYER_LOGIN")
-	end
-end)
-
--- Embed Right
-if TukuiCF["general"].embedright == "Skada" and IsAddOnLoaded("Skada") then
-	SkadaBarWindowSkada:ClearAllPoints()
-	SkadaBarWindowSkada:SetPoint("TOPRIGHT", ChatRBackground2, "TOPRIGHT", -2, -2)
-	local function AdjustSkadaFrameLevels()
-		SkadaBarWindowSkada:SetFrameLevel(ChatFrame3:GetFrameLevel() + 2)
-		if SkadaBG then
-			SkadaBG:SetFrameStrata("MEDIUM")	
-			SkadaBG:ClearAllPoints()
-			SkadaBG:SetAllPoints(ChatRBackground2)
-			SkadaBarWindowSkada:SetFrameStrata("HIGH")
+	elseif event == "PLAYER_ENTERING_WORLD" then
+		self:SetScript("OnEvent",nil)
+		-- Embed Right
+		if TukuiCF["general"].embedright == "Skada" and IsAddOnLoaded("Skada") then
+			SkadaBarWindowSkada:ClearAllPoints()
+			SkadaBarWindowSkada:SetPoint("TOPRIGHT", ChatRBackground2, "TOPRIGHT", -2, -2)
+			local function AdjustSkadaFrameLevels()
+				SkadaBarWindowSkada:SetFrameLevel(ChatFrame3:GetFrameLevel() + 2)
+				if SkadaBG then
+					SkadaBG:SetFrameStrata("MEDIUM")	
+					SkadaBG:ClearAllPoints()
+					SkadaBG:SetAllPoints(ChatRBackground2)
+					SkadaBarWindowSkada:SetFrameStrata("HIGH")
+				end
+			end
+			
+			SkadaBarWindowSkada:HookScript("OnShow", AdjustSkadaFrameLevels)
+			--trick game into firing OnShow script so we can adjust the frame levels
+			SkadaBarWindowSkada:Hide()
+			SkadaBarWindowSkada:Show()
+		end
+		if TukuiCF["general"].embedright == "Recount" and IsAddOnLoaded("Recount") then
+			Recount.db.profile.FrameStrata = "4-HIGH"
+			Recount_MainWindow:ClearAllPoints()
+			Recount_MainWindow:SetPoint("TOPLEFT", ChatRBackground2,"TOPLEFT", 0, 7)
+			Recount_MainWindow:SetPoint("BOTTOMRIGHT", ChatRBackground2,"BOTTOMRIGHT", 0, 0)
+			Recount.db.profile.MainWindowWidth = (TukuiCF["chat"].chatwidth - 4)
+		elseif IsAddOnLoaded("Recount") then
+			Recount.db.profile.FrameStrata = "4-HIGH"
+		end
+		if TukuiCF["general"].embedright == "Omen" and IsAddOnLoaded("Omen") then
+			if IsAddOnLoaded("Omen") then
+				OmenBarList:SetFrameStrata("HIGH")
+			end
+			OmenBarList:ClearAllPoints()
+			OmenBarList:SetAllPoints(ChatRBackground2)
 		end
 	end
-	
-	SkadaBarWindowSkada:HookScript("OnShow", AdjustSkadaFrameLevels)
-	--trick game into firing OnShow script so we can adjust the frame levels
-	SkadaBarWindowSkada:Hide()
-	SkadaBarWindowSkada:Show()
-end
-if TukuiCF["general"].embedright == "Recount" and IsAddOnLoaded("Recount") then
-	Recount.db.profile.FrameStrata = "4-HIGH"
-	Recount_MainWindow:ClearAllPoints()
-	Recount_MainWindow:SetPoint("TOPLEFT", ChatRBackground2,"TOPLEFT", 0, 7)
-	Recount_MainWindow:SetPoint("BOTTOMRIGHT", ChatRBackground2,"BOTTOMRIGHT", 0, 0)
-	Recount.db.profile.MainWindowWidth = (TukuiCF["chat"].chatwidth - 4)
-elseif IsAddOnLoaded("Recount") then
-	Recount.db.profile.FrameStrata = "4-HIGH"
-end
-if TukuiCF["general"].embedright == "Omen" and IsAddOnLoaded("Omen") then
-	if IsAddOnLoaded("Omen") then
-		OmenBarList:SetFrameStrata("HIGH")
-	end
-	OmenBarList:SetAllPoints(ChatRBackground2)
-end
+end)
