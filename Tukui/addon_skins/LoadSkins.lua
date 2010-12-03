@@ -16,10 +16,10 @@ local function skinFrame(self, frame)
 	frame:GetParent():GetName() == "Recount_GraphWindow" or 
 	frame:GetParent():GetName() == "Recount_DetailWindow" then
 		TukuiDB.SetTransparentTemplate(frame)
+		frame:SetFrameStrata("MEDIUM")
 	else
 		tukskin(frame,frame)
 	end
-	frame:SetFrameStrata("MEDIUM")
 end
 local function skinButton(self, button)
 	skinFrame(self, button)
@@ -44,7 +44,7 @@ Mod_AddonSkins.font = TukuiCF.media.font
 Mod_AddonSkins.smallFont = TukuiCF.media.font
 Mod_AddonSkins.fontSize = 12
 Mod_AddonSkins.buttonSize = TukuiDB.Scale(27,27)
-Mod_AddonSkins.buttonSpacing = TukuiDB.Scale(4,4)
+Mod_AddonSkins.buttonSpacing = TukuiDB.Scale(TukuiDB.petbuttonspacing,TukuiDB.petbuttonspacing)
 Mod_AddonSkins.borderWidth = TukuiDB.Scale(2,2)
 Mod_AddonSkins.buttonZoom = {.09,.91,.09,.91}
 Mod_AddonSkins.barSpacing = TukuiDB.Scale(1,1)

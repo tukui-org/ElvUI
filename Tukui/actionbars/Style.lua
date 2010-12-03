@@ -354,21 +354,21 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			close:GetNormalTexture():SetTexture(nil)
 			close:ClearAllPoints()
 			if point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" or point == "BOTTOM" then
-				close:SetPoint("BOTTOMLEFT",last,"TOPLEFT",0,config.buttonSpacing)
-				close:SetPoint("BOTTOMRIGHT",last,"TOPRIGHT",0,config.buttonSpacing)
+				close:SetPoint("BOTTOMLEFT",last,"TOPLEFT",0,4)
+				close:SetPoint("BOTTOMRIGHT",last,"TOPRIGHT",0,4)
 			else
 				if last then
 					close:SetWidth(last:GetWidth())
 				end
-				close:SetPoint("TOP",flyout,"BOTTOM",0,-config.buttonSpacing)		
+				close:SetPoint("TOP",flyout,"BOTTOM",0,-4)		
 			end
-			close:SetHeight(config.buttonSpacing*2)
+			close:SetHeight(4*2)
 			close:SetBackdropBorderColor(parent:GetBackdropBorderColor())
 			flyout:ClearAllPoints()
 			if point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" or point == "BOTTOM" then
-				flyout:SetPoint("BOTTOM",parent,"TOP",0,config.buttonSpacing)
+				flyout:SetPoint("BOTTOM",parent,"TOP",0,4)
 			else
-				flyout:SetPoint("TOP",parent,"BOTTOM",0,-config.buttonSpacing)
+				flyout:SetPoint("TOP",parent,"BOTTOM",0,-4)
 			end
 			
 			MultiCastFlyoutFrameOpenButton:Hide()
@@ -379,7 +379,7 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			local point, _, _, _, _ = TukuiShiftBar:GetPoint()
 			button:GetHighlightTexture():SetTexture(nil)
 			button:GetNormalTexture():SetTexture(nil)
-			button:SetHeight(config.buttonSpacing*3)
+			button:SetHeight(TukuiDB.Scale(4)*3)
 			button:ClearAllPoints()
 			if point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" or point == "BOTTOM" then
 				button:SetPoint("BOTTOMLEFT", parent, "TOPLEFT")
@@ -392,10 +392,10 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			button:SetBackdropBorderColor(0,0,0,0)
 			if not button.visibleBut then
 				button.visibleBut = CreateFrame("Frame",nil,button)
-				button.visibleBut:SetHeight(TukuiDB.petbuttonspacing*2)
+				button.visibleBut:SetHeight(TukuiDB.Scale(4)*2)
 				if point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" or point == "BOTTOM" then
-					button.visibleBut:SetPoint("TOPLEFT")
-					button.visibleBut:SetPoint("TOPRIGHT")
+					button.visibleBut:SetPoint("TOPLEFT",config.barSpacing)
+					button.visibleBut:SetPoint("TOPRIGHT",config.barSpacing)
 				else
 					button.visibleBut:SetPoint("BOTTOMLEFT")
 					button.visibleBut:SetPoint("BOTTOMRIGHT")				
@@ -471,10 +471,6 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			_G[button:GetName().."NormalTexture"]:SetTexture(nil)
 			style(button, false, true)
 			TukuiDB.StyleButton(button, false)
-			if index == 0 then
-				button:ClearAllPoints() 
-				button:SetPoint("RIGHT", MultiCastActionButton1, "LEFT", -TukuiDB.petbuttonspacing*2, 0)	
-			end
 		end
 		hooksecurefunc("MultiCastSummonSpellButton_Update", function(self) skin:SkinMCABSpellButton(self,0) end)
 		hooksecurefunc("MultiCastRecallSpellButton_Update", function(self) skin:SkinMCABSpellButton(self,5) end)

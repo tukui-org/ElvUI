@@ -449,7 +449,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 12294 ), -- Mortal Strike
 			CreateSpellEntry( 1160 ), -- Demoralizing Shout
 			CreateSpellEntry( 64382 ), -- Shattering Throw
-			CreateSpellEntry( 7386 ), -- Sunder Armor
+			CreateSpellEntry( 58567 ), -- Sunder Armor
 			CreateSpellEntry( 86346 ), -- Colossus Smash
 			CreateSpellEntry( 7922 ), -- Charge (stun)
 			CreateSpellEntry( 1715 ), -- Hamstring
