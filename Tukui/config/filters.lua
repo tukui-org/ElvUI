@@ -345,7 +345,7 @@ DebuffHealerWhiteList = {
 --This list is used by the dps layout grid (When not inside a bg/arena)
 DebuffDPSWhiteList = {
 	--Baradin Hold
-		[SpellName(88942) = true, -- Meteor Slash
+		[SpellName(88942)] = true, -- Meteor Slash
 		
 	--Blackwing Descent
 		--Magmaw
