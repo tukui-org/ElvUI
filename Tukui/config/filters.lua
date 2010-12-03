@@ -268,6 +268,10 @@ DebuffWhiteList = {
 		[SpellName(20511)] = true, --Intimidating Shout
 	-- Racial
 		[SpellName(25046)] = true, --Arcane Torrent
+	
+	--PVE
+
+			
 }
 
 --List of debuffs for targetframe for pvp only (when inside a bg/arena
@@ -289,12 +293,102 @@ TargetPVPOnly = {
 
 --This list is used by the healerlayout (When not inside a bg/arena)
 DebuffHealerWhiteList = {
-
+	--Baradin Hold
+		[SpellName(88942)] = true, -- Meteor Slash
+		
+	--Blackwing Descent
+		--Magmaw
+		[SpellName(78006)] = true, -- Pillar of Flame
+		
+		--Omintron Defense System
+		[SpellName(79835)] = true, --Poison Soaked Shell	
+		[SpellName(79505)] = true, --Flamethrower
+		[SpellName(91431)] = true, --Lightning Conductor
+		
+		--Maloriak
+		[SpellName(77699)] = true, -- Flash Freeze
+		[SpellName(77786)] = true, -- Consuming Flames
+		[SpellName(77760)] = true, -- Biting Chill
+		
+		--Atramedes
+		[SpellName(92391)] = true, -- Vertigo
+		[SpellName(92407)] = true, -- Sonic Breath
+		
+		--Chimaeron
+		[SpellName(82881)] = true, -- Break
+		
+		--Nefarian
+		
+	--The Bastion of Twilight
+		--Valiona
+		[SpellName(86840)] = true, -- Devouring Flames
+		--Theralion
+		
+		--Halfus Wyrmbreaker
+		
+		--Twilight Ascendant Council
+		
+		--Cho'gall
+		
+	--Throne of the Four Winds
+		--Conclave of Wind
+			--Nezir <Lord of the North Wind>
+			
+			--Anshal <Lord of the West Wind>
+			
+			--Rohash <Lord of the East Wind>
+			
+		--Al'Akir
+		[SpellName(89668)] = true, -- Lightning Rod
 }
 
 --This list is used by the dps layout grid (When not inside a bg/arena)
 DebuffDPSWhiteList = {
-
+	--Baradin Hold
+		[SpellName(88942) = true, -- Meteor Slash
+		
+	--Blackwing Descent
+		--Magmaw
+		[SpellName(78006)] = true, -- Pillar of Flame
+		
+		--Omintron Defense System
+		[SpellName(79835)] = true, --Poison Soaked Shell	
+		[SpellName(79505)] = true, --Flamethrower
+		[SpellName(91431)] = true, --Lightning Conductor
+		
+		--Maloriak
+		[SpellName(77699)] = true, -- Flash Freeze
+		
+		--Atramedes
+		[SpellName(92391)] = true, -- Vertigo
+		
+		--Chimaeron
+		[SpellName(82881)] = true, -- Break
+		
+		--Nefarian
+		
+	--The Bastion of Twilight
+		--Valiona
+		[SpellName(86840)] = true, -- Devouring Flames
+		
+		--Theralion
+		
+		--Halfus Wyrmbreaker
+		
+		--Twilight Ascendant Council
+		
+		--Cho'gall
+		
+	--Throne of the Four Winds
+		--Conclave of Wind
+			--Nezir <Lord of the North Wind>
+			
+			--Anshal <Lord of the West Wind>
+			
+			--Rohash <Lord of the East Wind>
+			
+		--Al'Akir
+		[SpellName(89668)] = true, -- Lightning Rod
 }
 
 --------------------------------------------------------------------------------------------
