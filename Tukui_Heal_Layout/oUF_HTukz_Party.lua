@@ -1,4 +1,5 @@
 if not TukuiCF["raidframes"].enable == true == true or TukuiCF["raidframes"].gridonly == true then return end
+if IsAddOnLoaded("Tukui_Dps_Layout") then return end
 
 local font2 = TukuiCF["media"].uffont
 local font1 = TukuiCF["media"].font

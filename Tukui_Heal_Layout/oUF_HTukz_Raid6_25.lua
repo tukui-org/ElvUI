@@ -1,4 +1,5 @@
 if not TukuiCF["raidframes"].enable == true then return end
+if IsAddOnLoaded("Tukui_Dps_Layout") then return end
 
 local raid_width = TukuiDB.Scale((TukuiActionBarBackground:GetWidth() / 5) - 7)*TukuiCF["raidframes"].scale
 local raid_height = TukuiDB.Scale(42)*TukuiCF["raidframes"].scale

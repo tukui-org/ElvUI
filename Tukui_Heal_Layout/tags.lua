@@ -1,4 +1,5 @@
 if not TukuiCF["unitframes"].enable == true and not TukuiCF["raidframes"].enable == true then return end
+if IsAddOnLoaded("Tukui_Dps_Layout") then return end
 
 ------------------------------------------------------------------------
 --	Tags

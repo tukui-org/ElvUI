@@ -5,6 +5,7 @@
 ## X-Email: tukz@tukui.org
 ## X-Category: UnitFrame
 ## RequiredDeps: Tukui
+## OptionalDeps: Tukui_Dps_Layout
 ## SavedVariablesPerCharacter: HealElementsCharPos
 
 templates.xml
