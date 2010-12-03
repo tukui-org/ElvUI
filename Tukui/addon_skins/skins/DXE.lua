@@ -65,6 +65,8 @@ Mod_AddonSkins:RegisterSkin("DXE",function(Skin, skin, Layout, layout, config)
 		while _G["DXEAlertBar"..i] do
 			local bar = _G["DXEAlertBar"..i]
 			bar:SetScale(1)
+			bar:SetAlpha(1)
+			bar.SetAlpha = dummy
 			-- F U SCALE!
 			bar.SetScale = dummy
 			skin:SkinDXEBar(bar)
@@ -122,5 +124,15 @@ Mod_AddonSkins:RegisterSkin("DXE",function(Skin, skin, Layout, layout, config)
 	DXE:LayoutHealthWatchers()
 	DXE.Alerts:RefreshBars()
 	kill(DXE.Pane.border)
+	
+	if not DXEDB then DXEDB = {} end
+	if not DXEDB["profiles"] then DXEDB["profiles"] = {} end
+	if not DXEDB["profiles"][TukuiDB.myname.." - "..GetRealmName()] then DXEDB["profiles"][TukuiDB.myname.." - "..GetRealmName()] = {} end
+	if not DXEDB["profiles"][TukuiDB.myname.." - "..GetRealmName()]["Globals"] then DXEDB["profiles"][TukuiDB.myname.." - "..GetRealmName()]["Globals"] = {} end
+	DXEDB["profiles"][TukuiDB.myname.." - "..GetRealmName()]["Globals"]["BackgroundTexture"] = "TukUI"
+	DXEDB["profiles"][TukuiDB.myname.." - "..GetRealmName()]["Globals"]["BarTexture"] = "TukUI Bar"
+	DXEDB["profiles"][TukuiDB.myname.." - "..GetRealmName()]["Globals"]["Border"] = "None"
+	DXEDB["profiles"][TukuiDB.myname.." - "..GetRealmName()]["Globals"]["Font"] = "TukUI"
+	DXEDB["profiles"][TukuiDB.myname.." - "..GetRealmName()]["Globals"]["TimerFont"] = "TukUI"
 end)
 
