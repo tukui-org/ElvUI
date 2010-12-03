@@ -316,17 +316,13 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 10060 ), -- Power Infusion
 			CreateSpellEntry( 588 ), -- Inner Fire
 			CreateSpellEntry( 47585 ), -- Dispersion
-
-
-
-
 			CreateSpellEntry( 81700 ), -- Archangel
 			CreateSpellEntry( 14751 ), -- Chakra
 			CreateSpellEntry( 81208 ), -- Chakra Heal
 			CreateSpellEntry( 81207 ), -- Chakra Renew
 			CreateSpellEntry( 81209 ), -- Chakra Smite
 			CreateSpellEntry( 81206 ), -- Prayer of Healing
-
+			CreateSpellEntry( 63877 ), -- Pain Suppression
 		},
 		procs = {
 			CreateSpellEntry( 63735 ), -- Serendipity
@@ -336,6 +332,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 81661 ), -- Evangelism
 			CreateSpellEntry( 72418 ), -- Kuhlendes Wissen
 			CreateSpellEntry( 71584 ), -- Revitalize
+			CreateSpellEntry( 95799 ), -- Empowered Shadow
 		},
 	},
 	ROGUE = { 

@@ -1853,7 +1853,7 @@ if TukuiCF.arena.unitframes then
 	for i = 1, 5 do
 		arena[i] = oUF:Spawn("arena"..i, "oUF_TukzHealArena"..i)
 		if i == 1 then
-			arena[i]:SetPoint("BOTTOMLEFT", RDummyFrame, "TOPLEFT", -80, 285)
+			arena[i]:SetPoint("BOTTOMLEFT", ChatRBackground2, "TOPLEFT", -80, 285)
 		else
 			arena[i]:SetPoint("BOTTOM", arena[i-1], "TOP", 0, 34)
 		end
@@ -1866,7 +1866,7 @@ if TukuiCF.raidframes.showboss then
 	for i = 1, MAX_BOSS_FRAMES do
 		boss[i] = oUF:Spawn("boss"..i, "oUF_TukzHealBoss"..i)
 		if i == 1 then
-			boss[i]:SetPoint("BOTTOMLEFT", RDummyFrame, "TOPLEFT", -80, 285)
+			boss[i]:SetPoint("BOTTOMLEFT", ChatRBackground2, "TOPLEFT", -80, 285)
 		else
 			boss[i]:SetPoint('BOTTOM', boss[i-1], 'TOP', 0, 34)             
 		end
