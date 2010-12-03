@@ -567,7 +567,8 @@ TukuiDB.Fader = function(self, arg1, arg2)
 	end
 end
 
-TukuiDB.AuraFilter = function(icons, unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID)	
+--TEMP DISABLE
+--[[TukuiDB.AuraFilter = function(icons, unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID)	
 	local header = icon:GetParent():GetParent():GetParent():GetName()
 	local inInstance, instanceType = IsInInstance()
 	icon.owner = caster
@@ -583,6 +584,81 @@ TukuiDB.AuraFilter = function(icons, unit, icon, name, rank, texture, count, dty
 			if header == "oUF_TukuiHealR6R25" and DebuffHealerWhiteList[name] then
 				return true
 			elseif header == "oUF_TukuiDPSR6R25" and DebuffDPSWhiteList[name] then
+				return true
+			else
+				return false
+			end
+		end	
+	elseif (unit == "arena1" or unit == "arena2" or unit == "arena3" or unit == "arena4" or unit == "arena5") then --Arena frames
+		if dtype then
+			if DebuffWhiteList[name] then
+				return true
+			else
+				return false
+			end			
+		else
+			if ArenaBuffWhiteList[name] then
+				return true
+			else
+				return false
+			end		
+		end
+	elseif unit == "target" then --Target Only
+		if TukuiCF["auras"].playerdebuffsonly == true then
+			-- Show all debuffs on friendly targets
+			if UnitIsFriend("player", "target") then return true end
+			
+			local isPlayer
+			
+			if(caster == 'player' or caster == 'vehicle') then
+				isPlayer = true
+			else
+				isPlayer = false
+			end
+
+			if isPlayer then
+				return true
+			elseif DebuffWhiteList[name] or (inInstance and ((instanceType == "pvp" or instanceType == "arena") and TargetPVPOnly[name])) then
+				return true
+			else
+				return false
+			end
+		else
+			return true
+		end
+	else --Everything else
+		if unit ~= "player" and unit ~= "targettarget" and unit ~= "focus" and TukuiCF["auras"].arenadebuffs == true and inInstance and (instanceType == "pvp" or instanceType == "arena") then
+			if DebuffWhiteList[name] or TargetPVPOnly[name] then
+				return true
+			else
+				return false
+			end
+		else
+			if DebuffBlacklist[name] then
+				return false
+			else
+				return true
+			end
+		end
+	end
+end]]
+
+TukuiDB.AuraFilter = function(icons, unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID)	
+	local header = icon:GetParent():GetParent():GetParent():GetName()
+	local inInstance, instanceType = IsInInstance()
+	icon.owner = caster
+	icon.isStealable = isStealable
+	if header == "oUF_TukuiHealR6R25" or (TukuiCF["raidframes"].griddps == true and header == "oUF_TukuiDPSR6R25") then 
+		if inInstance and (instanceType == "pvp" or instanceType == "arena") then
+			if DebuffWhiteList[name] or TargetPVPOnly[name] then
+				return true
+			else
+				return false
+			end
+		else
+			if header == "oUF_TukuiHealR6R25" then
+				return true
+			elseif header == "oUF_TukuiDPSR6R25" then
 				return true
 			else
 				return false

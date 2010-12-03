@@ -209,22 +209,6 @@ DebuffBlacklist = {
 	[SpellName(23445)] = true, --evil twin
 	[SpellName(24755)] = true, --gay homosexual tricked or treated debuff
 	[SpellName(25163)] = true, --fucking annoying pet debuff oozeling disgusting aura
-	
-	--Blood Princes
-	[SpellName(71911)] = true, --shadow resonance
-	
-	--Festergut
-	[SpellName(72144)] = true, --"Orange Blight Residue"
-	[SpellName(73034)] = true, --Blighted Spores
-	[SpellName(70852)] = true, --Malleable Goo
-	
-	--Rotface
-	[SpellName(72145)] = true, --"Green Blight Residue"
-	
-	--Putricide
-	[SpellName(72511)] = true, --Mutated Transformation
-	
-	[SpellName(72460)] = true, --Choking Gas
 }
 
 
@@ -284,11 +268,6 @@ DebuffWhiteList = {
 		[SpellName(20511)] = true, --Intimidating Shout
 	-- Racial
 		[SpellName(25046)] = true, --Arcane Torrent
-		
-	--PVE Debuffs
-		
-	-- Lich King
-		[SpellName(73787)] = true, --Necrotic Plague
 }
 
 --List of debuffs for targetframe for pvp only (when inside a bg/arena
@@ -310,143 +289,12 @@ TargetPVPOnly = {
 
 --This list is used by the healerlayout (When not inside a bg/arena)
 DebuffHealerWhiteList = {
-	-- Naxxramas
-		[SpellName(27808)] = true, -- Frost Blast
-		[SpellName(32407)] = true, -- Strange Aura
-		[SpellName(28408)] = true, -- Chains of Kel'Thuzad
 
-	-- Ulduar
-		[SpellName(66313)] = true, -- Fire Bomb
-		[SpellName(63134)] = true, -- Sara's Blessing
-		[SpellName(62717)] = true, -- Slag Pot
-		[SpellName(63018)] = true, -- Searing Light
-		[SpellName(64233)] = true, -- Gravity Bomb
-		[SpellName(63495)] = true, -- Static Disruption
-
-	-- Trial of the Crusader
-		[SpellName(66406)] = true, -- Snobolled!
-		[SpellName(67574)] = true, -- Pursued by Anub'arak
-		[SpellName(68509)] = true, -- Penetrating Cold
-		[SpellName(67651)] = true, -- Arctic Breath
-		[SpellName(68127)] = true, -- Legion Flame
-		[SpellName(67049)] = true, -- Incinerate Flesh
-		[SpellName(66869)] = true, -- Burning Bile
-		[SpellName(66823)] = true, -- Paralytic Toxin
-
-	-- Icecrown Citadel
-		[SpellName(71224)] = true, -- Mutated Infection
-		[SpellName(71822)] = true, -- Shadow Resonance
-		[SpellName(70447)] = true, -- Volatile Ooze Adhesive
-		[SpellName(72293)] = true, -- Mark of the Fallen Champion
-		[SpellName(72448)] = true, -- Rune of Blood
-		[SpellName(71473)] = true, -- Essence of the Blood Queen
-		[SpellName(71624)] = true, -- Delirious Slash
-		[SpellName(70923)] = true, -- Uncontrollable Frenzy
-		[SpellName(70588)] = true, -- Suppression
-		[SpellName(71738)] = true, -- Corrosion
-		[SpellName(71733)] = true, -- Acid Burst
-		[SpellName(72108)] = true, -- Death and Decay
-		[SpellName(71289)] = true, -- Dominate Mind
-		[SpellName(69762)] = true, -- Unchained Magic
-		[SpellName(69651)] = true, -- Wounding Strike
-		[SpellName(69065)] = true, -- Impaled
-		[SpellName(71218)] = true, -- Vile Gas
-		[SpellName(72442)] = true, -- Boiling Blood
-		[SpellName(72769)] = true, -- Scent of Blood (heroic)
-		[SpellName(69279)] = true, -- Gas Spore
-		[SpellName(70949)] = true, -- Essence of the Blood Queen (hand icon)
-		[SpellName(72151)] = true, -- Frenzied Bloodthirst (bite icon)
-		[SpellName(71340)] = true, -- Pact of the Darkfallen
-		[SpellName(72985)] = true, -- Swarming Shadows (pink icon)
-		[SpellName(71807)] = true, -- Glittering Sparks
-		[SpellName(70873)] = true, -- Emerald Vigor
-		[SpellName(71283)] = true, -- Gut Spray
-		[SpellName(69766)] = true, -- Instability
-		[SpellName(70126)] = true, -- Frost Beacon
-		[SpellName(70157)] = true, -- Ice Tomb
-		[SpellName(71056)] = true, -- Frost Breath
-		[SpellName(70106)] = true, -- Chilled to the Bone
-		[SpellName(70128)] = true, -- Mystic Buffet
-		[SpellName(73785)] = true, -- Necrotic Plague
-		[SpellName(73779)] = true, -- Infest
-		[SpellName(73800)] = true, -- Soul Shriek
-		[SpellName(73797)] = true, -- Soul Reaper
-		[SpellName(73708)] = true, -- Defile
-		[SpellName(74327)] = true, -- Harvest Soul
-			
-	--Ruby Sanctum
-		[SpellName(74502)] = true, --Enervating Brand
-		[SpellName(75887)] = true, --Blazing Aura  
-		[SpellName(74562)] = true, --Fiery Combustion
-		[SpellName(74567)] = true, --Mark of Combustion (Fire)
-		[SpellName(74792)] = true, --Soul Consumption
-		[SpellName(74795)] = true, --Mark Of Consumption (Soul)
-
-	-- Other debuff
-		[SpellName(67479)] = true, -- Impale
 }
 
 --This list is used by the dps layout grid (When not inside a bg/arena)
 DebuffDPSWhiteList = {
-	-- Naxxramas
-		[SpellName(27808)] = true, -- Frost Blast
-		[SpellName(32407)] = true, -- Strange Aura
-		[SpellName(28408)] = true, -- Chains of Kel'Thuzad
 
-	-- Ulduar
-		[SpellName(66313)] = true, -- Fire Bomb
-		[SpellName(63134)] = true, -- Sara's Blessing
-		[SpellName(62717)] = true, -- Slag Pot
-		[SpellName(63018)] = true, -- Searing Light
-		[SpellName(64233)] = true, -- Gravity Bomb
-		[SpellName(63495)] = true, -- Static Disruption
-
-	-- Trial of the Crusader
-		[SpellName(66406)] = true, -- Snobolled!
-		[SpellName(67574)] = true, -- Pursued by Anub'arak
-		[SpellName(67651)] = true, -- Arctic Breath
-		[SpellName(68127)] = true, -- Legion Flame
-		[SpellName(67049)] = true, -- Incinerate Flesh
-		[SpellName(66869)] = true, -- Burning Bile
-		[SpellName(66823)] = true, -- Paralytic Toxin
-
-	-- Icecrown Citadel
-		[SpellName(71224)] = true, -- Mutated Infection
-		[SpellName(70447)] = true, -- Volatile Ooze Adhesive
-		[SpellName(72293)] = true, -- Mark of the Fallen Champion
-		[SpellName(72448)] = true, -- Rune of Blood
-		[SpellName(71473)] = true, -- Essence of the Blood Queen
-		[SpellName(70923)] = true, -- Uncontrollable Frenzy
-		[SpellName(71289)] = true, -- Dominate Mind
-		[SpellName(69065)] = true, -- Impaled
-		[SpellName(71218)] = true, -- Vile Gas
-		[SpellName(72769)] = true, -- Scent of Blood
-		[SpellName(69279)] = true, -- Gas Spore
-		[SpellName(70949)] = true, -- Essence of the Blood Queen
-		[SpellName(72151)] = true, -- Frenzied Bloodthirst
-		[SpellName(71340)] = true, -- Pact of the Darkfallen
-		[SpellName(72985)] = true, -- Swarming Shadows
-		[SpellName(71283)] = true, -- Gut Spray
-		[SpellName(70126)] = true, -- Frost Beacon
-		[SpellName(70157)] = true, -- Ice Tomb
-		[SpellName(73785)] = true, -- Necrotic Plague
-		[SpellName(73800)] = true, -- Soul Shriek
-		[SpellName(73797)] = true, -- Soul Reaper
-		[SpellName(73708)] = true, -- Defile
-		[SpellName(74327)] = true, -- Harvest Soul
-		[SpellName(72553)] = true, -- Gastric Bloat
-		[SpellName(72672)] = true, -- Mutated Plague
-			
-	--Ruby Sanctum
-		[SpellName(74502)] = true, --Enervating Brand
-		[SpellName(75887)] = true, --Blazing Aura  
-		[SpellName(74562)] = true, --Fiery Combustion
-		[SpellName(74567)] = true, --Mark of Combustion (Fire)
-		[SpellName(74792)] = true, --Soul Consumption
-		[SpellName(74795)] = true, --Mark Of Consumption (Soul)
-
-	-- Other debuff
-		[SpellName(67479)] = true, -- Impale
 }
 
 --------------------------------------------------------------------------------------------
