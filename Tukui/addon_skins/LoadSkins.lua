@@ -8,7 +8,11 @@ local Mod_AddonSkins = Mod_AddonSkins
 local tukskin = TukuiDB.SetTemplate
 local function skinFrame(self, frame)
 	--Unfortionatly theres not a prettier way of doing this
-	if frame:GetName() == "OmenBarList" or 
+	if frame:GetParent():GetName() == "Recount_ConfigWindow" then
+		TukuiDB.SetTransparentTemplate(frame)
+		frame:SetFrameStrata("BACKGROUND")
+		frame.SetFrameStrata = TukuiDB.dummy
+	elseif frame:GetName() == "OmenBarList" or 
 	frame:GetName() == "OmenTitle" or 
 	frame:GetName() == "DXEPane" or 
 	frame:GetName() == "SkadaBG" or 
@@ -16,7 +20,11 @@ local function skinFrame(self, frame)
 	frame:GetParent():GetName() == "Recount_GraphWindow" or 
 	frame:GetParent():GetName() == "Recount_DetailWindow" then
 		TukuiDB.SetTransparentTemplate(frame)
-		frame:SetFrameStrata("MEDIUM")
+		if frame:GetParent():GetName() ~= "Recount_GraphWindow" and frame:GetParent():GetName() ~= "Recount_DetailWindow" then
+			frame:SetFrameStrata("MEDIUM")
+		else
+			frame:SetFrameStrata("BACKGROUND")
+		end
 	else
 		tukskin(frame,frame)
 	end
