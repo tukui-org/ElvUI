@@ -815,6 +815,8 @@ local function Shared(self, unit)
 			self:RegisterEvent("UNIT_SPELLCAST_STOP", TukuiDB.Fader)
 			self:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START", TukuiDB.Fader)
 			self:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP", TukuiDB.Fader)
+			self:RegisterEvent("UNIT_PORTRAIT_UPDATE", TukuiDB.Fader)
+			self:RegisterEvent("UNIT_MODEL_CHANGED", TukuiDB.Fader)	
 			self:HookScript("OnEnter", function(self) TukuiDB.Fader(self, true) end)
 			self:HookScript("OnLeave", function(self) TukuiDB.Fader(self, false) end)
 		end
