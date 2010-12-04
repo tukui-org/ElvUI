@@ -57,12 +57,12 @@ local function UpdateThreat(frame, elapsed)
 		if(frame.region:IsShown()) then
 			local _, val = frame.region:GetVertexColor()
 			if(val > 0.7) then
-				frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 1, 0)
+				frame.healthborder_tex:SetTexture(transitionR, transitionG, transitionB)
 			else
-				frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 0, 0)
+				frame.healthborder_tex:SetTexture(badR, badG, badB)
 			end
 		else
-			frame.healthbackdrop.shadow:SetBackdropBorderColor(0, 0, 0)
+			frame.healthborder_tex:SetTexture(0.6, 0.6, 0.6)
 		end
 	else
 		if not frame.region:IsShown() then
@@ -70,15 +70,12 @@ local function UpdateThreat(frame, elapsed)
 				--No Threat
 				if TukuiDB.Role == "Tank" then
 					frame.hp:SetStatusBarColor(badR, badG, badB)
-					frame.hp.hpbg:SetVertexColor(badR, badG, badB, 0.4)
 				else
 					frame.hp:SetStatusBarColor(goodR, goodG, goodB)
-					frame.hp.hpbg:SetVertexColor(goodR, goodG, goodB, 0.35)
 				end		
 			else
 				--Set colors to their original, not in combat
 				frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
-				frame.hp.hpbg:SetVertexColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
 			end
 		else
 			--Ok we either have threat or we're losing/gaining it
@@ -87,15 +84,12 @@ local function UpdateThreat(frame, elapsed)
 				--Have Threat
 				if TukuiDB.Role == "Tank" then
 					frame.hp:SetStatusBarColor(goodR, goodG, goodB)
-					frame.hp.hpbg:SetVertexColor(goodR, goodG, goodB, 0.35)
 				else
 					frame.hp:SetStatusBarColor(badR, badG, badB)
-					frame.hp.hpbg:SetVertexColor(badR, badG, badB, 0.4)
 				end
 			else
 				--Losing/Gaining Threat
-				frame.hp:SetStatusBarColor(transitionR, transitionG, transitionB)
-				frame.hp.hpbg:SetVertexColor(transitionR, transitionG, transitionB, 0.35)					
+				frame.hp:SetStatusBarColor(transitionR, transitionG, transitionB)				
 			end
 		end
 	end
@@ -114,37 +108,20 @@ local function UpdateThreat(frame, elapsed)
 		--Targetted Unit
 		frame.name:SetTextColor(1, 1, 0)
 		
-		if TukuiCF["nameplate"].enhancethreat == true then
-			frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 1, 1)
-		else
-			frame.healthbackdrop:SetBackdropBorderColor(1, 1, 1)
-		end
 		if frame.overlay:IsShown() then frame.overlay:Hide() end
 	else
 		--Not Targetted
 		frame.name:SetTextColor(1, 1, 1)
-		
-		if TukuiCF["nameplate"].enhancethreat ~= true then
-			frame.healthbackdrop:SetBackdropBorderColor(0.6, 0.6, 0.6)
-		else
-			if frame.hasclass ~= true then
-				frame.healthbackdrop.shadow:SetBackdropBorderColor(0, 0, 0)
-			end
-		end
 	end
 	
 	--Setup frame shadow to change depending on enemy players health, also setup targetted unit to have white shadow
 	if frame.hasclass == true then
 		if(d <= 50 and d >= 21) then
-			frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 1, 0)
+			frame.healthborder_tex:SetTexture(1, 1, 0)
 		elseif(d < 21) then
-			frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 0, 0)
+			frame.healthborder_tex:SetTexture(1, 0, 0)
 		else
-			if UnitName("target") == frame.name:GetText() and frame:GetAlpha() == 1 then
-				frame.healthbackdrop.shadow:SetBackdropBorderColor(1, 1, 1)	
-			else
-				frame.healthbackdrop.shadow:SetBackdropBorderColor(0, 0, 0)
-			end
+			frame.healthborder_tex:SetTexture(0.6, 0.6, 0.6)
 		end
 	end
 end
@@ -189,11 +166,7 @@ local function UpdateObjects(frame)
 	frame.overlay:SetAllPoints(frame.hp)
 	frame.overlay:SetTexture(1,1,1,0.25)
 	frame.overlay:Hide()
-	
-	-- color hp bg dependend on hp color
-    local BGr, BGg, BGb = frame.hp:GetStatusBarColor()
-	frame.hp.hpbg:SetVertexColor(BGr*0.36, BGg*0.36, BGb*0.36, 0.35)
-	
+		
 	--create variable for original colors
 	frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = frame.hp:GetStatusBarColor()
 	
@@ -262,38 +235,39 @@ local function SkinObjects(frame)
 	local threat, hpborder, cbshield, cbborder, cbicon, overlay, oldname, level, bossicon, raidicon, elite = frame:GetRegions()
 	frame.healthOriginal = hp
 	
+	hp:SetFrameLevel(9)
+	
 	--Create Health Backdrop Frame
 	local healthbackdrop = CreateFrame("Frame", nil, hp)
-	healthbackdrop:SetBackdrop({
-		bgFile = TukuiCF["media"].blank,
-		edgeFile = TukuiCF["media"].blank,
-		tile = false, tileSize = 0, edgeSize = noscalemult,
-		insets = {left = -noscalemult, right = -noscalemult, top = -noscalemult, bottom = -noscalemult}
-	})
-	healthbackdrop:SetBackdropBorderColor(0.6, 0.6, 0.6, 1)
-	healthbackdrop:SetBackdropColor(0.1, 0.1, 0.1, 1)
-	healthbackdrop:SetPoint("TOPLEFT", hp, "TOPLEFT", -noscalemult*2, noscalemult*2)
-	healthbackdrop:SetPoint("BOTTOMRIGHT", hp, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
-	if (hp:GetFrameLevel() - 1) > 0 then
-		healthbackdrop:SetFrameLevel(hp:GetFrameLevel() - 1)
-	else
-		hp:SetFrameLevel(9)
-		healthbackdrop:SetFrameLevel(hp:GetFrameLevel() - 1)
-	end
-	healthbackdrop:SetFrameStrata(hp:GetFrameStrata())
-	frame.healthbackdrop = healthbackdrop
+	healthbackdrop:SetPoint("TOPLEFT", hp, "TOPLEFT", -noscalemult*3, noscalemult*3)
+	healthbackdrop:SetPoint("BOTTOMRIGHT", hp, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
+	healthbackdrop:SetFrameLevel(hp:GetFrameLevel() - 3)
+	healthbackdrop_tex = healthbackdrop:CreateTexture(nil, "BACKGROUND")
+	healthbackdrop_tex:SetAllPoints(healthbackdrop)
+	healthbackdrop_tex:SetTexture(0.1, 0.1, 0.1)
+	frame.healthbackdrop = healthbackdrop_tex
+	
+	local healthborder = CreateFrame("Frame", nil, hp)
+	healthborder:SetPoint("TOPLEFT", hp, "TOPLEFT", -noscalemult*2, noscalemult*2)
+	healthborder:SetPoint("BOTTOMRIGHT", hp, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
+	healthborder:SetFrameLevel(hp:GetFrameLevel() - 2)
+	healthborder_tex = healthborder:CreateTexture(nil, "BACKGROUND")
+	healthborder_tex:SetAllPoints(healthborder)
+	healthborder_tex:SetTexture(0.6, 0.6, 0.6)	
+	frame.healthborder_tex = healthborder_tex
+	
+	--Create Health Backdrop Frame
+	local healthbackdrop2 = CreateFrame("Frame", nil, hp)
+	healthbackdrop2:SetPoint("TOPLEFT", hp, "TOPLEFT", -noscalemult, noscalemult)
+	healthbackdrop2:SetPoint("BOTTOMRIGHT", hp, "BOTTOMRIGHT", noscalemult, -noscalemult)
+	healthbackdrop2:SetFrameLevel(hp:GetFrameLevel() - 1)
+	healthbackdrop2_tex = healthbackdrop2:CreateTexture(nil, "BACKGROUND")
+	healthbackdrop2_tex:SetAllPoints(healthbackdrop2)
+	healthbackdrop2_tex:SetTexture(0.1, 0.1, 0.1)
 	
 	hp:HookScript('OnShow', UpdateObjects)
 	hp:SetStatusBarTexture(TEXTURE)
 	frame.hp = hp
-	
-	--Create Shadow for Healthbar
-	TukuiDB.CreateShadow(frame.healthbackdrop)
-	
-	--Actual Background for the Healthbar
-	hp.hpbg = hp:CreateTexture(nil, 'BORDER')
-	hp.hpbg:SetAllPoints(hp)
-	hp.hpbg:SetTexture(1,1,1,0.4)	
 	
 	--Need to Reposition the overlay with the health
 	frame.overlay = overlay
@@ -314,54 +288,55 @@ local function SkinObjects(frame)
 		hp.value:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
 	end
 	
-	-- Create Castbar Backdrop frame
-	local castbackdrop = CreateFrame("Frame", nil, cb)
-	castbackdrop:SetBackdrop({
-		bgFile = TukuiCF["media"].blank,
-		edgeFile = TukuiCF["media"].blank,
-		tile = false, tileSize = 0, edgeSize = noscalemult,
-		insets = {left = -noscalemult, right = -noscalemult, top = -noscalemult, bottom = -noscalemult}
-	})
-	castbackdrop:SetBackdropBorderColor(0.6,0.6,0.6,1)
-	castbackdrop:SetBackdropColor(0.1, 0.1, 0.1, 1)
-	castbackdrop:SetPoint("TOPLEFT", cb, "TOPLEFT", -noscalemult*2, noscalemult*2)
-	castbackdrop:SetPoint("BOTTOMRIGHT", cb, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
-	castbackdrop:SetFrameStrata(cb:GetFrameStrata())
-	if (cb:GetFrameLevel() - 1) > 0 then
-		castbackdrop:SetFrameLevel(cb:GetFrameLevel() - 1)
-	else
-		cb:SetFrameLevel(9)
-		castbackdrop:SetFrameLevel(cb:GetFrameLevel() - 1)
-	end
-	frame.castbackdrop = castbackdrop
-
-	--Create Shadow for Healthbar
-	TukuiDB.CreateShadow(frame.castbackdrop)
+	--Create Castbar Backdrop Frame
+	local castbarbackdrop = CreateFrame("Frame", nil, cb)
+	castbarbackdrop:SetPoint("TOPLEFT", cb, "TOPLEFT", -noscalemult*3, noscalemult*3)
+	castbarbackdrop:SetPoint("BOTTOMRIGHT", cb, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
+	castbarbackdrop:SetFrameLevel(cb:GetFrameLevel() - 3)
+	castbarbackdrop_tex = castbarbackdrop:CreateTexture(nil, "BACKGROUND")
+	castbarbackdrop_tex:SetAllPoints(castbarbackdrop)
+	castbarbackdrop_tex:SetTexture(0.1, 0.1, 0.1)
+	
+	local castbarborder = CreateFrame("Frame", nil, cb)
+	castbarborder:SetPoint("TOPLEFT", cb, "TOPLEFT", -noscalemult*2, noscalemult*2)
+	castbarborder:SetPoint("BOTTOMRIGHT", cb, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
+	castbarborder:SetFrameLevel(cb:GetFrameLevel() - 2)
+	castbarborder_tex = castbarborder:CreateTexture(nil, "BACKGROUND")
+	castbarborder_tex:SetAllPoints(castbarborder)
+	castbarborder_tex:SetTexture(0.6, 0.6, 0.6)	
+	
+	--Create Health Backdrop Frame
+	local castbarbackdrop2 = CreateFrame("Frame", nil, cb)
+	castbarbackdrop2:SetPoint("TOPLEFT", cb, "TOPLEFT", -noscalemult, noscalemult)
+	castbarbackdrop2:SetPoint("BOTTOMRIGHT", cb, "BOTTOMRIGHT", noscalemult, -noscalemult)
+	castbarbackdrop2:SetFrameLevel(cb:GetFrameLevel() - 1)
+	castbarbackdrop2_tex = castbarbackdrop2:CreateTexture(nil, "BACKGROUND")
+	castbarbackdrop2_tex:SetAllPoints(castbarbackdrop2)
+	castbarbackdrop2_tex:SetTexture(0.1, 0.1, 0.1)
 	
 	--Setup CastBar Icon
 	cbicon:ClearAllPoints()
 	cbicon:SetPoint("TOPLEFT", hp, "TOPRIGHT", 8, 0)		
 	cbicon:SetSize(iconSize, iconSize)
 	cbicon:SetTexCoord(.07, .93, .07, .93)
+	cbicon:SetDrawLayer("OVERLAY")
 
 	-- Create Cast Icon Backdrop frame
-	local casticonbackdrop = CreateFrame("Frame", nil, cb)
-	casticonbackdrop:SetBackdrop({
-		bgFile = TukuiCF["media"].blank,
-		edgeFile = TukuiCF["media"].blank,
-		tile = false, tileSize = 0, edgeSize = noscalemult,
-		insets = {left = -noscalemult, right = -noscalemult, top = -noscalemult, bottom = -noscalemult}
-	})
-	casticonbackdrop:SetBackdropBorderColor(0.6,0.6,0.6,1)
-	casticonbackdrop:SetBackdropColor(0.1, 0.1, 0.1, 1)
-	casticonbackdrop:SetPoint("TOPLEFT", cbicon, "TOPLEFT", -noscalemult*2, noscalemult*2)
-	casticonbackdrop:SetPoint("BOTTOMRIGHT", cbicon, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
-	casticonbackdrop:SetFrameLevel(hp:GetFrameLevel() - 1)
-	casticonbackdrop:SetFrameStrata(hp:GetFrameStrata())
-	frame.casticonbackdrop = casticonbackdrop
+	local castbarbackdrop_tex = cb:CreateTexture(nil, "BACKGROUND")
+	castbarbackdrop_tex:SetPoint("TOPLEFT", cbicon, "TOPLEFT", -noscalemult*3, noscalemult*3)
+	castbarbackdrop_tex:SetPoint("BOTTOMRIGHT", cbicon, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
+	castbarbackdrop_tex:SetTexture(0.1, 0.1, 0.1)
 	
-	--Create Shadow for Cast Icon
-	TukuiDB.CreateShadow(frame.casticonbackdrop)
+	local castbarborder_tex = cb:CreateTexture(nil, "BORDER")
+	castbarborder_tex:SetPoint("TOPLEFT", cbicon, "TOPLEFT", -noscalemult*2, noscalemult*2)
+	castbarborder_tex:SetPoint("BOTTOMRIGHT", cbicon, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
+	castbarborder_tex:SetTexture(0.6, 0.6, 0.6)	
+	
+	--Create Health Backdrop Frame
+	local castbarbackdrop2_tex = cb:CreateTexture(nil, "ARTWORK")
+	castbarbackdrop2_tex:SetPoint("TOPLEFT", cbicon, "TOPLEFT", -noscalemult, noscalemult)
+	castbarbackdrop2_tex:SetPoint("BOTTOMRIGHT", cbicon, "BOTTOMRIGHT", noscalemult, -noscalemult)
+	castbarbackdrop2_tex:SetTexture(0.1, 0.1, 0.1)
 	
 	--Create Cast Time Text
 	cb.time = cb:CreateFontString(nil, "ARTWORK")
