@@ -7,15 +7,17 @@ if TukuiCF["datatext"].wowtime and TukuiCF["datatext"].wowtime > 0 then
 	Stat:SetFrameStrata("MEDIUM")
 	Stat:SetFrameLevel(3)
 	
+	local fader = CreateFrame("Frame", "TimeDataText", TukuiInfoLeft)
+	
 	local Text
-	Text = TukuiInfoLeft:CreateFontString(nil, "OVERLAY")
-		Text:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
+	Text = fader:CreateFontString(nil, "OVERLAY")
+	Text:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
 	Text:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
 	TukuiDB.PP(TukuiCF["datatext"].wowtime, Text)
 
 	local int = 1
+	SetUpAnimGroup(TimeDataText)
 	local function Update(self, t)
-		local pendingCalendarInvites = CalendarGetNumPendingInvites()
 		int = int - t
 		if int < 0 then
 			if TukuiCF["datatext"].localtime == true then
@@ -23,55 +25,37 @@ if TukuiCF["datatext"].wowtime and TukuiCF["datatext"].wowtime > 0 then
 				Hr = tonumber(date("%I"))
 				Min = date("%M")
 				if TukuiCF["datatext"].time24 == true then
-					if pendingCalendarInvites > 0 then
-					Text:SetText("|cffFF0000"..valuecolor..Hr24..":|r"..Min)
-				else
 					Text:SetText(Hr24..valuecolor..":|r"..Min)
-				end
-			else
-				if Hr24>=12 then
-					if pendingCalendarInvites > 0 then
-						Text:SetText("|cffFF0000"..Hr.."|r"..valuecolor..":|r|cffFF0000"..Min.."|r "..valuecolor.." PM|r")
-					else
-						Text:SetText(Hr..valuecolor..":|r"..Min..valuecolor.." PM")
-					end
 				else
-					if pendingCalendarInvites > 0 then
-						Text:SetText("|cffFF0000"..Hr.."|r"..valuecolor..":|r|cffFF0000"..Min.."|r "..valuecolor.." AM|r")
+					if Hr24>=12 then
+						Text:SetText(Hr..valuecolor..":|r"..Min..valuecolor.." PM")
 					else
 						Text:SetText(Hr..valuecolor..":|r"..Min..valuecolor.." AM")
 					end
 				end
-			end
-		else
-			local Hr, Min = GetGameTime()
-			if Min<10 then Min = "0"..Min end
-			if TukuiCF["datatext"].time24 == true then
-				if pendingCalendarInvites > 0 then			
-					Text:SetText("|cffFF0000"..Hr..valuecolor..":|r"..Min.." |cffffffff|r")
-				else
+			else
+				local Hr, Min = GetGameTime()
+				if Min<10 then Min = "0"..Min end
+				if TukuiCF["datatext"].time24 == true then
 					Text:SetText(Hr..valuecolor..":|r"..Min.." |cffffffff|r")
-				end
-			else
-				if Hr>=12 then
-					if Hr>12 then Hr = Hr-12 end
-					if pendingCalendarInvites > 0 then
-						Text:SetText("|cffFF0000"..Hr.."|r"..valuecolor..":|r|cffFF0000"..Min.."|r "..valuecolor.." PM|r")
-					else
-						Text:SetText(Hr..valuecolor..":|r"..Min..valuecolor.." PM")
-					end
 				else
-					if Hr == 0 then Hr = 12 end
-					if pendingCalendarInvites > 0 then
-						Text:SetText("|cffFF0000"..Hr.."|r"..valuecolor..":|r|cffFF0000"..Min.."|r "..valuecolor.." AM|r")
+					if Hr>=12 then
+						if Hr>12 then Hr = Hr-12 end
+						Text:SetText(Hr..valuecolor..":|r"..Min..valuecolor.." PM")
 					else
+						if Hr == 0 then Hr = 12 end
 						Text:SetText(Hr..valuecolor..":|r"..Min..valuecolor.." AM")
 					end
 				end
 			end
-		end
-		self:SetAllPoints(Text)
-		int = 1
+			
+			if CalendarGetNumPendingInvites() > 0 then
+				Flash(TimeDataText, 0.53)
+			else
+				StopFlash(TimeDataText)
+			end
+			self:SetAllPoints(Text)
+			int = 1
 		end
 	end
 

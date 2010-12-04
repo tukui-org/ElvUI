@@ -8,14 +8,17 @@ if TukuiCF["datatext"].dur and TukuiCF["datatext"].dur > 0 then
 	Stat:SetFrameStrata("MEDIUM")
 	Stat:SetFrameLevel(3)
 	
-	local Text  = TukuiInfoLeft:CreateFontString(nil, "OVERLAY")
-		Text:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
+	local fader = CreateFrame("Frame", "DurabilityDataText", TukuiInfoLeft)
+	
+	local Text  = DurabilityDataText:CreateFontString(nil, "OVERLAY")
+	Text:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
 	Text:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
 	TukuiDB.PP(TukuiCF["datatext"].dur, Text)
 
 	local Total = 0
 	local current, max
-
+	SetUpAnimGroup(DurabilityDataText)
+	
 	local function OnEvent(self)
 		for i = 1, 11 do
 			if GetInventoryItemLink("player", tukuilocal.Slots[i][1]) ~= nil then
@@ -27,9 +30,22 @@ if TukuiCF["datatext"].dur and TukuiCF["datatext"].dur > 0 then
 			end
 		end
 		table.sort(tukuilocal.Slots, function(a, b) return a[3] < b[3] end)
-		
+
 		if Total > 0 then
 			Text:SetText(DURABILITY..": "..valuecolor..floor(tukuilocal.Slots[1][3]*100).."%")
+			if floor(tukuilocal.Slots[1][3]*100) <= 20 then
+				local int = -1
+				Stat:SetScript("OnUpdate", function(self, t)
+					int = int - t
+					if int < 0 then
+						Flash(DurabilityDataText, 0.53)
+						int = 1
+					end
+				end)				
+			else
+				Stat:SetScript("OnUpdate", function() end)
+				StopFlash(DurabilityDataText)
+			end
 		else
 			Text:SetText(DURABILITY..": 100%")
 		end
