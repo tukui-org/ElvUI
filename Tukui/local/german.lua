@@ -18,7 +18,7 @@ if TukuiDB.client == "deDE" then
 	tukuilocal.chat_ERR_FRIEND_OFFLINE_S = "ist nun |cffff0000offline|r"
  
 	tukuilocal.disband = "Gruppe wird aufgelöst."
- 
+	tukuilocal.raidbufftoggler = "Schlachtzugs-Buff Erinnerung: "	
 	tukuilocal.datatext_download = "Herunterladen: "
 	tukuilocal.datatext_bandwidth = "Bandbreite: "
 	tukuilocal.datatext_guild = "Gilde"
@@ -90,7 +90,7 @@ if TukuiDB.client == "deDE" then
 	tukuilocal.popup_disableui = "Tukui funktioniert nicht mit deiner Auflösung, möchtest du Tukui ausschalten? (Drücke Abbrechen, falls du eine andere Auflösung testen willst.)"
 	tukuilocal.popup_install = "Dies ist das erste mal mit Tukui V12 mit diesem Charakter. Du musst dein UI neuladen, um Aktionsleisten, Variabeln und den Chat einzustellen."
 	tukuilocal.popup_2raidactive = "2 Raid Layouts sind aktiv, wähle bitte eines aus."
- 
+	tukuilocal.popup_rightchatwarn = "Du hast wahrscheinlich aus Versehen das rechte Chatfenster entfernt, momentan benötigt Tukui dies. Zum deaktivieren musst du es in  den Einstellungen ausschalten, ansonsten drücke annehmen um die Chatfenster zurückzusetzen."
 	tukuilocal.merchant_repairnomoney = "Du hast nicht genügend Gold zum Reparieren!"
 	tukuilocal.merchant_repaircost = "Deine Rüstung wurde repariert für"
 	tukuilocal.merchant_trashsell = "Dein Abfall wurde verkauft und du erhälst"

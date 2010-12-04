@@ -188,6 +188,7 @@ local function UpdateObjects(frame)
 	frame.overlay:ClearAllPoints()
 	frame.overlay:SetAllPoints(frame.hp)
 	frame.overlay:SetTexture(1,1,1,0.25)
+	frame.overlay:Hide()
 	
 	-- color hp bg dependend on hp color
     local BGr, BGg, BGb = frame.hp:GetStatusBarColor()
