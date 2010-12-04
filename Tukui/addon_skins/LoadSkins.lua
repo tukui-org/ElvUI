@@ -81,7 +81,7 @@ Mod_AddonSkins:SetScript("OnEvent",function(self, event, addon)
 	elseif event == "PLAYER_ENTERING_WORLD" then
 		self:SetScript("OnEvent",nil)
 		-- Embed Right
-		if TukuiCF["general"].embedright == "Skada" and IsAddOnLoaded("Skada") then
+		if TukuiCF["skin"].embedright == "Skada" and IsAddOnLoaded("Skada") then
 			SkadaBarWindowSkada:ClearAllPoints()
 			SkadaBarWindowSkada:SetPoint("TOPRIGHT", ChatRBackground2, "TOPRIGHT", -2, -2)
 			local function AdjustSkadaFrameLevels()
@@ -99,7 +99,7 @@ Mod_AddonSkins:SetScript("OnEvent",function(self, event, addon)
 			SkadaBarWindowSkada:Hide()
 			SkadaBarWindowSkada:Show()
 		end
-		if TukuiCF["general"].embedright == "Recount" and IsAddOnLoaded("Recount") then
+		if TukuiCF["skin"].embedright == "Recount" and IsAddOnLoaded("Recount") then
 			Recount.db.profile.FrameStrata = "4-HIGH"
 			Recount_MainWindow:ClearAllPoints()
 			Recount_MainWindow:SetPoint("TOPLEFT", ChatRBackground2,"TOPLEFT", 0, 7)
@@ -108,12 +108,20 @@ Mod_AddonSkins:SetScript("OnEvent",function(self, event, addon)
 		elseif IsAddOnLoaded("Recount") then
 			Recount.db.profile.FrameStrata = "4-HIGH"
 		end
-		if TukuiCF["general"].embedright == "Omen" and IsAddOnLoaded("Omen") then
+		if TukuiCF["skin"].embedright == "Omen" and IsAddOnLoaded("Omen") then
 			if IsAddOnLoaded("Omen") then
 				OmenBarList:SetFrameStrata("HIGH")
 			end
 			OmenBarList:ClearAllPoints()
 			OmenBarList:SetAllPoints(ChatRBackground2)
+		end
+		
+		if TukuiCF["chat"].showbackdrop == true and IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and TukuiCF["skin"].hookdxeright == true and TukuiCF["chat"].rightchat == true then
+			DXEAlertsTopStackAnchor:ClearAllPoints()
+			DXEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 18)			
+		elseif IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and TukuiCF["skin"].hookdxeright == true then
+			DXEAlertsTopStackAnchor:ClearAllPoints()
+			DXEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -5)
 		end
 	end
 end)

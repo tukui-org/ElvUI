@@ -324,6 +324,84 @@ SlideOut = function(self)
 end
 
 ------------------------------------------------------------------------
+-- Chat Animation Functions
+------------------------------------------------------------------------
+ToggleSlideChatL = function()
+	if TukuiChatLIn == true then
+		for i = 1, NUM_CHAT_WINDOWS do
+			local chat = _G[format("ChatFrame%s", i)]
+			local tab = _G[format("ChatFrame%sTab", i)]
+			chat:SetParent(tab)
+		end
+		SlideOut(ChatLBackground)	
+		TukuiChatLIn = false
+		TukuiInfoLeftLButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))
+	else
+		SlideIn(ChatLBackground)
+		TukuiChatLIn = true
+		TukuiInfoLeftLButton.Text:SetTextColor(1,1,1,1)
+	end
+end
+
+ToggleSlideChatR = function()
+	if TukuiChatRIn == true then
+		SlideOut(ChatRBackground)	
+		if IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and TukuiCF["skin"].hookdxeright == true and TukuiCF["chat"].rightchat == true and TukuiCF["chat"].showbackdrop == true then
+			DXEAlertsTopStackAnchor:ClearAllPoints()
+			DXEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -5)
+		end
+		TukuiChatRIn = false
+		TukuiDB.ChatRightShown = false
+		TukuiInfoRightRButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))
+	else
+		SlideIn(ChatRBackground)
+		if IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and TukuiCF["skin"].hookdxeright == true and TukuiCF["chat"].rightchat == true and TukuiCF["chat"].showbackdrop == true then
+			DXEAlertsTopStackAnchor:ClearAllPoints()
+			DXEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 18)
+		end
+		TukuiChatRIn = true
+		TukuiDB.ChatRightShown = true
+		TukuiInfoRightRButton.Text:SetTextColor(1,1,1,1)
+	end
+end
+
+--Bindings For Chat Sliders
+function ChatLeft_HotkeyPressed(keystate)
+	if keystate == "up" then return end
+	if TukuiChatLIn == true then
+		for i = 1, NUM_CHAT_WINDOWS do
+			local chat = _G[format("ChatFrame%s", i)]
+			local tab = _G[format("ChatFrame%sTab", i)]
+			chat:SetParent(tab)
+		end
+		ToggleSlideChatL()
+	else
+		ToggleSlideChatL()
+	end		
+end
+
+function ChatRight_HotkeyPressed(keystate)
+	if keystate == "up" then return end
+	ToggleSlideChatR()		
+end
+
+function ChatBoth_HotkeyPressed(keystate)
+	if keystate == "up" then return end
+	if TukuiChatLIn == true then
+		for i = 1, NUM_CHAT_WINDOWS do
+			local chat = _G[format("ChatFrame%s", i)]
+			local tab = _G[format("ChatFrame%sTab", i)]
+			chat:SetParent(tab)
+		end
+		ToggleSlideChatR()
+		ToggleSlideChatL()
+	else
+		ToggleSlideChatR()
+		ToggleSlideChatL()
+	end
+end
+
+------------------------------------------------------------------------
 --	ActionBar Functions
 ------------------------------------------------------------------------
 -- styleButton function authors are Chiril & Karudon.

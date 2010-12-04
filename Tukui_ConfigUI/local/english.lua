@@ -45,6 +45,7 @@ TukuiL.option_skin_dxe = "Deus Vox Encounters"
 TukuiL.option_skin_omen = "Omen"
 TukuiL.option_skin_recount = "Recount"
 TukuiL.option_skin_skada = "Skada"
+TukuiL.option_hookdxeright = "Force DXE's top bar anchor to be positioned above right chat frame"
 
 -- combat text
 TukuiL.option_combattext = "Combat Text"

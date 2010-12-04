@@ -2,7 +2,6 @@
 	["autoscale"] = true,                  -- mainly enabled for users that don't want to mess with the config file
 	["uiscale"] = 0.78,                    -- set your value (between 0.64 and 1) of your uiscale if autoscale is off
 	["multisampleprotect"] = true,         -- i don't recommend this because of shitty border but, voila!
-	["embedright"] = "NONE",				-- Addon to embed to the right frame ("Omen", "Recount", "Skada")
 	["classcolortheme"] = false,			--class colored theme for panels
 	["autocustomlagtolerance"] = true,		--set custom lag tollerance to your latency
 	["fontscale"] = 12,					--Master font
@@ -13,6 +12,8 @@ TukuiCF["skin"] = {	--Skin addons by Darth Android
 	["skada"] = true,
 	["dxe"] = true,
 	["omen"] = true,
+	["hookdxeright"] = false,			--Force DXE's Top Bar anchor to be hooked to the right chat window
+	["embedright"] = "NONE",				-- Addon to embed to the right frame ("Omen", "Recount", "Skada")
 }
 
 TukuiCF["unitframes"] = {

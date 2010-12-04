@@ -32,7 +32,6 @@ local function Local(o)
 	if o == "TukuiConfigUIgeneraloverridelowtohigh" then o = TukuiL.option_general_override end
 	if o == "TukuiConfigUIgeneralmultisampleprotect" then o = TukuiL.option_general_multisample end
 	if o == "TukuiConfigUIgeneraluiscale" then o = TukuiL.option_general_customuiscale end
-	if o == "TukuiConfigUIgeneralembedright" then o = TukuiL.option_general_embedright end
 	if o == "TukuiConfigUIgeneralclasscolortheme" then o = TukuiL.option_general_classtheme end
 	if o == "TukuiConfigUIgeneralautocustomlagtolerance" then o = TukuiL.option_general_autocustomlagtolerance end
 	if o == "TukuiConfigUIgeneralfontscale" then o = TukuiL.option_general_fontscale end 
@@ -63,6 +62,8 @@ local function Local(o)
 	if o =="TukuiConfigUIskinomen" then o = TukuiL.option_skin_omen end
 	if o =="TukuiConfigUIskinrecount" then o = TukuiL.option_skin_recount end
 	if o =="TukuiConfigUIskinskada" then o = TukuiL.option_skin_skada end
+	if o == "TukuiConfigUIskinhookdxeright" then o = TukuiL.option_hookdxeright end
+	if o == "TukuiConfigUIskinembedright" then o = TukuiL.option_general_embedright end
 	
 	--Combat Text
 	if o == "TukuiConfigUIcombattext" then o = TukuiL.option_combattext end

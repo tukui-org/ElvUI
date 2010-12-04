@@ -257,19 +257,19 @@ local function SetupChatPosAndFont(self)
 			end
 		end
 				
-		if not docked and (chat:GetName() == "ChatFrame3" and TukuiCF["chat"].rightchat == true) then
+		if not docked and (chat:GetName() == "ChatFrame3" and TukuiCF["chat"].rightchat == true) and TukuiCF["chat"].showbackdrop == true then
 			button:ClearAllPoints()
 			button:SetAlpha(1)
 			button:SetPoint("BOTTOMRIGHT", ChatRBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))
 			button:SetScript("OnEnter", function() end)
 			button:SetScript("OnLeave", function() end)
-		elseif not docked and not (chat:GetName() == "ChatFrame3" and TukuiCF["chat"].rightchat == true) then
+		elseif not docked and not (chat:GetName() == "ChatFrame3" and TukuiCF["chat"].rightchat == true) and TukuiCF["chat"].showbackdrop == true then
 			button:ClearAllPoints()
 			button:SetAlpha(0)
 			button:SetPoint("TOPRIGHT", chat, "TOPRIGHT", 0, 0)
 			button:SetScript("OnEnter", function() button:SetAlpha(1) end)
 			button:SetScript("OnLeave", function() button:SetAlpha(0) end)
-		elseif docked then
+		elseif docked and TukuiCF["chat"].showbackdrop == true then
 			button:ClearAllPoints()
 			button:SetAlpha(1)
 			button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))
@@ -282,19 +282,19 @@ local function SetupChatPosAndFont(self)
 			local chat = _G[format("ChatFrame%d", id)]
 			local button = _G[format("ButtonCF%d", id)]
 			local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
-			if not docked and (chat:GetName() == "ChatFrame3" and TukuiCF["chat"].rightchat == true) then
+			if not docked and (chat:GetName() == "ChatFrame3" and TukuiCF["chat"].rightchat == true) and TukuiCF["chat"].showbackdrop == true then
 				button:ClearAllPoints()
 				button:SetAlpha(1)
 				button:SetPoint("BOTTOMRIGHT", ChatRBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))
 				button:SetScript("OnEnter", function() end)
 				button:SetScript("OnLeave", function() end)
-			elseif not docked and not (chat:GetName() == "ChatFrame3" and TukuiCF["chat"].rightchat == true) then
+			elseif not docked and not (chat:GetName() == "ChatFrame3" and TukuiCF["chat"].rightchat == true) and TukuiCF["chat"].showbackdrop == true then
 				button:ClearAllPoints()
 				button:SetAlpha(0)
 				button:SetPoint("TOPRIGHT", chat, "TOPRIGHT", 0, 0)
 				button:SetScript("OnEnter", function() button:SetAlpha(1) end)
 				button:SetScript("OnLeave", function() button:SetAlpha(0) end)
-			elseif docked then
+			elseif docked and TukuiCF["chat"].showbackdrop == true then
 				button:ClearAllPoints()
 				button:SetAlpha(1)
 				button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))
@@ -308,19 +308,19 @@ local function SetupChatPosAndFont(self)
 			local chat = _G[format("ChatFrame%d", id)]
 			local button = _G[format("ButtonCF%d", id)]
 			local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
-			if not docked and (chat:GetName() == "ChatFrame3" and TukuiCF["chat"].rightchat == true) then
+			if not docked and (chat:GetName() == "ChatFrame3" and TukuiCF["chat"].rightchat == true) and TukuiCF["chat"].showbackdrop == true then
 				button:ClearAllPoints()
 				button:SetAlpha(1)
 				button:SetPoint("BOTTOMRIGHT", ChatRBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))
 				button:SetScript("OnEnter", function() end)
 				button:SetScript("OnLeave", function() end)
-			elseif not docked and not (chat:GetName() == "ChatFrame3" and TukuiCF["chat"].rightchat == true) then
+			elseif not docked and not (chat:GetName() == "ChatFrame3" and TukuiCF["chat"].rightchat == true) and TukuiCF["chat"].showbackdrop == true then
 				button:ClearAllPoints()
 				button:SetAlpha(0)
 				button:SetPoint("TOPRIGHT", chat, "TOPRIGHT", 0, 0)
 				button:SetScript("OnEnter", function() button:SetAlpha(1) end)
 				button:SetScript("OnLeave", function() button:SetAlpha(0) end)
-			elseif docked then
+			elseif docked and TukuiCF["chat"].showbackdrop == true then
 				button:ClearAllPoints()
 				button:SetAlpha(1)
 				button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, TukuiDB.Scale(3))
@@ -567,6 +567,10 @@ ChatCombatHider:SetScript("OnEvent", function(self, event)
 		if TukuiCF["chat"].combathide == "Both" then	
 			if TukuiChatRIn ~= false then
 				SlideOut(ChatRBackground)		
+				if IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and TukuiCF["skin"].hookdxeright == true then
+					DXEAlertsTopStackAnchor:ClearAllPoints()
+					DXEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -5)
+				end
 				TukuiDB.ChatRightShown = false
 				TukuiChatRIn = false
 				TukuiInfoRightRButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))			
@@ -579,6 +583,10 @@ ChatCombatHider:SetScript("OnEvent", function(self, event)
 		elseif TukuiCF["chat"].combathide == "Right" then
 			if TukuiChatRIn ~= false then
 				SlideOut(ChatRBackground)		
+				if IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and TukuiCF["skin"].hookdxeright == true then
+					DXEAlertsTopStackAnchor:ClearAllPoints()
+					DXEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -5)
+				end
 				TukuiDB.ChatRightShown = false
 				TukuiChatRIn = false
 				TukuiInfoRightRButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))			
@@ -593,7 +601,11 @@ ChatCombatHider:SetScript("OnEvent", function(self, event)
 	else
 		if TukuiCF["chat"].combathide == "Both" then
 			if TukuiChatRIn ~= true then
-				SlideIn(ChatRBackground)		
+				SlideIn(ChatRBackground)	
+				if IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and TukuiCF["skin"].hookdxeright == true and TukuiCF["chat"].rightchat == true and TukuiCF["chat"].showbackdrop == true then
+					DXEAlertsTopStackAnchor:ClearAllPoints()
+					DXEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 18)
+				end				
 				TukuiDB.ChatRightShown = true
 				TukuiChatRIn = true
 				TukuiInfoRightRButton.Text:SetTextColor(1,1,1)			
@@ -605,7 +617,11 @@ ChatCombatHider:SetScript("OnEvent", function(self, event)
 			end
 		elseif TukuiCF["chat"].combathide == "Right" then
 			if TukuiChatRIn ~= true then
-				SlideIn(ChatRBackground)		
+				SlideIn(ChatRBackground)	
+				if IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and TukuiCF["skin"].hookdxeright == true and TukuiCF["chat"].rightchat == true and TukuiCF["chat"].showbackdrop == true then
+					DXEAlertsTopStackAnchor:ClearAllPoints()
+					DXEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 18)
+				end					
 				TukuiDB.ChatRightShown = true
 				TukuiChatRIn = true
 				TukuiInfoRightRButton.Text:SetTextColor(1,1,1)			
