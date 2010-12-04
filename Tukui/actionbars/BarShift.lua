@@ -72,11 +72,20 @@ bar:SetScript("OnEvent", function(self, event, ...)
 			button = _G["ShapeshiftButton"..i]
 			button:ClearAllPoints()
 			button:SetParent(self)
-			if i == 1 then
-				button:SetPoint("BOTTOMLEFT", TukuiShift, 0, TukuiDB.Scale(29))
+			if TukuiCF["actionbar"].verticalstance ~= true then
+				if i == 1 then
+					button:SetPoint("BOTTOMLEFT", TukuiShift, 0, TukuiDB.Scale(29))
+				else
+					local previous = _G["ShapeshiftButton"..i-1]
+					button:SetPoint("LEFT", previous, "RIGHT", TukuiDB.petbuttonspacing, 0)
+				end
 			else
-				local previous = _G["ShapeshiftButton"..i-1]
-				button:SetPoint("LEFT", previous, "RIGHT", TukuiDB.Scale(4), 0)
+				if i == 1 then
+					button:SetPoint("BOTTOMLEFT", TukuiShift, 0, TukuiDB.Scale(29))
+				else
+					local previous = _G["ShapeshiftButton"..i-1]
+					button:SetPoint("TOP", previous, "BOTTOM", 0, -TukuiDB.petbuttonspacing)
+				end			
 			end
 			local _, name = GetShapeshiftFormInfo(i)
 			if name then
