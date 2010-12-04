@@ -123,6 +123,8 @@ local function UpdateThreat(frame, elapsed)
 		else
 			frame.healthborder_tex:SetTexture(0.6, 0.6, 0.6)
 		end
+	elseif frame.hasclass ~= true then
+		frame.healthborder_tex:SetTexture(0.6, 0.6, 0.6)
 	end
 end
 
@@ -137,6 +139,9 @@ local function UpdateObjects(frame)
 	frame.hp:SetSize(hpWidth, hpHeight)	
 	frame.hp:SetPoint('CENTER', frame, 0, -10)
 	frame.hp:GetStatusBarTexture():SetHorizTile(true)
+
+	--create variable for original colors
+	frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = frame.hp:GetStatusBarColor()
 	
 	--Class Icons
 	for class, color in pairs(RAID_CLASS_COLORS) do
@@ -156,7 +161,13 @@ local function UpdateObjects(frame)
 		texcoord = {0.5, 0.75, 0.5, 0.75}
 		frame.hasclass = false
 	end
-	frame.class:SetTexCoord(texcoord[1],texcoord[2],texcoord[3],texcoord[4]);
+	
+	if frame.hp.rcolor == 0 and frame.hp.gcolor == 0 and frame.hp.bcolor ~= 0 then
+		texcoord = {0.5, 0.75, 0.5, 0.75}
+		frame.hasclass = true
+	end
+	frame.class:SetTexCoord(texcoord[1],texcoord[2],texcoord[3],texcoord[4])
+	
 	
 	--Set the name text
 	frame.name:SetText(frame.oldname:GetText())
@@ -166,9 +177,6 @@ local function UpdateObjects(frame)
 	frame.overlay:SetAllPoints(frame.hp)
 	frame.overlay:SetTexture(1,1,1,0.25)
 	frame.overlay:Hide()
-		
-	--create variable for original colors
-	frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = frame.hp:GetStatusBarColor()
 	
 	--Setup level text
 	local level, elite, mylevel = tonumber(frame.level:GetText()), frame.elite:IsShown(), UnitLevel("player")
@@ -235,13 +243,15 @@ local function SkinObjects(frame)
 	local threat, hpborder, cbshield, cbborder, cbicon, overlay, oldname, level, bossicon, raidicon, elite = frame:GetRegions()
 	frame.healthOriginal = hp
 	
+	--Just make sure these are correct
 	hp:SetFrameLevel(9)
+	cb:SetFrameLevel(9)
 	
 	--Create Health Backdrop Frame
 	local healthbackdrop = CreateFrame("Frame", nil, hp)
 	healthbackdrop:SetPoint("TOPLEFT", hp, "TOPLEFT", -noscalemult*3, noscalemult*3)
 	healthbackdrop:SetPoint("BOTTOMRIGHT", hp, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
-	healthbackdrop:SetFrameLevel(hp:GetFrameLevel() - 3)
+	healthbackdrop:SetFrameLevel(1)
 	healthbackdrop_tex = healthbackdrop:CreateTexture(nil, "BACKGROUND")
 	healthbackdrop_tex:SetAllPoints(healthbackdrop)
 	healthbackdrop_tex:SetTexture(0.1, 0.1, 0.1)
@@ -258,10 +268,10 @@ local function SkinObjects(frame)
 	
 	--Create Health Backdrop Frame
 	local healthbackdrop2 = CreateFrame("Frame", nil, hp)
-	healthbackdrop2:SetPoint("TOPLEFT", hp, "TOPLEFT", -noscalemult, noscalemult)
-	healthbackdrop2:SetPoint("BOTTOMRIGHT", hp, "BOTTOMRIGHT", noscalemult, -noscalemult)
+	healthbackdrop2:SetPoint("TOPLEFT", healthborder, "TOPLEFT", noscalemult, -noscalemult)
+	healthbackdrop2:SetPoint("BOTTOMRIGHT", healthborder, "BOTTOMRIGHT", -noscalemult, noscalemult)
 	healthbackdrop2:SetFrameLevel(hp:GetFrameLevel() - 1)
-	healthbackdrop2_tex = healthbackdrop2:CreateTexture(nil, "BACKGROUND")
+	healthbackdrop2_tex = healthbackdrop2:CreateTexture(nil, "BORDER")
 	healthbackdrop2_tex:SetAllPoints(healthbackdrop2)
 	healthbackdrop2_tex:SetTexture(0.1, 0.1, 0.1)
 	
