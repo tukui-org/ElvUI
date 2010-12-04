@@ -146,32 +146,32 @@ MarkerFrame:SetPoint("TOPLEFT", WorldMarkerButton, "BOTTOMRIGHT", TukuiDB.Scale(
 MarkerFrame:Hide()
 
 --Setup Secure Buttons
-CreateMarkerButton("BlueFlare", "|cff519AE8"..tukuilocal.core_raidutil_blue.."|r", "TOPLEFT", MarkerFrame, "TOPLEFT")
+CreateMarkerButton("BlueFlare", "|cff0062FF"..RAID_TARGET_6.."|r", "TOPLEFT", MarkerFrame, "TOPLEFT")
 BlueFlare:SetAttribute("macrotext", [[
 /click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
 /click DropDownList1Button1
 ]])
-CreateMarkerButton("GreenFlare", "|cff24B358"..tukuilocal.core_raidutil_green.."|r", "TOPLEFT", BlueFlare, "BOTTOMLEFT")
+CreateMarkerButton("GreenFlare", "|cff00FF00"..RAID_TARGET_4.."|r", "TOPLEFT", BlueFlare, "BOTTOMLEFT")
 GreenFlare:SetAttribute("macrotext", [[
 /click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
 /click DropDownList1Button2
 ]])
-CreateMarkerButton("PurpleFlare", "|cff852096"..tukuilocal.core_raidutil_purple.."|r", "TOPLEFT", GreenFlare, "BOTTOMLEFT")
+CreateMarkerButton("PurpleFlare", "|cffB500B5"..RAID_TARGET_3.."|r", "TOPLEFT", GreenFlare, "BOTTOMLEFT")
 PurpleFlare:SetAttribute("macrotext", [[
 /click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
 /click DropDownList1Button3
 ]])
-CreateMarkerButton("RedFlare", "|cffD60629"..tukuilocal.core_raidutil_red.."|r", "TOPLEFT", PurpleFlare, "BOTTOMLEFT")
+CreateMarkerButton("RedFlare", "|cffFF0000"..RAID_TARGET_7.."|r", "TOPLEFT", PurpleFlare, "BOTTOMLEFT")
 RedFlare:SetAttribute("macrotext", [[
 /click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
 /click DropDownList1Button4
 ]])
-CreateMarkerButton("WhiteFlare", tukuilocal.core_raidutil_white, "TOPLEFT", RedFlare, "BOTTOMLEFT")
+CreateMarkerButton("WhiteFlare", "|cffFFFF00"..RAID_TARGET_1.."|r", "TOPLEFT", RedFlare, "BOTTOMLEFT")
 WhiteFlare:SetAttribute("macrotext", [[
 /click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
 /click DropDownList1Button5
 ]])
-CreateMarkerButton("ClearFlare", tukuilocal.core_raidutil_clear, "TOPLEFT", WhiteFlare, "BOTTOMLEFT")
+CreateMarkerButton("ClearFlare", REMOVE_WORLD_MARKERS, "TOPLEFT", WhiteFlare, "BOTTOMLEFT")
 ClearFlare:SetAttribute("macrotext", [[
 /click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
 /click DropDownList1Button6

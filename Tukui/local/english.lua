@@ -113,8 +113,6 @@ tukuilocal.unitframes_ouf_offlinedps = "Offline"
 tukuilocal.unitframes_ouf_deaddps = "Dead"
 tukuilocal.unitframes_ouf_ghostheal = "GHOST"
 tukuilocal.unitframes_ouf_deadheal = "DEAD"
-tukuilocal.unitframes_ouf_gohawk = "GO HAWK"
-tukuilocal.unitframes_ouf_goviper = "GO VIPER"
 tukuilocal.unitframes_disconnected = "D/C"
 
 tukuilocal.tooltip_count = "Count"
@@ -174,16 +172,6 @@ tukuilocal.bind_discardbind = "Discard bindings"
 
 tukuilocal.core_raidutil = "Raid Utility"
 tukuilocal.core_raidutil_disbandgroup = "Disband Group"
-tukuilocal.core_raidutil_blue = "Blue"
-tukuilocal.core_raidutil_green = "Green"
-tukuilocal.core_raidutil_purple = "Purple"
-tukuilocal.core_raidutil_red = "Red"
-tukuilocal.core_raidutil_white = "White"
-tukuilocal.core_raidutil_clear = "Clear"
-
-tukuilocal.hunter_unhappy = "Your pet is unhappy!"
-tukuilocal.hunter_content = "Your pet is content!"
-tukuilocal.hunter_happy = "Your pet is happy!"
 
 function TukuiDB.UpdateHotkey(self, actionButtonType)
 	local hotkey = _G[self:GetName() .. 'HotKey']
