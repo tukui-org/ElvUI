@@ -84,6 +84,9 @@ local function SetChatStyle(frame)
 				else
 					TukuiDB.Kill(region)
 				end
+				if region:GetParent():GetName() == "ChatFrame1Tab" then
+					TukuiDB.Kill(region)
+				end
 			end
 		end
 	end
