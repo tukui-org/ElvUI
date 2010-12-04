@@ -109,6 +109,8 @@ Mod_AddonSkins:SetScript("OnEvent",function(self, event, addon)
 			Recount.db.profile.FrameStrata = "4-HIGH"
 		end
 		if TukuiCF["skin"].embedright == "Omen" and IsAddOnLoaded("Omen") then
+			Omen.UpdateTitleBar = function() end
+			TukuiDB.Kill(OmenTitle)
 			if IsAddOnLoaded("Omen") then
 				OmenBarList:SetFrameStrata("HIGH")
 			end
