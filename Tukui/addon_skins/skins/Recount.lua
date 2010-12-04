@@ -23,7 +23,11 @@ Mod_AddonSkins:RegisterSkin("Recount",function(Skin, skin, Layout, layout, confi
 	    frame.bgMain:SetPoint("BOTTOMLEFT",frame,"BOTTOMLEFT")
 	    frame.bgMain:SetPoint("BOTTOMRIGHT",frame,"BOTTOMRIGHT")
 	    frame.bgMain:SetPoint("TOP",frame,"TOP",0,-7)
-	    frame.bgMain:SetFrameStrata("MEDIUM")
+		if frame:GetName() == "Recount_MainWindow" then
+			frame.bgMain:SetFrameStrata("MEDIUM")
+		else
+			frame.bgMain:SetFrameStrata("BACKGROUND")
+		end
 	    frame.bgMain:SetFrameLevel(31)
 	    frame.CloseButton:SetPoint("TOPRIGHT",frame,"TOPRIGHT",-1,-9)
 		frame:SetBackdrop(nil)
