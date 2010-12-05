@@ -91,8 +91,10 @@ local function UpdateThreat(frame, elapsed)
 				--No Threat
 				if TukuiDB.Role == "Tank" then
 					frame.hp:SetStatusBarColor(badR, badG, badB)
+					frame.hp.hpbg:SetTexture(badR, badG, badB, 0.25)
 				else
 					frame.hp:SetStatusBarColor(goodR, goodG, goodB)
+					frame.hp.hpbg:SetTexture(goodR, goodG, goodB, 0.25)
 				end		
 			else
 				--Set colors to their original, not in combat
@@ -105,12 +107,15 @@ local function UpdateThreat(frame, elapsed)
 				--Have Threat
 				if TukuiDB.Role == "Tank" then
 					frame.hp:SetStatusBarColor(goodR, goodG, goodB)
+					frame.hp.hpbg:SetTexture(goodR, goodG, goodB, 0.25)
 				else
 					frame.hp:SetStatusBarColor(badR, badG, badB)
+					frame.hp.hpbg:SetTexture(badR, badG, badB, 0.25)
 				end
 			else
 				--Losing/Gaining Threat
-				frame.hp:SetStatusBarColor(transitionR, transitionG, transitionB)				
+				frame.hp:SetStatusBarColor(transitionR, transitionG, transitionB)	
+				frame.hp.hpbg:SetTexture(transitionR, transitionG, transitionB, 0.25)
 			end
 		end
 	end
@@ -161,6 +166,7 @@ local function UpdateObjects(frame)
 
 	--create variable for original colors
 	frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = frame.hp:GetStatusBarColor()
+	frame.hp.hpbg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, 0.25)
 	
 	--Class Icons
 	for class, color in pairs(RAID_CLASS_COLORS) do
@@ -290,6 +296,11 @@ local function SkinObjects(frame)
 	hp:HookScript('OnShow', UpdateObjects)
 	hp:SetStatusBarTexture(TEXTURE)
 	frame.hp = hp
+	
+	--Actual Background for the Healthbar
+	hp.hpbg = hp:CreateTexture(nil, 'BORDER')
+	hp.hpbg:SetAllPoints(hp)
+	hp.hpbg:SetTexture(1,1,1,0.25)  
 	
 	--Create Overlay Highlight
 	frame.overlay = frame:CreateTexture(nil, "HIGHLIGHT")
