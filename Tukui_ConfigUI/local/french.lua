@@ -219,8 +219,8 @@ if GetLocale() == "frFR" then
 	TukuiL.option_actionbar_bottompetbar = "Positionner la barre de familier sous la barre d'action principale, ceci déplace la barre d'action principale vers le haut"
 	TukuiL.option_actionbar_buttonsize = "Taille des boutons de la barre d'action"
 	TukuiL.option_actionbar_buttonspacing = "Espace entre les boutons de la barre d'action"
-	TukuiL.option_actionbar_petbuttonsize = "Taille de la barre d'action du familier / de position / du totem"
-	TukuiL.option_actionbar_petbuttonspacing = "Espace entre les boutons de la barre d'action du familier / de position / du totem"
+	TukuiL.option_actionbar_petbuttonsize = "Taille de la barre d'action du familier / de position"
+	TukuiL.option_actionbar_petbuttonspacing = "Espace entre les boutons de la barre d'action du familier / de position"
 	TukuiL.option_actionbar_swaptopbottombar = "Intervertir les positions des 2 barres d'actions en bas."
 	
 	-- arena

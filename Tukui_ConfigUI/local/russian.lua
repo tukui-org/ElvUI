@@ -218,8 +218,8 @@
 	TukuiL.option_actionbar_bottompetbar = "Переместить панель питомца под главную панель заклинаний"
 	TukuiL.option_actionbar_buttonsize = "Размер кнопок панели действий"
 	TukuiL.option_actionbar_buttonspacing = "Промежуток между кнопками панели действий"
-	TukuiL.option_actionbar_petbuttonsize = "Размер кнопок панели действий для питомца/стоек/тотемов"
-	TukuiL.option_actionbar_petbuttonspacing = "Промежуток между кнопками панели действий для питомца/стоек/тотемов"
+	TukuiL.option_actionbar_petbuttonsize = "Размер кнопок панели действий для питомца/стоек"
+	TukuiL.option_actionbar_petbuttonspacing = "Промежуток между кнопками панели действий для питомца/стоек"
 	TukuiL.option_actionbar_swaptopbottombar = "Swap the top and bottom actionbar positions"
 	
 	-- arena

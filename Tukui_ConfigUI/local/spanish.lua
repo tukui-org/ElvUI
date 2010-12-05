@@ -216,8 +216,8 @@
 	TukuiL.option_actionbar_bottompetbar = "Posicionar la barra de mascota bajo la barra principal de acción, la barra de acción principal se desplazará hacia arriba"
 	TukuiL.option_actionbar_buttonsize = "Tamaño de los botones de la barra principal"
 	TukuiL.option_actionbar_buttonspacing = "Espacio entre los botones de la barra principal"
-	TukuiL.option_actionbar_petbuttonsize = "Tamaño de los botones de la barra de mascota/estancia/tótems"
-	TukuiL.option_actionbar_petbuttonspacing = "Espacio entre los botones de la barra de mascota/estancia/tótems"
+	TukuiL.option_actionbar_petbuttonsize = "Tamaño de los botones de la barra de mascota/estancia"
+	TukuiL.option_actionbar_petbuttonspacing = "Espacio entre los botones de la barra de mascota/estancia"
 	TukuiL.option_actionbar_swaptopbottombar = "Swap the top and bottom actionbar positions"
 	
 	-- arena
