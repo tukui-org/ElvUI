@@ -34,14 +34,7 @@ local function install()
 			FCF_OpenNewWindow(LOOT)
 			FCF_UnDockFrame(ChatFrame3)
 			FCF_SetLocked(ChatFrame3, 1)
-			ChatFrame3:Show()	
-			FCF_OpenNewWindow(WHISPER)
-			FCF_SetLocked(ChatFrame4, 1)
-			FCF_DockFrame(ChatFrame4)			
-		else
-			FCF_OpenNewWindow(WHISPER)
-			FCF_SetLocked(ChatFrame3, 1)
-			FCF_DockFrame(ChatFrame3)			
+			ChatFrame3:Show()			
 		end
 				
 		for i = 1, NUM_CHAT_WINDOWS do
@@ -76,10 +69,6 @@ local function install()
 				FCF_SetWindowName(frame, GUILD_EVENT_LOG)
 			elseif i == 3 and TukuiCF["chat"].rightchat == true then 
 				FCF_SetWindowName(frame, LOOT.." / "..TRADE) 
-			elseif i == 3 and TukuiCF["chat"].rightchat ~= true then
-				FCF_SetWindowName(frame, WHISPER)
-			elseif i == 4 and TukuiCF["chat"].rightchat == true then
-				FCF_SetWindowName(frame, WHISPER)
 			end
 		end
 		
@@ -130,11 +119,6 @@ local function install()
 			ChatFrame_AddChannel(ChatFrame1, "LocalDefense")
 			ChatFrame_AddChannel(ChatFrame1, "GuildRecruitment")
 			ChatFrame_AddChannel(ChatFrame1, "LookingForGroup")
-			ChatFrame_RemoveAllMessageGroups(ChatFrame4)
-			ChatFrame_AddMessageGroup(ChatFrame4, "WHISPER")
-			ChatFrame_AddMessageGroup(ChatFrame4, "BN_WHISPER")	
-			ChatFrame_AddMessageGroup(ChatFrame4, "MONSTER_WHISPER")
-			ChatFrame_AddMessageGroup(ChatFrame4, "MONSTER_BOSS_WHISPER")
 		else
 			ChatFrame_AddMessageGroup(ChatFrame1, "LOOT")
 			ChatFrame_AddMessageGroup(ChatFrame1, "MONEY")	
@@ -149,11 +133,6 @@ local function install()
 			ChatFrame_AddChannel(ChatFrame1, "LocalDefense")
 			ChatFrame_AddChannel(ChatFrame1, "GuildRecruitment")
 			ChatFrame_AddChannel(ChatFrame1, "LookingForGroup")
-			ChatFrame_RemoveAllMessageGroups(ChatFrame3)
-			ChatFrame_AddMessageGroup(ChatFrame3, "WHISPER")
-			ChatFrame_AddMessageGroup(ChatFrame3, "BN_WHISPER")	
-			ChatFrame_AddMessageGroup(ChatFrame3, "MONSTER_WHISPER")
-			ChatFrame_AddMessageGroup(ChatFrame3, "MONSTER_BOSS_WHISPER")
 		end
 		
 		if TukuiDB.myname == "Elv" then
