@@ -4,6 +4,43 @@ local function SpellName(id)
 end
 
 --[[
+	Nameplate Filter, Add the Nameplates name exactly here that you do NOT want to see
+]]
+PlateBlacklist = {
+	--Gundrak
+	["Fanged Pit Viper"] = true,
+	["Crafty Snake"] = true,
+
+	--Shaman Totems
+	["Earth Elemental Totem"] = true,
+	["Fire Elemental Totem"] = true,
+	["Fire Resistance Totem"] = true,
+	["Flametongue Totem"] = true,
+	["Frost Resistance Totem"] = true,
+	["Healing Stream Totem"] = true,
+	["Magma Totem"] = true,
+	["Mana Spring Totem"] = true,
+	["Nature Resistance Totem"] = true,
+	["Searing Totem"] = true,
+	["Stoneclaw Totem"] = true,
+	["Stoneskin Totem"] = true,
+	["Strength of Earth Totem"] = true,
+	["Windfury Totem"] = true,
+	["Totem of Wrath"] = true,
+	["Wrath of Air Totem"] = true,
+
+	--Army of the Dead
+	["Army of the Dead Ghoul"] = true,
+
+	--Hunter Trap
+	["Venomous Snake"] = true,
+	["Viper"] = true,
+
+	--Test
+	--["Unbound Seer"] = true,
+}
+
+--[[
 		This portion of the file is for adding of deleting a spellID for a specific encounter on Grid layout
 		or enemy cooldown in Arena displayed on screen.
 		

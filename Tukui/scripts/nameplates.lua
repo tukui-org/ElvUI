@@ -49,10 +49,31 @@ local function HideObjects(parent)
 	end
 end
 
+local function CheckBlacklist(frame, ...)
+	if PlateBlacklist[frame.name:GetText()] then
+		frame:SetScript("OnUpdate", function() end)
+		frame.hp:Hide()
+		frame.cb:Hide()
+		frame.overlay:Hide()
+		frame.oldlevel:Hide()
+	end
+end
+
+local function ForEachPlate(functionToRun, ...)
+	for frame in pairs(frames) do
+		if frame:IsShown() then
+			functionToRun(frame, ...)
+		end
+	end
+end
+
 local goodR, goodG, goodB = unpack(TukuiCF["nameplate"].goodcolor)
 local badR, badG, badB = unpack(TukuiCF["nameplate"].badcolor)
 local transitionR, transitionG, transitionB = unpack(TukuiCF["nameplate"].transitioncolor)
-local function UpdateThreat(frame, elapsed)	
+local function UpdateThreat(frame, elapsed)
+	frame.hp:Show()
+	frame.overlay:Show()
+	
 	if TukuiCF["nameplate"].enhancethreat ~= true then
 		if(frame.region:IsShown()) then
 			local _, val = frame.region:GetVertexColor()
@@ -107,8 +128,6 @@ local function UpdateThreat(frame, elapsed)
 	if UnitName("target") == frame.name:GetText() and frame:GetAlpha() == 1 then
 		--Targetted Unit
 		frame.name:SetTextColor(1, 1, 0)
-		
-		if frame.overlay:IsShown() then frame.overlay:Hide() end
 	else
 		--Not Targetted
 		frame.name:SetTextColor(1, 1, 1)
@@ -168,32 +187,27 @@ local function UpdateObjects(frame)
 	end
 	frame.class:SetTexCoord(texcoord[1],texcoord[2],texcoord[3],texcoord[4])
 	
-	
 	--Set the name text
 	frame.name:SetText(frame.oldname:GetText())
 	
-	--Position the highlight texture
-	frame.overlay:ClearAllPoints()
-	frame.overlay:SetAllPoints(frame.hp)
-	frame.overlay:SetTexture(1,1,1,0.25)
-	frame.overlay:Hide()
-	
 	--Setup level text
-	local level, elite, mylevel = tonumber(frame.level:GetText()), frame.elite:IsShown(), UnitLevel("player")
-	frame.level:ClearAllPoints()
+	local level, elite, mylevel = tonumber(frame.oldlevel:GetText()), frame.elite:IsShown(), UnitLevel("player")
+	frame.hp.level:ClearAllPoints()
 	if TukuiCF["nameplate"].showhealth == true then
-		frame.level:SetPoint("RIGHT", frame.hp, "RIGHT", 2, 0)
+		frame.hp.level:SetPoint("RIGHT", frame.hp, "RIGHT", 2, 0)
 	else
-		frame.level:SetPoint("RIGHT", frame.hp, "LEFT", -1, 0)
+		frame.hp.level:SetPoint("RIGHT", frame.hp, "LEFT", -1, 0)
 	end
+	
+	frame.hp.level:SetTextColor(frame.oldlevel:GetTextColor())
 	if frame.boss:IsShown() then
-		frame.level:SetText("B")
-		frame.level:SetTextColor(0.8, 0.05, 0)
-		frame.level:Show()
+		frame.hp.level:SetText("B")
+		frame.hp.level:SetTextColor(0.8, 0.05, 0)
+		frame.hp.level:Show()
 	elseif not elite and level == mylevel then
-		frame.level:Hide()
+		frame.hp.level:Hide()
 	else
-		frame.level:SetText(level..(elite and "+" or ""))
+		frame.hp.level:SetText(level..(elite and "+" or ""))
 	end
 	
 	HideObjects(frame)
@@ -237,10 +251,8 @@ local OnSizeChanged = function(self)
 end
 
 local function SkinObjects(frame)
-	if frames[frame] == true then return end
-	
 	local hp, cb = frame:GetChildren()
-	local threat, hpborder, cbshield, cbborder, cbicon, overlay, oldname, level, bossicon, raidicon, elite = frame:GetRegions()
+	local threat, hpborder, cbshield, cbborder, cbicon, oldoverlay, oldname, oldlevel, bossicon, raidicon, elite = frame:GetRegions()
 	frame.healthOriginal = hp
 	
 	--Just make sure these are correct
@@ -279,15 +291,21 @@ local function SkinObjects(frame)
 	hp:SetStatusBarTexture(TEXTURE)
 	frame.hp = hp
 	
-	--Need to Reposition the overlay with the health
-	frame.overlay = overlay
+	--Create Overlay Highlight
+	frame.overlay = frame:CreateTexture(nil, "HIGHLIGHT")
+	frame.overlay:SetAllPoints(hp)
+	frame.overlay:SetTexture(1,1,1,0.2)
+	
+	--Create Name
+	hp.level = hp:CreateFontString(nil, "OVERLAY")
+	hp.level:SetFont(FONT, FONTSIZE, FONTFLAG)
+	hp.level:SetTextColor(1, 1, 1)
+	hp.level:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)	
 	
 	--Needed for level text
-	frame.level = level
+	frame.oldlevel = oldlevel
 	frame.boss = bossicon
 	frame.elite = elite
-	frame.level:SetFont(FONT, FONTSIZE, FONTFLAG)
-	frame.level:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
 	
 	--Create Health Text
 	if TukuiCF["nameplate"].showhealth == true then
@@ -379,6 +397,8 @@ local function SkinObjects(frame)
 	frame.oldname = oldname
 	frame.name = name
 	
+	--Create level Text
+	
 	--Reposition and Resize RaidIcon
 	raidicon:ClearAllPoints()
 	raidicon:SetPoint("BOTTOM", hp, "TOP", 0, 16)
@@ -394,6 +414,8 @@ local function SkinObjects(frame)
 	frame.class = cIconTex
 	
 	--Hide Old Stuff
+	QueueObject(frame, oldlevel)
+	QueueObject(frame, oldoverlay)
 	QueueObject(frame, threat)
 	QueueObject(frame, hpborder)
 	QueueObject(frame, cbshield)
@@ -404,7 +426,7 @@ local function SkinObjects(frame)
 	
 	UpdateObjects(hp)
 	UpdateCastbar(cb)
-		
+	
 	frames[frame] = true
 end
 
@@ -437,6 +459,8 @@ CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
 	else
 		self.elapsed = (self.elapsed or 0) + elapsed
 	end
+	
+	ForEachPlate(CheckBlacklist)
 end)
 
 if TukuiCF["nameplate"].combat == true then
