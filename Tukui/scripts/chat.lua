@@ -635,3 +635,31 @@ ChatCombatHider:SetScript("OnEvent", function(self, event)
 		end	
 	end
 end)
+
+SetUpAnimGroup(TukuiInfoLeft.shadow)
+SetUpAnimGroup(TukuiInfoRight.shadow)
+local function CheckWhisperWindows(self, event)
+	local chat = self:GetName()
+
+	if chat == "ChatFrame1" and TukuiChatLIn == false then
+		if event == "CHAT_MSG_WHISPER" then
+			TukuiInfoLeft.shadow:SetBackdropBorderColor(ChatTypeInfo["WHISPER"].r,ChatTypeInfo["WHISPER"].g,ChatTypeInfo["WHISPER"].b, 0.8)
+		elseif event == "CHAT_MSG_BN_WHISPER" then
+			TukuiInfoLeft.shadow:SetBackdropBorderColor(ChatTypeInfo["BN_WHISPER"].r,ChatTypeInfo["BN_WHISPER"].g,ChatTypeInfo["BN_WHISPER"].b, 0.8)
+		end
+		TukuiInfoLeft:SetScript("OnUpdate", function(self)
+			Flash(TukuiInfoLeft.shadow, 0.5)
+		end)
+	elseif chat == "ChatFrame3" and TukuiCF["chat"].rightchat == true and TukuiChatRIn == false then
+		if event == "CHAT_MSG_WHISPER" then
+			TukuiInfoRight.shadow:SetBackdropBorderColor(ChatTypeInfo["WHISPER"].r,ChatTypeInfo["WHISPER"].g,ChatTypeInfo["WHISPER"].b, 0.8)
+		elseif event == "CHAT_MSG_BN_WHISPER" then
+			TukuiInfoRight.shadow:SetBackdropBorderColor(ChatTypeInfo["BN_WHISPER"].r,ChatTypeInfo["BN_WHISPER"].g,ChatTypeInfo["BN_WHISPER"].b, 0.8)
+		end
+		TukuiInfoRight:SetScript("OnUpdate", function(self)
+			Flash(TukuiInfoRight.shadow, 0.5)
+		end)	
+	end
+end
+ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", CheckWhisperWindows)	
+ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", CheckWhisperWindows)

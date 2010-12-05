@@ -186,6 +186,7 @@ end
 
 --INFO LEFT
 local infoleft = CreateFrame("Frame", "TukuiInfoLeft", UIParent)
+infoleft:SetFrameLevel(2)
 TukuiDB.SetNormTexTemplate(infoleft)
 TukuiDB.CreateShadow(infoleft)
 infoleft:SetPoint("TOPLEFT", chatlbgdummy2, "BOTTOMLEFT", TukuiDB.Scale(17), TukuiDB.Scale(-4))
@@ -202,7 +203,8 @@ infoleft:SetPoint("BOTTOMRIGHT", chatlbgdummy2, "BOTTOMRIGHT", TukuiDB.Scale(-17
 	TukuiDB.SetNormTexTemplate(infoleftRbutton)
 	infoleftRbutton:SetPoint("TOPLEFT", infoleft, "TOPRIGHT", TukuiDB.Scale(2), 0)
 	infoleftRbutton:SetPoint("BOTTOMRIGHT", chatlbgdummy2, "BOTTOMRIGHT", 0, TukuiDB.Scale(-26))
-
+	
+	infoleft.shadow:ClearAllPoints()
 	infoleft.shadow:SetPoint("TOPLEFT", infoleftLbutton, "TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))
 	infoleft.shadow:SetPoint("BOTTOMRIGHT", infoleftRbutton, "BOTTOMRIGHT", TukuiDB.Scale(4), TukuiDB.Scale(-4))
 
@@ -217,6 +219,7 @@ infoleft:SetPoint("BOTTOMRIGHT", chatlbgdummy2, "BOTTOMRIGHT", TukuiDB.Scale(-17
 --INFO RIGHT
 local inforight = CreateFrame("Frame", "TukuiInfoRight", UIParent)
 TukuiDB.SetNormTexTemplate(inforight)
+infoleft:SetFrameLevel(2)
 TukuiDB.CreateShadow(inforight)
 inforight:SetPoint("TOPLEFT", chatrbgdummy2, "BOTTOMLEFT", TukuiDB.Scale(17), TukuiDB.Scale(-4))
 inforight:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", TukuiDB.Scale(-17), TukuiDB.Scale(-26))
@@ -232,7 +235,8 @@ inforight:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", TukuiDB.Scale(-1
 	TukuiDB.SetNormTexTemplate(inforightRbutton)
 	inforightRbutton:SetPoint("TOPLEFT", inforight, "TOPRIGHT", TukuiDB.Scale(2), 0)
 	inforightRbutton:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", 0, TukuiDB.Scale(-26))
-
+	
+	inforight.shadow:ClearAllPoints()
 	inforight.shadow:SetPoint("TOPLEFT", inforightLbutton, "TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))
 	inforight.shadow:SetPoint("BOTTOMRIGHT", inforightRbutton, "BOTTOMRIGHT", TukuiDB.Scale(4), TukuiDB.Scale(-4))
 
@@ -575,6 +579,9 @@ ChatLBackground.anim:HookScript("OnFinished", function()
 			ChatFrame3:SetParent(ChatFrame3Tab)
 		end
 	end
+	TukuiInfoLeft.shadow:SetBackdropBorderColor(0,0,0,1)
+	TukuiInfoLeft:SetScript("OnUpdate", function() end)
+	StopFlash(TukuiInfoLeft.shadow)
 end)
 
 if TukuiCF["chat"].rightchat == true then
@@ -586,6 +593,9 @@ if TukuiCF["chat"].rightchat == true then
 	ChatRBackground.anim:HookScript("OnFinished", function()
 		ChatFrame3:SetParent(UIParent)
 		ChatFrame3:SetFrameStrata("LOW")
+		TukuiInfoRight.shadow:SetBackdropBorderColor(0,0,0,1)
+		TukuiInfoRight:SetScript("OnUpdate", function() end)
+		StopFlash(TukuiInfoRight.shadow)
 	end)
 end
 

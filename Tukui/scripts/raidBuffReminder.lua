@@ -104,7 +104,6 @@ end
 
 --Main Script
 RaidReminderShown = true
-local t = 44
 local function OnAuraChange(self, event, arg1, unit)
 	if (event == "UNIT_AURA" and arg1 ~= "player") then 
 		return
@@ -214,16 +213,11 @@ local function OnAuraChange(self, event, arg1, unit)
 	
 	if RaidReminderShown == true and inInstance and (instanceType == "raid") and InCombatLockdown() and (FlaskFrame:GetAlpha() == 1 or Spell3Frame:GetAlpha() == 1 or Spell4Frame:GetAlpha() == 1 or Spell5Frame:GetAlpha() == 1 or Spell6Frame:GetAlpha() == 1) then
 		self:SetScript("OnUpdate", function(self)
-			t = t + 1
-			if t == 45 then
-				Pulse(self)
-				t = 4
-			end
+			Pulse(self)
 		end)
 	else
 		self:SetScript("OnUpdate", function() end)
 		StopFlash(self)
-		t = 0
 	end
 	
 	

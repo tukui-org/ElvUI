@@ -59,7 +59,7 @@ local shadows = {
 function TukuiDB.CreateShadow(f)
 	if f.shadow then return end
 	local shadow = CreateFrame("Frame", nil, f)
-	shadow:SetFrameLevel(1)
+	shadow:SetFrameLevel(0)
 	shadow:SetFrameStrata(f:GetFrameStrata())
 	shadow:SetPoint("TOPLEFT", -TukuiDB.Scale(4), TukuiDB.Scale(4))
 	shadow:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(4), TukuiDB.Scale(-4))
