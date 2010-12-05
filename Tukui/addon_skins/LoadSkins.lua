@@ -27,7 +27,6 @@ local function skinFrame(self, frame)
 		end
 	else
 		tukskin(frame,frame)
-		frame:SetFrameStrata("BACKGROUND")
 	end
 end
 local function skinButton(self, button)

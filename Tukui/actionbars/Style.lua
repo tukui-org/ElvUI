@@ -338,6 +338,10 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 				end			
 				if button:IsVisible() then last = button end
 				button:SetBackdropBorderColor(parent:GetBackdropBorderColor())
+				if TukuiCF["actionbar"].shapeshiftmouseover == true then
+					button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
+					button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
+				end
 			end
 			flyout.buttons[1]:SetPoint("BOTTOM",flyout,"BOTTOM")
 			if type == "slot" then
@@ -371,6 +375,13 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 				flyout:SetPoint("TOP",parent,"BOTTOM",0,-4)
 			end
 			
+			if TukuiCF["actionbar"].shapeshiftmouseover == true then
+				flyout:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
+				flyout:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
+				close:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
+				close:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
+			end
+			
 			MultiCastFlyoutFrameOpenButton:Hide()
 		end
 		hooksecurefunc("MultiCastFlyoutFrame_ToggleFlyout",function(self, type, parent) skin:SkinMCABFlyoutFrame(self, type, parent) end)
@@ -402,7 +413,11 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 				end
 				self:SkinFrame(button.visibleBut)
 			end
-
+			
+			if TukuiCF["actionbar"].shapeshiftmouseover == true then
+				button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
+				button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
+			end
 			button.visibleBut:SetBackdropBorderColor(parent:GetBackdropBorderColor())
 		end
 		hooksecurefunc("MultiCastFlyoutFrameOpenButton_Show",function(button,_, parent) skin:SkinMCABFlyoutOpenButton(button, parent) end)
@@ -427,6 +442,10 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			button:SetBackdropBorderColor(unpack(bordercolors[((index-1) % 4) + 1]))
 			style(button, false, true)
 			TukuiDB.StyleButton(button, false)
+			if TukuiCF["actionbar"].shapeshiftmouseover == true then
+				button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
+				button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
+			end
 		end
 		hooksecurefunc("MultiCastSlotButton_Update",function(self, slot) skin:SkinMCABSlotButton(self, slot) end)
 		
@@ -456,6 +475,10 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			button:SetBackdropColor(0,0,0,0)
 			style(button, false, true)
 			TukuiDB.StyleButton(button, false)
+			if TukuiCF["actionbar"].shapeshiftmouseover == true then
+				button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
+				button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
+			end
 		end
 		hooksecurefunc("MultiCastActionButton_Update",function(actionButton, actionId, actionIndex, slot) skin:SkinMCABActionButton(actionButton,actionIndex) end)
 		
@@ -471,6 +494,14 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			_G[button:GetName().."NormalTexture"]:SetTexture(nil)
 			style(button, false, true)
 			TukuiDB.StyleButton(button, false)
+			if index == 0 then
+				button:ClearAllPoints()
+				button:SetPoint("RIGHT", MultiCastActionButton1, "LEFT", -8, 0)
+			end
+			if TukuiCF["actionbar"].shapeshiftmouseover == true then
+				button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
+				button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
+			end
 		end
 		hooksecurefunc("MultiCastSummonSpellButton_Update", function(self) skin:SkinMCABSpellButton(self,0) end)
 		hooksecurefunc("MultiCastRecallSpellButton_Update", function(self) skin:SkinMCABSpellButton(self,5) end)
