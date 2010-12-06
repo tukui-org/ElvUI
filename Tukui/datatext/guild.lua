@@ -16,7 +16,7 @@ if TukuiCF["datatext"].guild and TukuiCF["datatext"].guild > 0 then
 	local yoffset2 = TukuiDB.mult
 	local snapfrom = "BOTTOM"
 	
-	if TukuiCF["datatext"].friends == 8 or TukuiCF["datatext"].friends == 9 then
+	if TukuiCF["datatext"].guild == 7 or TukuiCF["datatext"].guild == 8 then
 		yoffset = TukuiDB.Scale(-6)
 		anchor = "BOTTOM"
 		anchor2 = "ANCHOR_BOTTOM"

@@ -393,7 +393,7 @@ function Stuffing:CreateBagFrame(w)
 	f:EnableMouse(1)
 	f:SetMovable(1)
 	f:SetToplevel(1)
-	f:SetFrameStrata("HIGH")
+	f:SetFrameStrata("DIALOG")
 	f:SetFrameLevel(20)
 
 	if w == "Bank" then
@@ -424,7 +424,7 @@ function Stuffing:CreateBagFrame(w)
 	-- create the bags frame
 	local fb = CreateFrame ("Frame", n .. "BagsFrame", f)
 	fb:SetPoint("BOTTOMLEFT", f, "TOPLEFT", 0, TukuiDB.Scale(2))
-	fb:SetFrameStrata("HIGH")
+	fb:SetFrameStrata("DIALOG")
 	f.bags_frame = fb
 
 	return f

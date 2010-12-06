@@ -90,12 +90,14 @@
 	tukuilocal.popup_disableui = "Tukui не работает на этом разрешении, хотите отключить Tukui? (Отмена если хотите попробовать другое разрешение)"
 	tukuilocal.popup_install = "Это первый запуск Tukui V12 для этого персонажа. Необходимо перезагрузить интерфейс для настройки Панелей, Переменных и Окон Чата."
 	tukuilocal.popup_2raidactive = "Обе рейдовые раскладки активны, пожалуйста, выберите одну."
- 
+	tukuilocal.popup_rightchatwarn = 'Вы самостоятельно убрали правое окно чата, от которого зависит корректная работа TukUI. Запретите правое окно чата в конфигурации или нажмите "Принять" для сброса настроек чата сейчас.'
+	
 	tukuilocal.merchant_repairnomoney = "Не достаточно денег на починку!"
 	tukuilocal.merchant_repaircost = "Предметы починены за"
 	tukuilocal.merchant_trashsell = "Серые предметы проданы и Вы получили"
 
-
+	tukuilocal.raidbufftoggler = "Напоминание рейдовых бафов: "
+	
 	tukuilocal.goldabbrev = "|cffffd700з|r"
 	tukuilocal.silverabbrev = "|cffc7c7cfс|r"
 	tukuilocal.copperabbrev = "|cffeda55fм|r"

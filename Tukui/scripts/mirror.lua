@@ -7,7 +7,7 @@ local _, settings = ...
 local _DEFAULTS = {
 	width = TukuiDB.Scale(220),
 	height = TukuiDB.Scale(18),
-	texture = TukuiCF["media"].blank,
+	texture = TukuiCF["media"].normTex,
 
 	position = {
 		["BREATH"] = 'TOP#UIParent#TOP#0#-96';
@@ -74,7 +74,7 @@ do
 
 		local bg = frame:CreateTexture(nil, 'BACKGROUND')
 		bg:SetAllPoints(frame)
-		bg:SetTexture(settings.texture)
+		bg:SetTexture(TukuiCF["media"].blank)
 		bg:SetVertexColor(r * .5, g * .5, b * .5)
 		
 		local border = CreateFrame("Frame", nil, frame)
@@ -85,7 +85,7 @@ do
 
 		local text = frame:CreateFontString(nil, 'OVERLAY')
 		text:SetFont(TukuiCF["media"].uffont, TukuiCF["general"].fontscale, "THINOUTLINE")
-		text:SetShadowOffset(.8, -.8)
+		text:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
 		text:SetShadowColor(0, 0, 0, 1)
 
 		text:SetJustifyH'CENTER'

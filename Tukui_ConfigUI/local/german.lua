@@ -96,7 +96,6 @@
 	TukuiL.option_auras_playeraura = "Aktiviere Stärkungs- und Schwächungszauber auf dem Spieler Einheitenfenster"
 	TukuiL.option_auras_aurascale = "Text-Skalierung auf  Stärkungs-/Schwächungszaubern"
 	TukuiL.option_auras_totdebuffs = "Aktiviere Ziel vom Ziel Schwächungszauber"
-	TukuiL.option_auras_playershowonlydebuffs = "Zeige Debuffs nur auf dem Spielerframe (Benötigt Auraanzeige auf Spielerframe)"
 	TukuiL.option_auras_playershowonlydebuffs = "Zeige nur Debuffs auf dem Spielerframe (Benötigt Auraanzeige auf Spielerframe)"
 	TukuiL.option_auras_RaidUnitBuffWatch = "Aktiviere die Anzeige für Stärkungszauber auf den Raidframes"
 	TukuiL.option_auras_playtarbuffperrow = "Anzahl von Stärkungs/Schwächungszauber in einer Reihe auf dem Spieler/Ziel Einheitenfenster"

@@ -7,6 +7,7 @@
 	TukuiL.option_general_embedright = "Аддон правой панели(Recount, Omen, Skada)"
 	TukuiL.option_general_classtheme = "Окрасить края рамок в соответствии с Вашим классом"
 	TukuiL.option_general_autocustomlagtolerance = "Automatically update the Blizzard Custom Lag Tolerance option to your latency."
+	TukuiL.option_general_fontscale = "Базовый размер шрифта"
 	
 	--Media
 	TukuiL.option_media = "Медиа"
@@ -44,7 +45,8 @@
 	TukuiL.option_skin_omen = "Omen"
 	TukuiL.option_skin_recount = "Recount"
 	TukuiL.option_skin_skada = "Skada"
-
+	TukuiL.option_hookdxeright = "Привязать панель DXE к верхней части правого окна чата"
+	
 	-- combat text
 	TukuiL.option_combattext = "Текст боя"
 	TukuiL.option_combattext_showoverheal = "Показывать переисцеление"
@@ -99,6 +101,7 @@
 	TukuiL.option_auras_RaidUnitBuffWatch = "Отображать баффы на рейдовых фреймах"
 	TukuiL.option_auras_playtarbuffperrow = "Кол-во Баффов/Дебаффов в ряду на фрейме Игрока/Цели"
 	TukuiL.option_auras_smallbuffperrow = "Кол-во Дебаффов в ряду на фрейме ЦелиЦели/Фокуса"
+	TukuiL.option_auras_buffindicatorsize = "Размер значков бафов на рейдовых/групповых рамках"
 	
 	-- raidframes
 	TukuiL.option_raidframes = "Рейдовые фреймы"
@@ -117,6 +120,7 @@
 	TukuiL.option_raidframes_scale = "Масштаб рейд фреймов (например : 0.96)"
 	TukuiL.option_raidframes_disableblizz = "Отключить фреймы рейда/группы от Blizzard"
 	TukuiL.option_raidframes_griddps = "Display the DPS Layout in grid layout instead of a vertical layout (Not Party)"
+	TukuiL.option_raidframes_partytarget = "Показывать цели членов группы (DPS раскладка)"
 	
 	-- castbar
 	TukuiL.option_castbar = "Полоса применений"
@@ -155,7 +159,8 @@
 	TukuiL.option_unitframes_healthbackdropcolor = "Backdrop color of health on all unitframes"
 	TukuiL.option_unitframes_healthcolorbyvalue = "Color Healthbars by Health Remaining"
 	TukuiL.option_unitframes_combat = "Fade unitframes while not in-combat"
-		
+	TukuiL.option_unitframes_pettarget = "Показывать цель своего питомца (DPS раскладка)"
+	
 	-- frame sizes
 	TukuiL.option_framesizes = "Размеры фреймов"	
 	TukuiL.option_framesizes_playtarwidth = "Ширина фрейма Игрока/Цели"
@@ -221,6 +226,10 @@
 	TukuiL.option_actionbar_petbuttonsize = "Размер кнопок панели действий для питомца/стоек"
 	TukuiL.option_actionbar_petbuttonspacing = "Промежуток между кнопками панели действий для питомца/стоек"
 	TukuiL.option_actionbar_swaptopbottombar = "Swap the top and bottom actionbar positions"
+	TukuiL.option_actionbar_macrotext = "Показывать название макро на кнопоках"
+	TukuiL.option_actionbar_verticalstance = "Расположить панель стоек вертикально"
+	TukuiL.option_actionbar_petbuttonsize = "Размер кнопок стоек/питомца"
+	TukuiL.option_actionbar_petbuttonspacing = "Расстояние между кнопками стоек/питомца"
 	
 	-- arena
 	TukuiL.option_arena = "Арена"
@@ -247,7 +256,9 @@
 	TukuiL_option_chat_chatheight = "Высота окна чата"
 	TukuiL_option_chat_fadeoutofuse = "Затемнять чат при длительном неиспользовании"
 	TukuiL_option_chat_sticky = "Закреплять свежесозданные окна чата"
-
+	TukuiL_option_chat_rightchat = "Показывать правое окно чата"
+	TukuiL_option_chat_combathide = "Какие панели чата скрывать в бою ('Left', 'Right', 'Both', or 'NONE')"
+	
 	-- buttons
 	TukuiL.option_button_reset = "Сброс"
 	TukuiL.option_button_load = "Применить настройки"

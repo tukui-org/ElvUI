@@ -466,7 +466,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 1719 ), -- Recklessness
 			CreateSpellEntry( 20230 ), -- Retaliation
 			CreateSpellEntry( 2565 ), -- Shield Block
-			CreateSpellEntry( 12975 ), -- Last Stand
+			CreateSpellEntry( 12976 ), -- Last Stand
 			CreateSpellEntry( 90806 ), -- Executioner
 			CreateSpellEntry( 85738 ), CreateSpellEntry( 85739 ), -- Meat Cleaver Rank 1 and 2
 			CreateSpellEntry( 86662 ), CreateSpellEntry( 86663 ), -- Rude interruption rank 1 and 2
