@@ -335,20 +335,22 @@ DebuffHealerWhiteList = {
 		
 	--Blackwing Descent
 		--Magmaw
-		[SpellName(78006)] = true, -- Pillar of Flame
+		[SpellName(91911)] = true, -- Constricting Chains
+		[SpellName(94679)] = true, -- Parasitic Infection
+		[SpellName(94617)] = true, -- Mangle
 		
 		--Omintron Defense System
 		[SpellName(79835)] = true, --Poison Soaked Shell	
-		[SpellName(79505)] = true, --Flamethrower
-		[SpellName(91431)] = true, --Lightning Conductor
+		[SpellName(91433)] = true, --Lightning Conductor
+		[SpellName(91521)] = true, --Incineration Security Measure
 		
 		--Maloriak
 		[SpellName(77699)] = true, -- Flash Freeze
-		[SpellName(77786)] = true, -- Consuming Flames
 		[SpellName(77760)] = true, -- Biting Chill
 		
 		--Atramedes
-		[SpellName(92391)] = true, -- Vertigo
+		[SpellName(92423)] = true, -- Searing Flame
+		[SpellName(92485)] = true, -- Roaring Flame
 		[SpellName(92407)] = true, -- Sonic Breath
 		
 		--Chimaeron
@@ -357,26 +359,35 @@ DebuffHealerWhiteList = {
 		--Nefarian
 		
 	--The Bastion of Twilight
-		--Valiona
+		--Valiona & Theralion
+		[SpellName(92878)] = true, -- Blackout
 		[SpellName(86840)] = true, -- Devouring Flames
-		--Theralion
 		
 		--Halfus Wyrmbreaker
 		
 		--Twilight Ascendant Council
+		[SpellName(92511)] = true, -- Hydro Lance
+		[SpellName(82762)] = true, -- Waterlogged
+		[SpellName(92505)] = true, -- Frozen
+		[SpellName(92518)] = true, -- Flame Torrent
+		[SpellName(83099)] = true, -- Lightning Rod
+		[SpellName(92075)] = true, -- Gravity Core
+		[SpellName(92488)] = true, -- Gravity Crush
 		
 		--Cho'gall
 		
 	--Throne of the Four Winds
 		--Conclave of Wind
 			--Nezir <Lord of the North Wind>
-			
+			[SpellName(93131)] = true, --Ice Patch
 			--Anshal <Lord of the West Wind>
-			
+			[SpellName(86206)] = true, --Soothing Breeze
+			[SpellName(93122)] = true, --Toxic Spores
 			--Rohash <Lord of the East Wind>
-			
+			[SpellName(93058)] = true, --Slicing Gale 
 		--Al'Akir
-		[SpellName(89668)] = true, -- Lightning Rod
+		[SpellName(93260)] = true, -- Ice Storm
+		[SpellName(93295)] = true, -- Lightning Rod
 }
 
 --This list is used by the dps layout grid (When not inside a bg/arena)
@@ -386,18 +397,15 @@ DebuffDPSWhiteList = {
 		
 	--Blackwing Descent
 		--Magmaw
-		[SpellName(78006)] = true, -- Pillar of Flame
+		[SpellName(91911)] = true, -- Constricting Chains
 		
 		--Omintron Defense System
-		[SpellName(79835)] = true, --Poison Soaked Shell	
-		[SpellName(79505)] = true, --Flamethrower
 		[SpellName(91431)] = true, --Lightning Conductor
 		
 		--Maloriak
 		[SpellName(77699)] = true, -- Flash Freeze
 		
 		--Atramedes
-		[SpellName(92391)] = true, -- Vertigo
 		
 		--Chimaeron
 		[SpellName(82881)] = true, -- Break
@@ -405,27 +413,33 @@ DebuffDPSWhiteList = {
 		--Nefarian
 		
 	--The Bastion of Twilight
-		--Valiona
+		--Valiona & Theralion
+		[SpellName(92878)] = true, -- Blackout
 		[SpellName(86840)] = true, -- Devouring Flames
-		
-		--Theralion
 		
 		--Halfus Wyrmbreaker
 		
 		--Twilight Ascendant Council
+		[SpellName(92511)] = true, -- Hydro Lance
+		[SpellName(82762)] = true, -- Waterlogged
+		[SpellName(92518)] = true, -- Flame Torrent
+		[SpellName(83099)] = true, -- Lightning Rod
+		[SpellName(92075)] = true, -- Gravity Core
+		[SpellName(92488)] = true, -- Gravity Crush
 		
 		--Cho'gall
 		
 	--Throne of the Four Winds
 		--Conclave of Wind
 			--Nezir <Lord of the North Wind>
-			
+			[SpellName(93131)] = true, --Ice Patch
 			--Anshal <Lord of the West Wind>
 			
 			--Rohash <Lord of the East Wind>
 			
 		--Al'Akir
-		[SpellName(89668)] = true, -- Lightning Rod
+		[SpellName(93260)] = true, -- Ice Storm
+		[SpellName(93295)] = true, -- Lightning Rod
 }
 
 --------------------------------------------------------------------------------------------
