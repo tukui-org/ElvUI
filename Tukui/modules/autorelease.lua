@@ -11,7 +11,7 @@ local autoreleasepvp = CreateFrame("frame")
 autoreleasepvp:RegisterEvent("PLAYER_DEAD")
 autoreleasepvp:SetScript("OnEvent", function(self, event)
 	local soulstone = GetSpellInfo(20707)
-	if (TukuiDB.myclass ~= "SHAMAN") or not (soulstone and UnitBuff("player", soulstone)) then
+	if (TukuiDB.myclass ~= "SHAMAN") and not (soulstone and UnitBuff("player", soulstone)) then
 		if (tostring(GetZoneText()) == WINTERGRASP) then
 			RepopMe()
 		end
