@@ -7,10 +7,6 @@ end
 	Nameplate Filter, Add the Nameplates name exactly here that you do NOT want to see
 ]]
 PlateBlacklist = {
-	--Gundrak
-	["Fanged Pit Viper"] = true,
-	["Crafty Snake"] = true,
-
 	--Shaman Totems
 	["Earth Elemental Totem"] = true,
 	["Fire Elemental Totem"] = true,
