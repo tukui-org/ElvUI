@@ -267,7 +267,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 642 ), -- Divine Shield
 			CreateSpellEntry( 31850 ), -- Ardent Defender
 			CreateSpellEntry( 498 ), -- Divine Protection
-
+			CreateSpellEntry( 84963 ), -- Inquisition
 			CreateSpellEntry( 31884 ), -- Avenging Wrath
 			CreateSpellEntry( 87342 ), -- Holy Shield
 			CreateSpellEntry( 85433 ), -- Sacred Duty
