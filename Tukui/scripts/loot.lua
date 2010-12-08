@@ -166,7 +166,7 @@ addon:SetBackdropColor(0.1, 0.1, 0.1, 1)
 addon:SetClampedToScreen(true)
 addon:SetClampRectInsets(0, 0, TukuiDB.Scale(14), 0)
 addon:SetHitRectInsets(0, 0, TukuiDB.Scale(-14), 0)
-addon:SetFrameStrata"HIGH"
+addon:SetFrameStrata"TOOLTIP"
 addon:SetToplevel(true)
 
 addon.slots = {}
