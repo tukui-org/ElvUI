@@ -50,7 +50,7 @@ local function HideObjects(parent)
 end
 
 local function CheckBlacklist(frame, ...)
-	if PlateBlacklist[frame.name:GetText()] then
+	if PlateBlacklist[frame.name:GetText()] or (TukuiDB.level ~= 1 and frame.oldlevel:GetText() == tostring(1)) then
 		frame:SetScript("OnUpdate", function() end)
 		frame.hp:Hide()
 		frame.cb:Hide()
@@ -99,6 +99,7 @@ local function UpdateThreat(frame, elapsed)
 			else
 				--Set colors to their original, not in combat
 				frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
+				frame.hp.hpbg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, 0.25)
 			end
 		else
 			--Ok we either have threat or we're losing/gaining it
