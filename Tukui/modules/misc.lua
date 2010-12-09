@@ -6,6 +6,8 @@ WorldStateAlwaysUpFrame:SetScale(TukuiDB.Scale(0.85))
 WorldStateAlwaysUpFrame:SetPoint("TOP", TukuiDB.Scale(-35), TukuiDB.Scale(-75))
 
 
+StackSplitFrame:SetFrameStrata("TOOLTIP")
+
 if TukuiCF["skin"].embedright == "Skada" and IsAddOnLoaded("Skada") then
 	SkadaBarWindowSkada:SetAllPoints(ChatRBackground)
 end

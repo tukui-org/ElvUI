@@ -238,13 +238,15 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 	local crtype = UnitCreatureType(unit)
 	local classif = UnitClassification(unit)
 	local title = UnitPVPName(unit)
+	if level == -1 then level = MAX_PLAYER_LEVEL + 5 end
 	local r, g, b = GetQuestDifficultyColor(level).r, GetQuestDifficultyColor(level).g, GetQuestDifficultyColor(level).b
 
 	local color = GetColor(unit)	
 	if not color then color = "|CFFFFFFFF" end -- just safe mode for when GetColor(unit) return nil for unit too far away
 
 	_G["GameTooltipTextLeft1"]:SetFormattedText("%s%s%s", color, title or name, realm and realm ~= "" and " - "..realm.."|r" or "|r")
-
+	
+	if level == MAX_PLAYER_LEVEL + 5 then level = "??" end
 	if(UnitIsPlayer(unit)) then
 		if UnitIsAFK(unit) then
 			self:AppendText((" %s"):format(CHAT_FLAG_AFK))
