@@ -242,6 +242,7 @@ DebuffBlacklist = {
 	[SpellName(23445)] = true, --evil twin
 	[SpellName(24755)] = true, --gay homosexual tricked or treated debuff
 	[SpellName(25163)] = true, --fucking annoying pet debuff oozeling disgusting aura
+	[SpellName(80354)] = true, --timewarp debuff
 }
 
 

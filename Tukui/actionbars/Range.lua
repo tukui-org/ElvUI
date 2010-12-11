@@ -86,8 +86,6 @@ do
 		[85256] = GetSpellInfo(85256), --Templar's Verdict
 		[53600] = GetSpellInfo(53600), --Shield of the Righteous
 		[84963] = GetSpellInfo(84963), --Inquisition
-		[85673] = GetSpellInfo(85673), --Word of Glory
-		[85222] = GetSpellInfo(85222), --Light of Dawn
 	}
 
 	isHolyPowerAbility = function(actionId)

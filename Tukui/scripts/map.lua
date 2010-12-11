@@ -1,9 +1,8 @@
 if not TukuiCF["others"].enablemap == true then return end
 
-WORLDMAP_WINDOWED_SIZE = 0.65
+WORLDMAP_WINDOWED_SIZE = 0.65 --Slightly increase the size of blizzard small map
 local mapscale = WORLDMAP_WINDOWED_SIZE
 
-local glowt = TukuiCF["media"].glowTex
 local ft = TukuiCF["media"].uffont -- Map font
 local fontsize = 22 -- Map Font Size
 
@@ -15,6 +14,7 @@ local mapbg = CreateFrame("Frame", nil, WorldMapDetailFrame)
 	insets = { left = -TukuiDB.mult, right = -TukuiDB.mult, top = -TukuiDB.mult, bottom = -TukuiDB.mult }
 })
 
+--Create move button for map
 local movebutton = CreateFrame ("Frame", nil, WorldMapFrameSizeUpButton)
 movebutton:SetHeight(TukuiDB.Scale(32))
 movebutton:SetWidth(TukuiDB.Scale(32))
@@ -22,11 +22,25 @@ movebutton:SetPoint("TOP", WorldMapFrameSizeUpButton, "BOTTOM", TukuiDB.Scale(-1
 movebutton:SetBackdrop( { 
 	bgFile = "Interface\\AddOns\\Tukui\\media\\textures\\cross",
 })
+movebutton:EnableMouse(true)
 
-local addon = CreateFrame('Frame')
-addon:RegisterEvent('PLAYER_ENTERING_WORLD')
-addon:RegisterEvent("PLAYER_REGEN_ENABLED")
-addon:RegisterEvent("PLAYER_REGEN_DISABLED")
+movebutton:SetScript("OnMouseDown", function()
+	local maplock = GetCVar("advancedWorldMap")
+	if maplock ~= "1" then return end
+	WorldMapScreenAnchor:ClearAllPoints()
+	WorldMapFrame:ClearAllPoints()
+	WorldMapFrame:StartMoving();
+end)
+
+movebutton:SetScript("OnMouseUp", function()
+	local maplock = GetCVar("advancedWorldMap")
+	if maplock ~= "1" then return end
+	WorldMapFrame:StopMovingOrSizing()
+	WorldMapScreenAnchor:StartMoving()
+	WorldMapScreenAnchor:SetPoint("TOPLEFT", WorldMapFrame)
+	WorldMapScreenAnchor:StopMovingOrSizing()
+end)
+
 
 -- look if map is not locked
 local MoveMap = GetCVarBool("advancedWorldMap")
@@ -34,14 +48,19 @@ if MoveMap == nil then
 	SetCVar("advancedWorldMap", 1)
 end
 
+-- new frame to put zone and title text in
+local ald = CreateFrame ("Frame", nil, WorldMapButton)
+ald:SetFrameStrata("HIGH")
+ald:SetFrameLevel(0)
+
+--for the larger map
+local alds = CreateFrame ("Frame", nil, WorldMapButton)
+alds:SetFrameStrata("HIGH")
+alds:SetFrameLevel(0)
+
 local SmallerMapSkin = function()
 	-- don't need this
 	TukuiDB.Kill(WorldMapTrackQuest)
-	
-	-- new frame to put zone and title text in
-	local ald = CreateFrame ("Frame", nil, WorldMapButton)
-	ald:SetFrameStrata("HIGH")
-	ald:SetFrameLevel(0)
 
 	-- map glow
 	TukuiDB.CreateShadow(mapbg)
@@ -73,6 +92,15 @@ local SmallerMapSkin = function()
 	WorldMapFrameCloseButton:SetFrameStrata("HIGH")
 	WorldMapFrameCloseButton:SetFrameLevel(18)
 	WorldMapFrameSizeDownButton:SetPoint("TOPRIGHT", WorldMapFrameMiniBorderRight, "TOPRIGHT", TukuiDB.Scale(-66), TukuiDB.Scale(7))
+	WorldMapFrameTitle:ClearAllPoints()
+	WorldMapFrameTitle:SetPoint("BOTTOMLEFT", WorldMapDetailFrame, TukuiDB.Scale(9), TukuiDB.Scale(10))
+	WorldMapFrameTitle:SetFont(ft, fontsize, "OUTLINE")
+	WorldMapFrameTitle:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
+	WorldMapFrameTitle:SetParent(ald)		
+	WorldMapTitleButton:SetFrameStrata("MEDIUM")
+	WorldMapTooltip:SetFrameStrata("TOOLTIP")
+
+	
 	WorldMapQuestShowObjectives:SetParent(ald)
 	WorldMapQuestShowObjectives:ClearAllPoints()
 	WorldMapQuestShowObjectives:SetPoint("BOTTOMRIGHT", WorldMapButton, "BOTTOMRIGHT", 0, TukuiDB.Scale(10))
@@ -81,13 +109,15 @@ local SmallerMapSkin = function()
 	WorldMapQuestShowObjectivesText:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
 	WorldMapQuestShowObjectivesText:ClearAllPoints()
 	WorldMapQuestShowObjectivesText:SetPoint("RIGHT", WorldMapQuestShowObjectives, "LEFT", TukuiDB.Scale(-4), TukuiDB.Scale(1))
-	WorldMapFrameTitle:ClearAllPoints()
-	WorldMapFrameTitle:SetPoint("BOTTOMLEFT", WorldMapDetailFrame, TukuiDB.Scale(9), TukuiDB.Scale(10))
-	WorldMapFrameTitle:SetFont(ft, fontsize, "OUTLINE")
-	WorldMapFrameTitle:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
-	WorldMapFrameTitle:SetParent(ald)		
-	WorldMapTitleButton:SetFrameStrata("MEDIUM")
-	WorldMapTooltip:SetFrameStrata("TOOLTIP")
+	
+	WorldMapShowDigSites:SetParent(ald)
+	WorldMapShowDigSitesText:ClearAllPoints()
+	WorldMapShowDigSitesText:SetPoint("BOTTOMLEFT", WorldMapQuestShowObjectivesText, "TOPLEFT", 0, TukuiDB.Scale(2))
+	WorldMapShowDigSitesText:SetFont(ft, fontsize, "THINOUTLINE")
+	WorldMapShowDigSitesText:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)	
+	WorldMapShowDigSites:ClearAllPoints()
+	WorldMapShowDigSites:SetPoint("BOTTOM", WorldMapQuestShowObjectives, "TOP", 0, TukuiDB.Scale(2))
+	WorldMapShowDigSites:SetFrameStrata("HIGH")
 	
 	WorldMapFrameAreaFrame:SetFrameStrata("DIALOG")
 	WorldMapFrameAreaFrame:SetFrameLevel(20)
@@ -109,31 +139,48 @@ local BiggerMapSkin = function()
 	WorldMapLevelDropDown:SetAlpha(1)
 	WorldMapLevelDropDown:SetScale(1)
 	
+	local fs = fontsize*0.7
+	
+	WorldMapQuestShowObjectives:SetParent(alds)
+	WorldMapQuestShowObjectives:ClearAllPoints()
+	WorldMapQuestShowObjectives:SetPoint("BOTTOMRIGHT", WorldMapButton, "BOTTOMRIGHT", 0, TukuiDB.Scale(-28))
+	WorldMapQuestShowObjectives:SetFrameStrata("HIGH")
+	WorldMapQuestShowObjectivesText:SetFont(ft, fs, "THINOUTLINE")
+	WorldMapQuestShowObjectivesText:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
+	WorldMapQuestShowObjectivesText:ClearAllPoints()
+	WorldMapQuestShowObjectivesText:SetPoint("RIGHT", WorldMapQuestShowObjectives, "LEFT", TukuiDB.Scale(-4), TukuiDB.Scale(1))
+	
+	WorldMapShowDigSites:SetParent(alds)
+	WorldMapShowDigSitesText:ClearAllPoints()
+	WorldMapShowDigSitesText:SetPoint("RIGHT", WorldMapQuestShowObjectivesText, "LEFT", TukuiDB.Scale(-45), 0)
+	WorldMapShowDigSitesText:SetFont(ft, fs, "THINOUTLINE")
+	WorldMapShowDigSitesText:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)	
+	WorldMapShowDigSites:ClearAllPoints()
+	WorldMapShowDigSites:SetPoint("LEFT", WorldMapShowDigSitesText, "RIGHT", TukuiDB.Scale(2), 0)
+	WorldMapShowDigSites:SetFrameStrata("HIGH")
+	
+	WorldMapFrameAreaFrame:SetFrameStrata("DIALOG")
+	WorldMapFrameAreaFrame:SetFrameLevel(20)
+	WorldMapFrameAreaLabel:SetFont(ft, fontsize*3, "OUTLINE")
+	WorldMapFrameAreaLabel:SetShadowOffset(2, -2)
+	WorldMapFrameAreaLabel:SetTextColor(0.90, 0.8294, 0.6407)
+	
 end
 hooksecurefunc("WorldMap_ToggleSizeUp", function() BiggerMapSkin() end)
 
-local function OnMouseDown()
-	local maplock = GetCVar("advancedWorldMap")
-	if maplock ~= "1" then return end
-	WorldMapScreenAnchor:ClearAllPoints()
-	WorldMapFrame:ClearAllPoints()
-	WorldMapFrame:StartMoving();
-end
+mapbg:SetScript("OnShow", function(self)
+	local SmallerMap = GetCVarBool("miniWorldMap")
+	if SmallerMap == nil then
+		BiggerMapSkin()
+	end
+	self:SetScript("OnShow", function() end)
+end)
 
-local function OnMouseUp()
-	local maplock = GetCVar("advancedWorldMap")
-	if maplock ~= "1" then return end
-	WorldMapFrame:StopMovingOrSizing()
-	WorldMapScreenAnchor:StartMoving()
-	WorldMapScreenAnchor:SetPoint("TOPLEFT", WorldMapFrame)
-	WorldMapScreenAnchor:StopMovingOrSizing()
-end
-
-movebutton:EnableMouse(true)
-movebutton:SetScript("OnMouseDown", OnMouseDown)
-movebutton:SetScript("OnMouseUp", OnMouseUp)
-
-local OnEvent = function(self, event)
+local addon = CreateFrame('Frame')
+addon:RegisterEvent('PLAYER_ENTERING_WORLD')
+addon:RegisterEvent("PLAYER_REGEN_ENABLED")
+addon:RegisterEvent("PLAYER_REGEN_DISABLED")
+addon:SetScript("OnEvent", function(self, event)
 	if event == "PLAYER_ENTERING_WORLD" then
 		ShowUIPanel(WorldMapFrame)
 		HideUIPanel(WorldMapFrame)
@@ -174,11 +221,11 @@ local OnEvent = function(self, event)
 
 		WatchFrame_Update()
 	end
-end
-addon:SetScript("OnEvent", OnEvent)
+end)
+
 
 -- BG TINY MAP (BG, mining, etc)
-local tinymap = CreateFrame("frame", "TukuiTinyMapMover", UIParent)
+local tinymap = CreateFrame("Frame", "TukuiTinyMapMover", UIParent)
 tinymap:SetPoint("CENTER")
 tinymap:SetSize(223, 150)
 tinymap:EnableMouse(true)
@@ -245,7 +292,7 @@ tinymap:SetScript("OnEvent", function(self, event, addon)
 end)
 
 
-coords = CreateFrame("Frame", "CoordsFrame", WorldMapFrame)
+local coords = CreateFrame("Frame", "CoordsFrame", WorldMapFrame)
 local fontheight = select(2, WorldMapQuestShowObjectivesText:GetFont())*1.1
 coords.PlayerText = TukuiDB.SetFontString(CoordsFrame, TukuiCF["media"].font, fontheight, "THINOUTLINE")
 coords.MouseText = TukuiDB.SetFontString(CoordsFrame, TukuiCF["media"].font, fontheight, "THINOUTLINE")

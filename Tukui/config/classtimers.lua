@@ -6,55 +6,23 @@ end
 
 
 TRINKET_FILTER = {
-	CreateSpellEntry( 75477 ), -- Scaly Nimbleness [Petrified Twilight Scale] 271
-	CreateSpellEntry( 75480 ), -- Scaly Nimbleness [Petrified Twilight Scale] 285
-	CreateSpellEntry( 71432 ), -- Tiny Abom in a jar (Mote of Anger)
 	CreateSpellEntry( 73422 ), -- Chaos Bane
 	CreateSpellEntry( 71905 ), -- Soul Fragment
 	CreateSpellEntry( 67671 ), -- Fury(Banner of Victory)
 	CreateSpellEntry( 54758 ), -- Hyperspeed Acceleration (Hyperspeed Accelerators)
 	CreateSpellEntry( 55637 ), -- Lightweave
-	CreateSpellEntry( 71635 ), -- Aegis of Dalaran 264
-	CreateSpellEntry( 71638 ), -- Aegis of Dalaran 272
-	CreateSpellEntry( 71586 ), -- Hardened Skin	
+
 	CreateSpellEntry( 2825, true ), --Heroism
 	CreateSpellEntry( 32182, true ), -- Bloodlust
 	CreateSpellEntry( 80353 ), -- Time Warp 
 	CreateSpellEntry( 26297 ), -- Berserking (troll racial)
 	CreateSpellEntry( 33702 ), CreateSpellEntry( 33697 ), CreateSpellEntry( 20572 ), -- Blood Fury (orc racial)
 	CreateSpellEntry( 57933, true ), -- Tricks of Trade (15% dmg buff)
-    CreateSpellEntry( 71403 ), -- Fatal Flaws (Needle-Encrusted Scorpion)
-    CreateSpellEntry( 71396 ), -- Rage of the Fallen (Herkuml War Token)
-    CreateSpellEntry( 67695 ), -- Rage (Mark of Supremacy)
-    CreateSpellEntry( 59620 ), -- Berserk (Weapon Enchant Berserking)
-    CreateSpellEntry( 28093 ), -- Lightning Speed (Weapon Enchant Mongoose)
-    CreateSpellEntry( 71491 ), -- Aim of the Iron Dwarves (Deathbringer's Will)
-    CreateSpellEntry( 71486 ), -- Power of the Taunka (Deathbringer's Will)
-    CreateSpellEntry( 71487 ), -- Precision of the Iron Dwarves (Deathbringer's Will)
-    CreateSpellEntry( 71492 ), -- Speed of the Vrykul (Deathbringer's Will)
-    CreateSpellEntry( 71484 ), -- Strength of the Taunka (Deathbringer's Will)
-    CreateSpellEntry( 71485 ), -- Agility of the Vrykul (Deathbringer's Will)
-    CreateSpellEntry( 71559 ), -- Aim of the Iron Dwarves (Deathbringer's Will Heroic)
-    CreateSpellEntry( 71558 ), -- Power of the Taunka (Deathbringer's Will Heroic)
-    CreateSpellEntry( 71557 ), -- Precision of the Iron Dwarves (Deathbringer's Will Heroic)
-    CreateSpellEntry( 71560 ), -- Speed of the Vrykul (Deathbringer's Will Heroic)
-    CreateSpellEntry( 71561 ), -- Strength of the Taunka (Deathbringer's Will Heroic)
-    CreateSpellEntry( 71556 ), -- Agility of the Vrykul (Deathbringer's Will Heroic)
-    CreateSpellEntry( 71401 ), -- Icy Rage (Whispering Fanged Skull)
-    CreateSpellEntry( 71541 ), -- Icy Rage (Whispering Fanged Skull Heroic)
-    CreateSpellEntry( 75458 ), -- Piercing Twilight (Sharpened Twilight Scale)
-    CreateSpellEntry( 75456 ), -- Piercing Twilight (Sharpened Twilight Scale Heroic)
-    CreateSpellEntry( 67703 ), -- Paragon Agility (Death's Verdict/Choice)
-    CreateSpellEntry( 67708 ), -- Paragon Strength (Death's Verdict/Choice)
-    CreateSpellEntry( 67772 ), -- Paragon Agility (Death's Verdict/Choice Heroic)
-    CreateSpellEntry( 67773 ), -- Paragon Strength (Death's Verdict/Choice Heroic)
-	CreateSpellEntry( 71579 ), -- Elusive Power (Maghia's Misguided Quill)
-	CreateSpellEntry( 67669 ), -- Elusive Power (Abyssal Rune)
+
 
 	CreateSpellEntry( 67684 ), -- Hospitality (Talisman of Resurgence)
 	CreateSpellEntry( 71584 ), -- Revitalized (Purified Lunar Dust)
-	CreateSpellEntry( 53909 ), -- Potion of Wild Magic
-	CreateSpellEntry( 53908 ), -- Potion of Speed
+
 	CreateSpellEntry( 59545 ), CreateSpellEntry( 59543 ), CreateSpellEntry( 59548 ), CreateSpellEntry( 59542 ), CreateSpellEntry( 59544 ), CreateSpellEntry( 59547 ), CreateSpellEntry( 28880 ), -- Gift of the Naaru
 	CreateSpellEntry( 55503 ), CreateSpellEntry( 55502 ), CreateSpellEntry( 55501 ), CreateSpellEntry( 55500 ), CreateSpellEntry( 55480 ), CreateSpellEntry( 55428 ), -- Lifeblood
 };
@@ -286,6 +254,9 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 54428 ), -- Divine Plea
 			CreateSpellEntry( 31482 ), -- Divine Favor
 			CreateSpellEntry( 70940, true), -- Divine Guardian 
+			CreateSpellEntry( 86659 ), --Guardian of Ancient Kings (Prot)
+			CreateSpellEntry( 86669 ), --Guardian of Ancient Kings (Holy)
+			CreateSpellEntry( 86698 ), --Guardian of Ancient Kings (Ret)
 		},
 		procs = {
 			CreateSpellEntry( 59578 ), -- The Art of War
