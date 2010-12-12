@@ -328,7 +328,7 @@ TargetPVPOnly = {
 --This list is used by the healerlayout (When not inside a bg/arena)
 DebuffHealerWhiteList = {
 	--Baradin Hold
-		[SpellName(88942)] = true, -- Meteor Slash
+		[SpellName(95173)] = true, -- Consuming Darkness
 		
 	--Blackwing Descent
 		--Magmaw
