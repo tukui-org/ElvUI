@@ -238,7 +238,7 @@ local function CheckRole(self, event, unit)
 		local base, posBuff, negBuff = UnitAttackPower("player");
 		local playerap = base + posBuff + negBuff;
 
-		if (((playerap > playerint) or (playeragi > playerint)) and not (TukuiDB.myclass == "SHAMAN" and tree ~= 1 and tree ~= 3) and and not (UnitBuff("player", GetSpellInfo(24858)) or UnitBuff("player", GetSpellInfo(65139)))) or TukuiDB.myclass == "ROGUE" or TukuiDB.myclass == "HUNTER" then
+		if (((playerap > playerint) or (playeragi > playerint)) and not (TukuiDB.myclass == "SHAMAN" and tree ~= 1 and tree ~= 3) and not (UnitBuff("player", GetSpellInfo(24858)) or UnitBuff("player", GetSpellInfo(65139)))) or TukuiDB.myclass == "ROGUE" or TukuiDB.myclass == "HUNTER" then
 			TukuiDB.Role = "Melee"
 		else
 			TukuiDB.Role = "Caster"
