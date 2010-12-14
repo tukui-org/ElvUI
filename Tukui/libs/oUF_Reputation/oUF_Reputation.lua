@@ -35,7 +35,7 @@ local function update(self, event, unit)
 
 	if(bar.Text) then
 		if(bar.OverrideText) then
-			bar:OverrideText(min, max, value, name, id)
+			bar:OverrideText(bar, min, max, value, name, id)
 		else
 			bar.Text:SetFormattedText('%d / %d - %s', value - min, max - min, name)
 		end

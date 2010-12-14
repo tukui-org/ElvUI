@@ -1328,9 +1328,12 @@ TukuiDB.RestingIconUpdate = function (self)
 	end
 end
 
-TukuiDB.UpdateReputationColor = function(self, event, unit, bar)
+TukuiDB.UpdateReputation = function(self, event, unit, bar, min, max, value, name, id)
+	if not name then return end
 	local name, id = GetWatchedFactionInfo()
 	bar:SetStatusBarColor(FACTION_BAR_COLORS[id].r, FACTION_BAR_COLORS[id].g, FACTION_BAR_COLORS[id].b)
+	
+	bar.Text:SetFormattedText(name..': '..TukuiDB.ShortValue(min)..' / '..TukuiDB.ShortValue(max)..' <%d%%>', min / max * 100)
 end
 
 local delay = 0
@@ -1468,6 +1471,8 @@ function TukuiDB.ExperienceText(self, unit, min, max)
 		self.Text:SetFormattedText('XP: '..TukuiDB.ShortValue(min)..' / '..TukuiDB.ShortValue(max)..' <%d%%>', min / max * 100)
 	end
 end
+
+
 
 --------------------------------------------------------------------------------------------
 -- THE AURAWATCH FUNCTION ITSELF. HERE BE DRAGONS!

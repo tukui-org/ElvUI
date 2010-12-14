@@ -301,7 +301,8 @@ local function Shared(self, unit)
 
 			
 			Experience.Text = self.Experience:CreateFontString(nil, 'OVERLAY')
-			Experience.Text:SetFont(font1, TukuiCF["unitframes"].fontsize, "OUTLINE")
+			Experience.Text:SetFont(font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
+			Experience.Text:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
 			Experience.Text:SetPoint('CENTER', self.Experience)
 			Experience.Text:Hide()
 			self.Experience.Text = Experience.Text
@@ -352,28 +353,36 @@ local function Shared(self, unit)
 			else
 				Reputation:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -TukuiDB.Scale(8))
 			end
-			Reputation.Tooltip = true
+			Reputation.Tooltip = false
 
-			Reputation:HookScript("OnEnter", function(self)
+			Reputation:SetScript("OnEnter", function(self)
 				if not InCombatLockdown() then
-						Reputation:SetHeight(TukuiDB.Scale(20))
+					Reputation:SetHeight(TukuiDB.Scale(20))
+					Reputation.Text:Show()
 				end
 			end)
 			
-			Reputation:HookScript("OnLeave", function(self)
+			Reputation:SetScript("OnLeave", function(self)
 				if not InCombatLockdown() then
-						Reputation:SetHeight(TukuiDB.Scale(5))
+					Reputation:SetHeight(TukuiDB.Scale(5))
+					Reputation.Text:Hide()
 				end
 			end)
 			
 			if TukuiCF["unitframes"].combat == true then
 				Reputation:HookScript("OnEnter", function(self) TukuiDB.Fader(self, true, true) end)
 				Reputation:HookScript("OnLeave", function(self) TukuiDB.Fader(self, false, true) end)
-			end		
+			end			
 
-			Reputation.PostUpdate = TukuiDB.UpdateReputationColor
+			Reputation.Text = Reputation:CreateFontString(nil, 'OVERLAY')
+			Reputation.Text:SetFont(font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
+			Reputation.Text:SetPoint('CENTER', Reputation)
+			Reputation.Text:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
+			Reputation.Text:Hide()
 			
+			Reputation.PostUpdate = TukuiDB.UpdateReputation
 			self.Reputation = Reputation
+			self.Reputation.Text = Reputation.Text
 			self.Reputation.F = CreateFrame("Frame", nil, self.Reputation)
 			TukuiDB.SetTemplate(self.Reputation.F)
 			self.Reputation.F:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
