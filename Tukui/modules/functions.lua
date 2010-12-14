@@ -1007,6 +1007,37 @@ local CreateAuraTimer = function(self, elapsed)
 	end
 end
 
+function TukuiDB.PvPUpdate(self, elapsed)
+	if(self.elapsed and self.elapsed > 0.2) then
+		local unit = self.unit
+		local time = GetPVPTimer()
+		
+		local min = format("%01.f", floor((time/1000)/60))
+		local sec = format("%02.f", floor((time/1000) - min *60)) 
+		if(self.PvP) then
+			local factionGroup = UnitFactionGroup(unit)
+			if(UnitIsPVPFreeForAll(unit)) then
+				if time ~= 301000 and time ~= -1 then
+					self.PvP:SetText(PVP.." ".."("..min..":"..sec..")")
+				else
+					self.PvP:SetText(PVP)
+				end
+			elseif(factionGroup and UnitIsPVP(unit)) then
+				if time ~= 301000 and time ~= -1 then
+					self.PvP:SetText(PVP.." ".."("..min..":"..sec..")")
+				else
+					self.PvP:SetText(PVP)
+				end
+			else
+				self.PvP:SetText("")
+			end
+		end
+		self.elapsed = 0
+	else
+		self.elapsed = (self.elapsed or 0) + elapsed
+	end
+end
+
 function TukuiDB.PostCreateAura(element, button)
 	local unit = button:GetParent():GetParent().unit
 	local header = button:GetParent():GetParent():GetParent():GetName()

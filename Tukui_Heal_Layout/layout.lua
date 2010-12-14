@@ -253,12 +253,20 @@ local function Shared(self, unit)
 		FlashInfo.ManaLevel:SetPoint("CENTER", health, "CENTER", 0, TukuiDB.Scale(-5))
 		self.FlashInfo = FlashInfo
 		
-		-- pvp status text
-		local PVP = health:CreateTexture(nil, "OVERLAY")
-		PVP:SetHeight(TukuiDB.Scale(14))
-		PVP:SetWidth(TukuiDB.Scale(14))
-		PVP:SetPoint("TOPRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(8))
-		self.PvP = PVP
+		local PvP = health:CreateFontString(nil, "OVERLAY")
+		PvP:SetFont(font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
+		PvP:SetPoint("CENTER", health, "CENTER", 0, TukuiDB.Scale(-5))
+		PvP:SetTextColor(0.69, 0.31, 0.31)
+		PvP:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
+		PvP:Hide()
+		self.PvP = PvP
+		self.PvP.Override = TukuiDB.dummy
+		
+		local PvPUpdate = CreateFrame("Frame", nil, self)
+		PvPUpdate:SetScript("OnUpdate", function(self, elapsed) TukuiDB.PvPUpdate(self:GetParent(), elapsed) end)
+		
+		self:SetScript("OnEnter", function(self) FlashInfo.ManaLevel:Hide() PvP:Show() UnitFrame_OnEnter(self) end)
+		self:SetScript("OnLeave", function(self) FlashInfo.ManaLevel:Show() PvP:Hide() UnitFrame_OnLeave(self) end)
 		
 		-- leader icon
 		local Leader = health:CreateTexture(nil, "OVERLAY")
