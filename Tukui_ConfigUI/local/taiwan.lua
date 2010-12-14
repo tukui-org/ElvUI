@@ -7,7 +7,8 @@
 	TukuiL.option_general_embedright = "將插件綁定於右邊對話框架(Recount, Omen, Skada)"
 	TukuiL.option_general_classtheme = "框架邊緣使用職業顏色"
 	TukuiL.option_general_autocustomlagtolerance = "自動更新自訂延遲容許值"
-		 
+	TukuiL.option_general_fontscale = "主文字大小"
+	
 	--Media
 	TukuiL.option_media = "材質&音效"
 	TukuiL.option_media_font = "主要字型檔案路徑"
@@ -44,7 +45,8 @@
 	TukuiL.option_skin_omen = "Omen"
 	TukuiL.option_skin_recount = "Recount"
 	TukuiL.option_skin_skada = "Skada"
-	 
+	TukuiL.option_hookdxeright = "強制將DXE設置於右邊對話框上方"
+	
 	-- combat text
 	TukuiL.option_combattext = "戰鬥文字"
 	TukuiL.option_combattext_showoverheal = "顯示過量治療"
@@ -97,7 +99,8 @@
 	TukuiL.option_auras_playershowonlydebuffs = "只在玩家單位框架顯示debuffs (限開啟玩家單位框架光環下使用)"
 	TukuiL.option_auras_playerdebuffsonly = "只顯示玩家DEBUFF於目標單位框架(可於auraFilter.lua設定)"
 	TukuiL.option_auras_RaidUnitBuffWatch = "開啟團隊buff監視"
-	 
+	TukuiL.option_auras_buffindicatorsize = "隊伍/團隊視窗增益圖示大小"
+	
 	TukuiL.option_auras_playtarbuffperrow = "於玩家/目標單位框架上每列BUFF/DEBUFF顯示數"
 	TukuiL.option_auras_smallbuffperrow = "於目標的目標/專注單位框架上每列BUFF/DEBUFF顯示數"
 	
@@ -117,7 +120,8 @@
 	TukuiL.option_raidframes_fontsize = "團隊框架字體大小"
 	TukuiL.option_raidframes_scale = "團隊單位框架比例 (用小數 例: 0.96)"
 	TukuiL.option_raidframes_disableblizz = "關閉WOW內建團隊框架"
-	 	TukuiL.option_raidframes_griddps = "Display the DPS Layout in grid layout instead of a vertical layout (Not Party)"
+	TukuiL.option_raidframes_griddps = "Display the DPS Layout in grid layout instead of a vertical layout (Not Party)"
+	TukuiL.option_raidframes_partytarget = "顯示隊員目標(DPS限定)"
 	
 	-- castbar
 	TukuiL.option_castbar = "施法條"
@@ -156,7 +160,8 @@
     TukuiL.option_unitframes_healthbackdropcolor = "全部單位視窗生命條使用背景顏色"
 	TukuiL.option_unitframes_healthcolorbyvalue = "生命條依照剩餘生命上色"
 	TukuiL.option_unitframes_combat = "Fade unitframes while not in-combat"
-			
+	TukuiL.option_unitframes_pettarget = "顯示寵物目標(DPS限定)"
+	
 	 -- frame sizes
 	TukuiL.option_framesizes = "單位視窗大小"
 	TukuiL.option_framesizes_playtarwidth = "玩家/目標單位框架的闊度"
@@ -221,7 +226,10 @@
 	TukuiL.option_actionbar_buttonspacing = "主要熱鍵間隔距離"
 	TukuiL.option_actionbar_petbuttonsize = "寵物/姿態/圖騰熱鍵大小"
 	TukuiL.option_actionbar_petbuttonspacing = "寵物/姿態/圖騰熱鍵鍵格距離"
-
+	TukuiL.option_actionbar_macrotext = "快捷鍵顯示巨集名稱"
+	TukuiL.option_actionbar_verticalstance = "直立式姿態列"
+	TukuiL.option_actionbar_petbuttonsize = "寵物/姿態列快捷鍵大小"
+	TukuiL.option_actionbar_petbuttonspacing = "寵物/姿態列快捷鍵間隔"
 	TukuiL.option_actionbar_swaptopbottombar = "Swap the top and bottom actionbar positions"
 	
 	-- arena
@@ -249,6 +257,8 @@
 	TukuiL_option_chat_chatheight = "對話框高度"
 	TukuiL_option_chat_fadeoutofuse = "不使用時使文字淡出"
 	TukuiL_option_chat_sticky = "開啟新對話框時預設某些重要頻道"
+	TukuiL_option_chat_rightchat = "顯示右邊對話框"
+	TukuiL_option_chat_combathide = "戰鬥中隱藏對話框('Left-左', 'Right-右', 'Both-左+右', or 'NONE-無')"
 	 
 	-- buttons
 	TukuiL.option_button_reset = "重置UI"

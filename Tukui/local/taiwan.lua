@@ -18,7 +18,8 @@
 	tukuilocal.chat_ERR_FRIEND_OFFLINE_S = " |cffff0000離線了|r"
 
 	tukuilocal.disband = "正在解散隊伍."
-
+	tukuilocal.raidbufftoggler = "團隊增益效果提醒: "
+	
 	tukuilocal.datatext_download = "下載: "
 	tukuilocal.datatext_bandwidth = "寬頻: "
 	tukuilocal.datatext_guild = "公會"
@@ -90,7 +91,8 @@
 	tukuilocal.popup_disableui = "Tukui並不支援此解析度, 您想要停用Tukui嗎? (若您想要嘗試其他解析度, 請按取消)"
 	tukuilocal.popup_install = "這個角色首次使用Tukui V12, 您必需先重載介面以完成設定"
 	tukuilocal.popup_2raidactive = "您同時啟用了兩種團隊框架, 請選擇其中一種"
-
+	tukuilocal.popup_rightchatwarn = "你可能不小心將右邊的對話框移除了，目前右對話框並沒被適當的關閉，你必需從設定中關閉或者按接受來重置你的對話框。"
+	
 	tukuilocal.merchant_repairnomoney = "您沒有足夠的金錢來修理!"
 	tukuilocal.merchant_repaircost = "您的裝備已修理, 花費了"
 	tukuilocal.merchant_trashsell = "您背包內的粗糙物品已被自動賣出, 您賺取了"

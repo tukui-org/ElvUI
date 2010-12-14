@@ -50,56 +50,23 @@ PlateBlacklist = {
 ]]-- 
 
 --------------------------------------------------------------------------------------------
--- Raid Buff Reminder
+-- Raid Buff Reminder (Bar in the topright corner below minimap)
 --------------------------------------------------------------------------------------------
 
 BuffReminderRaidBuffs = {
 	Flask = {
-		67016, --"Flask of the North-ING"
-		67017, --"Flask of the North-AGI"
-		67018, --"Flask of the North-STR"
-		53758, --"Flask of Stoneblood"
-		53755, --"Flask of the Frost Wyrm",
-		54212, --"Flask of Pure Mojo",
-		53760, --"Flask of Endless Rage",
-		17627, --"Flask of Distilled Wisdom", 
+		92729, --Flask of Steelskin
+		79472, --Strength
+		92730, --Int
 	},
 	BattleElixir = {
 		33721, --"Spellpower Elixir",
-		53746, --"Wrath Elixir",
-		28497, --"Elixir of Mighty Agility",
-		53748, --"Elixir of Mighty Strength",
-		60346, --"Elixir of Lightning Speed",
-		60344, --"Elixir of Expertise",
-		60341, --"Elixir of Deadly Strikes",
-		80532, --"Elixir of Armor Piercing",
-		60340, --"Elixir of Accuracy",
-		53749, --"Guru's Elixir",
 	},
 	GuardianElixir = {
 		60343, --"Elixir of Mighty Defense",
-		53751, --"Elixir of Mighty Fortitude",
-		53764, --"Elixir of Mighty Mageblood",
-		60347, --"Elixir of Mighty Thoughts",
-		53763, --"Elixir of Protection",
-		53747, --"Elixir of Spirit",
 	},
 	Food = {
 		57325, -- 80 AP
-		57327, -- 46 SP
-		57329, -- 40 CS
-		57332, -- 40 Haste
-		57334, -- 20 MP5
-		57356, -- 40 EXP
-		57360, -- 40 Hit
-		57363, -- Track Humanoids
-		57365, -- 40 Spirit
-		57367, -- 40 AGI
-		57371, -- 40 STR
-		57373, -- Track Beasts
-		57399, -- 80AP, 46SP (fish feast)
-		59230, -- 40 DODGE
-		65247, -- Pet 40 STR
 	},
 }
 

@@ -252,17 +252,12 @@ local function Shared(self, unit)
 		FlashInfo.ManaLevel:SetPoint("CENTER", health, "CENTER", 0, TukuiDB.Scale(-5))
 		self.FlashInfo = FlashInfo
 		
-		-- pvp status text
-		local status = TukuiDB.SetFontString(health, font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
-		status:SetPoint("CENTER", health, "CENTER", 0, TukuiDB.Scale(-5))
-		status:SetTextColor(0.69, 0.31, 0.31, 0)
-		self.Status = status
-		self:Tag(status, "[pvp]")
-		
-		-- script for pvp status and low mana
-		self:SetScript("OnEnter", function(self) FlashInfo.ManaLevel:Hide() status:SetAlpha(1) UnitFrame_OnEnter(self) end)
-		self:SetScript("OnLeave", function(self) FlashInfo.ManaLevel:Show() status:SetAlpha(0) UnitFrame_OnLeave(self) end)
-		
+		local PVP = health:CreateTexture(nil, "OVERLAY")
+		PVP:SetHeight(TukuiDB.Scale(14))
+		PVP:SetWidth(TukuiDB.Scale(14))
+		PVP:SetPoint("TOPRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(8))
+		self.PvP = PVP
+				
 		-- leader icon
 		local Leader = health:CreateTexture(nil, "OVERLAY")
 		Leader:SetHeight(TukuiDB.Scale(14))

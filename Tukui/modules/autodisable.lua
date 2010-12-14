@@ -22,10 +22,6 @@ if TukuiCF["actionbar"].bottomrows == 3 and TukuiCF["actionbar"].rightbars > 2 t
 	TukuiCF["actionbar"].rightbars = 2
 end
 
-if TukuiCF["unitframes"].classcolor == true then
-	TukuiCF["unitframes"].healthcolorbyvalue = false
-end
-
 if TukuiDB.client == "zhTW" or TukuiDB.client == "zhCN" then
 	TukuiCF["media"].uffont = [[fonts\bLEI00D.ttf]]
 	TukuiCF["media"].font = [[fonts\bLEI00D.ttf]]

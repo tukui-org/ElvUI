@@ -219,18 +219,18 @@ end
 --Check Player's Role
 local RoleUpdater = CreateFrame("Frame")
 local function CheckRole(self, event, unit)
+	local tree = GetPrimaryTalentTree()
 	local resilience
 	if GetCombatRating(COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN)*0.02828 > GetDodgeChance() then
 		resilience = true
 	else
 		resilience = false
 	end
-	if ((TukuiDB.myclass == "PALADIN" and GetPrimaryTalentTree() == 2) or 
-	(TukuiDB.myclass == "WARRIOR" and GetPrimaryTalentTree() == 3) or 
-	(TukuiDB.myclass == "DEATHKNIGHT" and GetPrimaryTalentTree() == 1)) and
+	if ((TukuiDB.myclass == "PALADIN" and tree == 2) or 
+	(TukuiDB.myclass == "WARRIOR" and tree == 3) or 
+	(TukuiDB.myclass == "DEATHKNIGHT" and tree == 1)) and
 	resilience == false or
-	--Check for 'Thick Hide' tanking talent
-	(TukuiDB.myclass == "DRUID" and GetPrimaryTalentTree() == 2 and GetBonusBarOffset() == 3) then
+	(TukuiDB.myclass == "DRUID" and tree == 2 and GetBonusBarOffset() == 3) then
 		TukuiDB.Role = "Tank"
 	else
 		local playerint = select(2, UnitStat("player", 4))
@@ -238,7 +238,7 @@ local function CheckRole(self, event, unit)
 		local base, posBuff, negBuff = UnitAttackPower("player");
 		local playerap = base + posBuff + negBuff;
 
-		if (((playerap > playerint) or (playeragi > playerint)) and not (UnitBuff("player", GetSpellInfo(24858)) or UnitBuff("player", GetSpellInfo(65139)))) or TukuiDB.myclass == "ROGUE" or TukuiDB.myclass == "HUNTER" then
+		if (((playerap > playerint) or (playeragi > playerint)) and not (TukuiDB.myclass == "SHAMAN" and tree ~= 1 and tree ~= 3) and and not (UnitBuff("player", GetSpellInfo(24858)) or UnitBuff("player", GetSpellInfo(65139)))) or TukuiDB.myclass == "ROGUE" or TukuiDB.myclass == "HUNTER" then
 			TukuiDB.Role = "Melee"
 		else
 			TukuiDB.Role = "Caster"
@@ -713,16 +713,39 @@ TukuiDB.PostUpdateHealth = function(health, unit, min, max)
 	
 	--Setup color health by value option
 	if TukuiCF["unitframes"].healthcolorbyvalue == true then
-		local perc = (min/max)*100
-		if(perc <= 50 and perc >= 26) then
-			health:SetStatusBarColor(224/255, 221/255, 9/255, 1)
-			health.bg:SetTexture(224/255, 221/255, 9/255, 0.1)
-		elseif(perc < 26) then
-			health:SetStatusBarColor(255/255, 13/255, 9/255, 1)
-			health.bg:SetTexture(255/255, 13/255, 9/255, 0.1)
+		if (UnitIsTapped("target")) and (not UnitIsTappedByPlayer("target")) and unit == "target" then
+			health:SetStatusBarColor(TukuiDB.oUF_colors.tapped[1], TukuiDB.oUF_colors.tapped[2], TukuiDB.oUF_colors.tapped[3], 1)
+			health.bg:SetTexture(TukuiDB.oUF_colors.tapped[1], TukuiDB.oUF_colors.tapped[2], TukuiDB.oUF_colors.tapped[3], 0.3)		
 		else
-			health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor))
-			health.bg:SetTexture(unpack(TukuiCF["unitframes"].healthbackdropcolor))		
+			local perc = (min/max)*100
+			if(perc <= 50 and perc >= 26) then
+				health:SetStatusBarColor(224/255, 221/255, 9/255, 1)
+				health.bg:SetTexture(224/255, 221/255, 9/255, 0.1)
+			elseif(perc < 26) then
+				health:SetStatusBarColor(255/255, 13/255, 9/255, 1)
+				health.bg:SetTexture(255/255, 13/255, 9/255, 0.1)
+			else
+				if TukuiCF["unitframes"].classcolor ~= true then
+					local reaction = UnitReaction(unit, 'player')
+					health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor))
+					health.bg:SetTexture(unpack(TukuiCF["unitframes"].healthbackdropcolor))		
+				else
+					if (UnitIsPlayer(unit)) then
+						local c = TukuiDB.oUF_colors.class[TukuiDB.myclass]
+						health:SetStatusBarColor(c[1], c[2], c[3], 1)
+						health.bg:SetTexture(c[1], c[2], c[3], 0.3)	
+					else
+						local reaction = UnitReaction(unit, 'player')
+						local c = TukuiDB.oUF_colors.reaction[reaction]
+						health:SetStatusBarColor(c[1], c[2], c[3], 1)
+						health.bg:SetTexture(c[1], c[2], c[3], 0.3)						
+					end
+				end
+			end
+		end
+	else
+		if (UnitIsTapped("target")) and (not UnitIsTappedByPlayer("target")) and unit == "target" then
+			health:SetStatusBarColor(TukuiDB.oUF_colors.tapped[1], TukuiDB.oUF_colors.tapped[2], TukuiDB.oUF_colors.tapped[3], 1)
 		end
 	end
 	
@@ -1210,7 +1233,7 @@ TukuiDB.ComboDisplay = function(self, event, unit)
 	
 	local cpoints = self.CPoints
 	local cp
-	if(UnitExists'vehicle') then
+	if(UnitExists'vehicle') and VehicleMenuBarActionButton1:IsShown() then
 		cp = GetComboPoints('vehicle', 'target')
 	else
 		cp = GetComboPoints('player', 'target')
