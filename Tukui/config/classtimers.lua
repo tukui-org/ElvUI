@@ -146,7 +146,6 @@ CLASS_FILTERS = {
 	HUNTER = { 
 		target = {
 			CreateSpellEntry( 49050 ), -- Aimed Shot
-			CreateSpellEntry( 1978 ), -- Serpent Sting
 			CreateSpellEntry( 53238 ), -- Piercing Shots
 			CreateSpellEntry( 3674 ), -- Black Arrow
 			CreateSpellEntry( 82654 ), -- Widow Venom
@@ -154,6 +153,8 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 37506 ), -- Scatter Shot
 			CreateSpellEntry( 53243 ), -- Marker for death, need to be changed I think
 			CreateSpellEntry( 1130 ), -- Hunters mark
+			CreateSpellEntry( 88453 ), --Serpent Sting
+			CreateSpellEntry( 88466 ), --Serpent Sting
 		},
 		player = {
 			CreateSpellEntry( 82749 ), -- killing streak
