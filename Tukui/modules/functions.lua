@@ -726,7 +726,6 @@ TukuiDB.PostUpdateHealth = function(health, unit, min, max)
 				health.bg:SetTexture(255/255, 13/255, 9/255, 0.1)
 			else
 				if TukuiCF["unitframes"].classcolor ~= true then
-					local reaction = UnitReaction(unit, 'player')
 					health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor))
 					health.bg:SetTexture(unpack(TukuiCF["unitframes"].healthbackdropcolor))		
 				else
@@ -746,6 +745,22 @@ TukuiDB.PostUpdateHealth = function(health, unit, min, max)
 	else
 		if (UnitIsTapped("target")) and (not UnitIsTappedByPlayer("target")) and unit == "target" then
 			health:SetStatusBarColor(TukuiDB.oUF_colors.tapped[1], TukuiDB.oUF_colors.tapped[2], TukuiDB.oUF_colors.tapped[3], 1)
+		else
+			if TukuiCF["unitframes"].classcolor ~= true then
+				health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor))
+				health.bg:SetTexture(unpack(TukuiCF["unitframes"].healthbackdropcolor))		
+			else		
+				if (UnitIsPlayer(unit)) then
+					local c = TukuiDB.oUF_colors.class[TukuiDB.myclass]
+					health:SetStatusBarColor(c[1], c[2], c[3], 1)
+					health.bg:SetTexture(c[1], c[2], c[3], 0.3)	
+				else
+					local reaction = UnitReaction(unit, 'player')
+					local c = TukuiDB.oUF_colors.reaction[reaction]
+					health:SetStatusBarColor(c[1], c[2], c[3], 1)
+					health.bg:SetTexture(c[1], c[2], c[3], 0.3)						
+				end			
+			end
 		end
 	end
 	
