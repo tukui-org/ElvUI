@@ -1079,15 +1079,6 @@ function TukuiDB.PostCreateAura(element, button)
 	button.count:SetParent(button.overlayFrame)
 	button.remaining:SetParent(button.overlayFrame)
 	
-	if header ~= "oUF_TukuiHealR6R25" and header ~= "oUF_TukuiDPSR6R25" then
-		button.Glow = CreateFrame("Frame", nil, button)
-		button.Glow:SetPoint("TOPLEFT", button, "TOPLEFT", TukuiDB.Scale(-3), TukuiDB.Scale(3))
-		button.Glow:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", TukuiDB.Scale(3), TukuiDB.Scale(-3))
-		button.Glow:SetFrameLevel(button:GetFrameLevel() -1)
-		button.Glow:SetBackdrop{edgeFile = TukuiCF["media"].glowTex, edgeSize = 3, insets = {left = 0, right = 0, top = 0, bottom = 0}}
-		button.Glow:SetBackdropColor(0, 0, 0, 0)
-		button.Glow:SetBackdropBorderColor(0, 0, 0)
-	end
 end
 
 function TukuiDB.PostUpdateAura(icons, unit, icon, index, offset, filter, isDebuff, duration, timeLeft)

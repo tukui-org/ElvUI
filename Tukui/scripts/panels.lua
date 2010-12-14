@@ -20,6 +20,8 @@ if TukuiMinimap then
 	TukuiDB.CreatePanel(minimapstatsright, (TukuiMinimap:GetWidth() / 2) -2, 19, "TOPRIGHT", TukuiMinimap, "BOTTOMRIGHT", 0, TukuiDB.Scale(-3))
 	TukuiDB.SetNormTexTemplate(TukuiMinimapStatsLeft)
 	TukuiDB.SetNormTexTemplate(TukuiMinimapStatsRight)
+	TukuiDB.CreateShadow(TukuiMinimapStatsLeft)
+	TukuiDB.CreateShadow(TukuiMinimapStatsRight)
 end
 
 -- MAIN ACTION BAR

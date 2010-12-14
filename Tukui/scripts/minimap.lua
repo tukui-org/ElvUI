@@ -9,6 +9,7 @@ TukuiDB.CreatePanel(p, TukuiDB.Scale(144 + 4), TukuiDB.Scale(144 + 4), "CENTER",
 p:ClearAllPoints()
 p:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
 p:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+TukuiDB.CreateShadow(TukuiMinimap)
 
 --------------------------------------------------------------------
 -- MINIMAP ROUND TO SQUARE AND MINIMAP SETTING
