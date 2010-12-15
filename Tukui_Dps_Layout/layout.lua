@@ -1676,10 +1676,10 @@ local function Shared(self, unit)
 		
 		if TukuiCF["castbar"].unitcastbar == true then
 			local castbar = CreateFrame("StatusBar", self:GetName().."_Castbar", self)
-			castbar:SetWidth(arenaboss_width)
+			castbar:SetWidth(original_width)
 			castbar:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -arenapowerbar_offset)		
 			
-			castbar:SetHeight(TukuiDB.Scale(14))
+			castbar:SetHeight(TukuiDB.Scale(16))
 			castbar:SetStatusBarTexture(normTex)
 			castbar:SetFrameLevel(6)
 			

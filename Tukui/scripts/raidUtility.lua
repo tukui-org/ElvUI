@@ -1,5 +1,6 @@
 --Raid Utility by Elv22
 if TukuiCF["raidframes"].disableblizz ~= true then return end
+if not IsAddOnLoaded("Blizzard_RaidUI") then LoadAddOn("Blizzard_RaidUI") end
 
 local panel_height = ((TukuiDB.Scale(5)*4) + (TukuiDB.Scale(20)*4))
 
