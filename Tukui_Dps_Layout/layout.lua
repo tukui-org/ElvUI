@@ -303,7 +303,7 @@ local function Shared(self, unit)
 			Experience.Text = self.Experience:CreateFontString(nil, 'OVERLAY')
 			Experience.Text:SetFont(font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
 			Experience.Text:SetPoint('CENTER', self.Experience)
-			Reputation.Text:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
+			Experience.Text:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
 			Experience.Text:Hide()
 			self.Experience.Text = Experience.Text
 			self.Experience.PostUpdate = TukuiDB.ExperienceText

@@ -1186,7 +1186,7 @@ TukuiDB.MoveBuffs = function(self, login)
 	if self:IsShown() then
 		if self == parent.EclipseBar then
 			parent.FlashInfo:Hide()
-			parent.Status:Hide()
+			parent.PvP:SetAlpha(0)
 		end
 		parent.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(17))
 		
@@ -1202,7 +1202,7 @@ TukuiDB.MoveBuffs = function(self, login)
 	else
 		if self == parent.EclipseBar then
 			parent.FlashInfo:Show()
-			parent.Status:Show()
+			parent.PvP:SetAlpha(1)
 		end
 		parent.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))
 		
