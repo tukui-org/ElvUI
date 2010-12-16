@@ -337,6 +337,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 73651 ), -- Recuperate --
 			CreateSpellEntry( 5171 ), -- Slice and Dice
 			CreateSpellEntry( 13877 ), -- Blade Flurry --
+			CreateSpellEntry( 58426 ), --Overkill
 		},
 		procs = {
 			CreateSpellEntry( 71396 ), -- Rage of the Fallen
