@@ -14,6 +14,7 @@ TRINKET_FILTER = {
 
 	CreateSpellEntry( 2825, true ), --Heroism
 	CreateSpellEntry( 32182, true ), -- Bloodlust
+	CreateSpellEntry( 90355, true ), -- Hunter Pet Bloodlust
 	CreateSpellEntry( 80353 ), -- Time Warp 
 	CreateSpellEntry( 26297 ), -- Berserking (troll racial)
 	CreateSpellEntry( 33702 ), CreateSpellEntry( 33697 ), CreateSpellEntry( 20572 ), -- Blood Fury (orc racial)
