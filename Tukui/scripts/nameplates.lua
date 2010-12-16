@@ -245,6 +245,9 @@ local function UpdateObjects(frame)
 		frame.hp.level:SetText(level..(elite and "+" or ""))
 	end
 	
+	frame.overlay:ClearAllPoints()
+	frame.overlay:SetAllPoints(frame.hp)
+	
 	HideObjects(frame)
 end
 
@@ -287,7 +290,7 @@ end
 
 local function SkinObjects(frame)
 	local hp, cb = frame:GetChildren()
-	local threat, hpborder, cbshield, cbborder, cbicon, oldoverlay, oldname, oldlevel, bossicon, raidicon, elite = frame:GetRegions()
+	local threat, hpborder, cbshield, cbborder, cbicon, overlay, oldname, oldlevel, bossicon, raidicon, elite = frame:GetRegions()
 	frame.healthOriginal = hp
 	
 	--Just make sure these are correct
@@ -340,9 +343,9 @@ local function SkinObjects(frame)
 	hp.hpbg:SetTexture(1,1,1,0.25)  
 	
 	--Create Overlay Highlight
-	frame.overlay = frame:CreateTexture(nil, "HIGHLIGHT")
+	frame.overlay = overlay
+	frame.overlay:SetTexture(1,1,1,0.15)
 	frame.overlay:SetAllPoints(hp)
-	frame.overlay:SetTexture(1,1,1,0.2)
 	
 	--Create Name
 	hp.level = hp:CreateFontString(nil, "OVERLAY")
@@ -459,7 +462,6 @@ local function SkinObjects(frame)
 	
 	--Hide Old Stuff
 	QueueObject(frame, oldlevel)
-	QueueObject(frame, oldoverlay)
 	QueueObject(frame, threat)
 	QueueObject(frame, hpborder)
 	QueueObject(frame, cbshield)
