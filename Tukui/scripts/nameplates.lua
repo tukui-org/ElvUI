@@ -367,29 +367,36 @@ local function SkinObjects(frame)
 		hp.value:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
 	end
 	
-	--Create Castbar Backdrop Frame
-	local castbarbackdrop = CreateFrame("Frame", nil, cb)
-	castbarbackdrop:SetPoint("TOPLEFT", cb, "TOPLEFT", -noscalemult*3, noscalemult*3)
-	castbarbackdrop:SetPoint("BOTTOMRIGHT", cb, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
-	castbarbackdrop:SetFrameLevel(1)
-
-	-- Create Cast Icon Backdrop frame
+	-- Create Cast Bar Backdrop frame
 	local castbarbackdrop_tex = cb:CreateTexture(nil, "BACKGROUND")
 	castbarbackdrop_tex:SetPoint("TOPLEFT", cb, "TOPLEFT", -noscalemult*3, noscalemult*3)
 	castbarbackdrop_tex:SetPoint("BOTTOMRIGHT", cb, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
 	castbarbackdrop_tex:SetTexture(0.1, 0.1, 0.1)
 	
-	local healthbarborder_tex = cb:CreateTexture(nil, "BORDER")
-	healthbarborder_tex:SetPoint("TOPLEFT", cb, "TOPLEFT", -noscalemult*2, noscalemult*2)
-	healthbarborder_tex:SetPoint("BOTTOMRIGHT", cb, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
-	healthbarborder_tex:SetTexture(0.6, 0.6, 0.6)	
-	frame.healthborder_tex = healthbarborder_tex
+	--Create our fake border.. fuck blizz
+	local castbarborder_tex1 = cb:CreateTexture(nil, "BORDER")
+	castbarborder_tex1:SetPoint("TOPLEFT", cb, "TOPLEFT", -noscalemult*2, noscalemult*2)
+	castbarborder_tex1:SetPoint("TOPRIGHT", cb, "TOPRIGHT", noscalemult*2, noscalemult*2)
+	castbarborder_tex1:SetHeight(noscalemult)
+	castbarborder_tex1:SetTexture(0.6, 0.6, 0.6)	
 	
-	--Create Health Backdrop Frame
-	local castbarbackdrop2_tex = cb:CreateTexture(nil, "ARTWORK")
-	castbarbackdrop2_tex:SetPoint("TOPLEFT", cb, "TOPLEFT", -noscalemult, noscalemult)
-	castbarbackdrop2_tex:SetPoint("BOTTOMRIGHT", cb, "BOTTOMRIGHT", noscalemult, -noscalemult)
-	castbarbackdrop2_tex:SetTexture(0.1, 0.1, 0.1)
+	local castbarborder_tex2 = cb:CreateTexture(nil, "BORDER")
+	castbarborder_tex2:SetPoint("BOTTOMLEFT", cb, "BOTTOMLEFT", -noscalemult*2, -noscalemult*2)
+	castbarborder_tex2:SetPoint("BOTTOMRIGHT", cb, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
+	castbarborder_tex2:SetHeight(noscalemult)
+	castbarborder_tex2:SetTexture(0.6, 0.6, 0.6)	
+	
+	local castbarborder_tex3 = cb:CreateTexture(nil, "BORDER")
+	castbarborder_tex3:SetPoint("TOPLEFT", cb, "TOPLEFT", -noscalemult*2, noscalemult*2)
+	castbarborder_tex3:SetPoint("BOTTOMLEFT", cb, "BOTTOMLEFT", noscalemult*2, -noscalemult*2)
+	castbarborder_tex3:SetWidth(noscalemult)
+	castbarborder_tex3:SetTexture(0.6, 0.6, 0.6)	
+	
+	local castbarborder_tex4 = cb:CreateTexture(nil, "BORDER")
+	castbarborder_tex4:SetPoint("TOPRIGHT", cb, "TOPRIGHT", noscalemult*2, noscalemult*2)
+	castbarborder_tex4:SetPoint("BOTTOMRIGHT", cb, "BOTTOMRIGHT", -noscalemult*2, -noscalemult*2)
+	castbarborder_tex4:SetWidth(noscalemult)
+	castbarborder_tex4:SetTexture(0.6, 0.6, 0.6)	
 	
 	--Setup CastBar Icon
 	cbicon:ClearAllPoints()
@@ -404,10 +411,10 @@ local function SkinObjects(frame)
 	casticonbackdrop_tex:SetPoint("BOTTOMRIGHT", cbicon, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
 	casticonbackdrop_tex:SetTexture(0.1, 0.1, 0.1)
 	
-	local castbarborder_tex = cb:CreateTexture(nil, "BORDER")
-	castbarborder_tex:SetPoint("TOPLEFT", cbicon, "TOPLEFT", -noscalemult*2, noscalemult*2)
-	castbarborder_tex:SetPoint("BOTTOMRIGHT", cbicon, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
-	castbarborder_tex:SetTexture(0.6, 0.6, 0.6)	
+	local casticonborder_tex = cb:CreateTexture(nil, "BORDER")
+	casticonborder_tex:SetPoint("TOPLEFT", cbicon, "TOPLEFT", -noscalemult*2, noscalemult*2)
+	casticonborder_tex:SetPoint("BOTTOMRIGHT", cbicon, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
+	casticonborder_tex:SetTexture(0.6, 0.6, 0.6)	
 	
 	--Create Health Backdrop Frame
 	local casticonbackdrop2_tex = cb:CreateTexture(nil, "ARTWORK")
