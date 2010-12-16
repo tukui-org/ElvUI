@@ -1,6 +1,6 @@
 ﻿## Interface: 40000
 ## Author: Elv, Tukz
-## Version: 3.0.1
+## Version: 3.0.2
 ## Title: |cffC495DDTukui|r
 ## Notes: UI of awesomeness!
 ## SavedVariables: TukuiData, TukuiArena
