@@ -55,9 +55,11 @@ PlateBlacklist = {
 
 BuffReminderRaidBuffs = {
 	Flask = {
-		92729, --Flask of Steelskin
-		79472, --Strength
-		92730, --Int
+		94160, --"Flask of Flowing Water"
+		79469, --"Flask of Steelskin"
+		79470, --"Flask of the Draconic Mind"
+		79471, --"Flask of the Winds
+		79472, --"Flask of Titanic Strength"
 	},
 	BattleElixir = {
 		33721, --"Spellpower Elixir",
