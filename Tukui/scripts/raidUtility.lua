@@ -147,36 +147,23 @@ MarkerFrame:SetPoint("TOPLEFT", WorldMarkerButton, "BOTTOMRIGHT", TukuiDB.Scale(
 MarkerFrame:Hide()
 
 --Setup Secure Buttons
-CreateMarkerButton("BlueFlare", "|cff0062FF"..RAID_TARGET_6.."|r", "TOPLEFT", MarkerFrame, "TOPLEFT")
-BlueFlare:SetAttribute("macrotext", [[
-/click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
-/click DropDownList1Button1
-]])
-CreateMarkerButton("GreenFlare", "|cff00FF00"..RAID_TARGET_4.."|r", "TOPLEFT", BlueFlare, "BOTTOMLEFT")
-GreenFlare:SetAttribute("macrotext", [[
-/click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
-/click DropDownList1Button2
-]])
-CreateMarkerButton("PurpleFlare", "|cffB500B5"..RAID_TARGET_3.."|r", "TOPLEFT", GreenFlare, "BOTTOMLEFT")
-PurpleFlare:SetAttribute("macrotext", [[
-/click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
-/click DropDownList1Button3
-]])
-CreateMarkerButton("RedFlare", "|cffFF0000"..RAID_TARGET_7.."|r", "TOPLEFT", PurpleFlare, "BOTTOMLEFT")
-RedFlare:SetAttribute("macrotext", [[
-/click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
-/click DropDownList1Button4
-]])
-CreateMarkerButton("WhiteFlare", "|cffFFFF00"..RAID_TARGET_1.."|r", "TOPLEFT", RedFlare, "BOTTOMLEFT")
-WhiteFlare:SetAttribute("macrotext", [[
-/click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
-/click DropDownList1Button5
-]])
-CreateMarkerButton("ClearFlare", REMOVE_WORLD_MARKERS, "TOPLEFT", WhiteFlare, "BOTTOMLEFT")
-ClearFlare:SetAttribute("macrotext", [[
-/click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
-/click DropDownList1Button6
-]])
+MarkerFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+MarkerFrame:SetScript("OnEvent", function(self, event)
+	if not CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton then print("error with worldmarkers, report to elv") end
+	CreateMarkerButton("BlueFlare", "|cff0062FF"..RAID_TARGET_6.."|r", "TOPLEFT", MarkerFrame, "TOPLEFT")
+	BlueFlare:SetAttribute("macrotext", "/click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton\n/click DropDownList1Button1")
+	CreateMarkerButton("GreenFlare", "|cff00FF00"..RAID_TARGET_4.."|r", "TOPLEFT", BlueFlare, "BOTTOMLEFT")
+	GreenFlare:SetAttribute("macrotext", "/click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton\n/click DropDownList1Button2")
+	CreateMarkerButton("PurpleFlare", "|cffB500B5"..RAID_TARGET_3.."|r", "TOPLEFT", GreenFlare, "BOTTOMLEFT")
+	PurpleFlare:SetAttribute("macrotext", "/click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton\n/click DropDownList1Button3")
+	CreateMarkerButton("RedFlare", "|cffFF0000"..RAID_TARGET_7.."|r", "TOPLEFT", PurpleFlare, "BOTTOMLEFT")
+	RedFlare:SetAttribute("macrotext", "/click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton\n/click DropDownList1Button4")
+	CreateMarkerButton("WhiteFlare", "|cffFFFF00"..RAID_TARGET_1.."|r", "TOPLEFT", RedFlare, "BOTTOMLEFT")
+	WhiteFlare:SetAttribute("macrotext", "/click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton\n/click DropDownList1Button5")
+	CreateMarkerButton("ClearFlare", REMOVE_WORLD_MARKERS, "TOPLEFT", WhiteFlare, "BOTTOMLEFT")
+	ClearFlare:SetAttribute("macrotext", "/click CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton\n/click DropDownList1Button6")
+	self:UnregisterAllEvents()
+end)
 MarkerFrame:SetHeight(MarkerFrame:GetHeight() + TukuiDB.Scale(4))
 
 local function ToggleRaidUtil(self, event)
