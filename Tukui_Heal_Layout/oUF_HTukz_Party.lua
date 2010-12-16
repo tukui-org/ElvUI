@@ -6,10 +6,10 @@ local font1 = TukuiCF["media"].font
 local normTex = TukuiCF["media"].normTex
 
 --Frame Size
-local party_width = TukuiDB.Scale((TukuiActionBarBackground:GetWidth() / 5) + 7)
-local party_height = TukuiDB.Scale(50)
-local pet_width = party_width
-local pet_height = TukuiDB.Scale(20)
+local party_width = TukuiDB.Scale((TukuiActionBarBackground:GetWidth() / 5) + 7)*TukuiCF["raidframes"].scale
+local party_height = TukuiDB.Scale(50)*TukuiCF["raidframes"].scale
+local pet_width = party_width*TukuiCF["raidframes"].scale
+local pet_height = TukuiDB.Scale(20)*TukuiCF["raidframes"].scale
 
 local function Shared(self, unit)	
 	self.colors = TukuiDB.oUF_colors
