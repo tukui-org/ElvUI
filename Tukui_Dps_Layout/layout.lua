@@ -1677,9 +1677,13 @@ local function Shared(self, unit)
 		if TukuiCF["castbar"].unitcastbar == true then
 			local castbar = CreateFrame("StatusBar", self:GetName().."_Castbar", self)
 			castbar:SetWidth(original_width)
-			castbar:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -arenapowerbar_offset)		
+			if powerbar_offset ~= 0 then
+				castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+			else
+				castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -TukuiDB.Scale(8))
+			end
 			
-			castbar:SetHeight(TukuiDB.Scale(16))
+			castbar:SetHeight(TukuiDB.Scale(18))
 			castbar:SetStatusBarTexture(normTex)
 			castbar:SetFrameLevel(6)
 			
@@ -1713,7 +1717,7 @@ local function Shared(self, unit)
 				castbar.icon:SetPoint("TOPLEFT", castbar.button, TukuiDB.Scale(2), TukuiDB.Scale(-2))
 				castbar.icon:SetPoint("BOTTOMRIGHT", castbar.button, TukuiDB.Scale(-2), TukuiDB.Scale(2))
 				castbar.icon:SetTexCoord(0.08, 0.92, 0.08, .92)
-				castbar:SetWidth(arenaboss_width - castbar.button:GetWidth() - TukuiDB.Scale(2))
+				castbar:SetWidth(original_width - castbar.button:GetWidth() - TukuiDB.Scale(2))
 			end
 
 			self.Castbar = castbar
@@ -1840,7 +1844,7 @@ target:SetSize(target_width, target_height)
 
 -- Focus
 local focus = oUF:Spawn('focus', "oUF_TukzDPS_focus")
-focus:SetPoint("BOTTOMLEFT", oUF_TukzDPS_target, "TOPRIGHT", TukuiDB.Scale(-35),TukuiDB.Scale(90))
+focus:SetPoint("BOTTOMLEFT", oUF_TukzDPS_target, "TOPRIGHT", TukuiDB.Scale(-35),TukuiDB.Scale(120))
 focus:SetSize(smallframe_width, smallframe_height)
 
 -- Target's Target
@@ -1894,7 +1898,6 @@ if TukuiCF.raidframes.showboss then
 		boss[i]:SetSize(arenaboss_width, arenaboss_height)
 	end
 end
-
 
 if TukuiCF["raidframes"].maintank == true then
 	local tank = oUF:SpawnHeader('oUF_TukzDPSMainTank', nil, 'raid', 

@@ -1687,10 +1687,14 @@ local function Shared(self, unit)
 		
 		if TukuiCF["castbar"].unitcastbar == true then
 			local castbar = CreateFrame("StatusBar", self:GetName().."_Castbar", self)
-			castbar:SetWidth(arenaboss_width)
-			castbar:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -arenapowerbar_offset)		
+			castbar:SetWidth(original_width)
+			if powerbar_offset ~= 0 then
+				castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+			else
+				castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -TukuiDB.Scale(8))
+			end
 			
-			castbar:SetHeight(TukuiDB.Scale(14))
+			castbar:SetHeight(TukuiDB.Scale(18))
 			castbar:SetStatusBarTexture(normTex)
 			castbar:SetFrameLevel(6)
 			
@@ -1724,7 +1728,7 @@ local function Shared(self, unit)
 				castbar.icon:SetPoint("TOPLEFT", castbar.button, TukuiDB.Scale(2), TukuiDB.Scale(-2))
 				castbar.icon:SetPoint("BOTTOMRIGHT", castbar.button, TukuiDB.Scale(-2), TukuiDB.Scale(2))
 				castbar.icon:SetTexCoord(0.08, 0.92, 0.08, .92)
-				castbar:SetWidth(arenaboss_width - castbar.button:GetWidth() - TukuiDB.Scale(2))
+				castbar:SetWidth(original_width - castbar.button:GetWidth() - TukuiDB.Scale(2))
 			end
 
 			self.Castbar = castbar
