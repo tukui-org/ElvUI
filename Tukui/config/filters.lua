@@ -60,6 +60,9 @@ BuffReminderRaidBuffs = {
 		79470, --"Flask of the Draconic Mind"
 		79471, --"Flask of the Winds
 		79472, --"Flask of Titanic Strength"
+		79638, --"Flask of Enhancement-STR"
+		79639, --"Flask of Enhancement-AGI"
+		79640, --"Flask of Enhancement-INT"
 	},
 	BattleElixir = {
 		33721, --"Spellpower Elixir",
@@ -68,7 +71,17 @@ BuffReminderRaidBuffs = {
 		60343, --"Elixir of Mighty Defense",
 	},
 	Food = {
-		57325, -- 80 AP
+		87545, --90 STR
+		87546, --90 AGI
+		87547, --90 INT
+		87548, --90 SPI
+		87549, --90 MAST
+		87550, --90 HIT
+		87551, --90 CRIT
+		87552, --90 HASTE
+		87554, --90 DODGE
+		87555, --90 PARRY
+		87635, --90 EXP
 	},
 }
 
@@ -328,6 +341,7 @@ DebuffHealerWhiteList = {
 		--Valiona & Theralion
 		[SpellName(92878)] = true, -- Blackout
 		[SpellName(86840)] = true, -- Devouring Flames
+		[SpellName(95639)] = true, -- Engulfing Magic
 		
 		--Halfus Wyrmbreaker
 		
@@ -382,6 +396,7 @@ DebuffDPSWhiteList = {
 		--Valiona & Theralion
 		[SpellName(92878)] = true, -- Blackout
 		[SpellName(86840)] = true, -- Devouring Flames
+		[SpellName(95639)] = true, -- Engulfing Magic
 		
 		--Halfus Wyrmbreaker
 		
