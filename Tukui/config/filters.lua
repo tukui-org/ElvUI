@@ -82,6 +82,16 @@ BuffReminderRaidBuffs = {
 		87554, --90 DODGE
 		87555, --90 PARRY
 		87635, --90 EXP
+		87556, --60 STR
+		87557, --60 AGI
+		87558, --60 INT
+		87559, --60 SPI
+		87560, --60 MAST
+		87561, --60 HIT
+		87562, --60 CRIT
+		87563, --60 HASTE
+		87564, --60 DODGE
+		87634, --60 EXP
 	},
 }
 

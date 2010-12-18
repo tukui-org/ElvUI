@@ -191,6 +191,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 1130 ), -- Hunters mark
 			CreateSpellEntry( 88453 ), --Serpent Sting
 			CreateSpellEntry( 88466 ), --Serpent Sting
+			CreateSpellEntry( 1978 ), --Serpent sting
 		},
 		player = {
 			CreateSpellEntry( 82749 ), -- killing streak
@@ -331,6 +332,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 81209 ), -- Chakra Smite
 			CreateSpellEntry( 81206 ), -- Prayer of Healing
 			CreateSpellEntry( 63877 ), -- Pain Suppression
+			CreateSpellEntry( 73413 ), -- Inner Will
 		},
 		procs = {
 			CreateSpellEntry( 63735 ), -- Serendipity

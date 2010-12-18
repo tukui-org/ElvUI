@@ -5,3 +5,6 @@ PlayerPowerBarAlt:ClearAllPoints()
 PlayerPowerBarAlt:SetPoint("TOP", UIParent, "TOP", 0, -32) 
 PlayerPowerBarAlt.ClearAllPoints = TukuiDB.dummy 
 PlayerPowerBarAlt.SetPoint = TukuiDB.dummy
+
+
+--/run PlayerPowerBarAlt:ClearAllPoints(); PlayerPowerBarAlt:SetPoint("TOP", UIParent, "TOP", 0, -32); PlayerPowerBarAlt.ClearAllPoints = function() end; PlayerPowerBarAlt.SetPoint = function() end;
