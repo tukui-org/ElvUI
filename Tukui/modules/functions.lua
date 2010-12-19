@@ -734,6 +734,7 @@ TukuiDB.PostUpdateHealth = function(health, unit, min, max)
 				else
 					if (UnitIsPlayer(unit)) then
 						local class = select(2, UnitClass(unit))
+						if not class then return end
 						local c = TukuiDB.oUF_colors.class[class]
 						health:SetStatusBarColor(c[1], c[2], c[3], 1)
 						health.bg:SetTexture(c[1], c[2], c[3], 0.3)	
@@ -761,6 +762,7 @@ TukuiDB.PostUpdateHealth = function(health, unit, min, max)
 			else		
 				if (UnitIsPlayer(unit)) then
 					local class = select(2, UnitClass(unit))
+					if not class then return end
 					local c = TukuiDB.oUF_colors.class[class]
 					health:SetStatusBarColor(c[1], c[2], c[3], 1)
 					health.bg:SetTexture(c[1], c[2], c[3], 0.3)	
