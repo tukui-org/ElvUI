@@ -344,7 +344,6 @@ DebuffHealerWhiteList = {
 		
 		--Chimaeron
 		[SpellName(82881)] = true, -- Break
-		[SpellName(89084)] = true, -- Low Health
 		
 		--Nefarian
 		
@@ -400,7 +399,6 @@ DebuffDPSWhiteList = {
 		
 		--Chimaeron
 		[SpellName(82881)] = true, -- Break
-		[SpellName(89084)] = true, -- Low Health
 		
 		--Nefarian
 		

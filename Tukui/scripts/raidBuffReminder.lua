@@ -20,7 +20,6 @@ local function SetCasterOnlyBuffs()
 		469, -- Commanding
 		6307, -- Blood Pact
 		90364, -- Qiraji Fortitude
-		72590, -- Drums of fortitude
 		21562, -- Fortitude
 	}
 	Spell5Buff = { --Total Mana
@@ -44,7 +43,6 @@ local function SetBuffs()
 		469, -- Commanding
 		6307, -- Blood Pact
 		90364, -- Qiraji Fortitude
-		72590, -- Drums of fortitude
 		21562, -- Fortitude
 	}
 	Spell5Buff = { --Total Mana
