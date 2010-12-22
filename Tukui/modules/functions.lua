@@ -1203,10 +1203,10 @@ TukuiDB.MoveBuffs = function(self, login)
 		end
 		parent.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(17))
 		
-		if (IsAddOnLoaded("Tukui_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["PlayerBuffs"] == true) then return end
-		if (IsAddOnLoaded("Tukui_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["PlayerBuffs"] == true) then return end
-		if (IsAddOnLoaded("Tukui_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["PlayerDebuffs"] == true) then return end
-		if (IsAddOnLoaded("Tukui_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["PlayerDebuffs"] == true) then return end
+		if (IsAddOnLoaded("Tukui_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["DPSPlayerBuffs"] == true) then return end
+		if (IsAddOnLoaded("Tukui_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["HealPlayerBuffs"] == true) then return end
+		if (IsAddOnLoaded("Tukui_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["DPSPlayerDebuffs"] == true) then return end
+		if (IsAddOnLoaded("Tukui_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["HealPlayerDebuffs"] == true) then return end
 		
 		if parent.Debuffs then 
 			parent.Debuffs:ClearAllPoints()
@@ -1219,10 +1219,10 @@ TukuiDB.MoveBuffs = function(self, login)
 		end
 		parent.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))
 		
-		if (IsAddOnLoaded("Tukui_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["PlayerBuffs"] == true) then return end
-		if (IsAddOnLoaded("Tukui_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["PlayerBuffs"] == true) then return end
-		if (IsAddOnLoaded("Tukui_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["PlayerDebuffs"] == true) then return end
-		if (IsAddOnLoaded("Tukui_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["PlayerDebuffs"] == true) then return end
+		if (IsAddOnLoaded("Tukui_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["DPSPlayerBuffs"] == true) then return end
+		if (IsAddOnLoaded("Tukui_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["HealPlayerBuffs"] == true) then return end
+		if (IsAddOnLoaded("Tukui_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["DPSPlayerDebuffs"] == true) then return end
+		if (IsAddOnLoaded("Tukui_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["HealPlayerDebuffs"] == true) then return end
 		
 		if parent.Debuffs then 
 			parent.Debuffs:ClearAllPoints()
@@ -1301,16 +1301,16 @@ TukuiDB.ComboDisplay = function(self, event, unit)
 		for i=1, MAX_COMBO_POINTS do
 			cpoints[i]:Show()
 		end
-		if (IsAddOnLoaded("Tukui_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["ComboBar"] == true) then return end
-		if (IsAddOnLoaded("Tukui_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["ComboBar"] == true) then return end
+		if (IsAddOnLoaded("Tukui_Dps_Layout") and DPSElementsCharPos and (DPSElementsCharPos["DPSComboBar"] == true or DPSElementsCharPos["DPSTargetBuffs"] == true)) then return end
+		if (IsAddOnLoaded("Tukui_Heal_Layout") and HealElementsCharPos and (HealElementsCharPos["HealComboBar"] == true or HealElementsCharPos["HealTargetBuffs"] == true)) then return end
 		self.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(17))
 		if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOM", self.Health, "TOP", 0, TukuiDB.Scale(17)) end	
 	else
 		for i=1, MAX_COMBO_POINTS do
 			cpoints[i]:Hide()
 		end
-		if (IsAddOnLoaded("Tukui_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["ComboBar"] == true) then return end
-		if (IsAddOnLoaded("Tukui_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["ComboBar"] == true) then return end
+		if (IsAddOnLoaded("Tukui_Dps_Layout") and DPSElementsCharPos and (DPSElementsCharPos["DPSComboBar"] == true or DPSElementsCharPos["DPSTargetBuffs"] == true)) then return end
+		if (IsAddOnLoaded("Tukui_Heal_Layout") and HealElementsCharPos and (HealElementsCharPos["HealComboBar"] == true or HealElementsCharPos["HealTargetBuffs"] == true)) then return end
 		self.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))	
 		if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOM", self.Health, "TOP", 0, TukuiDB.Scale(4)) end	
 	end
