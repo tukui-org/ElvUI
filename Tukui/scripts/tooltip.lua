@@ -385,7 +385,7 @@ TukuiTooltip:SetScript("OnEvent", function(self)
 	
 	BNToastFrame:HookScript("OnShow", function(self)
 		self:ClearAllPoints()
-		self:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, TukuiDB.Scale(5))
+		self:SetPoint("TOPLEFT", UIParent, "TOPLEFT", TukuiDB.Scale(5), TukuiDB.Scale(-5))
 	end)
 		
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
