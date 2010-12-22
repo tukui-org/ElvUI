@@ -150,6 +150,7 @@ if TukuiCF["datatext"].guild and TukuiCF["datatext"].guild > 0 then
 		if btn == "LeftButton" then
 			if not GuildFrame and IsInGuild() then LoadAddOn("Blizzard_GuildUI") end
 			GuildFrame_Toggle() 
+			GuildFrame_TabClicked(GuildFrameTab2)
 		end	
 	end)
 	Stat:SetScript("OnEvent", Update)
