@@ -63,12 +63,28 @@ BuffReminderRaidBuffs = {
 		79638, --"Flask of Enhancement-STR"
 		79639, --"Flask of Enhancement-AGI"
 		79640, --"Flask of Enhancement-INT"
+		92679, --Flask of battle
 	},
 	BattleElixir = {
-		33721, --"Spellpower Elixir",
+		--Scrolls
+		89343, --Agility
+		63308, --Armor 
+		89347, --Int
+		89342, --Spirit
+		63306, --Stam
+		89346, --Strength
+		
+		--Elixirs
+		79481, --Hit
+		79632, --Haste
+		79477, --Crit
+		79635, --Mastery
+		79474, --Expertise
+		79468, --Spirit
 	},
 	GuardianElixir = {
-		60343, --"Elixir of Mighty Defense",
+		79480, --Armor
+		58143, --Resistance+90
 	},
 	Food = {
 		87545, --90 STR
@@ -366,6 +382,8 @@ DebuffHealerWhiteList = {
 		[SpellName(92488)] = true, -- Gravity Crush
 		
 		--Cho'gall
+		[SpellName(86028)] = true, -- Cho's Blast
+		[SpellName(86029)] = true, -- Gall's Blast
 		
 	--Throne of the Four Winds
 		--Conclave of Wind
@@ -421,6 +439,8 @@ DebuffDPSWhiteList = {
 		[SpellName(92488)] = true, -- Gravity Crush
 		
 		--Cho'gall
+		[SpellName(86028)] = true, -- Cho's Blast
+		[SpellName(86029)] = true, -- Gall's Blast
 		
 	--Throne of the Four Winds
 		--Conclave of Wind

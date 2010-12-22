@@ -11,7 +11,6 @@ TRINKET_FILTER = {
 	CreateSpellEntry( 67671 ), -- Fury(Banner of Victory)
 	CreateSpellEntry( 54758 ), -- Hyperspeed Acceleration (Hyperspeed Accelerators)
 	CreateSpellEntry( 55637 ), -- Lightweave
-
 	CreateSpellEntry( 2825, true ), --Heroism
 	CreateSpellEntry( 32182, true ), -- Bloodlust
 	CreateSpellEntry( 90355, true ), -- Hunter Pet Bloodlust
@@ -19,7 +18,6 @@ TRINKET_FILTER = {
 	CreateSpellEntry( 26297 ), -- Berserking (troll racial)
 	CreateSpellEntry( 33702 ), CreateSpellEntry( 33697 ), CreateSpellEntry( 20572 ), -- Blood Fury (orc racial)
 	CreateSpellEntry( 57933, true ), -- Tricks of Trade (15% dmg buff)
-	
 	CreateSpellEntry( 90992 ), -- Hymn of Power (H Anhuur's Hymnal)
 	CreateSpellEntry( 91149 ), -- Blessing of Isiset (H Blood of Isiset)
 	CreateSpellEntry( 91308 ), -- Egg Shell (H Corrupted Egg Shell)
@@ -54,7 +52,7 @@ TRINKET_FILTER = {
 	CreateSpellEntry( 92104 ), -- River of Death (Fluid Death)
 	CreateSpellEntry( 91810 ), -- Slayer (License to Slay)
 	CreateSpellEntry( 91019 ), -- Soul Power (Soul Casket)
-
+	CreateSpellEntry( 82175 ), -- Synapse Springs
 
 	CreateSpellEntry( 67684 ), -- Hospitality (Talisman of Resurgence)
 	CreateSpellEntry( 71584 ), -- Revitalized (Purified Lunar Dust)
@@ -115,10 +113,8 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 33763 ), -- Lifebloom
 			CreateSpellEntry( 5570 ), -- Insect Swarm
 			CreateSpellEntry( 8921 ), -- Moonfire
-
 			CreateSpellEntry( 339 ), -- Entangling Roots
 			CreateSpellEntry( 33786 ), -- Cyclone
-
 			CreateSpellEntry( 2637 ), -- Hibernate
 			CreateSpellEntry( 2908 ), -- Soothe
 			CreateSpellEntry( 50259 ), -- Feral Charge (Cat) - daze
@@ -207,9 +203,6 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 53220 ), -- Improved Steadyshot
 			CreateSpellEntry( 70728 ), -- Exploit Weakness (2pc t10)
 			CreateSpellEntry( 71007 ), -- Stinger (4pc t10)
-
-
-
 		},
 	},
 	MAGE = {
@@ -238,12 +231,9 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 543 ), -- Mage Ward
 			CreateSpellEntry( 11426 ), -- Ice Barrier
 			CreateSpellEntry( 45438 ), -- Ice Block
-
 			CreateSpellEntry( 12472 ), -- Icy Veins
 			CreateSpellEntry( 130 ), -- Slow Fall
 			CreateSpellEntry( 57761 ), -- Brain Freeze
-
-
 		},
 		procs = {
 			CreateSpellEntry( 44544 ), -- Fingers of Frost
@@ -256,7 +246,6 @@ CLASS_FILTERS = {
 		target = {
 			CreateSpellEntry( 31803 ), -- Censure 
 			CreateSpellEntry( 20066 ), -- Repentance 
-
 			CreateSpellEntry( 853 ), -- Hammer of Justice 
 			CreateSpellEntry( 31935 ), -- Avenger's Shield 
 			CreateSpellEntry( 20170 ), -- Seal of Justice 
@@ -265,7 +254,6 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 86273 ), -- Illuminated Healing
 			CreateSpellEntry( 1044 ), -- Hand of Freedom
 			CreateSpellEntry( 1022 ), -- Hand of Protection
-
 			CreateSpellEntry( 1038 ), -- Hand of Salvation
 			CreateSpellEntry( 6940 ), -- Hand of Sacrifice
 		},
@@ -278,14 +266,11 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 87342 ), -- Holy Shield
 			CreateSpellEntry( 85433 ), -- Sacred Duty
 			CreateSpellEntry( 85416 ), --Grand Crusader
-
 			CreateSpellEntry( 85696 ), -- Zealotry
 			CreateSpellEntry( 1044 ), -- Hand of Freedom
 			CreateSpellEntry( 1022 ), -- Hand of Protection
-
 			CreateSpellEntry( 1038 ), -- Hand of Salvation
 			CreateSpellEntry( 6940 ), -- Hand of Sacrifice
-
 			CreateSpellEntry( 53657 ), -- Judgements of the Pure
 			CreateSpellEntry( 53563 ), -- Beacon of Light
 			CreateSpellEntry( 31821 ), -- Aura Mastery
@@ -304,7 +289,6 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 85496 ), -- Speed of Light
 			CreateSpellEntry( 88819 ), -- Daybreak
 			CreateSpellEntry( 20050 ), CreateSpellEntry( 20052 ), CreateSpellEntry( 20053 ), -- Conviction (Rank1/Rank2/Rank3)
-
 		},
 	},
 	PRIEST = { 
@@ -347,39 +331,36 @@ CLASS_FILTERS = {
 	},
 	ROGUE = { 
 		target = { 
-			CreateSpellEntry( 1833 ), -- Cheap Shot --
-			CreateSpellEntry( 408 ), -- Kidney Shot --
-			CreateSpellEntry( 1776 ), -- Gouge   --
-			CreateSpellEntry( 2094 ), -- Blind --
-			CreateSpellEntry( 8647 ), -- Expose Armor --
-			CreateSpellEntry( 51722 ), -- Dismantle --
-			CreateSpellEntry( 2818 ), -- Deadly Poison --
-			CreateSpellEntry( 13218 ), -- Wound Posion --
+			CreateSpellEntry( 1833 ), -- Cheap Shot
+			CreateSpellEntry( 408 ), -- Kidney Shot
+			CreateSpellEntry( 1776 ), -- Gouge
+			CreateSpellEntry( 2094 ), -- Blind
+			CreateSpellEntry( 8647 ), -- Expose Armor
+			CreateSpellEntry( 51722 ), -- Dismantle
+			CreateSpellEntry( 2818 ), -- Deadly Poison
+			CreateSpellEntry( 13218 ), -- Wound Posion
 			CreateSpellEntry( 3409 ),  -- Crippling Poison 
-			CreateSpellEntry( 5760 ), -- Mind-Numbing Poison --
+			CreateSpellEntry( 5760 ), -- Mind-Numbing Poison
 			CreateSpellEntry( 6770 ), -- Sap
-			CreateSpellEntry( 1943 ), -- Rupture --
-			CreateSpellEntry( 703 ), -- Garrote --
-
-
+			CreateSpellEntry( 1943 ), -- Rupture
+			CreateSpellEntry( 703 ), -- Garrote
 			CreateSpellEntry( 79140 ), -- vendetta
 			CreateSpellEntry( 16511 ), -- Hemorrhage
 		},
 		player = {
-			CreateSpellEntry( 32645 ), -- Envenom --
-			CreateSpellEntry( 2983 ), -- Sprint --
-			CreateSpellEntry( 5277 ), -- Evasion --
-			CreateSpellEntry( 1776 ), -- Gouge --
-			CreateSpellEntry( 51713 ), -- Shadow Dance --
-			CreateSpellEntry( 1966 ), -- Feint --
-			CreateSpellEntry( 73651 ), -- Recuperate --
+			CreateSpellEntry( 32645 ), -- Envenom
+			CreateSpellEntry( 2983 ), -- Sprint
+			CreateSpellEntry( 5277 ), -- Evasion
+			CreateSpellEntry( 1776 ), -- Gouge
+			CreateSpellEntry( 51713 ), -- Shadow Dance
+			CreateSpellEntry( 1966 ), -- Feint
+			CreateSpellEntry( 73651 ), -- Recuperate
 			CreateSpellEntry( 5171 ), -- Slice and Dice
-			CreateSpellEntry( 13877 ), -- Blade Flurry --
-			CreateSpellEntry( 58426 ), --Overkill
+			CreateSpellEntry( 13877 ), -- Blade Flurry
+			CreateSpellEntry( 58426 ), CreateSpellEntry( 58427 ), --Overkill
 		},
 		procs = {
 			CreateSpellEntry( 71396 ), -- Rage of the Fallen
-
 		},
 	},
 	SHAMAN = {
@@ -388,36 +369,20 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 8050), -- Flame Shock
 			CreateSpellEntry( 8056 ), -- Frost Shock
 			CreateSpellEntry( 17364 ), -- Storm Strike
-
-
-
 			CreateSpellEntry( 61295 ), -- Riptide
 			CreateSpellEntry( 51945 ), -- Earthliving
 			CreateSpellEntry( 77657 ), -- Searing Flames
 		},
-			player = {
-
+		player = {
 			CreateSpellEntry( 324 ), -- Lightning Shield
 			CreateSpellEntry( 52127 ), -- Water Shield
 			CreateSpellEntry( 974 ), -- Earth Shield
 			CreateSpellEntry( 30823 ), -- Shamanistic Rage
 			CreateSpellEntry( 55198 ), -- Tidal Force
-
-
-
-
-
-
-
-
 			CreateSpellEntry( 61295 ), -- Riptide
-
 		},
 		procs = {
 			CreateSpellEntry( 53817 ), -- Maelstrom Weapon			
-
-
-
 		},
 	},
 	WARLOCK = { 
@@ -428,27 +393,26 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 30108, false, nil, nil, 30108 ), -- Unstable Affliction
 			CreateSpellEntry( 603 ), -- Curse of Doom
 			CreateSpellEntry( 980 ), -- Curse of Agony
-
 			CreateSpellEntry( 1490 ), -- Curse of the Elements 
 			CreateSpellEntry( 17962 ), -- Conflagration
 			CreateSpellEntry( 348, false, nil, nil, 348 ), -- Immolate
 			CreateSpellEntry( 27243, false, nil, nil, 27243 ), -- Seed of Corruption
-
+			CreateSpellEntry( 80240 ), -- Bane of Havoc
+			CreateSpellEntry( 47897 ), -- Shadowflame //Gotta look this up further, not working for me
+			CreateSpellEntry( 702 ), -- Curse of Weakness
+			CreateSpellEntry( 1714), -- Curse of Tongues
+			CreateSpellEntry( 86105, true ), --Jinx: Curse of the Elements	
 		},
-			player = {            
+		player = {            
 			CreateSpellEntry( 17941 ), -- Shadow trance 
 			CreateSpellEntry( 64371 ), -- Eradication
+			CreateSpellEntry( 85383 ), -- Improved Soul Fire
 		},
 		procs = {
 			CreateSpellEntry( 86121 ), -- Soul Swap
 			CreateSpellEntry( 54276 ), -- Backdraft
-
-			CreateSpellEntry( 71165 ), -- Molten Cor
+			CreateSpellEntry( 71165 ), -- Molten Core
 			CreateSpellEntry( 63167 ), -- Decimation
-
-
-
-
 		},
 	},
 	WARRIOR = { 
