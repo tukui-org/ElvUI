@@ -1896,6 +1896,14 @@ if TukuiCF.raidframes.showboss then
 			boss[i]:SetPoint('BOTTOM', boss[i-1], 'TOP', 0, 34)             
 		end
 		boss[i]:SetSize(arenaboss_width, arenaboss_height)
+		
+		local pf = _G["Boss"..i.."TargetFramePowerBarAlt"]
+		pf:ClearAllPoints();
+		pf:SetPoint("LEFT", _G["oUF_TukzDPSBoss"..i], "RIGHT", 10, 0);
+		pf:SetParent(_G["oUF_TukzDPSBoss"..i]);
+		pf.ClearAllPoints = TukuiDB.dummy;
+		pf.SetPoint = TukuiDB.dummy;
+		pf.SetParent = TukuiDB.dummy;
 	end
 end
 
