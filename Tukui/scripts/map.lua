@@ -282,7 +282,7 @@ tinymap:SetScript("OnEvent", function(self, event, addon)
 	
 	self:SetScript("OnMouseDown", function(self, btn)
 		if btn == "LeftButton" then
-			if BattlefieldMinimapOptions.locked then
+			if BattlefieldMinimapOptions and BattlefieldMinimapOptions.locked then
 				return
 			else
 				self:StartMoving()
