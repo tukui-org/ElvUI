@@ -182,7 +182,7 @@ local function UpdateThreat(frame, elapsed)
 end
 
 local function UpdateObjects(frame)
-	frame = frame:GetParent()
+	local frame = frame:GetParent()
 	
 	local r, g, b = frame.hp:GetStatusBarColor()
 	local r, g, b = floor(r*100+.5)/100, floor(g*100+.5)/100, floor(b*100+.5)/100
@@ -247,7 +247,7 @@ local function UpdateObjects(frame)
 	
 	frame.overlay:ClearAllPoints()
 	frame.overlay:SetAllPoints(frame.hp)
-	
+
 	HideObjects(frame)
 end
 
@@ -286,6 +286,15 @@ end
 
 local OnSizeChanged = function(self)
 	self.needFix = true
+end
+
+local function OnHide(frame)
+	frame.overlay:Hide()
+	frame.cb:Hide()
+	frame.hasclass = nil
+	frame.hp.rcolor = nil
+	frame.hp.gcolor = nil
+	frame.hp.bcolor = nil
 end
 
 local function SkinObjects(frame)
@@ -333,7 +342,6 @@ local function SkinObjects(frame)
 	healthbarborder_tex4:SetTexture(0.6, 0.6, 0.6)	
 	frame.healthborder_tex4 = healthbarborder_tex4
 	
-	hp:HookScript('OnShow', UpdateObjects)
 	hp:SetStatusBarTexture(TEXTURE)
 	frame.hp = hp
 	
@@ -480,6 +488,8 @@ local function SkinObjects(frame)
 	UpdateObjects(hp)
 	UpdateCastbar(cb)
 	
+	frame.hp:HookScript('OnShow', UpdateObjects)
+	frame:HookScript('OnHide', OnHide)
 	frames[frame] = true
 end
 
