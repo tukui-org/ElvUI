@@ -214,9 +214,8 @@ local function UpdateObjects(frame)
 	frame.hp:GetStatusBarTexture():SetHorizTile(true)
 	
 	frame.healthbarbackdrop_tex:ClearAllPoints()
-	frame.healthbarbackdrop_tex:SetPoint("CENTER")
-	frame.healthbarbackdrop_tex:SetWidth(hpWidth + noscalemult*6)
-	frame.healthbarbackdrop_tex:SetHeight(hpHeight + noscalemult*6)
+	frame.healthbarbackdrop_tex:SetPoint("TOPLEFT", frame.hp, "TOPLEFT", -noscalemult*3, noscalemult*3)
+	frame.healthbarbackdrop_tex:SetPoint("BOTTOMRIGHT", frame.hp, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
 	
 	--create variable for original colors
 	Colorize(frame)
@@ -289,9 +288,8 @@ local function UpdateCastbar(frame)
 	
 	local frame = frame:GetParent()
 	frame.castbarbackdrop_tex:ClearAllPoints()
-	frame.castbarbackdrop_tex:SetPoint("CENTER")
-	frame.castbarbackdrop_tex:SetWidth(cbWidth + noscalemult*6)
-	frame.castbarbackdrop_tex:SetHeight(cbHeight + noscalemult*6)
+	frame.castbarbackdrop_tex:SetPoint("TOPLEFT", frame.cb, "TOPLEFT", -noscalemult*3, noscalemult*3)
+	frame.castbarbackdrop_tex:SetPoint("BOTTOMRIGHT", frame.cb, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
 end	
 
 local function UpdateCastText(frame, curValue)
@@ -342,9 +340,8 @@ local function SkinObjects(frame)
 	
 	-- Create Cast Icon Backdrop frame
 	local healthbarbackdrop_tex = hp:CreateTexture(nil, "BACKGROUND")
-	healthbarbackdrop_tex:SetPoint("CENTER")
-	healthbarbackdrop_tex:SetWidth(hpWidth + noscalemult*6)
-	healthbarbackdrop_tex:SetHeight(hpHeight + noscalemult*6)
+	healthbarbackdrop_tex:SetPoint("TOPLEFT", hp, "TOPLEFT", -noscalemult*3, noscalemult*3)
+	healthbarbackdrop_tex:SetPoint("BOTTOMRIGHT", hp, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
 	healthbarbackdrop_tex:SetTexture(0.1, 0.1, 0.1)
 	frame.healthbarbackdrop_tex = healthbarbackdrop_tex
 	
@@ -412,9 +409,8 @@ local function SkinObjects(frame)
 	
 	-- Create Cast Bar Backdrop frame
 	local castbarbackdrop_tex = cb:CreateTexture(nil, "BACKGROUND")
-	castbarbackdrop_tex:SetPoint("CENTER")
-	castbarbackdrop_tex:SetWidth(cbWidth + noscalemult*6)
-	castbarbackdrop_tex:SetHeight(cbHeight + noscalemult*6)
+	castbarbackdrop_tex:SetPoint("TOPLEFT", cb, "TOPLEFT", -noscalemult*3, noscalemult*3)
+	castbarbackdrop_tex:SetPoint("BOTTOMRIGHT", cb, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
 	castbarbackdrop_tex:SetTexture(0.1, 0.1, 0.1)
 	frame.castbarbackdrop_tex = castbarbackdrop_tex
 	
