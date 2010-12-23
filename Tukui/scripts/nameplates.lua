@@ -103,7 +103,7 @@ local function UpdateThreat(frame, elapsed)
 		end
 	else
 		if not frame.region:IsShown() then
-			if InCombatLockdown() and frame.hasclass ~= true then
+			if InCombatLockdown() and frame.hasclass ~= true and frame.isFriendly ~= true then
 				--No Threat
 				if TukuiDB.Role == "Tank" then
 					frame.hp:SetStatusBarColor(badR, badG, badB)
@@ -156,13 +156,13 @@ local function UpdateThreat(frame, elapsed)
 	end
 	
 	--Setup frame shadow to change depending on enemy players health, also setup targetted unit to have white shadow
-	if frame.hasclass == true then
-		if(d <= 50 and d >= 21) then
+	if frame.hasclass == true or frame.isFriendly == true then
+		if(d <= 50 and d >= 20) then
 			frame.healthborder_tex1:SetTexture(1, 1, 0)
 			frame.healthborder_tex2:SetTexture(1, 1, 0)
 			frame.healthborder_tex3:SetTexture(1, 1, 0)
 			frame.healthborder_tex4:SetTexture(1, 1, 0)
-		elseif(d < 21) then
+		elseif(d < 20) then
 			frame.healthborder_tex1:SetTexture(1, 0, 0)
 			frame.healthborder_tex2:SetTexture(1, 0, 0)
 			frame.healthborder_tex3:SetTexture(1, 0, 0)
@@ -173,12 +173,32 @@ local function UpdateThreat(frame, elapsed)
 			frame.healthborder_tex3:SetTexture(0.6, 0.6, 0.6)
 			frame.healthborder_tex4:SetTexture(0.6, 0.6, 0.6)
 		end
-	elseif frame.hasclass ~= true and TukuiCF["nameplate"].enhancethreat == true then
+	elseif (frame.hasclass ~= true and frame.isFriendly ~= true) and TukuiCF["nameplate"].enhancethreat == true then
 		frame.healthborder_tex1:SetTexture(0.6, 0.6, 0.6)
 		frame.healthborder_tex2:SetTexture(0.6, 0.6, 0.6)
 		frame.healthborder_tex3:SetTexture(0.6, 0.6, 0.6)
 		frame.healthborder_tex4:SetTexture(0.6, 0.6, 0.6)
 	end
+end
+
+local function Colorize(frame)
+	local r,g,b = frame.hp:GetStatusBarColor()
+	if g+b == 0 then -- hostile
+		r,g,b = unpack(TukuiDB.oUF_colors.reaction[1])
+		frame.isFriendly = false
+	elseif r+b == 0 then -- friendly
+		r,g,b = unpack(TukuiDB.oUF_colors.power["MANA"])
+		frame.isFriendly = true
+	elseif r+g > 1.95 then -- neutral
+		r,g,b = unpack(TukuiDB.oUF_colors.reaction[4])
+		frame.isFriendly = false
+	elseif r+g == 0 then -- friendly player
+		r,g,b = unpack(TukuiDB.oUF_colors.reaction[5])
+		frame.isFriendly = true
+	else -- enemy player
+		frame.isFriendly = false
+	end
+	frame.hp:SetStatusBarColor(r,g,b)
 end
 
 local function UpdateObjects(frame)
@@ -194,6 +214,7 @@ local function UpdateObjects(frame)
 	frame.hp:GetStatusBarTexture():SetHorizTile(true)
 
 	--create variable for original colors
+	Colorize(frame)
 	frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = frame.hp:GetStatusBarColor()
 	frame.hp.hpbg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, 0.25)
 	
@@ -292,6 +313,7 @@ local function OnHide(frame)
 	frame.overlay:Hide()
 	frame.cb:Hide()
 	frame.hasclass = nil
+	frame.isFriendly = nil
 	frame.hp.rcolor = nil
 	frame.hp.gcolor = nil
 	frame.hp.bcolor = nil
