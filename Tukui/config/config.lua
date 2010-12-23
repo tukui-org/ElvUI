@@ -157,7 +157,7 @@ TukuiCF["nameplate"] = {
 		["combat"] = false,					--only show enemy nameplates in-combat.
 		["goodcolor"] = {0, 1, 0},			--good threat color (tank shows this with threat, everyone else without)
 		["badcolor"] = {1, 0, 0},			--bad threat color (opposite of above)
-		["transitioncolor"] = {242/255, 161/255, 10/255},	--threat color when gaining threat
+		["transitioncolor"] = {1, 1, 0},	--threat color when gaining threat
 }
 
 TukuiCF["loot"] = {
