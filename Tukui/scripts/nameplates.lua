@@ -212,7 +212,12 @@ local function UpdateObjects(frame)
 	frame.hp:SetSize(hpWidth, hpHeight)	
 	frame.hp:SetPoint('CENTER', frame, 0, -10)
 	frame.hp:GetStatusBarTexture():SetHorizTile(true)
-
+	
+	frame.healthbarbackdrop_tex:ClearAllPoints()
+	frame.healthbarbackdrop_tex:SetPoint("CENTER")
+	frame.healthbarbackdrop_tex:SetWidth(hpWidth + noscalemult*6)
+	frame.healthbarbackdrop_tex:SetHeight(hpHeight + noscalemult*6)
+	
 	--create variable for original colors
 	Colorize(frame)
 	frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = frame.hp:GetStatusBarColor()
@@ -281,6 +286,12 @@ local function UpdateCastbar(frame)
 	if(not frame.shield:IsShown()) then
 		frame:SetStatusBarColor(1, 0.3, 0.3)
 	end
+	
+	local frame = frame:GetParent()
+	frame.castbarbackdrop_tex:ClearAllPoints()
+	frame.castbarbackdrop_tex:SetPoint("CENTER")
+	frame.castbarbackdrop_tex:SetWidth(cbWidth + noscalemult*6)
+	frame.castbarbackdrop_tex:SetHeight(cbHeight + noscalemult*6)
 end	
 
 local function UpdateCastText(frame, curValue)
@@ -331,9 +342,11 @@ local function SkinObjects(frame)
 	
 	-- Create Cast Icon Backdrop frame
 	local healthbarbackdrop_tex = hp:CreateTexture(nil, "BACKGROUND")
-	healthbarbackdrop_tex:SetPoint("TOPLEFT", hp, "TOPLEFT", -noscalemult*3, noscalemult*3)
-	healthbarbackdrop_tex:SetPoint("BOTTOMRIGHT", hp, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
+	healthbarbackdrop_tex:SetPoint("CENTER")
+	healthbarbackdrop_tex:SetWidth(hpWidth + noscalemult*6)
+	healthbarbackdrop_tex:SetHeight(hpHeight + noscalemult*6)
 	healthbarbackdrop_tex:SetTexture(0.1, 0.1, 0.1)
+	frame.healthbarbackdrop_tex = healthbarbackdrop_tex
 	
 	--Create our fake border.. fuck blizz
 	local healthbarborder_tex1 = hp:CreateTexture(nil, "BORDER")
@@ -399,9 +412,11 @@ local function SkinObjects(frame)
 	
 	-- Create Cast Bar Backdrop frame
 	local castbarbackdrop_tex = cb:CreateTexture(nil, "BACKGROUND")
-	castbarbackdrop_tex:SetPoint("TOPLEFT", cb, "TOPLEFT", -noscalemult*3, noscalemult*3)
-	castbarbackdrop_tex:SetPoint("BOTTOMRIGHT", cb, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
+	castbarbackdrop_tex:SetPoint("CENTER")
+	castbarbackdrop_tex:SetWidth(cbWidth + noscalemult*6)
+	castbarbackdrop_tex:SetHeight(cbHeight + noscalemult*6)
 	castbarbackdrop_tex:SetTexture(0.1, 0.1, 0.1)
+	frame.castbarbackdrop_tex = castbarbackdrop_tex
 	
 	--Create our fake border.. fuck blizz
 	local castbarborder_tex1 = cb:CreateTexture(nil, "BORDER")
