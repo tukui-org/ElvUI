@@ -269,11 +269,11 @@ local tagStrings = {
 	end]],
 
 	['pereclipse'] = [[function(u)
-		local m = UnitPowerMax(u, SPELL_POWER_ECLIPSE)
+		local m = UnitPowerMax('player', SPELL_POWER_ECLIPSE)
 		if(m == 0) then
 			return 0
 		else
-			return math.abs(UnitPower(u, SPELL_POWER_ECLIPSE)/m*100)
+			return math.abs(UnitPower('player', SPELL_POWER_ECLIPSE)/m*100)
 		end
 	end]],
 }

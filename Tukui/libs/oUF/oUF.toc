@@ -1,7 +1,7 @@
 ## Interface: 40000
 ## Title: oUF
 ## Author: Haste
-## Version: 1.5.4
+## Version: 1.5.5
 ## OptionalDeps: !ClassColors, Clique
 ## X-eMail: troeks@gmail.com
 ## X-oUF: oUF

@@ -12,7 +12,7 @@ local Update = function(self, event, unit, powerType)
 	local hp = self.HolyPower
 	if(hp.PreUpdate) then hp:PreUpdate(unit) end
 
-	local num = UnitPower(unit, SPELL_POWER_HOLY_POWER)
+	local num = UnitPower('player', SPELL_POWER_HOLY_POWER)
 	for i = 1, MAX_HOLY_POWER do
 		if(i <= num) then
 			hp[i]:SetAlpha(1)

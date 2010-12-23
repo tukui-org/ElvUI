@@ -5,7 +5,7 @@ local VISIBLE = 1
 local HIDDEN = 0
 
 local UpdateTooltip = function(self)
-	GameTooltip:SetUnitAura(self.parent:GetParent().unit or "targettarget", self:GetID(), self.filter)
+	GameTooltip:SetUnitAura(self.parent:GetParent().unit, self:GetID(), self.filter)
 end
 
 local OnEnter = function(self)
@@ -17,12 +17,6 @@ end
 
 local OnLeave = function()
 	GameTooltip:Hide()
-end
-
--- We don't really need to validate much here as the filter should prevent us
--- from doing something we shouldn't.
-local OnClick = function(self)
-	CancelUnitBuff(self.parent:GetParent().unit, self:GetID(), self.filter)
 end
 
 local createAuraIcon = function(icons, index)
@@ -56,14 +50,9 @@ local createAuraIcon = function(icons, index)
 	stealable:SetBlendMode'ADD'
 	button.stealable = stealable
 
-	button.UpdateTooltip= UpdateTooltip
+	button.UpdateTooltip = UpdateTooltip
 	button:SetScript("OnEnter", OnEnter)
 	button:SetScript("OnLeave", OnLeave)
-
-	local unit = icons.__owner.unit
-	if(unit == 'player') then
-		button:SetScript('OnClick', OnClick)
-	end
 
 	table.insert(icons, button)
 

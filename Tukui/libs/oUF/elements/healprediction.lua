@@ -9,9 +9,7 @@ local function Update(self, event, unit)
 
 	local myIncomingHeal = UnitGetIncomingHeals(unit, 'player') or 0
 	local allIncomingHeal = UnitGetIncomingHeals(unit) or 0
-
-	local health = self.Health:GetValue()
-	local _, maxHealth = self.Health:GetMinMaxValues()
+	local health, maxHealth = UnitHealth(unit), UnitHealthMax(unit)
 
 	if(health + allIncomingHeal > maxHealth * hp.maxOverflow) then
 		allIncomingHeal = maxHealth * hp.maxOverflow - health

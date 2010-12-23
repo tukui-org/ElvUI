@@ -12,7 +12,7 @@ local Update = function(self, event, unit, powerType)
 	local ss = self.SoulShards
 	if(ss.PreUpdate) then ss:PreUpdate(unit) end
 
-	local num = UnitPower(unit, SPELL_POWER_SOUL_SHARDS)
+	local num = UnitPower('player', SPELL_POWER_SOUL_SHARDS)
 	for i = 1, SHARD_BAR_NUM_SHARDS do
 		if(i <= num) then
 			ss[i]:SetAlpha(1)

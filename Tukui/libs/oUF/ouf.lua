@@ -86,24 +86,21 @@ local conv = {
 }
 local elements = {}
 
+-- updating of "invalid" units.
 local enableTargetUpdate = function(object)
-	-- updating of "invalid" units.
-	local OnTargetUpdate
-	do
-		local timer = 0
-		OnTargetUpdate = function(self, elapsed)
-			if(not self.unit) then
-				return
-			elseif(timer >= .5) then
-				self:UpdateAllElements'OnTargetUpdate'
-				timer = 0
-			end
+	local total = 0
+	object.onUpdateFrequency = object.onUpdateFrequency or .5
 
-			timer = timer + elapsed
+	object:SetScript('OnUpdate', function(self, elapsed)
+		if(not self.unit) then
+			return
+		elseif(total > self.onUpdateFrequency) then
+			self:UpdateAllElements'OnUpdate'
+			total = 0
 		end
-	end
 
-	object:SetScript("OnUpdate", OnTargetUpdate)
+		total = total + elapsed
+	end)
 end
 
 -- Events
@@ -402,6 +399,8 @@ local initObject = function(unit, style, styleFunc, header, ...)
 			object:SetAttribute('*type2', 'menu')
 
 			object:SetAttribute('toggleForVehicle', true)
+		else
+			object:RegisterEvent('PARTY_MEMBERS_CHANGED', object.UpdateAllElements)
 		end
 		object.style = style
 
@@ -555,7 +554,9 @@ local generateName = function(unit, ...)
 	local append
 	if(raid) then
 		if(groupFilter) then
-			if(groupFilter:match'TANK') then
+			if(type(groupFilter) == 'number' and groupFilter > 0) then
+				append = groupFilter
+			elseif(groupFilter:match'TANK') then
 				append = 'MainTank'
 			elseif(groupFilter:match'ASSIST') then
 				append =  'MainAssist'

@@ -13,8 +13,8 @@ local UNIT_POWER = function(self, event, unit, powerType)
 
 	local eb = self.EclipseBar
 
-	local power = UnitPower(unit, SPELL_POWER_ECLIPSE)
-	local maxPower = UnitPowerMax(unit, SPELL_POWER_ECLIPSE)
+	local power = UnitPower('player', SPELL_POWER_ECLIPSE)
+	local maxPower = UnitPowerMax('player', SPELL_POWER_ECLIPSE)
 
 	if(eb.LunarBar) then
 		eb.LunarBar:SetMinMaxValues(-maxPower, maxPower)
