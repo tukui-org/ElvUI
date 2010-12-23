@@ -59,6 +59,10 @@ local function StyleBuffs(buttonName, index, debuff)
 		TukuiDB.CreatePanel(panel, 30, 30, "CENTER", buff, "CENTER", 0, 0)
 		panel:SetFrameLevel(buff:GetFrameLevel() - 1)
 		panel:SetFrameStrata(buff:GetFrameStrata())
+
+		local highlight = buff:CreateTexture(nil, "HIGHLIGHT")
+		highlight:SetTexture(1,1,1,0.45)
+		highlight:SetAllPoints(icon)
 	end
 	if border then border:Hide() end
 end

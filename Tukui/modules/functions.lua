@@ -1092,6 +1092,9 @@ function TukuiDB.PostCreateAura(element, button)
 	button.count:SetParent(button.overlayFrame)
 	button.remaining:SetParent(button.overlayFrame)
 	
+	local highlight = button:CreateTexture(nil, "HIGHLIGHT")
+	highlight:SetTexture(1,1,1,0.45)
+	highlight:SetAllPoints(button.icon)	
 end
 
 function TukuiDB.PostUpdateAura(icons, unit, icon, index, offset, filter, isDebuff, duration, timeLeft)
