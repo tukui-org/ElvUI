@@ -369,6 +369,7 @@ DebuffHealerWhiteList = {
 		[SpellName(95639)] = true, -- Engulfing Magic
 		
 		--Halfus Wyrmbreaker
+		[SpellName(39171)] = true, -- Malevolent Strikes
 		
 		--Twilight Ascendant Council
 		[SpellName(92511)] = true, -- Hydro Lance
@@ -427,6 +428,7 @@ DebuffDPSWhiteList = {
 		[SpellName(95639)] = true, -- Engulfing Magic
 		
 		--Halfus Wyrmbreaker
+		[SpellName(39171)] = true, -- Malevolent Strikes
 		
 		--Twilight Ascendant Council
 		[SpellName(92511)] = true, -- Hydro Lance
