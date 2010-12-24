@@ -290,6 +290,8 @@ local function Shared(self, unit)
 			Experience:SetStatusBarColor(0, 0.4, 1, .8)
 			Experience:SetWidth(original_width)
 			Experience:SetHeight(TukuiDB.Scale(5))
+			Experience:SetFrameStrata("HIGH")
+
 			if powerbar_offset ~= 0 then
 				Experience:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
 			else	
