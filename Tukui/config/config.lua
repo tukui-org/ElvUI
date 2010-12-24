@@ -101,7 +101,7 @@ TukuiCF["castbar"] = {
 		["castermode"] = false, -- makes castbar larger and puts it above the actionbar frame
 		["classcolor"] = false, -- classcolor
 		["castbarcolor"] = { 0.3, 0.3, 0.3, 1 }, -- Color of player castbar
-		["nointerruptcolor"] = { 1, 0.1, 0.1, 0.5 }, -- Color of target castbar
+		["nointerruptcolor"] = { 0.78, 0.25, 0.25, 0.5 }, -- Color of target castbar
 }
 
 TukuiCF["classtimer"] = {
@@ -115,7 +115,7 @@ TukuiCF["classtimer"] = {
 		
 		["classcolor"] = false,
 		["buffcolor"] = {0.3, 0.3, 0.3, 1}, -- if classcolor isnt true
-		["debuffcolor"] = {0.69, 0.31, 0.31, 1},
+		["debuffcolor"] = {0.78, 0.25, 0.25, 1},
 		["proccolor"] = {0.84, 0.75, 0.65, 1},
 }
 
@@ -155,9 +155,9 @@ TukuiCF["nameplate"] = {
 		["enhancethreat"] = true,				-- threat features based on if your a tank or not
 		["overlap"] = false,				--allow nameplates to overlap
 		["combat"] = false,					--only show enemy nameplates in-combat.
-		["goodcolor"] = {0, 1, 0},			--good threat color (tank shows this with threat, everyone else without)
-		["badcolor"] = {1, 0, 0},			--bad threat color (opposite of above)
-		["transitioncolor"] = {1, 1, 0},	--threat color when gaining threat
+		["goodcolor"] = {75/255,  175/255, 76/255},			--good threat color (tank shows this with threat, everyone else without)
+		["badcolor"] = {0.78, 0.25, 0.25},			--bad threat color (opposite of above)
+		["transitioncolor"] = {218/255, 197/255, 92/255},	--threat color when gaining threat
 }
 
 TukuiCF["loot"] = {
