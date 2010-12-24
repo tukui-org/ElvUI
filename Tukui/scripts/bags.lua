@@ -61,43 +61,45 @@ end
 
 local function MoveChar()
 	if StuffingFrameBank and StuffingFrameBank:IsShown() then		
-		if PlayerTalentFrame then
+		if PlayerTalentFrame and PlayerTalentFrame:IsShown() then
 			PlayerTalentFrame:ClearAllPoints()
 			PlayerTalentFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", TukuiCF["chat"].chatwidth+30, -116)
 		end
 		
-		if AchievementFrame then
+		if AchievementFrame and AchievementFrame:IsShown() then
 			AchievementFrame:ClearAllPoints()
 			AchievementFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", TukuiCF["chat"].chatwidth+30, -116)		
 		end
 		
-		if QuestLogFrame then
+		if QuestLogFrame and QuestLogFrame:IsShown() then
 			QuestLogFrame:ClearAllPoints()
 			QuestLogFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", TukuiCF["chat"].chatwidth+30, -116)			
 		end
 		
-		if FriendsFrame then
+		if FriendsFrame and FriendsFrame:IsShown() and not (CharacterFrame:IsShown() or (PVPFrame and PVPFrame:IsShown()) or (GuildFrame and GuildFrame:IsShown()) or (LFDParentFrame and LFDParentFrame:IsShown())) then
 			FriendsFrame:ClearAllPoints()
 			FriendsFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", TukuiCF["chat"].chatwidth+30, -116)				
 		end
 		
-		if PVPFrame then
+		if PVPFrame and PVPFrame:IsShown() and not (CharacterFrame:IsShown() or (FriendsFrame and FriendsFrame:IsShown()) or (GuildFrame and GuildFrame:IsShown()) or (LFDParentFrame and LFDParentFrame:IsShown())) then
 			PVPFrame:ClearAllPoints()
 			PVPFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", TukuiCF["chat"].chatwidth+30, -116)				
 		end
 		
-		if GuildFrame then
+		if GuildFrame and GuildFrame:IsShown() and not (CharacterFrame:IsShown() or (FriendsFrame and FriendsFrame:IsShown()) or (PVPFrame and PVPFrame:IsShown()) or (LFDParentFrame and LFDParentFrame:IsShown())) then
 			GuildFrame:ClearAllPoints()
 			GuildFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", TukuiCF["chat"].chatwidth+30, -116)		
 		end
 		
-		if LFDParentFrame then
+		if LFDParentFrame and LFDParentFrame:IsShown() and not (CharacterFrame:IsShown() or (FriendsFrame and FriendsFrame:IsShown()) or (PVPFrame and PVPFrame:IsShown()) or (GuildFrame and GuildFrame:IsShown())) then
 			LFDParentFrame:ClearAllPoints()
 			LFDParentFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", TukuiCF["chat"].chatwidth+30, -116)				
 		end
 		
-		CharacterFrame:ClearAllPoints()
-		CharacterFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", TukuiCF["chat"].chatwidth+30, -116)
+		if CharacterFrame:IsShown() then
+			CharacterFrame:ClearAllPoints()
+			CharacterFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", TukuiCF["chat"].chatwidth+30, -116)
+		end
 		DressUpFrame:ClearAllPoints()
 		DressUpFrame:SetPoint("TOPLEFT", CharacterFrame, "TOPRIGHT", 15, 0)
 	end
