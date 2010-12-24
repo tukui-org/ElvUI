@@ -290,6 +290,7 @@ local function Shared(self, unit)
 			Experience:SetStatusBarColor(0, 0.4, 1, .8)
 			Experience:SetWidth(original_width)
 			Experience:SetHeight(TukuiDB.Scale(5))
+			Experience:SetFrameStrata("HIGH")
 			if powerbar_offset ~= 0 then
 				Experience:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
 			else	
@@ -321,7 +322,6 @@ local function Shared(self, unit)
 			self.Experience.Rested:SetStatusBarColor(1, 0, 1, 0.2)
 			self.Experience.Rested:SetBackdrop(backdrop)
 			self.Experience.Rested:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
-
 			
 			local Resting = Experience:CreateTexture(nil, "OVERLAY", Experience.Rested)
 			Resting:SetHeight(22)
