@@ -121,7 +121,7 @@ if TukuiCF["datatext"].friends and TukuiCF["datatext"].friends > 0 then
 					GameTooltip:AddLine' '
 					GameTooltip:AddLine("World of Warcraft")
 					for i = 1, total do
-						name, level, class, zone, connected, status, note = GetFriendInfo(i)
+						local name, level, class, zone, connected, status, note = GetFriendInfo(i)
 						if not connected then break end
 						if GetRealZoneText() == zone then zone_r, zone_g, zone_b = 0.3, 1.0, 0.3 else zone_r, zone_g, zone_b = 0.65, 0.65, 0.65 end
 						for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
@@ -129,6 +129,7 @@ if TukuiCF["datatext"].friends and TukuiCF["datatext"].friends > 0 then
 							for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
 						end
 						classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[class], GetQuestDifficultyColor(level)
+
 						if UnitInParty(name) or UnitInRaid(name) then grouped = "|cffaaaaaa*|r" else grouped = "" end
 						GameTooltip:AddDoubleLine(format("|cff%02x%02x%02x%d|r %s%s%s",levelc.r*255,levelc.g*255,levelc.b*255,level,name,grouped," "..status),zone,classc.r,classc.g,classc.b,zone_r,zone_g,zone_b)
 
@@ -169,7 +170,7 @@ if TukuiCF["datatext"].friends and TukuiCF["datatext"].friends > 0 then
 								for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
 							end
 							classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[class], GetQuestDifficultyColor(level)
-							if UnitInParty(name) or UnitInRaid(name) then grouped = "|cffaaaaaa*|r" else grouped = "" end
+							if UnitInParty(toonName) or UnitInRaid(toonName) then grouped = "|cffaaaaaa*|r" else grouped = "" end
 							GameTooltip:AddDoubleLine(format("%s |cff%02x%02x%02x(%d|r |cff%02x%02x%02x%s|r%s) |cff%02x%02x%02x%s|r",client,levelc.r*255,levelc.g*255,levelc.b*255,level,classc.r*255,classc.g*255,classc.b*255,toonName,grouped, 255, 0, 0, status),givenName.." "..surname,238,238,238,238,238,238)
 							if IsShiftKeyDown() then
 								if GetRealZoneText() == zone then zone_r, zone_g, zone_b = 0.3, 1.0, 0.3 else zone_r, zone_g, zone_b = 0.65, 0.65, 0.65 end
