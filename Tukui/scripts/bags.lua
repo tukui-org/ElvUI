@@ -60,9 +60,46 @@ local function Stuffing_OnShow()
 end
 
 local function MoveChar()
-	if StuffingFrameBank and StuffingFrameBank:IsShown() then
+	if StuffingFrameBank and StuffingFrameBank:IsShown() then		
+		if PlayerTalentFrame then
+			PlayerTalentFrame:ClearAllPoints()
+			PlayerTalentFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", TukuiCF["chat"].chatwidth+30, -116)
+		end
+		
+		if AchievementFrame then
+			AchievementFrame:ClearAllPoints()
+			AchievementFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", TukuiCF["chat"].chatwidth+30, -116)		
+		end
+		
+		if QuestLogFrame then
+			QuestLogFrame:ClearAllPoints()
+			QuestLogFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", TukuiCF["chat"].chatwidth+30, -116)			
+		end
+		
+		if FriendsFrame then
+			FriendsFrame:ClearAllPoints()
+			FriendsFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", TukuiCF["chat"].chatwidth+30, -116)				
+		end
+		
+		if PVPFrame then
+			PVPFrame:ClearAllPoints()
+			PVPFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", TukuiCF["chat"].chatwidth+30, -116)				
+		end
+		
+		if GuildFrame then
+			GuildFrame:ClearAllPoints()
+			GuildFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", TukuiCF["chat"].chatwidth+30, -116)		
+		end
+		
+		if LFDParentFrame then
+			LFDParentFrame:ClearAllPoints()
+			LFDParentFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", TukuiCF["chat"].chatwidth+30, -116)				
+		end
+		
 		CharacterFrame:ClearAllPoints()
-		CharacterFrame:SetPoint("TOPLEFT", StuffingFrameBank, "TOPRIGHT", TukuiDB.Scale(15), 0)
+		CharacterFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", TukuiCF["chat"].chatwidth+30, -116)
+		DressUpFrame:ClearAllPoints()
+		DressUpFrame:SetPoint("TOPLEFT", CharacterFrame, "TOPRIGHT", 15, 0)
 	end
 end
 
@@ -77,6 +114,15 @@ local function StuffingBank_OnHide()
 		ToggleCharacter("PaperDollFrame")
 		ToggleCharacter("PaperDollFrame")
 	end
+	
+	if DressUpFrame:IsShown() then HideUIPanel(DressUpFrame) ShowUIPanel(DressUpFrame) end
+	if PlayerTalentFrame and PlayerTalentFrame:IsShown() then HideUIPanel(PlayerTalentFrame) ShowUIPanel(PlayerTalentFrame) end
+	if AchievementFrame and AchievementFrame:IsShown() then HideUIPanel(AchievementFrame) ShowUIPanel(AchievementFrame) end
+	if QuestLogFrame and QuestLogFrame:IsShown() then HideUIPanel(QuestLogFrame) ShowUIPanel(QuestLogFrame) end
+	if FriendsFrame and FriendsFrame:IsShown() then HideUIPanel(FriendsFrame) ShowUIPanel(FriendsFrame) end
+	if PVPFrame and PVPFrame:IsShown() then HideUIPanel(PVPFrame) ShowUIPanel(PVPFrame) end
+	if GuildFrame and GuildFrame:IsShown() then HideUIPanel(GuildFrame) ShowUIPanel(GuildFrame) end
+	if LFDParentFrame and LFDParentFrame:IsShown() then HideUIPanel(LFDParentFrame) ShowUIPanel(LFDParentFrame) end
 	
 	if Stuffing.frame:IsShown() then
 		Stuffing.frame:Hide()
