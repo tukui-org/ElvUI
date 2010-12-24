@@ -704,13 +704,15 @@ local function Shared(self, unit)
 			castbar:SetHeight(TukuiDB.Scale(20))
 			castbar:SetStatusBarTexture(normTex)
 			castbar:SetFrameLevel(6)
- 
+			castbar:SetFrameStrata("DIALOG")
+			
 			castbar.bg = CreateFrame("Frame", nil, castbar)
 			TukuiDB.SetTemplate(castbar.bg)
 			castbar.bg:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
 			castbar.bg:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 			castbar.bg:SetFrameLevel(5)
- 
+			castbar.bg:SetFrameStrata("DIALOG")
+			
 			castbar.time = TukuiDB.SetFontString(castbar, font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
 			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", TukuiDB.Scale(-4), TukuiDB.Scale(1))
 			castbar.time:SetTextColor(0.84, 0.75, 0.65)
