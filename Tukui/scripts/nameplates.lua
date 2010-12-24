@@ -283,7 +283,7 @@ local function UpdateCastbar(frame)
 	frame:GetStatusBarTexture():SetHorizTile(true)
 
 	if(not frame.shield:IsShown()) then
-		frame:SetStatusBarColor(1, 0.3, 0.3)
+		frame:SetStatusBarColor(0.78, 0.25, 0.25, 1)
 	end
 	
 	local frame = frame:GetParent()
