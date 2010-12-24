@@ -183,6 +183,8 @@ end
 
 local function Colorize(frame)
 	local r,g,b = frame.hp:GetStatusBarColor()
+	if frame.hasclass == true then frame.isFriendly = false return end
+	
 	if g+b == 0 then -- hostile
 		r,g,b = unpack(TukuiDB.oUF_colors.reaction[1])
 		frame.isFriendly = false
@@ -216,12 +218,7 @@ local function UpdateObjects(frame)
 	frame.healthbarbackdrop_tex:ClearAllPoints()
 	frame.healthbarbackdrop_tex:SetPoint("TOPLEFT", frame.hp, "TOPLEFT", -noscalemult*3, noscalemult*3)
 	frame.healthbarbackdrop_tex:SetPoint("BOTTOMRIGHT", frame.hp, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
-	
-	--create variable for original colors
-	Colorize(frame)
-	frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = frame.hp:GetStatusBarColor()
-	frame.hp.hpbg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, 0.25)
-	
+		
 	--Class Icons
 	for class, color in pairs(RAID_CLASS_COLORS) do
 		if RAID_CLASS_COLORS[class].r == r and RAID_CLASS_COLORS[class].g == g and RAID_CLASS_COLORS[class].b == b then
@@ -246,6 +243,11 @@ local function UpdateObjects(frame)
 		frame.hasclass = true
 	end
 	frame.class:SetTexCoord(texcoord[1],texcoord[2],texcoord[3],texcoord[4])
+	
+	--create variable for original colors
+	Colorize(frame)
+	frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = frame.hp:GetStatusBarColor()
+	frame.hp.hpbg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, 0.25)
 	
 	--Set the name text
 	frame.name:SetText(frame.oldname:GetText())
