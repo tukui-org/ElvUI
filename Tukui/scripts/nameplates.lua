@@ -80,7 +80,6 @@ local badR, badG, badB = unpack(TukuiCF["nameplate"].badcolor)
 local transitionR, transitionG, transitionB = unpack(TukuiCF["nameplate"].transitioncolor)
 local function UpdateThreat(frame, elapsed)
 	frame.hp:Show()
-	
 	if TukuiCF["nameplate"].enhancethreat ~= true then
 		if(frame.region:IsShown()) then
 			local _, val = frame.region:GetVertexColor()
@@ -96,10 +95,10 @@ local function UpdateThreat(frame, elapsed)
 				frame.healthborder_tex4:SetTexture(badR, badG, badB)
 			end
 		else
-			frame.healthborder_tex1:SetTexture(0.6, 0.6, 0.6)
-			frame.healthborder_tex2:SetTexture(0.6, 0.6, 0.6)
-			frame.healthborder_tex3:SetTexture(0.6, 0.6, 0.6)
-			frame.healthborder_tex4:SetTexture(0.6, 0.6, 0.6)
+			frame.healthborder_tex1:SetTexture(0.3, 0.3, 0.3)
+			frame.healthborder_tex2:SetTexture(0.3, 0.3, 0.3)
+			frame.healthborder_tex3:SetTexture(0.3, 0.3, 0.3)
+			frame.healthborder_tex4:SetTexture(0.3, 0.3, 0.3)
 		end
 	else
 		if not frame.region:IsShown() then
@@ -168,16 +167,16 @@ local function UpdateThreat(frame, elapsed)
 			frame.healthborder_tex3:SetTexture(1, 0, 0)
 			frame.healthborder_tex4:SetTexture(1, 0, 0)
 		else
-			frame.healthborder_tex1:SetTexture(0.6, 0.6, 0.6)
-			frame.healthborder_tex2:SetTexture(0.6, 0.6, 0.6)
-			frame.healthborder_tex3:SetTexture(0.6, 0.6, 0.6)
-			frame.healthborder_tex4:SetTexture(0.6, 0.6, 0.6)
+			frame.healthborder_tex1:SetTexture(0.3, 0.3, 0.3)
+			frame.healthborder_tex2:SetTexture(0.3, 0.3, 0.3)
+			frame.healthborder_tex3:SetTexture(0.3, 0.3, 0.3)
+			frame.healthborder_tex4:SetTexture(0.3, 0.3, 0.3)
 		end
 	elseif (frame.hasclass ~= true and frame.isFriendly ~= true) and TukuiCF["nameplate"].enhancethreat == true then
-		frame.healthborder_tex1:SetTexture(0.6, 0.6, 0.6)
-		frame.healthborder_tex2:SetTexture(0.6, 0.6, 0.6)
-		frame.healthborder_tex3:SetTexture(0.6, 0.6, 0.6)
-		frame.healthborder_tex4:SetTexture(0.6, 0.6, 0.6)
+		frame.healthborder_tex1:SetTexture(0.3, 0.3, 0.3)
+		frame.healthborder_tex2:SetTexture(0.3, 0.3, 0.3)
+		frame.healthborder_tex3:SetTexture(0.3, 0.3, 0.3)
+		frame.healthborder_tex4:SetTexture(0.3, 0.3, 0.3)
 	end
 end
 
@@ -188,7 +187,7 @@ local function Colorize(frame)
 	if g+b == 0 then -- hostile
 		r,g,b = unpack(TukuiDB.oUF_colors.reaction[1])
 		frame.isFriendly = false
-	elseif r+b == 0 then -- friendly
+	elseif r+b == 0 then -- friendly npc
 		r,g,b = unpack(TukuiDB.oUF_colors.power["MANA"])
 		frame.isFriendly = true
 	elseif r+g > 1.95 then -- neutral
@@ -212,7 +211,7 @@ local function UpdateObjects(frame)
 	
 	frame.hp:ClearAllPoints()
 	frame.hp:SetSize(hpWidth, hpHeight)	
-	frame.hp:SetPoint('CENTER', frame, 0, -10)
+	frame.hp:SetPoint('TOP', frame, 'TOP', 0, -noscalemult*3)
 	frame.hp:GetStatusBarTexture():SetHorizTile(true)
 	
 	frame.healthbarbackdrop_tex:ClearAllPoints()
@@ -352,28 +351,28 @@ local function SkinObjects(frame)
 	healthbarborder_tex1:SetPoint("TOPLEFT", hp, "TOPLEFT", -noscalemult*2, noscalemult*2)
 	healthbarborder_tex1:SetPoint("TOPRIGHT", hp, "TOPRIGHT", noscalemult*2, noscalemult*2)
 	healthbarborder_tex1:SetHeight(noscalemult)
-	healthbarborder_tex1:SetTexture(0.6, 0.6, 0.6)	
+	healthbarborder_tex1:SetTexture(0.3, 0.3, 0.3)	
 	frame.healthborder_tex1 = healthbarborder_tex1
 	
 	local healthbarborder_tex2 = hp:CreateTexture(nil, "BORDER")
 	healthbarborder_tex2:SetPoint("BOTTOMLEFT", hp, "BOTTOMLEFT", -noscalemult*2, -noscalemult*2)
 	healthbarborder_tex2:SetPoint("BOTTOMRIGHT", hp, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
 	healthbarborder_tex2:SetHeight(noscalemult)
-	healthbarborder_tex2:SetTexture(0.6, 0.6, 0.6)	
+	healthbarborder_tex2:SetTexture(0.3, 0.3, 0.3)	
 	frame.healthborder_tex2 = healthbarborder_tex2
 	
 	local healthbarborder_tex3 = hp:CreateTexture(nil, "BORDER")
 	healthbarborder_tex3:SetPoint("TOPLEFT", hp, "TOPLEFT", -noscalemult*2, noscalemult*2)
 	healthbarborder_tex3:SetPoint("BOTTOMLEFT", hp, "BOTTOMLEFT", noscalemult*2, -noscalemult*2)
 	healthbarborder_tex3:SetWidth(noscalemult)
-	healthbarborder_tex3:SetTexture(0.6, 0.6, 0.6)	
+	healthbarborder_tex3:SetTexture(0.3, 0.3, 0.3)	
 	frame.healthborder_tex3 = healthbarborder_tex3
 	
 	local healthbarborder_tex4 = hp:CreateTexture(nil, "BORDER")
 	healthbarborder_tex4:SetPoint("TOPRIGHT", hp, "TOPRIGHT", noscalemult*2, noscalemult*2)
 	healthbarborder_tex4:SetPoint("BOTTOMRIGHT", hp, "BOTTOMRIGHT", -noscalemult*2, -noscalemult*2)
 	healthbarborder_tex4:SetWidth(noscalemult)
-	healthbarborder_tex4:SetTexture(0.6, 0.6, 0.6)	
+	healthbarborder_tex4:SetTexture(0.3, 0.3, 0.3)	
 	frame.healthborder_tex4 = healthbarborder_tex4
 	
 	hp:SetStatusBarTexture(TEXTURE)
@@ -421,25 +420,25 @@ local function SkinObjects(frame)
 	castbarborder_tex1:SetPoint("TOPLEFT", cb, "TOPLEFT", -noscalemult*2, noscalemult*2)
 	castbarborder_tex1:SetPoint("TOPRIGHT", cb, "TOPRIGHT", noscalemult*2, noscalemult*2)
 	castbarborder_tex1:SetHeight(noscalemult)
-	castbarborder_tex1:SetTexture(0.6, 0.6, 0.6)	
+	castbarborder_tex1:SetTexture(0.3, 0.3, 0.3)	
 	
 	local castbarborder_tex2 = cb:CreateTexture(nil, "BORDER")
 	castbarborder_tex2:SetPoint("BOTTOMLEFT", cb, "BOTTOMLEFT", -noscalemult*2, -noscalemult*2)
 	castbarborder_tex2:SetPoint("BOTTOMRIGHT", cb, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
 	castbarborder_tex2:SetHeight(noscalemult)
-	castbarborder_tex2:SetTexture(0.6, 0.6, 0.6)	
+	castbarborder_tex2:SetTexture(0.3, 0.3, 0.3)	
 	
 	local castbarborder_tex3 = cb:CreateTexture(nil, "BORDER")
 	castbarborder_tex3:SetPoint("TOPLEFT", cb, "TOPLEFT", -noscalemult*2, noscalemult*2)
 	castbarborder_tex3:SetPoint("BOTTOMLEFT", cb, "BOTTOMLEFT", noscalemult*2, -noscalemult*2)
 	castbarborder_tex3:SetWidth(noscalemult)
-	castbarborder_tex3:SetTexture(0.6, 0.6, 0.6)	
+	castbarborder_tex3:SetTexture(0.3, 0.3, 0.3)	
 	
 	local castbarborder_tex4 = cb:CreateTexture(nil, "BORDER")
 	castbarborder_tex4:SetPoint("TOPRIGHT", cb, "TOPRIGHT", noscalemult*2, noscalemult*2)
 	castbarborder_tex4:SetPoint("BOTTOMRIGHT", cb, "BOTTOMRIGHT", -noscalemult*2, -noscalemult*2)
 	castbarborder_tex4:SetWidth(noscalemult)
-	castbarborder_tex4:SetTexture(0.6, 0.6, 0.6)	
+	castbarborder_tex4:SetTexture(0.3, 0.3, 0.3)	
 	
 	--Setup CastBar Icon
 	cbicon:ClearAllPoints()
@@ -457,7 +456,7 @@ local function SkinObjects(frame)
 	local casticonborder_tex = cb:CreateTexture(nil, "BORDER")
 	casticonborder_tex:SetPoint("TOPLEFT", cbicon, "TOPLEFT", -noscalemult*2, noscalemult*2)
 	casticonborder_tex:SetPoint("BOTTOMRIGHT", cbicon, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
-	casticonborder_tex:SetTexture(0.6, 0.6, 0.6)	
+	casticonborder_tex:SetTexture(0.3, 0.3, 0.3)	
 	
 	--Create Health Backdrop Frame
 	local casticonbackdrop2_tex = cb:CreateTexture(nil, "ARTWORK")
