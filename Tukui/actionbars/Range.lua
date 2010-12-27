@@ -85,7 +85,6 @@ do
 	local HOLY_POWER_SPELLS = {
 		[85256] = GetSpellInfo(85256), --Templar's Verdict
 		[53600] = GetSpellInfo(53600), --Shield of the Righteous
-		[84963] = GetSpellInfo(84963), --Inquisition
 	}
 
 	isHolyPowerAbility = function(actionId)
