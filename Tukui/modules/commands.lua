@@ -115,3 +115,21 @@ SlashCmdList["GROUPDISBAND"] = function()
 	StaticPopup_Show("DISBAND_RAID")
 end
 SLASH_GROUPDISBAND1 = '/rd'
+
+-- farm mode
+local farm = false
+local minisize
+function SlashCmdList.FARMMODE(msg, editbox)
+	if farm == false then
+		minisize = Minimap:GetWidth()
+		Minimap:SetSize(250, 250)
+		farm = true
+	else
+		Minimap:SetSize(minisize, minisize)
+		farm = false
+	end
+
+	TukuiMinimapStatsLeft:SetWidth((Minimap:GetWidth() / 2) - 1)
+	TukuiMinimapStatsRight:SetWidth((Minimap:GetWidth() / 2) - 1)
+end
+SLASH_FARMMODE1 = '/farmmode'
