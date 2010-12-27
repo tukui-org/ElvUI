@@ -7,7 +7,7 @@ local guardianelixirbuffs = BuffReminderRaidBuffs["GuardianElixir"]
 local foodbuffs = BuffReminderRaidBuffs["Food"]	
 local battleelixired	
 local guardianelixired	
-
+local reminderoverride = false
 
 --Setup Caster Buffs
 local function SetCasterOnlyBuffs()
@@ -198,7 +198,7 @@ local function OnAuraChange(self, event, arg1, unit)
 	
 	local inInstance, instanceType = IsInInstance()
 	if inInstance and (instanceType ==  "party" or instanceType == "raid") then
-		if RaidReminderShown ~= true then
+		if RaidReminderShown ~= true and reminderoverride ~= true then
 			UIFrameFadeIn(self, 0.4)
 			TukuiInfoRightLButton.Text:SetTextColor(1,1,1)
 			RaidReminderShown = true
@@ -215,6 +215,7 @@ local function OnAuraChange(self, event, arg1, unit)
 	
 	if RaidReminderShown == true and inInstance and (instanceType == "raid") and InCombatLockdown() and (FlaskFrame:GetAlpha() == 1 or Spell3Frame:GetAlpha() == 1 or Spell4Frame:GetAlpha() == 1 or Spell5Frame:GetAlpha() == 1 or Spell6Frame:GetAlpha() == 1) then
 		self:SetScript("OnUpdate", function(self)
+			if reminderoverride == true then return end
 			Pulse(self)
 		end)
 	else
@@ -288,11 +289,13 @@ do
 				TukuiInfoRightLButton.Text:SetTextColor(unpack(TukuiCF["media"].valuecolor))
 				UIFrameFadeOut(RaidBuffReminder, 0.4)
 				RaidReminderShown = false
+				reminderoverride = true
 			else
 				GameTooltip:AddDoubleLine(tukuilocal.raidbufftoggler, SHOW,1,1,1,unpack(TukuiCF["media"].valuecolor))
 				TukuiInfoRightLButton.Text:SetTextColor(1,1,1)
 				UIFrameFadeIn(RaidBuffReminder, 0.4)
 				RaidReminderShown = true
+				reminderoverride = false
 			end
 		end
 	end)
