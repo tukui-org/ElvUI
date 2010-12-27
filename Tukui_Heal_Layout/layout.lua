@@ -1652,22 +1652,22 @@ local function Shared(self, unit)
 			end
 		end
 		
+		-- create arena/boss debuff/buff spawn point
+		local buffs = CreateFrame("Frame", nil, self)
+		buffs:SetHeight(arenaboss_height)
+		buffs:SetWidth(252)
+		buffs:SetPoint("RIGHT", self, "LEFT", TukuiDB.Scale(-4), 0)
+		buffs.size = arenaboss_height
+		buffs.num = 3
+		buffs.spacing = 2
+		buffs.initialAnchor = 'RIGHT'
+		buffs["growth-x"] = "LEFT"
+		buffs.PostCreateIcon = TukuiDB.PostCreateAura
+		buffs.PostUpdateIcon = TukuiDB.PostUpdateAura
+		self.Buffs = buffs		
+		
 		--only need to see debuffs for arena frames
-		if (unit and unit:find("arena%d")) and TukuiCF["auras"].arenadebuffs == true then
-			-- create arena/boss debuff/buff spawn point
-			local buffs = CreateFrame("Frame", nil, self)
-			buffs:SetHeight(arenaboss_height)
-			buffs:SetWidth(252)
-			buffs:SetPoint("RIGHT", self, "LEFT", TukuiDB.Scale(-4), 0)
-			buffs.size = arenaboss_height
-			buffs.num = 3
-			buffs.spacing = 2
-			buffs.initialAnchor = 'RIGHT'
-			buffs["growth-x"] = "LEFT"
-			buffs.PostCreateIcon = TukuiDB.PostCreateAura
-			buffs.PostUpdateIcon = TukuiDB.PostUpdateAura
-			self.Buffs = buffs
-			
+		if (unit and unit:find("arena%d")) and TukuiCF["auras"].arenadebuffs == true then	
 			local debuffs = CreateFrame("Frame", nil, self)
 			debuffs:SetHeight(arenaboss_height)
 			debuffs:SetWidth(arenaboss_width*2)
