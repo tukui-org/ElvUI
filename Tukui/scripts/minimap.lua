@@ -135,6 +135,10 @@ SpellbookMicroButton:SetFrameLevel(100)
 SpellbookMicroButton:SetAlpha(0)
 SpellbookMicroButton:HookScript("OnEnter", function(self) self:SetAlpha(1) end)
 SpellbookMicroButton:HookScript("OnLeave", function(self) self:SetAlpha(0) end)
+SpellbookMicroButton.Hide = TukuiDB.dummy
+SpellbookMicroButton.SetParent = TukuiDB.dummy
+SpellbookMicroButton.ClearAllPoints = TukuiDB.dummy
+SpellbookMicroButton.SetPoint = TukuiDB.dummy
 
 Minimap:SetScript("OnMouseUp", function(self, btn)
 	if btn == "RightButton" then
