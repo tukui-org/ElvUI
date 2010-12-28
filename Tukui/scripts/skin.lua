@@ -22,6 +22,15 @@ local function SkinButton(f)
 	f:HookScript("OnLeave", SetOriginalBackdrop)
 end
 
+local function SkinTexturedButton(f)
+	SkinButton(f)
+	
+	local f = f:GetName()
+	_G[f.."Left"]:SetAlpha(0)
+	_G[f.."Middle"]:SetAlpha(0)
+	_G[f.."Right"]:SetAlpha(0)
+end
+
 local TukuiSkin = CreateFrame("Frame")
 TukuiSkin:RegisterEvent("ADDON_LOADED")
 TukuiSkin:SetScript("OnEvent", function(self, event, addon)
@@ -200,6 +209,15 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		-- others
 		_G["ReadyCheckListenerFrame"]:SetAlpha(0)
 		_G["ReadyCheckFrame"]:HookScript("OnShow", function(self) if UnitIsUnit("player", self.initiator) then self:Hide() end end) -- bug fix, don't show it if initiator
+		
+		TukuiDB.SetTransparentTemplate(RolePollPopup)
+		TukuiDB.CreateShadow(RolePollPopup)
+		TukuiDB.SetTransparentTemplate(LFDDungeonReadyDialog)
+		TukuiDB.CreateShadow(LFDDungeonReadyDialog)
+		SkinTexturedButton(LFDDungeonReadyDialogEnterDungeonButton)
+		SkinTexturedButton(LFDDungeonReadyDialogLeaveQueueButton)
+		SkinTexturedButton(ColorPickerOkayButton)
+		SkinTexturedButton(ColorPickerCancelButton)
 	end
 		
 	-- mac menu/option panel, made by affli.
