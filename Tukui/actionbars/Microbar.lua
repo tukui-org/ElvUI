@@ -106,42 +106,43 @@ do
 	
 	--Spellbook
 	local sb = SpellbookMicroButton:CreateTexture(nil, "OVERLAY")
-	sb:SetTexture("Interface\\Spellbook\\Spellbook-Icon")
-	sb:SetTexCoord(0.13, 0.85, 0, 1)
+	sb:SetTexture([[Interface\Buttons\UI-MicroButton-Spellbook-Up]])
+	sb:SetTexCoord(0.15, 0.85, 0.48, 0.923)
 	sb:SetPoint("TOPLEFT", sb:GetParent().frame, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 	sb:SetPoint("BOTTOMRIGHT", sb:GetParent().frame, "BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
 	
 	--Talents
 	local tal = TalentMicroButton:CreateTexture(nil, "OVERLAY")
-	tal:SetTexture("Interface\\Icons\\Ability_Marksmanship")
-	tal:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+	tal:SetTexture([[Interface\Buttons\UI-MicroButton-Talents-Up]])
+	tal:SetTexCoord(0.15, 0.85, 0.48, 0.923)
 	tal:SetPoint("TOPLEFT", tal:GetParent().frame, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 	tal:SetPoint("BOTTOMRIGHT", tal:GetParent().frame, "BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
 	
 	--Achievements
 	local ach = AchievementMicroButton:CreateTexture(nil, "OVERLAY")
-	ach:SetTexture([[Interface\AchievementFrame\UI-Achievement-TinyShield]])
-	ach:SetTexCoord(0, 0.6, 0.03, 0.55)
+	ach:SetTexture([[Interface\Buttons\UI-MicroButton-Achievement-Up]])
+	ach:SetTexCoord(0.15, 0.85, 0.48, 0.923)
 	ach:SetPoint("TOPLEFT", ach:GetParent().frame, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 	ach:SetPoint("BOTTOMRIGHT", ach:GetParent().frame, "BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
 	
 	--Quests
 	local que = QuestLogMicroButton:CreateTexture(nil, "OVERLAY")
-	que:SetTexture([[Interface\Cursor\Quest]])
-	que:SetTexCoord(0.22, 0.82, 0, 1)
+	que:SetTexture([[Interface\Buttons\UI-MicroButton-Quest-Up]])
+	que:SetTexCoord(0.15, 0.85, 0.48, 0.923)
 	que:SetPoint("TOPLEFT", que:GetParent().frame, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 	que:SetPoint("BOTTOMRIGHT", que:GetParent().frame, "BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
 	
 	--LFG
 	local lfg = LFDMicroButton:CreateTexture(nil, "OVERLAY")
-	lfg:SetTexture([[Interface\Icons\LevelUpIcon-LFD]])
-	lfg:SetTexCoord(0.05, 0.95, 0.07, 0.93)
+	lfg:SetTexture([[Interface\Buttons\UI-MicroButton-LFG-Up]])
+	lfg:SetTexCoord(0.15, 0.85, 0.48, 0.923)
 	lfg:SetPoint("TOPLEFT", lfg:GetParent().frame, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 	lfg:SetPoint("BOTTOMRIGHT", lfg:GetParent().frame, "BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
 	
 	--Help
 	local help = HelpMicroButton:CreateTexture(nil, "OVERLAY")
-	help:SetTexture([[Interface\TutorialFrame\TutorialFrame-QuestionMark]])
+	help:SetTexture([[Interface\Buttons\UI-MicroButton-Help-Up]])
+	help:SetTexCoord(0.15, 0.85, 0.48, 0.923)
 	help:SetPoint("TOPLEFT", help:GetParent().frame, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 	help:SetPoint("BOTTOMRIGHT", help:GetParent().frame, "BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
 end
