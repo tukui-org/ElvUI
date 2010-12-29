@@ -97,6 +97,7 @@
 	<Script file="actionbars\Range.lua"/>
 	<Script file="actionbars\Others.lua"/>
 	<Script file="actionbars\Movers.lua"/>
+	<Script file="actionbars\Microbar.lua"/>
 	
 	<Script file="scripts\chat.lua"/>
 	<Script file="scripts\tooltip.lua"/>
