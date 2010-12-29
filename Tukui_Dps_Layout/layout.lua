@@ -1961,7 +1961,9 @@ if TukuiCF["raidframes"].disableblizz == true then --seriosly lazy addon authors
 	blizzloader:RegisterEvent("ADDON_LOADED")
 	blizzloader:SetScript("OnEvent", function(self, event, addon)
 		if addon == "Tukui_Dps_Layout" then 
-			TukuiDB.Kill(CompactRaidFrameManager)
+			if TukuiCF["raidframes"].griddps ~= true then
+				TukuiDB.Kill(CompactRaidFrameManager)
+			end
 			TukuiDB.Kill(CompactRaidFrameContainer)
 			TukuiDB.Kill(CompactPartyFrame)
 		end
