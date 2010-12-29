@@ -53,20 +53,19 @@ f:SetScript("OnUpdate", CheckFade)
 
 for i, button in pairs(microbuttons) do
 	local m = _G[button]
+	local pushed = m:GetPushedTexture()
+	local normal = m:GetNormalTexture()
+	local disabled = m:GetDisabledTexture()
+	
 	m.SetParent = TukuiDB.dummy
 	_G[button.."Flash"]:SetTexture("")
 	m:SetHighlightTexture("")
-	m:SetPushedTexture("")
-	m:SetNormalTexture("")	
-	m:SetDisabledTexture("")
-	m.SetDisabledTexture = TukuiDB.dummy
-	m.SetPushedTexture = TukuiDB.dummy
-	m.SetNormalTexture = TukuiDB.dummy
 	m.SetHighlightTexture = TukuiDB.dummy
-	
+
 	if i == 1 then
+		--Pretty much where we want the microbar positioned right here
 		m:ClearAllPoints()
-		m:SetPoint("TOP", UIParent, "TOP", -m:GetWidth()*4.5, 18)
+		m:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 1, 22)
 		m.ClearAllPoints = TukuiDB.dummy
 		m.SetPoint = TukuiDB.dummy
 	elseif i == 5 then
@@ -80,9 +79,27 @@ for i, button in pairs(microbuttons) do
 	f:SetFrameLevel(1)
 	f:SetFrameStrata("BACKGROUND")
 	f:SetPoint("BOTTOMLEFT", m, "BOTTOMLEFT", 2, 0)
-	f:SetPoint("TOPRIGHT", m, "TOPRIGHT", -2, -25)
+	f:SetPoint("TOPRIGHT", m, "TOPRIGHT", -2, -28)
 	TukuiDB.SetNormTexTemplate(f)
 	m.frame = f
+
+	
+	pushed:SetTexCoord(0.17, 0.87, 0.5, 0.908)
+	pushed:ClearAllPoints()
+	pushed:SetPoint("TOPLEFT", m.frame, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+	pushed:SetPoint("BOTTOMRIGHT", m.frame, "BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
+	
+	normal:SetTexCoord(0.17, 0.87, 0.5, 0.908)
+	normal:ClearAllPoints()
+	normal:SetPoint("TOPLEFT", m.frame, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+	normal:SetPoint("BOTTOMRIGHT", m.frame, "BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
+	
+	if disabled then
+		disabled:SetTexCoord(0.17, 0.87, 0.5, 0.908)
+		disabled:ClearAllPoints()
+		disabled:SetPoint("TOPLEFT", m.frame, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+		disabled:SetPoint("BOTTOMRIGHT", m.frame, "BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
+	end
 		
 
 	m.mouseover = false
@@ -104,45 +121,8 @@ do
 	MicroButtonPortrait:SetPoint("TOPLEFT", CharacterMicroButton.frame, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 	MicroButtonPortrait:SetPoint("BOTTOMRIGHT", CharacterMicroButton.frame, "BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
 	
-	--Spellbook
-	local sb = SpellbookMicroButton:CreateTexture(nil, "OVERLAY")
-	sb:SetTexture([[Interface\Buttons\UI-MicroButton-Spellbook-Up]])
-	sb:SetTexCoord(0.15, 0.85, 0.48, 0.923)
-	sb:SetPoint("TOPLEFT", sb:GetParent().frame, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
-	sb:SetPoint("BOTTOMRIGHT", sb:GetParent().frame, "BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-	
-	--Talents
-	local tal = TalentMicroButton:CreateTexture(nil, "OVERLAY")
-	tal:SetTexture([[Interface\Buttons\UI-MicroButton-Talents-Up]])
-	tal:SetTexCoord(0.15, 0.85, 0.48, 0.923)
-	tal:SetPoint("TOPLEFT", tal:GetParent().frame, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
-	tal:SetPoint("BOTTOMRIGHT", tal:GetParent().frame, "BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-	
-	--Achievements
-	local ach = AchievementMicroButton:CreateTexture(nil, "OVERLAY")
-	ach:SetTexture([[Interface\Buttons\UI-MicroButton-Achievement-Up]])
-	ach:SetTexCoord(0.15, 0.85, 0.48, 0.923)
-	ach:SetPoint("TOPLEFT", ach:GetParent().frame, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
-	ach:SetPoint("BOTTOMRIGHT", ach:GetParent().frame, "BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-	
-	--Quests
-	local que = QuestLogMicroButton:CreateTexture(nil, "OVERLAY")
-	que:SetTexture([[Interface\Buttons\UI-MicroButton-Quest-Up]])
-	que:SetTexCoord(0.15, 0.85, 0.48, 0.923)
-	que:SetPoint("TOPLEFT", que:GetParent().frame, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
-	que:SetPoint("BOTTOMRIGHT", que:GetParent().frame, "BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-	
-	--LFG
-	local lfg = LFDMicroButton:CreateTexture(nil, "OVERLAY")
-	lfg:SetTexture([[Interface\Buttons\UI-MicroButton-LFG-Up]])
-	lfg:SetTexCoord(0.15, 0.85, 0.48, 0.923)
-	lfg:SetPoint("TOPLEFT", lfg:GetParent().frame, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
-	lfg:SetPoint("BOTTOMRIGHT", lfg:GetParent().frame, "BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-	
-	--Help
-	local help = HelpMicroButton:CreateTexture(nil, "OVERLAY")
-	help:SetTexture([[Interface\Buttons\UI-MicroButton-Help-Up]])
-	help:SetTexCoord(0.15, 0.85, 0.48, 0.923)
-	help:SetPoint("TOPLEFT", help:GetParent().frame, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
-	help:SetPoint("BOTTOMRIGHT", help:GetParent().frame, "BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
+	GuildMicroButtonTabard:ClearAllPoints()
+	GuildMicroButtonTabard:SetPoint("TOP", GuildMicroButton.frame, "TOP", 0, 25)
+	GuildMicroButtonTabard.SetPoint = TukuiDB.dummy
+	GuildMicroButtonTabard.ClearAllPoints = TukuiDB.dummy
 end
