@@ -92,59 +92,14 @@ TukuiMinimap:SetScript("OnEvent", function(self, event, addon)
 	end
 end)
 
-
-
 if FeedbackUIButton then
 	TukuiDB.Kill(FeedbackUIButton)
 end
 
-----------------------------------------------------------------------------------------
--- Right click menu
-----------------------------------------------------------------------------------------
-local menuFrame = CreateFrame("Frame", "MinimapRightClickMenu", UIParent, "UIDropDownMenuTemplate")
-local menuList = {
-    {text = CHARACTER_BUTTON,
-		func = function() ToggleCharacter("PaperDollFrame") end},
-    {text = TALENTS_BUTTON,
-		func = function() if not PlayerTalentFrame then LoadAddOn("Blizzard_TalentUI") end if not GlyphFrame then LoadAddOn("Blizzard_GlyphUI") end PlayerTalentFrame_Toggle() end},
-    {text = ACHIEVEMENT_BUTTON,
-		func = function() ToggleAchievementFrame() end},
-    {text = QUESTLOG_BUTTON,
-		func = function() ToggleFrame(QuestLogFrame) end},
-    {text = SOCIAL_BUTTON,
-		func = function() ToggleFriendsFrame(1) end},
-    {text = PLAYER_V_PLAYER,
-		func = function() ToggleFrame(PVPFrame) end},
-    {text = ACHIEVEMENTS_GUILD_TAB,
-		func = function() if IsInGuild() then if not GuildFrame then LoadAddOn("Blizzard_GuildUI") end GuildFrame_Toggle() GuildFrame_TabClicked(GuildFrameTab2) end end},
-    {text = LFG_TITLE,
-		func = function() ToggleFrame(LFDParentFrame) end},
-    {text = L_LFRAID,
-		func = function() ToggleFrame(LFRParentFrame) end},
-    {text = HELP_BUTTON,
-		func = function() ToggleHelpFrame() end},
-    {text = L_CALENDAR,
-		func = function() if(not CalendarFrame) then LoadAddOn("Blizzard_Calendar") end Calendar_Toggle() end},
-}
-
-SpellbookMicroButton:SetParent(Minimap)
-SpellbookMicroButton:ClearAllPoints()
-SpellbookMicroButton:SetPoint("RIGHT")
-SpellbookMicroButton:SetFrameStrata("TOOLTIP")
-SpellbookMicroButton:SetFrameLevel(100)
-SpellbookMicroButton:SetAlpha(0)
-SpellbookMicroButton:HookScript("OnEnter", function(self) self:SetAlpha(1) end)
-SpellbookMicroButton:HookScript("OnLeave", function(self) self:SetAlpha(0) end)
-SpellbookMicroButton.Hide = TukuiDB.dummy
-SpellbookMicroButton.SetParent = TukuiDB.dummy
-SpellbookMicroButton.ClearAllPoints = TukuiDB.dummy
-SpellbookMicroButton.SetPoint = TukuiDB.dummy
 
 Minimap:SetScript("OnMouseUp", function(self, btn)
 	if btn == "RightButton" then
 		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, self)
-	elseif btn == "MiddleButton" then
-		EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
 	else
 		Minimap_OnClick(self)
 	end
@@ -227,7 +182,6 @@ Minimap:SetScript("OnEnter",function()
 	m_coord:Show()
 	m_coord.anim:Play()
 	m_zone.anim:Play()
-	SpellbookMicroButton:SetAlpha(1)
 end)
  
 Minimap:SetScript("OnLeave",function()
@@ -235,7 +189,6 @@ Minimap:SetScript("OnLeave",function()
 	m_coord.anim_o:Play()
 	m_zone.anim:Stop()
 	m_zone.anim_o:Play()
-	SpellbookMicroButton:SetAlpha(0)
 end)
  
 m_coord_text:SetText("00,00")
