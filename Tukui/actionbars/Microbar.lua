@@ -19,34 +19,34 @@ f:SetAlpha(0)
 UpdateMicroButtonsParent(f)
 
 local function CheckFade(self, elapsed)
-	if(self.elapsed and self.elapsed > 0.2) then
-		local mouseactive
-		for i, button in pairs(microbuttons) do
-			local b = _G[button]
-			if b.mouseover == true then
-				mouseactive = true
-			end
-		end
-		
-		if MicroPlaceHolder.mouseover == true then
+	local mouseactive
+	for i, button in pairs(microbuttons) do
+		local b = _G[button]
+		if b.mouseover == true then
 			mouseactive = true
-		end
-		
-		if mouseactive == true then
-			if MicroParent.shown ~= true then
-				UIFrameFadeIn(MicroParent, 0.2)
-				MicroParent.shown = true
-			end
-		else
-			if MicroParent.shown == true then
-				UIFrameFadeOut(MicroParent, 0.2)
-				MicroParent.shown = false
+			if GameTooltip:IsShown() then
+				GameTooltip:Hide()
 			end
 		end
-		
-		self.elapsed = 0
+	end
+	
+	if MicroPlaceHolder.mouseover == true then
+		mouseactive = true
+		if GameTooltip:IsShown() then
+			GameTooltip:Hide()
+		end
+	end
+	
+	if mouseactive == true then
+		if MicroParent.shown ~= true then
+			UIFrameFadeIn(MicroParent, 0.2)
+			MicroParent.shown = true
+		end
 	else
-		self.elapsed = (self.elapsed or 0) + elapsed
+		if MicroParent.shown == true then
+			UIFrameFadeOut(MicroParent, 0.2)
+			MicroParent.shown = false
+		end
 	end
 end
 f:SetScript("OnUpdate", CheckFade)
