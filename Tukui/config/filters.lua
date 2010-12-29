@@ -409,6 +409,7 @@ DebuffDPSWhiteList = {
 		
 		--Omintron Defense System
 		[SpellName(91431)] = true, --Lightning Conductor
+		[SpellName(80094)] = true, --Fixate 
 		
 		--Maloriak
 		[SpellName(77699)] = true, -- Flash Freeze
