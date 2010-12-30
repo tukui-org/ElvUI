@@ -228,6 +228,8 @@ TukuiL.option_actionbar_petbuttonspacing = "Spacing of the pet/stance action but
 TukuiL.option_actionbar_swaptopbottombar = "Swap the top and bottom actionbar positions"
 TukuiL.option_actionbar_macrotext = "Display macro text on actionbuttons"
 TukuiL.option_actionbar_verticalstance = "Vertical Stance Bar"
+TukuiL.option_actionbar_microbar = "Display MicroBar"
+TukuiL.option_actionbar_mousemicro = "MicroBar on mouseover"
 
 -- arena
 TukuiL.option_arena = "Arena"

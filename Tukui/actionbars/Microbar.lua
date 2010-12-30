@@ -1,4 +1,4 @@
-if TukuiCF["actionbar"].enable ~= true then return end
+if TukuiCF["actionbar"].enable ~= true or TukuiCF["actionbar"].microbar ~= true then return end
 
 local microbuttons = {
 	"CharacterMicroButton",
@@ -15,7 +15,7 @@ local microbuttons = {
 
 local f = CreateFrame("Frame", "MicroParent", UIParent)
 MicroParent.shown = false
-if TukuiCF["actionbar"].shapeshiftmouseover == true then f:SetAlpha(0) end
+if TukuiCF["actionbar"].mousemicro == true then f:SetAlpha(0) end
 
 UpdateMicroButtonsParent(f)
 
@@ -31,7 +31,7 @@ local function CheckFade(self, elapsed)
 		end
 	end
 	
-	if TukuiCF["actionbar"].shapeshiftmouseover ~= true then return end
+	if TukuiCF["actionbar"].mousemicro ~= true then return end
 	
 	if MicroPlaceHolder.mouseover == true then
 		mouseactive = true

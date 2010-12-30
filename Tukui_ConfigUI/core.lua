@@ -266,6 +266,8 @@ local function Local(o)
 	if o == "TukuiConfigUIactionbarswaptopbottombar" then o = TukuiL.option_actionbar_swaptopbottombar end
 	if o == "TukuiConfigUIactionbarmacrotext" then o = TukuiL.option_actionbar_macrotext end
 	if o == "TukuiConfigUIactionbarverticalstance" then o = TukuiL.option_actionbar_verticalstance end
+	if o == "TukuiConfigUIactionbarmicrobar" then o = TukuiL.option_actionbar_microbar end
+	if o == "TukuiConfigUIactionbarmousemicro" then o = TukuiL.option_actionbar_mousemicro end
 	
 	-- arena
 	if o == "TukuiConfigUIarena" then o = TukuiL.option_arena end

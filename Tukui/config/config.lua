@@ -147,6 +147,8 @@ TukuiCF["actionbar"] = {
 		["swaptopbottombar"] = false,			--swap the main actionbar position with the bottom actionbar
 		["macrotext"] = false,					--show macro text on actionbuttons
 		["verticalstance"] = false,				--make stance bar vertical
+		["microbar"] = true,					--enable microbar display
+		["mousemicro"] = false,					--only show microbar on mouseover
 }
 
 TukuiCF["nameplate"] = {
