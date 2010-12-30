@@ -102,7 +102,7 @@ if TukuiDB.client == "deDE" then
 	tukuilocal.error_noerror = "Keine Fehler bis jetzt."
  
 	tukuilocal.unitframes_ouf_offline = "Offline"
-	tukuilocal.unitframes_ouf_dead = "Tod"
+	tukuilocal.unitframes_ouf_dead = "Tot"
 	tukuilocal.unitframes_ouf_ghost = "Geist"
 	tukuilocal.unitframes_ouf_lowmana = "WENIG MANA"
 	tukuilocal.unitframes_ouf_threattext = "Bedrohung:"
