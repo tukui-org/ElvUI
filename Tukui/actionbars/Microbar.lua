@@ -15,6 +15,9 @@ local microbuttons = {
 
 local f = CreateFrame("Frame", "MicroParent", UIParent)
 MicroParent.shown = false
+f:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 1, -25) --Default microbar position
+f:SetWidth(((CharacterMicroButton:GetWidth() + 4) * 7) + 2)
+f:SetHeight(CharacterMicroButton:GetHeight() - 28)
 if TukuiCF["actionbar"].mousemicro == true then f:SetAlpha(0) end
 
 UpdateMicroButtonsParent(f)
@@ -65,13 +68,7 @@ for i, button in pairs(microbuttons) do
 	m:SetHighlightTexture("")
 	m.SetHighlightTexture = TukuiDB.dummy
 
-	if i == 1 then
-		--Pretty much where we want the microbar positioned right here
-		m:ClearAllPoints()
-		m:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 1, 22)
-		m.ClearAllPoints = TukuiDB.dummy
-		m.SetPoint = TukuiDB.dummy
-	elseif i == 5 then
+	if i == 5 then
 		TukuiDB.Kill(m)
 	elseif i == 9 then
 		m:ClearAllPoints()
@@ -130,3 +127,62 @@ do
 	GuildMicroButtonTabard.SetPoint = TukuiDB.dummy
 	GuildMicroButtonTabard.ClearAllPoints = TukuiDB.dummy
 end
+
+
+--Moving of the MicroBar
+local f = CreateFrame("Frame", "MicroBar", UIParent)
+f:SetFrameLevel(CharacterMicroButton:GetFrameLevel() + 1)
+f:SetFrameStrata("FULLSCREEN_DIALOG")
+f:SetPoint("BOTTOMLEFT", MicroParent, "BOTTOMLEFT", 0,  -58)
+f:SetWidth(((CharacterMicroButton:GetWidth() + 4) * 7) + 2)
+f:SetHeight(CharacterMicroButton:GetHeight() - 28)
+f:SetBackdrop({
+  bgFile = TukuiCF["media"].blank, 
+  edgeFile = TukuiCF["media"].blank, 
+  tile = false, tileSize = 0, edgeSize = 2, 
+  insets = { left = 0, right = 0, top = 0, bottom = 0}
+})	
+f:SetBackdropBorderColor(0, 0, 0, 1)
+f:SetBackdropColor(0, 1, 0, 0.75)
+	
+f:RegisterForDrag("LeftButton", "RightButton")
+f:SetScript("OnDragStart", function(self) 
+	if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end
+	self:StartMoving() 
+end)
+f:SetScript("OnDragStop", function(self) 
+	if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end
+	self:StopMovingOrSizing() 
+end)
+
+f:SetAlpha(0)
+f:SetMovable(true)
+f:EnableMouse(false)
+f.shown = false
+
+CharacterMicroButton:ClearAllPoints()
+CharacterMicroButton:SetPoint("BOTTOMLEFT", f, "BOTTOMLEFT")
+
+local fs = f:CreateFontString(nil, "OVERLAY")
+fs:SetFont(TukuiCF["media"].font, TukuiCF["auras"].auratextscale, "THINOUTLINE")
+fs:SetJustifyH("CENTER")
+fs:SetShadowColor(0, 0, 0)
+fs:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
+fs:SetPoint("CENTER")
+fs:SetText("MicroBar")
+
+
+local function MoveMicro()
+	if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end
+	if MicroBar.shown == false then
+		MicroBar.shown = true
+		MicroBar:SetAlpha(1)
+		MicroBar:EnableMouse(true)
+	else
+		MicroBar.shown = false
+		MicroBar:SetAlpha(0)
+		MicroBar:EnableMouse(false)	
+	end
+end
+SLASH_MICRO1 = "/micro"
+SlashCmdList["MICRO"] = MoveMicro
