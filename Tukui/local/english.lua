@@ -161,6 +161,7 @@ tukuilocal.core_uihelp15 = "|cffFF0000/ainv|r - Enable autoinvite via keyword on
 tukuilocal.core_uihelp16 = "|cffFF0000/resetgold|r - reset the gold datatext"
 tukuilocal.core_uihelp17 = "|cffFF0000/moveele|r - Toggles the unlocking of various unitframe elements."
 tukuilocal.core_uihelp18 = "|cffFF0000/resetele|r - Resets all elements to their default position. You can also just reset a specific element by typing /resetele <elementname>."
+tukuilocal.core_uihelp19 = "|cffFF0000/farmmode|r - Toggles increasing/decreasing the size of the minimap, useful when farming."
 tukuilocal.core_uihelp14 = "(Scroll up for more commands ...)"
 
 tukuilocal.bind_combat = "You can't bind keys in combat."
