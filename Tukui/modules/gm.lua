@@ -3,7 +3,7 @@
 ------------------------------------------------------------------------
 
 TicketStatusFrame:ClearAllPoints()
-TicketStatusFrame:SetPoint("TOPLEFT", TukuiDB.Scale(4), TukuiDB.Scale(-4))
+TicketStatusFrame:SetPoint("TOPLEFT", 250, -5)
 
 
 ------------------------------------------------------------------------
