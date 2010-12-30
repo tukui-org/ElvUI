@@ -93,7 +93,7 @@ local function stylesmallbutton(normal, button, icon, name, pet)
 	-- another bug fix reported by Affli in t12 beta
 	button.SetNormalTexture = TukuiDB.dummy
 	
-	Flash:SetTexture(media.buttonhover)
+	Flash:SetTexture(1, 1, 1, 0.3)
 	
 	if not _G[name.."Panel"] then
 		button:SetWidth(TukuiDB.petbuttonsize)
