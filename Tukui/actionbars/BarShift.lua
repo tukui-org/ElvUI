@@ -5,7 +5,7 @@ if (not TukuiCF["actionbar"].enable == true) then return end
 
 -- used for anchor totembar or shapeshiftbar
 local TukuiShift = CreateFrame("Frame","TukuiShiftBar",TukuiActionBarBackground)
-TukuiShift:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 250, -2)
+TukuiShift:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 3, -38)
 TukuiShift:SetWidth(29)
 TukuiShift:SetHeight(58)
 
