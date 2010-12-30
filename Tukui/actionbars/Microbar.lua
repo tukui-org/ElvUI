@@ -15,7 +15,8 @@ local microbuttons = {
 
 local f = CreateFrame("Frame", "MicroParent", UIParent)
 MicroParent.shown = false
-f:SetAlpha(0)
+if TukuiCF["actionbar"].shapeshiftmouseover == true then f:SetAlpha(0) end
+
 UpdateMicroButtonsParent(f)
 
 local function CheckFade(self, elapsed)
@@ -29,6 +30,8 @@ local function CheckFade(self, elapsed)
 			end
 		end
 	end
+	
+	if TukuiCF["actionbar"].shapeshiftmouseover ~= true then return end
 	
 	if MicroPlaceHolder.mouseover == true then
 		mouseactive = true
@@ -82,7 +85,6 @@ for i, button in pairs(microbuttons) do
 	f:SetPoint("TOPRIGHT", m, "TOPRIGHT", -2, -28)
 	TukuiDB.SetNormTexTemplate(f)
 	m.frame = f
-
 	
 	pushed:SetTexCoord(0.17, 0.87, 0.5, 0.908)
 	pushed:ClearAllPoints()
@@ -108,12 +110,14 @@ for i, button in pairs(microbuttons) do
 end
 
 local x = CreateFrame("Frame", "MicroPlaceHolder", MicroParent)
-x:SetPoint("TOPLEFT", CharacterMicroButton, "TOPLEFT")
-x:SetPoint("BOTTOMRIGHT", HelpMicroButton, "BOTTOMRIGHT")
+x:SetPoint("TOPLEFT", CharacterMicroButton.frame, "TOPLEFT")
+x:SetPoint("BOTTOMRIGHT", HelpMicroButton.frame, "BOTTOMRIGHT")
 x:EnableMouse(true)
 x.mouseover = false
+TukuiDB.CreateShadow(x)
 x:SetScript("OnEnter", function(self) self.mouseover = true end)
 x:SetScript("OnLeave", function(self) self.mouseover = false end)
+
 
 --Fix/Create textures for buttons
 do
