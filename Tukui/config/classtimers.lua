@@ -102,9 +102,8 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 64856 ), -- Blade barrier
 			CreateSpellEntry( 70657 ), -- Advantage
 			CreateSpellEntry( 81340 ), -- Sudden Doom
-		}		},
-
-
+		},
+	},
 	DRUID = { 
 		target = { 
 			CreateSpellEntry( 48438 ), -- Wild Growth
@@ -169,11 +168,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 69369 ), -- Predator's Swiftness
 			CreateSpellEntry( 93400 ), -- Shooting Stars
 			CreateSpellEntry( 81192 ), -- Lunar Shower
-
 		},
-		procs = {		
-
-		}
 	},
 	HUNTER = { 
 		target = {
@@ -188,6 +183,8 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 88453 ), --Serpent Sting
 			CreateSpellEntry( 88466 ), --Serpent Sting
 			CreateSpellEntry( 1978 ), --Serpent sting
+			CreateSpellEntry( 90337 ), --Bad Manner
+			CreateSpellEntry( 53301 ), --Explosive Shot
 		},
 		player = {
 			CreateSpellEntry( 82749 ), -- killing streak
@@ -240,6 +237,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 79683 ), -- Arcane Missiles!
 			CreateSpellEntry( 48108 ), -- Hot Streak
 			CreateSpellEntry( 64343 ), -- Impact
+			CreateSpellEntry( 12536 ), -- Clearcasting
 		},
 	},
 	PALADIN = { 
@@ -280,6 +278,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 86659 ), --Guardian of Ancient Kings (Prot)
 			CreateSpellEntry( 86669 ), --Guardian of Ancient Kings (Holy)
 			CreateSpellEntry( 86698 ), --Guardian of Ancient Kings (Ret)
+			CreateSpellEntry( 85510 ), --Denounce
 		},
 		procs = {
 			CreateSpellEntry( 59578 ), -- The Art of War
@@ -398,7 +397,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 348, false, nil, nil, 348 ), -- Immolate
 			CreateSpellEntry( 27243, false, nil, nil, 27243 ), -- Seed of Corruption
 			CreateSpellEntry( 80240 ), -- Bane of Havoc
-			CreateSpellEntry( 47897 ), -- Shadowflame //Gotta look this up further, not working for me
+			CreateSpellEntry( 47960 ), -- Shadowflame
 			CreateSpellEntry( 702 ), -- Curse of Weakness
 			CreateSpellEntry( 1714), -- Curse of Tongues
 			CreateSpellEntry( 86105, true ), --Jinx: Curse of the Elements	
