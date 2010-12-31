@@ -5,7 +5,6 @@
 ## X-Email: tukz@tukui.org
 ## X-Category: UnitFrame
 ## RequiredDeps: Tukui
-## SavedVariablesPerCharacter: DPSElementsCharPos
 
 templates.xml
 tags.lua

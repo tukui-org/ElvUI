@@ -1,5 +1,4 @@
 if not TukuiCF["unitframes"].enable == true then return end
-if IsAddOnLoaded("Tukui_Dps_Layout") then return end
 
 local Frames = {}
 local FramesDefault = {}
@@ -12,9 +11,18 @@ local function CreateFrameOverlay(parent, name)
 	if not parent then return end
 	
 	--Setup Variables
-	if not HealElementsCharPos[name] then HealElementsCharPos[name] = false end
+	if not HealElementsCharPos[name] or type(HealElementsCharPos[name]) ~= "table" then HealElementsCharPos[name] = {} end
+	if not HealElementsCharPos[name]["moved"] then HealElementsCharPos[name]["moved"] = false end
 	
 	local p, p2, p3, p4, p5 = parent:GetPoint()
+	
+	if HealElementsCharPos[name]["moved"] ~= true then
+		HealElementsCharPos[name]["p"] = nil
+		HealElementsCharPos[name]["p2"] = nil
+		HealElementsCharPos[name]["p3"] = nil
+		HealElementsCharPos[name]["p4"] = nil
+	end
+	
 	local f2 = CreateFrame("Frame", nil, UIParent)
 	f2:SetPoint(p, p2, p3, p4, p5)
 	f2:SetWidth(parent:GetWidth())
@@ -45,11 +53,16 @@ local function CreateFrameOverlay(parent, name)
 	f:SetScript("OnDragStop", function(self) 
 		if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end
 		self:StopMovingOrSizing() 
-		HealElementsCharPos[name] = true
+		HealElementsCharPos[name]["moved"] = true
+		local p, _, p2, p3, p4 = self:GetPoint()
+		HealElementsCharPos[name]["p"] = p
+		HealElementsCharPos[name]["p2"] = p2
+		HealElementsCharPos[name]["p3"] = p3
+		HealElementsCharPos[name]["p4"] = p4
 	end)
-	
+		
 	local x = tostring(name)
-	if not FramesDefault[x] then FramesDefault[x] = { } end
+	if not FramesDefault[x] then FramesDefault[x] = {} end
 	if not FramesDefault[x]["p"] then FramesDefault[x]["p"] = p end
 	if not FramesDefault[x]["p2"] then FramesDefault[x]["p2"] = p2 end
 	if not FramesDefault[x]["p3"] then FramesDefault[x]["p3"] = p3 end
@@ -59,9 +72,14 @@ local function CreateFrameOverlay(parent, name)
 	f:SetAlpha(0)
 	f:SetMovable(true)
 	f:EnableMouse(false)
-
+	
 	parent:ClearAllPoints()
 	parent:SetAllPoints(f)
+	
+	if HealElementsCharPos[name]["moved"] == true then
+		f2:ClearAllPoints()
+		f2:SetPoint(HealElementsCharPos[name]["p"], UIParent, HealElementsCharPos[name]["p3"], HealElementsCharPos[name]["p4"], HealElementsCharPos[name]["p5"])
+	end
 	
 	
 	local fs = f:CreateFontString(nil, "OVERLAY")
@@ -73,7 +91,7 @@ local function CreateFrameOverlay(parent, name)
 	fs:SetText(name)
 end
 
-do
+do 
 	CreateFrameOverlay(oUF_TukzHeal_player.Castbar, "HealPlayerCastBar")
 	CreateFrameOverlay(oUF_TukzHeal_target.Castbar, "HealTargetCastBar")
 	CreateFrameOverlay(oUF_TukzHeal_focus.Castbar, "HealFocusCastBar")
@@ -124,7 +142,11 @@ local function ResetElements(arg1)
 			local name = _G[Frames]:GetName()
 			_G[Frames]:ClearAllPoints()
 			_G[Frames]:SetPoint(FramesDefault[name]["p"], FramesDefault[name]["p2"], FramesDefault[name]["p3"], FramesDefault[name]["p4"], FramesDefault[name]["p5"])
-			HealElementsCharPos[name] = false
+			HealElementsCharPos[name]["moved"] = false
+			HealElementsCharPos[name]["p"] = nil
+			HealElementsCharPos[name]["p2"] = nil
+			HealElementsCharPos[name]["p3"] = nil
+			HealElementsCharPos[name]["p4"] = nil
 		end
 		StaticPopup_Show("RELOAD")
 	else
@@ -134,7 +156,12 @@ local function ResetElements(arg1)
 				local name = _G[arg1]:GetName()
 				_G[arg1]:ClearAllPoints()
 				_G[arg1]:SetPoint(FramesDefault[name]["p"], FramesDefault[name]["p2"], FramesDefault[name]["p3"], FramesDefault[name]["p4"], FramesDefault[name]["p5"])	
-				HealElementsCharPos[name] = false		
+				HealElementsCharPos[name]["moved"] = false	
+				HealElementsCharPos[name]["p"] = nil
+				HealElementsCharPos[name]["p2"] = nil
+				HealElementsCharPos[name]["p3"] = nil
+				HealElementsCharPos[name]["p4"] = nil		
+				break	
 			end
 		end
 		StaticPopup_Show("RELOAD")

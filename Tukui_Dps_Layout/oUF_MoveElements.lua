@@ -11,9 +11,18 @@ local function CreateFrameOverlay(parent, name)
 	if not parent then return end
 	
 	--Setup Variables
-	if not DPSElementsCharPos[name] then DPSElementsCharPos[name] = false end
+	if not DPSElementsCharPos[name] or type(DPSElementsCharPos[name]) ~= "table" then DPSElementsCharPos[name] = {} end
+	if not DPSElementsCharPos[name]["moved"] then DPSElementsCharPos[name]["moved"] = false end
 	
 	local p, p2, p3, p4, p5 = parent:GetPoint()
+	
+	if DPSElementsCharPos[name]["moved"] ~= true then
+		DPSElementsCharPos[name]["p"] = nil
+		DPSElementsCharPos[name]["p2"] = nil
+		DPSElementsCharPos[name]["p3"] = nil
+		DPSElementsCharPos[name]["p4"] = nil
+	end
+	
 	local f2 = CreateFrame("Frame", nil, UIParent)
 	f2:SetPoint(p, p2, p3, p4, p5)
 	f2:SetWidth(parent:GetWidth())
@@ -44,11 +53,16 @@ local function CreateFrameOverlay(parent, name)
 	f:SetScript("OnDragStop", function(self) 
 		if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end
 		self:StopMovingOrSizing() 
-		DPSElementsCharPos[name] = true
+		DPSElementsCharPos[name]["moved"] = true
+		local p, _, p2, p3, p4 = self:GetPoint()
+		DPSElementsCharPos[name]["p"] = p
+		DPSElementsCharPos[name]["p2"] = p2
+		DPSElementsCharPos[name]["p3"] = p3
+		DPSElementsCharPos[name]["p4"] = p4
 	end)
 		
 	local x = tostring(name)
-	if not FramesDefault[x] then FramesDefault[x] = { } end
+	if not FramesDefault[x] then FramesDefault[x] = {} end
 	if not FramesDefault[x]["p"] then FramesDefault[x]["p"] = p end
 	if not FramesDefault[x]["p2"] then FramesDefault[x]["p2"] = p2 end
 	if not FramesDefault[x]["p3"] then FramesDefault[x]["p3"] = p3 end
@@ -58,9 +72,14 @@ local function CreateFrameOverlay(parent, name)
 	f:SetAlpha(0)
 	f:SetMovable(true)
 	f:EnableMouse(false)
-
+	
 	parent:ClearAllPoints()
 	parent:SetAllPoints(f)
+	
+	if DPSElementsCharPos[name]["moved"] == true then
+		f2:ClearAllPoints()
+		f2:SetPoint(DPSElementsCharPos[name]["p"], UIParent, DPSElementsCharPos[name]["p3"], DPSElementsCharPos[name]["p4"], DPSElementsCharPos[name]["p5"])
+	end
 	
 	
 	local fs = f:CreateFontString(nil, "OVERLAY")
@@ -124,7 +143,11 @@ local function ResetElements(arg1)
 			local name = _G[Frames]:GetName()
 			_G[Frames]:ClearAllPoints()
 			_G[Frames]:SetPoint(FramesDefault[name]["p"], FramesDefault[name]["p2"], FramesDefault[name]["p3"], FramesDefault[name]["p4"], FramesDefault[name]["p5"])
-			DPSElementsCharPos[name] = false
+			DPSElementsCharPos[name]["moved"] = false
+			DPSElementsCharPos[name]["p"] = nil
+			DPSElementsCharPos[name]["p2"] = nil
+			DPSElementsCharPos[name]["p3"] = nil
+			DPSElementsCharPos[name]["p4"] = nil
 		end
 		StaticPopup_Show("RELOAD")
 	else
@@ -134,7 +157,11 @@ local function ResetElements(arg1)
 				local name = _G[arg1]:GetName()
 				_G[arg1]:ClearAllPoints()
 				_G[arg1]:SetPoint(FramesDefault[name]["p"], FramesDefault[name]["p2"], FramesDefault[name]["p3"], FramesDefault[name]["p4"], FramesDefault[name]["p5"])	
-				DPSElementsCharPos[name] = false	
+				DPSElementsCharPos[name]["moved"] = false	
+				DPSElementsCharPos[name]["p"] = nil
+				DPSElementsCharPos[name]["p2"] = nil
+				DPSElementsCharPos[name]["p3"] = nil
+				DPSElementsCharPos[name]["p4"] = nil		
 				break	
 			end
 		end
