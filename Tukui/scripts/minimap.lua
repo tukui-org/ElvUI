@@ -97,9 +97,89 @@ if FeedbackUIButton then
 end
 
 
+----------------------------------------------------------------------------------------
+-- Right click menu
+----------------------------------------------------------------------------------------
+local menuFrame = CreateFrame("Frame", "MinimapRightClickMenu", UIParent, "UIDropDownMenuTemplate")
+local menuList = {
+    {text = CHARACTER_BUTTON,
+		func = function() ToggleCharacter("PaperDollFrame") end},
+    {text = TALENTS_BUTTON,
+		func = function() if not PlayerTalentFrame then LoadAddOn("Blizzard_TalentUI") end if not GlyphFrame then LoadAddOn("Blizzard_GlyphUI") end PlayerTalentFrame_Toggle() end},
+    {text = ACHIEVEMENT_BUTTON,
+		func = function() ToggleAchievementFrame() end},
+    {text = QUESTLOG_BUTTON,
+		func = function() ToggleFrame(QuestLogFrame) end},
+    {text = SOCIAL_BUTTON,
+		func = function() ToggleFriendsFrame(1) end},
+    {text = PLAYER_V_PLAYER,
+		func = function() ToggleFrame(PVPFrame) end},
+    {text = ACHIEVEMENTS_GUILD_TAB,
+		func = function() if IsInGuild() then if not GuildFrame then LoadAddOn("Blizzard_GuildUI") end GuildFrame_Toggle() GuildFrame_TabClicked(GuildFrameTab2) end end},
+    {text = LFG_TITLE,
+		func = function() ToggleFrame(LFDParentFrame) end},
+    {text = L_LFRAID,
+		func = function() ToggleFrame(LFRParentFrame) end},
+    {text = HELP_BUTTON,
+		func = function() ToggleHelpFrame() end},
+    {text = L_CALENDAR,
+		func = function() if(not CalendarFrame) then LoadAddOn("Blizzard_Calendar") end Calendar_Toggle() end},
+}
+
+if TukuiCF["actionbar"].enable == true and TukuiCF["actionbar"].microbar ~= true then
+	SpellbookMicroButton:SetParent(Minimap)
+	SpellbookMicroButton:ClearAllPoints()
+	SpellbookMicroButton:SetPoint("RIGHT")
+	SpellbookMicroButton:SetFrameStrata("TOOLTIP")
+	SpellbookMicroButton:SetFrameLevel(100)
+	SpellbookMicroButton:SetAlpha(0)
+	SpellbookMicroButton:HookScript("OnEnter", function(self)  end)
+	SpellbookMicroButton:HookScript("OnLeave", function(self) self:SetAlpha(0) end)
+	SpellbookMicroButton.Hide = TukuiDB.dummy
+	SpellbookMicroButton.SetParent = TukuiDB.dummy
+	SpellbookMicroButton.ClearAllPoints = TukuiDB.dummy
+	SpellbookMicroButton.SetPoint = TukuiDB.dummy
+	SpellbookMicroButton:SetHighlightTexture("")
+	SpellbookMicroButton.SetHighlightTexture = TukuiDB.dummy
+	
+	local pushed = SpellbookMicroButton:GetPushedTexture()
+	local normal = SpellbookMicroButton:GetNormalTexture()
+	local disabled = SpellbookMicroButton:GetDisabledTexture()
+	
+	local f = CreateFrame("Frame", nil, SpellbookMicroButton)
+	f:SetFrameLevel(1)
+	f:SetFrameStrata("LOW")
+	f:SetPoint("BOTTOMLEFT", SpellbookMicroButton, "BOTTOMLEFT", 2, 0)
+	f:SetPoint("TOPRIGHT", SpellbookMicroButton, "TOPRIGHT", -2, -28)
+	TukuiDB.SetNormTexTemplate(f)	
+	SpellbookMicroButton.frame = f
+	
+	pushed:SetTexCoord(0.17, 0.87, 0.5, 0.908)
+	pushed:ClearAllPoints()
+	pushed:SetPoint("TOPLEFT", SpellbookMicroButton.frame, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+	pushed:SetPoint("BOTTOMRIGHT", SpellbookMicroButton.frame, "BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
+	
+	normal:SetTexCoord(0.17, 0.87, 0.5, 0.908)
+	normal:ClearAllPoints()
+	normal:SetPoint("TOPLEFT", SpellbookMicroButton.frame, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+	normal:SetPoint("BOTTOMRIGHT", SpellbookMicroButton.frame, "BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
+	
+	if disabled then
+		disabled:SetTexCoord(0.17, 0.87, 0.5, 0.908)
+		disabled:ClearAllPoints()
+		disabled:SetPoint("TOPLEFT", SpellbookMicroButton.frame, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+		disabled:SetPoint("BOTTOMRIGHT", SpellbookMicroButton.frame, "BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
+	end
+	
+	SpellbookMicroButton:HookScript("OnEnter", function(self) local color = RAID_CLASS_COLORS[TukuiDB.myclass] self.frame:SetBackdropBorderColor(color.r, color.g, color.b) self:SetAlpha(1) end)
+	SpellbookMicroButton:HookScript("OnLeave", function(self) self.frame:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor)) self:SetAlpha(0) end)
+end
+
 Minimap:SetScript("OnMouseUp", function(self, btn)
 	if btn == "RightButton" then
 		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, self)
+	elseif btn == "MiddleButton" and TukuiCF["actionbar"].enable == true and TukuiCF["actionbar"].microbar ~= true then
+		EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
 	else
 		Minimap_OnClick(self)
 	end
@@ -182,6 +262,9 @@ Minimap:SetScript("OnEnter",function()
 	m_coord:Show()
 	m_coord.anim:Play()
 	m_zone.anim:Play()
+	if TukuiCF["actionbar"].enable == true and TukuiCF["actionbar"].microbar ~= true then
+		SpellbookMicroButton:SetAlpha(1)
+	end
 end)
  
 Minimap:SetScript("OnLeave",function()
@@ -189,6 +272,9 @@ Minimap:SetScript("OnLeave",function()
 	m_coord.anim_o:Play()
 	m_zone.anim:Stop()
 	m_zone.anim_o:Play()
+	if TukuiCF["actionbar"].enable == true and TukuiCF["actionbar"].microbar ~= true then
+		SpellbookMicroButton:SetAlpha(0)
+	end
 end)
  
 m_coord_text:SetText("00,00")
