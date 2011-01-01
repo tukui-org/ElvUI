@@ -13,6 +13,9 @@ local microbuttons = {
 	"AchievementMicroButton"
 }
 
+--Fix blizzard bug
+TalentMicroButton:HookScript("OnClick", function() if not PlayerTalentFrame then LoadAddOn("Blizzard_TalentUI") end if not GlyphFrame then LoadAddOn("Blizzard_GlyphUI") end end)
+
 local f = CreateFrame("Frame", "MicroParent", UIParent)
 MicroParent.shown = false
 f:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 1, -25) --Default microbar position

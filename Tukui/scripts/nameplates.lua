@@ -67,6 +67,12 @@ local function CheckBlacklist(frame, ...)
 	end
 end
 
+local function HideDrunkenText(frame, ...)
+	if frame and frame.oldlevel and frame.oldlevel:IsShown() then
+		frame.oldlevel:Hide()
+	end
+end
+
 local function ForEachPlate(functionToRun, ...)
 	for frame in pairs(frames) do
 		if frame:IsShown() then
@@ -208,6 +214,7 @@ local function UpdateObjects(frame)
 	local r, g, b = frame.hp:GetStatusBarColor()
 	local r, g, b = floor(r*100+.5)/100, floor(g*100+.5)/100, floor(b*100+.5)/100
 	local classname = ""
+	
 	
 	frame.hp:ClearAllPoints()
 	frame.hp:SetSize(hpWidth, hpHeight)	
@@ -558,6 +565,7 @@ CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
 	end
 	
 	ForEachPlate(CheckBlacklist)
+	ForEachPlate(HideDrunkenText)
 end)
 
 if TukuiCF["nameplate"].combat == true then
