@@ -13,14 +13,13 @@ local microbuttons = {
 	"AchievementMicroButton"
 }
 
---Fix blizzard bug
-TalentMicroButton:HookScript("OnClick", function() if not PlayerTalentFrame then LoadAddOn("Blizzard_TalentUI") end if not GlyphFrame then LoadAddOn("Blizzard_GlyphUI") end end)
-
 local f = CreateFrame("Frame", "MicroParent", UIParent)
 MicroParent.shown = false
 f:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 1, -25) --Default microbar position
 f:SetWidth(((CharacterMicroButton:GetWidth() + 4) * 7) + 2)
 f:SetHeight(CharacterMicroButton:GetHeight() - 28)
+f:RegisterEvent("PLAYER_ENTERING_WORLD")
+f:SetScript("OnEvent", function(self, event) if not PlayerTalentFrame then LoadAddOn("Blizzard_TalentUI") end if not GlyphFrame then LoadAddOn("Blizzard_GlyphUI") end end)
 if TukuiCF["actionbar"].mousemicro == true then f:SetAlpha(0) end
 
 UpdateMicroButtonsParent(f)
