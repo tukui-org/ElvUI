@@ -129,7 +129,17 @@ end
 oUF.TagEvents['Tukui:nameshort'] = 'UNIT_NAME_UPDATE'
 oUF.Tags['Tukui:nameshort'] = function(unit)
 	local name = UnitName(unit)
-	return utf8sub(name, 10, false)
+	local colorblind = GetCVarBool("colorblindMode")
+	if colorblind ~= 1 then
+		return utf8sub(name, 10, true)
+	else
+		if (UnitIsPlayer(unit)) then
+			local class = select(1, UnitClass(unit))
+			return utf8sub((name.." "..class), 10, true)
+		else
+			return utf8sub(name, 10, true)
+		end
+	end
 end
 
 oUF.TagEvents['Tukui:namemedium'] = 'UNIT_NAME_UPDATE'
