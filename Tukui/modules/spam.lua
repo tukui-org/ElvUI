@@ -80,9 +80,45 @@ ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", SPELL_FILTER)
 -- Only enabling this for me because i get asked too much
 ----------------------------------------------------------------------------------
 if TukuiDB.myname == "Elv" then
+
+	local waitTable = {};
+	local waitFrame = nil;
+	local whispered = {}
+	local function whisper_wait(delay, func, ...)
+		if(type(delay)~="number" or type(func)~="function") then
+			return false;
+		end
+		if(waitFrame == nil) then
+			waitFrame = CreateFrame("Frame","WaitFrame", UIParent);
+			waitFrame:SetScript("onUpdate",function (self,elapse)
+				local count = #waitTable;
+				local i = 1;
+				while(i<=count) do
+					local waitRecord = tremove(waitTable,i);
+					local d = tremove(waitRecord,1);
+					local f = tremove(waitRecord,1);
+					local p = tremove(waitRecord,1);
+					if(d>elapse) then
+					  tinsert(waitTable,i,{d-elapse,f,p});
+					  i = i + 1;
+					else
+					  count = count - 1;
+					  f(unpack(p));
+					end
+				end
+			end)
+		end
+		tinsert(waitTable,{delay,func,{...}})
+		return true
+	end
+
+	
 	local function NOOB_FILTER(self, event, arg1, arg2)
-		if strfind(arg1,"that mount") or strfind(arg1, "mount from") or strfind(arg1, "your mount") or strfind(arg1, "ur mount") or strfind(arg1, "the mount") --[[ <-- third world lingo ]] then
-			SendChatMessage("I got this mount in Desolace it was a world drop, you need to open up some crates near the shore, it only works for the first one you open per day.", "WHISPER", nil, arg2)
+		if strfind(arg1, "mount") then
+			for i, name in pairs(whispered) do if name == tostring(arg2) then return end end -- dont reply to the same person more than once
+			whisper_wait(5, SendChatMessage, "I got this in Desolace it was a world drop, you need to open up some crates near the shore. It only works for the first one you open per day.", "WHISPER", nil, arg2) -- 5 second delay.. more realistic :) 
+			
+			tinsert(whispered, tostring(arg2))
 		end
 	end
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", NOOB_FILTER)	
