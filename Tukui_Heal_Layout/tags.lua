@@ -135,8 +135,9 @@ oUF.Tags['Tukui:nameshort'] = function(unit)
 		return utf8sub(name, 10, true)
 	else
 		if (UnitIsPlayer(unit)) then
-			local class = select(1, UnitClass(unit))
-			return utf8sub((name.." "..class), 10, true)
+			local class = select(2, UnitClass(unit))
+			local texcoord = CLASS_BUTTONS[class]
+			return (utf8sub((name), 10, true)).." |TInterface\\WorldStateFrame\\Icons-Classes:25:25:0:0:256:256:"..tostring(texcoord[1]*256)..":"..tostring(texcoord[2]*256)..":"..tostring(texcoord[3]*256)..":"..tostring(texcoord[4]*256).."|t"
 		else
 			return utf8sub(name, 10, true)
 		end
@@ -146,11 +147,33 @@ end
 oUF.TagEvents['Tukui:namemedium'] = 'UNIT_NAME_UPDATE'
 oUF.Tags['Tukui:namemedium'] = function(unit)
 	local name = UnitName(unit)
-	return utf8sub(name, 15, true)
+	local colorblind = GetCVarBool("colorblindMode")
+	if colorblind ~= 1 then
+		return utf8sub(name, 15, true)
+	else
+		if (UnitIsPlayer(unit)) then
+			local class = select(2, UnitClass(unit))
+			local texcoord = CLASS_BUTTONS[class]
+			return (utf8sub((name), 15, true)).." |TInterface\\WorldStateFrame\\Icons-Classes:25:25:0:0:256:256:"..tostring(texcoord[1]*256)..":"..tostring(texcoord[2]*256)..":"..tostring(texcoord[3]*256)..":"..tostring(texcoord[4]*256).."|t"
+		else
+			return utf8sub(name, 15, true)
+		end
+	end
 end
 
 oUF.TagEvents['Tukui:namelong'] = 'UNIT_NAME_UPDATE'
 oUF.Tags['Tukui:namelong'] = function(unit)
 	local name = UnitName(unit)
-	return utf8sub(name, 20, true)
+	local colorblind = GetCVarBool("colorblindMode")
+	if colorblind ~= 1 then
+		return utf8sub(name, 20, true)
+	else
+		if (UnitIsPlayer(unit)) then
+			local class = select(2, UnitClass(unit))
+			local texcoord = CLASS_BUTTONS[class]
+			return (utf8sub((name), 20, true)).." |TInterface\\WorldStateFrame\\Icons-Classes:25:25:0:0:256:256:"..tostring(texcoord[1]*256)..":"..tostring(texcoord[2]*256)..":"..tostring(texcoord[3]*256)..":"..tostring(texcoord[4]*256).."|t"
+		else
+			return utf8sub(name, 20, true)
+		end
+	end
 end
