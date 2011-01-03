@@ -62,6 +62,10 @@ if TukuiCF["general"].classcolortheme == true then
 	TukuiCF["media"].bordercolor = { r,g,b,1 }
 end
 
+if TukuiDB.myname == "Platinúm" then
+	TukuiDB.oUF_colors.power.RAGE = {1, 0, 0}
+end
+
 
 
 
