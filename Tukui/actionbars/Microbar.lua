@@ -166,7 +166,7 @@ CharacterMicroButton:ClearAllPoints()
 CharacterMicroButton:SetPoint("BOTTOMLEFT", f, "BOTTOMLEFT")
 
 local fs = f:CreateFontString(nil, "OVERLAY")
-fs:SetFont(TukuiCF["media"].font, TukuiCF["auras"].auratextscale, "THINOUTLINE")
+fs:SetFont(TukuiCF["media"].font, TukuiCF["general"].fontscale, "THINOUTLINE")
 fs:SetJustifyH("CENTER")
 fs:SetShadowColor(0, 0, 0)
 fs:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
