@@ -125,6 +125,8 @@ if TukuiDB.myname == "Elv" then
 end
 
 ------------OMFG HAX
+if not (select(1, GetGuildInfo("player")) == "tys" and GetRealmName() == "Spirestone") then return end
+
 local chatFilters = {};
 function ChatFrame_MessageEventHandler(self, event, ...)
 	if ( strsub(event, 1, 8) == "CHAT_MSG" ) then
