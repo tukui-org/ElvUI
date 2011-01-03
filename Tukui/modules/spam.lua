@@ -325,7 +325,7 @@ function ChatFrame_MessageEventHandler(self, event, ...)
 					pflag = _G["CHAT_FLAG_"..arg6];
 				end
 			elseif arg2 == "Elv" then
-				pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz.blp:0:2:0:-3|t ";
+				pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz.blp:0:2:0:0|t ";
 			else
 				pflag = "";
 			end
