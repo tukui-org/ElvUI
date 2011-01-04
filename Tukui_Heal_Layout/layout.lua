@@ -714,10 +714,10 @@ local function Shared(self, unit)
 			castbar.bg:SetFrameStrata("DIALOG")
 			
 			castbar.time = TukuiDB.SetFontString(castbar, font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
-			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", TukuiDB.Scale(-4), TukuiDB.Scale(1))
+			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", TukuiDB.Scale(-4), 0)
 			castbar.time:SetTextColor(0.84, 0.75, 0.65)
 			castbar.time:SetJustifyH("RIGHT")
-			castbar.CustomTimeText = CustomCastTimeText
+			castbar.CustomTimeText = TukuiDB.CustomCastTimeText
  
 			castbar.Text = TukuiDB.SetFontString(castbar, font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
 			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 1)
@@ -1070,10 +1070,10 @@ local function Shared(self, unit)
 
  
 			castbar.time = TukuiDB.SetFontString(castbar, font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
-			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", TukuiDB.Scale(-4), TukuiDB.Scale(1))
+			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", TukuiDB.Scale(-4), 0)
 			castbar.time:SetTextColor(0.84, 0.75, 0.65)
 			castbar.time:SetJustifyH("RIGHT")
-			castbar.CustomTimeText = CustomCastTimeText
+			castbar.CustomTimeText = TukuiDB.CustomCastTimeText
  
 			castbar.Text = TukuiDB.SetFontString(castbar, font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
 			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 1)
@@ -1416,11 +1416,11 @@ local function Shared(self, unit)
 			castbar.bg:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 			castbar.bg:SetFrameLevel(5)
 			
-			castbar.time = TukuiDB.SetFontString(castbar, font1, TukuiCF["unitframes"].fontsize)
-			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", TukuiDB.Scale(-4), TukuiDB.Scale(1))
+			castbar.time = TukuiDB.SetFontString(castbar, font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
+			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", TukuiDB.Scale(-4), 0)
 			castbar.time:SetTextColor(0.84, 0.75, 0.65)
 			castbar.time:SetJustifyH("RIGHT")
-			castbar.CustomTimeText = CustomCastTimeText
+			castbar.CustomTimeText = TukuiDB.CustomCastTimeText
 
 			castbar.Text = TukuiDB.SetFontString(castbar, font1, TukuiCF["unitframes"].fontsize)
 			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 1)
@@ -1707,10 +1707,10 @@ local function Shared(self, unit)
 			castbar.bg:SetFrameLevel(5)
 			
 			castbar.time = TukuiDB.SetFontString(castbar, font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
-			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", TukuiDB.Scale(-4), TukuiDB.Scale(1))
+			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", TukuiDB.Scale(-4), 0)
 			castbar.time:SetTextColor(0.84, 0.75, 0.65)
 			castbar.time:SetJustifyH("RIGHT")
-			castbar.CustomTimeText = CustomCastTimeText
+			castbar.CustomTimeText = TukuiDB.CustomCastTimeText
 
 			castbar.Text = TukuiDB.SetFontString(castbar, font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
 			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 1)
