@@ -406,6 +406,7 @@ DebuffDPSWhiteList = {
 	--Blackwing Descent
 		--Magmaw
 		[SpellName(91911)] = true, -- Constricting Chains
+		[SpellName(78199)] = true, -- Sweltering Armor
 		
 		--Omintron Defense System
 		[SpellName(91431)] = true, --Lightning Conductor
