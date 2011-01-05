@@ -112,6 +112,7 @@ end
 
 oUF.TagEvents['Tukui:getnamecolor'] = 'UNIT_POWER'
 oUF.Tags['Tukui:getnamecolor'] = function(unit)
+	if not unit then return end
 	local reaction = UnitReaction(unit, 'player')
 	if (unit == 'pet' and GetPetHappiness()) then
 		local c = TukuiDB.oUF_colors.happiness[GetPetHappiness()]

@@ -1400,6 +1400,9 @@ end
 
 function TukuiDB.UpdateThreat(self, event, unit)
 	if (self.unit ~= unit) or (unit == "target" or unit == "focus" or unit == "focustarget" or unit == "targettarget") then return end
+	if not self.unit then return end
+	if not unit then return end
+	
 	local threat = UnitThreatSituation(self.unit)
 	if threat and threat > 1 then
 		local r, g, b = GetThreatStatusColor(threat)
