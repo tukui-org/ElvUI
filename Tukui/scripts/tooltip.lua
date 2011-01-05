@@ -238,7 +238,7 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 	local crtype = UnitCreatureType(unit)
 	local classif = UnitClassification(unit)
 	local title = UnitPVPName(unit)
-	if level == -1 then level = MAX_PLAYER_LEVEL + 5 end
+
 	local r, g, b = GetQuestDifficultyColor(level).r, GetQuestDifficultyColor(level).g, GetQuestDifficultyColor(level).b
 
 	local color = GetColor(unit)	
@@ -246,7 +246,7 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 
 	_G["GameTooltipTextLeft1"]:SetFormattedText("%s%s%s", color, title or name, realm and realm ~= "" and " - "..realm.."|r" or "|r")
 	
-	if level == MAX_PLAYER_LEVEL + 5 then level = "??" end
+
 	if(UnitIsPlayer(unit)) then
 		if UnitIsAFK(unit) then
 			self:AppendText((" %s"):format(CHAT_FLAG_AFK))
@@ -275,7 +275,7 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 	else
 		for i = 2, lines do
 			if((_G["GameTooltipTextLeft"..i]:GetText():find("^"..LEVEL)) or (crtype and _G["GameTooltipTextLeft"..i]:GetText():find("^"..crtype))) then
-				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r%s %s", r*255, g*255, b*255, classif ~= "worldboss" and level ~= 0 and level or "", classification[classif] or "", crtype or "")
+				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r%s %s", r*255, g*255, b*255, classif ~= "worldboss" and level > 0 and level or "??", classification[classif] or "", crtype or "")
 				break
 			end
 		end
