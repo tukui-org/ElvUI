@@ -60,7 +60,11 @@ end
 
 hooksecurefunc("GameTooltip_SetDefaultAnchor", function(self, parent)
 	if db.cursor == true then
-		self:SetOwner(parent, "ANCHOR_CURSOR")	
+		if IsAddOnLoaded("Tukui_Heal_Layout") and parent ~= UIParent then 
+			self:SetOwner(parent, "ANCHOR_NONE")	
+		else
+			self:SetOwner(parent, "ANCHOR_CURSOR")
+		end
 	else
 		self:SetOwner(parent, "ANCHOR_NONE")
 		self:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -15+xOffset, TukuiDB.Scale(42+yOffset))	
@@ -70,6 +74,13 @@ end)
 
 GameTooltip:HookScript("OnUpdate",function(self, ...)
 	local inInstance, instanceType = IsInInstance()
+	if self:GetAnchorType() == "ANCHOR_CURSOR" then
+		local x, y = GetCursorPosition();
+		local effScale = self:GetEffectiveScale();
+		self:ClearAllPoints();
+		self:SetPoint("BOTTOMLEFT","UIParent","BOTTOMLEFT",(x / effScale + (15)),(y / effScale + (7)))		
+	end
+	
 	if self:GetAnchorType() == "ANCHOR_CURSOR" and NeedBackdropBorderRefresh == true and db.cursor ~= true then
 		-- h4x for world object tooltip border showing last border color 
 		-- or showing background sometime ~blue :x
