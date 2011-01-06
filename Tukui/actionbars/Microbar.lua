@@ -15,7 +15,7 @@ local microbuttons = {
 
 local f = CreateFrame("Frame", "MicroParent", UIParent)
 MicroParent.shown = false
-f:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 1, -25) --Default microbar position
+f:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 1, 52) --Default microbar position
 f:SetWidth(((CharacterMicroButton:GetWidth() + 4) * 7) + 2)
 f:SetHeight(CharacterMicroButton:GetHeight() - 28)
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
