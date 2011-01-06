@@ -222,8 +222,9 @@ local function UpdateObjects(frame)
 	frame.hp:GetStatusBarTexture():SetHorizTile(true)
 	
 	frame.healthbarbackdrop_tex:ClearAllPoints()
-	frame.healthbarbackdrop_tex:SetPoint("TOPLEFT", frame.hp, "TOPLEFT", -noscalemult*3, noscalemult*3)
-	frame.healthbarbackdrop_tex:SetPoint("BOTTOMRIGHT", frame.hp, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
+	frame.healthbarbackdrop_tex:SetPoint("CENTER")
+	frame.healthbarbackdrop_tex:SetWidth(hpWidth + noscalemult*6)
+	frame.healthbarbackdrop_tex:SetHeight(hpHeight + noscalemult*6)
 		
 	--Class Icons
 	for class, color in pairs(RAID_CLASS_COLORS) do
@@ -327,6 +328,7 @@ local OnSizeChanged = function(self)
 end
 
 local function OnHide(frame)
+	frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
 	frame.overlay:Hide()
 	frame.cb:Hide()
 	frame.hasclass = nil
@@ -348,8 +350,9 @@ local function SkinObjects(frame)
 	
 	-- Create Cast Icon Backdrop frame
 	local healthbarbackdrop_tex = hp:CreateTexture(nil, "BACKGROUND")
-	healthbarbackdrop_tex:SetPoint("TOPLEFT", hp, "TOPLEFT", -noscalemult*3, noscalemult*3)
-	healthbarbackdrop_tex:SetPoint("BOTTOMRIGHT", hp, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
+	healthbarbackdrop_tex:SetPoint("CENTER")
+	healthbarbackdrop_tex:SetWidth(hpWidth + noscalemult*6)
+	healthbarbackdrop_tex:SetHeight(hpHeight + noscalemult*6)
 	healthbarbackdrop_tex:SetTexture(0.1, 0.1, 0.1)
 	frame.healthbarbackdrop_tex = healthbarbackdrop_tex
 	
