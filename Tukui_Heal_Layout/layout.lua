@@ -1510,10 +1510,6 @@ local function Shared(self, unit)
 		
 		local healthBG = health:CreateTexture(nil, 'BORDER')
 		healthBG:SetAllPoints()
-
-		health.value = TukuiDB.SetFontString(health, font1,TukuiCF["unitframes"].fontsize, "OUTLINE")
-		health.value:SetPoint("LEFT", TukuiDB.Scale(2), TukuiDB.Scale(1))
-		health.PostUpdate = TukuiDB.PostUpdateHealth
 				
 		self.Health = health
 		self.Health.bg = healthBG
@@ -1598,17 +1594,31 @@ local function Shared(self, unit)
 		powerBG.multiplier = 0.3
 		power.colorTapping = false
 		power.colorDisconnected = true
-		
-		if (unit and unit:find('arena%d')) then
-			power.value = TukuiDB.SetFontString(health, font1, TukuiCF["unitframes"].fontsize, "OUTLINE")
-			power.value:SetPoint("RIGHT", health, "RIGHT", TukuiDB.Scale(-4), TukuiDB.Scale(1))
-			power.PreUpdate = TukuiDB.PreUpdatePower
-			power.PostUpdate = TukuiDB.PostUpdatePower
-		end
-
-		
+				
 		self.Power = power
 		self.Power.bg = powerBG
+		
+		--Health and Power
+		if (unit and unit:find('arena%d')) then
+			health.value = TukuiDB.SetFontString(health, font1,TukuiCF["unitframes"].fontsize, "OUTLINE")
+			health.value:SetPoint("LEFT", TukuiDB.Scale(2), TukuiDB.Scale(1))
+			health.PostUpdate = TukuiDB.PostUpdateHealth
+			
+			power.value = TukuiDB.SetFontString(health, font1, TukuiCF["unitframes"].fontsize, "OUTLINE")
+			power.value:SetPoint("RIGHT", health, "RIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(1))
+			power.PreUpdate = TukuiDB.PreUpdatePower
+			power.PostUpdate = TukuiDB.PostUpdatePower			
+		else
+			health.value = TukuiDB.SetFontString(health, font1,TukuiCF["unitframes"].fontsize, "OUTLINE")
+			health.value:SetPoint("TOPLEFT", health, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+			health.PostUpdate = TukuiDB.PostUpdateHealth
+			
+			power.value = TukuiDB.SetFontString(health, font1, TukuiCF["unitframes"].fontsize, "OUTLINE")
+			power.value:SetPoint("BOTTOMLEFT", health, "BOTTOMLEFT", TukuiDB.Scale(2), TukuiDB.Scale(1))
+			power.value:SetJustifyH("RIGHT")
+			power.PreUpdate = TukuiDB.PreUpdatePower
+			power.PostUpdate = TukuiDB.PostUpdatePower		
+		end
 		
 		-- names
 		local Name
@@ -1625,7 +1635,7 @@ local function Shared(self, unit)
 			Name:SetJustifyH("RIGHT")
 			Name:SetFont(font1, TukuiCF["unitframes"].fontsize, "OUTLINE")
 			Name:SetShadowColor(0, 0, 0)
-			Name:SetShadowOffset(1.25, -1.25)		
+			Name:SetShadowOffset(1.25, -1.25)	
 		end
 		
 		self:Tag(Name, '[Tukui:getnamecolor][Tukui:nameshort] [Tukui:diffcolor][level] [shortclassification]')
@@ -1654,7 +1664,7 @@ local function Shared(self, unit)
 		
 		-- create arena/boss debuff/buff spawn point
 		local buffs = CreateFrame("Frame", nil, self)
-		buffs:SetHeight(arenaboss_height)
+		buffs:SetHeight(arenaboss_height + 8)
 		buffs:SetWidth(252)
 		buffs:SetPoint("RIGHT", self, "LEFT", TukuiDB.Scale(-4), 0)
 		buffs.size = arenaboss_height
@@ -1669,7 +1679,7 @@ local function Shared(self, unit)
 		--only need to see debuffs for arena frames
 		if (unit and unit:find("arena%d")) and TukuiCF["auras"].arenadebuffs == true then	
 			local debuffs = CreateFrame("Frame", nil, self)
-			debuffs:SetHeight(arenaboss_height)
+			debuffs:SetHeight(arenaboss_height + 8)
 			debuffs:SetWidth(arenaboss_width*2)
 			debuffs:SetPoint("LEFT", self, "RIGHT", TukuiDB.Scale(4), 0)
 			debuffs.size = arenaboss_height

@@ -50,7 +50,7 @@ TukuiCF["framesizes"] = {
 	["smallwidth"] = 100,					--Width of TargetTarget, Focus, FocusTarget, Player's Pet frames
 	["smallheight"] = 23,					--Height of TargetTarget, Focus, FocusTarget, Player's Pet frames
 	["arenabosswidth"] = 180,				--Width of Arena/Boss Frames
-	["arenabossheight"] = 23,				--Height of Arena/Boss Frames
+	["arenabossheight"] = 28,				--Height of Arena/Boss Frames
 	["assisttankwidth"] = 100,				--Width of MainTank/MainAssist frames
 	["assisttankheight"] = 20,				--Height of MainTank/MainAssist frames
 }
