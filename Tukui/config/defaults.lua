@@ -249,6 +249,7 @@ TukuiCF["tooltip"] = {
 		["xOfs"] = 0,							--X offset
 		["yOfs"] = 0,							--Y offset
 		["itemid"] = true,						--display itemid on item tooltips 
+		["whotargetting"] = true,				--show who is targetting the unit (in raid or party)
 }
 
 TukuiCF["buffreminder"] = {

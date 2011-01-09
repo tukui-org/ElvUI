@@ -166,6 +166,8 @@ tukuilocal.core_uihelp19 = "|cffFF0000/farmmode|r - Toggles increasing/decreasin
 tukuilocal.core_uihelp20 = "|cffFF0000/micro|r - Toggles the unlocking of the MicroBar"
 tukuilocal.core_uihelp14 = "(Scroll up for more commands ...)"
 
+tukuilocal.tooltip_whotarget = "Targeted By"
+
 tukuilocal.bind_combat = "You can't bind keys in combat."
 tukuilocal.bind_saved = "All keybindings have been saved."
 tukuilocal.bind_discard = "All newly set keybindings have been discarded."

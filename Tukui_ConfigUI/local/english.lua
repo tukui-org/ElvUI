@@ -184,6 +184,7 @@ TukuiL.option_tooltip_colorreaction = "Always color tooltip border and healthbar
 TukuiL.option_tooltip_xOfs = "X-Offset of the tooltip (-x = Left, +x = Right)"
 TukuiL.option_tooltip_yOfs = "Y-Offset of the tooltip (-y = Down, +y = Up)"
 TukuiL.option_tooltip_itemid = "Display Item ID"
+TukuiL.option_tooltip_whotargetting = "Display who is targetting the unit that is in your party/raid."
 
 -- others
 TukuiL.option_others = "Others"

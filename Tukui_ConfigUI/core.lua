@@ -219,6 +219,7 @@ local function Local(o)
 	if o == "TukuiConfigUItooltipxOfs" then o = TukuiL.option_tooltip_xOfs end
 	if o == "TukuiConfigUItooltipyOfs" then o = TukuiL.option_tooltip_yOfs end
 	if o == "TukuiConfigUItooltipitemid" then o = TukuiL.option_tooltip_itemid end
+	if o == "TukuiConfigUItooltipwhotargetting" then o = TukuiL.option_tooltip_whotargetting end
 	
 	-- others
 	if o == "TukuiConfigUIothers" then o = TukuiL.option_others end
