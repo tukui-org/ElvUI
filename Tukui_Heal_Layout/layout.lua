@@ -1912,7 +1912,7 @@ if TukuiCF["raidframes"].maintank == true then
 		'groupFilter', 'MAINTANK', 
 		'yOffset', 7, 
 		'point' , 'BOTTOM',
-		'template', 'oUF_TukzHealMtt'
+		'template', 'oUF_TukzMtt'
 	)
 	tank:SetPoint("BOTTOM", ChatLBackground2, "TOP", -42, 450)
 end
@@ -1927,7 +1927,7 @@ if TukuiCF["raidframes"].mainassist == true then
 		'groupFilter', 'MAINASSIST', 
 		'yOffset', 7, 
 		'point' , 'BOTTOM',
-		'template', 'oUF_TukzHealMtt'
+		'template', 'oUF_TukzMtt'
 	)
 	if TukuiCF["raidframes"].maintank == true then 
 		assist:SetPoint("TOPLEFT", oUF_TukzHealMainTank, "BOTTOMLEFT", 2, -50)
