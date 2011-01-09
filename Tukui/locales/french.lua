@@ -1,3 +1,6 @@
+local tukuilocal = tukuilocal
+local TukuiDB = TukuiDB
+
 if TukuiDB.client == "frFR" then
 	tukuilocal.chat_BATTLEGROUND_GET = "[B]"
 	tukuilocal.chat_BATTLEGROUND_LEADER_GET = "[B]"

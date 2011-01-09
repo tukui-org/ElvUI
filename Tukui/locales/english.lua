@@ -1,6 +1,9 @@
 tukuilocal = {}
--- localization for enUS and enGB
+local tukuilocal = tukuilocal
+local TukuiDB = TukuiDB
+TukuiDB.client = GetLocale() 
 
+-- localization for enUS and enGB
 tukuilocal.chat_BATTLEGROUND_GET = "[B]"
 tukuilocal.chat_BATTLEGROUND_LEADER_GET = "[B]"
 tukuilocal.chat_BN_WHISPER_GET = "From"

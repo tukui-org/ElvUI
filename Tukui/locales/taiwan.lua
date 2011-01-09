@@ -1,4 +1,7 @@
-﻿if TukuiDB.client == "zhTW" then
+﻿local tukuilocal = tukuilocal
+local TukuiDB = TukuiDB
+
+if TukuiDB.client == "zhTW" then
 	tukuilocal.chat_BATTLEGROUND_GET = "[戰場]"
 	tukuilocal.chat_BATTLEGROUND_LEADER_GET = "[戰場領袖]"
 	tukuilocal.chat_BN_WHISPER_GET = "來自"

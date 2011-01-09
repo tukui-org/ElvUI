@@ -1,4 +1,7 @@
-﻿if TukuiDB.client == "ruRU" then
+﻿local tukuilocal = tukuilocal
+local TukuiDB = TukuiDB
+
+if TukuiDB.client == "ruRU" then
 	tukuilocal.chat_BATTLEGROUND_GET = "[Пб]"
 	tukuilocal.chat_BATTLEGROUND_LEADER_GET = "[ПБ]"
 	tukuilocal.chat_BN_WHISPER_GET = "От"

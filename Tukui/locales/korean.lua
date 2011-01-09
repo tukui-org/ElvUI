@@ -1,4 +1,7 @@
-﻿if TukuiDB.client == "koKR" then
+﻿local tukuilocal = tukuilocal
+local TukuiDB = TukuiDB
+
+if TukuiDB.client == "koKR" then
  
 	tukuilocal.chat_BATTLEGROUND_GET = "[BG]"
 	tukuilocal.chat_BATTLEGROUND_LEADER_GET = "[BG]"
