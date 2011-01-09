@@ -586,6 +586,8 @@ TukuiDB.LoadUFFunctions = function(layout)
 		--Fix blank castbar with opening text
 		if name == "Opening" then
 			self.Text:SetText(OPENING)
+		else
+			self.Text:SetText(string.sub(name, 0, 25))
 		end
 		
 		if self.interrupt and unit ~= "player" then
