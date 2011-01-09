@@ -1744,7 +1744,7 @@ local function Shared(self, unit)
 	--	Main tanks and Main Assists layout (both mirror'd)
 	------------------------------------------------------------------------
 	
-	if(self:GetParent():GetName():match"oUF_TukzDPSMainTank" or self:GetParent():GetName():match"oUF_TukzDPSMainAssist") then
+	if(self:GetParent():GetName():match"oUF_TukzMainTank" or self:GetParent():GetName():match"oUF_TukzMainAssist") then
 		-- Right-click focus on maintank or mainassist units
 		self:SetAttribute("type2", "focus")
 		
@@ -1839,7 +1839,7 @@ if db.swingbar then
 end
 
 -- Player
-local player = oUF:Spawn('player', "oUF_TukzDPS_player")
+local player = oUF:Spawn('player', "oUF_Tukz_player")
 if TukuiCF["unitframes"].charportrait == true then
 	player:SetPoint("BOTTOM", TukuiActionBarBackground, "TOPLEFT", TukuiDB.Scale(-20),TukuiDB.Scale(40+yOffset))
 else
@@ -1848,7 +1848,7 @@ end
 player:SetSize(player_width, player_height)
 
 -- Target
-local target = oUF:Spawn('target', "oUF_TukzDPS_target")
+local target = oUF:Spawn('target', "oUF_Tukz_target")
 if TukuiCF["unitframes"].charportrait == true then
 	target:SetPoint("BOTTOM", TukuiActionBarBackground, "TOPRIGHT", TukuiDB.Scale(20),TukuiDB.Scale(40+yOffset))
 else
@@ -1857,40 +1857,40 @@ end
 target:SetSize(target_width, target_height)
 
 -- Focus
-local focus = oUF:Spawn('focus', "oUF_TukzDPS_focus")
-focus:SetPoint("BOTTOMLEFT", oUF_TukzDPS_target, "TOPRIGHT", TukuiDB.Scale(-35),TukuiDB.Scale(120))
+local focus = oUF:Spawn('focus', "oUF_Tukz_focus")
+focus:SetPoint("BOTTOMLEFT", oUF_Tukz_target, "TOPRIGHT", TukuiDB.Scale(-35),TukuiDB.Scale(120))
 focus:SetSize(smallframe_width, smallframe_height)
 
 -- Target's Target
-local tot = oUF:Spawn('targettarget', "oUF_TukzDPS_targettarget")
+local tot = oUF:Spawn('targettarget', "oUF_Tukz_targettarget")
 tot:SetPoint("BOTTOM", TukuiActionBarBackground, "TOP", 0,TukuiDB.Scale(40+yOffset))
 tot:SetSize(smallframe_width, smallframe_height)
 
 -- Player's Pet
-local pet = oUF:Spawn('pet', "oUF_TukzDPS_pet")
-pet:SetPoint("BOTTOM", oUF_TukzDPS_targettarget, "TOP", 0,TukuiDB.Scale(15))
+local pet = oUF:Spawn('pet', "oUF_Tukz_pet")
+pet:SetPoint("BOTTOM", oUF_Tukz_targettarget, "TOP", 0,TukuiDB.Scale(15))
 pet:SetSize(smallframe_width, smallframe_height)
 pet:SetParent(player)
 
 -- Player's Pet's Target
 if TukuiCF["unitframes"].pettarget == true then
-	local pettarget = oUF:Spawn('pettarget', "oUF_TukzDPS_pettarget")
-	pettarget:SetPoint("BOTTOM", oUF_TukzDPS_pet, "TOP", 0,TukuiDB.Scale(8))
+	local pettarget = oUF:Spawn('pettarget', "oUF_Tukz_pettarget")
+	pettarget:SetPoint("BOTTOM", oUF_Tukz_pet, "TOP", 0,TukuiDB.Scale(8))
 	pettarget:SetSize(smallframe_width, smallframe_height*0.8)
 	pettarget:SetParent(pet)
 end
 
 -- Focus's target
 if db.showfocustarget == true then
-	local focustarget = oUF:Spawn('focustarget', "oUF_TukzDPS_focustarget")
-	focustarget:SetPoint("BOTTOM", oUF_TukzDPS_focus, "TOP", 0,TukuiDB.Scale(15))
+	local focustarget = oUF:Spawn('focustarget', "oUF_Tukz_focustarget")
+	focustarget:SetPoint("BOTTOM", oUF_Tukz_focus, "TOP", 0,TukuiDB.Scale(15))
 	focustarget:SetSize(smallframe_width, smallframe_height)
 end
 
 if TukuiCF.arena.unitframes then
 	local arena = {}
 	for i = 1, 5 do
-		arena[i] = oUF:Spawn("arena"..i, "oUF_TukzDPSArena"..i)
+		arena[i] = oUF:Spawn("arena"..i, "oUF_TukzArena"..i)
 		if i == 1 then
 			arena[i]:SetPoint("BOTTOMLEFT", ChatRBackground2, "TOPLEFT", -80, 185)
 		else
@@ -1995,10 +1995,10 @@ do
 end
 
 --Move threatbar to targetframe
-if oUF_TukzDPS_player.ThreatBar then
+if oUF_Tukz_player.ThreatBar then
 	if powerbar_offset ~= 0 then
-		oUF_TukzDPS_player.ThreatBar:SetPoint("TOPLEFT", oUF_TukzDPS_target.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+		oUF_Tukz_player.ThreatBar:SetPoint("TOPLEFT", oUF_Tukz_target.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
 	else
-		oUF_TukzDPS_player.ThreatBar:SetPoint("TOPRIGHT", oUF_TukzDPS_target.Health, "BOTTOMRIGHT", 0, -(oUF_TukzDPS_target.Health:GetHeight() * 0.35) + -TukuiDB.Scale(8))
+		oUF_Tukz_player.ThreatBar:SetPoint("TOPRIGHT", oUF_Tukz_target.Health, "BOTTOMRIGHT", 0, -(oUF_Tukz_target.Health:GetHeight() * 0.35) + -TukuiDB.Scale(8))
 	end
 end

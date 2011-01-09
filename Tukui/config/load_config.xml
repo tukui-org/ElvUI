@@ -1,0 +1,6 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">	
+	<Script file="defaults.lua"/>
+	<Script file="classtimers_spellist.lua"/>
+	<Script file="filter.lua"/>
+	<Script file="configui.lua"/>
+</Ui>

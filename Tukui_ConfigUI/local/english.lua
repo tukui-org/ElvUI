@@ -46,12 +46,6 @@ TukuiL.option_skin_omen = "Omen"
 TukuiL.option_skin_recount = "Recount"
 TukuiL.option_skin_skada = "Skada"
 TukuiL.option_hookdxeright = "Force DXE's top bar anchor to be positioned above right chat frame"
-
--- combat text
-TukuiL.option_combattext = "Combat Text"
-TukuiL.option_combattext_showoverheal = "Show Overhealing"
-TukuiL.option_combattext_fontsize = "Font Size"
-TukuiL.option_combattext_showhots = "Show Hots"
  
 -- classtimer
 TukuiL.option_classtimer = "Class Timer"

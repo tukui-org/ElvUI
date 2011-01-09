@@ -7,7 +7,6 @@ ALLOWED_GROUPS = {
 	["media"]=1,
 	["unitframes"]=1,
 	["arena"]=1,
-	["combattext"]=1,
 	["actionbar"]=1,
 	["nameplate"]=1,
 	["loot"]=1,
@@ -64,11 +63,6 @@ local function Local(o)
 	if o =="TukuiConfigUIskinskada" then o = TukuiL.option_skin_skada end
 	if o == "TukuiConfigUIskinhookdxeright" then o = TukuiL.option_hookdxeright end
 	if o == "TukuiConfigUIskinembedright" then o = TukuiL.option_general_embedright end
-	
-	--Combat Text
-	if o == "TukuiConfigUIcombattext" then o = TukuiL.option_combattext end
-	if o == "TukuiConfigUIcombattextshowoverheal" then o = TukuiL.option_combattext_showoverheal end
-	if o == "TukuiConfigUIcombattextshowhots" then o = TukuiL.option_combattext_showhots end
 	
 	--Classtimers
 	if o == "TukuiConfigUIclasstimer" then o = TukuiL.option_classtimer end

@@ -44,12 +44,6 @@
 	TukuiL.option_skin_omen = "Omen"
 	TukuiL.option_skin_recount = "Recount"
 	TukuiL.option_skin_skada = "Skada"
-
-	-- combat text
-	TukuiL.option_combattext = "战斗文字"
-	TukuiL.option_combattext_showoverheal = "显示过量治疗"
-	TukuiL.option_combattext_fontsize = "文字大小"
-	TukuiL.option_combattext_showhots = "显示HOTs"
 	 
 	-- classtimer
 	TukuiL.option_classtimer = "Class Timer"

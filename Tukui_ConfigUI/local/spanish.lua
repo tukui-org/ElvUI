@@ -45,12 +45,6 @@
 	TukuiL.option_skin_recount = "Recount"
 	TukuiL.option_skin_skada = "Skada"
  
-	-- combat text
-	TukuiL.option_combattext = "Texto de combate"
-	TukuiL.option_combattext_showoverheal = "Mostrar sobresanación"
-	TukuiL.option_combattext_fontsize = "Tamaño de la fuente"
-	TukuiL.option_combattext_showhots = "Mostrar sanación en el tiempo"
- 
 	-- classtimer
 	TukuiL.option_classtimer = "Class Timer"
 	TukuiL.option_classtimer_enable = "Activar Classtimer"

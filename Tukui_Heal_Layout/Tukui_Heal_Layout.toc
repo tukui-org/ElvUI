@@ -6,12 +6,15 @@
 ## X-Category: UnitFrame
 ## RequiredDeps: Tukui
 ## OptionalDeps: Tukui_Dps_Layout
+## X-oUF: oUF
 
+libs\load_libs.xml
 templates.xml
+colors.lua
+functions.lua
 tags.lua
 layout.lua
-oUF_HTukz_Party.lua
-oUF_HTukz_Raid6_25.lua
-oUF_HTukz_Raid26_40.lua
-
-oUF_MoveElements.lua
+raid\party.lua
+raid\raid25.lua
+raid\raid2540.lua
+move_ele.lua

@@ -45,12 +45,6 @@ if GetLocale() == "frFR" then
 	TukuiL.option_skin_recount = "Recount"
 	TukuiL.option_skin_skada = "Skada"
  
-	-- combat text
-	TukuiL.option_combattext = "Textes de combats" --"Combat Text"
-	TukuiL.option_combattext_showoverheal = "Montrer les soins en trop" --"Show Overhealing"
-	TukuiL.option_combattext_fontsize = "Taille de la police" --"Font Size"
-	TukuiL.option_unitframes_combat = "Estomper les barres d'unités hors-combat" --"Show Hots"
- 
 	-- classtimer
 	TukuiL.option_classtimer = "Class Timer"
 	TukuiL.option_classtimer_enable = "Activer Class timer" --"Enable Classtimer"

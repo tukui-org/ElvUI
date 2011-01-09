@@ -46,12 +46,6 @@
 	TukuiL.option_skin_recount = "Recount"
 	TukuiL.option_skin_skada = "Skada"
 	TukuiL.option_hookdxeright = "強制將DXE設置於右邊對話框上方"
-	
-	-- combat text
-	TukuiL.option_combattext = "戰鬥文字"
-	TukuiL.option_combattext_showoverheal = "顯示過量治療"
-	TukuiL.option_combattext_fontsize = "字體大小"
-	TukuiL.option_combattext_showhots = "顯示HOTs"
 	 
 	-- classtimer
 	TukuiL.option_classtimer = "職業計時條"

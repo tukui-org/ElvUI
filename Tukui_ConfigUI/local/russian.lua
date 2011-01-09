@@ -46,12 +46,6 @@
 	TukuiL.option_skin_recount = "Recount"
 	TukuiL.option_skin_skada = "Skada"
 	TukuiL.option_hookdxeright = "Привязать панель DXE к верхней части правого окна чата"
-	
-	-- combat text
-	TukuiL.option_combattext = "Текст боя"
-	TukuiL.option_combattext_showoverheal = "Показывать переисцеление"
-	TukuiL.option_combattext_fontsize = "Размер шрифта"
-	TukuiL.option_combattext_showhots = "Показывать ХоТы"
 
 	-- classtimer
 	TukuiL.option_classtimer = "Class Timer"

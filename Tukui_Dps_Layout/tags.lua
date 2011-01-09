@@ -3,17 +3,6 @@ if not TukuiCF["unitframes"].enable == true and not TukuiCF["raidframes"].enable
 ------------------------------------------------------------------------
 --	Tags
 ------------------------------------------------------------------------
-
-local function ShortenValue(value)
-	if(value >= 1e6) then
-		return ('%.2fm'):format(value / 1e6):gsub('%.?0+([km])$', '%1')
-	elseif(value >= 1e4) then
-		return ('%.1fk'):format(value / 1e3):gsub('%.?0+([km])$', '%1')
-	else
-		return value
-	end
-end
-
 oUF.TagEvents['Tukui:threat'] = 'UNIT_THREAT_LIST_UPDATE'
 oUF.Tags['Tukui:threat'] = function(unit)
 	local tanking, status, percent = UnitDetailedThreatSituation('player', 'target')
@@ -29,11 +18,11 @@ oUF.Tags['Tukui:health'] = function(unit)
 	if(status) then
 		return status
 	elseif(unit == 'target' and UnitCanAttack('player', unit)) then
-		return ('%s (%d|cff0090ff%%|r)'):format(ShortenValue(min), min / max * 100)
+		return ('%s (%d|cff0090ff%%|r)'):format(TukuiDB.ShortenValue(min), min / max * 100)
 	elseif(unit == 'player' and min ~= max) then
 		return ('|cffff8080%d|r %d|cff0090ff%%|r'):format(min - max, min / max * 100)
 	elseif(min ~= max) then
-		return ('%s |cff0090ff/|r %s'):format(ShortenValue(min), ShortenValue(max))
+		return ('%s |cff0090ff/|r %s'):format(TukuiDB.ShortenValue(min), TukuiDB.ShortenValue(max))
 	else
 		return max
 	end

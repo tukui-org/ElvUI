@@ -1,0 +1,15 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/">	
+	<Script file="arenatrack.lua"/>
+	<Script file="autodez.lua"/>
+	<Script file="autorelease.lua"/>
+	<Script file="error.lua"/>
+	<Script file="invite.lua"/>
+	<Script file="merchant.lua"/>
+	<Script file="quests.lua"/>
+	<Script file="raidUtility.lua"/>
+	<Script file="raidBuffReminder.lua"/>
+	<Script file="reminder.lua"/>
+	<Script file="mirror.lua"/>
+	<Script file="raidmarker.lua"/>
+	<Script file="spam.lua"/>
+</Ui>

@@ -45,12 +45,6 @@
 	TukuiL.option_skin_recount = "Recount"
 	TukuiL.option_skin_skada = "Skada"
  
-	-- 전투메세지
-	TukuiL.option_combattext = "전투메세지"
-	TukuiL.option_combattext_showoverheal = "초과 치유량을 표시"
-	TukuiL.option_combattext_fontsize = "글꼴크기"
-	TukuiL.option_combattext_showhots = "Hots 표시"
- 
 	-- 클래스타이머
 	TukuiL.option_classtimer = "클래스타이머"
 	TukuiL.option_classtimer_enable = "클래스타이머를 사용"

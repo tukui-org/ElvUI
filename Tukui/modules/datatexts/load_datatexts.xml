@@ -1,0 +1,18 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">	
+	<Script file="position.lua"/>
+	<Script file="stat1.lua"/>
+	<Script file="stat2.lua"/>
+	<Script file="battleground.lua"/>
+	<Script file="durability.lua"/>
+	<Script file="system.lua"/>
+	<Script file="friend.lua"/>
+	<Script file="gold.lua"/>
+	<Script file="guild.lua"/>
+	<Script file="loc.lua"/>
+	<Script file="time.lua"/>
+	<Script file="bags.lua"/>
+	<Script file="dps.lua"/>
+	<Script file="hps.lua"/>
+	<Script file="haste.lua"/>
+	<Script file="currency.lua"/>
+</Ui>	

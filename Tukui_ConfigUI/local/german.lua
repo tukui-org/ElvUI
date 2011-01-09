@@ -46,12 +46,6 @@
 	TukuiL.option_skin_recount = "Recount"
 	TukuiL.option_skin_skada = "Skada"
 	TukuiL.option_hookdxeright = "Erzwingt die Position von DXEs oberem Leistenanker über dem rechten Chatfenster"
-	
-	-- combat text
-	TukuiL.option_combattext = "Kampftext"
-	TukuiL.option_combattext_showoverheal = "Zeige Überheilung"
-	TukuiL.option_combattext_fontsize = "Schriftgröße"
-	TukuiL.option_combattext_showhots = "Zeige Heilung über Zeit"
  
 	-- classtimer
 	TukuiL.option_classtimer = "Klassentimer"

@@ -5,12 +5,15 @@
 ## X-Email: tukz@tukui.org
 ## X-Category: UnitFrame
 ## RequiredDeps: Tukui
+## X-oUF: oUF
 
+libs\load_libs.xml
 templates.xml
+colors.lua
+functions.lua
 tags.lua
 layout.lua
-oUF_Tukz_Party.lua
-oUF_Tukz_Raid6_25.lua
-oUF_Tukz_Raid26_40.lua
-
-oUF_MoveElements.lua
+raid\party.lua
+raid\raid25.lua
+raid\raid2540.lua
+move_ele.lua
