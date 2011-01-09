@@ -839,6 +839,28 @@ local function Shared(self, unit)
 			self:HookScript("OnLeave", function(self) TukuiDB.Fader(self, false) end)
 		end
 		
+		-- alt power bar
+		local AltPowerBar = CreateFrame("StatusBar", nil, self.Health)
+		AltPowerBar:SetFrameLevel(self.Health:GetFrameLevel() + 1)
+		AltPowerBar:SetHeight(4)
+		AltPowerBar:SetStatusBarTexture(TukuiCF.media.normTex)
+		AltPowerBar:GetStatusBarTexture():SetHorizTile(false)
+		AltPowerBar:SetStatusBarColor(1, 0, 0)
+
+		AltPowerBar:SetPoint("LEFT")
+		AltPowerBar:SetPoint("RIGHT")
+		AltPowerBar:SetPoint("TOP", self.Health, "TOP")
+		
+		AltPowerBar:SetBackdrop({
+		  bgFile = TukuiCF["media"].blank, 
+		  edgeFile = TukuiCF["media"].blank, 
+		  tile = false, tileSize = 0, edgeSize = 1, 
+		  insets = { left = 0, right = 0, top = 0, bottom = TukuiDB.Scale(-1)}
+		})
+		AltPowerBar:SetBackdropColor(0, 0, 0)
+
+		self.AltPowerBar = AltPowerBar				
+		
 		-- update all frames when changing area, to fix exiting instance while in vehicle
 		self:RegisterEvent("ZONE_CHANGED_NEW_AREA", TukuiDB.updateAllElements)
 	end
@@ -1200,7 +1222,29 @@ local function Shared(self, unit)
 				otherBar = ohpb,
 				maxOverflow = 1,
 			}
-		end		
+		end	
+
+		-- alt power bar
+		local AltPowerBar = CreateFrame("StatusBar", nil, self.Health)
+		AltPowerBar:SetFrameLevel(self.Health:GetFrameLevel() + 1)
+		AltPowerBar:SetHeight(4)
+		AltPowerBar:SetStatusBarTexture(TukuiCF.media.normTex)
+		AltPowerBar:GetStatusBarTexture():SetHorizTile(false)
+		AltPowerBar:SetStatusBarColor(1, 0, 0)
+
+		AltPowerBar:SetPoint("LEFT")
+		AltPowerBar:SetPoint("RIGHT")
+		AltPowerBar:SetPoint("TOP", self.Health, "TOP")
+		
+		AltPowerBar:SetBackdrop({
+		  bgFile = TukuiCF["media"].blank, 
+		  edgeFile = TukuiCF["media"].blank, 
+		  tile = false, tileSize = 0, edgeSize = 1, 
+		  insets = { left = 0, right = 0, top = 0, bottom = TukuiDB.Scale(-1)}
+		})
+		AltPowerBar:SetBackdropColor(0, 0, 0)
+
+		self.AltPowerBar = AltPowerBar				
 		
 	end
 	
@@ -1484,7 +1528,7 @@ local function Shared(self, unit)
 	if (unit and unit:find("arena%d") and TukuiCF["arena"].unitframes == true) or (unit and unit:find("boss%d") and TukuiCF["raidframes"].showboss == true) then
 		local original_height = arenaboss_height
 		local original_width = arenaboss_width
-		
+
 		local arenapowerbar_offset
 		if powerbar_offset ~= 0 then
 			arenapowerbar_offset = powerbar_offset*(7/9)
@@ -1522,7 +1566,6 @@ local function Shared(self, unit)
 			health.Smooth = true
 		end
 		
-		-- Setup Colors
 		if db.classcolor ~= true then
 			health.colorTapping = false
 			health.colorClass = false
@@ -1532,7 +1575,7 @@ local function Shared(self, unit)
 			health.colorTapping = true	
 			health.colorClass = true
 			health.colorReaction = true		
-			health.bg.multiplier = 0.3				
+			healthBG.multiplier = 0.3
 		end
 		health.colorDisconnected = false
 		
@@ -1620,7 +1663,35 @@ local function Shared(self, unit)
 			power.value:SetPoint("BOTTOMLEFT", health, "BOTTOMLEFT", TukuiDB.Scale(2), TukuiDB.Scale(1))
 			power.value:SetJustifyH("RIGHT")
 			power.PreUpdate = TukuiDB.PreUpdatePower
-			power.PostUpdate = TukuiDB.PostUpdatePower		
+			power.PostUpdate = TukuiDB.PostUpdatePower
+
+			-- alt power bar
+			local AltPowerBar = CreateFrame("StatusBar", nil, self)
+			local apb_bg = CreateFrame("Frame", nil, AltPowerBar)
+			apb_bg:SetWidth(arenaboss_width + TukuiDB.Scale(-3))
+			apb_bg:SetHeight(arenaboss_height * 0.2)
+			apb_bg:SetPoint("BOTTOMLEFT", self, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(3))
+			TukuiDB.SetTemplate(apb_bg)
+			
+			AltPowerBar:SetFrameLevel(self.Health:GetFrameLevel() + 1)
+			apb_bg:SetFrameLevel(AltPowerBar:GetFrameLevel() - 1)
+			AltPowerBar:SetStatusBarTexture(TukuiCF.media.normTex)
+			AltPowerBar:GetStatusBarTexture():SetHorizTile(false)
+			AltPowerBar:SetStatusBarColor(1, 0, 0)
+		
+			AltPowerBar:SetPoint("TOPLEFT", apb_bg, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+			AltPowerBar:SetPoint("BOTTOMRIGHT", apb_bg, "BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
+			
+			AltPowerBar:SetBackdrop({
+			  bgFile = TukuiCF["media"].blank, 
+			  edgeFile = TukuiCF["media"].blank, 
+			  tile = false, tileSize = 0, edgeSize = 1, 
+			  insets = { left = 0, right = 0, top = 0, bottom = TukuiDB.Scale(-1)}
+			})
+			AltPowerBar:SetBackdropColor(0, 0, 0)
+			AltPowerBar:HookScript("OnShow", function(self) self:GetParent().FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(12)) end)
+			AltPowerBar:HookScript("OnHide", function(self) self:GetParent().FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4)) end)
+			self.AltPowerBar = AltPowerBar	
 		end
 		
 		-- names
@@ -1706,10 +1777,10 @@ local function Shared(self, unit)
 			if powerbar_offset ~= 0 then
 				castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -powerbar_offset + -TukuiDB.Scale(5))
 			else
-				castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -TukuiDB.Scale(8))
+				castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -TukuiDB.Scale(4))
 			end
 			
-			castbar:SetHeight(TukuiDB.Scale(18))
+			castbar:SetHeight(TukuiDB.Scale(16))
 			castbar:SetStatusBarTexture(normTex)
 			castbar:SetFrameLevel(6)
 			
@@ -1726,7 +1797,7 @@ local function Shared(self, unit)
 			castbar.CustomTimeText = TukuiDB.CustomCastTimeText
 
 			castbar.Text = TukuiDB.SetFontString(castbar, font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
-			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 1)
+			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 0)
 			castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 			
 			castbar.CustomDelayText = TukuiDB.CustomCastDelayText
@@ -1751,85 +1822,6 @@ local function Shared(self, unit)
 			self.Castbar.Icon = castbar.icon
 		end		
 	end
-
-	------------------------------------------------------------------------
-	--	Main tanks and Main Assists layout (both mirror'd)
-	------------------------------------------------------------------------
-	
-	if(self:GetParent():GetName():match"oUF_TukzMainTank" or self:GetParent():GetName():match"oUF_TukzMainAssist") then
-		-- Right-click focus on maintank or mainassist units
-		self:SetAttribute("type2", "focus")
-		
-		-- health 
-		local health = CreateFrame('StatusBar', nil, self)
-		health:SetAllPoints()
-		health:SetStatusBarTexture(normTex)
-		
-		local healthBG = health:CreateTexture(nil, 'BORDER')
-		healthBG:SetAllPoints()
-				
-		self.Health = health
-		self.Health.bg = healthBG
-		
-		health.frequentUpdates = true
-		if db.showsmooth == true then
-			health.Smooth = true
-		end
-		
-		-- Setup Colors
-		if db.classcolor ~= true then
-			health.colorTapping = false
-			health.colorClass = false
-			health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor))	
-			healthBG:SetTexture(unpack(TukuiCF["unitframes"].healthbackdropcolor))
-		else
-			health.colorTapping = true	
-			health.colorClass = true
-			health.colorReaction = true		
-			health.bg.multiplier = 0.3				
-		end
-		health.colorDisconnected = false
-		
-		-- Border for HealthBar
-		local FrameBorder = CreateFrame("Frame", nil, health)
-		FrameBorder:SetPoint("TOPLEFT", health, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-		FrameBorder:SetPoint("BOTTOMRIGHT", health, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
-		TukuiDB.SetTemplate(FrameBorder)
-		FrameBorder:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))
-		FrameBorder:SetFrameLevel(2)
-		self.FrameBorder = FrameBorder
-		TukuiDB.CreateShadow(self.FrameBorder)
-		self.FrameBorder.shadow:SetFrameLevel(0)
-		self.FrameBorder.shadow:SetFrameStrata("BACKGROUND")
-		
-		-- names
-		local Name = health:CreateFontString(nil, "OVERLAY")
-		Name:SetPoint("CENTER", health, "CENTER", 0, TukuiDB.Scale(1))
-		Name:SetJustifyH("CENTER")
-		Name:SetFont(font1, TukuiCF["unitframes"].fontsize, "OUTLINE")
-		Name:SetShadowColor(0, 0, 0)
-		Name:SetShadowOffset(1.25, -1.25)
-		
-		self:Tag(Name, '[Tukui:getnamecolor][Tukui:nameshort]')
-		self.Name = Name
-	end
-	
-	-- here we create an invisible frame for all element we want to show over health/power.
-	-- because we can only use self here, and self is under all elements.
-	if unit ~= "party" then
-		local InvFrame = CreateFrame("Frame", nil, self)
-		InvFrame:SetFrameStrata("MEDIUM")
-		InvFrame:SetFrameLevel(5)
-		InvFrame:SetAllPoints(self.Health)
-		
-		-- symbols, now put the symbol on the frame we created above.
-		local RaidIcon = InvFrame:CreateTexture(nil, "OVERLAY")
-		RaidIcon:SetTexture("Interface\\AddOns\\Tukui\\media\\textures\\raidicons.blp") 
-		RaidIcon:SetHeight(15)
-		RaidIcon:SetWidth(15)
-		RaidIcon:SetPoint("TOP", 0, 8)
-		self.RaidIcon = RaidIcon
-	end
 	
 	return self
 end
@@ -1846,39 +1838,39 @@ if TukuiCF["actionbar"].bottomrows == 1 then
 end
 
 -- Player
-local player = oUF:Spawn('player', "oUF_Tukz_player")
+local player = oUF:Spawn('player', "oUF_TukzHeal_player")
 player:SetPoint("BOTTOMRIGHT", TukuiActionBarBackground, "TOPLEFT", TukuiDB.Scale(-15),TukuiDB.Scale(205) + yoffset)
 player:SetSize(player_width, player_height)
 
 -- Target
-local target = oUF:Spawn('target', "oUF_Tukz_target")
+local target = oUF:Spawn('target', "oUF_TukzHeal_target")
 target:SetPoint("BOTTOMLEFT", TukuiActionBarBackground, "TOPRIGHT", TukuiDB.Scale(15),TukuiDB.Scale(205) + yoffset)
 target:SetSize(target_width, target_height)
 
 -- Focus
-local focus = oUF:Spawn('focus', "oUF_Tukz_focus")
+local focus = oUF:Spawn('focus', "oUF_TukzHeal_focus")
 if powerbar_offset ~= 0 then
-	focus:SetPoint("TOPLEFT", oUF_Tukz_target, "BOTTOMLEFT", TukuiDB.Scale(9),TukuiDB.Scale(-42))
+	focus:SetPoint("TOPLEFT", oUF_TukzHeal_target, "BOTTOMLEFT", TukuiDB.Scale(9),TukuiDB.Scale(-42))
 else
-	focus:SetPoint("TOPLEFT", oUF_Tukz_target, "BOTTOMLEFT", 0,TukuiDB.Scale(-42))
+	focus:SetPoint("TOPLEFT", oUF_TukzHeal_target, "BOTTOMLEFT", 0,TukuiDB.Scale(-42))
 end
 focus:SetSize(smallframe_width, smallframe_height)
 
 -- Target's Target
-local tot = oUF:Spawn('targettarget', "oUF_Tukz_targettarget")
-tot:SetPoint("TOPRIGHT", oUF_Tukz_target, "BOTTOMRIGHT", 0,TukuiDB.Scale(-42))
+local tot = oUF:Spawn('targettarget', "oUF_TukzHeal_targettarget")
+tot:SetPoint("TOPRIGHT", oUF_TukzHeal_target, "BOTTOMRIGHT", 0,TukuiDB.Scale(-42))
 tot:SetSize(smallframe_width, smallframe_height)
 
 -- Player's Pet
-local pet = oUF:Spawn('pet', "oUF_Tukz_pet")
-pet:SetPoint("TOPRIGHT", oUF_Tukz_player, "BOTTOMRIGHT", 0,TukuiDB.Scale(-42))
+local pet = oUF:Spawn('pet', "oUF_TukzHeal_pet")
+pet:SetPoint("TOPRIGHT", oUF_TukzHeal_player, "BOTTOMRIGHT", 0,TukuiDB.Scale(-42))
 pet:SetSize(smallframe_width, smallframe_height)
 pet:SetParent(player)
 
 -- Focus's target
 if db.showfocustarget == true then
-	local focustarget = oUF:Spawn('focustarget', "oUF_Tukz_focustarget")
-	focustarget:SetPoint("TOP", oUF_Tukz_focus, "BOTTOM", 0,TukuiDB.Scale(-32))
+	local focustarget = oUF:Spawn('focustarget', "oUF_TukzHeal_focustarget")
+	focustarget:SetPoint("TOP", oUF_TukzHeal_focus, "BOTTOM", 0,TukuiDB.Scale(-32))
 	focustarget:SetSize(smallframe_width, smallframe_height)
 end
 
@@ -1886,11 +1878,11 @@ end
 if TukuiCF.arena.unitframes then
 	local arena = {}
 	for i = 1, 5 do
-		arena[i] = oUF:Spawn("arena"..i, "oUF_TukzArena"..i)
+		arena[i] = oUF:Spawn("arena"..i, "oUF_TukzHealArena"..i)
 		if i == 1 then
 			arena[i]:SetPoint("BOTTOMLEFT", ChatRBackground2, "TOPLEFT", -80, 285)
 		else
-			arena[i]:SetPoint("BOTTOM", arena[i-1], "TOP", 0, 34)
+			arena[i]:SetPoint("BOTTOM", arena[i-1], "TOP", 0, 38)
 		end
 		arena[i]:SetSize(arenaboss_width, arenaboss_height)
 	end
@@ -1899,11 +1891,11 @@ end
 if TukuiCF.raidframes.showboss then
 	local boss = {}
 	for i = 1, MAX_BOSS_FRAMES do
-		boss[i] = oUF:Spawn("boss"..i, "oUF_TukzBoss"..i)
+		boss[i] = oUF:Spawn("boss"..i, "oUF_TukzHealBoss"..i)
 		if i == 1 then
 			boss[i]:SetPoint("BOTTOMLEFT", ChatRBackground2, "TOPLEFT", -80, 285)
 		else
-			boss[i]:SetPoint('BOTTOM', boss[i-1], 'TOP', 0, 34)             
+			boss[i]:SetPoint('BOTTOM', boss[i-1], 'TOP', 0, 38)             
 		end
 		boss[i]:SetSize(arenaboss_width, arenaboss_height)
 	end
@@ -1911,7 +1903,7 @@ end
 
 
 if TukuiCF["raidframes"].maintank == true then
-	local tank = oUF:SpawnHeader('oUF_TukzMainTank', nil, 'raid', 
+	local tank = oUF:SpawnHeader('oUF_TukzHealMainTank', nil, 'raid', 
 		'oUF-initialConfigFunction', ([[
 			self:SetWidth(%d)
 			self:SetHeight(%d)
@@ -1920,13 +1912,13 @@ if TukuiCF["raidframes"].maintank == true then
 		'groupFilter', 'MAINTANK', 
 		'yOffset', 7, 
 		'point' , 'BOTTOM',
-		'template', 'oUF_tukzMtt'
+		'template', 'oUF_TukzHealMtt'
 	)
 	tank:SetPoint("BOTTOM", ChatLBackground2, "TOP", -42, 450)
 end
 
 if TukuiCF["raidframes"].mainassist == true then
-	local assist = oUF:SpawnHeader("oUF_TukzMainAssist", nil, 'raid', 
+	local assist = oUF:SpawnHeader("oUF_TukzHealMainAssist", nil, 'raid', 
 		'oUF-initialConfigFunction', ([[
 			self:SetWidth(%d)
 			self:SetHeight(%d)
@@ -1935,10 +1927,10 @@ if TukuiCF["raidframes"].mainassist == true then
 		'groupFilter', 'MAINASSIST', 
 		'yOffset', 7, 
 		'point' , 'BOTTOM',
-		'template', 'oUF_tukzMtt'
+		'template', 'oUF_TukzHealMtt'
 	)
 	if TukuiCF["raidframes"].maintank == true then 
-		assist:SetPoint("TOPLEFT", oUF_TukzMainTank, "BOTTOMLEFT", 2, -50)
+		assist:SetPoint("TOPLEFT", oUF_TukzHealMainTank, "BOTTOMLEFT", 2, -50)
 	else
 		assist:SetPoint("BOTTOM", ChatLBackground2, "TOP", -42, 450)
 	end
@@ -1984,10 +1976,10 @@ do
 end
 
 --Move threatbar to targetframe
-if oUF_Tukz_player.ThreatBar then
+if oUF_TukzHeal_player.ThreatBar then
 	if powerbar_offset ~= 0 then
-		oUF_Tukz_player.ThreatBar:SetPoint("TOPLEFT", oUF_Tukz_target.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
+		oUF_TukzHeal_player.ThreatBar:SetPoint("TOPLEFT", oUF_TukzHeal_target.Health, "BOTTOMLEFT", 0, -powerbar_offset + -TukuiDB.Scale(5))
 	else
-		oUF_Tukz_player.ThreatBar:SetPoint("TOPRIGHT", oUF_Tukz_target.Health, "BOTTOMRIGHT", 0, -(oUF_Tukz_target.Health:GetHeight() * 0.35) + -TukuiDB.Scale(8))
+		oUF_TukzHeal_player.ThreatBar:SetPoint("TOPRIGHT", oUF_TukzHeal_target.Health, "BOTTOMRIGHT", 0, -(oUF_TukzHeal_target.Health:GetHeight() * 0.35) + -TukuiDB.Scale(8))
 	end
 end

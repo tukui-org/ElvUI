@@ -95,16 +95,16 @@ local function CreateFrameOverlay(parent, name)
 end
 
 do 
-	CreateFrameOverlay(oUF_TukzHeal_player.Castbar, "PlayerCastBar")
-	CreateFrameOverlay(oUF_TukzHeal_target.Castbar, "TargetCastBar")
-	CreateFrameOverlay(oUF_TukzHeal_focus.Castbar, "FocusCastBar")
-	CreateFrameOverlay(oUF_TukzHeal_target.CPoints, "ComboBar")
-	CreateFrameOverlay(oUF_TukzHeal_player.Buffs, "PlayerBuffs")
-	CreateFrameOverlay(oUF_TukzHeal_target.Buffs, "TargetBuffs")
-	CreateFrameOverlay(oUF_TukzHeal_player.Debuffs, "PlayerDebuffs")
-	CreateFrameOverlay(oUF_TukzHeal_target.Debuffs, "TargetDebuffs")
-	CreateFrameOverlay(oUF_TukzHeal_focus.Debuffs, "FocusDebuffs")
-	CreateFrameOverlay(oUF_TukzHeal_targettarget.Debuffs, "TargetTargetDebuffs")
+	CreateFrameOverlay(oUF_TukzHeal_player.Castbar, "HealPlayerCastBar")
+	CreateFrameOverlay(oUF_TukzHeal_target.Castbar, "HealTargetCastBar")
+	CreateFrameOverlay(oUF_TukzHeal_focus.Castbar, "HealFocusCastBar")
+	CreateFrameOverlay(oUF_TukzHeal_target.CPoints, "HealComboBar")
+	CreateFrameOverlay(oUF_TukzHeal_player.Buffs, "HealPlayerBuffs")
+	CreateFrameOverlay(oUF_TukzHeal_target.Buffs, "HealTargetBuffs")
+	CreateFrameOverlay(oUF_TukzHeal_player.Debuffs, "HealPlayerDebuffs")
+	CreateFrameOverlay(oUF_TukzHeal_target.Debuffs, "HealTargetDebuffs")
+	CreateFrameOverlay(oUF_TukzHeal_focus.Debuffs, "HealFocusDebuffs")
+	CreateFrameOverlay(oUF_TukzHeal_targettarget.Debuffs, "HealTargetTargetDebuffs")
 end
 
 StaticPopupDialogs["RELOAD"] = {

@@ -57,6 +57,15 @@ local function OnUnitFramesLoad(self, event, addon)
 	if not (addon == "Tukui_Dps_Layout" or addon == "Tukui_Heal_Layout") then return end
 		
 	self:UnregisterEvent("ADDON_LOADED")
+	local oUF_Tukz_player
+	local oUF_Tukz_target
+	if addon == "Tukui_Dps_Layout" then
+		oUF_Tukz_player = oUF_TukzDPS_player
+		oUF_Tukz_target = oUF_TukzDPS_target
+	else
+		oUF_Tukz_player = oUF_TukzHeal_player
+		oUF_Tukz_target = oUF_TukzHeal_target
+	end
 	
 	local CreateUnitAuraDataSource;
 	do

@@ -95,17 +95,17 @@ local function CreateFrameOverlay(parent, name)
 end
 
 do 
-	CreateFrameOverlay(oUF_Tukz_player.Castbar, "PlayerCastBar")
-	CreateFrameOverlay(oUF_Tukz_target.Castbar, "TargetCastBar")
-	CreateFrameOverlay(oUF_Tukz_focus.Castbar, "FocusCastBar")
-	CreateFrameOverlay(oUF_Tukz_target.CPoints, "ComboBar")
-	CreateFrameOverlay(oUF_Tukz_player.Buffs, "PlayerBuffs")
-	CreateFrameOverlay(oUF_Tukz_target.Buffs, "TargetBuffs")
-	CreateFrameOverlay(oUF_Tukz_player.Debuffs, "PlayerDebuffs")
-	CreateFrameOverlay(oUF_Tukz_target.Debuffs, "TargetDebuffs")
-	CreateFrameOverlay(oUF_Tukz_focus.Debuffs, "FocusDebuffs")
-	CreateFrameOverlay(oUF_Tukz_targettarget.Debuffs, "TargetTargetDebuffs")
-	CreateFrameOverlay(oUF_Tukz_player.Swing, "SwingBar")
+	CreateFrameOverlay(oUF_TukzDPS_player.Castbar, "DPSPlayerCastBar")
+	CreateFrameOverlay(oUF_TukzDPS_target.Castbar, "DPSTargetCastBar")
+	CreateFrameOverlay(oUF_TukzDPS_focus.Castbar, "DPSFocusCastBar")
+	CreateFrameOverlay(oUF_TukzDPS_target.CPoints, "DPSComboBar")
+	CreateFrameOverlay(oUF_TukzDPS_player.Buffs, "DPSPlayerBuffs")
+	CreateFrameOverlay(oUF_TukzDPS_target.Buffs, "DPSTargetBuffs")
+	CreateFrameOverlay(oUF_TukzDPS_player.Debuffs, "DPSPlayerDebuffs")
+	CreateFrameOverlay(oUF_TukzDPS_target.Debuffs, "DPSTargetDebuffs")
+	CreateFrameOverlay(oUF_TukzDPS_focus.Debuffs, "DPSFocusDebuffs")
+	CreateFrameOverlay(oUF_TukzDPS_targettarget.Debuffs, "DPSTargetTargetDebuffs")
+	CreateFrameOverlay(oUF_TukzDPS_player.Swing, "SwingBar")
 end
 
 StaticPopupDialogs["RELOAD"] = {
