@@ -13,6 +13,8 @@
 	(C)2010 Darth Android / Telroth - Black Dragonflight
 	File version v15.37
 ]]
+local TukuiDB = TukuiDB
+local TukuiCF = TukuiCF
 if not Mod_AddonSkins or not Skada or not TukuiCF["skin"].skada == true then return end
 local Skada = Skada
 

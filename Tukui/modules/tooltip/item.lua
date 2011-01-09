@@ -1,3 +1,6 @@
+local TukuiCF = TukuiCF
+
+
 if TukuiCF.tooltip.enable ~= true then return end
 
 GameTooltip:HookScript("OnTooltipCleared", function(self) self.TukuiItemTooltip=nil end)

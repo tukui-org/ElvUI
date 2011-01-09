@@ -1,4 +1,6 @@
 -- add quest level into Quest list frame.
+local TukuiCF = TukuiCF
+local TukuiDB = TukuiDB
 
 local function questlevel()
 	local buttons = QuestLogScrollFrame.buttons

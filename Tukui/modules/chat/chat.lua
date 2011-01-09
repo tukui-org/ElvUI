@@ -1,3 +1,6 @@
+local TukuiCF = TukuiCF
+local TukuiDB = TukuiDB
+
 if TukuiCF["chat"].enable ~= true then return end
 
 -----------------------------------------------------------------------

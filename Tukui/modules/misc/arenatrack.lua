@@ -1,3 +1,6 @@
+local TukuiCF = TukuiCF
+local TukuiDB = TukuiDB
+
 if TukuiCF["arena"].spelltracker ~= true then return end
 
 tCooldownTracker = CreateFrame("frame")

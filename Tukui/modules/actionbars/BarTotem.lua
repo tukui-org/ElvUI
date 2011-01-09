@@ -1,6 +1,9 @@
 -- we just use default totem bar for shaman
 -- we parent it to our shapeshift bar.
 -- This is approx the same script as it was in WOTLK Tukui version.
+local TukuiDB = TukuiDB
+local TukuiCF = TukuiCF
+
 if TukuiCF["actionbar"].enable ~= true then return end
 if TukuiDB.myclass ~= "SHAMAN" then return end
 

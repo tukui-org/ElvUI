@@ -1,3 +1,6 @@
+local TukuiDB = TukuiDB
+local TukuiCF = TukuiCF
+
 if not TukuiCF["raidframes"].enable == true then return end
 
 local raid_width

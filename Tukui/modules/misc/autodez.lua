@@ -3,6 +3,8 @@
 -- yes... you are right... i'm totally lazy
 -- auto-greed Frozen Orbs
 --------------------------------------------------------------------------
+local TukuiCF = TukuiCF
+local TukuiDB = TukuiDB
 
 if TukuiCF["loot"].autogreed == true then
 	local autogreed = CreateFrame("frame")

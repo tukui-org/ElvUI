@@ -1,5 +1,4 @@
 --Credit Baudzilla
-
 local ButtonIsDown
 local RaidMarkFrame = CreateFrame("Frame", nil, UIParent)
 RaidMarkFrame:EnableMouse(true)

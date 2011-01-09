@@ -1,4 +1,6 @@
 -- here we kill all shit stuff on default UI that we don't need!
+local TukuiDB = TukuiDB
+local TukuiCF = TukuiCF
 
 local k = TukuiDB.Kill
 

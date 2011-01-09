@@ -11,6 +11,8 @@
 	(C)2010 Darth Android / Telroth - Black Dragonflight
 ]]
 
+local TukuiDB = TukuiDB
+local TukuiCF = TukuiCF
 
 if not Mod_AddonSkins or not IsAddOnLoaded("Omen") or not TukuiCF["skin"].omen == true then return end
 

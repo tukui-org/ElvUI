@@ -1,3 +1,6 @@
+local TukuiDB = TukuiDB
+local TukuiCF = TukuiCF
+
 if not TukuiCF["raidframes"].enable == true or TukuiCF["raidframes"].gridonly == true then return end
 
 local font2 = TukuiCF["media"].uffont

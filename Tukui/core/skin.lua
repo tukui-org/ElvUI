@@ -1,6 +1,5 @@
--- NOTE: i'm not reskinning everything, too much thing to do and anyway, 80% of all frames are redone for Cataclysm
--- I don't want to loose my time reskinning all panels/frame, because in a couple of month we need to redo it. :x
--- thank to karudon for helping me reskinning some elements in default interface.
+local TukuiDB = TukuiDB
+local TukuiCF = TukuiCF
 
 local function SetModifiedBackdrop(self)
 	local color = RAID_CLASS_COLORS[TukuiDB.myclass]

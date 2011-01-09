@@ -5,6 +5,9 @@
 	
 	All credits of this bags script is by Stuffing and his author Hungtar.
 --]]
+local TukuiDB = TukuiDB
+local TukuiCF = TukuiCF
+local tukuilocal = tukuilocal
 
 if not TukuiCF["others"].enablebag == true then return end
 

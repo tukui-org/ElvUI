@@ -3,6 +3,8 @@
                 A featureless, 'pure' version of OmniCC.
                 This version should work on absolutely everything, but I've removed pretty much all of the options
 --]]
+local TukuiDB = TukuiDB
+local TukuiCF = TukuiCF
 
 local db = TukuiCF["cooldown"]
 if IsAddOnLoaded("OmniCC") or IsAddOnLoaded("ncCooldown") or db.enable ~= true then return end

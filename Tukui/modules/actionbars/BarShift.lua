@@ -1,4 +1,7 @@
 if (not TukuiCF["actionbar"].enable == true) then return end
+local TukuiDB = TukuiDB
+local TukuiCF = TukuiCF
+
 ---------------------------------------------------------------------------
 -- Setup Shapeshift Bar
 ---------------------------------------------------------------------------

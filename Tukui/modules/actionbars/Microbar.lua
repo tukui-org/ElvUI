@@ -1,3 +1,6 @@
+local TukuiDB = TukuiDB
+local TukuiCF = TukuiCF
+
 if TukuiCF["actionbar"].enable ~= true or TukuiCF["actionbar"].microbar ~= true then return end
 
 local microbuttons = {

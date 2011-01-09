@@ -6,7 +6,8 @@
 	File version v37.37
 	(C)2010 Darth Android / Telroth - Black Dragonflight
 ]]
-
+local TukuiDB = TukuiDB
+local TukuiCF = TukuiCF
 
 if not Mod_AddonSkins or not IsAddOnLoaded("DXE") or not TukuiCF["skin"].dxe == true then return end
 local DXE = DXE

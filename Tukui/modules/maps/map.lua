@@ -1,3 +1,6 @@
+local TukuiCF = TukuiCF
+local TukuiDB = TukuiDB
+
 if not TukuiCF["others"].enablemap == true then return end
 
 WORLDMAP_WINDOWED_SIZE = 0.65 --Slightly increase the size of blizzard small map

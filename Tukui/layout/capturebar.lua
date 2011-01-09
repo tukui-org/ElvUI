@@ -1,4 +1,5 @@
 -- reposition capture bar to top/center of the screen
+local TukuiDB = TukuiDB
 
 local function CaptureUpdate()
 	if NUM_EXTENDED_UI_FRAMES then

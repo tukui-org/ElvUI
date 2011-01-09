@@ -2,6 +2,8 @@
 		this is an edited version of teksloot
 		all credits of this mod goes to tekhub
 --]]
+local TukuiCF = TukuiCF
+local TukuiDB = TukuiDB
 
 if TukuiCF["loot"].rolllootframe ~= true then return end
 

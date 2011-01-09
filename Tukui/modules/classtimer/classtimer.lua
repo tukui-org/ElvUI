@@ -1,3 +1,6 @@
+local TukuiCF = TukuiCF
+local TukuiDB = TukuiDB
+
 if ( TukuiUF ~= true and ( TukuiDB == nil or TukuiCF["unitframes"] == nil or not TukuiCF["unitframes"]["enable"] ) ) then return end
 
 

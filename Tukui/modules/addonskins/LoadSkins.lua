@@ -4,6 +4,8 @@
 
 Mod_AddonSkins = CreateFrame("Frame")
 local Mod_AddonSkins = Mod_AddonSkins
+local TukuiDB = TukuiDB
+local TukuiCF = TukuiCF
 
 local tukskin = TukuiDB.SetTemplate
 local function skinFrame(self, frame)

@@ -1,3 +1,7 @@
+local TukuiCF = TukuiCF
+local TukuiDB = TukuiDB
+
+
 if TukuiCF["chat"].bubbles ~= true then return end
 local chatbubblehook = CreateFrame("Frame", nil, UIParent)
 local noscalemult = TukuiDB.mult * TukuiCF["general"].uiscale

@@ -1,3 +1,6 @@
+local TukuiCF = TukuiCF
+local TukuiDB = TukuiDB
+
 if TukuiCF["buffreminder"].enable ~= true then return end
 
 -- Spells that should be shown with an icon in the middle of the screen when not buffed in combat.

@@ -1,4 +1,7 @@
 --Raid Utility by Elv22
+local TukuiCF = TukuiCF
+local TukuiDB = TukuiDB
+
 if TukuiCF["raidframes"].disableblizz ~= true then return end
 TukuiDB.Kill(CompactRaidFrameManager) --Get rid of old module
 

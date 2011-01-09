@@ -11,6 +11,8 @@
 	(C)2010 Darth Android / Telroth - Black Dragonflight
 	File version v15.37
 ]]
+local TukuiDB = TukuiDB
+local TukuiCF = TukuiCF
 
 if not IsAddOnLoaded("Recount") or not Mod_AddonSkins or not TukuiCF["skin"].recount == true then return end
 local Recount = _G.Recount

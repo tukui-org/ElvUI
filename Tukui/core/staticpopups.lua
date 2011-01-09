@@ -1,6 +1,7 @@
 ------------------------------------------------------------------------
 --	Popups
 ------------------------------------------------------------------------
+local tukuilocal = tukuilocal
 
 StaticPopupDialogs["DISABLE_UI"] = {
 	text = tukuilocal.popup_disableui,

@@ -1,6 +1,8 @@
 --------------------------------------------------------------------------
 -- Auto-Release when dead in Wintergrasp or Battleground.
 --------------------------------------------------------------------------
+local TukuiCF = TukuiCF
+local TukuiDB = TukuiDB
 
 if TukuiCF["others"].pvpautorelease ~= true then return end
 

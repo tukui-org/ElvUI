@@ -1,3 +1,6 @@
+local TukuiDB = TukuiDB
+local TukuiCF = TukuiCF
+
 if not TukuiCF["actionbar"].enable == true then return end
 
 local _G = _G

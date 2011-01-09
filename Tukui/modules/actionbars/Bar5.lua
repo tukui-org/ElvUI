@@ -1,4 +1,6 @@
 if not TukuiCF["actionbar"].enable == true then return end
+local TukuiDB = TukuiDB
+local TukuiCF = TukuiCF
 
 ---------------------------------------------------------------------------
 -- setup MultiBarBottomRight as bar #5

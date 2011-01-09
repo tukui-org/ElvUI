@@ -3,6 +3,8 @@
 		Adds out of range coloring to action buttons
 		Derived from RedRange with negligable improvements to CPU usage
 --]]
+local TukuiDB = TukuiDB
+local TukuiCF = TukuiCF
 
 if not TukuiCF["actionbar"].enable == true then return end
 

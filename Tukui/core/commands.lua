@@ -79,3 +79,8 @@ function SlashCmdList.FARMMODE(msg, editbox)
 	TukuiMinimapStatsRight:SetWidth((Minimap:GetWidth() / 2) - 1)
 end
 SLASH_FARMMODE1 = '/farmmode'
+
+
+--	GM toggle command
+SLASH_GM1 = "/gm"
+SlashCmdList["GM"] = function() ToggleHelpFrame() end

@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------
 -- move vehicle indicator
 --------------------------------------------------------------------------
-
+local TukuiDB = TukuiDB
 hooksecurefunc(VehicleSeatIndicator,"SetPoint",function(_,_,parent) -- vehicle seat indicator
     if (parent == "MinimapCluster") or (parent == _G["MinimapCluster"]) then
 		VehicleSeatIndicator:ClearAllPoints()

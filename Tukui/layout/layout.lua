@@ -1,3 +1,7 @@
+local TukuiDB = TukuiDB
+local TukuiCF = TukuiCF
+local tukuilocal = tukuilocal
+
 -- BUTTON SIZES
 TukuiDB.buttonsize = TukuiDB.Scale(TukuiCF["actionbar"].buttonsize)
 TukuiDB.buttonspacing = TukuiDB.Scale(TukuiCF["actionbar"].buttonspacing)

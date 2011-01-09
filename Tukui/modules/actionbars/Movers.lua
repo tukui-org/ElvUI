@@ -1,6 +1,7 @@
 --Create interactable actionbars
 if not IsAddOnLoaded("Tukui_ConfigUI") or not TukuiCF["actionbar"].enable == true then return end
 local TukuiDB = TukuiDB
+local TukuiCF = TukuiCF
 
 
 local function Button_OnEnter(self)

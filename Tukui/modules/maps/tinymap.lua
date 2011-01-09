@@ -1,3 +1,5 @@
+local TukuiDB = TukuiDB
+
 -- BG TINY MAP (BG, mining, etc)
 local tinymap = CreateFrame("Frame", "TukuiTinyMapMover", UIParent)
 tinymap:SetPoint("CENTER")

@@ -1,3 +1,5 @@
+local TukuiDB = TukuiDB
+
 local function SpellName(id)
 	local name, _, _, _, _, _, _, _, _ = GetSpellInfo(id)
 	return name

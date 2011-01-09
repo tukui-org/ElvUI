@@ -1,6 +1,8 @@
 ------------------------------------------------------------------------
 -- prevent action bar users config errors
 ------------------------------------------------------------------------
+local TukuiDB = TukuiDB
+local TukuiCF = TukuiCF
 
 if TukuiCF["actionbar"].bottomrows == 0 or TukuiCF["actionbar"].bottomrows > 3 then
 	TukuiCF["actionbar"].bottomrows = 1

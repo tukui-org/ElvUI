@@ -1,3 +1,6 @@
+local TukuiCF = TukuiCF
+local TukuiDB = TukuiDB
+
 local db = TukuiCF["others"]
 
 local f = CreateFrame("Frame")

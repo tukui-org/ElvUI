@@ -1,3 +1,6 @@
+local TukuiCF = TukuiCF
+local TukuiDB = TukuiDB
+
 if TukuiCF["buffreminder"].raidbuffreminder ~= true then return end
 
 --Locals

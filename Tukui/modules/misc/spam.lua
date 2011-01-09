@@ -1,6 +1,8 @@
 -- This file is used for enGB or enUS client only.
 -- translate or do anything you want if you want to 
 -- use this feature on others clients.
+local TukuiCF = TukuiCF
+local TukuiDB = TukuiDB
 
 if TukuiDB.client ~= "enUS" and TukuiDB.client ~= "enGB" then return end
 

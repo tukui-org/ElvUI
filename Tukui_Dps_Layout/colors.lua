@@ -1,3 +1,6 @@
+local TukuiDB = TukuiDB
+local TukuiCF = TukuiCF
+
 if not TukuiCF["unitframes"].enable == true and not TukuiCF["raidframes"].enable == true and not TukuiCF["nameplate"].enable == true then return end
 ------------------------------------------------------------------------
 --	Colors

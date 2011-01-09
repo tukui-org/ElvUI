@@ -1,4 +1,6 @@
 -- credits : Aezay (TipTac) and Caellian for some parts of code.
+local TukuiCF = TukuiCF
+local TukuiDB = TukuiDB
 
 local db = TukuiCF["tooltip"]
 if not db.enable then return end

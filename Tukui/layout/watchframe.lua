@@ -1,5 +1,6 @@
 local TukuiWatchFrame = CreateFrame("Frame", "TukuiWatchFrame", UIParent)
-
+local TukuiCF = TukuiCF
+local TukuiDB = TukuiDB
 local wideFrame = GetCVar("watchFrameWidth")
 
 local function init()

@@ -2,7 +2,7 @@
 --	ActionBar Functions
 ------------------------------------------------------------------------
 local TukuiDB = TukuiDB
-
+local TukuiCF = TukuiCF
 -- styleButton function authors are Chiril & Karudon.
 function TukuiDB.StyleButton(b, checked) 
     local name = b:GetName()

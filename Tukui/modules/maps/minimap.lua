@@ -1,3 +1,6 @@
+local TukuiCF = TukuiCF
+local TukuiDB = TukuiDB
+
 --------------------------------------------------------------------
 -- MINIMAP ROUND TO SQUARE AND MINIMAP SETTING
 --------------------------------------------------------------------

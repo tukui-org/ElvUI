@@ -1,5 +1,6 @@
 --And so it begins..
 local TukuiDB = TukuiDB
+local TukuiCF = TukuiCF
 
 --Vars
 TukuiDB.dummy = function() return end

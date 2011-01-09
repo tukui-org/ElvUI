@@ -2,6 +2,8 @@
 --	UnitFrame Functions
 ------------------------------------------------------------------------
 local TukuiDB = TukuiDB
+local TukuiCF = TukuiCF
+local tukuilocal = tukuilocal
 
 TukuiDB.LoadUFFunctions = function(layout)
 	function TukuiDB.SpawnMenu(self)

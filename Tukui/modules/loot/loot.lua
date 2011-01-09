@@ -1,4 +1,6 @@
 -- credits : Haste
+local TukuiCF = TukuiCF
+local TukuiDB = TukuiDB
 
 if not TukuiCF["loot"].lootframe == true then return end
 
