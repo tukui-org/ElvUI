@@ -62,7 +62,7 @@ TukuiFonts:SetScript("OnEvent", function(self, event, addon)
 	SetFont(PVPInfoTextString,					NORMAL, 22, "THINOUTLINE")
 	SetFont(PVPArenaTextString,					NORMAL, 22, "THINOUTLINE")
 	SetFont(CombatTextFont,                     COMBAT, 100, "THINOUTLINE") -- number here just increase the font quality.
-	
+
 	hooksecurefunc("PlayerTitleFrame_UpdateTitles", FixTitleFont)
 	FixTitleFont()
 	
