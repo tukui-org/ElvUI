@@ -83,20 +83,8 @@ if TukuiCF["datatext"].wowtime and TukuiCF["datatext"].wowtime > 0 then
 				local min = format(hour>0 and "%02.f" or "%01.f", floor(wgtime/60 - (hour*60)))
 				local sec = format("%02.f", floor(wgtime - hour*3600 - min *60)) 
 				wgtime = (hour>0 and hour..":" or "")..min..":"..sec
-				SetMapByID(485)
-				for i = 1, GetNumMapLandmarks() do
-					local index = select(3, GetMapLandmarkInfo(i))
-					if index == 46 then
-						control = "|cFF69CCF0"..FACTION_ALLIANCE.."|r"
-					elseif index == 48 then
-						control = "|cFFC41F3B"..FACTION_HORDE.."|r"
-					end
-				end
-				SetMapToCurrentZone()
 			end
 			GameTooltip:AddDoubleLine(format(PVPBATTLEGROUND_WINTERGRASPTIMER_TOOLTIP, ""),wgtime)
-			GameTooltip:AddLine(" ")
-			GameTooltip:AddDoubleLine(tukuilocal.datatext_control, control)
 		elseif TukuiDB.level == 85 then
 			local _, localizedName, isActive, canQueue, startTime, canEnter = GetWorldPVPAreaInfo(2)
 			local control = QUEUE_TIME_UNAVAILABLE
@@ -110,20 +98,8 @@ if TukuiCF["datatext"].wowtime and TukuiCF["datatext"].wowtime > 0 then
 				local min = format(hour>0 and "%02.f" or "%01.f", floor(startTime/60 - (hour*60)))
 				local sec = format("%02.f", floor(startTime - hour*3600 - min *60)) 
 				startTime = (hour>0 and hour..":" or "")..min..":"..sec
-				SetMapByID(708)
-				for i = 1, GetNumMapLandmarks() do
-					local index = select(3, GetMapLandmarkInfo(i))
-					if index == 46 then
-						control = "|cFF69CCF0"..FACTION_ALLIANCE.."|r"
-					elseif index == 48 then
-						control = "|cFFC41F3B"..FACTION_HORDE.."|r"
-					end
-				end
-				SetMapToCurrentZone()
 			end
-			GameTooltip:AddDoubleLine(localizedName..":",startTime)
-			GameTooltip:AddLine(" ")
-			GameTooltip:AddDoubleLine(tukuilocal.datatext_control, control)		
+			GameTooltip:AddDoubleLine(localizedName..":",startTime)	
 		end
 
 		
