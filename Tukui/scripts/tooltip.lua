@@ -72,6 +72,29 @@ hooksecurefunc("GameTooltip_SetDefaultAnchor", function(self, parent)
 	self.default = 1
 end)
 
+local function SetRightTooltipPos(self)
+	self:ClearAllPoints()
+	if InCombatLockdown() and db.hidecombat == true and (TukuiCF["tooltip"].hidecombatraid == true and inInstance and (instanceType == "raid")) then
+		self:Hide()
+	elseif InCombatLockdown() and db.hidecombat == true and TukuiCF["tooltip"].hidecombatraid == false then
+		self:Hide()
+	else
+		if TukuiCF["others"].enablebag == true and StuffingFrameBags and StuffingFrameBags:IsShown() and xOffset == 0 and yOffset == 0 then
+			self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", -1, TukuiDB.Scale(18))	
+		else
+			if CheckAddOnShown() == true and xOffset == 0 and yOffset == 0 then
+				if TukuiCF["chat"].showbackdrop == true and TukuiDB.ChatRightShown == true then
+					self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", -1, TukuiDB.Scale(42))	
+				else
+					self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", -1, TukuiDB.Scale(18))		
+				end	
+			else
+				self:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -15+xOffset, TukuiDB.Scale(42+yOffset))	
+			end
+		end
+	end
+end
+
 GameTooltip:HookScript("OnUpdate",function(self, ...)
 	local inInstance, instanceType = IsInInstance()
 	if self:GetAnchorType() == "ANCHOR_CURSOR" then
@@ -88,26 +111,7 @@ GameTooltip:HookScript("OnUpdate",function(self, ...)
 		self:SetBackdropColor(unpack(TukuiCF.media.backdropfadecolor))
 		self:SetBackdropBorderColor(unpack(TukuiCF.media.bordercolor))
 	elseif self:GetAnchorType() == "ANCHOR_NONE" then
-		self:ClearAllPoints()
-		if InCombatLockdown() and db.hidecombat == true and (TukuiCF["tooltip"].hidecombatraid == true and inInstance and (instanceType == "raid")) then
-			self:Hide()
-		elseif InCombatLockdown() and db.hidecombat == true and TukuiCF["tooltip"].hidecombatraid == false then
-			self:Hide()
-		else
-			if TukuiCF["others"].enablebag == true and StuffingFrameBags and StuffingFrameBags:IsShown() and xOffset == 0 and yOffset == 0 then
-				self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", -1, TukuiDB.Scale(18))	
-			else
-				if CheckAddOnShown() == true and xOffset == 0 and yOffset == 0 then
-					if TukuiCF["chat"].showbackdrop == true and TukuiDB.ChatRightShown == true then
-						self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", -1, TukuiDB.Scale(42))	
-					else
-						self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", -1, TukuiDB.Scale(18))		
-					end	
-				else
-					self:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -15+xOffset, TukuiDB.Scale(42+yOffset))	
-				end
-			end
-		end
+		SetRightTooltipPos(self)
 	end
 end)
 
@@ -212,28 +216,7 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 	if (self:GetOwner() ~= UIParent and db.hideuf) then self:Hide() return end
 
 	if self:GetOwner() ~= UIParent and unit then
-		self:ClearAllPoints()
-		if InCombatLockdown() and db.hidecombat == true and (TukuiCF["tooltip"].hidecombatraid == true and inInstance and (instanceType == "raid")) then
-			self:Hide()
-			return
-		elseif InCombatLockdown() and db.hidecombat == true and TukuiCF["tooltip"].hidecombatraid == false then
-			self:Hide()
-			return
-		else
-			if TukuiCF["others"].enablebag == true and StuffingFrameBags and StuffingFrameBags:IsShown() and xOffset == 0 and yOffset == 0 then
-				self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", -1, TukuiDB.Scale(18))	
-			else
-				if CheckAddOnShown() == true and xOffset == 0 and yOffset == 0 then
-					if TukuiCF["chat"].showbackdrop == true and TukuiDB.ChatRightShown == true then
-						self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", -1, TukuiDB.Scale(42))	
-					else
-						self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", -1, TukuiDB.Scale(18))		
-					end
-				else
-					self:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -15+xOffset, TukuiDB.Scale(42+yOffset))	
-				end
-			end
-		end
+		SetRightTooltipPos(self)
 	end	
 	
 	-- A "mouseover" unit is better to have as we can then safely say the tip should no longer show when it becomes invalid.
@@ -244,7 +227,7 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 	local race = UnitRace(unit)
 	local class = UnitClass(unit)
 	local level = UnitLevel(unit)
-	local guild = GetGuildInfo(unit)
+	local guildName, guildRankName, guildRankIndex = GetGuildInfo(unit)
 	local name, realm = UnitName(unit)
 	local crtype = UnitCreatureType(unit)
 	local classif = UnitClassification(unit)
@@ -266,13 +249,11 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 		end
 
 		local offset = 2
-		if guild then
-			local guildName, guildRankName, guildRankIndex = GetGuildInfo(unit);
-			if guildRankName then
-			-- can't use setformated text because some assholes have % signs in their guild ranks
-				_G["GameTooltipTextLeft2"]:SetText("<|cff00ff10"..guildName.."|r> [|cff00ff10"..guildRankName.."|r]")
+		if guildName then
+			if UnitIsInMyGuild(unit) then
+				_G["GameTooltipTextLeft2"]:SetText("<"..valuecolor..guildName.."|r> ["..valuecolor..guildRankName.."|r]")
 			else
-				_G["GameTooltipTextLeft2"]:SetFormattedText("<|cff00ff10%s|r>", GetGuildInfo(unit))
+				_G["GameTooltipTextLeft2"]:SetText("<|cff00ff10"..guildName.."|r> [|cff00ff10"..guildRankName.."|r]")
 			end
 			offset = offset + 1
 		end
@@ -392,7 +373,6 @@ TukuiTooltip:SetScript("OnEvent", function(self)
 	TukuiDB.SetTemplate(DropDownList1Backdrop)
 	DropDownList1Backdrop:SetBackdropColor(unpack(TukuiCF.media.backdropfadecolor))
 	TukuiDB.SetTemplate(DropDownList2Backdrop)
-	DropDownList2Backdrop:SetBackdropColor(unpack(TukuiCF.media.backdropfadecolor))
 	
 	BNToastFrame:HookScript("OnShow", function(self)
 		self:ClearAllPoints()
