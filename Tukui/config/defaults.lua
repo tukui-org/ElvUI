@@ -34,7 +34,6 @@ TukuiCF["general"] = {
 	["uiscale"] = 0.78,                    -- set your value (between 0.64 and 1) of your uiscale if autoscale is off
 	["multisampleprotect"] = true,         -- i don't recommend this because of shitty border but, voila!
 	["classcolortheme"] = false,			--class colored theme for panels
-	["autocustomlagtolerance"] = true,		--set custom lag tollerance to your latency
 	["fontscale"] = 12,					--Master font
 }
 
