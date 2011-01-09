@@ -6,8 +6,8 @@
 	TukuiL.option_general_customuiscale = "Escala de la interfaz (si la escala automática está desactivada)"
 	TukuiL.option_general_embedright = "Addon que se ajustará en el panel de chat derecho (Recount, Omen, Skada)"
 	TukuiL.option_general_classtheme = "Colorear los bordes del color de tu clase"
-	TukuiL.option_general_autocustomlagtolerance = "Automatically update the Blizzard Custom Lag Tolerance option to your latency."
-	 
+	TukuiL.option_general_autocustomlagtolerance = "Actualizar automaticamente la Tolerancia de Latencia de Blizzard segun tu Latencia."
+
 	--Media
 	TukuiL.option_media = "Medios"
 	TukuiL.option_media_font = "Ruta de la fuente que será usada como fuente principal"
@@ -27,24 +27,31 @@
 	TukuiL.option_media_whisper = "Archivos de sonido que se usará al recibir un susurro"
 	TukuiL.option_media_warning = "Sonido de alerta"
 	TukuiL.option_media_glossy = "Textura del brillo de las barras"
- 
+
 	-- nameplate
 	TukuiL.option_nameplates = "Placas de nombre"
 	TukuiL.option_nameplates_enable = "Activar placas de nombre"
 	TukuiL.option_nameplates_enhancethreat = "Activar visor de amenaza, cambia automáticamente según tu rol: \n Tanque - Verde (aggro) Rojo (noaggro) DPS - Verde (noaggro) Rojo (aggro)"
 	TukuiL.option_nameplates_showhealth = "Mostrar vida en las placas de nombre"
  	TukuiL.option_nameplates_combat = "Mostrar las chapas de nombre de los enemigos sólo en combate"
-	TukuiL.option_nameplates_goodcolor = "Good threat color, varies depending if your a tank or dps/heal"
-	TukuiL.option_nameplates_badcolor = "Bad threat color, varies depending if your a tank or dps/heal"
-	TukuiL.option_nameplates_transitioncolor = "Losing/Gaining threat color"
-	
+	TukuiL.option_nameplates_goodcolor = "Color de buena amenaza, dependiendo si eres Tanque, DPS o Healer."
+	TukuiL.option_nameplates_badcolor = "Color de mala amenaza, dependiendo si eres Tanque, DPS o Healer."
+	TukuiL.option_nameplates_transitioncolor = "Color de Perdida o Ganancia de Amenaza"
+
 	-- addon skins
-	TukuiL.option_skin = "Pieles de addons"
+	TukuiL.option_skin = "Addons"
 	TukuiL.option_skin_dxe = "Deus Vox Encounters"
 	TukuiL.option_skin_omen = "Omen"
 	TukuiL.option_skin_recount = "Recount"
 	TukuiL.option_skin_skada = "Skada"
- 
+	TukuiL.option_hookdxeright = "Forzar a DEX que la barra sea posicionada arriba a la derecha del marco de chat"
+
+	-- combat text
+	TukuiL.option_combattext = "Texto de combate"
+	TukuiL.option_combattext_showoverheal = "Mostrar sobresanación"
+	TukuiL.option_combattext_fontsize = "Tamaño de la fuente"
+	TukuiL.option_combattext_showhots = "Mostrar sanación en el tiempo"
+
 	-- classtimer
 	TukuiL.option_classtimer = "Class Timer"
 	TukuiL.option_classtimer_enable = "Activar Classtimer"
@@ -58,7 +65,7 @@
 	TukuiL.option_classtimer_debuffcolor = "Color de la barra de perjuicios"
 	TukuiL.option_classtimer_buffcolor = "Color de la barra de beneficios"
 	TukuiL.option_classtimer_proccolor = "Color de la barra de abalorios/proc"
- 
+
 	-- datatext
 	TukuiL.option_datatext = "Textos de datos"
 	TukuiL.option_datatext_24h = "Activar tiempo en 24h"
@@ -77,7 +84,7 @@
 	TukuiL.option_datatext_stat2 = "Posición de la estadística 2"
 	TukuiL.option_datatext_dps = "Posicion de Daño por segundo"
 	TukuiL.option_datatext_hps = "Posicion de Curas por Segundo"
-	
+
 	-- auras
 	TukuiL.option_auras = "Auras"
 	TukuiL.option_auras_minimapauras = "Auras al lado del minimapa"
@@ -91,7 +98,9 @@
 	TukuiL.option_auras_playershowonlydebuffs = "Mostras perjuicios en el marco de jugador únicamente (requiere activar mostrar auras)"
 	TukuiL.option_auras_playerdebuffsonly = "Mostras solamente tus perjuicios/CCs en el objetivo \n (auraFilter.lua para configurar)"
 	TukuiL.option_auras_RaidUnitBuffWatch = "Activar visor de beneficios en los marcos de banda"
- 
+	TukuiL.option_auras_playtarbuffperrow = "Cantidad de Perjucios y Beneficios en una linea del marco de Jugador/Objetivo"
+	TukuiL.option_auras_smallbuffperrow = "Cantidad de Perjucios y Beneficios en una linea del marco de Objetivo de Objetivo y Foco"
+	TukuiL.option_auras_buffindicatorsize = "Tamaño del icono del Indicador de Beneficios en el marco de Banda o Grups"
 	-- raidframes
 	TukuiL.option_raidframes = "Marcos de banda"
 	TukuiL.option_raidframes_enable = "Activar marcos de banda"
@@ -108,8 +117,9 @@
 	TukuiL.option_raidframes_fontsize = "Tamaño de la fuenta en los marcos de banda"
 	TukuiL.option_raidframes_scale = "Escala de los marcos de banda (en decimales ej: 0.96)"
 	TukuiL.option_raidframes_disableblizz = "Desactivar los marcos de banda/grupo por defecto de Blizzard"
- 	TukuiL.option_raidframes_griddps = "Display the DPS Layout in grid layout instead of a vertical layout (Not Party)"
-	
+ 	TukuiL.option_raidframes_griddps = "Muestra el diseño de DPS en diseño de celdas en vez de el diseño de barras vertical (Solo en Banda).."
+	TukuiL.option_raidframes_partytarget = "Muestra los Objetivos de los Miembros del Grupo (Solo DPS)"
+
 	-- castbar
 	TukuiL.option_castbar = "Barra de lanzamiento"
 	TukuiL.option_castbar_nointerruptcolor = "Color de la barra de lanzamiento si no se puede interrumpir"
@@ -119,7 +129,7 @@
 	TukuiL.option_castbar_icon = "Mostrar iconos en la barra de lanzamiento"
 	TukuiL.option_castbar_castermode = "Activar una barra de lanzamiento mayor (recomendada para casters)"
 	TukuiL.option_castbar_classcolor = "Colorear la barra de lanzamiento según el color de clase"
- 
+
 	-- unit frames
 	TukuiL.option_unitframes_unitframes = "Marcos de unidad"
 	TukuiL.option_unitframes_healthcolor = "Color de las barras de vida"
@@ -145,26 +155,27 @@
 	TukuiL.option_unitframes_unitframes_poweroffset = "Compensación de la barra de poder dentro del marco de unidad (0 para no usar compensación)"
 	TukuiL.option_unitframes_classbar = "Activar la barra de clase (Totems, Runas, poder sagrado, almas, Eclipse)"
 	TukuiL.option_unitframes_healthbackdropcolor = "Color de fondo de la barra de vida para todas las unidades"
-	TukuiL.option_unitframes_healthcolorbyvalue = "Color Healthbars by Health Remaining"
-	TukuiL.option_unitframes_combat = "Fade unitframes while not in-combat"
-			
+	TukuiL.option_unitframes_healthcolorbyvalue = "Colorear las Barras de Vida por la cantidad que queda de vida."
+	TukuiL.option_unitframes_combat = "Ocultar Marcos de Unidad mientras no estás en combate."
+	TukuiL.option_unitframes_pettarget = "Mostrar el Objetivo de la Mascota (Solo DPS)"
+
 	 -- frame sizes
 	TukuiL.option_framesizes = "Tamaño de los marcos de unidad"
-	TukuiL.option_framesizes_playtarwidth = "Width of the Player/Target frames"
-	TukuiL.option_framesizes_playtarheight = "Height of the Player/Target frames"
-	TukuiL.option_framesizes_smallwidth = "Width of the TargetTarget/Focus/FocusTarget/PlayersPet frames"
-	TukuiL.option_framesizes_smallheight = "Height of the TargetTarget/Focus/FocusTarget/PlayersPet frames"
-	TukuiL.option_framesizes_arenabosswidth = "Width of the Arena/Boss frames"
-	TukuiL.option_framesizes_arenabossheight = "Height of the Arena/Boss frames"
-	TukuiL.option_framesizes_assisttankwidth = "Width of the MainTank/MainAssist frames"
-	TukuiL.option_framesizes_assisttankheight = "Height of the MainTank/MainAssist frames"
+	TukuiL.option_framesizes_playtarwidth = "Ancho del marco de Jugador/Objetivo"
+	TukuiL.option_framesizes_playtarheight = "Alto del marco de Jugador/Objetivo"
+	TukuiL.option_framesizes_smallwidth = "Ancho del marco de Objetivo del Objetivo/Foco/Objetivo del Foco/Mascota"
+	TukuiL.option_framesizes_smallheight = "Alto del marco de Objetivo del Objetivo/Foco/Objetivo del Foco/Mascota"
+	TukuiL.option_framesizes_arenabosswidth = "Ancho del marco de Arena/Jefes"
+	TukuiL.option_framesizes_arenabossheight = "Alto del marco de Arena/Jefes"
+	TukuiL.option_framesizes_assisttankwidth = "Ancho del marco de Tanque Principal/Asistente"
+	TukuiL.option_framesizes_assisttankheight = "Alto del marco de Tanque Principal/Asistente"
 
 	-- loot
-	TukuiL.option_loot = "Loot"
-	TukuiL.option_loot_enableloot = "Enable loot window"
-	TukuiL.option_loot_autogreed = "Enable auto-greed for green item at max level"
-	TukuiL.option_loot_enableroll = "Enable item roll window"
- 
+	TukuiL.option_loot = "Despojar"
+	TukuiL.option_loot_enableloot = "Enable loot window Habilitar la ventana de Despojar."
+	TukuiL.option_loot_autogreed = "Habilitar la Auto-Codicia para objetos verdes con mas Ilvl"
+	TukuiL.option_loot_enableroll = "Habilitar la ventana de Tirar Dados."
+
 	-- tooltip
 	TukuiL.option_tooltip = "Botín"
 	TukuiL.option_tooltip_enable = "Activar tooltip"
@@ -176,8 +187,8 @@
 	TukuiL.option_tooltip_colorreaction = "Colorear el borde y la barra de vida del tooltip según la reacción"
 	TukuiL.option_tooltip_xOfs = "Compensación en el eje X del tooltip (-x = Izquierda, +x = Derecha)"
 	TukuiL.option_tooltip_yOfs = "Compensación en el eje Ydel tooltip (-y = Izquierda, +y = Arriba)"
-	TukuiL.option_tooltip_itemid = "Display Item ID"
-	
+	TukuiL.option_tooltip_itemid = "Mostrar ID de Objeto"
+
 	-- others
 	TukuiL.option_others = "Otros"
 	TukuiL.option_others_bg = "Activar la liberación automática del cadáver en los campos de batalla"
@@ -188,13 +199,13 @@
 	TukuiL.option_others_errorhide = "Ocultar los errores (textos en rojo) que aparecen en mitad de la pantalla"
 	TukuiL.option_others_spincam = "Girar la cámara cuando se está AUS"
 	TukuiL.option_others_bagenable = "Unir todas las bolsas del inventario en una"
- 
+
 	-- reminder
 	TukuiL.option_reminder = "Advertencia de auras"
 	TukuiL.option_reminder_enable = "Activar las advertencias de auras para el jugador"
 	TukuiL.option_reminder_sound = "Activar el sonido de alerta"
 	TukuiL.option_reminder_RaidBuffReminder = "Activar la barra de recordatorio de auras (frascos, comidas...) debajo del minimapa"
- 
+
 	-- action bar
 	TukuiL.option_actionbar = "Barras de acción"
 	TukuiL.option_actionbar_hidess = "Ocultar la barra de cambio de forma y/o barra de tótems"
@@ -212,13 +223,16 @@
 	TukuiL.option_actionbar_buttonspacing = "Espacio entre los botones de la barra principal"
 	TukuiL.option_actionbar_petbuttonsize = "Tamaño de los botones de la barra de mascota/estancia"
 	TukuiL.option_actionbar_petbuttonspacing = "Espacio entre los botones de la barra de mascota/estancia"
-	TukuiL.option_actionbar_swaptopbottombar = "Swap the top and bottom actionbar positions"
-	
+	TukuiL.option_actionbar_swaptopbottombar = "Intercambia la Barra de Acciones de Lugar."
+	TukuiL.option_actionbar_macrotext = "Muestra el Marco de texto de las Barras de Acción"
+	TukuiL.option_actionbar_verticalstance = "Barras de estancias en Vertical"
+	TukuiL.option_actionbar_microbar = "Mostrar Microbarra (Menú)"
+	TukuiL.option_actionbar_mousemicro = "Mostrar Microbarra al pasar el Ratón"
 	-- arena
 	TukuiL.option_arena = "Arena"
 	TukuiL.option_arena_st = "Activar seguimiento de hechizos del enemigo en arenas"
 	TukuiL.option_arena_uf = "Activar los marcos de arena"
- 
+
 	-- cooldowns
 	TukuiL.option_cooldown = "Cooldowns"
 	TukuiL.option_cooldown_enable = "Activar el tiempo de enfriamiento en los botones"
@@ -228,7 +242,7 @@
 	TukuiL.option_cooldown_minutescolor = "Color de los minutos"
 	TukuiL.option_cooldown_hourscolor = "Color de las horas"
 	TukuiL.option_cooldown_dayscolor = "Color de los días"
- 
+
 	-- chat
 	TukuiL.option_chat = "Chat"
 	TukuiL.option_chat_bubbles = "Burbujas de chat skineadas (encima de las cabezas)"
@@ -239,7 +253,9 @@
 	TukuiL_option_chat_chatheight = "Altura del chat"
 	TukuiL_option_chat_fadeoutofuse = "Ocultar chat cuando no está en uso"
 	TukuiL_option_chat_sticky = "Fijar algunas pestañas del chat cuando se edita"
- 
+	TukuiL_option_chat_combathide = "Deslizar el Chat fuera en cambate ('Left', 'Right', 'Both', or 'NONE')"
+	TukuiL_option_chat_rightchat = "Mostrar ventana derecha del Chat."
+
 	-- buttons
 	TukuiL.option_button_reset = "Reiniciar interfaz"
 	TukuiL.option_button_load = "Aplicar cambios"
