@@ -2,7 +2,6 @@ local parent, ns = ...
 local oUF = ns.oUF
 local Private = oUF.Private
 
-local dummy = Private.dummy
 local enableTargetUpdate = Private.enableTargetUpdate
 
 local HandleFrame = function(baseName)
@@ -15,7 +14,7 @@ local HandleFrame = function(baseName)
 
 	if(frame) then
 		frame:UnregisterAllEvents()
-		frame.Show = dummy
+		frame.Show = frame.Hide
 		frame:Hide()
 
 		local health = frame.healthbar

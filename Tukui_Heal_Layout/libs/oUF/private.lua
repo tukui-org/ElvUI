@@ -1,9 +1,6 @@
 local parent, ns = ...
 local Private = ns.oUF.Private
 
-function Private.dumy()
-end
-
 function Private.argcheck(value, num, ...)
 	assert(type(num) == 'number', "Bad argument #2 to 'argcheck' (number expected, got "..type(num)..")")
 

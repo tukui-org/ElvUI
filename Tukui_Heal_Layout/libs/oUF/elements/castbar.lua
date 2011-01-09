@@ -6,7 +6,6 @@
 local parent, ns = ...
 local oUF = ns.oUF
 
-local noop = function() end
 local UnitName = UnitName
 local GetTime = GetTime
 local UnitCastingInfo = UnitCastingInfo
@@ -381,11 +380,11 @@ local Enable = function(object, unit)
 
 		if(object.unit == "player") then
 			CastingBarFrame:UnregisterAllEvents()
-			CastingBarFrame.Show = noop
+			CastingBarFrame.Show = CastingBarFrame.Hide
 			CastingBarFrame:Hide()
 		elseif(object.unit == 'pet') then
 			PetCastingBarFrame:UnregisterAllEvents()
-			PetCastingBarFrame.Show = noop
+			PetCastingBarFrame.Show = PetCastingBarFrame.Hide
 			PetCastingBarFrame:Hide()
 		end
 
