@@ -96,6 +96,7 @@ local function UpdateThreat(frame, elapsed)
 	frame.healthbarbackdrop_tex:SetWidth(hpWidth + noscalemult*6)
 	frame.healthbarbackdrop_tex:SetHeight(hpHeight + noscalemult*6)
 	frame.healthbarbackdrop_tex:SetTexture(0.1, 0.1, 0.1, 1)
+	frame.healthbarbackdrop_tex:SetParent(frame.hp)
 	
 	if TukuiCF["nameplate"].enhancethreat ~= true then
 		if(frame.region:IsShown()) then
