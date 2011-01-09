@@ -840,15 +840,15 @@ TukuiDB.PostUpdateHealth = function(health, unit, min, max)
 				elseif (unit and unit:find("arena%d")) then
 					health.value:SetText("|cff559655"..TukuiDB.ShortValue(min).."|r")
 				else
-					health.value:SetFormattedText("|cffAF5050%d|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", min, r * 255, g * 255, b * 255, floor(min / max * 100))
+					health.value:SetFormattedText("|cffAF5050%d|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", TukuiDB.ShortValue(min), r * 255, g * 255, b * 255, floor(min / max * 100))
 				end
 			else
 				if unit == "player" and health:GetAttribute("normalUnit") ~= "pet" then
-					health.value:SetText("|cff559655"..max.."|r")
+					health.value:SetText("|cff559655"..TukuiDB.ShortValue(max).."|r")
 				elseif unit == "target" or unit == "focus" or (unit and unit:find("arena%d")) then
 					health.value:SetText("|cff559655"..TukuiDB.ShortValue(max).."|r")
 				else
-					health.value:SetText("|cff559655"..max.."|r")
+					health.value:SetText("|cff559655"..TukuiDB.ShortValue(max).."|r")
 				end
 			end
 		end
@@ -948,7 +948,7 @@ TukuiDB.PostUpdatePower = function(power, unit, min, max)
 						if TukuiCF["unitframes"].showtotalhpmp == true then
 							power.value:SetFormattedText("%s |cffD7BEA5|||r %s", TukuiDB.ShortValue(max - (max - min)), TukuiDB.ShortValue(max))
 						else
-							power.value:SetFormattedText("%d%% |cffD7BEA5-|r %d", floor(min / max * 100), max - (max - min))
+							power.value:SetFormattedText("%d%% |cffD7BEA5-|r %s", floor(min / max * 100), TukuiDB.ShortValue(max - (max - min)))
 						end
 					end
 				else
@@ -958,7 +958,7 @@ TukuiDB.PostUpdatePower = function(power, unit, min, max)
 				if unit == "pet" or unit == "target" or (unit and unit:find("arena%d")) then
 					power.value:SetText(TukuiDB.ShortValue(min))
 				else
-					power.value:SetText(min)
+					power.value:SetText(TukuiDB.ShortValue(min))
 				end
 			end
 		end
