@@ -229,11 +229,7 @@ local function SetupChatPosAndFont(self)
 		chat:SetFrameStrata("LOW")
 		
 		-- well... tukui font under fontsize 10 is unreadable.
-		if fontSize < 10 then		
-			FCF_SetChatWindowFontSize(nil, chat, 10)
-		else
-			FCF_SetChatWindowFontSize(nil, chat, fontSize)
-		end
+		FCF_SetChatWindowFontSize(nil, chat, fontSize)
 		
 		
 		-- force chat position on #1 and #3, needed if we change ui scale or resolution
