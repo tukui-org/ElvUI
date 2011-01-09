@@ -13,22 +13,36 @@ local function SetOriginalBackdrop(self)
 end
 
 local function SkinButton(f)
-	f:SetNormalTexture("")
-	f:SetHighlightTexture("")
-	f:SetPushedTexture("")
-	f:SetDisabledTexture("")
+	if f:GetName() then
+		local l = _G[f:GetName().."Left"]
+		local m = _G[f:GetName().."Middle"]
+		local r = _G[f:GetName().."Right"]
+		
+		
+		if l then l:SetAlpha(0) end
+		if m then m:SetAlpha(0) end
+		if r then r:SetAlpha(0) end
+	end
+	
+	if f.SetNormalTexture then
+		f:SetNormalTexture("")
+	end
+	
+	if f.SetHighlightTexture then
+		f:SetHighlightTexture("")
+	end
+	
+	if f.SetPushedTexture then
+		f:SetPushedTexture("")
+	end
+	
+	if f.SetDisabledTexture then
+		f:SetDisabledTexture("")
+	end
 	TukuiDB.SetNormTexTemplate(f)
+	
 	f:HookScript("OnEnter", SetModifiedBackdrop)
 	f:HookScript("OnLeave", SetOriginalBackdrop)
-end
-
-local function SkinTexturedButton(f)
-	SkinButton(f)
-	
-	local f = f:GetName()
-	_G[f.."Left"]:SetAlpha(0)
-	_G[f.."Middle"]:SetAlpha(0)
-	_G[f.."Right"]:SetAlpha(0)
 end
 
 local TukuiSkin = CreateFrame("Frame")
@@ -60,6 +74,14 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"ReadyCheckFrame",
 		}
 		
+		for i = 1, getn(skins) do
+			TukuiDB.SetNormTexTemplate(_G[skins[i]])
+			if _G[skins[i]] ~= _G["GhostFrameContentsFrame"] or _G[skins[i]] ~= _G["AutoCompleteBox"] then -- frame to blacklist from create shadow function
+				TukuiDB.CreateShadow(_G[skins[i]])
+			end
+			_G[skins[i]]:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor))
+		end
+		
 		local ChatMenus = {
 			"ChatMenu",
 			"EmoteMenu",
@@ -74,20 +96,12 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 				_G[ChatMenus[i]]:HookScript("OnShow", function(self) TukuiDB.SetNormTexTemplate(self) self:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor)) end)
 			end
 		end
-
+		
 		-- reskin popup buttons
 		for i = 1, 2 do
 			for j = 1, 3 do
 				SkinButton(_G["StaticPopup"..i.."Button"..j])
 			end
-		end
-		
-		for i = 1, getn(skins) do
-			TukuiDB.SetNormTexTemplate(_G[skins[i]])
-			if _G[skins[i]] ~= _G["GhostFrameContentsFrame"] or _G[skins[i]] ~= _G["AutoCompleteBox"] then -- frame to blacklist from create shadow function
-				TukuiDB.CreateShadow(_G[skins[i]])
-			end
-			_G[skins[i]]:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor))
 		end
 		
 		-- reskin all esc/menu buttons
@@ -109,9 +123,6 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			local TukuiMenuButtons = _G["GameMenuButton"..BlizzardMenuButtons[i]]
 			if TukuiMenuButtons then
 				SkinButton(TukuiMenuButtons)
-				_G["GameMenuButton"..BlizzardMenuButtons[i].."Left"]:SetAlpha(0)
-				_G["GameMenuButton"..BlizzardMenuButtons[i].."Middle"]:SetAlpha(0)
-				_G["GameMenuButton"..BlizzardMenuButtons[i].."Right"]:SetAlpha(0)
 			end
 		end
 		
@@ -120,23 +131,27 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		end
 		
 		-- skin return to graveyard button
-		SkinButton(GhostFrame)
-		TukuiDB.SetNormTexTemplate(GhostFrameContentsFrame)
-		GhostFrame:SetNormalTexture("")
-		GhostFrame:SetHighlightTexture("")
-		GhostFrame:SetPushedTexture("")
-		GhostFrame:SetDisabledTexture("")
-		TukuiDB.SetNormTexTemplate(GhostFrame)
-		GhostFrame:HookScript("OnEnter", function(self) 	
-			self:SetBackdropColor(0,0,0,0)
-			self:SetBackdropBorderColor(0,0,0,0)
-		end)
-		GhostFrame:HookScript("OnLeave", function(self) 	
-			self:SetBackdropColor(0,0,0,0)
-			self:SetBackdropBorderColor(0,0,0,0)
-		end)
-		GhostFrame:ClearAllPoints()
-		GhostFrame:SetPoint("TOP", UIParent, "TOP", 0, -150)
+		do
+			SkinButton(GhostFrame)
+			GhostFrame:SetBackdropColor(0,0,0,0)
+			GhostFrame:SetBackdropBorderColor(0,0,0,0)
+			GhostFrame.SetBackdropColor = TukuiDB.dummy
+			GhostFrame.SetBackdropBorderColor = TukuiDB.dummy
+			GhostFrame:ClearAllPoints()
+			GhostFrame:SetPoint("TOP", UIParent, "TOP", 0, -150)
+			SkinButton(GhostFrameContentsFrame)
+			GhostFrameContentsFrameIcon:SetTexture(nil)
+			local x = CreateFrame("Frame", nil, GhostFrame)
+			x:SetFrameStrata("MEDIUM")
+			TukuiDB.SetTemplate(x)
+			x:SetPoint("TOPLEFT", GhostFrameContentsFrameIcon, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
+			x:SetPoint("BOTTOMRIGHT", GhostFrameContentsFrameIcon, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+			local tex = x:CreateTexture(nil, "OVERLAY")
+			tex:SetTexture("Interface\\Icons\\spell_holy_guardianspirit")
+			tex:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+			tex:SetPoint("TOPLEFT", x, "TOPLEFT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+			tex:SetPoint("BOTTOMRIGHT", x, "BOTTOMRIGHT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
+		end
 		
 		-- hide header textures and move text/buttons.
 		local BlizzardHeader = {
@@ -214,10 +229,10 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		TukuiDB.CreateShadow(RolePollPopup)
 		TukuiDB.SetTransparentTemplate(LFDDungeonReadyDialog)
 		TukuiDB.CreateShadow(LFDDungeonReadyDialog)
-		SkinTexturedButton(LFDDungeonReadyDialogEnterDungeonButton)
-		SkinTexturedButton(LFDDungeonReadyDialogLeaveQueueButton)
-		SkinTexturedButton(ColorPickerOkayButton)
-		SkinTexturedButton(ColorPickerCancelButton)
+		SkinButton(LFDDungeonReadyDialogEnterDungeonButton)
+		SkinButton(LFDDungeonReadyDialogLeaveQueueButton)
+		SkinButton(ColorPickerOkayButton)
+		SkinButton(ColorPickerCancelButton)
 	end
 		
 	-- mac menu/option panel, made by affli.
