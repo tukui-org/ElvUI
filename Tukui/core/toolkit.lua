@@ -56,6 +56,7 @@ function TukuiDB.SetNormTexTemplate(f)
 end
 
 function TukuiDB.SetTransparentTemplate(f)
+	local r, g, b = RAID_CLASS_COLORS[TukuiDB.myclass].r, RAID_CLASS_COLORS[TukuiDB.myclass].g, RAID_CLASS_COLORS[TukuiDB.myclass].b
     f:SetFrameLevel(1)
     f:SetFrameStrata("BACKGROUND")
     f:SetBackdrop({
@@ -65,7 +66,11 @@ function TukuiDB.SetTransparentTemplate(f)
       insets = { left = -TukuiDB.mult, right = -TukuiDB.mult, top = -TukuiDB.mult, bottom = -TukuiDB.mult}
     })
     f:SetBackdropColor(unpack(TukuiCF["media"].backdropfadecolor))
-    f:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))
+	if TukuiCF["general"].classcolortheme == true then
+		f:SetBackdropBorderColor(r, g, b)
+	else
+		f:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))
+	end
 end
 
 function TukuiDB.CreatePanel(f, w, h, a1, p, a2, x, y)

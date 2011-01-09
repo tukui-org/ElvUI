@@ -3,12 +3,21 @@ local TukuiCF = TukuiCF
 
 local function SetModifiedBackdrop(self)
 	local color = RAID_CLASS_COLORS[TukuiDB.myclass]
-	self:SetBackdropBorderColor(color.r, color.g, color.b)
+	if TukuiCF["general"].classcolortheme == true then
+		self:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))		
+	else
+		self:SetBackdropBorderColor(color.r, color.g, color.b)
+	end
 end
 
 local function SetOriginalBackdrop(self)
-	self:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
-	self:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))
+	local color = RAID_CLASS_COLORS[TukuiDB.myclass]
+	if TukuiCF["general"].classcolortheme == true then
+		self:SetBackdropBorderColor(color.r, color.g, color.b)
+	else
+		self:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
+		self:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))
+	end
 end
 
 local function SkinButton(f)
