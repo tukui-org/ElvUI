@@ -25,6 +25,7 @@ TukuiCF["media"] = {
 	["warning"] = [[Interface\AddOns\Tukui\media\sounds\warning.mp3]],
 	["glossyTexture"] = true,	-- Use a glossy texture for all frames
 }
+
 -- convert datatext valuecolor from rgb decimal to hex DO NOT TOUCH
 local r, g, b = unpack(TukuiCF["media"].valuecolor)
 valuecolor = ("|cff%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255)
@@ -264,4 +265,9 @@ TukuiCF["others"] = {
 	["autoacceptinv"] = true,                 -- auto-accept invite from guildmate and friends.
 	["enablemap"] = true,                     -- reskin the map to fit tukui
 	["enablebag"] = true,                     -- enable an all in one bag mod that fit tukui perfectly
+}
+
+TukuiCF["debug"] = {--don't recommend turning this on
+	["enabled"] = false,				
+	["events"] = false,
 }
