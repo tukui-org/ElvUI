@@ -397,3 +397,32 @@ TukuiTooltip:SetScript("OnEvent", function(self)
 end)
 
 
+TukuiTooltip:SetScript("OnUpdate", function(self, elapsed)
+	if(self.elapsed and self.elapsed > 0.1) then
+		if FrameStackTooltip then
+			local noscalemult = TukuiDB.mult * TukuiCF["general"].uiscale
+			local r, g, b = RAID_CLASS_COLORS[TukuiDB.myclass].r, RAID_CLASS_COLORS[TukuiDB.myclass].g, RAID_CLASS_COLORS[TukuiDB.myclass].b
+			FrameStackTooltip:SetBackdrop({
+			  bgFile = TukuiCF["media"].blank, 
+			  edgeFile = TukuiCF["media"].blank, 
+			  tile = false, tileSize = 0, edgeSize = noscalemult, 
+			  insets = { left = -noscalemult, right = -noscalemult, top = -noscalemult, bottom = -noscalemult}
+			})
+			FrameStackTooltip:SetBackdropColor(unpack(TukuiCF.media.backdropfadecolor))
+			if TukuiCF["general"].classcolortheme == true then
+				FrameStackTooltip:SetBackdropBorderColor(r, g, b)
+			else
+				FrameStackTooltip:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))
+			end	
+			FrameStackTooltip.SetBackdropColor = TukuiDB.dummy
+			FrameStackTooltip.SetBackdropBorderColor = TukuiDB.dummy
+			self.elapsed = nil
+			self:SetScript("OnUpdate", nil)
+		end
+		self.elapsed = 0
+	else
+		self.elapsed = (self.elapsed or 0) + elapsed
+	end
+end)
+
+
