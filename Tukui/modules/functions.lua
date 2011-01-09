@@ -71,8 +71,7 @@ function TukuiDB.CreateShadow(f)
 end
 
 function TukuiDB.SetTemplate(f)
-	local _, class = UnitClass("player")
-	local r, g, b = RAID_CLASS_COLORS[class].r, RAID_CLASS_COLORS[class].g, RAID_CLASS_COLORS[class].b
+	local r, g, b = RAID_CLASS_COLORS[TukuiDB.myclass].r, RAID_CLASS_COLORS[TukuiDB.myclass].g, RAID_CLASS_COLORS[TukuiDB.myclass].b
 	f:SetBackdrop({
 	  bgFile = TukuiCF["media"].blank, 
 	  edgeFile = TukuiCF["media"].blank, 
@@ -88,8 +87,7 @@ function TukuiDB.SetTemplate(f)
 end
 
 function TukuiDB.SetNormTexTemplate(f)
-	local _, class = UnitClass("player")
-	local r, g, b = RAID_CLASS_COLORS[class].r, RAID_CLASS_COLORS[class].g, RAID_CLASS_COLORS[class].b
+	local r, g, b = RAID_CLASS_COLORS[TukuiDB.myclass].r, RAID_CLASS_COLORS[TukuiDB.myclass].g, RAID_CLASS_COLORS[TukuiDB.myclass].b
 	f:SetBackdrop({
 	  bgFile = TukuiCF["media"].normTex, 
 	  edgeFile = TukuiCF["media"].blank, 
