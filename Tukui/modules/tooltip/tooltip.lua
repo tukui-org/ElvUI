@@ -299,6 +299,8 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 		end
 	else
 		for i = 2, lines do
+			if not crtype then print("UnitCreatureType is returning nil, Report to Elv.") return end
+			if not _G["GameTooltipTextLeft"..i]:GetText() then print("GameTooltipTextLeft"..i.." is returning nil text, Report to Elv.") return end
 			if((_G["GameTooltipTextLeft"..i]:GetText():find("^"..LEVEL)) or (crtype and _G["GameTooltipTextLeft"..i]:GetText():find("^"..crtype))) then
 				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r%s %s", r*255, g*255, b*255, classif ~= "worldboss" and level > 0 and level or "??", classification[classif] or "", crtype or "")
 				break
@@ -349,24 +351,16 @@ local Colorize = function(self)
 		healthBar:SetStatusBarColor(r, g, b)
 	elseif player and not TukuiCF["tooltip"].colorreaction == true then
 		local class = select(2, UnitClass(unit))
-		if TukuiCF.unitframes.enable == true then
-			local c = TukuiDB.oUF_colors.class[class]
-			if c then
-				r, g, b = c[1], c[2], c[3]
-			end
-		else
-			r, g, b = RAID_CLASS_COLORS[class].r, RAID_CLASS_COLORS[class].g, RAID_CLASS_COLORS[class].b
+		local c = TukuiDB.colors.class[class]
+		if c then
+			r, g, b = c[1], c[2], c[3]
 		end
 		self:SetBackdropBorderColor(r, g, b)
 		healthBarBG:SetBackdropBorderColor(r, g, b)
 		healthBar:SetStatusBarColor(r, g, b)
 	elseif reaction then
-		if TukuiCF.unitframes.enable == true then
-			local c = TukuiDB.oUF_colors.reaction[reaction]
-			r, g, b = c[1], c[2], c[3]
-		else
-			r, g, b = FACTION_BAR_COLORS[reaction].r, FACTION_BAR_COLORS[reaction].g, FACTION_BAR_COLORS[reaction].b
-		end
+		local c = TukuiDB.colors.reaction[reaction]
+		r, g, b = c[1], c[2], c[3]
 		self:SetBackdropBorderColor(r, g, b)
 		healthBarBG:SetBackdropBorderColor(r, g, b)
 		healthBar:SetStatusBarColor(r, g, b)
