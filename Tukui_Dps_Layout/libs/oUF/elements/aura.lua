@@ -7,6 +7,7 @@ local HIDDEN = 0
 local UpdateTooltip = function(self)
 	local p = self.parent:GetParent().unit
 	if not p then p = self.parent:GetParent():GetParent().unit end
+	if not p then return end
 	GameTooltip:SetUnitAura(p, self:GetID(), self.filter)
 end
 
