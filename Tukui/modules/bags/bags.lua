@@ -11,6 +11,8 @@ local tukuilocal = tukuilocal
 
 if not TukuiCF["others"].enablebag == true then return end
 
+StackSplitFrame:SetFrameStrata("TOOLTIP")
+
 local bags_BACKPACK = {0, 1, 2, 3, 4}
 local bags_BANK = {-1, 5, 6, 7, 8, 9, 10, 11}
 local BAGSFONT = TukuiCF["media"].font
