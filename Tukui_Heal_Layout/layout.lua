@@ -1837,6 +1837,27 @@ local function Shared(self, unit)
 		end		
 	end
 	
+	------------------------------------------------------------------------
+	--	Features we want for all units at the same time
+	------------------------------------------------------------------------
+	
+	-- here we create an invisible frame for all element we want to show over health/power.
+	-- because we can only use self here, and self is under all elements.
+	if unit ~= "party" then
+		local InvFrame = CreateFrame("Frame", nil, self)
+		InvFrame:SetFrameStrata("MEDIUM")
+		InvFrame:SetFrameLevel(5)
+		InvFrame:SetAllPoints(self.Health)
+		
+		-- symbols, now put the symbol on the frame we created above.
+		local RaidIcon = InvFrame:CreateTexture(nil, "OVERLAY")
+		RaidIcon:SetTexture("Interface\\AddOns\\Tukui\\media\\textures\\raidicons.blp") 
+		RaidIcon:SetHeight(15)
+		RaidIcon:SetWidth(15)
+		RaidIcon:SetPoint("TOP", 0, 8)
+		self.RaidIcon = RaidIcon
+	end	
+	
 	return self
 end
 
