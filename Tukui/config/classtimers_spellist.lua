@@ -280,6 +280,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 86669 ), --Guardian of Ancient Kings (Holy)
 			CreateSpellEntry( 86698 ), --Guardian of Ancient Kings (Ret)
 			CreateSpellEntry( 85510 ), --Denounce
+			CreateSpellEntry( 85646 ), --Guarded by the light
 		},
 		procs = {
 			CreateSpellEntry( 59578 ), -- The Art of War
