@@ -265,7 +265,7 @@ TukuiDB.LoadUFFunctions = function(layout)
 						if TukuiCF["unitframes"].showtotalhpmp == true then
 							health.value:SetFormattedText("|cff559655%s|r |cffD7BEA5|||r |cff559655%s|r", TukuiDB.ShortValue(min), TukuiDB.ShortValue(max))
 						else
-							health.value:SetFormattedText("|cffAF5050%d|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", min, r * 255, g * 255, b * 255, floor(min / max * 100))
+							health.value:SetFormattedText("|cffAF5050%s|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", TukuiDB.ShortValue(min), r * 255, g * 255, b * 255, floor(min / max * 100))
 						end
 					elseif unit == "target" or unit == "focus" or (unit and unit:find("boss%d")) then
 						if TukuiCF["unitframes"].showtotalhpmp == true then
