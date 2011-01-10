@@ -15,5 +15,5 @@ tags.lua
 layout.lua
 raid\party.lua
 raid\raid25.lua
-raid\raid2540.lua
+raid\raid40.lua
 move_ele.lua
