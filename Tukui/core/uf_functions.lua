@@ -276,7 +276,7 @@ TukuiDB.LoadUFFunctions = function(layout)
 					elseif (unit and unit:find("arena%d")) then
 						health.value:SetText("|cff559655"..TukuiDB.ShortValue(min).."|r")
 					else
-						health.value:SetFormattedText("|cffAF5050%d|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", TukuiDB.ShortValue(min), r * 255, g * 255, b * 255, floor(min / max * 100))
+						health.value:SetFormattedText("|cffAF5050%s|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", TukuiDB.ShortValue(min), r * 255, g * 255, b * 255, floor(min / max * 100))
 					end
 				else
 					if unit == "player" and health:GetAttribute("normalUnit") ~= "pet" then
