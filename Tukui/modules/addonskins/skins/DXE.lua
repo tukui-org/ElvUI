@@ -130,10 +130,10 @@ Mod_AddonSkins:RegisterSkin("DXE",function(Skin, skin, Layout, layout, config)
 	if not DXEDB["profiles"] then DXEDB["profiles"] = {} end
 	if not DXEDB["profiles"][TukuiDB.myname.." - "..GetRealmName()] then DXEDB["profiles"][TukuiDB.myname.." - "..GetRealmName()] = {} end
 	if not DXEDB["profiles"][TukuiDB.myname.." - "..GetRealmName()]["Globals"] then DXEDB["profiles"][TukuiDB.myname.." - "..GetRealmName()]["Globals"] = {} end
-	DXEDB["profiles"][TukuiDB.myname.." - "..GetRealmName()]["Globals"]["BackgroundTexture"] = "TukUI"
-	DXEDB["profiles"][TukuiDB.myname.." - "..GetRealmName()]["Globals"]["BarTexture"] = "TukUI Bar"
+	DXEDB["profiles"][TukuiDB.myname.." - "..GetRealmName()]["Globals"]["BackgroundTexture"] = "TukUI Blank"
+	DXEDB["profiles"][TukuiDB.myname.." - "..GetRealmName()]["Globals"]["BarTexture"] = "TukUI Gloss"
 	DXEDB["profiles"][TukuiDB.myname.." - "..GetRealmName()]["Globals"]["Border"] = "None"
-	DXEDB["profiles"][TukuiDB.myname.." - "..GetRealmName()]["Globals"]["Font"] = "TukUI"
-	DXEDB["profiles"][TukuiDB.myname.." - "..GetRealmName()]["Globals"]["TimerFont"] = "TukUI"
+	DXEDB["profiles"][TukuiDB.myname.." - "..GetRealmName()]["Globals"]["Font"] = "TukUI Font"
+	DXEDB["profiles"][TukuiDB.myname.." - "..GetRealmName()]["Globals"]["TimerFont"] = "TukUI Font"
 end)
 

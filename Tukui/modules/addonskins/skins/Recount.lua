@@ -42,7 +42,7 @@ Mod_AddonSkins:RegisterSkin("Recount",function(Skin, skin, Layout, layout, confi
 			v.StatusBar:GetStatusBarTexture():SetHorizTile(false)
 			v.StatusBar:GetStatusBarTexture():SetVertTile(false)
 		end
-		Recount:SetFont("TukUI")
+		Recount:SetFont("TukUI Font")
 	end
 	Recount.SetBarTextures = Recount.UpdateBarTextures
 	
