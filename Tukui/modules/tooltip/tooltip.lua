@@ -298,10 +298,8 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 			end
 		end
 	else
-		for i = 2, lines do
-			if not crtype then print("UnitCreatureType is returning nil, Report to Elv.") return end
-			if not _G["GameTooltipTextLeft"..i]:GetText() then print("GameTooltipTextLeft"..i.." is returning nil text, Report to Elv.") return end
-			if((_G["GameTooltipTextLeft"..i]:GetText():find("^"..LEVEL)) or (crtype and _G["GameTooltipTextLeft"..i]:GetText():find("^"..crtype))) then
+		for i = 2, lines do			
+			if _G["GameTooltipTextLeft"..i]:GetText() and ((_G["GameTooltipTextLeft"..i]:GetText():find("^"..LEVEL)) or (crtype and _G["GameTooltipTextLeft"..i]:GetText():find("^"..crtype))) then
 				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r%s %s", r*255, g*255, b*255, classif ~= "worldboss" and level > 0 and level or "??", classification[classif] or "", crtype or "")
 				break
 			end
