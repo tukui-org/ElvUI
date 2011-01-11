@@ -226,6 +226,7 @@ local function AddTargetedBy()
 			targetedList[#targetedList] = nil;
 			GameTooltip:AddLine(" ",nil,nil,nil,1);
 			local line = _G["GameTooltipTextLeft"..GameTooltip:NumLines()];
+			if not line then return end
 			line:SetFormattedText(tukuilocal.tooltip_whotarget.." (|cffffffff%d|r): %s",(#targetedList + 1) / 3,table.concat(targetedList));
 			wipe(targetedList);
 		end
@@ -292,14 +293,14 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 		end
 
 		for i= offset, lines do
-			if(_G["GameTooltipTextLeft"..i]:GetText():find("^"..LEVEL)) then
+			if _G["GameTooltipTextLeft"..i] and _G["GameTooltipTextLeft"..i]:GetText() and (_G["GameTooltipTextLeft"..i]:GetText():find("^"..LEVEL)) then
 				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r %s %s%s", r*255, g*255, b*255, level > 0 and level or "??", race, color, class.."|r")
 				break
 			end
 		end
 	else
 		for i = 2, lines do			
-			if _G["GameTooltipTextLeft"..i]:GetText() and ((_G["GameTooltipTextLeft"..i]:GetText():find("^"..LEVEL)) or (crtype and _G["GameTooltipTextLeft"..i]:GetText():find("^"..crtype))) then
+			if _G["GameTooltipTextLeft"..i] and _G["GameTooltipTextLeft"..i]:GetText() and ((_G["GameTooltipTextLeft"..i]:GetText():find("^"..LEVEL)) or (crtype and _G["GameTooltipTextLeft"..i]:GetText():find("^"..crtype))) then
 				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r%s %s", r*255, g*255, b*255, classif ~= "worldboss" and level > 0 and level or "??", classification[classif] or "", crtype or "")
 				break
 			end
@@ -308,8 +309,7 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 
 	local pvpLine
 	for i = 1, lines do
-		local text = _G["GameTooltipTextLeft"..i]:GetText()
-		if text and text == PVP_ENABLED then
+		if _G["GameTooltipTextLeft"..i] and _G["GameTooltipTextLeft"..i]:GetText() and _G["GameTooltipTextLeft"..i]:GetText() == PVP_ENABLED then
 			pvpLine = _G["GameTooltipTextLeft"..i]
 			pvpLine:SetText()
 			break
