@@ -20,6 +20,7 @@ end
 
 oUF.TagEvents['Tukui:threat'] = 'UNIT_THREAT_LIST_UPDATE'
 oUF.Tags['Tukui:threat'] = function(unit)
+	if not unit then return end
 	local tanking, status, percent = UnitDetailedThreatSituation('player', 'target')
 	if(percent and percent > 0) then
 		return ('%s%d%%|r'):format(Hex(GetThreatStatusColor(status)), percent)
@@ -27,6 +28,7 @@ oUF.Tags['Tukui:threat'] = function(unit)
 end
 
 oUF.Tags['Tukui:health'] = function(unit)
+	if not unit then return end
 	local min, max = UnitHealth(unit), UnitHealthMax(unit)
 	local status = not UnitIsConnected(unit) and 'Offline' or UnitIsGhost(unit) and 'Ghost' or UnitIsDead(unit) and 'Dead'
 
@@ -44,6 +46,7 @@ oUF.Tags['Tukui:health'] = function(unit)
 end
 
 oUF.Tags['Tukui:power'] = function(unit)
+	if not unit then return end
 	local power = UnitPower(unit)
 	if(power > 0 and not UnitIsDeadOrGhost(unit)) then
 		local _, type = UnitPowerType(unit)
@@ -61,6 +64,7 @@ end
 
 oUF.TagEvents['Tukui:diffcolor'] = 'UNIT_LEVEL'
 oUF.Tags['Tukui:diffcolor'] = function(unit)
+	if not unit then return end
 	local r, g, b
 	local level = UnitLevel(unit)
 	if (level < 1) then
@@ -133,6 +137,7 @@ end
 
 oUF.TagEvents['Tukui:nameshort'] = 'UNIT_NAME_UPDATE'
 oUF.Tags['Tukui:nameshort'] = function(unit)
+	if not unit then return end
 	local name = UnitName(unit)
 	local colorblind = GetCVarBool("colorblindMode")
 	if colorblind ~= 1 then
@@ -150,6 +155,7 @@ end
 
 oUF.TagEvents['Tukui:namemedium'] = 'UNIT_NAME_UPDATE'
 oUF.Tags['Tukui:namemedium'] = function(unit)
+	if not unit then return end
 	local name = UnitName(unit)
 	local colorblind = GetCVarBool("colorblindMode")
 	if colorblind ~= 1 then
@@ -167,6 +173,7 @@ end
 
 oUF.TagEvents['Tukui:namelong'] = 'UNIT_NAME_UPDATE'
 oUF.Tags['Tukui:namelong'] = function(unit)
+	if not unit then return end
 	local name = UnitName(unit)
 	local colorblind = GetCVarBool("colorblindMode")
 	if colorblind ~= 1 then
