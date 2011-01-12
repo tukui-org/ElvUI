@@ -298,7 +298,7 @@ local coord_Update = function(self,t)
 		else
 			yt = y
 		end
-		m_coord_text:SetText(xt..valuecolor..",|r"..yt)
+		m_coord_text:SetText(xt..TukuiDB.ValColor..",|r"..yt)
 	end
 	ela = .2
 end

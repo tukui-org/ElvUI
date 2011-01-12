@@ -29,26 +29,26 @@ if TukuiCF["datatext"].wowtime and TukuiCF["datatext"].wowtime > 0 then
 				Hr = tonumber(date("%I"))
 				Min = date("%M")
 				if TukuiCF["datatext"].time24 == true then
-					Text:SetText(Hr24..valuecolor..":|r"..Min)
+					Text:SetText(Hr24..TukuiDB.ValColor..":|r"..Min)
 				else
 					if Hr24>=12 then
-						Text:SetText(Hr..valuecolor..":|r"..Min..valuecolor.." PM")
+						Text:SetText(Hr..TukuiDB.ValColor..":|r"..Min..TukuiDB.ValColor.." PM")
 					else
-						Text:SetText(Hr..valuecolor..":|r"..Min..valuecolor.." AM")
+						Text:SetText(Hr..TukuiDB.ValColor..":|r"..Min..TukuiDB.ValColor.." AM")
 					end
 				end
 			else
 				local Hr, Min = GetGameTime()
 				if Min<10 then Min = "0"..Min end
 				if TukuiCF["datatext"].time24 == true then
-					Text:SetText(Hr..valuecolor..":|r"..Min.." |cffffffff|r")
+					Text:SetText(Hr..TukuiDB.ValColor..":|r"..Min.." |cffffffff|r")
 				else
 					if Hr>=12 then
 						if Hr>12 then Hr = Hr-12 end
-						Text:SetText(Hr..valuecolor..":|r"..Min..valuecolor.." PM")
+						Text:SetText(Hr..TukuiDB.ValColor..":|r"..Min..TukuiDB.ValColor.." PM")
 					else
 						if Hr == 0 then Hr = 12 end
-						Text:SetText(Hr..valuecolor..":|r"..Min..valuecolor.." AM")
+						Text:SetText(Hr..TukuiDB.ValColor..":|r"..Min..TukuiDB.ValColor.." AM")
 					end
 				end
 			end

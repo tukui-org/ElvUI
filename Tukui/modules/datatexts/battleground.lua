@@ -43,12 +43,12 @@ if TukuiCF["datatext"].battleground == true then
 				local name, killingBlows, honorableKills, deaths, honorGained, faction, race, class, classToken, damageDone, healingDone, bgRating, ratingChange = GetBattlefieldScore(i)
 				if ( name ) then
 					if ( name == TukuiDB.myname) then
-						Text1:SetText(tukuilocal.datatext_damage..valuecolor..damageDone)
-						Text2:SetText(tukuilocal.datatext_honor..valuecolor..format('%d', honorGained))
-						Text3:SetText(tukuilocal.datatext_killingblows..valuecolor..killingBlows)
-						Text4:SetText(tukuilocal.datatext_ttdeaths..valuecolor..deaths)
-						Text5:SetText(tukuilocal.datatext_tthonorkills..valuecolor..honorableKills)
-						Text6:SetText(tukuilocal.datatext_healing..valuecolor..healingDone)
+						Text1:SetText(tukuilocal.datatext_damage..TukuiDB.ValColor..damageDone)
+						Text2:SetText(tukuilocal.datatext_honor..TukuiDB.ValColor..format('%d', honorGained))
+						Text3:SetText(tukuilocal.datatext_killingblows..TukuiDB.ValColor..killingBlows)
+						Text4:SetText(tukuilocal.datatext_ttdeaths..TukuiDB.ValColor..deaths)
+						Text5:SetText(tukuilocal.datatext_tthonorkills..TukuiDB.ValColor..honorableKills)
+						Text6:SetText(tukuilocal.datatext_healing..TukuiDB.ValColor..healingDone)
 					end   
 				end
 			end 

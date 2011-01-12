@@ -18,7 +18,7 @@ if TukuiCF["datatext"].dps_text and TukuiCF["datatext"].dps_text > 0 then
 	dText = TukuiInfoLeft:CreateFontString(nil, "OVERLAY")
 	dText:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
 	dText:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
-	dText:SetText("DPS: "..valuecolor.."0.0|r")
+	dText:SetText("DPS: "..TukuiDB.ValColor.."0.0|r")
 
 	TukuiDB.PP(TukuiCF["datatext"].dps_text, dText)
 
@@ -75,9 +75,9 @@ if TukuiCF["datatext"].dps_text and TukuiCF["datatext"].dps_text > 0 then
      
 	function getDPS()
 		if (dmg_total == 0) then
-			return ("DPS: "..valuecolor.."0.0|r")
+			return ("DPS: "..TukuiDB.ValColor.."0.0|r")
 		else
-			return string.format("DPS: "..valuecolor.."%.1f|r", (dmg_total or 0) / (cmbt_time or 1))
+			return string.format("DPS: "..TukuiDB.ValColor.."%.1f|r", (dmg_total or 0) / (cmbt_time or 1))
 		end
 	end
 

@@ -15,7 +15,7 @@ if TukuiCF["datatext"].hps_text and TukuiCF["datatext"].hps_text > 0 then
 	hText = TukuiInfoLeft:CreateFontString(nil, "OVERLAY")
 	hText:SetFont(TukuiCF.media.font, TukuiCF["datatext"].fontsize, "THINOUTLINE")
 	hText:SetShadowOffset(TukuiDB.mult, -TukuiDB.mult)
-	hText:SetText("HPS: "..valuecolor.."0.0")
+	hText:SetText("HPS: "..TukuiDB.ValColor.."0.0")
  
 	TukuiDB.PP(TukuiCF["datatext"].hps_text, hText)
  
@@ -80,9 +80,9 @@ if TukuiCF["datatext"].hps_text and TukuiCF["datatext"].hps_text > 0 then
  
 	function get_hps()
 		if (actual_heals_total == 0) then
-			return ("HPS: "..valuecolor.."0.0")
+			return ("HPS: "..TukuiDB.ValColor.."0.0")
 		else
-			return string.format("HPS: "..valuecolor.."%.1f", (actual_heals_total or 0) / (cmbt_time or 1))
+			return string.format("HPS: "..TukuiDB.ValColor.."%.1f", (actual_heals_total or 0) / (cmbt_time or 1))
 		end
 	end
 

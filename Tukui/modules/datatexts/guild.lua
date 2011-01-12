@@ -46,9 +46,9 @@ if TukuiCF["datatext"].guild and TukuiCF["datatext"].guild > 0 then
 				end
 			end 			
 			self:SetAllPoints(Text)
-			Text:SetText(tukuilocal.datatext_guild .. ": " .. valuecolor..numOnline)
+			Text:SetText(tukuilocal.datatext_guild .. ": " .. TukuiDB.ValColor..numOnline)
 		else
-			Text:SetText(valuecolor..tukuilocal.datatext_noguild)
+			Text:SetText(TukuiDB.ValColor..tukuilocal.datatext_noguild)
 		end
 	end
 		

@@ -374,3 +374,7 @@ SlashCmdList["UIHELP"] = UIHelp
 
 SLASH_CONFIGURE1 = "/resetui"
 SlashCmdList.CONFIGURE = function() StaticPopup_Show("INSTALL_UI") end
+
+-- convert datatext TukuiDB.ValColor from rgb decimal to hex DO NOT TOUCH
+local r, g, b = unpack(TukuiCF["media"].valuecolor)
+TukuiDB.ValColor = ("|cff%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255)

@@ -36,7 +36,7 @@ if TukuiCF["datatext"].dur and TukuiCF["datatext"].dur > 0 then
 		table.sort(tukuilocal.Slots, function(a, b) return a[3] < b[3] end)
 
 		if Total > 0 then
-			Text:SetText(DURABILITY..": "..valuecolor..floor(tukuilocal.Slots[1][3]*100).."%")
+			Text:SetText(DURABILITY..": "..TukuiDB.ValColor..floor(tukuilocal.Slots[1][3]*100).."%")
 			if floor(tukuilocal.Slots[1][3]*100) <= 20 then
 				local int = -1
 				Stat:SetScript("OnUpdate", function(self, t)

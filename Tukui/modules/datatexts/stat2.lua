@@ -23,7 +23,7 @@ if TukuiCF["datatext"].stat2 and TukuiCF["datatext"].stat2 > 0 then
 		if int < 0 then
 			if TukuiDB.Role == "Tank" then
 				local baseArmor , effectiveArmor, armor, posBuff, negBuff = UnitArmor("player");
-				Text:SetText("Armor: "..valuecolor..(effectiveArmor))
+				Text:SetText("Armor: "..TukuiDB.ValColor..(effectiveArmor))
 				--Setup Armor Tooltip
 				self:SetAllPoints(Text)
 				self:SetScript("OnEnter", function()
@@ -66,7 +66,7 @@ if TukuiCF["datatext"].stat2 and TukuiCF["datatext"].stat2 > 0 then
 				end)
 				self:SetScript("OnLeave", function() GameTooltip:Hide() end)				
 			elseif TukuiDB.Role == "Caster" then
-				Text:SetText(tukuilocal.datatext_playercrit.." "..valuecolor..format("%.2f", GetSpellCritChance(1)) .. "%")
+				Text:SetText(tukuilocal.datatext_playercrit.." "..TukuiDB.ValColor..format("%.2f", GetSpellCritChance(1)) .. "%")
 			elseif TukuiDB.Role == "Melee" then
 				local meleecrit = GetCritChance()
 				local rangedcrit = GetRangedCritChance()
@@ -78,7 +78,7 @@ if TukuiCF["datatext"].stat2 and TukuiCF["datatext"].stat2 > 0 then
 					CritChance = meleecrit
 				end
 
-				Text:SetText(tukuilocal.datatext_playercrit.." "..valuecolor..format("%.2f", CritChance) .. "%")
+				Text:SetText(tukuilocal.datatext_playercrit.." "..TukuiDB.ValColor..format("%.2f", CritChance) .. "%")
 			end
 			int = 1
 		end

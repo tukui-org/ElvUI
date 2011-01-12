@@ -285,7 +285,7 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 		local offset = 2
 		if guildName then
 			if UnitIsInMyGuild(unit) then
-				_G["GameTooltipTextLeft2"]:SetText("<"..valuecolor..guildName.."|r> ["..valuecolor..guildRankName.."|r]")
+				_G["GameTooltipTextLeft2"]:SetText("<"..TukuiDB.ValColor..guildName.."|r> ["..TukuiDB.ValColor..guildRankName.."|r]")
 			else
 				_G["GameTooltipTextLeft2"]:SetText("<|cff00ff10"..guildName.."|r> [|cff00ff10"..guildRankName.."|r]")
 			end

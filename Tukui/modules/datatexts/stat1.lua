@@ -53,7 +53,7 @@ if TukuiCF["datatext"].stat1 and TukuiCF["datatext"].stat1 > 0 then
 					avoidance = (dodge+parry+block+basemisschance)
 				end
 					
-				Text:SetText(tukuilocal.datatext_playeravd..valuecolor..format("%.2f", avoidance))
+				Text:SetText(tukuilocal.datatext_playeravd..TukuiDB.ValColor..format("%.2f", avoidance))
 				--Setup Avoidance Tooltip
 				self:SetAllPoints(Text)
 				self:SetScript("OnEnter", function()
@@ -86,7 +86,7 @@ if TukuiCF["datatext"].stat1 and TukuiCF["datatext"].stat1 > 0 then
 					spellpwr = GetSpellBonusDamage(7)
 				end
 				
-				Text:SetText(tukuilocal.datatext_playersp.." "..valuecolor..spellpwr)      
+				Text:SetText(tukuilocal.datatext_playersp.." "..TukuiDB.ValColor..spellpwr)      
 			elseif TukuiDB.Role == "Melee" then
 				local base, posBuff, negBuff = UnitAttackPower("player");
 				local effective = base + posBuff + negBuff;
@@ -100,7 +100,7 @@ if TukuiCF["datatext"].stat1 and TukuiCF["datatext"].stat1 > 0 then
 					pwr = effective
 				end
 				
-				Text:SetText(tukuilocal.datatext_playerap.." "..valuecolor..pwr)      
+				Text:SetText(tukuilocal.datatext_playerap.." "..TukuiDB.ValColor..pwr)      
 			end
 			int = 1
 		end

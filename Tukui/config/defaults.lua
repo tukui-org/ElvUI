@@ -26,10 +26,6 @@ TukuiCF["media"] = {
 	["glossyTexture"] = true,	-- Use a glossy texture for all frames
 }
 
--- convert datatext valuecolor from rgb decimal to hex DO NOT TOUCH
-local r, g, b = unpack(TukuiCF["media"].valuecolor)
-valuecolor = ("|cff%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255)
-
 TukuiCF["general"] = {
 	["autoscale"] = true,                  -- mainly enabled for users that don't want to mess with the config file
 	["uiscale"] = 0.78,                    -- set your value (between 0.64 and 1) of your uiscale if autoscale is off

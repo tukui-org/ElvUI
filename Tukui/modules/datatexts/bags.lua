@@ -23,7 +23,7 @@ if TukuiCF["datatext"].bags and TukuiCF["datatext"].bags > 0 then
 			free, total = free + GetContainerNumFreeSlots(i), total + GetContainerNumSlots(i)
 		end
 		used = total - free
-		Text:SetText(tukuilocal.datatext_bags..valuecolor..used.."|r/"..valuecolor..total)
+		Text:SetText(tukuilocal.datatext_bags..TukuiDB.ValColor..used.."|r/"..TukuiDB.ValColor..total)
 		self:SetAllPoints(Text)
 	end
           

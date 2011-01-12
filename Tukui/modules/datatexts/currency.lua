@@ -27,7 +27,7 @@ if TukuiCF["datatext"].currency and TukuiCF["datatext"].currency > 0 then
 				for _, word in ipairs(words) do
 					_text = _text .. string.sub(word,1,1)
 				end
-				_text = _text .. ": " .. valuecolor.. count .." |r"
+				_text = _text .. ": " .. TukuiDB.ValColor.. count .." |r"
 			end
 		end
 		
