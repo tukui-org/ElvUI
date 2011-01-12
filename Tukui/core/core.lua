@@ -333,8 +333,7 @@ TukuiInGame:SetScript("OnEvent", function(self, event)
 	eventcount = eventcount + 1
 	if InCombatLockdown() then return end
 
-	eventcount = eventcount + 1
-	if eventcount > 10000 then
+	if eventcount > 6000 then
 		collectgarbage("collect")
 		eventcount = 0
 	end
