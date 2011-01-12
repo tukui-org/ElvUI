@@ -336,7 +336,6 @@ TukuiDB.LoadUFFunctions = function(layout)
 		end
 	end
 	
-	local test
 	TukuiDB.PostUpdatePower = function(power, unit, min, max)
 		local self = power:GetParent()
 		local header = power:GetParent():GetParent():GetName()
@@ -403,7 +402,7 @@ TukuiDB.LoadUFFunctions = function(layout)
 		end
 		
 		
-		if test == nil and (select(1, UnitName(self.unit)) == "Anshal" or select(1, UnitName(self.unit)) == "Nezir" or select(1, UnitName(self.unit)) == "Rohash") then print(select(1, UnitName(self.unit)), min, max, "<--- Report these to Elv please :)") test = true end
+		if (select(1, UnitName(self.unit)) == "Anshal" or select(1, UnitName(self.unit)) == "Nezir" or select(1, UnitName(self.unit)) == "Rohash") then print(select(1, UnitName(self.unit)), min, max, "<--- Report these to Elv please :)") end
 		if self.Name then
 			if unit == "target" then TukuiDB.PostNamePosition(self, power) end
 		end
