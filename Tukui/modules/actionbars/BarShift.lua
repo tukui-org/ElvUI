@@ -8,7 +8,11 @@ local TukuiCF = TukuiCF
 
 -- used for anchor totembar or shapeshiftbar
 local TukuiShift = CreateFrame("Frame","TukuiShiftBar",TukuiActionBarBackground)
-TukuiShift:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 3, -38)
+if TukuiCF["actionbar"].microbar == true then
+	TukuiShift:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 3, -38)
+else
+	TukuiShift:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 2, -2)
+end
 TukuiShift:SetWidth(29)
 TukuiShift:SetHeight(58)
 
