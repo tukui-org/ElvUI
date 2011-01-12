@@ -90,14 +90,6 @@ local transitionR, transitionG, transitionB = unpack(TukuiCF["nameplate"].transi
 local function UpdateThreat(frame, elapsed)
 	frame.hp:Show()
 	
-	--FUCKING HEALTHBAR BACKDROP TEXTURE KEEPS DISAPEARING
-	frame.healthbarbackdrop_tex:ClearAllPoints()
-	frame.healthbarbackdrop_tex:SetPoint("CENTER", frame.hp, "CENTER")
-	frame.healthbarbackdrop_tex:SetWidth(hpWidth + noscalemult*6)
-	frame.healthbarbackdrop_tex:SetHeight(hpHeight + noscalemult*6)
-	frame.healthbarbackdrop_tex:SetTexture(0.1, 0.1, 0.1, 1)
-	frame.healthbarbackdrop_tex:SetParent(frame.hp)
-	
 	if TukuiCF["nameplate"].enhancethreat ~= true then
 		if(frame.region:IsShown()) then
 			local _, val = frame.region:GetVertexColor()
@@ -353,7 +345,6 @@ local function SkinObjects(frame)
 	--Just make sure these are correct
 	hp:SetFrameLevel(9)
 	cb:SetFrameLevel(9)
-	
 	
 	-- Create Cast Icon Backdrop frame
 	local healthbarbackdrop_tex = hp:CreateTexture(nil, "BACKGROUND")
