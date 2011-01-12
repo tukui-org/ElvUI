@@ -1644,8 +1644,6 @@ local function Shared(self, unit)
 		power.colorTapping = false
 		power.colorDisconnected = true
 				
-		self.Power = power
-		self.Power.bg = powerBG
 		
 		--Health and Power
 		if (unit and unit:find('arena%d')) then
@@ -1664,7 +1662,7 @@ local function Shared(self, unit)
 			
 			power.value = TukuiDB.SetFontString(health, font1, TukuiCF["unitframes"].fontsize, "OUTLINE")
 			power.value:SetPoint("BOTTOMLEFT", health, "BOTTOMLEFT", TukuiDB.Scale(2), TukuiDB.Scale(1))
-			power.value:SetJustifyH("RIGHT")
+			power.value:SetJustifyH("LEFT")
 			power.PreUpdate = TukuiDB.PreUpdatePower
 			power.PostUpdate = TukuiDB.PostUpdatePower
 
@@ -1696,6 +1694,9 @@ local function Shared(self, unit)
 			AltPowerBar:HookScript("OnHide", function(self) self:GetParent().FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4)) end)
 			self.AltPowerBar = AltPowerBar	
 		end
+		
+		self.Power = power
+		self.Power.bg = powerBG
 		
 		-- names
 		local Name

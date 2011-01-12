@@ -335,7 +335,8 @@ TukuiDB.LoadUFFunctions = function(layout)
 			power:SetStatusBarColor(color[1], color[2], color[3])
 		end
 	end
-
+	
+	local test
 	TukuiDB.PostUpdatePower = function(power, unit, min, max)
 		local self = power:GetParent()
 		local header = power:GetParent():GetParent():GetName()
@@ -355,9 +356,10 @@ TukuiDB.LoadUFFunctions = function(layout)
 		if color then
 			power.value:SetTextColor(color[1], color[2], color[3])
 		end	
+		
 			
 		if min == 0 then 
-				power.value:SetText("") 
+			power.value:SetText("") 
 		else
 			if not UnitIsPlayer(unit) and not UnitPlayerControlled(unit) or not UnitIsConnected(unit) then
 				power.value:SetText()
@@ -400,6 +402,8 @@ TukuiDB.LoadUFFunctions = function(layout)
 			end
 		end
 		
+		
+		if test == nil and (select(1, UnitName(self.unit)) == "Anshal" or select(1, UnitName(self.unit)) == "Nezir" or select(1, UnitName(self.unit)) == "Rohash") then print(select(1, UnitName(self.unit)), min, max, "<--- Report these to Elv please :)") test = true end
 		if self.Name then
 			if unit == "target" then TukuiDB.PostNamePosition(self, power) end
 		end
