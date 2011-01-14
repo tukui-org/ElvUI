@@ -191,6 +191,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 82749 ), -- killing streak
 			CreateSpellEntry( 3045 ), -- Rapid Fire
 			CreateSpellEntry( 34471 ), --The beast within
+			CreateSpellEntry( 77769 ), -- Trap Launcher
 		},
 		procs = {
 			CreateSpellEntry( 53257 ), -- cobra strikes 

@@ -167,6 +167,8 @@ if TukuiDB.client == "ruRU" then
 	tukuilocal.core_uihelp16 = "|cffFF0000/resetgold|r - сбросить статистику золота"
 	tukuilocal.core_uihelp17 = "|cffFF0000/moveele|r - Toggles the unlocking of various unitframe elements."
 	tukuilocal.core_uihelp18 = "|cffFF0000/resetele|r - Resets all elements to their default position. You can also just reset a specific element by typing /resetele <elementname>."
+	tukuilocal.core_uihelp19 = "|cffFF0000/farmmode|r - Переключает увеличение/уменьшение миникарты, удобно для фарма."
+	tukuilocal.core_uihelp20 = "|cffFF0000/micro|r - Переключает фиксацию позиции микроменю"
 	tukuilocal.core_uihelp14 = "(Прокрутите вверх, чтобы увидеть больше комманд ...)"
 
 	tukuilocal.bind_combat = "Вы не можете назначать клавиши в бою."
@@ -176,7 +178,8 @@ if TukuiDB.client == "ruRU" then
 	tukuilocal.bind_save = "Сохранить назначения"
 	tukuilocal.bind_discardbind = "Отменить назначения"
 
-
+	tukuilocal.tooltip_whotarget = "Выбран целью"
+	
 	tukuilocal.core_raidutil = "Инструменты рейда"
 	tukuilocal.core_raidutil_disbandgroup = "Распустить группу"
 	tukuilocal.core_raidutil_blue = "Синяя"

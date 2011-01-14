@@ -19,17 +19,17 @@ if TukuiDB.client == "zhTW" then
 	tukuilocal.chat_FLAG_GM = "[GM]"
 	tukuilocal.chat_ERR_FRIEND_ONLINE_SS = " |cff298F00上線了|r"
 	tukuilocal.chat_ERR_FRIEND_OFFLINE_S = " |cffff0000離線了|r"
+	tukuilocal.raidbufftoggler = "團隊增益效果提醒: "
 
 	tukuilocal.disband = "正在解散隊伍."
-	tukuilocal.raidbufftoggler = "團隊增益效果提醒: "
-	
+
 	tukuilocal.datatext_download = "下載: "
-	tukuilocal.datatext_bandwidth = "寬頻: "
+	tukuilocal.datatext_bandwidth = "頻寬: "
 	tukuilocal.datatext_guild = "公會"
 	tukuilocal.datatext_noguild = "無公會"
 	tukuilocal.datatext_bags = "背包: "
 	tukuilocal.datatext_friends = "好友"
-	tukuilocal.datatext_online = "線上: "	
+	tukuilocal.datatext_online = "線上: "
 	tukuilocal.datatext_earned = "賺取:"
 	tukuilocal.datatext_spent = "花費:"
 	tukuilocal.datatext_deficit = "赤字:"
@@ -83,66 +83,62 @@ if TukuiDB.client == "zhTW" then
 		[3] = {5, "胸部", 1000},
 		[4] = {6, "腰部", 1000},
 		[5] = {9, "手腕", 1000},
-		[6] = {10, "手", 1000},
+		[6] = {10, "手套", 1000},
 		[7] = {7, "腿部", 1000},
-		[8] = {8, "腳", 1000},
+		[8] = {8, "腳部", 1000},
 		[9] = {16, "主手", 1000},
 		[10] = {17, "副手", 1000},
 		[11] = {18, "遠程", 1000}
 	}
 
-	tukuilocal.popup_disableui = "Tukui並不支援此解析度, 您想要停用Tukui嗎? (若您想要嘗試其他解析度, 請按取消)"
-	tukuilocal.popup_install = "這個角色首次使用Tukui V12, 您必需先重載介面以完成設定"
-	tukuilocal.popup_2raidactive = "您同時啟用了兩種團隊框架, 請選擇其中一種"
-	tukuilocal.popup_rightchatwarn = "你可能不小心將右邊的對話框移除了，目前右對話框並沒被適當的關閉，你必需從設定中關閉或者按接受來重置你的對話框。"
-	
-	tukuilocal.merchant_repairnomoney = "您沒有足夠的金錢來修理!"
-	tukuilocal.merchant_repaircost = "您的裝備已修理, 花費了"
-	tukuilocal.merchant_trashsell = "您背包內的粗糙物品已被自動賣出, 您賺取了"
+	tukuilocal.popup_disableui = "Tukui並不支援此解析度, 你想要停用Tukui嗎? (若想要嘗試其他解析度, 請按取消)"
+	tukuilocal.popup_install = "這個角色第一次使用Tukui, 你需要設定聊天視窗和快捷列."
+	tukuilocal.popup_2raidactive = "你同時啟用了兩種團隊框架, 請選擇其中一種"
+	tukuilocal.popup_rightchatwarn = "你可能不小心移除了右邊的對話框，依造目前的設定Tukui需要右邊的對話框，你必須從設定中關閉(/tc)或者按接受來重置對話框。"
+
+	tukuilocal.merchant_repairnomoney = "你沒有足夠的金錢修理裝備!"
+	tukuilocal.merchant_repaircost = "裝備已經修復, 一共花費"
+	tukuilocal.merchant_trashsell = "背包內的垃圾物品已自動賣出, 一共賺取"
 
 	tukuilocal.goldabbrev = "|cffffd700g|r"
 	tukuilocal.silverabbrev = "|cffc7c7cfs|r"
 	tukuilocal.copperabbrev = "|cffeda55fc|r"
 
-	tukuilocal.error_noerror = "沒有錯誤"
+	tukuilocal.error_noerror = "沒有錯誤."
 
 	tukuilocal.unitframes_ouf_offline = "離線"
 	tukuilocal.unitframes_ouf_dead = "死亡"
 	tukuilocal.unitframes_ouf_ghost = "鬼魂"
 	tukuilocal.unitframes_ouf_lowmana = "法力過低"
-	tukuilocal.unitframes_ouf_threattext = "當前目標的仇恨:"
+	tukuilocal.unitframes_ouf_threattext = "目標的仇恨:"
 	tukuilocal.unitframes_ouf_offlinedps = "離線"
 	tukuilocal.unitframes_ouf_deaddps = "死亡"
 	tukuilocal.unitframes_ouf_ghostheal = "鬼魂"
 	tukuilocal.unitframes_ouf_deadheal = "死亡"
-	tukuilocal.unitframes_ouf_gohawk = "切換為雄鷹守護"
-	tukuilocal.unitframes_ouf_goviper = "切換為蝮蛇守護"
 	tukuilocal.unitframes_disconnected = "斷線"
 
 	tukuilocal.tooltip_count = "數量"
 
 	tukuilocal.bags_noslots = "不能再購買更多的背包欄位!"
 	tukuilocal.bags_costs = "花費: %.2f 金"
-	tukuilocal.bags_buyslots = "輸入 /bags purchase yes 以購買銀行背包欄位"
-	tukuilocal.bags_openbank = "您需要先造訪您的銀行"
-	tukuilocal.bags_sort = "將背包或銀行內的物品分類及排序"
-	tukuilocal.bags_stack = "將背包或銀行內的不完整的物品堆疊重新堆疊"
-	tukuilocal.bags_buybankslot = "購買銀行背包欄位. (需要造訪銀行)"
+	tukuilocal.bags_buyslots = "輸入 /bags purchase yes 來購買銀行背包欄位"
+	tukuilocal.bags_openbank = "你需要先開啟你的銀行"
+	tukuilocal.bags_sort = "排序背包/銀行內的物品(需開啟背包/銀行)"
+	tukuilocal.bags_stack = "重新堆疊背包/銀行內的未滿的物品(需開啟背包/銀行)"
+	tukuilocal.bags_buybankslot = "購買銀行背包欄位. (需開啟銀行)"
 	tukuilocal.bags_search = "搜尋"
-	tukuilocal.bags_sortmenu = "分類及排序"
-	tukuilocal.bags_sortspecial = "分類及排序特殊物品"
+	tukuilocal.bags_sortmenu = "排序"
+	tukuilocal.bags_sortspecial = "排序特殊物品"
 	tukuilocal.bags_stackmenu = "堆疊"
 	tukuilocal.bags_stackspecial = "堆疊特殊物品"
 	tukuilocal.bags_showbags = "顯示背包"
-	tukuilocal.bags_sortingbags = "分類及排序完成"
-	tukuilocal.bags_nothingsort= "不需要分類"
+	tukuilocal.bags_sortingbags = "排序完成"
+	tukuilocal.bags_nothingsort= "不需要排序"
 	tukuilocal.bags_bids = "使用背包: "
 	tukuilocal.bags_stackend = "重新堆疊完成"
 	tukuilocal.bags_rightclick_search = "點擊右鍵以搜尋物品"
- 
-	tukuilocal.chat_invalidtarget = "無效的目標"
 
-	
+	tukuilocal.chat_invalidtarget = "無效的目標"
 
 	tukuilocal.core_autoinv_enable = "啟用自動邀請: invite"
 	tukuilocal.core_autoinv_enable_c = "自動邀請功能已啟用: "
@@ -152,47 +148,41 @@ if TukuiDB.client == "zhTW" then
 
 	tukuilocal.core_uihelp1 = "|cff00ff00基本指令|r"
 	tukuilocal.core_uihelp2 = "|cffFF0000/tracker|r - Tukui 競技場敵方冷卻監視器 - 一個精簡的PvP冷卻監視器 (Icon only)"
-	tukuilocal.core_uihelp3 = "|cffFF0000/rl|r - 重載您的使用者介面"
+	tukuilocal.core_uihelp3 = "|cffFF0000/rl|r - 重新載入使用者介面"
 	tukuilocal.core_uihelp4 = "|cffFF0000/gm|r - 聯繫GM或開啟魔獸世界幫助訊息"
-	tukuilocal.core_uihelp5 = "|cffFF0000/frame|r - 偵測您滑鼠位置上的框架名稱 (對於lua編制者非常有幫助)"
-	tukuilocal.core_uihelp6 = "|cffFF0000/heal|r - 啟用治療的ouf介面"
-	tukuilocal.core_uihelp7 = "|cffFF0000/dps|r - 啟用Dps/Tank的ouf介面"
-	tukuilocal.core_uihelp8 = "|cffFF0000/uf|r - 移動及鎖定ouf框架"
-	tukuilocal.core_uihelp9 = "|cffFF0000/bags|r - 分類及排序背包, 購買銀行背包欄位或重新堆疊背包/銀行內的物品"
-	tukuilocal.core_uihelp10 = "|cffFF0000/resetui|r - 重置Tukui的設定"
+	tukuilocal.core_uihelp5 = "|cffFF0000/frame|r - 偵測滑鼠位置上的框架名稱 (對於lua編輯非常有幫助)"
+	tukuilocal.core_uihelp6 = "|cffFF0000/heal|r - 啟用治療的版面設定"
+	tukuilocal.core_uihelp7 = "|cffFF0000/dps|r - 啟用Dps/Tank的版面設定"
+	tukuilocal.core_uihelp8 = "|cffFF0000/uf|r - 移動及鎖定單位框架"
+	tukuilocal.core_uihelp9 = "|cffFF0000/bags|r - 排序背包, 購買銀行欄位或重新堆疊背包/銀行內的物品"
+	tukuilocal.core_uihelp10 = "|cffFF0000/resetui|r - 重置設定為預設值"
 	tukuilocal.core_uihelp11 = "|cffFF0000/rd|r - 解散團隊"
-	tukuilocal.core_uihelp12 = "|cffFF0000/hb|r - 設置動作條快捷鍵"
+	tukuilocal.core_uihelp12 = "|cffFF0000/hb|r - 設置動作列快捷鍵"
 	tukuilocal.core_uihelp13 = "|cffFF0000/mss|r - 移動姿態/變形列和圖騰列"
-	tukuilocal.core_uihelp15 = "|cffFF0000/ainv|r - 輸入關鍵字(預設:/ainv)以啟用密語自動邀請, 您可以自行設定關鍵字, 指令為/ainv 關鍵字"
+	tukuilocal.core_uihelp15 = "|cffFF0000/ainv|r - 輸入關鍵字以啟用密語自動邀請, 可以自行設定關鍵字, 指令為`/ainv 關鍵字`"
 	tukuilocal.core_uihelp16 = "|cffFF0000/resetgold|r - 重置金錢記錄"
-	tukuilocal.core_uihelp17 = "|cffFF0000/moveele|r - 解鎖單位視窗可移動部位"
-	tukuilocal.core_uihelp18 = "|cffFF0000/resetele|r - 將所有可移動部位重置回預設位置，重置單一部位請用/resetele <部位名稱>。"
+	tukuilocal.core_uihelp17 = "|cffFF0000/moveele|r - 移動或鎖定單位視窗可移動部位"
+	tukuilocal.core_uihelp18 = "|cffFF0000/resetele|r - 將所有可移動部位重置回預設位置，重置單一部位請用/resetele <部位名稱>."
+	tukuilocal.core_uihelp19 = "|cffFF0000/farmmode|r - 增加或減少小地圖的大小, farming很有用."
+	tukuilocal.core_uihelp20 = "|cffFF0000/micro|r - 移動或鎖定微型工作列"
 	tukuilocal.core_uihelp14 = "(向上滾動以獲得更多命令 ...)"
 
-	tukuilocal.bind_combat = "您不能在戰鬥中設定快捷鍵"
-	tukuilocal.bind_saved = "所有快捷鍵修改已儲存"
-	tukuilocal.bind_discard = "這次的快捷鍵修改已重設為上一次修改"
-	tukuilocal.bind_instruct = "將滑鼠指向動作列上以綁定快捷鍵, 您可以按ESC或以右鍵點擊快捷列上任何一格以清除該位置的設定"
+	tukuilocal.tooltip_whotarget = "Targeted By"
+
+	tukuilocal.bind_combat = "戰鬥中不能設定快捷鍵."
+	tukuilocal.bind_saved = "已儲存快捷鍵的修改."
+	tukuilocal.bind_discard = "已放棄快捷鍵的修改, 回復先前設定."
+	tukuilocal.bind_instruct = "將滑鼠移動到想更改的動作列上設定快捷鍵. 若要清除快速鍵設定可以按ESC或者滑鼠右鍵點擊動作列按鈕."
 	tukuilocal.bind_save = "儲存"
 	tukuilocal.bind_discardbind = "放棄"
 
 	tukuilocal.core_raidutil = "團隊助手"
 	tukuilocal.core_raidutil_disbandgroup = "解散團隊"
-	tukuilocal.core_raidutil_blue = "藍色"
-	tukuilocal.core_raidutil_green = "綠色"
-	tukuilocal.core_raidutil_purple = "紫色"
-	tukuilocal.core_raidutil_red = "紅色"
-	tukuilocal.core_raidutil_white = "白色"
-	tukuilocal.core_raidutil_clear = "清除"
-
-	tukuilocal.hunter_unhappy = "你的寵物感到不高興!"
-	tukuilocal.hunter_content = "你的寵物感到滿足!"
-	tukuilocal.hunter_happy = "你的寵物感到高興!"
 
 	function TukuiDB.UpdateHotkey(self, actionButtonType)
 		local hotkey = _G[self:GetName() .. 'HotKey']
 		local text = hotkey:GetText()
-		
+
 		text = string.gsub(text, '(s%-)', 'S')
 		text = string.gsub(text, '(a%-)', 'A')
 		text = string.gsub(text, '(c%-)', 'C')
@@ -207,7 +197,7 @@ if TukuiDB.client == "zhTW" then
 		text = string.gsub(text, KEY_DELETE, 'Del')
 		text = string.gsub(text, KEY_MOUSEWHEELUP, 'MwU')
 		text = string.gsub(text, KEY_MOUSEWHEELDOWN, 'MwD')
-		
+
 		if hotkey:GetText() == _G['RANGE_INDICATOR'] then
 			hotkey:SetText('')
 		else

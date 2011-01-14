@@ -184,6 +184,7 @@
 	TukuiL.option_tooltip_xOfs = "X-Отступ подсказки (-x = Лево, +x = Право)"
 	TukuiL.option_tooltip_yOfs = "Y-Отступ подсказки (-y = Низ, +y = Верх)"
 	TukuiL.option_tooltip_itemid = "Display Item ID"
+	TukuiL.option_tooltip_whotargetting = "Показывает того, кто нацеливается на игрока группы/рейда."
 	
 	-- others
 	TukuiL.option_others = "Прочее"
@@ -224,6 +225,8 @@
 	TukuiL.option_actionbar_verticalstance = "Расположить панель стоек вертикально"
 	TukuiL.option_actionbar_petbuttonsize = "Размер кнопок стоек/питомца"
 	TukuiL.option_actionbar_petbuttonspacing = "Расстояние между кнопками стоек/питомца"
+	TukuiL.option_actionbar_microbar = "Включить микроменю"
+	TukuiL.option_actionbar_mousemicro = "Показывать микроменю при наведении курсора"
 	
 	-- arena
 	TukuiL.option_arena = "Арена"
