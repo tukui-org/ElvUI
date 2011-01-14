@@ -74,10 +74,12 @@ if (buffs and buffs[1]) then
 				self:RegisterEvent("PLAYER_LOGIN")
 				self:RegisterEvent("PLAYER_REGEN_ENABLED")
 				self:RegisterEvent("PLAYER_REGEN_DISABLED")
+				self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 			end
 		end
-				
-		if (UnitAffectingCombat("player") and not UnitInVehicle("player")) then
+		
+		local inInstance, _ = IsInInstance()	
+		if (UnitAffectingCombat("player") or inInstance) and not UnitInVehicle("player") then
 			for i, buff in pairs(buffs) do
 				local name = GetSpellInfo(buff)
 				if (name and UnitBuff("player", name)) then
@@ -112,6 +114,7 @@ if (buffs and buffs[1]) then
 	frame:RegisterEvent("PLAYER_LOGIN")
 	frame:RegisterEvent("PLAYER_REGEN_ENABLED")
 	frame:RegisterEvent("PLAYER_REGEN_DISABLED")
+	frame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 	frame:RegisterEvent("UNIT_ENTERING_VEHICLE")
 	frame:RegisterEvent("UNIT_ENTERED_VEHICLE")
 	frame:RegisterEvent("UNIT_EXITING_VEHICLE")
