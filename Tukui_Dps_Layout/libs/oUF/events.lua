@@ -29,10 +29,11 @@ function frame_metatable.__index:RegisterEvent(event, func)
 	end
 
 	local curev = self[event]
+	local kind = type(curev)
 	if(curev and func) then
-		if(type(curev) == 'function') then
+		if(kind == 'function' and curev ~= func) then
 			self[event] = setmetatable({curev, func}, event_metatable)
-		else
+		elseif(kind == 'table') then
 			for _, infunc in next, curev do
 				if(infunc == func) then return end
 			end
@@ -60,10 +61,13 @@ function frame_metatable.__index:UnregisterEvent(event, func)
 	if(type(curev) == 'table' and func) then
 		for k, infunc in next, curev do
 			if(infunc == func) then
-				curev[k] = nil
+				table.remove(curev, k)
 
-				if(#curev == 0) then
-					table.remove(curev, k)
+				local n = #curev
+				if(n == 1) then
+					local _, handler = next(curev)
+					self[event] = handler
+				elseif(n == 0) then
 					UnregisterEvent(self, event)
 				end
 

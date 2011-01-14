@@ -67,11 +67,12 @@ local OnUpdate = function(self, elapsed)
 	end
 end
 
-local Update = function(self, event, unit)
+local Update = function(self, event)
+	local unit = self.unit
 	local readyCheck = self.ReadyCheck
 	if(event == 'READY_CHECK_FINISHED') then
 		Finish(readyCheck)
-	elseif(self.unit == unit) then
+	else
 		local status = GetReadyCheckStatus(unit)
 		if(UnitExists(unit) and status) then
 			if(status == 'ready') then
@@ -81,10 +82,6 @@ local Update = function(self, event, unit)
 			else
 				Start(readyCheck)
 			end
-		--- XXX: RegisterAttributeDriver is making my life hell...
-		-- Remove when it actually gets fixed.
-		elseif(event) then
-			readyCheck:Hide()
 		end
 	end
 end
