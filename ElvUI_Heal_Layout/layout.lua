@@ -1838,6 +1838,67 @@ local function Shared(self, unit)
 	end
 	
 	------------------------------------------------------------------------
+	--	Main tanks and Main Assists layout (both mirror'd)
+	------------------------------------------------------------------------
+	
+	if(self:GetParent():GetName():match"ElvHealMainTank" or self:GetParent():GetName():match"ElvHealMainAssist") then
+		-- Right-click focus on maintank or mainassist units
+		self:SetAttribute("type2", "focus")
+		
+		-- health 
+		local health = CreateFrame('StatusBar', nil, self)
+		health:SetAllPoints()
+		health:SetStatusBarTexture(normTex)
+		
+		local healthBG = health:CreateTexture(nil, 'BORDER')
+		healthBG:SetAllPoints()
+				
+		self.Health = health
+		self.Health.bg = healthBG
+		
+		health.frequentUpdates = true
+		if db.showsmooth == true then
+			health.Smooth = true
+		end
+		
+		if db.classcolor ~= true then
+			health.colorTapping = false
+			health.colorClass = false
+			health:SetStatusBarColor(unpack(ElvCF["unitframes"].healthcolor))	
+			healthBG:SetTexture(unpack(ElvCF["unitframes"].healthbackdropcolor))
+		else
+			health.colorTapping = true	
+			health.colorClass = true
+			health.colorReaction = true	
+			healthBG.multiplier = 0.3
+		end
+		health.colorDisconnected = false
+		
+		-- Border for HealthBar
+		local FrameBorder = CreateFrame("Frame", nil, health)
+		FrameBorder:SetPoint("TOPLEFT", health, "TOPLEFT", ElvDB.Scale(-2), ElvDB.Scale(2))
+		FrameBorder:SetPoint("BOTTOMRIGHT", health, "BOTTOMRIGHT", ElvDB.Scale(2), ElvDB.Scale(-2))
+		ElvDB.SetTemplate(FrameBorder)
+		FrameBorder:SetBackdropBorderColor(unpack(ElvCF["media"].altbordercolor))
+		FrameBorder:SetFrameLevel(2)
+		self.FrameBorder = FrameBorder
+		ElvDB.CreateShadow(self.FrameBorder)
+		self.FrameBorder.shadow:SetFrameLevel(0)
+		self.FrameBorder.shadow:SetFrameStrata("BACKGROUND")
+		
+		-- names
+		local Name = health:CreateFontString(nil, "OVERLAY")
+		Name:SetPoint("CENTER", health, "CENTER", 0, ElvDB.Scale(1))
+		Name:SetJustifyH("CENTER")
+		Name:SetFont(font1, ElvCF["unitframes"].fontsize, "OUTLINE")
+		Name:SetShadowColor(0, 0, 0)
+		Name:SetShadowOffset(1.25, -1.25)
+		
+		self:Tag(Name, '[Elvui:getnamecolor][Elvui:nameshort]')
+		self.Name = Name
+	end	
+	
+	------------------------------------------------------------------------
 	--	Features we want for all units at the same time
 	------------------------------------------------------------------------
 	
