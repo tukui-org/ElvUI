@@ -16,7 +16,7 @@ function TukuiDB.StyleButton(b, checked)
     local nametext        = _G[name.."Name"]
     local flash           = _G[name.."Flash"]
     local normaltexture   = _G[name.."NormalTexture"]
-		local icontexture	= _G[name.."IconTexture"]
+	local icontexture	= _G[name.."IconTexture"]
  
     local hover = b:CreateTexture("frame", nil, self) -- hover
     hover:SetTexture(1,1,1,0.3)

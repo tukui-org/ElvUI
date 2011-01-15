@@ -276,6 +276,7 @@ local function UpdateObjects(frame)
 		frame.hp.level:Hide()
 	else
 		frame.hp.level:SetText(level..(elite and "+" or ""))
+		frame.hp.level:Show()
 	end
 	
 	frame.overlay:ClearAllPoints()
