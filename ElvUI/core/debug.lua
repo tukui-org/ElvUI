@@ -2,7 +2,7 @@
 local ElvCF = ElvCF
 
 local print = function(...)
-	return print('|cff33ff99ElvUI:|r', ...)
+	return print('|cffFF6347ElvUI:|r', ...)
 end
 
 function ElvDB.debug(...)

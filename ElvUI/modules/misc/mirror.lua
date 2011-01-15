@@ -129,7 +129,7 @@ frame:SetScript('OnEvent', function(self, event, ...)
 end)
 
 function frame:ADDON_LOADED(addon)
-	if(addon == 'Elvui') then
+	if(addon == 'ElvUI') then
 		UIParent:UnregisterEvent'MIRROR_TIMER_START'
 
 		self:UnregisterEvent'ADDON_LOADED'
