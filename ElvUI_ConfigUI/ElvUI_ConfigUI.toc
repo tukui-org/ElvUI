@@ -1,0 +1,19 @@
+## Interface: 40000
+## Title: |cffFF6347ElvUI Config UI|r
+## Notes: Someday there is only pantesaur left.
+## Author: Tohveli
+## Editor: Elv, Tukz
+## SavedVariables: ElvuiConfigAll, ElvuiConfigSettings
+## SavedVariablesPerCharacter: ElvuiConfig, ElvuiABLock
+## RequiredDeps: ElvUI
+
+local\english.lua
+local\french.lua
+local\russian.lua
+local\german.lua
+local\taiwan.lua
+local\spanish.lua
+local\korean.lua
+local\china.lua
+
+core.lua

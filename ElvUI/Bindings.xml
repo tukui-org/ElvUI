@@ -1,0 +1,14 @@
+<Bindings>
+  <Binding name="Elvui Raid Marker" header="ELVUI" runOnUp="true">
+    RaidMark_HotkeyPressed(keystate)
+  </Binding>
+  <Binding name="Elvui Chat Left Slider" header="ELVUI" runOnUp="true">
+	ChatLeft_HotkeyPressed(keystate)
+  </Binding>
+  <Binding name="Elvui Chat Right Slider" header="ELVUI" runOnUp="true">
+	ChatRight_HotkeyPressed(keystate)
+  </Binding>
+  <Binding name="Elvui Chat Both Sliders" header="ELVUI" runOnUp="true">
+	ChatBoth_HotkeyPressed(keystate)
+  </Binding>
+</Bindings>
