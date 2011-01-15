@@ -14,39 +14,40 @@ tinymap:Hide()
 -- create minimap background
 local tinymapbg = CreateFrame("Frame", nil, tinymap)
 tinymapbg:SetAllPoints()
-tinymapbg:SetFrameLevel(8)
+tinymapbg:SetFrameLevel(tinymap:GetFrameLevel() - 10)
 TukuiDB.SetTemplate(tinymapbg)
 
 tinymap:SetScript("OnEvent", function(self, event, addon)
 	if addon ~= "Blizzard_BattlefieldMinimap" then return end
-		
-	-- show holder
-	self:Show()
 
-	BattlefieldMinimap:SetScript("OnShow", function()
+	BattlefieldMinimap:SetScript("OnShow", function(self)
+		-- show holder
+		tinymap:Show()
 		TukuiDB.Kill(BattlefieldMinimapCorner)
 		TukuiDB.Kill(BattlefieldMinimapBackground)
 		TukuiDB.Kill(BattlefieldMinimapTab)
 		TukuiDB.Kill(BattlefieldMinimapTabLeft)
 		TukuiDB.Kill(BattlefieldMinimapTabMiddle)
 		TukuiDB.Kill(BattlefieldMinimapTabRight)
-		BattlefieldMinimap:SetParent(self)
-		BattlefieldMinimap:SetPoint("TOPLEFT", self, "TOPLEFT", 2, -2)
-		BattlefieldMinimap:SetFrameStrata(self:GetFrameStrata())
-		BattlefieldMinimap:SetFrameLevel(self:GetFrameLevel() + 1)
+		self:SetParent(tinymap)
+		self:SetPoint("TOPLEFT", tinymap, "TOPLEFT", 2, -2)
+		self:SetFrameStrata(tinymap:GetFrameStrata())
+		self:SetFrameLevel(tinymap:GetFrameLevel() + 1)
 		BattlefieldMinimapCloseButton:ClearAllPoints()
 		BattlefieldMinimapCloseButton:SetPoint("TOPRIGHT", -4, 0)
-		BattlefieldMinimapCloseButton:SetFrameLevel(self:GetFrameLevel() + 1)
-		self:SetScale(1)
-		self:SetAlpha(1)
+		BattlefieldMinimapCloseButton:SetFrameLevel(tinymap:GetFrameLevel() + 1)
+		tinymap:SetScale(1)
+		tinymap:SetAlpha(1)
+		ToggleFrame(WorldMapFrame)
+		ToggleFrame(WorldMapFrame)
 	end)
-	
-	BattlefieldMinimap:SetScript("OnHide", function()
-		self:SetScale(0.00001)
-		self:SetAlpha(0)
+
+	BattlefieldMinimap:SetScript("OnHide", function(self)
+		tinymap:SetScale(0.00001)
+		tinymap:SetAlpha(0)
 	end)
-	
-	self:SetScript("OnMouseUp", function(self, btn)
+
+	tinymap:SetScript("OnMouseUp", function(self, btn)
 		if btn == "LeftButton" then
 			self:StopMovingOrSizing()
 			if OpacityFrame:IsShown() then OpacityFrame:Hide() end -- seem to be a bug with default ui in 4.0, we hide it on next click
@@ -55,8 +56,8 @@ tinymap:SetScript("OnEvent", function(self, event, addon)
 			if OpacityFrame:IsShown() then OpacityFrame:Hide() end -- seem to be a bug with default ui in 4.0, we hide it on next click
 		end
 	end)
-	
-	self:SetScript("OnMouseDown", function(self, btn)
+
+	tinymap:SetScript("OnMouseDown", function(self, btn)
 		if btn == "LeftButton" then
 			if BattlefieldMinimapOptions and BattlefieldMinimapOptions.locked then
 				return
