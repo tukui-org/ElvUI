@@ -38,8 +38,6 @@ tinymap:SetScript("OnEvent", function(self, event, addon)
 		BattlefieldMinimapCloseButton:SetFrameLevel(tinymap:GetFrameLevel() + 1)
 		tinymap:SetScale(1)
 		tinymap:SetAlpha(1)
-		ToggleFrame(WorldMapFrame)
-		ToggleFrame(WorldMapFrame)
 	end)
 
 	BattlefieldMinimap:SetScript("OnHide", function(self)
