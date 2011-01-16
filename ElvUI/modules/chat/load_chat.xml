@@ -2,4 +2,5 @@
 	<Script file="chatanimations.lua"/>
 	<Script file='chat.lua'/>
 	<Script file="copyurl.lua"/>
+	<Script file="spam.lua"/>
 </Ui>
