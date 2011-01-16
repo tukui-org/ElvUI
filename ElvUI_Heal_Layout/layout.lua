@@ -1937,12 +1937,12 @@ end
 
 -- Player
 local player = oUF:Spawn('player', "ElvHeal_player")
-player:SetPoint("BOTTOMRIGHT", ElvuiActionBarBackground, "TOPLEFT", ElvDB.Scale(-15),ElvDB.Scale(205) + yoffset)
+player:SetPoint("BOTTOMRIGHT", ElvuiActionBarBackground, "TOPLEFT", ElvDB.Scale(-35),ElvDB.Scale(205) + yoffset)
 player:SetSize(player_width, player_height)
 
 -- Target
 local target = oUF:Spawn('target', "ElvHeal_target")
-target:SetPoint("BOTTOMLEFT", ElvuiActionBarBackground, "TOPRIGHT", ElvDB.Scale(15),ElvDB.Scale(205) + yoffset)
+target:SetPoint("BOTTOMLEFT", ElvuiActionBarBackground, "TOPRIGHT", ElvDB.Scale(35),ElvDB.Scale(205) + yoffset)
 target:SetSize(target_width, target_height)
 
 -- Focus
