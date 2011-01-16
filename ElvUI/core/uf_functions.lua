@@ -157,6 +157,14 @@ ElvDB.LoadUFFunctions = function(layout)
 				if health:GetParent().CPoints.FrameBackdrop then
 					health:GetParent().CPoints.FrameBackdrop:SetBackdropBorderColor(r,g,b)
 				end
+			elseif unit and unit:find("boss%d") then
+				if health:GetParent().AltPowerBar.FrameBackdrop then
+					health:GetParent().AltPowerBar.FrameBackdrop:SetBackdropBorderColor(r,g,b)
+				end
+			elseif unit and unit:find("arena%d") then
+				if health:GetParent().Trinketbg then
+					health:GetParent().Trinketbg:SetBackdropBorderColor(r,g,b)
+				end
 			end
 		end
 		

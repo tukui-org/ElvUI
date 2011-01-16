@@ -1693,6 +1693,7 @@ local function Shared(self, unit)
 			AltPowerBar:SetBackdropColor(0, 0, 0)
 			AltPowerBar:HookScript("OnShow", function(self) self:GetParent().FrameBorder.shadow:SetPoint("TOPLEFT", ElvDB.Scale(-4), ElvDB.Scale(12)) end)
 			AltPowerBar:HookScript("OnHide", function(self) self:GetParent().FrameBorder.shadow:SetPoint("TOPLEFT", ElvDB.Scale(-4), ElvDB.Scale(4)) end)
+			AltPowerBar.FrameBackdrop = apb_bg			
 			self.AltPowerBar = AltPowerBar	
 		end
 		
