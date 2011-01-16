@@ -3,4 +3,5 @@
 	<Script file="classtimers_spellist.lua"/>
 	<Script file="filter.lua"/>
 	<Script file="configui.lua"/>
+	<Script file='autodisable.lua'/>
 </Ui>

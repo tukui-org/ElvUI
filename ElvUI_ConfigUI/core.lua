@@ -313,9 +313,9 @@ login:SetScript("OnEvent", function(self)
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 
 	if ElvuiConfigAll[myPlayerRealm][myPlayerName] == true then
-		print(elvuilocal.core_welcome1..ElvDB.version.." (Loaded "..myPlayerName.."'s settings)")
+		print(ElvL.core_welcome1..ElvDB.version.." (Loaded "..myPlayerName.."'s settings)")
 	else
-		print(elvuilocal.core_welcome1..ElvDB.version.." (Loaded default settings)")
+		print(ElvL.core_welcome1..ElvDB.version.." (Loaded default settings)")
 	end
 end)
 

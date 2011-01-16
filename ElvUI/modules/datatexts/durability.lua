@@ -1,6 +1,6 @@
 local ElvCF = ElvCF
 local ElvDB = ElvDB
-local elvuilocal = elvuilocal
+local ElvL = ElvL
 
 --------------------------------------------------------------------
 -- DURABILITY
@@ -25,19 +25,19 @@ if ElvCF["datatext"].dur and ElvCF["datatext"].dur > 0 then
 	
 	local function OnEvent(self)
 		for i = 1, 11 do
-			if GetInventoryItemLink("player", elvuilocal.Slots[i][1]) ~= nil then
-				current, max = GetInventoryItemDurability(elvuilocal.Slots[i][1])
+			if GetInventoryItemLink("player", ElvL.Slots[i][1]) ~= nil then
+				current, max = GetInventoryItemDurability(ElvL.Slots[i][1])
 				if current then 
-					elvuilocal.Slots[i][3] = current/max
+					ElvL.Slots[i][3] = current/max
 					Total = Total + 1
 				end
 			end
 		end
-		table.sort(elvuilocal.Slots, function(a, b) return a[3] < b[3] end)
+		table.sort(ElvL.Slots, function(a, b) return a[3] < b[3] end)
 
 		if Total > 0 then
-			Text:SetText(DURABILITY..": "..ElvDB.ValColor..floor(elvuilocal.Slots[1][3]*100).."%")
-			if floor(elvuilocal.Slots[1][3]*100) <= 20 then
+			Text:SetText(DURABILITY..": "..ElvDB.ValColor..floor(ElvL.Slots[1][3]*100).."%")
+			if floor(ElvL.Slots[1][3]*100) <= 20 then
 				local int = -1
 				Stat:SetScript("OnUpdate", function(self, t)
 					int = int - t
@@ -62,10 +62,10 @@ if ElvCF["datatext"].dur and ElvCF["datatext"].dur > 0 then
 				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, ElvDB.mult)
 				GameTooltip:ClearLines()
 				for i = 1, 11 do
-					if elvuilocal.Slots[i][3] ~= 1000 then
-						green = elvuilocal.Slots[i][3]*2
+					if ElvL.Slots[i][3] ~= 1000 then
+						green = ElvL.Slots[i][3]*2
 						red = 1 - green
-						GameTooltip:AddDoubleLine(elvuilocal.Slots[i][2], floor(elvuilocal.Slots[i][3]*100).."%",1 ,1 , 1, red + 1, green, 0)
+						GameTooltip:AddDoubleLine(ElvL.Slots[i][2], floor(ElvL.Slots[i][3]*100).."%",1 ,1 , 1, red + 1, green, 0)
 					end
 				end
 				GameTooltip:Show()

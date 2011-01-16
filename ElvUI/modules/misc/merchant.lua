@@ -22,7 +22,7 @@ f:SetScript("OnEvent", function()
 		end
 		if c>0 then
 			local g, s, c = math.floor(c/10000) or 0, math.floor((c%10000)/100) or 0, c%100
-			DEFAULT_CHAT_FRAME:AddMessage(elvuilocal.merchant_trashsell.." |cffffffff"..g..elvuilocal.goldabbrev.." |cffffffff"..s..elvuilocal.silverabbrev.." |cffffffff"..c..elvuilocal.copperabbrev..".",255,255,0)
+			DEFAULT_CHAT_FRAME:AddMessage(ElvL.merchant_trashsell.." |cffffffff"..g..ElvL.goldabbrev.." |cffffffff"..s..ElvL.silverabbrev.." |cffffffff"..c..ElvL.copperabbrev..".",255,255,0)
 		end
 	end
 	if not IsShiftKeyDown() then
@@ -34,9 +34,9 @@ f:SetScript("OnEvent", function()
 					local c = cost%100
 					local s = math.floor((cost%10000)/100)
 					local g = math.floor(cost/10000)
-					DEFAULT_CHAT_FRAME:AddMessage(elvuilocal.merchant_repaircost.." |cffffffff"..g..elvuilocal.goldabbrev.." |cffffffff"..s..elvuilocal.silverabbrev.." |cffffffff"..c..elvuilocal.copperabbrev..".",255,255,0)
+					DEFAULT_CHAT_FRAME:AddMessage(ElvL.merchant_repaircost.." |cffffffff"..g..ElvL.goldabbrev.." |cffffffff"..s..ElvL.silverabbrev.." |cffffffff"..c..ElvL.copperabbrev..".",255,255,0)
 				else
-					DEFAULT_CHAT_FRAME:AddMessage(elvuilocal.merchant_repairnomoney,255,0,0)
+					DEFAULT_CHAT_FRAME:AddMessage(ElvL.merchant_repairnomoney,255,0,0)
 				end
 			end
 		end

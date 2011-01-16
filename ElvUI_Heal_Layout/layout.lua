@@ -1351,6 +1351,7 @@ local function Shared(self, unit)
 		else
 			self.FrameBorder.shadow:SetPoint("BOTTOMLEFT", PowerFrame, "BOTTOMLEFT", ElvDB.Scale(-4), ElvDB.Scale(-4))
 		end
+		self.PowerFrame = PowerFrame
 		
 		-- power
 		local power = CreateFrame('StatusBar', nil, self)

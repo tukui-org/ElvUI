@@ -1,6 +1,6 @@
 local ElvCF = ElvCF
 local ElvDB = ElvDB
-local elvuilocal = elvuilocal
+local ElvL = ElvL
 
 --------------------------------------------------------------------
 -- GUILD ROSTER
@@ -46,9 +46,9 @@ if ElvCF["datatext"].guild and ElvCF["datatext"].guild > 0 then
 				end
 			end 			
 			self:SetAllPoints(Text)
-			Text:SetText(elvuilocal.datatext_guild .. ": " .. ElvDB.ValColor..numOnline)
+			Text:SetText(ElvL.datatext_guild .. ": " .. ElvDB.ValColor..numOnline)
 		else
-			Text:SetText(ElvDB.ValColor..elvuilocal.datatext_noguild)
+			Text:SetText(ElvDB.ValColor..ElvL.datatext_noguild)
 		end
 	end
 		
@@ -110,7 +110,7 @@ if ElvCF["datatext"].guild and ElvCF["datatext"].guild > 0 then
 				GameTooltip:ClearAllPoints()
 				GameTooltip:SetPoint(anchor, self, snapfrom, 0, yoffset2)
 				GameTooltip:ClearLines()
-				GameTooltip:AddDoubleLine(GetGuildInfo'player',format("%s: %d/%d",elvuilocal.datatext_guild,online,total),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
+				GameTooltip:AddDoubleLine(GetGuildInfo'player',format("%s: %d/%d",ElvL.datatext_guild,online,total),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
 				GameTooltip:AddLine' '
 				if gmotd ~= "" then GameTooltip:AddLine(format("  %s |cffaaaaaa- |cffffffff%s",GUILD_MOTD,gmotd),ttsubh.r,ttsubh.g,ttsubh.b,1) end
 				if online > 1 then

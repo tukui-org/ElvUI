@@ -7,7 +7,7 @@
 --]]
 local ElvDB = ElvDB
 local ElvCF = ElvCF
-local elvuilocal = elvuilocal
+local ElvL = ElvL
 
 if not ElvCF["others"].enablebag == true then return end
 
@@ -544,7 +544,7 @@ function Stuffing:InitBags()
 	editbox:SetScript("OnEditFocusLost", editbox.Hide)
 	editbox:SetScript("OnEditFocusGained", editbox.HighlightText)
 	editbox:SetScript("OnTextChanged", updateSearch)
-	editbox:SetText(elvuilocal.bags_search)
+	editbox:SetText(ElvL.bags_search)
 
 
 	local detail = f:CreateFontString(nil, "ARTWORK", "GameFontHighlightLarge")
@@ -599,7 +599,7 @@ function Stuffing:InitBags()
 	local tooltip_show = function (self)
 		GameTooltip:SetOwner(self, "ANCHOR_CURSOR")
 		GameTooltip:ClearLines()
-		GameTooltip:SetText(elvuilocal.bags_rightclick_search)
+		GameTooltip:SetText(ElvL.bags_rightclick_search)
 	end
 
 	button:SetScript("OnEnter", tooltip_show)
@@ -857,7 +857,7 @@ function Stuffing:SetBagsForSorting(c)
 		end
 	end
 
-	local bids = elvuilocal.bags_bids
+	local bids = ElvL.bags_bids
 	for _, i in ipairs(self.sortBags) do
 		bids = bids .. i .. " "
 	end
@@ -886,7 +886,7 @@ local function StuffingSlashCmd(Cmd)
 		if Stuffing.bankFrame and Stuffing.bankFrame:IsShown() then
 			local cnt, full = GetNumBankSlots()
 			if full then
-				Print(elvuilocal.bags_noslots)
+				Print(ElvL.bags_noslots)
 				return
 			end
 
@@ -895,15 +895,15 @@ local function StuffingSlashCmd(Cmd)
 				return
 			end
 
-			Print(string.format(elvuilocal.bags_costs, GetBankSlotCost() / 10000))
-			Print(elvuilocal.bags_buyslots)
+			Print(string.format(ElvL.bags_costs, GetBankSlotCost() / 10000))
+			Print(ElvL.bags_buyslots)
 		else
-			Print(elvuilocal.bags_openbank)
+			Print(ElvL.bags_openbank)
 		end
 	else
-		Print("sort - " .. elvuilocal.bags_sort)
-		Print("stack - " .. elvuilocal.bags_stack)
-		Print("purchase - " .. elvuilocal.bags_buybankslot)
+		Print("sort - " .. ElvL.bags_sort)
+		Print("stack - " .. ElvL.bags_stack)
+		Print("purchase - " .. ElvL.bags_buybankslot)
 	end
 end
 
@@ -1174,7 +1174,7 @@ function Stuffing:SortOnUpdate(e)
 	if (not changed and not blocked) or self.itmax > 250 then
 		self:SetScript("OnUpdate", nil)
 		self.sortList = nil
-		Print (elvuilocal.bags_sortingbags)
+		Print (ElvL.bags_sortingbags)
 	end
 end
 
@@ -1197,7 +1197,7 @@ function Stuffing:SortBags()
 	if (UnitAffectingCombat("player")) then return end;
 	local bs = self.sortBags
 	if #bs < 1 then
-		Print (elvuilocal.bags_nothingsort)
+		Print (ElvL.bags_nothingsort)
 		return
 	end
 
@@ -1280,7 +1280,7 @@ function Stuffing:SortBags()
 
 	-- kick off moving of stuff, if needed.
 	if st == nil or next(st, nil) == nil then
-		Print(elvuilocal.bags_sortingbags)
+		Print(ElvL.bags_sortingbags)
 		self:SetScript("OnUpdate", nil)
 	else
 		self.sortList = st
@@ -1359,7 +1359,7 @@ function Stuffing:Restack()
 		self:SetScript("OnUpdate", Stuffing.RestackOnUpdate)
 	else
 		self:SetScript("OnUpdate", nil)
-		Print (elvuilocal.bags_stackend)
+		Print (ElvL.bags_stackend)
 	end
 end
 
@@ -1377,7 +1377,7 @@ function Stuffing.Menu(self, level)
 	end
 
 	wipe(info)
-	info.text = elvuilocal.bags_sortmenu
+	info.text = ElvL.bags_sortmenu
 	info.notCheckable = 1
 	info.func = function()
 		Stuffing_Sort("d")
@@ -1385,7 +1385,7 @@ function Stuffing.Menu(self, level)
 	UIDropDownMenu_AddButton(info, level)
 	
 	wipe(info)
-	info.text = elvuilocal.bags_sortspecial
+	info.text = ElvL.bags_sortspecial
 	info.notCheckable = 1
 	info.func = function()
 		Stuffing_Sort("c/p")
@@ -1393,7 +1393,7 @@ function Stuffing.Menu(self, level)
 	UIDropDownMenu_AddButton(info, level)
 
 	wipe(info)
-	info.text = elvuilocal.bags_stackmenu
+	info.text = ElvL.bags_stackmenu
 	info.notCheckable = 1
 	info.func = function()
 		Stuffing:SetBagsForSorting("d")
@@ -1402,7 +1402,7 @@ function Stuffing.Menu(self, level)
 	UIDropDownMenu_AddButton(info, level)
 	
 	wipe(info)
-	info.text = elvuilocal.bags_stackspecial
+	info.text = ElvL.bags_stackspecial
 	info.notCheckable = 1
 	info.func = function()
 		Stuffing:SetBagsForSorting("c/p")
@@ -1411,7 +1411,7 @@ function Stuffing.Menu(self, level)
 	UIDropDownMenu_AddButton(info, level)
 
 	wipe(info)
-	info.text = elvuilocal.bags_showbags
+	info.text = ElvL.bags_showbags
 	info.checked = function()
 		return bag_bars == 1
 	end

@@ -1,6 +1,6 @@
 local ElvCF = ElvCF
 local ElvDB = ElvDB
-local elvuilocal = elvuilocal
+local ElvL = ElvL
 
 --------------------------------------------------------------------
 -- GOLD
@@ -26,18 +26,18 @@ if ElvCF["datatext"].gold and ElvCF["datatext"].gold > 0 then
 		local silver = mod(floor(math.abs(money) / 100), 100)
 		local copper = mod(floor(math.abs(money)), 100)
 		if gold ~= 0 then
-			return format("%s"..elvuilocal.goldabbrev.." %s"..elvuilocal.silverabbrev.." %s"..elvuilocal.copperabbrev, gold, silver, copper)
+			return format("%s"..ElvL.goldabbrev.." %s"..ElvL.silverabbrev.." %s"..ElvL.copperabbrev, gold, silver, copper)
 		elseif silver ~= 0 then
-			return format("%s"..elvuilocal.silverabbrev.." %s"..elvuilocal.copperabbrev, silver, copper)
+			return format("%s"..ElvL.silverabbrev.." %s"..ElvL.copperabbrev, silver, copper)
 		else
-			return format("%s"..elvuilocal.copperabbrev, copper)
+			return format("%s"..ElvL.copperabbrev, copper)
 		end
 	end
 
 	local function FormatTooltipMoney(money)
 		local gold, silver, copper = abs(money / 10000), abs(mod(money / 100, 100)), abs(mod(money, 100))
 		local cash = ""
-		cash = format("%d"..elvuilocal.goldabbrev.." %d"..elvuilocal.silverabbrev.." %d"..elvuilocal.copperabbrev, gold, silver, copper)		
+		cash = format("%d"..ElvL.goldabbrev.." %d"..ElvL.silverabbrev.." %d"..ElvL.copperabbrev, gold, silver, copper)		
 		return cash
 	end	
 
@@ -73,26 +73,26 @@ if ElvCF["datatext"].gold and ElvCF["datatext"].gold > 0 then
 				GameTooltip:ClearAllPoints()
 				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, ElvDB.mult)
 				GameTooltip:ClearLines()
-				GameTooltip:AddLine(elvuilocal.datatext_session)
-				GameTooltip:AddDoubleLine(elvuilocal.datatext_earned, formatMoney(Profit), 1, 1, 1, 1, 1, 1)
-				GameTooltip:AddDoubleLine(elvuilocal.datatext_spent, formatMoney(Spent), 1, 1, 1, 1, 1, 1)
+				GameTooltip:AddLine(ElvL.datatext_session)
+				GameTooltip:AddDoubleLine(ElvL.datatext_earned, formatMoney(Profit), 1, 1, 1, 1, 1, 1)
+				GameTooltip:AddDoubleLine(ElvL.datatext_spent, formatMoney(Spent), 1, 1, 1, 1, 1, 1)
 				if Profit < Spent then
-					GameTooltip:AddDoubleLine(elvuilocal.datatext_deficit, formatMoney(Profit-Spent), 1, 0, 0, 1, 1, 1)
+					GameTooltip:AddDoubleLine(ElvL.datatext_deficit, formatMoney(Profit-Spent), 1, 0, 0, 1, 1, 1)
 				elseif (Profit-Spent)>0 then
-					GameTooltip:AddDoubleLine(elvuilocal.datatext_profit, formatMoney(Profit-Spent), 0, 1, 0, 1, 1, 1)
+					GameTooltip:AddDoubleLine(ElvL.datatext_profit, formatMoney(Profit-Spent), 0, 1, 0, 1, 1, 1)
 				end				
 				GameTooltip:AddLine' '								
 			
 				local totalGold = 0				
-				GameTooltip:AddLine(elvuilocal.datatext_character)			
+				GameTooltip:AddLine(ElvL.datatext_character)			
 				local thisRealmList = ElvuiData.gold[myPlayerRealm];
 				for k,v in pairs(thisRealmList) do
 					GameTooltip:AddDoubleLine(k, FormatTooltipMoney(v), 1, 1, 1, 1, 1, 1)
 					totalGold=totalGold+v;
 				end 
 				GameTooltip:AddLine' '
-				GameTooltip:AddLine(elvuilocal.datatext_server)
-				GameTooltip:AddDoubleLine(elvuilocal.datatext_totalgold, FormatTooltipMoney(totalGold), 1, 1, 1, 1, 1, 1)
+				GameTooltip:AddLine(ElvL.datatext_server)
+				GameTooltip:AddDoubleLine(ElvL.datatext_totalgold, FormatTooltipMoney(totalGold), 1, 1, 1, 1, 1, 1)
 
 				for i = 1, MAX_WATCHED_TOKENS do
 					local name, count, extraCurrencyType, icon, itemID = GetBackpackCurrencyInfo(i)

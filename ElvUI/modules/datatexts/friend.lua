@@ -1,6 +1,6 @@
 local ElvCF = ElvCF
 local ElvDB = ElvDB
-local elvuilocal = elvuilocal
+local ElvL = ElvL
 
 --------------------------------------------------------------------
 -- FRIEND
@@ -76,7 +76,7 @@ if ElvCF["datatext"].friends and ElvCF["datatext"].friends > 0 then
 				for i = 1, BNtotal do if select(7, BNGetFriendInfo(i)) then BNonline = BNonline + 1 end end
 			end
 			local totalonline = online + BNonline
-			Text:SetText(elvuilocal.datatext_friends..": "..ElvDB.ValColor..totalonline)
+			Text:SetText(ElvL.datatext_friends..": "..ElvDB.ValColor..totalonline)
 			self:SetAllPoints(Text)
 	end
 
@@ -120,7 +120,7 @@ if ElvCF["datatext"].friends and ElvCF["datatext"].friends > 0 then
 				GameTooltip:ClearAllPoints()
 				GameTooltip:SetPoint(anchor, self, snapfrom, 0, yoffset2)
 				GameTooltip:ClearLines()
-				GameTooltip:AddDoubleLine(elvuilocal.datatext_friendlist, format(elvuilocal.datatext_online .. "%s/%s",totalonline,totalfriends),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
+				GameTooltip:AddDoubleLine(ElvL.datatext_friendlist, format(ElvL.datatext_online .. "%s/%s",totalonline,totalfriends),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
 				if online > 0 then
 					GameTooltip:AddLine' '
 					GameTooltip:AddLine("World of Warcraft")

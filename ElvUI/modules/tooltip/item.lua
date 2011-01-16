@@ -16,7 +16,7 @@ GameTooltip:HookScript("OnTooltipSetItem", function(self)
 		end
 		
 		if ElvuiItemTooltip.count and num > 1 then
-			right = "|cFFCA3C3C"..elvuilocal.tooltip_count.."|r "..num
+			right = "|cFFCA3C3C"..ElvL.tooltip_count.."|r "..num
 		end
 				
 		self:AddLine(" ")

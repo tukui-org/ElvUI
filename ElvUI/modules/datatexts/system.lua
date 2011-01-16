@@ -1,6 +1,6 @@
 local ElvCF = ElvCF
 local ElvDB = ElvDB
-local elvuilocal = elvuilocal
+local ElvL = ElvL
 
 --------------------------------------------------------------------
 -- System Stats
@@ -103,11 +103,11 @@ if ElvCF["datatext"].system and ElvCF["datatext"].system > 0 then
 			GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, ElvDB.mult)
 			GameTooltip:ClearLines()
 			if bandwidth ~= 0 then
-				GameTooltip:AddDoubleLine(elvuilocal.datatext_bandwidth,format("%s ".."Mbps",ElvDB.Round(bandwidth, 2)),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
-				GameTooltip:AddDoubleLine(elvuilocal.datatext_download,format("%s%%", floor(GetDownloadedPercentage()*100+0.5)),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
+				GameTooltip:AddDoubleLine(ElvL.datatext_bandwidth,format("%s ".."Mbps",ElvDB.Round(bandwidth, 2)),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+				GameTooltip:AddDoubleLine(ElvL.datatext_download,format("%s%%", floor(GetDownloadedPercentage()*100+0.5)),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
 				GameTooltip:AddLine(" ")
 			end
-			GameTooltip:AddDoubleLine(elvuilocal.datatext_totalmemusage,formatMem(Total), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+			GameTooltip:AddDoubleLine(ElvL.datatext_totalmemusage,formatMem(Total), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 			GameTooltip:AddLine(" ")
 			for i = 1, #Memory do
 				if Memory[i][3] then 

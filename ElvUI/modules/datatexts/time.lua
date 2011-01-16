@@ -1,6 +1,6 @@
 local ElvCF = ElvCF
 local ElvDB = ElvDB
-local elvuilocal = elvuilocal
+local ElvL = ElvL
 
 --------------------------------------------------------------------
 -- TIME
@@ -111,15 +111,15 @@ if ElvCF["datatext"].wowtime and ElvCF["datatext"].wowtime > 0 then
 			local Hr, Min = GetGameTime()
 			if Min<10 then Min = "0"..Min end
 			if ElvCF["datatext"].time24 == true then         
-				GameTooltip:AddDoubleLine(elvuilocal.datatext_servertime,Hr .. ":" .. Min);
+				GameTooltip:AddDoubleLine(ElvL.datatext_servertime,Hr .. ":" .. Min);
 			else             
 				if Hr>=12 then
 				Hr = Hr-12
 				if Hr == 0 then Hr = 12 end
-					GameTooltip:AddDoubleLine(elvuilocal.datatext_servertime,Hr .. ":" .. Min.." PM");
+					GameTooltip:AddDoubleLine(ElvL.datatext_servertime,Hr .. ":" .. Min.." PM");
 				else
 					if Hr == 0 then Hr = 12 end
-					GameTooltip:AddDoubleLine(elvuilocal.datatext_servertime,Hr .. ":" .. Min.." AM");
+					GameTooltip:AddDoubleLine(ElvL.datatext_servertime,Hr .. ":" .. Min.." AM");
 				end
 			end
 		else
@@ -127,12 +127,12 @@ if ElvCF["datatext"].wowtime and ElvCF["datatext"].wowtime > 0 then
 			Hr = tonumber(date("%I"))
 			Min = date("%M")
 			if ElvCF["datatext"].time24 == true then
-				GameTooltip:AddDoubleLine(elvuilocal.datatext_localtime,Hr24 .. ":" .. Min);
+				GameTooltip:AddDoubleLine(ElvL.datatext_localtime,Hr24 .. ":" .. Min);
 			else
 				if Hr24>=12 then
-					GameTooltip:AddDoubleLine(elvuilocal.datatext_localtime,Hr .. ":" .. Min.." PM");
+					GameTooltip:AddDoubleLine(ElvL.datatext_localtime,Hr .. ":" .. Min.." PM");
 				else
-					GameTooltip:AddDoubleLine(elvuilocal.datatext_localtime,Hr .. ":" .. Min.." AM");
+					GameTooltip:AddDoubleLine(ElvL.datatext_localtime,Hr .. ":" .. Min.." AM");
 				end
 			end
 		end  
@@ -144,7 +144,7 @@ if ElvCF["datatext"].wowtime and ElvCF["datatext"].wowtime > 0 then
 			local tr,tg,tb,diff
 			if not oneraid then
 				GameTooltip:AddLine(" ")
-				GameTooltip:AddLine(elvuilocal.datatext_savedraid)
+				GameTooltip:AddLine(ElvL.datatext_savedraid)
 				oneraid = true
 			end
 

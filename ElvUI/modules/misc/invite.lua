@@ -68,14 +68,14 @@ end)
 function SlashCmdList.AUTOINVITE(msg, editbox)
 	if (msg == 'off') then
 		ainvenabled = false
-		print(elvuilocal.core_autoinv_disable)
+		print(ElvL.core_autoinv_disable)
 	elseif (msg == '') then
 		ainvenabled = true
-		print(elvuilocal.core_autoinv_enable)
+		print(ElvL.core_autoinv_enable)
 		ainvkeyword = "invite"
 	else
 		ainvenabled = true
-		print(elvuilocal.core_autoinv_enable_c .. msg)
+		print(ElvL.core_autoinv_enable_c .. msg)
 		ainvkeyword = msg
 	end
 end

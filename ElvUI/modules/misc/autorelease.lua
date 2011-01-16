@@ -7,7 +7,7 @@ local ElvDB = ElvDB
 if ElvCF["others"].pvpautorelease ~= true then return end
 
 local WINTERGRASP
-WINTERGRASP = elvuilocal.mount_wintergrasp
+WINTERGRASP = ElvL.mount_wintergrasp
 
 local autoreleasepvp = CreateFrame("frame")
 autoreleasepvp:RegisterEvent("PLAYER_DEAD")

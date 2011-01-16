@@ -61,7 +61,7 @@ local function CreateButton(name, parent, template, width, height, point, relati
 end
 
 --Create button to toggle the frame
-CreateButton("ShowButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate, SecureHandlerClickTemplate", RaidUtilityPanel:GetWidth() / 2.5, ElvDB.Scale(18), "TOP", UIParent, "TOP", -300, 2, elvuilocal.core_raidutil, nil)
+CreateButton("ShowButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate, SecureHandlerClickTemplate", RaidUtilityPanel:GetWidth() / 2.5, ElvDB.Scale(18), "TOP", UIParent, "TOP", -300, 2, ElvL.core_raidutil, nil)
 ShowButton:SetAttribute("_onclick", [=[
  if select(5, self:GetPoint()) > 0 then
 	 self:GetParent():ClearAllPoints()
@@ -77,7 +77,7 @@ ShowButton:SetAttribute("_onclick", [=[
 ]=])
 
 --Disband Raid button
-CreateButton("DisbandRaidButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate", RaidUtilityPanel:GetWidth() * 0.8, ElvDB.Scale(18), "TOP", RaidUtilityPanel, "TOP", 0, ElvDB.Scale(-5), elvuilocal.core_raidutil_disbandgroup, nil)
+CreateButton("DisbandRaidButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate", RaidUtilityPanel:GetWidth() * 0.8, ElvDB.Scale(18), "TOP", RaidUtilityPanel, "TOP", 0, ElvDB.Scale(-5), ElvL.core_raidutil_disbandgroup, nil)
 DisbandRaidButton:SetScript("OnMouseUp", function(self)
 	if CheckRaidStatus() then
 		StaticPopup_Show("DISBAND_RAID")

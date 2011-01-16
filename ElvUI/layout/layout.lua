@@ -1,6 +1,6 @@
 local ElvDB = ElvDB
 local ElvCF = ElvCF
-local elvuilocal = elvuilocal
+local ElvL = ElvL
 
 -- BUTTON SIZES
 ElvDB.buttonsize = ElvDB.Scale(ElvCF["actionbar"].buttonsize)
@@ -350,28 +350,28 @@ if ElvCF["datatext"].battleground == true then
 					local classcolor = ("|cff%.2x%.2x%.2x"):format(color.r * 255, color.g * 255, color.b * 255)
 					GameTooltip:SetOwner(self, "ANCHOR_CURSOR")
 					GameTooltip:ClearLines()
-					GameTooltip:AddDoubleLine(elvuilocal.datatext_ttstatsfor, classcolor..name.."|r")
+					GameTooltip:AddDoubleLine(ElvL.datatext_ttstatsfor, classcolor..name.."|r")
 					GameTooltip:AddLine' '
 					--Add extra statistics to watch based on what BG you are in.
 					if GetRealZoneText() == "Arathi Basin" then --
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
 					elseif GetRealZoneText() == "Warsong Gulch" then --
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_flagsreturned,GetBattlefieldStatData(i, 2),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_flagsreturned,GetBattlefieldStatData(i, 2),1,1,1)
 					elseif GetRealZoneText() == "Eye of the Storm" then --
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
 					elseif GetRealZoneText() == "Alterac Valley" then
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_graveyardsassaulted,GetBattlefieldStatData(i, 1),1,1,1)
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_graveyardsdefended,GetBattlefieldStatData(i, 2),1,1,1)
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_towersassaulted,GetBattlefieldStatData(i, 3),1,1,1)
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_towersdefended,GetBattlefieldStatData(i, 4),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_graveyardsassaulted,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_graveyardsdefended,GetBattlefieldStatData(i, 2),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_towersassaulted,GetBattlefieldStatData(i, 3),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_towersdefended,GetBattlefieldStatData(i, 4),1,1,1)
 					elseif GetRealZoneText() == "Strand of the Ancients" then
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_demolishersdestroyed,GetBattlefieldStatData(i, 1),1,1,1)
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_gatesdestroyed,GetBattlefieldStatData(i, 2),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_demolishersdestroyed,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_gatesdestroyed,GetBattlefieldStatData(i, 2),1,1,1)
 					elseif GetRealZoneText() == "Isle of Conquest" then
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
 					end			
 					GameTooltip:Show()
 				end
@@ -395,28 +395,28 @@ if ElvCF["datatext"].battleground == true then
 					local classcolor = ("|cff%.2x%.2x%.2x"):format(color.r * 255, color.g * 255, color.b * 255)
 					GameTooltip:SetOwner(self, "ANCHOR_CURSOR")
 					GameTooltip:ClearLines()
-					GameTooltip:AddDoubleLine(elvuilocal.datatext_ttstatsfor, classcolor..name.."|r")
+					GameTooltip:AddDoubleLine(ElvL.datatext_ttstatsfor, classcolor..name.."|r")
 					GameTooltip:AddLine' '
 					--Add extra statistics to watch based on what BG you are in.
 					if GetRealZoneText() == "Arathi Basin" then --
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
 					elseif GetRealZoneText() == "Warsong Gulch" then --
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_flagsreturned,GetBattlefieldStatData(i, 2),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_flagsreturned,GetBattlefieldStatData(i, 2),1,1,1)
 					elseif GetRealZoneText() == "Eye of the Storm" then --
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
 					elseif GetRealZoneText() == "Alterac Valley" then
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_graveyardsassaulted,GetBattlefieldStatData(i, 1),1,1,1)
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_graveyardsdefended,GetBattlefieldStatData(i, 2),1,1,1)
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_towersassaulted,GetBattlefieldStatData(i, 3),1,1,1)
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_towersdefended,GetBattlefieldStatData(i, 4),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_graveyardsassaulted,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_graveyardsdefended,GetBattlefieldStatData(i, 2),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_towersassaulted,GetBattlefieldStatData(i, 3),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_towersdefended,GetBattlefieldStatData(i, 4),1,1,1)
 					elseif GetRealZoneText() == "Strand of the Ancients" then
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_demolishersdestroyed,GetBattlefieldStatData(i, 1),1,1,1)
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_gatesdestroyed,GetBattlefieldStatData(i, 2),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_demolishersdestroyed,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_gatesdestroyed,GetBattlefieldStatData(i, 2),1,1,1)
 					elseif GetRealZoneText() == "Isle of Conquest" then
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
-						GameTooltip:AddDoubleLine(elvuilocal.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(ElvL.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
 					end			
 					GameTooltip:Show()
 				end

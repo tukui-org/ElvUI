@@ -3,7 +3,7 @@
 ------------------------------------------------------------------------
 local ElvDB = ElvDB
 local ElvCF = ElvCF
-local elvuilocal = elvuilocal
+local ElvL = ElvL
 
 ElvDB.LoadUFFunctions = function(layout)
 	function ElvDB.SpawnMenu(self)
@@ -144,6 +144,21 @@ ElvDB.LoadUFFunctions = function(layout)
 
 	ElvDB.PostUpdateHealth = function(health, unit, min, max)
 		local header = health:GetParent():GetParent():GetName()
+
+		if ElvCF["general"].classcolortheme == true then
+			local r, g, b = health:GetStatusBarColor()
+			health:GetParent().FrameBorder:SetBackdropBorderColor(r,g,b)
+			
+			if health:GetParent().PowerFrame then
+				health:GetParent().PowerFrame:SetBackdropBorderColor(r,g,b)
+			end
+			
+			if unit == "target" then
+				if health:GetParent().CPoints.FrameBackdrop then
+					health:GetParent().CPoints.FrameBackdrop:SetBackdropBorderColor(r,g,b)
+				end
+			end
+		end
 		
 		--Setup color health by value option
 		if ElvCF["unitframes"].healthcolorbyvalue == true then
@@ -217,11 +232,11 @@ ElvDB.LoadUFFunctions = function(layout)
 		if header == "ElvuiHealParty" or header == "ElvuiDPSParty" or header == "ElvuiHealR6R25" or header == "ElvuiDPSR6R25" or header == "ElvuiHealR26R40" or header == "ElvuiDPSR26R40" then --Raid/Party Layouts
 			if not UnitIsConnected(unit) or UnitIsDead(unit) or UnitIsGhost(unit) then
 				if not UnitIsConnected(unit) then
-					health.value:SetText("|cffD7BEA5"..elvuilocal.unitframes_ouf_offline.."|r")
+					health.value:SetText("|cffD7BEA5"..ElvL.unitframes_ouf_offline.."|r")
 				elseif UnitIsDead(unit) then
-					health.value:SetText("|cffD7BEA5"..elvuilocal.unitframes_ouf_dead.."|r")
+					health.value:SetText("|cffD7BEA5"..ElvL.unitframes_ouf_dead.."|r")
 				elseif UnitIsGhost(unit) then
-					health.value:SetText("|cffD7BEA5"..elvuilocal.unitframes_ouf_ghost.."|r")
+					health.value:SetText("|cffD7BEA5"..ElvL.unitframes_ouf_ghost.."|r")
 				end
 			else
 				if min ~= max and ElvCF["raidframes"].healthdeficit == true then
@@ -251,11 +266,11 @@ ElvDB.LoadUFFunctions = function(layout)
 		else
 			if not UnitIsConnected(unit) or UnitIsDead(unit) or UnitIsGhost(unit) then
 				if not UnitIsConnected(unit) then
-					health.value:SetText("|cffD7BEA5"..elvuilocal.unitframes_ouf_offline.."|r")
+					health.value:SetText("|cffD7BEA5"..ElvL.unitframes_ouf_offline.."|r")
 				elseif UnitIsDead(unit) then
-					health.value:SetText("|cffD7BEA5"..elvuilocal.unitframes_ouf_dead.."|r")
+					health.value:SetText("|cffD7BEA5"..ElvL.unitframes_ouf_dead.."|r")
 				elseif UnitIsGhost(unit) then
-					health.value:SetText("|cffD7BEA5"..elvuilocal.unitframes_ouf_ghost.."|r")
+					health.value:SetText("|cffD7BEA5"..ElvL.unitframes_ouf_ghost.."|r")
 				end
 			else
 				if min ~= max then
@@ -463,6 +478,10 @@ ElvDB.LoadUFFunctions = function(layout)
 					self.remaining:Hide()
 					self:SetScript("OnUpdate", nil)
 				end
+				if (not self.debuff) and ElvCF["general"].classcolortheme == true then
+					local r, g, b = self:GetParent():GetParent().FrameBorder:GetBackdropBorderColor()
+					self:SetBackdropBorderColor(r, g, b)
+				end
 				self.elapsed = 0
 			end
 		end
@@ -565,7 +584,12 @@ ElvDB.LoadUFFunctions = function(layout)
 			if (icon.isStealable or (ElvDB.myclass == "PRIEST" and dtype == "Magic")) and not UnitIsFriend("player", unit) then
 				icon:SetBackdropBorderColor(237/255, 234/255, 142/255)
 			else
-				icon:SetBackdropBorderColor(unpack(ElvCF["media"].bordercolor))
+				if ElvCF["general"].classcolortheme == true then
+					local r, g, b = icon:GetParent():GetParent().FrameBorder:GetBackdropBorderColor()
+					icon:SetBackdropBorderColor(r, g, b)
+				else
+					icon:SetBackdropBorderColor(unpack(ElvCF["media"].bordercolor))
+				end			
 			end
 		end
 		
@@ -805,7 +829,7 @@ ElvDB.LoadUFFunctions = function(layout)
 		local percMana = UnitMana("player") / UnitManaMax("player") * 100
 
 		if percMana <= 20 then
-			self.ManaLevel:SetText("|cffaf5050"..elvuilocal.unitframes_ouf_lowmana.."|r")
+			self.ManaLevel:SetText("|cffaf5050"..ElvL.unitframes_ouf_lowmana.."|r")
 			ElvDB.Flash(self, 0.3)
 		else
 			self.ManaLevel:SetText()
@@ -823,7 +847,7 @@ ElvDB.LoadUFFunctions = function(layout)
 
 			local percMana = min / max * 100
 			if percMana <= ElvCF["unitframes"].lowThreshold then
-				self.FlashInfo.ManaLevel:SetText("|cffaf5050"..elvuilocal.unitframes_ouf_lowmana.."|r")
+				self.FlashInfo.ManaLevel:SetText("|cffaf5050"..ElvL.unitframes_ouf_lowmana.."|r")
 				ElvDB.Flash(self.FlashInfo, 0.3)
 			else
 				self.FlashInfo.ManaLevel:SetText()

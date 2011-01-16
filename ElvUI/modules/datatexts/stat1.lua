@@ -1,6 +1,6 @@
 local ElvCF = ElvCF
 local ElvDB = ElvDB
-local elvuilocal = elvuilocal
+local ElvL = ElvL
 
 -----------------------------------------
 -- Stat 1 
@@ -53,7 +53,7 @@ if ElvCF["datatext"].stat1 and ElvCF["datatext"].stat1 > 0 then
 					avoidance = (dodge+parry+block+basemisschance)
 				end
 					
-				Text:SetText(elvuilocal.datatext_playeravd..ElvDB.ValColor..format("%.2f", avoidance))
+				Text:SetText(ElvL.datatext_playeravd..ElvDB.ValColor..format("%.2f", avoidance))
 				--Setup Avoidance Tooltip
 				self:SetAllPoints(Text)
 				self:SetScript("OnEnter", function()
@@ -63,11 +63,11 @@ if ElvCF["datatext"].stat1 and ElvCF["datatext"].stat1 > 0 then
 						GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, ElvDB.mult)
 						GameTooltip:ClearLines()
 						if targetlv > 1 then
-							GameTooltip:AddDoubleLine(elvuilocal.datatext_avoidancebreakdown," ("..elvuilocal.datatext_lvl.." "..targetlv..")")
+							GameTooltip:AddDoubleLine(ElvL.datatext_avoidancebreakdown," ("..ElvL.datatext_lvl.." "..targetlv..")")
 						elseif targetlv == -1 then
-							GameTooltip:AddDoubleLine(elvuilocal.datatext_avoidancebreakdown," ("..elvuilocal.datatext_boss..")")
+							GameTooltip:AddDoubleLine(ElvL.datatext_avoidancebreakdown," ("..ElvL.datatext_boss..")")
 						else
-							GameTooltip:AddDoubleLine(elvuilocal.datatext_avoidancebreakdown," ("..elvuilocal.datatext_lvl.." "..playerlv..")")
+							GameTooltip:AddDoubleLine(ElvL.datatext_avoidancebreakdown," ("..ElvL.datatext_lvl.." "..playerlv..")")
 						end
 						GameTooltip:AddLine' '
 						GameTooltip:AddDoubleLine(DODGE_CHANCE,format("%.2f",dodge) .. "%",1,1,1)
@@ -86,7 +86,7 @@ if ElvCF["datatext"].stat1 and ElvCF["datatext"].stat1 > 0 then
 					spellpwr = GetSpellBonusDamage(7)
 				end
 				
-				Text:SetText(elvuilocal.datatext_playersp.." "..ElvDB.ValColor..spellpwr)      
+				Text:SetText(ElvL.datatext_playersp.." "..ElvDB.ValColor..spellpwr)      
 			elseif ElvDB.Role == "Melee" then
 				local base, posBuff, negBuff = UnitAttackPower("player");
 				local effective = base + posBuff + negBuff;
@@ -100,7 +100,7 @@ if ElvCF["datatext"].stat1 and ElvCF["datatext"].stat1 > 0 then
 					pwr = effective
 				end
 				
-				Text:SetText(elvuilocal.datatext_playerap.." "..ElvDB.ValColor..pwr)      
+				Text:SetText(ElvL.datatext_playerap.." "..ElvDB.ValColor..pwr)      
 			end
 			int = 1
 		end

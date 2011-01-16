@@ -1,6 +1,6 @@
 local ElvCF = ElvCF
 local ElvDB = ElvDB
-local elvuilocal = elvuilocal
+local ElvL = ElvL
 
 --------------------------------------------------------------------
  -- BAGS
@@ -23,7 +23,7 @@ if ElvCF["datatext"].bags and ElvCF["datatext"].bags > 0 then
 			free, total = free + GetContainerNumFreeSlots(i), total + GetContainerNumSlots(i)
 		end
 		used = total - free
-		Text:SetText(elvuilocal.datatext_bags..ElvDB.ValColor..used.."|r/"..ElvDB.ValColor..total)
+		Text:SetText(ElvL.datatext_bags..ElvDB.ValColor..used.."|r/"..ElvDB.ValColor..total)
 		self:SetAllPoints(Text)
 	end
           

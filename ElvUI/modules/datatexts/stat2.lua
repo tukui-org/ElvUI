@@ -1,6 +1,6 @@
 local ElvCF = ElvCF
 local ElvDB = ElvDB
-local elvuilocal = elvuilocal
+local ElvL = ElvL
 
 -----------------------------------------
 -- Stat 2
@@ -32,7 +32,7 @@ if ElvCF["datatext"].stat2 and ElvCF["datatext"].stat2 > 0 then
 					GameTooltip:ClearAllPoints()
 					GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, ElvDB.mult)
 					GameTooltip:ClearLines()
-					GameTooltip:AddLine(elvuilocal.datatext_mitigation)
+					GameTooltip:AddLine(ElvL.datatext_mitigation)
 					GameTooltip:AddLine(' ')
 					local lv = ElvDB.level +3
 					for i = 1, 4 do
@@ -66,7 +66,7 @@ if ElvCF["datatext"].stat2 and ElvCF["datatext"].stat2 > 0 then
 				end)
 				self:SetScript("OnLeave", function() GameTooltip:Hide() end)				
 			elseif ElvDB.Role == "Caster" then
-				Text:SetText(elvuilocal.datatext_playercrit.." "..ElvDB.ValColor..format("%.2f", GetSpellCritChance(1)) .. "%")
+				Text:SetText(ElvL.datatext_playercrit.." "..ElvDB.ValColor..format("%.2f", GetSpellCritChance(1)) .. "%")
 			elseif ElvDB.Role == "Melee" then
 				local meleecrit = GetCritChance()
 				local rangedcrit = GetRangedCritChance()
@@ -78,7 +78,7 @@ if ElvCF["datatext"].stat2 and ElvCF["datatext"].stat2 > 0 then
 					CritChance = meleecrit
 				end
 
-				Text:SetText(elvuilocal.datatext_playercrit.." "..ElvDB.ValColor..format("%.2f", CritChance) .. "%")
+				Text:SetText(ElvL.datatext_playercrit.." "..ElvDB.ValColor..format("%.2f", CritChance) .. "%")
 			end
 			int = 1
 		end

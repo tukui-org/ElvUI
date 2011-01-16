@@ -1,5 +1,4 @@
 ﻿<Ui xmlns="http://www.blizzard.com/wow/ui/">	
-	<Script file='autodisable.lua'/>
 	<Script file='core.lua'/>
 	<Script file='debug.lua'/>
 	<Script file='pixelperfect.lua'/>

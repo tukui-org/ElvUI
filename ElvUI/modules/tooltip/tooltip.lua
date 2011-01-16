@@ -1,7 +1,7 @@
 -- credits : Aezay (TipTac) and Caellian for some parts of code.
 local ElvCF = ElvCF
 local ElvDB = ElvDB
-local elvuilocal = elvuilocal
+local ElvL = ElvL
 
 local db = ElvCF["tooltip"]
 if not db.enable then return end
@@ -164,9 +164,9 @@ GameTooltipStatusBar:SetScript("OnValueChanged", function(self, value)
 			min, max = UnitHealth(unit), UnitHealthMax(unit)
 			local hp = ElvDB.ShortValue(min).." / "..ElvDB.ShortValue(max)
 			if UnitIsGhost(unit) then
-				self.text:SetText(elvuilocal.unitframes_ouf_ghost)
+				self.text:SetText(ElvL.unitframes_ouf_ghost)
 			elseif min == 0 or UnitIsDead(unit) or UnitIsGhost(unit) then
-				self.text:SetText(elvuilocal.unitframes_ouf_dead)
+				self.text:SetText(ElvL.unitframes_ouf_dead)
 			else
 				self.text:SetText(hp)
 			end
@@ -177,7 +177,7 @@ GameTooltipStatusBar:SetScript("OnValueChanged", function(self, value)
 			self.text:Show()
 			local hp = ElvDB.ShortValue(min).." / "..ElvDB.ShortValue(max)
 			if min == 0 or min == 1 then
-				self.text:SetText(elvuilocal.unitframes_ouf_dead)
+				self.text:SetText(ElvL.unitframes_ouf_dead)
 			else
 				self.text:SetText(hp)
 			end
@@ -227,7 +227,7 @@ local function AddTargetedBy()
 			GameTooltip:AddLine(" ",nil,nil,nil,1);
 			local line = _G["GameTooltipTextLeft"..GameTooltip:NumLines()];
 			if not line then return end
-			line:SetFormattedText(elvuilocal.tooltip_whotarget.." (|cffffffff%d|r): %s",(#targetedList + 1) / 3,table.concat(targetedList));
+			line:SetFormattedText(ElvL.tooltip_whotarget.." (|cffffffff%d|r): %s",(#targetedList + 1) / 3,table.concat(targetedList));
 			wipe(targetedList);
 		end
 	end

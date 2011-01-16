@@ -1338,6 +1338,7 @@ local function Shared(self, unit)
 			PowerFrame:SetFrameStrata("LOW")
 			ElvDB.SetTemplate(PowerFrame)
 			PowerFrame:SetBackdropBorderColor(unpack(ElvCF["media"].altbordercolor))	
+			self.PowerFrame = PowerFrame
 			if powerbar_offset ~= 0 then
 				ElvDB.CreateShadow(PowerFrame)
 			else

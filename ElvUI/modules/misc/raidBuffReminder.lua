@@ -288,13 +288,13 @@ do
 		if ElvuiInfoRightLButton.hovered == true then
 			GameTooltip:ClearLines()
 			if RaidReminderShown == true then
-				GameTooltip:AddDoubleLine(elvuilocal.raidbufftoggler, HIDE,1,1,1,unpack(ElvCF["media"].valuecolor))
+				GameTooltip:AddDoubleLine(ElvL.raidbufftoggler, HIDE,1,1,1,unpack(ElvCF["media"].valuecolor))
 				ElvuiInfoRightLButton.Text:SetTextColor(unpack(ElvCF["media"].valuecolor))
 				UIFrameFadeOut(RaidBuffReminder, 0.4)
 				RaidReminderShown = false
 				reminderoverride = true
 			else
-				GameTooltip:AddDoubleLine(elvuilocal.raidbufftoggler, SHOW,1,1,1,unpack(ElvCF["media"].valuecolor))
+				GameTooltip:AddDoubleLine(ElvL.raidbufftoggler, SHOW,1,1,1,unpack(ElvCF["media"].valuecolor))
 				ElvuiInfoRightLButton.Text:SetTextColor(1,1,1)
 				UIFrameFadeIn(RaidBuffReminder, 0.4)
 				RaidReminderShown = true
@@ -312,9 +312,9 @@ do
 		GameTooltip:ClearLines()
 		
 		if RaidReminderShown == true then
-			GameTooltip:AddDoubleLine(elvuilocal.raidbufftoggler, SHOW,1,1,1,unpack(ElvCF["media"].valuecolor))
+			GameTooltip:AddDoubleLine(ElvL.raidbufftoggler, SHOW,1,1,1,unpack(ElvCF["media"].valuecolor))
 		else
-			GameTooltip:AddDoubleLine(elvuilocal.raidbufftoggler, HIDE,1,1,1,unpack(ElvCF["media"].valuecolor))
+			GameTooltip:AddDoubleLine(ElvL.raidbufftoggler, HIDE,1,1,1,unpack(ElvCF["media"].valuecolor))
 		end
 		GameTooltip:Show()
 	end)

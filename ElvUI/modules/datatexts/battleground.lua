@@ -1,6 +1,6 @@
 local ElvCF = ElvCF
 local ElvDB = ElvDB
-local elvuilocal = elvuilocal
+local ElvL = ElvL
 
 --------------------------------------------------------------------
 -- BGScore
@@ -43,12 +43,12 @@ if ElvCF["datatext"].battleground == true then
 				local name, killingBlows, honorableKills, deaths, honorGained, faction, race, class, classToken, damageDone, healingDone, bgRating, ratingChange = GetBattlefieldScore(i)
 				if ( name ) then
 					if ( name == ElvDB.myname) then
-						Text1:SetText(elvuilocal.datatext_damage..ElvDB.ValColor..damageDone)
-						Text2:SetText(elvuilocal.datatext_honor..ElvDB.ValColor..format('%d', honorGained))
-						Text3:SetText(elvuilocal.datatext_killingblows..ElvDB.ValColor..killingBlows)
-						Text4:SetText(elvuilocal.datatext_ttdeaths..ElvDB.ValColor..deaths)
-						Text5:SetText(elvuilocal.datatext_tthonorkills..ElvDB.ValColor..honorableKills)
-						Text6:SetText(elvuilocal.datatext_healing..ElvDB.ValColor..healingDone)
+						Text1:SetText(ElvL.datatext_damage..ElvDB.ValColor..damageDone)
+						Text2:SetText(ElvL.datatext_honor..ElvDB.ValColor..format('%d', honorGained))
+						Text3:SetText(ElvL.datatext_killingblows..ElvDB.ValColor..killingBlows)
+						Text4:SetText(ElvL.datatext_ttdeaths..ElvDB.ValColor..deaths)
+						Text5:SetText(ElvL.datatext_tthonorkills..ElvDB.ValColor..honorableKills)
+						Text6:SetText(ElvL.datatext_healing..ElvDB.ValColor..healingDone)
 					end   
 				end
 			end 

@@ -20,27 +20,27 @@ local AddMessage = function(self, text, ...)
 	return origs[self](self, text, ...)
 end
 
-_G.CHAT_BATTLEGROUND_GET = "|Hchannel:Battleground|h"..elvuilocal.chat_BATTLEGROUND_GET.."|h %s:\32"
-_G.CHAT_BATTLEGROUND_LEADER_GET = "|Hchannel:Battleground|h"..elvuilocal.chat_BATTLEGROUND_LEADER_GET.."|h %s:\32"
-_G.CHAT_BN_WHISPER_GET = elvuilocal.chat_BN_WHISPER_GET.." %s:\32"
-_G.CHAT_GUILD_GET = "|Hchannel:Guild|h"..elvuilocal.chat_GUILD_GET.."|h %s:\32"
-_G.CHAT_OFFICER_GET = "|Hchannel:o|h"..elvuilocal.chat_OFFICER_GET.."|h %s:\32"
-_G.CHAT_PARTY_GET = "|Hchannel:Party|h"..elvuilocal.chat_PARTY_GET.."|h %s:\32"
-_G.CHAT_PARTY_GUIDE_GET = "|Hchannel:party|h"..elvuilocal.chat_PARTY_GUIDE_GET.."|h %s:\32"
-_G.CHAT_PARTY_LEADER_GET = "|Hchannel:party|h"..elvuilocal.chat_PARTY_LEADER_GET.."|h %s:\32"
-_G.CHAT_RAID_GET = "|Hchannel:raid|h"..elvuilocal.chat_RAID_GET.."|h %s:\32"
-_G.CHAT_RAID_LEADER_GET = "|Hchannel:raid|h"..elvuilocal.chat_RAID_LEADER_GET.."|h %s:\32"
-_G.CHAT_RAID_WARNING_GET = elvuilocal.chat_RAID_WARNING_GET.." %s:\32"
+_G.CHAT_BATTLEGROUND_GET = "|Hchannel:Battleground|h"..ElvL.chat_BATTLEGROUND_GET.."|h %s:\32"
+_G.CHAT_BATTLEGROUND_LEADER_GET = "|Hchannel:Battleground|h"..ElvL.chat_BATTLEGROUND_LEADER_GET.."|h %s:\32"
+_G.CHAT_BN_WHISPER_GET = ElvL.chat_BN_WHISPER_GET.." %s:\32"
+_G.CHAT_GUILD_GET = "|Hchannel:Guild|h"..ElvL.chat_GUILD_GET.."|h %s:\32"
+_G.CHAT_OFFICER_GET = "|Hchannel:o|h"..ElvL.chat_OFFICER_GET.."|h %s:\32"
+_G.CHAT_PARTY_GET = "|Hchannel:Party|h"..ElvL.chat_PARTY_GET.."|h %s:\32"
+_G.CHAT_PARTY_GUIDE_GET = "|Hchannel:party|h"..ElvL.chat_PARTY_GUIDE_GET.."|h %s:\32"
+_G.CHAT_PARTY_LEADER_GET = "|Hchannel:party|h"..ElvL.chat_PARTY_LEADER_GET.."|h %s:\32"
+_G.CHAT_RAID_GET = "|Hchannel:raid|h"..ElvL.chat_RAID_GET.."|h %s:\32"
+_G.CHAT_RAID_LEADER_GET = "|Hchannel:raid|h"..ElvL.chat_RAID_LEADER_GET.."|h %s:\32"
+_G.CHAT_RAID_WARNING_GET = ElvL.chat_RAID_WARNING_GET.." %s:\32"
 _G.CHAT_SAY_GET = "%s:\32"
-_G.CHAT_WHISPER_GET = elvuilocal.chat_WHISPER_GET.." %s:\32"
+_G.CHAT_WHISPER_GET = ElvL.chat_WHISPER_GET.." %s:\32"
 _G.CHAT_YELL_GET = "%s:\32"
  
-_G.CHAT_FLAG_AFK = "|cffFF0000"..elvuilocal.chat_FLAG_AFK.."|r "
-_G.CHAT_FLAG_DND = "|cffE7E716"..elvuilocal.chat_FLAG_DND.."|r "
-_G.CHAT_FLAG_GM = "|cff4154F5"..elvuilocal.chat_FLAG_GM.."|r "
+_G.CHAT_FLAG_AFK = "|cffFF0000"..ElvL.chat_FLAG_AFK.."|r "
+_G.CHAT_FLAG_DND = "|cffE7E716"..ElvL.chat_FLAG_DND.."|r "
+_G.CHAT_FLAG_GM = "|cff4154F5"..ElvL.chat_FLAG_GM.."|r "
  
-_G.ERR_FRIEND_ONLINE_SS = "|Hplayer:%s|h[%s]|h "..elvuilocal.chat_ERR_FRIEND_ONLINE_SS.."!"
-_G.ERR_FRIEND_OFFLINE_S = "%s "..elvuilocal.chat_ERR_FRIEND_OFFLINE_S.."!"
+_G.ERR_FRIEND_ONLINE_SS = "|Hplayer:%s|h[%s]|h "..ElvL.chat_ERR_FRIEND_ONLINE_SS.."!"
+_G.ERR_FRIEND_OFFLINE_S = "%s "..ElvL.chat_ERR_FRIEND_OFFLINE_S.."!"
 
 -- Hide friends micro button (added in 3.3.5)
 ElvDB.Kill(FriendsMicroButton)
@@ -367,7 +367,7 @@ for i = 1, NUM_CHAT_WINDOWS do
 			 if unitname and not UnitIsSameServer("player", "target") then
 				unitname = unitname .. "-" .. gsub(realm, " ", "")
 			 end
-			 ChatFrame_SendTell((unitname or elvuilocal.chat_invalidtarget), ChatFrame1)
+			 ChatFrame_SendTell((unitname or ElvL.chat_invalidtarget), ChatFrame1)
 		  end
 	   end
 	end)

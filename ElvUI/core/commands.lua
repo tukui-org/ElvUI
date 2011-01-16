@@ -39,7 +39,7 @@ SLASH_LUAERROR1 = '/luaerror'
 function DisbandRaidGroup()
 		if InCombatLockdown() then return end -- Prevent user error in combat
 		
-		SendChatMessage(elvuilocal.disband, "RAID" or "PARTY")
+		SendChatMessage(ElvL.disband, "RAID" or "PARTY")
 		if UnitInRaid("player") then
 			for i = 1, GetNumRaidMembers() do
 				local name, _, _, _, _, _, _, online = GetRaidRosterInfo(i)

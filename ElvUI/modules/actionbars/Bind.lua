@@ -1,7 +1,7 @@
 local bind = CreateFrame("Frame", "ElvuiHoverBind", UIParent)
 -- SLASH COMMAND
 SlashCmdList.MOUSEOVERBIND = function()
-	if InCombatLockdown() then print(elvuilocal.bind_combat) return end
+	if InCombatLockdown() then print(ElvL.bind_combat) return end
 	if not bind.loaded then
 		local find = string.find
 		local _G = getfenv(0)
@@ -215,10 +215,10 @@ SlashCmdList.MOUSEOVERBIND = function()
 		function bind:Deactivate(save)
 			if save then
 				SaveBindings(2)
-				print(elvuilocal.bind_saved)
+				print(ElvL.bind_saved)
 			else
 				LoadBindings(2)
-				print(elvuilocal.bind_discard)
+				print(ElvL.bind_discard)
 			end
 			self.enabled = false
 			self:HideFrame()
@@ -227,9 +227,9 @@ SlashCmdList.MOUSEOVERBIND = function()
 		end
 
 		StaticPopupDialogs["KEYBIND_MODE"] = {
-			text = elvuilocal.bind_instruct,
-			button1 = elvuilocal.bind_save,
-			button2 = elvuilocal.bind_discardbind,
+			text = ElvL.bind_instruct,
+			button1 = ElvL.bind_save,
+			button2 = ElvL.bind_discardbind,
 			OnAccept = function() bind:Deactivate(true) end,
 			OnCancel = function() bind:Deactivate(false) end,
 			timeout = 0,
