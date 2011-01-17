@@ -22,6 +22,7 @@ ALLOWED_GROUPS = {
 	["raidframes"]=1,
 	["auras"]=1,
 	["framesizes"]=1,
+	["debug"]=1,
 }
 
 local function Local(o)
@@ -291,6 +292,11 @@ local function Local(o)
 	if o == "ElvuiConfigUIchatsticky" then o = ElvuiL_option_chat_sticky end
 	if o == "ElvuiConfigUIchatrightchat" then o = ElvuiL_option_chat_rightchat end
 	if o == "ElvuiConfigUIchatcombathide" then o = ElvuiL_option_chat_combathide end
+	
+	--debug
+	if o == "ElvuiConfigUIdebug" then o = ElvuiL.option_debug end
+	if o == "ElvuiConfigUIdebugenabled" then o = ElvuiL.option_debug_enabled end
+	if o == "ElvuiConfigUIdebugevents" then o = ElvuiL.option_debug_events end
 	
 	ElvDB.option = o
 end

@@ -254,6 +254,11 @@ ElvuiL_option_chat_sticky = "Sticky some chat channels when opening new chat edi
 ElvuiL_option_chat_rightchat = "Display right chat window"
 ElvuiL_option_chat_combathide = "Slide chatframe out during combat ('Left', 'Right', 'Both', or 'NONE')"
 
+--Debug
+ElvuiL.option_debug = "Debug Mode"
+ElvuiL.option_debug_enabled = "Enable debug mode, not recommended!"
+ElvuiL.option_debug_events = "Print events to chat window"
+
 -- buttons
 ElvuiL.option_button_reset = "Reset UI"
 ElvuiL.option_button_load = "Apply Changes"

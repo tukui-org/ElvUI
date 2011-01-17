@@ -12,9 +12,8 @@ end
 
 if ElvCF["debug"].enabled ~= true then return end
 
-ElvCF["chat"].chatheight = 500
-
 if ElvCF["debug"].events == true then
+	ElvCF["chat"].chatheight = 500
 	local x = CreateFrame("Frame")
 	x:RegisterAllEvents()
 	x:SetScript("OnEvent", function(self, event)
