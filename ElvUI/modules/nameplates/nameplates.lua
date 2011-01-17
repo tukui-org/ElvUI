@@ -25,6 +25,14 @@ if ElvCF["nameplate"].showhealth ~= true then
 	iconSize = 20
 end
 
+local DebuffColor = {
+	['Magic']	= {.2, .6, 1},
+	['Curse']	= {.6, 0, 1},
+	['Disease']	= {.6, .4, 0},
+	['Poison']	= {0, .6, 0},
+	['none'] = {0, 0, 0},
+}
+
 local NamePlates = CreateFrame("Frame", nil, UIParent)
 NamePlates:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
 SetCVar("bloatthreat", 0) -- stop resizing nameplate according to threat level.
@@ -80,12 +88,24 @@ local function CreateAuraIcon(parent)
 	local button = CreateFrame("Frame",nil,parent)
 	button:SetWidth(20)
 	button:SetHeight(20)
-	button.bg = button:CreateTexture(nil, "BORDER")
-	button.bg:SetTexture(0,0,0)
+	
+	button.bg = button:CreateTexture(nil, "BACKGROUND")
+	button.bg:SetTexture(.1, .1, .1)
 	button.bg:SetAllPoints(button)
-	button.icon = button:CreateTexture(nil, "ARTWORK")
-	button.icon:SetPoint("TOPLEFT",button,"TOPLEFT", noscalemult*2,-noscalemult*2)
-	button.icon:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-noscalemult*2,noscalemult*2)
+	
+	button.bord = button:CreateTexture(nil, "BORDER")
+	button.bord:SetTexture(0.3, 0.3, 0.3)
+	button.bord:SetPoint("TOPLEFT",button,"TOPLEFT", noscalemult,-noscalemult)
+	button.bord:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-noscalemult,noscalemult)
+	
+	button.bg2 = button:CreateTexture(nil, "BORDER")
+	button.bg2:SetTexture(.1, .1, .1)
+	button.bg2:SetPoint("TOPLEFT",button,"TOPLEFT", noscalemult*2,-noscalemult*2)
+	button.bg2:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-noscalemult*2,noscalemult*2)	
+	
+	button.icon = button:CreateTexture(nil, "OVERLAY")
+	button.icon:SetPoint("TOPLEFT",button,"TOPLEFT", noscalemult*3,-noscalemult*3)
+	button.icon:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-noscalemult*3,noscalemult*3)
 	button.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	button.cd = CreateFrame("Cooldown",nil,button)
 	button.cd:SetAllPoints(button)
@@ -98,6 +118,11 @@ end
 
 local function UpdateAuraIcon(button, unit, index, filter)
 	local _, _, icon, count, debuffType, duration, expirationTime,_,_,spellID = UnitAura(unit,index,filter)
+	
+	--[[ Leaving debuff coloring here in case i want to use it ever.
+	local c = DebuffColor[debuffType] or DebuffColor.none
+	button.bord:SetTexture(c[1], c[2], c[3])]]
+	
 	button.icon:SetTexture(icon)
 	button.cd:SetCooldown(expirationTime-duration,duration)
 	button.expirationTime = expirationTime
