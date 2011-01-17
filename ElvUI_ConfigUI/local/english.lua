@@ -39,7 +39,7 @@ ElvuiL.option_nameplates_goodcolor = "Good threat color, varies depending if you
 ElvuiL.option_nameplates_badcolor = "Bad threat color, varies depending if your a tank or dps/heal"
 ElvuiL.option_nameplates_transitioncolor = "Losing/Gaining threat color"
 ElvuiL.option_nameplates_trackauras = "Track 'Your' debuffs on nameplates."
-ElvuiL.option_nameplates_trackccauras = "Track 'Any CC' debuffs on nameplates."
+ElvuiL.option_nameplates_trackccauras = "Track 'CC' debuffs on nameplates."
 
 -- addon skins
 ElvuiL.option_skin = "Addon Skins"
