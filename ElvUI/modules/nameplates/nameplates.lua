@@ -108,6 +108,7 @@ local function UpdateAuraIcon(button, unit, index, filter)
 	else
 		button.count:SetText("")
 	end
+	button.cd:SetScript("OnUpdate", function(self) if self.timer.enabled == nil and frame.unit == nil then self:GetParent():Hide() self:SetScript("OnUpdate", nil) end end)
 	button:Show()
 end
 
@@ -290,11 +291,6 @@ local function OnHide(frame)
 	frame.hp.bcolor = nil
 	if frame.icons then
 		for _,icon in ipairs(frame.icons) do
-			icon.icon:SetTexture(nil)
-			icon.count:SetText(nil)
-			icon.duration = nil
-			icon.spellID = nil
-			icon.expirationTime = nil
 			icon:Hide()
 		end
 	end	
@@ -650,12 +646,14 @@ local function CheckUnit_Guid(frame, ...)
 	if UnitExists("target") and frame:GetAlpha() == 1 and UnitName("target") == frame.name:GetText() then
 		frame.guid = UnitGUID("target")
 		frame.unit = "target"
+		OnAura(frame, "target")
 	elseif frame.overlay:IsShown() and UnitExists("mouseover") and UnitName("mouseover") == frame.name:GetText() then
 		frame.guid = UnitGUID("mouseover")
 		frame.unit = "mouseover"
+		OnAura(frame, "mouseover")
 	else
 		frame.unit = nil		
-	end
+	end	
 	
 	if ElvCF["debug"].enabled == true then frame.hp.debug:SetText(frame.unit or "") end
 end
