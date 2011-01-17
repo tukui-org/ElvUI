@@ -7,7 +7,6 @@ local ElvDB = ElvDB
 local ElvCF = ElvCF
 
 local db = ElvCF["cooldown"]
-if IsAddOnLoaded("OmniCC") or IsAddOnLoaded("ncCooldown") or db.enable ~= true then return end
 
 --constants!
 OmniCC = true --hack to work around detection from other addons for OmniCC
@@ -101,11 +100,15 @@ local function Timer_OnUpdate(self, elapsed)
 		local remain = self.duration - (GetTime() - self.start)
 		if tonumber(ElvDB.Round(remain)) > 0 then
 			if (self.fontScale * self:GetEffectiveScale() / UIParent:GetScale()) < MIN_SCALE then
-				self.text:SetText('')
+				if db.enable == true and not IsAddOnLoaded("OmniCC") and not IsAddOnLoaded("ncCooldown") then
+					self.text:SetText('')
+				end
 				self.nextUpdate  = 1
 			else
 				local formatStr, time, nextUpdate = getTimeText(remain)
-				self.text:SetFormattedText(formatStr, time)
+				if db.enable == true and not IsAddOnLoaded("OmniCC") and not IsAddOnLoaded("ncCooldown") then
+					self.text:SetFormattedText(formatStr, time)
+				end
 				self.nextUpdate = nextUpdate
 			end
 		else
