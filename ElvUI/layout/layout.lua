@@ -22,6 +22,7 @@ mini:ClearAllPoints()
 mini:SetPoint("TOPLEFT", ElvDB.Scale(-2), ElvDB.Scale(2))
 mini:SetPoint("BOTTOMRIGHT", ElvDB.Scale(2), ElvDB.Scale(-2))
 ElvDB.CreateShadow(ElvuiMinimap)
+TukuiMinimap = ElvuiMinimap -- conversion
 
 -- MINIMAP STAT FRAMES
 if ElvuiMinimap then
@@ -34,6 +35,9 @@ if ElvuiMinimap then
 	ElvDB.SetNormTexTemplate(ElvuiMinimapStatsRight)
 	ElvDB.CreateShadow(ElvuiMinimapStatsLeft)
 	ElvDB.CreateShadow(ElvuiMinimapStatsRight)
+	
+	TukuiMinimapStatsLeft = ElvuiMinimapStatsLeft -- conversion
+	TukuiMinimapStatsRight = ElvuiMinimapStatsRight -- conversion
 end
 
 -- MAIN ACTION BAR
@@ -261,6 +265,9 @@ inforight:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", ElvDB.Scale(-17)
 	inforightRbutton.Text = ElvDB.SetFontString(ElvuiInfoRightRButton, ElvCF["media"].font, ElvCF["general"].fontscale, "THINOUTLINE")
 	inforightRbutton.Text:SetText(">")
 	inforightRbutton.Text:SetPoint("CENTER")
+	
+TukuiInfoLeft = ElvuiInfoLeft -- conversion
+TukuiInfoRight = ElvuiInfoRight -- conversion	
 
 -- BATTLEGROUND STATS FRAME
 local shownbg = true
