@@ -35,6 +35,10 @@ local DebuffColor = { -- Not used currently
 
 local NamePlates = CreateFrame("Frame", nil, UIParent)
 NamePlates:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
+if ElvCF["nameplate"].trackauras == true or ElvCF["nameplate"].trackccauras == true then
+	NamePlates:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+end
+
 SetCVar("bloatthreat", 0) -- stop resizing nameplate according to threat level.
 SetCVar("bloattest", 0)
 if ElvCF["nameplate"].overlap == true then
@@ -67,7 +71,6 @@ local function HideObjects(parent)
 		end
 	end
 end
-
 
 --Create our Aura Icons
 local function CreateAuraIcon(parent)
@@ -104,8 +107,7 @@ end
 
 --Update an Aura Icon
 local function UpdateAuraIcon(button, unit, index, filter)
-	local _, _, icon, count, debuffType, duration, expirationTime,_,_,spellID = UnitAura(unit,index,filter)
-	
+	local name,_,icon,count,debuffType,duration,expirationTime,_,_,_,spellID = UnitAura(unit,index,filter)
 	--[[ Leaving debuff coloring here in case i want to use it ever.
 	local c = DebuffColor[debuffType] or DebuffColor.none
 	button.bord:SetTexture(c[1], c[2], c[3])]]
@@ -120,7 +122,7 @@ local function UpdateAuraIcon(button, unit, index, filter)
 	else
 		button.count:SetText("")
 	end
-	button.cd:SetScript("OnUpdate", function(self) button.cd.timer.text:SetFont(FONT,8,FONTFLAG) if self.timer.enabled == nil and frame.unit == nil then self:GetParent():Hide() self:SetScript("OnUpdate", nil) end end)
+	button.cd:SetScript("OnUpdate", function(self) if not button.cd.timer then self:SetScript("OnUpdate", nil) return end button.cd.timer.text:SetFont(FONT,8,FONTFLAG) end)
 	button:Show()
 end
 
@@ -156,22 +158,6 @@ local function OnAura(frame, unit)
 	end
 	for index = i, #frame.icons do frame.icons[index]:Hide() end
 end
-
---Check if an aura has fallen off a nameplate
-local function OnCLogEvent(frame, timestamp, event, _,sourceName,_,destGUID,_,_,spellID)
-	if frame.guid == destGUID and event == "SPELL_AURA_REMOVED" then
-		for _,icon in ipairs(frame.icons) do if icon.spellID == spellID then icon:Hide() end end			
-	end
-end
-
-local function OnEvent(frame, event, ...)
-	if event == "COMBAT_LOG_EVENT_UNFILTERED" then 
-		OnCLogEvent(frame, ...)
-	else
-		OnAura(frame, ...)
-	end
-end
-
 
 --OnUpdate function for all nameplates, we use this to update threat, health, and anything else that may require rapid updates.
 local goodR, goodG, goodB = unpack(ElvCF["nameplate"].goodcolor)
@@ -460,8 +446,7 @@ local function UpdateObjects(frame)
 		frame.icons:SetHeight(25)
 		frame.icons:SetFrameLevel(frame.hp:GetFrameLevel()+2)
 		frame:RegisterEvent("UNIT_AURA")
-		frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-		frame:HookScript("OnEvent",OnEvent)		
+		frame:HookScript("OnEvent", OnAura)
 	end	
 
 	HideObjects(frame)
@@ -701,6 +686,15 @@ local function CheckUnit_Guid(frame, ...)
 	if ElvCF["debug"].enabled == true then frame.hp.debug:SetText(frame.unit or "") end
 end
 
+--Attempt to match a nameplate with a GUID from the combat log
+local function MatchGUID(frame, destGUID, spellID)
+	if not frame.guid then return end
+	
+	if frame.guid == destGUID then
+		for _,icon in ipairs(frame.icons) do if icon.spellID == spellID then icon:Hide() end end
+	end
+end
+
 --Run a function for all visible nameplates, we use this for the blacklist, to check unitguid, and to hide drunken text
 local function ForEachPlate(functionToRun, ...)
 	for frame in pairs(frames) do
@@ -745,6 +739,12 @@ CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
 	ForEachPlate(HideDrunkenText)
 	ForEachPlate(CheckUnit_Guid)
 end)
+
+function NamePlates:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, sourceGUID, sourceName, sourceFlags, destGUID, destName, _, spellID)
+	if event == "SPELL_AURA_REMOVED" and destName ~= UnitName("player") then
+		ForEachPlate(MatchGUID, destGUID, spellID)
+	end
+end
 
 --Only show nameplates when in combat
 if ElvCF["nameplate"].combat == true then
