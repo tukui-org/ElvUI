@@ -345,12 +345,11 @@ local function UpdateObjects(frame)
 	
 	-- Create Health Backdrop frame
 	if not frame.healthbarbackdrop_tex then
-		local healthbarbackdrop_tex = frame.hp:CreateTexture(nil, "BACKGROUND")
-		healthbarbackdrop_tex:SetPoint("CENTER", frame.hp, "CENTER")
-		healthbarbackdrop_tex:SetWidth(hpWidth + noscalemult*6)
-		healthbarbackdrop_tex:SetHeight(hpHeight + noscalemult*6)
-		healthbarbackdrop_tex:SetTexture(0.1, 0.1, 0.1)
-		frame.healthbarbackdrop_tex = healthbarbackdrop_tex	
+		frame.healthbarbackdrop_tex = frame.hp:CreateTexture(nil, "BACKGROUND")
+		frame.healthbarbackdrop_tex:SetPoint("CENTER", frame.hp, "CENTER")
+		frame.healthbarbackdrop_tex:SetWidth(hpWidth + noscalemult*6)
+		frame.healthbarbackdrop_tex:SetHeight(hpHeight + noscalemult*6)
+		frame.healthbarbackdrop_tex:SetTexture(0.1, 0.1, 0.1)
 	end
 			
 	--Class Icons

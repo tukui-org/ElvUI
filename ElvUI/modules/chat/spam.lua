@@ -67,26 +67,21 @@ GOLDSPAM:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 GOLDSPAM:SetScript("OnEvent", GOLDSPAM_FILTER)
 
 ----------------------------------------------------------------------------------
--- Report AFKer's to RaidWarning
-----------------------------------------------------------------------------------
-
-local function SPELL_FILTER(self, event, arg1)
-    if strfind(arg1,"is not ready") or strfind(arg1,"The following players are Away") then
-        SendChatMessage(arg1, "RAID_WARNING", nil ,nil)
-    end
-end
-ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", SPELL_FILTER)
-
-
-----------------------------------------------------------------------------------
 -- Only enabling this for me because i get asked too much
 ----------------------------------------------------------------------------------
 if ElvDB.myname == "Elv" then
+	local function SPELL_FILTER(self, event, arg1)
+		if strfind(arg1,"is not ready") or strfind(arg1,"The following players are Away") then
+			SendChatMessage(arg1, "RAID_WARNING", nil ,nil)
+		end
+	end
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", SPELL_FILTER)
+
 	local whispered = {}
 	local function NOOB_FILTER(self, event, arg1, arg2)
 		if strfind(arg1, "mount") then
 			for i, name in pairs(whispered) do if name == tostring(arg2) then return end end -- dont reply to the same person more than once
-			ElvDB.Delay(6, SendChatMessage, "idk, stop being a lazy ass and go see where my mount buff comes from on wowhead", "WHISPER", nil, arg2) -- 6 second delay.. more realistic :) 
+			ElvDB.Delay(6, SendChatMessage, "Auto Response: idk, stop being a lazy ass and go see where my mount buff comes from on Wowhead.", "WHISPER", nil, arg2) -- 6 second delay.. more realistic :) 
 			
 			tinsert(whispered, tostring(arg2))
 		end
