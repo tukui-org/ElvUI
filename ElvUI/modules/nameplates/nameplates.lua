@@ -374,8 +374,8 @@ local function UpdateObjects(frame)
 	-- Create Health Backdrop frame
 	if not frame.healthbarbackdrop_tex then
 		frame.healthbarbackdrop_tex = frame.hp:CreateTexture(nil, "BACKGROUND")
-		frame.healthbarbackdrop_tex:SetPoint("CENTER", frame.hp, "CENTER")
-		frame.healthbarbackdrop_tex:SetWidth(hpWidth + noscalemult*6)
+		frame.healthbarbackdrop_tex:SetPoint("TOPLEFT", frame.hp, "TOPLEFT", -noscalemult*3, noscalemult*3)
+		frame.healthbarbackdrop_tex:SetPoint("TOPRIGHT", frame.hp, "TOPRIGHT", noscalemult*3, noscalemult*3)
 		frame.healthbarbackdrop_tex:SetHeight(hpHeight + noscalemult*6)
 		frame.healthbarbackdrop_tex:SetTexture(unpack(ElvCF["media"].backdropcolor))
 	end
