@@ -1725,6 +1725,7 @@ local function Shared(self, unit)
 			Name:SetShadowOffset(1.25, -1.25)	
 		end
 		
+		Name.frequentUpdates = 0.2
 		self:Tag(Name, '[Elvui:getnamecolor][Elvui:nameshort] [Elvui:diffcolor][level] [shortclassification]')
 		self.Name = Name
 					
