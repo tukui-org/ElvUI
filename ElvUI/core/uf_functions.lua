@@ -162,7 +162,7 @@ ElvDB.LoadUFFunctions = function(layout)
 					health:GetParent().AltPowerBar.FrameBackdrop:SetBackdropBorderColor(r,g,b)
 				end
 				
-				local powmin, powmax = UnitPower(unit), UnitPowerMax(unit)
+				local powmin = UnitPower(unit)
 				if powmin == 0 then
 					health.value:ClearAllPoints()
 					health.value:SetPoint("LEFT", health, "LEFT", ElvDB.Scale(2), ElvDB.Scale(1))				
