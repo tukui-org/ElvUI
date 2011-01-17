@@ -342,6 +342,16 @@ local function UpdateObjects(frame)
 	frame.hp:SetSize(hpWidth, hpHeight)	
 	frame.hp:SetPoint('TOP', frame, 'TOP', 0, -noscalemult*3)
 	frame.hp:GetStatusBarTexture():SetHorizTile(true)
+	
+	-- Create Health Backdrop frame
+	if not frame.healthbarbackdrop_tex then
+		local healthbarbackdrop_tex = frame.hp:CreateTexture(nil, "BACKGROUND")
+		healthbarbackdrop_tex:SetPoint("CENTER", frame.hp, "CENTER")
+		healthbarbackdrop_tex:SetWidth(hpWidth + noscalemult*6)
+		healthbarbackdrop_tex:SetHeight(hpHeight + noscalemult*6)
+		healthbarbackdrop_tex:SetTexture(0.1, 0.1, 0.1)
+		frame.healthbarbackdrop_tex = healthbarbackdrop_tex	
+	end
 			
 	--Class Icons
 	for class, color in pairs(RAID_CLASS_COLORS) do
@@ -466,14 +476,6 @@ local function SkinObjects(frame)
 	--Just make sure these are correct
 	hp:SetFrameLevel(9)
 	cb:SetFrameLevel(9)
-	
-	-- Create Cast Icon Backdrop frame
-	local healthbarbackdrop_tex = hp:CreateTexture(nil, "BACKGROUND")
-	healthbarbackdrop_tex:SetPoint("CENTER")
-	healthbarbackdrop_tex:SetWidth(hpWidth + noscalemult*6)
-	healthbarbackdrop_tex:SetHeight(hpHeight + noscalemult*6)
-	healthbarbackdrop_tex:SetTexture(0.1, 0.1, 0.1)
-	frame.healthbarbackdrop_tex = healthbarbackdrop_tex
 	
 	--Create our fake border.. fuck blizz
 	local healthbarborder_tex1 = hp:CreateTexture(nil, "BORDER")
