@@ -98,7 +98,7 @@ local function CreateAuraIcon(parent)
 	button.bord:SetPoint("TOPLEFT",button,"TOPLEFT", noscalemult,-noscalemult)
 	button.bord:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-noscalemult,noscalemult)
 	
-	button.bg2 = button:CreateTexture(nil, "BORDER")
+	button.bg2 = button:CreateTexture(nil, "ARTWORK")
 	button.bg2:SetTexture(.1, .1, .1)
 	button.bg2:SetPoint("TOPLEFT",button,"TOPLEFT", noscalemult*2,-noscalemult*2)
 	button.bg2:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-noscalemult*2,noscalemult*2)	
@@ -112,7 +112,7 @@ local function CreateAuraIcon(parent)
 	button.cd:SetReverse(true)
 	button.count = button:CreateFontString(nil,"OVERLAY")
 	button.count:SetFont(FONT,7,FONTFLAG)
-	button.count:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT")
+	button.count:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 2)
 	return button
 end
 
@@ -133,7 +133,7 @@ local function UpdateAuraIcon(button, unit, index, filter)
 	else
 		button.count:SetText("")
 	end
-	button.cd:SetScript("OnUpdate", function(self) if self.timer.enabled == nil and frame.unit == nil then self:GetParent():Hide() self:SetScript("OnUpdate", nil) end end)
+	button.cd:SetScript("OnUpdate", function(self) button.cd.timer.text:SetFont(FONT,8,FONTFLAG) if self.timer.enabled == nil and frame.unit == nil then self:GetParent():Hide() self:SetScript("OnUpdate", nil) end end)
 	button:Show()
 end
 
@@ -145,11 +145,19 @@ local function OnAura(frame, unit)
 		if i > 5 then return end
 		local match
 		local name,_,_,_,_,duration,_,caster,_,_,spellid = UnitAura(frame.unit,index,"HARMFUL")
-		for i, tab in pairs(tab) do
-			local id = tab.id
-			if spellid == id then match = true end
+		
+		if ElvCF["nameplate"].trackauras == true then
+			for i, tab in pairs(tab) do
+				local id = tab.id
+				if spellid == id and caster == "player" then match = true end
+			end
 		end
-		if duration and caster == "player" and match == true then
+		
+		if ElvCF["nameplate"].trackccauras == true then
+			if DebuffWhiteList[name] then match = true end
+		end
+		
+		if duration and match == true then
 			if not frame.icons[i] then frame.icons[i] = CreateAuraIcon(frame) end
 			local icon = frame.icons[i]
 			if i == 1 then icon:SetPoint("RIGHT",frame.icons,"RIGHT") end
@@ -162,7 +170,7 @@ local function OnAura(frame, unit)
 end
 
 local function OnCLogEvent(frame, timestamp, event, _,sourceName,_,destGUID,_,_,spellID)
-	if frame.guid == destGUID and UnitName("player") == sourceName and event == "SPELL_AURA_REMOVED" then
+	if frame.guid == destGUID and event == "SPELL_AURA_REMOVED" then
 		for _,icon in ipairs(frame.icons) do if icon.spellID == spellID then icon:Hide() end end			
 	end
 end
@@ -393,7 +401,7 @@ local function UpdateObjects(frame)
 	frame.overlay:SetAllPoints(frame.hp)
 	
 	-- Aura tracking
-	if ElvCF["nameplate"].trackauras == true then
+	if ElvCF["nameplate"].trackauras == true or ElvCF["nameplate"].trackccauras == true then
 		if frame.icons then return end
 		frame.icons = CreateFrame("Frame",nil,frame)
 		frame.icons:SetPoint("BOTTOMRIGHT",frame.hp,"TOPRIGHT", 0, FONTSIZE+5)

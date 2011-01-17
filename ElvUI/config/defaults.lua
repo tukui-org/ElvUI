@@ -180,7 +180,8 @@ ElvCF["nameplate"] = {
 		["goodcolor"] = {75/255,  175/255, 76/255},			--good threat color (tank shows this with threat, everyone else without)
 		["badcolor"] = {0.78, 0.25, 0.25},			--bad threat color (opposite of above)
 		["transitioncolor"] = {218/255, 197/255, 92/255},	--threat color when gaining threat
-		["trackauras"] = false,
+		["trackauras"] = false,		--track players debuffs only (debuff list derived from classtimer spell list)
+		["trackccauras"] = false,			--track all CC debuffs
 }
 
 ElvCF["loot"] = {

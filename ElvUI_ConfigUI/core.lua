@@ -89,6 +89,8 @@ local function Local(o)
 	if o == "ElvuiConfigUInameplategoodcolor" then o = ElvuiL.option_nameplates_goodcolor end
 	if o == "ElvuiConfigUInameplatebadcolor" then o = ElvuiL.option_nameplates_badcolor end
 	if o == "ElvuiConfigUInameplatetransitioncolor" then o = ElvuiL.option_nameplates_transitioncolor end
+	if o == "ElvuiConfigUInameplatetrackauras" then o = ElvuiL.option_nameplates_trackauras end
+	if o == "ElvuiConfigUInameplatetrackccauras" then o = ElvuiL.option_nameplates_trackccauras end
 	
 	-- datatext
 	if o == "ElvuiConfigUIdatatext" then o = ElvuiL.option_datatext end
