@@ -161,6 +161,15 @@ ElvDB.LoadUFFunctions = function(layout)
 				if health:GetParent().AltPowerBar.FrameBackdrop then
 					health:GetParent().AltPowerBar.FrameBackdrop:SetBackdropBorderColor(r,g,b)
 				end
+				
+				local powmin, powmax = UnitPower(unit), UnitPowerMax(unit)
+				if powmin == 0 then
+					health.value:ClearAllPoints()
+					health.value:SetPoint("LEFT", health, "LEFT", ElvDB.Scale(2), ElvDB.Scale(1))				
+				else
+					self.Health.value:ClearAllPoints()
+					self.Health.value:SetPoint("TOPLEFT", self.Health, "TOPLEFT", ElvDB.Scale(2), ElvDB.Scale(-2))		
+				end
 			elseif unit and unit:find("arena%d") then
 				if health:GetParent().Trinketbg then
 					health:GetParent().Trinketbg:SetBackdropBorderColor(r,g,b)
