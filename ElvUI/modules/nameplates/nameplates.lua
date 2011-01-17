@@ -84,6 +84,74 @@ local function ForEachPlate(functionToRun, ...)
 	end
 end
 
+local function CreateAuraIcon(parent)
+	local button = CreateFrame("Frame",nil,parent)
+	button:SetWidth(20)
+	button:SetHeight(20)
+	button.bg = button:CreateTexture(nil, "BORDER")
+	button.bg:SetTexture(0,0,0)
+	button.bg:SetAllPoints(button)
+	button.icon = button:CreateTexture(nil, "ARTWORK")
+	button.icon:SetPoint("TOPLEFT",button,"TOPLEFT", noscalemult*2,-noscalemult*2)
+	button.icon:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-noscalemult*2,noscalemult*2)
+	button.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+	button.cd = CreateFrame("Cooldown",nil,button)
+	button.cd:SetAllPoints(button)
+	button.cd:SetReverse(true)
+	button.count = button:CreateFontString(nil,"OVERLAY")
+	button.count:SetFont(FONT,7,FONTFLAG)
+	button.count:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT")
+	return button
+end
+
+local function UpdateAuraIcon(button, unit, index, filter)
+	local _, _, icon, count, debuffType, duration, expirationTime,_,_,spellID = UnitAura(unit,index,filter)
+	button.icon:SetTexture(icon)
+	button.cd:SetCooldown(expirationTime-duration,duration)
+	button.expirationTime = expirationTime
+	button.duration = duration
+	button.spellID = spellID
+	if count > 1 then 
+		button.count:SetText(count)
+	else
+		button.count:SetText("")
+	end
+	button:Show()
+end
+
+local tab = CLASS_FILTERS[ElvDB.myclass].target
+local function OnAura(frame, unit)
+	if unit ~= frame.unit or not frame.icons then return end
+	if not tab then return end
+	local i = 1
+	for index = 1,40 do
+		if i > 5 then return end
+		local match
+		local name,_,_,_,_,duration,_,caster,_,_,spellid = UnitAura(unit,index,"HARMFUL")
+		for i, tab in pairs(tab) do
+			local id = tab.id
+			if spellid == id then match = true end
+		end
+		match = true
+		if duration and caster == "player" and match == true then
+			if not frame.icons[i] then frame.icons[i] = CreateAuraIcon(frame) end
+			local icon = frame.icons[i]
+			if i == 1 then icon:SetPoint("RIGHT",frame.icons,"RIGHT") end
+			if i ~= 1 and i <= 5 then icon:SetPoint("RIGHT", frame.icons[i-1], "LEFT", -2, 0) end
+			i = i + 1
+			UpdateAuraIcon(icon, unit, index, "HARMFUL")
+		end
+	end
+	for index = i, #frame.icons do frame.icons[index]:Hide() end
+	frame.icons.n = i-1
+end
+
+local function OnCLogEvent(frame, timestamp, event, _,sourceName,_,destGUID,_,_,spellID)
+	if frame.guid == destGUID and UnitName("player") == sourceName and event == "SPELL_AURA_REMOVED" then
+		for _,icon in ipairs(frame.icons) do if icon.spellID == spellID then icon:Hide() end end			
+	end
+end
+
 local goodR, goodG, goodB = unpack(ElvCF["nameplate"].goodcolor)
 local badR, badG, badB = unpack(ElvCF["nameplate"].badcolor)
 local transitionR, transitionG, transitionB = unpack(ElvCF["nameplate"].transitioncolor)
@@ -188,6 +256,16 @@ local function UpdateThreat(frame, elapsed)
 		frame.healthborder_tex3:SetTexture(0.3, 0.3, 0.3)
 		frame.healthborder_tex4:SetTexture(0.3, 0.3, 0.3)
 	end
+	
+	if UnitName("target") == frame.name:GetText() and frame:GetAlpha() == 1 then
+		frame.guid = UnitGUID("target")
+		frame.unit = "target"
+		OnAura(frame, frame.unit)	
+	elseif frame.overlay:IsShown() then
+		frame.guid = UnitGUID("mouseover")
+		frame.unit = "mouseover"
+		OnAura(frame, frame.unit)		
+	end	
 end
 
 local function Colorize(frame)
@@ -331,8 +409,8 @@ local function OnHide(frame)
 	frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
 	frame.overlay:Hide()
 	frame.cb:Hide()
-	--frame.unit = nil
-	--frame.guid = nil
+	frame.unit = nil
+	frame.guid = nil
 	frame.hasclass = nil
 	frame.isFriendly = nil
 	frame.hp.rcolor = nil
@@ -344,152 +422,6 @@ local function OnHide(frame)
 		end
 	end	
 	frame:SetScript("OnUpdate",nil)
-end
-
---[[local function CreateAuraIcon(parent)
-	local button = CreateFrame("Frame",nil,parent)
-	ElvDB.SetTemplate(button)
-	button:SetHeight(FONTSIZE)
-	button:SetWidth(button:GetHeight())
-	button.icon = button:CreateTexture(nil, "ARTWORK")
-	button.icon:SetPoint("TOPLEFT",button,"TOPLEFT", noscalemult*3,-noscalemult*3)
-	button.icon:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-noscalemult*3,noscalemult*3)
-	button.cd = CreateFrame("Cooldown",nil,button)
-	button.cd:SetAllPoints(button)
-	button.cd:SetReverse(true)
-	button.count = button:CreateFontString(nil,"OVERLAY")
-	button.count:SetFont(FONT,FONTSIZE,FONTFLAG)
-	button.count:SetPoint("TOPLEFT")
-	return button
-end
-
-local function UpdateAuraIcon(button, unit, index, filter)
-	local _, _, icon, count, debuffType, duration, expirationTime,_,_,spellID = UnitAura(unit,index,filter)
-	button.icon:SetTexture(icon)
-	button.cd:SetCooldown(expirationTime-duration,duration)
-	button.expirationTime = expirationTime
-	button.duration = duration
-	button.spellID = spellID
-	button.count:SetText(count)
-end
-
-local function buffsSort(a,b)
-	if a:IsShown() ~= b:IsShown() then return a:IsShown() end
-	if a.expirationTime == 0 then return false end
-	return a.expirationTime < b.expirationTime
-end
-
-local tsort = table.sort
-local function SortAuraIcons(icons)
-	tsort(icons,buffsSort)
-end
-
--- Anchor Opposites
-local oppAnchor = {
-	TOP = "BOTTOM",
-	BOTTOM = "TOP",
-	RIGHT = "LEFT",
-	LEFT = "RIGHT",
-}
-
-local match, ceil, floor, min, max = string.match, math.ceil, math.floor, math.min, math.max
-local filterTable, tinsert, twipe, tsort = {},table.insert,table.wipe, table.sort
-local function ArrangeGrid(frames, direction, wrapPoint, spacing, skipHidden, sortFunc)
-	assert(frames and type(frames)=="table")
-	-- Filter the frames if necessary
-	twipe(filterTable)
-	for _,frame in ipairs(frames) do
-		if not skipHidden or frame:IsShown() then tinsert(filterTable,frame) end
-	end
-	
-	frames = filterTable
-	if sortFunc then tsort(frames,sortFunc) end
-	if #frames == 0 then return "TOPLEFT",0,0 end
-	direction, wrapPoint, spacing = direction or "RIGHT", wrapPoint or -1, spacing or 0
-	-- Parse the direction string
-	local dir1 = direction
-	local dir2 = direction
-	if direction ~= "STACK" then
-		dir1 = match(direction,"^(RIGHT)") or match(direction,"^(LEFT)") or match(direction,"^(UP)") or match(direction,"^(DOWN)")
-		dir2 = match(direction,"^"..dir1.."(..*)$")
-	end
-	-- Translate to anchoring points
-	local sx1, sy1, sx2, sy2 = 0, 0, 0, 0
-	dir1 = (dir1 == "UP" and "TOP") or (dir1 == "DOWN" and "BOTTOM") or (dir1 == "STACK" and "CENTER") or dir1
-	dir2 = (dir2 == "UP" and "TOP") or (dir2 == "DOWN" and "BOTTOM") or (dir2 == "STACK" and "CENTER") or dir2
-	sy1 = (dir1 == "TOP" and spcaing) or (dir1 == "BOTTOM" and -spacing) or 0
-	sy2 = (dir2 == "TOP" and spacing) or (dir2 == "BOTTOM" and -spacing) or 0
-	sx1 = (dir1 == "RIGHT" and spacing) or (dir1 == "LEFT" and -spacing) or 0
-	sx2 = (dir2 == "RIGHT" and spacing) or (dir2 == "LEFT" and -spacing) or 0	
-	-- Anchor all the frames
-	local count,frmLvl = #frames, frames[1]:GetFrameLevel()
-	if not dir2 or wrapPoint == -1 then wrapPoint = count end -- Only wrap if we know which way
-	for i=1,ceil(count/wrapPoint) do
-		for j=1,min(wrapPoint,count-(i-1)*wrapPoint) do
-			local frame = frames[(i-1)*wrapPoint+j]
-			frame:SetFrameLevel(frmLvl)
-			frmLvl = frmLvl + 1
-			frame:ClearAllPoints()
-			if j == 1 and i > 1 then
-				frame:SetPoint(oppAnchor[dir2],frames[(i-2)*wrapPoint+1], dir2, sx2, sy2)
-			elseif j > 1 then
-				frame:SetPoint(oppAnchor[dir1],frames[(i-1)*wrapPoint+j-1],dir1, sx1, sy1)
-			end
-		end
-	end
-	-- Calculate the size & anchor point
-	local rows,cols = ceil(count/wrapPoint),max(min(count,wrapPoint),1)
-	if dir1 == "TOP" or dir1 == "BOTTOM" then cols, rows = rows, cols end
-	local width, height = frames[1]:GetWidth() + spacing, frames[1]:GetHeight() + spacing
-	width, height = cols*width-spacing, rows*height-spacing
-	local first, second
-	if dir1 == "TOP" or dir1 == "BOTTOM" then first = oppAnchor[dir1] else second = oppAnchor[dir1] end
-	if dir2 == "TOP" or dir2 == "BOTTOM" then first = oppAnchor[dir2] else second = (second or "")..(oppAnchor[dir2] or "") end
-	return (first or "TOP")..(second or ""), width, height,frames[1]
-end
-
-local tab = CLASS_FILTERS[ElvDB.myclass].target
-local function OnAura(frame, unit, ...)
-	if unit ~= frame.unit or not frame.icons then return end
-	if not tab then return end
-	local i = 1
-	for k = 1,40 do
-		local match
-		local _,_,_,_,_,_,duration,_,caster,_,_,spellid = select(6,UnitAura(unit,k,"HELPFUL"))
-		if duration and caster == "player" then
-			if not frame.icons[i] then frame.icons[i] = CreateAuraIcon(frame) end
-			local icon = frame.icons[i]
-			if i == 1 then icon:SetPoint("RIGHT",frame.icons,"RIGHT") end
-			i = i + 1
-			UpdateAuraIcon(icon, unit, k, "HELPFUL")
-		end
-		duration,_,caster,_,_,spellid = select(6,UnitAura(unit,k,"HARMFUL"))
-		for i, tab in pairs(tab) do
-			local id = tab.id
-			if spellid == id then match = true end
-		end
-		if duration and caster == "player" and match == true then
-			if not frame.icons[i] then frame.icons[i] = CreateAuraIcon(frame) end
-			local icon = frame.icons[i]
-			if i == 1 then icon:SetPoint("RIGHT",frame.icons,"RIGHT") end
-			i = i + 1
-			UpdateAuraIcon(icon, unit, k, "HARMFUL")
-		end
-	end
-	for k = i, #frame.icons do frame.icons[k]:Hide() end
-	frame.icons.n = i-1
-	SortAuraIcons(frame.icons)
-	local _, width, _ = ArrangeGrid(frame.icons,"LEFT",nil,ElvDB.Scale(2))
-	frame.icons:SetWidth(width)	
-end
-
-local function OnCLogEvent(frame, timestamp, event, _,sourceName,_,destGUID,_,_,spellID)
-	if frame.guid == destGUID and UnitName("player") == sourceName and event == "SPELL_AURA_REMOVED" then
-		for _,icon in ipairs(frame.icons) do if icon.spellID == spellID then icon:Hide() end end
-		SortAuraIcons(frame.icons)
-		local _, width, _ = ArrangeGrid(frame.icons,"LEFT",nil,ElvDB.Scale(2))
-		frame.icons:SetWidth(width)				
-	end
 end
 
 local function OnEvent(frame, event, ...)
@@ -517,7 +449,7 @@ local function OnEvent(frame, event, ...)
 			end
 		end
 	end
-end]]
+end
 
 local function SkinObjects(frame)
 	local hp, cb = frame:GetChildren()
@@ -700,17 +632,18 @@ local function SkinObjects(frame)
 	frame.class = cIconTex
 	
 	-- Aura tracking
-	--[[if ElvCF["nameplate"].trackauras == true then
-		frame.icons = CreateFrame("Frame",nil,frame.hp)
-		frame.icons:SetPoint("BOTTOMLEFT",frame.hp,"TOPLEFT", -10, FONTSIZE+5)
+	if ElvCF["nameplate"].trackauras == true then
+		frame.icons = CreateFrame("Frame",nil,frame)
+		frame.icons:SetPoint("BOTTOMRIGHT",frame.hp,"TOPRIGHT", 0, FONTSIZE+5)
 		frame.icons:SetWidth(20 + hpWidth)
+		frame.icons:SetHeight(25)
 		frame.icons:SetFrameLevel(frame.hp:GetFrameLevel()+2)
 		frame:RegisterEvent("UNIT_AURA")
 		frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 		frame:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
 		frame:RegisterEvent("PLAYER_TARGET_CHANGED")	
 		frame:HookScript("OnEvent",OnEvent)		
-	end]]
+	end
 	
 	--Hide Old Stuff
 	QueueObject(frame, oldlevel)
