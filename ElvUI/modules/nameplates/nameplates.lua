@@ -76,14 +76,6 @@ local function HideDrunkenText(frame, ...)
 	end
 end
 
-local function ForEachPlate(functionToRun, ...)
-	for frame in pairs(frames) do
-		if frame:IsShown() then
-			functionToRun(frame, ...)
-		end
-	end
-end
-
 local function CreateAuraIcon(parent)
 	local button = CreateFrame("Frame",nil,parent)
 	button:SetWidth(20)
@@ -121,29 +113,26 @@ end
 
 local tab = CLASS_FILTERS[ElvDB.myclass].target
 local function OnAura(frame, unit)
-	if unit ~= frame.unit or not frame.icons then return end
-	if not tab then return end
+	if not frame.icons or not tab or not frame.unit then return end
 	local i = 1
 	for index = 1,40 do
 		if i > 5 then return end
 		local match
-		local name,_,_,_,_,duration,_,caster,_,_,spellid = UnitAura(unit,index,"HARMFUL")
+		local name,_,_,_,_,duration,_,caster,_,_,spellid = UnitAura(frame.unit,index,"HARMFUL")
 		for i, tab in pairs(tab) do
 			local id = tab.id
 			if spellid == id then match = true end
 		end
-		match = true
 		if duration and caster == "player" and match == true then
 			if not frame.icons[i] then frame.icons[i] = CreateAuraIcon(frame) end
 			local icon = frame.icons[i]
 			if i == 1 then icon:SetPoint("RIGHT",frame.icons,"RIGHT") end
 			if i ~= 1 and i <= 5 then icon:SetPoint("RIGHT", frame.icons[i-1], "LEFT", -2, 0) end
 			i = i + 1
-			UpdateAuraIcon(icon, unit, index, "HARMFUL")
+			UpdateAuraIcon(icon, frame.unit, index, "HARMFUL")
 		end
 	end
 	for index = i, #frame.icons do frame.icons[index]:Hide() end
-	frame.icons.n = i-1
 end
 
 local function OnCLogEvent(frame, timestamp, event, _,sourceName,_,destGUID,_,_,spellID)
@@ -256,16 +245,6 @@ local function UpdateThreat(frame, elapsed)
 		frame.healthborder_tex3:SetTexture(0.3, 0.3, 0.3)
 		frame.healthborder_tex4:SetTexture(0.3, 0.3, 0.3)
 	end
-	
-	if UnitName("target") == frame.name:GetText() and frame:GetAlpha() == 1 then
-		frame.guid = UnitGUID("target")
-		frame.unit = "target"
-		OnAura(frame, frame.unit)	
-	elseif frame.overlay:IsShown() then
-		frame.guid = UnitGUID("mouseover")
-		frame.unit = "mouseover"
-		OnAura(frame, frame.unit)		
-	end	
 end
 
 local function Colorize(frame)
@@ -288,6 +267,38 @@ local function Colorize(frame)
 		frame.isFriendly = false
 	end
 	frame.hp:SetStatusBarColor(r,g,b)
+end
+
+local function OnEvent(frame, event, ...)
+	if event == "COMBAT_LOG_EVENT_UNFILTERED" then 
+		OnCLogEvent(frame, ...)
+	else
+		OnAura(frame, ...)
+	end
+end
+
+local function OnHide(frame)
+	frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
+	frame.overlay:Hide()
+	frame.cb:Hide()
+	frame.unit = nil
+	frame.guid = nil
+	frame.hasclass = nil
+	frame.isFriendly = nil
+	frame.hp.rcolor = nil
+	frame.hp.gcolor = nil
+	frame.hp.bcolor = nil
+	if frame.icons then
+		for _,icon in ipairs(frame.icons) do
+			icon.icon:SetTexture(nil)
+			icon.count:SetText(nil)
+			icon.duration = nil
+			icon.spellID = nil
+			icon.expirationTime = nil
+			icon:Hide()
+		end
+	end	
+	frame:SetScript("OnUpdate",nil)
 end
 
 local function UpdateObjects(frame)
@@ -359,6 +370,19 @@ local function UpdateObjects(frame)
 	
 	frame.overlay:ClearAllPoints()
 	frame.overlay:SetAllPoints(frame.hp)
+	
+	-- Aura tracking
+	if ElvCF["nameplate"].trackauras == true then
+		if frame.icons then return end
+		frame.icons = CreateFrame("Frame",nil,frame)
+		frame.icons:SetPoint("BOTTOMRIGHT",frame.hp,"TOPRIGHT", 0, FONTSIZE+5)
+		frame.icons:SetWidth(20 + hpWidth)
+		frame.icons:SetHeight(25)
+		frame.icons:SetFrameLevel(frame.hp:GetFrameLevel()+2)
+		frame:RegisterEvent("UNIT_AURA")
+		frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+		frame:HookScript("OnEvent",OnEvent)		
+	end	
 
 	HideObjects(frame)
 end
@@ -403,52 +427,6 @@ end
 
 local OnSizeChanged = function(self)
 	self.needFix = true
-end
-
-local function OnHide(frame)
-	frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
-	frame.overlay:Hide()
-	frame.cb:Hide()
-	frame.unit = nil
-	frame.guid = nil
-	frame.hasclass = nil
-	frame.isFriendly = nil
-	frame.hp.rcolor = nil
-	frame.hp.gcolor = nil
-	frame.hp.bcolor = nil
-	if frame.icons then
-		for _,icon in ipairs(frame.icons) do
-			icon:Hide()
-		end
-	end	
-	frame:SetScript("OnUpdate",nil)
-end
-
-local function OnEvent(frame, event, ...)
-	-- UnitID detection
-	if event == "PLAYER_TARGET_CHANGED" and frame:GetAlpha() == 1 then
-		frame.guid = UnitGUID("target")
-		frame.unit = "target"
-		OnAura(frame, frame.unit)
-		return
-	elseif event == "UPDATE_MOUSEOVER_UNIT" and frame.overlay:IsShown() then
-		frame.guid = UnitGUID("mouseover")
-		frame.unit = "mouseover"
-		OnAura(frame, frame.unit)
-		return
-	elseif event == "PLAYER_TARGET_CHANGED" or event == "UPDATE_MOUSEOVER_UNIT" then
-		frame.unit = nil
-	else
-		if event == "COMBAT_LOG_EVENT_UNFILTERED" then 
-			OnCLogEvent(frame, ...)
-		else
-			if UnitName("target") == frame.name:GetText() and frame:GetAlpha() == 1 then
-				frame.unit = "target"
-				frame.guid = UnitGUID("target")
-				OnAura(frame, ...)
-			end
-		end
-	end
 end
 
 local function SkinObjects(frame)
@@ -529,6 +507,12 @@ local function SkinObjects(frame)
 		hp.value:SetTextColor(1,1,1)
 		hp.value:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
 	end
+	
+	hp.debug = hp:CreateFontString(nil, "OVERLAY")	
+	hp.debug:SetFont(FONT, FONTSIZE, FONTFLAG)
+	hp.debug:SetPoint("CENTER", hp, "CENTER", 0, 50)
+	hp.debug:SetTextColor(1,1,1)
+	hp.debug:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
 	
 	-- Create Cast Bar Backdrop frame
 	local castbarbackdrop_tex = cb:CreateTexture(nil, "BACKGROUND")
@@ -631,20 +615,6 @@ local function SkinObjects(frame)
 	cIconTex:SetSize(iconSize, iconSize)
 	frame.class = cIconTex
 	
-	-- Aura tracking
-	if ElvCF["nameplate"].trackauras == true then
-		frame.icons = CreateFrame("Frame",nil,frame)
-		frame.icons:SetPoint("BOTTOMRIGHT",frame.hp,"TOPRIGHT", 0, FONTSIZE+5)
-		frame.icons:SetWidth(20 + hpWidth)
-		frame.icons:SetHeight(25)
-		frame.icons:SetFrameLevel(frame.hp:GetFrameLevel()+2)
-		frame:RegisterEvent("UNIT_AURA")
-		frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-		frame:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
-		frame:RegisterEvent("PLAYER_TARGET_CHANGED")	
-		frame:HookScript("OnEvent",OnEvent)		
-	end
-	
 	--Hide Old Stuff
 	QueueObject(frame, oldlevel)
 	QueueObject(frame, threat)
@@ -676,6 +646,27 @@ local function HookFrames(...)
 	end
 end
 
+local function CheckUnit_Guid(frame, ...)
+	if UnitExists("target") and frame:GetAlpha() == 1 and UnitName("target") == frame.name:GetText() then
+		frame.guid = UnitGUID("target")
+		frame.unit = "target"
+	elseif frame.overlay:IsShown() and UnitExists("mouseover") and UnitName("mouseover") == frame.name:GetText() then
+		frame.guid = UnitGUID("mouseover")
+		frame.unit = "mouseover"
+	else
+		frame.unit = nil		
+	end
+	
+	if ElvCF["debug"].enabled == true then frame.hp.debug:SetText(frame.unit or "") end
+end
+
+local function ForEachPlate(functionToRun, ...)
+	for frame in pairs(frames) do
+		if frame:IsShown() then
+			functionToRun(frame, ...)
+		end
+	end
+end
 
 CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
 	if(WorldFrame:GetNumChildren() ~= numChildren) then
@@ -695,6 +686,7 @@ CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
 	
 	ForEachPlate(CheckBlacklist)
 	ForEachPlate(HideDrunkenText)
+	ForEachPlate(CheckUnit_Guid)
 end)
 
 if ElvCF["nameplate"].combat == true then
