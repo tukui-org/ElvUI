@@ -110,6 +110,7 @@ BuffReminderRaidBuffs = {
 		87563, --60 HASTE
 		87564, --60 DODGE
 		87634, --60 EXP
+		87554, --Seafood Feast
 	},
 }
 

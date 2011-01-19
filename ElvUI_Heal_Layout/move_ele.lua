@@ -2,6 +2,7 @@ local ElvDB = ElvDB
 local ElvCF = ElvCF
 
 if not ElvCF["unitframes"].enable == true then return end
+if IsAddOnLoaded("ElvUI_Dps_Layout") then return end
 
 local Frames = {}
 local FramesDefault = {}
