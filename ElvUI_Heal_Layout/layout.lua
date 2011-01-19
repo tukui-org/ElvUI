@@ -865,8 +865,8 @@ local function Shared(self, unit)
 		  tile = false, tileSize = 0, edgeSize = 1, 
 		  insets = { left = 0, right = 0, top = 0, bottom = ElvDB.Scale(-1)}
 		})
-		AltPowerBar:SetBackdropColor(0, 0, 0)
-
+		AltPowerBar:SetBackdropColor(0, 0, 0, 0)
+		AltPowerBar:SetBackdropBorderColor(0, 0, 0, 0)
 		self.AltPowerBar = AltPowerBar				
 		
 		-- update all frames when changing area, to fix exiting instance while in vehicle
@@ -1252,7 +1252,8 @@ local function Shared(self, unit)
 		  tile = false, tileSize = 0, edgeSize = 1, 
 		  insets = { left = 0, right = 0, top = 0, bottom = ElvDB.Scale(-1)}
 		})
-		AltPowerBar:SetBackdropColor(0, 0, 0)
+		AltPowerBar:SetBackdropColor(0, 0, 0, 0)
+		AltPowerBar:SetBackdropBorderColor(0, 0, 0, 0)
 
 		self.AltPowerBar = AltPowerBar				
 		
@@ -1700,7 +1701,8 @@ local function Shared(self, unit)
 			  tile = false, tileSize = 0, edgeSize = 1, 
 			  insets = { left = 0, right = 0, top = 0, bottom = ElvDB.Scale(-1)}
 			})
-			AltPowerBar:SetBackdropColor(0, 0, 0)
+			AltPowerBar:SetBackdropColor(0, 0, 0, 0)
+			AltPowerBar:SetBackdropBorderColor(0, 0, 0, 0)
 			AltPowerBar:HookScript("OnShow", function(self) self:GetParent().FrameBorder.shadow:SetPoint("TOPLEFT", ElvDB.Scale(-4), ElvDB.Scale(12)) end)
 			AltPowerBar:HookScript("OnHide", function(self) self:GetParent().FrameBorder.shadow:SetPoint("TOPLEFT", ElvDB.Scale(-4), ElvDB.Scale(4)) end)
 			AltPowerBar.FrameBackdrop = apb_bg		
