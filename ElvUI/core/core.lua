@@ -20,7 +20,8 @@ local RoleUpdater = CreateFrame("Frame")
 local function CheckRole(self, event, unit)
 	local tree = GetPrimaryTalentTree()
 	local resilience
-	if GetCombatRating(COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN)*0.02828 > GetDodgeChance() then
+	local resilperc = GetCombatRatingBonus(COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN)
+	if resilperc > GetDodgeChance() and resilperc > GetParryChance() then
 		resilience = true
 	else
 		resilience = false
