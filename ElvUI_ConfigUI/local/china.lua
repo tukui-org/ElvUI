@@ -237,11 +237,11 @@
 	ElvuiL.option_chat = "对话框"
 	ElvuiL.option_chat_enable = "开启Elvui对话框"
 	ElvuiL.option_chat_whispersound = "收到密语时语音警告"
-	ElvuiL_option_chat_chatwidth = "对话框宽度"
-	ElvuiL_option_chat_backdrop = "显示对话框背景"
-	ElvuiL_option_chat_chatheight = "对话框高度"
-	ElvuiL_option_chat_fadeoutofuse = "不使用时对话文字淡出"
-	ElvuiL_option_chat_sticky = "开启新对话框时预设某些重要频道"
+	ElvuiL.option_chat_chatwidth = "对话框宽度"
+	ElvuiL.option_chat_backdrop = "显示对话框背景"
+	ElvuiL.option_chat_chatheight = "对话框高度"
+	ElvuiL.option_chat_fadeoutofuse = "不使用时对话文字淡出"
+	ElvuiL.option_chat_sticky = "开启新对话框时预设某些重要频道"
  
 	-- buttons
 	ElvuiL.option_button_reset = "重置UI"
@@ -250,6 +250,6 @@
 	ElvuiL.option_setsavedsetttings = "依角色储存设定"
 	ElvuiL.option_resetchar = "你确定要将你的角色设定设置成你的预设设定吗?"
 	ElvuiL.option_resetall = "你确定要将你所有的设定设置成系统预设吗?"
-	ElvuiL_option_perchar = "你确定要开启或者关闭依角色储存设定的模式吗?"
-	ElvuiL_option_makeselection = "你必需作出选择才能继续设定"
+	ElvuiL.option_perchar = "你确定要开启或者关闭依角色储存设定的模式吗?"
+	ElvuiL.option_makeselection = "你必需作出选择才能继续设定"
 end

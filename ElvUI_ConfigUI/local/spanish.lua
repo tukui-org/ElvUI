@@ -7,7 +7,8 @@
 	ElvuiL.option_general_embedright = "Addon que se ajustará en el panel de chat derecho (Recount, Omen, Skada)"
 	ElvuiL.option_general_classtheme = "Colorear los bordes del color de tu clase"
 	ElvuiL.option_general_autocustomlagtolerance = "Actualizar automaticamente la Tolerancia de Latencia de Blizzard segun tu Latencia."
-
+	ElvuiL.option_general_fontscale = "Escala maestra de Fuente"
+	
 	--Media
 	ElvuiL.option_media = "Medios"
 	ElvuiL.option_media_font = "Ruta de la fuente que será usada como fuente principal"
@@ -158,7 +159,8 @@
 	ElvuiL.option_unitframes_healthcolorbyvalue = "Colorear las Barras de Vida por la cantidad que queda de vida."
 	ElvuiL.option_unitframes_combat = "Ocultar Marcos de Unidad mientras no estás en combate."
 	ElvuiL.option_unitframes_pettarget = "Mostrar el Objetivo de la Mascota (Solo DPS)"
-
+	ElvuiL.option_raidframes_partytarget = "Mostrar objetivo de los miembros de grupo (Solo DPS)"
+	
 	 -- frame sizes
 	ElvuiL.option_framesizes = "Tamaño de los marcos de unidad"
 	ElvuiL.option_framesizes_playtarwidth = "Ancho del marco de Jugador/Objetivo"
@@ -188,7 +190,8 @@
 	ElvuiL.option_tooltip_xOfs = "Compensación en el eje X del tooltip (-x = Izquierda, +x = Derecha)"
 	ElvuiL.option_tooltip_yOfs = "Compensación en el eje Ydel tooltip (-y = Izquierda, +y = Arriba)"
 	ElvuiL.option_tooltip_itemid = "Mostrar ID de Objeto"
-
+	ElvuiL.option_tooltip_whotargetting = "Muestra quien está marcando la unidad que está en tu grupo/banda."
+	
 	-- others
 	ElvuiL.option_others = "Otros"
 	ElvuiL.option_others_bg = "Activar la liberación automática del cadáver en los campos de batalla"
@@ -228,6 +231,8 @@
 	ElvuiL.option_actionbar_verticalstance = "Barras de estancias en Vertical"
 	ElvuiL.option_actionbar_microbar = "Mostrar Microbarra (Menú)"
 	ElvuiL.option_actionbar_mousemicro = "Mostrar Microbarra al pasar el Ratón"
+	ElvuiL.option_actionbar_macrotext = "Mostrar texto de macro en la barra de acciones"
+	
 	-- arena
 	ElvuiL.option_arena = "Arena"
 	ElvuiL.option_arena_st = "Activar seguimiento de hechizos del enemigo en arenas"
@@ -248,13 +253,13 @@
 	ElvuiL.option_chat_bubbles = "Burbujas de chat skineadas (encima de las cabezas)"
 	ElvuiL.option_chat_enable = "Activar el chat Elvui"
 	ElvuiL.option_chat_whispersound = "Reproducir sonido cuando se recibe un privado"
-	ElvuiL_option_chat_chatwidth = "Anchura del chat (horizontal)"
-	ElvuiL_option_chat_backdrop = "Mostrar fondo en el chat"
-	ElvuiL_option_chat_chatheight = "Altura del chat"
-	ElvuiL_option_chat_fadeoutofuse = "Ocultar chat cuando no está en uso"
-	ElvuiL_option_chat_sticky = "Fijar algunas pestañas del chat cuando se edita"
-	ElvuiL_option_chat_combathide = "Deslizar el Chat fuera en cambate ('Left', 'Right', 'Both', or 'NONE')"
-	ElvuiL_option_chat_rightchat = "Mostrar ventana derecha del Chat."
+	ElvuiL.option_chat_chatwidth = "Anchura del chat (horizontal)"
+	ElvuiL.option_chat_backdrop = "Mostrar fondo en el chat"
+	ElvuiL.option_chat_chatheight = "Altura del chat"
+	ElvuiL.option_chat_fadeoutofuse = "Ocultar chat cuando no está en uso"
+	ElvuiL.option_chat_sticky = "Fijar algunas pestañas del chat cuando se edita"
+	ElvuiL.option_chat_combathide = "Deslizar chat durante el combate ('Left', 'Right', 'Both', o 'NONE')"
+	ElvuiL.option_chat_rightchat = "Mostrar ventana derecha del Chat."
 
 	-- buttons
 	ElvuiL.option_button_reset = "Reiniciar interfaz"
@@ -263,6 +268,6 @@
 	ElvuiL.option_setsavedsetttings = "Guardar opciones por personje"
 	ElvuiL.option_resetchar = "¿Seguro que desea reiniciar las opcioens de este personaje a las por defecto?"
 	ElvuiL.option_resetall = "¿Seguro que desea reiniciar TODAS las opciones a las por defecto?"
-	ElvuiL_option_perchar = "¿Seguro que desea cambiar la configuración 'por personaje'?"
-	ElvuiL_option_makeselection = "Tiene que seleccionar una opción antes de seguir con la configuración."
+	ElvuiL.option_perchar = "¿Seguro que desea cambiar la configuración 'por personaje'?"
+	ElvuiL.option_makeselection = "Tiene que seleccionar una opción antes de seguir con la configuración."
 end

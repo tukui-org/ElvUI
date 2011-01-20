@@ -287,13 +287,13 @@ local function Local(o)
 	if o == "ElvuiConfigUIchatbubbles" then o = ElvuiL.option_chat_bubbles end
 	if o == "ElvuiConfigUIchatenable" then o = ElvuiL.option_chat_enable end
 	if o == "ElvuiConfigUIchatwhispersound" then o = ElvuiL.option_chat_whispersound end
-	if o == "ElvuiConfigUIchatchatwidth" then o = ElvuiL_option_chat_chatwidth end
-	if o == "ElvuiConfigUIchatshowbackdrop" then o = ElvuiL_option_chat_backdrop end
-	if o == "ElvuiConfigUIchatfadeoutofuse" then o = ElvuiL_option_chat_fadeoutofuse end
-	if o == "ElvuiConfigUIchatchatheight" then o = ElvuiL_option_chat_chatheight end
-	if o == "ElvuiConfigUIchatsticky" then o = ElvuiL_option_chat_sticky end
-	if o == "ElvuiConfigUIchatrightchat" then o = ElvuiL_option_chat_rightchat end
-	if o == "ElvuiConfigUIchatcombathide" then o = ElvuiL_option_chat_combathide end
+	if o == "ElvuiConfigUIchatchatwidth" then o = ElvuiL.option_chat_chatwidth end
+	if o == "ElvuiConfigUIchatshowbackdrop" then o = ElvuiL.option_chat_backdrop end
+	if o == "ElvuiConfigUIchatfadeoutofuse" then o = ElvuiL.option_chat_fadeoutofuse end
+	if o == "ElvuiConfigUIchatchatheight" then o = ElvuiL.option_chat_chatheight end
+	if o == "ElvuiConfigUIchatsticky" then o = ElvuiL.option_chat_sticky end
+	if o == "ElvuiConfigUIchatrightchat" then o = ElvuiL.option_chat_rightchat end
+	if o == "ElvuiConfigUIchatcombathide" then o = ElvuiL.option_chat_combathide end
 	
 	--debug
 	if o == "ElvuiConfigUIdebug" then o = ElvuiL.option_debug end
@@ -328,7 +328,7 @@ login:SetScript("OnEvent", function(self)
 end)
 
 StaticPopupDialogs["PERCHAR"] = {
-	text = ElvuiL_option_perchar,
+	text = ElvuiL.option_perchar,
 	OnAccept = function() 
 		local myPlayerRealm = GetCVar("realmName");
 		local myPlayerName  = UnitName("player");
@@ -502,7 +502,7 @@ local function CreateElvuiConfigUI()
 	ElvuiConfigCover:SetPoint("BOTTOMRIGHT", ElvuiConfigUI, "BOTTOMRIGHT")
 	ElvuiConfigCover:SetFrameLevel(ElvuiConfigUI:GetFrameLevel() + 20)
 	ElvuiConfigCover:EnableMouse(true)
-	ElvuiConfigCover:SetScript("OnMouseDown", function(self) print(ElvuiL_option_makeselection) end)
+	ElvuiConfigCover:SetScript("OnMouseDown", function(self) print(ElvuiL.option_makeselection) end)
 	ElvuiConfigCover:Hide()
 	
 	local groupsBG = CreateFrame("Frame","ElvuiConfigUI",ElvuiConfigUI)

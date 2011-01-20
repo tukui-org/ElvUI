@@ -236,11 +236,11 @@
 	ElvuiL.option_chat_bubbles = "대화창 버블 스킨을 사용"
 	ElvuiL.option_chat_enable = "대화창을 사용"
 	ElvuiL.option_chat_whispersound = "귓속말 알림 소리를 사용"
-	ElvuiL_option_chat_chatwidth = "대화창의 너비"
-	ElvuiL_option_chat_backdrop = "대화창 배경을 사용"
-	ElvuiL_option_chat_chatheight = "대화창의 높이"
-	ElvuiL_option_chat_fadeoutofuse = "사라지지 않는 대화를 사용"
-	ElvuiL_option_chat_sticky = "몇 대화 채널에 글을 쓸 때 새로운 입력창을 사용"
+	ElvuiL.option_chat_chatwidth = "대화창의 너비"
+	ElvuiL.option_chat_backdrop = "대화창 배경을 사용"
+	ElvuiL.option_chat_chatheight = "대화창의 높이"
+	ElvuiL.option_chat_fadeoutofuse = "사라지지 않는 대화를 사용"
+	ElvuiL.option_chat_sticky = "몇 대화 채널에 글을 쓸 때 새로운 입력창을 사용"
  
 	-- 버튼
 	ElvuiL.option_button_reset = "초기화"
@@ -249,6 +249,6 @@
 	ElvuiL.option_setsavedsetttings = "캐릭터별로 저장"
 	ElvuiL.option_resetchar = "해당 캐릭터의 설정을 기본 설정으로 초기화하시겠습니까?"
 	ElvuiL.option_resetall = "모든 캐릭터의 설정을 기본 설정으로 초기화하시겠습니까?"
-	ElvuiL_option_perchar = "설정을 캐릭터별로 저장하시겠습니까?"
-	ElvuiL_option_makeselection = "계속하기전에 선택을 해야합니다."
+	ElvuiL.option_perchar = "설정을 캐릭터별로 저장하시겠습니까?"
+	ElvuiL.option_makeselection = "계속하기전에 선택을 해야합니다."
 end

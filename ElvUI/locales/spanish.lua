@@ -93,7 +93,9 @@ if ElvDB.client == "esES" then
 	ElvL.popup_disableui = "Elvui no funciona para esta resolución, ¿quieres desactivar Elvui? (Cancela si quieres probar otra resolución)"
 	ElvL.popup_install = "Primera vez usando Elvui en este personaje, necesitas configurar tus ventanas de chat y barras de habilidades."
 	ElvL.popup_2raidactive = "2 distribuciones de banda están activos, por favor selecciona una distribución."
- 
+	ElvL.popup_rightchatwarn = "Puedes haber eliminado accidentalmente la ventana derecha de chat, actualmente Tukui es dependiente del mismo. Tienes que deshabilitarlo mediante la configuración, pulsa aceptar para reiniciar las ventanas de chat."
+	ElvL.raidbufftoggler = "Rastreador de Beneficios de Raid: "
+
 	ElvL.merchant_repairnomoney = "¡No tienes suficiente dinero para reparar!"
 	ElvL.merchant_repaircost = "Tus objetos han sido reparados por"
 	ElvL.merchant_trashsell = "Tu basura de vendedor ha sido vendida y has recibido"
@@ -118,7 +120,8 @@ if ElvDB.client == "esES" then
 	ElvL.unitframes_disconnected = "D/C"
  
 	ElvL.tooltip_count = "Contador"
- 
+	ElvL.tooltip_whotarget = "Marcado por"
+	
 	ElvL.bags_noslots = "¡No puedes comprar más espacios!"
 	ElvL.bags_costs = "Coste: %.2f oro"
 	ElvL.bags_buyslots = "Compra nuevo espacio con /compra de bolsas sí"
@@ -163,6 +166,8 @@ if ElvDB.client == "esES" then
 	ElvL.core_uihelp16 = "|cffFF0000/resetgold|r - reinicia el texto de datos de oro"
 	ElvL.core_uihelp17 = "|cffFF0000/moveele|r - Desbloquea ciertos marcos de unidades para poder moverlos."
 	ElvL.core_uihelp18 = "|cffFF0000/resetele|r - Reinicia todos los elementos a su posición inicial. También puedes reiniciar un elemento concreto poniendo /resetele <nombrelemento>."
+	ElvL.core_uihelp19 = "|cffFF0000/farmmode|r - Activa aumentar/disminuir el tamaño del minimapa, útil para farmear."
+	ElvL.core_uihelp20 = "|cffFF0000/micro|r - Activa el desbloqueo de la Microbarra"	
 	ElvL.core_uihelp14 = "(Sube para más comandos ...)"
  
 	ElvL.bind_combat = "No puedes vincular teclas en combate."

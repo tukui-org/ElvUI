@@ -237,11 +237,11 @@ if GetLocale() == "frFR" then
 	ElvuiL.option_chat_bubbles = "Skin des bulles de discussions" --"Skin Chat Bubbles"
 	ElvuiL.option_chat_enable = "Activer le chat de Elvui" --"Enable Elvui Chat"
 	ElvuiL.option_chat_whispersound = "Jouer un son quand un chuchotement est reçu" --"Play sound when receiving private message"
-	ElvuiL_option_chat_chatwidth = "Largeur de la fenêtre de chat" --"Width of the chat windows"
-	ElvuiL_option_chat_backdrop = "Arrière-plan pour les fenêtres de chat" --"Show backdrop behind chat window"
-	ElvuiL_option_chat_chatheight = "Hauteur de la fenêtre de chat" --"Height of chat frames"
-	ElvuiL_option_chat_fadeoutofuse = "Masquer le chat quand pas utilisé" --"Fade chat text when not in use"
-	ElvuiL_option_chat_sticky = "Vérouiller certains cannaux de chat à l'ouverture d'une nouvelle fenêtre." --"Sticky some chat channels when opening new chat edit"
+	ElvuiL.option_chat_chatwidth = "Largeur de la fenêtre de chat" --"Width of the chat windows"
+	ElvuiL.option_chat_backdrop = "Arrière-plan pour les fenêtres de chat" --"Show backdrop behind chat window"
+	ElvuiL.option_chat_chatheight = "Hauteur de la fenêtre de chat" --"Height of chat frames"
+	ElvuiL.option_chat_fadeoutofuse = "Masquer le chat quand pas utilisé" --"Fade chat text when not in use"
+	ElvuiL.option_chat_sticky = "Vérouiller certains cannaux de chat à l'ouverture d'une nouvelle fenêtre." --"Sticky some chat channels when opening new chat edit"
  
 	-- buttons
 	ElvuiL.option_button_reset = "Réinitialiser" --"Reset UI"
@@ -250,6 +250,6 @@ if GetLocale() == "frFR" then
 	ElvuiL.option_setsavedsetttings = "Activer les paramètres par personnage" --"Set settings Per-Character"
 	ElvuiL.option_resetchar = "Etes-vous sur de vouloir réinitialiser les paramètres de votre personnage ?" --"Are you sure you want to reset your character's settings to match your default settings?"
 	ElvuiL.option_resetall = "Etes vous sur de vouloir tout réinitialiser ?" --"Are you sure you want to reset all of your settings to Default?"
-	ElvuiL_option_perchar = "Etes vous sur de vouloir annuler/passer à des paramêtres par personnage ?" --"Are you sure you want to change to or from 'Per Char Settings'?"
-	ElvuiL_option_makeselection = "Vous devez faire un choix pour continuer." --"You must make a selection before you can continue to config."
+	ElvuiL.option_perchar = "Etes vous sur de vouloir annuler/passer à des paramêtres par personnage ?" --"Are you sure you want to change to or from 'Per Char Settings'?"
+	ElvuiL.option_makeselection = "Vous devez faire un choix pour continuer." --"You must make a selection before you can continue to config."
 end
