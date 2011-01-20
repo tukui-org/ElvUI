@@ -1,6 +1,6 @@
 ﻿## Interface: 40000
 ## Author: Elv, Tukz
-## Version: 1.0.5
+## Version: 1.0.6
 ## Title: |cffFF6347ElvUI|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvuiData, ElvuiArena
