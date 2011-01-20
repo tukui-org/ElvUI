@@ -58,7 +58,9 @@ TRINKET_FILTER = {
 	CreateSpellEntry( 67684 ), -- Hospitality (Talisman of Resurgence)
 	CreateSpellEntry( 71584 ), -- Revitalized (Purified Lunar Dust)
 	CreateSpellEntry( 92213 ), -- Memory of Invincibility
-
+	CreateSpellEntry( 59473 ), -- Twisted (Essence of the Cyclone)
+	CreateSpellEntry(81932), -- Gnomish X-Ray Scope
+	
 	CreateSpellEntry( 59545 ), CreateSpellEntry( 59543 ), CreateSpellEntry( 59548 ), CreateSpellEntry( 59542 ), CreateSpellEntry( 59544 ), CreateSpellEntry( 59547 ), CreateSpellEntry( 28880 ), -- Gift of the Naaru
 	CreateSpellEntry( 55503 ), CreateSpellEntry( 55502 ), CreateSpellEntry( 55501 ), CreateSpellEntry( 55500 ), CreateSpellEntry( 55480 ), CreateSpellEntry( 55428 ), -- Lifeblood
 };
@@ -187,6 +189,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 1978 ), --Serpent sting
 			CreateSpellEntry( 90337 ), --Bad Manner
 			CreateSpellEntry( 53301 ), --Explosive Shot
+			CreateSpellEntry( 13809 ), -- Ice Trap
 		},
 		player = {
 			CreateSpellEntry( 82749 ), -- killing streak
@@ -307,6 +310,8 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 2944 ), -- Devouring Plague
 			CreateSpellEntry( 48153 ), -- Guardian Spirit
 			CreateSpellEntry( 77489 ), -- Echo of Light
+			CreateSpellEntry( 9484 ), -- Shackle Undead
+			CreateSpellEntry( 34914 ), -- Vampiric Touch			
 		},
 		player = {
 			CreateSpellEntry( 10060 ), -- Power Infusion
@@ -376,6 +381,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 61295 ), -- Riptide
 			CreateSpellEntry( 51945 ), -- Earthliving
 			CreateSpellEntry( 77657 ), -- Searing Flames
+			CreateSpellEntry( 51514 ), -- Hex
 		},
 		player = {
 			CreateSpellEntry( 324 ), -- Lightning Shield
@@ -389,34 +395,51 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 53817 ), -- Maelstrom Weapon			
 		},
 	},
-	WARLOCK = { 
+	WARLOCK = {
 		target = {
-			CreateSpellEntry( 48181, false, nil, nil, 48181 ), -- Haunt
-			CreateSpellEntry( 32389 ), -- Shadow Embrace 
-			CreateSpellEntry( 172 ), -- Corruption
-			CreateSpellEntry( 30108, false, nil, nil, 30108 ), -- Unstable Affliction
-			CreateSpellEntry( 603 ), -- Curse of Doom
-			CreateSpellEntry( 980 ), -- Curse of Agony
-			CreateSpellEntry( 1490 ), -- Curse of the Elements 
-			CreateSpellEntry( 17962 ), -- Conflagration
-			CreateSpellEntry( 348, false, nil, nil, 348 ), -- Immolate
-			CreateSpellEntry( 27243, false, nil, nil, 27243 ), -- Seed of Corruption
-			CreateSpellEntry( 80240 ), -- Bane of Havoc
-			CreateSpellEntry( 47960 ), -- Shadowflame
-			CreateSpellEntry( 702 ), -- Curse of Weakness
-			CreateSpellEntry( 1714), -- Curse of Tongues
-			CreateSpellEntry( 86105, true ), --Jinx: Curse of the Elements	
+				CreateSpellEntry( 48181, false, nil, nil, 48181 ), -- Haunt
+				CreateSpellEntry( 32389 ), -- Shadow Embrace
+				CreateSpellEntry( 172 ), -- Corruption
+				CreateSpellEntry( 30108, false, nil, nil, 30108 ), -- Unstable Affliction
+				CreateSpellEntry( 603 ), -- Curse of Doom
+				CreateSpellEntry( 980 ), -- Curse of Agony
+				CreateSpellEntry( 1490 ), -- Curse of the Elements
+				CreateSpellEntry( 17962 ), -- Conflagration
+				CreateSpellEntry( 348, false, nil, nil, 348 ), -- Immolate
+				CreateSpellEntry( 27243, false, nil, nil, 27243 ), -- Seed of Corruption
+				CreateSpellEntry( 17941 ), -- Shadow trance
+				CreateSpellEntry( 64371 ), -- Eradication
+				CreateSpellEntry( 1714 ), -- Curse of Tongue
+				CreateSpellEntry( 18223 ), -- Curse of Exhaustion
+				CreateSpellEntry( 18179 ), -- Jinx
+				CreateSpellEntry( 47960 ), -- Shadowflame
+				CreateSpellEntry( 6789 ), -- Death Coil
+				CreateSpellEntry( 6358 ), -- Seduction
+				CreateSpellEntry( 5782, false, nil, nil, 5782 ), -- Fear
+				CreateSpellEntry( 702 ), -- Curse of Weakness
+				CreateSpellEntry( 710, false, nil, nil, 710 ), -- Banish
+				CreateSpellEntry( 17801 ), -- Shadow and Flame
+				CreateSpellEntry( 80240 ), -- Bane of Havoc
 		},
-		player = {            
-			CreateSpellEntry( 17941 ), -- Shadow trance 
+		player = {
+			CreateSpellEntry( 17941 ), -- Shadow trance
 			CreateSpellEntry( 64371 ), -- Eradication
-			CreateSpellEntry( 85383 ), -- Improved Soul Fire
+			CreateSpellEntry( 85403 ), -- Hellfire
+			CreateSpellEntry( 48018 ), -- Demon Circle: Summon
+			CreateSpellEntry( 86121 ), -- Soul Swap
+			CreateSpellEntry( 74434 ), -- Soulburn
+			CreateSpellEntry( 6229 ), -- Shadow Ward
+			CreateSpellEntry( 79459 ), -- Demon Soul (Imp)
+			CreateSpellEntry( 79463 ), -- Demon Soul (Succubus)
+			CreateSpellEntry( 79460 ), -- Demon Soul (Felhunter)
+			CreateSpellEntry( 79464 ), -- Demon Soul (Voidwalker)
+			CreateSpellEntry( 79462 ), -- Demon Soul (Felguard)
 		},
 		procs = {
-			CreateSpellEntry( 86121 ), -- Soul Swap
-			CreateSpellEntry( 54276 ), -- Backdraft
-			CreateSpellEntry( 71165 ), -- Molten Core
+			CreateSpellEntry( 54274 ), CreateSpellEntry( 54276 ), CreateSpellEntry( 54277 ), -- Backdraft rank 1/2/3
+			CreateSpellEntry( 71165 ), -- Molten Cor
 			CreateSpellEntry( 63167 ), -- Decimation
+			CreateSpellEntry( 85383, false, nil, nil, 6353 ), -- Imp Soul Fire
 		},
 	},
 	WARRIOR = { 
