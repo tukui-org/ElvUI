@@ -57,6 +57,7 @@ TRINKET_FILTER = {
 	CreateSpellEntry( 92345 ), -- Rageheart (H Heart of Rage)
 	CreateSpellEntry( 67684 ), -- Hospitality (Talisman of Resurgence)
 	CreateSpellEntry( 71584 ), -- Revitalized (Purified Lunar Dust)
+	CreateSpellEntry( 92213 ), -- Memory of Invincibility
 
 	CreateSpellEntry( 59545 ), CreateSpellEntry( 59543 ), CreateSpellEntry( 59548 ), CreateSpellEntry( 59542 ), CreateSpellEntry( 59544 ), CreateSpellEntry( 59547 ), CreateSpellEntry( 28880 ), -- Gift of the Naaru
 	CreateSpellEntry( 55503 ), CreateSpellEntry( 55502 ), CreateSpellEntry( 55501 ), CreateSpellEntry( 55500 ), CreateSpellEntry( 55480 ), CreateSpellEntry( 55428 ), -- Lifeblood
