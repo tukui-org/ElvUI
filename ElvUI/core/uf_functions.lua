@@ -175,7 +175,7 @@ ElvDB.LoadUFFunctions = function(layout)
 				health.value:SetPoint("LEFT", health, "LEFT", ElvDB.Scale(2), ElvDB.Scale(1))				
 			else
 				health.value:ClearAllPoints()
-				health.value:SetPoint("TOPLEFT", self.Health, "TOPLEFT", ElvDB.Scale(2), ElvDB.Scale(-2))		
+				health.value:SetPoint("TOPLEFT", health, "TOPLEFT", ElvDB.Scale(2), ElvDB.Scale(-2))		
 			end		
 		end
 		
