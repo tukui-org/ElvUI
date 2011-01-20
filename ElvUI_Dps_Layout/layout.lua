@@ -1786,9 +1786,9 @@ local function Shared(self, unit)
 			local castbar = CreateFrame("StatusBar", self:GetName().."_Castbar", self)
 			castbar:SetWidth(original_width)
 			if powerbar_offset ~= 0 then
-				castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -powerbar_offset + -ElvDB.Scale(5))
+				castbar:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -powerbar_offset + ElvDB.Scale(-1))
 			else
-				castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -ElvDB.Scale(4))
+				castbar:SetPoint("TOPRIGHT", self.Power, "BOTTOMRIGHT", 0, -(original_height * 0.35) + ElvDB.Scale(5))
 			end
 			
 			castbar:SetHeight(ElvDB.Scale(16))
@@ -1828,6 +1828,13 @@ local function Shared(self, unit)
 				castbar.icon:SetPoint("BOTTOMRIGHT", castbar.button, ElvDB.Scale(-2), ElvDB.Scale(2))
 				castbar.icon:SetTexCoord(0.08, 0.92, 0.08, .92)
 				castbar:SetWidth(original_width - castbar.button:GetWidth() - ElvDB.Scale(2))
+				
+				castbar:ClearAllPoints()
+				if powerbar_offset ~= 0 then
+					castbar:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", castbar.button:GetWidth() + ElvDB.Scale(2), -powerbar_offset + ElvDB.Scale(-1))
+				else
+					castbar:SetPoint("TOPRIGHT", self.Power, "BOTTOMRIGHT", 0, -(original_height * 0.35) + ElvDB.Scale(5))
+				end				
 			end
 
 			self.Castbar = castbar

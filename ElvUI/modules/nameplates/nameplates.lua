@@ -671,6 +671,7 @@ end
 
 --Scan all visible nameplate for a known unit.
 local function CheckUnit_Guid(frame, ...)
+	--local numParty, numRaid = GetNumPartyMembers(), GetNumRaidMembers()
 	if UnitExists("target") and frame:GetAlpha() == 1 and UnitName("target") == frame.name:GetText() then
 		frame.guid = UnitGUID("target")
 		frame.unit = "target"
@@ -680,7 +681,19 @@ local function CheckUnit_Guid(frame, ...)
 		frame.unit = "mouseover"
 		OnAura(frame, "mouseover")
 	else
-		frame.unit = nil		
+		--[[if (numParty > 0 or numRaid > 0) then
+			for i = 1, (numRaid > 0 and numRaid or numParty) do
+				local unit = (numRaid > 0 and "raid"..i or "party"..i);
+				if not UnitIsUnit(unit,"player") then
+					if frame.guid and frame.guid == UnitGUID(unit) then
+						frame.unit = unit
+					else
+						frmae.unit = nil
+					end
+				end
+			end	
+		end]]
+		frame.unit = nil
 	end	
 	
 	if ElvCF["debug"].enabled == true then frame.hp.debug:SetText(frame.unit or "") end
