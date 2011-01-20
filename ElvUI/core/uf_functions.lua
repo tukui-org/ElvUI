@@ -161,20 +161,22 @@ ElvDB.LoadUFFunctions = function(layout)
 				if health:GetParent().AltPowerBar.FrameBackdrop then
 					health:GetParent().AltPowerBar.FrameBackdrop:SetBackdropBorderColor(r,g,b)
 				end
-				
-				local powmin = UnitPower(unit)
-				if powmin == 0 then
-					health.value:ClearAllPoints()
-					health.value:SetPoint("LEFT", health, "LEFT", ElvDB.Scale(2), ElvDB.Scale(1))				
-				else
-					self.Health.value:ClearAllPoints()
-					self.Health.value:SetPoint("TOPLEFT", self.Health, "TOPLEFT", ElvDB.Scale(2), ElvDB.Scale(-2))		
-				end
 			elseif unit and unit:find("arena%d") then
 				if health:GetParent().Trinketbg then
 					health:GetParent().Trinketbg:SetBackdropBorderColor(r,g,b)
 				end
 			end
+		end
+		
+		if unit and unit:find("boss%d") then
+			local curpow = UnitPower(unit)
+			if curpow == 0 then
+				health.value:ClearAllPoints()
+				health.value:SetPoint("LEFT", health, "LEFT", ElvDB.Scale(2), ElvDB.Scale(1))				
+			else
+				self.Health.value:ClearAllPoints()
+				self.Health.value:SetPoint("TOPLEFT", self.Health, "TOPLEFT", ElvDB.Scale(2), ElvDB.Scale(-2))		
+			end		
 		end
 		
 		--Setup color health by value option
@@ -392,10 +394,6 @@ ElvDB.LoadUFFunctions = function(layout)
 			
 		if min == 0 then 
 			power.value:SetText("") 
-			if (unit and unit:find("boss%d")) then
-				self.Health.value:ClearAllPoints()
-				self.Health.value:SetPoint("LEFT", self.Health, "LEFT", ElvDB.Scale(2), ElvDB.Scale(1))
-			end
 		else
 			if (not UnitIsPlayer(unit) and not UnitPlayerControlled(unit) or not UnitIsConnected(unit)) and not (unit and unit:find("boss%d")) then
 				power.value:SetText()
@@ -423,9 +421,7 @@ ElvDB.LoadUFFunctions = function(layout)
 								power.value:SetFormattedText("%s |cffD7BEA5|||r %s", ElvDB.ShortValue(max), ElvDB.ShortValue(max - (max - min)))
 							else
 								power.value:SetFormattedText("%s |cffD7BEA5-|r %d%%", ElvDB.ShortValue(max - (max - min)), floor(min / max * 100))
-							end		
-							self.Health.value:ClearAllPoints()
-							self.Health.value:SetPoint("TOPLEFT", self.Health, "TOPLEFT", ElvDB.Scale(2), ElvDB.Scale(-2))						
+							end						
 						else
 							if ElvCF["unitframes"].showtotalhpmp == true then
 								power.value:SetFormattedText("%s |cffD7BEA5|||r %s", ElvDB.ShortValue(max - (max - min)), ElvDB.ShortValue(max))
