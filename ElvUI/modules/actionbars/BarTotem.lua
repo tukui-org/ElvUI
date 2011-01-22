@@ -13,13 +13,13 @@ if MultiCastActionBarFrame then
 	MultiCastActionBarFrame:SetScript("OnHide", nil)
 	MultiCastActionBarFrame:SetParent(ElvuiShiftBar)
 	MultiCastActionBarFrame:ClearAllPoints()
-	MultiCastActionBarFrame:SetPoint("BOTTOMLEFT", ElvuiShiftBar, 0, ElvDB.Scale(23))
+	MultiCastActionBarFrame:SetPoint("BOTTOMLEFT", ElvuiShiftBar, "BOTTOMLEFT", -2, -2)
 
 	hooksecurefunc("MultiCastActionButton_Update",function(actionbutton) if not InCombatLockdown() then actionbutton:SetAllPoints(actionbutton.slotButton) end end)
 
 	MultiCastActionBarFrame.SetParent = ElvDB.dummy
 	MultiCastActionBarFrame.SetPoint = ElvDB.dummy
-	MultiCastRecallSpellButton.SetPoint = ElvDB.dummy -- bug fix, see http://www.Elvui.org/v2/forums/topic.php?id=2405
+	MultiCastRecallSpellButton.SetPoint = ElvDB.dummy -- bug fix, see http://www.tukui.org/v2/forums/topic.php?id=2405
 	
 	if ElvCF["actionbar"].shapeshiftmouseover == true then
 		MultiCastActionBarFrame:SetAlpha(0)

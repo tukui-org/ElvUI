@@ -85,6 +85,11 @@ function SlashCmdList.FARMMODE(msg, editbox)
 
 	ElvuiMinimapStatsLeft:SetWidth((Minimap:GetWidth() / 2) - 1)
 	ElvuiMinimapStatsRight:SetWidth((Minimap:GetWidth() / 2) - 1)
+	
+	if ElvDB.Movers["AurasMover"]["moved"] ~= true then
+		AurasMover:ClearAllPoints()
+		AurasMover:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", ElvDB.Scale(-8), ElvDB.Scale(2))
+	end	
 end
 SLASH_FARMMODE1 = '/farmmode'
 
