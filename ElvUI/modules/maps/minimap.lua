@@ -10,7 +10,12 @@ Minimap:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", ElvDB.Scale(-5), ElvDB.Scale(
 Minimap:SetSize(ElvDB.Scale(144), ElvDB.Scale(144))
 
 
+
 ElvDB.CreateMover(Minimap, "MinimapMover", "Minimap") --Too easy muahaha
+
+--just incase these dont fit on the screen when you move the minimap
+LFDSearchStatus:SetClampedToScreen(true)
+LFDDungeonReadyStatus:SetClampedToScreen(true)
 
 -- Hide Border
 MinimapBorder:Hide()
