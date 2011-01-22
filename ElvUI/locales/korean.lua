@@ -156,7 +156,7 @@ if ElvDB.client == "koKR" then
 	ElvL.core_uihelp7 = "|cffFF0000/dps|r - 딜러/탱커용 공격대창을 사용합니다."
 	ElvL.core_uihelp8 = "|cffFF0000/uf|r - 개체창을 이동할 수 있습니다."
 	ElvL.core_uihelp9 = "|cffFF0000/bags|r - 분류, 정리, 가방 보관함을 추가 구입을 할 수 있습니다."
-	ElvL.core_uihelp10 = "|cffFF0000/resetui|r - Elvui의 설정을 초기화합니다."
+	ElvL.core_uihelp10 = "|cffFF0000/installui|r - Elvui의 설정을 초기화합니다."
 	ElvL.core_uihelp11 = "|cffFF0000/rd|r - 공격대를 해체합니다."
 	ElvL.core_uihelp12 = "|cffFF0000/wf|r - 임무 추적창을 이동할 수 있습니다."
 	ElvL.core_uihelp13 = "|cffFF0000/mss|r - 특수 기술 단축바를 이동할 수 있습니다."

@@ -155,7 +155,7 @@ if ElvDB.client == "frFR" then
 	ElvL.core_uihelp7 = "|cffFF0000/dps|r - Activer l'interface Tank/DPS."
 	ElvL.core_uihelp8 = "|cffFF0000/uf|r - Activer ou désactivez le déplacement des cadres d'unités."
 	ElvL.core_uihelp9 = "|cffFF0000/bags|r - pour trier, acheter des places en banque ou empiler des objets dans vos sacs."
-	ElvL.core_uihelp10 = "|cffFF0000/resetui|r - Réinitialiser les variables et le Chat."
+	ElvL.core_uihelp10 = "|cffFF0000/installui|r - Réinitialiser les variables et le Chat."
 	ElvL.core_uihelp11 = "|cffFF0000/rd|r - Disooudre le raid."
 	ElvL.core_uihelp12 = "|cffFF0000/hb|r - assigner des raccourcis à vos boutons d'actions."
 	ElvL.core_uihelp13 = "|cffFF0000/mss|r - Déplacer la barre de changeforme / totem."

@@ -242,8 +242,6 @@ ElvCF["tooltip"] = {
 		["hideuf"] = false,                    -- hide tooltip on unitframes
 		["cursor"] = false,                    -- show anchored to cursor
 		["colorreaction"] = false,				-- always color border of tooltip by unit reaction
-		["xOfs"] = 0,							--X offset
-		["yOfs"] = 0,							--Y offset
 		["itemid"] = true,						--display itemid on item tooltips 
 		["whotargetting"] = true,				--show who is targetting the unit (in raid or party)
 }

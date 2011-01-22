@@ -84,3 +84,19 @@ SLASH_FARMMODE1 = '/farmmode'
 --	GM toggle command
 SLASH_GM1 = "/gm"
 SlashCmdList["GM"] = function() ToggleHelpFrame() end
+
+-- Print list of commands to chat
+SLASH_UIHELP1 = "/UIHelp"
+SlashCmdList["UIHELP"] = ElvDB.UIHelp
+
+--ReInstall UI
+SLASH_CONFIGURE1 = "/installui"
+SlashCmdList.CONFIGURE = function() StaticPopup_Show("INSTALL_UI") end
+
+-- Command to Toggle showing the UI Movers
+SLASH_MOVEUI1 = '/moveui'
+SlashCmdList.MOVEUI = function() ElvDB.ToggleMovers() end
+
+-- Command to reset the movers
+SLASH_RESETMOVERS1 = '/resetui'
+SlashCmdList.RESETMOVERS = function() ElvDB.ResetMovers() end

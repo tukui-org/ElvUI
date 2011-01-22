@@ -9,6 +9,9 @@ Minimap:ClearAllPoints()
 Minimap:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", ElvDB.Scale(-5), ElvDB.Scale(-5))
 Minimap:SetSize(ElvDB.Scale(144), ElvDB.Scale(144))
 
+
+ElvDB.CreateMover(Minimap, "MinimapMover", "Minimap") --Too easy muahaha
+
 -- Hide Border
 MinimapBorder:Hide()
 MinimapBorderTop:Hide()
@@ -186,31 +189,6 @@ function GetMinimapShape() return 'SQUARE' end
 -- reskin LFG dropdown
 ElvDB.SetTemplate(LFDSearchStatus)
 
-
-----------------------------------------------------------------------------------------
--- Animation Coords and Current Zone. Awesome feature by AlleyKat.
-----------------------------------------------------------------------------------------
-
--- Set Anim func
-local set_anim = function (self,k,x,y)
-	self.anim = self:CreateAnimationGroup("Move_In")
-	self.anim.in_a = self.anim:CreateAnimation("Translation")
-	self.anim.in_a:SetDuration(0)
-	self.anim.in_a:SetOrder(1)
-	self.anim.in_b = self.anim:CreateAnimation("Translation")
-	self.anim.in_b:SetDuration(.3)
-	self.anim.in_b:SetOrder(2)
-	self.anim.in_b:SetSmoothing("OUT")
-	self.anim_o = self:CreateAnimationGroup("Move_Out")
-	self.anim_o.b = self.anim_o:CreateAnimation("Translation")
-	self.anim_o.b:SetDuration(.3)
-	self.anim_o.b:SetOrder(1)
-	self.anim_o.b:SetSmoothing("IN")
-	self.anim.in_a:SetOffset(x,y)
-	self.anim.in_b:SetOffset(-x,-y)
-	self.anim_o.b:SetOffset(x,y)
-	if k then self.anim_o:SetScript("OnFinished",function() self:Hide() end) end
-end
  
 --Style Zone and Coord panels
 local m_zone = CreateFrame("Frame",nil,UIParent)
@@ -220,8 +198,6 @@ m_zone:SetFrameStrata("LOW")
 m_zone:SetPoint("TOPRIGHT",Minimap,ElvDB.Scale(-2),ElvDB.Scale(-2))
 m_zone:SetBackdropColor(0,0,0,0)
 m_zone:SetBackdropBorderColor(0,0,0,0)
-
-set_anim(m_zone,true,0,ElvDB.Scale(60))
 m_zone:Hide()
 
 local m_zone_text = m_zone:CreateFontString(nil,"Overlay")
@@ -236,7 +212,6 @@ ElvDB.CreatePanel(m_coord, 40, 20, "BOTTOMLEFT", Minimap, "BOTTOMLEFT", ElvDB.Sc
 m_coord:SetFrameStrata("LOW")
 m_coord:SetBackdropColor(0,0,0,0)
 m_coord:SetBackdropBorderColor(0,0,0,0)
-set_anim(m_coord,true,ElvDB.Scale(320),0)
 m_coord:Hide()	
 
 local m_coord_text = m_coord:CreateFontString(nil,"Overlay")
@@ -246,39 +221,41 @@ m_coord_text:SetJustifyH("CENTER")
 m_coord_text:SetJustifyV("MIDDLE")
  
 -- Set Scripts and etc.
-Minimap:SetScript("OnEnter",function()
-	m_zone.anim_o:Stop()
-	m_coord.anim_o:Stop()
-	m_zone:Show()
+Minimap:SetScript("OnEnter",function()	
 	m_coord:Show()
-	m_coord.anim:Play()
-	m_zone.anim:Play()
+	m_zone:Show()
 	if ElvCF["actionbar"].enable == true and ElvCF["actionbar"].microbar ~= true then
 		SpellbookMicroButton:SetAlpha(1)
 	end
 end)
  
 Minimap:SetScript("OnLeave",function()
-	m_coord.anim:Stop()
-	m_coord.anim_o:Play()
-	m_zone.anim:Stop()
-	m_zone.anim_o:Play()
+	m_coord:Hide()
+	m_zone:Hide()
 	if ElvCF["actionbar"].enable == true and ElvCF["actionbar"].microbar ~= true then
 		SpellbookMicroButton:SetAlpha(0)
 	end
 end)
- 
+
+if ElvCF["actionbar"].enable == true and ElvCF["actionbar"].microbar ~= true then
+	SpellbookMicroButton:HookScript("OnEnter", function() 	
+		m_coord:Show()
+		m_zone:Show() 
+	end)
+
+	SpellbookMicroButton:HookScript("OnLeave", function() 	
+		m_coord:Hide()
+		m_zone:Hide()
+	end)
+end
+
 m_coord_text:SetText("00,00")
  
-local ela,go = 0,false
- 
-m_coord.anim:SetScript("OnFinished",function() go = true end)
-m_coord.anim_o:SetScript("OnPlay",function() go = false end)
- 
+local ela = 0
 local coord_Update = function(self,t)
 	local inInstance, _ = IsInInstance()
 	ela = ela - t
-	if ela > 0 or not(go) then return end
+	if ela > 0 then return end
 	local x,y = GetPlayerMapPosition("player")
 	local xt,yt
 	x = math.floor(100 * x)

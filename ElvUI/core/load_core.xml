@@ -12,4 +12,5 @@
 	<Script file='kill.lua'/>
 	<Script file='skin.lua'/>
 	<Script file='uf_functions.lua'/>
+	<Script file='movers.lua'/>
 </Ui>

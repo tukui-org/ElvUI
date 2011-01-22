@@ -157,7 +157,7 @@ if ElvDB.client == "zhCN" then
 	ElvL.core_uihelp7 = "|cffFF0000/dps|r - 启用Dps/Tank的ouf界面"
 	ElvL.core_uihelp8 = "|cffFF0000/uf|r - 启用或停用可移动ouf框架"
 	ElvL.core_uihelp9 = "|cffFF0000/bags|r - 分类及排序背包, 购买银行背包字段或重新堆栈背包/银行内的物品"
-	ElvL.core_uihelp10 = "|cffFF0000/resetui|r - 重置Elvui的设定"
+	ElvL.core_uihelp10 = "|cffFF0000/installui|r - 重置Elvui的设定"
 	ElvL.core_uihelp11 = "|cffFF0000/rd|r - 解散团队"
 	ElvL.core_uihelp12 = "|cffFF0000/hb|r - 绑定动作条键位"
 	ElvL.core_uihelp13 = "|cffFF0000/mss|r - 移动变形列和图腾列"

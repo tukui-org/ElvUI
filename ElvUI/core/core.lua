@@ -239,7 +239,7 @@ function ElvDB.Install()
 		ElvuiData.ufpos = {}
 	end
 	
-	ReloadUI()
+	StaticPopup_Show("RELOAD_UI")
 end
 
 local function DisableElvui()
@@ -339,7 +339,7 @@ end)
 ------------------------------------------------------------------------
 
 -- Print Help Messages
-local function UIHelp()
+function ElvDB.UIHelp()
 	print(" ")
 	print(ElvL.core_uihelp1)
 	print(ElvL.core_uihelp2)
@@ -353,22 +353,16 @@ local function UIHelp()
 	print(ElvL.core_uihelp10)
 	print(ElvL.core_uihelp11)
 	print(ElvL.core_uihelp12)
-	print(ElvL.core_uihelp13)
 	print(ElvL.core_uihelp15)
 	print(ElvL.core_uihelp16)
 	print(ElvL.core_uihelp17)
 	print(ElvL.core_uihelp18)
 	print(ElvL.core_uihelp19)
-	print(ElvL.core_uihelp20)
+	print(ElvL.core_uihelp21)
+	print(ElvL.core_uihelp22)
 	print(" ")
 	print(ElvL.core_uihelp14)
 end
-
-SLASH_UIHELP1 = "/UIHelp"
-SlashCmdList["UIHELP"] = UIHelp
-
-SLASH_CONFIGURE1 = "/resetui"
-SlashCmdList.CONFIGURE = function() StaticPopup_Show("INSTALL_UI") end
 
 -- convert datatext ElvDB.ValColor from rgb decimal to hex DO NOT TOUCH
 local r, g, b = unpack(ElvCF["media"].valuecolor)

@@ -159,7 +159,7 @@ if ElvDB.client == "ruRU" then
 	ElvL.core_uihelp7 = "|cffFF0000/dps|r - Включить Dps/Tank раскладку рейдовых фреймов."
 	ElvL.core_uihelp8 = "|cffFF0000/uf|r - ВКЛ/ВЫКЛ перемещение рамок юнитов."
 	ElvL.core_uihelp9 = "|cffFF0000/bags|r - сортировка, покупка банковских ячеек и складывание предметов в ваших сумках."
-	ElvL.core_uihelp10 = "|cffFF0000/resetui|r - сбросить переменные и настройки чата в значения Elvui по умолчанию"
+	ElvL.core_uihelp10 = "|cffFF0000/installui|r - сбросить переменные и настройки чата в значения Elvui по умолчанию"
 	ElvL.core_uihelp11 = "|cffFF0000/rd|r - распустить рейд."
 	ElvL.core_uihelp12 = "|cffFF0000/wf|r - разблокировать окно отслеживания заданий для перемещения."
 	ElvL.core_uihelp13 = "|cffFF0000/mss|r - передвинуть панель стоек/тотемов."

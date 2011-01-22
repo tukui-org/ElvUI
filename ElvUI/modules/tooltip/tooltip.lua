@@ -12,6 +12,13 @@ local _G = getfenv(0)
 
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
 
+local TooltipHolder = CreateFrame("Frame", "TooltipHolder", UIParent)
+TooltipHolder:SetWidth(130)
+TooltipHolder:SetHeight(22)
+TooltipHolder:SetPoint("BOTTOMRIGHT", ElvuiInfoRight, "BOTTOMRIGHT")
+
+ElvDB.CreateMover(TooltipHolder, "TooltipMover", "Tooltip")
+
 local gsub, find, format = string.gsub, string.find, string.format
 
 local Tooltips = {GameTooltip,ItemRefTooltip,ShoppingTooltip1,ShoppingTooltip2,ShoppingTooltip3,WorldMapTooltip}
@@ -26,13 +33,6 @@ local classification = {
 }
  	
 local NeedBackdropBorderRefresh = false
-
-local yOffset = 0
-local xOffset = 0
-
-yOffset = yOffset + ElvCF["tooltip"].yOfs
-xOffset = xOffset + ElvCF["tooltip"].xOfs
-
 
 --Check if our embed right addon is shown
 local function CheckAddOnShown()
@@ -70,7 +70,6 @@ hooksecurefunc("GameTooltip_SetDefaultAnchor", function(self, parent)
 		end
 	else
 		self:SetOwner(parent, "ANCHOR_NONE")
-		self:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -15+xOffset, ElvDB.Scale(42+yOffset))	
 	end
 	self.default = 1
 end)
@@ -82,17 +81,19 @@ local function SetRightTooltipPos(self)
 	elseif InCombatLockdown() and db.hidecombat == true and ElvCF["tooltip"].hidecombatraid == false then
 		self:Hide()
 	else
-		if ElvCF["others"].enablebag == true and StuffingFrameBags and StuffingFrameBags:IsShown() and xOffset == 0 and yOffset == 0 then
+		if ElvCF["others"].enablebag == true and StuffingFrameBags and StuffingFrameBags:IsShown() then
 			self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", -1, ElvDB.Scale(18))	
+		elseif TooltipMover and ElvDB.Movers["TooltipMover"]["moved"] == true then
+			self:SetPoint("BOTTOMRIGHT", TooltipMover, "TOPRIGHT", -1, ElvDB.Scale(18))
 		else
-			if CheckAddOnShown() == true and xOffset == 0 and yOffset == 0 then
+			if CheckAddOnShown() == true then
 				if ElvCF["chat"].showbackdrop == true and ElvDB.ChatRightShown == true then
 					self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", -1, ElvDB.Scale(42))	
 				else
 					self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", -1, ElvDB.Scale(18))		
 				end	
 			else
-				self:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -15+xOffset, ElvDB.Scale(42+yOffset))	
+				self:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -15, ElvDB.Scale(42))	
 			end
 		end
 	end

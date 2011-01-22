@@ -158,7 +158,7 @@ if ElvDB.client == "esES" then
 	ElvL.core_uihelp7 = "|cffFF0000/dps|r - Activar distribución de banda para DPS/Tanque."
 	ElvL.core_uihelp8 = "|cffFF0000/uf|r - Activa o desactiva el mover los cuadros de unidad."
 	ElvL.core_uihelp9 = "|cffFF0000/bags|r - para ordenar comprar espacios de banco o amontonar objetos en tus bolsas."
-	ElvL.core_uihelp10 = "|cffFF0000/resetui|r - reinicia cVar y Chat Frames a los valores por defecto."
+	ElvL.core_uihelp10 = "|cffFF0000/installui|r - reinicia cVar y Chat Frames a los valores por defecto."
 	ElvL.core_uihelp11 = "|cffFF0000/rd|r - disolver banda."
 	ElvL.core_uihelp12 = "|cffFF0000/hb|r - asigna vinculaciones de teclas a tus botones de acción."
 	ElvL.core_uihelp13 = "|cffFF0000/mss|r - Mover la barra de cambio de forma o totem."

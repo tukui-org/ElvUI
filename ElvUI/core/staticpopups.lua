@@ -12,12 +12,20 @@ StaticPopupDialogs["DISABLE_UI"] = {
 	whileDead = 1,
 }
 
+StaticPopupDialogs["RELOAD_UI"] = {
+	text = ElvL.popup_reloadui,
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	OnAccept = function() ReloadUI() end,
+	timeout = 0,
+	whileDead = 1,
+}
+
 StaticPopupDialogs["INSTALL_UI"] = {
 	text = ElvL.popup_install,
 	button1 = ACCEPT,
 	button2 = CANCEL,
-    OnAccept = ElvDB.Install,
-	OnCancel = function() ElvuiMinimal = true end,
+    OnAccept = function() ElvDB.ResetMovers() ElvDB.Install() end,
     timeout = 0,
     whileDead = 1,
 }

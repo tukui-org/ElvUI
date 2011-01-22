@@ -13,13 +13,44 @@ local mainhand, _, _, offhand = GetWeaponEnchantInfo()
 local rowbuffs = 12
 local warningtime = 6
 
+--Holder frame for mover
+local holder = CreateFrame("Frame", "AurasHolder", UIParent)
+holder:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", ElvDB.Scale(-8), ElvDB.Scale(2))
+holder:SetWidth(ElvDB.Scale(456)) --(30 + 8) * 12)
+holder:SetHeight(ElvuiMinimap:GetHeight() + ElvDB.Scale(3 + 19))
+
+local btnspace = ElvDB.Scale(-4)
+local aurapos = "RIGHT"
+function ElvDB.AurasPostDrag(frame)
+	local point = select(1, frame:GetPoint())
+	
+	TempEnchant1:ClearAllPoints()
+	TempEnchant2:ClearAllPoints()
+	
+	if string.find(point, "LEFT") then
+		btnspace = ElvDB.Scale(4)
+		aurapos = "LEFT"
+		TempEnchant1:SetPoint("TOPLEFT", AurasHolder, "TOPLEFT", 0, 0)
+		TempEnchant2:SetPoint("LEFT", TempEnchant1, "RIGHT", btnspace, 0)			
+	elseif string.find(point, "RIGHT") then
+		btnspace = ElvDB.Scale(-4)
+		aurapos = "RIGHT"
+		TempEnchant1:SetPoint("TOPRIGHT", AurasHolder, "TOPRIGHT", 0, 0)
+		TempEnchant2:SetPoint("RIGHT", TempEnchant1, "LEFT", btnspace, 0)		
+	end
+	BuffFrame_UpdateAllBuffAnchors()
+	BuffFrame_Update()
+end
+
+ElvDB.CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, ElvDB.AurasPostDrag)
+
 TemporaryEnchantFrame:ClearAllPoints()
-TemporaryEnchantFrame:SetPoint("TOPRIGHT", Minimap, "TOPRIGHT", 0, ElvDB.Scale(-8))
+TemporaryEnchantFrame:SetPoint("TOPRIGHT", AurasHolder, "TOPRIGHT", 0, 0)
 TemporaryEnchantFrame.SetPoint = ElvDB.dummy
 
 TempEnchant1:ClearAllPoints()
 TempEnchant2:ClearAllPoints()
-TempEnchant1:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", ElvDB.Scale(-8), ElvDB.Scale(2))
+TempEnchant1:SetPoint("TOPRIGHT", AurasHolder, "TOPRIGHT", 0, 0)
 TempEnchant2:SetPoint("RIGHT", TempEnchant1, "LEFT", ElvDB.Scale(-4), 0)
 
 for i = 1, 3 do
@@ -97,26 +128,50 @@ local function UpdateBuffAnchors()
 			numBuffs = numBuffs + 1
 			index = numBuffs
 			buff:ClearAllPoints()
-			if ( (index > 1) and (mod(index, rowbuffs) == 1) ) then
-				if ( index == rowbuffs+1 ) then
-					buff:SetPoint("RIGHT", Minimap, "LEFT", ElvDB.Scale(-8), 0)
+			if aurapos == "RIGHT" then
+				if ( (index > 1) and (mod(index, rowbuffs) == 1) ) then
+					if ( index == rowbuffs+1 ) then
+						buff:SetPoint("RIGHT", AurasHolder, "RIGHT", 0, 0)
+					else
+						buff:SetPoint("TOPRIGHT", AurasHolder, "TOPRIGHT", 0, 0)
+					end
+					aboveBuff = buff;
+				elseif ( index == 1 ) then
+					local mainhand, _, _, offhand, _, _, hand3 = GetWeaponEnchantInfo()
+					if (mainhand and offhand and hand3) and not UnitHasVehicleUI("player") then
+						buff:SetPoint("RIGHT", TempEnchant3, "LEFT", btnspace, 0)
+					elseif ((mainhand and offhand) or (mainhand and hand3) or (offhand and hand3)) and not UnitHasVehicleUI("player") then
+						buff:SetPoint("RIGHT", TempEnchant2, "LEFT", btnspace, 0)
+					elseif ((mainhand and not offhand and not hand3) or (offhand and not mainhand and not hand3) or (hand3 and not mainhand and not offhand)) and not UnitHasVehicleUI("player") then
+						buff:SetPoint("RIGHT", TempEnchant1, "LEFT", btnspace, 0)
+					else
+						buff:SetPoint("TOPRIGHT", AurasHolder, "TOPRIGHT", 0, 0)
+					end
 				else
-					buff:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", ElvDB.Scale(-8), ElvDB.Scale(2))
-				end
-				aboveBuff = buff;
-			elseif ( index == 1 ) then
-				local mainhand, _, _, offhand, _, _, hand3 = GetWeaponEnchantInfo()
-				if (mainhand and offhand and hand3) and not UnitHasVehicleUI("player") then
-					buff:SetPoint("RIGHT", TempEnchant3, "LEFT", ElvDB.Scale(-4), 0)
-				elseif ((mainhand and offhand) or (mainhand and hand3) or (offhand and hand3)) and not UnitHasVehicleUI("player") then
-					buff:SetPoint("RIGHT", TempEnchant2, "LEFT", ElvDB.Scale(-4), 0)
-				elseif ((mainhand and not offhand and not hand3) or (offhand and not mainhand and not hand3) or (hand3 and not mainhand and not offhand)) and not UnitHasVehicleUI("player") then
-					buff:SetPoint("RIGHT", TempEnchant1, "LEFT", ElvDB.Scale(-4), 0)
-				else
-					buff:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", ElvDB.Scale(-8), ElvDB.Scale(2))
+					buff:SetPoint("RIGHT", previousBuff, "LEFT", btnspace, 0)
 				end
 			else
-				buff:SetPoint("RIGHT", previousBuff, "LEFT", ElvDB.Scale(-4), 0)
+				if ( (index > 1) and (mod(index, rowbuffs) == 1) ) then
+					if ( index == rowbuffs+1 ) then
+						buff:SetPoint("LEFT", AurasHolder, "LEFT", 0, 0)
+					else
+						buff:SetPoint("TOPLEFT", AurasHolder, "TOPLEFT", 0, 0)
+					end
+					aboveBuff = buff;
+				elseif ( index == 1 ) then
+					local mainhand, _, _, offhand, _, _, hand3 = GetWeaponEnchantInfo()
+					if (mainhand and offhand and hand3) and not UnitHasVehicleUI("player") then
+						buff:SetPoint("LEFT", TempEnchant3, "RIGHT", btnspace, 0)
+					elseif ((mainhand and offhand) or (mainhand and hand3) or (offhand and hand3)) and not UnitHasVehicleUI("player") then
+						buff:SetPoint("LEFT", TempEnchant2, "RIGHT", btnspace, 0)
+					elseif ((mainhand and not offhand and not hand3) or (offhand and not mainhand and not hand3) or (hand3 and not mainhand and not offhand)) and not UnitHasVehicleUI("player") then
+						buff:SetPoint("LEFT", TempEnchant1, "RIGHT", btnspace, 0)
+					else
+						buff:SetPoint("TOPLEFT", AurasHolder, "TOPLEFT", 0, 0)
+					end
+				else
+					buff:SetPoint("LEFT", previousBuff, "RIGHT", btnspace, 0)
+				end			
 			end
 			previousBuff = buff
 			if index > (rowbuffs*2) then
@@ -140,16 +195,25 @@ local function UpdateDebuffAnchors(buttonName, index)
 	end
 	_G[buttonName..index.."Panel"]:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
 	debuff:ClearAllPoints()
-	if index == 1 then
-		debuff:SetPoint("TOPRIGHT", ElvuiMinimapStatsLeft, "TOPLEFT", ElvDB.Scale(-8), 0)
-	else
-		debuff:SetPoint("RIGHT", _G[buttonName..(index-1)], "LEFT", ElvDB.Scale(-4), 0)
-		if index > rowbuffs then
-			debuff:Hide()
+	if aurapos == "RIGHT" then
+		if index == 1 then
+			debuff:SetPoint("BOTTOMRIGHT", AurasHolder, "BOTTOMRIGHT", 0, 0)
 		else
-			debuff:Show()
+			debuff:SetPoint("RIGHT", _G[buttonName..(index-1)], "LEFT", btnspace, 0)
 		end
+	else
+		if index == 1 then
+			debuff:SetPoint("BOTTOMLEFT", AurasHolder, "BOTTOMLEFT", 0, 0)
+		else
+			debuff:SetPoint("LEFT", _G[buttonName..(index-1)], "RIGHT", btnspace, 0)
+		end	
 	end
+	
+	if index > rowbuffs then
+		debuff:Hide()
+	else
+		debuff:Show()
+	end	
 end
 
 local f = CreateFrame("Frame")

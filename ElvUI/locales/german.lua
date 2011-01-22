@@ -155,7 +155,7 @@ if ElvDB.client == "deDE" then
 	ElvL.core_uihelp7 = "|cffFF0000/dps|r - Aktiviert DPS/Tank Raid Layout."
 	ElvL.core_uihelp8 = "|cffFF0000/uf|r - Aktiviert oder deaktiviert das Bewegen der Einheitenfenster."
 	ElvL.core_uihelp9 = "|cffFF0000/bags|r - Zum Sortieren, Kaufen von Bankplätzen oder neu Stapeln von Gegenständen in deiner Tasche."
-	ElvL.core_uihelp10 = "|cffFF0000/resetui|r - Wiederherstellung der ursprünglichen Elvui Einstellungen."
+	ElvL.core_uihelp10 = "|cffFF0000/installui|r - Wiederherstellung der ursprünglichen Elvui Einstellungen."
 	ElvL.core_uihelp11 = "|cffFF0000/rd|r - Raid auflösen."
 	ElvL.core_uihelp12 = "|cffFF0000/hb|r - Setzte Tastaturbelegung auf die Aktionsleisten"
 	ElvL.core_uihelp13 = "|cffFF0000/mss|r - Befehl, um die Haltungs-(Krieger), Präsenz-(Todesritter), Auren-(Paladin), Formen-(Druide), Schattengestalt-(Priester) und Totem-(Schamane) Leisten zu bewegen."

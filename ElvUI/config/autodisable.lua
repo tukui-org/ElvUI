@@ -129,8 +129,6 @@ do
 		ElvCF["tooltip"]["hideuf"] = nil                    -- hide tooltip on unitframes
 		ElvCF["tooltip"]["cursor"] = nil                    -- show anchored to cursor
 		ElvCF["tooltip"]["colorreaction"] = nil				-- always color border of tooltip by unit reaction
-		ElvCF["tooltip"]["xOfs"] = nil							--X offset
-		ElvCF["tooltip"]["yOfs"] = nil							--Y offset	
 	end
 	
 	if ElvCF["actionbar"].enable ~= true then

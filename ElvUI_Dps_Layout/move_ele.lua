@@ -53,6 +53,7 @@ local function CreateFrameOverlay(parent, name)
 		if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end
 		self:StartMoving() 
 	end)
+	
 	f:SetScript("OnDragStop", function(self) 
 		if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end
 		self:StopMovingOrSizing() 

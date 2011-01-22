@@ -5,6 +5,10 @@ local ElvCF = ElvCF
 ---------------------------------------------------------------------------
 -- Setup Shapeshift Bar
 ---------------------------------------------------------------------------
+local numshape = 0
+for i = 1, NUM_SHAPESHIFT_SLOTS do
+	if _G["ShapeshiftButton"..i] and _G["ShapeshiftButton"..i]:IsShown() then numshape = numshape + 1 end
+end
 
 -- used for anchor totembar or shapeshiftbar
 local ElvuiShift = CreateFrame("Frame","ElvuiShiftBar",ElvuiActionBarBackground)
@@ -13,38 +17,16 @@ if ElvCF["actionbar"].microbar == true then
 else
 	ElvuiShift:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 2, -2)
 end
-ElvuiShift:SetWidth(29)
-ElvuiShift:SetHeight(58)
+local w = numshape * (ElvDB.petbuttonspacing + ElvDB.petbuttonsize)
+if w < 100 then w = 100 end
+ElvuiShift:SetWidth(w)
+ElvuiShift:SetHeight(ElvDB.petbuttonsize)
 
 if ElvCF["actionbar"].hideshapeshift == true then
 	ElvuiShift:Hide()
 end
 
--- shapeshift command to move totem or shapeshift in-game
-local ssmover = CreateFrame("Frame", "ssmoverholder", ElvuiShift)
-ssmover:SetAllPoints(ElvuiShift)
-ElvDB.SetTemplate(ssmover)
-ssmover:SetAlpha(0)
-ElvuiShift:SetMovable(true)
-ElvuiShift:SetUserPlaced(true)
-local ssmove = false
-local function showmovebutton()
-	if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end
-	if ssmove == false then
-		ssmove = true
-		ssmover:SetAlpha(1)
-		ElvuiShift:EnableMouse(true)
-		ElvuiShift:RegisterForDrag("LeftButton", "RightButton")
-		ElvuiShift:SetScript("OnDragStart", function(self) self:StartMoving() end)
-		ElvuiShift:SetScript("OnDragStop", function(self) self:StopMovingOrSizing() end)
-	elseif ssmove == true then
-		ssmove = false
-		ssmover:SetAlpha(0)
-		ElvuiShift:EnableMouse(false)
-	end
-end
-SLASH_SHOWMOVEBUTTON1 = "/mss"
-SlashCmdList["SHOWMOVEBUTTON"] = showmovebutton
+ElvDB.CreateMover(ElvuiShift, "ShapeShiftMover", "Class Bar")
 
 -- hide it if not needed and stop executing code
 if ElvCF.actionbar.hideshapeshift then ElvuiShift:Hide() return end
@@ -81,14 +63,14 @@ bar:SetScript("OnEvent", function(self, event, ...)
 			button:SetParent(self)
 			if ElvCF["actionbar"].verticalstance ~= true then
 				if i == 1 then
-					button:SetPoint("BOTTOMLEFT", ElvuiShift, 0, ElvDB.Scale(29))
+					button:SetPoint("BOTTOMLEFT", ElvuiShift, 0, 0)
 				else
 					local previous = _G["ShapeshiftButton"..i-1]
 					button:SetPoint("LEFT", previous, "RIGHT", ElvDB.petbuttonspacing, 0)
 				end
 			else
 				if i == 1 then
-					button:SetPoint("BOTTOMLEFT", ElvuiShift, 0, ElvDB.Scale(29))
+					button:SetPoint("BOTTOMLEFT", ElvuiShift, 0, 0)
 				else
 					local previous = _G["ShapeshiftButton"..i-1]
 					button:SetPoint("TOP", previous, "BOTTOM", 0, -ElvDB.petbuttonspacing)

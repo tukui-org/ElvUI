@@ -155,7 +155,7 @@ if ElvDB.client == "zhTW" then
 	ElvL.core_uihelp7 = "|cffFF0000/dps|r - 啟用Dps/Tank的版面設定"
 	ElvL.core_uihelp8 = "|cffFF0000/uf|r - 移動及鎖定單位框架"
 	ElvL.core_uihelp9 = "|cffFF0000/bags|r - 排序背包, 購買銀行欄位或重新堆疊背包/銀行內的物品"
-	ElvL.core_uihelp10 = "|cffFF0000/resetui|r - 重置設定為預設值"
+	ElvL.core_uihelp10 = "|cffFF0000/installui|r - 重置設定為預設值"
 	ElvL.core_uihelp11 = "|cffFF0000/rd|r - 解散團隊"
 	ElvL.core_uihelp12 = "|cffFF0000/hb|r - 設置動作列快捷鍵"
 	ElvL.core_uihelp13 = "|cffFF0000/mss|r - 移動姿態/變形列和圖騰列"

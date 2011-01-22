@@ -18,9 +18,6 @@ local microbuttons = {
 
 local f = CreateFrame("Frame", "MicroParent", UIParent)
 MicroParent.shown = false
-f:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 1, 52) --Default microbar position
-f:SetWidth(((CharacterMicroButton:GetWidth() + 4) * 7) + 2)
-f:SetHeight(CharacterMicroButton:GetHeight() - 28)
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:SetScript("OnEvent", function(self, event) if not PlayerTalentFrame then LoadAddOn("Blizzard_TalentUI") end if not GlyphFrame then LoadAddOn("Blizzard_GlyphUI") end end)
 if ElvCF["actionbar"].mousemicro == true then f:SetAlpha(0) end
@@ -133,61 +130,14 @@ do
 	GuildMicroButtonTabard.ClearAllPoints = ElvDB.dummy
 end
 
-
---Moving of the MicroBar
-local f = CreateFrame("Frame", "MicroBar", UIParent)
-f:SetFrameLevel(CharacterMicroButton:GetFrameLevel() + 1)
-f:SetFrameStrata("FULLSCREEN_DIALOG")
-f:SetPoint("BOTTOMLEFT", MicroParent, "BOTTOMLEFT", 0,  -58)
-f:SetWidth(((CharacterMicroButton:GetWidth() + 4) * 7) + 2)
-f:SetHeight(CharacterMicroButton:GetHeight() - 28)
-f:SetBackdrop({
-  bgFile = ElvCF["media"].blank, 
-  edgeFile = ElvCF["media"].blank, 
-  tile = false, tileSize = 0, edgeSize = 2, 
-  insets = { left = 0, right = 0, top = 0, bottom = 0}
-})	
-f:SetBackdropBorderColor(0, 0, 0, 1)
-f:SetBackdropColor(0, 1, 0, 0.75)
-	
-f:RegisterForDrag("LeftButton", "RightButton")
-f:SetScript("OnDragStart", function(self) 
-	if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end
-	self:StartMoving() 
-end)
-f:SetScript("OnDragStop", function(self) 
-	if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end
-	self:StopMovingOrSizing() 
-end)
-
-f:SetAlpha(0)
-f:SetMovable(true)
-f:EnableMouse(false)
-f.shown = false
+MicroParent:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 2, -2) --Default microbar position
+MicroParent:SetWidth(((CharacterMicroButton:GetWidth() + 4) * 7) + 2)
+MicroParent:SetHeight(CharacterMicroButton:GetHeight() - 28)
 
 CharacterMicroButton:ClearAllPoints()
-CharacterMicroButton:SetPoint("BOTTOMLEFT", f, "BOTTOMLEFT")
-
-local fs = f:CreateFontString(nil, "OVERLAY")
-fs:SetFont(ElvCF["media"].font, ElvCF["general"].fontscale, "THINOUTLINE")
-fs:SetJustifyH("CENTER")
-fs:SetShadowColor(0, 0, 0)
-fs:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
-fs:SetPoint("CENTER")
-fs:SetText("MicroBar")
+CharacterMicroButton:SetPoint("BOTTOMLEFT", MicroParent, "BOTTOMLEFT", 0,  0)
+CharacterMicroButton.SetPoint = TukuiDB.dummy
+CharacterMicroButton.ClearAllPoints = TukuiDB.dummy
 
 
-local function MoveMicro()
-	if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end
-	if MicroBar.shown == false then
-		MicroBar.shown = true
-		MicroBar:SetAlpha(1)
-		MicroBar:EnableMouse(true)
-	else
-		MicroBar.shown = false
-		MicroBar:SetAlpha(0)
-		MicroBar:EnableMouse(false)	
-	end
-end
-SLASH_MICRO1 = "/micro"
-SlashCmdList["MICRO"] = MoveMicro
+ElvDB.CreateMover(MicroParent, "MicroMover", "MicroBar")
