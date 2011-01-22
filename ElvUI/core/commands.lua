@@ -64,13 +64,21 @@ SLASH_GROUPDISBAND1 = '/rd'
 
 -- farm mode
 local farm = false
-local minisize
+local minisize = 250
+local minisize2 = 250
 function SlashCmdList.FARMMODE(msg, editbox)
 	if farm == false then
 		minisize = Minimap:GetWidth()
+		if MinimapMover then
+			minisize2 = MinimapMover:GetWidth()
+			MinimapMover:SetSize(250, 250)
+		end
 		Minimap:SetSize(250, 250)
 		farm = true
 	else
+		if MinimapMover then
+			MinimapMover:SetSize(minisize2, minisize2)
+		end	
 		Minimap:SetSize(minisize, minisize)
 		farm = false
 	end
