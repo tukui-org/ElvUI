@@ -24,19 +24,24 @@ local aurapos = "RIGHT"
 function ElvDB.AurasPostDrag(frame)
 	local point = select(1, frame:GetPoint())
 	
-	TempEnchant1:ClearAllPoints()
-	TempEnchant2:ClearAllPoints()
-	
 	if string.find(point, "LEFT") then
+		TempEnchant1:ClearAllPoints()
+		TempEnchant2:ClearAllPoints()
+		TemporaryEnchantFrame:ClearAllPoints()
 		btnspace = ElvDB.Scale(4)
 		aurapos = "LEFT"
 		TempEnchant1:SetPoint("TOPLEFT", AurasHolder, "TOPLEFT", 0, 0)
-		TempEnchant2:SetPoint("LEFT", TempEnchant1, "RIGHT", btnspace, 0)			
+		TempEnchant2:SetPoint("LEFT", TempEnchant1, "RIGHT", btnspace, 0)		
+		TemporaryEnchantFrame:SetPoint("TOPLEFT", AurasHolder, "TOPLEFT", 0, 0)	
 	elseif string.find(point, "RIGHT") then
+		TempEnchant1:ClearAllPoints()
+		TempEnchant2:ClearAllPoints()
+		TemporaryEnchantFrame:ClearAllPoints()
 		btnspace = ElvDB.Scale(-4)
 		aurapos = "RIGHT"
 		TempEnchant1:SetPoint("TOPRIGHT", AurasHolder, "TOPRIGHT", 0, 0)
-		TempEnchant2:SetPoint("RIGHT", TempEnchant1, "LEFT", btnspace, 0)		
+		TempEnchant2:SetPoint("RIGHT", TempEnchant1, "LEFT", btnspace, 0)	
+		TemporaryEnchantFrame:SetPoint("TOPRIGHT", AurasHolder, "TOPRIGHT", 0, 0)			
 	end
 	BuffFrame_UpdateAllBuffAnchors()
 	BuffFrame_Update()
@@ -46,7 +51,6 @@ ElvDB.CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, ElvDB.AurasPo
 
 TemporaryEnchantFrame:ClearAllPoints()
 TemporaryEnchantFrame:SetPoint("TOPRIGHT", AurasHolder, "TOPRIGHT", 0, 0)
-TemporaryEnchantFrame.SetPoint = ElvDB.dummy
 
 TempEnchant1:ClearAllPoints()
 TempEnchant2:ClearAllPoints()
