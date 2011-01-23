@@ -326,7 +326,12 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 	Mod_AddonSkins:RegisterSkin("Blizzard_TotemBar",function(Skin,skin,Layout,layout,config)
 		-- Skin Flyout
 		function Skin:SkinMCABFlyoutFrame(flyout, type, parent)
-			local point, _, _, _, _ = ElvuiShiftBar:GetPoint()
+			local point
+			if ShapeShiftMover then
+				point, _, _, _, _ = ShapeShiftMover:GetPoint()
+			else
+				point, _, _, _, _ = ElvuiShiftBar:GetPoint()
+			end
 			flyout.top:SetTexture(nil)
 			flyout.middle:SetTexture(nil)
 			self:SkinFrame(flyout)
@@ -392,7 +397,12 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 		hooksecurefunc("MultiCastFlyoutFrame_ToggleFlyout",function(self, type, parent) skin:SkinMCABFlyoutFrame(self, type, parent) end)
 		
 		function Skin:SkinMCABFlyoutOpenButton(button, parent)
-			local point, _, _, _, _ = ElvuiShiftBar:GetPoint()
+			local point
+			if ShapeShiftMover then
+				point, _, _, _, _ = ShapeShiftMover:GetPoint()
+			else
+				point, _, _, _, _ = ElvuiShiftBar:GetPoint()
+			end
 			button:GetHighlightTexture():SetTexture(nil)
 			button:GetNormalTexture():SetTexture(nil)
 			button:SetHeight(ElvDB.Scale(4)*3)
