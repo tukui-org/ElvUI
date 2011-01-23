@@ -142,25 +142,50 @@ function ElvDB.ToggleMovers()
 	end
 end
 
-function ElvDB.ResetMovers()
-	for name, _ in pairs(ElvDB.CreatedMovers) do
-		local n = _G[name]
-		_G[name]:ClearAllPoints()
-		_G[name]:SetPoint(ElvDB.CreatedMovers[name]["p"], ElvDB.CreatedMovers[name]["p2"], ElvDB.CreatedMovers[name]["p3"], ElvDB.CreatedMovers[name]["p4"], ElvDB.CreatedMovers[name]["p5"])
-		
-		ElvDB.Movers[name]["moved"] = false 
-		
-		ElvDB.Movers[name]["p"] = nil
-		ElvDB.Movers[name]["p2"] = nil
-		ElvDB.Movers[name]["p3"] = nil
-		ElvDB.Movers[name]["p4"] = nil	
-		
-		for key, value in pairs(ElvDB.CreatedMovers[name]) do
-			if key == "postdrag" and type(value) == 'function' then
-				value(n)
+function ElvDB.ResetMovers(arg)
+	if arg == "" then
+		for name, _ in pairs(ElvDB.CreatedMovers) do
+			local n = _G[name]
+			_G[name]:ClearAllPoints()
+			_G[name]:SetPoint(ElvDB.CreatedMovers[name]["p"], ElvDB.CreatedMovers[name]["p2"], ElvDB.CreatedMovers[name]["p3"], ElvDB.CreatedMovers[name]["p4"], ElvDB.CreatedMovers[name]["p5"])
+			
+			ElvDB.Movers[name]["moved"] = false 
+			
+			ElvDB.Movers[name]["p"] = nil
+			ElvDB.Movers[name]["p2"] = nil
+			ElvDB.Movers[name]["p3"] = nil
+			ElvDB.Movers[name]["p4"] = nil	
+			
+			for key, value in pairs(ElvDB.CreatedMovers[name]) do
+				if key == "postdrag" and type(value) == 'function' then
+					value(n)
+				end
 			end
+		end	
+	else
+		for name, _ in pairs(ElvDB.CreatedMovers) do
+			for key, value in pairs(ElvDB.CreatedMovers[name]) do
+				local mover
+				if key == "text" then
+					if arg == value then 
+						_G[name]:ClearAllPoints()
+						_G[name]:SetPoint(ElvDB.CreatedMovers[name]["p"], ElvDB.CreatedMovers[name]["p2"], ElvDB.CreatedMovers[name]["p3"], ElvDB.CreatedMovers[name]["p4"], ElvDB.CreatedMovers[name]["p5"])						
+						
+						ElvDB.Movers[name]["moved"] = false 
+						
+						ElvDB.Movers[name]["p"] = nil
+						ElvDB.Movers[name]["p2"] = nil
+						ElvDB.Movers[name]["p3"] = nil
+						ElvDB.Movers[name]["p4"] = nil	
+
+						if ElvDB.CreatedMovers[name]["postdrag"] ~= nil and type(ElvDB.CreatedMovers[name]["postdrag"]) == 'function' then
+							ElvDB.CreatedMovers[name]["postdrag"](_G[name])
+						end
+					end
+				end
+			end	
 		end
-	end	
+	end
 end
 
 local loadmovers = CreateFrame("Frame")

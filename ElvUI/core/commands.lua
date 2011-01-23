@@ -112,4 +112,4 @@ SlashCmdList.MOVEUI = function() ElvDB.ToggleMovers() end
 
 -- Command to reset the movers
 SLASH_RESETMOVERS1 = '/resetui'
-SlashCmdList.RESETMOVERS = function() ElvDB.ResetMovers() end
+SlashCmdList.RESETMOVERS = function(arg) ElvDB.ResetMovers(arg) end
