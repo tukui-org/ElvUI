@@ -10,8 +10,15 @@ Minimap:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", ElvDB.Scale(-5), ElvDB.Scale(
 Minimap:SetSize(ElvDB.Scale(144), ElvDB.Scale(144))
 
 
+function ElvDB.PostMinimapMove(frame)
 
-ElvDB.CreateMover(Minimap, "MinimapMover", "Minimap") --Too easy muahaha
+	if ElvDB.Movers[frame:GetName()]["moved"] ~= true then
+		frame:ClearAllPoints()
+		frame:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", ElvDB.Scale(-6), ElvDB.Scale(-6))
+	end
+end
+
+ElvDB.CreateMover(Minimap, "MinimapMover", "Minimap", nil, ElvDB.PostMinimapMove) --Too easy muahaha
 
 --just incase these dont fit on the screen when you move the minimap
 LFDSearchStatus:SetClampedToScreen(true)
