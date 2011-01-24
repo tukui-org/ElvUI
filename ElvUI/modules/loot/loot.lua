@@ -153,9 +153,14 @@ end)
 addon:SetMovable(true)
 addon:RegisterForClicks"anyup"
 
+local x = CreateFrame("Frame", "LootFrameHolder", UIParent)
+x:SetPoint("TOPLEFT", ElvDB.Scale(68), ElvDB.Scale(-194))
+x:SetWidth(150)
+x:SetHeight(22)
+
 addon:SetParent(UIParent)
 addon:SetUserPlaced(true)
-addon:SetPoint("TOPLEFT", 0, ElvDB.Scale(-104))
+addon:SetPoint("TOPLEFT", LootFrameHolder, "TOPLEFT", 0, 0)
 addon:SetBackdrop{
 	bgFile = ElvCF["media"].blank, tile = true, tileSize = ElvDB.Scale(16),
 	edgeFile = ElvCF["media"].blank, edgeSize = ElvDB.mult,
@@ -199,6 +204,10 @@ addon.LOOT_OPENED = function(self, event, autoloot)
 		self:SetPoint("TOPLEFT", nil, "BOTTOMLEFT", ElvDB.Scale(x - 40), ElvDB.Scale(y + 20))
 		self:GetCenter()
 		self:Raise()
+	else
+		self:SetUserPlaced(false)
+		self:ClearAllPoints()
+		self:SetPoint("TOPLEFT", LootFrameHolder, "TOPLEFT", 0, 0)	
 	end
 
 	local m, w, t = 0, 0, title:GetStringWidth()
@@ -310,6 +319,8 @@ addon:RegisterEvent"OPEN_MASTER_LOOT_LIST"
 addon:RegisterEvent"UPDATE_MASTER_LOOT_LIST"
 addon:RegisterEvent"ADDON_LOADED"
 addon:Hide()
+
+ElvDB.CreateMover(LootFrameHolder, "LootFrameMover", "Loot Frame")
 
 -- Fuzz
 LootFrame:UnregisterAllEvents()

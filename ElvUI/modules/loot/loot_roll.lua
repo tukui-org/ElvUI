@@ -6,6 +6,7 @@ local ElvCF = ElvCF
 local ElvDB = ElvDB
 
 if ElvCF["loot"].rolllootframe ~= true then return end
+local pos = "TOP"
 
 local backdrop = {
 	bgFile = ElvCF["media"].blank, tile = true, tileSize = 0,
@@ -65,6 +66,7 @@ end
 
 
 local function StatusUpdate(frame)
+	if not frame.parent.rollid then return end
 	local t = GetLootRollTimeLeft(frame.parent.rollid)
 	local perc = t / frame.parent.time
 	frame.spark:SetPoint("CENTER", frame, "LEFT", ElvDB.Scale(perc * frame:GetWidth()), 0)
@@ -215,13 +217,18 @@ local f = CreateRollFrame() -- Create one for good measure
 f:SetPoint("TOPLEFT", next(frames) and frames[#frames] or anchor, "BOTTOMLEFT", 0, ElvDB.Scale(-4))
 table.insert(frames, f)
 
+
 local function GetFrame()
 	for i,f in ipairs(frames) do
 		if not f.rollid then return f end
 	end
 
 	local f = CreateRollFrame()
-	f:SetPoint("TOPLEFT", next(frames) and frames[#frames] or anchor, "BOTTOMLEFT", 0, ElvDB.Scale(-4))
+	if pos == "TOP" then
+		f:SetPoint("TOPLEFT", next(frames) and frames[#frames] or anchor, "BOTTOMLEFT", 0, ElvDB.Scale(-4))
+	else
+		f:SetPoint("BOTTOMLEFT", next(frames) and frames[#frames] or anchor, "TOPLEFT", 0, ElvDB.Scale(4))
+	end
 	table.insert(frames, f)
 	return f
 end
@@ -328,6 +335,36 @@ local function CHAT_MSG_LOOT(msg)
 	end
 end
 
+function ElvDB.PostMoveLootRoll(frame)
+	local point = select(1, frame:GetPoint())
+
+	if string.find(point, "TOP") or point == "CENTER" or point == "LEFT" or point == "RIGHT" then
+		pos = "TOP"
+	elseif string.find(point, "BOTTOM") then
+		pos = "BOTTOM"
+	end
+	
+	local lastframe
+	for i, frame in pairs(frames) do
+		if i ~= 1 then
+			frame:ClearAllPoints()
+			if pos == "TOP" then
+				frame:SetPoint("TOPLEFT", lastframe, "BOTTOMLEFT", 0, ElvDB.Scale(-4))
+			else
+				frame:SetPoint("BOTTOMLEFT", lastframe, "TOPLEFT", 0, ElvDB.Scale(4))
+			end	
+		else
+			frame:ClearAllPoints()
+			if pos == "TOP" then
+				frame:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 0, ElvDB.Scale(-4))
+			else
+				frame:SetPoint("BOTTOMLEFT", anchor, "TOPLEFT", 0, ElvDB.Scale(4))
+			end
+		end
+		lastframe = frame
+	end
+
+end
 
 anchor:RegisterEvent("ADDON_LOADED")
 anchor:SetScript("OnEvent", function(frame, event, addon)
@@ -340,6 +377,15 @@ anchor:SetScript("OnEvent", function(frame, event, addon)
 	UIParent:UnregisterEvent("CANCEL_LOOT_ROLL")
 
 	anchor:SetScript("OnEvent", function(frame, event, ...) if event == "CHAT_MSG_LOOT" then return CHAT_MSG_LOOT(...) else return START_LOOT_ROLL(...) end end)
-
-	anchor:SetPoint("TOP", UIParent, "TOP", 0, ElvDB.Scale(-200))
+	
+	local anchorholder = CreateFrame("Frame", "AnchorHolder", UIParent)
+	anchorholder:SetPoint("TOP", UIParent, "TOP", 0, -200)
+	anchorholder:SetWidth(anchor:GetWidth())
+	anchorholder:SetHeight(anchor:GetHeight())
+	
+	ElvDB.CreateMover(AnchorHolder, "LootRollMover", "LootRoll Frame", nil, ElvDB.PostMoveLootRoll)
+	
+	anchor:SetPoint("TOP", anchorholder, "TOP", 0, 0)
+	
+	
 end)

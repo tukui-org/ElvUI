@@ -12,16 +12,9 @@ local function init()
 	ElvuiWatchFrame:UnregisterEvent("PLAYER_ENTERING_WORLD")
 	ElvuiWatchFrame:RegisterEvent("CVAR_UPDATE")
 	ElvuiWatchFrame:SetScript("OnEvent", function(_,_,cvar,value)
-		if cvar == "WATCH_FRAME_WIDTH_TEXT" then
-			if not WatchFrame.userCollapsed then
-				if value == "1" then
-					ElvuiWatchFrame:SetWidth(350)
-				else
-					ElvuiWatchFrame:SetWidth(250)
-				end
-			end
-			wideFrame = value
-		end
+		SetCVar("watchFrameWidth", 0)
+		ElvuiWatchFrame:SetWidth(250)
+		InterfaceOptionsObjectivesPanelWatchFrameWidth:Hide()
 	end)
 	
 	ElvuiWatchFrame:ClearAllPoints()

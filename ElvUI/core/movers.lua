@@ -7,6 +7,10 @@ local myPlayerName  = UnitName("player")
 
 ElvDB.CreatedMovers = {}
 
+local print = function(...)
+	return print('|cffFF6347ElvUI:|r', ...)
+end
+
 local function CreateMover(parent, name, text, overlay, postdrag)
 	if not parent then return end --If for some reason the parent isnt loaded yet
 	
@@ -104,7 +108,11 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	f2:Hide()	
 	
 	if postdrag ~= nil and type(postdrag) == 'function' then
-		postdrag(f2)
+		f:RegisterEvent("PLAYER_ENTERING_WORLD")
+		f:SetScript("OnEvent", function(self, event)
+			postdrag(f2)
+			self:UnregisterAllEvents()
+		end)
 	end	
 end
 
@@ -143,6 +151,7 @@ function ElvDB.ToggleMovers()
 end
 
 function ElvDB.ResetMovers(arg)
+	if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end
 	if arg == "" then
 		for name, _ in pairs(ElvDB.CreatedMovers) do
 			local n = _G[name]
@@ -190,24 +199,38 @@ end
 
 local loadmovers = CreateFrame("Frame")
 loadmovers:RegisterEvent("ADDON_LOADED")
+loadmovers:RegisterEvent("PLAYER_REGEN_DISABLED")
 loadmovers:SetScript("OnEvent", function(self, event, addon)
-	if addon ~= "ElvUI" then return end
-	for name, _ in pairs(ElvDB.CreatedMovers) do
-		local n = name
-		local p, t, o, pd
-		for key, value in pairs(ElvDB.CreatedMovers[name]) do
-			if key == "parent" then
-				p = value
-			elseif key == "text" then
-				t = value
-			elseif key == "overlay" then
-				o = value
-			elseif key == "postdrag" then
-				pd = value
+	if event == "ADDON_LOADED" then
+		if addon ~= "ElvUI" then return end
+		for name, _ in pairs(ElvDB.CreatedMovers) do
+			local n = name
+			local p, t, o, pd
+			for key, value in pairs(ElvDB.CreatedMovers[name]) do
+				if key == "parent" then
+					p = value
+				elseif key == "text" then
+					t = value
+				elseif key == "overlay" then
+					o = value
+				elseif key == "postdrag" then
+					pd = value
+				end
+			end
+			CreateMover(p, n, t, o, pd)
+		end
+		
+		self:UnregisterEvent("ADDON_LOADED")
+	else
+		local err = false
+		for name, _ in pairs(ElvDB.CreatedMovers) do
+			if _G[name]:IsShown() then
+				err = true
+				_G[name]:Hide()
 			end
 		end
-		CreateMover(p, n, t, o, pd)
+			if err == true then
+				print(ERR_NOT_IN_COMBAT)			
+			end		
 	end
-	
-	self:UnregisterEvent("ADDON_LOADED")
 end)

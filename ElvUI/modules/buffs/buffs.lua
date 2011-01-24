@@ -235,12 +235,4 @@ function ElvDB.AurasPostDrag(frame)
 	end
 end
 
-local x = CreateFrame('Frame')
-x:RegisterEvent('PLAYER_ENTERING_WORLD')
-x:SetScript('OnEvent', function(self, event)
-	ElvDB.AurasPostDrag(AurasMover)
-	self:UnregisterEvent(event)
-	self = nil
-end)
-
 ElvDB.CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, ElvDB.AurasPostDrag)
