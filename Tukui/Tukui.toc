@@ -1,0 +1,10 @@
+﻿## Interface: 40000
+## Author: Elv22
+## Version: 1.0.0
+## Title: |cffFF6347Tukui DB Converter|r
+## Notes: Converts TukuiDB to ElvDB. Only use if you have an addon that Requires Tukui to load.
+## RequiredDeps: ElvUI
+## OptionalDeps: ElvUI_Dps_Layout, ElvUI_Heal_Layout
+## DefaultState: disabled
+
+core.lua
