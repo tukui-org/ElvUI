@@ -35,7 +35,6 @@ if ElvCF["general"].classcolortheme == true then
 	local r, g, b = RAID_CLASS_COLORS[c].r, RAID_CLASS_COLORS[c].g, RAID_CLASS_COLORS[c].b
 	ElvCF["media"].altbordercolor = {r, g, b, 1}
 	ElvCF["unitframes"].classcolor = true
-	ElvCF["classtimer"].classcolor = true
 end
 
 ------------------------

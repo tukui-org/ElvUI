@@ -5,7 +5,7 @@ ElvuiL.option_general_uiscale = "Auto UI Scale"
 ElvuiL.option_general_multisample = "Multisample protection (clean 1px border)"
 ElvuiL.option_general_customuiscale = "UI Scale (if auto-scale is disabled)"
 ElvuiL.option_general_embedright = "Addon to embed to right chat panel (Recount, Omen, Skada)"
-ElvuiL.option_general_classtheme = "Color border colors to your class"
+ElvuiL.option_general_classtheme = "Class Color Theme"
 ElvuiL.option_general_autocustomlagtolerance = "Automatically update the Blizzard Custom Lag Tolerance option to your latency."
 ElvuiL.option_general_fontscale = "Master font scale"
 
