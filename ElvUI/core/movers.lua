@@ -75,7 +75,7 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	end)	
 	
 	parent:ClearAllPoints()
-	parent:SetAllPoints(f2)	
+	parent:SetPoint(p3, f2, p3, 0, 0)
 	parent.ClearAllPoints = ElvDB.dummy
 	parent.SetAllPoints = ElvDB.dummy
 	parent.SetPoint = ElvDB.dummy
