@@ -255,7 +255,7 @@ DebuffBlacklist = {
 
 
 -- Debuffs to Show
--- Only works on raid frames when inside a BG/Arena. Target frame will always show these
+-- Only works on raid frames when inside a BG/Arena. Target frame will always show these, arena frames will always show these.
 DebuffWhiteList = {
 	-- Death Knight
 		[SpellName(51209)] = true, --hungering cold
@@ -318,7 +318,7 @@ DebuffWhiteList = {
 }
 
 --List of debuffs for targetframe for pvp only (when inside a bg/arena
---We do this because in PVE Situations we don't want to see these debuffs on our target frame
+--We do this because in PVE Situations we don't want to see these debuffs on our target frame, arena frames will always show these.
 TargetPVPOnly = {
 	[SpellName(34438)] = true, --UA
 	[SpellName(34914)] = true, --VT
