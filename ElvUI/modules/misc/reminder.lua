@@ -79,7 +79,7 @@ if (buffs and buffs[1]) then
 		end
 		
 		local inInstance, _ = IsInInstance()	
-		if (UnitAffectingCombat("player") or inInstance) and not UnitInVehicle("player") then
+		if (UnitAffectingCombat("player") or inInstance) and not UnitInVehicle("player") and self.icon:GetTexture() then
 			for i, buff in pairs(buffs) do
 				local name = GetSpellInfo(buff)
 				if (name and UnitBuff("player", name)) then
@@ -150,7 +150,7 @@ if (tankbuffs and tankbuffs[1]) then
 		end
 		local inInstance, instanceType = IsInInstance()	
 		--check aura
-		if (not UnitInVehicle("player")) and (inInstance and (instanceType == "raid" or instanceType == "party")) and ElvDB.Role == "Tank" then
+		if (not UnitInVehicle("player")) and (inInstance and (instanceType == "raid" or instanceType == "party")) and ElvDB.Role == "Tank" and self.icon:GetTexture() then
 			for i, tankbuffs in pairs(tankbuffs) do
 				local name = GetSpellInfo(tankbuffs)
 				if (name and UnitBuff("player", name)) then
