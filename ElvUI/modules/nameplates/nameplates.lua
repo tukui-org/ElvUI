@@ -164,7 +164,7 @@ local goodR, goodG, goodB = unpack(ElvCF["nameplate"].goodcolor)
 local badR, badG, badB = unpack(ElvCF["nameplate"].badcolor)
 local transitionR, transitionG, transitionB = unpack(ElvCF["nameplate"].transitioncolor)
 local function UpdateThreat(frame, elapsed)
-	if not frame.hp:IsShown() and frame.blacklist and frame.blacklist == true then frame.hp:Show() end
+	frame.hp:Show()
 	
 	if ElvCF["nameplate"].enhancethreat ~= true then
 		if(frame.region:IsShown()) then
@@ -325,7 +325,6 @@ local function OnHide(frame)
 	frame.hp.rcolor = nil
 	frame.hp.gcolor = nil
 	frame.hp.bcolor = nil
-	frame.blacklist = nil
 	if frame.icons then
 		for _,icon in ipairs(frame.icons) do
 			icon:Hide()
@@ -660,7 +659,6 @@ local function CheckBlacklist(frame, ...)
 		frame.cb:Hide()
 		frame.overlay:Hide()
 		frame.oldlevel:Hide()
-		frame.blacklist = true
 	end
 end
 
