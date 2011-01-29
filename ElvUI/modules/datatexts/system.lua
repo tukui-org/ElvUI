@@ -13,7 +13,7 @@ if ElvCF["datatext"].system and ElvCF["datatext"].system > 0 then
 	Stat:EnableMouse(true)
 	
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
-		Text:SetFont(ElvCF.media.font, ElvCF["datatext"].fontsize, "THINOUTLINE")
+	Text:SetFont(ElvCF.media.font, ElvCF["datatext"].fontsize, "THINOUTLINE")
 	Text:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
 	ElvDB.PP(ElvCF["datatext"].system, Text)
 	local colorme = string.format("%02x%02x%02x", 1*255, 1*255, 1*255)
@@ -65,32 +65,45 @@ if ElvCF["datatext"].system and ElvCF["datatext"].system > 0 then
 	end
 
 	local int, int2 = 10, 1
+	
+
+	local statusColors = {
+		"|cff0CD809",
+		"|cffE8DA0F",
+		"|cffFF9000",
+		"|cffD80909"
+	}
+	
 	local function Update(self, t)
 		int = int - t
 		int2 = int2 - t
-		local fpscolor
-		local latencycolor
 		
 		if int < 0 then
 			RefreshMem(self)
 			int = 10
 		end
+		
 		if int2 < 0 then
-			if select(3, GetNetStats()) < 300 then
-				latencycolor = "|cff0CD809"
-			elseif (select(3, GetNetStats()) > 300 and select(3, GetNetStats()) < 500) then
-				latencycolor = "|cffE8DA0F"
-			else
-				latencycolor = "|cffD80909"
+			local framerate = floor(GetFramerate())
+			local fpscolor = 4
+			local latency = select(3, GetNetStats()) 
+			local latencycolor = 4
+
+			if latency < 150 then
+				latencycolor = 1
+			elseif latency >= 150 and latency < 300 then
+				latencycolor = 2
+			elseif latency >= 300 and latency < 500 then
+				latencycolor = 3
 			end
-			if floor(GetFramerate()) >= 30 then
-				fpscolor = "|cff0CD809"
-			elseif (floor(GetFramerate()) > 15 and floor(GetFramerate()) < 30) then
-				fpscolor = "|cffE8DA0F"
-			else
-				fpscolor = "|cffD80909"
+			if framerate >= 30 then
+				fpscolor = 1
+			elseif framerate >= 20 and framerate < 30 then
+				fpscolor = 2
+			elseif framerate >= 10 and framerate < 20 then
+				fpscolor = 3
 			end
-			Text:SetText("FPS: "..fpscolor..floor(GetFramerate()).."  |r".."MS: "..latencycolor..select(3, GetNetStats()))
+			Text:SetText("FPS: "..statusColors[fpscolor]..framerate.."  |r".."MS: "..statusColors[latencycolor]..latency)
 			int2 = 0.8
 		end
 	end

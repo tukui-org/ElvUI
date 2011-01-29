@@ -1,1 +1,0 @@
---[[	Command to fix the Combat Log if it breaks]]local function CLFIX()	CombatLogClearEntries()endSLASH_CLFIX1 = "/clfix"SlashCmdList["CLFIX"] = CLFIX

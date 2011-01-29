@@ -13,7 +13,7 @@ if ElvCF["datatext"].stat1 and ElvCF["datatext"].stat1 > 0 then
 	Stat:SetFrameLevel(3)
 
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
-		Text:SetFont(ElvCF.media.font, ElvCF["datatext"].fontsize, "THINOUTLINE")
+	Text:SetFont(ElvCF.media.font, ElvCF["datatext"].fontsize, "THINOUTLINE")
 	Text:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
 	ElvDB.PP(ElvCF["datatext"].stat1, Text)
 	
@@ -24,6 +24,7 @@ if ElvCF["datatext"].stat1 and ElvCF["datatext"].stat1 > 0 then
 			if ElvDB.Role == "Tank" then
 				local format = string.format
 				local targetlv, playerlv = UnitLevel("target"), UnitLevel("player")
+				local basemisschance, leveldifference, dodge, parry, block, avoidance
 				
 				if targetlv == -1 then
 					basemisschance = (5 - (3*.2))
@@ -70,10 +71,10 @@ if ElvCF["datatext"].stat1 and ElvCF["datatext"].stat1 > 0 then
 							GameTooltip:AddDoubleLine(ElvL.datatext_avoidancebreakdown," ("..ElvL.datatext_lvl.." "..playerlv..")")
 						end
 						GameTooltip:AddLine' '
-						GameTooltip:AddDoubleLine(DODGE_CHANCE,format("%.2f",dodge) .. "%",1,1,1)
-						GameTooltip:AddDoubleLine(PARRY_CHANCE,format("%.2f",parry) .. "%",1,1,1)
-						GameTooltip:AddDoubleLine(BLOCK_CHANCE,format("%.2f",block) .. "%",1,1,1)
-						GameTooltip:AddDoubleLine(MISS_CHANCE,format("%.2f",basemisschance) .. "%",1,1,1)
+						GameTooltip:AddDoubleLine(DODGE_CHANCE,format("%.2f%%",dodge),1,1,1)
+						GameTooltip:AddDoubleLine(PARRY_CHANCE,format("%.2f%%",parry),1,1,1)
+						GameTooltip:AddDoubleLine(BLOCK_CHANCE,format("%.2f%%",block),1,1,1)
+						GameTooltip:AddDoubleLine(MISS_CHANCE,format("%.2f%%",basemisschance),1,1,1)
 						GameTooltip:Show()
 					end
 				end)

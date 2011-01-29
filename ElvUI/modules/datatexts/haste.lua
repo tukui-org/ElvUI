@@ -12,23 +12,24 @@ if ElvCF["datatext"].haste and ElvCF["datatext"].haste > 0 then
 	Stat:SetFrameLevel(3)
 
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
-		Text:SetFont(ElvCF.media.font, ElvCF["datatext"].fontsize, "THINOUTLINE")
+	Text:SetFont(ElvCF.media.font, ElvCF["datatext"].fontsize, "THINOUTLINE")
 	Text:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
 	ElvDB.PP(ElvCF["datatext"].haste, Text)
 
 	local int = 1
-
+	
+	local haste
 	local function Update(self, t)
-		spellhaste = GetCombatRating(20)
-		rangedhaste = GetCombatRating(19)
-		attackhaste = GetCombatRating(18)
+		local spellHaste = GetCombatRating(20)
+		local rangedHaste = GetCombatRating(19)
+		local attackHaste = GetCombatRating(18)
 		
-		if attackhaste > spellhaste and ElvDB.class ~= "HUNTER" then
-			haste = attackhaste
+		if attackHaste > spellHaste and ElvDB.class ~= "HUNTER" then
+			haste = attackHaste
 		elseif ElvDB.class == "HUNTER" then
-			haste = rangedhaste
+			haste = rangedHaste
 		else
-			haste = spellhaste
+			haste = spellHaste
 		end
 		
 		int = int - t

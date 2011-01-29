@@ -13,7 +13,7 @@ if ElvCF["datatext"].currency and ElvCF["datatext"].currency > 0 then
 	Stat:SetFrameLevel(3)
 
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
-		Text:SetFont(ElvCF.media.font, ElvCF["datatext"].fontsize, "THINOUTLINE")
+	Text:SetFont(ElvCF.media.font, ElvCF["datatext"].fontsize, "THINOUTLINE")
 	Text:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
 	ElvDB.PP(ElvCF["datatext"].currency, Text)
 	

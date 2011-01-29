@@ -12,7 +12,7 @@ if ElvCF["datatext"].hps_text and ElvCF["datatext"].hps_text > 0 then
 	local player_id = UnitGUID("player")
 	local actual_heals_total, cmbt_time = 0
  
-	hText = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
+	local hText = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
 	hText:SetFont(ElvCF.media.font, ElvCF["datatext"].fontsize, "THINOUTLINE")
 	hText:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
 	hText:SetText("HPS: "..ElvDB.ValColor.."0.0")

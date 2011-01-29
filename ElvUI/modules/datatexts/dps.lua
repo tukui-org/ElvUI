@@ -15,7 +15,7 @@ if ElvCF["datatext"].dps_text and ElvCF["datatext"].dps_text > 0 then
 
 	local pet_id = UnitGUID("pet")
      
-	dText = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
+	local dText = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
 	dText:SetFont(ElvCF.media.font, ElvCF["datatext"].fontsize, "THINOUTLINE")
 	dText:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
 	dText:SetText("DPS: "..ElvDB.ValColor.."0.0|r")

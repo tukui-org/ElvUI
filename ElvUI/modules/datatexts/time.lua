@@ -13,8 +13,7 @@ if ElvCF["datatext"].wowtime and ElvCF["datatext"].wowtime > 0 then
 	
 	local fader = CreateFrame("Frame", "TimeDataText", ElvuiInfoLeft)
 	
-	local Text
-	Text = fader:CreateFontString(nil, "OVERLAY")
+	local Text = fader:CreateFontString(nil, "OVERLAY")
 	Text:SetFont(ElvCF.media.font, ElvCF["datatext"].fontsize, "THINOUTLINE")
 	Text:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
 	ElvDB.PP(ElvCF["datatext"].wowtime, Text)
@@ -77,7 +76,8 @@ if ElvCF["datatext"].wowtime and ElvCF["datatext"].wowtime > 0 then
 		if ElvDB.level >= 77 and ElvDB.level <=84 then
 			local wgtime = GetWintergraspWaitTime() or nil
 			local control = QUEUE_TIME_UNAVAILABLE
-			inInstance, instanceType = IsInInstance()
+			local inInstance, instanceType = IsInInstance()
+			
 			if not ( instanceType == "none" ) then
 				wgtime = QUEUE_TIME_UNAVAILABLE
 			elseif wgtime == nil then
@@ -92,7 +92,8 @@ if ElvCF["datatext"].wowtime and ElvCF["datatext"].wowtime > 0 then
 		elseif ElvDB.level == 85 then
 			local _, localizedName, isActive, canQueue, startTime, canEnter = GetWorldPVPAreaInfo(2)
 			local control = QUEUE_TIME_UNAVAILABLE
-			inInstance, instanceType = IsInInstance()
+			local inInstance, instanceType = IsInInstance()
+			
 			if not ( instanceType == "none" ) then
 				startTime = QUEUE_TIME_UNAVAILABLE
 			elseif isActive then
@@ -168,21 +169,6 @@ if ElvCF["datatext"].wowtime and ElvCF["datatext"].wowtime > 0 then
 	Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
 	Stat:SetScript("OnUpdate", Update)
 	Stat:RegisterEvent("UPDATE_INSTANCE_INFO")
-	if ElvCF["general"].minimalistic ~= true then
-		Stat:SetScript("OnMouseDown", function() GameTimeFrame:Click() end)
-	else
-		Stat:SetScript("OnMouseDown", function(self, btn) 
-			if btn == "RightButton" then
-				OpenAllBags()
-			elseif btn == "MiddleButton" then
-				if not IsAddOnLoaded("Blizzard_GuildUI") then 
-					LoadAddOn("Blizzard_GuildUI")
-				end 
-				ToggleFrame(GuildFrame)
-			else
-				GameTimeFrame:Click() 
-			end
-		end)
-	end
+	Stat:SetScript("OnMouseDown", function() GameTimeFrame:Click() end)
 	Update(Stat, 10)
 end
