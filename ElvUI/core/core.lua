@@ -167,8 +167,8 @@ function ElvDB.Install()
 			ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_HONOR_GAIN")
 			ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_GUILD_XP_GAIN")
 			ChatFrame_AddChannel(ChatFrame1, GENERAL)
-			ChatFrame_RemoveChannel(ChatFrame1, TRADE)
-			ChatFrame_AddChannel(ChatFrame3, TRADE)
+			ChatFrame_RemoveChannel(ChatFrame1, ElvL.chat_trade)
+			ChatFrame_AddChannel(ChatFrame3, ElvL.chat_trade)
 		else
 			ChatFrame_AddMessageGroup(ChatFrame1, "LOOT")
 			ChatFrame_AddMessageGroup(ChatFrame1, "MONEY")	
@@ -178,8 +178,8 @@ function ElvDB.Install()
 			ChatFrame_AddMessageGroup(ChatFrame1, "COMBAT_HONOR_GAIN")
 			ChatFrame_AddMessageGroup(ChatFrame1, "COMBAT_FACTION_CHANGE")
 			ChatFrame_AddChannel(ChatFrame1, GENERAL)
-			ChatFrame_RemoveChannel(ChatFrame3, TRADE)
-			ChatFrame_AddChannel(ChatFrame1, TRADE)
+			ChatFrame_RemoveChannel(ChatFrame3, ElvL.chat_trade)
+			ChatFrame_AddChannel(ChatFrame1, ElvL.chat_trade)
 		end
 		
 		if ElvDB.myname == "Elv" then

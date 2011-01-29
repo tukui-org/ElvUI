@@ -23,6 +23,7 @@ ElvL.chat_ERR_FRIEND_OFFLINE_S = "is now |cffff0000offline|r"
 ElvL.raidbufftoggler = "Raid Buff Reminder: "
 
 ElvL.disband = "Disbanding group."
+ElvL.chat_trade = "Trade"
 
 ElvL.datatext_download = "Download: "
 ElvL.datatext_bandwidth = "Bandwidth: "

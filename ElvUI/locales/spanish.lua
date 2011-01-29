@@ -21,7 +21,8 @@ if ElvDB.client == "esES" then
 	ElvL.chat_ERR_FRIEND_OFFLINE_S = "está ahora |cffff0000offline|r"
  
 	ElvL.disband = "Disolviendo grupo."
- 
+	ElvL.chat_trade = TRADE
+	
 	ElvL.datatext_download = "Descarga: "
 	ElvL.datatext_bandwidth = "Ancho de banda: "
 	ElvL.datatext_guild = "Hermandad"

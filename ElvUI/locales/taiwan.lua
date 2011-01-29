@@ -22,7 +22,8 @@ if ElvDB.client == "zhTW" then
 	ElvL.raidbufftoggler = "團隊增益效果提醒: "
 
 	ElvL.disband = "正在解散隊伍."
-
+	ElvL.chat_trade = "交易"
+	
 	ElvL.datatext_download = "下載: "
 	ElvL.datatext_bandwidth = "頻寬: "
 	ElvL.datatext_guild = "公會"

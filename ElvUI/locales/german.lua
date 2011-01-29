@@ -21,6 +21,8 @@ if ElvDB.client == "deDE" then
 	ElvL.chat_ERR_FRIEND_OFFLINE_S = "ist nun |cffff0000offline|r"
  
 	ElvL.disband = "Gruppe wird aufgelöst."
+	ElvL.chat_trade = "Handel"
+	
 	ElvL.raidbufftoggler = "Schlachtzugs-Buff Erinnerung: "	
 	ElvL.datatext_download = "Herunterladen: "
 	ElvL.datatext_bandwidth = "Bandbreite: "

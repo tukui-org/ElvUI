@@ -21,7 +21,8 @@ if ElvDB.client == "frFR" then
 	ElvL.chat_ERR_FRIEND_OFFLINE_S = "est maintenant |cffff0000hors ligne|r"
  
 	ElvL.disband = "GROUPE DISSOUT."
- 
+	ElvL.chat_trade = "Commerce"
+	
 	ElvL.datatext_download = "Téléchargement: "
 	ElvL.datatext_bandwidth = "Bande passante: "
 	ElvL.datatext_guild = "Guilde"

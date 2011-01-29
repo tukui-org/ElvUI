@@ -21,7 +21,8 @@ if ElvDB.client == "ruRU" then
 	ElvL.chat_ERR_FRIEND_OFFLINE_S = "|cffff0000выходит|r из игры"
 
 	ElvL.disband = "Роспуск группы."
-
+	ElvL.chat_trade = "Торговля"
+	
 	ElvL.datatext_download = "Загрузка: "
 	ElvL.datatext_bandwidth = "Скорость: "
 	ElvL.datatext_guild = "Гильдия"

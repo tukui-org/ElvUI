@@ -21,6 +21,7 @@ if ElvDB.client == "zhCN" then
 	ElvL.chat_ERR_FRIEND_OFFLINE_S = "is now |cffff0000offline|r"
 
 	ElvL.disband = "正在解散队伍."
+	ElvL.chat_trade = TRADE
 	
 	ElvL.datatext_download = "Download: "
 	ElvL.datatext_bandwidth = "Bandwidth: "

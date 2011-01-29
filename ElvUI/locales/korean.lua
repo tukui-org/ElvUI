@@ -22,7 +22,8 @@ if ElvDB.client == "koKR" then
 	ElvL.chat_ERR_FRIEND_OFFLINE_S = "|cffff0000접속종료|r했습니다"
  
 	ElvL.disband = "공격대를 해체합니다."
- 
+	ElvL.chat_trade = "거래"
+	
 	ElvL.datatext_download = "다운로드: "
 	ElvL.datatext_bandwidth = "대역폭: "
 	ElvL.datatext_guild = "길드"
