@@ -59,7 +59,7 @@ function style(self, vehicle, totem)
 			end
 			ElvDB.SetNormTexTemplate(panel)
 			panel:SetFrameStrata(self:GetFrameStrata())
-			panel:SetFrameLevel(self:GetFrameLevel() - 1)
+			panel:SetFrameLevel(self:GetFrameLevel() - 1 or 0)
 		end
 		
 		if Icon then

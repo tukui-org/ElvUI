@@ -10,7 +10,7 @@ ElvCF["media"] = {
 	-- textures
 	["normTex"] = [[Interface\AddOns\ElvUI\media\textures\normTex]], -- texture used for Elvui healthbar/powerbar/etc
 	["glowTex"] = [[Interface\AddOns\ElvUI\media\textures\glowTex]], -- the glow text around some frame.
-	["blank"] = [[Interface\AddOns\ElvUI\media\textures\blank]], -- the main texture for all borders/panels
+	["blank"] = [[Interface\BUTTONS\WHITE8X8]], -- the main texture for all borders/panels
 	["bordercolor"] = { .3,.3,.3,1 }, -- border color of Elvui panels
 	["altbordercolor"] = { .3,.3,.3,1 }, -- alternative border color, mainly for unitframes text panels.
 	["backdropcolor"] = { .1,.1,.1,1 }, -- background color of Elvui panels
