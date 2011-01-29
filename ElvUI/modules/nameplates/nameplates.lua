@@ -653,7 +653,7 @@ end
 
 --Create our blacklist for nameplates, so prevent a certain nameplate from ever showing
 local function CheckBlacklist(frame, ...)
-	if PlateBlacklist[frame.name:GetText()] or (ElvDB.level ~= 1 and frame.oldlevel:GetText() == tostring(1)) then
+	if PlateBlacklist[frame.name:GetText()] then
 		frame:SetScript("OnUpdate", function() end)
 		frame.hp:Hide()
 		frame.cb:Hide()
