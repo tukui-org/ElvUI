@@ -8,29 +8,31 @@ AchievementHolder:SetPoint("CENTER", UIParent, "CENTER", 0, 170)
 local pos = "TOP"
 
 function ElvDB.AchievementMove(self, event, ...)
+	local previousFrame
 	for i=1, MAX_ACHIEVEMENT_ALERTS do
 		local aFrame = _G["AchievementAlertFrame"..i]
-		local previousFrame
 		if ( aFrame ) then
 			aFrame:ClearAllPoints()
 			if pos == "TOP" then
-				if ( not previousFrame ) then
-					aFrame:SetPoint("TOP", AchievementHolder, "BOTTOM")
+				if ( previousFrame and previousFrame:IsShown() ) then
+					aFrame:SetPoint("TOP", previousFrame, "BOTTOM", 0, -10)
 				else
-					aFrame:SetPoint("BOTTOM", previousFrame, "TOP", 0, -10)
+					aFrame:SetPoint("TOP", AchievementHolder, "BOTTOM")
 				end
 			else
-				if ( not previousFrame ) then
-					aFrame:SetPoint("BOTTOM", AchievementHolder, "TOP")
+				if ( previousFrame and previousFrame:IsShown() ) then
+					aFrame:SetPoint("BOTTOM", previousFrame, "TOP", 0, 10)
 				else
-					aFrame:SetPoint("TOP", previousFrame, "BOTTOM", 0, 10)
+					aFrame:SetPoint("BOTTOM", AchievementHolder, "TOP")	
 				end			
 			end
 			
 			previousFrame = aFrame
 		end		
 	end
+	
 end
+hooksecurefunc("AchievementAlertFrame_FixAnchors", ElvDB.AchievementMove)
 
 hooksecurefunc("DungeonCompletionAlertFrame_FixAnchors", function()
 	for i=MAX_ACHIEVEMENT_ALERTS, 1, -1 do
