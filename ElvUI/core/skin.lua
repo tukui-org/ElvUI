@@ -2,11 +2,10 @@ local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Lo
 
 
 local function SetModifiedBackdrop(self)
-	local color = RAID_CLASS_COLORS[E.myclass]
 	if C["general"].classcolortheme == true then
 		self:SetBackdropBorderColor(unpack(C["media"].bordercolor))		
 	else
-		self:SetBackdropBorderColor(color.r, color.g, color.b)
+		self:SetBackdropBorderColor(unpack(C["media"].valuecolor))	
 	end
 end
 

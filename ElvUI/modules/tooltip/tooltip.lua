@@ -379,7 +379,6 @@ end
 
 local SetStyle = function(self)
 	E.SetNormTexTemplate(self)
-	self:SetBackdropColor(unpack(C.media.backdropfadecolor))
 	Colorize(self)
 end
 
@@ -389,17 +388,12 @@ ElvuiTooltip:SetScript("OnEvent", function(self)
 		tt:HookScript("OnShow", SetStyle)
 	end
 	
-	E.SetTemplate(FriendsTooltip)
-	FriendsTooltip:SetBackdropColor(unpack(C.media.backdropfadecolor))
-	E.SetTemplate(BNToastFrame)
-	BNToastFrame:SetBackdropColor(unpack(C.media.backdropfadecolor))
-	E.SetTemplate(DropDownList1MenuBackdrop)
-	DropDownList1MenuBackdrop:SetBackdropColor(unpack(C.media.backdropfadecolor))
-	E.SetTemplate(DropDownList2MenuBackdrop)
-	DropDownList2MenuBackdrop:SetBackdropColor(unpack(C.media.backdropfadecolor))
-	E.SetTemplate(DropDownList1Backdrop)
-	DropDownList1Backdrop:SetBackdropColor(unpack(C.media.backdropfadecolor))
-	E.SetTemplate(DropDownList2Backdrop)
+	E.SetNormTexTemplate(FriendsTooltip)
+	E.SetNormTexTemplate(BNToastFrame)
+	E.SetNormTexTemplate(DropDownList1MenuBackdrop)
+	E.SetNormTexTemplate(DropDownList2MenuBackdrop)
+	E.SetNormTexTemplate(DropDownList1Backdrop)
+	E.SetNormTexTemplate(DropDownList2Backdrop)
 	
 	BNToastFrame:HookScript("OnShow", function(self)
 		self:ClearAllPoints()

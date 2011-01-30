@@ -104,7 +104,7 @@ for i, button in pairs(microbuttons) do
 		
 
 	m.mouseover = false
-	m:HookScript("OnEnter", function(self) local color = RAID_CLASS_COLORS[E.myclass] self.frame:SetBackdropBorderColor(color.r, color.g, color.b) self.mouseover = true end)
+	m:HookScript("OnEnter", function(self) local color = RAID_CLASS_COLORS[E.myclass] if C["general"].classcolortheme == true then self.frame:SetBackdropBorderColor(color.r, color.g, color.b) else self.frame:SetBackdropBorderColor(unpack(C["media"].valuecolor)) end self.mouseover = true end)
 	m:HookScript("OnLeave", function(self) self.frame:SetBackdropBorderColor(unpack(C["media"].bordercolor)) self.mouseover = false end)
 end
 
