@@ -34,7 +34,7 @@ Stuffing:SetScript("OnEvent", function(self, event, ...)
 end)
 
 -- stub for localization.
-local L = setmetatable({}, {
+local Loc = setmetatable({}, {
 	__index = function (t, v)
 		t[v] = v
 		return v
@@ -850,7 +850,7 @@ function Stuffing:SetBagsForSorting(c)
 			end
 		else
 			if tonumber(s) == nil then
-				Print(string.format(L["Error: don't know what \"%s\" means."], s))
+				Print(string.format(Loc["Error: don't know what \"%s\" means."], s))
 			end
 
 			table.insert(self.sortBags, tonumber(s))
