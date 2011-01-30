@@ -1,5 +1,5 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 --------------------------------------------------------------------
@@ -14,16 +14,16 @@ if C["datatext"].hps_text and C["datatext"].hps_text > 0 then
  
 	local hText = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
 	hText:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
-	hText:SetShadowOffset(DB.mult, -DB.mult)
-	hText:SetText("HPS: "..DB.ValColor.."0.0")
+	hText:SetShadowOffset(E.mult, -E.mult)
+	hText:SetText("HPS: "..E.ValColor.."0.0")
  
-	DB.PP(C["datatext"].hps_text, hText)
+	E.PP(C["datatext"].hps_text, hText)
  
 	HPS_FEED:EnableMouse(true)
 	HPS_FEED:SetFrameStrata("MEDIUM")
 	HPS_FEED:SetFrameLevel(3)
-	HPS_FEED:SetHeight(DB.Scale(20))
-	HPS_FEED:SetWidth(DB.Scale(100))
+	HPS_FEED:SetHeight(E.Scale(20))
+	HPS_FEED:SetWidth(E.Scale(100))
 	HPS_FEED:SetAllPoints(hText)
  
 	HPS_FEED:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
@@ -80,9 +80,9 @@ if C["datatext"].hps_text and C["datatext"].hps_text > 0 then
  
 	function get_hps()
 		if (actual_heals_total == 0) then
-			return ("HPS: "..DB.ValColor.."0.0")
+			return ("HPS: "..E.ValColor.."0.0")
 		else
-			return string.format("HPS: "..DB.ValColor.."%.1f", (actual_heals_total or 0) / (cmbt_time or 1))
+			return string.format("HPS: "..E.ValColor.."%.1f", (actual_heals_total or 0) / (cmbt_time or 1))
 		end
 	end
 

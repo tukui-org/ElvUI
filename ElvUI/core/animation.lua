@@ -1,9 +1,9 @@
 ------------------------------------------------------------------------
 -- Animation Functions (Credit AlleyCat, Hydra)
 ------------------------------------------------------------------------
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-DB.SetUpAnimGroup = function(self)
+E.SetUpAnimGroup = function(self)
 	self.anim = self:CreateAnimationGroup("Flash")
 	self.anim.fadein = self.anim:CreateAnimation("ALPHA", "FadeIn")
 	self.anim.fadein:SetChange(1)
@@ -14,9 +14,9 @@ DB.SetUpAnimGroup = function(self)
 	self.anim.fadeout:SetOrder(1)
 end
 
-DB.Flash = function(self, duration)
+E.Flash = function(self, duration)
 	if not self.anim then
-		DB.SetUpAnimGroup(self)
+		E.SetUpAnimGroup(self)
 	end
 
 	self.anim.fadein:SetDuration(duration)
@@ -24,13 +24,13 @@ DB.Flash = function(self, duration)
 	self.anim:Play()
 end
 
-DB.StopFlash = function(self)
+E.StopFlash = function(self)
 	if self.anim then
 		self.anim:Finish()
 	end
 end
 
-DB.AnimGroup = function (self,x,y,duration)
+E.AnimGroup = function (self,x,y,duration)
 	self.anim = self:CreateAnimationGroup("Move_In")
 	self.anim.in1 = self.anim:CreateAnimation("Translation")
 	self.anim.in1:SetDuration(0)
@@ -50,9 +50,9 @@ DB.AnimGroup = function (self,x,y,duration)
 	self.anim_o:SetScript("OnFinished",function() self:Hide() end)
 end
 
-DB.SlideIn = function(self)
+E.SlideIn = function(self)
 	if not self.anim then
-		DB.AnimGroup(self)
+		E.AnimGroup(self)
 	end
 
 	self.anim_o:Stop()
@@ -60,7 +60,7 @@ DB.SlideIn = function(self)
 	self.anim:Play()
 end
 
-DB.SlideOut = function(self)
+E.SlideOut = function(self)
 	if self.anim then
 		self.anim:Finish()
 	end

@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- prevent action bar users config errors
 ------------------------------------------------------------------------
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 if C["actionbar"].bottomrows == 0 or C["actionbar"].bottomrows > 3 then
@@ -24,7 +24,7 @@ if C["actionbar"].bottomrows == 3 and C["actionbar"].rightbars > 2 then
 	C["actionbar"].rightbars = 2
 end
 
-if DB.client == "zhTW" or DB.client == "zhCN" then
+if E.client == "zhTW" or E.client == "zhCN" then
 	C["media"].uffont = [[fonts\bLEI00D.ttf]]
 	C["media"].font = [[fonts\bLEI00D.ttf]]
 	C["media"].dmgfont = [[fonts\bLEI00D.ttf]]

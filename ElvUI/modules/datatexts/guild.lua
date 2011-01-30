@@ -1,5 +1,5 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 --------------------------------------------------------------------
@@ -14,24 +14,24 @@ if C["datatext"].guild and C["datatext"].guild > 0 then
 	
 	local tthead = {r=0.4,g=0.78,b=1}
 	local ttsubh = {r=0.75,g=0.9,b=1}
-	local yoffset = DB.Scale(6)
+	local yoffset = E.Scale(6)
 	local anchor = "TOP"
 	local anchor2 = "ANCHOR_TOP"
-	local yoffset2 = DB.mult
+	local yoffset2 = E.mult
 	local snapfrom = "BOTTOM"
 	
 	if C["datatext"].guild == 7 or C["datatext"].guild == 8 then
-		yoffset = DB.Scale(-6)
+		yoffset = E.Scale(-6)
 		anchor = "BOTTOM"
 		anchor2 = "ANCHOR_BOTTOM"
-		yoffset2 = DB.mult
+		yoffset2 = E.mult
 		snapfrom = "TOP"
 	end
 	
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
 		Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
-	Text:SetShadowOffset(DB.mult, -DB.mult)
-	DB.PP(C["datatext"].guild, Text)
+	Text:SetShadowOffset(E.mult, -E.mult)
+	E.PP(C["datatext"].guild, Text)
 
 	local function Update(self, event, ...)	
 		if IsInGuild() then
@@ -45,9 +45,9 @@ if C["datatext"].guild and C["datatext"].guild > 0 then
 				end
 			end 			
 			self:SetAllPoints(Text)
-			Text:SetText(L.datatext_guild .. ": " .. DB.ValColor..numOnline)
+			Text:SetText(L.datatext_guild .. ": " .. E.ValColor..numOnline)
 		else
-			Text:SetText(DB.ValColor..L.datatext_noguild)
+			Text:SetText(E.ValColor..L.datatext_noguild)
 		end
 	end
 		

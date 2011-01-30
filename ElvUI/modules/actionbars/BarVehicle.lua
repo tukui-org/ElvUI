@@ -1,4 +1,4 @@
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if not C["actionbar"].enable == true then return end
 
@@ -36,14 +36,14 @@ vbar:SetScript("OnEvent", function(self, event, ...)
 		local button
 		for i = 1, VEHICLE_MAX_ACTIONBUTTONS do
 			button = _G["VehicleMenuBarActionButton"..i]
-			button:SetSize(DB.buttonsize*1.2, DB.buttonsize*1.2)
+			button:SetSize(E.buttonsize*1.2, E.buttonsize*1.2)
 			button:ClearAllPoints()
 			button:SetParent(ElvuiVehicleBar)
 			if i == 1 then
-				button:SetPoint("BOTTOMLEFT", ElvuiVehicleBar, DB.buttonspacing*1.2, DB.buttonspacing*1.2)
+				button:SetPoint("BOTTOMLEFT", ElvuiVehicleBar, E.buttonspacing*1.2, E.buttonspacing*1.2)
 			else
 				local previous = _G["VehicleMenuBarActionButton"..i-1]
-				button:SetPoint("LEFT", previous, "RIGHT", DB.buttonspacing*1.2, 0)
+				button:SetPoint("LEFT", previous, "RIGHT", E.buttonspacing*1.2, 0)
 			end
 		end
 	else
@@ -56,15 +56,15 @@ do
 	for i=1, VEHICLE_MAX_ACTIONBUTTONS do
 		_G["ElvuiVehicleHotkey"..i] = _G["VehicleMenuBarActionButton"..i]:CreateFontString("ElvuiVehicleHotkey"..i, "OVERLAY", nil)
 		_G["ElvuiVehicleHotkey"..i]:ClearAllPoints()
-		_G["ElvuiVehicleHotkey"..i]:SetPoint("TOPRIGHT", 0, DB.Scale(-3))
+		_G["ElvuiVehicleHotkey"..i]:SetPoint("TOPRIGHT", 0, E.Scale(-3))
 		_G["ElvuiVehicleHotkey"..i]:SetFont(C["media"].font, 14, "OUTLINE")
-		_G["ElvuiVehicleHotkey"..i].ClearAllPoints = DB.dummy
-		_G["ElvuiVehicleHotkey"..i].SetPoint = DB.dummy
+		_G["ElvuiVehicleHotkey"..i].ClearAllPoints = E.dummy
+		_G["ElvuiVehicleHotkey"..i].SetPoint = E.dummy
 		
 		if not C["actionbar"].hotkey == true then
 			_G["ElvuiVehicleHotkey"..i]:SetText("")
 			_G["ElvuiVehicleHotkey"..i]:Hide()
-			_G["ElvuiVehicleHotkey"..i].Show = DB.dummy
+			_G["ElvuiVehicleHotkey"..i].Show = E.dummy
 		else
 			_G["ElvuiVehicleHotkey"..i]:SetText(_G["VehicleMenuBarActionButton"..i.."HotKey"]:GetText())
 		end
@@ -87,25 +87,25 @@ VehTextUpdate:SetScript("OnEvent", UpdateVehHotkeys)
 
 -- vehicle button under minimap
 local vehicle = CreateFrame("Button", nil, UIParent, "SecureHandlerClickTemplate")
-vehicle:SetWidth(DB.Scale(26))
-vehicle:SetHeight(DB.Scale(26))
-vehicle:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", DB.Scale(2), DB.Scale(2))
+vehicle:SetWidth(E.Scale(26))
+vehicle:SetHeight(E.Scale(26))
+vehicle:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", E.Scale(2), E.Scale(2))
 vehicle:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
 vehicle:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
 vehicle:SetHighlightTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
-DB.SetTemplate(vehicle)
+E.SetTemplate(vehicle)
 vehicle:RegisterForClicks("AnyUp")
 vehicle:SetScript("OnClick", function() VehicleExit() end)
 RegisterStateDriver(vehicle, "visibility", "[vehicleui][target=vehicle,noexists] hide;show")
 
 -- vehicle on vehicle bar, dont need to have a state driver.. its parented to vehicle bar
 local vehicle2 = CreateFrame("BUTTON", nil, ElvuiVehicleBarBackground, "SecureActionButtonTemplate")
-vehicle2:SetWidth(DB.buttonsize*1.2)
-vehicle2:SetHeight(DB.buttonsize*1.2)
-vehicle2:SetPoint("RIGHT", ElvuiVehicleBarBackground, "RIGHT", -DB.buttonspacing*1.2, 0)
+vehicle2:SetWidth(E.buttonsize*1.2)
+vehicle2:SetHeight(E.buttonsize*1.2)
+vehicle2:SetPoint("RIGHT", ElvuiVehicleBarBackground, "RIGHT", -E.buttonspacing*1.2, 0)
 vehicle2:RegisterForClicks("AnyUp")
 vehicle2:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
 vehicle2:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
 vehicle2:SetHighlightTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
-DB.SetTemplate(vehicle2)
+E.SetTemplate(vehicle2)
 vehicle2:SetScript("OnClick", function() VehicleExit() end)

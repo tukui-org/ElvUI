@@ -1,5 +1,5 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 --Base code by Dawn (dNameplates)
 if not C["nameplate"].enable == true then return end
@@ -17,7 +17,7 @@ local blankTex = C["media"].blank
 local OVERLAY = [=[Interface\TargetingFrame\UI-TargetingFrame-Flash]=]
 local numChildren = -1
 local frames = {}
-local noscalemult = DB.mult * C["general"].uiscale
+local noscalemult = E.mult * C["general"].uiscale
 
 --Change defaults if we are showing health text or not
 if C["nameplate"].showhealth ~= true then
@@ -56,18 +56,18 @@ local function HideObjects(parent)
 	for object in pairs(parent.queue) do
 		if(object:GetObjectType() == 'Texture') then
 			object:SetTexture(nil)
-			object.SetTexture = DB.dummy
+			object.SetTexture = E.dummy
 		elseif (object:GetObjectType() == 'FontString') then
-			object.ClearAllPoints = DB.dummy
-			object.SetFont = DB.dummy
-			object.SetPoint = DB.dummy
+			object.ClearAllPoints = E.dummy
+			object.SetFont = E.dummy
+			object.SetPoint = E.dummy
 			object:Hide()
-			object.Show = DB.dummy
-			object.SetText = DB.dummy
-			object.SetShadowOffset = DB.dummy
+			object.Show = E.dummy
+			object.SetText = E.dummy
+			object.SetShadowOffset = E.dummy
 		else
 			object:Hide()
-			object.Show = DB.dummy
+			object.Show = E.dummy
 		end
 	end
 end
@@ -127,7 +127,7 @@ local function UpdateAuraIcon(button, unit, index, filter)
 end
 
 --Filter auras on nameplate, and determine if we need to update them or not.
-local tab = CLASS_FILTERS[DB.myclass].target
+local tab = CLASS_FILTERS[E.myclass].target
 local function OnAura(frame, unit)
 	if not frame.icons or not tab or not frame.unit then return end
 	local i = 1
@@ -190,7 +190,7 @@ local function UpdateThreat(frame, elapsed)
 		if not frame.region:IsShown() then
 			if InCombatLockdown() and frame.hasclass ~= true and frame.isFriendly ~= true then
 				--No Threat
-				if DB.Role == "Tank" then
+				if E.Role == "Tank" then
 					frame.hp:SetStatusBarColor(badR, badG, badB)
 					frame.hp.hpbg:SetTexture(badR, badG, badB, 0.25)
 				else
@@ -207,7 +207,7 @@ local function UpdateThreat(frame, elapsed)
 			local r, g, b = frame.region:GetVertexColor()
 			if g + b == 0 then
 				--Have Threat
-				if DB.Role == "Tank" then
+				if E.Role == "Tank" then
 					frame.hp:SetStatusBarColor(goodR, goodG, goodB)
 					frame.hp.hpbg:SetTexture(goodR, goodG, goodB, 0.25)
 				else
@@ -228,7 +228,7 @@ local function UpdateThreat(frame, elapsed)
 	local d =(valueHealth/maxHealth)*100
 	
 	if C["nameplate"].showhealth == true then
-		frame.hp.value:SetText(DB.ShortValue(valueHealth).." - "..(string.format("%d%%", math.floor((valueHealth/maxHealth)*100))))
+		frame.hp.value:SetText(E.ShortValue(valueHealth).." - "..(string.format("%d%%", math.floor((valueHealth/maxHealth)*100))))
 	end
 		
 	--Change frame style if the frame is our target or not
@@ -339,16 +339,16 @@ local function Colorize(frame)
 	if frame.hasclass == true then frame.isFriendly = false return end
 	
 	if g+b == 0 then -- hostile
-		r,g,b = unpack(DB.oUF_colors.reaction[1])
+		r,g,b = unpack(E.oUF_colors.reaction[1])
 		frame.isFriendly = false
 	elseif r+b == 0 then -- friendly npc
-		r,g,b = unpack(DB.oUF_colors.power["MANA"])
+		r,g,b = unpack(E.oUF_colors.power["MANA"])
 		frame.isFriendly = true
 	elseif r+g > 1.95 then -- neutral
-		r,g,b = unpack(DB.oUF_colors.reaction[4])
+		r,g,b = unpack(E.oUF_colors.reaction[4])
 		frame.isFriendly = false
 	elseif r+g == 0 then -- friendly player
-		r,g,b = unpack(DB.oUF_colors.reaction[5])
+		r,g,b = unpack(E.oUF_colors.reaction[5])
 		frame.isFriendly = true
 	else -- enemy player
 		frame.isFriendly = false
@@ -508,7 +508,7 @@ local function SkinObjects(frame)
 	hp.level = hp:CreateFontString(nil, "OVERLAY")
 	hp.level:SetFont(FONT, FONTSIZE, FONTFLAG)
 	hp.level:SetTextColor(1, 1, 1)
-	hp.level:SetShadowOffset(DB.mult, -DB.mult)	
+	hp.level:SetShadowOffset(E.mult, -E.mult)	
 	
 	--Needed for level text
 	frame.oldlevel = oldlevel
@@ -521,7 +521,7 @@ local function SkinObjects(frame)
 		hp.value:SetFont(FONT, FONTSIZE, FONTFLAG)
 		hp.value:SetPoint("CENTER", hp)
 		hp.value:SetTextColor(1,1,1)
-		hp.value:SetShadowOffset(DB.mult, -DB.mult)
+		hp.value:SetShadowOffset(E.mult, -E.mult)
 	end
 	
 	--Debug Text for when i'm testing
@@ -529,7 +529,7 @@ local function SkinObjects(frame)
 	hp.debug:SetFont(FONT, FONTSIZE, FONTFLAG)
 	hp.debug:SetPoint("CENTER", hp, "CENTER", 0, 50)
 	hp.debug:SetTextColor(1,1,1)
-	hp.debug:SetShadowOffset(DB.mult, -DB.mult)
+	hp.debug:SetShadowOffset(E.mult, -E.mult)
 	
 	-- Create Cast Bar Backdrop frame
 	local castbarbackdrop_tex = cb:CreateTexture(nil, "BACKGROUND")
@@ -593,14 +593,14 @@ local function SkinObjects(frame)
 	cb.time:SetPoint("RIGHT", cb, "LEFT", -1, 0)
 	cb.time:SetFont(FONT, FONTSIZE, FONTFLAG)
 	cb.time:SetTextColor(1, 1, 1)
-	cb.time:SetShadowOffset(DB.mult, -DB.mult)
+	cb.time:SetShadowOffset(E.mult, -E.mult)
 
 	--Create Cast Name Text
 	cb.name = cb:CreateFontString(nil, "ARTWORK")
 	cb.name:SetPoint("TOP", cb, "BOTTOM", 0, -3)
 	cb.name:SetFont(FONT, FONTSIZE, FONTFLAG)
 	cb.name:SetTextColor(1, 1, 1)
-	cb.name:SetShadowOffset(DB.mult, -DB.mult)
+	cb.name:SetShadowOffset(E.mult, -E.mult)
 	
 	--We need the castbar shield to determine if it can be interrupted or not
 	cb.shield = cbshield
@@ -615,7 +615,7 @@ local function SkinObjects(frame)
 	name:SetPoint('BOTTOMLEFT', hp, 'TOPLEFT', -10, 3)
 	name:SetPoint('BOTTOMRIGHT', hp, 'TOPRIGHT', 10, 3)
 	name:SetFont(FONT, FONTSIZE, FONTFLAG)
-	name:SetShadowOffset(DB.mult, -DB.mult)
+	name:SetShadowOffset(E.mult, -E.mult)
 	frame.oldname = oldname
 	frame.name = name
 		

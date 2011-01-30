@@ -6,7 +6,7 @@
 	File version v37.37
 	(C)2010 Darth Android / Telroth - Black Dragonflight
 ]]
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 if not Mod_AddonSkins or not IsAddOnLoaded("DXE") or not C["skin"].dxe == true then return end
@@ -127,13 +127,13 @@ Mod_AddonSkins:RegisterSkin("DXE",function(Skin, skin, Layout, layout, config)
 	kill(DXE.Pane.border)
 	
 	if not DXEDB then DXEDB = {} end
-	if not DXEDB["profiles"] then DXEDB["profiles"] = {} end
-	if not DXEDB["profiles"][DB.myname.." - "..GetRealmName()] then DXEDB["profiles"][DB.myname.." - "..GetRealmName()] = {} end
-	if not DXEDB["profiles"][DB.myname.." - "..GetRealmName()]["Globals"] then DXEDB["profiles"][DB.myname.." - "..GetRealmName()]["Globals"] = {} end
-	DXEDB["profiles"][DB.myname.." - "..GetRealmName()]["Globals"]["BackgroundTexture"] = "Elvui Blank"
-	DXEDB["profiles"][DB.myname.." - "..GetRealmName()]["Globals"]["BarTexture"] = "Elvui Gloss"
-	DXEDB["profiles"][DB.myname.." - "..GetRealmName()]["Globals"]["Border"] = "None"
-	DXEDB["profiles"][DB.myname.." - "..GetRealmName()]["Globals"]["Font"] = "Elvui Font"
-	DXEDB["profiles"][DB.myname.." - "..GetRealmName()]["Globals"]["TimerFont"] = "Elvui Font"
+	if not DXEE["profiles"] then DXEE["profiles"] = {} end
+	if not DXEE["profiles"][E.myname.." - "..GetRealmName()] then DXEE["profiles"][E.myname.." - "..GetRealmName()] = {} end
+	if not DXEE["profiles"][E.myname.." - "..GetRealmName()]["Globals"] then DXEE["profiles"][E.myname.." - "..GetRealmName()]["Globals"] = {} end
+	DXEE["profiles"][E.myname.." - "..GetRealmName()]["Globals"]["BackgroundTexture"] = "Elvui Blank"
+	DXEE["profiles"][E.myname.." - "..GetRealmName()]["Globals"]["BarTexture"] = "Elvui Gloss"
+	DXEE["profiles"][E.myname.." - "..GetRealmName()]["Globals"]["Border"] = "None"
+	DXEE["profiles"][E.myname.." - "..GetRealmName()]["Globals"]["Font"] = "Elvui Font"
+	DXEE["profiles"][E.myname.." - "..GetRealmName()]["Globals"]["TimerFont"] = "Elvui Font"
 end)
 

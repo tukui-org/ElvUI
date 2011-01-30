@@ -1,11 +1,11 @@
 --@@ DEBUG MODE @@
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 local print = function(...)
 	return print('|cffFF6347ElvUI:|r', ...)
 end
 
-function DB.debug(...)
+function E.debug(...)
 	if C["debug"].enabled ~= true then return end
 	print(tostring(...))
 end

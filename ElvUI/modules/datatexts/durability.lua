@@ -1,5 +1,5 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 --------------------------------------------------------------------
@@ -16,12 +16,12 @@ if C["datatext"].dur and C["datatext"].dur > 0 then
 	
 	local Text  = DurabilityDataText:CreateFontString(nil, "OVERLAY")
 	Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
-	Text:SetShadowOffset(DB.mult, -DB.mult)
-	DB.PP(C["datatext"].dur, Text)
+	Text:SetShadowOffset(E.mult, -E.mult)
+	E.PP(C["datatext"].dur, Text)
 
 	local Total = 0
 	local current, max
-	DB.SetUpAnimGroup(DurabilityDataText)
+	E.SetUpAnimGroup(DurabilityDataText)
 	
 	local function OnEvent(self)
 		for i = 1, 11 do
@@ -36,19 +36,19 @@ if C["datatext"].dur and C["datatext"].dur > 0 then
 		table.sort(L.Slots, function(a, b) return a[3] < b[3] end)
 
 		if Total > 0 then
-			Text:SetText(DURABILITY..": "..DB.ValColor..floor(L.Slots[1][3]*100).."%")
+			Text:SetText(DURABILITY..": "..E.ValColor..floor(L.Slots[1][3]*100).."%")
 			if floor(L.Slots[1][3]*100) <= 20 then
 				local int = -1
 				Stat:SetScript("OnUpdate", function(self, t)
 					int = int - t
 					if int < 0 then
-						DB.Flash(DurabilityDataText, 0.53)
+						E.Flash(DurabilityDataText, 0.53)
 						int = 1
 					end
 				end)				
 			else
 				Stat:SetScript("OnUpdate", function() end)
-				DB.StopFlash(DurabilityDataText)
+				E.StopFlash(DurabilityDataText)
 			end
 		else
 			Text:SetText(DURABILITY..": 100%")
@@ -57,9 +57,9 @@ if C["datatext"].dur and C["datatext"].dur > 0 then
 		self:SetAllPoints(Text)
 		self:SetScript("OnEnter", function()
 			if not InCombatLockdown() then
-				GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, DB.Scale(6));
+				GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, E.Scale(6));
 				GameTooltip:ClearAllPoints()
-				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, DB.mult)
+				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, E.mult)
 				GameTooltip:ClearLines()
 				for i = 1, 11 do
 					if L.Slots[i][3] ~= 1000 then

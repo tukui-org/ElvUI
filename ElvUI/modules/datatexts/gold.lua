@@ -1,5 +1,5 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 --------------------------------------------------------------------
@@ -14,8 +14,8 @@ if C["datatext"].gold and C["datatext"].gold > 0 then
 
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
 		Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
-	Text:SetShadowOffset(DB.mult, -DB.mult)
-	DB.PP(C["datatext"].gold, Text)
+	Text:SetShadowOffset(E.mult, -E.mult)
+	E.PP(C["datatext"].gold, Text)
 
 	local Profit	= 0
 	local Spent		= 0
@@ -69,9 +69,9 @@ if C["datatext"].gold and C["datatext"].gold > 0 then
 		self:SetScript("OnEnter", function()
 			if not InCombatLockdown() then
 				self.hovered = true 
-				GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, DB.Scale(6));
+				GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, E.Scale(6));
 				GameTooltip:ClearAllPoints()
-				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, DB.mult)
+				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, E.mult)
 				GameTooltip:ClearLines()
 				GameTooltip:AddLine(L.datatext_session)
 				GameTooltip:AddDoubleLine(L.datatext_earned, formatMoney(Profit), 1, 1, 1, 1, 1, 1)

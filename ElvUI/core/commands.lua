@@ -1,4 +1,4 @@
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 -- enable or disable an addon via command
 SlashCmdList.DISABLE_ADDON = function(s) DisableAddOn(s) ReloadUI() end
@@ -45,7 +45,7 @@ function DisbandRaidGroup()
 		if UnitInRaid("player") then
 			for i = 1, GetNumRaidMembers() do
 				local name, _, _, _, _, _, _, online = GetRaidRosterInfo(i)
-				if online and name ~= DB.myname then
+				if online and name ~= E.myname then
 					UninviteUnit(name)
 				end
 			end
@@ -88,9 +88,9 @@ function SlashCmdList.FARMMODE(msg, editbox)
 	ElvuiMinimapStatsLeft:SetWidth((Minimap:GetWidth() / 2) - 1)
 	ElvuiMinimapStatsRight:SetWidth((Minimap:GetWidth() / 2) - 1)
 	
-	if DB.Movers["AurasMover"]["moved"] ~= true then
+	if E.Movers["AurasMover"]["moved"] ~= true then
 		AurasMover:ClearAllPoints()
-		AurasMover:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", DB.Scale(-8), DB.Scale(2))
+		AurasMover:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", E.Scale(-8), E.Scale(2))
 	end	
 end
 SLASH_FARMMODE1 = '/farmmode'
@@ -102,7 +102,7 @@ SlashCmdList["GM"] = function() ToggleHelpFrame() end
 
 -- Print list of commands to chat
 SLASH_UIHELP1 = "/UIHelp"
-SlashCmdList["UIHELP"] = DB.UIHelp
+SlashCmdList["UIHELP"] = E.UIHelp
 
 --ReInstall UI
 SLASH_CONFIGURE1 = "/installui"
@@ -111,16 +111,16 @@ SlashCmdList.CONFIGURE = function() StaticPopup_Show("INSTALL_UI") end
 -- Command to Toggle showing the UI Movers
 SLASH_MOVEUI1 = '/moveui'
 SlashCmdList.MOVEUI = function()		
-	DB.ToggleMovers()
+	E.ToggleMovers()
 	
 	if C["actionbar"].enable == true then
-		DB.ToggleABLock()
+		E.ToggleABLock()
 	end
 	
 	if ElvuiInfoLeftRButton.hovered == true then
 		local locked = false
 		GameTooltip:ClearLines()
-		for name, _ in pairs(DB.CreatedMovers) do
+		for name, _ in pairs(E.CreatedMovers) do
 			if _G[name]:IsShown() then
 				locked = true
 			else
@@ -138,7 +138,7 @@ end
 
 -- Command to reset the movers
 SLASH_RESETMOVERS1 = '/resetui'
-SlashCmdList.RESETMOVERS = function(arg) DB.ResetMovers(arg) end
+SlashCmdList.RESETMOVERS = function(arg) E.ResetMovers(arg) end
 
 --Command to fix the Combat Log if it breaks
 local function CLFIX()

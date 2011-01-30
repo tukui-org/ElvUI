@@ -1,5 +1,5 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if C["arena"].spelltracker ~= true then return end
 
@@ -18,7 +18,7 @@ tCooldownTracker.Orientations = {
 -- spell configuration
 ------------------------------------------------------------
 
-tCooldownTracker.Spells = DB.spelltracker
+tCooldownTracker.Spells = E.spelltracker
 
 ------------------------------------------------------------
 -- end of spell configuration
@@ -35,8 +35,8 @@ function tCooldownTracker.CreateIcon()
 	local i = (#tCooldownTracker.Icons)+1
    
 	tCooldownTracker.Icons[i] = CreateFrame("frame","tCooldownTrackerIcon"..i,UIParent)
-	tCooldownTracker.Icons[i]:SetHeight(DB.Scale(28))
-	tCooldownTracker.Icons[i]:SetWidth(DB.Scale(28))
+	tCooldownTracker.Icons[i]:SetHeight(E.Scale(28))
+	tCooldownTracker.Icons[i]:SetWidth(E.Scale(28))
 	tCooldownTracker.Icons[i]:SetFrameStrata("BACKGROUND")
 	tCooldownTracker.Icons[i]:SetFrameLevel(20)
 	  
@@ -44,18 +44,18 @@ function tCooldownTracker.CreateIcon()
 
 	tCooldownTracker.Icons[i].Texture = tCooldownTracker.Icons[i]:CreateTexture(nil,"LOW")
 	tCooldownTracker.Icons[i].Texture:SetTexture("Interface\\Icons\\Spell_Nature_Cyclone.blp")
-	tCooldownTracker.Icons[i].Texture:SetPoint("TOPLEFT", tCooldownTracker.Icons[i], DB.Scale(2), DB.Scale(-2))
-	tCooldownTracker.Icons[i].Texture:SetPoint("BOTTOMRIGHT", tCooldownTracker.Icons[i], DB.Scale(-2), DB.Scale(2))
+	tCooldownTracker.Icons[i].Texture:SetPoint("TOPLEFT", tCooldownTracker.Icons[i], E.Scale(2), E.Scale(-2))
+	tCooldownTracker.Icons[i].Texture:SetPoint("BOTTOMRIGHT", tCooldownTracker.Icons[i], E.Scale(-2), E.Scale(2))
 	tCooldownTracker.Icons[i].Texture:SetTexCoord(.08, .92, .08, .92)
 	
-	DB.SetTemplate(tCooldownTracker.Icons[i])
+	E.SetTemplate(tCooldownTracker.Icons[i])
 
 	tCooldownTracker.Icons[i].TimerText = tCooldownTracker.Icons[i]:CreateFontString("tCooldownTrackerTimerText","OVERLAY")
 	tCooldownTracker.Icons[i].TimerText:SetFont(C.media.font,14,"Outline")
 	tCooldownTracker.Icons[i].TimerText:SetTextColor(1,0,0)
 	tCooldownTracker.Icons[i].TimerText:SetShadowColor(0,0,0)
-	tCooldownTracker.Icons[i].TimerText:SetShadowOffset(DB.mult,-DB.mult)
-	tCooldownTracker.Icons[i].TimerText:SetPoint("CENTER", tCooldownTracker.Icons[i], "CENTER",DB.mult,0)
+	tCooldownTracker.Icons[i].TimerText:SetShadowOffset(E.mult,-E.mult)
+	tCooldownTracker.Icons[i].TimerText:SetPoint("CENTER", tCooldownTracker.Icons[i], "CENTER",E.mult,0)
 	tCooldownTracker.Icons[i].TimerText:SetText(5)
    
 	return i
@@ -168,10 +168,10 @@ function tCooldownTracker.StartTimer(icon, duration, texture, spellID)
 	UIFrameFadeIn(tCooldownTracker.Icons[icon],0.2,0.0,1.0)
 	if (texture) then
 		tCooldownTracker.Icons[(active or icon)].Texture:SetTexture(texture)
-		tCooldownTracker.Icons[(active or icon)].Texture:SetPoint("TOPLEFT", tCooldownTracker.Icons[(active or icon)], DB.Scale(2), DB.Scale(-2))
-		tCooldownTracker.Icons[(active or icon)].Texture:SetPoint("BOTTOMRIGHT", tCooldownTracker.Icons[(active or icon)], DB.Scale(-2), DB.Scale(2))
+		tCooldownTracker.Icons[(active or icon)].Texture:SetPoint("TOPLEFT", tCooldownTracker.Icons[(active or icon)], E.Scale(2), E.Scale(-2))
+		tCooldownTracker.Icons[(active or icon)].Texture:SetPoint("BOTTOMRIGHT", tCooldownTracker.Icons[(active or icon)], E.Scale(-2), E.Scale(2))
 		tCooldownTracker.Icons[(active or icon)].Texture:SetTexCoord(.08, .92, .08, .92)
-		DB.SetTemplate(tCooldownTracker.Icons[(active or icon)])
+		E.SetTemplate(tCooldownTracker.Icons[(active or icon)])
 	end
 	tCooldownTracker.Reposition()
 	tCooldownTracker:SetScript("OnUpdate", function(self, arg1) tCooldownTracker.OnUpdate(arg1) end)

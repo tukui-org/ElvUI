@@ -1,4 +1,4 @@
-local DB, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 
 
 if not C["unitframes"].enable == true and not C["raidframes"].enable == true then return end
@@ -22,11 +22,11 @@ oUF.Tags['Elvui:health'] = function(unit)
 	if(status) then
 		return status
 	elseif(unit == 'target' and UnitCanAttack('player', unit)) then
-		return ('%s (%d|cff0090ff%%|r)'):format(DB.ShortenValue(min), min / max * 100)
+		return ('%s (%d|cff0090ff%%|r)'):format(E.ShortenValue(min), min / max * 100)
 	elseif(unit == 'player' and min ~= max) then
 		return ('|cffff8080%d|r %d|cff0090ff%%|r'):format(min - max, min / max * 100)
 	elseif(min ~= max) then
-		return ('%s |cff0090ff/|r %s'):format(DB.ShortenValue(min), DB.ShortenValue(max))
+		return ('%s |cff0090ff/|r %s'):format(E.ShortenValue(min), E.ShortenValue(max))
 	else
 		return max
 	end
@@ -110,12 +110,12 @@ oUF.Tags['Elvui:getnamecolor'] = function(unit)
 	if not unit then return end
 	local reaction = UnitReaction(unit, 'player')
 	if (unit == 'pet' and GetPetHappiness()) then
-		local c = DB.oUF_colors.happiness[GetPetHappiness()]
+		local c = E.oUF_colors.happiness[GetPetHappiness()]
 		return string.format('|cff%02x%02x%02x', c[1] * 255, c[2] * 255, c[3] * 255)
 	elseif (UnitIsPlayer(unit)) then
 		return _TAGS['raidcolor'](unit)
 	elseif (reaction) then
-		local c = DB.oUF_colors.reaction[reaction]
+		local c = E.oUF_colors.reaction[reaction]
 		return string.format('|cff%02x%02x%02x', c[1] * 255, c[2] * 255, c[3] * 255)
 	else
 		r, g, b = .84,.75,.65

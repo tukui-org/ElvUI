@@ -1,8 +1,8 @@
 --Set Datatext Postitions
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-function DB.PP(p, obj)
-	obj:SetHeight(DB.Scale(15))
+function E.PP(p, obj)
+	obj:SetHeight(E.Scale(15))
 	local left = ElvuiInfoLeft
 	local right = ElvuiInfoRight
 	local mapleft = ElvuiMinimapStatsLeft

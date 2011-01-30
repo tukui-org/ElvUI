@@ -4,7 +4,7 @@
 -- auto-need Chaos Orbs
 --------------------------------------------------------------------------
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if C["loot"].autogreed == true then
 	local autogreed = CreateFrame("frame")
@@ -17,7 +17,7 @@ if C["loot"].autogreed == true then
 			RollOnLoot(id, 1)
 		end
 		
-		if DB.level ~= MAX_PLAYER_LEVEL then return end
+		if E.level ~= MAX_PLAYER_LEVEL then return end
 		if(id and select(4, GetLootRollItemInfo(id))==2 and not (select(5, GetLootRollItemInfo(id)))) then
 			if RollOnLoot(id, 3) then
 				RollOnLoot(id, 3)

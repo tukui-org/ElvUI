@@ -1,4 +1,4 @@
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if not C["actionbar"].enable == true then return end
 
@@ -32,7 +32,7 @@ local Page = {
 
 local function GetBar()
 	local condition = Page["DEFAULT"]
-	local class = DB.myclass
+	local class = E.myclass
 	local page = Page[class]
 	if page then
 		condition = condition.." "..page
@@ -46,19 +46,19 @@ function PositionMainBar()
 	local button
 	for i = 1, 12 do
 		button = _G["ActionButton"..i]
-		button:SetSize(DB.buttonsize, DB.buttonsize)
+		button:SetSize(E.buttonsize, E.buttonsize)
 		button:SetParent(ElvuiMainMenuBar)
 		button:ClearAllPoints()
 		
 		if i == 1 then
 			if C["actionbar"].swaptopbottombar == true then
-				button:SetPoint("TOPLEFT", ElvuiMainMenuBar, DB.buttonspacing, -DB.buttonspacing)
+				button:SetPoint("TOPLEFT", ElvuiMainMenuBar, E.buttonspacing, -E.buttonspacing)
 			else
-				button:SetPoint("BOTTOMLEFT", ElvuiMainMenuBar, DB.buttonspacing, DB.buttonspacing)
+				button:SetPoint("BOTTOMLEFT", ElvuiMainMenuBar, E.buttonspacing, E.buttonspacing)
 			end
 		else
 			local previous = _G["ActionButton"..i-1]
-			button:SetPoint("LEFT", previous, "RIGHT", DB.buttonspacing, 0)
+			button:SetPoint("LEFT", previous, "RIGHT", E.buttonspacing, 0)
 		end
 	end
 end

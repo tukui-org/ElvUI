@@ -1,10 +1,10 @@
 ------------------------------------------------------------------------
 --	UnitFrame Functions
 ------------------------------------------------------------------------
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-DB.LoadUFFunctions = function(layout)
-	function DB.SpawnMenu(self)
+E.LoadUFFunctions = function(layout)
+	function E.SpawnMenu(self)
 		local unit = self.unit:gsub("(.)", string.upper, 1)
 		if self.unit == "targettarget" then return end
 		if _G[unit.."FrameDropDown"] then
@@ -32,7 +32,7 @@ DB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	DB.Fader = function(self, arg1, arg2)	
+	E.Fader = function(self, arg1, arg2)	
 		if arg1 == "UNIT_HEALTH" and self.unit ~= arg2 then return end
 		
 		local unit = self.unit
@@ -65,7 +65,7 @@ DB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	DB.AuraFilter = function(icons, unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID)	
+	E.AuraFilter = function(icons, unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID)	
 		local header = icon:GetParent():GetParent():GetParent():GetName()
 		local inInstance, instanceType = IsInInstance()
 		icon.owner = caster
@@ -140,7 +140,7 @@ DB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	DB.PostUpdateHealth = function(health, unit, min, max)
+	E.PostUpdateHealth = function(health, unit, min, max)
 		local header = health:GetParent():GetParent():GetName()
 
 		if C["general"].classcolortheme == true then
@@ -170,21 +170,21 @@ DB.LoadUFFunctions = function(layout)
 			local curpow = UnitPower(unit)
 			if curpow == 0 then
 				health.value:ClearAllPoints()
-				health.value:SetPoint("LEFT", health, "LEFT", DB.Scale(2), DB.Scale(1))				
+				health.value:SetPoint("LEFT", health, "LEFT", E.Scale(2), E.Scale(1))				
 			else
 				health.value:ClearAllPoints()
-				health.value:SetPoint("TOPLEFT", health, "TOPLEFT", DB.Scale(2), DB.Scale(-2))		
+				health.value:SetPoint("TOPLEFT", health, "TOPLEFT", E.Scale(2), E.Scale(-2))		
 			end		
 		end
 		
 		--Setup color health by value option
 		if C["unitframes"].healthcolorbyvalue == true then
 			if (UnitIsTapped("target")) and (not UnitIsTappedByPlayer("target")) and unit == "target" then
-				health:SetStatusBarColor(DB.oUF_colors.tapped[1], DB.oUF_colors.tapped[2], DB.oUF_colors.tapped[3], 1)
-				health.bg:SetTexture(DB.oUF_colors.tapped[1], DB.oUF_colors.tapped[2], DB.oUF_colors.tapped[3], 0.3)		
+				health:SetStatusBarColor(E.oUF_colors.tapped[1], E.oUF_colors.tapped[2], E.oUF_colors.tapped[3], 1)
+				health.bg:SetTexture(E.oUF_colors.tapped[1], E.oUF_colors.tapped[2], E.oUF_colors.tapped[3], 0.3)		
 			elseif not UnitIsConnected(unit) then
-				health:SetStatusBarColor(DB.oUF_colors.tapped[1], DB.oUF_colors.tapped[2], DB.oUF_colors.tapped[3], 1)
-				health.bg:SetTexture(DB.oUF_colors.tapped[1], DB.oUF_colors.tapped[2], DB.oUF_colors.tapped[3], 0.3)				
+				health:SetStatusBarColor(E.oUF_colors.tapped[1], E.oUF_colors.tapped[2], E.oUF_colors.tapped[3], 1)
+				health.bg:SetTexture(E.oUF_colors.tapped[1], E.oUF_colors.tapped[2], E.oUF_colors.tapped[3], 0.3)				
 			else
 				local perc = (min/max)*100
 				if(perc <= 50 and perc >= 26) then
@@ -201,13 +201,13 @@ DB.LoadUFFunctions = function(layout)
 						if (UnitIsPlayer(unit)) then
 							local class = select(2, UnitClass(unit))
 							if not class then return end
-							local c = DB.oUF_colors.class[class]
+							local c = E.oUF_colors.class[class]
 							health:SetStatusBarColor(c[1], c[2], c[3], 1)
 							health.bg:SetTexture(c[1], c[2], c[3], 0.3)	
 						else
 							local reaction = UnitReaction(unit, 'player')
 							if not reaction then return end
-							local c = DB.oUF_colors.reaction[reaction]
+							local c = E.oUF_colors.reaction[reaction]
 							health:SetStatusBarColor(c[1], c[2], c[3], 1)
 							health.bg:SetTexture(c[1], c[2], c[3], 0.3)						
 						end
@@ -216,11 +216,11 @@ DB.LoadUFFunctions = function(layout)
 			end
 		else
 			if (UnitIsTapped("target")) and (not UnitIsTappedByPlayer("target")) and unit == "target" then
-				health:SetStatusBarColor(DB.oUF_colors.tapped[1], DB.oUF_colors.tapped[2], DB.oUF_colors.tapped[3], 1)
-				health.bg:SetTexture(DB.oUF_colors.tapped[1], DB.oUF_colors.tapped[2], DB.oUF_colors.tapped[3], 0.3)		
+				health:SetStatusBarColor(E.oUF_colors.tapped[1], E.oUF_colors.tapped[2], E.oUF_colors.tapped[3], 1)
+				health.bg:SetTexture(E.oUF_colors.tapped[1], E.oUF_colors.tapped[2], E.oUF_colors.tapped[3], 0.3)		
 			elseif not UnitIsConnected(unit) then
-				health:SetStatusBarColor(DB.oUF_colors.tapped[1], DB.oUF_colors.tapped[2], DB.oUF_colors.tapped[3], 1)
-				health.bg:SetTexture(DB.oUF_colors.tapped[1], DB.oUF_colors.tapped[2], DB.oUF_colors.tapped[3], 0.3)						
+				health:SetStatusBarColor(E.oUF_colors.tapped[1], E.oUF_colors.tapped[2], E.oUF_colors.tapped[3], 1)
+				health.bg:SetTexture(E.oUF_colors.tapped[1], E.oUF_colors.tapped[2], E.oUF_colors.tapped[3], 0.3)						
 			else
 				if C["unitframes"].classcolor ~= true then
 					health:SetStatusBarColor(unpack(C["unitframes"].healthcolor))
@@ -229,13 +229,13 @@ DB.LoadUFFunctions = function(layout)
 					if (UnitIsPlayer(unit)) then
 						local class = select(2, UnitClass(unit))
 						if not class then return end
-						local c = DB.oUF_colors.class[class]
+						local c = E.oUF_colors.class[class]
 						health:SetStatusBarColor(c[1], c[2], c[3], 1)
 						health.bg:SetTexture(c[1], c[2], c[3], 0.3)	
 					else
 						local reaction = UnitReaction(unit, 'player')
 						if not reaction then return end
-						local c = DB.oUF_colors.reaction[reaction]
+						local c = E.oUF_colors.reaction[reaction]
 						health:SetStatusBarColor(c[1], c[2], c[3], 1)
 						health.bg:SetTexture(c[1], c[2], c[3], 0.3)						
 					end			
@@ -257,7 +257,7 @@ DB.LoadUFFunctions = function(layout)
 				end
 			else
 				if min ~= max and C["raidframes"].healthdeficit == true then
-					health.value:SetText("|cff559655-"..DB.ShortValueNegative(max-min).."|r")
+					health.value:SetText("|cff559655-"..E.ShortValueNegative(max-min).."|r")
 				else
 					health.value:SetText("")
 				end
@@ -295,35 +295,35 @@ DB.LoadUFFunctions = function(layout)
 					r, g, b = oUF.ColorGradient(min/max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
 					if unit == "player" and health:GetAttribute("normalUnit") ~= "pet" then
 						if C["unitframes"].showtotalhpmp == true then
-							health.value:SetFormattedText("|cff559655%s|r |cffD7BEA5|||r |cff559655%s|r", DB.ShortValue(min), DB.ShortValue(max))
+							health.value:SetFormattedText("|cff559655%s|r |cffD7BEA5|||r |cff559655%s|r", E.ShortValue(min), E.ShortValue(max))
 						else
-							health.value:SetFormattedText("|cffAF5050%s|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", DB.ShortValue(min), r * 255, g * 255, b * 255, floor(min / max * 100))
+							health.value:SetFormattedText("|cffAF5050%s|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", E.ShortValue(min), r * 255, g * 255, b * 255, floor(min / max * 100))
 						end
 					elseif unit == "target" or unit == "focus" or (unit and unit:find("boss%d")) then
 						if C["unitframes"].showtotalhpmp == true then
-							health.value:SetFormattedText("|cff559655%s|r |cffD7BEA5|||r |cff559655%s|r", DB.ShortValue(min), DB.ShortValue(max))
+							health.value:SetFormattedText("|cff559655%s|r |cffD7BEA5|||r |cff559655%s|r", E.ShortValue(min), E.ShortValue(max))
 						else
-							health.value:SetFormattedText("|cffAF5050%s|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", DB.ShortValue(min), r * 255, g * 255, b * 255, floor(min / max * 100))
+							health.value:SetFormattedText("|cffAF5050%s|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", E.ShortValue(min), r * 255, g * 255, b * 255, floor(min / max * 100))
 						end
 					elseif (unit and unit:find("arena%d")) then
-						health.value:SetText("|cff559655"..DB.ShortValue(min).."|r")
+						health.value:SetText("|cff559655"..E.ShortValue(min).."|r")
 					else
-						health.value:SetFormattedText("|cffAF5050%s|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", DB.ShortValue(min), r * 255, g * 255, b * 255, floor(min / max * 100))
+						health.value:SetFormattedText("|cffAF5050%s|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", E.ShortValue(min), r * 255, g * 255, b * 255, floor(min / max * 100))
 					end
 				else
 					if unit == "player" and health:GetAttribute("normalUnit") ~= "pet" then
-						health.value:SetText("|cff559655"..DB.ShortValue(max).."|r")
+						health.value:SetText("|cff559655"..E.ShortValue(max).."|r")
 					elseif unit == "target" or unit == "focus" or (unit and unit:find("arena%d")) then
-						health.value:SetText("|cff559655"..DB.ShortValue(max).."|r")
+						health.value:SetText("|cff559655"..E.ShortValue(max).."|r")
 					else
-						health.value:SetText("|cff559655"..DB.ShortValue(max).."|r")
+						health.value:SetText("|cff559655"..E.ShortValue(max).."|r")
 					end
 				end
 			end
 		end
 	end
 
-	DB.CheckPower = function(self, event)
+	E.CheckPower = function(self, event)
 		local unit = self.unit
 		local powertype, _ = UnitPowerType(unit)
 		if powertype ~= SPELL_POWER_MANA then
@@ -349,7 +349,7 @@ DB.LoadUFFunctions = function(layout)
 		end	
 	end
 
-	DB.PostNamePosition = function(self)
+	E.PostNamePosition = function(self)
 		self.Name:ClearAllPoints()
 		if (self.Power.value:GetText() and UnitIsPlayer("target") and C["unitframes"].targetpowerplayeronly == true) or (self.Power.value:GetText() and C["unitframes"].targetpowerplayeronly == false) then
 			self.Name:SetPoint("CENTER", self.health, "CENTER", 0, 1)
@@ -359,20 +359,20 @@ DB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	DB.PreUpdatePower = function(power, unit)
+	E.PreUpdatePower = function(power, unit)
 		local _, pType = UnitPowerType(unit)
 		
-		local color = DB.oUF_colors.power[pType]
+		local color = E.oUF_colors.power[pType]
 		if color then
 			power:SetStatusBarColor(color[1], color[2], color[3])
 		end
 	end
 	
-	DB.PostUpdatePower = function(power, unit, min, max)
+	E.PostUpdatePower = function(power, unit, min, max)
 		local self = power:GetParent()
 		local header = power:GetParent():GetParent():GetName()
 		local pType, pToken, altR, altG, altB = UnitPowerType(unit)
-		local color = DB.oUF_colors.power[pToken]
+		local color = E.oUF_colors.power[pToken]
 		
 		if header == "ElvuiDPSR6R25" or header == "ElvuiHealR6R25" then
 			if pType ~= SPELL_POWER_MANA then
@@ -402,29 +402,29 @@ DB.LoadUFFunctions = function(layout)
 					if pType == 0 then
 						if unit == "target" then
 							if C["unitframes"].showtotalhpmp == true then
-								power.value:SetFormattedText("%s |cffD7BEA5|||r %s", DB.ShortValue(max - (max - min)), DB.ShortValue(max))
+								power.value:SetFormattedText("%s |cffD7BEA5|||r %s", E.ShortValue(max - (max - min)), E.ShortValue(max))
 							else
-								power.value:SetFormattedText("%d%% |cffD7BEA5-|r %s", floor(min / max * 100), DB.ShortValue(max - (max - min)))
+								power.value:SetFormattedText("%d%% |cffD7BEA5-|r %s", floor(min / max * 100), E.ShortValue(max - (max - min)))
 							end
 						elseif unit == "player" and self:GetAttribute("normalUnit") == "pet" or unit == "pet" then
 							if C["unitframes"].showtotalhpmp == true then
-								power.value:SetFormattedText("%s |cffD7BEA5|||r %s", DB.ShortValue(max - (max - min)), DB.ShortValue(max))
+								power.value:SetFormattedText("%s |cffD7BEA5|||r %s", E.ShortValue(max - (max - min)), E.ShortValue(max))
 							else
 								power.value:SetFormattedText("%d%%", floor(min / max * 100))
 							end
 						elseif (unit and unit:find("arena%d")) then
-							power.value:SetText(DB.ShortValue(min))
+							power.value:SetText(E.ShortValue(min))
 						elseif (unit and unit:find("boss%d")) then
 							if C["unitframes"].showtotalhpmp == true then
-								power.value:SetFormattedText("%s |cffD7BEA5|||r %s", DB.ShortValue(max), DB.ShortValue(max - (max - min)))
+								power.value:SetFormattedText("%s |cffD7BEA5|||r %s", E.ShortValue(max), E.ShortValue(max - (max - min)))
 							else
-								power.value:SetFormattedText("%s |cffD7BEA5-|r %d%%", DB.ShortValue(max - (max - min)), floor(min / max * 100))
+								power.value:SetFormattedText("%s |cffD7BEA5-|r %d%%", E.ShortValue(max - (max - min)), floor(min / max * 100))
 							end						
 						else
 							if C["unitframes"].showtotalhpmp == true then
-								power.value:SetFormattedText("%s |cffD7BEA5|||r %s", DB.ShortValue(max - (max - min)), DB.ShortValue(max))
+								power.value:SetFormattedText("%s |cffD7BEA5|||r %s", E.ShortValue(max - (max - min)), E.ShortValue(max))
 							else
-								power.value:SetFormattedText("%d%% |cffD7BEA5-|r %s", floor(min / max * 100), DB.ShortValue(max - (max - min)))
+								power.value:SetFormattedText("%d%% |cffD7BEA5-|r %s", floor(min / max * 100), E.ShortValue(max - (max - min)))
 							end
 						end
 					else
@@ -432,24 +432,24 @@ DB.LoadUFFunctions = function(layout)
 					end
 				else
 					if unit == "pet" or unit == "target" or (unit and unit:find("arena%d")) then
-						power.value:SetText(DB.ShortValue(min))
+						power.value:SetText(E.ShortValue(min))
 					else
-						power.value:SetText(DB.ShortValue(min))
+						power.value:SetText(E.ShortValue(min))
 					end
 				end
 			end
 		end
 		
 		if self.Name then
-			if unit == "target" then DB.PostNamePosition(self, power) end
+			if unit == "target" then E.PostNamePosition(self, power) end
 		end
 	end
 
-	DB.CustomCastTimeText = function(self, duration)
+	E.CustomCastTimeText = function(self, duration)
 		self.Time:SetText(("%.1f / %.1f"):format(self.channeling and duration or self.max - duration, self.max))
 	end
 
-	DB.CustomCastDelayText = function(self, duration)
+	E.CustomCastDelayText = function(self, duration)
 		self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(self.channeling and duration or self.max - duration, self.channeling and "- " or "+", self.delay))
 	end
 
@@ -498,7 +498,7 @@ DB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	function DB.PvPUpdate(self, elapsed)
+	function E.PvPUpdate(self, elapsed)
 		if(self.elapsed and self.elapsed > 0.2) then
 			local unit = self.unit
 			local time = GetPVPTimer()
@@ -529,7 +529,7 @@ DB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	function DB.PostCreateAura(element, button)
+	function E.PostCreateAura(element, button)
 		local unit = button:GetParent():GetParent().unit
 		local header = button:GetParent():GetParent():GetParent():GetName()
 		
@@ -539,32 +539,32 @@ DB.LoadUFFunctions = function(layout)
 		end
 		
 		if unit == "focus" or unit == "targettarget" or header == "ElvuiHealR6R25" or header == "ElvuiDPSR6R25" or header == "ElvuiHealParty" then
-			button.remaining = DB.SetFontString(button, C["media"].font, C["auras"].auratextscale*0.85, "THINOUTLINE")
+			button.remaining = E.SetFontString(button, C["media"].font, C["auras"].auratextscale*0.85, "THINOUTLINE")
 		else
-			button.remaining = DB.SetFontString(button, C["media"].font, C["auras"].auratextscale, "THINOUTLINE")
+			button.remaining = E.SetFontString(button, C["media"].font, C["auras"].auratextscale, "THINOUTLINE")
 		end
 		
-		DB.SetTemplate(button)
-		button.remaining:SetPoint("CENTER", DB.Scale(0), DB.mult)
+		E.SetTemplate(button)
+		button.remaining:SetPoint("CENTER", E.Scale(0), E.mult)
 		
 		button.cd.noOCC = true		 	-- hide OmniCC CDs
 		button.cd.noCooldownCount = true	-- hide CDC CDs
 		
 		button.cd:SetReverse()
-		button.icon:SetPoint("TOPLEFT", DB.Scale(2), DB.Scale(-2))
-		button.icon:SetPoint("BOTTOMRIGHT", DB.Scale(-2), DB.Scale(2))
+		button.icon:SetPoint("TOPLEFT", E.Scale(2), E.Scale(-2))
+		button.icon:SetPoint("BOTTOMRIGHT", E.Scale(-2), E.Scale(2))
 		button.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
 		button.icon:SetDrawLayer('ARTWORK')
 		
-		button.count:SetPoint("BOTTOMRIGHT", DB.mult, DB.Scale(1.5))
+		button.count:SetPoint("BOTTOMRIGHT", E.mult, E.Scale(1.5))
 		button.count:SetJustifyH("RIGHT")
 		button.count:SetFont(C["media"].font, C["auras"].auratextscale*0.8, "THINOUTLINE")
 
 		button.overlayFrame = CreateFrame("frame", nil, button, nil)
 		button.cd:SetFrameLevel(button:GetFrameLevel() + 1)
 		button.cd:ClearAllPoints()
-		button.cd:SetPoint("TOPLEFT", button, "TOPLEFT", DB.Scale(2), DB.Scale(-2))
-		button.cd:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", DB.Scale(-2), DB.Scale(2))
+		button.cd:SetPoint("TOPLEFT", button, "TOPLEFT", E.Scale(2), E.Scale(-2))
+		button.cd:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", E.Scale(-2), E.Scale(2))
 		button.overlayFrame:SetFrameLevel(button.cd:GetFrameLevel() + 2)	   
 		button.overlay:SetParent(button.overlayFrame)
 		button.count:SetParent(button.overlayFrame)
@@ -575,7 +575,7 @@ DB.LoadUFFunctions = function(layout)
 		highlight:SetAllPoints(button.icon)	
 	end
 
-	function DB.PostUpdateAura(icons, unit, icon, index, offset, filter, isDebuff, duration, timeLeft)
+	function E.PostUpdateAura(icons, unit, icon, index, offset, filter, isDebuff, duration, timeLeft)
 		local name, _, _, _, dtype, duration, expirationTime, unitCaster, _ = UnitAura(unit, index, icon.filter)
 		
 		if(icon.debuff) then
@@ -584,7 +584,7 @@ DB.LoadUFFunctions = function(layout)
 				icon.icon:SetDesaturated(true)
 			else
 				local color = DebuffTypeColor[dtype] or DebuffTypeColor.none
-				if (name == "Unstable Affliction" or name == "Vampiric Touch") and DB.myclass ~= "WARLOCK" then
+				if (name == "Unstable Affliction" or name == "Vampiric Touch") and E.myclass ~= "WARLOCK" then
 					icon:SetBackdropBorderColor(0.05, 0.85, 0.94)
 				else
 					icon:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
@@ -592,7 +592,7 @@ DB.LoadUFFunctions = function(layout)
 				icon.icon:SetDesaturated(false)
 			end
 		else
-			if (icon.isStealable or (DB.myclass == "PRIEST" and dtype == "Magic")) and not UnitIsFriend("player", unit) then
+			if (icon.isStealable or (E.myclass == "PRIEST" and dtype == "Magic")) and not UnitIsFriend("player", unit) then
 				icon:SetBackdropBorderColor(237/255, 234/255, 142/255)
 			else
 				if C["general"].classcolortheme == true then
@@ -620,7 +620,7 @@ DB.LoadUFFunctions = function(layout)
 		icon:SetScript("OnUpdate", CreateAuraTimer)
 	end
 
-	DB.HidePortrait = function(self, event)
+	E.HidePortrait = function(self, event)
 		if self.unit == "target" then
 			if not UnitExists(self.unit) or not UnitIsConnected(self.unit) or not UnitIsVisible(self.unit) then
 				self.PFrame:SetAlpha(0)
@@ -630,7 +630,7 @@ DB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	DB.PostCastStart = function(self, unit, name, rank, castid)
+	E.PostCastStart = function(self, unit, name, rank, castid)
 		if unit == "vehicle" then unit = "player" end
 		--Fix blank castbar with opening text
 		if name == "Opening" then
@@ -654,7 +654,7 @@ DB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	DB.UpdateShards = function(self, event, unit, powerType)
+	E.UpdateShards = function(self, event, unit, powerType)
 		if(self.unit ~= unit or (powerType and powerType ~= 'SOUL_SHARDS')) then return end
 		local num = UnitPower(unit, SPELL_POWER_SOUL_SHARDS)
 		for i = 1, SHARD_BAR_NUM_SHARDS do
@@ -666,7 +666,7 @@ DB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	DB.UpdateHoly = function(self, event, unit, powerType)
+	E.UpdateHoly = function(self, event, unit, powerType)
 		if(self.unit ~= unit or (powerType and powerType ~= 'HOLY_POWER')) then return end
 		local num = UnitPower(unit, SPELL_POWER_HOLY_POWER)
 		for i = 1, MAX_HOLY_POWER do
@@ -678,7 +678,7 @@ DB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	DB.MoveBuffs = function(self, login)
+	E.MoveBuffs = function(self, login)
 		local parent = self:GetParent()
 		if login then
 			self:SetScript("OnUpdate", nil)
@@ -689,7 +689,7 @@ DB.LoadUFFunctions = function(layout)
 				parent.FlashInfo:Hide()
 				parent.PvP:SetAlpha(0)
 			end
-			parent.FrameBorder.shadow:SetPoint("TOPLEFT", DB.Scale(-4), DB.Scale(17))
+			parent.FrameBorder.shadow:SetPoint("TOPLEFT", E.Scale(-4), E.Scale(17))
 			
 			if (IsAddOnLoaded("ElvUI_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["DPSPlayerBuffs"] and DPSElementsCharPos["DPSPlayerBuffs"]["moved"] == true) then return end
 			if (IsAddOnLoaded("ElvUI_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["HealPlayerBuffs"] and HealElementsCharPos["HealPlayerBuffs"]["moved"] == true) then return end
@@ -698,14 +698,14 @@ DB.LoadUFFunctions = function(layout)
 			
 			if parent.Debuffs then 
 				parent.Debuffs:ClearAllPoints()
-				if parent.Debuffs then parent.Debuffs:SetPoint("BOTTOM", parent.Health, "TOP", 0, DB.Scale(17)) end	
+				if parent.Debuffs then parent.Debuffs:SetPoint("BOTTOM", parent.Health, "TOP", 0, E.Scale(17)) end	
 			end		
 		else
 			if self == parent.EclipseBar then
 				parent.FlashInfo:Show()
 				parent.PvP:SetAlpha(1)
 			end
-			parent.FrameBorder.shadow:SetPoint("TOPLEFT", DB.Scale(-4), DB.Scale(4))
+			parent.FrameBorder.shadow:SetPoint("TOPLEFT", E.Scale(-4), E.Scale(4))
 			
 			if (IsAddOnLoaded("ElvUI_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["DPSPlayerBuffs"] and DPSElementsCharPos["DPSPlayerBuffs"]["moved"] == true) then return end
 			if (IsAddOnLoaded("ElvUI_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["HealPlayerBuffs"] and HealElementsCharPos["HealPlayerBuffs"]["moved"] == true) then return end
@@ -714,13 +714,13 @@ DB.LoadUFFunctions = function(layout)
 			
 			if parent.Debuffs then 
 				parent.Debuffs:ClearAllPoints()
-				parent.Debuffs:SetPoint("BOTTOM", parent.Health, "TOP", 0, DB.Scale(6))
+				parent.Debuffs:SetPoint("BOTTOM", parent.Health, "TOP", 0, E.Scale(6))
 			end	
 		end
 	end
 
 	local starfirename = select(1, GetSpellInfo(2912))
-	DB.EclipseDirection = function(self)
+	E.EclipseDirection = function(self)
 		if ( GetEclipseDirection() == "sun" ) then
 			self.Text:SetText(starfirename.."!")
 			self.Text:SetTextColor(.2,.2,1,1)
@@ -732,7 +732,7 @@ DB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	DB.ToggleBars = function(self)
+	E.ToggleBars = function(self)
 		local parent = self:GetParent()
 		local unit = parent.unit
 		if unit == "vehicle" then unit = "player" end
@@ -766,7 +766,7 @@ DB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	DB.ComboDisplay = function(self, event, unit)
+	E.ComboDisplay = function(self, event, unit)
 		if(unit == 'pet') then return end
 		
 		local cpoints = self.CPoints
@@ -791,20 +791,20 @@ DB.LoadUFFunctions = function(layout)
 			end
 			if (IsAddOnLoaded("ElvUI_Dps_Layout") and DPSElementsCharPos and ((DPSElementsCharPos["DPSComboBar"] and DPSElementsCharPos["DPSComboBar"]["moved"] == true) or (DPSElementsCharPos["DPSTargetBuffs"] and DPSElementsCharPos["DPSTargetBuffs"]["moved"] == true))) then return end
 			if (IsAddOnLoaded("ElvUI_Heal_Layout") and HealElementsCharPos and ((HealElementsCharPos["HealComboBar"] and HealElementsCharPos["HealComboBar"]["moved"] == true) or (HealElementsCharPos["HealTargetBuffs"] and HealElementsCharPos["HealTargetBuffs"]["moved"] == true))) then return end
-			self.FrameBorder.shadow:SetPoint("TOPLEFT", DB.Scale(-4), DB.Scale(17))
-			if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOM", self.Health, "TOP", 0, DB.Scale(17)) end	
+			self.FrameBorder.shadow:SetPoint("TOPLEFT", E.Scale(-4), E.Scale(17))
+			if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOM", self.Health, "TOP", 0, E.Scale(17)) end	
 		else
 			for i=1, MAX_COMBO_POINTS do
 				cpoints[i]:Hide()
 			end
 			if (IsAddOnLoaded("ElvUI_Dps_Layout") and DPSElementsCharPos and ((DPSElementsCharPos["DPSComboBar"] and DPSElementsCharPos["DPSComboBar"]["moved"] == true) or (DPSElementsCharPos["DPSTargetBuffs"] and DPSElementsCharPos["DPSTargetBuffs"]["moved"] == true))) then return end
 			if (IsAddOnLoaded("ElvUI_Heal_Layout") and HealElementsCharPos and ((HealElementsCharPos["HealComboBar"] and HealElementsCharPos["HealComboBar"]["moved"] == true) or (HealElementsCharPos["HealTargetBuffs"] and HealElementsCharPos["HealTargetBuffs"]["moved"] == true))) then return end
-			self.FrameBorder.shadow:SetPoint("TOPLEFT", DB.Scale(-4), DB.Scale(4))	
-			if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOM", self.Health, "TOP", 0, DB.Scale(4)) end	
+			self.FrameBorder.shadow:SetPoint("TOPLEFT", E.Scale(-4), E.Scale(4))	
+			if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOM", self.Health, "TOP", 0, E.Scale(4)) end	
 		end
 	end
 
-	DB.MLAnchorUpdate = function (self)
+	E.MLAnchorUpdate = function (self)
 		if self.Leader:IsShown() then
 			self.MasterLooter:SetPoint("TOPLEFT", 14, 8)
 		else
@@ -812,7 +812,7 @@ DB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	DB.RestingIconUpdate = function (self)
+	E.RestingIconUpdate = function (self)
 		if IsResting() then
 			self.Resting:Show()
 		else
@@ -820,7 +820,7 @@ DB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	DB.UpdateReputation = function(self, event, unit, bar, min, max, value, name, id)
+	E.UpdateReputation = function(self, event, unit, bar, min, max, value, name, id)
 		if not name then return end
 		local name, id = GetWatchedFactionInfo()
 		bar:SetStatusBarColor(FACTION_BAR_COLORS[id].r, FACTION_BAR_COLORS[id].g, FACTION_BAR_COLORS[id].b)
@@ -828,11 +828,11 @@ DB.LoadUFFunctions = function(layout)
 		local cur = value - min
 		local total = max - min
 		
-		bar.Text:SetFormattedText(name..': '..DB.ShortValue(cur)..' / '..DB.ShortValue(total)..' <%d%%>', (cur / total) * 100)
+		bar.Text:SetFormattedText(name..': '..E.ShortValue(cur)..' / '..E.ShortValue(total)..' <%d%%>', (cur / total) * 100)
 	end
 
 	local delay = 0
-	DB.UpdateManaLevel = function(self, elapsed)
+	E.UpdateManaLevel = function(self, elapsed)
 		delay = delay + elapsed
 		if self.parent.unit ~= "player" or delay < 0.2 or UnitIsDeadOrGhost("player") or UnitPowerType("player") ~= 0 then return end
 		delay = 0
@@ -841,14 +841,14 @@ DB.LoadUFFunctions = function(layout)
 
 		if percMana <= 20 then
 			self.ManaLevel:SetText("|cffaf5050"..L.unitframes_ouf_lowmana.."|r")
-			DB.Flash(self, 0.3)
+			E.Flash(self, 0.3)
 		else
 			self.ManaLevel:SetText()
-			DB.StopFlash(self)
+			E.StopFlash(self)
 		end
 	end
 
-	DB.UpdateDruidMana = function(self)
+	E.UpdateDruidMana = function(self)
 		if self.unit ~= "player" then return end
 
 		local num, str = UnitPowerType("player")
@@ -859,10 +859,10 @@ DB.LoadUFFunctions = function(layout)
 			local percMana = min / max * 100
 			if percMana <= C["unitframes"].lowThreshold then
 				self.FlashInfo.ManaLevel:SetText("|cffaf5050"..L.unitframes_ouf_lowmana.."|r")
-				DB.Flash(self.FlashInfo, 0.3)
+				E.Flash(self.FlashInfo, 0.3)
 			else
 				self.FlashInfo.ManaLevel:SetText()
-				DB.StopFlash(self.FlashInfo)
+				E.StopFlash(self.FlashInfo)
 			end
 
 			if min ~= max then
@@ -883,7 +883,7 @@ DB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	function DB.UpdateThreat(self, event, unit)
+	function E.UpdateThreat(self, event, unit)
 		if (self.unit ~= unit) or (unit == "target" or unit == "focus" or unit == "focustarget" or unit == "targettarget") then return end
 		if not self.unit then return end
 		if not unit then return end
@@ -929,7 +929,7 @@ DB.LoadUFFunctions = function(layout)
 		end 
 	end
 
-	DB.updateAllElements = function(frame)
+	E.updateAllElements = function(frame)
 		for _, v in ipairs(frame.__elements) do
 			v(frame, "UpdateElement", frame.unit)
 		end
@@ -961,12 +961,12 @@ DB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	function DB.ExperienceText(self, unit, min, max)
+	function E.ExperienceText(self, unit, min, max)
 		local rested = GetXPExhaustion()
 		if rested then 
-			self.Text:SetFormattedText('XP: '..DB.ShortValue(min)..' / '..DB.ShortValue(max)..' <%d%%>  R: +'..DB.ShortValue(rested)..' <%d%%>', min / max * 100, rested / max * 100)
+			self.Text:SetFormattedText('XP: '..E.ShortValue(min)..' / '..E.ShortValue(max)..' <%d%%>  R: +'..E.ShortValue(rested)..' <%d%%>', min / max * 100, rested / max * 100)
 		else
-			self.Text:SetFormattedText('XP: '..DB.ShortValue(min)..' / '..DB.ShortValue(max)..' <%d%%>', min / max * 100)
+			self.Text:SetFormattedText('XP: '..E.ShortValue(min)..' / '..E.ShortValue(max)..' <%d%%>', min / max * 100)
 		end
 	end
 
@@ -976,7 +976,7 @@ DB.LoadUFFunctions = function(layout)
 	-- THE AURAWATCH FUNCTION ITSELF. HERE BE DRAGONS!
 	--------------------------------------------------------------------------------------------
 
-	DB.countOffsets = {
+	E.countOffsets = {
 		TOPLEFT = {6, 1},
 		TOPRIGHT = {-6, 1},
 		BOTTOMLEFT = {6, 1},
@@ -987,20 +987,20 @@ DB.LoadUFFunctions = function(layout)
 		BOTTOM = {0, 0},
 	}
 
-	function DB.CreateAuraWatchIcon(self, icon)
+	function E.CreateAuraWatchIcon(self, icon)
 		if (icon.cd) then
 			icon.cd:SetReverse()
 		end 	
 	end
 
-	function DB.createAuraWatch(self, unit)
+	function E.createAuraWatch(self, unit)
 		local auras = CreateFrame("Frame", nil, self)
 		auras:SetPoint("TOPLEFT", self.Health, 2, -2)
 		auras:SetPoint("BOTTOMRIGHT", self.Health, -2, 2)
 		auras.presentAlpha = 1
 		auras.missingAlpha = 0
 		auras.icons = {}
-		auras.PostCreateIcon = DB.CreateAuraWatchIcon
+		auras.PostCreateIcon = E.CreateAuraWatchIcon
 
 		if (not C["auras"].auratimer) then
 			auras.hideCooldown = true
@@ -1008,33 +1008,33 @@ DB.LoadUFFunctions = function(layout)
 
 		local buffs = {}
 		if IsAddOnLoaded("ElvUI_Dps_Layout") then
-			if (DB.DPSBuffIDs["ALL"]) then
-				for key, value in pairs(DB.DPSBuffIDs["ALL"]) do
+			if (E.DPSBuffIDs["ALL"]) then
+				for key, value in pairs(E.DPSBuffIDs["ALL"]) do
 					tinsert(buffs, value)
 				end
 			end
 
-			if (DB.DPSBuffIDs[DB.myclass]) then
-				for key, value in pairs(DB.DPSBuffIDs[DB.myclass]) do
+			if (E.DPSBuffIDs[E.myclass]) then
+				for key, value in pairs(E.DPSBuffIDs[E.myclass]) do
 					tinsert(buffs, value)
 				end
 			end	
 		else
-			if (DB.HealerBuffIDs["ALL"]) then
-				for key, value in pairs(DB.HealerBuffIDs["ALL"]) do
+			if (E.HealerBuffIDs["ALL"]) then
+				for key, value in pairs(E.HealerBuffIDs["ALL"]) do
 					tinsert(buffs, value)
 				end
 			end
 
-			if (DB.HealerBuffIDs[DB.myclass]) then
-				for key, value in pairs(DB.HealerBuffIDs[DB.myclass]) do
+			if (E.HealerBuffIDs[E.myclass]) then
+				for key, value in pairs(E.HealerBuffIDs[E.myclass]) do
 					tinsert(buffs, value)
 				end
 			end
 		end
 		
-		if DB.PetBuffs[DB.myclass] then
-			for key, value in pairs(DB.PetBuffs[DB.myclass]) do
+		if E.PetBuffs[E.myclass] then
+			for key, value in pairs(E.PetBuffs[E.myclass]) do
 				tinsert(buffs, value)
 			end
 		end
@@ -1045,8 +1045,8 @@ DB.LoadUFFunctions = function(layout)
 				local icon = CreateFrame("Frame", nil, auras)
 				icon.spellID = spell[1]
 				icon.anyUnit = spell[4]
-				icon:SetWidth(DB.Scale(C["auras"].buffindicatorsize))
-				icon:SetHeight(DB.Scale(C["auras"].buffindicatorsize))
+				icon:SetWidth(E.Scale(C["auras"].buffindicatorsize))
+				icon:SetHeight(E.Scale(C["auras"].buffindicatorsize))
 				icon:SetPoint(spell[2], 0, 0)
 
 				local tex = icon:CreateTexture(nil, "OVERLAY")
@@ -1060,7 +1060,7 @@ DB.LoadUFFunctions = function(layout)
 
 				local count = icon:CreateFontString(nil, "OVERLAY")
 				count:SetFont(C["media"].uffont, 8, "THINOUTLINE")
-				count:SetPoint("CENTER", unpack(DB.countOffsets[spell[2]]))
+				count:SetPoint("CENTER", unpack(E.countOffsets[spell[2]]))
 				icon.count = count
 
 				auras.icons[spell[1]] = icon

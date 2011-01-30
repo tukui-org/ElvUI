@@ -1,6 +1,6 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
-DB.client = GetLocale() 
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+E.client = GetLocale() 
 
 -- localization for enUS and enGB
 L.chat_BATTLEGROUND_GET = "[B]"
@@ -182,7 +182,7 @@ L.bind_discardbind = "Discard bindings"
 L.core_raidutil = "Raid Utility"
 L.core_raidutil_disbandgroup = "Disband Group"
 
-function DB.UpdateHotkey(self, actionButtonType)
+function E.UpdateHotkey(self, actionButtonType)
 	local hotkey = _G[self:GetName() .. 'HotKey']
 	local text = hotkey:GetText()
 	

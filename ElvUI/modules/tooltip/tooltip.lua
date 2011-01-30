@@ -1,6 +1,6 @@
 -- credits : Aezay (TipTac) and Caellian for some parts of code.
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if not C["tooltip"].enable then return end
 
@@ -15,7 +15,7 @@ TooltipHolder:SetWidth(130)
 TooltipHolder:SetHeight(22)
 TooltipHolder:SetPoint("BOTTOMRIGHT", ElvuiInfoRight, "BOTTOMRIGHT")
 
-DB.CreateMover(TooltipHolder, "TooltipMover", "Tooltip")
+E.CreateMover(TooltipHolder, "TooltipMover", "Tooltip")
 
 local gsub, find, format = string.gsub, string.find, string.format
 
@@ -34,7 +34,7 @@ local NeedBackdropBorderRefresh = false
 
 --Check if our embed right addon is shown
 local function CheckAddOnShown()
-	if DB.ChatRightShown == true then
+	if E.ChatRightShown == true then
 		return true
 	elseif C["skin"].embedright == "Omen" and IsAddOnLoaded("Omen") and OmenAnchor then
 		if OmenAnchor:IsShown() then
@@ -80,18 +80,18 @@ local function SetRightTooltipPos(self)
 		self:Hide()
 	else
 		if C["others"].enablebag == true and StuffingFrameBags and StuffingFrameBags:IsShown() then
-			self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", -1, DB.Scale(18))	
-		elseif TooltipMover and DB.Movers["TooltipMover"]["moved"] == true then
-			self:SetPoint("BOTTOMRIGHT", TooltipMover, "TOPRIGHT", -1, DB.Scale(18))
+			self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", -1, E.Scale(18))	
+		elseif TooltipMover and E.Movers["TooltipMover"]["moved"] == true then
+			self:SetPoint("BOTTOMRIGHT", TooltipMover, "TOPRIGHT", -1, E.Scale(18))
 		else
 			if CheckAddOnShown() == true then
-				if C["chat"].showbackdrop == true and DB.ChatRightShown == true then
-					self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", -1, DB.Scale(42))	
+				if C["chat"].showbackdrop == true and E.ChatRightShown == true then
+					self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", -1, E.Scale(42))	
 				else
-					self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", -1, DB.Scale(18))		
+					self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", -1, E.Scale(18))		
 				end	
 			else
-				self:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -15, DB.Scale(42))	
+				self:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -15, E.Scale(42))	
 			end
 		end
 	end
@@ -156,12 +156,12 @@ GameTooltipStatusBar:SetScript("OnValueChanged", function(self, value)
 
 	if not self.text then
 		self.text = self:CreateFontString(nil, "OVERLAY")
-		self.text:SetPoint("CENTER", GameTooltipStatusBar, 0, DB.Scale(-3))
+		self.text:SetPoint("CENTER", GameTooltipStatusBar, 0, E.Scale(-3))
 		self.text:SetFont(C["media"].font, C["general"].fontscale, "THINOUTLINE")
 		self.text:Show()
 		if unit then
 			min, max = UnitHealth(unit), UnitHealthMax(unit)
-			local hp = DB.ShortValue(min).." / "..DB.ShortValue(max)
+			local hp = E.ShortValue(min).." / "..E.ShortValue(max)
 			if UnitIsGhost(unit) then
 				self.text:SetText(L.unitframes_ouf_ghost)
 			elseif min == 0 or UnitIsDead(unit) or UnitIsGhost(unit) then
@@ -174,7 +174,7 @@ GameTooltipStatusBar:SetScript("OnValueChanged", function(self, value)
 		if unit then
 			min, max = UnitHealth(unit), UnitHealthMax(unit)
 			self.text:Show()
-			local hp = DB.ShortValue(min).." / "..DB.ShortValue(max)
+			local hp = E.ShortValue(min).." / "..E.ShortValue(max)
 			if min == 0 or min == 1 then
 				self.text:SetText(L.unitframes_ouf_dead)
 			else
@@ -188,17 +188,17 @@ end)
 
 local healthBar = GameTooltipStatusBar
 healthBar:ClearAllPoints()
-healthBar:SetHeight(DB.Scale(5))
-healthBar:SetPoint("TOPLEFT", healthBar:GetParent(), "BOTTOMLEFT", DB.Scale(2), DB.Scale(-5))
-healthBar:SetPoint("TOPRIGHT", healthBar:GetParent(), "BOTTOMRIGHT", -DB.Scale(2), DB.Scale(-5))
+healthBar:SetHeight(E.Scale(5))
+healthBar:SetPoint("TOPLEFT", healthBar:GetParent(), "BOTTOMLEFT", E.Scale(2), E.Scale(-5))
+healthBar:SetPoint("TOPRIGHT", healthBar:GetParent(), "BOTTOMRIGHT", -E.Scale(2), E.Scale(-5))
 healthBar:SetStatusBarTexture(C.media.normTex)
 
 
 local healthBarBG = CreateFrame("Frame", "StatusBarBG", healthBar)
 healthBarBG:SetFrameLevel(healthBar:GetFrameLevel() - 1)
-healthBarBG:SetPoint("TOPLEFT", -DB.Scale(2), DB.Scale(2))
-healthBarBG:SetPoint("BOTTOMRIGHT", DB.Scale(2), -DB.Scale(2))
-DB.SetTemplate(healthBarBG)
+healthBarBG:SetPoint("TOPLEFT", -E.Scale(2), E.Scale(2))
+healthBarBG:SetPoint("BOTTOMRIGHT", E.Scale(2), -E.Scale(2))
+E.SetTemplate(healthBarBG)
 healthBarBG:SetBackdropColor(unpack(C.media.backdropfadecolor))
 
 -- Add "Targeted By" line
@@ -284,7 +284,7 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 		local offset = 2
 		if guildName then
 			if UnitIsInMyGuild(unit) then
-				_G["GameTooltipTextLeft2"]:SetText("<"..DB.ValColor..guildName.."|r> ["..DB.ValColor..guildRankName.."|r]")
+				_G["GameTooltipTextLeft2"]:SetText("<"..E.ValColor..guildName.."|r> ["..E.ValColor..guildRankName.."|r]")
 			else
 				_G["GameTooltipTextLeft2"]:SetText("<|cff00ff10"..guildName.."|r> [|cff00ff10"..guildRankName.."|r]")
 			end
@@ -348,7 +348,7 @@ local Colorize = function(self)
 		healthBar:SetStatusBarColor(r, g, b)
 	elseif player and not C["tooltip"].colorreaction == true then
 		local class = select(2, UnitClass(unit))
-		local c = DB.colors.class[class]
+		local c = E.colors.class[class]
 		if c then
 			r, g, b = c[1], c[2], c[3]
 		end
@@ -356,7 +356,7 @@ local Colorize = function(self)
 		healthBarBG:SetBackdropBorderColor(r, g, b)
 		healthBar:SetStatusBarColor(r, g, b)
 	elseif reaction then
-		local c = DB.colors.reaction[reaction]
+		local c = E.colors.reaction[reaction]
 		r, g, b = c[1], c[2], c[3]
 		self:SetBackdropBorderColor(r, g, b)
 		healthBarBG:SetBackdropBorderColor(r, g, b)
@@ -378,7 +378,7 @@ local Colorize = function(self)
 end
 
 local SetStyle = function(self)
-	DB.SetNormTexTemplate(self)
+	E.SetNormTexTemplate(self)
 	self:SetBackdropColor(unpack(C.media.backdropfadecolor))
 	Colorize(self)
 end
@@ -389,21 +389,21 @@ ElvuiTooltip:SetScript("OnEvent", function(self)
 		tt:HookScript("OnShow", SetStyle)
 	end
 	
-	DB.SetTemplate(FriendsTooltip)
+	E.SetTemplate(FriendsTooltip)
 	FriendsTooltip:SetBackdropColor(unpack(C.media.backdropfadecolor))
-	DB.SetTemplate(BNToastFrame)
+	E.SetTemplate(BNToastFrame)
 	BNToastFrame:SetBackdropColor(unpack(C.media.backdropfadecolor))
-	DB.SetTemplate(DropDownList1MenuBackdrop)
+	E.SetTemplate(DropDownList1MenuBackdrop)
 	DropDownList1MenuBackdrop:SetBackdropColor(unpack(C.media.backdropfadecolor))
-	DB.SetTemplate(DropDownList2MenuBackdrop)
+	E.SetTemplate(DropDownList2MenuBackdrop)
 	DropDownList2MenuBackdrop:SetBackdropColor(unpack(C.media.backdropfadecolor))
-	DB.SetTemplate(DropDownList1Backdrop)
+	E.SetTemplate(DropDownList1Backdrop)
 	DropDownList1Backdrop:SetBackdropColor(unpack(C.media.backdropfadecolor))
-	DB.SetTemplate(DropDownList2Backdrop)
+	E.SetTemplate(DropDownList2Backdrop)
 	
 	BNToastFrame:HookScript("OnShow", function(self)
 		self:ClearAllPoints()
-		self:SetPoint("TOPLEFT", UIParent, "TOPLEFT", DB.Scale(5), DB.Scale(-5))
+		self:SetPoint("TOPLEFT", UIParent, "TOPLEFT", E.Scale(5), E.Scale(-5))
 	end)
 		
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
@@ -427,8 +427,8 @@ end)
 ElvuiTooltip:SetScript("OnUpdate", function(self, elapsed)
 	if(self.elapsed and self.elapsed > 0.1) then
 		if FrameStackTooltip then
-			local noscalemult = DB.mult * C["general"].uiscale
-			local r, g, b = RAID_CLASS_COLORS[DB.myclass].r, RAID_CLASS_COLORS[DB.myclass].g, RAID_CLASS_COLORS[DB.myclass].b
+			local noscalemult = E.mult * C["general"].uiscale
+			local r, g, b = RAID_CLASS_COLORS[E.myclass].r, RAID_CLASS_COLORS[E.myclass].g, RAID_CLASS_COLORS[E.myclass].b
 			FrameStackTooltip:SetBackdrop({
 			  bgFile = C["media"].blank, 
 			  edgeFile = C["media"].blank, 
@@ -441,8 +441,8 @@ ElvuiTooltip:SetScript("OnUpdate", function(self, elapsed)
 			else
 				FrameStackTooltip:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 			end	
-			FrameStackTooltip.SetBackdropColor = DB.dummy
-			FrameStackTooltip.SetBackdropBorderColor = DB.dummy
+			FrameStackTooltip.SetBackdropColor = E.dummy
+			FrameStackTooltip.SetBackdropBorderColor = E.dummy
 			self.elapsed = nil
 			self:SetScript("OnUpdate", nil)
 		end

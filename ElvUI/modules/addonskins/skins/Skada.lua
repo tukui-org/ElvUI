@@ -13,7 +13,7 @@
 	(C)2010 Darth Android / Telroth - Black Dragonflight
 	File version v15.37
 ]]
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if not Mod_AddonSkins or not Skada or not C["skin"].skada == true then return end
 local Skada = Skada
@@ -32,7 +32,7 @@ Mod_AddonSkins:RegisterSkin("Skada",function(Skin,skin,Layout,layout,config)
 		options.titleoptions.args.margin = nil
 		options.titleoptions.args.color = nil
 		options.windowoptions = nil
-    --if not DB.skins.Skada.nofont or DB.skins.Skada.nofont ~= true then
+    --if not E.skins.Skada.nofont or E.skins.Skada.nofont ~= true then
         options.baroptions.args.barfont = nil
         options.titleoptions.args.font = nil
     --end
@@ -100,7 +100,7 @@ Mod_AddonSkins:RegisterSkin("Skada",function(Skin,skin,Layout,layout,config)
         local color = win.db.title.color
 	    win.bargroup.button:SetBackdropColor(unpack(C["media"].bordercolor))
 		if win.bargroup.bgframe then
-            DB.SetTransparentTemplate(win.bargroup.bgframe)
+            E.SetTransparentTemplate(win.bargroup.bgframe)
 			if win.db.reversegrowth then
 				win.bargroup.bgframe:SetPoint("BOTTOM", win.bargroup.button, "BOTTOM", 0, -1 * (win.db.enabletitle and 2 or 1))
 			else

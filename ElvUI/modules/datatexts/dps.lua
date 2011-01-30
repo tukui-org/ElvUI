@@ -1,5 +1,5 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 --------------------------------------------------------------------
@@ -17,16 +17,16 @@ if C["datatext"].dps_text and C["datatext"].dps_text > 0 then
      
 	local dText = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
 	dText:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
-	dText:SetShadowOffset(DB.mult, -DB.mult)
-	dText:SetText("DPS: "..DB.ValColor.."0.0|r")
+	dText:SetShadowOffset(E.mult, -E.mult)
+	dText:SetText("DPS: "..E.ValColor.."0.0|r")
 
-	DB.PP(C["datatext"].dps_text, dText)
+	E.PP(C["datatext"].dps_text, dText)
 
 	DPS_FEED:EnableMouse(true)
 	DPS_FEED:SetFrameStrata("MEDIUM")
 	DPS_FEED:SetFrameLevel(3)
-	DPS_FEED:SetHeight(DB.Scale(20))
-	DPS_FEED:SetWidth(DB.Scale(100))
+	DPS_FEED:SetHeight(E.Scale(20))
+	DPS_FEED:SetWidth(E.Scale(100))
 	DPS_FEED:SetAllPoints(dText)
 
 	DPS_FEED:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
@@ -75,9 +75,9 @@ if C["datatext"].dps_text and C["datatext"].dps_text > 0 then
      
 	function getDPS()
 		if (dmg_total == 0) then
-			return ("DPS: "..DB.ValColor.."0.0|r")
+			return ("DPS: "..E.ValColor.."0.0|r")
 		else
-			return string.format("DPS: "..DB.ValColor.."%.1f|r", (dmg_total or 0) / (cmbt_time or 1))
+			return string.format("DPS: "..E.ValColor.."%.1f|r", (dmg_total or 0) / (cmbt_time or 1))
 		end
 	end
 

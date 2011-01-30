@@ -1,4 +1,4 @@
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if not C["actionbar"].enable == true then return end
 
@@ -28,54 +28,54 @@ function PositionBar3()
 		if C["actionbar"].splitbar ~= true then
 			if C["actionbar"].rightbars > 1 then
 				if i == 1 then
-					b:SetPoint("TOPRIGHT", ElvuiActionBarBackgroundRight, "TOPRIGHT", -DB.buttonspacing, -DB.buttonspacing)
+					b:SetPoint("TOPRIGHT", ElvuiActionBarBackgroundRight, "TOPRIGHT", -E.buttonspacing, -E.buttonspacing)
 				else
-					b:SetPoint("TOP", b2, "BOTTOM", 0, -DB.buttonspacing)
+					b:SetPoint("TOP", b2, "BOTTOM", 0, -E.buttonspacing)
 				end			
 			else
 				if i == 1 then
-					b:SetPoint("TOP", ElvuiActionBarBackgroundRight, "TOP", 0, -DB.buttonspacing)
+					b:SetPoint("TOP", ElvuiActionBarBackgroundRight, "TOP", 0, -E.buttonspacing)
 				else
-					b:SetPoint("TOP", b2, "BOTTOM", 0, -DB.buttonspacing)
+					b:SetPoint("TOP", b2, "BOTTOM", 0, -E.buttonspacing)
 				end	
 			end
 		else
 			if C.actionbar.bottomrows == 1 then
 				if i == 1 then
-					b:SetPoint("TOPLEFT", ElvuiSplitActionBarLeftBackground, "TOPLEFT", DB.buttonspacing, -DB.buttonspacing)
+					b:SetPoint("TOPLEFT", ElvuiSplitActionBarLeftBackground, "TOPLEFT", E.buttonspacing, -E.buttonspacing)
 				elseif i > 3 and i < 7 then
 					b:SetParent(ElvuiBar3Split)
 				elseif i == 7 then
-					b:SetPoint("TOPLEFT", ElvuiSplitActionBarRightBackground, "TOPLEFT", DB.buttonspacing, -DB.buttonspacing)
+					b:SetPoint("TOPLEFT", ElvuiSplitActionBarRightBackground, "TOPLEFT", E.buttonspacing, -E.buttonspacing)
 				elseif i > 9 then
 					b:SetParent(ElvuiBar3Split)
 					ElvuiBar3Split:Hide()
 				else
-					b:SetPoint("LEFT", b2, "RIGHT", DB.buttonspacing, 0)
+					b:SetPoint("LEFT", b2, "RIGHT", E.buttonspacing, 0)
 				end		
 			elseif C.actionbar.bottomrows == 2 then
 				if i == 1 then
-					b:SetPoint("TOPLEFT", ElvuiSplitActionBarLeftBackground, "TOPLEFT", DB.buttonspacing, -DB.buttonspacing)
+					b:SetPoint("TOPLEFT", ElvuiSplitActionBarLeftBackground, "TOPLEFT", E.buttonspacing, -E.buttonspacing)
 				elseif i == 4 then
-					b:SetPoint("TOP", _G["MultiBarLeftButton"..i-3], "BOTTOM", 0, -DB.buttonspacing)
+					b:SetPoint("TOP", _G["MultiBarLeftButton"..i-3], "BOTTOM", 0, -E.buttonspacing)
 				elseif i == 7 then
-					b:SetPoint("TOPLEFT", ElvuiSplitActionBarRightBackground, "TOPLEFT", DB.buttonspacing, -DB.buttonspacing)
+					b:SetPoint("TOPLEFT", ElvuiSplitActionBarRightBackground, "TOPLEFT", E.buttonspacing, -E.buttonspacing)
 				elseif i == 10 then
-					b:SetPoint("TOP", _G["MultiBarLeftButton"..i-3], "BOTTOM", 0, -DB.buttonspacing)
+					b:SetPoint("TOP", _G["MultiBarLeftButton"..i-3], "BOTTOM", 0, -E.buttonspacing)
 				else
-					b:SetPoint("LEFT", b2, "RIGHT", DB.buttonspacing, 0)
+					b:SetPoint("LEFT", b2, "RIGHT", E.buttonspacing, 0)
 				end	
 			else
 				if i == 1 then
-					b:SetPoint("TOPLEFT", ElvuiSplitActionBarLeftBackground, "TOPLEFT", (DB.buttonsize * 1) + (DB.buttonspacing * 2), -DB.buttonspacing)
+					b:SetPoint("TOPLEFT", ElvuiSplitActionBarLeftBackground, "TOPLEFT", (E.buttonsize * 1) + (E.buttonspacing * 2), -E.buttonspacing)
 				elseif i == 4 then
-					b:SetPoint("TOP", _G["MultiBarLeftButton"..i-3], "BOTTOM", 0, -DB.buttonspacing)
+					b:SetPoint("TOP", _G["MultiBarLeftButton"..i-3], "BOTTOM", 0, -E.buttonspacing)
 				elseif i == 7 then
-					b:SetPoint("TOPLEFT", ElvuiSplitActionBarRightBackground, "TOPLEFT", DB.buttonspacing, -DB.buttonspacing)
+					b:SetPoint("TOPLEFT", ElvuiSplitActionBarRightBackground, "TOPLEFT", E.buttonspacing, -E.buttonspacing)
 				elseif i == 10 then
-					b:SetPoint("TOP", _G["MultiBarLeftButton"..i-3], "BOTTOM", 0, -DB.buttonspacing)
+					b:SetPoint("TOP", _G["MultiBarLeftButton"..i-3], "BOTTOM", 0, -E.buttonspacing)
 				else
-					b:SetPoint("LEFT", b2, "RIGHT", DB.buttonspacing, 0)
+					b:SetPoint("LEFT", b2, "RIGHT", E.buttonspacing, 0)
 				end  		
 			end
 		end

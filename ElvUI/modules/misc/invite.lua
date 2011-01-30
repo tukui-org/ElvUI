@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- Auto accept invite
 ------------------------------------------------------------------------
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if C["others"].autoacceptinv then
 	local tAutoAcceptInvite = CreateFrame("Frame")

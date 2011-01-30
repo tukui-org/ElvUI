@@ -1,5 +1,5 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 --------------------------------------------------------------------
@@ -14,24 +14,24 @@ if C["datatext"].friends and C["datatext"].friends > 0 then
 
 	local tthead = {r=0.4,g=0.78,b=1}
 	local ttsubh = {r=0.75,g=0.9,b=1}
-	local yoffset = DB.Scale(6)
+	local yoffset = E.Scale(6)
 	local anchor = "TOP"
 	local anchor2 = "ANCHOR_TOP"
-	local yoffset2 = DB.mult
+	local yoffset2 = E.mult
 	local snapfrom = "BOTTOM"
 	
 	if C["datatext"].friends == 7 or C["datatext"].friends == 8 then
-		yoffset = DB.Scale(-6)
+		yoffset = E.Scale(-6)
 		anchor = "BOTTOM"
 		anchor2 = "ANCHOR_BOTTOM"
-		yoffset2 = DB.mult
+		yoffset2 = E.mult
 		snapfrom = "TOP"
 	end
 
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
 	Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
-	Text:SetShadowOffset(DB.mult, -DB.mult)
-	DB.PP(C["datatext"].friends, Text)
+	Text:SetShadowOffset(E.mult, -E.mult)
+	E.PP(C["datatext"].friends, Text)
 
 	local menuFrame = CreateFrame("Frame", "MinimapRightClickMenu", UIParent, "UIDropDownMenuTemplate")
 	local menuList = {
@@ -73,7 +73,7 @@ if C["datatext"].friends and C["datatext"].friends > 0 then
 				for i = 1, BNtotal do if select(7, BNGetFriendInfo(i)) then BNonline = BNonline + 1 end end
 			end
 			local totalonline = online + BNonline
-			Text:SetText(L.datatext_friends..": "..DB.ValColor..totalonline)
+			Text:SetText(L.datatext_friends..": "..E.ValColor..totalonline)
 			self:SetAllPoints(Text)
 	end
 

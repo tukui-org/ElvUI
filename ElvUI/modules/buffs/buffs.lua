@@ -1,11 +1,11 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 ConsolidatedBuffs:ClearAllPoints()
-ConsolidatedBuffs:SetPoint("LEFT", Minimap, "LEFT", DB.Scale(0), DB.Scale(0))
+ConsolidatedBuffs:SetPoint("LEFT", Minimap, "LEFT", E.Scale(0), E.Scale(0))
 ConsolidatedBuffs:SetSize(16, 16)
 ConsolidatedBuffsIcon:SetTexture(nil)
-ConsolidatedBuffs.SetPoint = DB.dummy
+ConsolidatedBuffs.SetPoint = E.dummy
 
 if C["auras"].minimapauras ~= true then return end
 
@@ -15,11 +15,11 @@ local warningtime = 6
 
 --Holder frame for mover
 local holder = CreateFrame("Frame", "AurasHolder", UIParent)
-holder:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", DB.Scale(-8), DB.Scale(2))
-holder:SetWidth(DB.Scale(456)) --(30 + 8) * 12)
-holder:SetHeight(ElvuiMinimap:GetHeight() + DB.Scale(3 + 19))
+holder:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", E.Scale(-8), E.Scale(2))
+holder:SetWidth(E.Scale(456)) --(30 + 8) * 12)
+holder:SetHeight(ElvuiMinimap:GetHeight() + E.Scale(3 + 19))
 
-local btnspace = DB.Scale(-4)
+local btnspace = E.Scale(-4)
 local aurapos = "RIGHT"
 
 TemporaryEnchantFrame:ClearAllPoints()
@@ -28,19 +28,19 @@ TemporaryEnchantFrame:SetPoint("TOPRIGHT", AurasHolder, "TOPRIGHT", 0, 0)
 TempEnchant1:ClearAllPoints()
 TempEnchant2:ClearAllPoints()
 TempEnchant1:SetPoint("TOPRIGHT", AurasHolder, "TOPRIGHT", 0, 0)
-TempEnchant2:SetPoint("RIGHT", TempEnchant1, "LEFT", DB.Scale(-4), 0)
+TempEnchant2:SetPoint("RIGHT", TempEnchant1, "LEFT", E.Scale(-4), 0)
 
 for i = 1, 3 do
 	local f = CreateFrame("Frame", nil, _G["TempEnchant"..i])
-	DB.CreatePanel(f, 30, 30, "CENTER", _G["TempEnchant"..i], "CENTER", 0, 0)	
+	E.CreatePanel(f, 30, 30, "CENTER", _G["TempEnchant"..i], "CENTER", 0, 0)	
 	_G["TempEnchant"..i.."Border"]:Hide()
 	_G["TempEnchant"..i.."Icon"]:SetTexCoord(.08, .92, .08, .92)
-	_G["TempEnchant"..i.."Icon"]:SetPoint("TOPLEFT", _G["TempEnchant"..i], DB.Scale(2), DB.Scale(-2))
-	_G["TempEnchant"..i.."Icon"]:SetPoint("BOTTOMRIGHT", _G["TempEnchant"..i], DB.Scale(-2), DB.Scale(2))
-	_G["TempEnchant"..i]:SetHeight(DB.Scale(30))
-	_G["TempEnchant"..i]:SetWidth(DB.Scale(30))	
+	_G["TempEnchant"..i.."Icon"]:SetPoint("TOPLEFT", _G["TempEnchant"..i], E.Scale(2), E.Scale(-2))
+	_G["TempEnchant"..i.."Icon"]:SetPoint("BOTTOMRIGHT", _G["TempEnchant"..i], E.Scale(-2), E.Scale(2))
+	_G["TempEnchant"..i]:SetHeight(E.Scale(30))
+	_G["TempEnchant"..i]:SetWidth(E.Scale(30))	
 	_G["TempEnchant"..i.."Duration"]:ClearAllPoints()
-	_G["TempEnchant"..i.."Duration"]:SetPoint("BOTTOM", 0, DB.Scale(-13))
+	_G["TempEnchant"..i.."Duration"]:SetPoint("BOTTOM", 0, E.Scale(-13))
 	_G["TempEnchant"..i.."Duration"]:SetFont(C["media"].font, C["general"].fontscale, "THINOUTLINE")
 end
 
@@ -52,22 +52,22 @@ local function StyleBuffs(buttonName, index, debuff)
 	local count 	= _G[buttonName..index.."Count"]
 	if icon and not _G[buttonName..index.."Panel"] then
 		icon:SetTexCoord(.08, .92, .08, .92)
-		icon:SetPoint("TOPLEFT", buff, DB.Scale(2), DB.Scale(-2))
-		icon:SetPoint("BOTTOMRIGHT", buff, DB.Scale(-2), DB.Scale(2))
+		icon:SetPoint("TOPLEFT", buff, E.Scale(2), E.Scale(-2))
+		icon:SetPoint("BOTTOMRIGHT", buff, E.Scale(-2), E.Scale(2))
 		
-		buff:SetHeight(DB.Scale(30))
-		buff:SetWidth(DB.Scale(30))
+		buff:SetHeight(E.Scale(30))
+		buff:SetWidth(E.Scale(30))
 				
 		duration:ClearAllPoints()
-		duration:SetPoint("BOTTOM", 0, DB.Scale(-13))
+		duration:SetPoint("BOTTOM", 0, E.Scale(-13))
 		duration:SetFont(C["media"].font, 12, "THINOUTLINE")
 		
 		count:ClearAllPoints()
-		count:SetPoint("TOPLEFT", DB.Scale(1), DB.Scale(-2))
+		count:SetPoint("TOPLEFT", E.Scale(1), E.Scale(-2))
 		count:SetFont(C["media"].font, C["general"].fontscale, "OUTLINE")
 		
 		local panel = CreateFrame("Frame", buttonName..index.."Panel", buff)
-		DB.CreatePanel(panel, 30, 30, "CENTER", buff, "CENTER", 0, 0)
+		E.CreatePanel(panel, 30, 30, "CENTER", buff, "CENTER", 0, 0)
 		panel:SetFrameLevel(buff:GetFrameLevel() - 1)
 		panel:SetFrameStrata(buff:GetFrameStrata())
 
@@ -203,14 +203,14 @@ hooksecurefunc("BuffFrame_UpdateAllBuffAnchors", UpdateBuffAnchors)
 hooksecurefunc("DebuffButton_UpdateAnchors", UpdateDebuffAnchors)
 
 
-function DB.AurasPostDrag(frame)
+function E.AurasPostDrag(frame)
 	local point = select(1, frame:GetPoint())
 	
 	if string.find(point, "LEFT") then
 		TempEnchant1:ClearAllPoints()
 		TempEnchant2:ClearAllPoints()
 		TemporaryEnchantFrame:ClearAllPoints()
-		btnspace = DB.Scale(4)
+		btnspace = E.Scale(4)
 		aurapos = "LEFT"
 		TempEnchant1:SetPoint("TOPLEFT", AurasHolder, "TOPLEFT", 0, 0)
 		TempEnchant2:SetPoint("LEFT", TempEnchant1, "RIGHT", btnspace, 0)		
@@ -219,7 +219,7 @@ function DB.AurasPostDrag(frame)
 		TempEnchant1:ClearAllPoints()
 		TempEnchant2:ClearAllPoints()
 		TemporaryEnchantFrame:ClearAllPoints()
-		btnspace = DB.Scale(-4)
+		btnspace = E.Scale(-4)
 		aurapos = "RIGHT"
 		TempEnchant1:SetPoint("TOPRIGHT", AurasHolder, "TOPRIGHT", 0, 0)
 		TempEnchant2:SetPoint("RIGHT", TempEnchant1, "LEFT", btnspace, 0)	
@@ -229,10 +229,10 @@ function DB.AurasPostDrag(frame)
 	UpdateBuffAnchors()
 	BuffFrame_UpdateAllBuffAnchors()
 	
-	if DB.Movers["AurasMover"]["moved"] ~= true then
+	if E.Movers["AurasMover"]["moved"] ~= true then
 		AurasMover:ClearAllPoints()
-		AurasMover:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", DB.Scale(-8), DB.Scale(2))
+		AurasMover:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", E.Scale(-8), E.Scale(2))
 	end
 end
 
-DB.CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, DB.AurasPostDrag)
+E.CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, E.AurasPostDrag)

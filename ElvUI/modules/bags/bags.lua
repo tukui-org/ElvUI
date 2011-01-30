@@ -5,7 +5,7 @@
 	
 	All credits of this bags script is by Stuffing and his author Hungtar.
 --]]
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 
@@ -457,9 +457,9 @@ function Stuffing:CreateBagFrame(w)
 	
 	-- close button
 	f.b_close = CreateFrame("Button", "Stuffing_CloseButton" .. w, f, "UIPanelCloseButton")
-	f.b_close:SetWidth(DB.Scale(32))
-	f.b_close:SetHeight(DB.Scale(32))
-	f.b_close:SetPoint("TOPRIGHT", DB.Scale(-3), DB.Scale(-3))
+	f.b_close:SetWidth(E.Scale(32))
+	f.b_close:SetHeight(E.Scale(32))
+	f.b_close:SetPoint("TOPRIGHT", E.Scale(-3), E.Scale(-3))
 	f.b_close:SetScript("OnClick", function(self, btn)
 		if self:GetParent():GetName() == "StuffingFrameBags" and btn == "RightButton" then
 			if Stuffing_DDMenu.initialize ~= Stuffing.Menu then
@@ -476,7 +476,7 @@ function Stuffing:CreateBagFrame(w)
 
 	-- create the bags frame
 	local fb = CreateFrame ("Frame", n .. "BagsFrame", f)
-	fb:SetPoint("BOTTOMLEFT", f, "TOPLEFT", 0, DB.Scale(2))
+	fb:SetPoint("BOTTOMLEFT", f, "TOPLEFT", 0, E.Scale(2))
 	fb:SetFrameStrata("DIALOG")
 	f.bags_frame = fb
 
@@ -523,8 +523,8 @@ function Stuffing:InitBags()
 	local editbox = CreateFrame("EditBox", nil, f)
 	editbox:Hide()
 	editbox:SetAutoFocus(true)
-	editbox:SetHeight(DB.Scale(32))
-	DB.SetNormTexTemplate(editbox)
+	editbox:SetHeight(E.Scale(32))
+	E.SetNormTexTemplate(editbox)
 
 	local resetAndClear = function (self)
 		self:GetParent().detail:Show()
@@ -548,15 +548,15 @@ function Stuffing:InitBags()
 
 
 	local detail = f:CreateFontString(nil, "ARTWORK", "GameFontHighlightLarge")
-	detail:SetPoint("TOPLEFT", f, DB.Scale(12), DB.Scale(-10))
-	detail:SetPoint("RIGHT", DB.Scale(-(16 + 24)), 0)
+	detail:SetPoint("TOPLEFT", f, E.Scale(12), E.Scale(-10))
+	detail:SetPoint("RIGHT", E.Scale(-(16 + 24)), 0)
 	detail:SetJustifyH("LEFT")
 	detail:SetText("|cff9999ff" .. "Search")
 	editbox:SetAllPoints(detail)
 
 	local gold = f:CreateFontString(nil, "ARTWORK", "GameFontHighlightLarge")
 	gold:SetJustifyH("RIGHT")
-	gold:SetPoint("RIGHT", f.b_close, "LEFT", DB.Scale(-3), 0)
+	gold:SetPoint("RIGHT", f.b_close, "LEFT", E.Scale(-3), 0)
 
 	f:SetScript("OnEvent", function (self, e)
 		self.gold:SetText (GetCoinTextureString(GetMoney(), 12))
@@ -637,16 +637,16 @@ function Stuffing:Layout(lb)
 		f.gold:SetFont(BAGSFONT, C["general"].fontscale)
 
 		f.detail:ClearAllPoints()
-		f.detail:SetPoint("TOPLEFT", f, DB.Scale(12), DB.Scale(-10))
-		f.detail:SetPoint("RIGHT", DB.Scale(-(16 + 24)), 0)
+		f.detail:SetPoint("TOPLEFT", f, E.Scale(12), E.Scale(-10))
+		f.detail:SetPoint("RIGHT", E.Scale(-(16 + 24)), 0)
 	end
 
 	f:SetClampedToScreen(1)
 	f:SetBackdrop({
 		bgFile = C["media"].blank,
 		edgeFile = C["media"].blank,
-		edgeSize = DB.mult,
-		insets = {left = -DB.mult, right = -DB.mult, top = -DB.mult, bottom = -DB.mult}
+		edgeSize = E.mult,
+		insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
 	})
 	f:SetBackdropColor(unpack(C["media"].backdropfadecolor))
 	f:SetBackdropBorderColor(unpack(C["media"].bordercolor))
@@ -659,8 +659,8 @@ function Stuffing:Layout(lb)
 		fb:SetBackdrop({
 			bgFile = C["media"].blank,
 			edgeFile = C["media"].blank,
-			edgeSize = DB.mult,
-			insets = {left = -DB.mult, right = -DB.mult, top = -DB.mult, bottom = -DB.mult}
+			edgeSize = E.mult,
+			insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
 		})
 		fb:SetBackdropColor(unpack(C["media"].backdropfadecolor))
 		fb:SetBackdropBorderColor(unpack(C["media"].bordercolor))
@@ -672,8 +672,8 @@ function Stuffing:Layout(lb)
 		w = w + ((#bs - 1) * bsize)
 		w = w + (12 * (#bs - 2))
 
-		fb:SetHeight(DB.Scale(2 * 12 + bsize))
-		fb:SetWidth(DB.Scale(w))
+		fb:SetHeight(E.Scale(2 * 12 + bsize))
+		fb:SetWidth(E.Scale(w))
 		fb:Show()
 	else
 		fb:Hide()
@@ -695,7 +695,7 @@ function Stuffing:Layout(lb)
 			xoff = xoff + (idx * 4)
 
 			b.frame:ClearAllPoints()
-			b.frame:SetPoint("LEFT", fb, "LEFT", DB.Scale(xoff), 0)
+			b.frame:SetPoint("LEFT", fb, "LEFT", E.Scale(xoff), 0)
 			b.frame:Show()
 
 
@@ -723,8 +723,8 @@ function Stuffing:Layout(lb)
 		rows = rows + 1
 	end
 
-	f:SetWidth(DB.Scale(C["chat"].chatwidth))
-	f:SetHeight(DB.Scale(rows * 31 + (rows - 1) * 4 + off + 12 * 2))
+	f:SetWidth(E.Scale(C["chat"].chatwidth))
+	f:SetHeight(E.Scale(rows * 31 + (rows - 1) * 4 + off + 12 * 2))
 
 	local bf = CreateFrame("Frame", "BagHolderFrame", f)
 	bf:SetWidth((31 + 2.5) * cols)
@@ -763,15 +763,15 @@ function Stuffing:Layout(lb)
 					
 					
 					b.frame:ClearAllPoints()
-					b.frame:SetPoint("TOPLEFT", bf, "TOPLEFT", DB.Scale(xoff), DB.Scale(yoff))
-					b.frame:SetHeight(DB.Scale(31))
-					b.frame:SetWidth(DB.Scale(31))
+					b.frame:SetPoint("TOPLEFT", bf, "TOPLEFT", E.Scale(xoff), E.Scale(yoff))
+					b.frame:SetHeight(E.Scale(31))
+					b.frame:SetWidth(E.Scale(31))
 					b.frame:SetPushedTexture("")
 					b.frame:SetNormalTexture("")
 					b.frame:Show()
-					DB.SetNormTexTemplate(b.frame)
+					E.SetNormTexTemplate(b.frame)
 					--b.frame:SetBackdropColor(unpack(C["media"].backdropfadecolor))
-					DB.StyleButton(b.frame)
+					E.StyleButton(b.frame)
 					local clink = GetContainerItemLink
 					if (clink and b.rarity and b.rarity > 1) then
 						b.frame:SetBackdropBorderColor(GetItemQualityColor(b.rarity))
@@ -793,8 +793,8 @@ function Stuffing:Layout(lb)
 
 					local iconTex = _G[b.frame:GetName() .. "IconTexture"]
 					iconTex:SetTexCoord(.08, .92, .08, .92)
-					iconTex:SetPoint("TOPLEFT", b.frame, DB.Scale(2), DB.Scale(-2))
-					iconTex:SetPoint("BOTTOMRIGHT", b.frame, DB.Scale(-2), DB.Scale(2))
+					iconTex:SetPoint("TOPLEFT", b.frame, E.Scale(2), E.Scale(-2))
+					iconTex:SetPoint("BOTTOMRIGHT", b.frame, E.Scale(-2), E.Scale(2))
 
 					iconTex:Show()
 					b.iconTex = iconTex
@@ -947,10 +947,10 @@ function Stuffing:PLAYER_ENTERING_WORLD()
 	-- this is just a reskin of Blizzard key bag to fit Elvui
 
 	local keybackdrop = CreateFrame("Frame", nil, ContainerFrame1)
-	keybackdrop:SetPoint("TOPLEFT", DB.Scale(9), DB.Scale(-40))
+	keybackdrop:SetPoint("TOPLEFT", E.Scale(9), E.Scale(-40))
 	keybackdrop:SetPoint("BOTTOMLEFT", 0, 0)
-	keybackdrop:SetSize(DB.Scale(179),DB.Scale(215))
-	DB.SetTemplate(keybackdrop)
+	keybackdrop:SetSize(E.Scale(179),E.Scale(215))
+	E.SetTemplate(keybackdrop)
 	keybackdrop:SetBackdropColor(unpack(C["media"].backdropfadecolor))
 	ContainerFrame1CloseButton:Hide()
 	ContainerFrame1Portrait:Hide()
@@ -965,17 +965,17 @@ function Stuffing:PLAYER_ENTERING_WORLD()
 		slot:SetPushedTexture("")
 		slot:SetNormalTexture("")
 		t:SetTexCoord(.08, .92, .08, .92)
-		t:SetPoint("TOPLEFT", slot, DB.Scale(2), DB.Scale(-2))
-		t:SetPoint("BOTTOMRIGHT", slot, DB.Scale(-2), DB.Scale(2))
-		DB.SetNormTexTemplate(slot)
+		t:SetPoint("TOPLEFT", slot, E.Scale(2), E.Scale(-2))
+		t:SetPoint("BOTTOMRIGHT", slot, E.Scale(-2), E.Scale(2))
+		E.SetNormTexTemplate(slot)
 		
-		DB.StyleButton(slot, false)
+		E.StyleButton(slot, false)
 	end
 
 
 	ContainerFrame1:HookScript("OnShow", function(self)
 		ContainerFrame1:ClearAllPoints()
-		ContainerFrame1:SetPoint("TOPRIGHT", StuffingFrameBags, "TOPLEFT", DB.Scale(2), DB.Scale(40))
+		ContainerFrame1:SetPoint("TOPRIGHT", StuffingFrameBags, "TOPLEFT", E.Scale(2), E.Scale(40))
 	end)
 	ContainerFrame1:SetParent(StuffingFrameBags)
 end

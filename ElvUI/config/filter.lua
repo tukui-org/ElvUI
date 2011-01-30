@@ -1,4 +1,4 @@
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 local function SpellName(id)
 	local name, _, _, _, _, _, _, _, _ = GetSpellInfo(id)
@@ -122,7 +122,7 @@ if C["auras"].raidunitbuffwatch == true then
 	-- Classbuffs { spell ID, position [, {r,g,b,a}][, anyUnit] }
 	
 	--Healer Layout
-	DB.HealerBuffIDs = {
+	E.HealerBuffIDs = {
 		PRIEST = {
 			{6788, "TOPLEFT", {1, 0, 0}, true}, -- Weakened Soul
 			{33076, "TOPRIGHT", {0.2, 0.7, 0.2}}, -- Prayer of Mending
@@ -157,7 +157,7 @@ if C["auras"].raidunitbuffwatch == true then
 	}
 
 	--DPS Layout
-	DB.DPSBuffIDs = {
+	E.DPSBuffIDs = {
 		PALADIN = {
 			{1022, "TOPRIGHT", {0.2, 0.2, 1}, true}, -- Hand of Protection
 			{1044, "TOPRIGHT", {221/255, 117/255, 0}, true}, -- Hand of Freedom
@@ -183,7 +183,7 @@ if C["auras"].raidunitbuffwatch == true then
 	}
 	
 	--Layout for pets
-	DB.PetBuffs = {
+	E.PetBuffs = {
 		HUNTER = {
 			{136, "TOPRIGHT", {0.2, 0.8, 0.2}}, -- Mend Pet
 		},
@@ -466,7 +466,7 @@ DebuffDPSWhiteList = {
 
 -- the spellIDs to track on screen in arena.
 if C["arena"].spelltracker == true then
-	DB.spelltracker = {
+	E.spelltracker = {
 		[1766] = 10, -- kick
 		[6552] = 10, -- pummel
 		[80964] = 60, --SkullBash Bear

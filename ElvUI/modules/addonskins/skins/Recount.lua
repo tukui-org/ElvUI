@@ -11,7 +11,7 @@
 	(C)2010 Darth Android / Telroth - Black Dragonflight
 	File version v15.37
 ]]
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 if not IsAddOnLoaded("Recount") or not Mod_AddonSkins or not C["skin"].recount == true then return end

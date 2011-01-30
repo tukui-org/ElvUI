@@ -4,16 +4,16 @@
 
 Mod_AddonSkins = CreateFrame("Frame")
 local Mod_AddonSkins = Mod_AddonSkins
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
-local elvskin = DB.SetTemplate
+local elvskin = E.SetTemplate
 local function skinFrame(self, frame)
 	--Unfortionatly theres not a prettier way of doing this
 	if frame:GetParent():GetName() == "Recount_ConfigWindow" then
-		DB.SetTransparentTemplate(frame)
+		E.SetTransparentTemplate(frame)
 		frame:SetFrameStrata("BACKGROUND")
-		frame.SetFrameStrata = DB.dummy
+		frame.SetFrameStrata = E.dummy
 	elseif frame:GetName() == "OmenBarList" or 
 	frame:GetName() == "OmenTitle" or 
 	frame:GetName() == "DXEPane" or 
@@ -21,7 +21,7 @@ local function skinFrame(self, frame)
 	frame:GetParent():GetName() == "Recount_MainWindow" or 
 	frame:GetParent():GetName() == "Recount_GraphWindow" or 
 	frame:GetParent():GetName() == "Recount_DetailWindow" then
-		DB.SetTransparentTemplate(frame)
+		E.SetTransparentTemplate(frame)
 		if frame:GetParent():GetName() ~= "Recount_GraphWindow" and frame:GetParent():GetName() ~= "Recount_DetailWindow" then
 			frame:SetFrameStrata("MEDIUM")
 		else
@@ -53,12 +53,12 @@ Mod_AddonSkins.bgTexture = C.media.blank
 Mod_AddonSkins.font = C.media.font
 Mod_AddonSkins.smallFont = C.media.font
 Mod_AddonSkins.fontSize = 12
-Mod_AddonSkins.buttonSize = DB.Scale(27,27)
-Mod_AddonSkins.buttonSpacing = DB.Scale(DB.petbuttonspacing,DB.petbuttonspacing)
-Mod_AddonSkins.borderWidth = DB.Scale(2,2)
+Mod_AddonSkins.buttonSize = E.Scale(27,27)
+Mod_AddonSkins.buttonSpacing = E.Scale(E.petbuttonspacing,E.petbuttonspacing)
+Mod_AddonSkins.borderWidth = E.Scale(2,2)
 Mod_AddonSkins.buttonZoom = {.09,.91,.09,.91}
-Mod_AddonSkins.barSpacing = DB.Scale(1,1)
-Mod_AddonSkins.barHeight = DB.Scale(20,20)
+Mod_AddonSkins.barSpacing = E.Scale(1,1)
+Mod_AddonSkins.barHeight = E.Scale(20,20)
 Mod_AddonSkins.skins = {}
 
 -- Dummy function expected by some skins
@@ -112,7 +112,7 @@ Mod_AddonSkins:SetScript("OnEvent",function(self, event, addon)
 		end
 		if C["skin"].embedright == "Omen" and IsAddOnLoaded("Omen") then
 			Omen.UpdateTitleBar = function() end
-			DB.Kill(OmenTitle)
+			E.Kill(OmenTitle)
 			if IsAddOnLoaded("Omen") then
 				OmenBarList:SetFrameStrata("HIGH")
 			end

@@ -1,11 +1,11 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if C["buffreminder"].enable ~= true then return end
 
 -- Spells that should be shown with an icon in the middle of the screen when not buffed in combat.
 -- Use the rank 1 id for best results. The first valid spell in each class's list will be the icon shown. 
-DB.remindbuffs = {
+E.remindbuffs = {
 	PRIEST = {
 		588, -- inner fire
 		73413, -- inner will
@@ -38,7 +38,7 @@ DB.remindbuffs = {
 	},
 }
 
-DB.tankremindbuffs = {
+E.tankremindbuffs = {
 	PALADIN = {
 		25780, -- righteous fury
 	},
@@ -50,7 +50,7 @@ DB.tankremindbuffs = {
 
 -- Nasty stuff below. Don't touch.
 local class = select(2, UnitClass("Player"))
-local buffs = DB.remindbuffs[class]
+local buffs = E.remindbuffs[class]
 local sound
 
 if (buffs and buffs[1]) then
@@ -100,14 +100,14 @@ if (buffs and buffs[1]) then
 	end
 	
 	local frame = CreateFrame("Frame", _, UIParent)
-	DB.CreatePanel(frame, DB.Scale(40), DB.Scale(40), "CENTER", UIParent, "CENTER", 0, DB.Scale(200))
+	E.CreatePanel(frame, E.Scale(40), E.Scale(40), "CENTER", UIParent, "CENTER", 0, E.Scale(200))
 	frame:SetFrameLevel(1)
 	
 	frame.icon = frame:CreateTexture(nil, "OVERLAY")
 	frame.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	frame.icon:SetPoint("CENTER")
-	frame.icon:SetWidth(DB.Scale(36))
-	frame.icon:SetHeight(DB.Scale(36))
+	frame.icon:SetWidth(E.Scale(36))
+	frame.icon:SetHeight(E.Scale(36))
 	frame:Hide()
 	
 	frame:RegisterEvent("UNIT_AURA")
@@ -124,7 +124,7 @@ if (buffs and buffs[1]) then
 end
 
 -- Tanking Version
-local tankbuffs = DB.tankremindbuffs[class]
+local tankbuffs = E.tankremindbuffs[class]
 local tanksound
 if (tankbuffs and tankbuffs[1]) then
 	local function OnEvent(self, event)	
@@ -150,7 +150,7 @@ if (tankbuffs and tankbuffs[1]) then
 		end
 		local inInstance, instanceType = IsInInstance()	
 		--check aura
-		if (not UnitInVehicle("player")) and (inInstance and (instanceType == "raid" or instanceType == "party")) and DB.Role == "Tank" and self.icon:GetTexture() then
+		if (not UnitInVehicle("player")) and (inInstance and (instanceType == "raid" or instanceType == "party")) and E.Role == "Tank" and self.icon:GetTexture() then
 			for i, tankbuffs in pairs(tankbuffs) do
 				local name = GetSpellInfo(tankbuffs)
 				if (name and UnitBuff("player", name)) then
@@ -171,13 +171,13 @@ if (tankbuffs and tankbuffs[1]) then
 	end
 	
 	local frame = CreateFrame("Frame", _, UIParent)
-	DB.CreatePanel(frame, DB.Scale(40), DB.Scale(40), "CENTER", UIParent, "CENTER", 0, DB.Scale(200))
+	E.CreatePanel(frame, E.Scale(40), E.Scale(40), "CENTER", UIParent, "CENTER", 0, E.Scale(200))
 	frame:SetFrameLevel(2)
 	frame.icon = frame:CreateTexture(nil, "OVERLAY")
 	frame.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	frame.icon:SetPoint("CENTER")
-	frame.icon:SetWidth(DB.Scale(36))
-	frame.icon:SetHeight(DB.Scale(36))
+	frame.icon:SetWidth(E.Scale(36))
+	frame.icon:SetHeight(E.Scale(36))
 	frame:Hide()
 	
 	frame:RegisterEvent("UNIT_AURA")

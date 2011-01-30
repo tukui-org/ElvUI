@@ -1,7 +1,7 @@
 ----------------------------------------------------------------------------
 -- This Module loads new user settings if ElvUI_ConfigUI is loaded
 ----------------------------------------------------------------------------
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 local myPlayerRealm = GetCVar("realmName")
 local myPlayerName  = UnitName("player")

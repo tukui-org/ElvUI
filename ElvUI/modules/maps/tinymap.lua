@@ -1,4 +1,4 @@
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 -- BG TINY MAP (BG, mining, etc)
 local tinymap = CreateFrame("Frame", "ElvuiTinyMapMover", UIParent)
@@ -15,7 +15,7 @@ tinymap:Hide()
 local tinymapbg = CreateFrame("Frame", nil, tinymap)
 tinymapbg:SetAllPoints()
 tinymapbg:SetFrameLevel(tinymap:GetFrameLevel() - 10)
-DB.SetTemplate(tinymapbg)
+E.SetTemplate(tinymapbg)
 
 tinymap:SetScript("OnEvent", function(self, event, addon)
 	if addon ~= "Blizzard_BattlefieldMinimap" then return end
@@ -23,12 +23,12 @@ tinymap:SetScript("OnEvent", function(self, event, addon)
 	BattlefieldMinimap:SetScript("OnShow", function(self)
 		-- show holder
 		tinymap:Show()
-		DB.Kill(BattlefieldMinimapCorner)
-		DB.Kill(BattlefieldMinimapBackground)
-		DB.Kill(BattlefieldMinimapTab)
-		DB.Kill(BattlefieldMinimapTabLeft)
-		DB.Kill(BattlefieldMinimapTabMiddle)
-		DB.Kill(BattlefieldMinimapTabRight)
+		E.Kill(BattlefieldMinimapCorner)
+		E.Kill(BattlefieldMinimapBackground)
+		E.Kill(BattlefieldMinimapTab)
+		E.Kill(BattlefieldMinimapTabLeft)
+		E.Kill(BattlefieldMinimapTabMiddle)
+		E.Kill(BattlefieldMinimapTabRight)
 		self:SetParent(tinymap)
 		self:SetPoint("TOPLEFT", tinymap, "TOPLEFT", 2, -2)
 		self:SetFrameStrata(tinymap:GetFrameStrata())

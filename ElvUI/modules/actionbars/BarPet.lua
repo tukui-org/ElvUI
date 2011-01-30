@@ -1,4 +1,4 @@
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if not C["actionbar"].enable == true then return end
 
@@ -18,14 +18,14 @@ function PositionBarPet(self)
 		button:SetParent(ElvuiPetBar)
 		ElvuiPetActionBarBackground:SetParent(ElvuiPetBar)
 		button:SetFrameStrata("MEDIUM")
-		button:SetSize(DB.petbuttonsize, DB.petbuttonsize)
+		button:SetSize(E.petbuttonsize, E.petbuttonsize)
 		if i == 1 then
-			button:SetPoint("TOPLEFT", DB.petbuttonspacing, -DB.petbuttonspacing)
+			button:SetPoint("TOPLEFT", E.petbuttonspacing, -E.petbuttonspacing)
 		else
 			if C["actionbar"].bottompetbar ~= true then
-				button:SetPoint("TOP", _G["PetActionButton"..(i - 1)], "BOTTOM", 0, -DB.petbuttonspacing)
+				button:SetPoint("TOP", _G["PetActionButton"..(i - 1)], "BOTTOM", 0, -E.petbuttonspacing)
 			else
-				button:SetPoint("LEFT", _G["PetActionButton"..(i - 1)], "RIGHT", DB.petbuttonspacing, 0)
+				button:SetPoint("LEFT", _G["PetActionButton"..(i - 1)], "RIGHT", E.petbuttonspacing, 0)
 			end	
 		end
 		button:Show()
@@ -68,14 +68,14 @@ bar:SetScript("OnEvent", function(self, event, ...)
 		
 		PositionBarPet(self)
 		RegisterStateDriver(self, "visibility", "[pet,novehicleui,nobonusbar:5] show; hide")
-		hooksecurefunc("PetActionBar_Update", DB.ElvuiPetBarUpdate)
+		hooksecurefunc("PetActionBar_Update", E.ElvuiPetBarUpdate)
 	elseif event == "PET_BAR_UPDATE" or event == "UNIT_PET" and arg1 == "player" 
 	or event == "PLAYER_CONTROL_LOST" or event == "PLAYER_CONTROL_GAINED" or event == "PLAYER_FARSIGHT_FOCUS_CHANGED" or event == "UNIT_FLAGS"
 	or arg1 == "pet" and (event == "UNIT_AURA") then
-		DB.ElvuiPetBarUpdate()
+		E.ElvuiPetBarUpdate()
 	elseif event == "PET_BAR_UPDATE_COOLDOWN" then
 		PetActionBar_UpdateCooldowns()
 	else
-		DB.StylePet()
+		E.StylePet()
 	end
 end)

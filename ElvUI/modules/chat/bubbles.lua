@@ -1,10 +1,10 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 if C["chat"].bubbles ~= true then return end
 local chatbubblehook = CreateFrame("Frame", nil, UIParent)
-local noscalemult = DB.mult * C["general"].uiscale
+local noscalemult = E.mult * C["general"].uiscale
 local tslu = 0
 local numkids = 0
 local bubbles = {}

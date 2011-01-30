@@ -1,4 +1,4 @@
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if not C["actionbar"].enable == true then return end
 
@@ -20,27 +20,27 @@ function PositionBar5()
 		b:Show()
 		if C["actionbar"].rightbars > 1 then
 			if i == 1 then
-				b:SetPoint("TOPLEFT", ElvuiActionBarBackgroundRight, "TOPLEFT", DB.buttonspacing, -DB.buttonspacing)
+				b:SetPoint("TOPLEFT", ElvuiActionBarBackgroundRight, "TOPLEFT", E.buttonspacing, -E.buttonspacing)
 			else
-				b:SetPoint("TOP", b2, "BOTTOM", 0, -DB.buttonspacing)
+				b:SetPoint("TOP", b2, "BOTTOM", 0, -E.buttonspacing)
 			end
 		elseif C["actionbar"].bottomrows == 3 and C["actionbar"].splitbar == true then
 			if i == 1 then
-				b:SetPoint("TOP", MultiBarLeftButton4, "BOTTOM", 0, -DB.buttonspacing)
+				b:SetPoint("TOP", MultiBarLeftButton4, "BOTTOM", 0, -E.buttonspacing)
 			elseif i < 4 then
-				b:SetPoint("LEFT", b2, "RIGHT", DB.buttonspacing, 0)
+				b:SetPoint("LEFT", b2, "RIGHT", E.buttonspacing, 0)
 			elseif i == 4 then
-				b:SetPoint("TOP", MultiBarLeftButton10, "BOTTOM", 0, -DB.buttonspacing)
+				b:SetPoint("TOP", MultiBarLeftButton10, "BOTTOM", 0, -E.buttonspacing)
 			elseif i > 4 and i < 7 then
-				b:SetPoint("LEFT", b2, "RIGHT", DB.buttonspacing, 0)
+				b:SetPoint("LEFT", b2, "RIGHT", E.buttonspacing, 0)
 			elseif i == 7 then
-				b:SetPoint("RIGHT", MultiBarLeftButton1, "LEFT", -DB.buttonspacing, 0)
+				b:SetPoint("RIGHT", MultiBarLeftButton1, "LEFT", -E.buttonspacing, 0)
 			elseif i > 7 and i < 10 then
-				b:SetPoint("TOP", b2, "BOTTOM", 0, -DB.buttonspacing)
+				b:SetPoint("TOP", b2, "BOTTOM", 0, -E.buttonspacing)
 			elseif i == 10 then
-				b:SetPoint("LEFT", MultiBarLeftButton9, "RIGHT", DB.buttonspacing, 0)
+				b:SetPoint("LEFT", MultiBarLeftButton9, "RIGHT", E.buttonspacing, 0)
 			elseif i > 10 then
-				b:SetPoint("TOP", b2, "BOTTOM", 0, -DB.buttonspacing)
+				b:SetPoint("TOP", b2, "BOTTOM", 0, -E.buttonspacing)
 			else
 				b:Hide()
 			end

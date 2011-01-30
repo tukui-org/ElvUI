@@ -1,11 +1,11 @@
 -- we just use default totem bar for shaman
 -- we parent it to our shapeshift bar.
 -- This is approx the same script as it was in WOTLK Elvui version.
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 if C["actionbar"].enable ~= true then return end
-if DB.myclass ~= "SHAMAN" then return end
+if E.myclass ~= "SHAMAN" then return end
 
 if MultiCastActionBarFrame then
 	MultiCastActionBarFrame:SetScript("OnUpdate", nil)
@@ -17,9 +17,9 @@ if MultiCastActionBarFrame then
 
 	hooksecurefunc("MultiCastActionButton_Update",function(actionbutton) if not InCombatLockdown() then actionbutton:SetAllPoints(actionbutton.slotButton) end end)
 
-	MultiCastActionBarFrame.SetParent = DB.dummy
-	MultiCastActionBarFrame.SetPoint = DB.dummy
-	MultiCastRecallSpellButton.SetPoint = DB.dummy -- bug fix, see http://www.tukui.org/v2/forums/topic.php?id=2405
+	MultiCastActionBarFrame.SetParent = E.dummy
+	MultiCastActionBarFrame.SetPoint = E.dummy
+	MultiCastRecallSpellButton.SetPoint = E.dummy -- bug fix, see http://www.tukui.org/v2/forums/topic.php?id=2405
 	
 	if C["actionbar"].shapeshiftmouseover == true then
 		MultiCastActionBarFrame:SetAlpha(0)

@@ -1,5 +1,5 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 --------------------------------------------------------------------
@@ -14,8 +14,8 @@ if C["datatext"].bags and C["datatext"].bags > 0 then
 
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
 	Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
-	Text:SetShadowOffset(DB.mult, -DB.mult)
-	DB.PP(C["datatext"].bags, Text)
+	Text:SetShadowOffset(E.mult, -E.mult)
+	E.PP(C["datatext"].bags, Text)
 
 	local function OnEvent(self, event, ...)
 		local free, total,used = 0, 0, 0
@@ -23,7 +23,7 @@ if C["datatext"].bags and C["datatext"].bags > 0 then
 			free, total = free + GetContainerNumFreeSlots(i), total + GetContainerNumSlots(i)
 		end
 		used = total - free
-		Text:SetText(L.datatext_bags..DB.ValColor..used.."|r/"..DB.ValColor..total)
+		Text:SetText(L.datatext_bags..E.ValColor..used.."|r/"..E.ValColor..total)
 		self:SetAllPoints(Text)
 	end
           

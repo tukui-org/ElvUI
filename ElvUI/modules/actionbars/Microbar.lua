@@ -1,4 +1,4 @@
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 if C["actionbar"].enable ~= true or C["actionbar"].microbar ~= true then return end
@@ -65,13 +65,13 @@ for i, button in pairs(microbuttons) do
 	local normal = m:GetNormalTexture()
 	local disabled = m:GetDisabledTexture()
 	
-	m.SetParent = DB.dummy
+	m.SetParent = E.dummy
 	_G[button.."Flash"]:SetTexture("")
 	m:SetHighlightTexture("")
-	m.SetHighlightTexture = DB.dummy
+	m.SetHighlightTexture = E.dummy
 
 	if i == 5 then
-		DB.Kill(m)
+		E.Kill(m)
 	elseif i == 9 then
 		m:ClearAllPoints()
 		m:SetPoint("LEFT", LFDMicroButton, "RIGHT", -3, 0)
@@ -82,29 +82,29 @@ for i, button in pairs(microbuttons) do
 	f:SetFrameStrata("BACKGROUND")
 	f:SetPoint("BOTTOMLEFT", m, "BOTTOMLEFT", 2, 0)
 	f:SetPoint("TOPRIGHT", m, "TOPRIGHT", -2, -28)
-	DB.SetNormTexTemplate(f)
+	E.SetNormTexTemplate(f)
 	m.frame = f
 	
 	pushed:SetTexCoord(0.17, 0.87, 0.5, 0.908)
 	pushed:ClearAllPoints()
-	pushed:SetPoint("TOPLEFT", m.frame, "TOPLEFT", DB.Scale(2), DB.Scale(-2))
-	pushed:SetPoint("BOTTOMRIGHT", m.frame, "BOTTOMRIGHT", DB.Scale(-2), DB.Scale(2))
+	pushed:SetPoint("TOPLEFT", m.frame, "TOPLEFT", E.Scale(2), E.Scale(-2))
+	pushed:SetPoint("BOTTOMRIGHT", m.frame, "BOTTOMRIGHT", E.Scale(-2), E.Scale(2))
 	
 	normal:SetTexCoord(0.17, 0.87, 0.5, 0.908)
 	normal:ClearAllPoints()
-	normal:SetPoint("TOPLEFT", m.frame, "TOPLEFT", DB.Scale(2), DB.Scale(-2))
-	normal:SetPoint("BOTTOMRIGHT", m.frame, "BOTTOMRIGHT", DB.Scale(-2), DB.Scale(2))
+	normal:SetPoint("TOPLEFT", m.frame, "TOPLEFT", E.Scale(2), E.Scale(-2))
+	normal:SetPoint("BOTTOMRIGHT", m.frame, "BOTTOMRIGHT", E.Scale(-2), E.Scale(2))
 	
 	if disabled then
 		disabled:SetTexCoord(0.17, 0.87, 0.5, 0.908)
 		disabled:ClearAllPoints()
-		disabled:SetPoint("TOPLEFT", m.frame, "TOPLEFT", DB.Scale(2), DB.Scale(-2))
-		disabled:SetPoint("BOTTOMRIGHT", m.frame, "BOTTOMRIGHT", DB.Scale(-2), DB.Scale(2))
+		disabled:SetPoint("TOPLEFT", m.frame, "TOPLEFT", E.Scale(2), E.Scale(-2))
+		disabled:SetPoint("BOTTOMRIGHT", m.frame, "BOTTOMRIGHT", E.Scale(-2), E.Scale(2))
 	end
 		
 
 	m.mouseover = false
-	m:HookScript("OnEnter", function(self) local color = RAID_CLASS_COLORS[DB.myclass] self.frame:SetBackdropBorderColor(color.r, color.g, color.b) self.mouseover = true end)
+	m:HookScript("OnEnter", function(self) local color = RAID_CLASS_COLORS[E.myclass] self.frame:SetBackdropBorderColor(color.r, color.g, color.b) self.mouseover = true end)
 	m:HookScript("OnLeave", function(self) self.frame:SetBackdropBorderColor(unpack(C["media"].bordercolor)) self.mouseover = false end)
 end
 
@@ -113,7 +113,7 @@ x:SetPoint("TOPLEFT", CharacterMicroButton.frame, "TOPLEFT")
 x:SetPoint("BOTTOMRIGHT", HelpMicroButton.frame, "BOTTOMRIGHT")
 x:EnableMouse(true)
 x.mouseover = false
-DB.CreateShadow(x)
+E.CreateShadow(x)
 x:SetScript("OnEnter", function(self) self.mouseover = true end)
 x:SetScript("OnLeave", function(self) self.mouseover = false end)
 
@@ -121,13 +121,13 @@ x:SetScript("OnLeave", function(self) self.mouseover = false end)
 --Fix/Create textures for buttons
 do
 	MicroButtonPortrait:ClearAllPoints()
-	MicroButtonPortrait:SetPoint("TOPLEFT", CharacterMicroButton.frame, "TOPLEFT", DB.Scale(2), DB.Scale(-2))
-	MicroButtonPortrait:SetPoint("BOTTOMRIGHT", CharacterMicroButton.frame, "BOTTOMRIGHT", DB.Scale(-2), DB.Scale(2))
+	MicroButtonPortrait:SetPoint("TOPLEFT", CharacterMicroButton.frame, "TOPLEFT", E.Scale(2), E.Scale(-2))
+	MicroButtonPortrait:SetPoint("BOTTOMRIGHT", CharacterMicroButton.frame, "BOTTOMRIGHT", E.Scale(-2), E.Scale(2))
 	
 	GuildMicroButtonTabard:ClearAllPoints()
 	GuildMicroButtonTabard:SetPoint("TOP", GuildMicroButton.frame, "TOP", 0, 25)
-	GuildMicroButtonTabard.SetPoint = DB.dummy
-	GuildMicroButtonTabard.ClearAllPoints = DB.dummy
+	GuildMicroButtonTabard.SetPoint = E.dummy
+	GuildMicroButtonTabard.ClearAllPoints = E.dummy
 end
 
 MicroParent:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 2, -2) --Default microbar position
@@ -136,8 +136,8 @@ MicroParent:SetHeight(CharacterMicroButton:GetHeight() - 28)
 
 CharacterMicroButton:ClearAllPoints()
 CharacterMicroButton:SetPoint("BOTTOMLEFT", MicroParent, "BOTTOMLEFT", 0,  0)
-CharacterMicroButton.SetPoint = DB.dummy
-CharacterMicroButton.ClearAllPoints = DB.dummy
+CharacterMicroButton.SetPoint = E.dummy
+CharacterMicroButton.ClearAllPoints = E.dummy
 
 
-DB.CreateMover(MicroParent, "MicroMover", "MicroBar")
+E.CreateMover(MicroParent, "MicroMover", "MicroBar")

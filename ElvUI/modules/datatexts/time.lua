@@ -1,5 +1,5 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 --------------------------------------------------------------------
@@ -15,11 +15,11 @@ if C["datatext"].wowtime and C["datatext"].wowtime > 0 then
 	
 	local Text = fader:CreateFontString(nil, "OVERLAY")
 	Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
-	Text:SetShadowOffset(DB.mult, -DB.mult)
-	DB.PP(C["datatext"].wowtime, Text)
+	Text:SetShadowOffset(E.mult, -E.mult)
+	E.PP(C["datatext"].wowtime, Text)
 
 	local int = 1
-	DB.SetUpAnimGroup(TimeDataText)
+	E.SetUpAnimGroup(TimeDataText)
 	local function Update(self, t)
 		int = int - t
 		if int < 0 then
@@ -28,34 +28,34 @@ if C["datatext"].wowtime and C["datatext"].wowtime > 0 then
 				Hr = tonumber(date("%I"))
 				Min = date("%M")
 				if C["datatext"].time24 == true then
-					Text:SetText(Hr24..DB.ValColor..":|r"..Min)
+					Text:SetText(Hr24..E.ValColor..":|r"..Min)
 				else
 					if Hr24>=12 then
-						Text:SetText(Hr..DB.ValColor..":|r"..Min..DB.ValColor.." PM")
+						Text:SetText(Hr..E.ValColor..":|r"..Min..E.ValColor.." PM")
 					else
-						Text:SetText(Hr..DB.ValColor..":|r"..Min..DB.ValColor.." AM")
+						Text:SetText(Hr..E.ValColor..":|r"..Min..E.ValColor.." AM")
 					end
 				end
 			else
 				local Hr, Min = GetGameTime()
 				if Min<10 then Min = "0"..Min end
 				if C["datatext"].time24 == true then
-					Text:SetText(Hr..DB.ValColor..":|r"..Min.." |cffffffff|r")
+					Text:SetText(Hr..E.ValColor..":|r"..Min.." |cffffffff|r")
 				else
 					if Hr>=12 then
 						if Hr>12 then Hr = Hr-12 end
-						Text:SetText(Hr..DB.ValColor..":|r"..Min..DB.ValColor.." PM")
+						Text:SetText(Hr..E.ValColor..":|r"..Min..E.ValColor.." PM")
 					else
 						if Hr == 0 then Hr = 12 end
-						Text:SetText(Hr..DB.ValColor..":|r"..Min..DB.ValColor.." AM")
+						Text:SetText(Hr..E.ValColor..":|r"..Min..E.ValColor.." AM")
 					end
 				end
 			end
 			
 			if CalendarGetNumPendingInvites() > 0 then
-				DB.Flash(TimeDataText, 0.53)
+				E.Flash(TimeDataText, 0.53)
 			else
-				DB.StopFlash(TimeDataText)
+				E.StopFlash(TimeDataText)
 			end
 			self:SetAllPoints(Text)
 			int = 1
@@ -64,16 +64,16 @@ if C["datatext"].wowtime and C["datatext"].wowtime > 0 then
 
 	Stat:SetScript("OnEnter", function(self)
 		OnLoad = function(self) RequestRaidInfo() end,
-		GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, DB.Scale(6));
+		GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, E.Scale(6));
 		GameTooltip:ClearAllPoints()
-		GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, DB.mult)
+		GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, E.mult)
 		GameTooltip:ClearLines()
 		
 		-- update level everytime we mouseover time
-		DB.level = UnitLevel("player") 
+		E.level = UnitLevel("player") 
 
 		-- show wintergrasp info at 77+ only, can't get wg info under 77.
-		if DB.level >= 77 and DB.level <=84 then
+		if E.level >= 77 and E.level <=84 then
 			local wgtime = GetWintergraspWaitTime() or nil
 			local control = QUEUE_TIME_UNAVAILABLE
 			local inInstance, instanceType = IsInInstance()
@@ -89,7 +89,7 @@ if C["datatext"].wowtime and C["datatext"].wowtime > 0 then
 				wgtime = (hour>0 and hour..":" or "")..min..":"..sec
 			end
 			GameTooltip:AddDoubleLine(format(PVPBATTLEGROUND_WINTERGRASPTIMER_TOOLTIP, ""),wgtime)
-		elseif DB.level == 85 then
+		elseif E.level == 85 then
 			local _, localizedName, isActive, canQueue, startTime, canEnter = GetWorldPVPAreaInfo(2)
 			local control = QUEUE_TIME_UNAVAILABLE
 			local inInstance, instanceType = IsInInstance()

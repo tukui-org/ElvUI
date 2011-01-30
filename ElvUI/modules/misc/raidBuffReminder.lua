@@ -1,5 +1,5 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if C["buffreminder"].raidbuffreminder ~= true then return end
 
@@ -103,7 +103,7 @@ local function CheckElixir(unit)
 end
 
 local function Pulse(self)
-	DB.Flash(self, 0.3)
+	E.Flash(self, 0.3)
 end
 
 
@@ -115,7 +115,7 @@ local function OnAuraChange(self, event, arg1, unit)
 	end
 	
 	--If We're a caster we may want to see differant buffs
-	if DB.Role == "Caster" then 
+	if E.Role == "Caster" then 
 		SetCasterOnlyBuffs() 
 	else
 		SetBuffs()
@@ -223,17 +223,17 @@ local function OnAuraChange(self, event, arg1, unit)
 		end)
 	else
 		self:SetScript("OnUpdate", function() end)
-		DB.StopFlash(self)
+		E.StopFlash(self)
 	end
 	
 	
 end
 
-local bsize = (((ElvuiMinimap:GetWidth()) - (DB.Scale(4) * 7)) / 6)
+local bsize = (((ElvuiMinimap:GetWidth()) - (E.Scale(4) * 7)) / 6)
 
 --Create the Main bar
 local raidbuff_reminder = CreateFrame("Frame", "RaidBuffReminder", ElvuiMinimap)
-DB.CreatePanel(raidbuff_reminder, ElvuiMinimap:GetWidth(), bsize + DB.Scale(8), "TOPLEFT", ElvuiMinimapStatsLeft, "BOTTOMLEFT", 0, DB.Scale(-3))
+E.CreatePanel(raidbuff_reminder, ElvuiMinimap:GetWidth(), bsize + E.Scale(8), "TOPLEFT", ElvuiMinimapStatsLeft, "BOTTOMLEFT", 0, E.Scale(-3))
 raidbuff_reminder:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 raidbuff_reminder:RegisterEvent("UNIT_INVENTORY_CHANGED")
 raidbuff_reminder:RegisterEvent("UNIT_AURA")
@@ -244,7 +244,7 @@ raidbuff_reminder:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
 raidbuff_reminder:RegisterEvent("CHARACTER_POINTS_CHANGED")
 raidbuff_reminder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 raidbuff_reminder:SetScript("OnEvent", OnAuraChange)
-DB.SetUpAnimGroup(RaidBuffReminder)
+E.SetUpAnimGroup(RaidBuffReminder)
 
 
 
@@ -252,17 +252,17 @@ DB.SetUpAnimGroup(RaidBuffReminder)
 local function CreateButton(name, relativeTo, firstbutton)
 	local button = CreateFrame("Frame", name, RaidBuffReminder)
 	if firstbutton == true then
-		DB.CreatePanel(button, bsize, bsize, "LEFT", relativeTo, "LEFT", DB.Scale(4), 0)
+		E.CreatePanel(button, bsize, bsize, "LEFT", relativeTo, "LEFT", E.Scale(4), 0)
 	else
-		DB.CreatePanel(button, bsize, bsize, "LEFT", relativeTo, "RIGHT", DB.Scale(4), 0)
+		E.CreatePanel(button, bsize, bsize, "LEFT", relativeTo, "RIGHT", E.Scale(4), 0)
 	end
 	button:SetFrameLevel(RaidBuffReminder:GetFrameLevel() + 2)
 	button:SetBackdropBorderColor(0,0,0,0)
 	
 	button.FrameBackdrop = CreateFrame("Frame", nil, button)
-	DB.SetTemplate(button.FrameBackdrop)
-	button.FrameBackdrop:SetPoint("TOPLEFT", DB.Scale(-2), DB.Scale(2))
-	button.FrameBackdrop:SetPoint("BOTTOMRIGHT", DB.Scale(2), DB.Scale(-2))
+	E.SetTemplate(button.FrameBackdrop)
+	button.FrameBackdrop:SetPoint("TOPLEFT", E.Scale(-2), E.Scale(2))
+	button.FrameBackdrop:SetPoint("BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
 	button.FrameBackdrop:SetFrameLevel(button:GetFrameLevel() - 1)	
 	button.t = button:CreateTexture(name..".t", "OVERLAY")
 	button.t:SetTexCoord(0.1, 0.9, 0.1, 0.9)
@@ -306,9 +306,9 @@ do
 	ElvuiInfoRightLButton:SetScript("OnEnter", function(self)
 		ElvuiInfoRightLButton.hovered = true
 		if InCombatLockdown() then return end
-		GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, DB.Scale(6));
+		GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, E.Scale(6));
 		GameTooltip:ClearAllPoints()
-		GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, DB.mult)
+		GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, E.mult)
 		GameTooltip:ClearLines()
 		
 		if RaidReminderShown == true then

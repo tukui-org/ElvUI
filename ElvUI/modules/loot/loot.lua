@@ -1,6 +1,6 @@
 -- credits : Haste
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if not C["loot"].lootframe == true then return end
 
@@ -64,9 +64,9 @@ end
 local createSlot = function(id)
 	local iconsize = iconSize-2
 	local frame = CreateFrame("Button", 'ButsuSlot'..id, addon)
-	frame:SetPoint("LEFT", DB.Scale(8), 0)
-	frame:SetPoint("RIGHT", DB.Scale(-8), 0)
-	frame:SetHeight(DB.Scale(iconsize))
+	frame:SetPoint("LEFT", E.Scale(8), 0)
+	frame:SetPoint("RIGHT", E.Scale(-8), 0)
+	frame:SetHeight(E.Scale(iconsize))
 	frame:SetID(id)
 
 	frame:RegisterForClicks("LeftButtonUp", "RightButtonUp")
@@ -77,24 +77,24 @@ local createSlot = function(id)
 	frame:SetScript("OnUpdate", OnUpdate)
 
 	local iconFrame = CreateFrame("Frame", nil, frame)
-	iconFrame:SetHeight(DB.Scale(iconsize))
-	iconFrame:SetWidth(DB.Scale(iconsize))
+	iconFrame:SetHeight(E.Scale(iconsize))
+	iconFrame:SetWidth(E.Scale(iconsize))
 	iconFrame:ClearAllPoints()
 	iconFrame:SetPoint("RIGHT", frame)
 	
-	DB.SetTemplate(iconFrame)
+	E.SetTemplate(iconFrame)
 
 	local icon = iconFrame:CreateTexture(nil, "ARTWORK")
 	icon:SetAlpha(.8)
 	icon:SetTexCoord(.07, .93, .07, .93)
-	icon:SetPoint("TOPLEFT", DB.Scale(2), DB.Scale(-2))
-	icon:SetPoint("BOTTOMRIGHT", DB.Scale(-2), DB.Scale(2))
+	icon:SetPoint("TOPLEFT", E.Scale(2), E.Scale(-2))
+	icon:SetPoint("BOTTOMRIGHT", E.Scale(-2), E.Scale(2))
 	frame.icon = icon
 
 	local count = iconFrame:CreateFontString(nil, "OVERLAY")
 	count:ClearAllPoints()
 	count:SetJustifyH"RIGHT"
-	count:SetPoint("BOTTOMRIGHT", iconFrame, DB.Scale(-1), DB.Scale(2))
+	count:SetPoint("BOTTOMRIGHT", iconFrame, E.Scale(-1), E.Scale(2))
 	count:SetFont(C["media"].font, C["general"].fontscale, "OUTLINE")
 	count:SetShadowOffset(.8, -.8)
 	count:SetShadowColor(0, 0, 0, 1)
@@ -134,15 +134,15 @@ local anchorSlots = function(self)
 			shownSlots = shownSlots + 1
 
 			-- We don't have to worry about the previous slots as they're already hidden.
-			frame:SetPoint("TOP", addon, DB.Scale(4), DB.Scale((-8 + iconsize) - (shownSlots * iconsize)))
+			frame:SetPoint("TOP", addon, E.Scale(4), E.Scale((-8 + iconsize) - (shownSlots * iconsize)))
 		end
 	end
 
-	self:SetHeight(DB.Scale(math.max(shownSlots * iconsize + 16, 20)))
+	self:SetHeight(E.Scale(math.max(shownSlots * iconsize + 16, 20)))
 end
 
 title:SetFont(C["media"].font, C["general"].fontscale, "OUTLINE")
-title:SetPoint("BOTTOMLEFT", addon, "TOPLEFT", DB.Scale(4), DB.Scale(4))
+title:SetPoint("BOTTOMLEFT", addon, "TOPLEFT", E.Scale(4), E.Scale(4))
 
 addon:SetScript("OnMouseDown", function(self) if(IsAltKeyDown()) then self:StartMoving() end end)
 addon:SetScript("OnMouseUp", function(self) self:StopMovingOrSizing() end)
@@ -154,7 +154,7 @@ addon:SetMovable(true)
 addon:RegisterForClicks"anyup"
 
 local x = CreateFrame("Frame", "LootFrameHolder", UIParent)
-x:SetPoint("TOPLEFT", DB.Scale(68), DB.Scale(-194))
+x:SetPoint("TOPLEFT", E.Scale(68), E.Scale(-194))
 x:SetWidth(150)
 x:SetHeight(22)
 
@@ -162,17 +162,17 @@ addon:SetParent(UIParent)
 addon:SetUserPlaced(true)
 addon:SetPoint("TOPLEFT", LootFrameHolder, "TOPLEFT", 0, 0)
 addon:SetBackdrop{
-	bgFile = C["media"].blank, tile = true, tileSize = DB.Scale(16),
-	edgeFile = C["media"].blank, edgeSize = DB.mult,
-	insets = {left = -DB.mult, right = -DB.mult, top = -DB.mult, bottom = -DB.mult},
+	bgFile = C["media"].blank, tile = true, tileSize = E.Scale(16),
+	edgeFile = C["media"].blank, edgeSize = E.mult,
+	insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult},
 }
-addon:SetWidth(DB.Scale(256))
-addon:SetHeight(DB.Scale(64))
+addon:SetWidth(E.Scale(256))
+addon:SetHeight(E.Scale(64))
 addon:SetBackdropColor(0.1, 0.1, 0.1, 1)
 
 addon:SetClampedToScreen(true)
-addon:SetClampRectInsets(0, 0, DB.Scale(14), 0)
-addon:SetHitRectInsets(0, 0, DB.Scale(-14), 0)
+addon:SetClampRectInsets(0, 0, E.Scale(14), 0)
+addon:SetHitRectInsets(0, 0, E.Scale(-14), 0)
 addon:SetFrameStrata"FULLSCREEN"
 addon:SetToplevel(true)
 
@@ -201,7 +201,7 @@ addon.LOOT_OPENED = function(self, event, autoloot)
 		y = y / self:GetEffectiveScale()
 
 		self:ClearAllPoints()
-		self:SetPoint("TOPLEFT", nil, "BOTTOMLEFT", DB.Scale(x - 40), DB.Scale(y + 20))
+		self:SetPoint("TOPLEFT", nil, "BOTTOMLEFT", E.Scale(x - 40), E.Scale(y + 20))
 		self:GetCenter()
 		self:Raise()
 	else
@@ -269,7 +269,7 @@ addon.LOOT_OPENED = function(self, event, autoloot)
 
 	local color = ITEM_QUALITY_COLORS[m]
 	self:SetBackdropBorderColor(color.r, color.g, color.b, .8)
-	self:SetWidth(DB.Scale(math.max(w, t)))
+	self:SetWidth(E.Scale(math.max(w, t)))
 end
 
 addon.LOOT_SLOT_CLEARED = function(self, event, slot)
@@ -320,7 +320,7 @@ addon:RegisterEvent"UPDATE_MASTER_LOOT_LIST"
 addon:RegisterEvent"ADDON_LOADED"
 addon:Hide()
 
-DB.CreateMover(LootFrameHolder, "LootFrameMover", "Loot Frame")
+E.CreateMover(LootFrameHolder, "LootFrameMover", "Loot Frame")
 
 -- Fuzz
 LootFrame:UnregisterAllEvents()

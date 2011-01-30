@@ -1,5 +1,5 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 --------------------------------------------------------------------
@@ -14,8 +14,8 @@ if C["datatext"].currency and C["datatext"].currency > 0 then
 
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
 	Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
-	Text:SetShadowOffset(DB.mult, -DB.mult)
-	DB.PP(C["datatext"].currency, Text)
+	Text:SetShadowOffset(E.mult, -E.mult)
+	E.PP(C["datatext"].currency, Text)
 	
 	local function update()
 		local _text = "---"
@@ -27,7 +27,7 @@ if C["datatext"].currency and C["datatext"].currency > 0 then
 				for _, word in ipairs(words) do
 					_text = _text .. string.sub(word,1,1)
 				end
-				_text = _text .. ": " .. DB.ValColor.. count .." |r"
+				_text = _text .. ": " .. E.ValColor.. count .." |r"
 			end
 		end
 		

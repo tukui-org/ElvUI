@@ -1,4 +1,4 @@
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if not C["actionbar"].enable == true then return end
 
@@ -22,29 +22,29 @@ function PositionBar4()
 		if C.actionbar.bottomrows == 3 then
 			if i == 1 then
 				if C["actionbar"].swaptopbottombar == true then
-					b:SetPoint("TOP", MultiBarBottomLeftButton1, "BOTTOM", 0, -DB.buttonspacing)
+					b:SetPoint("TOP", MultiBarBottomLeftButton1, "BOTTOM", 0, -E.buttonspacing)
 				else
-					b:SetPoint("BOTTOM", MultiBarBottomLeftButton1, "TOP", 0, DB.buttonspacing)
+					b:SetPoint("BOTTOM", MultiBarBottomLeftButton1, "TOP", 0, E.buttonspacing)
 				end
 			else
-				b:SetPoint("LEFT", b2, "RIGHT", DB.buttonspacing, 0)
+				b:SetPoint("LEFT", b2, "RIGHT", E.buttonspacing, 0)
 			end
 			ElvuiBar4:SetParent(ElvuiActionBarBackground)
 		elseif C.actionbar.bottomrows ~= 3 and C.actionbar.rightbars > 1 then
 			if i == 1 then
 				if C.actionbar.rightbars == 2 then
-					b:SetPoint("TOPRIGHT", ElvuiActionBarBackgroundRight, "TOPRIGHT", -DB.buttonspacing, -DB.buttonspacing)
+					b:SetPoint("TOPRIGHT", ElvuiActionBarBackgroundRight, "TOPRIGHT", -E.buttonspacing, -E.buttonspacing)
 				else
-					b:SetPoint("TOP", ElvuiActionBarBackgroundRight, "TOP", 0, -DB.buttonspacing)
+					b:SetPoint("TOP", ElvuiActionBarBackgroundRight, "TOP", 0, -E.buttonspacing)
 				end
 			else
-				b:SetPoint("TOP", b2, "BOTTOM", 0, -DB.buttonspacing)
+				b:SetPoint("TOP", b2, "BOTTOM", 0, -E.buttonspacing)
 			end		
 		else
 			if i == 1 then
-				b:SetPoint("TOPRIGHT", ElvuiActionBarBackgroundRight, "TOPRIGHT", -DB.buttonspacing, -DB.buttonspacing)
+				b:SetPoint("TOPRIGHT", ElvuiActionBarBackgroundRight, "TOPRIGHT", -E.buttonspacing, -E.buttonspacing)
 			else
-				b:SetPoint("TOP", b2, "BOTTOM", 0, -DB.buttonspacing)
+				b:SetPoint("TOP", b2, "BOTTOM", 0, -E.buttonspacing)
 			end	
 		end
 		

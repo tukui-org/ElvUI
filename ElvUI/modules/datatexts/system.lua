@@ -1,5 +1,5 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 --------------------------------------------------------------------
@@ -14,8 +14,8 @@ if C["datatext"].system and C["datatext"].system > 0 then
 	
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
 	Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
-	Text:SetShadowOffset(DB.mult, -DB.mult)
-	DB.PP(C["datatext"].system, Text)
+	Text:SetShadowOffset(E.mult, -E.mult)
+	E.PP(C["datatext"].system, Text)
 	local colorme = string.format("%02x%02x%02x", 1*255, 1*255, 1*255)
 	
 	local function formatMem(memory, color)
@@ -111,12 +111,12 @@ if C["datatext"].system and C["datatext"].system > 0 then
 	Stat:SetScript("OnEnter", function(self)
 		if not InCombatLockdown() then
 			local bandwidth = GetAvailableBandwidth()
-			GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, DB.Scale(6));
+			GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, E.Scale(6));
 			GameTooltip:ClearAllPoints()
-			GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, DB.mult)
+			GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, E.mult)
 			GameTooltip:ClearLines()
 			if bandwidth ~= 0 then
-				GameTooltip:AddDoubleLine(L.datatext_bandwidth,format("%s ".."Mbps",DB.Round(bandwidth, 2)),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+				GameTooltip:AddDoubleLine(L.datatext_bandwidth,format("%s ".."Mbps",E.Round(bandwidth, 2)),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 				GameTooltip:AddDoubleLine(L.datatext_download,format("%s%%", floor(GetDownloadedPercentage()*100+0.5)),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
 				GameTooltip:AddLine(" ")
 			end

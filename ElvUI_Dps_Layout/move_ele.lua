@@ -1,4 +1,4 @@
-local DB, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 
 
 if not C["unitframes"].enable == true then return end
@@ -90,7 +90,7 @@ local function CreateFrameOverlay(parent, name)
 	fs:SetFont(C["media"].font, C["auras"].auratextscale, "THINOUTLINE")
 	fs:SetJustifyH("CENTER")
 	fs:SetShadowColor(0, 0, 0)
-	fs:SetShadowOffset(DB.mult, -DB.mult)
+	fs:SetShadowOffset(E.mult, -E.mult)
 	fs:SetPoint("CENTER")
 	fs:SetText(name)
 end

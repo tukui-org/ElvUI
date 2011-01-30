@@ -1,5 +1,5 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if ( ElvuiUF ~= true and ( DB == nil or C["unitframes"] == nil or not C["unitframes"]["enable"] ) ) then return end
 
@@ -478,9 +478,9 @@ local function OnUnitFramesLoad(self, event, addon)
 					if ICON_POSITION == 2 or ICON_POSITION == 3 then
 						iconbackdrop = CreateFrame("Frame")
 						iconbackdrop:SetParent(result)
-						iconbackdrop:SetPoint("TOPLEFT", icon, "TOPLEFT", DB.Scale(-2), DB.Scale(2))
-						iconbackdrop:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT", DB.Scale(2), DB.Scale(-2))
-						DB.SetTemplate(iconbackdrop)
+						iconbackdrop:SetPoint("TOPLEFT", icon, "TOPLEFT", E.Scale(-2), E.Scale(2))
+						iconbackdrop:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
+						E.SetTemplate(iconbackdrop)
 						iconbackdrop:SetFrameLevel(result:GetFrameLevel() - 1)
 					end
 					
@@ -490,7 +490,7 @@ local function OnUnitFramesLoad(self, event, addon)
 					stacks:SetShadowOffset( 1.25, -1.25 );
 					stacks:SetJustifyH( "CENTER" );
 					stacks:SetJustifyV( "CENTER" );
-					stacks:SetPoint( "CENTER", icon, "CENTER", 0, DB.mult*2);
+					stacks:SetPoint( "CENTER", icon, "CENTER", 0, E.mult*2);
 					result.stacks = stacks;
 					
 
@@ -671,9 +671,9 @@ local function OnUnitFramesLoad(self, event, addon)
 			result.background = background;
 			
 			local border = CreateFrame( "Frame", nil, result, nil );
-				DB.SetTemplate(border)
-				border:SetPoint("TOPLEFT", DB.Scale(-2), DB.Scale(2))
-				border:SetPoint("BOTTOMRIGHT", DB.Scale(2), DB.Scale(-2))
+				E.SetTemplate(border)
+				border:SetPoint("TOPLEFT", E.Scale(-2), E.Scale(2))
+				border:SetPoint("BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
 				border:SetFrameLevel(result:GetFrameLevel() - 1)
 				border:SetBackdropColor(unpack(C["media"].backdropfadecolor))
 			result.border = border;		
@@ -743,7 +743,7 @@ local function OnUnitFramesLoad(self, event, addon)
 				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.TotemBar, "TOPLEFT", xOffset1, yOffset );
 				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.TotemBar, "TOPRIGHT", xOffset2, yOffset );								
 			else
-				if DB.myclass == "DRUID" or DB.myclass == "ROGUE" then
+				if E.myclass == "DRUID" or E.myclass == "ROGUE" then
 					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Health, "TOPLEFT", xOffset1, yOffset + 14 );
 					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Health, "TOPRIGHT", xOffset2, yOffset + 14 );				
 				else
@@ -804,7 +804,7 @@ local function OnUnitFramesLoad(self, event, addon)
 				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.TotemBar, "TOPLEFT", xOffset1, yOffset );
 				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.TotemBar, "TOPRIGHT", xOffset2, yOffset );								
 			else
-				if DB.myclass == "DRUID" or DB.myclass == "ROGUE" then
+				if E.myclass == "DRUID" or E.myclass == "ROGUE" then
 					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Health, "TOPLEFT", xOffset1, yOffset + 14 );
 					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Health, "TOPRIGHT", xOffset2, yOffset + 14 );				
 				else
@@ -870,7 +870,7 @@ local function OnUnitFramesLoad(self, event, addon)
 				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.TotemBar, "TOPLEFT", xOffset1, yOffset );
 				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.TotemBar, "TOPRIGHT", xOffset2, yOffset );								
 			else
-				if DB.myclass == "DRUID" or DB.myclass == "ROGUE" then
+				if E.myclass == "DRUID" or E.myclass == "ROGUE" then
 					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Health, "TOPLEFT", xOffset1, yOffset + 14 );
 					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Health, "TOPRIGHT", xOffset2, yOffset + 14 );				
 				else
@@ -960,7 +960,7 @@ local function OnUnitFramesLoad(self, event, addon)
 			targetFrame:SetPoint( "BOTTOMLEFT", Elv_target.Debuffs, "TOPLEFT", xOffset1, yOffset );
 			targetFrame:SetPoint( "BOTTOMRIGHT", Elv_target.Debuffs, "TOPRIGHT", xOffset2, yOffset );
 		else
-			if DB.myclass == "DRUID" or DB.myclass == "ROGUE" then
+			if E.myclass == "DRUID" or E.myclass == "ROGUE" then
 				targetFrame:SetPoint( "BOTTOMLEFT", Elv_target.Health, "TOPLEFT", xOffset1, yOffset + 14 );
 				targetFrame:SetPoint( "BOTTOMRIGHT", Elv_target.Health, "TOPRIGHT", xOffset2, yOffset + 14 );				
 			else

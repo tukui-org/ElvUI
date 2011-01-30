@@ -11,7 +11,7 @@
 	(C)2010 Darth Android / Telroth - Black Dragonflight
 ]]
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 if not Mod_AddonSkins or not IsAddOnLoaded("Omen") or not C["skin"].omen == true then return end

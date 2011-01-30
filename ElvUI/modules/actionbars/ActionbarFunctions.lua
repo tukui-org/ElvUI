@@ -1,10 +1,10 @@
 ------------------------------------------------------------------------
 --	ActionBar Functions
 ------------------------------------------------------------------------
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 -- styleButton function authors are Chiril & Karudon.
-function DB.StyleButton(b, checked) 
+function E.StyleButton(b, checked) 
     local name = b:GetName()
 
     local button          = _G[name]
@@ -51,7 +51,7 @@ function DB.StyleButton(b, checked)
 	end
 end
 
-function DB.ElvuiPetBarUpdate(self, event)
+function E.ElvuiPetBarUpdate(self, event)
 	local petActionButton, petActionIcon, petAutoCastableTexture, petAutoCastShine
 	for i=1, NUM_PET_ACTION_SLOTS, 1 do
 		local buttonName = "PetActionButton" .. i
@@ -129,7 +129,7 @@ function DB.ElvuiPetBarUpdate(self, event)
 	end
 end
 
-function DB.ElvuiShiftBarUpdate()
+function E.ElvuiShiftBarUpdate()
 	local numForms = GetNumShapeshiftForms()
 	local texture, name, isActive, isCastable
 	local button, icon, cooldown

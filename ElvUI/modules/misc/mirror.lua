@@ -1,5 +1,5 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 ---------------------------------------------------------------------
 -- original by haste, edited for Elvui :)
@@ -8,8 +8,8 @@ local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, L
 local _, settings = ...
 
 local _DEFAULTS = {
-	width = DB.Scale(220),
-	height = DB.Scale(18),
+	width = E.Scale(220),
+	height = E.Scale(18),
 	texture = C["media"].normTex,
 
 	position = {
@@ -43,7 +43,7 @@ do
 		local pos = settings.position[self.type]
 		local p1, frame, p2, x, y = strsplit("#", pos)
 
-		return self:SetPoint(p1, frame, p2, DB.Scale(x), DB.Scale(y))
+		return self:SetPoint(p1, frame, p2, E.Scale(x), E.Scale(y))
 	end
 
 	local OnUpdate = function(self, elapsed)
@@ -81,14 +81,14 @@ do
 		bg:SetVertexColor(r * .5, g * .5, b * .5)
 		
 		local border = CreateFrame("Frame", nil, frame)
-		border:SetPoint("TOPLEFT", frame, DB.Scale(-2), DB.Scale(2))
-		border:SetPoint("BOTTOMRIGHT", frame, DB.Scale(2), DB.Scale(-2))
-		DB.SetTemplate(border)
+		border:SetPoint("TOPLEFT", frame, E.Scale(-2), E.Scale(2))
+		border:SetPoint("BOTTOMRIGHT", frame, E.Scale(2), E.Scale(-2))
+		E.SetTemplate(border)
 		border:SetFrameLevel(0)
 
 		local text = frame:CreateFontString(nil, 'OVERLAY')
 		text:SetFont(C["media"].uffont, C["general"].fontscale, "THINOUTLINE")
-		text:SetShadowOffset(DB.mult, -DB.mult)
+		text:SetShadowOffset(E.mult, -E.mult)
 		text:SetShadowColor(0, 0, 0, 1)
 
 		text:SetJustifyH'CENTER'
@@ -96,7 +96,7 @@ do
 
 		text:SetPoint('LEFT', frame)
 		text:SetPoint('RIGHT', frame)
-		text:SetPoint('TOP', frame, 0, DB.Scale(2))
+		text:SetPoint('TOP', frame, 0, E.Scale(2))
 		text:SetPoint('BOTTOM', frame)
 
 		frame:SetSize(settings.width, settings.height)

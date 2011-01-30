@@ -1,24 +1,24 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 --------------------------------------------------------------------
 -- MINIMAP ROUND TO SQUARE AND MINIMAP SETTING
 --------------------------------------------------------------------
 
 Minimap:ClearAllPoints()
-Minimap:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", DB.Scale(-5), DB.Scale(-5))
-Minimap:SetSize(DB.Scale(144), DB.Scale(144))
+Minimap:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-5), E.Scale(-5))
+Minimap:SetSize(E.Scale(144), E.Scale(144))
 
 
-function DB.PostMinimapMove(frame)
+function E.PostMinimapMove(frame)
 
-	if DB.Movers[frame:GetName()]["moved"] ~= true then
+	if E.Movers[frame:GetName()]["moved"] ~= true then
 		frame:ClearAllPoints()
-		frame:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", DB.Scale(-6), DB.Scale(-6))
+		frame:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-6), E.Scale(-6))
 	end
 end
 
-DB.CreateMover(Minimap, "MinimapMover", "Minimap", nil, DB.PostMinimapMove) --Too easy muahaha
+E.CreateMover(Minimap, "MinimapMover", "Minimap", nil, E.PostMinimapMove) --Too easy muahaha
 
 --just incase these dont fit on the screen when you move the minimap
 LFDSearchStatus:SetClampedToScreen(true)
@@ -49,13 +49,13 @@ MiniMapTracking:Hide()
 
 -- Hide Mail Button
 MiniMapMailFrame:ClearAllPoints()
-MiniMapMailFrame:SetPoint("TOPRIGHT", Minimap, DB.Scale(3), DB.Scale(4))
+MiniMapMailFrame:SetPoint("TOPRIGHT", Minimap, E.Scale(3), E.Scale(4))
 MiniMapMailBorder:Hide()
 MiniMapMailIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\mail")
 
 -- Move battleground icon
 MiniMapBattlefieldFrame:ClearAllPoints()
-MiniMapBattlefieldFrame:SetPoint("BOTTOMRIGHT", Minimap, DB.Scale(3), 0)
+MiniMapBattlefieldFrame:SetPoint("BOTTOMRIGHT", Minimap, E.Scale(3), 0)
 MiniMapBattlefieldBorder:Hide()
 
 -- Hide world map button
@@ -72,7 +72,7 @@ GuildInstanceDifficulty:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 0, 0)
 
 local function UpdateLFG()
 	MiniMapLFGFrame:ClearAllPoints()
-	MiniMapLFGFrame:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", DB.Scale(2), DB.Scale(1))
+	MiniMapLFGFrame:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", E.Scale(2), E.Scale(1))
 	MiniMapLFGFrameBorder:Hide()
 end
 hooksecurefunc("MiniMapLFG_UpdateIsShown", UpdateLFG)
@@ -91,15 +91,15 @@ ElvuiMinimap:RegisterEvent("ADDON_LOADED")
 ElvuiMinimap:SetScript("OnEvent", function(self, event, addon)
 	if addon == "Blizzard_TimeManager" then
 		-- Hide Game Time
-		DB.Kill(TimeManagerClockButton)
-		--DB.Kill(InterfaceOptionsDisplayPanelShowClock)
+		E.Kill(TimeManagerClockButton)
+		--E.Kill(InterfaceOptionsDisplayPanelShowClock)
 	elseif addon == "Blizzard_FeedbackUI" then
-		DB.Kill(FeedbackUIButton)
+		E.Kill(FeedbackUIButton)
 	end
 end)
 
 if FeedbackUIButton then
-	DB.Kill(FeedbackUIButton)
+	E.Kill(FeedbackUIButton)
 end
 
 
@@ -141,12 +141,12 @@ if C["actionbar"].enable == true and C["actionbar"].microbar ~= true then
 	SpellbookMicroButton:SetAlpha(0)
 	SpellbookMicroButton:HookScript("OnEnter", function(self)  end)
 	SpellbookMicroButton:HookScript("OnLeave", function(self) self:SetAlpha(0) end)
-	SpellbookMicroButton.Hide = DB.dummy
-	SpellbookMicroButton.SetParent = DB.dummy
-	SpellbookMicroButton.ClearAllPoints = DB.dummy
-	SpellbookMicroButton.SetPoint = DB.dummy
+	SpellbookMicroButton.Hide = E.dummy
+	SpellbookMicroButton.SetParent = E.dummy
+	SpellbookMicroButton.ClearAllPoints = E.dummy
+	SpellbookMicroButton.SetPoint = E.dummy
 	SpellbookMicroButton:SetHighlightTexture("")
-	SpellbookMicroButton.SetHighlightTexture = DB.dummy
+	SpellbookMicroButton.SetHighlightTexture = E.dummy
 	
 	local pushed = SpellbookMicroButton:GetPushedTexture()
 	local normal = SpellbookMicroButton:GetNormalTexture()
@@ -157,27 +157,27 @@ if C["actionbar"].enable == true and C["actionbar"].microbar ~= true then
 	f:SetFrameStrata("LOW")
 	f:SetPoint("BOTTOMLEFT", SpellbookMicroButton, "BOTTOMLEFT", 2, 0)
 	f:SetPoint("TOPRIGHT", SpellbookMicroButton, "TOPRIGHT", -2, -28)
-	DB.SetNormTexTemplate(f)	
+	E.SetNormTexTemplate(f)	
 	SpellbookMicroButton.frame = f
 	
 	pushed:SetTexCoord(0.17, 0.87, 0.5, 0.908)
 	pushed:ClearAllPoints()
-	pushed:SetPoint("TOPLEFT", SpellbookMicroButton.frame, "TOPLEFT", DB.Scale(2), DB.Scale(-2))
-	pushed:SetPoint("BOTTOMRIGHT", SpellbookMicroButton.frame, "BOTTOMRIGHT", DB.Scale(-2), DB.Scale(2))
+	pushed:SetPoint("TOPLEFT", SpellbookMicroButton.frame, "TOPLEFT", E.Scale(2), E.Scale(-2))
+	pushed:SetPoint("BOTTOMRIGHT", SpellbookMicroButton.frame, "BOTTOMRIGHT", E.Scale(-2), E.Scale(2))
 	
 	normal:SetTexCoord(0.17, 0.87, 0.5, 0.908)
 	normal:ClearAllPoints()
-	normal:SetPoint("TOPLEFT", SpellbookMicroButton.frame, "TOPLEFT", DB.Scale(2), DB.Scale(-2))
-	normal:SetPoint("BOTTOMRIGHT", SpellbookMicroButton.frame, "BOTTOMRIGHT", DB.Scale(-2), DB.Scale(2))
+	normal:SetPoint("TOPLEFT", SpellbookMicroButton.frame, "TOPLEFT", E.Scale(2), E.Scale(-2))
+	normal:SetPoint("BOTTOMRIGHT", SpellbookMicroButton.frame, "BOTTOMRIGHT", E.Scale(-2), E.Scale(2))
 	
 	if disabled then
 		disabled:SetTexCoord(0.17, 0.87, 0.5, 0.908)
 		disabled:ClearAllPoints()
-		disabled:SetPoint("TOPLEFT", SpellbookMicroButton.frame, "TOPLEFT", DB.Scale(2), DB.Scale(-2))
-		disabled:SetPoint("BOTTOMRIGHT", SpellbookMicroButton.frame, "BOTTOMRIGHT", DB.Scale(-2), DB.Scale(2))
+		disabled:SetPoint("TOPLEFT", SpellbookMicroButton.frame, "TOPLEFT", E.Scale(2), E.Scale(-2))
+		disabled:SetPoint("BOTTOMRIGHT", SpellbookMicroButton.frame, "BOTTOMRIGHT", E.Scale(-2), E.Scale(2))
 	end
 	
-	SpellbookMicroButton:HookScript("OnEnter", function(self) local color = RAID_CLASS_COLORS[DB.myclass] self.frame:SetBackdropBorderColor(color.r, color.g, color.b) self:SetAlpha(1) end)
+	SpellbookMicroButton:HookScript("OnEnter", function(self) local color = RAID_CLASS_COLORS[E.myclass] self.frame:SetBackdropBorderColor(color.r, color.g, color.b) self:SetAlpha(1) end)
 	SpellbookMicroButton:HookScript("OnLeave", function(self) self.frame:SetBackdropBorderColor(unpack(C["media"].bordercolor)) self:SetAlpha(0) end)
 end
 
@@ -199,15 +199,15 @@ Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
 function GetMinimapShape() return 'SQUARE' end
 
 -- reskin LFG dropdown
-DB.SetTemplate(LFDSearchStatus)
+E.SetTemplate(LFDSearchStatus)
 
  
 --Style Zone and Coord panels
 local m_zone = CreateFrame("Frame",nil,UIParent)
-DB.CreatePanel(m_zone, 0, 20, "TOPLEFT", Minimap, "TOPLEFT", DB.Scale(2),DB.Scale(-2))
+E.CreatePanel(m_zone, 0, 20, "TOPLEFT", Minimap, "TOPLEFT", E.Scale(2),E.Scale(-2))
 m_zone:SetFrameLevel(5)
 m_zone:SetFrameStrata("LOW")
-m_zone:SetPoint("TOPRIGHT",Minimap,DB.Scale(-2),DB.Scale(-2))
+m_zone:SetPoint("TOPRIGHT",Minimap,E.Scale(-2),E.Scale(-2))
 m_zone:SetBackdropColor(0,0,0,0)
 m_zone:SetBackdropBorderColor(0,0,0,0)
 m_zone:Hide()
@@ -217,10 +217,10 @@ m_zone_text:SetFont(C["media"].font,C["general"].fontscale,"OUTLINE")
 m_zone_text:SetPoint("Center",0,0)
 m_zone_text:SetJustifyH("CENTER")
 m_zone_text:SetJustifyV("MIDDLE")
-m_zone_text:SetHeight(DB.Scale(12))
+m_zone_text:SetHeight(E.Scale(12))
 
 local m_coord = CreateFrame("Frame",nil,UIParent)
-DB.CreatePanel(m_coord, 40, 20, "BOTTOMLEFT", Minimap, "BOTTOMLEFT", DB.Scale(2),DB.Scale(2))
+E.CreatePanel(m_coord, 40, 20, "BOTTOMLEFT", Minimap, "BOTTOMLEFT", E.Scale(2),E.Scale(2))
 m_coord:SetFrameStrata("LOW")
 m_coord:SetBackdropColor(0,0,0,0)
 m_coord:SetBackdropBorderColor(0,0,0,0)
@@ -228,7 +228,7 @@ m_coord:Hide()
 
 local m_coord_text = m_coord:CreateFontString(nil,"Overlay")
 m_coord_text:SetFont(C["media"].font,C["general"].fontscale,"OUTLINE")
-m_coord_text:SetPoint("Center",DB.Scale(-1),0)
+m_coord_text:SetPoint("Center",E.Scale(-1),0)
 m_coord_text:SetJustifyH("CENTER")
 m_coord_text:SetJustifyV("MIDDLE")
  
@@ -287,7 +287,7 @@ local coord_Update = function(self,t)
 		else
 			yt = y
 		end
-		m_coord_text:SetText(xt..DB.ValColor..",|r"..yt)
+		m_coord_text:SetText(xt..E.ValColor..",|r"..yt)
 	end
 	ela = .2
 end

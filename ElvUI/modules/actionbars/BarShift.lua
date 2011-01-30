@@ -1,4 +1,4 @@
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if not C["actionbar"].enable == true then return end
 
@@ -18,16 +18,16 @@ if C["actionbar"].microbar == true then
 else
 	ElvuiShift:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 2, -2)
 end
-local w = numshape * (DB.petbuttonspacing + DB.petbuttonsize)
+local w = numshape * (E.petbuttonspacing + E.petbuttonsize)
 if w < 100 then w = 100 end
 ElvuiShift:SetWidth(w)
-ElvuiShift:SetHeight(DB.petbuttonsize)
+ElvuiShift:SetHeight(E.petbuttonsize)
 
 if C["actionbar"].hideshapeshift == true then
 	ElvuiShift:Hide()
 end
 
-DB.CreateMover(ElvuiShift, "ShapeShiftMover", "Class Bar")
+E.CreateMover(ElvuiShift, "ShapeShiftMover", "Class Bar")
 
 -- hide it if not needed and stop executing code
 if C.actionbar.hideshapeshift then ElvuiShift:Hide() return end
@@ -67,14 +67,14 @@ bar:SetScript("OnEvent", function(self, event, ...)
 					button:SetPoint("BOTTOMLEFT", ElvuiShift, 0, 0)
 				else
 					local previous = _G["ShapeshiftButton"..i-1]
-					button:SetPoint("LEFT", previous, "RIGHT", DB.petbuttonspacing, 0)
+					button:SetPoint("LEFT", previous, "RIGHT", E.petbuttonspacing, 0)
 				end
 			else
 				if i == 1 then
 					button:SetPoint("BOTTOMLEFT", ElvuiShift, 0, 0)
 				else
 					local previous = _G["ShapeshiftButton"..i-1]
-					button:SetPoint("TOP", previous, "BOTTOM", 0, -DB.petbuttonspacing)
+					button:SetPoint("TOP", previous, "BOTTOM", 0, -E.petbuttonspacing)
 				end			
 			end
 			local _, name = GetShapeshiftFormInfo(i)
@@ -82,7 +82,7 @@ bar:SetScript("OnEvent", function(self, event, ...)
 				button:Show()
 			end
 		end
-		RegisterStateDriver(self, "visibility", States[DB.myclass] or "hide")
+		RegisterStateDriver(self, "visibility", States[E.myclass] or "hide")
 	elseif event == "UPDATE_SHAPESHIFT_FORMS" then
 		-- Update Shapeshift Bar Button Visibility
 		-- I seriously don't know if it's the best way to do it on spec changes or when we learn a new stance.
@@ -97,11 +97,11 @@ bar:SetScript("OnEvent", function(self, event, ...)
 				button:Hide()
 			end
 		end
-		DB.ElvuiShiftBarUpdate()
+		E.ElvuiShiftBarUpdate()
 	elseif event == "PLAYER_ENTERING_WORLD" then
-		DB.StyleShift()
+		E.StyleShift()
 	else
-		DB.ElvuiShiftBarUpdate()
+		E.ElvuiShiftBarUpdate()
 	end
 end)
 

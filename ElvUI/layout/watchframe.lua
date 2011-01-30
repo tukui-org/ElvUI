@@ -1,6 +1,6 @@
 local ElvuiWatchFrame = CreateFrame("Frame", "ElvuiWatchFrame", UIParent)
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 local wideFrame = GetCVar("watchFrameWidth")
 
 local WatchFrameHolder = CreateFrame("Frame", "WatchFrameHolder", UIParent)
@@ -21,73 +21,73 @@ local function init()
 	ElvuiWatchFrame:SetPoint("TOP", WatchFrameHolder, "TOP", 0, 0)
 end
 
-function DB.PostWatchMove()
-	if DB.Movers["WatchFrameMover"]["moved"] == false then
+function E.PostWatchMove()
+	if E.Movers["WatchFrameMover"]["moved"] == false then
 		PositionWatchFrame()
 	end
 end
 
 function PositionWatchFrame()
-	if fired == true and DB.Movers["WatchFrameMover"]["moved"] == true then return end
+	if fired == true and E.Movers["WatchFrameMover"]["moved"] == true then return end
 	
 	if WatchFrameMover then
-		if DB.Movers["WatchFrameMover"]["moved"] == true then return end
+		if E.Movers["WatchFrameMover"]["moved"] == true then return end
 
 		WatchFrameMover:ClearAllPoints()
 		if C.actionbar.rightbars == 3 then
 			if C["actionbar"].bottompetbar ~= true then
-				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", DB.Scale(-210), DB.Scale(-300))
+				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-210), E.Scale(-300))
 			else
-				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", DB.Scale(-165), DB.Scale(-300))
+				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-165), E.Scale(-300))
 			end
 		elseif C.actionbar.rightbars == 2 then
 			if C["actionbar"].bottompetbar ~= true then
-				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", DB.Scale(-190), DB.Scale(-300))
+				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-190), E.Scale(-300))
 			else
-				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", DB.Scale(-140), DB.Scale(-300))
+				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-140), E.Scale(-300))
 			end
 		elseif C.actionbar.rightbars == 1 then
 			if C["actionbar"].bottompetbar ~= true then
-				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", DB.Scale(-160), DB.Scale(-300))
+				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-160), E.Scale(-300))
 			else
-				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", DB.Scale(-110), DB.Scale(-300))
+				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-110), E.Scale(-300))
 			end
 		else
 			if C["actionbar"].bottompetbar ~= true then
-				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", DB.Scale(-120), DB.Scale(-300))
+				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-120), E.Scale(-300))
 			else
-				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", DB.Scale(-70), DB.Scale(-300))
+				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-70), E.Scale(-300))
 			end
 		end		
 	else
 		WatchFrameHolder:ClearAllPoints()
 		if C.actionbar.rightbars == 3 then
 			if C["actionbar"].bottompetbar ~= true then
-				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", DB.Scale(-210), DB.Scale(-300))
+				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-210), E.Scale(-300))
 			else
-				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", DB.Scale(-165), DB.Scale(-300))
+				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-165), E.Scale(-300))
 			end
 		elseif C.actionbar.rightbars == 2 then
 			if C["actionbar"].bottompetbar ~= true then
-				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", DB.Scale(-190), DB.Scale(-300))
+				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-190), E.Scale(-300))
 			else
-				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", DB.Scale(-140), DB.Scale(-300))
+				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-140), E.Scale(-300))
 			end
 		elseif C.actionbar.rightbars == 1 then
 			if C["actionbar"].bottompetbar ~= true then
-				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", DB.Scale(-160), DB.Scale(-300))
+				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-160), E.Scale(-300))
 			else
-				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", DB.Scale(-110), DB.Scale(-300))
+				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-110), E.Scale(-300))
 			end
 		else
 			if C["actionbar"].bottompetbar ~= true then
-				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", DB.Scale(-120), DB.Scale(-300))
+				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-120), E.Scale(-300))
 			else
-				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", DB.Scale(-70), DB.Scale(-300))
+				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-70), E.Scale(-300))
 			end
 		end
 		
-		DB.CreateMover(WatchFrameHolder, "WatchFrameMover", "Watch Frame", true, DB.PostWatchMove)
+		E.CreateMover(WatchFrameHolder, "WatchFrameMover", "Watch Frame", true, E.PostWatchMove)
 	end
 end
 
@@ -98,7 +98,7 @@ local function setup()
 	ElvuiWatchFrame:SetSize(1,screenheight / 2)
 	
 	-- template was just to help positioning watch frame.
-	--DB.SetTemplate(ElvuiWatchFrame)
+	--E.SetTemplate(ElvuiWatchFrame)
 	
 	ElvuiWatchFrame:SetWidth(250)
 	
@@ -108,13 +108,13 @@ local function setup()
 	WatchFrame.ClearAllPoints = function() end
 	WatchFrame:SetPoint("TOPLEFT", 32,-2.5)
 	WatchFrame:SetPoint("BOTTOMRIGHT", 4,0)
-	WatchFrame.SetPoint = DB.dummy
+	WatchFrame.SetPoint = E.dummy
 
 	WatchFrameTitle:SetParent(ElvuiWatchFrame)
 	WatchFrameCollapseExpandButton:SetParent(ElvuiWatchFrame)
 	WatchFrameTitle:Hide()
-	WatchFrameTitle.Show = DB.dummy
-	WatchFrameCollapseExpandButton.Disable = DB.dummy
+	WatchFrameTitle.Show = E.dummy
+	WatchFrameCollapseExpandButton.Disable = E.dummy
 end
 
 ElvuiWatchFrame:RegisterEvent("PLAYER_ENTERING_WORLD")

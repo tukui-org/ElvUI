@@ -1,5 +1,5 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 -----------------------------------------
@@ -14,28 +14,28 @@ if C["datatext"].stat2 and C["datatext"].stat2 > 0 then
 
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
-	Text:SetShadowOffset(DB.mult, -DB.mult)
-	DB.PP(C["datatext"].stat2, Text)
+	Text:SetShadowOffset(E.mult, -E.mult)
+	E.PP(C["datatext"].stat2, Text)
 	
 	local int = 1	
 	local function Update(self, t)
 		int = int - t
 		if int < 0 then
-			if DB.Role == "Tank" then
+			if E.Role == "Tank" then
 				local baseArmor , effectiveArmor, armor, posBuff, negBuff = UnitArmor("player");
-				Text:SetText("Armor: "..DB.ValColor..(effectiveArmor))
+				Text:SetText("Armor: "..E.ValColor..(effectiveArmor))
 				
 				--Setup Armor Tooltip
 				self:SetAllPoints(Text)
 				self:SetScript("OnEnter", function()
-					if DB.Role == "Tank" then
-						GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, DB.Scale(6));
+					if E.Role == "Tank" then
+						GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, E.Scale(6));
 						GameTooltip:ClearAllPoints()
-						GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, DB.mult)
+						GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, E.mult)
 						GameTooltip:ClearLines()
 						GameTooltip:AddLine(L.datatext_mitigation)
 						GameTooltip:AddLine(' ')
-						local lv = DB.level +3
+						local lv = E.level +3
 						for i = 1, 4 do
 							local format = string.format
 							local mitigation
@@ -51,7 +51,7 @@ if C["datatext"].stat2 and C["datatext"].stat2 > 0 then
 							lv = lv - 1
 						end
 						lv = UnitLevel("target")
-						if lv > 0 and (lv > DB.level + 3 or lv < DB.level) then
+						if lv > 0 and (lv > E.level + 3 or lv < E.level) then
 							if lv < 60 then
 								mitigation = (effectiveArmor/(effectiveArmor+400+(85 * lv)));
 							else
@@ -67,20 +67,20 @@ if C["datatext"].stat2 and C["datatext"].stat2 > 0 then
 				end)
 				
 				self:SetScript("OnLeave", function() GameTooltip:Hide() end)				
-			elseif DB.Role == "Caster" then
-				Text:SetText(L.datatext_playercrit.." "..DB.ValColor..format("%.2f%%", GetSpellCritChance(1)))
-			elseif DB.Role == "Melee" then
+			elseif E.Role == "Caster" then
+				Text:SetText(L.datatext_playercrit.." "..E.ValColor..format("%.2f%%", GetSpellCritChance(1)))
+			elseif E.Role == "Melee" then
 				local meleecrit = GetCritChance()
 				local rangedcrit = GetRangedCritChance()
 				local CritChance
 					
-				if DB.myclass == "HUNTER" then    
+				if E.myclass == "HUNTER" then    
 					CritChance = rangedcrit
 				else
 					CritChance = meleecrit
 				end
 
-				Text:SetText(L.datatext_playercrit.." "..DB.ValColor..format("%.2f%%", CritChance))
+				Text:SetText(L.datatext_playercrit.." "..E.ValColor..format("%.2f%%", CritChance))
 			end
 			int = 1
 		end

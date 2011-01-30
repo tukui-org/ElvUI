@@ -1,15 +1,15 @@
 --And so it begins..
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 --Constants
-DB.dummy = function() return end
-DB.myname, _ = UnitName("player")
-DB.myrealm = GetRealmName()
-_, DB.myclass = UnitClass("player")
-DB.version = GetAddOnMetadata("ElvUI", "Version")
-DB.patch = GetBuildInfo()
-DB.level = UnitLevel("player")
-DB.IsElvsEdit = true
+E.dummy = function() return end
+E.myname, _ = UnitName("player")
+E.myrealm = GetRealmName()
+_, E.myclass = UnitClass("player")
+E.version = GetAddOnMetadata("ElvUI", "Version")
+E.patch = GetBuildInfo()
+E.level = UnitLevel("player")
+E.IsElvsEdit = true
 
 --Keybind Header
 BINDING_HEADER_ELVUI = GetAddOnMetadata("ElvUI", "Title") --Header name inside keybinds menu
@@ -25,22 +25,22 @@ local function CheckRole(self, event, unit)
 	else
 		resilience = false
 	end
-	if ((DB.myclass == "PALADIN" and tree == 2) or 
-	(DB.myclass == "WARRIOR" and tree == 3) or 
-	(DB.myclass == "DEATHKNIGHT" and tree == 1)) and
+	if ((E.myclass == "PALADIN" and tree == 2) or 
+	(E.myclass == "WARRIOR" and tree == 3) or 
+	(E.myclass == "DEATHKNIGHT" and tree == 1)) and
 	resilience == false or
-	(DB.myclass == "DRUID" and tree == 2 and GetBonusBarOffset() == 3) then
-		DB.Role = "Tank"
+	(E.myclass == "DRUID" and tree == 2 and GetBonusBarOffset() == 3) then
+		E.Role = "Tank"
 	else
 		local playerint = select(2, UnitStat("player", 4))
 		local playeragi	= select(2, UnitStat("player", 2))
 		local base, posBuff, negBuff = UnitAttackPower("player");
 		local playerap = base + posBuff + negBuff;
 
-		if (((playerap > playerint) or (playeragi > playerint)) and not (DB.myclass == "SHAMAN" and tree ~= 1 and tree ~= 3) and not (UnitBuff("player", GetSpellInfo(24858)) or UnitBuff("player", GetSpellInfo(65139)))) or DB.myclass == "ROGUE" or DB.myclass == "HUNTER" or (DB.myclass == "SHAMAN" and tree == 2) then
-			DB.Role = "Melee"
+		if (((playerap > playerint) or (playeragi > playerint)) and not (E.myclass == "SHAMAN" and tree ~= 1 and tree ~= 3) and not (UnitBuff("player", GetSpellInfo(24858)) or UnitBuff("player", GetSpellInfo(65139)))) or E.myclass == "ROGUE" or E.myclass == "HUNTER" or (E.myclass == "SHAMAN" and tree == 2) then
+			E.Role = "Melee"
 		else
-			DB.Role = "Caster"
+			E.Role = "Caster"
 		end
 	end
 end	
@@ -54,7 +54,7 @@ RoleUpdater:SetScript("OnEvent", CheckRole)
 CheckRole()
 
 --Install UI
-function DB.Install()
+function E.Install()
 	SetCVar("buffDurations", 1)
 	SetCVar("mapQuestDifficulty", 1)
 	SetCVar("scriptErrors", 0)
@@ -94,18 +94,18 @@ function DB.Install()
 			local chatFrameId = frame:GetID()
 			local chatName = FCF_GetChatWindowInfo(chatFrameId)
 			
-			_G["ChatFrame"..i]:SetSize(DB.Scale(C["chat"].chatwidth - 5), DB.Scale(C["chat"].chatheight))
+			_G["ChatFrame"..i]:SetSize(E.Scale(C["chat"].chatwidth - 5), E.Scale(C["chat"].chatheight))
 			
 			-- this is the default width and height of Elvui chats.
-			SetChatWindowSavedDimensions(chatFrameId, DB.Scale(C["chat"].chatwidth + -4), DB.Scale(C["chat"].chatheight))
+			SetChatWindowSavedDimensions(chatFrameId, E.Scale(C["chat"].chatwidth + -4), E.Scale(C["chat"].chatheight))
 			
 			-- move general bottom left
 			if i == 1 then
 				frame:ClearAllPoints()
-				frame:SetPoint("BOTTOMLEFT", ChatLBackground, "BOTTOMLEFT", DB.Scale(2), 0)
+				frame:SetPoint("BOTTOMLEFT", ChatLBackground, "BOTTOMLEFT", E.Scale(2), 0)
 			elseif i == 3 and C["chat"].rightchat == true then
 				frame:ClearAllPoints()
-				frame:SetPoint("BOTTOMLEFT", ChatRBackground, "BOTTOMLEFT", DB.Scale(2), 0)			
+				frame:SetPoint("BOTTOMLEFT", ChatRBackground, "BOTTOMLEFT", E.Scale(2), 0)			
 			end
 					
 			-- save new default position and dimension
@@ -181,7 +181,7 @@ function DB.Install()
 			ChatFrame_AddChannel(ChatFrame1, L.chat_trade)
 		end
 		
-		if DB.myname == "Elv" then
+		if E.myname == "Elv" then
 			--keep losing my god damn channels everytime i resetui
 			ChatFrame_AddChannel(DEFAULT_CHAT_FRAME, "tystank")
 			ChatFrame_AddChannel(DEFAULT_CHAT_FRAME, "tys")
@@ -251,11 +251,11 @@ ElvuiOnLogon:RegisterEvent("PLAYER_ENTERING_WORLD")
 ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 
-	if DB.getscreenresolution == "800x600"
-		or DB.getscreenresolution == "1024x768"
-		or DB.getscreenresolution == "720x576"
-		or DB.getscreenresolution == "1024x600" -- eeepc reso
-		or DB.getscreenresolution == "1152x864" then
+	if E.getscreenresolution == "800x600"
+		or E.getscreenresolution == "1024x768"
+		or E.getscreenresolution == "720x576"
+		or E.getscreenresolution == "1024x600" -- eeepc reso
+		or E.getscreenresolution == "1152x864" then
 			SetCVar("useUiScale", 0)
 			StaticPopup_Show("DISABLE_UI")
 	else
@@ -279,8 +279,8 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 		SetCVar("showArenaEnemyFrames", 0)
 	end
 	
-	DB.ChatLIn = true
-	DB.ChatRIn = true
+	E.ChatLIn = true
+	E.ChatRIn = true
 	
 
 	local chatrightfound = false
@@ -313,7 +313,7 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 		if not ButtonCF3 then return end
 		local x = CreateFrame("Frame", nil, ChatFrame3Tab)
 		x:SetAllPoints(ButtonCF3)
-		DB.SetTemplate(x)
+		E.SetTemplate(x)
 		x:SetBackdropColor(0,0,0,0)
 	end
 	
@@ -338,7 +338,7 @@ end)
 ------------------------------------------------------------------------
 
 -- Print Help Messages
-function DB.UIHelp()
+function E.UIHelp()
 	print(" ")
 	print(L.core_uihelp1)
 	print(L.core_uihelp2)
@@ -363,6 +363,6 @@ function DB.UIHelp()
 	print(L.core_uihelp14)
 end
 
--- convert datatext DB.ValColor from rgb decimal to hex DO NOT TOUCH
+-- convert datatext E.ValColor from rgb decimal to hex DO NOT TOUCH
 local r, g, b = unpack(C["media"].valuecolor)
-DB.ValColor = ("|cff%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255)
+E.ValColor = ("|cff%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255)

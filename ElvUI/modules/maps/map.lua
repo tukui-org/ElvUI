@@ -1,5 +1,5 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if not C["others"].enablemap == true then return end
 
@@ -13,15 +13,15 @@ local mapbg = CreateFrame("Frame", nil, WorldMapDetailFrame)
 	mapbg:SetBackdrop( { 
 	bgFile = C["media"].blank, 
 	edgeFile = C["media"].blank, 
-	tile = false, edgeSize = DB.mult, 
-	insets = { left = -DB.mult, right = -DB.mult, top = -DB.mult, bottom = -DB.mult }
+	tile = false, edgeSize = E.mult, 
+	insets = { left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult }
 })
 
 --Create move button for map
 local movebutton = CreateFrame ("Frame", nil, WorldMapFrameSizeUpButton)
-movebutton:SetHeight(DB.Scale(32))
-movebutton:SetWidth(DB.Scale(32))
-movebutton:SetPoint("TOP", WorldMapFrameSizeUpButton, "BOTTOM", DB.Scale(-1), DB.Scale(4))
+movebutton:SetHeight(E.Scale(32))
+movebutton:SetWidth(E.Scale(32))
+movebutton:SetPoint("TOP", WorldMapFrameSizeUpButton, "BOTTOM", E.Scale(-1), E.Scale(4))
 movebutton:SetBackdrop( { 
 	bgFile = "Interface\\AddOns\\ElvUI\\media\\textures\\cross",
 })
@@ -63,17 +63,17 @@ alds:SetFrameLevel(0)
 
 local SmallerMapSkin = function()
 	-- don't need this
-	DB.Kill(WorldMapTrackQuest)
+	E.Kill(WorldMapTrackQuest)
 
 	-- map glow
-	DB.CreateShadow(mapbg)
+	E.CreateShadow(mapbg)
 	
 	-- map border and bg
 	mapbg:SetBackdropColor(unpack(C["media"].backdropcolor))
 	mapbg:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 	mapbg:SetScale(1 / mapscale)
-	mapbg:SetPoint("TOPLEFT", WorldMapDetailFrame, DB.Scale(-2), DB.Scale(2))
-	mapbg:SetPoint("BOTTOMRIGHT", WorldMapDetailFrame, DB.Scale(2), DB.Scale(-2))
+	mapbg:SetPoint("TOPLEFT", WorldMapDetailFrame, E.Scale(-2), E.Scale(2))
+	mapbg:SetPoint("BOTTOMRIGHT", WorldMapDetailFrame, E.Scale(2), E.Scale(-2))
 	mapbg:SetFrameStrata("MEDIUM")
 	mapbg:SetFrameLevel(20)
 	
@@ -87,18 +87,18 @@ local SmallerMapSkin = function()
 	WorldMapFrameMiniBorderRight:Hide()
 	WorldMapFrameSizeUpButton:Show()
 	WorldMapFrameSizeUpButton:ClearAllPoints()
-	WorldMapFrameSizeUpButton:SetPoint("TOPRIGHT", WorldMapButton, "TOPRIGHT", DB.Scale(3), DB.Scale(-18))
+	WorldMapFrameSizeUpButton:SetPoint("TOPRIGHT", WorldMapButton, "TOPRIGHT", E.Scale(3), E.Scale(-18))
 	WorldMapFrameSizeUpButton:SetFrameStrata("HIGH")
 	WorldMapFrameSizeUpButton:SetFrameLevel(18)
 	WorldMapFrameCloseButton:ClearAllPoints()
-	WorldMapFrameCloseButton:SetPoint("TOPRIGHT", WorldMapButton, "TOPRIGHT", DB.Scale(3), DB.Scale(3))
+	WorldMapFrameCloseButton:SetPoint("TOPRIGHT", WorldMapButton, "TOPRIGHT", E.Scale(3), E.Scale(3))
 	WorldMapFrameCloseButton:SetFrameStrata("HIGH")
 	WorldMapFrameCloseButton:SetFrameLevel(18)
-	WorldMapFrameSizeDownButton:SetPoint("TOPRIGHT", WorldMapFrameMiniBorderRight, "TOPRIGHT", DB.Scale(-66), DB.Scale(7))
+	WorldMapFrameSizeDownButton:SetPoint("TOPRIGHT", WorldMapFrameMiniBorderRight, "TOPRIGHT", E.Scale(-66), E.Scale(7))
 	WorldMapFrameTitle:ClearAllPoints()
-	WorldMapFrameTitle:SetPoint("BOTTOMLEFT", WorldMapDetailFrame, DB.Scale(9), DB.Scale(10))
+	WorldMapFrameTitle:SetPoint("BOTTOMLEFT", WorldMapDetailFrame, E.Scale(9), E.Scale(10))
 	WorldMapFrameTitle:SetFont(ft, fontsize, "OUTLINE")
-	WorldMapFrameTitle:SetShadowOffset(DB.mult, -DB.mult)
+	WorldMapFrameTitle:SetShadowOffset(E.mult, -E.mult)
 	WorldMapFrameTitle:SetParent(ald)		
 	WorldMapTitleButton:SetFrameStrata("MEDIUM")
 	WorldMapTooltip:SetFrameStrata("TOOLTIP")
@@ -106,21 +106,21 @@ local SmallerMapSkin = function()
 	
 	WorldMapQuestShowObjectives:SetParent(ald)
 	WorldMapQuestShowObjectives:ClearAllPoints()
-	WorldMapQuestShowObjectives:SetPoint("BOTTOMRIGHT", WorldMapButton, "BOTTOMRIGHT", 0, DB.Scale(10))
+	WorldMapQuestShowObjectives:SetPoint("BOTTOMRIGHT", WorldMapButton, "BOTTOMRIGHT", 0, E.Scale(10))
 	WorldMapQuestShowObjectives:SetFrameStrata("HIGH")
 	WorldMapQuestShowObjectivesText:SetFont(ft, fontsize, "THINOUTLINE")
-	WorldMapQuestShowObjectivesText:SetShadowOffset(DB.mult, -DB.mult)
+	WorldMapQuestShowObjectivesText:SetShadowOffset(E.mult, -E.mult)
 	WorldMapQuestShowObjectivesText:ClearAllPoints()
-	WorldMapQuestShowObjectivesText:SetPoint("RIGHT", WorldMapQuestShowObjectives, "LEFT", DB.Scale(-4), DB.Scale(1))
+	WorldMapQuestShowObjectivesText:SetPoint("RIGHT", WorldMapQuestShowObjectives, "LEFT", E.Scale(-4), E.Scale(1))
 	
 	WorldMapShowDigSites:SetParent(ald)
 	WorldMapShowDigSites:ClearAllPoints()
-	WorldMapShowDigSites:SetPoint("BOTTOM", WorldMapQuestShowObjectives, "TOP", 0, DB.Scale(2))
+	WorldMapShowDigSites:SetPoint("BOTTOM", WorldMapQuestShowObjectives, "TOP", 0, E.Scale(2))
 	WorldMapShowDigSites:SetFrameStrata("HIGH")
 	WorldMapShowDigSitesText:ClearAllPoints()
-	WorldMapShowDigSitesText:SetPoint("RIGHT", WorldMapShowDigSites, "LEFT", DB.Scale(-4), DB.Scale(1))
+	WorldMapShowDigSitesText:SetPoint("RIGHT", WorldMapShowDigSites, "LEFT", E.Scale(-4), E.Scale(1))
 	WorldMapShowDigSitesText:SetFont(ft, fontsize, "THINOUTLINE")
-	WorldMapShowDigSitesText:SetShadowOffset(DB.mult, -DB.mult)		
+	WorldMapShowDigSitesText:SetShadowOffset(E.mult, -E.mult)		
 	
 	WorldMapFrameAreaFrame:SetFrameStrata("DIALOG")
 	WorldMapFrameAreaFrame:SetFrameLevel(20)
@@ -149,18 +149,18 @@ local BiggerMapSkin = function()
 	WorldMapQuestShowObjectives:SetPoint("BOTTOMRIGHT", WorldMapButton, "BOTTOMRIGHT")
 	WorldMapQuestShowObjectives:SetFrameStrata("HIGH")
 	WorldMapQuestShowObjectivesText:SetFont(ft, fs, "THINOUTLINE")
-	WorldMapQuestShowObjectivesText:SetShadowOffset(DB.mult, -DB.mult)
+	WorldMapQuestShowObjectivesText:SetShadowOffset(E.mult, -E.mult)
 	WorldMapQuestShowObjectivesText:ClearAllPoints()
-	WorldMapQuestShowObjectivesText:SetPoint("RIGHT", WorldMapQuestShowObjectives, "LEFT", DB.Scale(-4), DB.Scale(1))
+	WorldMapQuestShowObjectivesText:SetPoint("RIGHT", WorldMapQuestShowObjectives, "LEFT", E.Scale(-4), E.Scale(1))
 	
 	WorldMapShowDigSites:SetParent(ald)
 	WorldMapShowDigSites:ClearAllPoints()
-	WorldMapShowDigSites:SetPoint("BOTTOM", WorldMapQuestShowObjectives, "TOP", 0, DB.Scale(1))
+	WorldMapShowDigSites:SetPoint("BOTTOM", WorldMapQuestShowObjectives, "TOP", 0, E.Scale(1))
 	WorldMapShowDigSites:SetFrameStrata("HIGH")
 	WorldMapShowDigSitesText:ClearAllPoints()
-	WorldMapShowDigSitesText:SetPoint("RIGHT", WorldMapShowDigSites, "LEFT", DB.Scale(-4), DB.Scale(1))
+	WorldMapShowDigSitesText:SetPoint("RIGHT", WorldMapShowDigSites, "LEFT", E.Scale(-4), E.Scale(1))
 	WorldMapShowDigSitesText:SetFont(ft, fs, "THINOUTLINE")
-	WorldMapShowDigSitesText:SetShadowOffset(DB.mult, -DB.mult)	
+	WorldMapShowDigSitesText:SetShadowOffset(E.mult, -E.mult)	
 	
 	WorldMapFrameAreaFrame:SetFrameStrata("DIALOG")
 	WorldMapFrameAreaFrame:SetFrameLevel(20)
@@ -199,10 +199,10 @@ addon:SetScript("OnEvent", function(self, event)
 		WorldMapBlobFrame:Hide()
 		WorldMapPOIFrame:Hide()
 
-		WorldMapQuestShowObjectives.Show = DB.dummy
-		WorldMapTitleButton.Show = DB.dummy
-		WorldMapBlobFrame.Show = DB.dummy
-		WorldMapPOIFrame.Show = DB.dummy       
+		WorldMapQuestShowObjectives.Show = E.dummy
+		WorldMapTitleButton.Show = E.dummy
+		WorldMapBlobFrame.Show = E.dummy
+		WorldMapPOIFrame.Show = E.dummy       
 
 		WatchFrame_Update()
 	elseif event == "PLAYER_REGEN_ENABLED" then
@@ -228,8 +228,8 @@ end)
 
 local coords = CreateFrame("Frame", "CoordsFrame", WorldMapFrame)
 local fontheight = select(2, WorldMapQuestShowObjectivesText:GetFont())*1.1
-coords.PlayerText = DB.SetFontString(CoordsFrame, C["media"].font, fontheight, "THINOUTLINE")
-coords.MouseText = DB.SetFontString(CoordsFrame, C["media"].font, fontheight, "THINOUTLINE")
+coords.PlayerText = E.SetFontString(CoordsFrame, C["media"].font, fontheight, "THINOUTLINE")
+coords.MouseText = E.SetFontString(CoordsFrame, C["media"].font, fontheight, "THINOUTLINE")
 coords.PlayerText:SetTextColor(WorldMapQuestShowObjectivesText:GetTextColor())
 coords.MouseText:SetTextColor(WorldMapQuestShowObjectivesText:GetTextColor())
 coords.PlayerText:SetPoint("TOPLEFT", WorldMapButton, "TOPLEFT", 5, -5)

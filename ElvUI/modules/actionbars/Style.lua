@@ -1,4 +1,4 @@
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if not C["actionbar"].enable == true then return end
 
@@ -28,12 +28,12 @@ function style(self, vehicle, totem)
 	
 	if Border then
 		Border:Hide()
-		Border = DB.dummy
+		Border = E.dummy
 	end
 	
 	if Count then
 		Count:ClearAllPoints()
-		Count:SetPoint("BOTTOMRIGHT", 0, DB.Scale(2))
+		Count:SetPoint("BOTTOMRIGHT", 0, E.Scale(2))
 		Count:SetFont(C["media"].font, 12, "OUTLINE")
 	end
 	
@@ -41,43 +41,43 @@ function style(self, vehicle, totem)
 		if C["actionbar"].macrotext ~= true then
 			Btname:SetText("")
 			Btname:Hide()
-			Btname.Show = DB.dummy
+			Btname.Show = E.dummy
 		end
 	end
 	
 	if not _G[name.."Panel"] then
 		if not totem then
-			self:SetWidth(DB.buttonsize)
-			self:SetHeight(DB.buttonsize)
+			self:SetWidth(E.buttonsize)
+			self:SetHeight(E.buttonsize)
  
 			local panel = CreateFrame("Frame", name.."Panel", self)
 			if vehicle then
-				DB.CreatePanel(panel, DB.buttonsize*1.2, DB.buttonsize*1.2, "CENTER", self, "CENTER", 0, 0)
+				E.CreatePanel(panel, E.buttonsize*1.2, E.buttonsize*1.2, "CENTER", self, "CENTER", 0, 0)
 			else
-				DB.CreatePanel(panel, DB.buttonsize, DB.buttonsize, "CENTER", self, "CENTER", 0, 0)
+				E.CreatePanel(panel, E.buttonsize, E.buttonsize, "CENTER", self, "CENTER", 0, 0)
 			end
-			DB.SetNormTexTemplate(panel)
+			E.SetNormTexTemplate(panel)
 			panel:SetFrameStrata(self:GetFrameStrata())
 			panel:SetFrameLevel(self:GetFrameLevel() - 1 or 0)
 		end
 		
 		if Icon then
 			Icon:SetTexCoord(.08, .92, .08, .92)
-			Icon:SetPoint("TOPLEFT", Button, DB.Scale(2), DB.Scale(-2))
-			Icon:SetPoint("BOTTOMRIGHT", Button, DB.Scale(-2), DB.Scale(2))
+			Icon:SetPoint("TOPLEFT", Button, E.Scale(2), E.Scale(-2))
+			Icon:SetPoint("BOTTOMRIGHT", Button, E.Scale(-2), E.Scale(2))
 		end
 	end
 	
 	if HotKey then
 		HotKey:ClearAllPoints()
-		HotKey:SetPoint("TOPRIGHT", 0, DB.Scale(-3))
+		HotKey:SetPoint("TOPRIGHT", 0, E.Scale(-3))
 		HotKey:SetFont(C["media"].font, 12, "OUTLINE")
-		HotKey.ClearAllPoints = DB.dummy
-		HotKey.SetPoint = DB.dummy
+		HotKey.ClearAllPoints = E.dummy
+		HotKey.SetPoint = E.dummy
 		if not C["actionbar"].hotkey == true then
 			HotKey:SetText("")
 			HotKey:Hide()
-			HotKey.Show = DB.dummy
+			HotKey.Show = E.dummy
 		end
 	end
 	
@@ -93,16 +93,16 @@ local function stylesmallbutton(normal, button, icon, name, pet)
 	button:SetNormalTexture("")
 	
 	-- another bug fix reported by Affli in t12 beta
-	button.SetNormalTexture = DB.dummy
+	button.SetNormalTexture = E.dummy
 	
 	Flash:SetTexture(1, 1, 1, 0.3)
 	
 	if not _G[name.."Panel"] then
-		button:SetWidth(DB.petbuttonsize)
-		button:SetHeight(DB.petbuttonsize)
+		button:SetWidth(E.petbuttonsize)
+		button:SetHeight(E.petbuttonsize)
 		
 		local panel = CreateFrame("Frame", name.."Panel", button)
-		DB.CreatePanel(panel, DB.petbuttonsize, DB.petbuttonsize, "CENTER", button, "CENTER", 0, 0)
+		E.CreatePanel(panel, E.petbuttonsize, E.petbuttonsize, "CENTER", button, "CENTER", 0, 0)
 		panel:SetBackdropColor(unpack(media.backdropcolor))
 		panel:SetFrameStrata(button:GetFrameStrata())
 		panel:SetFrameLevel(button:GetFrameLevel() - 1)
@@ -111,15 +111,15 @@ local function stylesmallbutton(normal, button, icon, name, pet)
 		icon:ClearAllPoints()
 		if pet then
 			local autocast = _G[name.."AutoCastable"]
-			autocast:SetWidth(DB.Scale(41))
-			autocast:SetHeight(DB.Scale(40))
+			autocast:SetWidth(E.Scale(41))
+			autocast:SetHeight(E.Scale(40))
 			autocast:ClearAllPoints()
 			autocast:SetPoint("CENTER", button, 0, 0)
-			icon:SetPoint("TOPLEFT", button, DB.Scale(2), DB.Scale(-2))
-			icon:SetPoint("BOTTOMRIGHT", button, DB.Scale(-2), DB.Scale(2))
+			icon:SetPoint("TOPLEFT", button, E.Scale(2), E.Scale(-2))
+			icon:SetPoint("BOTTOMRIGHT", button, E.Scale(-2), E.Scale(2))
 		else
-			icon:SetPoint("TOPLEFT", button, DB.Scale(2), DB.Scale(-2))
-			icon:SetPoint("BOTTOMRIGHT", button, DB.Scale(-2), DB.Scale(2))
+			icon:SetPoint("TOPLEFT", button, E.Scale(2), E.Scale(-2))
+			icon:SetPoint("BOTTOMRIGHT", button, E.Scale(-2), E.Scale(2))
 		end
 	end
 	
@@ -130,7 +130,7 @@ local function stylesmallbutton(normal, button, icon, name, pet)
 	end
 end
 
-function DB.StyleShift()
+function E.StyleShift()
 	for i=1, NUM_SHAPESHIFT_SLOTS do
 		local name = "ShapeshiftButton"..i
 		local button  = _G[name]
@@ -140,7 +140,7 @@ function DB.StyleShift()
 	end
 end
 
-function DB.StylePet()
+function E.StylePet()
 	for i=1, NUM_PET_ACTION_SLOTS do
 		local name = "PetActionButton"..i
 		local button  = _G[name]
@@ -174,7 +174,7 @@ local function SetupFlyoutButton()
 		--prevent error if you don't have max ammount of buttons
 		if _G["SpellFlyoutButton"..i] then
 			style(_G["SpellFlyoutButton"..i], false)
-			DB.StyleButton(_G["SpellFlyoutButton"..i], true)
+			E.StyleButton(_G["SpellFlyoutButton"..i], true)
 			if C["actionbar"].rightbarmouseover == true then
 				SpellFlyout:HookScript("OnEnter", function(self) RightBarMouseOver(1) end)
 				SpellFlyout:HookScript("OnLeave", function(self) RightBarMouseOver(0) end)
@@ -245,7 +245,7 @@ local function styleflyout(self)
 		self.FlyoutArrow:SetPoint("LEFT", self, "LEFT", -arrowDistance, 0)
 		SetClampedTextureRotation(self.FlyoutArrow, 270)
 		FlyoutButtonPos(self,buttons,"LEFT")
-	elseif (self:GetParent() == MultiBarLeft and not DB.lowversion and C.actionbar.bottomrows == 2) then
+	elseif (self:GetParent() == MultiBarLeft and not E.lowversion and C.actionbar.bottomrows == 2) then
 		self.FlyoutArrow:ClearAllPoints()
 		self.FlyoutArrow:SetPoint("TOP", self, "TOP", 0, arrowDistance)
 		SetClampedTextureRotation(self.FlyoutArrow, 0)
@@ -257,26 +257,26 @@ end
 
 do	
 	for i = 1, 12 do
-		DB.StyleButton(_G["MultiBarLeftButton"..i], true)
-		DB.StyleButton(_G["MultiBarRightButton"..i], true)
-		DB.StyleButton(_G["MultiBarBottomRightButton"..i], true)
-		DB.StyleButton(_G["MultiBarBottomLeftButton"..i], true)
-		DB.StyleButton(_G["ActionButton"..i], true)
+		E.StyleButton(_G["MultiBarLeftButton"..i], true)
+		E.StyleButton(_G["MultiBarRightButton"..i], true)
+		E.StyleButton(_G["MultiBarBottomRightButton"..i], true)
+		E.StyleButton(_G["MultiBarBottomLeftButton"..i], true)
+		E.StyleButton(_G["ActionButton"..i], true)
 	end
 	 
 	for i=1, 10 do
-		DB.StyleButton(_G["ShapeshiftButton"..i], true)
-		DB.StyleButton(_G["PetActionButton"..i], true)	
+		E.StyleButton(_G["ShapeshiftButton"..i], true)
+		E.StyleButton(_G["PetActionButton"..i], true)	
 	end
 	
 	for i=1, 6 do
-		DB.StyleButton(_G["VehicleMenuBarActionButton"..i], true)
+		E.StyleButton(_G["VehicleMenuBarActionButton"..i], true)
 		style(_G["VehicleMenuBarActionButton"..i], true)
 	end
 end
 
 hooksecurefunc("ActionButton_Update", style)
-hooksecurefunc("ActionButton_UpdateHotkeys", DB.UpdateHotkey)
+hooksecurefunc("ActionButton_UpdateHotkeys", E.UpdateHotkey)
 hooksecurefunc("ActionButton_UpdateFlyout", styleflyout)
 
 --[[
@@ -286,7 +286,7 @@ hooksecurefunc("ActionButton_UpdateFlyout", styleflyout)
 
 ]]
 
-if DB.myclass ~= "SHAMAN" then return end
+if E.myclass ~= "SHAMAN" then return end
 
 -- Courtesy Blizzard Inc.
 -- I wouldn't have to copy these if they'd just make them not local >.>
@@ -341,7 +341,7 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			for _,button in ipairs(flyout.buttons) do
 				self:SkinButton(button)
 				if not InCombatLockdown() then
-					button:SetSize(DB.petbuttonsize,DB.petbuttonsize)
+					button:SetSize(E.petbuttonsize,E.petbuttonsize)
 					button:ClearAllPoints()
 					button:SetPoint("BOTTOM",last,"TOP",0,config.borderWidth)
 				end			
@@ -404,7 +404,7 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			end
 			button:GetHighlightTexture():SetTexture(nil)
 			button:GetNormalTexture():SetTexture(nil)
-			button:SetHeight(DB.Scale(4)*3)
+			button:SetHeight(E.Scale(4)*3)
 			button:ClearAllPoints()
 			if point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" or point == "BOTTOM" then
 				button:SetPoint("BOTTOMLEFT", parent, "TOPLEFT")
@@ -417,7 +417,7 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			button:SetBackdropBorderColor(0,0,0,0)
 			if not button.visibleBut then
 				button.visibleBut = CreateFrame("Frame",nil,button)
-				button.visibleBut:SetHeight(DB.Scale(4)*2)
+				button.visibleBut:SetHeight(E.Scale(4)*2)
 				if point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" or point == "BOTTOM" then
 					button.visibleBut:SetPoint("TOPLEFT",config.barSpacing)
 					button.visibleBut:SetPoint("TOPRIGHT",config.barSpacing)
@@ -452,10 +452,10 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			button.background:ClearAllPoints()
 			button.background:SetPoint("TOPLEFT",button,"TOPLEFT",config.borderWidth,-config.borderWidth)
 			button.background:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-config.borderWidth,config.borderWidth)
-			button:SetSize(DB.petbuttonsize, DB.petbuttonsize)
+			button:SetSize(E.petbuttonsize, E.petbuttonsize)
 			button:SetBackdropBorderColor(unpack(bordercolors[((index-1) % 4) + 1]))
 			style(button, false, true)
-			DB.StyleButton(button, false)
+			E.StyleButton(button, false)
 			if C["actionbar"].shapeshiftmouseover == true then
 				button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
 				button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
@@ -482,13 +482,13 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			button.overlayTex:Hide()
 			button:GetNormalTexture():SetTexture(nil)
 			button:GetNormalTexture():Hide()
-			button:GetNormalTexture().Show = DB.dummy
+			button:GetNormalTexture().Show = E.dummy
 			if _G[button:GetName().."Panel"] then _G[button:GetName().."Panel"]:Hide() end
 			if not InCombatLockdown() then button:SetAllPoints(button.slotButton) end
 			button:SetBackdropBorderColor(unpack(bordercolors[((index-1) % 4) + 1]))
 			button:SetBackdropColor(0,0,0,0)
 			style(button, false, true)
-			DB.StyleButton(button, false)
+			E.StyleButton(button, false)
 			if C["actionbar"].shapeshiftmouseover == true then
 				button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
 				button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
@@ -503,11 +503,11 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			button:GetNormalTexture():SetTexture(nil)
 			self:SkinBackgroundFrame(button)
 			button:SetBackdropBorderColor(unpack(bordercolors[((index-1)%5)+1]))
-			if not InCombatLockdown() then button:SetSize(DB.petbuttonsize, DB.petbuttonsize) end
+			if not InCombatLockdown() then button:SetSize(E.petbuttonsize, E.petbuttonsize) end
 			_G[button:GetName().."Highlight"]:SetTexture(nil)
 			_G[button:GetName().."NormalTexture"]:SetTexture(nil)
 			style(button, false, true)
-			DB.StyleButton(button, false)
+			E.StyleButton(button, false)
 			if index == 0 then
 				button:ClearAllPoints()
 				button:SetPoint("RIGHT", MultiCastActionButton1, "LEFT", -8, 0)

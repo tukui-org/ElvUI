@@ -1,7 +1,7 @@
 ﻿
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if DB.client == "zhTW" then
+if E.client == "zhTW" then
 	L.chat_BATTLEGROUND_GET = "[戰場]"
 	L.chat_BATTLEGROUND_LEADER_GET = "[戰場領袖]"
 	L.chat_BN_WHISPER_GET = "來自"
@@ -180,7 +180,7 @@ if DB.client == "zhTW" then
 	L.core_raidutil = "團隊助手"
 	L.core_raidutil_disbandgroup = "解散團隊"
 
-	function DB.UpdateHotkey(self, actionButtonType)
+	function E.UpdateHotkey(self, actionButtonType)
 		local hotkey = _G[self:GetName() .. 'HotKey']
 		local text = hotkey:GetText()
 

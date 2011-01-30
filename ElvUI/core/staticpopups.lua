@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 --	Popups
 ------------------------------------------------------------------------
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 StaticPopupDialogs["DISABLE_UI"] = {
 	text = L.popup_disableui,
@@ -25,7 +25,7 @@ StaticPopupDialogs["INSTALL_UI"] = {
 	text = L.popup_install,
 	button1 = ACCEPT,
 	button2 = CANCEL,
-    OnAccept = function() DB.ResetMovers() DB.Install() end,
+    OnAccept = function() E.ResetMovers() E.Install() end,
     timeout = 0,
     whileDead = 1,
 }
@@ -44,7 +44,7 @@ StaticPopupDialogs["CHAT_WARN"] = {
 	text = L.popup_rightchatwarn,
 	button1 = ACCEPT,
 	button2 = CANCEL,
-	OnAccept = DB.Install,
+	OnAccept = E.Install,
 	timeout = 0,
 	whileDead = 1,
 }

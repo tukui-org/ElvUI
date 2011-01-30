@@ -3,7 +3,7 @@
                 A featureless, 'pure' version of OmniCC.
                 This version should work on absolutely everything, but I've removed pretty much all of the options
 --]]
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if C["cooldown"].enable ~= true or IsAddOnLoaded("OmniCC") or IsAddOnLoaded("ncCooldown") then return end
 
@@ -21,11 +21,11 @@ local MIN_SCALE = 0.5 --the minimum scale we want to show cooldown counts at, an
 local MIN_DURATION = 2.5 --the minimum duration to show cooldown text for
 local EXPIRING_DURATION = C["cooldown"].treshold --the minimum number of seconds a cooldown must be to use to display in the expiring format
 
-local EXPIRING_FORMAT = "|cff"..DB.RGBPercToHex(unpack(C["cooldown"].expiringcolor))..'%.1f|r' --format for timers that are soon to expire
-local SECONDS_FORMAT = "|cff"..DB.RGBPercToHex(unpack(C["cooldown"].secondscolor))..'%d|r' --format for timers that have seconds remaining
-local MINUTES_FORMAT = "|cff"..DB.RGBPercToHex(unpack(C["cooldown"].minutescolor))..'%dm|r' --format for timers that have minutes remaining
-local HOURS_FORMAT = "|cff"..DB.RGBPercToHex(unpack(C["cooldown"].hourscolor))..'%dh|r' --format for timers that have hours remaining
-local DAYS_FORMAT = "|cff"..DB.RGBPercToHex(unpack(C["cooldown"].dayscolor))..'%dh|r' --format for timers that have days remaining
+local EXPIRING_FORMAT = "|cff"..E.RGBPercToHex(unpack(C["cooldown"].expiringcolor))..'%.1f|r' --format for timers that are soon to expire
+local SECONDS_FORMAT = "|cff"..E.RGBPercToHex(unpack(C["cooldown"].secondscolor))..'%d|r' --format for timers that have seconds remaining
+local MINUTES_FORMAT = "|cff"..E.RGBPercToHex(unpack(C["cooldown"].minutescolor))..'%dm|r' --format for timers that have minutes remaining
+local HOURS_FORMAT = "|cff"..E.RGBPercToHex(unpack(C["cooldown"].hourscolor))..'%dh|r' --format for timers that have hours remaining
+local DAYS_FORMAT = "|cff"..E.RGBPercToHex(unpack(C["cooldown"].dayscolor))..'%dh|r' --format for timers that have days remaining
 
 --local bindings!
 local floor = math.floor
@@ -36,7 +36,7 @@ local GetTime = GetTime
 local function getTimeText(s)
 	--format text as seconds when below a minute
 	if s < MINUTEISH then
-		local seconds = tonumber(DB.Round(s))
+		local seconds = tonumber(E.Round(s))
 		if seconds > EXPIRING_DURATION then
 			return SECONDS_FORMAT, seconds, s - (seconds - 0.51)
 		else
@@ -44,15 +44,15 @@ local function getTimeText(s)
 		end
 	--format text as minutes when below an hour
 	elseif s < HOURISH then
-		local minutes = tonumber(DB.Round(s/MINUTE))
+		local minutes = tonumber(E.Round(s/MINUTE))
 		return MINUTES_FORMAT, minutes, minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH)
 	--format text as hours when below a day
 	elseif s < DAYISH then
-		local hours = tonumber(DB.Round(s/HOUR))
+		local hours = tonumber(E.Round(s/HOUR))
 		return HOURS_FORMAT, hours, hours > 1 and (s - (hours*HOUR - HALFHOURISH)) or (s - HOURISH)
 	--format text as days
 	else
-		local days = tonumber(DB.Round(s/DAY))
+		local days = tonumber(E.Round(s/DAY))
 		return DAYS_FORMAT, days,  days > 1 and (s - (days*DAY - HALFDAYISH)) or (s - DAYISH)
 	end
 end
@@ -72,7 +72,7 @@ end
 --adjust font size whenever the timer's parent size changes
 --hide if it gets too tiny
 local function Timer_OnSizeChanged(self, width, height)
-	local fontScale = DB.Round(width) / ICON_SIZE
+	local fontScale = E.Round(width) / ICON_SIZE
 	if fontScale == self.fontScale then
 		return
 	end
@@ -97,7 +97,7 @@ local function Timer_OnUpdate(self, elapsed)
 		self.nextUpdate = self.nextUpdate - elapsed
 	else
 		local remain = self.duration - (GetTime() - self.start)
-		if tonumber(DB.Round(remain)) > 0 then
+		if tonumber(E.Round(remain)) > 0 then
 			if (self.fontScale * self:GetEffectiveScale() / UIParent:GetScale()) < MIN_SCALE then
 				self.text:SetText('')
 				self.nextUpdate  = 1
@@ -124,7 +124,7 @@ local function Timer_Create(self)
 	timer:SetScript('OnUpdate', Timer_OnUpdate)
 
 	local text = timer:CreateFontString(nil, 'OVERLAY')
-	text:SetPoint('CENTER', DB.Scale(1), DB.Scale(1))
+	text:SetPoint('CENTER', E.Scale(1), E.Scale(1))
 	text:SetJustifyH("CENTER")
 	timer.text = text
 

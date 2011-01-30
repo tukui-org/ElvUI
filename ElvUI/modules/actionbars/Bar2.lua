@@ -1,4 +1,4 @@
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if not C["actionbar"].enable == true then return end
 
@@ -17,12 +17,12 @@ function PositionBar2()
 		b:ClearAllPoints()
 		if i == 1 then
 			if C["actionbar"].swaptopbottombar == true then
-				b:SetPoint("TOP", ActionButton1, "BOTTOM", 0, -DB.buttonspacing)
+				b:SetPoint("TOP", ActionButton1, "BOTTOM", 0, -E.buttonspacing)
 			else
-				b:SetPoint("BOTTOM", ActionButton1, "TOP", 0, DB.buttonspacing)
+				b:SetPoint("BOTTOM", ActionButton1, "TOP", 0, E.buttonspacing)
 			end
 		else
-			b:SetPoint("LEFT", b2, "RIGHT", DB.buttonspacing, 0)
+			b:SetPoint("LEFT", b2, "RIGHT", E.buttonspacing, 0)
 		end
 	end
 	-- hide it if needed

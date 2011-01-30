@@ -1,5 +1,5 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 -----------------------------------------
@@ -14,14 +14,14 @@ if C["datatext"].stat1 and C["datatext"].stat1 > 0 then
 
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
 	Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
-	Text:SetShadowOffset(DB.mult, -DB.mult)
-	DB.PP(C["datatext"].stat1, Text)
+	Text:SetShadowOffset(E.mult, -E.mult)
+	E.PP(C["datatext"].stat1, Text)
 	
 	local int = 1	
 	local function Update(self, t)
 		int = int - t
 		if int < 0 then
-			if DB.Role == "Tank" then
+			if E.Role == "Tank" then
 				local format = string.format
 				local targetlv, playerlv = UnitLevel("target"), UnitLevel("player")
 				local basemisschance, leveldifference, dodge, parry, block, avoidance
@@ -54,14 +54,14 @@ if C["datatext"].stat1 and C["datatext"].stat1 > 0 then
 					avoidance = (dodge+parry+block+basemisschance)
 				end
 					
-				Text:SetText(L.datatext_playeravd..DB.ValColor..format("%.2f", avoidance))
+				Text:SetText(L.datatext_playeravd..E.ValColor..format("%.2f", avoidance))
 				--Setup Avoidance Tooltip
 				self:SetAllPoints(Text)
 				self:SetScript("OnEnter", function()
-					if DB.Role == "Tank" then
-						GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, DB.Scale(6));
+					if E.Role == "Tank" then
+						GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, E.Scale(6));
 						GameTooltip:ClearAllPoints()
-						GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, DB.mult)
+						GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, E.mult)
 						GameTooltip:ClearLines()
 						if targetlv > 1 then
 							GameTooltip:AddDoubleLine(L.datatext_avoidancebreakdown," ("..L.datatext_lvl.." "..targetlv..")")
@@ -79,7 +79,7 @@ if C["datatext"].stat1 and C["datatext"].stat1 > 0 then
 					end
 				end)
 				self:SetScript("OnLeave", function() GameTooltip:Hide() end)
-			elseif DB.Role == "Caster" then
+			elseif E.Role == "Caster" then
 				local spellpwr
 				if GetSpellBonusHealing() > GetSpellBonusDamage(7) then
 					spellpwr = GetSpellBonusHealing()
@@ -87,21 +87,21 @@ if C["datatext"].stat1 and C["datatext"].stat1 > 0 then
 					spellpwr = GetSpellBonusDamage(7)
 				end
 				
-				Text:SetText(L.datatext_playersp.." "..DB.ValColor..spellpwr)      
-			elseif DB.Role == "Melee" then
+				Text:SetText(L.datatext_playersp.." "..E.ValColor..spellpwr)      
+			elseif E.Role == "Melee" then
 				local base, posBuff, negBuff = UnitAttackPower("player");
 				local effective = base + posBuff + negBuff;
 				local Rbase, RposBuff, RnegBuff = UnitRangedAttackPower("player");
 				local Reffective = Rbase + RposBuff + RnegBuff;
 				local pwr
 					
-				if DB.myclass == "HUNTER" then
+				if E.myclass == "HUNTER" then
 					pwr = Reffective
 				else
 					pwr = effective
 				end
 				
-				Text:SetText(L.datatext_playerap.." "..DB.ValColor..pwr)      
+				Text:SetText(L.datatext_playerap.." "..E.ValColor..pwr)      
 			end
 			int = 1
 		end

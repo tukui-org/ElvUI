@@ -1,7 +1,7 @@
 
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if DB.client == "deDE" then
+if E.client == "deDE" then
 	L.chat_BATTLEGROUND_GET = "[B]"
 	L.chat_BATTLEGROUND_LEADER_GET = "[B]"
 	L.chat_BN_WHISPER_GET = "From"
@@ -187,7 +187,7 @@ if DB.client == "deDE" then
 	L.hunter_content = "Dein Begleiter ist zufrieden!"
 	L.hunter_happy = "Dein Begleiter ist glücklich!"
  
-	function DB.UpdateHotkey(self, actionButtonType)
+	function E.UpdateHotkey(self, actionButtonType)
 		local hotkey = _G[self:GetName() .. 'HotKey']
 		local text = hotkey:GetText()
  

@@ -1,8 +1,8 @@
 -- here we kill all shit stuff on default UI that we don't need!
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
-local k = DB.Kill
+local k = E.Kill
 
 local Kill = CreateFrame("Frame")
 Kill:RegisterEvent("ADDON_LOADED")
@@ -17,7 +17,7 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 		end	
 
 
-		if DB.myclass == "DEATHKNIGHT" then
+		if E.myclass == "DEATHKNIGHT" then
 			k(RuneFrame)
 		end
 	else

@@ -1,7 +1,7 @@
-local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 --Return shor value of a number
-function DB.ShortValue(v)
+function E.ShortValue(v)
 	if v >= 1e6 then
 		return ("%.1fm"):format(v / 1e6):gsub("%.?0+([km])$", "%1")
 	elseif v >= 1e3 or v <= -1e3 then
@@ -12,7 +12,7 @@ function DB.ShortValue(v)
 end
 
 --Return short negative value of a number, example -1000 returned as string -1k
-function DB.ShortValueNegative(v)
+function E.ShortValueNegative(v)
 	if v <= 999 then return v end
 	if v >= 1000000 then
 		local value = string.format("%.1fm", v/1000000)
@@ -24,19 +24,19 @@ function DB.ShortValueNegative(v)
 end
 
 --Return rounded number
-function DB.Round(v, decimals)
+function E.Round(v, decimals)
 	if not decimals then decimals = 0 end
     return (("%%.%df"):format(decimals)):format(v)
 end
 
 --Truncate a number off to n places
-function DB.Truncate(v, decimals)
+function E.Truncate(v, decimals)
 	if not decimals then decimals = 0 end
     return v - (v % (0.1 ^ decimals))
 end
 
 --RGB to Hex
-function DB.RGBToHex(r, g, b)
+function E.RGBToHex(r, g, b)
 	r = r <= 1 and r >= 0 and r or 0
 	g = g <= 1 and g >= 0 and g or 0
 	b = b <= 1 and b >= 0 and b or 0
@@ -44,7 +44,7 @@ function DB.RGBToHex(r, g, b)
 end
 
 --RGBPerc to Hex
-function DB.RGBPercToHex(r, g, b)
+function E.RGBPercToHex(r, g, b)
 	r = r <= 1 and r >= 0 and r or 0
 	g = g <= 1 and g >= 0 and g or 0
 	b = b <= 1 and b >= 0 and b or 0
@@ -52,17 +52,17 @@ function DB.RGBPercToHex(r, g, b)
 end
 
 --Hex to RGB
-function DB.HexToRGB(hex)
+function E.HexToRGB(hex)
 	local rhex, ghex, bhex = string.sub(hex, 1, 2), string.sub(hex, 3, 4), string.sub(hex, 5, 6)
 	return tonumber(rhex, 16), tonumber(ghex, 16), tonumber(bhex, 16)
 end
 
 
 --Add time before calling a function
---Usage DB.Delay(seconds, functionToCall, ...)
+--Usage E.Delay(seconds, functionToCall, ...)
 local waitTable = {}
 local waitFrame
-function DB.Delay(delay, func, ...)
+function E.Delay(delay, func, ...)
 	if(type(delay)~="number" or type(func)~="function") then
 		return false
 	end

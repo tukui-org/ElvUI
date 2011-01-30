@@ -1,23 +1,23 @@
-local DB, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
+local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 
 
 if not C["raidframes"].enable == true then return end
 if IsAddOnLoaded("ElvUI_Dps_Layout") then return end
 
-local raid_width = DB.Scale((ElvuiActionBarBackground:GetWidth() / 5) - 7)*C["raidframes"].scale
-local raid_height = DB.Scale(42)*C["raidframes"].scale
+local raid_width = E.Scale((ElvuiActionBarBackground:GetWidth() / 5) - 7)*C["raidframes"].scale
+local raid_height = E.Scale(42)*C["raidframes"].scale
 local function Shared(self, unit)
-	self.colors = DB.oUF_colors
+	self.colors = E.oUF_colors
 	self:RegisterForClicks("AnyUp")
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)
 	
-	self.menu = DB.SpawnMenu
+	self.menu = E.SpawnMenu
 
 	-- an update script to all elements
-	self:HookScript("OnShow", DB.updateAllElements)
+	self:HookScript("OnShow", E.updateAllElements)
 
-	self:SetBackdrop({bgFile = C["media"].blank, insets = {top = -DB.mult, left = -DB.mult, bottom = -DB.mult, right = -DB.mult}})
+	self:SetBackdrop({bgFile = C["media"].blank, insets = {top = -E.mult, left = -E.mult, bottom = -E.mult, right = -E.mult}})
 	self:SetBackdropColor(0.1, 0.1, 0.1)
 	
 	local health = CreateFrame('StatusBar', nil, self)
@@ -37,13 +37,13 @@ local function Shared(self, unit)
 	self.Health.bg = health.bg
 	
 	health.value = health:CreateFontString(nil, "OVERLAY")
-	health.value:SetPoint("BOTTOM", health, "BOTTOM", 0, DB.Scale(4))
+	health.value:SetPoint("BOTTOM", health, "BOTTOM", 0, E.Scale(4))
 	health.value:SetFont(C["media"].uffont, (C["raidframes"].fontsize*.83)*C["raidframes"].scale, "THINOUTLINE")
 	health.value:SetTextColor(1,1,1)
 	health.value:SetShadowOffset(1, -1)
 	self.Health.value = health.value		
 	
-	health.PostUpdate = DB.PostUpdateHealth
+	health.PostUpdate = E.PostUpdateHealth
 	health.frequentUpdates = true
 	
 	-- Setup Colors
@@ -62,31 +62,31 @@ local function Shared(self, unit)
 	
 	-- border for all frames
 	local FrameBorder = CreateFrame("Frame", nil, self)
-	FrameBorder:SetPoint("TOPLEFT", self, "TOPLEFT", DB.Scale(-2), DB.Scale(2))
-	FrameBorder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", DB.Scale(2), DB.Scale(-2))
-	DB.SetTemplate(FrameBorder)
+	FrameBorder:SetPoint("TOPLEFT", self, "TOPLEFT", E.Scale(-2), E.Scale(2))
+	FrameBorder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
+	E.SetTemplate(FrameBorder)
 	FrameBorder:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
 	FrameBorder:SetFrameLevel(2)
 	self.FrameBorder = FrameBorder
 	
 	-- power
 	local power = CreateFrame('StatusBar', nil, self)
-	power:SetPoint("TOPLEFT", health, "BOTTOMLEFT", 0, DB.Scale(-1)+(-DB.mult*2))
-	power:SetPoint("TOPRIGHT", health, "BOTTOMRIGHT", 0, DB.Scale(-1)+(-DB.mult*2))
+	power:SetPoint("TOPLEFT", health, "BOTTOMLEFT", 0, E.Scale(-1)+(-E.mult*2))
+	power:SetPoint("TOPRIGHT", health, "BOTTOMRIGHT", 0, E.Scale(-1)+(-E.mult*2))
 	power:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", 0, 0)
 	power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 0, 0)
 	power:SetStatusBarTexture(C["media"].normTex)
 	self.Power = power
 	if C["raidframes"].hidenonmana == true then
-		power.PostUpdate = DB.PostUpdatePower
+		power.PostUpdate = E.PostUpdatePower
 	end
 	-- border between health and power
 	self.HealthBorder = CreateFrame("Frame", nil, power)
-	self.HealthBorder:SetPoint("TOPLEFT", health, "BOTTOMLEFT", 0, -DB.mult)
-	self.HealthBorder:SetPoint("TOPRIGHT", health, "BOTTOMRIGHT", 0, -DB.mult)
-	self.HealthBorder:SetPoint("BOTTOMLEFT", power, "TOPLEFT", 0, DB.mult)
-	self.HealthBorder:SetPoint("BOTTOMRIGHT", power, "TOPRIGHT", 0, DB.mult)
-	DB.SetTemplate(self.HealthBorder)
+	self.HealthBorder:SetPoint("TOPLEFT", health, "BOTTOMLEFT", 0, -E.mult)
+	self.HealthBorder:SetPoint("TOPRIGHT", health, "BOTTOMRIGHT", 0, -E.mult)
+	self.HealthBorder:SetPoint("BOTTOMLEFT", power, "TOPLEFT", 0, E.mult)
+	self.HealthBorder:SetPoint("BOTTOMRIGHT", power, "TOPRIGHT", 0, E.mult)
+	E.SetTemplate(self.HealthBorder)
 	self.HealthBorder:SetBackdropBorderColor(unpack(C["media"].altbordercolor))	
 	
 	power.frequentUpdates = true
@@ -102,7 +102,7 @@ local function Shared(self, unit)
 	power.colorDisconnected = true
 	
 	local name = health:CreateFontString(nil, "OVERLAY")
-    name:SetPoint("TOP", health, 0, DB.Scale(-2))
+    name:SetPoint("TOP", health, 0, E.Scale(-2))
 	name:SetFont(C["media"].uffont, C["raidframes"].fontsize*C["raidframes"].scale, "THINOUTLINE")
 	name:SetShadowOffset(1, -1)
 	
@@ -111,24 +111,24 @@ local function Shared(self, unit)
 	
 	if C["raidframes"].role == true then
 		local LFDRole = self.Health:CreateTexture(nil, "OVERLAY")
-		LFDRole:SetHeight(DB.Scale(6))
-		LFDRole:SetWidth(DB.Scale(6))
-		LFDRole:SetPoint("TOP", self.Name, "BOTTOM", 0, DB.Scale(-2))
+		LFDRole:SetHeight(E.Scale(6))
+		LFDRole:SetWidth(E.Scale(6))
+		LFDRole:SetPoint("TOP", self.Name, "BOTTOM", 0, E.Scale(-2))
 		LFDRole:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\lfdicons.blp")
 		self.LFDRole = LFDRole
 	end
 	
     if C["unitframes"].aggro == true then
-		table.insert(self.__elements, DB.UpdateThreat)
-		self:RegisterEvent('PLAYER_TARGET_CHANGED', DB.UpdateThreat)
-		self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', DB.UpdateThreat)
-		self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', DB.UpdateThreat)
+		table.insert(self.__elements, E.UpdateThreat)
+		self:RegisterEvent('PLAYER_TARGET_CHANGED', E.UpdateThreat)
+		self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', E.UpdateThreat)
+		self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', E.UpdateThreat)
 	end
 	
 	if C["unitframes"].showsymbols == true then
 		local RaidIcon = health:CreateTexture(nil, 'OVERLAY')
-		RaidIcon:SetHeight(DB.Scale(15)*C["raidframes"].scale)
-		RaidIcon:SetWidth(DB.Scale(15)*C["raidframes"].scale)
+		RaidIcon:SetHeight(E.Scale(15)*C["raidframes"].scale)
+		RaidIcon:SetWidth(E.Scale(15)*C["raidframes"].scale)
 		RaidIcon:SetPoint('CENTER', self, 'TOP', 0, 3)
 		RaidIcon:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\raidicons.blp')
 		self.RaidIcon = RaidIcon
@@ -188,17 +188,17 @@ local function Shared(self, unit)
 	
 
 	local debuffs = CreateFrame('Frame', nil, self)
-	debuffs:SetPoint('CENTER', self, 'CENTER', 0, DB.Scale(-6))
+	debuffs:SetPoint('CENTER', self, 'CENTER', 0, E.Scale(-6))
 	debuffs:SetHeight((raid_width / 2)*.73)
 	debuffs:SetWidth(raid_width)
 	debuffs.size = ((raid_width / 2) *.73)
 	debuffs.spacing = 0
 	debuffs.initialAnchor = 'CENTER'
 	debuffs.num = 1
-	debuffs.PostCreateIcon = DB.PostCreateAura
-	debuffs.PostUpdateIcon = DB.PostUpdateAura
+	debuffs.PostCreateIcon = E.PostCreateAura
+	debuffs.PostUpdateIcon = E.PostUpdateAura
 	self.Debuffs = debuffs
-	self.Debuffs.CustomFilter = DB.AuraFilter
+	self.Debuffs.CustomFilter = E.AuraFilter
 
 			
 	if C["raidframes"].showrange == true then
@@ -214,17 +214,17 @@ local function Shared(self, unit)
 	end	
 	
 	if C["auras"].raidunitbuffwatch == true then
-		DB.createAuraWatch(self,unit)
+		E.createAuraWatch(self,unit)
     end
 	
 	if C["raidframes"].hidenonmana == true then
-		self:RegisterEvent("UNIT_DISPLAYPOWER", DB.CheckPower)	
+		self:RegisterEvent("UNIT_DISPLAYPOWER", E.CheckPower)	
 	end
 	
 	-- execute an update on every raids unit if party or raid member changed
 	-- should fix issues with names/symbols/etc not updating introduced with 4.0.3 patch
-	self:RegisterEvent("PARTY_MEMBERS_CHANGED", DB.updateAllElements)
-	self:RegisterEvent("RAID_ROSTER_UPDATE", DB.updateAllElements)
+	self:RegisterEvent("PARTY_MEMBERS_CHANGED", E.updateAllElements)
+	self:RegisterEvent("RAID_ROSTER_UPDATE", E.updateAllElements)
 	
 	return self
 end
@@ -248,18 +248,18 @@ oUF:Factory(function(self)
 		"showRaid", true, 
 		"showParty", true,
 		"showPlayer", C["raidframes"].showplayerinparty,
-		"xoffset", DB.Scale(6),
-		"yOffset", DB.Scale(-6),
+		"xoffset", E.Scale(6),
+		"yOffset", E.Scale(-6),
 		"point", "LEFT",
 		"groupFilter", "1,2,3,4,5",
 		"groupingOrder", "1,2,3,4,5",
 		"groupBy", "GROUP",
 		"maxColumns", 5,
 		"unitsPerColumn", 5,
-		"columnSpacing", DB.Scale(6),
+		"columnSpacing", E.Scale(6),
 		"columnAnchorPoint", "TOP"		
 	)
-	raid:SetPoint("BOTTOM", ElvuiActionBarBackground, "TOP", 0, DB.Scale(6+yOffset))	
+	raid:SetPoint("BOTTOM", ElvuiActionBarBackground, "TOP", 0, E.Scale(6+yOffset))	
 	
 	local function ChangeVisibility(visibility)
 		if(visibility) then
