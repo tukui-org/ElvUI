@@ -14,20 +14,7 @@ if C["datatext"].guild and C["datatext"].guild > 0 then
 	
 	local tthead = {r=0.4,g=0.78,b=1}
 	local ttsubh = {r=0.75,g=0.9,b=1}
-	local yoffset = E.Scale(6)
-	local anchor = "TOP"
-	local anchor2 = "ANCHOR_TOP"
-	local yoffset2 = E.mult
-	local snapfrom = "BOTTOM"
-	
-	if C["datatext"].guild == 7 or C["datatext"].guild == 8 then
-		yoffset = E.Scale(-6)
-		anchor = "BOTTOM"
-		anchor2 = "ANCHOR_BOTTOM"
-		yoffset2 = E.mult
-		snapfrom = "TOP"
-	end
-	
+
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
 		Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
 	Text:SetShadowOffset(E.mult, -E.mult)
@@ -103,9 +90,8 @@ if C["datatext"].guild and C["datatext"].guild > 0 then
 			local online, total, gmotd = 0, GetNumGuildMembers(true), GetGuildRosterMOTD()
 			for i = 0, total do if select(9, GetGuildRosterInfo(i)) then online = online + 1 end end
 			
-			GameTooltip:SetOwner(self, anchor2, 0, yoffset);
-			GameTooltip:ClearAllPoints()
-			GameTooltip:SetPoint(anchor, self, snapfrom, 0, yoffset2)
+			local anchor, panel, xoff, yoff = E.DataTextTooltipAnchor(Text)
+			GameTooltip:SetOwner(panel, anchor, xoff, yoff)
 			GameTooltip:ClearLines()
 			GameTooltip:AddDoubleLine(GetGuildInfo'player',format("%s: %d/%d",L.datatext_guild,online,total),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
 			GameTooltip:AddLine' '

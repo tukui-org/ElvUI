@@ -111,9 +111,8 @@ if C["datatext"].system and C["datatext"].system > 0 then
 	Stat:SetScript("OnEnter", function(self)
 		if not InCombatLockdown() then
 			local bandwidth = GetAvailableBandwidth()
-			GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, E.Scale(6));
-			GameTooltip:ClearAllPoints()
-			GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, E.mult)
+			local anchor, panel, xoff, yoff = E.DataTextTooltipAnchor(Text)
+			GameTooltip:SetOwner(panel, anchor, xoff, yoff)
 			GameTooltip:ClearLines()
 			if bandwidth ~= 0 then
 				GameTooltip:AddDoubleLine(L.datatext_bandwidth,format("%s ".."Mbps",E.Round(bandwidth, 2)),0.69, 0.31, 0.31,0.84, 0.75, 0.65)

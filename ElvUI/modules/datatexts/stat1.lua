@@ -59,9 +59,8 @@ if C["datatext"].stat1 and C["datatext"].stat1 > 0 then
 				self:SetAllPoints(Text)
 				self:SetScript("OnEnter", function()
 					if E.Role == "Tank" then
-						GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, E.Scale(6));
-						GameTooltip:ClearAllPoints()
-						GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, E.mult)
+						local anchor, panel, xoff, yoff = E.DataTextTooltipAnchor(Text)
+						GameTooltip:SetOwner(panel, anchor, xoff, yoff)
 						GameTooltip:ClearLines()
 						if targetlv > 1 then
 							GameTooltip:AddDoubleLine(L.datatext_avoidancebreakdown," ("..L.datatext_lvl.." "..targetlv..")")

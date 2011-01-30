@@ -69,9 +69,8 @@ if C["datatext"].gold and C["datatext"].gold > 0 then
 		self:SetScript("OnEnter", function()
 			if not InCombatLockdown() then
 				self.hovered = true 
-				GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, E.Scale(6));
-				GameTooltip:ClearAllPoints()
-				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, E.mult)
+				local anchor, panel, xoff, yoff = E.DataTextTooltipAnchor(Text)
+				GameTooltip:SetOwner(panel, anchor, xoff, yoff)
 				GameTooltip:ClearLines()
 				GameTooltip:AddLine(L.datatext_session)
 				GameTooltip:AddDoubleLine(L.datatext_earned, formatMoney(Profit), 1, 1, 1, 1, 1, 1)

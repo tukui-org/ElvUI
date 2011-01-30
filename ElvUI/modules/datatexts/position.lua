@@ -56,3 +56,36 @@ function E.PP(p, obj)
 		end
 	end
 end
+
+E.DataTextTooltipAnchor = function(self)
+	local panel = self:GetParent()
+	local anchor = "ANCHOR_TOP"
+	local xoff = 0
+	local yoff = E.Scale(4)
+	
+	if panel == ElvuiInfoLeft then
+		anchor = "ANCHOR_TOPLEFT"
+		xoff = E.Scale(-17)
+	elseif panel == ElvuiInfoRight then
+		anchor = "ANCHOR_TOPRIGHT"
+		xoff = E.Scale(17)
+	elseif panel == ElvuiMinimapStatsLeft or panel == ElvuiMinimapStatsRight then
+		local position = select(3, MinimapMover:GetPoint())
+		if position:match("LEFT") then
+			anchor = "ANCHOR_BOTTOMRIGHT"
+			yoff = E.Scale(-4)
+			xoff = -ElvuiMinimapStatsRight:GetWidth()
+			panel = ElvuiMinimapStatsLeft
+		elseif position:match("RIGHT") then
+			anchor = "ANCHOR_BOTTOMLEFT"
+			yoff = E.Scale(-4)
+			xoff = ElvuiMinimapStatsRight:GetWidth()
+			panel = ElvuiMinimapStatsRight
+		else
+			anchor = "ANCHOR_BOTTOM"
+			yoff = E.Scale(-4)
+		end
+	end
+	
+	return anchor, panel, xoff, yoff
+end

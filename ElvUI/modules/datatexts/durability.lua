@@ -57,9 +57,8 @@ if C["datatext"].dur and C["datatext"].dur > 0 then
 		self:SetAllPoints(Text)
 		self:SetScript("OnEnter", function()
 			if not InCombatLockdown() then
-				GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, E.Scale(6));
-				GameTooltip:ClearAllPoints()
-				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, E.mult)
+				local anchor, panel, xoff, yoff = E.DataTextTooltipAnchor(Text)
+				GameTooltip:SetOwner(panel, anchor, xoff, yoff)
 				GameTooltip:ClearLines()
 				for i = 1, 11 do
 					if L.Slots[i][3] ~= 1000 then

@@ -63,10 +63,9 @@ if C["datatext"].wowtime and C["datatext"].wowtime > 0 then
 	end
 
 	Stat:SetScript("OnEnter", function(self)
-		OnLoad = function(self) RequestRaidInfo() end,
-		GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, E.Scale(6));
-		GameTooltip:ClearAllPoints()
-		GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, E.mult)
+		OnLoad = function(self) RequestRaidInfo() end
+		local anchor, panel, xoff, yoff = E.DataTextTooltipAnchor(Text)
+		GameTooltip:SetOwner(panel, anchor, xoff, yoff)
 		GameTooltip:ClearLines()
 		
 		-- update level everytime we mouseover time

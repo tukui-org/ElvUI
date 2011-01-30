@@ -12,26 +12,33 @@ if C["datatext"].battleground == true then
 	local Text1  = ElvuiInfoBattleGroundL:CreateFontString(nil, "OVERLAY")
 	Text1:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
 	E.PP(1, Text1)
-
+	Text1:SetParent(ElvuiInfoBattleGroundL)
+	
 	local Text2  = ElvuiInfoBattleGroundL:CreateFontString(nil, "OVERLAY")
 	Text2:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
 	E.PP(2, Text2)
-
+	Text2:SetParent(ElvuiInfoBattleGroundL)
+	
 	local Text3  = ElvuiInfoBattleGroundL:CreateFontString(nil, "OVERLAY")
 	Text3:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
 	E.PP(3, Text3)
+	Text3:SetParent(ElvuiInfoBattleGroundL)
 	
 	local Text4  = ElvuiInfoBattleGroundR:CreateFontString(nil, "OVERLAY")
 	Text4:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
 	E.PP(5, Text4)
-
+	Text4:SetParent(ElvuiInfoBattleGroundR)
+	
 	local Text5  = ElvuiInfoBattleGroundR:CreateFontString(nil, "OVERLAY")
 	Text5:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
 	E.PP(4, Text5)
-
+	Text5:SetParent(ElvuiInfoBattleGroundR)
+	
 	local Text6  = ElvuiInfoBattleGroundR:CreateFontString(nil, "OVERLAY")
 	Text6:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
 	E.PP(6, Text6)
+	Text6:SetParent(ElvuiInfoBattleGroundR)
+
 
 	local int = 1
 	local function Update(self, t)
@@ -43,6 +50,7 @@ if C["datatext"].battleground == true then
 				local name, killingBlows, honorableKills, deaths, honorGained, faction, race, class, classToken, damageDone, healingDone, bgRating, ratingChange = GetBattlefieldScore(i)
 				if ( name ) then
 					if ( name == E.myname) then
+						
 						Text1:SetText(L.datatext_damage..E.ValColor..damageDone)
 						Text2:SetText(L.datatext_honor..E.ValColor..format('%d', honorGained))
 						Text3:SetText(L.datatext_killingblows..E.ValColor..killingBlows)
