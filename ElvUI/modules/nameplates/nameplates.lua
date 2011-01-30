@@ -136,9 +136,9 @@ local function OnAura(frame, unit)
 		local name,_,_,_,_,duration,_,caster,_,_,spellid = UnitAura(frame.unit,index,"HARMFUL")
 		
 		if C["nameplate"].trackauras == true then
-			for i, tab in pairs(tab) do
+			for _, tab in pairs(tab) do
 				local id = tab.id
-				if spellid == id and caster == "player" then match = true end
+				if caster == "player" then match = true end
 			end
 		end
 		
@@ -390,20 +390,16 @@ local function UpdateObjects(frame)
 		if texcoord then
 			frame.hasclass = true
 		else
-			texcoord = {0.5, 0.75, 0.5, 0.75}
 			frame.hasclass = false
 		end
 	else
-		texcoord = {0.5, 0.75, 0.5, 0.75}
 		frame.hasclass = false
 	end
 	
 	if frame.hp.rcolor == 0 and frame.hp.gcolor == 0 and frame.hp.bcolor ~= 0 then
-		texcoord = {0.5, 0.75, 0.5, 0.75}
 		frame.hasclass = true
 	end
-	frame.class:SetTexCoord(texcoord[1],texcoord[2],texcoord[3],texcoord[4])
-	
+
 	--create variable for original colors
 	Colorize(frame)
 	frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = frame.hp:GetStatusBarColor()
@@ -624,13 +620,6 @@ local function SkinObjects(frame)
 	raidicon:SetSize(iconSize*1.4, iconSize*1.4)
 	raidicon:SetTexture(C["media"].raidicons)	
 	frame.raidicon = raidicon
-	
-	--Create Class Icon
-	local cIconTex = hp:CreateTexture(nil, "OVERLAY")
-	cIconTex:SetPoint("BOTTOM", hp, "TOP", 0, 16)
-	cIconTex:SetTexture("Interface\\WorldStateFrame\\Icons-Classes")
-	cIconTex:SetSize(iconSize, iconSize)
-	frame.class = cIconTex
 	
 	--Hide Old Stuff
 	QueueObject(frame, oldlevel)

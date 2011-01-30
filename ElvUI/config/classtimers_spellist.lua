@@ -100,6 +100,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 49028 ), -- Dancing Rune Weapon
 			CreateSpellEntry( 51271 ), -- Pillar of Frost
 			CreateSpellEntry( 48707 ), -- Anti-Magic Shell
+			CreateSpellEntry( 49039 ), -- Lichborne			
 		},
 		procs = {
 			CreateSpellEntry( 53365 ), -- Unholy Strength

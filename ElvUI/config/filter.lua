@@ -311,7 +311,7 @@ DebuffWhiteList = {
 		[SpellName(20511)] = true, --Intimidating Shout
 	-- Racial
 		[SpellName(25046)] = true, --Arcane Torrent
-	
+		[SpellName(20549)] = true, --War Stomp
 	--PVE
 
 			
