@@ -93,7 +93,7 @@ if C["datatext"].guild and C["datatext"].guild > 0 then
 			local anchor, panel, xoff, yoff = E.DataTextTooltipAnchor(Text)
 			GameTooltip:SetOwner(panel, anchor, xoff, yoff)
 			GameTooltip:ClearLines()
-			GameTooltip:AddDoubleLine(GetGuildInfo'player',format("%s: %d/%d",L.datatext_guild,online,total),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
+			GameTooltip:AddDoubleLine(GetGuildInfo'player'.." ["..GetGuildLevel().."]",format("%s: %d/%d",L.datatext_guild,online,total),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
 			GameTooltip:AddLine' '
 			if gmotd ~= "" then GameTooltip:AddLine(format("  %s |cffaaaaaa- |cffffffff%s",GUILD_MOTD,gmotd),ttsubh.r,ttsubh.g,ttsubh.b,1) end
 			if online > 1 then
@@ -130,6 +130,25 @@ if C["datatext"].guild and C["datatext"].guild > 0 then
 						menuList[3].menuList[menuCountWhispers] = {text = format("|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r",levelc.r*255,levelc.g*255,levelc.b*255,level,classc.r*255,classc.g*255,classc.b*255,name), arg1 = name,notCheckable=true, func = whisperClick}	
 					end
 				end
+			end
+			
+			local currentXP, remainingXP, dailyXP, maxDailyXP = UnitGetGuildXP("player")
+			local nextLevelXP = currentXP + remainingXP
+			local percentTotal = tostring(math.ceil((currentXP / nextLevelXP) * 100))
+			local percentDaily = tostring(math.ceil((dailyXP / maxDailyXP) * 100))
+			local col = E.RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b)
+			local _, _, standingID, barMin, barMax, barValue = GetGuildFactionInfo()
+			barMax = barMax - barMin
+			barValue = barValue - barMin
+			barMin = 0
+	
+			GameTooltip:AddLine' '
+			if GetGuildLevel() ~= 25 then
+				GameTooltip:AddLine(string.format(col..GUILD_EXPERIENCE_CURRENT, "|r |cFFFFFFFF"..E.ShortValue(currentXP), E.ShortValue(nextLevelXP), percentTotal))
+				GameTooltip:AddLine(string.format(col..GUILD_EXPERIENCE_DAILY, "|r |cFFFFFFFF"..E.ShortValue(dailyXP), E.ShortValue(maxDailyXP), percentDaily))
+			end
+			if standingID ~= 4 then -- Not Max Rep
+				GameTooltip:AddLine(string.format("%s|r |cFFFFFFFF%s/%s (%s%%)",col..COMBAT_FACTION_CHANGE, E.ShortValue(barValue), E.ShortValue(barMax), math.ceil((barValue / barMax) * 100)))
 			end
 			GameTooltip:Show()
 		end
