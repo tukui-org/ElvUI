@@ -51,7 +51,7 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 		f2:SetFrameStrata("BACKGROUND")
 	end
 	f2:SetPoint("CENTER", f, "CENTER")
-	E.SetTemplate(f2)
+	E.SetNormTexTemplate(f2)
 	f2:RegisterForDrag("LeftButton", "RightButton")
 	f2:SetScript("OnDragStart", function(self) 
 		if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end

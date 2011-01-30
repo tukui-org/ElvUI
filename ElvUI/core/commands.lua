@@ -117,6 +117,10 @@ SlashCmdList.MOVEUI = function()
 		E.ToggleABLock()
 	end
 	
+	if oUF then
+		E.MoveUF()
+	end
+	
 	if ElvuiInfoLeftRButton.hovered == true then
 		local locked = false
 		GameTooltip:ClearLines()
@@ -138,7 +142,16 @@ end
 
 -- Command to reset the movers
 SLASH_RESETMOVERS1 = '/resetui'
-SlashCmdList.RESETMOVERS = function(arg) E.ResetMovers(arg) end
+SlashCmdList.RESETMOVERS = function(arg) 
+	if arg ~= "uf" then
+		E.ResetMovers(arg) 
+	end
+	
+	if oUF and (arg == nil or arg == "" or arg == "uf") then 
+		E.ResetUF() 
+		StaticPopup_Show("RELOAD_UI") 
+	end 
+end
 
 --Command to fix the Combat Log if it breaks
 local function CLFIX()

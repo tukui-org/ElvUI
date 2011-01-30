@@ -367,15 +367,15 @@ do
 		local name = backdrop:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 		name:SetPoint"CENTER"
 		name:SetJustifyH"CENTER"
-		name:SetFont(GameFontNormal:GetFont(), 12)
-		name:SetTextColor(1, 1, 1)
-
+		name:SetFont(GameFontNormal:GetFont(), 12, "THINOUTLINE")
+		name:SetShadowOffset(E.mult, -E.mult)
+		name:SetTextColor(unpack(C["media"].valuecolor))
+		
 		backdrop.name = name
 		backdrop.obj = obj
 		backdrop.header = isHeader
 
-		backdrop:SetBackdropBorderColor(0, .9, 0)
-		backdrop:SetBackdropColor(0, .9, 0)
+		E.SetNormTexTemplate(backdrop)
 
 		-- Work around the fact that headers with no units displayed are 0 in height.
 		if(isHeader and math.floor(isHeader:GetHeight()) == 0) then
@@ -385,6 +385,14 @@ do
 
 		backdrop:SetScript("OnDragStart", OnDragStart)
 		backdrop:SetScript("OnDragStop", OnDragStop)
+		backdrop:SetScript("OnEnter", function(self)
+			self.name:SetTextColor(1, 1, 1)
+			self:SetBackdropBorderColor(unpack(C["media"].valuecolor))		
+		end)
+		backdrop:SetScript("OnLeave", function(self)
+			self.name:SetTextColor(unpack(C["media"].valuecolor))
+			E.SetNormTexTemplate(self)	
+		end)		
 
 		backdropPool[target] = backdrop
 
@@ -393,19 +401,15 @@ do
 end
 
 -- reset data
-local function RESETUF()
+function E.ResetUF()
 	if C["unitframes"].positionbychar == true then
 		ElvuiUFpos = {}
 	else
 		ElvuiData.ufpos = {}
 	end
-	ReloadUI()
 end
-SLASH_RESETUF1 = "/resetuf"
-SlashCmdList["RESETUF"] = RESETUF
 
-SLASH_OUF_MOVABLEFRAMES1 = '/uf'
-SlashCmdList['OUF_MOVABLEFRAMES'] = function(inp)
+function E.MoveUF()
 	if(InCombatLockdown()) then
 		return print"Frames cannot be moved while in combat. Bailing out."
 	end
@@ -426,4 +430,3 @@ SlashCmdList['OUF_MOVABLEFRAMES'] = function(inp)
 		_LOCK = nil
 	end
 end
--- It's not in your best interest to disconnect me. Someone could get hurt.

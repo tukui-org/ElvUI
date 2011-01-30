@@ -668,6 +668,10 @@ ElvuiInfoLeftRButton:SetScript("OnMouseDown", function(self)
 	if C["actionbar"].enable == true then
 		E.ToggleABLock()
 	end
+
+	if oUF then
+		E.MoveUF()
+	end	
 	
 	if ElvuiInfoLeftRButton.hovered == true then
 		local locked = false
