@@ -127,13 +127,13 @@ Mod_AddonSkins:RegisterSkin("DXE",function(Skin, skin, Layout, layout, config)
 	kill(DXE.Pane.border)
 	
 	if not DXEDB then DXEDB = {} end
-	if not DXEE["profiles"] then DXEE["profiles"] = {} end
-	if not DXEE["profiles"][E.myname.." - "..GetRealmName()] then DXEE["profiles"][E.myname.." - "..GetRealmName()] = {} end
-	if not DXEE["profiles"][E.myname.." - "..GetRealmName()]["Globals"] then DXEE["profiles"][E.myname.." - "..GetRealmName()]["Globals"] = {} end
-	DXEE["profiles"][E.myname.." - "..GetRealmName()]["Globals"]["BackgroundTexture"] = "Elvui Blank"
-	DXEE["profiles"][E.myname.." - "..GetRealmName()]["Globals"]["BarTexture"] = "Elvui Gloss"
-	DXEE["profiles"][E.myname.." - "..GetRealmName()]["Globals"]["Border"] = "None"
-	DXEE["profiles"][E.myname.." - "..GetRealmName()]["Globals"]["Font"] = "Elvui Font"
-	DXEE["profiles"][E.myname.." - "..GetRealmName()]["Globals"]["TimerFont"] = "Elvui Font"
+	if not DXEDB["profiles"] then DXEDB["profiles"] = {} end
+	if not DXEDB["profiles"][E.myname.." - "..GetRealmName()] then DXEDB["profiles"][E.myname.." - "..GetRealmName()] = {} end
+	if not DXEDB["profiles"][E.myname.." - "..GetRealmName()]["Globals"] then DXEDB["profiles"][E.myname.." - "..GetRealmName()]["Globals"] = {} end
+	DXEDB["profiles"][E.myname.." - "..GetRealmName()]["Globals"]["BackgroundTexture"] = "Elvui Blank"
+	DXEDB["profiles"][E.myname.." - "..GetRealmName()]["Globals"]["BarTexture"] = "Elvui Gloss"
+	DXEDB["profiles"][E.myname.." - "..GetRealmName()]["Globals"]["Border"] = "None"
+	DXEDB["profiles"][E.myname.." - "..GetRealmName()]["Globals"]["Font"] = "Elvui Font"
+	DXEDB["profiles"][E.myname.." - "..GetRealmName()]["Globals"]["TimerFont"] = "Elvui Font"
 end)
 
