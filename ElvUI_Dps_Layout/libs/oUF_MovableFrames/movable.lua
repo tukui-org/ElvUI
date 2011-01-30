@@ -105,7 +105,7 @@ end
 
 local restoreDefaultPosition = function(style, identifier)
 	-- We've not saved any default position for this style.
-	if(not _E.__INITIAL or not _E.__INITIAL[style] or not _E.__INITIAL[style][identifier]) then return end
+	if(not _DB.__INITIAL or not _DB.__INITIAL[style] or not _DB.__INITIAL[style][identifier]) then return end
 
 	local obj, isHeader
 	for _, frame in next, oUF.objects do
@@ -125,7 +125,7 @@ local restoreDefaultPosition = function(style, identifier)
 
 		target:ClearAllPoints()
 
-		local point, parentName, x, y = string.split('\031', _E.__INITIAL[style][identifier])
+		local point, parentName, x, y = string.split('\031', _DB.__INITIAL[style][identifier])
 		SetPoint(target, point, parentName, point, x / scale, y / scale)
 
 		local backdrop = backdropPool[target]
@@ -135,8 +135,8 @@ local restoreDefaultPosition = function(style, identifier)
 		end
 
 		-- We don't need this anymore
-		_E.__INITIAL[style][identifier] = nil
-		if(not next(_E.__INITIAL[style])) then
+		_DB.__INITIAL[style][identifier] = nil
+		if(not next(_DB.__INITIAL[style])) then
 			_DB[style] = nil
 		end
 	end
@@ -166,15 +166,15 @@ end
 
 local saveDefaultPosition = function(obj)
 	local style, identifier, isHeader = getObjectInformation(obj)
-	if(not _E.__INITIAL) then
-		_E.__INITIAL = {}
+	if(not _DB.__INITIAL) then
+		_DB.__INITIAL = {}
 	end
 
-	if(not _E.__INITIAL[style]) then
-		_E.__INITIAL[style] = {}
+	if(not _DB.__INITIAL[style]) then
+		_DB.__INITIAL[style] = {}
 	end
 
-	if(not _E.__INITIAL[style][identifier]) then
+	if(not _DB.__INITIAL[style][identifier]) then
 		local point
 		if(isHeader) then
 			point = getPoint(isHeader)
@@ -182,7 +182,7 @@ local saveDefaultPosition = function(obj)
 			point = getPoint(obj)
 		end
 
-		_E.__INITIAL[style][identifier] = point
+		_DB.__INITIAL[style][identifier] = point
 	end
 end
 
