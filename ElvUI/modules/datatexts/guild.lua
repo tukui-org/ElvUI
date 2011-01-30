@@ -144,8 +144,12 @@ if C["datatext"].guild and C["datatext"].guild > 0 then
 	
 			GameTooltip:AddLine' '
 			if GetGuildLevel() ~= 25 then
-				GameTooltip:AddLine(string.format(col..GUILD_EXPERIENCE_CURRENT, "|r |cFFFFFFFF"..E.ShortValue(currentXP), E.ShortValue(nextLevelXP), percentTotal))
-				GameTooltip:AddLine(string.format(col..GUILD_EXPERIENCE_DAILY, "|r |cFFFFFFFF"..E.ShortValue(dailyXP), E.ShortValue(maxDailyXP), percentDaily))
+				if currentXP ~= 0 and nextLevelXP ~= 0 then
+					GameTooltip:AddLine(string.format(col..GUILD_EXPERIENCE_CURRENT, "|r |cFFFFFFFF"..E.ShortValue(currentXP), E.ShortValue(nextLevelXP), percentTotal))
+				end
+				if dailyXP ~= 0 and maxDailyXP ~= 0 then
+					GameTooltip:AddLine(string.format(col..GUILD_EXPERIENCE_DAILY, "|r |cFFFFFFFF"..E.ShortValue(dailyXP), E.ShortValue(maxDailyXP), percentDaily))
+				end
 			end
 			if standingID ~= 4 then -- Not Max Rep
 				GameTooltip:AddLine(string.format("%s:|r |cFFFFFFFF%s/%s (%s%%)",col..COMBAT_FACTION_CHANGE, E.ShortValue(barValue), E.ShortValue(barMax), math.ceil((barValue / barMax) * 100)))
