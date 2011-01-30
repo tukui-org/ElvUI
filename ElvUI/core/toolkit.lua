@@ -63,7 +63,7 @@ function E.SetTransparentTemplate(f)
       bgFile = C["media"].blank,
       edgeFile = C["media"].blank,
       tile = false, tileSize = 0, edgeSize = E.mult,
-      insets = { left = E.Scale(2), right = E.Scale(2), top = E.Scale(2), bottom = E.Scale(2)}
+      insets = { left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
     })
     f:SetBackdropColor(unpack(C["media"].backdropfadecolor))
 	if C["general"].classcolortheme == true then
@@ -71,22 +71,6 @@ function E.SetTransparentTemplate(f)
 	else
 		f:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 	end
-	
-    local border = CreateFrame("Frame", nil, f)
-    border:SetFrameLevel(0)
-    border:SetPoint("TOPLEFT", f, "TOPLEFT", E.Scale(-1), E.Scale(1))
-    border:SetFrameStrata("BACKGROUND")
-    border:SetBackdrop {
-        edgeFile = C["media"].blank, edgeSize = E.Scale(3),
-        insets = {left = 0, right = 0, top = 0, bottom = 0}
-    }
-    border:SetBackdropColor(unpack(C["media"].backdropcolor))
-	if C["general"].classcolortheme == true then
-		border:SetBackdropBorderColor(r, g, b)
-	else
-		border:SetBackdropBorderColor(unpack(C["media"].backdropcolor))
-	end
-    border:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", E.Scale(1), E.Scale(-1))	
 end
 
 function E.CreatePanel(f, w, h, a1, p, a2, x, y)
