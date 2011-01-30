@@ -1,6 +1,7 @@
-if not ElvCF["actionbar"].enable == true then return end
-local ElvDB = ElvDB
-local ElvCF = ElvCF
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
+if not C["actionbar"].enable == true then return end
+
 
 ---------------------------------------------------------------------------
 -- setup MultiBarLeft as bar #3
@@ -24,70 +25,70 @@ function PositionBar3()
 		b:SetParent(MultiBarLeft)
 		b:Show()
 		b:SetAlpha(1)
-		if ElvCF["actionbar"].splitbar ~= true then
-			if ElvCF["actionbar"].rightbars > 1 then
+		if C["actionbar"].splitbar ~= true then
+			if C["actionbar"].rightbars > 1 then
 				if i == 1 then
-					b:SetPoint("TOPRIGHT", ElvuiActionBarBackgroundRight, "TOPRIGHT", -ElvDB.buttonspacing, -ElvDB.buttonspacing)
+					b:SetPoint("TOPRIGHT", ElvuiActionBarBackgroundRight, "TOPRIGHT", -DB.buttonspacing, -DB.buttonspacing)
 				else
-					b:SetPoint("TOP", b2, "BOTTOM", 0, -ElvDB.buttonspacing)
+					b:SetPoint("TOP", b2, "BOTTOM", 0, -DB.buttonspacing)
 				end			
 			else
 				if i == 1 then
-					b:SetPoint("TOP", ElvuiActionBarBackgroundRight, "TOP", 0, -ElvDB.buttonspacing)
+					b:SetPoint("TOP", ElvuiActionBarBackgroundRight, "TOP", 0, -DB.buttonspacing)
 				else
-					b:SetPoint("TOP", b2, "BOTTOM", 0, -ElvDB.buttonspacing)
+					b:SetPoint("TOP", b2, "BOTTOM", 0, -DB.buttonspacing)
 				end	
 			end
 		else
-			if ElvCF.actionbar.bottomrows == 1 then
+			if C.actionbar.bottomrows == 1 then
 				if i == 1 then
-					b:SetPoint("TOPLEFT", ElvuiSplitActionBarLeftBackground, "TOPLEFT", ElvDB.buttonspacing, -ElvDB.buttonspacing)
+					b:SetPoint("TOPLEFT", ElvuiSplitActionBarLeftBackground, "TOPLEFT", DB.buttonspacing, -DB.buttonspacing)
 				elseif i > 3 and i < 7 then
 					b:SetParent(ElvuiBar3Split)
 				elseif i == 7 then
-					b:SetPoint("TOPLEFT", ElvuiSplitActionBarRightBackground, "TOPLEFT", ElvDB.buttonspacing, -ElvDB.buttonspacing)
+					b:SetPoint("TOPLEFT", ElvuiSplitActionBarRightBackground, "TOPLEFT", DB.buttonspacing, -DB.buttonspacing)
 				elseif i > 9 then
 					b:SetParent(ElvuiBar3Split)
 					ElvuiBar3Split:Hide()
 				else
-					b:SetPoint("LEFT", b2, "RIGHT", ElvDB.buttonspacing, 0)
+					b:SetPoint("LEFT", b2, "RIGHT", DB.buttonspacing, 0)
 				end		
-			elseif ElvCF.actionbar.bottomrows == 2 then
+			elseif C.actionbar.bottomrows == 2 then
 				if i == 1 then
-					b:SetPoint("TOPLEFT", ElvuiSplitActionBarLeftBackground, "TOPLEFT", ElvDB.buttonspacing, -ElvDB.buttonspacing)
+					b:SetPoint("TOPLEFT", ElvuiSplitActionBarLeftBackground, "TOPLEFT", DB.buttonspacing, -DB.buttonspacing)
 				elseif i == 4 then
-					b:SetPoint("TOP", _G["MultiBarLeftButton"..i-3], "BOTTOM", 0, -ElvDB.buttonspacing)
+					b:SetPoint("TOP", _G["MultiBarLeftButton"..i-3], "BOTTOM", 0, -DB.buttonspacing)
 				elseif i == 7 then
-					b:SetPoint("TOPLEFT", ElvuiSplitActionBarRightBackground, "TOPLEFT", ElvDB.buttonspacing, -ElvDB.buttonspacing)
+					b:SetPoint("TOPLEFT", ElvuiSplitActionBarRightBackground, "TOPLEFT", DB.buttonspacing, -DB.buttonspacing)
 				elseif i == 10 then
-					b:SetPoint("TOP", _G["MultiBarLeftButton"..i-3], "BOTTOM", 0, -ElvDB.buttonspacing)
+					b:SetPoint("TOP", _G["MultiBarLeftButton"..i-3], "BOTTOM", 0, -DB.buttonspacing)
 				else
-					b:SetPoint("LEFT", b2, "RIGHT", ElvDB.buttonspacing, 0)
+					b:SetPoint("LEFT", b2, "RIGHT", DB.buttonspacing, 0)
 				end	
 			else
 				if i == 1 then
-					b:SetPoint("TOPLEFT", ElvuiSplitActionBarLeftBackground, "TOPLEFT", (ElvDB.buttonsize * 1) + (ElvDB.buttonspacing * 2), -ElvDB.buttonspacing)
+					b:SetPoint("TOPLEFT", ElvuiSplitActionBarLeftBackground, "TOPLEFT", (DB.buttonsize * 1) + (DB.buttonspacing * 2), -DB.buttonspacing)
 				elseif i == 4 then
-					b:SetPoint("TOP", _G["MultiBarLeftButton"..i-3], "BOTTOM", 0, -ElvDB.buttonspacing)
+					b:SetPoint("TOP", _G["MultiBarLeftButton"..i-3], "BOTTOM", 0, -DB.buttonspacing)
 				elseif i == 7 then
-					b:SetPoint("TOPLEFT", ElvuiSplitActionBarRightBackground, "TOPLEFT", ElvDB.buttonspacing, -ElvDB.buttonspacing)
+					b:SetPoint("TOPLEFT", ElvuiSplitActionBarRightBackground, "TOPLEFT", DB.buttonspacing, -DB.buttonspacing)
 				elseif i == 10 then
-					b:SetPoint("TOP", _G["MultiBarLeftButton"..i-3], "BOTTOM", 0, -ElvDB.buttonspacing)
+					b:SetPoint("TOP", _G["MultiBarLeftButton"..i-3], "BOTTOM", 0, -DB.buttonspacing)
 				else
-					b:SetPoint("LEFT", b2, "RIGHT", ElvDB.buttonspacing, 0)
+					b:SetPoint("LEFT", b2, "RIGHT", DB.buttonspacing, 0)
 				end  		
 			end
 		end
 		--Setup Mouseover
-		if ElvCF["actionbar"].rightbarmouseover == true and not (ElvCF.actionbar.bottomrows == 3) and ElvCF["actionbar"].splitbar ~= true then
+		if C["actionbar"].rightbarmouseover == true and not (C.actionbar.bottomrows == 3) and C["actionbar"].splitbar ~= true then
 			b:SetAlpha(0)
 			b:HookScript("OnEnter", function() 
-				if not (ElvCF.actionbar.bottomrows == 3) and ElvCF["actionbar"].splitbar ~= true then
+				if not (C.actionbar.bottomrows == 3) and C["actionbar"].splitbar ~= true then
 					RightBarMouseOver(1) 
 				end
 			end)
 			b:HookScript("OnLeave", function() 
-				if not (ElvCF.actionbar.bottomrows == 3) and ElvCF["actionbar"].splitbar ~= true then
+				if not (C.actionbar.bottomrows == 3) and C["actionbar"].splitbar ~= true then
 					RightBarMouseOver(0) 
 				end
 			end)
@@ -95,9 +96,9 @@ function PositionBar3()
 	end
 
 	-- hide it if needed
-	if ((ElvCF.actionbar.rightbars < 3 and ElvCF["actionbar"].splitbar ~= true and ElvCF.actionbar.bottomrows ~= 3) and not 
-	(ElvCF["actionbar"].splitbar ~= true and ElvCF["actionbar"].bottomrows == 2 and ElvCF["actionbar"].rightbars == 2)) or 
-	(ElvCF["actionbar"].bottomrows == 3 and ElvCF["actionbar"].splitbar ~= true and ElvCF["actionbar"].rightbars == 0) then
+	if ((C.actionbar.rightbars < 3 and C["actionbar"].splitbar ~= true and C.actionbar.bottomrows ~= 3) and not 
+	(C["actionbar"].splitbar ~= true and C["actionbar"].bottomrows == 2 and C["actionbar"].rightbars == 2)) or 
+	(C["actionbar"].bottomrows == 3 and C["actionbar"].splitbar ~= true and C["actionbar"].rightbars == 0) then
 		ElvuiBar3:Hide()
 	else
 		ElvuiBar3:Show()

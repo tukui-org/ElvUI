@@ -1,10 +1,10 @@
 ------------------------------------------------------------------------
 --	Popups
 ------------------------------------------------------------------------
-local ElvL = ElvL
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 StaticPopupDialogs["DISABLE_UI"] = {
-	text = ElvL.popup_disableui,
+	text = L.popup_disableui,
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = DisableElvui,
@@ -13,7 +13,7 @@ StaticPopupDialogs["DISABLE_UI"] = {
 }
 
 StaticPopupDialogs["RELOAD_UI"] = {
-	text = ElvL.popup_reloadui,
+	text = L.popup_reloadui,
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = function() ReloadUI() end,
@@ -22,16 +22,16 @@ StaticPopupDialogs["RELOAD_UI"] = {
 }
 
 StaticPopupDialogs["INSTALL_UI"] = {
-	text = ElvL.popup_install,
+	text = L.popup_install,
 	button1 = ACCEPT,
 	button2 = CANCEL,
-    OnAccept = function() ElvDB.ResetMovers() ElvDB.Install() end,
+    OnAccept = function() DB.ResetMovers() DB.Install() end,
     timeout = 0,
     whileDead = 1,
 }
 
 StaticPopupDialogs["DISABLE_RAID"] = {
-	text = ElvL.popup_2raidactive,
+	text = L.popup_2raidactive,
 	button1 = "DPS - TANK",
 	button2 = "HEAL",
 	OnAccept = function() DisableAddOn("ElvUI_Heal_Layout") EnableAddOn("ElvUI_Dps_Layout") ReloadUI() end,
@@ -41,10 +41,10 @@ StaticPopupDialogs["DISABLE_RAID"] = {
 }
 
 StaticPopupDialogs["CHAT_WARN"] = {
-	text = ElvL.popup_rightchatwarn,
+	text = L.popup_rightchatwarn,
 	button1 = ACCEPT,
 	button2 = CANCEL,
-	OnAccept = ElvDB.Install,
+	OnAccept = DB.Install,
 	timeout = 0,
 	whileDead = 1,
 }

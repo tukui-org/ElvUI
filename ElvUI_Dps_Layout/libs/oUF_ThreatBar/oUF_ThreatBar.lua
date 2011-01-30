@@ -1,4 +1,5 @@
-if ElvCF.unitframes.enable ~= true or ElvCF.unitframes.showthreat ~= true then return end
+local DB, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
+if C.unitframes.enable ~= true or C.unitframes.showthreat ~= true then return end
 --[[
 	Elements handled:
 	.ThreatBar - StatusBar

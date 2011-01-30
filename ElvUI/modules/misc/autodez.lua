@@ -3,10 +3,10 @@
 -- yes... you are right... i'm totally lazy
 -- auto-need Chaos Orbs
 --------------------------------------------------------------------------
-local ElvCF = ElvCF
-local ElvDB = ElvDB
 
-if ElvCF["loot"].autogreed == true then
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
+if C["loot"].autogreed == true then
 	local autogreed = CreateFrame("frame")
 	autogreed:RegisterEvent("START_LOOT_ROLL")
 	autogreed:SetScript("OnEvent", function(self, event, id)
@@ -17,7 +17,7 @@ if ElvCF["loot"].autogreed == true then
 			RollOnLoot(id, 1)
 		end
 		
-		if ElvDB.level ~= MAX_PLAYER_LEVEL then return end
+		if DB.level ~= MAX_PLAYER_LEVEL then return end
 		if(id and select(4, GetLootRollItemInfo(id))==2 and not (select(5, GetLootRollItemInfo(id)))) then
 			if RollOnLoot(id, 3) then
 				RollOnLoot(id, 3)

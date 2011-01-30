@@ -1,6 +1,6 @@
-if not ElvCF["actionbar"].enable == true then return end
-local ElvDB = ElvDB
-local ElvCF = ElvCF
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
+if not C["actionbar"].enable == true then return end
 
 ---------------------------------------------------------------------------
 -- setup MultiBarBottomLeft as bar #2
@@ -16,17 +16,17 @@ function PositionBar2()
 		local b2 = _G["MultiBarBottomLeftButton"..i-1]
 		b:ClearAllPoints()
 		if i == 1 then
-			if ElvCF["actionbar"].swaptopbottombar == true then
-				b:SetPoint("TOP", ActionButton1, "BOTTOM", 0, -ElvDB.buttonspacing)
+			if C["actionbar"].swaptopbottombar == true then
+				b:SetPoint("TOP", ActionButton1, "BOTTOM", 0, -DB.buttonspacing)
 			else
-				b:SetPoint("BOTTOM", ActionButton1, "TOP", 0, ElvDB.buttonspacing)
+				b:SetPoint("BOTTOM", ActionButton1, "TOP", 0, DB.buttonspacing)
 			end
 		else
-			b:SetPoint("LEFT", b2, "RIGHT", ElvDB.buttonspacing, 0)
+			b:SetPoint("LEFT", b2, "RIGHT", DB.buttonspacing, 0)
 		end
 	end
 	-- hide it if needed
-	if ElvCF.actionbar.bottomrows == 1 then
+	if C.actionbar.bottomrows == 1 then
 		ElvuiBar2:Hide()
 	else
 		ElvuiBar2:Show()

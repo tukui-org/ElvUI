@@ -1,8 +1,10 @@
 ----------------------------------------------------------------------------
 -- This Module loads new user settings if ElvUI_ConfigUI is loaded
 ----------------------------------------------------------------------------
-local myPlayerRealm = GetCVar("realmName");
-local myPlayerName  = UnitName("player");
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
+local myPlayerRealm = GetCVar("realmName")
+local myPlayerName  = UnitName("player")
 
 if not IsAddOnLoaded("ElvUI_ConfigUI") then return end
 
@@ -16,15 +18,15 @@ if ElvuiConfigAll[myPlayerRealm][myPlayerName] == false and not ElvuiConfigSetti
 
 if ElvuiConfigAll[myPlayerRealm][myPlayerName] == true then
 	for group,options in pairs(ElvuiConfig) do
-		if ElvCF[group] then
+		if C[group] then
 			local count = 0
 			for option,value in pairs(options) do
-				if ElvCF[group][option] ~= nil then
-					if ElvCF[group][option] == value then
+				if C[group][option] ~= nil then
+					if C[group][option] == value then
 						ElvuiConfig[group][option] = nil	
 					else
 						count = count+1
-						ElvCF[group][option] = value
+						C[group][option] = value
 					end
 				end
 			end
@@ -36,15 +38,15 @@ if ElvuiConfigAll[myPlayerRealm][myPlayerName] == true then
 	end
 else
 	for group,options in pairs(ElvuiConfigSettings) do
-		if ElvCF[group] then
+		if C[group] then
 			local count = 0
 			for option,value in pairs(options) do
-				if ElvCF[group][option] ~= nil then
-					if ElvCF[group][option] == value then
+				if C[group][option] ~= nil then
+					if C[group][option] == value then
 						ElvuiConfigSettings[group][option] = nil	
 					else
 						count = count+1
-						ElvCF[group][option] = value
+						C[group][option] = value
 					end
 				end
 			end

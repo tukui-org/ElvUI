@@ -3,10 +3,10 @@
 		Adds out of range coloring to action buttons
 		Derived from RedRange with negligable improvements to CPU usage
 --]]
-local ElvDB = ElvDB
-local ElvCF = ElvCF
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not ElvCF["actionbar"].enable == true then return end
+
+if not C["actionbar"].enable == true then return end
 
 --locals and speed
 local _G = _G

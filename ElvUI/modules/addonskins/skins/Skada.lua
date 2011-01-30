@@ -13,9 +13,9 @@
 	(C)2010 Darth Android / Telroth - Black Dragonflight
 	File version v15.37
 ]]
-local ElvDB = ElvDB
-local ElvCF = ElvCF
-if not Mod_AddonSkins or not Skada or not ElvCF["skin"].skada == true then return end
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
+if not Mod_AddonSkins or not Skada or not C["skin"].skada == true then return end
 local Skada = Skada
 
 Mod_AddonSkins:RegisterSkin("Skada",function(Skin,skin,Layout,layout,config)
@@ -32,7 +32,7 @@ Mod_AddonSkins:RegisterSkin("Skada",function(Skin,skin,Layout,layout,config)
 		options.titleoptions.args.margin = nil
 		options.titleoptions.args.color = nil
 		options.windowoptions = nil
-    --if not ElvDB.skins.Skada.nofont or ElvDB.skins.Skada.nofont ~= true then
+    --if not DB.skins.Skada.nofont or DB.skins.Skada.nofont ~= true then
         options.baroptions.args.barfont = nil
         options.titleoptions.args.font = nil
     --end
@@ -76,10 +76,10 @@ Mod_AddonSkins:RegisterSkin("Skada",function(Skin,skin,Layout,layout,config)
 	}
 	barmod.ApplySettings_ = barmod.ApplySettings
 	barmod.ApplySettings = function(self, win)
-		if ElvCF["skin"].embedright == "Skada" then
-			win.db.barwidth = (ElvCF["chat"].chatwidth - 4)
-			win.db.barheight = (ElvCF["chat"].chatheight*0.965) / 8
-			win.db.barmax = (math.floor(ElvCF["chat"].chatheight / win.db.barheight) - 1)
+		if C["skin"].embedright == "Skada" then
+			win.db.barwidth = (C["chat"].chatwidth - 4)
+			win.db.barheight = (C["chat"].chatheight*0.965) / 8
+			win.db.barmax = (math.floor(C["chat"].chatheight / win.db.barheight) - 1)
 			win.db.background.height = 1
 			win.db.spark = false
 			win.db.barslocked = true
@@ -98,9 +98,9 @@ Mod_AddonSkins:RegisterSkin("Skada",function(Skin,skin,Layout,layout,config)
 		titlefont:SetFont(config.font,config.fontSize, config.fontFlags)
 		win.bargroup.button:SetNormalFontObject(titlefont)
         local color = win.db.title.color
-	    win.bargroup.button:SetBackdropColor(unpack(ElvCF["media"].bordercolor))
+	    win.bargroup.button:SetBackdropColor(unpack(C["media"].bordercolor))
 		if win.bargroup.bgframe then
-            ElvDB.SetTransparentTemplate(win.bargroup.bgframe)
+            DB.SetTransparentTemplate(win.bargroup.bgframe)
 			if win.db.reversegrowth then
 				win.bargroup.bgframe:SetPoint("BOTTOM", win.bargroup.button, "BOTTOM", 0, -1 * (win.db.enabletitle and 2 or 1))
 			else

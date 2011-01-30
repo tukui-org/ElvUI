@@ -1,4 +1,5 @@
 --Reposition achievement frames
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 local AchievementHolder = CreateFrame("Frame", "AchievementHolder", UIParent)
 AchievementHolder:SetWidth(180)
@@ -7,7 +8,7 @@ AchievementHolder:SetPoint("CENTER", UIParent, "CENTER", 0, 170)
 
 local pos = "TOP"
 
-function ElvDB.AchievementMove(self, event, ...)
+function DB.AchievementMove(self, event, ...)
 	local previousFrame
 	for i=1, MAX_ACHIEVEMENT_ALERTS do
 		local aFrame = _G["AchievementAlertFrame"..i]
@@ -32,7 +33,7 @@ function ElvDB.AchievementMove(self, event, ...)
 	end
 	
 end
-hooksecurefunc("AchievementAlertFrame_FixAnchors", ElvDB.AchievementMove)
+hooksecurefunc("AchievementAlertFrame_FixAnchors", DB.AchievementMove)
 
 hooksecurefunc("DungeonCompletionAlertFrame_FixAnchors", function()
 	for i=MAX_ACHIEVEMENT_ALERTS, 1, -1 do
@@ -57,7 +58,7 @@ hooksecurefunc("DungeonCompletionAlertFrame_FixAnchors", function()
 	end
 end)
 
-function ElvDB.PostAchievementMove(frame)
+function DB.PostAchievementMove(frame)
 	local point = select(1, frame:GetPoint())
 
 	if string.find(point, "TOP") or point == "CENTER" or point == "LEFT" or point == "RIGHT" then
@@ -65,11 +66,11 @@ function ElvDB.PostAchievementMove(frame)
 	else
 		pos = "BOTTOM"
 	end
-	ElvDB.AchievementMove()
+	DB.AchievementMove()
 end
 
-ElvDB.CreateMover(AchievementHolder, "AchievementMover", "Achievement Frames", nil, ElvDB.PostAchievementMove)
+DB.CreateMover(AchievementHolder, "AchievementMover", "Achievement Frames", nil, DB.PostAchievementMove)
 
 local frame = CreateFrame("Frame")
 frame:RegisterEvent("ACHIEVEMENT_EARNED")
-frame:SetScript("OnEvent", function(self, event, ...) ElvDB.AchievementMove(self, event, ...) end)
+frame:SetScript("OnEvent", function(self, event, ...) DB.AchievementMove(self, event, ...) end)

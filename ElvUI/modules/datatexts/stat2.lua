@@ -1,41 +1,41 @@
-local ElvCF = ElvCF
-local ElvDB = ElvDB
-local ElvL = ElvL
+
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
 
 -----------------------------------------
 -- Stat 2
 -----------------------------------------
 
-if ElvCF["datatext"].stat2 and ElvCF["datatext"].stat2 > 0 then
+if C["datatext"].stat2 and C["datatext"].stat2 > 0 then
 	local Stat = CreateFrame("Frame")
 	Stat:EnableMouse(true)
 	Stat:SetFrameStrata("MEDIUM")
 	Stat:SetFrameLevel(3)
 
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "LOW")
-	Text:SetFont(ElvCF.media.font, ElvCF["datatext"].fontsize, "THINOUTLINE")
-	Text:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
-	ElvDB.PP(ElvCF["datatext"].stat2, Text)
+	Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
+	Text:SetShadowOffset(DB.mult, -DB.mult)
+	DB.PP(C["datatext"].stat2, Text)
 	
 	local int = 1	
 	local function Update(self, t)
 		int = int - t
 		if int < 0 then
-			if ElvDB.Role == "Tank" then
+			if DB.Role == "Tank" then
 				local baseArmor , effectiveArmor, armor, posBuff, negBuff = UnitArmor("player");
-				Text:SetText("Armor: "..ElvDB.ValColor..(effectiveArmor))
+				Text:SetText("Armor: "..DB.ValColor..(effectiveArmor))
 				
 				--Setup Armor Tooltip
 				self:SetAllPoints(Text)
 				self:SetScript("OnEnter", function()
-					if ElvDB.Role == "Tank" then
-						GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, ElvDB.Scale(6));
+					if DB.Role == "Tank" then
+						GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, DB.Scale(6));
 						GameTooltip:ClearAllPoints()
-						GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, ElvDB.mult)
+						GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, DB.mult)
 						GameTooltip:ClearLines()
-						GameTooltip:AddLine(ElvL.datatext_mitigation)
+						GameTooltip:AddLine(L.datatext_mitigation)
 						GameTooltip:AddLine(' ')
-						local lv = ElvDB.level +3
+						local lv = DB.level +3
 						for i = 1, 4 do
 							local format = string.format
 							local mitigation
@@ -51,7 +51,7 @@ if ElvCF["datatext"].stat2 and ElvCF["datatext"].stat2 > 0 then
 							lv = lv - 1
 						end
 						lv = UnitLevel("target")
-						if lv > 0 and (lv > ElvDB.level + 3 or lv < ElvDB.level) then
+						if lv > 0 and (lv > DB.level + 3 or lv < DB.level) then
 							if lv < 60 then
 								mitigation = (effectiveArmor/(effectiveArmor+400+(85 * lv)));
 							else
@@ -67,20 +67,20 @@ if ElvCF["datatext"].stat2 and ElvCF["datatext"].stat2 > 0 then
 				end)
 				
 				self:SetScript("OnLeave", function() GameTooltip:Hide() end)				
-			elseif ElvDB.Role == "Caster" then
-				Text:SetText(ElvL.datatext_playercrit.." "..ElvDB.ValColor..format("%.2f%%", GetSpellCritChance(1)))
-			elseif ElvDB.Role == "Melee" then
+			elseif DB.Role == "Caster" then
+				Text:SetText(L.datatext_playercrit.." "..DB.ValColor..format("%.2f%%", GetSpellCritChance(1)))
+			elseif DB.Role == "Melee" then
 				local meleecrit = GetCritChance()
 				local rangedcrit = GetRangedCritChance()
 				local CritChance
 					
-				if ElvDB.myclass == "HUNTER" then    
+				if DB.myclass == "HUNTER" then    
 					CritChance = rangedcrit
 				else
 					CritChance = meleecrit
 				end
 
-				Text:SetText(ElvL.datatext_playercrit.." "..ElvDB.ValColor..format("%.2f%%", CritChance))
+				Text:SetText(L.datatext_playercrit.." "..DB.ValColor..format("%.2f%%", CritChance))
 			end
 			int = 1
 		end

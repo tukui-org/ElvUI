@@ -1,4 +1,4 @@
-local ElvDB = ElvDB
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 local function SpellName(id)
 	local name, _, _, _, _, _, _, _, _ = GetSpellInfo(id)
@@ -118,11 +118,11 @@ BuffReminderRaidBuffs = {
 -- Buff Watch (Raid Frame Buff Indicator)
 --------------------------------------------------------------------------------------------
 
-if ElvCF["auras"].raidunitbuffwatch == true then
+if C["auras"].raidunitbuffwatch == true then
 	-- Classbuffs { spell ID, position [, {r,g,b,a}][, anyUnit] }
 	
 	--Healer Layout
-	ElvDB.HealerBuffIDs = {
+	DB.HealerBuffIDs = {
 		PRIEST = {
 			{6788, "TOPLEFT", {1, 0, 0}, true}, -- Weakened Soul
 			{33076, "TOPRIGHT", {0.2, 0.7, 0.2}}, -- Prayer of Mending
@@ -157,7 +157,7 @@ if ElvCF["auras"].raidunitbuffwatch == true then
 	}
 
 	--DPS Layout
-	ElvDB.DPSBuffIDs = {
+	DB.DPSBuffIDs = {
 		PALADIN = {
 			{1022, "TOPRIGHT", {0.2, 0.2, 1}, true}, -- Hand of Protection
 			{1044, "TOPRIGHT", {221/255, 117/255, 0}, true}, -- Hand of Freedom
@@ -183,7 +183,7 @@ if ElvCF["auras"].raidunitbuffwatch == true then
 	}
 	
 	--Layout for pets
-	ElvDB.PetBuffs = {
+	DB.PetBuffs = {
 		HUNTER = {
 			{136, "TOPRIGHT", {0.2, 0.8, 0.2}}, -- Mend Pet
 		},
@@ -465,8 +465,8 @@ DebuffDPSWhiteList = {
 --------------------------------------------------------------------------------------------
 
 -- the spellIDs to track on screen in arena.
-if ElvCF["arena"].spelltracker == true then
-	ElvDB.spelltracker = {
+if C["arena"].spelltracker == true then
+	DB.spelltracker = {
 		[1766] = 10, -- kick
 		[6552] = 10, -- pummel
 		[80964] = 60, --SkullBash Bear

@@ -1,4 +1,5 @@
 ﻿ElvuiL = { }
+
 -- general
 ElvuiL.option_general = "General"
 ElvuiL.option_general_uiscale = "Auto UI Scale"

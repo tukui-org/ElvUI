@@ -1,21 +1,21 @@
-local ElvCF = ElvCF
-local ElvDB = ElvDB
-local ElvL = ElvL
+
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
 
 --------------------------------------------------------------------
 -- System Stats
 --------------------------------------------------------------------
 
-if ElvCF["datatext"].system and ElvCF["datatext"].system > 0 then
+if C["datatext"].system and C["datatext"].system > 0 then
 	local Stat = CreateFrame("Frame")
 	Stat:SetFrameStrata("MEDIUM")
 	Stat:SetFrameLevel(3)
 	Stat:EnableMouse(true)
 	
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(ElvCF.media.font, ElvCF["datatext"].fontsize, "THINOUTLINE")
-	Text:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
-	ElvDB.PP(ElvCF["datatext"].system, Text)
+	Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
+	Text:SetShadowOffset(DB.mult, -DB.mult)
+	DB.PP(C["datatext"].system, Text)
 	local colorme = string.format("%02x%02x%02x", 1*255, 1*255, 1*255)
 	
 	local function formatMem(memory, color)
@@ -111,16 +111,16 @@ if ElvCF["datatext"].system and ElvCF["datatext"].system > 0 then
 	Stat:SetScript("OnEnter", function(self)
 		if not InCombatLockdown() then
 			local bandwidth = GetAvailableBandwidth()
-			GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, ElvDB.Scale(6));
+			GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, DB.Scale(6));
 			GameTooltip:ClearAllPoints()
-			GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, ElvDB.mult)
+			GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, DB.mult)
 			GameTooltip:ClearLines()
 			if bandwidth ~= 0 then
-				GameTooltip:AddDoubleLine(ElvL.datatext_bandwidth,format("%s ".."Mbps",ElvDB.Round(bandwidth, 2)),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
-				GameTooltip:AddDoubleLine(ElvL.datatext_download,format("%s%%", floor(GetDownloadedPercentage()*100+0.5)),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
+				GameTooltip:AddDoubleLine(L.datatext_bandwidth,format("%s ".."Mbps",DB.Round(bandwidth, 2)),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+				GameTooltip:AddDoubleLine(L.datatext_download,format("%s%%", floor(GetDownloadedPercentage()*100+0.5)),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
 				GameTooltip:AddLine(" ")
 			end
-			GameTooltip:AddDoubleLine(ElvL.datatext_totalmemusage,formatMem(Total), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+			GameTooltip:AddDoubleLine(L.datatext_totalmemusage,formatMem(Total), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 			GameTooltip:AddLine(" ")
 			for i = 1, #Memory do
 				if Memory[i][3] then 

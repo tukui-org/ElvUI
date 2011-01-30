@@ -1,19 +1,19 @@
 --@@ DEBUG MODE @@
-local ElvCF = ElvCF
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 local print = function(...)
 	return print('|cffFF6347ElvUI:|r', ...)
 end
 
-function ElvDB.debug(...)
-	if ElvCF["debug"].enabled ~= true then return end
+function DB.debug(...)
+	if C["debug"].enabled ~= true then return end
 	print(tostring(...))
 end
 
-if ElvCF["debug"].enabled ~= true then return end
+if C["debug"].enabled ~= true then return end
 
-if ElvCF["debug"].events == true then
-	ElvCF["chat"].chatheight = 500
+if C["debug"].events == true then
+	C["chat"].chatheight = 500
 	local x = CreateFrame("Frame")
 	x:RegisterAllEvents()
 	x:SetScript("OnEvent", function(self, event)

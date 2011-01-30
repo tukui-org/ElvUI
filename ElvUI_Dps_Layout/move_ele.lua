@@ -1,7 +1,7 @@
-local ElvDB = ElvDB
-local ElvCF = ElvCF
+local DB, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 
-if not ElvCF["unitframes"].enable == true then return end
+
+if not C["unitframes"].enable == true then return end
 
 local Frames = {}
 local FramesDefault = {}
@@ -38,8 +38,8 @@ local function CreateFrameOverlay(parent, name)
 	f:SetFrameStrata("DIALOG")
 	f:SetPoint("CENTER", f2, "CENTER")
 	f:SetBackdrop({
-	  bgFile = ElvCF["media"].blank, 
-	  edgeFile = ElvCF["media"].blank, 
+	  bgFile = C["media"].blank, 
+	  edgeFile = C["media"].blank, 
 	  tile = false, tileSize = 0, edgeSize = 2, 
 	  insets = { left = 0, right = 0, top = 0, bottom = 0}
 	})	
@@ -87,10 +87,10 @@ local function CreateFrameOverlay(parent, name)
 	
 	
 	local fs = f:CreateFontString(nil, "OVERLAY")
-	fs:SetFont(ElvCF["media"].font, ElvCF["auras"].auratextscale, "THINOUTLINE")
+	fs:SetFont(C["media"].font, C["auras"].auratextscale, "THINOUTLINE")
 	fs:SetJustifyH("CENTER")
 	fs:SetShadowColor(0, 0, 0)
-	fs:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
+	fs:SetShadowOffset(DB.mult, -DB.mult)
 	fs:SetPoint("CENTER")
 	fs:SetText(name)
 end

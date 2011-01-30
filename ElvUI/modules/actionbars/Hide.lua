@@ -1,4 +1,6 @@
-if not ElvCF["actionbar"].enable == true then return end
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
+if not C["actionbar"].enable == true then return end
 
 ---------------------------------------------------------------------------
 -- Hide all Blizzard stuff that we don't need
@@ -55,10 +57,10 @@ end
 
 function RightBarMouseOver(alpha)
 	ElvuiActionBarBackgroundRight:SetAlpha(alpha)
-	if ElvCF["actionbar"].bottompetbar ~= true then
+	if C["actionbar"].bottompetbar ~= true then
 		ElvuiPetActionBarBackground:SetAlpha(alpha)
 	end
-	if (ElvCF["actionbar"].rightbars ~= 0 and ElvCF["actionbar"].splitbar ~= true) then
+	if (C["actionbar"].rightbars ~= 0 and C["actionbar"].splitbar ~= true) then
 		if MultiBarLeft:IsShown() then
 			for i=1, 12 do
 				local pb = _G["MultiBarLeftButton"..i]
@@ -67,7 +69,7 @@ function RightBarMouseOver(alpha)
 			--MultiBarLeft:SetAlpha(alpha)
 		end
 	end
-	if ElvCF["actionbar"].rightbars > 1 then
+	if C["actionbar"].rightbars > 1 then
 		if MultiBarBottomRight:IsShown() then
 			for i=1, 12 do
 				local pb = _G["MultiBarBottomRightButton"..i]
@@ -76,7 +78,7 @@ function RightBarMouseOver(alpha)
 			--MultiBarBottomRight:SetAlpha(alpha)
 		end
 	end
-	if ElvCF["actionbar"].bottomrows ~= 3 then
+	if C["actionbar"].bottomrows ~= 3 then
 		if MultiBarRight:IsShown() then
 			for i=1, 12 do
 				local pb = _G["MultiBarRightButton"..i]
@@ -85,7 +87,7 @@ function RightBarMouseOver(alpha)
 			--MultiBarRight:SetAlpha(alpha)
 		end
 	end
-	if ElvuiPetBar:IsShown() and ElvCF["actionbar"].bottompetbar ~= true then
+	if ElvuiPetBar:IsShown() and C["actionbar"].bottompetbar ~= true then
 		for i=1, 10 do
 			local pb = _G["PetActionButton"..i]
 			pb:SetAlpha(alpha)
@@ -102,7 +104,7 @@ function ShapeShiftMouseOver(alpha)
 end
 
 do
-	if ElvCF["actionbar"].rightbarmouseover == true then
+	if C["actionbar"].rightbarmouseover == true then
 		ElvuiActionBarBackgroundRight:SetAlpha(0)
 		ElvuiActionBarBackgroundRight:SetScript("OnEnter", function() RightBarMouseOver(1) end)
 		ElvuiActionBarBackgroundRight:SetScript("OnLeave", function() RightBarMouseOver(0) end)

@@ -1,5 +1,5 @@
 -- reposition capture bar to top/center of the screen
-local ElvDB = ElvDB
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 local function CaptureUpdate()
 	if NUM_EXTENDED_UI_FRAMES then
@@ -11,9 +11,9 @@ local function CaptureUpdate()
 				captureBar:ClearAllPoints()
 				
 				if( i == 1 ) then
-					captureBar:SetPoint("TOP", UIParent, "TOP", 0, ElvDB.Scale(-170))
+					captureBar:SetPoint("TOP", UIParent, "TOP", 0, DB.Scale(-170))
 				else
-					captureBar:SetPoint("TOPLEFT", getglobal("WorldStateCaptureBar" .. i - 1 ), "TOPLEFT", 0, ElvDB.Scale(-45))
+					captureBar:SetPoint("TOPLEFT", getglobal("WorldStateCaptureBar" .. i - 1 ), "TOPLEFT", 0, DB.Scale(-45))
 				end
 			end	
 		end	

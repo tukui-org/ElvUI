@@ -1,6 +1,7 @@
-if not ElvCF["actionbar"].enable == true then return end
-local ElvDB = ElvDB
-local ElvCF = ElvCF
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
+if not C["actionbar"].enable == true then return end
+
 
 ---------------------------------------------------------------------------
 -- setup MultiBarBottomRight as bar #5
@@ -17,35 +18,35 @@ function PositionBar5()
 		b:ClearAllPoints()
 		b:SetAlpha(1)
 		b:Show()
-		if ElvCF["actionbar"].rightbars > 1 then
+		if C["actionbar"].rightbars > 1 then
 			if i == 1 then
-				b:SetPoint("TOPLEFT", ElvuiActionBarBackgroundRight, "TOPLEFT", ElvDB.buttonspacing, -ElvDB.buttonspacing)
+				b:SetPoint("TOPLEFT", ElvuiActionBarBackgroundRight, "TOPLEFT", DB.buttonspacing, -DB.buttonspacing)
 			else
-				b:SetPoint("TOP", b2, "BOTTOM", 0, -ElvDB.buttonspacing)
+				b:SetPoint("TOP", b2, "BOTTOM", 0, -DB.buttonspacing)
 			end
-		elseif ElvCF["actionbar"].bottomrows == 3 and ElvCF["actionbar"].splitbar == true then
+		elseif C["actionbar"].bottomrows == 3 and C["actionbar"].splitbar == true then
 			if i == 1 then
-				b:SetPoint("TOP", MultiBarLeftButton4, "BOTTOM", 0, -ElvDB.buttonspacing)
+				b:SetPoint("TOP", MultiBarLeftButton4, "BOTTOM", 0, -DB.buttonspacing)
 			elseif i < 4 then
-				b:SetPoint("LEFT", b2, "RIGHT", ElvDB.buttonspacing, 0)
+				b:SetPoint("LEFT", b2, "RIGHT", DB.buttonspacing, 0)
 			elseif i == 4 then
-				b:SetPoint("TOP", MultiBarLeftButton10, "BOTTOM", 0, -ElvDB.buttonspacing)
+				b:SetPoint("TOP", MultiBarLeftButton10, "BOTTOM", 0, -DB.buttonspacing)
 			elseif i > 4 and i < 7 then
-				b:SetPoint("LEFT", b2, "RIGHT", ElvDB.buttonspacing, 0)
+				b:SetPoint("LEFT", b2, "RIGHT", DB.buttonspacing, 0)
 			elseif i == 7 then
-				b:SetPoint("RIGHT", MultiBarLeftButton1, "LEFT", -ElvDB.buttonspacing, 0)
+				b:SetPoint("RIGHT", MultiBarLeftButton1, "LEFT", -DB.buttonspacing, 0)
 			elseif i > 7 and i < 10 then
-				b:SetPoint("TOP", b2, "BOTTOM", 0, -ElvDB.buttonspacing)
+				b:SetPoint("TOP", b2, "BOTTOM", 0, -DB.buttonspacing)
 			elseif i == 10 then
-				b:SetPoint("LEFT", MultiBarLeftButton9, "RIGHT", ElvDB.buttonspacing, 0)
+				b:SetPoint("LEFT", MultiBarLeftButton9, "RIGHT", DB.buttonspacing, 0)
 			elseif i > 10 then
-				b:SetPoint("TOP", b2, "BOTTOM", 0, -ElvDB.buttonspacing)
+				b:SetPoint("TOP", b2, "BOTTOM", 0, -DB.buttonspacing)
 			else
 				b:Hide()
 			end
 		end
 		--Setup Mouseover
-		if ElvCF["actionbar"].rightbarmouseover == true and not (ElvCF.actionbar.bottomrows == 3) then
+		if C["actionbar"].rightbarmouseover == true and not (C.actionbar.bottomrows == 3) then
 			b:SetAlpha(0)
 			b:HookScript("OnEnter", function() RightBarMouseOver(1) end)
 			b:HookScript("OnLeave", function() RightBarMouseOver(0) end)
@@ -53,7 +54,7 @@ function PositionBar5()
 	end
 
 	-- hide it if needed
-	if not ((ElvCF["actionbar"].rightbars > 1) or (ElvCF["actionbar"].bottomrows == 3 and ElvCF["actionbar"].splitbar == true)) then
+	if not ((C["actionbar"].rightbars > 1) or (C["actionbar"].bottomrows == 3 and C["actionbar"].splitbar == true)) then
 		ElvuiBar5:Hide()
 	else
 		ElvuiBar5:Show()

@@ -1,21 +1,21 @@
-local ElvCF = ElvCF
-local ElvDB = ElvDB
-local ElvL = ElvL
+
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
 
 --------------------------------------------------------------------
  -- BAGS
 --------------------------------------------------------------------
 
-if ElvCF["datatext"].bags and ElvCF["datatext"].bags > 0 then
+if C["datatext"].bags and C["datatext"].bags > 0 then
 	local Stat = CreateFrame("Frame")
 	Stat:EnableMouse(true)
 	Stat:SetFrameStrata("MEDIUM")
 	Stat:SetFrameLevel(3)
 
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(ElvCF.media.font, ElvCF["datatext"].fontsize, "THINOUTLINE")
-	Text:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
-	ElvDB.PP(ElvCF["datatext"].bags, Text)
+	Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
+	Text:SetShadowOffset(DB.mult, -DB.mult)
+	DB.PP(C["datatext"].bags, Text)
 
 	local function OnEvent(self, event, ...)
 		local free, total,used = 0, 0, 0
@@ -23,7 +23,7 @@ if ElvCF["datatext"].bags and ElvCF["datatext"].bags > 0 then
 			free, total = free + GetContainerNumFreeSlots(i), total + GetContainerNumSlots(i)
 		end
 		used = total - free
-		Text:SetText(ElvL.datatext_bags..ElvDB.ValColor..used.."|r/"..ElvDB.ValColor..total)
+		Text:SetText(L.datatext_bags..DB.ValColor..used.."|r/"..DB.ValColor..total)
 		self:SetAllPoints(Text)
 	end
           

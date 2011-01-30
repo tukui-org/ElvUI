@@ -1,10 +1,9 @@
-local ElvDB = ElvDB
-local ElvCF = ElvCF
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not ElvCF["actionbar"].enable == true then return end
+if not C["actionbar"].enable == true then return end
 
 local _G = _G
-local media = ElvCF["media"]
+local media = C["media"]
 local securehandler = CreateFrame("Frame", nil, nil, "SecureHandlerBaseTemplate")
 
 function style(self, vehicle, totem)
@@ -29,56 +28,56 @@ function style(self, vehicle, totem)
 	
 	if Border then
 		Border:Hide()
-		Border = ElvDB.dummy
+		Border = DB.dummy
 	end
 	
 	if Count then
 		Count:ClearAllPoints()
-		Count:SetPoint("BOTTOMRIGHT", 0, ElvDB.Scale(2))
-		Count:SetFont(ElvCF["media"].font, 12, "OUTLINE")
+		Count:SetPoint("BOTTOMRIGHT", 0, DB.Scale(2))
+		Count:SetFont(C["media"].font, 12, "OUTLINE")
 	end
 	
 	if Btname then
-		if ElvCF["actionbar"].macrotext ~= true then
+		if C["actionbar"].macrotext ~= true then
 			Btname:SetText("")
 			Btname:Hide()
-			Btname.Show = ElvDB.dummy
+			Btname.Show = DB.dummy
 		end
 	end
 	
 	if not _G[name.."Panel"] then
 		if not totem then
-			self:SetWidth(ElvDB.buttonsize)
-			self:SetHeight(ElvDB.buttonsize)
+			self:SetWidth(DB.buttonsize)
+			self:SetHeight(DB.buttonsize)
  
 			local panel = CreateFrame("Frame", name.."Panel", self)
 			if vehicle then
-				ElvDB.CreatePanel(panel, ElvDB.buttonsize*1.2, ElvDB.buttonsize*1.2, "CENTER", self, "CENTER", 0, 0)
+				DB.CreatePanel(panel, DB.buttonsize*1.2, DB.buttonsize*1.2, "CENTER", self, "CENTER", 0, 0)
 			else
-				ElvDB.CreatePanel(panel, ElvDB.buttonsize, ElvDB.buttonsize, "CENTER", self, "CENTER", 0, 0)
+				DB.CreatePanel(panel, DB.buttonsize, DB.buttonsize, "CENTER", self, "CENTER", 0, 0)
 			end
-			ElvDB.SetNormTexTemplate(panel)
+			DB.SetNormTexTemplate(panel)
 			panel:SetFrameStrata(self:GetFrameStrata())
 			panel:SetFrameLevel(self:GetFrameLevel() - 1 or 0)
 		end
 		
 		if Icon then
 			Icon:SetTexCoord(.08, .92, .08, .92)
-			Icon:SetPoint("TOPLEFT", Button, ElvDB.Scale(2), ElvDB.Scale(-2))
-			Icon:SetPoint("BOTTOMRIGHT", Button, ElvDB.Scale(-2), ElvDB.Scale(2))
+			Icon:SetPoint("TOPLEFT", Button, DB.Scale(2), DB.Scale(-2))
+			Icon:SetPoint("BOTTOMRIGHT", Button, DB.Scale(-2), DB.Scale(2))
 		end
 	end
 	
 	if HotKey then
 		HotKey:ClearAllPoints()
-		HotKey:SetPoint("TOPRIGHT", 0, ElvDB.Scale(-3))
-		HotKey:SetFont(ElvCF["media"].font, 12, "OUTLINE")
-		HotKey.ClearAllPoints = ElvDB.dummy
-		HotKey.SetPoint = ElvDB.dummy
-		if not ElvCF["actionbar"].hotkey == true then
+		HotKey:SetPoint("TOPRIGHT", 0, DB.Scale(-3))
+		HotKey:SetFont(C["media"].font, 12, "OUTLINE")
+		HotKey.ClearAllPoints = DB.dummy
+		HotKey.SetPoint = DB.dummy
+		if not C["actionbar"].hotkey == true then
 			HotKey:SetText("")
 			HotKey:Hide()
-			HotKey.Show = ElvDB.dummy
+			HotKey.Show = DB.dummy
 		end
 	end
 	
@@ -94,16 +93,16 @@ local function stylesmallbutton(normal, button, icon, name, pet)
 	button:SetNormalTexture("")
 	
 	-- another bug fix reported by Affli in t12 beta
-	button.SetNormalTexture = ElvDB.dummy
+	button.SetNormalTexture = DB.dummy
 	
 	Flash:SetTexture(1, 1, 1, 0.3)
 	
 	if not _G[name.."Panel"] then
-		button:SetWidth(ElvDB.petbuttonsize)
-		button:SetHeight(ElvDB.petbuttonsize)
+		button:SetWidth(DB.petbuttonsize)
+		button:SetHeight(DB.petbuttonsize)
 		
 		local panel = CreateFrame("Frame", name.."Panel", button)
-		ElvDB.CreatePanel(panel, ElvDB.petbuttonsize, ElvDB.petbuttonsize, "CENTER", button, "CENTER", 0, 0)
+		DB.CreatePanel(panel, DB.petbuttonsize, DB.petbuttonsize, "CENTER", button, "CENTER", 0, 0)
 		panel:SetBackdropColor(unpack(media.backdropcolor))
 		panel:SetFrameStrata(button:GetFrameStrata())
 		panel:SetFrameLevel(button:GetFrameLevel() - 1)
@@ -112,15 +111,15 @@ local function stylesmallbutton(normal, button, icon, name, pet)
 		icon:ClearAllPoints()
 		if pet then
 			local autocast = _G[name.."AutoCastable"]
-			autocast:SetWidth(ElvDB.Scale(41))
-			autocast:SetHeight(ElvDB.Scale(40))
+			autocast:SetWidth(DB.Scale(41))
+			autocast:SetHeight(DB.Scale(40))
 			autocast:ClearAllPoints()
 			autocast:SetPoint("CENTER", button, 0, 0)
-			icon:SetPoint("TOPLEFT", button, ElvDB.Scale(2), ElvDB.Scale(-2))
-			icon:SetPoint("BOTTOMRIGHT", button, ElvDB.Scale(-2), ElvDB.Scale(2))
+			icon:SetPoint("TOPLEFT", button, DB.Scale(2), DB.Scale(-2))
+			icon:SetPoint("BOTTOMRIGHT", button, DB.Scale(-2), DB.Scale(2))
 		else
-			icon:SetPoint("TOPLEFT", button, ElvDB.Scale(2), ElvDB.Scale(-2))
-			icon:SetPoint("BOTTOMRIGHT", button, ElvDB.Scale(-2), ElvDB.Scale(2))
+			icon:SetPoint("TOPLEFT", button, DB.Scale(2), DB.Scale(-2))
+			icon:SetPoint("BOTTOMRIGHT", button, DB.Scale(-2), DB.Scale(2))
 		end
 	end
 	
@@ -131,7 +130,7 @@ local function stylesmallbutton(normal, button, icon, name, pet)
 	end
 end
 
-function ElvDB.StyleShift()
+function DB.StyleShift()
 	for i=1, NUM_SHAPESHIFT_SLOTS do
 		local name = "ShapeshiftButton"..i
 		local button  = _G[name]
@@ -141,7 +140,7 @@ function ElvDB.StyleShift()
 	end
 end
 
-function ElvDB.StylePet()
+function DB.StylePet()
 	for i=1, NUM_PET_ACTION_SLOTS do
 		local name = "PetActionButton"..i
 		local button  = _G[name]
@@ -175,8 +174,8 @@ local function SetupFlyoutButton()
 		--prevent error if you don't have max ammount of buttons
 		if _G["SpellFlyoutButton"..i] then
 			style(_G["SpellFlyoutButton"..i], false)
-			ElvDB.StyleButton(_G["SpellFlyoutButton"..i], true)
-			if ElvCF["actionbar"].rightbarmouseover == true then
+			DB.StyleButton(_G["SpellFlyoutButton"..i], true)
+			if C["actionbar"].rightbarmouseover == true then
 				SpellFlyout:HookScript("OnEnter", function(self) RightBarMouseOver(1) end)
 				SpellFlyout:HookScript("OnLeave", function(self) RightBarMouseOver(0) end)
 				_G["SpellFlyoutButton"..i]:HookScript("OnEnter", function(self) RightBarMouseOver(1) end)
@@ -241,12 +240,12 @@ local function styleflyout(self)
 			arrowDistance = 2
 	end
 	
-	if (self:GetParent() == MultiBarBottomRight and ElvCF.actionbar.rightbars > 1) then
+	if (self:GetParent() == MultiBarBottomRight and C.actionbar.rightbars > 1) then
 		self.FlyoutArrow:ClearAllPoints()
 		self.FlyoutArrow:SetPoint("LEFT", self, "LEFT", -arrowDistance, 0)
 		SetClampedTextureRotation(self.FlyoutArrow, 270)
 		FlyoutButtonPos(self,buttons,"LEFT")
-	elseif (self:GetParent() == MultiBarLeft and not ElvDB.lowversion and ElvCF.actionbar.bottomrows == 2) then
+	elseif (self:GetParent() == MultiBarLeft and not DB.lowversion and C.actionbar.bottomrows == 2) then
 		self.FlyoutArrow:ClearAllPoints()
 		self.FlyoutArrow:SetPoint("TOP", self, "TOP", 0, arrowDistance)
 		SetClampedTextureRotation(self.FlyoutArrow, 0)
@@ -258,26 +257,26 @@ end
 
 do	
 	for i = 1, 12 do
-		ElvDB.StyleButton(_G["MultiBarLeftButton"..i], true)
-		ElvDB.StyleButton(_G["MultiBarRightButton"..i], true)
-		ElvDB.StyleButton(_G["MultiBarBottomRightButton"..i], true)
-		ElvDB.StyleButton(_G["MultiBarBottomLeftButton"..i], true)
-		ElvDB.StyleButton(_G["ActionButton"..i], true)
+		DB.StyleButton(_G["MultiBarLeftButton"..i], true)
+		DB.StyleButton(_G["MultiBarRightButton"..i], true)
+		DB.StyleButton(_G["MultiBarBottomRightButton"..i], true)
+		DB.StyleButton(_G["MultiBarBottomLeftButton"..i], true)
+		DB.StyleButton(_G["ActionButton"..i], true)
 	end
 	 
 	for i=1, 10 do
-		ElvDB.StyleButton(_G["ShapeshiftButton"..i], true)
-		ElvDB.StyleButton(_G["PetActionButton"..i], true)	
+		DB.StyleButton(_G["ShapeshiftButton"..i], true)
+		DB.StyleButton(_G["PetActionButton"..i], true)	
 	end
 	
 	for i=1, 6 do
-		ElvDB.StyleButton(_G["VehicleMenuBarActionButton"..i], true)
+		DB.StyleButton(_G["VehicleMenuBarActionButton"..i], true)
 		style(_G["VehicleMenuBarActionButton"..i], true)
 	end
 end
 
 hooksecurefunc("ActionButton_Update", style)
-hooksecurefunc("ActionButton_UpdateHotkeys", ElvDB.UpdateHotkey)
+hooksecurefunc("ActionButton_UpdateHotkeys", DB.UpdateHotkey)
 hooksecurefunc("ActionButton_UpdateFlyout", styleflyout)
 
 --[[
@@ -287,7 +286,7 @@ hooksecurefunc("ActionButton_UpdateFlyout", styleflyout)
 
 ]]
 
-if ElvDB.myclass ~= "SHAMAN" then return end
+if DB.myclass ~= "SHAMAN" then return end
 
 -- Courtesy Blizzard Inc.
 -- I wouldn't have to copy these if they'd just make them not local >.>
@@ -342,13 +341,13 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			for _,button in ipairs(flyout.buttons) do
 				self:SkinButton(button)
 				if not InCombatLockdown() then
-					button:SetSize(ElvDB.petbuttonsize,ElvDB.petbuttonsize)
+					button:SetSize(DB.petbuttonsize,DB.petbuttonsize)
 					button:ClearAllPoints()
 					button:SetPoint("BOTTOM",last,"TOP",0,config.borderWidth)
 				end			
 				if button:IsVisible() then last = button end
 				button:SetBackdropBorderColor(parent:GetBackdropBorderColor())
-				if ElvCF["actionbar"].shapeshiftmouseover == true then
+				if C["actionbar"].shapeshiftmouseover == true then
 					button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
 					button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
 				end
@@ -385,7 +384,7 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 				flyout:SetPoint("TOP",parent,"BOTTOM",0,-4)
 			end
 			
-			if ElvCF["actionbar"].shapeshiftmouseover == true then
+			if C["actionbar"].shapeshiftmouseover == true then
 				flyout:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
 				flyout:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
 				close:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
@@ -405,7 +404,7 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			end
 			button:GetHighlightTexture():SetTexture(nil)
 			button:GetNormalTexture():SetTexture(nil)
-			button:SetHeight(ElvDB.Scale(4)*3)
+			button:SetHeight(DB.Scale(4)*3)
 			button:ClearAllPoints()
 			if point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" or point == "BOTTOM" then
 				button:SetPoint("BOTTOMLEFT", parent, "TOPLEFT")
@@ -418,7 +417,7 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			button:SetBackdropBorderColor(0,0,0,0)
 			if not button.visibleBut then
 				button.visibleBut = CreateFrame("Frame",nil,button)
-				button.visibleBut:SetHeight(ElvDB.Scale(4)*2)
+				button.visibleBut:SetHeight(DB.Scale(4)*2)
 				if point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" or point == "BOTTOM" then
 					button.visibleBut:SetPoint("TOPLEFT",config.barSpacing)
 					button.visibleBut:SetPoint("TOPRIGHT",config.barSpacing)
@@ -429,7 +428,7 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 				self:SkinFrame(button.visibleBut)
 			end
 			
-			if ElvCF["actionbar"].shapeshiftmouseover == true then
+			if C["actionbar"].shapeshiftmouseover == true then
 				button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
 				button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
 			end
@@ -453,11 +452,11 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			button.background:ClearAllPoints()
 			button.background:SetPoint("TOPLEFT",button,"TOPLEFT",config.borderWidth,-config.borderWidth)
 			button.background:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-config.borderWidth,config.borderWidth)
-			button:SetSize(ElvDB.petbuttonsize, ElvDB.petbuttonsize)
+			button:SetSize(DB.petbuttonsize, DB.petbuttonsize)
 			button:SetBackdropBorderColor(unpack(bordercolors[((index-1) % 4) + 1]))
 			style(button, false, true)
-			ElvDB.StyleButton(button, false)
-			if ElvCF["actionbar"].shapeshiftmouseover == true then
+			DB.StyleButton(button, false)
+			if C["actionbar"].shapeshiftmouseover == true then
 				button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
 				button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
 			end
@@ -483,14 +482,14 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			button.overlayTex:Hide()
 			button:GetNormalTexture():SetTexture(nil)
 			button:GetNormalTexture():Hide()
-			button:GetNormalTexture().Show = ElvDB.dummy
+			button:GetNormalTexture().Show = DB.dummy
 			if _G[button:GetName().."Panel"] then _G[button:GetName().."Panel"]:Hide() end
 			if not InCombatLockdown() then button:SetAllPoints(button.slotButton) end
 			button:SetBackdropBorderColor(unpack(bordercolors[((index-1) % 4) + 1]))
 			button:SetBackdropColor(0,0,0,0)
 			style(button, false, true)
-			ElvDB.StyleButton(button, false)
-			if ElvCF["actionbar"].shapeshiftmouseover == true then
+			DB.StyleButton(button, false)
+			if C["actionbar"].shapeshiftmouseover == true then
 				button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
 				button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
 			end
@@ -504,16 +503,16 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			button:GetNormalTexture():SetTexture(nil)
 			self:SkinBackgroundFrame(button)
 			button:SetBackdropBorderColor(unpack(bordercolors[((index-1)%5)+1]))
-			if not InCombatLockdown() then button:SetSize(ElvDB.petbuttonsize, ElvDB.petbuttonsize) end
+			if not InCombatLockdown() then button:SetSize(DB.petbuttonsize, DB.petbuttonsize) end
 			_G[button:GetName().."Highlight"]:SetTexture(nil)
 			_G[button:GetName().."NormalTexture"]:SetTexture(nil)
 			style(button, false, true)
-			ElvDB.StyleButton(button, false)
+			DB.StyleButton(button, false)
 			if index == 0 then
 				button:ClearAllPoints()
 				button:SetPoint("RIGHT", MultiCastActionButton1, "LEFT", -8, 0)
 			end
-			if ElvCF["actionbar"].shapeshiftmouseover == true then
+			if C["actionbar"].shapeshiftmouseover == true then
 				button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
 				button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
 			end

@@ -1,24 +1,24 @@
-local ElvCF = ElvCF
-local ElvDB = ElvDB
+
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 --------------------------------------------------------------------
 -- MINIMAP ROUND TO SQUARE AND MINIMAP SETTING
 --------------------------------------------------------------------
 
 Minimap:ClearAllPoints()
-Minimap:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", ElvDB.Scale(-5), ElvDB.Scale(-5))
-Minimap:SetSize(ElvDB.Scale(144), ElvDB.Scale(144))
+Minimap:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", DB.Scale(-5), DB.Scale(-5))
+Minimap:SetSize(DB.Scale(144), DB.Scale(144))
 
 
-function ElvDB.PostMinimapMove(frame)
+function DB.PostMinimapMove(frame)
 
-	if ElvDB.Movers[frame:GetName()]["moved"] ~= true then
+	if DB.Movers[frame:GetName()]["moved"] ~= true then
 		frame:ClearAllPoints()
-		frame:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", ElvDB.Scale(-6), ElvDB.Scale(-6))
+		frame:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", DB.Scale(-6), DB.Scale(-6))
 	end
 end
 
-ElvDB.CreateMover(Minimap, "MinimapMover", "Minimap", nil, ElvDB.PostMinimapMove) --Too easy muahaha
+DB.CreateMover(Minimap, "MinimapMover", "Minimap", nil, DB.PostMinimapMove) --Too easy muahaha
 
 --just incase these dont fit on the screen when you move the minimap
 LFDSearchStatus:SetClampedToScreen(true)
@@ -49,13 +49,13 @@ MiniMapTracking:Hide()
 
 -- Hide Mail Button
 MiniMapMailFrame:ClearAllPoints()
-MiniMapMailFrame:SetPoint("TOPRIGHT", Minimap, ElvDB.Scale(3), ElvDB.Scale(4))
+MiniMapMailFrame:SetPoint("TOPRIGHT", Minimap, DB.Scale(3), DB.Scale(4))
 MiniMapMailBorder:Hide()
 MiniMapMailIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\mail")
 
 -- Move battleground icon
 MiniMapBattlefieldFrame:ClearAllPoints()
-MiniMapBattlefieldFrame:SetPoint("BOTTOMRIGHT", Minimap, ElvDB.Scale(3), 0)
+MiniMapBattlefieldFrame:SetPoint("BOTTOMRIGHT", Minimap, DB.Scale(3), 0)
 MiniMapBattlefieldBorder:Hide()
 
 -- Hide world map button
@@ -72,7 +72,7 @@ GuildInstanceDifficulty:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 0, 0)
 
 local function UpdateLFG()
 	MiniMapLFGFrame:ClearAllPoints()
-	MiniMapLFGFrame:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", ElvDB.Scale(2), ElvDB.Scale(1))
+	MiniMapLFGFrame:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", DB.Scale(2), DB.Scale(1))
 	MiniMapLFGFrameBorder:Hide()
 end
 hooksecurefunc("MiniMapLFG_UpdateIsShown", UpdateLFG)
@@ -91,15 +91,15 @@ ElvuiMinimap:RegisterEvent("ADDON_LOADED")
 ElvuiMinimap:SetScript("OnEvent", function(self, event, addon)
 	if addon == "Blizzard_TimeManager" then
 		-- Hide Game Time
-		ElvDB.Kill(TimeManagerClockButton)
-		--ElvDB.Kill(InterfaceOptionsDisplayPanelShowClock)
+		DB.Kill(TimeManagerClockButton)
+		--DB.Kill(InterfaceOptionsDisplayPanelShowClock)
 	elseif addon == "Blizzard_FeedbackUI" then
-		ElvDB.Kill(FeedbackUIButton)
+		DB.Kill(FeedbackUIButton)
 	end
 end)
 
 if FeedbackUIButton then
-	ElvDB.Kill(FeedbackUIButton)
+	DB.Kill(FeedbackUIButton)
 end
 
 
@@ -132,7 +132,7 @@ local menuList = {
 		func = function() if(not CalendarFrame) then LoadAddOn("Blizzard_Calendar") end Calendar_Toggle() end},
 }
 
-if ElvCF["actionbar"].enable == true and ElvCF["actionbar"].microbar ~= true then
+if C["actionbar"].enable == true and C["actionbar"].microbar ~= true then
 	SpellbookMicroButton:SetParent(Minimap)
 	SpellbookMicroButton:ClearAllPoints()
 	SpellbookMicroButton:SetPoint("RIGHT")
@@ -141,12 +141,12 @@ if ElvCF["actionbar"].enable == true and ElvCF["actionbar"].microbar ~= true the
 	SpellbookMicroButton:SetAlpha(0)
 	SpellbookMicroButton:HookScript("OnEnter", function(self)  end)
 	SpellbookMicroButton:HookScript("OnLeave", function(self) self:SetAlpha(0) end)
-	SpellbookMicroButton.Hide = ElvDB.dummy
-	SpellbookMicroButton.SetParent = ElvDB.dummy
-	SpellbookMicroButton.ClearAllPoints = ElvDB.dummy
-	SpellbookMicroButton.SetPoint = ElvDB.dummy
+	SpellbookMicroButton.Hide = DB.dummy
+	SpellbookMicroButton.SetParent = DB.dummy
+	SpellbookMicroButton.ClearAllPoints = DB.dummy
+	SpellbookMicroButton.SetPoint = DB.dummy
 	SpellbookMicroButton:SetHighlightTexture("")
-	SpellbookMicroButton.SetHighlightTexture = ElvDB.dummy
+	SpellbookMicroButton.SetHighlightTexture = DB.dummy
 	
 	local pushed = SpellbookMicroButton:GetPushedTexture()
 	local normal = SpellbookMicroButton:GetNormalTexture()
@@ -157,34 +157,34 @@ if ElvCF["actionbar"].enable == true and ElvCF["actionbar"].microbar ~= true the
 	f:SetFrameStrata("LOW")
 	f:SetPoint("BOTTOMLEFT", SpellbookMicroButton, "BOTTOMLEFT", 2, 0)
 	f:SetPoint("TOPRIGHT", SpellbookMicroButton, "TOPRIGHT", -2, -28)
-	ElvDB.SetNormTexTemplate(f)	
+	DB.SetNormTexTemplate(f)	
 	SpellbookMicroButton.frame = f
 	
 	pushed:SetTexCoord(0.17, 0.87, 0.5, 0.908)
 	pushed:ClearAllPoints()
-	pushed:SetPoint("TOPLEFT", SpellbookMicroButton.frame, "TOPLEFT", ElvDB.Scale(2), ElvDB.Scale(-2))
-	pushed:SetPoint("BOTTOMRIGHT", SpellbookMicroButton.frame, "BOTTOMRIGHT", ElvDB.Scale(-2), ElvDB.Scale(2))
+	pushed:SetPoint("TOPLEFT", SpellbookMicroButton.frame, "TOPLEFT", DB.Scale(2), DB.Scale(-2))
+	pushed:SetPoint("BOTTOMRIGHT", SpellbookMicroButton.frame, "BOTTOMRIGHT", DB.Scale(-2), DB.Scale(2))
 	
 	normal:SetTexCoord(0.17, 0.87, 0.5, 0.908)
 	normal:ClearAllPoints()
-	normal:SetPoint("TOPLEFT", SpellbookMicroButton.frame, "TOPLEFT", ElvDB.Scale(2), ElvDB.Scale(-2))
-	normal:SetPoint("BOTTOMRIGHT", SpellbookMicroButton.frame, "BOTTOMRIGHT", ElvDB.Scale(-2), ElvDB.Scale(2))
+	normal:SetPoint("TOPLEFT", SpellbookMicroButton.frame, "TOPLEFT", DB.Scale(2), DB.Scale(-2))
+	normal:SetPoint("BOTTOMRIGHT", SpellbookMicroButton.frame, "BOTTOMRIGHT", DB.Scale(-2), DB.Scale(2))
 	
 	if disabled then
 		disabled:SetTexCoord(0.17, 0.87, 0.5, 0.908)
 		disabled:ClearAllPoints()
-		disabled:SetPoint("TOPLEFT", SpellbookMicroButton.frame, "TOPLEFT", ElvDB.Scale(2), ElvDB.Scale(-2))
-		disabled:SetPoint("BOTTOMRIGHT", SpellbookMicroButton.frame, "BOTTOMRIGHT", ElvDB.Scale(-2), ElvDB.Scale(2))
+		disabled:SetPoint("TOPLEFT", SpellbookMicroButton.frame, "TOPLEFT", DB.Scale(2), DB.Scale(-2))
+		disabled:SetPoint("BOTTOMRIGHT", SpellbookMicroButton.frame, "BOTTOMRIGHT", DB.Scale(-2), DB.Scale(2))
 	end
 	
-	SpellbookMicroButton:HookScript("OnEnter", function(self) local color = RAID_CLASS_COLORS[ElvDB.myclass] self.frame:SetBackdropBorderColor(color.r, color.g, color.b) self:SetAlpha(1) end)
-	SpellbookMicroButton:HookScript("OnLeave", function(self) self.frame:SetBackdropBorderColor(unpack(ElvCF["media"].bordercolor)) self:SetAlpha(0) end)
+	SpellbookMicroButton:HookScript("OnEnter", function(self) local color = RAID_CLASS_COLORS[DB.myclass] self.frame:SetBackdropBorderColor(color.r, color.g, color.b) self:SetAlpha(1) end)
+	SpellbookMicroButton:HookScript("OnLeave", function(self) self.frame:SetBackdropBorderColor(unpack(C["media"].bordercolor)) self:SetAlpha(0) end)
 end
 
 Minimap:SetScript("OnMouseUp", function(self, btn)
 	if btn == "RightButton" then
 		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, self)
-	elseif btn == "MiddleButton" and ElvCF["actionbar"].enable == true and ElvCF["actionbar"].microbar ~= true then
+	elseif btn == "MiddleButton" and C["actionbar"].enable == true and C["actionbar"].microbar ~= true then
 		EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
 	else
 		Minimap_OnClick(self)
@@ -199,36 +199,36 @@ Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
 function GetMinimapShape() return 'SQUARE' end
 
 -- reskin LFG dropdown
-ElvDB.SetTemplate(LFDSearchStatus)
+DB.SetTemplate(LFDSearchStatus)
 
  
 --Style Zone and Coord panels
 local m_zone = CreateFrame("Frame",nil,UIParent)
-ElvDB.CreatePanel(m_zone, 0, 20, "TOPLEFT", Minimap, "TOPLEFT", ElvDB.Scale(2),ElvDB.Scale(-2))
+DB.CreatePanel(m_zone, 0, 20, "TOPLEFT", Minimap, "TOPLEFT", DB.Scale(2),DB.Scale(-2))
 m_zone:SetFrameLevel(5)
 m_zone:SetFrameStrata("LOW")
-m_zone:SetPoint("TOPRIGHT",Minimap,ElvDB.Scale(-2),ElvDB.Scale(-2))
+m_zone:SetPoint("TOPRIGHT",Minimap,DB.Scale(-2),DB.Scale(-2))
 m_zone:SetBackdropColor(0,0,0,0)
 m_zone:SetBackdropBorderColor(0,0,0,0)
 m_zone:Hide()
 
 local m_zone_text = m_zone:CreateFontString(nil,"Overlay")
-m_zone_text:SetFont(ElvCF["media"].font,ElvCF["general"].fontscale,"OUTLINE")
+m_zone_text:SetFont(C["media"].font,C["general"].fontscale,"OUTLINE")
 m_zone_text:SetPoint("Center",0,0)
 m_zone_text:SetJustifyH("CENTER")
 m_zone_text:SetJustifyV("MIDDLE")
-m_zone_text:SetHeight(ElvDB.Scale(12))
+m_zone_text:SetHeight(DB.Scale(12))
 
 local m_coord = CreateFrame("Frame",nil,UIParent)
-ElvDB.CreatePanel(m_coord, 40, 20, "BOTTOMLEFT", Minimap, "BOTTOMLEFT", ElvDB.Scale(2),ElvDB.Scale(2))
+DB.CreatePanel(m_coord, 40, 20, "BOTTOMLEFT", Minimap, "BOTTOMLEFT", DB.Scale(2),DB.Scale(2))
 m_coord:SetFrameStrata("LOW")
 m_coord:SetBackdropColor(0,0,0,0)
 m_coord:SetBackdropBorderColor(0,0,0,0)
 m_coord:Hide()	
 
 local m_coord_text = m_coord:CreateFontString(nil,"Overlay")
-m_coord_text:SetFont(ElvCF["media"].font,ElvCF["general"].fontscale,"OUTLINE")
-m_coord_text:SetPoint("Center",ElvDB.Scale(-1),0)
+m_coord_text:SetFont(C["media"].font,C["general"].fontscale,"OUTLINE")
+m_coord_text:SetPoint("Center",DB.Scale(-1),0)
 m_coord_text:SetJustifyH("CENTER")
 m_coord_text:SetJustifyV("MIDDLE")
  
@@ -236,7 +236,7 @@ m_coord_text:SetJustifyV("MIDDLE")
 Minimap:SetScript("OnEnter",function()	
 	m_coord:Show()
 	m_zone:Show()
-	if ElvCF["actionbar"].enable == true and ElvCF["actionbar"].microbar ~= true then
+	if C["actionbar"].enable == true and C["actionbar"].microbar ~= true then
 		SpellbookMicroButton:SetAlpha(1)
 	end
 end)
@@ -244,12 +244,12 @@ end)
 Minimap:SetScript("OnLeave",function()
 	m_coord:Hide()
 	m_zone:Hide()
-	if ElvCF["actionbar"].enable == true and ElvCF["actionbar"].microbar ~= true then
+	if C["actionbar"].enable == true and C["actionbar"].microbar ~= true then
 		SpellbookMicroButton:SetAlpha(0)
 	end
 end)
 
-if ElvCF["actionbar"].enable == true and ElvCF["actionbar"].microbar ~= true then
+if C["actionbar"].enable == true and C["actionbar"].microbar ~= true then
 	SpellbookMicroButton:HookScript("OnEnter", function() 	
 		m_coord:Show()
 		m_zone:Show() 
@@ -287,7 +287,7 @@ local coord_Update = function(self,t)
 		else
 			yt = y
 		end
-		m_coord_text:SetText(xt..ElvDB.ValColor..",|r"..yt)
+		m_coord_text:SetText(xt..DB.ValColor..",|r"..yt)
 	end
 	ela = .2
 end

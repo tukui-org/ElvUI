@@ -1,21 +1,21 @@
-local ElvCF = ElvCF
-local ElvDB = ElvDB
-local ElvL = ElvL
+
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
 
 --------------------------------------------------------------------
 -- GOLD
 --------------------------------------------------------------------
 
-if ElvCF["datatext"].gold and ElvCF["datatext"].gold > 0 then
+if C["datatext"].gold and C["datatext"].gold > 0 then
 	local Stat = CreateFrame("Frame")
 	Stat:EnableMouse(true)
 	Stat:SetFrameStrata("MEDIUM")
 	Stat:SetFrameLevel(3)
 
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
-		Text:SetFont(ElvCF.media.font, ElvCF["datatext"].fontsize, "THINOUTLINE")
-	Text:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
-	ElvDB.PP(ElvCF["datatext"].gold, Text)
+		Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
+	Text:SetShadowOffset(DB.mult, -DB.mult)
+	DB.PP(C["datatext"].gold, Text)
 
 	local Profit	= 0
 	local Spent		= 0
@@ -26,18 +26,18 @@ if ElvCF["datatext"].gold and ElvCF["datatext"].gold > 0 then
 		local silver = mod(floor(math.abs(money) / 100), 100)
 		local copper = mod(floor(math.abs(money)), 100)
 		if gold ~= 0 then
-			return format("%s"..ElvL.goldabbrev.." %s"..ElvL.silverabbrev.." %s"..ElvL.copperabbrev, gold, silver, copper)
+			return format("%s"..L.goldabbrev.." %s"..L.silverabbrev.." %s"..L.copperabbrev, gold, silver, copper)
 		elseif silver ~= 0 then
-			return format("%s"..ElvL.silverabbrev.." %s"..ElvL.copperabbrev, silver, copper)
+			return format("%s"..L.silverabbrev.." %s"..L.copperabbrev, silver, copper)
 		else
-			return format("%s"..ElvL.copperabbrev, copper)
+			return format("%s"..L.copperabbrev, copper)
 		end
 	end
 
 	local function FormatTooltipMoney(money)
 		local gold, silver, copper = abs(money / 10000), abs(mod(money / 100, 100)), abs(mod(money, 100))
 		local cash = ""
-		cash = format("%d"..ElvL.goldabbrev.." %d"..ElvL.silverabbrev.." %d"..ElvL.copperabbrev, gold, silver, copper)		
+		cash = format("%d"..L.goldabbrev.." %d"..L.silverabbrev.." %d"..L.copperabbrev, gold, silver, copper)		
 		return cash
 	end	
 
@@ -69,30 +69,30 @@ if ElvCF["datatext"].gold and ElvCF["datatext"].gold > 0 then
 		self:SetScript("OnEnter", function()
 			if not InCombatLockdown() then
 				self.hovered = true 
-				GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, ElvDB.Scale(6));
+				GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, DB.Scale(6));
 				GameTooltip:ClearAllPoints()
-				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, ElvDB.mult)
+				GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, DB.mult)
 				GameTooltip:ClearLines()
-				GameTooltip:AddLine(ElvL.datatext_session)
-				GameTooltip:AddDoubleLine(ElvL.datatext_earned, formatMoney(Profit), 1, 1, 1, 1, 1, 1)
-				GameTooltip:AddDoubleLine(ElvL.datatext_spent, formatMoney(Spent), 1, 1, 1, 1, 1, 1)
+				GameTooltip:AddLine(L.datatext_session)
+				GameTooltip:AddDoubleLine(L.datatext_earned, formatMoney(Profit), 1, 1, 1, 1, 1, 1)
+				GameTooltip:AddDoubleLine(L.datatext_spent, formatMoney(Spent), 1, 1, 1, 1, 1, 1)
 				if Profit < Spent then
-					GameTooltip:AddDoubleLine(ElvL.datatext_deficit, formatMoney(Profit-Spent), 1, 0, 0, 1, 1, 1)
+					GameTooltip:AddDoubleLine(L.datatext_deficit, formatMoney(Profit-Spent), 1, 0, 0, 1, 1, 1)
 				elseif (Profit-Spent)>0 then
-					GameTooltip:AddDoubleLine(ElvL.datatext_profit, formatMoney(Profit-Spent), 0, 1, 0, 1, 1, 1)
+					GameTooltip:AddDoubleLine(L.datatext_profit, formatMoney(Profit-Spent), 0, 1, 0, 1, 1, 1)
 				end				
 				GameTooltip:AddLine' '								
 			
 				local totalGold = 0				
-				GameTooltip:AddLine(ElvL.datatext_character)			
+				GameTooltip:AddLine(L.datatext_character)			
 				local thisRealmList = ElvuiData.gold[myPlayerRealm];
 				for k,v in pairs(thisRealmList) do
 					GameTooltip:AddDoubleLine(k, FormatTooltipMoney(v), 1, 1, 1, 1, 1, 1)
 					totalGold=totalGold+v;
 				end 
 				GameTooltip:AddLine' '
-				GameTooltip:AddLine(ElvL.datatext_server)
-				GameTooltip:AddDoubleLine(ElvL.datatext_totalgold, FormatTooltipMoney(totalGold), 1, 1, 1, 1, 1, 1)
+				GameTooltip:AddLine(L.datatext_server)
+				GameTooltip:AddDoubleLine(L.datatext_totalgold, FormatTooltipMoney(totalGold), 1, 1, 1, 1, 1, 1)
 
 				for i = 1, MAX_WATCHED_TOKENS do
 					local name, count, extraCurrencyType, icon, itemID = GetBackpackCurrencyInfo(i)

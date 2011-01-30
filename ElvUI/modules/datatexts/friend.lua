@@ -1,12 +1,12 @@
-local ElvCF = ElvCF
-local ElvDB = ElvDB
-local ElvL = ElvL
+
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
 
 --------------------------------------------------------------------
 -- FRIEND
 --------------------------------------------------------------------
 
-if ElvCF["datatext"].friends and ElvCF["datatext"].friends > 0 then
+if C["datatext"].friends and C["datatext"].friends > 0 then
 	local Stat = CreateFrame("Frame")
 	Stat:EnableMouse(true)
 	Stat:SetFrameStrata("MEDIUM")
@@ -14,24 +14,24 @@ if ElvCF["datatext"].friends and ElvCF["datatext"].friends > 0 then
 
 	local tthead = {r=0.4,g=0.78,b=1}
 	local ttsubh = {r=0.75,g=0.9,b=1}
-	local yoffset = ElvDB.Scale(6)
+	local yoffset = DB.Scale(6)
 	local anchor = "TOP"
 	local anchor2 = "ANCHOR_TOP"
-	local yoffset2 = ElvDB.mult
+	local yoffset2 = DB.mult
 	local snapfrom = "BOTTOM"
 	
-	if ElvCF["datatext"].friends == 7 or ElvCF["datatext"].friends == 8 then
-		yoffset = ElvDB.Scale(-6)
+	if C["datatext"].friends == 7 or C["datatext"].friends == 8 then
+		yoffset = DB.Scale(-6)
 		anchor = "BOTTOM"
 		anchor2 = "ANCHOR_BOTTOM"
-		yoffset2 = ElvDB.mult
+		yoffset2 = DB.mult
 		snapfrom = "TOP"
 	end
 
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(ElvCF.media.font, ElvCF["datatext"].fontsize, "THINOUTLINE")
-	Text:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
-	ElvDB.PP(ElvCF["datatext"].friends, Text)
+	Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
+	Text:SetShadowOffset(DB.mult, -DB.mult)
+	DB.PP(C["datatext"].friends, Text)
 
 	local menuFrame = CreateFrame("Frame", "MinimapRightClickMenu", UIParent, "UIDropDownMenuTemplate")
 	local menuList = {
@@ -73,7 +73,7 @@ if ElvCF["datatext"].friends and ElvCF["datatext"].friends > 0 then
 				for i = 1, BNtotal do if select(7, BNGetFriendInfo(i)) then BNonline = BNonline + 1 end end
 			end
 			local totalonline = online + BNonline
-			Text:SetText(ElvL.datatext_friends..": "..ElvDB.ValColor..totalonline)
+			Text:SetText(L.datatext_friends..": "..DB.ValColor..totalonline)
 			self:SetAllPoints(Text)
 	end
 
@@ -122,7 +122,7 @@ if ElvCF["datatext"].friends and ElvCF["datatext"].friends > 0 then
 				GameTooltip:ClearAllPoints()
 				GameTooltip:SetPoint(anchor, self, snapfrom, 0, yoffset2)
 				GameTooltip:ClearLines()
-				GameTooltip:AddDoubleLine(ElvL.datatext_friendlist, format(ElvL.datatext_online .. "%s/%s",totalonline,totalfriends),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
+				GameTooltip:AddDoubleLine(L.datatext_friendlist, format(L.datatext_online .. "%s/%s",totalonline,totalfriends),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
 				
 				if online > 0 then
 					GameTooltip:AddLine' '

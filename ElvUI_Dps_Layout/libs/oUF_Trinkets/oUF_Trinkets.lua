@@ -1,4 +1,5 @@
-if ElvCF.unitframes.enable ~= true or ElvCF.arena.unitframes ~= true then return end
+local DB, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
+if C.unitframes.enable ~= true or C.arena.unitframes ~= true then return end
 
 local _, ns = ...
 local oUF = ns.oUF

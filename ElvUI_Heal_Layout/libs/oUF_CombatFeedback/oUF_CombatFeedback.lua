@@ -1,4 +1,5 @@
-if ElvCF.unitframes.enable ~= true or ElvCF.unitframes.combatfeedback ~= true then return end
+local DB, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
+if C.unitframes.enable ~= true or C.unitframes.combatfeedback ~= true then return end
 if not oUF then return end
 
 local damage_format = "-%d"

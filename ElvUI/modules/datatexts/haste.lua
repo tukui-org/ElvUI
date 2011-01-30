@@ -1,20 +1,20 @@
-local ElvCF = ElvCF
-local ElvDB = ElvDB
-local ElvL = ElvL
+
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
 
 --------------------------------------------------------------------
 -- player haste
 --------------------------------------------------------------------
 
-if ElvCF["datatext"].haste and ElvCF["datatext"].haste > 0 then
+if C["datatext"].haste and C["datatext"].haste > 0 then
 	local Stat = CreateFrame("Frame")
 	Stat:SetFrameStrata("MEDIUM")
 	Stat:SetFrameLevel(3)
 
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(ElvCF.media.font, ElvCF["datatext"].fontsize, "THINOUTLINE")
-	Text:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
-	ElvDB.PP(ElvCF["datatext"].haste, Text)
+	Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
+	Text:SetShadowOffset(DB.mult, -DB.mult)
+	DB.PP(C["datatext"].haste, Text)
 
 	local int = 1
 	
@@ -24,9 +24,9 @@ if ElvCF["datatext"].haste and ElvCF["datatext"].haste > 0 then
 		local rangedHaste = GetCombatRating(19)
 		local attackHaste = GetCombatRating(18)
 		
-		if attackHaste > spellHaste and ElvDB.class ~= "HUNTER" then
+		if attackHaste > spellHaste and DB.class ~= "HUNTER" then
 			haste = attackHaste
-		elseif ElvDB.class == "HUNTER" then
+		elseif DB.class == "HUNTER" then
 			haste = rangedHaste
 		else
 			haste = spellHaste
@@ -34,7 +34,7 @@ if ElvCF["datatext"].haste and ElvCF["datatext"].haste > 0 then
 		
 		int = int - t
 		if int < 0 then
-			Text:SetText(SPELL_HASTE_ABBR..": "..ElvDB.ValColor..haste)
+			Text:SetText(SPELL_HASTE_ABBR..": "..DB.ValColor..haste)
 			int = 1
 		end     
 	end

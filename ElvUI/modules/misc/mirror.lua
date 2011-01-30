@@ -1,5 +1,5 @@
-local ElvCF = ElvCF
-local ElvDB = ElvDB
+
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 ---------------------------------------------------------------------
 -- original by haste, edited for Elvui :)
@@ -8,9 +8,9 @@ local ElvDB = ElvDB
 local _, settings = ...
 
 local _DEFAULTS = {
-	width = ElvDB.Scale(220),
-	height = ElvDB.Scale(18),
-	texture = ElvCF["media"].normTex,
+	width = DB.Scale(220),
+	height = DB.Scale(18),
+	texture = C["media"].normTex,
 
 	position = {
 		["BREATH"] = 'TOP#UIParent#TOP#0#-96';
@@ -43,7 +43,7 @@ do
 		local pos = settings.position[self.type]
 		local p1, frame, p2, x, y = strsplit("#", pos)
 
-		return self:SetPoint(p1, frame, p2, ElvDB.Scale(x), ElvDB.Scale(y))
+		return self:SetPoint(p1, frame, p2, DB.Scale(x), DB.Scale(y))
 	end
 
 	local OnUpdate = function(self, elapsed)
@@ -77,18 +77,18 @@ do
 
 		local bg = frame:CreateTexture(nil, 'BACKGROUND')
 		bg:SetAllPoints(frame)
-		bg:SetTexture(ElvCF["media"].blank)
+		bg:SetTexture(C["media"].blank)
 		bg:SetVertexColor(r * .5, g * .5, b * .5)
 		
 		local border = CreateFrame("Frame", nil, frame)
-		border:SetPoint("TOPLEFT", frame, ElvDB.Scale(-2), ElvDB.Scale(2))
-		border:SetPoint("BOTTOMRIGHT", frame, ElvDB.Scale(2), ElvDB.Scale(-2))
-		ElvDB.SetTemplate(border)
+		border:SetPoint("TOPLEFT", frame, DB.Scale(-2), DB.Scale(2))
+		border:SetPoint("BOTTOMRIGHT", frame, DB.Scale(2), DB.Scale(-2))
+		DB.SetTemplate(border)
 		border:SetFrameLevel(0)
 
 		local text = frame:CreateFontString(nil, 'OVERLAY')
-		text:SetFont(ElvCF["media"].uffont, ElvCF["general"].fontscale, "THINOUTLINE")
-		text:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
+		text:SetFont(C["media"].uffont, C["general"].fontscale, "THINOUTLINE")
+		text:SetShadowOffset(DB.mult, -DB.mult)
 		text:SetShadowColor(0, 0, 0, 1)
 
 		text:SetJustifyH'CENTER'
@@ -96,7 +96,7 @@ do
 
 		text:SetPoint('LEFT', frame)
 		text:SetPoint('RIGHT', frame)
-		text:SetPoint('TOP', frame, 0, ElvDB.Scale(2))
+		text:SetPoint('TOP', frame, 0, DB.Scale(2))
 		text:SetPoint('BOTTOM', frame)
 
 		frame:SetSize(settings.width, settings.height)

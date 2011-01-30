@@ -1,21 +1,21 @@
-local ElvCF = ElvCF
-local ElvDB = ElvDB
-local ElvL = ElvL
+
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
 
 --------------------------------------------------------------------
  -- CURRENCY
 --------------------------------------------------------------------
 
-if ElvCF["datatext"].currency and ElvCF["datatext"].currency > 0 then
+if C["datatext"].currency and C["datatext"].currency > 0 then
 	local Stat = CreateFrame("Frame")
 	Stat:EnableMouse(true)
 	Stat:SetFrameStrata("MEDIUM")
 	Stat:SetFrameLevel(3)
 
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(ElvCF.media.font, ElvCF["datatext"].fontsize, "THINOUTLINE")
-	Text:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
-	ElvDB.PP(ElvCF["datatext"].currency, Text)
+	Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
+	Text:SetShadowOffset(DB.mult, -DB.mult)
+	DB.PP(C["datatext"].currency, Text)
 	
 	local function update()
 		local _text = "---"
@@ -27,7 +27,7 @@ if ElvCF["datatext"].currency and ElvCF["datatext"].currency > 0 then
 				for _, word in ipairs(words) do
 					_text = _text .. string.sub(word,1,1)
 				end
-				_text = _text .. ": " .. ElvDB.ValColor.. count .." |r"
+				_text = _text .. ": " .. DB.ValColor.. count .." |r"
 			end
 		end
 		

@@ -1,6 +1,6 @@
-if not ElvCF["actionbar"].enable == true then return end
-local ElvDB = ElvDB
-local ElvCF = ElvCF
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
+if not C["actionbar"].enable == true then return end
 
 ---------------------------------------------------------------------------
 -- Setup Main Action Bar.
@@ -32,7 +32,7 @@ local Page = {
 
 local function GetBar()
 	local condition = Page["DEFAULT"]
-	local class = ElvDB.myclass
+	local class = DB.myclass
 	local page = Page[class]
 	if page then
 		condition = condition.." "..page
@@ -46,19 +46,19 @@ function PositionMainBar()
 	local button
 	for i = 1, 12 do
 		button = _G["ActionButton"..i]
-		button:SetSize(ElvDB.buttonsize, ElvDB.buttonsize)
+		button:SetSize(DB.buttonsize, DB.buttonsize)
 		button:SetParent(ElvuiMainMenuBar)
 		button:ClearAllPoints()
 		
 		if i == 1 then
-			if ElvCF["actionbar"].swaptopbottombar == true then
-				button:SetPoint("TOPLEFT", ElvuiMainMenuBar, ElvDB.buttonspacing, -ElvDB.buttonspacing)
+			if C["actionbar"].swaptopbottombar == true then
+				button:SetPoint("TOPLEFT", ElvuiMainMenuBar, DB.buttonspacing, -DB.buttonspacing)
 			else
-				button:SetPoint("BOTTOMLEFT", ElvuiMainMenuBar, ElvDB.buttonspacing, ElvDB.buttonspacing)
+				button:SetPoint("BOTTOMLEFT", ElvuiMainMenuBar, DB.buttonspacing, DB.buttonspacing)
 			end
 		else
 			local previous = _G["ActionButton"..i-1]
-			button:SetPoint("LEFT", previous, "RIGHT", ElvDB.buttonspacing, 0)
+			button:SetPoint("LEFT", previous, "RIGHT", DB.buttonspacing, 0)
 		end
 	end
 end

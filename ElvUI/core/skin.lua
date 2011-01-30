@@ -1,22 +1,22 @@
-local ElvDB = ElvDB
-local ElvCF = ElvCF
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
 
 local function SetModifiedBackdrop(self)
-	local color = RAID_CLASS_COLORS[ElvDB.myclass]
-	if ElvCF["general"].classcolortheme == true then
-		self:SetBackdropBorderColor(unpack(ElvCF["media"].bordercolor))		
+	local color = RAID_CLASS_COLORS[DB.myclass]
+	if C["general"].classcolortheme == true then
+		self:SetBackdropBorderColor(unpack(C["media"].bordercolor))		
 	else
 		self:SetBackdropBorderColor(color.r, color.g, color.b)
 	end
 end
 
 local function SetOriginalBackdrop(self)
-	local color = RAID_CLASS_COLORS[ElvDB.myclass]
-	if ElvCF["general"].classcolortheme == true then
+	local color = RAID_CLASS_COLORS[DB.myclass]
+	if C["general"].classcolortheme == true then
 		self:SetBackdropBorderColor(color.r, color.g, color.b)
 	else
-		self:SetBackdropColor(unpack(ElvCF["media"].backdropcolor))
-		self:SetBackdropBorderColor(unpack(ElvCF["media"].bordercolor))
+		self:SetBackdropColor(unpack(C["media"].backdropcolor))
+		self:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 	end
 end
 
@@ -47,7 +47,7 @@ local function SkinButton(f)
 	if f.SetDisabledTexture then
 		f:SetDisabledTexture("")
 	end
-	ElvDB.SetNormTexTemplate(f)
+	DB.SetNormTexTemplate(f)
 	
 	f:HookScript("OnEnter", SetModifiedBackdrop)
 	f:HookScript("OnLeave", SetOriginalBackdrop)
@@ -83,11 +83,11 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		}
 		
 		for i = 1, getn(skins) do
-			ElvDB.SetNormTexTemplate(_G[skins[i]])
+			DB.SetNormTexTemplate(_G[skins[i]])
 			if _G[skins[i]] ~= _G["GhostFrameContentsFrame"] or _G[skins[i]] ~= _G["AutoCompleteBox"] then -- frame to blacklist from create shadow function
-				ElvDB.CreateShadow(_G[skins[i]])
+				DB.CreateShadow(_G[skins[i]])
 			end
-			_G[skins[i]]:SetBackdropColor(unpack(ElvCF["media"].backdropfadecolor))
+			_G[skins[i]]:SetBackdropColor(unpack(C["media"].backdropfadecolor))
 		end
 		
 		local ChatMenus = {
@@ -99,9 +99,9 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		--
 		for i = 1, getn(ChatMenus) do
 			if _G[ChatMenus[i]] == _G["ChatMenu"] then
-				_G[ChatMenus[i]]:HookScript("OnShow", function(self) ElvDB.SetNormTexTemplate(self) self:SetBackdropColor(unpack(ElvCF["media"].backdropfadecolor)) self:ClearAllPoints() self:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, ElvDB.Scale(30)) end)
+				_G[ChatMenus[i]]:HookScript("OnShow", function(self) DB.SetNormTexTemplate(self) self:SetBackdropColor(unpack(C["media"].backdropfadecolor)) self:ClearAllPoints() self:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, DB.Scale(30)) end)
 			else
-				_G[ChatMenus[i]]:HookScript("OnShow", function(self) ElvDB.SetNormTexTemplate(self) self:SetBackdropColor(unpack(ElvCF["media"].backdropfadecolor)) end)
+				_G[ChatMenus[i]]:HookScript("OnShow", function(self) DB.SetNormTexTemplate(self) self:SetBackdropColor(unpack(C["media"].backdropfadecolor)) end)
 			end
 		end
 		
@@ -143,22 +143,22 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			SkinButton(GhostFrame)
 			GhostFrame:SetBackdropColor(0,0,0,0)
 			GhostFrame:SetBackdropBorderColor(0,0,0,0)
-			GhostFrame.SetBackdropColor = ElvDB.dummy
-			GhostFrame.SetBackdropBorderColor = ElvDB.dummy
+			GhostFrame.SetBackdropColor = DB.dummy
+			GhostFrame.SetBackdropBorderColor = DB.dummy
 			GhostFrame:ClearAllPoints()
 			GhostFrame:SetPoint("TOP", UIParent, "TOP", 0, -150)
 			SkinButton(GhostFrameContentsFrame)
 			GhostFrameContentsFrameIcon:SetTexture(nil)
 			local x = CreateFrame("Frame", nil, GhostFrame)
 			x:SetFrameStrata("MEDIUM")
-			ElvDB.SetTemplate(x)
-			x:SetPoint("TOPLEFT", GhostFrameContentsFrameIcon, "TOPLEFT", ElvDB.Scale(-2), ElvDB.Scale(2))
-			x:SetPoint("BOTTOMRIGHT", GhostFrameContentsFrameIcon, "BOTTOMRIGHT", ElvDB.Scale(2), ElvDB.Scale(-2))
+			DB.SetTemplate(x)
+			x:SetPoint("TOPLEFT", GhostFrameContentsFrameIcon, "TOPLEFT", DB.Scale(-2), DB.Scale(2))
+			x:SetPoint("BOTTOMRIGHT", GhostFrameContentsFrameIcon, "BOTTOMRIGHT", DB.Scale(2), DB.Scale(-2))
 			local tex = x:CreateTexture(nil, "OVERLAY")
 			tex:SetTexture("Interface\\Icons\\spell_holy_guardianspirit")
 			tex:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-			tex:SetPoint("TOPLEFT", x, "TOPLEFT", ElvDB.Scale(2), ElvDB.Scale(-2))
-			tex:SetPoint("BOTTOMRIGHT", x, "BOTTOMRIGHT", ElvDB.Scale(-2), ElvDB.Scale(2))
+			tex:SetPoint("TOPLEFT", x, "TOPLEFT", DB.Scale(2), DB.Scale(-2))
+			tex:SetPoint("BOTTOMRIGHT", x, "BOTTOMRIGHT", DB.Scale(-2), DB.Scale(2))
 		end
 		
 		-- hide header textures and move text/buttons.
@@ -233,10 +233,10 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		_G["ReadyCheckListenerFrame"]:SetAlpha(0)
 		_G["ReadyCheckFrame"]:HookScript("OnShow", function(self) if UnitIsUnit("player", self.initiator) then self:Hide() end end) -- bug fix, don't show it if initiator
 		
-		ElvDB.SetTransparentTemplate(RolePollPopup)
-		ElvDB.CreateShadow(RolePollPopup)
-		ElvDB.SetTransparentTemplate(LFDDungeonReadyDialog)
-		ElvDB.CreateShadow(LFDDungeonReadyDialog)
+		DB.SetTransparentTemplate(RolePollPopup)
+		DB.CreateShadow(RolePollPopup)
+		DB.SetTransparentTemplate(LFDDungeonReadyDialog)
+		DB.CreateShadow(LFDDungeonReadyDialog)
 		SkinButton(LFDDungeonReadyDialogEnterDungeonButton)
 		SkinButton(LFDDungeonReadyDialogLeaveQueueButton)
 		SkinButton(ColorPickerOkayButton)
@@ -246,14 +246,14 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 	-- mac menu/option panel, made by affli.
 	if IsMacClient() then
 		-- Skin main frame and reposition the header
-		ElvDB.SetNormTexTemplate(MacOptionsFrame)
+		DB.SetNormTexTemplate(MacOptionsFrame)
 		MacOptionsFrameHeader:SetTexture("")
 		MacOptionsFrameHeader:ClearAllPoints()
 		MacOptionsFrameHeader:SetPoint("TOP", MacOptionsFrame, 0, 0)
  
 		--Skin internal frames
-		ElvDB.SetNormTexTemplate(MacOptionsFrameMovieRecording)
-		ElvDB.SetNormTexTemplate(MacOptionsITunesRemote)
+		DB.SetNormTexTemplate(MacOptionsFrameMovieRecording)
+		DB.SetNormTexTemplate(MacOptionsITunesRemote)
  
 		--Skin buttons
 		SkinButton(_G["MacOptionsFrameCancel"])
@@ -266,23 +266,23 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		local tPoint, tRTo, tRP, tX, tY =  _G["MacOptionsButtonCompress"]:GetPoint()
 		_G["MacOptionsButtonCompress"]:SetWidth(136)
 		_G["MacOptionsButtonCompress"]:ClearAllPoints()
-		_G["MacOptionsButtonCompress"]:SetPoint(tPoint, tRTo, tRP, ElvDB.Scale(4), tY)
+		_G["MacOptionsButtonCompress"]:SetPoint(tPoint, tRTo, tRP, DB.Scale(4), tY)
  
 		_G["MacOptionsFrameCancel"]:SetWidth(96)
 		_G["MacOptionsFrameCancel"]:SetHeight(22)
 		tPoint, tRTo, tRP, tX, tY =  _G["MacOptionsFrameCancel"]:GetPoint()
 		_G["MacOptionsFrameCancel"]:ClearAllPoints()
-		_G["MacOptionsFrameCancel"]:SetPoint(tPoint, tRTo, tRP, ElvDB.Scale(-14), tY)
+		_G["MacOptionsFrameCancel"]:SetPoint(tPoint, tRTo, tRP, DB.Scale(-14), tY)
  
 		_G["MacOptionsFrameOkay"]:ClearAllPoints()
 		_G["MacOptionsFrameOkay"]:SetWidth(96)
 		_G["MacOptionsFrameOkay"]:SetHeight(22)
-		_G["MacOptionsFrameOkay"]:SetPoint("LEFT",_G["MacOptionsFrameCancel"],ElvDB.Scale(-99),0)
+		_G["MacOptionsFrameOkay"]:SetPoint("LEFT",_G["MacOptionsFrameCancel"],DB.Scale(-99),0)
  
 		_G["MacOptionsButtonKeybindings"]:ClearAllPoints()
 		_G["MacOptionsButtonKeybindings"]:SetWidth(96)
 		_G["MacOptionsButtonKeybindings"]:SetHeight(22)
-		_G["MacOptionsButtonKeybindings"]:SetPoint("LEFT",_G["MacOptionsFrameOkay"],ElvDB.Scale(-99),0)
+		_G["MacOptionsButtonKeybindings"]:SetPoint("LEFT",_G["MacOptionsFrameOkay"],DB.Scale(-99),0)
  
 		_G["MacOptionsFrameDefaults"]:SetWidth(96)
 		_G["MacOptionsFrameDefaults"]:SetHeight(22)

@@ -1,12 +1,12 @@
-local ElvCF = ElvCF
-local ElvDB = ElvDB
-local ElvL = ElvL
+
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
 
 --------------------------------------------------------------------
 -- SUPPORT FOR DPS Feed... 
 --------------------------------------------------------------------
 
-if ElvCF["datatext"].dps_text and ElvCF["datatext"].dps_text > 0 then
+if C["datatext"].dps_text and C["datatext"].dps_text > 0 then
 	local events = {SWING_DAMAGE = true, RANGE_DAMAGE = true, SPELL_DAMAGE = true, SPELL_PERIODIC_DAMAGE = true, DAMAGE_SHIELD = true, DAMAGE_SPLIT = true, SPELL_EXTRA_ATTACKS = true}
 	local DPS_FEED = CreateFrame("Frame")
 	local player_id = UnitGUID("player")
@@ -16,17 +16,17 @@ if ElvCF["datatext"].dps_text and ElvCF["datatext"].dps_text > 0 then
 	local pet_id = UnitGUID("pet")
      
 	local dText = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
-	dText:SetFont(ElvCF.media.font, ElvCF["datatext"].fontsize, "THINOUTLINE")
-	dText:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
-	dText:SetText("DPS: "..ElvDB.ValColor.."0.0|r")
+	dText:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
+	dText:SetShadowOffset(DB.mult, -DB.mult)
+	dText:SetText("DPS: "..DB.ValColor.."0.0|r")
 
-	ElvDB.PP(ElvCF["datatext"].dps_text, dText)
+	DB.PP(C["datatext"].dps_text, dText)
 
 	DPS_FEED:EnableMouse(true)
 	DPS_FEED:SetFrameStrata("MEDIUM")
 	DPS_FEED:SetFrameLevel(3)
-	DPS_FEED:SetHeight(ElvDB.Scale(20))
-	DPS_FEED:SetWidth(ElvDB.Scale(100))
+	DPS_FEED:SetHeight(DB.Scale(20))
+	DPS_FEED:SetWidth(DB.Scale(100))
 	DPS_FEED:SetAllPoints(dText)
 
 	DPS_FEED:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
@@ -75,9 +75,9 @@ if ElvCF["datatext"].dps_text and ElvCF["datatext"].dps_text > 0 then
      
 	function getDPS()
 		if (dmg_total == 0) then
-			return ("DPS: "..ElvDB.ValColor.."0.0|r")
+			return ("DPS: "..DB.ValColor.."0.0|r")
 		else
-			return string.format("DPS: "..ElvDB.ValColor.."%.1f|r", (dmg_total or 0) / (cmbt_time or 1))
+			return string.format("DPS: "..DB.ValColor.."%.1f|r", (dmg_total or 0) / (cmbt_time or 1))
 		end
 	end
 

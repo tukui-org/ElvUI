@@ -1,9 +1,9 @@
 -----------------------------------------------------
 --Default color table, oUF will import these if loaded..
 -----------------------------------------------------
-local ElvDB = ElvDB
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-ElvDB.colors = {
+DB.colors = {
 	tapped = {0.55, 0.57, 0.61},
 	disconnected = {0.84, 0.75, 0.65},
 	power = {

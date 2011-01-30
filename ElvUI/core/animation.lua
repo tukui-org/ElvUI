@@ -1,9 +1,9 @@
 ------------------------------------------------------------------------
 -- Animation Functions (Credit AlleyCat, Hydra)
 ------------------------------------------------------------------------
-local ElvDB = ElvDB
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-ElvDB.SetUpAnimGroup = function(self)
+DB.SetUpAnimGroup = function(self)
 	self.anim = self:CreateAnimationGroup("Flash")
 	self.anim.fadein = self.anim:CreateAnimation("ALPHA", "FadeIn")
 	self.anim.fadein:SetChange(1)
@@ -14,9 +14,9 @@ ElvDB.SetUpAnimGroup = function(self)
 	self.anim.fadeout:SetOrder(1)
 end
 
-ElvDB.Flash = function(self, duration)
+DB.Flash = function(self, duration)
 	if not self.anim then
-		ElvDB.SetUpAnimGroup(self)
+		DB.SetUpAnimGroup(self)
 	end
 
 	self.anim.fadein:SetDuration(duration)
@@ -24,13 +24,13 @@ ElvDB.Flash = function(self, duration)
 	self.anim:Play()
 end
 
-ElvDB.StopFlash = function(self)
+DB.StopFlash = function(self)
 	if self.anim then
 		self.anim:Finish()
 	end
 end
 
-ElvDB.AnimGroup = function (self,x,y,duration)
+DB.AnimGroup = function (self,x,y,duration)
 	self.anim = self:CreateAnimationGroup("Move_In")
 	self.anim.in1 = self.anim:CreateAnimation("Translation")
 	self.anim.in1:SetDuration(0)
@@ -50,9 +50,9 @@ ElvDB.AnimGroup = function (self,x,y,duration)
 	self.anim_o:SetScript("OnFinished",function() self:Hide() end)
 end
 
-ElvDB.SlideIn = function(self)
+DB.SlideIn = function(self)
 	if not self.anim then
-		ElvDB.AnimGroup(self)
+		DB.AnimGroup(self)
 	end
 
 	self.anim_o:Stop()
@@ -60,7 +60,7 @@ ElvDB.SlideIn = function(self)
 	self.anim:Play()
 end
 
-ElvDB.SlideOut = function(self)
+DB.SlideOut = function(self)
 	if self.anim then
 		self.anim:Finish()
 	end

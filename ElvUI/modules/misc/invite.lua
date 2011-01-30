@@ -1,10 +1,9 @@
-local ElvCF = ElvCF
-
 ------------------------------------------------------------------------
 -- Auto accept invite
 ------------------------------------------------------------------------
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if ElvCF["others"].autoacceptinv then
+if C["others"].autoacceptinv then
 	local tAutoAcceptInvite = CreateFrame("Frame")
 	tAutoAcceptInvite:RegisterEvent("PARTY_INVITE_REQUEST")
 	tAutoAcceptInvite:RegisterEvent("PARTY_MEMBERS_CHANGED")
@@ -68,14 +67,14 @@ end)
 function SlashCmdList.AUTOINVITE(msg, editbox)
 	if (msg == 'off') then
 		ainvenabled = false
-		print(ElvL.core_autoinv_disable)
+		print(L.core_autoinv_disable)
 	elseif (msg == '') then
 		ainvenabled = true
-		print(ElvL.core_autoinv_enable)
+		print(L.core_autoinv_enable)
 		ainvkeyword = "invite"
 	else
 		ainvenabled = true
-		print(ElvL.core_autoinv_enable_c .. msg)
+		print(L.core_autoinv_enable_c .. msg)
 		ainvkeyword = msg
 	end
 end

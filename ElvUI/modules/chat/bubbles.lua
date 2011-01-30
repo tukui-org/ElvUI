@@ -1,10 +1,10 @@
-local ElvCF = ElvCF
-local ElvDB = ElvDB
+
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
-if ElvCF["chat"].bubbles ~= true then return end
+if C["chat"].bubbles ~= true then return end
 local chatbubblehook = CreateFrame("Frame", nil, UIParent)
-local noscalemult = ElvDB.mult * ElvCF["general"].uiscale
+local noscalemult = DB.mult * C["general"].uiscale
 local tslu = 0
 local numkids = 0
 local bubbles = {}
@@ -20,12 +20,12 @@ local function skinbubble(frame)
 	end
 	
 	frame:SetBackdrop({
-		bgFile = ElvCF["media"].blank,
-		edgeFile = ElvCF["media"].blank,
+		bgFile = C["media"].blank,
+		edgeFile = C["media"].blank,
 		tile = false, tileSize = 0, edgeSize = noscalemult,
 		insets = {left = -noscalemult, right = -noscalemult, top = -noscalemult, bottom = -noscalemult}
 	})
-	frame:SetBackdropBorderColor(unpack(ElvCF["media"].bordercolor))
+	frame:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 	frame:SetBackdropColor(.1, .1, .1, .8)
 	frame:SetClampedToScreen(false)
 	

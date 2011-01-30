@@ -1,13 +1,13 @@
-local ElvCF = ElvCF
-local ElvDB = ElvDB
+
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 ConsolidatedBuffs:ClearAllPoints()
-ConsolidatedBuffs:SetPoint("LEFT", Minimap, "LEFT", ElvDB.Scale(0), ElvDB.Scale(0))
+ConsolidatedBuffs:SetPoint("LEFT", Minimap, "LEFT", DB.Scale(0), DB.Scale(0))
 ConsolidatedBuffs:SetSize(16, 16)
 ConsolidatedBuffsIcon:SetTexture(nil)
-ConsolidatedBuffs.SetPoint = ElvDB.dummy
+ConsolidatedBuffs.SetPoint = DB.dummy
 
-if ElvCF["auras"].minimapauras ~= true then return end
+if C["auras"].minimapauras ~= true then return end
 
 local mainhand, _, _, offhand = GetWeaponEnchantInfo()
 local rowbuffs = 12
@@ -15,11 +15,11 @@ local warningtime = 6
 
 --Holder frame for mover
 local holder = CreateFrame("Frame", "AurasHolder", UIParent)
-holder:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", ElvDB.Scale(-8), ElvDB.Scale(2))
-holder:SetWidth(ElvDB.Scale(456)) --(30 + 8) * 12)
-holder:SetHeight(ElvuiMinimap:GetHeight() + ElvDB.Scale(3 + 19))
+holder:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", DB.Scale(-8), DB.Scale(2))
+holder:SetWidth(DB.Scale(456)) --(30 + 8) * 12)
+holder:SetHeight(ElvuiMinimap:GetHeight() + DB.Scale(3 + 19))
 
-local btnspace = ElvDB.Scale(-4)
+local btnspace = DB.Scale(-4)
 local aurapos = "RIGHT"
 
 TemporaryEnchantFrame:ClearAllPoints()
@@ -28,20 +28,20 @@ TemporaryEnchantFrame:SetPoint("TOPRIGHT", AurasHolder, "TOPRIGHT", 0, 0)
 TempEnchant1:ClearAllPoints()
 TempEnchant2:ClearAllPoints()
 TempEnchant1:SetPoint("TOPRIGHT", AurasHolder, "TOPRIGHT", 0, 0)
-TempEnchant2:SetPoint("RIGHT", TempEnchant1, "LEFT", ElvDB.Scale(-4), 0)
+TempEnchant2:SetPoint("RIGHT", TempEnchant1, "LEFT", DB.Scale(-4), 0)
 
 for i = 1, 3 do
 	local f = CreateFrame("Frame", nil, _G["TempEnchant"..i])
-	ElvDB.CreatePanel(f, 30, 30, "CENTER", _G["TempEnchant"..i], "CENTER", 0, 0)	
+	DB.CreatePanel(f, 30, 30, "CENTER", _G["TempEnchant"..i], "CENTER", 0, 0)	
 	_G["TempEnchant"..i.."Border"]:Hide()
 	_G["TempEnchant"..i.."Icon"]:SetTexCoord(.08, .92, .08, .92)
-	_G["TempEnchant"..i.."Icon"]:SetPoint("TOPLEFT", _G["TempEnchant"..i], ElvDB.Scale(2), ElvDB.Scale(-2))
-	_G["TempEnchant"..i.."Icon"]:SetPoint("BOTTOMRIGHT", _G["TempEnchant"..i], ElvDB.Scale(-2), ElvDB.Scale(2))
-	_G["TempEnchant"..i]:SetHeight(ElvDB.Scale(30))
-	_G["TempEnchant"..i]:SetWidth(ElvDB.Scale(30))	
+	_G["TempEnchant"..i.."Icon"]:SetPoint("TOPLEFT", _G["TempEnchant"..i], DB.Scale(2), DB.Scale(-2))
+	_G["TempEnchant"..i.."Icon"]:SetPoint("BOTTOMRIGHT", _G["TempEnchant"..i], DB.Scale(-2), DB.Scale(2))
+	_G["TempEnchant"..i]:SetHeight(DB.Scale(30))
+	_G["TempEnchant"..i]:SetWidth(DB.Scale(30))	
 	_G["TempEnchant"..i.."Duration"]:ClearAllPoints()
-	_G["TempEnchant"..i.."Duration"]:SetPoint("BOTTOM", 0, ElvDB.Scale(-13))
-	_G["TempEnchant"..i.."Duration"]:SetFont(ElvCF["media"].font, ElvCF["general"].fontscale, "THINOUTLINE")
+	_G["TempEnchant"..i.."Duration"]:SetPoint("BOTTOM", 0, DB.Scale(-13))
+	_G["TempEnchant"..i.."Duration"]:SetFont(C["media"].font, C["general"].fontscale, "THINOUTLINE")
 end
 
 local function StyleBuffs(buttonName, index, debuff)
@@ -52,22 +52,22 @@ local function StyleBuffs(buttonName, index, debuff)
 	local count 	= _G[buttonName..index.."Count"]
 	if icon and not _G[buttonName..index.."Panel"] then
 		icon:SetTexCoord(.08, .92, .08, .92)
-		icon:SetPoint("TOPLEFT", buff, ElvDB.Scale(2), ElvDB.Scale(-2))
-		icon:SetPoint("BOTTOMRIGHT", buff, ElvDB.Scale(-2), ElvDB.Scale(2))
+		icon:SetPoint("TOPLEFT", buff, DB.Scale(2), DB.Scale(-2))
+		icon:SetPoint("BOTTOMRIGHT", buff, DB.Scale(-2), DB.Scale(2))
 		
-		buff:SetHeight(ElvDB.Scale(30))
-		buff:SetWidth(ElvDB.Scale(30))
+		buff:SetHeight(DB.Scale(30))
+		buff:SetWidth(DB.Scale(30))
 				
 		duration:ClearAllPoints()
-		duration:SetPoint("BOTTOM", 0, ElvDB.Scale(-13))
-		duration:SetFont(ElvCF["media"].font, 12, "THINOUTLINE")
+		duration:SetPoint("BOTTOM", 0, DB.Scale(-13))
+		duration:SetFont(C["media"].font, 12, "THINOUTLINE")
 		
 		count:ClearAllPoints()
-		count:SetPoint("TOPLEFT", ElvDB.Scale(1), ElvDB.Scale(-2))
-		count:SetFont(ElvCF["media"].font, ElvCF["general"].fontscale, "OUTLINE")
+		count:SetPoint("TOPLEFT", DB.Scale(1), DB.Scale(-2))
+		count:SetFont(C["media"].font, C["general"].fontscale, "OUTLINE")
 		
 		local panel = CreateFrame("Frame", buttonName..index.."Panel", buff)
-		ElvDB.CreatePanel(panel, 30, 30, "CENTER", buff, "CENTER", 0, 0)
+		DB.CreatePanel(panel, 30, 30, "CENTER", buff, "CENTER", 0, 0)
 		panel:SetFrameLevel(buff:GetFrameLevel() - 1)
 		panel:SetFrameStrata(buff:GetFrameStrata())
 
@@ -203,14 +203,14 @@ hooksecurefunc("BuffFrame_UpdateAllBuffAnchors", UpdateBuffAnchors)
 hooksecurefunc("DebuffButton_UpdateAnchors", UpdateDebuffAnchors)
 
 
-function ElvDB.AurasPostDrag(frame)
+function DB.AurasPostDrag(frame)
 	local point = select(1, frame:GetPoint())
 	
 	if string.find(point, "LEFT") then
 		TempEnchant1:ClearAllPoints()
 		TempEnchant2:ClearAllPoints()
 		TemporaryEnchantFrame:ClearAllPoints()
-		btnspace = ElvDB.Scale(4)
+		btnspace = DB.Scale(4)
 		aurapos = "LEFT"
 		TempEnchant1:SetPoint("TOPLEFT", AurasHolder, "TOPLEFT", 0, 0)
 		TempEnchant2:SetPoint("LEFT", TempEnchant1, "RIGHT", btnspace, 0)		
@@ -219,7 +219,7 @@ function ElvDB.AurasPostDrag(frame)
 		TempEnchant1:ClearAllPoints()
 		TempEnchant2:ClearAllPoints()
 		TemporaryEnchantFrame:ClearAllPoints()
-		btnspace = ElvDB.Scale(-4)
+		btnspace = DB.Scale(-4)
 		aurapos = "RIGHT"
 		TempEnchant1:SetPoint("TOPRIGHT", AurasHolder, "TOPRIGHT", 0, 0)
 		TempEnchant2:SetPoint("RIGHT", TempEnchant1, "LEFT", btnspace, 0)	
@@ -229,10 +229,10 @@ function ElvDB.AurasPostDrag(frame)
 	UpdateBuffAnchors()
 	BuffFrame_UpdateAllBuffAnchors()
 	
-	if ElvDB.Movers["AurasMover"]["moved"] ~= true then
+	if DB.Movers["AurasMover"]["moved"] ~= true then
 		AurasMover:ClearAllPoints()
-		AurasMover:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", ElvDB.Scale(-8), ElvDB.Scale(2))
+		AurasMover:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", DB.Scale(-8), DB.Scale(2))
 	end
 end
 
-ElvDB.CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, ElvDB.AurasPostDrag)
+DB.CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, DB.AurasPostDrag)

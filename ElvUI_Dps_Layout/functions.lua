@@ -1,7 +1,7 @@
-local ElvDB = ElvDB
-local ElvCF = ElvCF
-
-if not ElvCF["unitframes"].enable == true and not ElvCF["raidframes"].enable == true then return end
+local DB, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 
 
-ElvDB.LoadUFFunctions("DPS")
+if not C["unitframes"].enable == true and not C["raidframes"].enable == true then return end
+
+
+DB.LoadUFFunctions("DPS")

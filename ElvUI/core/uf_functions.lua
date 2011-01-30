@@ -1,12 +1,10 @@
 ------------------------------------------------------------------------
 --	UnitFrame Functions
 ------------------------------------------------------------------------
-local ElvDB = ElvDB
-local ElvCF = ElvCF
-local ElvL = ElvL
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-ElvDB.LoadUFFunctions = function(layout)
-	function ElvDB.SpawnMenu(self)
+DB.LoadUFFunctions = function(layout)
+	function DB.SpawnMenu(self)
 		local unit = self.unit:gsub("(.)", string.upper, 1)
 		if self.unit == "targettarget" then return end
 		if _G[unit.."FrameDropDown"] then
@@ -34,7 +32,7 @@ ElvDB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	ElvDB.Fader = function(self, arg1, arg2)	
+	DB.Fader = function(self, arg1, arg2)	
 		if arg1 == "UNIT_HEALTH" and self.unit ~= arg2 then return end
 		
 		local unit = self.unit
@@ -67,12 +65,12 @@ ElvDB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	ElvDB.AuraFilter = function(icons, unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID)	
+	DB.AuraFilter = function(icons, unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID)	
 		local header = icon:GetParent():GetParent():GetParent():GetName()
 		local inInstance, instanceType = IsInInstance()
 		icon.owner = caster
 		icon.isStealable = isStealable
-		if header == "ElvuiHealR6R25" or (ElvCF["raidframes"].griddps == true and header == "ElvuiDPSR6R25") then 
+		if header == "ElvuiHealR6R25" or (C["raidframes"].griddps == true and header == "ElvuiDPSR6R25") then 
 			if inInstance and (instanceType == "pvp" or instanceType == "arena") then
 				if DebuffWhiteList[name] or TargetPVPOnly[name] then
 					return true
@@ -103,7 +101,7 @@ ElvDB.LoadUFFunctions = function(layout)
 				end		
 			end
 		elseif unit == "target" then --Target Only
-			if ElvCF["auras"].playerdebuffsonly == true then
+			if C["auras"].playerdebuffsonly == true then
 				-- Show all debuffs on friendly targets
 				if UnitIsFriend("player", "target") then return true end
 				
@@ -126,7 +124,7 @@ ElvDB.LoadUFFunctions = function(layout)
 				return true
 			end
 		else --Everything else
-			if unit ~= "player" and unit ~= "targettarget" and unit ~= "focus" and ElvCF["auras"].arenadebuffs == true and inInstance and (instanceType == "pvp" or instanceType == "arena") then
+			if unit ~= "player" and unit ~= "targettarget" and unit ~= "focus" and C["auras"].arenadebuffs == true and inInstance and (instanceType == "pvp" or instanceType == "arena") then
 				if DebuffWhiteList[name] or TargetPVPOnly[name] then
 					return true
 				else
@@ -142,10 +140,10 @@ ElvDB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	ElvDB.PostUpdateHealth = function(health, unit, min, max)
+	DB.PostUpdateHealth = function(health, unit, min, max)
 		local header = health:GetParent():GetParent():GetName()
 
-		if ElvCF["general"].classcolortheme == true then
+		if C["general"].classcolortheme == true then
 			local r, g, b = health:GetStatusBarColor()
 			health:GetParent().FrameBorder:SetBackdropBorderColor(r,g,b)
 			
@@ -172,21 +170,21 @@ ElvDB.LoadUFFunctions = function(layout)
 			local curpow = UnitPower(unit)
 			if curpow == 0 then
 				health.value:ClearAllPoints()
-				health.value:SetPoint("LEFT", health, "LEFT", ElvDB.Scale(2), ElvDB.Scale(1))				
+				health.value:SetPoint("LEFT", health, "LEFT", DB.Scale(2), DB.Scale(1))				
 			else
 				health.value:ClearAllPoints()
-				health.value:SetPoint("TOPLEFT", health, "TOPLEFT", ElvDB.Scale(2), ElvDB.Scale(-2))		
+				health.value:SetPoint("TOPLEFT", health, "TOPLEFT", DB.Scale(2), DB.Scale(-2))		
 			end		
 		end
 		
 		--Setup color health by value option
-		if ElvCF["unitframes"].healthcolorbyvalue == true then
+		if C["unitframes"].healthcolorbyvalue == true then
 			if (UnitIsTapped("target")) and (not UnitIsTappedByPlayer("target")) and unit == "target" then
-				health:SetStatusBarColor(ElvDB.oUF_colors.tapped[1], ElvDB.oUF_colors.tapped[2], ElvDB.oUF_colors.tapped[3], 1)
-				health.bg:SetTexture(ElvDB.oUF_colors.tapped[1], ElvDB.oUF_colors.tapped[2], ElvDB.oUF_colors.tapped[3], 0.3)		
+				health:SetStatusBarColor(DB.oUF_colors.tapped[1], DB.oUF_colors.tapped[2], DB.oUF_colors.tapped[3], 1)
+				health.bg:SetTexture(DB.oUF_colors.tapped[1], DB.oUF_colors.tapped[2], DB.oUF_colors.tapped[3], 0.3)		
 			elseif not UnitIsConnected(unit) then
-				health:SetStatusBarColor(ElvDB.oUF_colors.tapped[1], ElvDB.oUF_colors.tapped[2], ElvDB.oUF_colors.tapped[3], 1)
-				health.bg:SetTexture(ElvDB.oUF_colors.tapped[1], ElvDB.oUF_colors.tapped[2], ElvDB.oUF_colors.tapped[3], 0.3)				
+				health:SetStatusBarColor(DB.oUF_colors.tapped[1], DB.oUF_colors.tapped[2], DB.oUF_colors.tapped[3], 1)
+				health.bg:SetTexture(DB.oUF_colors.tapped[1], DB.oUF_colors.tapped[2], DB.oUF_colors.tapped[3], 0.3)				
 			else
 				local perc = (min/max)*100
 				if(perc <= 50 and perc >= 26) then
@@ -196,20 +194,20 @@ ElvDB.LoadUFFunctions = function(layout)
 					health:SetStatusBarColor(255/255, 13/255, 9/255, 1)
 					health.bg:SetTexture(255/255, 13/255, 9/255, 0.1)
 				else
-					if ElvCF["unitframes"].classcolor ~= true then
-						health:SetStatusBarColor(unpack(ElvCF["unitframes"].healthcolor))
-						health.bg:SetTexture(unpack(ElvCF["unitframes"].healthbackdropcolor))		
+					if C["unitframes"].classcolor ~= true then
+						health:SetStatusBarColor(unpack(C["unitframes"].healthcolor))
+						health.bg:SetTexture(unpack(C["unitframes"].healthbackdropcolor))		
 					else
 						if (UnitIsPlayer(unit)) then
 							local class = select(2, UnitClass(unit))
 							if not class then return end
-							local c = ElvDB.oUF_colors.class[class]
+							local c = DB.oUF_colors.class[class]
 							health:SetStatusBarColor(c[1], c[2], c[3], 1)
 							health.bg:SetTexture(c[1], c[2], c[3], 0.3)	
 						else
 							local reaction = UnitReaction(unit, 'player')
 							if not reaction then return end
-							local c = ElvDB.oUF_colors.reaction[reaction]
+							local c = DB.oUF_colors.reaction[reaction]
 							health:SetStatusBarColor(c[1], c[2], c[3], 1)
 							health.bg:SetTexture(c[1], c[2], c[3], 0.3)						
 						end
@@ -218,26 +216,26 @@ ElvDB.LoadUFFunctions = function(layout)
 			end
 		else
 			if (UnitIsTapped("target")) and (not UnitIsTappedByPlayer("target")) and unit == "target" then
-				health:SetStatusBarColor(ElvDB.oUF_colors.tapped[1], ElvDB.oUF_colors.tapped[2], ElvDB.oUF_colors.tapped[3], 1)
-				health.bg:SetTexture(ElvDB.oUF_colors.tapped[1], ElvDB.oUF_colors.tapped[2], ElvDB.oUF_colors.tapped[3], 0.3)		
+				health:SetStatusBarColor(DB.oUF_colors.tapped[1], DB.oUF_colors.tapped[2], DB.oUF_colors.tapped[3], 1)
+				health.bg:SetTexture(DB.oUF_colors.tapped[1], DB.oUF_colors.tapped[2], DB.oUF_colors.tapped[3], 0.3)		
 			elseif not UnitIsConnected(unit) then
-				health:SetStatusBarColor(ElvDB.oUF_colors.tapped[1], ElvDB.oUF_colors.tapped[2], ElvDB.oUF_colors.tapped[3], 1)
-				health.bg:SetTexture(ElvDB.oUF_colors.tapped[1], ElvDB.oUF_colors.tapped[2], ElvDB.oUF_colors.tapped[3], 0.3)						
+				health:SetStatusBarColor(DB.oUF_colors.tapped[1], DB.oUF_colors.tapped[2], DB.oUF_colors.tapped[3], 1)
+				health.bg:SetTexture(DB.oUF_colors.tapped[1], DB.oUF_colors.tapped[2], DB.oUF_colors.tapped[3], 0.3)						
 			else
-				if ElvCF["unitframes"].classcolor ~= true then
-					health:SetStatusBarColor(unpack(ElvCF["unitframes"].healthcolor))
-					health.bg:SetTexture(unpack(ElvCF["unitframes"].healthbackdropcolor))		
+				if C["unitframes"].classcolor ~= true then
+					health:SetStatusBarColor(unpack(C["unitframes"].healthcolor))
+					health.bg:SetTexture(unpack(C["unitframes"].healthbackdropcolor))		
 				else		
 					if (UnitIsPlayer(unit)) then
 						local class = select(2, UnitClass(unit))
 						if not class then return end
-						local c = ElvDB.oUF_colors.class[class]
+						local c = DB.oUF_colors.class[class]
 						health:SetStatusBarColor(c[1], c[2], c[3], 1)
 						health.bg:SetTexture(c[1], c[2], c[3], 0.3)	
 					else
 						local reaction = UnitReaction(unit, 'player')
 						if not reaction then return end
-						local c = ElvDB.oUF_colors.reaction[reaction]
+						local c = DB.oUF_colors.reaction[reaction]
 						health:SetStatusBarColor(c[1], c[2], c[3], 1)
 						health.bg:SetTexture(c[1], c[2], c[3], 0.3)						
 					end			
@@ -251,20 +249,20 @@ ElvDB.LoadUFFunctions = function(layout)
 		if header == "ElvuiHealParty" or header == "ElvuiDPSParty" or header == "ElvuiHealR6R25" or header == "ElvuiDPSR6R25" or header == "ElvuiHealR26R40" or header == "ElvuiDPSR26R40" then --Raid/Party Layouts
 			if not UnitIsConnected(unit) or UnitIsDead(unit) or UnitIsGhost(unit) then
 				if not UnitIsConnected(unit) then
-					health.value:SetText("|cffD7BEA5"..ElvL.unitframes_ouf_offline.."|r")
+					health.value:SetText("|cffD7BEA5"..L.unitframes_ouf_offline.."|r")
 				elseif UnitIsDead(unit) then
-					health.value:SetText("|cffD7BEA5"..ElvL.unitframes_ouf_dead.."|r")
+					health.value:SetText("|cffD7BEA5"..L.unitframes_ouf_dead.."|r")
 				elseif UnitIsGhost(unit) then
-					health.value:SetText("|cffD7BEA5"..ElvL.unitframes_ouf_ghost.."|r")
+					health.value:SetText("|cffD7BEA5"..L.unitframes_ouf_ghost.."|r")
 				end
 			else
-				if min ~= max and ElvCF["raidframes"].healthdeficit == true then
-					health.value:SetText("|cff559655-"..ElvDB.ShortValueNegative(max-min).."|r")
+				if min ~= max and C["raidframes"].healthdeficit == true then
+					health.value:SetText("|cff559655-"..DB.ShortValueNegative(max-min).."|r")
 				else
 					health.value:SetText("")
 				end
 			end
-			if (header == "ElvuiHealR6R25" or header == "ElvuiDPSR6R25" or header == "ElvuiHealR26R40" or header == "ElvuiDPSR26R40") and ElvCF["raidframes"].hidenonmana == true then
+			if (header == "ElvuiHealR6R25" or header == "ElvuiDPSR6R25" or header == "ElvuiHealR26R40" or header == "ElvuiDPSR26R40") and C["raidframes"].hidenonmana == true then
 				local powertype, _ = UnitPowerType(unit)
 				if powertype ~= SPELL_POWER_MANA then
 					health:SetHeight(health:GetParent():GetHeight())
@@ -272,7 +270,7 @@ ElvDB.LoadUFFunctions = function(layout)
 					if header == "ElvuiHealR6R25" then
 						health:SetHeight(health:GetParent():GetHeight() * 0.85)
 					elseif header == "ElvuiDPSR6R25" then
-						if ElvCF["raidframes"].griddps ~= true then
+						if C["raidframes"].griddps ~= true then
 							health:SetHeight(health:GetParent():GetHeight() * 0.75)
 						else
 							health:SetHeight(health:GetParent():GetHeight() * 0.83)
@@ -285,47 +283,47 @@ ElvDB.LoadUFFunctions = function(layout)
 		else
 			if not UnitIsConnected(unit) or UnitIsDead(unit) or UnitIsGhost(unit) then
 				if not UnitIsConnected(unit) then
-					health.value:SetText("|cffD7BEA5"..ElvL.unitframes_ouf_offline.."|r")
+					health.value:SetText("|cffD7BEA5"..L.unitframes_ouf_offline.."|r")
 				elseif UnitIsDead(unit) then
-					health.value:SetText("|cffD7BEA5"..ElvL.unitframes_ouf_dead.."|r")
+					health.value:SetText("|cffD7BEA5"..L.unitframes_ouf_dead.."|r")
 				elseif UnitIsGhost(unit) then
-					health.value:SetText("|cffD7BEA5"..ElvL.unitframes_ouf_ghost.."|r")
+					health.value:SetText("|cffD7BEA5"..L.unitframes_ouf_ghost.."|r")
 				end
 			else
 				if min ~= max then
 					local r, g, b
 					r, g, b = oUF.ColorGradient(min/max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
 					if unit == "player" and health:GetAttribute("normalUnit") ~= "pet" then
-						if ElvCF["unitframes"].showtotalhpmp == true then
-							health.value:SetFormattedText("|cff559655%s|r |cffD7BEA5|||r |cff559655%s|r", ElvDB.ShortValue(min), ElvDB.ShortValue(max))
+						if C["unitframes"].showtotalhpmp == true then
+							health.value:SetFormattedText("|cff559655%s|r |cffD7BEA5|||r |cff559655%s|r", DB.ShortValue(min), DB.ShortValue(max))
 						else
-							health.value:SetFormattedText("|cffAF5050%s|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", ElvDB.ShortValue(min), r * 255, g * 255, b * 255, floor(min / max * 100))
+							health.value:SetFormattedText("|cffAF5050%s|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", DB.ShortValue(min), r * 255, g * 255, b * 255, floor(min / max * 100))
 						end
 					elseif unit == "target" or unit == "focus" or (unit and unit:find("boss%d")) then
-						if ElvCF["unitframes"].showtotalhpmp == true then
-							health.value:SetFormattedText("|cff559655%s|r |cffD7BEA5|||r |cff559655%s|r", ElvDB.ShortValue(min), ElvDB.ShortValue(max))
+						if C["unitframes"].showtotalhpmp == true then
+							health.value:SetFormattedText("|cff559655%s|r |cffD7BEA5|||r |cff559655%s|r", DB.ShortValue(min), DB.ShortValue(max))
 						else
-							health.value:SetFormattedText("|cffAF5050%s|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", ElvDB.ShortValue(min), r * 255, g * 255, b * 255, floor(min / max * 100))
+							health.value:SetFormattedText("|cffAF5050%s|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", DB.ShortValue(min), r * 255, g * 255, b * 255, floor(min / max * 100))
 						end
 					elseif (unit and unit:find("arena%d")) then
-						health.value:SetText("|cff559655"..ElvDB.ShortValue(min).."|r")
+						health.value:SetText("|cff559655"..DB.ShortValue(min).."|r")
 					else
-						health.value:SetFormattedText("|cffAF5050%s|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", ElvDB.ShortValue(min), r * 255, g * 255, b * 255, floor(min / max * 100))
+						health.value:SetFormattedText("|cffAF5050%s|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", DB.ShortValue(min), r * 255, g * 255, b * 255, floor(min / max * 100))
 					end
 				else
 					if unit == "player" and health:GetAttribute("normalUnit") ~= "pet" then
-						health.value:SetText("|cff559655"..ElvDB.ShortValue(max).."|r")
+						health.value:SetText("|cff559655"..DB.ShortValue(max).."|r")
 					elseif unit == "target" or unit == "focus" or (unit and unit:find("arena%d")) then
-						health.value:SetText("|cff559655"..ElvDB.ShortValue(max).."|r")
+						health.value:SetText("|cff559655"..DB.ShortValue(max).."|r")
 					else
-						health.value:SetText("|cff559655"..ElvDB.ShortValue(max).."|r")
+						health.value:SetText("|cff559655"..DB.ShortValue(max).."|r")
 					end
 				end
 			end
 		end
 	end
 
-	ElvDB.CheckPower = function(self, event)
+	DB.CheckPower = function(self, event)
 		local unit = self.unit
 		local powertype, _ = UnitPowerType(unit)
 		if powertype ~= SPELL_POWER_MANA then
@@ -337,7 +335,7 @@ ElvDB.LoadUFFunctions = function(layout)
 			if IsAddOnLoaded("ElvUI_Heal_Layout") and self:GetParent():GetName() == "ElvuiHealR6R25" then
 					self.Health:SetHeight(self.Health:GetParent():GetHeight() * 0.85)
 			elseif self:GetParent():GetName() == "ElvuiDPSR6R25" then
-				if ElvCF["raidframes"].griddps ~= true then
+				if C["raidframes"].griddps ~= true then
 					self.Health:SetHeight(self.Health:GetParent():GetHeight() * 0.75)
 				else
 					self.Health:SetHeight(self.Health:GetParent():GetHeight() * 0.83)
@@ -351,9 +349,9 @@ ElvDB.LoadUFFunctions = function(layout)
 		end	
 	end
 
-	ElvDB.PostNamePosition = function(self)
+	DB.PostNamePosition = function(self)
 		self.Name:ClearAllPoints()
-		if (self.Power.value:GetText() and UnitIsPlayer("target") and ElvCF["unitframes"].targetpowerplayeronly == true) or (self.Power.value:GetText() and ElvCF["unitframes"].targetpowerplayeronly == false) then
+		if (self.Power.value:GetText() and UnitIsPlayer("target") and C["unitframes"].targetpowerplayeronly == true) or (self.Power.value:GetText() and C["unitframes"].targetpowerplayeronly == false) then
 			self.Name:SetPoint("CENTER", self.health, "CENTER", 0, 1)
 		else
 			self.Power.value:SetAlpha(0)
@@ -361,20 +359,20 @@ ElvDB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	ElvDB.PreUpdatePower = function(power, unit)
+	DB.PreUpdatePower = function(power, unit)
 		local _, pType = UnitPowerType(unit)
 		
-		local color = ElvDB.oUF_colors.power[pType]
+		local color = DB.oUF_colors.power[pType]
 		if color then
 			power:SetStatusBarColor(color[1], color[2], color[3])
 		end
 	end
 	
-	ElvDB.PostUpdatePower = function(power, unit, min, max)
+	DB.PostUpdatePower = function(power, unit, min, max)
 		local self = power:GetParent()
 		local header = power:GetParent():GetParent():GetName()
 		local pType, pToken, altR, altG, altB = UnitPowerType(unit)
-		local color = ElvDB.oUF_colors.power[pToken]
+		local color = DB.oUF_colors.power[pToken]
 		
 		if header == "ElvuiDPSR6R25" or header == "ElvuiHealR6R25" then
 			if pType ~= SPELL_POWER_MANA then
@@ -403,30 +401,30 @@ ElvDB.LoadUFFunctions = function(layout)
 				if min ~= max then
 					if pType == 0 then
 						if unit == "target" then
-							if ElvCF["unitframes"].showtotalhpmp == true then
-								power.value:SetFormattedText("%s |cffD7BEA5|||r %s", ElvDB.ShortValue(max - (max - min)), ElvDB.ShortValue(max))
+							if C["unitframes"].showtotalhpmp == true then
+								power.value:SetFormattedText("%s |cffD7BEA5|||r %s", DB.ShortValue(max - (max - min)), DB.ShortValue(max))
 							else
-								power.value:SetFormattedText("%d%% |cffD7BEA5-|r %s", floor(min / max * 100), ElvDB.ShortValue(max - (max - min)))
+								power.value:SetFormattedText("%d%% |cffD7BEA5-|r %s", floor(min / max * 100), DB.ShortValue(max - (max - min)))
 							end
 						elseif unit == "player" and self:GetAttribute("normalUnit") == "pet" or unit == "pet" then
-							if ElvCF["unitframes"].showtotalhpmp == true then
-								power.value:SetFormattedText("%s |cffD7BEA5|||r %s", ElvDB.ShortValue(max - (max - min)), ElvDB.ShortValue(max))
+							if C["unitframes"].showtotalhpmp == true then
+								power.value:SetFormattedText("%s |cffD7BEA5|||r %s", DB.ShortValue(max - (max - min)), DB.ShortValue(max))
 							else
 								power.value:SetFormattedText("%d%%", floor(min / max * 100))
 							end
 						elseif (unit and unit:find("arena%d")) then
-							power.value:SetText(ElvDB.ShortValue(min))
+							power.value:SetText(DB.ShortValue(min))
 						elseif (unit and unit:find("boss%d")) then
-							if ElvCF["unitframes"].showtotalhpmp == true then
-								power.value:SetFormattedText("%s |cffD7BEA5|||r %s", ElvDB.ShortValue(max), ElvDB.ShortValue(max - (max - min)))
+							if C["unitframes"].showtotalhpmp == true then
+								power.value:SetFormattedText("%s |cffD7BEA5|||r %s", DB.ShortValue(max), DB.ShortValue(max - (max - min)))
 							else
-								power.value:SetFormattedText("%s |cffD7BEA5-|r %d%%", ElvDB.ShortValue(max - (max - min)), floor(min / max * 100))
+								power.value:SetFormattedText("%s |cffD7BEA5-|r %d%%", DB.ShortValue(max - (max - min)), floor(min / max * 100))
 							end						
 						else
-							if ElvCF["unitframes"].showtotalhpmp == true then
-								power.value:SetFormattedText("%s |cffD7BEA5|||r %s", ElvDB.ShortValue(max - (max - min)), ElvDB.ShortValue(max))
+							if C["unitframes"].showtotalhpmp == true then
+								power.value:SetFormattedText("%s |cffD7BEA5|||r %s", DB.ShortValue(max - (max - min)), DB.ShortValue(max))
 							else
-								power.value:SetFormattedText("%d%% |cffD7BEA5-|r %s", floor(min / max * 100), ElvDB.ShortValue(max - (max - min)))
+								power.value:SetFormattedText("%d%% |cffD7BEA5-|r %s", floor(min / max * 100), DB.ShortValue(max - (max - min)))
 							end
 						end
 					else
@@ -434,24 +432,24 @@ ElvDB.LoadUFFunctions = function(layout)
 					end
 				else
 					if unit == "pet" or unit == "target" or (unit and unit:find("arena%d")) then
-						power.value:SetText(ElvDB.ShortValue(min))
+						power.value:SetText(DB.ShortValue(min))
 					else
-						power.value:SetText(ElvDB.ShortValue(min))
+						power.value:SetText(DB.ShortValue(min))
 					end
 				end
 			end
 		end
 		
 		if self.Name then
-			if unit == "target" then ElvDB.PostNamePosition(self, power) end
+			if unit == "target" then DB.PostNamePosition(self, power) end
 		end
 	end
 
-	ElvDB.CustomCastTimeText = function(self, duration)
+	DB.CustomCastTimeText = function(self, duration)
 		self.Time:SetText(("%.1f / %.1f"):format(self.channeling and duration or self.max - duration, self.max))
 	end
 
-	ElvDB.CustomCastDelayText = function(self, duration)
+	DB.CustomCastDelayText = function(self, duration)
 		self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(self.channeling and duration or self.max - duration, self.channeling and "- " or "+", self.delay))
 	end
 
@@ -491,7 +489,7 @@ ElvDB.LoadUFFunctions = function(layout)
 					self.remaining:Hide()
 					self:SetScript("OnUpdate", nil)
 				end
-				if (not self.debuff) and ElvCF["general"].classcolortheme == true then
+				if (not self.debuff) and C["general"].classcolortheme == true then
 					local r, g, b = self:GetParent():GetParent().FrameBorder:GetBackdropBorderColor()
 					self:SetBackdropBorderColor(r, g, b)
 				end
@@ -500,7 +498,7 @@ ElvDB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	function ElvDB.PvPUpdate(self, elapsed)
+	function DB.PvPUpdate(self, elapsed)
 		if(self.elapsed and self.elapsed > 0.2) then
 			local unit = self.unit
 			local time = GetPVPTimer()
@@ -531,42 +529,42 @@ ElvDB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	function ElvDB.PostCreateAura(element, button)
+	function DB.PostCreateAura(element, button)
 		local unit = button:GetParent():GetParent().unit
 		local header = button:GetParent():GetParent():GetParent():GetName()
 		
-		if header == "ElvuiHealR6R25" or (header == "ElvuiDPSR6R25" and ElvCF["raidframes"].griddps == true) then
+		if header == "ElvuiHealR6R25" or (header == "ElvuiDPSR6R25" and C["raidframes"].griddps == true) then
 			button:EnableMouse(false)
 			button:SetFrameLevel(button:GetParent():GetParent().Power:GetFrameLevel() + 4)
 		end
 		
 		if unit == "focus" or unit == "targettarget" or header == "ElvuiHealR6R25" or header == "ElvuiDPSR6R25" or header == "ElvuiHealParty" then
-			button.remaining = ElvDB.SetFontString(button, ElvCF["media"].font, ElvCF["auras"].auratextscale*0.85, "THINOUTLINE")
+			button.remaining = DB.SetFontString(button, C["media"].font, C["auras"].auratextscale*0.85, "THINOUTLINE")
 		else
-			button.remaining = ElvDB.SetFontString(button, ElvCF["media"].font, ElvCF["auras"].auratextscale, "THINOUTLINE")
+			button.remaining = DB.SetFontString(button, C["media"].font, C["auras"].auratextscale, "THINOUTLINE")
 		end
 		
-		ElvDB.SetTemplate(button)
-		button.remaining:SetPoint("CENTER", ElvDB.Scale(0), ElvDB.mult)
+		DB.SetTemplate(button)
+		button.remaining:SetPoint("CENTER", DB.Scale(0), DB.mult)
 		
 		button.cd.noOCC = true		 	-- hide OmniCC CDs
 		button.cd.noCooldownCount = true	-- hide CDC CDs
 		
 		button.cd:SetReverse()
-		button.icon:SetPoint("TOPLEFT", ElvDB.Scale(2), ElvDB.Scale(-2))
-		button.icon:SetPoint("BOTTOMRIGHT", ElvDB.Scale(-2), ElvDB.Scale(2))
+		button.icon:SetPoint("TOPLEFT", DB.Scale(2), DB.Scale(-2))
+		button.icon:SetPoint("BOTTOMRIGHT", DB.Scale(-2), DB.Scale(2))
 		button.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
 		button.icon:SetDrawLayer('ARTWORK')
 		
-		button.count:SetPoint("BOTTOMRIGHT", ElvDB.mult, ElvDB.Scale(1.5))
+		button.count:SetPoint("BOTTOMRIGHT", DB.mult, DB.Scale(1.5))
 		button.count:SetJustifyH("RIGHT")
-		button.count:SetFont(ElvCF["media"].font, ElvCF["auras"].auratextscale*0.8, "THINOUTLINE")
+		button.count:SetFont(C["media"].font, C["auras"].auratextscale*0.8, "THINOUTLINE")
 
 		button.overlayFrame = CreateFrame("frame", nil, button, nil)
 		button.cd:SetFrameLevel(button:GetFrameLevel() + 1)
 		button.cd:ClearAllPoints()
-		button.cd:SetPoint("TOPLEFT", button, "TOPLEFT", ElvDB.Scale(2), ElvDB.Scale(-2))
-		button.cd:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", ElvDB.Scale(-2), ElvDB.Scale(2))
+		button.cd:SetPoint("TOPLEFT", button, "TOPLEFT", DB.Scale(2), DB.Scale(-2))
+		button.cd:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", DB.Scale(-2), DB.Scale(2))
 		button.overlayFrame:SetFrameLevel(button.cd:GetFrameLevel() + 2)	   
 		button.overlay:SetParent(button.overlayFrame)
 		button.count:SetParent(button.overlayFrame)
@@ -577,16 +575,16 @@ ElvDB.LoadUFFunctions = function(layout)
 		highlight:SetAllPoints(button.icon)	
 	end
 
-	function ElvDB.PostUpdateAura(icons, unit, icon, index, offset, filter, isDebuff, duration, timeLeft)
+	function DB.PostUpdateAura(icons, unit, icon, index, offset, filter, isDebuff, duration, timeLeft)
 		local name, _, _, _, dtype, duration, expirationTime, unitCaster, _ = UnitAura(unit, index, icon.filter)
 		
 		if(icon.debuff) then
 			if(not UnitIsFriend("player", unit) and icon.owner ~= "player" and icon.owner ~= "vehicle") and (not DebuffWhiteList[name]) then
-				icon:SetBackdropBorderColor(unpack(ElvCF["media"].bordercolor))
+				icon:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 				icon.icon:SetDesaturated(true)
 			else
 				local color = DebuffTypeColor[dtype] or DebuffTypeColor.none
-				if (name == "Unstable Affliction" or name == "Vampiric Touch") and ElvDB.myclass ~= "WARLOCK" then
+				if (name == "Unstable Affliction" or name == "Vampiric Touch") and DB.myclass ~= "WARLOCK" then
 					icon:SetBackdropBorderColor(0.05, 0.85, 0.94)
 				else
 					icon:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
@@ -594,20 +592,20 @@ ElvDB.LoadUFFunctions = function(layout)
 				icon.icon:SetDesaturated(false)
 			end
 		else
-			if (icon.isStealable or (ElvDB.myclass == "PRIEST" and dtype == "Magic")) and not UnitIsFriend("player", unit) then
+			if (icon.isStealable or (DB.myclass == "PRIEST" and dtype == "Magic")) and not UnitIsFriend("player", unit) then
 				icon:SetBackdropBorderColor(237/255, 234/255, 142/255)
 			else
-				if ElvCF["general"].classcolortheme == true then
+				if C["general"].classcolortheme == true then
 					local r, g, b = icon:GetParent():GetParent().FrameBorder:GetBackdropBorderColor()
 					icon:SetBackdropBorderColor(r, g, b)
 				else
-					icon:SetBackdropBorderColor(unpack(ElvCF["media"].bordercolor))
+					icon:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 				end			
 			end
 		end
 		
 		if duration and duration > 0 then
-			if ElvCF["auras"].auratimer == true then
+			if C["auras"].auratimer == true then
 				icon.remaining:Show()
 			else
 				icon.remaining:Hide()
@@ -622,7 +620,7 @@ ElvDB.LoadUFFunctions = function(layout)
 		icon:SetScript("OnUpdate", CreateAuraTimer)
 	end
 
-	ElvDB.HidePortrait = function(self, event)
+	DB.HidePortrait = function(self, event)
 		if self.unit == "target" then
 			if not UnitExists(self.unit) or not UnitIsConnected(self.unit) or not UnitIsVisible(self.unit) then
 				self.PFrame:SetAlpha(0)
@@ -632,7 +630,7 @@ ElvDB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	ElvDB.PostCastStart = function(self, unit, name, rank, castid)
+	DB.PostCastStart = function(self, unit, name, rank, castid)
 		if unit == "vehicle" then unit = "player" end
 		--Fix blank castbar with opening text
 		if name == "Opening" then
@@ -643,20 +641,20 @@ ElvDB.LoadUFFunctions = function(layout)
 		
 		if self.interrupt and unit ~= "player" then
 			if UnitCanAttack("player", unit) then
-				self:SetStatusBarColor(unpack(ElvCF["castbar"].nointerruptcolor))
+				self:SetStatusBarColor(unpack(C["castbar"].nointerruptcolor))
 			else
-				self:SetStatusBarColor(unpack(ElvCF["castbar"].castbarcolor))	
+				self:SetStatusBarColor(unpack(C["castbar"].castbarcolor))	
 			end
 		else
-			if ElvCF["castbar"].classcolor ~= true or unit ~= "player" then
-				self:SetStatusBarColor(unpack(ElvCF["castbar"].castbarcolor))
+			if C["castbar"].classcolor ~= true or unit ~= "player" then
+				self:SetStatusBarColor(unpack(C["castbar"].castbarcolor))
 			else
 				self:SetStatusBarColor(unpack(oUF.colors.class[select(2, UnitClass(unit))]))
 			end	
 		end
 	end
 
-	ElvDB.UpdateShards = function(self, event, unit, powerType)
+	DB.UpdateShards = function(self, event, unit, powerType)
 		if(self.unit ~= unit or (powerType and powerType ~= 'SOUL_SHARDS')) then return end
 		local num = UnitPower(unit, SPELL_POWER_SOUL_SHARDS)
 		for i = 1, SHARD_BAR_NUM_SHARDS do
@@ -668,7 +666,7 @@ ElvDB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	ElvDB.UpdateHoly = function(self, event, unit, powerType)
+	DB.UpdateHoly = function(self, event, unit, powerType)
 		if(self.unit ~= unit or (powerType and powerType ~= 'HOLY_POWER')) then return end
 		local num = UnitPower(unit, SPELL_POWER_HOLY_POWER)
 		for i = 1, MAX_HOLY_POWER do
@@ -680,7 +678,7 @@ ElvDB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	ElvDB.MoveBuffs = function(self, login)
+	DB.MoveBuffs = function(self, login)
 		local parent = self:GetParent()
 		if login then
 			self:SetScript("OnUpdate", nil)
@@ -691,7 +689,7 @@ ElvDB.LoadUFFunctions = function(layout)
 				parent.FlashInfo:Hide()
 				parent.PvP:SetAlpha(0)
 			end
-			parent.FrameBorder.shadow:SetPoint("TOPLEFT", ElvDB.Scale(-4), ElvDB.Scale(17))
+			parent.FrameBorder.shadow:SetPoint("TOPLEFT", DB.Scale(-4), DB.Scale(17))
 			
 			if (IsAddOnLoaded("ElvUI_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["DPSPlayerBuffs"] and DPSElementsCharPos["DPSPlayerBuffs"]["moved"] == true) then return end
 			if (IsAddOnLoaded("ElvUI_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["HealPlayerBuffs"] and HealElementsCharPos["HealPlayerBuffs"]["moved"] == true) then return end
@@ -700,14 +698,14 @@ ElvDB.LoadUFFunctions = function(layout)
 			
 			if parent.Debuffs then 
 				parent.Debuffs:ClearAllPoints()
-				if parent.Debuffs then parent.Debuffs:SetPoint("BOTTOM", parent.Health, "TOP", 0, ElvDB.Scale(17)) end	
+				if parent.Debuffs then parent.Debuffs:SetPoint("BOTTOM", parent.Health, "TOP", 0, DB.Scale(17)) end	
 			end		
 		else
 			if self == parent.EclipseBar then
 				parent.FlashInfo:Show()
 				parent.PvP:SetAlpha(1)
 			end
-			parent.FrameBorder.shadow:SetPoint("TOPLEFT", ElvDB.Scale(-4), ElvDB.Scale(4))
+			parent.FrameBorder.shadow:SetPoint("TOPLEFT", DB.Scale(-4), DB.Scale(4))
 			
 			if (IsAddOnLoaded("ElvUI_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["DPSPlayerBuffs"] and DPSElementsCharPos["DPSPlayerBuffs"]["moved"] == true) then return end
 			if (IsAddOnLoaded("ElvUI_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["HealPlayerBuffs"] and HealElementsCharPos["HealPlayerBuffs"]["moved"] == true) then return end
@@ -716,13 +714,13 @@ ElvDB.LoadUFFunctions = function(layout)
 			
 			if parent.Debuffs then 
 				parent.Debuffs:ClearAllPoints()
-				parent.Debuffs:SetPoint("BOTTOM", parent.Health, "TOP", 0, ElvDB.Scale(6))
+				parent.Debuffs:SetPoint("BOTTOM", parent.Health, "TOP", 0, DB.Scale(6))
 			end	
 		end
 	end
 
 	local starfirename = select(1, GetSpellInfo(2912))
-	ElvDB.EclipseDirection = function(self)
+	DB.EclipseDirection = function(self)
 		if ( GetEclipseDirection() == "sun" ) then
 			self.Text:SetText(starfirename.."!")
 			self.Text:SetTextColor(.2,.2,1,1)
@@ -734,7 +732,7 @@ ElvDB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	ElvDB.ToggleBars = function(self)
+	DB.ToggleBars = function(self)
 		local parent = self:GetParent()
 		local unit = parent.unit
 		if unit == "vehicle" then unit = "player" end
@@ -768,7 +766,7 @@ ElvDB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	ElvDB.ComboDisplay = function(self, event, unit)
+	DB.ComboDisplay = function(self, event, unit)
 		if(unit == 'pet') then return end
 		
 		local cpoints = self.CPoints
@@ -793,20 +791,20 @@ ElvDB.LoadUFFunctions = function(layout)
 			end
 			if (IsAddOnLoaded("ElvUI_Dps_Layout") and DPSElementsCharPos and ((DPSElementsCharPos["DPSComboBar"] and DPSElementsCharPos["DPSComboBar"]["moved"] == true) or (DPSElementsCharPos["DPSTargetBuffs"] and DPSElementsCharPos["DPSTargetBuffs"]["moved"] == true))) then return end
 			if (IsAddOnLoaded("ElvUI_Heal_Layout") and HealElementsCharPos and ((HealElementsCharPos["HealComboBar"] and HealElementsCharPos["HealComboBar"]["moved"] == true) or (HealElementsCharPos["HealTargetBuffs"] and HealElementsCharPos["HealTargetBuffs"]["moved"] == true))) then return end
-			self.FrameBorder.shadow:SetPoint("TOPLEFT", ElvDB.Scale(-4), ElvDB.Scale(17))
-			if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOM", self.Health, "TOP", 0, ElvDB.Scale(17)) end	
+			self.FrameBorder.shadow:SetPoint("TOPLEFT", DB.Scale(-4), DB.Scale(17))
+			if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOM", self.Health, "TOP", 0, DB.Scale(17)) end	
 		else
 			for i=1, MAX_COMBO_POINTS do
 				cpoints[i]:Hide()
 			end
 			if (IsAddOnLoaded("ElvUI_Dps_Layout") and DPSElementsCharPos and ((DPSElementsCharPos["DPSComboBar"] and DPSElementsCharPos["DPSComboBar"]["moved"] == true) or (DPSElementsCharPos["DPSTargetBuffs"] and DPSElementsCharPos["DPSTargetBuffs"]["moved"] == true))) then return end
 			if (IsAddOnLoaded("ElvUI_Heal_Layout") and HealElementsCharPos and ((HealElementsCharPos["HealComboBar"] and HealElementsCharPos["HealComboBar"]["moved"] == true) or (HealElementsCharPos["HealTargetBuffs"] and HealElementsCharPos["HealTargetBuffs"]["moved"] == true))) then return end
-			self.FrameBorder.shadow:SetPoint("TOPLEFT", ElvDB.Scale(-4), ElvDB.Scale(4))	
-			if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOM", self.Health, "TOP", 0, ElvDB.Scale(4)) end	
+			self.FrameBorder.shadow:SetPoint("TOPLEFT", DB.Scale(-4), DB.Scale(4))	
+			if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOM", self.Health, "TOP", 0, DB.Scale(4)) end	
 		end
 	end
 
-	ElvDB.MLAnchorUpdate = function (self)
+	DB.MLAnchorUpdate = function (self)
 		if self.Leader:IsShown() then
 			self.MasterLooter:SetPoint("TOPLEFT", 14, 8)
 		else
@@ -814,7 +812,7 @@ ElvDB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	ElvDB.RestingIconUpdate = function (self)
+	DB.RestingIconUpdate = function (self)
 		if IsResting() then
 			self.Resting:Show()
 		else
@@ -822,7 +820,7 @@ ElvDB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	ElvDB.UpdateReputation = function(self, event, unit, bar, min, max, value, name, id)
+	DB.UpdateReputation = function(self, event, unit, bar, min, max, value, name, id)
 		if not name then return end
 		local name, id = GetWatchedFactionInfo()
 		bar:SetStatusBarColor(FACTION_BAR_COLORS[id].r, FACTION_BAR_COLORS[id].g, FACTION_BAR_COLORS[id].b)
@@ -830,11 +828,11 @@ ElvDB.LoadUFFunctions = function(layout)
 		local cur = value - min
 		local total = max - min
 		
-		bar.Text:SetFormattedText(name..': '..ElvDB.ShortValue(cur)..' / '..ElvDB.ShortValue(total)..' <%d%%>', (cur / total) * 100)
+		bar.Text:SetFormattedText(name..': '..DB.ShortValue(cur)..' / '..DB.ShortValue(total)..' <%d%%>', (cur / total) * 100)
 	end
 
 	local delay = 0
-	ElvDB.UpdateManaLevel = function(self, elapsed)
+	DB.UpdateManaLevel = function(self, elapsed)
 		delay = delay + elapsed
 		if self.parent.unit ~= "player" or delay < 0.2 or UnitIsDeadOrGhost("player") or UnitPowerType("player") ~= 0 then return end
 		delay = 0
@@ -842,15 +840,15 @@ ElvDB.LoadUFFunctions = function(layout)
 		local percMana = UnitMana("player") / UnitManaMax("player") * 100
 
 		if percMana <= 20 then
-			self.ManaLevel:SetText("|cffaf5050"..ElvL.unitframes_ouf_lowmana.."|r")
-			ElvDB.Flash(self, 0.3)
+			self.ManaLevel:SetText("|cffaf5050"..L.unitframes_ouf_lowmana.."|r")
+			DB.Flash(self, 0.3)
 		else
 			self.ManaLevel:SetText()
-			ElvDB.StopFlash(self)
+			DB.StopFlash(self)
 		end
 	end
 
-	ElvDB.UpdateDruidMana = function(self)
+	DB.UpdateDruidMana = function(self)
 		if self.unit ~= "player" then return end
 
 		local num, str = UnitPowerType("player")
@@ -859,12 +857,12 @@ ElvDB.LoadUFFunctions = function(layout)
 			local max = UnitPowerMax("player", 0)
 
 			local percMana = min / max * 100
-			if percMana <= ElvCF["unitframes"].lowThreshold then
-				self.FlashInfo.ManaLevel:SetText("|cffaf5050"..ElvL.unitframes_ouf_lowmana.."|r")
-				ElvDB.Flash(self.FlashInfo, 0.3)
+			if percMana <= C["unitframes"].lowThreshold then
+				self.FlashInfo.ManaLevel:SetText("|cffaf5050"..L.unitframes_ouf_lowmana.."|r")
+				DB.Flash(self.FlashInfo, 0.3)
 			else
 				self.FlashInfo.ManaLevel:SetText()
-				ElvDB.StopFlash(self.FlashInfo)
+				DB.StopFlash(self.FlashInfo)
 			end
 
 			if min ~= max then
@@ -885,7 +883,7 @@ ElvDB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	function ElvDB.UpdateThreat(self, event, unit)
+	function DB.UpdateThreat(self, event, unit)
 		if (self.unit ~= unit) or (unit == "target" or unit == "focus" or unit == "focustarget" or unit == "targettarget") then return end
 		if not self.unit then return end
 		if not unit then return end
@@ -920,24 +918,24 @@ ElvDB.LoadUFFunctions = function(layout)
 					self.PFrame.shadow:SetBackdropBorderColor(0, 0, 0, 1)
 				end
 			else
-				self.FrameBorder:SetBackdropBorderColor(unpack(ElvCF["media"].altbordercolor))
+				self.FrameBorder:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
 				if self.HealthBorder then
-					self.HealthBorder:SetBackdropBorderColor(unpack(ElvCF["media"].altbordercolor))
+					self.HealthBorder:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
 				end
 				if self.PFrame then
-					self.PFrame:SetBackdropBorderColor(unpack(ElvCF["media"].altbordercolor))
+					self.PFrame:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
 				end
 			end
 		end 
 	end
 
-	ElvDB.updateAllElements = function(frame)
+	DB.updateAllElements = function(frame)
 		for _, v in ipairs(frame.__elements) do
 			v(frame, "UpdateElement", frame.unit)
 		end
 		
 		local header = frame:GetParent():GetName()
-		if (header == "ElvuiDPSR6R25" or header == "ElvuiHealR6R25") and ElvCF["raidframes"].hidenonmana == true then
+		if (header == "ElvuiDPSR6R25" or header == "ElvuiHealR6R25") and C["raidframes"].hidenonmana == true then
 			local powertype, _ = UnitPowerType(frame.unit)
 			if powertype ~= SPELL_POWER_MANA then
 				frame.Health:SetHeight(frame.Health:GetParent():GetHeight())
@@ -948,7 +946,7 @@ ElvDB.LoadUFFunctions = function(layout)
 				if IsAddOnLoaded("ElvUI_Heal_Layout") and frame:GetParent():GetName() == "ElvuiHealR6R25" then
 					frame.Health:SetHeight(frame.Health:GetParent():GetHeight() * 0.85)
 				elseif frame:GetParent():GetName() == "ElvuiDPSR6R25" then
-					if ElvCF["raidframes"].griddps ~= true then
+					if C["raidframes"].griddps ~= true then
 						frame.Health:SetHeight(frame.Health:GetParent():GetHeight() * 0.75)
 					else
 						frame.Health:SetHeight(frame.Health:GetParent():GetHeight() * 0.83)
@@ -963,12 +961,12 @@ ElvDB.LoadUFFunctions = function(layout)
 		end
 	end
 
-	function ElvDB.ExperienceText(self, unit, min, max)
+	function DB.ExperienceText(self, unit, min, max)
 		local rested = GetXPExhaustion()
 		if rested then 
-			self.Text:SetFormattedText('XP: '..ElvDB.ShortValue(min)..' / '..ElvDB.ShortValue(max)..' <%d%%>  R: +'..ElvDB.ShortValue(rested)..' <%d%%>', min / max * 100, rested / max * 100)
+			self.Text:SetFormattedText('XP: '..DB.ShortValue(min)..' / '..DB.ShortValue(max)..' <%d%%>  R: +'..DB.ShortValue(rested)..' <%d%%>', min / max * 100, rested / max * 100)
 		else
-			self.Text:SetFormattedText('XP: '..ElvDB.ShortValue(min)..' / '..ElvDB.ShortValue(max)..' <%d%%>', min / max * 100)
+			self.Text:SetFormattedText('XP: '..DB.ShortValue(min)..' / '..DB.ShortValue(max)..' <%d%%>', min / max * 100)
 		end
 	end
 
@@ -978,7 +976,7 @@ ElvDB.LoadUFFunctions = function(layout)
 	-- THE AURAWATCH FUNCTION ITSELF. HERE BE DRAGONS!
 	--------------------------------------------------------------------------------------------
 
-	ElvDB.countOffsets = {
+	DB.countOffsets = {
 		TOPLEFT = {6, 1},
 		TOPRIGHT = {-6, 1},
 		BOTTOMLEFT = {6, 1},
@@ -989,54 +987,54 @@ ElvDB.LoadUFFunctions = function(layout)
 		BOTTOM = {0, 0},
 	}
 
-	function ElvDB.CreateAuraWatchIcon(self, icon)
+	function DB.CreateAuraWatchIcon(self, icon)
 		if (icon.cd) then
 			icon.cd:SetReverse()
 		end 	
 	end
 
-	function ElvDB.createAuraWatch(self, unit)
+	function DB.createAuraWatch(self, unit)
 		local auras = CreateFrame("Frame", nil, self)
 		auras:SetPoint("TOPLEFT", self.Health, 2, -2)
 		auras:SetPoint("BOTTOMRIGHT", self.Health, -2, 2)
 		auras.presentAlpha = 1
 		auras.missingAlpha = 0
 		auras.icons = {}
-		auras.PostCreateIcon = ElvDB.CreateAuraWatchIcon
+		auras.PostCreateIcon = DB.CreateAuraWatchIcon
 
-		if (not ElvCF["auras"].auratimer) then
+		if (not C["auras"].auratimer) then
 			auras.hideCooldown = true
 		end
 
 		local buffs = {}
 		if IsAddOnLoaded("ElvUI_Dps_Layout") then
-			if (ElvDB.DPSBuffIDs["ALL"]) then
-				for key, value in pairs(ElvDB.DPSBuffIDs["ALL"]) do
+			if (DB.DPSBuffIDs["ALL"]) then
+				for key, value in pairs(DB.DPSBuffIDs["ALL"]) do
 					tinsert(buffs, value)
 				end
 			end
 
-			if (ElvDB.DPSBuffIDs[ElvDB.myclass]) then
-				for key, value in pairs(ElvDB.DPSBuffIDs[ElvDB.myclass]) do
+			if (DB.DPSBuffIDs[DB.myclass]) then
+				for key, value in pairs(DB.DPSBuffIDs[DB.myclass]) do
 					tinsert(buffs, value)
 				end
 			end	
 		else
-			if (ElvDB.HealerBuffIDs["ALL"]) then
-				for key, value in pairs(ElvDB.HealerBuffIDs["ALL"]) do
+			if (DB.HealerBuffIDs["ALL"]) then
+				for key, value in pairs(DB.HealerBuffIDs["ALL"]) do
 					tinsert(buffs, value)
 				end
 			end
 
-			if (ElvDB.HealerBuffIDs[ElvDB.myclass]) then
-				for key, value in pairs(ElvDB.HealerBuffIDs[ElvDB.myclass]) do
+			if (DB.HealerBuffIDs[DB.myclass]) then
+				for key, value in pairs(DB.HealerBuffIDs[DB.myclass]) do
 					tinsert(buffs, value)
 				end
 			end
 		end
 		
-		if ElvDB.PetBuffs[ElvDB.myclass] then
-			for key, value in pairs(ElvDB.PetBuffs[ElvDB.myclass]) do
+		if DB.PetBuffs[DB.myclass] then
+			for key, value in pairs(DB.PetBuffs[DB.myclass]) do
 				tinsert(buffs, value)
 			end
 		end
@@ -1047,8 +1045,8 @@ ElvDB.LoadUFFunctions = function(layout)
 				local icon = CreateFrame("Frame", nil, auras)
 				icon.spellID = spell[1]
 				icon.anyUnit = spell[4]
-				icon:SetWidth(ElvDB.Scale(ElvCF["auras"].buffindicatorsize))
-				icon:SetHeight(ElvDB.Scale(ElvCF["auras"].buffindicatorsize))
+				icon:SetWidth(DB.Scale(C["auras"].buffindicatorsize))
+				icon:SetHeight(DB.Scale(C["auras"].buffindicatorsize))
 				icon:SetPoint(spell[2], 0, 0)
 
 				local tex = icon:CreateTexture(nil, "OVERLAY")
@@ -1061,8 +1059,8 @@ ElvDB.LoadUFFunctions = function(layout)
 				end
 
 				local count = icon:CreateFontString(nil, "OVERLAY")
-				count:SetFont(ElvCF["media"].uffont, 8, "THINOUTLINE")
-				count:SetPoint("CENTER", unpack(ElvDB.countOffsets[spell[2]]))
+				count:SetFont(C["media"].uffont, 8, "THINOUTLINE")
+				count:SetPoint("CENTER", unpack(DB.countOffsets[spell[2]]))
 				icon.count = count
 
 				auras.icons[spell[1]] = icon

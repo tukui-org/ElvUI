@@ -1,7 +1,6 @@
-local ElvCF = ElvCF
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-
-if ElvCF.tooltip.enable ~= true then return end
+if C.tooltip.enable ~= true then return end
 
 GameTooltip:HookScript("OnTooltipCleared", function(self) self.ElvuiItemTooltip=nil end)
 GameTooltip:HookScript("OnTooltipSetItem", function(self)
@@ -16,7 +15,7 @@ GameTooltip:HookScript("OnTooltipSetItem", function(self)
 		end
 		
 		if ElvuiItemTooltip.count and num > 1 then
-			right = "|cFFCA3C3C"..ElvL.tooltip_count.."|r "..num
+			right = "|cFFCA3C3C"..L.tooltip_count.."|r "..num
 		end
 				
 		self:AddLine(" ")
@@ -31,14 +30,14 @@ f:SetScript("OnEvent", function(_, _, name)
 	if name ~= "ElvUI" then return end
 	f:UnregisterEvent("ADDON_LOADED")
 	f:SetScript("OnEvent", nil)
-	ElvuiItemTooltip = ElvuiItemTooltip or {count=true,id=ElvCF["tooltip"].itemid}
+	ElvuiItemTooltip = ElvuiItemTooltip or {count=true,id=C["tooltip"].itemid}
 end)
 
 --------------------------------------------------------------------
 -- SpellID's by Silverwind
 -- http://wow.curseforge.com/addons/spellid/
 --------------------------------------------------------------------
-if ElvCF["tooltip"].itemid ~= true then return end
+if C["tooltip"].itemid ~= true then return end
 
 hooksecurefunc(GameTooltip, "SetUnitBuff", function(self,...)
 	local id = select(11,UnitBuff(...))

@@ -11,10 +11,10 @@
 	(C)2010 Darth Android / Telroth - Black Dragonflight
 	File version v15.37
 ]]
-local ElvDB = ElvDB
-local ElvCF = ElvCF
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not IsAddOnLoaded("Recount") or not Mod_AddonSkins or not ElvCF["skin"].recount == true then return end
+
+if not IsAddOnLoaded("Recount") or not Mod_AddonSkins or not C["skin"].recount == true then return end
 local Recount = _G.Recount
 
 Mod_AddonSkins:RegisterSkin("Recount",function(Skin, skin, Layout, layout, config)

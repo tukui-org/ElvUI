@@ -1,16 +1,15 @@
 --And so it begins..
-local ElvDB = ElvDB
-local ElvCF = ElvCF
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
---Vars
-ElvDB.dummy = function() return end
-ElvDB.myname, _ = UnitName("player")
-ElvDB.myrealm = GetRealmName()
-_, ElvDB.myclass = UnitClass("player")
-ElvDB.version = GetAddOnMetadata("ElvUI", "Version")
-ElvDB.patch = GetBuildInfo()
-ElvDB.level = UnitLevel("player")
-ElvDB.IsElvsEdit = true
+--Constants
+DB.dummy = function() return end
+DB.myname, _ = UnitName("player")
+DB.myrealm = GetRealmName()
+_, DB.myclass = UnitClass("player")
+DB.version = GetAddOnMetadata("ElvUI", "Version")
+DB.patch = GetBuildInfo()
+DB.level = UnitLevel("player")
+DB.IsElvsEdit = true
 
 --Keybind Header
 BINDING_HEADER_ELVUI = GetAddOnMetadata("ElvUI", "Title") --Header name inside keybinds menu
@@ -26,22 +25,22 @@ local function CheckRole(self, event, unit)
 	else
 		resilience = false
 	end
-	if ((ElvDB.myclass == "PALADIN" and tree == 2) or 
-	(ElvDB.myclass == "WARRIOR" and tree == 3) or 
-	(ElvDB.myclass == "DEATHKNIGHT" and tree == 1)) and
+	if ((DB.myclass == "PALADIN" and tree == 2) or 
+	(DB.myclass == "WARRIOR" and tree == 3) or 
+	(DB.myclass == "DEATHKNIGHT" and tree == 1)) and
 	resilience == false or
-	(ElvDB.myclass == "DRUID" and tree == 2 and GetBonusBarOffset() == 3) then
-		ElvDB.Role = "Tank"
+	(DB.myclass == "DRUID" and tree == 2 and GetBonusBarOffset() == 3) then
+		DB.Role = "Tank"
 	else
 		local playerint = select(2, UnitStat("player", 4))
 		local playeragi	= select(2, UnitStat("player", 2))
 		local base, posBuff, negBuff = UnitAttackPower("player");
 		local playerap = base + posBuff + negBuff;
 
-		if (((playerap > playerint) or (playeragi > playerint)) and not (ElvDB.myclass == "SHAMAN" and tree ~= 1 and tree ~= 3) and not (UnitBuff("player", GetSpellInfo(24858)) or UnitBuff("player", GetSpellInfo(65139)))) or ElvDB.myclass == "ROGUE" or ElvDB.myclass == "HUNTER" or (ElvDB.myclass == "SHAMAN" and tree == 2) then
-			ElvDB.Role = "Melee"
+		if (((playerap > playerint) or (playeragi > playerint)) and not (DB.myclass == "SHAMAN" and tree ~= 1 and tree ~= 3) and not (UnitBuff("player", GetSpellInfo(24858)) or UnitBuff("player", GetSpellInfo(65139)))) or DB.myclass == "ROGUE" or DB.myclass == "HUNTER" or (DB.myclass == "SHAMAN" and tree == 2) then
+			DB.Role = "Melee"
 		else
-			ElvDB.Role = "Caster"
+			DB.Role = "Caster"
 		end
 	end
 end	
@@ -55,7 +54,7 @@ RoleUpdater:SetScript("OnEvent", CheckRole)
 CheckRole()
 
 --Install UI
-function ElvDB.Install()
+function DB.Install()
 	SetCVar("buffDurations", 1)
 	SetCVar("mapQuestDifficulty", 1)
 	SetCVar("scriptErrors", 0)
@@ -77,13 +76,13 @@ function ElvDB.Install()
 	SetCVar("gxTextureCacheSize", 512)
 	
 	-- Var ok, now setting chat frames if using Elvui chats.	
-	if (ElvCF.chat.enable == true) and (not IsAddOnLoaded("Prat") or not IsAddOnLoaded("Chatter")) then					
+	if (C.chat.enable == true) and (not IsAddOnLoaded("Prat") or not IsAddOnLoaded("Chatter")) then					
 		FCF_ResetChatWindows()
 		FCF_SetLocked(ChatFrame1, 1)
 		FCF_DockFrame(ChatFrame2)
 		FCF_SetLocked(ChatFrame2, 1)
 		
-		if ElvCF["chat"].rightchat == true then
+		if C["chat"].rightchat == true then
 			FCF_OpenNewWindow(LOOT)
 			FCF_UnDockFrame(ChatFrame3)
 			FCF_SetLocked(ChatFrame3, 1)
@@ -95,18 +94,18 @@ function ElvDB.Install()
 			local chatFrameId = frame:GetID()
 			local chatName = FCF_GetChatWindowInfo(chatFrameId)
 			
-			_G["ChatFrame"..i]:SetSize(ElvDB.Scale(ElvCF["chat"].chatwidth - 5), ElvDB.Scale(ElvCF["chat"].chatheight))
+			_G["ChatFrame"..i]:SetSize(DB.Scale(C["chat"].chatwidth - 5), DB.Scale(C["chat"].chatheight))
 			
 			-- this is the default width and height of Elvui chats.
-			SetChatWindowSavedDimensions(chatFrameId, ElvDB.Scale(ElvCF["chat"].chatwidth + -4), ElvDB.Scale(ElvCF["chat"].chatheight))
+			SetChatWindowSavedDimensions(chatFrameId, DB.Scale(C["chat"].chatwidth + -4), DB.Scale(C["chat"].chatheight))
 			
 			-- move general bottom left
 			if i == 1 then
 				frame:ClearAllPoints()
-				frame:SetPoint("BOTTOMLEFT", ChatLBackground, "BOTTOMLEFT", ElvDB.Scale(2), 0)
-			elseif i == 3 and ElvCF["chat"].rightchat == true then
+				frame:SetPoint("BOTTOMLEFT", ChatLBackground, "BOTTOMLEFT", DB.Scale(2), 0)
+			elseif i == 3 and C["chat"].rightchat == true then
 				frame:ClearAllPoints()
-				frame:SetPoint("BOTTOMLEFT", ChatRBackground, "BOTTOMLEFT", ElvDB.Scale(2), 0)			
+				frame:SetPoint("BOTTOMLEFT", ChatRBackground, "BOTTOMLEFT", DB.Scale(2), 0)			
 			end
 					
 			-- save new default position and dimension
@@ -120,7 +119,7 @@ function ElvDB.Install()
 				FCF_SetWindowName(frame, GENERAL)
 			elseif i == 2 then
 				FCF_SetWindowName(frame, GUILD_EVENT_LOG)
-			elseif i == 3 and ElvCF["chat"].rightchat == true then 
+			elseif i == 3 and C["chat"].rightchat == true then 
 				FCF_SetWindowName(frame, LOOT.." / "..TRADE) 
 			end
 		end
@@ -157,7 +156,7 @@ function ElvDB.Install()
 		ChatFrame_AddMessageGroup(ChatFrame1, "BN_CONVERSATION")
 		ChatFrame_AddMessageGroup(ChatFrame1, "BN_INLINE_TOAST_ALERT")
 		
-		if ElvCF["chat"].rightchat == true then
+		if C["chat"].rightchat == true then
 			ChatFrame_RemoveAllMessageGroups(ChatFrame3)	
 			ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_FACTION_CHANGE")
 			ChatFrame_AddMessageGroup(ChatFrame3, "SKILL")
@@ -167,8 +166,8 @@ function ElvDB.Install()
 			ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_HONOR_GAIN")
 			ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_GUILD_XP_GAIN")
 			ChatFrame_AddChannel(ChatFrame1, GENERAL)
-			ChatFrame_RemoveChannel(ChatFrame1, ElvL.chat_trade)
-			ChatFrame_AddChannel(ChatFrame3, ElvL.chat_trade)
+			ChatFrame_RemoveChannel(ChatFrame1, L.chat_trade)
+			ChatFrame_AddChannel(ChatFrame3, L.chat_trade)
 		else
 			ChatFrame_AddMessageGroup(ChatFrame1, "LOOT")
 			ChatFrame_AddMessageGroup(ChatFrame1, "MONEY")	
@@ -178,11 +177,11 @@ function ElvDB.Install()
 			ChatFrame_AddMessageGroup(ChatFrame1, "COMBAT_HONOR_GAIN")
 			ChatFrame_AddMessageGroup(ChatFrame1, "COMBAT_FACTION_CHANGE")
 			ChatFrame_AddChannel(ChatFrame1, GENERAL)
-			ChatFrame_RemoveChannel(ChatFrame3, ElvL.chat_trade)
-			ChatFrame_AddChannel(ChatFrame1, ElvL.chat_trade)
+			ChatFrame_RemoveChannel(ChatFrame3, L.chat_trade)
+			ChatFrame_AddChannel(ChatFrame1, L.chat_trade)
 		end
 		
-		if ElvDB.myname == "Elv" then
+		if DB.myname == "Elv" then
 			--keep losing my god damn channels everytime i resetui
 			ChatFrame_AddChannel(DEFAULT_CHAT_FRAME, "tystank")
 			ChatFrame_AddChannel(DEFAULT_CHAT_FRAME, "tys")
@@ -233,7 +232,7 @@ function ElvDB.Install()
 	ElvUIInstalled = true
 
 	-- reset unitframe position
-	if ElvCF["unitframes"].positionbychar == true then
+	if C["unitframes"].positionbychar == true then
 		ElvuiUFpos = {}
 	else
 		ElvuiData.ufpos = {}
@@ -252,19 +251,19 @@ ElvuiOnLogon:RegisterEvent("PLAYER_ENTERING_WORLD")
 ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 
-	if ElvDB.getscreenresolution == "800x600"
-		or ElvDB.getscreenresolution == "1024x768"
-		or ElvDB.getscreenresolution == "720x576"
-		or ElvDB.getscreenresolution == "1024x600" -- eeepc reso
-		or ElvDB.getscreenresolution == "1152x864" then
+	if DB.getscreenresolution == "800x600"
+		or DB.getscreenresolution == "1024x768"
+		or DB.getscreenresolution == "720x576"
+		or DB.getscreenresolution == "1024x600" -- eeepc reso
+		or DB.getscreenresolution == "1152x864" then
 			SetCVar("useUiScale", 0)
 			StaticPopup_Show("DISABLE_UI")
 	else
 		SetCVar("useUiScale", 1)
-		if ElvCF["general"].multisampleprotect == true then
+		if C["general"].multisampleprotect == true then
 			SetMultisampleFormat(1)
 		end
-		SetCVar("uiScale", ElvCF["general"].uiscale)
+		SetCVar("uiScale", C["general"].uiscale)
 		if (ElvuiData == nil) then ElvuiData = {} end
 
 		if ElvUIInstalled ~= true then
@@ -276,12 +275,12 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 		StaticPopup_Show("DISABLE_RAID")
 	end
 		
-	if ElvCF["arena"].unitframes == true then
+	if C["arena"].unitframes == true then
 		SetCVar("showArenaEnemyFrames", 0)
 	end
 	
-	ElvDB.ChatLIn = true
-	ElvDB.ChatRIn = true
+	DB.ChatLIn = true
+	DB.ChatRIn = true
 	
 
 	local chatrightfound = false
@@ -295,12 +294,12 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 		local button = _G[format("ButtonCF%d", i)]
 		local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
 		
-		if point == "BOTTOMRIGHT" and ElvCF["chat"].rightchat == true and chat:IsShown() and docked == nil then
+		if point == "BOTTOMRIGHT" and C["chat"].rightchat == true and chat:IsShown() and docked == nil then
 			chatrightfound = true
 			tab:SetParent(ChatRBackground)
 		end
 		
-		if ElvCF["chat"].rightchat ~= true then chatrightfound = true end
+		if C["chat"].rightchat ~= true then chatrightfound = true end
 		
 		if i == NUM_CHAT_WINDOWS and chatrightfound == false and not StaticPopup1:IsShown() then
 			StaticPopup_Show("CHAT_WARN")
@@ -310,15 +309,15 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 	GeneralDockManager:SetParent(ChatLBackground)
 	
 	--Fixing fucked up border on right chat button, really do not understand why this is happening
-	if ElvCF["chat"].rightchat == true and ElvCF["chat"].showbackdrop == true then
+	if C["chat"].rightchat == true and C["chat"].showbackdrop == true then
 		if not ButtonCF3 then return end
 		local x = CreateFrame("Frame", nil, ChatFrame3Tab)
 		x:SetAllPoints(ButtonCF3)
-		ElvDB.SetTemplate(x)
+		DB.SetTemplate(x)
 		x:SetBackdropColor(0,0,0,0)
 	end
 	
-	print(ElvL.core_welcome2)
+	print(L.core_welcome2)
 end)
 
 local eventcount = 0
@@ -339,31 +338,31 @@ end)
 ------------------------------------------------------------------------
 
 -- Print Help Messages
-function ElvDB.UIHelp()
+function DB.UIHelp()
 	print(" ")
-	print(ElvL.core_uihelp1)
-	print(ElvL.core_uihelp2)
-	print(ElvL.core_uihelp3)
-	print(ElvL.core_uihelp4)
-	print(ElvL.core_uihelp5)
-	print(ElvL.core_uihelp6)
-	print(ElvL.core_uihelp7)
-	print(ElvL.core_uihelp8)
-	print(ElvL.core_uihelp9)
-	print(ElvL.core_uihelp10)
-	print(ElvL.core_uihelp11)
-	print(ElvL.core_uihelp12)
-	print(ElvL.core_uihelp15)
-	print(ElvL.core_uihelp16)
-	print(ElvL.core_uihelp17)
-	print(ElvL.core_uihelp18)
-	print(ElvL.core_uihelp19)
-	print(ElvL.core_uihelp21)
-	print(ElvL.core_uihelp22)
+	print(L.core_uihelp1)
+	print(L.core_uihelp2)
+	print(L.core_uihelp3)
+	print(L.core_uihelp4)
+	print(L.core_uihelp5)
+	print(L.core_uihelp6)
+	print(L.core_uihelp7)
+	print(L.core_uihelp8)
+	print(L.core_uihelp9)
+	print(L.core_uihelp10)
+	print(L.core_uihelp11)
+	print(L.core_uihelp12)
+	print(L.core_uihelp15)
+	print(L.core_uihelp16)
+	print(L.core_uihelp17)
+	print(L.core_uihelp18)
+	print(L.core_uihelp19)
+	print(L.core_uihelp21)
+	print(L.core_uihelp22)
 	print(" ")
-	print(ElvL.core_uihelp14)
+	print(L.core_uihelp14)
 end
 
--- convert datatext ElvDB.ValColor from rgb decimal to hex DO NOT TOUCH
-local r, g, b = unpack(ElvCF["media"].valuecolor)
-ElvDB.ValColor = ("|cff%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255)
+-- convert datatext DB.ValColor from rgb decimal to hex DO NOT TOUCH
+local r, g, b = unpack(C["media"].valuecolor)
+DB.ValColor = ("|cff%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255)

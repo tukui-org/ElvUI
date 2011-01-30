@@ -1,10 +1,10 @@
 -- This file is used for enGB or enUS client only.
 -- translate or do anything you want if you want to 
 -- use this feature on others clients.
-local ElvCF = ElvCF
-local ElvDB = ElvDB
 
-if ElvDB.client ~= "enUS" and ElvDB.client ~= "enGB" then return end
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
+if DB.client ~= "enUS" and DB.client ~= "enGB" then return end
 
 ----------------------------------------------------------------------------------
 -- Trade Chat Stuff
@@ -20,7 +20,7 @@ local SpamList = {
 local function TRADE_FILTER(self, event, arg1, arg2)
 	if (SpamList and SpamList[1]) then
 		for i, SpamList in pairs(SpamList) do
-			if arg2 == ElvDB.myname then return end
+			if arg2 == DB.myname then return end
 			if (strfind(arg1, SpamList)) then
 				return true
 			end
@@ -34,7 +34,7 @@ ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", TRADE_FILTER)
 ----------------------------------------------------------------------------------
 
 local function SPELL_FILTER(self, event, arg1)
-    if (strfind(arg1,"You have unlearned") or strfind(arg1,"You have learned a new spell:") or strfind(arg1,"You have learned a new ability:")) and ElvDB.level == MAX_PLAYER_LEVEL then
+    if (strfind(arg1,"You have unlearned") or strfind(arg1,"You have learned a new spell:") or strfind(arg1,"You have learned a new ability:")) and DB.level == MAX_PLAYER_LEVEL then
         return true
     end
 end
@@ -69,7 +69,7 @@ GOLDSPAM:SetScript("OnEvent", GOLDSPAM_FILTER)
 ----------------------------------------------------------------------------------
 -- Only enabling this for me because i get asked too much
 ----------------------------------------------------------------------------------
-if ElvDB.myname == "Elv" then
+if DB.myname == "Elv" then
 	local function SPELL_FILTER(self, event, arg1)
 		if strfind(arg1,"is not ready") or strfind(arg1,"The following players are Away") then
 			SendChatMessage(arg1, "RAID_WARNING", nil ,nil)
@@ -81,7 +81,7 @@ if ElvDB.myname == "Elv" then
 	local function NOOB_FILTER(self, event, arg1, arg2)
 		if strfind(arg1, "mount") then
 			for i, name in pairs(whispered) do if name == tostring(arg2) then return end end -- dont reply to the same person more than once
-			ElvDB.Delay(6, SendChatMessage, "Auto Response: idk, stop being a lazy ass and go see where my mount buff comes from on Wowhead.", "WHISPER", nil, arg2) -- 6 second delay.. more realistic :) 
+			DB.Delay(6, SendChatMessage, "Auto Response: idk, stop being a lazy ass and go see where my mount buff comes from on Wowhead.", "WHISPER", nil, arg2) -- 6 second delay.. more realistic :) 
 			
 			tinsert(whispered, tostring(arg2))
 		end

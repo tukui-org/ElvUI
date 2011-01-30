@@ -1,7 +1,7 @@
-local ElvDB = ElvDB
-local ElvCF = ElvCF
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if ElvCF["actionbar"].enable ~= true or ElvCF["actionbar"].microbar ~= true then return end
+
+if C["actionbar"].enable ~= true or C["actionbar"].microbar ~= true then return end
 
 local microbuttons = {
 	"CharacterMicroButton",
@@ -20,7 +20,7 @@ local f = CreateFrame("Frame", "MicroParent", UIParent)
 MicroParent.shown = false
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:SetScript("OnEvent", function(self, event) if not PlayerTalentFrame then LoadAddOn("Blizzard_TalentUI") end if not GlyphFrame then LoadAddOn("Blizzard_GlyphUI") end end)
-if ElvCF["actionbar"].mousemicro == true then f:SetAlpha(0) end
+if C["actionbar"].mousemicro == true then f:SetAlpha(0) end
 
 UpdateMicroButtonsParent(f)
 
@@ -36,7 +36,7 @@ local function CheckFade(self, elapsed)
 		end
 	end
 	
-	if ElvCF["actionbar"].mousemicro ~= true then return end
+	if C["actionbar"].mousemicro ~= true then return end
 	
 	if MicroPlaceHolder.mouseover == true then
 		mouseactive = true
@@ -65,13 +65,13 @@ for i, button in pairs(microbuttons) do
 	local normal = m:GetNormalTexture()
 	local disabled = m:GetDisabledTexture()
 	
-	m.SetParent = ElvDB.dummy
+	m.SetParent = DB.dummy
 	_G[button.."Flash"]:SetTexture("")
 	m:SetHighlightTexture("")
-	m.SetHighlightTexture = ElvDB.dummy
+	m.SetHighlightTexture = DB.dummy
 
 	if i == 5 then
-		ElvDB.Kill(m)
+		DB.Kill(m)
 	elseif i == 9 then
 		m:ClearAllPoints()
 		m:SetPoint("LEFT", LFDMicroButton, "RIGHT", -3, 0)
@@ -82,30 +82,30 @@ for i, button in pairs(microbuttons) do
 	f:SetFrameStrata("BACKGROUND")
 	f:SetPoint("BOTTOMLEFT", m, "BOTTOMLEFT", 2, 0)
 	f:SetPoint("TOPRIGHT", m, "TOPRIGHT", -2, -28)
-	ElvDB.SetNormTexTemplate(f)
+	DB.SetNormTexTemplate(f)
 	m.frame = f
 	
 	pushed:SetTexCoord(0.17, 0.87, 0.5, 0.908)
 	pushed:ClearAllPoints()
-	pushed:SetPoint("TOPLEFT", m.frame, "TOPLEFT", ElvDB.Scale(2), ElvDB.Scale(-2))
-	pushed:SetPoint("BOTTOMRIGHT", m.frame, "BOTTOMRIGHT", ElvDB.Scale(-2), ElvDB.Scale(2))
+	pushed:SetPoint("TOPLEFT", m.frame, "TOPLEFT", DB.Scale(2), DB.Scale(-2))
+	pushed:SetPoint("BOTTOMRIGHT", m.frame, "BOTTOMRIGHT", DB.Scale(-2), DB.Scale(2))
 	
 	normal:SetTexCoord(0.17, 0.87, 0.5, 0.908)
 	normal:ClearAllPoints()
-	normal:SetPoint("TOPLEFT", m.frame, "TOPLEFT", ElvDB.Scale(2), ElvDB.Scale(-2))
-	normal:SetPoint("BOTTOMRIGHT", m.frame, "BOTTOMRIGHT", ElvDB.Scale(-2), ElvDB.Scale(2))
+	normal:SetPoint("TOPLEFT", m.frame, "TOPLEFT", DB.Scale(2), DB.Scale(-2))
+	normal:SetPoint("BOTTOMRIGHT", m.frame, "BOTTOMRIGHT", DB.Scale(-2), DB.Scale(2))
 	
 	if disabled then
 		disabled:SetTexCoord(0.17, 0.87, 0.5, 0.908)
 		disabled:ClearAllPoints()
-		disabled:SetPoint("TOPLEFT", m.frame, "TOPLEFT", ElvDB.Scale(2), ElvDB.Scale(-2))
-		disabled:SetPoint("BOTTOMRIGHT", m.frame, "BOTTOMRIGHT", ElvDB.Scale(-2), ElvDB.Scale(2))
+		disabled:SetPoint("TOPLEFT", m.frame, "TOPLEFT", DB.Scale(2), DB.Scale(-2))
+		disabled:SetPoint("BOTTOMRIGHT", m.frame, "BOTTOMRIGHT", DB.Scale(-2), DB.Scale(2))
 	end
 		
 
 	m.mouseover = false
-	m:HookScript("OnEnter", function(self) local color = RAID_CLASS_COLORS[ElvDB.myclass] self.frame:SetBackdropBorderColor(color.r, color.g, color.b) self.mouseover = true end)
-	m:HookScript("OnLeave", function(self) self.frame:SetBackdropBorderColor(unpack(ElvCF["media"].bordercolor)) self.mouseover = false end)
+	m:HookScript("OnEnter", function(self) local color = RAID_CLASS_COLORS[DB.myclass] self.frame:SetBackdropBorderColor(color.r, color.g, color.b) self.mouseover = true end)
+	m:HookScript("OnLeave", function(self) self.frame:SetBackdropBorderColor(unpack(C["media"].bordercolor)) self.mouseover = false end)
 end
 
 local x = CreateFrame("Frame", "MicroPlaceHolder", MicroParent)
@@ -113,7 +113,7 @@ x:SetPoint("TOPLEFT", CharacterMicroButton.frame, "TOPLEFT")
 x:SetPoint("BOTTOMRIGHT", HelpMicroButton.frame, "BOTTOMRIGHT")
 x:EnableMouse(true)
 x.mouseover = false
-ElvDB.CreateShadow(x)
+DB.CreateShadow(x)
 x:SetScript("OnEnter", function(self) self.mouseover = true end)
 x:SetScript("OnLeave", function(self) self.mouseover = false end)
 
@@ -121,13 +121,13 @@ x:SetScript("OnLeave", function(self) self.mouseover = false end)
 --Fix/Create textures for buttons
 do
 	MicroButtonPortrait:ClearAllPoints()
-	MicroButtonPortrait:SetPoint("TOPLEFT", CharacterMicroButton.frame, "TOPLEFT", ElvDB.Scale(2), ElvDB.Scale(-2))
-	MicroButtonPortrait:SetPoint("BOTTOMRIGHT", CharacterMicroButton.frame, "BOTTOMRIGHT", ElvDB.Scale(-2), ElvDB.Scale(2))
+	MicroButtonPortrait:SetPoint("TOPLEFT", CharacterMicroButton.frame, "TOPLEFT", DB.Scale(2), DB.Scale(-2))
+	MicroButtonPortrait:SetPoint("BOTTOMRIGHT", CharacterMicroButton.frame, "BOTTOMRIGHT", DB.Scale(-2), DB.Scale(2))
 	
 	GuildMicroButtonTabard:ClearAllPoints()
 	GuildMicroButtonTabard:SetPoint("TOP", GuildMicroButton.frame, "TOP", 0, 25)
-	GuildMicroButtonTabard.SetPoint = ElvDB.dummy
-	GuildMicroButtonTabard.ClearAllPoints = ElvDB.dummy
+	GuildMicroButtonTabard.SetPoint = DB.dummy
+	GuildMicroButtonTabard.ClearAllPoints = DB.dummy
 end
 
 MicroParent:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 2, -2) --Default microbar position
@@ -136,8 +136,8 @@ MicroParent:SetHeight(CharacterMicroButton:GetHeight() - 28)
 
 CharacterMicroButton:ClearAllPoints()
 CharacterMicroButton:SetPoint("BOTTOMLEFT", MicroParent, "BOTTOMLEFT", 0,  0)
-CharacterMicroButton.SetPoint = TukuiDB.dummy
-CharacterMicroButton.ClearAllPoints = TukuiDB.dummy
+CharacterMicroButton.SetPoint = DB.dummy
+CharacterMicroButton.ClearAllPoints = DB.dummy
 
 
-ElvDB.CreateMover(MicroParent, "MicroMover", "MicroBar")
+DB.CreateMover(MicroParent, "MicroMover", "MicroBar")

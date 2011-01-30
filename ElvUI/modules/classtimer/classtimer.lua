@@ -1,7 +1,7 @@
-local ElvCF = ElvCF
-local ElvDB = ElvDB
 
-if ( ElvuiUF ~= true and ( ElvDB == nil or ElvCF["unitframes"] == nil or not ElvCF["unitframes"]["enable"] ) ) then return end
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
+if ( ElvuiUF ~= true and ( DB == nil or C["unitframes"] == nil or not C["unitframes"]["enable"] ) ) then return end
 
 
 local CreateColor = function( red, green, blue, alpha )
@@ -9,24 +9,24 @@ local CreateColor = function( red, green, blue, alpha )
 end
 
 -- Configuration starts here:
-if ElvCF["classtimer"].enable == false then return end
+if C["classtimer"].enable == false then return end
 
-BAR_HEIGHT = ElvCF["classtimer"].bar_height;
-BAR_SPACING = ElvCF["classtimer"].bar_spacing;
-LAYOUT = ElvCF["classtimer"].layout;
-ICON_POSITION = ElvCF["classtimer"].icon_position;
-ICON_COLOR = { unpack(ElvCF["media"].altbordercolor) };
-SPARK = ElvCF["classtimer"].showspark;
-CAST_SEPARATOR = ElvCF["classtimer"].cast_suparator;
+BAR_HEIGHT = C["classtimer"].bar_height;
+BAR_SPACING = C["classtimer"].bar_spacing;
+LAYOUT = C["classtimer"].layout;
+ICON_POSITION = C["classtimer"].icon_position;
+ICON_COLOR = { unpack(C["media"].altbordercolor) };
+SPARK = C["classtimer"].showspark;
+CAST_SEPARATOR = C["classtimer"].cast_suparator;
 CAST_SEPARATOR_COLOR = CreateColor( 0, 0, 0, 0.5 );
 TEXT_MARGIN = 5;
 
-if ( ElvDB and ElvCF["media"] and ElvCF["media"]["uffont"] ) then
+if ( DB and C["media"] and C["media"]["uffont"] ) then
 	-- Sets font for all texts
-	MASTER_FONT = { ElvCF["media"]["uffont"], 12, "OUTLINE" };
+	MASTER_FONT = { C["media"]["uffont"], 12, "OUTLINE" };
 
 	-- Sets font for stack count
-	STACKS_FONT = { ElvCF["media"]["uffont"], 11, "OUTLINE" };
+	STACKS_FONT = { C["media"]["uffont"], 11, "OUTLINE" };
 else
 	-- Sets font for all texts
 	MASTER_FONT = { [=[Interface\Addons\ElvUI\media\Russel Square LT.ttf]=], 12, "OUTLINE" };
@@ -35,11 +35,11 @@ else
 	STACKS_FONT = { [=[Interface\Addons\ElvUI\media\Russel Square LT.ttf]=], 11, "OUTLINE" };
 end
 PERMANENT_AURA_VALUE = 1;
-if ElvCF["classtimer"].classcolor == false then
-	PLAYER_BAR_COLOR = { unpack(ElvCF["classtimer"]["buffcolor"]) };
-	TARGET_BAR_COLOR = { unpack(ElvCF["classtimer"]["buffcolor"]) };
-	TARGET_DEBUFF_COLOR = { unpack(ElvCF["classtimer"]["debuffcolor"]) };
-	TRINKET_BAR_COLOR = { unpack(ElvCF["classtimer"]["proccolor"]) };
+if C["classtimer"].classcolor == false then
+	PLAYER_BAR_COLOR = { unpack(C["classtimer"]["buffcolor"]) };
+	TARGET_BAR_COLOR = { unpack(C["classtimer"]["buffcolor"]) };
+	TARGET_DEBUFF_COLOR = { unpack(C["classtimer"]["debuffcolor"]) };
+	TRINKET_BAR_COLOR = { unpack(C["classtimer"]["proccolor"]) };
 	PLAYER_DEBUFF_COLOR = nil
 else
 	classcolor = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[select(2,UnitClass("player"))];
@@ -478,9 +478,9 @@ local function OnUnitFramesLoad(self, event, addon)
 					if ICON_POSITION == 2 or ICON_POSITION == 3 then
 						iconbackdrop = CreateFrame("Frame")
 						iconbackdrop:SetParent(result)
-						iconbackdrop:SetPoint("TOPLEFT", icon, "TOPLEFT", ElvDB.Scale(-2), ElvDB.Scale(2))
-						iconbackdrop:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT", ElvDB.Scale(2), ElvDB.Scale(-2))
-						ElvDB.SetTemplate(iconbackdrop)
+						iconbackdrop:SetPoint("TOPLEFT", icon, "TOPLEFT", DB.Scale(-2), DB.Scale(2))
+						iconbackdrop:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT", DB.Scale(2), DB.Scale(-2))
+						DB.SetTemplate(iconbackdrop)
 						iconbackdrop:SetFrameLevel(result:GetFrameLevel() - 1)
 					end
 					
@@ -490,7 +490,7 @@ local function OnUnitFramesLoad(self, event, addon)
 					stacks:SetShadowOffset( 1.25, -1.25 );
 					stacks:SetJustifyH( "CENTER" );
 					stacks:SetJustifyV( "CENTER" );
-					stacks:SetPoint( "CENTER", icon, "CENTER", 0, ElvDB.mult*2);
+					stacks:SetPoint( "CENTER", icon, "CENTER", 0, DB.mult*2);
 					result.stacks = stacks;
 					
 
@@ -499,7 +499,7 @@ local function OnUnitFramesLoad(self, event, addon)
 
 				
 				local bar = CreateFrame( "StatusBar", nil, result, nil );
-				bar:SetStatusBarTexture( ElvCF["media"].normTex );
+				bar:SetStatusBarTexture( C["media"].normTex );
 				if ( bit.band( ICON_POSITION, 2 ) == 2 or bit.band( ICON_POSITION, 4 ) == 4 ) then
 					bar:SetPoint( "TOPLEFT", result, "TOPLEFT", 0, 0 );
 					bar:SetPoint( "BOTTOMRIGHT", result, "BOTTOMRIGHT", 0, 0 );
@@ -664,18 +664,18 @@ local function OnUnitFramesLoad(self, event, addon)
 			
 			local background = result:CreateTexture( nil, "BACKGROUND", nil );
 			background:SetAlpha( 0 );
-			background:SetTexture( ElvCF["media"].normTex );
+			background:SetTexture( C["media"].normTex );
 			background:SetPoint( "TOPLEFT", result, "TOPLEFT", 0, 0 );
 			background:SetPoint( "BOTTOMRIGHT", result, "BOTTOMRIGHT", 0, 0 );
 			background:SetVertexColor( 0.15, 0.15, 0.15 );
 			result.background = background;
 			
 			local border = CreateFrame( "Frame", nil, result, nil );
-				ElvDB.SetTemplate(border)
-				border:SetPoint("TOPLEFT", ElvDB.Scale(-2), ElvDB.Scale(2))
-				border:SetPoint("BOTTOMRIGHT", ElvDB.Scale(2), ElvDB.Scale(-2))
+				DB.SetTemplate(border)
+				border:SetPoint("TOPLEFT", DB.Scale(-2), DB.Scale(2))
+				border:SetPoint("BOTTOMRIGHT", DB.Scale(2), DB.Scale(-2))
 				border:SetFrameLevel(result:GetFrameLevel() - 1)
-				border:SetBackdropColor(unpack(ElvCF["media"].backdropfadecolor))
+				border:SetBackdropColor(unpack(C["media"].backdropfadecolor))
 			result.border = border;		
 			
 			result:RegisterEvent( "PLAYER_ENTERING_WORLD" );
@@ -721,8 +721,8 @@ local function OnUnitFramesLoad(self, event, addon)
 		end	
 		
 		playerFrame:SetHiddenHeight( -yOffset );
-		if ElvCF["auras"].playerauras == true then
-			if ElvCF["auras"].playershowonlydebuffs == true then
+		if C["auras"].playerauras == true then
+			if C["auras"].playershowonlydebuffs == true then
 				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Debuffs, "TOPLEFT", xOffset1, yOffset );
 				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Debuffs, "TOPRIGHT", xOffset2, yOffset );
 			else
@@ -743,7 +743,7 @@ local function OnUnitFramesLoad(self, event, addon)
 				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.TotemBar, "TOPLEFT", xOffset1, yOffset );
 				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.TotemBar, "TOPRIGHT", xOffset2, yOffset );								
 			else
-				if ElvDB.myclass == "DRUID" or ElvDB.myclass == "ROGUE" then
+				if DB.myclass == "DRUID" or DB.myclass == "ROGUE" then
 					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Health, "TOPLEFT", xOffset1, yOffset + 14 );
 					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Health, "TOPRIGHT", xOffset2, yOffset + 14 );				
 				else
@@ -782,8 +782,8 @@ local function OnUnitFramesLoad(self, event, addon)
 		playerFrame:SetHiddenHeight( -yOffset );
 		local playerFrame = CreateAuraBarFrame( playerDataSource, Elv_player );
 		playerFrame:SetHiddenHeight( -yOffset );
-		if ElvCF["auras"].playerauras == true then
-			if ElvCF["auras"].playershowonlydebuffs == true then
+		if C["auras"].playerauras == true then
+			if C["auras"].playershowonlydebuffs == true then
 				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Debuffs, "TOPLEFT", xOffset1, yOffset );
 				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Debuffs, "TOPRIGHT", xOffset2, yOffset );
 			else
@@ -804,7 +804,7 @@ local function OnUnitFramesLoad(self, event, addon)
 				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.TotemBar, "TOPLEFT", xOffset1, yOffset );
 				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.TotemBar, "TOPRIGHT", xOffset2, yOffset );								
 			else
-				if ElvDB.myclass == "DRUID" or ElvDB.myclass == "ROGUE" then
+				if DB.myclass == "DRUID" or DB.myclass == "ROGUE" then
 					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Health, "TOPLEFT", xOffset1, yOffset + 14 );
 					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Health, "TOPRIGHT", xOffset2, yOffset + 14 );				
 				else
@@ -848,8 +848,8 @@ local function OnUnitFramesLoad(self, event, addon)
 		playerFrame:SetHiddenHeight( -yOffset );
 		local playerFrame = CreateAuraBarFrame( playerDataSource, Elv_player );
 		playerFrame:SetHiddenHeight( -yOffset );
-		if ElvCF["auras"].playerauras == true then
-			if ElvCF["auras"].playershowonlydebuffs == true then
+		if C["auras"].playerauras == true then
+			if C["auras"].playershowonlydebuffs == true then
 				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Debuffs, "TOPLEFT", xOffset1, yOffset );
 				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Debuffs, "TOPRIGHT", xOffset2, yOffset );
 			else
@@ -870,7 +870,7 @@ local function OnUnitFramesLoad(self, event, addon)
 				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.TotemBar, "TOPLEFT", xOffset1, yOffset );
 				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.TotemBar, "TOPRIGHT", xOffset2, yOffset );								
 			else
-				if ElvDB.myclass == "DRUID" or ElvDB.myclass == "ROGUE" then
+				if DB.myclass == "DRUID" or DB.myclass == "ROGUE" then
 					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Health, "TOPLEFT", xOffset1, yOffset + 14 );
 					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Health, "TOPRIGHT", xOffset2, yOffset + 14 );				
 				else
@@ -920,8 +920,8 @@ local function OnUnitFramesLoad(self, event, addon)
 
 		local playerFrame = CreateAuraBarFrame( playerDataSource, Elv_player );
 		playerFrame:SetHiddenHeight( -yOffset );
-		if ElvCF["auras"].playerauras == true then
-			if ElvCF["auras"].playershowonlydebuffs == true then
+		if C["auras"].playerauras == true then
+			if C["auras"].playershowonlydebuffs == true then
 				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Debuffs, "TOPLEFT", xOffset1, yOffset );
 				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Debuffs, "TOPRIGHT", xOffset2, yOffset );
 			else
@@ -956,11 +956,11 @@ local function OnUnitFramesLoad(self, event, addon)
 		trinketFrame:Show();
 		
 		local targetFrame = CreateAuraBarFrame( targetDataSource, Elv_target );
-		if ElvCF["auras"].targetauras == true then
+		if C["auras"].targetauras == true then
 			targetFrame:SetPoint( "BOTTOMLEFT", Elv_target.Debuffs, "TOPLEFT", xOffset1, yOffset );
 			targetFrame:SetPoint( "BOTTOMRIGHT", Elv_target.Debuffs, "TOPRIGHT", xOffset2, yOffset );
 		else
-			if ElvDB.myclass == "DRUID" or ElvDB.myclass == "ROGUE" then
+			if DB.myclass == "DRUID" or DB.myclass == "ROGUE" then
 				targetFrame:SetPoint( "BOTTOMLEFT", Elv_target.Health, "TOPLEFT", xOffset1, yOffset + 14 );
 				targetFrame:SetPoint( "BOTTOMRIGHT", Elv_target.Health, "TOPRIGHT", xOffset2, yOffset + 14 );				
 			else
@@ -993,8 +993,8 @@ local function OnUnitFramesLoad(self, event, addon)
 
 		local playerFrame = CreateAuraBarFrame( playerDataSource, Elv_player );
 		playerFrame:SetHiddenHeight( -yOffset );
-		if ElvCF["auras"].playerauras == true then
-			if ElvCF["auras"].playershowonlydebuffs == true then
+		if C["auras"].playerauras == true then
+			if C["auras"].playershowonlydebuffs == true then
 				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Debuffs, "TOPLEFT", xOffset1, yOffset );
 				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Debuffs, "TOPRIGHT", xOffset2, yOffset );
 			else

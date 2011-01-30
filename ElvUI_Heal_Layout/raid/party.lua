@@ -1,29 +1,29 @@
-local ElvDB = ElvDB
-local ElvCF = ElvCF
+local DB, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 
-if not ElvCF["raidframes"].enable == true == true or ElvCF["raidframes"].gridonly == true then return end
+
+if not C["raidframes"].enable == true == true or C["raidframes"].gridonly == true then return end
 if IsAddOnLoaded("ElvUI_Dps_Layout") then return end
 
-local font2 = ElvCF["media"].uffont
-local font1 = ElvCF["media"].font
-local normTex = ElvCF["media"].normTex
+local font2 = C["media"].uffont
+local font1 = C["media"].font
+local normTex = C["media"].normTex
 
 --Frame Size
-local party_width = ElvDB.Scale((ElvuiActionBarBackground:GetWidth() / 5) + 7)*ElvCF["raidframes"].scale
-local party_height = ElvDB.Scale(50)*ElvCF["raidframes"].scale
-local pet_width = party_width*ElvCF["raidframes"].scale
-local pet_height = ElvDB.Scale(20)*ElvCF["raidframes"].scale
+local party_width = DB.Scale((ElvuiActionBarBackground:GetWidth() / 5) + 7)*C["raidframes"].scale
+local party_height = DB.Scale(50)*C["raidframes"].scale
+local pet_width = party_width*C["raidframes"].scale
+local pet_height = DB.Scale(20)*C["raidframes"].scale
 
 local function Shared(self, unit)	
-	self.colors = ElvDB.oUF_colors
+	self.colors = DB.oUF_colors
 	self:RegisterForClicks("AnyUp")
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)
 	
-	self.menu = ElvDB.SpawnMenu
+	self.menu = DB.SpawnMenu
 	
 	-- an update script to all elements
-	self:HookScript("OnShow", ElvDB.updateAllElements)
+	self:HookScript("OnShow", DB.updateAllElements)
 	
 	if unit == "raidpet" then
 		local health = CreateFrame('StatusBar', nil, self)
@@ -38,11 +38,11 @@ local function Shared(self, unit)
 		
 		self.Health.bg = health.bg
 		-- Setup Colors
-		if ElvCF["unitframes"].classcolor ~= true then
+		if C["unitframes"].classcolor ~= true then
 			health.colorTapping = false
 			health.colorClass = false
-			health:SetStatusBarColor(unpack(ElvCF["unitframes"].healthcolor))	
-			self.Health.bg:SetTexture(unpack(ElvCF["unitframes"].healthbackdropcolor))
+			health:SetStatusBarColor(unpack(C["unitframes"].healthcolor))	
+			self.Health.bg:SetTexture(unpack(C["unitframes"].healthbackdropcolor))
 		else
 			health.colorTapping = true	
 			health.colorClass = true
@@ -53,32 +53,32 @@ local function Shared(self, unit)
 		
 		-- border for all frames
 		local FrameBorder = CreateFrame("Frame", nil, self)
-		FrameBorder:SetPoint("TOPLEFT", self, "TOPLEFT", ElvDB.Scale(-2), ElvDB.Scale(2))
-		FrameBorder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", ElvDB.Scale(2), ElvDB.Scale(-2))
-		ElvDB.SetTemplate(FrameBorder)
-		FrameBorder:SetBackdropBorderColor(unpack(ElvCF["media"].altbordercolor))
+		FrameBorder:SetPoint("TOPLEFT", self, "TOPLEFT", DB.Scale(-2), DB.Scale(2))
+		FrameBorder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", DB.Scale(2), DB.Scale(-2))
+		DB.SetTemplate(FrameBorder)
+		FrameBorder:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
 		FrameBorder:SetFrameLevel(2)
 		self.FrameBorder = FrameBorder
 		
 		local name = health:CreateFontString(nil, "OVERLAY")
 		name:SetPoint("CENTER", health, 0, 0)
-		name:SetFont(font2, ElvCF["raidframes"].fontsize, "THINOUTLINE")
+		name:SetFont(font2, C["raidframes"].fontsize, "THINOUTLINE")
 		name:SetShadowOffset(1, -1)
 		
 		self:Tag(name, "[Elvui:getnamecolor][Elvui:nameshort]")
 		self.Name = name
 		
-		if ElvCF["unitframes"].aggro == true then
-			table.insert(self.__elements, ElvDB.UpdateThreat)
-			self:RegisterEvent('PLAYER_TARGET_CHANGED', ElvDB.UpdateThreat)
-			self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', ElvDB.UpdateThreat)
-			self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', ElvDB.UpdateThreat)
+		if C["unitframes"].aggro == true then
+			table.insert(self.__elements, DB.UpdateThreat)
+			self:RegisterEvent('PLAYER_TARGET_CHANGED', DB.UpdateThreat)
+			self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', DB.UpdateThreat)
+			self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', DB.UpdateThreat)
 		end
 		
-		if ElvCF["unitframes"].debuffhighlight == true then
+		if C["unitframes"].debuffhighlight == true then
 			local dbh = health:CreateTexture(nil, "OVERLAY", health)
 			dbh:SetAllPoints(health)
-			dbh:SetTexture(ElvCF["media"].normTex)
+			dbh:SetTexture(C["media"].normTex)
 			dbh:SetBlendMode("ADD")
 			dbh:SetVertexColor(0,0,0,0)
 			self.DebuffHighlight = dbh
@@ -87,19 +87,19 @@ local function Shared(self, unit)
 		end
 		
 		--Heal Comm
-		if ElvCF["raidframes"].healcomm == true then
+		if C["raidframes"].healcomm == true then
 			local mhpb = CreateFrame('StatusBar', nil, self.Health)
 			mhpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
 			mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)		
 			mhpb:SetWidth(party_width)
-			mhpb:SetStatusBarTexture(ElvCF["media"].normTex)
+			mhpb:SetStatusBarTexture(C["media"].normTex)
 			mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
 
 			local ohpb = CreateFrame('StatusBar', nil, self.Health)
 			ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
 			ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)		
 			ohpb:SetWidth(party_width)
-			ohpb:SetStatusBarTexture(ElvCF["media"].normTex)
+			ohpb:SetStatusBarTexture(C["media"].normTex)
 			ohpb:SetStatusBarColor(0, 1, 0, 0.25)
 
 			self.HealPrediction = {
@@ -109,18 +109,18 @@ local function Shared(self, unit)
 			}
 		end
 		
-		if ElvCF["raidframes"].showrange == true then
-			local range = {insideAlpha = 1, outsideAlpha = ElvCF["raidframes"].raidalphaoor}
+		if C["raidframes"].showrange == true then
+			local range = {insideAlpha = 1, outsideAlpha = C["raidframes"].raidalphaoor}
 			self.Range = range
 		end
 		
-		if ElvCF["unitframes"].showsmooth == true then health.Smooth = true end	
+		if C["unitframes"].showsmooth == true then health.Smooth = true end	
 	else
 		local health = CreateFrame('StatusBar', nil, self)
 		health:SetHeight(party_height*.86)
 		health:SetPoint("TOPLEFT")
 		health:SetPoint("TOPRIGHT")
-		if ElvCF["raidframes"].gridhealthvertical == true then
+		if C["raidframes"].gridhealthvertical == true then
 			health:SetOrientation("VERTICAL")
 		end
 		health:SetStatusBarTexture(normTex)
@@ -133,22 +133,22 @@ local function Shared(self, unit)
 		self.Health.bg = health.bg
 			
 		health.value = health:CreateFontString(nil, "OVERLAY")
-		health.value:SetPoint("BOTTOM", health, "BOTTOM", 0, ElvDB.Scale(4))
-		health.value:SetFont(font2, ElvCF["raidframes"].fontsize, "THINOUTLINE")
+		health.value:SetPoint("BOTTOM", health, "BOTTOM", 0, DB.Scale(4))
+		health.value:SetFont(font2, C["raidframes"].fontsize, "THINOUTLINE")
 		health.value:SetTextColor(1,1,1)
 		health.value:SetShadowOffset(1, -1)
 		self.Health.value = health.value
 		
-		health.PostUpdate = ElvDB.PostUpdateHealth
+		health.PostUpdate = DB.PostUpdateHealth
 		
 		health.frequentUpdates = true
 		
 		-- Setup Colors
-		if ElvCF["unitframes"].classcolor ~= true then
+		if C["unitframes"].classcolor ~= true then
 			health.colorTapping = false
 			health.colorClass = false
-			health:SetStatusBarColor(unpack(ElvCF["unitframes"].healthcolor))	
-			self.Health.bg:SetTexture(unpack(ElvCF["unitframes"].healthbackdropcolor))
+			health:SetStatusBarColor(unpack(C["unitframes"].healthcolor))	
+			self.Health.bg:SetTexture(unpack(C["unitframes"].healthbackdropcolor))
 		else
 			health.colorTapping = true	
 			health.colorClass = true
@@ -159,33 +159,33 @@ local function Shared(self, unit)
 		
 		-- border for all frames
 		local FrameBorder = CreateFrame("Frame", nil, self)
-		FrameBorder:SetPoint("TOPLEFT", self, "TOPLEFT", ElvDB.Scale(-2), ElvDB.Scale(2))
-		FrameBorder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", ElvDB.Scale(2), ElvDB.Scale(-2))
-		ElvDB.SetTemplate(FrameBorder)
-		FrameBorder:SetBackdropBorderColor(unpack(ElvCF["media"].altbordercolor))
+		FrameBorder:SetPoint("TOPLEFT", self, "TOPLEFT", DB.Scale(-2), DB.Scale(2))
+		FrameBorder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", DB.Scale(2), DB.Scale(-2))
+		DB.SetTemplate(FrameBorder)
+		FrameBorder:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
 		FrameBorder:SetFrameLevel(2)
 		self.FrameBorder = FrameBorder
 		
 		-- power
 		local power = CreateFrame('StatusBar', nil, self)
-		power:SetPoint("TOPLEFT", health, "BOTTOMLEFT", 0, ElvDB.Scale(-1)+(-ElvDB.mult*2))
-		power:SetPoint("TOPRIGHT", health, "BOTTOMRIGHT", 0, ElvDB.Scale(-1)+(-ElvDB.mult*2))
+		power:SetPoint("TOPLEFT", health, "BOTTOMLEFT", 0, DB.Scale(-1)+(-DB.mult*2))
+		power:SetPoint("TOPRIGHT", health, "BOTTOMRIGHT", 0, DB.Scale(-1)+(-DB.mult*2))
 		power:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", 0, 0)
 		power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 0, 0)
 		power:SetStatusBarTexture(normTex)
 		self.Power = power
-		--[[if ElvCF["raidframes"].hidenonmana == true then
-			power.PostUpdate = ElvDB.PostUpdatePowerParty
+		--[[if C["raidframes"].hidenonmana == true then
+			power.PostUpdate = DB.PostUpdatePowerParty
 		end]]
 		
 		-- border between health and power
 		self.HealthBorder = CreateFrame("Frame", nil, power)
-		self.HealthBorder:SetPoint("TOPLEFT", health, "BOTTOMLEFT", 0, -ElvDB.mult)
-		self.HealthBorder:SetPoint("TOPRIGHT", health, "BOTTOMRIGHT", 0, -ElvDB.mult)
-		self.HealthBorder:SetPoint("BOTTOMLEFT", power, "TOPLEFT", 0, ElvDB.mult)
-		self.HealthBorder:SetPoint("BOTTOMRIGHT", power, "TOPRIGHT", 0, ElvDB.mult)
-		ElvDB.SetTemplate(self.HealthBorder)
-		self.HealthBorder:SetBackdropBorderColor(unpack(ElvCF["media"].altbordercolor))	
+		self.HealthBorder:SetPoint("TOPLEFT", health, "BOTTOMLEFT", 0, -DB.mult)
+		self.HealthBorder:SetPoint("TOPRIGHT", health, "BOTTOMRIGHT", 0, -DB.mult)
+		self.HealthBorder:SetPoint("BOTTOMLEFT", power, "TOPLEFT", 0, DB.mult)
+		self.HealthBorder:SetPoint("BOTTOMRIGHT", power, "TOPRIGHT", 0, DB.mult)
+		DB.SetTemplate(self.HealthBorder)
+		self.HealthBorder:SetBackdropBorderColor(unpack(C["media"].altbordercolor))	
 			
 		power.frequentUpdates = true
 
@@ -201,70 +201,70 @@ local function Shared(self, unit)
 
 		
 		local name = health:CreateFontString(nil, "OVERLAY")
-		name:SetPoint("TOP", health, 0, ElvDB.Scale(-2))
-		name:SetFont(font2, ElvCF["raidframes"].fontsize, "THINOUTLINE")
+		name:SetPoint("TOP", health, 0, DB.Scale(-2))
+		name:SetFont(font2, C["raidframes"].fontsize, "THINOUTLINE")
 		name:SetShadowOffset(1, -1)
 		self:Tag(name, "[Elvui:getnamecolor][Elvui:nameshort]")
 		self.Name = name
 		
 		local leader = health:CreateTexture(nil, "OVERLAY")
-		leader:SetHeight(ElvDB.Scale(12))
-		leader:SetWidth(ElvDB.Scale(12))
+		leader:SetHeight(DB.Scale(12))
+		leader:SetWidth(DB.Scale(12))
 		leader:SetPoint("TOPLEFT", 0, 6)
 		self.Leader = leader
 		
 		local LFDRole = health:CreateTexture(nil, "OVERLAY")
-		LFDRole:SetHeight(ElvDB.Scale(6))
-		LFDRole:SetWidth(ElvDB.Scale(6))
-		LFDRole:SetPoint("TOP", self.Name, "BOTTOM", 0, ElvDB.Scale(-2))
+		LFDRole:SetHeight(DB.Scale(6))
+		LFDRole:SetWidth(DB.Scale(6))
+		LFDRole:SetPoint("TOP", self.Name, "BOTTOM", 0, DB.Scale(-2))
 		LFDRole:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\lfdicons.blp")
 		self.LFDRole = LFDRole
 		
 		local MasterLooter = health:CreateTexture(nil, "OVERLAY")
-		MasterLooter:SetHeight(ElvDB.Scale(12))
-		MasterLooter:SetWidth(ElvDB.Scale(12))
+		MasterLooter:SetHeight(DB.Scale(12))
+		MasterLooter:SetWidth(DB.Scale(12))
 		self.MasterLooter = MasterLooter
-		self:RegisterEvent("PARTY_LEADER_CHANGED", ElvDB.MLAnchorUpdate)
-		self:RegisterEvent("PARTY_MEMBERS_CHANGED", ElvDB.MLAnchorUpdate)
+		self:RegisterEvent("PARTY_LEADER_CHANGED", DB.MLAnchorUpdate)
+		self:RegisterEvent("PARTY_MEMBERS_CHANGED", DB.MLAnchorUpdate)
 		
-		if ElvCF["unitframes"].aggro == true then
-			table.insert(self.__elements, ElvDB.UpdateThreat)
-			self:RegisterEvent('PLAYER_TARGET_CHANGED', ElvDB.UpdateThreat)
-			self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', ElvDB.UpdateThreat)
-			self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', ElvDB.UpdateThreat)
+		if C["unitframes"].aggro == true then
+			table.insert(self.__elements, DB.UpdateThreat)
+			self:RegisterEvent('PLAYER_TARGET_CHANGED', DB.UpdateThreat)
+			self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', DB.UpdateThreat)
+			self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', DB.UpdateThreat)
 		end
 		
-		if ElvCF["unitframes"].showsymbols == true then
+		if C["unitframes"].showsymbols == true then
 			local RaidIcon = health:CreateTexture(nil, 'OVERLAY')
-			RaidIcon:SetHeight(ElvDB.Scale(18))
-			RaidIcon:SetWidth(ElvDB.Scale(18))
+			RaidIcon:SetHeight(DB.Scale(18))
+			RaidIcon:SetWidth(DB.Scale(18))
 			RaidIcon:SetPoint('CENTER', self, 'TOP')
 			RaidIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\raidicons.blp")
 			self.RaidIcon = RaidIcon
 		end
 		
 		local ReadyCheck = self.Health:CreateTexture(nil, "OVERLAY")
-		ReadyCheck:SetHeight(ElvCF["raidframes"].fontsize)
-		ReadyCheck:SetWidth(ElvCF["raidframes"].fontsize)
+		ReadyCheck:SetHeight(C["raidframes"].fontsize)
+		ReadyCheck:SetWidth(C["raidframes"].fontsize)
 		ReadyCheck:SetPoint('CENTER', self.Health, 'CENTER', 0, -4)
 		self.ReadyCheck = ReadyCheck
 		
 		local debuffs = CreateFrame('Frame', nil, self)
-		debuffs:SetPoint('TOP', self, 'BOTTOM', ElvDB.Scale(-1), ElvDB.Scale(-4))
+		debuffs:SetPoint('TOP', self, 'BOTTOM', DB.Scale(-1), DB.Scale(-4))
 		debuffs:SetHeight((party_width / 3)*.95)
 		debuffs:SetWidth(party_width)
 		debuffs.size = (party_width / 3) *.95
 		debuffs.spacing = 2
 		debuffs.initialAnchor = 'LEFT'
 		debuffs.num = 3
-		debuffs.PostCreateIcon = ElvDB.PostCreateAura
-		debuffs.PostUpdateIcon = ElvDB.PostUpdateAura
+		debuffs.PostCreateIcon = DB.PostCreateAura
+		debuffs.PostUpdateIcon = DB.PostUpdateAura
 		self.Debuffs = debuffs	
 		
-		if ElvCF["unitframes"].debuffhighlight == true then
+		if C["unitframes"].debuffhighlight == true then
 			local dbh = health:CreateTexture(nil, "OVERLAY", health)
 			dbh:SetAllPoints(health)
-			dbh:SetTexture(ElvCF["media"].normTex)
+			dbh:SetTexture(C["media"].normTex)
 			dbh:SetBlendMode("ADD")
 			dbh:SetVertexColor(0,0,0,0)
 			self.DebuffHighlight = dbh
@@ -273,12 +273,12 @@ local function Shared(self, unit)
 		end
 		
 		-- Debuff Aura Filter
-		self.Debuffs.CustomFilter = ElvDB.AuraFilter
+		self.Debuffs.CustomFilter = DB.AuraFilter
 		
 		--Heal Comm
-		if ElvCF["raidframes"].healcomm == true then
+		if C["raidframes"].healcomm == true then
 			local mhpb = CreateFrame('StatusBar', nil, self.Health)
-			if ElvCF["raidframes"].gridhealthvertical == true then
+			if C["raidframes"].gridhealthvertical == true then
 				mhpb:SetOrientation("VERTICAL")
 				mhpb:SetPoint('BOTTOM', self.Health:GetStatusBarTexture(), 'TOP', 0, 0)
 				mhpb:SetHeight(party_height)
@@ -287,11 +287,11 @@ local function Shared(self, unit)
 				mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)		
 			end
 			mhpb:SetWidth(party_width)
-			mhpb:SetStatusBarTexture(ElvCF["media"].normTex)
+			mhpb:SetStatusBarTexture(C["media"].normTex)
 			mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
 
 			local ohpb = CreateFrame('StatusBar', nil, self.Health)
-			if ElvCF["raidframes"].gridhealthvertical == true then		
+			if C["raidframes"].gridhealthvertical == true then		
 				ohpb:SetOrientation("VERTICAL")
 				ohpb:SetPoint('BOTTOM', mhpb:GetStatusBarTexture(), 'TOP', 0, 0)
 				ohpb:SetHeight(party_height)
@@ -300,7 +300,7 @@ local function Shared(self, unit)
 				ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)		
 			end
 			ohpb:SetWidth(party_width)
-			ohpb:SetStatusBarTexture(ElvCF["media"].normTex)
+			ohpb:SetStatusBarTexture(C["media"].normTex)
 			ohpb:SetStatusBarColor(0, 1, 0, 0.25)
 
 			self.HealPrediction = {
@@ -310,26 +310,26 @@ local function Shared(self, unit)
 			}
 		end
 		
-		if ElvCF["raidframes"].showrange == true then
-			local range = {insideAlpha = 1, outsideAlpha = ElvCF["raidframes"].raidalphaoor}
+		if C["raidframes"].showrange == true then
+			local range = {insideAlpha = 1, outsideAlpha = C["raidframes"].raidalphaoor}
 			self.Range = range
 		end
 		
-		if ElvCF["unitframes"].showsmooth == true then
+		if C["unitframes"].showsmooth == true then
 			health.Smooth = true
 			if self.Power then
 				power.Smooth = true
 			end
 		end	
 			
-		if ElvCF["auras"].raidunitbuffwatch == true then
-			ElvDB.createAuraWatch(self,unit)
+		if C["auras"].raidunitbuffwatch == true then
+			DB.createAuraWatch(self,unit)
 		end
 		
 		-- execute an update on every raids unit if party or raid member changed
 		-- should fix issues with names/symbols/etc not updating introduced with 4.0.3 patch
-		self:RegisterEvent("PARTY_MEMBERS_CHANGED", ElvDB.updateAllElements)
-		self:RegisterEvent("RAID_ROSTER_UPDATE", ElvDB.updateAllElements)
+		self:RegisterEvent("PARTY_MEMBERS_CHANGED", DB.updateAllElements)
+		self:RegisterEvent("RAID_ROSTER_UPDATE", DB.updateAllElements)
 	end
 	
 	return self
@@ -339,12 +339,12 @@ oUF:RegisterStyle('ElvuiHealParty', Shared)
 oUF:Factory(function(self)
 	oUF:SetActiveStyle("ElvuiHealParty")
 	local yOffset = 0
-	if ElvCF["castbar"].castermode == true and (HealElementsCharPos and HealElementsCharPos["PlayerCastBar"] ~= true) then
+	if C["castbar"].castermode == true and (HealElementsCharPos and HealElementsCharPos["PlayerCastBar"] ~= true) then
 		yOffset = yOffset + 28
 	end
 	
 	local party
-	if ElvCF["raidframes"].partypets == true then
+	if C["raidframes"].partypets == true then
 		party = self:SpawnHeader("ElvuiHealParty", nil, "custom [@raid6,exists] hide;show", 
 			'oUF-initialConfigFunction', ([[
 				local header = self:GetParent()
@@ -365,8 +365,8 @@ oUF:Factory(function(self)
 			"columnAnchorPoint", "TOP",
 			"maxColumns", 5,
 			"unitsPerColumn", 5,
-			"showPlayer", ElvCF["raidframes"].showplayerinparty,
-			"xoffset", ElvDB.Scale(6),
+			"showPlayer", C["raidframes"].showplayerinparty,
+			"xoffset", DB.Scale(6),
 			'template', 'HealerPartyPets'
 		)	
 	else
@@ -383,11 +383,11 @@ oUF:Factory(function(self)
 			"columnAnchorPoint", "TOP",
 			"maxColumns", 5,
 			"unitsPerColumn", 5,
-			"showPlayer", ElvCF["raidframes"].showplayerinparty,
-			"xoffset", ElvDB.Scale(6)
+			"showPlayer", C["raidframes"].showplayerinparty,
+			"xoffset", DB.Scale(6)
 		)		
 	end
-	party:SetPoint("BOTTOM", ElvuiActionBarBackground, "TOP", 0, ElvDB.Scale(32+yOffset))	
+	party:SetPoint("BOTTOM", ElvuiActionBarBackground, "TOP", 0, DB.Scale(32+yOffset))	
 	
 	local partyToggle = CreateFrame("Frame")
 	partyToggle:RegisterEvent("PLAYER_ENTERING_WORLD")

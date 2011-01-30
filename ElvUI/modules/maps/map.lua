@@ -1,27 +1,27 @@
-local ElvCF = ElvCF
-local ElvDB = ElvDB
 
-if not ElvCF["others"].enablemap == true then return end
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
+if not C["others"].enablemap == true then return end
 
 WORLDMAP_WINDOWED_SIZE = 0.65 --Slightly increase the size of blizzard small map
 local mapscale = WORLDMAP_WINDOWED_SIZE
 
-local ft = ElvCF["media"].uffont -- Map font
+local ft = C["media"].uffont -- Map font
 local fontsize = 22 -- Map Font Size
 
 local mapbg = CreateFrame("Frame", nil, WorldMapDetailFrame)
 	mapbg:SetBackdrop( { 
-	bgFile = ElvCF["media"].blank, 
-	edgeFile = ElvCF["media"].blank, 
-	tile = false, edgeSize = ElvDB.mult, 
-	insets = { left = -ElvDB.mult, right = -ElvDB.mult, top = -ElvDB.mult, bottom = -ElvDB.mult }
+	bgFile = C["media"].blank, 
+	edgeFile = C["media"].blank, 
+	tile = false, edgeSize = DB.mult, 
+	insets = { left = -DB.mult, right = -DB.mult, top = -DB.mult, bottom = -DB.mult }
 })
 
 --Create move button for map
 local movebutton = CreateFrame ("Frame", nil, WorldMapFrameSizeUpButton)
-movebutton:SetHeight(ElvDB.Scale(32))
-movebutton:SetWidth(ElvDB.Scale(32))
-movebutton:SetPoint("TOP", WorldMapFrameSizeUpButton, "BOTTOM", ElvDB.Scale(-1), ElvDB.Scale(4))
+movebutton:SetHeight(DB.Scale(32))
+movebutton:SetWidth(DB.Scale(32))
+movebutton:SetPoint("TOP", WorldMapFrameSizeUpButton, "BOTTOM", DB.Scale(-1), DB.Scale(4))
 movebutton:SetBackdrop( { 
 	bgFile = "Interface\\AddOns\\ElvUI\\media\\textures\\cross",
 })
@@ -63,17 +63,17 @@ alds:SetFrameLevel(0)
 
 local SmallerMapSkin = function()
 	-- don't need this
-	ElvDB.Kill(WorldMapTrackQuest)
+	DB.Kill(WorldMapTrackQuest)
 
 	-- map glow
-	ElvDB.CreateShadow(mapbg)
+	DB.CreateShadow(mapbg)
 	
 	-- map border and bg
-	mapbg:SetBackdropColor(unpack(ElvCF["media"].backdropcolor))
-	mapbg:SetBackdropBorderColor(unpack(ElvCF["media"].bordercolor))
+	mapbg:SetBackdropColor(unpack(C["media"].backdropcolor))
+	mapbg:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 	mapbg:SetScale(1 / mapscale)
-	mapbg:SetPoint("TOPLEFT", WorldMapDetailFrame, ElvDB.Scale(-2), ElvDB.Scale(2))
-	mapbg:SetPoint("BOTTOMRIGHT", WorldMapDetailFrame, ElvDB.Scale(2), ElvDB.Scale(-2))
+	mapbg:SetPoint("TOPLEFT", WorldMapDetailFrame, DB.Scale(-2), DB.Scale(2))
+	mapbg:SetPoint("BOTTOMRIGHT", WorldMapDetailFrame, DB.Scale(2), DB.Scale(-2))
 	mapbg:SetFrameStrata("MEDIUM")
 	mapbg:SetFrameLevel(20)
 	
@@ -87,18 +87,18 @@ local SmallerMapSkin = function()
 	WorldMapFrameMiniBorderRight:Hide()
 	WorldMapFrameSizeUpButton:Show()
 	WorldMapFrameSizeUpButton:ClearAllPoints()
-	WorldMapFrameSizeUpButton:SetPoint("TOPRIGHT", WorldMapButton, "TOPRIGHT", ElvDB.Scale(3), ElvDB.Scale(-18))
+	WorldMapFrameSizeUpButton:SetPoint("TOPRIGHT", WorldMapButton, "TOPRIGHT", DB.Scale(3), DB.Scale(-18))
 	WorldMapFrameSizeUpButton:SetFrameStrata("HIGH")
 	WorldMapFrameSizeUpButton:SetFrameLevel(18)
 	WorldMapFrameCloseButton:ClearAllPoints()
-	WorldMapFrameCloseButton:SetPoint("TOPRIGHT", WorldMapButton, "TOPRIGHT", ElvDB.Scale(3), ElvDB.Scale(3))
+	WorldMapFrameCloseButton:SetPoint("TOPRIGHT", WorldMapButton, "TOPRIGHT", DB.Scale(3), DB.Scale(3))
 	WorldMapFrameCloseButton:SetFrameStrata("HIGH")
 	WorldMapFrameCloseButton:SetFrameLevel(18)
-	WorldMapFrameSizeDownButton:SetPoint("TOPRIGHT", WorldMapFrameMiniBorderRight, "TOPRIGHT", ElvDB.Scale(-66), ElvDB.Scale(7))
+	WorldMapFrameSizeDownButton:SetPoint("TOPRIGHT", WorldMapFrameMiniBorderRight, "TOPRIGHT", DB.Scale(-66), DB.Scale(7))
 	WorldMapFrameTitle:ClearAllPoints()
-	WorldMapFrameTitle:SetPoint("BOTTOMLEFT", WorldMapDetailFrame, ElvDB.Scale(9), ElvDB.Scale(10))
+	WorldMapFrameTitle:SetPoint("BOTTOMLEFT", WorldMapDetailFrame, DB.Scale(9), DB.Scale(10))
 	WorldMapFrameTitle:SetFont(ft, fontsize, "OUTLINE")
-	WorldMapFrameTitle:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
+	WorldMapFrameTitle:SetShadowOffset(DB.mult, -DB.mult)
 	WorldMapFrameTitle:SetParent(ald)		
 	WorldMapTitleButton:SetFrameStrata("MEDIUM")
 	WorldMapTooltip:SetFrameStrata("TOOLTIP")
@@ -106,21 +106,21 @@ local SmallerMapSkin = function()
 	
 	WorldMapQuestShowObjectives:SetParent(ald)
 	WorldMapQuestShowObjectives:ClearAllPoints()
-	WorldMapQuestShowObjectives:SetPoint("BOTTOMRIGHT", WorldMapButton, "BOTTOMRIGHT", 0, ElvDB.Scale(10))
+	WorldMapQuestShowObjectives:SetPoint("BOTTOMRIGHT", WorldMapButton, "BOTTOMRIGHT", 0, DB.Scale(10))
 	WorldMapQuestShowObjectives:SetFrameStrata("HIGH")
 	WorldMapQuestShowObjectivesText:SetFont(ft, fontsize, "THINOUTLINE")
-	WorldMapQuestShowObjectivesText:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
+	WorldMapQuestShowObjectivesText:SetShadowOffset(DB.mult, -DB.mult)
 	WorldMapQuestShowObjectivesText:ClearAllPoints()
-	WorldMapQuestShowObjectivesText:SetPoint("RIGHT", WorldMapQuestShowObjectives, "LEFT", ElvDB.Scale(-4), ElvDB.Scale(1))
+	WorldMapQuestShowObjectivesText:SetPoint("RIGHT", WorldMapQuestShowObjectives, "LEFT", DB.Scale(-4), DB.Scale(1))
 	
 	WorldMapShowDigSites:SetParent(ald)
 	WorldMapShowDigSites:ClearAllPoints()
-	WorldMapShowDigSites:SetPoint("BOTTOM", WorldMapQuestShowObjectives, "TOP", 0, ElvDB.Scale(2))
+	WorldMapShowDigSites:SetPoint("BOTTOM", WorldMapQuestShowObjectives, "TOP", 0, DB.Scale(2))
 	WorldMapShowDigSites:SetFrameStrata("HIGH")
 	WorldMapShowDigSitesText:ClearAllPoints()
-	WorldMapShowDigSitesText:SetPoint("RIGHT", WorldMapShowDigSites, "LEFT", ElvDB.Scale(-4), ElvDB.Scale(1))
+	WorldMapShowDigSitesText:SetPoint("RIGHT", WorldMapShowDigSites, "LEFT", DB.Scale(-4), DB.Scale(1))
 	WorldMapShowDigSitesText:SetFont(ft, fontsize, "THINOUTLINE")
-	WorldMapShowDigSitesText:SetShadowOffset(ElvDB.mult, -ElvDB.mult)		
+	WorldMapShowDigSitesText:SetShadowOffset(DB.mult, -DB.mult)		
 	
 	WorldMapFrameAreaFrame:SetFrameStrata("DIALOG")
 	WorldMapFrameAreaFrame:SetFrameLevel(20)
@@ -149,18 +149,18 @@ local BiggerMapSkin = function()
 	WorldMapQuestShowObjectives:SetPoint("BOTTOMRIGHT", WorldMapButton, "BOTTOMRIGHT")
 	WorldMapQuestShowObjectives:SetFrameStrata("HIGH")
 	WorldMapQuestShowObjectivesText:SetFont(ft, fs, "THINOUTLINE")
-	WorldMapQuestShowObjectivesText:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
+	WorldMapQuestShowObjectivesText:SetShadowOffset(DB.mult, -DB.mult)
 	WorldMapQuestShowObjectivesText:ClearAllPoints()
-	WorldMapQuestShowObjectivesText:SetPoint("RIGHT", WorldMapQuestShowObjectives, "LEFT", ElvDB.Scale(-4), ElvDB.Scale(1))
+	WorldMapQuestShowObjectivesText:SetPoint("RIGHT", WorldMapQuestShowObjectives, "LEFT", DB.Scale(-4), DB.Scale(1))
 	
 	WorldMapShowDigSites:SetParent(ald)
 	WorldMapShowDigSites:ClearAllPoints()
-	WorldMapShowDigSites:SetPoint("BOTTOM", WorldMapQuestShowObjectives, "TOP", 0, ElvDB.Scale(1))
+	WorldMapShowDigSites:SetPoint("BOTTOM", WorldMapQuestShowObjectives, "TOP", 0, DB.Scale(1))
 	WorldMapShowDigSites:SetFrameStrata("HIGH")
 	WorldMapShowDigSitesText:ClearAllPoints()
-	WorldMapShowDigSitesText:SetPoint("RIGHT", WorldMapShowDigSites, "LEFT", ElvDB.Scale(-4), ElvDB.Scale(1))
+	WorldMapShowDigSitesText:SetPoint("RIGHT", WorldMapShowDigSites, "LEFT", DB.Scale(-4), DB.Scale(1))
 	WorldMapShowDigSitesText:SetFont(ft, fs, "THINOUTLINE")
-	WorldMapShowDigSitesText:SetShadowOffset(ElvDB.mult, -ElvDB.mult)	
+	WorldMapShowDigSitesText:SetShadowOffset(DB.mult, -DB.mult)	
 	
 	WorldMapFrameAreaFrame:SetFrameStrata("DIALOG")
 	WorldMapFrameAreaFrame:SetFrameLevel(20)
@@ -199,10 +199,10 @@ addon:SetScript("OnEvent", function(self, event)
 		WorldMapBlobFrame:Hide()
 		WorldMapPOIFrame:Hide()
 
-		WorldMapQuestShowObjectives.Show = ElvDB.dummy
-		WorldMapTitleButton.Show = ElvDB.dummy
-		WorldMapBlobFrame.Show = ElvDB.dummy
-		WorldMapPOIFrame.Show = ElvDB.dummy       
+		WorldMapQuestShowObjectives.Show = DB.dummy
+		WorldMapTitleButton.Show = DB.dummy
+		WorldMapBlobFrame.Show = DB.dummy
+		WorldMapPOIFrame.Show = DB.dummy       
 
 		WatchFrame_Update()
 	elseif event == "PLAYER_REGEN_ENABLED" then
@@ -228,8 +228,8 @@ end)
 
 local coords = CreateFrame("Frame", "CoordsFrame", WorldMapFrame)
 local fontheight = select(2, WorldMapQuestShowObjectivesText:GetFont())*1.1
-coords.PlayerText = ElvDB.SetFontString(CoordsFrame, ElvCF["media"].font, fontheight, "THINOUTLINE")
-coords.MouseText = ElvDB.SetFontString(CoordsFrame, ElvCF["media"].font, fontheight, "THINOUTLINE")
+coords.PlayerText = DB.SetFontString(CoordsFrame, C["media"].font, fontheight, "THINOUTLINE")
+coords.MouseText = DB.SetFontString(CoordsFrame, C["media"].font, fontheight, "THINOUTLINE")
 coords.PlayerText:SetTextColor(WorldMapQuestShowObjectivesText:GetTextColor())
 coords.MouseText:SetTextColor(WorldMapQuestShowObjectivesText:GetTextColor())
 coords.PlayerText:SetPoint("TOPLEFT", WorldMapButton, "TOPLEFT", 5, -5)

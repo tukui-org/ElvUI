@@ -1,3 +1,4 @@
+local DB, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 if not oUF then return end
 
 local _, ns = ...
@@ -295,7 +296,7 @@ do
 
 	function frame:VARIABLES_LOADED()
 		-- I honestly don't trust the load order of SVs.
-		if ElvCF["unitframes"].positionbychar == true then
+		if C["unitframes"].positionbychar == true then
 			_DB = ElvuiUFpos or {}
 			ElvuiUFpos = _DB
 		else
@@ -393,7 +394,7 @@ end
 
 -- reset data
 local function RESETUF()
-	if ElvCF["unitframes"].positionbychar == true then
+	if C["unitframes"].positionbychar == true then
 		ElvuiUFpos = {}
 	else
 		ElvuiData.ufpos = {}

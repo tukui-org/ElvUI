@@ -1,10 +1,10 @@
 ------------------------------------------------------------------------
 --	ActionBar Functions
 ------------------------------------------------------------------------
-local ElvDB = ElvDB
-local ElvCF = ElvCF
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
 -- styleButton function authors are Chiril & Karudon.
-function ElvDB.StyleButton(b, checked) 
+function DB.StyleButton(b, checked) 
     local name = b:GetName()
 
     local button          = _G[name]
@@ -51,7 +51,7 @@ function ElvDB.StyleButton(b, checked)
 	end
 end
 
-function ElvDB.ElvuiPetBarUpdate(self, event)
+function DB.ElvuiPetBarUpdate(self, event)
 	local petActionButton, petActionIcon, petAutoCastableTexture, petAutoCastShine
 	for i=1, NUM_PET_ACTION_SLOTS, 1 do
 		local buttonName = "PetActionButton" .. i
@@ -98,11 +98,11 @@ function ElvDB.ElvuiPetBarUpdate(self, event)
 		
 		-- grid display
 		if name then
-			if not ElvCF["actionbar"].showgrid then
+			if not C["actionbar"].showgrid then
 				petActionButton:SetAlpha(1)
 			end			
 		else
-			if not ElvCF["actionbar"].showgrid then
+			if not C["actionbar"].showgrid then
 				petActionButton:SetAlpha(0)
 			end
 		end
@@ -129,7 +129,7 @@ function ElvDB.ElvuiPetBarUpdate(self, event)
 	end
 end
 
-function ElvDB.ElvuiShiftBarUpdate()
+function DB.ElvuiShiftBarUpdate()
 	local numForms = GetNumShapeshiftForms()
 	local texture, name, isActive, isCastable
 	local button, icon, cooldown

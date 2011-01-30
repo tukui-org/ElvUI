@@ -1,4 +1,5 @@
-if ElvCF.unitframes.enable ~= true or ElvDB.myclass ~= "SHAMAN" then return end
+local DB, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
+if C.unitframes.enable ~= true or DB.myclass ~= "SHAMAN" then return end
 --[[
 	Documentation:
 	

@@ -1,6 +1,6 @@
-if not ElvCF["actionbar"].enable == true then return end
-local ElvDB = ElvDB
-local ElvCF = ElvCF
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
+if not C["actionbar"].enable == true then return end
 
 ---------------------------------------------------------------------------
 -- setup PetActionBar
@@ -18,14 +18,14 @@ function PositionBarPet(self)
 		button:SetParent(ElvuiPetBar)
 		ElvuiPetActionBarBackground:SetParent(ElvuiPetBar)
 		button:SetFrameStrata("MEDIUM")
-		button:SetSize(ElvDB.petbuttonsize, ElvDB.petbuttonsize)
+		button:SetSize(DB.petbuttonsize, DB.petbuttonsize)
 		if i == 1 then
-			button:SetPoint("TOPLEFT", ElvDB.petbuttonspacing, -ElvDB.petbuttonspacing)
+			button:SetPoint("TOPLEFT", DB.petbuttonspacing, -DB.petbuttonspacing)
 		else
-			if ElvCF["actionbar"].bottompetbar ~= true then
-				button:SetPoint("TOP", _G["PetActionButton"..(i - 1)], "BOTTOM", 0, -ElvDB.petbuttonspacing)
+			if C["actionbar"].bottompetbar ~= true then
+				button:SetPoint("TOP", _G["PetActionButton"..(i - 1)], "BOTTOM", 0, -DB.petbuttonspacing)
 			else
-				button:SetPoint("LEFT", _G["PetActionButton"..(i - 1)], "RIGHT", ElvDB.petbuttonspacing, 0)
+				button:SetPoint("LEFT", _G["PetActionButton"..(i - 1)], "RIGHT", DB.petbuttonspacing, 0)
 			end	
 		end
 		button:Show()
@@ -33,7 +33,7 @@ function PositionBarPet(self)
 	end
 	
 	--Setup Mouseover
-	if ElvCF["actionbar"].rightbarmouseover == true and ElvCF["actionbar"].bottompetbar ~= true then
+	if C["actionbar"].rightbarmouseover == true and C["actionbar"].bottompetbar ~= true then
 		ElvuiPetActionBarBackground:SetAlpha(0)
 		ElvuiPetActionBarBackground:SetScript("OnEnter", function() RightBarMouseOver(1) end)
 		ElvuiPetActionBarBackground:SetScript("OnLeave", function() RightBarMouseOver(0) end)
@@ -68,14 +68,14 @@ bar:SetScript("OnEvent", function(self, event, ...)
 		
 		PositionBarPet(self)
 		RegisterStateDriver(self, "visibility", "[pet,novehicleui,nobonusbar:5] show; hide")
-		hooksecurefunc("PetActionBar_Update", ElvDB.ElvuiPetBarUpdate)
+		hooksecurefunc("PetActionBar_Update", DB.ElvuiPetBarUpdate)
 	elseif event == "PET_BAR_UPDATE" or event == "UNIT_PET" and arg1 == "player" 
 	or event == "PLAYER_CONTROL_LOST" or event == "PLAYER_CONTROL_GAINED" or event == "PLAYER_FARSIGHT_FOCUS_CHANGED" or event == "UNIT_FLAGS"
 	or arg1 == "pet" and (event == "UNIT_AURA") then
-		ElvDB.ElvuiPetBarUpdate()
+		DB.ElvuiPetBarUpdate()
 	elseif event == "PET_BAR_UPDATE_COOLDOWN" then
 		PetActionBar_UpdateCooldowns()
 	else
-		ElvDB.StylePet()
+		DB.StylePet()
 	end
 end)

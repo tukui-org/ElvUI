@@ -1,4 +1,5 @@
-if ElvCF.unitframes.enable ~= true then return end
+local DB, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
+if C.unitframes.enable ~= true then return end
 if not oUF then return end
  
 local playerClass = select(2,UnitClass("player"))

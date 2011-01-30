@@ -1,26 +1,26 @@
-local ElvCF = ElvCF
-local ElvDB = ElvDB
+
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 --Base code by Dawn (dNameplates)
-if not ElvCF["nameplate"].enable == true then return end
+if not C["nameplate"].enable == true then return end
 
-local TEXTURE = ElvCF["media"].normTex
-local FONT = ElvCF["media"].font
-local FONTSIZE = ElvCF["general"].fontscale*0.9
+local TEXTURE = C["media"].normTex
+local FONT = C["media"].font
+local FONTSIZE = C["general"].fontscale*0.9
 local FONTFLAG = "THINOUTLINE"
 local hpHeight = 12
 local hpWidth = 110
 local iconSize = 25		--Size of all Icons, RaidIcon/ClassIcon/Castbar Icon
 local cbHeight = 5
 local cbWidth = 110
-local blankTex = ElvCF["media"].blank
+local blankTex = C["media"].blank
 local OVERLAY = [=[Interface\TargetingFrame\UI-TargetingFrame-Flash]=]
 local numChildren = -1
 local frames = {}
-local noscalemult = ElvDB.mult * ElvCF["general"].uiscale
+local noscalemult = DB.mult * C["general"].uiscale
 
 --Change defaults if we are showing health text or not
-if ElvCF["nameplate"].showhealth ~= true then
+if C["nameplate"].showhealth ~= true then
 	hpHeight = 7
 	iconSize = 20
 end
@@ -35,13 +35,13 @@ local DebuffColor = { -- Not used currently
 
 local NamePlates = CreateFrame("Frame", nil, UIParent)
 NamePlates:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
-if ElvCF["nameplate"].trackauras == true or ElvCF["nameplate"].trackccauras == true then
+if C["nameplate"].trackauras == true or C["nameplate"].trackccauras == true then
 	NamePlates:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 end
 
 SetCVar("bloatthreat", 0) -- stop resizing nameplate according to threat level.
 SetCVar("bloattest", 0)
-if ElvCF["nameplate"].overlap == true then
+if C["nameplate"].overlap == true then
 	SetCVar("spreadnameplates", "0")
 else
 	SetCVar("spreadnameplates", "1")
@@ -56,18 +56,18 @@ local function HideObjects(parent)
 	for object in pairs(parent.queue) do
 		if(object:GetObjectType() == 'Texture') then
 			object:SetTexture(nil)
-			object.SetTexture = ElvDB.dummy
+			object.SetTexture = DB.dummy
 		elseif (object:GetObjectType() == 'FontString') then
-			object.ClearAllPoints = ElvDB.dummy
-			object.SetFont = ElvDB.dummy
-			object.SetPoint = ElvDB.dummy
+			object.ClearAllPoints = DB.dummy
+			object.SetFont = DB.dummy
+			object.SetPoint = DB.dummy
 			object:Hide()
-			object.Show = ElvDB.dummy
-			object.SetText = ElvDB.dummy
-			object.SetShadowOffset = ElvDB.dummy
+			object.Show = DB.dummy
+			object.SetText = DB.dummy
+			object.SetShadowOffset = DB.dummy
 		else
 			object:Hide()
-			object.Show = ElvDB.dummy
+			object.Show = DB.dummy
 		end
 	end
 end
@@ -79,16 +79,16 @@ local function CreateAuraIcon(parent)
 	button:SetHeight(20)
 	
 	button.bg = button:CreateTexture(nil, "BACKGROUND")
-	button.bg:SetTexture(unpack(ElvCF["media"].backdropcolor))
+	button.bg:SetTexture(unpack(C["media"].backdropcolor))
 	button.bg:SetAllPoints(button)
 	
 	button.bord = button:CreateTexture(nil, "BORDER")
-	button.bord:SetTexture(unpack(ElvCF["media"].bordercolor))
+	button.bord:SetTexture(unpack(C["media"].bordercolor))
 	button.bord:SetPoint("TOPLEFT",button,"TOPLEFT", noscalemult,-noscalemult)
 	button.bord:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-noscalemult,noscalemult)
 	
 	button.bg2 = button:CreateTexture(nil, "ARTWORK")
-	button.bg2:SetTexture(unpack(ElvCF["media"].backdropcolor))
+	button.bg2:SetTexture(unpack(C["media"].backdropcolor))
 	button.bg2:SetPoint("TOPLEFT",button,"TOPLEFT", noscalemult*2,-noscalemult*2)
 	button.bg2:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-noscalemult*2,noscalemult*2)	
 	
@@ -127,7 +127,7 @@ local function UpdateAuraIcon(button, unit, index, filter)
 end
 
 --Filter auras on nameplate, and determine if we need to update them or not.
-local tab = CLASS_FILTERS[ElvDB.myclass].target
+local tab = CLASS_FILTERS[DB.myclass].target
 local function OnAura(frame, unit)
 	if not frame.icons or not tab or not frame.unit then return end
 	local i = 1
@@ -136,14 +136,14 @@ local function OnAura(frame, unit)
 		local match
 		local name,_,_,_,_,duration,_,caster,_,_,spellid = UnitAura(frame.unit,index,"HARMFUL")
 		
-		if ElvCF["nameplate"].trackauras == true then
+		if C["nameplate"].trackauras == true then
 			for i, tab in pairs(tab) do
 				local id = tab.id
 				if spellid == id and caster == "player" then match = true end
 			end
 		end
 		
-		if ElvCF["nameplate"].trackccauras == true then
+		if C["nameplate"].trackccauras == true then
 			if DebuffWhiteList[name] then match = true end
 		end
 		
@@ -160,13 +160,13 @@ local function OnAura(frame, unit)
 end
 
 --OnUpdate function for all nameplates, we use this to update threat, health, and anything else that may require rapid updates.
-local goodR, goodG, goodB = unpack(ElvCF["nameplate"].goodcolor)
-local badR, badG, badB = unpack(ElvCF["nameplate"].badcolor)
-local transitionR, transitionG, transitionB = unpack(ElvCF["nameplate"].transitioncolor)
+local goodR, goodG, goodB = unpack(C["nameplate"].goodcolor)
+local badR, badG, badB = unpack(C["nameplate"].badcolor)
+local transitionR, transitionG, transitionB = unpack(C["nameplate"].transitioncolor)
 local function UpdateThreat(frame, elapsed)
 	frame.hp:Show()
 	
-	if ElvCF["nameplate"].enhancethreat ~= true then
+	if C["nameplate"].enhancethreat ~= true then
 		if(frame.region:IsShown()) then
 			local _, val = frame.region:GetVertexColor()
 			if(val > 0.7) then
@@ -181,16 +181,16 @@ local function UpdateThreat(frame, elapsed)
 				frame.healthborder_tex4:SetTexture(badR, badG, badB)
 			end
 		else
-			frame.healthborder_tex1:SetTexture(unpack(ElvCF["media"].bordercolor))
-			frame.healthborder_tex2:SetTexture(unpack(ElvCF["media"].bordercolor))
-			frame.healthborder_tex3:SetTexture(unpack(ElvCF["media"].bordercolor))
-			frame.healthborder_tex4:SetTexture(unpack(ElvCF["media"].bordercolor))
+			frame.healthborder_tex1:SetTexture(unpack(C["media"].bordercolor))
+			frame.healthborder_tex2:SetTexture(unpack(C["media"].bordercolor))
+			frame.healthborder_tex3:SetTexture(unpack(C["media"].bordercolor))
+			frame.healthborder_tex4:SetTexture(unpack(C["media"].bordercolor))
 		end
 	else
 		if not frame.region:IsShown() then
 			if InCombatLockdown() and frame.hasclass ~= true and frame.isFriendly ~= true then
 				--No Threat
-				if ElvDB.Role == "Tank" then
+				if DB.Role == "Tank" then
 					frame.hp:SetStatusBarColor(badR, badG, badB)
 					frame.hp.hpbg:SetTexture(badR, badG, badB, 0.25)
 				else
@@ -207,7 +207,7 @@ local function UpdateThreat(frame, elapsed)
 			local r, g, b = frame.region:GetVertexColor()
 			if g + b == 0 then
 				--Have Threat
-				if ElvDB.Role == "Tank" then
+				if DB.Role == "Tank" then
 					frame.hp:SetStatusBarColor(goodR, goodG, goodB)
 					frame.hp.hpbg:SetTexture(goodR, goodG, goodB, 0.25)
 				else
@@ -227,8 +227,8 @@ local function UpdateThreat(frame, elapsed)
 	local valueHealth = frame.healthOriginal:GetValue()
 	local d =(valueHealth/maxHealth)*100
 	
-	if ElvCF["nameplate"].showhealth == true then
-		frame.hp.value:SetText(ElvDB.ShortValue(valueHealth).." - "..(string.format("%d%%", math.floor((valueHealth/maxHealth)*100))))
+	if C["nameplate"].showhealth == true then
+		frame.hp.value:SetText(DB.ShortValue(valueHealth).." - "..(string.format("%d%%", math.floor((valueHealth/maxHealth)*100))))
 	end
 		
 	--Change frame style if the frame is our target or not
@@ -253,16 +253,16 @@ local function UpdateThreat(frame, elapsed)
 			frame.healthborder_tex3:SetTexture(1, 0, 0)
 			frame.healthborder_tex4:SetTexture(1, 0, 0)
 		else
-			frame.healthborder_tex1:SetTexture(unpack(ElvCF["media"].bordercolor))
-			frame.healthborder_tex2:SetTexture(unpack(ElvCF["media"].bordercolor))
-			frame.healthborder_tex3:SetTexture(unpack(ElvCF["media"].bordercolor))
-			frame.healthborder_tex4:SetTexture(unpack(ElvCF["media"].bordercolor))
+			frame.healthborder_tex1:SetTexture(unpack(C["media"].bordercolor))
+			frame.healthborder_tex2:SetTexture(unpack(C["media"].bordercolor))
+			frame.healthborder_tex3:SetTexture(unpack(C["media"].bordercolor))
+			frame.healthborder_tex4:SetTexture(unpack(C["media"].bordercolor))
 		end
-	elseif (frame.hasclass ~= true and frame.isFriendly ~= true) and ElvCF["nameplate"].enhancethreat == true then
-		frame.healthborder_tex1:SetTexture(unpack(ElvCF["media"].bordercolor))
-		frame.healthborder_tex2:SetTexture(unpack(ElvCF["media"].bordercolor))
-		frame.healthborder_tex3:SetTexture(unpack(ElvCF["media"].bordercolor))
-		frame.healthborder_tex4:SetTexture(unpack(ElvCF["media"].bordercolor))
+	elseif (frame.hasclass ~= true and frame.isFriendly ~= true) and C["nameplate"].enhancethreat == true then
+		frame.healthborder_tex1:SetTexture(unpack(C["media"].bordercolor))
+		frame.healthborder_tex2:SetTexture(unpack(C["media"].bordercolor))
+		frame.healthborder_tex3:SetTexture(unpack(C["media"].bordercolor))
+		frame.healthborder_tex4:SetTexture(unpack(C["media"].bordercolor))
 	end
 end
 
@@ -339,16 +339,16 @@ local function Colorize(frame)
 	if frame.hasclass == true then frame.isFriendly = false return end
 	
 	if g+b == 0 then -- hostile
-		r,g,b = unpack(ElvDB.oUF_colors.reaction[1])
+		r,g,b = unpack(DB.oUF_colors.reaction[1])
 		frame.isFriendly = false
 	elseif r+b == 0 then -- friendly npc
-		r,g,b = unpack(ElvDB.oUF_colors.power["MANA"])
+		r,g,b = unpack(DB.oUF_colors.power["MANA"])
 		frame.isFriendly = true
 	elseif r+g > 1.95 then -- neutral
-		r,g,b = unpack(ElvDB.oUF_colors.reaction[4])
+		r,g,b = unpack(DB.oUF_colors.reaction[4])
 		frame.isFriendly = false
 	elseif r+g == 0 then -- friendly player
-		r,g,b = unpack(ElvDB.oUF_colors.reaction[5])
+		r,g,b = unpack(DB.oUF_colors.reaction[5])
 		frame.isFriendly = true
 	else -- enemy player
 		frame.isFriendly = false
@@ -377,7 +377,7 @@ local function UpdateObjects(frame)
 		frame.healthbarbackdrop_tex:SetPoint("TOPLEFT", frame.hp, "TOPLEFT", -noscalemult*3, noscalemult*3)
 		frame.healthbarbackdrop_tex:SetPoint("TOPRIGHT", frame.hp, "TOPRIGHT", noscalemult*3, noscalemult*3)
 		frame.healthbarbackdrop_tex:SetHeight(hpHeight + noscalemult*6)
-		frame.healthbarbackdrop_tex:SetTexture(unpack(ElvCF["media"].backdropcolor))
+		frame.healthbarbackdrop_tex:SetTexture(unpack(C["media"].backdropcolor))
 	end
 			
 	--Class Icons, also determines if the current frame is a Enemy Player frame
@@ -416,7 +416,7 @@ local function UpdateObjects(frame)
 	--Setup level text
 	local level, elite, mylevel = tonumber(frame.oldlevel:GetText()), frame.elite:IsShown(), UnitLevel("player")
 	frame.hp.level:ClearAllPoints()
-	if ElvCF["nameplate"].showhealth == true then
+	if C["nameplate"].showhealth == true then
 		frame.hp.level:SetPoint("RIGHT", frame.hp, "RIGHT", 2, 0)
 	else
 		frame.hp.level:SetPoint("RIGHT", frame.hp, "LEFT", -1, 0)
@@ -438,7 +438,7 @@ local function UpdateObjects(frame)
 	frame.overlay:SetAllPoints(frame.hp)
 	
 	-- Aura tracking
-	if ElvCF["nameplate"].trackauras == true or ElvCF["nameplate"].trackccauras == true then
+	if C["nameplate"].trackauras == true or C["nameplate"].trackccauras == true then
 		if frame.icons then return end
 		frame.icons = CreateFrame("Frame",nil,frame)
 		frame.icons:SetPoint("BOTTOMRIGHT",frame.hp,"TOPRIGHT", 0, FONTSIZE+5)
@@ -467,28 +467,28 @@ local function SkinObjects(frame)
 	healthbarborder_tex1:SetPoint("TOPLEFT", hp, "TOPLEFT", -noscalemult*2, noscalemult*2)
 	healthbarborder_tex1:SetPoint("TOPRIGHT", hp, "TOPRIGHT", noscalemult*2, noscalemult*2)
 	healthbarborder_tex1:SetHeight(noscalemult)
-	healthbarborder_tex1:SetTexture(unpack(ElvCF["media"].bordercolor))	
+	healthbarborder_tex1:SetTexture(unpack(C["media"].bordercolor))	
 	frame.healthborder_tex1 = healthbarborder_tex1
 	
 	local healthbarborder_tex2 = hp:CreateTexture(nil, "BORDER")
 	healthbarborder_tex2:SetPoint("BOTTOMLEFT", hp, "BOTTOMLEFT", -noscalemult*2, -noscalemult*2)
 	healthbarborder_tex2:SetPoint("BOTTOMRIGHT", hp, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
 	healthbarborder_tex2:SetHeight(noscalemult)
-	healthbarborder_tex2:SetTexture(unpack(ElvCF["media"].bordercolor))	
+	healthbarborder_tex2:SetTexture(unpack(C["media"].bordercolor))	
 	frame.healthborder_tex2 = healthbarborder_tex2
 	
 	local healthbarborder_tex3 = hp:CreateTexture(nil, "BORDER")
 	healthbarborder_tex3:SetPoint("TOPLEFT", hp, "TOPLEFT", -noscalemult*2, noscalemult*2)
 	healthbarborder_tex3:SetPoint("BOTTOMLEFT", hp, "BOTTOMLEFT", noscalemult*2, -noscalemult*2)
 	healthbarborder_tex3:SetWidth(noscalemult)
-	healthbarborder_tex3:SetTexture(unpack(ElvCF["media"].bordercolor))	
+	healthbarborder_tex3:SetTexture(unpack(C["media"].bordercolor))	
 	frame.healthborder_tex3 = healthbarborder_tex3
 	
 	local healthbarborder_tex4 = hp:CreateTexture(nil, "BORDER")
 	healthbarborder_tex4:SetPoint("TOPRIGHT", hp, "TOPRIGHT", noscalemult*2, noscalemult*2)
 	healthbarborder_tex4:SetPoint("BOTTOMRIGHT", hp, "BOTTOMRIGHT", -noscalemult*2, -noscalemult*2)
 	healthbarborder_tex4:SetWidth(noscalemult)
-	healthbarborder_tex4:SetTexture(unpack(ElvCF["media"].bordercolor))	
+	healthbarborder_tex4:SetTexture(unpack(C["media"].bordercolor))	
 	frame.healthborder_tex4 = healthbarborder_tex4
 
 	hp:SetStatusBarTexture(TEXTURE)
@@ -508,7 +508,7 @@ local function SkinObjects(frame)
 	hp.level = hp:CreateFontString(nil, "OVERLAY")
 	hp.level:SetFont(FONT, FONTSIZE, FONTFLAG)
 	hp.level:SetTextColor(1, 1, 1)
-	hp.level:SetShadowOffset(ElvDB.mult, -ElvDB.mult)	
+	hp.level:SetShadowOffset(DB.mult, -DB.mult)	
 	
 	--Needed for level text
 	frame.oldlevel = oldlevel
@@ -516,12 +516,12 @@ local function SkinObjects(frame)
 	frame.elite = elite
 	
 	--Create Health Text
-	if ElvCF["nameplate"].showhealth == true then
+	if C["nameplate"].showhealth == true then
 		hp.value = hp:CreateFontString(nil, "OVERLAY")	
 		hp.value:SetFont(FONT, FONTSIZE, FONTFLAG)
 		hp.value:SetPoint("CENTER", hp)
 		hp.value:SetTextColor(1,1,1)
-		hp.value:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
+		hp.value:SetShadowOffset(DB.mult, -DB.mult)
 	end
 	
 	--Debug Text for when i'm testing
@@ -529,13 +529,13 @@ local function SkinObjects(frame)
 	hp.debug:SetFont(FONT, FONTSIZE, FONTFLAG)
 	hp.debug:SetPoint("CENTER", hp, "CENTER", 0, 50)
 	hp.debug:SetTextColor(1,1,1)
-	hp.debug:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
+	hp.debug:SetShadowOffset(DB.mult, -DB.mult)
 	
 	-- Create Cast Bar Backdrop frame
 	local castbarbackdrop_tex = cb:CreateTexture(nil, "BACKGROUND")
 	castbarbackdrop_tex:SetPoint("TOPLEFT", cb, "TOPLEFT", -noscalemult*3, noscalemult*3)
 	castbarbackdrop_tex:SetPoint("BOTTOMRIGHT", cb, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
-	castbarbackdrop_tex:SetTexture(unpack(ElvCF["media"].backdropcolor))
+	castbarbackdrop_tex:SetTexture(unpack(C["media"].backdropcolor))
 	frame.castbarbackdrop_tex = castbarbackdrop_tex
 	
 	--Create our fake border.. fuck blizz
@@ -543,25 +543,25 @@ local function SkinObjects(frame)
 	castbarborder_tex1:SetPoint("TOPLEFT", cb, "TOPLEFT", -noscalemult*2, noscalemult*2)
 	castbarborder_tex1:SetPoint("TOPRIGHT", cb, "TOPRIGHT", noscalemult*2, noscalemult*2)
 	castbarborder_tex1:SetHeight(noscalemult)
-	castbarborder_tex1:SetTexture(unpack(ElvCF["media"].bordercolor))	
+	castbarborder_tex1:SetTexture(unpack(C["media"].bordercolor))	
 	
 	local castbarborder_tex2 = cb:CreateTexture(nil, "BORDER")
 	castbarborder_tex2:SetPoint("BOTTOMLEFT", cb, "BOTTOMLEFT", -noscalemult*2, -noscalemult*2)
 	castbarborder_tex2:SetPoint("BOTTOMRIGHT", cb, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
 	castbarborder_tex2:SetHeight(noscalemult)
-	castbarborder_tex2:SetTexture(unpack(ElvCF["media"].bordercolor))	
+	castbarborder_tex2:SetTexture(unpack(C["media"].bordercolor))	
 	
 	local castbarborder_tex3 = cb:CreateTexture(nil, "BORDER")
 	castbarborder_tex3:SetPoint("TOPLEFT", cb, "TOPLEFT", -noscalemult*2, noscalemult*2)
 	castbarborder_tex3:SetPoint("BOTTOMLEFT", cb, "BOTTOMLEFT", noscalemult*2, -noscalemult*2)
 	castbarborder_tex3:SetWidth(noscalemult)
-	castbarborder_tex3:SetTexture(unpack(ElvCF["media"].bordercolor))	
+	castbarborder_tex3:SetTexture(unpack(C["media"].bordercolor))	
 	
 	local castbarborder_tex4 = cb:CreateTexture(nil, "BORDER")
 	castbarborder_tex4:SetPoint("TOPRIGHT", cb, "TOPRIGHT", noscalemult*2, noscalemult*2)
 	castbarborder_tex4:SetPoint("BOTTOMRIGHT", cb, "BOTTOMRIGHT", -noscalemult*2, -noscalemult*2)
 	castbarborder_tex4:SetWidth(noscalemult)
-	castbarborder_tex4:SetTexture(unpack(ElvCF["media"].bordercolor))	
+	castbarborder_tex4:SetTexture(unpack(C["media"].bordercolor))	
 	
 	--Setup CastBar Icon
 	cbicon:ClearAllPoints()
@@ -575,32 +575,32 @@ local function SkinObjects(frame)
 	local casticonbackdrop_tex = cb:CreateTexture(nil, "BACKGROUND")
 	casticonbackdrop_tex:SetPoint("TOPLEFT", cbicon, "TOPLEFT", -noscalemult*3, noscalemult*3)
 	casticonbackdrop_tex:SetPoint("BOTTOMRIGHT", cbicon, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
-	casticonbackdrop_tex:SetTexture(unpack(ElvCF["media"].backdropcolor))
+	casticonbackdrop_tex:SetTexture(unpack(C["media"].backdropcolor))
 	
 	local casticonborder_tex = cb:CreateTexture(nil, "BORDER")
 	casticonborder_tex:SetPoint("TOPLEFT", cbicon, "TOPLEFT", -noscalemult*2, noscalemult*2)
 	casticonborder_tex:SetPoint("BOTTOMRIGHT", cbicon, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
-	casticonborder_tex:SetTexture(unpack(ElvCF["media"].bordercolor))	
+	casticonborder_tex:SetTexture(unpack(C["media"].bordercolor))	
 	
 	--Create Cast Backdrop Frame
 	local casticonbackdrop2_tex = cb:CreateTexture(nil, "ARTWORK")
 	casticonbackdrop2_tex:SetPoint("TOPLEFT", cbicon, "TOPLEFT", -noscalemult, noscalemult)
 	casticonbackdrop2_tex:SetPoint("BOTTOMRIGHT", cbicon, "BOTTOMRIGHT", noscalemult, -noscalemult)
-	casticonbackdrop2_tex:SetTexture(unpack(ElvCF["media"].backdropcolor))
+	casticonbackdrop2_tex:SetTexture(unpack(C["media"].backdropcolor))
 	
 	--Create Cast Time Text
 	cb.time = cb:CreateFontString(nil, "ARTWORK")
 	cb.time:SetPoint("RIGHT", cb, "LEFT", -1, 0)
 	cb.time:SetFont(FONT, FONTSIZE, FONTFLAG)
 	cb.time:SetTextColor(1, 1, 1)
-	cb.time:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
+	cb.time:SetShadowOffset(DB.mult, -DB.mult)
 
 	--Create Cast Name Text
 	cb.name = cb:CreateFontString(nil, "ARTWORK")
 	cb.name:SetPoint("TOP", cb, "BOTTOM", 0, -3)
 	cb.name:SetFont(FONT, FONTSIZE, FONTFLAG)
 	cb.name:SetTextColor(1, 1, 1)
-	cb.name:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
+	cb.name:SetShadowOffset(DB.mult, -DB.mult)
 	
 	--We need the castbar shield to determine if it can be interrupted or not
 	cb.shield = cbshield
@@ -615,7 +615,7 @@ local function SkinObjects(frame)
 	name:SetPoint('BOTTOMLEFT', hp, 'TOPLEFT', -10, 3)
 	name:SetPoint('BOTTOMRIGHT', hp, 'TOPRIGHT', 10, 3)
 	name:SetFont(FONT, FONTSIZE, FONTFLAG)
-	name:SetShadowOffset(ElvDB.mult, -ElvDB.mult)
+	name:SetShadowOffset(DB.mult, -DB.mult)
 	frame.oldname = oldname
 	frame.name = name
 		
@@ -623,7 +623,7 @@ local function SkinObjects(frame)
 	raidicon:ClearAllPoints()
 	raidicon:SetPoint("BOTTOM", hp, "TOP", 0, 16)
 	raidicon:SetSize(iconSize*1.4, iconSize*1.4)
-	raidicon:SetTexture(ElvCF["media"].raidicons)	
+	raidicon:SetTexture(C["media"].raidicons)	
 	frame.raidicon = raidicon
 	
 	--Create Class Icon
@@ -696,7 +696,7 @@ local function CheckUnit_Guid(frame, ...)
 		frame.unit = nil
 	end	
 	
-	if ElvCF["debug"].enabled == true then frame.hp.debug:SetText(frame.unit or "") end
+	if C["debug"].enabled == true then frame.hp.debug:SetText(frame.unit or "") end
 end
 
 --Attempt to match a nameplate with a GUID from the combat log
@@ -760,7 +760,7 @@ function NamePlates:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, sourceGUID, so
 end
 
 --Only show nameplates when in combat
-if ElvCF["nameplate"].combat == true then
+if C["nameplate"].combat == true then
 	NamePlates:RegisterEvent("PLAYER_REGEN_ENABLED")
 	NamePlates:RegisterEvent("PLAYER_REGEN_DISABLED")
 	NamePlates:RegisterEvent("PLAYER_ENTERING_WORLD")

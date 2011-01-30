@@ -1,7 +1,7 @@
-﻿local ElvDB = ElvDB
-local ElvCF = ElvCF
+﻿local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-ElvCF["media"] = {
+
+C["media"] = {
 	-- fonts
 	["font"] = [=[Interface\Addons\ElvUI\media\fonts\PT_Sans_Narrow.ttf]=], -- general font of Elvui
 	["uffont"] = [[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], -- general font of unitframes
@@ -24,7 +24,7 @@ ElvCF["media"] = {
 	["glossyTexture"] = true,	-- Use a glossy texture for all frames
 }
 
-ElvCF["general"] = {
+C["general"] = {
 	["autoscale"] = true,                  -- mainly enabled for users that don't want to mess with the config file
 	["uiscale"] = 0.78,                    -- set your value (between 0.64 and 1) of your uiscale if autoscale is off
 	["multisampleprotect"] = true,         -- i don't recommend this because of shitty border but, voila!
@@ -32,7 +32,7 @@ ElvCF["general"] = {
 	["fontscale"] = 12,					--Master font
 }
 
-ElvCF["skin"] = {	--Skin addons by Darth Android
+C["skin"] = {	--Skin addons by Darth Android
 	["recount"] = true,
 	["skada"] = true,
 	["dxe"] = true,
@@ -41,7 +41,7 @@ ElvCF["skin"] = {	--Skin addons by Darth Android
 	["embedright"] = "NONE",				-- Addon to embed to the right frame ("Omen", "Recount", "Skada")
 }
 
-ElvCF["unitframes"] = {
+C["unitframes"] = {
 	-- general options
 	["enable"] = true,                     -- do i really need to explain this?
 	["fontsize"] = 12,						-- default font height for unitframes
@@ -54,8 +54,8 @@ ElvCF["unitframes"] = {
 	["showthreat"] = true,                 -- enable the threat bar anchored to info left panel.
 	["charportrait"] = false,              -- enable character portrait
 	["classcolor"] = false,                  -- color unitframes by class
-	["healthcolor"] = ElvCF["media"].bordercolor, --color of the unitfram
-	["healthbackdropcolor"] = ElvCF["media"].backdropcolor, --backdropcolor of the unitframe
+	["healthcolor"] = C["media"].bordercolor, --color of the unitfram
+	["healthbackdropcolor"] = C["media"].backdropcolor, --backdropcolor of the unitframe
 	["healthcolorbyvalue"] = true,			-- color health by current health remaining
 	["combatfeedback"] = false,             -- enable combattext on player and target.
 	["playeraggro"] = true,                -- color player border to red if you have aggro on current target.
@@ -69,7 +69,7 @@ ElvCF["unitframes"] = {
 	["combat"] = false,						-- only show main unitframes when in combat/havetarget/or mouseover
 }
 
-ElvCF["framesizes"] = {
+C["framesizes"] = {
 	["playtarwidth"] = 220,					--width of player/target frame
 	["playtarheight"] = 28,					--height of player/target frame
 	["smallwidth"] = 100,					--Width of TargetTarget, Focus, FocusTarget, Player's Pet frames
@@ -80,7 +80,7 @@ ElvCF["framesizes"] = {
 	["assisttankheight"] = 20,				--Height of MainTank/MainAssist frames
 }
 
-ElvCF["raidframes"] = {
+C["raidframes"] = {
 	["enable"] = true,						-- enable raid frames
 	["fontsize"] = 12,						-- default font height for raidframes
 	["scale"] = 1,							-- for smaller use a number less than one (0.73), for higher use a number larger than one
@@ -102,7 +102,7 @@ ElvCF["raidframes"] = {
 	["partytarget"]	= false,				--display party members targets (DPS ONLY)
 }
 
-ElvCF["auras"] = {
+C["auras"] = {
 	["auratimer"] = true,                  -- enable timers on buffs/debuffs
 	["auratextscale"] = 11,                -- the font size of buffs/debuffs timers on unitframes
 	["playerauras"] = true,               -- enable auras
@@ -119,7 +119,7 @@ ElvCF["auras"] = {
 	["buffindicatorsize"] = 6,				-- size of the buff indicator on raid/party frames
 }
 
-ElvCF["castbar"] = {
+C["castbar"] = {
 	["unitcastbar"] = true, -- enable Elvui castbar
 		["cblatency"] = false, -- enable castbar latency
 		["cbicons"] = true, -- enable icons on castbar
@@ -129,7 +129,7 @@ ElvCF["castbar"] = {
 		["nointerruptcolor"] = { 0.78, 0.25, 0.25, 0.5 }, -- Color of target castbar
 }
 
-ElvCF["classtimer"] = {
+C["classtimer"] = {
 	["enable"] = true,
 		["bar_height"] = 17,
 		["bar_spacing"] = 1,
@@ -144,12 +144,12 @@ ElvCF["classtimer"] = {
 		["proccolor"] = {0.84, 0.75, 0.65, 1},
 }
 
-ElvCF["arena"] = {
+C["arena"] = {
 	["unitframes"] = true,                 -- enable elvui arena unitframes (requirement : Elvui unitframes enabled)
 	["spelltracker"] = false,               -- enable elvui enemy spell tracker (an afflicted3 or interruptbar alternative)
 }
 
-ElvCF["actionbar"] = {
+C["actionbar"] = {
 	["enable"] = true,                     -- enable elvui action bars
 		["hotkey"] = true,                     -- enable hotkey display because it was a lot requested
 		["rightbarmouseover"] = false,         -- enable right bars on mouse over
@@ -171,7 +171,7 @@ ElvCF["actionbar"] = {
 		["mousemicro"] = false,					--only show microbar on mouseover
 }
 
-ElvCF["nameplate"] = {
+C["nameplate"] = {
 	["enable"] = true,                     -- enable nice skinned nameplates that fit into Elvui
 		["showhealth"] = true,					-- show health text on nameplate
 		["enhancethreat"] = true,				-- threat features based on if your a tank or not
@@ -184,13 +184,13 @@ ElvCF["nameplate"] = {
 		["trackccauras"] = false,			--track all CC debuffs
 }
 
-ElvCF["loot"] = {
+C["loot"] = {
 	["lootframe"] = true,                  -- reskin the loot frame to fit Elvui
 	["rolllootframe"] = true,              -- reskin the roll frame to fit Elvui
 	["autogreed"] = true,                  -- auto-dez or auto-greed item at max level.
 }
 
-ElvCF["cooldown"] = {
+C["cooldown"] = {
 	["enable"] = true,                     -- do i really need to explain this?
 		["treshold"] = 3,                      -- show decimal under X seconds and text turn red
 		["expiringcolor"] = { 1, 0, 0 },		--color of expiring seconds turns to 
@@ -200,7 +200,7 @@ ElvCF["cooldown"] = {
 		["dayscolor"] = { 0.4, 0.4, 1 },		-- days color
 }
 
-ElvCF["datatext"] = {
+C["datatext"] = {
 	["stat1"] = 1,						   -- Stat Based on your Role (Avoidance-Tank, AP-Melee, SP/HP-Caster)
 	["dur"] = 2,                           -- show your equipment durability on panels.
 	["stat2"] = 3, 						   -- Stat Based on your Role (Armor-Tank, Crit-Melee, Crit-Caster)
@@ -221,7 +221,7 @@ ElvCF["datatext"] = {
 	["fontsize"] = 12,                     -- font size for panels.
 }
 
-ElvCF["chat"] = {
+C["chat"] = {
 	["enable"] = true,                     -- blah
 		["whispersound"] = true,               -- play a sound when receiving whisper
 		["showbackdrop"] = true,				-- show a backdrop on the chat panels
@@ -234,7 +234,7 @@ ElvCF["chat"] = {
 	["bubbles"] = true,							--skin blizzard chat bubbles
 }
 
-ElvCF["tooltip"] = {
+C["tooltip"] = {
 	["enable"] = true,                     -- true to enable this mod, false to disable
 		["hidecombat"] = true,                -- hide bottom-right tooltip when in combat
 		["hidecombatraid"] = true,				-- only hide in combat in a raid instance
@@ -246,13 +246,13 @@ ElvCF["tooltip"] = {
 		["whotargetting"] = true,				--show who is targetting the unit (in raid or party)
 }
 
-ElvCF["buffreminder"] = {
+C["buffreminder"] = {
 	["enable"] = true,                     -- this is now the new innerfire warning script for all armor/aspect class.
 		["sound"] = true,                      -- enable warning sound notification for reminder.
 		["raidbuffreminder"] = true,			-- buffbar below the minimap, important missing buffs
 }
 
-ElvCF["others"] = {
+C["others"] = {
 	["pvpautorelease"] = false,            -- enable auto-release in bg or wintergrasp.
 	["sellgrays"] = true,                  -- automaticly sell grays?
 	["autorepair"] = true,                 -- automaticly repair?
@@ -262,7 +262,7 @@ ElvCF["others"] = {
 	["enablebag"] = true,                     -- enable an all in one bag mod that fit Elvui perfectly
 }
 
-ElvCF["debug"] = {--don't recommend turning this on
+C["debug"] = {--don't recommend turning this on
 	["enabled"] = false,				
 	["events"] = false,
 }

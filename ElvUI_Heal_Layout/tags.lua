@@ -1,7 +1,7 @@
-local ElvDB = ElvDB
-local ElvCF = ElvCF
+local DB, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 
-if not ElvCF["unitframes"].enable == true and not ElvCF["raidframes"].enable == true then return end
+
+if not C["unitframes"].enable == true and not C["raidframes"].enable == true then return end
 if IsAddOnLoaded("ElvUI_Dps_Layout") then return end
 
 ------------------------------------------------------------------------
@@ -122,12 +122,12 @@ oUF.Tags['Elvui:getnamecolor'] = function(unit)
 	if not unit then return end
 	local reaction = UnitReaction(unit, 'player')
 	if (unit == 'pet' and GetPetHappiness()) then
-		local c = ElvDB.oUF_colors.happiness[GetPetHappiness()]
+		local c = DB.oUF_colors.happiness[GetPetHappiness()]
 		return string.format('|cff%02x%02x%02x', c[1] * 255, c[2] * 255, c[3] * 255)
 	elseif (UnitIsPlayer(unit)) then
 		return _TAGS['raidcolor'](unit)
 	elseif (reaction) then
-		local c = ElvDB.oUF_colors.reaction[reaction]
+		local c = DB.oUF_colors.reaction[reaction]
 		return string.format('|cff%02x%02x%02x', c[1] * 255, c[2] * 255, c[3] * 255)
 	else
 		r, g, b = .84,.75,.65

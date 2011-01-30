@@ -1,6 +1,6 @@
-if not ElvCF["actionbar"].enable == true then return end
-local ElvDB = ElvDB
-local ElvCF = ElvCF
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
+if not C["actionbar"].enable == true then return end
 
 ---------------------------------------------------------------------------
 -- Manage all others stuff for actionbars
@@ -12,8 +12,8 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")	
 	SetActionBarToggles(1, 1, 1, 1, 0)
 	SetCVar("alwaysShowActionBars", 0)	
-	if ElvCF["actionbar"].showgrid == true then
-		ActionButton_HideGrid = ElvDB.dummy
+	if C["actionbar"].showgrid == true then
+		ActionButton_HideGrid = DB.dummy
 		for i = 1, 12 do
 			local button = _G[format("ActionButton%d", i)]
 			button:SetAttribute("showgrid", 1)
@@ -43,20 +43,20 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 end)
 
 function PositionAllBars()
-	if ElvCF["actionbar"].rightbars > 2 and ElvCF["actionbar"].splitbar == true then
-		ElvCF["actionbar"].rightbars = 2
+	if C["actionbar"].rightbars > 2 and C["actionbar"].splitbar == true then
+		C["actionbar"].rightbars = 2
 	end
 
-	if ElvCF["actionbar"].bottomrows == 3 and ElvCF["actionbar"].rightbars ~= 0 and ElvCF["actionbar"].splitbar == true then
-		ElvCF["actionbar"].rightbars = 0
+	if C["actionbar"].bottomrows == 3 and C["actionbar"].rightbars ~= 0 and C["actionbar"].splitbar == true then
+		C["actionbar"].rightbars = 0
 		RightBarBig:Show()
 	end
 
-	if ElvCF["actionbar"].bottomrows == 3 and ElvCF["actionbar"].rightbars > 2 then
-		ElvCF["actionbar"].rightbars = 2
+	if C["actionbar"].bottomrows == 3 and C["actionbar"].rightbars > 2 then
+		C["actionbar"].rightbars = 2
 	end
 	
-	if ElvCF["actionbar"].rightbars ~= 0 or (ElvCF["actionbar"].bottomrows == 3 and ElvCF["actionbar"].splitbar == true) then
+	if C["actionbar"].rightbars ~= 0 or (C["actionbar"].bottomrows == 3 and C["actionbar"].splitbar == true) then
 		RightBarBig:Hide()
 	else
 		RightBarBig:Show()

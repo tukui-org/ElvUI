@@ -1,7 +1,7 @@
-local ElvCF = ElvCF
-local ElvDB = ElvDB
 
-if ElvCF["buffreminder"].raidbuffreminder ~= true then return end
+local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
+if C["buffreminder"].raidbuffreminder ~= true then return end
 
 --Locals
 local flaskbuffs = BuffReminderRaidBuffs["Flask"]
@@ -103,7 +103,7 @@ local function CheckElixir(unit)
 end
 
 local function Pulse(self)
-	ElvDB.Flash(self, 0.3)
+	DB.Flash(self, 0.3)
 end
 
 
@@ -115,7 +115,7 @@ local function OnAuraChange(self, event, arg1, unit)
 	end
 	
 	--If We're a caster we may want to see differant buffs
-	if ElvDB.Role == "Caster" then 
+	if DB.Role == "Caster" then 
 		SetCasterOnlyBuffs() 
 	else
 		SetBuffs()
@@ -208,7 +208,7 @@ local function OnAuraChange(self, event, arg1, unit)
 		end
 	else
 		if RaidReminderShown ~= false then 
-			ElvuiInfoRightLButton.Text:SetTextColor(unpack(ElvCF["media"].valuecolor))
+			ElvuiInfoRightLButton.Text:SetTextColor(unpack(C["media"].valuecolor))
 			UIFrameFadeOut(self, 0.4)
 			RaidReminderShown = false
 		end
@@ -223,17 +223,17 @@ local function OnAuraChange(self, event, arg1, unit)
 		end)
 	else
 		self:SetScript("OnUpdate", function() end)
-		ElvDB.StopFlash(self)
+		DB.StopFlash(self)
 	end
 	
 	
 end
 
-local bsize = (((ElvuiMinimap:GetWidth()) - (ElvDB.Scale(4) * 7)) / 6)
+local bsize = (((ElvuiMinimap:GetWidth()) - (DB.Scale(4) * 7)) / 6)
 
 --Create the Main bar
 local raidbuff_reminder = CreateFrame("Frame", "RaidBuffReminder", ElvuiMinimap)
-ElvDB.CreatePanel(raidbuff_reminder, ElvuiMinimap:GetWidth(), bsize + ElvDB.Scale(8), "TOPLEFT", ElvuiMinimapStatsLeft, "BOTTOMLEFT", 0, ElvDB.Scale(-3))
+DB.CreatePanel(raidbuff_reminder, ElvuiMinimap:GetWidth(), bsize + DB.Scale(8), "TOPLEFT", ElvuiMinimapStatsLeft, "BOTTOMLEFT", 0, DB.Scale(-3))
 raidbuff_reminder:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 raidbuff_reminder:RegisterEvent("UNIT_INVENTORY_CHANGED")
 raidbuff_reminder:RegisterEvent("UNIT_AURA")
@@ -244,7 +244,7 @@ raidbuff_reminder:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
 raidbuff_reminder:RegisterEvent("CHARACTER_POINTS_CHANGED")
 raidbuff_reminder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 raidbuff_reminder:SetScript("OnEvent", OnAuraChange)
-ElvDB.SetUpAnimGroup(RaidBuffReminder)
+DB.SetUpAnimGroup(RaidBuffReminder)
 
 
 
@@ -252,17 +252,17 @@ ElvDB.SetUpAnimGroup(RaidBuffReminder)
 local function CreateButton(name, relativeTo, firstbutton)
 	local button = CreateFrame("Frame", name, RaidBuffReminder)
 	if firstbutton == true then
-		ElvDB.CreatePanel(button, bsize, bsize, "LEFT", relativeTo, "LEFT", ElvDB.Scale(4), 0)
+		DB.CreatePanel(button, bsize, bsize, "LEFT", relativeTo, "LEFT", DB.Scale(4), 0)
 	else
-		ElvDB.CreatePanel(button, bsize, bsize, "LEFT", relativeTo, "RIGHT", ElvDB.Scale(4), 0)
+		DB.CreatePanel(button, bsize, bsize, "LEFT", relativeTo, "RIGHT", DB.Scale(4), 0)
 	end
 	button:SetFrameLevel(RaidBuffReminder:GetFrameLevel() + 2)
 	button:SetBackdropBorderColor(0,0,0,0)
 	
 	button.FrameBackdrop = CreateFrame("Frame", nil, button)
-	ElvDB.SetTemplate(button.FrameBackdrop)
-	button.FrameBackdrop:SetPoint("TOPLEFT", ElvDB.Scale(-2), ElvDB.Scale(2))
-	button.FrameBackdrop:SetPoint("BOTTOMRIGHT", ElvDB.Scale(2), ElvDB.Scale(-2))
+	DB.SetTemplate(button.FrameBackdrop)
+	button.FrameBackdrop:SetPoint("TOPLEFT", DB.Scale(-2), DB.Scale(2))
+	button.FrameBackdrop:SetPoint("BOTTOMRIGHT", DB.Scale(2), DB.Scale(-2))
 	button.FrameBackdrop:SetFrameLevel(button:GetFrameLevel() - 1)	
 	button.t = button:CreateTexture(name..".t", "OVERLAY")
 	button.t:SetTexCoord(0.1, 0.9, 0.1, 0.9)
@@ -288,13 +288,13 @@ do
 		if ElvuiInfoRightLButton.hovered == true then
 			GameTooltip:ClearLines()
 			if RaidReminderShown == true then
-				GameTooltip:AddDoubleLine(ElvL.raidbufftoggler, HIDE,1,1,1,unpack(ElvCF["media"].valuecolor))
-				ElvuiInfoRightLButton.Text:SetTextColor(unpack(ElvCF["media"].valuecolor))
+				GameTooltip:AddDoubleLine(L.raidbufftoggler, HIDE,1,1,1,unpack(C["media"].valuecolor))
+				ElvuiInfoRightLButton.Text:SetTextColor(unpack(C["media"].valuecolor))
 				UIFrameFadeOut(RaidBuffReminder, 0.4)
 				RaidReminderShown = false
 				reminderoverride = true
 			else
-				GameTooltip:AddDoubleLine(ElvL.raidbufftoggler, SHOW,1,1,1,unpack(ElvCF["media"].valuecolor))
+				GameTooltip:AddDoubleLine(L.raidbufftoggler, SHOW,1,1,1,unpack(C["media"].valuecolor))
 				ElvuiInfoRightLButton.Text:SetTextColor(1,1,1)
 				UIFrameFadeIn(RaidBuffReminder, 0.4)
 				RaidReminderShown = true
@@ -306,15 +306,15 @@ do
 	ElvuiInfoRightLButton:SetScript("OnEnter", function(self)
 		ElvuiInfoRightLButton.hovered = true
 		if InCombatLockdown() then return end
-		GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, ElvDB.Scale(6));
+		GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, DB.Scale(6));
 		GameTooltip:ClearAllPoints()
-		GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, ElvDB.mult)
+		GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, DB.mult)
 		GameTooltip:ClearLines()
 		
 		if RaidReminderShown == true then
-			GameTooltip:AddDoubleLine(ElvL.raidbufftoggler, SHOW,1,1,1,unpack(ElvCF["media"].valuecolor))
+			GameTooltip:AddDoubleLine(L.raidbufftoggler, SHOW,1,1,1,unpack(C["media"].valuecolor))
 		else
-			GameTooltip:AddDoubleLine(ElvL.raidbufftoggler, HIDE,1,1,1,unpack(ElvCF["media"].valuecolor))
+			GameTooltip:AddDoubleLine(L.raidbufftoggler, HIDE,1,1,1,unpack(C["media"].valuecolor))
 		end
 		GameTooltip:Show()
 	end)
