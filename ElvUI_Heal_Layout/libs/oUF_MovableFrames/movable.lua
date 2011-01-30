@@ -316,7 +316,6 @@ do
 
 	function frame:PLAYER_REGEN_DISABLED()
 		if(_LOCK) then
-			print("Anchors hidden due to combat.")
 			for k, bdrop in next, backdropPool do
 				bdrop:Hide()
 			end
@@ -410,9 +409,7 @@ function E.ResetUF()
 end
 
 function E.MoveUF()
-	if(InCombatLockdown()) then
-		return print"Frames cannot be moved while in combat. Bailing out."
-	end
+	if InCombatLockdown() then return end
 
 	if(not _LOCK) then
 		for k, obj in next, oUF.objects do
