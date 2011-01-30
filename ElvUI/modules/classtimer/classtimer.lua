@@ -1,7 +1,7 @@
 
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if ( ElvuiUF ~= true and ( DB == nil or C["unitframes"] == nil or not C["unitframes"]["enable"] ) ) then return end
+if C["unitframes"]["enable"] ~= true then return end
 
 
 local CreateColor = function( red, green, blue, alpha )
@@ -21,7 +21,7 @@ CAST_SEPARATOR = C["classtimer"].cast_suparator;
 CAST_SEPARATOR_COLOR = CreateColor( 0, 0, 0, 0.5 );
 TEXT_MARGIN = 5;
 
-if ( DB and C["media"] and C["media"]["uffont"] ) then
+if ( E and C["media"] and C["media"]["uffont"] ) then
 	-- Sets font for all texts
 	MASTER_FONT = { C["media"]["uffont"], 12, "OUTLINE" };
 
