@@ -1,6 +1,8 @@
-TukuiDB = ElvDB
-TukuiCF = ElvCF
-tukuilocal = ElvL
+local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
+
+TukuiDB = DB
+TukuiCF = C
+tukuilocal = L
 
 TukuiMinimap = ElvuiMinimap
 TukuiActionBarBackground = ElvuiActionBarBackground
