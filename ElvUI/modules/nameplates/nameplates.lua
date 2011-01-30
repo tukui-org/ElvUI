@@ -1,4 +1,3 @@
-
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 --Base code by Dawn (dNameplates)
@@ -708,6 +707,16 @@ local function MatchGUID(frame, destGUID, spellID)
 	end
 end
 
+--I can't for the life of me figure out why this loses position
+local function FixHealthBackdrop(frame, ...)
+	if not frame.healthbarbackdrop_tex then return end
+
+	frame.healthbarbackdrop_tex:ClearAllPoints()
+	frame.healthbarbackdrop_tex:SetPoint("TOPLEFT", frame.hp, "TOPLEFT", -noscalemult*3, noscalemult*3)
+	frame.healthbarbackdrop_tex:SetPoint("TOPRIGHT", frame.hp, "TOPRIGHT", noscalemult*3, noscalemult*3)
+	frame.healthbarbackdrop_tex:SetHeight(hpHeight + noscalemult*6)
+end
+
 --Run a function for all visible nameplates, we use this for the blacklist, to check unitguid, and to hide drunken text
 local function ForEachPlate(functionToRun, ...)
 	for frame in pairs(frames) do
@@ -751,6 +760,7 @@ CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
 	ForEachPlate(CheckBlacklist)
 	ForEachPlate(HideDrunkenText)
 	ForEachPlate(CheckUnit_Guid)
+	ForEachPlate(FixHealthBackdrop)
 end)
 
 function NamePlates:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, sourceGUID, sourceName, sourceFlags, destGUID, destName, _, spellID)
