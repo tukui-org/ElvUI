@@ -1,17 +1,20 @@
 --Create interactable actionbars
 local DB, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not IsAddOnLoaded("ElvUI_ConfigUI") or not C["actionbar"].enable == true then return end
+if not C["actionbar"].enable == true or not IsAddOnLoaded("ElvUI_ConfigUI") then return end
 
 local function Button_OnEnter(self)
-	if InCombatLockdown() then return end
-	self:SetAlpha(1)
-	self.shown = true
+	self.Text:SetTextColor(1, 1, 1)
+	self:SetBackdropBorderColor(unpack(C["media"].valuecolor))
 end
 
 local function Button_OnLeave(self)
-	self:SetAlpha(0)
-	self.shown = false
+	self.Text:SetTextColor(unpack(C["media"].valuecolor))
+	DB.SetNormTexTemplate(self)
+end
+
+local function Button_OnEvent(self, event)
+	if self:IsShown() then self:Hide() end
 end
 
 local btnnames = {}
@@ -19,10 +22,12 @@ local btnnames = {}
 local function CreateMoverButton(name, text)
 	local b = CreateFrame("Button", name, UIParent)
 	DB.SetNormTexTemplate(b)
+	b:RegisterEvent("PLAYER_REGEN_DISABLED")
+	b:SetScript("OnEvent", Button_OnEvent)
 	b:SetScript("OnEnter", Button_OnEnter)
 	b:SetScript("OnLeave", Button_OnLeave)
 	b:EnableMouse(true)
-	b:SetAlpha(0)
+	b:Hide()
 	DB.CreateShadow(b)
 	tinsert(btnnames, tostring(name))
 	
@@ -56,17 +61,17 @@ local function SaveBars(var, val)
 	end
 end
 
-function ToggleABLock()
+function DB.ToggleABLock()
 	if InCombatLockdown() then return end
 	
-	if ElvuiABLock == true then
-		ElvuiABLock = false
+	if DB.ABLock == true then
+		DB.ABLock = false
 	else
-		ElvuiABLock = true
+		DB.ABLock = true
 	end
 	
 	for i, btnnames in pairs(btnnames) do
-		if ElvuiABLock == false then
+		if DB.ABLock == false then
 			_G[btnnames]:EnableMouse(false)
 			_G[btnnames]:Hide()
 			ElvuiInfoLeftRButton.Text:SetTextColor(1,1,1)
@@ -188,23 +193,8 @@ barloader:SetScript("OnEvent", function(self)
 	RightBarDec:SetPoint("TOPRIGHT", ElvuiActionBarBackgroundRight, "BOTTOMRIGHT", 0, DB.Scale(-4))
 	RightBarDec:SetPoint("BOTTOMLEFT", ElvuiActionBarBackgroundRight, "BOTTOM", DB.Scale(2), DB.Scale(-19))
 	
-	if not ElvuiABLock == nil then ElvuiABLock = false end
-	for i, btnnames in pairs(btnnames) do
-		if ElvuiABLock == false then
-			_G[btnnames]:EnableMouse(false)
-			_G[btnnames]:Hide()
-			ElvuiInfoLeftRButton.Text:SetTextColor(1,1,1)
-		else
-			_G[btnnames]:EnableMouse(true)
-			if btnnames == "RightBarBig" and not (C["actionbar"].rightbars ~= 0 or (C["actionbar"].bottomrows == 3 and C["actionbar"].splitbar == true)) then
-				_G[btnnames]:Show()
-			elseif btnnames ~= "RightBarBig" then
-				_G[btnnames]:Show()
-			end
-			ElvuiInfoLeftRButton.Text:SetTextColor(unpack(C["media"].valuecolor))
-		end
-	end
-
+	DB.ABLock = false
+	ElvuiInfoLeftRButton.Text:SetTextColor(1,1,1)
 end)
 
 --Setup button clicks
@@ -234,8 +224,6 @@ do
 			RightSplit:SetPoint("TOPLEFT", ElvuiMainMenuBar, "TOPRIGHT", DB.Scale(4), 0)
 			RightSplit:SetPoint("BOTTOMRIGHT", ElvuiMainMenuBar, "BOTTOMRIGHT", DB.Scale(19), 0)
 		end
-		LeftSplit:SetAlpha(0)
-		RightSplit:SetAlpha(0)
 	end)
 	
 	RightSplit:SetScript("OnMouseDown", function(self)
@@ -264,8 +252,6 @@ do
 			RightSplit:SetPoint("TOPLEFT", ElvuiMainMenuBar, "TOPRIGHT", DB.Scale(4), 0)
 			RightSplit:SetPoint("BOTTOMRIGHT", ElvuiMainMenuBar, "BOTTOMRIGHT", DB.Scale(19), 0)
 		end
-		LeftSplit:SetAlpha(0)
-		RightSplit:SetAlpha(0)
 	end)
 	
 	TopMainBar:SetScript("OnMouseDown", function(self)
@@ -281,7 +267,6 @@ do
 			SaveBars("bottomrows", 1)
 			TopMainBar.Text:SetText("+")
 		end
-		TopMainBar:SetAlpha(0)
 	end)
 	
 	RightBarBig:SetScript("OnMouseDown", function(self)
@@ -343,41 +328,4 @@ do
 			RightBarMouseOver(1)
 		end
 	end)
-	
-	--Toggle lock button
-	ElvuiInfoLeftRButton:SetScript("OnMouseDown", function(self)
-		if InCombatLockdown() then return end
-		ToggleABLock()	
-		
-		if ElvuiInfoLeftRButton.hovered == true then
-			GameTooltip:ClearLines()
-			if ElvuiABLock == false then
-				GameTooltip:AddDoubleLine(ACTIONBAR_LABEL..":", LOCKED,1,1,1,unpack(C["media"].valuecolor))
-			else
-				GameTooltip:AddDoubleLine(ACTIONBAR_LABEL..":", UNLOCK,1,1,1,unpack(C["media"].valuecolor))
-			end
-		end
-	end)
-	
-	ElvuiInfoLeftRButton:SetScript("OnEnter", function(self)
-		ElvuiInfoLeftRButton.hovered = true
-		if InCombatLockdown() then return end
-		GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, DB.Scale(6));
-		GameTooltip:ClearAllPoints()
-		GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, DB.mult)
-		GameTooltip:ClearLines()
-		
-		if ElvuiABLock == false then
-			GameTooltip:AddDoubleLine(ACTIONBAR_LABEL..":", LOCKED,1,1,1,unpack(C["media"].valuecolor))
-		else
-			GameTooltip:AddDoubleLine(ACTIONBAR_LABEL..":", UNLOCK,1,1,1,unpack(C["media"].valuecolor))
-		end
-		GameTooltip:Show()
-	end)
-	
-	ElvuiInfoLeftRButton:SetScript("OnLeave", function(self)
-		ElvuiInfoLeftRButton.hovered = false
-		GameTooltip:Hide()
-	end)
-	
 end

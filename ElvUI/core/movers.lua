@@ -91,17 +91,17 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	fs:SetJustifyH("CENTER")
 	fs:SetPoint("CENTER")
 	fs:SetText(text or name)
+	fs:SetTextColor(unpack(C["media"].valuecolor))
 	f2:SetFontString(fs)
 	f2.text = fs
 	
 	f2:SetScript("OnEnter", function(self) 
-		local color = RAID_CLASS_COLORS[DB.myclass]
-		self.text:SetTextColor(color.r, color.g, color.b)
-		self:SetBackdropBorderColor(color.r, color.g, color.b)
+		self.text:SetTextColor(1, 1, 1)
+		self:SetBackdropBorderColor(unpack(C["media"].valuecolor))
 	end)
 	f2:SetScript("OnLeave", function(self)
-		self.text:SetTextColor(1, 1, 1)
-		self:SetBackdropBorderColor(unpack(C["media"].bordercolor))
+		self.text:SetTextColor(unpack(C["media"].valuecolor))
+		DB.SetNormTexTemplate(self)
 	end)
 	
 	f2:SetMovable(true)

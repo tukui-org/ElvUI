@@ -658,3 +658,63 @@ inforightRbutton:SetScript("OnMouseDown", function(self, btn)
 		DB.ToggleSlideChatR()
 	end
 end)
+
+--Toggle UI lock button
+ElvuiInfoLeftRButton:SetScript("OnMouseDown", function(self)
+	if InCombatLockdown() then return end
+		
+	DB.ToggleMovers()
+	
+	if C["actionbar"].enable == true then
+		DB.ToggleABLock()
+	end
+	
+	if ElvuiInfoLeftRButton.hovered == true then
+		local locked = false
+		GameTooltip:ClearLines()
+		for name, _ in pairs(DB.CreatedMovers) do
+			if _G[name]:IsShown() then
+				locked = true
+			else
+				locked = false
+			end
+		end	
+		
+		if locked ~= true then
+			GameTooltip:AddLine(LOCKED,1,1,1)
+		else
+			GameTooltip:AddLine(UNLOCK,unpack(C["media"].valuecolor))
+		end
+	end
+end)
+
+ElvuiInfoLeftRButton:SetScript("OnEnter", function(self)
+	ElvuiInfoLeftRButton.hovered = true
+	if InCombatLockdown() then return end
+	GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, DB.Scale(6));
+	GameTooltip:ClearAllPoints()
+	GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, DB.mult)
+	GameTooltip:ClearLines()
+	
+	local locked = false
+	for name, _ in pairs(DB.CreatedMovers) do
+		if _G[name]:IsShown() then
+			locked = true
+			break
+		else
+			locked = false
+		end
+	end	
+	
+	if locked ~= true then
+		GameTooltip:AddLine(LOCKED,1,1,1)
+	else
+		GameTooltip:AddLine(UNLOCK,unpack(C["media"].valuecolor))
+	end
+	GameTooltip:Show()
+end)
+
+ElvuiInfoLeftRButton:SetScript("OnLeave", function(self)
+	ElvuiInfoLeftRButton.hovered = false
+	GameTooltip:Hide()
+end)

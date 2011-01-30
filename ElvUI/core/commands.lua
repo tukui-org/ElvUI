@@ -110,7 +110,31 @@ SlashCmdList.CONFIGURE = function() StaticPopup_Show("INSTALL_UI") end
 
 -- Command to Toggle showing the UI Movers
 SLASH_MOVEUI1 = '/moveui'
-SlashCmdList.MOVEUI = function() DB.ToggleMovers() end
+SlashCmdList.MOVEUI = function()		
+	DB.ToggleMovers()
+	
+	if C["actionbar"].enable == true then
+		DB.ToggleABLock()
+	end
+	
+	if ElvuiInfoLeftRButton.hovered == true then
+		local locked = false
+		GameTooltip:ClearLines()
+		for name, _ in pairs(DB.CreatedMovers) do
+			if _G[name]:IsShown() then
+				locked = true
+			else
+				locked = false
+			end
+		end	
+		
+		if locked ~= true then
+			GameTooltip:AddLine(LOCKED,1,1,1)
+		else
+			GameTooltip:AddLine(UNLOCK,unpack(C["media"].valuecolor))
+		end
+	end
+end
 
 -- Command to reset the movers
 SLASH_RESETMOVERS1 = '/resetui'
