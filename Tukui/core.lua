@@ -1,6 +1,6 @@
 local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 
-TukuiDB = DB
+TukuiDB = E
 TukuiCF = C
 tukuilocal = L
 
