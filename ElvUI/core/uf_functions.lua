@@ -1051,7 +1051,7 @@ E.LoadUFFunctions = function(layout)
 
 				local tex = icon:CreateTexture(nil, "OVERLAY")
 				tex:SetAllPoints(icon)
-				tex:SetTexture([=[Interface\AddOns\ElvUI\media\textures\blank]=])
+				tex:SetTexture(C["media"].blank)
 				if (spell[3]) then
 					tex:SetVertexColor(unpack(spell[3]))
 				else
