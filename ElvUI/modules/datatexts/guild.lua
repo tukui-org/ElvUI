@@ -96,7 +96,28 @@ if C["datatext"].guild and C["datatext"].guild > 0 then
 		GameTooltip:ClearLines()
 		GameTooltip:AddDoubleLine(GetGuildInfo'player'.." ["..GetGuildLevel().."]",format("%s: %d/%d",L.datatext_guild,online,total),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
 		GameTooltip:AddLine' '
+		
 		if gmotd ~= "" then GameTooltip:AddLine(format("  %s |cffaaaaaa- |cffffffff%s",GUILD_MOTD,gmotd),ttsubh.r,ttsubh.g,ttsubh.b,1) end
+		
+		local currentXP, remainingXP, dailyXP, maxDailyXP = UnitGetGuildXP("player")
+		local nextLevelXP = currentXP + remainingXP
+		local percentTotal = tostring(math.ceil((currentXP / nextLevelXP) * 100))
+		local percentDaily = tostring(math.ceil((dailyXP / maxDailyXP) * 100))
+		local col = E.RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b)
+		local _, _, standingID, barMin, barMax, barValue = GetGuildFactionInfo()
+		barMax = barMax - barMin
+		barValue = barValue - barMin
+		barMin = 0
+		
+		GameTooltip:AddLine' '
+		if GetGuildLevel() ~= 25 then
+			GameTooltip:AddLine(string.format(col..GUILD_EXPERIENCE_CURRENT, "|r |cFFFFFFFF"..E.ShortValue(currentXP), E.ShortValue(nextLevelXP), percentTotal))
+			GameTooltip:AddLine(string.format(col..GUILD_EXPERIENCE_DAILY, "|r |cFFFFFFFF"..E.ShortValue(dailyXP), E.ShortValue(maxDailyXP), percentDaily))
+		end
+		if standingID ~= 4 then -- Not Max Rep
+			GameTooltip:AddLine(string.format("%s:|r |cFFFFFFFF%s/%s (%s%%)",col..COMBAT_FACTION_CHANGE, E.ShortValue(barValue), E.ShortValue(barMax), math.ceil((barValue / barMax) * 100)))
+		end
+		
 		if online > 1 then
 			GameTooltip:AddLine' '
 			for i = 1, total do
@@ -132,25 +153,7 @@ if C["datatext"].guild and C["datatext"].guild > 0 then
 				end
 			end
 		end
-		
-		local currentXP, remainingXP, dailyXP, maxDailyXP = UnitGetGuildXP("player")
-		local nextLevelXP = currentXP + remainingXP
-		local percentTotal = tostring(math.ceil((currentXP / nextLevelXP) * 100))
-		local percentDaily = tostring(math.ceil((dailyXP / maxDailyXP) * 100))
-		local col = E.RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b)
-		local _, _, standingID, barMin, barMax, barValue = GetGuildFactionInfo()
-		barMax = barMax - barMin
-		barValue = barValue - barMin
-		barMin = 0
 
-		GameTooltip:AddLine' '
-		if GetGuildLevel() ~= 25 then
-			GameTooltip:AddLine(string.format(col..GUILD_EXPERIENCE_CURRENT, "|r |cFFFFFFFF"..E.ShortValue(currentXP), E.ShortValue(nextLevelXP), percentTotal))
-			GameTooltip:AddLine(string.format(col..GUILD_EXPERIENCE_DAILY, "|r |cFFFFFFFF"..E.ShortValue(dailyXP), E.ShortValue(maxDailyXP), percentDaily))
-		end
-		if standingID ~= 4 then -- Not Max Rep
-			GameTooltip:AddLine(string.format("%s:|r |cFFFFFFFF%s/%s (%s%%)",col..COMBAT_FACTION_CHANGE, E.ShortValue(barValue), E.ShortValue(barMax), math.ceil((barValue / barMax) * 100)))
-		end
 		GameTooltip:Show()
 	end)
 	Stat:SetScript("OnLeave", function() GameTooltip:Hide() end)
