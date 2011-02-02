@@ -97,6 +97,12 @@ end
 local function CreatePanel(f, t, w, h, a1, p, a2, x, y)
 	GetTemplate(t)
 	
+	if t == "Transparent" then
+		backdropa = 0.8
+	else
+		backdropa = 1
+	end	
+	
 	local sh = E.Scale(h)
 	local sw = E.Scale(w)
 	f:SetFrameLevel(1)
@@ -110,27 +116,7 @@ local function CreatePanel(f, t, w, h, a1, p, a2, x, y)
 	  tile = false, tileSize = 0, edgeSize = E.mult, 
 	  insets = { left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
 	})
-	f:SetBackdropColor(backdropr, backdropg, backdropb)
-	f:SetBackdropBorderColor(borderr, borderg, borderb)
-end
-
-local function CreateTransparentPanel(f, t, w, h, a1, p, a2, x, y)	
-	GetTemplate(t)
-
-	local sh = E.Scale(h)
-	local sw = E.Scale(w)
-	f:SetFrameLevel(1)
-	f:SetHeight(sh)
-	f:SetWidth(sw)
-	f:SetFrameStrata("BACKGROUND")
-	f:SetPoint(a1, p, a2, E.Scale(x), E.Scale(y))
-	f:SetBackdrop({
-	  bgFile = C["media"].blank,
-	  edgeFile = C["media"].blank,
-	  tile = false, tileSize = 0, edgeSize = E.mult,
-	  insets = { left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
-	})
-	f:SetBackdropColor(backdropr,backdropg,backdropb,.8)
+	f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
 	f:SetBackdropBorderColor(borderr, borderg, borderb)
 end
 
