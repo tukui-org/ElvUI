@@ -2,6 +2,7 @@
 	<Script file='core.lua'/>
 	<Script file='debug.lua'/>
 	<Script file='pixelperfect.lua'/>
+	<Script file='deprecated.lua'/>
 	<Script file='toolkit.lua'/>
 	<Script file='math.lua'/>
 	<Script file='colors.lua'/>

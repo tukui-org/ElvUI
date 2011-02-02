@@ -260,7 +260,7 @@ local function CreateButton(name, relativeTo, firstbutton)
 	button:SetBackdropBorderColor(0,0,0,0)
 	
 	button.FrameBackdrop = CreateFrame("Frame", nil, button)
-	E.SetTemplate(button.FrameBackdrop)
+	button.FrameBackdrop:SetTemplate("Default")
 	button.FrameBackdrop:SetPoint("TOPLEFT", E.Scale(-2), E.Scale(2))
 	button.FrameBackdrop:SetPoint("BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
 	button.FrameBackdrop:SetFrameLevel(button:GetFrameLevel() - 1)	

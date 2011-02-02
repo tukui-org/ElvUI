@@ -83,7 +83,7 @@ do
 		local border = CreateFrame("Frame", nil, frame)
 		border:SetPoint("TOPLEFT", frame, E.Scale(-2), E.Scale(2))
 		border:SetPoint("BOTTOMRIGHT", frame, E.Scale(2), E.Scale(-2))
-		E.SetTemplate(border)
+		border:SetTemplate("Default")
 		border:SetFrameLevel(0)
 
 		local text = frame:CreateFontString(nil, 'OVERLAY')

@@ -82,7 +82,7 @@ local createSlot = function(id)
 	iconFrame:ClearAllPoints()
 	iconFrame:SetPoint("RIGHT", frame)
 	
-	E.SetTemplate(iconFrame)
+	iconFrame:SetTemplate("Default")
 
 	local icon = iconFrame:CreateTexture(nil, "ARTWORK")
 	icon:SetAlpha(.8)

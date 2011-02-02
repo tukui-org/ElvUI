@@ -480,7 +480,7 @@ local function OnUnitFramesLoad(self, event, addon)
 						iconbackdrop:SetParent(result)
 						iconbackdrop:SetPoint("TOPLEFT", icon, "TOPLEFT", E.Scale(-2), E.Scale(2))
 						iconbackdrop:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
-						E.SetTemplate(iconbackdrop)
+						iconbackdrop:SetTemplate("Default")
 						iconbackdrop:SetFrameLevel(result:GetFrameLevel() - 1)
 					end
 					
@@ -671,7 +671,7 @@ local function OnUnitFramesLoad(self, event, addon)
 			result.background = background;
 			
 			local border = CreateFrame( "Frame", nil, result, nil );
-				E.SetTemplate(border)
+				border:SetTemplate("Default")
 				border:SetPoint("TOPLEFT", E.Scale(-2), E.Scale(2))
 				border:SetPoint("BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
 				border:SetFrameLevel(result:GetFrameLevel() - 1)

@@ -487,7 +487,7 @@ local function CreateElvuiConfigUI()
 	ElvuiConfigUITitleBox:SetWidth(570)
 	ElvuiConfigUITitleBox:SetHeight(24)
 	ElvuiConfigUITitleBox:SetPoint("TOPLEFT", -10, 42)
-	E.SetTemplate(ElvuiConfigUITitleBox)
+	ElvuiConfigUITitleBox:SetTemplate("Default")
 	
 	local title = ElvuiConfigUITitleBox:CreateFontString("ElvuiConfigUITitle", "OVERLAY")
 	title:SetFont(C.media.font, C["general"].fontscale)
@@ -496,9 +496,7 @@ local function CreateElvuiConfigUI()
 	local ElvuiConfigUIBG = CreateFrame("Frame","ElvuiConfigUI",ElvuiConfigUI)
 	ElvuiConfigUIBG:SetPoint("TOPLEFT", -10, 10)
 	ElvuiConfigUIBG:SetPoint("BOTTOMRIGHT", 10, -10)
-	E.SetTemplate(ElvuiConfigUIBG)
-	
-
+	ElvuiConfigUIBG:SetTemplate("Default")
 	
 	-- GROUP SELECTION ( LEFT SIDE )
 	local groups = CreateFrame("ScrollFrame", "ElvuiCatagoryGroup", ElvuiConfigUI)
@@ -506,7 +504,6 @@ local function CreateElvuiConfigUI()
 	groups:SetWidth(150)
 	groups:SetHeight(300)
 
-	
 	local ElvuiConfigCover = CreateFrame("Frame", "ElvuiConfigCover", ElvuiConfigUI)
 	ElvuiConfigCover:SetPoint("TOPLEFT", ElvuiCatagoryGroup, "TOPLEFT")
 	ElvuiConfigCover:SetPoint("BOTTOMRIGHT", ElvuiConfigUI, "BOTTOMRIGHT")
@@ -518,7 +515,7 @@ local function CreateElvuiConfigUI()
 	local groupsBG = CreateFrame("Frame","ElvuiConfigUI",ElvuiConfigUI)
 	groupsBG:SetPoint("TOPLEFT", groups, -10, 10)
 	groupsBG:SetPoint("BOTTOMRIGHT", groups, 10, -10)
-	E.SetTemplate(groupsBG)
+	groupsBG:SetTemplate("Default")
 		
 	local slider = CreateFrame("Slider", "ElvuiConfigUICatagorySlider", groups)
 	slider:SetPoint("TOPRIGHT", 0, 0)
@@ -528,7 +525,7 @@ local function CreateElvuiConfigUI()
 	slider:SetOrientation("VERTICAL")
 	slider:SetValueStep(20)
 	slider:SetScript("OnValueChanged", function(self,value) groups:SetVerticalScroll(value) end)
-	E.SetTemplate(slider)
+	slider:SetTemplate("Default")
 	local r,g,b,a = unpack(C["media"].bordercolor)
 	slider:SetBackdropColor(r,g,b,0.2)
 	local child = CreateFrame("Frame",nil,groups)
@@ -577,7 +574,7 @@ local function CreateElvuiConfigUI()
 	slider:SetThumbTexture("Interface\\Buttons\\UI-ScrollBar-Knob")
 	slider:SetOrientation("VERTICAL")
 	slider:SetValueStep(20)
-	E.SetTemplate(slider)
+	slider:SetTemplate("Default")
 	local r,g,b,a = unpack(C["media"].bordercolor)
 	slider:SetBackdropColor(r,g,b,0.2)
 	slider:SetScript("OnValueChanged", function(self,value) group:SetVerticalScroll(value) end)
@@ -626,11 +623,11 @@ local function CreateElvuiConfigUI()
 				editbox:SetFontObject(GameFontHighlight)
 				editbox:SetPoint("TOPLEFT", 5, -(offset+20))
 				editbox:SetText(value)
-				E.SetTemplate(editbox)	
+				editbox:SetTemplate("Default")
 				local okbutton = CreateFrame("Button", nil, frame)
 				okbutton:SetHeight(editbox:GetHeight())
 				okbutton:SetWidth(editbox:GetHeight())
-				E.SetTemplate(okbutton)
+				okbutton:SetTemplate("Default")
 				okbutton:SetPoint("LEFT", editbox, "RIGHT", 2, 0)
 				local oktext = okbutton:CreateFontString(nil,"OVERLAY",nil)
 				oktext:SetFont(C.media.font,12,"OUTLINE")
@@ -654,8 +651,8 @@ local function CreateElvuiConfigUI()
 				offset = offset+45
 			elseif type(value) == "table" then
 				local label = frame:CreateFontString(nil,"OVERLAY",nil)
-				label:SetFont(C.media.font,C["general"].fontscale,"OUTLINE")
-				local o = "ElvuiConfigUI"..group..option
+				label:SetFont(C.media.font,C["general"].fontscale, "OUTLINE")
+				local o = "TukuiConfigUI"..group..option
 				Local(o)
 				label:SetText(E.option)
 				label:SetWidth(420)
@@ -667,61 +664,53 @@ local function CreateElvuiConfigUI()
 				local colorbutton = CreateFrame("Button", colorbuttonname, frame)
 				colorbutton:SetHeight(20)
 				colorbutton:SetWidth(50)
-				E.SetTemplate(colorbutton)
+				colorbutton:SetTemplate("Default")
 				colorbutton:SetBackdropBorderColor(unpack(value))
 				colorbutton:SetPoint("LEFT", label, "RIGHT", 2, 0)
 				local colortext = colorbutton:CreateFontString(nil,"OVERLAY",nil)
-				colortext:SetFont(C.media.font,C["general"].fontscale,"OUTLINE")
+				colortext:SetFont(C.media.font,C["general"].fontscale, "OUTLINE")
 				colortext:SetText("Set Color")
 				colortext:SetPoint("CENTER")
 				colortext:SetJustifyH("CENTER")
 				
-				local oldvalue = value
 				
 				local function round(number, decimal)
 					return (("%%.%df"):format(decimal)):format(number)
 				end	
 				
-				colorbutton:SetScript("OnMouseDown", function(self) 
+				colorbutton:SetScript("OnMouseDown", function(button) 
 					if ColorPickerFrame:IsShown() then return end
-					local newR, newG, newB, newA
-					local fired = 0
-					
-					local r,g,b,a = self:GetBackdropBorderColor();
-					r,g,b,a = round(r, 2),round(g, 2),round(b, 2),round(a, 2)
-					local originalR,originalG,originalB,originalA = r,g,b,a
-					
-					local function ShowColorPicker(r, g, b, a, changedCallback)
+					local oldr, oldg, oldb, olda = unpack(value)
+
+					local function ShowColorPicker(r, g, b, a, changedCallback, sameCallback)
+						HideUIPanel(ColorPickerFrame)
+						ColorPickerFrame.button = button
 						ColorPickerFrame:SetColorRGB(r,g,b)
-						a = tonumber(a)
-						ColorPickerFrame.hasOpacity = (a ~= nil and a ~= 1)
+						ColorPickerFrame.hasOpacity = (a ~= nil and a < 1)
 						ColorPickerFrame.opacity = a
-						ColorPickerFrame.previousValues = {originalR,originalG,originalB,originalA}
-						ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = changedCallback, changedCallback, changedCallback;
-						ColorPickerFrame:Hide()
-						ColorPickerFrame:Show()
+						ColorPickerFrame.previousValues = {oldr, oldg, oldb, olda}
+						ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = changedCallback, changedCallback, sameCallback;
+						ShowUIPanel(ColorPickerFrame)
 					end
 										
-					local function myColorCallback(restore)
-						fired = fired + 1
-						if restore ~= nil then
-							-- The user bailed, we extract the old color from the table created by ShowColorPicker.
-							newR, newG, newB, newA = unpack(restore)
-						else
-							-- Something changed
-							newA, newR, newG, newB = OpacitySliderFrame:GetValue(), ColorPickerFrame:GetColorRGB()
-						end
+					local function ColorCallback(restore)
+						-- Something change
+						if restore ~= nil or button ~= ColorPickerFrame.button then return end
+
+						local newA, newR, newG, newB = OpacitySliderFrame:GetValue(), ColorPickerFrame:GetColorRGB()
 						
-						--Kinda a cheesy way to fix setting the value in the wrong place.. oh well
-						if fired > 3 then
-							value = { newR, newG, newB, newA }
-							SetValue(group,option,(value)) 
-							self:SetBackdropBorderColor(newR, newG, newB, newA)
-							fired = 0
-						end
+						value = { newR, newG, newB, newA }
+						SetValue(group,option,(value)) 
+						button:SetBackdropBorderColor(newR, newG, newB, newA)	
+					end
+					
+					local function SameColorCallback()
+						value = { oldr, oldg, oldb, olda }
+						SetValue(group,option,(value))
+						button:SetBackdropBorderColor(oldr, oldg, oldb, olda)
 					end
 										
-					ShowColorPicker(originalR, originalG, originalB, originalA, myColorCallback)
+					ShowColorPicker(oldr, oldg, oldb, olda, ColorCallback, SameColorCallback)
 				end)
 				
 				offset = offset+25
@@ -744,21 +733,21 @@ local function CreateElvuiConfigUI()
 			StaticPopup_Show("RESET_ALL")
 		end
 	end)
-	E.SetTemplate(reset)
+	reset:SetTemplate("Default")
 	
 	local close = NewButton(ElvuiL.option_button_close, ElvuiConfigUI)
 	close:SetWidth(100)
 	close:SetHeight(20)
 	close:SetPoint("BOTTOMRIGHT", 10, -38)
 	close:SetScript("OnClick", function(self) ElvuiConfigUI:Hide() end)
-	E.SetTemplate(close)
+	close:SetTemplate("Default")
 	
 	local load = NewButton(ElvuiL.option_button_load, ElvuiConfigUI)
 	load:SetHeight(20)
 	load:SetPoint("LEFT", reset, "RIGHT", 15, 0)
 	load:SetPoint("RIGHT", close, "LEFT", -15, 0)
 	load:SetScript("OnClick", function(self) ReloadUI() end)
-	E.SetTemplate(load)
+	load:SetTemplate("Default")
 
 	if ElvuiConfigAll then
 		local button = CreateFrame("CheckButton", "ElvuiConfigAllCharacters", ElvuiConfigUITitleBox, "InterfaceOptionsCheckButtonTemplate")

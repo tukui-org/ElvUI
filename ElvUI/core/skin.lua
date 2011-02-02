@@ -150,7 +150,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			GhostFrameContentsFrameIcon:SetTexture(nil)
 			local x = CreateFrame("Frame", nil, GhostFrame)
 			x:SetFrameStrata("MEDIUM")
-			E.SetTemplate(x)
+			x:SetTemplate("Default")
 			x:SetPoint("TOPLEFT", GhostFrameContentsFrameIcon, "TOPLEFT", E.Scale(-2), E.Scale(2))
 			x:SetPoint("BOTTOMRIGHT", GhostFrameContentsFrameIcon, "BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
 			local tex = x:CreateTexture(nil, "OVERLAY")
@@ -201,7 +201,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		}
 		
 		for i = 1, getn(BlizzardButtons) do
-		local ElvuiButtons = _G[BlizzardButtons[i]]
+			local ElvuiButtons = _G[BlizzardButtons[i]]
 			if ElvuiButtons then
 				SkinButton(ElvuiButtons)
 			end

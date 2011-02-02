@@ -313,7 +313,7 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 		if not ButtonCF3 then return end
 		local x = CreateFrame("Frame", nil, ChatFrame3Tab)
 		x:SetAllPoints(ButtonCF3)
-		E.SetTemplate(x)
+		x:SetTemplate("Default")
 		x:SetBackdropColor(0,0,0,0)
 	end
 	

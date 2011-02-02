@@ -6,8 +6,6 @@ Mod_AddonSkins = CreateFrame("Frame")
 local Mod_AddonSkins = Mod_AddonSkins
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-
-local elvskin = E.SetTemplate
 local function skinFrame(self, frame)
 	--Unfortionatly theres not a prettier way of doing this
 	if frame:GetParent():GetName() == "Recount_ConfigWindow" then
@@ -28,7 +26,7 @@ local function skinFrame(self, frame)
 			frame:SetFrameStrata("BACKGROUND")
 		end
 	else
-		elvskin(frame,frame)
+		frame:SetTemplate("Default")
 	end
 end
 local function skinButton(self, button)

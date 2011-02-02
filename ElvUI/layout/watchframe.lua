@@ -98,7 +98,7 @@ local function setup()
 	ElvuiWatchFrame:SetSize(1,screenheight / 2)
 	
 	-- template was just to help positioning watch frame.
-	--E.SetTemplate(ElvuiWatchFrame)
+	--ElvuiWatchFrame:SetTemplate("Default")
 	
 	ElvuiWatchFrame:SetWidth(250)
 	

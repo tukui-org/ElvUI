@@ -44,7 +44,7 @@ local function CreateButton(name, parent, template, width, height, point, relati
 	b:HookScript("OnEnter", ButtonEnter)
 	b:HookScript("OnLeave", ButtonLeave)
 	b:EnableMouse(true)
-	E.SetTemplate(b)
+	b:SetTemplate("Default")
 	if text then
 		local t = b:CreateFontString(nil,"OVERLAY",b)
 		t:SetFont(C.media.font,C["general"].fontscale,"OUTLINE")

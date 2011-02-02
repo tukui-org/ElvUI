@@ -371,12 +371,12 @@ local function UpdateObjects(frame)
 	frame.hp:GetStatusBarTexture():SetHorizTile(true)
 	
 	-- Create Health Backdrop frame
-	if not frame.healthbarbackdrop_tex then
-		frame.healthbarbackdrop_tex = frame.hp:CreateTexture(nil, "BACKGROUND")
-		frame.healthbarbackdrop_tex:SetPoint("TOPLEFT", frame.hp, "TOPLEFT", -noscalemult*3, noscalemult*3)
-		frame.healthbarbackdrop_tex:SetPoint("TOPRIGHT", frame.hp, "TOPRIGHT", noscalemult*3, noscalemult*3)
-		frame.healthbarbackdrop_tex:SetHeight(hpHeight + noscalemult*6)
-		frame.healthbarbackdrop_tex:SetTexture(unpack(C["media"].backdropcolor))
+	if not frame.hp.healthbarbackdrop_tex then
+		frame.hp.healthbarbackdrop_tex = frame.hp:CreateTexture(nil, "BACKGROUND")
+		frame.hp.healthbarbackdrop_tex:SetPoint("TOPLEFT", frame.hp, "TOPLEFT", -noscalemult*3, noscalemult*3)
+		frame.hp.healthbarbackdrop_tex:SetPoint("TOPRIGHT", frame.hp, "TOPRIGHT", noscalemult*3, noscalemult*3)
+		frame.hp.healthbarbackdrop_tex:SetHeight(hpHeight + noscalemult*6)
+		frame.hp.healthbarbackdrop_tex:SetTexture(unpack(C["media"].backdropcolor))
 	end
 			
 	--Class Icons, also determines if the current frame is a Enemy Player frame
@@ -669,18 +669,6 @@ local function CheckUnit_Guid(frame, ...)
 		frame.unit = "mouseover"
 		OnAura(frame, "mouseover")
 	else
-		--[[if (numParty > 0 or numRaid > 0) then
-			for i = 1, (numRaid > 0 and numRaid or numParty) do
-				local unit = (numRaid > 0 and "raid"..i or "party"..i);
-				if not UnitIsUnit(unit,"player") then
-					if frame.guid and frame.guid == UnitGUID(unit) then
-						frame.unit = unit
-					else
-						frmae.unit = nil
-					end
-				end
-			end	
-		end]]
 		frame.unit = nil
 	end	
 	
@@ -694,16 +682,6 @@ local function MatchGUID(frame, destGUID, spellID)
 	if frame.guid == destGUID then
 		for _,icon in ipairs(frame.icons) do if icon.spellID == spellID then icon:Hide() end end
 	end
-end
-
---I can't for the life of me figure out why this loses position
-local function FixHealthBackdrop(frame, ...)
-	if not frame.healthbarbackdrop_tex then return end
-
-	frame.healthbarbackdrop_tex:ClearAllPoints()
-	frame.healthbarbackdrop_tex:SetPoint("TOPLEFT", frame.hp, "TOPLEFT", -noscalemult*3, noscalemult*3)
-	frame.healthbarbackdrop_tex:SetPoint("TOPRIGHT", frame.hp, "TOPRIGHT", noscalemult*3, noscalemult*3)
-	frame.healthbarbackdrop_tex:SetHeight(hpHeight + noscalemult*6)
 end
 
 --Run a function for all visible nameplates, we use this for the blacklist, to check unitguid, and to hide drunken text
@@ -749,7 +727,6 @@ CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
 	ForEachPlate(CheckBlacklist)
 	ForEachPlate(HideDrunkenText)
 	ForEachPlate(CheckUnit_Guid)
-	ForEachPlate(FixHealthBackdrop)
 end)
 
 function NamePlates:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, sourceGUID, sourceName, sourceFlags, destGUID, destName, _, spellID)

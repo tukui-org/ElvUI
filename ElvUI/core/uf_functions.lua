@@ -544,7 +544,7 @@ E.LoadUFFunctions = function(layout)
 			button.remaining = E.SetFontString(button, C["media"].font, C["auras"].auratextscale, "THINOUTLINE")
 		end
 		
-		E.SetTemplate(button)
+		button:SetTemplate("Default")
 		button.remaining:SetPoint("CENTER", E.Scale(0), E.mult)
 		
 		button.cd.noOCC = true		 	-- hide OmniCC CDs

@@ -199,7 +199,7 @@ Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
 function GetMinimapShape() return 'SQUARE' end
 
 -- reskin LFG dropdown
-E.SetTemplate(LFDSearchStatus)
+LFDSearchStatus:SetTemplate("Default")
 
  
 --Style Zone and Coord panels

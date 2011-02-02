@@ -198,7 +198,7 @@ local healthBarBG = CreateFrame("Frame", "StatusBarBG", healthBar)
 healthBarBG:SetFrameLevel(healthBar:GetFrameLevel() - 1)
 healthBarBG:SetPoint("TOPLEFT", -E.Scale(2), E.Scale(2))
 healthBarBG:SetPoint("BOTTOMRIGHT", E.Scale(2), -E.Scale(2))
-E.SetTemplate(healthBarBG)
+healthBarBG:SetTemplate("Default")
 healthBarBG:SetBackdropColor(unpack(C.media.backdropfadecolor))
 
 -- Add "Targeted By" line

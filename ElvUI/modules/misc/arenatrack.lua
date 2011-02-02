@@ -48,7 +48,7 @@ function tCooldownTracker.CreateIcon()
 	tCooldownTracker.Icons[i].Texture:SetPoint("BOTTOMRIGHT", tCooldownTracker.Icons[i], E.Scale(-2), E.Scale(2))
 	tCooldownTracker.Icons[i].Texture:SetTexCoord(.08, .92, .08, .92)
 	
-	E.SetTemplate(tCooldownTracker.Icons[i])
+	tCooldownTracker.Icons[i]:SetTemplate("Default")
 
 	tCooldownTracker.Icons[i].TimerText = tCooldownTracker.Icons[i]:CreateFontString("tCooldownTrackerTimerText","OVERLAY")
 	tCooldownTracker.Icons[i].TimerText:SetFont(C.media.font,14,"Outline")
@@ -171,7 +171,7 @@ function tCooldownTracker.StartTimer(icon, duration, texture, spellID)
 		tCooldownTracker.Icons[(active or icon)].Texture:SetPoint("TOPLEFT", tCooldownTracker.Icons[(active or icon)], E.Scale(2), E.Scale(-2))
 		tCooldownTracker.Icons[(active or icon)].Texture:SetPoint("BOTTOMRIGHT", tCooldownTracker.Icons[(active or icon)], E.Scale(-2), E.Scale(2))
 		tCooldownTracker.Icons[(active or icon)].Texture:SetTexCoord(.08, .92, .08, .92)
-		E.SetTemplate(tCooldownTracker.Icons[(active or icon)])
+		tCooldownTracker.Icons[(active or icon)]:SetTemplate("Default")
 	end
 	tCooldownTracker.Reposition()
 	tCooldownTracker:SetScript("OnUpdate", function(self, arg1) tCooldownTracker.OnUpdate(arg1) end)

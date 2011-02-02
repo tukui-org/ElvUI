@@ -67,7 +67,7 @@ local function Shared(self, unit)
 	local FrameBorder = CreateFrame("Frame", nil, self)
 	FrameBorder:SetPoint("TOPLEFT", self, "TOPLEFT", E.Scale(-2), E.Scale(2))
 	FrameBorder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
-	E.SetTemplate(FrameBorder)
+	FrameBorder:SetTemplate("Default")
 	FrameBorder:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
 	FrameBorder:SetFrameLevel(2)
 	self.FrameBorder = FrameBorder
