@@ -17,7 +17,7 @@ local function GetTemplate(t)
 		borderr, borderg, borderb = .6, .6, .6
 		backdropr, backdropg, backdropb = .1, .1, .1
 	elseif t == "ClassColor" then
-		local c = T.oUF_colors.class[class]
+		local c = E.colors.class[class]
 		borderr, borderg, borderb = c[1], c[2], c[3]
 		backdropr, backdropg, backdropb = unpack(C["media"].backdropcolor)
 	elseif t == "Elv" then
@@ -35,6 +35,10 @@ local function GetTemplate(t)
 	elseif t == "Hydra" then
 		borderr, borderg, borderb = .2, .2, .2
 		backdropr, backdropg, backdropb = .075, .075, .075
+	elseif C["general"].classcolortheme == true then
+		local c = E.colors.class[class]
+		borderr, borderg, borderb = c[1], c[2], c[3]
+		backdropr, backdropg, backdropb = unpack(C["media"].backdropcolor)		
 	else
 		borderr, borderg, borderb = unpack(C["media"].bordercolor)
 		backdropr, backdropg, backdropb = unpack(C["media"].backdropcolor)
