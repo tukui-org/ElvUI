@@ -73,6 +73,7 @@ local function SetChatStyle(frame)
 	_G[chat.."TabText"].SetTextColor = E.dummy
 	local originalpoint = select(2, _G[chat.."TabText"]:GetPoint())
 	_G[chat.."TabText"]:SetPoint("LEFT", originalpoint, "RIGHT", 0, -E.mult*2)
+	_G[chat]:SetMinResize(250,70)
 	
 	--Reposition the "New Message" orange glow so its aligned with the bottom of the chat tab
 	for i=1, tab:GetNumRegions() do
