@@ -303,6 +303,7 @@ local function Local(o)
 	if o == "ElvuiConfigUIdebugenabled" then o = ElvuiL.option_debug_enabled end
 	if o == "ElvuiConfigUIdebugevents" then o = ElvuiL.option_debug_events end
 	
+	
 	E.option = o
 end
 
@@ -652,7 +653,7 @@ local function CreateElvuiConfigUI()
 			elseif type(value) == "table" then
 				local label = frame:CreateFontString(nil,"OVERLAY",nil)
 				label:SetFont(C.media.font,C["general"].fontscale, "OUTLINE")
-				local o = "TukuiConfigUI"..group..option
+				local o = "ElvuiConfigUI"..group..option
 				Local(o)
 				label:SetText(E.option)
 				label:SetWidth(420)
