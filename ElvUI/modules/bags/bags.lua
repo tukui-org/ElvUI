@@ -771,7 +771,7 @@ function Stuffing:Layout(lb)
 					b.frame:Show()
 					E.SetNormTexTemplate(b.frame)
 					--b.frame:SetBackdropColor(unpack(C["media"].backdropfadecolor))
-					b.frame:StyleButton(false)
+					b.frame:StyleButton()
 					local clink = GetContainerItemLink
 					if (clink and b.rarity and b.rarity > 1) then
 						b.frame:SetBackdropBorderColor(GetItemQualityColor(b.rarity))
@@ -969,7 +969,7 @@ function Stuffing:PLAYER_ENTERING_WORLD()
 		t:SetPoint("BOTTOMRIGHT", slot, E.Scale(-2), E.Scale(2))
 		E.SetNormTexTemplate(slot)
 		
-		slot:StyleButton(false)
+		slot:StyleButton()
 	end
 
 

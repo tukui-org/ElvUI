@@ -217,7 +217,6 @@
 	ElvuiL.option_actionbar_buttonsize = "Größe der Aktionsleisten Buttons"
 	ElvuiL.option_actionbar_buttonspacing = "Abstand der Aktionsleisten Buttons"
 	ElvuiL.option_actionbar_petbuttonsize = "Größe der Begleiter/Haltungs Aktionsleisten Buttons"
-	ElvuiL.option_actionbar_petbuttonspacing = "Abstand der Begleiter/Haltungs Aktionsleisten Buttons"
 	ElvuiL.option_actionbar_swaptopbottombar = "Tausche die untere und obere Aktionsleiste"
 	ElvuiL.option_actionbar_macrotext = "Makrotexte auf den Aktionsleisten Buttons anzeigen"
 	ElvuiL.option_actionbar_verticalstance ="Vertikale Haltungsleiste"

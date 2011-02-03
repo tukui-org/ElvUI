@@ -213,7 +213,6 @@
 	ElvuiL.option_actionbar_buttonsize = "행동 단축버튼의 크기"
 	ElvuiL.option_actionbar_buttonspacing = "행동 단축버튼의 간격"
 	ElvuiL.option_actionbar_petbuttonsize = "특수 기술 단축버튼의 크기"
-	ElvuiL.option_actionbar_petbuttonspacing = "특수 기술 단축버튼의 간격"
 	ElvuiL.option_actionbar_swaptopbottombar = "Swap the top and bottom actionbar positions"
 	
 	-- 투기장

@@ -20,12 +20,12 @@ function PositionBarPet(self)
 		button:SetFrameStrata("MEDIUM")
 		button:SetSize(E.petbuttonsize, E.petbuttonsize)
 		if i == 1 then
-			button:SetPoint("TOPLEFT", E.petbuttonspacing, -E.petbuttonspacing)
+			button:SetPoint("TOPLEFT", E.buttonspacing, -E.buttonspacing)
 		else
 			if C["actionbar"].bottompetbar ~= true then
-				button:SetPoint("TOP", _G["PetActionButton"..(i - 1)], "BOTTOM", 0, -E.petbuttonspacing)
+				button:SetPoint("TOP", _G["PetActionButton"..(i - 1)], "BOTTOM", 0, -E.buttonspacing)
 			else
-				button:SetPoint("LEFT", _G["PetActionButton"..(i - 1)], "RIGHT", E.petbuttonspacing, 0)
+				button:SetPoint("LEFT", _G["PetActionButton"..(i - 1)], "RIGHT", E.buttonspacing, 0)
 			end	
 		end
 		button:Show()

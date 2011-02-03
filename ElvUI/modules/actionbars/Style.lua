@@ -6,7 +6,7 @@ local _G = _G
 local media = C["media"]
 local securehandler = CreateFrame("Frame", nil, nil, "SecureHandlerBaseTemplate")
 
-function style(self, vehicle, totem)
+function Style(self, vehicle, totem)
 	local name = self:GetName()
 	
 	if name:match("MultiCastActionButton") then return end 
@@ -88,7 +88,7 @@ function style(self, vehicle, totem)
 	end
 end
 
-local function stylesmallbutton(normal, button, icon, name, pet)
+local function Stylesmallbutton(normal, button, icon, name, pet)
 	local Flash	 = _G[name.."Flash"]
 	button:SetNormalTexture("")
 	
@@ -136,7 +136,7 @@ function E.StyleShift()
 		local button  = _G[name]
 		local icon  = _G[name.."Icon"]
 		local normal  = _G[name.."NormalTexture"]
-		stylesmallbutton(normal, button, icon, name)
+		Stylesmallbutton(normal, button, icon, name)
 	end
 end
 
@@ -146,7 +146,7 @@ function E.StylePet()
 		local button  = _G[name]
 		local icon  = _G[name.."Icon"]
 		local normal  = _G[name.."NormalTexture2"]
-		stylesmallbutton(normal, button, icon, name, true)
+		Stylesmallbutton(normal, button, icon, name, true)
 	end
 end
 
@@ -173,7 +173,7 @@ local function SetupFlyoutButton()
 	for i=1, buttons do
 		--prevent error if you don't have max ammount of buttons
 		if _G["SpellFlyoutButton"..i] then
-			style(_G["SpellFlyoutButton"..i], false)
+			Style(_G["SpellFlyoutButton"..i], false)
 			_G["SpellFlyoutButton"..i]:StyleButton(true)
 			if C["actionbar"].rightbarmouseover == true then
 				SpellFlyout:HookScript("OnEnter", function(self) RightBarMouseOver(1) end)
@@ -186,14 +186,14 @@ local function SetupFlyoutButton()
 end
 SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
 
--- Reposition flyout buttons depending on what Elvui bar the button is parented to
+-- Reposition flyout buttons depending on what tukui bar the button is parented to
 local function FlyoutButtonPos(self, buttons, direction)
 	for i=1, buttons do
 		local parent = SpellFlyout:GetParent()
 		if not _G["SpellFlyoutButton"..i] then return end
 		
 		if InCombatLockdown() then return end
- 
+		
 		if direction == "LEFT" then
 			if i == 1 then
 				_G["SpellFlyoutButton"..i]:ClearAllPoints()
@@ -215,7 +215,7 @@ local function FlyoutButtonPos(self, buttons, direction)
 end
  
 --Hide the Mouseover texture and attempt to find the ammount of buttons to be skinned
-local function styleflyout(self)
+local function StyleFlyout(self)
 	self.FlyoutBorder:SetAlpha(0)
 	self.FlyoutBorderShadow:SetAlpha(0)
 	
@@ -235,23 +235,24 @@ local function styleflyout(self)
 	--Change arrow direction depending on what bar the button is on
 	local arrowDistance
 	if ((SpellFlyout and SpellFlyout:IsShown() and SpellFlyout:GetParent() == self) or GetMouseFocus() == self) then
-			arrowDistance = 5
+		arrowDistance = 5
 	else
-			arrowDistance = 2
+		arrowDistance = 2
 	end
 	
-	if (self:GetParent() == MultiBarBottomRight and C.actionbar.rightbars > 1) then
+	if self:GetParent():GetParent():GetName() == "SpellBookSpellIconsFrame" then return end
+	local point, _, _, _, _ = self:GetParent():GetParent():GetPoint()
+
+	if strfind(point, "BOTTOM") then
+		self.FlyoutArrow:ClearAllPoints()
+		self.FlyoutArrow:SetPoint("TOP", self, "TOP", 0, arrowDistance)
+		SetClampedTextureRotation(self.FlyoutArrow, 0)
+		FlyoutButtonPos(self,buttons,"UP")		
+	else
 		self.FlyoutArrow:ClearAllPoints()
 		self.FlyoutArrow:SetPoint("LEFT", self, "LEFT", -arrowDistance, 0)
 		SetClampedTextureRotation(self.FlyoutArrow, 270)
 		FlyoutButtonPos(self,buttons,"LEFT")
-	elseif (self:GetParent() == MultiBarLeft and not E.lowversion and C.actionbar.bottomrows == 2) then
-		self.FlyoutArrow:ClearAllPoints()
-		self.FlyoutArrow:SetPoint("TOP", self, "TOP", 0, arrowDistance)
-		SetClampedTextureRotation(self.FlyoutArrow, 0)
-		FlyoutButtonPos(self,buttons,"UP")	
-	elseif not self:GetParent():GetParent() == "SpellBookSpellIconsFrame" then
-		FlyoutButtonPos(self,buttons,"UP")
 	end
 end
 
@@ -271,25 +272,24 @@ do
 	
 	for i=1, 6 do
 		_G["VehicleMenuBarActionButton"..i]:StyleButton(true)
-		style(_G["VehicleMenuBarActionButton"..i], true)
+		Style(_G["VehicleMenuBarActionButton"..i], true)
 	end
 end
 
-hooksecurefunc("ActionButton_Update", style)
+hooksecurefunc("ActionButton_Update", Style)
 hooksecurefunc("ActionButton_UpdateHotkeys", E.UpdateHotkey)
-hooksecurefunc("ActionButton_UpdateFlyout", styleflyout)
+hooksecurefunc("ActionButton_UpdateFlyout", StyleFlyout)
 
---[[
-    MultiCastActionBar Skin
-	
-	(C)2010 Darth Android / Telroth - The Venture Co.
+---------------------------------------------------------------
+-- Totem Style, they need a lot more work than "normal" buttons
+-- Because of this, we skin it via separate styling codes
+-- Special thank's to DarthAndroid
+---------------------------------------------------------------
 
-]]
+-- don't continue executing code in this file is not playing a shaman.
+if not E.myclass == "SHAMAN" then return end
 
-if E.myclass ~= "SHAMAN" then return end
-
--- Courtesy Blizzard Inc.
--- I wouldn't have to copy these if they'd just make them not local >.>
+-- Tex Coords for empty buttons
 SLOT_EMPTY_TCOORDS = {
 	[EARTH_TOTEM_SLOT] = {
 		left	= 66 / 128,
@@ -317,209 +317,158 @@ SLOT_EMPTY_TCOORDS = {
 	},
 }
 
-local AddOn_Loaded = CreateFrame("Frame")
-AddOn_Loaded:RegisterEvent("ADDON_LOADED")
-AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
-	if addon ~= "ElvUI" then return end
-
-	Mod_AddonSkins:RegisterSkin("Blizzard_TotemBar",function(Skin,skin,Layout,layout,config)
-		-- Skin Flyout
-		function Skin:SkinMCABFlyoutFrame(flyout, type, parent)
-			local point
-			if ShapeShiftMover then
-				point, _, _, _, _ = ShapeShiftMover:GetPoint()
-			else
-				point, _, _, _, _ = ElvuiShiftBar:GetPoint()
-			end
-			flyout.top:SetTexture(nil)
-			flyout.middle:SetTexture(nil)
-			self:SkinFrame(flyout)
-			flyout:SetBackdropBorderColor(0,0,0,0)
-			flyout:SetBackdropColor(0,0,0,0)
-			-- Skin buttons
-			local last = nil
-			for _,button in ipairs(flyout.buttons) do
-				self:SkinButton(button)
-				if not InCombatLockdown() then
-					button:SetSize(E.petbuttonsize,E.petbuttonsize)
-					button:ClearAllPoints()
-					button:SetPoint("BOTTOM",last,"TOP",0,config.borderWidth)
-				end			
-				if button:IsVisible() then last = button end
-				button:SetBackdropBorderColor(parent:GetBackdropBorderColor())
-				if C["actionbar"].shapeshiftmouseover == true then
-					button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
-					button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
-				end
-			end
-			flyout.buttons[1]:SetPoint("BOTTOM",flyout,"BOTTOM")
-			if type == "slot" then
-				local tcoords = SLOT_EMPTY_TCOORDS[flyout.parent:GetID()]
-				flyout.buttons[1].icon:SetTexCoord(tcoords.left,tcoords.right,tcoords.top,tcoords.bottom)
-			end
-			-- Skin Close button
-			local close = MultiCastFlyoutFrameCloseButton
-			self:SkinButton(close)
-			
-			close:GetHighlightTexture():SetTexture([[Interface\Buttons\ButtonHilight-Square]])
-			close:GetHighlightTexture():SetPoint("TOPLEFT",close,"TOPLEFT",config.borderWidth,-config.borderWidth)
-			close:GetHighlightTexture():SetPoint("BOTTOMRIGHT",close,"BOTTOMRIGHT",-config.borderWidth,config.borderWidth)
-			close:GetNormalTexture():SetTexture(nil)
-			close:ClearAllPoints()
-			if point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" or point == "BOTTOM" then
-				close:SetPoint("BOTTOMLEFT",last,"TOPLEFT",0,4)
-				close:SetPoint("BOTTOMRIGHT",last,"TOPRIGHT",0,4)
-			else
-				if last then
-					close:SetWidth(last:GetWidth())
-				end
-				close:SetPoint("TOP",flyout,"BOTTOM",0,-4)		
-			end
-			close:SetHeight(4*2)
-			close:SetBackdropBorderColor(parent:GetBackdropBorderColor())
-			flyout:ClearAllPoints()
-			if point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" or point == "BOTTOM" then
-				flyout:SetPoint("BOTTOM",parent,"TOP",0,4)
-			else
-				flyout:SetPoint("TOP",parent,"BOTTOM",0,-4)
-			end
-			
-			if C["actionbar"].shapeshiftmouseover == true then
-				flyout:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
-				flyout:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
-				close:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
-				close:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
-			end
-			
-			MultiCastFlyoutFrameOpenButton:Hide()
-		end
-		hooksecurefunc("MultiCastFlyoutFrame_ToggleFlyout",function(self, type, parent) skin:SkinMCABFlyoutFrame(self, type, parent) end)
-		
-		function Skin:SkinMCABFlyoutOpenButton(button, parent)
-			local point
-			if ShapeShiftMover then
-				point, _, _, _, _ = ShapeShiftMover:GetPoint()
-			else
-				point, _, _, _, _ = ElvuiShiftBar:GetPoint()
-			end
-			button:GetHighlightTexture():SetTexture(nil)
-			button:GetNormalTexture():SetTexture(nil)
-			button:SetHeight(E.Scale(4)*3)
+local function StyleTotemFlyout(flyout)
+	-- remove blizzard flyout texture
+	flyout.top:SetTexture(nil)
+	flyout.middle:SetTexture(nil)
+	
+	-- Skin buttons
+	local last = nil
+	
+	for _,button in ipairs(flyout.buttons) do
+		button:SetTemplate("Default")
+		local icon = select(1,button:GetRegions())
+		icon:SetTexCoord(.09,.91,.09,.91)
+		icon:SetDrawLayer("ARTWORK")
+		icon:Point("TOPLEFT",button,"TOPLEFT",2,-2)
+		icon:Point("BOTTOMRIGHT",button,"BOTTOMRIGHT",-2,2)			
+		if not InCombatLockdown() then
+			button:Size(C["actionbar"].petbuttonsize)
 			button:ClearAllPoints()
-			if point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" or point == "BOTTOM" then
-				button:SetPoint("BOTTOMLEFT", parent, "TOPLEFT")
-				button:SetPoint("BOTTOMRIGHT", parent, "TOPRIGHT")
+			if E.TotemOrientationDown then
+				button:Point("TOP",last,"BOTTOM",0,-4)
 			else
-				button:SetPoint("TOPLEFT", parent, "BOTTOMLEFT")
-				button:SetPoint("TOPRIGHT", parent, "BOTTOMRIGHT")			
+				button:Point("BOTTOM",last,"TOP",0,4)
 			end
-			button:SetBackdropColor(0,0,0,0)
-			button:SetBackdropBorderColor(0,0,0,0)
-			if not button.visibleBut then
-				button.visibleBut = CreateFrame("Frame",nil,button)
-				button.visibleBut:SetHeight(E.Scale(4)*2)
-				if point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" or point == "BOTTOM" then
-					button.visibleBut:SetPoint("TOPLEFT",config.barSpacing)
-					button.visibleBut:SetPoint("TOPRIGHT",config.barSpacing)
-				else
-					button.visibleBut:SetPoint("BOTTOMLEFT")
-					button.visibleBut:SetPoint("BOTTOMRIGHT")				
-				end
-				self:SkinFrame(button.visibleBut)
-			end
-			
-			if C["actionbar"].shapeshiftmouseover == true then
-				button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
-				button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
-			end
-			button.visibleBut:SetBackdropBorderColor(parent:GetBackdropBorderColor())
-		end
-		hooksecurefunc("MultiCastFlyoutFrameOpenButton_Show",function(button,_, parent) skin:SkinMCABFlyoutOpenButton(button, parent) end)
-		
-		local bordercolors = {
-			{.58,.23,.10},    -- Fire
-			{.23,.45,.13},    -- Earth
-			{.19,.48,.60},   -- Water
-			{.42,.18,.74},   -- Air
-			{.39,.39,.12}    -- Summon / Recall
-		}
-		
-		function Skin:SkinMCABSlotButton(button, index)
-			self:SkinButton(button)
-			if _G[button:GetName().."Panel"] then _G[button:GetName().."Panel"]:Hide() end
-			button.overlayTex:SetTexture(nil)
-			button.background:SetDrawLayer("ARTWORK")
-			button.background:ClearAllPoints()
-			button.background:SetPoint("TOPLEFT",button,"TOPLEFT",config.borderWidth,-config.borderWidth)
-			button.background:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-config.borderWidth,config.borderWidth)
-			button:SetSize(E.petbuttonsize, E.petbuttonsize)
-			button:SetBackdropBorderColor(unpack(bordercolors[((index-1) % 4) + 1]))
-			style(button, false, true)
-			button:StyleButton(false)
-			if C["actionbar"].shapeshiftmouseover == true then
-				button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
-				button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
-			end
-		end
-		hooksecurefunc("MultiCastSlotButton_Update",function(self, slot) skin:SkinMCABSlotButton(self, slot) end)
-		
-		-- Skin the actual totem buttons
-		function Skin:SkinMCABActionButton(button, index)
-			for i=1, button:GetNumRegions() do
-				local region = select(i, button:GetRegions())
-				if region:GetObjectType() == "Texture" then
-					if region:GetDrawLayer() == "BACKGROUND" then
-						region:SetTexCoord(0.1, 0.1, 0.1, 0.9, 0.9, 0.1, 0.9, 0.9)
-						if not InCombatLockdown() then
-							region:ClearAllPoints()
-							region:SetPoint("TOPLEFT", button.slotButton, "TOPLEFT", config.borderWidth, -config.borderWidth)
-							region:SetPoint("BOTTOMRIGHT", button.slotButton, "BOTTOMRIGHT", -config.borderWidth, config.borderWidth)
-						end
-					end
-				end
-			end
-			button.overlayTex:SetTexture(nil)
-			button.overlayTex:Hide()
-			button:GetNormalTexture():SetTexture(nil)
-			button:GetNormalTexture():Hide()
-			button:GetNormalTexture().Show = E.dummy
-			if _G[button:GetName().."Panel"] then _G[button:GetName().."Panel"]:Hide() end
-			if not InCombatLockdown() then button:SetAllPoints(button.slotButton) end
-			button:SetBackdropBorderColor(unpack(bordercolors[((index-1) % 4) + 1]))
-			button:SetBackdropColor(0,0,0,0)
-			style(button, false, true)
-			button:StyleButton(false)
-			if C["actionbar"].shapeshiftmouseover == true then
-				button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
-				button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
-			end
-		end
-		hooksecurefunc("MultiCastActionButton_Update",function(actionButton, actionId, actionIndex, slot) skin:SkinMCABActionButton(actionButton,actionIndex) end)
-		
-		-- Skin the summon and recall buttons
-		function Skin:SkinMCABSpellButton(button, index)
-			if not button then return end
-			self:SkinButton(button)
-			button:GetNormalTexture():SetTexture(nil)
-			self:SkinBackgroundFrame(button)
-			button:SetBackdropBorderColor(unpack(bordercolors[((index-1)%5)+1]))
-			if not InCombatLockdown() then button:SetSize(E.petbuttonsize, E.petbuttonsize) end
-			_G[button:GetName().."Highlight"]:SetTexture(nil)
-			_G[button:GetName().."NormalTexture"]:SetTexture(nil)
-			style(button, false, true)
-			button:StyleButton(false)
-			if index == 0 then
-				button:ClearAllPoints()
-				button:SetPoint("RIGHT", MultiCastActionButton1, "LEFT", -8, 0)
-			end
-			if C["actionbar"].shapeshiftmouseover == true then
-				button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
-				button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
-			end
-		end
-		hooksecurefunc("MultiCastSummonSpellButton_Update", function(self) skin:SkinMCABSpellButton(self,0) end)
-		hooksecurefunc("MultiCastRecallSpellButton_Update", function(self) skin:SkinMCABSpellButton(self,5) end)
-		
-		local frame = MultiCastActionBarFrame
-	end)
-end)
+		end			
+		if button:IsVisible() then last = button end
+		button:SetBackdropBorderColor(flyout.parent:GetBackdropBorderColor())
+		button:StyleButton()
+	end
+	
+	if E.TotemOrientationDown then
+		flyout.buttons[1]:SetPoint("TOP",flyout,"TOP")
+	else
+		flyout.buttons[1]:SetPoint("BOTTOM",flyout,"BOTTOM")
+	end
+	
+	if flyout.type == "slot" then
+		local tcoords = SLOT_EMPTY_TCOORDS[flyout.parent:GetID()]
+		flyout.buttons[1].icon:SetTexCoord(tcoords.left,tcoords.right,tcoords.top,tcoords.bottom)
+	end
+	
+	-- Skin Close button
+	local close = MultiCastFlyoutFrameCloseButton
+	close:SetTemplate("Default")	
+	close:GetHighlightTexture():SetTexture([[Interface\Buttons\ButtonHilight-Square]])
+	close:GetHighlightTexture():Point("TOPLEFT",close,"TOPLEFT",1,-1)
+	close:GetHighlightTexture():Point("BOTTOMRIGHT",close,"BOTTOMRIGHT",-1,1)
+	close:GetNormalTexture():SetTexture(nil)
+	close:ClearAllPoints()
+	if E.TotemOrientationDown then
+		close:Point("TOPLEFT",last,"BOTTOMLEFT",0,-4)
+		close:SetPoint("TOPRIGHT",last,"BOTTOMRIGHT",0,-4)
+	else
+		close:Point("BOTTOMLEFT",last,"TOPLEFT",0,4)
+		close:Point("BOTTOMRIGHT",last,"TOPRIGHT",0,4)	
+	end
+	close:SetBackdropBorderColor(last:GetBackdropBorderColor())
+	close:Height(8)
+	
+	flyout:ClearAllPoints()
+	if E.TotemOrientationDown then
+		flyout:Point("TOP",flyout.parent,"BOTTOM",0,-4)
+	else
+		flyout:Point("BOTTOM",flyout.parent,"TOP",0,4)
+	end
+end
+hooksecurefunc("MultiCastFlyoutFrame_ToggleFlyout",function(self) StyleTotemFlyout(self) end)
+	
+local function StyleTotemOpenButton(button, parent)
+	button:GetHighlightTexture():SetTexture(nil)
+	button:GetNormalTexture():SetTexture(nil)
+	button:Height(20)
+	button:ClearAllPoints()
+	if E.TotemOrientationDown then
+		button:Point("TOPLEFT", parent, "BOTTOMLEFT", 0, 3)
+		button:Point("TOPRIGHT", parent, "BOTTOMRIGHT", 0, 3)	
+	else
+		button:Point("BOTTOMLEFT", parent, "TOPLEFT", 0, -3)
+		button:Point("BOTTOMRIGHT", parent, "TOPRIGHT", 0, -3)
+	end
+	if not button.visibleBut then
+		button.visibleBut = CreateFrame("Frame",nil,button)
+		button.visibleBut:Height(8)
+		button.visibleBut:Width(C["actionbar"].petbuttonsize)
+		button.visibleBut:SetPoint("CENTER")
+		button.visibleBut.highlight = button.visibleBut:CreateTexture(nil,"HIGHLIGHT")
+		button.visibleBut.highlight:SetTexture([[Interface\Buttons\ButtonHilight-Square]])
+		button.visibleBut.highlight:Point("TOPLEFT",button.visibleBut,"TOPLEFT",1,-1)
+		button.visibleBut.highlight:Point("BOTTOMRIGHT",button.visibleBut,"BOTTOMRIGHT",-1,1)
+		button.visibleBut:SetTemplate("Default")
+	end	
+	
+	button.visibleBut:SetBackdropBorderColor(parent:GetBackdropBorderColor())
+end
+hooksecurefunc("MultiCastFlyoutFrameOpenButton_Show",function(button,_, parent) StyleTotemOpenButton(button, parent) end)
+
+-- the color we use for border
+local bordercolors = {
+	{.23,.45,.13},   -- Earth
+	{.58,.23,.10},   -- Fire
+	{.19,.48,.60},   -- Water
+	{.42,.18,.74},   -- Air
+}
+
+local function StyleTotemSlotButton(button, index)
+	button:SetTemplate("Default")
+	button.overlayTex:SetTexture(nil)
+	button.background:SetDrawLayer("ARTWORK")
+	button.background:ClearAllPoints()
+	button.background:Point("TOPLEFT",button,"TOPLEFT",2, -2)
+	button.background:Point("BOTTOMRIGHT",button,"BOTTOMRIGHT",-2, 2)
+	button:Size(C["actionbar"].petbuttonsize)
+	button:SetBackdropBorderColor(unpack(bordercolors[((index-1) % 4) + 1]))
+	button:StyleButton()
+end
+hooksecurefunc("MultiCastSlotButton_Update",function(self, slot) StyleTotemSlotButton(self,tonumber( string.match(self:GetName(),"MultiCastSlotButton(%d)"))) end)
+
+-- Skin the actual totem buttons
+local function StyleTotemActionButton(button, index)
+	local icon = select(1,button:GetRegions())
+	icon:SetTexCoord(.09,.91,.09,.91)
+	icon:SetDrawLayer("ARTWORK")
+	icon:Point("TOPLEFT",button,"TOPLEFT",2,-2)
+	icon:Point("BOTTOMRIGHT",button,"BOTTOMRIGHT",-2,2)
+	button.overlayTex:SetTexture(nil)
+	button.overlayTex:Hide()
+	button:GetNormalTexture():SetTexture(nil)
+	button.SetNormalTexture = E.dummy
+	if not InCombatLockdown() and button.slotButton then
+		button:ClearAllPoints()
+		button:SetAllPoints(button.slotButton)
+		button:SetFrameLevel(button.slotButton:GetFrameLevel()+1)
+	end
+	button:SetBackdropBorderColor(unpack(bordercolors[((index-1) % 4) + 1]))
+	button:SetBackdropColor(0,0,0,0)
+	button:StyleButton(true)
+end
+hooksecurefunc("MultiCastActionButton_Update",function(actionButton, actionId, actionIndex, slot) StyleTotemActionButton(actionButton,actionIndex) end)
+
+-- Skin the summon and recall buttons
+local function StyleTotemSpellButton(button, index)
+	if not button then return end
+	local icon = select(1,button:GetRegions())
+	icon:SetTexCoord(.09,.91,.09,.91)
+	icon:SetDrawLayer("ARTWORK")
+	icon:Point("TOPLEFT",button,"TOPLEFT",2,-2)
+	icon:Point("BOTTOMRIGHT",button,"BOTTOMRIGHT",-2,2)
+	button:SetTemplate("Default")
+	button:GetNormalTexture():SetTexture(nil)
+	if not InCombatLockdown() then button:Size(C["actionbar"].petbuttonsize) end
+	_G[button:GetName().."Highlight"]:SetTexture(nil)
+	_G[button:GetName().."NormalTexture"]:SetTexture(nil)
+	button:StyleButton()
+end
+hooksecurefunc("MultiCastSummonSpellButton_Update", function(self) StyleTotemSpellButton(self,0) end)
+hooksecurefunc("MultiCastRecallSpellButton_Update", function(self) StyleTotemSpellButton(self,5) end)

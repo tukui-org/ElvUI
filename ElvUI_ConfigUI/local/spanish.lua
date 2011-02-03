@@ -225,7 +225,6 @@
 	ElvuiL.option_actionbar_buttonsize = "Tamaño de los botones de la barra principal"
 	ElvuiL.option_actionbar_buttonspacing = "Espacio entre los botones de la barra principal"
 	ElvuiL.option_actionbar_petbuttonsize = "Tamaño de los botones de la barra de mascota/estancia"
-	ElvuiL.option_actionbar_petbuttonspacing = "Espacio entre los botones de la barra de mascota/estancia"
 	ElvuiL.option_actionbar_swaptopbottombar = "Intercambia la Barra de Acciones de Lugar."
 	ElvuiL.option_actionbar_macrotext = "Muestra el Marco de texto de las Barras de Acción"
 	ElvuiL.option_actionbar_verticalstance = "Barras de estancias en Vertical"

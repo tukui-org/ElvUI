@@ -18,7 +18,7 @@ if C["actionbar"].microbar == true then
 else
 	ElvuiShift:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 2, -2)
 end
-local w = numshape * (E.petbuttonspacing + E.petbuttonsize)
+local w = numshape * (E.buttonspacing + E.petbuttonsize)
 if w < 100 then w = 100 end
 ElvuiShift:SetWidth(w)
 ElvuiShift:SetHeight(E.petbuttonsize)
@@ -27,7 +27,11 @@ if C["actionbar"].hideshapeshift == true then
 	ElvuiShift:Hide()
 end
 
-E.CreateMover(ElvuiShift, "ShapeShiftMover", "Class Bar")
+local function CheckPos()
+	E.TotemOrientationDown = E.TotemBarOrientation()
+end
+
+E.CreateMover(ElvuiShift, "ShapeShiftMover", "Class Bar", true, CheckPos)
 
 -- hide it if not needed and stop executing code
 if C.actionbar.hideshapeshift then ElvuiShift:Hide() return end
@@ -67,14 +71,14 @@ bar:SetScript("OnEvent", function(self, event, ...)
 					button:SetPoint("BOTTOMLEFT", ElvuiShift, 0, 0)
 				else
 					local previous = _G["ShapeshiftButton"..i-1]
-					button:SetPoint("LEFT", previous, "RIGHT", E.petbuttonspacing, 0)
+					button:SetPoint("LEFT", previous, "RIGHT", E.buttonspacing, 0)
 				end
 			else
 				if i == 1 then
 					button:SetPoint("BOTTOMLEFT", ElvuiShift, 0, 0)
 				else
 					local previous = _G["ShapeshiftButton"..i-1]
-					button:SetPoint("TOP", previous, "BOTTOM", 0, -E.petbuttonspacing)
+					button:SetPoint("TOP", previous, "BOTTOM", 0, -E.buttonspacing)
 				end			
 			end
 			local _, name = GetShapeshiftFormInfo(i)

@@ -219,12 +219,10 @@
 	ElvuiL.option_actionbar_buttonsize = "Размер кнопок панели действий"
 	ElvuiL.option_actionbar_buttonspacing = "Промежуток между кнопками панели действий"
 	ElvuiL.option_actionbar_petbuttonsize = "Размер кнопок панели действий для питомца/стоек"
-	ElvuiL.option_actionbar_petbuttonspacing = "Промежуток между кнопками панели действий для питомца/стоек"
 	ElvuiL.option_actionbar_swaptopbottombar = "Swap the top and bottom actionbar positions"
 	ElvuiL.option_actionbar_macrotext = "Показывать название макро на кнопоках"
 	ElvuiL.option_actionbar_verticalstance = "Расположить панель стоек вертикально"
 	ElvuiL.option_actionbar_petbuttonsize = "Размер кнопок стоек/питомца"
-	ElvuiL.option_actionbar_petbuttonspacing = "Расстояние между кнопками стоек/питомца"
 	ElvuiL.option_actionbar_microbar = "Включить микроменю"
 	ElvuiL.option_actionbar_mousemicro = "Показывать микроменю при наведении курсора"
 	

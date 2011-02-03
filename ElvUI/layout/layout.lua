@@ -6,7 +6,7 @@ local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Lo
 E.buttonsize = E.Scale(C["actionbar"].buttonsize)
 E.buttonspacing = E.Scale(C["actionbar"].buttonspacing)
 E.petbuttonsize = E.Scale(C["actionbar"].petbuttonsize)
-E.petbuttonspacing = E.Scale(C["actionbar"].petbuttonspacing)
+E.buttonspacing = E.Scale(C["actionbar"].buttonspacing)
 
 --BOTTOM DUMMY FRAME DOES NOTHING BUT HOLDS FRAME POSITIONS
 local bottompanel = CreateFrame("Frame", "ElvuiBottomPanel", UIParent)
@@ -105,12 +105,12 @@ if C["actionbar"].enable == true then
 	local petbg = CreateFrame("Frame", "ElvuiPetActionBarBackground", UIParent)
 	if C["actionbar"].bottompetbar ~= true then
 		if C["actionbar"].rightbars > 0 then
-			E.CreatePanel(petbg, E.petbuttonsize + (E.petbuttonspacing * 2), (E.petbuttonsize * 10) + (E.petbuttonspacing * 11), "RIGHT", barbgr, "LEFT", E.Scale(-6), 0)
+			E.CreatePanel(petbg, E.petbuttonsize + (E.buttonspacing * 2), (E.petbuttonsize * 10) + (E.buttonspacing * 11), "RIGHT", barbgr, "LEFT", E.Scale(-6), 0)
 		else
-			E.CreatePanel(petbg, E.petbuttonsize + (E.petbuttonspacing * 2), (E.petbuttonsize * 10) + (E.petbuttonspacing * 11), "RIGHT", UIParent, "RIGHT", E.Scale(-6), E.Scale(-13.5))
+			E.CreatePanel(petbg, E.petbuttonsize + (E.buttonspacing * 2), (E.petbuttonsize * 10) + (E.buttonspacing * 11), "RIGHT", UIParent, "RIGHT", E.Scale(-6), E.Scale(-13.5))
 		end
 	else
-		E.CreatePanel(petbg, (E.petbuttonsize * 10) + (E.petbuttonspacing * 11), E.petbuttonsize + (E.petbuttonspacing * 2), "BOTTOM", UIParent, "BOTTOM", 0, E.Scale(4))
+		E.CreatePanel(petbg, (E.petbuttonsize * 10) + (E.buttonspacing * 11), E.petbuttonsize + (E.buttonspacing * 2), "BOTTOM", UIParent, "BOTTOM", 0, E.Scale(4))
 	end
 	
 	local ltpetbg = CreateFrame("Frame", "ElvuiLineToPetActionBarBackground", petbg)
@@ -516,12 +516,12 @@ function PositionAllPanels()
 		else
 			ElvuiPetActionBarBackground:SetPoint("RIGHT", UIParent, "RIGHT", E.Scale(-6), E.Scale(-13.5))
 		end
-		ElvuiPetActionBarBackground:SetSize(E.petbuttonsize + (E.petbuttonspacing * 2), (E.petbuttonsize * 10) + (E.petbuttonspacing * 11))
+		ElvuiPetActionBarBackground:SetSize(E.petbuttonsize + (E.buttonspacing * 2), (E.petbuttonsize * 10) + (E.buttonspacing * 11))
 		ElvuiLineToPetActionBarBackground:SetSize(30, 265)
 		ElvuiLineToPetActionBarBackground:SetPoint("LEFT", ElvuiPetActionBarBackground, "RIGHT", 0, 0)
 	else
 		ElvuiActionBarBackground:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, (E.buttonsize + (E.buttonspacing * 2)) + E.Scale(8))	
-		ElvuiPetActionBarBackground:SetSize((E.petbuttonsize * 10) + (E.petbuttonspacing * 11), E.petbuttonsize + (E.petbuttonspacing * 2))
+		ElvuiPetActionBarBackground:SetSize((E.petbuttonsize * 10) + (E.buttonspacing * 11), E.petbuttonsize + (E.buttonspacing * 2))
 		ElvuiPetActionBarBackground:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, E.Scale(4))
 		ElvuiLineToPetActionBarBackground:SetSize(265, 30)
 		ElvuiLineToPetActionBarBackground:SetPoint("BOTTOM", ElvuiPetActionBarBackground, "TOP", 0, 0)

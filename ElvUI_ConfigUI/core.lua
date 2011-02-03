@@ -263,7 +263,6 @@ local function Local(o)
 	if o == "ElvuiConfigUIactionbarbuttonsize" then o = ElvuiL.option_actionbar_buttonsize end
 	if o == "ElvuiConfigUIactionbarbuttonspacing" then o = ElvuiL.option_actionbar_buttonspacing end
 	if o == "ElvuiConfigUIactionbarpetbuttonsize" then o = ElvuiL.option_actionbar_petbuttonsize end
-	if o == "ElvuiConfigUIactionbarpetbuttonspacing" then o = ElvuiL.option_actionbar_petbuttonspacing end
 	if o == "ElvuiConfigUIactionbarswaptopbottombar" then o = ElvuiL.option_actionbar_swaptopbottombar end
 	if o == "ElvuiConfigUIactionbarmacrotext" then o = ElvuiL.option_actionbar_macrotext end
 	if o == "ElvuiConfigUIactionbarverticalstance" then o = ElvuiL.option_actionbar_verticalstance end

@@ -215,7 +215,6 @@
 	ElvuiL.option_actionbar_buttonsize = "Size of the main action buttons"
 	ElvuiL.option_actionbar_buttonspacing = "Spacing of the main action buttons"
 	ElvuiL.option_actionbar_petbuttonsize = "Size of the pet/stance action buttons"
-	ElvuiL.option_actionbar_petbuttonspacing = "Spacing of the pet/stance action buttons"
 	ElvuiL.option_actionbar_swaptopbottombar = "Swap the top and bottom actionbar positions"
 	
 	-- arena

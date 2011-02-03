@@ -219,11 +219,9 @@
 	ElvuiL.option_actionbar_buttonsize = "主要熱鍵大小"
 	ElvuiL.option_actionbar_buttonspacing = "主要熱鍵間隔距離"
 	ElvuiL.option_actionbar_petbuttonsize = "寵物/姿態/圖騰熱鍵大小"
-	ElvuiL.option_actionbar_petbuttonspacing = "寵物/姿態/圖騰熱鍵鍵格距離"
 	ElvuiL.option_actionbar_macrotext = "快捷鍵顯示巨集名稱"
 	ElvuiL.option_actionbar_verticalstance = "直立式姿態列"
 	ElvuiL.option_actionbar_petbuttonsize = "寵物/姿態列快捷鍵大小"
-	ElvuiL.option_actionbar_petbuttonspacing = "寵物/姿態列快捷鍵間隔"
 	ElvuiL.option_actionbar_swaptopbottombar = "Swap the top and bottom actionbar positions"
 	
 	-- arena

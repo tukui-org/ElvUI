@@ -214,7 +214,6 @@ if GetLocale() == "frFR" then
 	ElvuiL.option_actionbar_buttonsize = "Taille des boutons de la barre d'action"
 	ElvuiL.option_actionbar_buttonspacing = "Espace entre les boutons de la barre d'action"
 	ElvuiL.option_actionbar_petbuttonsize = "Taille de la barre d'action du familier / de position"
-	ElvuiL.option_actionbar_petbuttonspacing = "Espace entre les boutons de la barre d'action du familier / de position"
 	ElvuiL.option_actionbar_swaptopbottombar = "Intervertir les positions des 2 barres d'actions en bas."
 	
 	-- arena
