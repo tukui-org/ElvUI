@@ -125,7 +125,7 @@ local function CreateShadow(f, t)
 	backdropr, backdropg, backdropb = 0, 0, 0
 	
 	if t == "ClassColor" then
-		local c = T.oUF_colors.class[class]
+		local c = E.colors.class[class]
 		borderr, borderg, borderb = c[1], c[2], c[3]
 		backdropr, backdropg, backdropb = unpack(C["media"].backdropcolor)
 	end

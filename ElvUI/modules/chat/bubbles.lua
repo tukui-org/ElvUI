@@ -69,7 +69,7 @@ chatbubblehook:SetScript("OnUpdate", function(chatbubblehook, elapsed)
 			frame:SetBackdropBorderColor(r, g, b, .8)
 			
 			-- bubbles is unfortunatly not compatible with eyefinity, we hide it event if they are enabled. :(
-			if T.eyefinity then frame:SetScale(0.00001) end			
+			if E.eyefinity then frame:SetScale(0.00001) end			
 		end
 	end
 end)
