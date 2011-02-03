@@ -8,7 +8,7 @@ local myPlayerName  = UnitName("player")
 E.CreatedMovers = {}
 
 local print = function(...)
-	return print('|cffFF6347ElvUI:|r', ...)
+	return print('|cff1784d1ElvUI:|r', ...)
 end
 
 local function CreateMover(parent, name, text, overlay, postdrag)

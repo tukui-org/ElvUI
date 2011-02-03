@@ -1,5 +1,5 @@
 ## Interface: 40000
-## Title: |cffFF6347ElvUI Config UI|r
+## Title: |cff1784d1ElvUI Config UI|r
 ## Notes: Someday there is only pantesaur left.
 ## Author: Tohveli
 ## Editor: Elv, Tukz

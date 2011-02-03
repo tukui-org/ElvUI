@@ -174,7 +174,7 @@ local function SetupFlyoutButton()
 		--prevent error if you don't have max ammount of buttons
 		if _G["SpellFlyoutButton"..i] then
 			style(_G["SpellFlyoutButton"..i], false)
-			E.StyleButton(_G["SpellFlyoutButton"..i], true)
+			_G["SpellFlyoutButton"..i]:StyleButton(true)
 			if C["actionbar"].rightbarmouseover == true then
 				SpellFlyout:HookScript("OnEnter", function(self) RightBarMouseOver(1) end)
 				SpellFlyout:HookScript("OnLeave", function(self) RightBarMouseOver(0) end)
@@ -257,20 +257,20 @@ end
 
 do	
 	for i = 1, 12 do
-		E.StyleButton(_G["MultiBarLeftButton"..i], true)
-		E.StyleButton(_G["MultiBarRightButton"..i], true)
-		E.StyleButton(_G["MultiBarBottomRightButton"..i], true)
-		E.StyleButton(_G["MultiBarBottomLeftButton"..i], true)
-		E.StyleButton(_G["ActionButton"..i], true)
+		_G["MultiBarLeftButton"..i]:StyleButton(true)
+		_G["MultiBarRightButton"..i]:StyleButton(true)
+		_G["MultiBarBottomRightButton"..i]:StyleButton(true)
+		_G["MultiBarBottomLeftButton"..i]:StyleButton(true)
+		_G["ActionButton"..i]:StyleButton(true)
 	end
 	 
 	for i=1, 10 do
-		E.StyleButton(_G["ShapeshiftButton"..i], true)
-		E.StyleButton(_G["PetActionButton"..i], true)	
+		_G["ShapeshiftButton"..i]:StyleButton(true)
+		_G["PetActionButton"..i]:StyleButton(true)
 	end
 	
 	for i=1, 6 do
-		E.StyleButton(_G["VehicleMenuBarActionButton"..i], true)
+		_G["VehicleMenuBarActionButton"..i]:StyleButton(true)
 		style(_G["VehicleMenuBarActionButton"..i], true)
 	end
 end
@@ -455,7 +455,7 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			button:SetSize(E.petbuttonsize, E.petbuttonsize)
 			button:SetBackdropBorderColor(unpack(bordercolors[((index-1) % 4) + 1]))
 			style(button, false, true)
-			E.StyleButton(button, false)
+			button:StyleButton(false)
 			if C["actionbar"].shapeshiftmouseover == true then
 				button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
 				button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
@@ -488,7 +488,7 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			button:SetBackdropBorderColor(unpack(bordercolors[((index-1) % 4) + 1]))
 			button:SetBackdropColor(0,0,0,0)
 			style(button, false, true)
-			E.StyleButton(button, false)
+			button:StyleButton(false)
 			if C["actionbar"].shapeshiftmouseover == true then
 				button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
 				button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
@@ -507,7 +507,7 @@ AddOn_Loaded:SetScript("OnEvent", function(self, event, addon)
 			_G[button:GetName().."Highlight"]:SetTexture(nil)
 			_G[button:GetName().."NormalTexture"]:SetTexture(nil)
 			style(button, false, true)
-			E.StyleButton(button, false)
+			button:StyleButton(false)
 			if index == 0 then
 				button:ClearAllPoints()
 				button:SetPoint("RIGHT", MultiCastActionButton1, "LEFT", -8, 0)

@@ -43,7 +43,7 @@ local Loc = setmetatable({}, {
 
 
 local function Print (x)
-	DEFAULT_CHAT_FRAME:AddMessage("|cffFF6347Elvui:|r " .. x)
+	DEFAULT_CHAT_FRAME:AddMessage("|cff1784d1Elvui:|r " .. x)
 end
 
 local function Stuffing_Sort(args)
@@ -771,7 +771,7 @@ function Stuffing:Layout(lb)
 					b.frame:Show()
 					E.SetNormTexTemplate(b.frame)
 					--b.frame:SetBackdropColor(unpack(C["media"].backdropfadecolor))
-					E.StyleButton(b.frame)
+					b.frame:StyleButton(false)
 					local clink = GetContainerItemLink
 					if (clink and b.rarity and b.rarity > 1) then
 						b.frame:SetBackdropBorderColor(GetItemQualityColor(b.rarity))
@@ -969,7 +969,7 @@ function Stuffing:PLAYER_ENTERING_WORLD()
 		t:SetPoint("BOTTOMRIGHT", slot, E.Scale(-2), E.Scale(2))
 		E.SetNormTexTemplate(slot)
 		
-		E.StyleButton(slot, false)
+		slot:StyleButton(false)
 	end
 
 

@@ -282,30 +282,29 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 	E.ChatLIn = true
 	E.ChatRIn = true
 	
-
-	local chatrightfound = false
-	for i = 1, NUM_CHAT_WINDOWS do
-		local chat = _G[format("ChatFrame%s", i)]
-		local tab = _G[format("ChatFrame%sTab", i)]
-		local id = chat:GetID()
-		local name = FCF_GetChatWindowInfo(id)
-		local point = GetChatWindowSavedPosition(id)
-		local _, fontSize = FCF_GetChatWindowInfo(id)
-		local button = _G[format("ButtonCF%d", i)]
-		local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
-		
-		if point == "BOTTOMRIGHT" and C["chat"].rightchat == true and chat:IsShown() and docked == nil then
+	E.Delay(10, function()
+		local chatrightfound = false
+		if C["chat"].rightchat == true then
+			for i = 1, NUM_CHAT_WINDOWS do
+				local chat = _G[format("ChatFrame%s", i)]
+				local tab = _G[format("ChatFrame%sTab", i)]
+				local id = chat:GetID()
+				local point = GetChatWindowSavedPosition(id)
+				local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
+				
+				if point == "BOTTOMRIGHT" and chat:IsShown() then
+					chatrightfound = true
+					tab:SetParent(ChatRBackground)
+				end
+			end
+		else
 			chatrightfound = true
-			tab:SetParent(ChatRBackground)
-		end
-		
-		if C["chat"].rightchat ~= true then chatrightfound = true end
-		
-		if i == NUM_CHAT_WINDOWS and chatrightfound == false and not StaticPopup1:IsShown() then
-			StaticPopup_Show("CHAT_WARN")
 		end
 
-	end
+		if chatrightfound == false and not StaticPopup1:IsShown() then
+			StaticPopup_Show("CHAT_WARN")
+		end	
+	end)
 	GeneralDockManager:SetParent(ChatLBackground)
 	
 	--Fixing fucked up border on right chat button, really do not understand why this is happening

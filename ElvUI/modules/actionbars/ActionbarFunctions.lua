@@ -3,54 +3,6 @@
 ------------------------------------------------------------------------
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
--- styleButton function authors are Chiril & Karudon.
-function E.StyleButton(b, checked) 
-    local name = b:GetName()
-
-    local button          = _G[name]
-    local icon            = _G[name.."Icon"]
-    local count           = _G[name.."Count"]
-    local border          = _G[name.."Border"]
-    local hotkey          = _G[name.."HotKey"]
-    local cooldown        = _G[name.."Cooldown"]
-    local nametext        = _G[name.."Name"]
-    local flash           = _G[name.."Flash"]
-    local normaltexture   = _G[name.."NormalTexture"]
-	local icontexture	= _G[name.."IconTexture"]
- 
-    local hover = b:CreateTexture("frame", nil, self) -- hover
-    hover:SetTexture(1,1,1,0.3)
-    hover:SetHeight(button:GetHeight())
-    hover:SetWidth(button:GetWidth())
-    hover:SetPoint("TOPLEFT",button,2,-2)
-    hover:SetPoint("BOTTOMRIGHT",button,-2,2)
-    button:SetHighlightTexture(hover)
- 
-    local pushed = b:CreateTexture("frame", nil, self) -- pushed
-    pushed:SetTexture(0.1,0.1,0.1,0.5)
-    pushed:SetHeight(button:GetHeight())
-    pushed:SetWidth(button:GetWidth())
-    pushed:SetPoint("TOPLEFT",button,2,-2)
-    pushed:SetPoint("BOTTOMRIGHT",button,-2,2)
-    button:SetPushedTexture(pushed)
-	
-	if checked then
-		local checked = b:CreateTexture("frame", nil, self) -- checked
-		checked:SetTexture(1,1,1,0.3)
-		checked:SetHeight(button:GetHeight())
-		checked:SetWidth(button:GetWidth())
-		checked:SetPoint("TOPLEFT",button,2,-2)
-		checked:SetPoint("BOTTOMRIGHT",button,-2,2)
-		button:SetCheckedTexture(checked)
-	end
-		
-	if cooldown then
-		cooldown:ClearAllPoints()
-		cooldown:SetPoint("TOPLEFT", button, "TOPLEFT", 2, -2)
-		cooldown:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", -2, 2)	
-	end
-end
-
 function E.ElvuiPetBarUpdate(self, event)
 	local petActionButton, petActionIcon, petAutoCastableTexture, petAutoCastShine
 	for i=1, NUM_PET_ACTION_SLOTS, 1 do

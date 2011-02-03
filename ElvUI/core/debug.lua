@@ -2,7 +2,7 @@
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 local print = function(...)
-	return print('|cffFF6347ElvUI:|r', ...)
+	return print('|cff1784d1ElvUI:|r', ...)
 end
 
 function E.debug(...)
