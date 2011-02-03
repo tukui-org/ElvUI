@@ -743,13 +743,8 @@ local function OnUnitFramesLoad(self, event, addon)
 				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.TotemBar, "TOPLEFT", xOffset1, yOffset );
 				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.TotemBar, "TOPRIGHT", xOffset2, yOffset );								
 			else
-				if E.myclass == "DRUID" or E.myclass == "ROGUE" then
-					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Health, "TOPLEFT", xOffset1, yOffset + 14 );
-					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Health, "TOPRIGHT", xOffset2, yOffset + 14 );				
-				else
-					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Health, "TOPLEFT", xOffset1, yOffset );
-					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Health, "TOPRIGHT", xOffset2, yOffset );	
-				end
+				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player, "TOPLEFT", xOffset1, yOffset );
+				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player, "TOPRIGHT", xOffset2, yOffset );	
 			end
 		end
 		
@@ -804,13 +799,8 @@ local function OnUnitFramesLoad(self, event, addon)
 				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.TotemBar, "TOPLEFT", xOffset1, yOffset );
 				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.TotemBar, "TOPRIGHT", xOffset2, yOffset );								
 			else
-				if E.myclass == "DRUID" or E.myclass == "ROGUE" then
-					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Health, "TOPLEFT", xOffset1, yOffset + 14 );
-					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Health, "TOPRIGHT", xOffset2, yOffset + 14 );				
-				else
-					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Health, "TOPLEFT", xOffset1, yOffset );
-					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Health, "TOPRIGHT", xOffset2, yOffset );	
-				end
+				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player, "TOPLEFT", xOffset1, yOffset );
+				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player, "TOPRIGHT", xOffset2, yOffset );	
 			end
 		end
 		playerFrame:Show();
@@ -874,8 +864,8 @@ local function OnUnitFramesLoad(self, event, addon)
 					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Health, "TOPLEFT", xOffset1, yOffset + 14 );
 					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Health, "TOPRIGHT", xOffset2, yOffset + 14 );				
 				else
-					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Health, "TOPLEFT", xOffset1, yOffset );
-					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Health, "TOPRIGHT", xOffset2, yOffset );	
+					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player, "TOPLEFT", xOffset1, yOffset );
+					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player, "TOPRIGHT", xOffset2, yOffset );	
 				end
 			end
 		end
@@ -942,8 +932,8 @@ local function OnUnitFramesLoad(self, event, addon)
 				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.TotemBar, "TOPLEFT", xOffset1, yOffset );
 				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.TotemBar, "TOPRIGHT", xOffset2, yOffset );								
 			else
-					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Health, "TOPLEFT", xOffset1, yOffset );
-					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Health, "TOPRIGHT", xOffset2, yOffset );	
+				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player, "TOPLEFT", xOffset1, yOffset );
+				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player, "TOPRIGHT", xOffset2, yOffset );	
 			end
 		end
 		playerFrame:Show();

@@ -35,8 +35,8 @@
 	ElvuiL.option_nameplates_enhancethreat = "Aktiviere Bedrohungsanzeige, ändert sich automatisch je nach deiner Rolle"
 	ElvuiL.option_nameplates_showhealth = "Zeige Leben auf den Namensplaketten"
  	ElvuiL.option_nameplates_combat = "Zeige gegnerische Namensplaketten nur im Kampf"
- 	ElvuiL.option_nameplates_goodcolor = "Good threat color, varies depending if your a tank or dps/heal"
-	ElvuiL.option_nameplates_badcolor = "Bad threat color, varies depending if your a tank or dps/heal"
+ 	ElvuiL.option_nameplates_goodcolor = "Bedrohung im grünen Bereich, variiert abhängig davon, ob man Tank oder DPS/Heal ist"
+	ElvuiL.option_nameplates_badcolor = "Bedrohung im roten Bereich, variiert abhängig davon, ob man Tank oder DPS/Heal ist"
 	ElvuiL.option_nameplates_transitioncolor = "Bedrohung verlieren/erhalten Farbe"
 
 	-- addon skins
@@ -45,7 +45,7 @@
 	ElvuiL.option_skin_omen = "Omen"
 	ElvuiL.option_skin_recount = "Recount"
 	ElvuiL.option_skin_skada = "Skada"
-	ElvuiL.option_hookdxeright = "Erzwingt die Position von DXEs oberem Leistenanker über dem rechten Chatfenster"
+	ElvuiL.option_hookdxeright = "Erzwingt die Position von DXEs am oberem Leistenanker über dem rechten Chatfenster"
  
 	-- classtimer
 	ElvuiL.option_classtimer = "Klassentimer"
@@ -257,5 +257,5 @@
 	ElvuiL.option_resetchar = "Bist du sicher, dass du die Einstellungen für diesen Charakter auf Standard zurücksetzen willst?"
 	ElvuiL.option_resetall = "Bist du sicher, dass du alle Einstellungen auf Standard zurücksetzen willst?"
 	ElvuiL.option_perchar = "Bist du sicher, dass du die Einstellung für 'Einstellungen pro Charakter' wechseln willst?"
-	ElvuiL.option_makeselection = "Sie müssen erst eine Auswahl treffen bevor Sie mit den Einstellungen fortfahren können."
+	ElvuiL.option_makeselection = "Sie müssen erst eine Auswahl treffen, bevor Sie mit den Einstellungen fortfahren können."
 end
