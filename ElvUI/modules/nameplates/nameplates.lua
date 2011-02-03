@@ -40,7 +40,7 @@ end
 
 SetCVar("bloatthreat", 0) -- stop resizing nameplate according to threat level.
 SetCVar("bloattest", 0)
-if C["nameplate"].overlap == true then
+if C["nameplate"].overlap == true or E.eyefinity then
 	SetCVar("spreadnameplates", "0")
 else
 	SetCVar("spreadnameplates", "1")

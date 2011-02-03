@@ -1,13 +1,21 @@
-
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
+if C["chat"].bubbles ~= true or IsAddOnLoaded("BossEncounter2") then return end
 
-if C["chat"].bubbles ~= true then return end
 local chatbubblehook = CreateFrame("Frame", nil, UIParent)
 local noscalemult = E.mult * C["general"].uiscale
 local tslu = 0
 local numkids = 0
 local bubbles = {}
+
+if E.eyefinity then
+	-- hide options, disable bubbles, not compatible eyefinity
+	InterfaceOptionsSocialPanelChatBubbles:SetScale(0.00001)
+	InterfaceOptionsSocialPanelPartyChat:SetScale(0.00001)
+	SetCVar("chatBubbles", 0)
+	SetCVar("chatBubblesParty", 0)
+end
+
 
 local function skinbubble(frame)
 	for i=1, frame:GetNumRegions() do
@@ -59,6 +67,9 @@ chatbubblehook:SetScript("OnUpdate", function(chatbubblehook, elapsed)
 		for i, frame in next, bubbles do
 			local r, g, b = frame.text:GetTextColor()
 			frame:SetBackdropBorderColor(r, g, b, .8)
+			
+			-- bubbles is unfortunatly not compatible with eyefinity, we hide it event if they are enabled. :(
+			if T.eyefinity then frame:SetScale(0.00001) end			
 		end
 	end
 end)

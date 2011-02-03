@@ -11,4 +11,5 @@
 	<Script file="reminder.lua"/>
 	<Script file="mirror.lua"/>
 	<Script file="raidmarker.lua"/>
+	<Script file="damage.lua"/>
 </Ui>

@@ -3,9 +3,6 @@ local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Lo
 
 if not C["actionbar"].enable == true then return end
 
-local myPlayerRealm = GetCVar("realmName")
-local myPlayerName = E.myname
-
 local function Button_OnEnter(self)
 	self.Text:SetTextColor(1, 1, 1)
 	self:SetBackdropBorderColor(unpack(C["media"].valuecolor))
@@ -93,11 +90,11 @@ barloader:SetScript("OnEvent", function(self)
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 	
 	if ElvuiData == nil then ElvuiData = {} end
-	if ElvuiData[myPlayerRealm] == nil then ElvuiData[myPlayerRealm] = {} end
-	if ElvuiData[myPlayerRealm][myPlayerName] == nil then ElvuiData[myPlayerRealm][myPlayerName] = {} end
-	if ElvuiData[myPlayerRealm][myPlayerName]["actionbar"] == nil then ElvuiData[myPlayerRealm][myPlayerName]["actionbar"] = {} end
+	if ElvuiData[E.myrealm] == nil then ElvuiData[E.myrealm] = {} end
+	if ElvuiData[E.myrealm][E.myname] == nil then ElvuiData[E.myrealm][E.myname] = {} end
+	if ElvuiData[E.myrealm][E.myname]["actionbar"] == nil then ElvuiData[E.myrealm][E.myname]["actionbar"] = {} end
 	
-	E["actionbar"] = ElvuiData[myPlayerRealm][myPlayerName]["actionbar"]
+	E["actionbar"] = ElvuiData[E.myrealm][E.myname]["actionbar"]
 	
 	--Default settings
 	if E["actionbar"].splitbar == nil then E["actionbar"].splitbar = true end

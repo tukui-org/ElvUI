@@ -34,6 +34,22 @@ ElvuiFonts:SetScript("OnEvent", function(self, event, addon)
 	DAMAGE_TEXT_FONT   = COMBAT
 	STANDARD_TEXT_FONT = NORMAL
 	
+	if E.eyefinity then
+		-- damage are huge on eyefinity, so we disable it
+		InterfaceOptionsCombatTextPanelTargetDamage:Hide()
+		InterfaceOptionsCombatTextPanelPeriodicDamage:Hide()
+		InterfaceOptionsCombatTextPanelPetDamage:Hide()
+		InterfaceOptionsCombatTextPanelHealing:Hide()
+		SetCVar("CombatLogPeriodicSpells",0)
+		SetCVar("PetMeleeDamage",0)
+		SetCVar("CombatDamage",0)
+		SetCVar("CombatHealing",0)
+		
+		-- set an invisible font for xp, honor kill, etc
+		local INVISIBLE = [=[Interface\Addons\ElvUI\media\fonts\Invisible.ttf]=]
+		COMBAT = INVISIBLE
+	end	
+	
 	-- Base fonts
 	SetFont(GameTooltipHeader,                  NORMAL, C["general"].fontscale)
 	SetFont(NumberFont_OutlineThick_Mono_Small, NUMBER, C["general"].fontscale, "OUTLINE")
