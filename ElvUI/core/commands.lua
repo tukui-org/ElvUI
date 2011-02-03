@@ -133,9 +133,9 @@ SlashCmdList.MOVEUI = function()
 		end	
 		
 		if locked ~= true then
-			GameTooltip:AddLine(LOCKED,1,1,1)
+			GameTooltip:AddLine(UNLOCK.." "..BUG_CATEGORY5,1,1,1)
 		else
-			GameTooltip:AddLine(UNLOCK,unpack(C["media"].valuecolor))
+			GameTooltip:AddLine(LOCK.." "..BUG_CATEGORY5,unpack(C["media"].valuecolor))
 		end
 	end
 end
