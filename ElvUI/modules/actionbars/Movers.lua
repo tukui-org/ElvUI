@@ -1,7 +1,10 @@
 --Create interactable actionbars
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not C["actionbar"].enable == true or not IsAddOnLoaded("ElvUI_ConfigUI") then return end
+if not C["actionbar"].enable == true then return end
+
+local myPlayerRealm = GetCVar("realmName")
+local myPlayerName = E.myname
 
 local function Button_OnEnter(self)
 	self.Text:SetTextColor(1, 1, 1)
@@ -43,22 +46,8 @@ local function CreateMoverButton(name, text)
 end
 
 local function SaveBars(var, val)
-	C["actionbar"][var] = val
-	PositionAllBars()
-	
-	--Save configui variables
-	local myPlayerRealm = GetCVar("realmName")
-	local myPlayerName  = E.myname
-
-	if ElvuiConfigAll[myPlayerRealm][myPlayerName] == true then
-		if not ElvuiConfig then ElvuiConfig = {} end
-		if not ElvuiConfig["actionbar"] then ElvuiConfig["actionbar"] = {} end
-		ElvuiConfig["actionbar"][var] = val
-	else
-		if not ElvuiConfigSettings then ElvuiConfigSettings = {} end
-		if not ElvuiConfigSettings["actionbar"] then ElvuiConfigSettings["actionbar"] = {} end
-		ElvuiConfigSettings["actionbar"][var] = val
-	end
+	E["actionbar"][var] = val
+	E.PositionAllBars()
 end
 
 function E.ToggleABLock()
@@ -77,7 +66,7 @@ function E.ToggleABLock()
 			ElvuiInfoLeftRButton.Text:SetTextColor(1,1,1)
 		else
 			_G[btnnames]:EnableMouse(true)
-			if btnnames == "RightBarBig" and not (C["actionbar"].rightbars ~= 0 or (C["actionbar"].bottomrows == 3 and C["actionbar"].splitbar == true)) then
+			if btnnames == "RightBarBig" and not (E["actionbar"].rightbars ~= 0 or (E["actionbar"].bottomrows == 3 and E["actionbar"].splitbar == true)) then
 				_G[btnnames]:Show()
 			elseif btnnames ~= "RightBarBig" then
 				_G[btnnames]:Show()
@@ -103,7 +92,19 @@ barloader:RegisterEvent("PLAYER_ENTERING_WORLD")
 barloader:SetScript("OnEvent", function(self)
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 	
-	if C["actionbar"].splitbar == true then
+	if ElvuiData == nil then ElvuiData = {} end
+	if ElvuiData[myPlayerRealm] == nil then ElvuiData[myPlayerRealm] = {} end
+	if ElvuiData[myPlayerRealm][myPlayerName] == nil then ElvuiData[myPlayerRealm][myPlayerName] = {} end
+	if ElvuiData[myPlayerRealm][myPlayerName]["actionbar"] == nil then ElvuiData[myPlayerRealm][myPlayerName]["actionbar"] = {} end
+	
+	E["actionbar"] = ElvuiData[myPlayerRealm][myPlayerName]["actionbar"]
+	
+	--Default settings
+	if E["actionbar"].splitbar == nil then E["actionbar"].splitbar = true end
+	if E["actionbar"].bottomrows == nil then E["actionbar"].bottomrows = 1 end
+	if E["actionbar"].rightbars == nil then E["actionbar"].rightbars = 0 end
+	
+	if E["actionbar"].splitbar == true then
 		LeftSplit:SetPoint("TOPRIGHT", ElvuiSplitActionBarLeftBackground, "TOPLEFT", E.Scale(-4), 0)
 		LeftSplit:SetPoint("BOTTOMLEFT", ElvuiSplitActionBarLeftBackground, "BOTTOMLEFT", E.Scale(-19), 0)
 		LeftSplit.Text:SetText(">")
@@ -119,7 +120,7 @@ barloader:SetScript("OnEvent", function(self)
 		RightSplit:SetPoint("BOTTOMRIGHT", ElvuiMainMenuBar, "BOTTOMRIGHT", E.Scale(19), 0)
 	end
 	
-	if C["actionbar"].bottomrows == 3 then
+	if E["actionbar"].bottomrows == 3 then
 		TopMainBar.Text:SetText("-")
 	else
 		TopMainBar.Text:SetText("+")
@@ -164,7 +165,7 @@ barloader:SetScript("OnEvent", function(self)
 		end
 	end)
 	
-	if C["actionbar"].rightbars ~= 0 or (C["actionbar"].bottomrows == 3 and C["actionbar"].splitbar == true) then
+	if E["actionbar"].rightbars ~= 0 or (E["actionbar"].bottomrows == 3 and E["actionbar"].splitbar == true) then
 		RightBarBig:Hide()
 	end
 	
@@ -195,13 +196,14 @@ barloader:SetScript("OnEvent", function(self)
 	
 	E.ABLock = false
 	ElvuiInfoLeftRButton.Text:SetTextColor(1,1,1)
+	E.PositionAllBars()
 end)
 
 --Setup button clicks
 do
 	LeftSplit:SetScript("OnMouseDown", function(self)
 		if InCombatLockdown() then return end	
-		if C["actionbar"].splitbar ~= true then
+		if E["actionbar"].splitbar ~= true then
 			SaveBars("splitbar", true)
 			LeftSplit.Text:SetText(">")
 			LeftSplit:ClearAllPoints()
@@ -229,7 +231,7 @@ do
 	RightSplit:SetScript("OnMouseDown", function(self)
 		if InCombatLockdown() then return end
 		
-		if C["actionbar"].splitbar ~= true then
+		if E["actionbar"].splitbar ~= true then
 			SaveBars("splitbar", true)
 			LeftSplit.Text:SetText(">")
 			LeftSplit:ClearAllPoints()
@@ -257,13 +259,13 @@ do
 	TopMainBar:SetScript("OnMouseDown", function(self)
 		if InCombatLockdown() then return end
 		
-		if C["actionbar"].bottomrows == 1 then
+		if E["actionbar"].bottomrows == 1 then
 			SaveBars("bottomrows", 2)
 			TopMainBar.Text:SetText("+")
-		elseif C["actionbar"].bottomrows == 2 then
+		elseif E["actionbar"].bottomrows == 2 then
 			SaveBars("bottomrows", 3)
 			TopMainBar.Text:SetText("-")
-		elseif C["actionbar"].bottomrows == 3 then
+		elseif E["actionbar"].bottomrows == 3 then
 			SaveBars("bottomrows", 1)
 			TopMainBar.Text:SetText("+")
 		end
@@ -283,11 +285,11 @@ do
 	RightBarInc:SetScript("OnMouseDown", function(self)
 		if InCombatLockdown() then return end
 		
-		if C["actionbar"].rightbars == 1 then
+		if E["actionbar"].rightbars == 1 then
 			SaveBars("rightbars", 2)
-		elseif C["actionbar"].rightbars == 2 then
+		elseif E["actionbar"].rightbars == 2 then
 			SaveBars("rightbars", 3)
-		elseif C["actionbar"].rightbars == 3 then
+		elseif E["actionbar"].rightbars == 3 then
 			SaveBars("rightbars", 0)
 			RightBarBig:Show()
 			RightBarBig:ClearAllPoints()
@@ -307,7 +309,7 @@ do
 	RightBarDec:SetScript("OnMouseDown", function(self)
 		if InCombatLockdown() then return end
 		
-		if C["actionbar"].rightbars == 1 then
+		if E["actionbar"].rightbars == 1 then
 			SaveBars("rightbars", 0)
 			RightBarBig:Show()
 			RightBarBig:ClearAllPoints()
@@ -318,9 +320,9 @@ do
 				RightBarBig:SetPoint("TOPRIGHT", UIParent, "RIGHT", E.Scale(-1), (ElvuiActionBarBackgroundRight:GetHeight() * 0.2))
 				RightBarBig:SetPoint("BOTTOMLEFT", UIParent, "RIGHT", E.Scale(-16), -(ElvuiActionBarBackgroundRight:GetHeight() * 0.2))		
 			end
-		elseif C["actionbar"].rightbars == 2 then
+		elseif E["actionbar"].rightbars == 2 then
 			SaveBars("rightbars", 1)
-		elseif C["actionbar"].rightbars == 3 then
+		elseif E["actionbar"].rightbars == 3 then
 			SaveBars("rightbars", 2)
 		end		
 		

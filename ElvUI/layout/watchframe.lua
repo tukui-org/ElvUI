@@ -23,30 +23,30 @@ end
 
 function E.PostWatchMove()
 	if E.Movers["WatchFrameMover"]["moved"] == false then
-		PositionWatchFrame()
+		E.PositionWatchFrame()
 	end
 end
 
-function PositionWatchFrame()
+function E.PositionWatchFrame()
 	if fired == true and E.Movers["WatchFrameMover"]["moved"] == true then return end
 	
 	if WatchFrameMover then
 		if E.Movers["WatchFrameMover"]["moved"] == true then return end
 
 		WatchFrameMover:ClearAllPoints()
-		if C.actionbar.rightbars == 3 then
+		if E.actionbar.rightbars == 3 then
 			if C["actionbar"].bottompetbar ~= true then
 				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-210), E.Scale(-300))
 			else
 				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-165), E.Scale(-300))
 			end
-		elseif C.actionbar.rightbars == 2 then
+		elseif E.actionbar.rightbars == 2 then
 			if C["actionbar"].bottompetbar ~= true then
 				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-190), E.Scale(-300))
 			else
 				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-140), E.Scale(-300))
 			end
-		elseif C.actionbar.rightbars == 1 then
+		elseif E.actionbar.rightbars == 1 then
 			if C["actionbar"].bottompetbar ~= true then
 				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-160), E.Scale(-300))
 			else
@@ -61,19 +61,19 @@ function PositionWatchFrame()
 		end		
 	else
 		WatchFrameHolder:ClearAllPoints()
-		if C.actionbar.rightbars == 3 then
+		if E.actionbar.rightbars == 3 then
 			if C["actionbar"].bottompetbar ~= true then
 				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-210), E.Scale(-300))
 			else
 				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-165), E.Scale(-300))
 			end
-		elseif C.actionbar.rightbars == 2 then
+		elseif E.actionbar.rightbars == 2 then
 			if C["actionbar"].bottompetbar ~= true then
 				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-190), E.Scale(-300))
 			else
 				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-140), E.Scale(-300))
 			end
-		elseif C.actionbar.rightbars == 1 then
+		elseif E.actionbar.rightbars == 1 then
 			if C["actionbar"].bottompetbar ~= true then
 				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-160), E.Scale(-300))
 			else
@@ -92,7 +92,7 @@ function PositionWatchFrame()
 end
 
 local function setup()
-	PositionWatchFrame()
+	E.PositionWatchFrame()
 	
 	local screenheight = GetScreenHeight()
 	ElvuiWatchFrame:SetSize(1,screenheight / 2)

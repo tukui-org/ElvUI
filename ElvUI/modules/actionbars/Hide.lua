@@ -60,7 +60,7 @@ function RightBarMouseOver(alpha)
 	if C["actionbar"].bottompetbar ~= true then
 		ElvuiPetActionBarBackground:SetAlpha(alpha)
 	end
-	if (C["actionbar"].rightbars ~= 0 and C["actionbar"].splitbar ~= true) then
+	if (E["actionbar"].rightbars ~= 0 and E["actionbar"].splitbar ~= true) then
 		if MultiBarLeft:IsShown() then
 			for i=1, 12 do
 				local pb = _G["MultiBarLeftButton"..i]
@@ -69,7 +69,7 @@ function RightBarMouseOver(alpha)
 			--MultiBarLeft:SetAlpha(alpha)
 		end
 	end
-	if C["actionbar"].rightbars > 1 then
+	if E["actionbar"].rightbars > 1 then
 		if MultiBarBottomRight:IsShown() then
 			for i=1, 12 do
 				local pb = _G["MultiBarBottomRightButton"..i]
@@ -78,7 +78,7 @@ function RightBarMouseOver(alpha)
 			--MultiBarBottomRight:SetAlpha(alpha)
 		end
 	end
-	if C["actionbar"].bottomrows ~= 3 then
+	if E["actionbar"].bottomrows ~= 3 then
 		if MultiBarRight:IsShown() then
 			for i=1, 12 do
 				local pb = _G["MultiBarRightButton"..i]

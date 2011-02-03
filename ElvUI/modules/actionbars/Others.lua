@@ -42,32 +42,36 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 	end
 end)
 
-function PositionAllBars()
-	if C["actionbar"].rightbars > 2 and C["actionbar"].splitbar == true then
-		C["actionbar"].rightbars = 2
+function E.PositionAllBars()
+	if E["actionbar"].rightbars > 2 and E["actionbar"].splitbar == true then
+		E["actionbar"].rightbars = 2
 	end
 
-	if C["actionbar"].bottomrows == 3 and C["actionbar"].rightbars ~= 0 and C["actionbar"].splitbar == true then
-		C["actionbar"].rightbars = 0
-		RightBarBig:Show()
+	if E["actionbar"].bottomrows == 3 and E["actionbar"].rightbars ~= 0 and E["actionbar"].splitbar == true then
+		E["actionbar"].rightbars = 0
+		if E.ABLock == true then
+			RightBarBig:Show()
+		end
 	end
 
-	if C["actionbar"].bottomrows == 3 and C["actionbar"].rightbars > 2 then
-		C["actionbar"].rightbars = 2
+	if E["actionbar"].bottomrows == 3 and E["actionbar"].rightbars > 2 then
+		E["actionbar"].rightbars = 2
 	end
 	
-	if C["actionbar"].rightbars ~= 0 or (C["actionbar"].bottomrows == 3 and C["actionbar"].splitbar == true) then
+	if E["actionbar"].rightbars ~= 0 or (E["actionbar"].bottomrows == 3 and E["actionbar"].splitbar == true) then
 		RightBarBig:Hide()
 	else
-		RightBarBig:Show()
+		if E.ABLock == true then
+			RightBarBig:Show()
+		end
 	end
 	
-	PositionAllPanels()
-	PositionMainBar()
-	PositionBar2()
-	PositionBar3()
-	PositionBar4()
-	PositionBar5()
-	PositionBarPet(ElvuiPetBar)
-	PositionWatchFrame()
+	E.PositionAllPanels()
+	E.PositionMainBar()
+	E.PositionBar2()
+	E.PositionBar3()
+	E.PositionBar4()
+	E.PositionBar5()
+	E.PositionBarPet(ElvuiPetBar)
+	E.PositionWatchFrame()
 end

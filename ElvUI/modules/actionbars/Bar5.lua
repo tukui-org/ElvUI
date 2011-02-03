@@ -11,20 +11,20 @@ local ElvuiBar5 = CreateFrame("Frame","ElvuiBar5",ElvuiActionBarBackground) -- M
 ElvuiBar5:SetAllPoints(ElvuiActionBarBackground)
 MultiBarBottomRight:SetParent(ElvuiBar5)
 
-function PositionBar5()
+function E.PositionBar5()
 	for i=1, 12 do
 		local b = _G["MultiBarBottomRightButton"..i]
 		local b2 = _G["MultiBarBottomRightButton"..i-1]
 		b:ClearAllPoints()
 		b:SetAlpha(1)
 		b:Show()
-		if C["actionbar"].rightbars > 1 then
+		if E["actionbar"].rightbars > 1 then
 			if i == 1 then
 				b:SetPoint("TOPLEFT", ElvuiActionBarBackgroundRight, "TOPLEFT", E.buttonspacing, -E.buttonspacing)
 			else
 				b:SetPoint("TOP", b2, "BOTTOM", 0, -E.buttonspacing)
 			end
-		elseif C["actionbar"].bottomrows == 3 and C["actionbar"].splitbar == true then
+		elseif E["actionbar"].bottomrows == 3 and E["actionbar"].splitbar == true then
 			if i == 1 then
 				b:SetPoint("TOP", MultiBarLeftButton4, "BOTTOM", 0, -E.buttonspacing)
 			elseif i < 4 then
@@ -46,7 +46,7 @@ function PositionBar5()
 			end
 		end
 		--Setup Mouseover
-		if C["actionbar"].rightbarmouseover == true and not (C.actionbar.bottomrows == 3) then
+		if C["actionbar"].rightbarmouseover == true and not (E.actionbar.bottomrows == 3) then
 			b:SetAlpha(0)
 			b:HookScript("OnEnter", function() RightBarMouseOver(1) end)
 			b:HookScript("OnLeave", function() RightBarMouseOver(0) end)
@@ -54,14 +54,11 @@ function PositionBar5()
 	end
 
 	-- hide it if needed
-	if not ((C["actionbar"].rightbars > 1) or (C["actionbar"].bottomrows == 3 and C["actionbar"].splitbar == true)) then
+	if not ((E["actionbar"].rightbars > 1) or (E["actionbar"].bottomrows == 3 and E["actionbar"].splitbar == true)) then
 		ElvuiBar5:Hide()
 	else
 		ElvuiBar5:Show()
 	end
 end
 
-do
-	PositionBar5()
-end
 

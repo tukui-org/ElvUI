@@ -4,26 +4,6 @@
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
-if C["actionbar"].bottomrows == 0 or C["actionbar"].bottomrows > 3 then
-	C["actionbar"].bottomrows = 1
-end
-
-if C["actionbar"].rightbars > 3 then
-	C["actionbar"].rightbars = 3
-end
-
-if C["actionbar"].rightbars > 2 and C["actionbar"].splitbar == true then
-	C["actionbar"].rightbars = 2
-end
-
-if C["actionbar"].bottomrows == 3 and C["actionbar"].rightbars ~= 0 and C["actionbar"].splitbar == true then
-	C["actionbar"].rightbars = 0
-end
-
-if C["actionbar"].bottomrows == 3 and C["actionbar"].rightbars > 2 then
-	C["actionbar"].rightbars = 2
-end
-
 if E.client == "zhTW" or E.client == "zhCN" then
 	C["media"].uffont = [[fonts\bLEI00D.ttf]]
 	C["media"].font = [[fonts\bLEI00D.ttf]]
@@ -135,9 +115,6 @@ do
 		C["actionbar"]["rightbarmouseover"] = nil         -- enable right bars on mouse over
 		C["actionbar"]["shapeshiftmouseover"] = nil       -- enable shapeshift or totembar on mouseover
 		C["actionbar"]["hideshapeshift"] = nil            -- hide shapeshift or totembar because it was a lot requested.
-		C["actionbar"]["bottomrows"] = nil                    -- numbers of row you want to show at the bottom (select between 1 and 2 only)
-		C["actionbar"]["rightbars"] = nil                     -- numbers of right bar you want
-		C["actionbar"]["splitbar"] = nil					-- split the third right actionbar into two rows of 3 on the left and right side of the main actionbar
 		C["actionbar"]["showgrid"] = nil                   -- show grid on empty button	
 		C["actionbar"]["sixbuttons"] = nil  
 	end

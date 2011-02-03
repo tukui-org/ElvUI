@@ -10,7 +10,7 @@ local bar = CreateFrame("Frame", "ElvuiPetBar", ElvuiActionBarBackground, "Secur
 bar:ClearAllPoints()
 bar:SetAllPoints(ElvuiPetActionBarBackground)
 
-function PositionBarPet(self)
+function E.PositionBarPet(self)
 	local button		
 	for i = 1, 10 do
 		button = _G["PetActionButton"..i]
@@ -66,7 +66,7 @@ bar:SetScript("OnEvent", function(self, event, ...)
 		-- bug reported by Affli on t12 BETA
 		PetActionBarFrame.showgrid = 1 -- hack to never hide pet button. :X
 		
-		PositionBarPet(self)
+		E.PositionBarPet(self)
 		RegisterStateDriver(self, "visibility", "[pet,novehicleui,nobonusbar:5] show; hide")
 		hooksecurefunc("PetActionBar_Update", E.ElvuiPetBarUpdate)
 	elseif event == "PET_BAR_UPDATE" or event == "UNIT_PET" and arg1 == "player" 

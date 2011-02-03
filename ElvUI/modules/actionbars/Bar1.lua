@@ -41,7 +41,7 @@ local function GetBar()
 	return condition
 end
 
-function PositionMainBar()
+function E.PositionMainBar()
 	MainMenuBar_UpdateKeyRing()
 	local button
 	for i = 1, 12 do
@@ -64,7 +64,6 @@ function PositionMainBar()
 end
 
 bar:RegisterEvent("PLAYER_LOGIN")
-bar:RegisterEvent("PLAYER_ENTERING_WORLD")
 bar:RegisterEvent("KNOWN_CURRENCY_TYPES_UPDATE")
 bar:RegisterEvent("CURRENCY_DISPLAY_UPDATE")
 bar:RegisterEvent("BAG_UPDATE")
@@ -101,8 +100,6 @@ bar:SetScript("OnEvent", function(self, event, ...)
 		
 		RegisterStateDriver(self, "page", GetBar())
 		RegisterStateDriver(self, "vehicleupdate", "[vehicleui] s2;s1")
-	elseif event == "PLAYER_ENTERING_WORLD" then
-		PositionMainBar()
 	elseif event == "ACTIVE_TALENT_GROUP_CHANGED" then
 		-- attempt to fix blocked glyph change after switching spec.
 		LoadAddOn("Blizzard_GlyphUI")

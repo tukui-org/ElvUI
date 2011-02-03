@@ -17,7 +17,7 @@ local ElvuiBar3Split = CreateFrame("Frame", "ElvuiBarSplit1", ElvuiBar3)
 ElvuiBar3Split:SetAllPoints(ElvuiActionBarBackground)
 
 
-function PositionBar3()
+function E.PositionBar3()
 	for i= 1, 12 do
 		local b = _G["MultiBarLeftButton"..i]
 		local b2 = _G["MultiBarLeftButton"..i-1]
@@ -25,8 +25,8 @@ function PositionBar3()
 		b:SetParent(MultiBarLeft)
 		b:Show()
 		b:SetAlpha(1)
-		if C["actionbar"].splitbar ~= true then
-			if C["actionbar"].rightbars > 1 then
+		if E["actionbar"].splitbar ~= true then
+			if E["actionbar"].rightbars > 1 then
 				if i == 1 then
 					b:SetPoint("TOPRIGHT", ElvuiActionBarBackgroundRight, "TOPRIGHT", -E.buttonspacing, -E.buttonspacing)
 				else
@@ -40,7 +40,7 @@ function PositionBar3()
 				end	
 			end
 		else
-			if C.actionbar.bottomrows == 1 then
+			if E.actionbar.bottomrows == 1 then
 				if i == 1 then
 					b:SetPoint("TOPLEFT", ElvuiSplitActionBarLeftBackground, "TOPLEFT", E.buttonspacing, -E.buttonspacing)
 				elseif i > 3 and i < 7 then
@@ -53,7 +53,7 @@ function PositionBar3()
 				else
 					b:SetPoint("LEFT", b2, "RIGHT", E.buttonspacing, 0)
 				end		
-			elseif C.actionbar.bottomrows == 2 then
+			elseif E.actionbar.bottomrows == 2 then
 				if i == 1 then
 					b:SetPoint("TOPLEFT", ElvuiSplitActionBarLeftBackground, "TOPLEFT", E.buttonspacing, -E.buttonspacing)
 				elseif i == 4 then
@@ -80,15 +80,15 @@ function PositionBar3()
 			end
 		end
 		--Setup Mouseover
-		if C["actionbar"].rightbarmouseover == true and not (C.actionbar.bottomrows == 3) and C["actionbar"].splitbar ~= true then
+		if C["actionbar"].rightbarmouseover == true and not (E.actionbar.bottomrows == 3) and E["actionbar"].splitbar ~= true then
 			b:SetAlpha(0)
 			b:HookScript("OnEnter", function() 
-				if not (C.actionbar.bottomrows == 3) and C["actionbar"].splitbar ~= true then
+				if not (E.actionbar.bottomrows == 3) and E["actionbar"].splitbar ~= true then
 					RightBarMouseOver(1) 
 				end
 			end)
 			b:HookScript("OnLeave", function() 
-				if not (C.actionbar.bottomrows == 3) and C["actionbar"].splitbar ~= true then
+				if not (E.actionbar.bottomrows == 3) and E["actionbar"].splitbar ~= true then
 					RightBarMouseOver(0) 
 				end
 			end)
@@ -96,15 +96,11 @@ function PositionBar3()
 	end
 
 	-- hide it if needed
-	if ((C.actionbar.rightbars < 3 and C["actionbar"].splitbar ~= true and C.actionbar.bottomrows ~= 3) and not 
-	(C["actionbar"].splitbar ~= true and C["actionbar"].bottomrows == 2 and C["actionbar"].rightbars == 2)) or 
-	(C["actionbar"].bottomrows == 3 and C["actionbar"].splitbar ~= true and C["actionbar"].rightbars == 0) then
+	if ((E.actionbar.rightbars < 3 and E["actionbar"].splitbar ~= true and E.actionbar.bottomrows ~= 3) and not 
+	(E["actionbar"].splitbar ~= true and E["actionbar"].bottomrows == 2 and E["actionbar"].rightbars == 2)) or 
+	(E["actionbar"].bottomrows == 3 and E["actionbar"].splitbar ~= true and E["actionbar"].rightbars == 0) then
 		ElvuiBar3:Hide()
 	else
 		ElvuiBar3:Show()
 	end
-end
-
-do
-	PositionBar3()
 end

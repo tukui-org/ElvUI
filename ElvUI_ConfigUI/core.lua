@@ -256,9 +256,6 @@ local function Local(o)
 	if o == "ElvuiConfigUIactionbarrightbarmouseover" then o = ElvuiL.option_actionbar_rb end
 	if o == "ElvuiConfigUIactionbarhotkey" then o = ElvuiL.option_actionbar_hk end
 	if o == "ElvuiConfigUIactionbarshapeshiftmouseover" then o = ElvuiL.option_actionbar_ssmo end
-	if o == "ElvuiConfigUIactionbarbottomrows" then o = ElvuiL.option_actionbar_rbn2 end
-	if o == "ElvuiConfigUIactionbarrightbars" then o = ElvuiL.option_actionbar_rn end
-	if o == "ElvuiConfigUIactionbarsplitbar" then o = ElvuiL.option_actionbar_splitbar end
 	if o == "ElvuiConfigUIactionbarbottompetbar" then o = ElvuiL.option_actionbar_bottompetbar end
 	if o == "ElvuiConfigUIactionbarbuttonsize" then o = ElvuiL.option_actionbar_buttonsize end
 	if o == "ElvuiConfigUIactionbarbuttonspacing" then o = ElvuiL.option_actionbar_buttonspacing end

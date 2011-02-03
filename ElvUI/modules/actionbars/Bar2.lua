@@ -10,7 +10,7 @@ local ElvuiBar2 = CreateFrame("Frame","ElvuiBar2",ElvuiActionBarBackground)
 ElvuiBar2:SetAllPoints(ElvuiActionBarBackground)
 MultiBarBottomLeft:SetParent(ElvuiBar2)
 
-function PositionBar2()
+function E.PositionBar2()
 	for i=1, 12 do
 		local b = _G["MultiBarBottomLeftButton"..i]
 		local b2 = _G["MultiBarBottomLeftButton"..i-1]
@@ -26,13 +26,9 @@ function PositionBar2()
 		end
 	end
 	-- hide it if needed
-	if C.actionbar.bottomrows == 1 then
+	if E.actionbar.bottomrows == 1 then
 		ElvuiBar2:Hide()
 	else
 		ElvuiBar2:Show()
 	end
-end
-
-do
-	PositionBar2()
 end

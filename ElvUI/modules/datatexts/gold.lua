@@ -62,9 +62,10 @@ if C["datatext"].gold and C["datatext"].gold > 0 then
 		local myPlayerRealm = GetCVar("realmName");
 		local myPlayerName  = UnitName("player");				
 		if (ElvuiData == nil) then ElvuiData = {}; end
-		if (ElvuiData.gold == nil) then ElvuiData.gold = {}; end
-		if (ElvuiData.gold[myPlayerRealm]==nil) then ElvuiData.gold[myPlayerRealm]={}; end
-		ElvuiData.gold[myPlayerRealm][myPlayerName] = GetMoney();
+		if (ElvuiData[myPlayerRealm] == nil) then ElvuiData[myPlayerRealm] = {} end
+		if (ElvuiData[myPlayerRealm][myPlayerName] == nil) then ElvuiData[myPlayerRealm][myPlayerName] = {} end
+		if (ElvuiData[myPlayerRealm][myPlayerName]["gold"] == nil) then ElvuiData[myPlayerRealm][myPlayerName]["gold"] = GetMoney() end
+		ElvuiData.gold = nil -- old
 		
 		self:SetScript("OnEnter", function()
 			if not InCombatLockdown() then
@@ -84,10 +85,10 @@ if C["datatext"].gold and C["datatext"].gold > 0 then
 			
 				local totalGold = 0				
 				GameTooltip:AddLine(L.datatext_character)			
-				local thisRealmList = ElvuiData.gold[myPlayerRealm];
-				for k,v in pairs(thisRealmList) do
-					GameTooltip:AddDoubleLine(k, FormatTooltipMoney(v), 1, 1, 1, 1, 1, 1)
-					totalGold=totalGold+v;
+
+				for k,_ in pairs(ElvuiData[myPlayerRealm]) do
+					GameTooltip:AddDoubleLine(k, FormatTooltipMoney(ElvuiData[myPlayerRealm][k].gold), 1, 1, 1, 1, 1, 1)
+					totalGold=totalGold+ElvuiData[myPlayerRealm][k].gold
 				end 
 				GameTooltip:AddLine' '
 				GameTooltip:AddLine(L.datatext_server)
@@ -125,9 +126,9 @@ if C["datatext"].gold and C["datatext"].gold > 0 then
 		local myPlayerRealm = GetCVar("realmName");
 		local myPlayerName  = UnitName("player");
 		
-		ElvuiData.gold = {}
-		ElvuiData.gold[myPlayerRealm]={}
-		ElvuiData.gold[myPlayerRealm][myPlayerName] = GetMoney();
+		for k,_ in pairs(ElvuiData[myPlayerRealm]) do
+			ElvuiData[myPlayerRealm][k].gold = nil
+		end 
 	end
 	SLASH_RESETGOLD1 = "/resetgold"
 	SlashCmdList["RESETGOLD"] = RESETGOLD
