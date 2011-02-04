@@ -62,7 +62,7 @@ if C["datatext"].gold and C["datatext"].gold > 0 then
 		if (ElvuiData == nil) then ElvuiData = {}; end
 		if (ElvuiData[E.myrealm] == nil) then ElvuiData[E.myrealm] = {} end
 		if (ElvuiData[E.myrealm][E.myname] == nil) then ElvuiData[E.myrealm][E.myname] = {} end
-		if (ElvuiData[E.myrealm][E.myname]["gold"] == nil) then ElvuiData[E.myrealm][E.myname]["gold"] = GetMoney() end
+		ElvuiData[E.myrealm][E.myname]["gold"] = GetMoney()
 		ElvuiData.gold = nil -- old
 		
 		self:SetScript("OnEnter", function()
