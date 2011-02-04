@@ -8,10 +8,8 @@ if not C["actionbar"].enable == true then return end
 
 do
 	MainMenuBar:SetScale(0.00001)
-	MainMenuBar:SetAlpha(0)
 	MainMenuBar:EnableMouse(false)
 	VehicleMenuBar:SetScale(0.00001)
-	VehicleMenuBar:SetAlpha(0)
 	PetActionBarFrame:EnableMouse(false)
 	ShapeshiftBarFrame:EnableMouse(false)
 	
@@ -24,7 +22,10 @@ do
 		if element:GetObjectType() == "Frame" then
 			element:UnregisterAllEvents()
 		end
-		element:Hide()
+		
+		if element ~= MainMenuBar then
+			element:Hide()
+		end
 		element:SetAlpha(0)
 	end
 	elements = nil
