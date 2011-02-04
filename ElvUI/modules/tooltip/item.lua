@@ -1,6 +1,6 @@
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if C.tooltip.enable ~= true then return end
+if C.tooltip.enable ~= true or C["tooltip"].itemid ~= true then return end
 
 GameTooltip:HookScript("OnTooltipCleared", function(self) self.ElvuiItemTooltip=nil end)
 GameTooltip:HookScript("OnTooltipSetItem", function(self)
@@ -37,7 +37,6 @@ end)
 -- SpellID's by Silverwind
 -- http://wow.curseforge.com/addons/spellid/
 --------------------------------------------------------------------
-if C["tooltip"].itemid ~= true then return end
 
 hooksecurefunc(GameTooltip, "SetUnitBuff", function(self,...)
 	local id = select(11,UnitBuff(...))
