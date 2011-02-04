@@ -61,19 +61,19 @@ function E.PositionWatchFrame()
 		end		
 	else
 		WatchFrameHolder:ClearAllPoints()
-		if E.actionbar.rightbars == 3 then
+		if C["actionbar"].enable and E.actionbar.rightbars == 3 then
 			if C["actionbar"].bottompetbar ~= true then
 				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-210), E.Scale(-300))
 			else
 				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-165), E.Scale(-300))
 			end
-		elseif E.actionbar.rightbars == 2 then
+		elseif C["actionbar"].enable and E.actionbar.rightbars == 2 then
 			if C["actionbar"].bottompetbar ~= true then
 				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-190), E.Scale(-300))
 			else
 				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-140), E.Scale(-300))
 			end
-		elseif E.actionbar.rightbars == 1 then
+		elseif C["actionbar"].enable and E.actionbar.rightbars == 1 then
 			if C["actionbar"].bottompetbar ~= true then
 				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-160), E.Scale(-300))
 			else
