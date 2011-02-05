@@ -195,13 +195,13 @@ infoleft:SetPoint("BOTTOMRIGHT", chatlbgdummy2, "BOTTOMRIGHT", E.Scale(-17), E.S
 	infoleft.shadow:SetPoint("TOPLEFT", infoleftLbutton, "TOPLEFT", E.Scale(-4), E.Scale(4))
 	infoleft.shadow:SetPoint("BOTTOMRIGHT", infoleftRbutton, "BOTTOMRIGHT", E.Scale(4), E.Scale(-4))
 
-	infoleftLbutton.Text = E.FontString(ElvuiInfoLeftLButton, C["media"].font, C["general"].fontscale, "THINOUTLINE")
-	infoleftLbutton.Text:SetText("<")
-	infoleftLbutton.Text:SetPoint("CENTER")
+	infoleftLbutton:FontString(C["media"].font, C["general"].fontscale, "THINOUTLINE")
+	infoleftLbutton.text:SetText("<")
+	infoleftLbutton.text:SetPoint("CENTER")
 
-	infoleftRbutton.Text = E.FontString(ElvuiInfoLeftRButton, C["media"].font, C["general"].fontscale, "THINOUTLINE")
-	infoleftRbutton.Text:SetText("L")
-	infoleftRbutton.Text:SetPoint("CENTER")
+	infoleftRbutton:FontString(C["media"].font, C["general"].fontscale, "THINOUTLINE")
+	infoleftRbutton.text:SetText("L")
+	infoleftRbutton.text:SetPoint("CENTER")
 
 --INFO RIGHT
 local inforight = CreateFrame("Frame", "ElvuiInfoRight", UIParent)
@@ -227,13 +227,13 @@ inforight:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", E.Scale(-17), E.
 	inforight.shadow:SetPoint("TOPLEFT", inforightLbutton, "TOPLEFT", E.Scale(-4), E.Scale(4))
 	inforight.shadow:SetPoint("BOTTOMRIGHT", inforightRbutton, "BOTTOMRIGHT", E.Scale(4), E.Scale(-4))
 
-	inforightLbutton.Text = E.FontString(ElvuiInfoRightLButton, C["media"].font, C["general"].fontscale, "THINOUTLINE")
-	inforightLbutton.Text:SetText("R")
-	inforightLbutton.Text:SetPoint("CENTER")
+	inforightLbutton:FontString(C["media"].font, C["general"].fontscale, "THINOUTLINE")
+	inforightLbutton.text:SetText("R")
+	inforightLbutton.text:SetPoint("CENTER")
 
-	inforightRbutton.Text = E.FontString(ElvuiInfoRightRButton, C["media"].font, C["general"].fontscale, "THINOUTLINE")
-	inforightRbutton.Text:SetText(">")
-	inforightRbutton.Text:SetPoint("CENTER")
+	inforightRbutton:FontString(C["media"].font, C["general"].fontscale, "THINOUTLINE")
+	inforightRbutton.text:SetText(">")
+	inforightRbutton.text:SetPoint("CENTER")
 	
 TukuiInfoLeft = ElvuiInfoLeft -- conversion
 TukuiInfoRight = ElvuiInfoRight -- conversion	

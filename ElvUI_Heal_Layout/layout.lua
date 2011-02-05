@@ -104,7 +104,7 @@ local function Shared(self, unit)
 		-- Health Bar Background
 		local healthBG = health:CreateTexture(nil, 'BORDER')
 		healthBG:SetAllPoints()
-		health.value = E.FontString(health, font1, C["unitframes"].fontsize, "THINOUTLINE")
+		health.value = health:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
 		health.value:SetPoint("RIGHT", health, "RIGHT", E.Scale(-4), E.Scale(1))
 		health.PostUpdate = E.PostUpdateHealth
 		self.Health = health
@@ -165,7 +165,7 @@ local function Shared(self, unit)
 		powerBG:SetAllPoints(power)
 		powerBG:SetTexture(normTex)
 		powerBG.multiplier = 0.3
-		power.value = E.FontString(health, font1, C["unitframes"].fontsize, "THINOUTLINE")
+		power.value = health:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
 		power.value:SetPoint("LEFT", health, "LEFT", E.Scale(4), E.Scale(1))
 		power.PreUpdate = E.PreUpdatePower
 		power.PostUpdate = E.PostUpdatePower
@@ -250,7 +250,7 @@ local function Shared(self, unit)
 		FlashInfo.parent = self
 		FlashInfo:SetToplevel(true)
 		FlashInfo:SetAllPoints(health)
-		FlashInfo.ManaLevel = E.FontString(FlashInfo, font1, C["unitframes"].fontsize, "THINOUTLINE")
+		FlashInfo.ManaLevel = FlashInfo:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
 		FlashInfo.ManaLevel:SetPoint("CENTER", health, "CENTER", 0, E.Scale(-5))
 		self.FlashInfo = FlashInfo
 		
@@ -430,7 +430,7 @@ local function Shared(self, unit)
 				player_height = player_height + E.Scale(14)
 				
 				CreateFrame("Frame"):SetScript("OnUpdate", function() E.UpdateDruidMana(self) end)
-				local DruidMana = E.FontString(health, font1, C["unitframes"].fontsize, "THINOUTLINE")
+				local DruidMana = health:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
 				DruidMana:SetTextColor(1, 0.49, 0.04)
 				self.DruidMana = DruidMana
 				local eclipseBar = CreateFrame('Frame', nil, self)
@@ -722,13 +722,13 @@ local function Shared(self, unit)
 			castbar.bg:SetFrameLevel(5)
 			castbar.bg:SetFrameStrata("DIALOG")
 			
-			castbar.time = E.FontString(castbar, font1, C["unitframes"].fontsize, "THINOUTLINE")
+			castbar.time = castbar:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
 			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", E.Scale(-4), 0)
 			castbar.time:SetTextColor(0.84, 0.75, 0.65)
 			castbar.time:SetJustifyH("RIGHT")
 			castbar.CustomTimeText = E.CustomCastTimeText
  
-			castbar.Text = E.FontString(castbar, font1, C["unitframes"].fontsize, "THINOUTLINE")
+			castbar.Text = castbar:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
 			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 1)
 			castbar.Text:SetTextColor(0.84, 0.75, 0.65)
  
@@ -770,7 +770,7 @@ local function Shared(self, unit)
 		-- add combat feedback support
 		if C["unitframes"].combatfeedback == true then
 			local CombatFeedbackText 
-			CombatFeedbackText = E.FontString(health, font1, C["unitframes"].fontsize*1.1, "OUTLINE")
+			CombatFeedbackText = health:FontString(font1, C["unitframes"].fontsize*1.1, "OUTLINE")
 
 			if C["unitframes"].charportrait == true then
 				CombatFeedbackText:SetPoint("CENTER", self.Portrait, "CENTER")
@@ -905,7 +905,7 @@ local function Shared(self, unit)
 		-- Health Bar Background
 		local healthBG = health:CreateTexture(nil, 'BORDER')
 		healthBG:SetAllPoints()
-		health.value = E.FontString(health, font1, C["unitframes"].fontsize, "THINOUTLINE")
+		health.value = health:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
 		health.value:SetPoint("RIGHT", health, "RIGHT", E.Scale(-4), E.Scale(1))
 		health.PostUpdate = E.PostUpdateHealth
 		self.Health = health
@@ -966,7 +966,7 @@ local function Shared(self, unit)
 		powerBG:SetAllPoints(power)
 		powerBG:SetTexture(normTex)
 		powerBG.multiplier = 0.3
-		power.value = E.FontString(health, font1, C["unitframes"].fontsize, "THINOUTLINE")
+		power.value = health:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
 		power.value:SetPoint("LEFT", health, "LEFT", E.Scale(4), E.Scale(1))
 		power.PreUpdate = E.PreUpdatePower
 		power.PostUpdate = E.PostUpdatePower
@@ -1101,13 +1101,13 @@ local function Shared(self, unit)
 			castbar.bg:SetFrameLevel(5)
 
  
-			castbar.time = E.FontString(castbar, font1, C["unitframes"].fontsize, "THINOUTLINE")
+			castbar.time = castbar:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
 			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", E.Scale(-4), 0)
 			castbar.time:SetTextColor(0.84, 0.75, 0.65)
 			castbar.time:SetJustifyH("RIGHT")
 			castbar.CustomTimeText = E.CustomCastTimeText
  
-			castbar.Text = E.FontString(castbar, font1, C["unitframes"].fontsize, "THINOUTLINE")
+			castbar.Text = castbar:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
 			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 1)
 			castbar.Text:SetTextColor(0.84, 0.75, 0.65)
  
@@ -1137,7 +1137,7 @@ local function Shared(self, unit)
 		-- add combat feedback support
 		if C["unitframes"].combatfeedback == true then
 			local CombatFeedbackText 
-			CombatFeedbackText = E.FontString(health, font1, C["unitframes"].fontsize*1.1, "OUTLINE")
+			CombatFeedbackText = health:FontString(font1, C["unitframes"].fontsize*1.1, "OUTLINE")
 			
 			if C["unitframes"].charportrait == true then
 				CombatFeedbackText:SetPoint("CENTER", self.Portrait, "CENTER")
@@ -1474,13 +1474,13 @@ local function Shared(self, unit)
 			castbar.bg:SetPoint("BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
 			castbar.bg:SetFrameLevel(5)
 			
-			castbar.time = E.FontString(castbar, font1, C["unitframes"].fontsize, "THINOUTLINE")
+			castbar.time = castbar:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
 			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", E.Scale(-4), 0)
 			castbar.time:SetTextColor(0.84, 0.75, 0.65)
 			castbar.time:SetJustifyH("RIGHT")
 			castbar.CustomTimeText = E.CustomCastTimeText
 
-			castbar.Text = E.FontString(castbar, font1, C["unitframes"].fontsize)
+			castbar.Text = castbar:FontString(font1, C["unitframes"].fontsize)
 			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 1)
 			castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 			
@@ -1657,20 +1657,20 @@ local function Shared(self, unit)
 		
 		--Health and Power
 		if (unit and unit:find('arena%d')) then
-			health.value = E.FontString(health, font1,C["unitframes"].fontsize, "OUTLINE")
+			health.value = health:FontString(font1,C["unitframes"].fontsize, "OUTLINE")
 			health.value:SetPoint("LEFT", E.Scale(2), E.Scale(1))
 			health.PostUpdate = E.PostUpdateHealth
 			
-			power.value = E.FontString(health, font1, C["unitframes"].fontsize, "OUTLINE")
+			power.value = health:FontString(font1, C["unitframes"].fontsize, "OUTLINE")
 			power.value:SetPoint("RIGHT", health, "RIGHT", E.Scale(-2), E.Scale(1))
 			power.PreUpdate = E.PreUpdatePower
 			power.PostUpdate = E.PostUpdatePower			
 		else
-			health.value = E.FontString(health, font1,C["unitframes"].fontsize, "OUTLINE")
+			health.value = health:FontString(font1,C["unitframes"].fontsize, "OUTLINE")
 			health.value:SetPoint("TOPLEFT", health, "TOPLEFT", E.Scale(2), E.Scale(-2))
 			health.PostUpdate = E.PostUpdateHealth
 			
-			power.value = E.FontString(health, font1, C["unitframes"].fontsize, "OUTLINE")
+			power.value = health:FontString(font1, C["unitframes"].fontsize, "OUTLINE")
 			power.value:SetPoint("BOTTOMLEFT", health, "BOTTOMLEFT", E.Scale(2), E.Scale(1))
 			power.value:SetJustifyH("RIGHT")
 			power.PreUpdate = E.PreUpdatePower
@@ -1806,13 +1806,13 @@ local function Shared(self, unit)
 			castbar.bg:SetPoint("BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
 			castbar.bg:SetFrameLevel(5)
 			
-			castbar.time = E.FontString(castbar, font1, C["unitframes"].fontsize, "THINOUTLINE")
+			castbar.time = castbar:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
 			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", E.Scale(-4), 0)
 			castbar.time:SetTextColor(0.84, 0.75, 0.65)
 			castbar.time:SetJustifyH("RIGHT")
 			castbar.CustomTimeText = E.CustomCastTimeText
 
-			castbar.Text = E.FontString(castbar, font1, C["unitframes"].fontsize, "THINOUTLINE")
+			castbar.Text = castbar:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
 			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 0)
 			castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 			

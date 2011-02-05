@@ -203,12 +203,12 @@ local function OnAuraChange(self, event, arg1, unit)
 	if inInstance and (instanceType ==  "party" or instanceType == "raid") then
 		if RaidReminderShown ~= true and reminderoverride ~= true then
 			UIFrameFadeIn(self, 0.4)
-			ElvuiInfoRightLButton.Text:SetTextColor(1,1,1)
+			ElvuiInfoRightLButton.text:SetTextColor(1,1,1)
 			RaidReminderShown = true
 		end
 	else
 		if RaidReminderShown ~= false then 
-			ElvuiInfoRightLButton.Text:SetTextColor(unpack(C["media"].valuecolor))
+			ElvuiInfoRightLButton.text:SetTextColor(unpack(C["media"].valuecolor))
 			UIFrameFadeOut(self, 0.4)
 			RaidReminderShown = false
 		end

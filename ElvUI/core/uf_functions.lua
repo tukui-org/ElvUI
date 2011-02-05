@@ -479,14 +479,14 @@ E.LoadUFFunctions = function(layout)
 				end
 				if self.timeLeft > 0 then
 					local time = FormatTime(self.timeLeft)
-					self.remaining:SetText(time)
+					self.text:SetText(time)
 					if self.timeLeft <= 5 then
-						self.remaining:SetTextColor(0.99, 0.31, 0.31)
+						self.text:SetTextColor(0.99, 0.31, 0.31)
 					else
-						self.remaining:SetTextColor(1, 1, 1)
+						self.text:SetTextColor(1, 1, 1)
 					end
 				else
-					self.remaining:Hide()
+					self.text:Hide()
 					self:SetScript("OnUpdate", nil)
 				end
 				if (not self.debuff) and C["general"].classcolortheme == true then
@@ -539,13 +539,13 @@ E.LoadUFFunctions = function(layout)
 		end
 		
 		if unit == "focus" or unit == "targettarget" or header == "ElvuiHealR6R25" or header == "ElvuiDPSR6R25" or header == "ElvuiHealParty" then
-			button.remaining = E.FontString(button, C["media"].font, C["auras"].auratextscale*0.85, "THINOUTLINE")
+			button:FontString(C["media"].font, C["auras"].auratextscale*0.85, "THINOUTLINE")
 		else
-			button.remaining = E.FontString(button, C["media"].font, C["auras"].auratextscale, "THINOUTLINE")
+			button:FontString(C["media"].font, C["auras"].auratextscale, "THINOUTLINE")
 		end
 		
 		button:SetTemplate("Default")
-		button.remaining:SetPoint("CENTER", E.Scale(0), E.mult)
+		button.text:SetPoint("CENTER", E.Scale(0), E.mult)
 		
 		button.cd.noOCC = true		 	-- hide OmniCC CDs
 		button.cd.noCooldownCount = true	-- hide CDC CDs
@@ -568,7 +568,7 @@ E.LoadUFFunctions = function(layout)
 		button.overlayFrame:SetFrameLevel(button.cd:GetFrameLevel() + 2)	   
 		button.overlay:SetParent(button.overlayFrame)
 		button.count:SetParent(button.overlayFrame)
-		button.remaining:SetParent(button.overlayFrame)
+		button.text:SetParent(button.overlayFrame)
 		
 		local highlight = button:CreateTexture(nil, "HIGHLIGHT")
 		highlight:SetTexture(1,1,1,0.45)
@@ -606,12 +606,12 @@ E.LoadUFFunctions = function(layout)
 		
 		if duration and duration > 0 then
 			if C["auras"].auratimer == true then
-				icon.remaining:Show()
+				icon.text:Show()
 			else
-				icon.remaining:Hide()
+				icon.text:Hide()
 			end
 		else
-			icon.remaining:Hide()
+			icon.text:Hide()
 		end
 		
 		icon.duration = duration

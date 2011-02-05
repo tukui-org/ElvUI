@@ -192,7 +192,7 @@ barloader:SetScript("OnEvent", function(self)
 	RightBarDec:SetPoint("BOTTOMLEFT", ElvuiActionBarBackgroundRight, "BOTTOM", E.Scale(2), E.Scale(-19))
 	
 	E.ABLock = false
-	ElvuiInfoLeftRButton.Text:SetTextColor(1,1,1)
+	ElvuiInfoLeftRButton.text:SetTextColor(1,1,1)
 	E.PositionAllBars()
 end)
 
