@@ -40,15 +40,6 @@ StaticPopupDialogs["DISABLE_RAID"] = {
 	whileDead = 1,
 }
 
-StaticPopupDialogs["CHAT_WARN"] = {
-	text = L.popup_rightchatwarn,
-	button1 = ACCEPT,
-	button2 = CANCEL,
-	OnAccept = E.Install,
-	timeout = 0,
-	whileDead = 1,
-}
-
 StaticPopupDialogs["DISBAND_RAID"] = {
 	text = "Are you sure you want to disband the group?",
 	button1 = ACCEPT,

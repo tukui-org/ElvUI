@@ -96,7 +96,6 @@ L.Slots = {
 L.popup_disableui = "Elvui doesn't work for this resolution, do you want to disable Elvui? (Cancel if you want to try another resolution)"
 L.popup_install = "First time running Elvui on this character, you need to setup chat windows and actionbars."
 L.popup_2raidactive = "2 raid layouts are active, please select a layout."
-L.popup_rightchatwarn = "You may of accidentally removed the right chat, currently Elvui is dependent on this, you have to disable it through the config, otherwise hit accept to reset your chat windows."
 L.popup_reloadui = "The action you have performed requires a ReloadUI."
 
 L.merchant_repairnomoney = "You don't have enough money for repair!"

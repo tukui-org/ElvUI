@@ -234,7 +234,7 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 	E.ChatLIn = true
 	E.ChatRIn = true
 	
-	E.Delay(10, function()
+	E.Delay(5, function()
 		local chatrightfound = false
 		if C["chat"].rightchat == true then
 			for i = 1, NUM_CHAT_WINDOWS do
@@ -251,8 +251,11 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 			chatrightfound = true
 		end
 
-		if chatrightfound == false and not StaticPopup1:IsShown() then
-			StaticPopup_Show("CHAT_WARN")
+		if chatrightfound == false then
+			C["chat"].rightchat = false
+			E.ChatRIn = false
+			ChatRBackground:Kill()
+			B3FIX:Kill()
 		end
 	end)
 
@@ -274,7 +277,7 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 	--Fixing fucked up border on right chat button, really do not understand why this is happening
 	if C["chat"].rightchat == true and C["chat"].showbackdrop == true then
 		if not ButtonCF3 then return end
-		local x = CreateFrame("Frame", nil, ChatFrame3Tab)
+		local x = CreateFrame("Frame", "B3FIX", ChatFrame3Tab)
 		x:SetAllPoints(ButtonCF3)
 		x:SetTemplate("Default")
 		x:SetBackdropColor(0,0,0,0)

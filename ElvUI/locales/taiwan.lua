@@ -95,7 +95,6 @@ if E.client == "zhTW" then
 	L.popup_disableui = "Elvui並不支援此解析度, 你想要停用Elvui嗎? (若想要嘗試其他解析度, 請按取消)"
 	L.popup_install = "這個角色第一次使用Elvui, 你需要設定聊天視窗和快捷列."
 	L.popup_2raidactive = "你同時啟用了兩種團隊框架, 請選擇其中一種"
-	L.popup_rightchatwarn = "你可能不小心移除了右邊的對話框，依造目前的設定Elvui需要右邊的對話框，你必須從設定中關閉(/tc)或者按接受來重置對話框。"
 
 	L.merchant_repairnomoney = "你沒有足夠的金錢修理裝備!"
 	L.merchant_repaircost = "裝備已經修復, 一共花費"

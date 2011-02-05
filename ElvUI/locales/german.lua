@@ -95,7 +95,6 @@ if E.client == "deDE" then
 	L.popup_disableui = "Elvui funktioniert nicht mit deiner Auflösung, möchtest du Elvui ausschalten? (Drücke Abbrechen, falls du eine andere Auflösung testen willst.)"
 	L.popup_install = "Dies ist das erste mal mit Elvui V12 mit diesem Charakter. Du musst dein UI neuladen, um Aktionsleisten, Variabeln und den Chat einzustellen."
 	L.popup_2raidactive = "2 Raid Layouts sind aktiv, wähle bitte eines aus."
-	L.popup_rightchatwarn = "Du hast wahrscheinlich aus Versehen das rechte Chatfenster entfernt, momentan benötigt Elvui dies. Zum deaktivieren musst du es in  den Einstellungen ausschalten, ansonsten drücke annehmen um die Chatfenster zurückzusetzen."
 	L.merchant_repairnomoney = "Du hast nicht genügend Gold zum Reparieren!"
 	L.merchant_repaircost = "Deine Rüstung wurde repariert für"
 	L.merchant_trashsell = "Dein Abfall wurde verkauft und du erhälst"

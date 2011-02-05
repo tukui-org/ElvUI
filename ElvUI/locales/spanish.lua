@@ -94,7 +94,6 @@ if E.client == "esES" then
 	L.popup_disableui = "Elvui no funciona para esta resolución, ¿quieres desactivar Elvui? (Cancela si quieres probar otra resolución)"
 	L.popup_install = "Primera vez usando Elvui en este personaje, necesitas configurar tus ventanas de chat y barras de habilidades."
 	L.popup_2raidactive = "2 distribuciones de banda están activos, por favor selecciona una distribución."
-	L.popup_rightchatwarn = "Puedes haber eliminado accidentalmente la ventana derecha de chat, actualmente Tukui es dependiente del mismo. Tienes que deshabilitarlo mediante la configuración, pulsa aceptar para reiniciar las ventanas de chat."
 	L.raidbufftoggler = "Rastreador de Beneficios de Raid: "
 
 	L.merchant_repairnomoney = "¡No tienes suficiente dinero para reparar!"
