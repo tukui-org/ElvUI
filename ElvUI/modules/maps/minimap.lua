@@ -91,15 +91,15 @@ ElvuiMinimap:RegisterEvent("ADDON_LOADED")
 ElvuiMinimap:SetScript("OnEvent", function(self, event, addon)
 	if addon == "Blizzard_TimeManager" then
 		-- Hide Game Time
-		E.Kill(TimeManagerClockButton)
-		--E.Kill(InterfaceOptionsDisplayPanelShowClock)
+		TimeManagerClockButton:Kill()
+		--InterfaceOptionsDisplayPanelShowClock:Kill()
 	elseif addon == "Blizzard_FeedbackUI" then
-		E.Kill(FeedbackUIButton)
+		FeedbackUIButton:Kill()
 	end
 end)
 
 if FeedbackUIButton then
-	E.Kill(FeedbackUIButton)
+	FeedbackUIButton:Kill()
 end
 
 

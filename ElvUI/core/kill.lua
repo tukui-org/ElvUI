@@ -1,9 +1,6 @@
 -- here we kill all shit stuff on default UI that we don't need!
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-
-local k = E.Kill
-
 local Kill = CreateFrame("Frame")
 Kill:RegisterEvent("ADDON_LOADED")
 Kill:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -18,7 +15,7 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 
 
 		if E.myclass == "DEATHKNIGHT" then
-			k(RuneFrame)
+			RuneFrame:Kill()
 		end
 	else
 
@@ -29,26 +26,26 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 		end
 		
 		if addon ~= "ElvUI" then return end
-		k(StreamingIcon)
-		k(Advanced_UseUIScale)
-		k(Advanced_UIScaleSlider)
-		k(PartyMemberBackground)
-		k(TutorialFrameAlertButton)
+		StreamingIcon:Kill()
+		Advanced_UseUIScale:Kill()
+		Advanced_UIScaleSlider:Kill()
+		PartyMemberBackground:Kill()
+		TutorialFrameAlertButton:Kill()
 		
-		k(InterfaceOptionsUnitFramePanelPartyBackground)
+		InterfaceOptionsUnitFramePanelPartyBackground:Kill()
 		
 		if C.arena.unitframes then
 			SetCVar("showArenaEnemyFrames", 0)
-			k(InterfaceOptionsUnitFramePanelArenaEnemyFrames)
-			k(InterfaceOptionsUnitFramePanelArenaEnemyCastBar)
-			k(InterfaceOptionsUnitFramePanelArenaEnemyPets)
+			InterfaceOptionsUnitFramePanelArenaEnemyFrames:Kill()
+			InterfaceOptionsUnitFramePanelArenaEnemyCastBar:Kill()
+			InterfaceOptionsUnitFramePanelArenaEnemyPets:Kill()
 		end
 		
 		if C.chat.enable then
 			SetCVar("WholeChatWindowClickable", 0)
 			SetCVar("ConversationMode", "inline")
-			k(InterfaceOptionsSocialPanelWholeChatWindowClickable)
-			k(InterfaceOptionsSocialPanelConversationMode)
+			InterfaceOptionsSocialPanelWholeChatWindowClickable:Kill()
+			InterfaceOptionsSocialPanelConversationMode:Kill()
 		end
 		
 		if C.unitframes.enable then
@@ -59,11 +56,11 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 		end
 		
 		if C.actionbar.enable then
-			k(InterfaceOptionsActionBarsPanelBottomLeft)
-			k(InterfaceOptionsActionBarsPanelBottomRight)
-			k(InterfaceOptionsActionBarsPanelRight)
-			k(InterfaceOptionsActionBarsPanelRightTwo)
-			k(InterfaceOptionsActionBarsPanelAlwaysShowActionBars)
+			InterfaceOptionsActionBarsPanelBottomLeft:Kill()
+			InterfaceOptionsActionBarsPanelBottomRight:Kill()
+			InterfaceOptionsActionBarsPanelRight:Kill()
+			InterfaceOptionsActionBarsPanelRightTwo:Kill()
+			InterfaceOptionsActionBarsPanelAlwaysShowActionBars:Kill()
 		end
 	end
 end)

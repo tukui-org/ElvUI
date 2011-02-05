@@ -110,7 +110,7 @@ Mod_AddonSkins:SetScript("OnEvent",function(self, event, addon)
 		end
 		if C["skin"].embedright == "Omen" and IsAddOnLoaded("Omen") then
 			Omen.UpdateTitleBar = function() end
-			E.Kill(OmenTitle)
+			OmenTitle:Kill()
 			if IsAddOnLoaded("Omen") then
 				OmenBarList:SetFrameStrata("HIGH")
 			end

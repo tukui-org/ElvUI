@@ -63,7 +63,7 @@ alds:SetFrameLevel(0)
 
 local SmallerMapSkin = function()
 	-- don't need this
-	E.Kill(WorldMapTrackQuest)
+	WorldMapTrackQuest:Kill()
 
 	-- map glow
 	mapbg:CreateShadow("Default")

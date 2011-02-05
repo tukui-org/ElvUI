@@ -71,7 +71,7 @@ for i, button in pairs(microbuttons) do
 	m.SetHighlightTexture = E.dummy
 
 	if i == 5 then
-		E.Kill(m)
+		m:Kill()
 	elseif i == 9 then
 		m:ClearAllPoints()
 		m:SetPoint("LEFT", LFDMicroButton, "RIGHT", -3, 0)

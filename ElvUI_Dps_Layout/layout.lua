@@ -2065,8 +2065,8 @@ if C["raidframes"].disableblizz == true then --seriosly lazy addon authors can s
 	blizzloader:RegisterEvent("ADDON_LOADED")
 	blizzloader:SetScript("OnEvent", function(self, event, addon)
 		if addon == "ElvUI_Dps_Layout" then 
-			E.Kill(CompactRaidFrameContainer)
-			E.Kill(CompactPartyFrame)
+			CompactRaidFrameContainer:Kill()
+			CompactPartyFrame:Kill()
 		end
 	end)
 end

@@ -3,7 +3,7 @@
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if C["raidframes"].disableblizz ~= true then return end
-E.Kill(CompactRaidFrameManager) --Get rid of old module
+CompactRaidFrameManager:Kill() --Get rid of old module
 
 local panel_height = ((E.Scale(5)*4) + (E.Scale(20)*4))
 

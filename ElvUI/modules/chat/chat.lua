@@ -43,10 +43,10 @@ _G.ERR_FRIEND_ONLINE_SS = "|Hplayer:%s|h[%s]|h "..L.chat_ERR_FRIEND_ONLINE_SS.."
 _G.ERR_FRIEND_OFFLINE_S = "%s "..L.chat_ERR_FRIEND_OFFLINE_S.."!"
 
 -- Hide friends micro button (added in 3.3.5)
-E.Kill(FriendsMicroButton)
+FriendsMicroButton:Kill()
 
 -- hide chat bubble menu button
-E.Kill(ChatFrameMenuButton)
+ChatFrameMenuButton:Kill()
 
 local EditBoxDummy = CreateFrame("Frame", "EditBoxDummy", UIParent)
 EditBoxDummy:SetAllPoints(ElvuiInfoLeft)
@@ -85,10 +85,10 @@ local function SetChatStyle(frame)
 					region:SetPoint("BOTTOMLEFT", 0, E.Scale(4))
 					region:SetPoint("BOTTOMRIGHT", 0, E.Scale(4))
 				else
-					E.Kill(region)
+					region:Kill()
 				end
 				if region:GetParent():GetName() == "ChatFrame1Tab" then
-					E.Kill(region)
+					region:Kill()
 				end
 			end
 		end
@@ -113,38 +113,38 @@ local function SetChatStyle(frame)
 	end
 
 	-- Removes Default ChatFrame Tabs texture				
-	E.Kill(_G[format("ChatFrame%sTabLeft", id)])
-	E.Kill(_G[format("ChatFrame%sTabMiddle", id)])
-	E.Kill(_G[format("ChatFrame%sTabRight", id)])
+	_G[format("ChatFrame%sTabLeft", id)]:Kill()
+	_G[format("ChatFrame%sTabMiddle", id)]:Kill()
+	_G[format("ChatFrame%sTabRight", id)]:Kill()
 
-	E.Kill(_G[format("ChatFrame%sTabSelectedLeft", id)])
-	E.Kill(_G[format("ChatFrame%sTabSelectedMiddle", id)])
-	E.Kill(_G[format("ChatFrame%sTabSelectedRight", id)])
+	_G[format("ChatFrame%sTabSelectedLeft", id)]:Kill()
+	_G[format("ChatFrame%sTabSelectedMiddle", id)]:Kill()
+	_G[format("ChatFrame%sTabSelectedRight", id)]:Kill()
 	
-	E.Kill(_G[format("ChatFrame%sTabHighlightLeft", id)])
-	E.Kill(_G[format("ChatFrame%sTabHighlightMiddle", id)])
-	E.Kill(_G[format("ChatFrame%sTabHighlightRight", id)])
+	_G[format("ChatFrame%sTabHighlightLeft", id)]:Kill()
+	_G[format("ChatFrame%sTabHighlightMiddle", id)]:Kill()
+	_G[format("ChatFrame%sTabHighlightRight", id)]:Kill()
 
 	-- Killing off the new chat tab selected feature
-	E.Kill(_G[format("ChatFrame%sTabSelectedLeft", id)])
-	E.Kill(_G[format("ChatFrame%sTabSelectedMiddle", id)])
-	E.Kill(_G[format("ChatFrame%sTabSelectedRight", id)])
+	_G[format("ChatFrame%sTabSelectedLeft", id)]:Kill()
+	_G[format("ChatFrame%sTabSelectedMiddle", id)]:Kill()
+	_G[format("ChatFrame%sTabSelectedRight", id)]:Kill()
 
 	-- Kills off the new method of handling the Chat Frame scroll buttons as well as the resize button
 	-- Note: This also needs to include the actual frame textures for the ButtonFrame onHover
-	E.Kill(_G[format("ChatFrame%sButtonFrameUpButton", id)])
-	E.Kill(_G[format("ChatFrame%sButtonFrameDownButton", id)])
-	E.Kill(_G[format("ChatFrame%sButtonFrameBottomButton", id)])
-	E.Kill(_G[format("ChatFrame%sButtonFrameMinimizeButton", id)])
-	E.Kill(_G[format("ChatFrame%sButtonFrame", id)])
+	_G[format("ChatFrame%sButtonFrameUpButton", id)]:Kill()
+	_G[format("ChatFrame%sButtonFrameDownButton", id)]:Kill()
+	_G[format("ChatFrame%sButtonFrameBottomButton", id)]:Kill()
+	_G[format("ChatFrame%sButtonFrameMinimizeButton", id)]:Kill()
+	_G[format("ChatFrame%sButtonFrame", id)]:Kill()
 
 	-- Kills off the retarded new circle around the editbox
-	E.Kill(_G[format("ChatFrame%sEditBoxFocusLeft", id)])
-	E.Kill(_G[format("ChatFrame%sEditBoxFocusMid", id)])
-	E.Kill(_G[format("ChatFrame%sEditBoxFocusRight", id)])
+	_G[format("ChatFrame%sEditBoxFocusLeft", id)]:Kill()
+	_G[format("ChatFrame%sEditBoxFocusMid", id)]:Kill()
+	_G[format("ChatFrame%sEditBoxFocusRight", id)]:Kill()
 
 	-- Kill off editbox artwork
-	local a, b, c = select(6, _G[chat.."EditBox"]:GetRegions()); E.Kill (a); E.Kill (b); E.Kill (c)
+	local a, b, c = select(6, _G[chat.."EditBox"]:GetRegions()); a:Kill(); b:Kill(); c:Kill()
 				
 	-- Disable alt key usage
 	_G[chat.."EditBox"]:SetAltArrowKeyMode(false)
