@@ -1,0 +1,9 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/">	
+	<Script file='capturebar.lua'/>
+	<Script file='gm.lua'/>
+	<Script file='vehicle.lua'/>
+	<Script file='watchframe.lua'/>
+	<Script file='durability.lua'/>
+	<Script file='achievements.lua'/>
+	<Script file='bubbles.lua'/>
+</Ui>

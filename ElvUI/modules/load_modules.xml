@@ -11,4 +11,5 @@
 	<Include file="classtimer\load_classtimer.xml"/>
 	<Include file="misc\load_misc.xml"/>
 	<Include file="addonskins\load_addonskins.xml"/>
+	<Include file="blizzard\load_blizzard.xml"/>
 </Ui>
