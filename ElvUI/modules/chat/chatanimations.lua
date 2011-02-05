@@ -13,11 +13,11 @@ E.ToggleSlideChatL = function()
 		end
 		E.SlideOut(ChatLBackground)	
 		E.ChatLIn = false
-		ElvuiInfoLeftLButton.Text:SetTextColor(unpack(C["media"].valuecolor))
+		ElvuiInfoLeftLButton.text:SetTextColor(unpack(C["media"].valuecolor))
 	else
 		E.SlideIn(ChatLBackground)
 		E.ChatLIn = true
-		ElvuiInfoLeftLButton.Text:SetTextColor(1,1,1,1)
+		ElvuiInfoLeftLButton.text:SetTextColor(1,1,1,1)
 	end
 end
 
@@ -30,7 +30,7 @@ E.ToggleSlideChatR = function()
 		end
 		E.ChatRIn = false
 		E.ChatRightShown = false
-		ElvuiInfoRightRButton.Text:SetTextColor(unpack(C["media"].valuecolor))
+		ElvuiInfoRightRButton.text:SetTextColor(unpack(C["media"].valuecolor))
 	else
 		E.SlideIn(ChatRBackground)
 		if IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and C["skin"].hookdxeright == true and C["chat"].rightchat == true and C["chat"].showbackdrop == true then
@@ -39,7 +39,7 @@ E.ToggleSlideChatR = function()
 		end
 		E.ChatRIn = true
 		E.ChatRightShown = true
-		ElvuiInfoRightRButton.Text:SetTextColor(1,1,1,1)
+		ElvuiInfoRightRButton.text:SetTextColor(1,1,1,1)
 	end
 end
 

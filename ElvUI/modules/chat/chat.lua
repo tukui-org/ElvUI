@@ -572,12 +572,12 @@ ChatCombatHider:SetScript("OnEvent", function(self, event)
 				end
 				E.ChatRightShown = false
 				E.ChatRIn = false
-				ElvuiInfoRightRButton.Text:SetTextColor(unpack(C["media"].valuecolor))			
+				ElvuiInfoRightRButton.text:SetTextColor(unpack(C["media"].valuecolor))			
 			end
 			if E.ChatLIn ~= false then
 				E.SlideOut(ChatLBackground)
 				E.ChatLIn = false
-				ElvuiInfoLeftLButton.Text:SetTextColor(unpack(C["media"].valuecolor))
+				ElvuiInfoLeftLButton.text:SetTextColor(unpack(C["media"].valuecolor))
 			end
 		elseif C["chat"].combathide == "Right" then
 			if E.ChatRIn ~= false then
@@ -588,13 +588,13 @@ ChatCombatHider:SetScript("OnEvent", function(self, event)
 				end
 				E.ChatRightShown = false
 				E.ChatRIn = false
-				ElvuiInfoRightRButton.Text:SetTextColor(unpack(C["media"].valuecolor))			
+				ElvuiInfoRightRButton.text:SetTextColor(unpack(C["media"].valuecolor))			
 			end		
 		elseif C["chat"].combathide == "Left" then
 			if E.ChatLIn ~= false then
 				E.SlideOut(ChatLBackground)
 				E.ChatLIn = false
-				ElvuiInfoLeftLButton.Text:SetTextColor(unpack(C["media"].valuecolor))
+				ElvuiInfoLeftLButton.text:SetTextColor(unpack(C["media"].valuecolor))
 			end		
 		end
 	else
@@ -607,12 +607,12 @@ ChatCombatHider:SetScript("OnEvent", function(self, event)
 				end				
 				E.ChatRightShown = true
 				E.ChatRIn = true
-				ElvuiInfoRightRButton.Text:SetTextColor(1,1,1)			
+				ElvuiInfoRightRButton.text:SetTextColor(1,1,1)			
 			end
 			if E.ChatLIn ~= true then
 				E.SlideIn(ChatLBackground)
 				E.ChatLIn = true
-				ElvuiInfoLeftLButton.Text:SetTextColor(1,1,1)
+				ElvuiInfoLeftLButton.text:SetTextColor(1,1,1)
 			end
 		elseif C["chat"].combathide == "Right" then
 			if E.ChatRIn ~= true then
@@ -623,13 +623,13 @@ ChatCombatHider:SetScript("OnEvent", function(self, event)
 				end					
 				E.ChatRightShown = true
 				E.ChatRIn = true
-				ElvuiInfoRightRButton.Text:SetTextColor(1,1,1)			
+				ElvuiInfoRightRButton.text:SetTextColor(1,1,1)			
 			end		
 		elseif C["chat"].combathide == "Left" then
 			if E.ChatLIn ~= true then
 				E.SlideIn(ChatLBackground)
 				E.ChatLIn = true
-				ElvuiInfoLeftLButton.Text:SetTextColor(1,1,1)
+				ElvuiInfoLeftLButton.text:SetTextColor(1,1,1)
 			end		
 		end	
 	end
