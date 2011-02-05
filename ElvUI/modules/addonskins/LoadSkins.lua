@@ -9,7 +9,7 @@ local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Lo
 local function skinFrame(self, frame)
 	--Unfortionatly theres not a prettier way of doing this
 	if frame:GetParent():GetName() == "Recount_ConfigWindow" then
-		E.SetTransparentTemplate(frame)
+		frame:SetTemplate("Transparent")
 		frame:SetFrameStrata("BACKGROUND")
 		frame.SetFrameStrata = E.dummy
 	elseif frame:GetName() == "OmenBarList" or 
@@ -19,7 +19,7 @@ local function skinFrame(self, frame)
 	frame:GetParent():GetName() == "Recount_MainWindow" or 
 	frame:GetParent():GetName() == "Recount_GraphWindow" or 
 	frame:GetParent():GetName() == "Recount_DetailWindow" then
-		E.SetTransparentTemplate(frame)
+		frame:SetTemplate("Transparent")
 		if frame:GetParent():GetName() ~= "Recount_GraphWindow" and frame:GetParent():GetName() ~= "Recount_DetailWindow" then
 			frame:SetFrameStrata("MEDIUM")
 		else

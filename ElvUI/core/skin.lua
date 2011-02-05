@@ -232,9 +232,9 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		_G["ReadyCheckListenerFrame"]:SetAlpha(0)
 		_G["ReadyCheckFrame"]:HookScript("OnShow", function(self) if UnitIsUnit("player", self.initiator) then self:Hide() end end) -- bug fix, don't show it if initiator
 		
-		E.SetTransparentTemplate(RolePollPopup)
+		RolePollPopup:SetTemplate("Transparent")
 		RolePollPopup:CreateShadow("Default")
-		E.SetTransparentTemplate(LFDDungeonReadyDialog)
+		LFDDungeonReadyDialog:SetTemplate("Transparent")
 		LFDDungeonReadyDialog:CreateShadow("Default")
 		SkinButton(LFDDungeonReadyDialogEnterDungeonButton)
 		SkinButton(LFDDungeonReadyDialogLeaveQueueButton)
