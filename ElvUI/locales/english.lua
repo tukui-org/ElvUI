@@ -97,6 +97,7 @@ L.popup_disableui = "Elvui doesn't work for this resolution, do you want to disa
 L.popup_install = "First time running Elvui on this character, you need to setup chat windows and actionbars."
 L.popup_2raidactive = "2 raid layouts are active, please select a layout."
 L.popup_reloadui = "The action you have performed requires a ReloadUI."
+L.popup_resetuf = "Do you wish to reset your unitframe positions?"
 
 L.merchant_repairnomoney = "You don't have enough money for repair!"
 L.merchant_repaircost = "Your items have been repaired for"

@@ -148,8 +148,7 @@ SlashCmdList.RESETMOVERS = function(arg)
 	end
 	
 	if oUF and (arg == nil or arg == "" or arg == "uf") then 
-		E.ResetUF() 
-		StaticPopup_Show("RELOAD_UI") 
+		StaticPopup_Show("RESET_UF") 
 	end 
 end
 

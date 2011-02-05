@@ -21,6 +21,15 @@ StaticPopupDialogs["RELOAD_UI"] = {
 	whileDead = 1,
 }
 
+StaticPopupDialogs["RESET_UF"] = {
+	text = L.popup_resetuf,
+	button1 = YES,
+	button2 = NO,
+	OnAccept = function() E.ResetUF() ReloadUI() end,
+	timeout = 0,
+	whileDead = 1,
+}
+
 StaticPopupDialogs["INSTALL_UI"] = {
 	text = L.popup_install,
 	button1 = ACCEPT,
