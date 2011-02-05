@@ -515,14 +515,14 @@ ChatLBackground.anim:HookScript("OnFinished", function()
 end)
 
 ChatRBackground.anim_o:HookScript("OnPlay", function()
-	if E.RightChat ~= true then return end
+	if E.RightChat ~= true or not E.RightChatWindowID then return end
 	local chat = _G[format("ChatFrame%s", E.RightChatWindowID)]
 	chat:SetParent(_G[format("ChatFrame%sTab", E.RightChatWindowID)])
 	chat:SetFrameStrata("LOW")
 end)
 
 ChatRBackground.anim:HookScript("OnFinished", function()
-	if E.RightChat ~= true then return end
+	if E.RightChat ~= true or not E.RightChatWindowID then return end
 	local chat = _G[format("ChatFrame%d", E.RightChatWindowID)]
 	chat:SetParent(UIParent)
 	chat:SetFrameStrata("LOW")

@@ -1,11 +1,10 @@
+-----------------------------------------------------------------------
+-- SETUP ELVUI CHATS
+-----------------------------------------------------------------------
 
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if C["chat"].enable ~= true then return end
-
------------------------------------------------------------------------
--- SETUP ELVUI CHATS
------------------------------------------------------------------------
 
 local ElvuiChat = CreateFrame("Frame")
 local _G = _G
@@ -273,7 +272,6 @@ ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 			
 			if point == "BOTTOMRIGHT" and chat:IsShown() then
 				chatfound = true
-				E.RightChatWindowID = id
 				break
 			end
 		end
@@ -282,8 +280,10 @@ ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 		
 		if chatfound == true then
 			ChatRBG:SetAlpha(1)
+			E.RightChatWindowID = id
 		else
 			ChatRBG:SetAlpha(0)
+			E.RightChatWindowID = nil
 		end
 
 		
@@ -628,7 +628,6 @@ E.SetUpAnimGroup(ElvuiInfoLeft.shadow)
 E.SetUpAnimGroup(ElvuiInfoRight.shadow)
 local function CheckWhisperWindows(self, event)
 	local chat = self:GetName()
-
 	if chat == "ChatFrame1" and E.ChatLIn == false then
 		if event == "CHAT_MSG_WHISPER" then
 			ElvuiInfoLeft.shadow:SetBackdropBorderColor(ChatTypeInfo["WHISPER"].r,ChatTypeInfo["WHISPER"].g,ChatTypeInfo["WHISPER"].b, 1)
@@ -638,7 +637,7 @@ local function CheckWhisperWindows(self, event)
 		ElvuiInfoLeft:SetScript("OnUpdate", function(self)
 			E.Flash(ElvuiInfoLeft.shadow, 0.5)
 		end)
-	elseif chat == _G[format("ChatFrame%s", E.RightChatWindowID)] and E.RightChat == true and E.ChatRIn == false then
+	elseif E.RightChatWindowID and chat == _G[format("ChatFrame%s", E.RightChatWindowID)]:GetName() and E.RightChat == true and E.ChatRIn == false then
 		if event == "CHAT_MSG_WHISPER" then
 			ElvuiInfoRight.shadow:SetBackdropBorderColor(ChatTypeInfo["WHISPER"].r,ChatTypeInfo["WHISPER"].g,ChatTypeInfo["WHISPER"].b, 1)
 		elseif event == "CHAT_MSG_BN_WHISPER" then

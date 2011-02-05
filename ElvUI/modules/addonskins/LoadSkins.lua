@@ -85,7 +85,8 @@ Mod_AddonSkins:SetScript("OnEvent",function(self, event, addon)
 			SkadaBarWindowSkada:ClearAllPoints()
 			SkadaBarWindowSkada:SetPoint("TOPRIGHT", ChatRBackground2, "TOPRIGHT", -2, -2)
 			local function AdjustSkadaFrameLevels()
-				SkadaBarWindowSkada:SetFrameLevel(_G[format("ChatFrame%d", E.RightChatWindowID)]:GetFrameLevel() or 0 + 2)
+				if not E.RightChatWindowID then return end
+				SkadaBarWindowSkada:SetFrameLevel(_G[format("ChatFrame%s", E.RightChatWindowID)]:GetFrameLevel() or 0 + 2)
 				if SkadaBG then
 					SkadaBG:SetFrameStrata("MEDIUM")	
 					SkadaBG:ClearAllPoints()
