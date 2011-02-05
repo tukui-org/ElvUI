@@ -14,7 +14,6 @@ E.resolution = GetCurrentResolution()
 E.getscreenresolution = select(E.resolution, GetScreenResolutions())
 E.getscreenheight = tonumber(string.match(({GetScreenResolutions()})[GetCurrentResolution()], "%d+x(%d+)"))
 E.getscreenwidth = tonumber(string.match(({GetScreenResolutions()})[GetCurrentResolution()], "(%d+)x+%d"))
-E.client = GetLocale() 
 
 --Keybind Header
 BINDING_HEADER_ELVUI = GetAddOnMetadata("ElvUI", "Title") --Header name inside keybinds menu
