@@ -154,13 +154,19 @@ local function Kill(object)
 	object:Hide()
 end
 
-local function FontString(parent, fontName, fontHeight, fontStyle)
+local function FontString(parent, name, fontName, fontHeight, fontStyle)
 	local fs = parent:CreateFontString(nil, "OVERLAY")
 	fs:SetFont(fontName, fontHeight, fontStyle)
 	fs:SetJustifyH("LEFT")
 	fs:SetShadowColor(0, 0, 0)
 	fs:SetShadowOffset(E.mult, -E.mult)
-	parent.text = fs
+	
+	if not name then
+		parent.text = fs
+	else
+		parent[name] = fs
+	end
+	
 	return fs
 end
 

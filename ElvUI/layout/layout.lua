@@ -195,11 +195,11 @@ infoleft:SetPoint("BOTTOMRIGHT", chatlbgdummy2, "BOTTOMRIGHT", E.Scale(-17), E.S
 	infoleft.shadow:SetPoint("TOPLEFT", infoleftLbutton, "TOPLEFT", E.Scale(-4), E.Scale(4))
 	infoleft.shadow:SetPoint("BOTTOMRIGHT", infoleftRbutton, "BOTTOMRIGHT", E.Scale(4), E.Scale(-4))
 
-	infoleftLbutton:FontString(C["media"].font, C["general"].fontscale, "THINOUTLINE")
+	infoleftLbutton:FontString(nil, C["media"].font, C["general"].fontscale, "THINOUTLINE")
 	infoleftLbutton.text:SetText("<")
 	infoleftLbutton.text:SetPoint("CENTER")
 
-	infoleftRbutton:FontString(C["media"].font, C["general"].fontscale, "THINOUTLINE")
+	infoleftRbutton:FontString(nil, C["media"].font, C["general"].fontscale, "THINOUTLINE")
 	infoleftRbutton.text:SetText("L")
 	infoleftRbutton.text:SetPoint("CENTER")
 
@@ -227,11 +227,11 @@ inforight:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", E.Scale(-17), E.
 	inforight.shadow:SetPoint("TOPLEFT", inforightLbutton, "TOPLEFT", E.Scale(-4), E.Scale(4))
 	inforight.shadow:SetPoint("BOTTOMRIGHT", inforightRbutton, "BOTTOMRIGHT", E.Scale(4), E.Scale(-4))
 
-	inforightLbutton:FontString(C["media"].font, C["general"].fontscale, "THINOUTLINE")
+	inforightLbutton:FontString(nil, C["media"].font, C["general"].fontscale, "THINOUTLINE")
 	inforightLbutton.text:SetText("R")
 	inforightLbutton.text:SetPoint("CENTER")
 
-	inforightRbutton:FontString(C["media"].font, C["general"].fontscale, "THINOUTLINE")
+	inforightRbutton:FontString(nil, C["media"].font, C["general"].fontscale, "THINOUTLINE")
 	inforightRbutton.text:SetText(">")
 	inforightRbutton.text:SetPoint("CENTER")
 	

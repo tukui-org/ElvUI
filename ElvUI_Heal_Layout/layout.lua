@@ -104,7 +104,7 @@ local function Shared(self, unit)
 		-- Health Bar Background
 		local healthBG = health:CreateTexture(nil, 'BORDER')
 		healthBG:SetAllPoints()
-		health.value = health:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
+		health:FontString("value", font1, C["unitframes"].fontsize, "THINOUTLINE")
 		health.value:SetPoint("RIGHT", health, "RIGHT", E.Scale(-4), E.Scale(1))
 		health.PostUpdate = E.PostUpdateHealth
 		self.Health = health
@@ -165,7 +165,7 @@ local function Shared(self, unit)
 		powerBG:SetAllPoints(power)
 		powerBG:SetTexture(normTex)
 		powerBG.multiplier = 0.3
-		power.value = health:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
+		power:FontString("value", font1, C["unitframes"].fontsize, "THINOUTLINE")
 		power.value:SetPoint("LEFT", health, "LEFT", E.Scale(4), E.Scale(1))
 		power.PreUpdate = E.PreUpdatePower
 		power.PostUpdate = E.PostUpdatePower
@@ -250,7 +250,7 @@ local function Shared(self, unit)
 		FlashInfo.parent = self
 		FlashInfo:SetToplevel(true)
 		FlashInfo:SetAllPoints(health)
-		FlashInfo.ManaLevel = FlashInfo:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
+		FlashInfo:FontString("ManaLevel", font1, C["unitframes"].fontsize, "THINOUTLINE")
 		FlashInfo.ManaLevel:SetPoint("CENTER", health, "CENTER", 0, E.Scale(-5))
 		self.FlashInfo = FlashInfo
 		
@@ -433,6 +433,7 @@ local function Shared(self, unit)
 				local DruidMana = health:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
 				DruidMana:SetTextColor(1, 0.49, 0.04)
 				self.DruidMana = DruidMana
+				
 				local eclipseBar = CreateFrame('Frame', nil, self)
 				eclipseBar:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 0, E.Scale(5))
 				eclipseBar:SetSize(original_width, E.Scale(8))
@@ -455,10 +456,8 @@ local function Shared(self, unit)
 				solarBar:SetStatusBarColor(.80, .82,  .60)
 				eclipseBar.SolarBar = solarBar
 
-				local eclipseBarText = solarBar:CreateFontString(nil, 'OVERLAY')
-				eclipseBarText:SetPoint("CENTER", self.Health, "CENTER", E.Scale(1), E.Scale(-5))
-				eclipseBarText:SetFont(font1, C["unitframes"].fontsize, "THINOUTLINE")
-				eclipseBar.Text = eclipseBarText
+				eclipseBar:FontString("Text", font1, C["unitframes"].fontsize, "THINOUTLINE")
+				eclipseBar.Text:SetPoint("CENTER", self.Health, "CENTER", E.Scale(1), E.Scale(-5))
 			
 
 				self.EclipseBar = eclipseBar
@@ -722,13 +721,13 @@ local function Shared(self, unit)
 			castbar.bg:SetFrameLevel(5)
 			castbar.bg:SetFrameStrata("DIALOG")
 			
-			castbar.time = castbar:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
+			castbar:FontString("time", font1, C["unitframes"].fontsize, "THINOUTLINE")
 			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", E.Scale(-4), 0)
 			castbar.time:SetTextColor(0.84, 0.75, 0.65)
 			castbar.time:SetJustifyH("RIGHT")
 			castbar.CustomTimeText = E.CustomCastTimeText
  
-			castbar.Text = castbar:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
+			castbar:FontString("Text", font1, C["unitframes"].fontsize, "THINOUTLINE")
 			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 1)
 			castbar.Text:SetTextColor(0.84, 0.75, 0.65)
  
@@ -905,7 +904,7 @@ local function Shared(self, unit)
 		-- Health Bar Background
 		local healthBG = health:CreateTexture(nil, 'BORDER')
 		healthBG:SetAllPoints()
-		health.value = health:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
+		health:FontString("value", font1, C["unitframes"].fontsize, "THINOUTLINE")
 		health.value:SetPoint("RIGHT", health, "RIGHT", E.Scale(-4), E.Scale(1))
 		health.PostUpdate = E.PostUpdateHealth
 		self.Health = health
@@ -966,7 +965,7 @@ local function Shared(self, unit)
 		powerBG:SetAllPoints(power)
 		powerBG:SetTexture(normTex)
 		powerBG.multiplier = 0.3
-		power.value = health:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
+		power:FontString("value", font1, C["unitframes"].fontsize, "THINOUTLINE")
 		power.value:SetPoint("LEFT", health, "LEFT", E.Scale(4), E.Scale(1))
 		power.PreUpdate = E.PreUpdatePower
 		power.PostUpdate = E.PostUpdatePower
@@ -1101,13 +1100,13 @@ local function Shared(self, unit)
 			castbar.bg:SetFrameLevel(5)
 
  
-			castbar.time = castbar:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
+			castbar:FontString("time", font1, C["unitframes"].fontsize, "THINOUTLINE")
 			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", E.Scale(-4), 0)
 			castbar.time:SetTextColor(0.84, 0.75, 0.65)
 			castbar.time:SetJustifyH("RIGHT")
 			castbar.CustomTimeText = E.CustomCastTimeText
  
-			castbar.Text = castbar:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
+			castbar:FontString("Text", font1, C["unitframes"].fontsize, "THINOUTLINE")
 			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 1)
 			castbar.Text:SetTextColor(0.84, 0.75, 0.65)
  
@@ -1474,13 +1473,13 @@ local function Shared(self, unit)
 			castbar.bg:SetPoint("BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
 			castbar.bg:SetFrameLevel(5)
 			
-			castbar.time = castbar:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
+			castbar:FontString("time", font1, C["unitframes"].fontsize, "THINOUTLINE")
 			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", E.Scale(-4), 0)
 			castbar.time:SetTextColor(0.84, 0.75, 0.65)
 			castbar.time:SetJustifyH("RIGHT")
 			castbar.CustomTimeText = E.CustomCastTimeText
 
-			castbar.Text = castbar:FontString(font1, C["unitframes"].fontsize)
+			castbar:FontString("Text", font1, C["unitframes"].fontsize)
 			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 1)
 			castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 			
@@ -1657,20 +1656,20 @@ local function Shared(self, unit)
 		
 		--Health and Power
 		if (unit and unit:find('arena%d')) then
-			health.value = health:FontString(font1,C["unitframes"].fontsize, "OUTLINE")
+			health:FontString("value", font1,C["unitframes"].fontsize, "OUTLINE")
 			health.value:SetPoint("LEFT", E.Scale(2), E.Scale(1))
 			health.PostUpdate = E.PostUpdateHealth
 			
-			power.value = health:FontString(font1, C["unitframes"].fontsize, "OUTLINE")
+			power:FontString("value", font1, C["unitframes"].fontsize, "OUTLINE")
 			power.value:SetPoint("RIGHT", health, "RIGHT", E.Scale(-2), E.Scale(1))
 			power.PreUpdate = E.PreUpdatePower
 			power.PostUpdate = E.PostUpdatePower			
 		else
-			health.value = health:FontString(font1,C["unitframes"].fontsize, "OUTLINE")
+			health:FontString("value", font1,C["unitframes"].fontsize, "OUTLINE")
 			health.value:SetPoint("TOPLEFT", health, "TOPLEFT", E.Scale(2), E.Scale(-2))
 			health.PostUpdate = E.PostUpdateHealth
 			
-			power.value = health:FontString(font1, C["unitframes"].fontsize, "OUTLINE")
+			power:FontString("value", font1, C["unitframes"].fontsize, "OUTLINE")
 			power.value:SetPoint("BOTTOMLEFT", health, "BOTTOMLEFT", E.Scale(2), E.Scale(1))
 			power.value:SetJustifyH("RIGHT")
 			power.PreUpdate = E.PreUpdatePower
@@ -1806,13 +1805,13 @@ local function Shared(self, unit)
 			castbar.bg:SetPoint("BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
 			castbar.bg:SetFrameLevel(5)
 			
-			castbar.time = castbar:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
+			castbar:FontString("time", font1, C["unitframes"].fontsize, "THINOUTLINE")
 			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", E.Scale(-4), 0)
 			castbar.time:SetTextColor(0.84, 0.75, 0.65)
 			castbar.time:SetJustifyH("RIGHT")
 			castbar.CustomTimeText = E.CustomCastTimeText
 
-			castbar.Text = castbar:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
+			castbar:FontString("Text", font1, C["unitframes"].fontsize, "THINOUTLINE")
 			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 0)
 			castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 			

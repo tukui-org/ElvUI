@@ -228,8 +228,8 @@ end)
 
 local coords = CreateFrame("Frame", "CoordsFrame", WorldMapFrame)
 local fontheight = select(2, WorldMapQuestShowObjectivesText:GetFont())*1.1
-coords.PlayerText = coords:FontString(C["media"].font, fontheight, "THINOUTLINE")
-coords.MouseText = coords:FontString(C["media"].font, fontheight, "THINOUTLINE")
+coords:FontString("PlayerText", C["media"].font, fontheight, "THINOUTLINE")
+coords:FontString("MouseText", C["media"].font, fontheight, "THINOUTLINE")
 coords.PlayerText:SetTextColor(WorldMapQuestShowObjectivesText:GetTextColor())
 coords.MouseText:SetTextColor(WorldMapQuestShowObjectivesText:GetTextColor())
 coords.PlayerText:SetPoint("TOPLEFT", WorldMapButton, "TOPLEFT", 5, -5)
