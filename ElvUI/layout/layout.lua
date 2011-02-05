@@ -332,10 +332,10 @@ if C["datatext"].battleground == true then
 					if GetRealZoneText() == "Arathi Basin" then --
 						GameTooltip:AddDoubleLine(L.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
-					elseif GetRealZoneText() == "Warsong Gulch" then --
+					elseif GetRealZoneText() == "Warsong Gulch" or GetRealZoneText() == "Twin Peaks" then
 						GameTooltip:AddDoubleLine(L.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_flagsreturned,GetBattlefieldStatData(i, 2),1,1,1)
-					elseif GetRealZoneText() == "Eye of the Storm" then --
+					elseif GetRealZoneText() == "Eye of the Storm" or GetRealZoneText() == "The Battle for Gilneas" then
 						GameTooltip:AddDoubleLine(L.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
 					elseif GetRealZoneText() == "Alterac Valley" then
 						GameTooltip:AddDoubleLine(L.datatext_graveyardsassaulted,GetBattlefieldStatData(i, 1),1,1,1)
@@ -374,13 +374,13 @@ if C["datatext"].battleground == true then
 					GameTooltip:AddDoubleLine(L.datatext_ttstatsfor, classcolor..name.."|r")
 					GameTooltip:AddLine' '
 					--Add extra statistics to watch based on what BG you are in.
-					if GetRealZoneText() == "Arathi Basin" then --
+					if GetRealZoneText() == "Arathi Basin" or GetRealZoneText() == "The Battle for Gilneas" then
 						GameTooltip:AddDoubleLine(L.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
-					elseif GetRealZoneText() == "Warsong Gulch" then --
+					elseif GetRealZoneText() == "Warsong Gulch" or GetRealZoneText() == "Twin Peaks" then
 						GameTooltip:AddDoubleLine(L.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_flagsreturned,GetBattlefieldStatData(i, 2),1,1,1)
-					elseif GetRealZoneText() == "Eye of the Storm" then --
+					elseif GetRealZoneText() == "Eye of the Storm" then
 						GameTooltip:AddDoubleLine(L.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
 					elseif GetRealZoneText() == "Alterac Valley" then
 						GameTooltip:AddDoubleLine(L.datatext_graveyardsassaulted,GetBattlefieldStatData(i, 1),1,1,1)
@@ -393,7 +393,7 @@ if C["datatext"].battleground == true then
 					elseif GetRealZoneText() == "Isle of Conquest" then
 						GameTooltip:AddDoubleLine(L.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
-					end			
+					end		
 					GameTooltip:Show()
 				end
 			end
@@ -472,69 +472,6 @@ if C["datatext"].battleground == true then
 	end)
 end
 
---Mover buttons uses this
-function E.PositionAllPanels()
-	ElvuiActionBarBackground:ClearAllPoints()
-	ElvuiPetActionBarBackground:ClearAllPoints()
-	ElvuiLineToPetActionBarBackground:ClearAllPoints()
-	
-	if C["actionbar"].bottompetbar ~= true then
-		ElvuiActionBarBackground:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, E.Scale(4))
-		if E["actionbar"].rightbars > 0 then
-			ElvuiPetActionBarBackground:SetPoint("RIGHT", ElvuiActionBarBackgroundRight, "LEFT", E.Scale(-6), 0)
-		else
-			ElvuiPetActionBarBackground:SetPoint("RIGHT", UIParent, "RIGHT", E.Scale(-6), E.Scale(-13.5))
-		end
-		ElvuiPetActionBarBackground:SetSize(E.petbuttonsize + (E.buttonspacing * 2), (E.petbuttonsize * 10) + (E.buttonspacing * 11))
-		ElvuiLineToPetActionBarBackground:SetSize(30, 265)
-		ElvuiLineToPetActionBarBackground:SetPoint("LEFT", ElvuiPetActionBarBackground, "RIGHT", 0, 0)
-	else
-		ElvuiActionBarBackground:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, (E.buttonsize + (E.buttonspacing * 2)) + E.Scale(8))	
-		ElvuiPetActionBarBackground:SetSize((E.petbuttonsize * 10) + (E.buttonspacing * 11), E.petbuttonsize + (E.buttonspacing * 2))
-		ElvuiPetActionBarBackground:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, E.Scale(4))
-		ElvuiLineToPetActionBarBackground:SetSize(265, 30)
-		ElvuiLineToPetActionBarBackground:SetPoint("BOTTOM", ElvuiPetActionBarBackground, "TOP", 0, 0)
-	end
-	
-	if E["actionbar"].bottomrows == 3 then
-		ElvuiActionBarBackground:SetHeight((E.buttonsize * 3) + (E.buttonspacing * 4))
-	elseif E["actionbar"].bottomrows == 2 then
-		ElvuiActionBarBackground:SetHeight((E.buttonsize * 2) + (E.buttonspacing * 3))
-	else
-		ElvuiActionBarBackground:SetHeight(E.buttonsize + (E.buttonspacing * 2))
-	end
-	
-	--SplitBar
-	if E["actionbar"].splitbar == true then
-		if E["actionbar"].bottomrows == 3 then
-			ElvuiSplitActionBarLeftBackground:SetWidth((E.buttonsize * 4) + (E.buttonspacing * 5))
-			ElvuiSplitActionBarRightBackground:SetWidth((E.buttonsize * 4) + (E.buttonspacing * 5))
-		else
-			ElvuiSplitActionBarLeftBackground:SetWidth((E.buttonsize * 3) + (E.buttonspacing * 4))
-			ElvuiSplitActionBarRightBackground:SetWidth((E.buttonsize * 3) + (E.buttonspacing * 4))	
-		end
-		ElvuiSplitActionBarLeftBackground:Show()
-		ElvuiSplitActionBarRightBackground:Show()
-		ElvuiSplitActionBarLeftBackground:SetHeight(ElvuiActionBarBackground:GetHeight())
-		ElvuiSplitActionBarRightBackground:SetHeight(ElvuiActionBarBackground:GetHeight())
-	else
-		ElvuiSplitActionBarLeftBackground:Hide()
-		ElvuiSplitActionBarRightBackground:Hide()	
-	end
-	
-	--RightBar
-	ElvuiActionBarBackgroundRight:Show()
-	if E["actionbar"].rightbars == 1 then
-		ElvuiActionBarBackgroundRight:SetWidth(E.buttonsize + (E.buttonspacing * 2))
-	elseif E["actionbar"].rightbars == 2 then
-		ElvuiActionBarBackgroundRight:SetWidth((E.buttonsize * 2) + (E.buttonspacing * 3))
-	elseif E["actionbar"].rightbars == 3 then
-		ElvuiActionBarBackgroundRight:SetWidth((E.buttonsize * 3) + (E.buttonspacing * 4))
-	else
-		ElvuiActionBarBackgroundRight:Hide()
-	end	
-end
-
 --Fixes chat windows not displaying
 ChatLBackground.anim_o:HookScript("OnFinished", function()
 	for i = 1, NUM_CHAT_WINDOWS do
@@ -590,7 +527,7 @@ if C["chat"].rightchat == true then
 end
 
 --Setup Button Scripts
-infoleftLbutton:SetScript("OnMouseDown", function(self, btn)
+ElvuiInfoLeftLButton:SetScript("OnMouseDown", function(self, btn)
 	if btn == "RightButton" then
 		if E.ChatLIn == true then
 			for i = 1, NUM_CHAT_WINDOWS do
@@ -618,7 +555,7 @@ infoleftLbutton:SetScript("OnMouseDown", function(self, btn)
 	end
 end)
 
-inforightRbutton:SetScript("OnMouseDown", function(self, btn)
+ElvuiInfoLeftRButton:SetScript("OnMouseDown", function(self, btn)
 	if C["chat"].rightchat ~= true then self:EnableMouse(false) return end
 	if btn == "RightButton" then
 		E.ToggleSlideChatR()

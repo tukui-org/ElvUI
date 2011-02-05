@@ -41,37 +41,3 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 		end
 	end
 end)
-
-function E.PositionAllBars()
-	if E["actionbar"].rightbars > 2 and E["actionbar"].splitbar == true then
-		E["actionbar"].rightbars = 2
-	end
-
-	if E["actionbar"].bottomrows == 3 and E["actionbar"].rightbars ~= 0 and E["actionbar"].splitbar == true then
-		E["actionbar"].rightbars = 0
-		if E.ABLock == true then
-			RightBarBig:Show()
-		end
-	end
-
-	if E["actionbar"].bottomrows == 3 and E["actionbar"].rightbars > 2 then
-		E["actionbar"].rightbars = 2
-	end
-	
-	if E["actionbar"].rightbars ~= 0 or (E["actionbar"].bottomrows == 3 and E["actionbar"].splitbar == true) then
-		RightBarBig:Hide()
-	else
-		if E.ABLock == true then
-			RightBarBig:Show()
-		end
-	end
-	
-	E.PositionAllPanels()
-	E.PositionMainBar()
-	E.PositionBar2()
-	E.PositionBar3()
-	E.PositionBar4()
-	E.PositionBar5()
-	E.PositionBarPet(ElvuiPetBar)
-	E.PositionWatchFrame()
-end
