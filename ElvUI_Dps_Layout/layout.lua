@@ -97,7 +97,7 @@ local function Shared(self, unit)
 		FrameBorder:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
 		FrameBorder:SetFrameLevel(2)
 		self.FrameBorder = FrameBorder
-		E.CreateShadow(self.FrameBorder)
+		self.FrameBorder:CreateShadow("Default")
 		self.FrameBorder.shadow:SetFrameLevel(0)
 		self.FrameBorder.shadow:SetFrameStrata("BACKGROUND")
 	
@@ -148,7 +148,7 @@ local function Shared(self, unit)
 		PowerFrame:SetBackdropBorderColor(unpack(C["media"].altbordercolor))	
 		self.PowerFrame = PowerFrame
 		if powerbar_offset ~= 0 then
-			E.CreateShadow(self.PowerFrame)
+			self.PowerFrame:CreateShadow("Default")
 		else
 			self.FrameBorder.shadow:SetPoint("BOTTOMLEFT", self.PowerFrame, "BOTTOMLEFT", E.Scale(-4), E.Scale(-4))
 		end
@@ -223,7 +223,7 @@ local function Shared(self, unit)
 			PFrame:SetTemplate("Default")
 			PFrame:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
 			self.PFrame = PFrame
-			E.CreateShadow(self.PFrame)			
+			self.PFrame:CreateShadow("Default")		
 			local portrait = CreateFrame("PlayerModel", nil, PFrame)
 			portrait:SetFrameLevel(2)
 			
@@ -916,7 +916,7 @@ local function Shared(self, unit)
 		FrameBorder:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
 		FrameBorder:SetFrameLevel(2)
 		self.FrameBorder = FrameBorder
-		E.CreateShadow(self.FrameBorder)
+		self.FrameBorder:CreateShadow("Default")
 		self.FrameBorder.shadow:SetFrameLevel(0)
 		self.FrameBorder.shadow:SetFrameStrata("BACKGROUND")
 	
@@ -967,7 +967,7 @@ local function Shared(self, unit)
 		PowerFrame:SetBackdropBorderColor(unpack(C["media"].altbordercolor))	
 		self.PowerFrame = PowerFrame
 		if powerbar_offset ~= 0 then
-			E.CreateShadow(self.PowerFrame)
+			self.PowerFrame:CreateShadow("Default")
 		else
 			self.FrameBorder.shadow:SetPoint("BOTTOMLEFT", self.PowerFrame, "BOTTOMLEFT", E.Scale(-4), E.Scale(-4))
 		end
@@ -1040,7 +1040,7 @@ local function Shared(self, unit)
 			PFrame:SetTemplate("Default")
 			PFrame:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
 			self.PFrame = PFrame
-			E.CreateShadow(self.PFrame)			
+			self.PFrame:CreateShadow("Default")		
 			local portrait = CreateFrame("PlayerModel", nil, PFrame)
 			portrait:SetFrameLevel(2)
 			
@@ -1295,7 +1295,7 @@ local function Shared(self, unit)
 		FrameBorder:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
 		FrameBorder:SetFrameLevel(2)
 		self.FrameBorder = FrameBorder
-		E.CreateShadow(self.FrameBorder)
+		self.FrameBorder:CreateShadow("Default")
 		self.FrameBorder.shadow:SetFrameLevel(0)
 		self.FrameBorder.shadow:SetFrameStrata("BACKGROUND")
 		
@@ -1341,7 +1341,7 @@ local function Shared(self, unit)
 			PowerFrame:SetBackdropBorderColor(unpack(C["media"].altbordercolor))	
 			self.PowerFrame = PowerFrame
 			if powerbar_offset ~= 0 then
-				E.CreateShadow(PowerFrame)
+				PowerFrame:CreateShadow("Default")
 			else
 				self.FrameBorder.shadow:SetPoint("BOTTOMLEFT", PowerFrame, "BOTTOMLEFT", E.Scale(-4), E.Scale(-4))
 			end
@@ -1595,7 +1595,7 @@ local function Shared(self, unit)
 		FrameBorder:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
 		FrameBorder:SetFrameLevel(2)
 		self.FrameBorder = FrameBorder
-		E.CreateShadow(self.FrameBorder)
+		self.FrameBorder:CreateShadow("Default")
 		self.FrameBorder.shadow:SetFrameLevel(0)
 		self.FrameBorder.shadow:SetFrameStrata("BACKGROUND")
 		
@@ -1616,7 +1616,7 @@ local function Shared(self, unit)
 		PowerFrame:SetTemplate("Default")
 		PowerFrame:SetBackdropBorderColor(unpack(C["media"].altbordercolor))	
 		if powerbar_offset ~= 0 then
-			E.CreateShadow(PowerFrame)
+			PowerFrame:CreateShadow("Default")
 		else
 			self.FrameBorder.shadow:SetPoint("BOTTOMLEFT", PowerFrame, "BOTTOMLEFT", E.Scale(-4), E.Scale(-4))
 		end
@@ -1887,7 +1887,7 @@ local function Shared(self, unit)
 		FrameBorder:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
 		FrameBorder:SetFrameLevel(2)
 		self.FrameBorder = FrameBorder
-		E.CreateShadow(self.FrameBorder)
+		self.FrameBorder:CreateShadow("Default")
 		self.FrameBorder.shadow:SetFrameLevel(0)
 		self.FrameBorder.shadow:SetFrameStrata("BACKGROUND")
 		

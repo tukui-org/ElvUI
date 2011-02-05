@@ -482,7 +482,7 @@ function E.ChatCopyButtons()
 			button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, E.Scale(3))
 		end
 		E.SetNormTexTemplate(button)
-		E.CreateShadow(button)
+		button:CreateShadow("Default")
 		
 		local buttontext = button:CreateFontString(nil,"OVERLAY",nil)
 		buttontext:SetFont(C.media.font,C["general"].fontscale,"OUTLINE")

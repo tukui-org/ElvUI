@@ -28,7 +28,7 @@ local function CreateMoverButton(name, text)
 	b:SetScript("OnLeave", Button_OnLeave)
 	b:EnableMouse(true)
 	b:Hide()
-	E.CreateShadow(b)
+	b:CreateShadow("Default")
 	tinsert(btnnames, tostring(name))
 	
 	local t = b:CreateFontString(nil, "OVERLAY", b)

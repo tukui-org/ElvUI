@@ -12,7 +12,7 @@ local RaidUtilityPanel = CreateFrame("Frame", "RaidUtilityPanel", UIParent)
 E.CreatePanel(RaidUtilityPanel, E.Scale(170), panel_height, "TOP", UIParent, "TOP", -300, panel_height + 15)
 local r,g,b,_ = C["media"].backdropcolor
 RaidUtilityPanel:SetBackdropColor(r,g,b,0.6)
-E.CreateShadow(RaidUtilityPanel)
+RaidUtilityPanel:CreateShadow("Default")
 
 --Check if We are Raid Leader or Raid Officer
 local function CheckRaidStatus()

@@ -127,7 +127,7 @@ x:SetPoint("TOPLEFT", CharacterMicroButton.frame, "TOPLEFT")
 x:SetPoint("BOTTOMRIGHT", HelpMicroButton.frame, "BOTTOMRIGHT")
 x:EnableMouse(true)
 x.mouseover = false
-E.CreateShadow(x)
+x:CreateShadow("Default")
 x:SetScript("OnEnter", function(self) self.mouseover = true end)
 x:SetScript("OnLeave", function(self) self.mouseover = false end)
 

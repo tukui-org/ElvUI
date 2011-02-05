@@ -66,7 +66,7 @@ local SmallerMapSkin = function()
 	E.Kill(WorldMapTrackQuest)
 
 	-- map glow
-	E.CreateShadow(mapbg)
+	mapbg:CreateShadow("Default")
 	
 	-- map border and bg
 	mapbg:SetBackdropColor(unpack(C["media"].backdropcolor))

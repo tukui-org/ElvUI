@@ -84,7 +84,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		for i = 1, getn(skins) do
 			E.SetNormTexTemplate(_G[skins[i]])
 			if _G[skins[i]] ~= _G["GhostFrameContentsFrame"] or _G[skins[i]] ~= _G["AutoCompleteBox"] then -- frame to blacklist from create shadow function
-				E.CreateShadow(_G[skins[i]])
+				_G[skins[i]]:CreateShadow("Default")
 			end
 			_G[skins[i]]:SetBackdropColor(unpack(C["media"].backdropfadecolor))
 		end
@@ -233,9 +233,9 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		_G["ReadyCheckFrame"]:HookScript("OnShow", function(self) if UnitIsUnit("player", self.initiator) then self:Hide() end end) -- bug fix, don't show it if initiator
 		
 		E.SetTransparentTemplate(RolePollPopup)
-		E.CreateShadow(RolePollPopup)
+		RolePollPopup:CreateShadow("Default")
 		E.SetTransparentTemplate(LFDDungeonReadyDialog)
-		E.CreateShadow(LFDDungeonReadyDialog)
+		LFDDungeonReadyDialog:CreateShadow("Default")
 		SkinButton(LFDDungeonReadyDialogEnterDungeonButton)
 		SkinButton(LFDDungeonReadyDialogLeaveQueueButton)
 		SkinButton(ColorPickerOkayButton)

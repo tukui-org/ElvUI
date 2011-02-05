@@ -18,7 +18,7 @@ E.CreatePanel(mini, E.Scale(144 + 4), E.Scale(144 + 4), "CENTER", Minimap, "CENT
 mini:ClearAllPoints()
 mini:SetPoint("TOPLEFT", E.Scale(-2), E.Scale(2))
 mini:SetPoint("BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
-E.CreateShadow(ElvuiMinimap)
+ElvuiMinimap:CreateShadow("Default")
 TukuiMinimap = ElvuiMinimap -- conversion
 
 -- MINIMAP STAT FRAMES
@@ -30,8 +30,8 @@ if ElvuiMinimap then
 	E.CreatePanel(minimapstatsright, (ElvuiMinimap:GetWidth() / 2) -2, 19, "TOPRIGHT", ElvuiMinimap, "BOTTOMRIGHT", 0, E.Scale(-3))
 	E.SetNormTexTemplate(ElvuiMinimapStatsLeft)
 	E.SetNormTexTemplate(ElvuiMinimapStatsRight)
-	E.CreateShadow(ElvuiMinimapStatsLeft)
-	E.CreateShadow(ElvuiMinimapStatsRight)
+	ElvuiMinimapStatsLeft:CreateShadow("Default")
+	ElvuiMinimapStatsRight:CreateShadow("Default")
 	
 	TukuiMinimapStatsLeft = ElvuiMinimapStatsLeft -- conversion
 	TukuiMinimapStatsRight = ElvuiMinimapStatsRight -- conversion
@@ -47,7 +47,7 @@ end
 barbg:SetWidth(((E.buttonsize * 12) + (E.buttonspacing * 13)))
 barbg:SetFrameStrata("LOW")
 barbg:SetHeight(E.buttonsize + (E.buttonspacing * 2))
-E.CreateShadow(barbg)
+barbg:CreateShadow("Default")
 
 if C["actionbar"].enable ~= true then
 	barbg:SetAlpha(0)
@@ -64,8 +64,8 @@ E.CreatePanel(splitright, (E.buttonsize * 3) + (E.buttonspacing * 4), ElvuiActio
 splitright:SetFrameLevel(ElvuiActionBarBackground:GetFrameLevel())
 splitright:SetFrameStrata(ElvuiActionBarBackground:GetFrameStrata())
 
-E.CreateShadow(splitleft)
-E.CreateShadow(splitright)
+splitleft:CreateShadow("Default")
+splitright:CreateShadow("Default")
 
 
 -- RIGHT BAR
@@ -95,8 +95,8 @@ if C["actionbar"].enable == true then
 	end)
 
 	
-	E.CreateShadow(barbgr)
-	E.CreateShadow(petbg)
+	barbgr:CreateShadow("Default")
+	petbg:CreateShadow("Default")
 end
 
 -- VEHICLE BAR
@@ -105,7 +105,7 @@ if C["actionbar"].enable == true then
 	E.CreatePanel(vbarbg, 1, 1, "BOTTOM", UIParent, "BOTTOM", 0, E.Scale(4))
 	vbarbg:SetWidth(((E.buttonsize * 11) + (E.buttonspacing * 12))*1.2)
 	vbarbg:SetHeight((E.buttonsize + (E.buttonspacing * 2))*1.2)
-	E.CreateShadow(vbarbg)
+	vbarbg:CreateShadow("Default")
 end
 
 -- CHAT BACKGROUND LEFT (MOVES)
@@ -149,8 +149,8 @@ if C["chat"].showbackdrop == true then
 	chatltbg:SetHeight(E.Scale(22))
 	chatltbg:SetFrameStrata("BACKGROUND")
 	
-	E.CreateShadow(chatlbg)
-	E.CreateShadow(chatltbg)
+	chatlbg:CreateShadow("Default")
+	chatltbg:CreateShadow("Default")
 end
 
 if C["chat"].showbackdrop == true then
@@ -167,15 +167,15 @@ if C["chat"].showbackdrop == true then
 	chatrtbg:SetPoint("BOTTOMRIGHT", chatrbg, "TOPRIGHT", E.Scale(-24), E.Scale(3))
 	chatrtbg:SetHeight(E.Scale(22))
 	chatrtbg:SetFrameStrata("BACKGROUND")
-	E.CreateShadow(chatrbg)
-	E.CreateShadow(chatrtbg)
+	chatrbg:CreateShadow("Default")
+	chatrtbg:CreateShadow("Default")
 end
 
 --INFO LEFT
 local infoleft = CreateFrame("Frame", "ElvuiInfoLeft", UIParent)
 infoleft:SetFrameLevel(2)
 E.SetNormTexTemplate(infoleft)
-E.CreateShadow(infoleft)
+infoleft:CreateShadow("Default")
 infoleft:SetPoint("TOPLEFT", chatlbgdummy2, "BOTTOMLEFT", E.Scale(17), E.Scale(-4))
 infoleft:SetPoint("BOTTOMRIGHT", chatlbgdummy2, "BOTTOMRIGHT", E.Scale(-17), E.Scale(-26))
 
@@ -207,7 +207,7 @@ infoleft:SetPoint("BOTTOMRIGHT", chatlbgdummy2, "BOTTOMRIGHT", E.Scale(-17), E.S
 local inforight = CreateFrame("Frame", "ElvuiInfoRight", UIParent)
 E.SetNormTexTemplate(inforight)
 infoleft:SetFrameLevel(2)
-E.CreateShadow(inforight)
+inforight:CreateShadow("Default")
 inforight:SetPoint("TOPLEFT", chatrbgdummy2, "BOTTOMLEFT", E.Scale(17), E.Scale(-4))
 inforight:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", E.Scale(-17), E.Scale(-26))
 
