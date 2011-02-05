@@ -264,7 +264,7 @@ E.RightChat = true
 
 ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 	if(self.elapsed and self.elapsed > 2) then
-		if InCombatLockdown() or insidetab == true then return end
+		if InCombatLockdown() or insidetab == true or IsMouseButtonDown("LeftButton") then return end
 		chatfound = false
 		for i = 1, NUM_CHAT_WINDOWS do
 			chat = _G[format("ChatFrame%d", i)]
@@ -638,7 +638,7 @@ local function CheckWhisperWindows(self, event)
 		ElvuiInfoLeft:SetScript("OnUpdate", function(self)
 			E.Flash(ElvuiInfoLeft.shadow, 0.5)
 		end)
-	elseif chat == _G[format("ChatFrame%d", E.RightChatWindowID)] and E.RightChat == true and E.ChatRIn == false then
+	elseif chat == _G[format("ChatFrame%s", E.RightChatWindowID)] and E.RightChat == true and E.ChatRIn == false then
 		if event == "CHAT_MSG_WHISPER" then
 			ElvuiInfoRight.shadow:SetBackdropBorderColor(ChatTypeInfo["WHISPER"].r,ChatTypeInfo["WHISPER"].g,ChatTypeInfo["WHISPER"].b, 1)
 		elseif event == "CHAT_MSG_BN_WHISPER" then

@@ -516,7 +516,7 @@ end)
 
 ChatRBackground.anim_o:HookScript("OnPlay", function()
 	if E.RightChat ~= true then return end
-	local chat = _G[format("ChatFrame%d", E.RightChatWindowID)]
+	local chat = _G[format("ChatFrame%s", E.RightChatWindowID)]
 	chat:SetParent(_G[format("ChatFrame%sTab", E.RightChatWindowID)])
 	chat:SetFrameStrata("LOW")
 end)
