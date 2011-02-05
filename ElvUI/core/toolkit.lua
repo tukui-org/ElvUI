@@ -154,6 +154,16 @@ local function Kill(object)
 	object:Hide()
 end
 
+function E.FontString(parent, fontName, fontHeight, fontStyle)
+	local fs = parent:CreateFontString(nil, "OVERLAY")
+	fs:SetFont(fontName, fontHeight, fontStyle)
+	fs:SetJustifyH("LEFT")
+	fs:SetShadowColor(0, 0, 0)
+	fs:SetShadowOffset(E.mult, -E.mult)
+	parent.text = fs
+	return fs
+end
+
 local function StyleButton(b, c) 
     local name = b:GetName()
  

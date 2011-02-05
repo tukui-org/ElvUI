@@ -85,15 +85,6 @@ function E.CreatePanel(f, w, h, a1, p, a2, x, y)
 	E.SetTemplate(f)
 end
 
-E.SetFontString = function(parent, fontName, fontHeight, fontStyle)
-	local fs = parent:CreateFontString(nil, "OVERLAY")
-	fs:SetFont(fontName, fontHeight, fontStyle)
-	fs:SetJustifyH("LEFT")
-	fs:SetShadowColor(0, 0, 0)
-	fs:SetShadowOffset(E.mult, -E.mult)
-	return fs
-end
-
 function E.Kill(object)
 	if object.UnregisterAllEvents then
 		object:UnregisterAllEvents()

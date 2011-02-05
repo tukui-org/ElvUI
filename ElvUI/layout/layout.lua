@@ -195,11 +195,11 @@ infoleft:SetPoint("BOTTOMRIGHT", chatlbgdummy2, "BOTTOMRIGHT", E.Scale(-17), E.S
 	infoleft.shadow:SetPoint("TOPLEFT", infoleftLbutton, "TOPLEFT", E.Scale(-4), E.Scale(4))
 	infoleft.shadow:SetPoint("BOTTOMRIGHT", infoleftRbutton, "BOTTOMRIGHT", E.Scale(4), E.Scale(-4))
 
-	infoleftLbutton.Text = E.SetFontString(ElvuiInfoLeftLButton, C["media"].font, C["general"].fontscale, "THINOUTLINE")
+	infoleftLbutton.Text = E.FontString(ElvuiInfoLeftLButton, C["media"].font, C["general"].fontscale, "THINOUTLINE")
 	infoleftLbutton.Text:SetText("<")
 	infoleftLbutton.Text:SetPoint("CENTER")
 
-	infoleftRbutton.Text = E.SetFontString(ElvuiInfoLeftRButton, C["media"].font, C["general"].fontscale, "THINOUTLINE")
+	infoleftRbutton.Text = E.FontString(ElvuiInfoLeftRButton, C["media"].font, C["general"].fontscale, "THINOUTLINE")
 	infoleftRbutton.Text:SetText("L")
 	infoleftRbutton.Text:SetPoint("CENTER")
 
@@ -227,11 +227,11 @@ inforight:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", E.Scale(-17), E.
 	inforight.shadow:SetPoint("TOPLEFT", inforightLbutton, "TOPLEFT", E.Scale(-4), E.Scale(4))
 	inforight.shadow:SetPoint("BOTTOMRIGHT", inforightRbutton, "BOTTOMRIGHT", E.Scale(4), E.Scale(-4))
 
-	inforightLbutton.Text = E.SetFontString(ElvuiInfoRightLButton, C["media"].font, C["general"].fontscale, "THINOUTLINE")
+	inforightLbutton.Text = E.FontString(ElvuiInfoRightLButton, C["media"].font, C["general"].fontscale, "THINOUTLINE")
 	inforightLbutton.Text:SetText("R")
 	inforightLbutton.Text:SetPoint("CENTER")
 
-	inforightRbutton.Text = E.SetFontString(ElvuiInfoRightRButton, C["media"].font, C["general"].fontscale, "THINOUTLINE")
+	inforightRbutton.Text = E.FontString(ElvuiInfoRightRButton, C["media"].font, C["general"].fontscale, "THINOUTLINE")
 	inforightRbutton.Text:SetText(">")
 	inforightRbutton.Text:SetPoint("CENTER")
 	

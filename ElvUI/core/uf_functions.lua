@@ -539,9 +539,9 @@ E.LoadUFFunctions = function(layout)
 		end
 		
 		if unit == "focus" or unit == "targettarget" or header == "ElvuiHealR6R25" or header == "ElvuiDPSR6R25" or header == "ElvuiHealParty" then
-			button.remaining = E.SetFontString(button, C["media"].font, C["auras"].auratextscale*0.85, "THINOUTLINE")
+			button.remaining = E.FontString(button, C["media"].font, C["auras"].auratextscale*0.85, "THINOUTLINE")
 		else
-			button.remaining = E.SetFontString(button, C["media"].font, C["auras"].auratextscale, "THINOUTLINE")
+			button.remaining = E.FontString(button, C["media"].font, C["auras"].auratextscale, "THINOUTLINE")
 		end
 		
 		button:SetTemplate("Default")
