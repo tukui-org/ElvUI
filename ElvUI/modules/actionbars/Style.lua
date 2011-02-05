@@ -52,9 +52,9 @@ function Style(self, vehicle, totem)
  
 			local panel = CreateFrame("Frame", name.."Panel", self)
 			if vehicle then
-				E.CreatePanel(panel, E.buttonsize*1.2, E.buttonsize*1.2, "CENTER", self, "CENTER", 0, 0)
+				panel:CreatePanel("Default", E.buttonsize*1.2, E.buttonsize*1.2, "CENTER", self, "CENTER", 0, 0)
 			else
-				E.CreatePanel(panel, E.buttonsize, E.buttonsize, "CENTER", self, "CENTER", 0, 0)
+				panel:CreatePanel("Default", E.buttonsize, E.buttonsize, "CENTER", self, "CENTER", 0, 0)
 			end
 			panel:SetTemplate("Default", true)
 			panel:SetFrameStrata(self:GetFrameStrata())
@@ -102,7 +102,7 @@ local function Stylesmallbutton(normal, button, icon, name, pet)
 		button:SetHeight(E.petbuttonsize)
 		
 		local panel = CreateFrame("Frame", name.."Panel", button)
-		E.CreatePanel(panel, E.petbuttonsize, E.petbuttonsize, "CENTER", button, "CENTER", 0, 0)
+		panel:CreatePanel("Default", E.petbuttonsize, E.petbuttonsize, "CENTER", button, "CENTER", 0, 0)
 		panel:SetBackdropColor(unpack(media.backdropcolor))
 		panel:SetFrameStrata(button:GetFrameStrata())
 		panel:SetFrameLevel(button:GetFrameLevel() - 1)

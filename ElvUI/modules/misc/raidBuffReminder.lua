@@ -233,7 +233,7 @@ local bsize = (((ElvuiMinimap:GetWidth()) - (E.Scale(4) * 7)) / 6)
 
 --Create the Main bar
 local raidbuff_reminder = CreateFrame("Frame", "RaidBuffReminder", ElvuiMinimap)
-E.CreatePanel(raidbuff_reminder, ElvuiMinimap:GetWidth(), bsize + E.Scale(8), "TOPLEFT", ElvuiMinimapStatsLeft, "BOTTOMLEFT", 0, E.Scale(-3))
+raidbuff_reminder:CreatePanel("Default", ElvuiMinimap:GetWidth(), bsize + E.Scale(8), "TOPLEFT", ElvuiMinimapStatsLeft, "BOTTOMLEFT", 0, E.Scale(-3))
 raidbuff_reminder:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 raidbuff_reminder:RegisterEvent("UNIT_INVENTORY_CHANGED")
 raidbuff_reminder:RegisterEvent("UNIT_AURA")
@@ -252,9 +252,9 @@ E.SetUpAnimGroup(RaidBuffReminder)
 local function CreateButton(name, relativeTo, firstbutton)
 	local button = CreateFrame("Frame", name, RaidBuffReminder)
 	if firstbutton == true then
-		E.CreatePanel(button, bsize, bsize, "LEFT", relativeTo, "LEFT", E.Scale(4), 0)
+		button:CreatePanel("Default", bsize, bsize, "LEFT", relativeTo, "LEFT", E.Scale(4), 0)
 	else
-		E.CreatePanel(button, bsize, bsize, "LEFT", relativeTo, "RIGHT", E.Scale(4), 0)
+		button:CreatePanel("Default", bsize, bsize, "LEFT", relativeTo, "RIGHT", E.Scale(4), 0)
 	end
 	button:SetFrameLevel(RaidBuffReminder:GetFrameLevel() + 2)
 	button:SetBackdropBorderColor(0,0,0,0)

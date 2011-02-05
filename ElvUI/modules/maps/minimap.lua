@@ -204,7 +204,7 @@ LFDSearchStatus:SetTemplate("Default")
  
 --Style Zone and Coord panels
 local m_zone = CreateFrame("Frame",nil,UIParent)
-E.CreatePanel(m_zone, 0, 20, "TOPLEFT", Minimap, "TOPLEFT", E.Scale(2),E.Scale(-2))
+m_zone:CreatePanel("Default", 0, 20, "TOPLEFT", Minimap, "TOPLEFT", E.Scale(2),E.Scale(-2))
 m_zone:SetFrameLevel(5)
 m_zone:SetFrameStrata("LOW")
 m_zone:SetPoint("TOPRIGHT",Minimap,E.Scale(-2),E.Scale(-2))
@@ -220,7 +220,7 @@ m_zone_text:SetJustifyV("MIDDLE")
 m_zone_text:SetHeight(E.Scale(12))
 
 local m_coord = CreateFrame("Frame",nil,UIParent)
-E.CreatePanel(m_coord, 40, 20, "BOTTOMLEFT", Minimap, "BOTTOMLEFT", E.Scale(2),E.Scale(2))
+m_coord:CreatePanel("Default", 40, 20, "BOTTOMLEFT", Minimap, "BOTTOMLEFT", E.Scale(2),E.Scale(2))
 m_coord:SetFrameStrata("LOW")
 m_coord:SetBackdropColor(0,0,0,0)
 m_coord:SetBackdropBorderColor(0,0,0,0)

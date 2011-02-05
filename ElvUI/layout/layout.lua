@@ -14,7 +14,7 @@ bottompanel:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", -E.mult, -E.mult)
 bottompanel:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", E.mult, -E.mult)
 
 local mini = CreateFrame("Frame", "ElvuiMinimap", Minimap)
-E.CreatePanel(mini, E.Scale(144 + 4), E.Scale(144 + 4), "CENTER", Minimap, "CENTER", -0, 0)
+mini:CreatePanel("Default", E.Scale(144 + 4), E.Scale(144 + 4), "CENTER", Minimap, "CENTER", -0, 0)
 mini:ClearAllPoints()
 mini:SetPoint("TOPLEFT", E.Scale(-2), E.Scale(2))
 mini:SetPoint("BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
@@ -24,10 +24,10 @@ TukuiMinimap = ElvuiMinimap -- conversion
 -- MINIMAP STAT FRAMES
 if ElvuiMinimap then
 	local minimapstatsleft = CreateFrame("Frame", "ElvuiMinimapStatsLeft", ElvuiMinimap)
-	E.CreatePanel(minimapstatsleft, (ElvuiMinimap:GetWidth() / 2) - 2, 19, "TOPLEFT", ElvuiMinimap, "BOTTOMLEFT", 0, E.Scale(-3))
+	minimapstatsleft:CreatePanel("Default", (ElvuiMinimap:GetWidth() / 2) - 2, 19, "TOPLEFT", ElvuiMinimap, "BOTTOMLEFT", 0, E.Scale(-3))
 
 	local minimapstatsright = CreateFrame("Frame", "ElvuiMinimapStatsRight", ElvuiMinimap)
-	E.CreatePanel(minimapstatsright, (ElvuiMinimap:GetWidth() / 2) -2, 19, "TOPRIGHT", ElvuiMinimap, "BOTTOMRIGHT", 0, E.Scale(-3))
+	minimapstatsright:CreatePanel("Default", (ElvuiMinimap:GetWidth() / 2) -2, 19, "TOPRIGHT", ElvuiMinimap, "BOTTOMRIGHT", 0, E.Scale(-3))
 	ElvuiMinimapStatsLeft:SetTemplate("Default", true)
 	ElvuiMinimapStatsRight:SetTemplate("Default", true)
 	ElvuiMinimapStatsLeft:CreateShadow("Default")
@@ -40,9 +40,9 @@ end
 -- MAIN ACTION BAR
 local barbg = CreateFrame("Frame", "ElvuiActionBarBackground", UIParent)
 if C["actionbar"].bottompetbar ~= true then
-	E.CreatePanel(barbg, 1, 1, "BOTTOM", UIParent, "BOTTOM", 0, E.Scale(4))
+	barbg:CreatePanel("Default", 1, 1, "BOTTOM", UIParent, "BOTTOM", 0, E.Scale(4))
 else
-	E.CreatePanel(barbg, 1, 1, "BOTTOM", UIParent, "BOTTOM", 0, (E.buttonsize + (E.buttonspacing * 2)) + E.Scale(8))
+	barbg:CreatePanel("Default", 1, 1, "BOTTOM", UIParent, "BOTTOM", 0, (E.buttonsize + (E.buttonspacing * 2)) + E.Scale(8))
 end
 barbg:SetWidth(((E.buttonsize * 12) + (E.buttonspacing * 13)))
 barbg:SetFrameStrata("LOW")
@@ -55,12 +55,12 @@ end
 
 --SPLIT BAR PANELS
 local splitleft = CreateFrame("Frame", "ElvuiSplitActionBarLeftBackground", ElvuiActionBarBackground)
-E.CreatePanel(splitleft, (E.buttonsize * 3) + (E.buttonspacing * 4), ElvuiActionBarBackground:GetHeight(), "RIGHT", ElvuiActionBarBackground, "LEFT", E.Scale(-4), 0)
+splitleft:CreatePanel("Default", (E.buttonsize * 3) + (E.buttonspacing * 4), ElvuiActionBarBackground:GetHeight(), "RIGHT", ElvuiActionBarBackground, "LEFT", E.Scale(-4), 0)
 splitleft:SetFrameLevel(ElvuiActionBarBackground:GetFrameLevel())
 splitleft:SetFrameStrata(ElvuiActionBarBackground:GetFrameStrata())
 
 local splitright = CreateFrame("Frame", "ElvuiSplitActionBarRightBackground", ElvuiActionBarBackground)
-E.CreatePanel(splitright, (E.buttonsize * 3) + (E.buttonspacing * 4), ElvuiActionBarBackground:GetHeight(), "LEFT", ElvuiActionBarBackground, "RIGHT", E.Scale(4), 0)
+splitright:CreatePanel("Default", (E.buttonsize * 3) + (E.buttonspacing * 4), ElvuiActionBarBackground:GetHeight(), "LEFT", ElvuiActionBarBackground, "RIGHT", E.Scale(4), 0)
 splitright:SetFrameLevel(ElvuiActionBarBackground:GetFrameLevel())
 splitright:SetFrameStrata(ElvuiActionBarBackground:GetFrameStrata())
 
@@ -71,22 +71,22 @@ splitright:CreateShadow("Default")
 -- RIGHT BAR
 if C["actionbar"].enable == true then
 	local barbgr = CreateFrame("Frame", "ElvuiActionBarBackgroundRight", ElvuiActionBarBackground)
-	E.CreatePanel(barbgr, 1, (E.buttonsize * 12) + (E.buttonspacing * 13), "RIGHT", UIParent, "RIGHT", E.Scale(-4), E.Scale(-8))
+	barbgr:CreatePanel("Default", 1, (E.buttonsize * 12) + (E.buttonspacing * 13), "RIGHT", UIParent, "RIGHT", E.Scale(-4), E.Scale(-8))
 	barbgr:Hide()
 	E.AnimGroup(ElvuiActionBarBackgroundRight, E.Scale(350), 0, 0.4)
 
 	local petbg = CreateFrame("Frame", "ElvuiPetActionBarBackground", UIParent)
 	if C["actionbar"].bottompetbar ~= true then
-		E.CreatePanel(petbg, E.petbuttonsize + (E.buttonspacing * 2), (E.petbuttonsize * 10) + (E.buttonspacing * 11), "RIGHT", UIParent, "RIGHT", E.Scale(-6), E.Scale(-13.5))
+		petbg:CreatePanel("Default", E.petbuttonsize + (E.buttonspacing * 2), (E.petbuttonsize * 10) + (E.buttonspacing * 11), "RIGHT", UIParent, "RIGHT", E.Scale(-6), E.Scale(-13.5))
 	else
-		E.CreatePanel(petbg, (E.petbuttonsize * 10) + (E.buttonspacing * 11), E.petbuttonsize + (E.buttonspacing * 2), "BOTTOM", UIParent, "BOTTOM", 0, E.Scale(4))
+		petbg:CreatePanel("Default", (E.petbuttonsize * 10) + (E.buttonspacing * 11), E.petbuttonsize + (E.buttonspacing * 2), "BOTTOM", UIParent, "BOTTOM", 0, E.Scale(4))
 	end
 	
 	local ltpetbg = CreateFrame("Frame", "ElvuiLineToPetActionBarBackground", petbg)
 	if C["actionbar"].bottompetbar ~= true then
-		E.CreatePanel(ltpetbg, 30, 265, "LEFT", petbg, "RIGHT", 0, 0)
+		ltpetbg:CreatePanel("Default", 30, 265, "LEFT", petbg, "RIGHT", 0, 0)
 	else
-		E.CreatePanel(ltpetbg, 265, 30, "BOTTOM", petbg, "TOP", 0, 0)
+		ltpetbg:CreatePanel("Default", 265, 30, "BOTTOM", petbg, "TOP", 0, 0)
 	end
 	
 	ltpetbg:SetScript("OnShow", function(self)
@@ -102,7 +102,7 @@ end
 -- VEHICLE BAR
 if C["actionbar"].enable == true then
 	local vbarbg = CreateFrame("Frame", "ElvuiVehicleBarBackground", UIParent)
-	E.CreatePanel(vbarbg, 1, 1, "BOTTOM", UIParent, "BOTTOM", 0, E.Scale(4))
+	vbarbg:CreatePanel("Default", 1, 1, "BOTTOM", UIParent, "BOTTOM", 0, E.Scale(4))
 	vbarbg:SetWidth(((E.buttonsize * 11) + (E.buttonspacing * 12))*1.2)
 	vbarbg:SetHeight((E.buttonsize + (E.buttonspacing * 2))*1.2)
 	vbarbg:CreateShadow("Default")
@@ -311,7 +311,7 @@ if C["datatext"].battleground == true then
 
 
 	local bgframeL = CreateFrame("Frame", "ElvuiInfoBattleGroundL", UIParent)
-	E.CreatePanel(bgframeL, 1, 1, "TOPLEFT", UIParent, "BOTTOMLEFT", 0, 0)
+	bgframeL:CreatePanel("Default", 1, 1, "TOPLEFT", UIParent, "BOTTOMLEFT", 0, 0)
 	bgframeL:SetAllPoints(ElvuiInfoLeft)
 	bgframeL:SetFrameLevel(ElvuiInfoLeft:GetFrameLevel() + 1)
 	bgframeL:SetTemplate("Default", true)
@@ -356,7 +356,7 @@ if C["datatext"].battleground == true then
 	end) 
 	
 	local bgframeR = CreateFrame("Frame", "ElvuiInfoBattleGroundR", UIParent)
-	E.CreatePanel(bgframeR, 1, 1, "TOPLEFT", UIParent, "BOTTOMLEFT", 0, 0)
+	bgframeR:CreatePanel("Default", 1, 1, "TOPLEFT", UIParent, "BOTTOMLEFT", 0, 0)
 	bgframeR:SetTemplate("Default", true)
 	bgframeR:SetAllPoints(ElvuiInfoRight)
 	bgframeR:SetFrameLevel(ElvuiInfoRight:GetFrameLevel() + 1)

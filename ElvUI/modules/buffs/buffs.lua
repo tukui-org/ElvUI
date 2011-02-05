@@ -32,7 +32,7 @@ TempEnchant2:SetPoint("RIGHT", TempEnchant1, "LEFT", E.Scale(-4), 0)
 
 for i = 1, 3 do
 	local f = CreateFrame("Frame", nil, _G["TempEnchant"..i])
-	E.CreatePanel(f, 30, 30, "CENTER", _G["TempEnchant"..i], "CENTER", 0, 0)	
+	f:CreatePanel("Default", 30, 30, "CENTER", _G["TempEnchant"..i], "CENTER", 0, 0)	
 	_G["TempEnchant"..i.."Border"]:Hide()
 	_G["TempEnchant"..i.."Icon"]:SetTexCoord(.08, .92, .08, .92)
 	_G["TempEnchant"..i.."Icon"]:SetPoint("TOPLEFT", _G["TempEnchant"..i], E.Scale(2), E.Scale(-2))
@@ -67,7 +67,7 @@ local function StyleBuffs(buttonName, index, debuff)
 		count:SetFont(C["media"].font, C["general"].fontscale, "OUTLINE")
 		
 		local panel = CreateFrame("Frame", buttonName..index.."Panel", buff)
-		E.CreatePanel(panel, 30, 30, "CENTER", buff, "CENTER", 0, 0)
+		panel:CreatePanel("Default", 30, 30, "CENTER", buff, "CENTER", 0, 0)
 		panel:SetFrameLevel(buff:GetFrameLevel() - 1)
 		panel:SetFrameStrata(buff:GetFrameStrata())
 

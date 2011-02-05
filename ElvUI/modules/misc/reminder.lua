@@ -100,7 +100,7 @@ if (buffs and buffs[1]) then
 	end
 	
 	local frame = CreateFrame("Frame", _, UIParent)
-	E.CreatePanel(frame, E.Scale(40), E.Scale(40), "CENTER", UIParent, "CENTER", 0, E.Scale(200))
+	frame:CreatePanel("Default", E.Scale(40), E.Scale(40), "CENTER", UIParent, "CENTER", 0, E.Scale(200))
 	frame:SetFrameLevel(1)
 	
 	frame.icon = frame:CreateTexture(nil, "OVERLAY")
@@ -171,7 +171,7 @@ if (tankbuffs and tankbuffs[1]) then
 	end
 	
 	local frame = CreateFrame("Frame", _, UIParent)
-	E.CreatePanel(frame, E.Scale(40), E.Scale(40), "CENTER", UIParent, "CENTER", 0, E.Scale(200))
+	frame:CreatePanel("Default", E.Scale(40), E.Scale(40), "CENTER", UIParent, "CENTER", 0, E.Scale(200))
 	frame:SetFrameLevel(2)
 	frame.icon = frame:CreateTexture(nil, "OVERLAY")
 	frame.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
