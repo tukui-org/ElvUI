@@ -10,7 +10,6 @@ local guardianelixirbuffs = BuffReminderRaidBuffs["GuardianElixir"]
 local foodbuffs = BuffReminderRaidBuffs["Food"]	
 local battleelixired	
 local guardianelixired	
-local reminderoverride = false
 
 --Setup Caster Buffs
 local function SetCasterOnlyBuffs()
@@ -114,6 +113,10 @@ local function OnAuraChange(self, event, arg1, unit)
 		return
 	end
 	
+	if event == "PLAYER_ENTERING_WORLD" then
+		reminderoverride = false
+	end
+	
 	--If We're a caster we may want to see differant buffs
 	if E.Role == "Caster" then 
 		SetCasterOnlyBuffs() 
@@ -207,7 +210,7 @@ local function OnAuraChange(self, event, arg1, unit)
 			RaidReminderShown = true
 		end
 	else
-		if RaidReminderShown ~= false then 
+		if RaidReminderShown ~= false and reminderoverride ~= true then
 			ElvuiInfoRightLButton.text:SetTextColor(unpack(C["media"].valuecolor))
 			UIFrameFadeOut(self, 0.4)
 			RaidReminderShown = false
@@ -298,7 +301,7 @@ do
 				ElvuiInfoRightLButton.text:SetTextColor(1,1,1)
 				UIFrameFadeIn(RaidBuffReminder, 0.4)
 				RaidReminderShown = true
-				reminderoverride = false
+				reminderoverride = true
 			end
 		end
 	end)
