@@ -1,4 +1,5 @@
 local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
+Tukui = ElvUI -- Add support for local T, C, L = unpack(Tukui)
 
 TukuiDB = E
 TukuiCF = C
