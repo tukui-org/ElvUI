@@ -166,6 +166,7 @@ local function Shared(self, unit)
 		powerBG:SetTexture(normTex)
 		powerBG.multiplier = 0.3
 		power:FontString("value", font1, C["unitframes"].fontsize, "THINOUTLINE")
+		power.value:SetParent(health)
 		power.value:SetPoint("LEFT", health, "LEFT", E.Scale(4), E.Scale(1))
 		power.PreUpdate = E.PreUpdatePower
 		power.PostUpdate = E.PostUpdatePower
@@ -982,6 +983,7 @@ local function Shared(self, unit)
 		powerBG:SetTexture(normTex)
 		powerBG.multiplier = 0.3
 		power:FontString("value", font1, C["unitframes"].fontsize, "THINOUTLINE")
+		power.value:SetParent(health)
 		power.value:SetPoint("LEFT", health, "LEFT", E.Scale(4), E.Scale(1))
 		power.PreUpdate = E.PreUpdatePower
 		power.PostUpdate = E.PostUpdatePower
@@ -1650,6 +1652,7 @@ local function Shared(self, unit)
 			health.PostUpdate = E.PostUpdateHealth
 			
 			power:FontString("value", font1, C["unitframes"].fontsize, "OUTLINE")
+			power.value:SetParent(health)
 			power.value:SetPoint("RIGHT", health, "RIGHT", E.Scale(-2), E.Scale(1))
 			power.PreUpdate = E.PreUpdatePower
 			power.PostUpdate = E.PostUpdatePower			
@@ -1660,6 +1663,7 @@ local function Shared(self, unit)
 			
 			power:FontString("value", font1, C["unitframes"].fontsize, "OUTLINE")
 			power.value:SetPoint("BOTTOMLEFT", health, "BOTTOMLEFT", E.Scale(2), E.Scale(1))
+			power.value:SetParent(health)
 			power.value:SetJustifyH("LEFT")
 			power.PreUpdate = E.PreUpdatePower
 			power.PostUpdate = E.PostUpdatePower
