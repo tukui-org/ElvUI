@@ -533,14 +533,21 @@ function E.ScanForRightChat()
 		E.ChatRIn = false
 		ChatRBackground:Kill()
 		B3FIX:Kill()
-		for id = 1, NUM_CHAT_WINDOWS do
-			local chat = _G[format("ChatFrame%d", id)]
-			local button = _G[format("ButtonCF%d", id)]
+		local chat = _G[format("ChatFrame%d", 3)]
+		local button = _G[format("ButtonCF%d", 3)]
+		local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(3)
+		if not docked then
 			button:ClearAllPoints()
 			button:SetAlpha(0)
 			button:SetPoint("TOPRIGHT", chat, "TOPRIGHT", 0, 0)
 			button:SetScript("OnEnter", function() button:SetAlpha(1) end)
 			button:SetScript("OnLeave", function() button:SetAlpha(0) end)
+		else
+			button:ClearAllPoints()
+			button:SetAlpha(1)
+			button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, E.Scale(3))
+			button:SetScript("OnEnter", function() end)
+			button:SetScript("OnLeave", function() end)		
 		end
 	end	
 end
