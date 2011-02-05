@@ -22,9 +22,10 @@ E.ToggleSlideChatL = function()
 end
 
 E.ToggleSlideChatR = function()
+	if E.RightChat ~= true then return end
 	if E.ChatRIn == true then
 		E.SlideOut(ChatRBackground)	
-		if IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and C["skin"].hookdxeright == true and C["chat"].rightchat == true and C["chat"].showbackdrop == true then
+		if IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and C["skin"].hookdxeright == true and C["chat"].showbackdrop == true then
 			DXEAlertsTopStackAnchor:ClearAllPoints()
 			DXEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -5)
 		end
@@ -33,7 +34,7 @@ E.ToggleSlideChatR = function()
 		ElvuiInfoRightRButton.text:SetTextColor(unpack(C["media"].valuecolor))
 	else
 		E.SlideIn(ChatRBackground)
-		if IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and C["skin"].hookdxeright == true and C["chat"].rightchat == true and C["chat"].showbackdrop == true then
+		if IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and C["skin"].hookdxeright == true and C["chat"].showbackdrop == true then
 			DXEAlertsTopStackAnchor:ClearAllPoints()
 			DXEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 18)
 		end
@@ -66,11 +67,6 @@ end
 function ChatBoth_HotkeyPressed(keystate)
 	if keystate == "up" then return end
 	if E.ChatLIn == true then
-		for i = 1, NUM_CHAT_WINDOWS do
-			local chat = _G[format("ChatFrame%s", i)]
-			local tab = _G[format("ChatFrame%sTab", i)]
-			chat:SetParent(tab)
-		end
 		E.ToggleSlideChatR()
 		E.ToggleSlideChatL()
 	else

@@ -217,8 +217,8 @@ local function SetupChat(self)
 	ChatTypeInfo.CHANNEL.sticky = var
 end
 
-
-local function SetupChatPosAndFont(self)
+local insidetab = false
+local function SetupChatFont(self)
 	for i = 1, NUM_CHAT_WINDOWS do
 		local chat = _G[format("ChatFrame%s", i)]
 		local tab = _G[format("ChatFrame%sTab", i)]
@@ -232,110 +232,15 @@ local function SetupChatPosAndFont(self)
 		chat:SetFrameStrata("LOW")
 		
 		-- well... Elvui font under fontsize 10 is unreadable.
+		if fontSize < 10 then fontSize = 11 end
 		FCF_SetChatWindowFontSize(nil, chat, fontSize)
 		
-		
-		-- force chat position on #1 and #3, needed if we change ui scale or resolution
-		if i == 1 then
-			chat:ClearAllPoints()
-			chat:SetPoint("BOTTOMLEFT", ChatLBackground, "BOTTOMLEFT", E.Scale(2), E.Scale(4))
-			_G["ChatFrame"..i]:SetSize(E.Scale(C["chat"].chatwidth - 4), E.Scale(C["chat"].chatheight))
-			FCF_SavePositionAndDimensions(chat)
-		elseif point == "BOTTOMRIGHT" and C["chat"].rightchat == true and ChatFrame3:IsShown() then
-			chatrightfound = true
-			E.ChatRightShown = true
-			chat:ClearAllPoints()
-			chat:SetPoint("BOTTOMLEFT", ChatRBackground, "BOTTOMLEFT", E.Scale(2), E.Scale(4))
-			_G["ChatFrame"..i]:SetSize(E.Scale(C["chat"].chatwidth - 4), E.Scale(C["chat"].chatheight))
-			FCF_SavePositionAndDimensions(chat)
-		end
-		
-		if C["chat"].rightchat == true then
-			if ChatRBG then
-				ChatRBG:SetAlpha(1)
-			end
-		end
-				
-		if not docked and (chat:GetName() == "ChatFrame3" and C["chat"].rightchat == true) and C["chat"].showbackdrop == true then
-			button:ClearAllPoints()
-			button:SetAlpha(1)
-			button:SetPoint("BOTTOMRIGHT", ChatRBackground, "TOPRIGHT", 0, E.Scale(3))
-			button:SetScript("OnEnter", function() end)
-			button:SetScript("OnLeave", function() end)
-		elseif not docked and not (chat:GetName() == "ChatFrame3" and C["chat"].rightchat == true) and C["chat"].showbackdrop == true then
-			button:ClearAllPoints()
-			button:SetAlpha(0)
-			button:SetPoint("TOPRIGHT", chat, "TOPRIGHT", 0, 0)
-			button:SetScript("OnEnter", function() button:SetAlpha(1) end)
-			button:SetScript("OnLeave", function() button:SetAlpha(0) end)
-		elseif docked and C["chat"].showbackdrop == true then
-			button:ClearAllPoints()
-			button:SetAlpha(1)
-			button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, E.Scale(3))
-			button:SetScript("OnEnter", function() end)
-			button:SetScript("OnLeave", function() end)
-		end
-		
-		tab:HookScript("OnDragStop", function(self)
-			if InCombatLockdown() then return end
-			
-			local id = self:GetID()
-			local chat = _G[format("ChatFrame%d", id)]
-			local button = _G[format("ButtonCF%d", id)]
-			local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
-			if not docked and (chat:GetName() == "ChatFrame3" and C["chat"].rightchat == true) and C["chat"].showbackdrop == true then
-				button:ClearAllPoints()
-				button:SetAlpha(1)
-				button:SetPoint("BOTTOMRIGHT", ChatRBackground, "TOPRIGHT", 0, E.Scale(3))
-				button:SetScript("OnEnter", function() end)
-				button:SetScript("OnLeave", function() end)
-			elseif not docked and not (chat:GetName() == "ChatFrame3" and C["chat"].rightchat == true) and C["chat"].showbackdrop == true then
-				button:ClearAllPoints()
-				button:SetAlpha(0)
-				button:SetPoint("TOPRIGHT", chat, "TOPRIGHT", 0, 0)
-				button:SetScript("OnEnter", function() button:SetAlpha(1) end)
-				button:SetScript("OnLeave", function() button:SetAlpha(0) end)
-			elseif docked and C["chat"].showbackdrop == true then
-				button:ClearAllPoints()
-				button:SetAlpha(1)
-				button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, E.Scale(3))
-				button:SetScript("OnEnter", function() end)
-				button:SetScript("OnLeave", function() end)
-			end
-			chat:Hide()
-			chat:Show()
-			self:SetParent(UIParent)
-		end)
-		
-		tab:HookScript("OnDragStart", function(self)
-			local id = self:GetID()
-			local chat = _G[format("ChatFrame%d", id)]
-			local button = _G[format("ButtonCF%d", id)]
-			local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
-			if not docked and (chat:GetName() == "ChatFrame3" and C["chat"].rightchat == true) and C["chat"].showbackdrop == true then
-				button:ClearAllPoints()
-				button:SetAlpha(1)
-				button:SetPoint("BOTTOMRIGHT", ChatRBackground, "TOPRIGHT", 0, E.Scale(3))
-				button:SetScript("OnEnter", function() end)
-				button:SetScript("OnLeave", function() end)
-			elseif not docked and not (chat:GetName() == "ChatFrame3" and C["chat"].rightchat == true) and C["chat"].showbackdrop == true then
-				button:ClearAllPoints()
-				button:SetAlpha(0)
-				button:SetPoint("TOPRIGHT", chat, "TOPRIGHT", 0, 0)
-				button:SetScript("OnEnter", function() button:SetAlpha(1) end)
-				button:SetScript("OnLeave", function() button:SetAlpha(0) end)
-			elseif docked and C["chat"].showbackdrop == true then
-				button:ClearAllPoints()
-				button:SetAlpha(1)
-				button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, E.Scale(3))
-				button:SetScript("OnEnter", function() end)
-				button:SetScript("OnLeave", function() end)
-			end
-		end)
+		tab:SetScript("OnEnter", function() insidetab = true end)
+		tab:SetScript("OnLeave", function() insidetab = false end)	
 	end
 end
-hooksecurefunc("FCF_OpenNewWindow", SetupChatPosAndFont)
-hooksecurefunc("FCF_DockFrame", SetupChatPosAndFont)
+hooksecurefunc("FCF_OpenNewWindow", SetupChatFont)
+hooksecurefunc("FCF_DockFrame", SetupChatFont)
 
 ElvuiChat:RegisterEvent("ADDON_LOADED")
 ElvuiChat:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -348,8 +253,93 @@ ElvuiChat:SetScript("OnEvent", function(self, event, ...)
 			--return CombatLogQuickButtonFrame_Custom:SetAlpha(.4)
 		end
 	elseif event == "PLAYER_ENTERING_WORLD" then
-			self:UnregisterEvent("PLAYER_ENTERING_WORLD")
-			SetupChatPosAndFont(self)
+		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+		SetupChatFont(self)
+		GeneralDockManager:SetParent(ChatLBackground)
+	end
+end)
+
+local chat, tab, id, point, button, docked, chatfound
+E.RightChat = true
+
+ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
+	if(self.elapsed and self.elapsed > 2) then
+		if InCombatLockdown() or insidetab == true then return end
+		chatfound = false
+		for i = 1, NUM_CHAT_WINDOWS do
+			chat = _G[format("ChatFrame%d", i)]
+			id = chat:GetID()
+			point = GetChatWindowSavedPosition(id)
+			
+			if point == "BOTTOMRIGHT" and chat:IsShown() then
+				chatfound = true
+				E.RightChatWindowID = id
+				break
+			end
+		end
+		
+		E.RightChat = chatfound
+		
+		if chatfound == true then
+			ChatRBG:SetAlpha(1)
+		else
+			ChatRBG:SetAlpha(0)
+		end
+
+		
+		for i = 1, NUM_CHAT_WINDOWS do
+			chat = _G[format("ChatFrame%d", i)]
+			button = _G[format("ButtonCF%d", i)]
+			id = chat:GetID()
+			tab = _G[format("ChatFrame%sTab", i)]
+			point = GetChatWindowSavedPosition(id)
+			_, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)	
+
+			if point == "BOTTOMRIGHT" and chat:IsShown() then
+				chat:ClearAllPoints()
+				chat:SetPoint("BOTTOMLEFT", ChatRBackground, "BOTTOMLEFT", E.Scale(2), E.Scale(4))
+				chat:SetSize(E.Scale(C["chat"].chatwidth - 4), E.Scale(C["chat"].chatheight))
+				FCF_SavePositionAndDimensions(chat)			
+				
+				tab:SetParent(ChatRBackground)
+				
+				button:ClearAllPoints()
+				button:SetAlpha(1)
+				button:SetPoint("BOTTOMRIGHT", ChatRBackground, "TOPRIGHT", 0, E.Scale(3))
+				button:SetScript("OnEnter", nil)
+				button:SetScript("OnLeave", nil)				
+			elseif not docked and chat:IsShown() then
+				if not button:GetScript("OnEnter") then
+					button:SetAlpha(0)
+					button:SetScript("OnEnter", function(self) self:SetAlpha(1) end)
+					button:SetScript("OnLeave", function(self) self:SetAlpha(0) end)	
+				end
+				
+				button:ClearAllPoints()
+				button:SetPoint("TOPRIGHT")
+				tab:SetParent(UIParent)
+			else
+				if chat:GetID() ~= 2 then
+					chat:ClearAllPoints()
+					chat:SetPoint("BOTTOMLEFT", ChatLBackground, "BOTTOMLEFT", E.Scale(2), E.Scale(4))
+					chat:SetSize(E.Scale(C["chat"].chatwidth - 4), E.Scale(C["chat"].chatheight))
+					FCF_SavePositionAndDimensions(chat)		
+				end
+				
+				tab:SetParent(GeneralDockManager)
+				
+				button:ClearAllPoints()
+				button:SetAlpha(1)
+				button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, E.Scale(3))
+				button:SetScript("OnEnter", nil)
+				button:SetScript("OnLeave", nil)			
+			end
+			chat:SetParent(tab)
+		end
+		
+		self.elapsed = 0
+	else
+		self.elapsed = (self.elapsed or 0) + elapsed
 	end
 end)
 
@@ -480,12 +470,8 @@ function E.ChatCopyButtons()
 		
 		button:SetHeight(E.Scale(22))
 		button:SetWidth(E.Scale(20))
-		if C["chat"].showbackdrop ~= true or (C["chat"].rightchat ~= true and docked == nil) then
-			button:SetAlpha(0)
-			button:SetPoint("TOPRIGHT", 0, 0)
-		else
-			button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, E.Scale(3))
-		end
+		button:SetAlpha(0)
+		button:SetPoint("TOPRIGHT", 0, 0)
 		button:SetTemplate("Default", true)
 		button:CreateShadow("Default")
 		
@@ -506,56 +492,13 @@ function E.ChatCopyButtons()
 			end
 		end)
 		
-		if C["chat"].showbackdrop ~= true then
-			button:SetScript("OnEnter", function() 
-				button:SetAlpha(1) 
-			end)
-			button:SetScript("OnLeave", function() button:SetAlpha(0) end)
-		end
+		button:SetScript("OnEnter", function() 
+			button:SetAlpha(1) 
+		end)
+		button:SetScript("OnLeave", function() button:SetAlpha(0) end)
 	end
 end
 E.ChatCopyButtons()
-
-function E.ScanForRightChat()
-	local chatrightfound = false
-	if C["chat"].rightchat == true then
-		for i = 1, NUM_CHAT_WINDOWS do
-			local chat = _G[format("ChatFrame%s", i)]
-			local tab = _G[format("ChatFrame%sTab", i)]
-			local id = chat:GetID()
-			local point = GetChatWindowSavedPosition(id)
-			
-			if point == "BOTTOMRIGHT" and chat:IsShown() then
-				chatrightfound = true
-			end
-		end
-	else
-		chatrightfound = true
-	end
-
-	if chatrightfound == false then
-		C["chat"].rightchat = false
-		E.ChatRIn = false
-		ChatRBackground:Kill()
-		B3FIX:Kill()
-		local chat = _G[format("ChatFrame%d", 3)]
-		local button = _G[format("ButtonCF%d", 3)]
-		local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(3)
-		if not docked then
-			button:ClearAllPoints()
-			button:SetAlpha(0)
-			button:SetPoint("TOPRIGHT", chat, "TOPRIGHT", 0, 0)
-			button:SetScript("OnEnter", function() button:SetAlpha(1) end)
-			button:SetScript("OnLeave", function() button:SetAlpha(0) end)
-		else
-			button:ClearAllPoints()
-			button:SetAlpha(1)
-			button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, E.Scale(3))
-			button:SetScript("OnEnter", function() end)
-			button:SetScript("OnLeave", function() end)		
-		end
-	end	
-end
 
 ------------------------------------------------------------------------
 --	Enhance/rewrite a Blizzard feature, chatframe mousewheel.
@@ -606,7 +549,7 @@ ChatCombatHider:RegisterEvent("PLAYER_REGEN_ENABLED")
 ChatCombatHider:RegisterEvent("PLAYER_REGEN_DISABLED")
 ChatCombatHider:SetScript("OnEvent", function(self, event)
 	if C["chat"].combathide ~= "Left" and C["chat"].combathide ~= "Right" and C["chat"].combathide ~= "Both" then self:UnregisterAllEvents() return end
-	if (C["chat"].combathide == "Right" or C["chat"].combathide == "Both") and C["chat"].rightchat ~= true then return end
+	if (C["chat"].combathide == "Right" or C["chat"].combathide == "Both") and E.RightChat ~= true then return end
 	
 	if event == "PLAYER_REGEN_DISABLED" then
 		if C["chat"].combathide == "Both" then	
@@ -647,7 +590,7 @@ ChatCombatHider:SetScript("OnEvent", function(self, event)
 		if C["chat"].combathide == "Both" then
 			if E.ChatRIn ~= true then
 				E.SlideIn(ChatRBackground)	
-				if IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and C["skin"].hookdxeright == true and C["chat"].rightchat == true and C["chat"].showbackdrop == true then
+				if IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and C["skin"].hookdxeright == true and E.RightChat == true and C["chat"].showbackdrop == true then
 					DXEAlertsTopStackAnchor:ClearAllPoints()
 					DXEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 18)
 				end				
@@ -663,7 +606,7 @@ ChatCombatHider:SetScript("OnEvent", function(self, event)
 		elseif C["chat"].combathide == "Right" then
 			if E.ChatRIn ~= true then
 				E.SlideIn(ChatRBackground)	
-				if IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and C["skin"].hookdxeright == true and C["chat"].rightchat == true and C["chat"].showbackdrop == true then
+				if IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and C["skin"].hookdxeright == true and E.RightChat and C["chat"].showbackdrop == true then
 					DXEAlertsTopStackAnchor:ClearAllPoints()
 					DXEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 18)
 				end					
@@ -695,7 +638,7 @@ local function CheckWhisperWindows(self, event)
 		ElvuiInfoLeft:SetScript("OnUpdate", function(self)
 			E.Flash(ElvuiInfoLeft.shadow, 0.5)
 		end)
-	elseif chat == "ChatFrame3" and C["chat"].rightchat == true and E.ChatRIn == false then
+	elseif chat == _G[format("ChatFrame%d", E.RightChatWindowID)] and E.RightChat == true and E.ChatRIn == false then
 		if event == "CHAT_MSG_WHISPER" then
 			ElvuiInfoRight.shadow:SetBackdropBorderColor(ChatTypeInfo["WHISPER"].r,ChatTypeInfo["WHISPER"].g,ChatTypeInfo["WHISPER"].b, 1)
 		elseif event == "CHAT_MSG_BN_WHISPER" then

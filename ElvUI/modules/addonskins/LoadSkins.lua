@@ -85,7 +85,7 @@ Mod_AddonSkins:SetScript("OnEvent",function(self, event, addon)
 			SkadaBarWindowSkada:ClearAllPoints()
 			SkadaBarWindowSkada:SetPoint("TOPRIGHT", ChatRBackground2, "TOPRIGHT", -2, -2)
 			local function AdjustSkadaFrameLevels()
-				SkadaBarWindowSkada:SetFrameLevel(ChatFrame3:GetFrameLevel() + 2)
+				SkadaBarWindowSkada:SetFrameLevel(_G[format("ChatFrame%d", E.RightChatWindowID)]:GetFrameLevel() or 0 + 2)
 				if SkadaBG then
 					SkadaBG:SetFrameStrata("MEDIUM")	
 					SkadaBG:ClearAllPoints()
@@ -118,7 +118,7 @@ Mod_AddonSkins:SetScript("OnEvent",function(self, event, addon)
 			OmenBarList:SetAllPoints(ChatRBackground2)
 		end
 		
-		if C["chat"].showbackdrop == true and IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and C["skin"].hookdxeright == true and C["chat"].rightchat == true then
+		if C["chat"].showbackdrop == true and IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and C["skin"].hookdxeright == true and E.RightChat == true then
 			DXEAlertsTopStackAnchor:ClearAllPoints()
 			DXEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 18)			
 		elseif IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and C["skin"].hookdxeright == true then

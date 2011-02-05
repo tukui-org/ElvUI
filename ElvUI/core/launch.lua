@@ -30,13 +30,11 @@ function E.Install()
 		FCF_SetLocked(ChatFrame1, 1)
 		FCF_DockFrame(ChatFrame2)
 		FCF_SetLocked(ChatFrame2, 1)
-		
-		if C["chat"].rightchat == true then
-			FCF_OpenNewWindow(LOOT)
-			FCF_UnDockFrame(ChatFrame3)
-			FCF_SetLocked(ChatFrame3, 1)
-			ChatFrame3:Show()			
-		end
+
+		FCF_OpenNewWindow(LOOT)
+		FCF_UnDockFrame(ChatFrame3)
+		FCF_SetLocked(ChatFrame3, 1)
+		ChatFrame3:Show()			
 				
 		for i = 1, NUM_CHAT_WINDOWS do
 			local frame = _G[format("ChatFrame%s", i)]
@@ -52,7 +50,7 @@ function E.Install()
 			if i == 1 then
 				frame:ClearAllPoints()
 				frame:SetPoint("BOTTOMLEFT", ChatLBackground, "BOTTOMLEFT", E.Scale(2), 0)
-			elseif i == 3 and C["chat"].rightchat == true then
+			elseif i == 3 then
 				frame:ClearAllPoints()
 				frame:SetPoint("BOTTOMLEFT", ChatRBackground, "BOTTOMLEFT", E.Scale(2), 0)			
 			end
@@ -68,7 +66,7 @@ function E.Install()
 				FCF_SetWindowName(frame, GENERAL)
 			elseif i == 2 then
 				FCF_SetWindowName(frame, GUILD_EVENT_LOG)
-			elseif i == 3 and C["chat"].rightchat == true then 
+			elseif i == 3 then 
 				FCF_SetWindowName(frame, LOOT.." / "..TRADE) 
 			end
 		end
@@ -105,30 +103,19 @@ function E.Install()
 		ChatFrame_AddMessageGroup(ChatFrame1, "BN_CONVERSATION")
 		ChatFrame_AddMessageGroup(ChatFrame1, "BN_INLINE_TOAST_ALERT")
 		
-		if C["chat"].rightchat == true then
-			ChatFrame_RemoveAllMessageGroups(ChatFrame3)	
-			ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_FACTION_CHANGE")
-			ChatFrame_AddMessageGroup(ChatFrame3, "SKILL")
-			ChatFrame_AddMessageGroup(ChatFrame3, "LOOT")
-			ChatFrame_AddMessageGroup(ChatFrame3, "MONEY")
-			ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_XP_GAIN")
-			ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_HONOR_GAIN")
-			ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_GUILD_XP_GAIN")
-			ChatFrame_AddChannel(ChatFrame1, GENERAL)
-			ChatFrame_RemoveChannel(ChatFrame1, L.chat_trade)
-			ChatFrame_AddChannel(ChatFrame3, L.chat_trade)
-		else
-			ChatFrame_AddMessageGroup(ChatFrame1, "LOOT")
-			ChatFrame_AddMessageGroup(ChatFrame1, "MONEY")	
-			ChatFrame_AddMessageGroup(ChatFrame1, "SKILL")
-			ChatFrame_AddMessageGroup(ChatFrame1, "COMBAT_XP_GAIN")
-			ChatFrame_AddMessageGroup(ChatFrame1, "COMBAT_GUILD_XP_GAIN")
-			ChatFrame_AddMessageGroup(ChatFrame1, "COMBAT_HONOR_GAIN")
-			ChatFrame_AddMessageGroup(ChatFrame1, "COMBAT_FACTION_CHANGE")
-			ChatFrame_AddChannel(ChatFrame1, GENERAL)
-			ChatFrame_RemoveChannel(ChatFrame3, L.chat_trade)
-			ChatFrame_AddChannel(ChatFrame1, L.chat_trade)
-		end
+
+		ChatFrame_RemoveAllMessageGroups(ChatFrame3)	
+		ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_FACTION_CHANGE")
+		ChatFrame_AddMessageGroup(ChatFrame3, "SKILL")
+		ChatFrame_AddMessageGroup(ChatFrame3, "LOOT")
+		ChatFrame_AddMessageGroup(ChatFrame3, "MONEY")
+		ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_XP_GAIN")
+		ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_HONOR_GAIN")
+		ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_GUILD_XP_GAIN")
+		ChatFrame_AddChannel(ChatFrame1, GENERAL)
+		ChatFrame_RemoveChannel(ChatFrame1, L.chat_trade)
+		ChatFrame_AddChannel(ChatFrame3, L.chat_trade)
+
 		
 		if E.myname == "Elv" then
 			--keep losing my god damn channels everytime i resetui
@@ -170,12 +157,12 @@ function E.Install()
 		ToggleChatColorNamesByClassGroup(true, "CHANNEL11")
 		
 		--Adjust Chat Colors
-			--General
-			ChangeChatColor("CHANNEL1", 195/255, 230/255, 232/255)
-			--Trade
-			ChangeChatColor("CHANNEL2", 232/255, 158/255, 121/255)
-			--Local Defense
-			ChangeChatColor("CHANNEL3", 232/255, 228/255, 121/255)
+		--General
+		ChangeChatColor("CHANNEL1", 195/255, 230/255, 232/255)
+		--Trade
+		ChangeChatColor("CHANNEL2", 232/255, 158/255, 121/255)
+		--Local Defense
+		ChangeChatColor("CHANNEL3", 232/255, 228/255, 121/255)
 	end
 		   
 	ElvuiData[E.myrealm][E.myname].installed = true
@@ -230,41 +217,9 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 	if C["arena"].unitframes == true then
 		SetCVar("showArenaEnemyFrames", 0)
 	end
-	
+
 	E.ChatLIn = true
 	E.ChatRIn = true
-		
-	E.Delay(5, function()
-		E.ScanForRightChat()
-		for i = 1, NUM_CHAT_WINDOWS do
-			local tab = _G[format("ChatFrame%sTab", i)]
-			tab:HookScript("OnDragStop", function() E.ScanForRightChat() end)
-		end
-	end)
-	
-	if C["chat"].rightchat == true then
-		for i = 1, NUM_CHAT_WINDOWS do
-			local chat = _G[format("ChatFrame%s", i)]
-			local tab = _G[format("ChatFrame%sTab", i)]
-			local id = chat:GetID()
-			local point = GetChatWindowSavedPosition(id)
-			
-			if point == "BOTTOMRIGHT" and chat:IsShown() then
-				tab:SetParent(ChatRBackground)
-			end
-		end
-	end
-	
-	GeneralDockManager:SetParent(ChatLBackground)
-	
-	--Fixing fucked up border on right chat button, really do not understand why this is happening
-	if C["chat"].rightchat == true and C["chat"].showbackdrop == true then
-		if not ButtonCF3 then return end
-		local x = CreateFrame("Frame", "B3FIX", ChatFrame3Tab)
-		x:SetAllPoints(ButtonCF3)
-		x:SetTemplate("Default")
-		x:SetBackdropColor(0,0,0,0)
-	end
 	
 	-- we adjust UIParent to screen #1 if Eyefinity is found
 	if E.eyefinity then

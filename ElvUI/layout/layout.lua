@@ -135,7 +135,7 @@ chatrbgdummy2:SetPoint("BOTTOMRIGHT", ElvuiBottomPanel, "TOPRIGHT", E.Scale(-4),
 E.AnimGroup(ChatLBackground, E.Scale(-375), 0, 0.4)
 E.AnimGroup(ChatRBackground, E.Scale(375), 0, 0.4)
 
-E.ChatRightShown = false
+E.ChatRightShown = true
 if C["chat"].showbackdrop == true then
 	local chatlbg = CreateFrame("Frame", nil, ChatLBackground)
 	chatlbg:SetTemplate("Transparent")
@@ -495,6 +495,7 @@ ChatLBackground.anim_o:HookScript("OnPlay", function()
 end)
 
 ChatLBackground.anim:HookScript("OnFinished", function()
+	if E.RightChat ~= true then return end
 	for i = 1, NUM_CHAT_WINDOWS do
 		local chat = _G[format("ChatFrame%s", i)]
 		local id = chat:GetID()
@@ -502,8 +503,10 @@ ChatLBackground.anim:HookScript("OnFinished", function()
 		local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
 		chat:SetParent(UIParent)
 		
-		if C["chat"].rightchat == true then
-			ChatFrame3:SetParent(ChatFrame3Tab)
+		if i == E.RightChatWindowID then
+			chat:SetParent(_G[format("ChatFrame%sTab", i)])
+		else
+			chat:SetParent(UIParent)
 		end
 	end
 	ElvuiInfoLeft.shadow:SetBackdropBorderColor(0,0,0,1)
@@ -511,20 +514,23 @@ ChatLBackground.anim:HookScript("OnFinished", function()
 	E.StopFlash(ElvuiInfoLeft.shadow)
 end)
 
-if C["chat"].rightchat == true then
-	ChatRBackground.anim_o:HookScript("OnPlay", function()
-		ChatFrame3:SetParent(ChatFrame3Tab)
-		ChatFrame3:SetFrameStrata("LOW")
-	end)
+ChatRBackground.anim_o:HookScript("OnPlay", function()
+	if E.RightChat ~= true then return end
+	local chat = _G[format("ChatFrame%d", E.RightChatWindowID)]
+	chat:SetParent(_G[format("ChatFrame%sTab", E.RightChatWindowID)])
+	chat:SetFrameStrata("LOW")
+end)
 
-	ChatRBackground.anim:HookScript("OnFinished", function()
-		ChatFrame3:SetParent(UIParent)
-		ChatFrame3:SetFrameStrata("LOW")
-		ElvuiInfoRight.shadow:SetBackdropBorderColor(0,0,0,1)
-		ElvuiInfoRight:SetScript("OnUpdate", function() end)
-		E.StopFlash(ElvuiInfoRight.shadow)
-	end)
-end
+ChatRBackground.anim:HookScript("OnFinished", function()
+	if E.RightChat ~= true then return end
+	local chat = _G[format("ChatFrame%d", E.RightChatWindowID)]
+	chat:SetParent(UIParent)
+	chat:SetFrameStrata("LOW")
+	ElvuiInfoRight.shadow:SetBackdropBorderColor(0,0,0,1)
+	ElvuiInfoRight:SetScript("OnUpdate", function() end)
+	E.StopFlash(ElvuiInfoRight.shadow)
+end)
+
 
 --Setup Button Scripts
 ElvuiInfoLeftLButton:SetScript("OnMouseDown", function(self, btn)
@@ -555,8 +561,8 @@ ElvuiInfoLeftLButton:SetScript("OnMouseDown", function(self, btn)
 	end
 end)
 
-ElvuiInfoLeftRButton:SetScript("OnMouseDown", function(self, btn)
-	if C["chat"].rightchat ~= true then self:EnableMouse(false) return end
+ElvuiInfoRightRButton:SetScript("OnMouseDown", function(self, btn)
+	if E.RightChat ~= true then return end
 	if btn == "RightButton" then
 		E.ToggleSlideChatR()
 		E.ToggleSlideChatL()

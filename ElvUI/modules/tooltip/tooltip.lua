@@ -34,7 +34,7 @@ local NeedBackdropBorderRefresh = false
 
 --Check if our embed right addon is shown
 local function CheckAddOnShown()
-	if E.ChatRightShown == true then
+	if E.ChatRightShown == true and E.RightChat and E.RightChat == true then
 		return true
 	elseif C["skin"].embedright == "Omen" and IsAddOnLoaded("Omen") and OmenAnchor then
 		if OmenAnchor:IsShown() then
@@ -86,7 +86,11 @@ local function SetRightTooltipPos(self)
 		else
 			if CheckAddOnShown() == true then
 				if C["chat"].showbackdrop == true and E.ChatRightShown == true then
-					self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", -1, E.Scale(42))	
+					if E.RightChat == true then
+						self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", -1, E.Scale(42))	
+					else
+						self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", -1, E.Scale(18))	
+					end
 				else
 					self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", -1, E.Scale(18))		
 				end	
