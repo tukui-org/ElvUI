@@ -1,0 +1,11 @@
+Example of .toc file for an extra addon for ElvUI.
+Just copy/past below lines in a .toc file and edit it.
+
+## Interface: 40000
+## Title: |cff1784d1ElvUI Example|r
+## Notes: This is the tooltip text show in character screen, addon list, when mouse is over this mod.
+## Author: Your nickname
+## Version: 1.00
+## RequiredDeps: ElvUI
+
+example.lua
