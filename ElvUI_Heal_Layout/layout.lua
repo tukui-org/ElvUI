@@ -770,7 +770,7 @@ local function Shared(self, unit)
 		-- add combat feedback support
 		if C["unitframes"].combatfeedback == true then
 			local CombatFeedbackText 
-			CombatFeedbackText = health:FontString(font1, C["unitframes"].fontsize*1.1, "OUTLINE")
+			CombatFeedbackText = health:FontString(nil, font1, C["unitframes"].fontsize*1.1, "OUTLINE")
 
 			if C["unitframes"].charportrait == true then
 				CombatFeedbackText:SetPoint("CENTER", self.Portrait, "CENTER")
@@ -1138,7 +1138,7 @@ local function Shared(self, unit)
 		-- add combat feedback support
 		if C["unitframes"].combatfeedback == true then
 			local CombatFeedbackText 
-			CombatFeedbackText = health:FontString(font1, C["unitframes"].fontsize*1.1, "OUTLINE")
+			CombatFeedbackText = health:FontString(nil, font1, C["unitframes"].fontsize*1.1, "OUTLINE")
 			
 			if C["unitframes"].charportrait == true then
 				CombatFeedbackText:SetPoint("CENTER", self.Portrait, "CENTER")
