@@ -233,32 +233,15 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 	
 	E.ChatLIn = true
 	E.ChatRIn = true
-	
+		
 	E.Delay(5, function()
-		local chatrightfound = false
-		if C["chat"].rightchat == true then
-			for i = 1, NUM_CHAT_WINDOWS do
-				local chat = _G[format("ChatFrame%s", i)]
-				local tab = _G[format("ChatFrame%sTab", i)]
-				local id = chat:GetID()
-				local point = GetChatWindowSavedPosition(id)
-				
-				if point == "BOTTOMRIGHT" and chat:IsShown() then
-					chatrightfound = true
-				end
-			end
-		else
-			chatrightfound = true
-		end
-
-		if chatrightfound == false then
-			C["chat"].rightchat = false
-			E.ChatRIn = false
-			ChatRBackground:Kill()
-			B3FIX:Kill()
+		E.ScanForRightChat()
+		for i = 1, NUM_CHAT_WINDOWS do
+			local tab = _G[format("ChatFrame%sTab", i)]
+			tab:HookScript("OnDragStop", function() E.ScanForRightChat() end)
 		end
 	end)
-
+	
 	if C["chat"].rightchat == true then
 		for i = 1, NUM_CHAT_WINDOWS do
 			local chat = _G[format("ChatFrame%s", i)]

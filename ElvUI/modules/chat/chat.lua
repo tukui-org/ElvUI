@@ -511,6 +511,40 @@ function E.ChatCopyButtons()
 end
 E.ChatCopyButtons()
 
+function E.ScanForRightChat()
+	local chatrightfound = false
+	if C["chat"].rightchat == true then
+		for i = 1, NUM_CHAT_WINDOWS do
+			local chat = _G[format("ChatFrame%s", i)]
+			local tab = _G[format("ChatFrame%sTab", i)]
+			local id = chat:GetID()
+			local point = GetChatWindowSavedPosition(id)
+			
+			if point == "BOTTOMRIGHT" and chat:IsShown() then
+				chatrightfound = true
+			end
+		end
+	else
+		chatrightfound = true
+	end
+
+	if chatrightfound == false then
+		C["chat"].rightchat = false
+		E.ChatRIn = false
+		ChatRBackground:Kill()
+		B3FIX:Kill()
+		for id = 1, NUM_CHAT_WINDOWS do
+			local chat = _G[format("ChatFrame%d", id)]
+			local button = _G[format("ButtonCF%d", id)]
+			button:ClearAllPoints()
+			button:SetAlpha(0)
+			button:SetPoint("TOPRIGHT", chat, "TOPRIGHT", 0, 0)
+			button:SetScript("OnEnter", function() button:SetAlpha(1) end)
+			button:SetScript("OnLeave", function() button:SetAlpha(0) end)
+		end
+	end	
+end
+
 ------------------------------------------------------------------------
 --	Enhance/rewrite a Blizzard feature, chatframe mousewheel.
 ------------------------------------------------------------------------
