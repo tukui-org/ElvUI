@@ -142,8 +142,8 @@ Minimap:SetScript("OnMouseUp", function(self, btn)
 	if btn == "RightButton" then
 		local xoff = 0
 		
-		if position:match("RIGHT") then xoff = T.Scale(-16) end
-		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, TukuiMinimap, xoff, T.Scale(-2))
+		if position:match("RIGHT") then xoff = E.Scale(-16) end
+		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, TukuiMinimap, xoff, E.Scale(-2))
 	elseif btn == "MiddleButton" and C["actionbar"].enable == true and C["actionbar"].microbar ~= true then
 		if position:match("LEFT") then
 			EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)

@@ -1,4 +1,3 @@
-
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 E.client = GetLocale() 
 
@@ -107,13 +106,10 @@ L.goldabbrev = "|cffffd700g|r"
 L.silverabbrev = "|cffc7c7cfs|r"
 L.copperabbrev = "|cffeda55fc|r"
 
-L.error_noerror = "No error yet."
-
 L.unitframes_ouf_offline = "Offline"
 L.unitframes_ouf_dead = "Dead"
 L.unitframes_ouf_ghost = "Ghost"
 L.unitframes_ouf_lowmana = "LOW MANA"
-L.unitframes_ouf_threattext = "Threat:"
 L.unitframes_ouf_offlinedps = "Offline"
 L.unitframes_ouf_deaddps = "Dead"
 L.unitframes_ouf_ghostheal = "GHOST"
