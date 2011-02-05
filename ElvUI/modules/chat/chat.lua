@@ -277,6 +277,8 @@ local function SetupChatPosAndFont(self)
 		end
 		
 		tab:HookScript("OnDragStop", function(self)
+			if InCombatLockdown() then return end
+			
 			local id = self:GetID()
 			local chat = _G[format("ChatFrame%d", id)]
 			local button = _G[format("ButtonCF%d", id)]
@@ -300,6 +302,9 @@ local function SetupChatPosAndFont(self)
 				button:SetScript("OnEnter", function() end)
 				button:SetScript("OnLeave", function() end)
 			end
+			chat:Hide()
+			chat:Show()
+			self:SetParent(UIParent)
 		end)
 		
 		tab:HookScript("OnDragStart", function(self)
