@@ -5,6 +5,5 @@
 ## Notes: Converts TukuiDB to ElvDB. Only use if you have an addon that Requires Tukui to load.
 ## RequiredDeps: ElvUI
 ## OptionalDeps: ElvUI_Dps_Layout, ElvUI_Heal_Layout
-## DefaultState: disabled
 
 core.lua
