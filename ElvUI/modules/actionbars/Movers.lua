@@ -10,7 +10,7 @@ end
 
 local function Button_OnLeave(self)
 	self.Text:SetTextColor(unpack(C["media"].valuecolor))
-	E.SetNormTexTemplate(self)
+	self:SetTemplate("Default", true)
 end
 
 local function Button_OnEvent(self, event)
@@ -21,7 +21,7 @@ local btnnames = {}
 
 local function CreateMoverButton(name, text)
 	local b = CreateFrame("Button", name, UIParent)
-	E.SetNormTexTemplate(b)
+	b:SetTemplate("Default", true)
 	b:RegisterEvent("PLAYER_REGEN_DISABLED")
 	b:SetScript("OnEvent", Button_OnEvent)
 	b:SetScript("OnEnter", Button_OnEnter)

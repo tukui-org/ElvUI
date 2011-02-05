@@ -374,7 +374,7 @@ do
 		backdrop.obj = obj
 		backdrop.header = isHeader
 
-		E.SetNormTexTemplate(backdrop)
+		backdrop:SetTemplate("Default", true)
 
 		-- Work around the fact that headers with no units displayed are 0 in height.
 		if(isHeader and math.floor(isHeader:GetHeight()) == 0) then
@@ -390,7 +390,7 @@ do
 		end)
 		backdrop:SetScript("OnLeave", function(self)
 			self.name:SetTextColor(unpack(C["media"].valuecolor))
-			E.SetNormTexTemplate(self)	
+			self:SetTemplate("Default", true)
 		end)		
 
 		backdropPool[target] = backdrop

@@ -164,7 +164,7 @@ local function SetChatStyle(frame)
 	-- create our own texture for edit box
 	local EditBoxBackground = CreateFrame("frame", "ElvuiChatchatEditBoxBackground", _G[chat.."EditBox"])
 	E.CreatePanel(EditBoxBackground, 1, 1, "LEFT", _G[chat.."EditBox"], "LEFT", 0, 0)
-	E.SetNormTexTemplate(EditBoxBackground)
+	EditBoxBackground:SetTemplate("Default", true)
 	EditBoxBackground:ClearAllPoints()
 	EditBoxBackground:SetAllPoints(EditBoxDummy)
 	EditBoxBackground:SetFrameStrata("LOW")
@@ -481,7 +481,7 @@ function E.ChatCopyButtons()
 		else
 			button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, E.Scale(3))
 		end
-		E.SetNormTexTemplate(button)
+		button:SetTemplate("Default", true)
 		button:CreateShadow("Default")
 		
 		local buttontext = button:CreateFontString(nil,"OVERLAY",nil)

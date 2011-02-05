@@ -149,7 +149,7 @@ do
 		f:SetDisabledTexture("")
 		f:HookScript("OnEnter", ButtonEnter)
 		f:HookScript("OnLeave", ButtonLeave)
-		E.SetNormTexTemplate(f)
+		f:SetTemplate("Default", true)
 	end
 end
 

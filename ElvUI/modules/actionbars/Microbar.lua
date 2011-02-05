@@ -82,7 +82,7 @@ for i, button in pairs(microbuttons) do
 	f:SetFrameStrata("BACKGROUND")
 	f:SetPoint("BOTTOMLEFT", m, "BOTTOMLEFT", 2, 0)
 	f:SetPoint("TOPRIGHT", m, "TOPRIGHT", -2, -28)
-	E.SetNormTexTemplate(f)
+	f:SetTemplate("Default", true)
 	m.frame = f
 	
 	pushed:SetTexCoord(0.17, 0.87, 0.5, 0.908)

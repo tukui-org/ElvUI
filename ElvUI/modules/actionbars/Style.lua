@@ -56,7 +56,7 @@ function Style(self, vehicle, totem)
 			else
 				E.CreatePanel(panel, E.buttonsize, E.buttonsize, "CENTER", self, "CENTER", 0, 0)
 			end
-			E.SetNormTexTemplate(panel)
+			panel:SetTemplate("Default", true)
 			panel:SetFrameStrata(self:GetFrameStrata())
 			panel:SetFrameLevel(self:GetFrameLevel() - 1 or 0)
 		end

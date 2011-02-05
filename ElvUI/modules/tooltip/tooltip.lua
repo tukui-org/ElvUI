@@ -378,7 +378,7 @@ local Colorize = function(self)
 end
 
 local SetStyle = function(self)
-	E.SetNormTexTemplate(self)
+	self:SetTemplate("Default", true)
 	Colorize(self)
 end
 
@@ -388,12 +388,12 @@ ElvuiTooltip:SetScript("OnEvent", function(self)
 		tt:HookScript("OnShow", SetStyle)
 	end
 	
-	E.SetNormTexTemplate(FriendsTooltip)
-	E.SetNormTexTemplate(BNToastFrame)
-	E.SetNormTexTemplate(DropDownList1MenuBackdrop)
-	E.SetNormTexTemplate(DropDownList2MenuBackdrop)
-	E.SetNormTexTemplate(DropDownList1Backdrop)
-	E.SetNormTexTemplate(DropDownList2Backdrop)
+	FriendsTooltip:SetTemplate("Default", true)
+	BNToastFrame:SetTemplate("Default", true)
+	DropDownList1MenuBackdrop:SetTemplate("Default", true)
+	DropDownList2MenuBackdrop:SetTemplate("Default", true)
+	DropDownList1Backdrop:SetTemplate("Default", true)
+	DropDownList2Backdrop:SetTemplate("Default", true)
 	
 	BNToastFrame:HookScript("OnShow", function(self)
 		self:ClearAllPoints()

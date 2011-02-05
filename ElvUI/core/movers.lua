@@ -49,7 +49,7 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 		f2:SetFrameStrata("BACKGROUND")
 	end
 	f2:SetPoint("CENTER", f, "CENTER")
-	E.SetNormTexTemplate(f2)
+	f2:SetTemplate("Default", true)
 	f2:RegisterForDrag("LeftButton", "RightButton")
 	f2:SetScript("OnDragStart", function(self) 
 		if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end
@@ -99,7 +99,7 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	end)
 	f2:SetScript("OnLeave", function(self)
 		self.text:SetTextColor(unpack(C["media"].valuecolor))
-		E.SetNormTexTemplate(self)
+		self:SetTemplate("Default", true)
 	end)
 	
 	f2:SetMovable(true)

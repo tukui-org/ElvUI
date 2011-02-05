@@ -157,7 +157,7 @@ if C["actionbar"].enable == true and C["actionbar"].microbar ~= true then
 	f:SetFrameStrata("LOW")
 	f:SetPoint("BOTTOMLEFT", SpellbookMicroButton, "BOTTOMLEFT", 2, 0)
 	f:SetPoint("TOPRIGHT", SpellbookMicroButton, "TOPRIGHT", -2, -28)
-	E.SetNormTexTemplate(f)	
+	f:SetTemplate("Default", true)
 	SpellbookMicroButton.frame = f
 	
 	pushed:SetTexCoord(0.17, 0.87, 0.5, 0.908)

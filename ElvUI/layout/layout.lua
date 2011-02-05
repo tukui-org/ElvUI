@@ -28,8 +28,8 @@ if ElvuiMinimap then
 
 	local minimapstatsright = CreateFrame("Frame", "ElvuiMinimapStatsRight", ElvuiMinimap)
 	E.CreatePanel(minimapstatsright, (ElvuiMinimap:GetWidth() / 2) -2, 19, "TOPRIGHT", ElvuiMinimap, "BOTTOMRIGHT", 0, E.Scale(-3))
-	E.SetNormTexTemplate(ElvuiMinimapStatsLeft)
-	E.SetNormTexTemplate(ElvuiMinimapStatsRight)
+	ElvuiMinimapStatsLeft:SetTemplate("Default", true)
+	ElvuiMinimapStatsRight:SetTemplate("Default", true)
 	ElvuiMinimapStatsLeft:CreateShadow("Default")
 	ElvuiMinimapStatsRight:CreateShadow("Default")
 	
@@ -143,7 +143,7 @@ if C["chat"].showbackdrop == true then
 	chatlbg:SetFrameStrata("BACKGROUND")
 	
 	local chatltbg = CreateFrame("Frame", nil, chatlbg)
-	E.SetNormTexTemplate(chatltbg)
+	chatltbg:SetTemplate("Default", true)
 	chatltbg:SetPoint("BOTTOMLEFT", chatlbg, "TOPLEFT", 0, E.Scale(3))
 	chatltbg:SetPoint("BOTTOMRIGHT", chatlbg, "TOPRIGHT", E.Scale(-24), E.Scale(3))
 	chatltbg:SetHeight(E.Scale(22))
@@ -162,7 +162,7 @@ if C["chat"].showbackdrop == true then
 	chatrbg:SetAlpha(0)
 
 	local chatrtbg = CreateFrame("Frame", nil, chatrbg)
-	E.SetNormTexTemplate(chatrtbg)
+	chatrtbg:SetTemplate("Default", true)
 	chatrtbg:SetPoint("BOTTOMLEFT", chatrbg, "TOPLEFT", 0, E.Scale(3))
 	chatrtbg:SetPoint("BOTTOMRIGHT", chatrbg, "TOPRIGHT", E.Scale(-24), E.Scale(3))
 	chatrtbg:SetHeight(E.Scale(22))
@@ -174,20 +174,20 @@ end
 --INFO LEFT
 local infoleft = CreateFrame("Frame", "ElvuiInfoLeft", UIParent)
 infoleft:SetFrameLevel(2)
-E.SetNormTexTemplate(infoleft)
+infoleft:SetTemplate("Default", true)
 infoleft:CreateShadow("Default")
 infoleft:SetPoint("TOPLEFT", chatlbgdummy2, "BOTTOMLEFT", E.Scale(17), E.Scale(-4))
 infoleft:SetPoint("BOTTOMRIGHT", chatlbgdummy2, "BOTTOMRIGHT", E.Scale(-17), E.Scale(-26))
 
 	--INFOLEFT L BUTTON
 	local infoleftLbutton = CreateFrame("Button", "ElvuiInfoLeftLButton", ElvuiInfoLeft)
-	E.SetNormTexTemplate(infoleftLbutton)
+	infoleftLbutton:SetTemplate("Default", true)
 	infoleftLbutton:SetPoint("TOPRIGHT", infoleft, "TOPLEFT", E.Scale(-2), 0)
 	infoleftLbutton:SetPoint("BOTTOMLEFT", chatlbgdummy2, "BOTTOMLEFT", 0, E.Scale(-26))
 
 	--INFOLEFT R BUTTON
 	local infoleftRbutton = CreateFrame("Button", "ElvuiInfoLeftRButton", ElvuiInfoLeft)
-	E.SetNormTexTemplate(infoleftRbutton)
+	infoleftRbutton:SetTemplate("Default", true)
 	infoleftRbutton:SetPoint("TOPLEFT", infoleft, "TOPRIGHT", E.Scale(2), 0)
 	infoleftRbutton:SetPoint("BOTTOMRIGHT", chatlbgdummy2, "BOTTOMRIGHT", 0, E.Scale(-26))
 	
@@ -205,7 +205,7 @@ infoleft:SetPoint("BOTTOMRIGHT", chatlbgdummy2, "BOTTOMRIGHT", E.Scale(-17), E.S
 
 --INFO RIGHT
 local inforight = CreateFrame("Frame", "ElvuiInfoRight", UIParent)
-E.SetNormTexTemplate(inforight)
+inforight:SetTemplate("Default", true)
 infoleft:SetFrameLevel(2)
 inforight:CreateShadow("Default")
 inforight:SetPoint("TOPLEFT", chatrbgdummy2, "BOTTOMLEFT", E.Scale(17), E.Scale(-4))
@@ -213,13 +213,13 @@ inforight:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", E.Scale(-17), E.
 
 	--INFORIGHT L BUTTON
 	local inforightLbutton = CreateFrame("Button", "ElvuiInfoRightLButton", ElvuiInfoRight)
-	E.SetNormTexTemplate(inforightLbutton)
+	inforightLbutton:SetTemplate("Default", true)
 	inforightLbutton:SetPoint("TOPRIGHT", inforight, "TOPLEFT", E.Scale(-2), 0)
 	inforightLbutton:SetPoint("BOTTOMLEFT", chatrbgdummy2, "BOTTOMLEFT", 0, E.Scale(-26))
 
 	--INFORIGHT R BUTTON
 	local inforightRbutton = CreateFrame("Button", "ElvuiInfoRightRButton", ElvuiInfoRight)
-	E.SetNormTexTemplate(inforightRbutton)
+	inforightRbutton:SetTemplate("Default", true)
 	inforightRbutton:SetPoint("TOPLEFT", inforight, "TOPRIGHT", E.Scale(2), 0)
 	inforightRbutton:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", 0, E.Scale(-26))
 	
@@ -314,7 +314,7 @@ if C["datatext"].battleground == true then
 	E.CreatePanel(bgframeL, 1, 1, "TOPLEFT", UIParent, "BOTTOMLEFT", 0, 0)
 	bgframeL:SetAllPoints(ElvuiInfoLeft)
 	bgframeL:SetFrameLevel(ElvuiInfoLeft:GetFrameLevel() + 1)
-	E.SetNormTexTemplate(bgframeL)
+	bgframeL:SetTemplate("Default", true)
 	bgframeL:SetFrameStrata("HIGH")
 	bgframeL:SetScript("OnEnter", function(self)
 		local numScores = GetNumBattlefieldScores()
@@ -357,7 +357,7 @@ if C["datatext"].battleground == true then
 	
 	local bgframeR = CreateFrame("Frame", "ElvuiInfoBattleGroundR", UIParent)
 	E.CreatePanel(bgframeR, 1, 1, "TOPLEFT", UIParent, "BOTTOMLEFT", 0, 0)
-	E.SetNormTexTemplate(bgframeR)
+	bgframeR:SetTemplate("Default", true)
 	bgframeR:SetAllPoints(ElvuiInfoRight)
 	bgframeR:SetFrameLevel(ElvuiInfoRight:GetFrameLevel() + 1)
 	bgframeR:SetFrameStrata("HIGH")
