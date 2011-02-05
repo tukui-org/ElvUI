@@ -109,88 +109,51 @@ end
 local menuFrame = CreateFrame("Frame", "MinimapRightClickMenu", UIParent, "UIDropDownMenuTemplate")
 local menuList = {
     {text = CHARACTER_BUTTON,
-		func = function() ToggleCharacter("PaperDollFrame") end},
+    func = function() ToggleCharacter("PaperDollFrame") end},
+    {text = SPELLBOOK_ABILITIES_BUTTON,
+    func = function() if InCombatLockdown() then return end ToggleFrame(SpellBookFrame) end},
     {text = TALENTS_BUTTON,
-		func = function() if not PlayerTalentFrame then LoadAddOn("Blizzard_TalentUI") end if not GlyphFrame then LoadAddOn("Blizzard_GlyphUI") end PlayerTalentFrame_Toggle() end},
+    func = function() if not PlayerTalentFrame then LoadAddOn("Blizzard_TalentUI") end if not GlyphFrame then LoadAddOn("Blizzard_GlyphUI") end PlayerTalentFrame_Toggle() end},
     {text = ACHIEVEMENT_BUTTON,
-		func = function() ToggleAchievementFrame() end},
+    func = function() ToggleAchievementFrame() end},
     {text = QUESTLOG_BUTTON,
-		func = function() ToggleFrame(QuestLogFrame) end},
+    func = function() ToggleFrame(QuestLogFrame) end},
     {text = SOCIAL_BUTTON,
-		func = function() ToggleFriendsFrame(1) end},
+    func = function() ToggleFriendsFrame(1) end},
     {text = PLAYER_V_PLAYER,
-		func = function() ToggleFrame(PVPFrame) end},
+    func = function() ToggleFrame(PVPFrame) end},
     {text = ACHIEVEMENTS_GUILD_TAB,
-		func = function() if IsInGuild() then if not GuildFrame then LoadAddOn("Blizzard_GuildUI") end GuildFrame_Toggle() GuildFrame_TabClicked(GuildFrameTab2) end end},
+    func = function() if IsInGuild() then if not GuildFrame then LoadAddOn("Blizzard_GuildUI") end GuildFrame_Toggle() end end},
     {text = LFG_TITLE,
-		func = function() ToggleFrame(LFDParentFrame) end},
+    func = function() ToggleFrame(LFDParentFrame) end},
     {text = L_LFRAID,
-		func = function() ToggleFrame(LFRParentFrame) end},
+    func = function() ToggleFrame(LFRParentFrame) end},
     {text = HELP_BUTTON,
-		func = function() ToggleHelpFrame() end},
+    func = function() ToggleHelpFrame() end},
     {text = L_CALENDAR,
-		func = function() if(not CalendarFrame) then LoadAddOn("Blizzard_Calendar") end Calendar_Toggle() end},
+    func = function()
+    if(not CalendarFrame) then LoadAddOn("Blizzard_Calendar") end
+        Calendar_Toggle()
+    end},
 }
 
-if C["actionbar"].enable == true and C["actionbar"].microbar ~= true then
-	SpellbookMicroButton:SetParent(Minimap)
-	SpellbookMicroButton:ClearAllPoints()
-	SpellbookMicroButton:SetPoint("RIGHT")
-	SpellbookMicroButton:SetFrameStrata("TOOLTIP")
-	SpellbookMicroButton:SetFrameLevel(100)
-	SpellbookMicroButton:SetAlpha(0)
-	SpellbookMicroButton:HookScript("OnEnter", function(self)  end)
-	SpellbookMicroButton:HookScript("OnLeave", function(self) self:SetAlpha(0) end)
-	SpellbookMicroButton.Hide = E.dummy
-	SpellbookMicroButton.SetParent = E.dummy
-	SpellbookMicroButton.ClearAllPoints = E.dummy
-	SpellbookMicroButton.SetPoint = E.dummy
-	SpellbookMicroButton:SetHighlightTexture("")
-	SpellbookMicroButton.SetHighlightTexture = E.dummy
-	
-	local pushed = SpellbookMicroButton:GetPushedTexture()
-	local normal = SpellbookMicroButton:GetNormalTexture()
-	local disabled = SpellbookMicroButton:GetDisabledTexture()
-	
-	local f = CreateFrame("Frame", nil, SpellbookMicroButton)
-	f:SetFrameLevel(1)
-	f:SetFrameStrata("LOW")
-	f:SetPoint("BOTTOMLEFT", SpellbookMicroButton, "BOTTOMLEFT", 2, 0)
-	f:SetPoint("TOPRIGHT", SpellbookMicroButton, "TOPRIGHT", -2, -28)
-	f:SetTemplate("Default", true)
-	SpellbookMicroButton.frame = f
-	
-	pushed:SetTexCoord(0.17, 0.87, 0.5, 0.908)
-	pushed:ClearAllPoints()
-	pushed:SetPoint("TOPLEFT", SpellbookMicroButton.frame, "TOPLEFT", E.Scale(2), E.Scale(-2))
-	pushed:SetPoint("BOTTOMRIGHT", SpellbookMicroButton.frame, "BOTTOMRIGHT", E.Scale(-2), E.Scale(2))
-	
-	normal:SetTexCoord(0.17, 0.87, 0.5, 0.908)
-	normal:ClearAllPoints()
-	normal:SetPoint("TOPLEFT", SpellbookMicroButton.frame, "TOPLEFT", E.Scale(2), E.Scale(-2))
-	normal:SetPoint("BOTTOMRIGHT", SpellbookMicroButton.frame, "BOTTOMRIGHT", E.Scale(-2), E.Scale(2))
-	
-	if disabled then
-		disabled:SetTexCoord(0.17, 0.87, 0.5, 0.908)
-		disabled:ClearAllPoints()
-		disabled:SetPoint("TOPLEFT", SpellbookMicroButton.frame, "TOPLEFT", E.Scale(2), E.Scale(-2))
-		disabled:SetPoint("BOTTOMRIGHT", SpellbookMicroButton.frame, "BOTTOMRIGHT", E.Scale(-2), E.Scale(2))
-	end
-	
-	SpellbookMicroButton:HookScript("OnEnter", function(self) local color = RAID_CLASS_COLORS[E.myclass] self.frame:SetBackdropBorderColor(color.r, color.g, color.b) self:SetAlpha(1) end)
-	SpellbookMicroButton:HookScript("OnLeave", function(self) self.frame:SetBackdropBorderColor(unpack(C["media"].bordercolor)) self:SetAlpha(0) end)
-end
-
 Minimap:SetScript("OnMouseUp", function(self, btn)
+	local position = TukuiMinimap:GetPoint()
 	if btn == "RightButton" then
-		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, self)
+		local xoff = 0
+		
+		if position:match("RIGHT") then xoff = T.Scale(-16) end
+		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, TukuiMinimap, xoff, T.Scale(-2))
 	elseif btn == "MiddleButton" and C["actionbar"].enable == true and C["actionbar"].microbar ~= true then
-		EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
+		if position:match("LEFT") then
+			EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
+		else
+			EasyMenu(menuList, menuFrame, "cursor", -160, 0, "MENU", 2)
+		end
 	else
 		Minimap_OnClick(self)
 	end
 end)
-
 
 -- Set Square Map Mask
 Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
@@ -236,17 +199,11 @@ m_coord_text:SetJustifyV("MIDDLE")
 Minimap:SetScript("OnEnter",function()	
 	m_coord:Show()
 	m_zone:Show()
-	if C["actionbar"].enable == true and C["actionbar"].microbar ~= true then
-		SpellbookMicroButton:SetAlpha(1)
-	end
 end)
  
 Minimap:SetScript("OnLeave",function()
 	m_coord:Hide()
 	m_zone:Hide()
-	if C["actionbar"].enable == true and C["actionbar"].microbar ~= true then
-		SpellbookMicroButton:SetAlpha(0)
-	end
 end)
 
 if C["actionbar"].enable == true and C["actionbar"].microbar ~= true then
