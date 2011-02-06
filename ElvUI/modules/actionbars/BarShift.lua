@@ -6,11 +6,6 @@ if not C["actionbar"].enable == true then return end
 ---------------------------------------------------------------------------
 -- Setup Shapeshift Bar
 ---------------------------------------------------------------------------
-local numshape = 0
-for i = 1, NUM_SHAPESHIFT_SLOTS do
-	if _G["ShapeshiftButton"..i] and _G["ShapeshiftButton"..i]:IsShown() then numshape = numshape + 1 end
-end
-
 -- used for anchor totembar or shapeshiftbar
 local ElvuiShift = CreateFrame("Frame","ElvuiShiftBar",ElvuiActionBarBackground)
 if C["actionbar"].microbar == true then
@@ -18,9 +13,7 @@ if C["actionbar"].microbar == true then
 else
 	ElvuiShift:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 2, -2)
 end
-local w = numshape * (E.buttonspacing + E.petbuttonsize)
-if w < 100 then w = 100 end
-ElvuiShift:SetWidth(w)
+ElvuiShift:SetWidth(200)
 ElvuiShift:SetHeight(E.petbuttonsize)
 
 if C["actionbar"].hideshapeshift == true then
