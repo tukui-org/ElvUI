@@ -103,10 +103,10 @@ local function Update(self, event, ...)
 	-- our guild message of the day changed
 	if event == "GUILD_MOTD" then UpdateGuildMessage() end
 	-- an event occured that could change the guild roster, so request update
-	if event ~= "GUILD_ROSTER_UPDATE" then GuildRoster() return end
+	if event ~= "GUILD_ROSTER_UPDATE" then GuildRoster() end
 		
 	-- received an updated event, but we are already updating the table
-	if self.update == true then print("locked") return end
+	if self.update == true then return end
 
 	-- lock to prevent multiple updates simultaniously
 	self.update = true
@@ -121,8 +121,16 @@ local function Update(self, event, ...)
 		
 		self:SetAllPoints(Text)
 		Text:SetFormattedText(displayString, L.datatext_guild, totalOnline)
+		
+		if not Stat:GetScript("OnMouseDown") then
+			Stat:SetScript("OnMouseDown", function(self, btn)
+				if btn ~= "LeftButton" then return end
+				ToggleGuildFrame()
+			end)
+		end
 	else
 		Text:SetText(E.ValColor..L.datatext_noguild)
+		Stat:SetScript("OnMouseDown", nil)
 	end
 	self.update = false
 end
@@ -130,16 +138,8 @@ end
 local menuFrame = CreateFrame("Frame", "ElvuiGuildRightClickMenu", UIParent, "UIDropDownMenuTemplate")
 local menuList = {
 	{ text = "Select an Option", isTitle = true,notCheckable=true},
-	{ text = "Invite", hasArrow = true,notCheckable=true,
-		menuList = {
-			{ text = "Option 3", func = function() print("You've chosen option 3"); end }
-		}
-	},
-	{ text = "Whisper", hasArrow = true,notCheckable=true,
-		menuList = {
-			{ text = "Option 4", func = function() print("You've chosen option 4"); end }
-		}
-	}
+	{ text = "Invite", hasArrow = true,notCheckable=true,},
+	{ text = "Whisper", hasArrow = true,notCheckable=true,}
 }
 
 local function inviteClick(self, arg1, arg2, checked)
@@ -152,13 +152,11 @@ local function whisperClick(self,arg1,arg2,checked)
 	SetItemRef( "player:"..arg1, ("|Hplayer:%1$s|h[%1$s]|h"):format(arg1), "LeftButton" )
 end
 
-Stat:SetScript("OnMouseDown", function(self, btn) 
-	if btn ~= "LeftButton" then return end
-	
+local function ToggleGuildFrame()
 	if not GuildFrame and IsInGuild() then LoadAddOn("Blizzard_GuildUI") end
 	GuildFrame_Toggle() 
 	GuildFrame_TabClicked(GuildFrameTab2)
-end)
+end
 
 Stat:SetScript("OnMouseUp", function(self, btn)
 	if btn ~= "RightButton" then return end
