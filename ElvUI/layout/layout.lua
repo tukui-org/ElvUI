@@ -602,6 +602,7 @@ ElvuiInfoLeftRButton:SetScript("OnMouseDown", function(self)
 			GameTooltip:AddLine(LOCK.." "..BUG_CATEGORY5,unpack(C["media"].valuecolor))
 		end
 	end
+	GameTooltip:Show()
 end)
 
 ElvuiInfoLeftRButton:SetScript("OnEnter", function(self)
