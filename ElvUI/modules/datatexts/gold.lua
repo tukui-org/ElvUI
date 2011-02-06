@@ -35,6 +35,7 @@ if C["datatext"].gold and C["datatext"].gold > 0 then
 	end
 
 	local function FormatTooltipMoney(money)
+		if not money then return end
 		local gold, silver, copper = abs(money / 10000), abs(mod(money / 100, 100)), abs(mod(money, 100))
 		local cash = ""
 		cash = format("%d"..L.goldabbrev.." %d"..L.silverabbrev.." %d"..L.copperabbrev, gold, silver, copper)		
