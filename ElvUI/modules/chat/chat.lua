@@ -58,6 +58,7 @@ local function SetChatStyle(frame)
 	
 	tab:SetAlpha(1)
 	tab.SetAlpha = UIFrameFadeRemoveFrame	
+	
 	-- always set alpha to 1, don't fade it anymore
 	if C["chat"].showbackdrop ~= true then
 		-- hide text when setting chat
@@ -67,6 +68,7 @@ local function SetChatStyle(frame)
 		tab:HookScript("OnEnter", function() _G[chat.."TabText"]:Show() end)
 		tab:HookScript("OnLeave", function() _G[chat.."TabText"]:Hide() end)
 	end
+	
 	_G[chat.."TabText"]:SetTextColor(unpack(C["media"].valuecolor))
 	_G[chat.."TabText"]:SetFont(C.media.font,C["general"].fontscale,"THINOUTLINE")
 	_G[chat.."TabText"].SetTextColor = E.dummy
@@ -234,8 +236,8 @@ local function SetupChatFont(self)
 		if fontSize < 10 then fontSize = 11 end
 		FCF_SetChatWindowFontSize(nil, chat, fontSize)
 		
-		tab:SetScript("OnEnter", function() insidetab = true end)
-		tab:SetScript("OnLeave", function() insidetab = false end)	
+		tab:HookScript("OnEnter", function() insidetab = true end)
+		tab:HookScript("OnLeave", function() insidetab = false end)	
 	end
 end
 hooksecurefunc("FCF_OpenNewWindow", SetupChatFont)
@@ -278,10 +280,10 @@ ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 		E.RightChat = chatfound
 		
 		if chatfound == true then
-			ChatRBG:SetAlpha(1)
+			if ChatRBG then ChatRBG:SetAlpha(1) end
 			E.RightChatWindowID = id
 		else
-			ChatRBG:SetAlpha(0)
+			if ChatRBG then ChatRBG:SetAlpha(0) end
 			E.RightChatWindowID = nil
 		end
 
@@ -301,12 +303,21 @@ ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 				FCF_SavePositionAndDimensions(chat)			
 				
 				tab:SetParent(ChatRBackground)
-				
+				chat:SetParent(tab)
 				button:ClearAllPoints()
-				button:SetAlpha(1)
-				button:SetPoint("BOTTOMRIGHT", ChatRBackground, "TOPRIGHT", 0, E.Scale(3))
-				button:SetScript("OnEnter", nil)
-				button:SetScript("OnLeave", nil)				
+				if ChatRBG then
+					button:SetAlpha(1)
+					button:SetPoint("BOTTOMRIGHT", ChatRBackground, "TOPRIGHT", 0, E.Scale(3))
+					button:SetScript("OnEnter", nil)
+					button:SetScript("OnLeave", nil)	
+				else
+					if not button:GetScript("OnEnter") then
+						button:SetAlpha(0)
+						button:SetScript("OnEnter", function(self) self:SetAlpha(1) end)
+						button:SetScript("OnLeave", function(self) self:SetAlpha(0) end)	
+					end				
+					button:SetPoint("TOPRIGHT")
+				end
 			elseif not docked and chat:IsShown() then
 				if not button:GetScript("OnEnter") then
 					button:SetAlpha(0)
@@ -317,6 +328,7 @@ ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 				button:ClearAllPoints()
 				button:SetPoint("TOPRIGHT")
 				tab:SetParent(UIParent)
+				chat:SetParent(UIParent)
 			else
 				if chat:GetID() ~= 2 then
 					chat:ClearAllPoints()
@@ -324,16 +336,25 @@ ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 					chat:SetSize(E.Scale(C["chat"].chatwidth - 4), E.Scale(C["chat"].chatheight))
 					FCF_SavePositionAndDimensions(chat)		
 				end
-				
+				chat:SetParent(GeneralDockManager)
 				tab:SetParent(GeneralDockManager)
 				
-				button:ClearAllPoints()
-				button:SetAlpha(1)
-				button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, E.Scale(3))
-				button:SetScript("OnEnter", nil)
-				button:SetScript("OnLeave", nil)			
+				
+				if ChatRBG then
+					button:ClearAllPoints()
+					button:SetAlpha(1)
+					button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, E.Scale(3))
+					button:SetScript("OnEnter", nil)
+					button:SetScript("OnLeave", nil)	
+				else
+					if not button:GetScript("OnEnter") then
+						button:SetAlpha(0)
+						button:SetScript("OnEnter", function(self) self:SetAlpha(1) end)
+						button:SetScript("OnLeave", function(self) self:SetAlpha(0) end)	
+					end				
+					button:SetPoint("TOPRIGHT")
+				end		
 			end
-			--chat:SetParent(tab) I dont think this is needed anymore
 		end
 		
 		self.elapsed = 0

@@ -109,17 +109,20 @@ local function Stylesmallbutton(normal, button, icon, name, pet)
 
 		icon:SetTexCoord(.08, .92, .08, .92)
 		icon:ClearAllPoints()
-		if pet then
-			local autocast = _G[name.."AutoCastable"]
-			autocast:SetWidth(E.Scale(41))
-			autocast:SetHeight(E.Scale(40))
-			autocast:ClearAllPoints()
-			autocast:SetPoint("CENTER", button, 0, 0)
-			icon:SetPoint("TOPLEFT", button, E.Scale(2), E.Scale(-2))
-			icon:SetPoint("BOTTOMRIGHT", button, E.Scale(-2), E.Scale(2))
+		if pet then			
+			if E.petbuttonsize < 30 then
+				local autocast = _G[name.."AutoCastable"]
+				autocast:SetAlpha(0)
+			end
+			local shine = _G[name.."Shine"]
+			shine:Size(E.petbuttonsize, E.petbuttonsize)
+			shine:ClearAllPoints()
+			shine:SetPoint("CENTER", button, 0, 0)
+			icon:Point("TOPLEFT", button, 2, -2)
+			icon:Point("BOTTOMRIGHT", button, -2, 2)
 		else
-			icon:SetPoint("TOPLEFT", button, E.Scale(2), E.Scale(-2))
-			icon:SetPoint("BOTTOMRIGHT", button, E.Scale(-2), E.Scale(2))
+			icon:Point("TOPLEFT", button, 2, -2)
+			icon:Point("BOTTOMRIGHT", button, -2, 2)
 		end
 	end
 	
@@ -344,6 +347,11 @@ local function StyleTotemFlyout(flyout)
 		if button:IsVisible() then last = button end
 		button:SetBackdropBorderColor(flyout.parent:GetBackdropBorderColor())
 		button:StyleButton()
+		
+		if C["actionbar"].shapeshiftmouseover == true then
+			button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
+			button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
+		end			
 	end
 	
 	if E.TotemOrientationDown then
@@ -381,6 +389,13 @@ local function StyleTotemFlyout(flyout)
 	else
 		flyout:Point("BOTTOM",flyout.parent,"TOP",0,4)
 	end
+	
+	if C["actionbar"].shapeshiftmouseover == true then
+		flyout:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
+		flyout:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
+		close:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
+		close:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
+	end
 end
 hooksecurefunc("MultiCastFlyoutFrame_ToggleFlyout",function(self) StyleTotemFlyout(self) end)
 	
@@ -408,6 +423,10 @@ local function StyleTotemOpenButton(button, parent)
 		button.visibleBut:SetTemplate("Default")
 	end	
 	
+	if C["actionbar"].shapeshiftmouseover == true then
+		button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
+		button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
+	end	
 	button.visibleBut:SetBackdropBorderColor(parent:GetBackdropBorderColor())
 end
 hooksecurefunc("MultiCastFlyoutFrameOpenButton_Show",function(button,_, parent) StyleTotemOpenButton(button, parent) end)
@@ -430,6 +449,10 @@ local function StyleTotemSlotButton(button, index)
 	button:Size(C["actionbar"].petbuttonsize)
 	button:SetBackdropBorderColor(unpack(bordercolors[((index-1) % 4) + 1]))
 	button:StyleButton()
+	if C["actionbar"].shapeshiftmouseover == true then
+		button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
+		button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
+	end	
 end
 hooksecurefunc("MultiCastSlotButton_Update",function(self, slot) StyleTotemSlotButton(self,tonumber( string.match(self:GetName(),"MultiCastSlotButton(%d)"))) end)
 
@@ -452,6 +475,10 @@ local function StyleTotemActionButton(button, index)
 	button:SetBackdropBorderColor(unpack(bordercolors[((index-1) % 4) + 1]))
 	button:SetBackdropColor(0,0,0,0)
 	button:StyleButton(true)
+	if C["actionbar"].shapeshiftmouseover == true then
+		button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
+		button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
+	end	
 end
 hooksecurefunc("MultiCastActionButton_Update",function(actionButton, actionId, actionIndex, slot) StyleTotemActionButton(actionButton,actionIndex) end)
 
@@ -469,6 +496,10 @@ local function StyleTotemSpellButton(button, index)
 	_G[button:GetName().."Highlight"]:SetTexture(nil)
 	_G[button:GetName().."NormalTexture"]:SetTexture(nil)
 	button:StyleButton()
+	if C["actionbar"].shapeshiftmouseover == true then
+		button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
+		button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
+	end	
 end
 hooksecurefunc("MultiCastSummonSpellButton_Update", function(self) StyleTotemSpellButton(self,0) end)
 hooksecurefunc("MultiCastRecallSpellButton_Update", function(self) StyleTotemSpellButton(self,5) end)
