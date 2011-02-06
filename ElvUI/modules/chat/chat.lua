@@ -260,7 +260,6 @@ end)
 
 local chat, tab, id, point, button, docked, chatfound
 E.RightChat = true
-
 ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 	if(self.elapsed and self.elapsed > 2) then
 		if InCombatLockdown() or insidetab == true or IsMouseButtonDown("LeftButton") then return end
@@ -334,7 +333,7 @@ ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 				button:SetScript("OnEnter", nil)
 				button:SetScript("OnLeave", nil)			
 			end
-			chat:SetParent(tab)
+			--chat:SetParent(tab) I dont think this is needed anymore
 		end
 		
 		self.elapsed = 0
