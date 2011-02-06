@@ -26,6 +26,19 @@ ALLOWED_GROUPS = {
 	["debug"]=1,
 }
 
+--List of "Options" that we do not want to show in the config
+local Filter = {
+	["font"]=1,
+	["uffont"]=1,
+	["dmgfont"]=1,
+	["normTex"]=1,
+	["glowTex"]=1,
+	["blank"]=1,
+	["raidicons"]=1,
+	["whisper"]=1,
+	["warning"]=1,
+}
+
 local function Local(o)
 	local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 	
@@ -594,7 +607,7 @@ local function CreateElvuiConfigUI()
 				button:SetScript("OnClick", function(self) SetValue(group,option,(self:GetChecked() and true or false)) end)
 				button:SetPoint("TOPLEFT", 5, -(offset))
 				offset = offset+25
-			elseif type(value) == "number" or type(value) == "string" then
+			elseif (type(value) == "number" or type(value) == "string") and not Filter[option] then
 				local label = frame:CreateFontString(nil,"OVERLAY",nil)
 				label:SetFont(C.media.font,C["general"].fontscale)
 				local o = "ElvuiConfigUI"..group..option
