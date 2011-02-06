@@ -431,7 +431,7 @@ local function Shared(self, unit)
 				player_height = player_height + E.Scale(14)
 				
 				CreateFrame("Frame"):SetScript("OnUpdate", function() E.UpdateDruidMana(self) end)
-				local DruidMana = health:FontString(font1, C["unitframes"].fontsize, "THINOUTLINE")
+				local DruidMana = health:FontString(nil, font1, C["unitframes"].fontsize, "THINOUTLINE")
 				DruidMana:SetTextColor(1, 0.49, 0.04)
 				self.DruidMana = DruidMana
 				
