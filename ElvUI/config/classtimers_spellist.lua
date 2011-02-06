@@ -33,6 +33,7 @@ TRINKET_FILTER = {
 	CreateSpellEntry( 92099 ), -- Speed of Thought (H Skardyn's Grace)
 	CreateSpellEntry( 91136 ), -- Leviathan (H Sea Star)
 	CreateSpellEntry( 91368 ), -- Eye of Doom (H Right Eye of Rajh)
+	CreateSpellEntry( 91141 ), -- Anthem (Rainsong)
 	CreateSpellEntry( 91143 ), -- Anthem (H Rainsong)
 	CreateSpellEntry( 91002 ), -- Crescendo of Suffering (H Sorrowsong)
 	CreateSpellEntry( 91139 ), -- Cleansing Tears (H Tear of Blood)
@@ -60,9 +61,60 @@ TRINKET_FILTER = {
 	CreateSpellEntry( 92213 ), -- Memory of Invincibility
 	CreateSpellEntry( 59473 ), -- Twisted (Essence of the Cyclone)
 	CreateSpellEntry(81932), -- Gnomish X-Ray Scope
+	CreateSpellEntry(92123), -- Enigma (Unsolvable Riddle)
+	CreateSpellEntry( 73549 ), -- Demon Panther (Figurine: Demon Panther)
+	CreateSpellEntry( 73552 ), -- Dream Owl (Figurine: Dream Owl)
+	CreateSpellEntry( 73550 ), -- Earthen Guardian (Figurine: Earthen Guardian)
+	CreateSpellEntry( 73551 ), -- Jeweled Serpent (Figurine: Jeweled Serpent)
+	CreateSpellEntry( 73522 ), -- King of Boars (Figurine: King of Boars)
+	CreateSpellEntry( 91828 ), -- Thrill of Victory (Impatience of Youth)
+	CreateSpellEntry( 91192 ), -- Pattern of Light (Mandala of Stirring Patterns)
+	CreateSpellEntry( 92222 ), -- Image of Immortality (Mirror of Broken Images)
+	CreateSpellEntry( 92123 ), -- Enigma (Unsolvable Riddle)
+	CreateSpellEntry( 91007 ), -- Dire Magic (Bell of Enraging Resonance)
+	CreateSpellEntry( 92318 ), -- Dire Magic (H Bell of Enraging Resonance)
+	CreateSpellEntry( 91184 ), -- Grounded Soul (Fall of Mortality)
+	CreateSpellEntry( 92332 ), -- Grounded Soul (H Fall of Mortality)
+	CreateSpellEntry( 91836 ), -- Forged Fury (Fury of Angerforge)
+	CreateSpellEntry( 91027 ), -- Heart's Revelation (Heart of Ignacious)
+	CreateSpellEntry( 91041 ), -- Heart's Judgement (Heart of Ignacious)
+	CreateSpellEntry( 92325 ), -- Heart's Revelation (H Heart of Ignacious)
+	CreateSpellEntry( 92328 ), -- Heart's Judgement (H Heart of Ignacious)
+	CreateSpellEntry( 92124 ), -- Nefarious Plot (Prestor's Talisman of Machination)
+	CreateSpellEntry( 92349 ), -- Nefarious Plot (H Prestor's Talisman of Machination)
+	CreateSpellEntry( 92235 ), -- Turn of the Worm (Symbiotic Worm)
+	CreateSpellEntry( 92355 ), -- Turn of the Worm (H Symbiotic Worm)
+	CreateSpellEntry( 91024 ), -- Revelation (Theralion's Mirror)
+	CreateSpellEntry( 92320 ), -- Revelation (H Theralion's Mirror)
+	CreateSpellEntry( 92108 ), -- Heedless Carnage (Unheeded Warning)
+	CreateSpellEntry( 92213 ), -- Memory of Invincibility (Vial of Stolen Memories)
+	CreateSpellEntry( 92357 ), -- Memory of Invincibility (H Vial of Stolen Memories)	
+	CreateSpellEntry( 54861 ), -- Nitro Boosts (engineer tinker)
+	CreateSpellEntry( 92126 ), -- Twisted (Essence of the Cyclone)
+	CreateSpellEntry( 92351 ), -- Twisted (Heroic Essence of the Cyclone)
+	CreateSpellEntry( 92220 ), -- Surge of Conquest (PvP Agility Trinket)
+	CreateSpellEntry( 92216 ), -- Surge of Conquest	(PvP Strength Trinket)
+	CreateSpellEntry( 79633 ), -- Tol'vir Agility (Agility potion)
+	CreateSpellEntry( 79475 ), -- Earthen Armor (Armor potion)
+	CreateSpellEntry( 79634 ), -- Golem's Strength (Strength potion)
+	CreateSpellEntry( 78993 ), -- Concentration (Mana potion)
+	CreateSpellEntry( 79476 ), -- Volcanic Power (Spell power potion)
+	CreateSpellEntry( 7001 ), -- Lightwell Renew
+	CreateSpellEntry( 91832 ), -- Raw Fury
+	CreateSpellEntry( 91836 ), -- Forged Fury
+	
+	--Turtle Shit
+	CreateSpellEntry( 63877, true ), -- Pain Suppression
+	CreateSpellEntry( 47788, true ), -- Guardian Spirit	
+	CreateSpellEntry( 1044, true ), -- Hand of Freedom
+	CreateSpellEntry( 1022, true ), -- Hand of Protection
+	CreateSpellEntry( 1038, true ), -- Hand of Salvation
+	CreateSpellEntry( 6940, true ), -- Hand of Sacrifice
+	CreateSpellEntry( 62618, true ), --Power Word: Barrier
+	CreateSpellEntry( 70940, true), -- Divine Guardian 
 	
 	CreateSpellEntry( 59545 ), CreateSpellEntry( 59543 ), CreateSpellEntry( 59548 ), CreateSpellEntry( 59542 ), CreateSpellEntry( 59544 ), CreateSpellEntry( 59547 ), CreateSpellEntry( 28880 ), -- Gift of the Naaru
-	CreateSpellEntry( 55503 ), CreateSpellEntry( 55502 ), CreateSpellEntry( 55501 ), CreateSpellEntry( 55500 ), CreateSpellEntry( 55480 ), CreateSpellEntry( 55428 ), -- Lifeblood
+	CreateSpellEntry( 74497 ), CreateSpellEntry( 55503 ), CreateSpellEntry( 55502 ), CreateSpellEntry( 55501 ), CreateSpellEntry( 55500 ), CreateSpellEntry( 55480 ), CreateSpellEntry( 55428 ), CreateSpellEntry( 81708 ), -- Lifeblood
 };
 
 --[[ Configuration functions
@@ -197,6 +249,8 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 3045 ), -- Rapid Fire
 			CreateSpellEntry( 34471 ), --The beast within
 			CreateSpellEntry( 77769 ), -- Trap Launcher
+			CreateSpellEntry( 19263 ), -- Detterence
+			CreateSpellEntry( 53434 ), -- Call of the Wild
 		},
 		procs = {
 			CreateSpellEntry( 53257 ), -- cobra strikes 
@@ -272,21 +326,17 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 85433 ), -- Sacred Duty
 			CreateSpellEntry( 85416 ), --Grand Crusader
 			CreateSpellEntry( 85696 ), -- Zealotry
-			CreateSpellEntry( 1044 ), -- Hand of Freedom
-			CreateSpellEntry( 1022 ), -- Hand of Protection
-			CreateSpellEntry( 1038 ), -- Hand of Salvation
-			CreateSpellEntry( 6940 ), -- Hand of Sacrifice
 			CreateSpellEntry( 53657 ), -- Judgements of the Pure
 			CreateSpellEntry( 53563 ), -- Beacon of Light
 			CreateSpellEntry( 31821 ), -- Aura Mastery
 			CreateSpellEntry( 54428 ), -- Divine Plea
 			CreateSpellEntry( 31482 ), -- Divine Favor
-			CreateSpellEntry( 70940, true), -- Divine Guardian 
 			CreateSpellEntry( 86659 ), --Guardian of Ancient Kings (Prot)
 			CreateSpellEntry( 86669 ), --Guardian of Ancient Kings (Holy)
 			CreateSpellEntry( 86698 ), --Guardian of Ancient Kings (Ret)
 			CreateSpellEntry( 85510 ), --Denounce
-			CreateSpellEntry( 85646 ), --Guarded by the light
+			CreateSpellEntry( 88063 ), --Guarded by the light
+			CreateSpellEntry( 82327	), --Holy Radiance
 		},
 		procs = {
 			CreateSpellEntry( 59578 ), -- The Art of War
@@ -304,28 +354,30 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 6788, true, nil, 1 ), -- Weakened Soul
 			CreateSpellEntry( 139 ), -- Renew
 			CreateSpellEntry( 33076 ), -- Prayer of Mending
-			CreateSpellEntry( 552 ), -- Abolish Disease
 			CreateSpellEntry( 63877 ), -- Pain Suppression
 			CreateSpellEntry( 34914, false, nil, nil, 34914 ), -- Vampiric Touch
 			CreateSpellEntry( 589 ), -- Shadow Word: Pain
 			CreateSpellEntry( 2944 ), -- Devouring Plague
-			CreateSpellEntry( 48153 ), -- Guardian Spirit
+			CreateSpellEntry( 47788	), -- Guardian Spirit
 			CreateSpellEntry( 77489 ), -- Echo of Light
 			CreateSpellEntry( 9484 ), -- Shackle Undead
-			CreateSpellEntry( 34914 ), -- Vampiric Touch			
+			CreateSpellEntry( 34914, false, nil, nil, 34914 ), -- Vampiric Touch
+			CreateSpellEntry( 34914 ), -- Vampiric Touch	
 		},
 		player = {
 			CreateSpellEntry( 10060 ), -- Power Infusion
 			CreateSpellEntry( 588 ), -- Inner Fire
 			CreateSpellEntry( 47585 ), -- Dispersion
 			CreateSpellEntry( 81700 ), -- Archangel
+			CreateSpellEntry( 87153 ), -- Dark Archangel
 			CreateSpellEntry( 14751 ), -- Chakra
 			CreateSpellEntry( 81208 ), -- Chakra Heal
 			CreateSpellEntry( 81207 ), -- Chakra Renew
 			CreateSpellEntry( 81209 ), -- Chakra Smite
 			CreateSpellEntry( 81206 ), -- Prayer of Healing
-			CreateSpellEntry( 63877 ), -- Pain Suppression
 			CreateSpellEntry( 73413 ), -- Inner Will
+			CreateSpellEntry( 27827	), -- Spirit of Redemption
+			CreateSpellEntry( 586 ), -- Fade			
 		},
 		procs = {
 			CreateSpellEntry( 63735 ), -- Serendipity
@@ -336,6 +388,10 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 72418 ), -- Kuhlendes Wissen
 			CreateSpellEntry( 71584 ), -- Revitalize
 			CreateSpellEntry( 95799 ), -- Empowered Shadow
+			CreateSpellEntry( 65081	), -- Body and Soul
+			CreateSpellEntry( 88688	), -- Surge of Light	
+			CreateSpellEntry( 87117 ), -- Dark Evangelism
+			CreateSpellEntry( 87118 ), -- Dark Evangelism			
 		},
 	},
 	ROGUE = { 
@@ -473,9 +529,20 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 90806 ), -- Executioner
 			CreateSpellEntry( 85738 ), CreateSpellEntry( 85739 ), -- Meat Cleaver Rank 1 and 2
 			CreateSpellEntry( 86662 ), CreateSpellEntry( 86663 ), -- Rude interruption rank 1 and 2
+			CreateSpellEntry( 12328 ), -- Sweeping Stikes
+			CreateSpellEntry( 18499 ), -- Berzerker Rage
+			CreateSpellEntry( 85730 ), -- Deadly Calm
+			CreateSpellEntry( 46924 ), -- Bladestorm			
 		},
 		procs = {
-
+			CreateSpellEntry( 65156 ), -- Juggernaut
+			CreateSpellEntry( 84586 ), -- Slaughter
+			CreateSpellEntry( 60503 ), -- Taste for Blood
+			CreateSpellEntry( 32216 ), -- Victory (Victory Rush)
+			CreateSpellEntry( 57519 ), -- Enrage (Arms talent)
+			CreateSpellEntry( 1134 ), -- Inner Rage
+			CreateSpellEntry( 16491 ), -- Blood Craze
+			CreateSpellEntry( 29842 ), -- Second Wind
 		},
 	},
 };
