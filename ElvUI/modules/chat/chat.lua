@@ -226,15 +226,19 @@ local function SetupChatFont(self)
 		local id = chat:GetID()
 		local name = FCF_GetChatWindowInfo(id)
 		local point = GetChatWindowSavedPosition(id)
-		local _, fontSize = FCF_GetChatWindowInfo(id)
 		local button = _G[format("ButtonCF%d", i)]
 		local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
 		
 		chat:SetFrameStrata("LOW")
 		
-		-- well... Elvui font under fontsize 10 is unreadable.
-		if fontSize < 10 then fontSize = 11 end
-		FCF_SetChatWindowFontSize(nil, chat, fontSize)
+		local _, fontSize = FCF_GetChatWindowInfo(id)
+		
+		--font under fontsize 11 is unreadable.
+		if fontSize < 11 then		
+			FCF_SetChatWindowFontSize(nil, chat, 12)
+		else
+			FCF_SetChatWindowFontSize(nil, chat, fontSize)
+		end
 		
 		tab:HookScript("OnEnter", function() insidetab = true end)
 		tab:HookScript("OnLeave", function() insidetab = false end)	
