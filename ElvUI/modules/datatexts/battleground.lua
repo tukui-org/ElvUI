@@ -95,18 +95,18 @@ if C["datatext"].battleground == true then
 					GameTooltip:AddDoubleLine(L.datatext_ttstatsfor, classcolor..name.."|r")
 					GameTooltip:AddLine' '
 					--Add extra statistics to watch based on what BG you are in.
-					if GetRealZoneText() == GetBattlegroundInfo(5) or GetRealZoneText() == GetBattlegroundInfo(3) then
+					if GetRealZoneText() == select(1, GetBattlegroundInfo(5)) or GetRealZoneText() == select(1, GetBattlegroundInfo(3)) then
 						GameTooltip:AddDoubleLine(L.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_flagsreturned,GetBattlefieldStatData(i, 2),1,1,1)
-					elseif GetRealZoneText() == GetBattlegroundInfo(8) then
+					elseif GetRealZoneText() == select(1, GetBattlegroundInfo(8)) then
 						GameTooltip:AddDoubleLine(L.datatext_graveyardsassaulted,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_graveyardsdefended,GetBattlefieldStatData(i, 2),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_towersassaulted,GetBattlefieldStatData(i, 3),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_towersdefended,GetBattlefieldStatData(i, 4),1,1,1)
-					elseif GetRealZoneText() == GetBattlegroundInfo(9) then
+					elseif GetRealZoneText() == select(1, GetBattlegroundInfo(9)) then
 						GameTooltip:AddDoubleLine(L.datatext_demolishersdestroyed,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_gatesdestroyed,GetBattlefieldStatData(i, 2),1,1,1)
-					elseif GetRealZoneText() == GetBattlegroundInfo(2) or GetRealZoneText() == GetBattlegroundInfo(7) or GetRealZoneText() == GetBattlegroundInfo(4) or GetRealZoneText() == GetBattlegroundInfo(6) then
+					elseif GetRealZoneText() == select(1, GetBattlegroundInfo(2)) or GetRealZoneText() == select(1, GetBattlegroundInfo(7)) or GetRealZoneText() == select(1, GetBattlegroundInfo(4)) or GetRealZoneText() == select(1, GetBattlegroundInfo(6)) then
 						GameTooltip:AddDoubleLine(L.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
 					end			
@@ -135,18 +135,18 @@ if C["datatext"].battleground == true then
 					GameTooltip:AddDoubleLine(L.datatext_ttstatsfor, classcolor..name.."|r")
 					GameTooltip:AddLine' '
 					--Add extra statistics to watch based on what BG you are in.
-					if GetRealZoneText() == GetBattlegroundInfo(5) or GetRealZoneText() == GetBattlegroundInfo(3) then
+					if GetRealZoneText() == select(1, GetBattlegroundInfo(5)) or GetRealZoneText() == select(1, GetBattlegroundInfo(3)) then
 						GameTooltip:AddDoubleLine(L.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_flagsreturned,GetBattlefieldStatData(i, 2),1,1,1)
-					elseif GetRealZoneText() == GetBattlegroundInfo(8) then
+					elseif GetRealZoneText() == select(1, GetBattlegroundInfo(8)) then
 						GameTooltip:AddDoubleLine(L.datatext_graveyardsassaulted,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_graveyardsdefended,GetBattlefieldStatData(i, 2),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_towersassaulted,GetBattlefieldStatData(i, 3),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_towersdefended,GetBattlefieldStatData(i, 4),1,1,1)
-					elseif GetRealZoneText() == GetBattlegroundInfo(9) then
+					elseif GetRealZoneText() == select(1, GetBattlegroundInfo(9)) then
 						GameTooltip:AddDoubleLine(L.datatext_demolishersdestroyed,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_gatesdestroyed,GetBattlefieldStatData(i, 2),1,1,1)
-					elseif GetRealZoneText() == GetBattlegroundInfo(2) or GetRealZoneText() == GetBattlegroundInfo(7) or GetRealZoneText() == GetBattlegroundInfo(4) or GetRealZoneText() == GetBattlegroundInfo(6) then
+					elseif GetRealZoneText() == select(1, GetBattlegroundInfo(2)) or GetRealZoneText() == select(1, GetBattlegroundInfo(7)) or GetRealZoneText() == select(1, GetBattlegroundInfo(4)) or GetRealZoneText() == select(1, GetBattlegroundInfo(6)) then
 						GameTooltip:AddDoubleLine(L.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
 					end			
