@@ -86,8 +86,10 @@ if C["datatext"].gold and C["datatext"].gold > 0 then
 				GameTooltip:AddLine(L.datatext_character)			
 
 				for k,_ in pairs(ElvuiData[E.myrealm]) do
-					GameTooltip:AddDoubleLine(k, FormatTooltipMoney(ElvuiData[E.myrealm][k].gold), 1, 1, 1, 1, 1, 1)
-					totalGold=totalGold+ElvuiData[E.myrealm][k].gold
+					if ElvuiData[E.myrealm][k]["gold"] then 
+						GameTooltip:AddDoubleLine(k, FormatTooltipMoney(ElvuiData[E.myrealm][k]["gold"]), 1, 1, 1, 1, 1, 1)
+						totalGold=totalGold+ElvuiData[E.myrealm][k]["gold"]
+					end
 				end 
 				GameTooltip:AddLine' '
 				GameTooltip:AddLine(L.datatext_server)
@@ -125,6 +127,10 @@ if C["datatext"].gold and C["datatext"].gold > 0 then
 		for k,_ in pairs(ElvuiData[E.myrealm]) do
 			ElvuiData[E.myrealm][k].gold = nil
 		end 
+		if (ElvuiData == nil) then ElvuiData = {}; end
+		if (ElvuiData[E.myrealm] == nil) then ElvuiData[E.myrealm] = {} end
+		if (ElvuiData[E.myrealm][E.myname] == nil) then ElvuiData[E.myrealm][E.myname] = {} end
+		ElvuiData[E.myrealm][E.myname]["gold"] = GetMoney()		
 	end
 	SLASH_RESETGOLD1 = "/resetgold"
 	SlashCmdList["RESETGOLD"] = RESETGOLD
