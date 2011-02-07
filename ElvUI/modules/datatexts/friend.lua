@@ -60,6 +60,8 @@ local function BuildFriendTable(total)
 	local name, level, class, area, connected, status, note
 	for i = 1, total do
 		name, level, class, area, connected, status, note = GetFriendInfo(i)
+		for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
+		
 		friendTable[i] = { name, level, class, area, connected, status, note }
 		if connected then totalOnline = totalOnline + 1 end
 	end
@@ -75,6 +77,8 @@ local function UpdateFriendTable(total)
 	local name, level, class, area, connected, status, note
 	for i = 1, #friendTable do
 		name, level, class, area, connected, status, note = GetFriendInfo(i)
+		for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
+		
 		-- get the correct index in our table		
 		index = GetTableIndex(friendTable, 1, name)
 		-- we cannot find a friend in our table, so rebuild it
@@ -103,6 +107,8 @@ local function BuildBNTable(total)
 	for i = 1, total do
 		presenceID, givenName, surname, toonName, toonID, client, isOnline, _, isAFK, isDND, _, noteText = BNGetFriendInfo(i)
 		_, _, _, realmName, faction, race, class, _, zoneName, level = BNGetToonInfo(presenceID)
+		for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
+		
 		BNTable[i] = { presenceID, givenName, surname, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 		if isOnline then BNTotalOnline = BNTotalOnline + 1 end
 	end
@@ -122,7 +128,8 @@ local function UpdateBNTable(total)
 		-- get guild roster information
 		presenceID, givenName, surname, toonName, toonID, client, isOnline, _, isAFK, isDND, _, noteText = BNGetFriendInfo(i)
 		_, _, _, realmName, faction, race, class, _, zoneName, level = BNGetToonInfo(presenceID)
-
+		for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
+		
 		-- get the correct index in our table		
 		index = GetTableIndex(BNTable, 1, presenceID)
 		-- we cannot find a BN member in our table, so rebuild it
@@ -172,7 +179,7 @@ Stat:SetScript("OnMouseUp", function(self, btn)
 				menuCountInvites = menuCountInvites + 1
 				menuCountWhispers = menuCountWhispers + 1
 
-				classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[string.upper(friendTable[i][3])], GetQuestDifficultyColor(friendTable[i][2])
+				classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[friendTable[i][3]], GetQuestDifficultyColor(friendTable[i][2])
 				if classc == nil then classc = GetQuestDifficultyColor(friendTable[i][2]) end
 
 				menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,friendTable[i][2],classc.r*255,classc.g*255,classc.b*255,friendTable[i][1]), arg1 = friendTable[i][1],notCheckable=true, func = inviteClick}
@@ -191,7 +198,7 @@ Stat:SetScript("OnMouseUp", function(self, btn)
 
 				if select(1, UnitFactionGroup("player")) == "Horde" then playerFaction = 0 else playerFaction = 1 end
 				if BNTable[i][6] == wowString and BNTable[i][11] == E.myrealm and playerFaction == BNTable[i][12] then
-					classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[string.upper(BNTable[i][14])], GetQuestDifficultyColor(BNTable[i][16])
+					classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[BNTable[i][14]], GetQuestDifficultyColor(BNTable[i][16])
 					if classc == nil then classc = GetQuestDifficultyColor(BNTable[i][16]) end
 
 					if UnitInParty(BNTable[i][4]) or UnitInRaid(BNTable[i][4]) then grouped = 1 else grouped = 2 end
@@ -225,10 +232,8 @@ local function Update(self, event)
 		end
 	end
 
-	if #friendTable > 0 and #BNTable > 0 then	
-		Text:SetFormattedText(displayString, L.datatext_friends, totalOnline + BNTotalOnline)
-		self:SetAllPoints(Text)
-	end
+	Text:SetFormattedText(displayString, L.datatext_friends, totalOnline + BNTotalOnline)
+	self:SetAllPoints(Text)
 end
 
 Stat:SetScript("OnMouseDown", function(self, btn) if btn == "LeftButton" then ToggleFriendsFrame(1) end end)
@@ -249,8 +254,7 @@ Stat:SetScript("OnEnter", function(self)
 			for i = 1, #friendTable do
 				if friendTable[i][5] then
 					if GetRealZoneText() == friendTable[i][4] then zonec = activezone else zonec = inactivezone end
-	
-					classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[string.upper(friendTable[i][3])], GetQuestDifficultyColor(friendTable[i][2])
+					classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[friendTable[i][3]], GetQuestDifficultyColor(friendTable[i][2])
 					if classc == nil then classc = GetQuestDifficultyColor(friendTable[i][2]) end
 					
 					if UnitInParty(friendTable[i][1]) or UnitInRaid(friendTable[i][1]) then grouped = 1 else grouped = 2 end
@@ -268,7 +272,7 @@ Stat:SetScript("OnEnter", function(self)
 					if BNTable[i][6] == wowString then
 						if (BNTable[i][8] == true) then status = 1 elseif (BNTable[i][9] == true) then status = 2 else status = 3 end
 	
-						classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[string.upper(BNTable[i][14])], GetQuestDifficultyColor(BNTable[i][16])
+						classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[BNTable[i][14]], GetQuestDifficultyColor(BNTable[i][16])
 						if classc == nil then classc = GetQuestDifficultyColor(BNTable[i][16]) end
 						
 						if UnitInParty(BNTable[i][4]) or UnitInRaid(BNTable[i][4]) then grouped = 1 else grouped = 2 end
