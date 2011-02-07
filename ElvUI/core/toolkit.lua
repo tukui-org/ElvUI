@@ -37,6 +37,9 @@ local function GetTemplate(t)
 		local c = E.colors.class[class]
 		borderr, borderg, borderb = c[1], c[2], c[3]
 		backdropr, backdropg, backdropb = unpack(C["media"].backdropcolor)		
+	elseif t == "Transparent" then
+		borderr, borderg, borderb = unpack(C["media"].bordercolor)
+		backdropr, backdropg, backdropb = unpack(C["media"].backdropfadecolor)
 	else
 		borderr, borderg, borderb = unpack(C["media"].bordercolor)
 		backdropr, backdropg, backdropb = unpack(C["media"].backdropcolor)

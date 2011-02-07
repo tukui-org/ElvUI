@@ -137,7 +137,7 @@ E.AnimGroup(ChatRBackground, E.Scale(375), 0, 0.4)
 
 E.ChatRightShown = true
 if C["chat"].showbackdrop == true then
-	local chatlbg = CreateFrame("Frame", nil, ChatLBackground)
+	local chatlbg = CreateFrame("Frame", "ChatLBG", ChatLBackground)
 	chatlbg:SetTemplate("Transparent")
 	chatlbg:SetAllPoints(chatlbgdummy)
 	chatlbg:SetFrameStrata("BACKGROUND")
@@ -158,7 +158,6 @@ if C["chat"].showbackdrop == true then
 	chatrbg:SetAllPoints(chatrbgdummy)
 	chatrbg:SetTemplate("Transparent")
 	chatrbg:SetFrameStrata("BACKGROUND")
-	chatrbg:SetBackdropColor(unpack(C["media"].backdropfadecolor))
 	chatrbg:SetAlpha(0)
 
 	local chatrtbg = CreateFrame("Frame", nil, chatrbg)
