@@ -101,7 +101,7 @@ local function Update(self, event, ...)
 	-- our guild xp changed, recalculate it
 	if event == "GUILD_XP_UPDATE" then UpdateGuildXP() end
 	-- our guild message of the day changed
-	if event == "GUILD_MOTD" then UpdateGuildMessage() end
+	if event == "GUILD_MOTD" or event == "PLAYER_ENTERING_WORLD" then UpdateGuildMessage() end
 	-- an event occured that could change the guild roster, so request update
 	if event ~= "GUILD_ROSTER_UPDATE" then GuildRoster() end
 		
