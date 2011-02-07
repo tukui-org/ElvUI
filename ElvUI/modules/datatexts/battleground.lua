@@ -7,6 +7,8 @@ local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Lo
 --------------------------------------------------------------------
 if C["datatext"].battleground == true then
 	local shownbg = true
+	--rawr for 1 ass long line
+	local bgname5, bgname3, bgname8, bgname9, bgname2, bgname7, bgname4, bgname6 = select(1, GetBattlegroundInfo(5)), select(1, GetBattlegroundInfo(3)),  select(1, GetBattlegroundInfo(8)),  select(1, GetBattlegroundInfo(9)),  select(1, GetBattlegroundInfo(2)),  select(1, GetBattlegroundInfo(7)),  select(1, GetBattlegroundInfo(4)),  select(1, GetBattlegroundInfo(6))
 	ElvuiInfoLeft:SetScript("OnMouseDown", function(self) 
 		if shownbg == true then 
 			E.SlideOut(ElvuiInfoBattleGroundL) 
@@ -95,18 +97,18 @@ if C["datatext"].battleground == true then
 					GameTooltip:AddDoubleLine(L.datatext_ttstatsfor, classcolor..name.."|r")
 					GameTooltip:AddLine' '
 					--Add extra statistics to watch based on what BG you are in.
-					if GetRealZoneText() == select(1, GetBattlegroundInfo(5)) or GetRealZoneText() == select(1, GetBattlegroundInfo(3)) then
+					if GetRealZoneText() == bgname5 or GetRealZoneText() == bgname3 then 
 						GameTooltip:AddDoubleLine(L.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_flagsreturned,GetBattlefieldStatData(i, 2),1,1,1)
-					elseif GetRealZoneText() == select(1, GetBattlegroundInfo(8)) then
+					elseif GetRealZoneText() == bgname8 then
 						GameTooltip:AddDoubleLine(L.datatext_graveyardsassaulted,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_graveyardsdefended,GetBattlefieldStatData(i, 2),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_towersassaulted,GetBattlefieldStatData(i, 3),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_towersdefended,GetBattlefieldStatData(i, 4),1,1,1)
-					elseif GetRealZoneText() == select(1, GetBattlegroundInfo(9)) then
+					elseif GetRealZoneText() == bgname9 then
 						GameTooltip:AddDoubleLine(L.datatext_demolishersdestroyed,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_gatesdestroyed,GetBattlefieldStatData(i, 2),1,1,1)
-					elseif GetRealZoneText() == select(1, GetBattlegroundInfo(2)) or GetRealZoneText() == select(1, GetBattlegroundInfo(7)) or GetRealZoneText() == select(1, GetBattlegroundInfo(4)) or GetRealZoneText() == select(1, GetBattlegroundInfo(6)) then
+					elseif GetRealZoneText() == bgname2 or GetRealZoneText() == bgname7 or GetRealZoneText() == bgname4 or GetRealZoneText() == bgname6 then
 						GameTooltip:AddDoubleLine(L.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
 					end			
@@ -135,21 +137,21 @@ if C["datatext"].battleground == true then
 					GameTooltip:AddDoubleLine(L.datatext_ttstatsfor, classcolor..name.."|r")
 					GameTooltip:AddLine' '
 					--Add extra statistics to watch based on what BG you are in.
-					if GetRealZoneText() == select(1, GetBattlegroundInfo(5)) or GetRealZoneText() == select(1, GetBattlegroundInfo(3)) then
+					if GetRealZoneText() == bgname5 or GetRealZoneText() == bgname3 then 
 						GameTooltip:AddDoubleLine(L.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_flagsreturned,GetBattlefieldStatData(i, 2),1,1,1)
-					elseif GetRealZoneText() == select(1, GetBattlegroundInfo(8)) then
+					elseif GetRealZoneText() == bgname8 then
 						GameTooltip:AddDoubleLine(L.datatext_graveyardsassaulted,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_graveyardsdefended,GetBattlefieldStatData(i, 2),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_towersassaulted,GetBattlefieldStatData(i, 3),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_towersdefended,GetBattlefieldStatData(i, 4),1,1,1)
-					elseif GetRealZoneText() == select(1, GetBattlegroundInfo(9)) then
+					elseif GetRealZoneText() == bgname9 then
 						GameTooltip:AddDoubleLine(L.datatext_demolishersdestroyed,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_gatesdestroyed,GetBattlefieldStatData(i, 2),1,1,1)
-					elseif GetRealZoneText() == select(1, GetBattlegroundInfo(2)) or GetRealZoneText() == select(1, GetBattlegroundInfo(7)) or GetRealZoneText() == select(1, GetBattlegroundInfo(4)) or GetRealZoneText() == select(1, GetBattlegroundInfo(6)) then
+					elseif GetRealZoneText() == bgname2 or GetRealZoneText() == bgname7 or GetRealZoneText() == bgname4 or GetRealZoneText() == bgname6 then
 						GameTooltip:AddDoubleLine(L.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
-					end			
+					end					
 					GameTooltip:Show()
 				end
 			end
