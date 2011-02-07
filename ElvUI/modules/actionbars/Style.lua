@@ -335,15 +335,13 @@ local function StyleTotemFlyout(flyout)
 		icon:SetDrawLayer("ARTWORK")
 		icon:Point("TOPLEFT",button,"TOPLEFT",2,-2)
 		icon:Point("BOTTOMRIGHT",button,"BOTTOMRIGHT",-2,2)			
-		if not InCombatLockdown() then
-			button:Size(C["actionbar"].petbuttonsize)
-			button:ClearAllPoints()
-			if E.TotemOrientationDown then
-				button:Point("TOP",last,"BOTTOM",0,-4)
-			else
-				button:Point("BOTTOM",last,"TOP",0,4)
-			end
-		end			
+		button:Size(C["actionbar"].petbuttonsize)
+		button:ClearAllPoints()
+		if E.TotemOrientationDown then
+			button:Point("TOP",last,"BOTTOM",0,-4)
+		else
+			button:Point("BOTTOM",last,"TOP",0,4)
+		end
 		if button:IsVisible() then last = button end
 		button:SetBackdropBorderColor(flyout.parent:GetBackdropBorderColor())
 		button:StyleButton()
@@ -467,7 +465,7 @@ local function StyleTotemActionButton(button, index)
 	button.overlayTex:Hide()
 	button:GetNormalTexture():SetTexture(nil)
 	button.SetNormalTexture = E.dummy
-	if not InCombatLockdown() and button.slotButton then
+	if  button.slotButton then
 		button:ClearAllPoints()
 		button:SetAllPoints(button.slotButton)
 		button:SetFrameLevel(button.slotButton:GetFrameLevel()+1)
@@ -492,7 +490,7 @@ local function StyleTotemSpellButton(button, index)
 	icon:Point("BOTTOMRIGHT",button,"BOTTOMRIGHT",-2,2)
 	button:SetTemplate("Default")
 	button:GetNormalTexture():SetTexture(nil)
-	if not InCombatLockdown() then button:Size(C["actionbar"].petbuttonsize) end
+	button:Size(C["actionbar"].petbuttonsize)
 	_G[button:GetName().."Highlight"]:SetTexture(nil)
 	_G[button:GetName().."NormalTexture"]:SetTexture(nil)
 	button:StyleButton()
