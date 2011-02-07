@@ -6,6 +6,227 @@ local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Lo
 -- BGScore
 --------------------------------------------------------------------
 if C["datatext"].battleground == true then
+	local shownbg = true
+	ElvuiInfoLeft:SetScript("OnMouseDown", function(self) 
+		if shownbg == true then 
+			E.SlideOut(ElvuiInfoBattleGroundL) 
+			E.SlideOut(ElvuiInfoBattleGroundR) 
+			shownbg = false 
+		else 
+			E.SlideIn(ElvuiInfoBattleGroundL) 
+			E.SlideIn(ElvuiInfoBattleGroundR) 
+			shownbg = true 
+		end 
+	end)
+	ElvuiInfoLeft:RegisterEvent("PLAYER_ENTERING_WORLD")
+	ElvuiInfoLeft:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+	ElvuiInfoLeft:SetScript("OnEvent", function(self, event)
+		if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
+		local inInstance, instanceType = IsInInstance()
+		if (inInstance and (instanceType == "pvp")) then
+			if not InCombatLockdown() then
+				ElvuiInfoLeft:EnableMouse(true)
+				ElvuiInfoBattleGroundL:Show()
+			else
+				self:RegisterEvent("PLAYER_REGEN_ENABLED")
+			end
+		else
+			if not InCombatLockdown() then
+				ElvuiInfoLeft:EnableMouse(false)
+				ElvuiInfoBattleGroundL:Hide()
+			else
+				self:RegisterEvent("PLAYER_REGEN_ENABLED")
+			end
+		end
+		shownbg = true
+	end)
+
+	ElvuiInfoRight:SetScript("OnMouseDown", function(self) 
+		if shownbg == true then 
+			E.SlideOut(ElvuiInfoBattleGroundL) 
+			E.SlideOut(ElvuiInfoBattleGroundR) 
+			shownbg = false 
+		else 
+			E.SlideIn(ElvuiInfoBattleGroundL) 
+			E.SlideIn(ElvuiInfoBattleGroundR) 
+			shownbg = true 
+		end 
+	end)
+	ElvuiInfoRight:RegisterEvent("PLAYER_ENTERING_WORLD")
+	ElvuiInfoRight:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+	ElvuiInfoRight:SetScript("OnEvent", function(self, event)
+		if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
+		local inInstance, instanceType = IsInInstance()
+		if (inInstance and (instanceType == "pvp")) then
+			if not InCombatLockdown() then
+				ElvuiInfoRight:EnableMouse(true)
+				ElvuiInfoBattleGroundR:Show()
+			else
+				self:RegisterEvent("PLAYER_REGEN_ENABLED")
+			end
+		else
+			if not InCombatLockdown() then
+				ElvuiInfoRight:EnableMouse(false)
+				ElvuiInfoBattleGroundR:Hide()
+			else
+				self:RegisterEvent("PLAYER_REGEN_ENABLED")
+			end
+		end
+		shownbg = true
+	end)
+
+
+	local bgframeL = CreateFrame("Frame", "ElvuiInfoBattleGroundL", UIParent)
+	bgframeL:CreatePanel("Default", 1, 1, "TOPLEFT", UIParent, "BOTTOMLEFT", 0, 0)
+	bgframeL:SetAllPoints(ElvuiInfoLeft)
+	bgframeL:SetFrameLevel(ElvuiInfoLeft:GetFrameLevel() + 1)
+	bgframeL:SetTemplate("Default", true)
+	bgframeL:SetFrameStrata("HIGH")
+	bgframeL:SetScript("OnEnter", function(self)
+		local numScores = GetNumBattlefieldScores()
+		for i=1, numScores do
+			local name, killingBlows, honorableKills, deaths, honorGained, faction, race, class, classToken, damageDone, healingDone, bgRating, ratingChange = GetBattlefieldScore(i)
+			if name then
+				if name == E.myname then
+					local color = RAID_CLASS_COLORS[select(2, UnitClass("player"))]
+					local classcolor = ("|cff%.2x%.2x%.2x"):format(color.r * 255, color.g * 255, color.b * 255)
+					GameTooltip:SetOwner(self, "ANCHOR_CURSOR")
+					GameTooltip:ClearLines()
+					GameTooltip:AddDoubleLine(L.datatext_ttstatsfor, classcolor..name.."|r")
+					GameTooltip:AddLine' '
+					--Add extra statistics to watch based on what BG you are in.
+					if GetRealZoneText() == GetBattlegroundInfo(5) or GetRealZoneText() == GetBattlegroundInfo(3) then
+						GameTooltip:AddDoubleLine(L.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(L.datatext_flagsreturned,GetBattlefieldStatData(i, 2),1,1,1)
+					elseif GetRealZoneText() == GetBattlegroundInfo(8) then
+						GameTooltip:AddDoubleLine(L.datatext_graveyardsassaulted,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(L.datatext_graveyardsdefended,GetBattlefieldStatData(i, 2),1,1,1)
+						GameTooltip:AddDoubleLine(L.datatext_towersassaulted,GetBattlefieldStatData(i, 3),1,1,1)
+						GameTooltip:AddDoubleLine(L.datatext_towersdefended,GetBattlefieldStatData(i, 4),1,1,1)
+					elseif GetRealZoneText() == GetBattlegroundInfo(9) then
+						GameTooltip:AddDoubleLine(L.datatext_demolishersdestroyed,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(L.datatext_gatesdestroyed,GetBattlefieldStatData(i, 2),1,1,1)
+					elseif GetRealZoneText() == GetBattlegroundInfo(2) or GetRealZoneText() == GetBattlegroundInfo(7) or GetRealZoneText() == GetBattlegroundInfo(4) or GetRealZoneText() == GetBattlegroundInfo(6) then
+						GameTooltip:AddDoubleLine(L.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(L.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
+					end			
+					GameTooltip:Show()
+				end
+			end
+		end
+	end) 
+	
+	local bgframeR = CreateFrame("Frame", "ElvuiInfoBattleGroundR", UIParent)
+	bgframeR:CreatePanel("Default", 1, 1, "TOPLEFT", UIParent, "BOTTOMLEFT", 0, 0)
+	bgframeR:SetTemplate("Default", true)
+	bgframeR:SetAllPoints(ElvuiInfoRight)
+	bgframeR:SetFrameLevel(ElvuiInfoRight:GetFrameLevel() + 1)
+	bgframeR:SetFrameStrata("HIGH")
+	bgframeR:SetScript("OnEnter", function(self)
+		local numScores = GetNumBattlefieldScores()
+		for i=1, numScores do
+			local name, killingBlows, honorableKills, deaths, honorGained, faction, race, class, classToken, damageDone, healingDone, bgRating, ratingChange = GetBattlefieldScore(i)
+			if name then
+				if name == E.myname then
+					local color = RAID_CLASS_COLORS[select(2, UnitClass("player"))]
+					local classcolor = ("|cff%.2x%.2x%.2x"):format(color.r * 255, color.g * 255, color.b * 255)
+					GameTooltip:SetOwner(self, "ANCHOR_CURSOR")
+					GameTooltip:ClearLines()
+					GameTooltip:AddDoubleLine(L.datatext_ttstatsfor, classcolor..name.."|r")
+					GameTooltip:AddLine' '
+					--Add extra statistics to watch based on what BG you are in.
+					if GetRealZoneText() == GetBattlegroundInfo(5) or GetRealZoneText() == GetBattlegroundInfo(3) then
+						GameTooltip:AddDoubleLine(L.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(L.datatext_flagsreturned,GetBattlefieldStatData(i, 2),1,1,1)
+					elseif GetRealZoneText() == GetBattlegroundInfo(8) then
+						GameTooltip:AddDoubleLine(L.datatext_graveyardsassaulted,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(L.datatext_graveyardsdefended,GetBattlefieldStatData(i, 2),1,1,1)
+						GameTooltip:AddDoubleLine(L.datatext_towersassaulted,GetBattlefieldStatData(i, 3),1,1,1)
+						GameTooltip:AddDoubleLine(L.datatext_towersdefended,GetBattlefieldStatData(i, 4),1,1,1)
+					elseif GetRealZoneText() == GetBattlegroundInfo(9) then
+						GameTooltip:AddDoubleLine(L.datatext_demolishersdestroyed,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(L.datatext_gatesdestroyed,GetBattlefieldStatData(i, 2),1,1,1)
+					elseif GetRealZoneText() == GetBattlegroundInfo(2) or GetRealZoneText() == GetBattlegroundInfo(7) or GetRealZoneText() == GetBattlegroundInfo(4) or GetRealZoneText() == GetBattlegroundInfo(6) then
+						GameTooltip:AddDoubleLine(L.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
+						GameTooltip:AddDoubleLine(L.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
+					end			
+					GameTooltip:Show()
+				end
+			end
+		end
+	end)
+	
+	E.AnimGroup(ElvuiInfoBattleGroundL, 0, E.Scale(-150), 0.4)
+	E.AnimGroup(ElvuiInfoBattleGroundR, 0, E.Scale(-150), 0.4)
+
+	bgframeL:SetScript("OnMouseDown", function(self) 
+		if shownbg == true then 
+			E.SlideOut(ElvuiInfoBattleGroundL) 
+			E.SlideOut(ElvuiInfoBattleGroundR) 
+			shownbg = false 
+		else 
+			E.SlideIn(ElvuiInfoBattleGroundL) 
+			E.SlideIn(ElvuiInfoBattleGroundR) 
+			shownbg = true 
+		end 
+	end)
+	bgframeL:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
+	bgframeL:RegisterEvent("PLAYER_ENTERING_WORLD")
+	bgframeL:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+	bgframeL:SetScript("OnEvent", function(self, event)
+		local inInstance, instanceType = IsInInstance()
+		if (inInstance and (instanceType == "pvp")) then
+			if not InCombatLockdown() then
+				ElvuiInfoBattleGroundL:Show()
+				ElvuiInfoLeft:EnableMouse(true)
+			else
+				self:RegisterEvent("PLAYER_REGEN_ENABLED")
+			end
+		else
+			if not InCombatLockdown() then
+				ElvuiInfoBattleGroundL:Hide()
+				ElvuiInfoLeft:EnableMouse(false)
+			else
+				self:RegisterEvent("PLAYER_REGEN_ENABLED")
+			end
+		end
+		shownbg = true
+	end)
+	
+	bgframeR:SetScript("OnMouseDown", function(self) 
+		if shownbg == true then 
+			E.SlideOut(ElvuiInfoBattleGroundL) 
+			E.SlideOut(ElvuiInfoBattleGroundR) 
+			shownbg = false 
+		else 
+			E.SlideIn(ElvuiInfoBattleGroundL) 
+			E.SlideIn(ElvuiInfoBattleGroundR) 
+			shownbg = true 
+		end 
+	end)
+	bgframeR:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
+	bgframeR:RegisterEvent("PLAYER_ENTERING_WORLD")
+	bgframeR:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+	bgframeR:SetScript("OnEvent", function(self, event)
+		local inInstance, instanceType = IsInInstance()
+		if (inInstance and (instanceType == "pvp")) then
+			if not InCombatLockdown() then
+				ElvuiInfoBattleGroundR:Show()
+				ElvuiInfoRight:EnableMouse(true)
+			else
+				self:RegisterEvent("PLAYER_REGEN_ENABLED")
+			end
+		else
+			if not InCombatLockdown() then
+				ElvuiInfoBattleGroundR:Hide()
+				ElvuiInfoRight:EnableMouse(false)
+			else
+				self:RegisterEvent("PLAYER_REGEN_ENABLED")
+			end
+		end
+		shownbg = true
+	end)	
+	
 	local Stat = CreateFrame("Frame")
 	Stat:EnableMouse(true)
 	
@@ -83,4 +304,5 @@ if C["datatext"].battleground == true then
 	Stat:SetScript("OnEvent", OnEvent)
 	Stat:SetScript("OnUpdate", Update)
 	Update(Stat, 10)
+	
 end

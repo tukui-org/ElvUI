@@ -340,7 +340,7 @@ ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 					chat:SetSize(E.Scale(C["chat"].chatwidth - 4), E.Scale(C["chat"].chatheight))
 					FCF_SavePositionAndDimensions(chat)		
 				end
-				chat:SetParent(GeneralDockManager)
+				chat:SetParent(ChatLBackground)
 				tab:SetParent(GeneralDockManager)
 				
 				

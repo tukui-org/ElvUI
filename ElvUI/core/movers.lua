@@ -195,6 +195,73 @@ function E.ResetMovers(arg)
 	end
 end
 
+local function SetMoverButtonScript()
+	--Toggle UI lock button
+	ElvuiInfoLeftRButton:SetScript("OnMouseDown", function(self)
+		if InCombatLockdown() then return end
+			
+		E.ToggleMovers()
+		
+		if C["actionbar"].enable == true then
+			E.ToggleABLock()
+		end
+
+		if oUF then
+			E.MoveUF()
+		end	
+		
+		if ElvuiInfoLeftRButton.hovered == true then
+			local locked = false
+			GameTooltip:ClearLines()
+			for name, _ in pairs(E.CreatedMovers) do
+				if _G[name]:IsShown() then
+					locked = true
+				else
+					locked = false
+				end
+			end	
+			
+			if locked ~= true then
+				GameTooltip:AddLine(UNLOCK.." "..BUG_CATEGORY5,1,1,1)
+			else
+				GameTooltip:AddLine(LOCK.." "..BUG_CATEGORY5,unpack(C["media"].valuecolor))
+			end
+		end
+		GameTooltip:Show()
+	end)
+	
+	ElvuiInfoLeftRButton:SetScript("OnEnter", function(self)
+		ElvuiInfoLeftRButton.hovered = true
+		if InCombatLockdown() then return end
+		GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, E.Scale(6));
+		GameTooltip:ClearAllPoints()
+		GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, E.mult)
+		GameTooltip:ClearLines()
+		
+		local locked = false
+		for name, _ in pairs(E.CreatedMovers) do
+			if _G[name]:IsShown() then
+				locked = true
+				break
+			else
+				locked = false
+			end
+		end	
+		
+		if locked ~= true then
+			GameTooltip:AddLine(UNLOCK.." "..BUG_CATEGORY5,1,1,1)
+		else
+			GameTooltip:AddLine(LOCK.." "..BUG_CATEGORY5,unpack(C["media"].valuecolor))
+		end
+		GameTooltip:Show()
+	end)
+
+	ElvuiInfoLeftRButton:SetScript("OnLeave", function(self)
+		ElvuiInfoLeftRButton.hovered = false
+		GameTooltip:Hide()
+	end)	
+end
+
 local loadmovers = CreateFrame("Frame")
 loadmovers:RegisterEvent("ADDON_LOADED")
 loadmovers:RegisterEvent("PLAYER_REGEN_DISABLED")
@@ -218,6 +285,7 @@ loadmovers:SetScript("OnEvent", function(self, event, addon)
 			CreateMover(p, n, t, o, pd)
 		end
 		
+		SetMoverButtonScript()
 		self:UnregisterEvent("ADDON_LOADED")
 	else
 		local err = false

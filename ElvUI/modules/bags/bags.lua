@@ -352,18 +352,15 @@ end
 
 
 -- from OneBag
-local BAGTYPE_QUIVER = 0x0001 + 0x0002 
-local BAGTYPE_SOUL = 0x004
 local BAGTYPE_PROFESSION = 0x0008 + 0x0010 + 0x0020 + 0x0040 + 0x0080 + 0x0200 + 0x0400
+local BAGTYPE_FISHING = 32768
 
 function Stuffing:BagType(bag)
 	local bagType = select(2, GetContainerNumFreeSlots(bag))
-
-	if bit.band(bagType, BAGTYPE_QUIVER) > 0 then
-		return ST_QUIVER
-	elseif bit.band(bagType, BAGTYPE_SOUL) > 0 then
-		return ST_SOULBAG
-	elseif bit.band(bagType, BAGTYPE_PROFESSION) > 0 then
+	
+	if bit.band(bagType, BAGTYPE_FISHING) > 0 then
+		return ST_FISHBAG
+	elseif bit.band(bagType, BAGTYPE_PROFESSION) > 0 then		
 		return ST_SPECIAL
 	end
 
