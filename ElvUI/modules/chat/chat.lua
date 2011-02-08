@@ -10,6 +10,7 @@ local ElvuiChat = CreateFrame("Frame")
 local _G = _G
 local origs = {}
 local type = type
+local CreatedFrames = 0
 
 -- function to rename channel and other stuff
 local AddMessage = function(self, text, ...)
@@ -194,6 +195,8 @@ local function SetChatStyle(frame)
 		origs[_G[chat]] = _G[chat].AddMessage
 		_G[chat].AddMessage = AddMessage
 	end
+	CreatedFrames = id
+	E.ChatCopyButtons(id)
 end
 
 -- Setup chatframes 1 to 10 on login.
@@ -267,8 +270,8 @@ end)
 local chat, tab, id, point, button, docked, chatfound
 E.RightChat = true
 ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
-	if(self.elapsed and self.elapsed > 2) then
-		if InCombatLockdown() or insidetab == true or IsMouseButtonDown("LeftButton") then return end
+	if(self.elapsed and self.elapsed > 1) then
+		if InCombatLockdown() or insidetab == true or IsMouseButtonDown("LeftButton") then self.elapsed = 0 return end
 		chatfound = false
 		for i = 1, NUM_CHAT_WINDOWS do
 			chat = _G[format("ChatFrame%d", i)]
@@ -292,22 +295,41 @@ ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 		end
 
 		
-		for i = 1, NUM_CHAT_WINDOWS do
+		for i = 1, CreatedFrames do
 			chat = _G[format("ChatFrame%d", i)]
 			button = _G[format("ButtonCF%d", i)]
 			id = chat:GetID()
 			tab = _G[format("ChatFrame%sTab", i)]
 			point = GetChatWindowSavedPosition(id)
 			_, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)	
-
-			if point == "BOTTOMRIGHT" and chat:IsShown() then
-				chat:ClearAllPoints()
-				chat:SetPoint("BOTTOMLEFT", ChatRBackground, "BOTTOMLEFT", E.Scale(2), E.Scale(4))
-				chat:SetSize(E.Scale(C["chat"].chatwidth - 4), E.Scale(C["chat"].chatheight))
+			
+			if id > NUM_CHAT_WINDOWS then
+				if point == nil then
+					point = select(1, chat:GetPoint())
+				end
+				if select(2, tab:GetPoint()):GetName() == "GeneralDockManagerScrollFrameChild" or string.find(select(2, tab:GetPoint()):GetName(), "Tab") then
+					docked = true
+				else
+					docked = false
+				end	
+			end
+						
+			if point == "BOTTOMRIGHT" and chat:IsShown() and not (id > NUM_CHAT_WINDOWS) then
+				if id ~= 2 then
+					chat:ClearAllPoints()
+					chat:SetPoint("BOTTOMLEFT", ChatRBackground, "BOTTOMLEFT", E.Scale(2), E.Scale(4))
+					chat:SetSize(E.Scale(C["chat"].chatwidth - 4), E.Scale(C["chat"].chatheight))
+				else
+					chat:ClearAllPoints()
+					chat:SetPoint("BOTTOMLEFT", ChatRBackground, "BOTTOMLEFT", E.Scale(2), E.Scale(4))
+					chat:SetSize(E.Scale(C["chat"].chatwidth - 4), E.Scale(C["chat"].chatheight - CombatLogQuickButtonFrame_Custom:GetHeight()))				
+				end
 				FCF_SavePositionAndDimensions(chat)			
 				
 				tab:SetParent(ChatRBackground)
 				chat:SetParent(tab)
+				
+				if not button then E.ChatCopyButtons(id) button = _G[format("ButtonCF%d", id)] end
 				button:ClearAllPoints()
 				if ChatRBG then
 					button:SetAlpha(1)
@@ -323,6 +345,7 @@ ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 					button:SetPoint("TOPRIGHT")
 				end
 			elseif not docked and chat:IsShown() then
+				if not button then E.ChatCopyButtons(id) button = _G[format("ButtonCF%d", id)] end
 				if not button:GetScript("OnEnter") then
 					button:SetAlpha(0)
 					button:SetScript("OnEnter", function(self) self:SetAlpha(1) end)
@@ -334,7 +357,7 @@ ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 				tab:SetParent(UIParent)
 				chat:SetParent(UIParent)
 			else
-				if chat:GetID() ~= 2 then
+				if chat:GetID() ~= 2 and not (id > NUM_CHAT_WINDOWS) then
 					chat:ClearAllPoints()
 					chat:SetPoint("BOTTOMLEFT", ChatLBackground, "BOTTOMLEFT", E.Scale(2), E.Scale(4))
 					chat:SetSize(E.Scale(C["chat"].chatwidth - 4), E.Scale(C["chat"].chatheight))
@@ -343,7 +366,7 @@ ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 				chat:SetParent(ChatLBackground)
 				tab:SetParent(GeneralDockManager)
 				
-				
+				if not button then E.ChatCopyButtons(id) button = _G[format("ButtonCF%d", id)] end
 				if ChatRBG then
 					button:ClearAllPoints()
 					button:SetAlpha(1)
@@ -480,18 +503,17 @@ local function Copy(cf)
 	editBox:SetText(text)
 end
 
-function E.ChatCopyButtons()
-	for i = 1, NUM_CHAT_WINDOWS do
-		local cf = _G[format("ChatFrame%d",  i)]
-		local tab = _G[format("ChatFrame%dTab", i)]
-		local button = CreateFrame("Button", format("ButtonCF%d", i), cf)
-		local id = cf:GetID()
-		local name = FCF_GetChatWindowInfo(id)
-		local point = GetChatWindowSavedPosition(id)
-		local _, fontSize = FCF_GetChatWindowInfo(id)
-		local button = _G[format("ButtonCF%d", i)]
-		local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
-		
+function E.ChatCopyButtons(id)
+	
+	local cf = _G[format("ChatFrame%d",  id)]
+	local tab = _G[format("ChatFrame%dTab", id)]
+	local name = FCF_GetChatWindowInfo(id)
+	local point = GetChatWindowSavedPosition(id)
+	local _, fontSize = FCF_GetChatWindowInfo(id)
+	local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
+	
+	if not button then
+		local button = CreateFrame("Button", format("ButtonCF%d", id), cf)
 		button:SetHeight(E.Scale(22))
 		button:SetWidth(E.Scale(20))
 		button:SetAlpha(0)
@@ -521,8 +543,8 @@ function E.ChatCopyButtons()
 		end)
 		button:SetScript("OnLeave", function() button:SetAlpha(0) end)
 	end
+
 end
-E.ChatCopyButtons()
 
 ------------------------------------------------------------------------
 --	Enhance/rewrite a Blizzard feature, chatframe mousewheel.
