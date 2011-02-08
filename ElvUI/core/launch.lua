@@ -205,8 +205,13 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 		if ElvuiData[E.myrealm] == nil then ElvuiData[E.myrealm] = {} end
 		if ElvuiData[E.myrealm][E.myname] == nil then ElvuiData[E.myrealm][E.myname] = {} end
 		
-		if ElvuiData[E.myrealm][E.myname].installed ~= true then
-			StaticPopup_Show("INSTALL_UI")
+		if ElvUIInstalled and ElvUIInstalled == true then --Depreciated
+			ElvuiData[E.myrealm][E.myname].installed = true
+			ElvUIInstalled = nil
+		else
+			if ElvuiData[E.myrealm][E.myname].installed ~= true then
+				StaticPopup_Show("INSTALL_UI")
+			end
 		end
 	end
 	
