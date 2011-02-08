@@ -297,6 +297,7 @@ ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 		
 		for i = 1, CreatedFrames do
 			chat = _G[format("ChatFrame%d", i)]
+			local bg = format("ChatFrame%dBackground", i)
 			button = _G[format("ButtonCF%d", i)]
 			id = chat:GetID()
 			tab = _G[format("ChatFrame%sTab", i)]
@@ -307,7 +308,7 @@ ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 				if point == nil then
 					point = select(1, chat:GetPoint())
 				end
-				if select(2, tab:GetPoint()):GetName() == "GeneralDockManagerScrollFrameChild" or string.find(select(2, tab:GetPoint()):GetName(), "Tab") then
+				if select(2, tab:GetPoint()):GetName() ~= bg then
 					docked = true
 				else
 					docked = false
