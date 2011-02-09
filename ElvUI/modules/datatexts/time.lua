@@ -70,42 +70,7 @@ if C["datatext"].wowtime and C["datatext"].wowtime > 0 then
 		
 		-- update level everytime we mouseover time
 		E.level = UnitLevel("player") 
-
-		-- show wintergrasp info at 77+ only, can't get wg info under 77.
-		if E.level >= 77 and E.level <=84 then
-			local wgtime = GetWintergraspWaitTime() or nil
-			local control = QUEUE_TIME_UNAVAILABLE
-			local inInstance, instanceType = IsInInstance()
-			
-			if not ( instanceType == "none" ) then
-				wgtime = QUEUE_TIME_UNAVAILABLE
-			elseif wgtime == nil then
-				wgtime = WINTERGRASP_IN_PROGRESS
-			else
-				local hour = tonumber(format("%01.f", floor(wgtime/3600)))
-				local min = format(hour>0 and "%02.f" or "%01.f", floor(wgtime/60 - (hour*60)))
-				local sec = format("%02.f", floor(wgtime - hour*3600 - min *60)) 
-				wgtime = (hour>0 and hour..":" or "")..min..":"..sec
-			end
-			GameTooltip:AddDoubleLine(format(PVPBATTLEGROUND_WINTERGRASPTIMER_TOOLTIP, ""),wgtime)
-		elseif E.level == 85 then
-			local _, localizedName, isActive, canQueue, startTime, canEnter = GetWorldPVPAreaInfo(2)
-			local control = QUEUE_TIME_UNAVAILABLE
-			local inInstance, instanceType = IsInInstance()
-			
-			if not ( instanceType == "none" ) then
-				startTime = QUEUE_TIME_UNAVAILABLE
-			elseif isActive then
-				startTime = WINTERGRASP_IN_PROGRESS
-			else
-				local hour = tonumber(format("%01.f", floor(startTime/3600)))
-				local min = format(hour>0 and "%02.f" or "%01.f", floor(startTime/60 - (hour*60)))
-				local sec = format("%02.f", floor(startTime - hour*3600 - min *60)) 
-				startTime = (hour>0 and hour..":" or "")..min..":"..sec
-			end
-			GameTooltip:AddDoubleLine(localizedName..":",startTime)	
-		end
-
+		local inInstance, instanceType = IsInInstance()
 		
 		if C["datatext"].localtime == true then
 			local Hr, Min = GetGameTime()
@@ -135,7 +100,44 @@ if C["datatext"].wowtime and C["datatext"].wowtime > 0 then
 					GameTooltip:AddDoubleLine(L.datatext_localtime,Hr .. ":" .. Min.." AM");
 				end
 			end
-		end  
+		end  		
+		
+		GameTooltip:AddLine' '
+		-- show wintergrasp info at 77+ only, can't get wg info under 77.
+		if E.level >= 77 then
+			local _, localizedName, isActive, canQueue, startTime, canEnter = GetWorldPVPAreaInfo(1)
+			local control = QUEUE_TIME_UNAVAILABLE
+			
+			if not ( instanceType == "none" ) then
+				startTime = QUEUE_TIME_UNAVAILABLE
+			elseif isActive then
+				startTime = WINTERGRASP_IN_PROGRESS
+			else
+				local hour = tonumber(format("%01.f", floor(startTime/3600)))
+				local min = format(hour>0 and "%02.f" or "%01.f", floor(startTime/60 - (hour*60)))
+				local sec = format("%02.f", floor(startTime - hour*3600 - min *60)) 
+				startTime = (hour>0 and hour..":" or "")..min..":"..sec
+			end
+			GameTooltip:AddDoubleLine(localizedName..":",startTime)	
+		end
+		
+		if E.level == 85 then
+			local _, localizedName, isActive, canQueue, startTime, canEnter = GetWorldPVPAreaInfo(2)
+			local control = QUEUE_TIME_UNAVAILABLE
+			
+			if not ( instanceType == "none" ) then
+				startTime = QUEUE_TIME_UNAVAILABLE
+			elseif isActive then
+				startTime = WINTERGRASP_IN_PROGRESS
+			else
+				local hour = tonumber(format("%01.f", floor(startTime/3600)))
+				local min = format(hour>0 and "%02.f" or "%01.f", floor(startTime/60 - (hour*60)))
+				local sec = format("%02.f", floor(startTime - hour*3600 - min *60)) 
+				startTime = (hour>0 and hour..":" or "")..min..":"..sec
+			end
+
+			GameTooltip:AddDoubleLine(localizedName..":",startTime)	
+		end
 		
 		local oneraid
 		for i = 1, GetNumSavedInstances() do
