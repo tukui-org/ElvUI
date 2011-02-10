@@ -315,7 +315,7 @@ ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 				end	
 			end
 						
-			if point == "BOTTOMRIGHT" and chat:IsShown() and not (id > NUM_CHAT_WINDOWS) then
+			if point == "BOTTOMRIGHT" and chat:IsShown() and not (id > NUM_CHAT_WINDOWS) and id == E.RightChatWindowID then
 				if id ~= 2 then
 					chat:ClearAllPoints()
 					chat:SetPoint("BOTTOMLEFT", ChatRBackground, "BOTTOMLEFT", E.Scale(2), E.Scale(4))

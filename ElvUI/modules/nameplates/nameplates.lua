@@ -454,8 +454,8 @@ local function SkinObjects(frame)
 	frame.healthOriginal = hp
 	
 	--Just make sure these are correct
-	hp:SetFrameLevel(9)
-	cb:SetFrameLevel(9)
+	hp:SetFrameLevel(1)
+	cb:SetFrameLevel(1)
 	
 	--Create our fake border.. fuck blizz
 	local healthbarborder_tex1 = hp:CreateTexture(nil, "BORDER")

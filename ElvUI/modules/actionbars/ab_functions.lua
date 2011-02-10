@@ -3,17 +3,6 @@
 ------------------------------------------------------------------------
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-E.TotemBarOrientation = function(revert)
-	local position = ShapeShiftMover:GetPoint()
-	if position:match("TOP") then
-		revert = true
-	else
-		revert = false
-	end
-	
-	return revert
-end
-
 function E.ElvuiPetBarUpdate(self, event)
 	local petActionButton, petActionIcon, petAutoCastableTexture, petAutoCastShine
 	for i=1, NUM_PET_ACTION_SLOTS, 1 do

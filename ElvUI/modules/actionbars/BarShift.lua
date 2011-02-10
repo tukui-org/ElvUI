@@ -20,11 +20,7 @@ if C["actionbar"].hideshapeshift == true then
 	ElvuiShift:Hide()
 end
 
-local function CheckPos()
-	E.TotemOrientationDown = E.TotemBarOrientation()
-end
-
-E.CreateMover(ElvuiShift, "ShapeShiftMover", "Class Bar", true, CheckPos)
+E.CreateMover(ElvuiShift, "ShapeShiftMover", "Class Bar", true)
 
 -- hide it if not needed and stop executing code
 if C.actionbar.hideshapeshift then ElvuiShift:Hide() return end
