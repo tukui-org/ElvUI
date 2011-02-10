@@ -44,11 +44,11 @@ ElvuiL.option_nameplates_trackccauras = "Track 'CC' debuffs on nameplates."
 
 -- addon skins
 ElvuiL.option_skin = "Addon Skins"
-ElvuiL.option_skin_dxe = "Deus Vox Encounters"
+ElvuiL.option_skin_kle = "KL Encounters"
 ElvuiL.option_skin_omen = "Omen"
 ElvuiL.option_skin_recount = "Recount"
 ElvuiL.option_skin_skada = "Skada"
-ElvuiL.option_hookdxeright = "Force DXE's top bar anchor to be positioned above right chat frame"
+ElvuiL.option_hookkleright = "Force KLE's top bar anchor to be positioned above right chat frame"
  
 -- classtimer
 ElvuiL.option_classtimer = "Class Timer"

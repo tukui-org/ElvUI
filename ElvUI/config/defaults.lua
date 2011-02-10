@@ -35,9 +35,9 @@ C["general"] = {
 C["skin"] = {	--Skin addons by Darth Android
 	["recount"] = true,
 	["skada"] = true,
-	["dxe"] = true,
 	["omen"] = true,
-	["hookdxeright"] = false,			--Force DXE's Top Bar anchor to be hooked to the right chat window
+	["kle"] = true,
+	["hookkleright"] = true,			-- force KLE's top bar anchor to be hooked onto the right chat window
 	["embedright"] = "NONE",				-- Addon to embed to the right frame ("Omen", "Recount", "Skada")
 }
 

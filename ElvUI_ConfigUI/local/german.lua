@@ -41,11 +41,11 @@
 
 	-- addon skins
 	ElvuiL.option_skin = "Addon-Skins"
-	ElvuiL.option_skin_dxe = "Deus Vox Encounters"
+	ElvuiL.option_skin_kle = "KL Encounters"
 	ElvuiL.option_skin_omen = "Omen"
 	ElvuiL.option_skin_recount = "Recount"
 	ElvuiL.option_skin_skada = "Skada"
-	ElvuiL.option_hookdxeright = "Erzwingt die Position von DXEs am oberem Leistenanker über dem rechten Chatfenster"
+	ElvuiL.option_hookkleright = "Erzwingt die Position von KLEs am oberem Leistenanker über dem rechten Chatfenster"
  
 	-- classtimer
 	ElvuiL.option_classtimer = "Klassentimer"

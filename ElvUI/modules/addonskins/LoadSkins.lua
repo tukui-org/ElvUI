@@ -118,13 +118,13 @@ Mod_AddonSkins:SetScript("OnEvent",function(self, event, addon)
 			OmenBarList:ClearAllPoints()
 			OmenBarList:SetAllPoints(ChatRBackground2)
 		end
-		
-		if C["chat"].showbackdrop == true and IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and C["skin"].hookdxeright == true and E.RightChat == true then
-			DXEAlertsTopStackAnchor:ClearAllPoints()
-			DXEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 18)			
-		elseif IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and C["skin"].hookdxeright == true then
-			DXEAlertsTopStackAnchor:ClearAllPoints()
-			DXEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -5)
-		end
+				
+		if C["chat"].showbackdrop == true and IsAddOnLoaded("KLE") and KLEAlertsTopStackAnchor and C["skin"].hookkleright == true and E.RightChat == true then
+			KLEAlertsTopStackAnchor:ClearAllPoints()
+			KLEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 18)			
+		elseif IsAddOnLoaded("KLE") and KLEAlertsTopStackAnchor and C["skin"].hookkleright == true then
+			KLEAlertsTopStackAnchor:ClearAllPoints()
+			KLEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -5)
+		end		
 	end
 end)

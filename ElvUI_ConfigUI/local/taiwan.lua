@@ -41,11 +41,11 @@
 	
 	-- addon skins
 	ElvuiL.option_skin = "插件外皮"
-	ElvuiL.option_skin_dxe = "Deus Vox Encounters"
+	ElvuiL.option_skin_kle = "KL Encounters"
 	ElvuiL.option_skin_omen = "Omen"
 	ElvuiL.option_skin_recount = "Recount"
 	ElvuiL.option_skin_skada = "Skada"
-	ElvuiL.option_hookdxeright = "強制將DXE設置於右邊對話框上方"
+	ElvuiL.option_hookkleright = "強制將KLE設置於右邊對話框上方"
 	 
 	-- classtimer
 	ElvuiL.option_classtimer = "職業計時條"

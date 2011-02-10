@@ -40,7 +40,7 @@
 	
 	-- addon skins
 	ElvuiL.option_skin = "插件皮肤化"
-	ElvuiL.option_skin_dxe = "Deus Vox Encounters"
+	ElvuiL.option_skin_kle = "KL Encounters"
 	ElvuiL.option_skin_omen = "Omen"
 	ElvuiL.option_skin_recount = "Recount"
 	ElvuiL.option_skin_skada = "Skada"

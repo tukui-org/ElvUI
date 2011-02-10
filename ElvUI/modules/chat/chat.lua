@@ -602,10 +602,10 @@ ChatCombatHider:SetScript("OnEvent", function(self, event)
 		if C["chat"].combathide == "Both" then	
 			if E.ChatRIn ~= false then
 				E.SlideOut(ChatRBackground)		
-				if IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and C["skin"].hookdxeright == true then
-					DXEAlertsTopStackAnchor:ClearAllPoints()
-					DXEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -5)
-				end
+				if IsAddOnLoaded("KLE") and KLEAlertsTopStackAnchor and C["skin"].hookkleright == true then
+					KLEAlertsTopStackAnchor:ClearAllPoints()
+					KLEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -5)
+				end				
 				E.ChatRightShown = false
 				E.ChatRIn = false
 				ElvuiInfoRightRButton.text:SetTextColor(unpack(C["media"].valuecolor))			
@@ -618,10 +618,10 @@ ChatCombatHider:SetScript("OnEvent", function(self, event)
 		elseif C["chat"].combathide == "Right" then
 			if E.ChatRIn ~= false then
 				E.SlideOut(ChatRBackground)		
-				if IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and C["skin"].hookdxeright == true then
-					DXEAlertsTopStackAnchor:ClearAllPoints()
-					DXEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -5)
-				end
+				if IsAddOnLoaded("KLE") and KLEAlertsTopStackAnchor and C["skin"].hookkleright == true then
+					KLEAlertsTopStackAnchor:ClearAllPoints()
+					KLEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -5)
+				end					
 				E.ChatRightShown = false
 				E.ChatRIn = false
 				ElvuiInfoRightRButton.text:SetTextColor(unpack(C["media"].valuecolor))			
@@ -637,10 +637,10 @@ ChatCombatHider:SetScript("OnEvent", function(self, event)
 		if C["chat"].combathide == "Both" then
 			if E.ChatRIn ~= true then
 				E.SlideIn(ChatRBackground)	
-				if IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and C["skin"].hookdxeright == true and E.RightChat == true and C["chat"].showbackdrop == true then
-					DXEAlertsTopStackAnchor:ClearAllPoints()
-					DXEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 18)
-				end				
+				if IsAddOnLoaded("KLE") and KLEAlertsTopStackAnchor and C["skin"].hookkleright == true and E.RightChat == true and C["chat"].showbackdrop == true then
+					KLEAlertsTopStackAnchor:ClearAllPoints()
+					KLEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 18)
+				end								
 				E.ChatRightShown = true
 				E.ChatRIn = true
 				ElvuiInfoRightRButton.text:SetTextColor(1,1,1)			
@@ -653,10 +653,10 @@ ChatCombatHider:SetScript("OnEvent", function(self, event)
 		elseif C["chat"].combathide == "Right" then
 			if E.ChatRIn ~= true then
 				E.SlideIn(ChatRBackground)	
-				if IsAddOnLoaded("DXE") and DXEAlertsTopStackAnchor and C["skin"].hookdxeright == true and E.RightChat and C["chat"].showbackdrop == true then
-					DXEAlertsTopStackAnchor:ClearAllPoints()
-					DXEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 18)
-				end					
+				if IsAddOnLoaded("KLE") and KLEAlertsTopStackAnchor and C["skin"].hookkleright == true and E.RightChat and C["chat"].showbackdrop == true then
+					KLEAlertsTopStackAnchor:ClearAllPoints()
+					KLEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 18)
+				end							
 				E.ChatRightShown = true
 				E.ChatRIn = true
 				ElvuiInfoRightRButton.text:SetTextColor(1,1,1)			
