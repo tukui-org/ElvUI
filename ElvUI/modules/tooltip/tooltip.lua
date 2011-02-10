@@ -73,6 +73,7 @@ hooksecurefunc("GameTooltip_SetDefaultAnchor", function(self, parent)
 end)
 
 local function SetRightTooltipPos(self)
+	local inInstance, instanceType = IsInInstance()
 	self:ClearAllPoints()
 	if InCombatLockdown() and C["tooltip"].hidecombat == true and (C["tooltip"].hidecombatraid == true and inInstance and (instanceType == "raid")) then
 		self:Hide()
@@ -102,7 +103,6 @@ local function SetRightTooltipPos(self)
 end
 
 GameTooltip:HookScript("OnUpdate",function(self, ...)
-	local inInstance, instanceType = IsInInstance()
 	if self:GetAnchorType() == "ANCHOR_CURSOR" then
 		local x, y = GetCursorPosition();
 		local effScale = self:GetEffectiveScale();
