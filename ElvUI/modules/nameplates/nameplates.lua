@@ -276,11 +276,6 @@ local function UpdateCastbar(frame)
 	if(not frame.shield:IsShown()) then
 		frame:SetStatusBarColor(0.78, 0.25, 0.25, 1)
 	end
-	
-	local frame = frame:GetParent()
-	frame.castbarbackdrop_tex:ClearAllPoints()
-	frame.castbarbackdrop_tex:SetPoint("TOPLEFT", frame.cb, "TOPLEFT", -noscalemult*3, noscalemult*3)
-	frame.castbarbackdrop_tex:SetPoint("BOTTOMRIGHT", frame.cb, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
 end	
 
 --Determine whether or not the cast is Channelled or a Regular cast so we can grab the proper Cast Name
@@ -369,15 +364,6 @@ local function UpdateObjects(frame)
 	frame.hp:SetSize(hpWidth, hpHeight)	
 	frame.hp:SetPoint('TOP', frame, 'TOP', 0, -noscalemult*3)
 	frame.hp:GetStatusBarTexture():SetHorizTile(true)
-	
-	-- Create Health Backdrop frame
-	if not frame.hp.healthbarbackdrop_tex then
-		frame.hp.healthbarbackdrop_tex = frame.hp:CreateTexture(nil, "BACKGROUND")
-		frame.hp.healthbarbackdrop_tex:SetPoint("TOPLEFT", frame.hp, "TOPLEFT", -noscalemult*3, noscalemult*3)
-		frame.hp.healthbarbackdrop_tex:SetPoint("TOPRIGHT", frame.hp, "TOPRIGHT", noscalemult*3, noscalemult*3)
-		frame.hp.healthbarbackdrop_tex:SetHeight(hpHeight + noscalemult*6)
-		frame.hp.healthbarbackdrop_tex:SetTexture(unpack(C["media"].backdropcolor))
-	end
 			
 	--Class Icons, also determines if the current frame is a Enemy Player frame
 	for class, color in pairs(RAID_CLASS_COLORS) do
@@ -457,33 +443,45 @@ local function SkinObjects(frame)
 	hp:SetFrameLevel(1)
 	cb:SetFrameLevel(1)
 	
+	-- Create Health Backdrop frame
+	local healthbarbackdrop_tex = hp:CreateTexture(nil, "ARTWORK")
+	healthbarbackdrop_tex:SetDrawLayer("ARTWORK", -8)
+	healthbarbackdrop_tex:SetPoint("TOPLEFT", hp, "TOPLEFT", -noscalemult*3, noscalemult*3)
+	healthbarbackdrop_tex:SetPoint("TOPRIGHT", hp, "TOPRIGHT", noscalemult*3, noscalemult*3)
+	healthbarbackdrop_tex:SetHeight(hpHeight + noscalemult*6)
+	healthbarbackdrop_tex:SetTexture(unpack(C["media"].backdropcolor))
+
 	--Create our fake border.. fuck blizz
-	local healthbarborder_tex1 = hp:CreateTexture(nil, "BORDER")
+	local healthbarborder_tex1 = hp:CreateTexture(nil, "ARTWORK")
 	healthbarborder_tex1:SetPoint("TOPLEFT", hp, "TOPLEFT", -noscalemult*2, noscalemult*2)
 	healthbarborder_tex1:SetPoint("TOPRIGHT", hp, "TOPRIGHT", noscalemult*2, noscalemult*2)
 	healthbarborder_tex1:SetHeight(noscalemult)
 	healthbarborder_tex1:SetTexture(unpack(C["media"].bordercolor))	
+	healthbarborder_tex1:SetDrawLayer("ARTWORK", -7)
 	frame.healthborder_tex1 = healthbarborder_tex1
 	
-	local healthbarborder_tex2 = hp:CreateTexture(nil, "BORDER")
+	local healthbarborder_tex2 = hp:CreateTexture(nil, "ARTWORK")
 	healthbarborder_tex2:SetPoint("BOTTOMLEFT", hp, "BOTTOMLEFT", -noscalemult*2, -noscalemult*2)
 	healthbarborder_tex2:SetPoint("BOTTOMRIGHT", hp, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
 	healthbarborder_tex2:SetHeight(noscalemult)
 	healthbarborder_tex2:SetTexture(unpack(C["media"].bordercolor))	
+	healthbarborder_tex2:SetDrawLayer("ARTWORK", -7)
 	frame.healthborder_tex2 = healthbarborder_tex2
 	
-	local healthbarborder_tex3 = hp:CreateTexture(nil, "BORDER")
+	local healthbarborder_tex3 = hp:CreateTexture(nil, "ARTWORK")
 	healthbarborder_tex3:SetPoint("TOPLEFT", hp, "TOPLEFT", -noscalemult*2, noscalemult*2)
 	healthbarborder_tex3:SetPoint("BOTTOMLEFT", hp, "BOTTOMLEFT", noscalemult*2, -noscalemult*2)
 	healthbarborder_tex3:SetWidth(noscalemult)
 	healthbarborder_tex3:SetTexture(unpack(C["media"].bordercolor))	
+	healthbarborder_tex3:SetDrawLayer("ARTWORK", -7)
 	frame.healthborder_tex3 = healthbarborder_tex3
 	
-	local healthbarborder_tex4 = hp:CreateTexture(nil, "BORDER")
+	local healthbarborder_tex4 = hp:CreateTexture(nil, "ARTWORK")
 	healthbarborder_tex4:SetPoint("TOPRIGHT", hp, "TOPRIGHT", noscalemult*2, noscalemult*2)
 	healthbarborder_tex4:SetPoint("BOTTOMRIGHT", hp, "BOTTOMRIGHT", -noscalemult*2, -noscalemult*2)
 	healthbarborder_tex4:SetWidth(noscalemult)
 	healthbarborder_tex4:SetTexture(unpack(C["media"].bordercolor))	
+	healthbarborder_tex4:SetDrawLayer("ARTWORK", -7)
 	frame.healthborder_tex4 = healthbarborder_tex4
 
 	hp:SetStatusBarTexture(TEXTURE)
@@ -531,7 +529,6 @@ local function SkinObjects(frame)
 	castbarbackdrop_tex:SetPoint("TOPLEFT", cb, "TOPLEFT", -noscalemult*3, noscalemult*3)
 	castbarbackdrop_tex:SetPoint("BOTTOMRIGHT", cb, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
 	castbarbackdrop_tex:SetTexture(unpack(C["media"].backdropcolor))
-	frame.castbarbackdrop_tex = castbarbackdrop_tex
 	
 	--Create our fake border.. fuck blizz
 	local castbarborder_tex1 = cb:CreateTexture(nil, "BORDER")
