@@ -117,7 +117,7 @@ SlashCmdList.MOVEUI = function()
 		E.ToggleABLock()
 	end
 	
-	if oUF then
+	if ElvUF or oUF then
 		E.MoveUF()
 	end
 	
