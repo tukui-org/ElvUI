@@ -111,32 +111,10 @@ SlashCmdList.CONFIGURE = function() StaticPopup_Show("INSTALL_UI") end
 -- Command to Toggle showing the UI Movers
 SLASH_MOVEUI1 = '/moveui'
 SlashCmdList.MOVEUI = function()		
-	E.ToggleMovers()
+	local func = ElvuiInfoLeftRButton:GetScript("OnMouseDown")
 	
-	if C["actionbar"].enable == true then
-		E.ToggleABLock()
-	end
-	
-	if ElvUF or oUF then
-		E.MoveUF()
-	end
-	
-	if ElvuiInfoLeftRButton.hovered == true then
-		local locked = false
-		GameTooltip:ClearLines()
-		for name, _ in pairs(E.CreatedMovers) do
-			if _G[name]:IsShown() then
-				locked = true
-			else
-				locked = false
-			end
-		end	
-		
-		if locked ~= true then
-			GameTooltip:AddLine(UNLOCK.." "..BUG_CATEGORY5,1,1,1)
-		else
-			GameTooltip:AddLine(LOCK.." "..BUG_CATEGORY5,unpack(C["media"].valuecolor))
-		end
+	if func then
+		func()
 	end
 end
 

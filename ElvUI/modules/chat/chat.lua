@@ -512,6 +512,7 @@ function E.ChatCopyButtons(id)
 	local point = GetChatWindowSavedPosition(id)
 	local _, fontSize = FCF_GetChatWindowInfo(id)
 	local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
+	local button = _G[format("ButtonCF%d", id)]
 	
 	if not button then
 		local button = CreateFrame("Button", format("ButtonCF%d", id), cf)
@@ -530,14 +531,20 @@ function E.ChatCopyButtons(id)
 		buttontext:SetJustifyV("CENTER")
 		buttontext:SetTextColor(unpack(C["media"].valuecolor))
 		
-				
-		button:SetScript("OnMouseUp", function(self, btn)
-			if i == 1 and btn == "RightButton" then
-				ToggleFrame(ChatMenu)
-			else
+		
+		if id == 1 then
+			button:SetScript("OnMouseUp", function(self, btn)
+				if btn == "RightButton" then
+					ToggleFrame(ChatMenu)
+				else
+					Copy(cf)
+				end
+			end)
+		else
+			button:SetScript("OnMouseUp", function(self, btn)
 				Copy(cf)
-			end
-		end)
+			end)		
+		end
 		
 		button:SetScript("OnEnter", function() 
 			button:SetAlpha(1) 
