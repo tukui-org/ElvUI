@@ -18,7 +18,7 @@ E.PP(C["datatext"].system, Text)
 
 local bandwidthString = "%.2f Mbps"
 local percentageString = "%.2f%%"
-
+local worldLatencyString = "%d ms"
 local kiloByteString = "%d kb"
 local megaByteString = "%.2f mb"
 
@@ -113,9 +113,13 @@ Stat:SetScript("OnMouseDown", function () collectgarbage("collect") Update(Stat,
 Stat:SetScript("OnEnter", function(self)
 	if not InCombatLockdown() then
 		local bandwidth = GetAvailableBandwidth()
+		local world_latency = select(4, GetNetStats()) 
 		local anchor, panel, xoff, yoff = E.DataTextTooltipAnchor(Text)
 		GameTooltip:SetOwner(panel, anchor, xoff, yoff)
 		GameTooltip:ClearLines()
+		
+		GameTooltip:AddDoubleLine(L.datatext_worldlatency, string.format(worldLatencyString, world_latency), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+		
 		if bandwidth ~= 0 then
 			GameTooltip:AddDoubleLine(L.datatext_bandwidth , string.format(bandwidthString, bandwidth),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 			GameTooltip:AddDoubleLine(L.datatext_download , string.format(percentageString, GetDownloadedPercentage() *100),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
