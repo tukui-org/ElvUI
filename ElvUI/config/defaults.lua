@@ -21,7 +21,7 @@ C["media"] = {
 	-- sound
 	["whisper"] = [[Interface\AddOns\ElvUI\media\sounds\whisper.mp3]],
 	["warning"] = [[Interface\AddOns\ElvUI\media\sounds\warning.mp3]],
-	["glossyTexture"] = true,	-- Use a glossy texture for all frames
+	["glossyTexture"] = false,	-- Use a glossy texture for all frames
 }
 
 C["general"] = {
@@ -261,3 +261,5 @@ C["debug"] = {--don't recommend turning this on
 	["enabled"] = false,				
 	["events"] = false,
 }
+
+C["media"].normTex2 = C["media"].normTex

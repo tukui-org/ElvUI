@@ -37,6 +37,7 @@ local Filter = {
 	["raidicons"]=1,
 	["whisper"]=1,
 	["warning"]=1,
+	["normTex2"]=1,
 }
 
 local function Local(o)

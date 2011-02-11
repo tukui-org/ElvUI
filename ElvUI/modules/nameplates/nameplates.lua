@@ -5,7 +5,7 @@ if not C["nameplate"].enable == true then return end
 
 local TEXTURE = C["media"].normTex
 local FONT = C["media"].font
-local FONTSIZE = C["general"].fontscale*0.9
+local FONTSIZE = 10
 local FONTFLAG = "THINOUTLINE"
 local hpHeight = 12
 local hpWidth = 110

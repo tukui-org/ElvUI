@@ -74,7 +74,7 @@ local function Point(obj, arg1, arg2, arg3, arg4, arg5)
 end
 
 local function SetTemplate(f, t, tex)
-	if tex then texture = C.media.normTex else texture = C.media.blank end
+	if tex then texture = C.media.normTex2 else texture = C.media.blank end
 	
 	GetTemplate(t)
 		
