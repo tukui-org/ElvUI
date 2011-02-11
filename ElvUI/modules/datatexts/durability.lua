@@ -55,24 +55,25 @@ if C["datatext"].dur and C["datatext"].dur > 0 then
 		end
 		-- Setup Durability Tooltip
 		self:SetAllPoints(Text)
-		self:SetScript("OnEnter", function()
-			if not InCombatLockdown() then
-				local anchor, panel, xoff, yoff = E.DataTextTooltipAnchor(Text)
-				GameTooltip:SetOwner(panel, anchor, xoff, yoff)
-				GameTooltip:ClearLines()
-				for i = 1, 11 do
-					if L.Slots[i][3] ~= 1000 then
-						green = L.Slots[i][3]*2
-						red = 1 - green
-						GameTooltip:AddDoubleLine(L.Slots[i][2], floor(L.Slots[i][3]*100).."%",1 ,1 , 1, red + 1, green, 0)
-					end
-				end
-				GameTooltip:Show()
-			end
-		end)
-		self:SetScript("OnLeave", function() GameTooltip:Hide() end)
 		Total = 0
 	end
+	
+	Stat:SetScript("OnEnter", function()
+		if not InCombatLockdown() then
+			local anchor, panel, xoff, yoff = E.DataTextTooltipAnchor(fader)
+			GameTooltip:SetOwner(panel, anchor, xoff, yoff)
+			GameTooltip:ClearLines()
+			for i = 1, 11 do
+				if L.Slots[i][3] ~= 1000 then
+					green = L.Slots[i][3]*2
+					red = 1 - green
+					GameTooltip:AddDoubleLine(L.Slots[i][2], floor(L.Slots[i][3]*100).."%",1 ,1 , 1, red + 1, green, 0)
+				end
+			end
+			GameTooltip:Show()
+		end
+	end)
+	Stat:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
 	Stat:RegisterEvent("UPDATE_INVENTORY_DURABILITY")
 	Stat:RegisterEvent("MERCHANT_SHOW")
