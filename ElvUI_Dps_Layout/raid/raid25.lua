@@ -1,5 +1,7 @@
 local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
-
+local _, ns = ...
+local oUF = ElvUF or ns.oUF or oUF
+assert(oUF, "ElvUI was unable to locate oUF.")
 
 if not C["raidframes"].enable == true then return end
 

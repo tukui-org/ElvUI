@@ -1,5 +1,4 @@
 local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
-if not oUF then return end
 
 local _, ns = ...
 local oUF = ns.oUF or oUF

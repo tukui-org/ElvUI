@@ -10,5 +10,4 @@
 	<Script file="oUF_ThreatBar\oUF_ThreatBar.lua"/>
 	<Script file="oUF_TotemBar\oUF_TotemBar.lua"/>
 	<Script file="oUF_Trinkets\oUF_Trinkets.lua"/>
-	<Script file="oUF_Swing\oUF_Swing.lua"/>
 </Ui>

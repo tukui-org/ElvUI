@@ -60,7 +60,7 @@ local OnAttributeChanged = function(self, name, value)
 	if(name == "unit" and value) then
 		units[value] = self
 
-		if(self.unit and self.unit == value) then
+		if(self.unit and (self.unit == value or self.realUnit == value)) then
 			return
 		else
 			if(self.hasChildren) then
@@ -141,12 +141,51 @@ for k, v in pairs{
 	frame_metatable.__index[k] = v
 end
 
+local updateActiveUnit = function(self, event, unit)
+	-- Calculate units to work with
+	local realUnit, modUnit = SecureButton_GetUnit(self), SecureButton_GetModifiedUnit(self)
+
+	-- _GetUnit() doesn't rewrite playerpet -> pet like _GetModifiedUnit does.
+	if(realUnit == 'playerpet') then
+		realUnit = 'pet'
+	end
+
+	if(modUnit == "pet" and realUnit ~= "pet") then
+		modUnit = "vehicle"
+	end
+
+	-- Drop out if the event unit doesn't match any of the frame units.
+	if(not UnitExists(modUnit) or unit and unit ~= realUnit and unit ~= modUnit) then return end
+
+	if(modUnit ~= realUnit) then
+		self.realUnit = realUnit
+	else
+		self.realUnit = nil
+	end
+
+	-- Change the active unit and run a full update.
+	if(self.unit ~= modUnit) then
+		self.unit = modUnit
+		self:UpdateAllElements('RefreshUnit')
+
+		return true
+	end
+end
+
+local OnShow = function(self)
+	if(not updateActiveUnit(self, 'OnShow')) then
+		return self:UpdateAllElements'OnShow'
+	end
+end
+
 local initObject = function(unit, style, styleFunc, header, ...)
 	local num = select('#', ...)
 	for i=1, num do
 		local object = select(i, ...)
+		local objectUnit = object:GetAttribute'oUF-guessUnit' or unit
 
 		object.__elements = {}
+		object.style = style
 		object = setmetatable(object, frame_metatable)
 
 		-- Run it before the style function so they can override it.
@@ -158,7 +197,23 @@ local initObject = function(unit, style, styleFunc, header, ...)
 		else
 			object:RegisterEvent('PARTY_MEMBERS_CHANGED', object.UpdateAllElements)
 		end
-		object.style = style
+
+		-- Register it early so it won't be executed after the layouts PEW, if they
+		-- have one.
+		object:RegisterEvent("PLAYER_ENTERING_WORLD", object.UpdateAllElements)
+
+		local suffix = object:GetAttribute'unitsuffix'
+		if(not ((objectUnit and objectUnit:match'target') or suffix == 'target')) then
+			object:RegisterEvent('UNIT_ENTERED_VEHICLE', updateActiveUnit)
+			object:RegisterEvent('UNIT_EXITED_VEHICLE', updateActiveUnit)
+
+			-- We don't need to register UNIT_PET for the player unit. We rigester it
+			-- mainly because UNIT_EXITED_VEHICLE and UNIT_ENTERED_VEHICLE doesn't always
+			-- have pet information when they fire for party and raid units.
+			if(objectUnit ~= 'player') then
+				object:RegisterEvent('UNIT_PET', updateActiveUnit)
+			end
+		end
 
 		local parent = object:GetParent()
 		if(num > 1) then
@@ -169,18 +224,13 @@ local initObject = function(unit, style, styleFunc, header, ...)
 			end
 		end
 
-		-- Register it early so it won't be executed after the layouts PEW, if they
-		-- have one.
-		object:RegisterEvent("PLAYER_ENTERING_WORLD", object.UpdateAllElements)
-
-		styleFunc(object, object:GetAttribute'oUF-guessUnit' or unit, not header)
+		styleFunc(object, objectUnit, not header)
 
 		local showPlayer
 		if(header and i == 1) then
 			showPlayer = header:GetAttribute'showPlayer' or header:GetAttribute'showSolo'
 		end
 
-		local suffix = object:GetAttribute'unitsuffix'
 		if(suffix and suffix:match'target' and (i ~= 1 and not showPlayer)) then
 			enableTargetUpdate(object)
 		else
@@ -188,10 +238,10 @@ local initObject = function(unit, style, styleFunc, header, ...)
 		end
 
 		object:SetScript("OnAttributeChanged", OnAttributeChanged)
-		object:SetScript("OnShow", object.UpdateAllElements)
+		object:SetScript("OnShow", OnShow)
 
 		for element in next, elements do
-			object:EnableElement(element, object:GetAttribute'oUF-guessUnit' or unit)
+			object:EnableElement(element, objectUnit)
 		end
 
 		for _, func in next, callback do
@@ -494,5 +544,9 @@ oUF.units = units
 oUF.objects = objects
 
 if(global) then
-	_G[global] = oUF
+	if(parent ~= 'oUF' and global == 'oUF') then
+		error("%s is doing it wrong and setting its global to oUF.", parent)
+	else
+		_G[global] = oUF
+	end
 end

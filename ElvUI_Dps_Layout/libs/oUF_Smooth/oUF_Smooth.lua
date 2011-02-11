@@ -1,5 +1,7 @@
 local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 if C.unitframes.enable ~= true or C.unitframes.showsmooth ~= true then return end
+local _, ns = ...
+local oUF = ns.oUF or oUF
 if not oUF then return end
 
 local smoothing = {}

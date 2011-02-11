@@ -4,6 +4,9 @@
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 E.LoadUFFunctions = function(layout)
+	local oUF = ElvUF or oUF
+	assert(oUF, "ElvUI was unable to locate oUF.")
+
 	function E.SpawnMenu(self)
 		local unit = self.unit:gsub("(.)", string.upper, 1)
 		if self.unit == "targettarget" then return end

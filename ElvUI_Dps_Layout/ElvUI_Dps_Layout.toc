@@ -4,7 +4,7 @@
 ## Notes: Unitframe layout for party and raid, DPS mode.
 ## X-Category: UnitFrame
 ## RequiredDeps: ElvUI
-## X-oUF: oUF
+## X-oUF: ElvUF
 
 libs\load_libs.xml
 templates.xml

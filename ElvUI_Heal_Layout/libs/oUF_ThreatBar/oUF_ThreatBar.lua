@@ -13,6 +13,8 @@ if C.unitframes.enable ~= true or C.unitframes.showthreat ~= true then return en
 	.maxThreatVal - For use with .useRawThreat.  Allows threat percentage greater than 100.
 ]]--
 
+local _, ns = ...
+local oUF = ns.oUF or oUF
 if not oUF then return end
 
 local ThreatNumParty = 0

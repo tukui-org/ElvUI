@@ -1,5 +1,4 @@
 local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
-if not oUF then return end
 
 local _, ns = ...
 local oUF = ns.oUF or oUF
@@ -410,7 +409,7 @@ end
 
 function E.MoveUF()
 	if InCombatLockdown() then return end
-
+	
 	if(not _LOCK) then
 		for k, obj in next, oUF.objects do
 			local style, identifier, isHeader = getObjectInformation(obj)

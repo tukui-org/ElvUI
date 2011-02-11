@@ -34,7 +34,7 @@ local Update = function(self, event, unit)
 	elseif(power.colorHappiness and UnitIsUnit(unit, "pet") and GetPetHappiness()) then
 		t = self.colors.happiness[GetPetHappiness()]
 	elseif(power.colorPower) then
-		local ptype, ptoken, altR, altG, altB  = UnitPowerType(unit)
+		local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
 
 		t = self.colors.power[ptoken]
 		if(not t and altR) then

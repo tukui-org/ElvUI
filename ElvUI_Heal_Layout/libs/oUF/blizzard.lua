@@ -78,11 +78,13 @@ function oUF:DisableBlizzard(unit, object)
 
 		enableTargetUpdate(object)
 	elseif(unit:match'(boss)%d?$' == 'boss') then
+		enableTargetUpdate(object)
+
 		local id = unit:match'boss(%d)'
 		if(id) then
 			baseName = 'Boss' .. id .. 'TargetFrame'
 		else
-			for i=1, 3 do
+			for i=1, 4 do
 				HandleFrame(('Boss%dTargetFrame'):format(i))
 			end
 		end

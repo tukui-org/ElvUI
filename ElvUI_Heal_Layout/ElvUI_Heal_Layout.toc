@@ -5,7 +5,7 @@
 ## X-Category: UnitFrame
 ## RequiredDeps: ElvUI
 ## OptionalDeps: ElvUI_Dps_Layout
-## X-oUF: oUF
+## X-oUF: ElvUF
 
 libs\load_libs.xml
 templates.xml

@@ -21,6 +21,7 @@ local Path = function(self, ...)
 end
 
 local ForceUpdate = function(element)
+	if(not element.__owner.unit) then return end
 	return Path(element.__owner, 'ForceUpdate')
 end
 

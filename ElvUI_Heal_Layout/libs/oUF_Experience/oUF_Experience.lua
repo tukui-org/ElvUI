@@ -1,6 +1,5 @@
 local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 if C.unitframes.enable ~= true then return end
-if not oUF then return end
 --[[
 
 	Elements handled:

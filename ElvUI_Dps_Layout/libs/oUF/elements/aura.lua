@@ -5,8 +5,7 @@ local VISIBLE = 1
 local HIDDEN = 0
 
 local UpdateTooltip = function(self)
-	if (not self.parent:GetParent().unit) or (not self:GetID()) then return end
-	GameTooltip:SetUnitAura(self.parent:GetParent().unit, self:GetID(), self.filter)
+	GameTooltip:SetUnitAura(self.parent:GetParent().unit or self.parent:GetParent():GetParent().unit, self:GetID(), self.filter)
 end
 
 local OnEnter = function(self)
@@ -82,7 +81,7 @@ local customFilter = function(icons, unit, icon, name, rank, texture, count, dty
 end
 
 local updateIcon = function(unit, icons, index, offset, filter, isDebuff, visible)
-	local name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID = UnitAura(unit, index, filter)
+	local name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff = UnitAura(unit, index, filter)
 	if(name) then
 		local n = visible + offset + 1
 		local icon = icons[n]
@@ -90,7 +89,7 @@ local updateIcon = function(unit, icons, index, offset, filter, isDebuff, visibl
 			icon = (icons.CreateIcon or createAuraIcon) (icons, n)
 		end
 
-		local show = (icons.CustomFilter or customFilter) (icons, unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID)
+		local show = (icons.CustomFilter or customFilter) (icons, unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff)
 		if(show) then
 			-- We might want to consider delaying the creation of an actual cooldown
 			-- object to this point, but I think that will just make things needlessly
