@@ -113,6 +113,12 @@ local function Update(self, t)
 	
 	local Hr, Min, AmPm = CalculateTimeValues()
 	
+	if CalendarGetNumPendingInvites() > 0 then
+		E.Flash(TimeDataText, 0.53)
+	else
+		E.StopFlash(TimeDataText)
+	end
+	
 	-- no update quick exit
 	if (Hr == curHr and Min == curMin and AmPm == curAmPm) then
 		int = 2
@@ -129,11 +135,6 @@ local function Update(self, t)
 		Text:SetFormattedText(ukDisplayFormat, Hr, Min, APM[AmPm])
 	end
 	
-	if CalendarGetNumPendingInvites() > 0 then
-		E.Flash(TimeDataText, 0.53)
-	else
-		E.StopFlash(TimeDataText)
-	end
 	self:SetAllPoints(Text)
 	int = 2
 end
