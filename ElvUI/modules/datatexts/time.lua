@@ -141,7 +141,7 @@ end
 
 Stat:SetScript("OnEnter", function(self)
 	OnLoad = function(self) RequestRaidInfo() end
-	local anchor, panel, xoff, yoff = E.DataTextTooltipAnchor(Text)
+	local anchor, panel, xoff, yoff = E.DataTextTooltipAnchor(fader)
 	GameTooltip:SetOwner(panel, anchor, xoff, yoff)
 	GameTooltip:ClearLines()
 
