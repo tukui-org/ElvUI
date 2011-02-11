@@ -11,7 +11,7 @@ local europeDisplayFormat_nocolor = string.join("", "%02d", ":|r%02d")
 local ukDisplayFormat_nocolor = string.join("", "", "%d", ":|r%02d", " %s|r")
 local timerLongFormat = "%d:%02d:%02d"
 local timerShortFormat = "%d:%02d"
-local lockoutInfoFormat = "%s |cffaaaaaa(%s%s)"
+local lockoutInfoFormat = "%s |cffaaaaaa(%s%s, %s/%s)"
 local formatBattleGroundInfo = "%s: "
 local lockoutColorExtended, lockoutColorNormal = { r=0.3,g=1,b=0.3 }, { r=1,g=1,b=1 }
 local difficultyInfo = { "N", "N", "H", "H" }
@@ -151,7 +151,7 @@ Stat:SetScript("OnEnter", function(self)
 	
 	local oneraid, lockoutColor
 	for i = 1, GetNumSavedInstances() do
-		local name, _, reset, difficulty, locked, extended, _, isRaid, maxPlayers = GetSavedInstanceInfo(i)
+		local name, _, reset, difficulty, locked, extended, _, isRaid, maxPlayers, _, numEncounters, encounterProgress  = GetSavedInstanceInfo(i)
 		if isRaid and (locked or extended) then
 			local tr,tg,tb,diff
 			if not oneraid then
@@ -160,7 +160,7 @@ Stat:SetScript("OnEnter", function(self)
 				oneraid = true
 			end
 			if extended then lockoutColor = lockoutColorExtended else lockoutColor = lockoutColorNormal end
-			GameTooltip:AddDoubleLine(format(lockoutInfoFormat, name, maxPlayers, difficultyInfo[difficulty]), formatResetTime(reset), 1,1,1, lockoutColor.r,lockoutColor.g,lockoutColor.b)
+			GameTooltip:AddDoubleLine(format(lockoutInfoFormat, name, maxPlayers, difficultyInfo[difficulty],encounterProgress,numEncounters), formatResetTime(reset), 1,1,1, lockoutColor.r,lockoutColor.g,lockoutColor.b)
 		end
 	end
 	GameTooltip:Show()
