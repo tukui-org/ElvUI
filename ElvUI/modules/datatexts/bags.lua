@@ -15,6 +15,7 @@ if C["datatext"].bags and C["datatext"].bags > 0 then
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
 	Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
 	Text:SetShadowOffset(E.mult, -E.mult)
+	Text:SetShadowColor(0, 0, 0, 0.4)
 	E.PP(C["datatext"].bags, Text)
 
 	local function OnEvent(self, event, ...)

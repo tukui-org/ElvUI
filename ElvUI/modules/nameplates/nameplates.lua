@@ -100,6 +100,7 @@ local function CreateAuraIcon(parent)
 	button.cd:SetReverse(true)
 	button.count = button:CreateFontString(nil,"OVERLAY")
 	button.count:SetFont(FONT,7,FONTFLAG)
+	button.count:SetShadowColor(0, 0, 0, 0.4)
 	button.count:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 2)
 	return button
 end
@@ -121,7 +122,7 @@ local function UpdateAuraIcon(button, unit, index, filter)
 	else
 		button.count:SetText("")
 	end
-	button.cd:SetScript("OnUpdate", function(self) if not button.cd.timer then self:SetScript("OnUpdate", nil) return end button.cd.timer.text:SetFont(FONT,8,FONTFLAG) end)
+	button.cd:SetScript("OnUpdate", function(self) if not button.cd.timer then self:SetScript("OnUpdate", nil) return end button.cd.timer.text:SetFont(FONT,8,FONTFLAG) button.cd.timer.text:SetShadowColor(0, 0, 0, 0.4) end)
 	button:Show()
 end
 
@@ -500,6 +501,7 @@ local function SkinObjects(frame)
 	--Create Level
 	hp.level = hp:CreateFontString(nil, "OVERLAY")
 	hp.level:SetFont(FONT, FONTSIZE, FONTFLAG)
+	hp.level:SetShadowColor(0, 0, 0, 0.4)
 	hp.level:SetTextColor(1, 1, 1)
 	hp.level:SetShadowOffset(E.mult, -E.mult)	
 	
@@ -512,6 +514,7 @@ local function SkinObjects(frame)
 	if C["nameplate"].showhealth == true then
 		hp.value = hp:CreateFontString(nil, "OVERLAY")	
 		hp.value:SetFont(FONT, FONTSIZE, FONTFLAG)
+		hp.value:SetShadowColor(0, 0, 0, 0.4)
 		hp.value:SetPoint("CENTER", hp)
 		hp.value:SetTextColor(1,1,1)
 		hp.value:SetShadowOffset(E.mult, -E.mult)
@@ -520,6 +523,7 @@ local function SkinObjects(frame)
 	--Debug Text for when i'm testing
 	hp.debug = hp:CreateFontString(nil, "OVERLAY")	
 	hp.debug:SetFont(FONT, FONTSIZE, FONTFLAG)
+	hp.debug:SetShadowColor(0, 0, 0, 0.4)
 	hp.debug:SetPoint("CENTER", hp, "CENTER", 0, 50)
 	hp.debug:SetTextColor(1,1,1)
 	hp.debug:SetShadowOffset(E.mult, -E.mult)
@@ -584,6 +588,7 @@ local function SkinObjects(frame)
 	cb.time = cb:CreateFontString(nil, "ARTWORK")
 	cb.time:SetPoint("RIGHT", cb, "LEFT", -1, 0)
 	cb.time:SetFont(FONT, FONTSIZE, FONTFLAG)
+	cb.time:SetShadowColor(0, 0, 0, 0.4)
 	cb.time:SetTextColor(1, 1, 1)
 	cb.time:SetShadowOffset(E.mult, -E.mult)
 
@@ -592,6 +597,7 @@ local function SkinObjects(frame)
 	cb.name:SetPoint("TOP", cb, "BOTTOM", 0, -3)
 	cb.name:SetFont(FONT, FONTSIZE, FONTFLAG)
 	cb.name:SetTextColor(1, 1, 1)
+	cb.name:SetShadowColor(0, 0, 0, 0.4)
 	cb.name:SetShadowOffset(E.mult, -E.mult)
 	
 	--We need the castbar shield to determine if it can be interrupted or not
@@ -607,6 +613,7 @@ local function SkinObjects(frame)
 	name:SetPoint('BOTTOMLEFT', hp, 'TOPLEFT', -10, 3)
 	name:SetPoint('BOTTOMRIGHT', hp, 'TOPRIGHT', 10, 3)
 	name:SetFont(FONT, FONTSIZE, FONTFLAG)
+	name:SetShadowColor(0, 0, 0, 0.4)
 	name:SetShadowOffset(E.mult, -E.mult)
 	frame.oldname = oldname
 	frame.name = name

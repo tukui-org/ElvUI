@@ -17,6 +17,7 @@ if C["datatext"].dur and C["datatext"].dur > 0 then
 	local Text  = DurabilityDataText:CreateFontString(nil, "OVERLAY")
 	Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
 	Text:SetShadowOffset(E.mult, -E.mult)
+	Text:SetShadowColor(0, 0, 0, 0.4)
 	E.PP(C["datatext"].dur, Text)
 	fader:SetFrameLevel(fader:GetParent():GetFrameLevel())
 	fader:SetFrameStrata(fader:GetParent():GetFrameStrata())

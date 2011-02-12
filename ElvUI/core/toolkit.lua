@@ -161,7 +161,7 @@ local function FontString(parent, name, fontName, fontHeight, fontStyle)
 	local fs = parent:CreateFontString(nil, "OVERLAY")
 	fs:SetFont(fontName, fontHeight, fontStyle)
 	fs:SetJustifyH("LEFT")
-	fs:SetShadowColor(0, 0, 0)
+	fs:SetShadowColor(0, 0, 0, 0.4)
 	fs:SetShadowOffset(E.mult, -E.mult)
 	
 	if not name then

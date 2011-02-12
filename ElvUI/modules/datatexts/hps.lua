@@ -15,6 +15,7 @@ if C["datatext"].hps_text and C["datatext"].hps_text > 0 then
 	local hText = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
 	hText:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
 	hText:SetShadowOffset(E.mult, -E.mult)
+	hText:SetShadowColor(0, 0, 0, 0.4)
 	hText:SetText("HPS: "..E.ValColor.."0.0")
  
 	E.PP(C["datatext"].hps_text, hText)

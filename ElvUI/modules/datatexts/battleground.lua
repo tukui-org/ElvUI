@@ -247,31 +247,43 @@ if C["datatext"].battleground == true then
 	
 	local Text1  = ElvuiInfoBattleGroundL:CreateFontString(nil, "OVERLAY")
 	Text1:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
+	Text1:SetShadowColor(0, 0, 0, 0.4)
+	Text1:SetShadowOffset(E.mult, -E.mult)
 	E.PP(1, Text1)
 	Text1:SetParent(ElvuiInfoBattleGroundL)
 	
 	local Text2  = ElvuiInfoBattleGroundL:CreateFontString(nil, "OVERLAY")
 	Text2:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
+	Text2:SetShadowColor(0, 0, 0, 0.4)
+	Text2:SetShadowOffset(E.mult, -E.mult)
 	E.PP(2, Text2)
 	Text2:SetParent(ElvuiInfoBattleGroundL)
 	
 	local Text3  = ElvuiInfoBattleGroundL:CreateFontString(nil, "OVERLAY")
 	Text3:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
+	Text3:SetShadowColor(0, 0, 0, 0.4)
+	Text3:SetShadowOffset(E.mult, -E.mult)
 	E.PP(3, Text3)
 	Text3:SetParent(ElvuiInfoBattleGroundL)
 	
 	local Text4  = ElvuiInfoBattleGroundR:CreateFontString(nil, "OVERLAY")
 	Text4:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
+	Text4:SetShadowColor(0, 0, 0, 0.4)
+	Text4:SetShadowOffset(E.mult, -E.mult)
 	E.PP(5, Text4)
 	Text4:SetParent(ElvuiInfoBattleGroundR)
 	
 	local Text5  = ElvuiInfoBattleGroundR:CreateFontString(nil, "OVERLAY")
 	Text5:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
+	Text5:SetShadowColor(0, 0, 0, 0.4)
+	Text5:SetShadowOffset(E.mult, -E.mult)
 	E.PP(4, Text5)
 	Text5:SetParent(ElvuiInfoBattleGroundR)
 	
 	local Text6  = ElvuiInfoBattleGroundR:CreateFontString(nil, "OVERLAY")
 	Text6:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
+	Text6:SetShadowColor(0, 0, 0, 0.4)
+	Text6:SetShadowOffset(E.mult, -E.mult)
 	E.PP(6, Text6)
 	Text6:SetParent(ElvuiInfoBattleGroundR)
 

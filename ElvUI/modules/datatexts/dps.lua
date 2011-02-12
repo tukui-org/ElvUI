@@ -18,6 +18,7 @@ if C["datatext"].dps_text and C["datatext"].dps_text > 0 then
 	local dText = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
 	dText:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
 	dText:SetShadowOffset(E.mult, -E.mult)
+	dText:SetShadowColor(0, 0, 0, 0.4)
 	dText:SetText("DPS: "..E.ValColor.."0.0|r")
 
 	E.PP(C["datatext"].dps_text, dText)

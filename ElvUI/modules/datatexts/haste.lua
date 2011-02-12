@@ -14,6 +14,7 @@ if C["datatext"].haste and C["datatext"].haste > 0 then
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
 	Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
 	Text:SetShadowOffset(E.mult, -E.mult)
+	Text:SetShadowColor(0, 0, 0, 0.4)
 	E.PP(C["datatext"].haste, Text)
 
 	local int = 1

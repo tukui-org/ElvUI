@@ -12,6 +12,7 @@ Stat:SetFrameLevel(3)
 
 local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
 Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
+Text:SetShadowColor(0, 0, 0, 0.4)
 Text:SetShadowOffset(E.mult, -E.mult)
 E.PP(C["datatext"].friends, Text)
 

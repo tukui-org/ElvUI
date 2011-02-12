@@ -15,6 +15,7 @@ if C["datatext"].stat2 and C["datatext"].stat2 > 0 then
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "LOW")
 	Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
 	Text:SetShadowOffset(E.mult, -E.mult)
+	Text:SetShadowColor(0, 0, 0, 0.4)
 	E.PP(C["datatext"].stat2, Text)
 	
 	local int = 1	
