@@ -854,7 +854,8 @@ local function Shared(self, unit)
 		AltPowerBar:SetHeight(4)
 		AltPowerBar:SetStatusBarTexture(C.media.normTex)
 		AltPowerBar:GetStatusBarTexture():SetHorizTile(false)
-
+		AltPowerBar:EnableMouse(true)
+		AltPowerBar:SetFrameStrata("HIGH")
 		AltPowerBar:Point("TOPLEFT", ElvuiInfoLeft, "TOPLEFT", 2, -2)
 		AltPowerBar:Point("BOTTOMRIGHT", ElvuiInfoLeft, "BOTTOMRIGHT", -2, 2)
 		
@@ -1697,7 +1698,6 @@ local function Shared(self, unit)
 			apb_bg:SetFrameLevel(AltPowerBar:GetFrameLevel() - 1)
 			AltPowerBar:SetStatusBarTexture(C.media.normTex)
 			AltPowerBar:GetStatusBarTexture():SetHorizTile(false)
-			AltPowerBar:SetStatusBarColor(1, 0, 0)
 		
 			AltPowerBar:SetPoint("TOPLEFT", apb_bg, "TOPLEFT", E.Scale(2), E.Scale(-2))
 			AltPowerBar:SetPoint("BOTTOMRIGHT", apb_bg, "BOTTOMRIGHT", E.Scale(-2), E.Scale(2))

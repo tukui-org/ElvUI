@@ -871,7 +871,9 @@ local function Shared(self, unit)
 		AltPowerBar:SetHeight(4)
 		AltPowerBar:SetStatusBarTexture(C.media.normTex)
 		AltPowerBar:GetStatusBarTexture():SetHorizTile(false)
-
+		AltPowerBar:EnableMouse(true)
+		AltPowerBar:SetFrameStrata("HIGH")
+		
 		AltPowerBar:Point("TOPLEFT", ElvuiInfoLeft, "TOPLEFT", 2, -2)
 		AltPowerBar:Point("BOTTOMRIGHT", ElvuiInfoLeft, "BOTTOMRIGHT", -2, 2)
 		
