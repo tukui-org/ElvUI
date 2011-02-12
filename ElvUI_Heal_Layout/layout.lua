@@ -854,11 +854,9 @@ local function Shared(self, unit)
 		AltPowerBar:SetHeight(4)
 		AltPowerBar:SetStatusBarTexture(C.media.normTex)
 		AltPowerBar:GetStatusBarTexture():SetHorizTile(false)
-		AltPowerBar:SetStatusBarColor(1, 0, 0)
 
-		AltPowerBar:SetPoint("LEFT")
-		AltPowerBar:SetPoint("RIGHT")
-		AltPowerBar:SetPoint("TOP", self.Health, "TOP")
+		AltPowerBar:Point("TOPLEFT", ElvuiInfoLeft, "TOPLEFT", 2, -2)
+		AltPowerBar:Point("BOTTOMRIGHT", ElvuiInfoLeft, "BOTTOMRIGHT", -2, 2)
 		
 		AltPowerBar:SetBackdrop({
 		  bgFile = C["media"].blank, 
@@ -868,10 +866,16 @@ local function Shared(self, unit)
 		})
 		AltPowerBar:SetBackdropColor(0, 0, 0, 0)
 		AltPowerBar:SetBackdropBorderColor(0, 0, 0, 0)
-		self.AltPowerBar = AltPowerBar				
 		
-		-- update all frames when changing area, to fix exiting instance while in vehicle
-		self:RegisterEvent("ZONE_CHANGED_NEW_AREA", E.updateAllElements)
+		AltPowerBar:FontString(nil, font1, C["unitframes"].fontsize, "THINOUTLINE")
+		AltPowerBar.text:SetPoint("CENTER")
+		AltPowerBar.text:SetJustifyH("CENTER")
+		
+		AltPowerBar:HookScript("OnShow", E.AltPowerBarOnToggle)
+		AltPowerBar:HookScript("OnHide", E.AltPowerBarOnToggle)
+
+		self.AltPowerBar = AltPowerBar		
+		self.AltPowerBar.PostUpdate = E.AltPowerBarPostUpdate
 	end
 	
 	------------------------------------------------------------------------
@@ -1242,7 +1246,6 @@ local function Shared(self, unit)
 		AltPowerBar:SetHeight(4)
 		AltPowerBar:SetStatusBarTexture(C.media.normTex)
 		AltPowerBar:GetStatusBarTexture():SetHorizTile(false)
-		AltPowerBar:SetStatusBarColor(1, 0, 0)
 
 		AltPowerBar:SetPoint("LEFT")
 		AltPowerBar:SetPoint("RIGHT")
@@ -1257,8 +1260,8 @@ local function Shared(self, unit)
 		AltPowerBar:SetBackdropColor(0, 0, 0, 0)
 		AltPowerBar:SetBackdropBorderColor(0, 0, 0, 0)
 
-		self.AltPowerBar = AltPowerBar				
-		
+		self.AltPowerBar = AltPowerBar		
+		self.AltPowerBar.PostUpdate = E.AltPowerBarPostUpdate	
 	end
 	
 	------------------------------------------------------------------------
@@ -1711,6 +1714,7 @@ local function Shared(self, unit)
 			AltPowerBar:HookScript("OnHide", function(self) self:GetParent().FrameBorder.shadow:SetPoint("TOPLEFT", E.Scale(-4), E.Scale(4)) end)
 			AltPowerBar.FrameBackdrop = apb_bg		
 			self.AltPowerBar = AltPowerBar	
+			self.AltPowerBar.PostUpdate = E.AltPowerBarPostUpdate
 		end
 		
 		-- names

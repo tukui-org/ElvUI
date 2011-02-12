@@ -972,6 +972,41 @@ E.LoadUFFunctions = function(layout)
 			self.Text:SetFormattedText('XP: '..E.ShortValue(min)..' / '..E.ShortValue(max)..' <%d%%>', min / max * 100)
 		end
 	end
+	
+	function E.AltPowerBarOnToggle(self)
+		local unit = self:GetParent().unit
+		
+		if unit == nil or unit ~= "player" then return end
+		
+		if self:IsShown() then
+			for _, text in pairs(E.LeftDatatexts) do
+				text:Hide()
+			end
+		else
+			for _, text in pairs(E.LeftDatatexts) do
+				text:Show()
+			end		
+		end
+	end
+	
+	function E.AltPowerBarPostUpdate(self, min, cur, max)
+		print(self, min, cur, max)
+		local perc = math.floor((cur/max)*100)
+		
+		if perc < 35 then
+			self:SetStatusBarColor(0, 1, 0)
+		elseif perc < 75 then
+			self:SetStatusBarColor(1, 1, 0)
+		else
+			self:SetStatusBarColor(1, 0, 0)
+		end
+		
+		if self.text and perc ~= 0 then
+			self.text:SetText(format("%d%%", perc))
+		elseif self.text then
+			self.text:SetText("")
+		end
+	end
 
 
 

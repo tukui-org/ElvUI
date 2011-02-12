@@ -1,6 +1,7 @@
 --Set Datatext Postitions
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
+E.LeftDatatexts = {}
 function E.PP(p, obj)
 	obj:SetHeight(E.Scale(15))
 	local left = ElvuiInfoLeft
@@ -16,17 +17,20 @@ function E.PP(p, obj)
 		obj:SetPoint('TOP', left)
 		obj:SetPoint('BOTTOM', left)
 		if t ~= true then obj:SetParent(left) else obj:GetParent():SetParent(left) end
+		tinsert(E.LeftDatatexts, obj)
 	elseif p == 2 then
 		obj:SetHeight(left:GetHeight())
 		obj:SetPoint('TOP', left)
 		obj:SetPoint('BOTTOM', left)
 		if t ~= true then obj:SetParent(left) else obj:GetParent():SetParent(left) end
+		tinsert(E.LeftDatatexts, obj)
 	elseif p == 3 then
 		obj:SetHeight(left:GetHeight())
 		obj:SetPoint("RIGHT", left, -15, 0)
 		obj:SetPoint('TOP', left)
 		obj:SetPoint('BOTTOM', left)
 		if t ~= true then obj:SetParent(left) else obj:GetParent():SetParent(left) end
+		tinsert(E.LeftDatatexts, obj)
 	elseif p == 4 then
 		obj:SetHeight(right:GetHeight())
 		obj:SetPoint("LEFT", right, 15, 0)

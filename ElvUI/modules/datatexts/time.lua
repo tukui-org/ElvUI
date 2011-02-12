@@ -28,7 +28,9 @@ local Text = fader:CreateFontString(nil, "OVERLAY")
 Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
 Text:SetShadowOffset(E.mult, -E.mult)
 E.PP(C["datatext"].wowtime, Text)
-
+fader:SetFrameLevel(fader:GetParent():GetFrameLevel())
+fader:SetFrameStrata(fader:GetParent():GetFrameStrata())
+	
 local APM = { TIMEMANAGER_PM, TIMEMANAGER_AM }
 
 local function CalculateTimeValues(tt)
