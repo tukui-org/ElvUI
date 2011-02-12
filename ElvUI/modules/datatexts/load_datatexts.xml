@@ -15,4 +15,5 @@
 	<Script file="hps.lua"/>
 	<Script file="haste.lua"/>
 	<Script file="currency.lua"/>
+	<Script file="specswitch.lua"/>
 </Ui>	

@@ -210,7 +210,7 @@ C["datatext"] = {
 	["hps_text"] = 0,						-- show current hps
 	["haste"] = 0,							-- show current haste
 	["currency"] = 0,						-- show watched items in backpack
-	
+	["specswitch"] = 0,
 	["battleground"] = true,               -- enable 3 stats in battleground only that replace stat1,stat2,stat3.
 	["time24"] = false,                     -- set time to 24h format.
 	["localtime"] = true,                 -- set time to local time instead of server time.
