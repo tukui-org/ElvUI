@@ -8,15 +8,15 @@ local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Lo
 if C["datatext"].battleground == true then
 	local shownbg = true
 
-	--Localized names of BGs
-	local WSG = select(1, GetBattlegroundInfo(5))
-	local TP = select(1, GetBattlegroundInfo(3))
-	local AV = select(1, GetBattlegroundInfo(8))
-	local SOTA = select(1, GetBattlegroundInfo(9))
-	local IOC = select(1, GetBattlegroundInfo(2))
-	local EOTS = select(1, GetBattlegroundInfo(7))
-	local TBFG = select(1, GetBattlegroundInfo(4))
-	local AB = select(1, GetBattlegroundInfo(6))
+	--Map IDs
+	local WSG = 443
+	local TP = 626
+	local AV = 401
+	local SOTA = 512
+	local IOC = 540
+	local EOTS = 482
+	local TBFG = 736
+	local AB = 461
 
 	ElvuiInfoLeft:SetScript("OnMouseDown", function(self) 
 		if shownbg == true then 
@@ -101,23 +101,25 @@ if C["datatext"].battleground == true then
 				if name == E.myname then
 					local color = RAID_CLASS_COLORS[select(2, UnitClass("player"))]
 					local classcolor = ("|cff%.2x%.2x%.2x"):format(color.r * 255, color.g * 255, color.b * 255)
+					local curmapid = GetCurrentMapAreaID()
+					SetMapToCurrentZone()
 					GameTooltip:SetOwner(self, "ANCHOR_CURSOR")
 					GameTooltip:ClearLines()
 					GameTooltip:AddDoubleLine(L.datatext_ttstatsfor, classcolor..name.."|r")
 					GameTooltip:AddLine' '
 					--Add extra statistics to watch based on what BG you are in.
-					if GetRealZoneText() == WSG or GetRealZoneText() == TP then 
+					if curmapid == WSG or curmapid == TP then 
 						GameTooltip:AddDoubleLine(L.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_flagsreturned,GetBattlefieldStatData(i, 2),1,1,1)
-					elseif GetRealZoneText() == AV then
+					elseif curmapid == AV then
 						GameTooltip:AddDoubleLine(L.datatext_graveyardsassaulted,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_graveyardsdefended,GetBattlefieldStatData(i, 2),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_towersassaulted,GetBattlefieldStatData(i, 3),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_towersdefended,GetBattlefieldStatData(i, 4),1,1,1)
-					elseif GetRealZoneText() == SOTA then
+					elseif curmapid == SOTA then
 						GameTooltip:AddDoubleLine(L.datatext_demolishersdestroyed,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_gatesdestroyed,GetBattlefieldStatData(i, 2),1,1,1)
-					elseif GetRealZoneText() == IOC or GetRealZoneText() == EOTS or GetRealZoneText() == TBFG or GetRealZoneText() == AB then
+					elseif curmapid == IOC or curmapid == EOTS or curmapid == TBFG or curmapid == AB then
 						GameTooltip:AddDoubleLine(L.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
 					end			
@@ -141,26 +143,28 @@ if C["datatext"].battleground == true then
 				if name == E.myname then
 					local color = RAID_CLASS_COLORS[select(2, UnitClass("player"))]
 					local classcolor = ("|cff%.2x%.2x%.2x"):format(color.r * 255, color.g * 255, color.b * 255)
+					local curmapid = GetCurrentMapAreaID()
+					SetMapToCurrentZone()
 					GameTooltip:SetOwner(self, "ANCHOR_CURSOR")
 					GameTooltip:ClearLines()
 					GameTooltip:AddDoubleLine(L.datatext_ttstatsfor, classcolor..name.."|r")
 					GameTooltip:AddLine' '
 					--Add extra statistics to watch based on what BG you are in.
-					if GetRealZoneText() == WSG or GetRealZoneText() == TP then 
+					if curmapid == WSG or curmapid == TP then 
 						GameTooltip:AddDoubleLine(L.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_flagsreturned,GetBattlefieldStatData(i, 2),1,1,1)
-					elseif GetRealZoneText() == AV then
+					elseif curmapid == AV then
 						GameTooltip:AddDoubleLine(L.datatext_graveyardsassaulted,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_graveyardsdefended,GetBattlefieldStatData(i, 2),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_towersassaulted,GetBattlefieldStatData(i, 3),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_towersdefended,GetBattlefieldStatData(i, 4),1,1,1)
-					elseif GetRealZoneText() == SOTA then
+					elseif curmapid == SOTA then
 						GameTooltip:AddDoubleLine(L.datatext_demolishersdestroyed,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_gatesdestroyed,GetBattlefieldStatData(i, 2),1,1,1)
-					elseif GetRealZoneText() == IOC or GetRealZoneText() == EOTS or GetRealZoneText() == TBFG or GetRealZoneText() == AB then
+					elseif curmapid == IOC or curmapid == EOTS or curmapid == TBFG or curmapid == AB then
 						GameTooltip:AddDoubleLine(L.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
-					end					
+					end			
 					GameTooltip:Show()
 				end
 			end
