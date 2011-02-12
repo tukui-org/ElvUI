@@ -125,7 +125,7 @@ SlashCmdList.RESETMOVERS = function(arg)
 		E.ResetMovers(arg) 
 	end
 	
-	if oUF and (arg == nil or arg == "" or arg == "uf") then 
+	if (ElvUI or oUF) and (arg == nil or arg == "" or arg == "uf") then 
 		StaticPopup_Show("RESET_UF") 
 	end 
 end
