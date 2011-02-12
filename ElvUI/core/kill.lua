@@ -25,6 +25,11 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 			end
 		end
 		
+		--[[if C["auras"].minimapauras == true then
+			BuffFrame:Kill()
+			TemporaryEnchantFrame:Kill()
+		end]]
+		
 		if addon ~= "ElvUI" then return end
 		StreamingIcon:Kill()
 		Advanced_UseUIScale:Kill()

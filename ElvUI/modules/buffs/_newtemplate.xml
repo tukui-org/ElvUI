@@ -1,0 +1,22 @@
+<Ui xmlns='http://www.blizzard.com/wow/ui'>
+	<Button name='ElvuiAuraTemplate' inherits='SecureActionButtonTemplate' virtual='true'>
+		<Size x='26' y='26'/>
+		<Attributes>
+			<Attribute name='type' value='cancelaura'/>
+		</Attributes>
+		<Scripts>
+			<OnLoad>
+				self:RegisterForClicks('RightButtonUp')
+			</OnLoad>
+			<OnEnter>
+				GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMLEFT')
+				if self:GetAttribute("target-slot") == 16 or self:GetAttribute("target-slot") == 17 or self:GetAttribute("target-slot") == 18 then
+					GameTooltip:SetInventoryItem("player", self:GetID())
+				else
+					GameTooltip:SetUnitAura(PlayerFrame.unit, self:GetID(), self:GetAttribute('filter'))
+				end
+			</OnEnter>
+			<OnLeave function='GameTooltip_Hide'/>
+		</Scripts>
+	</Button>
+</Ui>
