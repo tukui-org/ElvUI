@@ -111,6 +111,8 @@ if C["datatext"].battleground == true then
 					if curmapid == WSG or curmapid == TP then 
 						GameTooltip:AddDoubleLine(L.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_flagsreturned,GetBattlefieldStatData(i, 2),1,1,1)
+					elseif curmapid == EOTS then
+						GameTooltip:AddDoubleLine(L.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
 					elseif curmapid == AV then
 						GameTooltip:AddDoubleLine(L.datatext_graveyardsassaulted,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_graveyardsdefended,GetBattlefieldStatData(i, 2),1,1,1)
@@ -119,7 +121,7 @@ if C["datatext"].battleground == true then
 					elseif curmapid == SOTA then
 						GameTooltip:AddDoubleLine(L.datatext_demolishersdestroyed,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_gatesdestroyed,GetBattlefieldStatData(i, 2),1,1,1)
-					elseif curmapid == IOC or curmapid == EOTS or curmapid == TBFG or curmapid == AB then
+					elseif curmapid == IOC or curmapid == TBFG or curmapid == AB then
 						GameTooltip:AddDoubleLine(L.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
 					end			
@@ -153,6 +155,8 @@ if C["datatext"].battleground == true then
 					if curmapid == WSG or curmapid == TP then 
 						GameTooltip:AddDoubleLine(L.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_flagsreturned,GetBattlefieldStatData(i, 2),1,1,1)
+					elseif curmapid == EOTS then
+						GameTooltip:AddDoubleLine(L.datatext_flagscaptured,GetBattlefieldStatData(i, 1),1,1,1)
 					elseif curmapid == AV then
 						GameTooltip:AddDoubleLine(L.datatext_graveyardsassaulted,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_graveyardsdefended,GetBattlefieldStatData(i, 2),1,1,1)
@@ -161,7 +165,7 @@ if C["datatext"].battleground == true then
 					elseif curmapid == SOTA then
 						GameTooltip:AddDoubleLine(L.datatext_demolishersdestroyed,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_gatesdestroyed,GetBattlefieldStatData(i, 2),1,1,1)
-					elseif curmapid == IOC or curmapid == EOTS or curmapid == TBFG or curmapid == AB then
+					elseif curmapid == IOC or curmapid == TBFG or curmapid == AB then
 						GameTooltip:AddDoubleLine(L.datatext_basesassaulted,GetBattlefieldStatData(i, 1),1,1,1)
 						GameTooltip:AddDoubleLine(L.datatext_basesdefended,GetBattlefieldStatData(i, 2),1,1,1)
 					end			
