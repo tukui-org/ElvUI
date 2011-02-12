@@ -990,7 +990,6 @@ E.LoadUFFunctions = function(layout)
 	end
 	
 	function E.AltPowerBarPostUpdate(self, min, cur, max)
-		print(self, min, cur, max)
 		local perc = math.floor((cur/max)*100)
 		
 		if perc < 35 then
