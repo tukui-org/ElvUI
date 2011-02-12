@@ -112,32 +112,30 @@ local function Update(self, t)
 end
 Stat:SetScript("OnMouseDown", function () collectgarbage("collect") Update(Stat, 20) end)
 Stat:SetScript("OnEnter", function(self)
-	if not InCombatLockdown() then
-		local bandwidth = GetAvailableBandwidth()
-		local world_latency = select(4, GetNetStats()) 
-		local anchor, panel, xoff, yoff = E.DataTextTooltipAnchor(Text)
-		GameTooltip:SetOwner(panel, anchor, xoff, yoff)
-		GameTooltip:ClearLines()
-		
-		GameTooltip:AddDoubleLine(L.datatext_worldlatency, string.format(worldLatencyString, world_latency), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
-		
-		if bandwidth ~= 0 then
-			GameTooltip:AddDoubleLine(L.datatext_bandwidth , string.format(bandwidthString, bandwidth),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
-			GameTooltip:AddDoubleLine(L.datatext_download , string.format(percentageString, GetDownloadedPercentage() *100),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
-			GameTooltip:AddLine(" ")
-		end
-		local totalMemory = UpdateMemory()
-		GameTooltip:AddDoubleLine(L.datatext_totalmemusage, formatMem(totalMemory), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+	local bandwidth = GetAvailableBandwidth()
+	local world_latency = select(4, GetNetStats()) 
+	local anchor, panel, xoff, yoff = E.DataTextTooltipAnchor(Text)
+	GameTooltip:SetOwner(panel, anchor, xoff, yoff)
+	GameTooltip:ClearLines()
+	
+	GameTooltip:AddDoubleLine(L.datatext_worldlatency, string.format(worldLatencyString, world_latency), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+	
+	if bandwidth ~= 0 then
+		GameTooltip:AddDoubleLine(L.datatext_bandwidth , string.format(bandwidthString, bandwidth),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+		GameTooltip:AddDoubleLine(L.datatext_download , string.format(percentageString, GetDownloadedPercentage() *100),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
 		GameTooltip:AddLine(" ")
-		for i = 1, #memoryTable do
-			if (memoryTable[i][4]) then
-				local red = memoryTable[i][3] / totalMemory
-				local green = 1 - red
-				GameTooltip:AddDoubleLine(memoryTable[i][2], formatMem(memoryTable[i][3]), 1, 1, 1, red, green + .5, 0)
-			end						
-		end
-		GameTooltip:Show()
 	end
+	local totalMemory = UpdateMemory()
+	GameTooltip:AddDoubleLine(L.datatext_totalmemusage, formatMem(totalMemory), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+	GameTooltip:AddLine(" ")
+	for i = 1, #memoryTable do
+		if (memoryTable[i][4]) then
+			local red = memoryTable[i][3] / totalMemory
+			local green = 1 - red
+			GameTooltip:AddDoubleLine(memoryTable[i][2], formatMem(memoryTable[i][3]), 1, 1, 1, red, green + .5, 0)
+		end						
+	end
+	GameTooltip:Show()
 end)
 Stat:SetScript("OnLeave", function() GameTooltip:Hide() end)
 Stat:SetScript("OnUpdate", Update) 

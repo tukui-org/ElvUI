@@ -143,6 +143,7 @@ local function Update(self, t)
 end
 
 Stat:SetScript("OnEnter", function(self)
+	if InCombatLockdown() then return end
 	OnLoad = function(self) RequestRaidInfo() end
 	local anchor, panel, xoff, yoff = E.DataTextTooltipAnchor(fader)
 	GameTooltip:SetOwner(panel, anchor, xoff, yoff)
@@ -171,11 +172,7 @@ Stat:SetScript("OnEnter", function(self)
 	local timeText
 	local Hr, Min, AmPm = CalculateTimeValues(true)
 
-	if C["datatext"].localtime == true then
-		timeText = L.datatext_servertime
-	else
-		timeText = L.datatext_localtime
-	end
+	timeText = C["datatext"].localtime == true and TIMEMANAGER_TOOLTIP_LOCALTIME or TIMEMANAGER_TOOLTIP_REALMTIME
 	if AmPm == -1 then
 			GameTooltip:AddDoubleLine(timeText, string.format(europeDisplayFormat_nocolor, Hr, Min))
 	else

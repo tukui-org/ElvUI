@@ -7,9 +7,9 @@ if not C["datatext"].guild or C["datatext"].guild == 0 then return end
 
 local tthead, ttsubh, ttoff = {r=0.4, g=0.78, b=1}, {r=0.75, g=0.9, b=1}, {r=.3,g=1,b=.3}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
-local displayString = string.join("", "%s: ", E.ValColor, "%d|r")
+local displayString = string.join("", GUILD, ": ", E.ValColor, "%d|r")
 local guildInfoString = "%s [%d]"
-local guildInfoString2 = "%s: %d/%d"
+local guildInfoString2 = string.join("", GUILD, ": %d/%d")
 local guildMotDString = "  %s |cffaaaaaa- |cffffffff%s"
 local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r %s"
 local levelNameStatusString = "|cff%02x%02x%02x%d|r %s %s"
@@ -121,7 +121,7 @@ local function Update(self, event, ...)
 		end
 		
 		self:SetAllPoints(Text)
-		Text:SetFormattedText(displayString, L.datatext_guild, totalOnline)
+		Text:SetFormattedText(displayString, totalOnline)
 		
 		if not Stat:GetScript("OnMouseDown") then
 			Stat:SetScript("OnMouseDown", function(self, btn)
@@ -200,7 +200,7 @@ Stat:SetScript("OnEnter", function(self)
 	local anchor, panel, xoff, yoff = E.DataTextTooltipAnchor(Text)
 	GameTooltip:SetOwner(panel, anchor, xoff, yoff)
 	GameTooltip:ClearLines()
-	GameTooltip:AddDoubleLine(string.format(guildInfoString, GetGuildInfo('player'), GetGuildLevel()), string.format(guildInfoString2, L.datatext_guild, online, #guildTable),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
+	GameTooltip:AddDoubleLine(string.format(guildInfoString, GetGuildInfo('player'), GetGuildLevel()), string.format(guildInfoString2, online, #guildTable),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
 	GameTooltip:AddLine(' ')
 	
 	if guildMotD ~= "" then GameTooltip:AddLine(string.format(guildMotDString, GUILD_MOTD, guildMotD), ttsubh.r, ttsubh.g, ttsubh.b, 1) end

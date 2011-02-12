@@ -208,7 +208,6 @@ C["datatext"] = {
 	["bags"] = 0,							-- show ammount of bag space available
 	["dps_text"] = 0,						-- show current dps
 	["hps_text"] = 0,						-- show current hps
-	["haste"] = 0,							-- show current haste
 	["currency"] = 0,						-- show watched items in backpack
 	["specswitch"] = 0,
 	["battleground"] = true,               -- enable 3 stats in battleground only that replace stat1,stat2,stat3.

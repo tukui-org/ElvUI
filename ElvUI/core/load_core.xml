@@ -11,7 +11,6 @@
 	<Script file='staticpopups.lua'/>
 	<Script file='fonts.lua'/>
 	<Script file='animation.lua'/>
-	<Script file='kill.lua'/>
 	<Script file='uf_functions.lua'/>
 	<Script file='movers.lua'/>
 </Ui>

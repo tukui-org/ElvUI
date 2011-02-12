@@ -7,4 +7,5 @@
 	<Script file='achievements.lua'/>
 	<Script file='bubbles.lua'/>
 	<Script file='skin.lua'/>
+	<Script file='kill.lua'/>
 </Ui>
