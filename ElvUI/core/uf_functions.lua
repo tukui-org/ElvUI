@@ -974,18 +974,14 @@ E.LoadUFFunctions = function(layout)
 	end
 	
 	function E.AltPowerBarOnToggle(self)
-		local unit = self:GetParent().unit
+		local unit = self:GetParent().unit or self:GetParent():GetParent().unit
 		
 		if unit == nil or unit ~= "player" then return end
 		
 		if self:IsShown() then
-			for _, text in pairs(E.LeftDatatexts) do
-				text:Hide()
-			end
+			for _, text in pairs(E.LeftDatatexts) do text:Hide() end
 		else
-			for _, text in pairs(E.LeftDatatexts) do
-				text:Show()
-			end		
+			for _, text in pairs(E.LeftDatatexts) do text:Show() end		
 		end
 	end
 	
