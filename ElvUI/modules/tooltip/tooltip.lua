@@ -83,7 +83,16 @@ local function SetRightTooltipPos(self)
 		if C["others"].enablebag == true and StuffingFrameBags and StuffingFrameBags:IsShown() then
 			self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", -1, E.Scale(18))	
 		elseif TooltipMover and E.Movers["TooltipMover"]["moved"] == true then
-			self:SetPoint("BOTTOMRIGHT", TooltipMover, "TOPRIGHT", -1, E.Scale(18))
+			local point, _, _, _, _ = TooltipMover:GetPoint()
+			if point == "TOPLEFT" then
+				self:SetPoint("TOPLEFT", TooltipMover, "BOTTOMLEFT", 1, E.Scale(-4))
+			elseif point == "TOPRIGHT" then
+				self:SetPoint("TOPRIGHT", TooltipMover, "BOTTOMRIGHT", -1, E.Scale(-4))
+			elseif point == "BOTTOMLEFT" or point == "LEFT" then
+				self:SetPoint("BOTTOMLEFT", TooltipMover, "TOPLEFT", 1, E.Scale(18))
+			else
+				self:SetPoint("BOTTOMRIGHT", TooltipMover, "TOPRIGHT", -1, E.Scale(18))
+			end
 		else
 			if CheckAddOnShown() == true then
 				if C["chat"].showbackdrop == true and E.ChatRightShown == true then
