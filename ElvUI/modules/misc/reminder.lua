@@ -15,6 +15,8 @@ if C["buffreminder"].enable ~= true then return end
 	tree - you must be active in a specific talent tree for it to display (1, 2, 3) note: tree order can be viewed from left to right when you open your talent pane
 	instance - you must be in an instance for it to display, note: if you have combat checked and this option checked then the combat check will only run when your inside a party/raid instance
 	pvp - you must be in a pvp area for it to display (bg/arena), note: if you have combat checked and this option checked then the combat check will only run when your inside a bg/arena instance
+	reversecheck - only works if you provide a role or a tree, instead of hiding the frame when you have the buff, it shows the frame when you have the buff.
+	negate_reversecheck - if reversecheck is set you can set a talent tree to not follow the reverse check
 	
 	for every group created a new frame is created, it's a lot easier this way
 ]]
@@ -75,7 +77,9 @@ E.ReminderBuffs = {
 				25780, 
 			},
 			["role"] = "Tank",
-			["instance"] = true,	
+			["instance"] = true,
+			["reversecheck"] = true,
+			["negate_reversecheck"] = 1, --Holy paladins use RF sometimes
 		},
 	},
 	SHAMAN = {
@@ -133,7 +137,8 @@ E.ReminderBuffs = {
 				48263, 
 			},
 			["role"] = "Tank",
-			["instance"] = true,		
+			["instance"] = true,	
+			["reversecheck"] = true,
 		},
 	},	
 }
@@ -148,11 +153,12 @@ local function OnEvent(self, event, arg1)
 	if not GetActiveTalentGroup() then return end
 	if event == "UNIT_AURA" and arg1 ~= "player" then return end 
 	
+	self:Hide()
+	
 	if group.negate_spells then
 		for _, buff in pairs(group.negate_spells) do
 			local name = GetSpellInfo(buff)
 			if (name and UnitBuff("player", name)) then
-				self:Hide()
 				sound = true
 				return
 			end
@@ -179,6 +185,7 @@ local function OnEvent(self, event, arg1)
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")
 		self:RegisterEvent("PLAYER_REGEN_DISABLED")
 		self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+		self:RegisterEvent("UNIT_INVENTORY_CHANGED")
 	end		
 	
 	local role = group.role
@@ -186,6 +193,8 @@ local function OnEvent(self, event, arg1)
 	local combat = group.combat
 	local instance = group.instance
 	local pvp = group.pvp	
+	local reversecheck = group.reversecheck
+	local negate_reversecheck = group.negate_reversecheck
 	local canplaysound = false
 	local rolepass = false
 	local treepass = false
@@ -203,10 +212,10 @@ local function OnEvent(self, event, arg1)
 	end
 	
 	if tree ~= nil then
-		if tree == GetActiveTalentGroup() then
+		if tree == GetPrimaryTalentTree() then
 			treepass = true
 		else
-			treepass = false
+			treepass = false	
 		end
 	else
 		treepass = true
@@ -230,13 +239,12 @@ local function OnEvent(self, event, arg1)
 		combatpass = true
 	end
 	
-	if event == "ZONE_CHANGED_NEW_AREA" then
+	if event == "ZONE_CHANGED_NEW_AREA" or (instance == nil and combat == true) then
 		canplaysound = true
 	end
 	
 	if ((combat and UnitAffectingCombat("player")) or (instance and (instanceType == "party" or instanceType == "raid")) or (pvp and (instanceType == "arena" or instanceType == "pvp"))) and 
 	combatpass == true and treepass == true and rolepass == true and not (UnitInVehicle("player") and self.icon:GetTexture()) then
-		
 		for _, buff in pairs(group.spells) do
 			local name = GetSpellInfo(buff)
 			if (name and UnitBuff("player", name)) then
@@ -249,7 +257,18 @@ local function OnEvent(self, event, arg1)
 		if C["buffreminder"].sound == true and sound == true and canplaysound == true then
 			PlaySoundFile(C["media"].warning)
 			sound = false
-		end	
+		end		
+	elseif ((combat and UnitAffectingCombat("player")) or (instance and (instanceType == "party" or instanceType == "raid")) or (pvp and (instanceType == "arena" or instanceType == "pvp"))) and 
+	combatpass == true and reversecheck == true and not (UnitInVehicle("player") and self.icon:GetTexture()) then
+		if negate_reversecheck and negate_reversecheck == GetPrimaryTalentTree() then self:Hide() sound = true return end
+		for _, buff in pairs(group.spells) do
+			local name = GetSpellInfo(buff)
+			if (name and UnitBuff("player", name)) then
+				self:Show()
+				if C["buffreminder"].sound == true and canplaysound == true then PlaySoundFile(C["media"].warning) end
+				return
+			end			
+		end			
 	else
 		self:Hide()
 		sound = true
