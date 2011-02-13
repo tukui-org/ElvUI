@@ -23,7 +23,6 @@ local modifierString = string.join("", "%d (+", chanceString, ")")
 local baseArmor, effectiveArmor, armor, posBuff, negBuff
 local displayNumberString = string.join("", "%s", E.ValColor, "%d|r")
 local displayFloatString = string.join("", "%s", E.ValColor, "%.2f%%|r")
-local curEffectiveArmor, curSpellcrit, curCritChance
 
 local function CalculateMitigation(level, effective)
 	local mitigation
@@ -81,11 +80,6 @@ end
 local function UpdateTank(self)
 	baseArmor, effectiveArmor, armor, posBuff, negBuff = UnitArmor("player");
 	
-	-- only update data when armor has actually changed
-	if effectiveArmor == curEffectiveArmor then return end
-	
-	curEffectiveArmor = effectiveArmor
-
 	Text:SetFormattedText(displayNumberString, armorString, effectiveArmor)
 	--Setup Tooltip
 	self:SetAllPoints(Text)
@@ -94,10 +88,6 @@ end
 local function UpdateCaster(self)
 	local spellcrit = GetSpellCritChance(1)
 
-	-- only update data when spell crit has actually changed
-	if spellcrit == curSpellcrit then return end
-	
-	curSpellcrit = spellcrit
 	Text:SetFormattedText(displayFloatString, L.datatext_playercrit, spellcrit)
 	--Setup Tooltip
 	self:SetAllPoints(Text)
@@ -114,10 +104,6 @@ local function UpdateMelee(self)
 		critChance = meleecrit
 	end
 	
-	-- only update data when crit chance has actually changed
-	if critChance == curCritChance then return end
-	
-	curCritChance = critChance
 	Text:SetFormattedText(displayFloatString, L.datatext_playercrit, critChance)
 	--Setup Tooltip
 	self:SetAllPoints(Text)

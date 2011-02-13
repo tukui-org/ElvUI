@@ -6,7 +6,7 @@ local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Lo
 
 if C["buffreminder"].enable ~= true then return end
 --[[
-	Table Arguments
+	Arguments
 	
 	spells - List of spells in a group, if you have anyone of these spells the icon will hide.
 	negate_spells - List of spells in a group, if you have anyone of these spells the icon will immediately hide and stop running the spell check (these should be other peoples spells)

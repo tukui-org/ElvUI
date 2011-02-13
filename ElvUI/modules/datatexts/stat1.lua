@@ -23,7 +23,6 @@ local modifierString = string.join("", "%d (+", chanceString, ")")
 local manaRegenString = "%d / %d"
 local displayNumberString = string.join("", "%s", E.ValColor, "%d|r")
 local displayFloatString = string.join("", "%s", E.ValColor, "%.2f|r")
-local curAvoidance, curSpellpwr, curPwr
 local spellpwr, avoidance, pwr
 local haste, hasteBonus
 
@@ -116,10 +115,6 @@ local function UpdateTank(self)
 		avoidance = (dodge+parry+block+basemisschance)
 	end
 	
-	-- only update data when avoidance has actually changed
-	if (curAvoidance == avoidance) then return end
-	
-	curAvoidance = avoidance
 	Text:SetFormattedText(displayFloatString, L.datatext_playeravd, avoidance)
 	--Setup Tooltip
 	self:SetAllPoints(Text)
@@ -132,10 +127,6 @@ local function UpdateCaster(self)
 		spellpwr = GetSpellBonusDamage(7)
 	end
 	
-	-- only update data when spell power has actually changed
-	if spellpwr == curSpellpwr then return end
-	
-	curSpellpwr = spellpwr
 	Text:SetFormattedText(displayNumberString, L.datatext_playersp, spellpwr)
 	--Setup Tooltip
 	self:SetAllPoints(Text)
@@ -153,10 +144,6 @@ local function UpdateMelee(self)
 		pwr = effective
 	end
 	
-	-- only update data when armor piercing has actually changed
-	if pwr == curPwr then return end
-	
-	curPwr = pwr
 	Text:SetFormattedText(displayNumberString, L.datatext_playerap, pwr)      
 	--Setup Tooltip
 	self:SetAllPoints(Text)
@@ -166,7 +153,6 @@ local int = 1
 local function Update(self, t)
 	int = int - t
 	if int > 0 then return end
-	
 	if E.Role == "Tank" then 
 		UpdateTank(self)
 	elseif E.Role == "Caster" then
