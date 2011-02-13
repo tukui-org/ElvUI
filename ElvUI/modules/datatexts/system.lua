@@ -69,7 +69,8 @@ local function UpdateMemory()
 	return totalMemory
 end
 
-local int, int2 = 10, 1
+-- initial delay for update (let the ui load)
+local int, int2 = 10, 5
 local statusColors = {
 	"|cff0CD809",
 	"|cffE8DA0F",
@@ -139,4 +140,3 @@ Stat:SetScript("OnEnter", function(self)
 end)
 Stat:SetScript("OnLeave", function() GameTooltip:Hide() end)
 Stat:SetScript("OnUpdate", Update) 
-Update(Stat, 10)

@@ -109,7 +109,8 @@ local function UpdateMelee(self)
 	self:SetAllPoints(Text)
 end
 
-local int = 1	
+-- initial delay for update (let the ui load)
+local int = 5	
 local function Update(self, t)
 	int = int - t
 	if int > 0 then return end
@@ -127,4 +128,3 @@ end
 Stat:SetScript("OnEnter", function() ShowTooltip(Stat) end)
 Stat:SetScript("OnLeave", function() GameTooltip:Hide() end)
 Stat:SetScript("OnUpdate", Update)
-Update(Stat, 10)
