@@ -76,10 +76,12 @@ local function ShowTooltip(self)
 		GameTooltip:AddDoubleLine(STAT_HASTE, format(modifierString, haste, hasteBonus), 1, 1, 1)
 	end
 	
-	if GetCombatRating(CR_MASTERY) ~= 0 then
+	if GetCombatRating(CR_MASTERY) ~= 0 and GetPrimaryTalentTree() and GetTalentTreeMasterySpells(GetPrimaryTalentTree()) then
 		local masteryName, _, _, _, _, _, _, _, _ = GetSpellInfo(GetTalentTreeMasterySpells(GetPrimaryTalentTree()))
-		GameTooltip:AddLine' '
-		GameTooltip:AddDoubleLine(masteryName, format(modifierString, GetCombatRating(CR_MASTERY), GetCombatRatingBonus(CR_MASTERY)), 1, 1, 1)
+		if masteryName then
+			GameTooltip:AddLine' '
+			GameTooltip:AddDoubleLine(masteryName, format(modifierString, GetCombatRating(CR_MASTERY), GetCombatRatingBonus(CR_MASTERY)), 1, 1, 1)
+		end
 	end
 	
 	GameTooltip:Show()
