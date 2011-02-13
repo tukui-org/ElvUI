@@ -76,11 +76,26 @@ local function ShowTooltip(self)
 		GameTooltip:AddDoubleLine(STAT_HASTE, format(modifierString, haste, hasteBonus), 1, 1, 1)
 	end
 	
-	if GetCombatRating(CR_MASTERY) ~= 0 and GetPrimaryTalentTree() and GetTalentTreeMasterySpells(GetPrimaryTalentTree()) then
-		local masteryName, _, _, _, _, _, _, _, _ = GetSpellInfo(GetTalentTreeMasterySpells(GetPrimaryTalentTree()))
-		if masteryName then
-			GameTooltip:AddLine' '
-			GameTooltip:AddDoubleLine(masteryName, format(modifierString, GetCombatRating(CR_MASTERY), GetCombatRatingBonus(CR_MASTERY)), 1, 1, 1)
+	local masteryspell
+	if GetCombatRating(CR_MASTERY) ~= 0 and GetPrimaryTalentTree() then
+		if E.myclass == "DRUID" then
+			if E.Role == "Melee" then
+				masteryspell = select(2, GetTalentTreeMasterySpells(GetPrimaryTalentTree()))
+			elseif E.Role == "Tank" then
+				masteryspell = select(1, GetTalentTreeMasterySpells(GetPrimaryTalentTree()))
+			else
+				masteryspell = GetTalentTreeMasterySpells(GetPrimaryTalentTree())
+			end
+		else
+			masteryspell = GetTalentTreeMasterySpells(GetPrimaryTalentTree())
+		end
+		
+		if masterySpell ~= nil then
+			local masteryName, _, _, _, _, _, _, _, _ = GetSpellInfo(masteryspell)
+			if masteryName then
+				GameTooltip:AddLine' '
+				GameTooltip:AddDoubleLine(masteryName, format(modifierString, GetCombatRating(CR_MASTERY), GetCombatRatingBonus(CR_MASTERY)), 1, 1, 1)
+			end
 		end
 	end
 	
