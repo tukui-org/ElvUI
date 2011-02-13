@@ -1,115 +1,273 @@
+------------------------------------------------------
+-- Spell Reminder
+------------------------------------------------------
 
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if C["buffreminder"].enable ~= true then return end
+--[[
+	Table Arguments
+	
+	spells - List of spells in a group, if you have anyone of these spells the icon will hide.
+	negate_spells - List of spells in a group, if you have anyone of these spells the icon will immediately hide and stop running the spell check (these should be other peoples spells)
+	combat - you must be in combat for it to display
+	role - you must be a certain role for it to display (Tank, Melee, Caster)
+	tree - you must be active in a specific talent tree for it to display (1, 2, 3) note: tree order can be viewed from left to right when you open your talent pane
+	instance - you must be in an instance for it to display, note: if you have combat checked and this option checked then the combat check will only run when your inside a party/raid instance
+	pvp - you must be in a pvp area for it to display (bg/arena), note: if you have combat checked and this option checked then the combat check will only run when your inside a bg/arena instance
+	
+	for every group created a new frame is created, it's a lot easier this way
+]]
 
--- Spells that should be shown with an icon in the middle of the screen when not buffed in combat.
--- Use the rank 1 id for best results. The first valid spell in each class's list will be the icon shown. 
-E.remindbuffs = {
+E.ReminderBuffs = {
 	PRIEST = {
-		588, -- inner fire
-		73413, -- inner will
+		[1] = { --inner fire/will group
+			["spells"] = {
+				588, -- inner fire
+				73413, -- inner will			
+			},
+			["combat"] = true,
+		},
 	},
 	HUNTER = {
-		82661, -- fox
-		13165, -- hawk
-		5118, -- cheetah
-		13159, -- pack
-		20043, -- wild
+		[1] = { --aspects group
+			["spells"] = {
+				13165, -- hawk
+				5118, -- cheetah
+				13159, -- pack
+				20043, -- wild
+				82661, -- fox	
+			},
+			["combat"] = true,
+		},				
 	},
 	MAGE = {
-		7302, -- frost armor
-		6117, -- mage armor
-		30482, -- molten armor
+		[1] = { --armors group
+			["spells"] = {
+				7302, -- frost armor
+				6117, -- mage armor
+				30482, -- molten armor		
+			},
+			["combat"] = true,
+		},		
 	},
 	WARLOCK = {
-		28176, -- fel armor
-		687, -- demon armor
+		[1] = { --armors group
+			["spells"] = {
+				28176, -- fel armor
+				687, -- demon armor			
+			},
+			["combat"] = true,
+		},
 	},
 	PALADIN = {
-		20154, -- seal of righteousness
-		20164, -- seal of justice
-		20165, -- seal of insight
-		31801, -- seal of truth
+		[1] = { --Seals group
+			["spells"] = {
+				20154, -- seal of righteousness
+				20164, -- seal of justice
+				20165, -- seal of insight
+				31801, -- seal of truth				
+			},
+			["combat"] = true,
+		},
+		[2] = { -- righteous fury group
+			["spells"] = {
+				25780, 
+			},
+			["role"] = "Tank",
+			["instance"] = true,	
+		},
 	},
 	SHAMAN = {
-		52127, -- water shield
-		324, -- lightning shield
+		[1] = { --shields group
+			["spells"] = {
+				52127, -- water shield
+				324, -- lightning shield			
+			},
+			["combat"] = true,
+			["instance"] = true,
+		},
 	},
-}
-
-E.tankremindbuffs = {
-	PALADIN = {
-		25780, -- righteous fury
+	WARRIOR = {
+		[1] = { -- commanding Shout group
+			["spells"] = {
+				469, 
+			},
+			["negate_spells"] = {
+				6307, -- Blood Pact
+				90364, -- Qiraji Fortitude
+				72590, -- Drums of fortitude
+				21562, -- Fortitude				
+			},
+			["combat"] = true,
+			["role"] = "Tank",
+		},
+		[2] = { -- battle Shout group
+			["spells"] = {
+				6673, 
+			},
+			["negate_spells"] = {
+				8076, -- strength of earth
+				57330, -- horn of Winter
+				93435, -- roar of courage (hunter pet)						
+			},
+			["combat"] = true,
+			["role"] = "Melee",
+		},
 	},
-	
 	DEATHKNIGHT = {
-		48263, -- blood presence
-	},
+		[1] = { -- horn of Winter group
+			["spells"] = {
+				57330, 
+			},
+			["negate_spells"] = {
+				8076, -- strength of earth totem
+				6673, -- battle Shout
+				93435, -- roar of courage (hunter pet)			
+			},
+			["combat"] = true,
+			["instance"] = true,
+		},
+		[2] = { -- blood presence group
+			["spells"] = {
+				48263, 
+			},
+			["role"] = "Tank",
+			["instance"] = true,		
+		},
+	},	
 }
 
--- Nasty stuff below. Don't touch.
-local class = select(2, UnitClass("Player"))
-local buffs = E.remindbuffs[class]
-local sound
+local tab = E.ReminderBuffs[E.myclass]
+if not tab then return end
 
-if (buffs and buffs[1]) then
-	local function OnEvent(self, event)	
-		if (event == "PLAYER_LOGIN" or event == "LEARNED_SPELL_IN_TAB") then
-			for i, buff in pairs(buffs) do
-				local name = GetSpellInfo(buff)
-				local usable, nomana = IsUsableSpell(name)
-				if (usable or nomana) then
-					self.icon:SetTexture(select(3, GetSpellInfo(buff)))
-					break
-				end
-			end
-			if (not self.icon:GetTexture() and event == "PLAYER_LOGIN") then
-				self:UnregisterAllEvents()
-				self:RegisterEvent("LEARNED_SPELL_IN_TAB")
+local sound
+local function OnEvent(self, event, arg1)
+	local group = tab[self.id]
+	if not group.spells then return end
+	if not GetActiveTalentGroup() then return end
+	if event == "UNIT_AURA" and arg1 ~= "player" then return end 
+	
+	if group.negate_spells then
+		for _, buff in pairs(group.negate_spells) do
+			local name = GetSpellInfo(buff)
+			if (name and UnitBuff("player", name)) then
+				self:Hide()
+				sound = true
 				return
-			elseif (self.icon:GetTexture() and event == "LEARNED_SPELL_IN_TAB") then
-				self:UnregisterAllEvents()
-				self:RegisterEvent("UNIT_AURA")
-				self:RegisterEvent("PLAYER_LOGIN")
-				self:RegisterEvent("PLAYER_REGEN_ENABLED")
-				self:RegisterEvent("PLAYER_REGEN_DISABLED")
-				self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 			end
-		end
-		
-		local inInstance, _ = IsInInstance()	
-		if (UnitAffectingCombat("player") or inInstance) and not UnitInVehicle("player") and self.icon:GetTexture() then
-			for i, buff in pairs(buffs) do
-				local name = GetSpellInfo(buff)
-				if (name and UnitBuff("player", name)) then
-					self:Hide()
-					sound = true
-					return
-				end
-			end
-			self:Show()
-			if C["buffreminder"].sound == true and sound == true then
-				PlaySoundFile(C["media"].warning)
-				sound = false
-			end
-		else
-			self:Hide()
-			sound = true
 		end
 	end
 	
-	local frame = CreateFrame("Frame", _, UIParent)
+	for _, buff in pairs(group.spells) do
+		local name = GetSpellInfo(buff)
+		local usable, nomana = IsUsableSpell(name)
+		if (usable or nomana) then
+			self.icon:SetTexture(select(3, GetSpellInfo(buff)))
+			break
+		end			
+	end
+	
+	if (not self.icon:GetTexture() and event == "PLAYER_LOGIN") then
+		self:UnregisterAllEvents()
+		self:RegisterEvent("LEARNED_SPELL_IN_TAB")
+		return
+	elseif (self.icon:GetTexture() and event == "LEARNED_SPELL_IN_TAB") then
+		self:UnregisterAllEvents()
+		self:RegisterEvent("UNIT_AURA")
+		self:RegisterEvent("PLAYER_LOGIN")
+		self:RegisterEvent("PLAYER_REGEN_ENABLED")
+		self:RegisterEvent("PLAYER_REGEN_DISABLED")
+		self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+	end		
+	
+	local role = group.role
+	local tree = group.tree
+	local combat = group.combat
+	local instance = group.instance
+	local pvp = group.pvp	
+	local canplaysound = false
+	local rolepass = false
+	local treepass = false
+	local combatpass = false
+	local inInstance, instanceType = IsInInstance()
+	
+	if role ~= nil then
+		if role == E.Role then
+			rolepass = true
+		else
+			rolepass = false
+		end
+	else
+		rolepass = true
+	end
+	
+	if tree ~= nil then
+		if tree == GetActiveTalentGroup() then
+			treepass = true
+		else
+			treepass = false
+		end
+	else
+		treepass = true
+	end
+	
+	if (instance ~= nil or pvp ~= nil) and combat then
+		if instance then
+			if instanceType == "party" or instanceType == "raid" then
+				combatpass = true
+			else
+				combatpass = false
+			end
+		elseif pvp then
+			if instanceType == "arena" or instanceType == "pvp" then
+				combatpass = true
+			else
+				combatpass = false
+			end		
+		end
+	else
+		combatpass = true
+	end
+	
+	if event == "ZONE_CHANGED_NEW_AREA" then
+		canplaysound = true
+	end
+	
+	if ((combat and UnitAffectingCombat("player")) or (instance and (instanceType == "party" or instanceType == "raid")) or (pvp and (instanceType == "arena" or instanceType == "pvp"))) and 
+	combatpass == true and treepass == true and rolepass == true and not (UnitInVehicle("player") and self.icon:GetTexture()) then
+		
+		for _, buff in pairs(group.spells) do
+			local name = GetSpellInfo(buff)
+			if (name and UnitBuff("player", name)) then
+				self:Hide()
+				sound = true
+				return
+			end
+		end
+		self:Show()
+		if C["buffreminder"].sound == true and sound == true and canplaysound == true then
+			PlaySoundFile(C["media"].warning)
+			sound = false
+		end	
+	else
+		self:Hide()
+		sound = true
+	end
+end
+
+for i=1, #tab do
+	local frame = CreateFrame("Frame", "ReminderFrame"..i, UIParent)
 	frame:CreatePanel("Default", E.Scale(40), E.Scale(40), "CENTER", UIParent, "CENTER", 0, E.Scale(200))
 	frame:SetFrameLevel(1)
-	
+	frame.id = i
 	frame.icon = frame:CreateTexture(nil, "OVERLAY")
 	frame.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	frame.icon:SetPoint("CENTER")
 	frame.icon:SetWidth(E.Scale(36))
 	frame.icon:SetHeight(E.Scale(36))
 	frame:Hide()
-	
+
 	frame:RegisterEvent("UNIT_AURA")
 	frame:RegisterEvent("PLAYER_LOGIN")
 	frame:RegisterEvent("PLAYER_REGEN_ENABLED")
@@ -119,74 +277,5 @@ if (buffs and buffs[1]) then
 	frame:RegisterEvent("UNIT_ENTERED_VEHICLE")
 	frame:RegisterEvent("UNIT_EXITING_VEHICLE")
 	frame:RegisterEvent("UNIT_EXITED_VEHICLE")
-	
-	frame:SetScript("OnEvent", OnEvent)
-end
-
--- Tanking Version
-local tankbuffs = E.tankremindbuffs[class]
-local tanksound
-if (tankbuffs and tankbuffs[1]) then
-	local function OnEvent(self, event)	
-		if (event == "PLAYER_ENTERING_WORLD" or event == "ZONE_CHANGED_NEW_AREA" or event == "LEARNED_SPELL_IN_TAB") then
-			for i, tankbuffs in pairs(tankbuffs) do
-				local name = GetSpellInfo(tankbuffs)
-				local usable, nomana = IsUsableSpell(name)
-				if (usable or nomana) then
-					self.icon:SetTexture(select(3, GetSpellInfo(tankbuffs)))
-					break
-				end
-			end
-			if (not self.icon:GetTexture() and event == "PLAYER_ENTERING_WORLD") then
-				self:UnregisterAllEvents()
-				self:RegisterEvent("LEARNED_SPELL_IN_TAB")
-				return
-			elseif (self.icon:GetTexture() and event == "LEARNED_SPELL_IN_TAB") then
-				self:UnregisterAllEvents()
-				self:RegisterEvent("UNIT_AURA")
-				self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-				self:RegisterEvent("PLAYER_ENTERING_WORLD")
-			end
-		end
-		local inInstance, instanceType = IsInInstance()	
-		--check aura
-		if (not UnitInVehicle("player")) and (inInstance and (instanceType == "raid" or instanceType == "party")) and E.Role == "Tank" and self.icon:GetTexture() then
-			for i, tankbuffs in pairs(tankbuffs) do
-				local name = GetSpellInfo(tankbuffs)
-				if (name and UnitBuff("player", name)) then
-					self:Hide()
-					tanksound = true
-					return
-				end
-			end
-			self:Show()
-			if C["buffreminder"].sound == true and tanksound1 == true then
-				PlaySoundFile(C["media"].warning)
-				tanksound = false
-			end
-		else
-			self:Hide()
-			tanksound = true
-		end
-	end
-	
-	local frame = CreateFrame("Frame", _, UIParent)
-	frame:CreatePanel("Default", E.Scale(40), E.Scale(40), "CENTER", UIParent, "CENTER", 0, E.Scale(200))
-	frame:SetFrameLevel(2)
-	frame.icon = frame:CreateTexture(nil, "OVERLAY")
-	frame.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-	frame.icon:SetPoint("CENTER")
-	frame.icon:SetWidth(E.Scale(36))
-	frame.icon:SetHeight(E.Scale(36))
-	frame:Hide()
-	
-	frame:RegisterEvent("UNIT_AURA")
-	frame:RegisterEvent("PLAYER_ENTERING_WORLD")
-	frame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-	frame:RegisterEvent("UNIT_ENTERING_VEHICLE")
-	frame:RegisterEvent("UNIT_ENTERED_VEHICLE")
-	frame:RegisterEvent("UNIT_EXITING_VEHICLE")
-	frame:RegisterEvent("UNIT_EXITED_VEHICLE")
-	
 	frame:SetScript("OnEvent", OnEvent)
 end
