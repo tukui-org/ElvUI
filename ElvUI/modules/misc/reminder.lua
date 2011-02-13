@@ -239,6 +239,8 @@ local function OnEvent(self, event, arg1)
 		combatpass = true
 	end
 	
+	if reversecheck ~= nil and (role == nil and tree == nil) then reversecheck = nil end
+	
 	if event == "ZONE_CHANGED_NEW_AREA" or (instance == nil and combat == true) then
 		canplaysound = true
 	end
