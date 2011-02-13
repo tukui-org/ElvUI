@@ -116,7 +116,7 @@ Stat:RegisterEvent("SEND_MAIL_COD_CHANGED")
 Stat:RegisterEvent("PLAYER_TRADE_MONEY")
 Stat:RegisterEvent("TRADE_MONEY_CHANGED")
 Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
-Stat:SetScript("OnMouseDown", OpenAllBags)
+Stat:SetScript("OnMouseDown", function() OpenAllBags() end)
 Stat:SetScript("OnEvent", OnEvent)
 
 -- reset gold data
