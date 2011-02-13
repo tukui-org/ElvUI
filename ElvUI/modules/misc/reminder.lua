@@ -9,14 +9,20 @@ if C["buffreminder"].enable ~= true then return end
 	Arguments
 	
 	spells - List of spells in a group, if you have anyone of these spells the icon will hide.
-	negate_spells - List of spells in a group, if you have anyone of these spells the icon will immediately hide and stop running the spell check (these should be other peoples spells)
+		negate_spells - List of spells in a group, if you have anyone of these spells the icon will immediately hide and stop running the spell check (these should be other peoples spells)
+		reversecheck - only works if you provide a role or a tree, instead of hiding the frame when you have the buff, it shows the frame when you have the buff, doesn't work with weapons
+		negate_reversecheck - if reversecheck is set you can set a talent tree to not follow the reverse check, doesn't work with weapons
+	
+	weapon - Run a weapon enchant check instead of a spell check
+	
+	These can be ran no matter what you have selected from the above:
+	
 	combat - you must be in combat for it to display
 	role - you must be a certain role for it to display (Tank, Melee, Caster)
 	tree - you must be active in a specific talent tree for it to display (1, 2, 3) note: tree order can be viewed from left to right when you open your talent pane
 	instance - you must be in an instance for it to display, note: if you have combat checked and this option checked then the combat check will only run when your inside a party/raid instance
 	pvp - you must be in a pvp area for it to display (bg/arena), note: if you have combat checked and this option checked then the combat check will only run when your inside a bg/arena instance
-	reversecheck - only works if you provide a role or a tree, instead of hiding the frame when you have the buff, it shows the frame when you have the buff.
-	negate_reversecheck - if reversecheck is set you can set a talent tree to not follow the reverse check
+	level - the minimum level you must be
 	
 	for every group created a new frame is created, it's a lot easier this way
 ]]
@@ -91,6 +97,11 @@ E.ReminderBuffs = {
 			["combat"] = true,
 			["instance"] = true,
 		},
+		[2] = { --check weapons for enchants
+			["weapon"] = true,
+			["combat"] = true,
+			["level"] = 10,
+		},
 	},
 	WARRIOR = {
 		[1] = { -- commanding Shout group
@@ -140,21 +151,29 @@ E.ReminderBuffs = {
 			["instance"] = true,	
 			["reversecheck"] = true,
 		},
-	},	
+	},
+	ROGUE = { 
+		[1] = { --weapons enchant group
+			["weapon"] = true,
+			["combat"] = true,
+			["level"] = 10,
+		},
+	},
 }
 
 local tab = E.ReminderBuffs[E.myclass]
 if not tab then return end
 
 local sound
-local function OnEvent(self, event, arg1)
+local function OnEvent(self, event, arg1, arg2)
 	local group = tab[self.id]
-	if not group.spells then return end
+	if not group.spells and not group.weapon then return end
 	if not GetActiveTalentGroup() then return end
 	if event == "UNIT_AURA" and arg1 ~= "player" then return end 
+	if event == "COMBAT_LOG_EVENT_UNFILTERED" and arg2 ~= "ENCHANT_APPLIED" and arg2 ~= "ENCHANT_REMOVED" then return end
+	if group.level and UnitLevel("player") < group.level then return end
 	
 	self:Hide()
-	
 	if group.negate_spells then
 		for _, buff in pairs(group.negate_spells) do
 			local name = GetSpellInfo(buff)
@@ -165,28 +184,52 @@ local function OnEvent(self, event, arg1)
 		end
 	end
 	
-	for _, buff in pairs(group.spells) do
-		local name = GetSpellInfo(buff)
-		local usable, nomana = IsUsableSpell(name)
-		if (usable or nomana) then
-			self.icon:SetTexture(select(3, GetSpellInfo(buff)))
-			break
-		end			
-	end
-	
-	if (not self.icon:GetTexture() and event == "PLAYER_LOGIN") then
+	local hasOffhandWeapon = OffhandHasWeapon()
+	local hasMainHandEnchant, _, _, hasOffHandEnchant, _, _ = GetWeaponEnchantInfo()
+	if not group.weapon then
+		for _, buff in pairs(group.spells) do
+			local name = GetSpellInfo(buff)
+			local usable, nomana = IsUsableSpell(name)
+			if (usable or nomana) then
+				self.icon:SetTexture(select(3, GetSpellInfo(buff)))
+				break
+			end			
+		end
+		
+		if (not self.icon:GetTexture() and event == "PLAYER_LOGIN") then
+			self:UnregisterAllEvents()
+			self:RegisterEvent("LEARNED_SPELL_IN_TAB")
+			return
+		elseif (self.icon:GetTexture() and event == "LEARNED_SPELL_IN_TAB") then
+			self:UnregisterAllEvents()
+			self:RegisterEvent("UNIT_AURA")
+			self:RegisterEvent("PLAYER_LOGIN")
+			self:RegisterEvent("PLAYER_REGEN_ENABLED")
+			self:RegisterEvent("PLAYER_REGEN_DISABLED")
+			self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+			self:RegisterEvent("UNIT_INVENTORY_CHANGED")
+		end		
+	else
+		if hasOffhandWeapon == nil then
+			if hasMainHandEnchant == nil then
+				self.icon:SetTexture(GetInventoryItemTexture("player", 16))
+			end
+		else
+			if hasMainHandEnchant == nil then
+				self.icon:SetTexture(GetInventoryItemTexture("player", 16))
+			elseif hasOffHandEnchant == nil then
+				self.icon:SetTexture(GetInventoryItemTexture("player", 17))
+			end
+		end
+		
 		self:UnregisterAllEvents()
-		self:RegisterEvent("LEARNED_SPELL_IN_TAB")
-		return
-	elseif (self.icon:GetTexture() and event == "LEARNED_SPELL_IN_TAB") then
-		self:UnregisterAllEvents()
-		self:RegisterEvent("UNIT_AURA")
 		self:RegisterEvent("PLAYER_LOGIN")
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")
 		self:RegisterEvent("PLAYER_REGEN_DISABLED")
 		self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 		self:RegisterEvent("UNIT_INVENTORY_CHANGED")
-	end		
+		self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	end
 	
 	local role = group.role
 	local tree = group.tree
@@ -245,35 +288,74 @@ local function OnEvent(self, event, arg1)
 		canplaysound = true
 	end
 	
-	if ((combat and UnitAffectingCombat("player")) or (instance and (instanceType == "party" or instanceType == "raid")) or (pvp and (instanceType == "arena" or instanceType == "pvp"))) and 
-	combatpass == true and treepass == true and rolepass == true and not (UnitInVehicle("player") and self.icon:GetTexture()) then
-		for _, buff in pairs(group.spells) do
-			local name = GetSpellInfo(buff)
-			if (name and UnitBuff("player", name)) then
-				self:Hide()
-				sound = true
-				return
+	if not group.weapon then
+		if ((combat and UnitAffectingCombat("player")) or (instance and (instanceType == "party" or instanceType == "raid")) or (pvp and (instanceType == "arena" or instanceType == "pvp"))) and 
+		combatpass == true and treepass == true and rolepass == true and not (UnitInVehicle("player") and self.icon:GetTexture()) then
+			for _, buff in pairs(group.spells) do
+				local name = GetSpellInfo(buff)
+				if (name and UnitBuff("player", name)) then
+					self:Hide()
+					sound = true
+					return
+				end
 			end
-		end
-		self:Show()
-		if C["buffreminder"].sound == true and sound == true and canplaysound == true then
-			PlaySoundFile(C["media"].warning)
-			sound = false
-		end		
-	elseif ((combat and UnitAffectingCombat("player")) or (instance and (instanceType == "party" or instanceType == "raid")) or (pvp and (instanceType == "arena" or instanceType == "pvp"))) and 
-	combatpass == true and reversecheck == true and not (UnitInVehicle("player") and self.icon:GetTexture()) then
-		if negate_reversecheck and negate_reversecheck == GetPrimaryTalentTree() then self:Hide() sound = true return end
-		for _, buff in pairs(group.spells) do
-			local name = GetSpellInfo(buff)
-			if (name and UnitBuff("player", name)) then
-				self:Show()
-				if C["buffreminder"].sound == true and canplaysound == true then PlaySoundFile(C["media"].warning) end
-				return
+			self:Show()
+			if C["buffreminder"].sound == true and sound == true and canplaysound == true then
+				PlaySoundFile(C["media"].warning)
+				sound = false
+			end		
+		elseif ((combat and UnitAffectingCombat("player")) or (instance and (instanceType == "party" or instanceType == "raid")) or (pvp and (instanceType == "arena" or instanceType == "pvp"))) and 
+		combatpass == true and reversecheck == true and not (UnitInVehicle("player") and self.icon:GetTexture()) then
+			if negate_reversecheck and negate_reversecheck == GetPrimaryTalentTree() then self:Hide() sound = true return end
+			for _, buff in pairs(group.spells) do
+				local name = GetSpellInfo(buff)
+				if (name and UnitBuff("player", name)) then
+					self:Show()
+					if C["buffreminder"].sound == true and canplaysound == true then PlaySoundFile(C["media"].warning) end
+					return
+				end			
 			end			
-		end			
+		else
+			self:Hide()
+			sound = true
+		end
 	else
-		self:Hide()
-		sound = true
+		if ((combat and UnitAffectingCombat("player")) or (instance and (instanceType == "party" or instanceType == "raid")) or (pvp and (instanceType == "arena" or instanceType == "pvp"))) and 
+		combatpass == true and treepass == true and rolepass == true and not (UnitInVehicle("player") and self.icon:GetTexture()) then
+			if hasOffhandWeapon == nil then
+				if hasMainHandEnchant == nil then
+					self:Show()
+					if C["buffreminder"].sound == true and sound == true and canplaysound == true then
+						PlaySoundFile(C["media"].warning)
+						sound = false
+					end		
+					return
+				end
+			else
+				if hasMainHandEnchant == nil then
+					self:Show()
+					if C["buffreminder"].sound == true and sound == true and canplaysound == true then
+						PlaySoundFile(C["media"].warning)
+						sound = false
+					end	
+					return
+				elseif hasOffHandEnchant == nil then
+					self:Show()
+					if C["buffreminder"].sound == true and sound == true and canplaysound == true then
+						PlaySoundFile(C["media"].warning)
+						sound = false
+					end	
+					return
+				end
+			end
+			self:Hide()
+			sound = true
+			return	
+		else
+			self:Hide()
+			sound = true
+			return
+		end	
 	end
 end
 
