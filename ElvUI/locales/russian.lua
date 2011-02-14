@@ -144,7 +144,7 @@ if E.client == "ruRU" then
 	L.core_autoinv_enable_c = "Автоприглашение ВКЛ: "
 	L.core_autoinv_disable = "Автоприглашение ВЫКЛ"
 	L.core_welcome1 = "Добро пожаловать в |cff1784d1Elvui редакции Elv|r, версии "
-	L.core_welcome2 = "Напечатайте |cff00FFFF/uihelp|r для получения доп. информации или зайдите по адресу http://www.tukui.org/v2/forums/forum.php?id=31"
+	L.core_welcome2 = "Напечатайте |cff00FFFF/uihelp|r для получения доп. информации или зайдите по адресу http://www.tukui.org/v2/forums/forum.php?id=38"
 
 	L.core_uihelp1 = "|cff00ff00Общие комманды|r"
 	L.core_uihelp2 = "|cff1784d1/tracker|r - Elvui Arena Enemy Cooldown Tracker - PVP-таймер вражеских перезарядок . (только иконка)"

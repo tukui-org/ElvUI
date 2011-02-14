@@ -143,7 +143,7 @@ if E.client == "esES" then
 	L.core_autoinv_enable_c = "Autoinvitar ON: "
 	L.core_autoinv_disable = "Autoinvitar OFF"
 	L.core_welcome1 = "Bienvenido a la edición de |cff1784d1Elv of Elvui|r, versión "
-	L.core_welcome2 = "Escribe |cff00FFFF/uihelp|r para más ayuda, escribe |cff00FFFF/Elvui|r para configurar, o visit http://www.tukui.org/v2/forums/forum.php?id=31"
+	L.core_welcome2 = "Escribe |cff00FFFF/uihelp|r para más ayuda, escribe |cff00FFFF/Elvui|r para configurar, o visit http://www.tukui.org/v2/forums/forum.php?id=38"
  
 	L.core_uihelp1 = "|cff00ff00Comandos Generales|r"
 	L.core_uihelp2 = "|cff1784d1/tracker|r - Elvui Arena Enemy Cooldown Tracker - Low-memory enemy PVP cooldown tracker. (Solo Iconos)"

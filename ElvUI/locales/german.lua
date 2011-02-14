@@ -141,7 +141,7 @@ if E.client == "deDE" then
 	L.core_autoinv_enable_c = "Autoinvite AN: "
 	L.core_autoinv_disable = "Autoinvite AUS"
 	L.core_welcome1 = "Willkommen zu |cff1784d1Elv's Edit von Elvui|r, version "
-	L.core_welcome2 = "Tippe |cff00FFFF/uihelp|r für mehr Informationen, Tippe |cff00FFFF/Elvui|r zum Konfigurieren, oder besuche http://www.tukui.org/v2/forums/forum.php?id=31"
+	L.core_welcome2 = "Tippe |cff00FFFF/uihelp|r für mehr Informationen, Tippe |cff00FFFF/Elvui|r zum Konfigurieren, oder besuche http://www.tukui.org/v2/forums/forum.php?id=38"
  
 	L.core_uihelp1 = "|cff00ff00Allgemeine Slash Befehle|r"
 	L.core_uihelp2 = "|cff1784d1/tracker|r - Elvui Arena Gegner Abklingzeiten Anzeige - Low-memory Gegner PVP Abkling Anzeige. (Nur Icons)"

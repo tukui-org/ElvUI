@@ -140,7 +140,7 @@ if E.client == "zhTW" then
 	L.core_autoinv_enable_c = "自動邀請功能已啟用: "
 	L.core_autoinv_disable = "自動邀請功能已關閉"
 	L.core_welcome1 = "歡迎使用 |cff1784d1Elv's Edit of Elvui|r, 版本號 "
-	L.core_welcome2 = "輸入 |cff00FFFF/uihelp|r 以獲得更多資訊, 輸入 |cff00FFFF/Elvui|r 進行設置, 或訪問 http://www.tukui.org/v2/forums/forum.php?id=31"
+	L.core_welcome2 = "輸入 |cff00FFFF/uihelp|r 以獲得更多資訊, 輸入 |cff00FFFF/Elvui|r 進行設置, 或訪問 http://www.tukui.org/v2/forums/forum.php?id=38"
 
 	L.core_uihelp1 = "|cff00ff00基本指令|r"
 	L.core_uihelp2 = "|cff1784d1/tracker|r - Elvui 競技場敵方冷卻監視器 - 一個精簡的PvP冷卻監視器 (Icon only)"

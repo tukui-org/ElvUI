@@ -142,7 +142,7 @@ if E.client == "koKR" then
 	L.core_autoinv_enable_c = "자동초대 활성화: "
 	L.core_autoinv_disable = "자동초대 비활성화"
 	L.core_welcome1 = "|cff1784d1Elvui|r를 사용해주셔서 감사합니다. 버전 "
-	L.core_welcome2 = "자세한 사항은 |cff00FFFF/uihelp|r를 입력하거나 http://www.tukui.org/v2/forums/forum.php?id=31 에 방문하시면 확인 가능합니다."
+	L.core_welcome2 = "자세한 사항은 |cff00FFFF/uihelp|r를 입력하거나 http://www.tukui.org/v2/forums/forum.php?id=38 에 방문하시면 확인 가능합니다."
  
 	L.core_uihelp1 = "|cff00ff00일반적인 명령어|r"
 	L.core_uihelp2 = "|cff1784d1/tracker|r - Elvui 투기장 애드온 - 가벼운 투기장 애드온입니다."
