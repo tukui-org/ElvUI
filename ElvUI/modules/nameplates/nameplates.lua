@@ -207,6 +207,11 @@ local function OnHide(frame)
 			icon:Hide()
 		end
 	end	
+	
+	frame.healthborder_tex1:SetTexture(unpack(C["media"].bordercolor))
+	frame.healthborder_tex2:SetTexture(unpack(C["media"].bordercolor))
+	frame.healthborder_tex3:SetTexture(unpack(C["media"].bordercolor))
+	frame.healthborder_tex4:SetTexture(unpack(C["media"].bordercolor))	
 	frame:SetScript("OnUpdate",nil)
 end
 
@@ -611,7 +616,7 @@ local function AdjustNameLevel(frame, ...)
 	if UnitName("target") == frame.name:GetText() and frame:GetAlpha() == 1 then
 		frame.name:SetDrawLayer("OVERLAY")
 	else
-		frame.name:SetDrawLayer("BACKGROUND")
+		frame.name:SetDrawLayer("BORDER")
 	end
 end
 
@@ -712,13 +717,12 @@ CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
 	if(self.elapsed and self.elapsed > 0.2) then
 		ForEachPlate(UpdateThreat, self.elapsed)
 		ForEachPlate(AdjustNameLevel)
-		ForEachPlate(ShowHealth)
-
 		self.elapsed = 0
 	else
 		self.elapsed = (self.elapsed or 0) + elapsed
 	end
 	
+	ForEachPlate(ShowHealth)
 	ForEachPlate(CheckBlacklist)
 	ForEachPlate(HideDrunkenText)
 	ForEachPlate(CheckUnit_Guid)
