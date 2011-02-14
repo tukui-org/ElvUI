@@ -119,7 +119,9 @@ local function UpdateTank(self)
 		basemisschance = 5
 		leveldifference = 0
 	end
-
+	
+	if select(2, UnitRace("player")) == "NightElf" then basemisschance = basemisschance + 2 end
+	
 	if leveldifference >= 0 then
 		dodge = (GetDodgeChance()-leveldifference*.2)
 		parry = (GetParryChance()-leveldifference*.2)
