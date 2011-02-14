@@ -24,7 +24,8 @@ local OnEnter = function(self)
 		GameTooltip:SetLootItem(slot)
 		CursorUpdate(self)
 	end
-
+	
+	LootFrame.selectedSlot = self:GetID()
 	self.drop:Show()
 	self.drop:SetVertexColor(1, 1, 0)
 end
@@ -36,7 +37,7 @@ local OnLeave = function(self)
 	else
 		self.drop:Hide()
 	end
-
+	
 	GameTooltip:Hide()
 	ResetCursor()
 end
