@@ -7,6 +7,8 @@ if not C["datatext"].wowtime or C["datatext"].wowtime == 0 then return end
 
 local europeDisplayFormat = string.join("", "%02d", E.ValColor, ":|r%02d")
 local ukDisplayFormat = string.join("", "", "%d", E.ValColor, ":|r%02d", E.ValColor, " %s|r")
+local europeDisplayFormat_nocolor = string.join("", "%02d", ":|r%02d")
+local ukDisplayFormat_nocolor = string.join("", "", "%d", ":|r%02d", " %s|r")
 local timerLongFormat = "%d:%02d:%02d"
 local timerShortFormat = "%d:%02d"
 local lockoutInfoFormat = "|cffcccccc[%d%s]|r %s |cfff04000(%s/%s)|r"
@@ -151,9 +153,9 @@ Stat:SetScript("OnEnter", function(self)
 	GameTooltip:AddLine(" ")
 	timeText = C["datatext"].localtime == true and TIMEMANAGER_TOOLTIP_LOCALTIME or TIMEMANAGER_TOOLTIP_REALMTIME
 	if AmPm == -1 then
-			GameTooltip:AddDoubleLine(timeText, string.format(europeDisplayFormat, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
+			GameTooltip:AddDoubleLine(timeText, string.format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	else
-			GameTooltip:AddDoubleLine(timeText, string.format(ukDisplayFormat, Hr, Min, APM[AmPm]), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
+			GameTooltip:AddDoubleLine(timeText, string.format(ukDisplayFormat_nocolor, Hr, Min, APM[AmPm]), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	end
 
 	local oneraid, lockoutColor
