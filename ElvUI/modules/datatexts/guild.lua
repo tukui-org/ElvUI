@@ -32,11 +32,11 @@ Text:SetShadowOffset(E.mult, -E.mult)
 Text:SetShadowColor(0, 0, 0, 0.4)
 E.PP(C["datatext"].guild, Text)
 
-local function BuildGuildTable(total)
+local function BuildGuildTable()
 	totalOnline = 0
 	wipe(guildTable)
 	local name, rank, level, zone, note, officernote, connected, status, class
-	for i = 1, total do
+	for i = 1, GetNumGuildMembers() do
 		name, rank, _, level, _, zone, note, officernote, connected, status, class = GetGuildRosterInfo(i)
 		guildTable[i] = { name, rank, level, zone, note, officernote, connected, status, class }
 		if connected then totalOnline = totalOnline + 1 end
@@ -46,41 +46,6 @@ local function BuildGuildTable(total)
 			return a[1] < b[1]
 		end
 	end)
-end
-
-local function GetGuildMemberIndex(name)
-	for k,v in ipairs(guildTable) do
-		if v[1] == name then return k end
-	end
-	return -1
-end
-
-local function UpdateGuildTable(total)
-	totalOnline = 0
-	local index, name, rank, level, zone, note, officernote, connected, status
-	for i = 1, #guildTable do
-		-- get guild roster information
-		name, rank, _, level, _, zone, note, officernote, connected, status = GetGuildRosterInfo(i)
-		-- get the correct index in our table		
-		index = GetGuildMemberIndex(name)
-		-- we cannot find a guild member in our table, so rebuild it
-		if index == -1 then
-			BuildGuildTable(total)
-			break
-		end
-		-- update on-line status for all members
-		guildTable[index][7] = connected
-		-- update information only for on-line members
-		if connected then
-			guildTable[index][2] = rank
-			guildTable[index][3] = level
-			guildTable[index][4] = zone
-			guildTable[index][5] = note
-			guildTable[index][6] = officernote
-			guildTable[index][8] = status
-			totalOnline = totalOnline + 1
-		end
-	end
 end
 
 local function UpdateGuildXP()
@@ -112,13 +77,7 @@ local function Update(self, event, ...)
 	-- lock to prevent multiple updates simultaniously
 	self.update = true
 	if IsInGuild() then
-		local total = (GetNumGuildMembers())
-		
-		if total == #guildTable then
-			UpdateGuildTable(total)
-		else
-			BuildGuildTable(total)
-		end
+		BuildGuildTable()
 		
 		self:SetAllPoints(Text)
 		Text:SetFormattedText(displayString, totalOnline)

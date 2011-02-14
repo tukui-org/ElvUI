@@ -361,6 +361,7 @@ hooksecurefunc("MultiCastFlyoutFrame_ToggleFlyout",function(self) StyleTotemFlyo
 local function StyleTotemOpenButton(button, parent)
 	button:GetHighlightTexture():SetAlpha(0)
 	button:GetNormalTexture():SetAlpha(0)
+	button:GetNormalTexture().SetAlpha = E.dummy
 	button:Height(20)
 	button:ClearAllPoints()
 	button:Point("BOTTOMLEFT", parent, "TOPLEFT", 0, -3)
