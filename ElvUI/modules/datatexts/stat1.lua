@@ -90,12 +90,12 @@ local function ShowTooltip(self)
 			masteryspell = GetTalentTreeMasterySpells(GetPrimaryTalentTree())
 		end
 		
-		if masterySpell ~= nil then
-			local masteryName, _, _, _, _, _, _, _, _ = GetSpellInfo(masteryspell)
-			if masteryName then
-				GameTooltip:AddLine' '
-				GameTooltip:AddDoubleLine(masteryName, format(modifierString, GetCombatRating(CR_MASTERY), GetCombatRatingBonus(CR_MASTERY)), 1, 1, 1)
-			end
+
+
+		local masteryName, _, _, _, _, _, _, _, _ = GetSpellInfo(masteryspell)
+		if masteryName then
+			GameTooltip:AddLine' '
+			GameTooltip:AddDoubleLine(masteryName, format(modifierString, GetCombatRating(CR_MASTERY), GetCombatRatingBonus(CR_MASTERY)), 1, 1, 1)
 		end
 	end
 	
