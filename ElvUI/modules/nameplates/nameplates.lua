@@ -24,14 +24,6 @@ if C["nameplate"].showhealth ~= true then
 	iconSize = 20
 end
 
-local DebuffColor = { -- Not used currently
-	['Magic']	= {.2, .6, 1},
-	['Curse']	= {.6, 0, 1},
-	['Disease']	= {.6, .4, 0},
-	['Poison']	= {0, .6, 0},
-	['none'] = {0, 0, 0},
-}
-
 local NamePlates = CreateFrame("Frame", nil, UIParent)
 NamePlates:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
 if C["nameplate"].trackauras == true or C["nameplate"].trackccauras == true then
@@ -108,9 +100,6 @@ end
 --Update an Aura Icon
 local function UpdateAuraIcon(button, unit, index, filter)
 	local name,_,icon,count,debuffType,duration,expirationTime,_,_,_,spellID = UnitAura(unit,index,filter)
-	--[[ Leaving debuff coloring here in case i want to use it ever.
-	local c = DebuffColor[debuffType] or DebuffColor.none
-	button.bord:SetTexture(c[1], c[2], c[3])]]
 	
 	button.icon:SetTexture(icon)
 	button.cd:SetCooldown(expirationTime-duration,duration)
@@ -157,113 +146,6 @@ local function OnAura(frame, unit)
 		end
 	end
 	for index = i, #frame.icons do frame.icons[index]:Hide() end
-end
-
---OnUpdate function for all nameplates, we use this to update threat, health, and anything else that may require rapid updates.
-local goodR, goodG, goodB = unpack(C["nameplate"].goodcolor)
-local badR, badG, badB = unpack(C["nameplate"].badcolor)
-local transitionR, transitionG, transitionB = unpack(C["nameplate"].transitioncolor)
-local function UpdateThreat(frame, elapsed)
-	frame.hp:Show()
-	
-	if C["nameplate"].enhancethreat ~= true then
-		if(frame.region:IsShown()) then
-			local _, val = frame.region:GetVertexColor()
-			if(val > 0.7) then
-				frame.healthborder_tex1:SetTexture(transitionR, transitionG, transitionB)
-				frame.healthborder_tex2:SetTexture(transitionR, transitionG, transitionB)
-				frame.healthborder_tex3:SetTexture(transitionR, transitionG, transitionB)
-				frame.healthborder_tex4:SetTexture(transitionR, transitionG, transitionB)
-			else
-				frame.healthborder_tex1:SetTexture(badR, badG, badB)
-				frame.healthborder_tex2:SetTexture(badR, badG, badB)
-				frame.healthborder_tex3:SetTexture(badR, badG, badB)
-				frame.healthborder_tex4:SetTexture(badR, badG, badB)
-			end
-		else
-			frame.healthborder_tex1:SetTexture(unpack(C["media"].bordercolor))
-			frame.healthborder_tex2:SetTexture(unpack(C["media"].bordercolor))
-			frame.healthborder_tex3:SetTexture(unpack(C["media"].bordercolor))
-			frame.healthborder_tex4:SetTexture(unpack(C["media"].bordercolor))
-		end
-	else
-		if not frame.region:IsShown() then
-			if InCombatLockdown() and frame.hasclass ~= true and frame.isFriendly ~= true then
-				--No Threat
-				if E.Role == "Tank" then
-					frame.hp:SetStatusBarColor(badR, badG, badB)
-					frame.hp.hpbg:SetTexture(badR, badG, badB, 0.25)
-				else
-					frame.hp:SetStatusBarColor(goodR, goodG, goodB)
-					frame.hp.hpbg:SetTexture(goodR, goodG, goodB, 0.25)
-				end		
-			else
-				--Set colors to their original, not in combat
-				frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
-				frame.hp.hpbg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, 0.25)
-			end
-		else
-			--Ok we either have threat or we're losing/gaining it
-			local r, g, b = frame.region:GetVertexColor()
-			if g + b == 0 then
-				--Have Threat
-				if E.Role == "Tank" then
-					frame.hp:SetStatusBarColor(goodR, goodG, goodB)
-					frame.hp.hpbg:SetTexture(goodR, goodG, goodB, 0.25)
-				else
-					frame.hp:SetStatusBarColor(badR, badG, badB)
-					frame.hp.hpbg:SetTexture(badR, badG, badB, 0.25)
-				end
-			else
-				--Losing/Gaining Threat
-				frame.hp:SetStatusBarColor(transitionR, transitionG, transitionB)	
-				frame.hp.hpbg:SetTexture(transitionR, transitionG, transitionB, 0.25)
-			end
-		end
-	end
-	
-	-- show current health value
-	local minHealth, maxHealth = frame.healthOriginal:GetMinMaxValues()
-	local valueHealth = frame.healthOriginal:GetValue()
-	local d =(valueHealth/maxHealth)*100
-	
-	if C["nameplate"].showhealth == true then
-		frame.hp.value:SetText(E.ShortValue(valueHealth).." - "..(string.format("%d%%", math.floor((valueHealth/maxHealth)*100))))
-	end
-		
-	--Change frame style if the frame is our target or not
-	if UnitName("target") == frame.name:GetText() and frame:GetAlpha() == 1 then
-		--Targetted Unit
-		frame.name:SetTextColor(1, 1, 0)
-	else
-		--Not Targetted
-		frame.name:SetTextColor(1, 1, 1)
-	end
-	
-	--Setup frame shadow to change depending on enemy players health, also setup targetted unit to have white shadow
-	if frame.hasclass == true or frame.isFriendly == true then
-		if(d <= 50 and d >= 20) then
-			frame.healthborder_tex1:SetTexture(1, 1, 0)
-			frame.healthborder_tex2:SetTexture(1, 1, 0)
-			frame.healthborder_tex3:SetTexture(1, 1, 0)
-			frame.healthborder_tex4:SetTexture(1, 1, 0)
-		elseif(d < 20) then
-			frame.healthborder_tex1:SetTexture(1, 0, 0)
-			frame.healthborder_tex2:SetTexture(1, 0, 0)
-			frame.healthborder_tex3:SetTexture(1, 0, 0)
-			frame.healthborder_tex4:SetTexture(1, 0, 0)
-		else
-			frame.healthborder_tex1:SetTexture(unpack(C["media"].bordercolor))
-			frame.healthborder_tex2:SetTexture(unpack(C["media"].bordercolor))
-			frame.healthborder_tex3:SetTexture(unpack(C["media"].bordercolor))
-			frame.healthborder_tex4:SetTexture(unpack(C["media"].bordercolor))
-		end
-	elseif (frame.hasclass ~= true and frame.isFriendly ~= true) and C["nameplate"].enhancethreat == true then
-		frame.healthborder_tex1:SetTexture(unpack(C["media"].bordercolor))
-		frame.healthborder_tex2:SetTexture(unpack(C["media"].bordercolor))
-		frame.healthborder_tex3:SetTexture(unpack(C["media"].bordercolor))
-		frame.healthborder_tex4:SetTexture(unpack(C["media"].bordercolor))
-	end
 end
 
 --Color the castbar depending on if we can interrupt or not, 
@@ -391,6 +273,7 @@ local function UpdateObjects(frame)
 	Colorize(frame)
 	frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = frame.hp:GetStatusBarColor()
 	frame.hp.hpbg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, 0.25)
+	frame.name:SetTextColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
 	
 	--Set the name text
 	frame.name:SetText(frame.oldname:GetText())
@@ -643,6 +526,68 @@ local function SkinObjects(frame)
 	frames[frame] = true
 end
 
+local goodR, goodG, goodB = unpack(C["nameplate"].goodcolor)
+local badR, badG, badB = unpack(C["nameplate"].badcolor)
+local transitionR, transitionG, transitionB = unpack(C["nameplate"].transitioncolor)
+local function UpdateThreat(frame, elapsed)
+	frame.hp:Show()
+	if C["nameplate"].enhancethreat ~= true then
+		if(frame.region:IsShown()) then
+			local _, val = frame.region:GetVertexColor()
+			if(val > 0.7) then
+				frame.healthborder_tex1:SetTexture(transitionR, transitionG, transitionB)
+				frame.healthborder_tex2:SetTexture(transitionR, transitionG, transitionB)
+				frame.healthborder_tex3:SetTexture(transitionR, transitionG, transitionB)
+				frame.healthborder_tex4:SetTexture(transitionR, transitionG, transitionB)
+			else
+				frame.healthborder_tex1:SetTexture(badR, badG, badB)
+				frame.healthborder_tex2:SetTexture(badR, badG, badB)
+				frame.healthborder_tex3:SetTexture(badR, badG, badB)
+				frame.healthborder_tex4:SetTexture(badR, badG, badB)
+			end
+		else
+			frame.healthborder_tex1:SetTexture(unpack(C["media"].bordercolor))
+			frame.healthborder_tex2:SetTexture(unpack(C["media"].bordercolor))
+			frame.healthborder_tex3:SetTexture(unpack(C["media"].bordercolor))
+			frame.healthborder_tex4:SetTexture(unpack(C["media"].bordercolor))
+		end
+	else
+		if not frame.region:IsShown() then
+			if InCombatLockdown() and frame.hasclass ~= true and frame.isFriendly ~= true then
+				--No Threat
+				if E.Role == "Tank" then
+					frame.hp:SetStatusBarColor(badR, badG, badB)
+					frame.hp.hpbg:SetTexture(badR, badG, badB, 0.25)
+				else
+					frame.hp:SetStatusBarColor(goodR, goodG, goodB)
+					frame.hp.hpbg:SetTexture(goodR, goodG, goodB, 0.25)
+				end		
+			else
+				--Set colors to their original, not in combat
+				frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
+				frame.hp.hpbg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, 0.25)
+			end
+		else
+			--Ok we either have threat or we're losing/gaining it
+			local r, g, b = frame.region:GetVertexColor()
+			if g + b == 0 then
+				--Have Threat
+				if E.Role == "Tank" then
+					frame.hp:SetStatusBarColor(goodR, goodG, goodB)
+					frame.hp.hpbg:SetTexture(goodR, goodG, goodB, 0.25)
+				else
+					frame.hp:SetStatusBarColor(badR, badG, badB)
+					frame.hp.hpbg:SetTexture(badR, badG, badB, 0.25)
+				end
+			else
+				--Losing/Gaining Threat
+				frame.hp:SetStatusBarColor(transitionR, transitionG, transitionB)	
+				frame.hp.hpbg:SetTexture(transitionR, transitionG, transitionB, 0.25)
+			end
+		end
+	end
+end
+
 --Create our blacklist for nameplates, so prevent a certain nameplate from ever showing
 local function CheckBlacklist(frame, ...)
 	if PlateBlacklist[frame.name:GetText()] then
@@ -658,6 +603,52 @@ end
 local function HideDrunkenText(frame, ...)
 	if frame and frame.oldlevel and frame.oldlevel:IsShown() then
 		frame.oldlevel:Hide()
+	end
+end
+
+--Force the name text of a nameplate to be behind other nameplates unless it is our target
+local function AdjustNameLevel(frame, ...)
+	if UnitName("target") == frame.name:GetText() and frame:GetAlpha() == 1 then
+		frame.name:SetDrawLayer("OVERLAY")
+	else
+		frame.name:SetDrawLayer("BACKGROUND")
+	end
+end
+
+--Health Text, also border coloring for certain plates depending on health
+local function ShowHealth(frame, ...)
+	-- show current health value
+	local minHealth, maxHealth = frame.healthOriginal:GetMinMaxValues()
+	local valueHealth = frame.healthOriginal:GetValue()
+	local d =(valueHealth/maxHealth)*100
+	
+	if C["nameplate"].showhealth == true then
+		frame.hp.value:SetText(E.ShortValue(valueHealth).." - "..(string.format("%d%%", math.floor((valueHealth/maxHealth)*100))))
+	end
+			
+	--Setup frame shadow to change depending on enemy players health, also setup targetted unit to have white shadow
+	if frame.hasclass == true or frame.isFriendly == true or (frame.isFriendly == false and C["nameplate"].enhancethreat == true) then
+		if(d <= 50 and d >= 20) then
+			frame.healthborder_tex1:SetTexture(1, 1, 0)
+			frame.healthborder_tex2:SetTexture(1, 1, 0)
+			frame.healthborder_tex3:SetTexture(1, 1, 0)
+			frame.healthborder_tex4:SetTexture(1, 1, 0)
+		elseif(d < 20) then
+			frame.healthborder_tex1:SetTexture(1, 0, 0)
+			frame.healthborder_tex2:SetTexture(1, 0, 0)
+			frame.healthborder_tex3:SetTexture(1, 0, 0)
+			frame.healthborder_tex4:SetTexture(1, 0, 0)
+		else
+			frame.healthborder_tex1:SetTexture(unpack(C["media"].bordercolor))
+			frame.healthborder_tex2:SetTexture(unpack(C["media"].bordercolor))
+			frame.healthborder_tex3:SetTexture(unpack(C["media"].bordercolor))
+			frame.healthborder_tex4:SetTexture(unpack(C["media"].bordercolor))
+		end
+	elseif (frame.hasclass ~= true and frame.isFriendly ~= true) and C["nameplate"].enhancethreat == true then
+		frame.healthborder_tex1:SetTexture(unpack(C["media"].bordercolor))
+		frame.healthborder_tex2:SetTexture(unpack(C["media"].bordercolor))
+		frame.healthborder_tex3:SetTexture(unpack(C["media"].bordercolor))
+		frame.healthborder_tex4:SetTexture(unpack(C["media"].bordercolor))
 	end
 end
 
@@ -719,10 +710,10 @@ CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
 	end
 
 	if(self.elapsed and self.elapsed > 0.2) then
-		for frame in pairs(frames) do
-			UpdateThreat(frame, self.elapsed)
-		end
-		
+		ForEachPlate(UpdateThreat, self.elapsed)
+		ForEachPlate(AdjustNameLevel)
+		ForEachPlate(ShowHealth)
+
 		self.elapsed = 0
 	else
 		self.elapsed = (self.elapsed or 0) + elapsed
