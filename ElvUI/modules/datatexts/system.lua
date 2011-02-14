@@ -70,7 +70,7 @@ local function UpdateMemory()
 end
 
 -- initial delay for update (let the ui load)
-local int, int2 = 10, 5
+local int, int2 = 6, 5
 local statusColors = {
 	"|cff0CD809",
 	"|cffE8DA0F",
