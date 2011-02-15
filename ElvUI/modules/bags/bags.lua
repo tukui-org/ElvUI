@@ -696,6 +696,16 @@ function Stuffing:Layout(lb)
 			b.frame:Show()
 
 
+			local t = _G[b.frame:GetName().."IconTexture"]
+			b.frame:SetPushedTexture("")
+			b.frame:SetNormalTexture("")
+			t:SetTexCoord(.08, .92, .08, .92)
+			t:SetPoint("TOPLEFT", b.frame, E.Scale(2), E.Scale(-2))
+			t:SetPoint("BOTTOMRIGHT", b.frame, E.Scale(-2), E.Scale(2))
+			b.frame:SetTemplate("Default", true)
+		
+			b.frame:StyleButton()			
+			
 			idx = idx + 1
 		end
 	end
@@ -973,9 +983,12 @@ function Stuffing:PLAYER_ENTERING_WORLD()
 	ContainerFrame1:HookScript("OnShow", function(self)
 		ContainerFrame1:ClearAllPoints()
 		ContainerFrame1:SetPoint("TOPRIGHT", StuffingFrameBags, "TOPLEFT", E.Scale(2), E.Scale(40))
+		ContainerFrame1.SetPoint = E.dummy
+		ContainerFrame1.ClearAllPoints = E.dummy
 	end)
 	ContainerFrame1:SetParent(StuffingFrameBags)
 end
+
 function Stuffing:PLAYERBANKSLOTS_CHANGED(id)
 	if id > 28 then
 		for _, v in ipairs(self.bagframe_buttons) do
@@ -1380,29 +1393,12 @@ function Stuffing.Menu(self, level)
 		Stuffing_Sort("d")
 	end
 	UIDropDownMenu_AddButton(info, level)
-	
-	wipe(info)
-	info.text = L.bags_sortspecial
-	info.notCheckable = 1
-	info.func = function()
-		Stuffing_Sort("c/p")
-	end
-	UIDropDownMenu_AddButton(info, level)
 
 	wipe(info)
 	info.text = L.bags_stackmenu
 	info.notCheckable = 1
 	info.func = function()
 		Stuffing:SetBagsForSorting("d")
-		Stuffing:Restack()
-	end
-	UIDropDownMenu_AddButton(info, level)
-	
-	wipe(info)
-	info.text = L.bags_stackspecial
-	info.notCheckable = 1
-	info.func = function()
-		Stuffing:SetBagsForSorting("c/p")
 		Stuffing:Restack()
 	end
 	UIDropDownMenu_AddButton(info, level)
