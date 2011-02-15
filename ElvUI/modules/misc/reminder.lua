@@ -5,166 +5,10 @@
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if C["buffreminder"].enable ~= true then return end
---[[
-	Arguments
-	
-	spells - List of spells in a group, if you have anyone of these spells the icon will hide.
-		negate_spells - List of spells in a group, if you have anyone of these spells the icon will immediately hide and stop running the spell check (these should be other peoples spells)
-		reversecheck - only works if you provide a role or a tree, instead of hiding the frame when you have the buff, it shows the frame when you have the buff, doesn't work with weapons
-		negate_reversecheck - if reversecheck is set you can set a talent tree to not follow the reverse check, doesn't work with weapons
-	
-	weapon - Run a weapon enchant check instead of a spell check
-	
-	These can be ran no matter what you have selected from the above:
-	
-	combat - you must be in combat for it to display
-	role - you must be a certain role for it to display (Tank, Melee, Caster)
-	tree - you must be active in a specific talent tree for it to display (1, 2, 3) note: tree order can be viewed from left to right when you open your talent pane
-	instance - you must be in an instance for it to display, note: if you have combat checked and this option checked then the combat check will only run when your inside a party/raid instance
-	pvp - you must be in a pvp area for it to display (bg/arena), note: if you have combat checked and this option checked then the combat check will only run when your inside a bg/arena instance
-	level - the minimum level you must be
-	
-	for every group created a new frame is created, it's a lot easier this way
-]]
-
-E.ReminderBuffs = {
-	PRIEST = {
-		[1] = { --inner fire/will group
-			["spells"] = {
-				588, -- inner fire
-				73413, -- inner will			
-			},
-			["combat"] = true,
-		},
-	},
-	HUNTER = {
-		[1] = { --aspects group
-			["spells"] = {
-				13165, -- hawk
-				5118, -- cheetah
-				13159, -- pack
-				20043, -- wild
-				82661, -- fox	
-			},
-			["combat"] = true,
-		},				
-	},
-	MAGE = {
-		[1] = { --armors group
-			["spells"] = {
-				7302, -- frost armor
-				6117, -- mage armor
-				30482, -- molten armor		
-			},
-			["combat"] = true,
-		},		
-	},
-	WARLOCK = {
-		[1] = { --armors group
-			["spells"] = {
-				28176, -- fel armor
-				687, -- demon armor			
-			},
-			["combat"] = true,
-		},
-	},
-	PALADIN = {
-		[1] = { --Seals group
-			["spells"] = {
-				20154, -- seal of righteousness
-				20164, -- seal of justice
-				20165, -- seal of insight
-				31801, -- seal of truth				
-			},
-			["combat"] = true,
-		},
-		[2] = { -- righteous fury group
-			["spells"] = {
-				25780, 
-			},
-			["role"] = "Tank",
-			["instance"] = true,
-			["reversecheck"] = true,
-			["negate_reversecheck"] = 1, --Holy paladins use RF sometimes
-		},
-	},
-	SHAMAN = {
-		[1] = { --shields group
-			["spells"] = {
-				52127, -- water shield
-				324, -- lightning shield			
-			},
-			["combat"] = true,
-			["instance"] = true,
-		},
-		[2] = { --check weapons for enchants
-			["weapon"] = true,
-			["combat"] = true,
-			["level"] = 10,
-		},
-	},
-	WARRIOR = {
-		[1] = { -- commanding Shout group
-			["spells"] = {
-				469, 
-			},
-			["negate_spells"] = {
-				6307, -- Blood Pact
-				90364, -- Qiraji Fortitude
-				72590, -- Drums of fortitude
-				21562, -- Fortitude				
-			},
-			["combat"] = true,
-			["role"] = "Tank",
-		},
-		[2] = { -- battle Shout group
-			["spells"] = {
-				6673, 
-			},
-			["negate_spells"] = {
-				8076, -- strength of earth
-				57330, -- horn of Winter
-				93435, -- roar of courage (hunter pet)						
-			},
-			["combat"] = true,
-			["role"] = "Melee",
-		},
-	},
-	DEATHKNIGHT = {
-		[1] = { -- horn of Winter group
-			["spells"] = {
-				57330, 
-			},
-			["negate_spells"] = {
-				8076, -- strength of earth totem
-				6673, -- battle Shout
-				93435, -- roar of courage (hunter pet)			
-			},
-			["combat"] = true,
-			["instance"] = true,
-		},
-		[2] = { -- blood presence group
-			["spells"] = {
-				48263, 
-			},
-			["role"] = "Tank",
-			["instance"] = true,	
-			["reversecheck"] = true,
-		},
-	},
-	ROGUE = { 
-		[1] = { --weapons enchant group
-			["weapon"] = true,
-			["combat"] = true,
-			["level"] = 10,
-		},
-	},
-}
 
 local tab = E.ReminderBuffs[E.myclass]
 if not tab then return end
 
-local sound
 local function OnEvent(self, event, arg1, arg2)
 	local group = tab[self.id]
 	if not group.spells and not group.weapon then return end
@@ -178,7 +22,6 @@ local function OnEvent(self, event, arg1, arg2)
 		for _, buff in pairs(group.negate_spells) do
 			local name = GetSpellInfo(buff)
 			if (name and UnitBuff("player", name)) then
-				sound = true
 				return
 			end
 		end
@@ -234,6 +77,7 @@ local function OnEvent(self, event, arg1, arg2)
 	local role = group.role
 	local tree = group.tree
 	local combat = group.combat
+	local personal = group.personal
 	local instance = group.instance
 	local pvp = group.pvp	
 	local reversecheck = group.reversecheck
@@ -241,7 +85,6 @@ local function OnEvent(self, event, arg1, arg2)
 	local canplaysound = false
 	local rolepass = false
 	local treepass = false
-	local combatpass = false
 	local inInstance, instanceType = IsInInstance()
 	
 	if role ~= nil then
@@ -264,96 +107,72 @@ local function OnEvent(self, event, arg1, arg2)
 		treepass = true
 	end
 	
-	if (instance ~= nil or pvp ~= nil) and combat then
-		if instance then
-			if instanceType == "party" or instanceType == "raid" then
-				combatpass = true
-			else
-				combatpass = false
-			end
-		elseif pvp then
-			if instanceType == "arena" or instanceType == "pvp" then
-				combatpass = true
-			else
-				combatpass = false
-			end		
-		end
-	else
-		combatpass = true
-	end
-	
+	--Prevent user error
 	if reversecheck ~= nil and (role == nil and tree == nil) then reversecheck = nil end
 	
-	if event == "ZONE_CHANGED_NEW_AREA" or (instance == nil and combat == true) then
-		canplaysound = true
-	end
+	--Only time we allow it to play a sound
+	if (event == "ZONE_CHANGED_NEW_AREA" or event == "PLAYER_REGEN_DISABLED") and C["buffreminder"].sound == true then canplaysound = true end
+	
 	
 	if not group.weapon then
 		if ((combat and UnitAffectingCombat("player")) or (instance and (instanceType == "party" or instanceType == "raid")) or (pvp and (instanceType == "arena" or instanceType == "pvp"))) and 
-		combatpass == true and treepass == true and rolepass == true and not (UnitInVehicle("player") and self.icon:GetTexture()) then
+		treepass == true and rolepass == true and not (UnitInVehicle("player") and self.icon:GetTexture()) then
 			for _, buff in pairs(group.spells) do
 				local name = GetSpellInfo(buff)
-				if (name and UnitBuff("player", name)) then
-					self:Hide()
-					sound = true
-					return
+				local _, _, icon, _, _, _, _, unitCaster, _, _, _ = UnitBuff("player", name)
+				if personal and personal == true then
+					if (name and icon and unitCaster == "player") then
+						self:Hide()
+						return
+					end
+				else
+					if (name and icon) then
+						self:Hide()
+						return
+					end
 				end
 			end
 			self:Show()
-			if C["buffreminder"].sound == true and sound == true and canplaysound == true then
-				PlaySoundFile(C["media"].warning)
-				sound = false
-			end		
+			if canplaysound == true then PlaySoundFile(C["media"].warning) end		
 		elseif ((combat and UnitAffectingCombat("player")) or (instance and (instanceType == "party" or instanceType == "raid")) or (pvp and (instanceType == "arena" or instanceType == "pvp"))) and 
-		combatpass == true and reversecheck == true and not (UnitInVehicle("player") and self.icon:GetTexture()) then
-			if negate_reversecheck and negate_reversecheck == GetPrimaryTalentTree() then self:Hide() sound = true return end
+		reversecheck == true and not (UnitInVehicle("player") and self.icon:GetTexture()) then
+			if negate_reversecheck and negate_reversecheck == GetPrimaryTalentTree() then self:Hide() return end
 			for _, buff in pairs(group.spells) do
 				local name = GetSpellInfo(buff)
-				if (name and UnitBuff("player", name)) then
+				local _, _, icon, _, _, _, _, unitCaster, _, _, _ = UnitBuff("player", name)
+				if (name and icon and unitCaster == "player") then
 					self:Show()
-					if C["buffreminder"].sound == true and canplaysound == true then PlaySoundFile(C["media"].warning) end
+					if canplaysound == true then PlaySoundFile(C["media"].warning) end
 					return
 				end			
 			end			
 		else
 			self:Hide()
-			sound = true
 		end
 	else
 		if ((combat and UnitAffectingCombat("player")) or (instance and (instanceType == "party" or instanceType == "raid")) or (pvp and (instanceType == "arena" or instanceType == "pvp"))) and 
-		combatpass == true and treepass == true and rolepass == true and not (UnitInVehicle("player") and self.icon:GetTexture()) then
+		treepass == true and rolepass == true and not (UnitInVehicle("player") and self.icon:GetTexture()) then
 			if hasOffhandWeapon == nil then
 				if hasMainHandEnchant == nil then
 					self:Show()
-					if C["buffreminder"].sound == true and sound == true and canplaysound == true then
-						PlaySoundFile(C["media"].warning)
-						sound = false
-					end		
+					if canplaysound == true then PlaySoundFile(C["media"].warning) end		
 					return
 				end
 			else
 				if hasMainHandEnchant == nil then
 					self:Show()
-					if C["buffreminder"].sound == true and sound == true and canplaysound == true then
-						PlaySoundFile(C["media"].warning)
-						sound = false
-					end	
+					if canplaysound == true then PlaySoundFile(C["media"].warning) end	
 					return
 				elseif hasOffHandEnchant == nil then
 					self:Show()
-					if C["buffreminder"].sound == true and sound == true and canplaysound == true then
-						PlaySoundFile(C["media"].warning)
-						sound = false
-					end	
+					if canplaysound == true then PlaySoundFile(C["media"].warning) end	
 					return
 				end
 			end
 			self:Hide()
-			sound = true
 			return	
 		else
 			self:Hide()
-			sound = true
 			return
 		end	
 	end
@@ -373,6 +192,7 @@ for i=1, #tab do
 
 	frame:RegisterEvent("UNIT_AURA")
 	frame:RegisterEvent("PLAYER_LOGIN")
+	frame:RegisterEvent("UNIT_INVENTORY_CHANGED")
 	frame:RegisterEvent("PLAYER_REGEN_ENABLED")
 	frame:RegisterEvent("PLAYER_REGEN_DISABLED")
 	frame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
