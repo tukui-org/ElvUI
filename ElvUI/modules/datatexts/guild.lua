@@ -5,20 +5,33 @@ local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Lo
 
 if not C["datatext"].guild or C["datatext"].guild == 0 then return end
 
+-- localized references for global functions (about 50% faster)
+local join 			= string.join
+local format		= string.format
+local find			= string.find
+local gsub			= string.gsub
+local sort			= table.sort
+local ceil			= math.ceil
+
 local tthead, ttsubh, ttoff = {r=0.4, g=0.78, b=1}, {r=0.75, g=0.9, b=1}, {r=.3,g=1,b=.3}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
-local displayString = string.join("", GUILD, ": ", E.ValColor, "%d|r")
+local displayString = join("", GUILD, ": ", E.ValColor, "%d|r")
+local noGuildString = join("", E.ValColor, L.datatext_noguild)
 local guildInfoString = "%s [%d]"
-local guildInfoString2 = string.join("", GUILD, ": %d/%d")
-local guildMotDString = "  %s |cffaaaaaa- |cffffffff%s"
+local guildInfoString2 = join("", GUILD, ": %d/%d")
+local guildMotDString = "%s |cffaaaaaa- |cffffffff%s"
 local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r %s"
 local levelNameStatusString = "|cff%02x%02x%02x%d|r %s %s"
 local nameRankString = "%s |cff999999-|cffffffff %s"
-local noteString = "  '%s'"
-local officerNoteString = "  o: '%s'"
-
+local guildXpCurrentString = gsub(join("", E.RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b), GUILD_EXPERIENCE_CURRENT), ": ", ":|r |cffffffff", 1)
+local guildXpDailyString = gsub(join("", E.RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b), GUILD_EXPERIENCE_DAILY), ": ", ":|r |cffffffff", 1)
+local standingString = join("", E.RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b), "%s:|r |cFFFFFFFF%s/%s (%s%%)")
+local moreMembersOnlineString = join("", "+ %d ", FRIENDS_LIST_ONLINE, "...")
+local noteString = join("", "|cff999999   ", LABEL_NOTE, ":|r %s")
+local officerNoteString = join("", "|cff999999   ", GUILD_RANK1_DESC, ":|r %s")
+local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
 local guildTable, guildXP, guildMotD = {}, {}, ""
-local totalOnline = 0
+local dataValid = false
 
 local Stat = CreateFrame("Frame")
 Stat:EnableMouse(true)
@@ -33,15 +46,16 @@ Text:SetShadowColor(0, 0, 0, 0.4)
 E.PP(C["datatext"].guild, Text)
 
 local function BuildGuildTable()
-	totalOnline = 0
 	wipe(guildTable)
 	local name, rank, level, zone, note, officernote, connected, status, class
 	for i = 1, GetNumGuildMembers() do
 		name, rank, _, level, _, zone, note, officernote, connected, status, class = GetGuildRosterInfo(i)
-		guildTable[i] = { name, rank, level, zone, note, officernote, connected, status, class }
-		if connected then totalOnline = totalOnline + 1 end
+		-- we are only interested in online members
+		if connected then 
+			guildTable[i] = { name, rank, level, zone, note, officernote, connected, status, class }
+		end
 	end
-	table.sort(guildTable, function(a, b)
+	sort(guildTable, function(a, b)
 		if a and b then
 			return a[1] < b[1]
 		end
@@ -51,8 +65,8 @@ end
 local function UpdateGuildXP()
 	local currentXP, remainingXP, dailyXP, maxDailyXP = UnitGetGuildXP("player")
 	local nextLevelXP = currentXP + remainingXP
-	local percentTotal = tostring(math.ceil((currentXP / nextLevelXP) * 100))
-	local percentDaily = tostring(math.ceil((dailyXP / maxDailyXP) * 100))
+	local percentTotal = ceil((currentXP / nextLevelXP) * 100)
+	local percentDaily = ceil((dailyXP / maxDailyXP) * 100)
 	
 	guildXP[0] = { currentXP, nextLevelXP, percentTotal }
 	guildXP[1] = { dailyXP, maxDailyXP, percentDaily }
@@ -63,24 +77,31 @@ local function UpdateGuildMessage()
 end
 
 local function Update(self, event, ...)	
-	if not GuildFrame then LoadAddOn("Blizzard_GuildUI") UpdateGuildXP() end
-	-- our guild xp changed, recalculate it
-	if event == "GUILD_XP_UPDATE" then UpdateGuildXP() end
-	-- our guild message of the day changed
-	if event == "GUILD_MOTD" or event == "PLAYER_ENTERING_WORLD" then UpdateGuildMessage() end
-	-- an event occured that could change the guild roster, so request update
-	if event ~= "GUILD_ROSTER_UPDATE" then GuildRoster() end
-		
-	-- received an updated event, but we are already updating the table
-	if self.update == true then return end
-
-	-- lock to prevent multiple updates simultaniously
-	self.update = true
 	if IsInGuild() then
-		BuildGuildTable()
+		-- special handler to request guild roster updates when guild members come online or go
+		-- offline, since this does not automatically trigger the GuildRoster update from the server
+		if event == "CHAT_MSG_SYSTEM" then
+			local message = select(1, ...)
+			if find(message, friendOnline) or find(message, friendOffline) then GuildRoster() end
+		end
+		-- our guild xp changed, recalculate it
+		if event == "GUILD_XP_UPDATE" then UpdateGuildXP() return end
+		-- our guild message of the day changed
+		if event == "GUILD_MOTD" then UpdateGuildMessage() return end
+		-- when we enter the world and guildframe is not available then
+		-- load guild frame, update guild message and guild xp
+		if event == "PLAYER_ENTERING_WORLD" then
+			if not GuildFrame and IsInGuild() then LoadAddOn("Blizzard_GuildUI") UpdateGuildMessage() UpdateGuildXP() end
+		end
+		-- an event occured that could change the guild roster, so request update, and wait for guild roster update to occur
+		if event ~= "GUILD_ROSTER_UPDATE" and event~="PLAYER_GUILD_UPDATE" then GuildRoster() return end
+
+		local _, online = GetNumGuildMembers()
+		
+		dataValid = false
 		
 		self:SetAllPoints(Text)
-		Text:SetFormattedText(displayString, totalOnline)
+		Text:SetFormattedText(displayString, online)
 		
 		if not Stat:GetScript("OnMouseDown") then
 			Stat:SetScript("OnMouseDown", function(self, btn)
@@ -89,17 +110,16 @@ local function Update(self, event, ...)
 			end)
 		end
 	else
-		Text:SetText(E.ValColor..L.datatext_noguild)
+		Text:SetText(noGuildString)
 		Stat:SetScript("OnMouseDown", nil)
 	end
-	self.update = false
 end
 	
 local menuFrame = CreateFrame("Frame", "ElvuiGuildRightClickMenu", UIParent, "UIDropDownMenuTemplate")
 local menuList = {
-	{ text = OPTIONS_MENU, isTitle = true,notCheckable=true},
-	{ text = INVITE, hasArrow = true,notCheckable=true,},
-	{ text = CHAT_MSG_WHISPER_INFORM, hasArrow = true,notCheckable=true,}
+	{ text = OPTIONS_MENU, isTitle = true, notCheckable=true},
+	{ text = INVITE, hasArrow = true, notCheckable=true,},
+	{ text = CHAT_MSG_WHISPER_INFORM, hasArrow = true, notCheckable=true,}
 }
 
 local function inviteClick(self, arg1, arg2, checked)
@@ -120,10 +140,11 @@ end
 
 Stat:SetScript("OnMouseUp", function(self, btn)
 	if btn ~= "RightButton" then return end
+	if InCombatLockdown() or not IsInGuild() then return end
 	
 	GameTooltip:Hide()
 
-	local classc, levelc, grouped
+	local classc, levelc, grouped, info
 	local menuCountWhispers = 0
 	local menuCountInvites = 0
 
@@ -131,18 +152,19 @@ Stat:SetScript("OnMouseUp", function(self, btn)
 	menuList[3].menuList = {}
 
 	for i = 1, #guildTable do
-		if guildTable[i][7] and guildTable[i][1] ~= E.myname then
-			local classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[guildTable[i][9]], GetQuestDifficultyColor(guildTable[i][3])
+		info = guildTable[i]
+		if info[7] and info[1] ~= E.myname then
+			local classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
 
-			if UnitInParty(guildTable[i][1]) or UnitInRaid(guildTable[i][1]) then
+			if UnitInParty(info[1]) or UnitInRaid(info[1]) then
 				grouped = "|cffaaaaaa*|r"
 			else
 				menuCountInvites = menuCountInvites +1
 				grouped = ""
-				menuList[2].menuList[menuCountInvites] = {text = string.format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, guildTable[i][3], classc.r*255,classc.g*255,classc.b*255, guildTable[i][1], ""), arg1 = guildTable[i][1],notCheckable=true, func = inviteClick}
+				menuList[2].menuList[menuCountInvites] = {text = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info[3], classc.r*255,classc.g*255,classc.b*255, info[1], ""), arg1 = info[1],notCheckable=true, func = inviteClick}
 			end
 			menuCountWhispers = menuCountWhispers + 1
-			menuList[3].menuList[menuCountWhispers] = {text = string.format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, guildTable[i][3], classc.r*255,classc.g*255,classc.b*255, guildTable[i][1], grouped), arg1 = guildTable[i][1],notCheckable=true, func = whisperClick}
+			menuList[3].menuList[menuCountWhispers] = {text = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info[3], classc.r*255,classc.g*255,classc.b*255, info[1], grouped), arg1 = info[1],notCheckable=true, func = whisperClick}
 		end
 	end
 
@@ -151,26 +173,36 @@ end)
 
 Stat:SetScript("OnEnter", function(self)
 	if InCombatLockdown() or not IsInGuild() then return end
+	
+	local total, online = GetNumGuildMembers()
 		
-	local name, rank, level, zone, note, officernote, connected, status, class
-	local zonec, classc, levelc
-	local online = totalOnline
-		
+	if not dataValid then
+		-- only retrieve information for all on-line members when we actually view the tooltip
+		BuildGuildTable(total)
+		dataValid = true
+	end
+
+	local guildName, guildRank = GetGuildInfo('player')
+	local guildLevel = GetGuildLevel()
+
 	local anchor, panel, xoff, yoff = E.DataTextTooltipAnchor(Text)
 	GameTooltip:SetOwner(panel, anchor, xoff, yoff)
+	
 	GameTooltip:ClearLines()
-	GameTooltip:AddDoubleLine(string.format(guildInfoString, GetGuildInfo('player'), GetGuildLevel()), string.format(guildInfoString2, online, #guildTable),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
+	GameTooltip:AddDoubleLine(format(guildInfoString, guildName, guildLevel), format(guildInfoString2, online, total),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
+	GameTooltip:AddLine(guildRank, unpack(tthead))
 	GameTooltip:AddLine(' ')
 	
-	if guildMotD ~= "" then GameTooltip:AddLine(string.format(guildMotDString, GUILD_MOTD, guildMotD), ttsubh.r, ttsubh.g, ttsubh.b, 1) end
+	if guildMotD ~= "" then GameTooltip:AddLine(format(guildMotDString, GUILD_MOTD, guildMotD), ttsubh.r, ttsubh.g, ttsubh.b, 1) end
 	
 	local col = E.RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b)
-	GameTooltip:AddLine' '
+	GameTooltip:AddLine(' ')
 	if GetGuildLevel() ~= 25 then
 		local currentXP, nextLevelXP, percentTotal = unpack(guildXP[0])
 		local dailyXP, maxDailyXP, percentDaily = unpack(guildXP[1])
-		GameTooltip:AddLine(string.format(col..GUILD_EXPERIENCE_CURRENT, "|r |cFFFFFFFF"..E.ShortValue(currentXP), E.ShortValue(nextLevelXP), percentTotal))
-		GameTooltip:AddLine(string.format(col..GUILD_EXPERIENCE_DAILY, "|r |cFFFFFFFF"..E.ShortValue(dailyXP), E.ShortValue(maxDailyXP), percentDaily))
+				
+		GameTooltip:AddLine(format(guildXpCurrentString, E.ShortValue(currentXP), E.ShortValue(nextLevelXP), percentTotal))
+		GameTooltip:AddLine(format(guildXpDailyString, E.ShortValue(dailyXP), E.ShortValue(maxDailyXP), percentDaily))
 	end
 	
 	local _, _, standingID, barMin, barMax, barValue = GetGuildFactionInfo()
@@ -178,29 +210,34 @@ Stat:SetScript("OnEnter", function(self)
 		barMax = barMax - barMin
 		barValue = barValue - barMin
 		barMin = 0
-		GameTooltip:AddLine(string.format("%s:|r |cFFFFFFFF%s/%s (%s%%)",col..COMBAT_FACTION_CHANGE, E.ShortValue(barValue), E.ShortValue(barMax), math.ceil((barValue / barMax) * 100)))
+		GameTooltip:AddLine(format(standingString, COMBAT_FACTION_CHANGE, E.ShortValue(barValue), E.ShortValue(barMax), ceil((barValue / barMax) * 100)))
 	end
 	
 	if online > 1 then
+		local zonec, classc, levelc, info
+		local shown = 0
+		
 		GameTooltip:AddLine(' ')
 		for i = 1, #guildTable do
-			if online <= 1 then
-				if online > 1 then GameTooltip:AddLine(format("+ %d More...", online - modules.Guild.maxguild),ttsubh.r,ttsubh.g,ttsubh.b) end
+			-- if more then 30 guild members are online, we don't Show any more, but inform user there are more
+			if 30 - shown <= 1 then
+				if online - 30 > 1 then GameTooltip:AddLine(format(moreMembersOnlineString, online - 30), ttsubh.r, ttsubh.g, ttsubh.b) end
 				break
 			end
 
-			name, rank, level, zone, note, officernote, connected, status, class = unpack(guildTable[i])
-			if connected and name ~= E.myname then
-				if GetRealZoneText() == zone then zonec = activezone else zonec = inactivezone end
-				classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[class], GetQuestDifficultyColor(level)
+			info = guildTable[i]
+			if info[7] and info[1] ~= E.myname then
+				if GetRealZoneText() == info[4] then zonec = activezone else zonec = inactivezone end
+				classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
 				
 				if IsShiftKeyDown() then
-					GameTooltip:AddDoubleLine(string.format(nameRankString, name, rank), zone, classc.r, classc.g, classc.b, zonec.r, zonec.g, zonec.b)
-					if note ~= "" then GameTooltip:AddLine(string.format(noteString, note), ttsubh.r, ttsubh.g, ttsubh.b, 1) end
-					if officernote ~= "" then GameTooltip:AddLine(string.format(officerNoteString, officernote), ttoff.r, ttoff.g, ttoff.b ,1) end
+					GameTooltip:AddDoubleLine(format(nameRankString, info[1], info[2]), info[4], classc.r, classc.g, classc.b, zonec.r, zonec.g, zonec.b)
+					if info[5] ~= "" then GameTooltip:AddLine(format(noteString, info[5]), ttsubh.r, ttsubh.g, ttsubh.b, 1) end
+					if info[6] ~= "" then GameTooltip:AddLine(format(officerNoteString, info[6]), ttoff.r, ttoff.g, ttoff.b, 1) end
 				else
-					GameTooltip:AddDoubleLine(string.format(levelNameStatusString, levelc.r*255, levelc.g*255, levelc.b*255, level, name, status), zone, classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
+					GameTooltip:AddDoubleLine(format(levelNameStatusString, levelc.r*255, levelc.g*255, levelc.b*255, info[3], info[1], info[8]), info[4], classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
 				end
+				shown = shown + 1
 			end
 		end
 	end
@@ -215,5 +252,5 @@ Stat:RegisterEvent("GUILD_ROSTER_UPDATE")
 Stat:RegisterEvent("GUILD_XP_UPDATE")
 Stat:RegisterEvent("PLAYER_GUILD_UPDATE")
 Stat:RegisterEvent("GUILD_MOTD")
+Stat:RegisterEvent("CHAT_MSG_SYSTEM")
 Stat:SetScript("OnEvent", Update)
-UpdateGuildMessage()

@@ -39,8 +39,11 @@ _G.CHAT_FLAG_AFK = "|cffFF0000"..L.chat_FLAG_AFK.."|r "
 _G.CHAT_FLAG_DND = "|cffE7E716"..L.chat_FLAG_DND.."|r "
 _G.CHAT_FLAG_GM = "|cff4154F5"..L.chat_FLAG_GM.."|r "
  
-_G.ERR_FRIEND_ONLINE_SS = "|Hplayer:%s|h[%s]|h "..L.chat_ERR_FRIEND_ONLINE_SS.."!"
-_G.ERR_FRIEND_OFFLINE_S = "%s "..L.chat_ERR_FRIEND_OFFLINE_S.."!"
+
+-- don't replace this with custom colors, since many addons
+-- use these strings to detect if friends come on-line or go off-line 
+--_G.ERR_FRIEND_ONLINE_SS = "|Hplayer:%s|h[%s]|h "..L.chat_ERR_FRIEND_ONLINE_SS.."!"
+--_G.ERR_FRIEND_OFFLINE_S = "%s "..L.chat_ERR_FRIEND_OFFLINE_S.."!"
 
 -- Hide friends micro button (added in 3.3.5)
 FriendsMicroButton:Kill()
