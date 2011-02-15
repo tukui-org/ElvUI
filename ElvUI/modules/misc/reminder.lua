@@ -46,11 +46,18 @@ local function OnEvent(self, event, arg1, arg2)
 		elseif (self.icon:GetTexture() and event == "LEARNED_SPELL_IN_TAB") then
 			self:UnregisterAllEvents()
 			self:RegisterEvent("UNIT_AURA")
-			self:RegisterEvent("PLAYER_LOGIN")
-			self:RegisterEvent("PLAYER_REGEN_ENABLED")
-			self:RegisterEvent("PLAYER_REGEN_DISABLED")
-			self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-			self:RegisterEvent("UNIT_INVENTORY_CHANGED")
+			if group.combat and group.combat == true then
+				self:RegisterEvent("PLAYER_REGEN_ENABLED")
+				self:RegisterEvent("PLAYER_REGEN_DISABLED")
+			end
+			
+			if (group.instance and group.instance == true) or (group.pvp and group.pvp == true) then
+				self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+			end
+			
+			if group.role and group.role == true then
+				self:RegisterEvent("UNIT_INVENTORY_CHANGED")
+			end
 		end		
 	else
 		if hasOffhandWeapon == nil then
@@ -66,12 +73,19 @@ local function OnEvent(self, event, arg1, arg2)
 		end
 		
 		self:UnregisterAllEvents()
-		self:RegisterEvent("PLAYER_LOGIN")
-		self:RegisterEvent("PLAYER_REGEN_ENABLED")
-		self:RegisterEvent("PLAYER_REGEN_DISABLED")
-		self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-		self:RegisterEvent("UNIT_INVENTORY_CHANGED")
 		self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+		if group.combat and group.combat == true then
+			self:RegisterEvent("PLAYER_REGEN_ENABLED")
+			self:RegisterEvent("PLAYER_REGEN_DISABLED")
+		end
+		
+		if (group.instance and group.instance == true) or (group.pvp and group.pvp == true) then
+			self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+		end
+		
+		if group.role and group.role == true then
+			self:RegisterEvent("UNIT_INVENTORY_CHANGED")
+		end
 	end
 	
 	local role = group.role
@@ -112,7 +126,6 @@ local function OnEvent(self, event, arg1, arg2)
 	
 	--Only time we allow it to play a sound
 	if (event == "ZONE_CHANGED_NEW_AREA" or event == "PLAYER_REGEN_DISABLED") and C["buffreminder"].sound == true then canplaysound = true end
-	
 	
 	if not group.weapon then
 		if ((combat and UnitAffectingCombat("player")) or (instance and (instanceType == "party" or instanceType == "raid")) or (pvp and (instanceType == "arena" or instanceType == "pvp"))) and 
