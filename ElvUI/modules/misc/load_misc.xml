@@ -12,4 +12,5 @@
 	<Script file="mirror.lua"/>
 	<Script file="raidmarker.lua"/>
 	<Script file="damage.lua"/>
+	<Script file="threat.lua"/>
 </Ui>

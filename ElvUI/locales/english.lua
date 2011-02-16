@@ -112,6 +112,7 @@ L.unitframes_ouf_deaddps = "Dead"
 L.unitframes_ouf_ghostheal = "GHOST"
 L.unitframes_ouf_deadheal = "DEAD"
 L.unitframes_disconnected = "D/C"
+L.unitframes_ouf_threattext = "Threat on current target:"
 
 L.tooltip_count = "Count"
 

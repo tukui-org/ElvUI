@@ -1,8 +1,0 @@
-## Interface: 30300
-## Title: oUF_ThreatBar
-## Author: Wurmfood
-## Version: 1.0.5
-## Notes: oUF Threat Bar.
-## Dependencies: oUF
-
-oUF_ThreatBar.lua

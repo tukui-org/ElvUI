@@ -398,35 +398,7 @@ local function Shared(self, unit)
 			self.Reputation.F:SetPoint("BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
 			self.Reputation.F:SetFrameLevel(self.Reputation:GetFrameLevel() - 1)
 		end
-		
-		if C["unitframes"].showthreat == true and not IsAddOnLoaded("Omen") then
-			-- the threat bar, we move this to targetframe at bottom of file
-			local ThreatBar = CreateFrame("StatusBar", self:GetName()..'_ThreatBar', self)
-			ThreatBar:SetWidth(original_width)
-			ThreatBar:SetHeight(E.Scale(5))
-			if powerbar_offset ~= 0 then
-				ThreatBar:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -powerbar_offset + -E.Scale(5))
-			else
-				ThreatBar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -E.Scale(8))
-			end
-			ThreatBar:SetStatusBarTexture(normTex)
-			ThreatBar:GetStatusBarTexture():SetHorizTile(false)
-			ThreatBar:SetBackdrop(backdrop)
-			ThreatBar:SetBackdropColor(0, 0, 0, 0)
-			ThreatBar.bg = ThreatBar:CreateTexture(nil, 'BORDER')
-			ThreatBar.bg:SetAllPoints(ThreatBar)
-			ThreatBar.bg:SetTexture(0.1,0.1,0.1)
-			ThreatBar.useRawThreat = false
-			self.ThreatBar = ThreatBar
-			
-			self.ThreatBar.F = CreateFrame("Frame", nil, self.ThreatBar)
-			self.ThreatBar.F:SetTemplate("Default")
-			self.ThreatBar.F:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-			self.ThreatBar.F:SetPoint("TOPLEFT", E.Scale(-2), E.Scale(2))
-			self.ThreatBar.F:SetPoint("BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
-			self.ThreatBar.F:SetFrameLevel(self.ThreatBar:GetFrameLevel() - 1)
-		end
-		
+				
 		--CLASS BARS
 		if C["unitframes"].classbar == true then
 			-- show druid mana when shapeshifted in bear, cat or whatever
@@ -2096,13 +2068,4 @@ do
 	UnitPopupMenus["ARENAENEMY"] = { "CANCEL" }
 	UnitPopupMenus["FOCUS"] = { "RAID_TARGET_ICON", "CANCEL" }
 	UnitPopupMenus["BOSS"] = { "RAID_TARGET_ICON", "CANCEL" }
-end
-
---Move threatbar to targetframe
-if ElvDPS_player.ThreatBar then
-	if powerbar_offset ~= 0 then
-		ElvDPS_player.ThreatBar:SetPoint("TOPLEFT", ElvDPS_target.Health, "BOTTOMLEFT", 0, -powerbar_offset + -E.Scale(5))
-	else
-		ElvDPS_player.ThreatBar:SetPoint("TOPRIGHT", ElvDPS_target.Health, "BOTTOMRIGHT", 0, -(ElvDPS_target.Health:GetHeight() * 0.35) + -E.Scale(8))
-	end
 end
