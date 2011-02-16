@@ -632,7 +632,7 @@ local function ShowHealth(frame, ...)
 	end
 			
 	--Setup frame shadow to change depending on enemy players health, also setup targetted unit to have white shadow
-	if frame.hasclass == true or frame.isFriendly == true or (frame.isFriendly == false and C["nameplate"].enhancethreat == true) then
+	if frame.hasclass == true or frame.isFriendly == true then
 		if(d <= 50 and d >= 20) then
 			frame.healthborder_tex1:SetTexture(1, 1, 0)
 			frame.healthborder_tex2:SetTexture(1, 1, 0)
