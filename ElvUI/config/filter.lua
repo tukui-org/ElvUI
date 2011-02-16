@@ -548,6 +548,9 @@ DebuffHealerWhiteList = {
 		
 		--Nefarian
 		
+		--Sinestra
+		[SpellName(92956)] = true, -- Wrack
+		
 	--The Bastion of Twilight
 		--Valiona & Theralion
 		[SpellName(92878)] = true, -- Blackout
