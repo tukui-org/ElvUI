@@ -222,14 +222,14 @@ addon.LOOT_OPENED = function(self, event, autoloot)
 				item = item:gsub("\n", ", ")
 			end
 
-			if(quantity > 1) then
+			if quantity and (quantity > 1) then
 				slot.count:SetText(quantity)
 				slot.count:Show()
 			else
 				slot.count:Hide()
 			end
 
-			if(quality > 1) then
+			if quality and (quality > 1) then
 				slot.drop:SetVertexColor(color.r, color.g, color.b)
 				slot.drop:Show()
 			else
