@@ -35,33 +35,61 @@ fader:SetFrameStrata(fader:GetParent():GetFrameStrata())
 	
 local APM = { TIMEMANAGER_PM, TIMEMANAGER_AM }
 
-local function CalculateTimeValues()
+local function CalculateTimeValues(tt)
 	local Hr, Min, AmPm
-	if C["datatext"].localtime == true then
-		local Hr24 = tonumber(date("%H"))
-		Hr = tonumber(date("%I"))
-		Min = tonumber(date("%M"))
-		if C["datatext"].time24 == true then
-			return Hr24, Min, -1
+	if tt and tt == true then
+		if C["datatext"].localtime == true then
+			Hr, Min = GetGameTime()
+			if C["datatext"].time24 == true then
+				return Hr, Min, -1
+			else
+				if Hr>=12 then
+					if Hr>12 then Hr = Hr - 12 end
+					AmPm = 1
+				else
+					if Hr == 0 then Hr = 12 end
+					AmPm = 2
+				end
+				return Hr, Min, AmPm
+			end			
 		else
-			if Hr24>=12 then AmPm = 1 else AmPm = 2 end
-			return Hr, Min, AmPm
+			local Hr24 = tonumber(date("%H"))
+			Hr = tonumber(date("%I"))
+			Min = tonumber(date("%M"))
+			if C["datatext"].time24 == true then
+				return Hr24, Min, -1
+			else
+				if Hr24>=12 then AmPm = 1 else AmPm = 2 end
+				return Hr, Min, AmPm
+			end
 		end
 	else
-		Hr, Min = GetGameTime()
-		if C["datatext"].time24 == true then
-			return Hr, Min, -1
-		else
-			if Hr>=12 then
-				if Hr>12 then Hr = Hr - 12 end
-				AmPm = 1
+		if C["datatext"].localtime == true then
+			local Hr24 = tonumber(date("%H"))
+			Hr = tonumber(date("%I"))
+			Min = tonumber(date("%M"))
+			if C["datatext"].time24 == true then
+				return Hr24, Min, -1
 			else
-				if Hr == 0 then Hr = 12 end
-				AmPm = 2
+				if Hr24>=12 then AmPm = 1 else AmPm = 2 end
+				return Hr, Min, AmPm
 			end
-			return Hr, Min, AmPm
-		end
-	end	
+		else
+			Hr, Min = GetGameTime()
+			if C["datatext"].time24 == true then
+				return Hr, Min, -1
+			else
+				if Hr>=12 then
+					if Hr>12 then Hr = Hr - 12 end
+					AmPm = 1
+				else
+					if Hr == 0 then Hr = 12 end
+					AmPm = 2
+				end
+				return Hr, Min, AmPm
+			end
+		end	
+	end
 end
 
 local function CalculateTimeLeft(time)
@@ -91,7 +119,7 @@ local function Update(self, t)
 	int = int - t
 	if int > 0 then return end
 	
-	local Hr, Min, AmPm = CalculateTimeValues()
+	local Hr, Min, AmPm = CalculateTimeValues(false)
 	
 	if CalendarGetNumPendingInvites() > 0 then
 		E.Flash(TimeDataText, 0.53)
@@ -148,10 +176,10 @@ Stat:SetScript("OnEnter", function(self)
 	end	
 
 	local timeText
-	local Hr, Min, AmPm = CalculateTimeValues()
+	local Hr, Min, AmPm = CalculateTimeValues(true)
 
 	GameTooltip:AddLine(" ")
-	timeText = C["datatext"].localtime == true and TIMEMANAGER_TOOLTIP_LOCALTIME or TIMEMANAGER_TOOLTIP_REALMTIME
+	timeText = C["datatext"].localtime == true and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME
 	if AmPm == -1 then
 			GameTooltip:AddDoubleLine(timeText, string.format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	else
