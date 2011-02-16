@@ -32,6 +32,7 @@ local officerNoteString = join("", "|cff999999   ", GUILD_RANK1_DESC, ":|r %s")
 local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
 local guildTable, guildXP, guildMotD = {}, {}, ""
 local dataValid = false
+local lastEnter
 
 local Stat = CreateFrame("Frame")
 Stat:EnableMouse(true)
@@ -45,21 +46,30 @@ Text:SetShadowOffset(E.mult, -E.mult)
 Text:SetShadowColor(0, 0, 0, 0.4)
 E.PP(C["datatext"].guild, Text)
 
+local function SortGuildTable(shift)
+	sort(guildTable, function(a, b)
+		if a and b then
+			if shift then
+				return a[10] < b[10]
+			else
+				return a[1] < b[1]
+			end
+		end
+	end)
+end
+
 local function BuildGuildTable()
 	wipe(guildTable)
 	local name, rank, level, zone, note, officernote, connected, status, class
 	for i = 1, GetNumGuildMembers() do
-		name, rank, _, level, _, zone, note, officernote, connected, status, class = GetGuildRosterInfo(i)
+		name, rank, rankIndex, level, _, zone, note, officernote, connected, status, class = GetGuildRosterInfo(i)
 		-- we are only interested in online members
 		if connected then 
-			guildTable[i] = { name, rank, level, zone, note, officernote, connected, status, class }
+			guildTable[i] = { name, rank, level, zone, note, officernote, connected, status, class, rankIndex }
 		end
 	end
-	sort(guildTable, function(a, b)
-		if a and b then
-			return a[1] < b[1]
-		end
-	end)
+	
+	SortGuildTable(IsShiftKeyDown())
 end
 
 local function UpdateGuildXP()
@@ -176,12 +186,13 @@ Stat:SetScript("OnEnter", function(self)
 	
 	local total, online = GetNumGuildMembers()
 		
-	if not dataValid then
+	if not dataValid or lastEnter ~= IsShiftKeyDown() then
 		-- only retrieve information for all on-line members when we actually view the tooltip
-		BuildGuildTable(total)
+		BuildGuildTable()
 		dataValid = true
+		lastEnter = IsShiftKeyDown()		
 	end
-
+	
 	local guildName, guildRank = GetGuildInfo('player')
 	local guildLevel = GetGuildLevel()
 

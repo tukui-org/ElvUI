@@ -8,7 +8,7 @@ if not C["datatext"].dur or C["datatext"].dur == 0 then return end
 local join = string.join
 local floor = math.floor
 
-local displayString = string.join("", DURABILITY, ": ", E.ValColor, "%d %%|r")
+local displayString = string.join("", DURABILITY, ": ", E.ValColor, "%d%%|r")
 local tooltipString = "%d %%"
 
 local Stat = CreateFrame("Frame")
