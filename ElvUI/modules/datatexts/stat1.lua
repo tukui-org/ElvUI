@@ -126,13 +126,16 @@ local function UpdateTank(self)
 		dodge = (GetDodgeChance()-leveldifference*.2)
 		parry = (GetParryChance()-leveldifference*.2)
 		block = (GetBlockChance()-leveldifference*.2)
-		avoidance = (dodge+parry+block+basemisschance)	
 	else
 		dodge = (GetDodgeChance()+abs(leveldifference*.2))
 		parry = (GetParryChance()+abs(leveldifference*.2))
 		block = (GetBlockChance()+abs(leveldifference*.2))
-		avoidance = (dodge+parry+block+basemisschance)
 	end
+	
+	if dodge <= 0 then dodge = 0 end
+	if parry <= 0 then parry = 0 end
+	if block <= 0 then block = 0 end
+	avoidance = (dodge+parry+block+basemisschance)
 	
 	Text:SetFormattedText(displayFloatString, L.datatext_playeravd, avoidance)
 	--Setup Tooltip
