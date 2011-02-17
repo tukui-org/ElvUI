@@ -31,14 +31,11 @@ local noteString = join("", "|cff999999   ", LABEL_NOTE, ":|r %s")
 local officerNoteString = join("", "|cff999999   ", GUILD_RANK1_DESC, ":|r %s")
 local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
 local guildTable, guildXP, guildMotD = {}, {}, ""
-local dataValid = false
-local lastEnter
 
 local Stat = CreateFrame("Frame")
 Stat:EnableMouse(true)
 Stat:SetFrameStrata("MEDIUM")
 Stat:SetFrameLevel(3)
-Stat.update = false
 
 local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
 Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
@@ -109,8 +106,6 @@ local function Update(self, event, ...)
 		if event ~= "GUILD_ROSTER_UPDATE" and event~="PLAYER_GUILD_UPDATE" then GuildRoster() return end
 
 		local _, online = GetNumGuildMembers()
-		
-		dataValid = false
 		
 		self:SetAllPoints(Text)
 		Text:SetFormattedText(displayString, online)
@@ -187,13 +182,7 @@ Stat:SetScript("OnEnter", function(self)
 	if InCombatLockdown() or not IsInGuild() then return end
 	
 	local total, online = GetNumGuildMembers()
-		
-	if not dataValid or lastEnter ~= IsShiftKeyDown() then
-		-- only retrieve information for all on-line members when we actually view the tooltip
-		BuildGuildTable()
-		dataValid = true
-		lastEnter = IsShiftKeyDown()		
-	end
+	BuildGuildTable()
 	
 	local guildName, guildRank = GetGuildInfo('player')
 	local guildLevel = GetGuildLevel()
