@@ -22,7 +22,7 @@ local chanceString = "%.2f%%"
 local modifierString = string.join("", "%d (+", chanceString, ")")
 local manaRegenString = "%d / %d"
 local displayNumberString = string.join("", "%s", E.ValColor, "%d|r")
-local displayFloatString = string.join("", "%s", E.ValColor, "%.2f|r")
+local displayFloatString = string.join("", "%s", E.ValColor, "%.2f%%|r")
 local spellpwr, avoidance, pwr
 local haste, hasteBonus
 
