@@ -155,7 +155,7 @@ addon:SetMovable(true)
 addon:RegisterForClicks"anyup"
 
 local x = CreateFrame("Frame", "LootFrameHolder", UIParent)
-x:SetPoint("TOPLEFT", E.Scale(68), E.Scale(-194))
+x:Point("TOPLEFT", 36, -195)
 x:SetWidth(150)
 x:SetHeight(22)
 

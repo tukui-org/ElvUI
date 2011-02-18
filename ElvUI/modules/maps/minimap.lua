@@ -11,10 +11,30 @@ Minimap:SetSize(E.Scale(144), E.Scale(144))
 
 
 function E.PostMinimapMove(frame)
-
+	local point, _, _, _, _ = frame:GetPoint()
 	if E.Movers[frame:GetName()]["moved"] ~= true then
 		frame:ClearAllPoints()
 		frame:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-6), E.Scale(-6))
+	end
+	
+	if point:match("TOP") then
+		ElvuiMinimapStatsLeft:ClearAllPoints()
+		ElvuiMinimapStatsLeft:Point("TOPLEFT", ElvuiMinimap, "BOTTOMLEFT", 0, -3)
+		ElvuiMinimapStatsRight:ClearAllPoints()
+		ElvuiMinimapStatsRight:Point("TOPRIGHT", ElvuiMinimap, "BOTTOMRIGHT", 0, -3)
+		if RaidBuffReminder then
+			RaidBuffReminder:ClearAllPoints()
+			RaidBuffReminder:Point("TOPLEFT", ElvuiMinimapStatsLeft, "BOTTOMLEFT", 0, -3)
+		end	
+	else
+		ElvuiMinimapStatsLeft:ClearAllPoints()
+		ElvuiMinimapStatsLeft:Point("BOTTOMLEFT", ElvuiMinimap, "TOPLEFT", 0, 3)
+		ElvuiMinimapStatsRight:ClearAllPoints()
+		ElvuiMinimapStatsRight:Point("BOTTOMRIGHT", ElvuiMinimap, "TOPRIGHT", 0, 3)	
+		if RaidBuffReminder then
+			RaidBuffReminder:ClearAllPoints()
+			RaidBuffReminder:Point("BOTTOMLEFT", ElvuiMinimapStatsLeft, "TOPLEFT", 0, 3)
+		end		
 	end
 end
 
