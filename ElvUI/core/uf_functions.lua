@@ -75,15 +75,15 @@ E.LoadUFFunctions = function(layout)
 		icon.isStealable = isStealable
 		if header == "ElvuiHealR6R25" or (C["raidframes"].griddps == true and header == "ElvuiDPSR6R25") then 
 			if inInstance and (instanceType == "pvp" or instanceType == "arena") then
-				if DebuffWhiteList[name] or TargetPVPOnly[name] then
+				if E.DebuffWhiteList[spellID] or E.TargetPVPOnly[spellID] then
 					return true
 				else
 					return false
 				end
 			else
-				if header == "ElvuiHealR6R25" and DebuffHealerWhiteList[name] then
+				if header == "ElvuiHealR6R25" and E.DebuffHealerWhiteList[spellID] then
 					return true
-				elseif header == "ElvuiDPSR6R25" and DebuffDPSWhiteList[name] then
+				elseif header == "ElvuiDPSR6R25" and E.DebuffDPSWhiteList[spellID] then
 					return true
 				else
 					return false
@@ -91,13 +91,13 @@ E.LoadUFFunctions = function(layout)
 			end	
 		elseif (unit and unit:find("arena%d")) then --Arena frames
 			if dtype then
-				if DebuffWhiteList[name] then
+				if E.DebuffWhiteList[spellID] then
 					return true
 				else
 					return false
 				end			
 			else
-				if ArenaBuffWhiteList[name] then
+				if E.ArenaBuffWhiteList[spellID] then
 					return true
 				else
 					return false
@@ -118,7 +118,7 @@ E.LoadUFFunctions = function(layout)
 
 				if isPlayer then
 					return true
-				elseif DebuffWhiteList[name] or (inInstance and ((instanceType == "pvp" or instanceType == "arena") and TargetPVPOnly[name])) then
+				elseif E.DebuffWhiteList[spellID] or (inInstance and ((instanceType == "pvp" or instanceType == "arena") and E.TargetPVPOnly[spellID])) then
 					return true
 				else
 					return false
@@ -128,13 +128,13 @@ E.LoadUFFunctions = function(layout)
 			end
 		else --Everything else
 			if unit ~= "player" and unit ~= "targettarget" and unit ~= "focus" and C["auras"].arenadebuffs == true and inInstance and (instanceType == "pvp" or instanceType == "arena") then
-				if DebuffWhiteList[name] or TargetPVPOnly[name] then
+				if E.DebuffWhiteList[spellID] or E.TargetPVPOnly[spellID] then
 					return true
 				else
 					return false
 				end
 			else
-				if DebuffBlacklist[name] then
+				if E.DebuffBlacklist[spellID] then
 					return false
 				else
 					return true
@@ -589,7 +589,7 @@ E.LoadUFFunctions = function(layout)
 		local name, _, _, _, dtype, duration, expirationTime, unitCaster, _, _, spellID = UnitAura(unit, index, icon.filter)
 		
 		if(icon.debuff) then
-			if(not UnitIsFriend("player", unit) and icon.owner ~= "player" and icon.owner ~= "vehicle") and (not DebuffWhiteList[name]) then
+			if(not UnitIsFriend("player", unit) and icon.owner ~= "player" and icon.owner ~= "vehicle") and (not E.DebuffWhiteList[name]) then
 				icon:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 				icon.icon:SetDesaturated(true)
 			else

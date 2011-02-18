@@ -4,10 +4,10 @@ local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Lo
 if C["buffreminder"].raidbuffreminder ~= true then return end
 
 --Locals
-local flaskbuffs = BuffReminderRaidBuffs["Flask"]
-local battleelixirbuffs = BuffReminderRaidBuffs["BattleElixir"]
-local guardianelixirbuffs = BuffReminderRaidBuffs["GuardianElixir"]
-local foodbuffs = BuffReminderRaidBuffs["Food"]	
+local flaskbuffs = E.BuffReminderRaidBuffs["Flask"]
+local battleelixirbuffs = E.BuffReminderRaidBuffs["BattleElixir"]
+local guardianelixirbuffs = E.BuffReminderRaidBuffs["GuardianElixir"]
+local foodbuffs = E.BuffReminderRaidBuffs["Food"]	
 local battleelixired	
 local guardianelixired	
 

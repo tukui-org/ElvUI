@@ -133,7 +133,7 @@ local function OnAura(frame, unit)
 		end
 		
 		if C["nameplate"].trackccauras == true then
-			if DebuffWhiteList[name] then match = true end
+			if E.DebuffWhiteList[name] then match = true end
 		end
 		
 		if duration and match == true then
@@ -595,7 +595,7 @@ end
 
 --Create our blacklist for nameplates, so prevent a certain nameplate from ever showing
 local function CheckBlacklist(frame, ...)
-	if PlateBlacklist[frame.name:GetText()] then
+	if E.PlateBlacklist[frame.name:GetText()] then
 		frame:SetScript("OnUpdate", function() end)
 		frame.hp:Hide()
 		frame.cb:Hide()
