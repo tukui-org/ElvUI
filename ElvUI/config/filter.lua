@@ -609,6 +609,9 @@ DebuffDPSWhiteList = {
 		
 		--Nefarian
 		
+		--Sinestra
+		[SpellName(92956)] = true, -- Wrack
+		
 	--The Bastion of Twilight
 		--Valiona & Theralion
 		[SpellName(92878)] = true, -- Blackout
@@ -641,6 +644,12 @@ DebuffDPSWhiteList = {
 		--Al'Akir
 		[SpellName(93260)] = true, -- Ice Storm
 		[SpellName(93295)] = true, -- Lightning Rod
+}
+
+--Spells to show how long the buff/debuff has been active on you instead of how long is left
+E.ReverseTimerSpells = {
+	[92956] = true, -- Wrack (Sinestra)
+	--[79102] = true, -- Test(Blessing of Might)
 }
 
 --------------------------------------------------------------------------------------------

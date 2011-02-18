@@ -456,8 +456,8 @@ E.LoadUFFunctions = function(layout)
 		self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(self.channeling and duration or self.max - duration, self.channeling and "- " or "+", self.delay))
 	end
 
-	local FormatTime = function(s)
-		local day, hour, minute = 86400, 3600, 60
+	local FormatTime = function(s, reverse)
+		local day, hour, minute, second = 86400, 3600, 60, 1
 		if s >= day then
 			return format("%dd", ceil(s / hour))
 		elseif s >= hour then
@@ -467,7 +467,12 @@ E.LoadUFFunctions = function(layout)
 		elseif s >= minute / 12 then
 			return floor(s)
 		end
-		return format("%.1f", s)
+		
+		if reverse and reverse == true and s >= second then
+			return floor(s)
+		else	
+			return format("%.1f", s)
+		end
 	end
 
 	local CreateAuraTimer = function(self, elapsed)	
@@ -499,6 +504,38 @@ E.LoadUFFunctions = function(layout)
 				self.elapsed = 0
 			end
 		end
+	end
+	
+	local abs = math.abs --faster
+	local function CreateReverseAuraTimer(self, elapsed)
+		if self.timeLeft then
+			self.elapsed = (self.elapsed or 0) + elapsed
+			if self.elapsed >= 0.1 then
+				if not self.first then
+					self.timeLeft = self.timeLeft - self.elapsed
+				else
+					self.timeLeft = self.timeLeft - GetTime()
+					self.first = false
+				end
+				if self.timeLeft > 0 then
+					local time = FormatTime(abs(self.timeLeft - self.duration), true)
+					self.text:SetText(time)
+					if self.timeLeft <= 5 then
+						self.text:SetTextColor(0.99, 0.31, 0.31)
+					else
+						self.text:SetTextColor(1, 1, 1)
+					end
+				else
+					self.text:Hide()
+					self:SetScript("OnUpdate", nil)
+				end
+				if (not self.debuff) and C["general"].classcolortheme == true then
+					local r, g, b = self:GetParent():GetParent().FrameBorder:GetBackdropBorderColor()
+					self:SetBackdropBorderColor(r, g, b)
+				end
+				self.elapsed = 0
+			end
+		end	
 	end
 
 	function E.PvPUpdate(self, elapsed)
@@ -579,7 +616,7 @@ E.LoadUFFunctions = function(layout)
 	end
 
 	function E.PostUpdateAura(icons, unit, icon, index, offset, filter, isDebuff, duration, timeLeft)
-		local name, _, _, _, dtype, duration, expirationTime, unitCaster, _ = UnitAura(unit, index, icon.filter)
+		local name, _, _, _, dtype, duration, expirationTime, unitCaster, _, _, spellID = UnitAura(unit, index, icon.filter)
 		
 		if(icon.debuff) then
 			if(not UnitIsFriend("player", unit) and icon.owner ~= "player" and icon.owner ~= "vehicle") and (not DebuffWhiteList[name]) then
@@ -620,7 +657,13 @@ E.LoadUFFunctions = function(layout)
 		icon.duration = duration
 		icon.timeLeft = expirationTime
 		icon.first = true
-		icon:SetScript("OnUpdate", CreateAuraTimer)
+		
+		
+		if E.ReverseTimerSpells and E.ReverseTimerSpells[spellID] then
+			icon:SetScript("OnUpdate", CreateReverseAuraTimer)
+		else
+			icon:SetScript("OnUpdate", CreateAuraTimer)
+		end
 	end
 
 	E.HidePortrait = function(self, event)
