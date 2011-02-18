@@ -5,9 +5,9 @@ local E, C, L = unpack(select(2, ...)) -- Import: E - functions, constants, vari
 if not ElvuiInfoRight or C["unitframes"].showthreat ~= true then return end
 
 local aggroColors = {
-	[1] = {unpack(C["nameplate"].goodcolor)},
-	[2] = {unpack(C["nameplate"].transitioncolor)},
-	[3] = {unpack(C["nameplate"].badcolor)},
+	[1] = {0, 1, 0},
+	[2] = {1, 1, 0},
+	[3] = {0, 1, 0},
 }
 
 -- create the bar
