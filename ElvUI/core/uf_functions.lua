@@ -474,7 +474,8 @@ E.LoadUFFunctions = function(layout)
 			return format("%.1f", s)
 		end
 	end
-
+	
+	local abs = math.abs --faster
 	local CreateAuraTimer = function(self, elapsed)	
 		if self.timeLeft then
 			self.elapsed = (self.elapsed or 0) + elapsed
@@ -487,6 +488,7 @@ E.LoadUFFunctions = function(layout)
 				end
 				if self.timeLeft > 0 then
 					local time = FormatTime(self.timeLeft)
+					if self.reverse then time = FormatTime(abs(self.timeLeft - self.duration), true) end
 					self.text:SetText(time)
 					if self.timeLeft <= 5 then
 						self.text:SetTextColor(0.99, 0.31, 0.31)
@@ -504,38 +506,6 @@ E.LoadUFFunctions = function(layout)
 				self.elapsed = 0
 			end
 		end
-	end
-	
-	local abs = math.abs --faster
-	local function CreateReverseAuraTimer(self, elapsed)
-		if self.timeLeft then
-			self.elapsed = (self.elapsed or 0) + elapsed
-			if self.elapsed >= 0.1 then
-				if not self.first then
-					self.timeLeft = self.timeLeft - self.elapsed
-				else
-					self.timeLeft = self.timeLeft - GetTime()
-					self.first = false
-				end
-				if self.timeLeft > 0 then
-					local time = FormatTime(abs(self.timeLeft - self.duration), true)
-					self.text:SetText(time)
-					if self.timeLeft <= 5 then
-						self.text:SetTextColor(0.99, 0.31, 0.31)
-					else
-						self.text:SetTextColor(1, 1, 1)
-					end
-				else
-					self.text:Hide()
-					self:SetScript("OnUpdate", nil)
-				end
-				if (not self.debuff) and C["general"].classcolortheme == true then
-					local r, g, b = self:GetParent():GetParent().FrameBorder:GetBackdropBorderColor()
-					self:SetBackdropBorderColor(r, g, b)
-				end
-				self.elapsed = 0
-			end
-		end	
 	end
 
 	function E.PvPUpdate(self, elapsed)
@@ -659,11 +629,8 @@ E.LoadUFFunctions = function(layout)
 		icon.first = true
 		
 		
-		if E.ReverseTimerSpells and E.ReverseTimerSpells[spellID] then
-			icon:SetScript("OnUpdate", CreateReverseAuraTimer)
-		else
-			icon:SetScript("OnUpdate", CreateAuraTimer)
-		end
+		if E.ReverseTimerSpells and E.ReverseTimerSpells[spellID] then icon.reverse = true end
+		icon:SetScript("OnUpdate", CreateAuraTimer)
 	end
 
 	E.HidePortrait = function(self, event)
