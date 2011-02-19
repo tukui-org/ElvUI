@@ -1,5 +1,10 @@
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
+local function SpellName(id)
+	local name, _, _, _, _, _, _, _, _ = GetSpellInfo(id) 	
+	return name	
+end
+
 --[[
 	Spell Reminder Arguments
 	
@@ -377,32 +382,32 @@ end
 --List of buffs to watch for on arena frames
 E.ArenaBuffWhiteList = {
 	-- Buffs
-		[1022] = true, --hop
-		[12051] = true, --evoc
-		[2825] = true, --BL
-		[32182] = true, --Heroism
-		[33206] = true, --Pain Suppression
-		[29166] = true, --Innervate
-		[18708] = true, --"Fel Domination"
-		[54428] = true, --divine plea
-		[31821] = true, -- aura mastery
+		[SpellName(1022)] = true, --hop
+		[SpellName(12051)] = true, --evoc
+		[SpellName(2825)] = true, --BL
+		[SpellName(32182)] = true, --Heroism
+		[SpellName(33206)] = true, --Pain Suppression
+		[SpellName(29166)] = true, --Innervate
+		[SpellName(18708)] = true, --"Fel Domination"
+		[SpellName(54428)] = true, --divine plea
+		[SpellName(31821)] = true, -- aura mastery
 
 	-- Turtling abilities
-		[871] = true, --Shield Wall
-		[48707] = true, --"Anti-Magic Shell"
-		[31224] = true, -- cloak of shadows
-		[19263] = true, -- deterance
-		[47585] = true, --  Dispersion
+		[SpellName(871)] = true, --Shield Wall
+		[SpellName(48707)] = true, --"Anti-Magic Shell"
+		[SpellName(31224)] = true, -- cloak of shadows
+		[SpellName(19263)] = true, -- deterance
+		[SpellName(47585)] = true, --  Dispersion
 
 	-- Immunities
-		[45438] = true, -- ice Brock
-		[642] = true, -- pally bubble from hell
+		[SpellName(45438)] = true, -- ice Brock
+		[SpellName(642)] = true, -- pally bubble from hell
 		
 	-- Offensive Shit
-		[31884] = true, -- Avenging Wrath
-		[34471] = true, -- beast within
-		[85696] = true, -- Zealotry
-		[467] = true, -- Thorns
+		[SpellName(31884)] = true, -- Avenging Wrath
+		[SpellName(34471)] = true, -- beast within
+		[SpellName(85696)] = true, -- Zealotry
+		[SpellName(467)] = true, -- Thorns
 }
 
 -------------------------------------------------------------
@@ -412,22 +417,22 @@ E.ArenaBuffWhiteList = {
 -- Debuffs to always hide
 -- DPS Raid frames use this when not inside a BG/Arena. Player, TargetTarget, Focus always use it.
 E.DebuffBlacklist = {
-	[8733] = true, --Blessing of Blackfathom
-	[57724] = true, --Sated
-	[25771] = true, --forbearance
-	[57723] = true, --Exhaustion
-	[36032] = true, --arcane blast
-	[58539] = true, --watchers corpse
-	[26013] = true, --deserter
-	[6788] = true, --weakended soul
-	[71041] = true, --dungeon deserter
-	[41425] = true, --"Hypothermia"
-	[55711] = true, --Weakened Heart
-	[8326] = true, --ghost
-	[23445] = true, --evil twin
-	[24755] = true, --gay homosexual tricked or treated debuff
-	[25163] = true, --fucking annoying pet debuff oozeling disgusting aura
-	[80354] = true, --timewarp debuff
+	[SpellName(8733)] = true, --Blessing of Blackfathom
+	[SpellName(57724)] = true, --Sated
+	[SpellName(25771)] = true, --forbearance
+	[SpellName(57723)] = true, --Exhaustion
+	[SpellName(36032)] = true, --arcane blast
+	[SpellName(58539)] = true, --watchers corpse
+	[SpellName(26013)] = true, --deserter
+	[SpellName(6788)] = true, --weakended soul
+	[SpellName(71041)] = true, --dungeon deserter
+	[SpellName(41425)] = true, --"Hypothermia"
+	[SpellName(55711)] = true, --Weakened Heart
+	[SpellName(8326)] = true, --ghost
+	[SpellName(23445)] = true, --evil twin
+	[SpellName(24755)] = true, --gay homosexual tricked or treated debuff
+	[SpellName(25163)] = true, --fucking annoying pet debuff oozeling disgusting aura
+	[SpellName(80354)] = true, --timewarp debuff
 }
 
 
@@ -435,60 +440,60 @@ E.DebuffBlacklist = {
 -- Only works on raid frames when inside a BG/Arena. Target frame will always show these, arena frames will always show these.
 E.DebuffWhiteList = {
 	-- Death Knight
-		[51209] = true, --hungering cold
-		[47476] = true, --strangulate
+		[SpellName(51209)] = true, --hungering cold
+		[SpellName(47476)] = true, --strangulate
 	-- Druid
-		[33786] = true, --Cyclone
-		[2637] = true, --Hibernate
-		[339] = true, --Entangling Roots
-		[80964] = true, --Skull Bash
-		[78675] = true, --Solar Beam
+		[SpellName(33786)] = true, --Cyclone
+		[SpellName(2637)] = true, --Hibernate
+		[SpellName(339)] = true, --Entangling Roots
+		[SpellName(80964)] = true, --Skull Bash
+		[SpellName(78675)] = true, --Solar Beam
 	-- Hunter
-		[3355] = true, --Freezing Trap Effect
-		--[60210] = true, --Freezing Arrow Effect
-		[1513] = true, --scare beast
-		[19503] = true, --scatter shot
-		[34490] = true, --silence shot
+		[SpellName(3355)] = true, --Freezing Trap Effect
+		--[SpellName(60210)] = true, --Freezing Arrow Effect
+		[SpellName(1513)] = true, --scare beast
+		[SpellName(19503)] = true, --scatter shot
+		[SpellName(34490)] = true, --silence shot
 	-- Mage
-		[31661] = true, --Dragon's Breath
-		[61305] = true, --Polymorph
-		[18469] = true, --Silenced - Improved Counterspell
-		[122] = true, --Frost Nova
-		[55080] = true, --Shattered Barrier
+		[SpellName(31661)] = true, --Dragon's Breath
+		[SpellName(61305)] = true, --Polymorph
+		[SpellName(18469)] = true, --Silenced - Improved Counterspell
+		[SpellName(122)] = true, --Frost Nova
+		[SpellName(55080)] = true, --Shattered Barrier
 	-- Paladin
-		[20066] = true, --Repentance
-		[10326] = true, --Turn Evil
-		[853] = true, --Hammer of Justice
+		[SpellName(20066)] = true, --Repentance
+		[SpellName(10326)] = true, --Turn Evil
+		[SpellName(853)] = true, --Hammer of Justice
 	-- Priest
-		[605] = true, --Mind Control
-		[64044] = true, --Psychic Horror
-		[8122] = true, --Psychic Scream
-		[9484] = true, --Shackle Undead
-		[15487] = true, --Silence
+		[SpellName(605)] = true, --Mind Control
+		[SpellName(64044)] = true, --Psychic Horror
+		[SpellName(8122)] = true, --Psychic Scream
+		[SpellName(9484)] = true, --Shackle Undead
+		[SpellName(15487)] = true, --Silence
 	-- Rogue
-		[2094] = true, --Blind
-		[1776] = true, --Gouge
-		[6770] = true, --Sap
-		[18425] = true, --Silenced - Improved Kick
+		[SpellName(2094)] = true, --Blind
+		[SpellName(1776)] = true, --Gouge
+		[SpellName(6770)] = true, --Sap
+		[SpellName(18425)] = true, --Silenced - Improved Kick
 	-- Shaman
-		[51514] = true, --Hex
-		[3600] = true, --Earthbind
-		[8056] = true, --Frost Shock
-		[63685] = true, --Freeze
-		[39796] = true, --Stoneclaw Stun
+		[SpellName(51514)] = true, --Hex
+		[SpellName(3600)] = true, --Earthbind
+		[SpellName(8056)] = true, --Frost Shock
+		[SpellName(63685)] = true, --Freeze
+		[SpellName(39796)] = true, --Stoneclaw Stun
 	-- Warlock
-		[710] = true, --Banish
-		[6789] = true, --Death Coil
-		[5782] = true, --Fear
-		[5484] = true, --Howl of Terror
-		[6358] = true, --Seduction
-		[30283] = true, --Shadowfury
-		[89605] = true, --Aura of Foreboding
+		[SpellName(710)] = true, --Banish
+		[SpellName(6789)] = true, --Death Coil
+		[SpellName(5782)] = true, --Fear
+		[SpellName(5484)] = true, --Howl of Terror
+		[SpellName(6358)] = true, --Seduction
+		[SpellName(30283)] = true, --Shadowfury
+		[SpellName(89605)] = true, --Aura of Foreboding
 	-- Warrior
-		[20511] = true, --Intimidating Shout
+		[SpellName(20511)] = true, --Intimidating Shout
 	-- Racial
-		[25046] = true, --Arcane Torrent
-		[20549] = true, --War Stomp
+		[SpellName(25046)] = true, --Arcane Torrent
+		[SpellName(20549)] = true, --War Stomp
 	--PVE
 
 			
@@ -497,153 +502,153 @@ E.DebuffWhiteList = {
 --List of debuffs for targetframe for pvp only (when inside a bg/arena
 --We do this because in PVE Situations we don't want to see these debuffs on our target frame, arena frames will always show these.
 E.TargetPVPOnly = {
-	[34438] = true, --UA
-	[34914] = true, --VT
-	[31935] = true, --avengers shield
-	[63529] = true, --shield of the templar
-	[19386] = true, --wyvern sting
-	[116] = true, --frostbolt
-	[58179] = true, --infected wounds
-	[18223] = true, -- curse of exhaustion
-	[18118] = true, --aftermath
-	[31589] = true, --Slow
+	[SpellName(34438)] = true, --UA
+	[SpellName(34914)] = true, --VT
+	[SpellName(31935)] = true, --avengers shield
+	[SpellName(63529)] = true, --shield of the templar
+	[SpellName(19386)] = true, --wyvern sting
+	[SpellName(116)] = true, --frostbolt
+	[SpellName(58179)] = true, --infected wounds
+	[SpellName(18223)] = true, -- curse of exhaustion
+	[SpellName(18118)] = true, --aftermath
+	[SpellName(31589)] = true, --Slow
 	--not sure if this one belongs here but i do know frost pve uses this
-	[44572] = true, --deep freeze
+	[SpellName(44572)] = true, --deep freeze
 }
 
 --This list is used by the healerlayout (When not inside a bg/arena)
 E.DebuffHealerWhiteList = {
 	--Baradin Hold
-		[95173] = true, -- Consuming Darkness
+		[SpellName(95173)] = true, -- Consuming Darkness
 		
 	--Blackwing Descent
 		--Magmaw
-		[91911] = true, -- Constricting Chains
-		[94679] = true, -- Parasitic Infection
-		[94617] = true, -- Mangle
+		[SpellName(91911)] = true, -- Constricting Chains
+		[SpellName(94679)] = true, -- Parasitic Infection
+		[SpellName(94617)] = true, -- Mangle
 		
 		--Omintron Defense System
-		[79835] = true, --Poison Soaked Shell	
-		[91433] = true, --Lightning Conductor
-		[91521] = true, --Incineration Security Measure
+		[SpellName(79835)] = true, --Poison Soaked Shell	
+		[SpellName(91433)] = true, --Lightning Conductor
+		[SpellName(91521)] = true, --Incineration Security Measure
 		
 		--Maloriak
-		[77699] = true, -- Flash Freeze
-		[77760] = true, -- Biting Chill
+		[SpellName(77699)] = true, -- Flash Freeze
+		[SpellName(77760)] = true, -- Biting Chill
 		
 		--Atramedes
-		[92423] = true, -- Searing Flame
-		[92485] = true, -- Roaring Flame
-		[92407] = true, -- Sonic Breath
+		[SpellName(92423)] = true, -- Searing Flame
+		[SpellName(92485)] = true, -- Roaring Flame
+		[SpellName(92407)] = true, -- Sonic Breath
 		
 		--Chimaeron
-		[82881] = true, -- Break
-		[89084] = true, -- Low Health
+		[SpellName(82881)] = true, -- Break
+		[SpellName(89084)] = true, -- Low Health
 		
 		--Nefarian
 		
 	--The Bastion of Twilight
 		--Valiona & Theralion
-		[92878] = true, -- Blackout
-		[86840] = true, -- Devouring Flames
-		[95639] = true, -- Engulfing Magic
+		[SpellName(92878)] = true, -- Blackout
+		[SpellName(86840)] = true, -- Devouring Flames
+		[SpellName(95639)] = true, -- Engulfing Magic
 		
 		--Halfus Wyrmbreaker
-		[39171] = true, -- Malevolent Strikes
+		[SpellName(39171)] = true, -- Malevolent Strikes
 		
 		--Twilight Ascendant Council
-		[92511] = true, -- Hydro Lance
-		[82762] = true, -- Waterlogged
-		[92505] = true, -- Frozen
-		[92518] = true, -- Flame Torrent
-		[83099] = true, -- Lightning Rod
-		[92075] = true, -- Gravity Core
-		[92488] = true, -- Gravity Crush
+		[SpellName(92511)] = true, -- Hydro Lance
+		[SpellName(82762)] = true, -- Waterlogged
+		[SpellName(92505)] = true, -- Frozen
+		[SpellName(92518)] = true, -- Flame Torrent
+		[SpellName(83099)] = true, -- Lightning Rod
+		[SpellName(92075)] = true, -- Gravity Core
+		[SpellName(92488)] = true, -- Gravity Crush
 		
 		--Cho'gall
-		[86028] = true, -- Cho's Blast
-		[86029] = true, -- Gall's Blast
+		[SpellName(86028)] = true, -- Cho's Blast
+		[SpellName(86029)] = true, -- Gall's Blast
 		
 	--Throne of the Four Winds
 		--Conclave of Wind
 			--Nezir <Lord of the North Wind>
-			[93131] = true, --Ice Patch
+			[SpellName(93131)] = true, --Ice Patch
 			--Anshal <Lord of the West Wind>
-			[86206] = true, --Soothing Breeze
-			[93122] = true, --Toxic Spores
+			[SpellName(86206)] = true, --Soothing Breeze
+			[SpellName(93122)] = true, --Toxic Spores
 			--Rohash <Lord of the East Wind>
-			[93058] = true, --Slicing Gale 
+			[SpellName(93058)] = true, --Slicing Gale 
 		--Al'Akir
-		[93260] = true, -- Ice Storm
-		[93295] = true, -- Lightning Rod
+		[SpellName(93260)] = true, -- Ice Storm
+		[SpellName(93295)] = true, -- Lightning Rod
 }
 
 --This list is used by the dps layout grid (When not inside a bg/arena)
 E.DebuffDPSWhiteList = {
 	--Baradin Hold
-		[88942] = true, -- Meteor Slash
+		[SpellName(88942)] = true, -- Meteor Slash
 		
 	--Blackwing Descent
 		--Magmaw
-		[91911] = true, -- Constricting Chains
-		[78199] = true, -- Sweltering Armor
+		[SpellName(91911)] = true, -- Constricting Chains
+		[SpellName(78199)] = true, -- Sweltering Armor
 		
 		--Omintron Defense System
-		[91431] = true, --Lightning Conductor
-		[80094] = true, --Fixate 
+		[SpellName(91431)] = true, --Lightning Conductor
+		[SpellName(80094)] = true, --Fixate 
 		
 		--Maloriak
-		[77699] = true, -- Flash Freeze
+		[SpellName(77699)] = true, -- Flash Freeze
 		
 		--Atramedes
 		
 		--Chimaeron
-		[82881] = true, -- Break
-		[89084] = true, -- Low Health
+		[SpellName(82881)] = true, -- Break
+		[SpellName(89084)] = true, -- Low Health
 		
 		--Nefarian
 		
 		--Sinestra
-		[92956] = true, -- Wrack
+		[SpellName(92956)] = true, -- Wrack
 		
 	--The Bastion of Twilight
 		--Valiona & Theralion
-		[92878] = true, -- Blackout
-		[86840] = true, -- Devouring Flames
-		[95639] = true, -- Engulfing Magic
+		[SpellName(92878)] = true, -- Blackout
+		[SpellName(86840)] = true, -- Devouring Flames
+		[SpellName(95639)] = true, -- Engulfing Magic
 		
 		--Halfus Wyrmbreaker
-		[39171] = true, -- Malevolent Strikes
+		[SpellName(39171)] = true, -- Malevolent Strikes
 		
 		--Twilight Ascendant Council
-		[92511] = true, -- Hydro Lance
-		[82762] = true, -- Waterlogged
-		[92518] = true, -- Flame Torrent
-		[83099] = true, -- Lightning Rod
-		[92075] = true, -- Gravity Core
-		[92488] = true, -- Gravity Crush
+		[SpellName(92511)] = true, -- Hydro Lance
+		[SpellName(82762)] = true, -- Waterlogged
+		[SpellName(92518)] = true, -- Flame Torrent
+		[SpellName(83099)] = true, -- Lightning Rod
+		[SpellName(92075)] = true, -- Gravity Core
+		[SpellName(92488)] = true, -- Gravity Crush
 		
 		--Cho'gall
-		[86028] = true, -- Cho's Blast
-		[86029] = true, -- Gall's Blast
+		[SpellName(86028)] = true, -- Cho's Blast
+		[SpellName(86029)] = true, -- Gall's Blast
 		
 	--Throne of the Four Winds
 		--Conclave of Wind
 			--Nezir <Lord of the North Wind>
-			[93131] = true, --Ice Patch
+			[SpellName(93131)] = true, --Ice Patch
 			--Anshal <Lord of the West Wind>
 			
 			--Rohash <Lord of the East Wind>
 			
 		--Al'Akir
-		[93260] = true, -- Ice Storm
-		[93295] = true, -- Lightning Rod
+		[SpellName(93260)] = true, -- Ice Storm
+		[SpellName(93295)] = true, -- Lightning Rod
 }
 
 --Spells to show how long the buff/debuff has been active on you instead of how long is left
 E.ReverseTimerSpells = {
-	[92956] = true, -- Wrack (Sinestra)
-	--[79102] = true, -- Test(Blessing of Might)
+	[SpellName(92956)] = true, -- Wrack (Sinestra)
+	--[SpellName(79102)] = true, -- Test(Blessing of Might)
 }
 
 --------------------------------------------------------------------------------------------

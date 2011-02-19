@@ -75,15 +75,15 @@ E.LoadUFFunctions = function(layout)
 		icon.isStealable = isStealable
 		if header == "ElvuiHealR6R25" or (C["raidframes"].griddps == true and header == "ElvuiDPSR6R25") then 
 			if inInstance and (instanceType == "pvp" or instanceType == "arena") then
-				if E.DebuffWhiteList[spellID] or E.TargetPVPOnly[spellID] then
+				if E.DebuffWhiteList[name] or E.TargetPVPOnly[name] then
 					return true
 				else
 					return false
 				end
 			else
-				if header == "ElvuiHealR6R25" and E.DebuffHealerWhiteList[spellID] then
+				if header == "ElvuiHealR6R25" and E.DebuffHealerWhiteList[name] then
 					return true
-				elseif header == "ElvuiDPSR6R25" and E.DebuffDPSWhiteList[spellID] then
+				elseif header == "ElvuiDPSR6R25" and E.DebuffDPSWhiteList[name] then
 					return true
 				else
 					return false
@@ -91,13 +91,13 @@ E.LoadUFFunctions = function(layout)
 			end	
 		elseif (unit and unit:find("arena%d")) then --Arena frames
 			if dtype then
-				if E.DebuffWhiteList[spellID] then
+				if E.DebuffWhiteList[name] then
 					return true
 				else
 					return false
 				end			
 			else
-				if E.ArenaBuffWhiteList[spellID] then
+				if E.ArenaBuffWhiteList[name] then
 					return true
 				else
 					return false
@@ -118,7 +118,7 @@ E.LoadUFFunctions = function(layout)
 
 				if isPlayer then
 					return true
-				elseif E.DebuffWhiteList[spellID] or (inInstance and ((instanceType == "pvp" or instanceType == "arena") and E.TargetPVPOnly[spellID])) then
+				elseif E.DebuffWhiteList[name] or (inInstance and ((instanceType == "pvp" or instanceType == "arena") and E.TargetPVPOnly[name])) then
 					return true
 				else
 					return false
@@ -128,13 +128,13 @@ E.LoadUFFunctions = function(layout)
 			end
 		else --Everything else
 			if unit ~= "player" and unit ~= "targettarget" and unit ~= "focus" and C["auras"].arenadebuffs == true and inInstance and (instanceType == "pvp" or instanceType == "arena") then
-				if E.DebuffWhiteList[spellID] or E.TargetPVPOnly[spellID] then
+				if E.DebuffWhiteList[name] or E.TargetPVPOnly[name] then
 					return true
 				else
 					return false
 				end
 			else
-				if E.DebuffBlacklist[spellID] then
+				if E.DebuffBlacklist[name] then
 					return false
 				else
 					return true
