@@ -9,10 +9,10 @@ Minimap:ClearAllPoints()
 Minimap:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-5), E.Scale(-5))
 Minimap:SetSize(E.Scale(144), E.Scale(144))
 
-
 function E.PostMinimapMove(frame)
 	local point, _, _, _, _ = frame:GetPoint()
 	if E.Movers[frame:GetName()]["moved"] ~= true then
+		point, _, _, _, _ = Minimap:GetPoint()
 		frame:ClearAllPoints()
 		frame:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-6), E.Scale(-6))
 	end
