@@ -11,17 +11,17 @@ C["media"] = {
 	["normTex"] = [[Interface\AddOns\ElvUI\media\textures\normTex]], -- texture used for Elvui healthbar/powerbar/etc
 	["glowTex"] = [[Interface\AddOns\ElvUI\media\textures\glowTex]], -- the glow text around some frame.
 	["blank"] = [[Interface\BUTTONS\WHITE8X8]], -- the main texture for all borders/panels
-	["bordercolor"] = { .3,.3,.3,1 }, -- border color of Elvui panels
-	["altbordercolor"] = { .3,.3,.3,1 }, -- alternative border color, mainly for unitframes text panels.
-	["backdropcolor"] = { .1,.1,.1,1 }, -- background color of Elvui panels
-	["backdropfadecolor"] = { .1,.1,.1,0.8 }, --this is always the same as the backdrop color with an alpha of 0.8, see colors.lua
+	["bordercolor"] = { .23,.23,.23,1 }, -- border color of Elvui panels
+	["altbordercolor"] = { .23,.23,.23,1 }, -- alternative border color, mainly for unitframes text panels.
+	["backdropcolor"] = { .07,.07,.07,1 }, -- background color of Elvui panels
+	["backdropfadecolor"] = { .07,.07,.07,0.9 }, --this is always the same as the backdrop color with an alpha of 0.8, see colors.lua
 	["valuecolor"] = {23/255,132/255,209/255}, -- color for values of datatexts
 	["raidicons"] = [[Interface\AddOns\ElvUI\media\textures\raidicons.blp]], -- new raid icon textures by hankthetank
 	
 	-- sound
 	["whisper"] = [[Interface\AddOns\ElvUI\media\sounds\whisper.mp3]],
 	["warning"] = [[Interface\AddOns\ElvUI\media\sounds\warning.mp3]],
-	["glossyTexture"] = true,	-- Use a glossy texture for all frames
+	["glossyTexture"] = false,	-- Use a glossy texture for all frames
 }
 
 C["general"] = {
@@ -125,7 +125,7 @@ C["castbar"] = {
 		["cbicons"] = true, -- enable icons on castbar
 		["castermode"] = false, -- makes castbar larger and puts it above the actionbar frame
 		["classcolor"] = false, -- classcolor
-		["castbarcolor"] = { 0.3, 0.3, 0.3, 1 }, -- Color of player castbar
+		["castbarcolor"] = C["media"].bordercolor, -- Color of player castbar
 		["nointerruptcolor"] = { 0.78, 0.25, 0.25, 0.5 }, -- Color of target castbar
 }
 
@@ -139,7 +139,7 @@ C["classtimer"] = {
 		["cast_suparator"] = true,
 		
 		["classcolor"] = false,
-		["buffcolor"] = {0.3, 0.3, 0.3, 1}, -- if classcolor isnt true
+		["buffcolor"] = C["media"].bordercolor, -- if classcolor isnt true
 		["debuffcolor"] = {0.78, 0.25, 0.25, 1},
 		["proccolor"] = {0.84, 0.75, 0.65, 1},
 }
@@ -169,7 +169,7 @@ C["actionbar"] = {
 
 C["nameplate"] = {
 	["enable"] = true,                     -- enable nice skinned nameplates that fit into Elvui
-		["showhealth"] = true,					-- show health text on nameplate
+		["showhealth"] = false,					-- show health text on nameplate
 		["enhancethreat"] = true,				-- threat features based on if your a tank or not
 		["overlap"] = false,				--allow nameplates to overlap
 		["combat"] = false,					--only show enemy nameplates in-combat.
@@ -177,7 +177,7 @@ C["nameplate"] = {
 		["badcolor"] = {0.78, 0.25, 0.25},			--bad threat color (opposite of above)
 		["transitioncolor"] = {218/255, 197/255, 92/255},	--threat color when gaining threat
 		["trackauras"] = false,		--track players debuffs only (debuff list derived from classtimer spell list)
-		["trackccauras"] = false,			--track all CC debuffs
+		["trackccauras"] = true,			--track all CC debuffs
 }
 
 C["loot"] = {

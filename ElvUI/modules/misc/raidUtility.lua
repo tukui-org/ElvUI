@@ -10,8 +10,6 @@ local panel_height = ((E.Scale(5)*4) + (E.Scale(20)*4))
 --Create main frame
 local RaidUtilityPanel = CreateFrame("Frame", "RaidUtilityPanel", UIParent)
 RaidUtilityPanel:CreatePanel("Default", E.Scale(170), panel_height, "TOP", UIParent, "TOP", -300, panel_height + 15)
-local r,g,b,_ = C["media"].backdropcolor
-RaidUtilityPanel:SetBackdropColor(r,g,b,0.6)
 RaidUtilityPanel:CreateShadow("Default")
 
 --Check if We are Raid Leader or Raid Officer

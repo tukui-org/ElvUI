@@ -12,7 +12,7 @@
 ]]--
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if C["classtimer"].enable ~= true then return end
+if C["classtimer"].enable ~= true and C["nameplate"].enable ~= true then return end
 
 CreateSpellEntry = function( id, castByAnyone, color, unitType, castSpellId )
 	return { id = id, castByAnyone = castByAnyone, color = color, unitType = unitType or 0, castSpellId = castSpellId };
