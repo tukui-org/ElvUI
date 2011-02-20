@@ -1,3 +1,19 @@
+--[[
+	ClassTimers
+
+	Configuration functions
+	id - spell id
+	castByAnyone - show if aura wasn't created by player, set true to show if its by anyone
+	color - bar color (nil for default color)
+	unitType - 0 all, 1 friendly, 2 enemy
+	castSpellId - fill only if you want to see line on bar that indicates if its safe to start casting spell and not clip the last tick, also note that this can be different from aura id 
+
+	Example: CreateSpellEntry( spellID , castByAnyone, color, unitType, castSpellId), 
+]]--
+local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
+if C["classtimer"].enable ~= true then return end
+
 CreateSpellEntry = function( id, castByAnyone, color, unitType, castSpellId )
 	return { id = id, castByAnyone = castByAnyone, color = color, unitType = unitType or 0, castSpellId = castSpellId };
 end
@@ -115,17 +131,7 @@ TRINKET_FILTER = {
 	
 	CreateSpellEntry( 59545 ), CreateSpellEntry( 59543 ), CreateSpellEntry( 59548 ), CreateSpellEntry( 59542 ), CreateSpellEntry( 59544 ), CreateSpellEntry( 59547 ), CreateSpellEntry( 28880 ), -- Gift of the Naaru
 	CreateSpellEntry( 74497 ), CreateSpellEntry( 55503 ), CreateSpellEntry( 55502 ), CreateSpellEntry( 55501 ), CreateSpellEntry( 55500 ), CreateSpellEntry( 55480 ), CreateSpellEntry( 55428 ), CreateSpellEntry( 81708 ), -- Lifeblood
-};
-
---[[ Configuration functions
-	id - spell id
-	castByAnyone - show if aura wasn't created by player, set true to show if its by anyone
-	color - bar color (nil for default color)
-	unitType - 0 all, 1 friendly, 2 enemy
-	castSpellId - fill only if you want to see line on bar that indicates if its safe to start casting spell and not clip the last tick, also note that this can be different from aura id 
-
-	Example: CreateSpellEntry( spellID , castByAnyone, color, unitType, castSpellId), 
-]]--
+}
 
 CLASS_FILTERS = {
 	DEATHKNIGHT = { 
