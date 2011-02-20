@@ -85,9 +85,10 @@ end
 
 --Position & Size our buttons after variables loaded
 local barloader = CreateFrame("Frame")
-barloader:RegisterEvent("PLAYER_ENTERING_WORLD")
-barloader:SetScript("OnEvent", function(self)
-	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+barloader:RegisterEvent("ADDON_LOADED")
+barloader:SetScript("OnEvent", function(self, addon)
+	if not IsAddOnLoaded("ElvUI") then return end
+	self:UnregisterEvent("ADDON_LOADED")
 	
 	if ElvuiData == nil then ElvuiData = {} end
 	if ElvuiData[E.myrealm] == nil then ElvuiData[E.myrealm] = {} end
@@ -201,8 +202,6 @@ barloader:SetScript("OnEvent", function(self)
 		RightBarDec:SetPoint("TOPRIGHT", ElvuiActionBarBackgroundRight, "BOTTOMRIGHT", 0, E.Scale(-4))
 		RightBarDec:SetPoint("BOTTOMLEFT", ElvuiActionBarBackgroundRight, "BOTTOMLEFT", 0, E.Scale(-19))		
 	else
-		RightSplit:Kill()
-		LeftSplit:Kill()
 		RightBarDec:SetPoint("TOPRIGHT", ElvuiActionBarBackgroundRight, "BOTTOMRIGHT", 0, E.Scale(-4))
 		RightBarDec:SetPoint("BOTTOMLEFT", ElvuiActionBarBackgroundRight, "BOTTOM", E.Scale(2), E.Scale(-19))
 	end
@@ -239,6 +238,11 @@ do
 			RightSplit:SetPoint("TOPLEFT", ElvuiMainMenuBar, "TOPRIGHT", E.Scale(4), 0)
 			RightSplit:SetPoint("BOTTOMRIGHT", ElvuiMainMenuBar, "BOTTOMRIGHT", E.Scale(19), 0)
 		end
+		
+		if E["actionbar"].bottomrows == 3 then
+			SaveBars("bottomrows", 2)
+			TopMainBar.Text:SetText("-")
+		end		
 	end)
 	
 	RightSplit:SetScript("OnMouseDown", function(self)
@@ -267,6 +271,11 @@ do
 			RightSplit:SetPoint("TOPLEFT", ElvuiMainMenuBar, "TOPRIGHT", E.Scale(4), 0)
 			RightSplit:SetPoint("BOTTOMRIGHT", ElvuiMainMenuBar, "BOTTOMRIGHT", E.Scale(19), 0)
 		end
+		
+		if E["actionbar"].bottomrows == 3 then
+			SaveBars("bottomrows", 2)
+			TopMainBar.Text:SetText("-")
+		end
 	end)
 	
 	TopMainBar:SetScript("OnMouseDown", function(self)
@@ -292,12 +301,25 @@ do
 				TopMainBar.Text:SetText("+")			
 			end
 		end
+		
+		if E["actionbar"].bottomrows == 3 then
+			SaveBars("splitbar", false)
+			LeftSplit.Text:SetText("<")
+			LeftSplit:ClearAllPoints()
+			LeftSplit:SetPoint("TOPRIGHT", ElvuiMainMenuBar, "TOPLEFT", E.Scale(-4), 0)
+			LeftSplit:SetPoint("BOTTOMLEFT", ElvuiMainMenuBar, "BOTTOMLEFT", E.Scale(-19), 0)
+			
+			RightSplit.Text:SetText(">")
+			RightSplit:ClearAllPoints()
+			RightSplit:SetPoint("TOPLEFT", ElvuiMainMenuBar, "TOPRIGHT", E.Scale(4), 0)
+			RightSplit:SetPoint("BOTTOMRIGHT", ElvuiMainMenuBar, "BOTTOMRIGHT", E.Scale(19), 0)
+		end		
 	end)
 	
 	RightBarBig:SetScript("OnMouseDown", function(self)
 		if InCombatLockdown() then return end
 		if C["actionbar"].rightbarmouseover ~= true then 
-			E.SlideIn(ElvuiActionBarBackgroundRight)
+			ElvuiActionBarBackgroundRight:Show()
 		else
 			ElvuiActionBarBackgroundRight:SetAlpha(0)
 		end
@@ -311,8 +333,6 @@ do
 		if E["actionbar"].rightbars == 1 then
 			SaveBars("rightbars", 2)
 		elseif E["actionbar"].rightbars == 2 then
-			SaveBars("rightbars", 3)
-		elseif E["actionbar"].rightbars == 3 then
 			SaveBars("rightbars", 0)
 			RightBarBig:Show()
 			RightBarBig:ClearAllPoints()

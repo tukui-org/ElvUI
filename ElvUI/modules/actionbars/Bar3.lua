@@ -11,14 +11,17 @@ local ElvuiBar3 = CreateFrame("Frame","ElvuiBar3",ElvuiActionBarBackground) -- b
 ElvuiBar3:SetAllPoints(ElvuiActionBarBackground)
 MultiBarLeft:SetParent(ElvuiBar3)
 
+local ElvuiBar3Split = CreateFrame("Frame", nil, ElvuiBar3)
+
 function E.PositionBar3()
+	ElvuiBar3Split:Show()
 	for i= 1, 12 do
 		local b = _G["MultiBarLeftButton"..i]
 		local b2 = _G["MultiBarLeftButton"..i-1]
 		b:ClearAllPoints()
 		b:Show()
+		b:SetParent(MultiBarLeft)
 		b:SetAlpha(1)
-
 		if E.lowversion ~= true then
 			if i == 1 then
 				b:SetPoint("TOPLEFT", ElvuiActionBarBackgroundRight, "TOPLEFT", E.buttonspacing, -E.buttonspacing)
@@ -32,12 +35,32 @@ function E.PositionBar3()
 				b:HookScript("OnLeave", function() RightBarMouseOver(0) end)			
 			end	
 		else
-			if C["actionbar"].swaptopbottombar == true and i == 1 and E["actionbar"].bottomrows > 1 then
-				b:SetPoint("BOTTOM", ActionButton1, "TOP", 0, E.buttonspacing)
-			elseif i == 1 then
-				b:SetPoint("BOTTOM", MultiBarBottomLeftButton1, "TOP", 0, E.buttonspacing)
+			if E["actionbar"].splitbar ~= true and E["actionbar"].bottomrows == 3 then
+				if C["actionbar"].swaptopbottombar == true and i == 1 then
+					b:SetPoint("BOTTOM", ActionButton1, "TOP", 0, E.buttonspacing)
+				elseif i == 1 then
+					b:SetPoint("BOTTOM", MultiBarBottomLeftButton1, "TOP", 0, E.buttonspacing)
+				else
+					b:SetPoint("LEFT", b2, "RIGHT", E.buttonspacing, 0)
+				end
 			else
-				b:SetPoint("LEFT", b2, "RIGHT", E.buttonspacing, 0)
+				if i > 6 and E["actionbar"].bottomrows == 1 then
+					b:Hide()
+					b:SetParent(ElvuiBar3Split)
+					ElvuiBar3Split:Hide()
+				end
+				
+				if i == 1 then
+					b:SetPoint("BOTTOMLEFT", ElvuiSplitActionBarLeftBackground, "BOTTOMLEFT", E.buttonspacing, E.buttonspacing)
+				elseif i == 4 then
+					b:SetPoint("BOTTOMLEFT", ElvuiSplitActionBarRightBackground, "BOTTOMLEFT", E.buttonspacing, E.buttonspacing)
+				elseif i == 7 then
+					b:SetPoint("BOTTOM", MultiBarLeftButton1, "TOP", 0, E.buttonspacing)
+				elseif i == 10 then
+					b:SetPoint("BOTTOM", MultiBarLeftButton4, "TOP", 0, E.buttonspacing)
+				else
+					b:SetPoint("LEFT", b2, "RIGHT", E.buttonspacing, 0)
+				end
 			end
 		end
 	
@@ -51,11 +74,10 @@ function E.PositionBar3()
 			ElvuiBar3:Hide()
 		end	
 	else
-		ElvuiBar3:SetParent(ElvuiActionBarBackgroundRight)
-		if E["actionbar"].bottomrows == 3 then
-			ElvuiBar3:Show()
-		else
+		if E["actionbar"].bottomrows ~= 3 and E["actionbar"].splitbar ~= true then
 			ElvuiBar3:Hide()
+		else
+			ElvuiBar3:Show()
 		end
 	end	
 end

@@ -159,11 +159,19 @@ function E.PositionAllPanels()
 	end
 	
 	--SplitBar
-	if E["actionbar"].splitbar == true and E.lowversion == false then
+	if E["actionbar"].splitbar == true then
 		ElvuiSplitActionBarLeftBackground:Show()
 		ElvuiSplitActionBarRightBackground:Show()
 		ElvuiSplitActionBarLeftBackground:SetHeight(ElvuiActionBarBackground:GetHeight())
 		ElvuiSplitActionBarRightBackground:SetHeight(ElvuiActionBarBackground:GetHeight())
+		
+		if E.lowversion == true then
+			ElvuiSplitActionBarLeftBackground:SetWidth((E.buttonsize * 3) + (E.buttonspacing * 4))
+			ElvuiSplitActionBarRightBackground:SetWidth((E.buttonsize * 3) + (E.buttonspacing * 4))			
+		else
+			ElvuiSplitActionBarLeftBackground:SetWidth((E.buttonsize * 6) + (E.buttonspacing * 7))
+			ElvuiSplitActionBarRightBackground:SetWidth((E.buttonsize * 6) + (E.buttonspacing * 7))
+		end
 	else
 		ElvuiSplitActionBarLeftBackground:Hide()
 		ElvuiSplitActionBarRightBackground:Hide()	
@@ -190,29 +198,6 @@ function E.PositionAllPanels()
 end
 
 function E.PositionAllBars()
-	if E["actionbar"].rightbars > 2 and E["actionbar"].splitbar == true then
-		E["actionbar"].rightbars = 2
-	end
-
-	if E["actionbar"].bottomrows == 3 and E["actionbar"].rightbars ~= 0 and E["actionbar"].splitbar == true then
-		E["actionbar"].rightbars = 0
-		if E.ABLock == true then
-			RightBarBig:Show()
-		end
-	end
-
-	if E["actionbar"].bottomrows == 3 and E["actionbar"].rightbars > 2 then
-		E["actionbar"].rightbars = 2
-	end
-	
-	if E["actionbar"].rightbars ~= 0 or (E["actionbar"].bottomrows == 3 and E["actionbar"].splitbar == true) then
-		RightBarBig:Hide()
-	else
-		if E.ABLock == true then
-			RightBarBig:Show()
-		end
-	end
-	
 	E.PositionAllPanels()
 	E.PositionMainBar()
 	E.PositionBar2()

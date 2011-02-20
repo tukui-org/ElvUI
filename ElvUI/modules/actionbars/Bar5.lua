@@ -24,8 +24,8 @@ function E.PositionBar5()
 		b:Show()
 		
 		if E.lowversion ~= true then
-			if E.actionbar.bottomrows == 1 then 
-				if i > 6 then b:SetParent(ElvuiBar5Split) end
+			if E.actionbar.bottomrows == 1 and i > 6 then 
+				b:SetParent(ElvuiBar5Split)
 				ElvuiBar5Split:Hide()
 			end
 			
@@ -37,7 +37,6 @@ function E.PositionBar5()
 				b:SetPoint("LEFT", b2, "RIGHT", E.buttonspacing, 0)
 			end
 		else
-			b:SetParent(ElvuiActionBarBackgroundRight)
 			if i == 1 then
 				b:SetPoint("TOPLEFT", ElvuiActionBarBackgroundRight, "TOPLEFT", E.buttonspacing, -E.buttonspacing)
 			else
