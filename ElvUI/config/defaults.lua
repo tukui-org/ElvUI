@@ -31,6 +31,7 @@ C["general"] = {
 	["classcolortheme"] = false,			--class colored theme for panels
 	["fontscale"] = 12,					--Master font
 	["overridelowtohigh"] = false,		--override lowversion
+	["layoutoverride"] = "NONE",
 }
 
 C["skin"] = {	--Skin addons by Darth Android

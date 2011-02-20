@@ -1,0 +1,10 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">	
+	<Include file="core\oUF\oUF.xml"/>
+	<Include file="plugins\load_plugins.xml"/>
+	<Include file="uf_functions.lua"/>
+	<Include file="tags.lua"/>
+	<Script file="colors.lua"/>
+	<Script file="move_ele.lua"/>
+	<Include file="layouts\load_layouts.xml"/>
+	<Script file="init.lua"/>
+</Ui>

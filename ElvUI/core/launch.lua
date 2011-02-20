@@ -215,7 +215,7 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 		end
 	end
 	
-	if (IsAddOnLoaded("ElvUI_Dps_Layout") and IsAddOnLoaded("ElvUI_Heal_Layout")) then
+	if (IsAddOnLoaded("Elvui_RaidDPS") and IsAddOnLoaded("Elvui_RaidHeal")) then
 		StaticPopup_Show("DISABLE_RAID")
 	end
 		

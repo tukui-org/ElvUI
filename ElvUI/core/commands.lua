@@ -8,8 +8,8 @@ SLASH_ENABLE_ADDON1 = "/enable"
 
 -- switch to heal layout via a command
 local function HEAL()
-	DisableAddOn("ElvUI_Dps_Layout")
-	EnableAddOn("ElvUI_Heal_Layout")
+	DisableAddOn("Elvui_RaidDPS")
+	EnableAddOn("Elvui_RaidHeal")
 	ReloadUI()
 end
 SLASH_HEAL1 = "/heal"
@@ -17,8 +17,8 @@ SlashCmdList["HEAL"] = HEAL
 
 -- switch to dps layout via a command
 local function DPS()
-	DisableAddOn("ElvUI_Heal_Layout");
-	EnableAddOn("ElvUI_Dps_Layout")
+	DisableAddOn("Elvui_RaidHeal");
+	EnableAddOn("Elvui_RaidDPS")
 	ReloadUI()
 end
 SLASH_DPS1 = "/dps"

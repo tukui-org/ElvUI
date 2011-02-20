@@ -8,7 +8,7 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 	if event == "PLAYER_ENTERING_WORLD" then
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 		
-		if IsAddOnLoaded("ElvUI_Dps_Layout") or IsAddOnLoaded("ElvUI_Heal_Layout") then
+		if IsAddOnLoaded("Elvui_RaidDPS") or IsAddOnLoaded("Elvui_RaidHeal") then
 			InterfaceOptionsFrameCategoriesButton11:SetScale(0.00001)
 			InterfaceOptionsFrameCategoriesButton11:SetAlpha(0)
 		end	

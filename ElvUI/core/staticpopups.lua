@@ -43,8 +43,8 @@ StaticPopupDialogs["DISABLE_RAID"] = {
 	text = L.popup_2raidactive,
 	button1 = "DPS - TANK",
 	button2 = "HEAL",
-	OnAccept = function() DisableAddOn("ElvUI_Heal_Layout") EnableAddOn("ElvUI_Dps_Layout") ReloadUI() end,
-	OnCancel = function() EnableAddOn("ElvUI_Heal_Layout") DisableAddOn("ElvUI_Dps_Layout") ReloadUI() end,
+	OnAccept = function() DisableAddOn("Elvui_RaidHeal") EnableAddOn("Elvui_RaidDPS") ReloadUI() end,
+	OnCancel = function() EnableAddOn("Elvui_RaidHeal") DisableAddOn("Elvui_RaidDPS") ReloadUI() end,
 	timeout = 0,
 	whileDead = 1,
 }

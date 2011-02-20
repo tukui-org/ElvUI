@@ -6,6 +6,7 @@
 ## SavedVariables: ElvuiData, ElvuiArena
 ## SavedVariablesPerCharacter: ElvuiUFpos, DPSElementsCharPos, HealElementsCharPos
 ## OptionalDeps: ElvUI_ConfigUI, Recount, Omen, Skada, DXE, Blizzard_CombatText, OptionHouse, ACP, Who Framed Watcher Wabbit, Skinner, Aurora, !ClassColors, HealBot, Fux, OmniCC, ncCooldown, KLE
+## X-oUF: ElvUF
 
 init.lua
 developer\load_developer.xml

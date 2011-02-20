@@ -12,4 +12,5 @@
 	<Include file="misc\load_misc.xml"/>
 	<Include file="addonskins\load_addonskins.xml"/>
 	<Include file="blizzard\load_blizzard.xml"/>
+	<Include file="unitframes\load_unitframes.xml"/>
 </Ui>
