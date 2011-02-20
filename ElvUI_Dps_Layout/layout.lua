@@ -1925,18 +1925,18 @@ end
 -- Player
 local player = oUF:Spawn('player', "ElvDPS_player")
 if C["unitframes"].charportrait == true then
-	player:SetPoint("BOTTOM", ElvuiActionBarBackground, "TOPLEFT", E.Scale(-20),E.Scale(40+yOffset))
+	player:SetPoint("BOTTOM", ElvuiActionBarBackground, "TOPLEFT", E.Scale(-20),E.Scale(55+yOffset))
 else
-	player:SetPoint("BOTTOMLEFT", ElvuiSplitActionBarLeftBackground, "TOPLEFT", 0,E.Scale(40+yOffset))
+	player:SetPoint("BOTTOMLEFT", ElvuiActionBarBackground, "TOPLEFT", -ElvuiSplitActionBarRightBackground:GetWidth() + E.Scale(-2),E.Scale(35+yOffset))
 end
 player:SetSize(player_width, player_height)
 
 -- Target
 local target = oUF:Spawn('target', "ElvDPS_target")
 if C["unitframes"].charportrait == true then
-	target:SetPoint("BOTTOM", ElvuiActionBarBackground, "TOPRIGHT", E.Scale(20),E.Scale(40+yOffset))
+	target:SetPoint("BOTTOM", ElvuiActionBarBackground, "TOPRIGHT", E.Scale(20),E.Scale(55+yOffset))
 else
-	target:SetPoint("BOTTOMRIGHT", ElvuiSplitActionBarRightBackground, "TOPRIGHT", 0,E.Scale(40+yOffset))
+	target:SetPoint("BOTTOMRIGHT", ElvuiActionBarBackground, "TOPRIGHT", ElvuiSplitActionBarRightBackground:GetWidth() + E.Scale(2),E.Scale(35+yOffset))
 end
 target:SetSize(target_width, target_height)
 
@@ -1947,7 +1947,7 @@ focus:SetSize(smallframe_width, smallframe_height)
 
 -- Target's Target
 local tot = oUF:Spawn('targettarget', "ElvDPS_targettarget")
-tot:SetPoint("BOTTOM", ElvuiActionBarBackground, "TOP", 0,E.Scale(40+yOffset))
+tot:SetPoint("BOTTOM", ElvuiActionBarBackground, "TOP", 0,E.Scale(35+yOffset))
 tot:SetSize(smallframe_width, smallframe_height)
 
 -- Player's Pet

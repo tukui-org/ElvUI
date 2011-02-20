@@ -117,10 +117,18 @@ barloader:SetScript("OnEvent", function(self)
 		RightSplit:SetPoint("BOTTOMRIGHT", ElvuiMainMenuBar, "BOTTOMRIGHT", E.Scale(19), 0)
 	end
 	
-	if E["actionbar"].bottomrows == 3 then
-		TopMainBar.Text:SetText("-")
+	if E.lowversion == true then
+		if E["actionbar"].bottomrows == 3 then
+			TopMainBar.Text:SetText("-")
+		else
+			TopMainBar.Text:SetText("+")
+		end
 	else
-		TopMainBar.Text:SetText("+")
+		if E["actionbar"].bottomrows == 2 then
+			TopMainBar.Text:SetText("-")
+		else
+			TopMainBar.Text:SetText("+")
+		end	
 	end
 	
 	TopMainBar:SetPoint("BOTTOMLEFT", ElvuiMainMenuBar, "TOPLEFT", 0, E.Scale(4))
@@ -188,9 +196,17 @@ barloader:SetScript("OnEvent", function(self)
 	RightBarInc:SetPoint("TOPLEFT", ElvuiActionBarBackgroundRight, "BOTTOMLEFT", 0, E.Scale(-4))
 	RightBarInc:SetPoint("BOTTOMRIGHT", ElvuiActionBarBackgroundRight, "BOTTOM", E.Scale(-2), E.Scale(-19))
 	
-	RightBarDec:SetPoint("TOPRIGHT", ElvuiActionBarBackgroundRight, "BOTTOMRIGHT", 0, E.Scale(-4))
-	RightBarDec:SetPoint("BOTTOMLEFT", ElvuiActionBarBackgroundRight, "BOTTOM", E.Scale(2), E.Scale(-19))
-	
+	if E.lowversion ~= true then 
+		RightBarInc:Kill()
+		RightBarDec:SetPoint("TOPRIGHT", ElvuiActionBarBackgroundRight, "BOTTOMRIGHT", 0, E.Scale(-4))
+		RightBarDec:SetPoint("BOTTOMLEFT", ElvuiActionBarBackgroundRight, "BOTTOMLEFT", 0, E.Scale(-19))		
+	else
+		RightSplit:Kill()
+		LeftSplit:Kill()
+		RightBarDec:SetPoint("TOPRIGHT", ElvuiActionBarBackgroundRight, "BOTTOMRIGHT", 0, E.Scale(-4))
+		RightBarDec:SetPoint("BOTTOMLEFT", ElvuiActionBarBackgroundRight, "BOTTOM", E.Scale(2), E.Scale(-19))
+	end
+
 	E.ABLock = false
 	ElvuiInfoLeftRButton.text:SetTextColor(1,1,1)
 	E.PositionAllBars()
@@ -256,15 +272,25 @@ do
 	TopMainBar:SetScript("OnMouseDown", function(self)
 		if InCombatLockdown() then return end
 		
-		if E["actionbar"].bottomrows == 1 then
-			SaveBars("bottomrows", 2)
-			TopMainBar.Text:SetText("+")
-		elseif E["actionbar"].bottomrows == 2 then
-			SaveBars("bottomrows", 3)
-			TopMainBar.Text:SetText("-")
-		elseif E["actionbar"].bottomrows == 3 then
-			SaveBars("bottomrows", 1)
-			TopMainBar.Text:SetText("+")
+		if E.lowversion == true then
+			if E["actionbar"].bottomrows == 1 then
+				SaveBars("bottomrows", 2)
+				TopMainBar.Text:SetText("+")
+			elseif E["actionbar"].bottomrows == 2 then
+				SaveBars("bottomrows", 3)
+				TopMainBar.Text:SetText("-")
+			elseif E["actionbar"].bottomrows == 3 then
+				SaveBars("bottomrows", 1)
+				TopMainBar.Text:SetText("+")
+			end
+		else
+			if E["actionbar"].bottomrows == 1 then
+				SaveBars("bottomrows", 2)
+				TopMainBar.Text:SetText("-")	
+			else
+				SaveBars("bottomrows", 1)
+				TopMainBar.Text:SetText("+")			
+			end
 		end
 	end)
 	
@@ -306,7 +332,24 @@ do
 	RightBarDec:SetScript("OnMouseDown", function(self)
 		if InCombatLockdown() then return end
 		
-		if E["actionbar"].rightbars == 1 then
+		if E.lowversion == true then
+			if E["actionbar"].rightbars == 1 then
+				SaveBars("rightbars", 0)
+				RightBarBig:Show()
+				RightBarBig:ClearAllPoints()
+				if ElvuiPetBar:IsShown() and not C["actionbar"].bottompetbar == true then
+					RightBarBig:SetPoint("TOPRIGHT", ElvuiPetBar, "LEFT", E.Scale(-3), (ElvuiActionBarBackgroundRight:GetHeight() * 0.2))
+					RightBarBig:SetPoint("BOTTOMLEFT", ElvuiPetBar, "LEFT", E.Scale(-19), -(ElvuiActionBarBackgroundRight:GetHeight() * 0.2))			
+				else
+					RightBarBig:SetPoint("TOPRIGHT", UIParent, "RIGHT", E.Scale(-1), (ElvuiActionBarBackgroundRight:GetHeight() * 0.2))
+					RightBarBig:SetPoint("BOTTOMLEFT", UIParent, "RIGHT", E.Scale(-16), -(ElvuiActionBarBackgroundRight:GetHeight() * 0.2))		
+				end
+			elseif E["actionbar"].rightbars == 2 then
+				SaveBars("rightbars", 1)
+			elseif E["actionbar"].rightbars == 3 then
+				SaveBars("rightbars", 2)
+			end		
+		else
 			SaveBars("rightbars", 0)
 			RightBarBig:Show()
 			RightBarBig:ClearAllPoints()
@@ -316,12 +359,8 @@ do
 			else
 				RightBarBig:SetPoint("TOPRIGHT", UIParent, "RIGHT", E.Scale(-1), (ElvuiActionBarBackgroundRight:GetHeight() * 0.2))
 				RightBarBig:SetPoint("BOTTOMLEFT", UIParent, "RIGHT", E.Scale(-16), -(ElvuiActionBarBackgroundRight:GetHeight() * 0.2))		
-			end
-		elseif E["actionbar"].rightbars == 2 then
-			SaveBars("rightbars", 1)
-		elseif E["actionbar"].rightbars == 3 then
-			SaveBars("rightbars", 2)
-		end		
+			end			
+		end
 		
 		if C["actionbar"].rightbarmouseover == true then 
 			RightBarMouseOver(1)

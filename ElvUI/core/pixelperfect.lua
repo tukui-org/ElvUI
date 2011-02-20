@@ -37,6 +37,8 @@ function E.UIScale()
 		
 		-- register a constant, we will need it later for launch.lua
 		E.eyefinity = width
+	else
+		E.lowversion = false
 	end
 	
 	if C["general"].autoscale == true then

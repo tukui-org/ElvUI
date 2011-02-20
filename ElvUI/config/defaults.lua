@@ -30,6 +30,7 @@ C["general"] = {
 	["multisampleprotect"] = true,         -- i don't recommend this because of shitty border but, voila!
 	["classcolortheme"] = false,			--class colored theme for panels
 	["fontscale"] = 12,					--Master font
+	["overridelowtohigh"] = false,		--override lowversion
 }
 
 C["skin"] = {	--Skin addons by Darth Android
@@ -70,13 +71,13 @@ C["unitframes"] = {
 }
 
 C["framesizes"] = {
-	["playtarwidth"] = 220,					--width of player/target frame
+	["playtarwidth"] = 250,					--width of player/target frame
 	["playtarheight"] = 28,					--height of player/target frame
-	["smallwidth"] = 100,					--Width of TargetTarget, Focus, FocusTarget, Player's Pet frames
+	["smallwidth"] = 140,					--Width of TargetTarget, Focus, FocusTarget, Player's Pet frames
 	["smallheight"] = 23,					--Height of TargetTarget, Focus, FocusTarget, Player's Pet frames
 	["arenabosswidth"] = 180,				--Width of Arena/Boss Frames
 	["arenabossheight"] = 28,				--Height of Arena/Boss Frames
-	["assisttankwidth"] = 100,				--Width of MainTank/MainAssist frames
+	["assisttankwidth"] = 120,				--Width of MainTank/MainAssist frames
 	["assisttankheight"] = 20,				--Height of MainTank/MainAssist frames
 }
 
