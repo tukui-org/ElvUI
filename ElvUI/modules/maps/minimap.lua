@@ -193,7 +193,6 @@ m_zone:SetFrameStrata("LOW")
 m_zone:SetPoint("TOPRIGHT",Minimap,E.Scale(-2),E.Scale(-2))
 m_zone:SetBackdropColor(0,0,0,0)
 m_zone:SetBackdropBorderColor(0,0,0,0)
-m_zone:Hide()
 
 local m_zone_text = m_zone:CreateFontString(nil,"Overlay")
 m_zone_text:SetFont(C["media"].font,C["general"].fontscale,"OUTLINE")
@@ -207,7 +206,6 @@ m_coord:CreatePanel("Default", 40, 20, "BOTTOMLEFT", Minimap, "BOTTOMLEFT", E.Sc
 m_coord:SetFrameStrata("LOW")
 m_coord:SetBackdropColor(0,0,0,0)
 m_coord:SetBackdropBorderColor(0,0,0,0)
-m_coord:Hide()	
 
 local m_coord_text = m_coord:CreateFontString(nil,"Overlay")
 m_coord_text:SetFont(C["media"].font,C["general"].fontscale,"OUTLINE")
@@ -215,31 +213,7 @@ m_coord_text:SetPoint("Center",E.Scale(-1),0)
 m_coord_text:SetJustifyH("CENTER")
 m_coord_text:SetJustifyV("MIDDLE")
  
--- Set Scripts and etc.
-Minimap:SetScript("OnEnter",function()	
-	m_coord:Show()
-	m_zone:Show()
-end)
- 
-Minimap:SetScript("OnLeave",function()
-	m_coord:Hide()
-	m_zone:Hide()
-end)
 
-if C["actionbar"].enable == true and C["actionbar"].microbar ~= true then
-	SpellbookMicroButton:HookScript("OnEnter", function() 	
-		m_coord:Show()
-		m_zone:Show() 
-	end)
-
-	SpellbookMicroButton:HookScript("OnLeave", function() 	
-		m_coord:Hide()
-		m_zone:Hide()
-	end)
-end
-
-m_coord_text:SetText("00,00")
- 
 local ela = 0
 local coord_Update = function(self,t)
 	local inInstance, _ = IsInInstance()
