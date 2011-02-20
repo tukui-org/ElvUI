@@ -11,28 +11,19 @@ local ElvuiBar4 = CreateFrame("Frame","ElvuiBar4",ElvuiActionBarBackground) -- b
 ElvuiBar4:SetAllPoints(ElvuiActionBarBackground)
 MultiBarRight:SetParent(ElvuiBar4)
 
-local ElvuiBar4Split = CreateFrame("Frame", nil, ElvuiBar4)
-
 function E.PositionBar4()
-	ElvuiBar4Split:Show()
 	for i= 1, 12 do
 		local b = _G["MultiBarRightButton"..i]
 		local b2 = _G["MultiBarRightButton"..i-1]
 		b:ClearAllPoints()
 		b:SetAlpha(1)
-		b:SetParent(MultiBarRight)
 		b:Show()
 		
 		if E.lowversion ~= true then
-			if E.actionbar.bottomrows == 1 and i > 6 then 
-				b:SetParent(ElvuiBar4Split)
-				ElvuiBar4Split:Hide()				
-			end
-			
 			if i == 1 then
 				b:SetPoint("BOTTOMLEFT", ElvuiSplitActionBarLeftBackground, "BOTTOMLEFT", E.buttonspacing, E.buttonspacing)
 			elseif i == 7 then
-				b:SetPoint("BOTTOM", MultiBarRightButton1, "TOP", 0, E.buttonspacing)
+				b:SetPoint("BOTTOMLEFT", ElvuiSplitActionBarRightBackground, "BOTTOMLEFT", E.buttonspacing, E.buttonspacing)
 			else
 				b:SetPoint("LEFT", b2, "RIGHT", E.buttonspacing, 0)
 			end

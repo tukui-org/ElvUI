@@ -52,6 +52,7 @@ local function Local(o)
 	if o == "ElvuiConfigUIgeneralclasscolortheme" then o = ElvuiL.option_general_classtheme end
 	if o == "ElvuiConfigUIgeneralautocustomlagtolerance" then o = ElvuiL.option_general_autocustomlagtolerance end
 	if o == "ElvuiConfigUIgeneralfontscale" then o = ElvuiL.option_general_fontscale end 
+	if o == "ElvuiConfigUIgenerallayoutoverride" then o = ElvuiL.option_general_layoutoverride end
 	
 	--Media
 	if o =="ElvuiConfigUImedia" then o = ElvuiL.option_media end

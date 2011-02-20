@@ -15,6 +15,7 @@ end
 
 local function Button_OnEvent(self, event)
 	if self:IsShown() then self:Hide() end
+	E.ABLock = false
 end
 
 local btnnames = {}

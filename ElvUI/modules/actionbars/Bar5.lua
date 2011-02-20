@@ -11,28 +11,19 @@ local ElvuiBar5 = CreateFrame("Frame","ElvuiBar5",ElvuiActionBarBackground) -- M
 ElvuiBar5:SetAllPoints(ElvuiActionBarBackground)
 MultiBarBottomRight:SetParent(ElvuiBar5)
 
-local ElvuiBar5Split = CreateFrame("Frame", nil, ElvuiBar5)
-
 function E.PositionBar5()
-	ElvuiBar5Split:Show()
 	for i= 1, 12 do
 		local b = _G["MultiBarBottomRightButton"..i]
 		local b2 = _G["MultiBarBottomRightButton"..i-1]
 		b:ClearAllPoints()
 		b:SetAlpha(1)
-		b:SetParent(MultiBarBottomRight)
 		b:Show()
 		
 		if E.lowversion ~= true then
-			if E.actionbar.bottomrows == 1 and i > 6 then 
-				b:SetParent(ElvuiBar5Split)
-				ElvuiBar5Split:Hide()
-			end
-			
 			if i == 1 then
-				b:SetPoint("BOTTOMLEFT", ElvuiSplitActionBarRightBackground, "BOTTOMLEFT", E.buttonspacing, E.buttonspacing)
+				b:SetPoint("TOPLEFT", ElvuiSplitActionBarLeftBackground, "TOPLEFT", E.buttonspacing, -E.buttonspacing)
 			elseif i == 7 then
-				b:SetPoint("BOTTOM", MultiBarBottomRightButton1, "TOP", 0, E.buttonspacing)
+				b:SetPoint("TOPLEFT", ElvuiSplitActionBarRightBackground, "TOPLEFT", E.buttonspacing, -E.buttonspacing)
 			else
 				b:SetPoint("LEFT", b2, "RIGHT", E.buttonspacing, 0)
 			end
@@ -54,7 +45,7 @@ function E.PositionBar5()
 
 	-- hide it if needed
 	if E.lowversion ~= true then
-		if E["actionbar"].splitbar ~= true then
+		if E["actionbar"].splitbar ~= true or E["actionbar"].bottomrows == 1 then
 			ElvuiBar5:Hide()
 		else
 			ElvuiBar5:Show()
