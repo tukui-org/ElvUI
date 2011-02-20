@@ -14,7 +14,7 @@ bottompanel:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", -E.mult, -E.mult)
 bottompanel:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", E.mult, -E.mult)
 
 local mini = CreateFrame("Frame", "ElvuiMinimap", Minimap)
-mini:CreatePanel("Default", E.Scale(144 + 4), E.Scale(144 + 4), "CENTER", Minimap, "CENTER", -0, 0)
+mini:CreatePanel("Default", E.Scale(164 + 4), E.Scale(164 + 4), "CENTER", Minimap, "CENTER", -0, 0)
 mini:ClearAllPoints()
 mini:SetPoint("TOPLEFT", E.Scale(-2), E.Scale(2))
 mini:SetPoint("BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
