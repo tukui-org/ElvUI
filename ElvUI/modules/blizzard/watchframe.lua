@@ -34,13 +34,7 @@ function E.PositionWatchFrame()
 		if E.Movers["WatchFrameMover"]["moved"] == true then return end
 
 		WatchFrameMover:ClearAllPoints()
-		if E.actionbar.rightbars == 3 then
-			if C["actionbar"].bottompetbar ~= true then
-				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-210), E.Scale(-300))
-			else
-				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-165), E.Scale(-300))
-			end
-		elseif E.actionbar.rightbars == 2 then
+		if E.actionbar.rightbars == 2 then
 			if C["actionbar"].bottompetbar ~= true then
 				WatchFrameMover:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-190), E.Scale(-300))
 			else
@@ -61,13 +55,7 @@ function E.PositionWatchFrame()
 		end		
 	else
 		WatchFrameHolder:ClearAllPoints()
-		if C["actionbar"].enable and E.actionbar.rightbars == 3 then
-			if C["actionbar"].bottompetbar ~= true then
-				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-210), E.Scale(-300))
-			else
-				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-165), E.Scale(-300))
-			end
-		elseif C["actionbar"].enable and E.actionbar.rightbars == 2 then
+		if C["actionbar"].enable and E.actionbar.rightbars == 2 then
 			if C["actionbar"].bottompetbar ~= true then
 				WatchFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-190), E.Scale(-300))
 			else
