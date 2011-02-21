@@ -30,8 +30,8 @@ C["general"] = {
 	["multisampleprotect"] = true,         -- i don't recommend this because of shitty border but, voila!
 	["classcolortheme"] = false,			--class colored theme for panels
 	["fontscale"] = 12,					--Master font
-	["overridelowtohigh"] = false,		--override lowversion
-	["layoutoverride"] = "NONE",
+	["resolutionoverride"] = "NONE",		--override lowversion (Low, High)
+	["layoutoverride"] = "NONE",			--ovverride layout (DPS, Healer)
 }
 
 C["skin"] = {	--Skin addons by Darth Android

@@ -9,7 +9,7 @@ ElvuiL.option_general_embedright = "Addon to embed to right chat panel (Recount,
 ElvuiL.option_general_classtheme = "Class Color Theme"
 ElvuiL.option_general_autocustomlagtolerance = "Automatically update the Blizzard Custom Lag Tolerance option to your latency."
 ElvuiL.option_general_fontscale = "Master font scale"
-ElvuiL.option_general_override = "Force low resolution version of UI to use higher resolution version (Screen width less than 1600)"
+ElvuiL.option_general_override = "Force a certain resolution size (Low, High)"
 ElvuiL.option_general_layoutoverride = "Force load a unitframe layout, (Defaults: DPS, Heal)"
 
 --Media

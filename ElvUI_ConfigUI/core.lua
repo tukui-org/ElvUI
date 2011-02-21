@@ -46,7 +46,7 @@ local function Local(o)
 	-- general
 	if o == "ElvuiConfigUIgeneral" then o = ElvuiL.option_general end
 	if o == "ElvuiConfigUIgeneralautoscale" then o = ElvuiL.option_general_uiscale end
-	if o == "ElvuiConfigUIgeneraloverridelowtohigh" then o = ElvuiL.option_general_override end
+	if o == "ElvuiConfigUIgeneralresolutionoverride" then o = ElvuiL.option_general_override end
 	if o == "ElvuiConfigUIgeneralmultisampleprotect" then o = ElvuiL.option_general_multisample end
 	if o == "ElvuiConfigUIgeneraluiscale" then o = ElvuiL.option_general_customuiscale end
 	if o == "ElvuiConfigUIgeneralclasscolortheme" then o = ElvuiL.option_general_classtheme end
