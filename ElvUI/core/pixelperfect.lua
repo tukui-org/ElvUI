@@ -2,13 +2,8 @@ local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Lo
 
 
 function E.UIScale()
-	if E.getscreenwidth < 1440 then
-			if C.general.overridelowtohigh == true then
-				C["general"].autoscale = false
-				E.lowversion = false
-			else
-				E.lowversion = true
-			end
+	if E.getscreenwidth < 1600 and C.general.overridelowtohigh ~= true then
+		E.lowversion = true
 	elseif (E.getscreenwidth >= 3840) or (UIParent:GetWidth() + 1 > E.getscreenwidth) then
 		local width = E.getscreenwidth
 		local height = E.getscreenheight
@@ -31,7 +26,7 @@ function E.UIScale()
 		if width >= 3840 and width < 4080 then width = 1224 end 	                -- SXGA & SXGA (UVGA) & WXGA & HDTV
 		
 		-- yep, now set Elvui to lower reso if screen #1 width < 1440
-		if width < 1440 and not C.general.overridelowtohigh then
+		if width < 1600 and C.general.overridelowtohigh ~= true then
 			E.lowversion = true
 		end
 		
