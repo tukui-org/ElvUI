@@ -2030,7 +2030,7 @@ local function LoadDPSLayout()
 			'template', 'Elv_Mtt'
 		)
 		if C["raidframes"].maintank == true then 
-			assist:Point("TOPLEFT", ElvDPSMainTank, "BOTTOMLEFT", 2, -50)
+			assist:Point("TOPLEFT", ElvDPSMainTank, "BOTTOMLEFT", 0, -50)
 		else
 			assist:Point("LEFT", UIParent, "LEFT", 6, 250)
 		end
