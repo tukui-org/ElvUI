@@ -3,13 +3,11 @@
 	<Script file='launch.lua'/>
 	<Script file='debug.lua'/>
 	<Script file='pixelperfect.lua'/>
-	<Script file='deprecated.lua'/>
 	<Script file='toolkit.lua'/>
 	<Script file='math.lua'/>
 	<Script file='colors.lua'/>
 	<Script file='commands.lua'/>
 	<Script file='staticpopups.lua'/>
-	<Script file='fonts.lua'/>
 	<Script file='animation.lua'/>
 	<Script file='movers.lua'/>
 </Ui>

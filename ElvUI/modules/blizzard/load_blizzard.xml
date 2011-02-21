@@ -8,4 +8,5 @@
 	<Script file='bubbles.lua'/>
 	<Script file='skin.lua'/>
 	<Script file='kill.lua'/>
+	<Script file='fonts.lua'/>	
 </Ui>

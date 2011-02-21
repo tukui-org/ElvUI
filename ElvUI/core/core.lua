@@ -14,7 +14,7 @@ E.resolution = GetCurrentResolution()
 E.getscreenresolution = select(E.resolution, GetScreenResolutions())
 E.getscreenheight = tonumber(string.match(({GetScreenResolutions()})[GetCurrentResolution()], "%d+x(%d+)"))
 E.getscreenwidth = tonumber(string.match(({GetScreenResolutions()})[GetCurrentResolution()], "(%d+)x+%d"))
-E.Layouts = {}
+E.Layouts = {} --Unitframe Layouts
 
 --Keybind Header
 BINDING_HEADER_ELVUI = GetAddOnMetadata("ElvUI", "Title") --Header name inside keybinds menu
@@ -58,6 +58,6 @@ RoleUpdater:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
 RoleUpdater:SetScript("OnEvent", CheckRole)
 CheckRole()
 
--- convert datatext E.ValColor from rgb decimal to hex DO NOT TOUCH
+-- convert datatext E.ValColor from rgb decimal to hex
 local r, g, b = unpack(C["media"].valuecolor)
 E.ValColor = ("|cff%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255)
