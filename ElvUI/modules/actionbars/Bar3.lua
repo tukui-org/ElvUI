@@ -37,7 +37,7 @@ function E.PositionBar3()
 		else
 			if E["actionbar"].splitbar ~= true and E["actionbar"].bottomrows == 3 then
 				if C["actionbar"].swaptopbottombar == true and i == 1 then
-					b:SetPoint("BOTTOM", ActionButton1, "TOP", 0, E.buttonspacing)
+					b:SetPoint("TOP", MultiBarBottomLeftButton1, "BOTTOM", 0, -E.buttonspacing)
 				elseif i == 1 then
 					b:SetPoint("BOTTOM", MultiBarBottomLeftButton1, "TOP", 0, E.buttonspacing)
 				else

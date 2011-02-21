@@ -61,33 +61,44 @@ function RightBarMouseOver(alpha)
 	if C["actionbar"].bottompetbar ~= true then
 		ElvuiPetActionBarBackground:SetAlpha(alpha)
 	end
-	if (E["actionbar"].rightbars ~= 0 and E["actionbar"].splitbar ~= true) then
-		if MultiBarLeft:IsShown() then
+	
+	if E.lowversion ~= true then
+		if E["actionbar"].rightbars > 0 and MultiBarLeft:IsShown() then
 			for i=1, 12 do
 				local pb = _G["MultiBarLeftButton"..i]
 				pb:SetAlpha(alpha)
-			end
-			--MultiBarLeft:SetAlpha(alpha)
+			end	
 		end
-	end
-	if E["actionbar"].rightbars > 1 then
-		if MultiBarBottomRight:IsShown() then
+		
+		if E["actionbar"].rightbars > 1 and MultiBarBottomRight:IsShown() then
 			for i=1, 12 do
 				local pb = _G["MultiBarBottomRightButton"..i]
 				pb:SetAlpha(alpha)
 			end
-			--MultiBarBottomRight:SetAlpha(alpha)
 		end
-	end
-	if E["actionbar"].bottomrows ~= 3 then
-		if MultiBarRight:IsShown() then
+
+		if E["actionbar"].rightbars > 2 and MultiBarRight:IsShown() then
+			for i=1, 12 do
+				local pb = _G["MultiBarRightButton"..i]
+				pb:SetAlpha(alpha)
+			end		
+		end
+	else
+		if E["actionbar"].rightbars > 0 and MultiBarRight:IsShown() then
 			for i=1, 12 do
 				local pb = _G["MultiBarRightButton"..i]
 				pb:SetAlpha(alpha)
 			end
-			--MultiBarRight:SetAlpha(alpha)
+		end
+		
+		if E["actionbar"].rightbars > 1 and MultiBarBottomRight:IsShown() then
+			for i=1, 12 do
+				local pb = _G["MultiBarBottomRightButton"..i]
+				pb:SetAlpha(alpha)
+			end
 		end
 	end
+
 	if ElvuiPetBar:IsShown() and C["actionbar"].bottompetbar ~= true then
 		for i=1, 10 do
 			local pb = _G["PetActionButton"..i]
