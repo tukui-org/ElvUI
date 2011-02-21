@@ -240,7 +240,7 @@ do
 		
 		if E.lowversion ~= true and E["actionbar"].rightbars > 2 and E["actionbar"].splitbar == true and E["actionbar"].bottomrows == 1 then
 			SaveBars("rightbars", 2)
-		elseif E.lowversion ~= true and E["actionbar"].splitbar == true and E["actionbar"].bottomrows == 2 then
+		elseif E.lowversion ~= true and E["actionbar"].rightbars > 1 and E["actionbar"].splitbar == true and E["actionbar"].bottomrows == 2 then
 			SaveBars("rightbars", 1)
 		end		
 	end)
@@ -279,7 +279,7 @@ do
 		
 		if E.lowversion ~= true and E["actionbar"].rightbars > 2 and E["actionbar"].splitbar == true and E["actionbar"].bottomrows == 1 then
 			SaveBars("rightbars", 2)
-		elseif E.lowversion ~= true and E["actionbar"].splitbar == true and E["actionbar"].bottomrows == 2 then
+		elseif E.lowversion ~= true and E["actionbar"].rightbars > 1 and E["actionbar"].splitbar == true and E["actionbar"].bottomrows == 2 then
 			SaveBars("rightbars", 1)
 		end		
 	end)
