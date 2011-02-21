@@ -178,29 +178,49 @@ local function Shared(self, unit)
 		self.DebuffHighlightAlpha = 0.4		
 	end
 	
-    local debuffs = CreateFrame('Frame', nil, self)
 	if C["raidframes"].griddps ~= true then
+		local debuffs = CreateFrame('Frame', nil, self)
 		debuffs:SetPoint('LEFT', self, 'RIGHT', E.Scale(6), 0)
 		debuffs:SetHeight(raidframe_height)
 		debuffs:SetWidth(raidframe_height*5)
 		debuffs.size = (raidframe_height)
 		debuffs.num = 5
 		debuffs.spacing = 2
+		
+		debuffs.initialAnchor = 'LEFT'
+		debuffs.PostCreateIcon = E.PostCreateAura
+		debuffs.PostUpdateIcon = E.PostUpdateAura
+		self.Debuffs = debuffs
+		
+		-- Debuff Aura Filter
+		self.Debuffs.CustomFilter = E.AuraFilter		
 	else
-		debuffs:SetPoint('BOTTOM', self, 'BOTTOM', 0, 1)
-		debuffs:SetHeight(raidframe_height*0.6)
-		debuffs:SetWidth(raidframe_height*0.6)
-		debuffs.size = (raidframe_height*0.6)
-		debuffs.num = 1
-		debuffs.spacing = 0	
+		-- Raid Debuffs (big middle icon)
+		local RaidDebuffs = CreateFrame('Frame', nil, self)
+		RaidDebuffs:Height(raidframe_height*0.6)
+		RaidDebuffs:Width(raidframe_height*0.6)
+		RaidDebuffs:Point('BOTTOM', self, 'BOTTOM', 0, 1)
+		RaidDebuffs:SetFrameStrata(health:GetFrameStrata())
+		RaidDebuffs:SetFrameLevel(health:GetFrameLevel() + 2)
+		
+		RaidDebuffs:SetTemplate("Default")
+		
+		RaidDebuffs.icon = RaidDebuffs:CreateTexture(nil, 'OVERLAY')
+		RaidDebuffs.icon:SetTexCoord(.1,.9,.1,.9)
+		RaidDebuffs.icon:Point("TOPLEFT", 2, -2)
+		RaidDebuffs.icon:Point("BOTTOMRIGHT", -2, 2)
+		
+		RaidDebuffs.count = RaidDebuffs:CreateFontString(nil, 'OVERLAY')
+		RaidDebuffs.count:SetFont(C["media"].uffont, C["general"].fontscale*0.85, "THINOUTLINE")
+		RaidDebuffs.count:SetPoint('BOTTOMRIGHT', RaidDebuffs, 'BOTTOMRIGHT', 0, 2)
+		RaidDebuffs.count:SetTextColor(1, .9, 0)
+		
+		RaidDebuffs:FontString('time', C["media"].uffont, C["general"].fontscale*0.85, "THINOUTLINE")
+		RaidDebuffs.time:SetPoint('CENTER')
+		RaidDebuffs.time:SetTextColor(1, .9, 0)
+		
+		self.RaidDebuffs = RaidDebuffs
 	end
-    debuffs.initialAnchor = 'LEFT'
-	debuffs.PostCreateIcon = E.PostCreateAura
-	debuffs.PostUpdateIcon = E.PostUpdateAura
-	self.Debuffs = debuffs
-	
-	-- Debuff Aura Filter
-	self.Debuffs.CustomFilter = E.AuraFilter
 				
 	if C["raidframes"].showrange == true then
 		local range = {insideAlpha = 1, outsideAlpha = C["raidframes"].raidalphaoor}

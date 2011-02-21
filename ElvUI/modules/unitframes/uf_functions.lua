@@ -2,6 +2,7 @@
 --	UnitFrame Functions
 ------------------------------------------------------------------------
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local _, ns = ...
 
 E.LoadUFFunctions = function(layout)
 	local oUF = ElvUF or oUF
@@ -73,23 +74,8 @@ E.LoadUFFunctions = function(layout)
 		local inInstance, instanceType = IsInInstance()
 		icon.owner = caster
 		icon.isStealable = isStealable
-		if header == "ElvuiHealR6R25" or (C["raidframes"].griddps == true and header == "ElvuiDPSR6R25") then 
-			if inInstance and (instanceType == "pvp" or instanceType == "arena") then
-				if E.DebuffWhiteList[name] or E.TargetPVPOnly[name] then
-					return true
-				else
-					return false
-				end
-			else
-				if header == "ElvuiHealR6R25" and E.DebuffHealerWhiteList[name] then
-					return true
-				elseif header == "ElvuiDPSR6R25" and E.DebuffDPSWhiteList[name] then
-					return true
-				else
-					return false
-				end
-			end	
-		elseif (unit and unit:find("arena%d")) then --Arena frames
+		
+		if (unit and unit:find("arena%d")) then --Arena frames
 			if dtype then
 				if E.DebuffWhiteList[name] then
 					return true
@@ -1120,6 +1106,15 @@ E.LoadUFFunctions = function(layout)
 
 		self.AuraWatch = auras
 	end
+
+	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs
+
+	if not ORD then return end
+	ORD.ShowDispelableDebuff = true
+	ORD.FilterDispellableDebuff = true
+	ORD.MatchBySpellName = true
+
+	ORD:RegisterDebuffs(E.RaidDebuffs)	
 	
 	E.LoadUFFunctions = nil
 end

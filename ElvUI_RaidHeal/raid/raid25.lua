@@ -189,21 +189,32 @@ local function Shared(self, unit)
 		}
 	end
 	
+	-- Raid Debuffs (big middle icon)
+	local RaidDebuffs = CreateFrame('Frame', nil, self)
+	RaidDebuffs:Height(raidframe_height*0.6)
+	RaidDebuffs:Width(raidframe_height*0.6)
+	RaidDebuffs:Point('BOTTOM', self, 'BOTTOM', 0, 1)
+	RaidDebuffs:SetFrameStrata(health:GetFrameStrata())
+	RaidDebuffs:SetFrameLevel(health:GetFrameLevel() + 2)
+	
+	RaidDebuffs:SetTemplate("Default")
+	
+	RaidDebuffs.icon = RaidDebuffs:CreateTexture(nil, 'OVERLAY')
+	RaidDebuffs.icon:SetTexCoord(.1,.9,.1,.9)
+	RaidDebuffs.icon:Point("TOPLEFT", 2, -2)
+	RaidDebuffs.icon:Point("BOTTOMRIGHT", -2, 2)
+	
+	RaidDebuffs.count = RaidDebuffs:CreateFontString(nil, 'OVERLAY')
+	RaidDebuffs.count:SetFont(C["media"].uffont, C["general"].fontscale*0.85, "THINOUTLINE")
+	RaidDebuffs.count:SetPoint('BOTTOMRIGHT', RaidDebuffs, 'BOTTOMRIGHT', 0, 2)
+	RaidDebuffs.count:SetTextColor(1, .9, 0)
+	
+	RaidDebuffs:FontString('time', C["media"].uffont, C["general"].fontscale*0.85, "THINOUTLINE")
+	RaidDebuffs.time:SetPoint('CENTER')
+	RaidDebuffs.time:SetTextColor(1, .9, 0)
+	
+	self.RaidDebuffs = RaidDebuffs
 
-	local debuffs = CreateFrame('Frame', nil, self)
-	debuffs:SetPoint('CENTER', self, 'CENTER', 0, E.Scale(-6))
-	debuffs:SetHeight((raid_width / 2)*.73)
-	debuffs:SetWidth(raid_width)
-	debuffs.size = ((raid_width / 2) *.73)
-	debuffs.spacing = 0
-	debuffs.initialAnchor = 'CENTER'
-	debuffs.num = 1
-	debuffs.PostCreateIcon = E.PostCreateAura
-	debuffs.PostUpdateIcon = E.PostUpdateAura
-	self.Debuffs = debuffs
-	self.Debuffs.CustomFilter = E.AuraFilter
-
-			
 	if C["raidframes"].showrange == true then
 		local range = {insideAlpha = 1, outsideAlpha = C["raidframes"].raidalphaoor}
 		self.Range = range
