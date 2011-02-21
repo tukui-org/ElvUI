@@ -1,0 +1,5 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">		
+	<Include file="maintanktargets.xml"/>
+	<Include file="healerpets.xml"/>
+	<Include file="partytargets.xml"/>
+</Ui>

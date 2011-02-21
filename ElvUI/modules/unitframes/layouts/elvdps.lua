@@ -2014,7 +2014,7 @@ local function LoadDPSLayout()
 			'point' , 'BOTTOM',
 			'template', 'Elv_Mtt'
 		)
-		tank:SetPoint("BOTTOMLEFT", ChatRBackground2, "TOPLEFT", -42, 450)
+		tank:Point("LEFT", UIParent, "LEFT", 6, 250)
 	end
 
 	if C["raidframes"].mainassist == true then
@@ -2030,9 +2030,9 @@ local function LoadDPSLayout()
 			'template', 'Elv_Mtt'
 		)
 		if C["raidframes"].maintank == true then 
-			assist:SetPoint("TOPLEFT", ElvDPSMainTank, "BOTTOMLEFT", 2, -50)
+			assist:Point("TOPLEFT", ElvDPSMainTank, "BOTTOMLEFT", 2, -50)
 		else
-			assist:SetPoint("BOTTOMLEFT", ChatRBackground2, "TOPLEFT", -42, 450)
+			assist:Point("LEFT", UIParent, "LEFT", 6, 250)
 		end
 	end
 

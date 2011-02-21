@@ -6,7 +6,6 @@
 ## RequiredDeps: ElvUI
 ## OptionalDeps: ElvUI_Dps_Layout
 
-templates.xml
 init.lua
 raid\party.lua
 raid\raid25.lua

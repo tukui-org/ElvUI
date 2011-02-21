@@ -5,7 +5,6 @@
 ## X-Category: UnitFrame
 ## RequiredDeps: ElvUI
 
-templates.xml
 init.lua
 raid\party.lua
 raid\raid25.lua

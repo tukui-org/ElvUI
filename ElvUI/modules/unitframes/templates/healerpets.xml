@@ -1,0 +1,21 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/">	
+	<Button name="HealerPartyPets" inherits="SecureUnitButtonTemplate" hidden="true" virtual="true">
+		<Frames>
+			<Button name="$parentPet" inherits="SecureUnitButtonTemplate">	
+				<Anchors>
+					<Anchor point="BOTTOM" relativePoint="TOP" relativeTo="$parent">
+						<Offset>
+							<AbsDimension x="0" y="6"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Attributes>
+					<Attribute name="unitsuffix" type="string" value="pet"/>
+					<Attribute name="useparent-unit" type="boolean" value="true"/>
+					<Attribute name="type1" type="string" value="target"/>
+					<Attribute name="initial-unitWatch" type="boolean" value="true"/>
+				</Attributes>
+			</Button>
+		</Frames>
+	</Button>
+</Ui>
