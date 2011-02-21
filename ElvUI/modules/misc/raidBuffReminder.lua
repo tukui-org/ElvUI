@@ -218,8 +218,7 @@ local function OnAuraChange(self, event, arg1, unit)
 	end
 	
 	--Check if your incombat and are missing a buff
-	
-	if RaidReminderShown == true and inInstance and (instanceType ==  "party" or instanceType == "raid" or instanceType == "pvp" or instanceType == "arena") and InCombatLockdown() and (FlaskFrame:GetAlpha() == 1 or Spell3Frame:GetAlpha() == 1 or Spell4Frame:GetAlpha() == 1 or Spell5Frame:GetAlpha() == 1 or Spell6Frame:GetAlpha() == 1) then
+	if RaidReminderShown == true and inInstance and (instanceType == "raid") and InCombatLockdown() and (FlaskFrame:GetAlpha() == 1 or Spell3Frame:GetAlpha() == 1 or Spell4Frame:GetAlpha() == 1 or Spell5Frame:GetAlpha() == 1 or Spell6Frame:GetAlpha() == 1) then
 		self:SetScript("OnUpdate", function(self)
 			if reminderoverride == true then return end
 			Pulse(self)
