@@ -189,11 +189,15 @@ function E.PositionAllPanels()
 			ElvuiActionBarBackgroundRight:Hide()
 		end	
 	else
-		if E["actionbar"].rightbars > 0 then
+		if E["actionbar"].rightbars == 1 then
 			ElvuiActionBarBackgroundRight:SetWidth(E.buttonsize + (E.buttonspacing * 2))
+		elseif E["actionbar"].rightbars == 2 then
+			ElvuiActionBarBackgroundRight:SetWidth((E.buttonsize * 2) + (E.buttonspacing * 3))
+		elseif E["actionbar"].rightbars == 3 then
+			ElvuiActionBarBackgroundRight:SetWidth((E.buttonsize * 3) + (E.buttonspacing * 4))			
 		else
 			ElvuiActionBarBackgroundRight:Hide()
-		end
+		end	
 	end
 end
 

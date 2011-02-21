@@ -24,7 +24,7 @@ function E.PositionBar3()
 		b:SetAlpha(1)
 		if E.lowversion ~= true then
 			if i == 1 then
-				b:SetPoint("TOPLEFT", ElvuiActionBarBackgroundRight, "TOPLEFT", E.buttonspacing, -E.buttonspacing)
+				b:SetPoint("TOPRIGHT", ElvuiActionBarBackgroundRight, "TOPRIGHT", -E.buttonspacing, -E.buttonspacing)
 			else
 				b:SetPoint("TOP", b2, "BOTTOM", 0, -E.buttonspacing)
 			end
