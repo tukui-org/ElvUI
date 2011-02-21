@@ -35,21 +35,23 @@ local powerbar_offset = E.Scale(C["unitframes"].poweroffset)
 ------------------------------------------------------------------------
 
 local function Shared(self, unit)
+	local resscale = 1
+	if E.lowversion == true then resscale = 0.85 end
 	--Set Sizes
-	player_width = E.Scale(C["framesizes"].playtarwidth)
-	player_height = E.Scale(C["framesizes"].playtarheight)
+	player_width = E.Scale(C["framesizes"].playtarwidth*resscale)
+	player_height = E.Scale(C["framesizes"].playtarheight*resscale)
 
-	target_width = E.Scale(C["framesizes"].playtarwidth)
-	target_height = E.Scale(C["framesizes"].playtarheight)
+	target_width = E.Scale(C["framesizes"].playtarwidth*resscale)
+	target_height = E.Scale(C["framesizes"].playtarheight*resscale)
 
-	smallframe_width = E.Scale(C["framesizes"].smallwidth)
-	smallframe_height = E.Scale(C["framesizes"].smallheight)
+	smallframe_width = E.Scale(C["framesizes"].smallwidth*resscale)
+	smallframe_height = E.Scale(C["framesizes"].smallheight*resscale)
 
-	arenaboss_width = E.Scale(C["framesizes"].arenabosswidth)
-	arenaboss_height = E.Scale(C["framesizes"].arenabossheight)
+	arenaboss_width = E.Scale(C["framesizes"].arenabosswidth*resscale)
+	arenaboss_height = E.Scale(C["framesizes"].arenabossheight*resscale)
 
-	assisttank_width = E.Scale(C["framesizes"].assisttankwidth)
-	assisttank_height = E.Scale(C["framesizes"].assisttankheight)
+	assisttank_width = E.Scale(C["framesizes"].assisttankwidth*resscale)
+	assisttank_height = E.Scale(C["framesizes"].assisttankheight*resscale)
 	
 	-- Set Colors
 	self.colors = E.oUF_colors
