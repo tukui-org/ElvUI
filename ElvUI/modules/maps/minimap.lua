@@ -223,7 +223,7 @@ local coord_Update = function(self,t)
 	local xt,yt
 	x = math.floor(100 * x)
 	y = math.floor(100 * y)
-	if x == 0 and y == 0 and not inInstance then
+	if x == 0 and y == 0 and not inInstance and not WorldMapFrame:IsShown() then
 		SetMapToCurrentZone()
 	elseif x ==0 and y==0 then
 		m_coord_text:SetText(" ")	
