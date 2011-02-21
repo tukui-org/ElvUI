@@ -36,7 +36,7 @@ local powerbar_offset = E.Scale(C["unitframes"].poweroffset)
 
 local function Shared(self, unit)
 	local resscale = 1
-	if E.lowversion == true then resscale = 0.85 end
+	if E.lowversion == true then resscale = 0.88 end
 	--Set Sizes
 	player_width = E.Scale(C["framesizes"].playtarwidth*resscale)
 	player_height = E.Scale(C["framesizes"].playtarheight*resscale)
@@ -2067,7 +2067,7 @@ local function LoadHealLayout()
 	end
 	
 	E.LoadDPSMoveElements("ElvHeal")
-	E.LoadClassTimers("ElvHeal")	
+	E.LoadClassTimers(ElvHeal_player, ElvHeal_target)	
 end
 
 E.Layouts["Heal"] = LoadHealLayout

@@ -53,19 +53,9 @@ PLAYER_DEBUFF_COLOR = nil;
 SORT_DIRECTION = true;
 TENTHS_TRESHOLD = 1
 	
-function E.LoadClassTimers(layout)
-
-	local Elv_player
-	local Elv_target
-	if layout == "ElvDPS" then
-		Elv_player = ElvDPS_player
-		Elv_target = ElvDPS_target
-	elseif layout == "ElvHeal" then
-		Elv_player = ElvHeal_player
-		Elv_target = ElvHeal_target
-	else
-		return
-	end
+function E.LoadClassTimers(Elv_player, Elv_target)
+	assert(Elv_player, "Classtimers failed to load, you need to specify a player and target frame, E.LoadClassTimers([player], [target])")
+	assert(Elv_target, "Classtimers failed to load, you need to specify a player and target frame, E.LoadClassTimers([player], [target])")
 	
 	local CreateUnitAuraDataSource;
 	do
