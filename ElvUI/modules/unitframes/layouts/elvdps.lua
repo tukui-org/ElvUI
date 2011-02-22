@@ -2076,7 +2076,9 @@ local function LoadDPSLayout()
 	end
 	
 	E.LoadDPSMoveElements("ElvDPS")
-	E.LoadClassTimers(ElvDPS_player, ElvDPS_target)
+	if C["classtimer"].enable == true then
+		E.LoadClassTimers(ElvDPS_player, ElvDPS_target)
+	end
 end
 
 E.Layouts["DPS"] = LoadDPSLayout
