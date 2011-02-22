@@ -175,7 +175,7 @@ local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTi
 		f.duration = duration
 		
 		if f.count then
-			if count and (count > 0) then
+			if count and (count > 1) then
 				f.count:SetText(count)
 				f.count:Show()
 			else
