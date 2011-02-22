@@ -241,8 +241,8 @@ local function SetupChatFont(self)
 		
 		local _, fontSize = FCF_GetChatWindowInfo(id)
 		
-		--font under fontsize 11 is unreadable.
-		if fontSize < 11 then		
+		--font under fontsize 12 is unreadable.
+		if fontSize < 12 then		
 			FCF_SetChatWindowFontSize(nil, chat, 12)
 		else
 			FCF_SetChatWindowFontSize(nil, chat, fontSize)
