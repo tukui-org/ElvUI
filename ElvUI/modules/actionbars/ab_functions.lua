@@ -202,6 +202,20 @@ function E.PositionAllPanels()
 end
 
 function E.PositionAllBars()
+	if E.lowversion == true then
+		if E.actionbar.rightbars > 2 then
+			E.actionbar.rightbars = 2
+		end
+	else
+		if E.actionbar.rightbars > 1 and E.actionbar.splitbar == true then
+			E.actionbar.rightbars = 1
+		end
+		
+		if E.actionbar.bottomrows > 2 then
+			E.actionbar.bottomrows = 2
+		end
+	end
+	
 	E.PositionAllPanels()
 	E.PositionMainBar()
 	E.PositionBar2()
