@@ -222,6 +222,10 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 	if C["arena"].unitframes == true then
 		SetCVar("showArenaEnemyFrames", 0)
 	end
+	
+	if C["nameplate"].enable == true and C["nameplate"].enhancethreat == true then
+		SetCVar("threatWarning", 3)
+	end
 
 	E.ChatLIn = true
 	E.ChatRIn = true

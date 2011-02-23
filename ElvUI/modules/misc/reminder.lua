@@ -17,6 +17,7 @@ local function OnEvent(self, event, arg1, arg2)
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" and arg2 ~= "ENCHANT_APPLIED" and arg2 ~= "ENCHANT_REMOVED" then return end
 	if group.level and UnitLevel("player") < group.level then return end
 	
+	self.icon:SetTexture(nil)
 	self:Hide()
 	if group.negate_spells then
 		for _, buff in pairs(group.negate_spells) do
