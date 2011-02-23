@@ -42,16 +42,26 @@ function E.PositionBar5()
 				end						
 			end
 		else
-			if i == 1 then
-				b:SetPoint("TOPLEFT", ElvuiActionBarBackgroundRight, "TOPLEFT", E.buttonspacing, -E.buttonspacing)
+			if E["actionbar"].splitbar == true and E["actionbar"].bottomrows == 3 then
+				if C["actionbar"].swaptopbottombar == true and i == 1 then
+					b:SetPoint("TOP", MultiBarBottomLeftButton1, "BOTTOM", 0, -E.buttonspacing)
+				elseif i == 1 then
+					b:SetPoint("BOTTOM", MultiBarBottomLeftButton1, "TOP", 0, E.buttonspacing)
+				else
+					b:SetPoint("LEFT", b2, "RIGHT", E.buttonspacing, 0)
+				end
 			else
-				b:SetPoint("TOP", b2, "BOTTOM", 0, -E.buttonspacing)
-			end
-			
-			if C["actionbar"].rightbarmouseover == true then
-				b:SetAlpha(0)
-				b:HookScript("OnEnter", function() RightBarMouseOver(1) end)
-				b:HookScript("OnLeave", function() RightBarMouseOver(0) end)			
+				if i == 1 then
+					b:SetPoint("TOPLEFT", ElvuiActionBarBackgroundRight, "TOPLEFT", E.buttonspacing, -E.buttonspacing)
+				else
+					b:SetPoint("TOP", b2, "BOTTOM", 0, -E.buttonspacing)
+				end
+				
+				if C["actionbar"].rightbarmouseover == true then
+					b:SetAlpha(0)
+					b:HookScript("OnEnter", function() RightBarMouseOver(1) end)
+					b:HookScript("OnLeave", function() RightBarMouseOver(0) end)			
+				end			
 			end
 		end
 
@@ -65,7 +75,7 @@ function E.PositionBar5()
 			ElvuiBar5:Hide()
 		end
 	else
-		if E["actionbar"].rightbars > 1 then
+		if (E["actionbar"].splitbar == true and E["actionbar"].bottomrows == 3) or E["actionbar"].rightbars > 1 then
 			ElvuiBar5:Show()
 		else
 			ElvuiBar5:Hide()

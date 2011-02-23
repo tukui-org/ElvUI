@@ -166,8 +166,13 @@ function E.PositionAllPanels()
 		ElvuiSplitActionBarRightBackground:SetHeight(ElvuiActionBarBackground:GetHeight())
 		
 		if E.lowversion == true then
-			ElvuiSplitActionBarLeftBackground:SetWidth((E.buttonsize * 3) + (E.buttonspacing * 4))
-			ElvuiSplitActionBarRightBackground:SetWidth((E.buttonsize * 3) + (E.buttonspacing * 4))			
+			if E["actionbar"].bottomrows < 3 then
+				ElvuiSplitActionBarLeftBackground:SetWidth((E.buttonsize * 3) + (E.buttonspacing * 4))
+				ElvuiSplitActionBarRightBackground:SetWidth((E.buttonsize * 3) + (E.buttonspacing * 4))			
+			else
+				ElvuiSplitActionBarLeftBackground:SetWidth((E.buttonsize * 4) + (E.buttonspacing * 5))
+				ElvuiSplitActionBarRightBackground:SetWidth((E.buttonsize * 4) + (E.buttonspacing * 5))					
+			end
 		else
 			ElvuiSplitActionBarLeftBackground:SetWidth((E.buttonsize * 6) + (E.buttonspacing * 7))
 			ElvuiSplitActionBarRightBackground:SetWidth((E.buttonsize * 6) + (E.buttonspacing * 7))
