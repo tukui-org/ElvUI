@@ -55,6 +55,7 @@ C["unitframes"] = {
 	["showsmooth"] = true,                 -- enable smooth bar
 	["showthreat"] = true,                 -- enable the threat bar anchored to info right panel.
 	["charportrait"] = false,              -- enable character portrait
+	["portraitonhealthbar"] = true,			-- portrait on healthbar
 	["classcolor"] = false,                  -- color unitframes by class
 	["healthcolor"] = C["media"].bordercolor, --color of the unitfram
 	["healthbackdropcolor"] = C["media"].backdropcolor, --backdropcolor of the unitframe

@@ -211,31 +211,40 @@ local function Shared(self, unit)
 		
 		-- Portraits
 		if (C["unitframes"].charportrait == true) then
-			local PFrame = CreateFrame("Frame", nil, self)
-			if powerbar_offset ~= 0 then
-				PFrame:SetPoint('TOPRIGHT', self.Health,'TOPLEFT', E.Scale(-6), E.Scale(2))
-				PFrame:SetPoint('BOTTOMRIGHT', self.Health,'BOTTOMLEFT', E.Scale(-6) - powerbar_offset, -powerbar_offset)
-				PFrame:SetWidth(original_width/5)
-			else
-				PFrame:SetPoint('TOPRIGHT', self.Health,'TOPLEFT', E.Scale(-6), E.Scale(2))
-				PFrame:SetPoint('BOTTOMRIGHT', self.Health,'BOTTOMLEFT', E.Scale(-6), E.Scale(-3) + -(original_height * 0.35))
-				PFrame:SetWidth(original_width/5)
-	
-			end
-			PFrame:SetTemplate("Default")
-			PFrame:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-			self.PFrame = PFrame
-			self.PFrame:CreateShadow("Default")		
-			local portrait = CreateFrame("PlayerModel", nil, PFrame)
-			portrait:SetFrameLevel(2)
-			
-			--dont ask me why but the playerframe looks completely fucked when i set it how it should be..
-			portrait:SetPoint('BOTTOMLEFT', PFrame, 'BOTTOMLEFT', E.Scale(1), E.Scale(2))		
-			portrait:SetPoint('TOPRIGHT', PFrame, 'TOPRIGHT', E.Scale(-2), E.Scale(-2))	
-			table.insert(self.__elements, E.HidePortrait)
+			if C["unitframes"].portraitonhealthbar ~= true then
+				local PFrame = CreateFrame("Frame", nil, self)
+				if powerbar_offset ~= 0 then
+					PFrame:SetPoint('TOPRIGHT', self.Health,'TOPLEFT', E.Scale(-6), E.Scale(2))
+					PFrame:SetPoint('BOTTOMRIGHT', self.Health,'BOTTOMLEFT', E.Scale(-6) - powerbar_offset, -powerbar_offset)
+					PFrame:SetWidth(original_width/5)
+				else
+					PFrame:SetPoint('TOPRIGHT', self.Health,'TOPLEFT', E.Scale(-6), E.Scale(2))
+					PFrame:SetPoint('BOTTOMRIGHT', self.Health,'BOTTOMLEFT', E.Scale(-6), E.Scale(-3) + -(original_height * 0.35))
+					PFrame:SetWidth(original_width/5)
 		
-			self.Portrait = portrait
-			player_width = player_width + (PFrame:GetWidth() + E.Scale(6))
+				end
+				PFrame:SetTemplate("Default")
+				PFrame:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
+				self.PFrame = PFrame
+				self.PFrame:CreateShadow("Default")		
+				player_width = player_width + (PFrame:GetWidth() + E.Scale(6))
+				
+				local portrait = CreateFrame("PlayerModel", nil, PFrame)
+				portrait:SetFrameLevel(2)
+				
+				--dont ask me why but the playerframe looks completely fucked when i set it how it should be..
+				portrait:SetPoint('BOTTOMLEFT', PFrame, 'BOTTOMLEFT', E.Scale(1), E.Scale(2))		
+				portrait:SetPoint('TOPRIGHT', PFrame, 'TOPRIGHT', E.Scale(-2), E.Scale(-2))	
+				table.insert(self.__elements, E.HidePortrait)		
+				self.Portrait = portrait
+			else
+				local portrait = CreateFrame("PlayerModel", nil, health)
+				portrait:SetFrameLevel(health:GetFrameLevel() + 1)
+				portrait:SetPoint('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMLEFT')		
+				portrait:SetPoint('TOPRIGHT', health:GetStatusBarTexture(), 'TOPRIGHT')	
+				portrait.PostUpdate = function(self) self:SetAlpha(0) self:SetAlpha(0.35) end		
+				self.Portrait = portrait
+			end
 		end
 			
 		-- combat icon
@@ -988,30 +997,39 @@ local function Shared(self, unit)
 		
 		-- Portraits
 		if (C["unitframes"].charportrait == true) then			
-			local PFrame = CreateFrame("Frame", nil, self)
-			if powerbar_offset ~= 0 then
-				PFrame:SetPoint('TOPLEFT', self.Health,'TOPRIGHT', E.Scale(6), E.Scale(2))
-				PFrame:SetPoint('BOTTOMLEFT', self.Health,'BOTTOMRIGHT', E.Scale(6) + powerbar_offset, -powerbar_offset)
-				PFrame:SetWidth(original_width/5)
-			else
-				PFrame:SetPoint('TOPLEFT', self.Health,'TOPRIGHT', E.Scale(6), E.Scale(2))
-				PFrame:SetPoint('BOTTOMLEFT', self.Health,'BOTTOMRIGHT', E.Scale(6), E.Scale(-3) + -(original_height * 0.35))
-				PFrame:SetWidth(original_width/5)
-			end
-			PFrame:SetTemplate("Default")
-			PFrame:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-			self.PFrame = PFrame
-			self.PFrame:CreateShadow("Default")	
-			local portrait = CreateFrame("PlayerModel", nil, PFrame)
-			portrait:SetFrameLevel(2)
+			if C["unitframes"].portraitonhealthbar ~= true then
+				local PFrame = CreateFrame("Frame", nil, self)
+				if powerbar_offset ~= 0 then
+					PFrame:SetPoint('TOPLEFT', self.Health,'TOPRIGHT', E.Scale(6), E.Scale(2))
+					PFrame:SetPoint('BOTTOMLEFT', self.Health,'BOTTOMRIGHT', E.Scale(6) + powerbar_offset, -powerbar_offset)
+					PFrame:SetWidth(original_width/5)
+				else
+					PFrame:SetPoint('TOPLEFT', self.Health,'TOPRIGHT', E.Scale(6), E.Scale(2))
+					PFrame:SetPoint('BOTTOMLEFT', self.Health,'BOTTOMRIGHT', E.Scale(6), E.Scale(-3) + -(original_height * 0.35))
+					PFrame:SetWidth(original_width/5)
+				end
+				PFrame:SetTemplate("Default")
+				PFrame:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
+				self.PFrame = PFrame
+				self.PFrame:CreateShadow("Default")		
+				local portrait = CreateFrame("PlayerModel", nil, PFrame)
+				portrait:SetFrameLevel(2)
+				
+				--dont ask me why but the playerframe looks completely fucked when i set it how it should be..
+				portrait:SetPoint('BOTTOMLEFT', PFrame, 'BOTTOMLEFT', E.Scale(2), E.Scale(2))		
+				portrait:SetPoint('TOPRIGHT', PFrame, 'TOPRIGHT', E.Scale(-2), E.Scale(-2))		
+				table.insert(self.__elements, E.HidePortrait)
 			
-			--dont ask me why but the playerframe looks completely fucked when i set it how it should be..
-			portrait:SetPoint('BOTTOMLEFT', PFrame, 'BOTTOMLEFT', E.Scale(2), E.Scale(2))		
-			portrait:SetPoint('TOPRIGHT', PFrame, 'TOPRIGHT', E.Scale(-2), E.Scale(-2))		
-			table.insert(self.__elements, E.HidePortrait)
-		
-			self.Portrait = portrait
-			target_width = target_width + (PFrame:GetWidth() + E.Scale(6))
+				self.Portrait = portrait
+				target_width = target_width + (PFrame:GetWidth() + E.Scale(6))
+			else
+				local portrait = CreateFrame("PlayerModel", nil, health)
+				portrait:SetFrameLevel(health:GetFrameLevel() + 1)
+				portrait:SetPoint('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMLEFT')		
+				portrait:SetPoint('TOPRIGHT', health:GetStatusBarTexture(), 'TOPRIGHT')	
+				portrait.PostUpdate = function(self) self:SetAlpha(0) self:SetAlpha(0.35) end		
+				self.Portrait = portrait
+			end			
 		end
 						
 		-- Unit name on target
@@ -1378,6 +1396,14 @@ local function Shared(self, unit)
 		
 		self:Tag(Name, '[Elvui:getnamecolor][Elvui:namemedium]')
 		self.Name = Name
+		
+		-- portraits
+		if C["unitframes"].charportrait == true and C["unitframes"].portraitonhealthbar == true  then
+			local portrait = CreateFrame("PlayerModel", nil, health)
+			portrait.PostUpdate = function(self) self:SetAlpha(0) self:SetAlpha(0.35) end
+			portrait:SetAllPoints(health:GetStatusBarTexture())
+			self.Portrait = portrait
+		end				
 		
 		if unit == "targettarget" and C["auras"].totdebuffs == true then
 			local debuffs = CreateFrame("Frame", nil, health)			
@@ -1938,19 +1964,15 @@ local function LoadHealLayout()
 	target:SetPoint("BOTTOMLEFT", ElvuiActionBarBackground, "TOPRIGHT", E.Scale(35),E.Scale(205) + yoffset)
 	target:SetSize(target_width, target_height)
 
-	-- Focus
-	local focus = oUF:Spawn('focus', "ElvHeal_focus")
-	if powerbar_offset ~= 0 then
-		focus:SetPoint("TOPLEFT", ElvHeal_target, "BOTTOMLEFT", E.Scale(9),E.Scale(-42))
-	else
-		focus:SetPoint("TOPLEFT", ElvHeal_target, "BOTTOMLEFT", 0,E.Scale(-42))
-	end
-	focus:SetSize(smallframe_width, smallframe_height)
-
 	-- Target's Target
 	local tot = oUF:Spawn('targettarget', "ElvHeal_targettarget")
 	tot:SetPoint("TOPRIGHT", ElvHeal_target, "BOTTOMRIGHT", 0,E.Scale(-42))
 	tot:SetSize(smallframe_width, smallframe_height)
+	
+	-- Focus
+	local focus = oUF:Spawn('focus', "ElvHeal_focus")
+	focus:SetPoint("TOPLEFT", ElvHeal_targettarget, "BOTTOMLEFT", 0,E.Scale(-22))
+	focus:SetSize(smallframe_width, smallframe_height)
 
 	-- Player's Pet
 	local pet = oUF:Spawn('pet', "ElvHeal_pet")

@@ -192,6 +192,7 @@ local function Local(o)
 	if o == "ElvuiConfigUIunitframesplayeraggro" then o = ElvuiL.option_unitframes_playeraggro end
 	if o == "ElvuiConfigUIunitframesshowsmooth" then o = ElvuiL.option_unitframes_smooth end
 	if o == "ElvuiConfigUIunitframescharportrait" then o = ElvuiL.option_unitframes_portrait end
+	if o == "ElvuiConfigUIunitframesportraitonhealthbar" then o = ElvuiL.option_unitframes_portraitonhealthbar end
 	if o == "ElvuiConfigUIunitframesenable" then o = ElvuiL.option_unitframes_enable end
 	if o == "ElvuiConfigUIunitframestargetpowerplayeronly" then o = ElvuiL.option_unitframes_enemypower end
 	if o == "ElvuiConfigUIunitframesaggro" then o = ElvuiL.option_unitframes_raidaggro end

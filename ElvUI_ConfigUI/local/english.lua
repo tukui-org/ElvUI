@@ -159,6 +159,7 @@ ElvuiL.option_unitframes_healthbackdropcolor = "Backdrop color of health on all 
 ElvuiL.option_unitframes_healthcolorbyvalue = "Color Healthbars by Health Remaining"
 ElvuiL.option_unitframes_combat = "Fade unitframes while not in-combat"
 ElvuiL.option_unitframes_pettarget = "Display your pet's target (DPS Only)"
+ElvuiL.option_unitframes_portraitonhealthbar = "Display character portrait overlaying healthbar (Portraits must be on)"
 
 -- frame sizes
 ElvuiL.option_framesizes = "UnitFrame Sizes"
