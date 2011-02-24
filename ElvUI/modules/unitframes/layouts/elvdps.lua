@@ -101,12 +101,16 @@ local function Shared(self, unit)
 		self.FrameBorder:CreateShadow("Default")
 		self.FrameBorder.shadow:SetFrameLevel(0)
 		self.FrameBorder.shadow:SetFrameStrata("BACKGROUND")
+		
+		--Strata Frame, creating texts from this
+		local TextOverlay = CreateFrame("Frame", nil, health)
 	
 		-- Health Bar Background
 		local healthBG = health:CreateTexture(nil, 'BORDER')
 		healthBG:SetAllPoints()
 		health:FontString("value", font1, C["unitframes"].fontsize, "THINOUTLINE")
 		health.value:SetPoint("RIGHT", health, "RIGHT", E.Scale(-4), E.Scale(1))
+		health.value:SetParent(TextOverlay)
 		health.PostUpdate = E.PostUpdateHealth
 		self.Health = health
 		self.Health.bg = healthBG
@@ -167,8 +171,8 @@ local function Shared(self, unit)
 		powerBG:SetTexture(normTex)
 		powerBG.multiplier = 0.3
 		power:FontString("value", font1, C["unitframes"].fontsize, "THINOUTLINE")
-		power.value:SetParent(health)
 		power.value:SetPoint("LEFT", health, "LEFT", E.Scale(4), E.Scale(1))
+		power.value:SetParent(TextOverlay)
 		power.PreUpdate = E.PreUpdatePower
 		power.PostUpdate = E.PostUpdatePower
 		
@@ -248,15 +252,15 @@ local function Shared(self, unit)
 		end
 			
 		-- combat icon
-		local Combat = health:CreateTexture(nil, "OVERLAY")
+		local Combat = TextOverlay:CreateTexture(nil, "OVERLAY")
 		Combat:SetHeight(E.Scale(19))
 		Combat:SetWidth(E.Scale(19))
-		Combat:SetPoint("CENTER",0,7)
+		Combat:SetPoint("CENTER", health, "CENTER", 0,7)
 		Combat:SetVertexColor(0.69, 0.31, 0.31)
 		self.Combat = Combat
 
 		-- custom info (low mana warning)
-		FlashInfo = CreateFrame("Frame", "FlashInfo", self)
+		FlashInfo = CreateFrame("Frame", "FlashInfo", health)
 		FlashInfo:SetScript("OnUpdate", E.UpdateManaLevel)
 		FlashInfo.parent = self
 		FlashInfo:SetToplevel(true)
@@ -271,6 +275,7 @@ local function Shared(self, unit)
 		PvP:SetPoint("CENTER", health, "CENTER", 0, E.Scale(-5))
 		PvP:SetTextColor(0.69, 0.31, 0.31)
 		PvP:SetShadowOffset(E.mult, -E.mult)
+		PvP:SetParent(TextOverlay)
 		PvP:Hide()
 		self.PvP = PvP
 		self.PvP.Override = E.dummy
@@ -444,7 +449,8 @@ local function Shared(self, unit)
 
 				eclipseBar:FontString("Text", font1, C["unitframes"].fontsize, "THINOUTLINE")
 				eclipseBar.Text:SetPoint("CENTER", self.Health, "CENTER", E.Scale(1), E.Scale(-5))
-			
+				eclipseBar.Text:SetParent(TextOverlay)
+				
 				self.EclipseBar = eclipseBar
 				
 				self.EclipseBar.PostUpdatePower = E.EclipseDirection
@@ -895,6 +901,9 @@ local function Shared(self, unit)
 		end
 		health:SetStatusBarTexture(normTex)
 		self.health = health
+
+		--Strata Frame, creating texts from this
+		local TextOverlay = CreateFrame("Frame", nil, health)
 		
 		-- Border for HealthBar
 		local FrameBorder = CreateFrame("Frame", nil, health)
@@ -913,6 +922,7 @@ local function Shared(self, unit)
 		healthBG:SetAllPoints()
 		health:FontString("value", font1, C["unitframes"].fontsize, "THINOUTLINE")
 		health.value:SetPoint("RIGHT", health, "RIGHT", E.Scale(-4), E.Scale(1))
+		health.value:SetParent(TextOverlay)
 		health.PostUpdate = E.PostUpdateHealth
 		self.Health = health
 		self.Health.bg = healthBG
@@ -973,7 +983,7 @@ local function Shared(self, unit)
 		powerBG:SetTexture(normTex)
 		powerBG.multiplier = 0.3
 		power:FontString("value", font1, C["unitframes"].fontsize, "THINOUTLINE")
-		power.value:SetParent(health)
+		power.value:SetParent(TextOverlay)
 		power.value:SetPoint("LEFT", health, "LEFT", E.Scale(4), E.Scale(1))
 		power.PreUpdate = E.PreUpdatePower
 		power.PostUpdate = E.PostUpdatePower
@@ -1058,6 +1068,7 @@ local function Shared(self, unit)
 		Name:SetFont(font1, C["unitframes"].fontsize, "OUTLINE")
 		Name:SetShadowColor(0, 0, 0, 0.4)
 		Name:SetShadowOffset(1.25, -1.25)
+		Name:SetParent(TextOverlay)
 		self:Tag(Name, '[Elvui:getnamecolor][Elvui:namelong] [Elvui:diffcolor][level] [shortclassification]')
 		self.Name = Name
 		
@@ -1274,6 +1285,9 @@ local function Shared(self, unit)
 		health:SetHeight(original_height)
 		health:SetStatusBarTexture(normTex)
 		
+		--Strata Frame, creating texts from this
+		local TextOverlay = CreateFrame("Frame", nil, health)		
+		
 		local healthBG = health:CreateTexture(nil, 'BORDER')
 		healthBG:SetAllPoints()
 		
@@ -1389,6 +1403,7 @@ local function Shared(self, unit)
 		Name:SetJustifyH("CENTER")
 		Name:SetShadowColor(0, 0, 0, 0.4)
 		Name:SetShadowOffset(1.25, -1.25)
+		Name:SetParent(TextOverlay)
 		
 		self:Tag(Name, '[Elvui:getnamecolor][Elvui:namemedium]')
 		self.Name = Name
