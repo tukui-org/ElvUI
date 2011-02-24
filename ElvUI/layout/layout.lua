@@ -102,8 +102,8 @@ end
 if C["actionbar"].enable == true then
 	local vbarbg = CreateFrame("Frame", "ElvuiVehicleBarBackground", UIParent)
 	vbarbg:CreatePanel("Default", 1, 1, "BOTTOM", UIParent, "BOTTOM", 0, E.Scale(4))
-	vbarbg:SetWidth(((E.buttonsize * 11) + (E.buttonspacing * 12))*1.2)
-	vbarbg:SetHeight((E.buttonsize + (E.buttonspacing * 2))*1.2)
+	vbarbg:SetWidth((E.buttonsize * 12) + (E.buttonspacing * 13))
+	vbarbg:SetHeight(E.buttonsize + (E.buttonspacing * 2))
 	vbarbg:CreateShadow("Default")
 end
 

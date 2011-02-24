@@ -36,14 +36,14 @@ vbar:SetScript("OnEvent", function(self, event, ...)
 		local button
 		for i = 1, VEHICLE_MAX_ACTIONBUTTONS do
 			button = _G["VehicleMenuBarActionButton"..i]
-			button:SetSize(E.buttonsize*1.2, E.buttonsize*1.2)
+			button:SetSize(E.buttonsize, E.buttonsize)
 			button:ClearAllPoints()
 			button:SetParent(ElvuiVehicleBar)
 			if i == 1 then
-				button:SetPoint("BOTTOMLEFT", ElvuiVehicleBar, E.buttonspacing*1.2, E.buttonspacing*1.2)
+				button:SetPoint("BOTTOMLEFT", ElvuiVehicleBar, E.buttonspacing, E.buttonspacing)
 			else
 				local previous = _G["VehicleMenuBarActionButton"..i-1]
-				button:SetPoint("LEFT", previous, "RIGHT", E.buttonspacing*1.2, 0)
+				button:SetPoint("LEFT", previous, "RIGHT", E.buttonspacing, 0)
 			end
 		end
 	else
@@ -57,7 +57,7 @@ do
 		_G["ElvuiVehicleHotkey"..i] = _G["VehicleMenuBarActionButton"..i]:CreateFontString("ElvuiVehicleHotkey"..i, "OVERLAY", nil)
 		_G["ElvuiVehicleHotkey"..i]:ClearAllPoints()
 		_G["ElvuiVehicleHotkey"..i]:SetPoint("TOPRIGHT", 0, E.Scale(-3))
-		_G["ElvuiVehicleHotkey"..i]:SetFont(C["media"].font, 14, "OUTLINE")
+		_G["ElvuiVehicleHotkey"..i]:SetFont(C["media"].font, 12, "OUTLINE")
 		_G["ElvuiVehicleHotkey"..i].ClearAllPoints = E.dummy
 		_G["ElvuiVehicleHotkey"..i].SetPoint = E.dummy
 		
@@ -100,9 +100,9 @@ RegisterStateDriver(vehicle, "visibility", "[vehicleui][target=vehicle,noexists]
 
 -- vehicle on vehicle bar, dont need to have a state driver.. its parented to vehicle bar
 local vehicle2 = CreateFrame("BUTTON", nil, ElvuiVehicleBarBackground, "SecureActionButtonTemplate")
-vehicle2:SetWidth(E.buttonsize*1.2)
-vehicle2:SetHeight(E.buttonsize*1.2)
-vehicle2:SetPoint("RIGHT", ElvuiVehicleBarBackground, "RIGHT", -E.buttonspacing*1.2, 0)
+vehicle2:SetWidth(E.buttonsize)
+vehicle2:SetHeight(E.buttonsize)
+vehicle2:SetPoint("RIGHT", ElvuiVehicleBarBackground, "RIGHT", -E.buttonspacing, 0)
 vehicle2:RegisterForClicks("AnyUp")
 vehicle2:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
 vehicle2:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")

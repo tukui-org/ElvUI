@@ -36,7 +36,7 @@ local function Shared(self, unit)
 		health.bg = health:CreateTexture(nil, 'BORDER')
 		health.bg:SetAllPoints(health)
 		health.bg:SetTexture(normTex)
-		health.frequentUpdates = true
+		health.frequentUpdates = 0.3
 		
 		self.Health.bg = health.bg
 		-- Setup Colors
@@ -66,7 +66,7 @@ local function Shared(self, unit)
 		name:SetPoint("CENTER", health, 0, 0)
 		name:SetFont(font2, C["raidframes"].fontsize, "THINOUTLINE")
 		name:SetShadowOffset(1, -1)
-		
+		name.frequentUpdates = 0.3
 		self:Tag(name, "[Elvui:getnamecolor][Elvui:nameshort]")
 		self.Name = name
 		
@@ -143,7 +143,7 @@ local function Shared(self, unit)
 		
 		health.PostUpdate = E.PostUpdateHealth
 		
-		health.frequentUpdates = true
+		health.frequentUpdates = 0.3
 		
 		-- Setup Colors
 		if C["unitframes"].classcolor ~= true then
@@ -189,7 +189,7 @@ local function Shared(self, unit)
 		self.HealthBorder:SetTemplate("Default")
 		self.HealthBorder:SetBackdropBorderColor(unpack(C["media"].altbordercolor))	
 			
-		power.frequentUpdates = true
+		power.frequentUpdates = 0.3
 
 		power.bg = self.Power:CreateTexture(nil, "BORDER")
 		power.bg:SetAllPoints(power)
@@ -206,6 +206,7 @@ local function Shared(self, unit)
 		name:SetPoint("TOP", health, 0, E.Scale(-2))
 		name:SetFont(font2, C["raidframes"].fontsize, "THINOUTLINE")
 		name:SetShadowOffset(1, -1)
+		name.frequentUpdates = 0.3
 		self:Tag(name, "[Elvui:getnamecolor][Elvui:nameshort]")
 		self.Name = name
 		

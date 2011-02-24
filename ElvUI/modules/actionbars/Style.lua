@@ -6,7 +6,7 @@ local _G = _G
 local media = C["media"]
 local securehandler = CreateFrame("Frame", nil, nil, "SecureHandlerBaseTemplate")
 
-function Style(self, vehicle, totem)
+function Style(self, totem)
 	local name = self:GetName()
 	
 	if name:match("MultiCast") then return end 
@@ -51,11 +51,7 @@ function Style(self, vehicle, totem)
 			self:SetHeight(E.buttonsize)
  
 			local panel = CreateFrame("Frame", name.."Panel", self)
-			if vehicle then
-				panel:CreatePanel("Default", E.buttonsize*1.2, E.buttonsize*1.2, "CENTER", self, "CENTER", 0, 0)
-			else
-				panel:CreatePanel("Default", E.buttonsize, E.buttonsize, "CENTER", self, "CENTER", 0, 0)
-			end
+			panel:CreatePanel("Default", E.buttonsize, E.buttonsize, "CENTER", self, "CENTER", 0, 0)
 			panel:SetTemplate("Default", true)
 			panel:SetFrameStrata(self:GetFrameStrata())
 			panel:SetFrameLevel(self:GetFrameLevel() - 1 or 0)
@@ -251,7 +247,7 @@ do
 	
 	for i=1, 6 do
 		_G["VehicleMenuBarActionButton"..i]:StyleButton(true)
-		Style(_G["VehicleMenuBarActionButton"..i], true)
+		Style(_G["VehicleMenuBarActionButton"..i])
 	end
 end
 

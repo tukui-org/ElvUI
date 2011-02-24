@@ -51,7 +51,7 @@ local function Shared(self, unit)
 	self.Health.value = health.value		
 	
 	health.PostUpdate = E.PostUpdateHealth
-	health.frequentUpdates = true
+	health.frequentUpdates = 0.3
 	
 	if C.unitframes.classcolor ~= true then
 		health.colorClass = false
@@ -81,7 +81,7 @@ local function Shared(self, unit)
 	end
 	name:SetFont(C["media"].uffont, (C["raidframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
 	name:SetShadowOffset(1, -1)
-	
+	name.frequentUpdates = 0.3
 	self:Tag(name, "[Elvui:getnamecolor][Elvui:nameshort]")
 	self.Name = name
 	
