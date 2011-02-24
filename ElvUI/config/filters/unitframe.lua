@@ -157,19 +157,17 @@ E.RaidDebuffs = {
 -- Other debuff
 	SpellName(67479), -- Impale
 
---Baradin Hold
-	SpellName(95173), -- Consuming Darkness
-
 --Blackwing Descent
 	--Magmaw
 	SpellName(91911), -- Constricting Chains
 	SpellName(94679), -- Parasitic Infection
 	SpellName(94617), -- Mangle
+	SpellName(78199), -- Sweltering Armor
 
 	--Omintron Defense System
-	SpellName(79835), --Poison Soaked Shell
 	SpellName(91433), --Lightning Conductor
 	SpellName(91521), --Incineration Security Measure
+	SpellName(80094), --Fixate 
 
 	--Maloriak
 	SpellName(77699), -- Flash Freeze
@@ -220,6 +218,7 @@ E.RaidDebuffs = {
 		SpellName(93122), --Toxic Spores
 		--Rohash <Lord of the East Wind>
 		SpellName(93058), --Slicing Gale
+		
 	--Al'Akir
 	SpellName(93260), -- Ice Storm
 	SpellName(93295), -- Lightning Rod
