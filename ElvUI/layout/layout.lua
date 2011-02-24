@@ -204,7 +204,7 @@ infoleft:SetPoint("BOTTOMRIGHT", chatlbgdummy2, "BOTTOMRIGHT", E.Scale(-17), E.S
 --INFO RIGHT
 local inforight = CreateFrame("Frame", "ElvuiInfoRight", UIParent)
 inforight:SetTemplate("Default", true)
-infoleft:SetFrameLevel(2)
+inforight:SetFrameLevel(2)
 inforight:CreateShadow("Default")
 inforight:SetPoint("TOPLEFT", chatrbgdummy2, "BOTTOMLEFT", E.Scale(17), E.Scale(-4))
 inforight:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", E.Scale(-17), E.Scale(-26))

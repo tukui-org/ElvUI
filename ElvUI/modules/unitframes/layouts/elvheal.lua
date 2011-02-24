@@ -237,7 +237,7 @@ local function Shared(self, unit)
 				portrait:SetFrameLevel(2)
 				
 				--dont ask me why but the playerframe looks completely fucked when i set it how it should be..
-				portrait:SetPoint('BOTTOMLEFT', PFrame, 'BOTTOMLEFT', E.Scale(1), E.Scale(2))		
+				portrait:SetPoint('BOTTOMLEFT', PFrame, 'BOTTOMLEFT', E.Scale(2), E.Scale(2))		
 				portrait:SetPoint('TOPRIGHT', PFrame, 'TOPRIGHT', E.Scale(-2), E.Scale(-2))	
 				table.insert(self.__elements, E.HidePortrait)		
 				self.Portrait = portrait
@@ -715,7 +715,7 @@ local function Shared(self, unit)
 			castbar.CustomTimeText = E.CustomCastTimeText
  
 			castbar:FontString("Text", font1, C["unitframes"].fontsize, "THINOUTLINE")
-			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 1)
+			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 0)
 			castbar.Text:SetTextColor(0.84, 0.75, 0.65)
  
 			castbar.CustomDelayText = E.CustomCastDelayText
@@ -1113,7 +1113,7 @@ local function Shared(self, unit)
 			castbar.CustomTimeText = E.CustomCastTimeText
  
 			castbar:FontString("Text", font1, C["unitframes"].fontsize, "THINOUTLINE")
-			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 1)
+			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 0)
 			castbar.Text:SetTextColor(0.84, 0.75, 0.65)
  
 			castbar.CustomDelayText = E.CustomCastDelayText
@@ -1496,7 +1496,7 @@ local function Shared(self, unit)
 			castbar.CustomTimeText = E.CustomCastTimeText
 
 			castbar:FontString("Text", font1, C["unitframes"].fontsize)
-			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 1)
+			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 0)
 			castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 			
 			castbar.CustomDelayText = E.CustomCastDelayText

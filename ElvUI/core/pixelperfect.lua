@@ -39,10 +39,6 @@ function E.UIScale()
 		E.lowversion = false
 	end
 	
-	if C["general"].resolutionoverride == "Low" then
-		E.lowversion = true
-	end
-	
 	if C["general"].autoscale == true then
 		C["general"].uiscale = min(2, max(.64, 768/string.match(({GetScreenResolutions()})[GetCurrentResolution()], "%d+x(%d+)")))
 	end
