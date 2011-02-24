@@ -529,12 +529,7 @@ E.LoadUFFunctions = function(layout)
 		local unit = button:GetParent():GetParent().unit
 		local header = button:GetParent():GetParent():GetParent():GetName()
 		
-		if header == "ElvuiHealR6R25" or (header == "ElvuiDPSR6R25" and C["raidframes"].griddps == true) then
-			button:EnableMouse(false)
-			button:SetFrameLevel(button:GetParent():GetParent().Power:GetFrameLevel() + 4)
-		end
-		
-		if unit == "focus" or unit == "targettarget" or header == "ElvuiHealR6R25" or header == "ElvuiDPSR6R25" or header == "ElvuiHealParty" then
+		if unit == "focus" or unit == "targettarget" or header == "ElvuiHealParty" then
 			button:FontString(nil, C["media"].font, C["auras"].auratextscale*0.85, "THINOUTLINE")
 		else
 			button:FontString(nil, C["media"].font, C["auras"].auratextscale, "THINOUTLINE")
@@ -588,7 +583,7 @@ E.LoadUFFunctions = function(layout)
 				icon.icon:SetDesaturated(false)
 			end
 		else
-			if (icon.isStealable or (E.myclass == "PRIEST" and dtype == "Magic")) and not UnitIsFriend("player", unit) then
+			if (icon.isStealable or ((E.myclass == "PRIEST" or E.myclass == "SHAMAN") and dtype == "Magic")) and not UnitIsFriend("player", unit) then
 				icon:SetBackdropBorderColor(237/255, 234/255, 142/255)
 			else
 				if C["general"].classcolortheme == true then

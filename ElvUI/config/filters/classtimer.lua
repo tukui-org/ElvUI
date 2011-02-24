@@ -23,7 +23,7 @@ TRINKET_FILTER = {
 	CreateSpellEntry( 71905 ), -- Soul Fragment
 	CreateSpellEntry( 67671 ), -- Fury(Banner of Victory)
 	CreateSpellEntry( 54758 ), -- Hyperspeed Acceleration (Hyperspeed Accelerators)
-	CreateSpellEntry( 55637 ), -- Lightweave
+	CreateSpellEntry( 75170 ), -- Lightweave
 	CreateSpellEntry( 2825, true ), --Heroism
 	CreateSpellEntry( 32182, true ), -- Bloodlust
 	CreateSpellEntry( 90355, true ), -- Hunter Pet Bloodlust
@@ -118,6 +118,7 @@ TRINKET_FILTER = {
 	CreateSpellEntry( 7001 ), -- Lightwell Renew
 	CreateSpellEntry( 91832 ), -- Raw Fury
 	CreateSpellEntry( 91836 ), -- Forged Fury
+	CreateSpellEntry( 74241 ), -- Power Torrent
 	
 	--Turtle Shit
 	CreateSpellEntry( 63877, true ), -- Pain Suppression
@@ -141,7 +142,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 81130 ), -- Scarlet Fever
 			CreateSpellEntry( 50536 ), -- Unholy Blight
 			CreateSpellEntry( 65142 ), -- Ebon Plague
-
+			CreateSpellEntry( 73975 ), -- Necrotic Strike
 		},
 		player = {
 			CreateSpellEntry( 59052 ), -- Freezing Fog
@@ -443,7 +444,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 17364 ), -- Storm Strike
 			CreateSpellEntry( 61295 ), -- Riptide
 			CreateSpellEntry( 51945 ), -- Earthliving
-			CreateSpellEntry( 77657 ), -- Searing Flames
+			CreateSpellEntry( 77661 ), -- Searing Flames
 			CreateSpellEntry( 51514 ), -- Hex
 		},
 		player = {
@@ -538,7 +539,10 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 12328 ), -- Sweeping Stikes
 			CreateSpellEntry( 18499 ), -- Berzerker Rage
 			CreateSpellEntry( 85730 ), -- Deadly Calm
-			CreateSpellEntry( 46924 ), -- Bladestorm			
+			CreateSpellEntry( 46924 ), -- Bladestorm	
+			CreateSpellEntry( 86627 ), -- Incite
+			CreateSpellEntry( 12964 ), -- Battle Trance
+			CreateSpellEntry( 14202 ), --Enrage
 		},
 		procs = {
 			CreateSpellEntry( 65156 ), -- Juggernaut
