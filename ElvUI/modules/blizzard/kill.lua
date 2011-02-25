@@ -19,6 +19,13 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 		end
 	else
 
+		if C["raidframes"].disableblizz == true then 
+			InterfaceOptionsFrameCategoriesButton10:SetScale(0.00001)
+			InterfaceOptionsFrameCategoriesButton10:SetAlpha(0)	
+			CompactRaidFrameContainer:Kill()
+			CompactPartyFrame:Kill()
+		end
+
 		if addon == "Blizzard_AchievementUI" then
 			if C.tooltip.enable then
 				hooksecurefunc("AchievementFrameCategories_DisplayButton", function(button) button.showTooltipFunc = nil end)
@@ -51,13 +58,18 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 			SetCVar("ConversationMode", "inline")
 			InterfaceOptionsSocialPanelWholeChatWindowClickable:Kill()
 			InterfaceOptionsSocialPanelConversationMode:Kill()
+			InterfaceOptionsSocialPanelChatStyle:Kill()
+			InterfaceOptionsSocialPanelChatHoverDelay:Kill()
 		end
 		
 		if C.unitframes.enable then
 			InterfaceOptionsFrameCategoriesButton9:SetScale(0.00001)
 			InterfaceOptionsFrameCategoriesButton9:SetAlpha(0)	
-			InterfaceOptionsFrameCategoriesButton9:SetScale(0.00001)
-			InterfaceOptionsFrameCategoriesButton9:SetAlpha(0)
+			InterfaceOptionsCombatPanelTargetOfTarget:Kill()
+			InterfaceOptionsDisplayPanelShowAggroPercentage:Kill()
+			InterfaceOptionsBuffsPanelDispellableDebuffs:Kill()
+			InterfaceOptionsBuffsPanelShowCastableDebuffs:Kill()
+			InterfaceOptionsBuffsPanelCastableBuffs:Kill()
 		end
 		
 		if C.actionbar.enable then
