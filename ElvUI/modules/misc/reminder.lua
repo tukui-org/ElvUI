@@ -216,13 +216,13 @@ for i=1, #tab do
 	frame:RegisterEvent("UNIT_EXITED_VEHICLE")
 	frame:SetScript("OnEvent", OnEvent)
 	frame:SetScript("OnUpdate", function(self, elapsed)
-		if(self.elapsed and self.elapsed > 0.2) then
-			if not self.icon:GetTexture() then
-				self:Hide()
-			end
-			self.elapsed = 0
-		else
-			self.elapsed = (self.elapsed or 0) + elapsed
+		if not self.icon:GetTexture() then
+			self:Hide()
+		end
+	end)
+	frame:SetScript("OnShow", function(self)
+		if not self.icon:GetTexture() then
+			self:Hide()
 		end	
 	end)
 end
