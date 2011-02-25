@@ -7,7 +7,7 @@ local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Lo
 
 Minimap:ClearAllPoints()
 Minimap:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.Scale(-5), E.Scale(-5))
-Minimap:SetSize(E.Scale(164), E.Scale(164))
+Minimap:SetSize(E.minimapsize - E.Scale(4), E.minimapsize - E.Scale(4))
 
 function E.PostMinimapMove(frame)
 	local point, _, _, _, _ = frame:GetPoint()

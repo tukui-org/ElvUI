@@ -231,11 +231,11 @@ local function OnAuraChange(self, event, arg1, unit)
 	
 end
 
-local bsize = (((ElvuiMinimap:GetWidth()) - (E.Scale(4) * 7)) / 6)
+local bsize = (((E.minimapsize) - (E.Scale(4) * 7)) / 6)
 
 --Create the Main bar
 local raidbuff_reminder = CreateFrame("Frame", "RaidBuffReminder", ElvuiMinimap)
-raidbuff_reminder:CreatePanel("Default", ElvuiMinimap:GetWidth(), bsize + E.Scale(8), "TOPLEFT", ElvuiMinimapStatsLeft, "BOTTOMLEFT", 0, E.Scale(-3))
+raidbuff_reminder:CreatePanel("Default", E.minimapsize, bsize + E.Scale(8), "TOPLEFT", ElvuiMinimapStatsLeft, "BOTTOMLEFT", 0, E.Scale(-3))
 raidbuff_reminder:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 raidbuff_reminder:RegisterEvent("UNIT_INVENTORY_CHANGED")
 raidbuff_reminder:RegisterEvent("UNIT_AURA")

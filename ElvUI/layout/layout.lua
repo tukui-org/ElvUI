@@ -5,6 +5,7 @@ E.buttonsize = E.Scale(C["actionbar"].buttonsize)
 E.buttonspacing = E.Scale(C["actionbar"].buttonspacing)
 E.petbuttonsize = E.Scale(C["actionbar"].petbuttonsize)
 E.buttonspacing = E.Scale(C["actionbar"].buttonspacing)
+E.minimapsize = E.Scale(168)
 
 --BOTTOM DUMMY FRAME DOES NOTHING BUT HOLDS FRAME POSITIONS
 local bottompanel = CreateFrame("Frame", "ElvuiBottomPanel", UIParent)
@@ -14,7 +15,7 @@ bottompanel:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", -E.mult, -E.mult)
 bottompanel:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", E.mult, -E.mult)
 
 local mini = CreateFrame("Frame", "ElvuiMinimap", Minimap)
-mini:CreatePanel("Default", E.Scale(164 + 4), E.Scale(164 + 4), "CENTER", Minimap, "CENTER", -0, 0)
+mini:CreatePanel("Default", E.minimapsize, E.minimapsize, "CENTER", Minimap, "CENTER", -0, 0)
 mini:ClearAllPoints()
 mini:SetPoint("TOPLEFT", E.Scale(-2), E.Scale(2))
 mini:SetPoint("BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
@@ -24,10 +25,10 @@ TukuiMinimap = ElvuiMinimap -- conversion
 -- MINIMAP STAT FRAMES
 if ElvuiMinimap then
 	local minimapstatsleft = CreateFrame("Frame", "ElvuiMinimapStatsLeft", ElvuiMinimap)
-	minimapstatsleft:CreatePanel("Default", (ElvuiMinimap:GetWidth() / 2) - 2, 19, "TOPLEFT", ElvuiMinimap, "BOTTOMLEFT", 0, E.Scale(-3))
+	minimapstatsleft:CreatePanel("Default", (E.minimapsize / 2) - 2, 19, "TOPLEFT", ElvuiMinimap, "BOTTOMLEFT", 0, E.Scale(-3))
 
 	local minimapstatsright = CreateFrame("Frame", "ElvuiMinimapStatsRight", ElvuiMinimap)
-	minimapstatsright:CreatePanel("Default", (ElvuiMinimap:GetWidth() / 2) -2, 19, "TOPRIGHT", ElvuiMinimap, "BOTTOMRIGHT", 0, E.Scale(-3))
+	minimapstatsright:CreatePanel("Default", (E.minimapsize / 2) - 2, 19, "TOPRIGHT", ElvuiMinimap, "BOTTOMRIGHT", 0, E.Scale(-3))
 	ElvuiMinimapStatsLeft:SetTemplate("Default", true)
 	ElvuiMinimapStatsRight:SetTemplate("Default", true)
 	ElvuiMinimapStatsLeft:CreateShadow("Default")

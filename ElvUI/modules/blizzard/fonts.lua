@@ -11,12 +11,6 @@ SetFont = function(obj, font, size, style, r, g, b, sr, sg, sb, sox, soy)
 	elseif r then obj:SetAlpha(r) end
 end
 
-local FixTitleFont = function()
-	for _,butt in pairs(PlayerTitlePickerScrollFrame.buttons) do
-		butt.text:SetFontObject(GameFontHighlightSmallLeft)
-	end
-end
-
 ElvuiFonts:RegisterEvent("ADDON_LOADED")
 ElvuiFonts:SetScript("OnEvent", function(self, event, addon)
 	if addon ~= "ElvUI" then return end
@@ -81,9 +75,6 @@ ElvuiFonts:SetScript("OnEvent", function(self, event, addon)
 	SetFont(PVPArenaTextString,					NORMAL, 22, "THINOUTLINE")
 	SetFont(CombatTextFont,                     COMBAT, 100, "THINOUTLINE") -- number here just increase the font quality.
 
-	hooksecurefunc("PlayerTitleFrame_UpdateTitles", FixTitleFont)
-	FixTitleFont()
-	
 	SetFont = nil
 	self:SetScript("OnEvent", nil)
 	self:UnregisterAllEvents()
