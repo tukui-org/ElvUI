@@ -25,19 +25,11 @@ E.ToggleSlideChatR = function()
 	if E.RightChat ~= true then return end
 	if E.ChatRIn == true then
 		E.SlideOut(ChatRBackground)	
-		if IsAddOnLoaded("KLE") and KLEAlertsTopStackAnchor and C["skin"].hookkleright == true and C["chat"].showbackdrop == true then
-			KLEAlertsTopStackAnchor:ClearAllPoints()
-			KLEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -5)
-		end		
 		E.ChatRIn = false
 		E.ChatRightShown = false
 		ElvuiInfoRightRButton.text:SetTextColor(unpack(C["media"].valuecolor))
 	else
 		E.SlideIn(ChatRBackground)
-		if IsAddOnLoaded("KLE") and KLEAlertsTopStackAnchor and C["skin"].hookkleright == true and C["chat"].showbackdrop == true then
-			KLEAlertsTopStackAnchor:ClearAllPoints()
-			KLEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 18)
-		end		
 		E.ChatRIn = true
 		E.ChatRightShown = true
 		ElvuiInfoRightRButton.text:SetTextColor(1,1,1,1)

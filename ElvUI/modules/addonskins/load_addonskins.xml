@@ -1,7 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
-	<Script file='LoadSkins.lua' />
-	<Script file='skins\KLE.lua' />
-	<Script file='skins\Omen.lua' />
-	<Script file='skins\Recount.lua' />
-	<Script file='skins\Skada.lua' />
+	<Script file='kle.lua' />
+	<Script file='omen.lua' />
+	<Script file='recount.lua' />
+	<Script file='skada.lua' />
 </Ui>
