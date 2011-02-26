@@ -58,7 +58,9 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 			SetCVar("ConversationMode", "inline")
 			InterfaceOptionsSocialPanelWholeChatWindowClickable:Kill()
 			InterfaceOptionsSocialPanelConversationMode:Kill()
-			InterfaceOptionsSocialPanelChatStyle:Kill()
+			InterfaceOptionsSocialPanelChatStyleButton:EnableMouse(false)
+			InterfaceOptionsSocialPanelChatStyle:EnableMouse(false)
+			InterfaceOptionsSocialPanelChatStyle:SetAlpha(0)
 			InterfaceOptionsSocialPanelChatHoverDelay:Kill()
 		end
 		

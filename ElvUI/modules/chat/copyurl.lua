@@ -1,4 +1,3 @@
-
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if C.chat.enable ~= true then return end
