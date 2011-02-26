@@ -6,7 +6,7 @@ local Recount = _G.Recount
 
 local function SkinFrame(frame)
 	frame.bgMain = CreateFrame("Frame", nil, frame)
-	frame.bgMain:SetTemplate("Default")
+	frame.bgMain:SetTemplate("Transparent")
 	frame.bgMain:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT")
 	frame.bgMain:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT")
 	frame.bgMain:SetPoint("TOP", frame, "TOP", 0, -7)
