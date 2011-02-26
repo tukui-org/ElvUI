@@ -2,6 +2,7 @@
 	<Script file="arenatrack.lua"/>
 	<Script file="autodez.lua"/>
 	<Script file="autorelease.lua"/>
+	<Script file="announce.lua"/>
 	<Script file="error.lua"/>
 	<Script file="invite.lua"/>
 	<Script file="merchant.lua"/>

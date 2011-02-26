@@ -200,7 +200,7 @@ ElvuiL.option_others_autorepair = "Auto Repair items"
 ElvuiL.option_others_autoinvite = "Enable Auto-Invite (Friends and Guildmates)"
 ElvuiL.option_others_enablemap = "Enable Map"
 ElvuiL.option_others_errorhide = "Hide spamming error at the middle of your screen"
-ElvuiL.option_others_spincam = "Spin camera while AFK"
+ElvuiL.option_others_announceinterrupt = "Announce your interrupts in party chat"
 ElvuiL.option_others_bagenable = "Enable all in one bag"
 
 -- reminder

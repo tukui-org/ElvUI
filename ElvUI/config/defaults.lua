@@ -257,6 +257,7 @@ C["others"] = {
 	["autoacceptinv"] = true,                 -- auto-accept invite from guildmate and friends.
 	["enablemap"] = true,                     -- reskin the map to fit Elvui
 	["enablebag"] = true,                     -- enable an all in one bag mod that fit Elvui perfectly
+	["announceinterrupt"] = true,			-- announce in party/raid when you interrupt
 }
 
 C["debug"] = {--don't recommend turning this on
