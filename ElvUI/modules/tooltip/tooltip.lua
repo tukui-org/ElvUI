@@ -48,8 +48,8 @@ local function CheckAddOnShown()
 		else
 			return false
 		end
-	elseif  C["skin"].embedright ==  "Skada" and IsAddOnLoaded("Skada") and SkadaBarWindowSkada then
-		if SkadaBarWindowSkada:IsShown() then
+	elseif  C["skin"].embedright ==  "Skada" and IsAddOnLoaded("Skada") and Skada:GetWindows()[1] then
+		if Skada:GetWindows()[1].bargroup:IsShown() then
 			return true
 		else
 			return false
