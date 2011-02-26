@@ -21,7 +21,7 @@ local movers = {
 
 local function SkinKLEBar(bar)
 	-- The main bar
-	bar:SetTemplate("Transparent")
+	bar:SetTemplate("Default")
 	bar.bg:SetTexture(nil)
 	bar.border:Kill()
 	bar.statusbar:SetStatusBarTexture(C["media"].normTex)
@@ -30,7 +30,7 @@ local function SkinKLEBar(bar)
 	bar.statusbar:SetPoint("BOTTOMRIGHT",-borderWidth, borderWidth)
 	
 	-- Right Icon
-	bar.righticon:SetTemplate("Transparent")
+	bar.righticon:SetTemplate("Default")
 	bar.righticon.border:Kill()
 	bar.righticon.t:SetTexCoord(unpack(buttonZoom))
 	bar.righticon.t:ClearAllPoints()
@@ -39,7 +39,7 @@ local function SkinKLEBar(bar)
 	bar.righticon.t:SetDrawLayer("ARTWORK")
 	
 	-- Left Icon
-	bar.lefticon:SetTemplate("Transparent")
+	bar.lefticon:SetTemplate("Default")
 	bar.lefticon.border:Kill()
 	bar.lefticon.t:SetTexCoord(unpack(buttonZoom))
 	bar.lefticon.t:ClearAllPoints()
@@ -61,12 +61,12 @@ KLE.NotifyBackgroundColorChanged = E.dummy
 KLE.CreateWindow_ = KLE.CreateWindow
 KLE.CreateWindow = function(self, name, width, height)
 	local win = self:CreateWindow_(name, width, height)
-	win:SetTemplate("Transparent")
+	win:SetTemplate("Default")
 	return win
 end
 
 -- Skin the pane
-KLE.Pane:SetTemplate("Transparent")
+KLE.Pane:SetTemplate("Default")
 
 -- Hook Health frames (Skin & spacing)
 KLE.LayoutHealthWatchers_ = KLE.LayoutHealthWatchers
@@ -75,7 +75,7 @@ KLE.LayoutHealthWatchers = function(self)
 	self:LayoutHealthWatchers_()
 	for i,hw in ipairs(self.HW) do
 		if hw:IsShown() then
-			hw:SetTemplate("Transparent")
+			hw:SetTemplate("Default")
 			hw.border:Kill()
 			hw.healthbar:SetStatusBarTexture(C["media"].normTex)
 		end
