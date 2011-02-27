@@ -175,31 +175,31 @@ for _, window in ipairs(Skada:GetWindows()) do
 	tinsert(windows, window)
 end
 
-Skada.CreateWindow_ = Skada.CreateWindow
-function Skada:CreateWindow(name, db)
-	Skada:CreateWindow_(name, db)
-	
-	windows = {}
-	for _, window in ipairs(Skada:GetWindows()) do
-		tinsert(windows, window)
-	end	
-	
-	EmbedSkada()
-end
-
-Skada.DeleteWindow_ = Skada.DeleteWindow
-function Skada:DeleteWindow(name)
-	Skada:DeleteWindow_(name)
-	
-	windows = {}
-	for _, window in ipairs(Skada:GetWindows()) do
-		tinsert(windows, window)
-	end	
-	
-	EmbedSkada()
-end
-
 if C["skin"].embedright == "Skada" then
+	Skada.CreateWindow_ = Skada.CreateWindow
+	function Skada:CreateWindow(name, db)
+		Skada:CreateWindow_(name, db)
+		
+		windows = {}
+		for _, window in ipairs(Skada:GetWindows()) do
+			tinsert(windows, window)
+		end	
+		
+		EmbedSkada()
+	end
+
+	Skada.DeleteWindow_ = Skada.DeleteWindow
+	function Skada:DeleteWindow(name)
+		Skada:DeleteWindow_(name)
+		
+		windows = {}
+		for _, window in ipairs(Skada:GetWindows()) do
+			tinsert(windows, window)
+		end	
+		
+		EmbedSkada()
+	end
+
 	local Skada_Skin = CreateFrame("Frame")
 	Skada_Skin:RegisterEvent("PLAYER_ENTERING_WORLD")
 	Skada_Skin:SetScript("OnEvent", function(self)
