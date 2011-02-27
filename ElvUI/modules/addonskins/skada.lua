@@ -101,71 +101,30 @@ barmod.ApplySettings = function(self, win)
 	win.bargroup:SortBars()
 end
 
+local function EmbedWindow(window, width, height, max, point, relativeFrame, relativePoint, ofsx, ofsy)
+	window.db.barwidth = width
+	window.db.barheight = height
+	window.db.barmax = (floor(max / window.db.barheight) - (window.db.enabletitle and 1 or 0))
+	window.db.background.height = 1
+	window.db.spark = false
+	window.db.barslocked = true
+	window.bargroup:ClearAllPoints()
+	window.bargroup:SetPoint(point, relativeFrame, relativePoint, ofsx, ofsy)
+	
+	barmod.ApplySettings(barmod, window)
+end
+
 local windows = {}
 function EmbedSkada()
 	if #windows == 1 then
-		windows[1].db.barwidth = (C["chat"].chatwidth - 4)
-		windows[1].db.barheight = (C["chat"].chatheight - (barSpacing * 5)) / 8
-		windows[1].db.barmax = (math.floor(C["chat"].chatheight / windows[1].db.barheight) - 1)
-		windows[1].db.background.height = 1
-		windows[1].db.spark = false
-		windows[1].db.barslocked = true
-		windows[1].bargroup:ClearAllPoints()
-		windows[1].bargroup:SetPoint("TOPRIGHT", ChatRBackground2, "TOPRIGHT", -2, -2)
-		
-		barmod.ApplySettings(barmod, windows[1])
+		EmbedWindow(windows[1], C["chat"].chatwidth - 4, (C["chat"].chatheight - (barSpacing * 5)) / 8, C["chat"].chatheight, "TOPRIGHT", ChatRBackground2, "TOPRIGHT", -2, -2)
 	elseif #windows == 2 then
-		windows[1].db.barwidth = ((C["chat"].chatwidth - 4) / 2) - (borderWidth + E.mult)
-		windows[1].db.barheight = (C["chat"].chatheight - (barSpacing * 5)) / 8
-		windows[1].db.barmax = (math.floor(C["chat"].chatheight / windows[1].db.barheight) - 1)
-		windows[1].db.background.height = 1
-		windows[1].db.spark = false
-		windows[1].db.barslocked = true
-		windows[1].bargroup:ClearAllPoints()
-		windows[1].bargroup:SetPoint("TOPRIGHT", ChatRBackground2, "TOPRIGHT", -2, -2)
-		
-		windows[2].db.barwidth = ((C["chat"].chatwidth - 4) / 2) - (borderWidth + E.mult)
-		windows[2].db.barheight = (C["chat"].chatheight - (barSpacing * 5)) / 8
-		windows[2].db.barmax = (math.floor(C["chat"].chatheight / windows[2].db.barheight) - 1)
-		windows[2].db.background.height = 1
-		windows[2].db.spark = false
-		windows[2].db.barslocked = true
-		windows[2].bargroup:ClearAllPoints()
-		windows[2].bargroup:SetPoint("TOPLEFT", ChatRBackground2, "TOPLEFT", 2, -2)		
-		
-		barmod.ApplySettings(barmod, windows[1])
-		barmod.ApplySettings(barmod, windows[2])	
+		EmbedWindow(windows[1], ((C["chat"].chatwidth - 4) / 2) - (borderWidth + E.mult), (C["chat"].chatheight - (barSpacing * 5)) / 8, C["chat"].chatheight,  "TOPRIGHT", ChatRBackground2, "TOPRIGHT", -2, -2)
+		EmbedWindow(windows[2], ((C["chat"].chatwidth - 4) / 2) - (borderWidth + E.mult), (C["chat"].chatheight - (barSpacing * 5)) / 8, C["chat"].chatheight,  "TOPLEFT", ChatRBackground2, "TOPLEFT", 2, -2)
 	elseif #windows > 2 then
-		windows[1].db.barwidth = ((C["chat"].chatwidth - 4) / 2) - (borderWidth + E.mult)
-		windows[1].db.barheight = (C["chat"].chatheight - (barSpacing * 5)) / 8
-		windows[1].db.barmax = (math.floor(C["chat"].chatheight / windows[1].db.barheight) - 1)
-		windows[1].db.background.height = 1
-		windows[1].db.spark = false
-		windows[1].db.barslocked = true
-		windows[1].bargroup:ClearAllPoints()
-		windows[1].bargroup:SetPoint("TOPRIGHT", ChatRBackground2, "TOPRIGHT", -2, -2)
-		
-		windows[2].db.barwidth = ((C["chat"].chatwidth - 4) / 2) - (borderWidth + E.mult)
-		windows[2].db.barheight = (C["chat"].chatheight - (barSpacing * 8)) / 8
-		windows[2].db.barmax = (math.floor((C["chat"].chatheight / 2) / windows[2].db.barheight) - 1)
-		windows[2].db.background.height = 1
-		windows[2].db.spark = false
-		windows[2].db.barslocked = true
-		windows[2].bargroup:ClearAllPoints()
-		windows[2].bargroup:SetPoint("TOPLEFT", ChatRBackground2, "TOPLEFT", 2, -2)		
-		
-		windows[3].db.barwidth = ((C["chat"].chatwidth - 4) / 2) - (borderWidth + E.mult)
-		windows[3].db.barheight = (C["chat"].chatheight - (barSpacing * 8)) / 8
-		windows[3].db.barmax = (math.floor((C["chat"].chatheight / 2) / windows[3].db.barheight) - 1)
-		windows[3].db.background.height = 1
-		windows[3].db.spark = false
-		windows[3].db.barslocked = true
-		windows[3].bargroup:ClearAllPoints()
-		windows[3].bargroup:SetPoint("TOPLEFT", windows[2].bargroup.bgframe, "BOTTOMLEFT", 2, -2)				
-		
-		barmod.ApplySettings(barmod, windows[1])
-		barmod.ApplySettings(barmod, windows[2])
-		barmod.ApplySettings(barmod, windows[3])		
+		EmbedWindow(windows[1], ((C["chat"].chatwidth - 4) / 2) - (borderWidth + E.mult), (C["chat"].chatheight - (barSpacing * 5)) / 8, C["chat"].chatheight,  "TOPRIGHT", ChatRBackground2, "TOPRIGHT", -2, -2)
+		EmbedWindow(windows[2], ((C["chat"].chatwidth - 4) / 2) - (borderWidth + E.mult), (C["chat"].chatheight - (barSpacing * 8)) / 8, C["chat"].chatheight / 2,  "TOPLEFT", ChatRBackground2, "TOPLEFT", 2, -2)
+		EmbedWindow(windows[3], windows[2].db.barwidth, (C["chat"].chatheight - (barSpacing * 8)) / 8, C["chat"].chatheight / 2,  "TOPLEFT", windows[2].bargroup.bgframe, "BOTTOMLEFT", 2, -2)
 	end
 end
 

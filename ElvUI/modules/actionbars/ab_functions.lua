@@ -228,5 +228,7 @@ function E.PositionAllBars()
 	E.PositionBar4()
 	E.PositionBar5()
 	E.PositionBarPet(ElvuiPetBar)
-	E.PositionWatchFrame()
+	if E.PositionWatchFrame then
+		E.PositionWatchFrame()
+	end
 end
