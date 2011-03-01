@@ -630,6 +630,12 @@ local function Shared(self, unit)
 		--Adjust Threat Glow
 		backdrop.shadow:Point("BOTTOMLEFT", power.backdrop, "BOTTOMLEFT", -3, -3)
 		self.Power = power
+
+		--Name
+		self:FontString("Name", font1, C["unitframes"].fontsize, "THINOUTLINE")
+		self.Name:SetJustifyH("LEFT")
+		self.Name.frequentUpdates = 0.2
+		self:Tag(self.Name, '[Elvui:getnamecolor][Elvui:namelong] [Elvui:diffcolor][level] [shortclassification]')
 		
 		--Portrait
 		if C["unitframes"].charportrait == true then
@@ -954,13 +960,7 @@ local function Shared(self, unit)
 		--Adjust Threat Glow
 		backdrop.shadow:Point("BOTTOMLEFT", power.backdrop, "BOTTOMLEFT", -3, -3)
 		self.Power = power
-		
-		--Name
-		self:FontString("Name", font1, C["unitframes"].fontsize, "THINOUTLINE")
-		self.Name:SetJustifyH("LEFT")
-		self.Name.frequentUpdates = 0.2
-		self:Tag(self.Name, '[Elvui:getnamecolor][Elvui:namelong] [Elvui:diffcolor][level] [shortclassification]')
-		
+				
 		--Name & Trinkets
 		if (unit and unit:find('arena%d')) then
 			health:Point("TOPRIGHT", self, "TOPRIGHT", -(TRINKET_WIDTH + 2), -2)
