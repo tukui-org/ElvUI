@@ -315,13 +315,13 @@ local function Shared(self, unit)
 			experience.Rested.SetFrameLevel = E.dummy --oUF_Experience thinks its a good idea to set frame level to 1
 			experience.Rested:SetAllPoints(power)
 			
-			local resting = experience:CreateTexture(nil, "OVERLAY")
+			local resting = self:CreateTexture(nil, "OVERLAY")
 			resting:Size(22)
 			resting:Point("CENTER", health, "TOPLEFT", -3, 6)
 			resting:SetTexture([=[Interface\CharacterFrame\UI-StateIcon]=])
 			resting:SetTexCoord(0, 0.5, 0, 0.421875)
 			resting:Hide()
-			self.Resting = Resting
+			self.Resting = resting
 			
 			experience.backdrop = CreateFrame("Frame", nil, experience)
 			experience.backdrop:SetTemplate("Default")
