@@ -543,7 +543,7 @@ local function Shared(self, unit)
 				eclipseBar.SolarBar = solarBar
 
 				eclipseBar:FontString("Text", font1, 10, "THINOUTLINE")
-				eclipseBar.Text:SetPoint("CENTER", eclipseBar)
+				eclipseBar.Text:SetPoint("CENTER", lunarBar:GetStatusBarTexture(), "RIGHT")
 				eclipseBar.Text:SetParent(lunarBar)
 				
 				eclipseBar.FrameBackdrop = CreateFrame("Frame", nil, eclipseBar)
