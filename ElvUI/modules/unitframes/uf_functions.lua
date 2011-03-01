@@ -167,7 +167,7 @@ E.LoadUFFunctions = function(layout)
 					return false
 				end		
 			end
-		elseif unit == "target" or (unit and unit:find("boss%d") and dtype) then --Target/Boss Only
+		elseif unit == "target" or (unit and unit:find("boss%d")) then --Target/Boss Only
 			if C["auras"].playerdebuffsonly == true then
 				-- Show all debuffs on friendly targets
 				if UnitIsFriend("player", "target") then return true end

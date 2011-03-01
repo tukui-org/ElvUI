@@ -820,8 +820,8 @@ local function Shared(self, unit)
 		combo.FrameBackdrop:SetFrameLevel(combo:GetFrameLevel() - 1)
 
 		--Reposition the Aggro glow		
-		backdrop.shadow:Point("TOPLEFT", combo.FrameBackdrop, "TOPLEFT", -3, 3)
 		combo:HookScript("OnShow", function()
+			if ElementsPos["DPSComboBar"]["moved"] == true and E.CreatedMoveEleFrames["DPSComboBar"] then return end
 			backdrop:Point("TOPRIGHT", self, "TOPRIGHT", 0, -(POWERBAR_HEIGHT+1))
 			backdrop.shadow:Point("TOPLEFT", combo.FrameBackdrop, "TOPLEFT", -3, 3)
 			health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+POWERBAR_HEIGHT+1))

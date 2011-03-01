@@ -4,7 +4,7 @@
 ## Title: |cff1784d1ElvUI|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvuiData, ElvuiArena
-## SavedVariablesPerCharacter: ElvuiUFpos, DPSElementsCharPos, HealElementsCharPos
+## SavedVariablesPerCharacter: ElvuiUFpos, ElementsPos
 ## OptionalDeps: ElvUI_ConfigUI, Recount, Omen, Skada, DXE, Blizzard_CombatText, OptionHouse, ACP, Who Framed Watcher Wabbit, Aurora, !ClassColors, HealBot, Fux, OmniCC, ncCooldown, KLE, KLE_AutoRespond
 ## X-oUF: ElvUF
 
