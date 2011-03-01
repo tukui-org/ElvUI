@@ -819,9 +819,17 @@ local function Shared(self, unit)
 		combo.FrameBackdrop:Point("BOTTOMRIGHT", 2, -2)
 		combo.FrameBackdrop:SetFrameLevel(combo:GetFrameLevel() - 1)
 
-		--Reposition the Aggro glow		
+		--Reposition the Aggro glow	
+		
+		--[[This is a little differant than everything else because we have to take into account 
+		the combobar is movable with the /moveele command, this should make it work correctly only 
+		after a reloadui.]]
 		combo:HookScript("OnShow", function()
+			if DPSComboBar then DPSComboBar:SetFrameLevel(DPSComboBar:GetFrameLevel() + 1) end
+			
 			if ElementsPos["DPSComboBar"]["moved"] == true and E.CreatedMoveEleFrames["DPSComboBar"] then return end
+			combo:ClearAllPoints()
+			combo:Point("BOTTOMLEFT", backdrop, "TOPLEFT", BORDER, BORDER+1)
 			backdrop:Point("TOPRIGHT", self, "TOPRIGHT", 0, -(POWERBAR_HEIGHT+1))
 			backdrop.shadow:Point("TOPLEFT", combo.FrameBackdrop, "TOPLEFT", -3, 3)
 			health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+POWERBAR_HEIGHT+1))
