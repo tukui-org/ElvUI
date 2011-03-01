@@ -107,7 +107,6 @@ function E.LoadDPSMoveElements(layout)
 		CreateFrameOverlay(ElvDPS_target.Debuffs, "DPSTargetDebuffs")
 		CreateFrameOverlay(ElvDPS_focus.Debuffs, "DPSFocusDebuffs")
 		CreateFrameOverlay(ElvDPS_targettarget.Debuffs, "DPSTargetTargetDebuffs")
-		CreateFrameOverlay(ElvDPS_player.Swing, "SwingBar")
 	elseif layout == "ElvHeal" then
 		CreateFrameOverlay(ElvHeal_player.Castbar, "HealPlayerCastBar")
 		CreateFrameOverlay(ElvHeal_target.Castbar, "HealTargetCastBar")

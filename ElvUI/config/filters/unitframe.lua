@@ -154,6 +154,9 @@ E.DebuffBlacklist = {
 
 --RAID DEBUFFS
 E.RaidDebuffs = {
+	--Test
+	--SpellName(25771), --Forbearance
+	
 -- Other debuff
 	SpellName(67479), -- Impale
 

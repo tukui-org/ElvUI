@@ -44,7 +44,6 @@ do
 		C["unitframes"]["showfocustarget"] = nil           -- show focus's target
 		C["unitframes"]["showtotalhpmp"] = nil             -- change the display of info text on player and target with XXXX/Total.
 		C["unitframes"]["showsmooth"] = nil                 -- enable smooth bar
-		C["unitframes"]["showthreat"] = nil                 -- enable the threat bar anchored to info left panel.
 		C["unitframes"]["charportrait"] = nil              -- enable character portrait
 		C["unitframes"]["combatfeedback"] = nil             -- enable combattext on player and target.
 		C["unitframes"]["playeraggro"] = nil                -- color player border to red if you have aggro on current target.

@@ -136,7 +136,7 @@
 	ElvuiL.option_unitframes_enemypower = "플레이어창에만 파워 바를 표시"
 	ElvuiL.option_unitframes_raidaggro = "위협수준이 높은 공격대원을 강조"
 	ElvuiL.option_unitframes_symbol = "전술 목표 아이콘을 표시"
-	ElvuiL.option_unitframes_threatbar = "위협수준 바를 사용"
+	ElvuiL.option_others_threatbar = "위협수준 바를 사용"
 	ElvuiL.option_unitframes_focus = "주시대상의 대상을 표시"
 	ElvuiL.option_unitframes_manalow = "마나가 낮으면 경고"
 	ElvuiL.option_unitframes_classcolor = "직업색상 테마를 사용"

@@ -138,7 +138,7 @@
 	ElvuiL.option_unitframes_enemypower = "Enable Power display on player only"
 	ElvuiL.option_unitframes_raidaggro = "开启仇恨显示"
 	ElvuiL.option_unitframes_symbol = "显示队伍/团队标计"
-	ElvuiL.option_unitframes_threatbar = "开启仇恨条"
+	ElvuiL.option_others_threatbar = "开启仇恨条"
 	ElvuiL.option_unitframes_focus = "开启专注目标"
 	ElvuiL.option_unitframes_manalow = "法力过低显示"
 	ElvuiL.option_unitframes_classcolor = "依照职业上色单位窗口"

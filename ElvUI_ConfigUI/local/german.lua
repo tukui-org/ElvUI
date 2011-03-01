@@ -139,7 +139,7 @@
 	ElvuiL.option_unitframes_enemypower = "Aktiviere Kraftanzeige nur beim Spieler"
 	ElvuiL.option_unitframes_raidaggro = "Aktiviere Bedrohungsanzeige auf Raidframes"
 	ElvuiL.option_unitframes_symbol = "Zeige Symbole auf Gruppen und Raidframes"
-	ElvuiL.option_unitframes_threatbar = "Aktiviere Bedrohungsleiste"
+	ElvuiL.option_others_threatbar = "Aktiviere Bedrohungsleiste"
 	ElvuiL.option_unitframes_focus = "Aktiviere Fokus Ziel"
 	ElvuiL.option_unitframes_manalow = "Wenig Mana Indikator"
 	ElvuiL.option_unitframes_classcolor = "Farbe der Einheitenfenster nach Klassenfarbe"

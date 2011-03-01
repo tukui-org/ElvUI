@@ -77,6 +77,7 @@ local function Update(self, event, owner)
 	end
 
 	if(experience.Rested) then
+		
 		local rested = GetXPExhaustion()
 		if(unit == 'player' and rested and rested > 0) then
 			experience.Rested:SetMinMaxValues(0, max)

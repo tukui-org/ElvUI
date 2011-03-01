@@ -295,14 +295,9 @@ do
 
 	function frame:VARIABLES_LOADED()
 		-- I honestly don't trust the load order of SVs.
-		if C["unitframes"].positionbychar == true then
-			_DB = ElvuiUFpos or {}
-			ElvuiUFpos = _DB
-		else
-			if (ElvuiData == nil) then ElvuiData = {} end
-			_DB = ElvuiData.ufpos or {}
-			ElvuiData.ufpos = _DB
-		end
+		_DB = ElvuiUFpos or {}
+		ElvuiUFpos = _DB
+
 		-- Got to catch them all!
 		for _, obj in next, oUF.objects do
 			restorePosition(obj)
@@ -400,11 +395,7 @@ end
 
 -- reset data
 function E.ResetUF()
-	if C["unitframes"].positionbychar == true then
-		ElvuiUFpos = {}
-	else
-		ElvuiData.ufpos = {}
-	end
+	ElvuiUFpos = {}
 end
 
 function E.MoveUF()

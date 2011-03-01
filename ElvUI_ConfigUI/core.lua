@@ -50,7 +50,6 @@ local function Local(o)
 	if o == "ElvuiConfigUIgeneralmultisampleprotect" then o = ElvuiL.option_general_multisample end
 	if o == "ElvuiConfigUIgeneraluiscale" then o = ElvuiL.option_general_customuiscale end
 	if o == "ElvuiConfigUIgeneralclasscolortheme" then o = ElvuiL.option_general_classtheme end
-	if o == "ElvuiConfigUIgeneralautocustomlagtolerance" then o = ElvuiL.option_general_autocustomlagtolerance end
 	if o == "ElvuiConfigUIgeneralfontscale" then o = ElvuiL.option_general_fontscale end 
 	if o == "ElvuiConfigUIgenerallayoutoverride" then o = ElvuiL.option_general_layoutoverride end
 	
@@ -155,7 +154,7 @@ local function Local(o)
 	if o == "ElvuiConfigUIcastbarunitcastbar" then o = ElvuiL.option_castbar_castbar end
 	if o == "ElvuiConfigUIcastbarcblatency" then o = ElvuiL.option_castbar_latency end
 	if o == "ElvuiConfigUIcastbarcbicons" then o = ElvuiL.option_castbar_icon end
-	if o == "ElvuiConfigUIcastbarcastermode" then o = ElvuiL.option_castbar_castermode end
+	if o == "ElvuiConfigUIcastbarwidth" then o = ElvuiL.option_castbar_width end
 	if o == "ElvuiConfigUIcastbarclasscolor" then o = ElvuiL.option_castbar_classcolor end
 	
 	--raidframes
@@ -197,7 +196,6 @@ local function Local(o)
 	if o == "ElvuiConfigUIunitframestargetpowerplayeronly" then o = ElvuiL.option_unitframes_enemypower end
 	if o == "ElvuiConfigUIunitframesaggro" then o = ElvuiL.option_unitframes_raidaggro end
 	if o == "ElvuiConfigUIunitframesshowsymbols" then o = ElvuiL.option_unitframes_symbol end
-	if o == "ElvuiConfigUIunitframesshowthreat" then o = ElvuiL.option_unitframes_threatbar end
 	if o == "ElvuiConfigUIunitframesshowfocustarget" then o = ElvuiL.option_unitframes_focus end
 	if o == "ElvuiConfigUIunitframeslowThreshold" then o = ElvuiL.option_unitframes_manalow end
 	if o == "ElvuiConfigUIunitframesclasscolor" then o = ElvuiL.option_unitframes_classcolor end
@@ -257,6 +255,7 @@ local function Local(o)
 	if o == "ElvuiConfigUIotherstotembardirection" then o = ElvuiL.option_others_totembardirection end
 	if o == "ElvuiConfigUIothersportals" then o = ElvuiL.option_others_portals end
 	if o == "ElvuiConfigUIothersannounceinterrupt" then o = ElvuiL.option_others_announceinterrupt end
+	if o == "ElvuiConfigUIothersshowthreat" then o = ElvuiL.option_others_threatbar end
 	
 	-- reminder
 	if o == "ElvuiConfigUIbuffreminder" then o = ElvuiL.option_reminder end

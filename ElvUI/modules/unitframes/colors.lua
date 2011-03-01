@@ -59,4 +59,9 @@ E.oUF_colors = setmetatable({
 		["WARLOCK"]     = E.colors.class.WARLOCK,
 		["WARRIOR"]     = E.colors.class.WARRIOR,
 	}, {__index = oUF.colors.class}),
+	smooth = setmetatable({
+		1, 0, 0,
+		1, 1, 0,
+		unpack(C["unitframes"].healthcolor)
+	}, {__index = oUF.colors.smooth}),
 }, {__index = oUF.colors})

@@ -136,7 +136,7 @@ if GetLocale() == "frFR" then
 	ElvuiL.option_unitframes_enemypower = "Enable Power display on player only" --"Enable Power display on enemy only"
 	ElvuiL.option_unitframes_raidaggro = "Activer l'affichage de l'aggro" --"Enable aggro display"
 	ElvuiL.option_unitframes_symbol = "Montrer les symboles sur le groupe/raid" --"Show symbols on party/raid"
-	ElvuiL.option_unitframes_threatbar = "Activer la barre de menace" --"Enable threat bar"
+	ElvuiL.option_others_threatbar = "Activer la barre de menace" --"Enable threat bar"
 	ElvuiL.option_unitframes_focus = "Activer la cible du focus" --"Enable Focus target"
 	ElvuiL.option_unitframes_manalow = "Avertissement mana faible" --"Low mana indicator"
 	ElvuiL.option_unitframes_classcolor = "Cadres de couleur de classe" --"Color unitframes by class"

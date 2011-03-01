@@ -140,7 +140,7 @@
 	ElvuiL.option_unitframes_enemypower = "Enable Power display on player only"
 	ElvuiL.option_unitframes_raidaggro = "Включить отображение аггро"
 	ElvuiL.option_unitframes_symbol = "Отображать метки на рейде/группе"
-	ElvuiL.option_unitframes_threatbar = "Включить панель угрозы"
+	ElvuiL.option_others_threatbar = "Включить панель угрозы"
 	ElvuiL.option_unitframes_focus = "Включить цель фокуса"
 	ElvuiL.option_unitframes_manalow = "Индикатор малого запаса маны"
 	ElvuiL.option_unitframes_classcolor = "Окрасить рамки по классу"

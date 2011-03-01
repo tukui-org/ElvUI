@@ -8,6 +8,84 @@ E.LoadUFFunctions = function(layout)
 	local oUF = ElvUF or oUF
 	assert(oUF, "ElvUI was unable to locate oUF.")
 
+	function E.ContructHealthBar(self, bg, text)
+		local health = CreateFrame('StatusBar', nil, self)
+		health:SetStatusBarTexture(C["media"].normTex)
+		health:SetFrameStrata("LOW")
+		health.frequentUpdates = 0.2
+		
+		if C["unitframes"].showsmooth == true then
+			health.Smooth = true
+		end	
+		
+		if bg then
+			health.bg = health:CreateTexture(nil, 'BORDER')
+			health.bg:SetAllPoints()
+			health.bg:SetTexture(C["media"].blank)
+			health.bg.multiplier = 0.3
+		end
+		
+		if text then
+			health:FontString("value", C["media"].uffont, C["unitframes"].fontsize, "THINOUTLINE")
+			health.value:SetParent(self)
+			health.PostUpdate = E.PostUpdateHealth
+		end
+		
+		if C["unitframes"].classcolor ~= true then
+			health.colorTapping = true
+			
+			if C["unitframes"].healthcolorbyvalue == true then
+				health.colorSmooth = true
+			else
+				local r, g, b = unpack(C["unitframes"].healthcolor)
+				health:SetStatusBarColor(r, g, b)
+				health.bg:SetVertexColor(r * health.bg.multiplier, g * health.bg.multiplier, b * health.bg.multiplier)
+			end
+		else
+			health.colorTapping = true	
+			health.colorClass = true
+			health.colorReaction = true
+		end
+		health.colorDisconnected = true
+		
+		return health
+	end
+
+	function E.ConstructPowerBar(self, bg, text)
+		local power = CreateFrame('StatusBar', nil, self)
+		power:SetStatusBarTexture(C["media"].normTex)
+		power.frequentUpdates = 0.2
+
+		if C["unitframes"].showsmooth == true then
+			power.Smooth = true
+		end	
+		
+		if bg then
+			power.bg = power:CreateTexture(nil, 'BORDER')
+			power.bg:SetAllPoints()
+			power.bg:SetTexture(C["media"].blank)
+			power.bg.multiplier = 0.3
+		end
+		
+		if text then
+			power:FontString("value", C["media"].uffont, C["unitframes"].fontsize, "THINOUTLINE")
+			power.value:SetParent(self)
+			power.PostUpdate = E.PostUpdatePower
+		end
+		
+		power.colorDisconnected = true
+		power.colorPower = true
+		power.colorTapping = false
+		
+		power.backdrop = CreateFrame('Frame', nil, power)
+		power.backdrop:SetTemplate("Default")
+		power.backdrop:Point("TOPRIGHT", power, "TOPRIGHT", 2, 2)
+		power.backdrop:Point("BOTTOMLEFT", power, "BOTTOMLEFT", -2, -2)
+		power.backdrop:SetFrameLevel(power:GetFrameLevel() - 1)
+		
+		return power
+	end	
+	
 	function E.SpawnMenu(self)
 		local unit = self.unit:gsub("(.)", string.upper, 1)
 		if self.unit == "targettarget" then return end
@@ -89,7 +167,7 @@ E.LoadUFFunctions = function(layout)
 					return false
 				end		
 			end
-		elseif unit == "target" then --Target Only
+		elseif unit == "target" or (unit and unit:find("boss%d") and dtype) then --Target/Boss Only
 			if C["auras"].playerdebuffsonly == true then
 				-- Show all debuffs on friendly targets
 				if UnitIsFriend("player", "target") then return true end
@@ -131,110 +209,6 @@ E.LoadUFFunctions = function(layout)
 
 	E.PostUpdateHealth = function(health, unit, min, max)
 		local header = health:GetParent():GetParent():GetName()
-
-		if C["general"].classcolortheme == true then
-			local r, g, b = health:GetStatusBarColor()
-			health:GetParent().FrameBorder:SetBackdropBorderColor(r,g,b)
-			
-			if health:GetParent().PowerFrame then
-				health:GetParent().PowerFrame:SetBackdropBorderColor(r,g,b)
-			end
-			
-			if unit == "target" then
-				if health:GetParent().CPoints.FrameBackdrop then
-					health:GetParent().CPoints.FrameBackdrop:SetBackdropBorderColor(r,g,b)
-				end
-			elseif unit and unit:find("boss%d") then
-				if health:GetParent().AltPowerBar.FrameBackdrop then
-					health:GetParent().AltPowerBar.FrameBackdrop:SetBackdropBorderColor(r,g,b)
-				end
-			elseif unit and unit:find("arena%d") then
-				if health:GetParent().Trinketbg then
-					health:GetParent().Trinketbg:SetBackdropBorderColor(r,g,b)
-				end
-			end
-		end
-		
-		if unit and unit:find("boss%d") then
-			local curpow = UnitPower(unit)
-			if curpow == 0 then
-				health.value:ClearAllPoints()
-				health.value:SetPoint("LEFT", health, "LEFT", E.Scale(2), E.Scale(1))				
-			else
-				health.value:ClearAllPoints()
-				health.value:SetPoint("TOPLEFT", health, "TOPLEFT", E.Scale(2), E.Scale(-2))		
-			end		
-		end
-		
-		--Setup color health by value option
-		if C["unitframes"].healthcolorbyvalue == true then
-			if (UnitIsTapped("target")) and (not UnitIsTappedByPlayer("target")) and unit == "target" then
-				health:SetStatusBarColor(E.oUF_colors.tapped[1], E.oUF_colors.tapped[2], E.oUF_colors.tapped[3], 1)
-				health.bg:SetTexture(E.oUF_colors.tapped[1], E.oUF_colors.tapped[2], E.oUF_colors.tapped[3], 0.3)		
-			elseif not UnitIsConnected(unit) then
-				health:SetStatusBarColor(E.oUF_colors.tapped[1], E.oUF_colors.tapped[2], E.oUF_colors.tapped[3], 1)
-				health.bg:SetTexture(E.oUF_colors.tapped[1], E.oUF_colors.tapped[2], E.oUF_colors.tapped[3], 0.3)				
-			else
-				local perc = (min/max)*100
-				if(perc <= 50 and perc >= 26) then
-					health:SetStatusBarColor(224/255, 221/255, 9/255, 1)
-					health.bg:SetTexture(224/255, 221/255, 9/255, 0.1)
-				elseif(perc < 26) then
-					health:SetStatusBarColor(255/255, 13/255, 9/255, 1)
-					health.bg:SetTexture(255/255, 13/255, 9/255, 0.1)
-				else
-					if C["unitframes"].classcolor ~= true then
-						health:SetStatusBarColor(unpack(C["unitframes"].healthcolor))
-						health.bg:SetTexture(unpack(C["unitframes"].healthbackdropcolor))		
-					else
-						if (UnitIsPlayer(unit)) then
-							local class = select(2, UnitClass(unit))
-							if not class then return end
-							local c = E.oUF_colors.class[class]
-							health:SetStatusBarColor(c[1], c[2], c[3], 1)
-							health.bg:SetTexture(c[1], c[2], c[3], 0.3)	
-						else
-							local reaction = UnitReaction(unit, 'player')
-							if not reaction then return end
-							local c = E.oUF_colors.reaction[reaction]
-							health:SetStatusBarColor(c[1], c[2], c[3], 1)
-							health.bg:SetTexture(c[1], c[2], c[3], 0.3)						
-						end
-					end
-				end
-			end
-		else
-			if (UnitIsTapped("target")) and (not UnitIsTappedByPlayer("target")) and unit == "target" then
-				health:SetStatusBarColor(E.oUF_colors.tapped[1], E.oUF_colors.tapped[2], E.oUF_colors.tapped[3], 1)
-				health.bg:SetTexture(E.oUF_colors.tapped[1], E.oUF_colors.tapped[2], E.oUF_colors.tapped[3], 0.3)		
-			elseif not UnitIsConnected(unit) then
-				health:SetStatusBarColor(E.oUF_colors.tapped[1], E.oUF_colors.tapped[2], E.oUF_colors.tapped[3], 1)
-				health.bg:SetTexture(E.oUF_colors.tapped[1], E.oUF_colors.tapped[2], E.oUF_colors.tapped[3], 0.3)						
-			else
-				if C["unitframes"].classcolor ~= true then
-					health:SetStatusBarColor(unpack(C["unitframes"].healthcolor))
-					health.bg:SetTexture(unpack(C["unitframes"].healthbackdropcolor))		
-				else		
-					if (UnitIsPlayer(unit)) then
-						local class = select(2, UnitClass(unit))
-						if not class then return end
-						local c = E.oUF_colors.class[class]
-						health:SetStatusBarColor(c[1], c[2], c[3], 1)
-						health.bg:SetTexture(c[1], c[2], c[3], 0.3)	
-					else
-						local reaction = UnitReaction(unit, 'player')
-						if not reaction then return end
-						local c = E.oUF_colors.reaction[reaction]
-						health:SetStatusBarColor(c[1], c[2], c[3], 1)
-						health.bg:SetTexture(c[1], c[2], c[3], 0.3)						
-					end			
-				end
-			end
-		end
-		
-		--Small frames don't have health value display
-		if not health.value then return end
-		
 		if header == "ElvuiHealParty" or header == "ElvuiDPSParty" or header == "ElvuiHealR6R25" or header == "ElvuiDPSR6R25" or header == "ElvuiHealR26R40" or header == "ElvuiDPSR26R40" then --Raid/Party Layouts
 			if not UnitIsConnected(unit) or UnitIsDead(unit) or UnitIsGhost(unit) then
 				if not UnitIsConnected(unit) then
@@ -251,24 +225,6 @@ E.LoadUFFunctions = function(layout)
 					health.value:SetText("")
 				end
 			end
-			if (header == "ElvuiHealR6R25" or header == "ElvuiDPSR6R25" or header == "ElvuiHealR26R40" or header == "ElvuiDPSR26R40") and C["raidframes"].hidenonmana == true then
-				local powertype, _ = UnitPowerType(unit)
-				if powertype ~= SPELL_POWER_MANA then
-					health:SetHeight(health:GetParent():GetHeight())
-				else
-					if header == "ElvuiHealR6R25" then
-						health:SetHeight(health:GetParent():GetHeight() * 0.85)
-					elseif header == "ElvuiDPSR6R25" then
-						if C["raidframes"].griddps ~= true then
-							health:SetHeight(health:GetParent():GetHeight() * 0.75)
-						else
-							health:SetHeight(health:GetParent():GetHeight() * 0.83)
-						end
-					else
-						health:SetHeight(health:GetParent():GetHeight())	
-					end
-				end	
-			end		
 		else
 			if not UnitIsConnected(unit) or UnitIsDead(unit) or UnitIsGhost(unit) then
 				if not UnitIsConnected(unit) then
@@ -312,67 +268,22 @@ E.LoadUFFunctions = function(layout)
 		end
 	end
 
-	E.CheckPower = function(self, event)
-		local unit = self.unit
-		local powertype, _ = UnitPowerType(unit)
-		if powertype ~= SPELL_POWER_MANA then
-			self.Health:SetHeight(self.Health:GetParent():GetHeight())
-			if self.Power then
-				self.Power:Hide()
-			end
-		else
-			if IsAddOnLoaded("Elvui_RaidHeal") and self:GetParent():GetName() == "ElvuiHealR6R25" then
-					self.Health:SetHeight(self.Health:GetParent():GetHeight() * 0.85)
-			elseif self:GetParent():GetName() == "ElvuiDPSR6R25" then
-				if C["raidframes"].griddps ~= true then
-					self.Health:SetHeight(self.Health:GetParent():GetHeight() * 0.75)
-				else
-					self.Health:SetHeight(self.Health:GetParent():GetHeight() * 0.83)
-				end
-			else
-				self.Health:SetHeight(self.Health:GetParent():GetHeight())	
-			end
-			if self.Power then
-				self.Power:Show()
-			end
-		end	
-	end
-
 	E.PostNamePosition = function(self)
 		self.Name:ClearAllPoints()
 		if (self.Power.value:GetText() and UnitIsPlayer("target") and C["unitframes"].targetpowerplayeronly == true) or (self.Power.value:GetText() and C["unitframes"].targetpowerplayeronly == false) then
-			self.Name:SetPoint("CENTER", self.health, "CENTER", 0, 1)
+			self.Power.value:SetAlpha(1)
+			self.Name:SetPoint("CENTER", self.Health, "CENTER")
 		else
 			self.Power.value:SetAlpha(0)
-			self.Name:SetPoint("LEFT", self.health, "LEFT", 4, 1)
+			self.Name:SetPoint("LEFT", self.Health, "LEFT", 4, 0)
 		end
 	end
 
-	E.PreUpdatePower = function(power, unit)
-		local _, pType = UnitPowerType(unit)
-		
-		local color = E.oUF_colors.power[pType]
-		if color then
-			power:SetStatusBarColor(color[1], color[2], color[3])
-		end
-	end
-	
 	E.PostUpdatePower = function(power, unit, min, max)
 		local self = power:GetParent()
-		local header = power:GetParent():GetParent():GetName()
 		local pType, pToken, altR, altG, altB = UnitPowerType(unit)
 		local color = E.oUF_colors.power[pToken]
-		
-		if header == "ElvuiDPSR6R25" or header == "ElvuiHealR6R25" then
-			if pType ~= SPELL_POWER_MANA then
-				power:Hide()
-			else
-				power:Show()
-			end
-		end
-		
-		if not power.value then return end
-		
+	
 		if color then
 			power.value:SetTextColor(color[1], color[2], color[3])
 		else
@@ -429,10 +340,71 @@ E.LoadUFFunctions = function(layout)
 			end
 		end
 		
-		if self.Name then
-			if unit == "target" then E.PostNamePosition(self, power) end
+		if self.Name and unit == "target"  then
+			E.PostNamePosition(self)
 		end
 	end
+	
+	local delay = 0
+	E.UpdateManaLevel = function(self, elapsed)
+		delay = delay + elapsed
+		if self.unit ~= "player" or delay < 0.2 or UnitIsDeadOrGhost("player") or UnitPowerType("player") ~= 0 then return end
+		delay = 0
+
+		local percMana = UnitMana("player") / UnitManaMax("player") * 100
+
+		if percMana <= 20 then
+			self.ManaLevel:SetText("|cffaf5050"..L.unitframes_ouf_lowmana.."|r")
+			E.Flash(self.ManaLevel, 0.3)
+		else
+			self.ManaLevel:SetText()
+			E.StopFlash(self.ManaLevel)
+		end
+	end
+	
+	E.MLAnchorUpdate = function(self)
+		if self.Leader:IsShown() then
+			self.MasterLooter:Point("TOPRIGHT", -18, 9)
+		else
+			self.MasterLooter:Point("TOPRIGHT", -4, 9)
+		end
+	end
+	
+	E.UpdateShards = function(self, event, unit, powerType)
+		if(self.unit ~= unit or (powerType and powerType ~= 'SOUL_SHARDS')) then return end
+		local num = UnitPower(unit, SPELL_POWER_SOUL_SHARDS)
+		for i = 1, SHARD_BAR_NUM_SHARDS do
+			if(i <= num) then
+				self.SoulShards[i]:SetAlpha(1)
+			else
+				self.SoulShards[i]:SetAlpha(.2)
+			end
+		end
+	end
+
+	E.UpdateHoly = function(self, event, unit, powerType)
+		if(self.unit ~= unit or (powerType and powerType ~= 'HOLY_POWER')) then return end
+		local num = UnitPower(unit, SPELL_POWER_HOLY_POWER)
+		for i = 1, MAX_HOLY_POWER do
+			if(i <= num) then
+				self.HolyPower[i]:SetAlpha(1)
+			else
+				self.HolyPower[i]:SetAlpha(.2)
+			end
+		end
+	end	
+	
+	E.EclipseDirection = function(self)
+		if ( GetEclipseDirection() == "sun" ) then
+			self.Text:SetText(">")
+			self.Text:SetTextColor(.2,.2,1,1)
+		elseif ( GetEclipseDirection() == "moon" ) then
+			self.Text:SetText("<")
+			self.Text:SetTextColor(1,1,.3, 1)
+		else
+			self.Text:SetText("")
+		end
+	end	
 
 	E.CustomCastTimeText = function(self, duration)
 		self.Time:SetText(("%.1f / %.1f"):format(self.channeling and duration or self.max - duration, self.max))
@@ -498,18 +470,17 @@ E.LoadUFFunctions = function(layout)
 		if(self.elapsed and self.elapsed > 0.2) then
 			local unit = self.unit
 			local time = GetPVPTimer()
-			
+
 			local min = format("%01.f", floor((time/1000)/60))
 			local sec = format("%02.f", floor((time/1000) - min *60)) 
 			if(self.PvP) then
-				local factionGroup = UnitFactionGroup(unit)
 				if(UnitIsPVPFreeForAll(unit)) then
 					if time ~= 301000 and time ~= -1 then
 						self.PvP:SetText(PVP.." ".."("..min..":"..sec..")")
 					else
 						self.PvP:SetText(PVP)
 					end
-				elseif(factionGroup and UnitIsPVP(unit)) then
+				elseif UnitIsPVP(unit) then
 					if time ~= 301000 and time ~= -1 then
 						self.PvP:SetText(PVP.." ".."("..min..":"..sec..")")
 					else
@@ -648,118 +619,6 @@ E.LoadUFFunctions = function(layout)
 		end
 	end
 
-	E.UpdateShards = function(self, event, unit, powerType)
-		if(self.unit ~= unit or (powerType and powerType ~= 'SOUL_SHARDS')) then return end
-		local num = UnitPower(unit, SPELL_POWER_SOUL_SHARDS)
-		for i = 1, SHARD_BAR_NUM_SHARDS do
-			if(i <= num) then
-				self.SoulShards[i]:SetAlpha(1)
-			else
-				self.SoulShards[i]:SetAlpha(.2)
-			end
-		end
-	end
-
-	E.UpdateHoly = function(self, event, unit, powerType)
-		if(self.unit ~= unit or (powerType and powerType ~= 'HOLY_POWER')) then return end
-		local num = UnitPower(unit, SPELL_POWER_HOLY_POWER)
-		for i = 1, MAX_HOLY_POWER do
-			if(i <= num) then
-				self.HolyPower[i]:SetAlpha(1)
-			else
-				self.HolyPower[i]:SetAlpha(.2)
-			end
-		end
-	end
-
-	E.MoveBuffs = function(self, login)
-		local parent = self:GetParent()
-		if login then
-			self:SetScript("OnUpdate", nil)
-		end
-		
-		if self:IsShown() then
-			if self == parent.EclipseBar then
-				parent.FlashInfo:Hide()
-				parent.PvP:SetAlpha(0)
-			end
-			parent.FrameBorder.shadow:SetPoint("TOPLEFT", E.Scale(-4), E.Scale(17))
-			
-			if (IsAddOnLoaded("Elvui_RaidDPS") and DPSElementsCharPos and DPSElementsCharPos["DPSPlayerBuffs"] and DPSElementsCharPos["DPSPlayerBuffs"]["moved"] == true) then return end
-			if (IsAddOnLoaded("Elvui_RaidHeal") and HealElementsCharPos and HealElementsCharPos["HealPlayerBuffs"] and HealElementsCharPos["HealPlayerBuffs"]["moved"] == true) then return end
-			if (IsAddOnLoaded("Elvui_RaidDPS") and DPSElementsCharPos and DPSElementsCharPos["DPSPlayerDebuffs"] and DPSElementsCharPos["DPSPlayerDebuffs"]["moved"] == true) then return end
-			if (IsAddOnLoaded("Elvui_RaidHeal") and HealElementsCharPos and HealElementsCharPos["HealPlayerDebuffs"] and HealElementsCharPos["HealPlayerDebuffs"]["moved"] == true) then return end
-			
-			if parent.Debuffs then 
-				parent.Debuffs:ClearAllPoints()
-				if parent.Debuffs then parent.Debuffs:SetPoint("BOTTOM", parent.Health, "TOP", 0, E.Scale(17)) end	
-			end		
-		else
-			if self == parent.EclipseBar then
-				parent.FlashInfo:Show()
-				parent.PvP:SetAlpha(1)
-			end
-			parent.FrameBorder.shadow:SetPoint("TOPLEFT", E.Scale(-4), E.Scale(4))
-			
-			if (IsAddOnLoaded("Elvui_RaidDPS") and DPSElementsCharPos and DPSElementsCharPos["DPSPlayerBuffs"] and DPSElementsCharPos["DPSPlayerBuffs"]["moved"] == true) then return end
-			if (IsAddOnLoaded("Elvui_RaidHeal") and HealElementsCharPos and HealElementsCharPos["HealPlayerBuffs"] and HealElementsCharPos["HealPlayerBuffs"]["moved"] == true) then return end
-			if (IsAddOnLoaded("Elvui_RaidDPS") and DPSElementsCharPos and DPSElementsCharPos["DPSPlayerDebuffs"] and DPSElementsCharPos["DPSPlayerDebuffs"]["moved"] == true) then return end
-			if (IsAddOnLoaded("Elvui_RaidHeal") and HealElementsCharPos and HealElementsCharPos["HealPlayerDebuffs"] and HealElementsCharPos["HealPlayerDebuffs"]["moved"] == true) then return end
-			
-			if parent.Debuffs then 
-				parent.Debuffs:ClearAllPoints()
-				parent.Debuffs:SetPoint("BOTTOM", parent.Health, "TOP", 0, E.Scale(6))
-			end	
-		end
-	end
-
-	local starfirename = select(1, GetSpellInfo(2912))
-	E.EclipseDirection = function(self)
-		if ( GetEclipseDirection() == "sun" ) then
-			self.Text:SetText(starfirename.."!")
-			self.Text:SetTextColor(.2,.2,1,1)
-		elseif ( GetEclipseDirection() == "moon" ) then
-			self.Text:SetText(POWER_TYPE_WRATH.."!")
-			self.Text:SetTextColor(1,1,.3, 1)
-		else
-			self.Text:SetText("")
-		end
-	end
-
-	E.ToggleBars = function(self)
-		local parent = self:GetParent()
-		local unit = parent.unit
-		if unit == "vehicle" then unit = "player" end
-		if unit ~= "player" then return end
-		
-		if IsAddOnLoaded("Elvui_RaidDPS") then
-			Elv_player = ElvDPS_player
-		elseif IsAddOnLoaded("Elvui_RaidHeal") then
-			Elv_player = ElvHeal_player
-		end
-		
-		if self == Elv_player.EclipseBar and (UnitHasVehicleUI("player") or UnitHasVehicleUI("vehicle")) then 
-			Elv_player.EclipseBar:SetScript("OnUpdate", function() 
-				if (UnitHasVehicleUI("player") or UnitHasVehicleUI("vehicle")) then
-					if Elv_player.EclipseBar:IsShown() then
-						Elv_player.EclipseBar:Hide()
-						Elv_player.EclipseBar:SetScript("OnUpdate", nil)
-					end
-				else
-					Elv_player.EclipseBar:Show()
-					Elv_player.EclipseBar:SetScript("OnUpdate", nil)			
-				end
-			end) 
-			return 
-		end
-		
-		if UnitHasVehicleUI("player") then
-			self:Hide()
-		else	
-			self:Show()
-		end
-	end
-
 	E.ComboDisplay = function(self, event, unit)
 		if(unit == 'pet') then return end
 		
@@ -780,29 +639,9 @@ E.LoadUFFunctions = function(layout)
 		end
 		
 		if cpoints[1]:GetAlpha() == 1 then
-			for i=1, MAX_COMBO_POINTS do
-				cpoints[i]:Show()
-			end
-			if (IsAddOnLoaded("Elvui_RaidDPS") and DPSElementsCharPos and ((DPSElementsCharPos["DPSComboBar"] and DPSElementsCharPos["DPSComboBar"]["moved"] == true) or (DPSElementsCharPos["DPSTargetBuffs"] and DPSElementsCharPos["DPSTargetBuffs"]["moved"] == true))) then return end
-			if (IsAddOnLoaded("Elvui_RaidHeal") and HealElementsCharPos and ((HealElementsCharPos["HealComboBar"] and HealElementsCharPos["HealComboBar"]["moved"] == true) or (HealElementsCharPos["HealTargetBuffs"] and HealElementsCharPos["HealTargetBuffs"]["moved"] == true))) then return end
-			self.FrameBorder.shadow:SetPoint("TOPLEFT", E.Scale(-4), E.Scale(17))
-			if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOM", self.Health, "TOP", 0, E.Scale(17)) end	
+			cpoints:Show()
 		else
-			for i=1, MAX_COMBO_POINTS do
-				cpoints[i]:Hide()
-			end
-			if (IsAddOnLoaded("Elvui_RaidDPS") and DPSElementsCharPos and ((DPSElementsCharPos["DPSComboBar"] and DPSElementsCharPos["DPSComboBar"]["moved"] == true) or (DPSElementsCharPos["DPSTargetBuffs"] and DPSElementsCharPos["DPSTargetBuffs"]["moved"] == true))) then return end
-			if (IsAddOnLoaded("Elvui_RaidHeal") and HealElementsCharPos and ((HealElementsCharPos["HealComboBar"] and HealElementsCharPos["HealComboBar"]["moved"] == true) or (HealElementsCharPos["HealTargetBuffs"] and HealElementsCharPos["HealTargetBuffs"]["moved"] == true))) then return end
-			self.FrameBorder.shadow:SetPoint("TOPLEFT", E.Scale(-4), E.Scale(4))	
-			if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOM", self.Health, "TOP", 0, E.Scale(4)) end	
-		end
-	end
-
-	E.MLAnchorUpdate = function (self)
-		if self.Leader:IsShown() then
-			self.MasterLooter:SetPoint("TOPLEFT", 14, 8)
-		else
-			self.MasterLooter:SetPoint("TOPLEFT", 2, 8)
+			cpoints:Hide()
 		end
 	end
 
@@ -811,34 +650,6 @@ E.LoadUFFunctions = function(layout)
 			self.Resting:Show()
 		else
 			self.Resting:Hide()
-		end
-	end
-
-	E.UpdateReputation = function(self, event, unit, bar, min, max, value, name, id)
-		if not name then return end
-		local name, id = GetWatchedFactionInfo()
-		bar:SetStatusBarColor(FACTION_BAR_COLORS[id].r, FACTION_BAR_COLORS[id].g, FACTION_BAR_COLORS[id].b)
-		
-		local cur = value - min
-		local total = max - min
-		
-		bar.Text:SetFormattedText(name..': '..E.ShortValue(cur)..' / '..E.ShortValue(total)..' <%d%%>', (cur / total) * 100)
-	end
-
-	local delay = 0
-	E.UpdateManaLevel = function(self, elapsed)
-		delay = delay + elapsed
-		if self.parent.unit ~= "player" or delay < 0.2 or UnitIsDeadOrGhost("player") or UnitPowerType("player") ~= 0 then return end
-		delay = 0
-
-		local percMana = UnitMana("player") / UnitManaMax("player") * 100
-
-		if percMana <= 20 then
-			self.ManaLevel:SetText("|cffaf5050"..L.unitframes_ouf_lowmana.."|r")
-			E.Flash(self, 0.3)
-		else
-			self.ManaLevel:SetText()
-			E.StopFlash(self)
 		end
 	end
 
@@ -852,11 +663,11 @@ E.LoadUFFunctions = function(layout)
 
 			local percMana = min / max * 100
 			if percMana <= C["unitframes"].lowThreshold then
-				self.FlashInfo.ManaLevel:SetText("|cffaf5050"..L.unitframes_ouf_lowmana.."|r")
-				E.Flash(self.FlashInfo, 0.3)
+				self.ManaLevel:SetText("|cffaf5050"..L.unitframes_ouf_lowmana.."|r")
+				E.Flash(self.ManaLevel, 0.3)
 			else
-				self.FlashInfo.ManaLevel:SetText()
-				E.StopFlash(self.FlashInfo)
+				self.ManaLevel:SetText()
+				E.StopFlash(self.ManaLevel)
 			end
 
 			if min ~= max then
@@ -878,92 +689,34 @@ E.LoadUFFunctions = function(layout)
 	end
 
 	function E.UpdateThreat(self, event, unit)
-		if (self.unit ~= unit) or (unit == "target" or unit == "focus" or unit == "focustarget" or unit == "targettarget") then return end
-		if not self.unit then return end
+		if (self.unit ~= unit) or (unit ~= "player" or unit == "vehicle") then return end
 		if not unit then return end
 		
-		local threat = UnitThreatSituation(self.unit)
+		local threat = UnitThreatSituation(unit)
 		if threat and threat > 1 then
-			local r, g, b = GetThreatStatusColor(threat)
-			if self.FrameBorder.shadow then
-				self.FrameBorder.shadow:SetBackdropBorderColor(r,g,b,0.85)
-				if self.PowerFrame and self.PowerFrame.shadow then
-					self.PowerFrame.shadow:SetBackdropBorderColor(r,g,b,0.85)
+			local r, g, b = GetThreatStatusColor(threat)			
+			if self.backdrop and self.backdrop.shadow then
+				self.backdrop.shadow:SetBackdropBorderColor(r, g, b)
+			elseif self.backdrop then
+				self.backdrop:SetBackdropBorderColor(r, g, b)
+				
+				if self.Power and self.Power.backdrop then
+					self.Power.backdrop:SetBackdropBorderColor(r, g, b)
 				end
-				if self.PFrame and self.PFrame.shadow then
-					self.PFrame.shadow:SetBackdropBorderColor(r, g, b, 1)
-				end
-			else
-				if self.HealthBorder then
-					self.HealthBorder:SetBackdropBorderColor(r, g, b, 1)
-				end
-				if self.PFrame then
-					self.PFrame:SetBackdropBorderColor(r, g, b, 1)
-				end
-				self.FrameBorder:SetBackdropBorderColor(r, g, b, 1)
 			end
-		else
-			if self.FrameBorder.shadow then
-				self.FrameBorder.shadow:SetBackdropBorderColor(0,0,0,0.75)
-				if self.PowerFrame and self.PowerFrame.shadow then
-					self.PowerFrame.shadow:SetBackdropBorderColor(0,0,0,0.75)
-				end
-				if self.PFrame and self.PFrame.shadow then
-					self.PFrame.shadow:SetBackdropBorderColor(0, 0, 0, 1)
-				end
-			else
-				self.FrameBorder:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-				if self.HealthBorder then
-					self.HealthBorder:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-				end
-				if self.PFrame then
-					self.PFrame:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
+		else		
+			if self.backdrop and self.backdrop.shadow then
+				self.backdrop.shadow:SetBackdropBorderColor(0, 0, 0)
+			elseif self.backdrop then
+				self.backdrop:SetTemplate("Default")
+				
+				if self.Power and self.Power.backdrop then
+					self.Power.backdrop:SetTemplate("Default")
 				end
 			end
 		end 
 	end
 
-	E.updateAllElements = function(frame)
-		for _, v in ipairs(frame.__elements) do
-			v(frame, "UpdateElement", frame.unit)
-		end
-		
-		local header = frame:GetParent():GetName()
-		if (header == "ElvuiDPSR6R25" or header == "ElvuiHealR6R25") and C["raidframes"].hidenonmana == true then
-			local powertype, _ = UnitPowerType(frame.unit)
-			if powertype ~= SPELL_POWER_MANA then
-				frame.Health:SetHeight(frame.Health:GetParent():GetHeight())
-				if frame.Power then
-					frame.Power:Hide()
-				end
-			else
-				if IsAddOnLoaded("Elvui_RaidHeal") and frame:GetParent():GetName() == "ElvuiHealR6R25" then
-					frame.Health:SetHeight(frame.Health:GetParent():GetHeight() * 0.85)
-				elseif frame:GetParent():GetName() == "ElvuiDPSR6R25" then
-					if C["raidframes"].griddps ~= true then
-						frame.Health:SetHeight(frame.Health:GetParent():GetHeight() * 0.75)
-					else
-						frame.Health:SetHeight(frame.Health:GetParent():GetHeight() * 0.83)
-					end
-				else
-					frame.Health:SetHeight(frame.Health:GetParent():GetHeight())	
-				end
-				if frame.Power then
-					frame.Power:Show()
-				end
-			end		
-		end
-	end
-
-	function E.ExperienceText(self, unit, min, max)
-		local rested = GetXPExhaustion()
-		if rested then 
-			self.Text:SetFormattedText('XP: '..E.ShortValue(min)..' / '..E.ShortValue(max)..' <%d%%>  R: +'..E.ShortValue(rested)..' <%d%%>', min / max * 100, rested / max * 100)
-		else
-			self.Text:SetFormattedText('XP: '..E.ShortValue(min)..' / '..E.ShortValue(max)..' <%d%%>', min / max * 100)
-		end
-	end
-	
 	function E.AltPowerBarOnToggle(self)
 		local unit = self:GetParent().unit or self:GetParent():GetParent().unit
 		

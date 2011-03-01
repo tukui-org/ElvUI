@@ -145,7 +145,7 @@
 	ElvuiL.option_unitframes_enemypower = "Activar la barra de poder (maná, ira...) sólo en el jugador"
 	ElvuiL.option_unitframes_raidaggro = "Mostrar alerta de amenaza"
 	ElvuiL.option_unitframes_symbol = "Mostrar símbolos en banda/grupo"
-	ElvuiL.option_unitframes_threatbar = "Activar barra de amenaza"
+	ElvuiL.option_others_threatbar = "Activar barra de amenaza"
 	ElvuiL.option_unitframes_focus = "Activar marco de foco"
 	ElvuiL.option_unitframes_manalow = "Indicador de maná bajo"
 	ElvuiL.option_unitframes_classcolor = "Colorear los marcos de unidad con el color de la clase"

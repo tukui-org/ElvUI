@@ -2,7 +2,7 @@ local E, C, L = unpack(select(2, ...)) -- Import: E - functions, constants, vari
 -- Very simple threat bar for ElvUI.
 
 -- cannot work without Info Right DataText Panel.
-if not ElvuiInfoRight or C["unitframes"].showthreat ~= true then return end
+if not ElvuiInfoRight or C["others"].showthreat ~= true then return end
 
 local aggroColors = {
 	[1] = {0, 1, 0},

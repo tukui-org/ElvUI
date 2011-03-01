@@ -706,13 +706,15 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 		local playerFrame = CreateAuraBarFrame( dataSource, Elv_player );
 		local yOffset = 6;
 		local xOffset1 = 0
-		local xOffset2 = 0
+		local xOffset2 = -2
 		if ICON_POSITION == 2 then
-			xOffset1 = xOffset1 + BAR_HEIGHT+6
+			xOffset2 = -2
+			xOffset1 = xOffset1 + BAR_HEIGHT+9
 		end
 		if ICON_POSITION == 3 then
+			xOffset1 = 2
 			xOffset2 = xOffset2 - (BAR_HEIGHT+6)
-		end	
+		end
 		
 		playerFrame:SetHiddenHeight( -yOffset );
 		if C["auras"].playerauras == true then
@@ -724,27 +726,8 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Buffs, "TOPRIGHT", xOffset2, yOffset );
 			end
 		else
-			if Elv_player.HolyPower then
-				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.HolyPower, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.HolyPower, "TOPRIGHT", xOffset2, yOffset );		
-			elseif Elv_player.SoulShards then
-				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.SoulShards, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.SoulShards, "TOPRIGHT", xOffset2, yOffset );				
-			elseif Elv_player.Runes then
-				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Runes, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Runes, "TOPRIGHT", xOffset2, yOffset );				
-			elseif Elv_player.TotemBar then
-				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.TotemBar, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.TotemBar, "TOPRIGHT", xOffset2, yOffset );								
-			else
-				if E.myclass == "DRUID" or E.myclass == "ROGUE" then
-					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Health, "TOPLEFT", xOffset1, yOffset + 14 );
-					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Health, "TOPRIGHT", xOffset2, yOffset + 14 );				
-				else
-					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Health, "TOPLEFT", xOffset1, yOffset );
-					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Health, "TOPRIGHT", xOffset2, yOffset );	
-				end
-			end
+			playerFrame:SetPoint( "BOTTOMLEFT", Elv_player, "TOPLEFT", xOffset1, yOffset );
+			playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player, "TOPRIGHT", xOffset2, yOffset );	
 		end
 		
 		playerFrame:Show(); 
@@ -765,13 +748,16 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 
 		local yOffset = 6;
 		local xOffset1 = 0
-		local xOffset2 = 0
+		local xOffset2 = -2
 		if ICON_POSITION == 2 then
-			xOffset1 = xOffset1 + BAR_HEIGHT+6
+			xOffset2 = -2
+			xOffset1 = xOffset1 + BAR_HEIGHT+9
 		end
 		if ICON_POSITION == 3 then
+			xOffset1 = 2
 			xOffset2 = xOffset2 - (BAR_HEIGHT+6)
-		end	
+		end
+		
 		local playerFrame = CreateAuraBarFrame( playerDataSource, Elv_player );	
 		playerFrame:SetHiddenHeight( -yOffset );
 		local playerFrame = CreateAuraBarFrame( playerDataSource, Elv_player );
@@ -785,27 +771,8 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Buffs, "TOPRIGHT", xOffset2, yOffset );
 			end
 		else
-			if Elv_player.HolyPower then
-				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.HolyPower, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.HolyPower, "TOPRIGHT", xOffset2, yOffset );		
-			elseif Elv_player.SoulShards then
-				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.SoulShards, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.SoulShards, "TOPRIGHT", xOffset2, yOffset );				
-			elseif Elv_player.Runes then
-				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Runes, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Runes, "TOPRIGHT", xOffset2, yOffset );				
-			elseif Elv_player.TotemBar then
-				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.TotemBar, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.TotemBar, "TOPRIGHT", xOffset2, yOffset );								
-			else
-				if E.myclass == "DRUID" or E.myclass == "ROGUE" then
-					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Health, "TOPLEFT", xOffset1, yOffset + 14 );
-					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Health, "TOPRIGHT", xOffset2, yOffset + 14 );				
-				else
-					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Health, "TOPLEFT", xOffset1, yOffset );
-					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Health, "TOPRIGHT", xOffset2, yOffset );	
-				end
-			end
+			playerFrame:SetPoint( "BOTTOMLEFT", Elv_player, "TOPLEFT", xOffset1, yOffset );
+			playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player, "TOPRIGHT", xOffset2, yOffset );	
 		end
 		playerFrame:Show();
 
@@ -816,13 +783,16 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 	elseif ( LAYOUT == 3 ) then
 		local yOffset = 6;
 		local xOffset1 = 0
-		local xOffset2 = 0
+		local xOffset2 = -2
 		if ICON_POSITION == 2 then
-			xOffset1 = xOffset1 + BAR_HEIGHT+6
+			xOffset2 = -2
+			xOffset1 = xOffset1 + BAR_HEIGHT+9
 		end
 		if ICON_POSITION == 3 then
+			xOffset1 = 2
 			xOffset2 = xOffset2 - (BAR_HEIGHT+6)
 		end
+		
 		local targetDataSource = CreateUnitAuraDataSource( "target" );
 		local playerDataSource = CreateUnitAuraDataSource( "player" );
 		local trinketDataSource = CreateUnitAuraDataSource( "player" );
@@ -851,27 +821,8 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Buffs, "TOPRIGHT", xOffset2, yOffset );
 			end
 		else
-			if Elv_player.HolyPower then
-				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.HolyPower, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.HolyPower, "TOPRIGHT", xOffset2, yOffset );		
-			elseif Elv_player.SoulShards then
-				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.SoulShards, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.SoulShards, "TOPRIGHT", xOffset2, yOffset );				
-			elseif Elv_player.Runes then
-				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Runes, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Runes, "TOPRIGHT", xOffset2, yOffset );				
-			elseif Elv_player.TotemBar then
-				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.TotemBar, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.TotemBar, "TOPRIGHT", xOffset2, yOffset );								
-			else
-				if E.myclass == "DRUID" or E.myclass == "ROGUE" then
-					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Health, "TOPLEFT", xOffset1, yOffset + 14 );
-					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Health, "TOPRIGHT", xOffset2, yOffset + 14 );				
-				else
-					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Health, "TOPLEFT", xOffset1, yOffset );
-					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Health, "TOPRIGHT", xOffset2, yOffset );	
-				end
-			end
+			playerFrame:SetPoint( "BOTTOMLEFT", Elv_player, "TOPLEFT", xOffset1, yOffset );
+			playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player, "TOPRIGHT", xOffset2, yOffset );	
 		end
 
 		playerFrame:Show();
@@ -890,13 +841,16 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 	elseif ( LAYOUT == 4 ) then
 		local yOffset = 6;
 		local xOffset1 = 0
-		local xOffset2 = 0
+		local xOffset2 = -2
 		if ICON_POSITION == 2 then
-			xOffset1 = xOffset1 + BAR_HEIGHT+6
+			xOffset2 = -2
+			xOffset1 = xOffset1 + BAR_HEIGHT+9
 		end
 		if ICON_POSITION == 3 then
+			xOffset1 = 2
 			xOffset2 = xOffset2 - (BAR_HEIGHT+6)
 		end
+		
 		local targetDataSource = CreateUnitAuraDataSource( "target" );
 		local playerDataSource = CreateUnitAuraDataSource( "player" );
 		local trinketDataSource = CreateUnitAuraDataSource( "player" );
@@ -921,29 +875,10 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 			else
 				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Buffs, "TOPLEFT", xOffset1, yOffset );
 				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Buffs, "TOPRIGHT", xOffset2, yOffset );
-			end
+			end						
 		else
-			if Elv_player.HolyPower then
-				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.HolyPower, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.HolyPower, "TOPRIGHT", xOffset2, yOffset );		
-			elseif Elv_player.SoulShards then
-				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.SoulShards, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.SoulShards, "TOPRIGHT", xOffset2, yOffset );				
-			elseif Elv_player.Runes then
-				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Runes, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Runes, "TOPRIGHT", xOffset2, yOffset );				
-			elseif Elv_player.TotemBar then
-				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.TotemBar, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.TotemBar, "TOPRIGHT", xOffset2, yOffset );								
-			else
-				if E.myclass == "DRUID" or E.myclass == "ROGUE" then
-					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Health, "TOPLEFT", xOffset1, yOffset + 14 );
-					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Health, "TOPRIGHT", xOffset2, yOffset + 14 );				
-				else
-					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Health, "TOPLEFT", xOffset1, yOffset );
-					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Health, "TOPRIGHT", xOffset2, yOffset );	
-				end
-			end
+			playerFrame:SetPoint( "BOTTOMLEFT", Elv_player, "TOPLEFT", xOffset1, yOffset );
+			playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player, "TOPRIGHT", xOffset2, yOffset );	
 		end
 		playerFrame:Show();
 
@@ -1001,27 +936,8 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Buffs, "TOPRIGHT", xOffset2, yOffset );
 			end
 		else
-			if Elv_player.HolyPower then
-				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.HolyPower, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.HolyPower, "TOPRIGHT", xOffset2, yOffset );		
-			elseif Elv_player.SoulShards then
-				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.SoulShards, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.SoulShards, "TOPRIGHT", xOffset2, yOffset );				
-			elseif Elv_player.Runes then
-				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Runes, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Runes, "TOPRIGHT", xOffset2, yOffset );				
-			elseif Elv_player.TotemBar then
-				playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.TotemBar, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.TotemBar, "TOPRIGHT", xOffset2, yOffset );								
-			else
-				if E.myclass == "DRUID" or E.myclass == "ROGUE" then
-					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Health, "TOPLEFT", xOffset1, yOffset + 14 );
-					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Health, "TOPRIGHT", xOffset2, yOffset + 14 );				
-				else
-					playerFrame:SetPoint( "BOTTOMLEFT", Elv_player.Health, "TOPLEFT", xOffset1, yOffset );
-					playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player.Health, "TOPRIGHT", xOffset2, yOffset );	
-				end
-			end
+			playerFrame:SetPoint( "BOTTOMLEFT", Elv_player, "TOPLEFT", xOffset1, yOffset );
+			playerFrame:SetPoint( "BOTTOMRIGHT", Elv_player, "TOPRIGHT", xOffset2, yOffset );	
 		end
 		playerFrame:Show();
 

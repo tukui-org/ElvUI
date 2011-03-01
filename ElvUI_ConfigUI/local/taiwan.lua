@@ -141,7 +141,7 @@
 	ElvuiL.option_unitframes_enemypower = "只顯示玩家能量條"
 	ElvuiL.option_unitframes_raidaggro = "啟用仇恨顯示"
 	ElvuiL.option_unitframes_symbol = "顯示隊伍/團隊標記"
-	ElvuiL.option_unitframes_threatbar = "啟用仇恨條"
+	ElvuiL.option_others_threatbar = "啟用仇恨條"
 	ElvuiL.option_unitframes_focus = "啟用專注目標"
 	ElvuiL.option_unitframes_manalow = "法力過低顯示"
 	ElvuiL.option_unitframes_classcolor = "單位框架依照職業上色"
