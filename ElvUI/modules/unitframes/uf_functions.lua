@@ -264,8 +264,20 @@ E.LoadUFFunctions = function(layout)
 	end
 
 	E.PostUpdateHealth = function(health, unit, min, max)
+		local r, g, b = health:GetStatusBarColor()
+		
 		if C["general"].classcolortheme == true then
-			health:GetParent().backdrop:SetBackdropBorderColor(health:GetStatusBarColor())
+			health:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+		end
+		
+		if C["unitframes"].classcolor == true and C["unitframes"].healthcolorbyvalue == true then
+			local mu, bg = health.bg.multiplier, health.bg
+			local newr, newg, newb = ElvUF.ColorGradient(min / max, 1, 0, 0, 1, 1, 0, r, g, b)
+	
+			health:SetStatusBarColor(newr, newg, newb)
+			if bg and mu then
+				bg:SetVertexColor(newr * mu, newg * mu, newb * mu)
+			end
 		end
 		
 		if not health.value then return end
@@ -757,8 +769,7 @@ E.LoadUFFunctions = function(layout)
 	end
 
 	function E.UpdateThreat(self, event, unit)
-		if (self.unit ~= unit) or (unit ~= "player" or unit == "vehicle") then return end
-		if not unit then return end
+		if (self.unit ~= unit) or not unit then return end
 		
 		local threat = UnitThreatSituation(unit)
 		if threat and threat > 1 then
