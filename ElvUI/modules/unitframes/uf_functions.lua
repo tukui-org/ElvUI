@@ -670,16 +670,6 @@ E.LoadUFFunctions = function(layout)
 		icon:SetScript("OnUpdate", CreateAuraTimer)
 	end
 
-	E.HidePortrait = function(self, event)
-		if self.unit == "target" then
-			if not UnitExists(self.unit) or not UnitIsConnected(self.unit) or not UnitIsVisible(self.unit) then
-				self.PFrame:SetAlpha(0)
-			else
-				self.PFrame:SetAlpha(1)
-			end
-		end
-	end
-
 	E.PostCastStart = function(self, unit, name, rank, castid)
 		if unit == "vehicle" then unit = "player" end
 		--Fix blank castbar with opening text
@@ -779,8 +769,8 @@ E.LoadUFFunctions = function(layout)
 		local threat = UnitThreatSituation(unit)
 		if threat and threat > 1 then
 			local r, g, b = GetThreatStatusColor(threat)			
-			if self.backdrop and self.backdrop.shadow then
-				self.backdrop.shadow:SetBackdropBorderColor(r, g, b)
+			if self.shadow then
+				self.shadow:SetBackdropBorderColor(r, g, b)
 			elseif self.backdrop then
 				self.backdrop:SetBackdropBorderColor(r, g, b)
 				
@@ -789,8 +779,8 @@ E.LoadUFFunctions = function(layout)
 				end
 			end
 		else		
-			if self.backdrop and self.backdrop.shadow then
-				self.backdrop.shadow:SetBackdropBorderColor(0, 0, 0)
+			if self.shadow then
+				self.shadow:SetBackdropBorderColor(0, 0, 0)
 			elseif self.backdrop then
 				self.backdrop:SetTemplate("Default")
 				

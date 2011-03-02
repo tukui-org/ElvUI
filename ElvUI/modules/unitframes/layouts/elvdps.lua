@@ -58,6 +58,10 @@ local function Shared(self, unit)
 	backdrop:SetFrameStrata("BACKGROUND")
 	self.backdrop = backdrop
 	
+	--Threat Glow
+	self:CreateShadow("Default")
+	self.shadow:SetFrameStrata("BACKGROUND")
+	
 	------------------------------------------------------------------------
 	--	Player
 	------------------------------------------------------------------------
@@ -66,11 +70,14 @@ local function Shared(self, unit)
 		local POWERBAR_HEIGHT = 10
 		local CASTBAR_HEIGHT = 20
 		local CASTBAR_WIDTH = C["castbar"].width*resscale
-
-		--Threat Glow
-		backdrop:CreateShadow("Default")
-		backdrop.shadow:SetFrameStrata("BACKGROUND")
+		local portrait_width = 45
 		
+		if C["unitframes"].charportraithealth == true or C["unitframes"].charportrait == false then
+			portrait_width = 0
+		elseif C["unitframes"].charportrait == true then
+			POWERBAR_WIDTH = POWERBAR_WIDTH - portrait_width
+		end
+	
 		--Health Bar
 		local health = E.ContructHealthBar(self, true, true)
 		health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
@@ -87,27 +94,44 @@ local function Shared(self, unit)
 		power:Point("TOPLEFT", backdrop, "BOTTOMLEFT", BORDER, -(BORDER + 1))
 		power:Point("BOTTOMRIGHT", self, "BOTTOMRIGHT", -BORDER, BORDER)
 		power.value:Point("LEFT", health, "LEFT", 4, 0)
-		
-		--Adjust Threat Glow
-		backdrop.shadow:Point("BOTTOMLEFT", power.backdrop, "BOTTOMLEFT", -3, -3)
+
 		self.Power = power
 		
 		--Portrait
 		if C["unitframes"].charportrait == true then
-			local portrait = CreateFrame("PlayerModel", nil, health)
-			portrait:SetFrameLevel(health:GetFrameLevel() + 1)
-			portrait:SetAllPoints(health)
-			portrait.PostUpdate = function(self) self:SetAlpha(0) self:SetAlpha(0.35) end		
-			self.Portrait = portrait
-			
-			local overlay = CreateFrame("Frame", nil, self)
-			overlay:SetFrameLevel(self:GetFrameLevel() - 2)
-			
-			health.bg:ClearAllPoints()
-			health.bg:Point('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
-			health.bg:Point('TOPRIGHT', health)
-			health.bg:SetDrawLayer("OVERLAY", 7)
-			health.bg:SetParent(overlay)
+			if C["unitframes"].charportraithealth == true then
+				local portrait = CreateFrame("PlayerModel", nil, health)
+				portrait:SetFrameLevel(health:GetFrameLevel() + 1)
+				portrait:SetAllPoints(health)
+				portrait.PostUpdate = function(self) self:SetAlpha(0) self:SetAlpha(0.35) end		
+				self.Portrait = portrait
+				
+				local overlay = CreateFrame("Frame", nil, self)
+				overlay:SetFrameLevel(self:GetFrameLevel() - 2)
+				
+				health.bg:ClearAllPoints()
+				health.bg:Point('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
+				health.bg:Point('TOPRIGHT', health)
+				health.bg:SetDrawLayer("OVERLAY", 7)
+				health.bg:SetParent(overlay)
+			else
+				--Reposition Health and Backdrop
+				backdrop:Point("TOPLEFT", portrait_width, 0)
+				health:Point("TOPLEFT", portrait_width+BORDER, 0)
+				
+				
+				local portrait = CreateFrame("PlayerModel", nil, self)	
+				portrait.backdrop = CreateFrame("Frame", nil, portrait)
+				portrait.backdrop:SetTemplate("Default")
+				portrait.backdrop:SetPoint("TOPLEFT", self, "TOPLEFT")
+				portrait.backdrop:Point("BOTTOMRIGHT", power.backdrop, "BOTTOMLEFT", -1, 0)
+				portrait.backdrop:SetFrameLevel(portrait:GetFrameLevel() - 1)
+				
+				portrait:Point('BOTTOMLEFT', portrait.backdrop, 'BOTTOMLEFT', 2, 2)		
+				portrait:Point('TOPRIGHT', portrait.backdrop, 'TOPRIGHT', -2, -2)
+				
+				self.Portrait = portrait
+			end
 		end
 				
 		--Auras
@@ -307,9 +331,11 @@ local function Shared(self, unit)
 		if C["unitframes"].classbar == true and (E.myclass == "PALADIN" or E.myclass == "SHAMAN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK") then
 			--Reposition Backdrop for ClassBars
 			backdrop:Point("TOPRIGHT", self, "TOPRIGHT", 0, -(POWERBAR_HEIGHT+1))
-
+			backdrop:Point("TOPLEFT", self, "TOPLEFT", portrait_width, -(POWERBAR_HEIGHT+1))
+			
 			--Reposition Health Bar for ClassBars
 			health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+POWERBAR_HEIGHT+1))
+			health:Point("TOPLEFT", self, "TOPLEFT", portrait_width+BORDER, -(BORDER+POWERBAR_HEIGHT+1))
 			
 			--Soul Shard / Holy Power Bar
 			if E.myclass == "PALADIN" or E.myclass == "WARLOCK" then
@@ -356,17 +382,18 @@ local function Shared(self, unit)
 				bars.FrameBackdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
 				
 				--Reposition the Aggro glow
-				backdrop.shadow:Point("TOPLEFT", bars.FrameBackdrop, "TOPLEFT", -3, 3)
-				bars:HookScript("OnShow", function()
+				bars:SetScript("OnShow", function()
 					backdrop:Point("TOPRIGHT", self, "TOPRIGHT", 0, -(POWERBAR_HEIGHT+1))
-					backdrop.shadow:Point("TOPLEFT", bars.FrameBackdrop, "TOPLEFT", -3, 3)
+					backdrop:Point("TOPLEFT", self, "TOPLEFT", portrait_width, -(POWERBAR_HEIGHT+1))
 					health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+POWERBAR_HEIGHT+1))
+					health:Point("TOPLEFT", self, "TOPLEFT", portrait_width+BORDER, -(BORDER+POWERBAR_HEIGHT+1))
 				end)
-				bars:HookScript("OnHide", function()
-					backdrop:SetPoint("TOPRIGHT")
-					backdrop.shadow:Point("TOPLEFT", backdrop, "TOPLEFT", -3, 3)
+				bars:HookScript("OnHide", function()	
+					backdrop:Point("TOPRIGHT", self, "TOPRIGHT")
+					backdrop:Point("TOPLEFT", self, "TOPLEFT", portrait_width, 0)
 					health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
-				end)				
+					health:Point("TOPLEFT", self, "TOPLEFT", portrait_width+BORDER, -BORDER)		
+				end)			
 				
 				if E.myclass == "PALADIN" then
 					bars.Override = E.UpdateHoly
@@ -404,19 +431,20 @@ local function Shared(self, unit)
 				runes.FrameBackdrop:Point("TOPLEFT", -BORDER, BORDER)
 				runes.FrameBackdrop:Point("BOTTOMRIGHT", BORDER, -BORDER)
 				runes.FrameBackdrop:SetFrameLevel(runes:GetFrameLevel() - 1)
-					
-				--Reposition the Aggro glow			
-				backdrop.shadow:Point("TOPLEFT", runes.FrameBackdrop, "TOPLEFT", -3, 3)
+
+				--Reposition the Aggro glow
 				runes:HookScript("OnShow", function()
 					backdrop:Point("TOPRIGHT", self, "TOPRIGHT", 0, -(POWERBAR_HEIGHT+1))
-					backdrop.shadow:Point("TOPLEFT", runes.FrameBackdrop, "TOPLEFT", -3, 3)
+					backdrop:Point("TOPLEFT", self, "TOPLEFT", portrait_width, -(POWERBAR_HEIGHT+1))
 					health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+POWERBAR_HEIGHT+1))
+					health:Point("TOPLEFT", self, "TOPLEFT", portrait_width+BORDER, -(BORDER+POWERBAR_HEIGHT+1))
 				end)
 				runes:HookScript("OnHide", function()
-					backdrop:SetPoint("TOPRIGHT")
-					backdrop.shadow:Point("TOPLEFT", backdrop, "TOPLEFT", -3, 3)
+					backdrop:Point("TOPRIGHT", self, "TOPRIGHT")
+					backdrop:Point("TOPLEFT", self, "TOPLEFT", portrait_width, 0)
 					health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
-				end)
+					health:Point("TOPLEFT", self, "TOPLEFT", portrait_width+BORDER, -BORDER)		
+				end)	
 				
 				self.Runes = runes
 			end
@@ -456,19 +484,20 @@ local function Shared(self, unit)
 				totems.FrameBackdrop:SetPoint("BOTTOMRIGHT", BORDER, -BORDER)
 				totems.FrameBackdrop:SetFrameLevel(totems:GetFrameLevel() - 1)
 				
-				--Reposition the Aggro glow				
-				backdrop.shadow:Point("TOPLEFT", totems.FrameBackdrop, "TOPLEFT", -3, 3)
+				--Reposition the Aggro glow
 				totems:HookScript("OnShow", function()
 					backdrop:Point("TOPRIGHT", self, "TOPRIGHT", 0, -(POWERBAR_HEIGHT+1))
-					backdrop.shadow:Point("TOPLEFT", totems.FrameBackdrop, "TOPLEFT", -3, 3)
+					backdrop:Point("TOPLEFT", self, "TOPLEFT", portrait_width, -(POWERBAR_HEIGHT+1))
 					health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+POWERBAR_HEIGHT+1))
+					health:Point("TOPLEFT", self, "TOPLEFT", portrait_width+BORDER, -(BORDER+POWERBAR_HEIGHT+1))
 				end)
 				totems:HookScript("OnHide", function()
-					backdrop:SetPoint("TOPRIGHT")
-					backdrop.shadow:Point("TOPLEFT", backdrop, "TOPLEFT", -3, 3)
+					backdrop:Point("TOPRIGHT", self, "TOPRIGHT")
+					backdrop:Point("TOPLEFT", self, "TOPLEFT", portrait_width, 0)
 					health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
+					health:Point("TOPLEFT", self, "TOPLEFT", portrait_width+BORDER, -BORDER)		
 				end)
-				
+
 				self.TotemBar = totems			
 			end
 			
@@ -504,18 +533,18 @@ local function Shared(self, unit)
 				eclipseBar.FrameBackdrop:Point("BOTTOMRIGHT", lunarBar, "BOTTOMRIGHT", BORDER, -BORDER)
 				eclipseBar.FrameBackdrop:SetFrameLevel(eclipseBar:GetFrameLevel() - 1)
 				
-				
-				--Reposition the Aggro glow		
-				backdrop.shadow:Point("TOPLEFT", eclipseBar.FrameBackdrop, "TOPLEFT", -3, 3)
+				--Reposition the Aggro glow
 				eclipseBar:HookScript("OnShow", function()
 					backdrop:Point("TOPRIGHT", self, "TOPRIGHT", 0, -(POWERBAR_HEIGHT+1))
-					backdrop.shadow:Point("TOPLEFT", eclipseBar.FrameBackdrop, "TOPLEFT", -3, 3)
+					backdrop:Point("TOPLEFT", self, "TOPLEFT", portrait_width, -(POWERBAR_HEIGHT+1))
 					health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+POWERBAR_HEIGHT+1))
+					health:Point("TOPLEFT", self, "TOPLEFT", portrait_width+BORDER, -(BORDER+POWERBAR_HEIGHT+1))
 				end)
 				eclipseBar:HookScript("OnHide", function()
-					backdrop:SetPoint("TOPRIGHT")
-					backdrop.shadow:Point("TOPLEFT", backdrop, "TOPLEFT", -3, 3)
+					backdrop:Point("TOPRIGHT", self, "TOPRIGHT")
+					backdrop:Point("TOPLEFT", self, "TOPLEFT", portrait_width, 0)
 					health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
+					health:Point("TOPLEFT", self, "TOPLEFT", portrait_width+BORDER, -BORDER)
 				end)
 				
 				self.EclipseBar = eclipseBar
@@ -556,11 +585,14 @@ local function Shared(self, unit)
 		local POWERBAR_HEIGHT = 10
 		local CASTBAR_HEIGHT = 20
 		local CASTBAR_WIDTH = C["castbar"].width*resscale
-
-		--Threat Glow
-		backdrop:CreateShadow("Default")
-		backdrop.shadow:SetFrameStrata("BACKGROUND")
+		local portrait_width = 45
 		
+		if C["unitframes"].charportraithealth == true or C["unitframes"].charportrait == false then
+			portrait_width = 0
+		elseif C["unitframes"].charportrait == true then
+			POWERBAR_WIDTH = POWERBAR_WIDTH - portrait_width
+		end
+
 		--Health Bar
 		local health = E.ContructHealthBar(self, true, true)
 		health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
@@ -574,12 +606,10 @@ local function Shared(self, unit)
 		
 		--Power Bar
 		local power = E.ConstructPowerBar(self, true, true)
-		power:Point("TOPLEFT", backdrop, "BOTTOMLEFT", BORDER, -(BORDER + 1))
-		power:Point("BOTTOMRIGHT", self, "BOTTOMRIGHT", -BORDER, BORDER)
+		power:Point("TOPRIGHT", backdrop, "BOTTOMRIGHT", -BORDER, -(BORDER + 1))
+		power:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER)
 		power.value:Point("LEFT", health, "LEFT", 4, 0)
 		
-		--Adjust Threat Glow
-		backdrop.shadow:Point("BOTTOMLEFT", power.backdrop, "BOTTOMLEFT", -3, -3)
 		self.Power = power
 
 		--Name
@@ -590,20 +620,39 @@ local function Shared(self, unit)
 		
 		--Portrait
 		if C["unitframes"].charportrait == true then
-			local portrait = CreateFrame("PlayerModel", nil, health)
-			portrait:SetFrameLevel(health:GetFrameLevel() + 1)
-			portrait:SetAllPoints(health)
-			portrait.PostUpdate = function(self) self:SetAlpha(0) self:SetAlpha(0.35) end		
-			self.Portrait = portrait
-			
-			local overlay = CreateFrame("Frame", nil, self)
-			overlay:SetFrameLevel(self:GetFrameLevel() - 2)
-			
-			health.bg:ClearAllPoints()
-			health.bg:Point('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
-			health.bg:Point('TOPRIGHT', health)
-			health.bg:SetDrawLayer("OVERLAY", 7)
-			health.bg:SetParent(overlay)
+			if C["unitframes"].charportraithealth == true then
+				local portrait = CreateFrame("PlayerModel", nil, health)
+				portrait:SetFrameLevel(health:GetFrameLevel() + 1)
+				portrait:SetAllPoints(health)
+				portrait.PostUpdate = function(self) self:SetAlpha(0) self:SetAlpha(0.35) end		
+				self.Portrait = portrait
+				
+				local overlay = CreateFrame("Frame", nil, self)
+				overlay:SetFrameLevel(self:GetFrameLevel() - 2)
+				
+				health.bg:ClearAllPoints()
+				health.bg:Point('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
+				health.bg:Point('TOPRIGHT', health)
+				health.bg:SetDrawLayer("OVERLAY", 7)
+				health.bg:SetParent(overlay)
+			else
+				--Reposition Health and Backdrop
+				backdrop:Point("TOPRIGHT", -portrait_width, 0)
+				health:Point("TOPRIGHT", -(portrait_width+BORDER), 0)
+				
+				local portrait = CreateFrame("PlayerModel", nil, self)
+				
+				portrait.backdrop = CreateFrame("Frame", nil, portrait)
+				portrait.backdrop:SetTemplate("Default")
+				portrait.backdrop:SetPoint("TOPRIGHT", self, "TOPRIGHT")
+				portrait.backdrop:Point("BOTTOMLEFT", power.backdrop, "BOTTOMRIGHT", 1, 0)
+				portrait.backdrop:SetFrameLevel(portrait:GetFrameLevel() - 1)
+				
+				portrait:Point('BOTTOMLEFT', portrait.backdrop, 'BOTTOMLEFT', 2, 2)		
+				portrait:Point('TOPRIGHT', portrait.backdrop, 'TOPRIGHT', -2, -2)
+				
+				self.Portrait = portrait
+			end
 		end
 				
 		--Auras
@@ -681,12 +730,6 @@ local function Shared(self, unit)
 			}
 		end
 
-		--Reposition Backdrop for Combo Bar
-		backdrop:Point("TOPRIGHT", self, "TOPRIGHT", 0, -(POWERBAR_HEIGHT+1))
-
-		--Reposition Health Bar for Combo Bar
-		health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+POWERBAR_HEIGHT+1))
-		
 		--Combo Bar
 		local combo = CreateFrame("Frame", nil, self)
 		combo:Point("BOTTOMLEFT", backdrop, "TOPLEFT", BORDER, BORDER+1)
@@ -732,15 +775,15 @@ local function Shared(self, unit)
 			if ElementsPos["DPSComboBar"]["moved"] == true and E.CreatedMoveEleFrames["DPSComboBar"] then return end
 			combo:ClearAllPoints()
 			combo:Point("BOTTOMLEFT", backdrop, "TOPLEFT", BORDER, BORDER+1)
-			backdrop:Point("TOPRIGHT", self, "TOPRIGHT", 0, -(POWERBAR_HEIGHT+1))
-			backdrop.shadow:Point("TOPLEFT", combo.FrameBackdrop, "TOPLEFT", -3, 3)
-			health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+POWERBAR_HEIGHT+1))
+			
+			backdrop:Point("TOPRIGHT", self, "TOPRIGHT", -portrait_width, -(POWERBAR_HEIGHT+1))
+			health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+portrait_width), -(BORDER+POWERBAR_HEIGHT+1))
 		end)
 		combo:HookScript("OnHide", function()
-			backdrop:SetPoint("TOPRIGHT")
-			backdrop.shadow:Point("TOPLEFT", backdrop, "TOPLEFT", -3, 3)
-			health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
-		end)
+			backdrop:SetPoint("TOPRIGHT", self, "TOPRIGHT", -portrait_width, 0)	
+			health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+portrait_width), -BORDER)
+		end)			
+		combo:Hide()
 		
 		combo.Override = E.ComboDisplay
 		self.CPoints = combo
@@ -754,11 +797,7 @@ local function Shared(self, unit)
 		local POWERBAR_HEIGHT = 8
 		local CASTBAR_HEIGHT = 20
 		local CASTBAR_WIDTH = C["castbar"].width*resscale
-
-		--Threat Glow
-		backdrop:CreateShadow("Default")
-		backdrop.shadow:SetFrameStrata("BACKGROUND")
-		
+	
 		--Health Bar
 		local health = E.ContructHealthBar(self, true, nil)
 		health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
@@ -775,8 +814,6 @@ local function Shared(self, unit)
 			power:Point("TOPLEFT", backdrop, "BOTTOMLEFT", BORDER, -(BORDER + 1))
 			power:Point("BOTTOMRIGHT", self, "BOTTOMRIGHT", -BORDER, BORDER)
 
-			--Adjust Threat Glow
-			backdrop.shadow:Point("BOTTOMLEFT", power.backdrop, "BOTTOMLEFT", -3, -3)
 			self.Power = power
 		end
 		
@@ -846,10 +883,6 @@ local function Shared(self, unit)
 		local CASTBAR_HEIGHT = 16
 		local CASTBAR_WIDTH = BOSS_WIDTH	
 		
-		--Threat Glow
-		backdrop:CreateShadow("Default")
-		backdrop.shadow:SetFrameStrata("BACKGROUND")
-		
 		--Health Bar
 		local health = E.ContructHealthBar(self, true, true)
 		health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
@@ -867,8 +900,6 @@ local function Shared(self, unit)
 		power:Point("BOTTOMRIGHT", self, "BOTTOMRIGHT", -BORDER, BORDER)
 		power.value:Point("LEFT", health, "LEFT", 4, 0)
 		
-		--Adjust Threat Glow
-		backdrop.shadow:Point("BOTTOMLEFT", power.backdrop, "BOTTOMLEFT", -3, -3)
 		self.Power = power
 				
 		--Name & Trinkets
@@ -929,14 +960,12 @@ local function Shared(self, unit)
 			altpower:Point("BOTTOMRIGHT", altpower.bg, "BOTTOMRIGHT", -2, 2)
 			altpower:HookScript("OnShow", function(self) 			
 				health:Point("TOPRIGHT", self:GetParent(), "TOPRIGHT", -2, -(POWERBAR_HEIGHT + 2))
-				backdrop:SetPoint("TOPRIGHT", self:GetParent(), "TOPRIGHT", 0, -POWERBAR_HEIGHT)
-				backdrop.shadow:Point("TOPLEFT", -3, 16 + self:GetHeight())				
+				backdrop:SetPoint("TOPRIGHT", self:GetParent(), "TOPRIGHT", 0, -POWERBAR_HEIGHT)		
 			end)
 			
 			altpower:HookScript("OnHide", function(self) 
 				health:Point("TOPRIGHT", self:GetParent(), "TOPRIGHT", -2, -2)
-				backdrop:SetPoint("TOPRIGHT", self:GetParent(), "TOPRIGHT")		
-				backdrop.shadow:Point("TOPLEFT", -3, 3)					
+				backdrop:SetPoint("TOPRIGHT", self:GetParent(), "TOPRIGHT")					
 			end)
 			
 			self.AltPowerBar = altpower
