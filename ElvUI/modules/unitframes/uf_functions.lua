@@ -85,6 +85,63 @@ E.LoadUFFunctions = function(layout)
 		
 		return power
 	end	
+		
+	function E.ConstructCastBar(self, width, height, direction)
+		local castbar = CreateFrame("StatusBar", nil, self)
+		castbar:SetStatusBarTexture(C["media"].normTex)
+		castbar:Height(height)
+		castbar:Width(width - 4)
+				
+		castbar.bg = CreateFrame("Frame", nil, castbar)
+		castbar.bg:SetTemplate("Default")
+		castbar.bg:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
+		castbar.bg:Point("TOPLEFT", -2, 2)
+		castbar.bg:Point("BOTTOMRIGHT", 2, -2)
+		castbar.bg:SetFrameLevel(castbar:GetFrameLevel() - 1)
+		
+		castbar:FontString("Time", C["media"].uffont, C["unitframes"].fontsize, "THINOUTLINE")
+		castbar.Time:Point("RIGHT", castbar, "RIGHT", -4, 0)
+		castbar.Time:SetTextColor(0.84, 0.75, 0.65)
+		castbar.Time:SetJustifyH("RIGHT")
+		castbar.CustomTimeText = E.CustomCastTimeText
+
+		castbar:FontString("Text", C["media"].uffont, C["unitframes"].fontsize, "THINOUTLINE")
+		castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 0)
+		castbar.Text:SetTextColor(0.84, 0.75, 0.65)
+
+		-- cast bar latency on player
+		if C["castbar"].cblatency == true and self.unit == "player" then
+			castbar.SafeZone = castbar:CreateTexture(nil, "OVERLAY")
+			castbar.SafeZone:SetTexture(C["media"].normTex)
+			castbar.SafeZone:SetVertexColor(0.69, 0.31, 0.31, 0.75)
+		end			
+
+		if C["castbar"].cbicons == true then
+			local button = CreateFrame("Frame", nil, castbar)
+			button:Height(height + 4)
+			button:Width(height + 4)
+			button:SetTemplate("Default")
+			button:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
+			if direction == "LEFT" then
+				button:Point("RIGHT", castbar, "LEFT", -4, 0)
+			else
+				button:Point("LEFT", castbar, "RIGHT", 4, 0)
+			end
+			
+			castbar.Icon = button:CreateTexture(nil, "ARTWORK")
+			castbar.Icon:Point("TOPLEFT", button, 2, -2)
+			castbar.Icon:Point("BOTTOMRIGHT", button, -2, 2)
+			castbar.Icon:SetTexCoord(0.08, 0.92, 0.08, .92)
+			
+			castbar:Width(width - button:GetWidth() - 6)
+		end
+		
+		castbar.CustomDelayText = E.CustomCastDelayText
+		castbar.PostCastStart = E.PostCastStart
+		castbar.PostChannelStart = E.PostCastStart
+		
+		return castbar
+	end
 	
 	function E.SpawnMenu(self)
 		local unit = self.unit:gsub("(.)", string.upper, 1)

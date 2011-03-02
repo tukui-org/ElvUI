@@ -146,59 +146,10 @@ local function Shared(self, unit)
 
 		--Cast Bar
 		if C["castbar"].unitcastbar == true then
-			local castbar = CreateFrame("StatusBar", nil, self)
+			local castbar = E.ConstructCastBar(self, CASTBAR_WIDTH, CASTBAR_HEIGHT, "LEFT")
 			castbar:Point("TOPRIGHT", self, "BOTTOMRIGHT", -BORDER, -(BORDER*2+BORDER))
-			castbar:Height(CASTBAR_HEIGHT)
-			castbar:Width(CASTBAR_WIDTH - 4)
-			castbar:SetStatusBarTexture(normTex)
-
-			castbar.bg = CreateFrame("Frame", nil, castbar)
-			castbar.bg:SetTemplate("Default")
-			castbar.bg:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-			castbar.bg:Point("TOPLEFT", -BORDER, BORDER)
-			castbar.bg:Point("BOTTOMRIGHT", BORDER, -BORDER)
-			castbar.bg:SetFrameLevel(castbar:GetFrameLevel() - 1)
 			
-			castbar:FontString("time", font1, C["unitframes"].fontsize, "THINOUTLINE")
-			castbar.time:Point("RIGHT", castbar, "RIGHT", -4, 0)
-			castbar.time:SetTextColor(0.84, 0.75, 0.65)
-			castbar.time:SetJustifyH("RIGHT")
-			castbar.CustomTimeText = E.CustomCastTimeText
- 
-			castbar:FontString("Text", font1, C["unitframes"].fontsize, "THINOUTLINE")
-			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 0)
-			castbar.Text:SetTextColor(0.84, 0.75, 0.65)
- 
-			castbar.CustomDelayText = E.CustomCastDelayText
-			castbar.PostCastStart = E.PostCastStart
-			castbar.PostChannelStart = E.PostCastStart
- 
-			-- cast bar latency on player
-			if C["castbar"].cblatency == true then
-				castbar.SafeZone = castbar:CreateTexture(nil, "OVERLAY")
-				castbar.SafeZone:SetTexture(normTex)
-				castbar.SafeZone:SetVertexColor(0.69, 0.31, 0.31, 0.75)
-			end			
- 
-			if C["castbar"].cbicons == true then
-				castbar.button = CreateFrame("Frame", nil, castbar)
-				castbar.button:SetHeight(CASTBAR_HEIGHT + E.Scale(BORDER*2))
-				castbar.button:SetWidth(CASTBAR_HEIGHT + E.Scale(BORDER*2))
-				castbar.button:Point("RIGHT", castbar, "LEFT", -4, 0)
-				castbar.button:SetTemplate("Default")
-				castbar.button:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-				
-				castbar.icon = castbar.button:CreateTexture(nil, "ARTWORK")
-				castbar.icon:Point("TOPLEFT", castbar.button, BORDER, -BORDER)
-				castbar.icon:Point("BOTTOMRIGHT", castbar.button, -BORDER, BORDER)
-				castbar.icon:SetTexCoord(0.08, 0.92, 0.08, .92)
-				
-				castbar:Width(CASTBAR_WIDTH - castbar.button:GetWidth() - BORDER*3)
-			end
- 
 			self.Castbar = castbar
-			self.Castbar.Time = castbar.time
-			self.Castbar.Icon = castbar.icon
 		end
 		
 		-- Debuff Highlight (Overlays Health Bar)
@@ -689,59 +640,10 @@ local function Shared(self, unit)
 
 		--Cast Bar
 		if C["castbar"].unitcastbar == true then
-			local castbar = CreateFrame("StatusBar", nil, self)
+			local castbar = E.ConstructCastBar(self, CASTBAR_WIDTH, CASTBAR_HEIGHT, "RIGHT")
 			castbar:Point("TOPLEFT", self, "BOTTOMLEFT", BORDER, -(BORDER*2+BORDER))
-			castbar:Height(CASTBAR_HEIGHT)
-			castbar:Width(CASTBAR_WIDTH - 4)
-			castbar:SetStatusBarTexture(normTex)
-
-			castbar.bg = CreateFrame("Frame", nil, castbar)
-			castbar.bg:SetTemplate("Default")
-			castbar.bg:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-			castbar.bg:Point("TOPLEFT", -BORDER, BORDER)
-			castbar.bg:Point("BOTTOMRIGHT", BORDER, -BORDER)
-			castbar.bg:SetFrameLevel(castbar:GetFrameLevel() - 1)
 			
-			castbar:FontString("time", font1, C["unitframes"].fontsize, "THINOUTLINE")
-			castbar.time:Point("RIGHT", castbar, "RIGHT", -4, 0)
-			castbar.time:SetTextColor(0.84, 0.75, 0.65)
-			castbar.time:SetJustifyH("RIGHT")
-			castbar.CustomTimeText = E.CustomCastTimeText
- 
-			castbar:FontString("Text", font1, C["unitframes"].fontsize, "THINOUTLINE")
-			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 0)
-			castbar.Text:SetTextColor(0.84, 0.75, 0.65)
- 
-			castbar.CustomDelayText = E.CustomCastDelayText
-			castbar.PostCastStart = E.PostCastStart
-			castbar.PostChannelStart = E.PostCastStart
- 
-			-- cast bar latency on player
-			if C["castbar"].cblatency == true then
-				castbar.SafeZone = castbar:CreateTexture(nil, "OVERLAY")
-				castbar.SafeZone:SetTexture(normTex)
-				castbar.SafeZone:SetVertexColor(0.69, 0.31, 0.31, 0.75)
-			end			
- 
-			if C["castbar"].cbicons == true then
-				castbar.button = CreateFrame("Frame", nil, castbar)
-				castbar.button:SetHeight(CASTBAR_HEIGHT + E.Scale(BORDER*2))
-				castbar.button:SetWidth(CASTBAR_HEIGHT + E.Scale(BORDER*2))
-				castbar.button:Point("LEFT", castbar, "RIGHT", 4, 0)
-				castbar.button:SetTemplate("Default")
-				castbar.button:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-				
-				castbar.icon = castbar.button:CreateTexture(nil, "ARTWORK")
-				castbar.icon:Point("TOPLEFT", castbar.button, BORDER, -BORDER)
-				castbar.icon:Point("BOTTOMRIGHT", castbar.button, -BORDER, BORDER)
-				castbar.icon:SetTexCoord(0.08, 0.92, 0.08, .92)
-				
-				castbar:Width(CASTBAR_WIDTH - castbar.button:GetWidth() - BORDER*3)
-			end
- 
 			self.Castbar = castbar
-			self.Castbar.Time = castbar.time
-			self.Castbar.Icon = castbar.icon
 		end
 		
 		-- Debuff Highlight (Overlays Health Bar)
@@ -942,7 +844,7 @@ local function Shared(self, unit)
 		local POWERBAR_WIDTH = BOSS_HEIGHT - (BORDER*2)
 		local POWERBAR_HEIGHT = 8
 		local CASTBAR_HEIGHT = 16
-		local CASTBAR_WIDTH = C["castbar"].width*resscale		
+		local CASTBAR_WIDTH = BOSS_WIDTH	
 		
 		--Threat Glow
 		backdrop:CreateShadow("Default")
@@ -1072,52 +974,10 @@ local function Shared(self, unit)
 
 		--Cast Bar
 		if C["castbar"].unitcastbar == true then
-			local castbar = CreateFrame("StatusBar", nil, self)
+			local castbar = E.ConstructCastBar(self, CASTBAR_WIDTH, CASTBAR_HEIGHT, "RIGHT")
 			castbar:Point("TOPLEFT", self, "BOTTOMLEFT", 2, -BORDER*2)
-			castbar:Height(CASTBAR_HEIGHT)
-			castbar:Width(BOSS_WIDTH - 4)
-			castbar:SetStatusBarTexture(normTex)
-
-			castbar.bg = CreateFrame("Frame", nil, castbar)
-			castbar.bg:SetTemplate("Default")
-			castbar.bg:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-			castbar.bg:SetPoint("TOPLEFT", E.Scale(-2), E.Scale(2))
-			castbar.bg:SetPoint("BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
-			castbar.bg:SetFrameLevel(castbar:GetFrameLevel() - 1)
 			
-			castbar:FontString("time", font1, C["unitframes"].fontsize, "THINOUTLINE")
-			castbar.time:Point("RIGHT", castbar, "RIGHT", -4, 0)
-			castbar.time:SetTextColor(0.84, 0.75, 0.65)
-			castbar.time:SetJustifyH("RIGHT")
-			castbar.CustomTimeText = E.CustomCastTimeText
- 
-			castbar:FontString("Text", font1, C["unitframes"].fontsize, "THINOUTLINE")
-			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 0)
-			castbar.Text:SetTextColor(0.84, 0.75, 0.65)
- 
-			castbar.CustomDelayText = E.CustomCastDelayText
-			castbar.PostCastStart = E.PostCastStart
-			castbar.PostChannelStart = E.PostCastStart
-  
-			if C["castbar"].cbicons == true then
-				castbar.button = CreateFrame("Frame", nil, castbar)
-				castbar.button:SetHeight(CASTBAR_HEIGHT + E.Scale(4))
-				castbar.button:SetWidth(CASTBAR_HEIGHT + E.Scale(4))
-				castbar.button:Point("LEFT", castbar, "RIGHT", 4, 0)
-				castbar.button:SetTemplate("Default")
-				castbar.button:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-				
-				castbar.icon = castbar.button:CreateTexture(nil, "ARTWORK")
-				castbar.icon:Point("TOPLEFT", castbar.button, 2, -2)
-				castbar.icon:Point("BOTTOMRIGHT", castbar.button, -2, 2)
-				castbar.icon:SetTexCoord(0.08, 0.92, 0.08, .92)
-				
-				castbar:Width(BOSS_WIDTH - castbar.button:GetWidth() - 6)
-			end
- 
 			self.Castbar = castbar
-			self.Castbar.Time = castbar.time
-			self.Castbar.Icon = castbar.icon
 		end
 	end
 
