@@ -25,7 +25,7 @@ E.LoadUFFunctions = function(layout)
 			health.bg:SetTexture(C["media"].blank)
 			
 			if C["unitframes"].healthbackdrop ~= true then
-				health.bg.multiplier = 0.3
+				health.bg.multiplier = 0.2
 			else
 				health.bg:SetTexture(unpack(C["unitframes"].healthbackdropcolor))
 			end
@@ -76,7 +76,7 @@ E.LoadUFFunctions = function(layout)
 			power.bg = power:CreateTexture(nil, 'BORDER')
 			power.bg:SetAllPoints()
 			power.bg:SetTexture(C["media"].blank)
-			power.bg.multiplier = 0.3
+			power.bg.multiplier = 0.2
 		end
 		
 		if text then

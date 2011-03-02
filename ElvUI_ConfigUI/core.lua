@@ -75,6 +75,7 @@ local function Local(o)
 	
 	--Skin
 	if o =="ElvuiConfigUIskin" then o = ElvuiL.option_skin end
+	if o =="ElvuiConfigUIskindbm" then o = ElvuiL.option_skin_dbm end
 	if o =="ElvuiConfigUIskinkle" then o = ElvuiL.option_skin_kle end
 	if o =="ElvuiConfigUIskinomen" then o = ElvuiL.option_skin_omen end
 	if o =="ElvuiConfigUIskinrecount" then o = ElvuiL.option_skin_recount end
@@ -154,7 +155,8 @@ local function Local(o)
 	if o == "ElvuiConfigUIcastbarunitcastbar" then o = ElvuiL.option_castbar_castbar end
 	if o == "ElvuiConfigUIcastbarcblatency" then o = ElvuiL.option_castbar_latency end
 	if o == "ElvuiConfigUIcastbarcbicons" then o = ElvuiL.option_castbar_icon end
-	if o == "ElvuiConfigUIcastbarwidth" then o = ElvuiL.option_castbar_width end
+	if o == "ElvuiConfigUIcastbarplayerwidth" then o = ElvuiL.option_castbar_playerwidth end
+	if o == "ElvuiConfigUIcastbartargetwidth" then o = ElvuiL.option_castbar_targetwidth end
 	if o == "ElvuiConfigUIcastbarclasscolor" then o = ElvuiL.option_castbar_classcolor end
 	
 	--raidframes

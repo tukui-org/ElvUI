@@ -39,6 +39,7 @@ C["skin"] = {	--Skin addons by Darth Android
 	["skada"] = true,
 	["omen"] = true,
 	["kle"] = true,
+	["dbm"] = true,
 	["hookkleright"] = true,			-- force KLE's top bar anchor to be hooked onto the right chat window
 	["embedright"] = "NONE",				-- Addon to embed to the right frame ("Omen", "Recount", "Skada")
 }
@@ -120,7 +121,8 @@ C["castbar"] = {
 	["unitcastbar"] = true, -- enable Elvui castbar
 		["cblatency"] = false, -- enable castbar latency
 		["cbicons"] = true, -- enable icons on castbar
-		["width"] = C["framesizes"].playtarwidth,
+		["playerwidth"] = C["framesizes"].playtarwidth,
+		["targetwidth"] = C["framesizes"].playtarwidth,
 		["classcolor"] = false, -- classcolor
 		["castbarcolor"] = C["media"].bordercolor, -- Color of player castbar
 		["nointerruptcolor"] = { 0.78, 0.25, 0.25, 0.5 }, -- Color of target castbar

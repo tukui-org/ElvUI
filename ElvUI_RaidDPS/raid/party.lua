@@ -102,7 +102,7 @@ local function Shared(self, unit)
 		
 		local LFDRole = self:CreateTexture(nil, "OVERLAY")
 		LFDRole:Size(6, 6)
-		LFDRole:Point("TOPRIGHT", -2, -2)
+		LFDRole:Point("TOPRIGHT", health, "TOPRIGHT", -2, -2)
 		LFDRole:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\lfdicons.blp")
 		self.LFDRole = LFDRole		
 		

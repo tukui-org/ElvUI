@@ -1,5 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
 	<Script file='kle.lua' />
+	<Script file='dbm.lua' />
 	<Script file='omen.lua' />
 	<Script file='recount.lua' />
 	<Script file='skada.lua' />

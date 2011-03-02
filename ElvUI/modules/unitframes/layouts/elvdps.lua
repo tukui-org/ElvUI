@@ -69,7 +69,7 @@ local function Shared(self, unit)
 		local POWERBAR_WIDTH = PLAYER_WIDTH - (BORDER*2)
 		local POWERBAR_HEIGHT = 10
 		local CASTBAR_HEIGHT = 20
-		local CASTBAR_WIDTH = C["castbar"].width*resscale
+		local CASTBAR_WIDTH = C["castbar"].playerwidth*resscale
 		local portrait_width = 45
 		
 		if C["unitframes"].charportraithealth == true or C["unitframes"].charportrait == false then
@@ -560,7 +560,7 @@ local function Shared(self, unit)
 		local POWERBAR_WIDTH = TARGET_WIDTH - (BORDER*2)
 		local POWERBAR_HEIGHT = 10
 		local CASTBAR_HEIGHT = 20
-		local CASTBAR_WIDTH = C["castbar"].width*resscale
+		local CASTBAR_WIDTH = C["castbar"].targetwidth*resscale
 		local portrait_width = 45
 		
 		if C["unitframes"].charportraithealth == true or C["unitframes"].charportrait == false then
@@ -765,9 +765,7 @@ local function Shared(self, unit)
 	if (unit == "targettarget" or unit == "pet" or unit == "pettarget" or unit == "focustarget" or unit == "focus") then
 		local POWERBAR_WIDTH = SMALL_WIDTH - (BORDER*2)
 		local POWERBAR_HEIGHT = 8
-		local CASTBAR_HEIGHT = 20
-		local CASTBAR_WIDTH = C["castbar"].width*resscale
-	
+
 		--Health Bar
 		local health = E.ContructHealthBar(self, true, nil)
 		health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
