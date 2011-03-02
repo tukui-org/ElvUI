@@ -85,13 +85,10 @@ local function Shared(self, unit)
 
 		health.value:Point("RIGHT", health, "RIGHT", -4, 0)
 		self.Health = health
-
-		--Reposition Backdrop for PowerBar
-		backdrop:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", 0, POWERBAR_HEIGHT)
 		
 		--Power Bar
 		local power = E.ConstructPowerBar(self, true, true)
-		power:Point("TOPLEFT", backdrop, "BOTTOMLEFT", BORDER, -(BORDER + 1))
+		power:Point("TOPLEFT", health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + 1))
 		power:Point("BOTTOMRIGHT", self, "BOTTOMRIGHT", -BORDER, BORDER)
 		power.value:Point("LEFT", health, "LEFT", 4, 0)
 
@@ -115,8 +112,7 @@ local function Shared(self, unit)
 				health.bg:SetDrawLayer("OVERLAY", 7)
 				health.bg:SetParent(overlay)
 			else
-				--Reposition Health and Backdrop
-				backdrop:Point("TOPLEFT", portrait_width, 0)
+				--Reposition Health
 				health:Point("TOPLEFT", portrait_width+BORDER, 0)
 				
 				
@@ -329,10 +325,6 @@ local function Shared(self, unit)
 
 		--Class Resource Bars
 		if C["unitframes"].classbar == true and (E.myclass == "PALADIN" or E.myclass == "SHAMAN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK") then
-			--Reposition Backdrop for ClassBars
-			backdrop:Point("TOPRIGHT", self, "TOPRIGHT", 0, -(POWERBAR_HEIGHT+1))
-			backdrop:Point("TOPLEFT", self, "TOPLEFT", portrait_width, -(POWERBAR_HEIGHT+1))
-			
 			--Reposition Health Bar for ClassBars
 			health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+POWERBAR_HEIGHT+1))
 			health:Point("TOPLEFT", self, "TOPLEFT", portrait_width+BORDER, -(BORDER+POWERBAR_HEIGHT+1))
@@ -340,7 +332,7 @@ local function Shared(self, unit)
 			--Soul Shard / Holy Power Bar
 			if E.myclass == "PALADIN" or E.myclass == "WARLOCK" then
 				local bars = CreateFrame("Frame", nil, self)
-				bars:Point("BOTTOMLEFT", backdrop, "TOPLEFT", BORDER, BORDER+1)
+				bars:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+1)
 				bars:Width(POWERBAR_WIDTH)
 				bars:Height(POWERBAR_HEIGHT - (BORDER*2))
 
@@ -374,23 +366,19 @@ local function Shared(self, unit)
 					bars[i].bg:SetAlpha(.15)
 				end
 				
-				bars.FrameBackdrop = CreateFrame("Frame", nil, bars)
-				bars.FrameBackdrop:SetTemplate("Default")
-				bars.FrameBackdrop:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-				bars.FrameBackdrop:Point("TOPLEFT", -BORDER, BORDER)
-				bars.FrameBackdrop:Point("BOTTOMRIGHT", BORDER, -BORDER)
-				bars.FrameBackdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
+				bars.backdrop = CreateFrame("Frame", nil, bars)
+				bars.backdrop:SetTemplate("Default")
+				bars.backdrop:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
+				bars.backdrop:Point("TOPLEFT", -BORDER, BORDER)
+				bars.backdrop:Point("BOTTOMRIGHT", BORDER, -BORDER)
+				bars.backdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
 				
 				--Reposition the Aggro glow
 				bars:SetScript("OnShow", function()
-					backdrop:Point("TOPRIGHT", self, "TOPRIGHT", 0, -(POWERBAR_HEIGHT+1))
-					backdrop:Point("TOPLEFT", self, "TOPLEFT", portrait_width, -(POWERBAR_HEIGHT+1))
 					health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+POWERBAR_HEIGHT+1))
 					health:Point("TOPLEFT", self, "TOPLEFT", portrait_width+BORDER, -(BORDER+POWERBAR_HEIGHT+1))
 				end)
 				bars:HookScript("OnHide", function()	
-					backdrop:Point("TOPRIGHT", self, "TOPRIGHT")
-					backdrop:Point("TOPLEFT", self, "TOPLEFT", portrait_width, 0)
 					health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
 					health:Point("TOPLEFT", self, "TOPLEFT", portrait_width+BORDER, -BORDER)		
 				end)			
@@ -407,7 +395,7 @@ local function Shared(self, unit)
 			--Rune Bar
 			if E.myclass == "DEATHKNIGHT" then
 				local runes = CreateFrame("Frame", nil, self)
-				runes:Point("BOTTOMLEFT", backdrop, "TOPLEFT", BORDER, BORDER+1)
+				runes:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+1)
 				runes:Width(POWERBAR_WIDTH)
 				runes:Height(POWERBAR_HEIGHT - (BORDER*2))
 
@@ -425,23 +413,19 @@ local function Shared(self, unit)
 					runes[i]:GetStatusBarTexture():SetHorizTile(false)
 				end
 				
-				runes.FrameBackdrop = CreateFrame("Frame", nil, runes)
-				runes.FrameBackdrop:SetTemplate("Default")
-				runes.FrameBackdrop:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-				runes.FrameBackdrop:Point("TOPLEFT", -BORDER, BORDER)
-				runes.FrameBackdrop:Point("BOTTOMRIGHT", BORDER, -BORDER)
-				runes.FrameBackdrop:SetFrameLevel(runes:GetFrameLevel() - 1)
+				runes.backdrop = CreateFrame("Frame", nil, runes)
+				runes.backdrop:SetTemplate("Default")
+				runes.backdrop:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
+				runes.backdrop:Point("TOPLEFT", -BORDER, BORDER)
+				runes.backdrop:Point("BOTTOMRIGHT", BORDER, -BORDER)
+				runes.backdrop:SetFrameLevel(runes:GetFrameLevel() - 1)
 
 				--Reposition the Aggro glow
 				runes:HookScript("OnShow", function()
-					backdrop:Point("TOPRIGHT", self, "TOPRIGHT", 0, -(POWERBAR_HEIGHT+1))
-					backdrop:Point("TOPLEFT", self, "TOPLEFT", portrait_width, -(POWERBAR_HEIGHT+1))
 					health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+POWERBAR_HEIGHT+1))
 					health:Point("TOPLEFT", self, "TOPLEFT", portrait_width+BORDER, -(BORDER+POWERBAR_HEIGHT+1))
 				end)
 				runes:HookScript("OnHide", function()
-					backdrop:Point("TOPRIGHT", self, "TOPRIGHT")
-					backdrop:Point("TOPLEFT", self, "TOPLEFT", portrait_width, 0)
 					health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
 					health:Point("TOPLEFT", self, "TOPLEFT", portrait_width+BORDER, -BORDER)		
 				end)	
@@ -452,7 +436,7 @@ local function Shared(self, unit)
 			--Totem Bar
 			if E.myclass == "SHAMAN" then
 				local totems = CreateFrame("Frame", nil, self)
-				totems:Point("BOTTOMLEFT", backdrop, "TOPLEFT", BORDER, BORDER+1)
+				totems:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+1)
 				totems:Width(POWERBAR_WIDTH)
 				totems:Height(POWERBAR_HEIGHT - (BORDER*2))
 				totems.Destroy = true
@@ -477,23 +461,19 @@ local function Shared(self, unit)
 					totems[i].bg:SetTexture(normTex)
 					totems[i].bg.multiplier = 0.3
 				end
-				totems.FrameBackdrop = CreateFrame("Frame", nil, totems)
-				totems.FrameBackdrop:SetTemplate("Default")
-				totems.FrameBackdrop:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-				totems.FrameBackdrop:SetPoint("TOPLEFT", -BORDER, BORDER)
-				totems.FrameBackdrop:SetPoint("BOTTOMRIGHT", BORDER, -BORDER)
-				totems.FrameBackdrop:SetFrameLevel(totems:GetFrameLevel() - 1)
+				totems.backdrop = CreateFrame("Frame", nil, totems)
+				totems.backdrop:SetTemplate("Default")
+				totems.backdrop:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
+				totems.backdrop:SetPoint("TOPLEFT", -BORDER, BORDER)
+				totems.backdrop:SetPoint("BOTTOMRIGHT", BORDER, -BORDER)
+				totems.backdrop:SetFrameLevel(totems:GetFrameLevel() - 1)
 				
 				--Reposition the Aggro glow
 				totems:HookScript("OnShow", function()
-					backdrop:Point("TOPRIGHT", self, "TOPRIGHT", 0, -(POWERBAR_HEIGHT+1))
-					backdrop:Point("TOPLEFT", self, "TOPLEFT", portrait_width, -(POWERBAR_HEIGHT+1))
 					health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+POWERBAR_HEIGHT+1))
 					health:Point("TOPLEFT", self, "TOPLEFT", portrait_width+BORDER, -(BORDER+POWERBAR_HEIGHT+1))
 				end)
 				totems:HookScript("OnHide", function()
-					backdrop:Point("TOPRIGHT", self, "TOPRIGHT")
-					backdrop:Point("TOPLEFT", self, "TOPLEFT", portrait_width, 0)
 					health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
 					health:Point("TOPLEFT", self, "TOPLEFT", portrait_width+BORDER, -BORDER)		
 				end)
@@ -504,7 +484,7 @@ local function Shared(self, unit)
 			--Eclipse Bar
 			if E.myclass == "DRUID" then
 				local eclipseBar = CreateFrame('Frame', nil, self)
-				eclipseBar:Point("BOTTOMLEFT", backdrop, "TOPLEFT", BORDER, BORDER+1)
+				eclipseBar:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+1)
 				eclipseBar:Width(POWERBAR_WIDTH)
 				eclipseBar:Height(POWERBAR_HEIGHT - (BORDER*2))
 
@@ -526,23 +506,19 @@ local function Shared(self, unit)
 				eclipseBar.Text:SetPoint("CENTER", lunarBar:GetStatusBarTexture(), "RIGHT")
 				eclipseBar.Text:SetParent(lunarBar)
 				
-				eclipseBar.FrameBackdrop = CreateFrame("Frame", nil, eclipseBar)
-				eclipseBar.FrameBackdrop:SetTemplate("Default")
-				eclipseBar.FrameBackdrop:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-				eclipseBar.FrameBackdrop:Point("TOPLEFT", eclipseBar, "TOPLEFT", -BORDER, BORDER)
-				eclipseBar.FrameBackdrop:Point("BOTTOMRIGHT", lunarBar, "BOTTOMRIGHT", BORDER, -BORDER)
-				eclipseBar.FrameBackdrop:SetFrameLevel(eclipseBar:GetFrameLevel() - 1)
+				eclipseBar.backdrop = CreateFrame("Frame", nil, eclipseBar)
+				eclipseBar.backdrop:SetTemplate("Default")
+				eclipseBar.backdrop:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
+				eclipseBar.backdrop:Point("TOPLEFT", eclipseBar, "TOPLEFT", -BORDER, BORDER)
+				eclipseBar.backdrop:Point("BOTTOMRIGHT", lunarBar, "BOTTOMRIGHT", BORDER, -BORDER)
+				eclipseBar.backdrop:SetFrameLevel(eclipseBar:GetFrameLevel() - 1)
 				
 				--Reposition the Aggro glow
 				eclipseBar:HookScript("OnShow", function()
-					backdrop:Point("TOPRIGHT", self, "TOPRIGHT", 0, -(POWERBAR_HEIGHT+1))
-					backdrop:Point("TOPLEFT", self, "TOPLEFT", portrait_width, -(POWERBAR_HEIGHT+1))
 					health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+POWERBAR_HEIGHT+1))
 					health:Point("TOPLEFT", self, "TOPLEFT", portrait_width+BORDER, -(BORDER+POWERBAR_HEIGHT+1))
 				end)
 				eclipseBar:HookScript("OnHide", function()
-					backdrop:Point("TOPRIGHT", self, "TOPRIGHT")
-					backdrop:Point("TOPLEFT", self, "TOPLEFT", portrait_width, 0)
 					health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
 					health:Point("TOPLEFT", self, "TOPLEFT", portrait_width+BORDER, -BORDER)
 				end)
@@ -601,12 +577,9 @@ local function Shared(self, unit)
 		health.value:Point("RIGHT", health, "RIGHT", -4, 0)
 		self.Health = health
 
-		--Reposition Backdrop for PowerBar
-		backdrop:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", 0, POWERBAR_HEIGHT)
-		
 		--Power Bar
 		local power = E.ConstructPowerBar(self, true, true)
-		power:Point("TOPRIGHT", backdrop, "BOTTOMRIGHT", -BORDER, -(BORDER + 1))
+		power:Point("TOPRIGHT", health.backdrop, "BOTTOMRIGHT", -BORDER, -(BORDER + 1))
 		power:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER)
 		power.value:Point("LEFT", health, "LEFT", 4, 0)
 		
@@ -636,8 +609,7 @@ local function Shared(self, unit)
 				health.bg:SetDrawLayer("OVERLAY", 7)
 				health.bg:SetParent(overlay)
 			else
-				--Reposition Health and Backdrop
-				backdrop:Point("TOPRIGHT", -portrait_width, 0)
+				--Reposition Health
 				health:Point("TOPRIGHT", -(portrait_width+BORDER), 0)
 				
 				local portrait = CreateFrame("PlayerModel", nil, self)
@@ -732,7 +704,7 @@ local function Shared(self, unit)
 
 		--Combo Bar
 		local combo = CreateFrame("Frame", nil, self)
-		combo:Point("BOTTOMLEFT", backdrop, "TOPLEFT", BORDER, BORDER+1)
+		combo:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+1)
 		combo:Width(POWERBAR_WIDTH)
 		combo:Height(POWERBAR_HEIGHT - (BORDER*2))
 
@@ -757,12 +729,12 @@ local function Shared(self, unit)
 		combo[4]:SetStatusBarColor(0.65, 0.63, 0.35)
 		combo[5]:SetStatusBarColor(0.33, 0.59, 0.33)
 		
-		combo.FrameBackdrop = CreateFrame("Frame", nil, combo)
-		combo.FrameBackdrop:SetTemplate("Default")
-		combo.FrameBackdrop:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-		combo.FrameBackdrop:Point("TOPLEFT", -2, 2)
-		combo.FrameBackdrop:Point("BOTTOMRIGHT", 2, -2)
-		combo.FrameBackdrop:SetFrameLevel(combo:GetFrameLevel() - 1)
+		combo.backdrop = CreateFrame("Frame", nil, combo)
+		combo.backdrop:SetTemplate("Default")
+		combo.backdrop:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
+		combo.backdrop:Point("TOPLEFT", -2, 2)
+		combo.backdrop:Point("BOTTOMRIGHT", 2, -2)
+		combo.backdrop:SetFrameLevel(combo:GetFrameLevel() - 1)
 
 		--Reposition the Aggro glow	
 		
@@ -774,13 +746,11 @@ local function Shared(self, unit)
 			
 			if ElementsPos["DPSComboBar"]["moved"] == true and E.CreatedMoveEleFrames["DPSComboBar"] then return end
 			combo:ClearAllPoints()
-			combo:Point("BOTTOMLEFT", backdrop, "TOPLEFT", BORDER, BORDER+1)
+			combo:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+1)
 			
-			backdrop:Point("TOPRIGHT", self, "TOPRIGHT", -portrait_width, -(POWERBAR_HEIGHT+1))
 			health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+portrait_width), -(BORDER+POWERBAR_HEIGHT+1))
 		end)
 		combo:HookScript("OnHide", function()
-			backdrop:SetPoint("TOPRIGHT", self, "TOPRIGHT", -portrait_width, 0)	
 			health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+portrait_width), -BORDER)
 		end)			
 		combo:Hide()
@@ -807,11 +777,8 @@ local function Shared(self, unit)
 
 		--Power Bar
 		if unit ~= "pettarget" then
-			--Reposition Backdrop for PowerBar
-			backdrop:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", 0, POWERBAR_HEIGHT)
-			
 			local power = E.ConstructPowerBar(self, true, nil)
-			power:Point("TOPLEFT", backdrop, "BOTTOMLEFT", BORDER, -(BORDER + 1))
+			power:Point("TOPLEFT", health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + 1))
 			power:Point("BOTTOMRIGHT", self, "BOTTOMRIGHT", -BORDER, BORDER)
 
 			self.Power = power
@@ -890,13 +857,10 @@ local function Shared(self, unit)
 
 		health.value:Point("RIGHT", health, "RIGHT", -4, 0)
 		self.Health = health
-
-		--Reposition Backdrop for PowerBar
-		backdrop:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", 0, POWERBAR_HEIGHT)
 		
 		--Power Bar
 		local power = E.ConstructPowerBar(self, true, true)
-		power:Point("TOPLEFT", backdrop, "BOTTOMLEFT", BORDER, -(BORDER + 1))
+		power:Point("TOPLEFT", health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + 1))
 		power:Point("BOTTOMRIGHT", self, "BOTTOMRIGHT", -BORDER, BORDER)
 		power.value:Point("LEFT", health, "LEFT", 4, 0)
 		
@@ -905,10 +869,9 @@ local function Shared(self, unit)
 		--Name & Trinkets
 		if (unit and unit:find('arena%d')) then
 			health:Point("TOPRIGHT", self, "TOPRIGHT", -(TRINKET_WIDTH + 2), -2)
-			backdrop:SetPoint("TOPRIGHT", self, "TOPRIGHT", -TRINKET_WIDTH, 0)		
 			
 			self:FontString("Name", font1, C["unitframes"].fontsize, "THINOUTLINE")
-			self.Name:Point("LEFT", health, "LEFT")
+			self.Name:Point("LEFT", health, "LEFT", 4, 0)
 			self.Name.frequentUpdates = 0.5
 			self:Tag(self.Name, '[Elvui:getnamecolor][Elvui:namemedium]')
 			
@@ -922,7 +885,7 @@ local function Shared(self, unit)
 			trinket.trinketUseAnnounce = true
 			
 			trinket.bg = CreateFrame("Frame", nil, trinket)
-			trinket.bg:Point("TOPLEFT", backdrop, "TOPRIGHT", 2, 0)
+			trinket.bg:Point("TOPLEFT", health.backdrop, "TOPRIGHT", 2, 0)
 			trinket.bg:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT")		
 			trinket.bg:SetTemplate("Default")
 			trinket.bg:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
@@ -950,7 +913,7 @@ local function Shared(self, unit)
 			altpower.PostUpdate = E.AltPowerBarPostUpdate
 			
 			altpower.bg = CreateFrame("Frame", nil, altpower)
-			altpower.bg:Point("BOTTOMLEFT", backdrop, "TOPLEFT", 0, 1)
+			altpower.bg:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", 0, 1)
 			altpower.bg:Point("TOPRIGHT", self, "TOPRIGHT")
 			altpower.bg:SetTemplate("Default")
 			altpower.bg:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
@@ -959,13 +922,11 @@ local function Shared(self, unit)
 			altpower:Point("TOPLEFT", altpower.bg, "TOPLEFT", 2, -2)
 			altpower:Point("BOTTOMRIGHT", altpower.bg, "BOTTOMRIGHT", -2, 2)
 			altpower:HookScript("OnShow", function(self) 			
-				health:Point("TOPRIGHT", self:GetParent(), "TOPRIGHT", -2, -(POWERBAR_HEIGHT + 2))
-				backdrop:SetPoint("TOPRIGHT", self:GetParent(), "TOPRIGHT", 0, -POWERBAR_HEIGHT)		
+				health:Point("TOPRIGHT", self:GetParent(), "TOPRIGHT", -2, -(POWERBAR_HEIGHT + 2))	
 			end)
 			
 			altpower:HookScript("OnHide", function(self) 
-				health:Point("TOPRIGHT", self:GetParent(), "TOPRIGHT", -2, -2)
-				backdrop:SetPoint("TOPRIGHT", self:GetParent(), "TOPRIGHT")					
+				health:Point("TOPRIGHT", self:GetParent(), "TOPRIGHT", -2, -2)			
 			end)
 			
 			self.AltPowerBar = altpower
@@ -1014,10 +975,6 @@ local function Shared(self, unit)
 	--	Main tanks and Main Assists
 	------------------------------------------------------------------------
 	if(self:GetParent():GetName():match"ElvDPSMainTank" or self:GetParent():GetName():match"ElvDPSMainAssist") then
-		--Threat Glow
-		backdrop:CreateShadow("Default")
-		backdrop.shadow:SetFrameStrata("BACKGROUND")
-		
 		--Health Bar
 		local health = E.ContructHealthBar(self, true, nil)
 		health:Point("TOPRIGHT", self, "TOPRIGHT", -2, -2)

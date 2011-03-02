@@ -24,14 +24,6 @@ local function Shared(self, unit)
 	-- Frame Level
 	self:SetFrameLevel(5)
 	
-	--Create Backdrop Frame
-	local backdrop = CreateFrame("Frame", nil, self)
-	backdrop:SetPoint("TOPRIGHT")
-	backdrop:SetPoint("BOTTOMLEFT")
-	backdrop:SetTemplate("Default")
-	backdrop:SetFrameStrata("BACKGROUND")
-	self.backdrop = backdrop
-	
 	--Health Bar
 	local health = E.ContructHealthBar(self, true, true)
 	health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)

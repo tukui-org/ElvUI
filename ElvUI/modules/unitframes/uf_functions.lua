@@ -53,6 +53,12 @@ E.LoadUFFunctions = function(layout)
 		end
 		health.colorDisconnected = true
 		
+		health.backdrop = CreateFrame('Frame', nil, health)
+		health.backdrop:SetTemplate("Default")
+		health.backdrop:Point("TOPRIGHT", health, "TOPRIGHT", 2, 2)
+		health.backdrop:Point("BOTTOMLEFT", health, "BOTTOMLEFT", -2, -2)
+		health.backdrop:SetFrameLevel(health:GetFrameLevel() - 1)		
+		
 		return health
 	end
 
@@ -272,7 +278,7 @@ E.LoadUFFunctions = function(layout)
 		local r, g, b = health:GetStatusBarColor()
 		
 		if C["general"].classcolortheme == true then
-			health:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+			health.backdrop:SetBackdropBorderColor(r, g, b)
 		end
 		
 		if C["unitframes"].classcolor == true and C["unitframes"].healthcolorbyvalue == true and not (UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit)) then
@@ -543,7 +549,7 @@ E.LoadUFFunctions = function(layout)
 					self:SetScript("OnUpdate", nil)
 				end
 				if (not self.debuff) and C["general"].classcolortheme == true then
-					local r, g, b = self:GetParent():GetParent().backdrop:GetBackdropBorderColor()
+					local r, g, b = self:GetParent():GetParent().Health.backdrop:GetBackdropBorderColor()
 					self:SetBackdropBorderColor(r, g, b)
 				end
 				self.elapsed = 0
@@ -771,8 +777,8 @@ E.LoadUFFunctions = function(layout)
 			local r, g, b = GetThreatStatusColor(threat)			
 			if self.shadow then
 				self.shadow:SetBackdropBorderColor(r, g, b)
-			elseif self.backdrop then
-				self.backdrop:SetBackdropBorderColor(r, g, b)
+			elseif self.Health.backdrop then
+				self.Health.backdrop:SetBackdropBorderColor(r, g, b)
 				
 				if self.Power and self.Power.backdrop then
 					self.Power.backdrop:SetBackdropBorderColor(r, g, b)
@@ -781,8 +787,8 @@ E.LoadUFFunctions = function(layout)
 		else		
 			if self.shadow then
 				self.shadow:SetBackdropBorderColor(0, 0, 0)
-			elseif self.backdrop then
-				self.backdrop:SetTemplate("Default")
+			elseif self.Health.backdrop then
+				self.Health.backdrop:SetTemplate("Default")
 				
 				if self.Power and self.Power.backdrop then
 					self.Power.backdrop:SetTemplate("Default")

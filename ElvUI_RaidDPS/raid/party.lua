@@ -32,14 +32,6 @@ local function Shared(self, unit)
 	-- Frame Level
 	self:SetFrameLevel(5)
 	
-	--Create Backdrop Frame
-	local backdrop = CreateFrame("Frame", nil, self)
-	backdrop:SetPoint("TOPRIGHT")
-	backdrop:SetPoint("BOTTOMLEFT")
-	backdrop:SetTemplate("Default")
-	backdrop:SetFrameStrata("BACKGROUND")
-	self.backdrop = backdrop
-	
 	if unit == "raidtarget" then
 		--Health Bar
 		local health = E.ContructHealthBar(self, true, nil)
@@ -78,12 +70,9 @@ local function Shared(self, unit)
 
 		--Power Bar
 		local power = E.ConstructPowerBar(self, true, nil)
-		power:Point("TOPLEFT", backdrop, "BOTTOMLEFT", BORDER, -(BORDER + 1))
+		power:Point("TOPLEFT", health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + 1))
 		power:Point("BOTTOMRIGHT", self, "BOTTOMRIGHT", -BORDER, BORDER)
 		self.Power = power
-		
-		--Reposition Backdrop for PowerBar
-		backdrop:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", 0, POWERBAR_HEIGHT)
 		
 		--Name
 		self:FontString("Name", font1, C["unitframes"].fontsize, "THINOUTLINE")
