@@ -13,6 +13,7 @@ E.LoadUFFunctions = function(layout)
 		health:SetStatusBarTexture(C["media"].normTex)
 		health:SetFrameStrata("LOW")
 		health.frequentUpdates = 0.2
+		health.PostUpdate = E.PostUpdateHealth
 		
 		if C["unitframes"].showsmooth == true then
 			health.Smooth = true
@@ -28,7 +29,6 @@ E.LoadUFFunctions = function(layout)
 		if text then
 			health:FontString("value", C["media"].uffont, C["unitframes"].fontsize, "THINOUTLINE")
 			health.value:SetParent(self)
-			health.PostUpdate = E.PostUpdateHealth
 		end
 		
 		if C["unitframes"].classcolor ~= true then
@@ -55,7 +55,8 @@ E.LoadUFFunctions = function(layout)
 		local power = CreateFrame('StatusBar', nil, self)
 		power:SetStatusBarTexture(C["media"].normTex)
 		power.frequentUpdates = 0.2
-
+		power.PostUpdate = E.PostUpdatePower
+		
 		if C["unitframes"].showsmooth == true then
 			power.Smooth = true
 		end	
@@ -70,7 +71,6 @@ E.LoadUFFunctions = function(layout)
 		if text then
 			power:FontString("value", C["media"].uffont, C["unitframes"].fontsize, "THINOUTLINE")
 			power.value:SetParent(self)
-			power.PostUpdate = E.PostUpdatePower
 		end
 		
 		power.colorDisconnected = true
@@ -82,7 +82,7 @@ E.LoadUFFunctions = function(layout)
 		power.backdrop:Point("TOPRIGHT", power, "TOPRIGHT", 2, 2)
 		power.backdrop:Point("BOTTOMLEFT", power, "BOTTOMLEFT", -2, -2)
 		power.backdrop:SetFrameLevel(power:GetFrameLevel() - 1)
-		
+	
 		return power
 	end	
 		
@@ -91,6 +91,9 @@ E.LoadUFFunctions = function(layout)
 		castbar:SetStatusBarTexture(C["media"].normTex)
 		castbar:Height(height)
 		castbar:Width(width - 4)
+		castbar.CustomDelayText = E.CustomCastDelayText
+		castbar.PostCastStart = E.PostCastStart
+		castbar.PostChannelStart = E.PostCastStart		
 				
 		castbar.bg = CreateFrame("Frame", nil, castbar)
 		castbar.bg:SetTemplate("Default")
@@ -135,11 +138,7 @@ E.LoadUFFunctions = function(layout)
 			
 			castbar:Width(width - button:GetWidth() - 6)
 		end
-		
-		castbar.CustomDelayText = E.CustomCastDelayText
-		castbar.PostCastStart = E.PostCastStart
-		castbar.PostChannelStart = E.PostCastStart
-		
+	
 		return castbar
 	end
 	
@@ -265,6 +264,12 @@ E.LoadUFFunctions = function(layout)
 	end
 
 	E.PostUpdateHealth = function(health, unit, min, max)
+		if C["general"].classcolortheme == true then
+			health:GetParent().backdrop:SetBackdropBorderColor(health:GetStatusBarColor())
+		end
+		
+		if not health.value then return end
+		
 		local header = health:GetParent():GetParent():GetName()
 		if header == "ElvuiHealParty" or header == "ElvuiDPSParty" or header == "ElvuiHealR6R25" or header == "ElvuiDPSR6R25" or header == "ElvuiHealR26R40" or header == "ElvuiDPSR26R40" then --Raid/Party Layouts
 			if not UnitIsConnected(unit) or UnitIsDead(unit) or UnitIsGhost(unit) then
@@ -340,6 +345,12 @@ E.LoadUFFunctions = function(layout)
 		local self = power:GetParent()
 		local pType, pToken, altR, altG, altB = UnitPowerType(unit)
 		local color = E.oUF_colors.power[pToken]
+		
+		if C["general"].classcolortheme == true then
+			power.backdrop:SetBackdropBorderColor(power:GetParent().Health:GetStatusBarColor())
+		end
+		
+		if not power.value then return end		
 	
 		if color then
 			power.value:SetTextColor(color[1], color[2], color[3])
@@ -515,7 +526,7 @@ E.LoadUFFunctions = function(layout)
 					self:SetScript("OnUpdate", nil)
 				end
 				if (not self.debuff) and C["general"].classcolortheme == true then
-					local r, g, b = self:GetParent():GetParent().FrameBorder:GetBackdropBorderColor()
+					local r, g, b = self:GetParent():GetParent().backdrop:GetBackdropBorderColor()
 					self:SetBackdropBorderColor(r, g, b)
 				end
 				self.elapsed = 0
@@ -615,7 +626,7 @@ E.LoadUFFunctions = function(layout)
 				icon:SetBackdropBorderColor(237/255, 234/255, 142/255)
 			else
 				if C["general"].classcolortheme == true then
-					local r, g, b = icon:GetParent():GetParent().FrameBorder:GetBackdropBorderColor()
+					local r, g, b = icon:GetParent():GetParent().backdrop:GetBackdropBorderColor()
 					icon:SetBackdropBorderColor(r, g, b)
 				else
 					icon:SetBackdropBorderColor(unpack(C["media"].bordercolor))
