@@ -270,7 +270,7 @@ E.LoadUFFunctions = function(layout)
 			health:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
 		end
 		
-		if C["unitframes"].classcolor == true and C["unitframes"].healthcolorbyvalue == true then
+		if C["unitframes"].classcolor == true and C["unitframes"].healthcolorbyvalue == true and not (UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit)) then
 			local mu, bg = health.bg.multiplier, health.bg
 			local newr, newg, newb = ElvUF.ColorGradient(min / max, 1, 0, 0, 1, 1, 0, r, g, b)
 	
