@@ -205,6 +205,7 @@ local function Local(o)
 	if o == "ElvuiConfigUIunitframesmendpet" then o = ElvuiL.option_unitframes_mendpet end
 	if o == "ElvuiConfigUIunitframespoweroffset" then o = ElvuiL.option_unitframes_unitframes_poweroffset end
 	if o == "ElvuiConfigUIunitframesclassbar" then o = ElvuiL.option_unitframes_classbar end
+	if o == "ElvuiConfigUIunitframeshealthbackdrop" then o = ElvuiL.option_unitframes_healthbackdrop end
 	if o == "ElvuiConfigUIunitframeshealthbackdropcolor" then o = ElvuiL.option_unitframes_healthbackdropcolor end
 	if o == "ElvuiConfigUIunitframeshealthcolorbyvalue" then o = ElvuiL.option_unitframes_healthcolorbyvalue end
 	if o == "ElvuiConfigUIunitframescombat" then o = ElvuiL.option_unitframes_combat end

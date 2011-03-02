@@ -23,7 +23,12 @@ E.LoadUFFunctions = function(layout)
 			health.bg = health:CreateTexture(nil, 'BORDER')
 			health.bg:SetAllPoints()
 			health.bg:SetTexture(C["media"].blank)
-			health.bg.multiplier = 0.3
+			
+			if C["unitframes"].healthbackdrop ~= true then
+				health.bg.multiplier = 0.3
+			else
+				health.bg:SetTexture(unpack(C["unitframes"].healthbackdropcolor))
+			end
 		end
 		
 		if text then
@@ -271,12 +276,12 @@ E.LoadUFFunctions = function(layout)
 		end
 		
 		if C["unitframes"].classcolor == true and C["unitframes"].healthcolorbyvalue == true and not (UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit)) then
-			local mu, bg = health.bg.multiplier, health.bg
 			local newr, newg, newb = ElvUF.ColorGradient(min / max, 1, 0, 0, 1, 1, 0, r, g, b)
 	
 			health:SetStatusBarColor(newr, newg, newb)
-			if bg and mu then
-				bg:SetVertexColor(newr * mu, newg * mu, newb * mu)
+			if health.bg and health.bg.multiplier then
+				local mu = health.bg.multiplier
+				health.bg:SetVertexColor(newr * mu, newg * mu, newb * mu)
 			end
 		end
 		
