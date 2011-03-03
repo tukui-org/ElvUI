@@ -23,7 +23,7 @@ local function SkinBars(self)
 				local icon2 = _G[frame:GetName().."BarIcon2"]
 				local name = _G[frame:GetName().."BarName"]
 				local timer = _G[frame:GetName().."BarTimer"]
-			
+				
 				if not (icon1.overlay) then
 					icon1.overlay = CreateFrame("Frame", "$parentIcon1Overlay", tbar)
 					icon1.overlay:CreatePanel(template, buttonsize, buttonsize, "BOTTOMRIGHT", tbar, "BOTTOMLEFT", -buttonsize/4, -2)
@@ -92,14 +92,12 @@ local function SkinBars(self)
 					texture:SetTexture(C["media"].normTex)
 					texture.styled=true
 				end
-
+				
+				tbar:SetStatusBarTexture(C["media"].normTex)
 				if not tbar.styled then
 					tbar:Point("TOPLEFT", frame, "TOPLEFT", 2, -2)
 					tbar:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 2)
-					tbar:SetFrameStrata(frame:GetFrameStrata())
-					tbar:SetFrameLevel(frame:GetFrameLevel() + 1)
-					tbar.SetFrameStrata = E.dummy
-					tbar.SetFrameLevel = E.dummy
+					
 					tbar.styled=true
 				end
 
