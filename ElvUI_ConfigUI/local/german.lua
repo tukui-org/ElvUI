@@ -8,6 +8,8 @@
 	ElvuiL.option_general_classtheme = "Rahmenfarbe nach Klasse färben"
 	ElvuiL.option_general_autocustomlagtolerance = "Automatische Anpassung der Blizzard Custom Lag Toleranz an deine Latenz."
 	ElvuiL.option_general_fontscale = "Hauptschriftskalierung"
+	ElvuiL.option_general_override = "Erzwinge eine bestimmte Auflösung (Low, High)"
+	ElvuiL.option_general_layoutoverride = "Erzwinge ein bestimmtes Layout der Einheitenfenster, (DPS, Heal)"
 	
 	--Media
 	ElvuiL.option_media = "Medien"
@@ -21,6 +23,7 @@
 	ElvuiL.option_media_bordercolor = "Farbe der nicht-Einheitenfenster Rahmen"
 	ElvuiL.option_media_altbordercolor = "Farbe der Einheitenfenster Rahmen"
 	ElvuiL.option_media_backdropcolor = "Hintergrundfarbe für alle Frames"
+	ElvuiL.option_unitframes_healthbackdrop = "Aktiviere Farbe für verblassende Hintergründe, andernfalls wird 20% der aktuellen Gesundheitsfarbe verwendet."
 	ElvuiL.option_media_backdropfadecolor = "Farbe für verblassende Hintergründe bei einigen verblassten Fenstern"
 	ElvuiL.option_media_buttonhover = "Texturpfad für die Mouse-Over-Textur auf den Aktionsknöpfen"
 	ElvuiL.option_media_valuecolor = "Farbe der Infotext Werte"
@@ -38,14 +41,15 @@
  	ElvuiL.option_nameplates_goodcolor = "Bedrohung im grünen Bereich, variiert abhängig davon, ob man Tank oder DPS/Heal ist"
 	ElvuiL.option_nameplates_badcolor = "Bedrohung im roten Bereich, variiert abhängig davon, ob man Tank oder DPS/Heal ist"
 	ElvuiL.option_nameplates_transitioncolor = "Bedrohung verlieren/erhalten Farbe"
-
+	ElvuiL.option_nameplates_trackauras = "Verfolge 'Deine' debuffs auf den Namensplaketten."
+	ElvuiL.option_nameplates_trackccauras = "Verfolge 'CC' debuffs auf den Namensplaketten."
 	-- addon skins
 	ElvuiL.option_skin = "Addon-Skins"
 	ElvuiL.option_skin_kle = "KL Encounters"
 	ElvuiL.option_skin_omen = "Omen"
 	ElvuiL.option_skin_recount = "Recount"
 	ElvuiL.option_skin_skada = "Skada"
-	ElvuiL.option_hookkleright = "Erzwingt die Position von KLEs am oberem Leistenanker über dem rechten Chatfenster"
+	ElvuiL.option_hookkleright = "Erzwingt die Position von KLE am oberem Leistenanker über dem rechten Chatfenster"
  
 	-- classtimer
 	ElvuiL.option_classtimer = "Klassentimer"
@@ -91,6 +95,7 @@
 	ElvuiL.option_auras_aurascale = "Text-Skalierung auf  Stärkungs-/Schwächungszaubern"
 	ElvuiL.option_auras_totdebuffs = "Aktiviere Ziel vom Ziel Schwächungszauber"
 	ElvuiL.option_auras_playershowonlydebuffs = "Zeige nur Debuffs auf dem Spielerframe (Benötigt Auraanzeige auf Spielerframe)"
+	ElvuiL.option_auras_playerdebuffsonly = "Zeige nur Deine und CC debuffs auf dem Ziel  (konfigurierbar innerhalb auraFilter.lua)"
 	ElvuiL.option_auras_RaidUnitBuffWatch = "Aktiviere die Anzeige für Stärkungszauber auf den Raidframes"
 	ElvuiL.option_auras_playtarbuffperrow = "Anzahl von Stärkungs/Schwächungszauber in einer Reihe auf dem Spieler/Ziel Einheitenfenster"
 	ElvuiL.option_auras_smallbuffperrow = "Anzahl von Stärkungs/Schwächungszauber in einer Reihe auf dem Ziel des Ziels/Fokus Einheitenfenster"
@@ -122,6 +127,7 @@
 	ElvuiL.option_castbar_castbar = "Aktiviere Zauberleiste"
 	ElvuiL.option_castbar_latency = "Zeige Zauberleisten Latenz"
 	ElvuiL.option_castbar_icon = "Zeige Icons auf der Zauberleiste"
+	ElvuiL.option_castbar_playerwidth = "Breite der Zauberleiste des Spielers"
 	ElvuiL.option_castbar_castermode = "Aktiviere größere Zauberleiste für Zauberklassen"
 	ElvuiL.option_castbar_classcolor = "Zauberleistenfarbe nach Klasse färben"
  
@@ -153,6 +159,7 @@
  	ElvuiL.option_unitframes_healthcolorbyvalue = "Färbe den Lebensbalken nach verbleibenden Leben"
 	ElvuiL.option_unitframes_combat = "Einheitenfenster ausblenden, wenn nicht im Kampf"
 	ElvuiL.option_unitframes_pettarget = "Ziel deines Begleiters anzeigen (nur DPS)"
+	ElvuiL.option_unitframes_portraitonhealthbar = "Zeige das Portrait über der Gesundheitsleiste an (Portrait muss aktiviert sein)"
 	
 	-- frame sizes
 	ElvuiL.option_framesizes = "Einheitenfenstergrößen"
@@ -183,6 +190,7 @@
 	ElvuiL.option_tooltip_xOfs = "X-Versatz des Tooltips (-x = Links, +x = Rechts)"
 	ElvuiL.option_tooltip_yOfs = "Y-Versatz des Tooltips (-y = Runter, +y = Hoch)"
 	ElvuiL.option_tooltip_itemid = "Anzeige der Item ID"
+	ElvuiL.option_tooltip_whotargetting = "Zeige an, wer die Eihneit, die in deiner Gruppe/Raid ist, ins Ziel nimmt."
 	
 	-- others
 	ElvuiL.option_others = "Sonstiges"
@@ -192,7 +200,8 @@
 	ElvuiL.option_others_autoinvite = "Einladungen von Freunden und Gildenmitgliedern automatisch annehmen"
 	ElvuiL.option_others_enablemap = "Aktiviere Karte"
 	ElvuiL.option_others_errorhide = "Verstecke spam Fehlermeldungen in der Mitte des Bildschirms"
-	ElvuiL.option_others_spincam = "Drehe die Kamera wenn man AFK ist"
+	ElvuiL.option_others_announceinterrupt = "Melde deine verwendeten Unterbrechnungsfähigkeiten im Gruppen-Chat"
+	
 	ElvuiL.option_others_bagenable = "Aktiviere All-in-one Tasche"
  
 	-- reminder
@@ -216,7 +225,8 @@
 	ElvuiL.option_actionbar_swaptopbottombar = "Tausche die untere und obere Aktionsleiste"
 	ElvuiL.option_actionbar_macrotext = "Makrotexte auf den Aktionsleisten Buttons anzeigen"
 	ElvuiL.option_actionbar_verticalstance ="Vertikale Haltungsleiste"
-	
+	ElvuiL.option_actionbar_microbar = "Zeige die MicroBar an"
+	ElvuiL.option_actionbar_mousemicro = "Zeige die MicroBar bei mouseover an"
 	-- arena
 	ElvuiL.option_arena = "Arena"
 	ElvuiL.option_arena_st = "Aktiviere gegnerischen Zauberverfolger in der Arena"
@@ -244,6 +254,11 @@
 	ElvuiL.option_chat_sticky = "Behalte einige Chatchannel wenn ein neuer Chat eröffnet wird"
 	ElvuiL.option_chat_rightchat = "Rechtes Chatfenster anzeigen"
 	ElvuiL.option_chat_combathide = "Chatfenster während des Kampfes rausfahren ('Left', 'Right', 'Both', oder 'None'"
+	
+	--Debug
+	ElvuiL.option_debug = "Debug Mode"
+	ElvuiL.option_debug_enabled = "Aktivieren des debug mode, nicht empfohlen!"
+	ElvuiL.option_debug_events = "Schreibe die events in das Chatfenster"
 	
 	-- buttons
 	ElvuiL.option_button_reset = "Zurücksetzen"
