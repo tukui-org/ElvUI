@@ -44,7 +44,10 @@ E.LoadUFFunctions = function(layout)
 			else
 				local r, g, b = unpack(C["unitframes"].healthcolor)
 				health:SetStatusBarColor(r, g, b)
-				health.bg:SetVertexColor(r * health.bg.multiplier, g * health.bg.multiplier, b * health.bg.multiplier)
+				
+				if health.bg and health.bg.multiplier then
+					health.bg:SetVertexColor(r * health.bg.multiplier, g * health.bg.multiplier, b * health.bg.multiplier)
+				end
 			end
 		else
 			health.colorTapping = true	
