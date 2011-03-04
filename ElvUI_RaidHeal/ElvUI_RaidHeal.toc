@@ -7,6 +7,6 @@
 ## OptionalDeps: ElvUI_Dps_Layout
 
 init.lua
-raid\_party.lua
-raid\_raid25.lua
-raid\_raid40.lua
+raid\party.lua
+raid\raid25.lua
+raid\raid40.lua

@@ -1,185 +1,122 @@
 local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 
-local _, ns = ...
-local oUF = ElvUF or ns.oUF or oUF
+local oUF = ElvUF or oUF
 assert(oUF, "ElvUI was unable to locate oUF.")
 
 if not C["raidframes"].enable == true then return end
 if IsAddOnLoaded("ElvUI_Dps_Layout") then return end
 
-local raid_width = E.Scale((ElvuiActionBarBackground:GetWidth() / 5) - 7)*C["raidframes"].scale
-local raid_height = E.Scale(42)*C["raidframes"].scale
+local RAID_WIDTH = ((ElvuiActionBarBackground:GetWidth() / 5) - 2.5)*C["raidframes"].scale
+local RAID_HEIGHT = E.Scale(42)*C["raidframes"].scale
+
+local BORDER = 2
+
 local function Shared(self, unit)
+	local POWERBAR_WIDTH = RAID_WIDTH - (BORDER*2)
+	local POWERBAR_HEIGHT = 8
+		
+	-- Set Colors
 	self.colors = E.oUF_colors
+	
+	-- Register Frames for Click
 	self:RegisterForClicks("AnyUp")
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)
 	
+	-- Setup Menu
 	self.menu = E.SpawnMenu
-
-	-- an update script to all elements
-	self:HookScript("OnShow", E.updateAllElements)
-
-	self:SetBackdrop({bgFile = C["media"].blank, insets = {top = -E.mult, left = -E.mult, bottom = -E.mult, right = -E.mult}})
-	self:SetBackdropColor(0.1, 0.1, 0.1)
 	
-	local health = CreateFrame('StatusBar', nil, self)
-	health:SetHeight(raid_height*.83)
-	health:SetPoint("TOPLEFT")
-	health:SetPoint("TOPRIGHT")
-	health:SetStatusBarTexture(C["media"].normTex)
+	-- Frame Level
+	self:SetFrameLevel(5)
+	
+	--Health Bar
+	local health = E.ContructHealthBar(self, true, true)
+	health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
+	health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
 	if C["raidframes"].gridhealthvertical == true then
 		health:SetOrientation("VERTICAL")
-	end
+	end		
+	health.value:Point("BOTTOM", health, "BOTTOM", 0, 3)
+	health.value:SetFont(C["media"].uffont, (C["raidframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
+	
 	self.Health = health
-	
-	health.bg = health:CreateTexture(nil, 'BORDER')
-	health.bg:SetAllPoints(health)
-	health.bg:SetTexture(C["media"].normTex)
-	
-	self.Health.bg = health.bg
-	
-	health.value = health:CreateFontString(nil, "OVERLAY")
-	health.value:SetPoint("BOTTOM", health, "BOTTOM", 0, E.Scale(4))
-	health.value:SetFont(C["media"].uffont, (C["raidframes"].fontsize*.83)*C["raidframes"].scale, "THINOUTLINE")
-	health.value:SetTextColor(1,1,1)
-	health.value:SetShadowOffset(1, -1)
-	self.Health.value = health.value		
-	
-	health.PostUpdate = E.PostUpdateHealth
-	health.frequentUpdates = 0.3
-	
-	-- Setup Colors
-	if C["unitframes"].classcolor ~= true then
-		health.colorTapping = false
-		health.colorClass = false
-		health:SetStatusBarColor(unpack(C["unitframes"].healthcolor))	
-		self.Health.bg:SetTexture(unpack(C["unitframes"].healthbackdropcolor))
-	else
-		health.colorTapping = true	
-		health.colorClass = true
-		health.colorReaction = true		
-		health.bg.multiplier = 0.3				
-	end
-	health.colorDisconnected = false
-	
-	-- border for all frames
-	local FrameBorder = CreateFrame("Frame", nil, self)
-	FrameBorder:SetPoint("TOPLEFT", self, "TOPLEFT", E.Scale(-2), E.Scale(2))
-	FrameBorder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
-	FrameBorder:SetTemplate("Default")
-	FrameBorder:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-	FrameBorder:SetFrameLevel(2)
-	self.FrameBorder = FrameBorder
-	
-	-- power
-	local power = CreateFrame('StatusBar', nil, self)
-	power:SetPoint("TOPLEFT", health, "BOTTOMLEFT", 0, E.Scale(-1)+(-E.mult*2))
-	power:SetPoint("TOPRIGHT", health, "BOTTOMRIGHT", 0, E.Scale(-1)+(-E.mult*2))
-	power:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", 0, 0)
-	power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 0, 0)
-	power:SetStatusBarTexture(C["media"].normTex)
-	self.Power = power
-	if C["raidframes"].hidenonmana == true then
-		power.PostUpdate = E.PostUpdatePower
-	end
-	-- border between health and power
-	self.HealthBorder = CreateFrame("Frame", nil, power)
-	self.HealthBorder:SetPoint("TOPLEFT", health, "BOTTOMLEFT", 0, -E.mult)
-	self.HealthBorder:SetPoint("TOPRIGHT", health, "BOTTOMRIGHT", 0, -E.mult)
-	self.HealthBorder:SetPoint("BOTTOMLEFT", power, "TOPLEFT", 0, E.mult)
-	self.HealthBorder:SetPoint("BOTTOMRIGHT", power, "TOPRIGHT", 0, E.mult)
-	self.HealthBorder:SetTemplate("Default")
-	self.HealthBorder:SetBackdropBorderColor(unpack(C["media"].altbordercolor))	
-	
-	power.frequentUpdates = 0.3
+			
+	--Power Bar
+	local power = E.ConstructPowerBar(self, true, nil)
+	power:Point("TOPLEFT", health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + 1))
+	power:Point("BOTTOMRIGHT", self, "BOTTOMRIGHT", -BORDER, BORDER)
 
-	power.bg = self.Power:CreateTexture(nil, "BORDER")
-	power.bg:SetAllPoints(power)
-	power.bg:SetTexture(C["media"].normTex)
-	power.bg.multiplier = 0.3
-	self.Power.bg = power.bg
-	
-	power.colorPower = true
-	power.colorTapping = false
-	power.colorDisconnected = true
-	
-	local name = health:CreateFontString(nil, "OVERLAY")
-    name:SetPoint("TOP", health, 0, E.Scale(-2))
-	name:SetFont(C["media"].uffont, C["raidframes"].fontsize*C["raidframes"].scale, "THINOUTLINE")
-	name:SetShadowOffset(1, -1)
-	name.frequentUpdates = 0.3
-	self:Tag(name, "[Elvui:getnamecolor][Elvui:nameshort]")
-	self.Name = name
-	
+	self.Power = power
+
+	--Name
+	self:FontString("Name", C["media"].uffont, (C["unitframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
+	self.Name:Point("TOP", health, "TOP", 0, -3)
+	self.Name.frequentUpdates = 0.3
+	self:Tag(self.Name, "[Elvui:getnamecolor][Elvui:nameshort]")
+
 	if C["raidframes"].role == true then
-		local LFDRole = self.Health:CreateTexture(nil, "OVERLAY")
-		LFDRole:SetHeight(E.Scale(6))
-		LFDRole:SetWidth(E.Scale(6))
-		LFDRole:SetPoint("TOP", self.Name, "BOTTOM", 0, E.Scale(-2))
+		local LFDRole = self:CreateTexture(nil, "OVERLAY")
+		LFDRole:Size(6, 6)
+		LFDRole:Point("TOP", self.Name, "BOTTOM", 0, -1)
 		LFDRole:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\lfdicons.blp")
 		self.LFDRole = LFDRole
 	end
 	
-    if C["unitframes"].aggro == true then
-		table.insert(self.__elements, E.UpdateThreat)
-		self:RegisterEvent('PLAYER_TARGET_CHANGED', E.UpdateThreat)
-		self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', E.UpdateThreat)
-		self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', E.UpdateThreat)
-	end
-	
-	if C["unitframes"].showsymbols == true then
-		local RaidIcon = health:CreateTexture(nil, 'OVERLAY')
-		RaidIcon:SetHeight(E.Scale(15)*C["raidframes"].scale)
-		RaidIcon:SetWidth(E.Scale(15)*C["raidframes"].scale)
-		RaidIcon:SetPoint('CENTER', self, 'TOP', 0, 3)
-		RaidIcon:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\raidicons.blp')
-		self.RaidIcon = RaidIcon
-	end
+	table.insert(self.__elements, E.UpdateThreat)
+	self:RegisterEvent('PLAYER_TARGET_CHANGED', E.UpdateThreat)
+	self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', E.UpdateThreat)
+	self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', E.UpdateThreat)
+
+
+	local RaidIcon = self:CreateTexture(nil, 'OVERLAY')
+	RaidIcon:Size(15*C["raidframes"].scale, 15*C["raidframes"].scale)
+	RaidIcon:SetPoint('CENTER', self, 'TOP')
+	RaidIcon:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\raidicons.blp')
+	self.RaidIcon = RaidIcon
 	
 	local ReadyCheck = self.Health:CreateTexture(nil, "OVERLAY")
 	ReadyCheck:SetHeight(C["raidframes"].fontsize)
 	ReadyCheck:SetWidth(C["raidframes"].fontsize)
-	ReadyCheck:SetPoint('CENTER', self.Health, 'CENTER', 0, -4)
+	ReadyCheck:Point('TOP', self.Name, 'BOTTOM', 0, -2)
 	self.ReadyCheck = ReadyCheck
 	
 	if C["unitframes"].debuffhighlight == true then
-		local dbh = health:CreateTexture(nil, "OVERLAY", health)
-		dbh:SetAllPoints(health)
-		dbh:SetTexture(C["media"].normTex)
+		local dbh = self:CreateTexture(nil, "OVERLAY")
+		dbh:SetAllPoints()
+		dbh:SetTexture(C["media"].blank)
 		dbh:SetBlendMode("ADD")
 		dbh:SetVertexColor(0,0,0,0)
 		self.DebuffHighlight = dbh
 		self.DebuffHighlightFilter = true
-		self.DebuffHighlightAlpha = 0.4		
+		self.DebuffHighlightAlpha = 0.35
 	end
-		
+
 	--Heal Comm
 	if C["raidframes"].healcomm == true then
-		local mhpb = CreateFrame('StatusBar', nil, self.Health)
+		local mhpb = CreateFrame('StatusBar', nil, health)
 		if C["raidframes"].gridhealthvertical == true then
 			mhpb:SetOrientation("VERTICAL")
-			mhpb:SetPoint('BOTTOM', self.Health:GetStatusBarTexture(), 'TOP', 0, 0)
-			mhpb:SetHeight(raid_height)
+			mhpb:SetPoint('BOTTOM', health:GetStatusBarTexture(), 'TOP', 0, 0)
+			mhpb:SetHeight(RAID_HEIGHT)
 		else
-			mhpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
-			mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)		
+			mhpb:SetPoint('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
+			mhpb:SetPoint('TOPLEFT', health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)		
 		end
-		mhpb:SetWidth(raid_width)
-		mhpb:SetStatusBarTexture(C["media"].normTex)
+		mhpb:SetWidth(RAID_WIDTH - (BORDER*2))
+		mhpb:SetStatusBarTexture(C["media"].blank)
 		mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
 
-		local ohpb = CreateFrame('StatusBar', nil, self.Health)
+		local ohpb = CreateFrame('StatusBar', nil, health)
 		if C["raidframes"].gridhealthvertical == true then		
 			ohpb:SetOrientation("VERTICAL")
 			ohpb:SetPoint('BOTTOM', mhpb:GetStatusBarTexture(), 'TOP', 0, 0)
-			ohpb:SetHeight(raid_height)
+			ohpb:SetHeight(RAID_HEIGHT)
 		else
 			ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
 			ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)		
 		end
-		ohpb:SetWidth(raid_width)
-		ohpb:SetStatusBarTexture(C["media"].normTex)
+		ohpb:SetWidth(RAID_WIDTH)
+		ohpb:SetStatusBarTexture(C["media"].blank)
 		ohpb:SetStatusBarColor(0, 1, 0, 0.25)
 
 		self.HealPrediction = {
@@ -189,13 +126,11 @@ local function Shared(self, unit)
 		}
 	end
 	
-	-- Raid Debuffs (big middle icon)
+	-- Raid Debuffs
 	local RaidDebuffs = CreateFrame('Frame', nil, self)
-	RaidDebuffs:Height(raid_height*0.6)
-	RaidDebuffs:Width(raid_height*0.6)
+	RaidDebuffs:Height(RAID_HEIGHT*0.6)
+	RaidDebuffs:Width(RAID_HEIGHT*0.6)
 	RaidDebuffs:Point('BOTTOM', self, 'BOTTOM', 0, 1)
-	RaidDebuffs:SetFrameStrata(health:GetFrameStrata())
-	RaidDebuffs:SetFrameLevel(health:GetFrameLevel() + 2)
 	
 	RaidDebuffs:SetTemplate("Default")
 	
@@ -204,42 +139,21 @@ local function Shared(self, unit)
 	RaidDebuffs.icon:Point("TOPLEFT", 2, -2)
 	RaidDebuffs.icon:Point("BOTTOMRIGHT", -2, 2)
 	
-	RaidDebuffs.count = RaidDebuffs:CreateFontString(nil, 'OVERLAY')
-	RaidDebuffs.count:SetFont(C["media"].uffont, C["general"].fontscale*0.75, "THINOUTLINE")
-	RaidDebuffs.count:SetPoint('BOTTOMRIGHT', RaidDebuffs, 'BOTTOMRIGHT', 0, 2)
+	RaidDebuffs.count = RaidDebuffs:FontString('count', C["media"].uffont, C["general"].fontscale*0.75, "THINOUTLINE")
+	RaidDebuffs.count:Point('BOTTOMRIGHT', RaidDebuffs, 'BOTTOMRIGHT', 0, 2)
 	RaidDebuffs.count:SetTextColor(1, .9, 0)
 	
 	RaidDebuffs:FontString('time', C["media"].uffont, C["general"].fontscale*0.75, "THINOUTLINE")
 	RaidDebuffs.time:SetPoint('CENTER')
 	RaidDebuffs.time:SetTextColor(1, .9, 0)
 	
-	self.RaidDebuffs = RaidDebuffs
-
+	self.RaidDebuffs = RaidDebuffs	
+				
 	if C["raidframes"].showrange == true then
 		local range = {insideAlpha = 1, outsideAlpha = C["raidframes"].raidalphaoor}
 		self.Range = range
 	end
-	
-	if C["unitframes"].showsmooth == true then
-		health.Smooth = true
-		if self.Power then
-			power.Smooth = true
-		end
-	end	
-	
-	if C["auras"].raidunitbuffwatch == true then
-		E.createAuraWatch(self,unit)
-    end
-	
-	if C["raidframes"].hidenonmana == true then
-		self:RegisterEvent("UNIT_DISPLAYPOWER", E.CheckPower)	
-	end
-	
-	-- execute an update on every raids unit if party or raid member changed
-	-- should fix issues with names/symbols/etc not updating introduced with 4.0.3 patch
-	self:RegisterEvent("PARTY_MEMBERS_CHANGED", E.updateAllElements)
-	self:RegisterEvent("RAID_ROSTER_UPDATE", E.updateAllElements)
-	
+
 	return self
 end
 
@@ -247,33 +161,29 @@ end
 oUF:RegisterStyle('ElvuiHealR6R25', Shared)
 oUF:Factory(function(self)
 	oUF:SetActiveStyle("ElvuiHealR6R25")	
-	local yOffset = 0
-	if C["castbar"].castermode == true and (HealElementsCharPos and HealElementsCharPos["PlayerCastBar"] ~= true) then
-		yOffset = yOffset + 28
-	end
 	local raid = self:SpawnHeader("ElvuiHealR6R25", nil, "custom [@raid6,noexists][@raid26,exists] hide;show",
 		'oUF-initialConfigFunction', [[
 			local header = self:GetParent()
 			self:SetWidth(header:GetAttribute('initial-width'))
 			self:SetHeight(header:GetAttribute('initial-height'))
 		]],
-		'initial-width', raid_width,
-		'initial-height', raid_height,	
+		'initial-width', RAID_WIDTH,
+		'initial-height', RAID_HEIGHT,	
 		"showRaid", true, 
 		"showParty", true,
 		"showPlayer", C["raidframes"].showplayerinparty,
-		"xoffset", E.Scale(6),
-		"yOffset", E.Scale(-6),
+		"xoffset", 3,
+		"yOffset", -3,
 		"point", "LEFT",
 		"groupFilter", "1,2,3,4,5",
 		"groupingOrder", "1,2,3,4,5",
 		"groupBy", "GROUP",
 		"maxColumns", 5,
 		"unitsPerColumn", 5,
-		"columnSpacing", E.Scale(6),
+		"columnSpacing", 3,
 		"columnAnchorPoint", "TOP"		
 	)
-	raid:SetPoint("BOTTOM", ElvuiActionBarBackground, "TOP", 0, E.Scale(6+yOffset))	
+	raid:Point("BOTTOM", ElvuiActionBarBackground, "TOP", 0, 6)	
 	
 	local function ChangeVisibility(visibility)
 		if(visibility) then

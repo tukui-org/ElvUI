@@ -11,11 +11,6 @@ local font2 = C["media"].font
 local normTex = C["media"].normTex
 local glowTex = C["media"].glowTex
 
-local backdrop = {
-	bgFile = C["media"].blank,
-	insets = {top = -E.mult, left = -E.mult, bottom = -E.mult, right = -E.mult},
-}
-
 local resscale = 1
 if E.lowversion == true then resscale = 0.88 end
 
@@ -373,7 +368,6 @@ local function Shared(self, unit)
 				bars.backdrop:Point("BOTTOMRIGHT", BORDER, -BORDER)
 				bars.backdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
 				
-				--Reposition the Aggro glow
 				bars:SetScript("OnShow", function()
 					health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+POWERBAR_HEIGHT+1))
 					health:Point("TOPLEFT", self, "TOPLEFT", portrait_width+BORDER, -(BORDER+POWERBAR_HEIGHT+1))
@@ -420,7 +414,6 @@ local function Shared(self, unit)
 				runes.backdrop:Point("BOTTOMRIGHT", BORDER, -BORDER)
 				runes.backdrop:SetFrameLevel(runes:GetFrameLevel() - 1)
 
-				--Reposition the Aggro glow
 				runes:HookScript("OnShow", function()
 					health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+POWERBAR_HEIGHT+1))
 					health:Point("TOPLEFT", self, "TOPLEFT", portrait_width+BORDER, -(BORDER+POWERBAR_HEIGHT+1))
@@ -468,7 +461,6 @@ local function Shared(self, unit)
 				totems.backdrop:SetPoint("BOTTOMRIGHT", BORDER, -BORDER)
 				totems.backdrop:SetFrameLevel(totems:GetFrameLevel() - 1)
 				
-				--Reposition the Aggro glow
 				totems:HookScript("OnShow", function()
 					health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+POWERBAR_HEIGHT+1))
 					health:Point("TOPLEFT", self, "TOPLEFT", portrait_width+BORDER, -(BORDER+POWERBAR_HEIGHT+1))
@@ -512,8 +504,7 @@ local function Shared(self, unit)
 				eclipseBar.backdrop:Point("TOPLEFT", eclipseBar, "TOPLEFT", -BORDER, BORDER)
 				eclipseBar.backdrop:Point("BOTTOMRIGHT", lunarBar, "BOTTOMRIGHT", BORDER, -BORDER)
 				eclipseBar.backdrop:SetFrameLevel(eclipseBar:GetFrameLevel() - 1)
-				
-				--Reposition the Aggro glow
+
 				eclipseBar:HookScript("OnShow", function()
 					health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+POWERBAR_HEIGHT+1))
 					health:Point("TOPLEFT", self, "TOPLEFT", portrait_width+BORDER, -(BORDER+POWERBAR_HEIGHT+1))
@@ -735,8 +726,6 @@ local function Shared(self, unit)
 		combo.backdrop:Point("TOPLEFT", -2, 2)
 		combo.backdrop:Point("BOTTOMRIGHT", 2, -2)
 		combo.backdrop:SetFrameLevel(combo:GetFrameLevel() - 1)
-
-		--Reposition the Aggro glow	
 		
 		--[[This is a little differant than everything else because we have to take into account 
 		the combobar is movable with the /moveele command, this should make it work correctly only 
@@ -987,7 +976,7 @@ local function Shared(self, unit)
 	
 		--Name
 		self:FontString("Name", font1, C["unitframes"].fontsize, "THINOUTLINE")
-		self.Name:Point("CENTER", health, "CENTER", 0, 2)
+		self.Name:SetPoint("CENTER", health, "CENTER")
 		self.Name.frequentUpdates = 0.5
 		self:Tag(self.Name, '[Elvui:getnamecolor][Elvui:namemedium]')			
 	end
