@@ -172,16 +172,16 @@ local function Shared(self, unit)
 			self.Castbar = castbar
 		end
 		
-		-- Debuff Highlight (Overlays Health Bar)
+		-- Debuff Highlight
 		if C["unitframes"].debuffhighlight == true then
-			local dbh = health:CreateTexture(nil, "OVERLAY")
+			local dbh = self:CreateTexture(nil, "OVERLAY")
 			dbh:SetAllPoints()
 			dbh:SetTexture(C["media"].blank)
 			dbh:SetBlendMode("ADD")
 			dbh:SetVertexColor(0,0,0,0)
 			self.DebuffHighlight = dbh
 			self.DebuffHighlightFilter = true
-			self.DebuffHighlightAlpha = 0.4		
+			self.DebuffHighlightAlpha = 0.35
 		end
 
 		--Combat Feedback
@@ -667,16 +667,16 @@ local function Shared(self, unit)
 			self.Castbar = castbar
 		end
 		
-		-- Debuff Highlight (Overlays Health Bar)
+		-- Debuff Highlight
 		if C["unitframes"].debuffhighlight == true then
-			local dbh = health:CreateTexture(nil, "OVERLAY")
+			local dbh = self:CreateTexture(nil, "OVERLAY")
 			dbh:SetAllPoints()
 			dbh:SetTexture(C["media"].blank)
 			dbh:SetBlendMode("ADD")
 			dbh:SetVertexColor(0,0,0,0)
 			self.DebuffHighlight = dbh
 			self.DebuffHighlightFilter = true
-			self.DebuffHighlightAlpha = 0.4		
+			self.DebuffHighlightAlpha = 0.35	
 		end
 
 		--Combat Feedback
@@ -806,16 +806,16 @@ local function Shared(self, unit)
 			self.Debuffs = debuffs
 		end
 	
-		-- Debuff Highlight (Overlays Health Bar)
+		-- Debuff Highlight
 		if C["unitframes"].debuffhighlight == true then
-			local dbh = health:CreateTexture(nil, "OVERLAY")
+			local dbh = self:CreateTexture(nil, "OVERLAY")
 			dbh:SetAllPoints()
 			dbh:SetTexture(C["media"].blank)
 			dbh:SetBlendMode("ADD")
 			dbh:SetVertexColor(0,0,0,0)
 			self.DebuffHighlight = dbh
 			self.DebuffHighlightFilter = true
-			self.DebuffHighlightAlpha = 0.4		
+			self.DebuffHighlightAlpha = 0.35
 		end
 		
 		if unit == "pet" then
@@ -835,6 +835,12 @@ local function Shared(self, unit)
 				self:HookScript("OnEnter", function(self) E.Fader(self, true) end)
 				self:HookScript("OnLeave", function(self) E.Fader(self, false) end)
 			end
+		elseif unit == "focus" and C["castbar"].unitcastbar == true	then
+			--Cast Bar
+			local castbar = E.ConstructCastBar(self, PLAYER_WIDTH, 20, "LEFT")
+			castbar:Point("TOP", UIParent, "TOP", 0, -150)
+			
+			self.Castbar = castbar
 		end
 	end
 	

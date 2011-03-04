@@ -45,7 +45,7 @@ local function Shared(self, unit)
 		self.Name.frequentUpdates = 0.5
 		self:Tag(self.Name, '[Elvui:getnamecolor][Elvui:namemedium]')
 
-		-- Debuff Highlight (Overlays Health Bar)
+		-- Debuff Highlight
 		if C["unitframes"].debuffhighlight == true then
 			local dbh = self:CreateTexture(nil, "OVERLAY")
 			dbh:SetAllPoints()
@@ -54,7 +54,7 @@ local function Shared(self, unit)
 			dbh:SetVertexColor(0,0,0,0)
 			self.DebuffHighlight = dbh
 			self.DebuffHighlightFilter = true
-			self.DebuffHighlightAlpha = 0.4		
+			self.DebuffHighlightAlpha = 0.35
 		end		
 	else
 		local POWERBAR_WIDTH = PARTY_WIDTH - (BORDER*2)
@@ -134,13 +134,13 @@ local function Shared(self, unit)
 		
 		if C["unitframes"].debuffhighlight == true then
 			local dbh = self:CreateTexture(nil, "OVERLAY")
-			dbh:SetAllPoints(health)
+			dbh:SetAllPoints()
 			dbh:SetTexture(C["media"].blank)
 			dbh:SetBlendMode("ADD")
 			dbh:SetVertexColor(0,0,0,0)
 			self.DebuffHighlight = dbh
 			self.DebuffHighlightFilter = true
-			self.DebuffHighlightAlpha = 0.4		
+			self.DebuffHighlightAlpha = 0.35
 		end
 		
 		if C["raidframes"].showrange == true then

@@ -109,13 +109,13 @@ local function Shared(self, unit)
 
 	if C["unitframes"].debuffhighlight == true then
 		local dbh = self:CreateTexture(nil, "OVERLAY")
-		dbh:SetAllPoints(health)
-		dbh:SetTexture(C["media"].normTex)
+		dbh:SetAllPoints()
+		dbh:SetTexture(C["media"].blank)
 		dbh:SetBlendMode("ADD")
 		dbh:SetVertexColor(0,0,0,0)
 		self.DebuffHighlight = dbh
 		self.DebuffHighlightFilter = true
-		self.DebuffHighlightAlpha = 0.4		
+		self.DebuffHighlightAlpha = 0.35
 	end
 	
 	if C["raidframes"].griddps ~= true then

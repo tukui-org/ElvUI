@@ -69,6 +69,7 @@ E.LoadUFFunctions = function(layout)
 		local power = CreateFrame('StatusBar', nil, self)
 		power:SetStatusBarTexture(C["media"].normTex)
 		power.frequentUpdates = 0.2
+		power:SetFrameStrata("LOW")
 		power.PostUpdate = E.PostUpdatePower
 		
 		if C["unitframes"].showsmooth == true then
