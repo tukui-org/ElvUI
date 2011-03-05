@@ -434,6 +434,13 @@ local function StyleTotemActionButton(button, index)
 end
 hooksecurefunc("MultiCastActionButton_Update",function(actionButton, actionId, actionIndex, slot) StyleTotemActionButton(actionButton,actionIndex) end)
 
+local function FixBackdrop(button)
+	if button:GetName() and button:GetName():find("MultiCast") and button:GetNormalTexture() then
+		button:GetNormalTexture():SetAlpha(0)
+	end
+end
+hooksecurefunc("ActionButton_ShowGrid", FixBackdrop)
+
 -- Skin the summon and recall buttons
 local function StyleTotemSpellButton(button, index)
 	if not button then return end
