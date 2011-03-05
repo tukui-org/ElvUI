@@ -201,7 +201,7 @@ oUF:Factory(function(self)
 				local header = self:GetParent()
 				self:SetWidth(%d)
 				self:SetHeight(%d)
-			]]):format(party_width, party_height),	
+			]]):format(RAID_WIDTH, RAID_HEIGHT),	
 			"showRaid", true, 
 			"showParty", true,
 			"showSolo", false,
