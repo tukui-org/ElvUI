@@ -109,9 +109,8 @@ local function Shared(self, unit)
 		--Raid Icon
 		local RaidIcon = self:CreateTexture(nil, "OVERLAY")
 		RaidIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\raidicons.blp") 
-		RaidIcon:Size(30, 30)
-		RaidIcon:SetAlpha(0.3)
-		RaidIcon:SetPoint("CENTER", health, "CENTER")
+		RaidIcon:Size(18, 18)
+		RaidIcon:Point("CENTER", health, "TOP", 0, BORDER)
 		self.RaidIcon = RaidIcon
 
 		local ReadyCheck = self:CreateTexture(nil, "OVERLAY")

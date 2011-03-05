@@ -112,6 +112,7 @@ local function Shared(self, unit)
 				
 				
 				local portrait = CreateFrame("PlayerModel", nil, self)	
+				portrait:SetFrameStrata("LOW")
 				portrait.backdrop = CreateFrame("Frame", nil, portrait)
 				portrait.backdrop:SetTemplate("Default")
 				portrait.backdrop:SetPoint("TOPLEFT", self, "TOPLEFT")
@@ -328,6 +329,7 @@ local function Shared(self, unit)
 			if E.myclass == "PALADIN" or E.myclass == "WARLOCK" then
 				local bars = CreateFrame("Frame", nil, self)
 				bars:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+1)
+				bars:SetFrameStrata("LOW")
 				bars:Width(POWERBAR_WIDTH)
 				bars:Height(POWERBAR_HEIGHT - (BORDER*2))
 
@@ -390,6 +392,7 @@ local function Shared(self, unit)
 			if E.myclass == "DEATHKNIGHT" then
 				local runes = CreateFrame("Frame", nil, self)
 				runes:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+1)
+				runes:SetFrameStrata("LOW")
 				runes:Width(POWERBAR_WIDTH)
 				runes:Height(POWERBAR_HEIGHT - (BORDER*2))
 
@@ -430,6 +433,7 @@ local function Shared(self, unit)
 			if E.myclass == "SHAMAN" then
 				local totems = CreateFrame("Frame", nil, self)
 				totems:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+1)
+				totems:SetFrameStrata("LOW")
 				totems:Width(POWERBAR_WIDTH)
 				totems:Height(POWERBAR_HEIGHT - (BORDER*2))
 				totems.Destroy = true
@@ -438,7 +442,9 @@ local function Shared(self, unit)
 					totems[i] = CreateFrame("StatusBar", nil, totems)
 					totems[i]:SetHeight(totems:GetHeight())
 					totems[i]:SetWidth(E.Scale(totems:GetWidth() - 3) / 4)
-
+					totems[i]:SetFrameStrata(self:GetFrameStrata())
+					totems[i]:SetFrameLevel(self:GetFrameLevel())
+					
 					if (i == 1) then
 						totems[i]:SetPoint("LEFT", totems)
 					else
@@ -477,6 +483,7 @@ local function Shared(self, unit)
 			if E.myclass == "DRUID" then
 				local eclipseBar = CreateFrame('Frame', nil, self)
 				eclipseBar:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+1)
+				eclipseBar:SetFrameStrata("LOW")
 				eclipseBar:Width(POWERBAR_WIDTH)
 				eclipseBar:Height(POWERBAR_HEIGHT - (BORDER*2))
 
@@ -628,7 +635,7 @@ local function Shared(self, unit)
 				health:Point("TOPRIGHT", -(portrait_width+BORDER), -BORDER)
 				
 				local portrait = CreateFrame("PlayerModel", nil, self)
-				
+				portrait:SetFrameStrata("LOW")
 				portrait.backdrop = CreateFrame("Frame", nil, portrait)
 				portrait.backdrop:SetTemplate("Default")
 				portrait.backdrop:SetPoint("TOPRIGHT", self, "TOPRIGHT")
@@ -720,6 +727,7 @@ local function Shared(self, unit)
 		--Combo Bar
 		local combo = CreateFrame("Frame", nil, self)
 		combo:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+1)
+		combo:SetFrameStrata("LOW")
 		combo:Width(POWERBAR_WIDTH)
 		combo:Height(POWERBAR_HEIGHT - (BORDER*2))
 
@@ -1033,16 +1041,10 @@ local function Shared(self, unit)
 	--	All Units
 	------------------------------------------------------------------------
 	if unit ~= "party" then
-		local InvFrame = CreateFrame("Frame", nil, self)
-		InvFrame:SetFrameLevel(self:GetFrameLevel() - 1)
-		InvFrame:SetAllPoints(self.Health)
-		
-		-- symbols, now put the symbol on the frame we created above.
-		local RaidIcon = InvFrame:CreateTexture(nil, "OVERLAY")
+		local RaidIcon = self:CreateTexture(nil, "OVERLAY")
 		RaidIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\raidicons.blp") 
-		RaidIcon:Size(30, 30)
-		RaidIcon:SetAlpha(0.3)
-		RaidIcon:SetPoint("CENTER")
+		RaidIcon:Size(18, 18)
+		RaidIcon:Point("CENTER", self.Health, "TOP", 0, BORDER)
 		self.RaidIcon = RaidIcon
 	end
 		
