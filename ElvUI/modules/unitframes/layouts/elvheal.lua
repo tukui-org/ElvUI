@@ -1058,43 +1058,37 @@ local function LoadHealLayout()
 	if E.LoadUFFunctions then E.LoadUFFunctions("ElvHeal") end
 	oUF:RegisterStyle('Elv', Shared)
 
-	local yoffset = 0
-
-	if C["actionbar"].bottomrows == 1 then
-		yoffset = yoffset + 30
-	end
-
 	-- Player
 	local player = oUF:Spawn('player', "ElvHeal_player")
-	player:SetPoint("BOTTOMRIGHT", ElvuiActionBarBackground, "TOPLEFT", E.Scale(-35),E.Scale(205) + yoffset)
-	player:SetSize(PLAYER_WIDTH, PLAYER_HEIGHT)
+	player:Point("BOTTOMRIGHT", ElvuiSplitActionBarLeftBackground, "TOPRIGHT", 0, 200)
+	player:Size(PLAYER_WIDTH, PLAYER_HEIGHT)
 
 	-- Target
 	local target = oUF:Spawn('target', "ElvHeal_target")
-	target:SetPoint("BOTTOMLEFT", ElvuiActionBarBackground, "TOPRIGHT", E.Scale(35),E.Scale(205) + yoffset)
+	target:Point("BOTTOMLEFT", ElvuiSplitActionBarRightBackground, "TOPLEFT", 0, 200)
 	target:SetSize(TARGET_WIDTH, TARGET_HEIGHT)
 
 	-- Target's Target
 	local tot = oUF:Spawn('targettarget', "ElvHeal_targettarget")
-	tot:SetPoint("TOPRIGHT", ElvHeal_target, "BOTTOMRIGHT", 0,E.Scale(-42))
-	tot:SetSize(SMALL_WIDTH, SMALL_HEIGHT)
+	tot:Point("TOPRIGHT", ElvHeal_target, "BOTTOMRIGHT", 0, -42)
+	tot:Size(SMALL_WIDTH, SMALL_HEIGHT)
 	
 	-- Focus
 	local focus = oUF:Spawn('focus', "ElvHeal_focus")
-	focus:SetPoint("TOPLEFT", ElvHeal_targettarget, "BOTTOMLEFT", 0,E.Scale(-32))
-	focus:SetSize(SMALL_WIDTH, SMALL_HEIGHT)
+	focus:Point("TOPLEFT", ElvHeal_targettarget, "BOTTOMLEFT", 0, -32)
+	focus:Size(SMALL_WIDTH, SMALL_HEIGHT)
 
 	-- Player's Pet
 	local pet = oUF:Spawn('pet', "ElvHeal_pet")
-	pet:SetPoint("TOPRIGHT", ElvHeal_player, "BOTTOMRIGHT", 0,E.Scale(-42))
-	pet:SetSize(SMALL_WIDTH, SMALL_HEIGHT)
+	pet:Point("TOPLEFT", ElvHeal_player, "BOTTOMLEFT", 0, -42)
+	pet:Size(SMALL_WIDTH, SMALL_HEIGHT)
 	pet:SetParent(player)
 
 	-- Focus's target
 	if C["unitframes"].showfocustarget == true then
 		local focustarget = oUF:Spawn('focustarget', "ElvHeal_focustarget")
-		focustarget:SetPoint("TOP", ElvHeal_focus, "BOTTOM", 0,E.Scale(-32))
-		focustarget:SetSize(SMALL_WIDTH, SMALL_HEIGHT)
+		focustarget:Point("TOP", ElvHeal_focus, "BOTTOM", 0, -32)
+		focustarget:Size(SMALL_WIDTH, SMALL_HEIGHT)
 	end
 
 
@@ -1103,11 +1097,11 @@ local function LoadHealLayout()
 		for i = 1, 5 do
 			arena[i] = oUF:Spawn("arena"..i, "ElvHealArena"..i)
 			if i == 1 then
-				arena[i]:SetPoint("BOTTOMLEFT", ChatRBackground2, "TOPLEFT", -80, 285)
+				arena[i]:Point("BOTTOMLEFT", ChatRBackground2, "TOPLEFT", -80, 285)
 			else
-				arena[i]:SetPoint("BOTTOM", arena[i-1], "TOP", 0, 38)
+				arena[i]:Point("BOTTOM", arena[i-1], "TOP", 0, 38)
 			end
-			arena[i]:SetSize(BOSS_WIDTH, BOSS_HEIGHT)
+			arena[i]:Size(BOSS_WIDTH, BOSS_HEIGHT)
 		end
 	end
 
@@ -1116,11 +1110,11 @@ local function LoadHealLayout()
 		for i = 1, MAX_BOSS_FRAMES do
 			boss[i] = oUF:Spawn("boss"..i, "ElvHealBoss"..i)
 			if i == 1 then
-				boss[i]:SetPoint("BOTTOMLEFT", ChatRBackground2, "TOPLEFT", -80, 285)
+				boss[i]:Point("BOTTOMLEFT", ChatRBackground2, "TOPLEFT", -80, 285)
 			else
-				boss[i]:SetPoint('BOTTOM', boss[i-1], 'TOP', 0, 38)             
+				boss[i]:Point('BOTTOM', boss[i-1], 'TOP', 0, 38)             
 			end
-			boss[i]:SetSize(BOSS_WIDTH, BOSS_HEIGHT)
+			boss[i]:Size(BOSS_WIDTH, BOSS_HEIGHT)
 		end
 	end
 
