@@ -12,7 +12,7 @@ local normTex = C["media"].normTex
 local glowTex = C["media"].glowTex
 
 local resscale = 1
-if E.lowversion == true then resscale = 0.88 end
+if E.lowversion == true then resscale = 0.9 end
 
 --Constants
 local PLAYER_WIDTH = C["framesizes"].playtarwidth*resscale
