@@ -146,6 +146,10 @@ local function Shared(self, unit)
 		local range = {insideAlpha = 1, outsideAlpha = C["raidframes"].raidalphaoor}
 		self.Range = range
 	end
+	
+	if C["auras"].raidunitbuffwatch == true then
+		E.createAuraWatch(self,unit)
+    end
 
 	return self
 end
