@@ -3,6 +3,9 @@ local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Lo
 --Base code by Dawn (dNameplates)
 if not C["nameplate"].enable == true then return end
 
+local _, build = GetBuildInfo()
+if tonumber(build) > 13623 then return end
+
 local TEXTURE = C["media"].normTex
 local FONT = C["media"].font
 local FONTSIZE = 10
