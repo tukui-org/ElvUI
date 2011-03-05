@@ -108,7 +108,7 @@ local function Shared(self, unit)
 				health.bg:SetParent(overlay)
 			else
 				--Reposition Health
-				health:Point("TOPLEFT", portrait_width+BORDER, 0)
+				health:Point("TOPLEFT", portrait_width+BORDER, -BORDER)
 				
 				
 				local portrait = CreateFrame("PlayerModel", nil, self)	
@@ -601,7 +601,7 @@ local function Shared(self, unit)
 				health.bg:SetParent(overlay)
 			else
 				--Reposition Health
-				health:Point("TOPRIGHT", -(portrait_width+BORDER), 0)
+				health:Point("TOPRIGHT", -(portrait_width+BORDER), -BORDER)
 				
 				local portrait = CreateFrame("PlayerModel", nil, self)
 				
