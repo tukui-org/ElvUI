@@ -61,6 +61,10 @@ local function OnEvent(self, event, arg1, arg2)
 			end
 		end		
 	else
+		self:UnregisterAllEvents()
+		self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+		self:RegisterEvent("UNIT_AURA")
+		
 		if hasOffhandWeapon == nil then
 			if hasMainHandEnchant == nil then
 				self.icon:SetTexture(GetInventoryItemTexture("player", 16))
@@ -72,9 +76,6 @@ local function OnEvent(self, event, arg1, arg2)
 				self.icon:SetTexture(GetInventoryItemTexture("player", 17))
 			end
 		end
-		
-		self:UnregisterAllEvents()
-		self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 		if group.combat and group.combat == true then
 			self:RegisterEvent("PLAYER_REGEN_ENABLED")
 			self:RegisterEvent("PLAYER_REGEN_DISABLED")
