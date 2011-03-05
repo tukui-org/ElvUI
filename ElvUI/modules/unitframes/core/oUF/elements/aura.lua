@@ -5,7 +5,7 @@ local VISIBLE = 1
 local HIDDEN = 0
 
 local UpdateTooltip = function(self)
-	GameTooltip:SetUnitAura(self.parent:GetParent().unit or self.parent:GetParent():GetParent().unit, self:GetID(), self.filter)
+	GameTooltip:SetUnitAura(self.parent.__owner.unit, self:GetID(), self.filter)
 end
 
 local OnEnter = function(self)
