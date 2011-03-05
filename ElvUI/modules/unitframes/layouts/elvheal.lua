@@ -801,7 +801,8 @@ local function Shared(self, unit)
 	if (unit == "targettarget" or unit == "pet" or unit == "pettarget" or unit == "focustarget" or unit == "focus") then
 		local POWERBAR_WIDTH = SMALL_WIDTH - (BORDER*2)
 		local POWERBAR_HEIGHT = 8
-
+		local CASTBAR_WIDTH = C["castbar"].focuswidth*resscale
+		
 		--Health Bar
 		local health = E.ContructHealthBar(self, true, nil)
 		health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
@@ -873,7 +874,7 @@ local function Shared(self, unit)
 			end
 		elseif unit == "focus" and C["castbar"].unitcastbar == true	then
 			--Cast Bar
-			local castbar = E.ConstructCastBar(self, PLAYER_WIDTH, 20, "LEFT")
+			local castbar = E.ConstructCastBar(self, CASTBAR_WIDTH, 20, "LEFT")
 			castbar:Point("TOP", UIParent, "TOP", 0, -150)
 			
 			self.Castbar = castbar

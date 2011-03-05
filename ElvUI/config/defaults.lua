@@ -123,6 +123,7 @@ C["castbar"] = {
 		["cbicons"] = true, -- enable icons on castbar
 		["playerwidth"] = C["framesizes"].playtarwidth,
 		["targetwidth"] = C["framesizes"].playtarwidth,
+		["focuswidth"] = C["framesizes"].playtarwidth,
 		["classcolor"] = false, -- classcolor
 		["castbarcolor"] = C["media"].bordercolor, -- Color of player castbar
 		["nointerruptcolor"] = { 0.78, 0.25, 0.25, 0.5 }, -- Color of target castbar

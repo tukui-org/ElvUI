@@ -157,6 +157,7 @@ local function Local(o)
 	if o == "ElvuiConfigUIcastbarcbicons" then o = ElvuiL.option_castbar_icon end
 	if o == "ElvuiConfigUIcastbarplayerwidth" then o = ElvuiL.option_castbar_playerwidth end
 	if o == "ElvuiConfigUIcastbartargetwidth" then o = ElvuiL.option_castbar_targetwidth end
+	if o == "ElvuiConfigUIcastbarfocuswidth" then o = ElvuiL.option_castbar_focuswidth end
 	if o == "ElvuiConfigUIcastbarclasscolor" then o = ElvuiL.option_castbar_classcolor end
 	
 	--raidframes

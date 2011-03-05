@@ -132,6 +132,7 @@ ElvuiL.option_castbar_latency = "Show cast bar latency"
 ElvuiL.option_castbar_icon = "Show icons on cast bar"
 ElvuiL.option_castbar_playerwidth = "Width of the player castbar"
 ElvuiL.option_castbar_targetwidth = "Width of the target castbar"
+ElvuiL.option_castbar_focuswidth = "Width of the focus castbar"
 ElvuiL.option_castbar_classcolor = "Color castbar by classcolor"
 
 -- unit frames
