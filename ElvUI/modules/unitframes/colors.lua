@@ -11,6 +11,7 @@ if not C["unitframes"].enable == true and not C["raidframes"].enable == true and
 
 local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 
+table.remove(C["unitframes"].healthcolor,4) -- We don't need alpha from here on (hacky).
 E.oUF_colors = setmetatable({
 	tapped = E.colors.tapped,
 	disconnected = E.colors.disconnected,
