@@ -790,7 +790,7 @@ E.LoadUFFunctions = function(layout)
 			end
 		else		
 			if self.shadow then
-				self.shadow:SetBackdropBorderColor(0, 0, 0)
+				self.shadow:SetBackdropBorderColor(0, 0, 0, 0)
 			elseif self.Health.backdrop then
 				self.Health.backdrop:SetTemplate("Default")
 				
