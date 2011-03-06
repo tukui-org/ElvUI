@@ -53,7 +53,9 @@ ElvuiL.option_skin_omen = "Omen"
 ElvuiL.option_skin_recount = "Recount"
 ElvuiL.option_skin_skada = "Skada"
 ElvuiL.option_hookkleright = "Force KLE's top bar anchor to be positioned above right chat frame"
- 
+ElvuiL.option_hookbwright = "Force BigWig's bar anchor to be positioned above the right chat frame"
+ElvuiL.option_skin_bigwigs = "BigWigs"
+
 -- classtimer
 ElvuiL.option_classtimer = "Class Timer"
 ElvuiL.option_classtimer_enable = "Enable Classtimer"

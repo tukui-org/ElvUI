@@ -76,10 +76,12 @@ local function Local(o)
 	if o =="ElvuiConfigUIskin" then o = ElvuiL.option_skin end
 	if o =="ElvuiConfigUIskindbm" then o = ElvuiL.option_skin_dbm end
 	if o =="ElvuiConfigUIskinkle" then o = ElvuiL.option_skin_kle end
+	if o =="ElvuiConfigUIskinbigwigs" then o = ElvuiL.option_skin_bigwigs end
 	if o =="ElvuiConfigUIskinomen" then o = ElvuiL.option_skin_omen end
 	if o =="ElvuiConfigUIskinrecount" then o = ElvuiL.option_skin_recount end
 	if o =="ElvuiConfigUIskinskada" then o = ElvuiL.option_skin_skada end
 	if o == "ElvuiConfigUIskinhookkleright" then o = ElvuiL.option_hookkleright end
+	if o == "ElvuiConfigUIskinhookbwright" then o = ElvuiL.option_hookbwright end
 	if o == "ElvuiConfigUIskinembedright" then o = ElvuiL.option_general_embedright end
 	
 	--Classtimers

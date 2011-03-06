@@ -9,7 +9,7 @@ if not C["skin"].dbm == true or not IsAddOnLoaded("DBM-Core") then return end
 
 local croprwicons = true			-- crops blizz shitty borders from icons in RaidWarning messages
 local rwiconsize = 18			-- RaidWarning icon size, because 12 is small for me. Works only if croprwicons=true
-local buttonsize = 23
+local buttonsize = 22
 
 local function SkinBars(self)
 	for bar in self:GetBarIterator() do
@@ -27,7 +27,6 @@ local function SkinBars(self)
 				if not (icon1.overlay) then
 					icon1.overlay = CreateFrame("Frame", "$parentIcon1Overlay", tbar)
 					icon1.overlay:CreatePanel(template, buttonsize, buttonsize, "BOTTOMRIGHT", tbar, "BOTTOMLEFT", -buttonsize/4, -2)
-					icon1.overlay:CreateShadow("Default")
 					
 					local backdroptex = icon1.overlay:CreateTexture(nil, "BORDER")
 					backdroptex:SetTexture([=[Interface\Icons\Spell_Nature_WispSplode]=])
@@ -39,7 +38,6 @@ local function SkinBars(self)
 				if not (icon2.overlay) then
 					icon2.overlay = CreateFrame("Frame", "$parentIcon2Overlay", tbar)
 					icon2.overlay:CreatePanel(template, buttonsize, buttonsize, "BOTTOMLEFT", tbar, "BOTTOMRIGHT", buttonsize/4, -2)
-					icon2.overlay:CreateShadow("Default")
 					
 					local backdroptex = icon2.overlay:CreateTexture(nil, "BORDER")
 					backdroptex:SetTexture([=[Interface\Icons\Spell_Nature_WispSplode]=])
@@ -62,7 +60,6 @@ local function SkinBars(self)
 					frame.SetScale=E.dummy
 					frame:SetHeight(buttonsize)
 					frame:SetTemplate("Default")
-					frame:CreateShadow("Default")
 					frame.styled=true
 				end
 
@@ -183,7 +180,6 @@ local SkinBoss=function()
 		if not bar.styled then
 			bar:SetHeight(buttonsize)
 			bar:SetTemplate("Default")
-			bar:CreateShadow("Default")
 			background:SetNormalTexture(nil)
 			bar.styled=true
 		end	
@@ -226,7 +222,6 @@ DBM.RangeCheck:Show()
 DBM.RangeCheck:Hide()
 DBMRangeCheck:HookScript("OnShow",function(self)
 	self:SetTemplate("Default")
-	self:CreateShadow("Default")
 end)
 
 
