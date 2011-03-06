@@ -397,7 +397,7 @@ local SetStyle = function(self)
 end
 
 ElvuiTooltip:RegisterEvent("PLAYER_ENTERING_WORLD")
-ElvuiTooltip:SetScript("OnEvent", function(self)
+ElvuiTooltip:SetScript("OnEvent", function(self, event, addon)
 	for _, tt in pairs(Tooltips) do
 		tt:HookScript("OnShow", SetStyle)
 	end
@@ -429,35 +429,21 @@ ElvuiTooltip:SetScript("OnEvent", function(self)
 		hooksecurefunc(GameTooltip, "SetPetAction", CombatHideActionButtonsTooltip)
 		hooksecurefunc(GameTooltip, "SetShapeshift", CombatHideActionButtonsTooltip)
 	end
+	
+	LoadAddOn("Blizzard_DebugTools")
+	FrameStackTooltip:HookScript("OnShow", function(self)
+		local noscalemult = E.mult * C["general"].uiscale
+		self:SetBackdrop({
+		  bgFile = C["media"].blank, 
+		  edgeFile = C["media"].blank, 
+		  tile = false, tileSize = 0, edgeSize = noscalemult, 
+		  insets = { left = -noscalemult, right = -noscalemult, top = -noscalemult, bottom = -noscalemult}
+		})
+		self:SetBackdropColor(unpack(C.media.backdropfadecolor))
+		self:SetBackdropBorderColor(unpack(C.media.bordercolor))
+	end)
+	
+	EventTraceTooltip:HookScript("OnShow", function(self)
+		self:SetTemplate("Transparent")
+	end)
 end)
-
-
-ElvuiTooltip:SetScript("OnUpdate", function(self, elapsed)
-	if(self.elapsed and self.elapsed > 0.1) then
-		if FrameStackTooltip then
-			local noscalemult = E.mult * C["general"].uiscale
-			local r, g, b = RAID_CLASS_COLORS[E.myclass].r, RAID_CLASS_COLORS[E.myclass].g, RAID_CLASS_COLORS[E.myclass].b
-			FrameStackTooltip:SetBackdrop({
-			  bgFile = C["media"].blank, 
-			  edgeFile = C["media"].blank, 
-			  tile = false, tileSize = 0, edgeSize = noscalemult, 
-			  insets = { left = -noscalemult, right = -noscalemult, top = -noscalemult, bottom = -noscalemult}
-			})
-			FrameStackTooltip:SetBackdropColor(unpack(C.media.backdropfadecolor))
-			if C["general"].classcolortheme == true then
-				FrameStackTooltip:SetBackdropBorderColor(r, g, b)
-			else
-				FrameStackTooltip:SetBackdropBorderColor(unpack(C["media"].bordercolor))
-			end	
-			FrameStackTooltip.SetBackdropColor = E.dummy
-			FrameStackTooltip.SetBackdropBorderColor = E.dummy
-			self.elapsed = nil
-			self:SetScript("OnUpdate", nil)
-		end
-		self.elapsed = 0
-	else
-		self.elapsed = (self.elapsed or 0) + elapsed
-	end
-end)
-
-
