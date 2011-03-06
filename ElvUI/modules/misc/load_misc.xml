@@ -1,5 +1,4 @@
 ﻿<Ui xmlns="http://www.blizzard.com/wow/ui/">	
-	<Script file="arenatrack.lua"/>
 	<Script file="autodez.lua"/>
 	<Script file="autorelease.lua"/>
 	<Script file="announce.lua"/>
