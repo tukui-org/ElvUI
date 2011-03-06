@@ -1,9 +1,9 @@
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 -- enable or disable an addon via command
-SlashCmdList.DISABLE_ADDON = function(s) DisableAddOn(s) ReloadUI() end
+SlashCmdList.DISABLE_ADDON = function(addon) local _, _, _, _, _, reason, _ = GetAddOnInfo(addon) if reason ~= "MISSING" then DisableAddOn(addon) ReloadUI() else print("|cffff0000Error, Addon '"..addon.."' not found.|r") end end
 SLASH_DISABLE_ADDON1 = "/disable"
-SlashCmdList.ENABLE_ADDON = function(s) EnableAddOn(s) LoadAddOn(s) ReloadUI() end
+SlashCmdList.ENABLE_ADDON = function(addon) local _, _, _, _, _, reason, _ = GetAddOnInfo(addon) if reason ~= "MISSING" then EnableAddOn(addon) LoadAddOn(addon) ReloadUI() else print("|cffff0000Error, Addon '"..addon.."' not found.|r") end end
 SLASH_ENABLE_ADDON1 = "/enable"
 
 -- switch to heal layout via a command
