@@ -181,6 +181,7 @@ function E.PositionAllPanels()
 		ElvuiSplitActionBarLeftBackground:SetWidth((E.buttonsize * 6) + (E.buttonspacing * 7))
 		ElvuiSplitActionBarRightBackground:SetWidth((E.buttonsize * 6) + (E.buttonspacing * 7))
 	end
+	ElvuiSplitActionBarLeftBackground:SetHeight(ElvuiActionBarBackground:GetHeight())
 	
 	--RightBar
 	ElvuiActionBarBackgroundRight:Show()
