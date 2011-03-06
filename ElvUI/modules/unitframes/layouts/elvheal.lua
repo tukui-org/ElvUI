@@ -1078,12 +1078,12 @@ local function LoadHealLayout()
 	
 	-- Focus
 	local focus = oUF:Spawn('focus', "ElvHeal_focus")
-	focus:Point("TOPLEFT", ElvHeal_targettarget, "BOTTOMLEFT", 0, -32)
+	focus:Point("TOPLEFT", ElvHeal_player, "BOTTOMLEFT", 0, -42)
 	focus:Size(SMALL_WIDTH, SMALL_HEIGHT)
 
 	-- Player's Pet
 	local pet = oUF:Spawn('pet', "ElvHeal_pet")
-	pet:Point("TOPLEFT", ElvHeal_player, "BOTTOMLEFT", 0, -42)
+	pet:Point("TOPRIGHT", ElvHeal_player, "BOTTOMRIGHT", 0, -42)
 	pet:Size(SMALL_WIDTH, SMALL_HEIGHT)
 	pet:SetParent(player)
 
