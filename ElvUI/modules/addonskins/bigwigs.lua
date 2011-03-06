@@ -140,6 +140,24 @@ local function RegisterStyle()
 	end
 end
 
+local function PositionBWAnchor()
+	if not BigWigsAnchor then return end
+	BigWigsAnchor:ClearAllPoints()
+	if E.CheckAddOnShown() == true then
+		if C["chat"].showbackdrop == true and E.ChatRightShown == true then
+			if E.RightChat == true then
+				BigWigsAnchor:Point("BOTTOM", ChatRBackground2, "TOP", 13, 3)	
+			else
+				BigWigsAnchor:Point("BOTTOM", ChatRBackground2, "TOP", 13, -22)
+			end
+		else
+			BigWigsAnchor:Point("BOTTOM", ChatRBackground2, "TOP", 13, -22)	
+		end	
+	else
+		BigWigsAnchor:Point("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -5, 3)		
+	end
+end
+
 f:RegisterEvent("ADDON_LOADED")
 f:SetScript("OnEvent", function(self, event, addon)
 	if event == "ADDON_LOADED" and addon == "BigWigs_Plugins" then
@@ -150,29 +168,11 @@ f:SetScript("OnEvent", function(self, event, addon)
 		BigWigsOptions:SendMessage("BigWigs_StartConfigureMode", true)
 		BigWigsOptions:SendMessage("BigWigs_StopConfigureMode")
 		HideUIPanel(InterfaceOptionsFrame)
-		if C["chat"].showbackdrop == true and E.RightChat == true then
-			BigWigsAnchor:ClearAllPoints()
-			BigWigsAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 3)			
-		else
-			BigWigsAnchor:ClearAllPoints()
-			BigWigsAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -22)
-		end	
-	elseif event == "PLAYER_REGEN_DISABLED" and BigWigsAnchor then
-		if C["chat"].combathide == "Both" and E.ChatRIn ~= false then	
-			BigWigsAnchor:ClearAllPoints()
-			BigWigsAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -22)	
-		elseif C["chat"].combathide == "Right" and E.ChatRIn ~= false then
-			BigWigsAnchor:ClearAllPoints()
-			BigWigsAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -22)
-		end
-	elseif event == "PLAYER_REGEN_ENABLED" and BigWigsAnchor then
-		if C["chat"].combathide == "Both" and E.ChatRIn ~= true then
-			BigWigsAnchor:ClearAllPoints()
-			BigWigsAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 3)
-		elseif C["chat"].combathide == "Right" and E.ChatRIn ~= true then
-			BigWigsAnchor:ClearAllPoints()
-			BigWigsAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 3)		
-		end	
+		PositionBWAnchor()
+	elseif event == "PLAYER_REGEN_DISABLED" then
+		PositionBWAnchor()
+	elseif event == "PLAYER_REGEN_ENABLED" then
+		PositionBWAnchor()
 	end
 end)
 
@@ -182,15 +182,15 @@ if C["skin"].hookbwright == true then
 	f:RegisterEvent("PLAYER_REGEN_DISABLED")
 	f:RegisterEvent("PLAYER_ENTERING_WORLD")
 
-	ChatRBackground.anim_o:HookScript("OnPlay", function(self)
-		if not BigWigsAnchor then return end
-		BigWigsAnchor:ClearAllPoints()
-		BigWigsAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -22)	
+	ChatRBackground.anim_o:HookScript("OnFinished", function(self)
+		PositionBWAnchor()
 	end)
 	
-	ChatRBackground.anim:HookScript("OnFinished", function(self)
-		if not BigWigsAnchor then return end
-		BigWigsAnchor:ClearAllPoints()
-		BigWigsAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 3)	
+	ChatRBackground.anim:HookScript("OnPlay", function(self)
+		PositionBWAnchor()
 	end)	
+	
+	ChatRBackground.anim:HookScript("OnFinished", function(self)
+		PositionBWAnchor()
+	end)		
 end

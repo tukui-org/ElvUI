@@ -61,3 +61,30 @@ CheckRole()
 -- convert datatext E.ValColor from rgb decimal to hex
 local r, g, b = unpack(C["media"].valuecolor)
 E.ValColor = ("|cff%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255)
+
+--Check if our embed right addon is shown
+function E.CheckAddOnShown()
+	if E.ChatRightShown == true and E.RightChat and E.RightChat == true then
+		return true
+	elseif C["skin"].embedright == "Omen" and IsAddOnLoaded("Omen") and OmenAnchor then
+		if OmenAnchor:IsShown() then
+			return true
+		else
+			return false
+		end
+	elseif C["skin"].embedright == "Recount" and IsAddOnLoaded("Recount") and Recount_MainWindow then
+		if Recount_MainWindow:IsShown() then
+			return true
+		else
+			return false
+		end
+	elseif  C["skin"].embedright ==  "Skada" and IsAddOnLoaded("Skada") and Skada:GetWindows()[1] then
+		if Skada:GetWindows()[1].bargroup:IsShown() then
+			return true
+		else
+			return false
+		end
+	else
+		return false
+	end
+end

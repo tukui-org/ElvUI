@@ -148,7 +148,6 @@ C["classtimer"] = {
 
 C["arena"] = {
 	["unitframes"] = true,                 -- enable elvui arena unitframes (requirement : Elvui unitframes enabled)
-	["spelltracker"] = false,               -- enable elvui enemy spell tracker (an afflicted3 or interruptbar alternative)
 }
 
 C["actionbar"] = {

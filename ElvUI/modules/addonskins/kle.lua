@@ -136,6 +136,24 @@ KLEDB["profiles"][E.myname.." - "..E.myrealm]["Globals"]["Border"] = "None"
 KLEDB["profiles"][E.myname.." - "..E.myrealm]["Globals"]["Font"] = "Elvui Font"
 KLEDB["profiles"][E.myname.." - "..E.myrealm]["Globals"]["TimerFont"] = "Elvui Font"
 
+local function PositionKLEAnchor()
+	if not KLEAlertsTopStackAnchor then return end
+	KLEAlertsTopStackAnchor:ClearAllPoints()
+	if E.CheckAddOnShown() == true then
+		if C["chat"].showbackdrop == true and E.ChatRightShown == true then
+			if E.RightChat == true then
+				KLEAlertsTopStackAnchor:Point("BOTTOM", ChatRBackground2, "TOP", 13, 14)	
+			else
+				KLEAlertsTopStackAnchor:Point("BOTTOM", ChatRBackground2, "TOP", 13, -9)
+			end
+		else
+			KLEAlertsTopStackAnchor:Point("BOTTOM", ChatRBackground2, "TOP", 13, -9)	
+		end	
+	else
+		KLEAlertsTopStackAnchor:Point("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -41, 14)		
+	end
+end
+
 --Hook bar to chatframe, rest of this is handled inside chat.lua and chatanimation.lua
 local KLE_Skin = CreateFrame("Frame")
 KLE_Skin:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -151,30 +169,14 @@ KLE_Skin:SetScript("OnEvent", function(self, event)
 		for i=1, #movers do
 			_G[movers[i]]:SetTemplate("Transparent")
 		end
-
-		if C["chat"].showbackdrop == true and C["skin"].hookkleright == true and E.RightChat == true then
-			KLEAlertsTopStackAnchor:ClearAllPoints()
-			KLEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 18)			
-		elseif C["skin"].hookkleright == true then
-			KLEAlertsTopStackAnchor:ClearAllPoints()
-			KLEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -5)
-		end	
-	elseif event == "PLAYER_REGEN_DISABLED" then
-		if C["chat"].combathide == "Both" and E.ChatRIn ~= false then	
-			KLEAlertsTopStackAnchor:ClearAllPoints()
-			KLEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -5)	
-		elseif C["chat"].combathide == "Right" and E.ChatRIn ~= false then
-			KLEAlertsTopStackAnchor:ClearAllPoints()
-			KLEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -5)
+		
+		if C["skin"].hookkleright == true then
+			PositionKLEAnchor()
 		end
+	elseif event == "PLAYER_REGEN_DISABLED" then
+		PositionKLEAnchor()
 	elseif event == "PLAYER_REGEN_ENABLED" then
-		if C["chat"].combathide == "Both" and E.ChatRIn ~= true then
-			KLEAlertsTopStackAnchor:ClearAllPoints()
-			KLEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 18)
-		elseif C["chat"].combathide == "Right" and E.ChatRIn ~= true then
-			KLEAlertsTopStackAnchor:ClearAllPoints()
-			KLEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 18)		
-		end	
+		PositionKLEAnchor()
 	end
 end)
 
@@ -182,13 +184,15 @@ if C["skin"].hookkleright == true then
 	KLE_Skin:RegisterEvent("PLAYER_REGEN_ENABLED")
 	KLE_Skin:RegisterEvent("PLAYER_REGEN_DISABLED")
 
-	ChatRBackground.anim_o:HookScript("OnPlay", function(self)
-		KLEAlertsTopStackAnchor:ClearAllPoints()
-		KLEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -5)	
+	ChatRBackground.anim_o:HookScript("OnFinished", function(self)
+		PositionKLEAnchor()
 	end)
 	
+	ChatRBackground.anim:HookScript("OnPlay", function(self)
+		PositionKLEAnchor()
+	end)	
+	
 	ChatRBackground.anim:HookScript("OnFinished", function(self)
-		KLEAlertsTopStackAnchor:ClearAllPoints()
-		KLEAlertsTopStackAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 18)	
+		PositionKLEAnchor()	
 	end)	
 end
