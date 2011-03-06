@@ -147,7 +147,8 @@ f:SetScript("OnEvent", function(self, event, addon)
 		f:UnregisterEvent("ADDON_LOADED")
 	elseif event == "PLAYER_ENTERING_WORLD" then
 		SlashCmdList["BigWigs"]()
-		BigWigs:Test()
+		BigWigsOptions:SendMessage("BigWigs_StartConfigureMode", true)
+		BigWigsOptions:SendMessage("BigWigs_StopConfigureMode")
 		HideUIPanel(InterfaceOptionsFrame)
 		if C["chat"].showbackdrop == true and E.RightChat == true then
 			BigWigsAnchor:ClearAllPoints()
