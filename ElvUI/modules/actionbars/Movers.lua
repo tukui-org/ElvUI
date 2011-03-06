@@ -381,8 +381,7 @@ do
 			end
 		else
 			if E["actionbar"].rightbars == 1 then
-				SaveBars("rightbars", 2)
-				if E["actionbar"].splitbar == true and E["actionbar"].bottomrows == 2 then
+				if E["actionbar"].splitbar == true then
 					SaveBars("splitbar", false)
 					LeftSplit.Text:SetText("<")
 					LeftSplit:ClearAllPoints()
@@ -394,9 +393,9 @@ do
 					RightSplit:SetPoint("TOPLEFT", ElvuiMainMenuBar, "TOPRIGHT", E.Scale(4), 0)
 					RightSplit:SetPoint("BOTTOMRIGHT", ElvuiMainMenuBar, "BOTTOMRIGHT", E.Scale(19), 0)					
 				end
+				SaveBars("rightbars", 2)
 			elseif E["actionbar"].rightbars == 2 then
-				SaveBars("rightbars", 3)
-				if E["actionbar"].splitbar == true and E["actionbar"].bottomrows == 1 then
+				if E["actionbar"].splitbar == true then
 					SaveBars("splitbar", false)
 					LeftSplit.Text:SetText("<")
 					LeftSplit:ClearAllPoints()
@@ -407,7 +406,8 @@ do
 					RightSplit:ClearAllPoints()
 					RightSplit:SetPoint("TOPLEFT", ElvuiMainMenuBar, "TOPRIGHT", E.Scale(4), 0)
 					RightSplit:SetPoint("BOTTOMRIGHT", ElvuiMainMenuBar, "BOTTOMRIGHT", E.Scale(19), 0)					
-				end				
+				end	
+				SaveBars("rightbars", 3)				
 			elseif E["actionbar"].rightbars == 3 then
 				SaveBars("rightbars", 0)
 				RightBarBig:Show()
