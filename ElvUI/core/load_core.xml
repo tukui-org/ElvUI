@@ -1,7 +1,6 @@
 ﻿<Ui xmlns="http://www.blizzard.com/wow/ui/">	
 	<Script file='core.lua'/>
 	<Script file='launch.lua'/>
-	<Script file='debug.lua'/>
 	<Script file='pixelperfect.lua'/>
 	<Script file='toolkit.lua'/>
 	<Script file='math.lua'/>

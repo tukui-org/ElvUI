@@ -390,15 +390,7 @@ local function SkinObjects(frame)
 	hp.name:SetShadowColor(0, 0, 0, 0.4)
 	hp.name:SetShadowOffset(E.mult, -E.mult)
 	hp.oldname = oldname
-	
-	--Debug Text for when i'm testing
-	hp.debug = hp:CreateFontString(nil, "OVERLAY")	
-	hp.debug:SetFont(FONT, FONTSIZE, FONTFLAG)
-	hp.debug:SetShadowColor(0, 0, 0, 0.4)
-	hp.debug:SetPoint("CENTER", hp, "CENTER", 0, 50)
-	hp.debug:SetTextColor(1,1,1)
-	hp.debug:SetShadowOffset(E.mult, -E.mult)
-	
+
 	hp.hpbg = hp:CreateTexture(nil, 'BORDER')
 	hp.hpbg:SetAllPoints(hp)
 	hp.hpbg:SetTexture(1,1,1,0.25) 		
@@ -594,8 +586,6 @@ local function CheckUnit_Guid(frame, ...)
 	else
 		frame.unit = nil
 	end	
-	
-	if C["debug"].enabled == true then frame.hp.debug:SetText(frame.unit or "") end
 end
 
 --Attempt to match a nameplate with a GUID from the combat log
