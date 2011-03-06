@@ -145,7 +145,10 @@ f:SetScript("OnEvent", function(self, event, addon)
 	if event == "ADDON_LOADED" and addon == "BigWigs_Plugins" then
 		RegisterStyle()
 		f:UnregisterEvent("ADDON_LOADED")
-	elseif event == "PLAYER_ENTERING_WORLD" and BigWigsAnchor and C["skin"].hookbwright == true then
+	elseif event == "PLAYER_ENTERING_WORLD" then
+		SlashCmdList["BigWigs"]()
+		BigWigs:Test()
+		HideUIPanel(InterfaceOptionsFrame)
 		if C["chat"].showbackdrop == true and E.RightChat == true then
 			BigWigsAnchor:ClearAllPoints()
 			BigWigsAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 3)			
@@ -153,7 +156,7 @@ f:SetScript("OnEvent", function(self, event, addon)
 			BigWigsAnchor:ClearAllPoints()
 			BigWigsAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -22)
 		end	
-	elseif event == "PLAYER_REGEN_DISABLED" then
+	elseif event == "PLAYER_REGEN_DISABLED" and BigWigsAnchor then
 		if C["chat"].combathide == "Both" and E.ChatRIn ~= false then	
 			BigWigsAnchor:ClearAllPoints()
 			BigWigsAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -22)	
@@ -161,7 +164,7 @@ f:SetScript("OnEvent", function(self, event, addon)
 			BigWigsAnchor:ClearAllPoints()
 			BigWigsAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -22)
 		end
-	elseif event == "PLAYER_REGEN_ENABLED" then
+	elseif event == "PLAYER_REGEN_ENABLED" and BigWigsAnchor then
 		if C["chat"].combathide == "Both" and E.ChatRIn ~= true then
 			BigWigsAnchor:ClearAllPoints()
 			BigWigsAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 3)
@@ -179,11 +182,13 @@ if C["skin"].hookbwright == true then
 	f:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 	ChatRBackground.anim_o:HookScript("OnPlay", function(self)
+		if not BigWigsAnchor then return end
 		BigWigsAnchor:ClearAllPoints()
 		BigWigsAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, -22)	
 	end)
 	
 	ChatRBackground.anim:HookScript("OnFinished", function(self)
+		if not BigWigsAnchor then return end
 		BigWigsAnchor:ClearAllPoints()
 		BigWigsAnchor:SetPoint("BOTTOM", ChatRBackground2, "TOP", 13, 3)	
 	end)	
