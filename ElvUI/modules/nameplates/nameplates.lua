@@ -257,7 +257,6 @@ local function OnHide(frame)
 		end
 	end	
 	
-	SetVirtualBorder(frame.hp, unpack(C["media"].bordercolor))
 	frame:SetScript("OnUpdate",nil)
 end
 
@@ -312,7 +311,10 @@ local function UpdateObjects(frame)
 	Colorize(frame)
 	frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = frame.hp:GetStatusBarColor()
 	frame.hp.hpbg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, 0.25)
-	frame.hp.name:SetTextColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
+	SetVirtualBorder(frame.hp, unpack(C["media"].bordercolor))
+	if C["nameplate"].enhancethreat == true then
+		frame.hp.name:SetTextColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
+	end
 	
 	--Set the name text
 	frame.hp.name:SetText(frame.hp.oldname:GetText())
