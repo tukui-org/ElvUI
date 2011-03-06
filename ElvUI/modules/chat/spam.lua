@@ -7,29 +7,6 @@ local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Lo
 if E.client ~= "enUS" and E.client ~= "enGB" then return end
 
 ----------------------------------------------------------------------------------
--- Trade Chat Stuff
-----------------------------------------------------------------------------------
-local SpamList = {
-	";Powerlevel",
-	"SusanExpress",
-	"recruiting",
-	"Discount",
-	"discount",
-}
-
-local function TRADE_FILTER(self, event, arg1, arg2)
-	if (SpamList and SpamList[1]) then
-		for i, SpamList in pairs(SpamList) do
-			if arg2 == E.myname then return end
-			if (strfind(arg1, SpamList)) then
-				return true
-			end
-		end
-	end
-end
-ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", TRADE_FILTER)
-
-----------------------------------------------------------------------------------
 -- Hide annoying chat text when talent switch.
 ----------------------------------------------------------------------------------
 
@@ -66,10 +43,30 @@ GOLDSPAM:RegisterEvent("ZONE_CHANGED_INDOORS")
 GOLDSPAM:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 GOLDSPAM:SetScript("OnEvent", GOLDSPAM_FILTER)
 
-----------------------------------------------------------------------------------
--- Only enabling this for me because i get asked too much
-----------------------------------------------------------------------------------
 if E.myname == "Elv" then
+	----------------------------------------------------------------------------------
+	-- Trade Chat Stuff
+	----------------------------------------------------------------------------------
+	local SpamList = {
+		";Powerlevel",
+		"SusanExpress",
+		"recruiting",
+		"Discount",
+		"discount",
+	}
+
+	local function TRADE_FILTER(self, event, arg1, arg2)
+		if (SpamList and SpamList[1]) then
+			for i, SpamList in pairs(SpamList) do
+				if arg2 == E.myname then return end
+				if (strfind(arg1, SpamList)) then
+					return true
+				end
+			end
+		end
+	end
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", TRADE_FILTER)
+
 	local function SPELL_FILTER(self, event, arg1)
 		if strfind(arg1,"is not ready") or strfind(arg1,"The following players are Away") then
 			SendChatMessage(arg1, "RAID_WARNING", nil ,nil)
