@@ -67,7 +67,9 @@ function Style(self, totem)
 	if HotKey then
 		HotKey:ClearAllPoints()
 		HotKey:SetPoint("TOPRIGHT", 0, E.Scale(-3))
-		HotKey:SetFont(C["media"].font, 12, "OUTLINE")
+		HotKey:SetFont(C["media"].font, 12, "THINOUTLINE")
+		HotKey:SetShadowOffset(E.mult, -E.mult)
+		HotKey:SetShadowColor(0, 0, 0, 0.3)
 		HotKey.ClearAllPoints = E.dummy
 		HotKey.SetPoint = E.dummy
 		if not C["actionbar"].hotkey == true then

@@ -25,7 +25,7 @@ E.LoadUFFunctions = function(layout)
 			health.bg:SetTexture(C["media"].blank)
 			
 			if C["unitframes"].healthbackdrop ~= true then
-				health.bg.multiplier = 0.2
+				health.bg.multiplier = 0.25
 			else
 				health.bg:SetTexture(unpack(C["unitframes"].healthbackdropcolor))
 			end
@@ -42,12 +42,7 @@ E.LoadUFFunctions = function(layout)
 			if C["unitframes"].healthcolorbyvalue == true then
 				health.colorSmooth = true
 			else
-				local r, g, b = unpack(C["unitframes"].healthcolor)
-				health:SetStatusBarColor(r, g, b)
-				
-				if health.bg and health.bg.multiplier then
-					health.bg:SetVertexColor(r * health.bg.multiplier, g * health.bg.multiplier, b * health.bg.multiplier)
-				end
+				health.colorHealth = true
 			end
 		else
 			health.colorTapping = true	

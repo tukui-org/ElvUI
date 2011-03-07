@@ -15,6 +15,7 @@ table.remove(C["unitframes"].healthcolor,4) -- We don't need alpha from here on 
 E.oUF_colors = setmetatable({
 	tapped = E.colors.tapped,
 	disconnected = E.colors.disconnected,
+	health = C["unitframes"].healthcolor,
 	power = setmetatable({
 		["MANA"] = E.colors.power.MANA,
 		["RAGE"] = E.colors.power.RAGE,
@@ -65,4 +66,5 @@ E.oUF_colors = setmetatable({
 		1, 1, 0,
 		unpack(C["unitframes"].healthcolor)
 	}, {__index = oUF.colors.smooth}),
+	
 }, {__index = oUF.colors})

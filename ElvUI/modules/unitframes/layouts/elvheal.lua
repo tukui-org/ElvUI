@@ -66,6 +66,10 @@ local function Shared(self, unit)
 		--Threat Glow
 		self:CreateShadow("Default")
 		self.shadow:SetFrameStrata("BACKGROUND")
+		self.shadow:Point("TOPLEFT", -4, 4)
+		self.shadow:Point("BOTTOMLEFT", -4, -4)
+		self.shadow:Point("TOPRIGHT", 4, 4)
+		self.shadow:Point("BOTTOMRIGHT", 4, -4)
 		
 		if C["unitframes"].charportraithealth == true or C["unitframes"].charportrait == false then
 			portrait_width = 0
