@@ -23,7 +23,7 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 			InterfaceOptionsFrameCategoriesButton10:SetScale(0.00001)
 			InterfaceOptionsFrameCategoriesButton10:SetAlpha(0)	
 			CompactRaidFrameContainer:Kill()
-			CompactPartyFrame:Kill()
+			SetCVar("useCompactPartyFrames", 0)
 		end
 
 		if addon == "Blizzard_AchievementUI" then
