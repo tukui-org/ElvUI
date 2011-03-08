@@ -78,10 +78,7 @@ barmod.ApplySettings = function(self, win)
 	local titlefont = CreateFont("TitleFont"..win.db.name)
 	titlefont:SetFont(C["media"].font, C["general"].fontscale)
 	win.bargroup.button:SetNormalFontObject(titlefont)
-	win.bargroup.button:SetFrameStrata("HIGH")
-	win.bargroup.button:SetFrameLevel(5)
-	
-	
+
 	local color = win.db.title.color
 	win.bargroup.button:SetBackdropColor(unpack(C["media"].bordercolor))
 	if win.bargroup.bgframe then
@@ -93,8 +90,12 @@ barmod.ApplySettings = function(self, win)
 		end
 	end
 	
-	win.bargroup.bgframe:SetFrameStrata("HIGH")
-	win.bargroup:SetFrameStrata("HIGH")
+	if C["skin"].embedright == "Skada" then
+		win.bargroup.button:SetFrameStrata("HIGH")
+		win.bargroup.button:SetFrameLevel(5)	
+		win.bargroup.bgframe:SetFrameStrata("HIGH")
+		win.bargroup:SetFrameStrata("HIGH")
+	end
 	
 	self:AdjustBackgroundHeight(win)
 	win.bargroup:SetMaxBars(win.db.barmax)
