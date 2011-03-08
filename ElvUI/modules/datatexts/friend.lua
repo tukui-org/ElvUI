@@ -5,6 +5,25 @@ local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Lo
 
 if not C["datatext"].friends or C["datatext"].friends == 0 then return end
 
+-- create a popup
+StaticPopupDialogs.SET_BN_BROADCAST = {
+	text = BN_BROADCAST_TOOLTIP,
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	hasEditBox = 1,
+	editBoxWidth = 350,
+	maxLetters = 127,
+	OnAccept = function(self) BNSetCustomMessage(self.editBox:GetText()) end,
+	OnShow = function(self) self.editBox:SetText(select(3, BNGetInfo()) ) self.editBox:SetFocus() end,
+	OnHide = ChatEdit_FocusActiveWindow,
+	EditBoxOnEnterPressed = function(self) BNSetCustomMessage(self:GetText()) self:GetParent():Hide() end,
+	EditBoxOnEscapePressed = function(self) self:GetParent():Hide() end,
+	timeout = 0,
+	exclusive = 1,
+	whileDead = 1,
+	hideOnEscape = 1
+}
+
 -- localized references for global functions (about 50% faster)
 local join 			= string.join
 local find			= string.find
@@ -26,7 +45,15 @@ local menuFrame = CreateFrame("Frame", "ElvuiFriendRightClickMenu", UIParent, "U
 local menuList = {
 	{ text = OPTIONS_MENU, isTitle = true,notCheckable=true},
 	{ text = INVITE, hasArrow = true,notCheckable=true, },
-	{ text = CHAT_MSG_WHISPER_INFORM, hasArrow = true,notCheckable=true, }
+	{ text = CHAT_MSG_WHISPER_INFORM, hasArrow = true,notCheckable=true, },
+	{ text = PLAYER_STATUS, hasArrow = true, notCheckable=true,
+		menuList = {
+			{ text = "|cff2BC226"..AVAILABLE.."|r", notCheckable=true, func = function() if IsChatAFK() then SendChatMessage("", "AFK") elseif IsChatDND() then SendChatMessage("", "DND") end end },
+			{ text = "|cffE7E716"..DND.."|r", notCheckable=true, func = function() if not IsChatDND() then SendChatMessage("", "DND") end end },
+			{ text = "|cffFF0000"..AFK.."|r", notCheckable=true, func = function() if not IsChatAFK() then SendChatMessage("", "AFK") end end },
+		},
+	},
+	{ text = BN_BROADCAST_TOOLTIP, notCheckable=true, func = function() StaticPopup_Show("SET_BN_BROADCAST") end },
 }
 
 local function inviteClick(self, arg1, arg2, checked)
