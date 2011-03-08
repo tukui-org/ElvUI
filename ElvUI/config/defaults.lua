@@ -7,6 +7,31 @@ C["media"] = {
 	["uffont"] = [[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], -- general font of unitframes
 	["dmgfont"] = [[Interface\AddOns\ElvUI\media\fonts\Action_Man.ttf]], -- general font of dmg / sct
 	
+	-- fonts (DEUTSCH)
+	["de_font"] = [=[Interface\Addons\Tukui\media\fonts\PT_Sans_Narrow.ttf]=], -- general font of tukui
+	["de_uffont"] = [[Interface\AddOns\Tukui\media\fonts\PT_Sans_Narrow.ttf]], -- general font of unitframes
+	["de_dmgfont"] = [[Interface\AddOns\Tukui\media\fonts\Action_Man.ttf]], -- general font of dmg / sct
+	
+	-- fonts (FRENCH)
+	["fr_font"] = [=[Interface\Addons\Tukui\media\fonts\PT_Sans_Narrow.ttf]=], -- general font of tukui
+	["fr_uffont"] = [[Interface\AddOns\Tukui\media\fonts\PT_Sans_Narrow.ttf]], -- general font of unitframes
+	["fr_dmgfont"] = [=[Interface\AddOns\Tukui\media\fonts\Action_Man.ttf]=], -- general font of dmg / sct
+	
+	-- fonts (RUSSIAN)
+	["ru_font"] = [=[Interface\Addons\Tukui\media\fonts\PT_Sans_Narrow.ttf]=], -- general font of tukui
+	["ru_uffont"] = [[Fonts\ARIALN.TTF]], -- general font of unitframes
+	["ru_dmgfont"] = [[Fonts\ARIALN.TTF]], -- general font of dmg / sct
+	
+	-- fonts (TAIWAN ONLY)
+	["tw_font"] = [=[Fonts\bLEI00D.ttf]=], -- general font of tukui
+	["tw_uffont"] = [[Fonts\bLEI00D.ttf]], -- general font of unitframes
+	["tw_dmgfont"] = [[Fonts\bLEI00D.ttf]], -- general font of dmg / sct
+	
+	-- fonts (KOREAN ONLY)
+	["kr_font"] = [=[Fonts\2002.TTF]=], -- general font of tukui
+	["kr_uffont"] = [[Fonts\2002.TTF]], -- general font of unitframes
+	["kr_dmgfont"] = [[Fonts\2002.TTF]], -- general font of dmg / sct	
+	
 	-- textures
 	["normTex"] = [[Interface\AddOns\ElvUI\media\textures\normTex]], -- texture used for Elvui healthbar/powerbar/etc
 	["glowTex"] = [[Interface\AddOns\ElvUI\media\textures\glowTex]], -- the glow text around some frame.

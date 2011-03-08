@@ -5,6 +5,7 @@
 	<Script file='toolkit.lua'/>
 	<Script file='math.lua'/>
 	<Script file='colors.lua'/>
+	<Script file='fonts.lua'/>
 	<Script file='commands.lua'/>
 	<Script file='staticpopups.lua'/>
 	<Script file='animation.lua'/>

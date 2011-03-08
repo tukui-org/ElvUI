@@ -37,6 +37,21 @@ local Filter = {
 	["whisper"]=1,
 	["warning"]=1,
 	["normTex2"]=1,
+	["de_font"]=1,
+	["de_uffont"]=1,
+	["de_dmgfont"]=1,
+	["fr_font"]=1,
+	["fr_uffont"]=1,
+	["fr_dmgfont"]=1,
+	["ru_font"]=1,
+	["ru_uffont"]=1,
+	["ru_dmgfont"]=1,
+	["tw_font"]=1,
+	["tw_uffont"]=1,
+	["tw_dmgfont"]=1,
+	["kr_font"]=1,
+	["kr_uffont"]=1,
+	["kr_dmgfont"]=1,	
 }
 
 local function Local(o)

@@ -3,13 +3,6 @@
 ------------------------------------------------------------------------
 local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-
-if E.client == "zhTW" or E.client == "zhCN" then
-	C["media"].uffont = [[fonts\bLEI00D.ttf]]
-	C["media"].font = [[fonts\bLEI00D.ttf]]
-	C["media"].dmgfont = [[fonts\bLEI00D.ttf]]
-end
-
 if C["general"].classcolortheme == true then
 	local c = select(2, UnitClass("player"))
 	local r, g, b = RAID_CLASS_COLORS[c].r, RAID_CLASS_COLORS[c].g, RAID_CLASS_COLORS[c].b
