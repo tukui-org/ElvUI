@@ -11,35 +11,10 @@ local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0,
 ---------------------------------------------------
 
 local function GetTemplate(t)
-	if t == "Tukui" then
-		borderr, borderg, borderb = .6, .6, .6
-		backdropr, backdropg, backdropb = .1, .1, .1
-	elseif t == "ClassColor" then
+	if t == "ClassColor" or C["general"].classcolortheme == true  then
 		local c = E.colors.class[class]
 		borderr, borderg, borderb = c[1], c[2], c[3]
 		backdropr, backdropg, backdropb = unpack(C["media"].backdropcolor)
-	elseif t == "Elv" then
-		borderr, borderg, borderb = .3, .3, .3
-		backdropr, backdropg, backdropb = .1, .1, .1	
-	elseif t == "Duffed" then
-		borderr, borderg, borderb = .2, .2, .2
-		backdropr, backdropg, backdropb = .02, .02, .02
-	elseif t == "Dajova" then
-		borderr, borderg, borderb = .05, .05, .05
-		backdropr, backdropg, backdropb = .1, .1, .1
-	elseif t == "Eclipse" then
-		borderr, borderg, borderb = .1, .1, .1
-		backdropr, backdropg, backdropb = 0, 0, 0
-	elseif t == "Hydra" then
-		borderr, borderg, borderb = .2, .2, .2
-		backdropr, backdropg, backdropb = .075, .075, .075
-	elseif C["general"].classcolortheme == true then
-		local c = E.colors.class[class]
-		borderr, borderg, borderb = c[1], c[2], c[3]
-		backdropr, backdropg, backdropb = unpack(C["media"].backdropcolor)		
-	elseif t == "Transparent" then
-		borderr, borderg, borderb = unpack(C["media"].bordercolor)
-		backdropr, backdropg, backdropb = unpack(C["media"].backdropfadecolor)
 	else
 		borderr, borderg, borderb = unpack(C["media"].bordercolor)
 		backdropr, backdropg, backdropb = unpack(C["media"].backdropcolor)
@@ -73,37 +48,63 @@ local function Point(obj, arg1, arg2, arg3, arg4, arg5)
 	obj:SetPoint(arg1, arg2, arg3, arg4, arg5)
 end
 
-local function SetTemplate(f, t, tex)
-	if tex then texture = C.media.normTex2 else texture = C.media.blank end
-	
+local function SetTemplate(f, t, texture)
 	GetTemplate(t)
 		
 	f:SetBackdrop({
-	  bgFile = texture, 
+	  bgFile = C.media.blank, 
 	  edgeFile = C.media.blank, 
 	  tile = false, tileSize = 0, edgeSize = E.mult, 
 	  insets = { left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
 	})
 	
 	if t == "Transparent" then
-		backdropa = 0.8
+		backdropa = 0.8		
 	else
 		backdropa = 1
 	end
 	
-	f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
+	if texture then
+		f:SetBackdropColor(0, 0, 0, backdropa)	
+		
+		local tex = f:CreateTexture(nil, "BORDER")
+		tex:Point("TOPLEFT", f, "TOPLEFT", 2, -2)
+		tex:Point("BOTTOMRIGHT", f, "BOTTOMRIGHT", -2, 2)
+		tex:SetTexture(C.media.normTex2)
+		tex:SetVertexColor(backdropr, backdropg, backdropb)
+	else
+		f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
+		
+		if not f.oborder and not f.iborder then
+			local border = CreateFrame("Frame", nil, f)
+			border:Point("TOPLEFT", E.mult, -E.mult)
+			border:Point("BOTTOMRIGHT", -E.mult, E.mult)
+			border:SetBackdrop({
+				edgeFile = C["media"].blank, 
+				edgeSize = E.mult, 
+				insets = { left = E.mult, right = E.mult, top = E.mult, bottom = E.mult }
+			})
+			border:SetBackdropBorderColor(0, 0, 0, 1)
+			f.iborder = border
+			
+			if f.oborder then return end
+			local border = CreateFrame("Frame", nil, f)
+			border:Point("TOPLEFT", -E.mult, E.mult)
+			border:Point("BOTTOMRIGHT", E.mult, -E.mult)
+			border:SetFrameLevel(f:GetFrameLevel() + 1)
+			border:SetBackdrop({
+				edgeFile = C["media"].blank, 
+				edgeSize = E.mult, 
+				insets = { left = E.mult, right = E.mult, top = E.mult, bottom = E.mult }
+			})
+			border:SetBackdropBorderColor(0, 0, 0, 1)
+			f.oborder = border				
+		end
+	end
 	f:SetBackdropBorderColor(borderr, borderg, borderb)
 end
 
 local function CreatePanel(f, t, w, h, a1, p, a2, x, y)
-	GetTemplate(t)
-	
-	if t == "Transparent" then
-		backdropa = 0.8
-	else
-		backdropa = 1
-	end	
-	
 	local sh = E.Scale(h)
 	local sw = E.Scale(w)
 	f:SetFrameLevel(1)
@@ -111,14 +112,7 @@ local function CreatePanel(f, t, w, h, a1, p, a2, x, y)
 	f:SetWidth(sw)
 	f:SetFrameStrata("BACKGROUND")
 	f:SetPoint(a1, p, a2, E.Scale(x), E.Scale(y))
-	f:SetBackdrop({
-	  bgFile = C["media"].blank, 
-	  edgeFile = C["media"].blank, 
-	  tile = false, tileSize = 0, edgeSize = E.mult, 
-	  insets = { left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
-	})
-	f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
-	f:SetBackdropBorderColor(borderr, borderg, borderb)
+	f:SetTemplate(t)
 end
 
 local function CreateShadow(f, t)
