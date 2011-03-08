@@ -132,6 +132,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"ColorPickerFrame",
 			"ConsolidatedBuffsTooltip",
 			"ReadyCheckFrame",
+			"StackSplitFrame",
 		}
 		
 		for i = 1, getn(skins) do
@@ -251,6 +252,8 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"ColorPickerCancelButton",
 			"ReadyCheckFrameYesButton",
 			"ReadyCheckFrameNoButton",
+			"StackSplitOkayButton",
+			"StackSplitCancelButton",			
 		}
 		
 		for i = 1, getn(BlizzardButtons) do
@@ -284,6 +287,11 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		-- others
 		_G["ReadyCheckListenerFrame"]:SetAlpha(0)
 		_G["ReadyCheckFrame"]:HookScript("OnShow", function(self) if UnitIsUnit("player", self.initiator) then self:Hide() end end) -- bug fix, don't show it if initiator
+ 		_G["StackSplitFrame"]:GetRegions():Hide()
+		_G["StaticPopup1EditBox"]:SetTemplate("Default")
+		_G["StaticPopup1EditBoxLeft"]:SetTexture(nil)
+		_G["StaticPopup1EditBoxMid"]:SetTexture(nil)
+		_G["StaticPopup1EditBoxRight"]:SetTexture(nil)
 		
 		RolePollPopup:SetTemplate("Transparent")
 		RolePollPopup:CreateShadow("Default")
