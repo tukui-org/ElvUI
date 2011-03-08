@@ -94,13 +94,13 @@ end)
 CreateButton("MainTankButton", RaidUtilityPanel, "SecureActionButtonTemplate, UIMenuButtonStretchTemplate", (DisbandRaidButton:GetWidth() / 2) - E.Scale(2), E.Scale(18), "TOPLEFT", RoleCheckButton, "BOTTOMLEFT", 0, E.Scale(-5), MAINTANK, nil)
 MainTankButton:SetAttribute("type", "maintank")
 MainTankButton:SetAttribute("unit", "target")
-MainTankButton:SetAttribute("action", "set")
+MainTankButton:SetAttribute("action", "toggle")
 
 --MainAssist Button
 CreateButton("MainAssistButton", RaidUtilityPanel, "SecureActionButtonTemplate, UIMenuButtonStretchTemplate", (DisbandRaidButton:GetWidth() / 2) - E.Scale(2), E.Scale(18), "TOPRIGHT", RoleCheckButton, "BOTTOMRIGHT", 0, E.Scale(-5), MAINASSIST, nil)
 MainAssistButton:SetAttribute("type", "mainassist")
 MainAssistButton:SetAttribute("unit", "target")
-MainAssistButton:SetAttribute("action", "set")
+MainAssistButton:SetAttribute("action", "toggle")
 
 --Ready Check button
 CreateButton("ReadyCheckButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate", RoleCheckButton:GetWidth() * 0.75, E.Scale(18), "TOPLEFT", MainTankButton, "BOTTOMLEFT", 0, E.Scale(-5), READY_CHECK, nil)
