@@ -42,6 +42,7 @@ Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
 Text:SetShadowOffset(E.mult, -E.mult)
 Text:SetShadowColor(0, 0, 0, 0.4)
 E.PP(C["datatext"].guild, Text)
+Stat:SetAllPoints(Text)
 
 local function SortGuildTable(shift)
 	sort(guildTable, function(a, b)
@@ -107,18 +108,9 @@ local function Update(self, event, ...)
 
 		local _, online = GetNumGuildMembers()
 		
-		self:SetAllPoints(Text)
 		Text:SetFormattedText(displayString, online)
-		
-		if not Stat:GetScript("OnMouseDown") then
-			Stat:SetScript("OnMouseDown", function(self, btn)
-				if btn ~= "LeftButton" then return end
-				ToggleGuildFrame()
-			end)
-		end
 	else
 		Text:SetText(noGuildString)
-		Stat:SetScript("OnMouseDown", nil)
 	end
 end
 	
@@ -140,13 +132,18 @@ local function whisperClick(self,arg1,arg2,checked)
 end
 
 local function ToggleGuildFrame()
-	if not GuildFrame and IsInGuild() then LoadAddOn("Blizzard_GuildUI") end
-	GuildFrame_Toggle() 
-	GuildFrame_TabClicked(GuildFrameTab2)
+	if IsInGuild() then
+		if not GuildFrame then LoadAddOn("Blizzard_GuildUI") end
+		GuildFrame_Toggle()
+		GuildFrame_TabClicked(GuildFrameTab2)
+	else
+		if not LookingForGuildFrame then LoadAddOn("Blizzard_LookingForGuildUI") end
+		if LookingForGuildFrame then LookingForGuildFrame_Toggle() end
+	end
 end
 
 Stat:SetScript("OnMouseUp", function(self, btn)
-	if btn ~= "RightButton" then return end
+	if btn ~= "RightButton" or not IsInGuild() then return end
 	if InCombatLockdown() or not IsInGuild() then return end
 	
 	GameTooltip:Hide()
@@ -176,6 +173,11 @@ Stat:SetScript("OnMouseUp", function(self, btn)
 	end
 
 	EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
+end)
+
+Stat:SetScript("OnMouseDown", function(self, btn)
+	if btn ~= "LeftButton" then return end
+	ToggleGuildFrame()
 end)
 
 Stat:SetScript("OnEnter", function(self)
