@@ -45,14 +45,6 @@ local function Shared(self, unit)
 	-- Frame Level
 	self:SetFrameLevel(5)
 	
-	--Create Backdrop Frame
-	local backdrop = CreateFrame("Frame", nil, self)
-	backdrop:SetPoint("TOPRIGHT")
-	backdrop:SetPoint("BOTTOMLEFT")
-	backdrop:SetTemplate("Default")
-	backdrop:SetFrameStrata("BACKGROUND")
-	self.backdrop = backdrop
-	
 	------------------------------------------------------------------------
 	--	Player
 	------------------------------------------------------------------------
@@ -1026,7 +1018,7 @@ local function Shared(self, unit)
 	------------------------------------------------------------------------
 	--	Main tanks and Main Assists
 	------------------------------------------------------------------------
-	if(self:GetParent():GetName():match"ElvDPSMainTank" or self:GetParent():GetName():match"ElvDPSMainAssist") then
+	if unit == "raid" or unit == "raidtarget" then
 		--Health Bar
 		local health = E.ContructHealthBar(self, true, nil)
 		health:Point("TOPRIGHT", self, "TOPRIGHT", -2, -2)
@@ -1181,7 +1173,7 @@ local function LoadHealLayout()
 		end)
 	end
 	
-	E.LoadDPSMoveElements("ElvHeal")
+	E.LoadMoveElements("ElvHeal")
 	if C["classtimer"].enable == true then
 		E.LoadClassTimers(ElvHeal_player, ElvHeal_target)
 	end

@@ -45,14 +45,6 @@ local function Shared(self, unit)
 	-- Frame Level
 	self:SetFrameLevel(5)
 	
-	--Create Backdrop Frame
-	local backdrop = CreateFrame("Frame", nil, self)
-	backdrop:SetPoint("TOPRIGHT")
-	backdrop:SetPoint("BOTTOMLEFT")
-	backdrop:SetTemplate("Default")
-	backdrop:SetFrameStrata("BACKGROUND")
-	self.backdrop = backdrop
-	
 	------------------------------------------------------------------------
 	--	Player
 	------------------------------------------------------------------------
@@ -980,7 +972,7 @@ local function Shared(self, unit)
 	------------------------------------------------------------------------
 	--	Main tanks and Main Assists
 	------------------------------------------------------------------------
-	if(self:GetParent():GetName():match"ElvDPSMainTank" or self:GetParent():GetName():match"ElvDPSMainAssist") then
+	if unit == "raid" or unit == "raidtarget" then
 		--Health Bar
 		local health = E.ContructHealthBar(self, true, nil)
 		health:Point("TOPRIGHT", self, "TOPRIGHT", -2, -2)
@@ -989,7 +981,7 @@ local function Shared(self, unit)
 	
 		--Name
 		self:FontString("Name", font1, C["unitframes"].fontsize, "THINOUTLINE")
-		self.Name:SetPoint("CENTER", health, "CENTER")
+		self.Name:Point("CENTER", health, "CENTER", 0, 2)
 		self.Name.frequentUpdates = 0.5
 		self:Tag(self.Name, '[Elvui:getnamecolor][Elvui:namemedium]')			
 	end
@@ -1159,7 +1151,7 @@ local function LoadDPSLayout()
 		UnitPopupMenus["BOSS"] = { "RAID_TARGET_ICON", "CANCEL" }
 	end
 	
-	E.LoadDPSMoveElements("ElvDPS")
+	E.LoadMoveElements("ElvDPS")
 	if C["classtimer"].enable == true then
 		E.LoadClassTimers(ElvDPS_player, ElvDPS_target)
 	end

@@ -96,7 +96,7 @@ local function CreateFrameOverlay(parent, name)
 	fs:SetText(name)
 end
 
-function E.LoadDPSMoveElements(layout)
+function E.LoadMoveElements(layout)
 	if layout == "ElvDPS" then 
 		CreateFrameOverlay(ElvDPS_player.Castbar, "DPSPlayerCastBar")
 		CreateFrameOverlay(ElvDPS_target.Castbar, "DPSTargetCastBar")
