@@ -278,6 +278,9 @@ E.LoadUFFunctions = function(layout)
 		
 		if C["general"].classcolortheme == true then
 			health.backdrop:SetBackdropBorderColor(r, g, b)
+			if health:GetParent().Portrait and health:GetParent().Portrait.backdrop then
+				health:GetParent().Portrait.backdrop:SetBackdropBorderColor(r, g, b)
+			end
 		end
 		
 		if C["unitframes"].classcolor == true and C["unitframes"].healthcolorbyvalue == true and not (UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit)) then
@@ -369,7 +372,7 @@ E.LoadUFFunctions = function(layout)
 		local color = E.oUF_colors.power[pToken]
 		
 		if C["general"].classcolortheme == true then
-			power.backdrop:SetBackdropBorderColor(power:GetParent().Health:GetStatusBarColor())
+			power.backdrop:SetBackdropBorderColor(power:GetParent().Health.backdrop:GetBackdropBorderColor())
 		end
 		
 		if not power.value then return end		
@@ -648,7 +651,7 @@ E.LoadUFFunctions = function(layout)
 				icon:SetBackdropBorderColor(237/255, 234/255, 142/255)
 			else
 				if C["general"].classcolortheme == true then
-					local r, g, b = icon:GetParent():GetParent().backdrop:GetBackdropBorderColor()
+					local r, g, b = icon:GetParent():GetParent().Health.backdrop:GetBackdropBorderColor()
 					icon:SetBackdropBorderColor(r, g, b)
 				else
 					icon:SetBackdropBorderColor(unpack(C["media"].bordercolor))
