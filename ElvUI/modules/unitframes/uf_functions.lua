@@ -680,7 +680,7 @@ E.LoadUFFunctions = function(layout)
 		if name == "Opening" then
 			self.Text:SetText(OPENING)
 		else
-			self.Text:SetText(string.sub(name, 0, 25))
+			self.Text:SetText(string.sub(name, 0, math.floor((((32/245) * self:GetWidth()) / C["unitframes"].fontsize) * 12)))
 		end
 		
 		if self.interrupt and unit ~= "player" then
