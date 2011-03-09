@@ -238,7 +238,9 @@ addon.LOOT_OPENED = function(self, event, autoloot)
 
 			slot.quality = quality
 			slot.name:SetText(item)
-			slot.name:SetTextColor(color.r, color.g, color.b)
+			if color then
+				slot.name:SetTextColor(color.r, color.g, color.b)
+			end
 			slot.icon:SetTexture(texture)
 
 			m = math.max(m, quality)
@@ -252,7 +254,9 @@ addon.LOOT_OPENED = function(self, event, autoloot)
 		local color = ITEM_QUALITY_COLORS[0]
 
 		slot.name:SetText(L.empty)
-		slot.name:SetTextColor(color.r, color.g, color.b)
+		if color then
+			slot.name:SetTextColor(color.r, color.g, color.b)
+		end
 		slot.icon:SetTexture[[Interface\Icons\INV_Misc_Herb_AncientLichen]]
 
 		items = 1

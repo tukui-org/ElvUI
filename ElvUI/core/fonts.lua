@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------
 local E, C, L = unpack(select(2, ...)) -- Import: E - functions, constants, variables; C - config; L - locales
 
-if E.client == "ruRU" then
+if E.client == "ruRU" or E.client == "RUru" then
 	C["media"].uffont = C["media"].ru_uffont
 	C["media"].font = C["media"].ru_font
 	C["media"].dmgfont = C["media"].ru_dmgfont

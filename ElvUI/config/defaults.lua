@@ -19,8 +19,8 @@ C["media"] = {
 	
 	-- fonts (RUSSIAN)
 	["ru_font"] = [=[Interface\Addons\Tukui\media\fonts\PT_Sans_Narrow.ttf]=], -- general font of tukui
-	["ru_uffont"] = [[Fonts\ARIALN.TTF]], -- general font of unitframes
-	["ru_dmgfont"] = [[Fonts\ARIALN.TTF]], -- general font of dmg / sct
+	["ru_uffont"] = [[Interface\AddOns\Tukui\media\fonts\PT_Sans_Narrow.ttf]], -- general font of unitframes
+	["ru_dmgfont"] = [[Interface\AddOns\Tukui\media\fonts\Action_Man.ttf]], -- general font of dmg / sct
 	
 	-- fonts (TAIWAN ONLY)
 	["tw_font"] = [[Fonts\bLEI00D.ttf]], -- general font of tukui
