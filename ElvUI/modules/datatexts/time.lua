@@ -121,9 +121,10 @@ local function Update(self, t)
 	
 	local Hr, Min, AmPm = CalculateTimeValues(false)
 	
-	if CalendarGetNumPendingInvites() > 0 then
+	local pendingCalendarInvites = CalendarGetNumPendingInvites()
+	if pendingCalendarInvites > GameTimeFrame.pendingCalendarInvites then
 		E.Flash(TimeDataText, 0.53)
-	else
+	elseif pendingCalendarInvites == 0 then
 		E.StopFlash(TimeDataText)
 	end
 	
