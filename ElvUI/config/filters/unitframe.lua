@@ -196,6 +196,8 @@ E.RaidDebuffs = {
 	SpellName(86840), -- Devouring Flames
 	SpellName(95639), -- Engulfing Magic
 	SpellName(93051), -- Twilight Shift
+	SpellName(92886), -- Twilight Zone
+	SpellName(88518), -- Twilight Meteorite
 
 	--Halfus Wyrmbreaker
 	SpellName(39171), -- Malevolent Strikes
