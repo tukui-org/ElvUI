@@ -547,28 +547,31 @@ local function Shared(self, unit)
 		self.AltPowerBar = altpower
 		
 
-		--Incoming Heals
 		if C["raidframes"].healcomm == true then
 			local mhpb = CreateFrame('StatusBar', nil, health)
 			mhpb:SetPoint('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
 			mhpb:SetPoint('TOPLEFT', health:GetStatusBarTexture(), 'TOPRIGHT')	
-			mhpb:SetWidth(PLAYER_WIDTH)
+			mhpb:SetWidth(POWERBAR_WIDTH)
 			mhpb:SetStatusBarTexture(C["media"].blank)
 			mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
-
+			
 			local ohpb = CreateFrame('StatusBar', nil, health)
 			ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
 			ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)		
-			ohpb:SetWidth(PLAYER_WIDTH)
+			ohpb:SetWidth(mhpb:GetWidth())
 			ohpb:SetStatusBarTexture(C["media"].blank)
 			ohpb:SetStatusBarColor(0, 1, 0, 0.25)
-
+			
 			self.HealPrediction = {
 				myBar = mhpb,
 				otherBar = ohpb,
 				maxOverflow = 1,
+				PostUpdate = function(self)
+					if self.myBar:GetValue() == 0 then self.myBar:Hide() end
+					if self.otherBar:GetValue() == 0 then self.otherBar:Hide() end
+				end
 			}
-		end		
+		end	
 	end
 	
 	------------------------------------------------------------------------
@@ -780,21 +783,25 @@ local function Shared(self, unit)
 			local mhpb = CreateFrame('StatusBar', nil, health)
 			mhpb:SetPoint('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
 			mhpb:SetPoint('TOPLEFT', health:GetStatusBarTexture(), 'TOPRIGHT')	
-			mhpb:SetWidth(PLAYER_WIDTH)
+			mhpb:SetWidth(POWERBAR_WIDTH)
 			mhpb:SetStatusBarTexture(C["media"].blank)
 			mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
-
+			
 			local ohpb = CreateFrame('StatusBar', nil, health)
 			ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
 			ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)		
-			ohpb:SetWidth(PLAYER_WIDTH)
+			ohpb:SetWidth(mhpb:GetWidth())
 			ohpb:SetStatusBarTexture(C["media"].blank)
 			ohpb:SetStatusBarColor(0, 1, 0, 0.25)
-
+			
 			self.HealPrediction = {
 				myBar = mhpb,
 				otherBar = ohpb,
 				maxOverflow = 1,
+				PostUpdate = function(self)
+					if self.myBar:GetValue() == 0 then self.myBar:Hide() end
+					if self.otherBar:GetValue() == 0 then self.otherBar:Hide() end
+				end
 			}
 		end		
 	end

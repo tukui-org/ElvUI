@@ -89,26 +89,29 @@ local function Shared(self, unit)
 		local mhpb = CreateFrame('StatusBar', nil, health)
 		if C["raidframes"].gridhealthvertical == true then
 			mhpb:SetOrientation("VERTICAL")
-			mhpb:SetPoint('BOTTOM', health:GetStatusBarTexture(), 'TOP', 0, 0)
+			mhpb:SetPoint('BOTTOMLEFT', health:GetStatusBarTexture(), 'TOPLEFT')
+			mhpb:SetPoint('BOTTOMRIGHT', health:GetStatusBarTexture(), 'TOPRIGHT')
 			mhpb:SetHeight(RAID_HEIGHT)
 		else
-			mhpb:SetPoint('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
-			mhpb:SetPoint('TOPLEFT', health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)		
+			mhpb:SetPoint('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
+			mhpb:SetPoint('TOPLEFT', health:GetStatusBarTexture(), 'TOPRIGHT')		
+			mhpb:SetWidth(RAID_WIDTH - (BORDER*2))
 		end
-		mhpb:SetWidth(RAID_WIDTH - (BORDER*2))
+		
 		mhpb:SetStatusBarTexture(C["media"].blank)
 		mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
 
 		local ohpb = CreateFrame('StatusBar', nil, health)
 		if C["raidframes"].gridhealthvertical == true then		
 			ohpb:SetOrientation("VERTICAL")
-			ohpb:SetPoint('BOTTOM', mhpb:GetStatusBarTexture(), 'TOP', 0, 0)
+			ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'TOPLEFT')
+			ohpb:SetPoint('BOTTOMRIGHT', mhpb:GetStatusBarTexture(), 'TOPRIGHT')
 			ohpb:SetHeight(RAID_HEIGHT)
 		else
 			ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
-			ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)		
+			ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
+			ohpb:SetWidth(RAID_WIDTH - (BORDER*2))
 		end
-		ohpb:SetWidth(RAID_WIDTH)
 		ohpb:SetStatusBarTexture(C["media"].blank)
 		ohpb:SetStatusBarColor(0, 1, 0, 0.25)
 
@@ -116,6 +119,10 @@ local function Shared(self, unit)
 			myBar = mhpb,
 			otherBar = ohpb,
 			maxOverflow = 1,
+			PostUpdate = function(self)
+				if self.myBar:GetValue() == 0 then self.myBar:Hide() end
+				if self.otherBar:GetValue() == 0 then self.otherBar:Hide() end
+			end
 		}
 	end
 	
