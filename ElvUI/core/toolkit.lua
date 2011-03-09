@@ -72,6 +72,7 @@ local function SetTemplate(f, t, texture)
 		tex:Point("BOTTOMRIGHT", f, "BOTTOMRIGHT", -2, 2)
 		tex:SetTexture(C.media.normTex2)
 		tex:SetVertexColor(backdropr, backdropg, backdropb)
+		tex:SetDrawLayer("BORDER", -8)
 	else
 		f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
 		
