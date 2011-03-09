@@ -8,18 +8,18 @@ C["media"] = {
 	["dmgfont"] = [[Interface\AddOns\ElvUI\media\fonts\Action_Man.ttf]], -- general font of dmg / sct
 	
 	-- fonts (DEUTSCH)
-	["de_font"] = [=[Interface\Addons\Tukui\media\fonts\PT_Sans_Narrow.ttf]=], -- general font of tukui
-	["de_uffont"] = [[Interface\AddOns\Tukui\media\fonts\PT_Sans_Narrow.ttf]], -- general font of unitframes
-	["de_dmgfont"] = [[Interface\AddOns\Tukui\media\fonts\Action_Man.ttf]], -- general font of dmg / sct
+	["de_font"] = [=[Interface\Addons\ElvUI\media\fonts\PT_Sans_Narrow.ttf]=], -- general font of ElvUI
+	["de_uffont"] = [[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], -- general font of unitframes
+	["de_dmgfont"] = [[Interface\AddOns\ElvUI\media\fonts\Action_Man.ttf]], -- general font of dmg / sct
 	
 	-- fonts (FRENCH)
-	["fr_font"] = [=[Interface\Addons\Tukui\media\fonts\PT_Sans_Narrow.ttf]=], -- general font of tukui
-	["fr_uffont"] = [[Interface\AddOns\Tukui\media\fonts\PT_Sans_Narrow.ttf]], -- general font of unitframes
-	["fr_dmgfont"] = [=[Interface\AddOns\Tukui\media\fonts\Action_Man.ttf]=], -- general font of dmg / sct
+	["fr_font"] = [=[Interface\Addons\ElvUI\media\fonts\PT_Sans_Narrow.ttf]=], -- general font of ElvUI
+	["fr_uffont"] = [[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], -- general font of unitframes
+	["fr_dmgfont"] = [=[Interface\AddOns\ElvUI\media\fonts\Action_Man.ttf]=], -- general font of dmg / sct
 	
 	-- fonts (RUSSIAN)
-	["ru_font"] = [=[Interface\Addons\Tukui\media\fonts\PT_Sans_Narrow.ttf]=], -- general font of tukui
-	["ru_uffont"] = [=[Interface\Addons\Tukui\media\fonts\PT_Sans_Narrow.ttf]=], -- general font of unitframes
+	["ru_font"] = [=[Interface\Addons\ElvUI\media\fonts\PT_Sans_Narrow.ttf]=], -- general font of ElvUI
+	["ru_uffont"] = [=[Interface\Addons\ElvUI\media\fonts\PT_Sans_Narrow.ttf]=], -- general font of unitframes
 	["ru_dmgfont"] = [[Fonts\ARIALN.TTF]], -- general font of dmg / sct
 	
 	-- fonts (TAIWAN ONLY)
