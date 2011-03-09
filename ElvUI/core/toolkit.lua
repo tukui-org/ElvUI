@@ -64,7 +64,7 @@ local function SetTemplate(f, t, texture)
 		backdropa = 1
 	end
 	
-	if texture then
+	if texture and not f.tex then
 		f:SetBackdropColor(0, 0, 0, backdropa)	
 		
 		local tex = f:CreateTexture(nil, "BORDER")
@@ -73,6 +73,7 @@ local function SetTemplate(f, t, texture)
 		tex:SetTexture(C.media.normTex2)
 		tex:SetVertexColor(backdropr, backdropg, backdropb)
 		tex:SetDrawLayer("BORDER", -8)
+		f.tex = tex
 	else
 		f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
 		
