@@ -436,9 +436,9 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 				local result = CreateFrame( "Frame", nil, parent, nil );
 
 				if ( bit.band( ICON_POSITION, 4 ) == 0 ) then		
-					local icon = CreateFramedTexture( result, "ARTWORK" );
+					local icon = CreateFramedTexture( result, "OVERLAY" );
 					icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
-					
+			
 					local iconbackdrop = CreateFrame("Frame")
 					iconbackdrop:SetAllPoints(icon)
 					
@@ -471,6 +471,8 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 						iconbackdrop:SetPoint("TOPLEFT", icon, "TOPLEFT", E.Scale(-2), E.Scale(2))
 						iconbackdrop:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
 						iconbackdrop:SetTemplate("Default")
+						iconbackdrop.iborder:SetBackdropBorderColor(0, 0, 0, 0)
+						iconbackdrop.oborder:SetBackdropBorderColor(0, 0, 0, 0)
 						iconbackdrop:SetFrameLevel(result:GetFrameLevel() - 1)
 					end
 					
