@@ -973,6 +973,9 @@ local function Shared(self, unit)
 				health:Point("TOPRIGHT", self:GetParent(), "TOPRIGHT", -2, -2)			
 			end)
 			
+			altpower:FontString("text", font1, C["unitframes"].fontsize, "THINOUTLINE")
+			altpower.text:Point("LEFT", power.value, "RIGHT", -2, E.mult)			
+			
 			self.AltPowerBar = altpower
 		end
 				

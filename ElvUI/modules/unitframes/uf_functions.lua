@@ -384,7 +384,7 @@ E.LoadUFFunctions = function(layout)
 		end	
 			
 		if min == 0 then 
-			power.value:SetText("") 
+			power.value:SetText() 
 		else
 			if (not UnitIsPlayer(unit) and not UnitPlayerControlled(unit) or not UnitIsConnected(unit)) and not (unit and unit:find("boss%d")) then
 				power.value:SetText()
@@ -408,11 +408,7 @@ E.LoadUFFunctions = function(layout)
 						elseif (unit and unit:find("arena%d")) then
 							power.value:SetText(E.ShortValue(min))
 						elseif (unit and unit:find("boss%d")) then
-							if C["unitframes"].showtotalhpmp == true then
-								power.value:SetFormattedText("%s |cffD7BEA5|||r %s", E.ShortValue(max), E.ShortValue(max - (max - min)))
-							else
-								power.value:SetFormattedText("%s |cffD7BEA5-|r %d%%", E.ShortValue(max - (max - min)), floor(min / max * 100))
-							end						
+							power.value:SetFormattedText("%d%%", floor(min / max * 100))					
 						else
 							if C["unitframes"].showtotalhpmp == true then
 								power.value:SetFormattedText("%s |cffD7BEA5|||r %s", E.ShortValue(max - (max - min)), E.ShortValue(max))
@@ -807,7 +803,7 @@ E.LoadUFFunctions = function(layout)
 		if self:IsShown() then
 			for _, text in pairs(E.LeftDatatexts) do text:Hide() end
 			local type = select(10, UnitAlternatePowerInfo(unit))
-			if self.text and type then self.text:SetText(type..": "..E.ValColor.."0%") end
+			if self.text and type then self.text:SetText(type..": 0%") end
 		else
 			for _, text in pairs(E.LeftDatatexts) do text:Show() end		
 		end
@@ -826,14 +822,21 @@ E.LoadUFFunctions = function(layout)
 		
 		local unit = self:GetParent().unit or self:GetParent():GetParent().unit
 		
-		if unit == nil or unit ~= "player" then return end --Only want to see this on the players bar
-		
-		local type = select(10, UnitAlternatePowerInfo(unit))
-				
-		if self.text and perc > 0 then
-			self.text:SetText(type..": "..E.ValColor..format("%d%%", perc))
-		elseif self.text then
-			self.text:SetText(type..": "..E.ValColor.."0%")
+		if unit == "player" and self.text then 
+			local type = select(10, UnitAlternatePowerInfo(unit))
+					
+			if perc > 0 then
+				self.text:SetText(type..": "..format("%d%%", perc))
+			else
+				self.text:SetText(type..": 0%")
+			end
+		elseif unit and unit:find("boss%d") and self.text then
+			self.text:SetTextColor(self:GetStatusBarColor())
+			if perc > 0 then
+				self.text:SetText("|cffD7BEA5[|r"..format("%d%%", perc).."|cffD7BEA5]|r")
+			else
+				self.text:SetText(nil)
+			end
 		end
 	end
 
