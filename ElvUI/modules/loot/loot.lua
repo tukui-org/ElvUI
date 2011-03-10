@@ -31,7 +31,7 @@ local OnEnter = function(self)
 end
 
 local OnLeave = function(self)
-	if(self.quality > 1) then
+	if self.quality and (self.quality > 1) then
 		local color = ITEM_QUALITY_COLORS[self.quality]
 		self.drop:SetVertexColor(color.r, color.g, color.b)
 	else
@@ -242,8 +242,10 @@ addon.LOOT_OPENED = function(self, event, autoloot)
 				slot.name:SetTextColor(color.r, color.g, color.b)
 			end
 			slot.icon:SetTexture(texture)
-
-			m = math.max(m, quality)
+			
+			if quality then
+				m = math.max(m, quality)
+			end
 			w = math.max(w, slot.name:GetStringWidth())
 
 			slot:Enable()
