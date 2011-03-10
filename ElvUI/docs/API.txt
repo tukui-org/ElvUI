@@ -55,13 +55,5 @@ Templates:
 		-- use default color according to what we have set via /media/medias.lua
 	- "Transparent"
 		-- Same as "Default" but with Transparent background
-	- "Tukui"
 	- "ClassColor"
-	- "Elv"
-	- "Eclipse"
-	- "Dajova"
-	- "Hydra"
-	- "Duffed"
-	- "Eclipse"
-
-		( ... will probably add more in the future from most popular edits ... )
+		-- Your classes color on borders.
