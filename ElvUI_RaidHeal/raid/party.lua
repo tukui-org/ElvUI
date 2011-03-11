@@ -154,8 +154,8 @@ local function Shared(self, unit)
 				otherBar = ohpb,
 				maxOverflow = 1,
 				PostUpdate = function(self)
-					if self.myBar:GetValue() == 0 then self.myBar:Hide() end
-					if self.otherBar:GetValue() == 0 then self.otherBar:Hide() end
+					if self.myBar:GetValue() == 0 then self.myBar:SetAlpha(0) else self.myBar:SetAlpha(1) end
+					if self.otherBar:GetValue() == 0 then self.otherBar:SetAlpha(0) else self.otherBar:SetAlpha(1) end
 				end
 			}
 		end
