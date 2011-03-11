@@ -849,6 +849,9 @@ local function Shared(self, unit)
 		local CASTBAR_HEIGHT = 16
 		local CASTBAR_WIDTH = BOSS_WIDTH	
 		
+		-- Right-click focus on arena or boss units
+		self:SetAttribute("type2", "focus")
+		
 		--Health Bar
 		local health = E.ContructHealthBar(self, true, true)
 		health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
@@ -946,6 +949,9 @@ local function Shared(self, unit)
 		buffs["growth-x"] = "LEFT"
 		buffs.PostCreateIcon = E.PostCreateAura
 		buffs.PostUpdateIcon = E.PostUpdateAura
+		if (unit and unit:find('arena%d')) then
+			buffs.CustomFilter = E.AuraFilter
+		end
 		self.Buffs = buffs	
 		
 		local debuffs = CreateFrame("Frame", nil, self)
