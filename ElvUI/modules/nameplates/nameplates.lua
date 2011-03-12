@@ -33,8 +33,6 @@ if C["nameplate"].trackauras == true or C["nameplate"].trackccauras == true then
 	NamePlates:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 end
 
-SetCVar("bloatthreat", 0) -- stop resizing nameplate according to threat level.
-SetCVar("bloattest", 0)
 if C["nameplate"].overlap == true or E.eyefinity then
 	SetCVar("spreadnameplates", "0")
 else
@@ -675,6 +673,10 @@ function NamePlates:PLAYER_ENTERING_WORLD()
 			SetCVar("nameplateShowEnemies", 0)
 		end
 	end
+	
+	SetCVar("bloatthreat", 0)
+	SetCVar("bloattest", 0)
+	SetCVar("bloatnameplates", 0)
 	
 	if C["nameplate"].enable == true and C["nameplate"].enhancethreat == true then
 		SetCVar("threatWarning", 3)
