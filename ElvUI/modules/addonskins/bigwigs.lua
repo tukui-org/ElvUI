@@ -167,6 +167,8 @@ f:SetScript("OnEvent", function(self, event, addon)
 		SlashCmdList["BigWigs"]()
 		BigWigsOptions:SendMessage("BigWigs_StartConfigureMode", true)
 		BigWigsOptions:SendMessage("BigWigs_StopConfigureMode")
+		InterfaceOptionsFrameTab1:Click()
+		InterfaceOptionsFrameCategoriesButton1:Click()
 		HideUIPanel(InterfaceOptionsFrame)
 		PositionBWAnchor()
 	elseif event == "PLAYER_REGEN_DISABLED" then
