@@ -28,6 +28,7 @@ E.LoadUFFunctions = function(layout)
 				health.bg.multiplier = 0.25
 			else
 				health.bg:SetTexture(unpack(C["unitframes"].healthbackdropcolor))
+				health.bg.SetVertexColor = E.dummy
 			end
 		end
 		
@@ -927,6 +928,12 @@ E.LoadUFFunctions = function(layout)
 				else
 					tex:SetVertexColor(0.8, 0.8, 0.8)
 				end
+				
+				local border = icon:CreateTexture(nil, "ARTWORK")
+				border:Point("TOPLEFT", -E.mult, E.mult)
+				border:Point("BOTTOMRIGHT", E.mult, -E.mult)
+				border:SetTexture(C["media"].blank)
+				border:SetVertexColor(0, 0, 0)
 
 				local count = icon:CreateFontString(nil, "OVERLAY")
 				count:SetFont(C["media"].uffont, 8, "THINOUTLINE")
