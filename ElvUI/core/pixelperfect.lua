@@ -44,6 +44,13 @@ function E.UIScale()
 	elseif C["general"].resolutionoverride == "High" then
 		E.lowversion = false
 	end
+	
+	--Set a value for unitframe scaling
+	if E.lowversion == true then
+		E.ResScale = 0.9
+	else
+		E.ResScale = 1
+	end
 end
 E.UIScale()
 
