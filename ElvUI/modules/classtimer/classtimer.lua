@@ -915,6 +915,7 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 		if ICON_POSITION == 3 then
 			xOffset2 = xOffset2 - (BAR_HEIGHT+6)
 		end
+		
 		local playerDataSource = CreateUnitAuraDataSource( "player" );
 		local trinketDataSource = CreateUnitAuraDataSource( "player" );
 		
