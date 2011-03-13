@@ -151,7 +151,7 @@ local function Shared(self, unit)
 			debuffs.num = C["auras"].playtarbuffperrow
 			debuffs:SetWidth(PLAYER_WIDTH)
 			debuffs.spacing = SPACING
-			debuffs.size = ((PLAYER_WIDTH - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)
+			debuffs.size = ((C["framesizes"].playtarwidth - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)*E.ResScale
 			debuffs:SetHeight(debuffs.size)
 			debuffs:Point("BOTTOMLEFT", self, "TOPLEFT", 0, SPACING)	
 			debuffs.initialAnchor = 'BOTTOMRIGHT'
@@ -167,7 +167,7 @@ local function Shared(self, unit)
 				buffs.num = C["auras"].playtarbuffperrow
 				buffs:SetWidth(debuffs:GetWidth())
 				buffs.spacing = SPACING
-				buffs.size = (((PLAYER_WIDTH - (buffs.spacing*(buffs.num - 1))) / buffs.num))
+				buffs.size = (((C["framesizes"].playtarwidth - (buffs.spacing*(buffs.num - 1))) / buffs.num))*E.ResScale
 				buffs:Point("BOTTOM", debuffs, "TOP", 0, SPACING)
 				buffs:SetHeight(debuffs:GetHeight())
 				buffs.initialAnchor = 'BOTTOMLEFT'
@@ -698,7 +698,7 @@ local function Shared(self, unit)
 			buffs.num = C["auras"].playtarbuffperrow
 			buffs:SetWidth(TARGET_WIDTH)
 			buffs.spacing = SPACING
-			buffs.size = (((TARGET_WIDTH - (buffs.spacing*(buffs.num - 1))) / buffs.num))
+			buffs.size = (((C["framesizes"].playtarwidth - (buffs.spacing*(buffs.num - 1))) / buffs.num))*E.ResScale
 			buffs:Point("BOTTOM", self, "TOP", 0, SPACING)
 			buffs:SetHeight(buffs.size)
 			buffs.initialAnchor = 'BOTTOMLEFT'
@@ -712,7 +712,7 @@ local function Shared(self, unit)
 			debuffs.num = C["auras"].playtarbuffperrow
 			debuffs:SetWidth(TARGET_WIDTH)
 			debuffs.spacing = SPACING
-			debuffs.size = ((TARGET_WIDTH - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)
+			debuffs.size = ((C["framesizes"].playtarwidth - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)*E.ResScale
 			debuffs:SetHeight(debuffs.size)
 			debuffs:Point("BOTTOM", buffs, "TOP", 0, SPACING)	
 			debuffs.initialAnchor = 'BOTTOMRIGHT'
@@ -902,7 +902,7 @@ local function Shared(self, unit)
 			debuffs.num = C["auras"].smallbuffperrow
 			debuffs:SetWidth(SMALL_WIDTH)
 			debuffs.spacing = SPACING
-			debuffs.size = ((SMALL_WIDTH - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)
+			debuffs.size = ((C["framesizes"].smallwidth - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)*E.ResScale
 			debuffs:SetHeight(debuffs.size)
 			debuffs:Point("TOP", self, "BOTTOM", 0, -SPACING)	
 			debuffs.initialAnchor = 'BOTTOMRIGHT'
