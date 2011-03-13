@@ -92,7 +92,7 @@ C["unitframes"] = {
 	["debuffhighlight"] = true,				--highlight frame with the debuff color if the frame is dispellable
 	["classbar"] = true,                    -- enable runebar/totembar/holypowerbar/soulshardbar/eclipsebar
 	["combat"] = false,						-- only show main unitframes when in combat/havetarget/or mouseover
-	["mini_powerbar"] = true,
+	["mini_powerbar"] = false,
 }
 
 C["framesizes"] = {
