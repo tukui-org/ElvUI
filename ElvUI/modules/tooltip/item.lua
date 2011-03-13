@@ -77,3 +77,5 @@ GameTooltip:HookScript("OnTooltipSetSpell", function(self)
 		self:Show()
 	end
 end)
+
+

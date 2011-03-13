@@ -218,6 +218,29 @@ local function AddTargetedBy()
 	end
 end
 
+local SlotName = {
+	"Head","Neck","Shoulder","Back","Chest","Wrist",
+	"Hands","Waist","Legs","Feet","Finger0","Finger1",
+	"Trinket0","Trinket1","MainHand","SecondaryHand","Ranged","Ammo"
+}
+
+local function GetItemLvL(unit)
+	local total, item = 0, 0
+
+	for i in pairs(SlotName) do
+		local slot = GetInventoryItemLink(unit, GetInventorySlotInfo(SlotName[i].."Slot"))
+		if (slot ~= nil) then
+			item = item + 1
+			total = total + select(4, GetItemInfo(slot))
+		end
+	end
+	if (total < 1 or item < 1) then
+		return 0
+	end
+	
+	return floor(total / item);
+end
+
 GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 	local lines = self:NumLines()
 	local GMF = GetMouseFocus()
@@ -301,12 +324,28 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 			break
 		end
 	end
+	
+	if (unit and CanInspect(unit)) and C["tooltip"].itemid == true then
+		local isInspectOpen = (InspectFrame and InspectFrame:IsShown()) or (Examiner and Examiner:IsShown());
+		if ((unit) and (CanInspect(unit)) and (not isInspectOpen)) then
+			NotifyInspect(unit)
+			
+			local ilvl = GetItemLvL(unit)
+			
+			ClearInspectPlayer(unit)
+			
+			if ilvl > 1 then
+				GameTooltip:AddDoubleLine(STAT_AVERAGE_ITEM_LEVEL..":", "|cffFFFFFF"..ilvl.."|r")
+				GameTooltip:Show()
+			end
+		end
+	end	
 
 	-- ToT line
 	if UnitExists(unit.."target") and unit~="player" then
-		local hex, r, g, b = GetColor(unit.."target")
-		if not r and not g and not b then r, g, b = 1, 1, 1 end
-		GameTooltip:AddLine(UnitName(unit.."target"), r, g, b)
+		local hex, _, _, _ = GetColor(unit.."target")
+		if not hex then hex = "|cffFFFFFF" end
+		GameTooltip:AddDoubleLine(TARGET..":", hex..UnitName(unit.."target").."|r")
 	end
 	
 	if C["tooltip"].whotargetting == true then token = unit AddTargetedBy() end
