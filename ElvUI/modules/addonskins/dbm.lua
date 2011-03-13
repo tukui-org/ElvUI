@@ -240,7 +240,6 @@ local ForceOptions = function()
 	DBT_SavedOptions["DBM"].HugeScale = 1
 	DBT_SavedOptions["DBM"].BarXOffset = 0
 	DBT_SavedOptions["DBM"].BarYOffset = 9
-	DBT_SavedOptions["DBM"].ExpandUpwards = true
 	DBT_SavedOptions["DBM"].Texture = "Elvui Norm"
 	DBT_SavedOptions["DBM"].Font = "Elvui Font"
 end
