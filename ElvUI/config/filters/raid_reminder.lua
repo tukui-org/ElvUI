@@ -64,3 +64,9 @@ E.BuffReminderRaidBuffs = {
 		87554, --Seafood Feast
 	},
 }
+
+--TEMP FIX TO CRASH ON LOAD
+local _, build = GetBuildInfo()
+if tonumber(build) > 13623 then 
+	E.BuffReminderRaidBuffs.Flask = {}
+end
