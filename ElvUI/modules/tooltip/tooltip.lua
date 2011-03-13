@@ -325,7 +325,7 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 		end
 	end
 	
-	if (unit and CanInspect(unit)) and C["tooltip"].itemid == true then
+	if IsShiftKeyDown() and (unit and CanInspect(unit)) and C["tooltip"].itemid == true then
 		local isInspectOpen = (InspectFrame and InspectFrame:IsShown()) or (Examiner and Examiner:IsShown());
 		if ((unit) and (CanInspect(unit)) and (not isInspectOpen)) then
 			NotifyInspect(unit)
