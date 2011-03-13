@@ -54,7 +54,7 @@ local Filter = {
 	["kr_dmgfont"]=1,	
 }
 
-local function Local(o)
+function LoadConfigLocals(o)
 	local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 	
 	-- general
@@ -229,6 +229,7 @@ local function Local(o)
 	if o == "ElvuiConfigUIunitframeshealthcolorbyvalue" then o = ElvuiL.option_unitframes_healthcolorbyvalue end
 	if o == "ElvuiConfigUIunitframescombat" then o = ElvuiL.option_unitframes_combat end
 	if o == "ElvuiConfigUIunitframespettarget" then o = ElvuiL.option_unitframes_pettarget end
+	if o == "ElvuiConfigUIunitframesmini_powerbar" then o = ElvuiL.option_unitframes_mini_powerbar end
 	
 	-- frame sizes
 	if o == "ElvuiConfigUIframesizes" then o = ElvuiL.option_framesizes end
@@ -452,7 +453,7 @@ local function ShowGroup(group)
 	end
 	if _G["ElvuiConfigUI"..group] then
 		local o = "ElvuiConfigUI"..group
-		Local(o)
+		LoadConfigLocals(o)
 		_G["ElvuiConfigUITitle"]:SetText(E.option)
 		local height = _G["ElvuiConfigUI"..group]:GetHeight()
 		_G["ElvuiConfigUI"..group]:Show()
@@ -560,7 +561,7 @@ local function CreateElvuiConfigUI()
 	
 	for group in pairs(ALLOWED_GROUPS) do
 		local o = "ElvuiConfigUI"..group
-		Local(o)
+		LoadConfigLocals(o)
 		local button = NewButton(E.option, child)
 		button:SetHeight(16)
 		button:SetWidth(125)
@@ -616,7 +617,7 @@ local function CreateElvuiConfigUI()
 			if type(value) == "boolean" then
 				local button = CreateFrame("CheckButton", "ElvuiConfigUI"..group..option, frame, "InterfaceOptionsCheckButtonTemplate")
 				local o = "ElvuiConfigUI"..group..option
-				Local(o)
+				LoadConfigLocals(o)
 				_G["ElvuiConfigUI"..group..option.."Text"]:SetText(E.option)
 				_G["ElvuiConfigUI"..group..option.."Text"]:SetFont(C.media.font, C["general"].fontscale)
 				button:SetChecked(value)
@@ -627,7 +628,7 @@ local function CreateElvuiConfigUI()
 				local label = frame:CreateFontString(nil,"OVERLAY",nil)
 				label:SetFont(C.media.font,C["general"].fontscale)
 				local o = "ElvuiConfigUI"..group..option
-				Local(o)
+				LoadConfigLocals(o)
 				label:SetText(E.option)
 				label:SetWidth(420)
 				label:SetHeight(20)
@@ -679,7 +680,7 @@ local function CreateElvuiConfigUI()
 				local label = frame:CreateFontString(nil,"OVERLAY",nil)
 				label:SetFont(C.media.font,C["general"].fontscale)
 				local o = "ElvuiConfigUI"..group..option
-				Local(o)
+				LoadConfigLocals(o)
 				label:SetText(E.option)
 				label:SetWidth(420)
 				label:SetHeight(20)

@@ -10,5 +10,4 @@ function E.LoadLayout(layout)
 		end
 	end
 end
-
 E.LoadLayout(C["general"].layoutoverride)

@@ -21,6 +21,7 @@ local SPACING = 1*E.ResScale
 local FONTSIZE = C["unitframes"].fontsize*E.ResScale
 local FONT = C["media"].uffont
 local NORMTEX = C["media"].normTex
+local POWERTHEME = C["unitframes"].mini_powerbar
 
 ------------------------------------------------------------------------
 --	Layout
@@ -44,7 +45,8 @@ local function Shared(self, unit)
 	--	Player
 	------------------------------------------------------------------------
 	if unit == "player" then
-		local POWERBAR_WIDTH = (C["framesizes"].playtarwidth - (2*2))*E.ResScale
+		local POWERBAR_WIDTH = C["framesizes"].playtarwidth/2*E.ResScale
+		local CLASSBAR_WIDTH = (C["framesizes"].playtarwidth - (2*2))*E.ResScale
 		local POWERBAR_HEIGHT = 10*E.ResScale
 		local CASTBAR_HEIGHT = 20*E.ResScale
 		local CASTBAR_WIDTH = C["castbar"].playerwidth*E.ResScale
@@ -55,28 +57,39 @@ local function Shared(self, unit)
 		self.shadow:SetFrameStrata("BACKGROUND")
 		self.shadow:SetBackdropBorderColor(0, 0, 0, 0)
 		self.shadow:Point("TOPLEFT", -4, 4)
-		self.shadow:Point("BOTTOMLEFT", -4, -4)
 		self.shadow:Point("TOPRIGHT", 4, 4)
-		self.shadow:Point("BOTTOMRIGHT", 4, -4)
-	
+		self.shadow:Point("BOTTOMLEFT", -4, -4)
+		self.shadow:Point("BOTTOMRIGHT", 4, -4)		
+
 		if C["unitframes"].charportraithealth == true or C["unitframes"].charportrait == false then
 			PORTRAIT_WIDTH = 0
 		elseif C["unitframes"].charportrait == true then
-			POWERBAR_WIDTH = math.ceil(((C["framesizes"].playtarwidth - (2*2)) - 45)*E.ResScale)
+			CLASSBAR_WIDTH = math.ceil(((C["framesizes"].playtarwidth - (2*2)) - 45)*E.ResScale)
 		end
 	
 		--Health Bar
 		local health = E.ContructHealthBar(self, true, true)
 		health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
-		health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
+		if POWERTHEME == true then
+			health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER + (POWERBAR_HEIGHT/2))
+		else
+			health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
+		end
 
 		health.value:Point("RIGHT", health, "RIGHT", -4, 0)
 		self.Health = health
 		
 		--Power Bar
 		local power = E.ConstructPowerBar(self, true, true)
-		power:Point("TOPLEFT", health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + SPACING))
-		power:Point("BOTTOMRIGHT", self, "BOTTOMRIGHT", -BORDER, BORDER)
+		if POWERTHEME == true then
+			power:Width(POWERBAR_WIDTH - BORDER*2)
+			power:Height(POWERBAR_HEIGHT - BORDER*2)
+			power:Point("RIGHT", self, "BOTTOMRIGHT", -(BORDER*2 + 4), BORDER + (POWERBAR_HEIGHT/2))
+			power:SetFrameStrata(self:GetFrameStrata())
+		else
+			power:Point("TOPLEFT", health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + SPACING))
+			power:Point("BOTTOMRIGHT", self, "BOTTOMRIGHT", -BORDER, BORDER)
+		end
 		power.value:Point("LEFT", health, "LEFT", 4, 0)
 
 		self.Power = power
@@ -108,7 +121,11 @@ local function Shared(self, unit)
 				portrait.backdrop = CreateFrame("Frame", nil, portrait)
 				portrait.backdrop:SetTemplate("Default")
 				portrait.backdrop:SetPoint("TOPLEFT", self, "TOPLEFT")
-				portrait.backdrop:Point("BOTTOMRIGHT", power.backdrop, "BOTTOMLEFT", -SPACING, 0)
+				if POWERTHEME == true then
+					portrait.backdrop:Point("BOTTOMRIGHT", health.backdrop, "BOTTOMLEFT", -SPACING, 0)
+				else
+					portrait.backdrop:Point("BOTTOMRIGHT", power.backdrop, "BOTTOMLEFT", -SPACING, 0)
+				end
 				portrait.backdrop:SetFrameLevel(portrait:GetFrameLevel() - 1)
 				
 				portrait:Point('BOTTOMLEFT', portrait.backdrop, 'BOTTOMLEFT', BORDER, BORDER)		
@@ -117,6 +134,16 @@ local function Shared(self, unit)
 				self.Portrait = portrait
 			end
 		end
+		
+		--Anchor aggro glow to the healthbar if powertheme is on
+		if POWERTHEME == true then
+			if C["unitframes"].charportrait == true and not C["unitframes"].charportraithealth == true then
+				self.shadow:Point("BOTTOMLEFT", self.Portrait.backdrop, "BOTTOMLEFT", -4, -4)
+			else
+				self.shadow:Point("BOTTOMLEFT", health, "BOTTOMLEFT", -4, -4)
+			end
+			self.shadow:Point("BOTTOMRIGHT", health, "BOTTOMRIGHT", 4, -4)
+		end				
 				
 		--Auras
 		if C["auras"].playerauras then
@@ -322,7 +349,7 @@ local function Shared(self, unit)
 				local bars = CreateFrame("Frame", nil, self)
 				bars:SetFrameStrata("LOW")
 				bars:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
-				bars:Width(POWERBAR_WIDTH)
+				bars:Width(CLASSBAR_WIDTH)
 				bars:Height(POWERBAR_HEIGHT - (BORDER*2))
 
 				
@@ -385,7 +412,7 @@ local function Shared(self, unit)
 				local runes = CreateFrame("Frame", nil, self)
 				runes:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
 				runes:SetFrameStrata("LOW")
-				runes:Width(POWERBAR_WIDTH)
+				runes:Width(CLASSBAR_WIDTH)
 				runes:Height(POWERBAR_HEIGHT - (BORDER*2))
 
 				for i = 1, 6 do
@@ -426,7 +453,7 @@ local function Shared(self, unit)
 				local totems = CreateFrame("Frame", nil, self)
 				totems:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
 				totems:SetFrameStrata("LOW")
-				totems:Width(POWERBAR_WIDTH)
+				totems:Width(CLASSBAR_WIDTH)
 				totems:Height(POWERBAR_HEIGHT - (BORDER*2))
 				totems.Destroy = true
 
@@ -476,7 +503,7 @@ local function Shared(self, unit)
 				local eclipseBar = CreateFrame('Frame', nil, self)
 				eclipseBar:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
 				eclipseBar:SetFrameStrata("LOW")
-				eclipseBar:Width(POWERBAR_WIDTH)
+				eclipseBar:Width(CLASSBAR_WIDTH)
 				eclipseBar:Height(POWERBAR_HEIGHT - (BORDER*2))
 
 				local lunarBar = CreateFrame('StatusBar', nil, eclipseBar)
@@ -542,6 +569,7 @@ local function Shared(self, unit)
 		altpower.text:SetJustifyH("CENTER")		
 		self.AltPowerBar = altpower
 		
+		--Incoming Heals
 		if C["raidframes"].healcomm == true then
 			local mhpb = CreateFrame('StatusBar', nil, health)
 			mhpb:SetPoint('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
@@ -566,14 +594,15 @@ local function Shared(self, unit)
 					if self.otherBar:GetValue() == 0 then self.otherBar:SetAlpha(0) else self.otherBar:SetAlpha(1) end
 				end
 			}
-		end			
+		end				
 	end
 	
 	------------------------------------------------------------------------
 	-- Target
 	------------------------------------------------------------------------
 	if unit == "target" then
-		local POWERBAR_WIDTH = (C["framesizes"].playtarwidth - (2*2))*E.ResScale
+		local POWERBAR_WIDTH = C["framesizes"].playtarwidth/2*E.ResScale
+		local CLASSBAR_WIDTH = (C["framesizes"].playtarwidth - (2*2))*E.ResScale
 		local POWERBAR_HEIGHT = 10*E.ResScale
 		local CASTBAR_HEIGHT = 20*E.ResScale
 		local CASTBAR_WIDTH = C["castbar"].playerwidth*E.ResScale
@@ -582,21 +611,32 @@ local function Shared(self, unit)
 		if C["unitframes"].charportraithealth == true or C["unitframes"].charportrait == false then
 			PORTRAIT_WIDTH = 0
 		elseif C["unitframes"].charportrait == true then
-			POWERBAR_WIDTH = math.ceil(((C["framesizes"].playtarwidth - (2*2)) - 45)*E.ResScale)
+			CLASSBAR_WIDTH = math.ceil(((C["framesizes"].playtarwidth - (2*2)) - 45)*E.ResScale)
 		end
 
 		--Health Bar
 		local health = E.ContructHealthBar(self, true, true)
 		health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
-		health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
+		if POWERTHEME == true then
+			health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER + (POWERBAR_HEIGHT/2))
+		else
+			health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
+		end
 
 		health.value:Point("RIGHT", health, "RIGHT", -4, 0)
 		self.Health = health
 
 		--Power Bar
 		local power = E.ConstructPowerBar(self, true, true)
-		power:Point("TOPRIGHT", health.backdrop, "BOTTOMRIGHT", -BORDER, -(BORDER + SPACING))
-		power:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER)
+		if POWERTHEME == true then
+			power:Width(POWERBAR_WIDTH - BORDER*2)
+			power:Height(POWERBAR_HEIGHT - BORDER*2)
+			power:Point("LEFT", self, "BOTTOMLEFT", BORDER*2 + 4, BORDER + (POWERBAR_HEIGHT/2))
+			power:SetFrameStrata(self:GetFrameStrata())
+		else
+			power:Point("TOPRIGHT", health.backdrop, "BOTTOMRIGHT", -BORDER, -(BORDER + SPACING))
+			power:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER)
+		end		
 		power.value:Point("LEFT", health, "LEFT", 4, 0)
 		
 		self.Power = power
@@ -633,7 +673,11 @@ local function Shared(self, unit)
 				portrait.backdrop = CreateFrame("Frame", nil, portrait)
 				portrait.backdrop:SetTemplate("Default")
 				portrait.backdrop:SetPoint("TOPRIGHT", self, "TOPRIGHT")
-				portrait.backdrop:Point("BOTTOMLEFT", power.backdrop, "BOTTOMRIGHT", SPACING, 0)
+				if POWERTHEME == true then
+					portrait.backdrop:Point("BOTTOMLEFT", health.backdrop, "BOTTOMRIGHT", SPACING, 0)
+				else
+					portrait.backdrop:Point("BOTTOMLEFT", power.backdrop, "BOTTOMRIGHT", SPACING, 0)
+				end				
 				portrait.backdrop:SetFrameLevel(portrait:GetFrameLevel() - 1)
 				
 				portrait:Point('BOTTOMLEFT', portrait.backdrop, 'BOTTOMLEFT', BORDER, BORDER)		
@@ -722,7 +766,7 @@ local function Shared(self, unit)
 		local combo = CreateFrame("Frame", nil, self)
 		combo:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
 		combo:SetFrameStrata("LOW")
-		combo:Width(POWERBAR_WIDTH)
+		combo:Width(CLASSBAR_WIDTH)
 		combo:Height(POWERBAR_HEIGHT - (BORDER*2))
 
 		for i = 1, 5 do					
@@ -737,7 +781,7 @@ local function Shared(self, unit)
 				combo[i]:Point("LEFT", combo[i-1], "RIGHT", SPACING, 0)
 			end
 			combo[i]:SetAlpha(0.15)
-			combo[i]:SetWidth(E.Scale(POWERBAR_WIDTH - 4)/5)
+			combo[i]:SetWidth(E.Scale(CLASSBAR_WIDTH - 4)/5)
 		end
 		
 		combo[1]:SetStatusBarColor(0.69, 0.31, 0.31)		
@@ -757,9 +801,9 @@ local function Shared(self, unit)
 		the combobar is movable with the /moveele command, this should make it work correctly only 
 		after a reloadui.]]
 		combo:HookScript("OnShow", function()
-			if DPSComboBar then DPSComboBar:SetFrameLevel(DPSComboBar:GetFrameLevel() + 1) end
+			if HealComboBar then HealComboBar:SetFrameLevel(HealComboBar:GetFrameLevel() + 1) end
 			
-			if ElementsPos["DPSComboBar"]["moved"] == true and E.CreatedMoveEleFrames["DPSComboBar"] then return end
+			if ElementsPos["HealComboBar"]["moved"] == true and E.CreatedMoveEleFrames["HealComboBar"] then return end
 			combo:ClearAllPoints()
 			combo:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
 			
@@ -798,29 +842,41 @@ local function Shared(self, unit)
 					if self.otherBar:GetValue() == 0 then self.otherBar:SetAlpha(0) else self.otherBar:SetAlpha(1) end
 				end
 			}
-		end			
+		end				
 	end
 	
 	------------------------------------------------------------------------
 	--	TargetofTarget, Pet, PetTarget, Focus, FocusTarget
 	------------------------------------------------------------------------
 	if (unit == "targettarget" or unit == "pet" or unit == "pettarget" or unit == "focustarget" or unit == "focus") then
-		local POWERBAR_HEIGHT = 8*E.ResScale
+		local POWERBAR_WIDTH = C["framesizes"].smallwidth/1.5*E.ResScale
+		local POWERBAR_HEIGHT = 8
 		local CASTBAR_WIDTH = C["castbar"].focuswidth*E.ResScale
 		
 		--Health Bar
 		local health = E.ContructHealthBar(self, true, nil)
 		health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
-		health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
-
+		if POWERTHEME == true then
+			health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER + (POWERBAR_HEIGHT/2))
+		else
+			health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
+		end
+		
 		self.Health = health
 
 		--Power Bar
 		if unit ~= "pettarget" then
 			local power = E.ConstructPowerBar(self, true, nil)
-			power:Point("TOPLEFT", health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + SPACING))
-			power:Point("BOTTOMRIGHT", self, "BOTTOMRIGHT", -BORDER, BORDER)
-
+			if POWERTHEME == true then
+				power:Width(POWERBAR_WIDTH - BORDER*2)
+				power:Height(POWERBAR_HEIGHT - BORDER*2)
+				power:Point("CENTER", self, "BOTTOM", 0, BORDER + (POWERBAR_HEIGHT/2))
+				power:SetFrameStrata(self:GetFrameStrata())
+			else
+				power:Point("TOPLEFT", health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + SPACING))
+				power:Point("BOTTOMRIGHT", self, "BOTTOMRIGHT", -BORDER, BORDER)
+			end					
+			
 			self.Power = power
 		end
 		
@@ -890,10 +946,15 @@ local function Shared(self, unit)
 	--	Arena and Boss
 	------------------------------------------------------------------------
 	if (unit and unit:find("arena%d") and C["arena"].unitframes == true) or (unit and unit:find("boss%d") and C["raidframes"].showboss == true) then
-		local TRINKET_WIDTH = BOSS_HEIGHT
-		local POWERBAR_HEIGHT = 8*E.ResScale
+		local POWERBAR_WIDTH = C["framesizes"].arenabosswidth/2*E.ResScale
+		local TRINKET_WIDTH = BOSS_HEIGHT * 0.9
+		local POWERBAR_HEIGHT = 7
 		local CASTBAR_HEIGHT = 16*E.ResScale
 		local CASTBAR_WIDTH = BOSS_WIDTH
+
+		if unit:find("arena%d") then
+			POWERBAR_WIDTH = C["framesizes"].arenabosswidth/2.3*E.ResScale
+		end
 		
 		-- Right-click focus on arena or boss units
 		self:SetAttribute("type2", "focus")
@@ -901,16 +962,27 @@ local function Shared(self, unit)
 		--Health Bar
 		local health = E.ContructHealthBar(self, true, true)
 		health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
-		health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
+		if POWERTHEME == true then
+			health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER + (POWERBAR_HEIGHT/2))
+		else
+			health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
+		end
 
-		health.value:Point("RIGHT", health, "RIGHT", -4, 0)
+		health.value:Point("TOPRIGHT", health, "TOPRIGHT", 0, -2)
 		self.Health = health
 		
 		--Power Bar
 		local power = E.ConstructPowerBar(self, true, true)
-		power:Point("TOPLEFT", health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + SPACING))
-		power:Point("BOTTOMRIGHT", self, "BOTTOMRIGHT", -BORDER, BORDER)
-		power.value:Point("LEFT", health, "LEFT", 4, 0)
+		if POWERTHEME == true then
+			power:Width(POWERBAR_WIDTH - BORDER*2)
+			power:Height(POWERBAR_HEIGHT - BORDER*2)
+			power:Point("LEFT", self, "BOTTOMLEFT", BORDER*2 + 4, BORDER + (POWERBAR_HEIGHT/2))
+			power:SetFrameStrata(self:GetFrameStrata())
+		else
+			power:Point("TOPRIGHT", health.backdrop, "BOTTOMRIGHT", -BORDER, -(BORDER + SPACING))
+			power:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER)
+		end		
+		power.value:Point("BOTTOMRIGHT", health, "BOTTOMRIGHT")
 		
 		self.Power = power
 				
@@ -918,23 +990,16 @@ local function Shared(self, unit)
 		if (unit and unit:find('arena%d')) then
 			health:Point("TOPRIGHT", self, "TOPRIGHT", -(TRINKET_WIDTH + BORDER), -BORDER)
 			
-			self:FontString("Name", FONT, FONTSIZE, "THINOUTLINE")
-			self.Name:Point("LEFT", health, "LEFT", 4, 0)
-			self.Name.frequentUpdates = 0.5
-			self:Tag(self.Name, '[Elvui:getnamecolor][Elvui:namemedium]')
-			
-			health.value:ClearAllPoints()
-			health.value:Point("TOPRIGHT", health, "TOPRIGHT", 0, -1)
-
-			power.value:ClearAllPoints()
-			power.value:Point("BOTTOMRIGHT", health, "BOTTOMRIGHT")
-			
 			local trinket = CreateFrame("Frame", nil, self)
 			trinket.trinketUseAnnounce = true
 			
 			trinket.bg = CreateFrame("Frame", nil, trinket)
-			trinket.bg:Point("TOPLEFT", health.backdrop, "TOPRIGHT", BORDER, 0)
-			trinket.bg:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT")		
+			trinket.bg:Point("TOPRIGHT", self, "TOPRIGHT")
+			if POWERTHEME == true then
+				trinket.bg:SetPoint("BOTTOMLEFT", health.backdrop, "BOTTOMRIGHT", SPACING, 0)
+			else
+				trinket.bg:SetPoint("BOTTOMLEFT", power.backdrop, "BOTTOMRIGHT", SPACING, 0)		
+			end
 			trinket.bg:SetTemplate("Default")
 			trinket.bg:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
 			trinket.bg:SetFrameLevel(trinket:GetFrameLevel() - 1)
@@ -943,17 +1008,10 @@ local function Shared(self, unit)
 			trinket:Point("BOTTOMRIGHT", trinket.bg, -BORDER, BORDER)
 			
 			self.Trinket = trinket			
-			
-			power:Point("BOTTOMRIGHT", trinket.bg, "BOTTOMLEFT", -BORDER*2, BORDER)
 		end
 		
 		--Name & AltPowerBar
 		if (unit and unit:find('boss%d')) then
-			self:FontString("Name", FONT, FONTSIZE, "THINOUTLINE")
-			self.Name:Point("CENTER", health, "CENTER")
-			self.Name.frequentUpdates = 0.5
-			self:Tag(self.Name, '[Elvui:getnamecolor][Elvui:nameshort]')		
-		
 			local altpower = CreateFrame("StatusBar", nil, self)
 			altpower:SetStatusBarTexture(NORMTEX)
 			altpower:GetStatusBarTexture():SetHorizTile(false)
@@ -977,10 +1035,16 @@ local function Shared(self, unit)
 			end)
 			
 			altpower:FontString("text", FONT, FONTSIZE, "THINOUTLINE")
-			altpower.text:Point("LEFT", power.value, "RIGHT", -2, E.mult)		
+			altpower.text:Point("RIGHT", power.value, "LEFT", 2, E.mult)		
 			
 			self.AltPowerBar = altpower
 		end
+		
+		--Name
+		self:FontString("Name", FONT, FONTSIZE, "THINOUTLINE")
+		self.Name:Point("LEFT", health, "LEFT", 4, 0)
+		self.Name.frequentUpdates = 0.5
+		self:Tag(self.Name, '[Elvui:getnamecolor][Elvui:namemedium]')
 				
 		--Auras
 		local buffs = CreateFrame("Frame", nil, self)
@@ -1182,7 +1246,7 @@ local function LoadHealLayout()
 		end)
 	end
 	
-	E.LoadMoveElements("ElvHeal")
+	E.LoadMoveElements("Heal")
 	if C["classtimer"].enable == true then
 		E.LoadClassTimers(ElvHeal_player, ElvHeal_target)
 	end

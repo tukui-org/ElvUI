@@ -92,6 +92,7 @@ C["unitframes"] = {
 	["debuffhighlight"] = true,				--highlight frame with the debuff color if the frame is dispellable
 	["classbar"] = true,                    -- enable runebar/totembar/holypowerbar/soulshardbar/eclipsebar
 	["combat"] = false,						-- only show main unitframes when in combat/havetarget/or mouseover
+	["mini_powerbar"] = true,
 }
 
 C["framesizes"] = {
@@ -100,7 +101,7 @@ C["framesizes"] = {
 	["smallwidth"] = 130,					--Width of TargetTarget, Focus, FocusTarget, Player's Pet frames
 	["smallheight"] = 35,					--Height of TargetTarget, Focus, FocusTarget, Player's Pet frames
 	["arenabosswidth"] = 212,				--Width of Arena/Boss Frames
-	["arenabossheight"] = 40,				--Height of Arena/Boss Frames
+	["arenabossheight"] = 43,				--Height of Arena/Boss Frames
 	["assisttankwidth"] = 120,				--Width of MainTank/MainAssist frames
 	["assisttankheight"] = 27,				--Height of MainTank/MainAssist frames
 }
