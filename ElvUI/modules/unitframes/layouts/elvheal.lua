@@ -85,7 +85,7 @@ local function Shared(self, unit)
 			power:Width(POWERBAR_WIDTH - BORDER*2)
 			power:Height(POWERBAR_HEIGHT - BORDER*2)
 			power:Point("RIGHT", self, "BOTTOMRIGHT", -(BORDER*2 + 4), BORDER + (POWERBAR_HEIGHT/2))
-			power:SetFrameStrata(self:GetFrameStrata())
+			power:SetFrameStrata("HIGH")
 		else
 			power:Point("TOPLEFT", health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + SPACING))
 			power:Point("BOTTOMRIGHT", self, "BOTTOMRIGHT", -BORDER, BORDER)
@@ -190,7 +190,12 @@ local function Shared(self, unit)
 		-- Debuff Highlight
 		if C["unitframes"].debuffhighlight == true then
 			local dbh = self:CreateTexture(nil, "OVERLAY")
-			dbh:SetAllPoints()
+			if POWERTHEME == true then
+				dbh:SetPoint("TOPLEFT")
+				dbh:SetPoint("BOTTOMRIGHT", health.backdrop, "BOTTOMRIGHT")
+			else
+				dbh:SetAllPoints()
+			end
 			dbh:SetTexture(C["media"].blank)
 			dbh:SetBlendMode("ADD")
 			dbh:SetVertexColor(0,0,0,0)
@@ -632,7 +637,7 @@ local function Shared(self, unit)
 			power:Width(POWERBAR_WIDTH - BORDER*2)
 			power:Height(POWERBAR_HEIGHT - BORDER*2)
 			power:Point("LEFT", self, "BOTTOMLEFT", BORDER*2 + 4, BORDER + (POWERBAR_HEIGHT/2))
-			power:SetFrameStrata(self:GetFrameStrata())
+			power:SetFrameStrata("HIGH")
 		else
 			power:Point("TOPRIGHT", health.backdrop, "BOTTOMRIGHT", -BORDER, -(BORDER + SPACING))
 			power:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER)
@@ -730,13 +735,18 @@ local function Shared(self, unit)
 		-- Debuff Highlight
 		if C["unitframes"].debuffhighlight == true then
 			local dbh = self:CreateTexture(nil, "OVERLAY")
-			dbh:SetAllPoints()
+			if POWERTHEME == true then
+				dbh:SetPoint("TOPLEFT")
+				dbh:SetPoint("BOTTOMRIGHT", health.backdrop, "BOTTOMRIGHT")
+			else
+				dbh:SetAllPoints()
+			end
 			dbh:SetTexture(C["media"].blank)
 			dbh:SetBlendMode("ADD")
 			dbh:SetVertexColor(0,0,0,0)
 			self.DebuffHighlight = dbh
 			self.DebuffHighlightFilter = true
-			self.DebuffHighlightAlpha = 0.35	
+			self.DebuffHighlightAlpha = 0.35
 		end
 
 		--Combat Feedback
@@ -871,7 +881,7 @@ local function Shared(self, unit)
 				power:Width(POWERBAR_WIDTH - BORDER*2)
 				power:Height(POWERBAR_HEIGHT - BORDER*2)
 				power:Point("CENTER", self, "BOTTOM", 0, BORDER + (POWERBAR_HEIGHT/2))
-				power:SetFrameStrata(self:GetFrameStrata())
+				power:SetFrameStrata("HIGH")
 			else
 				power:Point("TOPLEFT", health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + SPACING))
 				power:Point("BOTTOMRIGHT", self, "BOTTOMRIGHT", -BORDER, BORDER)
@@ -907,7 +917,12 @@ local function Shared(self, unit)
 		-- Debuff Highlight
 		if C["unitframes"].debuffhighlight == true then
 			local dbh = self:CreateTexture(nil, "OVERLAY")
-			dbh:SetAllPoints()
+			if POWERTHEME == true then
+				dbh:SetPoint("TOPLEFT")
+				dbh:SetPoint("BOTTOMRIGHT", health.backdrop, "BOTTOMRIGHT")
+			else
+				dbh:SetAllPoints()
+			end
 			dbh:SetTexture(C["media"].blank)
 			dbh:SetBlendMode("ADD")
 			dbh:SetVertexColor(0,0,0,0)
@@ -977,7 +992,7 @@ local function Shared(self, unit)
 			power:Width(POWERBAR_WIDTH - BORDER*2)
 			power:Height(POWERBAR_HEIGHT - BORDER*2)
 			power:Point("LEFT", self, "BOTTOMLEFT", BORDER*2 + 4, BORDER + (POWERBAR_HEIGHT/2))
-			power:SetFrameStrata(self:GetFrameStrata())
+			power:SetFrameStrata("HIGH")
 		else
 			power:Point("TOPRIGHT", health.backdrop, "BOTTOMRIGHT", -BORDER, -(BORDER + SPACING))
 			power:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER)
