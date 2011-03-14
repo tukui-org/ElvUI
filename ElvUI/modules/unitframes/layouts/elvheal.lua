@@ -610,7 +610,7 @@ local function Shared(self, unit)
 		local CLASSBAR_WIDTH = (C["framesizes"].playtarwidth - (2*2))*E.ResScale
 		local POWERBAR_HEIGHT = 10*E.ResScale
 		local CASTBAR_HEIGHT = 20*E.ResScale
-		local CASTBAR_WIDTH = C["castbar"].playerwidth*E.ResScale
+		local CASTBAR_WIDTH = C["castbar"].targetwidth*E.ResScale
 		local PORTRAIT_WIDTH = 45*E.ResScale
 	
 		if C["unitframes"].charportraithealth == true or C["unitframes"].charportrait == false then
