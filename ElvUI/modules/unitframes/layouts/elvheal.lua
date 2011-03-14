@@ -294,6 +294,7 @@ local function Shared(self, unit)
 			experience:SetStatusBarColor(0, 0.4, 1, .8)
 			experience:SetFrameLevel(power:GetFrameLevel() + 3)
 			experience:SetAllPoints(power)
+			experience:SetFrameStrata("HIGH")
 			experience:SetAlpha(0)
 			
 			experience:HookScript("OnEnter", function(self) self:SetAlpha(1) end)
@@ -330,6 +331,7 @@ local function Shared(self, unit)
 			reputation:SetFrameLevel(power:GetFrameLevel() + 2)
 			reputation:SetAllPoints(power)
 			reputation:SetAlpha(0)
+			reputation:SetFrameStrata("HIGH")
 			reputation.Tooltip = true
 			
 			reputation:HookScript("OnEnter", function(self) self:SetAlpha(1) end)
