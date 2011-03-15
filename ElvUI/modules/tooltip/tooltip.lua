@@ -19,7 +19,7 @@ E.CreateMover(TooltipHolder, "TooltipMover", "Tooltip")
 
 local gsub, find, format = string.gsub, string.find, string.format
 
-local Tooltips = {GameTooltip,ItemRefTooltip,ShoppingTooltip1,ShoppingTooltip2,ShoppingTooltip3,WorldMapTooltip}
+local Tooltips = {GameTooltip,ItemRefTooltip,ItemRefShoppingTooltip1,ItemRefShoppingTooltip2,ItemRefShoppingTooltip3,ShoppingTooltip1,ShoppingTooltip2,ShoppingTooltip3,WorldMapTooltip}
 
 local linkTypes = {item = true, enchant = true, spell = true, quest = true, unit = true, talent = true, achievement = true, glyph = true}
 
@@ -406,6 +406,7 @@ end
 local SetStyle = function(self)
 	self:SetTemplate("Default", true)
 	Colorize(self)
+	self:SetClampedToScreen(true)
 end
 
 ElvuiTooltip:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -414,6 +415,7 @@ ElvuiTooltip:SetScript("OnEvent", function(self, event, addon)
 		tt:HookScript("OnShow", SetStyle)
 	end
 	
+	ItemRefTooltip:HookScript("OnTooltipSetItem", SetStyle)
 	FriendsTooltip:SetTemplate("Default", true)
 	BNToastFrame:SetTemplate("Default", true)
 	DropDownList1MenuBackdrop:SetTemplate("Default", true)
@@ -458,4 +460,120 @@ ElvuiTooltip:SetScript("OnEvent", function(self, event, addon)
 	EventTraceTooltip:HookScript("OnShow", function(self)
 		self:SetTemplate("Transparent")
 	end)
+end)
+
+--Fix compare tooltips
+hooksecurefunc("GameTooltip_ShowCompareItem", function(self, shift)
+	if ( not self ) then
+		self = GameTooltip;
+	end
+	local item, link = self:GetItem();
+	if ( not link ) then
+		return;
+	end
+	
+	local shoppingTooltip1, shoppingTooltip2, shoppingTooltip3 = unpack(self.shoppingTooltips);
+
+	local item1 = nil;
+	local item2 = nil;
+	local item3 = nil;
+	local side = "left";
+	if ( shoppingTooltip1:SetHyperlinkCompareItem(link, 1, shift, self) ) then
+		item1 = true;
+	end
+	if ( shoppingTooltip2:SetHyperlinkCompareItem(link, 2, shift, self) ) then
+		item2 = true;
+	end
+	if ( shoppingTooltip3:SetHyperlinkCompareItem(link, 3, shift, self) ) then
+		item3 = true;
+	end
+
+	-- find correct side
+	local rightDist = 0;
+	local leftPos = self:GetLeft();
+	local rightPos = self:GetRight();
+	if ( not rightPos ) then
+		rightPos = 0;
+	end
+	if ( not leftPos ) then
+		leftPos = 0;
+	end
+
+	rightDist = GetScreenWidth() - rightPos;
+
+	if (leftPos and (rightDist < leftPos)) then
+		side = "left";
+	else
+		side = "right";
+	end
+
+	-- see if we should slide the tooltip
+	if ( self:GetAnchorType() and self:GetAnchorType() ~= "ANCHOR_PRESERVE" ) then
+		local totalWidth = 0;
+		if ( item1  ) then
+			totalWidth = totalWidth + shoppingTooltip1:GetWidth();
+		end
+		if ( item2  ) then
+			totalWidth = totalWidth + shoppingTooltip2:GetWidth();
+		end
+		if ( item3  ) then
+			totalWidth = totalWidth + shoppingTooltip3:GetWidth();
+		end
+
+		if ( (side == "left") and (totalWidth > leftPos) ) then
+			self:SetAnchorType(self:GetAnchorType(), (totalWidth - leftPos), 0);
+		elseif ( (side == "right") and (rightPos + totalWidth) >  GetScreenWidth() ) then
+			self:SetAnchorType(self:GetAnchorType(), -((rightPos + totalWidth) - GetScreenWidth()), 0);
+		end
+	end
+
+	-- anchor the compare tooltips
+	if ( item3 ) then
+		shoppingTooltip3:SetOwner(self, "ANCHOR_NONE");
+		shoppingTooltip3:ClearAllPoints();
+		if ( side and side == "left" ) then
+			shoppingTooltip3:Point("TOPRIGHT", self, "TOPLEFT", -2, -10);
+		else
+			shoppingTooltip3:Point("TOPLEFT", self, "TOPRIGHT", 2, -10);
+		end
+		shoppingTooltip3:SetHyperlinkCompareItem(link, 3, shift, self);
+		shoppingTooltip3:Show();
+	end
+	
+	if ( item1 ) then
+		if( item3 ) then
+			shoppingTooltip1:SetOwner(shoppingTooltip3, "ANCHOR_NONE");
+		else
+			shoppingTooltip1:SetOwner(self, "ANCHOR_NONE");
+		end
+		shoppingTooltip1:ClearAllPoints();
+		if ( side and side == "left" ) then
+			if( item3 ) then
+				shoppingTooltip1:Point("TOPRIGHT", shoppingTooltip3, "TOPLEFT", -2, 0);
+			else
+				shoppingTooltip1:Point("TOPRIGHT", self, "TOPLEFT", -2, -10);
+			end
+		else
+			if( item3 ) then
+				shoppingTooltip1:Point("TOPLEFT", shoppingTooltip3, "TOPRIGHT", 2, 0);
+			else
+				shoppingTooltip1:Point("TOPLEFT", self, "TOPRIGHT", 2, -10);
+			end
+		end
+		shoppingTooltip1:SetHyperlinkCompareItem(link, 1, shift, self);
+		shoppingTooltip1:Show();
+
+		if ( item2 ) then
+			shoppingTooltip2:SetOwner(shoppingTooltip1, "ANCHOR_NONE");
+			shoppingTooltip2:ClearAllPoints();
+			if ( side and side == "left" ) then
+				shoppingTooltip2:Point("TOPRIGHT", shoppingTooltip1, "TOPLEFT", -2, 0);
+			else
+				shoppingTooltip2:Point("TOPLEFT", shoppingTooltip1, "TOPRIGHT", 2, 0);
+			end
+			shoppingTooltip2:SetHyperlinkCompareItem(link, 2, shift, self);
+			shoppingTooltip2:Show();
+		end
+	end
+
 end)
