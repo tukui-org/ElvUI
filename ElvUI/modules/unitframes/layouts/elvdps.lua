@@ -150,7 +150,7 @@ local function Shared(self, unit)
 			local debuffs = CreateFrame("Frame", nil, self)
 			debuffs.num = C["auras"].playtarbuffperrow
 			debuffs:SetWidth(PLAYER_WIDTH)
-			debuffs.spacing = SPACING
+			debuffs.spacing = E.Scale(SPACING)
 			debuffs.size = ((C["framesizes"].playtarwidth - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)*E.ResScale
 			debuffs:SetHeight(debuffs.size)
 			debuffs:Point("BOTTOMLEFT", self, "TOPLEFT", 0, SPACING)	
@@ -166,7 +166,7 @@ local function Shared(self, unit)
 				local buffs = CreateFrame("Frame", nil, self)
 				buffs.num = C["auras"].playtarbuffperrow
 				buffs:SetWidth(debuffs:GetWidth())
-				buffs.spacing = SPACING
+				buffs.spacing = E.Scale(SPACING)
 				buffs.size = (((C["framesizes"].playtarwidth - (buffs.spacing*(buffs.num - 1))) / buffs.num))*E.ResScale
 				buffs:Point("BOTTOM", debuffs, "TOP", 0, SPACING)
 				buffs:SetHeight(debuffs:GetHeight())
@@ -699,7 +699,7 @@ local function Shared(self, unit)
 			local buffs = CreateFrame("Frame", nil, self)
 			buffs.num = C["auras"].playtarbuffperrow
 			buffs:SetWidth(TARGET_WIDTH)
-			buffs.spacing = SPACING
+			buffs.spacing = E.Scale(SPACING)
 			buffs.size = (((C["framesizes"].playtarwidth - (buffs.spacing*(buffs.num - 1))) / buffs.num))*E.ResScale
 			buffs:Point("BOTTOM", self, "TOP", 0, SPACING)
 			buffs:SetHeight(buffs.size)
@@ -713,7 +713,7 @@ local function Shared(self, unit)
 			local debuffs = CreateFrame("Frame", nil, self)
 			debuffs.num = C["auras"].playtarbuffperrow
 			debuffs:SetWidth(TARGET_WIDTH)
-			debuffs.spacing = SPACING
+			debuffs.spacing = E.Scale(SPACING)
 			debuffs.size = ((C["framesizes"].playtarwidth - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)*E.ResScale
 			debuffs:SetHeight(debuffs.size)
 			debuffs:Point("BOTTOM", buffs, "TOP", 0, SPACING)	
@@ -903,7 +903,7 @@ local function Shared(self, unit)
 			local debuffs = CreateFrame("Frame", nil, self)
 			debuffs.num = C["auras"].smallbuffperrow
 			debuffs:SetWidth(SMALL_WIDTH)
-			debuffs.spacing = SPACING
+			debuffs.spacing = E.Scale(SPACING)
 			debuffs.size = ((C["framesizes"].smallwidth - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)*E.ResScale
 			debuffs:SetHeight(debuffs.size)
 			debuffs:Point("TOP", self, "BOTTOM", 0, -SPACING)	
@@ -1067,7 +1067,7 @@ local function Shared(self, unit)
 		local buffs = CreateFrame("Frame", nil, self)
 		buffs.num = 3
 		buffs:SetWidth(BOSS_WIDTH)
-		buffs.spacing = SPACING
+		buffs.spacing = E.Scale(SPACING)
 		buffs.size = BOSS_HEIGHT
 		buffs:Point("RIGHT", self, "LEFT", -4, 0)
 		buffs:SetHeight(buffs.size)
