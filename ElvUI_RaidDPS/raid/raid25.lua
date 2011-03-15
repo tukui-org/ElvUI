@@ -179,7 +179,9 @@ local function Shared(self, unit)
 		
 		self.mouseglow:SetFrameStrata("BACKGROUND")
 		self.mouseglow:Point("TOPLEFT", -4, 4)
+		self.mouseglow:Point("TOPRIGHT", 4, 4)
 		self.mouseglow:Point("BOTTOMLEFT", -4, -4)
+		self.mouseglow:Point("BOTTOMRIGHT", 4, -4)
 		self.mouseglow:Hide()
 		
 		self:HookScript("OnEnter", function(self)
