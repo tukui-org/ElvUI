@@ -23,6 +23,36 @@ local FONT = C["media"].uffont
 local NORMTEX = C["media"].normTex
 local POWERTHEME = C["unitframes"].mini_powerbar
 
+
+--[[
+	Constuctor Functions (inside uf_functions.lua)
+	
+	E.ContructHealthBar(arg1, arg2, arg3):
+		arg1 - first argument should always be self
+		arg2 - [true/false] OPTIONAL create a backdrop
+		arg3 - [true/false] OPTIONAL create health value text
+		
+	E.ContructPowerBar(arg1, arg2, arg3):
+		arg1 - first argument should always be self
+		arg2 - [true/false] OPTIONAL create a backdrop 
+		arg3 - [true/false] OPTIONAL create power value text
+
+	E.ConstructCastBar(arg1, arg2, arg3, arg4):
+		arg1 - first argument should always be self
+		arg2 - width of entire bar, cast icon is calculated in already
+		arg3 - height of entire bar
+		arg4 - ["Left", "Right"] side that you want the cast icon to go on, if cast icons are enabled.
+		
+	
+	Note: These functions do not make the element active, you have to do that manually.
+	
+	Example:
+		local health = E.ContructHealthBar(self, true, true)
+		health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
+		
+		self.Health = health
+]]
+
 ------------------------------------------------------------------------
 --	Layout
 ------------------------------------------------------------------------

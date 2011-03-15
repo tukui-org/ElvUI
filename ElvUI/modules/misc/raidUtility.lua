@@ -9,8 +9,8 @@ local panel_height = ((E.Scale(5)*4) + (E.Scale(20)*4))
 
 --Create main frame
 local RaidUtilityPanel = CreateFrame("Frame", "RaidUtilityPanel", UIParent)
-RaidUtilityPanel:CreatePanel("Default", E.Scale(170), panel_height, "TOP", UIParent, "TOP", -300, panel_height + 15)
-RaidUtilityPanel:CreateShadow("Default")
+RaidUtilityPanel:CreatePanel("Transparent", E.Scale(170), panel_height, "TOP", UIParent, "TOP", -300, 1)
+RaidUtilityPanel.toggled = false
 
 --Check if We are Raid Leader or Raid Officer
 local function CheckRaidStatus()
@@ -24,13 +24,21 @@ end
 
 --Change border when mouse is inside the button
 local function ButtonEnter(self)
-	local color = RAID_CLASS_COLORS[E.myclass]
-	self:SetBackdropBorderColor(color.r, color.g, color.b)
+	if C["general"].classcolortheme == true then
+		self:SetBackdropBorderColor(unpack(C["media"].bordercolor))		
+	else
+		self:SetBackdropBorderColor(unpack(C["media"].valuecolor))	
+	end
 end
 
 --Change border back to normal when mouse leaves button
 local function ButtonLeave(self)
-	self:SetBackdropBorderColor(unpack(C["media"].bordercolor))
+	if C["general"].classcolortheme == true then
+		local color = RAID_CLASS_COLORS[E.myclass]
+		self:SetBackdropBorderColor(color.r, color.g, color.b)
+	else
+		self:SetBackdropBorderColor(unpack(C["media"].bordercolor))
+	end
 end
 
 -- Function to create buttons in this module
@@ -45,7 +53,7 @@ local function CreateButton(name, parent, template, width, height, point, relati
 	b:SetTemplate("Default")
 	if text then
 		local t = b:CreateFontString(nil,"OVERLAY",b)
-		t:SetFont(C.media.font,C["general"].fontscale,"OUTLINE")
+		t:SetFont(C.media.font,12)
 		t:SetPoint("CENTER")
 		t:SetJustifyH("CENTER")
 		t:SetText(text)
@@ -58,21 +66,17 @@ local function CreateButton(name, parent, template, width, height, point, relati
 	end
 end
 
---Create button to toggle the frame
-CreateButton("ShowButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate, SecureHandlerClickTemplate", RaidUtilityPanel:GetWidth() / 2.5, E.Scale(18), "TOP", UIParent, "TOP", -300, 2, L.core_raidutil, nil)
-ShowButton:SetAttribute("_onclick", [=[
- if select(5, self:GetPoint()) > 0 then
-	 self:GetParent():ClearAllPoints()
-	 self:GetParent():SetPoint("TOP", UIParent, "TOP", -300, 1)
-	 self:ClearAllPoints()
-	 self:SetPoint("TOP", UIParent, "TOP", -300, -100)
- else
-	 self:GetParent():ClearAllPoints()
-	 self:GetParent():SetPoint("TOP", UIParent, "TOP", -300, 500)
-	 self:ClearAllPoints()
-	 self:SetPoint("TOP", UIParent, "TOP", -300, 1) 
- end
-]=])
+--Show Button
+CreateButton("ShowButton", UIParent, "UIMenuButtonStretchTemplate, SecureHandlerClickTemplate", 80, 18, "TOP", UIParent, "TOP", -300, 2, L.core_raidutil, nil)
+ShowButton:SetFrameRef("RaidUtilityPanel", RaidUtilityPanel)
+ShowButton:SetAttribute("_onclick", [=[self:Hide(); self:GetFrameRef("RaidUtilityPanel"):Show();]=])
+ShowButton:SetScript("OnMouseUp", function(self) RaidUtilityPanel.toggled = true end)
+
+--Close Button
+CreateButton("CloseButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate, SecureHandlerClickTemplate", 80, 18, "TOP", RaidUtilityPanel, "BOTTOM", 0, -1, CLOSE, nil)
+CloseButton:SetFrameRef("ShowButton", ShowButton)
+CloseButton:SetAttribute("_onclick", [=[self:GetParent():Hide(); self:GetFrameRef("ShowButton"):Show();]=])
+CloseButton:SetScript("OnMouseUp", function(self) RaidUtilityPanel.toggled = false end)
 
 --Disband Raid button
 CreateButton("DisbandRaidButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate", RaidUtilityPanel:GetWidth() * 0.8, E.Scale(18), "TOP", RaidUtilityPanel, "TOP", 0, E.Scale(-5), L.core_raidutil_disbandgroup, nil)
@@ -135,7 +139,8 @@ do
 		"MainAssistButton",
 		"RoleCheckButton",
 		"ReadyCheckButton",
-		"ShowButton"
+		"ShowButton",
+		"CloseButton"
 	}
 
 	for i, button in pairs(buttons) do
@@ -152,15 +157,22 @@ do
 end
 
 
-local function ToggleRaidUtil(self, event)
+function ToggleRaidUtil(self, event)
 	if InCombatLockdown() then
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")
 		return
 	end
-		
+	
 	if CheckRaidStatus() then
-		RaidUtilityPanel:Show()
+		if RaidUtilityPanel.toggled == true then
+			ShowButton:Hide()
+			RaidUtilityPanel:Show()		
+		else
+			ShowButton:Show()
+			RaidUtilityPanel:Hide()
+		end
 	else
+		ShowButton:Hide()
 		RaidUtilityPanel:Hide()
 	end
 	
