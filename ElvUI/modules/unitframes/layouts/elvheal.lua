@@ -321,20 +321,16 @@ local function Shared(self, unit)
 			local experience = CreateFrame("StatusBar", nil, self)
 			experience:SetStatusBarTexture(NORMTEX)
 			experience:SetStatusBarColor(0, 0.4, 1, .8)
-			experience:SetFrameLevel(power:GetFrameLevel() + 3)
-			experience:SetAllPoints(power)
-			experience:SetFrameStrata("HIGH")
-			experience:SetAlpha(0)
+			experience:Size(CASTBAR_WIDTH -(BORDER*2), POWERBAR_HEIGHT -(BORDER*2))
+			experience:Point("TOPRIGHT", self, "BOTTOMRIGHT", -BORDER, -(BORDER*2+BORDER))
+			experience:SetFrameStrata("LOW")
 			
-			experience:HookScript("OnEnter", function(self) self:SetAlpha(1) end)
-			experience:HookScript("OnLeave", function(self) self:SetAlpha(0) end)
-
 			experience.Rested = CreateFrame('StatusBar', nil, experience)
 			experience.Rested:SetStatusBarTexture(NORMTEX)
 			experience.Rested:SetStatusBarColor(1, 0, 1, 0.2)
 			experience.Rested:SetFrameLevel(experience:GetFrameLevel() - 1)
 			experience.Rested.SetFrameLevel = E.dummy --oUF_Experience thinks its a good idea to set frame level to 1
-			experience.Rested:SetAllPoints(power)
+			experience.Rested:SetAllPoints(experience)
 			
 			local resting = self:CreateTexture(nil, "OVERLAY")
 			resting:Size(22)
@@ -342,14 +338,15 @@ local function Shared(self, unit)
 			resting:SetTexture([=[Interface\CharacterFrame\UI-StateIcon]=])
 			resting:SetTexCoord(0, 0.5, 0, 0.421875)
 			resting:Hide()
+			self:RegisterEvent("PLAYER_UPDATE_RESTING", E.RestingIconUpdate)
 			self.Resting = resting
 			
 			experience.backdrop = CreateFrame("Frame", nil, experience)
 			experience.backdrop:SetTemplate("Default")
 			experience.backdrop:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-			experience.backdrop:SetAllPoints(power.backdrop)
-			experience.backdrop:SetFrameLevel(power:GetFrameLevel() + 1)
-			self:RegisterEvent("PLAYER_UPDATE_RESTING", E.RestingIconUpdate)
+			experience.backdrop:Point("TOPLEFT", experience, "TOPLEFT", -2, 2)
+			experience.backdrop:Point("BOTTOMRIGHT", experience, "BOTTOMRIGHT", 2, -2)
+			experience.backdrop:SetFrameLevel(experience:GetFrameLevel() - 1)
 			self.Experience = experience
 		end
 		
@@ -357,20 +354,19 @@ local function Shared(self, unit)
 			local reputation = CreateFrame("StatusBar", nil, self)
 			reputation:SetStatusBarTexture(NORMTEX)
 			reputation:SetStatusBarColor(0, 0.4, 1, .8)
-			reputation:SetFrameLevel(power:GetFrameLevel() + 2)
-			reputation:SetAllPoints(power)
-			reputation:SetAlpha(0)
-			reputation:SetFrameStrata("HIGH")
+			reputation:Size(CASTBAR_WIDTH -(BORDER*2), POWERBAR_HEIGHT -(BORDER*2))
+			reputation:Point("TOPRIGHT", self, "BOTTOMRIGHT", -BORDER, -(BORDER*2+BORDER))
+			reputation:SetFrameStrata("LOW")
+
 			reputation.Tooltip = true
-			
-			reputation:HookScript("OnEnter", function(self) self:SetAlpha(1) end)
-			reputation:HookScript("OnLeave", function(self) self:SetAlpha(0) end)
+
 
 			reputation.backdrop = CreateFrame("Frame", nil, reputation)
 			reputation.backdrop:SetTemplate("Default")
 			reputation.backdrop:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-			reputation.backdrop:SetAllPoints(power.backdrop)
-			reputation.backdrop:SetFrameLevel(power:GetFrameLevel() + 1)
+			reputation.backdrop:Point("TOPLEFT", reputation, "TOPLEFT", -2, 2)
+			reputation.backdrop:Point("BOTTOMRIGHT", reputation, "BOTTOMRIGHT", 2, -2)
+			reputation.backdrop:SetFrameLevel(reputation:GetFrameLevel() - 1)
 			self.Reputation = reputation
 		end
 
