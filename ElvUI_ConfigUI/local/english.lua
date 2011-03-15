@@ -124,7 +124,8 @@ ElvuiL.option_raidframes_scale = "Scale of raidframes (use decimals ex: 0.96)"
 ElvuiL.option_raidframes_disableblizz = "Disable blizzard default party and raid frames"
 ElvuiL.option_raidframes_griddps = "Display the DPS Layout in grid layout instead of a vertical layout (Not Party)"
 ElvuiL.option_raidframes_partytarget = "Display party members target's (DPS Only)"
-
+ElvuiL.option_raidframes_mouseglow = "When you mouseover a party/raid unitframe glow the backdrop to the class/reaction of the unit"
+ 
 -- castbar
 ElvuiL.option_castbar = "Castbar"
 ElvuiL.option_castbar_nointerruptcolor = "Color for castbar if you cannot interrupt"

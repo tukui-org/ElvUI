@@ -170,6 +170,42 @@ local function Shared(self, unit)
 		E.createAuraWatch(self,unit)
     end
 	
+	if C["raidframes"].mouseglow == true then
+		self:CreateShadow("Default")
+		
+		--self.shadow is used for threat, if we leave it like this, it may cause complications
+		self.mouseglow = self.shadow
+		self.shadow = nil
+		
+		self.mouseglow:SetFrameStrata("BACKGROUND")
+		self.mouseglow:Point("TOPLEFT", -4, 4)
+		self.mouseglow:Point("BOTTOMLEFT", -4, -4)
+		self.mouseglow:Hide()
+		
+		self:HookScript("OnEnter", function(self)
+			local unit = self.unit
+			if not unit then return end
+			self.mouseglow:Show()
+			
+			local reaction = UnitReaction(unit, 'player')
+			local _, class = UnitClass(unit)
+			
+			if UnitIsPlayer(unit) then
+				local c = E.colors.class[class]
+				self.mouseglow:SetBackdropBorderColor(c[1], c[2], c[3], 1)
+			elseif reaction then
+				local c = E.oUF_colors.reaction[reaction]
+				self.mouseglow:SetBackdropBorderColor(c[1], c[2], c[3], 1)
+			else
+				self.mouseglow:SetBackdropBorderColor(.84, .75, .65, 1)
+			end			
+		end)
+		
+		self:HookScript("OnLeave", function(self)
+			self.mouseglow:Hide()		
+		end)	
+	end	
+	
 	return self
 end
 

@@ -111,7 +111,6 @@ C["raidframes"] = {
 	["fontsize"] = 12,						-- default font height for raidframes
 	["scale"] = 1,							-- for smaller use a number less than one (0.73), for higher use a number larger than one
 	["showrange"] = true,                  -- show range opacity on raidframes
-	["hidenonmana"] = true,					-- hide non mana on party/raid frames
 	["healcomm"] = true,                  -- enable healcomm4 support on healer layout.
 	["raidalphaoor"] = 0.3,                -- alpha of raidframes when unit is out of range
 	["gridonly"] = false,                  -- enable grid only mode for all raid layout. TEMP
@@ -126,6 +125,7 @@ C["raidframes"] = {
 	["griddps"] = true,					-- show dps layout in grid style
 	["role"] = false,					--display role on raidframe
 	["partytarget"]	= false,				--display party members targets (DPS ONLY)
+	["mouseglow"] = true,					--glow the class/reaction color of the unit that you mouseover
 }
 
 C["auras"] = {

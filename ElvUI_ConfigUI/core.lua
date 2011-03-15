@@ -199,6 +199,7 @@ function LoadConfigLocals(o)
 	if o == "ElvuiConfigUIraidframesgriddps" then o = ElvuiL.option_raidframes_griddps end
 	if o == "ElvuiConfigUIraidframesrole" then o = TRACKER_FILTER_LABEL.." "..RAID_SORT_GROUP.." "..RAID_SORT_ROLE end
 	if o == "ElvuiConfigUIraidframespartytarget" then o = ElvuiL.option_raidframes_partytarget end
+	if o == "ElvuiConfigUIraidframesmouseglow" then o = ElvuiL.option_raidframes_mouseglow end
 	
 	-- unit frames
 	if o == "ElvuiConfigUIunitframes" then o = ElvuiL.option_unitframes_unitframes end
