@@ -157,7 +157,7 @@ do
 end
 
 
-function ToggleRaidUtil(self, event)
+local function ToggleRaidUtil(self, event)
 	if InCombatLockdown() then
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")
 		return
