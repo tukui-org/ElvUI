@@ -1,0 +1,18 @@
+## Interface: 40000
+## Title: |cff1784d1ElvUI Config|r
+## Notes: Config for ElvUI
+## Author: Elv
+## SavedVariables: ElvConfig
+## RequiredDeps: ElvUI
+
+libs\load_libs.xml
+local\english.lua
+local\french.lua
+local\russian.lua
+local\german.lua
+local\taiwan.lua
+local\spanish.lua
+local\korean.lua
+local\china.lua
+
+core.lua
