@@ -1,7 +1,7 @@
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
-if C["actionbar"].enable ~= true or C["actionbar"].microbar ~= true then return end
+if DB["actionbar"].enable ~= true or DB["actionbar"].microbar ~= true then return end
 
 local microbuttons = {
 	"CharacterMicroButton",
@@ -18,7 +18,7 @@ local microbuttons = {
 
 local f = CreateFrame("Frame", "MicroParent", UIParent)
 MicroParent.shown = false
-if C["actionbar"].mousemicro == true then f:SetAlpha(0) end
+if DB["actionbar"].mousemicro == true then f:SetAlpha(0) end
 
 UpdateMicroButtonsParent(f)
 
@@ -34,7 +34,7 @@ local function CheckFade(self, elapsed)
 		end
 	end
 	
-	if C["actionbar"].mousemicro ~= true then return end
+	if DB["actionbar"].mousemicro ~= true then return end
 	
 	if MicroPlaceHolder.mouseover == true then
 		mouseactive = true
@@ -103,16 +103,16 @@ for i, button in pairs(microbuttons) do
 
 	m.mouseover = false
 	m:HookScript("OnEnter", function(self) 
-		if C["general"].classcolortheme == true then 
-			self.frame:SetBackdropBorderColor(unpack(C["media"].bordercolor)) 
+		if DB["general"].classcolortheme == true then 
+			self.frame:SetBackdropBorderColor(unpack(DB["media"].bordercolor)) 
 		else
-			self.frame:SetBackdropBorderColor(unpack(C["media"].valuecolor)) 
+			self.frame:SetBackdropBorderColor(unpack(DB["media"].valuecolor)) 
 		end self.mouseover = true 
 	end)
 	m:HookScript("OnLeave", function(self) 
 		local color = RAID_CLASS_COLORS[E.myclass] 
-		if C["general"].classcolortheme ~= true then 
-			self.frame:SetBackdropBorderColor(unpack(C["media"].bordercolor)) 
+		if DB["general"].classcolortheme ~= true then 
+			self.frame:SetBackdropBorderColor(unpack(DB["media"].bordercolor)) 
 		else
 			self.frame:SetBackdropBorderColor(color.r, color.g, color.b) 
 		end

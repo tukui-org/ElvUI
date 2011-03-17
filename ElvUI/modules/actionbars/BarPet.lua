@@ -1,6 +1,6 @@
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not C["actionbar"].enable == true then return end
+if not DB["actionbar"].enable == true then return end
 
 ---------------------------------------------------------------------------
 -- setup PetActionBar
@@ -22,7 +22,7 @@ function E.PositionBarPet(self)
 		if i == 1 then
 			button:SetPoint("TOPLEFT", E.buttonspacing, -E.buttonspacing)
 		else
-			if C["actionbar"].bottompetbar ~= true then
+			if DB["actionbar"].bottompetbar ~= true then
 				button:SetPoint("TOP", _G["PetActionButton"..(i - 1)], "BOTTOM", 0, -E.buttonspacing)
 			else
 				button:SetPoint("LEFT", _G["PetActionButton"..(i - 1)], "RIGHT", E.buttonspacing, 0)
@@ -33,7 +33,7 @@ function E.PositionBarPet(self)
 	end
 	
 	--Setup Mouseover
-	if C["actionbar"].rightbarmouseover == true and C["actionbar"].bottompetbar ~= true then
+	if DB["actionbar"].rightbarmouseover == true and DB["actionbar"].bottompetbar ~= true then
 		ElvuiPetActionBarBackground:SetAlpha(0)
 		ElvuiPetActionBarBackground:SetScript("OnEnter", function() RightBarMouseOver(1) end)
 		ElvuiPetActionBarBackground:SetScript("OnLeave", function() RightBarMouseOver(0) end)

@@ -3,10 +3,10 @@
 		Adds out of range coloring to action buttons
 		Derived from RedRange with negligable improvements to CPU usage
 --]]
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
-if not C["actionbar"].enable == true then return end
+if not DB["actionbar"].enable == true then return end
 
 --locals and speed
 local _G = _G

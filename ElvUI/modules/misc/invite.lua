@@ -1,9 +1,9 @@
 ------------------------------------------------------------------------
 -- Auto accept invite
 ------------------------------------------------------------------------
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if C["others"].autoacceptinv then
+if DB["others"].autoacceptinv then
 	local tAutoAcceptInvite = CreateFrame("Frame")
 	tAutoAcceptInvite:RegisterEvent("PARTY_INVITE_REQUEST")
 	tAutoAcceptInvite:RegisterEvent("PARTY_MEMBERS_CHANGED")

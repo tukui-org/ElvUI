@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 --	ActionBar Functions
 ------------------------------------------------------------------------
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 function E.ElvuiPetBarUpdate(self, event)
 	local petActionButton, petActionIcon, petAutoCastableTexture, petAutoCastShine
@@ -50,11 +50,11 @@ function E.ElvuiPetBarUpdate(self, event)
 		
 		-- grid display
 		if name then
-			if not C["actionbar"].showgrid then
+			if not DB["actionbar"].showgrid then
 				petActionButton:SetAlpha(1)
 			end			
 		else
-			if not C["actionbar"].showgrid then
+			if not DB["actionbar"].showgrid then
 				petActionButton:SetAlpha(0)
 			end
 		end
@@ -124,7 +124,7 @@ function E.PositionAllPanels()
 	ElvuiPetActionBarBackground:ClearAllPoints()
 	ElvuiLineToPetActionBarBackground:ClearAllPoints()
 	
-	if C["actionbar"].bottompetbar ~= true then
+	if DB["actionbar"].bottompetbar ~= true then
 		ElvuiActionBarBackground:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, E.Scale(4))
 		if E["actionbar"].rightbars > 0 then
 			ElvuiPetActionBarBackground:SetPoint("RIGHT", ElvuiActionBarBackgroundRight, "LEFT", E.Scale(-6), 0)

@@ -1,17 +1,17 @@
-local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 local oUF = ElvUF or oUF
 assert(oUF, "ElvUI was unable to locate oUF.")
 
-if not C["raidframes"].enable == true then return end
+if not DB["raidframes"].enable == true then return end
 
 local RAID_WIDTH
 local RAID_HEIGHT
-if C["raidframes"].griddps ~= true then
-	RAID_WIDTH = E.Scale(110)*C["raidframes"].scale
-	RAID_HEIGHT = E.Scale(25)*C["raidframes"].scale
+if DB["raidframes"].griddps ~= true then
+	RAID_WIDTH = E.Scale(110)*DB["raidframes"].scale
+	RAID_HEIGHT = E.Scale(25)*DB["raidframes"].scale
 else
-	RAID_WIDTH = ((ChatLBackground2:GetWidth() / 5) - 2.5)*C["raidframes"].scale
-	RAID_HEIGHT = E.Scale(40)*C["raidframes"].scale
+	RAID_WIDTH = ((ChatLBackground2:GetWidth() / 5) - 2.5)*DB["raidframes"].scale
+	RAID_HEIGHT = E.Scale(40)*DB["raidframes"].scale
 end
 
 local BORDER = 2
@@ -20,7 +20,7 @@ local function Shared(self, unit)
 	local POWERBAR_WIDTH = RAID_WIDTH - (BORDER*2)
 	local POWERBAR_HEIGHT = 8
 	
-	if C["raidframes"].griddps ~= true then
+	if DB["raidframes"].griddps ~= true then
 		POWERBAR_HEIGHT = 7
 	end
 	
@@ -42,12 +42,12 @@ local function Shared(self, unit)
 	local health = E.ContructHealthBar(self, true, true)
 	health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
 	health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
-	if C["raidframes"].griddps ~= true then
+	if DB["raidframes"].griddps ~= true then
 		health.value:Point("RIGHT", health, "RIGHT", -2, 0)
 	else
 		health.value:Point("BOTTOM", health, "BOTTOM", 0, 1)
 	end
-	health.value:SetFont(C["media"].uffont, (C["raidframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
+	health.value:SetFont(DB["media"].uffont, (DB["raidframes"].fontsize-1)*DB["raidframes"].scale, "THINOUTLINE")
 	
 	self.Health = health
 			
@@ -59,8 +59,8 @@ local function Shared(self, unit)
 	self.Power = power
 
 	--Name
-	self:FontString("Name", C["media"].uffont, (C["unitframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
-	if C["raidframes"].griddps ~= true then
+	self:FontString("Name", DB["media"].uffont, (DB["unitframes"].fontsize-1)*DB["raidframes"].scale, "THINOUTLINE")
+	if DB["raidframes"].griddps ~= true then
 		self.Name:Point("LEFT", health, "LEFT", 2, 0)
 	else
 		self.Name:Point("TOP", health, "TOP", 0, -3)
@@ -68,10 +68,10 @@ local function Shared(self, unit)
 	self.Name.frequentUpdates = 0.3
 	self:Tag(self.Name, "[Elvui:getnamecolor][Elvui:nameshort]")
 
-	if C["raidframes"].role == true then
+	if DB["raidframes"].role == true then
 		local LFDRole = self:CreateTexture(nil, "OVERLAY")
 		LFDRole:Size(6, 6)
-		if C["raidframes"].griddps ~= true then
+		if DB["raidframes"].griddps ~= true then
 			LFDRole:Point("BOTTOMRIGHT", health, "BOTTOMRIGHT", -2, -2)
 		else
 			LFDRole:Point("TOP", self.Name, "BOTTOM", 0, -1)
@@ -87,8 +87,8 @@ local function Shared(self, unit)
 
 
 	local RaidIcon = self:CreateTexture(nil, 'OVERLAY')
-	RaidIcon:Size(15*C["raidframes"].scale, 15*C["raidframes"].scale)
-	if C["raidframes"].griddps ~= true then
+	RaidIcon:Size(15*DB["raidframes"].scale, 15*DB["raidframes"].scale)
+	if DB["raidframes"].griddps ~= true then
 		RaidIcon:SetPoint('LEFT', self.Name, 'RIGHT')
 	else
 		RaidIcon:SetPoint('CENTER', self, 'TOP')
@@ -97,9 +97,9 @@ local function Shared(self, unit)
 	self.RaidIcon = RaidIcon
 	
 	local ReadyCheck = self.Health:CreateTexture(nil, "OVERLAY")
-	ReadyCheck:SetHeight(C["raidframes"].fontsize)
-	ReadyCheck:SetWidth(C["raidframes"].fontsize)
-	if C["raidframes"].griddps ~= true then
+	ReadyCheck:SetHeight(DB["raidframes"].fontsize)
+	ReadyCheck:SetWidth(DB["raidframes"].fontsize)
+	if DB["raidframes"].griddps ~= true then
 		ReadyCheck:Point('LEFT', self.Name, 'RIGHT', 4, 0)
 	else	
 		ReadyCheck:Point('TOP', self.Name, 'BOTTOM', 0, -2)
@@ -107,10 +107,10 @@ local function Shared(self, unit)
 	self.ReadyCheck = ReadyCheck
 	
 
-	if C["unitframes"].debuffhighlight == true then
+	if DB["unitframes"].debuffhighlight == true then
 		local dbh = self:CreateTexture(nil, "OVERLAY")
 		dbh:SetAllPoints()
-		dbh:SetTexture(C["media"].blank)
+		dbh:SetTexture(DB["media"].blank)
 		dbh:SetBlendMode("ADD")
 		dbh:SetVertexColor(0,0,0,0)
 		self.DebuffHighlight = dbh
@@ -118,7 +118,7 @@ local function Shared(self, unit)
 		self.DebuffHighlightAlpha = 0.35
 	end
 	
-	if C["raidframes"].griddps ~= true then
+	if DB["raidframes"].griddps ~= true then
 		local debuffs = CreateFrame('Frame', nil, self)
 		debuffs:SetPoint('LEFT', self, 'RIGHT', E.Scale(6), 0)
 		debuffs:SetHeight(RAID_HEIGHT)
@@ -150,27 +150,27 @@ local function Shared(self, unit)
 		RaidDebuffs.icon:Point("BOTTOMRIGHT", -2, 2)
 		
 		RaidDebuffs.count = RaidDebuffs:CreateFontString(nil, 'OVERLAY')
-		RaidDebuffs.count:SetFont(C["media"].uffont, C["general"].fontscale*0.75, "THINOUTLINE")
+		RaidDebuffs.count:SetFont(DB["media"].uffont, DB["general"].fontscale*0.75, "THINOUTLINE")
 		RaidDebuffs.count:SetPoint('BOTTOMRIGHT', RaidDebuffs, 'BOTTOMRIGHT', 0, 2)
 		RaidDebuffs.count:SetTextColor(1, .9, 0)
 		
-		RaidDebuffs:FontString('time', C["media"].uffont, C["general"].fontscale*0.75, "THINOUTLINE")
+		RaidDebuffs:FontString('time', DB["media"].uffont, DB["general"].fontscale*0.75, "THINOUTLINE")
 		RaidDebuffs.time:SetPoint('CENTER')
 		RaidDebuffs.time:SetTextColor(1, .9, 0)
 		
 		self.RaidDebuffs = RaidDebuffs
 	end
 				
-	if C["raidframes"].showrange == true then
-		local range = {insideAlpha = 1, outsideAlpha = C["raidframes"].raidalphaoor}
+	if DB["raidframes"].showrange == true then
+		local range = {insideAlpha = 1, outsideAlpha = DB["raidframes"].raidalphaoor}
 		self.Range = range
 	end
 	
-	if C["auras"].raidunitbuffwatch == true then
+	if DB["auras"].raidunitbuffwatch == true then
 		E.createAuraWatch(self,unit)
     end
 	
-	if C["raidframes"].mouseglow == true then
+	if DB["raidframes"].mouseglow == true then
 		self:CreateShadow("Default")
 		
 		--self.shadow is used for threat, if we leave it like this, it may cause complications
@@ -215,7 +215,7 @@ oUF:RegisterStyle('ElvuiDPSR6R25', Shared)
 oUF:Factory(function(self)
 	oUF:SetActiveStyle("ElvuiDPSR6R25")	
 	local raid
-	if C["raidframes"].griddps ~= true then
+	if DB["raidframes"].griddps ~= true then
 		raid = self:SpawnHeader("ElvuiDPSR6R25", nil, "custom [@raid6,noexists][@raid26,exists] hide;show",
 			'oUF-initialConfigFunction', [[
 				local header = self:GetParent()
@@ -228,7 +228,7 @@ oUF:Factory(function(self)
 			"showParty", true,
 			"showSolo", false,
 			"point", "BOTTOM",
-			"showPlayer", C["raidframes"].showplayerinparty,
+			"showPlayer", DB["raidframes"].showplayerinparty,
 			"groupFilter", "1,2,3,4,5",
 			"groupingOrder", "1,2,3,4,5",
 			"groupBy", "GROUP",	
@@ -246,7 +246,7 @@ oUF:Factory(function(self)
 			'initial-height', RAID_HEIGHT,	
 			"showRaid", true, 
 			"showParty", true,
-			"showPlayer", C["raidframes"].showplayerinparty,
+			"showPlayer", DB["raidframes"].showplayerinparty,
 			"xoffset", 3,
 			"yOffset", -3,
 			"point", "LEFT",
@@ -281,7 +281,7 @@ oUF:Factory(function(self)
 			if inInstance and instanceType == "raid" and maxPlayers ~= 40 then
 				ChangeVisibility("custom [group:party,nogroup:raid][group:raid] show;hide")
 			else
-				if C["raidframes"].gridonly == true then
+				if DB["raidframes"].gridonly == true then
 					ChangeVisibility("custom [@raid26,exists] hide;show")
 				else
 					ChangeVisibility("custom [@raid6,noexists][@raid26,exists] hide;show")

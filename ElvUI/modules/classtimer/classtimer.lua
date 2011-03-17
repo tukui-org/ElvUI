@@ -1,7 +1,7 @@
 
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if C["unitframes"]["enable"] ~= true then return end
+if DB["unitframes"]["enable"] ~= true then return end
 
 
 local CreateColor = function( red, green, blue, alpha )
@@ -9,24 +9,24 @@ local CreateColor = function( red, green, blue, alpha )
 end
 
 -- Configuration starts here:
-if C["classtimer"].enable == false then return end
+if DB["classtimer"].enable == false then return end
 
-BAR_HEIGHT = C["classtimer"].bar_height;
-BAR_SPACING = C["classtimer"].bar_spacing;
-LAYOUT = C["classtimer"].layout;
-ICON_POSITION = C["classtimer"].icon_position;
-ICON_COLOR = { unpack(C["media"].altbordercolor) };
-SPARK = C["classtimer"].showspark;
-CAST_SEPARATOR = C["classtimer"].cast_suparator;
+BAR_HEIGHT = DB["classtimer"].bar_height;
+BAR_SPACING = DB["classtimer"].bar_spacing;
+LAYOUT = DB["classtimer"].layout;
+ICON_POSITION = DB["classtimer"].icon_position;
+ICON_COLOR = { unpack(DB["media"].bordercolor) };
+SPARK = DB["classtimer"].showspark;
+CAST_SEPARATOR = DB["classtimer"].cast_suparator;
 CAST_SEPARATOR_COLOR = CreateColor( 0, 0, 0, 0.5 );
 TEXT_MARGIN = 5;
 
-if ( E and C["media"] and C["media"]["uffont"] ) then
+if ( E and DB["media"] and DB["media"]["uffont"] ) then
 	-- Sets font for all texts
-	MASTER_FONT = { C["media"]["uffont"], 12, "OUTLINE" };
+	MASTER_FONT = { DB["media"]["uffont_"], 12, "OUTLINE" };
 
 	-- Sets font for stack count
-	STACKS_FONT = { C["media"]["uffont"], 11, "OUTLINE" };
+	STACKS_FONT = { DB["media"]["uffont_"], 11, "OUTLINE" };
 else
 	-- Sets font for all texts
 	MASTER_FONT = { [=[Interface\Addons\ElvUI\media\Russel Square LT.ttf]=], 12, "OUTLINE" };
@@ -35,11 +35,11 @@ else
 	STACKS_FONT = { [=[Interface\Addons\ElvUI\media\Russel Square LT.ttf]=], 11, "OUTLINE" };
 end
 PERMANENT_AURA_VALUE = 1;
-if C["classtimer"].classcolor == false then
-	PLAYER_BAR_COLOR = { unpack(C["classtimer"]["buffcolor"]) };
-	TARGET_BAR_COLOR = { unpack(C["classtimer"]["buffcolor"]) };
-	TARGET_DEBUFF_COLOR = { unpack(C["classtimer"]["debuffcolor"]) };
-	TRINKET_BAR_COLOR = { unpack(C["classtimer"]["proccolor"]) };
+if DB["classtimer"].classcolor == false then
+	PLAYER_BAR_COLOR = { unpack(DB["classtimer"]["buffcolor"]) };
+	TARGET_BAR_COLOR = { unpack(DB["classtimer"]["buffcolor"]) };
+	TARGET_DEBUFF_COLOR = { unpack(DB["classtimer"]["debuffcolor"]) };
+	TRINKET_BAR_COLOR = { unpack(DB["classtimer"]["proccolor"]) };
 	PLAYER_DEBUFF_COLOR = nil
 else
 	classcolor = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[select(2,UnitClass("player"))];
@@ -491,7 +491,7 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 
 				
 				local bar = CreateFrame( "StatusBar", nil, result, nil );
-				bar:SetStatusBarTexture( C["media"].normTex );
+				bar:SetStatusBarTexture( DB["media"].normTex_ );
 				if ( bit.band( ICON_POSITION, 2 ) == 2 or bit.band( ICON_POSITION, 4 ) == 4 ) then
 					bar:SetPoint( "TOPLEFT", result, "TOPLEFT", 0, 0 );
 					bar:SetPoint( "BOTTOMRIGHT", result, "BOTTOMRIGHT", 0, 0 );
@@ -656,7 +656,7 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 			
 			local background = result:CreateTexture( nil, "BACKGROUND", nil );
 			background:SetAlpha( 0 );
-			background:SetTexture( C["media"].normTex );
+			background:SetTexture( DB["media"].normTex_ );
 			background:SetPoint( "TOPLEFT", result, "TOPLEFT", 0, 0 );
 			background:SetPoint( "BOTTOMRIGHT", result, "BOTTOMRIGHT", 0, 0 );
 			background:SetVertexColor( 0.15, 0.15, 0.15 );
@@ -671,7 +671,7 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 				else
 					border:SetFrameLevel(0)
 				end
-				border:SetBackdropColor(unpack(C["media"].backdropfadecolor))
+				border:SetBackdropColor(unpack(DB["media"].backdropfadecolor))
 			result.border = border;		
 			
 			result:RegisterEvent( "PLAYER_ENTERING_WORLD" );
@@ -719,8 +719,8 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 		end
 		
 		playerFrame:SetHiddenHeight( -yOffset );
-		if C["auras"].playerauras == true then
-			if C["auras"].playershowonlydebuffs == true then
+		if DB["auras"].playerauras == true then
+			if DB["auras"].playershowonlydebuffs == true then
 				playerFrame:Point( "BOTTOMLEFT", Elv_player.Debuffs, "TOPLEFT", xOffset1, yOffset );
 				playerFrame:Point( "BOTTOMRIGHT", Elv_player.Debuffs, "TOPRIGHT", xOffset2, yOffset );
 			else
@@ -764,8 +764,8 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 		playerFrame:SetHiddenHeight( -yOffset );
 		local playerFrame = CreateAuraBarFrame( playerDataSource, Elv_player );
 		playerFrame:SetHiddenHeight( -yOffset );
-		if C["auras"].playerauras == true then
-			if C["auras"].playershowonlydebuffs == true then
+		if DB["auras"].playerauras == true then
+			if DB["auras"].playershowonlydebuffs == true then
 				playerFrame:Point( "BOTTOMLEFT", Elv_player.Debuffs, "TOPLEFT", xOffset1, yOffset );
 				playerFrame:Point( "BOTTOMRIGHT", Elv_player.Debuffs, "TOPRIGHT", xOffset2, yOffset );
 			else
@@ -814,8 +814,8 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 		playerFrame:SetHiddenHeight( -yOffset );
 		local playerFrame = CreateAuraBarFrame( playerDataSource, Elv_player );
 		playerFrame:SetHiddenHeight( -yOffset );
-		if C["auras"].playerauras == true then
-			if C["auras"].playershowonlydebuffs == true then
+		if DB["auras"].playerauras == true then
+			if DB["auras"].playershowonlydebuffs == true then
 				playerFrame:Point( "BOTTOMLEFT", Elv_player.Debuffs, "TOPLEFT", xOffset1, yOffset );
 				playerFrame:Point( "BOTTOMRIGHT", Elv_player.Debuffs, "TOPRIGHT", xOffset2, yOffset );
 			else
@@ -870,8 +870,8 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 
 		local playerFrame = CreateAuraBarFrame( playerDataSource, Elv_player );
 		playerFrame:SetHiddenHeight( -yOffset );
-		if C["auras"].playerauras == true then
-			if C["auras"].playershowonlydebuffs == true then
+		if DB["auras"].playerauras == true then
+			if DB["auras"].playershowonlydebuffs == true then
 				playerFrame:Point( "BOTTOMLEFT", Elv_player.Debuffs, "TOPLEFT", xOffset1, yOffset );
 				playerFrame:Point( "BOTTOMRIGHT", Elv_player.Debuffs, "TOPRIGHT", xOffset2, yOffset );
 			else
@@ -892,7 +892,7 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 		trinketFrame:Show();
 		
 		local targetFrame = CreateAuraBarFrame( targetDataSource, Elv_target );
-		if C["auras"].targetauras == true then
+		if DB["auras"].targetauras == true then
 			targetFrame:Point( "BOTTOMLEFT", Elv_target.Debuffs, "TOPLEFT", xOffset1, yOffset );
 			targetFrame:Point( "BOTTOMRIGHT", Elv_target.Debuffs, "TOPRIGHT", xOffset2, yOffset );
 		else
@@ -930,8 +930,8 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 
 		local playerFrame = CreateAuraBarFrame( playerDataSource, Elv_player );
 		playerFrame:SetHiddenHeight( -yOffset );
-		if C["auras"].playerauras == true then
-			if C["auras"].playershowonlydebuffs == true then
+		if DB["auras"].playerauras == true then
+			if DB["auras"].playershowonlydebuffs == true then
 				playerFrame:Point( "BOTTOMLEFT", Elv_player.Debuffs, "TOPLEFT", xOffset1, yOffset );
 				playerFrame:Point( "BOTTOMRIGHT", Elv_player.Debuffs, "TOPRIGHT", xOffset2, yOffset );
 			else

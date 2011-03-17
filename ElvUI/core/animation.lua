@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- Animation Functions (Credit AlleyCat, Hydra)
 ------------------------------------------------------------------------
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 E.SetUpAnimGroup = function(self)
 	self.anim = self:CreateAnimationGroup("Flash")

@@ -1,9 +1,9 @@
 --------------------------------------------------------------------------------------------
 -- Buff Watch (Raid Frame Buff Indicator)
 --------------------------------------------------------------------------------------------
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if C["auras"].raidunitbuffwatch ~= true then return end
+if DB["auras"].raidunitbuffwatch ~= true then return end
 -- Classbuffs { spell ID, position [, {r,g,b,a}][, anyUnit] }
 
 --Healer

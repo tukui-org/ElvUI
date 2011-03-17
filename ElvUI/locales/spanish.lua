@@ -1,5 +1,5 @@
 
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if E.client == "esES" then
 	L.chat_BATTLEGROUND_GET = "[B]"

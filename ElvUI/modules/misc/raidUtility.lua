@@ -1,8 +1,8 @@
 --Raid Utility by Elv22
 
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if C["raidframes"].disableblizz ~= true then return end
+if DB["raidframes"].disableblizz ~= true then return end
 CompactRaidFrameManager:Kill() --Get rid of old module
 
 local panel_height = ((E.Scale(5)*4) + (E.Scale(20)*4))
@@ -24,20 +24,20 @@ end
 
 --Change border when mouse is inside the button
 local function ButtonEnter(self)
-	if C["general"].classcolortheme == true then
-		self:SetBackdropBorderColor(unpack(C["media"].bordercolor))		
+	if DB["general"].classcolortheme == true then
+		self:SetBackdropBorderColor(unpack(DB["media"].bordercolor))		
 	else
-		self:SetBackdropBorderColor(unpack(C["media"].valuecolor))	
+		self:SetBackdropBorderColor(unpack(DB["media"].valuecolor))	
 	end
 end
 
 --Change border back to normal when mouse leaves button
 local function ButtonLeave(self)
-	if C["general"].classcolortheme == true then
+	if DB["general"].classcolortheme == true then
 		local color = RAID_CLASS_COLORS[E.myclass]
 		self:SetBackdropBorderColor(color.r, color.g, color.b)
 	else
-		self:SetBackdropBorderColor(unpack(C["media"].bordercolor))
+		self:SetBackdropBorderColor(unpack(DB["media"].bordercolor))
 	end
 end
 
@@ -53,7 +53,7 @@ local function CreateButton(name, parent, template, width, height, point, relati
 	b:SetTemplate("Default")
 	if text then
 		local t = b:CreateFontString(nil,"OVERLAY",b)
-		t:SetFont(C.media.font,12)
+		t:SetFont(DB["media"].font_,12)
 		t:SetPoint("CENTER")
 		t:SetJustifyH("CENTER")
 		t:SetText(text)

@@ -1,6 +1,6 @@
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not C["actionbar"].enable == true then return end
+if not DB["actionbar"].enable == true then return end
 
 ---------------------------------------------------------------------------
 -- Manage all others stuff for actionbars
@@ -12,7 +12,7 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")	
 	SetActionBarToggles(1, 1, 1, 1, 0)
 	SetCVar("alwaysShowActionBars", 0)	
-	if C["actionbar"].showgrid == true then
+	if DB["actionbar"].showgrid == true then
 		ActionButton_HideGrid = E.dummy
 		for i = 1, 12 do
 			local button = _G[format("ActionButton%d", i)]

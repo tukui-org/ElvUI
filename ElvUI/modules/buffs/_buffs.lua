@@ -1,5 +1,5 @@
-local E, C, L = unpack(select(2, ...)) -- Import: E - functions, constants, variables; C - config; L - locales
-if C["auras"].minimapauras ~= true then return end
+local E, C, L, DB = unpack(select(2, ...)) -- Import: E - functions, constants, variables; C - config; L - locales
+if DB["auras"].minimapauras ~= true then return end
 
 --Holder frame for mover
 local holder = CreateFrame("Frame", "AurasHolder", UIParent)
@@ -52,7 +52,7 @@ local function UpdateWeapons(button, slot, active, expiration)
 		
 		button.time = button:CreateFontString(nil, "ARTWORK")
 		button.time:SetPoint("BOTTOM", 0, -17)
-		button.time:SetFont(C.media.font, 12, "THINOUTLINE")
+		button.time:SetFont(DB["media"].font_, 12, "THINOUTLINE")
 		button.time:SetShadowColor(0, 0, 0, 0.4)
 		button.time:SetShadowOffset(E.mult, -E.mult)
 				
@@ -83,11 +83,11 @@ local function UpdateAuras(header, button)
 
 		button.count = button:CreateFontString(nil, "ARTWORK")
 		button.count:SetPoint("BOTTOMRIGHT", -1, 1)
-		button.count:SetFont(C.media.font, 12, "OUTLINE")
+		button.count:SetFont(DB["media"].font_, 12, "OUTLINE")
 
 		button.time = button:CreateFontString(nil, "ARTWORK")
 		button.time:SetPoint("BOTTOM", 0, -17)
-		button.time:SetFont(C.media.font, 12, "OUTLINE")
+		button.time:SetFont(DB["media"].font_, 12, "OUTLINE")
 
 		button:SetScript("OnUpdate", UpdateTime)
 		

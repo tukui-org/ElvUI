@@ -1,11 +1,11 @@
-local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 local oUF = ElvUF or oUF
 assert(oUF, "ElvUI was unable to locate oUF.")
 
-if not C["raidframes"].enable == true then return end
+if not DB["raidframes"].enable == true then return end
 
-local RAID_WIDTH = ((ChatLBackground2:GetWidth() / 5) - 2.5)*C["raidframes"].scale
-local RAID_HEIGHT = E.Scale(32)*C["raidframes"].scale
+local RAID_WIDTH = ((ChatLBackground2:GetWidth() / 5) - 2.5)*DB["raidframes"].scale
+local RAID_HEIGHT = E.Scale(32)*DB["raidframes"].scale
 
 local BORDER = 2
 
@@ -29,17 +29,17 @@ local function Shared(self, unit)
 	health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
 	health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER)
 	health.value:Point("BOTTOM", health, "BOTTOM", 0, 1)
-	health.value:SetFont(C["media"].uffont, (C["raidframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
+	health.value:SetFont(DB["media"].uffont, (DB["raidframes"].fontsize-1)*DB["raidframes"].scale, "THINOUTLINE")
 	
 	self.Health = health
 				
 	--Name
-	self:FontString("Name", C["media"].uffont, (C["unitframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
+	self:FontString("Name", DB["media"].uffont, (DB["unitframes"].fontsize-1)*DB["raidframes"].scale, "THINOUTLINE")
 	self.Name:Point("TOP", health, "TOP", 0, -3)
 	self.Name.frequentUpdates = 0.3
 	self:Tag(self.Name, "[Elvui:getnamecolor][Elvui:nameshort]")
 
-	if C["raidframes"].role == true then
+	if DB["raidframes"].role == true then
 		local LFDRole = self:CreateTexture(nil, "OVERLAY")
 		LFDRole:Size(6, 6)
 		LFDRole:Point("TOP", self.Name, "BOTTOM", 0, -1)
@@ -53,21 +53,21 @@ local function Shared(self, unit)
 	self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', E.UpdateThreat)
 
 	local RaidIcon = self:CreateTexture(nil, 'OVERLAY')
-	RaidIcon:Size(15*C["raidframes"].scale, 15*C["raidframes"].scale)
+	RaidIcon:Size(15*DB["raidframes"].scale, 15*DB["raidframes"].scale)
 	RaidIcon:SetPoint('CENTER', self, 'TOP')
 	RaidIcon:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\raidicons.blp')
 	self.RaidIcon = RaidIcon
 	
 	local ReadyCheck = self.Health:CreateTexture(nil, "OVERLAY")
-	ReadyCheck:SetHeight(C["raidframes"].fontsize)
-	ReadyCheck:SetWidth(C["raidframes"].fontsize)
+	ReadyCheck:SetHeight(DB["raidframes"].fontsize)
+	ReadyCheck:SetWidth(DB["raidframes"].fontsize)
 	ReadyCheck:Point('TOP', self.Name, 'BOTTOM', 0, -2)
 	self.ReadyCheck = ReadyCheck
 	
-	if C["unitframes"].debuffhighlight == true then
+	if DB["unitframes"].debuffhighlight == true then
 		local dbh = self:CreateTexture(nil, "OVERLAY")
 		dbh:SetAllPoints()
-		dbh:SetTexture(C["media"].blank)
+		dbh:SetTexture(DB["media"].blank)
 		dbh:SetBlendMode("ADD")
 		dbh:SetVertexColor(0,0,0,0)
 		self.DebuffHighlight = dbh
@@ -75,16 +75,16 @@ local function Shared(self, unit)
 		self.DebuffHighlightAlpha = 0.35	
 	end
 		
-	if C["raidframes"].showrange == true then
-		local range = {insideAlpha = 1, outsideAlpha = C["raidframes"].raidalphaoor}
+	if DB["raidframes"].showrange == true then
+		local range = {insideAlpha = 1, outsideAlpha = DB["raidframes"].raidalphaoor}
 		self.Range = range
 	end
 	
-	if C["auras"].raidunitbuffwatch == true then
+	if DB["auras"].raidunitbuffwatch == true then
 		E.createAuraWatch(self,unit)
     end
 	
-	if C["raidframes"].mouseglow == true then
+	if DB["raidframes"].mouseglow == true then
 		self:CreateShadow("Default")
 		
 		--self.shadow is used for threat, if we leave it like this, it may cause complications
@@ -138,7 +138,7 @@ oUF:Factory(function(self)
 		'initial-height', RAID_HEIGHT,	
 		"showRaid", true, 
 		"showParty", true,
-		"showPlayer", C["raidframes"].showplayerinparty,
+		"showPlayer", DB["raidframes"].showplayerinparty,
 		"xoffset", 3,
 		"yOffset", -3,
 		"point", "LEFT",

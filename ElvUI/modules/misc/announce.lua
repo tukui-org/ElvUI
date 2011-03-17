@@ -1,6 +1,6 @@
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if C["others"].announceinterrupt ~= true then return end
+if DB["others"].announceinterrupt ~= true then return end
 
 local announce = CreateFrame("Frame")
 announce:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")

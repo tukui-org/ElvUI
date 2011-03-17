@@ -1,4 +1,4 @@
-local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 
 local _, ns = ...
 local oUF = ns.oUF or oUF
@@ -362,7 +362,7 @@ do
 		name:SetJustifyH"CENTER"
 		name:SetFont(GameFontNormal:GetFont(), 12, "THINOUTLINE")
 		name:SetShadowOffset(E.mult, -E.mult)
-		name:SetTextColor(unpack(C["media"].valuecolor))
+		name:SetTextColor(unpack(DB["media"].valuecolor))
 		
 		backdrop.name = name
 		backdrop.obj = obj
@@ -380,10 +380,10 @@ do
 		backdrop:SetScript("OnDragStop", OnDragStop)
 		backdrop:SetScript("OnEnter", function(self)
 			self.name:SetTextColor(1, 1, 1)
-			self:SetBackdropBorderColor(unpack(C["media"].valuecolor))		
+			self:SetBackdropBorderColor(unpack(DB["media"].valuecolor))		
 		end)
 		backdrop:SetScript("OnLeave", function(self)
-			self.name:SetTextColor(unpack(C["media"].valuecolor))
+			self.name:SetTextColor(unpack(DB["media"].valuecolor))
 			self:SetTemplate("Default", true)
 		end)		
 

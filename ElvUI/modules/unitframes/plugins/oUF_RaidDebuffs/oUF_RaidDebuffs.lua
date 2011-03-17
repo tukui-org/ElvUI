@@ -1,7 +1,7 @@
-local E, C, L = unpack(select(2, ...)) -- Import: E - functions, constants, variables; C - config; L - locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import: E - functions, constants, variables; C - config; L - locales
 -- yleaf (yaroot@gmail.com)
 
-if C.unitframes.enable ~= true then return end
+if DB.unitframes.enable ~= true then return end
 
 local _, ns = ...
 local oUF = ns.oUF or oUF
@@ -49,7 +49,7 @@ local DispellColor = {
 	['Curse']	= {.6, 0, 1},
 	['Disease']	= {.6, .4, 0},
 	['Poison']	= {0, .6, 0},
-	['none'] = {unpack(C.media.bordercolor)},
+	['none'] = {unpack(DB.media.bordercolor)},
 }
 
 local DispellPriority = {

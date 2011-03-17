@@ -1,9 +1,9 @@
 -----------------------------------------
 -- Stat 1 
 -----------------------------------------
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not C["datatext"].stat1 or C["datatext"].stat1 == 0 then return end
+if not DB["datatext"].stat1 or DB["datatext"].stat1 == 0 then return end
 
 local Stat = CreateFrame("Frame")
 Stat:EnableMouse(true)
@@ -11,9 +11,9 @@ Stat:SetFrameStrata("MEDIUM")
 Stat:SetFrameLevel(3)
 
 local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
-Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
+Text:SetFont(DB["media"].font_, DB["datatext"].fontsize, "THINOUTLINE")
 Text:SetShadowOffset(E.mult, -E.mult)
-E.PP(C["datatext"].stat1, Text)
+E.PP(DB["datatext"].stat1, Text)
 
 local format = string.format
 local targetlv, playerlv

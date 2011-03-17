@@ -3,9 +3,9 @@ Author: Affli@RU-Howling Fjord,
 Modified: Elv
 All rights reserved.
 ]]--
-local E, C, L = unpack(select(2, ...))
+local E, C, L, DB = unpack(select(2, ...))
 
-if not C["skin"].bigwigs == true or not IsAddOnLoaded("BigWigs") then return end
+if not DB["skin"].bigwigs == true or not IsAddOnLoaded("BigWigs") then return end
 
 local buttonsize = 19
 
@@ -87,13 +87,13 @@ local applystyle = function(bar)
 	end
 
 	-- setup timer and bar name fonts and positions
-	bar.candyBarLabel:SetFont(C["media"].font, 12, "OUTLINE")
+	bar.candyBarLabel:SetFont(DB["media"].font_, 12, "OUTLINE")
 	bar.candyBarLabel:SetShadowColor(0, 0, 0, 0)
 	bar.candyBarLabel:SetJustifyH("LEFT")
 	bar.candyBarLabel:ClearAllPoints()
 	bar.candyBarLabel:Point("LEFT", bar, "LEFT", 4, 0)
 	
-	bar.candyBarDuration:SetFont(C["media"].font, 12, "OUTLINE")
+	bar.candyBarDuration:SetFont(DB["media"].font_, 12, "OUTLINE")
 	bar.candyBarDuration:SetShadowColor(0, 0, 0, 0)
 	bar.candyBarDuration:SetJustifyH("RIGHT")
 	bar.candyBarDuration:ClearAllPoints()
@@ -104,8 +104,8 @@ local applystyle = function(bar)
 	bar.candyBarBar:SetAllPoints(bar)
 	bar.candyBarBar.OldSetPoint = bar.candyBarBar.SetPoint
 	bar.candyBarBar.SetPoint=E.dummy
-	bar.candyBarBar:SetStatusBarTexture(C.media.normTex)
-	bar.candyBarBackground:SetTexture(unpack(C.media.backdropcolor))
+	bar.candyBarBar:SetStatusBarTexture(DB["media"].normTex_)
+	bar.candyBarBackground:SetTexture(unpack(DB.media.backdropcolor))
 	
 	-- setup icon positions and other things
 	bar.candyBarIconFrame:ClearAllPoints()
@@ -144,7 +144,7 @@ local function PositionBWAnchor()
 	if not BigWigsAnchor then return end
 	BigWigsAnchor:ClearAllPoints()
 	if E.CheckAddOnShown() == true then
-		if C["chat"].showbackdrop == true and E.ChatRightShown == true then
+		if DB["chat"].showbackdrop == true and E.ChatRightShown == true then
 			if E.RightChat == true then
 				BigWigsAnchor:Point("BOTTOM", ChatRBackground2, "TOP", 13, 3)	
 			else
@@ -179,7 +179,7 @@ f:SetScript("OnEvent", function(self, event, addon)
 end)
 
 --BigWigsAnchor
-if C["skin"].hookbwright == true then
+if DB["skin"].hookbwright == true then
 	f:RegisterEvent("PLAYER_REGEN_ENABLED")
 	f:RegisterEvent("PLAYER_REGEN_DISABLED")
 	f:RegisterEvent("PLAYER_ENTERING_WORLD")

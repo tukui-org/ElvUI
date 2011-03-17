@@ -2,9 +2,9 @@
 -- Raid Buff Reminder
 --------------------------------------------------------------------------------------------
 
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if C["buffreminder"].raidbuffreminder ~= true then return end
+if DB["buffreminder"].raidbuffreminder ~= true then return end
 
 E.BuffReminderRaidBuffs = {
 	Flask = {

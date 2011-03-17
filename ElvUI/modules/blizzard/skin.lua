@@ -1,21 +1,21 @@
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 local function SetModifiedBackdrop(self)
-	if C["general"].classcolortheme == true then
-		self:SetBackdropBorderColor(unpack(C["media"].bordercolor))		
+	if DB["general"].classcolortheme == true then
+		self:SetBackdropBorderColor(unpack(DB["media"].bordercolor))		
 	else
-		self:SetBackdropBorderColor(unpack(C["media"].valuecolor))	
+		self:SetBackdropBorderColor(unpack(DB["media"].valuecolor))	
 	end
 end
 
 local function SetOriginalBackdrop(self)
 	local color = RAID_CLASS_COLORS[E.myclass]
-	if C["general"].classcolortheme == true then
+	if DB["general"].classcolortheme == true then
 		self:SetBackdropBorderColor(color.r, color.g, color.b)
 	else
-		self:SetBackdropColor(unpack(C["media"].backdropcolor))
-		self:SetBackdropBorderColor(unpack(C["media"].bordercolor))
+		self:SetBackdropColor(unpack(DB["media"].backdropcolor))
+		self:SetBackdropBorderColor(unpack(DB["media"].bordercolor))
 	end
 end
 
@@ -58,17 +58,17 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 	if IsAddOnLoaded("Skinner") or IsAddOnLoaded("Aurora") then return end
 	
 	if addon == "Blizzard_DebugTools" then
-		local noscalemult = E.mult * C["general"].uiscale
+		local noscalemult = E.mult * DB["general"].uiscale
 		local bg = {
-		  bgFile = C["media"].blank, 
-		  edgeFile = C["media"].blank, 
+		  bgFile = DB["media"].blank_, 
+		  edgeFile = DB["media"].blank_, 
 		  tile = false, tileSize = 0, edgeSize = noscalemult, 
 		  insets = { left = -noscalemult, right = -noscalemult, top = -noscalemult, bottom = -noscalemult}
 		}
 		
 		ScriptErrorsFrame:SetBackdrop(bg)
-		ScriptErrorsFrame:SetBackdropColor(unpack(C.media.backdropfadecolor))
-		ScriptErrorsFrame:SetBackdropBorderColor(unpack(C.media.bordercolor))	
+		ScriptErrorsFrame:SetBackdropColor(unpack(DB.media.backdropfadecolor))
+		ScriptErrorsFrame:SetBackdropBorderColor(unpack(DB.media.bordercolor))	
 
 		EventTraceFrame:SetTemplate("Transparent")
 		
@@ -91,8 +91,8 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		end
 		
 		local bg = {
-		  bgFile = C["media"].normTex, 
-		  edgeFile = C["media"].blank, 
+		  bgFile = DB["media"].normTex_, 
+		  edgeFile = DB["media"].blank_, 
 		  tile = false, tileSize = 0, edgeSize = noscalemult, 
 		  insets = { left = -noscalemult, right = -noscalemult, top = -noscalemult, bottom = -noscalemult}
 		}
@@ -103,8 +103,8 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 				
 				SkinButton(child)
 				child:SetBackdrop(bg)
-				child:SetBackdropColor(unpack(C.media.backdropcolor))
-				child:SetBackdropBorderColor(unpack(C.media.bordercolor))	
+				child:SetBackdropColor(unpack(DB.media.backdropcolor))
+				child:SetBackdropBorderColor(unpack(DB.media.bordercolor))	
 			end
 		end	
 	end
@@ -151,9 +151,9 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		--
 		for i = 1, getn(ChatMenus) do
 			if _G[ChatMenus[i]] == _G["ChatMenu"] then
-				_G[ChatMenus[i]]:HookScript("OnShow", function(self) self:SetTemplate("Default", true) self:SetBackdropColor(unpack(C["media"].backdropfadecolor)) self:ClearAllPoints() self:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, E.Scale(30)) end)
+				_G[ChatMenus[i]]:HookScript("OnShow", function(self) self:SetTemplate("Default", true) self:SetBackdropColor(unpack(DB["media"].backdropfadecolor)) self:ClearAllPoints() self:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, E.Scale(30)) end)
 			else
-				_G[ChatMenus[i]]:HookScript("OnShow", function(self) self:SetTemplate("Default", true) self:SetBackdropColor(unpack(C["media"].backdropfadecolor)) end)
+				_G[ChatMenus[i]]:HookScript("OnShow", function(self) self:SetTemplate("Default", true) self:SetBackdropColor(unpack(DB["media"].backdropfadecolor)) end)
 			end
 		end
 		

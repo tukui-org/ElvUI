@@ -2,7 +2,7 @@
 -- translate or do anything you want if you want to 
 -- use this feature on others clients.
 
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if E.client ~= "enUS" and E.client ~= "enGB" then return end
 

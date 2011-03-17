@@ -1,6 +1,6 @@
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not C["actionbar"].enable == true then return end
+if not DB["actionbar"].enable == true then return end
 
 
 ---------------------------------------------------------------------------
@@ -35,7 +35,7 @@ function E.PositionBar4()
 					b:SetPoint("TOP", b2, "BOTTOM", 0, -E.buttonspacing)
 				end
 			
-				if C["actionbar"].rightbarmouseover == true then
+				if DB["actionbar"].rightbarmouseover == true then
 					b:SetAlpha(0)
 					b:HookScript("OnEnter", function() RightBarMouseOver(1) end)
 					b:HookScript("OnLeave", function() RightBarMouseOver(0) end)			
@@ -59,7 +59,7 @@ function E.PositionBar4()
 					b:SetPoint("TOP", b2, "BOTTOM", 0, -E.buttonspacing)
 				end
 				
-				if C["actionbar"].rightbarmouseover == true then
+				if DB["actionbar"].rightbarmouseover == true then
 					b:SetAlpha(0)
 					b:HookScript("OnEnter", function() RightBarMouseOver(1) end)
 					b:HookScript("OnLeave", function() RightBarMouseOver(0) end)			

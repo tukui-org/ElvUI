@@ -1,6 +1,6 @@
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if C["unitframes"].enable ~= true and C["raidframes"].enable ~= true then return end
+if DB["unitframes"].enable ~= true and DB["raidframes"].enable ~= true then return end
 
 local function SpellName(id)
 	local name, _, _, _, _, _, _, _, _ = GetSpellInfo(id) 	

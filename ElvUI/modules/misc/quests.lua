@@ -1,6 +1,6 @@
 -- add quest level into Quest list frame.
 
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 local function questlevel()
 	local buttons = QuestLogScrollFrame.buttons

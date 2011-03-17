@@ -3,9 +3,9 @@
 	
 	Add the nameplates name that you do NOT want to see.
 ]]
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if C["nameplate"].enable ~= true then return end
+if DB["nameplate"].enable ~= true then return end
 
 E.PlateBlacklist = {
 	--Shaman Totems

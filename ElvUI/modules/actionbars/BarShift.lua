@@ -1,6 +1,6 @@
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not C["actionbar"].enable == true then return end
+if not DB["actionbar"].enable == true then return end
 
 
 ---------------------------------------------------------------------------
@@ -8,7 +8,7 @@ if not C["actionbar"].enable == true then return end
 ---------------------------------------------------------------------------
 -- used for anchor totembar or shapeshiftbar
 local ElvuiShift = CreateFrame("Frame","ElvuiShiftBar",ElvuiActionBarBackground)
-if C["actionbar"].microbar == true then
+if DB["actionbar"].microbar == true then
 	ElvuiShift:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 3, -38)
 else
 	ElvuiShift:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 2, -2)
@@ -16,14 +16,14 @@ end
 ElvuiShift:SetWidth(200)
 ElvuiShift:SetHeight(E.petbuttonsize)
 
-if C["actionbar"].hideshapeshift == true then
+if DB["actionbar"].hideshapeshift == true then
 	ElvuiShift:Hide()
 end
 
 E.CreateMover(ElvuiShift, "ShapeShiftMover", "Class Bar", true)
 
 -- hide it if not needed and stop executing code
-if C.actionbar.hideshapeshift then ElvuiShift:Hide() return end
+if DB.actionbar.hideshapeshift then ElvuiShift:Hide() return end
 
 -- create the shapeshift bar if we enabled it
 local bar = CreateFrame("Frame", "ElvuiShapeShift", ElvuiShift, "SecureHandlerStateTemplate")
@@ -55,7 +55,7 @@ bar:SetScript("OnEvent", function(self, event, ...)
 			button = _G["ShapeshiftButton"..i]
 			button:ClearAllPoints()
 			button:SetParent(self)
-			if C["actionbar"].verticalstance ~= true then
+			if DB["actionbar"].verticalstance ~= true then
 				if i == 1 then
 					button:SetPoint("BOTTOMLEFT", ElvuiShift, 0, 0)
 				else
@@ -98,7 +98,7 @@ bar:SetScript("OnEvent", function(self, event, ...)
 	end
 end)
 
-if C["actionbar"].shapeshiftmouseover == true then
+if DB["actionbar"].shapeshiftmouseover == true then
 	for i=1, NUM_SHAPESHIFT_SLOTS do
 		local b = _G["ShapeshiftButton"..i]
 		b:SetAlpha(0)

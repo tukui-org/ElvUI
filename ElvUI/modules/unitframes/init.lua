@@ -1,4 +1,4 @@
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 function E.LoadLayout(layout)
 	for name, func in pairs(E.Layouts) do
@@ -10,4 +10,4 @@ function E.LoadLayout(layout)
 		end
 	end
 end
-E.LoadLayout(C["general"].layoutoverride)
+E.LoadLayout(DB["general"].layoutoverride)

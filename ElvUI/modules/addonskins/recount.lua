@@ -1,7 +1,7 @@
-﻿local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+﻿local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
-if not IsAddOnLoaded("Recount") or not C["skin"].recount == true then return end
+if not IsAddOnLoaded("Recount") or not DB["skin"].recount == true then return end
 local Recount = _G.Recount
 
 local function SkinFrame(frame)
@@ -18,7 +18,7 @@ end
 -- Override bar textures
 Recount.UpdateBarTextures = function(self)
 	for k, v in pairs(Recount.MainWindow.Rows) do
-		v.StatusBar:SetStatusBarTexture(C["media"].normTex)
+		v.StatusBar:SetStatusBarTexture(DB["media"].normTex_)
 		v.StatusBar:GetStatusBarTexture():SetHorizTile(false)
 		v.StatusBar:GetStatusBarTexture():SetVertTile(false)
 	end
@@ -30,7 +30,7 @@ Recount.SetBarTextures = Recount.UpdateBarTextures
 Recount.SetupBar_ = Recount.SetupBar
 Recount.SetupBar = function(self, bar)
 	self:SetupBar_(bar)
-	bar.StatusBar:SetStatusBarTexture(C["media"].normTex)
+	bar.StatusBar:SetStatusBarTexture(DB["media"].normTex_)
 end
 
 -- Skin frames when they're created
@@ -60,7 +60,7 @@ if _G["Recount_Realtime_Upstream Traffic_UP_TRAFFIC"] then SkinFrame(_G["Recount
 --Update Textures
 Recount:UpdateBarTextures()
 
-if C["skin"].embedright == "Recount" then
+if DB["skin"].embedright == "Recount" then
 	local Recount_Skin = CreateFrame("Frame")
 	Recount_Skin:RegisterEvent("PLAYER_ENTERING_WORLD")
 	Recount_Skin:SetScript("OnEvent", function(self)
@@ -71,6 +71,6 @@ if C["skin"].embedright == "Recount" then
 		Recount_MainWindow:SetPoint("TOPLEFT", ChatRBackground2,"TOPLEFT", 0, 7)
 		Recount_MainWindow:SetPoint("BOTTOMRIGHT", ChatRBackground2,"BOTTOMRIGHT", 0, 0)
 		Recount.db.profile.FrameStrata = "4-HIGH"
-		Recount.db.profile.MainWindowWidth = (C["chat"].chatwidth - 4)	
+		Recount.db.profile.MainWindowWidth = (DB["chat"].chatwidth - 4)	
 	end)
 end

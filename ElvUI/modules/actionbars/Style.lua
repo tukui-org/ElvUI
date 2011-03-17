@@ -1,9 +1,9 @@
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not C["actionbar"].enable == true then return end
+if not DB["actionbar"].enable == true then return end
 
 local _G = _G
-local media = C["media"]
+local media = DB["media"]
 local securehandler = CreateFrame("Frame", nil, nil, "SecureHandlerBaseTemplate")
 
 function Style(self, totem)
@@ -34,11 +34,11 @@ function Style(self, totem)
 	if Count then
 		Count:ClearAllPoints()
 		Count:SetPoint("BOTTOMRIGHT", 0, E.Scale(2))
-		Count:SetFont(C["media"].font, 12, "OUTLINE")
+		Count:SetFont(DB["media"].font_, 12, "OUTLINE")
 	end
 	
 	if Btname then
-		if C["actionbar"].macrotext ~= true then
+		if DB["actionbar"].macrotext ~= true then
 			Btname:SetText("")
 			Btname:Hide()
 			Btname.Show = E.dummy
@@ -67,12 +67,12 @@ function Style(self, totem)
 	if HotKey then
 		HotKey:ClearAllPoints()
 		HotKey:SetPoint("TOPRIGHT", 0, E.Scale(-3))
-		HotKey:SetFont(C["media"].font, 12, "THINOUTLINE")
+		HotKey:SetFont(DB["media"].font_, 12, "THINOUTLINE")
 		HotKey:SetShadowOffset(E.mult, -E.mult)
 		HotKey:SetShadowColor(0, 0, 0, 0.3)
 		HotKey.ClearAllPoints = E.dummy
 		HotKey.SetPoint = E.dummy
-		if not C["actionbar"].hotkey == true then
+		if not DB["actionbar"].hotkey == true then
 			HotKey:SetText("")
 			HotKey:Hide()
 			HotKey.Show = E.dummy
@@ -176,7 +176,7 @@ local function SetupFlyoutButton()
 		if _G["SpellFlyoutButton"..i] then
 			Style(_G["SpellFlyoutButton"..i], false)
 			_G["SpellFlyoutButton"..i]:StyleButton(true)
-			if C["actionbar"].rightbarmouseover == true then
+			if DB["actionbar"].rightbarmouseover == true then
 				SpellFlyout:HookScript("OnEnter", function(self) RightBarMouseOver(1) end)
 				SpellFlyout:HookScript("OnLeave", function(self) RightBarMouseOver(0) end)
 				_G["SpellFlyoutButton"..i]:HookScript("OnEnter", function(self) RightBarMouseOver(1) end)
@@ -310,7 +310,7 @@ local function StyleTotemFlyout(flyout)
 		icon:Point("TOPLEFT",button,"TOPLEFT",2,-2)
 		icon:Point("BOTTOMRIGHT",button,"BOTTOMRIGHT",-2,2)		
 		if not InCombatLockdown() then
-			button:Size(C["actionbar"].petbuttonsize)
+			button:Size(DB["actionbar"].petbuttonsize)
 			button:ClearAllPoints()
 			button:Point("BOTTOM",last,"TOP",0,4)
 		end
@@ -318,7 +318,7 @@ local function StyleTotemFlyout(flyout)
 		button:SetBackdropBorderColor(flyout.parent:GetBackdropBorderColor())
 		button:StyleButton()
 		
-		if C["actionbar"].shapeshiftmouseover == true then
+		if DB["actionbar"].shapeshiftmouseover == true then
 			button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
 			button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
 		end			
@@ -347,7 +347,7 @@ local function StyleTotemFlyout(flyout)
 	flyout:ClearAllPoints()
 	flyout:Point("BOTTOM",flyout.parent,"TOP",0,4)
 	
-	if C["actionbar"].shapeshiftmouseover == true then
+	if DB["actionbar"].shapeshiftmouseover == true then
 		flyout:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
 		flyout:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
 		close:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
@@ -367,7 +367,7 @@ local function StyleTotemOpenButton(button, parent)
 	if not button.visibleBut then
 		button.visibleBut = CreateFrame("Frame",nil,button)
 		button.visibleBut:Height(8)
-		button.visibleBut:Width(C["actionbar"].petbuttonsize)
+		button.visibleBut:Width(DB["actionbar"].petbuttonsize)
 		button.visibleBut:SetPoint("CENTER")
 		button.visibleBut.highlight = button.visibleBut:CreateTexture(nil,"HIGHLIGHT")
 		button.visibleBut.highlight:SetTexture([[Interface\Buttons\ButtonHilight-Square]])
@@ -376,7 +376,7 @@ local function StyleTotemOpenButton(button, parent)
 		button.visibleBut:SetTemplate("Default")
 	end	
 	
-	if C["actionbar"].shapeshiftmouseover == true then
+	if DB["actionbar"].shapeshiftmouseover == true then
 		button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
 		button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
 	end	
@@ -399,10 +399,10 @@ local function StyleTotemSlotButton(button, index)
 	button.background:ClearAllPoints()
 	button.background:Point("TOPLEFT",button,"TOPLEFT",2, -2)
 	button.background:Point("BOTTOMRIGHT",button,"BOTTOMRIGHT",-2, 2)
-	if not InCombatLockdown() then button:Size(C["actionbar"].petbuttonsize) end
+	if not InCombatLockdown() then button:Size(DB["actionbar"].petbuttonsize) end
 	button:SetBackdropBorderColor(unpack(bordercolors[((index-1) % 4) + 1]))
 	button:StyleButton()
-	if C["actionbar"].shapeshiftmouseover == true then
+	if DB["actionbar"].shapeshiftmouseover == true then
 		button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
 		button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
 	end	
@@ -427,7 +427,7 @@ local function StyleTotemActionButton(button, index)
 	button:SetBackdropBorderColor(unpack(bordercolors[((index-1) % 4) + 1]))
 	button:SetBackdropColor(0,0,0,0)
 	button:StyleButton(true)
-	if C["actionbar"].shapeshiftmouseover == true then
+	if DB["actionbar"].shapeshiftmouseover == true then
 		button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
 		button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
 	end	
@@ -451,11 +451,11 @@ local function StyleTotemSpellButton(button, index)
 	icon:Point("BOTTOMRIGHT",button,"BOTTOMRIGHT",-2,2)
 	button:SetTemplate("Default")
 	button:GetNormalTexture():SetTexture(nil)
-	if not InCombatLockdown() then button:Size(C["actionbar"].petbuttonsize) end
+	if not InCombatLockdown() then button:Size(DB["actionbar"].petbuttonsize) end
 	_G[button:GetName().."Highlight"]:SetTexture(nil)
 	_G[button:GetName().."NormalTexture"]:SetTexture(nil)
 	button:StyleButton()
-	if C["actionbar"].shapeshiftmouseover == true then
+	if DB["actionbar"].shapeshiftmouseover == true then
 		button:HookScript("OnEnter", function() MultiCastActionBarFrame:SetAlpha(1) end)
 		button:HookScript("OnLeave", function() MultiCastActionBarFrame:SetAlpha(0) end)
 	end	

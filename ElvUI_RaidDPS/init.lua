@@ -1,3 +1,3 @@
-local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 
 if E.LoadLayout then E.LoadLayout("DPS") end

@@ -1,21 +1,21 @@
 ------------------------------------------------------------------------
 --	Colors
 ------------------------------------------------------------------------
-local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 
 local _, ns = ...
 local oUF = ElvUF or ns.oUF or oUF
 assert(oUF, "ElvUI was unable to locate oUF.")
 
-if not C["unitframes"].enable == true and not C["raidframes"].enable == true and not C["nameplate"].enable == true then return end
+if not DB["unitframes"].enable == true and not DB["raidframes"].enable == true and not DB["nameplate"].enable == true then return end
 
-local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 
-table.remove(C["unitframes"].healthcolor,4) -- We don't need alpha from here on (hacky).
+table.remove(DB["unitframes"].healthcolor,4) -- We don't need alpha from here on (hacky).
 E.oUF_colors = setmetatable({
 	tapped = E.colors.tapped,
 	disconnected = E.colors.disconnected,
-	health = C["unitframes"].healthcolor,
+	health = DB["unitframes"].healthcolor,
 	power = setmetatable({
 		["MANA"] = E.colors.power.MANA,
 		["RAGE"] = E.colors.power.RAGE,
@@ -64,7 +64,7 @@ E.oUF_colors = setmetatable({
 	smooth = setmetatable({
 		1, 0, 0,
 		1, 1, 0,
-		unpack(C["unitframes"].healthcolor)
+		unpack(DB["unitframes"].healthcolor)
 	}, {__index = oUF.colors.smooth}),
 	
 }, {__index = oUF.colors})

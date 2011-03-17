@@ -1,5 +1,5 @@
 --Set Datatext Postitions
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 E.LeftDatatexts = {}
 function E.PP(p, obj)

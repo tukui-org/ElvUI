@@ -1,5 +1,5 @@
 
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 ---------------------------------------------------------------------
 -- original by haste, edited for Elvui :)
@@ -10,7 +10,7 @@ local _, settings = ...
 local _DEFAULTS = {
 	width = E.Scale(220),
 	height = E.Scale(18),
-	texture = C["media"].normTex,
+	texture = DB["media"].normTex_,
 
 	position = {
 		["BREATH"] = 'TOP#UIParent#TOP#0#-96';
@@ -77,7 +77,7 @@ do
 
 		local bg = frame:CreateTexture(nil, 'BACKGROUND')
 		bg:SetAllPoints(frame)
-		bg:SetTexture(C["media"].blank)
+		bg:SetTexture(DB["media"].blank_)
 		bg:SetVertexColor(r * .5, g * .5, b * .5)
 		
 		local border = CreateFrame("Frame", nil, frame)
@@ -87,7 +87,7 @@ do
 		border:SetFrameLevel(0)
 
 		local text = frame:CreateFontString(nil, 'OVERLAY')
-		text:SetFont(C["media"].uffont, C["general"].fontscale, "THINOUTLINE")
+		text:SetFont(DB["media"].uffont_, DB["general"].fontscale, "THINOUTLINE")
 		text:SetShadowOffset(E.mult, -E.mult)
 		text:SetShadowColor(0, 0, 0, 1)
 

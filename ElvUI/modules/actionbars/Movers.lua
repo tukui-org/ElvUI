@@ -1,15 +1,15 @@
 --Create interactable actionbars
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not C["actionbar"].enable == true then return end
+if not DB["actionbar"].enable == true then return end
 
 local function Button_OnEnter(self)
 	self.Text:SetTextColor(1, 1, 1)
-	self:SetBackdropBorderColor(unpack(C["media"].valuecolor))
+	self:SetBackdropBorderColor(unpack(DB["media"].valuecolor))
 end
 
 local function Button_OnLeave(self)
-	self.Text:SetTextColor(unpack(C["media"].valuecolor))
+	self.Text:SetTextColor(unpack(DB["media"].valuecolor))
 	self:SetTemplate("Default", true)
 end
 
@@ -33,13 +33,13 @@ local function CreateMoverButton(name, text)
 	tinsert(btnnames, tostring(name))
 	
 	local t = b:CreateFontString(nil, "OVERLAY", b)
-	t:SetFont(C.media.font,14,"THINOUTLINE")
+	t:SetFont(DB["media"].font_,14,"THINOUTLINE")
 	t:SetShadowOffset(E.mult, -E.mult)
 	t:SetShadowColor(0, 0, 0, 0.4)
 	t:SetPoint("CENTER")
 	t:SetJustifyH("CENTER")
 	t:SetText(text)
-	t:SetTextColor(unpack(C["media"].valuecolor))
+	t:SetTextColor(unpack(DB["media"].valuecolor))
 	b.Text = t
 end
 
@@ -69,7 +69,7 @@ function E.ToggleABLock()
 			elseif btnnames ~= "RightBarBig" then
 				_G[btnnames]:Show()
 			end
-			ElvuiInfoLeftRButton.text:SetTextColor(unpack(C["media"].valuecolor))
+			ElvuiInfoLeftRButton.text:SetTextColor(unpack(DB["media"].valuecolor))
 		end
 	end
 end
@@ -136,7 +136,7 @@ barloader:SetScript("OnEvent", function(self, addon)
 	TopMainBar:SetPoint("BOTTOMLEFT", ElvuiMainMenuBar, "TOPLEFT", 0, E.Scale(4))
 	TopMainBar:SetPoint("TOPRIGHT", ElvuiMainMenuBar, "TOPRIGHT", 0, E.Scale(19))
 	
-	if ElvuiPetBar:IsShown() and not C["actionbar"].bottompetbar == true then
+	if ElvuiPetBar:IsShown() and not DB["actionbar"].bottompetbar == true then
 		RightBarBig:SetPoint("TOPRIGHT", ElvuiPetBar, "LEFT", E.Scale(-3), (ElvuiActionBarBackgroundRight:GetHeight() * 0.2))
 		RightBarBig:SetPoint("BOTTOMLEFT", ElvuiPetBar, "LEFT", E.Scale(-19), -(ElvuiActionBarBackgroundRight:GetHeight() * 0.2))			
 	else
@@ -145,7 +145,7 @@ barloader:SetScript("OnEvent", function(self, addon)
 	end
 	
 	ElvuiPetBar:HookScript("OnShow", function(self)
-		if C["actionbar"].bottompetbar == true then return end
+		if DB["actionbar"].bottompetbar == true then return end
 		if InCombatLockdown() then return end
 		RightBarBig:ClearAllPoints()
 		RightBarBig:SetPoint("TOPRIGHT", ElvuiPetBar, "LEFT", E.Scale(-3), (ElvuiActionBarBackgroundRight:GetHeight() * 0.2))
@@ -154,7 +154,7 @@ barloader:SetScript("OnEvent", function(self, addon)
 	
 	ElvuiPetBar:HookScript("OnHide", function(self)
 		if InCombatLockdown() then return end
-		if C["actionbar"].bottompetbar == true then return end
+		if DB["actionbar"].bottompetbar == true then return end
 		RightBarBig:ClearAllPoints()
 		RightBarBig:SetPoint("TOPRIGHT", UIParent, "RIGHT", E.Scale(-1), (ElvuiActionBarBackgroundRight:GetHeight() * 0.2))
 		RightBarBig:SetPoint("BOTTOMLEFT", UIParent, "RIGHT", E.Scale(-16), -(ElvuiActionBarBackgroundRight:GetHeight() * 0.2))
@@ -163,7 +163,7 @@ barloader:SetScript("OnEvent", function(self, addon)
 	RightBarBig:HookScript("OnEnter", function()
 		if InCombatLockdown() then return end
 		RightBarBig:ClearAllPoints()
-		if ElvuiPetBar:IsShown() and not C["actionbar"].bottompetbar == true then
+		if ElvuiPetBar:IsShown() and not DB["actionbar"].bottompetbar == true then
 			RightBarBig:SetPoint("TOPRIGHT", ElvuiPetBar, "LEFT", E.Scale(-3), (ElvuiActionBarBackgroundRight:GetHeight() * 0.2))
 			RightBarBig:SetPoint("BOTTOMLEFT", ElvuiPetBar, "LEFT", E.Scale(-19), -(ElvuiActionBarBackgroundRight:GetHeight() * 0.2))			
 		else
@@ -180,7 +180,7 @@ barloader:SetScript("OnEvent", function(self, addon)
 	RightBarDec:SetParent(ElvuiActionBarBackgroundRight)
 	
 	--Disable some default button stuff
-	if C["actionbar"].rightbarmouseover == true then
+	if DB["actionbar"].rightbarmouseover == true then
 		RightBarInc:SetScript("OnEnter", function() RightBarMouseOver(1) end)
 		RightBarInc:SetScript("OnLeave", function() RightBarMouseOver(0) end)
 		RightBarDec:SetScript("OnEnter", function() RightBarMouseOver(1) end)
@@ -243,7 +243,7 @@ do
 			SaveBars("rightbars", 0)	
 			RightBarBig:Show()
 			RightBarBig:ClearAllPoints()
-			if ElvuiPetBar:IsShown() and not C["actionbar"].bottompetbar == true then
+			if ElvuiPetBar:IsShown() and not DB["actionbar"].bottompetbar == true then
 				RightBarBig:SetPoint("TOPRIGHT", ElvuiPetBar, "LEFT", E.Scale(-3), (ElvuiActionBarBackgroundRight:GetHeight() * 0.2))
 				RightBarBig:SetPoint("BOTTOMLEFT", ElvuiPetBar, "LEFT", E.Scale(-19), -(ElvuiActionBarBackgroundRight:GetHeight() * 0.2))			
 			else
@@ -292,7 +292,7 @@ do
 			SaveBars("rightbars", 0)	
 			RightBarBig:Show()
 			RightBarBig:ClearAllPoints()
-			if ElvuiPetBar:IsShown() and not C["actionbar"].bottompetbar == true then
+			if ElvuiPetBar:IsShown() and not DB["actionbar"].bottompetbar == true then
 				RightBarBig:SetPoint("TOPRIGHT", ElvuiPetBar, "LEFT", E.Scale(-3), (ElvuiActionBarBackgroundRight:GetHeight() * 0.2))
 				RightBarBig:SetPoint("BOTTOMLEFT", ElvuiPetBar, "LEFT", E.Scale(-19), -(ElvuiActionBarBackgroundRight:GetHeight() * 0.2))			
 			else
@@ -328,7 +328,7 @@ do
 			if E["actionbar"].bottomrows ~= 3 and E["actionbar"].rightbars == 0 then
 				RightBarBig:Show()
 				RightBarBig:ClearAllPoints()
-				if ElvuiPetBar:IsShown() and not C["actionbar"].bottompetbar == true then
+				if ElvuiPetBar:IsShown() and not DB["actionbar"].bottompetbar == true then
 					RightBarBig:SetPoint("TOPRIGHT", ElvuiPetBar, "LEFT", E.Scale(-3), (ElvuiActionBarBackgroundRight:GetHeight() * 0.2))
 					RightBarBig:SetPoint("BOTTOMLEFT", ElvuiPetBar, "LEFT", E.Scale(-19), -(ElvuiActionBarBackgroundRight:GetHeight() * 0.2))			
 				else
@@ -352,7 +352,7 @@ do
 	
 	RightBarBig:SetScript("OnMouseDown", function(self)
 		if InCombatLockdown() then return end
-		if C["actionbar"].rightbarmouseover ~= true then 
+		if DB["actionbar"].rightbarmouseover ~= true then 
 			ElvuiActionBarBackgroundRight:Show()
 		else
 			ElvuiActionBarBackgroundRight:SetAlpha(0)
@@ -371,7 +371,7 @@ do
 				SaveBars("rightbars", 0)
 				RightBarBig:Show()
 				RightBarBig:ClearAllPoints()
-				if ElvuiPetBar:IsShown() and not C["actionbar"].bottompetbar == true then
+				if ElvuiPetBar:IsShown() and not DB["actionbar"].bottompetbar == true then
 					RightBarBig:SetPoint("TOPRIGHT", ElvuiPetBar, "LEFT", E.Scale(-3), (ElvuiActionBarBackgroundRight:GetHeight() * 0.2))
 					RightBarBig:SetPoint("BOTTOMLEFT", ElvuiPetBar, "LEFT", E.Scale(-19), -(ElvuiActionBarBackgroundRight:GetHeight() * 0.2))			
 				else
@@ -412,7 +412,7 @@ do
 				SaveBars("rightbars", 0)
 				RightBarBig:Show()
 				RightBarBig:ClearAllPoints()
-				if ElvuiPetBar:IsShown() and not C["actionbar"].bottompetbar == true then
+				if ElvuiPetBar:IsShown() and not DB["actionbar"].bottompetbar == true then
 					RightBarBig:SetPoint("TOPRIGHT", ElvuiPetBar, "LEFT", E.Scale(-3), (ElvuiActionBarBackgroundRight:GetHeight() * 0.2))
 					RightBarBig:SetPoint("BOTTOMLEFT", ElvuiPetBar, "LEFT", E.Scale(-19), -(ElvuiActionBarBackgroundRight:GetHeight() * 0.2))			
 				else
@@ -421,7 +421,7 @@ do
 				end			
 			end		
 		end
-		if C["actionbar"].rightbarmouseover == true then 
+		if DB["actionbar"].rightbarmouseover == true then 
 			RightBarMouseOver(1)
 		end
 	end)
@@ -434,7 +434,7 @@ do
 				SaveBars("rightbars", 0)
 				RightBarBig:Show()
 				RightBarBig:ClearAllPoints()
-				if ElvuiPetBar:IsShown() and not C["actionbar"].bottompetbar == true then
+				if ElvuiPetBar:IsShown() and not DB["actionbar"].bottompetbar == true then
 					RightBarBig:SetPoint("TOPRIGHT", ElvuiPetBar, "LEFT", E.Scale(-3), (ElvuiActionBarBackgroundRight:GetHeight() * 0.2))
 					RightBarBig:SetPoint("BOTTOMLEFT", ElvuiPetBar, "LEFT", E.Scale(-19), -(ElvuiActionBarBackgroundRight:GetHeight() * 0.2))			
 				else
@@ -449,7 +449,7 @@ do
 				SaveBars("rightbars", 0)
 				RightBarBig:Show()
 				RightBarBig:ClearAllPoints()
-				if ElvuiPetBar:IsShown() and not C["actionbar"].bottompetbar == true then
+				if ElvuiPetBar:IsShown() and not DB["actionbar"].bottompetbar == true then
 					RightBarBig:SetPoint("TOPRIGHT", ElvuiPetBar, "LEFT", E.Scale(-3), (ElvuiActionBarBackgroundRight:GetHeight() * 0.2))
 					RightBarBig:SetPoint("BOTTOMLEFT", ElvuiPetBar, "LEFT", E.Scale(-19), -(ElvuiActionBarBackgroundRight:GetHeight() * 0.2))			
 				else
@@ -463,7 +463,7 @@ do
 			end
 		end
 		
-		if C["actionbar"].rightbarmouseover == true then 
+		if DB["actionbar"].rightbarmouseover == true then 
 			RightBarMouseOver(1)
 		end
 	end)

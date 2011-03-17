@@ -1,4 +1,4 @@
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 --[[
 	Spell Reminder Arguments
@@ -26,7 +26,7 @@ local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Lo
 	For every group created a new frame is created, it's a lot easier this way.
 ]]
 
-if C["buffreminder"].enable ~= true then return end
+if DB["buffreminder"].enable ~= true then return end
 
 E.ReminderBuffs = {
 	PRIEST = {

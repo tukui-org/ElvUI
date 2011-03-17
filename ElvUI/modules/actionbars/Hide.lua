@@ -1,6 +1,6 @@
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not C["actionbar"].enable == true then return end
+if not DB["actionbar"].enable == true then return end
 
 ---------------------------------------------------------------------------
 -- Hide all Blizzard stuff that we don't need
@@ -58,7 +58,7 @@ end
 
 function RightBarMouseOver(alpha)
 	ElvuiActionBarBackgroundRight:SetAlpha(alpha)
-	if C["actionbar"].bottompetbar ~= true then
+	if DB["actionbar"].bottompetbar ~= true then
 		ElvuiPetActionBarBackground:SetAlpha(alpha)
 	end
 	
@@ -99,7 +99,7 @@ function RightBarMouseOver(alpha)
 		end
 	end
 
-	if ElvuiPetBar:IsShown() and C["actionbar"].bottompetbar ~= true then
+	if ElvuiPetBar:IsShown() and DB["actionbar"].bottompetbar ~= true then
 		for i=1, 10 do
 			local pb = _G["PetActionButton"..i]
 			pb:SetAlpha(alpha)
@@ -116,7 +116,7 @@ function ShapeShiftMouseOver(alpha)
 end
 
 do
-	if C["actionbar"].rightbarmouseover == true then
+	if DB["actionbar"].rightbarmouseover == true then
 		ElvuiActionBarBackgroundRight:SetAlpha(0)
 		ElvuiActionBarBackgroundRight:SetScript("OnEnter", function() RightBarMouseOver(1) end)
 		ElvuiActionBarBackgroundRight:SetScript("OnLeave", function() RightBarMouseOver(0) end)

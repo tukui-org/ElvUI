@@ -3,14 +3,14 @@
 		all credits of this mod goes to tekhub
 --]]
 
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if C["loot"].rolllootframe ~= true then return end
+if DB["loot"].rolllootframe ~= true then return end
 local pos = "TOP"
 
 local backdrop = {
-	bgFile = C["media"].blank, tile = true, tileSize = 0,
-	edgeFile = C["media"].blank, edgeSize = E.mult,
+	bgFile = DB["media"].blank_, tile = true, tileSize = 0,
+	edgeFile = DB["media"].blank_, edgeSize = E.mult,
 	insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult},
 }
 
@@ -90,7 +90,7 @@ local function CreateRollButton(parent, ntex, ptex, htex, rolltype, tiptext, ...
 	f:SetScript("OnClick", ClickRoll)
 	f:SetMotionScriptsWhileDisabled(true)
 	local txt = f:CreateFontString(nil, nil)
-	txt:SetFont(C["media"].uffont, C["general"].fontscale, "OUTLINE")
+	txt:SetFont(DB["media"].uffont_, DB["general"].fontscale, "OUTLINE")
 	txt:SetPoint("CENTER", 0, E.Scale(rolltype == 2 and 1 or rolltype == 0 and -1.2 or 0))
 	return f, txt
 end
@@ -149,7 +149,7 @@ local function CreateRollFrame()
 	status:SetPoint("CENTER", frame, "CENTER", 0, 0)
 	status:SetScript("OnUpdate", StatusUpdate)
 	status:SetFrameLevel(status:GetFrameLevel()-1)
-	status:SetStatusBarTexture(C["media"].normTex)
+	status:SetStatusBarTexture(DB["media"].normTex_)
 	status:SetStatusBarColor(.8, .8, .8, .9)
 	status.parent = frame
 	frame.status = status
@@ -171,11 +171,11 @@ local function CreateRollFrame()
 
 	local bind = frame:CreateFontString()
 	bind:SetPoint("LEFT", pass, "RIGHT", E.Scale(3), E.Scale(1))
-	bind:SetFont(C["media"].uffont, C["general"].fontscale, "OUTLINE")
+	bind:SetFont(DB["media"].uffont_, DB["general"].fontscale, "OUTLINE")
 	frame.fsbind = bind
 
 	local loot = frame:CreateFontString(nil, "ARTWORK")
-	loot:SetFont(C["media"].uffont, C["general"].fontscale, "OUTLINE")
+	loot:SetFont(DB["media"].uffont_, DB["general"].fontscale, "OUTLINE")
 	loot:SetPoint("LEFT", bind, "RIGHT", 0, E.Scale(0.12))
 	loot:SetPoint("RIGHT", frame, "RIGHT", E.Scale(-5), 0)
 	loot:SetHeight(E.Scale(10))
@@ -195,7 +195,7 @@ anchor:SetHeight(E.Scale(22))
 anchor:SetBackdrop(backdrop)
 anchor:SetBackdropColor(0.25, 0.25, 0.25, 1)
 local label = anchor:CreateFontString(nil, "ARTWORK")
-label:SetFont(C["media"].uffont, C["general"].fontscale, "OUTLINE")
+label:SetFont(DB["media"].uffont_, DB["general"].fontscale, "OUTLINE")
 label:SetAllPoints(anchor)
 label:SetText("teksLoot")
 

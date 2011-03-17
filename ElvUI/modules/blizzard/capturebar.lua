@@ -1,5 +1,5 @@
 -- reposition capture bar to top/center of the screen
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 local function CaptureUpdate()
 	if NUM_EXTENDED_UI_FRAMES then

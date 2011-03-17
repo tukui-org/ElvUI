@@ -1,6 +1,6 @@
-local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 
-if C.auras.raidunitbuffwatch ~= true then return end
+if DB.auras.raidunitbuffwatch ~= true then return end
 
 --[[------------------------------------------------------------------------------------------------------
 oUF_AuraWatch by Astromech

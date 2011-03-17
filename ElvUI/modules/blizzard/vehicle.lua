@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------
 -- move vehicle indicator
 --------------------------------------------------------------------------
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 local once = false
 hooksecurefunc(VehicleSeatIndicator,"SetPoint",function(_,_,parent) -- vehicle seat indicator
     if (parent == "MinimapCluster") or (parent == _G["MinimapCluster"]) then

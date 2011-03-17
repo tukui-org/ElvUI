@@ -2,7 +2,7 @@
 -- DAMAGE / HEAL DISPLAY REPLACEMENT FOR EYEFINITY
 -- BECAUSE REGULAR 3D WORLD DAMAGE ISN'T COMPATIBLE
 -------------------------------------------------------------
-local E, C, L = unpack(select(2, ...)) -- Import: E - functions, constants, variables; C - config; L - locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import: E - functions, constants, variables; C - config; L - locales
 
 if not E.eyefinity then return end
 
@@ -55,7 +55,7 @@ f:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 f:SetScript("OnEvent",OnEvent)
 f:SetSize(200, 200)
 f:SetPoint("TOP", 0, -50)
-f:SetFont(C.media.dmgfont,36,"OUTLINE")
+f:SetFont(DB["media"].dmgfont_,36,"OUTLINE")
 f:SetShadowColor(0,0,0,0)
 f:SetFading(true)
 f:SetFadeDuration(0.5)

@@ -1,6 +1,6 @@
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not C["actionbar"].enable == true then return end
+if not DB["actionbar"].enable == true then return end
 
 ---------------------------------------------------------------------------
 -- setup MultiBarBottomLeft as bar #2
@@ -16,7 +16,7 @@ function E.PositionBar2()
 		local b2 = _G["MultiBarBottomLeftButton"..i-1]
 		b:ClearAllPoints()
 		if i == 1 then
-			if C["actionbar"].swaptopbottombar == true then
+			if DB["actionbar"].swaptopbottombar == true then
 				b:SetPoint("TOP", ActionButton1, "BOTTOM", 0, -E.buttonspacing)
 			else
 				b:SetPoint("BOTTOM", ActionButton1, "TOP", 0, E.buttonspacing)

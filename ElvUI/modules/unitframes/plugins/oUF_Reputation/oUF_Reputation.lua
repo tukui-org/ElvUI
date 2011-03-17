@@ -1,7 +1,7 @@
-local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 local _, ns = ...
 local oUF = ns.oUF or oUF
-if C.unitframes.enable ~= true then return end
+if DB.unitframes.enable ~= true then return end
 --[[
 
 	Elements handled:

@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 --	UnitFrame Functions
 ------------------------------------------------------------------------
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 local _, ns = ...
 
 E.LoadUFFunctions = function(layout)
@@ -10,37 +10,37 @@ E.LoadUFFunctions = function(layout)
 
 	function E.ContructHealthBar(self, bg, text)
 		local health = CreateFrame('StatusBar', nil, self)
-		health:SetStatusBarTexture(C["media"].normTex)
+		health:SetStatusBarTexture(DB["media"].normTex_)
 		health:SetFrameStrata("LOW")
 		health.frequentUpdates = 0.2
 		health.PostUpdate = E.PostUpdateHealth
 		
-		if C["unitframes"].showsmooth == true then
+		if DB["unitframes"].showsmooth == true then
 			health.Smooth = true
 		end	
 		
 		if bg then
 			health.bg = health:CreateTexture(nil, 'BORDER')
 			health.bg:SetAllPoints()
-			health.bg:SetTexture(C["media"].blank)
+			health.bg:SetTexture(DB["media"].blank_)
 			
-			if C["unitframes"].healthbackdrop ~= true then
+			if DB["unitframes"].healthbackdrop ~= true then
 				health.bg.multiplier = 0.25
 			else
-				health.bg:SetTexture(unpack(C["unitframes"].healthbackdropcolor))
+				health.bg:SetTexture(unpack(DB["unitframes"].healthbackdropcolor))
 				health.bg.SetVertexColor = E.dummy
 			end
 		end
 		
 		if text then
-			health:FontString("value", C["media"].uffont, C["unitframes"].fontsize*E.ResScale, "THINOUTLINE")
+			health:FontString("value", DB["media"].uffont_, DB["unitframes"].fontsize*E.ResScale, "THINOUTLINE")
 			health.value:SetParent(self)
 		end
 		
-		if C["unitframes"].classcolor ~= true then
+		if DB["unitframes"].classcolor ~= true then
 			health.colorTapping = true
 			
-			if C["unitframes"].healthcolorbyvalue == true then
+			if DB["unitframes"].healthcolorbyvalue == true then
 				health.colorSmooth = true
 			else
 				health.colorHealth = true
@@ -63,24 +63,24 @@ E.LoadUFFunctions = function(layout)
 
 	function E.ConstructPowerBar(self, bg, text)
 		local power = CreateFrame('StatusBar', nil, self)
-		power:SetStatusBarTexture(C["media"].normTex)
+		power:SetStatusBarTexture(DB["media"].normTex_)
 		power.frequentUpdates = 0.2
 		power:SetFrameStrata("LOW")
 		power.PostUpdate = E.PostUpdatePower
 		
-		if C["unitframes"].showsmooth == true then
+		if DB["unitframes"].showsmooth == true then
 			power.Smooth = true
 		end	
 		
 		if bg then
 			power.bg = power:CreateTexture(nil, 'BORDER')
 			power.bg:SetAllPoints()
-			power.bg:SetTexture(C["media"].blank)
+			power.bg:SetTexture(DB["media"].blank_)
 			power.bg.multiplier = 0.2
 		end
 		
 		if text then
-			power:FontString("value", C["media"].uffont, C["unitframes"].fontsize*E.ResScale, "THINOUTLINE")
+			power:FontString("value", DB["media"].uffont_, DB["unitframes"].fontsize*E.ResScale, "THINOUTLINE")
 			power.value:SetParent(self)
 		end
 		
@@ -99,7 +99,7 @@ E.LoadUFFunctions = function(layout)
 		
 	function E.ConstructCastBar(self, width, height, direction)
 		local castbar = CreateFrame("StatusBar", nil, self)
-		castbar:SetStatusBarTexture(C["media"].normTex)
+		castbar:SetStatusBarTexture(DB["media"].normTex_)
 		castbar:Height(height)
 		castbar:Width(width - 4*E.ResScale)
 		castbar.CustomDelayText = E.CustomCastDelayText
@@ -108,34 +108,34 @@ E.LoadUFFunctions = function(layout)
 				
 		castbar.bg = CreateFrame("Frame", nil, castbar)
 		castbar.bg:SetTemplate("Default")
-		castbar.bg:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
+		castbar.bg:SetBackdropBorderColor(unpack(DB["media"].bordercolor))
 		castbar.bg:Point("TOPLEFT", -2*E.ResScale, 2*E.ResScale)
 		castbar.bg:Point("BOTTOMRIGHT", 2*E.ResScale, -2*E.ResScale)
 		castbar.bg:SetFrameLevel(castbar:GetFrameLevel() - 1)
 		
-		castbar:FontString("Time", C["media"].uffont, C["unitframes"].fontsize*E.ResScale, "THINOUTLINE")
+		castbar:FontString("Time", DB["media"].uffont_, DB["unitframes"].fontsize*E.ResScale, "THINOUTLINE")
 		castbar.Time:Point("RIGHT", castbar, "RIGHT", -4, 0)
 		castbar.Time:SetTextColor(0.84, 0.75, 0.65)
 		castbar.Time:SetJustifyH("RIGHT")
 		castbar.CustomTimeText = E.CustomCastTimeText
 
-		castbar:FontString("Text", C["media"].uffont, C["unitframes"].fontsize*E.ResScale, "THINOUTLINE")
+		castbar:FontString("Text", DB["media"].uffont_, DB["unitframes"].fontsize*E.ResScale, "THINOUTLINE")
 		castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 0)
 		castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 
 		-- cast bar latency on player
-		if C["castbar"].cblatency == true and self.unit == "player" then
+		if DB["castbar"].cblatency == true and self.unit == "player" then
 			castbar.SafeZone = castbar:CreateTexture(nil, "OVERLAY")
-			castbar.SafeZone:SetTexture(C["media"].normTex)
+			castbar.SafeZone:SetTexture(DB["media"].normTex_)
 			castbar.SafeZone:SetVertexColor(0.69, 0.31, 0.31, 0.75)
 		end			
 
-		if C["castbar"].cbicons == true then
+		if DB["castbar"].cbicons == true then
 			local button = CreateFrame("Frame", nil, castbar)
 			button:Height(height + 4*E.ResScale)
 			button:Width(height + 4*E.ResScale)
 			button:SetTemplate("Default")
-			button:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
+			button:SetBackdropBorderColor(unpack(DB["media"].bordercolor))
 			if direction == "LEFT" then
 				button:Point("RIGHT", castbar, "LEFT", -4*E.ResScale, 0)
 			else
@@ -235,7 +235,7 @@ E.LoadUFFunctions = function(layout)
 				end		
 			end
 		elseif unit == "target" or (unit and unit:find("boss%d")) then --Target/Boss Only
-			if C["auras"].playerdebuffsonly == true then
+			if DB["auras"].playerdebuffsonly == true then
 				-- Show all debuffs on friendly targets
 				if UnitIsFriend("player", "target") then return true end
 				
@@ -258,7 +258,7 @@ E.LoadUFFunctions = function(layout)
 				return true
 			end
 		else --Everything else
-			if unit ~= "player" and unit ~= "targettarget" and unit ~= "focus" and C["auras"].arenadebuffs == true and inInstance and (instanceType == "pvp" or instanceType == "arena") then
+			if unit ~= "player" and unit ~= "targettarget" and unit ~= "focus" and DB["auras"].arenadebuffs == true and inInstance and (instanceType == "pvp" or instanceType == "arena") then
 				if E.DebuffWhiteList[name] or E.TargetPVPOnly[name] then
 					return true
 				else
@@ -277,14 +277,14 @@ E.LoadUFFunctions = function(layout)
 	E.PostUpdateHealth = function(health, unit, min, max)
 		local r, g, b = health:GetStatusBarColor()
 		
-		if C["general"].classcolortheme == true then
+		if DB["general"].classcolortheme == true then
 			health.backdrop:SetBackdropBorderColor(r, g, b)
 			if health:GetParent().Portrait and health:GetParent().Portrait.backdrop then
 				health:GetParent().Portrait.backdrop:SetBackdropBorderColor(r, g, b)
 			end
 		end
 		
-		if C["unitframes"].classcolor == true and C["unitframes"].healthcolorbyvalue == true and not (UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit)) then
+		if DB["unitframes"].classcolor == true and DB["unitframes"].healthcolorbyvalue == true and not (UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit)) then
 			local newr, newg, newb = ElvUF.ColorGradient(min / max, 1, 0, 0, 1, 1, 0, r, g, b)
 	
 			health:SetStatusBarColor(newr, newg, newb)
@@ -307,7 +307,7 @@ E.LoadUFFunctions = function(layout)
 					health.value:SetText("|cffD7BEA5"..L.unitframes_ouf_ghost.."|r")
 				end
 			else
-				if min ~= max and C["raidframes"].healthdeficit == true then
+				if min ~= max and DB["raidframes"].healthdeficit == true then
 					health.value:SetText("|cff559655-"..E.ShortValueNegative(max-min).."|r")
 				else
 					health.value:SetText("")
@@ -327,13 +327,13 @@ E.LoadUFFunctions = function(layout)
 					local r, g, b
 					r, g, b = oUF.ColorGradient(min/max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
 					if unit == "player" and health:GetAttribute("normalUnit") ~= "pet" then
-						if C["unitframes"].showtotalhpmp == true then
+						if DB["unitframes"].showtotalhpmp == true then
 							health.value:SetFormattedText("|cff559655%s|r |cffD7BEA5|||r |cff559655%s|r", E.ShortValue(min), E.ShortValue(max))
 						else
 							health.value:SetFormattedText("|cffAF5050%s|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", E.ShortValue(min), r * 255, g * 255, b * 255, floor(min / max * 100))
 						end
 					elseif unit == "target" or unit == "focus" or (unit and unit:find("boss%d")) then
-						if C["unitframes"].showtotalhpmp == true then
+						if DB["unitframes"].showtotalhpmp == true then
 							health.value:SetFormattedText("|cff559655%s|r |cffD7BEA5|||r |cff559655%s|r", E.ShortValue(min), E.ShortValue(max))
 						else
 							health.value:SetFormattedText("|cffAF5050%s|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", E.ShortValue(min), r * 255, g * 255, b * 255, floor(min / max * 100))
@@ -358,7 +358,7 @@ E.LoadUFFunctions = function(layout)
 
 	E.PostNamePosition = function(self)
 		self.Name:ClearAllPoints()
-		if (self.Power.value:GetText() and UnitIsPlayer("target") and C["unitframes"].targetpowerplayeronly == true) or (self.Power.value:GetText() and C["unitframes"].targetpowerplayeronly == false) then
+		if (self.Power.value:GetText() and UnitIsPlayer("target") and DB["unitframes"].targetpowerplayeronly == true) or (self.Power.value:GetText() and DB["unitframes"].targetpowerplayeronly == false) then
 			self.Power.value:SetAlpha(1)
 			self.Name:SetPoint("CENTER", self.Health, "CENTER")
 		else
@@ -372,7 +372,7 @@ E.LoadUFFunctions = function(layout)
 		local pType, pToken, altR, altG, altB = UnitPowerType(unit)
 		local color = E.oUF_colors.power[pToken]
 		
-		if C["general"].classcolortheme == true then
+		if DB["general"].classcolortheme == true then
 			power.backdrop:SetBackdropBorderColor(power:GetParent().Health.backdrop:GetBackdropBorderColor())
 		end
 		
@@ -395,13 +395,13 @@ E.LoadUFFunctions = function(layout)
 				if min ~= max then
 					if pType == 0 then
 						if unit == "target" then
-							if C["unitframes"].showtotalhpmp == true then
+							if DB["unitframes"].showtotalhpmp == true then
 								power.value:SetFormattedText("%s |cffD7BEA5|||r %s", E.ShortValue(max - (max - min)), E.ShortValue(max))
 							else
 								power.value:SetFormattedText("%d%% |cffD7BEA5-|r %s", floor(min / max * 100), E.ShortValue(max - (max - min)))
 							end
 						elseif unit == "player" and self:GetAttribute("normalUnit") == "pet" or unit == "pet" then
-							if C["unitframes"].showtotalhpmp == true then
+							if DB["unitframes"].showtotalhpmp == true then
 								power.value:SetFormattedText("%s |cffD7BEA5|||r %s", E.ShortValue(max - (max - min)), E.ShortValue(max))
 							else
 								power.value:SetFormattedText("%d%%", floor(min / max * 100))
@@ -411,7 +411,7 @@ E.LoadUFFunctions = function(layout)
 						elseif (unit and unit:find("boss%d")) then
 							power.value:SetFormattedText("%d%%", floor(min / max * 100))					
 						else
-							if C["unitframes"].showtotalhpmp == true then
+							if DB["unitframes"].showtotalhpmp == true then
 								power.value:SetFormattedText("%s |cffD7BEA5|||r %s", E.ShortValue(max - (max - min)), E.ShortValue(max))
 							else
 								power.value:SetFormattedText("%d%% |cffD7BEA5-|r %s", floor(min / max * 100), E.ShortValue(max - (max - min)))
@@ -547,7 +547,7 @@ E.LoadUFFunctions = function(layout)
 					self.text:Hide()
 					self:SetScript("OnUpdate", nil)
 				end
-				if (not self.debuff) and C["general"].classcolortheme == true then
+				if (not self.debuff) and DB["general"].classcolortheme == true then
 					local r, g, b = self:GetParent():GetParent().Health.backdrop:GetBackdropBorderColor()
 					self:SetBackdropBorderColor(r, g, b)
 				end
@@ -591,9 +591,9 @@ E.LoadUFFunctions = function(layout)
 		local header = button:GetParent():GetParent():GetParent():GetName()
 		
 		if unit == "focus" or unit == "targettarget" or header == "ElvuiHealParty" then
-			button:FontString(nil, C["media"].font, C["auras"].auratextscale*0.85, "THINOUTLINE")
+			button:FontString(nil, DB["media"].font_, DB["auras"].auratextscale*0.85, "THINOUTLINE")
 		else
-			button:FontString(nil, C["media"].font, C["auras"].auratextscale, "THINOUTLINE")
+			button:FontString(nil, DB["media"].font_, DB["auras"].auratextscale, "THINOUTLINE")
 		end
 		
 		button:SetTemplate("Default")
@@ -610,7 +610,7 @@ E.LoadUFFunctions = function(layout)
 		
 		button.count:Point("BOTTOMRIGHT", E.mult, 1.5)
 		button.count:SetJustifyH("RIGHT")
-		button.count:SetFont(C["media"].font, C["auras"].auratextscale*0.8, "THINOUTLINE")
+		button.count:SetFont(DB["media"].font_, DB["auras"].auratextscale*0.8, "THINOUTLINE")
 
 		button.overlayFrame = CreateFrame("frame", nil, button, nil)
 		button.cd:SetFrameLevel(button:GetFrameLevel() + 1)
@@ -632,7 +632,7 @@ E.LoadUFFunctions = function(layout)
 		
 		if(icon.debuff) then
 			if(not UnitIsFriend("player", unit) and icon.owner ~= "player" and icon.owner ~= "vehicle") and (not E.DebuffWhiteList[name]) then
-				icon:SetBackdropBorderColor(unpack(C["media"].bordercolor))
+				icon:SetBackdropBorderColor(unpack(DB["media"].bordercolor))
 				icon.icon:SetDesaturated(true)
 			else
 				local color = DebuffTypeColor[dtype] or DebuffTypeColor.none
@@ -647,17 +647,17 @@ E.LoadUFFunctions = function(layout)
 			if (icon.isStealable or ((E.myclass == "PRIEST" or E.myclass == "SHAMAN") and dtype == "Magic")) and not UnitIsFriend("player", unit) then
 				icon:SetBackdropBorderColor(237/255, 234/255, 142/255)
 			else
-				if C["general"].classcolortheme == true then
+				if DB["general"].classcolortheme == true then
 					local r, g, b = icon:GetParent():GetParent().Health.backdrop:GetBackdropBorderColor()
 					icon:SetBackdropBorderColor(r, g, b)
 				else
-					icon:SetBackdropBorderColor(unpack(C["media"].bordercolor))
+					icon:SetBackdropBorderColor(unpack(DB["media"].bordercolor))
 				end			
 			end
 		end
 		
 		if duration and duration > 0 then
-			if C["auras"].auratimer == true then
+			if DB["auras"].auratimer == true then
 				icon.text:Show()
 			else
 				icon.text:Hide()
@@ -681,18 +681,18 @@ E.LoadUFFunctions = function(layout)
 		if name == "Opening" then
 			self.Text:SetText(OPENING)
 		else
-			self.Text:SetText(string.sub(name, 0, math.floor((((32/245) * self:GetWidth()) / C["unitframes"].fontsize) * 12)))
+			self.Text:SetText(string.sub(name, 0, math.floor((((32/245) * self:GetWidth()) / DB["unitframes"].fontsize) * 12)))
 		end
 		
 		if self.interrupt and unit ~= "player" then
 			if UnitCanAttack("player", unit) then
-				self:SetStatusBarColor(unpack(C["castbar"].nointerruptcolor))
+				self:SetStatusBarColor(unpack(DB["castbar"].nointerruptcolor))
 			else
-				self:SetStatusBarColor(unpack(C["castbar"].castbarcolor))	
+				self:SetStatusBarColor(unpack(DB["castbar"].castbarcolor))	
 			end
 		else
-			if C["castbar"].classcolor ~= true or unit ~= "player" then
-				self:SetStatusBarColor(unpack(C["castbar"].castbarcolor))
+			if DB["castbar"].classcolor ~= true or unit ~= "player" then
+				self:SetStatusBarColor(unpack(DB["castbar"].castbarcolor))
 			else
 				self:SetStatusBarColor(unpack(oUF.colors.class[select(2, UnitClass(unit))]))
 			end	
@@ -742,7 +742,7 @@ E.LoadUFFunctions = function(layout)
 			local max = UnitPowerMax("player", 0)
 
 			local percMana = min / max * 100
-			if percMana <= C["unitframes"].lowThreshold then
+			if percMana <= DB["unitframes"].lowThreshold then
 				self.ManaLevel:SetText("|cffaf5050"..L.unitframes_ouf_lowmana.."|r")
 				E.Flash(self.ManaLevel, 0.3)
 			else
@@ -873,7 +873,7 @@ E.LoadUFFunctions = function(layout)
 		auras.icons = {}
 		auras.PostCreateIcon = E.CreateAuraWatchIcon
 
-		if (not C["auras"].auratimer) then
+		if (not DB["auras"].auratimer) then
 			auras.hideCooldown = true
 		end
 
@@ -916,13 +916,13 @@ E.LoadUFFunctions = function(layout)
 				local icon = CreateFrame("Frame", nil, auras)
 				icon.spellID = spell[1]
 				icon.anyUnit = spell[4]
-				icon:SetWidth(E.Scale(C["auras"].buffindicatorsize))
-				icon:SetHeight(E.Scale(C["auras"].buffindicatorsize))
+				icon:SetWidth(E.Scale(DB["auras"].buffindicatorsize))
+				icon:SetHeight(E.Scale(DB["auras"].buffindicatorsize))
 				icon:SetPoint(spell[2], 0, 0)
 
 				local tex = icon:CreateTexture(nil, "OVERLAY")
 				tex:SetAllPoints(icon)
-				tex:SetTexture(C["media"].blank)
+				tex:SetTexture(DB["media"].blank_)
 				if (spell[3]) then
 					tex:SetVertexColor(unpack(spell[3]))
 				else
@@ -932,11 +932,11 @@ E.LoadUFFunctions = function(layout)
 				local border = icon:CreateTexture(nil, "ARTWORK")
 				border:Point("TOPLEFT", -E.mult, E.mult)
 				border:Point("BOTTOMRIGHT", E.mult, -E.mult)
-				border:SetTexture(C["media"].blank)
+				border:SetTexture(DB["media"].blank_)
 				border:SetVertexColor(0, 0, 0)
 
 				local count = icon:CreateFontString(nil, "OVERLAY")
-				count:SetFont(C["media"].uffont, 8, "THINOUTLINE")
+				count:SetFont(DB["media"].uffont_, 8, "THINOUTLINE")
 				count:SetPoint("CENTER", unpack(E.countOffsets[spell[2]]))
 				icon.count = count
 

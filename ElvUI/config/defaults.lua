@@ -1,51 +1,25 @@
-﻿local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
-
+﻿local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 C["media"] = {
 	-- fonts
-	["font"] = [=[Interface\Addons\ElvUI\media\fonts\PT_Sans_Narrow.ttf]=], -- general font of Elvui
-	["uffont"] = [[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], -- general font of unitframes
-	["dmgfont"] = [[Interface\AddOns\ElvUI\media\fonts\Action_Man.ttf]], -- general font of dmg / sct
-	
-	-- fonts (DEUTSCH)
-	["de_font"] = [=[Interface\Addons\ElvUI\media\fonts\PT_Sans_Narrow.ttf]=], -- general font of ElvUI
-	["de_uffont"] = [[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], -- general font of unitframes
-	["de_dmgfont"] = [[Interface\AddOns\ElvUI\media\fonts\Action_Man.ttf]], -- general font of dmg / sct
-	
-	-- fonts (FRENCH)
-	["fr_font"] = [=[Interface\Addons\ElvUI\media\fonts\PT_Sans_Narrow.ttf]=], -- general font of ElvUI
-	["fr_uffont"] = [[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], -- general font of unitframes
-	["fr_dmgfont"] = [=[Interface\AddOns\ElvUI\media\fonts\Action_Man.ttf]=], -- general font of dmg / sct
-	
-	-- fonts (RUSSIAN)
-	["ru_font"] = [=[Interface\Addons\ElvUI\media\fonts\PT_Sans_Narrow.ttf]=], -- general font of ElvUI
-	["ru_uffont"] = [=[Interface\Addons\ElvUI\media\fonts\PT_Sans_Narrow.ttf]=], -- general font of unitframes
-	["ru_dmgfont"] = [[Fonts\ARIALN.TTF]], -- general font of dmg / sct
-	
-	-- fonts (TAIWAN ONLY)
-	["tw_font"] = [[Fonts\bLEI00D.ttf]], -- general font of tukui
-	["tw_uffont"] = [[Fonts\bLEI00D.ttf]], -- general font of unitframes
-	["tw_dmgfont"] = [[Fonts\bLEI00D.ttf]], -- general font of dmg / sct
-	
-	-- fonts (KOREAN ONLY)
-	["kr_font"] = [[Fonts\2002.TTF]], -- general font of tukui
-	["kr_uffont"] = [[Fonts\2002.TTF]], -- general font of unitframes
-	["kr_dmgfont"] = [[Fonts\2002.TTF]], -- general font of dmg / sct	
-	
+	["font"] = "ElvUI Font", -- general font of Elvui
+	["uffont"] = "ElvUI Font", -- general font of unitframes
+	["dmgfont"] = "ElvUI Combat", -- general font of dmg / sct
+		
 	-- textures
-	["normTex"] = [[Interface\AddOns\ElvUI\media\textures\normTex]], -- texture used for Elvui healthbar/powerbar/etc
-	["glowTex"] = [[Interface\AddOns\ElvUI\media\textures\glowTex]], -- the glow text around some frame.
-	["blank"] = [[Interface\BUTTONS\WHITE8X8]], -- the main texture for all borders/panels
+	["normTex"] = "ElvUI Norm", -- texture used for Elvui healthbar/powerbar/etc
+	["glossTex"] = "ElvUI Gloss",
+	["glowTex"] = "ElvUI GlowBorder",
+	["blank"] = "ElvUI Blank",
 	["bordercolor"] = { .23,.23,.23 }, -- border color of Elvui panels
-	["altbordercolor"] = { .23,.23,.23 }, -- alternative border color, mainly for unitframes text panels.
 	["backdropcolor"] = { .07,.07,.07 }, -- background color of Elvui panels
 	["backdropfadecolor"] = { .07,.07,.07,0.9 }, --this is always the same as the backdrop color with an alpha of 0.8, see colors.lua
 	["valuecolor"] = {23/255,132/255,209/255}, -- color for values of datatexts
 	["raidicons"] = [[Interface\AddOns\ElvUI\media\textures\raidicons.blp]], -- new raid icon textures by hankthetank
 	
 	-- sound
-	["whisper"] = [[Interface\AddOns\ElvUI\media\sounds\whisper.mp3]],
-	["warning"] = [[Interface\AddOns\ElvUI\media\sounds\warning.mp3]],
+	["whisper"] = "ElvUI Whisper",
+	["warning"] = "ElvUI Warning",
 	["glossyTexture"] = false,	-- Use a glossy texture for all frames
 }
 
@@ -284,5 +258,3 @@ C["others"] = {
 	["announceinterrupt"] = true,			-- announce in party/raid when you interrupt
 	["showthreat"] = true,                 -- enable the threat bar anchored to info right panel.	
 }
-
-C["media"].normTex2 = C["media"].normTex

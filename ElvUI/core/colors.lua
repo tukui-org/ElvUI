@@ -1,7 +1,7 @@
 -----------------------------------------------------
 --Default color table, oUF will import these if loaded..
 -----------------------------------------------------
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 E.colors = {
 	tapped = {0.55, 0.57, 0.61},

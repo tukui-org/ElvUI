@@ -1,5 +1,5 @@
 
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 --------------------------------------------------------------------
 -- MINIMAP ROUND TO SQUARE AND MINIMAP SETTING
@@ -182,7 +182,7 @@ Minimap:SetScript("OnMouseUp", function(self, btn)
 		
 		if position:match("RIGHT") then xoff = E.Scale(-16) end
 		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, TukuiMinimap, xoff, E.Scale(-2))
-	elseif btn == "MiddleButton" and C["actionbar"].enable == true and C["actionbar"].microbar ~= true then
+	elseif btn == "MiddleButton" and DB["actionbar"].enable == true and DB["actionbar"].microbar ~= true then
 		if position:match("LEFT") then
 			EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
 		else
@@ -212,7 +212,7 @@ m_zone:Point("TOPLEFT", Minimap, "TOPLEFT", 2, -2)
 m_zone:Point("TOPRIGHT",Minimap,-2,-2)
 
 local m_zone_text = m_zone:CreateFontString(nil,"Overlay")
-m_zone_text:SetFont(C["media"].font,C["general"].fontscale,"OUTLINE")
+m_zone_text:SetFont(DB["media"].font_,DB["general"].fontscale,"OUTLINE")
 m_zone_text:SetPoint("Center",0,0)
 m_zone_text:SetJustifyH("CENTER")
 m_zone_text:SetJustifyV("MIDDLE")
@@ -225,7 +225,7 @@ m_coord:Point("BOTTOMLEFT", Minimap, "BOTTOMLEFT", 2, 2)
 m_coord:SetFrameStrata("LOW")
 
 local m_coord_text = m_coord:CreateFontString(nil,"Overlay")
-m_coord_text:SetFont(C["media"].font,C["general"].fontscale,"OUTLINE")
+m_coord_text:SetFont(DB["media"].font_,DB["general"].fontscale,"OUTLINE")
 m_coord_text:SetPoint("Center",E.Scale(-1),0)
 m_coord_text:SetJustifyH("CENTER")
 m_coord_text:SetJustifyV("MIDDLE")

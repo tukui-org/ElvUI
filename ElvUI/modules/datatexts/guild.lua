@@ -1,9 +1,9 @@
 --------------------------------------------------------------------
 -- GUILD ROSTER
 --------------------------------------------------------------------
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not C["datatext"].guild or C["datatext"].guild == 0 then return end
+if not DB["datatext"].guild or DB["datatext"].guild == 0 then return end
 
 -- localized references for global functions (about 50% faster)
 local join 			= string.join
@@ -38,10 +38,10 @@ Stat:SetFrameStrata("MEDIUM")
 Stat:SetFrameLevel(3)
 
 local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
-Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
+Text:SetFont(DB["media"].font_, DB["datatext"].fontsize, "THINOUTLINE")
 Text:SetShadowOffset(E.mult, -E.mult)
 Text:SetShadowColor(0, 0, 0, 0.4)
-E.PP(C["datatext"].guild, Text)
+E.PP(DB["datatext"].guild, Text)
 Stat:SetAllPoints(Text)
 
 local function SortGuildTable(shift)

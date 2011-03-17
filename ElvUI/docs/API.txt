@@ -2,7 +2,7 @@ ElvUI API
 
 This is how another addon imports the ElvUI engine:
 (it must be at the top of every lua file if your addon or edited version is built around ElvUI)
-	local E, C, L = unpack(ElvUI)
+	local E, C, L, DB = unpack(ElvUI)
 
 Note: ElvUI will import the Tukui engine, if your running the DB converter addon, which you should be by default.
 

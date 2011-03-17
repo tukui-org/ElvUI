@@ -1,8 +1,8 @@
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 local f = CreateFrame("Frame")
 f:SetScript("OnEvent", function()
-	if C["others"].sellgrays then
+	if DB["others"].sellgrays then
 		local c = 0
 		for b=0,4 do
 			for s=1,GetContainerNumSlots(b) do
@@ -23,7 +23,7 @@ f:SetScript("OnEvent", function()
 		end
 	end
 	if not IsShiftKeyDown() then
-		if CanMerchantRepair() and C["others"].autorepair then
+		if CanMerchantRepair() and DB["others"].autorepair then
 			local cost, possible = GetRepairAllCost()
 			if cost>0 then
 				if possible then
