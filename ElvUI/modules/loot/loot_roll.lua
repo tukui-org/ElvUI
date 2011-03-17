@@ -5,7 +5,7 @@
 
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if C["loot"].rolllootframe ~= true then return end
+if C["others"].rolllootframe ~= true then return end
 local pos = "TOP"
 
 local backdrop = {

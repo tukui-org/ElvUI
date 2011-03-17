@@ -2,7 +2,7 @@
 
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not C["loot"].lootframe == true then return end
+if not C["others"].lootframe == true then return end
 
 local L = {
 	fish = "Fishy loot",

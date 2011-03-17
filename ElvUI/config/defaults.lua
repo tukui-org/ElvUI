@@ -68,6 +68,7 @@ DB["unitframes"] = {
 	["combat"] = false,						-- only show main unitframes when in combat/havetarget/or mouseover
 	["mini_powerbar"] = false,
 	["showboss"] = true,                   -- enable boss unit frames for PVELOL encounters.
+	["arena"] = true,                 -- enable elvui arena unitframes (requirement : Elvui unitframes enabled)	
 	
 	--frame sizes
 	["playtarwidth"] = 275,					--width of player/target frame
@@ -102,9 +103,6 @@ DB["unitframes"] = {
 	["castfocuswidth"] = 275,
 	["castbarcolor"] = DB["media"].bordercolor, -- Color of player castbar
 	["nointerruptcolor"] = { 0.78, 0.25, 0.25, 0.5 }, -- Color of target castbar	
-	
-	--arena
-	["arena"] = true,                 -- enable elvui arena unitframes (requirement : Elvui unitframes enabled)
 }
 
 DB["raidframes"] = {
@@ -183,12 +181,6 @@ DB["nameplate"] = {
 	["trackccauras"] = true,			--track all CC debuffs
 }
 
-DB["loot"] = {
-	["lootframe"] = true,                  -- reskin the loot frame to fit Elvui
-	["rolllootframe"] = true,              -- reskin the roll frame to fit Elvui
-	["autogreed"] = true,                  -- auto-dez or auto-greed item at max level.
-}
-
 DB["datatext"] = {
 	["stat1"] = 1,						   -- Stat Based on your Role (Avoidance-Tank, AP-Melee, SP/HP-Caster)
 	["dur"] = 2,                           -- show your equipment durability on panels.
@@ -233,12 +225,6 @@ DB["tooltip"] = {
 	["whotargetting"] = true,				--show who is targetting the unit (in raid or party)
 }
 
-DB["buffreminder"] = {
-	["enable"] = true,                     -- this is now the new innerfire warning script for all armor/aspect class.
-	["sound"] = true,                      -- enable warning sound notification for reminder.
-	["raidbuffreminder"] = true,			-- buffbar below the minimap, important missing buffs
-}
-
 DB["others"] = {
 	["pvpautorelease"] = false,            -- enable auto-release in bg or wintergrasp.
 	["sellgrays"] = true,                  -- automaticly sell grays?
@@ -250,4 +236,12 @@ DB["others"] = {
 	["announceinterrupt"] = true,			-- announce in party/raid when you interrupt
 	["showthreat"] = true,                 -- enable the threat bar anchored to info right panel.
 	["minimapauras"] = true,				-- enable minimap auras	
+	
+	["lootframe"] = true,                  -- reskin the loot frame to fit Elvui
+	["rolllootframe"] = true,              -- reskin the roll frame to fit Elvui
+	["autogreed"] = true,                  -- auto-dez or auto-greed item at max level.	
+	
+	["buffreminder"] = true,                     -- this is now the new innerfire warning script for all armor/aspect class.
+	["sound"] = true,                      -- enable warning sound notification for reminder.
+	["raidbuffreminder"] = true,			-- buffbar below the minimap, important missing buffs	
 }

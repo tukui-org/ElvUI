@@ -26,7 +26,7 @@ local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config
 	For every group created a new frame is created, it's a lot easier this way.
 ]]
 
-if C["buffreminder"].enable ~= true then return end
+if C["others"].buffreminder ~= true then return end
 
 E.ReminderBuffs = {
 	PRIEST = {
