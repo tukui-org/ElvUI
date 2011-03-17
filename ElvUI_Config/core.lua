@@ -16,6 +16,7 @@ function ElvuiConfig:LoadDefaults()
 			unitframes = DB["unitframes"],
 			raidframes = DB["raidframes"],
 			classtimer = DB["classtimer"],
+			actionbar = DB["actionbar"],
 		},
 	}
 end	
@@ -64,9 +65,10 @@ function ElvuiConfig:SetupOptions()
 	self.optionsFrames.ElvuiConfig = ACD3:AddToBlizOptions("ElvuiConfig", "ElvUI", nil, "general")
 	self.optionsFrames.Media = ACD3:AddToBlizOptions("ElvuiConfig", L["Media"], "ElvUI", "media")
 	self.optionsFrames.Nameplates = ACD3:AddToBlizOptions("ElvuiConfig", L["Nameplates"], "ElvUI", "nameplate")
-	self.optionsFrames.Unitframes = ACD3:AddToBlizOptions("ElvuiConfig", L["Unitframes"], "ElvUI", "unitframes")
-	self.optionsFrames.Raidframes = ACD3:AddToBlizOptions("ElvuiConfig", L["Raidframes"], "ElvUI", "raidframes")
+	self.optionsFrames.Unitframes = ACD3:AddToBlizOptions("ElvuiConfig", L["Unit Frames"], "ElvUI", "unitframes")
+	self.optionsFrames.Raidframes = ACD3:AddToBlizOptions("ElvuiConfig", L["Raid Frames"], "ElvUI", "raidframes")
 	self.optionsFrames.Classtimer = ACD3:AddToBlizOptions("ElvuiConfig", L["Class Timers"], "ElvUI", "classtimer")
+	self.optionsFrames.Actionbar = ACD3:AddToBlizOptions("ElvuiConfig", L["Action Bars"], "ElvUI", "actionbar")
 	self.optionsFrames.Skins = ACD3:AddToBlizOptions("ElvuiConfig", L["Addon Skins"], "ElvUI", "skin")
 	self.optionsFrames.Profiles = ACD3:AddToBlizOptions("ElvProfiles", L["Profiles"], "ElvUI")
 	self.SetupOptions = nil
@@ -441,7 +443,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 			unitframes = {
 				order = 4,
 				type = "group",
-				name = L["Unitframes"],
+				name = L["Unit Frames"],
 				desc = L["UF_DESC"],
 				get = function(info) return db.unitframes[ info[#info] ] end,
 				set = function(info, value) db.unitframes[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
@@ -860,7 +862,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 			raidframes = {
 				order = 5,
 				type = "group",
-				name = L["Raidframes"],
+				name = L["Raid Frames"],
 				desc = L["RF_DESC"],
 				get = function(info) return db.raidframes[ info[#info] ] end,
 				set = function(info, value) db.raidframes[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,				
@@ -1122,8 +1124,196 @@ function ElvuiConfig.GenerateOptionsInternal()
 					},
 				},
 			},
-			skin = {
+			actionbar = {
 				order = 7,
+				type = "group",
+				name = L["Action Bars"],
+				desc = L["AB_DESC"],
+				get = function(info) return db.actionbar[ info[#info] ] end,
+				set = function(info, value) db.actionbar[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
+				args = {
+					intro = {
+						order = 1,
+						type = "description",
+						name = L["AB_DESC"],
+					},
+					enable = {
+						order = 2,
+						type = "toggle",
+						name = ENABLE,
+					},
+					ABGroup = {
+						order = 3,
+						type = "group",
+						name = L["General Settings"],
+						guiInline = true,
+						disabled = function() return not db.actionbar.enable end,	
+						args = {
+							hotkey = {
+								type = "toggle",
+								order = 1,
+								name = L["Hotkey Text"],
+								desc = L["Display hotkey text on action buttons"],
+							},
+							rightbarmouseover = {
+								type = "toggle",
+								order = 2,
+								name = L["Right Bar on Mouseover"],
+								desc = L["Hide the right action bar unless mouseovered"],							
+							},
+							hideshapeshift = {
+								type = "toggle",
+								order = 3,
+								name = L["Shape Shift Bar"],
+								desc = L["Hide the shape shift action bar"],								
+							},
+							shapeshiftmouseover = {
+								type = "toggle",
+								order = 4,
+								name = L["Shape Shift on Mouseover"],
+								desc = L["Hide the shape shift action bar unless mouseovered"],	
+								disabled = function() return not db.actionbar.enable or db.actionbar.hideshapeshift end,
+							},
+							verticalstance = {
+								type = "toggle",
+								order = 5,
+								name = L["Vertical Shape Shift"],
+								desc = L["Make the shape shift bar grow vertically instead of horizontally"],	
+								disabled = function() return not db.actionbar.enable or db.actionbar.hideshapeshift end,							
+							},
+							showgrid = {
+								type = "toggle",
+								order = 6,
+								name = L["Display Grid"],
+								desc = L["Display grid backdrop behind empty buttons"],	
+							},
+							bottompetbar = {
+								type = "toggle",
+								order = 7,
+								name = L["Pet Bar below main actionbar"],
+								desc = L["Positions the pet bar below the main actionbar instead of to the right side of the screen"],								
+							},
+							buttonsize = {
+								type = "range",
+								order = 8,
+								name = L["Button Size"],
+								type = "range",
+								min = 20, max = 40, step = 1,									
+							},
+							buttonspacing = {
+								type = "range",
+								order = 9,
+								name = L["Button Spacing"],
+								type = "range",
+								min = 2, max = 7, step = 1,								
+							},
+							petbuttonsize = {
+								type = "range",
+								order = 10,
+								name = L["Pet Button Size"],
+								type = "range",
+								min = 20, max = 40, step = 1,								
+							},
+							swaptopbottombar = {
+								type = "toggle",
+								order = 11,
+								name = L["Main actionbar on top"],
+								desc = L["Positions the main actionbar above all other actionbars"],								
+							},
+							macrotext = {
+								type = "toggle",
+								order = 12,
+								name = L["Macro Text"],						
+							},
+							microbar = {
+								type = "toggle",
+								order = 13,
+								name = L["Micro Bar"],
+								desc = L["Display blizzards default microbar, this will disable the right click menu on minimap"],
+							},
+							mousemicro = {
+								type = "toggle",
+								order = 14,
+								name = L["Micro Bar on Mouseover"],
+								desc = L["Display blizzards default microbar when mouseovered"],
+								disabled = function() return not db.actionbar.enable or not db.actionbar.microbar end,
+							},
+						},
+					},
+					CDGroup = {
+						order = 4,
+						type = "group",
+						name = L["Cooldown Text"],
+						guiInline = true,
+						disabled = function() return not db.actionbar.enablecd end,								
+						args = {
+							enablecd = {
+								type = "toggle",
+								order = 1,
+								name = ENABLE,
+								disabled = false,								
+							},
+							treshold = {
+								type = "range",
+								order = 2,
+								name = L["Threshold"],
+								desc = L["Threshold before turning text red and displaying decimal places"],
+								type = "range",
+								min = -1, max = 60, step = 1,		
+							},
+							ColorGroup = {
+								order = 3,
+								type = "group",
+								name = L["Colors"],
+								guiInline = true,
+								get = function(info)
+									local r, g, b = unpack(db.actionbar[ info[#info] ])
+									return r, g, b
+								end,
+								set = function(info, r, g, b)
+									db.actionbar[ info[#info] ] = {r, g, b}
+									StaticPopup_Show("RELOAD_UI")
+								end,									
+								args = {
+									expiringcolor = {
+										type = "color",
+										order = 1,
+										name = L["Expiring"],
+										desc = L["This gets displayed when your below the threshold"],
+										hasAlpha = false,		
+									},
+									secondscolor = {
+										type = "color",
+										order = 2,
+										name = L["Seconds"],
+										hasAlpha = false,												
+									},
+									minutescolor = {
+										type = "color",
+										order = 3,
+										name = L["Minutes"],
+										hasAlpha = false,													
+									},
+									hourscolor = {
+										type = "color",
+										order = 4,
+										name = L["Hours"],
+										hasAlpha = false,												
+									},
+									dayscolor = {
+										type = "color",
+										order = 5,
+										name = L["Days"],
+										hasAlpha = false,													
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			skin = {
+				order = 8,
 				type = "group",
 				name = L["Addon Skins"],
 				desc = L["ADDON_DESC"],

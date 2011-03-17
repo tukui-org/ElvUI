@@ -85,7 +85,7 @@ L["Nameplates"] = true
 		L["This color is displayed when gaining/losing threat"] = true
 
 --Unitframes
-L["Unitframes"] = true
+L["Unit Frames"] = true
 	L["UF_DESC"] = "Adjust settings for unitframes"
 	L["Enable Unitframes"] = true
 		L["Controls the size of the unitframe font"] = true
@@ -174,8 +174,9 @@ L["Castbar"] = true
 	L["Color of the castbar"] = true
 	L["Interrupt Color"] = true
 	L["Color of the castbar when you can't interrupt the cast"] = true
-	
-L["Raidframes"] = true
+
+--Raidframe
+L["Raid Frames"] = true
 	L["Enable Raidframes"] = true
 	L["RF_DESC"] = "Adjust settings for raidframes"
 	L["Size of the buff icon on raidframes"] = true
@@ -206,7 +207,8 @@ L["Raidframes"] = true
 	L["Party Target's"] = true
 	L["Mouse Glow"] = true
 		L["Glow the unitframe to the unit's Reaction/Class when mouseover'd"] = true
-		
+
+--Classtimer		
 L["Class Timers"] = true
 	L["CLASSTIMER_DESC"] = "Adjust settings for classtimers"
 	L["Enable Class Timers"] = true
@@ -224,6 +226,43 @@ L["Class Timers"] = true
 	L["Buff"] = true
 	L["Debuff"] = true
 	L["Proc"] = true
+	
+--Actionbar
+L["Action Bars"] = true
+	L["AB_DESC"] = "Adjust settings for actionbars and cooldown text on action buttons"
+	L["Hotkey Text"] = true
+		L["Display hotkey text on action buttons"] = true
+	L["Right Bar on Mouseover"] = true
+		L["Hide the right action bar unless mouseovered"] = true
+	L["Shape Shift Bar"] = true
+		L["Hide the shape shift action bar"] = true
+	L["Shape Shift on Mouseover"] = true
+		L["Hide the shape shift action bar unless mouseovered"] = true
+	L["Vertical Shape Shift"] = true
+		L["Make the shape shift bar grow vertically instead of horizontally"] = true
+	L["Display Grid"] = true
+		L["Display grid backdrop behind empty buttons"] = true
+	L["Pet Bar below main actionbar"] = true
+		L["Positions the pet bar below the main actionbar instead of to the right side of the screen"] = true
+	L["Button Size"] = true
+	L["Button Spacing"] = true
+	L["Pet Button Size"] = true
+	L["Main actionbar on top"] = true
+		L["Positions the main actionbar above all other actionbars"] = true
+	L["Macro Text"] = true
+	L["Micro Bar"] = true
+		L["Display blizzards default microbar, this will disable the right click menu on minimap"] = true
+	L["Micro Bar on Mouseover"] = true
+		L["Display blizzards default microbar when mouseovered"] = true
+	L["Cooldown Text"] = true
+	L["Threshold"] = true
+		L["Threshold before turning text red and displaying decimal places"] = true
+	L["Expiring"] = true
+		L["This gets displayed when your below the threshold"] = true
+	L["Seconds"] = true
+	L["Minutes"] = true
+	L["Hours"] = true
+	L["Days"] = true
 	
 --External Addons
 L["Addon Skins"] = true
