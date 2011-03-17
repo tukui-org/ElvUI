@@ -302,7 +302,34 @@ L["Data Texts"] = true
 		L["Display current watched items in backpack"] = true
 	L["Talent Spec"] = true	
 		L["Display current spec"] = true
-		
+
+--chat
+L["Chat"] = true
+	L["CHAT_DESC"] = "Adjust chat settings"
+		L["Play a sound when receiving a whisper, this can be set in media section"] = true
+	L["Chat Backdrop"] = true
+		L["Display backdrop panels behind chat window"] = true
+	L["Chat Width"] = true
+		L["Width of chatframe"] = true
+	L["Chat Height"] = true
+		L["Height of chatframe"] = true
+	L["Fade Windows"] = true
+		L["Fade chat windows after a long period of no activity"] = true
+	L["Sticky Editbox"] = true
+		L["When pressing enter to open the chat editbox, display the last known channel"] = true
+	L["Animate Chat In Combat"] = true
+		L["When you enter combat, the selected window will animate out of view"] = true
+	L["Chat Bubbles"] = true
+		L["Skin Blizzard's Chat Bubbles"] = true
+	L["Left"] = true
+	L["Right"] = true
+	L["Both"] = true
+	
+	
+	
+	
+	
+	
 --External Addons
 L["Addon Skins"] = true
 	L["ADDON_DESC"] = "Adjust settings for external addon skins/options"

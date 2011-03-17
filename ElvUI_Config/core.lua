@@ -18,6 +18,7 @@ function ElvuiConfig:LoadDefaults()
 			classtimer = DB["classtimer"],
 			actionbar = DB["actionbar"],
 			datatext = DB["datatext"],
+			chat = DB["chat"],
 		},
 	}
 end	
@@ -71,6 +72,7 @@ function ElvuiConfig:SetupOptions()
 	self.optionsFrames.Classtimer = ACD3:AddToBlizOptions("ElvuiConfig", L["Class Timers"], "ElvUI", "classtimer")
 	self.optionsFrames.Actionbar = ACD3:AddToBlizOptions("ElvuiConfig", L["Action Bars"], "ElvUI", "actionbar")
 	self.optionsFrames.Datatext = ACD3:AddToBlizOptions("ElvuiConfig", L["Data Texts"], "ElvUI", "datatext")
+	self.optionsFrames.Chat = ACD3:AddToBlizOptions("ElvuiConfig", L["Chat"], "ElvUI", "chat")
 	self.optionsFrames.Skins = ACD3:AddToBlizOptions("ElvuiConfig", L["Addon Skins"], "ElvUI", "skin")
 	self.optionsFrames.Profiles = ACD3:AddToBlizOptions("ElvProfiles", L["Profiles"], "ElvUI")
 	self.SetupOptions = nil
@@ -1455,8 +1457,93 @@ function ElvuiConfig.GenerateOptionsInternal()
 					},
 				},
 			},
-			skin = {
+			chat = {
 				order = 9,
+				type = "group",
+				name = L["Chat"],
+				desc = L["CHAT_DESC"],
+				get = function(info) return db.chat[ info[#info] ] end,
+				set = function(info, value) db.chat[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,		
+				args = {
+					intro = {
+						order = 1,
+						type = "description",
+						name = L["CHAT_DESC"],
+					},
+					enable = {
+						order = 2,
+						type = "toggle",
+						name = ENABLE,
+					},
+					ChatGroup = {
+						order = 3,
+						type = "group",
+						name = L["General Settings"],
+						guiInline = true,
+						disabled = function() return not db.chat.enable end,	
+						args = {
+							whispersound = {
+								type = "toggle",
+								order = 1,
+								name = L["Whisper Sound"],
+								desc = L["Play a sound when receiving a whisper, this can be set in media section"],
+							},
+							showbackdrop = {
+								type = "toggle",
+								order = 2,
+								name = L["Chat Backdrop"],
+								desc = L["Display backdrop panels behind chat window"],							
+							},
+							chatwidth = {
+								type = "range",
+								order = 3,
+								name = L["Chat Width"],
+								desc = L["Width of chatframe"],
+								min = 200, max = 400, step = 1,
+							},
+							chatheight = {
+								type = "range",
+								order = 4,
+								name = L["Chat Height"],
+								desc = L["Height of chatframe"],
+								min = 75, max = 250, step = 1,
+							},
+							fadeoutofuse = {
+								type = "toggle",
+								order = 5,
+								name = L["Fade Windows"],
+								desc = L["Fade chat windows after a long period of no activity"],								
+							},
+							sticky = {
+								type = "toggle",
+								order = 6,
+								name = L["Sticky Editbox"],
+								desc = L["When pressing enter to open the chat editbox, display the last known channel"],								
+							},
+							combathide = {
+								type = "select",
+								order = 7,
+								name = L["Animate Chat In Combat"],
+								desc = L["When you enter combat, the selected window will animate out of view"],
+								values = {
+									["NONE"] = L["None"],
+									["Left"] = L["Left"],
+									["Right"] = L["Right"],
+									["Both"] = L["Both"],
+								},
+							},
+							bubbles = {
+								type = "toggle",
+								order = 8,
+								name = L["Chat Bubbles"],
+								desc = L["Skin Blizzard's Chat Bubbles"],							
+							},
+						},
+					},
+				},
+			},
+			skin = {
+				order = 10,
 				type = "group",
 				name = L["Addon Skins"],
 				desc = L["ADDON_DESC"],
