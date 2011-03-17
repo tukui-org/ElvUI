@@ -37,12 +37,12 @@ local function Shared(self, unit)
 		health:SetOrientation("VERTICAL")
 	end		
 	health.value:Point("BOTTOM", health, "BOTTOM", 0, 3)
-	health.value:SetFont(C["media"].uffont, (C["raidframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
+	health.value:SetFont(C["media"].uffont_, (C["raidframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
 	
 	self.Health = health
 			
 	--Name
-	self:FontString("Name", C["media"].uffont, (C["unitframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
+	self:FontString("Name", C["media"].uffont_, (C["unitframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
 	self.Name:Point("TOP", health, "TOP", 0, -3)
 	self.Name.frequentUpdates = 0.3
 	self:Tag(self.Name, "[Elvui:getnamecolor][Elvui:nameshort]")
@@ -139,11 +139,11 @@ local function Shared(self, unit)
 	RaidDebuffs.icon:Point("TOPLEFT", 2, -2)
 	RaidDebuffs.icon:Point("BOTTOMRIGHT", -2, 2)
 	
-	RaidDebuffs.count = RaidDebuffs:FontString('count', C["media"].uffont, C["general"].fontscale*0.75, "THINOUTLINE")
+	RaidDebuffs.count = RaidDebuffs:FontString('count', C["media"].uffont_, C["general"].fontscale*0.75, "THINOUTLINE")
 	RaidDebuffs.count:Point('BOTTOMRIGHT', RaidDebuffs, 'BOTTOMRIGHT', 0, 2)
 	RaidDebuffs.count:SetTextColor(1, .9, 0)
 	
-	RaidDebuffs:FontString('time', C["media"].uffont, C["general"].fontscale*0.75, "THINOUTLINE")
+	RaidDebuffs:FontString('time', C["media"].uffont_, C["general"].fontscale*0.75, "THINOUTLINE")
 	RaidDebuffs.time:SetPoint('CENTER')
 	RaidDebuffs.time:SetTextColor(1, .9, 0)
 	

@@ -37,7 +37,7 @@ local function Shared(self, unit)
 		self.Health = health
 	
 		--Name
-		self:FontString("Name", C["media"].uffont, C["unitframes"].fontsize, "THINOUTLINE")
+		self:FontString("Name", C["media"].uffont_, C["unitframes"].fontsize, "THINOUTLINE")
 		self.Name:SetPoint("CENTER", health, "CENTER")
 		self.Name.frequentUpdates = 0.5
 		self:Tag(self.Name, '[Elvui:getnamecolor][Elvui:namemedium]')	
@@ -50,7 +50,7 @@ local function Shared(self, unit)
 			health:SetOrientation("VERTICAL")
 		end		
 		health.value:Point("BOTTOM", health, "BOTTOM", 0, 3)
-		health.value:SetFont(C["media"].uffont, (C["raidframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
+		health.value:SetFont(C["media"].uffont_, (C["raidframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
 		
 		self.Health = health
 				
@@ -62,7 +62,7 @@ local function Shared(self, unit)
 		self.Power = power
 
 		--Name
-		self:FontString("Name", C["media"].uffont, (C["unitframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
+		self:FontString("Name", C["media"].uffont_, (C["unitframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
 		self.Name:Point("TOP", health, "TOP", 0, -3)
 		self.Name.frequentUpdates = 0.3
 		self:Tag(self.Name, "[Elvui:getnamecolor][Elvui:nameshort]")

@@ -4,9 +4,9 @@ assert(oUF, "ElvUI was unable to locate oUF.")
 
 if not C["raidframes"].enable == true or C["raidframes"].gridonly == true then return end
 
-local font2 = C["media"].uffont
-local font1 = C["media"].font
-local normTex = C["media"].normTex
+local font2 = C["media"].uffont_
+local font1 = C["media"].font_
+local normTex = C["media"].normTex_
 
 --Frame Size
 local PARTY_HEIGHT = E.Scale(35)*C["raidframes"].scale

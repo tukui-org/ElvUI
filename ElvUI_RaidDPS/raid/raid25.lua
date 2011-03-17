@@ -47,7 +47,7 @@ local function Shared(self, unit)
 	else
 		health.value:Point("BOTTOM", health, "BOTTOM", 0, 1)
 	end
-	health.value:SetFont(C["media"].uffont, (C["raidframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
+	health.value:SetFont(C["media"].uffont_, (C["raidframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
 	
 	self.Health = health
 			
@@ -59,7 +59,7 @@ local function Shared(self, unit)
 	self.Power = power
 
 	--Name
-	self:FontString("Name", C["media"].uffont, (C["unitframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
+	self:FontString("Name", C["media"].uffont_, (C["unitframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
 	if C["raidframes"].griddps ~= true then
 		self.Name:Point("LEFT", health, "LEFT", 2, 0)
 	else
@@ -150,11 +150,11 @@ local function Shared(self, unit)
 		RaidDebuffs.icon:Point("BOTTOMRIGHT", -2, 2)
 		
 		RaidDebuffs.count = RaidDebuffs:CreateFontString(nil, 'OVERLAY')
-		RaidDebuffs.count:SetFont(C["media"].uffont, C["general"].fontscale*0.75, "THINOUTLINE")
+		RaidDebuffs.count:SetFont(C["media"].uffont_, C["general"].fontscale*0.75, "THINOUTLINE")
 		RaidDebuffs.count:SetPoint('BOTTOMRIGHT', RaidDebuffs, 'BOTTOMRIGHT', 0, 2)
 		RaidDebuffs.count:SetTextColor(1, .9, 0)
 		
-		RaidDebuffs:FontString('time', C["media"].uffont, C["general"].fontscale*0.75, "THINOUTLINE")
+		RaidDebuffs:FontString('time', C["media"].uffont_, C["general"].fontscale*0.75, "THINOUTLINE")
 		RaidDebuffs.time:SetPoint('CENTER')
 		RaidDebuffs.time:SetTextColor(1, .9, 0)
 		
