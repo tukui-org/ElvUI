@@ -5,7 +5,7 @@
 --]]
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if C["cooldown"].enable ~= true or IsAddOnLoaded("OmniCC") or IsAddOnLoaded("ncCooldown") then return end
+if C["actionbar"].enablecd ~= true or IsAddOnLoaded("OmniCC") or IsAddOnLoaded("ncCooldown") then return end
 
 --constants!
 OmniCC = true --hack to work around detection from other addons for OmniCC
@@ -19,13 +19,13 @@ local FONT_FACE = C["media"].font_ --what font to use
 local FONT_SIZE = 20 --the base font size to use at a scale of 1
 local MIN_SCALE = 0.5 --the minimum scale we want to show cooldown counts at, anything below this will be hidden
 local MIN_DURATION = 2.5 --the minimum duration to show cooldown text for
-local EXPIRING_DURATION = C["cooldown"].treshold --the minimum number of seconds a cooldown must be to use to display in the expiring format
+local EXPIRING_DURATION = C["actionbar"].treshold --the minimum number of seconds a cooldown must be to use to display in the expiring format
 
-local EXPIRING_FORMAT = E.RGBToHex(unpack(C["cooldown"].expiringcolor))..'%.1f|r' --format for timers that are soon to expire
-local SECONDS_FORMAT = E.RGBToHex(unpack(C["cooldown"].secondscolor))..'%d|r' --format for timers that have seconds remaining
-local MINUTES_FORMAT = E.RGBToHex(unpack(C["cooldown"].minutescolor))..'%dm|r' --format for timers that have minutes remaining
-local HOURS_FORMAT = E.RGBToHex(unpack(C["cooldown"].hourscolor))..'%dh|r' --format for timers that have hours remaining
-local DAYS_FORMAT = E.RGBToHex(unpack(C["cooldown"].dayscolor))..'%dh|r' --format for timers that have days remaining
+local EXPIRING_FORMAT = E.RGBToHex(unpack(C["actionbar"].expiringcolor))..'%.1f|r' --format for timers that are soon to expire
+local SECONDS_FORMAT = E.RGBToHex(unpack(C["actionbar"].secondscolor))..'%d|r' --format for timers that have seconds remaining
+local MINUTES_FORMAT = E.RGBToHex(unpack(C["actionbar"].minutescolor))..'%dm|r' --format for timers that have minutes remaining
+local HOURS_FORMAT = E.RGBToHex(unpack(C["actionbar"].hourscolor))..'%dh|r' --format for timers that have hours remaining
+local DAYS_FORMAT = E.RGBToHex(unpack(C["actionbar"].dayscolor))..'%dh|r' --format for timers that have days remaining
 
 --local bindings!
 local floor = math.floor

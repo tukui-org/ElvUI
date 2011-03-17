@@ -160,6 +160,14 @@ DB["actionbar"] = {
 	["verticalstance"] = false,				--make stance bar vertical
 	["microbar"] = false,					--enable microbar display
 	["mousemicro"] = false,					--only show microbar on mouseover
+	
+	["enablecd"] = true,                     -- do i really need to explain this?
+	["treshold"] = 3,                      -- show decimal under X seconds and text turn red
+	["expiringcolor"] = { 1, 0, 0 },		--color of expiring seconds turns to 
+	["secondscolor"] = { 1, 1, 0 },			--seconds color
+	["minutescolor"] = { 1, 1, 1 },			-- minutes color
+	["hourscolor"] = { 0.4, 1, 1 },			-- hours color
+	["dayscolor"] = { 0.4, 0.4, 1 },		-- days color	
 }
 
 DB["nameplate"] = {
@@ -179,16 +187,6 @@ DB["loot"] = {
 	["lootframe"] = true,                  -- reskin the loot frame to fit Elvui
 	["rolllootframe"] = true,              -- reskin the roll frame to fit Elvui
 	["autogreed"] = true,                  -- auto-dez or auto-greed item at max level.
-}
-
-DB["cooldown"] = {
-	["enable"] = true,                     -- do i really need to explain this?
-		["treshold"] = 3,                      -- show decimal under X seconds and text turn red
-		["expiringcolor"] = { 1, 0, 0 },		--color of expiring seconds turns to 
-		["secondscolor"] = { 1, 1, 0 },			--seconds color
-		["minutescolor"] = { 1, 1, 1 },			-- minutes color
-		["hourscolor"] = { 0.4, 1, 1 },			-- hours color
-		["dayscolor"] = { 0.4, 0.4, 1 },		-- days color
 }
 
 DB["datatext"] = {
