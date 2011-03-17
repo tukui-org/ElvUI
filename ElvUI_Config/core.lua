@@ -648,7 +648,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								name = L["Player/Target Width"],
 								desc = L["Controls the size of the frame"],
 								type = "range",
-								min = 235, max = 320, step = 1,								
+								min = 185, max = 320, step = 1,								
 							},
 							playtarheight = {
 								type = "range",
@@ -664,7 +664,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								name = L["TargetTarget, Focus, FocusTarget, Pet Width"],
 								desc = L["Controls the size of the frame"],
 								type = "range",
-								min = 100, max = 175, step = 1,								
+								min = 80, max = 175, step = 1,								
 							},
 							smallheight = {
 								type = "range",
