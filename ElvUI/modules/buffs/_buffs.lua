@@ -1,5 +1,5 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import: E - functions, constants, variables; C - config; L - locales
-if DB["auras"].minimapauras ~= true then return end
+if DB["others"].minimapauras ~= true then return end
 
 --Holder frame for mover
 local holder = CreateFrame("Frame", "AurasHolder", UIParent)

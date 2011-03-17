@@ -124,13 +124,13 @@ E.LoadUFFunctions = function(layout)
 		castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 
 		-- cast bar latency on player
-		if DB["castbar"].cblatency == true and self.unit == "player" then
+		if DB["unitframes"].cblatency == true and self.unit == "player" then
 			castbar.SafeZone = castbar:CreateTexture(nil, "OVERLAY")
 			castbar.SafeZone:SetTexture(DB["media"].normTex_)
 			castbar.SafeZone:SetVertexColor(0.69, 0.31, 0.31, 0.75)
 		end			
 
-		if DB["castbar"].cbicons == true then
+		if DB["unitframes"].cbicons == true then
 			local button = CreateFrame("Frame", nil, castbar)
 			button:Height(height + 4*E.ResScale)
 			button:Width(height + 4*E.ResScale)
@@ -235,7 +235,7 @@ E.LoadUFFunctions = function(layout)
 				end		
 			end
 		elseif unit == "target" or (unit and unit:find("boss%d")) then --Target/Boss Only
-			if DB["auras"].playerdebuffsonly == true then
+			if DB["unitframes"].playerdebuffsonly == true then
 				-- Show all debuffs on friendly targets
 				if UnitIsFriend("player", "target") then return true end
 				
@@ -258,7 +258,7 @@ E.LoadUFFunctions = function(layout)
 				return true
 			end
 		else --Everything else
-			if unit ~= "player" and unit ~= "targettarget" and unit ~= "focus" and DB["auras"].arenadebuffs == true and inInstance and (instanceType == "pvp" or instanceType == "arena") then
+			if unit ~= "player" and unit ~= "targettarget" and unit ~= "focus" and DB["unitframes"].arenadebuffs == true and inInstance and (instanceType == "pvp" or instanceType == "arena") then
 				if E.DebuffWhiteList[name] or E.TargetPVPOnly[name] then
 					return true
 				else
@@ -591,9 +591,9 @@ E.LoadUFFunctions = function(layout)
 		local header = button:GetParent():GetParent():GetParent():GetName()
 		
 		if unit == "focus" or unit == "targettarget" or header == "ElvuiHealParty" then
-			button:FontString(nil, DB["media"].font_, DB["auras"].auratextscale*0.85, "THINOUTLINE")
+			button:FontString(nil, DB["media"].font_, DB["unitframes"].auratextscale*0.85, "THINOUTLINE")
 		else
-			button:FontString(nil, DB["media"].font_, DB["auras"].auratextscale, "THINOUTLINE")
+			button:FontString(nil, DB["media"].font_, DB["unitframes"].auratextscale, "THINOUTLINE")
 		end
 		
 		button:SetTemplate("Default")
@@ -610,7 +610,7 @@ E.LoadUFFunctions = function(layout)
 		
 		button.count:Point("BOTTOMRIGHT", E.mult, 1.5)
 		button.count:SetJustifyH("RIGHT")
-		button.count:SetFont(DB["media"].font_, DB["auras"].auratextscale*0.8, "THINOUTLINE")
+		button.count:SetFont(DB["media"].font_, DB["unitframes"].auratextscale*0.8, "THINOUTLINE")
 
 		button.overlayFrame = CreateFrame("frame", nil, button, nil)
 		button.cd:SetFrameLevel(button:GetFrameLevel() + 1)
@@ -657,7 +657,7 @@ E.LoadUFFunctions = function(layout)
 		end
 		
 		if duration and duration > 0 then
-			if DB["auras"].auratimer == true then
+			if DB["unitframes"].auratimer == true then
 				icon.text:Show()
 			else
 				icon.text:Hide()
@@ -686,15 +686,15 @@ E.LoadUFFunctions = function(layout)
 		
 		if self.interrupt and unit ~= "player" then
 			if UnitCanAttack("player", unit) then
-				self:SetStatusBarColor(unpack(DB["castbar"].nointerruptcolor))
+				self:SetStatusBarColor(unpack(DB["unitframes"].nointerruptcolor))
 			else
-				self:SetStatusBarColor(unpack(DB["castbar"].castbarcolor))	
+				self:SetStatusBarColor(unpack(DB["unitframes"].castbarcolor))	
 			end
 		else
-			if DB["castbar"].classcolor ~= true or unit ~= "player" then
-				self:SetStatusBarColor(unpack(DB["castbar"].castbarcolor))
+			if DB["general"].classcolortheme ~= true then
+				self:SetStatusBarColor(unpack(DB["unitframes"].castbarcolor))
 			else
-				self:SetStatusBarColor(unpack(oUF.colors.class[select(2, UnitClass(unit))]))
+				self:SetStatusBarColor(self:GetParent().Health.backdrop:GetBackdropBorderColor())
 			end	
 		end
 	end
@@ -873,7 +873,7 @@ E.LoadUFFunctions = function(layout)
 		auras.icons = {}
 		auras.PostCreateIcon = E.CreateAuraWatchIcon
 
-		if (not DB["auras"].auratimer) then
+		if (not DB["unitframes"].auratimer) then
 			auras.hideCooldown = true
 		end
 
@@ -916,8 +916,8 @@ E.LoadUFFunctions = function(layout)
 				local icon = CreateFrame("Frame", nil, auras)
 				icon.spellID = spell[1]
 				icon.anyUnit = spell[4]
-				icon:SetWidth(E.Scale(DB["auras"].buffindicatorsize))
-				icon:SetHeight(E.Scale(DB["auras"].buffindicatorsize))
+				icon:SetWidth(E.Scale(DB["raidframes"].buffindicatorsize))
+				icon:SetHeight(E.Scale(DB["raidframes"].buffindicatorsize))
 				icon:SetPoint(spell[2], 0, 0)
 
 				local tex = icon:CreateTexture(nil, "OVERLAY")

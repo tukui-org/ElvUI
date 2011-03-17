@@ -219,7 +219,7 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 		StaticPopup_Show("DISABLE_RAID")
 	end
 		
-	if DB["arena"].unitframes == true then
+	if DB["unitframes"].arena == true then
 		SetCVar("showArenaEnemyFrames", 0)
 	end
 	

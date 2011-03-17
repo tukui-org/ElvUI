@@ -7,7 +7,7 @@ ConsolidatedBuffs:SetSize(16, 16)
 ConsolidatedBuffsIcon:SetTexture(nil)
 ConsolidatedBuffs.SetPoint = E.dummy
 
-if DB["auras"].minimapauras ~= true then BuffFrame:Kill() ConsolidatedBuffs:Kill() return end
+if DB["others"].minimapauras ~= true then BuffFrame:Kill() ConsolidatedBuffs:Kill() return end
 
 local mainhand, _, _, offhand = GetWeaponEnchantInfo()
 local rowbuffs = 12

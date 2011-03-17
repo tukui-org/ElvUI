@@ -80,7 +80,7 @@ local function Shared(self, unit)
 		self.Range = range
 	end
 	
-	if DB["auras"].raidunitbuffwatch == true then
+	if DB["raidframes"].raidunitbuffwatch == true then
 		E.createAuraWatch(self,unit)
     end
 	

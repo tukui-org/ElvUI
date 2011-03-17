@@ -88,7 +88,7 @@ local function CreateFrameOverlay(parent, name)
 	
 	
 	local fs = f:CreateFontString(nil, "OVERLAY")
-	fs:SetFont(DB["media"].font_, DB["auras"].auratextscale, "THINOUTLINE")
+	fs:SetFont(DB["media"].font_, DB["unitframes"].auratextscale, "THINOUTLINE")
 	fs:SetJustifyH("CENTER")
 	fs:SetShadowColor(0, 0, 0, 0.4)
 	fs:SetShadowOffset(E.mult, -E.mult)

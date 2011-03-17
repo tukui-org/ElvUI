@@ -32,7 +32,7 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 			end
 		end
 		
-		--[[if DB["auras"].minimapauras == true then
+		--[[if DB["others"].minimapauras == true then
 			BuffFrame:Kill()
 			TemporaryEnchantFrame:Kill()
 		end]]
@@ -46,7 +46,7 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 		
 		InterfaceOptionsUnitFramePanelPartyBackground:Kill()
 		
-		if DB.arena.unitframes then
+		if DB.unitframes.arena then
 			SetCVar("showArenaEnemyFrames", 0)
 			InterfaceOptionsUnitFramePanelArenaEnemyFrames:Kill()
 			InterfaceOptionsUnitFramePanelArenaEnemyCastBar:Kill()

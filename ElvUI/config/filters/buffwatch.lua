@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------------------
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if DB["auras"].raidunitbuffwatch ~= true then return end
+if DB["raidframes"].raidunitbuffwatch ~= true then return end
 -- Classbuffs { spell ID, position [, {r,g,b,a}][, anyUnit] }
 
 --Healer
