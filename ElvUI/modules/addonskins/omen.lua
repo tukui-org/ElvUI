@@ -10,7 +10,7 @@ local borderWidth = E.Scale(2, 2)
 Omen.UpdateBarTextureSettings_ = Omen.UpdateBarTextureSettings
 Omen.UpdateBarTextureSettings = function(self)
 	for i, v in ipairs(self.Bars) do
-		v.texture:SetTexture(C["media"].normTex_)
+		v.texture:SetTexture(C["media"].normTex)
 	end
 end
 
@@ -19,9 +19,9 @@ Omen.UpdateBarLabelSettings_ = Omen.UpdateBarLabelSettings
 Omen.UpdateBarLabelSettings = function(self)
 	self:UpdateBarLabelSettings_()
 	for i, v in ipairs(self.Bars) do
-		v.Text1:SetFont(C["media"].font_, self.db.profile.Bar.FontSize)
-		v.Text2:SetFont(C["media"].font_, self.db.profile.Bar.FontSize)
-		v.Text3:SetFont(C["media"].font_, self.db.profile.Bar.FontSize)
+		v.Text1:SetFont(C["media"].font, self.db.profile.Bar.FontSize)
+		v.Text2:SetFont(C["media"].font, self.db.profile.Bar.FontSize)
+		v.Text3:SetFont(C["media"].font, self.db.profile.Bar.FontSize)
 	end
 end
 
@@ -33,7 +33,7 @@ Omen.UpdateTitleBar = function(self)
 	Omen.db.profile.Background.BarInset = borderWidth
 	Omen.db.profile.TitleBar.UseSameBG = true
 	self:UpdateTitleBar_()
-	self.TitleText:SetFont(C["media"].font_, self.db.profile.TitleBar.FontSize)
+	self.TitleText:SetFont(C["media"].font, self.db.profile.TitleBar.FontSize)
 	self.BarList:SetPoint("TOPLEFT", self.Title, "BOTTOMLEFT", 0, -1)
 end
 

@@ -189,21 +189,21 @@ function ElvuiConfig.GenerateOptionsInternal()
 						name = L["Fonts"],
 						guiInline = true,
 						args = {
-							font = {
+							font_ = {
 								type = "select", dialogControl = 'LSM30_Font',
 								order = 1,
 								name = L["Font"],
 								desc = L["The font that the core of the UI will use"],
 								values = AceGUIWidgetLSMlists.font,	
 							},
-							uffont = {
+							uffont_ = {
 								type = "select", dialogControl = 'LSM30_Font',
 								order = 2,
 								name = L["UnitFrame Font"],
 								desc = L["The font that unitframes will use"],
 								values = AceGUIWidgetLSMlists.font,	
 							},
-							dmgfont = {
+							dmgfont_ = {
 								type = "select", dialogControl = 'LSM30_Font',
 								order = 3,
 								name = L["Combat Text Font"],
@@ -218,28 +218,28 @@ function ElvuiConfig.GenerateOptionsInternal()
 						name = L["Textures"],
 						guiInline = true,
 						args = {
-							normTex = {
+							normTex_ = {
 								type = "select", dialogControl = 'LSM30_Statusbar',
 								order = 1,
 								name = L["StatusBar Texture"],
 								desc = L["Texture that gets used on all StatusBars"],
 								values = AceGUIWidgetLSMlists.statusbar,								
 							},
-							glossTex = {
+							glossTex_ = {
 								type = "select", dialogControl = 'LSM30_Statusbar',
 								order = 2,
 								name = L["Gloss Texture"],
 								desc = L["This gets used by some objects, unless gloss mode is on."],
 								values = AceGUIWidgetLSMlists.statusbar,								
 							},		
-							glowTex = {
+							glowTex_ = {
 								type = "select", dialogControl = 'LSM30_Border',
 								order = 3,
 								name = L["Glow Border"],
 								desc = L["Shadow Effect"],
 								values = AceGUIWidgetLSMlists.border,								
 							},
-							blank = {
+							blank_ = {
 								type = "select", dialogControl = 'LSM30_Background',
 								order = 4,
 								name = L["Backdrop Texture"],
@@ -328,14 +328,14 @@ function ElvuiConfig.GenerateOptionsInternal()
 						name = L["Sounds"],
 						guiInline = true,					
 						args = {
-							whisper = {
+							whisper_ = {
 								type = "select", dialogControl = 'LSM30_Sound',
 								order = 1,
 								name = L["Whisper Sound"],
 								desc = L["Sound that is played when recieving a whisper"],
 								values = AceGUIWidgetLSMlists.sound,								
 							},			
-							warning = {
+							warning_ = {
 								type = "select", dialogControl = 'LSM30_Sound',
 								order = 2,
 								name = L["Warning Sound"],

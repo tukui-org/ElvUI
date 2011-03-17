@@ -23,10 +23,10 @@ TEXT_MARGIN = 5;
 
 if ( E and C["media"] and C["media"]["uffont"] ) then
 	-- Sets font for all texts
-	MASTER_FONT = { C["media"]["uffont_"], 12, "OUTLINE" };
+	MASTER_FONT = { C["media"].uffont, 12, "THINOUTLINE" };
 
 	-- Sets font for stack count
-	STACKS_FONT = { C["media"]["uffont_"], 11, "OUTLINE" };
+	STACKS_FONT = { C["media"].uffont, 11, "THINOUTLINE" };
 else
 	-- Sets font for all texts
 	MASTER_FONT = { [=[Interface\Addons\ElvUI\media\Russel Square LT.ttf]=], 12, "OUTLINE" };
@@ -36,10 +36,10 @@ else
 end
 PERMANENT_AURA_VALUE = 1;
 if C["classtimer"].classcolor == false then
-	PLAYER_BAR_COLOR = { unpack(C["classtimer"]["buffcolor"]) };
-	TARGET_BAR_COLOR = { unpack(C["classtimer"]["buffcolor"]) };
-	TARGET_DEBUFF_COLOR = { unpack(C["classtimer"]["debuffcolor"]) };
-	TRINKET_BAR_COLOR = { unpack(C["classtimer"]["proccolor"]) };
+	PLAYER_BAR_COLOR = { unpack(C["classtimer"].buffcolor) };
+	TARGET_BAR_COLOR = { unpack(C["classtimer"].buffcolor) };
+	TARGET_DEBUFF_COLOR = { unpack(C["classtimer"].debuffcolor) };
+	TRINKET_BAR_COLOR = { unpack(C["classtimer"].proccolor) };
 	PLAYER_DEBUFF_COLOR = nil
 else
 	classcolor = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[select(2,UnitClass("player"))];
@@ -491,7 +491,7 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 
 				
 				local bar = CreateFrame( "StatusBar", nil, result, nil );
-				bar:SetStatusBarTexture( C["media"].normTex_ );
+				bar:SetStatusBarTexture( C["media"].normTex );
 				if ( bit.band( ICON_POSITION, 2 ) == 2 or bit.band( ICON_POSITION, 4 ) == 4 ) then
 					bar:SetPoint( "TOPLEFT", result, "TOPLEFT", 0, 0 );
 					bar:SetPoint( "BOTTOMRIGHT", result, "BOTTOMRIGHT", 0, 0 );
@@ -656,7 +656,7 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 			
 			local background = result:CreateTexture( nil, "BACKGROUND", nil );
 			background:SetAlpha( 0 );
-			background:SetTexture( C["media"].normTex_ );
+			background:SetTexture( C["media"].normTex );
 			background:SetPoint( "TOPLEFT", result, "TOPLEFT", 0, 0 );
 			background:SetPoint( "BOTTOMRIGHT", result, "BOTTOMRIGHT", 0, 0 );
 			background:SetVertexColor( 0.15, 0.15, 0.15 );

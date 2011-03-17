@@ -53,7 +53,7 @@ local function CreateButton(name, parent, template, width, height, point, relati
 	b:SetTemplate("Default")
 	if text then
 		local t = b:CreateFontString(nil,"OVERLAY",b)
-		t:SetFont(C["media"].font_,12)
+		t:SetFont(C["media"].font,12)
 		t:SetPoint("CENTER")
 		t:SetJustifyH("CENTER")
 		t:SetText(text)

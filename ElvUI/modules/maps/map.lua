@@ -6,13 +6,13 @@ if not C["others"].enablemap == true then return end
 WORLDMAP_WINDOWED_SIZE = 0.65 --Slightly increase the size of blizzard small map
 local mapscale = WORLDMAP_WINDOWED_SIZE
 
-local ft = C["media"].uffont_ -- Map font
+local ft = C["media"].uffont -- Map font
 local fontsize = 22 -- Map Font Size
 
 local mapbg = CreateFrame("Frame", nil, WorldMapDetailFrame)
 	mapbg:SetBackdrop( { 
-	bgFile = C["media"].blank_, 
-	edgeFile = C["media"].blank_, 
+	bgFile = C["media"].blank, 
+	edgeFile = C["media"].blank, 
 	tile = false, edgeSize = E.mult, 
 	insets = { left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult }
 })
@@ -227,8 +227,8 @@ end)
 
 local coords = CreateFrame("Frame", "CoordsFrame", WorldMapFrame)
 local fontheight = select(2, WorldMapQuestShowObjectivesText:GetFont())*1.1
-coords:FontString("PlayerText", C["media"].font_, fontheight, "THINOUTLINE")
-coords:FontString("MouseText", C["media"].font_, fontheight, "THINOUTLINE")
+coords:FontString("PlayerText", C["media"].font, fontheight, "THINOUTLINE")
+coords:FontString("MouseText", C["media"].font, fontheight, "THINOUTLINE")
 coords.PlayerText:SetTextColor(WorldMapQuestShowObjectivesText:GetTextColor())
 coords.MouseText:SetTextColor(WorldMapQuestShowObjectivesText:GetTextColor())
 coords.PlayerText:SetPoint("TOPLEFT", WorldMapButton, "TOPLEFT", 5, -5)

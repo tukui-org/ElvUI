@@ -15,7 +15,7 @@ StackSplitFrame:SetFrameStrata("TOOLTIP")
 
 local bags_BACKPACK = {0, 1, 2, 3, 4}
 local bags_BANK = {-1, 5, 6, 7, 8, 9, 10, 11}
-local BAGSFONT = C["media"].font_
+local BAGSFONT = C["media"].font
 local ST_NORMAL = 1
 local ST_SOULBAG = 2
 local ST_SPECIAL = 3
@@ -640,8 +640,8 @@ function Stuffing:Layout(lb)
 
 	f:SetClampedToScreen(1)
 	f:SetBackdrop({
-		bgFile = C["media"].blank_,
-		edgeFile = C["media"].blank_,
+		bgFile = C["media"].blank,
+		edgeFile = C["media"].blank,
 		edgeSize = E.mult,
 		insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
 	})
@@ -654,8 +654,8 @@ function Stuffing:Layout(lb)
 	if bag_bars == 1 then
 		fb:SetClampedToScreen(1)
 		fb:SetBackdrop({
-			bgFile = C["media"].blank_,
-			edgeFile = C["media"].blank_,
+			bgFile = C["media"].blank,
+			edgeFile = C["media"].blank,
 			edgeSize = E.mult,
 			insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
 		})

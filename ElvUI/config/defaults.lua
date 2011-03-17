@@ -2,15 +2,15 @@
 
 DB["media"] = {
 	-- fonts
-	["font"] = "ElvUI Font", -- general font of Elvui
-	["uffont"] = "ElvUI Font", -- general font of unitframes
-	["dmgfont"] = "ElvUI Combat", -- general font of dmg / sct
+	["font_"] = "ElvUI Font", -- general font of Elvui
+	["uffont_"] = "ElvUI Font", -- general font of unitframes
+	["dmgfont_"] = "ElvUI Combat", -- general font of dmg / sct
 		
 	-- textures
-	["normTex"] = "ElvUI Norm", -- texture used for Elvui healthbar/powerbar/etc
-	["glossTex"] = "ElvUI Gloss",
-	["glowTex"] = "ElvUI GlowBorder",
-	["blank"] = "ElvUI Blank",
+	["normTex_"] = "ElvUI Norm", -- texture used for Elvui healthbar/powerbar/etc
+	["glossTex_"] = "ElvUI Gloss",
+	["glowTex_"] = "ElvUI GlowBorder",
+	["blank_"] = "ElvUI Blank",
 	["bordercolor"] = { .23,.23,.23 }, -- border color of Elvui panels
 	["backdropcolor"] = { .07,.07,.07 }, -- background color of Elvui panels
 	["backdropfadecolor"] = { .07,.07,.07,0.9 }, --this is always the same as the backdrop color with an alpha of 0.8, see colors.lua
@@ -18,8 +18,8 @@ DB["media"] = {
 	["raidicons"] = [[Interface\AddOns\ElvUI\media\textures\raidicons.blp]], -- new raid icon textures by hankthetank
 	
 	-- sound
-	["whisper"] = "ElvUI Whisper",
-	["warning"] = "ElvUI Warning",
+	["whisper_"] = "ElvUI Whisper",
+	["warning_"] = "ElvUI Warning",
 	["glossyTexture"] = false,	-- Use a glossy texture for all frames
 }
 

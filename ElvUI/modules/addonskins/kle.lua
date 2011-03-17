@@ -24,7 +24,7 @@ local function SkinKLEBar(bar)
 	bar:SetTemplate("Default")
 	bar.bg:SetTexture(nil)
 	bar.border:Kill()
-	bar.statusbar:SetStatusBarTexture(C["media"].normTex_)
+	bar.statusbar:SetStatusBarTexture(C["media"].normTex)
 	bar.statusbar:ClearAllPoints()
 	bar.statusbar:SetPoint("TOPLEFT",borderWidth, -borderWidth)
 	bar.statusbar:SetPoint("BOTTOMRIGHT",-borderWidth, borderWidth)
@@ -77,7 +77,7 @@ KLE.LayoutHealthWatchers = function(self)
 		if hw:IsShown() then
 			hw:SetTemplate("Default")
 			hw.border:Kill()
-			hw.healthbar:SetStatusBarTexture(C["media"].normTex_)
+			hw.healthbar:SetStatusBarTexture(C["media"].normTex)
 		end
 	end
 end
@@ -163,8 +163,8 @@ KLE_Skin:SetScript("OnEvent", function(self, event)
 		self = nil
 		
 		--KLE doesn't like the pane timer font to listen for some reason
-		KLE.Pane.timer.left:SetFont(C["media"].font_, 18)
-		KLE.Pane.timer.right:SetFont(C["media"].font_, 12)
+		KLE.Pane.timer.left:SetFont(C["media"].font, 18)
+		KLE.Pane.timer.right:SetFont(C["media"].font, 12)
 		
 		for i=1, #movers do
 			_G[movers[i]]:SetTemplate("Transparent")

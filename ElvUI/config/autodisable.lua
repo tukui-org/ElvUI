@@ -14,21 +14,21 @@ end
 -------------------------------
 -- Load Shared Media Settings
 -------------------------------
-C["media"].font_ = LSM:Fetch("font", C["media"].font)
-C["media"].uffont_ = LSM:Fetch("font", C["media"].uffont)
-C["media"].dmgfont_ = LSM:Fetch("font", C["media"].dmgfont)
-C["media"].normTex_ = LSM:Fetch("statusbar", C["media"].normTex)
-C["media"].glossTex_ = LSM:Fetch("statusbar", C["media"].glossTex)
-C["media"].glowTex_ = LSM:Fetch("border", C["media"].glowTex)
-C["media"].blank_ = LSM:Fetch("background", C["media"].blank)
-C["media"].whisper_ = LSM:Fetch("sound", C["media"].whisper)
-C["media"].warning_ = LSM:Fetch("sound", C["media"].warning)
+C["media"].font = LSM:Fetch("font", C["media"].font_)
+C["media"].uffont = LSM:Fetch("font", C["media"].uffont_)
+C["media"].dmgfont = LSM:Fetch("font", C["media"].dmgfont_)
+C["media"].normTex = LSM:Fetch("statusbar", C["media"].normTex_)
+C["media"].glossTex = LSM:Fetch("statusbar", C["media"].glossTex_)
+C["media"].glowTex = LSM:Fetch("border", C["media"].glowTex_)
+C["media"].blank = LSM:Fetch("background", C["media"].blank_)
+C["media"].whisper = LSM:Fetch("sound", C["media"].whisper_)
+C["media"].warning = LSM:Fetch("sound", C["media"].warning_)
 
 --------------------------------------------------------------------
 -- OTHERS
 --------------------------------------------------------------------
 
 if C["media"].glossyTexture == true then	
-	C["media"].normTex_2 = C["media"].glossTex_
-	C["media"].normTex_ = C["media"].glossTex_
+	C["media"].normTex_2 = C["media"].glossTex
+	C["media"].normTex = C["media"].glossTex
 end

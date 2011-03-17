@@ -55,7 +55,7 @@ end
 
 -- Override settings from in-game GUI
 local titleBG = {
-	bgFile = C["media"].normTex_,
+	bgFile = C["media"].normTex,
 	tile = false,
 	tileSize = 0
 }
@@ -70,13 +70,13 @@ barmod.ApplySettings = function(self, win)
 		win.bargroup.button:SetBackdrop(titleBG)
 	end
 	
-	win.bargroup:SetTexture(C["media"].normTex_)
+	win.bargroup:SetTexture(C["media"].normTex)
 	win.bargroup:SetSpacing(barSpacing)
-	win.bargroup:SetFont(C["media"].font_, C["general"].fontscale)
+	win.bargroup:SetFont(C["media"].font, C["general"].fontscale)
 	win.bargroup:SetFrameLevel(5)
 	
 	local titlefont = CreateFont("TitleFont"..win.db.name)
-	titlefont:SetFont(C["media"].font_, C["general"].fontscale)
+	titlefont:SetFont(C["media"].font, C["general"].fontscale)
 	win.bargroup.button:SetNormalFontObject(titlefont)
 
 	local color = win.db.title.color

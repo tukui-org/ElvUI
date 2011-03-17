@@ -143,7 +143,7 @@ GameTooltipStatusBar:SetScript("OnValueChanged", function(self, value)
 	if not self.text then
 		self.text = self:CreateFontString(nil, "OVERLAY")
 		self.text:SetPoint("CENTER", GameTooltipStatusBar, 0, E.Scale(-3))
-		self.text:SetFont(C["media"].font_, C["general"].fontscale, "THINOUTLINE")
+		self.text:SetFont(C["media"].font, C["general"].fontscale, "THINOUTLINE")
 		self.text:Show()
 		if unit then
 			min, max = UnitHealth(unit), UnitHealthMax(unit)
@@ -177,7 +177,7 @@ healthBar:ClearAllPoints()
 healthBar:SetHeight(E.Scale(5))
 healthBar:SetPoint("TOPLEFT", healthBar:GetParent(), "BOTTOMLEFT", E.Scale(2), E.Scale(-5))
 healthBar:SetPoint("TOPRIGHT", healthBar:GetParent(), "BOTTOMRIGHT", -E.Scale(2), E.Scale(-5))
-healthBar:SetStatusBarTexture(C["media"].normTex_)
+healthBar:SetStatusBarTexture(C["media"].normTex)
 
 
 local healthBarBG = CreateFrame("Frame", "StatusBarBG", healthBar)
@@ -448,8 +448,8 @@ ElvuiTooltip:SetScript("OnEvent", function(self, event, addon)
 	FrameStackTooltip:HookScript("OnShow", function(self)
 		local noscalemult = E.mult * C["general"].uiscale
 		self:SetBackdrop({
-		  bgFile = C["media"].blank_, 
-		  edgeFile = C["media"].blank_, 
+		  bgFile = C["media"].blank, 
+		  edgeFile = C["media"].blank, 
 		  tile = false, tileSize = 0, edgeSize = noscalemult, 
 		  insets = { left = -noscalemult, right = -noscalemult, top = -noscalemult, bottom = -noscalemult}
 		})

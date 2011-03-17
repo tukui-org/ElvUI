@@ -86,11 +86,11 @@ local function SkinBars(self)
 				end
 
 				if not texture.styled then
-					texture:SetTexture(C["media"].normTex_)
+					texture:SetTexture(C["media"].normTex)
 					texture.styled=true
 				end
 				
-				tbar:SetStatusBarTexture(C["media"].normTex_)
+				tbar:SetStatusBarTexture(C["media"].normTex)
 				if not tbar.styled then
 					tbar:Point("TOPLEFT", frame, "TOPLEFT", 2, -2)
 					tbar:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 2)
@@ -103,7 +103,7 @@ local function SkinBars(self)
 					name:Point("LEFT", frame, "LEFT", 4, 0)
 					name:SetWidth(165)
 					name:SetHeight(8)
-					name:SetFont(C["media"].font_, 12, "OUTLINE")
+					name:SetFont(C["media"].font, 12, "OUTLINE")
 					name:SetJustifyH("LEFT")
 					name:SetShadowColor(0, 0, 0, 0)
 					name.SetFont = E.dummy
@@ -113,7 +113,7 @@ local function SkinBars(self)
 				if not timer.styled then	
 					timer:ClearAllPoints()
 					timer:Point("RIGHT", frame, "RIGHT", -4, 0)
-					timer:SetFont(C["media"].font_, 12, "OUTLINE")
+					timer:SetFont(C["media"].font, 12, "OUTLINE")
 					timer:SetJustifyH("RIGHT")
 					timer:SetShadowColor(0, 0, 0, 0)
 					timer.SetFont = E.dummy
@@ -140,7 +140,7 @@ local SkinBossTitle=function()
 	if not anchor.styled then
 		local header={anchor:GetRegions()}
 			if header[1]:IsObjectType("FontString") then
-				header[1]:SetFont(C["media"].font_, 12, "OUTLINE")
+				header[1]:SetFont(C["media"].font, 12, "OUTLINE")
 				header[1]:SetTextColor(1,1,1,1)
 				header[1]:SetShadowColor(0, 0, 0, 0)
 				anchor.styled=true	
@@ -185,7 +185,7 @@ local SkinBoss=function()
 		end	
 		
 		if not progress.styled then
-			progress:SetStatusBarTexture(C["media"].normTex_)
+			progress:SetStatusBarTexture(C["media"].normTex)
 			progress.styled=true
 		end				
 		progress:ClearAllPoints()
@@ -195,7 +195,7 @@ local SkinBoss=function()
 		if not name.styled then
 			name:ClearAllPoints()
 			name:Point("LEFT", bar, "LEFT", 4, 0)
-			name:SetFont(C["media"].font_, 12, "OUTLINE")
+			name:SetFont(C["media"].font, 12, "OUTLINE")
 			name:SetJustifyH("LEFT")
 			name:SetShadowColor(0, 0, 0, 0)
 			name.styled=true
@@ -204,7 +204,7 @@ local SkinBoss=function()
 		if not timer.styled then
 			timer:ClearAllPoints()
 			timer:Point("RIGHT", bar, "RIGHT", -4, 0)
-			timer:SetFont(C["media"].font_, 12, "OUTLINE")
+			timer:SetFont(C["media"].font, 12, "OUTLINE")
 			timer:SetJustifyH("RIGHT")
 			timer:SetShadowColor(0, 0, 0, 0)
 			timer.styled=true

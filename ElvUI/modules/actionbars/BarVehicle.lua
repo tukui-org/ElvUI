@@ -57,7 +57,7 @@ do
 		_G["ElvuiVehicleHotkey"..i] = _G["VehicleMenuBarActionButton"..i]:CreateFontString("ElvuiVehicleHotkey"..i, "OVERLAY", nil)
 		_G["ElvuiVehicleHotkey"..i]:ClearAllPoints()
 		_G["ElvuiVehicleHotkey"..i]:SetPoint("TOPRIGHT", 0, E.Scale(-3))
-		_G["ElvuiVehicleHotkey"..i]:SetFont(C["media"].font_, 12, "OUTLINE")
+		_G["ElvuiVehicleHotkey"..i]:SetFont(C["media"].font, 12, "OUTLINE")
 		_G["ElvuiVehicleHotkey"..i].ClearAllPoints = E.dummy
 		_G["ElvuiVehicleHotkey"..i].SetPoint = E.dummy
 		

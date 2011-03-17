@@ -39,8 +39,8 @@ local function CreateFrameOverlay(parent, name)
 	f:SetFrameStrata("DIALOG")
 	f:SetPoint("CENTER", f2, "CENTER")
 	f:SetBackdrop({
-	  bgFile = C["media"].blank_, 
-	  edgeFile = C["media"].blank_, 
+	  bgFile = C["media"].blank, 
+	  edgeFile = C["media"].blank, 
 	  tile = false, tileSize = 0, edgeSize = 2, 
 	  insets = { left = 0, right = 0, top = 0, bottom = 0}
 	})	
@@ -88,7 +88,7 @@ local function CreateFrameOverlay(parent, name)
 	
 	
 	local fs = f:CreateFontString(nil, "OVERLAY")
-	fs:SetFont(C["media"].font_, C["unitframes"].auratextscale, "THINOUTLINE")
+	fs:SetFont(C["media"].font, C["unitframes"].auratextscale, "THINOUTLINE")
 	fs:SetJustifyH("CENTER")
 	fs:SetShadowColor(0, 0, 0, 0.4)
 	fs:SetShadowOffset(E.mult, -E.mult)

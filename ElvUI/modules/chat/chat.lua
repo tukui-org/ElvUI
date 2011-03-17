@@ -74,7 +74,7 @@ local function SetChatStyle(frame)
 	end
 	
 	_G[chat.."TabText"]:SetTextColor(unpack(C["media"].valuecolor))
-	_G[chat.."TabText"]:SetFont(C["media"].font_,C["general"].fontscale,"THINOUTLINE")
+	_G[chat.."TabText"]:SetFont(C["media"].font,C["general"].fontscale,"THINOUTLINE")
 	_G[chat.."TabText"]:SetShadowColor(0, 0, 0, 0.4)
 	_G[chat.."TabText"]:SetShadowOffset(E.mult, -E.mult)
 	_G[chat.."TabText"].SetTextColor = E.dummy
@@ -439,8 +439,8 @@ local isf = nil
 local function CreatCopyFrame()
 	frame = CreateFrame("Frame", "CopyFrame", UIParent)
 	frame:SetBackdrop({
-			bgFile = C["media"].blank_, 
-			edgeFile = C["media"].blank_, 
+			bgFile = C["media"].blank, 
+			edgeFile = C["media"].blank, 
 			tile = 0, tileSize = 0, edgeSize = E.mult, 
 			insets = { left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult }
 	})
@@ -533,7 +533,7 @@ function E.ChatCopyButtons(id)
 		button:CreateShadow("Default")
 		
 		local buttontext = button:CreateFontString(nil,"OVERLAY",nil)
-		buttontext:SetFont(C["media"].font_,C["general"].fontscale,"THINOUTLINE")
+		buttontext:SetFont(C["media"].font,C["general"].fontscale,"THINOUTLINE")
 		buttontext:SetShadowColor(0, 0, 0, 0.4)
 		buttontext:SetShadowOffset(E.mult, -E.mult)
 		buttontext:SetText("C")
@@ -600,7 +600,7 @@ if C.chat.whispersound then
 	SoundSys:RegisterEvent("CHAT_MSG_BN_WHISPER")
 	SoundSys:HookScript("OnEvent", function(self, event, ...)
 		if event == "CHAT_MSG_WHISPER" or "CHAT_MSG_BN_WHISPER" then
-			PlaySoundFile(C["media"].whisper_)
+			PlaySoundFile(C["media"].whisper)
 		end
 	end)
 end

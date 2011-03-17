@@ -28,8 +28,8 @@ local function skinbubble(frame)
 	end
 	
 	frame:SetBackdrop({
-		bgFile = C["media"].blank_,
-		edgeFile = C["media"].blank_,
+		bgFile = C["media"].blank,
+		edgeFile = C["media"].blank,
 		tile = false, tileSize = 0, edgeSize = noscalemult,
 		insets = {left = -noscalemult, right = -noscalemult, top = -noscalemult, bottom = -noscalemult}
 	})

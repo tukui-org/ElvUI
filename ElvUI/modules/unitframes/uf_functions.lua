@@ -10,7 +10,7 @@ E.LoadUFFunctions = function(layout)
 
 	function E.ContructHealthBar(self, bg, text)
 		local health = CreateFrame('StatusBar', nil, self)
-		health:SetStatusBarTexture(C["media"].normTex_)
+		health:SetStatusBarTexture(C["media"].normTex)
 		health:SetFrameStrata("LOW")
 		health.frequentUpdates = 0.2
 		health.PostUpdate = E.PostUpdateHealth
@@ -22,7 +22,7 @@ E.LoadUFFunctions = function(layout)
 		if bg then
 			health.bg = health:CreateTexture(nil, 'BORDER')
 			health.bg:SetAllPoints()
-			health.bg:SetTexture(C["media"].blank_)
+			health.bg:SetTexture(C["media"].blank)
 			
 			if C["unitframes"].healthbackdrop ~= true then
 				health.bg.multiplier = 0.25
@@ -33,7 +33,7 @@ E.LoadUFFunctions = function(layout)
 		end
 		
 		if text then
-			health:FontString("value", C["media"].uffont_, C["unitframes"].fontsize*E.ResScale, "THINOUTLINE")
+			health:FontString("value", C["media"].uffont, C["unitframes"].fontsize*E.ResScale, "THINOUTLINE")
 			health.value:SetParent(self)
 		end
 		
@@ -63,7 +63,7 @@ E.LoadUFFunctions = function(layout)
 
 	function E.ConstructPowerBar(self, bg, text)
 		local power = CreateFrame('StatusBar', nil, self)
-		power:SetStatusBarTexture(C["media"].normTex_)
+		power:SetStatusBarTexture(C["media"].normTex)
 		power.frequentUpdates = 0.2
 		power:SetFrameStrata("LOW")
 		power.PostUpdate = E.PostUpdatePower
@@ -75,12 +75,12 @@ E.LoadUFFunctions = function(layout)
 		if bg then
 			power.bg = power:CreateTexture(nil, 'BORDER')
 			power.bg:SetAllPoints()
-			power.bg:SetTexture(C["media"].blank_)
+			power.bg:SetTexture(C["media"].blank)
 			power.bg.multiplier = 0.2
 		end
 		
 		if text then
-			power:FontString("value", C["media"].uffont_, C["unitframes"].fontsize*E.ResScale, "THINOUTLINE")
+			power:FontString("value", C["media"].uffont, C["unitframes"].fontsize*E.ResScale, "THINOUTLINE")
 			power.value:SetParent(self)
 		end
 		
@@ -99,7 +99,7 @@ E.LoadUFFunctions = function(layout)
 		
 	function E.ConstructCastBar(self, width, height, direction)
 		local castbar = CreateFrame("StatusBar", nil, self)
-		castbar:SetStatusBarTexture(C["media"].normTex_)
+		castbar:SetStatusBarTexture(C["media"].normTex)
 		castbar:Height(height)
 		castbar:Width(width - 4*E.ResScale)
 		castbar.CustomDelayText = E.CustomCastDelayText
@@ -113,20 +113,20 @@ E.LoadUFFunctions = function(layout)
 		castbar.bg:Point("BOTTOMRIGHT", 2*E.ResScale, -2*E.ResScale)
 		castbar.bg:SetFrameLevel(castbar:GetFrameLevel() - 1)
 		
-		castbar:FontString("Time", C["media"].uffont_, C["unitframes"].fontsize*E.ResScale, "THINOUTLINE")
+		castbar:FontString("Time", C["media"].uffont, C["unitframes"].fontsize*E.ResScale, "THINOUTLINE")
 		castbar.Time:Point("RIGHT", castbar, "RIGHT", -4, 0)
 		castbar.Time:SetTextColor(0.84, 0.75, 0.65)
 		castbar.Time:SetJustifyH("RIGHT")
 		castbar.CustomTimeText = E.CustomCastTimeText
 
-		castbar:FontString("Text", C["media"].uffont_, C["unitframes"].fontsize*E.ResScale, "THINOUTLINE")
+		castbar:FontString("Text", C["media"].uffont, C["unitframes"].fontsize*E.ResScale, "THINOUTLINE")
 		castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 0)
 		castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 
 		-- cast bar latency on player
 		if C["unitframes"].cblatency == true and self.unit == "player" then
 			castbar.SafeZone = castbar:CreateTexture(nil, "OVERLAY")
-			castbar.SafeZone:SetTexture(C["media"].normTex_)
+			castbar.SafeZone:SetTexture(C["media"].normTex)
 			castbar.SafeZone:SetVertexColor(0.69, 0.31, 0.31, 0.75)
 		end			
 
@@ -591,9 +591,9 @@ E.LoadUFFunctions = function(layout)
 		local header = button:GetParent():GetParent():GetParent():GetName()
 		
 		if unit == "focus" or unit == "targettarget" or header == "ElvuiHealParty" then
-			button:FontString(nil, C["media"].font_, C["unitframes"].auratextscale*0.85, "THINOUTLINE")
+			button:FontString(nil, C["media"].font, C["unitframes"].auratextscale*0.85, "THINOUTLINE")
 		else
-			button:FontString(nil, C["media"].font_, C["unitframes"].auratextscale, "THINOUTLINE")
+			button:FontString(nil, C["media"].font, C["unitframes"].auratextscale, "THINOUTLINE")
 		end
 		
 		button:SetTemplate("Default")
@@ -610,7 +610,7 @@ E.LoadUFFunctions = function(layout)
 		
 		button.count:Point("BOTTOMRIGHT", E.mult, 1.5)
 		button.count:SetJustifyH("RIGHT")
-		button.count:SetFont(C["media"].font_, C["unitframes"].auratextscale*0.8, "THINOUTLINE")
+		button.count:SetFont(C["media"].font, C["unitframes"].auratextscale*0.8, "THINOUTLINE")
 
 		button.overlayFrame = CreateFrame("frame", nil, button, nil)
 		button.cd:SetFrameLevel(button:GetFrameLevel() + 1)
@@ -922,7 +922,7 @@ E.LoadUFFunctions = function(layout)
 
 				local tex = icon:CreateTexture(nil, "OVERLAY")
 				tex:SetAllPoints(icon)
-				tex:SetTexture(C["media"].blank_)
+				tex:SetTexture(C["media"].blank)
 				if (spell[3]) then
 					tex:SetVertexColor(unpack(spell[3]))
 				else
@@ -932,11 +932,11 @@ E.LoadUFFunctions = function(layout)
 				local border = icon:CreateTexture(nil, "ARTWORK")
 				border:Point("TOPLEFT", -E.mult, E.mult)
 				border:Point("BOTTOMRIGHT", E.mult, -E.mult)
-				border:SetTexture(C["media"].blank_)
+				border:SetTexture(C["media"].blank)
 				border:SetVertexColor(0, 0, 0)
 
 				local count = icon:CreateFontString(nil, "OVERLAY")
-				count:SetFont(C["media"].uffont_, 8, "THINOUTLINE")
+				count:SetFont(C["media"].uffont, 8, "THINOUTLINE")
 				count:SetPoint("CENTER", unpack(E.countOffsets[spell[2]]))
 				icon.count = count
 

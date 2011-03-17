@@ -29,12 +29,12 @@ local function Shared(self, unit)
 	health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
 	health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER)
 	health.value:Point("BOTTOM", health, "BOTTOM", 0, 1)
-	health.value:SetFont(C["media"].uffont_, (C["raidframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
+	health.value:SetFont(C["media"].uffont, (C["raidframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
 	
 	self.Health = health
 				
 	--Name
-	self:FontString("Name", C["media"].uffont_, (C["unitframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
+	self:FontString("Name", C["media"].uffont, (C["unitframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
 	self.Name:Point("TOP", health, "TOP", 0, -3)
 	self.Name.frequentUpdates = 0.3
 	self:Tag(self.Name, "[Elvui:getnamecolor][Elvui:nameshort]")

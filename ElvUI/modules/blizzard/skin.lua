@@ -60,8 +60,8 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 	if addon == "Blizzard_DebugTools" then
 		local noscalemult = E.mult * C["general"].uiscale
 		local bg = {
-		  bgFile = C["media"].blank_, 
-		  edgeFile = C["media"].blank_, 
+		  bgFile = C["media"].blank, 
+		  edgeFile = C["media"].blank, 
 		  tile = false, tileSize = 0, edgeSize = noscalemult, 
 		  insets = { left = -noscalemult, right = -noscalemult, top = -noscalemult, bottom = -noscalemult}
 		}
@@ -91,8 +91,8 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		end
 		
 		local bg = {
-		  bgFile = C["media"].normTex_, 
-		  edgeFile = C["media"].blank_, 
+		  bgFile = C["media"].normTex, 
+		  edgeFile = C["media"].blank, 
 		  tile = false, tileSize = 0, edgeSize = noscalemult, 
 		  insets = { left = -noscalemult, right = -noscalemult, top = -noscalemult, bottom = -noscalemult}
 		}

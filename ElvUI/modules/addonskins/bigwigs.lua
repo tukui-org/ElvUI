@@ -87,13 +87,13 @@ local applystyle = function(bar)
 	end
 
 	-- setup timer and bar name fonts and positions
-	bar.candyBarLabel:SetFont(C["media"].font_, 12, "OUTLINE")
+	bar.candyBarLabel:SetFont(C["media"].font, 12, "OUTLINE")
 	bar.candyBarLabel:SetShadowColor(0, 0, 0, 0)
 	bar.candyBarLabel:SetJustifyH("LEFT")
 	bar.candyBarLabel:ClearAllPoints()
 	bar.candyBarLabel:Point("LEFT", bar, "LEFT", 4, 0)
 	
-	bar.candyBarDuration:SetFont(C["media"].font_, 12, "OUTLINE")
+	bar.candyBarDuration:SetFont(C["media"].font, 12, "OUTLINE")
 	bar.candyBarDuration:SetShadowColor(0, 0, 0, 0)
 	bar.candyBarDuration:SetJustifyH("RIGHT")
 	bar.candyBarDuration:ClearAllPoints()
@@ -104,7 +104,7 @@ local applystyle = function(bar)
 	bar.candyBarBar:SetAllPoints(bar)
 	bar.candyBarBar.OldSetPoint = bar.candyBarBar.SetPoint
 	bar.candyBarBar.SetPoint=E.dummy
-	bar.candyBarBar:SetStatusBarTexture(C["media"].normTex_)
+	bar.candyBarBar:SetStatusBarTexture(C["media"].normTex)
 	bar.candyBarBackground:SetTexture(unpack(C.media.backdropcolor))
 	
 	-- setup icon positions and other things

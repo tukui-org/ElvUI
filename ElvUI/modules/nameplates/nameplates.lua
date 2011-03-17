@@ -6,8 +6,8 @@ if not C["nameplate"].enable == true then return end
 local _, build = GetBuildInfo()
 if tonumber(build) > 13623 then return end
 
-local TEXTURE = C["media"].normTex_
-local FONT = C["media"].font_
+local TEXTURE = C["media"].normTex
+local FONT = C["media"].font
 local FONTSIZE = 10
 local FONTFLAG = "THINOUTLINE"
 local hpHeight = 12
@@ -15,7 +15,7 @@ local hpWidth = 110
 local iconSize = 25		--Size of all Icons, RaidIcon/ClassIcon/Castbar Icon
 local cbHeight = 5
 local cbWidth = 110
-local blankTex = C["media"].blank_
+local blankTex = C["media"].blank
 local OVERLAY = [=[Interface\TargetingFrame\UI-TargetingFrame-Flash]=]
 local numChildren = -1
 local frames = {}

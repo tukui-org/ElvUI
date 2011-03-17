@@ -19,8 +19,8 @@ local BOSS_HEIGHT = C["unitframes"].arenabossheight*E.ResScale
 local BORDER = 2*E.ResScale
 local SPACING = 1*E.ResScale
 local FONTSIZE = C["unitframes"].fontsize*E.ResScale
-local FONT = C["media"].uffont_
-local NORMTEX = C["media"].normTex_
+local FONT = C["media"].uffont
+local NORMTEX = C["media"].normTex
 local POWERTHEME = C["unitframes"].mini_powerbar
 
 --[[
@@ -225,7 +225,7 @@ local function Shared(self, unit)
 			else
 				dbh:SetAllPoints()
 			end
-			dbh:SetTexture(C["media"].blank_)
+			dbh:SetTexture(C["media"].blank)
 			dbh:SetBlendMode("ADD")
 			dbh:SetVertexColor(0,0,0,0)
 			self.DebuffHighlight = dbh
@@ -607,14 +607,14 @@ local function Shared(self, unit)
 			mhpb:SetPoint('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
 			mhpb:SetPoint('TOPLEFT', health:GetStatusBarTexture(), 'TOPRIGHT')	
 			mhpb:SetWidth(POWERBAR_WIDTH)
-			mhpb:SetStatusBarTexture(C["media"].blank_)
+			mhpb:SetStatusBarTexture(C["media"].blank)
 			mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
 			
 			local ohpb = CreateFrame('StatusBar', nil, health)
 			ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
 			ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)		
 			ohpb:SetWidth(mhpb:GetWidth())
-			ohpb:SetStatusBarTexture(C["media"].blank_)
+			ohpb:SetStatusBarTexture(C["media"].blank)
 			ohpb:SetStatusBarColor(0, 1, 0, 0.25)
 			
 			self.HealPrediction = {
@@ -768,7 +768,7 @@ local function Shared(self, unit)
 			else
 				dbh:SetAllPoints()
 			end
-			dbh:SetTexture(C["media"].blank_)
+			dbh:SetTexture(C["media"].blank)
 			dbh:SetBlendMode("ADD")
 			dbh:SetVertexColor(0,0,0,0)
 			self.DebuffHighlight = dbh
@@ -860,14 +860,14 @@ local function Shared(self, unit)
 			mhpb:SetPoint('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
 			mhpb:SetPoint('TOPLEFT', health:GetStatusBarTexture(), 'TOPRIGHT')	
 			mhpb:SetWidth(POWERBAR_WIDTH)
-			mhpb:SetStatusBarTexture(C["media"].blank_)
+			mhpb:SetStatusBarTexture(C["media"].blank)
 			mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
 			
 			local ohpb = CreateFrame('StatusBar', nil, health)
 			ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
 			ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)		
 			ohpb:SetWidth(mhpb:GetWidth())
-			ohpb:SetStatusBarTexture(C["media"].blank_)
+			ohpb:SetStatusBarTexture(C["media"].blank)
 			ohpb:SetStatusBarColor(0, 1, 0, 0.25)
 			
 			self.HealPrediction = {
@@ -950,7 +950,7 @@ local function Shared(self, unit)
 			else
 				dbh:SetAllPoints()
 			end
-			dbh:SetTexture(C["media"].blank_)
+			dbh:SetTexture(C["media"].blank)
 			dbh:SetBlendMode("ADD")
 			dbh:SetVertexColor(0,0,0,0)
 			self.DebuffHighlight = dbh
