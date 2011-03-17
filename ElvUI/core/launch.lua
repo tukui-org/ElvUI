@@ -25,7 +25,7 @@ function E.Install()
 	SetCVar("gxTextureCacheSize", 512)
 	
 	-- Var ok, now setting chat frames if using Elvui chats.	
-	if (DB.chat.enable == true) and (not IsAddOnLoaded("Prat") or not IsAddOnLoaded("Chatter")) then					
+	if (C.chat.enable == true) and (not IsAddOnLoaded("Prat") or not IsAddOnLoaded("Chatter")) then					
 		FCF_ResetChatWindows()
 		FCF_SetLocked(ChatFrame1, 1)
 		FCF_DockFrame(ChatFrame2)
@@ -41,10 +41,10 @@ function E.Install()
 			local chatFrameId = frame:GetID()
 			local chatName = FCF_GetChatWindowInfo(chatFrameId)
 			
-			_G["ChatFrame"..i]:SetSize(E.Scale(DB["chat"].chatwidth - 5), E.Scale(DB["chat"].chatheight))
+			_G["ChatFrame"..i]:SetSize(E.Scale(C["chat"].chatwidth - 5), E.Scale(C["chat"].chatheight))
 			
 			-- this is the default width and height of Elvui chats.
-			SetChatWindowSavedDimensions(chatFrameId, E.Scale(DB["chat"].chatwidth + -4), E.Scale(DB["chat"].chatheight))
+			SetChatWindowSavedDimensions(chatFrameId, E.Scale(C["chat"].chatwidth + -4), E.Scale(C["chat"].chatheight))
 			
 			-- move general bottom left
 			if i == 1 then
@@ -168,7 +168,7 @@ function E.Install()
 	ElvuiData[E.myrealm][E.myname].installed = true
 
 	-- reset unitframe position
-	if DB["unitframes"].positionbychar == true then
+	if C["unitframes"].positionbychar == true then
 		ElvuiUFpos = {}
 	else
 		ElvuiData.ufpos = {}
@@ -196,10 +196,10 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 			StaticPopup_Show("DISABLE_UI")
 	else
 		SetCVar("useUiScale", 1)
-		if DB["general"].multisampleprotect == true then
+		if C["general"].multisampleprotect == true then
 			SetMultisampleFormat(1)
 		end
-		SetCVar("uiScale", DB["general"].uiscale)
+		SetCVar("uiScale", C["general"].uiscale)
 		
 		if ElvuiData == nil then ElvuiData = {} end
 		if ElvuiData[E.myrealm] == nil then ElvuiData[E.myrealm] = {} end
@@ -219,11 +219,11 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 		StaticPopup_Show("DISABLE_RAID")
 	end
 		
-	if DB["unitframes"].arena == true then
+	if C["unitframes"].arena == true then
 		SetCVar("showArenaEnemyFrames", 0)
 	end
 	
-	if DB["nameplate"].enable == true and DB["nameplate"].enhancethreat == true then
+	if C["nameplate"].enable == true and C["nameplate"].enhancethreat == true then
 		SetCVar("threatWarning", 3)
 	end
 
@@ -236,7 +236,7 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 		local height = E.getscreenheight
 		
 		-- if autoscale is off, find a new width value of UIParent for screen #1.
-		if not DB.general.autoscale or height > 1200 then
+		if not C.general.autoscale or height > 1200 then
 			local h = UIParent:GetHeight()
 			local ratio = E.getscreenheight / h
 			local w = E.eyefinity / ratio

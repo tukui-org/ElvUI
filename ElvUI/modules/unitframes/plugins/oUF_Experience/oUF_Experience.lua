@@ -1,5 +1,5 @@
 local E, C, L, DB = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
-if DB.unitframes.enable ~= true then return end
+if C.unitframes.enable ~= true then return end
 --[[
 
 	Elements handled:

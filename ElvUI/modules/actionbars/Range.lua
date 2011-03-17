@@ -6,7 +6,7 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
-if not DB["actionbar"].enable == true then return end
+if not C["actionbar"].enable == true then return end
 
 --locals and speed
 local _G = _G

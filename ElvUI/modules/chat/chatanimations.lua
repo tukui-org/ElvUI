@@ -12,7 +12,7 @@ E.ToggleSlideChatL = function()
 		end
 		E.SlideOut(ChatLBackground)	
 		E.ChatLIn = false
-		ElvuiInfoLeftLButton.text:SetTextColor(unpack(DB["media"].valuecolor))
+		ElvuiInfoLeftLButton.text:SetTextColor(unpack(C["media"].valuecolor))
 	else
 		E.SlideIn(ChatLBackground)
 		E.ChatLIn = true
@@ -26,7 +26,7 @@ E.ToggleSlideChatR = function()
 		E.SlideOut(ChatRBackground)	
 		E.ChatRIn = false
 		E.ChatRightShown = false
-		ElvuiInfoRightRButton.text:SetTextColor(unpack(DB["media"].valuecolor))
+		ElvuiInfoRightRButton.text:SetTextColor(unpack(C["media"].valuecolor))
 	else
 		E.SlideIn(ChatRBackground)
 		E.ChatRIn = true

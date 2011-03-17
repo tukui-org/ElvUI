@@ -50,11 +50,11 @@ function E.ElvuiPetBarUpdate(self, event)
 		
 		-- grid display
 		if name then
-			if not DB["actionbar"].showgrid then
+			if not C["actionbar"].showgrid then
 				petActionButton:SetAlpha(1)
 			end			
 		else
-			if not DB["actionbar"].showgrid then
+			if not C["actionbar"].showgrid then
 				petActionButton:SetAlpha(0)
 			end
 		end
@@ -124,7 +124,7 @@ function E.PositionAllPanels()
 	ElvuiPetActionBarBackground:ClearAllPoints()
 	ElvuiLineToPetActionBarBackground:ClearAllPoints()
 	
-	if DB["actionbar"].bottompetbar ~= true then
+	if C["actionbar"].bottompetbar ~= true then
 		ElvuiActionBarBackground:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, E.Scale(4))
 		if E["actionbar"].rightbars > 0 then
 			ElvuiPetActionBarBackground:SetPoint("RIGHT", ElvuiActionBarBackgroundRight, "LEFT", E.Scale(-6), 0)

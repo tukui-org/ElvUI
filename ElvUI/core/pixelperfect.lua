@@ -1,8 +1,8 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 function E.UIScale()
-	if DB["general"].autoscale == true then
-		DB["general"].uiscale = min(1, max(.64, 768/E.getscreenheight))
+	if C["general"].autoscale == true then
+		C["general"].uiscale = min(1, max(.64, 768/E.getscreenheight))
 	end
 
 	E.lowversion = false
@@ -39,9 +39,9 @@ function E.UIScale()
 		E.eyefinity = width
 	end
 	
-	if DB["general"].resolutionoverride == "Low" then
+	if C["general"].resolutionoverride == "Low" then
 		E.lowversion = true
-	elseif DB["general"].resolutionoverride == "High" then
+	elseif C["general"].resolutionoverride == "High" then
 		E.lowversion = false
 	end
 	
@@ -55,7 +55,7 @@ end
 E.UIScale()
 
 -- pixel perfect script of custom ui scale.
-local mult = 768/string.match(GetCVar("gxResolution"), "%d+x(%d+)")/DB["general"].uiscale
+local mult = 768/string.match(GetCVar("gxResolution"), "%d+x(%d+)")/C["general"].uiscale
 local function scale(x)
     return mult*math.floor(x/mult+.5)
 end

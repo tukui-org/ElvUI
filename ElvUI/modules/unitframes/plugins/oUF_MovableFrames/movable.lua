@@ -362,7 +362,7 @@ do
 		name:SetJustifyH"CENTER"
 		name:SetFont(GameFontNormal:GetFont(), 12, "THINOUTLINE")
 		name:SetShadowOffset(E.mult, -E.mult)
-		name:SetTextColor(unpack(DB["media"].valuecolor))
+		name:SetTextColor(unpack(C["media"].valuecolor))
 		
 		backdrop.name = name
 		backdrop.obj = obj
@@ -380,10 +380,10 @@ do
 		backdrop:SetScript("OnDragStop", OnDragStop)
 		backdrop:SetScript("OnEnter", function(self)
 			self.name:SetTextColor(1, 1, 1)
-			self:SetBackdropBorderColor(unpack(DB["media"].valuecolor))		
+			self:SetBackdropBorderColor(unpack(C["media"].valuecolor))		
 		end)
 		backdrop:SetScript("OnLeave", function(self)
-			self.name:SetTextColor(unpack(DB["media"].valuecolor))
+			self.name:SetTextColor(unpack(C["media"].valuecolor))
 			self:SetTemplate("Default", true)
 		end)		
 

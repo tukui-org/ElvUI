@@ -1,7 +1,7 @@
 
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if DB["buffreminder"].raidbuffreminder ~= true then return end
+if C["buffreminder"].raidbuffreminder ~= true then return end
 
 --Locals
 local flaskbuffs = E.BuffReminderRaidBuffs["Flask"]
@@ -211,7 +211,7 @@ local function OnAuraChange(self, event, arg1, unit)
 		end
 	else
 		if RaidReminderShown ~= false and reminderoverride ~= true then
-			ElvuiInfoRightLButton.text:SetTextColor(unpack(DB["media"].valuecolor))
+			ElvuiInfoRightLButton.text:SetTextColor(unpack(C["media"].valuecolor))
 			UIFrameFadeOut(self, 0.4)
 			RaidReminderShown = false
 		end
@@ -295,13 +295,13 @@ do
 		if ElvuiInfoRightLButton.hovered == true then
 			GameTooltip:ClearLines()
 			if RaidReminderShown == true then
-				GameTooltip:AddDoubleLine(L.raidbufftoggler, SHOW,1,1,1,unpack(DB["media"].valuecolor))
-				ElvuiInfoRightLButton.text:SetTextColor(unpack(DB["media"].valuecolor))
+				GameTooltip:AddDoubleLine(L.raidbufftoggler, SHOW,1,1,1,unpack(C["media"].valuecolor))
+				ElvuiInfoRightLButton.text:SetTextColor(unpack(C["media"].valuecolor))
 				UIFrameFadeOut(RaidBuffReminder, 0.4)
 				RaidReminderShown = false
 				reminderoverride = true
 			else
-				GameTooltip:AddDoubleLine(L.raidbufftoggler, HIDE,1,1,1,unpack(DB["media"].valuecolor))
+				GameTooltip:AddDoubleLine(L.raidbufftoggler, HIDE,1,1,1,unpack(C["media"].valuecolor))
 				ElvuiInfoRightLButton.text:SetTextColor(1,1,1)
 				UIFrameFadeIn(RaidBuffReminder, 0.4)
 				RaidReminderShown = true
@@ -319,9 +319,9 @@ do
 		GameTooltip:ClearLines()
 		
 		if RaidReminderShown == true then
-			GameTooltip:AddDoubleLine(L.raidbufftoggler, HIDE,1,1,1,unpack(DB["media"].valuecolor))
+			GameTooltip:AddDoubleLine(L.raidbufftoggler, HIDE,1,1,1,unpack(C["media"].valuecolor))
 		else
-			GameTooltip:AddDoubleLine(L.raidbufftoggler, SHOW,1,1,1,unpack(DB["media"].valuecolor))
+			GameTooltip:AddDoubleLine(L.raidbufftoggler, SHOW,1,1,1,unpack(C["media"].valuecolor))
 		end
 		GameTooltip:Show()
 	end)

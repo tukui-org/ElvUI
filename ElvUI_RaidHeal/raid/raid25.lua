@@ -3,11 +3,11 @@ local E, C, L, DB = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 local oUF = ElvUF or oUF
 assert(oUF, "ElvUI was unable to locate oUF.")
 
-if not DB["raidframes"].enable == true then return end
+if not C["raidframes"].enable == true then return end
 if IsAddOnLoaded("ElvUI_Dps_Layout") then return end
 
-local RAID_WIDTH = ((ElvuiActionBarBackground:GetWidth() / 5) - 2.5)*DB["raidframes"].scale
-local RAID_HEIGHT = E.Scale(42)*DB["raidframes"].scale
+local RAID_WIDTH = ((ElvuiActionBarBackground:GetWidth() / 5) - 2.5)*C["raidframes"].scale
+local RAID_HEIGHT = E.Scale(42)*C["raidframes"].scale
 
 local BORDER = 2
 
@@ -33,11 +33,11 @@ local function Shared(self, unit)
 	local health = E.ContructHealthBar(self, true, true)
 	health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
 	health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
-	if DB["raidframes"].gridhealthvertical == true then
+	if C["raidframes"].gridhealthvertical == true then
 		health:SetOrientation("VERTICAL")
 	end		
 	health.value:Point("BOTTOM", health, "BOTTOM", 0, 3)
-	health.value:SetFont(DB["media"].uffont, (DB["raidframes"].fontsize-1)*DB["raidframes"].scale, "THINOUTLINE")
+	health.value:SetFont(C["media"].uffont, (C["raidframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
 	
 	self.Health = health
 			
@@ -49,12 +49,12 @@ local function Shared(self, unit)
 	self.Power = power
 
 	--Name
-	self:FontString("Name", DB["media"].uffont, (DB["unitframes"].fontsize-1)*DB["raidframes"].scale, "THINOUTLINE")
+	self:FontString("Name", C["media"].uffont, (C["unitframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
 	self.Name:Point("TOP", health, "TOP", 0, -3)
 	self.Name.frequentUpdates = 0.3
 	self:Tag(self.Name, "[Elvui:getnamecolor][Elvui:nameshort]")
 
-	if DB["raidframes"].role == true then
+	if C["raidframes"].role == true then
 		local LFDRole = self:CreateTexture(nil, "OVERLAY")
 		LFDRole:Size(6, 6)
 		LFDRole:Point("TOP", self.Name, "BOTTOM", 0, -1)
@@ -69,21 +69,21 @@ local function Shared(self, unit)
 
 
 	local RaidIcon = self:CreateTexture(nil, 'OVERLAY')
-	RaidIcon:Size(15*DB["raidframes"].scale, 15*DB["raidframes"].scale)
+	RaidIcon:Size(15*C["raidframes"].scale, 15*C["raidframes"].scale)
 	RaidIcon:SetPoint('CENTER', self, 'TOP')
 	RaidIcon:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\raidicons.blp')
 	self.RaidIcon = RaidIcon
 	
 	local ReadyCheck = self.Health:CreateTexture(nil, "OVERLAY")
-	ReadyCheck:SetHeight(DB["raidframes"].fontsize)
-	ReadyCheck:SetWidth(DB["raidframes"].fontsize)
+	ReadyCheck:SetHeight(C["raidframes"].fontsize)
+	ReadyCheck:SetWidth(C["raidframes"].fontsize)
 	ReadyCheck:Point('TOP', self.Name, 'BOTTOM', 0, -2)
 	self.ReadyCheck = ReadyCheck
 	
-	if DB["unitframes"].debuffhighlight == true then
+	if C["unitframes"].debuffhighlight == true then
 		local dbh = self:CreateTexture(nil, "OVERLAY")
 		dbh:SetAllPoints()
-		dbh:SetTexture(DB["media"].blank)
+		dbh:SetTexture(C["media"].blank)
 		dbh:SetBlendMode("ADD")
 		dbh:SetVertexColor(0,0,0,0)
 		self.DebuffHighlight = dbh
@@ -92,9 +92,9 @@ local function Shared(self, unit)
 	end
 
 	--Heal Comm
-	if DB["raidframes"].healcomm == true then
+	if C["raidframes"].healcomm == true then
 		local mhpb = CreateFrame('StatusBar', nil, health)
-		if DB["raidframes"].gridhealthvertical == true then
+		if C["raidframes"].gridhealthvertical == true then
 			mhpb:SetOrientation("VERTICAL")
 			mhpb:SetPoint('BOTTOMLEFT', health:GetStatusBarTexture(), 'TOPLEFT')
 			mhpb:SetPoint('BOTTOMRIGHT', health:GetStatusBarTexture(), 'TOPRIGHT')
@@ -105,11 +105,11 @@ local function Shared(self, unit)
 			mhpb:SetWidth(RAID_WIDTH - (BORDER*2))
 		end
 		
-		mhpb:SetStatusBarTexture(DB["media"].blank)
+		mhpb:SetStatusBarTexture(C["media"].blank)
 		mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
 
 		local ohpb = CreateFrame('StatusBar', nil, health)
-		if DB["raidframes"].gridhealthvertical == true then		
+		if C["raidframes"].gridhealthvertical == true then		
 			ohpb:SetOrientation("VERTICAL")
 			ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'TOPLEFT')
 			ohpb:SetPoint('BOTTOMRIGHT', mhpb:GetStatusBarTexture(), 'TOPRIGHT')
@@ -119,7 +119,7 @@ local function Shared(self, unit)
 			ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
 			ohpb:SetWidth(RAID_WIDTH - (BORDER*2))
 		end
-		ohpb:SetStatusBarTexture(DB["media"].blank)
+		ohpb:SetStatusBarTexture(C["media"].blank)
 		ohpb:SetStatusBarColor(0, 1, 0, 0.25)
 
 		self.HealPrediction = {
@@ -146,26 +146,26 @@ local function Shared(self, unit)
 	RaidDebuffs.icon:Point("TOPLEFT", 2, -2)
 	RaidDebuffs.icon:Point("BOTTOMRIGHT", -2, 2)
 	
-	RaidDebuffs.count = RaidDebuffs:FontString('count', DB["media"].uffont, DB["general"].fontscale*0.75, "THINOUTLINE")
+	RaidDebuffs.count = RaidDebuffs:FontString('count', C["media"].uffont, C["general"].fontscale*0.75, "THINOUTLINE")
 	RaidDebuffs.count:Point('BOTTOMRIGHT', RaidDebuffs, 'BOTTOMRIGHT', 0, 2)
 	RaidDebuffs.count:SetTextColor(1, .9, 0)
 	
-	RaidDebuffs:FontString('time', DB["media"].uffont, DB["general"].fontscale*0.75, "THINOUTLINE")
+	RaidDebuffs:FontString('time', C["media"].uffont, C["general"].fontscale*0.75, "THINOUTLINE")
 	RaidDebuffs.time:SetPoint('CENTER')
 	RaidDebuffs.time:SetTextColor(1, .9, 0)
 	
 	self.RaidDebuffs = RaidDebuffs	
 				
-	if DB["raidframes"].showrange == true then
-		local range = {insideAlpha = 1, outsideAlpha = DB["raidframes"].raidalphaoor}
+	if C["raidframes"].showrange == true then
+		local range = {insideAlpha = 1, outsideAlpha = C["raidframes"].raidalphaoor}
 		self.Range = range
 	end
 	
-	if DB["raidframes"].raidunitbuffwatch == true then
+	if C["raidframes"].raidunitbuffwatch == true then
 		E.createAuraWatch(self,unit)
     end
 	
-	if DB["raidframes"].mouseglow == true then
+	if C["raidframes"].mouseglow == true then
 		self:CreateShadow("Default")
 		
 		--self.shadow is used for threat, if we leave it like this, it may cause complications
@@ -220,7 +220,7 @@ oUF:Factory(function(self)
 		'initial-height', RAID_HEIGHT,	
 		"showRaid", true, 
 		"showParty", true,
-		"showPlayer", DB["raidframes"].showplayerinparty,
+		"showPlayer", C["raidframes"].showplayerinparty,
 		"xoffset", 3,
 		"yOffset", -3,
 		"point", "LEFT",
@@ -254,7 +254,7 @@ oUF:Factory(function(self)
 			if inInstance and instanceType == "raid" and maxPlayers ~= 40 then
 				ChangeVisibility("custom [group:party,nogroup:raid][group:raid] show;hide")
 			else
-				if DB["raidframes"].gridonly == true then
+				if C["raidframes"].gridonly == true then
 					ChangeVisibility("custom [@raid26,exists] hide;show")
 				else
 					ChangeVisibility("custom [@raid6,noexists][@raid26,exists] hide;show")

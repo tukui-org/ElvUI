@@ -1,6 +1,6 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not IsAddOnLoaded("KLE") or not DB["skin"].kle == true then return end
+if not IsAddOnLoaded("KLE") or not C["skin"].kle == true then return end
 
 local KLE = KLE
 local _G = getfenv(0)
@@ -24,7 +24,7 @@ local function SkinKLEBar(bar)
 	bar:SetTemplate("Default")
 	bar.bg:SetTexture(nil)
 	bar.border:Kill()
-	bar.statusbar:SetStatusBarTexture(DB["media"].normTex_)
+	bar.statusbar:SetStatusBarTexture(C["media"].normTex_)
 	bar.statusbar:ClearAllPoints()
 	bar.statusbar:SetPoint("TOPLEFT",borderWidth, -borderWidth)
 	bar.statusbar:SetPoint("BOTTOMRIGHT",-borderWidth, borderWidth)
@@ -77,7 +77,7 @@ KLE.LayoutHealthWatchers = function(self)
 		if hw:IsShown() then
 			hw:SetTemplate("Default")
 			hw.border:Kill()
-			hw.healthbar:SetStatusBarTexture(DB["media"].normTex_)
+			hw.healthbar:SetStatusBarTexture(C["media"].normTex_)
 		end
 	end
 end
@@ -140,7 +140,7 @@ local function PositionKLEAnchor()
 	if not KLEAlertsTopStackAnchor then return end
 	KLEAlertsTopStackAnchor:ClearAllPoints()
 	if E.CheckAddOnShown() == true then
-		if DB["chat"].showbackdrop == true and E.ChatRightShown == true then
+		if C["chat"].showbackdrop == true and E.ChatRightShown == true then
 			if E.RightChat == true then
 				KLEAlertsTopStackAnchor:Point("BOTTOM", ChatRBackground2, "TOP", 13, 14)	
 			else
@@ -163,14 +163,14 @@ KLE_Skin:SetScript("OnEvent", function(self, event)
 		self = nil
 		
 		--KLE doesn't like the pane timer font to listen for some reason
-		KLE.Pane.timer.left:SetFont(DB["media"].font_, 18)
-		KLE.Pane.timer.right:SetFont(DB["media"].font_, 12)
+		KLE.Pane.timer.left:SetFont(C["media"].font_, 18)
+		KLE.Pane.timer.right:SetFont(C["media"].font_, 12)
 		
 		for i=1, #movers do
 			_G[movers[i]]:SetTemplate("Transparent")
 		end
 		
-		if DB["skin"].hookkleright == true then
+		if C["skin"].hookkleright == true then
 			PositionKLEAnchor()
 		end
 	elseif event == "PLAYER_REGEN_DISABLED" then
@@ -180,7 +180,7 @@ KLE_Skin:SetScript("OnEvent", function(self, event)
 	end
 end)
 
-if DB["skin"].hookkleright == true then
+if C["skin"].hookkleright == true then
 	KLE_Skin:RegisterEvent("PLAYER_REGEN_ENABLED")
 	KLE_Skin:RegisterEvent("PLAYER_REGEN_DISABLED")
 

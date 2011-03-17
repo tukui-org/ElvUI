@@ -9,19 +9,19 @@ local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config
 
 
 
-if not DB["others"].enablebag == true then return end
+if not C["others"].enablebag == true then return end
 
 StackSplitFrame:SetFrameStrata("TOOLTIP")
 
 local bags_BACKPACK = {0, 1, 2, 3, 4}
 local bags_BANK = {-1, 5, 6, 7, 8, 9, 10, 11}
-local BAGSFONT = DB["media"].font_
+local BAGSFONT = C["media"].font_
 local ST_NORMAL = 1
 local ST_SOULBAG = 2
 local ST_SPECIAL = 3
 local ST_QUIVER = 4
 local bag_bars = 0
-local hide_soulbag = DB["others"].soulbag
+local hide_soulbag = C["others"].soulbag
 
 -- hide bags options in default interface
 InterfaceOptionsDisplayPanelShowFreeBagSpace:Hide()
@@ -68,42 +68,42 @@ local function MoveChar()
 	if StuffingFrameBank and StuffingFrameBank:IsShown() then		
 		if PlayerTalentFrame and PlayerTalentFrame:IsShown() then
 			PlayerTalentFrame:ClearAllPoints()
-			PlayerTalentFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", DB["chat"].chatwidth+30, -116)
+			PlayerTalentFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)
 		end
 		
 		if AchievementFrame and AchievementFrame:IsShown() then
 			AchievementFrame:ClearAllPoints()
-			AchievementFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", DB["chat"].chatwidth+30, -116)		
+			AchievementFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)		
 		end
 		
 		if QuestLogFrame and QuestLogFrame:IsShown() then
 			QuestLogFrame:ClearAllPoints()
-			QuestLogFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", DB["chat"].chatwidth+30, -116)			
+			QuestLogFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)			
 		end
 		
 		if FriendsFrame and FriendsFrame:IsShown() and not (CharacterFrame:IsShown() or (PVPFrame and PVPFrame:IsShown()) or (GuildFrame and GuildFrame:IsShown()) or (LFDParentFrame and LFDParentFrame:IsShown())) then
 			FriendsFrame:ClearAllPoints()
-			FriendsFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", DB["chat"].chatwidth+30, -116)				
+			FriendsFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)				
 		end
 		
 		if PVPFrame and PVPFrame:IsShown() and not (CharacterFrame:IsShown() or (FriendsFrame and FriendsFrame:IsShown()) or (GuildFrame and GuildFrame:IsShown()) or (LFDParentFrame and LFDParentFrame:IsShown())) then
 			PVPFrame:ClearAllPoints()
-			PVPFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", DB["chat"].chatwidth+30, -116)				
+			PVPFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)				
 		end
 		
 		if GuildFrame and GuildFrame:IsShown() and not (CharacterFrame:IsShown() or (FriendsFrame and FriendsFrame:IsShown()) or (PVPFrame and PVPFrame:IsShown()) or (LFDParentFrame and LFDParentFrame:IsShown())) then
 			GuildFrame:ClearAllPoints()
-			GuildFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", DB["chat"].chatwidth+30, -116)		
+			GuildFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)		
 		end
 		
 		if LFDParentFrame and LFDParentFrame:IsShown() and not (CharacterFrame:IsShown() or (FriendsFrame and FriendsFrame:IsShown()) or (PVPFrame and PVPFrame:IsShown()) or (GuildFrame and GuildFrame:IsShown())) then
 			LFDParentFrame:ClearAllPoints()
-			LFDParentFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", DB["chat"].chatwidth+30, -116)				
+			LFDParentFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)				
 		end
 		
 		if CharacterFrame:IsShown() then
 			CharacterFrame:ClearAllPoints()
-			CharacterFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", DB["chat"].chatwidth+30, -116)
+			CharacterFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)
 		end
 		DressUpFrame:ClearAllPoints()
 		DressUpFrame:SetPoint("TOPLEFT", CharacterFrame, "TOPRIGHT", 15, 0)
@@ -183,7 +183,7 @@ function Stuffing:SlotUpdate(b)
 
 	-- set all slot color to default Elvui on update
 	if not b.frame.lock then
-		b.frame:SetBackdropBorderColor(unpack(DB.media.bordercolor))
+		b.frame:SetBackdropBorderColor(unpack(C.media.bordercolor))
 	end
 	
 	if b.Cooldown then
@@ -621,17 +621,17 @@ function Stuffing:Layout(lb)
 
 	if lb then
 		bs = bags_BANK
-		cols = (floor(DB["chat"].chatwidth/370 * 10))
+		cols = (floor(C["chat"].chatwidth/370 * 10))
 		f = self.bankFrame
 	else
 		bs = bags_BACKPACK
-		cols = (floor(DB["chat"].chatwidth/370 * 10))
+		cols = (floor(C["chat"].chatwidth/370 * 10))
 		f = self.frame
 
-		f.gold:SetText (GetCoinTextureString(GetMoney(), DB["general"].fontscale))
-		f.editbox:SetFont(BAGSFONT, DB["general"].fontscale)
-		f.detail:SetFont(BAGSFONT, DB["general"].fontscale)
-		f.gold:SetFont(BAGSFONT, DB["general"].fontscale)
+		f.gold:SetText (GetCoinTextureString(GetMoney(), C["general"].fontscale))
+		f.editbox:SetFont(BAGSFONT, C["general"].fontscale)
+		f.detail:SetFont(BAGSFONT, C["general"].fontscale)
+		f.gold:SetFont(BAGSFONT, C["general"].fontscale)
 
 		f.detail:ClearAllPoints()
 		f.detail:SetPoint("TOPLEFT", f, E.Scale(12), E.Scale(-10))
@@ -640,13 +640,13 @@ function Stuffing:Layout(lb)
 
 	f:SetClampedToScreen(1)
 	f:SetBackdrop({
-		bgFile = DB["media"].blank_,
-		edgeFile = DB["media"].blank_,
+		bgFile = C["media"].blank_,
+		edgeFile = C["media"].blank_,
 		edgeSize = E.mult,
 		insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
 	})
-	f:SetBackdropColor(unpack(DB["media"].backdropfadecolor))
-	f:SetBackdropBorderColor(unpack(DB["media"].bordercolor))
+	f:SetBackdropColor(unpack(C["media"].backdropfadecolor))
+	f:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 
 
 	-- bag frame stuff
@@ -654,13 +654,13 @@ function Stuffing:Layout(lb)
 	if bag_bars == 1 then
 		fb:SetClampedToScreen(1)
 		fb:SetBackdrop({
-			bgFile = DB["media"].blank_,
-			edgeFile = DB["media"].blank_,
+			bgFile = C["media"].blank_,
+			edgeFile = C["media"].blank_,
 			edgeSize = E.mult,
 			insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
 		})
-		fb:SetBackdropColor(unpack(DB["media"].backdropfadecolor))
-		fb:SetBackdropBorderColor(unpack(DB["media"].bordercolor))
+		fb:SetBackdropColor(unpack(C["media"].backdropfadecolor))
+		fb:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 
 		local bsize = 30
 		if lb then bsize = 37 end
@@ -730,7 +730,7 @@ function Stuffing:Layout(lb)
 		rows = rows + 1
 	end
 
-	f:SetWidth(E.Scale(DB["chat"].chatwidth))
+	f:SetWidth(E.Scale(C["chat"].chatwidth))
 	f:SetHeight(E.Scale(rows * 31 + (rows - 1) * 4 + off + 12 * 2))
 
 	local bf = CreateFrame("Frame", "BagHolderFrame", f)
@@ -777,7 +777,7 @@ function Stuffing:Layout(lb)
 					b.frame:SetNormalTexture("")
 					b.frame:Show()
 					b.frame:SetTemplate("Default", true)
-					--b.frame:SetBackdropColor(unpack(DB["media"].backdropfadecolor))
+					--b.frame:SetBackdropColor(unpack(C["media"].backdropfadecolor))
 					b.frame:StyleButton()
 					local clink = GetContainerItemLink
 					if (clink and b.rarity and b.rarity > 1) then
@@ -959,7 +959,7 @@ function Stuffing:PLAYER_ENTERING_WORLD()
 	keybackdrop:SetPoint("BOTTOMLEFT", 0, 0)
 	keybackdrop:SetSize(E.Scale(179),E.Scale(215))
 	keybackdrop:SetTemplate("Default")
-	keybackdrop:SetBackdropColor(unpack(DB["media"].backdropfadecolor))
+	keybackdrop:SetBackdropColor(unpack(C["media"].backdropfadecolor))
 	ContainerFrame1CloseButton:Hide()
 	ContainerFrame1Portrait:Hide()
 	ContainerFrame1Name:Hide()

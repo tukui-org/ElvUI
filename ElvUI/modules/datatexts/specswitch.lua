@@ -3,7 +3,7 @@
 --------------------------------------------------------------------
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not DB["datatext"].specswitch or DB["datatext"].specswitch == 0 then return end
+if not C["datatext"].specswitch or C["datatext"].specswitch == 0 then return end
 
 local Stat = CreateFrame("Frame")
 Stat:EnableMouse(true)
@@ -11,10 +11,10 @@ Stat:SetFrameStrata("BACKGROUND")
 Stat:SetFrameLevel(3)
 
 local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
-Text:SetFont(DB["media"].font_, DB["datatext"].fontsize, "THINOUTLINE")
+Text:SetFont(C["media"].font_, C["datatext"].fontsize, "THINOUTLINE")
 Text:SetShadowOffset(E.mult, -E.mult)
 Text:SetShadowColor(0, 0, 0, 0.4)
-E.PP(DB["datatext"].specswitch, Text)
+E.PP(C["datatext"].specswitch, Text)
 
 local talent = {}
 local active

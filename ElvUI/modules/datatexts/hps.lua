@@ -6,19 +6,19 @@ local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config
 -- SUPPORT FOR HPS Feed... 
 --------------------------------------------------------------------
 
-if DB["datatext"].hps_text and DB["datatext"].hps_text > 0 then
+if C["datatext"].hps_text and C["datatext"].hps_text > 0 then
 	local events = {SPELL_HEAL = true, SPELL_PERIODIC_HEAL = true}
 	local HPS_FEED = CreateFrame("Frame")
 	local player_id = UnitGUID("player")
 	local actual_heals_total, cmbt_time = 0
  
 	local hText = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
-	hText:SetFont(DB["media"].font_, DB["datatext"].fontsize, "THINOUTLINE")
+	hText:SetFont(C["media"].font_, C["datatext"].fontsize, "THINOUTLINE")
 	hText:SetShadowOffset(E.mult, -E.mult)
 	hText:SetShadowColor(0, 0, 0, 0.4)
 	hText:SetText("HPS: "..E.ValColor.."0.0")
  
-	E.PP(DB["datatext"].hps_text, hText)
+	E.PP(C["datatext"].hps_text, hText)
  
 	HPS_FEED:EnableMouse(true)
 	HPS_FEED:SetFrameStrata("MEDIUM")

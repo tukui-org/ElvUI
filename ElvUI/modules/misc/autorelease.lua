@@ -4,7 +4,7 @@
 
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if DB["others"].pvpautorelease ~= true then return end
+if C["others"].pvpautorelease ~= true then return end
 
 local autoreleasepvp = CreateFrame("frame")
 autoreleasepvp:RegisterEvent("PLAYER_DEAD")

@@ -1,6 +1,6 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if DB.chat.enable ~= true then return end
+if C.chat.enable ~= true then return end
 
 local SetItemRef_orig = SetItemRef
 function ReURL_SetItemRef(link, text, button, chatFrame)

@@ -1,6 +1,6 @@
 ﻿local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not Skada or not DB["skin"].skada == true then return end
+if not Skada or not C["skin"].skada == true then return end
 
 local Skada = Skada
 local barSpacing = E.Scale(1, 1)
@@ -55,7 +55,7 @@ end
 
 -- Override settings from in-game GUI
 local titleBG = {
-	bgFile = DB["media"].normTex_,
+	bgFile = C["media"].normTex_,
 	tile = false,
 	tileSize = 0
 }
@@ -70,17 +70,17 @@ barmod.ApplySettings = function(self, win)
 		win.bargroup.button:SetBackdrop(titleBG)
 	end
 	
-	win.bargroup:SetTexture(DB["media"].normTex_)
+	win.bargroup:SetTexture(C["media"].normTex_)
 	win.bargroup:SetSpacing(barSpacing)
-	win.bargroup:SetFont(DB["media"].font_, DB["general"].fontscale)
+	win.bargroup:SetFont(C["media"].font_, C["general"].fontscale)
 	win.bargroup:SetFrameLevel(5)
 	
 	local titlefont = CreateFont("TitleFont"..win.db.name)
-	titlefont:SetFont(DB["media"].font_, DB["general"].fontscale)
+	titlefont:SetFont(C["media"].font_, C["general"].fontscale)
 	win.bargroup.button:SetNormalFontObject(titlefont)
 
 	local color = win.db.title.color
-	win.bargroup.button:SetBackdropColor(unpack(DB["media"].bordercolor))
+	win.bargroup.button:SetBackdropColor(unpack(C["media"].bordercolor))
 	if win.bargroup.bgframe then
 		win.bargroup.bgframe:SetTemplate("Transparent")
 		if win.db.reversegrowth then
@@ -90,7 +90,7 @@ barmod.ApplySettings = function(self, win)
 		end
 	end
 	
-	if DB["skin"].embedright == "Skada" then
+	if C["skin"].embedright == "Skada" then
 		win.bargroup.button:SetFrameStrata("HIGH")
 		win.bargroup.button:SetFrameLevel(5)	
 		win.bargroup.bgframe:SetFrameStrata("HIGH")
@@ -118,14 +118,14 @@ end
 local windows = {}
 function EmbedSkada()
 	if #windows == 1 then
-		EmbedWindow(windows[1], DB["chat"].chatwidth - 4, (DB["chat"].chatheight - (barSpacing * 5)) / 8, DB["chat"].chatheight, "TOPRIGHT", ChatRBackground2, "TOPRIGHT", -2, -2)
+		EmbedWindow(windows[1], C["chat"].chatwidth - 4, (C["chat"].chatheight - (barSpacing * 5)) / 8, C["chat"].chatheight, "TOPRIGHT", ChatRBackground2, "TOPRIGHT", -2, -2)
 	elseif #windows == 2 then
-		EmbedWindow(windows[1], ((DB["chat"].chatwidth - 4) / 2) - (borderWidth + E.mult), (DB["chat"].chatheight - (barSpacing * 5)) / 8, DB["chat"].chatheight,  "TOPRIGHT", ChatRBackground2, "TOPRIGHT", -2, -2)
-		EmbedWindow(windows[2], ((DB["chat"].chatwidth - 4) / 2) - (borderWidth + E.mult), (DB["chat"].chatheight - (barSpacing * 5)) / 8, DB["chat"].chatheight,  "TOPLEFT", ChatRBackground2, "TOPLEFT", 2, -2)
+		EmbedWindow(windows[1], ((C["chat"].chatwidth - 4) / 2) - (borderWidth + E.mult), (C["chat"].chatheight - (barSpacing * 5)) / 8, C["chat"].chatheight,  "TOPRIGHT", ChatRBackground2, "TOPRIGHT", -2, -2)
+		EmbedWindow(windows[2], ((C["chat"].chatwidth - 4) / 2) - (borderWidth + E.mult), (C["chat"].chatheight - (barSpacing * 5)) / 8, C["chat"].chatheight,  "TOPLEFT", ChatRBackground2, "TOPLEFT", 2, -2)
 	elseif #windows > 2 then
-		EmbedWindow(windows[1], ((DB["chat"].chatwidth - 4) / 2) - (borderWidth + E.mult), (DB["chat"].chatheight - (barSpacing * 5)) / 8, DB["chat"].chatheight,  "TOPRIGHT", ChatRBackground2, "TOPRIGHT", -2, -2)
-		EmbedWindow(windows[2], ((DB["chat"].chatwidth - 4) / 2) - (borderWidth + E.mult), (DB["chat"].chatheight - (barSpacing * 8)) / 8, DB["chat"].chatheight / 2,  "TOPLEFT", ChatRBackground2, "TOPLEFT", 2, -2)
-		EmbedWindow(windows[3], windows[2].db.barwidth, (DB["chat"].chatheight - (barSpacing * 8)) / 8, DB["chat"].chatheight / 2,  "TOPLEFT", windows[2].bargroup.bgframe, "BOTTOMLEFT", 2, -2)
+		EmbedWindow(windows[1], ((C["chat"].chatwidth - 4) / 2) - (borderWidth + E.mult), (C["chat"].chatheight - (barSpacing * 5)) / 8, C["chat"].chatheight,  "TOPRIGHT", ChatRBackground2, "TOPRIGHT", -2, -2)
+		EmbedWindow(windows[2], ((C["chat"].chatwidth - 4) / 2) - (borderWidth + E.mult), (C["chat"].chatheight - (barSpacing * 8)) / 8, C["chat"].chatheight / 2,  "TOPLEFT", ChatRBackground2, "TOPLEFT", 2, -2)
+		EmbedWindow(windows[3], windows[2].db.barwidth, (C["chat"].chatheight - (barSpacing * 8)) / 8, C["chat"].chatheight / 2,  "TOPLEFT", windows[2].bargroup.bgframe, "BOTTOMLEFT", 2, -2)
 	end
 end
 
@@ -135,7 +135,7 @@ for _, window in ipairs(Skada:GetWindows()) do
 	tinsert(windows, window)
 end
 
-if DB["skin"].embedright == "Skada" then
+if C["skin"].embedright == "Skada" then
 	Skada.CreateWindow_ = Skada.CreateWindow
 	function Skada:CreateWindow(name, db)
 		Skada:CreateWindow_(name, db)

@@ -1,7 +1,7 @@
 local E, C, L, DB = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 
 
-if not DB["unitframes"].enable == true then return end
+if not C["unitframes"].enable == true then return end
 
 E.CreatedMoveEleFrames = {}
 local FramesDefault = {}
@@ -39,8 +39,8 @@ local function CreateFrameOverlay(parent, name)
 	f:SetFrameStrata("DIALOG")
 	f:SetPoint("CENTER", f2, "CENTER")
 	f:SetBackdrop({
-	  bgFile = DB["media"].blank_, 
-	  edgeFile = DB["media"].blank_, 
+	  bgFile = C["media"].blank_, 
+	  edgeFile = C["media"].blank_, 
 	  tile = false, tileSize = 0, edgeSize = 2, 
 	  insets = { left = 0, right = 0, top = 0, bottom = 0}
 	})	
@@ -88,7 +88,7 @@ local function CreateFrameOverlay(parent, name)
 	
 	
 	local fs = f:CreateFontString(nil, "OVERLAY")
-	fs:SetFont(DB["media"].font_, DB["unitframes"].auratextscale, "THINOUTLINE")
+	fs:SetFont(C["media"].font_, C["unitframes"].auratextscale, "THINOUTLINE")
 	fs:SetJustifyH("CENTER")
 	fs:SetShadowColor(0, 0, 0, 0.4)
 	fs:SetShadowOffset(E.mult, -E.mult)

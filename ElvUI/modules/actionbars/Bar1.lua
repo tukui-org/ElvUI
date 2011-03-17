@@ -1,6 +1,6 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not DB["actionbar"].enable == true then return end
+if not C["actionbar"].enable == true then return end
 
 ---------------------------------------------------------------------------
 -- Setup Main Action Bar.
@@ -51,7 +51,7 @@ function E.PositionMainBar()
 		button:ClearAllPoints()
 		
 		if i == 1 then
-			if DB["actionbar"].swaptopbottombar == true then
+			if C["actionbar"].swaptopbottombar == true then
 				button:SetPoint("TOPLEFT", ElvuiMainMenuBar, E.buttonspacing, -E.buttonspacing)
 			else
 				button:SetPoint("BOTTOMLEFT", ElvuiMainMenuBar, E.buttonspacing, E.buttonspacing)

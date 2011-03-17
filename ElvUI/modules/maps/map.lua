@@ -1,18 +1,18 @@
 
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not DB["others"].enablemap == true then return end
+if not C["others"].enablemap == true then return end
 
 WORLDMAP_WINDOWED_SIZE = 0.65 --Slightly increase the size of blizzard small map
 local mapscale = WORLDMAP_WINDOWED_SIZE
 
-local ft = DB["media"].uffont_ -- Map font
+local ft = C["media"].uffont_ -- Map font
 local fontsize = 22 -- Map Font Size
 
 local mapbg = CreateFrame("Frame", nil, WorldMapDetailFrame)
 	mapbg:SetBackdrop( { 
-	bgFile = DB["media"].blank_, 
-	edgeFile = DB["media"].blank_, 
+	bgFile = C["media"].blank_, 
+	edgeFile = C["media"].blank_, 
 	tile = false, edgeSize = E.mult, 
 	insets = { left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult }
 })
@@ -69,8 +69,8 @@ local SmallerMapSkin = function()
 	mapbg:CreateShadow("Default")
 	
 	-- map border and bg
-	mapbg:SetBackdropColor(unpack(DB["media"].backdropcolor))
-	mapbg:SetBackdropBorderColor(unpack(DB["media"].bordercolor))
+	mapbg:SetBackdropColor(unpack(C["media"].backdropcolor))
+	mapbg:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 	mapbg:SetScale(1 / mapscale)
 	mapbg:SetPoint("TOPLEFT", WorldMapDetailFrame, E.Scale(-2), E.Scale(2))
 	mapbg:SetPoint("BOTTOMRIGHT", WorldMapDetailFrame, E.Scale(2), E.Scale(-2))
@@ -227,8 +227,8 @@ end)
 
 local coords = CreateFrame("Frame", "CoordsFrame", WorldMapFrame)
 local fontheight = select(2, WorldMapQuestShowObjectivesText:GetFont())*1.1
-coords:FontString("PlayerText", DB["media"].font_, fontheight, "THINOUTLINE")
-coords:FontString("MouseText", DB["media"].font_, fontheight, "THINOUTLINE")
+coords:FontString("PlayerText", C["media"].font_, fontheight, "THINOUTLINE")
+coords:FontString("MouseText", C["media"].font_, fontheight, "THINOUTLINE")
 coords.PlayerText:SetTextColor(WorldMapQuestShowObjectivesText:GetTextColor())
 coords.MouseText:SetTextColor(WorldMapQuestShowObjectivesText:GetTextColor())
 coords.PlayerText:SetPoint("TOPLEFT", WorldMapButton, "TOPLEFT", 5, -5)

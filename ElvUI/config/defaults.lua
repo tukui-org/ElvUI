@@ -1,6 +1,6 @@
 ﻿local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-C["media"] = {
+DB["media"] = {
 	-- fonts
 	["font"] = "ElvUI Font", -- general font of Elvui
 	["uffont"] = "ElvUI Font", -- general font of unitframes
@@ -23,7 +23,7 @@ C["media"] = {
 	["glossyTexture"] = false,	-- Use a glossy texture for all frames
 }
 
-C["general"] = {
+DB["general"] = {
 	["autoscale"] = true,                  -- mainly enabled for users that don't want to mess with the config file
 	["uiscale"] = 0.78,                    -- set your value (between 0.64 and 1) of your uiscale if autoscale is off
 	["multisampleprotect"] = true,         -- i don't recommend this because of shitty border but, voila!
@@ -33,7 +33,7 @@ C["general"] = {
 	["layoutoverride"] = "NONE",			--ovverride layout (DPS, Healer)
 }
 
-C["skin"] = {	--Skin addons by Darth Android
+DB["skin"] = {	--Skin addons by Darth Android
 	["recount"] = true,
 	["skada"] = true,
 	["omen"] = true,
@@ -45,7 +45,7 @@ C["skin"] = {	--Skin addons by Darth Android
 	["embedright"] = "NONE",				-- Addon to embed to the right frame ("Omen", "Recount", "Skada")
 }
 
-C["unitframes"] = {
+DB["unitframes"] = {
 	-- general options
 	["enable"] = true,                     -- do i really need to explain this?
 	["fontsize"] = 12,						-- default font height for unitframes
@@ -58,10 +58,10 @@ C["unitframes"] = {
 	["charportrait"] = true,              -- enable character portrait
 	["charportraithealth"] = false,			-- portrait overlay healthbar
 	["classcolor"] = false,                  -- color unitframes by class
-	["healthcolor"] = C["media"].bordercolor, --color of the unitframe
+	["healthcolor"] = DB["media"].bordercolor, --color of the unitframe
 	["healthcolorbyvalue"] = true,			-- color health by current health remaining
 	["healthbackdrop"] = false,				-- enable using custom healthbackdrop color
-	["healthbackdropcolor"] = C["media"].backdropcolor,
+	["healthbackdropcolor"] = DB["media"].backdropcolor,
 	["combatfeedback"] = false,             -- enable combattext on player and target.
 	["debuffhighlight"] = true,				--highlight frame with the debuff color if the frame is dispellable
 	["classbar"] = true,                    -- enable runebar/totembar/holypowerbar/soulshardbar/eclipsebar
@@ -100,14 +100,14 @@ C["unitframes"] = {
 	["castplayerwidth"] = 275,
 	["casttargetwidth"] = 275,
 	["castfocuswidth"] = 275,
-	["castbarcolor"] = C["media"].bordercolor, -- Color of player castbar
+	["castbarcolor"] = DB["media"].bordercolor, -- Color of player castbar
 	["nointerruptcolor"] = { 0.78, 0.25, 0.25, 0.5 }, -- Color of target castbar	
 	
 	--arena
 	["arena"] = true,                 -- enable elvui arena unitframes (requirement : Elvui unitframes enabled)
 }
 
-C["raidframes"] = {
+DB["raidframes"] = {
 	["enable"] = true,						-- enable raid frames
 	["fontsize"] = 12,						-- default font height for raidframes
 	["scale"] = 1,							-- for smaller use a number less than one (0.73), for higher use a number larger than one
@@ -129,7 +129,7 @@ C["raidframes"] = {
 	["buffindicatorsize"] = 6,				-- size of the buff indicator on raid/party frames	
 }
 
-C["classtimer"] = {
+DB["classtimer"] = {
 	["enable"] = true,
 	["bar_height"] = 17,
 	["bar_spacing"] = 1,
@@ -139,12 +139,12 @@ C["classtimer"] = {
 	["cast_suparator"] = true,
 	
 	["classcolor"] = false,
-	["buffcolor"] = C["media"].bordercolor, -- if classcolor isnt true
+	["buffcolor"] = DB["media"].bordercolor, -- if classcolor isnt true
 	["debuffcolor"] = {0.78, 0.25, 0.25, 1},
 	["proccolor"] = {0.84, 0.75, 0.65, 1},
 }
 
-C["actionbar"] = {
+DB["actionbar"] = {
 	["enable"] = true,                     -- enable elvui action bars
 	["hotkey"] = true,                     -- enable hotkey display because it was a lot requested
 	["rightbarmouseover"] = false,         -- enable right bars on mouse over
@@ -162,7 +162,7 @@ C["actionbar"] = {
 	["mousemicro"] = false,					--only show microbar on mouseover
 }
 
-C["nameplate"] = {
+DB["nameplate"] = {
 	["enable"] = true,                     -- enable nice skinned nameplates that fit into Elvui
 	["showhealth"] = false,					-- show health text on nameplate
 	["enhancethreat"] = true,				-- threat features based on if your a tank or not
@@ -175,13 +175,13 @@ C["nameplate"] = {
 	["trackccauras"] = true,			--track all CC debuffs
 }
 
-C["loot"] = {
+DB["loot"] = {
 	["lootframe"] = true,                  -- reskin the loot frame to fit Elvui
 	["rolllootframe"] = true,              -- reskin the roll frame to fit Elvui
 	["autogreed"] = true,                  -- auto-dez or auto-greed item at max level.
 }
 
-C["cooldown"] = {
+DB["cooldown"] = {
 	["enable"] = true,                     -- do i really need to explain this?
 		["treshold"] = 3,                      -- show decimal under X seconds and text turn red
 		["expiringcolor"] = { 1, 0, 0 },		--color of expiring seconds turns to 
@@ -191,7 +191,7 @@ C["cooldown"] = {
 		["dayscolor"] = { 0.4, 0.4, 1 },		-- days color
 }
 
-C["datatext"] = {
+DB["datatext"] = {
 	["stat1"] = 1,						   -- Stat Based on your Role (Avoidance-Tank, AP-Melee, SP/HP-Caster)
 	["dur"] = 2,                           -- show your equipment durability on panels.
 	["stat2"] = 3, 						   -- Stat Based on your Role (Armor-Tank, Crit-Melee, Crit-Caster)
@@ -211,7 +211,7 @@ C["datatext"] = {
 	["fontsize"] = 12,                     -- font size for panels.
 }
 
-C["chat"] = {
+DB["chat"] = {
 	["enable"] = true,                     -- blah
 	["whispersound"] = true,               -- play a sound when receiving whisper
 	["showbackdrop"] = true,				-- show a backdrop on the chat panels
@@ -223,7 +223,7 @@ C["chat"] = {
 	["bubbles"] = true,							--skin blizzard chat bubbles
 }
 
-C["tooltip"] = {
+DB["tooltip"] = {
 	["enable"] = true,                     -- true to enable this mod, false to disable
 	["hidecombat"] = true,                -- hide bottom-right tooltip when in combat
 	["hidecombatraid"] = true,				-- only hide in combat in a raid instance
@@ -235,13 +235,13 @@ C["tooltip"] = {
 	["whotargetting"] = true,				--show who is targetting the unit (in raid or party)
 }
 
-C["buffreminder"] = {
+DB["buffreminder"] = {
 	["enable"] = true,                     -- this is now the new innerfire warning script for all armor/aspect class.
 	["sound"] = true,                      -- enable warning sound notification for reminder.
 	["raidbuffreminder"] = true,			-- buffbar below the minimap, important missing buffs
 }
 
-C["others"] = {
+DB["others"] = {
 	["pvpautorelease"] = false,            -- enable auto-release in bg or wintergrasp.
 	["sellgrays"] = true,                  -- automaticly sell grays?
 	["autorepair"] = true,                 -- automaticly repair?

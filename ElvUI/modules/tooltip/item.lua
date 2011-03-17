@@ -1,6 +1,6 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if DB.tooltip.enable ~= true or DB["tooltip"].itemid ~= true then return end
+if C.tooltip.enable ~= true or C["tooltip"].itemid ~= true then return end
 
 GameTooltip:HookScript("OnTooltipCleared", function(self) self.ElvuiItemTooltip=nil end)
 GameTooltip:HookScript("OnTooltipSetItem", function(self)
@@ -30,7 +30,7 @@ f:SetScript("OnEvent", function(_, _, name)
 	if name ~= "ElvUI" then return end
 	f:UnregisterEvent("ADDON_LOADED")
 	f:SetScript("OnEvent", nil)
-	ElvuiItemTooltip = ElvuiItemTooltip or {count=true,id=DB["tooltip"].itemid}
+	ElvuiItemTooltip = ElvuiItemTooltip or {count=true,id=C["tooltip"].itemid}
 end)
 
 --------------------------------------------------------------------

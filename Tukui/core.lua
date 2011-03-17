@@ -1,5 +1,5 @@
 local E, C, L, DB = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
-Tukui = {E, DB, L} -- Add support for local T, C, L = unpack(Tukui)
+Tukui = {E, C, L} -- Add support for local T, C, L = unpack(Tukui)
 
 TukuiMinimap = ElvuiMinimap
 TukuiActionBarBackground = ElvuiActionBarBackground

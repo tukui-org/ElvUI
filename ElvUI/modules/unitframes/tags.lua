@@ -3,7 +3,7 @@ local _, ns = ...
 local oUF = ElvUF or ns.oUF or oUF
 assert(oUF, "ElvUI was unable to locate oUF.")
 
-if not DB["unitframes"].enable == true and not DB["raidframes"].enable == true then return end
+if not C["unitframes"].enable == true and not C["raidframes"].enable == true then return end
 
 ------------------------------------------------------------------------
 --	Tags

@@ -3,7 +3,7 @@
 ------------------------------------------------------------------------
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if DB["others"].autoacceptinv then
+if C["others"].autoacceptinv then
 	local tAutoAcceptInvite = CreateFrame("Frame")
 	tAutoAcceptInvite:RegisterEvent("PARTY_INVITE_REQUEST")
 	tAutoAcceptInvite:RegisterEvent("PARTY_MEMBERS_CHANGED")

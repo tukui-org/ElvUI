@@ -4,7 +4,7 @@
 
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if DB["buffreminder"].enable ~= true then return end
+if C["buffreminder"].enable ~= true then return end
 
 local tab = E.ReminderBuffs[E.myclass]
 if not tab then return end
@@ -127,7 +127,7 @@ local function OnEvent(self, event, arg1, arg2)
 	if reversecheck ~= nil and (role == nil and tree == nil) then reversecheck = nil end
 	
 	--Only time we allow it to play a sound
-	if (event == "ZONE_CHANGED_NEW_AREA" or event == "PLAYER_REGEN_DISABLED") and DB["buffreminder"].sound == true then canplaysound = true end
+	if (event == "ZONE_CHANGED_NEW_AREA" or event == "PLAYER_REGEN_DISABLED") and C["buffreminder"].sound == true then canplaysound = true end
 	
 	if not group.weapon then
 		if ((combat and UnitAffectingCombat("player")) or (instance and (instanceType == "party" or instanceType == "raid")) or (pvp and (instanceType == "arena" or instanceType == "pvp"))) and 
@@ -148,7 +148,7 @@ local function OnEvent(self, event, arg1, arg2)
 				end
 			end
 			self:Show()
-			if canplaysound == true then PlaySoundFile(DB["media"].warning_) end		
+			if canplaysound == true then PlaySoundFile(C["media"].warning_) end		
 		elseif ((combat and UnitAffectingCombat("player")) or (instance and (instanceType == "party" or instanceType == "raid")) or (pvp and (instanceType == "arena" or instanceType == "pvp"))) and 
 		reversecheck == true and not (UnitInVehicle("player") and self.icon:GetTexture()) then
 			if negate_reversecheck and negate_reversecheck == GetPrimaryTalentTree() then self:Hide() return end
@@ -157,7 +157,7 @@ local function OnEvent(self, event, arg1, arg2)
 				local _, _, icon, _, _, _, _, unitCaster, _, _, _ = UnitBuff("player", name)
 				if (name and icon and unitCaster == "player") then
 					self:Show()
-					if canplaysound == true then PlaySoundFile(DB["media"].warning_) end
+					if canplaysound == true then PlaySoundFile(C["media"].warning_) end
 					return
 				end			
 			end			
@@ -170,17 +170,17 @@ local function OnEvent(self, event, arg1, arg2)
 			if hasOffhandWeapon == nil then
 				if hasMainHandEnchant == nil then
 					self:Show()
-					if canplaysound == true then PlaySoundFile(DB["media"].warning_) end		
+					if canplaysound == true then PlaySoundFile(C["media"].warning_) end		
 					return
 				end
 			else
 				if hasMainHandEnchant == nil then
 					self:Show()
-					if canplaysound == true then PlaySoundFile(DB["media"].warning_) end	
+					if canplaysound == true then PlaySoundFile(C["media"].warning_) end	
 					return
 				elseif hasOffHandEnchant == nil then
 					self:Show()
-					if canplaysound == true then PlaySoundFile(DB["media"].warning_) end	
+					if canplaysound == true then PlaySoundFile(C["media"].warning_) end	
 					return
 				end
 			end

@@ -6,7 +6,7 @@ local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config
 -- SUPPORT FOR DPS Feed... 
 --------------------------------------------------------------------
 
-if DB["datatext"].dps_text and DB["datatext"].dps_text > 0 then
+if C["datatext"].dps_text and C["datatext"].dps_text > 0 then
 	local events = {SWING_DAMAGE = true, RANGE_DAMAGE = true, SPELL_DAMAGE = true, SPELL_PERIODIC_DAMAGE = true, DAMAGE_SHIELD = true, DAMAGE_SPLIT = true, SPELL_EXTRA_ATTACKS = true}
 	local DPS_FEED = CreateFrame("Frame")
 	local player_id = UnitGUID("player")
@@ -16,12 +16,12 @@ if DB["datatext"].dps_text and DB["datatext"].dps_text > 0 then
 	local pet_id = UnitGUID("pet")
      
 	local dText = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
-	dText:SetFont(DB["media"].font_, DB["datatext"].fontsize, "THINOUTLINE")
+	dText:SetFont(C["media"].font_, C["datatext"].fontsize, "THINOUTLINE")
 	dText:SetShadowOffset(E.mult, -E.mult)
 	dText:SetShadowColor(0, 0, 0, 0.4)
 	dText:SetText("DPS: "..E.ValColor.."0.0|r")
 
-	E.PP(DB["datatext"].dps_text, dText)
+	E.PP(C["datatext"].dps_text, dText)
 
 	DPS_FEED:EnableMouse(true)
 	DPS_FEED:SetFrameStrata("MEDIUM")

@@ -19,7 +19,7 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 		end
 	else
 
-		if DB["raidframes"].disableblizz == true then 
+		if C["raidframes"].disableblizz == true then 
 			InterfaceOptionsFrameCategoriesButton10:SetScale(0.00001)
 			InterfaceOptionsFrameCategoriesButton10:SetAlpha(0)	
 			CompactRaidFrameContainer:Kill()
@@ -27,12 +27,12 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 		end
 
 		if addon == "Blizzard_AchievementUI" then
-			if DB.tooltip.enable then
+			if C.tooltip.enable then
 				hooksecurefunc("AchievementFrameCategories_DisplayButton", function(button) button.showTooltipFunc = nil end)
 			end
 		end
 		
-		--[[if DB["others"].minimapauras == true then
+		--[[if C["others"].minimapauras == true then
 			BuffFrame:Kill()
 			TemporaryEnchantFrame:Kill()
 		end]]
@@ -46,14 +46,14 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 		
 		InterfaceOptionsUnitFramePanelPartyBackground:Kill()
 		
-		if DB.unitframes.arena then
+		if C.unitframes.arena then
 			SetCVar("showArenaEnemyFrames", 0)
 			InterfaceOptionsUnitFramePanelArenaEnemyFrames:Kill()
 			InterfaceOptionsUnitFramePanelArenaEnemyCastBar:Kill()
 			InterfaceOptionsUnitFramePanelArenaEnemyPets:Kill()
 		end
 		
-		if DB.chat.enable then
+		if C.chat.enable then
 			SetCVar("WholeChatWindowClickable", 0)
 			SetCVar("ConversationMode", "inline")
 			InterfaceOptionsSocialPanelWholeChatWindowClickable:Kill()
@@ -64,7 +64,7 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 			InterfaceOptionsSocialPanelChatHoverDelay:Kill()
 		end
 		
-		if DB.unitframes.enable then
+		if C.unitframes.enable then
 			InterfaceOptionsFrameCategoriesButton9:SetScale(0.00001)
 			InterfaceOptionsFrameCategoriesButton9:SetAlpha(0)	
 			InterfaceOptionsCombatPanelTargetOfTarget:Kill()
@@ -74,7 +74,7 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 			InterfaceOptionsBuffsPanelCastableBuffs:Kill()
 		end
 		
-		if DB.actionbar.enable then
+		if C.actionbar.enable then
 			InterfaceOptionsActionBarsPanelBottomLeft:Kill()
 			InterfaceOptionsActionBarsPanelBottomRight:Kill()
 			InterfaceOptionsActionBarsPanelRight:Kill()
@@ -82,7 +82,7 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 			InterfaceOptionsActionBarsPanelAlwaysShowActionBars:Kill()
 		end
 		
-		if DB["nameplate"].enable == true and DB["nameplate"].enhancethreat == true then
+		if C["nameplate"].enable == true and C["nameplate"].enhancethreat == true then
 			InterfaceOptionsDisplayPanelAggroWarningDisplay:Kill()
 		end
 	end

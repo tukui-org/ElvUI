@@ -2,7 +2,7 @@
 
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not DB["loot"].lootframe == true then return end
+if not C["loot"].lootframe == true then return end
 
 local L = {
 	fish = "Fishy loot",
@@ -96,7 +96,7 @@ local createSlot = function(id)
 	count:ClearAllPoints()
 	count:SetJustifyH"RIGHT"
 	count:SetPoint("BOTTOMRIGHT", iconFrame, E.Scale(-1), E.Scale(2))
-	count:SetFont(DB["media"].font_, DB["general"].fontscale, "OUTLINE")
+	count:SetFont(C["media"].font_, C["general"].fontscale, "OUTLINE")
 	count:SetShadowOffset(.8, -.8)
 	count:SetShadowColor(0, 0, 0, 1)
 	count:SetText(1)
@@ -108,7 +108,7 @@ local createSlot = function(id)
 	name:SetPoint("LEFT", frame)
 	name:SetPoint("RIGHT", icon, "LEFT")
 	name:SetNonSpaceWrap(true)
-	name:SetFont(DB["media"].font_, DB["general"].fontscale, "OUTLINE")
+	name:SetFont(C["media"].font_, C["general"].fontscale, "OUTLINE")
 	name:SetShadowOffset(.8, -.8)
 	name:SetShadowColor(0, 0, 0, 1)
 	frame.name = name
@@ -142,7 +142,7 @@ local anchorSlots = function(self)
 	self:SetHeight(E.Scale(math.max(shownSlots * iconsize + 16, 20)))
 end
 
-title:SetFont(DB["media"].font_, DB["general"].fontscale, "OUTLINE")
+title:SetFont(C["media"].font_, C["general"].fontscale, "OUTLINE")
 title:SetPoint("BOTTOMLEFT", addon, "TOPLEFT", E.Scale(4), E.Scale(4))
 
 addon:SetScript("OnMouseDown", function(self) if(IsAltKeyDown()) then self:StartMoving() end end)
@@ -163,8 +163,8 @@ addon:SetParent(UIParent)
 addon:SetUserPlaced(true)
 addon:SetPoint("TOPLEFT", LootFrameHolder, "TOPLEFT", 0, 0)
 addon:SetBackdrop{
-	bgFile = DB["media"].blank_, tile = true, tileSize = E.Scale(16),
-	edgeFile = DB["media"].blank_, edgeSize = E.mult,
+	bgFile = C["media"].blank_, tile = true, tileSize = E.Scale(16),
+	edgeFile = C["media"].blank_, edgeSize = E.mult,
 	insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult},
 }
 addon:SetWidth(E.Scale(256))

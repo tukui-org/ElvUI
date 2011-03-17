@@ -5,16 +5,16 @@ local db
 local defaults
 
 function ElvuiConfig:LoadDefaults()
-	local _, C, _, _ = unpack(ElvUI)
+	local _, _, _, DB = unpack(ElvUI)
 	--Defaults
 	defaults = {
 		profile = {
-			general = C["general"],
-			media = C["media"],
-			nameplate = C["nameplate"],
-			skin = C["skin"],
-			unitframes = C["unitframes"],
-			raidframes = C["raidframes"],
+			general = DB["general"],
+			media = DB["media"],
+			nameplate = DB["nameplate"],
+			skin = DB["skin"],
+			unitframes = DB["unitframes"],
+			raidframes = DB["raidframes"],
 		},
 	}
 end	

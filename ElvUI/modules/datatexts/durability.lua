@@ -3,7 +3,7 @@
 --------------------------------------------------------------------
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 	
-if not DB["datatext"].dur or DB["datatext"].dur == 0 then return end
+if not C["datatext"].dur or C["datatext"].dur == 0 then return end
 
 local join = string.join
 local floor = math.floor
@@ -19,10 +19,10 @@ Stat:SetFrameLevel(3)
 local fader = CreateFrame("Frame", "DurabilityDataText", ElvuiInfoLeft)
 
 local Text  = DurabilityDataText:CreateFontString(nil, "OVERLAY")
-Text:SetFont(DB["media"].font_, DB["datatext"].fontsize, "THINOUTLINE")
+Text:SetFont(C["media"].font_, C["datatext"].fontsize, "THINOUTLINE")
 Text:SetShadowOffset(E.mult, -E.mult)
 Text:SetShadowColor(0, 0, 0, 0.4)
-E.PP(DB["datatext"].dur, Text)
+E.PP(C["datatext"].dur, Text)
 fader:SetFrameLevel(fader:GetParent():GetFrameLevel())
 fader:SetFrameStrata(fader:GetParent():GetFrameStrata())
 

@@ -84,21 +84,21 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	end
 	
 	local fs = f2:CreateFontString(nil, "OVERLAY")
-	fs:SetFont(DB["media"].font_, DB["general"].fontscale, "THINOUTLINE")
+	fs:SetFont(C["media"].font_, C["general"].fontscale, "THINOUTLINE")
 	fs:SetShadowOffset(E.mult*1.2, -E.mult*1.2)
 	fs:SetJustifyH("CENTER")
 	fs:SetPoint("CENTER")
 	fs:SetText(text or name)
-	fs:SetTextColor(unpack(DB["media"].valuecolor))
+	fs:SetTextColor(unpack(C["media"].valuecolor))
 	f2:SetFontString(fs)
 	f2.text = fs
 	
 	f2:SetScript("OnEnter", function(self) 
 		self.text:SetTextColor(1, 1, 1)
-		self:SetBackdropBorderColor(unpack(DB["media"].valuecolor))
+		self:SetBackdropBorderColor(unpack(C["media"].valuecolor))
 	end)
 	f2:SetScript("OnLeave", function(self)
-		self.text:SetTextColor(unpack(DB["media"].valuecolor))
+		self.text:SetTextColor(unpack(C["media"].valuecolor))
 		self:SetTemplate("Default", true)
 	end)
 	
@@ -202,7 +202,7 @@ local function SetMoverButtonScript()
 			
 		E.ToggleMovers()
 		
-		if DB["actionbar"].enable == true then
+		if C["actionbar"].enable == true then
 			E.ToggleABLock()
 		end
 
@@ -224,7 +224,7 @@ local function SetMoverButtonScript()
 			if locked ~= true then
 				GameTooltip:AddLine(UNLOCK.." "..BUG_CATEGORY5,1,1,1)
 			else
-				GameTooltip:AddLine(LOCK.." "..BUG_CATEGORY5,unpack(DB["media"].valuecolor))
+				GameTooltip:AddLine(LOCK.." "..BUG_CATEGORY5,unpack(C["media"].valuecolor))
 			end
 		end
 		GameTooltip:Show()
@@ -251,7 +251,7 @@ local function SetMoverButtonScript()
 		if locked ~= true then
 			GameTooltip:AddLine(UNLOCK.." "..BUG_CATEGORY5,1,1,1)
 		else
-			GameTooltip:AddLine(LOCK.." "..BUG_CATEGORY5,unpack(DB["media"].valuecolor))
+			GameTooltip:AddLine(LOCK.." "..BUG_CATEGORY5,unpack(C["media"].valuecolor))
 		end
 		GameTooltip:Show()
 	end)

@@ -3,7 +3,7 @@
 --------------------------------------------------------------------
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not DB["datatext"].wowtime or DB["datatext"].wowtime == 0 then return end
+if not C["datatext"].wowtime or C["datatext"].wowtime == 0 then return end
 
 local europeDisplayFormat = string.join("", "%02d", E.ValColor, ":|r%02d")
 local ukDisplayFormat = string.join("", "", "%d", E.ValColor, ":|r%02d", E.ValColor, " %s|r")
@@ -26,10 +26,10 @@ Stat:SetFrameLevel(3)
 local fader = CreateFrame("Frame", "TimeDataText", ElvuiInfoLeft)
 
 local Text = fader:CreateFontString(nil, "OVERLAY")
-Text:SetFont(DB["media"].font_, DB["datatext"].fontsize, "THINOUTLINE")
+Text:SetFont(C["media"].font_, C["datatext"].fontsize, "THINOUTLINE")
 Text:SetShadowOffset(E.mult, -E.mult)
 Text:SetShadowColor(0, 0, 0, 0.4)
-E.PP(DB["datatext"].wowtime, Text)
+E.PP(C["datatext"].wowtime, Text)
 fader:SetFrameLevel(fader:GetParent():GetFrameLevel())
 fader:SetFrameStrata(fader:GetParent():GetFrameStrata())
 	
@@ -38,9 +38,9 @@ local APM = { TIMEMANAGER_PM, TIMEMANAGER_AM }
 local function CalculateTimeValues(tt)
 	local Hr, Min, AmPm
 	if tt and tt == true then
-		if DB["datatext"].localtime == true then
+		if C["datatext"].localtime == true then
 			Hr, Min = GetGameTime()
-			if DB["datatext"].time24 == true then
+			if C["datatext"].time24 == true then
 				return Hr, Min, -1
 			else
 				if Hr>=12 then
@@ -56,7 +56,7 @@ local function CalculateTimeValues(tt)
 			local Hr24 = tonumber(date("%H"))
 			Hr = tonumber(date("%I"))
 			Min = tonumber(date("%M"))
-			if DB["datatext"].time24 == true then
+			if C["datatext"].time24 == true then
 				return Hr24, Min, -1
 			else
 				if Hr24>=12 then AmPm = 1 else AmPm = 2 end
@@ -64,11 +64,11 @@ local function CalculateTimeValues(tt)
 			end
 		end
 	else
-		if DB["datatext"].localtime == true then
+		if C["datatext"].localtime == true then
 			local Hr24 = tonumber(date("%H"))
 			Hr = tonumber(date("%I"))
 			Min = tonumber(date("%M"))
-			if DB["datatext"].time24 == true then
+			if C["datatext"].time24 == true then
 				return Hr24, Min, -1
 			else
 				if Hr24>=12 then AmPm = 1 else AmPm = 2 end
@@ -76,7 +76,7 @@ local function CalculateTimeValues(tt)
 			end
 		else
 			Hr, Min = GetGameTime()
-			if DB["datatext"].time24 == true then
+			if C["datatext"].time24 == true then
 				return Hr, Min, -1
 			else
 				if Hr>=12 then
@@ -179,7 +179,7 @@ Stat:SetScript("OnEnter", function(self)
 	local Hr, Min, AmPm = CalculateTimeValues(true)
 
 	GameTooltip:AddLine(" ")
-	timeText = DB["datatext"].localtime == true and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME
+	timeText = C["datatext"].localtime == true and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME
 	if AmPm == -1 then
 			GameTooltip:AddDoubleLine(timeText, string.format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	else

@@ -1,6 +1,6 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not DB["actionbar"].enable == true then return end
+if not C["actionbar"].enable == true then return end
 
 
 ---------------------------------------------------------------------------
@@ -35,7 +35,7 @@ function E.PositionBar5()
 					b:SetPoint("TOP", b2, "BOTTOM", 0, -E.buttonspacing)
 				end
 			
-				if DB["actionbar"].rightbarmouseover == true then
+				if C["actionbar"].rightbarmouseover == true then
 					b:SetAlpha(0)
 					b:HookScript("OnEnter", function() RightBarMouseOver(1) end)
 					b:HookScript("OnLeave", function() RightBarMouseOver(0) end)			
@@ -43,7 +43,7 @@ function E.PositionBar5()
 			end
 		else
 			if E["actionbar"].splitbar == true and E["actionbar"].bottomrows == 3 then
-				if DB["actionbar"].swaptopbottombar == true and i == 1 then
+				if C["actionbar"].swaptopbottombar == true and i == 1 then
 					b:SetPoint("TOP", MultiBarBottomLeftButton1, "BOTTOM", 0, -E.buttonspacing)
 				elseif i == 1 then
 					b:SetPoint("BOTTOM", MultiBarBottomLeftButton1, "TOP", 0, E.buttonspacing)
@@ -57,7 +57,7 @@ function E.PositionBar5()
 					b:SetPoint("TOP", b2, "BOTTOM", 0, -E.buttonspacing)
 				end
 				
-				if DB["actionbar"].rightbarmouseover == true then
+				if C["actionbar"].rightbarmouseover == true then
 					b:SetAlpha(0)
 					b:HookScript("OnEnter", function() RightBarMouseOver(1) end)
 					b:HookScript("OnLeave", function() RightBarMouseOver(0) end)			

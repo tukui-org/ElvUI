@@ -1,9 +1,9 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if DB["chat"].bubbles ~= true or IsAddOnLoaded("BossEncounter2") then return end
+if C["chat"].bubbles ~= true or IsAddOnLoaded("BossEncounter2") then return end
 
 local chatbubblehook = CreateFrame("Frame", nil, UIParent)
-local noscalemult = E.mult * DB["general"].uiscale
+local noscalemult = E.mult * C["general"].uiscale
 local tslu = 0
 local numkids = 0
 local bubbles = {}
@@ -28,12 +28,12 @@ local function skinbubble(frame)
 	end
 	
 	frame:SetBackdrop({
-		bgFile = DB["media"].blank_,
-		edgeFile = DB["media"].blank_,
+		bgFile = C["media"].blank_,
+		edgeFile = C["media"].blank_,
 		tile = false, tileSize = 0, edgeSize = noscalemult,
 		insets = {left = -noscalemult, right = -noscalemult, top = -noscalemult, bottom = -noscalemult}
 	})
-	frame:SetBackdropBorderColor(unpack(DB["media"].bordercolor))
+	frame:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 	frame:SetBackdropColor(.1, .1, .1, .8)
 	frame:SetClampedToScreen(false)
 	

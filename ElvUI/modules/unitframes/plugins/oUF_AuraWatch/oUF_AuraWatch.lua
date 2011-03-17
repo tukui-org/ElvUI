@@ -1,6 +1,6 @@
 local E, C, L, DB = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 
-if DB.unitframes.raidunitbuffwatch ~= true then return end
+if C.unitframes.raidunitbuffwatch ~= true then return end
 
 --[[------------------------------------------------------------------------------------------------------
 oUF_AuraWatch by Astromech

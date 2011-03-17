@@ -6,17 +6,17 @@ local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config
  -- CURRENCY
 --------------------------------------------------------------------
 
-if DB["datatext"].currency and DB["datatext"].currency > 0 then
+if C["datatext"].currency and C["datatext"].currency > 0 then
 	local Stat = CreateFrame("Frame")
 	Stat:EnableMouse(true)
 	Stat:SetFrameStrata("MEDIUM")
 	Stat:SetFrameLevel(3)
 
 	local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(DB["media"].font_, DB["datatext"].fontsize, "THINOUTLINE")
+	Text:SetFont(C["media"].font_, C["datatext"].fontsize, "THINOUTLINE")
 	Text:SetShadowOffset(E.mult, -E.mult)
 	Text:SetShadowColor(0, 0, 0, 0.4)
-	E.PP(DB["datatext"].currency, Text)
+	E.PP(C["datatext"].currency, Text)
 	
 	local function update()
 		local _text = "---"

@@ -3,7 +3,7 @@
 --------------------------------------------------------------------
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not DB["datatext"].friends or DB["datatext"].friends == 0 then return end
+if not C["datatext"].friends or C["datatext"].friends == 0 then return end
 
 -- create a popup
 StaticPopupDialogs.SET_BN_BROADCAST = {
@@ -36,10 +36,10 @@ Stat:SetFrameStrata("MEDIUM")
 Stat:SetFrameLevel(3)
 
 local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
-Text:SetFont(DB["media"].font_, DB["datatext"].fontsize, "THINOUTLINE")
+Text:SetFont(C["media"].font_, C["datatext"].fontsize, "THINOUTLINE")
 Text:SetShadowColor(0, 0, 0, 0.4)
 Text:SetShadowOffset(E.mult, -E.mult)
-E.PP(DB["datatext"].friends, Text)
+E.PP(C["datatext"].friends, Text)
 
 local menuFrame = CreateFrame("Frame", "ElvuiFriendRightClickMenu", UIParent, "UIDropDownMenuTemplate")
 local menuList = {

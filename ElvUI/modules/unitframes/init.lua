@@ -10,4 +10,4 @@ function E.LoadLayout(layout)
 		end
 	end
 end
-E.LoadLayout(DB["general"].layoutoverride)
+E.LoadLayout(C["general"].layoutoverride)

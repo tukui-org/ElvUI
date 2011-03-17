@@ -2,17 +2,17 @@ local E, C, L, DB = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 local oUF = ElvUF or oUF
 assert(oUF, "ElvUI was unable to locate oUF.")
 
-if not DB["raidframes"].enable == true or DB["raidframes"].gridonly == true then return end
+if not C["raidframes"].enable == true or C["raidframes"].gridonly == true then return end
 
-local font2 = DB["media"].uffont
-local font1 = DB["media"].font
-local normTex = DB["media"].normTex
+local font2 = C["media"].uffont
+local font1 = C["media"].font
+local normTex = C["media"].normTex
 
 --Frame Size
-local PARTY_HEIGHT = E.Scale(35)*DB["raidframes"].scale
-local PARTY_WIDTH = E.Scale(140)*DB["raidframes"].scale
-local PTARGET_HEIGHT = E.Scale(17)*DB["raidframes"].scale
-local PTARGET_WIDTH = (PARTY_WIDTH/2)*DB["raidframes"].scale
+local PARTY_HEIGHT = E.Scale(35)*C["raidframes"].scale
+local PARTY_WIDTH = E.Scale(140)*C["raidframes"].scale
+local PTARGET_HEIGHT = E.Scale(17)*C["raidframes"].scale
+local PTARGET_WIDTH = (PARTY_WIDTH/2)*C["raidframes"].scale
 local BORDER = 2
 
 if E.LoadUFFunctions then E.LoadUFFunctions("DPS") end
@@ -40,16 +40,16 @@ local function Shared(self, unit)
 		self.Health = health
 		
 		--Name
-		self:FontString("Name", font1, DB["unitframes"].fontsize, "THINOUTLINE")
+		self:FontString("Name", font1, C["unitframes"].fontsize, "THINOUTLINE")
 		self.Name:Point("CENTER", health, "CENTER", 0, 2)
 		self.Name.frequentUpdates = 0.5
 		self:Tag(self.Name, '[Elvui:getnamecolor][Elvui:namemedium]')
 
 		-- Debuff Highlight
-		if DB["unitframes"].debuffhighlight == true then
+		if C["unitframes"].debuffhighlight == true then
 			local dbh = self:CreateTexture(nil, "OVERLAY")
 			dbh:SetAllPoints()
-			dbh:SetTexture(DB["media"].blank)
+			dbh:SetTexture(C["media"].blank)
 			dbh:SetBlendMode("ADD")
 			dbh:SetVertexColor(0,0,0,0)
 			self.DebuffHighlight = dbh
@@ -75,7 +75,7 @@ local function Shared(self, unit)
 		self.Power = power
 		
 		--Name
-		self:FontString("Name", font1, DB["unitframes"].fontsize, "THINOUTLINE")
+		self:FontString("Name", font1, C["unitframes"].fontsize, "THINOUTLINE")
 		self.Name:SetJustifyH("LEFT")
 		self.Name:Point("LEFT", health, "LEFT", 2, 0)
 		self.Name.frequentUpdates = 0.2
@@ -114,7 +114,7 @@ local function Shared(self, unit)
 		self.RaidIcon = RaidIcon
 
 		local ReadyCheck = self:CreateTexture(nil, "OVERLAY")
-		ReadyCheck:Size(DB["raidframes"].fontsize, DB["raidframes"].fontsize)
+		ReadyCheck:Size(C["raidframes"].fontsize, C["raidframes"].fontsize)
 		ReadyCheck:Point('LEFT', self.Name, 'RIGHT', 4, 0)
 		self.ReadyCheck = ReadyCheck
 
@@ -131,10 +131,10 @@ local function Shared(self, unit)
 		debuffs.CustomFilter = E.AuraFilter
 		self.Debuffs = debuffs
 		
-		if DB["unitframes"].debuffhighlight == true then
+		if C["unitframes"].debuffhighlight == true then
 			local dbh = self:CreateTexture(nil, "OVERLAY")
 			dbh:SetAllPoints()
-			dbh:SetTexture(DB["media"].blank)
+			dbh:SetTexture(C["media"].blank)
 			dbh:SetBlendMode("ADD")
 			dbh:SetVertexColor(0,0,0,0)
 			self.DebuffHighlight = dbh
@@ -142,17 +142,17 @@ local function Shared(self, unit)
 			self.DebuffHighlightAlpha = 0.35
 		end
 		
-		if DB["raidframes"].showrange == true then
-			local range = {insideAlpha = 1, outsideAlpha = DB["raidframes"].raidalphaoor}
+		if C["raidframes"].showrange == true then
+			local range = {insideAlpha = 1, outsideAlpha = C["raidframes"].raidalphaoor}
 			self.Range = range
 		end
 
-		if DB["raidframes"].raidunitbuffwatch == true then
+		if C["raidframes"].raidunitbuffwatch == true then
 			E.createAuraWatch(self,unit)
 		end
 	end
 	
-	if DB["raidframes"].mouseglow == true then
+	if C["raidframes"].mouseglow == true then
 		self:CreateShadow("Default")
 		
 		--self.shadow is used for threat, if we leave it like this, it may cause complications
@@ -197,7 +197,7 @@ oUF:RegisterStyle('ElvuiDPSParty', Shared)
 oUF:Factory(function(self)
 	oUF:SetActiveStyle("ElvuiDPSParty")
 	local party
-	if DB["raidframes"].partytarget ~= true then
+	if C["raidframes"].partytarget ~= true then
 		party = self:SpawnHeader("ElvuiDPSParty", nil, "custom [@raid6,exists] hide;show", 
 			'oUF-initialConfigFunction', [[
 				local header = self:GetParent()
@@ -207,7 +207,7 @@ oUF:Factory(function(self)
 			'initial-width', PARTY_WIDTH,
 			'initial-height', PARTY_HEIGHT,			
 			"showParty", true, 
-			"showPlayer", DB["raidframes"].showplayerinparty, 
+			"showPlayer", C["raidframes"].showplayerinparty, 
 			"showRaid", true, 
 			"showSolo", false,
 			"yOffset", E.Scale(-8)
@@ -227,7 +227,7 @@ oUF:Factory(function(self)
 				end
 			]]):format(PARTY_WIDTH, PARTY_HEIGHT, PTARGET_WIDTH, PTARGET_HEIGHT),			
 			"showParty", true, 
-			"showPlayer", DB["raidframes"].showplayerinparty, 
+			"showPlayer", C["raidframes"].showplayerinparty, 
 			"showRaid", true, 
 			"showSolo", false,
 			"yOffset", E.Scale(-27),

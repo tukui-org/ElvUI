@@ -1,6 +1,6 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not DB["actionbar"].enable == true then return end
+if not C["actionbar"].enable == true then return end
 
 
 ---------------------------------------------------------------------------
@@ -57,11 +57,11 @@ do
 		_G["ElvuiVehicleHotkey"..i] = _G["VehicleMenuBarActionButton"..i]:CreateFontString("ElvuiVehicleHotkey"..i, "OVERLAY", nil)
 		_G["ElvuiVehicleHotkey"..i]:ClearAllPoints()
 		_G["ElvuiVehicleHotkey"..i]:SetPoint("TOPRIGHT", 0, E.Scale(-3))
-		_G["ElvuiVehicleHotkey"..i]:SetFont(DB["media"].font_, 12, "OUTLINE")
+		_G["ElvuiVehicleHotkey"..i]:SetFont(C["media"].font_, 12, "OUTLINE")
 		_G["ElvuiVehicleHotkey"..i].ClearAllPoints = E.dummy
 		_G["ElvuiVehicleHotkey"..i].SetPoint = E.dummy
 		
-		if not DB["actionbar"].hotkey == true then
+		if not C["actionbar"].hotkey == true then
 			_G["ElvuiVehicleHotkey"..i]:SetText("")
 			_G["ElvuiVehicleHotkey"..i]:Hide()
 			_G["ElvuiVehicleHotkey"..i].Show = E.dummy
@@ -73,7 +73,7 @@ end
 
 local UpdateVehHotkeys = function()
 	if not UnitHasVehicleUI("player") then return end
-	if DB["actionbar"].hotkey ~= true then return end
+	if C["actionbar"].hotkey ~= true then return end
 	for i=1, VEHICLE_MAX_ACTIONBUTTONS do
 		_G["ElvuiVehicleHotkey"..i]:SetText(_G["VehicleMenuBarActionButton"..i.."HotKey"]:GetText())
 		_G["ElvuiVehicleHotkey"..i]:SetTextColor(_G["VehicleMenuBarActionButton"..i.."HotKey"]:GetTextColor())

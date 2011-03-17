@@ -1,27 +1,27 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not DB["unitframes"].enable == true then return end
+if not C["unitframes"].enable == true then return end
 
 ------------------------------------------------------------------------
 --	Constants
 ------------------------------------------------------------------------
 
-local PLAYER_WIDTH = DB["unitframes"].playtarwidth*E.ResScale
-local PLAYER_HEIGHT = DB["unitframes"].playtarheight*E.ResScale
-local TARGET_WIDTH = DB["unitframes"].playtarwidth*E.ResScale
-local TARGET_HEIGHT = DB["unitframes"].playtarheight*E.ResScale
-local SMALL_WIDTH = DB["unitframes"].smallwidth*E.ResScale
-local SMALL_HEIGHT = DB["unitframes"].smallheight*E.ResScale
-local TANK_WIDTH = DB["unitframes"].assisttankwidth*E.ResScale
-local TANK_HEIGHT = DB["unitframes"].assisttankheight*E.ResScale
-local BOSS_WIDTH = DB["unitframes"].arenabosswidth*E.ResScale
-local BOSS_HEIGHT = DB["unitframes"].arenabossheight*E.ResScale
+local PLAYER_WIDTH = C["unitframes"].playtarwidth*E.ResScale
+local PLAYER_HEIGHT = C["unitframes"].playtarheight*E.ResScale
+local TARGET_WIDTH = C["unitframes"].playtarwidth*E.ResScale
+local TARGET_HEIGHT = C["unitframes"].playtarheight*E.ResScale
+local SMALL_WIDTH = C["unitframes"].smallwidth*E.ResScale
+local SMALL_HEIGHT = C["unitframes"].smallheight*E.ResScale
+local TANK_WIDTH = C["unitframes"].assisttankwidth*E.ResScale
+local TANK_HEIGHT = C["unitframes"].assisttankheight*E.ResScale
+local BOSS_WIDTH = C["unitframes"].arenabosswidth*E.ResScale
+local BOSS_HEIGHT = C["unitframes"].arenabossheight*E.ResScale
 local BORDER = 2*E.ResScale
 local SPACING = 1*E.ResScale
-local FONTSIZE = DB["unitframes"].fontsize*E.ResScale
-local FONT = DB["media"].uffont_
-local NORMTEX = DB["media"].normTex_
-local POWERTHEME = DB["unitframes"].mini_powerbar
+local FONTSIZE = C["unitframes"].fontsize*E.ResScale
+local FONT = C["media"].uffont_
+local NORMTEX = C["media"].normTex_
+local POWERTHEME = C["unitframes"].mini_powerbar
 
 --[[
 	Constuctor Functions (inside uf_functions.lua)
@@ -74,11 +74,11 @@ local function Shared(self, unit)
 	--	Player
 	------------------------------------------------------------------------
 	if unit == "player" then
-		local POWERBAR_WIDTH = DB["unitframes"].playtarwidth/2*E.ResScale
-		local CLASSBAR_WIDTH = (DB["unitframes"].playtarwidth - (2*2))*E.ResScale
+		local POWERBAR_WIDTH = C["unitframes"].playtarwidth/2*E.ResScale
+		local CLASSBAR_WIDTH = (C["unitframes"].playtarwidth - (2*2))*E.ResScale
 		local POWERBAR_HEIGHT = 10*E.ResScale
 		local CASTBAR_HEIGHT = 20*E.ResScale
-		local CASTBAR_WIDTH = DB["unitframes"].castplayerwidth*E.ResScale
+		local CASTBAR_WIDTH = C["unitframes"].castplayerwidth*E.ResScale
 		local PORTRAIT_WIDTH = 45*E.ResScale
 		
 		--Threat Glow
@@ -90,10 +90,10 @@ local function Shared(self, unit)
 		self.shadow:Point("BOTTOMLEFT", -4, -4)
 		self.shadow:Point("BOTTOMRIGHT", 4, -4)		
 
-		if DB["unitframes"].charportraithealth == true or DB["unitframes"].charportrait == false then
+		if C["unitframes"].charportraithealth == true or C["unitframes"].charportrait == false then
 			PORTRAIT_WIDTH = 0
-		elseif DB["unitframes"].charportrait == true then
-			CLASSBAR_WIDTH = math.ceil(((DB["unitframes"].playtarwidth - (2*2)) - 45)*E.ResScale)
+		elseif C["unitframes"].charportrait == true then
+			CLASSBAR_WIDTH = math.ceil(((C["unitframes"].playtarwidth - (2*2)) - 45)*E.ResScale)
 		end
 	
 		--Health Bar
@@ -124,8 +124,8 @@ local function Shared(self, unit)
 		self.Power = power
 		
 		--Portrait
-		if DB["unitframes"].charportrait == true then
-			if DB["unitframes"].charportraithealth == true then
+		if C["unitframes"].charportrait == true then
+			if C["unitframes"].charportraithealth == true then
 				local portrait = CreateFrame("PlayerModel", nil, health)
 				portrait:SetFrameLevel(health:GetFrameLevel() + 1)
 				portrait:SetAllPoints(health)
@@ -166,7 +166,7 @@ local function Shared(self, unit)
 		
 		--Anchor aggro glow to the healthbar if powertheme is on
 		if POWERTHEME == true then
-			if DB["unitframes"].charportrait == true and not DB["unitframes"].charportraithealth == true then
+			if C["unitframes"].charportrait == true and not C["unitframes"].charportraithealth == true then
 				self.shadow:Point("BOTTOMLEFT", self.Portrait.backdrop, "BOTTOMLEFT", -4, -4)
 			else
 				self.shadow:Point("BOTTOMLEFT", health, "BOTTOMLEFT", -4, -4)
@@ -175,12 +175,12 @@ local function Shared(self, unit)
 		end				
 				
 		--Auras
-		if DB["unitframes"].playerauras then
+		if C["unitframes"].playerauras then
 			local debuffs = CreateFrame("Frame", nil, self)
-			debuffs.num = DB["unitframes"].playtarbuffperrow
+			debuffs.num = C["unitframes"].playtarbuffperrow
 			debuffs:SetWidth(PLAYER_WIDTH)
 			debuffs.spacing = E.Scale(SPACING)
-			debuffs.size = ((DB["unitframes"].playtarwidth - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)*E.ResScale
+			debuffs.size = ((C["unitframes"].playtarwidth - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)*E.ResScale
 			debuffs:SetHeight(debuffs.size)
 			debuffs:Point("BOTTOMLEFT", self, "TOPLEFT", 0, SPACING)	
 			debuffs.initialAnchor = 'BOTTOMRIGHT'
@@ -191,12 +191,12 @@ local function Shared(self, unit)
 			debuffs.CustomFilter = E.AuraFilter
 			self.Debuffs = debuffs
 			
-			if DB["unitframes"].playershowonlydebuffs == false then
+			if C["unitframes"].playershowonlydebuffs == false then
 				local buffs = CreateFrame("Frame", nil, self)
-				buffs.num = DB["unitframes"].playtarbuffperrow
+				buffs.num = C["unitframes"].playtarbuffperrow
 				buffs:SetWidth(debuffs:GetWidth())
 				buffs.spacing = E.Scale(SPACING)
-				buffs.size = (((DB["unitframes"].playtarwidth - (buffs.spacing*(buffs.num - 1))) / buffs.num))*E.ResScale
+				buffs.size = (((C["unitframes"].playtarwidth - (buffs.spacing*(buffs.num - 1))) / buffs.num))*E.ResScale
 				buffs:Point("BOTTOM", debuffs, "TOP", 0, SPACING)
 				buffs:SetHeight(debuffs:GetHeight())
 				buffs.initialAnchor = 'BOTTOMLEFT'
@@ -209,7 +209,7 @@ local function Shared(self, unit)
 		end
 
 		--Cast Bar
-		if DB["unitframes"].unitcastbar == true then
+		if C["unitframes"].unitcastbar == true then
 			local castbar = E.ConstructCastBar(self, CASTBAR_WIDTH, CASTBAR_HEIGHT, "LEFT")
 			castbar:Point("TOPRIGHT", self, "BOTTOMRIGHT", -BORDER, -(BORDER*2+BORDER))
 			
@@ -217,7 +217,7 @@ local function Shared(self, unit)
 		end
 		
 		-- Debuff Highlight
-		if DB["unitframes"].debuffhighlight == true then
+		if C["unitframes"].debuffhighlight == true then
 			local dbh = self:CreateTexture(nil, "OVERLAY")
 			if POWERTHEME == true then
 				dbh:SetPoint("TOPLEFT")
@@ -225,7 +225,7 @@ local function Shared(self, unit)
 			else
 				dbh:SetAllPoints()
 			end
-			dbh:SetTexture(DB["media"].blank_)
+			dbh:SetTexture(C["media"].blank_)
 			dbh:SetBlendMode("ADD")
 			dbh:SetVertexColor(0,0,0,0)
 			self.DebuffHighlight = dbh
@@ -234,7 +234,7 @@ local function Shared(self, unit)
 		end
 
 		--Combat Feedback
-		if DB["unitframes"].combatfeedback == true then
+		if C["unitframes"].combatfeedback == true then
 			self:FontString("CombatFeedbackText", FONT, FONTSIZE, "OUTLINE")
 			self.CombatFeedbackText:SetPoint("CENTER", health, "CENTER", 0, -5)
 			
@@ -299,7 +299,7 @@ local function Shared(self, unit)
 		self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', E.UpdateThreat)
 		
 		--Auto Hide
-		if DB["unitframes"].combat == true then
+		if C["unitframes"].combat == true then
 			self:RegisterEvent("PLAYER_ENTERING_WORLD", E.Fader)
 			self:RegisterEvent("PLAYER_REGEN_ENABLED", E.Fader)
 			self:RegisterEvent("PLAYER_REGEN_DISABLED", E.Fader)
@@ -343,7 +343,7 @@ local function Shared(self, unit)
 			
 			experience.backdrop = CreateFrame("Frame", nil, experience)
 			experience.backdrop:SetTemplate("Default")
-			experience.backdrop:SetBackdropBorderColor(unpack(DB["media"].bordercolor))
+			experience.backdrop:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 			experience.backdrop:Point("TOPLEFT", experience, "TOPLEFT", -2, 2)
 			experience.backdrop:Point("BOTTOMRIGHT", experience, "BOTTOMRIGHT", 2, -2)
 			experience.backdrop:SetFrameLevel(experience:GetFrameLevel() - 1)
@@ -363,7 +363,7 @@ local function Shared(self, unit)
 
 			reputation.backdrop = CreateFrame("Frame", nil, reputation)
 			reputation.backdrop:SetTemplate("Default")
-			reputation.backdrop:SetBackdropBorderColor(unpack(DB["media"].bordercolor))
+			reputation.backdrop:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 			reputation.backdrop:Point("TOPLEFT", reputation, "TOPLEFT", -2, 2)
 			reputation.backdrop:Point("BOTTOMRIGHT", reputation, "BOTTOMRIGHT", 2, -2)
 			reputation.backdrop:SetFrameLevel(reputation:GetFrameLevel() - 1)
@@ -371,7 +371,7 @@ local function Shared(self, unit)
 		end
 
 		--Class Resource Bars
-		if DB["unitframes"].classbar == true and (E.myclass == "PALADIN" or E.myclass == "SHAMAN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK") then
+		if C["unitframes"].classbar == true and (E.myclass == "PALADIN" or E.myclass == "SHAMAN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK") then
 			--Reposition Health Bar for ClassBars
 			health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+POWERBAR_HEIGHT+SPACING))
 			health:Point("TOPLEFT", self, "TOPLEFT", PORTRAIT_WIDTH+BORDER, -(BORDER+POWERBAR_HEIGHT+SPACING))
@@ -416,7 +416,7 @@ local function Shared(self, unit)
 				
 				bars.backdrop = CreateFrame("Frame", nil, bars)
 				bars.backdrop:SetTemplate("Default")
-				bars.backdrop:SetBackdropBorderColor(unpack(DB["media"].bordercolor))
+				bars.backdrop:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 				bars.backdrop:Point("TOPLEFT", -BORDER, BORDER)
 				bars.backdrop:Point("BOTTOMRIGHT", BORDER, -BORDER)
 				bars.backdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
@@ -463,7 +463,7 @@ local function Shared(self, unit)
 				
 				runes.backdrop = CreateFrame("Frame", nil, runes)
 				runes.backdrop:SetTemplate("Default")
-				runes.backdrop:SetBackdropBorderColor(unpack(DB["media"].bordercolor))
+				runes.backdrop:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 				runes.backdrop:Point("TOPLEFT", -BORDER, BORDER)
 				runes.backdrop:Point("BOTTOMRIGHT", BORDER, -BORDER)
 				runes.backdrop:SetFrameLevel(runes:GetFrameLevel() - 1)
@@ -513,7 +513,7 @@ local function Shared(self, unit)
 				end
 				totems.backdrop = CreateFrame("Frame", nil, totems)
 				totems.backdrop:SetTemplate("Default")
-				totems.backdrop:SetBackdropBorderColor(unpack(DB["media"].bordercolor))
+				totems.backdrop:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 				totems.backdrop:Point("TOPLEFT", -BORDER, BORDER)
 				totems.backdrop:Point("BOTTOMRIGHT", BORDER, -BORDER)
 				totems.backdrop:SetFrameLevel(totems:GetFrameLevel() - 1)
@@ -558,7 +558,7 @@ local function Shared(self, unit)
 				
 				eclipseBar.backdrop = CreateFrame("Frame", nil, eclipseBar)
 				eclipseBar.backdrop:SetTemplate("Default")
-				eclipseBar.backdrop:SetBackdropBorderColor(unpack(DB["media"].bordercolor))
+				eclipseBar.backdrop:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 				eclipseBar.backdrop:Point("TOPLEFT", eclipseBar, "TOPLEFT", -BORDER, BORDER)
 				eclipseBar.backdrop:Point("BOTTOMRIGHT", lunarBar, "BOTTOMRIGHT", BORDER, -BORDER)
 				eclipseBar.backdrop:SetFrameLevel(eclipseBar:GetFrameLevel() - 1)
@@ -602,19 +602,19 @@ local function Shared(self, unit)
 		self.AltPowerBar = altpower
 		
 		--Incoming Heals
-		if DB["raidframes"].healcomm == true then
+		if C["raidframes"].healcomm == true then
 			local mhpb = CreateFrame('StatusBar', nil, health)
 			mhpb:SetPoint('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
 			mhpb:SetPoint('TOPLEFT', health:GetStatusBarTexture(), 'TOPRIGHT')	
 			mhpb:SetWidth(POWERBAR_WIDTH)
-			mhpb:SetStatusBarTexture(DB["media"].blank_)
+			mhpb:SetStatusBarTexture(C["media"].blank_)
 			mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
 			
 			local ohpb = CreateFrame('StatusBar', nil, health)
 			ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
 			ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)		
 			ohpb:SetWidth(mhpb:GetWidth())
-			ohpb:SetStatusBarTexture(DB["media"].blank_)
+			ohpb:SetStatusBarTexture(C["media"].blank_)
 			ohpb:SetStatusBarColor(0, 1, 0, 0.25)
 			
 			self.HealPrediction = {
@@ -633,17 +633,17 @@ local function Shared(self, unit)
 	-- Target
 	------------------------------------------------------------------------
 	if unit == "target" then
-		local POWERBAR_WIDTH = DB["unitframes"].playtarwidth/2*E.ResScale
-		local CLASSBAR_WIDTH = (DB["unitframes"].playtarwidth - (2*2))*E.ResScale
+		local POWERBAR_WIDTH = C["unitframes"].playtarwidth/2*E.ResScale
+		local CLASSBAR_WIDTH = (C["unitframes"].playtarwidth - (2*2))*E.ResScale
 		local POWERBAR_HEIGHT = 10*E.ResScale
 		local CASTBAR_HEIGHT = 20*E.ResScale
-		local CASTBAR_WIDTH = DB["unitframes"].casttargetwidth*E.ResScale
+		local CASTBAR_WIDTH = C["unitframes"].casttargetwidth*E.ResScale
 		local PORTRAIT_WIDTH = 45*E.ResScale
 	
-		if DB["unitframes"].charportraithealth == true or DB["unitframes"].charportrait == false then
+		if C["unitframes"].charportraithealth == true or C["unitframes"].charportrait == false then
 			PORTRAIT_WIDTH = 0
-		elseif DB["unitframes"].charportrait == true then
-			CLASSBAR_WIDTH = math.ceil(((DB["unitframes"].playtarwidth - (2*2)) - 45)*E.ResScale)
+		elseif C["unitframes"].charportrait == true then
+			CLASSBAR_WIDTH = math.ceil(((C["unitframes"].playtarwidth - (2*2)) - 45)*E.ResScale)
 		end
 
 		--Health Bar
@@ -680,8 +680,8 @@ local function Shared(self, unit)
 		self:Tag(self.Name, '[Elvui:getnamecolor][Elvui:namelong] [Elvui:diffcolor][level] [shortclassification]')
 		
 		--Portrait
-		if DB["unitframes"].charportrait == true then
-			if DB["unitframes"].charportraithealth == true then
+		if C["unitframes"].charportrait == true then
+			if C["unitframes"].charportraithealth == true then
 				local portrait = CreateFrame("PlayerModel", nil, health)
 				portrait:SetFrameLevel(health:GetFrameLevel() + 1)
 				portrait:SetAllPoints(health)
@@ -720,12 +720,12 @@ local function Shared(self, unit)
 		end
 				
 		--Auras
-		if DB["unitframes"].targetauras then
+		if C["unitframes"].targetauras then
 			local buffs = CreateFrame("Frame", nil, self)
-			buffs.num = DB["unitframes"].playtarbuffperrow
+			buffs.num = C["unitframes"].playtarbuffperrow
 			buffs:SetWidth(TARGET_WIDTH)
 			buffs.spacing = E.Scale(SPACING)
-			buffs.size = (((DB["unitframes"].playtarwidth - (buffs.spacing*(buffs.num - 1))) / buffs.num))*E.ResScale
+			buffs.size = (((C["unitframes"].playtarwidth - (buffs.spacing*(buffs.num - 1))) / buffs.num))*E.ResScale
 			buffs:Point("BOTTOM", self, "TOP", 0, SPACING)
 			buffs:SetHeight(buffs.size)
 			buffs.initialAnchor = 'BOTTOMLEFT'
@@ -736,10 +736,10 @@ local function Shared(self, unit)
 			self.Buffs = buffs	
 			
 			local debuffs = CreateFrame("Frame", nil, self)
-			debuffs.num = DB["unitframes"].playtarbuffperrow
+			debuffs.num = C["unitframes"].playtarbuffperrow
 			debuffs:SetWidth(TARGET_WIDTH)
 			debuffs.spacing = E.Scale(SPACING)
-			debuffs.size = ((DB["unitframes"].playtarwidth - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)*E.ResScale
+			debuffs.size = ((C["unitframes"].playtarwidth - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)*E.ResScale
 			debuffs:SetHeight(debuffs.size)
 			debuffs:Point("BOTTOM", buffs, "TOP", 0, SPACING)	
 			debuffs.initialAnchor = 'BOTTOMRIGHT'
@@ -752,7 +752,7 @@ local function Shared(self, unit)
 		end
 
 		--Cast Bar
-		if DB["unitframes"].unitcastbar == true then
+		if C["unitframes"].unitcastbar == true then
 			local castbar = E.ConstructCastBar(self, CASTBAR_WIDTH, CASTBAR_HEIGHT, "RIGHT")
 			castbar:Point("TOPLEFT", self, "BOTTOMLEFT", BORDER, -(BORDER*2+BORDER))
 			
@@ -760,7 +760,7 @@ local function Shared(self, unit)
 		end
 		
 		-- Debuff Highlight
-		if DB["unitframes"].debuffhighlight == true then
+		if C["unitframes"].debuffhighlight == true then
 			local dbh = self:CreateTexture(nil, "OVERLAY")
 			if POWERTHEME == true then
 				dbh:SetPoint("TOPLEFT")
@@ -768,7 +768,7 @@ local function Shared(self, unit)
 			else
 				dbh:SetAllPoints()
 			end
-			dbh:SetTexture(DB["media"].blank_)
+			dbh:SetTexture(C["media"].blank_)
 			dbh:SetBlendMode("ADD")
 			dbh:SetVertexColor(0,0,0,0)
 			self.DebuffHighlight = dbh
@@ -777,7 +777,7 @@ local function Shared(self, unit)
 		end
 
 		--Combat Feedback
-		if DB["unitframes"].combatfeedback == true then
+		if C["unitframes"].combatfeedback == true then
 			self:FontString("CombatFeedbackText", FONT, FONTSIZE, "OUTLINE")
 			self.CombatFeedbackText:SetPoint("CENTER", health, "CENTER", 0, -5)
 			
@@ -829,7 +829,7 @@ local function Shared(self, unit)
 		
 		combo.backdrop = CreateFrame("Frame", nil, combo)
 		combo.backdrop:SetTemplate("Default")
-		combo.backdrop:SetBackdropBorderColor(unpack(DB["media"].bordercolor))
+		combo.backdrop:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 		combo.backdrop:Point("TOPLEFT", -BORDER, BORDER)
 		combo.backdrop:Point("BOTTOMRIGHT", BORDER, -BORDER)
 		combo.backdrop:SetFrameLevel(combo:GetFrameLevel() - 1)
@@ -855,19 +855,19 @@ local function Shared(self, unit)
 		self.CPoints = combo
 		
 		--Incoming Heals
-		if DB["raidframes"].healcomm == true then
+		if C["raidframes"].healcomm == true then
 			local mhpb = CreateFrame('StatusBar', nil, health)
 			mhpb:SetPoint('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
 			mhpb:SetPoint('TOPLEFT', health:GetStatusBarTexture(), 'TOPRIGHT')	
 			mhpb:SetWidth(POWERBAR_WIDTH)
-			mhpb:SetStatusBarTexture(DB["media"].blank_)
+			mhpb:SetStatusBarTexture(C["media"].blank_)
 			mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
 			
 			local ohpb = CreateFrame('StatusBar', nil, health)
 			ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
 			ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)		
 			ohpb:SetWidth(mhpb:GetWidth())
-			ohpb:SetStatusBarTexture(DB["media"].blank_)
+			ohpb:SetStatusBarTexture(C["media"].blank_)
 			ohpb:SetStatusBarColor(0, 1, 0, 0.25)
 			
 			self.HealPrediction = {
@@ -886,9 +886,9 @@ local function Shared(self, unit)
 	--	TargetofTarget, Pet, PetTarget, Focus, FocusTarget
 	------------------------------------------------------------------------
 	if (unit == "targettarget" or unit == "pet" or unit == "pettarget" or unit == "focustarget" or unit == "focus") then
-		local POWERBAR_WIDTH = DB["unitframes"].smallwidth/1.5*E.ResScale
+		local POWERBAR_WIDTH = C["unitframes"].smallwidth/1.5*E.ResScale
 		local POWERBAR_HEIGHT = 8
-		local CASTBAR_WIDTH = DB["unitframes"].castfocuswidth*E.ResScale
+		local CASTBAR_WIDTH = C["unitframes"].castfocuswidth*E.ResScale
 		
 		--Health Bar
 		local health = E.ContructHealthBar(self, true, nil)
@@ -924,12 +924,12 @@ local function Shared(self, unit)
 		self:Tag(self.Name, '[Elvui:getnamecolor][Elvui:namemedium]')		
 		
 		--Auras
-		if (unit == "targettarget" and DB["unitframes"].totdebuffs == true) or (unit == "focus" and DB["unitframes"].focusdebuffs == true) then	
+		if (unit == "targettarget" and C["unitframes"].totdebuffs == true) or (unit == "focus" and C["unitframes"].focusdebuffs == true) then	
 			local debuffs = CreateFrame("Frame", nil, self)
-			debuffs.num = DB["unitframes"].smallbuffperrow
+			debuffs.num = C["unitframes"].smallbuffperrow
 			debuffs:SetWidth(SMALL_WIDTH)
 			debuffs.spacing = E.Scale(SPACING)
-			debuffs.size = ((DB["unitframes"].smallwidth - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)*E.ResScale
+			debuffs.size = ((C["unitframes"].smallwidth - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)*E.ResScale
 			debuffs:SetHeight(debuffs.size)
 			debuffs:Point("TOP", self, "BOTTOM", 0, -SPACING)	
 			debuffs.initialAnchor = 'BOTTOMRIGHT'
@@ -942,7 +942,7 @@ local function Shared(self, unit)
 		end
 	
 		-- Debuff Highlight
-		if DB["unitframes"].debuffhighlight == true then
+		if C["unitframes"].debuffhighlight == true then
 			local dbh = self:CreateTexture(nil, "OVERLAY")
 			if POWERTHEME == true then
 				dbh:SetPoint("TOPLEFT")
@@ -950,7 +950,7 @@ local function Shared(self, unit)
 			else
 				dbh:SetAllPoints()
 			end
-			dbh:SetTexture(DB["media"].blank_)
+			dbh:SetTexture(C["media"].blank_)
 			dbh:SetBlendMode("ADD")
 			dbh:SetVertexColor(0,0,0,0)
 			self.DebuffHighlight = dbh
@@ -960,22 +960,22 @@ local function Shared(self, unit)
 		
 		if unit == "pet" then
 			--Dummy Cast Bar, so we don't see an extra castbar while in vehicle
-			if (DB["unitframes"].unitcastbar == true) then
+			if (C["unitframes"].unitcastbar == true) then
 				local castbar = CreateFrame("StatusBar", nil, self)
 				self.Castbar = castbar
 			end
 			
 			--Incoming Pet Heals
-			if DB["raidframes"].raidunitbuffwatch == true then
+			if C["raidframes"].raidunitbuffwatch == true then
 				E.createAuraWatch(self,unit)
 			end
 			
 			--Autohide in combat
-			if DB["unitframes"].combat == true then
+			if C["unitframes"].combat == true then
 				self:HookScript("OnEnter", function(self) E.Fader(self, true) end)
 				self:HookScript("OnLeave", function(self) E.Fader(self, false) end)
 			end
-		elseif unit == "focus" and DB["unitframes"].unitcastbar == true	then
+		elseif unit == "focus" and C["unitframes"].unitcastbar == true	then
 			--Cast Bar
 			local castbar = E.ConstructCastBar(self, CASTBAR_WIDTH, 20, "LEFT")
 			castbar:Point("TOP", UIParent, "TOP", 0, -150)
@@ -987,15 +987,15 @@ local function Shared(self, unit)
 	------------------------------------------------------------------------
 	--	Arena and Boss
 	------------------------------------------------------------------------
-	if (unit and unit:find("arena%d") and DB["unitframes"].arena == true) or (unit and unit:find("boss%d") and DB["unitframes"].showboss == true) then
-		local POWERBAR_WIDTH = DB["unitframes"].arenabosswidth/2*E.ResScale
+	if (unit and unit:find("arena%d") and C["unitframes"].arena == true) or (unit and unit:find("boss%d") and C["unitframes"].showboss == true) then
+		local POWERBAR_WIDTH = C["unitframes"].arenabosswidth/2*E.ResScale
 		local TRINKET_WIDTH = BOSS_HEIGHT * 0.9
 		local POWERBAR_HEIGHT = 7
 		local CASTBAR_HEIGHT = 16*E.ResScale
 		local CASTBAR_WIDTH = BOSS_WIDTH
 
 		if unit:find("arena%d") then
-			POWERBAR_WIDTH = DB["unitframes"].arenabosswidth/2.3*E.ResScale
+			POWERBAR_WIDTH = C["unitframes"].arenabosswidth/2.3*E.ResScale
 		end
 		
 		-- Right-click focus on arena or boss units
@@ -1043,7 +1043,7 @@ local function Shared(self, unit)
 				trinket.bg:SetPoint("BOTTOMLEFT", power.backdrop, "BOTTOMRIGHT", SPACING, 0)		
 			end
 			trinket.bg:SetTemplate("Default")
-			trinket.bg:SetBackdropBorderColor(unpack(DB["media"].bordercolor))
+			trinket.bg:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 			trinket.bg:SetFrameLevel(trinket:GetFrameLevel() - 1)
 			
 			trinket:Point("TOPLEFT", trinket.bg, BORDER, -BORDER)
@@ -1063,7 +1063,7 @@ local function Shared(self, unit)
 			altpower.bg:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", 0, SPACING)
 			altpower.bg:Point("TOPRIGHT", self, "TOPRIGHT")
 			altpower.bg:SetTemplate("Default")
-			altpower.bg:SetBackdropBorderColor(unpack(DB["media"].bordercolor))
+			altpower.bg:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 			altpower.bg:SetFrameLevel(altpower:GetFrameLevel() - 1)
 
 			altpower:Point("TOPLEFT", altpower.bg, "TOPLEFT", BORDER, -BORDER)
@@ -1122,7 +1122,7 @@ local function Shared(self, unit)
 		self.Debuffs = debuffs
 
 		--Cast Bar
-		if DB["unitframes"].unitcastbar == true then
+		if C["unitframes"].unitcastbar == true then
 			local castbar = E.ConstructCastBar(self, CASTBAR_WIDTH, CASTBAR_HEIGHT, "RIGHT")
 			castbar:Point("TOPLEFT", self, "BOTTOMLEFT", BORDER, -BORDER*2)
 			
@@ -1198,14 +1198,14 @@ local function LoadHealLayout()
 	pet:SetParent(player)
 
 	-- Focus's target
-	if DB["unitframes"].showfocustarget == true then
+	if C["unitframes"].showfocustarget == true then
 		local focustarget = oUF:Spawn('focustarget', "ElvHeal_focustarget")
 		focustarget:Point("TOP", ElvHeal_focus, "BOTTOM", 0, -32)
 		focustarget:Size(SMALL_WIDTH, SMALL_HEIGHT)
 	end
 
 
-	if DB.unitframes.arena then
+	if C.unitframes.arena then
 		local arena = {}
 		for i = 1, 5 do
 			arena[i] = oUF:Spawn("arena"..i, "ElvHealArena"..i)
@@ -1218,7 +1218,7 @@ local function LoadHealLayout()
 		end
 	end
 
-	if DB["unitframes"].showboss then
+	if C["unitframes"].showboss then
 		local boss = {}
 		for i = 1, MAX_BOSS_FRAMES do
 			boss[i] = oUF:Spawn("boss"..i, "ElvHealBoss"..i)
@@ -1232,7 +1232,7 @@ local function LoadHealLayout()
 	end
 
 
-	if DB["raidframes"].maintank == true then
+	if C["raidframes"].maintank == true then
 		local tank = oUF:SpawnHeader('ElvHealMainTank', nil, 'raid', 
 			'oUF-initialConfigFunction', ([[
 				self:SetWidth(%d)
@@ -1247,7 +1247,7 @@ local function LoadHealLayout()
 		tank:Point("LEFT", UIParent, "LEFT", 6, 250)
 	end
 
-	if DB["raidframes"].mainassist == true then
+	if C["raidframes"].mainassist == true then
 		local assist = oUF:SpawnHeader("ElvHealMainAssist", nil, 'raid', 
 			'oUF-initialConfigFunction', ([[
 				self:SetWidth(%d)
@@ -1259,7 +1259,7 @@ local function LoadHealLayout()
 			'point' , 'BOTTOM',
 			'template', 'Elv_Mtt'
 		)
-		if DB["raidframes"].maintank == true then 
+		if C["raidframes"].maintank == true then 
 			assist:Point("TOPLEFT", ElvHealMainTank, "BOTTOMLEFT", 0, -50)
 		else
 			assist:Point("LEFT", UIParent, "LEFT", 6, 250)
@@ -1267,7 +1267,7 @@ local function LoadHealLayout()
 	end
 
 	local party
-	if DB["raidframes"].disableblizz == true then --seriosly lazy addon authors can suck my dick
+	if C["raidframes"].disableblizz == true then --seriosly lazy addon authors can suck my dick
 		for i = 1,MAX_BOSS_FRAMES do
 			local t_boss = _G["Boss"..i.."TargetFrame"]
 			t_boss:UnregisterAllEvents()
@@ -1289,7 +1289,7 @@ local function LoadHealLayout()
 	end
 	
 	E.LoadMoveElements("Heal")
-	if DB["classtimer"].enable == true then
+	if C["classtimer"].enable == true then
 		E.LoadClassTimers(ElvHeal_player, ElvHeal_target)
 	end
 end

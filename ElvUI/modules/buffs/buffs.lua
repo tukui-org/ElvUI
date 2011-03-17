@@ -7,7 +7,7 @@ ConsolidatedBuffs:SetSize(16, 16)
 ConsolidatedBuffsIcon:SetTexture(nil)
 ConsolidatedBuffs.SetPoint = E.dummy
 
-if DB["others"].minimapauras ~= true then BuffFrame:Kill() ConsolidatedBuffs:Kill() return end
+if C["others"].minimapauras ~= true then BuffFrame:Kill() ConsolidatedBuffs:Kill() return end
 
 local mainhand, _, _, offhand = GetWeaponEnchantInfo()
 local rowbuffs = 12
@@ -41,7 +41,7 @@ for i = 1, 3 do
 	_G["TempEnchant"..i]:SetWidth(E.Scale(30))	
 	_G["TempEnchant"..i.."Duration"]:ClearAllPoints()
 	_G["TempEnchant"..i.."Duration"]:SetPoint("BOTTOM", 0, E.Scale(-13))
-	_G["TempEnchant"..i.."Duration"]:SetFont(DB["media"].font_, DB["general"].fontscale, "THINOUTLINE")
+	_G["TempEnchant"..i.."Duration"]:SetFont(C["media"].font_, C["general"].fontscale, "THINOUTLINE")
 end
 
 local function StyleBuffs(buttonName, index, debuff)
@@ -60,11 +60,11 @@ local function StyleBuffs(buttonName, index, debuff)
 				
 		duration:ClearAllPoints()
 		duration:SetPoint("BOTTOM", 0, E.Scale(-13))
-		duration:SetFont(DB["media"].font_, 12, "THINOUTLINE")
+		duration:SetFont(C["media"].font_, 12, "THINOUTLINE")
 		
 		count:ClearAllPoints()
 		count:SetPoint("TOPLEFT", E.Scale(1), E.Scale(-2))
-		count:SetFont(DB["media"].font_, DB["general"].fontscale, "OUTLINE")
+		count:SetFont(C["media"].font_, C["general"].fontscale, "OUTLINE")
 		
 		local panel = CreateFrame("Frame", buttonName..index.."Panel", buff)
 		panel:CreatePanel("Default", 30, 30, "CENTER", buff, "CENTER", 0, 0)

@@ -5,7 +5,7 @@
 ]]
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if DB["nameplate"].enable ~= true then return end
+if C["nameplate"].enable ~= true then return end
 
 E.PlateBlacklist = {
 	--Shaman Totems

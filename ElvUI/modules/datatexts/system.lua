@@ -3,7 +3,7 @@
 --------------------------------------------------------------------
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if not DB["datatext"].system or DB["datatext"].system == 0 then return end
+if not C["datatext"].system or C["datatext"].system == 0 then return end
 
 local Stat = CreateFrame("Frame")
 Stat:SetFrameStrata("MEDIUM")
@@ -12,10 +12,10 @@ Stat:EnableMouse(true)
 Stat.tooltip = false
 
 local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
-Text:SetFont(DB["media"].font_, DB["datatext"].fontsize, "THINOUTLINE")
+Text:SetFont(C["media"].font_, C["datatext"].fontsize, "THINOUTLINE")
 Text:SetShadowOffset(E.mult, -E.mult)
 Text:SetShadowColor(0, 0, 0, 0.4)
-E.PP(DB["datatext"].system, Text)
+E.PP(C["datatext"].system, Text)
 
 local bandwidthString = "%.2f Mbps"
 local percentageString = "%.2f%%"

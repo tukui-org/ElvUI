@@ -1,13 +1,13 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 --Base code by Dawn (dNameplates)
-if not DB["nameplate"].enable == true then return end
+if not C["nameplate"].enable == true then return end
 
 local _, build = GetBuildInfo()
 if tonumber(build) > 13623 then return end
 
-local TEXTURE = DB["media"].normTex_
-local FONT = DB["media"].font_
+local TEXTURE = C["media"].normTex_
+local FONT = C["media"].font_
 local FONTSIZE = 10
 local FONTFLAG = "THINOUTLINE"
 local hpHeight = 12
@@ -15,25 +15,25 @@ local hpWidth = 110
 local iconSize = 25		--Size of all Icons, RaidIcon/ClassIcon/Castbar Icon
 local cbHeight = 5
 local cbWidth = 110
-local blankTex = DB["media"].blank_
+local blankTex = C["media"].blank_
 local OVERLAY = [=[Interface\TargetingFrame\UI-TargetingFrame-Flash]=]
 local numChildren = -1
 local frames = {}
-local noscalemult = E.mult * DB["general"].uiscale
+local noscalemult = E.mult * C["general"].uiscale
 
 --Change defaults if we are showing health text or not
-if DB["nameplate"].showhealth ~= true then
+if C["nameplate"].showhealth ~= true then
 	hpHeight = 7
 	iconSize = 20
 end
 
 local NamePlates = CreateFrame("Frame", nil, UIParent)
 NamePlates:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
-if DB["nameplate"].trackauras == true or DB["nameplate"].trackccauras == true then
+if C["nameplate"].trackauras == true or C["nameplate"].trackccauras == true then
 	NamePlates:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 end
 
-if DB["nameplate"].overlap == true or E.eyefinity then
+if C["nameplate"].overlap == true or E.eyefinity then
 	SetCVar("spreadnameplates", "0")
 else
 	SetCVar("spreadnameplates", "1")
@@ -73,34 +73,34 @@ local function CreateVirtualFrame(parent, point)
 	parent.backdrop:SetDrawLayer("BORDER", -8)
 	parent.backdrop:SetPoint("TOPLEFT", point, "TOPLEFT", -noscalemult*3, noscalemult*3)
 	parent.backdrop:SetPoint("BOTTOMRIGHT", point, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
-	parent.backdrop:SetTexture(unpack(DB["media"].backdropcolor))
+	parent.backdrop:SetTexture(unpack(C["media"].backdropcolor))
 
 	parent.bordertop = parent:CreateTexture(nil, "BORDER")
 	parent.bordertop:SetPoint("TOPLEFT", point, "TOPLEFT", -noscalemult*2, noscalemult*2)
 	parent.bordertop:SetPoint("TOPRIGHT", point, "TOPRIGHT", noscalemult*2, noscalemult*2)
 	parent.bordertop:SetHeight(noscalemult)
-	parent.bordertop:SetTexture(unpack(DB["media"].bordercolor))	
+	parent.bordertop:SetTexture(unpack(C["media"].bordercolor))	
 	parent.bordertop:SetDrawLayer("BORDER", -7)
 	
 	parent.borderbottom = parent:CreateTexture(nil, "BORDER")
 	parent.borderbottom:SetPoint("BOTTOMLEFT", point, "BOTTOMLEFT", -noscalemult*2, -noscalemult*2)
 	parent.borderbottom:SetPoint("BOTTOMRIGHT", point, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
 	parent.borderbottom:SetHeight(noscalemult)
-	parent.borderbottom:SetTexture(unpack(DB["media"].bordercolor))	
+	parent.borderbottom:SetTexture(unpack(C["media"].bordercolor))	
 	parent.borderbottom:SetDrawLayer("BORDER", -7)
 	
 	parent.borderleft = parent:CreateTexture(nil, "BORDER")
 	parent.borderleft:SetPoint("TOPLEFT", point, "TOPLEFT", -noscalemult*2, noscalemult*2)
 	parent.borderleft:SetPoint("BOTTOMLEFT", point, "BOTTOMLEFT", noscalemult*2, -noscalemult*2)
 	parent.borderleft:SetWidth(noscalemult)
-	parent.borderleft:SetTexture(unpack(DB["media"].bordercolor))	
+	parent.borderleft:SetTexture(unpack(C["media"].bordercolor))	
 	parent.borderleft:SetDrawLayer("BORDER", -7)
 	
 	parent.borderright = parent:CreateTexture(nil, "BORDER")
 	parent.borderright:SetPoint("TOPRIGHT", point, "TOPRIGHT", noscalemult*2, noscalemult*2)
 	parent.borderright:SetPoint("BOTTOMRIGHT", point, "BOTTOMRIGHT", -noscalemult*2, -noscalemult*2)
 	parent.borderright:SetWidth(noscalemult)
-	parent.borderright:SetTexture(unpack(DB["media"].bordercolor))	
+	parent.borderright:SetTexture(unpack(C["media"].bordercolor))	
 	parent.borderright:SetDrawLayer("BORDER", -7)	
 end
 
@@ -118,16 +118,16 @@ local function CreateAuraIcon(parent)
 	button:SetHeight(20)
 	
 	button.bg = button:CreateTexture(nil, "BACKGROUND")
-	button.bg:SetTexture(unpack(DB["media"].backdropcolor))
+	button.bg:SetTexture(unpack(C["media"].backdropcolor))
 	button.bg:SetAllPoints(button)
 	
 	button.bord = button:CreateTexture(nil, "BORDER")
-	button.bord:SetTexture(unpack(DB["media"].bordercolor))
+	button.bord:SetTexture(unpack(C["media"].bordercolor))
 	button.bord:SetPoint("TOPLEFT",button,"TOPLEFT", noscalemult,-noscalemult)
 	button.bord:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-noscalemult,noscalemult)
 	
 	button.bg2 = button:CreateTexture(nil, "ARTWORK")
-	button.bg2:SetTexture(unpack(DB["media"].backdropcolor))
+	button.bg2:SetTexture(unpack(C["media"].backdropcolor))
 	button.bg2:SetPoint("TOPLEFT",button,"TOPLEFT", noscalemult*2,-noscalemult*2)
 	button.bg2:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-noscalemult*2,noscalemult*2)	
 	
@@ -173,14 +173,14 @@ local function OnAura(frame, unit)
 		local match
 		local name,_,_,_,_,duration,_,caster,_,_,spellid = UnitAura(frame.unit,index,"HARMFUL")
 		
-		if DB["nameplate"].trackauras == true then
+		if C["nameplate"].trackauras == true then
 			for _, tab in pairs(tab) do
 				local id = tab.id
 				if caster == "player" then match = true end
 			end
 		end
 		
-		if DB["nameplate"].trackccauras == true then
+		if C["nameplate"].trackccauras == true then
 			if E.DebuffWhiteList[name] then match = true end
 		end
 		
@@ -309,8 +309,8 @@ local function UpdateObjects(frame)
 	Colorize(frame)
 	frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = frame.hp:GetStatusBarColor()
 	frame.hp.hpbg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, 0.25)
-	SetVirtualBorder(frame.hp, unpack(DB["media"].bordercolor))
-	if DB["nameplate"].enhancethreat == true then
+	SetVirtualBorder(frame.hp, unpack(C["media"].bordercolor))
+	if C["nameplate"].enhancethreat == true then
 		frame.hp.name:SetTextColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
 	end
 	
@@ -320,7 +320,7 @@ local function UpdateObjects(frame)
 	--Setup level text
 	local level, elite, mylevel = tonumber(frame.hp.oldlevel:GetText()), frame.hp.elite:IsShown(), UnitLevel("player")
 	frame.hp.level:ClearAllPoints()
-	if DB["nameplate"].showhealth == true then
+	if C["nameplate"].showhealth == true then
 		frame.hp.level:SetPoint("RIGHT", frame.hp, "RIGHT", 2, 0)
 	else
 		frame.hp.level:SetPoint("RIGHT", frame.hp, "LEFT", -1, 0)
@@ -342,7 +342,7 @@ local function UpdateObjects(frame)
 	frame.overlay:SetAllPoints(frame.hp)
 	
 	-- Aura tracking
-	if DB["nameplate"].trackauras == true or DB["nameplate"].trackccauras == true then
+	if C["nameplate"].trackauras == true or C["nameplate"].trackccauras == true then
 		if frame.icons then return end
 		frame.icons = CreateFrame("Frame",nil,frame)
 		frame.icons:SetPoint("BOTTOMRIGHT",frame.hp,"TOPRIGHT", 0, FONTSIZE+5)
@@ -378,7 +378,7 @@ local function SkinObjects(frame)
 	hp.elite = elite
 	
 	--Create Health Text
-	if DB["nameplate"].showhealth == true then
+	if C["nameplate"].showhealth == true then
 		hp.value = hp:CreateFontString(nil, "OVERLAY")	
 		hp.value:SetFont(FONT, FONTSIZE, FONTFLAG)
 		hp.value:SetShadowColor(0, 0, 0, 0.4)
@@ -448,7 +448,7 @@ local function SkinObjects(frame)
 	raidicon:ClearAllPoints()
 	raidicon:SetPoint("BOTTOM", hp, "TOP", 0, 16)
 	raidicon:SetSize(iconSize*1.4, iconSize*1.4)
-	raidicon:SetTexture(DB["media"].raidicons)	
+	raidicon:SetTexture(C["media"].raidicons)	
 	frame.raidicon = raidicon
 	
 	--Hide Old Stuff
@@ -468,14 +468,14 @@ local function SkinObjects(frame)
 	frames[frame] = true
 end
 
-local goodR, goodG, goodB = unpack(DB["nameplate"].goodcolor)
-local badR, badG, badB = unpack(DB["nameplate"].badcolor)
-local transitionR, transitionG, transitionB = unpack(DB["nameplate"].transitioncolor)
+local goodR, goodG, goodB = unpack(C["nameplate"].goodcolor)
+local badR, badG, badB = unpack(C["nameplate"].badcolor)
+local transitionR, transitionG, transitionB = unpack(C["nameplate"].transitioncolor)
 local function UpdateThreat(frame, elapsed)
 	frame.hp:Show()
 	if frame.hasClass == true then return end
 	
-	if DB["nameplate"].enhancethreat ~= true then
+	if C["nameplate"].enhancethreat ~= true then
 		if(frame.region:IsShown()) then
 			local _, val = frame.region:GetVertexColor()
 			if(val > 0.7) then
@@ -484,7 +484,7 @@ local function UpdateThreat(frame, elapsed)
 				SetVirtualBorder(frame.hp, badR, badG, badB)
 			end
 		else
-			SetVirtualBorder(frame.hp, unpack(DB["media"].bordercolor))
+			SetVirtualBorder(frame.hp, unpack(C["media"].bordercolor))
 		end
 	else
 		if not frame.region:IsShown() then
@@ -557,7 +557,7 @@ local function ShowHealth(frame, ...)
 	local valueHealth = frame.healthOriginal:GetValue()
 	local d =(valueHealth/maxHealth)*100
 	
-	if DB["nameplate"].showhealth == true then
+	if C["nameplate"].showhealth == true then
 		frame.hp.value:SetText(E.ShortValue(valueHealth).." - "..(string.format("%d%%", math.floor((valueHealth/maxHealth)*100))))
 	end
 			
@@ -568,10 +568,10 @@ local function ShowHealth(frame, ...)
 		elseif(d < 20) then
 			SetVirtualBorder(frame.hp, 1, 0, 0)
 		else
-			SetVirtualBorder(frame.hp, unpack(DB["media"].bordercolor))
+			SetVirtualBorder(frame.hp, unpack(C["media"].bordercolor))
 		end
-	elseif (frame.hasClass ~= true and frame.isFriendly ~= true) and DB["nameplate"].enhancethreat == true then
-		SetVirtualBorder(frame.hp, unpack(DB["media"].bordercolor))
+	elseif (frame.hasClass ~= true and frame.isFriendly ~= true) and C["nameplate"].enhancethreat == true then
+		SetVirtualBorder(frame.hp, unpack(C["media"].bordercolor))
 	end
 end
 
@@ -651,7 +651,7 @@ function NamePlates:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, sourceGUID, so
 end
 
 --Only show nameplates when in combat
-if DB["nameplate"].combat == true then
+if C["nameplate"].combat == true then
 	NamePlates:RegisterEvent("PLAYER_REGEN_ENABLED")
 	NamePlates:RegisterEvent("PLAYER_REGEN_DISABLED")
 	
@@ -666,7 +666,7 @@ end
 
 NamePlates:RegisterEvent("PLAYER_ENTERING_WORLD")
 function NamePlates:PLAYER_ENTERING_WORLD()
-	if DB["nameplate"].combat == true then
+	if C["nameplate"].combat == true then
 		if InCombatLockdown() then
 			SetCVar("nameplateShowEnemies", 1)
 		else
@@ -678,7 +678,7 @@ function NamePlates:PLAYER_ENTERING_WORLD()
 	SetCVar("bloattest", 0)
 	SetCVar("bloatnameplates", 0)
 	
-	if DB["nameplate"].enable == true and DB["nameplate"].enhancethreat == true then
+	if C["nameplate"].enable == true and C["nameplate"].enhancethreat == true then
 		SetCVar("threatWarning", 3)
 	end
 end

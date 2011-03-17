@@ -4,7 +4,7 @@
 
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if DB["chat"].enable ~= true then return end
+if C["chat"].enable ~= true then return end
 
 local ElvuiChat = CreateFrame("Frame")
 local _G = _G
@@ -64,7 +64,7 @@ local function SetChatStyle(frame)
 	tab.SetAlpha = UIFrameFadeRemoveFrame	
 	
 	-- always set alpha to 1, don't fade it anymore
-	if DB["chat"].showbackdrop ~= true then
+	if C["chat"].showbackdrop ~= true then
 		-- hide text when setting chat
 		_G[chat.."TabText"]:Hide()
 
@@ -73,8 +73,8 @@ local function SetChatStyle(frame)
 		tab:HookScript("OnLeave", function() _G[chat.."TabText"]:Hide() end)
 	end
 	
-	_G[chat.."TabText"]:SetTextColor(unpack(DB["media"].valuecolor))
-	_G[chat.."TabText"]:SetFont(DB["media"].font_,DB["general"].fontscale,"THINOUTLINE")
+	_G[chat.."TabText"]:SetTextColor(unpack(C["media"].valuecolor))
+	_G[chat.."TabText"]:SetFont(C["media"].font_,C["general"].fontscale,"THINOUTLINE")
 	_G[chat.."TabText"]:SetShadowColor(0, 0, 0, 0.4)
 	_G[chat.."TabText"]:SetShadowOffset(E.mult, -E.mult)
 	_G[chat.."TabText"].SetTextColor = E.dummy
@@ -87,7 +87,7 @@ local function SetChatStyle(frame)
 		local region = select(i, tab:GetRegions())
 		if region:GetObjectType() == "Texture" then
 			if region:GetTexture() == "Interface\\ChatFrame\\ChatFrameTab-NewMessage" then
-				if DB["chat"].showbackdrop == true then
+				if C["chat"].showbackdrop == true then
 					region:ClearAllPoints()
 					region:SetPoint("BOTTOMLEFT", 0, E.Scale(4))
 					region:SetPoint("BOTTOMRIGHT", 0, E.Scale(4))
@@ -107,7 +107,7 @@ local function SetChatStyle(frame)
 	_G[chat]:SetClampedToScreen(false)
 			
 	-- Stop the chat chat from fading out
-	_G[chat]:SetFading(DB["chat"].fadeoutofuse)
+	_G[chat]:SetFading(C["chat"].fadeoutofuse)
 	
 	-- move the chat edit box
 	_G[chat.."EditBox"]:ClearAllPoints();
@@ -187,7 +187,7 @@ local function SetChatStyle(frame)
 		if ( type == "CHANNEL" ) then
 		local id = GetChannelName(_G[chat.."EditBox"]:GetAttribute("channelTarget"))
 			if id == 0 then
-				colorize(unpack(DB.media.bordercolor))
+				colorize(unpack(C.media.bordercolor))
 			else
 				colorize(ChatTypeInfo[type..id].r,ChatTypeInfo[type..id].g,ChatTypeInfo[type..id].b)
 			end
@@ -213,7 +213,7 @@ local function SetupChat(self)
 	end
 	
 	local var
-	if DB["chat"].sticky == true then
+	if C["chat"].sticky == true then
 		var = 1
 	else
 		var = 0
@@ -324,11 +324,11 @@ ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 				if id ~= 2 then
 					chat:ClearAllPoints()
 					chat:SetPoint("BOTTOMLEFT", ChatRBackground, "BOTTOMLEFT", E.Scale(2), E.Scale(4))
-					chat:SetSize(E.Scale(DB["chat"].chatwidth - 4), E.Scale(DB["chat"].chatheight))
+					chat:SetSize(E.Scale(C["chat"].chatwidth - 4), E.Scale(C["chat"].chatheight))
 				else
 					chat:ClearAllPoints()
 					chat:SetPoint("BOTTOMLEFT", ChatRBackground, "BOTTOMLEFT", E.Scale(2), E.Scale(4))
-					chat:SetSize(E.Scale(DB["chat"].chatwidth - 4), E.Scale(DB["chat"].chatheight - CombatLogQuickButtonFrame_Custom:GetHeight()))				
+					chat:SetSize(E.Scale(C["chat"].chatwidth - 4), E.Scale(C["chat"].chatheight - CombatLogQuickButtonFrame_Custom:GetHeight()))				
 				end
 				FCF_SavePositionAndDimensions(chat)			
 				
@@ -366,7 +366,7 @@ ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 				if chat:GetID() ~= 2 and not (id > NUM_CHAT_WINDOWS) then
 					chat:ClearAllPoints()
 					chat:SetPoint("BOTTOMLEFT", ChatLBackground, "BOTTOMLEFT", E.Scale(2), E.Scale(4))
-					chat:SetSize(E.Scale(DB["chat"].chatwidth - 4), E.Scale(DB["chat"].chatheight))
+					chat:SetSize(E.Scale(C["chat"].chatwidth - 4), E.Scale(C["chat"].chatheight))
 					FCF_SavePositionAndDimensions(chat)		
 				end
 				chat:SetParent(ChatLBackground)
@@ -439,13 +439,13 @@ local isf = nil
 local function CreatCopyFrame()
 	frame = CreateFrame("Frame", "CopyFrame", UIParent)
 	frame:SetBackdrop({
-			bgFile = DB["media"].blank_, 
-			edgeFile = DB["media"].blank_, 
+			bgFile = C["media"].blank_, 
+			edgeFile = C["media"].blank_, 
 			tile = 0, tileSize = 0, edgeSize = E.mult, 
 			insets = { left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult }
 	})
-	frame:SetBackdropColor(unpack(DB["media"].backdropcolor))
-	frame:SetBackdropBorderColor(unpack(DB["media"].bordercolor))
+	frame:SetBackdropColor(unpack(C["media"].backdropcolor))
+	frame:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 	frame:SetHeight(E.Scale(200))
 	frame:SetScale(1)
 	frame:SetPoint("BOTTOMLEFT", ElvuiSplitActionBarLeftBackground, "BOTTOMLEFT", 0, 0)
@@ -533,14 +533,14 @@ function E.ChatCopyButtons(id)
 		button:CreateShadow("Default")
 		
 		local buttontext = button:CreateFontString(nil,"OVERLAY",nil)
-		buttontext:SetFont(DB["media"].font_,DB["general"].fontscale,"THINOUTLINE")
+		buttontext:SetFont(C["media"].font_,C["general"].fontscale,"THINOUTLINE")
 		buttontext:SetShadowColor(0, 0, 0, 0.4)
 		buttontext:SetShadowOffset(E.mult, -E.mult)
 		buttontext:SetText("C")
 		buttontext:SetPoint("CENTER", E.Scale(1), 0)
 		buttontext:SetJustifyH("CENTER")
 		buttontext:SetJustifyV("CENTER")
-		buttontext:SetTextColor(unpack(DB["media"].valuecolor))
+		buttontext:SetTextColor(unpack(C["media"].valuecolor))
 		
 		
 		if id == 1 then
@@ -594,13 +594,13 @@ end
 --	Play sound files system
 ------------------------------------------------------------------------
 
-if DB.chat.whispersound then
+if C.chat.whispersound then
 	local SoundSys = CreateFrame("Frame")
 	SoundSys:RegisterEvent("CHAT_MSG_WHISPER")
 	SoundSys:RegisterEvent("CHAT_MSG_BN_WHISPER")
 	SoundSys:HookScript("OnEvent", function(self, event, ...)
 		if event == "CHAT_MSG_WHISPER" or "CHAT_MSG_BN_WHISPER" then
-			PlaySoundFile(DB["media"].whisper_)
+			PlaySoundFile(C["media"].whisper_)
 		end
 	end)
 end
@@ -613,38 +613,38 @@ local ChatCombatHider = CreateFrame("Frame")
 ChatCombatHider:RegisterEvent("PLAYER_REGEN_ENABLED")
 ChatCombatHider:RegisterEvent("PLAYER_REGEN_DISABLED")
 ChatCombatHider:SetScript("OnEvent", function(self, event)
-	if DB["chat"].combathide ~= "Left" and DB["chat"].combathide ~= "Right" and DB["chat"].combathide ~= "Both" then self:UnregisterAllEvents() return end
-	if (DB["chat"].combathide == "Right" or DB["chat"].combathide == "Both") and E.RightChat ~= true then return end
+	if C["chat"].combathide ~= "Left" and C["chat"].combathide ~= "Right" and C["chat"].combathide ~= "Both" then self:UnregisterAllEvents() return end
+	if (C["chat"].combathide == "Right" or C["chat"].combathide == "Both") and E.RightChat ~= true then return end
 	
 	if event == "PLAYER_REGEN_DISABLED" then
-		if DB["chat"].combathide == "Both" then	
+		if C["chat"].combathide == "Both" then	
 			if E.ChatRIn ~= false then
 				E.SlideOut(ChatRBackground)				
 				E.ChatRightShown = false
 				E.ChatRIn = false
-				ElvuiInfoRightRButton.text:SetTextColor(unpack(DB["media"].valuecolor))			
+				ElvuiInfoRightRButton.text:SetTextColor(unpack(C["media"].valuecolor))			
 			end
 			if E.ChatLIn ~= false then
 				E.SlideOut(ChatLBackground)
 				E.ChatLIn = false
-				ElvuiInfoLeftLButton.text:SetTextColor(unpack(DB["media"].valuecolor))
+				ElvuiInfoLeftLButton.text:SetTextColor(unpack(C["media"].valuecolor))
 			end
-		elseif DB["chat"].combathide == "Right" then
+		elseif C["chat"].combathide == "Right" then
 			if E.ChatRIn ~= false then
 				E.SlideOut(ChatRBackground)					
 				E.ChatRightShown = false
 				E.ChatRIn = false
-				ElvuiInfoRightRButton.text:SetTextColor(unpack(DB["media"].valuecolor))			
+				ElvuiInfoRightRButton.text:SetTextColor(unpack(C["media"].valuecolor))			
 			end		
-		elseif DB["chat"].combathide == "Left" then
+		elseif C["chat"].combathide == "Left" then
 			if E.ChatLIn ~= false then
 				E.SlideOut(ChatLBackground)
 				E.ChatLIn = false
-				ElvuiInfoLeftLButton.text:SetTextColor(unpack(DB["media"].valuecolor))
+				ElvuiInfoLeftLButton.text:SetTextColor(unpack(C["media"].valuecolor))
 			end		
 		end
 	else
-		if DB["chat"].combathide == "Both" then
+		if C["chat"].combathide == "Both" then
 			if E.ChatRIn ~= true then
 				E.SlideIn(ChatRBackground)							
 				E.ChatRightShown = true
@@ -656,14 +656,14 @@ ChatCombatHider:SetScript("OnEvent", function(self, event)
 				E.ChatLIn = true
 				ElvuiInfoLeftLButton.text:SetTextColor(1,1,1)
 			end
-		elseif DB["chat"].combathide == "Right" then
+		elseif C["chat"].combathide == "Right" then
 			if E.ChatRIn ~= true then
 				E.SlideIn(ChatRBackground)						
 				E.ChatRightShown = true
 				E.ChatRIn = true
 				ElvuiInfoRightRButton.text:SetTextColor(1,1,1)			
 			end		
-		elseif DB["chat"].combathide == "Left" then
+		elseif C["chat"].combathide == "Left" then
 			if E.ChatLIn ~= true then
 				E.SlideIn(ChatLBackground)
 				E.ChatLIn = true
