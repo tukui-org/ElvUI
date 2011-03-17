@@ -879,7 +879,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 						type = "group",
 						name = L["General Settings"],
 						guiInline = true,
-						disabled = function() return not db.raidframes.enable end,	
+						disabled = function() return not db.raidframes.enable or (not IsAddOnLoaded("ElvUI_RaidDPS") and not IsAddOnLoaded("ElvUI_RaidHeal")) end,	
 						args = {
 							fontsize = {
 								type = "range",
