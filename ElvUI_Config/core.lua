@@ -17,6 +17,7 @@ function ElvuiConfig:LoadDefaults()
 			raidframes = DB["raidframes"],
 			classtimer = DB["classtimer"],
 			actionbar = DB["actionbar"],
+			datatext = DB["datatext"],
 		},
 	}
 end	
@@ -69,6 +70,7 @@ function ElvuiConfig:SetupOptions()
 	self.optionsFrames.Raidframes = ACD3:AddToBlizOptions("ElvuiConfig", L["Raid Frames"], "ElvUI", "raidframes")
 	self.optionsFrames.Classtimer = ACD3:AddToBlizOptions("ElvuiConfig", L["Class Timers"], "ElvUI", "classtimer")
 	self.optionsFrames.Actionbar = ACD3:AddToBlizOptions("ElvuiConfig", L["Action Bars"], "ElvUI", "actionbar")
+	self.optionsFrames.Datatext = ACD3:AddToBlizOptions("ElvuiConfig", L["Data Texts"], "ElvUI", "datatext")
 	self.optionsFrames.Skins = ACD3:AddToBlizOptions("ElvuiConfig", L["Addon Skins"], "ElvUI", "skin")
 	self.optionsFrames.Profiles = ACD3:AddToBlizOptions("ElvProfiles", L["Profiles"], "ElvUI")
 	self.SetupOptions = nil
@@ -1312,8 +1314,149 @@ function ElvuiConfig.GenerateOptionsInternal()
 					},
 				},
 			},
-			skin = {
+			datatext = {
 				order = 8,
+				type = "group",
+				name = L["Data Texts"],
+				desc = L["DATATEXT_DESC"],
+				get = function(info) return db.datatext[ info[#info] ] end,
+				set = function(info, value) db.datatext[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,		
+				args = {
+					intro = {
+						order = 1,
+						type = "description",
+						name = L["DATATEXT_DESC"],
+					},
+					battleground = {
+						order = 2,
+						type = "toggle",
+						name = L["BG Text"],
+						desc = L["Display special datatexts when inside a battleground"],
+					},
+					fontsize = {
+						order = 3,
+						name = L["Font Scale"],
+						desc = L["Font size for datatexts"],
+						type = "range",
+						min = 9, max = 15, step = 1,					
+					},
+					time24 = {
+						order = 4,
+						type = "toggle",
+						name = L["24-Hour Time"],
+						desc = L["Display time datatext on a 24 hour time scale"],	
+						disabled = function() return db.datatext.wowtime == 0 end,
+					},
+					localtime = {
+						order = 5,
+						type = "toggle",
+						name = L["Local Time"],
+						desc = L["Display local time instead of server time"],	
+						disabled = function() return db.datatext.wowtime == 0 end,					
+					},
+					DataGroup = {
+						order = 6,
+						type = "group",
+						name = L["Text Positions"],
+						guiInline = true,
+						args = {
+							stat1 = {
+								order = 1,
+								type = "range",
+								name = L["Stat #1"],
+								desc = L["Display stat based on your role (Avoidance-Tank, AP-Melee, SP/HP-Caster)"]..L["DATATEXT_POS"],
+								min = 0, max = 8, step = 1,
+							},
+							dur = {
+								order = 2,
+								type = "range",
+								name = L["Durability"],
+								desc = L["Display your current durability"]..L["DATATEXT_POS"],
+								min = 0, max = 8, step = 1,							
+							},
+							stat2 = {
+								order = 3,
+								type = "range",
+								name = L["Stat #2"],
+								desc = L["Display stat based on your role (Armor-Tank, Crit-Melee, Crit-Caster)"]..L["DATATEXT_POS"],
+								min = 0, max = 8, step = 1,							
+							},
+							system = {
+								order = 4,
+								type = "range",
+								name = L["System"],
+								desc = L["Display FPS and Latency"]..L["DATATEXT_POS"],
+								min = 0, max = 8, step = 1,								
+							},
+							wowtime = {
+								order = 5,
+								type = "range",
+								name = L["Time"],
+								desc = L["Display current time"]..L["DATATEXT_POS"],
+								min = 0, max = 8, step = 1,									
+							},
+							gold = {
+								order = 6,
+								type = "range",
+								name = L["Gold"],
+								desc = L["Display current gold"]..L["DATATEXT_POS"],
+								min = 0, max = 8, step = 1,								
+							},
+							guild = {
+								order = 7,
+								type = "range",
+								name = L["Guild"],
+								desc = L["Display current online people in guild"]..L["DATATEXT_POS"],
+								min = 0, max = 8, step = 1,								
+							},
+							friends = {
+								order = 8,
+								type = "range",
+								name = L["Friends"],
+								desc = L["Display current online friends"]..L["DATATEXT_POS"],
+								min = 0, max = 8, step = 1,								
+							},
+							bags = {
+								order = 9,
+								type = "range",
+								name = L["Bags"],
+								desc = L["Display ammount of bag space"]..L["DATATEXT_POS"],
+								min = 0, max = 8, step = 1,								
+							},
+							dps_text = {
+								order = 10,
+								type = "range",
+								name = L["DPS"],
+								desc = L["Display ammount of DPS"]..L["DATATEXT_POS"],
+								min = 0, max = 8, step = 1,								
+							},
+							hps_text = {
+								order = 11,
+								type = "range",
+								name = L["HPS"],
+								desc = L["Display ammount of HPS"]..L["DATATEXT_POS"],
+								min = 0, max = 8, step = 1,								
+							},
+							currency = {
+								order = 12,
+								type = "range",
+								name = L["Currency"],
+								desc = L["Display current watched items in backpack"]..L["DATATEXT_POS"],
+								min = 0, max = 8, step = 1,								
+							},
+							specswitch = {
+								order = 13,
+								type = "range",
+								name = L["Talent Spec"],
+								desc = L["Display current spec"]..L["DATATEXT_POS"],
+								min = 0, max = 8, step = 1,								
+							},
+						},
+					},
+				},
+			},
+			skin = {
+				order = 9,
 				type = "group",
 				name = L["Addon Skins"],
 				desc = L["ADDON_DESC"],

@@ -264,6 +264,45 @@ L["Action Bars"] = true
 	L["Hours"] = true
 	L["Days"] = true
 	
+--Datatext
+L["Data Texts"] = true
+	L["DATATEXT_DESC"] = "Edit display of informational text on panels"
+	L["DATATEXT_POS"] = "\n\n0 - Disabled\n1 - LEFT PANEL, LEFT\n2 - LEFT PANEL, CENTER\n3 - LEFT PANEL, RIGHT\n4 - RIGHT PANEL, LEFT\n5 - RIGHT PANEL, CENTER\n6 - RIGHT PANEL, RIGHT\n7 - MINIMAP LEFT\n8 - MINIMAP RIGHT"
+	L["Text Positions"] = true
+	L["BG Text"] = true
+		L["Display special datatexts when inside a battleground"] = true
+		L["Font size for datatexts"] = true
+	L["24-Hour Time"] = true
+		L["Display time datatext on a 24 hour time scale"] = true
+	L["Local Time"] = true
+		L["Display local time instead of server time"] = true
+	L["Stat #1"] = true
+		L["Display stat based on your role (Avoidance-Tank, AP-Melee, SP/HP-Caster)"] = true
+	L["Durability"] = true
+		L["Display your current durability"] = true
+	L["Stat #2"] = true
+		L["Display stat based on your role (Armor-Tank, Crit-Melee, Crit-Caster)"] = true
+	L["System"] = true
+		L["Display FPS and Latency"] = true
+	L["Time"] = true
+		L["Display current time"] = true
+	L["Gold"] = true
+		L["Display current gold"] = true
+	L["Guild"] = true
+		L["Display current online people in guild"] = true
+	L["Friends"] = true	
+		L["Display current online friends"] = true
+	L["Bags"] = true
+		L["Display ammount of bag space"] = true
+	L["DPS"] = true
+		L["Display ammount of DPS"] = true
+	L["HPS"] = true	
+		L["Display ammount of HPS"] = true	
+	L["Currency"] = true	
+		L["Display current watched items in backpack"] = true
+	L["Talent Spec"] = true	
+		L["Display current spec"] = true
+		
 --External Addons
 L["Addon Skins"] = true
 	L["ADDON_DESC"] = "Adjust settings for external addon skins/options"
