@@ -227,21 +227,22 @@ DB["tooltip"] = {
 
 DB["others"] = {
 	["pvpautorelease"] = false,            -- enable auto-release in bg or wintergrasp.
-	["sellgrays"] = true,                  -- automaticly sell grays?
-	["autorepair"] = true,                 -- automaticly repair?
 	["errorenable"] = true,                     -- true to enable this mod, false to disable
 	["autoacceptinv"] = true,                 -- auto-accept invite from guildmate and friends.
 	["enablemap"] = true,                     -- reskin the map to fit Elvui
 	["enablebag"] = true,                     -- enable an all in one bag mod that fit Elvui perfectly
-	["announceinterrupt"] = true,			-- announce in party/raid when you interrupt
-	["showthreat"] = true,                 -- enable the threat bar anchored to info right panel.
-	["minimapauras"] = true,				-- enable minimap auras	
 	
+
 	["lootframe"] = true,                  -- reskin the loot frame to fit Elvui
 	["rolllootframe"] = true,              -- reskin the roll frame to fit Elvui
 	["autogreed"] = true,                  -- auto-dez or auto-greed item at max level.	
+	["sellgrays"] = true,                  -- automaticly sell grays?
+	["autorepair"] = true,                 -- automaticly repair?
 	
 	["buffreminder"] = true,                     -- this is now the new innerfire warning script for all armor/aspect class.
-	["sound"] = true,                      -- enable warning sound notification for reminder.
+	["remindersound"] = true,                      -- enable warning sound notification for reminder.
 	["raidbuffreminder"] = true,			-- buffbar below the minimap, important missing buffs	
+	["announceinterrupt"] = true,			-- announce in party/raid when you interrupt
+	["showthreat"] = true,                 -- enable the threat bar anchored to info right panel.
+	["minimapauras"] = true,				-- enable minimap auras		
 }

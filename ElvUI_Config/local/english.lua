@@ -324,11 +324,26 @@ L["Chat"] = true
 	L["Left"] = true
 	L["Right"] = true
 	L["Both"] = true
-	
-	
-	
-	
-	
+
+--tooltip
+L["Tooltip"] = true	
+	L["TT_DESC"] = "Adjust tooltip settings"
+	L["Hide Combat"] = true
+		L["Hide tooltip when entering combat"] = true
+	L["Hide Combat in Raid"] = true
+		L["Hide tooltip when entering combat only inside a raid instance"] = true
+	L["Hide Buttons"] = true
+		L["Hide tooltip when mousing over action buttons"] = true
+	L["Hide Unit Frames"] = true
+		L["Hide tooltip when mousing over unit frames"] = true
+	L["Cursor"] = true
+		L["Tooltip anchored to cursor"] = true
+	L["Color Reaction"] = true
+		L["Always color border of tooltip by unit reaction"] = true
+	L["ItemID"] = true
+		L["Display itemid on item tooltips"] = true
+	L["Who's Targetting?"] = true
+		L["Display if anyone in your party/raid is targetting the tooltip unit"] = true
 	
 --External Addons
 L["Addon Skins"] = true
@@ -340,6 +355,41 @@ L["Addon Skins"] = true
 	L["Attach KLE's Bars to the right window"] = true
 	L["Hook BigWigs Bars"] = true
 	L["Attach BigWigs's Bars to the right window"] = true
+
+--Misc
+L["Misc"] = true
+	L["MISC_DESC"] = "Configure all other options"
+	L["General"] = true
+	L["PVP Autorelease"] = true
+		L["Automatically release body when dead inside a bg"] = true
+	L["Hide Error Text"] = true
+		L["Hide annoying red error text on center of screen"] = true
+	L["Auto Accept Invite"] = true
+		L["Automatically accept invite when invited by a friend/guildie"] = true
+	L["Loot"] = true
+	L["Loot Frame"] = true
+		L["Skin loot window"] = true
+	L["Loot Roll Frame"] = true
+		L["Skin loot roll window"] = true
+	L["Auto Greed/DE"] = true
+		L["Automatically roll greed or Disenchant on green quality items"] = true
+	L["Sell Grays"] = true
+		L["Automatically sell gray items when visiting a vendor"] = true
+	L["Auto Repair"] = true
+		L["Automatically repair when visiting a vendor"] = true
+	L["Combat"] = true
+	L["Buff Reminder"] = true
+		L["Icon at center of screen when you are missing a buff, or you have a buff you shouldn't have"] = true
+	L["Buff Reminder Sound"] = true
+		L["Play sound when icon is displayed"] = true
+	L["Raid Buffs Reminder"] = true
+		L["Icons below minimap, displayed inside instances"] = true
+	L["Interrupt Announce"] = true
+		L["Announce when you interrupt a spell"] = true
+	L["Threat Display"] = true
+		L["Display threat in the bottomright panel"] = true
+	L["Minimap Auras"] = true
+		L["Display blizzard skinned auras by the minimap"] = true
 	
 --Profiles
 L["Profiles"] = true

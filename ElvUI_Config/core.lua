@@ -19,6 +19,8 @@ function ElvuiConfig:LoadDefaults()
 			actionbar = DB["actionbar"],
 			datatext = DB["datatext"],
 			chat = DB["chat"],
+			tooltip = DB["tooltip"],
+			others = DB["others"],
 		},
 	}
 end	
@@ -73,7 +75,9 @@ function ElvuiConfig:SetupOptions()
 	self.optionsFrames.Actionbar = ACD3:AddToBlizOptions("ElvuiConfig", L["Action Bars"], "ElvUI", "actionbar")
 	self.optionsFrames.Datatext = ACD3:AddToBlizOptions("ElvuiConfig", L["Data Texts"], "ElvUI", "datatext")
 	self.optionsFrames.Chat = ACD3:AddToBlizOptions("ElvuiConfig", L["Chat"], "ElvUI", "chat")
+	self.optionsFrames.Tooltip = ACD3:AddToBlizOptions("ElvuiConfig", L["Tooltip"], "ElvUI", "tooltip")
 	self.optionsFrames.Skins = ACD3:AddToBlizOptions("ElvuiConfig", L["Addon Skins"], "ElvUI", "skin")
+	self.optionsFrames.Others = ACD3:AddToBlizOptions("ElvuiConfig", L["Misc"], "ElvUI", "others")
 	self.optionsFrames.Profiles = ACD3:AddToBlizOptions("ElvProfiles", L["Profiles"], "ElvUI")
 	self.SetupOptions = nil
 end
@@ -1542,6 +1546,84 @@ function ElvuiConfig.GenerateOptionsInternal()
 					},
 				},
 			},
+			tooltip = {
+				order = 9,
+				type = "group",
+				name = L["Tooltip"],
+				desc = L["TT_DESC"],
+				get = function(info) return db.tooltip[ info[#info] ] end,
+				set = function(info, value) db.tooltip[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,		
+				args = {
+					intro = {
+						order = 1,
+						type = "description",
+						name = L["TT_DESC"],
+					},
+					enable = {
+						order = 2,
+						type = "toggle",
+						name = ENABLE,
+					},
+					TTGroup = {
+						order = 3,
+						type = "group",
+						name = L["General Settings"],
+						guiInline = true,
+						disabled = function() return not db.tooltip.enable end,	
+						args = {
+							hidecombat = {
+								order = 1,
+								type = "toggle",
+								name = L["Hide Combat"],
+								desc = L["Hide tooltip when entering combat"],
+							},
+							hidecombatraid = {
+								order = 2,
+								type = "toggle",
+								name = L["Hide Combat in Raid"],
+								desc = L["Hide tooltip when entering combat only inside a raid instance"],	
+								disabled = function() return not db.tooltip.enable or not db.tooltip.hidecombat end,
+							},
+							hidebuttons = {
+								order = 3,
+								type = "toggle",
+								name = L["Hide Buttons"],
+								desc = L["Hide tooltip when mousing over action buttons"],								
+							},
+							hideuf = {
+								order = 4,
+								type = "toggle",
+								name = L["Hide Unit Frames"],
+								desc = L["Hide tooltip when mousing over unit frames"],								
+							},
+							cursor = {
+								order = 5,
+								type = "toggle",
+								name = L["Cursor"],
+								desc = L["Tooltip anchored to cursor"],								
+							},
+							colorreaction = {
+								order = 6,
+								type = "toggle",
+								name = L["Color Reaction"],
+								desc = L["Always color border of tooltip by unit reaction"],									
+							},
+							itemid = {
+								order = 7,
+								type = "toggle",
+								name = L["ItemID"],
+								desc = L["Display itemid on item tooltips"],							
+							},
+							whotargetting = {
+								order = 8,
+								type = "toggle",
+								name = L["Who's Targetting?"],
+								desc = L["Display if anyone in your party/raid is targetting the tooltip unit"],								
+							},
+						},
+					},
+				},
+			},
 			skin = {
 				order = 10,
 				type = "group",
@@ -1659,6 +1741,127 @@ function ElvuiConfig.GenerateOptionsInternal()
 					},						
 				},
 			},			
+			others = {
+				order = 9,
+				type = "group",
+				name = L["Misc"],
+				desc = L["MISC_DESC"],
+				get = function(info) return db.others[ info[#info] ] end,
+				set = function(info, value) db.others[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,		
+				args = {
+					intro = {
+						order = 1,
+						type = "description",
+						name = L["MISC_DESC"],
+					},
+					GenGroup = {
+						order = 2,
+						type = "group",
+						name = L["General"],	
+						args = {
+							pvpautorelease = {
+								type = "toggle",
+								order = 1,
+								name = L["PVP Autorelease"],
+								desc = L["Automatically release body when dead inside a bg"],
+								disabled = function() return E.myclass == "SHAMAN" end,
+							},
+							errorenable = {
+								type = "toggle",
+								order = 2,
+								name = L["Hide Error Text"],
+								desc = L["Hide annoying red error text on center of screen"],							
+							},
+							autoacceptinv = {
+								type = "toggle",
+								order = 3,
+								name = L["Auto Accept Invite"],
+								desc = L["Automatically accept invite when invited by a friend/guildie"],							
+							},
+						},
+					},
+					LootGroup = {
+						order = 3,
+						type = "group",
+						name = L["Loot"],	
+						args = {
+							lootframe = {
+								type = "toggle",
+								order = 1,
+								name = L["Loot Frame"],
+								desc = L["Skin loot window"],							
+							},
+							rolllootframe = {
+								type = "toggle",
+								order = 2,
+								name = L["Loot Roll Frame"],
+								desc = L["Skin loot roll window"],								
+							},
+							autogreed = {
+								type = "toggle",
+								order = 3,
+								name = L["Auto Greed/DE"],
+								desc = L["Automatically roll greed or Disenchant on green quality items"],								
+							},
+							sellgrays = {
+								type = "toggle",
+								order = 4,
+								name = L["Sell Grays"],
+								desc = L["Automatically sell gray items when visiting a vendor"],								
+							},
+							autorepair = {
+								type = "toggle",
+								order = 4,
+								name = L["Auto Repair"],
+								desc = L["Automatically repair when visiting a vendor"],							
+							},
+						},
+					},
+					AurasGroup = {
+						order = 3,
+						type = "group",
+						name = L["Combat"],	
+						args = {
+							buffreminder = {
+								type = "toggle",
+								order = 1,
+								name = L["Buff Reminder"],
+								desc = L["Icon at center of screen when you are missing a buff, or you have a buff you shouldn't have"],									
+							},
+							remindersound = {
+								type = "toggle",
+								order = 2,
+								name = L["Buff Reminder Sound"],
+								desc = L["Play sound when icon is displayed"],							
+							},
+							raidbuffreminder = {
+								type = "toggle",
+								order = 3,
+								name = L["Raid Buffs Reminder"],
+								desc = L["Icons below minimap, displayed inside instances"],								
+							},
+							announceinterrupt = {
+								type = "toggle",
+								order = 4,
+								name = L["Interrupt Announce"],
+								desc = L["Announce when you interrupt a spell"],								
+							},
+							showthreat = {
+								type = "toggle",
+								order = 5,
+								name = L["Threat Display"],
+								desc = L["Display threat in the bottomright panel"],							
+							},
+							minimapauras = {
+								type = "toggle",
+								order = 6,
+								name = L["Minimap Auras"],
+								desc = L["Display blizzard skinned auras by the minimap"],							
+							},
+						},
+					},
+				},		
+			},
 		},
 	}
 end
