@@ -53,7 +53,7 @@ function ElvuiConfig:PLAYER_LOGIN()
 end
 
 function ElvuiConfig:OnProfileChanged(event, database, newProfileKey)
-	StaticPopup_Show("RELOAD_UI")
+	StaticPopup_Show("CFG_RELOAD")
 end
 
 function ElvuiConfig:SetupOptions()
@@ -94,6 +94,15 @@ end
 
 function ElvuiConfig.GenerateOptionsInternal()
 	local E, C, _, DB = unpack(ElvUI)
+
+	StaticPopupDialogs["CFG_RELOAD"] = {
+		text = L["CFG_RELOAD"],
+		button1 = ACCEPT,
+		button2 = CANCEL,
+		OnAccept = function() ReloadUI() end,
+		timeout = 0,
+		whileDead = 1,
+	}
 	
 	ElvuiConfig.Options = {
 		type = "group",
@@ -105,7 +114,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 				name = L["General Settings"],
 				desc = L["General Settings"],
 				get = function(info) return db.general[ info[#info] ] end,
-				set = function(info, value) db.general[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
+				set = function(info, value) db.general[ info[#info] ] = value; StaticPopup_Show("CFG_RELOAD") end,
 				args = {
 					intro = {
 						order = 1,
@@ -176,7 +185,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 				name = L["Media"],
 				desc = L["MEDIA_DESC"],
 				get = function(info) return db.media[ info[#info] ] end,
-				set = function(info, value) db.media[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
+				set = function(info, value) db.media[ info[#info] ] = value; StaticPopup_Show("CFG_RELOAD") end,
 				args = {
 					intro = {
 						order = 1,
@@ -271,7 +280,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 									return r, g, b
 								end,
 								set = function(info, r, g, b)
-									StaticPopup_Show("RELOAD_UI")
+									StaticPopup_Show("CFG_RELOAD")
 									db.media[ info[#info] ] = {r, g, b}
 								end,					
 							},
@@ -286,7 +295,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 									return r, g, b
 								end,
 								set = function(info, r, g, b)
-									StaticPopup_Show("RELOAD_UI")
+									StaticPopup_Show("CFG_RELOAD")
 									db.media[ info[#info] ] = {r, g, b}
 								end,						
 							},
@@ -301,7 +310,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 									return r, g, b, a
 								end,
 								set = function(info, r, g, b, a)
-									StaticPopup_Show("RELOAD_UI")
+									StaticPopup_Show("CFG_RELOAD")
 									db.media[ info[#info] ] = {r, g, b, a}
 								end,						
 							},
@@ -316,7 +325,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 									return r, g, b
 								end,
 								set = function(info, r, g, b)
-									StaticPopup_Show("RELOAD_UI")
+									StaticPopup_Show("CFG_RELOAD")
 									db.media[ info[#info] ] = {r, g, b}
 								end,						
 							},
@@ -352,7 +361,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 				name = L["Nameplates"],
 				desc = L["NAMEPLATE_DESC"],
 				get = function(info) return db.nameplate[ info[#info] ] end,
-				set = function(info, value) db.nameplate[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
+				set = function(info, value) db.nameplate[ info[#info] ] = value; StaticPopup_Show("CFG_RELOAD") end,
 				args = {
 					intro = {
 						order = 1,
@@ -366,7 +375,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 						desc = L["Enable/Disable Nameplates"],
 						set = function(info, value)
 							db.nameplate[ info[#info] ] = value; 
-							StaticPopup_Show("RELOAD_UI")
+							StaticPopup_Show("CFG_RELOAD")
 						end,
 					},
 					Nameplates = {
@@ -417,7 +426,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								end,
 								set = function(info, r, g, b)
 									db.nameplate[ info[#info] ] = {r, g, b}
-									StaticPopup_Show("RELOAD_UI")
+									StaticPopup_Show("CFG_RELOAD")
 								end,
 								disabled = function() return (not db.nameplate.enhancethreat or not db.nameplate.enable) end,								
 								args = {
@@ -454,7 +463,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 				name = L["Unit Frames"],
 				desc = L["UF_DESC"],
 				get = function(info) return db.unitframes[ info[#info] ] end,
-				set = function(info, value) db.unitframes[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
+				set = function(info, value) db.unitframes[ info[#info] ] = value; StaticPopup_Show("CFG_RELOAD") end,
 				args = {
 					intro = {
 						order = 1,
@@ -553,7 +562,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								end,
 								set = function(info, r, g, b)
 									db.unitframes[ info[#info] ] = {r, g, b}
-									StaticPopup_Show("RELOAD_UI")
+									StaticPopup_Show("CFG_RELOAD")
 								end,								
 							},
 							healthcolorbyvalue = {
@@ -581,7 +590,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								end,
 								set = function(info, r, g, b)
 									db.unitframes[ info[#info] ] = {r, g, b}
-									StaticPopup_Show("RELOAD_UI")
+									StaticPopup_Show("CFG_RELOAD")
 								end,								
 							},
 							combatfeedback = {
@@ -845,7 +854,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								end,
 								set = function(info, r, g, b)
 									db.unitframes[ info[#info] ] = {r, g, b}
-									StaticPopup_Show("RELOAD_UI")
+									StaticPopup_Show("CFG_RELOAD")
 								end,							
 							},
 							nointerruptcolor = {
@@ -860,7 +869,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								end,
 								set = function(info, r, g, b)
 									db.unitframes[ info[#info] ] = {r, g, b}
-									StaticPopup_Show("RELOAD_UI")
+									StaticPopup_Show("CFG_RELOAD")
 								end,								
 							},
 						},
@@ -873,7 +882,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 				name = L["Raid Frames"],
 				desc = L["RF_DESC"],
 				get = function(info) return db.raidframes[ info[#info] ] end,
-				set = function(info, value) db.raidframes[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,				
+				set = function(info, value) db.raidframes[ info[#info] ] = value; StaticPopup_Show("CFG_RELOAD") end,				
 				args = {
 					intro = {
 						order = 1,
@@ -1025,7 +1034,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 				name = L["Class Timers"],
 				desc = L["CLASSTIMER_DESC"],
 				get = function(info) return db.classtimer[ info[#info] ] end,
-				set = function(info, value) db.classtimer[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
+				set = function(info, value) db.classtimer[ info[#info] ] = value; StaticPopup_Show("CFG_RELOAD") end,
 				args = {
 					intro = {
 						order = 1,
@@ -1105,7 +1114,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								end,
 								set = function(info, r, g, b)
 									db.classtimer[ info[#info] ] = {r, g, b}
-									StaticPopup_Show("RELOAD_UI")
+									StaticPopup_Show("CFG_RELOAD")
 								end,									
 								args = {
 									buffcolor = {
@@ -1138,7 +1147,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 				name = L["Action Bars"],
 				desc = L["AB_DESC"],
 				get = function(info) return db.actionbar[ info[#info] ] end,
-				set = function(info, value) db.actionbar[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
+				set = function(info, value) db.actionbar[ info[#info] ] = value; StaticPopup_Show("CFG_RELOAD") end,
 				args = {
 					intro = {
 						order = 1,
@@ -1280,7 +1289,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								end,
 								set = function(info, r, g, b)
 									db.actionbar[ info[#info] ] = {r, g, b}
-									StaticPopup_Show("RELOAD_UI")
+									StaticPopup_Show("CFG_RELOAD")
 								end,									
 								args = {
 									expiringcolor = {
@@ -1326,7 +1335,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 				name = L["Data Texts"],
 				desc = L["DATATEXT_DESC"],
 				get = function(info) return db.datatext[ info[#info] ] end,
-				set = function(info, value) db.datatext[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,		
+				set = function(info, value) db.datatext[ info[#info] ] = value; StaticPopup_Show("CFG_RELOAD") end,		
 				args = {
 					intro = {
 						order = 1,
@@ -1467,7 +1476,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 				name = L["Chat"],
 				desc = L["CHAT_DESC"],
 				get = function(info) return db.chat[ info[#info] ] end,
-				set = function(info, value) db.chat[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,		
+				set = function(info, value) db.chat[ info[#info] ] = value; StaticPopup_Show("CFG_RELOAD") end,		
 				args = {
 					intro = {
 						order = 1,
@@ -1552,7 +1561,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 				name = L["Tooltip"],
 				desc = L["TT_DESC"],
 				get = function(info) return db.tooltip[ info[#info] ] end,
-				set = function(info, value) db.tooltip[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,		
+				set = function(info, value) db.tooltip[ info[#info] ] = value; StaticPopup_Show("CFG_RELOAD") end,		
 				args = {
 					intro = {
 						order = 1,
@@ -1630,7 +1639,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 				name = L["Addon Skins"],
 				desc = L["ADDON_DESC"],
 				get = function(info) return db.skin[ info[#info] ] end,
-				set = function(info, value) db.skin[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
+				set = function(info, value) db.skin[ info[#info] ] = value; StaticPopup_Show("CFG_RELOAD") end,
 				args = {
 					intro = {
 						order = 1,
@@ -1747,7 +1756,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 				name = L["Misc"],
 				desc = L["MISC_DESC"],
 				get = function(info) return db.others[ info[#info] ] end,
-				set = function(info, value) db.others[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,		
+				set = function(info, value) db.others[ info[#info] ] = value; StaticPopup_Show("CFG_RELOAD") end,		
 				args = {
 					intro = {
 						order = 1,

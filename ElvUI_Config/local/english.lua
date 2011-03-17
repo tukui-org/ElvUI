@@ -393,3 +393,4 @@ L["Misc"] = true
 	
 --Profiles
 L["Profiles"] = true
+L["CFG_RELOAD"] = "A setting you have changed requires a ReloadUI for changes to take effect, when you are done configing hit Accept to ReloadUI."
