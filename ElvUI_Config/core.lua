@@ -288,7 +288,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 					GenColors = {
 						type = "group",
 						order = 5,
-						name = L["General Colors"],
+						name = L["Colors"],
 						guiInline = true,
 						args = {
 							bordercolor = {
@@ -353,52 +353,6 @@ function ElvuiConfig.GenerateOptionsInternal()
 							},
 						},
 					},	
-					PowerColors = {
-						type = "group",
-						order = 6,
-						name = L["Power Colors"],
-						guiInline = true,
-						get = function(info)
-							local r, g, b = unpack(db.media[ info[#info] ])
-							return r, g, b
-						end,
-						set = function(info, r, g, b)
-							StaticPopup_Show("CFG_RELOAD")
-							db.media[ info[#info] ] = {r, g, b}
-						end,							
-						args = {
-							POWER_MANA = {
-								type = "color",
-								order = 1,
-								name = L["Mana"],
-								hasAlpha = false,						
-							},
-							POWER_RAGE = {
-								type = "color",
-								order = 2,
-								name = L["Rage"],
-								hasAlpha = false,							
-							},
-							POWER_FOCUS = {
-								type = "color",
-								order = 3,
-								name = L["Focus"],
-								hasAlpha = false,							
-							},
-							POWER_ENERGY = {
-								type = "color",
-								order = 4,
-								name = L["Energy"],
-								hasAlpha = false,							
-							},
-							POWER_RUNICPOWER = {
-								type = "color",
-								order = 6,
-								name = L["Runic Power"],
-								hasAlpha = false,							
-							},
-						},
-					},
 				},
 			},
 			nameplate = {
@@ -917,6 +871,52 @@ function ElvuiConfig.GenerateOptionsInternal()
 									db.unitframes[ info[#info] ] = {r, g, b}
 									StaticPopup_Show("CFG_RELOAD")
 								end,								
+							},
+						},
+					},
+					PowerColors = {
+						type = "group",
+						order = 6,
+						name = L["Power Colors"],
+						guiInline = true,
+						get = function(info)
+							local r, g, b = unpack(db.unitframes[ info[#info] ])
+							return r, g, b
+						end,
+						set = function(info, r, g, b)
+							StaticPopup_Show("CFG_RELOAD")
+							db.unitframes[ info[#info] ] = {r, g, b}
+						end,							
+						args = {
+							POWER_MANA = {
+								type = "color",
+								order = 1,
+								name = L["Mana"],
+								hasAlpha = false,						
+							},
+							POWER_RAGE = {
+								type = "color",
+								order = 2,
+								name = L["Rage"],
+								hasAlpha = false,							
+							},
+							POWER_FOCUS = {
+								type = "color",
+								order = 3,
+								name = L["Focus"],
+								hasAlpha = false,							
+							},
+							POWER_ENERGY = {
+								type = "color",
+								order = 4,
+								name = L["Energy"],
+								hasAlpha = false,							
+							},
+							POWER_RUNICPOWER = {
+								type = "color",
+								order = 6,
+								name = L["Runic Power"],
+								hasAlpha = false,							
 							},
 						},
 					},

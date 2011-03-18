@@ -24,12 +24,6 @@ DB["media"] = {
 	["backdropcolor"] = { .07,.07,.07 }, -- background color of Elvui panels
 	["backdropfadecolor"] = { .07,.07,.07,0.9 }, --this is always the same as the backdrop color with an alpha of 0.8, see colors.lua
 	["valuecolor"] = {23/255,132/255,209/255}, -- color for values of datatexts
-		
-	["POWER_MANA"] = {0.31, 0.45, 0.63},
-	["POWER_RAGE"] = {1, 0, 0},
-	["POWER_FOCUS"] = {0.71, 0.43, 0.27},
-	["POWER_ENERGY"] = {0.65, 0.63, 0.35},
-	["POWER_RUNICPOWER"] = {0, 0.82, 1},
 }
 
 
@@ -112,7 +106,13 @@ DB["unitframes"] = {
 	["casttargetwidth"] = 275,
 	["castfocuswidth"] = 275,
 	["castbarcolor"] = DB["media"].bordercolor, -- Color of player castbar
-	["nointerruptcolor"] = { 0.78, 0.25, 0.25, 0.5 }, -- Color of target castbar	
+	["nointerruptcolor"] = { 0.78, 0.25, 0.25, 0.5 }, -- Color of target castbar
+	
+	["POWER_MANA"] = {0.31, 0.45, 0.63},
+	["POWER_RAGE"] = {1, 0, 0},
+	["POWER_FOCUS"] = {0.71, 0.43, 0.27},
+	["POWER_ENERGY"] = {0.65, 0.63, 0.35},
+	["POWER_RUNICPOWER"] = {0, 0.82, 1},	
 }
 
 DB["raidframes"] = {
