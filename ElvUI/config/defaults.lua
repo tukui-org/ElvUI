@@ -11,17 +11,27 @@ DB["media"] = {
 	["glossTex_"] = "ElvUI Gloss",
 	["glowTex_"] = "ElvUI GlowBorder",
 	["blank_"] = "ElvUI Blank",
-	["bordercolor"] = { .23,.23,.23 }, -- border color of Elvui panels
-	["backdropcolor"] = { .07,.07,.07 }, -- background color of Elvui panels
-	["backdropfadecolor"] = { .07,.07,.07,0.9 }, --this is always the same as the backdrop color with an alpha of 0.8, see colors.lua
-	["valuecolor"] = {23/255,132/255,209/255}, -- color for values of datatexts
+	
 	["raidicons"] = [[Interface\AddOns\ElvUI\media\textures\raidicons.blp]], -- new raid icon textures by hankthetank
 	
 	-- sound
 	["whisper_"] = "ElvUI Whisper",
 	["warning_"] = "ElvUI Warning",
 	["glossyTexture"] = false,	-- Use a glossy texture for all frames
+	
+	--colors
+	["bordercolor"] = { .23,.23,.23 }, -- border color of Elvui panels
+	["backdropcolor"] = { .07,.07,.07 }, -- background color of Elvui panels
+	["backdropfadecolor"] = { .07,.07,.07,0.9 }, --this is always the same as the backdrop color with an alpha of 0.8, see colors.lua
+	["valuecolor"] = {23/255,132/255,209/255}, -- color for values of datatexts
+		
+	["POWER_MANA"] = {0.31, 0.45, 0.63},
+	["POWER_RAGE"] = {1, 0, 0},
+	["POWER_FOCUS"] = {0.71, 0.43, 0.27},
+	["POWER_ENERGY"] = {0.65, 0.63, 0.35},
+	["POWER_RUNICPOWER"] = {0, 0.82, 1},
 }
+
 
 DB["general"] = {
 	["autoscale"] = true,                  -- mainly enabled for users that don't want to mess with the config file

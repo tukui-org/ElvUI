@@ -263,11 +263,33 @@ function ElvuiConfig.GenerateOptionsInternal()
 							},
 						},
 					},
-					Colors = {
+					Sounds = {
 						type = "group",
 						order = 4,
-						name = L["Colors"],
+						name = L["Sounds"],
 						guiInline = true,					
+						args = {
+							whisper_ = {
+								type = "select", dialogControl = 'LSM30_Sound',
+								order = 1,
+								name = L["Whisper Sound"],
+								desc = L["Sound that is played when recieving a whisper"],
+								values = AceGUIWidgetLSMlists.sound,								
+							},			
+							warning_ = {
+								type = "select", dialogControl = 'LSM30_Sound',
+								order = 2,
+								name = L["Warning Sound"],
+								desc = L["Sound that is played when you don't have a buff active"],
+								values = AceGUIWidgetLSMlists.sound,								
+							},							
+						},
+					},
+					GenColors = {
+						type = "group",
+						order = 5,
+						name = L["General Colors"],
+						guiInline = true,
 						args = {
 							bordercolor = {
 								type = "color",
@@ -330,27 +352,51 @@ function ElvuiConfig.GenerateOptionsInternal()
 								end,						
 							},
 						},
-					},
-					Sounds = {
+					},	
+					PowerColors = {
 						type = "group",
-						order = 5,
-						name = L["Sounds"],
-						guiInline = true,					
+						order = 6,
+						name = L["Power Colors"],
+						guiInline = true,
+						get = function(info)
+							local r, g, b = unpack(db.media[ info[#info] ])
+							return r, g, b
+						end,
+						set = function(info, r, g, b)
+							StaticPopup_Show("CFG_RELOAD")
+							db.media[ info[#info] ] = {r, g, b}
+						end,							
 						args = {
-							whisper_ = {
-								type = "select", dialogControl = 'LSM30_Sound',
+							POWER_MANA = {
+								type = "color",
 								order = 1,
-								name = L["Whisper Sound"],
-								desc = L["Sound that is played when recieving a whisper"],
-								values = AceGUIWidgetLSMlists.sound,								
-							},			
-							warning_ = {
-								type = "select", dialogControl = 'LSM30_Sound',
+								name = L["Mana"],
+								hasAlpha = false,						
+							},
+							POWER_RAGE = {
+								type = "color",
 								order = 2,
-								name = L["Warning Sound"],
-								desc = L["Sound that is played when you don't have a buff active"],
-								values = AceGUIWidgetLSMlists.sound,								
-							},							
+								name = L["Rage"],
+								hasAlpha = false,							
+							},
+							POWER_FOCUS = {
+								type = "color",
+								order = 3,
+								name = L["Focus"],
+								hasAlpha = false,							
+							},
+							POWER_ENERGY = {
+								type = "color",
+								order = 4,
+								name = L["Energy"],
+								hasAlpha = false,							
+							},
+							POWER_RUNICPOWER = {
+								type = "color",
+								order = 6,
+								name = L["Runic Power"],
+								hasAlpha = false,							
+							},
 						},
 					},
 				},
