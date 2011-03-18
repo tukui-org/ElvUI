@@ -1558,14 +1558,14 @@ function ElvuiConfig.GenerateOptionsInternal()
 								order = 3,
 								name = L["Chat Width"],
 								desc = L["Width of chatframe"],
-								min = 200, max = 400, step = 1,
+								min = 200, max = 600, step = 1,
 							},
 							chatheight = {
 								type = "range",
 								order = 4,
 								name = L["Chat Height"],
 								desc = L["Height of chatframe"],
-								min = 75, max = 250, step = 1,
+								min = 75, max = 450, step = 1,
 							},
 							fadeoutofuse = {
 								type = "toggle",
