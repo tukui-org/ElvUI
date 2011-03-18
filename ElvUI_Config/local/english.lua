@@ -397,7 +397,11 @@ L["Misc"] = true
 		L["Display threat in the bottomright panel"] = true
 	L["Minimap Auras"] = true
 		L["Display blizzard skinned auras by the minimap"] = true
-	
+	L["All-In-One Bag"] = true
+		L["Enable/Disable the All-In-One Bag, you must disable this if you wish to run another bag addon"] = true
+	L["Map Skin"] = true
+		L["Enable/Disable the map skin"] = true
+		
 --Profiles
 L["Profiles"] = true
 L["CFG_RELOAD"] = "A setting you have changed requires a ReloadUI for changes to take effect, when you are done configing hit Accept to ReloadUI."
