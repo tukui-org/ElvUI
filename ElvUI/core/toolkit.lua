@@ -169,6 +169,10 @@ local function FontString(parent, name, fontName, fontHeight, fontStyle)
 	return fs
 end
 
+-- convert datatext E.ValColor from rgb decimal to hex
+local r, g, b = unpack(C["media"].valuecolor)
+E.ValColor = ("|cff%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255)
+
 local function StyleButton(b, c) 
     local name = b:GetName()
  

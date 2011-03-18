@@ -37,9 +37,6 @@ end
 
 --RGB to Hex
 function E.RGBToHex(r, g, b)
-	if not r then r = 0 end
-	if not g then g = 0 end
-	if not b then b = 0 end
 	r = r <= 1 and r >= 0 and r or 0
 	g = g <= 1 and g >= 0 and g or 0
 	b = b <= 1 and b >= 0 and b or 0

@@ -2,28 +2,28 @@
 
 DB["media"] = {
 	-- fonts
-	["font_"] = "ElvUI Font", -- general font of Elvui
-	["uffont_"] = "ElvUI Font", -- general font of unitframes
-	["dmgfont_"] = "ElvUI Combat", -- general font of dmg / sct
+	["font"] = "ElvUI Font", -- general font of Elvui
+	["uffont"] = "ElvUI Font", -- general font of unitframes
+	["dmgfont"] = "ElvUI Combat", -- general font of dmg / sct
 		
 	-- textures
-	["normTex_"] = "ElvUI Norm", -- texture used for Elvui healthbar/powerbar/etc
-	["glossTex_"] = "ElvUI Gloss",
-	["glowTex_"] = "ElvUI GlowBorder",
-	["blank_"] = "ElvUI Blank",
+	["normTex"] = "ElvUI Norm", -- texture used for Elvui healthbar/powerbar/etc
+	["glossTex"] = "ElvUI Gloss",
+	["glowTex"] = "ElvUI GlowBorder",
+	["blank"] = "ElvUI Blank",
 	
 	["raidicons"] = [[Interface\AddOns\ElvUI\media\textures\raidicons.blp]], -- new raid icon textures by hankthetank
 	
 	-- sound
-	["whisper_"] = "ElvUI Whisper",
-	["warning_"] = "ElvUI Warning",
+	["whisper"] = "ElvUI Whisper",
+	["warning"] = "ElvUI Warning",
 	["glossyTexture"] = false,	-- Use a glossy texture for all frames
 	
 	--colors
-	["bordercolor"] = { .23,.23,.23 }, -- border color of Elvui panels
-	["backdropcolor"] = { .07,.07,.07 }, -- background color of Elvui panels
-	["backdropfadecolor"] = { .07,.07,.07,0.9 }, --this is always the same as the backdrop color with an alpha of 0.8, see colors.lua
-	["valuecolor"] = {23/255,132/255,209/255}, -- color for values of datatexts
+	["bordercolor"] = { r = .23,g = .23,b = .23 }, -- border color of Elvui panels
+	["backdropcolor"] = { r = .07,g = .07,b = .07 }, -- background color of Elvui panels
+	["backdropfadecolor"] = { r = .07,g = .07,b = .07, a = 0.9 }, --this is always the same as the backdrop color with an alpha of 0.8, see colors.lua
+	["valuecolor"] = {r = 23/255,g = 132/255,b = 209/255}, -- color for values of datatexts
 }
 
 
@@ -106,13 +106,13 @@ DB["unitframes"] = {
 	["casttargetwidth"] = 275,
 	["castfocuswidth"] = 275,
 	["castbarcolor"] = DB["media"].bordercolor, -- Color of player castbar
-	["nointerruptcolor"] = { 0.78, 0.25, 0.25, 0.5 }, -- Color of target castbar
+	["nointerruptcolor"] = { r = 0.78, g = 0.25, g = 0.25, a = 0.5 }, -- Color of target castbar
 	
-	["POWER_MANA"] = {0.31, 0.45, 0.63},
-	["POWER_RAGE"] = {1, 0, 0},
-	["POWER_FOCUS"] = {0.71, 0.43, 0.27},
-	["POWER_ENERGY"] = {0.65, 0.63, 0.35},
-	["POWER_RUNICPOWER"] = {0, 0.82, 1},	
+	["POWER_MANA"] = {r = 0.31, g = 0.45, b = 0.63},
+	["POWER_RAGE"] = {r = 1, g = 0, b = 0},
+	["POWER_FOCUS"] = {r = 0.71, g = 0.43, b = 0.27},
+	["POWER_ENERGY"] = {r = 0.65, g = 0.63, b = 0.35},
+	["POWER_RUNICPOWER"] = {r = 0, g = 0.82, b = 1},	
 }
 
 DB["raidframes"] = {
@@ -148,8 +148,8 @@ DB["classtimer"] = {
 	
 	["classcolor"] = false,
 	["buffcolor"] = DB["media"].bordercolor, -- if classcolor isnt true
-	["debuffcolor"] = {0.78, 0.25, 0.25, 1},
-	["proccolor"] = {0.84, 0.75, 0.65, 1},
+	["debuffcolor"] = {r = 0.78, g = 0.25, b = 0.25},
+	["proccolor"] = {r = 0.84, g = 0.75, b = 0.65},
 }
 
 DB["actionbar"] = {
@@ -171,11 +171,11 @@ DB["actionbar"] = {
 	
 	["enablecd"] = true,                     -- do i really need to explain this?
 	["treshold"] = 3,                      -- show decimal under X seconds and text turn red
-	["expiringcolor"] = { 1, 0, 0 },		--color of expiring seconds turns to 
-	["secondscolor"] = { 1, 1, 0 },			--seconds color
-	["minutescolor"] = { 1, 1, 1 },			-- minutes color
-	["hourscolor"] = { 0.4, 1, 1 },			-- hours color
-	["dayscolor"] = { 0.4, 0.4, 1 },		-- days color	
+	["expiringcolor"] = { r = 1, g = 0, b = 0 },		--color of expiring seconds turns to 
+	["secondscolor"] = { r = 1, g = 1, b = 0 },			--seconds color
+	["minutescolor"] = { r = 1, g = 1, b = 1 },			-- minutes color
+	["hourscolor"] = { r = 0.4, g = 1, b = 1 },			-- hours color
+	["dayscolor"] = { r = 0.4, g = 0.4, b = 1 },		-- days color	
 }
 
 DB["nameplate"] = {
@@ -184,9 +184,9 @@ DB["nameplate"] = {
 	["enhancethreat"] = true,				-- threat features based on if your a tank or not
 	["overlap"] = false,				--allow nameplates to overlap
 	["combat"] = false,					--only show enemy nameplates in-combat.
-	["goodcolor"] = {75/255,  175/255, 76/255},			--good threat color (tank shows this with threat, everyone else without)
-	["badcolor"] = {0.78, 0.25, 0.25},			--bad threat color (opposite of above)
-	["transitioncolor"] = {218/255, 197/255, 92/255},	--threat color when gaining threat
+	["goodcolor"] = {r = 75/255,  g = 175/255, b = 76/255},			--good threat color (tank shows this with threat, everyone else without)
+	["badcolor"] = {r = 0.78, g = 0.25, b = 0.25},			--bad threat color (opposite of above)
+	["transitioncolor"] = {r = 218/255, g = 197/255, b = 92/255},	--threat color when gaining threat
 	["trackauras"] = false,		--track players debuffs only (debuff list derived from classtimer spell list)
 	["trackccauras"] = true,			--track all CC debuffs
 }

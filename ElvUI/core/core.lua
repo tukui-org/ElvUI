@@ -58,10 +58,6 @@ RoleUpdater:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
 RoleUpdater:SetScript("OnEvent", CheckRole)
 CheckRole()
 
--- convert datatext E.ValColor from rgb decimal to hex
-local r, g, b = unpack(C["media"].valuecolor)
-E.ValColor = ("|cff%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255)
-
 --Check if our embed right addon is shown
 function E.CheckAddOnShown()
 	if E.ChatRightShown == true and E.RightChat and E.RightChat == true then

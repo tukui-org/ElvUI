@@ -198,21 +198,21 @@ function ElvuiConfig.GenerateOptionsInternal()
 						name = L["Fonts"],
 						guiInline = true,
 						args = {
-							font_ = {
+							font = {
 								type = "select", dialogControl = 'LSM30_Font',
 								order = 1,
 								name = L["Font"],
 								desc = L["The font that the core of the UI will use"],
 								values = AceGUIWidgetLSMlists.font,	
 							},
-							uffont_ = {
+							uffont = {
 								type = "select", dialogControl = 'LSM30_Font',
 								order = 2,
 								name = L["UnitFrame Font"],
 								desc = L["The font that unitframes will use"],
 								values = AceGUIWidgetLSMlists.font,	
 							},
-							dmgfont_ = {
+							dmgfont = {
 								type = "select", dialogControl = 'LSM30_Font',
 								order = 3,
 								name = L["Combat Text Font"],
@@ -227,28 +227,28 @@ function ElvuiConfig.GenerateOptionsInternal()
 						name = L["Textures"],
 						guiInline = true,
 						args = {
-							normTex_ = {
+							normTex = {
 								type = "select", dialogControl = 'LSM30_Statusbar',
 								order = 1,
 								name = L["StatusBar Texture"],
 								desc = L["Texture that gets used on all StatusBars"],
 								values = AceGUIWidgetLSMlists.statusbar,								
 							},
-							glossTex_ = {
+							glossTex = {
 								type = "select", dialogControl = 'LSM30_Statusbar',
 								order = 2,
 								name = L["Gloss Texture"],
 								desc = L["This gets used by some objects, unless gloss mode is on."],
 								values = AceGUIWidgetLSMlists.statusbar,								
 							},		
-							glowTex_ = {
+							glowTex = {
 								type = "select", dialogControl = 'LSM30_Border',
 								order = 3,
 								name = L["Glow Border"],
 								desc = L["Shadow Effect"],
 								values = AceGUIWidgetLSMlists.border,								
 							},
-							blank_ = {
+							blank = {
 								type = "select", dialogControl = 'LSM30_Background',
 								order = 4,
 								name = L["Backdrop Texture"],
@@ -269,14 +269,14 @@ function ElvuiConfig.GenerateOptionsInternal()
 						name = L["Sounds"],
 						guiInline = true,					
 						args = {
-							whisper_ = {
+							whisper = {
 								type = "select", dialogControl = 'LSM30_Sound',
 								order = 1,
 								name = L["Whisper Sound"],
 								desc = L["Sound that is played when recieving a whisper"],
 								values = AceGUIWidgetLSMlists.sound,								
 							},			
-							warning_ = {
+							warning = {
 								type = "select", dialogControl = 'LSM30_Sound',
 								order = 2,
 								name = L["Warning Sound"],
@@ -298,12 +298,14 @@ function ElvuiConfig.GenerateOptionsInternal()
 								desc = L["Main Frame's Border Color"],
 								hasAlpha = false,
 								get = function(info)
-									local r, g, b = unpack(db.media[ info[#info] ])
-									return r, g, b
+									local t = db.media[ info[#info] ]
+									return t.r, t.g, t.b, t.a
 								end,
 								set = function(info, r, g, b)
+									db.media[ info[#info] ] = {}
+									local t = db.media[ info[#info] ]
+									t.r, t.g, t.b = r, g, b
 									StaticPopup_Show("CFG_RELOAD")
-									db.media[ info[#info] ] = {r, g, b}
 								end,					
 							},
 							backdropcolor = {
@@ -313,12 +315,14 @@ function ElvuiConfig.GenerateOptionsInternal()
 								desc = L["Main Frame's Backdrop Color"],
 								hasAlpha = false,
 								get = function(info)
-									local r, g, b = unpack(db.media[ info[#info] ])
-									return r, g, b
+									local t = db.media[ info[#info] ]
+									return t.r, t.g, t.b, t.a
 								end,
 								set = function(info, r, g, b)
+									db.media[ info[#info] ] = {}
+									local t = db.media[ info[#info] ]
+									t.r, t.g, t.b = r, g, b
 									StaticPopup_Show("CFG_RELOAD")
-									db.media[ info[#info] ] = {r, g, b}
 								end,						
 							},
 							backdropfadecolor = {
@@ -328,12 +332,14 @@ function ElvuiConfig.GenerateOptionsInternal()
 								desc = L["Faded backdrop color of some frames"],
 								hasAlpha = true,
 								get = function(info)
-									local r, g, b, a = unpack(db.media[ info[#info] ])
-									return r, g, b, a
+									local t = db.media[ info[#info] ]
+									return t.r, t.g, t.b, t.a
 								end,
 								set = function(info, r, g, b, a)
+									db.media[ info[#info] ] = {}
+									local t = db.media[ info[#info] ]	
+									t.r, t.g, t.b, t.a = r, g, b, a
 									StaticPopup_Show("CFG_RELOAD")
-									db.media[ info[#info] ] = {r, g, b, a}
 								end,						
 							},
 							valuecolor = {
@@ -343,12 +349,14 @@ function ElvuiConfig.GenerateOptionsInternal()
 								desc = L["Value color of various text/frame objects"],
 								hasAlpha = false,
 								get = function(info)
-									local r, g, b = unpack(db.media[ info[#info] ])
-									return r, g, b
+									local t = db.media[ info[#info] ]
+									return t.r, t.g, t.b, t.a
 								end,
 								set = function(info, r, g, b)
+									db.media[ info[#info] ] = {}
+									local t = db.media[ info[#info] ]
+									t.r, t.g, t.b = r, g, b
 									StaticPopup_Show("CFG_RELOAD")
-									db.media[ info[#info] ] = {r, g, b}
 								end,						
 							},
 						},
@@ -421,13 +429,15 @@ function ElvuiConfig.GenerateOptionsInternal()
 								name = L["Colors"],
 								guiInline = true,	
 								get = function(info)
-									local r, g, b = unpack(db.nameplate[ info[#info] ])
-									return r, g, b
+									local t = db.nameplate[ info[#info] ]
+									return t.r, t.g, t.b, t.a
 								end,
 								set = function(info, r, g, b)
-									db.nameplate[ info[#info] ] = {r, g, b}
+									db.nameplate[ info[#info] ] = {}
+									local t = db.nameplate[ info[#info] ]
+									t.r, t.g, t.b = r, g, b
 									StaticPopup_Show("CFG_RELOAD")
-								end,
+								end,	
 								disabled = function() return (not db.nameplate.enhancethreat or not db.nameplate.enable) end,								
 								args = {
 									goodcolor = {
@@ -557,11 +567,13 @@ function ElvuiConfig.GenerateOptionsInternal()
 								hasAlpha = false,
 								disabled = function() return (not db.unitframes.enable or db.unitframes.classcolor) end,
 								get = function(info)
-									local r, g, b = unpack(db.unitframes[ info[#info] ])
-									return r, g, b
+									local t = db.unitframes[ info[#info] ]
+									return t.r, t.g, t.b, t.a
 								end,
 								set = function(info, r, g, b)
-									db.unitframes[ info[#info] ] = {r, g, b}
+									db.unitframes[ info[#info] ] = {}
+									local t = db.unitframes[ info[#info] ]
+									t.r, t.g, t.b = r, g, b
 									StaticPopup_Show("CFG_RELOAD")
 								end,								
 							},
@@ -585,13 +597,15 @@ function ElvuiConfig.GenerateOptionsInternal()
 								hasAlpha = false,
 								disabled = function() return (not db.unitframes.enable or not db.unitframes.healthbackdrop) end,
 								get = function(info)
-									local r, g, b = unpack(db.unitframes[ info[#info] ])
-									return r, g, b
+									local t = db.unitframes[ info[#info] ]
+									return t.r, t.g, t.b, t.a
 								end,
 								set = function(info, r, g, b)
-									db.unitframes[ info[#info] ] = {r, g, b}
+									db.unitframes[ info[#info] ] = {}
+									local t = db.unitframes[ info[#info] ]
+									t.r, t.g, t.b = r, g, b
 									StaticPopup_Show("CFG_RELOAD")
-								end,								
+								end,									
 							},
 							combatfeedback = {
 								type = "toggle",
@@ -849,28 +863,32 @@ function ElvuiConfig.GenerateOptionsInternal()
 								hasAlpha = false,
 								disabled = function() return (not db.unitframes.enable or db.general.classcolortheme) end,
 								get = function(info)
-									local r, g, b = unpack(db.unitframes[ info[#info] ])
-									return r, g, b
+									local t = db.unitframes[ info[#info] ]
+									return t.r, t.g, t.b, t.a
 								end,
 								set = function(info, r, g, b)
-									db.unitframes[ info[#info] ] = {r, g, b}
+									db.unitframes[ info[#info] ] = {}
+									local t = db.unitframes[ info[#info] ]
+									t.r, t.g, t.b = r, g, b
 									StaticPopup_Show("CFG_RELOAD")
-								end,							
+								end,								
 							},
 							nointerruptcolor = {
 								type = "color",
 								order = 8,
 								name = L["Interrupt Color"],
 								desc = L["Color of the castbar when you can't interrupt the cast"],
-								hasAlpha = false,
+								hasAlpha = true,
 								get = function(info)
-									local r, g, b = unpack(db.unitframes[ info[#info] ])
-									return r, g, b
+									local t = db.unitframes[ info[#info] ]
+									return t.r, t.g, t.b, t.a
 								end,
-								set = function(info, r, g, b)
-									db.unitframes[ info[#info] ] = {r, g, b}
+								set = function(info, r, g, b, a)
+									db.unitframes[ info[#info] ] = {}
+									local t = db.unitframes[ info[#info] ]
+									t.r, t.g, t.b, t.a = r, g, b, a
 									StaticPopup_Show("CFG_RELOAD")
-								end,								
+								end,									
 							},
 						},
 					},
@@ -880,13 +898,15 @@ function ElvuiConfig.GenerateOptionsInternal()
 						name = L["Power Colors"],
 						guiInline = true,
 						get = function(info)
-							local r, g, b = unpack(db.unitframes[ info[#info] ])
-							return r, g, b
+							local t = db.unitframes[ info[#info] ]
+							return t.r, t.g, t.b, t.a
 						end,
 						set = function(info, r, g, b)
+							db.unitframes[ info[#info] ] = {}
+							local t = db.unitframes[ info[#info] ]
+							t.r, t.g, t.b = r, g, b
 							StaticPopup_Show("CFG_RELOAD")
-							db.unitframes[ info[#info] ] = {r, g, b}
-						end,							
+						end,								
 						args = {
 							POWER_MANA = {
 								type = "color",
@@ -1155,11 +1175,13 @@ function ElvuiConfig.GenerateOptionsInternal()
 								guiInline = true,
 								disabled = function() return not db.classtimer.enable or (not ElvDPS_player and not ElvHeal_player) or not db.unitframes.enable or db.classtimer.classcolor end,
 								get = function(info)
-									local r, g, b = unpack(db.classtimer[ info[#info] ])
-									return r, g, b
+									local t = db.classtimer[ info[#info] ]
+									return t.r, t.g, t.b, t.a
 								end,
 								set = function(info, r, g, b)
-									db.classtimer[ info[#info] ] = {r, g, b}
+									db.classtimer[ info[#info] ] = {}
+									local t = db.classtimer[ info[#info] ]
+									t.r, t.g, t.b = r, g, b
 									StaticPopup_Show("CFG_RELOAD")
 								end,									
 								args = {
@@ -1330,11 +1352,13 @@ function ElvuiConfig.GenerateOptionsInternal()
 								name = L["Colors"],
 								guiInline = true,
 								get = function(info)
-									local r, g, b = unpack(db.actionbar[ info[#info] ])
-									return r, g, b
+									local t = db.actionbar[ info[#info] ]
+									return t.r, t.g, t.b, t.a
 								end,
 								set = function(info, r, g, b)
-									db.actionbar[ info[#info] ] = {r, g, b}
+									db.actionbar[ info[#info] ] = {}
+									local t = db.actionbar[ info[#info] ]
+									t.r, t.g, t.b = r, g, b
 									StaticPopup_Show("CFG_RELOAD")
 								end,									
 								args = {

@@ -21,6 +21,7 @@ local MIN_SCALE = 0.5 --the minimum scale we want to show cooldown counts at, an
 local MIN_DURATION = 2.5 --the minimum duration to show cooldown text for
 local EXPIRING_DURATION = C["actionbar"].treshold --the minimum number of seconds a cooldown must be to use to display in the expiring format
 
+
 local EXPIRING_FORMAT = E.RGBToHex(unpack(C["actionbar"].expiringcolor))..'%.1f|r' --format for timers that are soon to expire
 local SECONDS_FORMAT = E.RGBToHex(unpack(C["actionbar"].secondscolor))..'%d|r' --format for timers that have seconds remaining
 local MINUTES_FORMAT = E.RGBToHex(unpack(C["actionbar"].minutescolor))..'%dm|r' --format for timers that have minutes remaining
