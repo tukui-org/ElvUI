@@ -878,15 +878,15 @@ function ElvuiConfig.GenerateOptionsInternal()
 								order = 8,
 								name = L["Interrupt Color"],
 								desc = L["Color of the castbar when you can't interrupt the cast"],
-								hasAlpha = true,
+								hasAlpha = false,
 								get = function(info)
 									local t = db.unitframes[ info[#info] ]
-									return t.r, t.g, t.b, t.a
+									return t.r, t.g, t.b
 								end,
-								set = function(info, r, g, b, a)
+								set = function(info, r, g, b)
 									db.unitframes[ info[#info] ] = {}
 									local t = db.unitframes[ info[#info] ]
-									t.r, t.g, t.b, t.a = r, g, b, a
+									t.r, t.g, t.b = r, g, b
 									StaticPopup_Show("CFG_RELOAD")
 								end,									
 							},
