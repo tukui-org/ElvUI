@@ -109,7 +109,7 @@ DB["unitframes"] = {
 	["nointerruptcolor"] = { r = 0.78, g = 0.25, g = 0.25, a = 0.5 }, -- Color of target castbar
 	
 	["POWER_MANA"] = {r = 0.31, g = 0.45, b = 0.63},
-	["POWER_RAGE"] = {r = 1, g = 0, b = 0},
+	["POWER_RAGE"] = {r = 0.78, g = 0.25, b = 0.25},
 	["POWER_FOCUS"] = {r = 0.71, g = 0.43, b = 0.27},
 	["POWER_ENERGY"] = {r = 0.65, g = 0.63, b = 0.35},
 	["POWER_RUNICPOWER"] = {r = 0, g = 0.82, b = 1},	

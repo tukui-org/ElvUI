@@ -250,6 +250,8 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 		UIParent:SetPoint("CENTER")		
 	end	
 	
+
+	print(format(L.core_welcome1, E.version))
 	print(L.core_welcome2)
 end)
 
