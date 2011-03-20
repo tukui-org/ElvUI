@@ -1097,8 +1097,12 @@ local function Shared(self, unit)
 		buffs.num = 3
 		buffs:SetWidth(BOSS_WIDTH)
 		buffs.spacing = E.Scale(SPACING)
-		buffs.size = BOSS_HEIGHT
-		buffs:Point("RIGHT", self, "LEFT", -4, 0)
+		if POWERTHEME == true then
+			buffs.size = BOSS_HEIGHT - (POWERBAR_HEIGHT - BORDER - SPACING)
+		else
+			buffs.size = BOSS_HEIGHT
+		end
+		buffs:Point("TOPRIGHT", self, "TOPLEFT", -4, 0)
 		buffs:SetHeight(buffs.size)
 		buffs.initialAnchor = 'RIGHT'
 		buffs["growth-y"] = "UP"	
@@ -1114,9 +1118,13 @@ local function Shared(self, unit)
 		debuffs.num = 3
 		debuffs:SetWidth(BOSS_WIDTH)
 		debuffs.spacing = E.Scale(2)
-		debuffs.size = BOSS_HEIGHT
+		if POWERTHEME == true then
+			debuffs.size = BOSS_HEIGHT - (POWERBAR_HEIGHT - BORDER - SPACING)
+		else
+			debuffs.size = BOSS_HEIGHT
+		end
 		debuffs:SetHeight(debuffs.size)
-		debuffs:Point("LEFT", self, "RIGHT", 4, 0)
+		debuffs:Point("TOPLEFT", self, "TOPRIGHT", 4, 0)
 		debuffs.initialAnchor = 'LEFT'
 		debuffs["growth-y"] = "UP"
 		debuffs["growth-x"] = "RIGHT"
