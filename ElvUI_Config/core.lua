@@ -4,6 +4,10 @@ local LSM = LibStub("LibSharedMedia-3.0")
 local db
 local defaults
 
+if IsAddOnLoaded("ElvUI_ConfigUI") then
+	error("The AddOn 'ElvUI_ConfigUI' is no longer in use, please remove it from you addons folders. The new config addon is called 'ElvUI_Config'")
+end
+
 function ElvuiConfig:LoadDefaults()
 	local _, _, _, DB = unpack(ElvUI)
 	--Defaults

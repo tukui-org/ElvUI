@@ -22,7 +22,7 @@ Recount.UpdateBarTextures = function(self)
 		v.StatusBar:GetStatusBarTexture():SetHorizTile(false)
 		v.StatusBar:GetStatusBarTexture():SetVertTile(false)
 	end
-	Recount:SetFont("Elvui Font")
+	Recount:SetFont("ElvUI Font")
 end
 Recount.SetBarTextures = Recount.UpdateBarTextures
 
