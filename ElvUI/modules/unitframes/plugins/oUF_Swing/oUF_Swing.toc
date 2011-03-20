@@ -1,6 +1,6 @@
 ## Interface: 40000
 ## Author: p3lim, Thalyra
-## Version: 40000.1
+## Version: 40000.2
 ## Title: oUF Swing
 ## Notes: Swing timer plug-in for oUF
 ## RequiredDeps: oUF

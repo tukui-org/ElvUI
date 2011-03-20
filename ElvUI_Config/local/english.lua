@@ -127,6 +127,8 @@ L["Unit Frames"] = true
 		L["Style the unitframes with a smaller powerbar"] = true
 	L["Arena Frames"] = true
 	L["Boss Frames"] = true
+	L["Swing Bar"] = true
+		L["Bar that displays time between melee attacks"] = true
 	
 L["Frame Sizes"] = true
 	L["Controls the size of the frame"] = true

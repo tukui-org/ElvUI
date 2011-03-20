@@ -107,6 +107,7 @@ function E.LoadMoveElements(layout)
 	CreateFrameOverlay(_G["Elv"..layout.."_target"].Debuffs, layout.."TargetDebuffs")
 	CreateFrameOverlay(_G["Elv"..layout.."_focus"].Debuffs, layout.."FocusDebuffs")
 	CreateFrameOverlay(_G["Elv"..layout.."_targettarget"].Debuffs, layout.."TargetTargetDebuffs")	
+	CreateFrameOverlay(_G["Elv"..layout.."_player"].Swing, layout.."SwingBar")	
 end
 
 local function ShowCBOverlay()

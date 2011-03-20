@@ -214,8 +214,15 @@ local function Shared(self, unit)
 		if C["unitframes"].unitcastbar == true then
 			local castbar = E.ConstructCastBar(self, CASTBAR_WIDTH, CASTBAR_HEIGHT, "LEFT")
 			castbar:Point("TOPRIGHT", self, "BOTTOMRIGHT", -BORDER, -(BORDER*2+BORDER))
-			
+
 			self.Castbar = castbar
+		end
+		
+		--Swing Bar
+		if C["unitframes"].swing == true then
+			local swing = E.ConstructSwingBar(self, CASTBAR_WIDTH - (BORDER*2), POWERBAR_HEIGHT - (BORDER*2), false)
+			swing:Point("TOPRIGHT", self, "BOTTOMRIGHT", -BORDER, -(BORDER*2+BORDER))
+			self.Swing = swing
 		end
 		
 		-- Debuff Highlight

@@ -153,6 +153,41 @@ E.LoadUFFunctions = function(layout)
 		return castbar
 	end
 	
+	local function CreateSwingStatusBar(parent, text)
+		local sbar = CreateFrame("Statusbar", nil, parent)
+		sbar:SetPoint("TOPLEFT")
+		sbar:SetPoint("BOTTOMRIGHT")
+		sbar:SetStatusBarTexture(C["media"].normTex)
+		sbar:SetStatusBarColor(unpack(C["media"].bordercolor))
+		sbar:SetFrameLevel(20)
+		sbar:SetFrameStrata("LOW")
+		sbar:Hide()
+		
+		if text then
+			sbar:FontString("Text", C["media"].uffont, C["unitframes"].fontsize*E.ResScale, "THINOUTLINE")
+			sbar.Text:Point("CENTER", sbar, "CENTER")
+			sbar.Text:SetTextColor(0.84, 0.75, 0.65)
+		end
+		
+		sbar.backdrop = CreateFrame("Frame", nil, sbar)
+		sbar.backdrop:SetFrameLevel(sbar:GetFrameLevel() - 1)
+		sbar.backdrop:Point("TOPLEFT", parent, "TOPLEFT", -2*E.ResScale, 2*E.ResScale)
+		sbar.backdrop:Point("BOTTOMRIGHT", parent, "BOTTOMRIGHT", 2*E.ResScale, -2*E.ResScale)
+		sbar.backdrop:SetTemplate("Default")
+		return sbar
+	end
+	
+	function E.ConstructSwingBar(self, width, height, text)
+		local swing = CreateFrame("Frame", nil, self)
+		swing.Twohand = CreateSwingStatusBar(swing, text)
+		swing.Mainhand = CreateSwingStatusBar(swing, text)
+		swing.Offhand = CreateSwingStatusBar(swing, text)
+		swing.hideOoc = true
+		swing:SetWidth(width*E.ResScale)
+		swing:SetHeight(height*E.ResScale)
+		return swing
+	end
+	
 	function E.SpawnMenu(self)
 		local unit = self.unit:gsub("(.)", string.upper, 1)
 		if self.unit == "targettarget" then return end

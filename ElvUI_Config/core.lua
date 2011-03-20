@@ -530,7 +530,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								order = 5,
 								name = L["Pet's Target"],
 								desc = L["Display the pet unit's target"],
-								disabled = function() return (not db.unitframes.enable or not IsAddOnLoaded("ElvUI_RaidDPS")) end,	
+								disabled = function() return (not db.unitframes.enable or not (IsAddOnLoaded("ElvUI_RaidDPS") or db.general.layoutoverride == "DPS")) end,	
 							},
 							showtotalhpmp = {
 								type = "toggle",
@@ -650,7 +650,14 @@ function ElvuiConfig.GenerateOptionsInternal()
 								type = "toggle",
 								order = 20,
 								name = L["Boss Frames"],							
-							},							
+							},
+							swing = {
+								type = "toggle",
+								order = 21,
+								name = L["Swing Bar"],
+								desc = L["Bar that displays time between melee attacks"],
+								disabled = function() return (not db.unitframes.enable or not (IsAddOnLoaded("ElvUI_RaidDPS") or db.general.layoutoverride == "DPS")) end,	
+							},
 						},
 					},
 					UFSizeGroup = {
