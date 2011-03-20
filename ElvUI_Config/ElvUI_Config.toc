@@ -3,7 +3,8 @@
 ## Notes: Config for ElvUI
 ## Author: Elv
 ## SavedVariables: ElvConfig
-## RequiredDeps: ElvUI, ElvUI_ConfigUI
+## RequiredDeps: ElvUI
+## OptionalDeps: ElvUI_ConfigUI
 
 libs\load_libs.xml
 local\english.lua
