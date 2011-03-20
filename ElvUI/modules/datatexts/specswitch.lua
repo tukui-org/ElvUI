@@ -52,7 +52,9 @@ Stat:SetScript("OnEnter", function(self)
 
 	GameTooltip:ClearLines()
 	for i = 1, GetNumTalentGroups() do
-		GameTooltip:AddLine(string.join(" ", string.format(talentString, select(2, GetTalentTabInfo(GetPrimaryTalentTree(false, false, i))), talent[i][1], talent[i][2], talent[i][3]), (i == active and activeString or inactiveString)),1,1,1)
+		if GetPrimaryTalentTree(false, false, i) then
+			GameTooltip:AddLine(string.join(" ", string.format(talentString, select(2, GetTalentTabInfo(GetPrimaryTalentTree(false, false, i))), talent[i][1], talent[i][2], talent[i][3]), (i == active and activeString or inactiveString)),1,1,1)
+		end
 	end
 	GameTooltip:Show()
 end)
