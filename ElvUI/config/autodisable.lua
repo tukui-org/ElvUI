@@ -5,9 +5,6 @@ local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config
 local LSM = LibStub("LibSharedMedia-3.0")
 
 if C["general"].classcolortheme == true then
-	local c = select(2, UnitClass("player"))
-	local r, g, b = RAID_CLASS_COLORS[c].r, RAID_CLASS_COLORS[c].g, RAID_CLASS_COLORS[c].b
-	C["media"].bordercolor = {r, g, b, 1}
 	C["unitframes"].classcolor = true
 end
 
