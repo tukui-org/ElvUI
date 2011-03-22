@@ -260,7 +260,7 @@ end
 
 --Color Nameplate
 local function Colorize(frame)
-	local r,g,b = frame.hp:GetStatusBarColor()
+	local r,g,b = frame.healthOriginal:GetStatusBarColor()
 	
 	for class, color in pairs(RAID_CLASS_COLORS) do
 		local r, g, b = floor(r*100+.5)/100, floor(g*100+.5)/100, floor(b*100+.5)/100
@@ -304,7 +304,15 @@ local function UpdateObjects(frame)
 	frame.hp:SetSize(hpWidth, hpHeight)	
 	frame.hp:SetPoint('TOP', frame, 'TOP', 0, -noscalemult*3)
 	frame.hp:GetStatusBarTexture():SetHorizTile(true)
-			
+	
+	--Match values
+	frame.hp:SetMinMaxValues(frame.healthOriginal:GetMinMaxValues())
+	frame.hp:SetValue(frame.healthOriginal:GetValue())
+	frame.healthOriginal:SetScript("OnValueChanged", function()
+		frame.hp:SetMinMaxValues(frame.healthOriginal:GetMinMaxValues())
+		frame.hp:SetValue(frame.healthOriginal:GetValue())
+	end)
+	
 	--Colorize Plate
 	Colorize(frame)
 	frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = frame.hp:GetStatusBarColor()
@@ -357,13 +365,19 @@ local function UpdateObjects(frame)
 end
 
 --This is where we create most 'Static' objects for the nameplate, it gets fired when a nameplate is first seen.
+local id = 1
 local function SkinObjects(frame)
-	local hp, cb = frame:GetChildren()
+	local oldhp, cb = frame:GetChildren()
 	local threat, hpborder, cbshield, cbborder, cbicon, overlay, oldname, oldlevel, bossicon, raidicon, elite = frame:GetRegions()
-
+	
+	_G["NamePlate"..id] = frame
+	id = id + 1
+	
 	--Health Bar
-	frame.healthOriginal = hp
+	frame.healthOriginal = oldhp
+	local hp = CreateFrame("Statusbar", nil, frame)
 	hp:SetFrameLevel(1)
+	hp:SetFrameStrata(oldhp:GetFrameStrata())
 	hp:SetStatusBarTexture(TEXTURE)
 	CreateVirtualFrame(hp)
 	
@@ -452,6 +466,7 @@ local function SkinObjects(frame)
 	frame.raidicon = raidicon
 	
 	--Hide Old Stuff
+	QueueObject(frame, oldhp)
 	QueueObject(frame, oldlevel)
 	QueueObject(frame, threat)
 	QueueObject(frame, hpborder)

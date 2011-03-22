@@ -835,7 +835,9 @@ local function Shared(self, unit)
 		combo:HookScript("OnShow", function()
 			if HealComboBar then HealComboBar:SetFrameLevel(HealComboBar:GetFrameLevel() + 1) end
 			
-			if ElementsPos["HealComboBar"]["moved"] == true and E.CreatedMoveEleFrames["HealComboBar"] then return end
+			if ElementsPos and HealComboBar and HealComboBar["moved"] then
+				if ElementsPos["HealComboBar"]["moved"] == true and E.CreatedMoveEleFrames["HealComboBar"] then return end
+			end
 			combo:ClearAllPoints()
 			combo:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
 			

@@ -843,7 +843,9 @@ local function Shared(self, unit)
 		combo:HookScript("OnShow", function()
 			if DPSComboBar then DPSComboBar:SetFrameLevel(DPSComboBar:GetFrameLevel() + 1) end
 			
-			if ElementsPos["DPSComboBar"]["moved"] == true and E.CreatedMoveEleFrames["DPSComboBar"] then return end
+			if ElementsPos and DPSComboBar and DPSComboBar["moved"] then
+				if ElementsPos["DPSComboBar"]["moved"] == true and E.CreatedMoveEleFrames["DPSComboBar"] then return end
+			end
 			combo:ClearAllPoints()
 			combo:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
 			
