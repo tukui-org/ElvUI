@@ -840,9 +840,7 @@ local function Shared(self, unit)
 		--[[This is a little differant than everything else because we have to take into account 
 		the combobar is movable with the /moveele command, this should make it work correctly only 
 		after a reloadui.]]
-		combo:HookScript("OnShow", function()
-			if DPSComboBar then DPSComboBar:SetFrameLevel(DPSComboBar:GetFrameLevel() + 1) end
-			
+		combo:HookScript("OnShow", function()		
 			if ElementsPos and DPSComboBar and DPSComboBar["moved"] then
 				if ElementsPos["DPSComboBar"]["moved"] == true and E.CreatedMoveEleFrames["DPSComboBar"] then return end
 			end

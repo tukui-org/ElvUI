@@ -832,9 +832,7 @@ local function Shared(self, unit)
 		--[[This is a little differant than everything else because we have to take into account 
 		the combobar is movable with the /moveele command, this should make it work correctly only 
 		after a reloadui.]]
-		combo:HookScript("OnShow", function()
-			if HealComboBar then HealComboBar:SetFrameLevel(HealComboBar:GetFrameLevel() + 1) end
-			
+		combo:HookScript("OnShow", function()			
 			if ElementsPos and HealComboBar and HealComboBar["moved"] then
 				if ElementsPos["HealComboBar"]["moved"] == true and E.CreatedMoveEleFrames["HealComboBar"] then return end
 			end

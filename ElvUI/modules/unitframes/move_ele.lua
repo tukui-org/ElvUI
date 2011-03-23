@@ -111,6 +111,9 @@ function E.LoadMoveElements(layout)
 end
 
 local function ShowCBOverlay()
+	if DPSComboBar then DPSComboBar:SetFrameLevel(DPSComboBar:GetFrameLevel() + 1) end
+	if HealComboBar then DPSComboBar:SetFrameLevel(HealComboBar:GetFrameLevel() + 1) end
+	
 	if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end
 	local tab = E.CreatedMoveEleFrames
 	for frame, _ in pairs(tab) do
@@ -148,7 +151,7 @@ local function ResetElements(arg1)
 	else
 		if not _G[arg1] then return end
 		local tab = E.CreatedMoveEleFrames		
-		for i, frame in pairs(tab) do
+		for frame, _ in pairs(tab) do
 			if frame == arg1 then
 				local name = _G[arg1]:GetName()
 				_G[arg1]:ClearAllPoints()
