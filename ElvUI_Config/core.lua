@@ -848,7 +848,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								name = L["Width Player Castbar"],
 								desc = L["The size of the castbar"],
 								type = "range",
-								min = 200, max = 450, step = 1,								
+								min = 200, max = 600, step = 1,								
 							},
 							casttargetwidth = {
 								type = "range",
@@ -856,7 +856,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								name = L["Width Target Castbar"],
 								desc = L["The size of the castbar"],
 								type = "range",
-								min = 200, max = 450, step = 1,								
+								min = 200, max = 600, step = 1,								
 							},	
 							castfocuswidth = {
 								type = "range",
@@ -864,7 +864,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								name = L["Width Focus Castbar"],
 								desc = L["The size of the castbar"],
 								type = "range",
-								min = 200, max = 450, step = 1,								
+								min = 200, max = 600, step = 1,								
 							},
 							castbarcolor = {
 								type = "color",
