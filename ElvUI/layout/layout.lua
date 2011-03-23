@@ -45,7 +45,7 @@ if C["actionbar"].bottompetbar ~= true then
 else
 	barbg:CreatePanel("Default", 1, 1, "BOTTOM", UIParent, "BOTTOM", 0, (E.buttonsize + (E.buttonspacing * 2)) + E.Scale(8))
 end
-barbg:SetWidth(((E.buttonsize * 12) + (E.buttonspacing * 13)))
+barbg:SetWidth(math.ceil((E.buttonsize * 12) + (E.buttonspacing * 13)))
 barbg:SetFrameStrata("BACKGROUND")
 barbg:SetHeight(E.buttonsize + (E.buttonspacing * 2))
 barbg:CreateShadow("Default")
