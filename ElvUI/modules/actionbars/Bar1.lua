@@ -74,6 +74,7 @@ bar:SetScript("OnEvent", function(self, event, ...)
 		for i = 1, NUM_ACTIONBAR_BUTTONS do
 			button = _G["ActionButton"..i]
 			self:SetFrameRef("ActionButton"..i, button)
+			button.SetAlpha = E.dummy --weird bug with druids spec change from boomkin to feral
 		end	
 
 		self:Execute([[
