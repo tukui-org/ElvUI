@@ -135,6 +135,13 @@ local function UpdateTank(self)
 	if dodge <= 0 then dodge = 0 end
 	if parry <= 0 then parry = 0 end
 	if block <= 0 then block = 0 end
+	
+	if E.myclass == "DRUID" then
+		parry = 0
+		block = 0
+	elseif E.myclass == "DEATHKNIGHT" then
+		block = 0
+	end
 	avoidance = (dodge+parry+block+basemisschance)
 	
 	Text:SetFormattedText(displayFloatString, L.datatext_playeravd, avoidance)
