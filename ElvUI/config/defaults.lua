@@ -37,7 +37,7 @@ DB["general"] = {
 	["layoutoverride"] = "NONE",			--ovverride layout (DPS, Healer)
 }
 
-DB["skin"] = {	--Skin addons by Darth Android
+DB["skin"] = {
 	["recount"] = true,
 	["skada"] = true,
 	["omen"] = true,

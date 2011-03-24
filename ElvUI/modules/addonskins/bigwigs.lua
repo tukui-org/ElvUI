@@ -171,6 +171,17 @@ f:SetScript("OnEvent", function(self, event, addon)
 		InterfaceOptionsFrameCategoriesButton1:Click()
 		HideUIPanel(InterfaceOptionsFrame)
 		PositionBWAnchor()
+		
+		if Skada and Skada:GetWindows() and Skada:GetWindows()[1] and C["skin"].embedright == "Skada" then
+			Skada:GetWindows()[1].bargroup:HookScript("OnShow", function() PositionBWAnchor() end)
+			Skada:GetWindows()[1].bargroup:HookScript("OnHide", function() PositionBWAnchor() end)
+		elseif Recount_MainWindow and C["skin"].embedright == "Recount" then
+			Recount_MainWindow:HookScript("OnShow", function() PositionBWAnchor() end)
+			Recount_MainWindow:HookScript("OnHide", function() PositionBWAnchor() end)
+		elseif OmenAnchor and C["skin"].embedright == "Omen" then
+			OmenAnchor:HookScript("OnShow", function() PositionBWAnchor() end)
+			OmenAnchor:HookScript("OnHide", function() PositionBWAnchor() end)		
+		end	
 	elseif event == "PLAYER_REGEN_DISABLED" then
 		PositionBWAnchor()
 	elseif event == "PLAYER_REGEN_ENABLED" then

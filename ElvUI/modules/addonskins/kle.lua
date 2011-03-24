@@ -172,6 +172,17 @@ KLE_Skin:SetScript("OnEvent", function(self, event)
 		
 		if C["skin"].hookkleright == true then
 			PositionKLEAnchor()
+			
+			if Skada and Skada:GetWindows() and Skada:GetWindows()[1] and C["skin"].embedright == "Skada" then
+				Skada:GetWindows()[1].bargroup:HookScript("OnShow", function() PositionKLEAnchor() end)
+				Skada:GetWindows()[1].bargroup:HookScript("OnHide", function() PositionKLEAnchor() end)
+			elseif Recount_MainWindow and C["skin"].embedright == "Recount" then
+				Recount_MainWindow:HookScript("OnShow", function() PositionKLEAnchor() end)
+				Recount_MainWindow:HookScript("OnHide", function() PositionKLEAnchor() end)
+			elseif OmenAnchor and C["skin"].embedright == "Omen" then
+				OmenAnchor:HookScript("OnShow", function() PositionKLEAnchor() end)
+				OmenAnchor:HookScript("OnHide", function() PositionKLEAnchor() end)		
+			end	
 		end
 	elseif event == "PLAYER_REGEN_DISABLED" then
 		PositionKLEAnchor()
