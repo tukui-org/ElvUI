@@ -74,6 +74,7 @@ DB["unitframes"] = {
 	["showboss"] = true,                   -- enable boss unit frames for PVELOL encounters.
 	["arena"] = true,                 -- enable elvui arena unitframes (requirement : Elvui unitframes enabled)	
 	["swing"] = false,
+	["displayaggro"] = true,
 	
 	--frame sizes
 	["playtarwidth"] = 275,					--width of player/target frame
@@ -136,6 +137,7 @@ DB["raidframes"] = {
 	["mouseglow"] = true,					--glow the class/reaction color of the unit that you mouseover
 	["raidunitbuffwatch"] = true,       -- track important spell to watch in pve for grid mode.
 	["buffindicatorsize"] = 6,				-- size of the buff indicator on raid/party frames	
+	["displayaggro"] = true,
 }
 
 DB["classtimer"] = {

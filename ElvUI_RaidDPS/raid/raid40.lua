@@ -47,10 +47,14 @@ local function Shared(self, unit)
 		self.LFDRole = LFDRole
 	end
 	
-	table.insert(self.__elements, E.UpdateThreat)
-	self:RegisterEvent('PLAYER_TARGET_CHANGED', E.UpdateThreat)
-	self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', E.UpdateThreat)
-	self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', E.UpdateThreat)
+	--Aggro Glow
+	if C["raidframes"].displayaggro == true then
+		table.insert(self.__elements, E.UpdateThreat)
+		self:RegisterEvent('PLAYER_TARGET_CHANGED', E.UpdateThreat)
+		self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', E.UpdateThreat)
+		self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', E.UpdateThreat)
+	end
+
 
 	local RaidIcon = self:CreateTexture(nil, 'OVERLAY')
 	RaidIcon:Size(15*C["raidframes"].scale, 15*C["raidframes"].scale)

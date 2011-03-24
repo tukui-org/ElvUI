@@ -658,6 +658,12 @@ function ElvuiConfig.GenerateOptionsInternal()
 								desc = L["Bar that displays time between melee attacks"],
 								disabled = function() return (not db.unitframes.enable or not (IsAddOnLoaded("ElvUI_RaidDPS") or db.general.layoutoverride == "DPS")) end,	
 							},
+							displayaggro = {
+								type = "toggle",
+								order = 22,
+								name = L["Display Aggro"],
+								desc = L["Enable red glow around the player frame when you have aggro"],
+							},
 						},
 					},
 					UFSizeGroup = {
@@ -1085,16 +1091,22 @@ function ElvuiConfig.GenerateOptionsInternal()
 								name = L["Mouse Glow"],
 								desc = L["Glow the unitframe to the unit's Reaction/Class when mouseover'd"],							
 							},
+							displayaggro = {
+								type = "toggle",
+								order = 17,
+								name = L["Display Aggro"],
+								desc = L["Change the frame's border to red when a unit has aggro"],
+							},							
 							raidunitbuffwatch = {
 								type = "toggle",
-								order = 15,
+								order = 18,
 								name = L["Raid Buff Display"],
 								desc = L["Display special buffs on raidframes"],
 								disabled = function() return not db.raidframes.enable and not db.unitframes.enable end,
 							},
 							buffindicatorsize = {
 								type = "range",
-								order = 17,
+								order = 19,
 								name = L["Raid Buff Display Size"],
 								desc = L["Size of the buff icon on raidframes"],
 								disabled = function() return not db.raidframes.enable and not db.unitframes.enable end,
