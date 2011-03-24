@@ -162,6 +162,18 @@ f:RegisterEvent("ADDON_LOADED")
 f:SetScript("OnEvent", function(self, event, addon)
 	if event == "ADDON_LOADED" and addon == "BigWigs_Plugins" then
 		RegisterStyle()
+		local profile = BigWigs3DB["profileKeys"][E.myname.." - "..E.myrealm]
+		local path = BigWigs3DB["namespaces"]["BigWigs_Plugins_Bars"]["profiles"][profile]
+		path.texture = "ElvUI Norm"
+		path.barStyle = "ElvUI"
+		path.font = "ElvUI Font"
+		
+		local path = BigWigs3DB["namespaces"]["BigWigs_Plugins_Messages"]["profiles"][profile]
+		path.font = "ElvUI Font"
+		
+		local path = BigWigs3DB["namespaces"]["BigWigs_Plugins_Proximity"]["profiles"][profile]
+		path.font = "ElvUI Font"
+		
 		f:UnregisterEvent("ADDON_LOADED")
 	elseif event == "PLAYER_ENTERING_WORLD" then
 		SlashCmdList["BigWigs"]()
