@@ -112,7 +112,7 @@ end
 
 local function ShowCBOverlay()
 	if DPSComboBar then DPSComboBar:SetFrameLevel(DPSComboBar:GetFrameLevel() + 1) end
-	if HealComboBar then DPSComboBar:SetFrameLevel(HealComboBar:GetFrameLevel() + 1) end
+	if HealComboBar then HealComboBar:SetFrameLevel(HealComboBar:GetFrameLevel() + 1) end
 	
 	if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end
 	local tab = E.CreatedMoveEleFrames
