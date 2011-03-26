@@ -58,6 +58,8 @@ RoleUpdater:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
 RoleUpdater:SetScript("OnEvent", CheckRole)
 CheckRole()
 
+
+
 --Check if our embed right addon is shown
 function E.CheckAddOnShown()
 	if E.ChatRightShown == true and E.RightChat and E.RightChat == true then

@@ -176,7 +176,8 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"Logout", 
 			"Quit", 
 			"Continue", 
-			"MacOptions"
+			"MacOptions",
+			"Help"
 		}
 		
 		for i = 1, getn(BlizzardMenuButtons) do
@@ -252,7 +253,8 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"ReadyCheckFrameYesButton",
 			"ReadyCheckFrameNoButton",
 			"StackSplitOkayButton",
-			"StackSplitCancelButton",			
+			"StackSplitCancelButton",
+			"RolePollPopupAcceptButton"
 		}
 		
 		for i = 1, getn(BlizzardButtons) do
