@@ -176,6 +176,7 @@ if C["datatext"].classcolor ~= true then
 else
 	local color = RAID_CLASS_COLORS[class]
 	E.ValColor = ("|cff%.2x%.2x%.2x"):format(color.r * 255, color.g * 255, color.b * 255)
+	C["media"].valuecolor = {color.r, color.g, color.b}
 end
 
 local function StyleButton(b, c) 
