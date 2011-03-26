@@ -210,7 +210,7 @@ Stat:SetScript("OnEnter", function(self)
 	end
 	
 	local _, _, standingID, barMin, barMax, barValue = GetGuildFactionInfo()
-	if standingID ~= 4 then -- Not Max Rep
+	if standingID ~= 8 then -- Not Max Rep
 		barMax = barMax - barMin
 		barValue = barValue - barMin
 		barMin = 0
