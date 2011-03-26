@@ -60,7 +60,8 @@ local function StyleBuffs(buttonName, index, debuff)
 				
 		duration:ClearAllPoints()
 		duration:SetPoint("BOTTOM", 0, E.Scale(-13))
-		duration:SetFont(C["media"].font, 12, "THINOUTLINE")
+		duration:SetFont(C["media"].font, C["general"].fontscale, "THINOUTLINE")
+		duration:SetShadowColor(0,0,0,0)
 		
 		count:ClearAllPoints()
 		count:SetPoint("TOPLEFT", E.Scale(1), E.Scale(-2))

@@ -34,7 +34,7 @@ function Style(self, totem)
 	if Count then
 		Count:ClearAllPoints()
 		Count:SetPoint("BOTTOMRIGHT", 0, E.Scale(2))
-		Count:SetFont(C["media"].font, 12, "OUTLINE")
+		Count:SetFont(C["media"].font, C["general"].fontscale, "OUTLINE")
 	end
 	
 	if Btname then
@@ -67,8 +67,7 @@ function Style(self, totem)
 	if HotKey then
 		HotKey:ClearAllPoints()
 		HotKey:SetPoint("TOPRIGHT", 0, E.Scale(-3))
-		HotKey:SetFont(C["media"].font, 12, "THINOUTLINE")
-		HotKey:SetShadowOffset(E.mult, -E.mult)
+		HotKey:SetFont(C["media"].font, C["general"].fontscale, "THINOUTLINE")
 		HotKey:SetShadowColor(0, 0, 0, 0.3)
 		HotKey.ClearAllPoints = E.dummy
 		HotKey.SetPoint = E.dummy
