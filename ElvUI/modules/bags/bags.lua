@@ -56,10 +56,24 @@ local function Stuffing_Sort(args)
 	Stuffing:SortBags()
 end
 
+local resetAndClear = function (self)
+	if not self then return end
+	if self and self:GetParent() and self:GetParent().detail then
+		self:GetParent().detail:Show()
+	end
+	
+	if self and self:GetParent() and self:GetParent().gold then
+		self:GetParent().gold:Show()
+	end
+	
+	self:ClearFocus()
+	Stuffing:SearchReset()
+end
+
 
 local function Stuffing_OnShow()
 	Stuffing:PLAYERBANKSLOTS_CHANGED(29)	-- XXX: hack to force bag frame update
-
+	resetAndClear(StuffingFrameBags.editbox)
 	Stuffing:Layout()
 	Stuffing:SearchReset()
 	collectgarbage("collect")
@@ -414,8 +428,10 @@ function Stuffing:SearchUpdate(str)
 		if b.name then
 			if not string.find (string.lower(b.name), str) then
 				SetItemButtonDesaturated(b.frame, 1, 1, 1, 1)
+				b.frame:SetAlpha(0.4)
 			else
 				SetItemButtonDesaturated(b.frame, 0, 1, 1, 1)
+				b.frame:SetAlpha(1)
 			end
 		end
 	end
@@ -425,6 +441,7 @@ end
 function Stuffing:SearchReset()
 	for _, b in ipairs(self.buttons) do
 		SetItemButtonDesaturated(b.frame, 0, 1, 1, 1)
+		b.frame:SetAlpha(1)
 	end
 end
 
@@ -503,7 +520,6 @@ local parent_stopmovingorsizing = function (self)
 	StopMoving(self:GetParent())
 end
 
-
 function Stuffing:InitBags()
 	if self.frame then
 		return
@@ -523,13 +539,6 @@ function Stuffing:InitBags()
 	editbox:SetAutoFocus(true)
 	editbox:SetHeight(E.Scale(32))
 	editbox:SetTemplate("Default", true)
-
-	local resetAndClear = function (self)
-		self:GetParent().detail:Show()
-		self:GetParent().gold:Show()
-		self:ClearFocus()
-		Stuffing:SearchReset()
-	end
 
 	local updateSearch = function(self, t)
 		if t == true then
