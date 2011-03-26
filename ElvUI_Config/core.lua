@@ -1467,8 +1467,14 @@ function ElvuiConfig.GenerateOptionsInternal()
 						desc = L["Display local time instead of server time"],	
 						disabled = function() return db.datatext.wowtime == 0 end,					
 					},
-					DataGroup = {
+					classcolor = {
 						order = 6,
+						type = "toggle",
+						name = L["Class Color"],
+						desc = L["Color the datatext values based on your class"],
+					},
+					DataGroup = {
+						order = 7,
 						type = "group",
 						name = L["Text Positions"],
 						guiInline = true,

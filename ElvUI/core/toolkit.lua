@@ -170,8 +170,13 @@ local function FontString(parent, name, fontName, fontHeight, fontStyle)
 end
 
 -- convert datatext E.ValColor from rgb decimal to hex
-local r, g, b = unpack(C["media"].valuecolor)
-E.ValColor = ("|cff%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255)
+if C["datatext"].classcolor ~= true then
+	local r, g, b = unpack(C["media"].valuecolor)
+	E.ValColor = ("|cff%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255)
+else
+	local color = RAID_CLASS_COLORS[class]
+	E.ValColor = ("|cff%.2x%.2x%.2x"):format(color.r * 255, color.g * 255, color.b * 255)
+end
 
 local function StyleButton(b, c) 
     local name = b:GetName()

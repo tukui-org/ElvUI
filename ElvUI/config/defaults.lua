@@ -212,6 +212,7 @@ DB["datatext"] = {
 	["time24"] = false,                     -- set time to 24h format.
 	["localtime"] = true,                 -- set time to local time instead of server time.
 	["fontsize"] = 12,                     -- font size for panels.
+	["classcolor"] = false,
 }
 
 DB["chat"] = {
