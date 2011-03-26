@@ -1,6 +1,8 @@
 local ElvuiWatchFrame = CreateFrame("Frame", "ElvuiWatchFrame", UIParent)
 
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
+if C["actionbar"].enable ~= true then return end
 local wideFrame = GetCVar("watchFrameWidth")
 
 local WatchFrameHolder = CreateFrame("Frame", "WatchFrameHolder", UIParent)
@@ -32,7 +34,7 @@ function E.PositionWatchFrame()
 	
 	if WatchFrameMover then
 		if E.Movers["WatchFrameMover"]["moved"] == true then return end
-
+		
 		WatchFrameMover:ClearAllPoints()
 		if E.actionbar.rightbars == 3 then
 			if C["actionbar"].bottompetbar ~= true then
