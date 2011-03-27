@@ -35,6 +35,7 @@ DB["general"] = {
 	["fontscale"] = 12,					--Master font
 	["resolutionoverride"] = "NONE",		--override lowversion (Low, High)
 	["layoutoverride"] = "NONE",			--ovverride layout (DPS, Healer)
+	["sharpborders"] = true,
 }
 
 DB["skin"] = {

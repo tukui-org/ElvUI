@@ -181,6 +181,12 @@ function ElvuiConfig.GenerateOptionsInternal()
 							["Heal"] = L["Heal"],
 						},
 					},
+					sharpborders = {
+						order = 9,
+						type = "toggle",
+						name = L["Sharp Borders"],
+						desc = L["Enhance the borders on all frames by making a dark outline around the edges. You will probably need to disable this if you do not play in your monitors max resolution."],	
+					},
 				},
 			},
 			media = {

@@ -65,7 +65,11 @@ local function SetTemplate(f, t, texture)
 	end
 	
 	if texture and not f.tex then
-		f:SetBackdropColor(0, 0, 0, backdropa)	
+		if C["general"].sharpborders == true then
+			f:SetBackdropColor(0, 0, 0, backdropa)
+		else
+			f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
+		end
 		
 		local tex = f:CreateTexture(nil, "BORDER")
 		tex:Point("TOPLEFT", f, "TOPLEFT", 2, -2)
@@ -77,7 +81,7 @@ local function SetTemplate(f, t, texture)
 	else
 		f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
 		
-		if not f.oborder and not f.iborder then
+		if not f.oborder and not f.iborder and C["general"].sharpborders == true then
 			local border = CreateFrame("Frame", nil, f)
 			border:Point("TOPLEFT", E.mult, -E.mult)
 			border:Point("BOTTOMRIGHT", -E.mult, E.mult)

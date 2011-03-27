@@ -25,7 +25,9 @@ L["General Settings"] = true
 		L["Force a specific layout to show."] = true
 		L["DPS"] = true
 		L["Heal"] = true
-
+	L["Sharp Borders"] = true
+		L["Enhance the borders on all frames by making a dark outline around the edges. You will probably need to disable this if you do not play in your monitors max resolution."] = true
+		
 --Media
 L["Media"] = true
 	L["MEDIA_DESC"] = "Setup Textures, Colors, Fonts and Sounds for ElvUI"

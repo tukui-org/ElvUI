@@ -260,13 +260,18 @@ local function CreateButton(name, relativeTo, firstbutton)
 	end
 	button:SetFrameLevel(RaidBuffReminder:GetFrameLevel() + 2)
 	button:SetBackdropBorderColor(0,0,0,0)
-	button.iborder:SetBackdropBorderColor(0, 0, 0, 0)
-	button.oborder:SetBackdropBorderColor(0, 0, 0, 0)
+	if C["general"].sharpborders == true then
+		button.iborder:SetBackdropBorderColor(0, 0, 0, 0)
+		button.oborder:SetBackdropBorderColor(0, 0, 0, 0)
+	end
 	
 	button.FrameBackdrop = CreateFrame("Frame", nil, button)
 	button.FrameBackdrop:SetTemplate("Default")
-	button.FrameBackdrop.iborder:SetBackdropBorderColor(0, 0, 0, 0)
-	button.FrameBackdrop.oborder:SetBackdropBorderColor(0, 0, 0, 0)
+	
+	if C["general"].sharpborders == true then
+		button.FrameBackdrop.iborder:SetBackdropBorderColor(0, 0, 0, 0)
+		button.FrameBackdrop.oborder:SetBackdropBorderColor(0, 0, 0, 0)
+	end
 	
 	button.FrameBackdrop:SetPoint("TOPLEFT", E.Scale(-2), E.Scale(2))
 	button.FrameBackdrop:SetPoint("BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
