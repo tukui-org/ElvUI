@@ -1081,16 +1081,18 @@ local function Shared(self, unit)
 
 			altpower:Point("TOPLEFT", altpower.bg, "TOPLEFT", BORDER, -BORDER)
 			altpower:Point("BOTTOMRIGHT", altpower.bg, "BOTTOMRIGHT", -BORDER, BORDER)
+			
+			altpower:FontString("text", FONT, FONTSIZE, "THINOUTLINE")
+			altpower.text:Point("RIGHT", power.value, "LEFT", 2, E.mult)		
+			
 			altpower:HookScript("OnShow", function(self) 			
 				health:Point("TOPRIGHT", self:GetParent(), "TOPRIGHT", -BORDER, -(POWERBAR_HEIGHT + BORDER))	
 			end)
 			
 			altpower:HookScript("OnHide", function(self) 
-				health:Point("TOPRIGHT", self:GetParent(), "TOPRIGHT", -BORDER, -BORDER)			
+				health:Point("TOPRIGHT", self:GetParent(), "TOPRIGHT", -BORDER, -BORDER)
+				altpower.text:SetText("")
 			end)
-			
-			altpower:FontString("text", FONT, FONTSIZE, "THINOUTLINE")
-			altpower.text:Point("RIGHT", power.value, "LEFT", 2, E.mult)		
 			
 			self.AltPowerBar = altpower
 		end

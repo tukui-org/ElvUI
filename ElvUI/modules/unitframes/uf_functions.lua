@@ -872,6 +872,11 @@ E.LoadUFFunctions = function(layout)
 			end
 		elseif unit and unit:find("boss%d") and self.text then
 			self.text:SetTextColor(self:GetStatusBarColor())
+			if not self:GetParent().Power.value:GetText() or self:GetParent().Power.value:GetText() == "" then
+				self.text:Point("BOTTOMRIGHT", self:GetParent().Health, "BOTTOMRIGHT")
+			else
+				self.text:Point("RIGHT", self:GetParent().Power.value.value, "LEFT", 2, E.mult)	
+			end
 			if perc > 0 then
 				self.text:SetText("|cffD7BEA5[|r"..format("%d%%", perc).."|cffD7BEA5]|r")
 			else
