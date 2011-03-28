@@ -19,7 +19,7 @@ E.PP(C["datatext"].specswitch, Text)
 local talent = {}
 local active
 local talentString = string.join("", "|cffFFFFFF%s:|r ", E.ValColor, "%d|r/", E.ValColor, "%d|r/", E.ValColor, "%d|r")
-local activeString = string.join("", "|cff00FF00" , TALENT_SPEC_ACTIVATE, "|r")
+local activeString = string.join("", "|cff00FF00" , VIDEO_OPTIONS_ENABLED, "|r")
 local inactiveString = string.join("", "|cffFF0000", FACTION_INACTIVE, "|r")
 
 local function LoadTalentTrees()

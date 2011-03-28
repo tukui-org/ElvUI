@@ -82,7 +82,6 @@ bar:SetScript("OnEvent", function(self, event, ...)
 			for i = 1, 12 do
 				table.insert(buttons, self:GetFrameRef("ActionButton"..i))
 			end
-			firedonce = false
 		]])
 
 		self:SetAttribute("_onstate-page", [[ 
