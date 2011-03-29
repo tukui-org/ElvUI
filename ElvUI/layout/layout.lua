@@ -49,6 +49,7 @@ barbg:SetWidth(math.ceil((E.buttonsize * 12) + (E.buttonspacing * 13)))
 barbg:SetFrameStrata("BACKGROUND")
 barbg:SetHeight(E.buttonsize + (E.buttonspacing * 2))
 barbg:CreateShadow("Default")
+barbg:SetFrameLevel(2)
 
 if C["actionbar"].enable ~= true then
 	barbg:SetAlpha(0)
@@ -74,7 +75,8 @@ if C["actionbar"].enable == true then
 	local barbgr = CreateFrame("Frame", "ElvuiActionBarBackgroundRight", ElvuiActionBarBackground)
 	barbgr:CreatePanel("Default", 1, (E.buttonsize * 12) + (E.buttonspacing * 13), "RIGHT", UIParent, "RIGHT", E.Scale(-4), E.Scale(-8))
 	barbgr:Hide()
-
+	barbgr:SetFrameLevel(2)
+	
 	local petbg = CreateFrame("Frame", "ElvuiPetActionBarBackground", UIParent)
 	if C["actionbar"].bottompetbar ~= true then
 		petbg:CreatePanel("Default", E.petbuttonsize + (E.buttonspacing * 2), (E.petbuttonsize * 10) + (E.buttonspacing * 11), "RIGHT", UIParent, "RIGHT", E.Scale(-6), E.Scale(-13.5))
