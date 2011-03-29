@@ -910,11 +910,13 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 	elseif ( LAYOUT == 5 ) then
 		local yOffset = 6;
 		local xOffset1 = 0
-		local xOffset2 = 0
+		local xOffset2 = -2
 		if ICON_POSITION == 2 then
-			xOffset1 = xOffset1 + BAR_HEIGHT+6
+			xOffset2 = -2
+			xOffset1 = xOffset1 + BAR_HEIGHT+8
 		end
 		if ICON_POSITION == 3 then
+			xOffset1 = 2
 			xOffset2 = xOffset2 - (BAR_HEIGHT+6)
 		end
 		
