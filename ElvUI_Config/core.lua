@@ -107,6 +107,10 @@ function ElvuiConfig.GenerateOptionsInternal()
 		timeout = 0,
 		whileDead = 1,
 	}
+
+	if C["general"].upperpanel == true then
+		L["DATATEXT_POS"] = L["DATATEXT_POS2"]
+	end
 	
 	ElvuiConfig.Options = {
 		type = "group",
@@ -186,6 +190,18 @@ function ElvuiConfig.GenerateOptionsInternal()
 						type = "toggle",
 						name = L["Sharp Borders"],
 						desc = L["Enhance the borders on all frames by making a dark outline around the edges. You will probably need to disable this if you do not play in your monitors max resolution."],	
+					},
+					upperpanel = {
+						order = 10,
+						type = "toggle",
+						name = L["Upper Frame"],
+						desc = L["Enable a bar accross the top of the screen, doing this will move the location and coords texts to that bar, and also allow for spaces nine and ten of the datatexts to be used."],
+					},
+					lowerpanel = {
+						order = 11,
+						type = "toggle",
+						name = L["Lower Frame"],
+						desc = L["Enable a bar accross the bottom of the screen, mostly for decoration."],					
 					},
 				},
 			},
@@ -1995,6 +2011,13 @@ function ElvuiConfig.GenerateOptionsInternal()
 			},
 		},
 	}
+	
+	if C["general"].upperpanel == true then
+		for _, option in pairs(ElvuiConfig.Options.args.datatext.args.DataGroup.args) do
+			option.max = 10
+		end
+		L["DATATEXT_POS"] = L["DATATEXT_POS2"]
+	end
 end
 
 

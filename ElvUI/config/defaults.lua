@@ -36,6 +36,8 @@ DB["general"] = {
 	["resolutionoverride"] = "NONE",		--override lowversion (Low, High)
 	["layoutoverride"] = "NONE",			--ovverride layout (DPS, Healer)
 	["sharpborders"] = true,
+	["upperpanel"] = true,
+	["lowerpanel"] = true,
 }
 
 DB["skin"] = {

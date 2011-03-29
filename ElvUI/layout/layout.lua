@@ -7,12 +7,75 @@ E.petbuttonsize = E.Scale(C["actionbar"].petbuttonsize)
 E.buttonspacing = E.Scale(C["actionbar"].buttonspacing)
 E.minimapsize = E.Scale(168)
 
---BOTTOM DUMMY FRAME DOES NOTHING BUT HOLDS FRAME POSITIONS
-local bottompanel = CreateFrame("Frame", "ElvuiBottomPanel", UIParent)
-bottompanel:SetHeight(23)
-bottompanel:SetWidth(UIParent:GetWidth() + (E.mult * 2))
-bottompanel:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", -E.mult, -E.mult)
-bottompanel:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", E.mult, -E.mult)
+--
+
+--BOTTOM PANEL
+
+local f = CreateFrame("Frame", "ElvuiBottomPanel", UIParent)
+f:SetHeight(23)
+f:SetWidth(UIParent:GetWidth() + (E.mult * 2))
+f:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", -E.mult, -E.mult)
+f:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", E.mult, -E.mult)
+f:SetFrameStrata("BACKGROUND")
+f:SetFrameLevel(0)
+
+if C["general"].lowerpanel == true then	
+	f:SetTemplate("Transparent")
+	f:CreateShadow("Default")
+end
+
+--TOP PANEL
+if C["general"].upperpanel == true then
+	local f = CreateFrame("Frame", "ElvuiTopPanel", UIParent)
+	f:SetHeight(23)
+	f:SetWidth(UIParent:GetWidth() + (E.mult * 2))
+	f:SetPoint("TOPLEFT", UIParent, "TOPLEFT", -E.mult, E.mult)
+	f:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.mult, E.mult)
+	f:SetFrameStrata("BACKGROUND")
+	f:SetFrameLevel(0)
+	f:SetTemplate("Transparent")
+	f:CreateShadow("Default")
+	
+	local f = CreateFrame("Frame", "ElvuiLoc", ElvuiTopPanel)
+	f:SetHeight(23)
+	f:SetWidth(E.minimapsize)
+	f:SetFrameLevel(2)
+	f:SetTemplate("Default", true)
+	f:CreateShadow("Default")
+	f:Point("CENTER", ElvuiTopPanel, "BOTTOM")
+	
+	local f = CreateFrame("Frame", "ElvuiLocX", ElvuiLoc)
+	f:SetHeight(23)
+	f:SetWidth(E.minimapsize / 6)
+	f:SetFrameLevel(2)
+	f:SetTemplate("Default", true)
+	f:CreateShadow("Default")
+	f:Point("RIGHT", ElvuiLoc, "LEFT", -2, 0)	
+	
+	local f = CreateFrame("Frame", "ElvuiLocY", ElvuiLoc)
+	f:SetHeight(23)
+	f:SetWidth(E.minimapsize / 6)
+	f:SetFrameLevel(2)
+	f:SetTemplate("Default", true)
+	f:CreateShadow("Default")
+	f:Point("LEFT", ElvuiLoc, "RIGHT", 2, 0)	
+
+	local f = CreateFrame("Frame", "ElvuiStat9Block", ElvuiTopPanel)
+	f:SetHeight(23)
+	f:SetWidth(E.minimapsize / 1.5)
+	f:SetFrameLevel(2)
+	f:SetTemplate("Default", true)
+	f:CreateShadow("Default")
+	f:Point("RIGHT", ElvuiLocX, "LEFT", -6, 0)			
+	
+	local f = CreateFrame("Frame", "ElvuiStat10Block", ElvuiTopPanel)
+	f:SetHeight(23)
+	f:SetWidth(E.minimapsize / 1.5)
+	f:SetFrameLevel(2)
+	f:SetTemplate("Default", true)
+	f:CreateShadow("Default")
+	f:Point("LEFT", ElvuiLocY, "RIGHT", 6, 0)		
+end
 
 local mini = CreateFrame("Frame", "ElvuiMinimap", Minimap)
 mini:CreatePanel("Default", E.minimapsize, E.minimapsize, "CENTER", Minimap, "CENTER", -0, 0)

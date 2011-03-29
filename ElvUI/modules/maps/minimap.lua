@@ -202,94 +202,143 @@ function GetMinimapShape() return 'SQUARE' end
 -- reskin LFG dropdown
 LFDSearchStatus:SetTemplate("Default")
 
- 
---Style Zone and Coord panels
-local m_zone = CreateFrame("Frame",nil,UIParent)
-m_zone:Height(20)
-m_zone:SetFrameLevel(5)
-m_zone:SetFrameStrata("LOW")
-m_zone:Point("TOPLEFT", Minimap, "TOPLEFT", 2, -2)
-m_zone:Point("TOPRIGHT",Minimap,-2,-2)
-
-local m_zone_text = m_zone:CreateFontString(nil,"Overlay")
-m_zone_text:SetFont(C["media"].font,C["general"].fontscale,"OUTLINE")
-m_zone_text:SetPoint("Center",0,0)
-m_zone_text:SetJustifyH("CENTER")
-m_zone_text:SetJustifyV("MIDDLE")
-m_zone_text:SetHeight(E.Scale(12))
-
-local m_coord = CreateFrame("Frame",nil,UIParent)
-m_coord:Width(40)
-m_coord:Height(20)
-m_coord:Point("BOTTOMLEFT", Minimap, "BOTTOMLEFT", 2, 2)
-m_coord:SetFrameStrata("LOW")
-
-local m_coord_text = m_coord:CreateFontString(nil,"Overlay")
-m_coord_text:SetFont(C["media"].font,C["general"].fontscale,"OUTLINE")
-m_coord_text:SetPoint("Center",E.Scale(-1),0)
-m_coord_text:SetJustifyH("CENTER")
-m_coord_text:SetJustifyV("MIDDLE")
- 
-
-local ela = 0
-local coord_Update = function(self,t)
-	local inInstance, _ = IsInInstance()
-	ela = ela - t
-	if ela > 0 then return end
-	local x,y = GetPlayerMapPosition("player")
-	local xt,yt
-	x = math.floor(100 * x)
-	y = math.floor(100 * y)
-	if x ==0 and y==0 then
-		m_coord_text:SetText(" ")	
-	else
-		if x < 10 then
-			xt = "0"..x
-		else
-			xt = x
-		end
-		if y < 10 then
-			yt = "0"..y
-		else
-			yt = y
-		end
-		m_coord_text:SetText(xt..E.ValColor..",|r"..yt)
-	end
-	ela = .2
-end
- 
-m_coord:SetScript("OnUpdate",coord_Update)
- 
-local zone_Update = function()
+local function GetLocTextColor()
 	local pvpType = GetZonePVPInfo()
-	m_zone_text:SetText(strsub(GetMinimapZoneText(),1,23))
 	if pvpType == "arena" then
-		m_zone_text:SetTextColor(0.84, 0.03, 0.03)
+		return 0.84, 0.03, 0.03
 	elseif pvpType == "friendly" then
-		m_zone_text:SetTextColor(0.05, 0.85, 0.03)
+		return 0.05, 0.85, 0.03
 	elseif pvpType == "contested" then
-		m_zone_text:SetTextColor(0.9, 0.85, 0.05)
+		return 0.9, 0.85, 0.05
 	elseif pvpType == "hostile" then 
-		m_zone_text:SetTextColor(0.84, 0.03, 0.03)
+		return 0.84, 0.03, 0.03
 	elseif pvpType == "sanctuary" then
-		m_zone_text:SetTextColor(0.0352941, 0.58823529, 0.84705882)
+		return 0.035, 0.58, 0.84
 	elseif pvpType == "combat" then
-		m_zone_text:SetTextColor(0.84, 0.03, 0.03)
+		return 0.84, 0.03, 0.03
 	else
-		m_zone_text:SetTextColor(0.84, 0.03, 0.03)
-	end
+		return 0.84, 0.03, 0.03
+	end	
 end
- 
-m_zone:RegisterEvent("PLAYER_ENTERING_WORLD")
-m_zone:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-m_zone:RegisterEvent("ZONE_CHANGED")
-m_zone:RegisterEvent("ZONE_CHANGED_INDOORS")
-m_zone:SetScript("OnEvent",zone_Update) 
- 
-local a,k = CreateFrame("Frame"),4
-a:SetScript("OnUpdate",function(self,t)
-	k = k - t
-	if k > 0 then return end
-	self:Hide()
-	zone_Update()
-end)
+
+if C["general"].upperpanel ~= true then
+	--Style Zone and Coord panels
+	local m_zone = CreateFrame("Frame",nil,UIParent)
+	m_zone:Height(20)
+	m_zone:SetFrameLevel(5)
+	m_zone:SetFrameStrata("LOW")
+	m_zone:Point("TOPLEFT", Minimap, "TOPLEFT", 2, -2)
+	m_zone:Point("TOPRIGHT",Minimap,-2,-2)
+
+	local m_zone_text = m_zone:CreateFontString(nil,"Overlay")
+	m_zone_text:SetFont(C["media"].font,C["general"].fontscale,"OUTLINE")
+	m_zone_text:SetPoint("Center",0,0)
+	m_zone_text:SetJustifyH("CENTER")
+	m_zone_text:SetJustifyV("MIDDLE")
+	m_zone_text:SetHeight(E.Scale(12))
+
+	local m_coord = CreateFrame("Frame",nil,UIParent)
+	m_coord:Width(40)
+	m_coord:Height(20)
+	m_coord:Point("BOTTOMLEFT", Minimap, "BOTTOMLEFT", 2, 2)
+	m_coord:SetFrameStrata("LOW")
+
+	local m_coord_text = m_coord:CreateFontString(nil,"Overlay")
+	m_coord_text:SetFont(C["media"].font,C["general"].fontscale,"OUTLINE")
+	m_coord_text:SetPoint("Center",E.Scale(-1),0)
+	m_coord_text:SetJustifyH("CENTER")
+	m_coord_text:SetJustifyV("MIDDLE")
+	 
+
+	local ela = 0
+	local coord_Update = function(self,t)
+		local inInstance, _ = IsInInstance()
+		ela = ela - t
+		if ela > 0 then return end
+		local x,y = GetPlayerMapPosition("player")
+		local xt,yt
+		x = math.floor(100 * x)
+		y = math.floor(100 * y)
+		if x ==0 and y==0 then
+			m_coord_text:SetText(" ")	
+		else
+			if x < 10 then
+				xt = "0"..x
+			else
+				xt = x
+			end
+			if y < 10 then
+				yt = "0"..y
+			else
+				yt = y
+			end
+			m_coord_text:SetText(xt..E.ValColor..",|r"..yt)
+		end
+		ela = .2
+	end
+	 
+	m_coord:SetScript("OnUpdate",coord_Update)
+	 
+	local zone_Update = function()
+		local pvpType = GetZonePVPInfo()
+		m_zone_text:SetText(strsub(GetMinimapZoneText(),1,23))
+		m_zone_text:SetTextColor(GetLocTextColor())
+	end
+	 
+	m_zone:RegisterEvent("PLAYER_ENTERING_WORLD")
+	m_zone:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+	m_zone:RegisterEvent("ZONE_CHANGED")
+	m_zone:RegisterEvent("ZONE_CHANGED_INDOORS")
+	m_zone:SetScript("OnEvent",zone_Update) 
+	 
+	local a,k = CreateFrame("Frame"),4
+	a:SetScript("OnUpdate",function(self,t)
+		k = k - t
+		if k > 0 then return end
+		self:Hide()
+		zone_Update()
+	end)
+else
+	local x,y = GetPlayerMapPosition("player")
+	x = math.floor(100 * x)
+	y = math.floor(100 * y)	
+	
+	ElvuiLoc:FontString("zone", C["media"].font, C["datatext"].fontsize, "THINOUTLINE")
+	ElvuiLoc.zone:SetPoint("CENTER")
+	ElvuiLoc.zone:SetText(strsub(GetMinimapZoneText(),1,23))
+	ElvuiLoc:EnableMouse(true)
+	ElvuiLoc:SetScript("OnMouseDown", function() ToggleFrame(WorldMapFrame) end)
+	
+	
+	ElvuiLocX:FontString("coord", C["media"].font, C["datatext"].fontsize, "THINOUTLINE")
+	ElvuiLocX.coord:SetPoint("CENTER", ElvuiLocX, "CENTER")
+	ElvuiLocX.coord:SetText(x)	
+	ElvuiLocX.coord:SetTextColor(unpack(C["media"].valuecolor))
+	
+	ElvuiLocY:FontString("coord", C["media"].font, C["datatext"].fontsize, "THINOUTLINE")
+	ElvuiLocY.coord:SetPoint("CENTER", ElvuiLocY, "CENTER")
+	ElvuiLocY.coord:SetText(y)	
+	ElvuiLocY.coord:SetTextColor(unpack(C["media"].valuecolor))
+	
+	ElvuiLoc:SetScript("OnUpdate", function(self, elapsed)
+		if(self.elapsed and self.elapsed > 0.2) then
+			local x,y = GetPlayerMapPosition("player")
+			x = math.floor(100 * x)
+			y = math.floor(100 * y)			
+			self.zone:SetText(strsub(GetMinimapZoneText(),1,23))
+			self.zone:SetTextColor(GetLocTextColor())
+			
+			if x ==0 and y==0 then
+				ElvuiLocX.coord:SetText("??")
+				ElvuiLocY.coord:SetText("??")
+			else
+				ElvuiLocX.coord:SetText(x)
+				ElvuiLocY.coord:SetText(y)				
+			end
+			self.elapsed = 0
+		else
+			self.elapsed = (self.elapsed or 0) + elapsed
+		end	
+	end)
+	
+end

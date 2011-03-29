@@ -77,6 +77,7 @@ local function SetTemplate(f, t, texture)
 		tex:SetTexture(C["media"].glossTex)
 		tex:SetVertexColor(backdropr, backdropg, backdropb)
 		tex:SetDrawLayer("BORDER", -8)
+		tex:SetAlpha(backdropa)
 		f.tex = tex
 	else
 		f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)

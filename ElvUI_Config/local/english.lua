@@ -27,6 +27,10 @@ L["General Settings"] = true
 		L["Heal"] = true
 	L["Sharp Borders"] = true
 		L["Enhance the borders on all frames by making a dark outline around the edges. You will probably need to disable this if you do not play in your monitors max resolution."] = true
+	L["Upper Frame"] = true
+		L["Enable a bar accross the top of the screen, doing this will move the location and coords texts to that bar, and also allow for spaces nine and ten of the datatexts to be used."] = true
+	L["Lower Frame"] = true
+		L["Enable a bar accross the bottom of the screen, mostly for decoration."] = true
 		
 --Media
 L["Media"] = true
@@ -283,6 +287,7 @@ L["Action Bars"] = true
 L["Data Texts"] = true
 	L["DATATEXT_DESC"] = "Edit display of informational text on panels"
 	L["DATATEXT_POS"] = "\n\n0 - Disabled\n1 - LEFT PANEL, LEFT\n2 - LEFT PANEL, CENTER\n3 - LEFT PANEL, RIGHT\n4 - RIGHT PANEL, LEFT\n5 - RIGHT PANEL, CENTER\n6 - RIGHT PANEL, RIGHT\n7 - MINIMAP LEFT\n8 - MINIMAP RIGHT"
+	L["DATATEXT_POS2"] = "\n\n0 - Disabled\n1 - LEFT PANEL, LEFT\n2 - LEFT PANEL, CENTER\n3 - LEFT PANEL, RIGHT\n4 - RIGHT PANEL, LEFT\n5 - RIGHT PANEL, CENTER\n6 - RIGHT PANEL, RIGHT\n7 - MINIMAP LEFT\n8 - MINIMAP RIGHT\n9 - TOPBAR LEFT\n10 - TOPBAR RIGHT"
 	L["Text Positions"] = true
 	L["BG Text"] = true
 		L["Display special datatexts when inside a battleground"] = true

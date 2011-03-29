@@ -61,6 +61,18 @@ function E.PP(p, obj)
 			if t ~= true then obj:SetParent(mapright) else obj:GetParent():SetParent(mapright) end
 		end
 	end
+	
+	if C["general"].upperpanel == true then
+		if p == 9 then
+			obj:SetHeight(ElvuiStat9Block:GetHeight())
+			obj:SetPoint("CENTER", ElvuiStat9Block, 0, 0)
+			if t ~= true then obj:SetParent(ElvuiStat9Block) else obj:GetParent():SetParent(ElvuiStat9Block) end
+		elseif p == 10 then
+			obj:SetHeight(ElvuiStat10Block:GetHeight())
+			obj:SetPoint("CENTER", ElvuiStat10Block, 0, 0)
+			if t ~= true then obj:SetParent(ElvuiStat10Block) else obj:GetParent():SetParent(ElvuiStat10Block) end
+		end	
+	end
 end
 
 E.DataTextTooltipAnchor = function(self)
@@ -91,6 +103,9 @@ E.DataTextTooltipAnchor = function(self)
 			anchor = "ANCHOR_BOTTOM"
 			yoff = E.Scale(-4)
 		end
+	elseif ElvuiStat9Block and ElvuiStat10Block and (panel == ElvuiStat9Block or panel == ElvuiStat10Block) then
+		anchor = "ANCHOR_BOTTOM"
+		yoff = E.Scale(-4)
 	end
 	
 	return anchor, panel, xoff, yoff
