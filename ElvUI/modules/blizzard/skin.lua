@@ -289,10 +289,16 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		_G["ReadyCheckListenerFrame"]:SetAlpha(0)
 		_G["ReadyCheckFrame"]:HookScript("OnShow", function(self) if UnitIsUnit("player", self.initiator) then self:Hide() end end) -- bug fix, don't show it if initiator
  		_G["StackSplitFrame"]:GetRegions():Hide()
-		_G["StaticPopup1EditBox"]:SetTemplate("Default")
 		_G["StaticPopup1EditBoxLeft"]:SetTexture(nil)
 		_G["StaticPopup1EditBoxMid"]:SetTexture(nil)
 		_G["StaticPopup1EditBoxRight"]:SetTexture(nil)
+		
+		--Create backdrop for static popup editbox	
+		local bg = CreateFrame("Frame", nil, StaticPopup1EditBox)
+		bg:Point("TOPLEFT", StaticPopup1EditBox, "TOPLEFT", -2, -2)
+		bg:Point("BOTTOMRIGHT", StaticPopup1EditBox, "BOTTOMRIGHT", 2, 2)
+		bg:SetFrameLevel(StaticPopup1EditBox:GetFrameLevel())
+		bg:SetTemplate("Default")
 		
 		RolePollPopup:SetTemplate("Transparent")
 		RolePollPopup:CreateShadow("Default")
