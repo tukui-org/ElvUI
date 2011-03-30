@@ -9,4 +9,5 @@
 	<Script file='skin.lua'/>
 	<Script file='kill.lua'/>
 	<Script file='fonts.lua'/>	
+	<Script file='worldstate.lua'/>
 </Ui>
