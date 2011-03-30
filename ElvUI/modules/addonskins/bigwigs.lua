@@ -207,15 +207,11 @@ if C["skin"].hookbwright == true then
 	f:RegisterEvent("PLAYER_REGEN_DISABLED")
 	f:RegisterEvent("PLAYER_ENTERING_WORLD")
 
-	ChatRBackground.anim_o:HookScript("OnFinished", function(self)
+	ChatRBackground:HookScript("OnHide", function(self)
 		PositionBWAnchor()
 	end)
 	
-	ChatRBackground.anim:HookScript("OnPlay", function(self)
-		PositionBWAnchor()
-	end)	
-	
-	ChatRBackground.anim:HookScript("OnFinished", function(self)
+	ChatRBackground:HookScript("OnShow", function(self)
 		PositionBWAnchor()
 	end)		
 end

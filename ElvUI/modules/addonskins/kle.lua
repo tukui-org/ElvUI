@@ -195,15 +195,11 @@ if C["skin"].hookkleright == true then
 	KLE_Skin:RegisterEvent("PLAYER_REGEN_ENABLED")
 	KLE_Skin:RegisterEvent("PLAYER_REGEN_DISABLED")
 
-	ChatRBackground.anim_o:HookScript("OnFinished", function(self)
+	ChatRBackground:HookScript("OnHide", function(self)
 		PositionKLEAnchor()
 	end)
 	
-	ChatRBackground.anim:HookScript("OnPlay", function(self)
+	ChatRBackground:HookScript("OnShow", function(self)
 		PositionKLEAnchor()
-	end)	
-	
-	ChatRBackground.anim:HookScript("OnFinished", function(self)
-		PositionKLEAnchor()	
 	end)	
 end
