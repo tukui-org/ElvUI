@@ -454,8 +454,6 @@ local function CreatCopyFrame()
 	frame:EnableMouse(true)
 	frame:SetFrameStrata("DIALOG")
 
-	
-	E.AnimGroup(frame, 0, E.Scale(-220), 0.4)
 
 	local scrollArea = CreateFrame("ScrollFrame", "CopyScroll", frame, "UIPanelScrollFrameTemplate")
 	scrollArea:SetPoint("TOPLEFT", frame, "TOPLEFT", E.Scale(8), E.Scale(-30))
@@ -470,7 +468,7 @@ local function CreatCopyFrame()
 	editBox:SetWidth(E.Scale(710))
 	editBox:SetHeight(E.Scale(200))
 	editBox:SetScript("OnEscapePressed", function()
-		E.SlideOut(frame)
+		frame:Hide()
 	end)
 
 	scrollArea:SetScrollChild(editBox)
@@ -478,15 +476,11 @@ local function CreatCopyFrame()
 	local close = CreateFrame("Button", "CopyCloseButton", frame, "UIPanelCloseButton")
 	close:SetPoint("TOPRIGHT", frame, "TOPRIGHT")
 	close:EnableMouse(true)
-	close:SetScript("OnMouseDown", function()
-		E.SlideOut(frame)
+	close:SetScript("OnMouseUp", function()
+		frame:Hide()
 	end)
 	
 	isf = true
-	
-	frame:HookScript("OnShow", function(self, ...)
-		E.SlideIn(frame)
-	end)
 end
 
 local function GetLines(...)
@@ -509,7 +503,7 @@ local function Copy(cf)
 	local text = table.concat(lines, "\n", 1, lineCt)
 	FCF_SetChatWindowFontSize(cf, cf, size)
 	if not isf then CreatCopyFrame() end
-	if frame:IsShown() then E.SlideOut(frame) return end
+	if frame:IsShown() then frame:Hide() return end
 	frame:Show()
 	editBox:SetText(text)
 end
@@ -619,26 +613,26 @@ ChatCombatHider:SetScript("OnEvent", function(self, event)
 	if event == "PLAYER_REGEN_DISABLED" then
 		if C["chat"].combathide == "Both" then	
 			if E.ChatRIn ~= false then
-				E.SlideOut(ChatRBackground)				
+				ChatRBackground:Hide()			
 				E.ChatRightShown = false
 				E.ChatRIn = false
 				ElvuiInfoRightRButton.text:SetTextColor(unpack(C["media"].valuecolor))			
 			end
 			if E.ChatLIn ~= false then
-				E.SlideOut(ChatLBackground)
+				ChatLBackground:Hide()	
 				E.ChatLIn = false
 				ElvuiInfoLeftLButton.text:SetTextColor(unpack(C["media"].valuecolor))
 			end
 		elseif C["chat"].combathide == "Right" then
 			if E.ChatRIn ~= false then
-				E.SlideOut(ChatRBackground)					
+				ChatRBackground:Hide()				
 				E.ChatRightShown = false
 				E.ChatRIn = false
 				ElvuiInfoRightRButton.text:SetTextColor(unpack(C["media"].valuecolor))			
 			end		
 		elseif C["chat"].combathide == "Left" then
 			if E.ChatLIn ~= false then
-				E.SlideOut(ChatLBackground)
+				ChatLBackground:Hide()
 				E.ChatLIn = false
 				ElvuiInfoLeftLButton.text:SetTextColor(unpack(C["media"].valuecolor))
 			end		
@@ -646,26 +640,26 @@ ChatCombatHider:SetScript("OnEvent", function(self, event)
 	else
 		if C["chat"].combathide == "Both" then
 			if E.ChatRIn ~= true then
-				E.SlideIn(ChatRBackground)							
+				ChatRBackground:Show()							
 				E.ChatRightShown = true
 				E.ChatRIn = true
 				ElvuiInfoRightRButton.text:SetTextColor(1,1,1)			
 			end
 			if E.ChatLIn ~= true then
-				E.SlideIn(ChatLBackground)
+				ChatLBackground:Show()
 				E.ChatLIn = true
 				ElvuiInfoLeftLButton.text:SetTextColor(1,1,1)
 			end
 		elseif C["chat"].combathide == "Right" then
 			if E.ChatRIn ~= true then
-				E.SlideIn(ChatRBackground)						
+				ChatRBackground:Show()					
 				E.ChatRightShown = true
 				E.ChatRIn = true
 				ElvuiInfoRightRButton.text:SetTextColor(1,1,1)			
 			end		
 		elseif C["chat"].combathide == "Left" then
 			if E.ChatLIn ~= true then
-				E.SlideIn(ChatLBackground)
+				ChatLBackground:Show()
 				E.ChatLIn = true
 				ElvuiInfoLeftLButton.text:SetTextColor(1,1,1)
 			end		

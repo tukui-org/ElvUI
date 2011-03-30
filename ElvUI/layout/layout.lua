@@ -197,9 +197,6 @@ chatrbgdummy2:SetWidth(C["chat"].chatwidth)
 chatrbgdummy2:SetHeight(C["chat"].chatheight+6)
 chatrbgdummy2:SetPoint("BOTTOMRIGHT", ElvuiBottomPanel, "TOPRIGHT", E.Scale(-4),  E.Scale(7))
 
-E.AnimGroup(ChatLBackground, E.Scale(-375), 0, 0.4)
-E.AnimGroup(ChatRBackground, E.Scale(375), 0, 0.4)
-
 E.ChatRightShown = true
 if C["chat"].showbackdrop == true then
 	local chatlbg = CreateFrame("Frame", "ChatLBG", ChatLBackground)

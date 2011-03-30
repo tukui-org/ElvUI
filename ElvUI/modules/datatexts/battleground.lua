@@ -58,12 +58,12 @@ end
 
 ElvuiInfoLeft:SetScript("OnMouseDown", function(self) 
 	if shownbg == true then 
-		E.SlideOut(ElvuiInfoBattleGroundL) 
-		E.SlideOut(ElvuiInfoBattleGroundR) 
+		ElvuiInfoBattleGroundL:Hide()
+		ElvuiInfoBattleGroundR:Hide()
 		shownbg = false 
 	else 
-		E.SlideIn(ElvuiInfoBattleGroundL) 
-		E.SlideIn(ElvuiInfoBattleGroundR) 
+		ElvuiInfoBattleGroundL:Show()
+		ElvuiInfoBattleGroundR:Show()
 		shownbg = true 
 	end 
 end)
@@ -92,12 +92,12 @@ end)
 
 ElvuiInfoRight:SetScript("OnMouseDown", function(self) 
 	if shownbg == true then 
-		E.SlideOut(ElvuiInfoBattleGroundL) 
-		E.SlideOut(ElvuiInfoBattleGroundR) 
+		ElvuiInfoBattleGroundL:Hide()
+		ElvuiInfoBattleGroundR:Hide()
 		shownbg = false 
 	else 
-		E.SlideIn(ElvuiInfoBattleGroundL) 
-		E.SlideIn(ElvuiInfoBattleGroundR) 
+		ElvuiInfoBattleGroundL:Show()
+		ElvuiInfoBattleGroundR:Show()
 		shownbg = true 
 	end 
 end)
@@ -150,17 +150,14 @@ bgframeR:SetScript("OnEnter", function(self)
 	end
 end)
 
-E.AnimGroup(ElvuiInfoBattleGroundL, 0, E.Scale(-150), 0.4)
-E.AnimGroup(ElvuiInfoBattleGroundR, 0, E.Scale(-150), 0.4)
-
 bgframeL:SetScript("OnMouseDown", function(self) 
 	if shownbg == true then 
-		E.SlideOut(ElvuiInfoBattleGroundL) 
-		E.SlideOut(ElvuiInfoBattleGroundR) 
+		ElvuiInfoBattleGroundL:Hide()
+		ElvuiInfoBattleGroundR:Hide()
 		shownbg = false 
 	else 
-		E.SlideIn(ElvuiInfoBattleGroundL) 
-		E.SlideIn(ElvuiInfoBattleGroundR) 
+		ElvuiInfoBattleGroundL:Show()
+		ElvuiInfoBattleGroundR:Show()
 		shownbg = true 
 	end 
 end)
@@ -190,12 +187,12 @@ end)
 
 bgframeR:SetScript("OnMouseDown", function(self) 
 	if shownbg == true then 
-		E.SlideOut(ElvuiInfoBattleGroundL) 
-		E.SlideOut(ElvuiInfoBattleGroundR) 
+		ElvuiInfoBattleGroundL:Hide()
+		ElvuiInfoBattleGroundR:Hide()
 		shownbg = false 
 	else 
-		E.SlideIn(ElvuiInfoBattleGroundL) 
-		E.SlideIn(ElvuiInfoBattleGroundR) 
+		ElvuiInfoBattleGroundL:Show()
+		ElvuiInfoBattleGroundR:Show()
 		shownbg = true 
 	end 
 end)

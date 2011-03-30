@@ -1662,8 +1662,8 @@ function ElvuiConfig.GenerateOptionsInternal()
 							combathide = {
 								type = "select",
 								order = 7,
-								name = L["Animate Chat In Combat"],
-								desc = L["When you enter combat, the selected window will animate out of view"],
+								name = L["Toggle Chat In Combat"],
+								desc = L["When you enter combat, the selected window will toggle out of view"],
 								values = {
 									["NONE"] = L["None"],
 									["Left"] = L["Left"],
