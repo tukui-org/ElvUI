@@ -136,3 +136,10 @@ local function CLFIX()
 end
 SLASH_CLFIX1 = "/clfix"
 SlashCmdList["CLFIX"] = CLFIX
+
+local function FOOLS()
+	FoolsDay = true
+	ReloadUI()
+end
+SLASH_FOOLS1 = "/aprilfools"
+SlashCmdList["FOOLS"] = FOOLS

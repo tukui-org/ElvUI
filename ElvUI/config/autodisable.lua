@@ -69,3 +69,31 @@ if C["media"].glossyTexture == true then
 	C["media"].normTex2 = C["media"].glossTex
 	C["media"].normTex = C["media"].glossTex
 end
+
+--April Fools Day
+function E.FoolDayCheck()
+	local month = tonumber(date("%m"))
+	local day = tonumber(date("%d"))
+	if month == 4 and day == 1 then
+		return true
+	else
+		return false
+	end
+end
+
+if E.FoolDayCheck() == true and FoolsDay ~= true then
+	C["media"].backdropcolor = { 51/255, 0, 102/255 }
+	C["media"].bordercolor = { 255/255,105/255,180/255 }
+	C["unitframes"].healthcolor = C["media"].bordercolor
+	C["media"].valuecolor = C["media"].bordercolor
+	C["classtimer"].buffcolor = C["media"].bordercolor
+	C["unitframes"].castbarcolor = C["media"].bordercolor
+	
+	local x = CreateFrame("Frame")
+	x:RegisterEvent("PLAYER_ENTERING_WORLD")
+	x:SetScript("OnEvent", function(self)
+		E.Delay(15, print, "|cffFF69B4Your settings have been optimized for better performance. To disable these changes type /aprilfools.|r")
+		self:UnregisterAllEvents()
+	end)
+	
+end

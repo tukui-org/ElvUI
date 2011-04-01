@@ -130,7 +130,7 @@ local function Shared(self, unit)
 				local portrait = CreateFrame("PlayerModel", nil, health)
 				portrait:SetFrameLevel(health:GetFrameLevel() + 1)
 				portrait:SetAllPoints(health)
-				portrait.PostUpdate = function(self) self:SetAlpha(0) self:SetAlpha(0.35) end		
+				portrait.PostUpdate = E.PortraitUpdate		
 				self.Portrait = portrait
 				
 				local overlay = CreateFrame("Frame", nil, self)
@@ -160,6 +160,8 @@ local function Shared(self, unit)
 				
 				portrait:Point('BOTTOMLEFT', portrait.backdrop, 'BOTTOMLEFT', BORDER, BORDER)		
 				portrait:Point('TOPRIGHT', portrait.backdrop, 'TOPRIGHT', -BORDER, -BORDER)
+				
+				portrait.PostUpdate = E.PortraitUpdate	
 				
 				self.Portrait = portrait
 			end
@@ -684,7 +686,7 @@ local function Shared(self, unit)
 				local portrait = CreateFrame("PlayerModel", nil, health)
 				portrait:SetFrameLevel(health:GetFrameLevel() + 1)
 				portrait:SetAllPoints(health)
-				portrait.PostUpdate = function(self) self:SetAlpha(0) self:SetAlpha(0.35) end		
+				portrait.PostUpdate = E.PortraitUpdate		
 				self.Portrait = portrait
 				
 				local overlay = CreateFrame("Frame", nil, self)
@@ -713,6 +715,8 @@ local function Shared(self, unit)
 				
 				portrait:Point('BOTTOMLEFT', portrait.backdrop, 'BOTTOMLEFT', BORDER, BORDER)		
 				portrait:Point('TOPRIGHT', portrait.backdrop, 'TOPRIGHT', -BORDER, -BORDER)
+				
+				portrait.PostUpdate = E.PortraitUpdate	
 				
 				self.Portrait = portrait
 			end

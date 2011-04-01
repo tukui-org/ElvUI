@@ -738,6 +738,34 @@ E.LoadUFFunctions = function(layout)
 		end
 	end
 
+	E.PortraitUpdate = function(self, unit) 
+		if C["unitframes"].charportraithealth == true then
+			self:SetAlpha(0) self:SetAlpha(0.35) 
+		end
+		
+		if(not UnitExists(unit) or not UnitIsConnected(unit) or not UnitIsVisible(unit)) then
+			self:SetModelScale(4.25)
+			
+			if self.worgenfix then self.worgenfix:Hide() end
+		elseif self:GetModel():find("worgenmale") and not C["unitframes"].charportraithealth == true then
+			self:SetModelScale(0.0000000000000001)
+			
+			if not self.worgenfix then
+				local tex = self:CreateTexture(nil, "OVERLAY")
+				tex:SetAllPoints(self)
+				tex:SetTexCoord(0.2, 0.8, 0.2, 0.8)
+				self.worgenfix = tex
+			end
+			
+			SetPortraitTexture(self.worgenfix, unit)
+			self.worgenfix:Show()
+		else
+			self:SetModelScale(1)
+			
+			if self.worgenfix then self.worgenfix:Hide() end
+		end
+	end	
+	
 	E.ComboDisplay = function(self, event, unit)
 		if(unit == 'pet') then return end
 		

@@ -174,6 +174,8 @@ function E.Install()
 		ElvuiData.ufpos = {}
 	end
 	
+	FoolsDay = nil
+	
 	StaticPopup_Show("RELOAD_UI")
 end
 

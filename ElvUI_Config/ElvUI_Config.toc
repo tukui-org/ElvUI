@@ -2,7 +2,7 @@
 ## Title: |cff1784d1ElvUI Config|r
 ## Notes: Config for ElvUI
 ## Author: Elv
-## SavedVariables: ElvConfig
+## SavedVariables: ElvConfig, FoolsDay
 ## RequiredDeps: ElvUI
 ## OptionalDeps: ElvUI_ConfigUI
 
