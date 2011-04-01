@@ -747,7 +747,7 @@ E.LoadUFFunctions = function(layout)
 			self:SetModelScale(4.25)
 			
 			if self.worgenfix then self.worgenfix:Hide() end
-		elseif self:GetModel():find("worgenmale") and not C["unitframes"].charportraithealth == true then
+		elseif self:GetModel() and self:GetModel().find and self:GetModel():find("worgenmale") and not C["unitframes"].charportraithealth == true then
 			self:SetModelScale(0.0000000000000001)
 			
 			if not self.worgenfix then
