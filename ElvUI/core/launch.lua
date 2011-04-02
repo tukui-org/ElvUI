@@ -188,7 +188,12 @@ local ElvuiOnLogon = CreateFrame("Frame")
 ElvuiOnLogon:RegisterEvent("PLAYER_ENTERING_WORLD")
 ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
-
+	
+	--reset april fools day for next year
+	if not E.FoolDayCheck() then
+		FoolsDay = nil
+	end
+	
 	if E.getscreenresolution == "800x600"
 		or E.getscreenresolution == "1024x768"
 		or E.getscreenresolution == "720x576"
