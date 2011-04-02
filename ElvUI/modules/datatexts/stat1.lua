@@ -196,3 +196,4 @@ end
 Stat:SetScript("OnEnter", function() ShowTooltip(Stat) end)
 Stat:SetScript("OnLeave", function() GameTooltip:Hide() end)
 Stat:SetScript("OnUpdate", Update)
+Update(Stat, 6)

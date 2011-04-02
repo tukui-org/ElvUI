@@ -62,7 +62,7 @@ if C["general"].upperpanel == true then
 
 	local f = CreateFrame("Frame", "ElvuiStat9Block", ElvuiTopPanel)
 	f:SetHeight(23)
-	f:SetWidth(E.minimapsize / 1.5)
+	f:SetWidth(E.minimapsize / 1.3)
 	f:SetFrameLevel(2)
 	f:SetTemplate("Default", true)
 	f:CreateShadow("Default")
@@ -70,7 +70,7 @@ if C["general"].upperpanel == true then
 	
 	local f = CreateFrame("Frame", "ElvuiStat10Block", ElvuiTopPanel)
 	f:SetHeight(23)
-	f:SetWidth(E.minimapsize / 1.5)
+	f:SetWidth(E.minimapsize / 1.3)
 	f:SetFrameLevel(2)
 	f:SetTemplate("Default", true)
 	f:CreateShadow("Default")

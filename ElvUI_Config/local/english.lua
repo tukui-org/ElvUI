@@ -291,6 +291,8 @@ L["Data Texts"] = true
 	L["DATATEXT_POS"] = "\n\n0 - Disabled\n1 - LEFT PANEL, LEFT\n2 - LEFT PANEL, CENTER\n3 - LEFT PANEL, RIGHT\n4 - RIGHT PANEL, LEFT\n5 - RIGHT PANEL, CENTER\n6 - RIGHT PANEL, RIGHT\n7 - MINIMAP LEFT\n8 - MINIMAP RIGHT"
 	L["DATATEXT_POS2"] = "\n\n0 - Disabled\n1 - LEFT PANEL, LEFT\n2 - LEFT PANEL, CENTER\n3 - LEFT PANEL, RIGHT\n4 - RIGHT PANEL, LEFT\n5 - RIGHT PANEL, CENTER\n6 - RIGHT PANEL, RIGHT\n7 - MINIMAP LEFT\n8 - MINIMAP RIGHT\n9 - TOPBAR LEFT\n10 - TOPBAR RIGHT"
 	L["Text Positions"] = true
+	L["Mastery Spell"] = true
+		L["Display the mastery spell on the mastery datatext"] = true
 	L["BG Text"] = true
 		L["Display special datatexts when inside a battleground"] = true
 		L["Font size for datatexts"] = true
@@ -325,7 +327,18 @@ L["Data Texts"] = true
 		L["Display current watched items in backpack"] = true
 	L["Talent Spec"] = true	
 		L["Display current spec"] = true
-
+	L["Mastery"] = true
+		L["Display Mastery Rating"] = true
+	L["Hit Rating"] = true
+		L["Display Hit Rating"] = true
+	L["Haste Rating"] = true
+		L["Display Haste Rating"] = true
+	L["Crit Rating"] = true
+		L["Display Critical Strike Rating"] = true
+	L["Mana Regen"] = true
+		L["Display Mana Regen Rate"] = true
+	
+	
 --chat
 L["Chat"] = true
 	L["CHAT_DESC"] = "Adjust chat settings"
