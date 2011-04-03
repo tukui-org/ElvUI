@@ -4,8 +4,6 @@
 
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if C["others"].raidbuffreminder ~= true then return end
-
 E.BuffReminderRaidBuffs = {
 	Flask = {
 		94160, --"Flask of Flowing Water"

@@ -1,8 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">	
 	<Script file="defaults.lua"/>
-	<Script file="classtimers_spellist.lua"/>
-	<Script file="filter.lua"/>
+	<Include file="filters\load_filters.xml"/>
 	<Script file="configui.lua"/>
 	<Script file='autodisable.lua'/>
-	<Include file="filters\load_filters.xml"/>
 </Ui>

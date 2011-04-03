@@ -1026,7 +1026,7 @@ E.LoadUFFunctions = function(layout)
 	ORD.FilterDispellableDebuff = true
 	ORD.MatchBySpellName = true
 
-	ORD:RegisterDebuffs(E.RaidDebuffs)	
+	ORD:RegisterDebuffs(E.RaidDebuffsList)	
 	
 	E.LoadUFFunctions = nil
 end

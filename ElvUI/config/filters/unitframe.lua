@@ -1,6 +1,6 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if C["unitframes"].enable ~= true and C["raidframes"].enable ~= true then return end
+
 
 local function SpellName(id)
 	local name, _, _, _, _, _, _, _, _ = GetSpellInfo(id) 	
@@ -158,77 +158,78 @@ E.RaidDebuffs = {
 	--SpellName(25771), --Forbearance
 	
 -- Other debuff
-	SpellName(67479), -- Impale
+	[SpellName(67479)] = true, -- Impale
 
 --Blackwing Descent
 	--Magmaw
-	SpellName(91911), -- Constricting Chains
-	SpellName(94679), -- Parasitic Infection
-	SpellName(94617), -- Mangle
-	SpellName(78199), -- Sweltering Armor
+	[SpellName(91911)] = true, -- Constricting Chains
+	[SpellName(94679)] = true, -- Parasitic Infection
+	[SpellName(94617)] = true, -- Mangle
+	[SpellName(78199)] = true, -- Sweltering Armor
 
 	--Omintron Defense System
-	SpellName(91433), --Lightning Conductor
-	SpellName(91521), --Incineration Security Measure
-	SpellName(80094), --Fixate 
+	[SpellName(91433)] = true, --Lightning Conductor
+	[SpellName(91521)] = true, --Incineration Security Measure
+	[SpellName(80094)] = true, --Fixate 
 
 	--Maloriak
-	SpellName(77699), -- Flash Freeze
-	SpellName(77760), -- Biting Chill
+	[SpellName(77699)] = true, -- Flash Freeze
+	[SpellName(77760)] = true, -- Biting Chill
 
 	--Atramedes
-	SpellName(92423), -- Searing Flame
-	SpellName(92485), -- Roaring Flame
-	SpellName(92407), -- Sonic Breath
+	[SpellName(92423)] = true, -- Searing Flame
+	[SpellName(92485)] = true, -- Roaring Flame
+	[SpellName(92407)] = true, -- Sonic Breath
 
 	--Chimaeron
-	SpellName(82881), -- Break
-	SpellName(89084), -- Low Health
+	[SpellName(82881)] = true, -- Break
+	[SpellName(89084)] = true, -- Low Health
 
 	--Nefarian
 
 	--Sinestra
-	SpellName(92956), --Wrack
+	[SpellName(92956)] = true, --Wrack
 
 --The Bastion of Twilight
 	--Valiona & Theralion
-	SpellName(92878), -- Blackout
-	SpellName(86840), -- Devouring Flames
-	SpellName(95639), -- Engulfing Magic
-	SpellName(93051), -- Twilight Shift
-	SpellName(92886), -- Twilight Zone
-	SpellName(88518), -- Twilight Meteorite
+	[SpellName(92878)] = true, -- Blackout
+	[SpellName(86840)] = true, -- Devouring Flames
+	[SpellName(95639)] = true, -- Engulfing Magic
+	[SpellName(93051)] = true, -- Twilight Shift
+	[SpellName(92886)] = true, -- Twilight Zone
+	[SpellName(88518)] = true, -- Twilight Meteorite
 
 	--Halfus Wyrmbreaker
-	SpellName(39171), -- Malevolent Strikes
+	[SpellName(39171)] = true, -- Malevolent Strikes
 
 	--Twilight Ascendant Council
-	SpellName(92511), -- Hydro Lance
-	SpellName(82762), -- Waterlogged
-	SpellName(92505), -- Frozen
-	SpellName(92518), -- Flame Torrent
-	SpellName(83099), -- Lightning Rod
-	SpellName(92075), -- Gravity Core
-	SpellName(92488), -- Gravity Crush
+	[SpellName(92511)] = true, -- Hydro Lance
+	[SpellName(82762)] = true, -- Waterlogged
+	[SpellName(92505)] = true, -- Frozen
+	[SpellName(92518)] = true, -- Flame Torrent
+	[SpellName(83099)] = true, -- Lightning Rod
+	[SpellName(92075)] = true, -- Gravity Core
+	[SpellName(92488)] = true, -- Gravity Crush
 
 	--Cho'gall
-	SpellName(86028), -- Cho's Blast
-	SpellName(86029), -- Gall's Blast
+	[SpellName(86028)] = true, -- Cho's Blast
+	[SpellName(86029)] = true, -- Gall's Blast
 
 --Throne of the Four Winds
 	--Conclave of Wind
 		--Nezir <Lord of the North Wind>
-		SpellName(93131), --Ice Patch
+		[SpellName(93131)] = true, --Ice Patch
 		--Anshal <Lord of the West Wind>
-		SpellName(86206), --Soothing Breeze
-		SpellName(93122), --Toxic Spores
+		[SpellName(86206)] = true, --Soothing Breeze
+		[SpellName(93122)] = true, --Toxic Spores
 		--Rohash <Lord of the East Wind>
-		SpellName(93058), --Slicing Gale
+		[SpellName(93058)] = true, --Slicing Gale
 		
 	--Al'Akir
-	SpellName(93260), -- Ice Storm
-	SpellName(93295), -- Lightning Rod
+	[SpellName(93260)] = true, -- Ice Storm
+	[SpellName(93295)] = true, -- Lightning Rod
 }
+
 
 E.ReverseTimer = {
 	[92956] = true, -- Sinestra (Wrack)

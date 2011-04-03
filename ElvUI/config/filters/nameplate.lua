@@ -5,8 +5,6 @@
 ]]
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if C["nameplate"].enable ~= true then return end
-
 E.PlateBlacklist = {
 	--Shaman Totems
 	["Earth Elemental Totem"] = true,
@@ -32,11 +30,10 @@ E.PlateBlacklist = {
 	--Hunter Trap
 	["Venomous Snake"] = true,
 	["Viper"] = true,
+	
+	--Misc
+	["Lava Parasite"] = true,
 
 	--Test
 	--["Unbound Seer"] = true,
 }
-
-if select(1, UnitName("player")) == "Elv" then
-	E.PlateBlacklist["Lava Parasite"] = true --Fucking magmaw nameplates make it hard to see other adds
-end
