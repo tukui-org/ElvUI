@@ -134,6 +134,8 @@ L.bags_nothingsort= "Nothing to sort."
 L.bags_bids = "Using bags: "
 L.bags_stackend = "Restacking finished."
 L.bags_rightclick_search = "Right-click to search."
+L.bags_leftclick = "Left Click:"
+L.bags_rightclick = "Right Click:"
 
 L.chat_invalidtarget = "Invalid Target"
 

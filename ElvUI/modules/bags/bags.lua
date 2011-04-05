@@ -21,6 +21,7 @@ local ST_SOULBAG = 2
 local ST_SPECIAL = 3
 local ST_QUIVER = 4
 local bag_bars = 0
+local bankbag_bars = 0
 local hide_soulbag = C["others"].soulbag
 
 -- hide bags options in default interface
@@ -46,14 +47,14 @@ local function Print (x)
 	DEFAULT_CHAT_FRAME:AddMessage("|cff1784d1Elvui:|r " .. x)
 end
 
-local function Stuffing_Sort(args)
+local function Stuffing_Sort(args, bank)
 	if not args then
 		args = ""
 	end
 
 	Stuffing.itmax = 0
-	Stuffing:SetBagsForSorting(args)
-	Stuffing:SortBags()
+	Stuffing:SetBagsForSorting(args, bank)
+	Stuffing:SortBags(bank)
 end
 
 local resetAndClear = function (self)
@@ -455,6 +456,15 @@ Stuffing_DDMenu.HideMenu = function()
 	end
 end
 
+local Stuffing_DDMenu2 = CreateFrame("Frame", "Stuffing_DropDownMenu")
+Stuffing_DDMenu2.displayMode = "MENU"
+Stuffing_DDMenu2.info = {}
+Stuffing_DDMenu2.HideMenu = function()
+	if UIDROPDOWNMENU_OPEN_MENU == Stuffing_DDMenu2 then
+		CloseDropDownMenus()
+	end
+end
+
 
 function Stuffing:CreateBagFrame(w)
 	local n = "StuffingFrame"  .. w
@@ -476,20 +486,44 @@ function Stuffing:CreateBagFrame(w)
 	f.b_close:SetWidth(E.Scale(32))
 	f.b_close:SetHeight(E.Scale(32))
 	f.b_close:SetPoint("TOPRIGHT", E.Scale(-3), E.Scale(-3))
-	f.b_close:SetScript("OnClick", function(self, btn)
-		if self:GetParent():GetName() == "StuffingFrameBags" and btn == "RightButton" then
-			if Stuffing_DDMenu.initialize ~= Stuffing.Menu then
-				CloseDropDownMenus()
-				Stuffing_DDMenu.initialize = Stuffing.Menu
+	if w ~= "Bank" then
+		f.b_close:SetScript("OnClick", function(self, btn)
+			if btn == "RightButton" then
+				if Stuffing_DDMenu.initialize ~= Stuffing.Menu then
+					CloseDropDownMenus()
+					Stuffing_DDMenu.initialize = Stuffing.Menu
+				end
+				ToggleDropDownMenu(1, nil, Stuffing_DDMenu, self:GetName(), 0, 0)
+				return
 			end
-			ToggleDropDownMenu(1, nil, Stuffing_DDMenu, self:GetName(), 0, 0)
-			return
-		end
-		self:GetParent():Hide()
-	end)
+			self:GetParent():Hide()
+		end)
+	else
+		f.b_close:SetScript("OnClick", function(self, btn)
+			if btn == "RightButton" then
+				if Stuffing_DDMenu2.initialize ~= Stuffing.Menu2 then
+					CloseDropDownMenus()
+					Stuffing_DDMenu2.initialize = Stuffing.Menu2
+				end
+				ToggleDropDownMenu(1, nil, Stuffing_DDMenu2, self:GetName(), 0, 0)
+				return
+			end
+			self:GetParent():Hide()
+		end)	
+	end
 	f.b_close:RegisterForClicks("AnyUp")
 	f.b_close:GetNormalTexture():SetDesaturated(1)
-	
+	f.b_close:HookScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_CURSOR")
+		GameTooltip:ClearLines()
+		GameTooltip:AddDoubleLine(L.bags_leftclick, CLOSE, 1,1,1)
+		GameTooltip:AddDoubleLine(L.bags_rightclick, OPTIONS_MENU, 1,1,1)
+		GameTooltip:Show()
+	end)
+
+	f.b_close:HookScript("OnLeave", function()
+		GameTooltip:Hide()
+	end)
 	--Create Buy Bags Button
 	if w == "Bank" then
 		f.b_purchase = CreateFrame("Button", "Stuffing_PurchaseButton"..w, f)
@@ -532,6 +566,11 @@ function Stuffing:CreateBagFrame(w)
 	fb:SetPoint("BOTTOMLEFT", f, "TOPLEFT", 0, E.Scale(2))
 	fb:SetFrameStrata("DIALOG")
 	f.bags_frame = fb
+	
+	local fb2 = CreateFrame ("Frame", n .. "BagsBankFrame", f)
+	fb2:SetPoint("BOTTOMLEFT", f, "TOPLEFT", 0, E.Scale(2))
+	fb2:SetFrameStrata("DIALOG")
+	f.bagsbank_frame = fb2
 
 	return f
 end
@@ -699,7 +738,7 @@ function Stuffing:Layout(lb)
 
 	-- bag frame stuff
 	local fb = f.bags_frame
-	if bag_bars == 1 then
+	if bag_bars == 1 and not lb then
 		fb:SetClampedToScreen(1)
 		fb:SetBackdrop({
 			bgFile = C["media"].blank,
@@ -720,24 +759,51 @@ function Stuffing:Layout(lb)
 		fb:SetHeight(E.Scale(2 * 12 + bsize))
 		fb:SetWidth(E.Scale(w))
 		fb:Show()
-	else
+	elseif not lb then
 		fb:Hide()
 	end
+	
+	if lb then
+		fb = f.bagsbank_frame
+	end
+	
+	if bankbag_bars == 1 and lb then
+		fb:SetClampedToScreen(1)
+		fb:SetBackdrop({
+			bgFile = C["media"].blank,
+			edgeFile = C["media"].blank,
+			edgeSize = E.mult,
+			insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
+		})
+		fb:SetBackdropColor(unpack(C["media"].backdropfadecolor))
+		fb:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 
+		local bsize = 30
+		if lb then bsize = 37 end
 
+		local w = 2 * 12
+		w = w + ((#bs - 1) * bsize)
+		w = w + (12 * (#bs - 2))
+
+		fb:SetHeight(E.Scale(2 * 12 + bsize))
+		fb:SetWidth(E.Scale(w))
+		fb:Show()	
+	elseif lb then
+		fb:Hide()	
+	end
 
 	local idx = 0
 	for _, v in ipairs(bs) do
 		if (not lb and v <= 3 ) or (lb and v ~= -1) then
 			local bsize = 30
 			if lb then bsize = 37 end
-
 			local b = self:BagFrameSlotNew(v, fb)
 
 			local xoff = 12
 
 			xoff = xoff + (idx * bsize) -- 31)
 			xoff = xoff + (idx * 4)
+			
 
 			b.frame:ClearAllPoints()
 			b.frame:SetPoint("LEFT", fb, "LEFT", E.Scale(xoff), 0)
@@ -865,7 +931,7 @@ function Stuffing:Layout(lb)
 end
 
 
-function Stuffing:SetBagsForSorting(c)
+function Stuffing:SetBagsForSorting(c, bank)
 	Stuffing_Open()
 
 	self.sortBags = {}
@@ -876,7 +942,7 @@ function Stuffing:SetBagsForSorting(c)
 		if s == "c" then
 			self.sortBags = {}
 		elseif s == "d" then
-			if not self.bankFrame or not self.bankFrame:IsShown() then
+			if not bank then
 				for _, i in ipairs(bags_BACKPACK) do
 					if self.bags[i] and self.bags[i].bagType == ST_NORMAL then
 						table.insert(self.sortBags, i)
@@ -890,7 +956,7 @@ function Stuffing:SetBagsForSorting(c)
 				end
 			end
 		elseif s == "p" then
-			if not self.bankFrame or not self.bankFrame:IsShown() then
+			if not bank then
 				for _, i in ipairs(bags_BACKPACK) do
 					if self.bags[i] and self.bags[i].bagType == ST_SPECIAL then
 						table.insert(self.sortBags, i)
@@ -1419,10 +1485,6 @@ function Stuffing.Menu(self, level)
 			bag_bars = 1
 		end
 		Stuffing:Layout()
-		if Stuffing.bankFrame and Stuffing.bankFrame:IsShown() then
-			Stuffing:Layout(true)
-		end
-
 	end
 	UIDropDownMenu_AddButton(info, level)
 	
@@ -1443,6 +1505,61 @@ function Stuffing.Menu(self, level)
 	end
 	
 	
+	UIDropDownMenu_AddButton(info, level)
+
+	wipe(info)
+	info.disabled = nil
+	info.notCheckable = 1
+	info.text = CLOSE
+	info.func = self.HideMenu
+	info.tooltipTitle = CLOSE
+	UIDropDownMenu_AddButton(info, level)
+end
+
+function Stuffing.Menu2(self, level)
+	if not level then
+		return
+	end
+
+	local info = self.info
+
+	wipe(info)
+
+	if level ~= 1 then
+		return
+	end
+
+	wipe(info)
+	info.text = L.bags_sortmenu
+	info.notCheckable = 1
+	info.func = function()
+		Stuffing_Sort("d", true)
+	end
+	UIDropDownMenu_AddButton(info, level)
+
+	wipe(info)
+	info.text = L.bags_stackmenu
+	info.notCheckable = 1
+	info.func = function()
+		Stuffing:SetBagsForSorting("d", true)
+		Stuffing:Restack()
+	end
+	UIDropDownMenu_AddButton(info, level)
+
+	wipe(info)
+	info.text = L.bags_showbags
+	info.checked = function()
+		return bankbag_bars == 1
+	end
+	
+	info.func = function()
+		if bankbag_bars == 1 then
+			bankbag_bars = 0
+		else
+			bankbag_bars = 1
+		end
+		Stuffing:Layout(true)
+	end
 	UIDropDownMenu_AddButton(info, level)
 
 	wipe(info)
