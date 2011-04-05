@@ -678,7 +678,13 @@ local function CheckWhisperWindows(self, event)
 			ElvuiInfoLeft.shadow:SetBackdropBorderColor(ChatTypeInfo["BN_WHISPER"].r,ChatTypeInfo["BN_WHISPER"].g,ChatTypeInfo["BN_WHISPER"].b, 1)
 		end
 		ElvuiInfoLeft:SetScript("OnUpdate", function(self)
-			E.Flash(ElvuiInfoLeft.shadow, 0.5)
+			if not E.ChatLIn then
+				E.Flash(self.shadow, 0.5)
+			else
+				E.StopFlash(self.shadow)
+				self:SetScript("OnUpdate", nil)
+				self.shadow:SetBackdropBorderColor(0,0,0)
+			end
 		end)
 	elseif E.RightChatWindowID and chat == _G[format("ChatFrame%s", E.RightChatWindowID)]:GetName() and E.RightChat == true and E.ChatRIn == false then
 		if event == "CHAT_MSG_WHISPER" then
@@ -687,7 +693,13 @@ local function CheckWhisperWindows(self, event)
 			ElvuiInfoRight.shadow:SetBackdropBorderColor(ChatTypeInfo["BN_WHISPER"].r,ChatTypeInfo["BN_WHISPER"].g,ChatTypeInfo["BN_WHISPER"].b, 1)
 		end
 		ElvuiInfoRight:SetScript("OnUpdate", function(self)
-			E.Flash(ElvuiInfoRight.shadow, 0.5)
+			if E.RightChatWindowID and chat == _G[format("ChatFrame%s", E.RightChatWindowID)]:GetName() and E.RightChat == true and E.ChatRIn == false then
+				E.Flash(self.shadow, 0.5)
+			else
+				E.StopFlash(self.shadow)
+				self:SetScript("OnUpdate", nil)
+				self.shadow:SetBackdropBorderColor(0,0,0)
+			end
 		end)	
 	end
 end
