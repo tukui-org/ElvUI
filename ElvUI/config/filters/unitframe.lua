@@ -233,4 +233,7 @@ E.RaidDebuffs = {
 
 E.ReverseTimer = {
 	[92956] = true, -- Sinestra (Wrack)
+	[89435] = true,
+	[92955] = true,
+	[89421] = true,
 }
