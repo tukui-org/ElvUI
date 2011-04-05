@@ -570,6 +570,10 @@ function Stuffing:CreateBagFrame(w)
 	local fb2 = CreateFrame ("Frame", n .. "BagsBankFrame", f)
 	fb2:SetPoint("BOTTOMLEFT", f, "TOPLEFT", 0, E.Scale(2))
 	fb2:SetFrameStrata("DIALOG")
+	fb2:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED")
+	fb2:SetScript("OnEvent", function(self, event) 
+		Stuffing:Layout(true)
+	end)	
 	f.bagsbank_frame = fb2
 
 	return f
@@ -726,31 +730,16 @@ function Stuffing:Layout(lb)
 	end
 
 	f:SetClampedToScreen(1)
-	f:SetBackdrop({
-		bgFile = C["media"].blank,
-		edgeFile = C["media"].blank,
-		edgeSize = E.mult,
-		insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
-	})
-	f:SetBackdropColor(unpack(C["media"].backdropfadecolor))
-	f:SetBackdropBorderColor(unpack(C["media"].bordercolor))
+	f:SetTemplate("Transparent")
 
 
 	-- bag frame stuff
 	local fb = f.bags_frame
 	if bag_bars == 1 and not lb then
 		fb:SetClampedToScreen(1)
-		fb:SetBackdrop({
-			bgFile = C["media"].blank,
-			edgeFile = C["media"].blank,
-			edgeSize = E.mult,
-			insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
-		})
-		fb:SetBackdropColor(unpack(C["media"].backdropfadecolor))
-		fb:SetBackdropBorderColor(unpack(C["media"].bordercolor))
+		fb:SetTemplate("Transparent")
 
 		local bsize = 30
-		if lb then bsize = 37 end
 
 		local w = 2 * 12
 		w = w + ((#bs - 1) * bsize)
@@ -769,47 +758,38 @@ function Stuffing:Layout(lb)
 	
 	if bankbag_bars == 1 and lb then
 		fb:SetClampedToScreen(1)
-		fb:SetBackdrop({
-			bgFile = C["media"].blank,
-			edgeFile = C["media"].blank,
-			edgeSize = E.mult,
-			insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
-		})
-		fb:SetBackdropColor(unpack(C["media"].backdropfadecolor))
-		fb:SetBackdropBorderColor(unpack(C["media"].bordercolor))
+		fb:SetTemplate("Transparent")
 
 		local bsize = 30
-		if lb then bsize = 37 end
 
 		local w = 2 * 12
 		w = w + ((#bs - 1) * bsize)
 		w = w + (12 * (#bs - 2))
 
-		fb:SetHeight(E.Scale(2 * 12 + bsize))
-		fb:SetWidth(E.Scale(w))
+		fb:Height(2 * 12 + bsize)
+		fb:Width(w)
 		fb:Show()	
 	elseif lb then
 		fb:Hide()	
 	end
 
 	local idx = 0
-	for _, v in ipairs(bs) do
-		if (not lb and v <= 3 ) or (lb and v ~= -1) then
+	local numSlots, full = GetNumBankSlots()
+	for i, v in ipairs(bs) do
+		if (not lb and v <= 3 ) or (lb and v ~= -1 and numSlots >= 1) then
 			local bsize = 30
-			if lb then bsize = 37 end
 			local b = self:BagFrameSlotNew(v, fb)
 
 			local xoff = 12
 
 			xoff = xoff + (idx * bsize) -- 31)
 			xoff = xoff + (idx * 4)
-			
 
 			b.frame:ClearAllPoints()
 			b.frame:SetPoint("LEFT", fb, "LEFT", E.Scale(xoff), 0)
+			b.frame:Size(bsize)
 			b.frame:Show()
-
-
+			
 			local t = _G[b.frame:GetName().."IconTexture"]
 			b.frame:SetPushedTexture("")
 			b.frame:SetNormalTexture("")
@@ -821,6 +801,10 @@ function Stuffing:Layout(lb)
 			b.frame:StyleButton()			
 			
 			idx = idx + 1
+			
+			if lb and not full and i > numSlots then
+				break
+			end
 		end
 	end
 
@@ -1025,9 +1009,8 @@ function Stuffing:PLAYER_ENTERING_WORLD()
 	local keybackdrop = CreateFrame("Frame", nil, ContainerFrame1)
 	keybackdrop:SetPoint("TOPLEFT", E.Scale(9), E.Scale(-40))
 	keybackdrop:SetPoint("BOTTOMLEFT", 0, 0)
-	keybackdrop:SetSize(E.Scale(179),E.Scale(215))
-	keybackdrop:SetTemplate("Default")
-	keybackdrop:SetBackdropColor(unpack(C["media"].backdropfadecolor))
+	keybackdrop:Size(179, 215)
+	keybackdrop:SetTemplate("Transparent")
 	ContainerFrame1CloseButton:Hide()
 	ContainerFrame1Portrait:Hide()
 	ContainerFrame1Name:Hide()
@@ -1471,6 +1454,23 @@ function Stuffing.Menu(self, level)
 		Stuffing:Restack()
 	end
 	UIDropDownMenu_AddButton(info, level)
+	
+	wipe(info)
+	info.text = L.bags_sortspecial
+	info.notCheckable = 1
+	info.func = function()
+		Stuffing_Sort("c/p")
+	end
+	UIDropDownMenu_AddButton(info, level)	
+
+	wipe(info)
+	info.text = L.bags_stackspecial
+	info.notCheckable = 1
+	info.func = function()
+		Stuffing:SetBagsForSorting("c/p")
+		Stuffing:Restack()
+	end
+	UIDropDownMenu_AddButton(info, level)	
 
 	wipe(info)
 	info.text = L.bags_showbags
@@ -1545,7 +1545,24 @@ function Stuffing.Menu2(self, level)
 		Stuffing:Restack()
 	end
 	UIDropDownMenu_AddButton(info, level)
+	
+	wipe(info)
+	info.text = L.bags_sortspecial
+	info.notCheckable = 1
+	info.func = function()
+		Stuffing_Sort("c/p", true)
+	end
+	UIDropDownMenu_AddButton(info, level)	
 
+	wipe(info)
+	info.text = L.bags_stackspecial
+	info.notCheckable = 1
+	info.func = function()
+		Stuffing:SetBagsForSorting("c/p", true)
+		Stuffing:Restack()
+	end
+	UIDropDownMenu_AddButton(info, level)
+	
 	wipe(info)
 	info.text = L.bags_showbags
 	info.checked = function()
@@ -1553,12 +1570,17 @@ function Stuffing.Menu2(self, level)
 	end
 	
 	info.func = function()
-		if bankbag_bars == 1 then
-			bankbag_bars = 0
+		local numSlots, full = GetNumBankSlots()
+		if numSlots >= 1 then
+			if bankbag_bars == 1 then
+				bankbag_bars = 0
+			else
+				bankbag_bars = 1
+			end
+			Stuffing:Layout(true)
 		else
-			bankbag_bars = 1
+			StaticPopup_Show("NO_BANK_BAGS")
 		end
-		Stuffing:Layout(true)
 	end
 	UIDropDownMenu_AddButton(info, level)
 

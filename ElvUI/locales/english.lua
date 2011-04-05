@@ -117,6 +117,7 @@ L.unitframes_ouf_threattext = "Threat on current target:"
 L.tooltip_count = "Count"
 
 L.bags_noslots = "Can't buy anymore slots!"
+L.bags_need_purchase = "You must purchase a bank slot first!"
 L.bags_costs = "Cost: %.2f gold"
 L.bags_buyslots = "Buy new slot with /bags purchase yes"
 L.bags_openbank = "You need to open your bank first."

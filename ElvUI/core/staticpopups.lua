@@ -79,3 +79,10 @@ StaticPopupDialogs["CANNOT_BUY_BANK_SLOT"] = {
 	timeout = 0,
 	whileDead = 1,	
 }
+
+StaticPopupDialogs["NO_BANK_BAGS"] = {
+	text = L.bags_need_purchase,
+	button1 = ACCEPT,
+	timeout = 0,
+	whileDead = 1,	
+}
