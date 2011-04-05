@@ -176,14 +176,14 @@ f:SetScript("OnEvent", function(self, event, addon)
 		
 		f:UnregisterEvent("ADDON_LOADED")
 	elseif event == "PLAYER_ENTERING_WORLD" then
-		SlashCmdList["BigWigs"]()
+		LoadAddOn("BigWigs_Core")
+		LoadAddOn("BigWigs_Plugins")
+		LoadAddOn("BigWigs_Options")
+		BigWigs:Enable()
 		BigWigsOptions:SendMessage("BigWigs_StartConfigureMode", true)
 		BigWigsOptions:SendMessage("BigWigs_StopConfigureMode")
-		InterfaceOptionsFrameTab1:Click()
-		InterfaceOptionsFrameCategoriesButton1:Click()
-		HideUIPanel(InterfaceOptionsFrame)
 		PositionBWAnchor()
-		
+
 		if Skada and Skada:GetWindows() and Skada:GetWindows()[1] and C["skin"].embedright == "Skada" then
 			Skada:GetWindows()[1].bargroup:HookScript("OnShow", function() PositionBWAnchor() end)
 			Skada:GetWindows()[1].bargroup:HookScript("OnHide", function() PositionBWAnchor() end)
@@ -193,7 +193,7 @@ f:SetScript("OnEvent", function(self, event, addon)
 		elseif OmenAnchor and C["skin"].embedright == "Omen" then
 			OmenAnchor:HookScript("OnShow", function() PositionBWAnchor() end)
 			OmenAnchor:HookScript("OnHide", function() PositionBWAnchor() end)		
-		end	
+		end
 	elseif event == "PLAYER_REGEN_DISABLED" then
 		PositionBWAnchor()
 	elseif event == "PLAYER_REGEN_ENABLED" then
