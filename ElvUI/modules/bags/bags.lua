@@ -455,6 +455,7 @@ Stuffing_DDMenu.HideMenu = function()
 	end
 end
 
+
 function Stuffing:CreateBagFrame(w)
 	local n = "StuffingFrame"  .. w
 	local f = CreateFrame ("Frame", n, UIParent)
@@ -488,6 +489,43 @@ function Stuffing:CreateBagFrame(w)
 	end)
 	f.b_close:RegisterForClicks("AnyUp")
 	f.b_close:GetNormalTexture():SetDesaturated(1)
+	
+	--Create Buy Bags Button
+	if w == "Bank" then
+		f.b_purchase = CreateFrame("Button", "Stuffing_PurchaseButton"..w, f)
+		f.b_purchase:Size(80, 20)
+		f.b_purchase:Point("TOPLEFT", 10, -10)
+		f.b_purchase:RegisterForClicks("AnyUp")
+		f.b_purchase:SetTemplate("Default", true)
+		f.b_purchase:SetScript("OnEnter", function(self)
+			if C["general"].classcolortheme == true then
+				self:SetBackdropBorderColor(unpack(C["media"].bordercolor))		
+			else
+				self:SetBackdropBorderColor(unpack(C["media"].valuecolor))	
+			end		
+		end)
+		f.b_purchase:SetScript("OnLeave", function(self)
+			if C["general"].classcolortheme == true then
+				local color = RAID_CLASS_COLORS[E.myclass]
+				self:SetBackdropBorderColor(color.r, color.g, color.b)
+			else
+				self:SetBackdropBorderColor(unpack(C["media"].bordercolor))
+			end
+		end)
+		
+		f.b_purchase:SetScript("OnClick", function(self, btn)
+			local _, full = GetNumBankSlots()
+			if not full then
+				StaticPopup_Show("BUY_BANK_SLOT")
+			else
+				StaticPopup_Show("CANNOT_BUY_BANK_SLOT")
+			end
+		end)
+		f.b_purchase:FontString("text", C["media"].font, 12)
+		f.b_purchase.text:SetPoint("CENTER")
+		f.b_purchase.text:SetText("Purchase")
+		f.b_purchase:SetFontString(f.b_purchase.text)
+	end
 
 	-- create the bags frame
 	local fb = CreateFrame ("Frame", n .. "BagsFrame", f)
@@ -882,49 +920,6 @@ function Stuffing:SetBagsForSorting(c)
 	Print(bids)
 end
 
-
--- slash command handler
-local function StuffingSlashCmd(Cmd)
-	local cmd, args = strsplit(" ", Cmd:lower(), 2)
-
-	if cmd == "config" then
-		Stuffing_OpenConfig()
-	elseif cmd == "sort" then
-		Stuffing_Sort(args)
-	elseif cmd == "psort" then
-		Stuffing_Sort("c/p")
-	elseif cmd == "stack" then
-		Stuffing:SetBagsForSorting(args)
-		Stuffing:Restack()
-	elseif cmd == "test" then
-		Stuffing:SetBagsForSorting(args)
-	elseif cmd == "purchase" then
-		-- XXX
-		if Stuffing.bankFrame and Stuffing.bankFrame:IsShown() then
-			local cnt, full = GetNumBankSlots()
-			if full then
-				Print(L.bags_noslots)
-				return
-			end
-
-			if args == "yes" then
-				PurchaseSlot()
-				return
-			end
-
-			Print(string.format(L.bags_costs, GetBankSlotCost() / 10000))
-			Print(L.bags_buyslots)
-		else
-			Print(L.bags_openbank)
-		end
-	else
-		Print("sort - " .. L.bags_sort)
-		Print("stack - " .. L.bags_stack)
-		Print("purchase - " .. L.bags_buybankslot)
-	end
-end
-
-
 function Stuffing:ADDON_LOADED(addon)
 	if addon ~= "ElvUI" then
 		return nil
@@ -938,9 +933,6 @@ function Stuffing:ADDON_LOADED(addon)
 	self:RegisterEvent("PLAYERBANKSLOTS_CHANGED")
 
 	self:RegisterEvent("BAG_CLOSED")
-
-	SlashCmdList["STUFFING"] = StuffingSlashCmd
-	SLASH_STUFFING1 = "/bags"
 
 	self:InitBags()
 
