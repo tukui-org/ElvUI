@@ -228,6 +228,8 @@ L["Raid Frames"] = true
 	L["Party Target's"] = true
 	L["Mouse Glow"] = true
 		L["Glow the unitframe to the unit's Reaction/Class when mouseover'd"] = true
+	L["25 Man Layout Party"] = true
+		L["Use the 25 man layout inside a party group"] = true
 
 --Classtimer		
 L["Class Timers"] = true

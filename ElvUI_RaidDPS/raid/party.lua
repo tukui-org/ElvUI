@@ -13,7 +13,9 @@ local PARTY_HEIGHT = E.Scale(35)*C["raidframes"].scale
 local PARTY_WIDTH = E.Scale(140)*C["raidframes"].scale
 local PTARGET_HEIGHT = E.Scale(17)*C["raidframes"].scale
 local PTARGET_WIDTH = (PARTY_WIDTH/2)*C["raidframes"].scale
+local POWERTHEME = C["raidframes"].mini_powerbar
 local BORDER = 2
+local SPACING = 1
 
 if E.LoadUFFunctions then E.LoadUFFunctions("DPS") end
 
@@ -63,15 +65,27 @@ local function Shared(self, unit)
 		--Health Bar
 		local health = E.ContructHealthBar(self, true, true)
 		health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
-		health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
+		if POWERTHEME == true then
+			health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER + (POWERBAR_HEIGHT/2))
+		else
+			health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
+		end
 		health.value:Point("RIGHT", health, "RIGHT", -4, 0)
 		
 		self.Health = health
 
 		--Power Bar
 		local power = E.ConstructPowerBar(self, true, nil)
-		power:Point("TOPLEFT", health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + 1))
-		power:Point("BOTTOMRIGHT", self, "BOTTOMRIGHT", -BORDER, BORDER)
+		if POWERTHEME == true then
+			power:Width((POWERBAR_WIDTH/1.5) - BORDER*2)
+			power:Height(POWERBAR_HEIGHT - BORDER*2)
+			power:Point("RIGHT", self, "BOTTOMRIGHT", -(BORDER*2 + 4), BORDER + (POWERBAR_HEIGHT/2))
+			power:SetFrameStrata("MEDIUM")
+			power:SetFrameLevel(self:GetFrameLevel() + 3)
+		else
+			power:Point("TOPLEFT", health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + SPACING))
+			power:Point("BOTTOMRIGHT", self, "BOTTOMRIGHT", -BORDER, BORDER)
+		end	
 		self.Power = power
 		
 		--Name
@@ -135,7 +149,12 @@ local function Shared(self, unit)
 		
 		if C["unitframes"].debuffhighlight == true then
 			local dbh = self:CreateTexture(nil, "OVERLAY")
-			dbh:SetAllPoints()
+			if POWERTHEME then
+				dbh:SetPoint("TOPLEFT")
+				dbh:SetPoint("BOTTOMRIGHT", health.backdrop, "BOTTOMRIGHT")
+			else
+				dbh:SetAllPoints()
+			end
 			dbh:SetTexture(C["media"].blank)
 			dbh:SetBlendMode("ADD")
 			dbh:SetVertexColor(0,0,0,0)
@@ -162,10 +181,17 @@ local function Shared(self, unit)
 		self.shadow = nil
 		
 		self.mouseglow:SetFrameStrata("BACKGROUND")
-		self.mouseglow:Point("TOPLEFT", -4, 4)
-		self.mouseglow:Point("TOPRIGHT", 4, 4)
-		self.mouseglow:Point("BOTTOMLEFT", -4, -4)
-		self.mouseglow:Point("BOTTOMRIGHT", 4, -4)
+		if POWERTHEME then
+			self.mouseglow:Point("TOPLEFT", self.Health.backdrop, -4, 4)
+			self.mouseglow:Point("TOPRIGHT", self.Health.backdrop, 4, 4)
+			self.mouseglow:Point("BOTTOMLEFT", self.Health.backdrop, -4, -4)
+			self.mouseglow:Point("BOTTOMRIGHT", self.Health.backdrop, 4, -4)		
+		else
+			self.mouseglow:Point("TOPLEFT", -4, 4)
+			self.mouseglow:Point("TOPRIGHT", 4, 4)
+			self.mouseglow:Point("BOTTOMLEFT", -4, -4)
+			self.mouseglow:Point("BOTTOMRIGHT", 4, -4)
+		end
 		self.mouseglow:Hide()
 		
 		self:HookScript("OnEnter", function(self)

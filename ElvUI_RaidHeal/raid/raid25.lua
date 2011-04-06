@@ -10,6 +10,8 @@ local RAID_WIDTH = ((ElvuiActionBarBackground:GetWidth() / 5) - 2.5)*C["raidfram
 local RAID_HEIGHT = E.Scale(42)*C["raidframes"].scale
 
 local BORDER = 2
+local POWERTHEME = C["raidframes"].mini_powerbar
+local SPACING = 1
 
 local function Shared(self, unit)
 	local POWERBAR_WIDTH = RAID_WIDTH - (BORDER*2)
@@ -32,7 +34,11 @@ local function Shared(self, unit)
 	--Health Bar
 	local health = E.ContructHealthBar(self, true, true)
 	health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
-	health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
+	if POWERTHEME == true then
+		health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER + (POWERBAR_HEIGHT/2))
+	else
+		health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
+	end
 	if C["raidframes"].gridhealthvertical == true then
 		health:SetOrientation("VERTICAL")
 	end		
@@ -43,8 +49,16 @@ local function Shared(self, unit)
 			
 	--Power Bar
 	local power = E.ConstructPowerBar(self, true, nil)
-	power:Point("TOPLEFT", health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + 1))
-	power:Point("BOTTOMRIGHT", self, "BOTTOMRIGHT", -BORDER, BORDER)
+	if POWERTHEME == true then
+		power:Width((POWERBAR_WIDTH / 1.3) - BORDER*2)
+		power:Height(POWERBAR_HEIGHT - 1 - BORDER*2)
+		power:Point("CENTER", self, "BOTTOM", 0, (BORDER + (POWERBAR_HEIGHT/2)) - 1)
+		power:SetFrameStrata("MEDIUM")
+		power:SetFrameLevel(self:GetFrameLevel() + 3)
+	else
+		power:Point("TOPLEFT", health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + SPACING))
+		power:Point("BOTTOMRIGHT", self, "BOTTOMRIGHT", -BORDER, BORDER)
+	end	
 
 	self.Power = power
 
@@ -84,7 +98,12 @@ local function Shared(self, unit)
 	
 	if C["unitframes"].debuffhighlight == true then
 		local dbh = self:CreateTexture(nil, "OVERLAY")
-		dbh:SetAllPoints()
+		if POWERTHEME then
+			dbh:SetPoint("TOPLEFT")
+			dbh:SetPoint("BOTTOMRIGHT", health.backdrop, "BOTTOMRIGHT")
+		else
+			dbh:SetAllPoints()
+		end
 		dbh:SetTexture(C["media"].blank)
 		dbh:SetBlendMode("ADD")
 		dbh:SetVertexColor(0,0,0,0)
@@ -140,7 +159,7 @@ local function Shared(self, unit)
 	RaidDebuffs:Height(RAID_HEIGHT*0.6)
 	RaidDebuffs:Width(RAID_HEIGHT*0.6)
 	RaidDebuffs:Point('BOTTOM', self, 'BOTTOM', 0, 1)
-	
+	RaidDebuffs:SetFrameStrata("High")
 	RaidDebuffs:SetTemplate("Default")
 	
 	RaidDebuffs.icon = RaidDebuffs:CreateTexture(nil, 'OVERLAY')
@@ -175,10 +194,17 @@ local function Shared(self, unit)
 		self.shadow = nil
 		
 		self.mouseglow:SetFrameStrata("BACKGROUND")
-		self.mouseglow:Point("TOPLEFT", -4, 4)
-		self.mouseglow:Point("TOPRIGHT", 4, 4)
-		self.mouseglow:Point("BOTTOMLEFT", -4, -4)
-		self.mouseglow:Point("BOTTOMRIGHT", 4, -4)
+		if POWERTHEME then
+			self.mouseglow:Point("TOPLEFT", self.Health.backdrop, -4, 4)
+			self.mouseglow:Point("TOPRIGHT", self.Health.backdrop, 4, 4)
+			self.mouseglow:Point("BOTTOMLEFT", self.Health.backdrop, -4, -4)
+			self.mouseglow:Point("BOTTOMRIGHT", self.Health.backdrop, 4, -4)		
+		else
+			self.mouseglow:Point("TOPLEFT", -4, 4)
+			self.mouseglow:Point("TOPRIGHT", 4, 4)
+			self.mouseglow:Point("BOTTOMLEFT", -4, -4)
+			self.mouseglow:Point("BOTTOMRIGHT", 4, -4)
+		end
 		self.mouseglow:Hide()
 		
 		self:HookScript("OnEnter", function(self)

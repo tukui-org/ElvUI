@@ -11,10 +11,19 @@ local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0,
 ---------------------------------------------------
 
 local function GetTemplate(t)
+	backdropa = 1
 	if t == "ClassColor" or C["general"].classcolortheme == true  then
 		local c = E.colors.class[class]
 		borderr, borderg, borderb = c[1], c[2], c[3]
-		backdropr, backdropg, backdropb = unpack(C["media"].backdropcolor)
+		
+		if t ~= "Transparent" then
+			backdropr, backdropg, backdropb = unpack(C["media"].backdropcolor)
+		else
+			backdropr, backdropg, backdropb, backdropa = unpack(C["media"].backdropfadecolor)
+		end
+	elseif t == "Transparent" then
+		borderr, borderg, borderb = unpack(C["media"].bordercolor)
+		backdropr, backdropg, backdropb, backdropa = unpack(C["media"].backdropfadecolor)	
 	else
 		borderr, borderg, borderb = unpack(C["media"].bordercolor)
 		backdropr, backdropg, backdropb = unpack(C["media"].backdropcolor)
@@ -57,13 +66,7 @@ local function SetTemplate(f, t, texture)
 	  tile = false, tileSize = 0, edgeSize = E.mult, 
 	  insets = { left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
 	})
-	
-	if t == "Transparent" then
-		backdropa = 0.8		
-	else
-		backdropa = 1
-	end
-	
+
 	if texture and not f.tex then
 		if C["general"].sharpborders == true then
 			f:SetBackdropColor(0, 0, 0, backdropa)

@@ -142,6 +142,8 @@ DB["raidframes"] = {
 	["raidunitbuffwatch"] = true,       -- track important spell to watch in pve for grid mode.
 	["buffindicatorsize"] = 6,				-- size of the buff indicator on raid/party frames	
 	["displayaggro"] = true,
+	["mini_powerbar"] = false,
+	["gridonly"] = false,
 }
 
 DB["classtimer"] = {

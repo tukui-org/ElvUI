@@ -640,8 +640,9 @@ function Stuffing:InitBags()
 	detail:SetPoint("RIGHT", E.Scale(-(16 + 24)), 0)
 	detail:SetJustifyH("LEFT")
 	detail:SetText("|cff9999ff" .. "Search")
-	editbox:SetAllPoints(detail)
-
+	editbox:SetPoint("TOPLEFT", detail, "TOPLEFT", 0, 0)
+	editbox:SetPoint("BOTTOMRIGHT", detail, "BOTTOMRIGHT", 0, -4)
+	
 	local gold = f:CreateFontString(nil, "ARTWORK", "GameFontHighlightLarge")
 	gold:SetJustifyH("RIGHT")
 	gold:SetPoint("RIGHT", f.b_close, "LEFT", E.Scale(-3), 0)
