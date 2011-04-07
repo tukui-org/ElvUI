@@ -65,6 +65,8 @@ TRINKET_FILTER = {
 	CreateSpellEntry( 91810 ), -- Slayer (License to Slay)
 	CreateSpellEntry( 91019 ), -- Soul Power (Soul Casket)
 	CreateSpellEntry( 82174 ), -- Synapse Springs
+	CreateSpellEntry( 95712 ), -- Gnomish X-Ray Scope
+	CreateSpellEntry( 96228 ), -- Synapse Springs (engineer tinker)	
 	CreateSpellEntry( 91047 ), -- Battle Magic (Stump of Time)
 	CreateSpellEntry( 91821 ), -- Race Against Death (Crushing Weight)
 	CreateSpellEntry( 92342 ), -- Race Against Death (H Crushing Weight)
@@ -117,6 +119,17 @@ TRINKET_FILTER = {
 	CreateSpellEntry( 91832 ), -- Raw Fury
 	CreateSpellEntry( 91836 ), -- Forged Fury
 	CreateSpellEntry( 74241 ), -- Power Torrent
+	CreateSpellEntry( 74243 ), -- Windwalk
+	CreateSpellEntry( 74245), -- Landslide
+	CreateSpellEntry( 74221), -- Hurricane	
+	CreateSpellEntry( 91320 ), -- Inner Eye (Jar of Ancient Remedies)
+	CreateSpellEntry( 91329 ), -- Inner Eye (H Jar of Ancient Remedies)
+	CreateSpellEntry( 74224 ), -- Heartsong
+	CreateSpellEntry( 74225 ), -- Heartsong
+	CreateSpellEntry( 91011 ), -- Bell of Enraging Resonance
+	CreateSpellEntry( 91048 ), -- Stump of Time
+	CreateSpellEntry( 90019 ), -- Soul Casket	
+	CreateSpellEntry( 75170 ), -- Lightweave
 	
 	--Turtle Shit
 	CreateSpellEntry( 63877, true ), -- Pain Suppression
@@ -200,6 +213,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 467 ), -- Thorns
 			CreateSpellEntry( 78675 ), -- Solar Beam
 			CreateSpellEntry( 93402 ), -- Sunfire
+			CreateSpellEntry( 77758 ), -- Thrash
 		},
 		player = {
 			CreateSpellEntry( 48505 ), -- Starfall
@@ -222,6 +236,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 467 ), -- Thorns
 			CreateSpellEntry( 80951 ), -- Pulverize
 			CreateSpellEntry( 62600 ), --[[ Savage Defense]] CreateSpellEntry( 62606 ), -- Savage Defense
+			CreateSpellEntry( 33891 ), --Tree of life
 		},
 		procs = {
 			CreateSpellEntry( 16870 ), -- Clearcasting
@@ -266,6 +281,9 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 53220 ), -- Improved Steadyshot
 			CreateSpellEntry( 70728 ), -- Exploit Weakness (2pc t10)
 			CreateSpellEntry( 71007 ), -- Stinger (4pc t10)
+			CreateSpellEntry( 63087 ), -- Glyph of Raptor stike
+			CreateSpellEntry( 82925 ), -- Mastermarksman
+			CreateSpellEntry( 82926 ), -- Fire!			
 		},
 	},
 	MAGE = {
@@ -285,6 +303,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 31661 ), -- Dragon's Breath
 			CreateSpellEntry( 83154 ), -- Piercing Chill
 			CreateSpellEntry( 44572 ), -- Deep Freeze
+			CreateSpellEntry( 11366 ), -- Dot Pyroblast
 		},
 		player = {
 			CreateSpellEntry( 36032 ), -- Arcane Blast
@@ -371,7 +390,6 @@ CLASS_FILTERS = {
 		},
 		player = {
 			CreateSpellEntry( 10060 ), -- Power Infusion
-			CreateSpellEntry( 588 ), -- Inner Fire
 			CreateSpellEntry( 47585 ), -- Dispersion
 			CreateSpellEntry( 81700 ), -- Archangel
 			CreateSpellEntry( 87153 ), -- Dark Archangel
@@ -380,7 +398,6 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 81207 ), -- Chakra Renew
 			CreateSpellEntry( 81209 ), -- Chakra Smite
 			CreateSpellEntry( 81206 ), -- Prayer of Healing
-			CreateSpellEntry( 73413 ), -- Inner Will
 			CreateSpellEntry( 27827	), -- Spirit of Redemption
 			CreateSpellEntry( 586 ), -- Fade			
 		},
@@ -452,9 +469,18 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 30823 ), -- Shamanistic Rage
 			CreateSpellEntry( 55198 ), -- Tidal Force
 			CreateSpellEntry( 61295 ), -- Riptide
+			CreateSpellEntry( 16166 ), -- Elemental Mastery (instant cast)
+			CreateSpellEntry( 64701 ), -- Elemental Mastery (damage increase)
+			CreateSpellEntry( 16188 ), -- Nature Swiftness	
+			CreateSpellEntry( 79206 ), -- Spiritwalker's Grace
 		},
 		procs = {
-			CreateSpellEntry( 53817 ), -- Maelstrom Weapon			
+			CreateSpellEntry( 53817 ), -- Maelstrom Weapon
+			CreateSpellEntry( 53390 ), -- Tidal Waves
+			CreateSpellEntry( 16246 ), -- Clearcasting
+			CreateSpellEntry( 73685 ), -- Unleash Life
+			CreateSpellEntry( 73683 ), -- Unleash Fire
+			CreateSpellEntry( 73681 ), -- Unleash Wind			
 		},
 	},
 	WARLOCK = {
@@ -502,6 +528,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 71165 ), -- Molten Cor
 			CreateSpellEntry( 63167 ), -- Decimation
 			CreateSpellEntry( 85383, false, nil, nil, 6353 ), -- Imp Soul Fire
+			CreateSpellEntry( 47283 ), -- Empowered Imp
 		},
 	},
 	WARRIOR = { 
@@ -541,6 +568,9 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 86627 ), -- Incite
 			CreateSpellEntry( 12964 ), -- Battle Trance
 			CreateSpellEntry( 14202 ), --Enrage
+			CreateSpellEntry( 12292 ), --Death Wish
+			CreateSpellEntry( 86627 ), --Incite
+			CreateSpellEntry( 12964 ), --Battle Trance
 		},
 		procs = {
 			CreateSpellEntry( 65156 ), -- Juggernaut
