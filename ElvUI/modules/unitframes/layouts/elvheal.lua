@@ -201,7 +201,31 @@ local function Shared(self, unit)
 		end				
 				
 		--Auras
-		if C["unitframes"].playerauras then
+		if C["unitframes"].playerbuffs == true then
+			local buffs = CreateFrame("Frame", nil, self)
+			buffs.num = C["unitframes"].playtarbuffperrow
+			if USE_POWERBAR_OFFSET then
+				buffs:SetWidth(PLAYER_WIDTH - POWERBAR_OFFSET)
+			else
+				buffs:SetWidth(PLAYER_WIDTH)
+			end
+			buffs.spacing = E.Scale(SPACING)
+			if USE_POWERBAR_OFFSET then
+				buffs.size = ((((C["unitframes"].playtarwidth - POWERBAR_OFFSET) - (buffs.spacing*(buffs.num - 1))) / buffs.num))*E.ResScale
+			else
+				buffs.size = (((C["unitframes"].playtarwidth - (buffs.spacing*(buffs.num - 1))) / buffs.num))*E.ResScale
+			end
+			buffs:Point("BOTTOMLEFT", self, "TOPLEFT", 0, SPACING)
+			buffs:SetHeight(buffs.size)
+			buffs.initialAnchor = 'BOTTOMLEFT'
+			buffs["growth-y"] = "UP"	
+			buffs["growth-x"] = "RIGHT"
+			buffs.PostCreateIcon = E.PostCreateAura
+			buffs.PostUpdateIcon = E.PostUpdateAura
+			self.Buffs = buffs	
+		end
+		
+		if C["unitframes"].playerdebuffs == true then
 			local debuffs = CreateFrame("Frame", nil, self)
 			debuffs.num = C["unitframes"].playtarbuffperrow
 			if USE_POWERBAR_OFFSET then
@@ -216,7 +240,11 @@ local function Shared(self, unit)
 				debuffs.size = ((C["unitframes"].playtarwidth - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)*E.ResScale
 			end
 			debuffs:SetHeight(debuffs.size)
-			debuffs:Point("BOTTOMLEFT", self, "TOPLEFT", 0, SPACING)	
+			if C["unitframes"].playerbuffs == true then
+				debuffs:Point("BOTTOM", self.Buffs, "TOP", 0, SPACING)
+			else
+				debuffs:Point("BOTTOMLEFT", self, "TOPLEFT", 0, SPACING)
+			end
 			debuffs.initialAnchor = 'BOTTOMRIGHT'
 			debuffs["growth-y"] = "UP"
 			debuffs["growth-x"] = "LEFT"
@@ -224,26 +252,6 @@ local function Shared(self, unit)
 			debuffs.PostUpdateIcon = E.PostUpdateAura
 			debuffs.CustomFilter = E.AuraFilter
 			self.Debuffs = debuffs
-			
-			if C["unitframes"].playershowonlydebuffs == false then
-				local buffs = CreateFrame("Frame", nil, self)
-				buffs.num = C["unitframes"].playtarbuffperrow
-				buffs:SetWidth(debuffs:GetWidth())
-				buffs.spacing = E.Scale(SPACING)
-				if USE_POWERBAR_OFFSET then
-					buffs.size = ((((C["unitframes"].playtarwidth - POWERBAR_OFFSET) - (buffs.spacing*(buffs.num - 1))) / buffs.num))*E.ResScale
-				else
-					buffs.size = (((C["unitframes"].playtarwidth - (buffs.spacing*(buffs.num - 1))) / buffs.num))*E.ResScale
-				end
-				buffs:Point("BOTTOM", debuffs, "TOP", 0, SPACING)
-				buffs:SetHeight(debuffs:GetHeight())
-				buffs.initialAnchor = 'BOTTOMLEFT'
-				buffs["growth-y"] = "UP"	
-				buffs["growth-x"] = "RIGHT"
-				buffs.PostCreateIcon = E.PostCreateAura
-				buffs.PostUpdateIcon = E.PostUpdateAura
-				self.Buffs = buffs	
-			end
 		end
 
 		--Cast Bar
@@ -818,7 +826,7 @@ local function Shared(self, unit)
 		end
 				
 		--Auras
-		if C["unitframes"].targetauras then
+		if C["unitframes"].targetbuffs then
 			local buffs = CreateFrame("Frame", nil, self)
 			buffs.num = C["unitframes"].playtarbuffperrow
 			buffs.spacing = E.Scale(SPACING)
@@ -839,7 +847,9 @@ local function Shared(self, unit)
 			buffs.PostCreateIcon = E.PostCreateAura
 			buffs.PostUpdateIcon = E.PostUpdateAura
 			self.Buffs = buffs	
-			
+		end
+		
+		if C["unitframes"].targetdebuffs then
 			local debuffs = CreateFrame("Frame", nil, self)
 			debuffs.num = C["unitframes"].playtarbuffperrow
 			debuffs.spacing = E.Scale(SPACING)
@@ -851,7 +861,11 @@ local function Shared(self, unit)
 				debuffs.size = ((C["unitframes"].playtarwidth - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)*E.ResScale
 			end
 			debuffs:SetHeight(debuffs.size)
-			debuffs:Point("BOTTOM", buffs, "TOP", 0, SPACING)	
+			if C["unitframes"].targetbuffs then
+				debuffs:Point("BOTTOM", self.Buffs, "TOP", 0, SPACING)
+			else
+				debuffs:Point("BOTTOM", self, "TOP", 0, SPACING)
+			end
 			debuffs.initialAnchor = 'BOTTOMRIGHT'
 			debuffs["growth-y"] = "UP"
 			debuffs["growth-x"] = "LEFT"
@@ -1208,45 +1222,49 @@ local function Shared(self, unit)
 		self:Tag(self.Name, '[Elvui:getnamecolor][Elvui:namemedium]')
 				
 		--Auras
-		local buffs = CreateFrame("Frame", nil, self)
-		buffs.num = 3
-		buffs:SetWidth(BOSS_WIDTH)
-		buffs.spacing = E.Scale(SPACING)
-		if POWERTHEME == true or USE_POWERBAR_OFFSET == true then
-			buffs.size = BOSS_HEIGHT - (POWERBAR_HEIGHT - BORDER - SPACING)
-		else
-			buffs.size = BOSS_HEIGHT
+		if (unit and unit:find("arena%d") and C["unitframes"].arenabuffs == true) or (unit and unit:find("boss%d") and C["unitframes"].bossbuffs == true) then
+			local buffs = CreateFrame("Frame", nil, self)
+			buffs.num = 3
+			buffs:SetWidth(BOSS_WIDTH)
+			buffs.spacing = E.Scale(SPACING)
+			if POWERTHEME == true or USE_POWERBAR_OFFSET == true then
+				buffs.size = BOSS_HEIGHT - (POWERBAR_HEIGHT - BORDER - SPACING)
+			else
+				buffs.size = BOSS_HEIGHT
+			end
+			buffs:Point("TOPRIGHT", self, "TOPLEFT", -4, 0)
+			buffs:SetHeight(buffs.size)
+			buffs.initialAnchor = 'RIGHT'
+			buffs["growth-y"] = "UP"	
+			buffs["growth-x"] = "LEFT"
+			buffs.PostCreateIcon = E.PostCreateAura
+			buffs.PostUpdateIcon = E.PostUpdateAura
+			if (unit and unit:find('arena%d')) then
+				buffs.CustomFilter = E.AuraFilter
+			end
+			self.Buffs = buffs	
 		end
-		buffs:Point("TOPRIGHT", self, "TOPLEFT", -4, 0)
-		buffs:SetHeight(buffs.size)
-		buffs.initialAnchor = 'RIGHT'
-		buffs["growth-y"] = "UP"	
-		buffs["growth-x"] = "LEFT"
-		buffs.PostCreateIcon = E.PostCreateAura
-		buffs.PostUpdateIcon = E.PostUpdateAura
-		if (unit and unit:find('arena%d')) then
-			buffs.CustomFilter = E.AuraFilter
-		end
-		self.Buffs = buffs	
 		
-		local debuffs = CreateFrame("Frame", nil, self)
-		debuffs.num = 3
-		debuffs:SetWidth(BOSS_WIDTH)
-		debuffs.spacing = E.Scale(2)
-		if POWERTHEME == true or USE_POWERBAR_OFFSET == true then
-			debuffs.size = BOSS_HEIGHT - (POWERBAR_HEIGHT - BORDER - SPACING)
-		else
-			debuffs.size = BOSS_HEIGHT
+		if (unit and unit:find("arena%d") and C["unitframes"].arenadebuffs == true) or (unit and unit:find("boss%d") and C["unitframes"].bossdebuffs == true) then
+			local debuffs = CreateFrame("Frame", nil, self)
+			debuffs.num = 3
+			debuffs:SetWidth(BOSS_WIDTH)
+			debuffs.spacing = E.Scale(2)
+			if POWERTHEME == true or USE_POWERBAR_OFFSET == true then
+				debuffs.size = BOSS_HEIGHT - (POWERBAR_HEIGHT - BORDER - SPACING)
+			else
+				debuffs.size = BOSS_HEIGHT
+			end
+			debuffs:SetHeight(debuffs.size)
+			debuffs:Point("TOPLEFT", self, "TOPRIGHT", 4, 0)
+			debuffs.initialAnchor = 'LEFT'
+			debuffs["growth-y"] = "UP"
+			debuffs["growth-x"] = "RIGHT"
+			debuffs.PostCreateIcon = E.PostCreateAura
+			debuffs.PostUpdateIcon = E.PostUpdateAura
+			debuffs.CustomFilter = E.AuraFilter
+			self.Debuffs = debuffs
 		end
-		debuffs:SetHeight(debuffs.size)
-		debuffs:Point("TOPLEFT", self, "TOPRIGHT", 4, 0)
-		debuffs.initialAnchor = 'LEFT'
-		debuffs["growth-y"] = "UP"
-		debuffs["growth-x"] = "RIGHT"
-		debuffs.PostCreateIcon = E.PostCreateAura
-		debuffs.PostUpdateIcon = E.PostUpdateAura
-		debuffs.CustomFilter = E.AuraFilter
-		self.Debuffs = debuffs
 
 		--Cast Bar
 		if C["unitframes"].unitcastbar == true then
