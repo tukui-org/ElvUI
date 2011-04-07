@@ -732,17 +732,15 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 		end
 		
 		playerFrame:SetHiddenHeight( -yOffset );
-		if C["unitframes"].playerauras == true then
-			if C["unitframes"].playershowonlydebuffs == true then
-				playerFrame:Point( "BOTTOMLEFT", Elv_player.Debuffs, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:Point( "BOTTOMRIGHT", Elv_player.Debuffs, "TOPRIGHT", xOffset2, yOffset );
-			else
-				playerFrame:Point( "BOTTOMLEFT", Elv_player.Buffs, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:Point( "BOTTOMRIGHT", Elv_player.Buffs, "TOPRIGHT", xOffset2, yOffset );
-			end
+		if Elv_player.Debuffs then
+			playerFrame:Point( "BOTTOMLEFT", Elv_player.Debuffs, "TOPLEFT", xOffset1, yOffset );
+			playerFrame:Point( "BOTTOMRIGHT", Elv_player.Debuffs, "TOPRIGHT", xOffset2, yOffset );	
+		elseif Elv_player.Buffs then
+			playerFrame:Point( "BOTTOMLEFT", Elv_player.Buffs, "TOPLEFT", xOffset1, yOffset );
+			playerFrame:Point( "BOTTOMRIGHT", Elv_player.Buffs, "TOPRIGHT", xOffset2, yOffset );		
 		else
 			playerFrame:Point( "BOTTOMLEFT", Elv_player, "TOPLEFT", xOffset1, yOffset );
-			playerFrame:Point( "BOTTOMRIGHT", Elv_player, "TOPRIGHT", xOffset2, yOffset );	
+			playerFrame:Point( "BOTTOMRIGHT", Elv_player, "TOPRIGHT", xOffset2, yOffset );			
 		end
 		
 		playerFrame:Show(); 
@@ -779,17 +777,15 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 		playerFrame:SetHiddenHeight( -yOffset );
 		local playerFrame = CreateAuraBarFrame( playerDataSource, Elv_player );
 		playerFrame:SetHiddenHeight( -yOffset );
-		if C["unitframes"].playerauras == true then
-			if C["unitframes"].playershowonlydebuffs == true then
-				playerFrame:Point( "BOTTOMLEFT", Elv_player.Debuffs, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:Point( "BOTTOMRIGHT", Elv_player.Debuffs, "TOPRIGHT", xOffset2, yOffset );
-			else
-				playerFrame:Point( "BOTTOMLEFT", Elv_player.Buffs, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:Point( "BOTTOMRIGHT", Elv_player.Buffs, "TOPRIGHT", xOffset2, yOffset );
-			end
+		if Elv_player.Debuffs then
+			playerFrame:Point( "BOTTOMLEFT", Elv_player.Debuffs, "TOPLEFT", xOffset1, yOffset );
+			playerFrame:Point( "BOTTOMRIGHT", Elv_player.Debuffs, "TOPRIGHT", xOffset2, yOffset );	
+		elseif Elv_player.Buffs then
+			playerFrame:Point( "BOTTOMLEFT", Elv_player.Buffs, "TOPLEFT", xOffset1, yOffset );
+			playerFrame:Point( "BOTTOMRIGHT", Elv_player.Buffs, "TOPRIGHT", xOffset2, yOffset );		
 		else
 			playerFrame:Point( "BOTTOMLEFT", Elv_player, "TOPLEFT", xOffset1, yOffset );
-			playerFrame:Point( "BOTTOMRIGHT", Elv_player, "TOPRIGHT", xOffset2, yOffset );	
+			playerFrame:Point( "BOTTOMRIGHT", Elv_player, "TOPRIGHT", xOffset2, yOffset );			
 		end
 		playerFrame:Show();
 
@@ -833,17 +829,16 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 		playerFrame:SetHiddenHeight( -yOffset );
 		local playerFrame = CreateAuraBarFrame( playerDataSource, Elv_player );
 		playerFrame:SetHiddenHeight( -yOffset );
-		if C["unitframes"].playerauras == true then
-			if C["unitframes"].playershowonlydebuffs == true then
-				playerFrame:Point( "BOTTOMLEFT", Elv_player.Debuffs, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:Point( "BOTTOMRIGHT", Elv_player.Debuffs, "TOPRIGHT", xOffset2, yOffset );
-			else
-				playerFrame:Point( "BOTTOMLEFT", Elv_player.Buffs, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:Point( "BOTTOMRIGHT", Elv_player.Buffs, "TOPRIGHT", xOffset2, yOffset );
-			end
+		
+		if Elv_player.Debuffs then
+			playerFrame:Point( "BOTTOMLEFT", Elv_player.Debuffs, "TOPLEFT", xOffset1, yOffset );
+			playerFrame:Point( "BOTTOMRIGHT", Elv_player.Debuffs, "TOPRIGHT", xOffset2, yOffset );	
+		elseif Elv_player.Buffs then
+			playerFrame:Point( "BOTTOMLEFT", Elv_player.Buffs, "TOPLEFT", xOffset1, yOffset );
+			playerFrame:Point( "BOTTOMRIGHT", Elv_player.Buffs, "TOPRIGHT", xOffset2, yOffset );		
 		else
 			playerFrame:Point( "BOTTOMLEFT", Elv_player, "TOPLEFT", xOffset1, yOffset );
-			playerFrame:Point( "BOTTOMRIGHT", Elv_player, "TOPRIGHT", xOffset2, yOffset );	
+			playerFrame:Point( "BOTTOMRIGHT", Elv_player, "TOPRIGHT", xOffset2, yOffset );			
 		end
 
 		playerFrame:Show();
@@ -894,17 +889,15 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 
 		local playerFrame = CreateAuraBarFrame( playerDataSource, Elv_player );
 		playerFrame:SetHiddenHeight( -yOffset );
-		if C["unitframes"].playerauras == true then
-			if C["unitframes"].playershowonlydebuffs == true then
-				playerFrame:Point( "BOTTOMLEFT", Elv_player.Debuffs, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:Point( "BOTTOMRIGHT", Elv_player.Debuffs, "TOPRIGHT", xOffset2, yOffset );
-			else
-				playerFrame:Point( "BOTTOMLEFT", Elv_player.Buffs, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:Point( "BOTTOMRIGHT", Elv_player.Buffs, "TOPRIGHT", xOffset2, yOffset );
-			end						
+		if Elv_player.Debuffs then
+			playerFrame:Point( "BOTTOMLEFT", Elv_player.Debuffs, "TOPLEFT", xOffset1, yOffset );
+			playerFrame:Point( "BOTTOMRIGHT", Elv_player.Debuffs, "TOPRIGHT", xOffset2, yOffset );	
+		elseif Elv_player.Buffs then
+			playerFrame:Point( "BOTTOMLEFT", Elv_player.Buffs, "TOPLEFT", xOffset1, yOffset );
+			playerFrame:Point( "BOTTOMRIGHT", Elv_player.Buffs, "TOPRIGHT", xOffset2, yOffset );		
 		else
 			playerFrame:Point( "BOTTOMLEFT", Elv_player, "TOPLEFT", xOffset1, yOffset );
-			playerFrame:Point( "BOTTOMRIGHT", Elv_player, "TOPRIGHT", xOffset2, yOffset );	
+			playerFrame:Point( "BOTTOMRIGHT", Elv_player, "TOPRIGHT", xOffset2, yOffset );			
 		end
 		playerFrame:Show();
 
@@ -916,18 +909,16 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 		trinketFrame:Show();
 		
 		local targetFrame = CreateAuraBarFrame( targetDataSource, Elv_target );
-		if C["unitframes"].targetauras == true then
+		if Elv_target.Debuffs then
 			targetFrame:Point( "BOTTOMLEFT", Elv_target.Debuffs, "TOPLEFT", xOffset1, yOffset );
 			targetFrame:Point( "BOTTOMRIGHT", Elv_target.Debuffs, "TOPRIGHT", xOffset2, yOffset );
+		elseif Elv_target.Buffs then
+			targetFrame:Point( "BOTTOMLEFT", Elv_target.Buffs, "TOPLEFT", xOffset1, yOffset );
+			targetFrame:Point( "BOTTOMRIGHT", Elv_target.Buffs, "TOPRIGHT", xOffset2, yOffset );		
 		else
-			if E.myclass == "DRUID" or E.myclass == "ROGUE" then
-				targetFrame:Point( "BOTTOMLEFT", Elv_target.Health, "TOPLEFT", xOffset1, yOffset + 14 );
-				targetFrame:Point( "BOTTOMRIGHT", Elv_target.Health, "TOPRIGHT", xOffset2, yOffset + 14 );				
-			else
-				targetFrame:Point( "BOTTOMLEFT", Elv_target.Health, "TOPLEFT", xOffset1, yOffset );
-				targetFrame:Point( "BOTTOMRIGHT", Elv_target.Health, "TOPRIGHT", xOffset2, yOffset );	
-			end
-		end
+			targetFrame:Point( "BOTTOMLEFT", Elv_target, "TOPLEFT", xOffset1, yOffset );
+			targetFrame:Point( "BOTTOMRIGHT", Elv_target, "TOPRIGHT", xOffset2, yOffset );		
+		end		
 		targetFrame:Show();
 	elseif ( LAYOUT == 5 ) then
 		local yOffset = 6;
@@ -960,17 +951,15 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 
 		local playerFrame = CreateAuraBarFrame( playerDataSource, Elv_player );
 		playerFrame:SetHiddenHeight( -yOffset );
-		if C["unitframes"].playerauras == true then
-			if C["unitframes"].playershowonlydebuffs == true then
-				playerFrame:Point( "BOTTOMLEFT", Elv_player.Debuffs, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:Point( "BOTTOMRIGHT", Elv_player.Debuffs, "TOPRIGHT", xOffset2, yOffset );
-			else
-				playerFrame:Point( "BOTTOMLEFT", Elv_player.Buffs, "TOPLEFT", xOffset1, yOffset );
-				playerFrame:Point( "BOTTOMRIGHT", Elv_player.Buffs, "TOPRIGHT", xOffset2, yOffset );
-			end
+		if Elv_player.Debuffs then
+			playerFrame:Point( "BOTTOMLEFT", Elv_player.Debuffs, "TOPLEFT", xOffset1, yOffset );
+			playerFrame:Point( "BOTTOMRIGHT", Elv_player.Debuffs, "TOPRIGHT", xOffset2, yOffset );	
+		elseif Elv_player.Buffs then
+			playerFrame:Point( "BOTTOMLEFT", Elv_player.Buffs, "TOPLEFT", xOffset1, yOffset );
+			playerFrame:Point( "BOTTOMRIGHT", Elv_player.Buffs, "TOPRIGHT", xOffset2, yOffset );		
 		else
 			playerFrame:Point( "BOTTOMLEFT", Elv_player, "TOPLEFT", xOffset1, yOffset );
-			playerFrame:Point( "BOTTOMRIGHT", Elv_player, "TOPRIGHT", xOffset2, yOffset );	
+			playerFrame:Point( "BOTTOMRIGHT", Elv_player, "TOPRIGHT", xOffset2, yOffset );			
 		end
 		playerFrame:Show();
 
