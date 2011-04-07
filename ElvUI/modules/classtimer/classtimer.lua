@@ -471,20 +471,14 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 						iconbackdrop:SetPoint("TOPLEFT", icon, "TOPLEFT", E.Scale(-2), E.Scale(2))
 						iconbackdrop:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
 						iconbackdrop:SetTemplate("Default")
-						if C["general"].sharpborders == true then
-							iconbackdrop.iborder:SetBackdropBorderColor(0, 0, 0, 0)
-							iconbackdrop.oborder:SetBackdropBorderColor(0, 0, 0, 0)
-						end
 						iconbackdrop:SetFrameLevel(result:GetFrameLevel() - 1)
 					end
 					
 					local stacks = result:CreateFontString( nil, "OVERLAY", nil );
 					stacks:SetFont( unpack( STACKS_FONT ) );
-					stacks:SetShadowColor( 0, 0, 0 );
+					stacks:SetShadowColor( 0, 0, 0, 0 );
 					stacks:SetShadowOffset( 1.25, -1.25 );
-					stacks:SetJustifyH( "CENTER" );
-					stacks:SetJustifyV( "CENTER" );
-					stacks:SetPoint( "CENTER", icon, "CENTER", 0, E.mult*2);
+					stacks:SetPoint( "CENTER", icon, "CENTER", 1, 0);
 					result.stacks = stacks;
 					
 
@@ -494,6 +488,7 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 				
 				local bar = CreateFrame( "StatusBar", nil, result, nil );
 				bar:SetStatusBarTexture( C["media"].normTex );
+				
 				if ( bit.band( ICON_POSITION, 2 ) == 2 or bit.band( ICON_POSITION, 4 ) == 4 ) then
 					bar:SetPoint( "TOPLEFT", result, "TOPLEFT", 0, 0 );
 					bar:SetPoint( "BOTTOMRIGHT", result, "BOTTOMRIGHT", 0, 0 );
@@ -506,6 +501,19 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 						bar:SetPoint( "BOTTOMRIGHT", result, "BOTTOMRIGHT", 0, 0 );					
 					end	
 				end
+				
+				bar.backdrop = CreateFrame("Frame", nil, bar)
+				bar.backdrop:Point("TOPLEFT", bar, "TOPLEFT", -2, 2)
+				bar.backdrop:Point("BOTTOMRIGHT", bar, "BOTTOMRIGHT", 2, -2)
+				bar.backdrop:SetTemplate("Transparent")
+				bar.backdrop:SetFrameLevel(bar:GetFrameLevel() - 1)
+				
+				if ICON_POSITION == 0 then
+					bar.backdrop:Point("TOPLEFT", bar, "TOPLEFT", -20, 2)
+				elseif ICON_POSITION == 1 then
+					bar.backdrop:Point("BOTTOMRIGHT", bar, "BOTTOMRIGHT", 20, -2)
+				end
+				
 				result.bar = bar;
 				
 				if ( SPARK ) then
@@ -529,19 +537,19 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 				local name = bar:CreateFontString( nil, "OVERLAY", nil );
 				name:SetFont( unpack( MASTER_FONT ) );
 				name:SetJustifyH( "LEFT" );
-				name:SetShadowColor( 0, 0, 0 );
+				name:SetShadowColor( 0, 0, 0, 0 );
 				name:SetShadowOffset( 1.25, -1.25 );
 				name:SetPoint( "TOPLEFT", bar, "TOPLEFT", TEXT_MARGIN, 0 );
-				name:SetPoint( "BOTTOMRIGHT", bar, "BOTTOMRIGHT", -45, 2 );
+				name:SetPoint( "BOTTOMRIGHT", bar, "BOTTOMRIGHT", -45, 0 );
 				result.name = name;
 				
 				local time = bar:CreateFontString( nil, "OVERLAY", nil );
 				time:SetFont( unpack( MASTER_FONT ) );
 				time:SetJustifyH( "RIGHT" );
-				time:SetShadowColor( 0, 0, 0 );
+				time:SetShadowColor( 0, 0, 0, 0 );
 				time:SetShadowOffset( 1.25, -1.25 );
 				time:SetPoint( "TOPLEFT", name, "TOPRIGHT", 0, 0 );
-				time:SetPoint( "BOTTOMRIGHT", bar, "BOTTOMRIGHT", -TEXT_MARGIN, 2 );
+				time:SetPoint( "BOTTOMRIGHT", bar, "BOTTOMRIGHT", -TEXT_MARGIN, 0 );
 				result.time = time;
 				
 				result.SetIcon = SetIcon;
@@ -665,7 +673,7 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 			result.background = background;
 			
 			local border = CreateFrame( "Frame", nil, result, nil );
-				border:SetTemplate("Default")
+				--border:SetTemplate("Default")
 				border:SetPoint("TOPLEFT", E.Scale(-2), E.Scale(2))
 				border:SetPoint("BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
 				if result:GetFrameLevel() - 1 > -1 then 
@@ -711,6 +719,9 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 		local yOffset = 6;
 		local xOffset1 = 0
 		local xOffset2 = -2
+		if ICON_POSITION == 0 or ICON_POSITION == 1 then
+			xOffset1 = 3
+		end		
 		if ICON_POSITION == 2 then
 			xOffset2 = -2
 			xOffset1 = xOffset1 + BAR_HEIGHT+8
@@ -749,7 +760,9 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 			playerDataSource:AddFilter( classFilter.player, PLAYER_BAR_COLOR, PLAYER_DEBUFF_COLOR );
 			playerDataSource:AddFilter( classFilter.procs, TRINKET_BAR_COLOR );
 		end
-
+		if ICON_POSITION == 0 or ICON_POSITION == 1 then
+			xOffset1 = 3
+		end
 		local yOffset = 6;
 		local xOffset1 = 0
 		local xOffset2 = -2
@@ -788,6 +801,10 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 		local yOffset = 6;
 		local xOffset1 = 0
 		local xOffset2 = -2
+		
+		if ICON_POSITION == 0 or ICON_POSITION == 1 then
+			xOffset1 = 3
+		end		
 		if ICON_POSITION == 2 then
 			xOffset2 = -2
 			xOffset1 = xOffset1 + BAR_HEIGHT+8
@@ -846,6 +863,11 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 		local yOffset = 6;
 		local xOffset1 = 0
 		local xOffset2 = -2
+		
+		if ICON_POSITION == 0 or ICON_POSITION == 1 then
+			xOffset1 = 3
+		end
+		
 		if ICON_POSITION == 2 then
 			xOffset2 = -2
 			xOffset1 = xOffset1 + BAR_HEIGHT+8
@@ -911,6 +933,10 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 		local yOffset = 6;
 		local xOffset1 = 0
 		local xOffset2 = -2
+		
+		if ICON_POSITION == 0 or ICON_POSITION == 1 then
+			xOffset1 = 3
+		end		
 		if ICON_POSITION == 2 then
 			xOffset2 = -2
 			xOffset1 = xOffset1 + BAR_HEIGHT+8

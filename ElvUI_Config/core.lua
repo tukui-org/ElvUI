@@ -1290,7 +1290,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								name = L["Bar Spacing"],
 								desc = L["Controls the spacing in between bars"],
 								type = "range",
-								min = 1, max = 5, step = 1,								
+								min = 5, max = 10, step = 1,								
 							},
 							icon_position = {
 								type = "range",

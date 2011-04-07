@@ -149,7 +149,7 @@ DB["raidframes"] = {
 DB["classtimer"] = {
 	["enable"] = true,
 	["bar_height"] = 17,
-	["bar_spacing"] = 1,
+	["bar_spacing"] = 5,
 	["icon_position"] = 2, -- 0 = left, 1 = right, 2 = Outside left, 3 = Outside Right
 	["layout"] = 4, --1 - both player and target auras in one frame right above player frame, 2 - player and target auras separated into two frames above player frame, 3 - player, target and trinket auras separated into three frames above player frame, 4 - player and trinket auras are shown above player frame and target auras are shown above target frame, 5 - Everything above player frame, no target debuffs.
 	["showspark"] = true,
