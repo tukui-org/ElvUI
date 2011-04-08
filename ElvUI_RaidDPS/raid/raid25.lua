@@ -105,7 +105,7 @@ local function Shared(self, unit)
 		local LFDRole = self:CreateTexture(nil, "OVERLAY")
 		LFDRole:Size(6, 6)
 		if C["raidframes"].griddps ~= true then
-			LFDRole:Point("BOTTOMRIGHT", health, "BOTTOMRIGHT", -2, -2)
+			LFDRole:Point("TOPRIGHT", self.Health, "TOPRIGHT", -2, -2)
 		else
 			LFDRole:Point("TOP", self.Name, "BOTTOM", 0, -1)
 		end
