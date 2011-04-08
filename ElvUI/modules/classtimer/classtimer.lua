@@ -724,7 +724,7 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 		end		
 		if ICON_POSITION == 2 then
 			xOffset2 = -2
-			xOffset1 = xOffset1 + BAR_HEIGHT+8
+			xOffset1 = xOffset1 + BAR_HEIGHT+7
 		end
 		if ICON_POSITION == 3 then
 			xOffset1 = 2
@@ -766,7 +766,7 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 		local xOffset2 = -2
 		if ICON_POSITION == 2 then
 			xOffset2 = -2
-			xOffset1 = xOffset1 + BAR_HEIGHT+8
+			xOffset1 = xOffset1 + BAR_HEIGHT+7
 		end
 		if ICON_POSITION == 3 then
 			xOffset1 = 2
@@ -803,7 +803,7 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 		end		
 		if ICON_POSITION == 2 then
 			xOffset2 = -2
-			xOffset1 = xOffset1 + BAR_HEIGHT+8
+			xOffset1 = xOffset1 + BAR_HEIGHT+7
 		end
 		if ICON_POSITION == 3 then
 			xOffset1 = 2
@@ -865,7 +865,7 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 		
 		if ICON_POSITION == 2 then
 			xOffset2 = -2
-			xOffset1 = xOffset1 + BAR_HEIGHT+8
+			xOffset1 = xOffset1 + BAR_HEIGHT+7
 		end
 		if ICON_POSITION == 3 then
 			xOffset1 = 2
@@ -930,7 +930,7 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 		end		
 		if ICON_POSITION == 2 then
 			xOffset2 = -2
-			xOffset1 = xOffset1 + BAR_HEIGHT+8
+			xOffset1 = xOffset1 + BAR_HEIGHT+7
 		end
 		if ICON_POSITION == 3 then
 			xOffset1 = 2
