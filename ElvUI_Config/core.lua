@@ -2258,10 +2258,15 @@ function ElvuiConfig.GenerateOptionsInternal()
 								desc = L["Icons below minimap, displayed inside instances"],								
 							},
 							announceinterrupt = {
-								type = "toggle",
+								type = "select",
 								order = 4,
 								name = L["Interrupt Announce"],
-								desc = L["Announce when you interrupt a spell"],								
+								desc = L["Announce when you interrupt a spell"],
+								values = {
+									["SAY"] = CHAT_MSG_SAY,
+									["PARTY"] = PARTY,
+									["RAID"] = RAID,
+								},
 							},
 							showthreat = {
 								type = "toggle",

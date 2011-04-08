@@ -275,7 +275,7 @@ DB["others"] = {
 	["buffreminder"] = true,                     -- this is now the new innerfire warning script for all armor/aspect class.
 	["remindersound"] = true,                      -- enable warning sound notification for reminder.
 	["raidbuffreminder"] = true,			-- buffbar below the minimap, important missing buffs	
-	["announceinterrupt"] = true,			-- announce in party/raid when you interrupt
+	["announceinterrupt"] = "PARTY",			-- announce in party/raid when you interrupt
 	["showthreat"] = true,                 -- enable the threat bar anchored to info right panel.
 	["minimapauras"] = true,				-- enable minimap auras		
 }
