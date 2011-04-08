@@ -74,6 +74,7 @@ DB["unitframes"] = {
 	["classbar"] = true,                    -- enable runebar/totembar/holypowerbar/soulshardbar/eclipsebar
 	["combat"] = false,						-- only show main unitframes when in combat/havetarget/or mouseover
 	["mini_powerbar"] = false,
+	["mini_classbar"] = true,
 	["powerbar_offset"] = 0,
 	["showboss"] = true,                   -- enable boss unit frames for PVELOL encounters.
 	["arena"] = true,                 -- enable elvui arena unitframes (requirement : Elvui unitframes enabled)	
