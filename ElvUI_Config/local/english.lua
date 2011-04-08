@@ -238,7 +238,8 @@ L["Raid Frames"] = true
 		L["Glow the unitframe to the unit's Reaction/Class when mouseover'd"] = true
 	L["25 Man Layout Party"] = true
 		L["Use the 25 man layout inside a party group"] = true
-
+	L["Display Debuffs"] = true
+	
 --Classtimer		
 L["Class Timers"] = true
 	L["CLASSTIMER_DESC"] = "Adjust settings for classtimers"

@@ -126,19 +126,21 @@ local function Shared(self, unit)
 			self.DebuffHighlightFilter = true
 			self.DebuffHighlightAlpha = 0.35
 		end
-
-		local debuffs = CreateFrame('Frame', nil, self)
-		debuffs:Point('TOP', self, 'BOTTOM', 0, -1)
-		debuffs:SetHeight(RAID_HEIGHT/3)
-		debuffs:SetWidth(RAID_WIDTH)
-		debuffs.spacing = 2
-		debuffs.num = 3
-		debuffs.size = ((RAID_WIDTH - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)
-		debuffs.initialAnchor = 'TOPLEFT'
-		debuffs.PostCreateIcon = E.PostCreateAura
-		debuffs.PostUpdateIcon = E.PostUpdateAura
-		debuffs.CustomFilter = E.AuraFilter	
-		self.Debuffs = debuffs
+		
+		if C["raidframes"].debuffs == true then
+			local debuffs = CreateFrame('Frame', nil, self)
+			debuffs:Point('TOP', self, 'BOTTOM', 0, -1)
+			debuffs:SetHeight(RAID_HEIGHT/3)
+			debuffs:SetWidth(RAID_WIDTH)
+			debuffs.spacing = 2
+			debuffs.num = 3
+			debuffs.size = ((RAID_WIDTH - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)
+			debuffs.initialAnchor = 'TOPLEFT'
+			debuffs.PostCreateIcon = E.PostCreateAura
+			debuffs.PostUpdateIcon = E.PostUpdateAura
+			debuffs.CustomFilter = E.AuraFilter	
+			self.Debuffs = debuffs
+		end
 		
 		--Heal Comm
 		if C["raidframes"].healcomm == true then

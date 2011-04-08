@@ -133,19 +133,21 @@ local function Shared(self, unit)
 		ReadyCheck:Size(C["raidframes"].fontsize, C["raidframes"].fontsize)
 		ReadyCheck:Point('LEFT', self.Name, 'RIGHT', 4, 0)
 		self.ReadyCheck = ReadyCheck
-
-		local debuffs = CreateFrame('Frame', nil, self)
-		debuffs:SetPoint('LEFT', self, 'RIGHT', 5, 0)
-		debuffs:SetHeight(PARTY_HEIGHT*.9)
-		debuffs:SetWidth(200)
-		debuffs.size = PARTY_HEIGHT*.9
-		debuffs.spacing = 2
-		debuffs.initialAnchor = 'LEFT'
-		debuffs.num = 5
-		debuffs.PostCreateIcon = E.PostCreateAura
-		debuffs.PostUpdateIcon = E.PostUpdateAura
-		debuffs.CustomFilter = E.AuraFilter
-		self.Debuffs = debuffs
+		
+		if C["raidframes"].debuffs == true then
+			local debuffs = CreateFrame('Frame', nil, self)
+			debuffs:SetPoint('LEFT', self, 'RIGHT', 5, 0)
+			debuffs:SetHeight(PARTY_HEIGHT*.9)
+			debuffs:SetWidth(200)
+			debuffs.size = PARTY_HEIGHT*.9
+			debuffs.spacing = 2
+			debuffs.initialAnchor = 'LEFT'
+			debuffs.num = 5
+			debuffs.PostCreateIcon = E.PostCreateAura
+			debuffs.PostUpdateIcon = E.PostUpdateAura
+			debuffs.CustomFilter = E.AuraFilter
+			self.Debuffs = debuffs
+		end
 		
 		if C["unitframes"].debuffhighlight == true then
 			local dbh = self:CreateTexture(nil, "OVERLAY")

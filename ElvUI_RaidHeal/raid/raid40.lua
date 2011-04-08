@@ -129,28 +129,30 @@ local function Shared(self, unit)
 	end
 	
 	-- Raid Debuffs
-	local RaidDebuffs = CreateFrame('Frame', nil, self)
-	RaidDebuffs:Height(RAID_HEIGHT*0.6)
-	RaidDebuffs:Width(RAID_HEIGHT*0.6)
-	RaidDebuffs:Point('BOTTOM', self, 'BOTTOM', 0, 1)
+	if C["raidframes"].debuffs == true then
+		local RaidDebuffs = CreateFrame('Frame', nil, self)
+		RaidDebuffs:Height(RAID_HEIGHT*0.6)
+		RaidDebuffs:Width(RAID_HEIGHT*0.6)
+		RaidDebuffs:Point('BOTTOM', self, 'BOTTOM', 0, 1)
+		
+		RaidDebuffs:SetTemplate("Default")
+		
+		RaidDebuffs.icon = RaidDebuffs:CreateTexture(nil, 'OVERLAY')
+		RaidDebuffs.icon:SetTexCoord(.1,.9,.1,.9)
+		RaidDebuffs.icon:Point("TOPLEFT", 2, -2)
+		RaidDebuffs.icon:Point("BOTTOMRIGHT", -2, 2)
+		
+		RaidDebuffs.count = RaidDebuffs:FontString('count', C["media"].uffont, C["general"].fontscale*0.75, "THINOUTLINE")
+		RaidDebuffs.count:Point('BOTTOMRIGHT', RaidDebuffs, 'BOTTOMRIGHT', 0, 2)
+		RaidDebuffs.count:SetTextColor(1, .9, 0)
+		
+		RaidDebuffs:FontString('time', C["media"].uffont, C["general"].fontscale*0.75, "THINOUTLINE")
+		RaidDebuffs.time:SetPoint('CENTER')
+		RaidDebuffs.time:SetTextColor(1, .9, 0)
+		
+		self.RaidDebuffs = RaidDebuffs	
+	end
 	
-	RaidDebuffs:SetTemplate("Default")
-	
-	RaidDebuffs.icon = RaidDebuffs:CreateTexture(nil, 'OVERLAY')
-	RaidDebuffs.icon:SetTexCoord(.1,.9,.1,.9)
-	RaidDebuffs.icon:Point("TOPLEFT", 2, -2)
-	RaidDebuffs.icon:Point("BOTTOMRIGHT", -2, 2)
-	
-	RaidDebuffs.count = RaidDebuffs:FontString('count', C["media"].uffont, C["general"].fontscale*0.75, "THINOUTLINE")
-	RaidDebuffs.count:Point('BOTTOMRIGHT', RaidDebuffs, 'BOTTOMRIGHT', 0, 2)
-	RaidDebuffs.count:SetTextColor(1, .9, 0)
-	
-	RaidDebuffs:FontString('time', C["media"].uffont, C["general"].fontscale*0.75, "THINOUTLINE")
-	RaidDebuffs.time:SetPoint('CENTER')
-	RaidDebuffs.time:SetTextColor(1, .9, 0)
-	
-	self.RaidDebuffs = RaidDebuffs	
-				
 	if C["raidframes"].showrange == true then
 		local range = {insideAlpha = 1, outsideAlpha = C["raidframes"].raidalphaoor}
 		self.Range = range

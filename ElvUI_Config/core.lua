@@ -1265,9 +1265,14 @@ function ElvuiConfig.GenerateOptionsInternal()
 								desc = L["Display special buffs on raidframes"],
 								disabled = function() return not db.raidframes.enable and not db.unitframes.enable end,
 							},
+							debuffs = {
+								type = "toggle",
+								order = 21,
+								name = L["Display Debuffs"],
+							},
 							buffindicatorsize = {
 								type = "range",
-								order = 21,
+								order = 22,
 								name = L["Raid Buff Display Size"],
 								desc = L["Size of the buff icon on raidframes"],
 								disabled = function() return not db.raidframes.enable and not db.unitframes.enable end,

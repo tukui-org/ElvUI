@@ -159,7 +159,7 @@ local function Shared(self, unit)
 		self.DebuffHighlightAlpha = 0.35
 	end
 	
-	if C["raidframes"].griddps ~= true then
+	if C["raidframes"].griddps ~= true and C["raidframes"].debuffs == true then
 		local debuffs = CreateFrame('Frame', nil, self)
 		debuffs:SetPoint('LEFT', self, 'RIGHT', E.Scale(6), 0)
 		debuffs:SetHeight(RAID_HEIGHT)
@@ -175,7 +175,7 @@ local function Shared(self, unit)
 		
 		-- Debuff Aura Filter
 		self.Debuffs.CustomFilter = E.AuraFilter		
-	else
+	elseif C["raidframes"].debuffs == true then
 		-- Raid Debuffs (big middle icon)
 		local RaidDebuffs = CreateFrame('Frame', nil, self)
 		RaidDebuffs:Height(RAID_HEIGHT*0.6)
