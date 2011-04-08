@@ -315,6 +315,7 @@ E.LoadUFFunctions = function(layout)
 
 	E.PostUpdateHealth = function(health, unit, min, max)
 		local r, g, b = health:GetStatusBarColor()
+		health.defaultColor = {r, g, b}
 		
 		if C["general"].classcolortheme == true then
 			health.backdrop:SetBackdropBorderColor(r, g, b)

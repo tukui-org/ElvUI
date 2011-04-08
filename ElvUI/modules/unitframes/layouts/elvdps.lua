@@ -183,8 +183,8 @@ local function Shared(self, unit)
 				portrait:SetFrameStrata("LOW")
 				portrait.backdrop = CreateFrame("Frame", nil, portrait)
 				portrait.backdrop:SetTemplate("Default")
-				if MINI_CLASSBAR then
-					portrait.backdrop:Point("TOPLEFT", self, "TOPLEFT", 0, -(SPACING+(POWERBAR_HEIGHT/2)))
+				if MINI_CLASSBAR and C["unitframes"].classbar == true and (E.myclass == "PALADIN" or E.myclass == "SHAMAN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK") then
+					portrait.backdrop:Point("TOPLEFT", self, "TOPLEFT", 0, -((POWERBAR_HEIGHT/2)))
 				else
 					portrait.backdrop:SetPoint("TOPLEFT", self, "TOPLEFT")
 				end
@@ -286,12 +286,7 @@ local function Shared(self, unit)
 		-- Debuff Highlight
 		if C["unitframes"].debuffhighlight == true then
 			local dbh = self:CreateTexture(nil, "OVERLAY")
-			if POWERTHEME == true or USE_POWERBAR_OFFSET == true then
-				dbh:SetPoint("TOPLEFT")
-				dbh:SetPoint("BOTTOMRIGHT", health.backdrop, "BOTTOMRIGHT")
-			else
-				dbh:SetAllPoints()
-			end
+			dbh:SetAllPoints(self.Health.backdrop)
 			dbh:SetTexture(C["media"].blank)
 			dbh:SetBlendMode("ADD")
 			dbh:SetVertexColor(0,0,0,0)
@@ -346,19 +341,21 @@ local function Shared(self, unit)
 		combat:SetVertexColor(0.69, 0.31, 0.31)
 		self.Combat = combat		
 		
-		--Leader Icon
-		local leader = self:CreateTexture(nil, "OVERLAY")
-		leader:Size(14)
-		leader:Point("TOPRIGHT", -4, 8)
-		self.Leader = leader
+		if not MINI_CLASSBAR then
+			--Leader Icon
+			local leader = self:CreateTexture(nil, "OVERLAY")
+			leader:Size(14)
+			leader:Point("TOPRIGHT", self.Health.backdrop, "TOPRIGHT", -4, 8)
+			self.Leader = leader
 		
-		--Master Looter Icon
-		local ml = self:CreateTexture(nil, "OVERLAY")
-		ml:Size(14)
-		self.MasterLooter = ml
-		self:RegisterEvent("PARTY_LEADER_CHANGED", E.MLAnchorUpdate)
-		self:RegisterEvent("PARTY_MEMBERS_CHANGED", E.MLAnchorUpdate)	
-			
+			--Master Looter Icon
+			local ml = self:CreateTexture(nil, "OVERLAY")
+			ml:Size(14)
+			self.MasterLooter = ml
+			self:RegisterEvent("PARTY_LEADER_CHANGED", E.MLAnchorUpdate)
+			self:RegisterEvent("PARTY_MEMBERS_CHANGED", E.MLAnchorUpdate)	
+		end
+		
 		--Aggro Glow
 		if C["unitframes"].displayaggro == true then
 			table.insert(self.__elements, E.UpdateThreat)
@@ -815,12 +812,7 @@ local function Shared(self, unit)
 		local POWERBAR_HEIGHT = 10*E.ResScale
 		local CASTBAR_HEIGHT = 20*E.ResScale
 		local CASTBAR_WIDTH = C["unitframes"].casttargetwidth*E.ResScale
-		local PORTRAIT_WIDTH = 45*E.ResScale
-		local DEPTH = 0
-		
-		if MINI_CLASSBAR then	
-			DEPTH = -((POWERBAR_HEIGHT/2))
-		end
+		local PORTRAIT_WIDTH = 45*E.ResScale		
 		
 		if C["unitframes"].charportraithealth == true or C["unitframes"].charportrait == false then
 			PORTRAIT_WIDTH = 0
@@ -839,7 +831,7 @@ local function Shared(self, unit)
 
 		--Health Bar
 		local health = E.ContructHealthBar(self, true, true)
-		health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER+DEPTH)
+		health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
 		
 		if USE_POWERBAR_OFFSET then
 			health:Point("BOTTOMLEFT", self, "BOTTOMLEFT", BORDER+POWERBAR_OFFSET, BORDER+POWERBAR_OFFSET)
@@ -899,13 +891,13 @@ local function Shared(self, unit)
 				health.bg:SetParent(overlay)
 			else
 				--Reposition Health
-				health:Point("TOPRIGHT", -(PORTRAIT_WIDTH+BORDER), -BORDER+DEPTH)
+				health:Point("TOPRIGHT", -(PORTRAIT_WIDTH+BORDER), -BORDER)
 				
 				local portrait = CreateFrame("PlayerModel", nil, self)
 				portrait:SetFrameStrata("LOW")
 				portrait.backdrop = CreateFrame("Frame", nil, portrait)
 				portrait.backdrop:SetTemplate("Default")
-				portrait.backdrop:SetPoint("TOPRIGHT", self, "TOPRIGHT", 0, DEPTH)
+				portrait.backdrop:SetPoint("TOPRIGHT", self, "TOPRIGHT", 0, 0)
 				if POWERTHEME == true then
 					portrait.backdrop:Point("BOTTOMLEFT", health.backdrop, "BOTTOMRIGHT", SPACING, 0)
 				else
@@ -983,12 +975,7 @@ local function Shared(self, unit)
 		-- Debuff Highlight
 		if C["unitframes"].debuffhighlight == true then
 			local dbh = self:CreateTexture(nil, "OVERLAY")
-			if POWERTHEME == true or USE_POWERBAR_OFFSET == true then
-				dbh:SetPoint("TOPLEFT")
-				dbh:SetPoint("BOTTOMRIGHT", health.backdrop, "BOTTOMRIGHT")
-			else
-				dbh:SetAllPoints()
-			end
+			dbh:SetAllPoints(self.Health.backdrop)
 			dbh:SetTexture(C["media"].blank)
 			dbh:SetBlendMode("ADD")
 			dbh:SetVertexColor(0,0,0,0)
@@ -1087,15 +1074,44 @@ local function Shared(self, unit)
 			combo:HookScript("OnHide", function()
 				health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+PORTRAIT_WIDTH), -BORDER)
 			end)
+		else
+			combo:HookScript("OnShow", function()
+				if ElementsPos and DPSComboBar and ElementsPos["DPSComboBar"]["moved"] and E.CreatedMoveEleFrames["DPSComboBar"] then return end
+				combo:ClearAllPoints()
+				combo:Point("CENTER", health.backdrop, "TOP", -(BORDER*3 + 6), 0)
+
+				if self.Portrait and self.Portrait.backdrop then
+					health:Point("TOPRIGHT", self, "TOPRIGHT", -(PORTRAIT_WIDTH+BORDER), -BORDER-(POWERBAR_HEIGHT/2))
+					self.Portrait.backdrop:SetPoint("TOPRIGHT", self, "TOPRIGHT", 0, -(POWERBAR_HEIGHT/2))
+				else
+					health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER-(POWERBAR_HEIGHT/2))
+				end
+			end)
 			
-			combo:SetScript("OnUpdate", function()
-				if C["general"].classcolortheme == true and combo:IsShown() then
-					combo.backdrop:SetBackdropBorderColor(self.Health:GetStatusBarColor())
-				elseif C["general"].classcolortheme ~= true then
-					combo:SetScript("OnUpdate", nil)
-				end			
+			combo:HookScript("OnHide", function()
+				if self.Portrait and self.Portrait.backdrop then
+					self.Portrait.backdrop:SetPoint("TOPRIGHT", self, "TOPRIGHT", 0, 0)
+					health:Point("TOPRIGHT", self, "TOPRIGHT", -(PORTRAIT_WIDTH+BORDER), -BORDER)
+				else
+					health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
+				end				
 			end)
 		end
+		
+		combo:SetScript("OnUpdate", function()
+			if C["general"].classcolortheme == true and combo:IsShown() then
+				if combo.backdrop then
+					combo.backdrop:SetBackdropBorderColor(unpack(self.Health.defaultColor))
+				else
+					for i=1, 5 do
+						combo[i].backdrop:SetBackdropBorderColor(unpack(self.Health.defaultColor))
+					end
+				end
+			elseif C["general"].classcolortheme ~= true then
+				combo:SetScript("OnUpdate", nil)
+			end			
+		end)
+			
 		combo:Hide()
 		
 		combo.Override = E.ComboDisplay
@@ -1193,12 +1209,7 @@ local function Shared(self, unit)
 		-- Debuff Highlight
 		if C["unitframes"].debuffhighlight == true then
 			local dbh = self:CreateTexture(nil, "OVERLAY")
-			if POWERTHEME == true or USE_POWERBAR_OFFSET == true then
-				dbh:SetPoint("TOPLEFT")
-				dbh:SetPoint("BOTTOMRIGHT", health.backdrop, "BOTTOMRIGHT")
-			else
-				dbh:SetAllPoints()
-			end
+			dbh:SetAllPoints(self.Health.backdrop)
 			dbh:SetTexture(C["media"].blank)
 			dbh:SetBlendMode("ADD")
 			dbh:SetVertexColor(0,0,0,0)
