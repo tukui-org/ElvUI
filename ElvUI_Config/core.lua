@@ -33,14 +33,15 @@ function ElvuiConfig:LoadDefaults()
 				DebuffWhiteList = E["DebuffWhiteList"],
 				ArenaBuffWhiteList = E["ArenaBuffWhiteList"],
 				PlateBlacklist = E["PlateBlacklist"],
+				HealerBuffIDs = E["HealerBuffIDs"],
+				DPSBuffIDs = E["DPSBuffIDs"],
+				PetBuffs = E["PetBuffs"],
 			},
 		},
 	}
 end	
 
-function ElvuiConfig:OnInitialize()
-	self:RegisterEvent("PLAYER_LOGIN")
-	
+function ElvuiConfig:OnInitialize()	
 	ElvuiConfig:RegisterChatCommand("ec", "ShowConfig")
 	ElvuiConfig:RegisterChatCommand("elvui", "ShowConfig")
 	
@@ -52,7 +53,7 @@ function ElvuiConfig:ShowConfig(arg)
 	InterfaceOptionsFrame_OpenToCategory(self.optionsFrames.ElvuiConfig)
 end
 
-function ElvuiConfig:PLAYER_LOGIN()
+function ElvuiConfig:Load()
 	self:LoadDefaults()
 
 	-- Create savedvariables
@@ -120,40 +121,111 @@ function ElvuiConfig.GenerateOptionsInternal()
 		L["DATATEXT_POS"] = L["DATATEXT_POS2"]
 	end
 	
+	local RaidBuffs = {
+		["HealerBuffIDs"] = true,
+		["DPSBuffIDs"] = true,
+		["PetBuffs"] = true
+	}
+	
 	local function CreateFilterTable(tab)
 		local spelltable = db.spellfilter[tab]
 		if not spelltable then error("db.spellfilter could not find value 'tab'") return {} end
 		local newtable = {}
 		
-		local ORDER = 1
-		if tab == "RaidDebuffs" then --RaidDebuffs require a reloadui
+		if RaidBuffs[tab] then
+			if not spelltable[E.myclass] then spelltable[E.myclass] = {} end
+			newtable["SelectSpell"] = {
+				name = L["Select Spell"],
+				type = "select",
+				order = 1,
+				values = {},
+				set = function(info, value) 
+					db.spellfilter[ info[#info] ] = value;
+					local config = LibStub("AceConfigRegistry-3.0"):GetOptionsTable("ElvuiConfig", "dialog", "MyLib-1.2")
+					local curfilter = db.spellfilter.FilterPicker
+		
+					config.args.spellfilter.args.SpellListTable.args = CreateFilterTable(curfilter)
+				end,
+			}
+			
+			for i, spell in pairs(spelltable[E.myclass]) do
+				local id = spell["id"]
+				
+				newtable["SelectSpell"]["values"][id] = GetSpellInfo(id)
+				
+				if id == db.spellfilter["SelectSpell"] then
+					newtable["SpellGroup"] = {
+						order = 2,
+						type = "group",
+						name = GetSpellInfo(id).." ("..id..")",
+						guiInline = true,				
+						args = {
+							Enabled = {
+								type = "toggle",
+								order = 1,
+								name = L["Enabled"],
+								get = function(info) return db.spellfilter[tab][E.myclass][i]["enabled"] end,
+								set = function(info, value) db.spellfilter[tab][E.myclass][i]["enabled"] = value; StaticPopup_Show("CFG_RELOAD") end,										
+							},
+							Position = {
+								type = "select",
+								order = 2,
+								name = L["Position"],
+								desc = L["Position where the buff appears on the frame"],
+								get = function(info) return db.spellfilter[tab][E.myclass][i]["point"] end,
+								set = function(info, value) db.spellfilter[tab][E.myclass][i]["point"] = value; StaticPopup_Show("CFG_RELOAD") end,		
+								values = {
+									["TOPLEFT"] = "TOPLEFT",
+									["TOP"] = "TOP",
+									["TOPRIGHT"] = "TOPRIGHT",
+									["LEFT"] = "LEFT",
+									["RIGHT"] = "RIGHT",
+									["BOTTOMLEFT"] = "BOTTOMLEFT",
+									["BOTTOM"] = "BOTTOM",
+									["BOTTOMRIGHT"] = "BOTTOMRIGHT",
+								},
+							},
+							anyUnit = {
+								type = "toggle",
+								order = 3,
+								name = L["Any Unit"],
+								desc = L["Display the buff if cast by anyone?"],
+								get = function(info) return db.spellfilter[tab][E.myclass][i]["anyUnit"] end,
+								set = function(info, value) db.spellfilter[tab][E.myclass][i]["anyUnit"] = value; StaticPopup_Show("CFG_RELOAD") end,									
+							},
+							Color = {
+								type = "color",
+								order = 4,
+								name = L["Color"],
+								hasAlpha = false,
+								get = function(info)
+									local t = db.spellfilter[tab][E.myclass][i]["color"]
+									return t.r, t.g, t.b, t.a
+								end,
+								set = function(info, r, g, b)
+									db.spellfilter[tab][E.myclass][i]["color"] = {}
+									local t = db.spellfilter[tab][E.myclass][i]["color"]
+									t.r, t.g, t.b = r, g, b
+									StaticPopup_Show("CFG_RELOAD")
+								end,																	
+							},					
+						},
+					}
+				end
+			end	
+		else
 			for spell, value in pairs(spelltable) do
 				if db.spellfilter[tab][spell] ~= nil then
 					newtable[spell] = {
-						order = ORDER,
 						name = spell,
 						type = "toggle",
 						get = function(info) if db.spellfilter[tab][spell] then return true else return false end end,
 						set = function(info, value) db.spellfilter[tab][spell] = value; E[tab] = db.spellfilter[tab]; StaticPopup_Show("CFG_RELOAD") end,
 					}
-					ORDER = ORDER + 1
 				end
 			end
-		else
-			for spell, value in pairs(spelltable) do
-				if db.spellfilter[tab][spell] ~= nil then
-					newtable[spell] = {
-						order = ORDER,
-						name = spell,
-						type = "toggle",
-						get = function(info) if db.spellfilter[tab][spell] then return true else return false end end,
-						set = function(info, value) db.spellfilter[tab][spell] = value; E[tab] = db.spellfilter[tab] end,
-					}
-					ORDER = ORDER + 1
-				end
-			end		
 		end
-				
+		
 		return newtable
 	end		
 				
@@ -170,6 +242,12 @@ function ElvuiConfig.GenerateOptionsInternal()
 			return L["These debuffs only get displayed on the target unit when the unit happens to be an enemy player."]
 		elseif db.spellfilter.FilterPicker == "RaidDebuffs" then
 			return L["These debuffs will be displayed on your raid frames in addition to any debuff that is dispellable."]
+		elseif db.spellfilter.FilterPicker == "HealerBuffIDs" then
+			return L["These buffs are displayed on the healer raid and party layouts"]
+		elseif db.spellfilter.FilterPicker == "DPSBuffIDs" then
+			return L["These buffs are displayed on the DPS raid and party layouts"]
+		elseif db.spellfilter.FilterPicker == "PetBuffs" then
+			return L["These buffs are displayed on the pet frame"]
 		else
 			return ""
 		end
@@ -179,7 +257,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 		if db.spellfilter.FilterPicker == "PlateBlacklist" then
 			return L["Nameplate Names"]
 		else
-			return L["Aura Names"]
+			return L["Auras"]
 		end	
 	end
 	
@@ -190,11 +268,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 		config.args.spellfilter.args.SpellListTable.args = CreateFilterTable(curfilter)
 		config.args.spellfilter.args.FilterDesc.name = GetFilterDesc()
 		config.args.spellfilter.args.SpellListTable.name = GetFilterName()
-		
-		
 
-		
-		LibStub("AceConfigRegistry-3.0"):NotifyChange("ElvuiConfig")
 		collectgarbage("collect") -- Memory dump
 	end
 	
@@ -2086,6 +2160,9 @@ function ElvuiConfig.GenerateOptionsInternal()
 							["TargetPVPOnly"] = L["Target Debuffs (PvP Only)"],
 							["ArenaBuffWhiteList"] = L["Arena Buffs"],
 							["PlateBlacklist"] = L["Nameplate Blacklist"],
+							["HealerBuffIDs"] = L["Raid Buffs (Heal)"],
+							["DPSBuffIDs"] = L["Raid Buffs (DPS)"],
+							["PetBuffs"] = L["Pet Buffs"],
 						},						
 					},			
 					spacer = {
@@ -2101,41 +2178,26 @@ function ElvuiConfig.GenerateOptionsInternal()
 					},						
 					NewName = {
 						type = 'input',
-						name = L["New name"],
-						desc = L["Add a new name to the list."],
+						name = function() if RaidBuffs[db.spellfilter.FilterPicker] then return L["New ID"] else return L["New name"] end end,
+						desc = L["Add a new spell name / ID to the list."],
 						get = function(info) return "" end,
 						set = function(info, value)
-							local name_list = db.spellfilter[db.spellfilter.FilterPicker]
-							name_list[value] = true
-							UpdateSpellFilter()
-							E[name_list] = db.spellfilter[name_list]
-							if name_list == "RaidDebuffs" then
+							if RaidBuffs[db.spellfilter.FilterPicker] then
+								if not GetSpellInfo(value) then
+									print(L["Not valid spell id"])
+								else
+									db.spellfilter[db.spellfilter.FilterPicker][E.myclass][tonumber(value)] = {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = false}
+									StaticPopup_Show("CFG_RELOAD")
+								end
+							else
+								local name_list = db.spellfilter[db.spellfilter.FilterPicker]
+								name_list[value] = true
+								UpdateSpellFilter()
+								E[name_list] = db.spellfilter[name_list]
 								StaticPopup_Show("CFG_RELOAD")
 							end
 						end,
 						order = 5,
-					},
-					DeleteName = {
-						type = 'input',
-						name = L["Remove name"],
-						desc = L["Remove a name from the list."],
-						get = function(info) return "" end,
-						set = function(info, value)
-							local name_list = db.spellfilter[db.spellfilter.FilterPicker]
-							
-							if db.spellfilter[db.spellfilter.FilterPicker][value] == nil then
-								print(L["Spell not found in list"])
-							else
-								name_list[value] = nil
-								UpdateSpellFilter()
-								E[name_list] = db.spellfilter[name_list]
-								
-								if name_list == "RaidDebuffs" then
-									StaticPopup_Show("CFG_RELOAD")
-								end
-							end
-						end,
-						order = 6,
 					},
 					SpellListTable = {
 						order = 7,

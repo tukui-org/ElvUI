@@ -952,27 +952,17 @@ E.LoadUFFunctions = function(layout)
 
 		local buffs = {}
 		if IsAddOnLoaded("Elvui_RaidDPS") then
-			if (E.DPSBuffIDs["ALL"]) then
-				for key, value in pairs(E.DPSBuffIDs["ALL"]) do
-					tinsert(buffs, value)
-				end
-			end
-
 			if (E.DPSBuffIDs[E.myclass]) then
 				for key, value in pairs(E.DPSBuffIDs[E.myclass]) do
 					tinsert(buffs, value)
 				end
 			end	
 		else
-			if (E.HealerBuffIDs["ALL"]) then
-				for key, value in pairs(E.HealerBuffIDs["ALL"]) do
-					tinsert(buffs, value)
-				end
-			end
-
 			if (E.HealerBuffIDs[E.myclass]) then
 				for key, value in pairs(E.HealerBuffIDs[E.myclass]) do
-					tinsert(buffs, value)
+					if value["enabled"] == true then
+						tinsert(buffs, value)
+					end
 				end
 			end
 		end
@@ -987,17 +977,18 @@ E.LoadUFFunctions = function(layout)
 		if (buffs) then
 			for key, spell in pairs(buffs) do
 				local icon = CreateFrame("Frame", nil, auras)
-				icon.spellID = spell[1]
-				icon.anyUnit = spell[4]
+				icon.spellID = spell["id"]
+				icon.anyUnit = spell["anyUnit"]
 				icon:SetWidth(E.Scale(C["raidframes"].buffindicatorsize))
 				icon:SetHeight(E.Scale(C["raidframes"].buffindicatorsize))
-				icon:SetPoint(spell[2], 0, 0)
+				icon:SetPoint(spell["point"], 0, 0)
 
 				local tex = icon:CreateTexture(nil, "OVERLAY")
 				tex:SetAllPoints(icon)
 				tex:SetTexture(C["media"].blank)
-				if (spell[3]) then
-					tex:SetVertexColor(unpack(spell[3]))
+				if (spell["color"]) then
+					local color = spell["color"]
+					tex:SetVertexColor(color.r, color.g, color.b)
 				else
 					tex:SetVertexColor(0.8, 0.8, 0.8)
 				end
@@ -1010,10 +1001,10 @@ E.LoadUFFunctions = function(layout)
 
 				local count = icon:CreateFontString(nil, "OVERLAY")
 				count:SetFont(C["media"].uffont, 8, "THINOUTLINE")
-				count:SetPoint("CENTER", unpack(E.countOffsets[spell[2]]))
+				count:SetPoint("CENTER", unpack(E.countOffsets[spell["point"]]))
 				icon.count = count
 
-				auras.icons[spell[1]] = icon
+				auras.icons[spell["id"]] = icon
 			end
 		end
 
@@ -1027,7 +1018,7 @@ E.LoadUFFunctions = function(layout)
 	ORD.FilterDispellableDebuff = true
 	ORD.MatchBySpellName = true
 
-	ORD:RegisterDebuffs(E.RaidDebuffsList)	
+	ORD:RegisterDebuffs(E.RaidDebuffs)	
 	
 	E.LoadUFFunctions = nil
 end

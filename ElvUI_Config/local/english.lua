@@ -444,7 +444,7 @@ L["Misc"] = true
 		
 L["Filters"] = true
 L["SPELL_FILTER_DESC"] = "Filter everything from spell names to nameplate names."
-	L["Aura Names"] = true
+	L["Auras"] = true
 	L["Nameplate Names"] = true
 	L["Choose Filter"] = true
 		L["Choose the filter you want to modify."] = true
@@ -454,20 +454,34 @@ L["SPELL_FILTER_DESC"] = "Filter everything from spell names to nameplate names.
 		L["Arena Buffs"] = true
 		L["Target Debuffs (PvP Only)"] = true
 		L["Nameplate Blacklist"] = true
-		
+		L["Raid Buffs (Heal)"] = true
+		L["Raid Buffs (DPS)"] = true
+		L["Pet Buffs"] = true
 	L["Filter whether or not a nameplate is shown by the name of the nameplate"] = true
 	L["Filter the buffs that get displayed on arena units."] = true
 	L["Set buffs that will never get displayed."] = true
 	L["These debuffs will always get displayed on the Target Frame, Arena Frames, and Nameplates."] = true
 	L["These debuffs only get displayed on the target unit when the unit happens to be an enemy player."] = true
 	L["These debuffs will be displayed on your raid frames in addition to any debuff that is dispellable."] = true
+	L["These buffs are displayed on the healer raid and party layouts"] = true
+	L["These buffs are displayed on the DPS raid and party layouts"] = true
+	L["These buffs are displayed on the pet frame"] = true
 	
 	L["New name"] = true
-		L["Add a new name to the list."] = true
-	L["Remove name"] = true
-		L["Remove a name from the list."] = true
+		L["Add a new spell name / ID to the list."] = true
+	L["New ID"] = true
+	L["Not valid spell id"] = true
+	
 	L["You may only delete spells that you have added. Default spells can be disabled by unchecking the option"] = true
 	L["Spell not found in list"] = true
+	L["Select Spell"] = true
+	L["Enabled"] = true
+	L["Color"] = true
+	L["Position"] = true
+		L["Position where the buff appears on the frame"] = true
+	L["Any Unit"] = true
+		L["Display the buff if cast by anyone?"] = true
+	
 	
 --Profiles
 L["Profiles"] = true
