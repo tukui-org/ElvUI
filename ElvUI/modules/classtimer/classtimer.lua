@@ -164,10 +164,14 @@ function E.LoadClassTimers(Elv_player, Elv_target)
 			
 			for _, v in pairs( filter ) do
 				local clone = { };
+				
+				if v.color then
+					clone.color = {v.color.r, v.color.g, v.color.b}
+				end
+
 				clone.enabled = v.enabled;
 				clone.id = v.id;
 				clone.castByAnyone = v.castByAnyone;
-				clone.color = v.color;
 				clone.unitType = v.unitType;
 				clone.castSpellId = v.castSpellId;
 				

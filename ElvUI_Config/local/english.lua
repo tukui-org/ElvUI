@@ -457,6 +457,8 @@ L["SPELL_FILTER_DESC"] = "Filter everything from spell names to nameplate names.
 		L["Raid Buffs (Heal)"] = true
 		L["Raid Buffs (DPS)"] = true
 		L["Pet Buffs"] = true
+		L["Class Timer (Shared)"] = true
+		
 	L["Filter whether or not a nameplate is shown by the name of the nameplate"] = true
 	L["Filter the buffs that get displayed on arena units."] = true
 	L["Set buffs that will never get displayed."] = true
@@ -481,7 +483,13 @@ L["SPELL_FILTER_DESC"] = "Filter everything from spell names to nameplate names.
 		L["Position where the buff appears on the frame"] = true
 	L["Any Unit"] = true
 		L["Display the buff if cast by anyone?"] = true
-	
+	L["Unit Type"] = true
+		L["Only display on this type of unit"] = true
+		L["All"] = true
+		L["Enemy"] = true
+		L["Friendly"] = true
+	L["Show Ticks"] = true
+		L["Fill only if you want to see line on bar that indicates if its safe to start casting spell and not clip the last tick, also note that this can be different from aura id."] = true
 	
 --Profiles
 L["Profiles"] = true

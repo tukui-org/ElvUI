@@ -51,6 +51,9 @@ if IsAddOnLoaded("ElvUI_Config") and ElvConfig then
 		
 		--PetBuffIDs
 		E.PetBuffs = ElvuiConfig.db.profile.spellfilter.PetBuffs
+		
+		--ClassTimers
+		TRINKET_FILTER = ElvuiConfig.db.profile.spellfilter.TRINKET_FILTER
 end
 
 
