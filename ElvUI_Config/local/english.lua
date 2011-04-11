@@ -474,6 +474,9 @@ L["SPELL_FILTER_DESC"] = "Filter everything from spell names to nameplate names.
 	
 	L["New name"] = true
 		L["Add a new spell name / ID to the list."] = true
+	L["Remove ID"] = true
+	L["Remove Name"] = true
+		L["Remove a name or ID from the list."] = true
 	L["New ID"] = true
 	L["Not valid spell id"] = true
 	

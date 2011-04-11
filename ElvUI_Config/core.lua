@@ -2442,6 +2442,86 @@ function ElvuiConfig.GenerateOptionsInternal()
 						end,
 						order = 5,
 					},
+					DeleteName = {
+						type = 'input',
+						name = function() if ClassTimerShared[db.spellfilter.FilterPicker] or ClassTimer[db.spellfilter.FilterPicker] or RaidBuffs[db.spellfilter.FilterPicker] then return L["Remove ID"] else return L["Remove Name"] end end,
+						desc = L["Remove a name or ID from the list."],
+						get = function(info) return "" end,
+						set = function(info, value)
+							if ClassTimer[db.spellfilter.FilterPicker] then
+								if not GetSpellInfo(value) then
+									print(L["Not valid spell id"])
+								elseif not db.spellfilter["SelectSpellFilter"] then
+									print(L["You must select a filter first"])
+								else
+									local curfilter = db.spellfilter["SelectSpellFilter"]
+									local match
+									for x, y in pairs (db.spellfilter[db.spellfilter.FilterPicker][E.myclass][curfilter]) do
+										if y["id"] == tonumber(value) then
+											match = y
+											db.spellfilter[db.spellfilter.FilterPicker][E.myclass][curfilter][x] = nil
+										end
+									end
+									if match == nil then
+										print(L["Spell not found in list"])
+									else
+										UpdateSpellFilter()								
+										StaticPopup_Show("CFG_RELOAD")									
+									end	
+								end	
+							elseif ClassTimerShared[db.spellfilter.FilterPicker] then
+								if not GetSpellInfo(value) then
+									print(L["Not valid spell id"])
+								else
+									local match
+									for x, y in pairs (db.spellfilter[db.spellfilter.FilterPicker]) do
+										if y["id"] == tonumber(value) then
+											match = y
+											db.spellfilter[db.spellfilter.FilterPicker][x] = nil
+										end
+									end
+									if match == nil then
+										print(L["Spell not found in list"])
+									else
+										UpdateSpellFilter()								
+										StaticPopup_Show("CFG_RELOAD")									
+									end	
+								end	
+							elseif RaidBuffs[db.spellfilter.FilterPicker] then
+								if not GetSpellInfo(value) then
+									print(L["Not valid spell id"])
+								else
+									local match
+									for x, y in pairs(db.spellfilter[db.spellfilter.FilterPicker][E.myclass]) do
+										if y["id"] == tonumber(value) then
+											match = y
+											db.spellfilter[db.spellfilter.FilterPicker][E.myclass][x] = nil
+										end
+									end
+									if match == nil then
+										print(L["Spell not found in list"])
+									else
+										UpdateSpellFilter()								
+										StaticPopup_Show("CFG_RELOAD")									
+									end									
+								end								
+							else
+								local name_list = db.spellfilter[db.spellfilter.FilterPicker]
+								if db.spellfilter[db.spellfilter.FilterPicker][value] == nil then
+									print(L["Spell not found in list"])
+								else
+									name_list[value] = nil
+									UpdateSpellFilter()
+									E[name_list] = db.spellfilter[name_list]
+									
+									if name_list == "RaidDebuffs" then
+										StaticPopup_Show("CFG_RELOAD")
+									end
+								end
+							end
+						end,
+						order = 6,
+					},
 					SpellListTable = {
 						order = 7,
 						type = "group",

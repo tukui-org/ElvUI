@@ -44,7 +44,7 @@ local Loc = setmetatable({}, {
 
 
 local function Print (x)
-	DEFAULT_CHAT_FRAME:AddMessage("|cff1784d1Elvui:|r " .. x)
+	DEFAULT_CHAT_FRAME:AddMessage("|cff1784d1ElvUI:|r " .. x)
 end
 
 local function Stuffing_Sort(args, bank)
