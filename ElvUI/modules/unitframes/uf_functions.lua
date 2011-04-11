@@ -954,9 +954,11 @@ E.LoadUFFunctions = function(layout)
 		if IsAddOnLoaded("Elvui_RaidDPS") then
 			if (E.DPSBuffIDs[E.myclass]) then
 				for key, value in pairs(E.DPSBuffIDs[E.myclass]) do
-					tinsert(buffs, value)
+					if value["enabled"] == true then
+						tinsert(buffs, value)
+					end
 				end
-			end	
+			end
 		else
 			if (E.HealerBuffIDs[E.myclass]) then
 				for key, value in pairs(E.HealerBuffIDs[E.myclass]) do
