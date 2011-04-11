@@ -11,7 +11,7 @@ for group,options in pairs(DB) do
 	end
 end
 
-if IsAddOnLoaded("ElvUI_Config") and ElvConfig then
+if IsAddOnLoaded("ElvUI_Config") then
 	local ElvuiConfig = LibStub("AceAddon-3.0"):GetAddon("ElvuiConfig")
 	ElvuiConfig:Load()
 
@@ -54,6 +54,7 @@ if IsAddOnLoaded("ElvUI_Config") and ElvConfig then
 		
 		--ClassTimers
 		TRINKET_FILTER = ElvuiConfig.db.profile.spellfilter.TRINKET_FILTER
+		CLASS_FILTERS = ElvuiConfig.db.profile.spellfilter.CLASS_FILTERS
 end
 
 

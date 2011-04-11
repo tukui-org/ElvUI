@@ -458,6 +458,7 @@ L["SPELL_FILTER_DESC"] = "Filter everything from spell names to nameplate names.
 		L["Raid Buffs (DPS)"] = true
 		L["Pet Buffs"] = true
 		L["Class Timer (Shared)"] = true
+		L["Class Timer (Player)"] = true
 		
 	L["Filter whether or not a nameplate is shown by the name of the nameplate"] = true
 	L["Filter the buffs that get displayed on arena units."] = true
@@ -468,6 +469,8 @@ L["SPELL_FILTER_DESC"] = "Filter everything from spell names to nameplate names.
 	L["These buffs are displayed on the healer raid and party layouts"] = true
 	L["These buffs are displayed on the DPS raid and party layouts"] = true
 	L["These buffs are displayed on the pet frame"] = true
+	L["These buffs are displayed no matter your class you must have a layout enabled that uses trinkets however for them to show"] = true
+	L["These buffs/debuffs are displayed as a classtimer, where they get positioned is based on your layout option choice"] = true
 	
 	L["New name"] = true
 		L["Add a new spell name / ID to the list."] = true
@@ -490,6 +493,10 @@ L["SPELL_FILTER_DESC"] = "Filter everything from spell names to nameplate names.
 		L["Friendly"] = true
 	L["Show Ticks"] = true
 		L["Fill only if you want to see line on bar that indicates if its safe to start casting spell and not clip the last tick, also note that this can be different from aura id."] = true
+	L["Procs"] = true
+	L["You must select a filter first"] = true
+	
+	
 	
 --Profiles
 L["Profiles"] = true

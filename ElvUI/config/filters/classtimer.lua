@@ -354,7 +354,6 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 53563 ), -- Beacon of Light
 			CreateSpellEntry( 31821 ), -- Aura Mastery
 			CreateSpellEntry( 54428 ), -- Divine Plea
-			CreateSpellEntry( 31482 ), -- Divine Favor
 			CreateSpellEntry( 86659 ), --Guardian of Ancient Kings (Prot)
 			CreateSpellEntry( 86669 ), --Guardian of Ancient Kings (Holy)
 			CreateSpellEntry( 86698 ), --Guardian of Ancient Kings (Ret)
