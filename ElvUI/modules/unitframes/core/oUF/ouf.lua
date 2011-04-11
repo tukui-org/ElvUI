@@ -467,7 +467,7 @@ do
 		local name = overrideName or generateName(nil, ...)
 		local header = CreateFrame('Frame', name, UIParent, template)
 
-		header:SetAttribute("template", "SecureUnitButtonTemplate,oUF_ClickCastUnitTemplate")
+		header:SetAttribute("template", "oUF_ClickCastUnitTemplate")
 		for i=1, select("#", ...), 2 do
 			local att, val = select(i, ...)
 			if(not att) then break end

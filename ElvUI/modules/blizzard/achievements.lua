@@ -29,7 +29,7 @@ function E.AchievementMove(self, event, ...)
 			end
 			
 			previousFrame = aFrame
-		end		
+		end
 	end
 	
 end
@@ -58,15 +58,25 @@ hooksecurefunc("DungeonCompletionAlertFrame_FixAnchors", function()
 	end
 end)
 
+local initialize = false
 function E.PostAchievementMove(frame)
 	local point = select(1, frame:GetPoint())
-
+	if ( not AchievementFrame ) and initialize == true then
+		AchievementFrame_LoadUI()
+	end
+	
 	if string.find(point, "TOP") or point == "CENTER" or point == "LEFT" or point == "RIGHT" then
 		pos = "TOP"
 	else
 		pos = "BOTTOM"
 	end
+	
+	if initialize == true then
+		AchievementAlertFrame_ShowAlert(50)
+	end
+	
 	E.AchievementMove()
+	initialize = true
 end
 
 E.CreateMover(AchievementHolder, "AchievementMover", "Achievement Frames", nil, E.PostAchievementMove)
