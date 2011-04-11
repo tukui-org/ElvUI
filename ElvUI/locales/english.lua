@@ -1,6 +1,8 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 E.client = GetLocale() 
 
+L.core_resowarning = "|cff1784d1ElvUI:|r the current resolution you are using (%s), is not your monitor's native resolution. To fix this problem please press escape go to video settings and set your resolution to %s."
+
 -- localization for enUS and enGB
 L.chat_BATTLEGROUND_GET = "[B]"
 L.chat_BATTLEGROUND_LEADER_GET = "[B]"

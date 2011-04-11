@@ -260,6 +260,17 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 
 	print(format(L.core_welcome1, E.version))
 	print(L.core_welcome2)
+	
+	local maxresolution
+	for i=1, 30 do
+		if select(i, GetScreenResolutions()) ~= nil then
+			maxresolution = select(i, GetScreenResolutions())
+		end
+	end
+
+	if select(GetCurrentResolution(), GetScreenResolutions()) ~= maxresolution then
+		print(format(L.core_resowarning, select(GetCurrentResolution(), GetScreenResolutions()), maxresolution))
+	end
 end)
 
 local eventcount = 0
