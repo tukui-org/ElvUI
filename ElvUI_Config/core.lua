@@ -2445,7 +2445,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 					DeleteName = {
 						type = 'input',
 						name = function() if ClassTimerShared[db.spellfilter.FilterPicker] or ClassTimer[db.spellfilter.FilterPicker] or RaidBuffs[db.spellfilter.FilterPicker] then return L["Remove ID"] else return L["Remove Name"] end end,
-						desc = L["Remove a name or ID from the list."],
+						desc = L["You may only delete spells that you have added. Default spells can be disabled by unchecking the option"],
 						get = function(info) return "" end,
 						set = function(info, value)
 							if ClassTimer[db.spellfilter.FilterPicker] then
