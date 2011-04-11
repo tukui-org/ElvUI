@@ -213,21 +213,21 @@ local function StyleFlyout(self)
 		arrowDistance = 2
 	end
 	
-	if self:GetParent() and self:GetParent():GetParent() and self:GetParent():GetParent():GetName() == "SpellBookSpellIconsFrame" then return end
+	if self:GetParent() and self:GetParent():GetParent() and self:GetParent():GetParent():GetName() and self:GetParent():GetParent():GetName() == "SpellBookSpellIconsFrame" then return end
 	
 	if self:GetAttribute("flyoutDirection") ~= nil then
-		local point, _, _, _, _ = self:GetParent():GetParent():GetParent():GetPoint()
+		local point, _, _, _, _ = self:GetPoint()
 		
-		if strfind(point, "BOTTOM") then
+		if strfind(point, "TOP") then
+			self.FlyoutArrow:ClearAllPoints()
+			self.FlyoutArrow:SetPoint("LEFT", self, "LEFT", -arrowDistance, 0)
+			SetClampedTextureRotation(self.FlyoutArrow, 270)
+			if not InCombatLockdown() then self:SetAttribute("flyoutDirection", "LEFT") end		
+		else
 			self.FlyoutArrow:ClearAllPoints()
 			self.FlyoutArrow:SetPoint("TOP", self, "TOP", 0, arrowDistance)
 			SetClampedTextureRotation(self.FlyoutArrow, 0)
 			if not InCombatLockdown() then self:SetAttribute("flyoutDirection", "UP") end
-		else
-			self.FlyoutArrow:ClearAllPoints()
-			self.FlyoutArrow:SetPoint("LEFT", self, "LEFT", -arrowDistance, 0)
-			SetClampedTextureRotation(self.FlyoutArrow, 270)
-			if not InCombatLockdown() then self:SetAttribute("flyoutDirection", "LEFT") end
 		end
 	end
 end
