@@ -196,7 +196,9 @@ L["Castbar"] = true
 	L["Color of the castbar"] = true
 	L["Interrupt Color"] = true
 	L["Color of the castbar when you can't interrupt the cast"] = true
-	
+	L["Castbar Ticks"] = true
+		L["Display ticks on castbar when you cast a spell that is channeled, this list may be modified under filters"] = true
+		
 L["Power Colors"] = true
 	L["Mana"] = true
 	L["Rage"] = true
@@ -471,6 +473,8 @@ L["SPELL_FILTER_DESC"] = "Filter everything from spell names to nameplate names.
 	L["These buffs are displayed on the pet frame"] = true
 	L["These buffs are displayed no matter your class you must have a layout enabled that uses trinkets however for them to show"] = true
 	L["These buffs/debuffs are displayed as a classtimer, where they get positioned is based on your layout option choice"] = true
+	L["These spells when cast will display tick marks on the castbar"] = true
+	L["Spells"] = true
 	
 	L["New name"] = true
 		L["Add a new spell name / ID to the list."] = true
@@ -498,7 +502,7 @@ L["SPELL_FILTER_DESC"] = "Filter everything from spell names to nameplate names.
 		L["Fill only if you want to see line on bar that indicates if its safe to start casting spell and not clip the last tick, also note that this can be different from aura id."] = true
 	L["Procs"] = true
 	L["You must select a filter first"] = true
-	
+	L["To disable set to zero, otherwise set to the amount of times the spell ticks in a cast"] = true
 	
 	
 --Profiles

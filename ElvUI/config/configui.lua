@@ -55,6 +55,9 @@ if IsAddOnLoaded("ElvUI_Config") then
 		--ClassTimers
 		TRINKET_FILTER = ElvuiConfig.db.profile.spellfilter.TRINKET_FILTER
 		CLASS_FILTERS = ElvuiConfig.db.profile.spellfilter.CLASS_FILTERS
+		
+		--CastTicks
+		E.ChannelTicks = ElvuiConfig.db.profile.spellfilter.ChannelTicks
 end
 
 

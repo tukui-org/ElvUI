@@ -1,7 +1,5 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-
-
 local function SpellName(id)
 	local name, _, _, _, _, _, _, _, _ = GetSpellInfo(id) 	
 	return name
@@ -18,6 +16,25 @@ end
 		
 		Elv
 ]]-- 
+
+
+--List of spells to display ticks
+E.ChannelTicks = {
+	--Warlock
+	[SpellName(689)] = 3, -- "Drain Life"
+	[SpellName(5740)] = 4, -- "Rain of Fire"
+	--Druid
+	[SpellName(44203)] = 4, -- "Tranquility"
+	[SpellName(16914)] = 10, -- "Hurricane"
+	--Priest
+	[SpellName(15407)] = 3, -- "Mind Flay"
+	[SpellName(48045)] = 5, -- "Mind Sear"
+	[SpellName(47540)] = 2, -- "Penance"
+	--Mage
+	[SpellName(5143)] = 5, -- "Arcane Missiles"
+	[SpellName(10)] = 5, -- "Blizzard"
+	[SpellName(12051)] = 4, -- "Evocation"
+}
 
 --List of buffs to watch for on arena frames
 E.ArenaBuffWhiteList = {

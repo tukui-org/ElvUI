@@ -714,7 +714,31 @@ E.LoadUFFunctions = function(layout)
 		if E.ReverseTimerSpells and E.ReverseTimerSpells[spellID] then icon.reverse = true end
 		icon:SetScript("OnUpdate", CreateAuraTimer)
 	end
-
+	
+	--Credit Monolit
+	local ticks = {}
+	local function SetCastTicks(self, num)
+		if num and num > 0 then
+			local d = self:GetWidth() / num
+			for i = 1, num do
+				if not ticks[i] then
+					ticks[i] = self:CreateTexture(nil, 'OVERLAY')
+					ticks[i]:SetTexture(C["media"].blank)
+					ticks[i]:SetVertexColor(0, 0, 0)
+					ticks[i]:SetWidth(2)
+					ticks[i]:SetHeight(self:GetHeight())
+				end
+				ticks[i]:ClearAllPoints()
+				ticks[i]:SetPoint("CENTER", self, "LEFT", d * i, 0)
+				ticks[i]:Show()
+			end
+		else
+			for _, tick in pairs(ticks) do
+				tick:Hide()
+			end
+		end
+	end
+	
 	E.PostCastStart = function(self, unit, name, rank, castid)
 		if unit == "vehicle" then unit = "player" end
 		--Fix blank castbar with opening text
@@ -722,6 +746,16 @@ E.LoadUFFunctions = function(layout)
 			self.Text:SetText(OPENING)
 		else
 			self.Text:SetText(string.sub(name, 0, math.floor((((32/245) * self:GetWidth()) / C["unitframes"].fontsize) * 12)))
+		end
+		
+		if C["unitframes"].cbticks == true then
+			if E.ChannelTicks[name] and unit == "player" then
+				SetCastTicks(self, E.ChannelTicks[name])
+			else
+				for _, tick in pairs(ticks) do
+					tick:Hide()
+				end		
+			end
 		end
 		
 		if self.interrupt and unit ~= "player" then
