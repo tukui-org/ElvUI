@@ -23,6 +23,7 @@ E.ChannelTicks = {
 	--Warlock
 	[SpellName(689)] = 3, -- "Drain Life"
 	[SpellName(5740)] = 4, -- "Rain of Fire"
+	[SpellName(755)] = 3, -- Health Funnel
 	--Druid
 	[SpellName(44203)] = 4, -- "Tranquility"
 	[SpellName(16914)] = 10, -- "Hurricane"
