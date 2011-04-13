@@ -748,8 +748,8 @@ E.LoadUFFunctions = function(layout)
 			self.Text:SetText(string.sub(name, 0, math.floor((((32/245) * self:GetWidth()) / C["unitframes"].fontsize) * 12)))
 		end
 		
-		if C["unitframes"].cbticks == true then
-			if E.ChannelTicks[name] and unit == "player" then
+		if C["unitframes"].cbticks == true and unit == "player" then
+			if E.ChannelTicks[name] then
 				SetCastTicks(self, E.ChannelTicks[name])
 			else
 				for _, tick in pairs(ticks) do
