@@ -810,7 +810,7 @@ local function Shared(self, unit)
 		local POWERBAR_WIDTH = C["unitframes"].playtarwidth/2*E.ResScale
 		local CLASSBAR_WIDTH = (C["unitframes"].playtarwidth - (2*2))*E.ResScale
 		local POWERBAR_HEIGHT = 10*E.ResScale
-		local CASTBAR_HEIGHT = 20*E.ResScale
+		local CASTBAR_HEIGHT = C["unitframes"].casttargetheight*E.ResScale
 		local CASTBAR_WIDTH = C["unitframes"].casttargetwidth*E.ResScale
 		local PORTRAIT_WIDTH = 45*E.ResScale		
 		
