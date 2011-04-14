@@ -81,7 +81,7 @@ if E.myname == "Elv" then
 	}
 	
 	local function NOOB_FILTER(self, event, arg1, arg2)
-		if strfind(arg1, "mount") then
+		if strfind(arg1, " mount") then
 			for i, name in pairs(whispered) do if name == tostring(arg2) then return end end -- dont reply to the same person more than once
 			E.Delay(6, SendChatMessage, responses[math.random(1, #responses)], "WHISPER", nil, arg2) -- 6 second delay.. more realistic :) 
 			

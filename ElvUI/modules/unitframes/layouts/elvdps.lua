@@ -1427,7 +1427,10 @@ local function Shared(self, unit)
 	--	All Units
 	------------------------------------------------------------------------
 	if unit ~= "party" then
-		local RaidIcon = self:CreateTexture(nil, "OVERLAY")
+		local x = CreateFrame("Frame", nil, self)
+		x:SetFrameStrata("HIGH")
+		x:SetFrameLevel(20)
+		local RaidIcon = x:CreateTexture(nil, "OVERLAY")
 		RaidIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\raidicons.blp") 
 		RaidIcon:Size(18, 18)
 		RaidIcon:Point("CENTER", self.Health, "TOP", 0, BORDER)
