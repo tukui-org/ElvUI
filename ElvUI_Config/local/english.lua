@@ -256,7 +256,7 @@ L["Class Timers"] = true
 	L["Icon Position"] = true
 		L["0 = Left\n1 = Right\n2 = Outside Left\n3 = Outside Right"] = true
 	L["Layout"]	 = true
-		L["LAYOUT_DESC"] = "1 - Target auras in one frame right above player frame\n2 - Player and target auras separated into two frames above player frame\n3 - Player, target and trinket auras separated into three frames above player frame\n4 - Player and trinket auras are shown above player frame and target auras are shown above target frame\n 5 - Everything above player frame, no target debuffs."
+		L["LAYOUT_DESC"] = "1 - Player, Target, Proc auras in one frame right above player frame\n2 - Player and target auras separated into two frames above player frame\n3 - Player, target and trinket auras separated into three frames above player frame\n4 - Player and trinket auras are shown above player frame and target auras are shown above target frame\n 5 - Everything above player frame, no target debuffs."
 	L["Spark"] = true
 		L["Display spark"] = true
 	L["Cast Seperator"] = true
