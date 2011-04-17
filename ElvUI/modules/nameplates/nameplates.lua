@@ -376,7 +376,7 @@ local function SkinObjects(frame)
 	--Health Bar
 	frame.healthOriginal = oldhp
 	local hp = CreateFrame("Statusbar", nil, frame)
-	hp:SetFrameLevel(1)
+	hp:SetFrameLevel(oldhp:GetFrameLevel())
 	hp:SetFrameStrata(oldhp:GetFrameStrata())
 	hp:SetStatusBarTexture(TEXTURE)
 	CreateVirtualFrame(hp)
@@ -418,7 +418,6 @@ local function SkinObjects(frame)
 	frame.hp = hp
 	
 	--Cast Bar
-	cb:SetFrameLevel(1)
 	cb:SetStatusBarTexture(TEXTURE)
 	CreateVirtualFrame(cb)
 	
