@@ -898,7 +898,7 @@ local function Shared(self, unit)
 				portrait.backdrop = CreateFrame("Frame", nil, portrait)
 				portrait.backdrop:SetTemplate("Default")
 				portrait.backdrop:SetPoint("TOPRIGHT", self, "TOPRIGHT", 0, 0)
-				if POWERTHEME == true then
+				if POWERTHEME == true or USE_POWERBAR_OFFSET == true then
 					portrait.backdrop:Point("BOTTOMLEFT", health.backdrop, "BOTTOMRIGHT", SPACING, 0)
 				else
 					portrait.backdrop:Point("BOTTOMLEFT", power.backdrop, "BOTTOMRIGHT", SPACING, 0)
