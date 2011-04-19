@@ -10,4 +10,5 @@
 	<Script file='kill.lua'/>
 	<Script file='fonts.lua'/>	
 	<Script file='worldstate.lua'/>
+	<Script file='colorpicker.lua'/>
 </Ui>

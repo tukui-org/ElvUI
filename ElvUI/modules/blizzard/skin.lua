@@ -14,8 +14,7 @@ local function SetOriginalBackdrop(self)
 	if C["general"].classcolortheme == true then
 		self:SetBackdropBorderColor(color.r, color.g, color.b)
 	else
-		self:SetBackdropColor(unpack(C["media"].backdropcolor))
-		self:SetBackdropBorderColor(unpack(C["media"].bordercolor))
+		self:SetTemplate("Default")
 	end
 end
 
@@ -129,7 +128,6 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"DropDownList2Backdrop",
 			"LFDSearchStatus",
 			"AutoCompleteBox",
-			"ColorPickerFrame",
 			"ConsolidatedBuffsTooltip",
 			"ReadyCheckFrame",
 			"StackSplitFrame",
@@ -220,7 +218,6 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"InterfaceOptionsFrame", 
 			"AudioOptionsFrame", 
 			"VideoOptionsFrame",
-			"ColorPickerFrame"
 		}
 		
 		for i = 1, getn(BlizzardHeader) do
@@ -248,8 +245,6 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"InterfaceOptionsFrameDefaults", 
 			"InterfaceOptionsFrameOkay", 
 			"InterfaceOptionsFrameCancel",
-			"ColorPickerOkayButton",
-			"ColorPickerCancelButton",
 			"ReadyCheckFrameYesButton",
 			"ReadyCheckFrameNoButton",
 			"StackSplitOkayButton",
@@ -273,10 +268,6 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		_G["AudioOptionsFrameOkay"]:SetPoint("RIGHT",_G["AudioOptionsFrameCancel"],"LEFT",-4,0)
 		_G["InterfaceOptionsFrameOkay"]:ClearAllPoints()
 		_G["InterfaceOptionsFrameOkay"]:SetPoint("RIGHT",_G["InterfaceOptionsFrameCancel"],"LEFT", -4,0)
-		_G["ColorPickerCancelButton"]:ClearAllPoints()
-		_G["ColorPickerOkayButton"]:ClearAllPoints()
-		_G["ColorPickerCancelButton"]:SetPoint("BOTTOMRIGHT", ColorPickerFrame, "BOTTOMRIGHT", -6, 6)
-		_G["ColorPickerOkayButton"]:SetPoint("RIGHT",_G["ColorPickerCancelButton"],"LEFT", -4,0)
 		_G["ReadyCheckFrameYesButton"]:SetParent(_G["ReadyCheckFrame"])
 		_G["ReadyCheckFrameNoButton"]:SetParent(_G["ReadyCheckFrame"]) 
 		_G["ReadyCheckFrameYesButton"]:SetPoint("RIGHT", _G["ReadyCheckFrame"], "CENTER", -1, 0)
@@ -306,8 +297,6 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		LFDDungeonReadyDialog:CreateShadow("Default")
 		SkinButton(LFDDungeonReadyDialogEnterDungeonButton)
 		SkinButton(LFDDungeonReadyDialogLeaveQueueButton)
-		SkinButton(ColorPickerOkayButton)
-		SkinButton(ColorPickerCancelButton)
 	end
 		
 	-- mac menu/option panel, made by affli.
