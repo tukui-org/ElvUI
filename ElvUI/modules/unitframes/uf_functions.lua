@@ -711,7 +711,12 @@ E.LoadUFFunctions = function(layout)
 		icon.first = true
 		
 		
-		if E.ReverseTimerSpells and E.ReverseTimerSpells[spellID] then icon.reverse = true end
+		if E.ReverseTimer and E.ReverseTimer[spellID] then 
+			icon.reverse = true 
+		else
+			icon.reverse = false
+		end
+
 		icon:SetScript("OnUpdate", CreateAuraTimer)
 	end
 	
