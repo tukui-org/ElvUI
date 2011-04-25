@@ -303,6 +303,12 @@ local rollpairs = locale == "deDE" and {
 	["Разыгрывается: (.+)%. (.*): \"Не откажусь\""] = "greed",
 	["Разыгрывается: (.+)%. (.*): \"Мне это нужно\""] = "need",
 	["Разыгрывается: (.+)%. (.*): \"Распылить\""] = "disenchant",
+} or locale == "koKR" and {
+       ["(.+)님이 획득할 수 없는 아이템이어서 자동으로 주사위 굴리기를 포기했습니다: (.+)"] = "pass",
+       ["(.+)님이 주사위 굴리기를 포기했습니다: (.+)"] = "pass",
+       ["(.+)님이 차비를 선택했습니다: (.+)"] = "greed",
+       ["(.+)님이 입찰을 선택했습니다: (.+)"] = "need",
+       ["(.+)님이 마력 추출을 선택했습니다: (.+)"] = "disenchant",	
 } or {
 	["^(.*) automatically passed on: (.+) because s?he cannot loot that item.$"] = "pass",
 	["^(.*) passed on: (.+|r)$"]  = "pass",
@@ -310,6 +316,7 @@ local rollpairs = locale == "deDE" and {
 	["(.*) has selected Need for: (.+)"]  = "need",
 	["(.*) has selected Disenchant for: (.+)"]  = "disenchant",
 }
+
 local function ParseRollChoice(msg)
 	for i,v in pairs(rollpairs) do
 		local _, _, playername, itemname = string.find(msg, i)
