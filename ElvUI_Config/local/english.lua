@@ -89,7 +89,6 @@ L["Nameplates"] = true
 		L["This is displayed when you don't have threat as a tank, if you do have threat it is displayed as a DPS/Healer"] = true
 	L["Transition Color"] = true
 		L["This color is displayed when gaining/losing threat"] = true
-	L["Allow Overlap"] = true
 	
 --Unitframes
 L["Unit Frames"] = true

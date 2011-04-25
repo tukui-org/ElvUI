@@ -89,7 +89,6 @@ L["Nameplates"] = "Namensplaketten"
 		L["This is displayed when you don't have threat as a tank, if you do have threat it is displayed as a DPS/Healer"] = "Dies wird angezeigt, wenn du die Bedrohung als Tank nicht hast, wenn du die Bedrohung  hast wird es wie DPS/Heiler angezeigt"
 	L["Transition Color"] = "uebergangsfarbe"
 		L["This color is displayed when gaining/losing threat"] = "Diese Farbe wird angezeigt, wenn du die Bedrohung bekommst/verlierst"
-	L["Allow Overlap"] = "ueberlappen erlauben"
 
 --Unitframes
 L["Unit Frames"] = "Einheitenfenster"

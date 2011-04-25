@@ -101,7 +101,6 @@ L["Nameplates"] = "Индикаторы здоровья"
 		L["This is displayed when you don't have threat as a tank, if you do have threat it is displayed as a DPS/Healer"] = "Если вы не имеете угрозы будучи танком или имеете угрозу в качестве ДПС/Лекаря, то показывает этот цвет"
 	L["Transition Color"] = "Переходный цвет"
 		L["This color is displayed when gaining/losing threat"] = "Такой цвет используется, когда вы набираете/теряете угрозу"
-	L["Allow Overlap"] = "Наложение индикаторов друг на друга"
 
 --Unitframes
 L["Unit Frames"] = "Рамки юнитов"

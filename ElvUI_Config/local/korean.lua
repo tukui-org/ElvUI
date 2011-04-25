@@ -89,7 +89,6 @@ L["Nameplates"] = "이름표"
 		L["This is displayed when you don't have threat as a tank, if you do have threat it is displayed as a DPS/Healer"] = "탱커로 비위협시 표시됩니다. 딜러/힐러로 위협시 표시됩니다."
 	L["Transition Color"] = "색상 변환"
 		L["This color is displayed when gaining/losing threat"] = "이 색상은 위협을 얻을/잃을때 표시됩니다."
-	L["Allow Overlap"] = "겹침 허용"
 
 --Unitframes
 L["Unit Frames"] = "개체창"

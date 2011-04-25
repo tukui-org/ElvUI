@@ -107,7 +107,6 @@ L["Nameplates"] = "名條"
 		L["This is displayed when you don't have threat as a tank, if you do have threat it is displayed as a DPS/Healer"] = "危險仇恨值顏色，將根據你的角色定位決定"
 	L["Transition Color"] = "流失/獲得仇恨值顏色"
 		L["This color is displayed when gaining/losing threat"] = "即將獲得/失去仇恨時顯示的顏色"
-	L["Allow Overlap"] = "允許名條重疊"
 
 --Unitframes
 L["Unit Frames"] = "單位頭像"

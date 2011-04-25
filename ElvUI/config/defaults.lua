@@ -202,7 +202,6 @@ DB["nameplate"] = {
 	["enable"] = true,                     -- enable nice skinned nameplates that fit into Elvui
 	["showhealth"] = false,					-- show health text on nameplate
 	["enhancethreat"] = true,				-- threat features based on if your a tank or not
-	["overlap"] = false,				--allow nameplates to overlap
 	["combat"] = false,					--only show enemy nameplates in-combat.
 	["goodcolor"] = {r = 75/255,  g = 175/255, b = 76/255},			--good threat color (tank shows this with threat, everyone else without)
 	["badcolor"] = {r = 0.78, g = 0.25, b = 0.25},			--bad threat color (opposite of above)
