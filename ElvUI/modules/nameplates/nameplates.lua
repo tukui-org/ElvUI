@@ -3,9 +3,6 @@ local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config
 --Base code by Dawn (dNameplates)
 if not C["nameplate"].enable == true then return end
 
-local _, build = GetBuildInfo()
-if tonumber(build) > 13623 then return end
-
 local TEXTURE = C["media"].normTex
 local FONT = C["media"].font
 local FONTSIZE = 10
@@ -31,12 +28,6 @@ local NamePlates = CreateFrame("Frame", nil, UIParent)
 NamePlates:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
 if C["nameplate"].trackauras == true or C["nameplate"].trackccauras == true then
 	NamePlates:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-end
-
-if C["nameplate"].overlap == true or E.eyefinity then
-	SetCVar("spreadnameplates", "0")
-else
-	SetCVar("spreadnameplates", "1")
 end
 
 local function QueueObject(parent, object)
@@ -203,7 +194,7 @@ local function UpdateCastbar(frame)
 	frame:SetSize(cbWidth, cbHeight)
 	frame:SetPoint('TOP', frame:GetParent().hp, 'BOTTOM', 0, -8)
 	frame:GetStatusBarTexture():SetHorizTile(true)
-	if(not frame.shield:IsShown()) then
+	if(frame.shield:IsShown()) then
 		frame:SetStatusBarColor(0.78, 0.25, 0.25, 1)
 	end
 end	
@@ -302,9 +293,9 @@ local function UpdateObjects(frame)
 	--Have to reposition this here so it doesnt resize after being hidden
 	frame.hp:ClearAllPoints()
 	frame.hp:SetSize(hpWidth, hpHeight)	
-	frame.hp:SetPoint('TOP', frame, 'TOP', 0, -noscalemult*3)
+	frame.hp:SetPoint('TOP', frame, 'TOP', 0, -15)
 	frame.hp:GetStatusBarTexture():SetHorizTile(true)
-	
+
 	--Match values
 	frame.hp:SetMinMaxValues(frame.healthOriginal:GetMinMaxValues())
 	frame.hp:SetValue(frame.healthOriginal:GetValue())
@@ -365,14 +356,11 @@ local function UpdateObjects(frame)
 end
 
 --This is where we create most 'Static' objects for the nameplate, it gets fired when a nameplate is first seen.
-local id = 1
 local function SkinObjects(frame)
 	local oldhp, cb = frame:GetChildren()
-	local threat, hpborder, cbshield, cbborder, cbicon, overlay, oldname, oldlevel, bossicon, raidicon, elite = frame:GetRegions()
-	
-	_G["NamePlate"..id] = frame
-	id = id + 1
-	
+	local threat, hpborder, overlay, oldname, oldlevel, bossicon, raidicon, elite = frame:GetRegions()
+	local _, cbborder, cbshield, cbicon = cb:GetRegions()
+
 	--Health Bar
 	frame.healthOriginal = oldhp
 	local hp = CreateFrame("Statusbar", nil, frame)
@@ -447,6 +435,8 @@ local function SkinObjects(frame)
 	CreateVirtualFrame(cb, cb.icon)
 	
 	cb.shield = cbshield
+	cbshield:ClearAllPoints()
+	cbshield:SetPoint("TOP", cb, "BOTTOM")
 	cb:HookScript('OnShow', UpdateCastbar)
 	cb:HookScript('OnSizeChanged', OnSizeChanged)
 	cb:HookScript('OnValueChanged', OnValueChanged)			
@@ -630,7 +620,7 @@ local function HookFrames(...)
 		local frame = select(index, ...)
 		local region = frame:GetRegions()
 		
-		if(not frames[frame] and not frame:GetName() and region and region:GetObjectType() == 'Texture' and region:GetTexture() == OVERLAY) then
+		if(not frames[frame] and (frame:GetName() and frame:GetName():find("NamePlate%d")) and region and region:GetObjectType() == 'Texture' and region:GetTexture() == OVERLAY) then
 			SkinObjects(frame)
 			frame.region = region
 		end
@@ -688,11 +678,15 @@ function NamePlates:PLAYER_ENTERING_WORLD()
 		end
 	end
 	
+	if C["nameplate"].enable == true and C["nameplate"].enhancethreat == true then
+		SetCVar("threatWarning", 3)
+	end
+	
 	SetCVar("bloatthreat", 0)
 	SetCVar("bloattest", 0)
 	SetCVar("bloatnameplates", 0)
-	
-	if C["nameplate"].enable == true and C["nameplate"].enhancethreat == true then
-		SetCVar("threatWarning", 3)
+	if E.eyefinity then
+		SetCVar("nameplateMotion", "0")
+		InterfaceOptionsNamesPanelUnitNameplatesMotionDropDown:Kill()
 	end
 end

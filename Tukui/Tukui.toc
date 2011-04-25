@@ -1,4 +1,4 @@
-﻿## Interface: 40000
+﻿## Interface: 40100
 ## Author: Elv22
 ## Version: 1.0.0
 ## Title: |cff1784d1Tukui DB Converter|r

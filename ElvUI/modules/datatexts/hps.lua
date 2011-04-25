@@ -56,10 +56,10 @@ if C["datatext"].hps_text and C["datatext"].hps_text > 0 then
 		if event == "PLAYER_REGEN_DISABLED" then return end
 
 		-- only use events from the player
-		local id = select(3, ...)
+		local id = select(4, ...)
 		if id == player_id then
-			amount_healed = select(12, ...)
-			amount_over_healed = select(13, ...)
+			amount_healed = select(13, ...)
+			amount_over_healed = select(14, ...)
 			-- add to the total the healed amount subtracting the overhealed amount
 			actual_heals_total = actual_heals_total + math.max(0, amount_healed - amount_over_healed)
 		end

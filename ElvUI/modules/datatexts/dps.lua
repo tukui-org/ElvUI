@@ -62,13 +62,13 @@ if C["datatext"].dps_text and C["datatext"].dps_text > 0 then
 		if not events[select(2, ...)] then return end
 
 		-- only use events from the player
-		local id = select(3, ...)
+		local id = select(4, ...)
 		   
 		if id == player_id or id == pet_id then
 			if select(2, ...) == "SWING_DAMAGE" then
-				last_dmg_amount = select(9, ...)
+				last_dmg_amount = select(10, ...)
 			else
-				last_dmg_amount = select(12, ...)
+				last_dmg_amount = select(13, ...)
 			end
 			dmg_total = dmg_total + last_dmg_amount
 		end       
