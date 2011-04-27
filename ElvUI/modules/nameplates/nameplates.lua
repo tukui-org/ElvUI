@@ -599,8 +599,13 @@ end
 local function MatchGUID(frame, destGUID, spellID)
 	if not frame.guid then return end
 	
+	
 	if frame.guid == destGUID then
-		for _,icon in ipairs(frame.icons) do if icon.spellID == spellID then icon:Hide() end end
+		for _,icon in ipairs(frame.icons) do 
+			if icon.spellID == spellID then 
+				icon:Hide() 
+			end 
+		end
 	end
 end
 
@@ -648,8 +653,8 @@ CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
 	ForEachPlate(CheckUnit_Guid)
 end)
 
-function NamePlates:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, sourceGUID, sourceName, sourceFlags, destGUID, destName, _, spellID)
-	if event == "SPELL_AURA_REMOVED" and destName ~= UnitName("player") then
+function NamePlates:COMBAT_LOG_EVENT_UNFILTERED(_, event, _, _, sourceName, _, destGUID, _, _, spellID)
+	if event == "SPELL_AURA_REMOVED" then
 		ForEachPlate(MatchGUID, destGUID, spellID)
 	end
 end
