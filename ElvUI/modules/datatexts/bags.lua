@@ -31,5 +31,19 @@ if C["datatext"].bags and C["datatext"].bags > 0 then
 	Stat:RegisterEvent("PLAYER_LOGIN")
 	Stat:RegisterEvent("BAG_UPDATE")
 	Stat:SetScript("OnEvent", OnEvent)
-	Stat:SetScript("OnMouseDown", function() OpenAllBags() end)
+	Stat:SetScript("OnMouseDown", function() 
+		--Check if any bag is open
+		local opened = false
+		for i=1, NUM_CONTAINER_FRAMES do
+			if IsBagOpen(i) then
+				opened = true
+			end
+		end
+		
+		if opened == true then
+			CloseAllBags()
+		else
+			OpenAllBags()
+		end
+	end)
 end

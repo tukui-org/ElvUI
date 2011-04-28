@@ -116,7 +116,21 @@ Stat:RegisterEvent("SEND_MAIL_COD_CHANGED")
 Stat:RegisterEvent("PLAYER_TRADE_MONEY")
 Stat:RegisterEvent("TRADE_MONEY_CHANGED")
 Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
-Stat:SetScript("OnMouseDown", function() OpenAllBags() end)
+Stat:SetScript("OnMouseDown", function() 
+	--Check if any bag is open
+	local opened = false
+	for i=1, NUM_CONTAINER_FRAMES do
+		if IsBagOpen(i) then
+			opened = true
+		end
+	end
+	
+	if opened == true then
+		CloseAllBags()
+	else
+		OpenAllBags()
+	end
+end)
 Stat:SetScript("OnEvent", OnEvent)
 
 -- reset gold data
