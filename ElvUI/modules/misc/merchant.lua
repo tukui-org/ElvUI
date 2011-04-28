@@ -45,7 +45,9 @@ f:RegisterEvent("MERCHANT_SHOW")
 local savedMerchantItemButton_OnModifiedClick = MerchantItemButton_OnModifiedClick
 function MerchantItemButton_OnModifiedClick(self, ...)
 	if ( IsAltKeyDown() ) then
-		local maxStack = select(8, GetItemInfo(GetMerchantItemLink(self:GetID())))
+		local itemLink = GetMerchantItemLink(self:GetID())
+		if not itemLink then return end
+		local maxStack = select(8, GetItemInfo(itemLink))
 		if ( maxStack and maxStack > 1 ) then
 			BuyMerchantItem(self:GetID(), GetMerchantItemMaxStack(self:GetID()))
 		end
