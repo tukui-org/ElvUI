@@ -58,6 +58,30 @@ local function SkinScrollBar(texture)
 	_G[texture.."Middle"]:SetTexture(nil)
 end
 
+--Tab Regions
+local tabs = {
+	"LeftDisabled",
+	"MiddleDisabled",
+	"RightDisabled",
+	"Left",
+	"Middle",
+	"Right",
+}
+
+local function SkinTab(tab)
+	if not tab then return end
+	for _, object in pairs(tabs) do
+		local tex = _G[tab:GetName()..object]
+		tex:SetTexture(nil)
+	end
+	tab:GetHighlightTexture():SetTexture(nil)
+	tab.backdrop = CreateFrame("Frame", nil, tab)
+	tab.backdrop:SetTemplate("Default")
+	tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)
+	tab.backdrop:Point("TOPLEFT", 10, -3)
+	tab.backdrop:Point("BOTTOMRIGHT", -10, 3)				
+end
+
 local ElvuiSkin = CreateFrame("Frame")
 ElvuiSkin:RegisterEvent("ADDON_LOADED")
 ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
@@ -220,7 +244,179 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 	end
 	
 	-- stuff not in Blizzard load-on-demand
-	if addon == "ElvUI" then		
+	if addon == "ElvUI" then	
+		
+		--Spellbook
+		do
+			local StripAllTextures = {
+				"SpellBookFrame",
+				"SpellBookFrameInset",
+				"SpellBookSpellIconsFrame",
+				"SpellBookSideTabsFrame",
+				"SpellBookPageNavigationFrame",
+			}
+			
+			local KillTextures = {
+				"SpellBookPage1",
+				"SpellBookPage2",
+			}
+			
+			for _, object in pairs(StripAllTextures) do
+				_G[object]:StripTextures()
+			end
+			
+			for _, texture in pairs(KillTextures) do
+				_G[texture]:Kill()
+			end
+			
+			local pagebackdrop = CreateFrame("Frame", nil, SpellBookPage1:GetParent())
+			pagebackdrop:SetTemplate("Transparent")
+			pagebackdrop:Point("TOPLEFT", SpellBookFrame, "TOPLEFT", 50, -50)
+			pagebackdrop:Point("BOTTOMRIGHT", SpellBookPage1, "BOTTOMRIGHT", 15, 35)
+			
+			
+			--Skin SpellButtons
+			local function SpellButtons(self, first)
+				for i=1, SPELLS_PER_PAGE do
+					local button = _G["SpellButton"..i]
+					local icon = _G["SpellButton"..i.."IconTexture"]
+					
+					if first then
+						button:StripTextures()
+					end
+					
+					if _G["SpellButton"..i.."Highlight"] then
+						_G["SpellButton"..i.."Highlight"]:SetTexture(1, 1, 1, 0.3)
+						_G["SpellButton"..i.."Highlight"]:ClearAllPoints()
+						_G["SpellButton"..i.."Highlight"]:SetAllPoints(icon)
+					end
+
+					if icon then
+						icon:SetTexCoord(.08, .92, .08, .92)
+						icon:ClearAllPoints()
+						icon:SetAllPoints()
+						
+						button:SetFrameLevel(button:GetFrameLevel() + 2)
+						if not button.backdrop then
+							button:CreateBackdrop("Default", true)	
+						end
+					end	
+				end
+			end
+			SpellButtons(nil, true)
+			hooksecurefunc("SpellButton_UpdateButton", SpellButtons)
+			
+			--Skill Line Tabs
+			for i=1, MAX_SKILLLINE_TABS do
+				local tab = _G["SpellBookSkillLineTab"..i]
+				if tab then
+					tab:StripTextures()
+					tab:GetNormalTexture():SetTexCoord(.08, .92, .08, .92)
+					tab:GetNormalTexture():ClearAllPoints()
+
+					tab:GetNormalTexture():Point("TOPLEFT", 2, -2)
+					tab:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+					
+					tab:CreateBackdrop("Default")
+					tab.backdrop:SetAllPoints()
+					tab:StyleButton(true)				
+					
+					local point, relatedTo, point2, x, y = tab:GetPoint()
+					tab:Point(point, relatedTo, point2, 2, y)
+				end
+			end
+			
+			SpellBookFrame:SetTemplate("Transparent")
+			SpellBookFrame:CreateShadow("Default")
+			
+			--Profession Tab
+			local professionbuttons = {
+				"PrimaryProfession1SpellButtonTop",
+				"PrimaryProfession1SpellButtonBottom",
+				"PrimaryProfession2SpellButtonTop",
+				"PrimaryProfession2SpellButtonBottom",
+				"SecondaryProfession1SpellButtonLeft",
+				"SecondaryProfession1SpellButtonRight",
+				"SecondaryProfession2SpellButtonLeft",
+				"SecondaryProfession2SpellButtonRight",
+				"SecondaryProfession3SpellButtonLeft",
+				"SecondaryProfession3SpellButtonRight",
+				"SecondaryProfession4SpellButtonLeft",
+				"SecondaryProfession4SpellButtonRight",		
+			}
+			
+			for _, button in pairs(professionbuttons) do
+				local icon = _G[button.."IconTexture"]
+				local button = _G[button]
+				button:StripTextures()
+				
+				if icon then
+					icon:SetTexCoord(.08, .92, .08, .92)
+					icon:ClearAllPoints()
+					icon:Point("TOPLEFT", 2, -2)
+					icon:Point("BOTTOMRIGHT", -2, 2)
+					
+					button:SetFrameLevel(button:GetFrameLevel() + 2)
+					if not button.backdrop then
+						button:CreateBackdrop("Default", true)	
+						button.backdrop:SetAllPoints()
+					end
+				end					
+			end
+			
+			local professionstatusbars = {
+				"PrimaryProfession1StatusBar",	
+				"PrimaryProfession2StatusBar",	
+				"SecondaryProfession1StatusBar",	
+				"SecondaryProfession2StatusBar",	
+				"SecondaryProfession3StatusBar",	
+				"SecondaryProfession4StatusBar",
+			}
+			
+			for _, statusbar in pairs(professionstatusbars) do
+				local statusbar = _G[statusbar]
+				statusbar:StripTextures()
+				statusbar:SetStatusBarTexture(C["media"].normTex)
+				statusbar:SetStatusBarColor(0, 220/255, 0)
+				statusbar:CreateBackdrop("Default")
+				
+				statusbar.rankText:ClearAllPoints()
+				statusbar.rankText:SetPoint("CENTER")
+			end
+			
+			--Mounts/Companions
+			for i = 1, NUM_COMPANIONS_PER_PAGE do
+				local button = _G["SpellBookCompanionButton"..i]
+				local icon = _G["SpellBookCompanionButton"..i.."IconTexture"]
+				button:StripTextures()
+				button:StyleButton(false)
+				
+				if icon then
+					icon:SetTexCoord(.08, .92, .08, .92)
+					icon:ClearAllPoints()
+					icon:Point("TOPLEFT", 2, -2)
+					icon:Point("BOTTOMRIGHT", -2, 2)
+					
+					button:SetFrameLevel(button:GetFrameLevel() + 2)
+					if not button.backdrop then
+						button:CreateBackdrop("Default", true)	
+						button.backdrop:SetAllPoints()
+					end
+				end					
+			end
+			
+			SkinButton(SpellBookCompanionSummonButton)
+			SpellBookCompanionModelFrame:StripTextures()
+			SpellBookCompanionModelFrameShadowOverlay:StripTextures()
+			SpellBookCompanionsModelFrame:Kill()
+			SpellBookCompanionModelFrame:SetTemplate("Default")
+			
+			--Bottom Tabs
+			for i=1, 5 do
+				SkinTab(_G["SpellBookFrameTabButton"..i])
+			end
+		end
+		
 		--Character Frame
 		do
 			local slots = {
@@ -389,31 +585,9 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 				end
 			end)
 			
-			--Tab Regions
-			local tabs = {
-				"LeftDisabled",
-				"MiddleDisabled",
-				"RightDisabled",
-				"Left",
-				"Middle",
-				"Right",
-			}
-			
 			--Handle Tabs at bottom of character frame
 			for i=1, 4 do
-				local tab = _G["CharacterFrameTab"..i]
-				if tab then
-					for _, object in pairs(tabs) do
-						local tex = _G["CharacterFrameTab"..i..object]
-						tex:SetTexture(nil)
-					end
-					tab:GetHighlightTexture():SetTexture(nil)
-					tab.backdrop = CreateFrame("Frame", nil, tab)
-					tab.backdrop:SetTemplate("Default")
-					tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)
-					tab.backdrop:Point("TOPLEFT", 10, -3)
-					tab.backdrop:Point("BOTTOMRIGHT", -10, 3)
-				end
+				SkinTab(_G["CharacterFrameTab"..i])
 			end
 			
 			--Buttons used to toggle between equipment manager, titles, and character stats
