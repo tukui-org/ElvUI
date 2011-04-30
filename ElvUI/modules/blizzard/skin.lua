@@ -82,11 +82,77 @@ local function SkinTab(tab)
 	tab.backdrop:Point("BOTTOMRIGHT", -10, 3)				
 end
 
+local function SkinNextPrevButton(btn)
+	btn:SetTemplate("Default")
+	btn:GetNormalTexture():SetTexCoord(0.3, 0.29, 0.3, 0.81, 0.7, 0.29, 0.7, 0.81)
+	btn:GetNormalTexture():ClearAllPoints()
+	btn:GetNormalTexture():Point("TOPLEFT", 2, -2)
+	btn:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+	btn:GetPushedTexture():SetTexCoord(0.3, 0.35, 0.3, 0.81, 0.7, 0.35, 0.7, 0.81)
+	btn:GetPushedTexture():SetAllPoints(btn:GetNormalTexture())
+	btn:GetHighlightTexture():SetTexture(1, 1, 1, 0.3)
+	btn:GetHighlightTexture():SetAllPoints(btn:GetNormalTexture())
+end
+
 local ElvuiSkin = CreateFrame("Frame")
 ElvuiSkin:RegisterEvent("ADDON_LOADED")
 ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 	if IsAddOnLoaded("Skinner") or IsAddOnLoaded("Aurora") then return end
+	
+	--BarberShop
+	if addon == "Blizzard_BarbershopUI" then
+		local buttons = {
+			"BarberShopFrameOkayButton",
+			"BarberShopFrameCancelButton",
+			"BarberShopFrameResetButton",
+		}
+		BarberShopFrameOkayButton:Point("RIGHT", BarberShopFrameSelector4, "BOTTOM", 2, -50)
+		
+		for i = 1, #buttons do
+			_G[buttons[i]]:StripTextures()
+			SkinButton(_G[buttons[i]])
+		end
+		
 
+		for i = 1, 4 do
+			local f = _G["BarberShopFrameSelector"..i]
+			local f2 = _G["BarberShopFrameSelector"..i-1]
+			local prev = _G["BarberShopFrameSelector"..i.."Prev"]
+			local next = _G["BarberShopFrameSelector"..i.."Next"]
+			prev:Size(prev:GetWidth() - 5, prev:GetHeight() - 5)
+			next:Size(next:GetWidth() - 5, next:GetHeight() - 5)
+			SkinNextPrevButton(prev)
+			SkinNextPrevButton(next)
+			
+			if i ~= 1 then
+				f:ClearAllPoints()
+				f:Point("TOP", f2, "BOTTOM", 0, -3)			
+			end
+			
+			if f then
+				f:StripTextures()
+				--SkinButton(f)
+			end
+		end
+		
+		BarberShopFrameSelector1:ClearAllPoints()
+		BarberShopFrameSelector1:Point("TOP", 0, -12)
+		
+		BarberShopFrameResetButton:ClearAllPoints()
+		BarberShopFrameResetButton:Point("BOTTOM", 0, 12)
+	
+		BarberShopFrame:StripTextures()
+		BarberShopFrame:SetTemplate("Transparent")
+		BarberShopFrame:Size(BarberShopFrame:GetWidth() - 30, BarberShopFrame:GetHeight() - 56)
+		
+		BarberShopFrameMoneyFrame:StripTextures()
+		BarberShopFrameMoneyFrame:CreateBackdrop()
+		BarberShopFrameBackground:Kill()
+		
+		BarberShopBannerFrameBGTexture:Kill()
+		BarberShopBannerFrame:Kill()
+	end
+	
 	--Macro Frame
 	if addon == "Blizzard_MacroUI" then
 		local buttons = {
