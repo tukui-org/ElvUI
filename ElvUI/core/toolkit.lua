@@ -125,6 +125,23 @@ local function CreatePanel(f, t, w, h, a1, p, a2, x, y)
 	f:SetTemplate(t)
 end
 
+local function CreateBackdrop(f, t)
+	if not t then t = "Default" end
+
+	local b = CreateFrame("Frame", nil, f)
+	b:Point("TOPLEFT", -2, 2)
+	b:Point("BOTTOMRIGHT", 2, -2)
+	b:SetTemplate(t)
+
+	if f:GetFrameLevel() - 1 >= 0 then
+		b:SetFrameLevel(f:GetFrameLevel() - 1)
+	else
+		b:SetFrameLevel(0)
+	end
+	
+	f.backdrop = b
+end
+
 local function CreateShadow(f, t)
 	if f.shadow then return end -- we seriously don't want to create shadow 2 times in a row on the same frame.
 	
@@ -159,6 +176,15 @@ local function Kill(object)
 	end
 	object.Show = noop
 	object:Hide()
+end
+
+local function StripTextures(object)
+	for i=1, object:GetNumRegions() do
+		local region = select(i, object:GetRegions())
+		if region:GetObjectType() == "Texture" then
+			region:SetTexture(nil)
+		end
+	end		
 end
 
 local function FontString(parent, name, fontName, fontHeight, fontStyle)
@@ -241,12 +267,14 @@ local function addapi(object)
 	if not object.Point then mt.Point = Point end
 	if not object.SetTemplate then mt.SetTemplate = SetTemplate end
 	if not object.CreatePanel then mt.CreatePanel = CreatePanel end
+	if not object.CreateBackdrop then mt.CreateBackdrop = CreateBackdrop end
 	if not object.CreateShadow then mt.CreateShadow = CreateShadow end
 	if not object.Kill then mt.Kill = Kill end
 	if not object.StyleButton then mt.StyleButton = StyleButton end
 	if not object.Width then mt.Width = Width end
 	if not object.Height then mt.Height = Height end
 	if not object.FontString then mt.FontString = FontString end
+	if not object.StripTextures then mt.StripTextures = StripTextures end
 end
 
 local handled = {["Frame"] = true}

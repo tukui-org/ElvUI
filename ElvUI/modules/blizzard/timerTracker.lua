@@ -1,5 +1,8 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
+--Dummy Bar
+--/run TimerTracker_OnLoad(TimerTracker); TimerTracker_OnEvent(TimerTracker, "START_TIMER", 1, 30, 30)
+
 local function SkinIt(bar)
 	for i=1, bar:GetNumRegions() do
 		local region = select(i, bar:GetRegions())
@@ -21,7 +24,7 @@ local function SkinIt(bar)
 	bar.backdrop:Point("BOTTOMRIGHT", bar, "BOTTOMRIGHT", 2, -2)
 end
 
-local function SkinBlizzTimer(self, event, timerType, timeSeconds, totalTime)	
+local function SkinBlizzTimer()	
 	for _, b in pairs(TimerTracker.timerList) do
 		if b["bar"] and not b["bar"].skinned then
 			SkinIt(b["bar"])
