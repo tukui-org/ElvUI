@@ -299,27 +299,29 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			end
 			
 			--Reputation
-			ReputationListScrollFrame:StripTextures()
-			for i=1, GetNumFactions() do
-				local statusbar = _G["ReputationBar"..i.."ReputationBar"]
+			ReputationFrame:HookScript("OnShow", function()
+				ReputationListScrollFrame:StripTextures()
+				for i=1, GetNumFactions() do
+					local statusbar = _G["ReputationBar"..i.."ReputationBar"]
 
-				if statusbar then
-					statusbar:SetStatusBarTexture(C["media"].normTex)
-					statusbar:CreateBackdrop("Default")
-					_G["ReputationBar"..i.."Background"]:SetTexture(nil)
-					_G["ReputationBar"..i.."LeftLine"]:SetTexture(nil)
-					_G["ReputationBar"..i.."BottomLine"]:SetTexture(nil)
-					_G["ReputationBar"..i.."ReputationBarHighlight1"]:SetTexture(nil)
-					_G["ReputationBar"..i.."ReputationBarHighlight2"]:SetTexture(nil)	
-					_G["ReputationBar"..i.."ReputationBarAtWarHighlight1"]:SetTexture(nil)
-					_G["ReputationBar"..i.."ReputationBarAtWarHighlight2"]:SetTexture(nil)
-					_G["ReputationBar"..i.."ReputationBarLeftTexture"]:SetTexture(nil)
-					_G["ReputationBar"..i.."ReputationBarRightTexture"]:SetTexture(nil)
-				end		
-			end
-			ReputationDetailFrame:StripTextures()
-			ReputationDetailFrame:SetTemplate("Transparent")
-			ReputationDetailFrame:Point("TOPLEFT", ReputationFrame, "TOPRIGHT", 4, -28)
+					if statusbar then
+						statusbar:SetStatusBarTexture(C["media"].normTex)
+						statusbar:CreateBackdrop("Default")
+						_G["ReputationBar"..i.."Background"]:SetTexture(nil)
+						_G["ReputationBar"..i.."LeftLine"]:SetTexture(nil)
+						_G["ReputationBar"..i.."BottomLine"]:SetTexture(nil)
+						_G["ReputationBar"..i.."ReputationBarHighlight1"]:SetTexture(nil)
+						_G["ReputationBar"..i.."ReputationBarHighlight2"]:SetTexture(nil)	
+						_G["ReputationBar"..i.."ReputationBarAtWarHighlight1"]:SetTexture(nil)
+						_G["ReputationBar"..i.."ReputationBarAtWarHighlight2"]:SetTexture(nil)
+						_G["ReputationBar"..i.."ReputationBarLeftTexture"]:SetTexture(nil)
+						_G["ReputationBar"..i.."ReputationBarRightTexture"]:SetTexture(nil)
+					end		
+				end
+				ReputationDetailFrame:StripTextures()
+				ReputationDetailFrame:SetTemplate("Transparent")
+				ReputationDetailFrame:Point("TOPLEFT", ReputationFrame, "TOPRIGHT", 4, -28)
+			end)
 			
 			--Currency
 			TokenFrame:HookScript("OnShow", function()
