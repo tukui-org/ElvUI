@@ -306,7 +306,11 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 
 					if statusbar then
 						statusbar:SetStatusBarTexture(C["media"].normTex)
-						statusbar:CreateBackdrop("Default")
+						
+						if not statusbar.backdrop then
+							statusbar:CreateBackdrop("Default")
+						end
+						
 						_G["ReputationBar"..i.."Background"]:SetTexture(nil)
 						_G["ReputationBar"..i.."LeftLine"]:SetTexture(nil)
 						_G["ReputationBar"..i.."BottomLine"]:SetTexture(nil)
