@@ -51,6 +51,13 @@ local function SkinButton(f)
 	f:HookScript("OnLeave", SetOriginalBackdrop)
 end
 
+local function SkinScrollBar(texture)
+	_G[texture.."BG"]:SetTexture(nil)
+	_G[texture.."Top"]:SetTexture(nil)
+	_G[texture.."Bottom"]:SetTexture(nil)
+	_G[texture.."Middle"]:SetTexture(nil)
+end
+
 local ElvuiSkin = CreateFrame("Frame")
 ElvuiSkin:RegisterEvent("ADDON_LOADED")
 ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
@@ -110,6 +117,237 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 	
 	-- stuff not in Blizzard load-on-demand
 	if addon == "ElvUI" then
+		
+		--Character Frame
+		do
+			local slots = {
+				"HeadSlot",
+				"NeckSlot",
+				"ShoulderSlot",
+				"BackSlot",
+				"ChestSlot",
+				"ShirtSlot",
+				"TabardSlot",
+				"WristSlot",
+				"HandsSlot",
+				"WaistSlot",
+				"LegsSlot",
+				"FeetSlot",
+				"Finger0Slot",
+				"Finger1Slot",
+				"Trinket0Slot",
+				"Trinket1Slot",
+				"MainHandSlot",
+				"SecondaryHandSlot",
+				"RangedSlot",
+			}
+			for _, slot in pairs(slots) do
+				local icon = _G["Character"..slot.."IconTexture"]
+				local slot = _G["Character"..slot]
+				slot:StripTextures()
+				slot:StyleButton(false)
+				icon:SetTexCoord(.08, .92, .08, .92)
+				icon:ClearAllPoints()
+				icon:Point("TOPLEFT", 2, -2)
+				icon:Point("BOTTOMRIGHT", -2, 2)
+				
+				slot:SetFrameLevel(slot:GetFrameLevel() + 2)
+				slot:CreateBackdrop("Default")
+				slot.backdrop:SetAllPoints()
+			end
+			
+			--Strip Textures
+			local charframe = {
+				"CharacterFrame",
+				"CharacterModelFrame",
+				"CharacterFrameInset", 
+				"CharacterStatsPane",
+				"CharacterFrameInsetRight",
+				"PaperDollSidebarTabs",
+				"PaperDollEquipmentManagerPane",
+				"PaperDollFrameItemFlyout",
+			}
+			
+			--Swap item flyout frame (shown when holding alt over a slot)
+			PaperDollFrameItemFlyout:HookScript("OnShow", function()
+				PaperDollFrameItemFlyoutButtons:StripTextures()
+				
+				for i=1, PDFITEMFLYOUT_MAXITEMS do
+					local button = _G["PaperDollFrameItemFlyoutButtons"..i]
+					local icon = _G["PaperDollFrameItemFlyoutButtons"..i.."IconTexture"]
+					if button then
+						button:StyleButton(false)
+						
+						icon:SetTexCoord(.08, .92, .08, .92)
+						button:GetNormalTexture():SetTexture(nil)
+						
+						icon:ClearAllPoints()
+						icon:Point("TOPLEFT", 2, -2)
+						icon:Point("BOTTOMRIGHT", -2, 2)	
+						button:SetFrameLevel(button:GetFrameLevel() + 2)
+						if not button.backdrop then
+							button:CreateBackdrop("Default")
+							button.backdrop:SetAllPoints()			
+						end
+					end
+				end
+			end)
+			
+			--Icon in upper right corner of character frame
+			CharacterFramePortrait:Kill()
+			CharacterModelFrame:CreateBackdrop("Default")
+
+			local scrollbars = {
+				"PaperDollTitlesPaneScrollBar",
+				"PaperDollEquipmentManagerPaneScrollBar",
+			}
+			
+			for _, texture in pairs(scrollbars) do
+				SkinScrollBar(texture)
+			end
+			
+			for _, object in pairs(charframe) do
+				_G[object]:StripTextures()
+			end
+			
+			--Titles
+			PaperDollTitlesPane:HookScript("OnShow", function(self)
+				for x, object in pairs(PaperDollTitlesPane.buttons) do
+					object.BgTop:SetTexture(nil)
+					object.BgBottom:SetTexture(nil)
+					object.BgMiddle:SetTexture(nil)
+
+					object.Check:SetTexture(nil)
+					object.text:SetFont(C["media"].font,C["general"].fontscale)
+					object.text.SetFont = E.dummy
+				end
+			end)
+			
+			--Equipement Manager
+			SkinButton(PaperDollEquipmentManagerPaneEquipSet)
+			SkinButton(PaperDollEquipmentManagerPaneSaveSet)
+			PaperDollEquipmentManagerPaneEquipSet:Width(PaperDollEquipmentManagerPaneEquipSet:GetWidth() - 8)
+			PaperDollEquipmentManagerPaneSaveSet:Width(PaperDollEquipmentManagerPaneSaveSet:GetWidth() - 8)
+			PaperDollEquipmentManagerPaneEquipSet:Point("TOPLEFT", PaperDollEquipmentManagerPane, "TOPLEFT", 8, 0)
+			PaperDollEquipmentManagerPaneSaveSet:Point("LEFT", PaperDollEquipmentManagerPaneEquipSet, "RIGHT", 4, 0)
+			PaperDollEquipmentManagerPaneEquipSet.ButtonBackground:SetTexture(nil)
+			PaperDollEquipmentManagerPane:HookScript("OnShow", function(self)
+				for x, object in pairs(PaperDollEquipmentManagerPane.buttons) do
+					object.BgTop:SetTexture(nil)
+					object.BgBottom:SetTexture(nil)
+					object.BgMiddle:SetTexture(nil)
+
+					object.Check:SetTexture(nil)
+					object.icon:SetTexCoord(.08, .92, .08, .92)
+				end
+			end)
+			
+			--Tab Regions
+			local tabs = {
+				"LeftDisabled",
+				"MiddleDisabled",
+				"RightDisabled",
+				"Left",
+				"Middle",
+				"Right",
+			}
+			
+			--Handle Tabs at bottom of character frame
+			for i=1, 4 do
+				local tab = _G["CharacterFrameTab"..i]
+				if tab then
+					for _, object in pairs(tabs) do
+						local tex = _G["CharacterFrameTab"..i..object]
+						tex:SetTexture(nil)
+					end
+					tab:GetHighlightTexture():SetTexture(nil)
+					tab.backdrop = CreateFrame("Frame", nil, tab)
+					tab.backdrop:SetTemplate("Default")
+					tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)
+					tab.backdrop:Point("TOPLEFT", 10, -3)
+					tab.backdrop:Point("BOTTOMRIGHT", -10, 3)
+				end
+			end
+			
+			--Buttons used to toggle between equipment manager, titles, and character stats
+			local function FixSidebarTabCoords()
+				for i=1, #PAPERDOLL_SIDEBARS do
+					local tab = _G["PaperDollSidebarTab"..i]
+					if tab then
+						tab.TabBg:Kill()
+						tab.Highlight:Kill()
+						tab.Hider:Kill()
+						
+						if i == 1 then
+							for i=1, tab:GetNumRegions() do
+								local region = select(i, tab:GetRegions())
+								region:SetTexCoord(0.16, 0.86, 0.16, 0.86)
+								region.SetTexCoord = E.dummy
+							end
+						end
+						tab:CreateBackdrop("Default")
+						tab.backdrop:Point("TOPLEFT", 1, -2)
+						tab.backdrop:Point("BOTTOMRIGHT", 1, -2)	
+					end
+				end
+			end
+			hooksecurefunc("PaperDollFrame_UpdateSidebarTabs", FixSidebarTabCoords)
+			
+			--Stat panels, atm it looks like 7 is the max
+			for i=1, 7 do
+				_G["CharacterStatsPaneCategory"..i]:StripTextures()
+			end
+			
+			--Reputation
+			ReputationListScrollFrame:StripTextures()
+			for i=1, GetNumFactions() do
+				local statusbar = _G["ReputationBar"..i.."ReputationBar"]
+
+				if statusbar then
+					statusbar:SetStatusBarTexture(C["media"].normTex)
+					statusbar:CreateBackdrop("Default")
+					_G["ReputationBar"..i.."Background"]:SetTexture(nil)
+					_G["ReputationBar"..i.."LeftLine"]:SetTexture(nil)
+					_G["ReputationBar"..i.."BottomLine"]:SetTexture(nil)
+					_G["ReputationBar"..i.."ReputationBarHighlight1"]:SetTexture(nil)
+					_G["ReputationBar"..i.."ReputationBarHighlight2"]:SetTexture(nil)	
+					_G["ReputationBar"..i.."ReputationBarAtWarHighlight1"]:SetTexture(nil)
+					_G["ReputationBar"..i.."ReputationBarAtWarHighlight2"]:SetTexture(nil)
+					_G["ReputationBar"..i.."ReputationBarLeftTexture"]:SetTexture(nil)
+					_G["ReputationBar"..i.."ReputationBarRightTexture"]:SetTexture(nil)
+				end		
+			end
+			ReputationDetailFrame:StripTextures()
+			ReputationDetailFrame:SetTemplate("Transparent")
+			ReputationDetailFrame:Point("TOPLEFT", ReputationFrame, "TOPRIGHT", 4, -28)
+			
+			--Currency
+			TokenFrame:HookScript("OnShow", function()
+				for i=1, GetCurrencyListSize() do
+					local button = _G["TokenFrameContainerButton"..i]
+
+					button.highlight:Kill()
+					button.categoryMiddle:Kill()	
+					button.categoryLeft:Kill()	
+					button.categoryRight:Kill()
+					
+					if button.icon then
+						button.icon:SetTexCoord(.08, .92, .08, .92)
+					end
+				end
+				TokenFramePopup:StripTextures()
+				TokenFramePopup:SetTemplate("Transparent")
+				TokenFramePopup:Point("TOPLEFT", TokenFrame, "TOPRIGHT", 4, -28)				
+			end)
+			
+			--Pet
+			PetModelFrame:CreateBackdrop("Default")
+			PetPaperDollFrameExpBar:StripTextures()
+			PetPaperDollFrameExpBar:SetStatusBarTexture(C["media"].normTex)
+			PetPaperDollFrameExpBar:CreateBackdrop("Default")
+		end
+		
+		
 		-- Blizzard frame we want to reskin
 		local skins = {
 			"StaticPopup1",
@@ -131,6 +369,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"ConsolidatedBuffsTooltip",
 			"ReadyCheckFrame",
 			"StackSplitFrame",
+			"CharacterFrame",
 		}
 		
 		for i = 1, getn(skins) do
@@ -139,6 +378,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 				_G[skins[i]]:CreateShadow("Default")
 			end
 		end
+	
 		
 		local ChatMenus = {
 			"ChatMenu",
