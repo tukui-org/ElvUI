@@ -239,6 +239,50 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 
 					object.Check:SetTexture(nil)
 					object.icon:SetTexCoord(.08, .92, .08, .92)
+					
+					if not object.backdrop then
+						object:CreateBackdrop("Default")
+					end
+					
+					object.backdrop:Point("TOPLEFT", object.icon, "TOPLEFT", -2, 2)
+					object.backdrop:Point("BOTTOMRIGHT", object.icon, "BOTTOMRIGHT", 2, -2)
+					object.icon:SetParent(object.backdrop)
+
+					--Making all icons the same size and position because otherwise BlizzardUI tries to attach itself to itself when it refreshes
+					object.icon:SetPoint("LEFT", object, "LEFT", 4, 0)
+					object.icon.SetPoint = E.dummy
+					object.icon:Size(36, 36)
+					object.icon.SetSize = E.dummy
+				end
+				GearManagerDialogPopup:StripTextures()
+				GearManagerDialogPopup:SetTemplate("Transparent")
+				GearManagerDialogPopup:Point("LEFT", PaperDollFrame, "RIGHT", 4, 0)
+				GearManagerDialogPopupScrollFrame:StripTextures()
+				GearManagerDialogPopupEditBox:StripTextures()
+				GearManagerDialogPopupEditBox:SetTemplate("Default")
+				SkinButton(GearManagerDialogPopupOkay)
+				SkinButton(GearManagerDialogPopupCancel)
+				
+				for i=1, NUM_GEARSET_ICONS_SHOWN do
+					local button = _G["GearManagerDialogPopupButton"..i]
+					local icon = button.icon
+					
+					if button then
+						button:StripTextures()
+						button:StyleButton(true)
+						
+						icon:SetTexCoord(.08, .92, .08, .92)
+						_G["GearManagerDialogPopupButton"..i.."Icon"]:SetTexture(nil)
+						
+						icon:ClearAllPoints()
+						icon:Point("TOPLEFT", 2, -2)
+						icon:Point("BOTTOMRIGHT", -2, 2)	
+						button:SetFrameLevel(button:GetFrameLevel() + 2)
+						if not button.backdrop then
+							button:CreateBackdrop("Default")
+							button.backdrop:SetAllPoints()			
+						end
+					end
 				end
 			end)
 			
