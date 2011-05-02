@@ -84,20 +84,257 @@ end
 
 local function SkinNextPrevButton(btn)
 	btn:SetTemplate("Default")
-	btn:GetNormalTexture():SetTexCoord(0.3, 0.29, 0.3, 0.81, 0.7, 0.29, 0.7, 0.81)
+	btn:Size(btn:GetWidth() - 7, btn:GetHeight() - 7)	
+	btn:GetNormalTexture():SetTexCoord(0.3, 0.29, 0.3, 0.81, 0.65, 0.29, 0.65, 0.81)
 	btn:GetNormalTexture():ClearAllPoints()
 	btn:GetNormalTexture():Point("TOPLEFT", 2, -2)
 	btn:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
-	btn:GetPushedTexture():SetTexCoord(0.3, 0.35, 0.3, 0.81, 0.7, 0.35, 0.7, 0.81)
+	btn:GetPushedTexture():SetTexCoord(0.3, 0.35, 0.3, 0.81, 0.65, 0.35, 0.65, 0.81)
+	btn:GetDisabledTexture():SetTexCoord(0.3, 0.29, 0.3, 0.75, 0.65, 0.29, 0.65, 0.75)
+	btn:GetDisabledTexture():SetAllPoints(btn:GetNormalTexture())
 	btn:GetPushedTexture():SetAllPoints(btn:GetNormalTexture())
 	btn:GetHighlightTexture():SetTexture(1, 1, 1, 0.3)
 	btn:GetHighlightTexture():SetAllPoints(btn:GetNormalTexture())
+end
+
+local function SkinEditBox(frame)
+	if _G[frame.."Left"] then _G[frame.."Left"]:Kill() end
+	if _G[frame.."Middle"] then _G[frame.."Middle"]:Kill() end
+	if _G[frame.."Right"] then _G[frame.."Right"]:Kill() end
+	_G[frame]:CreateBackdrop("Default")
 end
 
 local ElvuiSkin = CreateFrame("Frame")
 ElvuiSkin:RegisterEvent("ADDON_LOADED")
 ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 	if IsAddOnLoaded("Skinner") or IsAddOnLoaded("Aurora") then return end
+	
+	--Auction House
+	if addon == "Blizzard_AuctionUI" then
+		AuctionFrame:StripTextures(true)
+		AuctionFrame:SetTemplate("Transparent")
+		AuctionFrame:CreateShadow("Default")
+		
+		BrowseFilterScrollFrame:StripTextures()
+		BrowseScrollFrame:StripTextures()
+		AuctionsScrollFrame:StripTextures()
+		BidScrollFrame:StripTextures()
+		
+		--Progress Frame
+		AuctionProgressFrame:StripTextures()
+		AuctionProgressFrame:SetTemplate("Transparent")
+		AuctionProgressFrame:CreateShadow("Default")
+		AuctionProgressFrameCancelButton:StyleButton()
+		AuctionProgressFrameCancelButton:SetTemplate("Default")
+		AuctionProgressFrameCancelButton:SetHitRectInsets(0, 0, 0, 0)
+		AuctionProgressFrameCancelButton:GetNormalTexture():ClearAllPoints()
+		AuctionProgressFrameCancelButton:GetNormalTexture():Point("TOPLEFT", 2, -2)
+		AuctionProgressFrameCancelButton:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+		AuctionProgressFrameCancelButton:GetNormalTexture():SetTexCoord(0.67, 0.37, 0.61, 0.26)
+		AuctionProgressFrameCancelButton:Size(28, 28)
+		AuctionProgressFrameCancelButton:Point("LEFT", AuctionProgressBar, "RIGHT", 8, 0)
+		
+		AuctionProgressBarIcon:SetTexCoord(0.67, 0.37, 0.61, 0.26)
+		
+		local backdrop = CreateFrame("Frame", nil, AuctionProgressBarIcon:GetParent())
+		backdrop:Point("TOPLEFT", AuctionProgressBarIcon, "TOPLEFT", -2, 2)
+		backdrop:Point("BOTTOMRIGHT", AuctionProgressBarIcon, "BOTTOMRIGHT", 2, -2)
+		backdrop:SetTemplate("Default")
+		AuctionProgressBarIcon:SetParent(backdrop)
+		
+		AuctionProgressBarText:ClearAllPoints()
+		AuctionProgressBarText:SetPoint("CENTER")
+		
+		AuctionProgressBar:StripTextures()
+		AuctionProgressBar:CreateBackdrop("Default")
+		AuctionProgressBar:SetStatusBarTexture(C["media"].normTex)
+		AuctionProgressBar:SetStatusBarColor(1, 1, 0)
+		
+		SkinNextPrevButton(BrowseNextPageButton)
+		SkinNextPrevButton(BrowsePrevPageButton)
+		
+		local buttons = {
+			"BrowseBidButton",
+			"BidBidButton",
+			"BrowseBuyoutButton",
+			"BidBuyoutButton",
+			"BrowseCloseButton",
+			"BidCloseButton",
+			"BrowseSearchButton",
+			"AuctionsCreateAuctionButton",
+			"AuctionsCancelAuctionButton",
+			"AuctionsCloseButton",
+			"BrowseResetButton",
+			"AuctionsStackSizeMaxButton",
+			"AuctionsNumStacksMaxButton",
+		}
+		
+		for _, button in pairs(buttons) do
+			SkinButton(_G[button])
+		end
+		
+		--Fix Button Positions
+		AuctionsCancelAuctionButton:Point("RIGHT", AuctionsCloseButton, "LEFT", -4, 0)
+		BidBuyoutButton:Point("RIGHT", BidCloseButton, "LEFT", -4, 0)
+		BidBidButton:Point("RIGHT", BidBuyoutButton, "LEFT", -4, 0)
+		BrowseBuyoutButton:Point("RIGHT", BrowseCloseButton, "LEFT", -4, 0)
+		BrowseBidButton:Point("RIGHT", BrowseBuyoutButton, "LEFT", -4, 0)		
+		AuctionsItemButton:StripTextures()
+		AuctionsItemButton:StyleButton()
+		AuctionsItemButton:SetTemplate("Default", true)
+		BrowseResetButton:Point("TOPLEFT", AuctionFrameBrowse, "TOPLEFT", 81, -74)
+		BrowseSearchButton:Point("TOPRIGHT", AuctionFrameBrowse, "TOPRIGHT", 25, -34)
+		
+		AuctionsItemButton:SetScript("OnUpdate", function()
+			if AuctionsItemButton:GetNormalTexture() then
+				AuctionsItemButton:GetNormalTexture():SetTexCoord(.08, .92, .08, .92)
+				AuctionsItemButton:GetNormalTexture():ClearAllPoints()
+				AuctionsItemButton:GetNormalTexture():Point("TOPLEFT", 2, -2)
+				AuctionsItemButton:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+			end
+		end)
+		
+		local sorttabs = {
+			"BrowseQualitySort",
+			"BrowseLevelSort",
+			"BrowseDurationSort",
+			"BrowseHighBidderSort",
+			"BrowseCurrentBidSort",
+			"BidQualitySort",
+			"BidLevelSort",
+			"BidDurationSort",
+			"BidBuyoutSort",
+			"BidStatusSort",
+			"BidBidSort",
+			"AuctionsQualitySort",
+			"AuctionsDurationSort",
+			"AuctionsHighBidderSort",
+			"AuctionsBidSort",
+		}
+		
+		for _, sorttab in pairs(sorttabs) do
+			_G[sorttab.."Left"]:Kill()
+			_G[sorttab.."Middle"]:Kill()
+			_G[sorttab.."Right"]:Kill()
+		end
+		
+		for i=1, 3 do
+			SkinTab(_G["AuctionFrameTab"..i])
+		end
+		
+		for i=1, NUM_FILTERS_TO_DISPLAY do
+			local tab = _G["AuctionFilterButton"..i]
+			tab:StripTextures()
+		end
+		
+		local editboxs = {
+			"BrowseName",
+			"BrowseMinLevel",
+			"BrowseMaxLevel",
+			"BrowseBidPriceGold",
+			"BrowseBidPriceSilver",
+			"BrowseBidPriceCopper",
+			"BidBidPriceGold",
+			"BidBidPriceSilver",
+			"BidBidPriceCopper",
+			"AuctionsStackSizeEntry",
+			"AuctionsNumStacksEntry",
+			"StartPriceGold",
+			"StartPriceSilver",
+			"StartPriceCopper",
+			"BuyoutPriceGold",
+			"BuyoutPriceSilver",
+			"BuyoutPriceCopper"			
+		}
+		
+		for _, editbox in pairs(editboxs) do
+			SkinEditBox(editbox)
+			_G[editbox]:SetTextInsets(1, 1, -1, 1)
+			if editbox:find("Silver") or editbox:find("Copper") then
+				_G[editbox].backdrop:Point("BOTTOMRIGHT", -12, -2)
+			end
+		end
+		BrowseMaxLevel:Point("LEFT", BrowseMinLevel, "RIGHT", 8, 0)
+		AuctionsStackSizeEntry.backdrop:SetAllPoints()
+		AuctionsNumStacksEntry.backdrop:SetAllPoints()
+		
+		for i=1, NUM_BROWSE_TO_DISPLAY do
+			local button = _G["BrowseButton"..i]
+			local icon = _G["BrowseButton"..i.."Item"]
+			
+			_G["BrowseButton"..i.."ItemIconTexture"]:SetTexCoord(.08, .92, .08, .92)
+			_G["BrowseButton"..i.."ItemIconTexture"]:ClearAllPoints()
+			_G["BrowseButton"..i.."ItemIconTexture"]:Point("TOPLEFT", 2, -2)
+			_G["BrowseButton"..i.."ItemIconTexture"]:Point("BOTTOMRIGHT", -2, 2)
+			
+			icon:StyleButton()
+			--TODO: Find a better method to ensure that the icon:GetNormalTexture doesn't return after clicking
+			icon:HookScript("OnUpdate", function() icon:GetNormalTexture():Kill() end)
+			
+			icon:CreateBackdrop("Default")
+			icon.backdrop:SetAllPoints()
+
+			button:StripTextures()
+			button:StyleButton()
+			_G["BrowseButton"..i.."Highlight"] = button:GetHighlightTexture()
+			button:GetHighlightTexture():ClearAllPoints()
+			button:GetHighlightTexture():Point("TOPLEFT", icon, "TOPRIGHT", 2, 0)
+			button:GetHighlightTexture():SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", -2, 5)
+			button:GetPushedTexture():SetAllPoints(button:GetHighlightTexture())
+		end
+		
+		for i=1, NUM_AUCTIONS_TO_DISPLAY do
+			local button = _G["AuctionsButton"..i]
+			local icon = _G["AuctionsButton"..i.."Item"]
+			
+			_G["AuctionsButton"..i.."ItemIconTexture"]:SetTexCoord(.08, .92, .08, .92)
+			_G["AuctionsButton"..i.."ItemIconTexture"].SetTexCoord = E.dummy
+			_G["AuctionsButton"..i.."ItemIconTexture"]:ClearAllPoints()
+			_G["AuctionsButton"..i.."ItemIconTexture"]:Point("TOPLEFT", 2, -2)
+			_G["AuctionsButton"..i.."ItemIconTexture"]:Point("BOTTOMRIGHT", -2, 2)
+			
+			icon:StyleButton()
+			--TODO: Find a better method to ensure that the icon:GetNormalTexture doesn't return after clicking
+			icon:HookScript("OnUpdate", function() icon:GetNormalTexture():Kill() end)
+			
+			icon:CreateBackdrop("Default")
+			icon.backdrop:SetAllPoints()
+
+			button:StripTextures()
+			button:StyleButton()
+			_G["AuctionsButton"..i.."Highlight"] = button:GetHighlightTexture()
+			button:GetHighlightTexture():ClearAllPoints()
+			button:GetHighlightTexture():Point("TOPLEFT", icon, "TOPRIGHT", 2, 0)
+			button:GetHighlightTexture():SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", -2, 5)
+			button:GetPushedTexture():SetAllPoints(button:GetHighlightTexture())		
+		end
+		
+		for i=1, NUM_BIDS_TO_DISPLAY do
+			local button = _G["BidButton"..i]
+			local icon = _G["BidButton"..i.."Item"]
+			
+			_G["BidButton"..i.."ItemIconTexture"]:SetTexCoord(.08, .92, .08, .92)
+			_G["BidButton"..i.."ItemIconTexture"]:ClearAllPoints()
+			_G["BidButton"..i.."ItemIconTexture"]:Point("TOPLEFT", 2, -2)
+			_G["BidButton"..i.."ItemIconTexture"]:Point("BOTTOMRIGHT", -2, 2)
+			
+			icon:StyleButton()
+			icon:HookScript("OnUpdate", function() icon:GetNormalTexture():Kill() end)
+			
+			icon:CreateBackdrop("Default")
+			icon.backdrop:SetAllPoints()
+
+			button:StripTextures()
+			button:StyleButton()
+			_G["BidButton"..i.."Highlight"] = button:GetHighlightTexture()
+			button:GetHighlightTexture():ClearAllPoints()
+			button:GetHighlightTexture():Point("TOPLEFT", icon, "TOPRIGHT", 2, 0)
+			button:GetHighlightTexture():SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", -2, 5)
+			button:GetPushedTexture():SetAllPoints(button:GetHighlightTexture())			
+		end
+		
+
+	end
 	
 	--BarberShop
 	if addon == "Blizzard_BarbershopUI" then
@@ -117,12 +354,8 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		for i = 1, 4 do
 			local f = _G["BarberShopFrameSelector"..i]
 			local f2 = _G["BarberShopFrameSelector"..i-1]
-			local prev = _G["BarberShopFrameSelector"..i.."Prev"]
-			local next = _G["BarberShopFrameSelector"..i.."Next"]
-			prev:Size(prev:GetWidth() - 5, prev:GetHeight() - 5)
-			next:Size(next:GetWidth() - 5, next:GetHeight() - 5)
-			SkinNextPrevButton(prev)
-			SkinNextPrevButton(next)
+			SkinNextPrevButton(_G["BarberShopFrameSelector"..i.."Prev"])
+			SkinNextPrevButton(_G["BarberShopFrameSelector"..i.."Next"])
 			
 			if i ~= 1 then
 				f:ClearAllPoints()
@@ -131,7 +364,6 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			
 			if f then
 				f:StripTextures()
-				--SkinButton(f)
 			end
 		end
 		
@@ -311,7 +543,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 	
 	-- stuff not in Blizzard load-on-demand
 	if addon == "ElvUI" then	
-		
+				
 		--Spellbook
 		do
 			local StripAllTextures = {
@@ -533,6 +765,9 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 				"PaperDollFrameItemFlyout",
 			}
 			
+			CharacterFrameExpandButton:Size(CharacterFrameExpandButton:GetWidth() - 7, CharacterFrameExpandButton:GetHeight() - 7)
+			SkinNextPrevButton(CharacterFrameExpandButton)
+			
 			--Swap item flyout frame (shown when holding alt over a slot)
 			PaperDollFrameItemFlyout:HookScript("OnShow", function()
 				PaperDollFrameItemFlyoutButtons:StripTextures()
@@ -690,7 +925,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			end
 			
 			--Reputation
-			ReputationFrame:HookScript("OnShow", function()
+			local function UpdateFactionSkins()
 				ReputationListScrollFrame:StripTextures()
 				for i=1, GetNumFactions() do
 					local statusbar = _G["ReputationBar"..i.."ReputationBar"]
@@ -715,8 +950,10 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 				end
 				ReputationDetailFrame:StripTextures()
 				ReputationDetailFrame:SetTemplate("Transparent")
-				ReputationDetailFrame:Point("TOPLEFT", ReputationFrame, "TOPRIGHT", 4, -28)
-			end)
+				ReputationDetailFrame:Point("TOPLEFT", ReputationFrame, "TOPRIGHT", 4, -28)			
+			end	
+			ReputationFrame:HookScript("OnShow", UpdateFactionSkins)
+			hooksecurefunc("ReputationFrame_OnEvent", UpdateFactionSkins)
 			
 			--Currency
 			TokenFrame:HookScript("OnShow", function()
