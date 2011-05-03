@@ -1044,14 +1044,16 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			TokenFrame:HookScript("OnShow", function()
 				for i=1, GetCurrencyListSize() do
 					local button = _G["TokenFrameContainerButton"..i]
-
-					button.highlight:Kill()
-					button.categoryMiddle:Kill()	
-					button.categoryLeft:Kill()	
-					button.categoryRight:Kill()
 					
-					if button.icon then
-						button.icon:SetTexCoord(.08, .92, .08, .92)
+					if button then
+						button.highlight:Kill()
+						button.categoryMiddle:Kill()	
+						button.categoryLeft:Kill()	
+						button.categoryRight:Kill()
+						
+						if button.icon then
+							button.icon:SetTexCoord(.08, .92, .08, .92)
+						end
 					end
 				end
 				TokenFramePopup:StripTextures()
