@@ -107,7 +107,7 @@ local function SkinNextPrevButton(btn, horizonal)
 	btn:GetHighlightTexture():SetAllPoints(btn:GetNormalTexture())
 end
 
-local function SkinRotatButton(btn)
+local function SkinRotateButton(btn)
 	btn:SetTemplate("Default")
 	btn:Size(btn:GetWidth() - 14, btn:GetHeight() - 14)	
 	
@@ -193,8 +193,8 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		AuctionDressUpFrameCloseButton:SetHighlightTexture(AuctionFrameCloseButton:GetHighlightTexture():GetTexture())
 		AuctionDressUpFrameCloseButton:SetDisabledTexture(AuctionFrameCloseButton:GetDisabledTexture():GetTexture())
 		
-		SkinRotatButton(AuctionDressUpModelRotateLeftButton)
-		SkinRotatButton(AuctionDressUpModelRotateRightButton)
+		SkinRotateButton(AuctionDressUpModelRotateLeftButton)
+		SkinRotateButton(AuctionDressUpModelRotateRightButton)
 		AuctionDressUpModelRotateRightButton:Point("TOPLEFT", AuctionDressUpModelRotateLeftButton, "TOPRIGHT", 4, 0)
 		
 		--Progress Frame
@@ -848,8 +848,8 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			CharacterFrameExpandButton:Size(CharacterFrameExpandButton:GetWidth() - 7, CharacterFrameExpandButton:GetHeight() - 7)
 			SkinNextPrevButton(CharacterFrameExpandButton)
 			
-			SkinRotatButton(CharacterModelFrameRotateLeftButton)
-			SkinRotatButton(CharacterModelFrameRotateRightButton)
+			SkinRotateButton(CharacterModelFrameRotateLeftButton)
+			SkinRotateButton(CharacterModelFrameRotateRightButton)
 			CharacterModelFrameRotateLeftButton:Point("TOPLEFT", CharacterModelFrame, "TOPLEFT", 4, -4)
 			CharacterModelFrameRotateRightButton:Point("TOPLEFT", CharacterModelFrameRotateLeftButton, "TOPRIGHT", 4, 0)
 			
