@@ -82,18 +82,44 @@ local function SkinTab(tab)
 	tab.backdrop:Point("BOTTOMRIGHT", -10, 3)				
 end
 
-local function SkinNextPrevButton(btn)
+local function SkinNextPrevButton(btn, horizonal)
 	btn:SetTemplate("Default")
 	btn:Size(btn:GetWidth() - 7, btn:GetHeight() - 7)	
-	btn:GetNormalTexture():SetTexCoord(0.3, 0.29, 0.3, 0.81, 0.65, 0.29, 0.65, 0.81)
+	
+	if horizonal then
+		btn:GetNormalTexture():SetTexCoord(0.3, 0.29, 0.3, 0.72, 0.65, 0.29, 0.65, 0.72)
+		btn:GetPushedTexture():SetTexCoord(0.3, 0.35, 0.3, 0.8, 0.65, 0.35, 0.65, 0.8)
+		btn:GetDisabledTexture():SetTexCoord(0.3, 0.29, 0.3, 0.75, 0.65, 0.29, 0.65, 0.75)	
+	else
+		btn:GetNormalTexture():SetTexCoord(0.3, 0.29, 0.3, 0.81, 0.65, 0.29, 0.65, 0.81)
+		btn:GetPushedTexture():SetTexCoord(0.3, 0.35, 0.3, 0.81, 0.65, 0.35, 0.65, 0.81)
+		if btn:GetDisabledTexture() then
+			btn:GetDisabledTexture():SetTexCoord(0.3, 0.29, 0.3, 0.75, 0.65, 0.29, 0.65, 0.75)
+		end
+	end
+	
 	btn:GetNormalTexture():ClearAllPoints()
 	btn:GetNormalTexture():Point("TOPLEFT", 2, -2)
 	btn:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
-	btn:GetPushedTexture():SetTexCoord(0.3, 0.35, 0.3, 0.81, 0.65, 0.35, 0.65, 0.81)
-	btn:GetDisabledTexture():SetTexCoord(0.3, 0.29, 0.3, 0.75, 0.65, 0.29, 0.65, 0.75)
 	btn:GetDisabledTexture():SetAllPoints(btn:GetNormalTexture())
 	btn:GetPushedTexture():SetAllPoints(btn:GetNormalTexture())
 	btn:GetHighlightTexture():SetTexture(1, 1, 1, 0.3)
+	btn:GetHighlightTexture():SetAllPoints(btn:GetNormalTexture())
+end
+
+local function SkinRotatButton(btn)
+	btn:SetTemplate("Default")
+	btn:Size(btn:GetWidth() - 14, btn:GetHeight() - 14)	
+	
+	btn:GetNormalTexture():SetTexCoord(0.3, 0.29, 0.3, 0.65, 0.69, 0.29, 0.69, 0.65)
+	btn:GetPushedTexture():SetTexCoord(0.3, 0.29, 0.3, 0.65, 0.69, 0.29, 0.69, 0.65)	
+	
+	btn:GetHighlightTexture():SetTexture(1, 1, 1, 0.3)
+	
+	btn:GetNormalTexture():ClearAllPoints()
+	btn:GetNormalTexture():Point("TOPLEFT", 2, -2)
+	btn:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+	btn:GetPushedTexture():SetAllPoints(btn:GetNormalTexture())	
 	btn:GetHighlightTexture():SetAllPoints(btn:GetNormalTexture())
 end
 
@@ -102,6 +128,35 @@ local function SkinEditBox(frame)
 	if _G[frame.."Middle"] then _G[frame.."Middle"]:Kill() end
 	if _G[frame.."Right"] then _G[frame.."Right"]:Kill() end
 	_G[frame]:CreateBackdrop("Default")
+end
+
+local function SkinDropDownBox(frame)
+	local button = _G[frame:GetName().."Button"]
+
+	frame:StripTextures()
+	frame:Width(155)
+	
+	_G[frame:GetName().."Text"]:ClearAllPoints()
+	_G[frame:GetName().."Text"]:Point("RIGHT", button, "LEFT", -2, 0)
+	
+	button:ClearAllPoints()
+	button:Point("RIGHT", frame, "RIGHT", -10, 3)
+	
+	SkinNextPrevButton(button, true)
+	
+	frame:CreateBackdrop("Default")
+	frame.backdrop:Point("TOPLEFT", 20, -2)
+	frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
+end
+
+local function SkinCheckBox(frame)
+	frame:StripTextures()
+	frame:CreateBackdrop("Default")
+	frame.backdrop:Point("TOPLEFT", 4, -4)
+	frame.backdrop:Point("BOTTOMRIGHT", -4, 4)
+	
+	frame:SetCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check")
+	frame:SetDisabledTexture("Interface\\Buttons\\UI-CheckBox-Check-Disabled")
 end
 
 local ElvuiSkin = CreateFrame("Frame")
@@ -119,6 +174,28 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		BrowseScrollFrame:StripTextures()
 		AuctionsScrollFrame:StripTextures()
 		BidScrollFrame:StripTextures()
+		
+		SkinDropDownBox(BrowseDropDown)
+		SkinDropDownBox(PriceDropDown)
+		SkinDropDownBox(DurationDropDown)
+		
+		SkinCheckBox(IsUsableCheckButton)
+		SkinCheckBox(ShowOnPlayerCheckButton)
+		
+		--Dress Up Frame
+		AuctionDressUpFrame:StripTextures()
+		AuctionDressUpFrame:SetTemplate("Transparent")
+		AuctionDressUpFrame:Point("TOPLEFT", AuctionFrame, "TOPRIGHT", 2, 0)
+		SkinButton(AuctionDressUpFrameResetButton)
+		AuctionDressUpFrameCloseButton:StripTextures()
+		AuctionDressUpFrameCloseButton:SetNormalTexture(AuctionFrameCloseButton:GetNormalTexture():GetTexture())
+		AuctionDressUpFrameCloseButton:SetPushedTexture(AuctionFrameCloseButton:GetPushedTexture():GetTexture())
+		AuctionDressUpFrameCloseButton:SetHighlightTexture(AuctionFrameCloseButton:GetHighlightTexture():GetTexture())
+		AuctionDressUpFrameCloseButton:SetDisabledTexture(AuctionFrameCloseButton:GetDisabledTexture():GetTexture())
+		
+		SkinRotatButton(AuctionDressUpModelRotateLeftButton)
+		SkinRotatButton(AuctionDressUpModelRotateRightButton)
+		AuctionDressUpModelRotateRightButton:Point("TOPLEFT", AuctionDressUpModelRotateLeftButton, "TOPRIGHT", 4, 0)
 		
 		--Progress Frame
 		AuctionProgressFrame:StripTextures()
@@ -225,6 +302,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		for i=1, NUM_FILTERS_TO_DISPLAY do
 			local tab = _G["AuctionFilterButton"..i]
 			tab:StripTextures()
+			tab:StyleButton()
 		end
 		
 		local editboxs = {
@@ -571,7 +649,9 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			pagebackdrop:SetTemplate("Transparent")
 			pagebackdrop:Point("TOPLEFT", SpellBookFrame, "TOPLEFT", 50, -50)
 			pagebackdrop:Point("BOTTOMRIGHT", SpellBookPage1, "BOTTOMRIGHT", 15, 35)
-			
+
+			SkinNextPrevButton(SpellBookPrevPageButton)
+			SkinNextPrevButton(SpellBookNextPageButton)
 			
 			--Skin SpellButtons
 			local function SpellButtons(self, first)
@@ -767,6 +847,11 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			
 			CharacterFrameExpandButton:Size(CharacterFrameExpandButton:GetWidth() - 7, CharacterFrameExpandButton:GetHeight() - 7)
 			SkinNextPrevButton(CharacterFrameExpandButton)
+			
+			SkinRotatButton(CharacterModelFrameRotateLeftButton)
+			SkinRotatButton(CharacterModelFrameRotateRightButton)
+			CharacterModelFrameRotateLeftButton:Point("TOPLEFT", CharacterModelFrame, "TOPLEFT", 4, -4)
+			CharacterModelFrameRotateRightButton:Point("TOPLEFT", CharacterModelFrameRotateLeftButton, "TOPRIGHT", 4, 0)
 			
 			--Swap item flyout frame (shown when holding alt over a slot)
 			PaperDollFrameItemFlyout:HookScript("OnShow", function()
