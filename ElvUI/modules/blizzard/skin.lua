@@ -1,5 +1,8 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
+local FONT = C["media"].font
+local FONTSIZE = 18
+local FONTFLAG = "THINOUTLINE"
 
 local function SetModifiedBackdrop(self)
 	if C["general"].classcolortheme == true then
@@ -18,7 +21,7 @@ local function SetOriginalBackdrop(self)
 	end
 end
 
-local function SkinButton(f)
+local function SkinButton(f, strip)
 	if f:GetName() then
 		local l = _G[f:GetName().."Left"]
 		local m = _G[f:GetName().."Middle"]
@@ -29,6 +32,8 @@ local function SkinButton(f)
 		if m then m:SetAlpha(0) end
 		if r then r:SetAlpha(0) end
 	end
+	
+	
 	
 	if f.SetNormalTexture then
 		f:SetNormalTexture("")
@@ -45,6 +50,11 @@ local function SkinButton(f)
 	if f.SetDisabledTexture then
 		f:SetDisabledTexture("")
 	end
+	
+	if strip then
+		f:StripTextures()
+	end
+	
 	f:SetTemplate("Default", true)
 	
 	f:HookScript("OnEnter", SetModifiedBackdrop)
@@ -130,14 +140,16 @@ local function SkinEditBox(frame)
 	_G[frame]:CreateBackdrop("Default")
 end
 
-local function SkinDropDownBox(frame)
+local function SkinDropDownBox(frame, xtextpos)
 	local button = _G[frame:GetName().."Button"]
 
 	frame:StripTextures()
 	frame:Width(155)
 	
+	if not xtextpos then xtextpos = -2 end
 	_G[frame:GetName().."Text"]:ClearAllPoints()
-	_G[frame:GetName().."Text"]:Point("RIGHT", button, "LEFT", -2, 0)
+	_G[frame:GetName().."Text"]:Point("RIGHT", button, "LEFT", xtextpos, 0)
+
 	
 	button:ClearAllPoints()
 	button:Point("RIGHT", frame, "RIGHT", -10, 3)
@@ -159,10 +171,440 @@ local function SkinCheckBox(frame)
 	frame:SetDisabledTexture("Interface\\Buttons\\UI-CheckBox-Check-Disabled")
 end
 
+local function SkinCloseButton(f)
+	if f.SetNormalTexture then
+		f:SetNormalTexture("")
+	end
+
+	if f.SetHighlightTexture then
+		f:SetHighlightTexture("")
+	end
+
+	if f.SetPushedTexture then
+		f:SetPushedTexture("")
+	end
+
+	if f.SetDisabledTexture then
+		f:SetDisabledTexture("")
+	end
+	f:SetTemplate("Default", true)
+	f:Size(18,18)
+
+	local text = f:FontString(nil, FONT, FONTSIZE, FONTFLAG)
+	text:Point("TOPRIGHT",f, "TOPRIGHT", -1, 2)
+	text:SetText("x")
+
+	f:Point("TOPRIGHT", -4, -4)
+	f:HookScript("OnEnter", SetModifiedBackdrop)
+	f:HookScript("OnLeave", SetOriginalBackdrop)
+end
+
 local ElvuiSkin = CreateFrame("Frame")
 ElvuiSkin:RegisterEvent("ADDON_LOADED")
 ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 	if IsAddOnLoaded("Skinner") or IsAddOnLoaded("Aurora") then return end
+
+	-- Talent Trees
+	if addon == "Blizzard_TalentUI" then
+		--PLAYER TALENTS
+		local buttons = {
+			"PlayerTalentFrameToggleSummariesButton",
+			"PlayerTalentFrameActivateButton",
+		}
+		PlayerTalentFrameToggleSummariesButton:Point("BOTTOM", PlayerTalentFrame, "BOTTOM",0,5)
+
+		for i = 1, #buttons do
+			_G[buttons[i]]:StripTextures()
+			SkinButton(_G[buttons[i]])
+		end
+
+		local StripAllTextures = {
+			"PlayerTalentFrame",
+			"PlayerTalentFrameInset",
+			"PlayerTalentFrameTalents",
+			"PlayerTalentFramePanel1",
+			"PlayerTalentFramePanel2",
+			"PlayerTalentFramePanel3",	
+			"PlayerTalentFramePanel1HeaderIcon",
+			"PlayerTalentFramePanel2HeaderIcon",
+			"PlayerTalentFramePanel3HeaderIcon",
+			"PlayerTalentFramePetTalents",
+			"PlayerTalentFramePetPanel"
+		}
+
+		for _, object in pairs(StripAllTextures) do
+			_G[object]:StripTextures()
+		end
+		
+		for i=1, 3 do
+			_G["PlayerTalentFramePanel"..i.."SelectTreeButton"]:SetFrameLevel(_G["PlayerTalentFramePanel"..i.."SelectTreeButton"]:GetFrameLevel() + 5)
+			_G["PlayerTalentFramePanel"..i.."SelectTreeButton"]:StripTextures(true)
+			SkinButton(_G["PlayerTalentFramePanel"..i.."SelectTreeButton"])
+		end
+
+		local KillTextures = {
+			"PlayerTalentFramePanel1InactiveShadow",
+			"PlayerTalentFramePanel2InactiveShadow",
+			"PlayerTalentFramePanel3InactiveShadow",
+			"PlayerTalentFramePanel1Arrow",
+			"PlayerTalentFramePanel2Arrow",
+			"PlayerTalentFramePanel3Arrow",
+			"PlayerTalentFramePetPanelArrow",
+			"PlayerTalentFramePanel1SummaryRoleIcon",
+			"PlayerTalentFramePanel2SummaryRoleIcon",
+			"PlayerTalentFramePanel3SummaryRoleIcon",
+			"PlayerTalentFramePetShadowOverlay",
+		}
+
+		for _, texture in pairs(KillTextures) do
+			_G[texture]:Kill()
+		end
+
+		PlayerTalentFrame:SetTemplate("Transparent")
+		PlayerTalentFramePanel1:CreateBackdrop("Transparent")
+		PlayerTalentFramePanel1.backdrop:Point( "TOPLEFT", PlayerTalentFramePanel1, "TOPLEFT", 3, -3 )
+		PlayerTalentFramePanel1.backdrop:Point( "BOTTOMRIGHT", PlayerTalentFramePanel1, "BOTTOMRIGHT", -3, 3 )
+		PlayerTalentFramePanel2:CreateBackdrop("Transparent")
+		PlayerTalentFramePanel2.backdrop:Point( "TOPLEFT", PlayerTalentFramePanel2, "TOPLEFT", 3, -3 )
+		PlayerTalentFramePanel2.backdrop:Point( "BOTTOMRIGHT", PlayerTalentFramePanel2, "BOTTOMRIGHT", -3, 3 )
+		PlayerTalentFramePanel3:CreateBackdrop("Transparent")
+		PlayerTalentFramePanel3.backdrop:Point( "TOPLEFT", PlayerTalentFramePanel3, "TOPLEFT", 3, -3 )
+		PlayerTalentFramePanel3.backdrop:Point( "BOTTOMRIGHT", PlayerTalentFramePanel3, "BOTTOMRIGHT", -3, 3 )
+		PlayerTalentFrame:CreateShadow("Default")
+		SkinCloseButton(PlayerTalentFrameCloseButton)
+
+		function talentpairs(inspect,pet)
+		   local tab,tal=1,0
+		   return function()
+			  tal=tal+1
+			  if tal>GetNumTalents(tab,inspect,pet) then
+				 tal=1
+				 tab=tab+1
+			  end
+			  if tab<=GetNumTalentTabs(inspect,pet) then
+				 return tab,tal
+			  end
+		   end
+		end
+
+		--Skin TalentButtons
+		local function TalentButtons(self, first, i, j)
+			local button = _G["PlayerTalentFramePanel"..i.."Talent"..j]
+			local icon = _G["PlayerTalentFramePanel"..i.."Talent"..j.."IconTexture"]
+
+			if first then
+				button:StripTextures()
+			end
+			
+			if button.Rank then
+				button.Rank:SetFont(FONT, 12, FONTFLAG)
+				button.Rank:ClearAllPoints()
+				button.Rank:SetPoint("BOTTOMRIGHT")
+			end
+			
+			if icon then
+				icon:SetTexCoord(.08, .92, .08, .92)
+				button:StyleButton()
+				button.SetHighlightTexture = E.dummy
+				button.SetPushedTexture = E.dummy
+				button:GetNormalTexture():SetTexCoord(.08, .92, .08, .92)
+				button:GetPushedTexture():SetTexCoord(.08, .92, .08, .92)
+				button:GetHighlightTexture():SetAllPoints(icon)
+				button:GetPushedTexture():SetAllPoints(icon)
+				
+				icon:ClearAllPoints()
+				icon:SetAllPoints()
+				button:SetFrameLevel(button:GetFrameLevel() +1)
+				button:CreateBackdrop("Default", true)
+			end
+		end
+
+		local function TalentSummaryButtons(self, first, active, i, j)
+			if active then
+				button = _G["PlayerTalentFramePanel"..i.."SummaryActiveBonus1"]
+				icon = _G["PlayerTalentFramePanel"..i.."SummaryActiveBonus1Icon"]
+			else
+				button = _G["PlayerTalentFramePanel"..i.."SummaryBonus"..j]
+				icon = _G["PlayerTalentFramePanel"..i.."SummaryBonus"..j.."Icon"]
+			end
+
+			if first then
+				button:StripTextures()
+			end
+
+			if icon then
+				icon:SetTexCoord(.08, .92, .08, .92)
+				button:SetFrameLevel(button:GetFrameLevel() +1)
+				local frame = CreateFrame("Frame",nil, button)
+				frame:CreateBackdrop("Default", true)
+				frame:SetFrameLevel(button:GetFrameLevel() -1)
+				frame:ClearAllPoints()
+				frame:Point( "TOPLEFT", icon, "TOPLEFT", 0, 0 )
+				frame:Point( "BOTTOMRIGHT", icon, "BOTTOMRIGHT", 0, 0 )
+			end
+		end
+
+		for i=1, 2 do
+			local tab = _G["PlayerSpecTab"..i]
+			if tab then
+				local a = tab:GetRegions()
+				a:Hide()
+				tab:StripTextures()
+				tab:GetNormalTexture():SetTexCoord(.08, .92, .08, .92)
+				
+				tab:GetNormalTexture():ClearAllPoints()
+				tab:GetNormalTexture():Point("TOPLEFT", 2, -2)
+				tab:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+
+				tab:CreateBackdrop("Default")
+				tab.backdrop:SetAllPoints()
+				tab:StyleButton(true)
+			end
+		end
+
+		--Reposition tabs
+		PlayerSpecTab1:ClearAllPoints()
+		PlayerSpecTab1:SetPoint("TOPLEFT", PlayerTalentFrame, "TOPRIGHT", 2, -32)
+		PlayerSpecTab1.SetPoint = E.dummy
+		
+		local function TalentSummaryClean(i)
+			frame = _G["PlayerTalentFramePanel"..i.."Summary"]
+			frame:CreateBackdrop("Default")
+			frame:SetFrameLevel(frame:GetFrameLevel() +1)
+			local a,b,_,d,_,_,_,_,_,_,_,_,m,_ = frame:GetRegions()
+			a:Hide()
+			b:Hide()
+			d:Hide()
+			m:Hide()
+		end
+
+		local function TalentHeaderIcon(self, first, i)
+			local button = _G["PlayerTalentFramePanel"..i.."HeaderIcon"]
+			local icon = _G["PlayerTalentFramePanel"..i.."HeaderIconIcon"]
+			local panel = _G["PlayerTalentFramePanel"..i]
+			local g = select(7, button:GetRegions())
+
+			if first then
+				button:StripTextures()
+			end
+			
+			_G["PlayerTalentFramePanel"..i.."HeaderIconPointsSpent"]:SetFont(FONT, 12, FONTFLAG)
+
+			if icon then
+				pointsSpent = select(5, GetTalentTabInfo(i))
+				g:ClearAllPoints()
+				icon:SetTexCoord(.08, .92, .08, .92)
+				button:SetFrameLevel(button:GetFrameLevel() +1)
+				button:ClearAllPoints()
+				button:Point("TOPLEFT",panel,"TOPLEFT", 4, -4)
+				local text = button:FontString(nil, FONT, 12, FONTFLAG)
+				text:Point("BOTTOMRIGHT",button, "BOTTOMRIGHT", -1, 2)
+				text:SetText(pointsSpent)
+				local frame = CreateFrame("Frame",nil, button)
+				frame:CreateBackdrop("Default", true)
+				frame:SetFrameLevel(button:GetFrameLevel() +1)
+				frame:ClearAllPoints()
+				frame:Point( "TOPLEFT", icon, "TOPLEFT", 0, 0 )
+				frame:Point( "BOTTOMRIGHT", icon, "BOTTOMRIGHT", 0, 0 )
+			end
+		end		
+
+		for i=1, 3 do
+			TalentSummaryClean(i)
+			TalentHeaderIcon(nil, true, i)
+			for j=1, 2 do
+				TalentSummaryButtons(nil, true, true, i, j)
+				TalentSummaryButtons(nil, true, false, i, j)
+			end
+		end
+
+		for tab,talent in talentpairs() do
+			TalentButtons(nil, true, tab, talent)
+		end
+
+		for i=1, 3 do
+			SkinTab(_G["PlayerTalentFrameTab"..i])
+		end
+
+		--PET TALENTS
+		SkinRotateButton(PlayerTalentFramePetModelRotateLeftButton)
+		SkinRotateButton(PlayerTalentFramePetModelRotateRightButton)
+		PlayerTalentFramePetModelRotateLeftButton:Point("BOTTOM", PlayerTalentFramePetModel, "BOTTOM", -4, 4)
+		PlayerTalentFramePetModelRotateRightButton:Point("TOPLEFT", PlayerTalentFramePetModelRotateLeftButton, "TOPRIGHT", 4, 0)
+		PlayerTalentFramePetPanel:CreateBackdrop("Transparent")
+		PlayerTalentFramePetPanel.backdrop:Point( "TOPLEFT", PlayerTalentFramePetPanel, "TOPLEFT", 3, -3 )
+		PlayerTalentFramePetPanel.backdrop:Point( "BOTTOMRIGHT", PlayerTalentFramePetPanel, "BOTTOMRIGHT", -3, 3 )
+		PlayerTalentFramePetModel:CreateBackdrop("Transparent")
+		PlayerTalentFramePetModel.backdrop:Point( "TOPLEFT", PlayerTalentFramePetModel, "TOPLEFT")
+		PlayerTalentFramePetModel.backdrop:Point( "BOTTOMRIGHT", PlayerTalentFramePetModel, "BOTTOMRIGHT")
+		SkinButton(PlayerTalentFrameLearnButton, true)
+		SkinButton(PlayerTalentFrameResetButton, true)
+		
+		local function PetHeaderIcon(self, first)
+			local button = _G["PlayerTalentFramePetPanelHeaderIcon"]
+			local icon = _G["PlayerTalentFramePetPanelHeaderIconIcon"]
+			local panel = _G["PlayerTalentFramePetPanel"]
+			local d = select(4, button:GetRegions())
+
+			if first then
+				button:StripTextures()
+			end
+
+			if icon then
+				d:ClearAllPoints()
+				pointsSpent = select(5,GetTalentTabInfo( 1, Partycheck, true, 1 ))
+				icon:SetTexCoord(.08, .92, .08, .92)
+				button:SetFrameLevel(button:GetFrameLevel() +1)
+				button:ClearAllPoints()
+				button:Point("TOPLEFT",panel,"TOPLEFT", 5, -5)
+				local text = button:FontString(nil, FONT, 12, FONTFLAG)
+				text:Point("BOTTOMRIGHT",button, "BOTTOMRIGHT", -1, 2)
+				text:SetText(pointsSpent)
+				local frame = CreateFrame("Frame",nil, button)
+				frame:CreateBackdrop("Default", true)
+				frame:SetFrameLevel(button:GetFrameLevel() +1)
+				frame:ClearAllPoints()
+				frame:Point( "TOPLEFT", icon, "TOPLEFT", 0, 0 )
+				frame:Point( "BOTTOMRIGHT", icon, "BOTTOMRIGHT", 0, 0 )
+			end
+		end
+
+		local function PetInfoIcon(self, first)
+			local button = _G["PlayerTalentFramePetInfo"]
+			local icon = _G["PlayerTalentFramePetIcon"]
+			local panel = _G["PlayerTalentFramePetModel"]
+
+			PlayerTalentFramePetDiet:Hide();
+
+			local petFoodList = { GetPetFoodTypes() };
+			if #petFoodList > 0 then
+				diet = petFoodList[1]
+			else
+				diet = "None"
+			end
+
+			if first then
+				button:StripTextures()
+			end
+
+			if icon then
+				icon:SetTexCoord(.08, .92, .08, .92)
+				button:SetFrameLevel(button:GetFrameLevel() +1)
+				button:ClearAllPoints()
+				button:Point("BOTTOMLEFT",panel,"TOPLEFT", 0, 10)
+				local text = button:FontString(nil, FONT, 12, FONTFLAG)
+				text:Point("TOPRIGHT",button, "TOPRIGHT", 0, -10)
+				text:SetText(diet)
+				local frame = CreateFrame("Frame",nil, button)
+				frame:CreateBackdrop("Default", true)
+				frame:SetFrameLevel(button:GetFrameLevel() +1)
+				frame:ClearAllPoints()
+				frame:Point( "TOPLEFT", icon, "TOPLEFT", 0, 0 )
+				frame:Point( "BOTTOMRIGHT", icon, "BOTTOMRIGHT", 0, 0 )
+			end
+		end	
+
+		local function PetTalentButtons(self, first, i)
+			local button = _G["PlayerTalentFramePetPanelTalent"..i]
+			local icon = _G["PlayerTalentFramePetPanelTalent"..i.."IconTexture"]
+
+			if first then
+				button:StripTextures()
+			end
+			
+			if button.Rank then
+				button.Rank:SetFont(FONT, 12, FONTFLAG)
+				button.Rank:ClearAllPoints()
+				button.Rank:SetPoint("BOTTOMRIGHT")
+			end
+			
+			if icon then
+				button:StyleButton()
+				button.SetHighlightTexture = E.dummy
+				button.SetPushedTexture = E.dummy
+				button:GetNormalTexture():SetTexCoord(.08, .92, .08, .92)
+				button:GetPushedTexture():SetTexCoord(.08, .92, .08, .92)
+				button:GetHighlightTexture():SetAllPoints(icon)
+				button:GetPushedTexture():SetAllPoints(icon)
+				
+				icon:SetTexCoord(.08, .92, .08, .92)
+				icon:ClearAllPoints()
+				icon:SetAllPoints()
+				button:SetFrameLevel(button:GetFrameLevel() +1)
+				button:CreateBackdrop("Default", true)
+			end
+		end	
+
+		PetInfoIcon(nil, true)
+		PetHeaderIcon(nil, true)
+		for i=1,GetNumTalents(1,false,true) do
+			PetTalentButtons(nil,true,i)
+		end
+
+	end
+
+	if addon == "Blizzard_GlyphUI" then
+
+		--GLYPHS TAB
+		GlyphFrameSparkleFrame:CreateBackdrop("Default")
+		GlyphFrameSparkleFrame.backdrop:Point( "TOPLEFT", GlyphFrameSparkleFrame, "TOPLEFT", 3, -3 )
+		GlyphFrameSparkleFrame.backdrop:Point( "BOTTOMRIGHT", GlyphFrameSparkleFrame, "BOTTOMRIGHT", -3, 3 )
+		SkinEditBox("GlyphFrameSearchBox")
+		SkinDropDownBox(GlyphFrameFilterDropDown, 45)
+		
+		GlyphFrameBackground:SetParent(GlyphFrameSparkleFrame)
+		GlyphFrameBackground:SetPoint("TOPLEFT", 4, -4)
+		GlyphFrameBackground:SetPoint("BOTTOMRIGHT", -4, 4)
+		
+		for i=1, 9 do
+			_G["GlyphFrameGlyph"..i]:SetFrameLevel(_G["GlyphFrameGlyph"..i]:GetFrameLevel() + 5)
+		end
+		
+		for i=1, 3 do
+			_G["GlyphFrameHeader"..i]:StripTextures()
+		end
+
+		local function Glyphs(self, first, i)
+			local button = _G["GlyphFrameScrollFrameButton"..i]
+			local icon = _G["GlyphFrameScrollFrameButton"..i.."Icon"]
+
+			if first then
+				button:StripTextures()
+			end
+
+			if icon then
+				icon:SetTexCoord(.08, .92, .08, .92)
+				SkinButton(button)
+			end
+		end
+
+		for i=1, 10 do
+			Glyphs(nil, true, i)
+		end
+
+		GlyphFrameClearInfoFrameIcon:SetTexCoord(.08, .92, .08, .92)
+		GlyphFrameClearInfoFrameIcon:ClearAllPoints()
+		GlyphFrameClearInfoFrameIcon:Point("TOPLEFT", 2, -2)
+		GlyphFrameClearInfoFrameIcon:Point("BOTTOMRIGHT", -2, 2)
+		
+		GlyphFrameClearInfoFrame:CreateBackdrop("Default", true)
+		GlyphFrameClearInfoFrame.backdrop:SetAllPoints()
+		GlyphFrameClearInfoFrame:StyleButton()
+		GlyphFrameClearInfoFrame:Size(25, 25)
+		
+		SkinScrollBar("GlyphFrameScrollFrameScrollBar")
+
+		local StripAllTextures = {
+			"GlyphFrameScrollFrame",
+			"GlyphFrameSideInset",
+			"GlyphFrameScrollFrameScrollChild",
+		}
+
+		for _, object in pairs(StripAllTextures) do
+			_G[object]:StripTextures()
+		end
+
+	end
 	
 	--Auction House
 	if addon == "Blizzard_AuctionUI" then
@@ -461,10 +903,17 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		
 		BarberShopBannerFrameBGTexture:Kill()
 		BarberShopBannerFrame:Kill()
+		
+		BarberShopAltFormFrameBorder:StripTextures()
+		BarberShopAltFormFrame:Point( "BOTTOM", BarberShopFrame, "TOP", 0, 5 )
+		BarberShopAltFormFrame:StripTextures()
+		BarberShopAltFormFrame:CreateBackdrop("Transparent")
 	end
 	
 	--Macro Frame
 	if addon == "Blizzard_MacroUI" then
+		SkinCloseButton(MacroFrameCloseButton)
+		
 		local buttons = {
 			"MacroDeleteButton",
 			"MacroNewButton",
@@ -624,6 +1073,8 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 				
 		--Spellbook
 		do
+			SkinCloseButton(SpellBookFrameCloseButton)
+			
 			local StripAllTextures = {
 				"SpellBookFrame",
 				"SpellBookFrameInset",
@@ -789,6 +1240,9 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			SpellBookCompanionsModelFrame:Kill()
 			SpellBookCompanionModelFrame:SetTemplate("Default")
 			
+			SkinRotateButton(SpellBookCompanionModelFrameRotateRightButton)
+			SkinRotateButton(SpellBookCompanionModelFrameRotateLeftButton)
+			
 			--Bottom Tabs
 			for i=1, 5 do
 				SkinTab(_G["SpellBookFrameTabButton"..i])
@@ -797,6 +1251,8 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		
 		--Character Frame
 		do
+			SkinCloseButton(CharacterFrameCloseButton)
+			
 			local slots = {
 				"HeadSlot",
 				"NeckSlot",
@@ -1066,6 +1522,15 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			PetPaperDollFrameExpBar:StripTextures()
 			PetPaperDollFrameExpBar:SetStatusBarTexture(C["media"].normTex)
 			PetPaperDollFrameExpBar:CreateBackdrop("Default")
+			SkinRotateButton(PetModelFrameRotateRightButton)
+			SkinRotateButton(PetModelFrameRotateLeftButton)
+			PetModelFrameRotateRightButton:ClearAllPoints()
+			PetModelFrameRotateRightButton:Point("LEFT", PetModelFrameRotateLeftButton, "RIGHT", 4, 0)
+			
+			local xtex = PetPaperDollPetInfo:GetRegions()
+			xtex:SetTexCoord(.12, .63, .15, .55)
+			PetPaperDollPetInfo:CreateBackdrop("Default")
+			PetPaperDollPetInfo:Size(24, 24)
 		end
 		
 		
