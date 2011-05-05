@@ -191,7 +191,7 @@ local function SkinCloseButton(f, point)
 	f:Size(18,18)
 
 	local text = f:FontString(nil, FONT, FONTSIZE, FONTFLAG)
-	text:Point("TOPRIGHT",f, "TOPRIGHT", -1, 2)
+	text:SetPoint("CENTER")
 	text:SetText("x")
 	
 	if point then
@@ -1120,7 +1120,114 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 	
 	-- stuff not in Blizzard load-on-demand
 	if addon == "ElvUI" then
-
+		--Quest Log
+		do
+			SkinCloseButton(QuestLogFrameCloseButton)
+			QuestLogFrame:StripTextures()
+			QuestLogFrame:SetTemplate("Transparent")
+			QuestLogFrame:CreateShadow("Default")
+			QuestLogCount:StripTextures()
+			QuestLogCount:SetTemplate("Default")
+			
+			local buttons = {
+				"QuestLogFrameAbandonButton",
+				"QuestLogFramePushQuestButton",
+				"QuestLogFrameTrackButton",
+				"QuestLogFrameCancelButton",
+			}
+			
+			for _, button in pairs(buttons) do
+				SkinButton(_G[button])
+			end
+			QuestLogFramePushQuestButton:Point("LEFT", QuestLogFrameAbandonButton, "RIGHT", 2, 0)
+			QuestLogFramePushQuestButton:Point("RIGHT", QuestLogFrameTrackButton, "LEFT", -2, 0)
+		
+			for i=1, MAX_NUM_ITEMS do
+				_G["QuestInfoItem"..i]:StripTextures()
+				_G["QuestInfoItem"..i]:StyleButton()
+				_G["QuestInfoItem"..i]:Width(_G["QuestInfoItem"..i]:GetWidth() - 4)
+				_G["QuestInfoItem"..i]:SetFrameLevel(_G["QuestInfoItem"..i]:GetFrameLevel() + 2)
+				_G["QuestInfoItem"..i.."IconTexture"]:SetTexCoord(.08, .92, .08, .92)
+				_G["QuestInfoItem"..i.."IconTexture"]:SetDrawLayer("OVERLAY")
+				_G["QuestInfoItem"..i.."IconTexture"]:Point("TOPLEFT", 2, -2)
+				_G["QuestInfoItem"..i.."IconTexture"]:Size(_G["QuestInfoItem"..i.."IconTexture"]:GetWidth() - 2, _G["QuestInfoItem"..i.."IconTexture"]:GetHeight() - 2)
+				_G["QuestInfoItem"..i]:SetTemplate("Default")
+			end
+			
+			--Everything here to make the text a readable color
+			local function QuestObjectiveText()
+				local numObjectives = GetNumQuestLeaderBoards()
+				local objective
+				local type, finished
+				local numVisibleObjectives = 0
+				for i = 1, numObjectives do
+					_, type, finished = GetQuestLogLeaderBoard(i)
+					if (type ~= "spell") then
+						numVisibleObjectives = numVisibleObjectives+1
+						objective = _G["QuestInfoObjective"..numVisibleObjectives]
+						if ( finished ) then
+							objective:SetTextColor(1, 1, 0)
+						else
+							objective:SetTextColor(0.6, 0.6, 0.6)
+						end
+					end
+				end			
+			end
+			
+			hooksecurefunc("QuestInfo_Display", function(template, parentFrame, acceptButton, material)								
+				local textColor = {1, 1, 1}
+				local titleTextColor = {1, 1, 0}
+				
+				-- headers
+				QuestInfoTitleHeader:SetTextColor(unpack(titleTextColor))
+				QuestInfoDescriptionHeader:SetTextColor(unpack(titleTextColor))
+				QuestInfoObjectivesHeader:SetTextColor(unpack(titleTextColor))
+				QuestInfoRewardsHeader:SetTextColor(unpack(titleTextColor))
+				-- other text
+				QuestInfoDescriptionText:SetTextColor(unpack(textColor))
+				QuestInfoObjectivesText:SetTextColor(unpack(textColor))
+				QuestInfoGroupSize:SetTextColor(unpack(textColor))
+				QuestInfoRewardText:SetTextColor(unpack(textColor))
+				-- reward frame text
+				QuestInfoItemChooseText:SetTextColor(unpack(textColor))
+				QuestInfoItemReceiveText:SetTextColor(unpack(textColor))
+				QuestInfoSpellLearnText:SetTextColor(unpack(textColor))
+				QuestInfoXPFrameReceiveText:SetTextColor(unpack(textColor))	
+				
+				QuestObjectiveText()
+			end)
+			
+			hooksecurefunc("QuestInfo_ShowRequiredMoney", function()
+				local requiredMoney = GetQuestLogRequiredMoney()
+				if ( requiredMoney > 0 ) then
+					if ( requiredMoney > GetMoney() ) then
+						-- Not enough money
+						QuestInfoRequiredMoneyText:SetTextColor(0.6, 0.6, 0.6)
+					else
+						QuestInfoRequiredMoneyText:SetTextColor(1, 1, 0)
+					end
+				end			
+			end)			
+		end
+		
+		
+		--Dressing Room Frame
+		do
+			DressUpFrame:StripTextures(true)
+			DressUpFrame:CreateBackdrop("Transparent")
+			DressUpFrame.backdrop:CreateShadow("Default")
+			DressUpFrame.backdrop:Point("TOPLEFT", 6, 0)
+			DressUpFrame.backdrop:Point("BOTTOMRIGHT", -32, 70)
+			
+			SkinButton(DressUpFrameResetButton)
+			SkinButton(DressUpFrameCancelButton)
+			SkinCloseButton(DressUpFrameCloseButton, DressUpFrame.backdrop)
+			SkinRotateButton(DressUpModelRotateLeftButton)
+			SkinRotateButton(DressUpModelRotateRightButton)
+			DressUpModelRotateRightButton:Point("TOPLEFT", DressUpModelRotateLeftButton, "TOPRIGHT", 2, 0)
+			DressUpFrameResetButton:Point("RIGHT", DressUpFrameCancelButton, "LEFT", -2, 0)
+		end
+		
 		--Honor/Conquest Pane
 		do
 			local buttons = {
