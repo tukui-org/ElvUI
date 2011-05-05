@@ -121,10 +121,10 @@ local function SkinRotateButton(btn)
 end
 
 local function SkinEditBox(frame)
-	if _G[frame.."Left"] then _G[frame.."Left"]:Kill() end
-	if _G[frame.."Middle"] then _G[frame.."Middle"]:Kill() end
-	if _G[frame.."Right"] then _G[frame.."Right"]:Kill() end
-	_G[frame]:CreateBackdrop("Default")
+	if _G[frame:GetName().."Left"] then _G[frame:GetName().."Left"]:Kill() end
+	if _G[frame:GetName().."Middle"] then _G[frame:GetName().."Middle"]:Kill() end
+	if _G[frame:GetName().."Right"] then _G[frame:GetName().."Right"]:Kill() end
+	frame:CreateBackdrop("Default")
 end
 
 local function SkinDropDownBox(frame, width)
@@ -186,6 +186,77 @@ local ElvuiSkin = CreateFrame("Frame")
 ElvuiSkin:RegisterEvent("ADDON_LOADED")
 ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 	if IsAddOnLoaded("Skinner") or IsAddOnLoaded("Aurora") then return end
+	
+	--TradeSkill
+	if addon == "Blizzard_TradeSkillUI" then
+		TradeSkillFrame:StripTextures(true)
+		TradeSkillListScrollFrame:StripTextures()
+		TradeSkillDetailScrollFrame:StripTextures()
+		TradeSkillFrameInset:StripTextures()
+		TradeSkillExpandButtonFrame:StripTextures()
+		TradeSkillDetailScrollChildFrame:StripTextures()
+		
+		TradeSkillFrame:SetTemplate("Transparent")
+		TradeSkillFrame:CreateShadow("Default")
+		TradeSkillFrame:Height(TradeSkillFrame:GetHeight() + 12)
+		TradeSkillRankFrame:StripTextures()
+		TradeSkillRankFrame:CreateBackdrop("Default")
+		TradeSkillRankFrame:SetStatusBarTexture(C["media"].normTex)
+		
+		SkinButton(TradeSkillCreateButton, true)
+		SkinButton(TradeSkillCancelButton, true)
+		SkinButton(TradeSkillFilterButton, true)
+		SkinButton(TradeSkillCreateAllButton, true)
+		
+		TradeSkillLinkButton:GetNormalTexture():SetTexCoord(0.25, 0.7, 0.37, 0.75)
+		TradeSkillLinkButton:GetPushedTexture():SetTexCoord(0.25, 0.7, 0.45, 0.8)
+		TradeSkillLinkButton:GetHighlightTexture():Kill()
+		TradeSkillLinkButton:CreateBackdrop("Default")
+		TradeSkillLinkButton:Size(17, 14)
+		TradeSkillLinkButton:Point("LEFT", TradeSkillLinkFrame, "LEFT", 5, -1)
+		SkinEditBox(TradeSkillFrameSearchBox)
+		SkinEditBox(TradeSkillInputBox)
+		SkinNextPrevButton(TradeSkillDecrementButton)
+		SkinNextPrevButton(TradeSkillIncrementButton)
+		TradeSkillIncrementButton:Point("RIGHT", TradeSkillCreateButton, "LEFT", -13, 0)
+		
+		SkinCloseButton(TradeSkillFrameCloseButton)
+		
+		local once = false
+		hooksecurefunc("TradeSkillFrame_SetSelection", function(id)
+			TradeSkillSkillIcon:StyleButton()
+			if TradeSkillSkillIcon:GetNormalTexture() then
+				TradeSkillSkillIcon:GetNormalTexture():SetTexCoord(.08, .92, .08, .92)
+				TradeSkillSkillIcon:GetNormalTexture():ClearAllPoints()
+				TradeSkillSkillIcon:GetNormalTexture():Point("TOPLEFT", 2, -2)
+				TradeSkillSkillIcon:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+			end
+			TradeSkillSkillIcon:SetTemplate("Default")
+
+			for i=1, MAX_TRADE_SKILL_REAGENTS do
+				local button = _G["TradeSkillReagent"..i]
+				local icon = _G["TradeSkillReagent"..i.."IconTexture"]
+				icon:SetTexCoord(.08, .92, .08, .92)
+				icon:SetDrawLayer("OVERLAY")
+				icon.backdrop = CreateFrame("Frame", nil, button)
+				icon.backdrop:SetFrameLevel(button:GetFrameLevel() - 1)
+				icon.backdrop:SetTemplate("Default")
+				icon.backdrop:Point("TOPLEFT", icon, "TOPLEFT", -2, 2)
+				icon.backdrop:Point("BOTTOMRIGHT", icon, "BOTTOMRIGHT", 2, -2)
+				icon:SetParent(icon.backdrop)
+				
+				if i > 2 and once == false then
+					local point, anchoredto, point2, x, y = button:GetPoint()
+					button:ClearAllPoints()
+					button:Point(point, anchoredto, point2, x, y - 3)
+					once = true
+				end
+				
+				_G["TradeSkillReagent"..i.."NameFrame"]:Kill()
+			end
+		end)
+		
+	end
 
 	--Raid Frame
 	if addon == "Blizzard_RaidUI" then
@@ -575,7 +646,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		GlyphFrameSparkleFrame:CreateBackdrop("Default")
 		GlyphFrameSparkleFrame.backdrop:Point( "TOPLEFT", GlyphFrameSparkleFrame, "TOPLEFT", 3, -3 )
 		GlyphFrameSparkleFrame.backdrop:Point( "BOTTOMRIGHT", GlyphFrameSparkleFrame, "BOTTOMRIGHT", -3, 3 )
-		SkinEditBox("GlyphFrameSearchBox")
+		SkinEditBox(GlyphFrameSearchBox)
 		SkinDropDownBox(GlyphFrameFilterDropDown, 212)
 		
 		GlyphFrameBackground:SetParent(GlyphFrameSparkleFrame)
@@ -794,7 +865,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		}
 		
 		for _, editbox in pairs(editboxs) do
-			SkinEditBox(editbox)
+			SkinEditBox(_G[editbox])
 			_G[editbox]:SetTextInsets(1, 1, -1, 1)
 			if editbox:find("Silver") or editbox:find("Copper") then
 				_G[editbox].backdrop:Point("BOTTOMRIGHT", -12, -2)
@@ -1096,6 +1167,8 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 	
 	-- stuff not in Blizzard load-on-demand
 	if addon == "ElvUI" then
+
+		
 		--Quest Log
 		do
 			SkinCloseButton(QuestLogFrameCloseButton)
@@ -1466,7 +1539,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			WhoFrameWhoButton:Size(WhoFrameWhoButton:GetWidth() - 4, WhoFrameWhoButton:GetHeight())
 			WhoFrameAddFriendButton:Size(WhoFrameAddFriendButton:GetWidth() - 4, WhoFrameAddFriendButton:GetHeight())
 			WhoFrameGroupInviteButton:Size(WhoFrameGroupInviteButton:GetWidth() - 4, WhoFrameGroupInviteButton:GetHeight())
-			SkinEditBox("WhoFrameEditBox")
+			SkinEditBox(WhoFrameEditBox)
 			WhoFrameEditBox:Height(WhoFrameEditBox:GetHeight() - 15)
 			WhoFrameEditBox:Point("BOTTOM", WhoFrame, "BOTTOM", -10, 108)
 			WhoFrameEditBox:Width(WhoFrameEditBox:GetWidth() + 17)
