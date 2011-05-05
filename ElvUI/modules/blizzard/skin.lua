@@ -140,15 +140,15 @@ local function SkinEditBox(frame)
 	_G[frame]:CreateBackdrop("Default")
 end
 
-local function SkinDropDownBox(frame, xtextpos)
+local function SkinDropDownBox(frame, width)
 	local button = _G[frame:GetName().."Button"]
-
-	frame:StripTextures()
-	frame:Width(155)
+	if not width then width = 155 end
 	
-	if not xtextpos then xtextpos = -2 end
+	frame:StripTextures()
+	frame:Width(width)
+	
 	_G[frame:GetName().."Text"]:ClearAllPoints()
-	_G[frame:GetName().."Text"]:Point("RIGHT", button, "LEFT", xtextpos, 0)
+	_G[frame:GetName().."Text"]:Point("RIGHT", button, "LEFT", -2, 0)
 
 	
 	button:ClearAllPoints()
@@ -171,7 +171,7 @@ local function SkinCheckBox(frame)
 	frame:SetDisabledTexture("Interface\\Buttons\\UI-CheckBox-Check-Disabled")
 end
 
-local function SkinCloseButton(f)
+local function SkinCloseButton(f, point)
 	if f.SetNormalTexture then
 		f:SetNormalTexture("")
 	end
@@ -193,8 +193,12 @@ local function SkinCloseButton(f)
 	local text = f:FontString(nil, FONT, FONTSIZE, FONTFLAG)
 	text:Point("TOPRIGHT",f, "TOPRIGHT", -1, 2)
 	text:SetText("x")
-
-	f:Point("TOPRIGHT", -4, -4)
+	
+	if point then
+		f:Point("TOPRIGHT", point, "TOPRIGHT", -4, -4)
+	else
+		f:Point("TOPRIGHT", -4, -4)
+	end
 	f:HookScript("OnEnter", SetModifiedBackdrop)
 	f:HookScript("OnLeave", SetOriginalBackdrop)
 end
@@ -204,6 +208,52 @@ ElvuiSkin:RegisterEvent("ADDON_LOADED")
 ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 	if IsAddOnLoaded("Skinner") or IsAddOnLoaded("Aurora") then return end
 
+	--Raid Frame
+	if addon == "Blizzard_RaidUI" then
+		local buttons = {
+			"RaidFrameRaidBrowserButton",
+			"RaidFrameRaidInfoButton",
+			"RaidFrameReadyCheckButton",
+		}
+
+		for i = 1, #buttons do
+			SkinButton(_G[buttons[i]])
+		end
+
+		local StripAllTextures = {
+			"RaidGroup1",
+			"RaidGroup2",
+			"RaidGroup3",
+			"RaidGroup4",
+			"RaidGroup5",
+			"RaidGroup6",
+			"RaidGroup7",
+			"RaidGroup8",
+		}
+
+		for _, object in pairs(StripAllTextures) do
+			_G[object]:StripTextures()
+		end
+
+		local function raidskinupdate()
+			nummembers = GetNumRaidMembers();
+
+			for i=1,nummembers do
+				SkinButton(_G["RaidGroupButton"..i])
+			end
+		end
+		raidskinupdate()
+		RaidFrame:HookScript("OnShow", raidskinupdate)
+		hooksecurefunc("RaidGroupFrame_OnEvent", raidskinupdate)
+
+		for i=1,8 do
+			for j=1,5 do
+				_G["RaidGroup"..i.."Slot"..j]:StripTextures()
+				_G["RaidGroup"..i.."Slot"..j]:SetTemplate("Transparent")
+			end
+		end
+	end	
+	
 	-- Talent Trees
 	if addon == "Blizzard_TalentUI" then
 		--PLAYER TALENTS
@@ -550,7 +600,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		GlyphFrameSparkleFrame.backdrop:Point( "TOPLEFT", GlyphFrameSparkleFrame, "TOPLEFT", 3, -3 )
 		GlyphFrameSparkleFrame.backdrop:Point( "BOTTOMRIGHT", GlyphFrameSparkleFrame, "BOTTOMRIGHT", -3, 3 )
 		SkinEditBox("GlyphFrameSearchBox")
-		SkinDropDownBox(GlyphFrameFilterDropDown, 45)
+		SkinDropDownBox(GlyphFrameFilterDropDown, 212)
 		
 		GlyphFrameBackground:SetParent(GlyphFrameSparkleFrame)
 		GlyphFrameBackground:SetPoint("TOPLEFT", 4, -4)
@@ -1069,8 +1119,334 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 	end
 	
 	-- stuff not in Blizzard load-on-demand
-	if addon == "ElvUI" then	
-				
+	if addon == "ElvUI" then
+
+		--Honor/Conquest Pane
+		do
+			local buttons = {
+				"PVPFrameLeftButton",
+				"PVPFrameRightButton",
+				"PVPHonorFrameWarGameButton",
+				"PVPColorPickerButton1",
+				"PVPColorPickerButton2",
+				"PVPColorPickerButton3",
+				"PVPBannerFrameAcceptButton",
+			}
+
+			for i = 1, #buttons do
+				_G[buttons[i]]:StripTextures()
+				SkinButton(_G[buttons[i]])
+			end
+
+			local KillTextures = {
+				"PVPHonorFrameBGTex",
+				"PVPHonorFrameInfoScrollFrameScrollBar",
+				"PVPConquestFrameInfoButtonInfoBG",
+				"PVPConquestFrameInfoButtonInfoBGOff",
+				"PVPTeamManagementFrameFlag2GlowBG",
+				"PVPTeamManagementFrameFlag3GlowBG",
+				"PVPTeamManagementFrameFlag5GlowBG",
+				"PVPTeamManagementFrameFlag2HeaderSelected",
+				"PVPTeamManagementFrameFlag3HeaderSelected",
+				"PVPTeamManagementFrameFlag5HeaderSelected",
+				"PVPTeamManagementFrameFlag2Header",
+				"PVPTeamManagementFrameFlag3Header",
+				"PVPTeamManagementFrameFlag5Header",
+				"PVPTeamManagementFrameWeeklyDisplayLeft",
+				"PVPTeamManagementFrameWeeklyDisplayRight",
+				"PVPTeamManagementFrameWeeklyDisplayMiddle",
+				"PVPBannerFramePortrait",
+				"PVPBannerFramePortraitFrame",
+				"PVPBannerFrameInset",
+				"PVPBannerFrameEditBoxLeft",
+				"PVPBannerFrameEditBoxRight",
+				"PVPBannerFrameEditBoxMiddle",
+				"PVPBannerFrameCancelButton_LeftSeparator",
+			}
+
+			for _, texture in pairs(KillTextures) do
+				_G[texture]:Kill()
+			end
+
+			local StripAllTextures = {
+				"PVPFrame",
+				"PVPFrameInset",
+				"PVPHonorFrame",
+				"PVPConquestFrame",
+				"PVPTeamManagementFrame",
+				"PVPHonorFrameTypeScrollFrame",
+				"PVPFrameTopInset",
+				"PVPTeamManagementFrameInvalidTeamFrame",
+				"PVPBannerFrame",
+				"PVPBannerFrameCustomization1",
+				"PVPBannerFrameCustomization2",
+				"PVPBannerFrameCustomizationFrame",
+			}
+
+			for _, object in pairs(StripAllTextures) do
+				_G[object]:StripTextures()
+			end
+
+			local function ArenaHeader(self, first, i)
+				local button = _G["PVPTeamManagementFrameHeader"..i]
+
+				if first then
+					button:StripTextures()
+				end
+			end
+
+			for i=1, 4 do
+				ArenaHeader(nil, true, i)
+			end	
+
+			PVPBannerFrameEditBox:CreateBackdrop("Default")
+			PVPBannerFrameEditBox.backdrop:Point( "TOPLEFT", PVPBannerFrameEditBox, "TOPLEFT" ,-5,-5)
+			PVPBannerFrameEditBox.backdrop:Point( "BOTTOMRIGHT", PVPBannerFrameEditBox, "BOTTOMRIGHT",5,5)
+			PVPHonorFrameInfoScrollFrameChildFrameDescription:SetTextColor(1,1,1)
+			PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(1,1,1)
+			PVPTeamManagementFrameInvalidTeamFrame:CreateBackdrop("Default")
+			PVPTeamManagementFrameInvalidTeamFrame:SetFrameLevel(PVPTeamManagementFrameInvalidTeamFrame:GetFrameLevel()+1)
+			PVPTeamManagementFrameInvalidTeamFrame.backdrop:Point( "TOPLEFT", PVPTeamManagementFrameInvalidTeamFrame, "TOPLEFT")
+			PVPTeamManagementFrameInvalidTeamFrame.backdrop:Point( "BOTTOMRIGHT", PVPTeamManagementFrameInvalidTeamFrame, "BOTTOMRIGHT")
+			PVPTeamManagementFrameInvalidTeamFrame.backdrop:SetFrameLevel(PVPTeamManagementFrameInvalidTeamFrame:GetFrameLevel())
+			PVPFrameConquestBar:StripTextures()
+			PVPFrameConquestBar:SetStatusBarTexture(C["media"].normTex)
+			PVPFrameConquestBar:CreateBackdrop("Default")
+			PVPBannerFrame:CreateBackdrop("Transparent")
+			PVPBannerFrame.backdrop:Point( "TOPLEFT", PVPBannerFrame, "TOPLEFT")
+			PVPBannerFrame.backdrop:Point( "BOTTOMRIGHT", PVPBannerFrame, "BOTTOMRIGHT")
+			PVPBannerFrameCustomization1:CreateBackdrop("Default")
+			PVPBannerFrameCustomization1.backdrop:Point( "TOPLEFT", PVPBannerFrameCustomization1LeftButton, "TOPRIGHT" ,2,0)
+			PVPBannerFrameCustomization1.backdrop:Point( "BOTTOMRIGHT", PVPBannerFrameCustomization1RightButton, "BOTTOMLEFT",-2,0)
+			PVPBannerFrameCustomization2:CreateBackdrop("Default")
+			PVPBannerFrameCustomization2.backdrop:Point( "TOPLEFT", PVPBannerFrameCustomization2LeftButton, "TOPRIGHT",2,0)
+			PVPBannerFrameCustomization2.backdrop:Point( "BOTTOMRIGHT", PVPBannerFrameCustomization2RightButton, "BOTTOMLEFT",-2,0)
+			SkinCloseButton(PVPBannerFrameCloseButton,PVPBannerFrame)
+			SkinNextPrevButton(PVPBannerFrameCustomization1LeftButton)
+			PVPBannerFrameCustomization1LeftButton:Height(PVPBannerFrameCustomization1:GetHeight())
+			SkinNextPrevButton(PVPBannerFrameCustomization1RightButton)
+			PVPBannerFrameCustomization1RightButton:Height(PVPBannerFrameCustomization1:GetHeight())
+			SkinNextPrevButton(PVPBannerFrameCustomization2LeftButton)
+			PVPBannerFrameCustomization2LeftButton:Height(PVPBannerFrameCustomization1:GetHeight())
+			SkinNextPrevButton(PVPBannerFrameCustomization2RightButton)
+			PVPBannerFrameCustomization2RightButton:Height(PVPBannerFrameCustomization1:GetHeight())
+			PVPFrame:CreateBackdrop("Transparent")
+			PVPFrame.backdrop:Point( "TOPLEFT", PVPFrame, "TOPLEFT")
+			PVPFrame.backdrop:Point( "BOTTOMRIGHT", PVPFrame, "BOTTOMRIGHT")
+			SkinCloseButton(PVPFrameCloseButton,PVPFrame)
+			SkinNextPrevButton(PVPTeamManagementFrameWeeklyToggleLeft)
+			SkinNextPrevButton(PVPTeamManagementFrameWeeklyToggleRight)
+			PVPColorPickerButton1:Height(PVPColorPickerButton1:GetHeight()-5)
+			PVPColorPickerButton2:Height(PVPColorPickerButton1:GetHeight())
+			PVPColorPickerButton3:Height(PVPColorPickerButton1:GetHeight())
+
+			--Freaking gay Cancel Button FFSlocal
+			local f = PVPBannerFrameCancelButton
+			local l = _G[f:GetName().."Left"]
+			local m = _G[f:GetName().."Middle"]
+			local r = _G[f:GetName().."Right"]
+			if l then l:SetAlpha(0) end
+			if m then m:SetAlpha(0) end
+			if r then r:SetAlpha(0) end
+			f:CreateBackdrop("Default")
+			f:SetFrameLevel(PVPBannerFrameAcceptButton:GetFrameLevel()+1)
+			f.backdrop:Point( "TOPLEFT", PVPBannerFrameAcceptButton, "TOPLEFT", PVPBannerFrame:GetWidth()-PVPBannerFrameAcceptButton:GetWidth()-10,0)
+			f.backdrop:Point( "BOTTOMRIGHT", PVPBannerFrameAcceptButton, "BOTTOMRIGHT", PVPBannerFrame:GetWidth()-PVPBannerFrameAcceptButton:GetWidth()-10, 0)
+			f.backdrop:SetFrameLevel(f:GetFrameLevel()-1)
+			
+			--Bottom Tabs
+			for i=1,3 do
+				SkinTab(_G["PVPFrameTab"..i])
+			end
+		end	
+	
+		--NonRaid Frame
+		do
+			local StripAllTextures = {
+				"RaidInfoFrame",
+				"RaidInfoInstanceLabel",
+				"RaidInfoIDLabel",
+			}
+
+			local KillTextures = {
+				"RaidInfoScrollFrameScrollBarBG",
+				"RaidInfoScrollFrameScrollBarTop",
+				"RaidInfoScrollFrameScrollBarBottom",
+				"RaidInfoScrollFrameScrollBarMiddle",
+			}
+			local buttons = {
+				"RaidFrameConvertToRaidButton",
+				"RaidFrameRaidInfoButton",
+				"RaidFrameNotInRaidRaidBrowserButton",
+				"RaidInfoExtendButton",
+				"RaidInfoCancelButton",
+			}
+
+			for _, object in pairs(StripAllTextures) do
+				_G[object]:StripTextures()
+			end
+
+			for _, texture in pairs(KillTextures) do
+				_G[texture]:Kill()
+			end
+
+			for i = 1, #buttons do
+				SkinButton(_G[buttons[i]])
+			end
+			RaidInfoScrollFrame:StripTextures()
+			RaidInfoFrame:CreateBackdrop("Transparent")
+			RaidInfoFrame.backdrop:Point( "TOPLEFT", RaidInfoFrame, "TOPLEFT")
+			RaidInfoFrame.backdrop:Point( "BOTTOMRIGHT", RaidInfoFrame, "BOTTOMRIGHT")
+			SkinCloseButton(RaidInfoCloseButton,RaidInfoFrame)
+
+		end
+		
+		--Social Frame
+		local function SkinSocialHeaderTab(tab)
+			if not tab then return end
+			for _, object in pairs(tabs) do
+				local tex = _G[tab:GetName()..object]
+				tex:SetTexture(nil)
+			end
+			tab:GetHighlightTexture():SetTexture(nil)
+			tab.backdrop = CreateFrame("Frame", nil, tab)
+			tab.backdrop:SetTemplate("Default")
+			tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)
+			tab.backdrop:Point("TOPLEFT", 3, -8)
+			tab.backdrop:Point("BOTTOMRIGHT", -6, 0)
+		end
+
+		--Friends/Social Pane
+		do
+			local StripAllTextures = {
+				"FriendsFrame",
+				"FriendsListFrame",
+				"FriendsTabHeader",
+				"FriendsFrameFriendsScrollFrame",
+				"WhoFrameColumnHeader1",
+				"WhoFrameColumnHeader2",
+				"WhoFrameColumnHeader3",
+				"WhoFrameColumnHeader4",
+				"ChannelListScrollFrame",
+				"ChannelRoster",
+				"FriendsFramePendingButton1",
+				"FriendsFramePendingButton2",
+				"FriendsFramePendingButton3",
+				"FriendsFramePendingButton4",
+				"ChannelFrameDaughterFrame",
+			}			
+
+			local KillTextures = {
+				"FriendsFrameTopLeft",
+				"FriendsFrameTopRight",
+				"FriendsFrameBottomLeft",
+				"FriendsFrameBottomRight",
+				"ChannelFrameVerticalBar",
+				"FriendsFrameBroadcastInputLeft",
+				"FriendsFrameBroadcastInputRight",
+				"FriendsFrameBroadcastInputMiddle",
+				"ChannelFrameDaughterFrameChannelNameLeft",
+				"ChannelFrameDaughterFrameChannelNameRight",
+				"ChannelFrameDaughterFrameChannelNameMiddle",
+				"ChannelFrameDaughterFrameChannelPasswordLeft",
+				"ChannelFrameDaughterFrameChannelPasswordRight",				"ChannelFrameDaughterFrameChannelPasswordMiddle",
+			}
+
+			local buttons = {
+				"FriendsFrameAddFriendButton",
+				"FriendsFrameSendMessageButton",
+				"WhoFrameWhoButton",
+				"WhoFrameAddFriendButton",
+				"WhoFrameGroupInviteButton",
+				"ChannelFrameNewButton",
+				"FriendsFrameIgnorePlayerButton",
+				"FriendsFramePendingButton1AcceptButton",
+				"FriendsFramePendingButton1DeclineButton",
+				"FriendsFramePendingButton2AcceptButton",
+				"FriendsFramePendingButton2DeclineButton",
+				"FriendsFramePendingButton3AcceptButton",
+				"FriendsFramePendingButton3DeclineButton",
+				"FriendsFramePendingButton4AcceptButton",
+				"FriendsFramePendingButton4DeclineButton",
+				"ChannelFrameDaughterFrameOkayButton",
+				"ChannelFrameDaughterFrameCancelButton",
+			}			
+
+			for _, button in pairs(buttons) do
+				SkinButton(_G[button])
+			end
+			--Reposition buttons
+			WhoFrameWhoButton:Point("RIGHT", WhoFrameAddFriendButton, "LEFT", -2, 0)
+			WhoFrameAddFriendButton:Point("RIGHT", WhoFrameGroupInviteButton, "LEFT", -2, 0)
+			WhoFrameGroupInviteButton:Point("BOTTOMRIGHT", WhoFrame, "BOTTOMRIGHT", -44, 82)
+			--Resize Buttons
+			WhoFrameWhoButton:Size(WhoFrameWhoButton:GetWidth() - 4, WhoFrameWhoButton:GetHeight())
+			WhoFrameAddFriendButton:Size(WhoFrameAddFriendButton:GetWidth() - 4, WhoFrameAddFriendButton:GetHeight())
+			WhoFrameGroupInviteButton:Size(WhoFrameGroupInviteButton:GetWidth() - 4, WhoFrameGroupInviteButton:GetHeight())
+			SkinEditBox("WhoFrameEditBox")
+			WhoFrameEditBox:Height(WhoFrameEditBox:GetHeight() - 15)
+			WhoFrameEditBox:Point("BOTTOM", WhoFrame, "BOTTOM", -10, 108)
+			WhoFrameEditBox:Width(WhoFrameEditBox:GetWidth() + 17)
+			
+			for _, texture in pairs(KillTextures) do
+				_G[texture]:Kill()
+			end
+
+			for _, object in pairs(StripAllTextures) do
+				_G[object]:StripTextures()
+			end
+
+			--Who Frame
+			local function UpdateWhoSkins()
+				WhoListScrollFrame:StripTextures()
+			end
+			--Channel Frame
+			local function UpdateChannel()
+				ChannelRosterScrollFrame:StripTextures()
+			end
+			--BNet Frame
+			FriendsFrameBroadcastInput:CreateBackdrop("Default")
+			ChannelFrameDaughterFrameChannelName:CreateBackdrop("Default")
+			ChannelFrameDaughterFrameChannelPassword:CreateBackdrop("Default")			
+
+			ChannelFrame:HookScript("OnShow", UpdateChannel)
+			hooksecurefunc("FriendsFrame_OnEvent", UpdateChannel)
+
+			WhoFrame:HookScript("OnShow", UpdateWhoSkins)
+			hooksecurefunc("FriendsFrame_OnEvent", UpdateWhoSkins)
+
+			ChannelFrameDaughterFrame:CreateBackdrop("Transparent")
+			FriendsFrame:CreateBackdrop("Transparent")
+			FriendsFrame.backdrop:Point( "TOPLEFT", FriendsFrame, "TOPLEFT", 11,-12)
+			FriendsFrame.backdrop:Point( "BOTTOMRIGHT", FriendsFrame, "BOTTOMRIGHT", -35, 76)
+			SkinCloseButton(ChannelFrameDaughterFrameDetailCloseButton,ChannelFrameDaughterFrame)
+			SkinCloseButton(FriendsFrameCloseButton,FriendsFrame.backdrop)
+			SkinDropDownBox(WhoFrameDropDown,150)
+			SkinDropDownBox(FriendsFrameStatusDropDown,70)
+
+			--Bottom Tabs
+			for i=1, 4 do
+				SkinTab(_G["FriendsFrameTab"..i])
+			end
+
+			for i=1, 3 do
+				SkinSocialHeaderTab(_G["FriendsTabHeaderTab"..i])
+			end
+
+			local function Channel()
+				for i=1, MAX_DISPLAY_CHANNEL_BUTTONS do
+					local button = _G["ChannelButton"..i]
+					if button then
+						button:StripTextures()
+						button:SetHighlightTexture("Interface\\PaperDollInfoFrame\\UI-Character-Tab-Highlight")
+						
+						_G["ChannelButton"..i.."Text"]:SetFont(FONT, 12)
+					end
+				end
+			end
+			hooksecurefunc("ChannelList_Update", Channel)
+		end
+		
 		--Spellbook
 		do
 			SkinCloseButton(SpellBookFrameCloseButton)
