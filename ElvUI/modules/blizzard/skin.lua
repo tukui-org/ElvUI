@@ -432,7 +432,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			local button = _G["PlayerTalentFramePanel"..i.."HeaderIcon"]
 			local icon = _G["PlayerTalentFramePanel"..i.."HeaderIconIcon"]
 			local panel = _G["PlayerTalentFramePanel"..i]
-			local g = select(7, button:GetRegions())
+			local text = _G["PlayerTalentFramePanel"..i.."HeaderIconPointsSpent"]
 
 			if first then
 				button:StripTextures()
@@ -441,15 +441,12 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			_G["PlayerTalentFramePanel"..i.."HeaderIconPointsSpent"]:SetFont(FONT, 12, FONTFLAG)
 
 			if icon then
-				pointsSpent = select(5, GetTalentTabInfo(i))
-				g:ClearAllPoints()
 				icon:SetTexCoord(.08, .92, .08, .92)
 				button:SetFrameLevel(button:GetFrameLevel() +1)
 				button:ClearAllPoints()
 				button:Point("TOPLEFT",panel,"TOPLEFT", 4, -4)
-				local text = button:FontString(nil, FONT, 12, FONTFLAG)
+				text:SetFont(FONT, 12, FONTFLAG)
 				text:Point("BOTTOMRIGHT",button, "BOTTOMRIGHT", -1, 2)
-				text:SetText(pointsSpent)
 				local frame = CreateFrame("Frame",nil, button)
 				frame:CreateBackdrop("Default", true)
 				frame:SetFrameLevel(button:GetFrameLevel() +1)
