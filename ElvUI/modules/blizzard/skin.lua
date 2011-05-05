@@ -32,31 +32,18 @@ local function SkinButton(f, strip)
 		if m then m:SetAlpha(0) end
 		if r then r:SetAlpha(0) end
 	end
+
+	if f.SetNormalTexture then f:SetNormalTexture("") end
 	
+	if f.SetHighlightTexture then f:SetHighlightTexture("") end
 	
+	if f.SetPushedTexture then f:SetPushedTexture("") end
 	
-	if f.SetNormalTexture then
-		f:SetNormalTexture("")
-	end
+	if f.SetDisabledTexture then f:SetDisabledTexture("") end
 	
-	if f.SetHighlightTexture then
-		f:SetHighlightTexture("")
-	end
-	
-	if f.SetPushedTexture then
-		f:SetPushedTexture("")
-	end
-	
-	if f.SetDisabledTexture then
-		f:SetDisabledTexture("")
-	end
-	
-	if strip then
-		f:StripTextures()
-	end
+	if strip then f:StripTextures() end
 	
 	f:SetTemplate("Default", true)
-	
 	f:HookScript("OnEnter", SetModifiedBackdrop)
 	f:HookScript("OnLeave", SetOriginalBackdrop)
 end
@@ -172,26 +159,18 @@ local function SkinCheckBox(frame)
 end
 
 local function SkinCloseButton(f, point)
-	if f.SetNormalTexture then
-		f:SetNormalTexture("")
-	end
+	if f.SetNormalTexture then f:SetNormalTexture("") end
 
-	if f.SetHighlightTexture then
-		f:SetHighlightTexture("")
-	end
+	if f.SetHighlightTexture then f:SetHighlightTexture("") end
 
-	if f.SetPushedTexture then
-		f:SetPushedTexture("")
-	end
+	if f.SetPushedTexture then f:SetPushedTexture("") end
 
-	if f.SetDisabledTexture then
-		f:SetDisabledTexture("")
-	end
+	if f.SetDisabledTexture then f:SetDisabledTexture("") end
 	f:SetTemplate("Default", true)
 	f:Size(18,18)
 
 	local text = f:FontString(nil, FONT, FONTSIZE, FONTFLAG)
-	text:SetPoint("CENTER")
+	text:SetPoint("CENTER", 1, 1)
 	text:SetText("x")
 	
 	if point then
