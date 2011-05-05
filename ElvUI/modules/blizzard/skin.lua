@@ -1178,6 +1178,12 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			QuestLogCount:StripTextures()
 			QuestLogCount:SetTemplate("Default")
 			
+			QuestLogFrameShowMapButton:StripTextures()
+			SkinButton(QuestLogFrameShowMapButton)
+			QuestLogFrameShowMapButton.text:ClearAllPoints()
+			QuestLogFrameShowMapButton.text:SetPoint("CENTER")
+			QuestLogFrameShowMapButton:Size(QuestLogFrameShowMapButton:GetWidth() - 30, QuestLogFrameShowMapButton:GetHeight(), - 40)
+			
 			local buttons = {
 				"QuestLogFrameAbandonButton",
 				"QuestLogFramePushQuestButton",
@@ -1202,7 +1208,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 				_G["QuestInfoItem"..i.."IconTexture"]:Size(_G["QuestInfoItem"..i.."IconTexture"]:GetWidth() - 2, _G["QuestInfoItem"..i.."IconTexture"]:GetHeight() - 2)
 				_G["QuestInfoItem"..i]:SetTemplate("Default")
 			end
-			
+
 			--Everything here to make the text a readable color
 			local function QuestObjectiveText()
 				local numObjectives = GetNumQuestLeaderBoards()
