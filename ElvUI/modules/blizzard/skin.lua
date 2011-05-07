@@ -2365,6 +2365,8 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 							button:CreateBackdrop("Default", true)	
 						end
 					end	
+					
+					_G["SpellButton"..i.."SubSpellName"]:SetTextColor(0.6, 0.6, 0.6)
 				end
 			end
 			SpellButtons(nil, true)
