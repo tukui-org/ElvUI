@@ -202,11 +202,13 @@ Stat:SetScript("OnEnter", function(self)
 	local col = E.RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b)
 	GameTooltip:AddLine(' ')
 	if GetGuildLevel() ~= 25 then
-		local currentXP, nextLevelXP, percentTotal = unpack(guildXP[0])
-		local dailyXP, maxDailyXP, percentDaily = unpack(guildXP[1])
-				
-		GameTooltip:AddLine(format(guildXpCurrentString, E.ShortValue(currentXP), E.ShortValue(nextLevelXP), percentTotal))
-		GameTooltip:AddLine(format(guildXpDailyString, E.ShortValue(dailyXP), E.ShortValue(maxDailyXP), percentDaily))
+		if guildXP[0] and guildXP[1] then
+			local currentXP, nextLevelXP, percentTotal = unpack(guildXP[0])
+			local dailyXP, maxDailyXP, percentDaily = unpack(guildXP[1])
+					
+			GameTooltip:AddLine(format(guildXpCurrentString, E.ShortValue(currentXP), E.ShortValue(nextLevelXP), percentTotal))
+			GameTooltip:AddLine(format(guildXpDailyString, E.ShortValue(dailyXP), E.ShortValue(maxDailyXP), percentDaily))
+		end
 	end
 	
 	local _, _, standingID, barMin, barMax, barValue = GetGuildFactionInfo()
