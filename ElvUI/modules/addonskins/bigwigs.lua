@@ -176,6 +176,7 @@ f:SetScript("OnEvent", function(self, event, addon)
 		
 		f:UnregisterEvent("ADDON_LOADED")
 	elseif event == "PLAYER_ENTERING_WORLD" then
+		LoadAddOn("BigWigs")
 		LoadAddOn("BigWigs_Core")
 		LoadAddOn("BigWigs_Plugins")
 		LoadAddOn("BigWigs_Options")

@@ -306,7 +306,8 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"GuildNewsBossModel",
 			"GuildNewsBossModelTextFrame",
 		}
-		
+		GuildRewardsFrameVisitText:ClearAllPoints()
+		GuildRewardsFrameVisitText:SetPoint("TOP", GuildRewardsFrame, "TOP", 0, 30)
 		for _, frame in pairs(striptextures) do
 			_G[frame]:StripTextures()
 		end
@@ -1371,6 +1372,8 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 	if addon == "Blizzard_MacroUI" then
 		SkinCloseButton(MacroFrameCloseButton)
 		
+		MacroFrame:Width(360)
+		
 		local buttons = {
 			"MacroDeleteButton",
 			"MacroNewButton",
@@ -1700,6 +1703,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 				SkinCheckBox(_G["LFDQueueFrameSpecificListButton"..i.."EnableButton"])
 			end
 			
+			LFDQueueFrameCapBar:SetPoint("LEFT", 40, 0)
 			LFDQueueFrameRandom:HookScript("OnShow", function()
 				for i=1, LFD_MAX_REWARDS do
 					local button = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i]
@@ -1761,6 +1765,10 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		do
 			QuestFrame:StripTextures(true)
 			QuestFrameDetailPanel:StripTextures(true)
+			QuestDetailScrollFrame:StripTextures(true)
+			QuestDetailScrollChildFrame:StripTextures(true)
+			QuestRewardScrollFrame:StripTextures(true)
+			QuestRewardScrollChildFrame:StripTextures(true)
 			QuestFrameProgressPanel:StripTextures(true)
 			QuestFrameRewardPanel:StripTextures(true)
 			QuestFrame:CreateBackdrop("Transparent")
@@ -1779,12 +1787,13 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 				local texture = _G["QuestProgressItem"..i.."IconTexture"]
 				button:StripTextures()
 				button:StyleButton()
-				button:Width(_G["QuestInfoItem"..i]:GetWidth() - 4)
+				button:Width(_G["QuestProgressItem"..i]:GetWidth() - 4)
 				button:SetFrameLevel(button:GetFrameLevel() + 2)
 				texture:SetTexCoord(.08, .92, .08, .92)
 				texture:SetDrawLayer("OVERLAY")
 				texture:Point("TOPLEFT", 2, -2)
 				texture:Size(texture:GetWidth() - 2, texture:GetHeight() - 2)
+				_G["QuestProgressItem"..i.."Count"]:SetDrawLayer("OVERLAY")
 				button:SetTemplate("Default")				
 			end
 			
@@ -1883,7 +1892,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 				_G["QuestInfoItem"..i.."IconTexture"]:Point("TOPLEFT", 2, -2)
 				_G["QuestInfoItem"..i.."IconTexture"]:Size(_G["QuestInfoItem"..i.."IconTexture"]:GetWidth() - 2, _G["QuestInfoItem"..i.."IconTexture"]:GetHeight() - 2)
 				_G["QuestInfoItem"..i]:SetTemplate("Default")
-				
+				_G["QuestInfoItem"..i.."Count"]:SetDrawLayer("OVERLAY")
 			end
 			QuestInfoItemHighlight:StripTextures()
 			QuestInfoItemHighlight:SetTemplate("Default")
@@ -2366,11 +2375,19 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 						end
 					end	
 					
+					local r, g, b = _G["SpellButton"..i.."SpellName"]:GetTextColor()
+
+					if r < 0.8 then
+						_G["SpellButton"..i.."SpellName"]:SetTextColor(0.6, 0.6, 0.6)
+					end
 					_G["SpellButton"..i.."SubSpellName"]:SetTextColor(0.6, 0.6, 0.6)
+					_G["SpellButton"..i.."RequiredLevelString"]:SetTextColor(0.6, 0.6, 0.6)
 				end
 			end
 			SpellButtons(nil, true)
 			hooksecurefunc("SpellButton_UpdateButton", SpellButtons)
+			
+			SpellBookPageText:SetTextColor(0.6, 0.6, 0.6)
 			
 			--Skill Line Tabs
 			for i=1, MAX_SKILLLINE_TABS do
@@ -2410,6 +2427,20 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 				"SecondaryProfession4SpellButtonLeft",
 				"SecondaryProfession4SpellButtonRight",		
 			}
+			
+			local professionheaders = {
+				"PrimaryProfession1",
+				"PrimaryProfession2",
+				"SecondaryProfession1",
+				"SecondaryProfession2",
+				"SecondaryProfession3",
+				"SecondaryProfession4",
+			}
+			
+			for _, header in pairs(professionheaders) do
+				_G[header.."Missing"]:SetTextColor(1, 1, 0)
+				_G[header].missingText:SetTextColor(0.6, 0.6, 0.6)
+			end
 			
 			for _, button in pairs(professionbuttons) do
 				local icon = _G[button.."IconTexture"]
@@ -2479,6 +2510,8 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			
 			SkinRotateButton(SpellBookCompanionModelFrameRotateRightButton)
 			SkinRotateButton(SpellBookCompanionModelFrameRotateLeftButton)
+			SpellBookCompanionModelFrameRotateRightButton:Point("TOPLEFT", SpellBookCompanionModelFrameRotateLeftButton, "TOPRIGHT", 3, 0)
+			
 			
 			--Bottom Tabs
 			for i=1, 5 do
@@ -2705,6 +2738,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			--Reputation
 			local function UpdateFactionSkins()
 				ReputationListScrollFrame:StripTextures()
+				ReputationFrame:StripTextures(true)
 				for i=1, GetNumFactions() do
 					local statusbar = _G["ReputationBar"..i.."ReputationBar"]
 
@@ -2716,14 +2750,15 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 						end
 						
 						_G["ReputationBar"..i.."Background"]:SetTexture(nil)
-						_G["ReputationBar"..i.."LeftLine"]:SetTexture(nil)
-						_G["ReputationBar"..i.."BottomLine"]:SetTexture(nil)
+						_G["ReputationBar"..i.."LeftLine"]:Kill()
+						_G["ReputationBar"..i.."BottomLine"]:Kill()
 						_G["ReputationBar"..i.."ReputationBarHighlight1"]:SetTexture(nil)
 						_G["ReputationBar"..i.."ReputationBarHighlight2"]:SetTexture(nil)	
 						_G["ReputationBar"..i.."ReputationBarAtWarHighlight1"]:SetTexture(nil)
 						_G["ReputationBar"..i.."ReputationBarAtWarHighlight2"]:SetTexture(nil)
 						_G["ReputationBar"..i.."ReputationBarLeftTexture"]:SetTexture(nil)
 						_G["ReputationBar"..i.."ReputationBarRightTexture"]:SetTexture(nil)
+						
 					end		
 				end
 				ReputationDetailFrame:StripTextures()
