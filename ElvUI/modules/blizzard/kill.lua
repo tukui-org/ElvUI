@@ -17,8 +17,9 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 		if E.myclass == "DEATHKNIGHT" then
 			RuneFrame:Kill()
 		end
+		
 	else
-
+		
 		if C["raidframes"].disableblizz == true then 
 			InterfaceOptionsFrameCategoriesButton10:SetScale(0.00001)
 			InterfaceOptionsFrameCategoriesButton10:SetAlpha(0)	
@@ -38,6 +39,9 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 		end]]
 		
 		if addon ~= "ElvUI" then return end
+		
+		GuildChallengeAlertFrame:Kill()
+		
 		StreamingIcon:Kill()
 		Advanced_UseUIScale:Kill()
 		Advanced_UIScaleSlider:Kill()
