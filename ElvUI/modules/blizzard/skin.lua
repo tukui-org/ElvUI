@@ -1321,6 +1321,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		end
 		
 		--Fix Button Positions
+		AuctionsCloseButton:Point("BOTTOMRIGHT", AuctionFrameAuctions, "BOTTOMRIGHT", 66, 10)
 		AuctionsCancelAuctionButton:Point("RIGHT", AuctionsCloseButton, "LEFT", -4, 0)
 		BidBuyoutButton:Point("RIGHT", BidCloseButton, "LEFT", -4, 0)
 		BidBidButton:Point("RIGHT", BidBuyoutButton, "LEFT", -4, 0)
@@ -1478,7 +1479,37 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			button:GetPushedTexture():SetAllPoints(button:GetHighlightTexture())			
 		end
 		
+		--Custom Backdrops
+		AuctionFrameBrowse.bg1 = CreateFrame("Frame", nil, AuctionFrameBrowse)
+		AuctionFrameBrowse.bg1:SetTemplate("Default")
+		AuctionFrameBrowse.bg1:Point("TOPLEFT", 20, -103)
+		AuctionFrameBrowse.bg1:Point("BOTTOMRIGHT", -575, 40)
+		BrowseFilterScrollFrame:Height(300) --Adjust scrollbar height a little off
 
+		AuctionFrameBrowse.bg2 = CreateFrame("Frame", nil, AuctionFrameBrowse)
+		AuctionFrameBrowse.bg2:SetTemplate("Default")
+		AuctionFrameBrowse.bg2:Point("TOPLEFT", AuctionFrameBrowse.bg1, "TOPRIGHT", 4, 0)
+		AuctionFrameBrowse.bg2:Point("BOTTOMRIGHT", AuctionFrame, "BOTTOMRIGHT", -8, 40)
+		BrowseScrollFrame:Height(300) --Adjust scrollbar height a little off
+		
+		AuctionFrameBid.bg = CreateFrame("Frame", nil, AuctionFrameBid)
+		AuctionFrameBid.bg:SetTemplate("Default")
+		AuctionFrameBid.bg:Point("TOPLEFT", 22, -72)
+		AuctionFrameBid.bg:Point("BOTTOMRIGHT", 66, 39)
+		BidScrollFrame:Height(332)	
+
+		AuctionsScrollFrame:Height(336)	
+		AuctionFrameAuctions.bg1 = CreateFrame("Frame", nil, AuctionFrameAuctions)
+		AuctionFrameAuctions.bg1:SetTemplate("Default")
+		AuctionFrameAuctions.bg1:Point("TOPLEFT", 15, -70)
+		AuctionFrameAuctions.bg1:Point("BOTTOMRIGHT", -545, 35)  
+		AuctionFrameAuctions.bg1:SetFrameLevel(AuctionFrameAuctions.bg1:GetFrameLevel() - 2)	
+		
+		AuctionFrameAuctions.bg2 = CreateFrame("Frame", nil, AuctionFrameAuctions)
+		AuctionFrameAuctions.bg2:SetTemplate("Default")
+		AuctionFrameAuctions.bg2:Point("TOPLEFT", AuctionFrameAuctions.bg1, "TOPRIGHT", 3, 0)
+		AuctionFrameAuctions.bg2:Point("BOTTOMRIGHT", AuctionFrame, -8, 35)  
+		AuctionFrameAuctions.bg2:SetFrameLevel(AuctionFrameAuctions.bg2:GetFrameLevel() - 2)		
 	end
 	
 	--BarberShop
