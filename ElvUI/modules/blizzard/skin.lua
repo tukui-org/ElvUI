@@ -131,6 +131,10 @@ local function SkinEditBox(frame)
 	if _G[frame:GetName().."Middle"] then _G[frame:GetName().."Middle"]:Kill() end
 	if _G[frame:GetName().."Right"] then _G[frame:GetName().."Right"]:Kill() end
 	frame:CreateBackdrop("Default")
+	
+	if frame:GetName() and frame:GetName():find("Silver") or frame:GetName():find("Copper") then
+		frame.backdrop:Point("BOTTOMRIGHT", -12, -2)
+	end
 end
 
 local function SkinDropDownBox(frame, width)
@@ -196,6 +200,64 @@ local ElvuiSkin = CreateFrame("Frame")
 ElvuiSkin:RegisterEvent("ADDON_LOADED")
 ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 	if IsAddOnLoaded("Skinner") or IsAddOnLoaded("Aurora") then return end
+	
+	--GBANK
+	if addon == "Blizzard_GuildBankUI" then
+		GuildBankFrame:StripTextures()
+		GuildBankFrame:SetTemplate("Transparent")
+		GuildBankEmblemFrame:StripTextures(true)
+		
+		SkinButton(GuildBankFrameDepositButton, true)
+		SkinButton(GuildBankFrameWithdrawButton, true)
+		SkinButton(GuildBankInfoSaveButton, true)
+		SkinButton(GuildBankFramePurchaseButton, true)
+		
+		GuildBankFrameWithdrawButton:Point("RIGHT", GuildBankFrameDepositButton, "LEFT", -2, 0)
+
+		GuildBankInfoScrollFrame:StripTextures()
+		GuildBankTransactionsScrollFrame:StripTextures()
+		
+		GuildBankFrame.inset = CreateFrame("Frame", nil, GuildBankFrame)
+		GuildBankFrame.inset:SetTemplate("Default")
+		GuildBankFrame.inset:Point("TOPLEFT", 30, -65)
+		GuildBankFrame.inset:Point("BOTTOMRIGHT", -20, 63)
+		
+		for i=1, NUM_GUILDBANK_COLUMNS do
+			_G["GuildBankColumn"..i]:StripTextures()
+			
+			for x=1, NUM_SLOTS_PER_GUILDBANK_GROUP do
+				local button = _G["GuildBankColumn"..i.."Button"..x]
+				local icon = _G["GuildBankColumn"..i.."Button"..x.."IconTexture"]
+				button:StripTextures()
+				button:StyleButton()
+				button:SetTemplate("Default", true)
+				
+				icon:ClearAllPoints()
+				icon:Point("TOPLEFT", 2, -2)
+				icon:Point("BOTTOMRIGHT", -2, 2)
+				icon:SetTexCoord(.08, .92, .08, .92)
+			end
+		end
+		
+		for i=1, 8 do
+			local button = _G["GuildBankTab"..i.."Button"]
+			local texture = _G["GuildBankTab"..i.."ButtonIconTexture"]
+			_G["GuildBankTab"..i]:StripTextures(true)
+			
+			button:StripTextures()
+			button:StyleButton(true)
+			button:SetTemplate("Default", true)
+			
+			texture:ClearAllPoints()
+			texture:Point("TOPLEFT", 2, -2)
+			texture:Point("BOTTOMRIGHT", -2, 2)
+			texture:SetTexCoord(.08, .92, .08, .92)
+		end
+		
+		for i=1, 4 do
+			SkinTab(_G["GuildBankFrameTab"..i])
+		end
+	end
 	
 	--Archaeology
 	if addon == "Blizzard_ArchaeologyUI" then
@@ -1328,9 +1390,6 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		for _, editbox in pairs(editboxs) do
 			SkinEditBox(_G[editbox])
 			_G[editbox]:SetTextInsets(1, 1, -1, 1)
-			if editbox:find("Silver") or editbox:find("Copper") then
-				_G[editbox].backdrop:Point("BOTTOMRIGHT", -12, -2)
-			end
 		end
 		BrowseMaxLevel:Point("LEFT", BrowseMinLevel, "RIGHT", 8, 0)
 		AuctionsStackSizeEntry.backdrop:SetAllPoints()
@@ -1884,8 +1943,6 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			SkinEditBox(SendMailMoneySilver)
 			SkinEditBox(SendMailMoneyCopper)
 			
-			SendMailMoneySilver.backdrop:Point("BOTTOMRIGHT", -12, -2)
-			SendMailMoneyCopper.backdrop:Point("BOTTOMRIGHT", -12, -2)
 			SendMailNameEditBox.backdrop:Point("BOTTOMRIGHT", 2, 0)
 			SendMailSubjectEditBox.backdrop:Point("BOTTOMRIGHT", 2, 0)
 			SendMailFrame:StripTextures()
@@ -1934,6 +1991,8 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			
 			SendMailBodyEditBox:SetTextColor(1, 1, 1)
 			OpenMailBodyText:SetTextColor(1, 1, 1)
+			InvoiceTextFontNormal:SetTextColor(1, 1, 1)
+			OpenMailArithmeticLine:Kill()
 			
 			OpenMailLetterButton:StripTextures()
 			OpenMailLetterButton:SetTemplate("Default", true)
@@ -1942,6 +2001,14 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			OpenMailLetterButtonIconTexture:ClearAllPoints()
 			OpenMailLetterButtonIconTexture:Point("TOPLEFT", 2, -2)
 			OpenMailLetterButtonIconTexture:Point("BOTTOMRIGHT", -2, 2)
+			
+			OpenMailMoneyButton:StripTextures()
+			OpenMailMoneyButton:SetTemplate("Default", true)
+			OpenMailMoneyButton:StyleButton()
+			OpenMailMoneyButtonIconTexture:SetTexCoord(.08, .92, .08, .92)						
+			OpenMailMoneyButtonIconTexture:ClearAllPoints()
+			OpenMailMoneyButtonIconTexture:Point("TOPLEFT", 2, -2)
+			OpenMailMoneyButtonIconTexture:Point("BOTTOMRIGHT", -2, 2)
 			
 			for i = 1, ATTACHMENTS_MAX_SEND do				
 				local b = _G["OpenMailAttachmentButton"..i]
@@ -2102,8 +2169,6 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			SkinEditBox(TradePlayerInputMoneyFrameGold)
 			SkinEditBox(TradePlayerInputMoneyFrameSilver)
 			SkinEditBox(TradePlayerInputMoneyFrameCopper)
-			TradePlayerInputMoneyFrameSilver.backdrop:Point("BOTTOMRIGHT", -12, -2)
-			TradePlayerInputMoneyFrameCopper.backdrop:Point("BOTTOMRIGHT", -12, -2)
 			
 			for i=1, 7 do
 				local player = _G["TradePlayerItem"..i]
@@ -3433,6 +3498,10 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		for i = 1, 2 do
 			for j = 1, 3 do
 				SkinButton(_G["StaticPopup"..i.."Button"..j])
+				SkinEditBox(_G["StaticPopup"..i.."EditBox"])
+				SkinEditBox(_G["StaticPopup"..i.."MoneyInputFrameGold"])
+				SkinEditBox(_G["StaticPopup"..i.."MoneyInputFrameSilver"])
+				SkinEditBox(_G["StaticPopup"..i.."MoneyInputFrameCopper"])
 			end
 		end
 		
@@ -3554,9 +3623,6 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		_G["ReadyCheckListenerFrame"]:SetAlpha(0)
 		_G["ReadyCheckFrame"]:HookScript("OnShow", function(self) if UnitIsUnit("player", self.initiator) then self:Hide() end end) -- bug fix, don't show it if initiator
  		_G["StackSplitFrame"]:GetRegions():Hide()
-		_G["StaticPopup1EditBoxLeft"]:SetTexture(nil)
-		_G["StaticPopup1EditBoxMid"]:SetTexture(nil)
-		_G["StaticPopup1EditBoxRight"]:SetTexture(nil)
 		
 		--Create backdrop for static popup editbox	
 		local bg = CreateFrame("Frame", nil, StaticPopup1EditBox)
