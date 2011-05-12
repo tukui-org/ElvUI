@@ -207,6 +207,14 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		GuildBankFrame:SetTemplate("Transparent")
 		GuildBankEmblemFrame:StripTextures(true)
 		
+		--Close button doesn't have a fucking name, extreme hackage
+		for i=1, GuildBankFrame:GetNumChildren() do
+			local child = select(i, GuildBankFrame:GetChildren())
+			if child.GetPushedTexture and child:GetPushedTexture() and not child:GetName() then
+				SkinCloseButton(child)
+			end
+		end
+		
 		SkinButton(GuildBankFrameDepositButton, true)
 		SkinButton(GuildBankFrameWithdrawButton, true)
 		SkinButton(GuildBankInfoSaveButton, true)
