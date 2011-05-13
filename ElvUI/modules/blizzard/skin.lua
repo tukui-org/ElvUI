@@ -201,6 +201,56 @@ ElvuiSkin:RegisterEvent("ADDON_LOADED")
 ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 	if IsAddOnLoaded("Skinner") or IsAddOnLoaded("Aurora") then return end
 
+	-- LF guild UI
+	if addon == "Blizzard_LookingForGuildUI" then
+		local checkbox = {
+			"LookingForGuildPvPButton",
+			"LookingForGuildWeekendsButton",
+			"LookingForGuildWeekdaysButton",
+			"LookingForGuildRPButton",
+			"LookingForGuildRaidButton",
+			"LookingForGuildQuestButton",
+			"LookingForGuildDungeonButton",
+		}
+		-- skin checkboxes
+		for _, v in pairs(checkbox) do
+			SkinCheckBox(_G[v])
+		end
+		
+	
+		-- have to skin these checkboxes seperate for some reason o_O
+		SkinCheckBox(LookingForGuildTankButton.checkButton)
+		SkinCheckBox(LookingForGuildHealerButton.checkButton)
+		SkinCheckBox(LookingForGuildDamagerButton.checkButton)
+		
+		-- skinning other frames
+		LookingForGuildFrameInset:StripTextures(false)
+		LookingForGuildFrame:StripTextures()
+		LookingForGuildFrame:SetTemplate("Default")
+		LookingForGuildBrowseButton_LeftSeparator:Kill()
+		LookingForGuildRequestButton_RightSeparator:Kill()
+		SkinScrollBar(LookingForGuildBrowseFrameContainerScrollBar)
+		SkinButton(LookingForGuildBrowseButton)
+		SkinButton(LookingForGuildRequestButton)
+		SkinCloseButton(LookingForGuildFrameCloseButton)
+		LookingForGuildCommentInputFrame:CreateBackdrop("Default")
+		LookingForGuildCommentInputFrame:StripTextures(false)
+		
+		-- skin container buttons on browse and request page
+		for i = 1, 4 do
+			local b = _G["LookingForGuildBrowseFrameContainerButton"..i]
+			local t = _G["LookingForGuildAppsFrameContainerButton"..i]
+			SkinButton(b, true)
+			SkinButton(t, true)
+		end
+		
+		-- skin tabs
+		for i= 1, 3 do
+			SkinTab(_G["LookingForGuildFrameTab"..i])
+		end
+		
+	end	
+	
 	--Inspect Frame
 	if addon == "Blizzard_InspectUI" then
 		InspectFrame:StripTextures(true)
@@ -1028,7 +1078,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		end
 		
 		for i=1, 3 do
-			_G["PlayerTalentFramePanel"..i.."Arrow"]:SetFrameStrata("HIGH")
+			_G["PlayerTalentFramePanel"..i.."Arrow"]:SetFrameLevel(_G["PlayerTalentFramePanel"..i.."Arrow"]:GetFrameLevel() + 2)
 		end
 		PlayerTalentFramePetPanelArrow:SetFrameStrata("HIGH")
 		
@@ -1142,6 +1192,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		
 		local function TalentSummaryClean(i)
 			frame = _G["PlayerTalentFramePanel"..i.."Summary"]
+			frame:SetFrameLevel(frame:GetFrameLevel() + 2)
 			frame:CreateBackdrop("Default")
 			frame:SetFrameLevel(frame:GetFrameLevel() +1)
 			local a,b,_,d,_,_,_,_,_,_,_,_,m,_ = frame:GetRegions()
