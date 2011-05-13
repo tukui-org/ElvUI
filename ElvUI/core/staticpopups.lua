@@ -30,14 +30,14 @@ StaticPopupDialogs["RESET_UF"] = {
 	whileDead = 1,
 }
 
-StaticPopupDialogs["INSTALL_UI"] = {
+--[[StaticPopupDialogs["INSTALL_UI"] = {
 	text = L.popup_install,
 	button1 = ACCEPT,
 	button2 = CANCEL,
     OnAccept = function() E.ResetMovers() E.Install() end,
     timeout = 0,
     whileDead = 1,
-}
+}]]
 
 StaticPopupDialogs["DISABLE_RAID"] = {
 	text = L.popup_2raidactive,

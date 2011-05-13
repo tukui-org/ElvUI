@@ -181,6 +181,51 @@ L.bind_discardbind = "Discard bindings"
 L.core_raidutil = "Raid Utility"
 L.core_raidutil_disbandgroup = "Disband Group"
 
+L.ElvUIInstall_Title = "ElvUI Installation"
+L.ElvUIInstall_ContinueMessage = "Please press the continue button to go onto the next step."
+L.ElvUIInstall_HighRecommended = "Importance: |cff07D400High|r"
+L.ElvUIInstall_MediumRecommended = "Importance: |cffD3CF00Medium|r"
+
+L.ElvUIInstall_page1_subtitle = "Welcome to ElvUI version %s!"
+L.ElvUIInstall_page1_desc1 = "This install process will help you learn some of the features in ElvUI has to offer and also prepare\n your user interface for usage."
+L.ElvUIInstall_page1_desc2 = "You can type the /uihelp command to display a list of commands. The in-game configuration menu can be\n accessed with either the /ec or the /elvui commands. Press the button below if you wish to skip the\n installation process."
+L.ElvUIInstall_page1_button1 = "Skip Process"
+
+L.ElvUIInstall_page2_subtitle = "CVars"
+L.ElvUIInstall_page2_desc1 = "This part of the installation process sets up your World of Warcraft default options it is recommended\n you should do this step for everything to behave properly."
+L.ElvUIInstall_page2_desc2 = "Please click the button below to setup your CVars."
+L.ElvUIInstall_page2_button1 = "Setup CVars"
+
+L.ElvUIInstall_page3_subtitle = "Chat"
+L.ElvUIInstall_page3_desc1 = "This part of the installation process sets up your chat windows names, positions and colors."
+L.ElvUIInstall_page3_desc2 = "Please click the button below to setup your chat windows. You will have to finish the installation process\n for the chat tabs to correct themselves."
+L.ElvUIInstall_page3_button1 = "Setup Chat"
+
+L.ElvUIInstall_page4_subtitle = "Resolution"
+L.ElvUIInstall_page4_desc1 = "Your current resolution is: %s, ElvUI has automatically selected the %s version for you based\n on your screen size."
+L.ElvUIInstall_page4_desc2 = "This controls various settings including how the actionbars are displayed and the scale of the unitframes.\n You can change this setting by using the in-game config (/ec) and setting the resolution override to what\n you want."
+L.ElvUIInstall_Low = "Low"
+L.ElvUIInstall_High = "High"
+
+L.ElvUIInstall_page5_subtitle = "Action Bars"
+L.ElvUIInstall_page5_desc1 = "Once the installation process is complete you will be able to setup your actionbars. This can be done by\n clicking the 'L' button that is located on the right side of the left chat panel."
+L.ElvUIInstall_page5_desc2 = "You can quickly setup your actionbar keybinds by using the /hb command. You can move the action buttons\n around by holding 'shift' and dragging a button."
+
+L.ElvUIInstall_page6_subtitle = "UnitFrames"
+L.ElvUIInstall_page6_desc1 = "Once the installation process is complete you will be able to reposition your unitframes. This can be done by\n clicking the 'L' button that is located on the right side of the left chat panel."
+L.ElvUIInstall_page6_desc2 = "You can quickly swap between DPS and Healer layouts by typing the /dps and /heal commands."
+L.ElvUIInstall_page6_desc3 = "If you wish to set the unitframe positions to their default spot please click the button below"
+L.ElvUIInstall_page6_button1 = "Set UnitFrame Position"
+
+L.ElvUIInstall_page7_subtitle = "Installation Complete"
+L.ElvUIInstall_page7_desc1 = "You are now finished with the installation process. If you are in need technical support please visit\n us at www.tukui.org."
+L.ElvUIInstall_page7_desc2 = "Please click the button below so you can setup variables and ReloadUI."
+L.ElvUIInstall_page7_button1 = "Finished"
+L.ElvUIInstall_CVarSet = "CVars Set"
+L.ElvUIInstall_ChatSet = "Chat Positions Set"
+L.ElvUIInstall_UFSet = "UnitFrame Positions Set"
+
+
 function E.UpdateHotkey(self, actionButtonType)
 	local hotkey = _G[self:GetName() .. 'HotKey']
 	local text = hotkey:GetText()

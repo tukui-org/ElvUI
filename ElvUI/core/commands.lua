@@ -106,7 +106,7 @@ SlashCmdList["UIHELP"] = E.UIHelp
 
 --ReInstall UI
 SLASH_CONFIGURE1 = "/installui"
-SlashCmdList.CONFIGURE = function() StaticPopup_Show("INSTALL_UI") end
+SlashCmdList.CONFIGURE = function() E.Install() end
 
 -- Command to Toggle showing the UI Movers
 SLASH_MOVEUI1 = '/moveui'
