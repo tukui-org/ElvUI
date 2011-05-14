@@ -130,6 +130,7 @@ local function SkinEditBox(frame)
 	if _G[frame:GetName().."Left"] then _G[frame:GetName().."Left"]:Kill() end
 	if _G[frame:GetName().."Middle"] then _G[frame:GetName().."Middle"]:Kill() end
 	if _G[frame:GetName().."Right"] then _G[frame:GetName().."Right"]:Kill() end
+	if _G[frame:GetName().."Mid"] then _G[frame:GetName().."Mid"]:Kill() end
 	frame:CreateBackdrop("Default")
 	
 	if frame:GetName() and frame:GetName():find("Silver") or frame:GetName():find("Copper") then
@@ -2523,6 +2524,46 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			end)
 		end
 		
+		--Greeting Frame
+		do
+			QuestFrameGreetingPanel:HookScript("OnShow", function()
+				QuestFrameGreetingPanel:StripTextures()
+				SkinButton(QuestFrameGreetingGoodbyeButton, true)
+				GreetingText:SetTextColor(1, 1, 1)
+				CurrentQuestsText:SetTextColor(1, 1, 0)
+				QuestGreetingFrameHorizontalBreak:Kill()
+				AvailableQuestsText:SetTextColor(1, 1, 0)
+				
+				for i=1, MAX_NUM_QUESTS do
+					local button = _G["QuestTitleButton"..i]
+					if button:GetFontString() then
+						if button:GetFontString():GetText() and button:GetFontString():GetText():find("|cff000000") then
+							button:GetFontString():SetText(string.gsub(button:GetFontString():GetText(), "|cff000000", "|cffFFFF00"))
+						end
+					end
+				end
+			end)
+		end
+		
+		--Item Text Frame
+		do
+			ItemTextFrame:StripTextures(true)
+			ItemTextScrollFrame:StripTextures()
+			ItemTextFrame:SetTemplate("Transparent")
+			SkinCloseButton(ItemTextCloseButton)
+			SkinNextPrevButton(ItemTextPrevPageButton)
+			SkinNextPrevButton(ItemTextNextPageButton)
+		end
+		
+		--Taxi Frame
+		do
+			TaxiFrame:StripTextures()
+			TaxiFrame:CreateBackdrop("Transparent")
+			TaxiRouteMap:CreateBackdrop("Default")
+			TaxiRouteMap.backdrop:SetAllPoints()
+			SkinCloseButton(TaxiFrameCloseButton)
+		end
+		
 		--LFD frame
 		do
 			local StripAllTextures = {
@@ -3736,6 +3777,8 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 				SkinEditBox(_G["StaticPopup"..i.."MoneyInputFrameGold"])
 				SkinEditBox(_G["StaticPopup"..i.."MoneyInputFrameSilver"])
 				SkinEditBox(_G["StaticPopup"..i.."MoneyInputFrameCopper"])
+				_G["StaticPopup"..i.."EditBox"].backdrop:Point("TOPLEFT", -2, -4)
+				_G["StaticPopup"..i.."EditBox"].backdrop:Point("BOTTOMRIGHT", 2, 4)
 			end
 		end
 		
@@ -3857,14 +3900,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		_G["ReadyCheckListenerFrame"]:SetAlpha(0)
 		_G["ReadyCheckFrame"]:HookScript("OnShow", function(self) if UnitIsUnit("player", self.initiator) then self:Hide() end end) -- bug fix, don't show it if initiator
  		_G["StackSplitFrame"]:GetRegions():Hide()
-		
-		--Create backdrop for static popup editbox	
-		local bg = CreateFrame("Frame", nil, StaticPopup1EditBox)
-		bg:Point("TOPLEFT", StaticPopup1EditBox, "TOPLEFT", -2, -2)
-		bg:Point("BOTTOMRIGHT", StaticPopup1EditBox, "BOTTOMRIGHT", 2, 2)
-		bg:SetFrameLevel(StaticPopup1EditBox:GetFrameLevel())
-		bg:SetTemplate("Default")
-		
+
 		RolePollPopup:SetTemplate("Transparent")
 		RolePollPopup:CreateShadow("Default")
 		LFDDungeonReadyDialog:SetTemplate("Transparent")
