@@ -2623,13 +2623,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								order = 4,
 								name = L["All-In-One Bag"],
 								desc = L["Enable/Disable the All-In-One Bag, you must disable this if you wish to run another bag addon"],										
-							},
-							enablemap = {
-								type = "toggle",
-								order = 5,
-								name = L["Map Skin"],
-								desc = L["Enable/Disable the map skin"],										
-							},							
+							},						
 						},
 					},
 					LootGroup = {

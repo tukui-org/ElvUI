@@ -265,7 +265,6 @@ DB["others"] = {
 	["pvpautorelease"] = false,            -- enable auto-release in bg or wintergrasp.
 	["errorenable"] = true,                     -- true to enable this mod, false to disable
 	["autoacceptinv"] = true,                 -- auto-accept invite from guildmate and friends.
-	["enablemap"] = true,                     -- reskin the map to fit Elvui
 	["enablebag"] = true,                     -- enable an all in one bag mod that fit Elvui perfectly
 	
 

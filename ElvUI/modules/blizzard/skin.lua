@@ -174,27 +174,16 @@ local function SkinCheckBox(frame)
 end
 
 local function SkinCloseButton(f, point)
-	if f.SetNormalTexture then f:SetNormalTexture("") end
-
-	if f.SetHighlightTexture then f:SetHighlightTexture("") end
-
-	if f.SetPushedTexture then f:SetPushedTexture("") end
-
-	if f.SetDisabledTexture then f:SetDisabledTexture("") end
-	f:SetTemplate("Default", true)
-	f:Size(18,18)
-
-	local text = f:FontString(nil, FONT, FONTSIZE, FONTFLAG)
-	text:SetPoint("CENTER", 1, 1)
-	text:SetText("x")
+	for i=1, f:GetNumRegions() do
+		local region = select(i, f:GetRegions())
+		if region:GetObjectType() == "Texture" then
+			region:SetDesaturated(1)
+		end
+	end	
 	
 	if point then
 		f:Point("TOPRIGHT", point, "TOPRIGHT", -4, -4)
-	else
-		f:Point("TOPRIGHT", -4, -4)
 	end
-	f:HookScript("OnEnter", SetModifiedBackdrop)
-	f:HookScript("OnLeave", SetOriginalBackdrop)
 end
 
 local ElvuiSkin = CreateFrame("Frame")
@@ -2543,6 +2532,208 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 					end
 				end
 			end)
+		end
+		
+		--Minor watch frame skin
+		do
+			SkinCloseButton(WatchFrameCollapseExpandButton)
+		end
+		
+		--Opacity Frame
+		do
+			OpacityFrame:StripTextures()
+			OpacityFrame:SetTemplate("Transparent")
+		end
+		
+		--WorldMap
+		do
+			WorldMapFrame:CreateBackdrop("Transparent")
+			WorldMapDetailFrame:SetFrameLevel(WorldMapDetailFrame:GetFrameLevel() + 1)
+			WorldMapDetailFrame.backdrop = CreateFrame("Frame", nil, WorldMapFrame)
+			WorldMapDetailFrame.backdrop:SetTemplate("Default")
+			WorldMapDetailFrame.backdrop:Point("TOPLEFT", WorldMapDetailFrame, "TOPLEFT", -2, 2)
+			WorldMapDetailFrame.backdrop:Point("BOTTOMRIGHT", WorldMapDetailFrame, "BOTTOMRIGHT", 2, -2)
+			WorldMapDetailFrame.backdrop:SetFrameLevel(WorldMapDetailFrame:GetFrameLevel() - 2)
+
+			SkinCloseButton(WorldMapFrameCloseButton)
+			SkinCloseButton(WorldMapFrameSizeDownButton)
+			SkinCloseButton(WorldMapFrameSizeUpButton)
+									
+			SkinDropDownBox(WorldMapLevelDropDown)
+			SkinDropDownBox(WorldMapZoneMinimapDropDown)
+			SkinDropDownBox(WorldMapContinentDropDown)
+			SkinDropDownBox(WorldMapZoneDropDown)
+			SkinButton(WorldMapZoomOutButton)
+			WorldMapZoomOutButton:Point("LEFT", WorldMapZoneDropDown, "RIGHT", 0, 4)
+			
+			SkinCheckBox(WorldMapTrackQuest)
+			SkinCheckBox(WorldMapQuestShowObjectives)
+			SkinCheckBox(WorldMapShowDigSites)
+			
+			--Mini
+			local function SmallSkin()
+				WorldMapLevelDropDown:ClearAllPoints()
+				WorldMapLevelDropDown:Point("TOPLEFT", WorldMapDetailFrame, "TOPLEFT", -10, -4)
+				
+				WorldMapFrame.backdrop:ClearAllPoints()
+				WorldMapFrame.backdrop:Point("TOPLEFT", 2, 2)
+				WorldMapFrame.backdrop:Point("BOTTOMRIGHT", 2, -2)
+			end
+			
+			--Large
+			local function LargeSkin()
+				if not InCombatLockdown() then
+					WorldMapFrame:SetParent(UIParent)
+					WorldMapFrame:EnableMouse(false)
+					WorldMapFrame:EnableKeyboard(false)
+					SetUIPanelAttribute(WorldMapFrame, "area", "center");
+					SetUIPanelAttribute(WorldMapFrame, "allowOtherPanels", true)
+				end
+				
+				WorldMapFrame.backdrop:ClearAllPoints()
+				WorldMapFrame.backdrop:Point("TOPLEFT", WorldMapDetailFrame, "TOPLEFT", -25, 70)
+				WorldMapFrame.backdrop:Point("BOTTOMRIGHT", WorldMapDetailFrame, "BOTTOMRIGHT", 25, -30)    
+			end
+			
+			local function QuestSkin()
+				if not InCombatLockdown() then
+					WorldMapFrame:SetParent(UIParent)
+					WorldMapFrame:EnableMouse(false)
+					WorldMapFrame:EnableKeyboard(false)
+					SetUIPanelAttribute(WorldMapFrame, "area", "center");
+					SetUIPanelAttribute(WorldMapFrame, "allowOtherPanels", true)
+				end
+				
+				WorldMapFrame.backdrop:ClearAllPoints()
+				WorldMapFrame.backdrop:Point("TOPLEFT", WorldMapDetailFrame, "TOPLEFT", -25, 70)
+				WorldMapFrame.backdrop:Point("BOTTOMRIGHT", WorldMapDetailFrame, "BOTTOMRIGHT", 325, -235)  
+				
+				if not WorldMapQuestDetailScrollFrame.backdrop then
+					WorldMapQuestDetailScrollFrame:CreateBackdrop("Default")
+					WorldMapQuestDetailScrollFrame.backdrop:Point("TOPLEFT", -22, 2)
+					WorldMapQuestDetailScrollFrame.backdrop:Point("BOTTOMRIGHT", 23, -4)
+				end
+				
+				if not WorldMapQuestRewardScrollFrame.backdrop then
+					WorldMapQuestRewardScrollFrame:CreateBackdrop("Default")
+					WorldMapQuestRewardScrollFrame.backdrop:Point("BOTTOMRIGHT", 22, -4)				
+				end
+				
+				if not WorldMapQuestScrollFrame.backdrop then
+					WorldMapQuestScrollFrame:CreateBackdrop("Default")
+					WorldMapQuestScrollFrame.backdrop:Point("TOPLEFT", 0, 2)
+					WorldMapQuestScrollFrame.backdrop:Point("BOTTOMRIGHT", 24, -3)				
+				end
+			end			
+			
+			local function FixSkin()
+				WorldMapFrame:StripTextures()
+				if WORLDMAP_SETTINGS.size == WORLDMAP_FULLMAP_SIZE then
+					LargeSkin()
+				elseif WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE then
+					SmallSkin()
+				elseif WORLDMAP_SETTINGS.size == WORLDMAP_QUESTLIST_SIZE then
+					QuestSkin()
+				end
+	
+				if not InCombatLockdown() then
+					WorldMapFrame:SetScale(1)
+					WorldMapFrameSizeDownButton:Show()
+					WorldMapFrame:SetFrameStrata("DIALOG")
+				else
+					WorldMapFrameSizeDownButton:Hide()
+					WorldMapFrameSizeUpButton:Hide()
+				end	
+				
+				WorldMapFrameAreaFrame:SetFrameStrata("FULLSCREEN")
+				WorldMapFrameAreaLabel:SetFont(C["media"].font, 50, "OUTLINE")
+				WorldMapFrameAreaLabel:SetShadowOffset(2, -2)
+				WorldMapFrameAreaLabel:SetTextColor(0.90, 0.8294, 0.6407)	
+				
+				WorldMapFrameAreaDescription:SetFont(C["media"].font, 40, "OUTLINE")
+				WorldMapFrameAreaDescription:SetShadowOffset(2, -2)	
+				
+				WorldMapZoneInfo:SetFont(C["media"].font, 27, "OUTLINE")
+				WorldMapZoneInfo:SetShadowOffset(2, -2)		
+			end
+			
+			WorldMapFrame:HookScript("OnShow", FixSkin)
+			hooksecurefunc("WorldMapFrame_SetFullMapView", LargeSkin)
+			hooksecurefunc("WorldMapFrame_SetQuestMapView", QuestSkin)
+			hooksecurefunc("WorldMap_ToggleSizeUp", FixSkin)
+			
+			if not GetCVarBool("miniWorldMap") then
+				ToggleFrame(WorldMapFrame)
+				ToggleFrame(WorldMapFrame)
+			end			
+	
+			WorldMapFrameSizeDownButton:RegisterEvent("PLAYER_REGEN_DISABLED")
+			WorldMapFrameSizeDownButton:RegisterEvent("PLAYER_REGEN_ENABLED")
+			WorldMapFrameSizeDownButton:SetScript("OnEvent", function(self, event)
+				if InCombatLockdown() then
+					self:Hide()
+				else
+					self:Show()
+				end
+			end)
+			
+			WorldMapFrameSizeUpButton:RegisterEvent("PLAYER_REGEN_DISABLED")
+			WorldMapFrameSizeUpButton:RegisterEvent("PLAYER_REGEN_ENABLED")
+			WorldMapFrameSizeUpButton:SetScript("OnEvent", function(self, event)
+				if InCombatLockdown() then
+					self:Hide()
+				else
+					self:Show()
+				end
+			end)
+			
+			local coords = CreateFrame("Frame", "CoordsFrame", WorldMapFrame)
+			local fontheight = select(2, WorldMapQuestShowObjectivesText:GetFont())*1.1
+			coords:SetFrameLevel(90)
+			coords:FontString("PlayerText", C["media"].font, fontheight, "THINOUTLINE")
+			coords:FontString("MouseText", C["media"].font, fontheight, "THINOUTLINE")
+			coords.PlayerText:SetTextColor(WorldMapQuestShowObjectivesText:GetTextColor())
+			coords.MouseText:SetTextColor(WorldMapQuestShowObjectivesText:GetTextColor())
+			coords.PlayerText:SetPoint("TOPLEFT", WorldMapDetailFrame, "TOPLEFT", 5, -5)
+			coords.PlayerText:SetText("Player:   0, 0")
+			coords.MouseText:SetPoint("TOPLEFT", coords.PlayerText, "BOTTOMLEFT", 0, -5)
+			coords.MouseText:SetText("Mouse:   0, 0")
+
+			local int = 0
+			coords:SetScript("OnUpdate", function(self, elapsed)
+				int = int + 1
+				
+				if int >= 3 then
+					local inInstance, _ = IsInInstance()
+					local x,y = GetPlayerMapPosition("player")
+					x = math.floor(100 * x)
+					y = math.floor(100 * y)
+					if x ~= 0 and y ~= 0 then
+						self.PlayerText:SetText(PLAYER..":   "..x..", "..y)
+					else
+						self.PlayerText:SetText(" ")
+					end
+					
+
+					local scale = WorldMapDetailFrame:GetEffectiveScale()
+					local width = WorldMapDetailFrame:GetWidth()
+					local height = WorldMapDetailFrame:GetHeight()
+					local centerX, centerY = WorldMapDetailFrame:GetCenter()
+					local x, y = GetCursorPosition()
+					local adjustedX = (x / scale - (centerX - (width/2))) / width
+					local adjustedY = (centerY + (height/2) - y / scale) / height	
+
+					if (adjustedX >= 0  and adjustedY >= 0 and adjustedX <= 1 and adjustedY <= 1) then
+						adjustedX = math.floor(100 * adjustedX)
+						adjustedY = math.floor(100 * adjustedY)
+						coords.MouseText:SetText(MOUSE_LABEL..":   "..adjustedX..", "..adjustedY)
+					else
+						coords.MouseText:SetText(" ")
+					end
+					
+					int = 0
+				end
+			end)			
 		end
 		
 		--Item Text Frame
