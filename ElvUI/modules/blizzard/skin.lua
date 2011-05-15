@@ -238,9 +238,10 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		AchievementFrame:CreateBackdrop("Transparent")
 		AchievementFrame.backdrop:Point("TOPLEFT", 0, 6)
 		AchievementFrame.backdrop:SetPoint("BOTTOMRIGHT")
-		AchievementFrameHeader:CreateBackdrop("Transparent")
-		AchievementFrameHeader.backdrop:Point("TOPLEFT", 300, -18)
-		AchievementFrameHeader.backdrop:Point("BOTTOMRIGHT", -250, 46)
+		AchievementFrameHeaderTitle:ClearAllPoints()
+		AchievementFrameHeaderTitle:Point("TOPLEFT", AchievementFrame.backdrop, "TOPLEFT", -30, -8)
+		AchievementFrameHeaderPoints:ClearAllPoints()
+		AchievementFrameHeaderPoints:Point("LEFT", AchievementFrameHeaderTitle, "RIGHT", 2, 0)
 		
 		--Backdrops
 		AchievementFrameCategoriesContainer:CreateBackdrop("Default")
