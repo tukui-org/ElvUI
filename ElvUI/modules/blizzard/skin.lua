@@ -4326,6 +4326,14 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 				SkinEditBox(_G["StaticPopup"..i.."MoneyInputFrameCopper"])
 				_G["StaticPopup"..i.."EditBox"].backdrop:Point("TOPLEFT", -2, -4)
 				_G["StaticPopup"..i.."EditBox"].backdrop:Point("BOTTOMRIGHT", 2, 4)
+				_G["StaticPopup"..i.."ItemFrameNameFrame"]:Kill()
+				_G["StaticPopup"..i.."ItemFrame"]:GetNormalTexture():Kill()
+				_G["StaticPopup"..i.."ItemFrame"]:SetTemplate("Default")
+				_G["StaticPopup"..i.."ItemFrame"]:StyleButton()
+				_G["StaticPopup"..i.."ItemFrameIconTexture"]:SetTexCoord(.08, .92, .08, .92)
+				_G["StaticPopup"..i.."ItemFrameIconTexture"]:ClearAllPoints()
+				_G["StaticPopup"..i.."ItemFrameIconTexture"]:Point("TOPLEFT", 2, -2)
+				_G["StaticPopup"..i.."ItemFrameIconTexture"]:Point("BOTTOMRIGHT", -2, 2)
 			end
 		end
 		
