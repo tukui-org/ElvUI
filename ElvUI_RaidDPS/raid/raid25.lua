@@ -182,7 +182,8 @@ local function Shared(self, unit)
 		RaidDebuffs:Width(RAID_HEIGHT*0.6)
 		RaidDebuffs:Point('BOTTOM', self, 'BOTTOM', 0, 1)
 		RaidDebuffs:SetFrameLevel(self:GetFrameLevel() + 2)
-		RaidDebuffs:SetFrameStrata("High")
+		RaidDebuffs:SetFrameStrata("MEDIUM")
+		RaidDebuffs:SetFrameLevel(50)
 		
 		RaidDebuffs:SetTemplate("Default")
 		

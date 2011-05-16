@@ -457,7 +457,7 @@ local function Shared(self, unit)
 				
 				if MINI_CLASSBAR then
 					bars:Point("CENTER", health.backdrop, "TOP", -(BORDER*3 + 6), 0)
-					bars:SetFrameStrata("HIGH")
+					bars:SetFrameStrata("MEDIUM")
 				else
 					bars:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
 					bars:SetFrameStrata("LOW")
@@ -549,7 +549,7 @@ local function Shared(self, unit)
 					CLASSBAR_WIDTH = CLASSBAR_WIDTH * 3/2 --Multiply by reciprocal to reset previous setting
 					CLASSBAR_WIDTH = CLASSBAR_WIDTH * 4/5
 					runes:Point("CENTER", health.backdrop, "TOP", -(BORDER*3 + 8), 0)
-					runes:SetFrameStrata("HIGH")
+					runes:SetFrameStrata("MEDIUM")
 				else
 					runes:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
 					runes:SetFrameStrata("LOW")
@@ -621,7 +621,7 @@ local function Shared(self, unit)
 					CLASSBAR_WIDTH = CLASSBAR_WIDTH * 3/2 --Multiply by reciprocal to reset previous setting
 					CLASSBAR_WIDTH = CLASSBAR_WIDTH * 4/5
 					totems:Point("CENTER", health.backdrop, "TOP", -(BORDER*3 + 6), 0)
-					totems:SetFrameStrata("HIGH")			
+					totems:SetFrameStrata("MEDIUM")			
 				end
 				totems:Width(CLASSBAR_WIDTH)
 				totems:Height(POWERBAR_HEIGHT - (BORDER*2))
@@ -698,7 +698,7 @@ local function Shared(self, unit)
 					eclipseBar:SetFrameStrata("LOW")
 				else
 					eclipseBar:Point("LEFT", health.backdrop, "TOPLEFT", (BORDER*2 + 4), 0)
-					eclipseBar:SetFrameStrata("HIGH")						
+					eclipseBar:SetFrameStrata("MEDIUM")						
 				end
 				eclipseBar:Width(CLASSBAR_WIDTH)
 				eclipseBar:Height(POWERBAR_HEIGHT - (BORDER*2))
@@ -763,7 +763,7 @@ local function Shared(self, unit)
 		altpower:SetStatusBarTexture(NORMTEX)
 		altpower:GetStatusBarTexture():SetHorizTile(false)
 		altpower:EnableMouse(true)
-		altpower:SetFrameStrata("HIGH")
+		altpower:SetFrameStrata("MEDIUM")
 		altpower.PostUpdate = E.AltPowerBarPostUpdate
 		altpower:Point("TOPLEFT", ElvuiInfoLeft, "TOPLEFT", BORDER, -BORDER)
 		altpower:Point("BOTTOMRIGHT", ElvuiInfoLeft, "BOTTOMRIGHT", -BORDER, BORDER)
@@ -1012,7 +1012,7 @@ local function Shared(self, unit)
 		if MINI_CLASSBAR then
 			CLASSBAR_WIDTH = CLASSBAR_WIDTH * 4/5
 			combo:Point("CENTER", health.backdrop, "TOP", -(BORDER*3 + 6), 0)
-			combo:SetFrameStrata("HIGH")
+			combo:SetFrameStrata("MEDIUM")
 		else
 			combo:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
 			combo:SetFrameStrata("LOW")
@@ -1428,8 +1428,8 @@ local function Shared(self, unit)
 	------------------------------------------------------------------------
 	if unit ~= "party" then
 		local x = CreateFrame("Frame", nil, self)
-		x:SetFrameStrata("HIGH")
-		x:SetFrameLevel(20)
+		x:SetFrameStrata("MEDIUM")
+		x:SetFrameLevel(50)
 		local RaidIcon = x:CreateTexture(nil, "OVERLAY")
 		RaidIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\raidicons.blp") 
 		RaidIcon:Size(18, 18)
