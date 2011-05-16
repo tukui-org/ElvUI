@@ -393,6 +393,29 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		CalendarViewHolidayFrame:Point("TOPLEFT", CalendarFrame, "TOPRIGHT", 3, -24)
 		CalendarViewHolidayTitleFrame:StripTextures()
 		SkinCloseButton(CalendarViewHolidayCloseButton)
+		
+		-- Event View
+		CalendarViewEventFrame:StripTextures()
+		CalendarViewEventFrame:SetTemplate("Transparent")
+		CalendarViewEventFrame:Point("TOPLEFT", CalendarFrame, "TOPRIGHT", 3, -24)
+		CalendarViewEventTitleFrame:StripTextures()
+		CalendarViewEventDescriptionContainer:StripTextures()
+		CalendarViewEventDescriptionContainer:SetTemplate("Transparent")
+		CalendarViewEventInviteList:StripTextures()
+		CalendarViewEventInviteList:SetTemplate("Transparent")
+		CalendarViewEventInviteListSection:StripTextures()
+		SkinCloseButton(CalendarViewEventCloseButton)
+
+		local buttons = {
+		    "CalendarViewEventAcceptButton",
+		    "CalendarViewEventTentativeButton",
+		    "CalendarViewEventRemoveButton",
+			"CalendarViewEventDeclineButton",
+		}
+
+		for _, button in pairs(buttons) do
+			SkinButton(_G[button])
+		end		
 	end
 	
 	if addon == "Blizzard_AchievementUI" then
