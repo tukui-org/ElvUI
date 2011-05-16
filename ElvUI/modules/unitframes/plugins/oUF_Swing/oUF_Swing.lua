@@ -252,7 +252,7 @@ local function Ranged(self, event, unit, spellName)
 	swingOH:SetScript("OnUpdate", nil)
 end
 
-local function Melee(self, event, _, subevent, GUID)
+local function Melee(self, event, _, subevent, _, GUID)
 	if UnitGUID("player") ~= GUID then return end
 	if not string.find(subevent, "SWING") then return end
 	
@@ -306,8 +306,9 @@ local function Melee(self, event, _, subevent, GUID)
 	lasthit = GetTime()
 end
 
-local function ParryHaste(self, event, _, subevent, _, _, _, _, tarGUID, _, missType)
+local function ParryHaste(self, event, _, subevent, _, _, _, _, _, tarGUID, _, missType)
 	if UnitGUID("player") ~= tarGUID then return end
+	
 	if not meleeing then return end
 	if not string.find(subevent, "MISSED") then return end
 	if missType ~= "PARRY" then return end
