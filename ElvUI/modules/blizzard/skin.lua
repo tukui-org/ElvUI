@@ -186,6 +186,10 @@ local function SkinCloseButton(f, point)
 		local region = select(i, f:GetRegions())
 		if region:GetObjectType() == "Texture" then
 			region:SetDesaturated(1)
+			
+			if region:GetTexture() == "Interface\\DialogFrame\\UI-DialogBox-Corner" then
+				region:Kill()
+			end
 		end
 	end	
 	
@@ -198,7 +202,154 @@ local ElvuiSkin = CreateFrame("Frame")
 ElvuiSkin:RegisterEvent("ADDON_LOADED")
 ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 	if IsAddOnLoaded("Skinner") or IsAddOnLoaded("Aurora") then return end
+	
+	if addon == "Blizzard_Calendar" then
+		local frames = {
+			"CalendarFrame",
+		}
+		
+		for _, frame in pairs(frames) do
+			_G[frame]:StripTextures()
+		end
+		
+		CalendarFrame:SetTemplate("Transparent")
+		SkinCloseButton(CalendarCloseButton)
+		CalendarCloseButton:Point("TOPRIGHT", CalendarFrame, "TOPRIGHT", -4, -4)
+		
+		SkinNextPrevButton(CalendarPrevMonthButton)
+		SkinNextPrevButton(CalendarNextMonthButton)
+		
+		do --Handle drop down button, this one is differant than the others
+			local frame = CalendarFilterFrame
+			local button = CalendarFilterButton
 
+			frame:StripTextures()
+			frame:Width(155)
+			
+			_G[frame:GetName().."Text"]:ClearAllPoints()
+			_G[frame:GetName().."Text"]:Point("RIGHT", button, "LEFT", -2, 0)
+
+			
+			button:ClearAllPoints()
+			button:Point("RIGHT", frame, "RIGHT", -10, 3)
+			button.SetPoint = E.dummy
+			
+			SkinNextPrevButton(button, true)
+			
+			frame:CreateBackdrop("Default")
+			frame.backdrop:Point("TOPLEFT", 20, 2)
+			frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
+		end
+		
+		
+		--backdrop
+		local bg = CreateFrame("Frame", "CalendarFrameBackdrop", CalendarFrame)
+		bg:SetTemplate("Default")
+		bg:Point("TOPLEFT", 10, -72)
+		bg:Point("BOTTOMRIGHT", -8, 3)
+		
+		CalendarContextMenu:SetTemplate("Default")
+		CalendarContextMenu.SetBackdropColor = E.dummy
+		CalendarContextMenu.SetBackdropBorderColor = E.dummy
+		
+		--Boost frame levels
+		for i=1, 42 do
+			_G["CalendarDayButton"..i]:SetFrameLevel(_G["CalendarDayButton"..i]:GetFrameLevel() + 1)
+		end
+		
+		--CreateEventFrame
+		CalendarCreateEventFrame:StripTextures()
+		CalendarCreateEventFrame:SetTemplate("Transparent")
+		CalendarCreateEventFrame:Point("TOPLEFT", CalendarFrame, "TOPRIGHT", 3, -24)
+		CalendarCreateEventTitleFrame:StripTextures()
+		
+		SkinButton(CalendarCreateEventCreateButton, true)
+		SkinButton(CalendarCreateEventMassInviteButton, true)
+		SkinButton(CalendarCreateEventInviteButton, true)
+		CalendarCreateEventInviteButton:Point("TOPLEFT", CalendarCreateEventInviteEdit, "TOPRIGHT", 4, 1)
+		CalendarCreateEventInviteEdit:Width(CalendarCreateEventInviteEdit:GetWidth() - 2)
+		
+		CalendarCreateEventInviteList:StripTextures()
+		CalendarCreateEventInviteList:SetTemplate("Default")
+		
+		SkinEditBox(CalendarCreateEventInviteEdit)
+		SkinEditBox(CalendarCreateEventTitleEdit)
+		SkinDropDownBox(CalendarCreateEventTypeDropDown, 120)
+		
+		CalendarCreateEventDescriptionContainer:StripTextures()
+		CalendarCreateEventDescriptionContainer:SetTemplate("Default")
+		
+		SkinCloseButton(CalendarCreateEventCloseButton)
+		
+		SkinCheckBox(CalendarCreateEventLockEventCheck)
+		
+		SkinDropDownBox(CalendarCreateEventHourDropDown, 68)
+		SkinDropDownBox(CalendarCreateEventMinuteDropDown, 68)
+		SkinDropDownBox(CalendarCreateEventAMPMDropDown, 68)
+		SkinDropDownBox(CalendarCreateEventRepeatOptionDropDown, 120)
+		CalendarCreateEventIcon:SetTexCoord(.08, .92, .08, .92)
+		CalendarCreateEventIcon.SetTexCoord = E.dummy
+		
+		CalendarCreateEventInviteListSection:StripTextures()
+		
+		CalendarClassButtonContainer:HookScript("OnShow", function()
+			for i, class in ipairs(CLASS_SORT_ORDER) do
+				local button = _G["CalendarClassButton"..i]
+				button:StripTextures()
+				button:CreateBackdrop("Default")
+				
+				local tcoords = CLASS_ICON_TCOORDS[class]
+				local buttonIcon = button:GetNormalTexture()
+				buttonIcon:SetTexture("Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes")
+				buttonIcon:SetTexCoord(tcoords[1] + 0.015, tcoords[2] - 0.02, tcoords[3] + 0.018, tcoords[4] - 0.02) --F U C K I N G H A X
+			end
+			
+			CalendarClassButton1:Point("TOPLEFT", CalendarClassButtonContainer, "TOPLEFT", 5, 0)
+			
+			CalendarClassTotalsButton:StripTextures()
+			CalendarClassTotalsButton:CreateBackdrop("Default")
+		end)
+		
+		--Texture Picker Frame
+		CalendarTexturePickerFrame:StripTextures()
+		CalendarTexturePickerTitleFrame:StripTextures()
+		
+		CalendarTexturePickerFrame:SetTemplate("Transparent")
+		
+		SkinScrollBar(CalendarTexturePickerScrollBar)
+		SkinButton(CalendarTexturePickerAcceptButton, true)
+		SkinButton(CalendarTexturePickerCancelButton, true)
+		
+		--Mass Invite Frame
+		CalendarMassInviteFrame:StripTextures()
+		CalendarMassInviteFrame:SetTemplate("Transparent")
+		CalendarMassInviteTitleFrame:StripTextures()
+		
+		SkinCloseButton(CalendarMassInviteCloseButton)
+		SkinButton(CalendarMassInviteGuildAcceptButton)
+		SkinButton(CalendarMassInviteArenaButton2)
+		SkinButton(CalendarMassInviteArenaButton3)
+		SkinButton(CalendarMassInviteArenaButton5)
+		SkinDropDownBox(CalendarMassInviteGuildRankMenu, 130)
+		
+		SkinEditBox(CalendarMassInviteGuildMinLevelEdit)
+		SkinEditBox(CalendarMassInviteGuildMaxLevelEdit)
+		
+		--Raid View
+		CalendarViewRaidFrame:StripTextures()
+		CalendarViewRaidFrame:SetTemplate("Transparent")
+		CalendarViewRaidFrame:Point("TOPLEFT", CalendarFrame, "TOPRIGHT", 3, -24)
+		CalendarViewRaidTitleFrame:StripTextures()
+		SkinCloseButton(CalendarViewRaidCloseButton)
+		
+		--Holiday View
+		CalendarViewHolidayFrame:StripTextures(true)
+		CalendarViewHolidayFrame:SetTemplate("Transparent")
+		CalendarViewHolidayFrame:Point("TOPLEFT", CalendarFrame, "TOPRIGHT", 3, -24)
+		CalendarViewHolidayTitleFrame:StripTextures()
+		SkinCloseButton(CalendarViewHolidayCloseButton)
+	end
+	
 	if addon == "Blizzard_AchievementUI" then
 		local frames = {
 			"AchievementFrame",
