@@ -474,7 +474,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 				frame:StripTextures()
 				
 				
-				_G["AchievementFrameSummaryAchievement"..i.."Description"]:SetTextColor(1, 1, 0)
+				_G["AchievementFrameSummaryAchievement"..i.."Description"]:SetTextColor(0.6, 0.6, 0.6)
 				
 				if not frame.backdrop then
 					frame:CreateBackdrop("Default", true)
@@ -516,6 +516,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			_G["AchievementFrameAchievementsContainerButton"..i.."Icon"]:SetParent(frame.backdrop)
 			_G["AchievementFrameAchievementsContainerButton"..i.."Shield"]:SetParent(frame.backdrop)
 			_G["AchievementFrameAchievementsContainerButton"..i.."Label"]:SetParent(frame.backdrop)
+			_G["AchievementFrameAchievementsContainerButton"..i.."Reward"]:SetParent(frame.backdrop)
 			
 			_G["AchievementFrameAchievementsContainerButton"..i.."IconBling"]:Kill()
 			_G["AchievementFrameAchievementsContainerButton"..i.."IconOverlay"]:Kill()
@@ -2416,11 +2417,17 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 
 		for i=1,8 do
 			_G["ClassTrainerScrollFrameButton"..i]:StripTextures()
+			_G["ClassTrainerScrollFrameButton"..i]:StyleButton()
 			_G["ClassTrainerScrollFrameButton"..i.."Icon"]:SetTexCoord(.08, .92, .08, .92)
 			_G["ClassTrainerScrollFrameButton"..i]:CreateBackdrop()
 			_G["ClassTrainerScrollFrameButton"..i].backdrop:Point("TOPLEFT", _G["ClassTrainerScrollFrameButton"..i.."Icon"], "TOPLEFT", -2, 2)
 			_G["ClassTrainerScrollFrameButton"..i].backdrop:Point("BOTTOMRIGHT", _G["ClassTrainerScrollFrameButton"..i.."Icon"], "BOTTOMRIGHT", 2, -2)
 			_G["ClassTrainerScrollFrameButton"..i.."Icon"]:SetParent(_G["ClassTrainerScrollFrameButton"..i].backdrop)
+			
+			_G["ClassTrainerScrollFrameButton"..i].selectedTex:SetTexture(1, 1, 1, 0.3)
+			_G["ClassTrainerScrollFrameButton"..i].selectedTex:ClearAllPoints()
+			_G["ClassTrainerScrollFrameButton"..i].selectedTex:Point("TOPLEFT", 2, -2)
+			_G["ClassTrainerScrollFrameButton"..i].selectedTex:Point("BOTTOMRIGHT", -2, 2)
 		end
 
 		for _, object in pairs(StripAllTextures) do
@@ -3093,6 +3100,8 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			SkinDropDownBox(WorldMapZoneDropDown)
 			SkinButton(WorldMapZoomOutButton)
 			WorldMapZoomOutButton:Point("LEFT", WorldMapZoneDropDown, "RIGHT", 0, 4)
+			WorldMapLevelUpButton:Point("TOPLEFT", WorldMapLevelDropDown, "TOPRIGHT", -2, 8)
+			WorldMapLevelDownButton:Point("BOTTOMLEFT", WorldMapLevelDropDown, "BOTTOMRIGHT", -2, 2)
 			
 			SkinCheckBox(WorldMapTrackQuest)
 			SkinCheckBox(WorldMapQuestShowObjectives)
