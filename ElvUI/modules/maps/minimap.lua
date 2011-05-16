@@ -126,6 +126,11 @@ end
 ----------------------------------------------------------------------------------------
 -- Right click menu
 ----------------------------------------------------------------------------------------
+
+--Hax so i don't have to localize this word, remove '/' and capitalize first letter
+local calendar_string = string.gsub(SLASH_CALENDAR1, "/", "")
+calendar_string = string.gsub(calendar_string, "^%l", string.upper)
+
 local menuFrame = CreateFrame("Frame", "MinimapRightClickMenu", UIParent, "UIDropDownMenuTemplate")
 local menuList = {
     {text = CHARACTER_BUTTON,
@@ -149,6 +154,8 @@ local menuList = {
     func = function() ToggleFrame(QuestLogFrame) end},
     {text = SOCIAL_BUTTON,
     func = function() ToggleFriendsFrame(1) end},
+	{text = calendar_string,
+	func = function() GameTimeFrame:Click() end},
     {text = PLAYER_V_PLAYER,
     func = function() ToggleFrame(PVPFrame) end},
     {text = ACHIEVEMENTS_GUILD_TAB,
