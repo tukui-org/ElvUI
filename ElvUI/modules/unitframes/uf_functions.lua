@@ -297,7 +297,7 @@ E.LoadUFFunctions = function(layout)
 				return true
 			end
 		else --Everything else
-			if unit ~= "player" and unit ~= "targettarget" and unit ~= "focus" and C["unitframes"].arenadebuffs == true and inInstance and (instanceType == "pvp" or instanceType == "arena") then
+			if unit ~= "player" and unit ~= "targettarget" and unit ~= "focus" and inInstance and (instanceType == "pvp" or instanceType == "arena") then
 				if E.DebuffWhiteList[name] or E.TargetPVPOnly[name] then
 					return true
 				else

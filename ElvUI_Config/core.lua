@@ -2845,7 +2845,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 						},
 					},
 					AurasGroup = {
-						order = 3,
+						order = 4,
 						type = "group",
 						name = L["Combat"],	
 						args = {

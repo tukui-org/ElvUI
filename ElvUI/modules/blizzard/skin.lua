@@ -3269,11 +3269,16 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			hooksecurefunc("WorldMapFrame_SetQuestMapView", QuestSkin)
 			hooksecurefunc("WorldMap_ToggleSizeUp", FixSkin)
 			
-			if not GetCVarBool("miniWorldMap") then
-				ToggleFrame(WorldMapFrame)
-				ToggleFrame(WorldMapFrame)
-			end			
-		
+			WorldMapFrame:RegisterEvent("PLAYER_LOGIN")
+			WorldMapFrame:HookScript("OnEvent", function(self, event)
+				if event == "PLAYER_LOGIN" then
+					if not GetCVarBool("miniWorldMap") then
+						ToggleFrame(WorldMapFrame)
+						ToggleFrame(WorldMapFrame)
+					end
+				end
+			end)
+			
 			local coords = CreateFrame("Frame", "CoordsFrame", WorldMapFrame)
 			local fontheight = select(2, WorldMapQuestShowObjectivesText:GetFont())*1.1
 			coords:SetFrameLevel(90)
