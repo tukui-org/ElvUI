@@ -4,7 +4,17 @@ local FONT = C["media"].font
 local FONTSIZE = 18
 local FONTFLAG = "THINOUTLINE"
 
---[[REMINDER TO SELF: NEED TO CHECK THAT THERE ARE NO RECURRING FRAMES!!!!!!!!!!!!!!]]
+--[[
+	
+	REMINDER TO SELF: NEED TO CHECK THAT THERE ARE NO RECURRING FRAMES!!!!!!!!!!!!!!
+
+	To do:
+	LFDRoleCheckPopup
+	LF Raid Frame (all subs)
+	(PTR) War Games tab of the PVP Frame
+	(PTR) Statusbar on the PVP Frame
+	(PTR) Boss Journal
+]]
 
 local function SetModifiedBackdrop(self)
 	if C["general"].classcolortheme == true then
@@ -352,6 +362,8 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		SkinScrollBar(CalendarTexturePickerScrollBar)
 		SkinButton(CalendarTexturePickerAcceptButton, true)
 		SkinButton(CalendarTexturePickerCancelButton, true)
+		SkinButton(CalendarCreateEventInviteButton, true)
+		SkinButton(CalendarCreateEventRaidInviteButton, true)
 		
 		--Mass Invite Frame
 		CalendarMassInviteFrame:StripTextures()
@@ -3661,13 +3673,16 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			local buttons = {
 				"PVPFrameLeftButton",
 				"PVPFrameRightButton",
-				"PVPHonorFrameWarGameButton",
 				"PVPColorPickerButton1",
 				"PVPColorPickerButton2",
 				"PVPColorPickerButton3",
 				"PVPBannerFrameAcceptButton",
 			}
-
+			
+			if not E.IsPTRVersion() then
+				tinsert(buttons, "PVPHonorFrameWarGameButton")
+			end
+			
 			for i = 1, #buttons do
 				_G[buttons[i]]:StripTextures()
 				SkinButton(_G[buttons[i]])
@@ -3745,7 +3760,11 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			PVPTeamManagementFrameInvalidTeamFrame.backdrop:Point( "BOTTOMRIGHT", PVPTeamManagementFrameInvalidTeamFrame, "BOTTOMRIGHT")
 			PVPTeamManagementFrameInvalidTeamFrame.backdrop:SetFrameLevel(PVPTeamManagementFrameInvalidTeamFrame:GetFrameLevel())
 			PVPFrameConquestBar:StripTextures()
-			PVPFrameConquestBar:SetStatusBarTexture(C["media"].normTex)
+			
+			if not E.IsPTRVersion() then
+				PVPFrameConquestBar:SetStatusBarTexture(C["media"].normTex)
+			end
+			
 			PVPFrameConquestBar:CreateBackdrop("Default")
 			PVPBannerFrame:CreateBackdrop("Transparent")
 			PVPBannerFrame.backdrop:Point( "TOPLEFT", PVPBannerFrame, "TOPLEFT")
@@ -3774,7 +3793,17 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			PVPColorPickerButton1:Height(PVPColorPickerButton1:GetHeight()-5)
 			PVPColorPickerButton2:Height(PVPColorPickerButton1:GetHeight())
 			PVPColorPickerButton3:Height(PVPColorPickerButton1:GetHeight())
-
+			
+			--War Games
+			if E.IsPTRVersion() then
+				SkinButton(WarGameStartButton, true)
+				WarGamesFrame:StripTextures()
+				SkinScrollBar(WarGamesFrameScrollFrameScrollBar)
+				
+				WarGameStartButton:ClearAllPoints()
+				WarGameStartButton:Point("LEFT", PVPFrameLeftButton, "RIGHT", 2, 0)
+			end
+			
 			--Freaking gay Cancel Button FFSlocal
 			local f = PVPBannerFrameCancelButton
 			local l = _G[f:GetName().."Left"]
@@ -3790,8 +3819,14 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			f.backdrop:SetFrameLevel(f:GetFrameLevel()-1)
 			
 			--Bottom Tabs
-			for i=1,3 do
-				SkinTab(_G["PVPFrameTab"..i])
+			if not E.IsPTRVersion() then
+				for i=1,3 do
+					SkinTab(_G["PVPFrameTab"..i])
+				end
+			else
+				for i=1,4 do
+					SkinTab(_G["PVPFrameTab"..i])
+				end			
 			end
 		end	
 	
