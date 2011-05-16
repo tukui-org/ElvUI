@@ -203,6 +203,39 @@ ElvuiSkin:RegisterEvent("ADDON_LOADED")
 ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 	if IsAddOnLoaded("Skinner") or IsAddOnLoaded("Aurora") then return end
 	
+	if addon == "Blizzard_ReforgingUI" then
+		ReforgingFrame:StripTextures()
+		ReforgingFrame:SetTemplate("Transparent")
+		
+		ReforgingFrameTopInset:StripTextures()
+		ReforgingFrameInset:StripTextures()
+		ReforgingFrameBottomInset:StripTextures()
+		
+		SkinButton(ReforgingFrameRestoreButton, true)
+		SkinButton(ReforgingFrameReforgeButton, true)
+		
+		SkinDropDownBox(ReforgingFrameFilterOldStat, 180)
+		SkinDropDownBox(ReforgingFrameFilterNewStat, 180)
+		
+		ReforgingFrameItemButton:StripTextures()
+		ReforgingFrameItemButton:SetTemplate("Default", true)
+		ReforgingFrameItemButton:StyleButton()
+		ReforgingFrameItemButtonIconTexture:ClearAllPoints()
+		ReforgingFrameItemButtonIconTexture:Point("TOPLEFT", 2, -2)
+		ReforgingFrameItemButtonIconTexture:Point("BOTTOMRIGHT", -2, 2)
+		
+		hooksecurefunc("ReforgingFrame_Update", function(self)
+			local currentReforge, icon, name, quality, bound, cost = GetReforgeItemInfo()
+			if icon then
+				ReforgingFrameItemButtonIconTexture:SetTexCoord(.08, .92, .08, .92)
+			else
+				ReforgingFrameItemButtonIconTexture:SetTexture(nil)
+			end
+		end)
+		
+		SkinCloseButton(ReforgingFrameCloseButton)
+	end
+	
 	if addon == "Blizzard_Calendar" then
 		local frames = {
 			"CalendarFrame",
