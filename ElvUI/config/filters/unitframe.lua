@@ -91,6 +91,7 @@ E.DebuffWhiteList = {
 		[SpellName(18469)] = true, --Silenced - Improved Counterspell
 		[SpellName(122)] = true, --Frost Nova
 		[SpellName(55080)] = true, --Shattered Barrier
+		[SpellName(82691)] = true, --Ring of Frost
 	-- Paladin
 		[SpellName(20066)] = true, --Repentance
 		[SpellName(10326)] = true, --Turn Evil
