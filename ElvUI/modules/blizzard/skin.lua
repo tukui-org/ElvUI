@@ -4150,7 +4150,15 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 					local icon = _G["SpellButton"..i.."IconTexture"]
 					
 					if first then
-						button:StripTextures()
+						--button:StripTextures()
+						for i=1, button:GetNumRegions() do
+							local region = select(i, button:GetRegions())
+							if region:GetObjectType() == "Texture" then
+								if region:GetTexture() ~= "Interface\\Buttons\\ActionBarFlyoutButton" then
+									region:SetTexture(nil)
+								end
+							end
+						end
 					end
 					
 					if _G["SpellButton"..i.."Highlight"] then

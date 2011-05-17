@@ -175,6 +175,7 @@ local function SetupFlyoutButton()
 		if _G["SpellFlyoutButton"..i] then
 			Style(_G["SpellFlyoutButton"..i], false)
 			_G["SpellFlyoutButton"..i]:StyleButton(true)
+			_G["SpellFlyoutButton"..i]:SetFrameLevel(_G["SpellFlyoutButton"..i]:GetParent():GetFrameLevel() + 5)
 			if C["actionbar"].rightbarmouseover == true then
 				SpellFlyout:HookScript("OnEnter", function(self) RightBarMouseOver(1) end)
 				SpellFlyout:HookScript("OnLeave", function(self) RightBarMouseOver(0) end)
@@ -213,7 +214,9 @@ local function StyleFlyout(self)
 		arrowDistance = 2
 	end
 	
-	if self:GetParent() and self:GetParent():GetParent() and self:GetParent():GetParent():GetName() and self:GetParent():GetParent():GetName() == "SpellBookSpellIconsFrame" then return end
+	if self:GetParent() and self:GetParent():GetParent() and self:GetParent():GetParent():GetName() and self:GetParent():GetParent():GetName() == "SpellBookSpellIconsFrame" then 
+		return 
+	end
 	
 	if self:GetAttribute("flyoutDirection") ~= nil then
 		local point, _, _, _, _ = self:GetPoint()
