@@ -2943,6 +2943,11 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			HelpFrameKnowledgebaseSearchBox:ClearAllPoints()
 			HelpFrameKnowledgebaseSearchBox:Point("TOPLEFT", HelpFrameMainInset, "TOPLEFT", 13, -10)
 			HelpFrameKnowledgebaseNavBarOverlay:Kill()
+			
+			if E.IsPTRVersion() then
+				HelpFrameKnowledgebaseNavBar:StripTextures()
+			end
+			
 			HelpFrame:StripTextures(true)
 			HelpFrame:CreateBackdrop("Transparent")
 			SkinEditBox(HelpFrameKnowledgebaseSearchBox)
@@ -3148,6 +3153,35 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		do
 			OpacityFrame:StripTextures()
 			OpacityFrame:SetTemplate("Transparent")
+		end
+		
+		
+		--Encounter Journal
+		if E.IsPTRVersion() then
+			do
+				EncounterJournal:StripTextures(true)
+				EncounterJournal:SetTemplate("Transparent")
+				EncounterJournalNavBar:StripTextures(true)
+				EncounterJournalNavBarOverlay:StripTextures(true)
+				
+				EncounterJournalNavBar:CreateBackdrop("Default")
+				EncounterJournalNavBar.backdrop:Point("TOPLEFT", -2, 0)
+				EncounterJournalNavBar.backdrop:SetPoint("BOTTOMRIGHT")
+				SkinButton(EncounterJournalNavBarHomeButton, true)
+				
+				SkinEditBox(EncounterJournalSearchBox)
+				SkinCloseButton(EncounterJournalCloseButton)
+				
+				EncounterJournalInset:StripTextures(true)
+				EncounterJournalInset:CreateBackdrop("Default")
+				EncounterJournalInset.backdrop:Point("TOPLEFT", 0, -2)
+				EncounterJournalInset.backdrop:Point("BOTTOMRIGHT", -2, 0)
+				EncounterJournalInset.backdrop:SetFrameLevel(EncounterJournalInset.backdrop:GetFrameLevel() + 1)
+				
+				EncounterJournalInstanceSelect:SetFrameLevel(EncounterJournalInstanceSelect:GetFrameLevel() + 1)
+				
+				SkinScrollBar(EncounterJournalInstanceSelectScrollFrameScrollBar)
+			end
 		end
 		
 		--WorldMap
