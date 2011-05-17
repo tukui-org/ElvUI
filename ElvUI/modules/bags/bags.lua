@@ -1027,6 +1027,8 @@ function Stuffing:ADDON_LOADED(addon)
 end
 
 function Stuffing:PLAYER_ENTERING_WORLD()
+	if E.IsPTRVersion() then return end
+	
 	-- setting key ring bag
 	-- this is just a reskin of Blizzard key bag to fit Elvui
 
@@ -1512,25 +1514,27 @@ function Stuffing.Menu(self, level)
 	end
 	UIDropDownMenu_AddButton(info, level)
 	
-	wipe(info)
-	info.text = "Show Keyring"
-	info.checked = function()
-		return key_ring == 1
-	end
-	
-	info.func = function()
-		if key_ring == 1 then
-			key_ring = 0
-		else
-			key_ring = 1
+	if not E.IsPTRVersion() then
+		wipe(info)
+		info.text = "Show Keyring"
+		info.checked = function()
+			return key_ring == 1
 		end
-		ToggleKeyRing()
-		Stuffing:Layout()
+		
+		info.func = function()
+			if key_ring == 1 then
+				key_ring = 0
+			else
+				key_ring = 1
+			end
+			ToggleKeyRing()
+			Stuffing:Layout()
+		end
+		
+		
+		UIDropDownMenu_AddButton(info, level)
 	end
 	
-	
-	UIDropDownMenu_AddButton(info, level)
-
 	wipe(info)
 	info.disabled = nil
 	info.notCheckable = 1

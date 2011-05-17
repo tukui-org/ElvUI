@@ -224,15 +224,15 @@ if E.IsPTRVersion() then
 		func = function() ToggleFrame(LFDParentFrame) end},
 		{text = L_LFRAID,
 		func = function() ToggleFrame(LFRParentFrame) end},
-		{text = HELP_BUTTON,
-		func = function() ToggleHelpFrame() end},
+		{text = ENCOUNTER_JOURNAL, 
+		func = function() ToggleFrame(EncounterJournal) end},	
 		{text = L_CALENDAR,
 		func = function()
 		if(not CalendarFrame) then LoadAddOn("Blizzard_Calendar") end
 			Calendar_Toggle()
-		end},
-		{text = ENCOUNTER_JOURNAL, 
-		func = function() ToggleFrame(EncounterJournal) end},		
+		end},			
+		{text = HELP_BUTTON,
+		func = function() ToggleHelpFrame() end},
 	}
 end
 
