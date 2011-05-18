@@ -676,6 +676,8 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 					frame:SetStatusBarColor(4/255, 179/255, 30/255)
 					frame:SetFrameLevel(frame:GetFrameLevel() + 3)
 					
+					frame:Height(frame:GetHeight() - 2)
+					
 					--Initiate fucked up method of creating a backdrop
 					frame.bg1 = frame:CreateTexture(nil, "BACKGROUND")
 					frame.bg1:SetDrawLayer("BACKGROUND", -7)
@@ -696,8 +698,16 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 					frame.bg3:Point("BOTTOMRIGHT", E.mult, -E.mult)		
 					
 					frame.text:ClearAllPoints()
-					frame.text:SetPoint("CENTER", frame, "CENTER", 0, -2)
+					frame.text:SetPoint("CENTER", frame, "CENTER", 0, -1)
 					frame.text:SetJustifyH("CENTER")
+					
+					if index > 1 then
+						frame:ClearAllPoints()
+						frame:Point("TOP", _G["AchievementFrameProgressBar"..index-1], "BOTTOM", 0, -5)
+						frame.SetPoint = E.dummy
+						frame.ClearAllPoints = E.dummy
+					end
+					
 					frame.skinned = true
 				end
 
