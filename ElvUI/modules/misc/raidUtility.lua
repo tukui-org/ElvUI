@@ -134,12 +134,7 @@ CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll:SetPoint("BOTTO
 --Raid Control Panel
 CreateButton("RaidControlButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate", RoleCheckButton:GetWidth(), E.Scale(18), "TOPLEFT", ReadyCheckButton, "BOTTOMLEFT", 0, E.Scale(-5), RAID_CONTROL, nil)
 RaidControlButton:SetScript("OnMouseUp", function(self)
-	if not FriendsFrame:IsShown() then
-		FriendsFrame:Show()
-		FriendsFrameTab4:Click()
-	else
-		FriendsFrame:Hide()
-	end
+	ToggleFriendsFrame(4)
 end)
 
 --Reskin Stuff
