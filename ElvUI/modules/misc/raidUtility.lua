@@ -5,7 +5,7 @@ local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config
 if C["raidframes"].disableblizz ~= true then return end
 CompactRaidFrameManager:Kill() --Get rid of old module
 
-local panel_height = ((E.Scale(5)*4) + (E.Scale(20)*4))
+local panel_height = ((E.Scale(5)*5) + (E.Scale(20)*5))
 
 --Create main frame
 local RaidUtilityPanel = CreateFrame("Frame", "RaidUtilityPanel", UIParent)
@@ -131,6 +131,17 @@ CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll:ClearAllPoints(
 CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll:SetPoint("BOTTOMLEFT", CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck, "TOPLEFT", 0, 1)
 CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll:SetPoint("BOTTOMRIGHT", CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck, "TOPRIGHT", 0, 1)
 
+--Raid Control Panel
+CreateButton("RaidControlButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate", RoleCheckButton:GetWidth(), E.Scale(18), "TOPLEFT", ReadyCheckButton, "BOTTOMLEFT", 0, E.Scale(-5), RAID_CONTROL, nil)
+RaidControlButton:SetScript("OnMouseUp", function(self)
+	if not FriendsFrame:IsShown() then
+		FriendsFrame:Show()
+		FriendsFrameTab4:Click()
+	else
+		FriendsFrame:Hide()
+	end
+end)
+
 --Reskin Stuff
 do
 	local buttons = {
@@ -140,6 +151,7 @@ do
 		"MainAssistButton",
 		"RoleCheckButton",
 		"ReadyCheckButton",
+		"RaidControlButton",
 		"ShowButton",
 		"CloseButton"
 	}
