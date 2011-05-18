@@ -11,7 +11,6 @@ if C["skin"].enable ~= true then return end
 	REMINDER TO SELF: NEED TO CHECK THAT THERE ARE NO RECURRING FRAMES!!!!!!!!!!!!!!
 
 	To do:
-	LF Raid Frame (all subs)
 	(PTR) War Games tab of the PVP Frame
 	(PTR) Statusbar on the PVP Frame
 ]]
@@ -573,24 +572,41 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		for i=1, 7 do
 			local frame = _G["AchievementFrameAchievementsContainerButton"..i]
 			_G["AchievementFrameAchievementsContainerButton"..i.."Highlight"]:Kill()
-			frame:StripTextures()
-						
-			frame:CreateBackdrop("Default", true)
-			frame.backdrop:Point("TOPLEFT", 2, -2)
-			frame.backdrop:Point("BOTTOMRIGHT", -2, 2)
+			frame:StripTextures(true)
 			frame.SetBackdropBorderColor = E.dummy
 
+			--Initiate fucked up method of creating a backdrop
+			frame.bg1 = frame:CreateTexture(nil, "BACKGROUND")
+			frame.bg1:SetDrawLayer("BACKGROUND", 4)
+			frame.bg1:SetTexture(C["media"].glossTex) --Default TukUI users this is normTex, glossTex doesn't exist
+			frame.bg1:SetVertexColor(unpack(C["media"].backdropcolor))
+			frame.bg1:Point("TOPLEFT", E.mult*4, -E.mult*4)
+			frame.bg1:Point("BOTTOMRIGHT", -E.mult*4, E.mult*4)				
+			
+			frame.bg2 = frame:CreateTexture(nil, "BACKGROUND")
+			frame.bg2:SetDrawLayer("BACKGROUND", 3)
+			frame.bg2:SetTexture(0,0,0)
+			frame.bg2:Point("TOPLEFT", E.mult*3, -E.mult*3)
+			frame.bg2:Point("BOTTOMRIGHT", -E.mult*3, E.mult*3)
+			
+			frame.bg3 = frame:CreateTexture(nil, "BACKGROUND")
+			frame.bg3:SetDrawLayer("BACKGROUND", 2)
+			frame.bg3:SetTexture(unpack(C["media"].bordercolor))
+			frame.bg3:Point("TOPLEFT", E.mult*2, -E.mult*2)
+			frame.bg3:Point("BOTTOMRIGHT", -E.mult*2, E.mult*2)			
+
+			frame.bg4 = frame:CreateTexture(nil, "BACKGROUND")
+			frame.bg4:SetDrawLayer("BACKGROUND", 1)
+			frame.bg4:SetTexture(0,0,0)
+			frame.bg4:Point("TOPLEFT", E.mult, -E.mult)
+			frame.bg4:Point("BOTTOMRIGHT", -E.mult, E.mult)					
+
+	
+			
 			_G["AchievementFrameAchievementsContainerButton"..i.."Description"]:SetTextColor(0.6, 0.6, 0.6)
 			_G["AchievementFrameAchievementsContainerButton"..i.."Description"].SetTextColor = E.dummy
 			_G["AchievementFrameAchievementsContainerButton"..i.."HiddenDescription"]:SetTextColor(1, 1, 1)
 			_G["AchievementFrameAchievementsContainerButton"..i.."HiddenDescription"].SetTextColor = E.dummy
-			
-			_G["AchievementFrameAchievementsContainerButton"..i.."HiddenDescription"]:SetParent(frame.backdrop)
-			_G["AchievementFrameAchievementsContainerButton"..i.."Description"]:SetParent(frame.backdrop)
-			_G["AchievementFrameAchievementsContainerButton"..i.."Icon"]:SetParent(frame.backdrop)
-			_G["AchievementFrameAchievementsContainerButton"..i.."Shield"]:SetParent(frame.backdrop)
-			_G["AchievementFrameAchievementsContainerButton"..i.."Label"]:SetParent(frame.backdrop)
-			_G["AchievementFrameAchievementsContainerButton"..i.."Reward"]:SetParent(frame.backdrop)
 			
 			_G["AchievementFrameAchievementsContainerButton"..i.."IconBling"]:Kill()
 			_G["AchievementFrameAchievementsContainerButton"..i.."IconOverlay"]:Kill()
@@ -603,7 +619,23 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			_G["AchievementFrameAchievementsContainerButton"..i.."IconTexture"]:ClearAllPoints()
 			_G["AchievementFrameAchievementsContainerButton"..i.."IconTexture"]:Point("TOPLEFT", 2, -2)
 			_G["AchievementFrameAchievementsContainerButton"..i.."IconTexture"]:Point("BOTTOMRIGHT", -2, 2)		
+			
+			
+			_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"].oborder = "Don't use sharp border" --Needed for ElvUI only
+			_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:StripTextures()
+			_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:SetTemplate("Default")
+			_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:SetCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check")
+			_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:Size(12, 12)
+			_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:GetCheckedTexture():Point("TOPLEFT", -4, 4)
+			_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:GetCheckedTexture():Point("BOTTOMRIGHT", 4, -4)
+			
+			_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:ClearAllPoints()
+			_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", 5, 5)
+			
+			_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"].ClearAllPoints = E.dummy
+			_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"].SetPoint = E.dummy
 		end
+
 		
 		local compares = {
 			"Player",
