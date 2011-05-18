@@ -82,6 +82,7 @@ DB["skin"] = {
 		["spellbook"] = true,
 		["character"] = true,
 		["misc"] = true,
+		["lfr"] = true,
 	["recount"] = true,
 	["skada"] = true,
 	["omen"] = true,

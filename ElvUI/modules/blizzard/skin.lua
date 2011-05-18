@@ -188,7 +188,13 @@ local function SkinCheckBox(frame)
 		frame:SetCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check")
 	end
 	
-	frame:SetDisabledTexture("Interface\\Buttons\\UI-CheckBox-Check-Disabled")
+	if frame.SetDisabledTexture then
+		frame:SetDisabledTexture("Interface\\Buttons\\UI-CheckBox-Check-Disabled")
+	end
+	
+	frame.SetNormalTexture = E.dummy
+	frame.SetPushedTexture = E.dummy
+	frame.SetHighlightTexture = E.dummy
 end
 
 local function SkinCloseButton(f, point)
@@ -3416,7 +3422,74 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			SkinCloseButton(TaxiFrameCloseButton)
 		end
 		
-		--LFD frame
+		--LFR frame
+		if C["skin"].lfr == true then
+			local buttons = {
+			  "LFRQueueFrameFindGroupButton",
+			  "LFRQueueFrameAcceptCommentButton",
+			  "LFRBrowseFrameSendMessageButton",
+			  "LFRBrowseFrameInviteButton",
+			  "LFRBrowseFrameRefreshButton",
+			}
+
+			LFRParentFrame:StripTextures()
+			LFRParentFrame:SetTemplate("Transparent")
+			LFRQueueFrame:StripTextures()
+			LFRBrowseFrame:StripTextures()
+
+
+			for i=1, #buttons do
+			  SkinButton(_G[buttons[i]])
+			end
+
+			--Close button doesn't have a fucking name, extreme hackage
+			for i=1, LFRParentFrame:GetNumChildren() do
+			  local child = select(i, LFRParentFrame:GetChildren())
+			  if child.GetPushedTexture and child:GetPushedTexture() and not child:GetName() then
+				SkinCloseButton(child)
+			  end
+			end
+
+			SkinTab(LFRParentFrameTab1)
+			SkinTab(LFRParentFrameTab2)
+
+			SkinDropDownBox(LFRBrowseFrameRaidDropDown)
+
+			for i=1, 20 do
+			  local button = _G["LFRQueueFrameSpecificListButton"..i.."ExpandOrCollapseButton"]
+
+			  if button then
+				button:HookScript("OnClick", function()
+				  SkinCloseButton(button)
+				end)
+				SkinCloseButton(button)
+			  end
+			end
+
+			LFRQueueFrameCommentTextButton:CreateBackdrop("Default")
+			LFRQueueFrameCommentTextButton:Height(35)
+
+			for i=1, 7 do
+				local button = "LFRBrowseFrameColumnHeader"..i
+				_G[button.."Left"]:Kill()
+				_G[button.."Middle"]:Kill()
+				_G[button.."Right"]:Kill()
+			end		
+			
+			for i=1, NUM_LFR_CHOICE_BUTTONS do
+				local button = _G["LFRQueueFrameSpecificListButton"..i]
+				SkinCheckBox(button.enableButton)
+			end
+			
+			--DPS, Healer, Tank check button's don't have a name, use it's parent as a referance.
+			SkinCheckBox(LFRQueueFrameRoleButtonTank:GetChildren())
+			SkinCheckBox(LFRQueueFrameRoleButtonHealer:GetChildren())
+			SkinCheckBox(LFRQueueFrameRoleButtonDPS:GetChildren())
+			LFRQueueFrameRoleButtonTank:GetChildren():SetFrameLevel(LFRQueueFrameRoleButtonTank:GetChildren():GetFrameLevel() + 2)
+			LFRQueueFrameRoleButtonHealer:GetChildren():SetFrameLevel(LFRQueueFrameRoleButtonHealer:GetChildren():GetFrameLevel() + 2)
+			LFRQueueFrameRoleButtonDPS:GetChildren():SetFrameLevel(LFRQueueFrameRoleButtonDPS:GetChildren():GetFrameLevel() + 2)
+		end
+		
 		if C["skin"].lfd == true then
 			local StripAllTextures = {
 				"LFDParentFrame",

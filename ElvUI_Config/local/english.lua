@@ -440,6 +440,7 @@ L["Skins"] = true
 	L["Friends"] = true
 	L["Spellbook"] = true
 	L["Character Frame"] = true
+	L["LFR Frame"] = true
 	L["Misc Frames"] = true
 	
 	L["Blizzard Skins"] = true
