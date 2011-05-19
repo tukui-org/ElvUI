@@ -3353,14 +3353,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			WorldMapFrame:HookScript("OnEvent", function(self, event)
 				if event == "PLAYER_LOGIN" then
 					if not GetCVarBool("miniWorldMap") then
-						ToggleFrame(WorldMapFrame)
-						WorldMapFrameSizeDownButton:Click()	
-						WorldMapFrameSizeUpButton:Click()					
-						ToggleFrame(WorldMapFrame)
-					else
-						ToggleFrame(WorldMapFrame)
-						WorldMapFrameSizeUpButton:Click()
-						WorldMapFrameSizeDownButton:Click()
+						ToggleFrame(WorldMapFrame)				
 						ToggleFrame(WorldMapFrame)
 					end
 				end
