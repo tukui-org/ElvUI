@@ -261,6 +261,7 @@ DB["datatext"] = {
 	["gold"] = 6,                          -- show your current gold on panels
 	["guild"] = 7,                         -- show number on guildmate connected on panels
 	["friends"] = 8,                       -- show number of friends connected.
+	["calltoarms"] = 0,
 	["bags"] = 0,							-- show ammount of bag space available
 	["dps_text"] = 0,						-- show current dps
 	["hps_text"] = 0,						-- show current hps

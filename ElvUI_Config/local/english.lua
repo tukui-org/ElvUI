@@ -352,7 +352,8 @@ L["Data Texts"] = true
 		L["Display Critical Strike Rating"] = true
 	L["Mana Regen"] = true
 		L["Display Mana Regen Rate"] = true
-	
+	L["Call to Arms"] = true
+		L["Display the active roles that will recieve a reward for completing a random dungeon"] = true
 	
 --chat
 L["Chat"] = true

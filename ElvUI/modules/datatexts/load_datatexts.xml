@@ -20,4 +20,5 @@
 	<Script file="mastery.lua"/>	
 	<Script file="crit.lua"/>
 	<Script file="regen.lua"/>
+	<Script file="calltoarms.lua"/>
 </Ui>	

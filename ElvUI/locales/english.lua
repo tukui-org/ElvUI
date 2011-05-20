@@ -77,6 +77,9 @@ L.datatext_demolishersdestroyed = "Demolishers Destroyed:"
 L.datatext_gatesdestroyed = "Gates Destroyed:"
 L.datatext_totalmemusage = "Total Memory Usage:"
 L.datatext_control = "Controlled by:"
+L.datatext_cta_allunavailable = "Could not get Call To Arms information."
+L.datatext_cta_nodungeons = "No dungeons are currently offering a Call To Arms."
+
 
 L.Slots = {
 	[1] = {1, "Head", 1000},
