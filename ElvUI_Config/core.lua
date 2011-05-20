@@ -2511,7 +2511,17 @@ function ElvuiConfig.GenerateOptionsInternal()
 								type = "toggle",
 								name = L["Misc Frames"],
 								desc = L["TOGGLESKIN_DESC"],								
-							},							
+							},		
+							tabard = {
+								type = "toggle",
+								name = L["Tabard Frame"],
+								desc = L["TOGGLESKIN_DESC"],								
+							},		
+							guildregistrar = {
+								type = "toggle",
+								name = L["Guild Registrar"],
+								desc = L["TOGGLESKIN_DESC"],								
+							},									
 						},
 					},					
 					embedright = {

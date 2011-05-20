@@ -443,6 +443,8 @@ L["Skins"] = true
 	L["Character Frame"] = true
 	L["LFR Frame"] = true
 	L["Misc Frames"] = true
+	L["Tabard Frame"] = true
+	L["Guild Registrar"] = true
 	
 	L["Blizzard Skins"] = true
 	L["SKIN_DESC"] = "Adjust settings for external addon skins. As well as skinning of default blizzard stuff."
