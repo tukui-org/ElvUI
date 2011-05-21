@@ -2658,7 +2658,50 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 					end
 				end
 			end
-			hooksecurefunc("AchievementAlertFrame_FixAnchors", SkinAchievePopUp)		
+			hooksecurefunc("AchievementAlertFrame_FixAnchors", SkinAchievePopUp)
+			
+			function SkinDungeonPopUP()
+				for i = 1, DUNGEON_COMPLETION_MAX_REWARDS do
+					local frame = _G["DungeonCompletionAlertFrame"..i]
+					if frame then
+						frame:SetAlpha(1)
+						frame.SetAlpha = E.dummy
+						if not frame.backdrop then
+							frame:CreateBackdrop("Default")
+							frame.backdrop:Point("TOPLEFT", frame, "TOPLEFT", -2, -6)
+							frame.backdrop:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 6)		
+						end
+						
+						-- Background
+						for i=1, frame:GetNumRegions() do
+							local region = select(i, frame:GetRegions())
+							if region:GetObjectType() == "Texture" then
+								if region:GetTexture() == "Interface\\LFGFrame\\UI-LFG-DUNGEONTOAST" then
+									region:Kill()
+								end
+							end
+						end
+						
+						_G["DungeonCompletionAlertFrame"..i.."Shine"]:Kill()
+
+						-- Icon
+						_G["DungeonCompletionAlertFrame"..i.."DungeonTexture"]:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+						
+						_G["DungeonCompletionAlertFrame"..i.."DungeonTexture"]:ClearAllPoints()
+						_G["DungeonCompletionAlertFrame"..i.."DungeonTexture"]:Point("LEFT", frame, 7, 0)
+						
+						if not _G["DungeonCompletionAlertFrame"..i.."DungeonTexture"].b then
+							_G["DungeonCompletionAlertFrame"..i.."DungeonTexture"].b = CreateFrame("Frame", nil, _G["DungeonCompletionAlertFrame"..i])
+							_G["DungeonCompletionAlertFrame"..i.."DungeonTexture"].b:SetFrameLevel(0)
+							_G["DungeonCompletionAlertFrame"..i.."DungeonTexture"].b:SetTemplate("Default")
+							_G["DungeonCompletionAlertFrame"..i.."DungeonTexture"].b:Point("TOPLEFT", _G["DungeonCompletionAlertFrame"..i.."DungeonTexture"], "TOPLEFT", -2, 2)
+							_G["DungeonCompletionAlertFrame"..i.."DungeonTexture"].b:Point("BOTTOMRIGHT", _G["DungeonCompletionAlertFrame"..i.."DungeonTexture"], "BOTTOMRIGHT", 2, -2)
+						end
+					end
+				end				
+			end
+			
+			hooksecurefunc("DungeonCompletionAlertFrame_FixAnchors", SkinDungeonPopUP)
 		end
 		
 		-- bg score frame
