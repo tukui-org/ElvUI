@@ -148,6 +148,8 @@ local menuList = {
 		end
 		PlayerTalentFrame_Toggle()
 	end},
+	{text = TIMEMANAGER_TITLE,
+	func = function() ToggleFrame(TimeManagerFrame) end},
     {text = ACHIEVEMENT_BUTTON,
     func = function() ToggleAchievementFrame() end},
     {text = QUESTLOG_BUTTON,
@@ -199,6 +201,8 @@ if E.IsPTRVersion() then
 			end
 			PlayerTalentFrame_Toggle()
 		end},
+		{text = TIMEMANAGER_TITLE,
+		func = function() ToggleFrame(TimeManagerFrame) end},		
 		{text = ACHIEVEMENT_BUTTON,
 		func = function() ToggleAchievementFrame() end},
 		{text = QUESTLOG_BUTTON,
