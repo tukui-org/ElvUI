@@ -2382,6 +2382,11 @@ function ElvuiConfig.GenerateOptionsInternal()
 								name = L["Auction Frame"],
 								desc = L["TOGGLESKIN_DESC"],								
 							},
+							timemanager = {
+								type = "toggle",
+								name = L["Time Manager"],
+								desc = L["TOGGLESKIN_DESC"],								
+							},
 							barber = {
 								type = "toggle",
 								name = L["Barbershop Frame"],
