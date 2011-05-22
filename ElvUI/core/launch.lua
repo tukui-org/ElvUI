@@ -8,7 +8,7 @@ function E.Install()
 	local MAX_PAGE = 7
 	
 	local function InstallComplete()
-		ElvuiData[E.myrealm][E.myname].v2installed = true
+		ElvuiData[E.myrealm][E.myname].v2_installed = true
 		FoolsDay = nil
 	
 		ReloadUI()
@@ -400,8 +400,9 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 		if ElvuiData[E.myrealm] == nil then ElvuiData[E.myrealm] = {} end
 		if ElvuiData[E.myrealm][E.myname] == nil then ElvuiData[E.myrealm][E.myname] = {} end
 		
+		ElvuiData[E.myrealm][E.myname].v2installed = nil--Depreciated
 		ElvuiData[E.myrealm][E.myname].installed = nil--Depreciated
-		if ElvuiData[E.myrealm][E.myname].v2installed ~= true then
+		if ElvuiData[E.myrealm][E.myname].v2_installed ~= true then
 			E.Install()
 		end
 	end
