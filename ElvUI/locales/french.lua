@@ -2,6 +2,50 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if E.client == "frFR" then
+	L.ElvUIInstall_Title = "Installation d'ElvUI"
+	L.ElvUIInstall_ContinueMessage = "Appuyer le bouton Continuer pour commencer l'installation."
+	L.ElvUIInstall_HighRecommended = "Importance: |cff07D400High|r"
+	L.ElvUIInstall_MediumRecommended = "Importance: |cffD3CF00Medium|r"
+
+	L.ElvUIInstall_page1_subtitle = "Bienvenue dans ElvUI version %s!"
+	L.ElvUIInstall_page1_desc1 = "Cette installation va vous aider à comprendre les possibilités d' ElvUI et préparer votre interface.\n"
+	L.ElvUIInstall_page1_desc2 = "Vous pouvez saisir la commande /uihelp pour voir la liste de commandes.\n Le menu de configuration en jeu s'obtient avec /ec ou /elvui.\n Appuyer le bouton en dessous pour lancer le processus d'installation.\n "
+	L.ElvUIInstall_page1_button1 = "Passer l'Etape"
+
+	L.ElvUIInstall_page2_subtitle = "CVars"
+	L.ElvUIInstall_page2_desc1 = "Cette partie de l'installation installe les options par défaut de votre World of Warcraft \n Vous devez faire cette Etape pour que les choses fonctionnent correctement."
+	L.ElvUIInstall_page2_desc2 = "Cliquez sur le bouton ci-dessous pour paramétrer votre CVars."
+	L.ElvUIInstall_page2_button1 = "Installation CVars"
+
+	L.ElvUIInstall_page3_subtitle = "Chat"
+	L.ElvUIInstall_page3_desc1 = "Cette partie installe les noms, positions et couleurs de vos fenêtres de chat."
+	L.ElvUIInstall_page3_desc2 = "Cliquez sur le bouton ci-dessous pour installer vos fenêtres de chat\n Vous devez terminer le processus d'installation\n pour un résultat correct."
+	L.ElvUIInstall_page3_button1 = "Installation du Chat"
+
+	L.ElvUIInstall_page4_subtitle = "Résolution"
+	L.ElvUIInstall_page4_desc1 = "Votre résolution courante est: %s, ElvUI a automatiquement choisi %s\n basée sur la taille de votre écran."
+	L.ElvUIInstall_page4_desc2 = "Ceci installe divers paramètrages dont l'affichage des barres d'actions et l'Echelle des cadres d'unité.\n Vous pourrez changer avec un /ec en jeu et choisir la résolution voulue.\n"
+	L.ElvUIInstall_Low = "Basse"
+	L.ElvUIInstall_High = "Haute"
+
+	L.ElvUIInstall_page5_subtitle = "Barres d'Actions"
+	L.ElvUIInstall_page5_desc1 = "L'installation finie, vous pourrez paramétrer vos barres d'actions.\n Pour le faire cliquer le bouton 'L' à droite du panneau gauche de chat."
+	L.ElvUIInstall_page5_desc2 = "Vous pouvez rapidement obtenir le bind de vos boutons par un /hb \n Pour déplacer vos actions appuyez 'shift' et glissez le bouton."
+
+	L.ElvUIInstall_page6_subtitle = "Cadres d'Unités"
+	L.ElvUIInstall_page6_desc1 = "L'installation terminée, vous pourrez repositionner vos cadres d'unité.\n Pour le faire clic du bouton 'L' à droite du panneau gauche de chat."
+	L.ElvUIInstall_page6_desc2 = "Pour passer rapidement de l'interface DPS à Heal tapez: /dps ou /heal"
+	L.ElvUIInstall_page6_desc3 = "Cliquez le bouton ci-dessous si vous voulez les emplacements des cadres d'unités par défaut."
+	L.ElvUIInstall_page6_button1 = "Installer les positions par défaut"
+
+	L.ElvUIInstall_page7_subtitle = "Installation Complète"
+	L.ElvUIInstall_page7_desc1 = "Vous avez fini le processus d'installation. Pour un support technique\n visitez http://www.tukui.org."
+	L.ElvUIInstall_page7_desc2 = "Cliquez le bouton ci-dessous pour terminer et ReloadUI."
+	L.ElvUIInstall_page7_button1 = "Terminer"
+	L.ElvUIInstall_CVarSet = "CVars appliqué"
+	L.ElvUIInstall_ChatSet = "Positions Chat appliquées"
+	L.ElvUIInstall_UFSet = "Positions Cadres d'Unités appliquées"
+
 	L.chat_BATTLEGROUND_GET = "[B]"
 	L.chat_BATTLEGROUND_LEADER_GET = "[B]"
 	L.chat_BN_WHISPER_GET = "De"

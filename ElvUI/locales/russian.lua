@@ -2,6 +2,50 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if E.client == "ruRU" then
+	L.ElvUIInstall_Title = "Установка ElvUI"
+	L.ElvUIInstall_ContinueMessage = "Пожалуйста, нажмите на кнопку <Продолжить> чтобы перейти в следующий шаг."
+	L.ElvUIInstall_HighRecommended = "Важно: |cff07D400High|r"
+	L.ElvUIInstall_MediumRecommended = "Важно: |cffD3CF00Medium|r"
+
+	L.ElvUIInstall_page1_subtitle = "Добро пожаловать в ElvUI версии %s!"
+	L.ElvUIInstall_page1_desc1 = "Эта установка поможет вам узнать возможности ElvUI\n и настроить его."
+	L.ElvUIInstall_page1_desc2 = "Вы можете ввести команду /uihelp в чате, чтобы увидеть дополнительные команды. Внутриигровая конфигурация может быть вызвана\n командами /ec или /elvui. Нажмите на кнопку ниже,\n чтобы начать процесс установки."
+	L.ElvUIInstall_page1_button1 = "Пропустить установку"
+
+	L.ElvUIInstall_page2_subtitle = "Базовые настройки"
+	L.ElvUIInstall_page2_desc1 = "Эта часть установки выставит параметры выших настроек World of Warcraft на рекомендуемые значения.\n Очень рекомендуется сделать проделать этот шаг.."
+	L.ElvUIInstall_page2_desc2 = "Пожалуйста, нажмите на кнопку ниже, чтобы настроить базовые параметры"
+	L.ElvUIInstall_page2_button1 = "Установить базовые настройки"
+
+	L.ElvUIInstall_page3_subtitle = "Чат"
+	L.ElvUIInstall_page3_desc1 = "Эта часть установки настраивает чат, его позицию, цвета и названия окон."
+	L.ElvUIInstall_page3_desc2 = "Пожалуйста, нажмите на кнопку ниже, чтобы настроить чат. Когда вы закончите установку\n чат настроится автоматически."
+	L.ElvUIInstall_page3_button1 = "Установить чат"
+
+	L.ElvUIInstall_page4_subtitle = "Разрешение"
+	L.ElvUIInstall_page4_desc1 = "Ваше текущее разрешение экрана: %s, ElvUI автоматически выбрал %s версию разрешения, основываясь\n на разрешении вашего экрана."
+	L.ElvUIInstall_page4_desc2 = "Тип разрешения устанавливает размер рамок юнитов и количество панелей действий в нижней части экрана.\n Вы можете изменить это опцию во внутреигровых настройках ElvUI (/ec) и установить разрешение,\n которое вам необходимо."
+	L.ElvUIInstall_Low = "Низкое"
+	L.ElvUIInstall_High = "Высокое"
+
+	L.ElvUIInstall_page5_subtitle = "Панели действий"
+	L.ElvUIInstall_page5_desc1 = "После завершения процесса установки вы сможете настроить панели действий. Это можно сделать по\n нажатию на кнопку 'L', которая находится справа внизу у левого окна чата."
+	L.ElvUIInstall_page5_desc2 = "Вы можете быстро настроить горячие клавиши для ваших способностей при помощи команды /hb. Вы можете переместить способности на панелях действий, зажав клавишу <Shift>."
+
+	L.ElvUIInstall_page6_subtitle = "Рамки юнитов"
+	L.ElvUIInstall_page6_desc1 = "После заверщения процесса установки вы сможете поменять позиции рамок юнитов. Это можно сделать по\n нажатию на кнопку 'L', которая находится справа внизу у левого окна чата."
+	L.ElvUIInstall_page6_desc2 = "Вы можете быстро переключиться между раскладками ДПС или Лекаря, написав в чате команды /dps и /heal соответственно"
+	L.ElvUIInstall_page6_desc3 = "Если вы хотите установить позицию рамок юнитов по умолчанию, кликните на кнопку ниже."
+	L.ElvUIInstall_page6_button1 = "Установить позицию рамок юнитов"
+
+	L.ElvUIInstall_page7_subtitle = "Установка завершена"
+	L.ElvUIInstall_page7_desc1 = "Вы завершили настройку ElvUI. Если вы нуждаетесь в технической поддержке, посетите\n нас на сайте http://www.tukui.org."
+	L.ElvUIInstall_page7_desc2 = "Пожалуйста, нажмите на кнопку ниже, чтобы перезагрузить интерфейс и применить настройки."
+	L.ElvUIInstall_page7_button1 = "Завершить"
+	L.ElvUIInstall_CVarSet = "Базовые параметры настроены"
+	L.ElvUIInstall_ChatSet = "Позиция чата установлена"
+	L.ElvUIInstall_UFSet = "Позиция рамок юнитов установлена"
+
 	L.chat_BATTLEGROUND_GET = "[Пб]"
 	L.chat_BATTLEGROUND_LEADER_GET = "[ПБ]"
 	L.chat_BN_WHISPER_GET = "От"

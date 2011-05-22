@@ -96,9 +96,9 @@ if E.client == "koKR" then
 	L.merchant_repaircost = "모든 아이템이 수리되었습니다: "
 	L.merchant_trashsell = "불필요한 아이템이 판매되었습니다: "
  
-	L.goldabbrev = "|cffffd700골|r"
-	L.silverabbrev = "|cffc7c7cf실|r"
-	L.copperabbrev = "|cffeda55f코|r"
+	L.goldabbrev = "|cffffd700●|r"
+	L.silverabbrev = "|cffc7c7cf●|r"
+	L.copperabbrev = "|cffeda55f●|r"
  
 	L.error_noerror = "오류가 발견되지 않았습니다."
  
@@ -168,6 +168,50 @@ if E.client == "koKR" then
 	L.bind_instruct = "커서가 위치한 단축버튼에 단축키를 지정할 수 있습니다. 오른쪽 클릭으로 해당 단축버튼의 단축키를 초기화할 수 있습니다."
 	L.bind_save = "저장"
 	L.bind_discardbind = "취소"
+
+        L.ElvUIInstall_Title = "ElvUI 설치"
+        L.ElvUIInstall_ContinueMessage = "다음 단계로 이동하려면 계속 단추를 누르세요."
+        L.ElvUIInstall_HighRecommended = "Importance: |cff07D400High|r"
+        L.ElvUIInstall_MediumRecommended = "Importance: |cffD3CF00Medium|r"
+
+        L.ElvUIInstall_page1_subtitle = "Elv UI오신 것을 환영합니다  버전 %s!"
+        L.ElvUIInstall_page1_desc1 = "설치 과정을 제공하는 것 역시 준비를 \ 사용에 대한 사용자 인터페이스를 가지고 없음 당신이 ElvUI의 기능 중 일부를 배울 수 있도록 도울 것입니다."
+        L.ElvUIInstall_page1_desc2 = "입력할 수있는 /uihelp 명령은 명령의 목록을 표시합니다.게임 설정 메뉴가 될 수 /EC 또는 /elvui 명령. 당신은  설치 과정을 생략하려는 경우 아래의 버튼을 눌러."
+        L.ElvUIInstall_page1_button1 = "건너뛰기"
+
+        L.ElvUIInstall_page2_subtitle = "CVars"
+        L.ElvUIInstall_page2_desc1 = "설치 과정의이 부분은 워크 래프트의 기본 옵션을 당신의 세계를 그것 권장합니다 . 당신이 모든 것이 제대로 작동하려면이 단계를해야 설정합니다."
+        L.ElvUIInstall_page2_desc2 = "당신의 CVars 설치하려면 아래 버튼을 클릭하십시오."
+        L.ElvUIInstall_page2_button1 = "설치 CVars"
+
+        L.ElvUIInstall_page3_subtitle = "채팅"
+        L.ElvUIInstall_page3_desc1 = "설치 과정의이 부분은 Windows 이름, 위치 및 색상을 채팅 설정합니다."
+        L.ElvUIInstall_page3_desc2 = "채팅 창이 설치하려면 아래 버튼을 클릭하십시오. 당신은 스스로를 해결 탭 채팅 설치 프로세스 완성해야합니다."
+        L.ElvUIInstall_page3_button1 = "채팅 설치"
+
+        L.ElvUIInstall_page4_subtitle = "해상도"
+        L.ElvUIInstall_page4_desc1 = "현재 해상도는 :. % s은, ElvUI 자동으로 %가 화면 크기에 따라 당신을 위해 버전의 선택했습니다."
+        L.ElvUIInstall_page4_desc2 = "이것은 액션바 표시되는 방법을 비롯한 다양한 설정과 프레임 규모를.  당신의 게임을 사용하여이 설정을 변경할 수 있습니다 제어 설정 (/ ec)와 해상도가 원하는 걸 우선합니다. 설정하기."
+        L.ElvUIInstall_Low = "낮음"
+        L.ElvUIInstall_High = "높음"
+
+        L.ElvUIInstall_page5_subtitle = "액션 바"
+        L.ElvUIInstall_page5_desc1 = "설치 프로세스가 완료되면 설치 프로그램을 액션바 설치 수있을 것입니다. 이것도 할 수 패널 채팅 왼쪽의 오른쪽에있는 'L'버튼을 클릭."
+        L.ElvUIInstall_page5_desc2 = "당신은 /HB인지 명령을 사용하여 신속하게 설치하여 실행바의 키설정 수 있습니다. 당신은 액션 버튼을 이동할 수 있습니다."
+
+        L.ElvUIInstall_page6_subtitle = "유닛 프레임"
+        L.ElvUIInstall_page6_desc1 = "설치 과정 유닛프레임을 당신이 조정하여 완성 할수 있습니다 패널 왼쪽의 오른쪽에있는 채팅 'L' 버튼."
+        L.ElvUIInstall_page6_desc2 = "당신은 /dps와/heal 입력하여 DPS과 치유 레이아웃 사이에 스왑합니다."
+        L.ElvUIInstall_page6_desc3 = "당신은 그들의 기본 장소로 프레임 위치를 설정하려면 아래 버튼을 클릭하십시오"
+        L.ElvUIInstall_page6_button1 = "설정 프레임 위치"
+
+        L.ElvUIInstall_page7_subtitle = "설치 완료"
+        L.ElvUIInstall_page7_desc1 = "이제 당신이 설치 과정이 완료됩니다. 필요한 기술 지원에있다면 다음 사이트를 방문하시기 바랍니다 \www.tukui.org."
+        L.ElvUIInstall_page7_desc2 = "설치 프로그램 변수와 ReloadUI 아래의 버튼을 클릭하십시오."
+        L.ElvUIInstall_page7_button1 = "완료"
+        L.ElvUIInstall_CVarSet = "CVars 설정"
+        L.ElvUIInstall_ChatSet = "채팅 위치를 설정"
+        L.ElvUIInstall_UFSet = "프레임 위치를 설정"
  
 	L.hunter_unhappy = "소환수의 만족도: 불만족"
 	L.hunter_content = "소환수의 만족도: 만족"
@@ -191,6 +235,12 @@ if E.client == "koKR" then
 		text = string.gsub(text, KEY_DELETE, 'Del')
 		text = string.gsub(text, KEY_MOUSEWHEELUP, 'MwU')
 		text = string.gsub(text, KEY_MOUSEWHEELDOWN, 'MwD')
+                        text = string.gsub(text, '(Maustaste 5)', 'M5')
+	            text = string.gsub(text, '(Maustaste 4)', 'M4')
+                        text = string.gsub(text, '(아래 화살표)', '↓')
+                        text = string.gsub(text, '(위 화살표)', '↑')
+                        text = string.gsub(text, '(왼쪽 화살표)', '←')
+                        text = string.gsub(text, '(오른쪽 화살표)', '→')
  
 		if hotkey:GetText() == _G['RANGE_INDICATOR'] then
 			hotkey:SetText('')
