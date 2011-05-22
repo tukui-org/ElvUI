@@ -23,7 +23,7 @@ local function init()
 end
 
 function E.PostWatchMove()
-	if E.Movers["WatchFrameMover"]["moved"] == false then
+	if E.Movers["WatchFrameMover"]["moved"] ~= true then
 		E.PositionWatchFrame()
 	end
 end

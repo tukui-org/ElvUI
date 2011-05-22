@@ -25,9 +25,7 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	local p, p2, p3, p4, p5 = parent:GetPoint()
 	
 	
-	if E.Movers[name]["moved"] == nil then 
-		E.Movers[name]["moved"] = false 
-		
+	if E.Movers[name]["moved"] == nil or E.Movers[name]["moved"] == false then 
 		E.Movers[name]["p"] = nil
 		E.Movers[name]["p2"] = nil
 		E.Movers[name]["p3"] = nil
@@ -59,7 +57,7 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	f2:SetScript("OnDragStop", function(self) 
 		if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end
 		self:StopMovingOrSizing()
-	
+
 		E.Movers[name]["moved"] = true
 		local p, _, p2, p3, p4 = self:GetPoint()
 		E.Movers[name]["p"] = p
@@ -156,7 +154,7 @@ function E.ResetMovers(arg)
 			_G[name]:ClearAllPoints()
 			_G[name]:SetPoint(E.CreatedMovers[name]["p"], E.CreatedMovers[name]["p2"], E.CreatedMovers[name]["p3"], E.CreatedMovers[name]["p4"], E.CreatedMovers[name]["p5"])
 			
-			E.Movers[name]["moved"] = false 
+			E.Movers[name]["moved"] = nil
 			
 			E.Movers[name]["p"] = nil
 			E.Movers[name]["p2"] = nil
@@ -178,7 +176,7 @@ function E.ResetMovers(arg)
 						_G[name]:ClearAllPoints()
 						_G[name]:SetPoint(E.CreatedMovers[name]["p"], E.CreatedMovers[name]["p2"], E.CreatedMovers[name]["p3"], E.CreatedMovers[name]["p4"], E.CreatedMovers[name]["p5"])						
 						
-						E.Movers[name]["moved"] = false 
+						E.Movers[name]["moved"] = nil
 						
 						E.Movers[name]["p"] = nil
 						E.Movers[name]["p2"] = nil

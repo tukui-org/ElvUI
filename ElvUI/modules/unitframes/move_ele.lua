@@ -21,6 +21,7 @@ local function CreateFrameOverlay(parent, name)
 	local p, p2, p3, p4, p5 = parent:GetPoint()
 	
 	if ElementsPos[name]["moved"] ~= true then
+		ElementsPos[name]["moved"] = nil
 		ElementsPos[name]["p"] = nil
 		ElementsPos[name]["p2"] = nil
 		ElementsPos[name]["p3"] = nil
@@ -141,7 +142,7 @@ local function ResetElements(arg1)
 			local name = _G[frame]:GetName()
 			_G[frame]:ClearAllPoints()
 			_G[frame]:SetPoint(FramesDefault[name]["p"], FramesDefault[name]["p2"], FramesDefault[name]["p3"], FramesDefault[name]["p4"], FramesDefault[name]["p5"])
-			ElementsPos[name]["moved"] = false
+			ElementsPos[name]["moved"] = nil
 			ElementsPos[name]["p"] = nil
 			ElementsPos[name]["p2"] = nil
 			ElementsPos[name]["p3"] = nil
@@ -156,7 +157,7 @@ local function ResetElements(arg1)
 				local name = _G[arg1]:GetName()
 				_G[arg1]:ClearAllPoints()
 				_G[arg1]:SetPoint(FramesDefault[name]["p"], FramesDefault[name]["p2"], FramesDefault[name]["p3"], FramesDefault[name]["p4"], FramesDefault[name]["p5"])	
-				ElementsPos[name]["moved"] = false	
+				ElementsPos[name]["moved"] = nil	
 				ElementsPos[name]["p"] = nil
 				ElementsPos[name]["p2"] = nil
 				ElementsPos[name]["p3"] = nil
