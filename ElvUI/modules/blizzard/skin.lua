@@ -4555,11 +4555,11 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			--Skill Line Tabs
 			for i=1, MAX_SKILLLINE_TABS do
 				local tab = _G["SpellBookSkillLineTab"..i]
+				_G["SpellBookSkillLineTab"..i.."Flash"]:Kill()
 				if tab then
 					tab:StripTextures()
 					tab:GetNormalTexture():SetTexCoord(.08, .92, .08, .92)
 					tab:GetNormalTexture():ClearAllPoints()
-
 					tab:GetNormalTexture():Point("TOPLEFT", 2, -2)
 					tab:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
 					
@@ -4568,10 +4568,23 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 					tab:StyleButton(true)				
 					
 					local point, relatedTo, point2, x, y = tab:GetPoint()
-					tab:Point(point, relatedTo, point2, 2, y)
+					tab:Point(point, relatedTo, point2, 1, y)
 				end
 			end
 			
+			local function SkinSkillLine()
+				for i=1, MAX_SKILLLINE_TABS do
+					local tab = _G["SpellBookSkillLineTab"..i]
+					local _, _, _, _, isGuild = GetSpellTabInfo(i)
+					if isGuild then
+						tab:GetNormalTexture():ClearAllPoints()
+						tab:GetNormalTexture():Point("TOPLEFT", 2, -2)
+						tab:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)	
+						tab:GetNormalTexture():SetTexCoord(.08, .92, .08, .92)					
+					end
+				end
+			end
+			hooksecurefunc("SpellBookFrame_UpdateSkillLineTabs", SkinSkillLine)
 			SpellBookFrame:SetTemplate("Transparent")
 			SpellBookFrame:CreateShadow("Default")
 			
