@@ -2,6 +2,13 @@
 -- move vehicle indicator
 --------------------------------------------------------------------------
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
+
+function E.PostVehicleMove(frame)
+	VehicleSeatIndicator:ClearAllPoints()
+	VehicleSeatIndicator:SetPoint("CENTER", frame, "CENTER", 0, 0)
+end
+
 local once = false
 hooksecurefunc(VehicleSeatIndicator,"SetPoint",function(_,_,parent) -- vehicle seat indicator
     if (parent == "MinimapCluster") or (parent == _G["MinimapCluster"]) then
