@@ -1408,7 +1408,7 @@ local function Shared(self, unit)
 	------------------------------------------------------------------------
 	--	Main tanks and Main Assists
 	------------------------------------------------------------------------
-	if unit == "raid" or unit == "raidtarget" then
+	if unit == "maintank" or unit == "mainassist" or unit == "maintanktarget" or unit == "mainassisttarget" then
 		--Health Bar
 		local health = E.ContructHealthBar(self, true, nil)
 		health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
