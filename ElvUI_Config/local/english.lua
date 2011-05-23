@@ -176,8 +176,14 @@ L["Auras"] = true
 		L["Enable filter for arena debuffs"] = true
 	L["TargetTarget Debuffs"] = true
 	L["Focus Debuffs"] = true
-	L["Player/Target Auras in Row"] = true
+	L["Player Auras in Row"] = true
+	L["Target Auras in Row"] = true
+	L["Player Buff Rows"] = true
+	L["Player Debuff Rows"] = true
+	L["Target Buff Rows"] = true
+	L["Target Debuff Rows"] = true	
 		L["The ammount of auras displayed in a single row"] = true
+		L["Ammount of rows of auras"] = true
 	L["Small Frames Auras in Row"] = true
 	L["Raid Buff Display Size"] = true
 	
