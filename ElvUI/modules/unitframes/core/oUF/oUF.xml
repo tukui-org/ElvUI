@@ -5,6 +5,7 @@
 	<Script file='events.lua'/>
 	<Script file='factory.lua' />
 	<Script file='blizzard.lua' />
+	<Script file='units.lua' />
 	<Script file='colors.lua' />
 	<Script file='finalize.lua' />
 
@@ -19,7 +20,6 @@
 	<Script file='elements\pvp.lua' />
 	<Script file='elements\portraits.lua' />
 	<Script file='elements\range.lua' />
-	<Script file='elements\happiness.lua' />
 	<Script file='elements\castbar.lua' />
 	<Script file='elements\threat.lua' />
 	<Script file='elements\tags.lua' />
@@ -35,6 +35,8 @@
 	<Script file='elements\qicon.lua' />
 	<Script file='elements\eclipsebar.lua' />
 	<Script file='elements\altpowerbar.lua' />
+	<Script file='elements\totems.lua' />
+	<Script file='elements\resurrect.lua' />
 
 	<!-- Clique support -->
 	<Button name="oUF_ClickCastUnitTemplate" virtual="true" inherits="SecureUnitButtonTemplate,SecureHandlerEnterLeaveTemplate">

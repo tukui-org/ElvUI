@@ -8,13 +8,23 @@ for power, color in next, PowerBarColor do
 	end
 end
 
+local GetDisplayPower = function(power, unit)
+	local _, _, _, _, _, _, showOnRaid = UnitAlternatePowerInfo(unit)
+	if(power.displayAltPower and showOnRaid) then
+		return ALTERNATE_POWER_INDEX
+	else
+		return (UnitPowerType(unit))
+	end
+end
+
 local Update = function(self, event, unit)
 	if(self.unit ~= unit) then return end
 	local power = self.Power
 
 	if(power.PreUpdate) then power:PreUpdate(unit) end
 
-	local min, max = UnitPower(unit), UnitPowerMax(unit)
+	local displayType = GetDisplayPower(power, unit)
+	local min, max = UnitPower(unit, displayType), UnitPowerMax(unit, displayType)
 	local disconnected = not UnitIsConnected(unit)
 	power:SetMinMaxValues(0, max)
 
@@ -31,8 +41,6 @@ local Update = function(self, event, unit)
 		t = self.colors.tapped
 	elseif(power.colorDisconnected and not UnitIsConnected(unit)) then
 		t = self.colors.disconnected
-	elseif(power.colorHappiness and UnitIsUnit(unit, "pet") and GetPetHappiness()) then
-		t = self.colors.happiness[GetPetHappiness()]
 	elseif(power.colorPower) then
 		local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
 
@@ -84,7 +92,7 @@ do
 	OnPowerUpdate = function(self)
 		if(self.disconnected) then return end
 		local unit = self.__owner.unit
-		local power = UnitPower(unit)
+		local power = UnitPower(unit, GetDisplayPower(self, unit))
 
 		if(power ~= self.min) then
 			self.min = power
@@ -106,6 +114,9 @@ local Enable = function(self, unit)
 			self:RegisterEvent('UNIT_POWER', Path)
 		end
 
+		self:RegisterEvent('UNIT_POWER_BAR_SHOW', Path)
+		self:RegisterEvent('UNIT_POWER_BAR_HIDE', Path)
+		self:RegisterEvent('UNIT_DISPLAYPOWER', Path)
 		self:RegisterEvent('UNIT_CONNECTION', Path)
 		self:RegisterEvent('UNIT_MAXPOWER', Path)
 

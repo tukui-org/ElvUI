@@ -15,12 +15,15 @@ local OnRangeUpdate = function(self, elapsed)
 		for _, object in next, _FRAMES do
 			if(object:IsShown()) then
 				local range = object.Range
-				if(UnitIsConnected(object.unit) and not UnitInRange(object.unit)) then
-					if(object:GetAlpha() == range.insideAlpha) then
-						object:SetAlpha(range.outsideAlpha)
+				if(UnitIsConnected(object.unit)) then
+					local inRange, checkedRange = UnitInRange(object.unit)
+					if(checkedRange and not inRange) then
+						if(object:GetAlpha() == range.insideAlpha) then
+							object:SetAlpha(range.outsideAlpha)
+						end
+					elseif(object:GetAlpha() ~= range.insideAlpha) then
+						object:SetAlpha(range.insideAlpha)
 					end
-				elseif(object:GetAlpha() ~= range.insideAlpha) then
-					object:SetAlpha(range.insideAlpha)
 				end
 			end
 		end

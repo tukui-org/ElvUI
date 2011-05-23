@@ -1,3 +1,5 @@
+local WoW41 = select(4, GetBuildInfo()) == 40100
+
 local parent, ns = ...
 local oUF = ns.oUF
 local Private = oUF.Private
@@ -5,11 +7,6 @@ local Private = oUF.Private
 local frame_metatable = Private.frame_metatable
 
 local colors = {
-	happiness = {
-		[1] = {1, 0, 0}, -- need.... | unhappy
-		[2] = {1, 1, 0}, -- new..... | content
-		[3] = {0, 1, 0}, -- colors.. | happy
-	},
 	smooth = {
 		1, 0, 0,
 		1, 1, 0,

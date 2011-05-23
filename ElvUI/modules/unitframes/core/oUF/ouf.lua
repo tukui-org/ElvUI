@@ -58,8 +58,6 @@ end
 
 local OnAttributeChanged = function(self, name, value)
 	if(name == "unit" and value) then
-		units[value] = self
-
 		if(self.unit and (self.unit == value or self.realUnit == value)) then
 			return
 		else
@@ -68,8 +66,11 @@ local OnAttributeChanged = function(self, name, value)
 			end
 
 			if(not self:GetAttribute'oUF-onlyProcessChildren') then
-				self.unit = SecureButton_GetModifiedUnit(self)
-				self.id = value:match"^.-(%d+)"
+				local unit = SecureButton_GetModifiedUnit(self)
+				unit = conv[unit] or unit
+				units[unit] = self
+				self.unit = unit
+				self.id = unit:match"^.-(%d+)"
 				self:UpdateAllElements"PLAYER_ENTERING_WORLD"
 			end
 		end
@@ -87,7 +88,7 @@ for k, v in pairs{
 		argcheck(unit, 3, 'string', 'nil')
 
 		local element = elements[name]
-		if(not element) then return end
+		if(not element or self:IsElementEnabled(name)) then return end
 
 		if(element.enable(self, unit or self.unit)) then
 			table.insert(self.__elements, element.update)
@@ -96,23 +97,32 @@ for k, v in pairs{
 
 	DisableElement = function(self, name)
 		argcheck(name, 2, 'string')
+
+		local enabled, k = self:IsElementEnabled(name)
+		if(not enabled) then return end
+
+		table.remove(self.__elements, k)
+
+		-- We need to run a new update cycle incase we knocked ourself out of sync.
+		-- The main reason we do this is to make sure the full update is completed
+		-- if an element for some reason removes itself _during_ the update
+		-- progress.
+		self:UpdateAllElements('DisableElement', name)
+
+		return elements[name].disable(self)
+	end,
+
+	IsElementEnabled = function(self, name)
+		argcheck(name, 2, 'string')
+
 		local element = elements[name]
 		if(not element) then return end
 
 		for k, update in next, self.__elements do
 			if(update == element.update) then
-				table.remove(self.__elements, k)
-
-				-- We need to run a new update cycle incase we knocked ourself out of sync.
-				-- The main reason we do this is to make sure the full update is completed
-				-- if an element for some reason removes itself _during_ the update
-				-- progress.
-				self:UpdateAllElements('DisableElement', name)
-				break
+				return true, k
 			end
 		end
-
-		return element.disable(self)
 	end,
 
 	Enable = RegisterUnitWatch,
@@ -183,27 +193,25 @@ local initObject = function(unit, style, styleFunc, header, ...)
 	for i=1, num do
 		local object = select(i, ...)
 		local objectUnit = object:GetAttribute'oUF-guessUnit' or unit
+		local suffix = object:GetAttribute'unitsuffix'
 
 		object.__elements = {}
 		object.style = style
 		object = setmetatable(object, frame_metatable)
 
-		-- Run it before the style function so they can override it.
-		if(not header) then
-			object:SetAttribute("*type1", "target")
-			object:SetAttribute('*type2', 'menu')
+		-- Expose the frame through oUF.objects.
+		table.insert(objects, object)
 
-			object:SetAttribute('toggleForVehicle', true)
-		else
-			object:RegisterEvent('PARTY_MEMBERS_CHANGED', object.UpdateAllElements)
-		end
-
-		-- Register it early so it won't be executed after the layouts PEW, if they
-		-- have one.
+		-- We have to force update the frames when PEW fires.
 		object:RegisterEvent("PLAYER_ENTERING_WORLD", object.UpdateAllElements)
 
-		local suffix = object:GetAttribute'unitsuffix'
-		if(not ((objectUnit and objectUnit:match'target') or suffix == 'target')) then
+		-- Handle the case where someone has modified the unitsuffix attribute in
+		-- oUF-initialConfigFunction.
+		if(suffix and not objectUnit:match(suffix)) then
+			objectUnit = objectUnit .. suffix
+		end
+
+		if(not (suffix == 'target' or objectUnit and objectUnit:match'target')) then
 			object:RegisterEvent('UNIT_ENTERED_VEHICLE', updateActiveUnit)
 			object:RegisterEvent('UNIT_EXITED_VEHICLE', updateActiveUnit)
 
@@ -215,27 +223,42 @@ local initObject = function(unit, style, styleFunc, header, ...)
 			end
 		end
 
-		local parent = object:GetParent()
-		if(num > 1) then
-			if(i == 1 and not parent:GetAttribute'oUF-onlyProcessChildren') then
-				object.hasChildren = true
+		if(not header) then
+			-- No header means it's a frame created through :Spawn().
+			object:SetAttribute("*type1", "target")
+			object:SetAttribute('*type2', 'menu')
+
+			-- No need to enable this for *target frames.
+			if(not (unit:match'target' or suffix == 'target')) then
+				object:SetAttribute('toggleForVehicle', true)
+			end
+
+			-- Other boss and target units are handled by :HandleUnit().
+			if(suffix == 'target') then
+				enableTargetUpdate(object)
+			elseif(not (unit:match'%w+target' or unit:match'(boss)%d?$' == 'boss')) then
+				object:SetScript('OnEvent', Private.OnEvent)
+			end
+		else
+			-- Used to update frames when they change position in a group.
+			object:RegisterEvent('PARTY_MEMBERS_CHANGED', object.UpdateAllElements)
+
+			if(num > 1) then
+				if(object:GetParent() == header) then
+					object.hasChildren = true
+				else
+					object.isChild = true
+				end
+			end
+
+			if(suffix == 'target') then
+				enableTargetUpdate(object)
 			else
-				object.isChild = true
+				object:SetScript('OnEvent', Private.OnEvent)
 			end
 		end
 
 		styleFunc(object, objectUnit, not header)
-
-		local showPlayer
-		if(header and i == 1) then
-			showPlayer = header:GetAttribute'showPlayer' or header:GetAttribute'showSolo'
-		end
-
-		if(suffix and suffix:match'target' and (i ~= 1 and not showPlayer)) then
-			enableTargetUpdate(object)
-		else
-			object:SetScript("OnEvent", Private.OnEvent)
-		end
 
 		object:SetScript("OnAttributeChanged", OnAttributeChanged)
 		object:SetScript("OnShow", OnShow)
@@ -248,9 +271,7 @@ local initObject = function(unit, style, styleFunc, header, ...)
 			func(object)
 		end
 
-		-- We could use ClickCastFrames only, but it will probably contain frames that
-		-- we don't care about.
-		table.insert(objects, object)
+		-- Make Clique happy
 		_G.ClickCastFrames = ClickCastFrames or {}
 		ClickCastFrames[object] = true
 	end
@@ -259,8 +280,9 @@ end
 local walkObject = function(object, unit)
 	local parent = object:GetParent()
 	local style = parent.style or style
-	local header = parent.style and parent
 	local styleFunc = styles[style]
+
+	local header = parent:GetAttribute'oUF-headerType' and parent
 
 	-- Check if we should leave the main frame blank.
 	if(object:GetAttribute'oUF-onlyProcessChildren') then
@@ -419,7 +441,16 @@ do
 				RegisterUnitWatch(frame)
 
 				-- Attempt to guess what the header is set to spawn.
-				if(header:GetAttribute'showRaid') then
+				local groupFilter = header:GetAttribute'groupFilter'
+
+				if(type(groupFilter) == 'string' and groupFilter:match('MAIN[AT]')) then
+					local role = groupFilter:match('MAIN([AT])')
+					if(role == 'T') then
+						unit = 'maintank'
+					else
+						unit = 'mainassist'
+					end
+				elseif(header:GetAttribute'showRaid') then
 					unit = 'raid'
 				elseif(header:GetAttribute'showParty') then
 					unit = 'party'
@@ -520,7 +551,8 @@ function oUF:Spawn(unit, overrideName)
 	object:SetAttribute("unit", unit)
 	RegisterUnitWatch(object)
 
-	self:DisableBlizzard(unit, object)
+	self:DisableBlizzard(unit)
+	self:HandleUnit(object)
 
 	return object
 end

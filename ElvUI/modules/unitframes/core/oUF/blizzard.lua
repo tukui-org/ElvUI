@@ -1,8 +1,5 @@
 local parent, ns = ...
 local oUF = ns.oUF
-local Private = oUF.Private
-
-local enableTargetUpdate = Private.enableTargetUpdate
 
 local HandleFrame = function(baseName)
 	local frame
@@ -39,10 +36,9 @@ local HandleFrame = function(baseName)
 	end
 end
 
-function oUF:DisableBlizzard(unit, object)
+function oUF:DisableBlizzard(unit)
 	if(not unit) then return end
 
-	local baseName
 	if(unit == 'player') then
 		HandleFrame(PlayerFrame)
 
@@ -52,37 +48,19 @@ function oUF:DisableBlizzard(unit, object)
 		PlayerFrame:RegisterEvent('UNIT_EXITING_VEHICLE')
 		PlayerFrame:RegisterEvent('UNIT_EXITED_VEHICLE')
 	elseif(unit == 'pet') then
-		baseName = PetFrame
+		HandleFrame(PetFrame)
 	elseif(unit == 'target') then
-		if(object) then
-			object:RegisterEvent('PLAYER_TARGET_CHANGED', object.UpdateAllElements)
-		end
-
 		HandleFrame(TargetFrame)
-		return HandleFrame(ComboFrame)
-	elseif(unit == 'mouseover') then
-		if(object) then
-			return object:RegisterEvent('UPDATE_MOUSEOVER_UNIT', object.UpdateAllElements)
-		end
+		HandleFrame(ComboFrame)
 	elseif(unit == 'focus') then
-		if(object) then
-			object:RegisterEvent('PLAYER_FOCUS_CHANGED', object.UpdateAllElements)
-		end
-
 		HandleFrame(FocusFrame)
 		HandleFrame(TargetofFocusFrame)
-	elseif(unit:match'%w+target') then
-		if(unit == 'targettarget') then
-			baseName = TargetFrameToT
-		end
-
-		enableTargetUpdate(object)
+	elseif(unit == 'targettarget') then
+		HandleFrame(TargetFrameToT)
 	elseif(unit:match'(boss)%d?$' == 'boss') then
-		enableTargetUpdate(object)
-
 		local id = unit:match'boss(%d)'
 		if(id) then
-			baseName = 'Boss' .. id .. 'TargetFrame'
+			HandleFrame('Boss' .. id .. 'TargetFrame')
 		else
 			for i=1, 4 do
 				HandleFrame(('Boss%dTargetFrame'):format(i))
@@ -91,15 +69,24 @@ function oUF:DisableBlizzard(unit, object)
 	elseif(unit:match'(party)%d?$' == 'party') then
 		local id = unit:match'party(%d)'
 		if(id) then
-			baseName = 'PartyMemberFrame' .. id
+			HandleFrame('PartyMemberFrame' .. id)
 		else
 			for i=1, 4 do
 				HandleFrame(('PartyMemberFrame%d'):format(i))
 			end
 		end
-	end
+	elseif(unit:match'(arena)%d?$' == 'arena') then
+		local id = unit:match'arena(%d)'
+		if(id) then
+			HandleFrame('ArenaEnemyFrame' .. id)
+		else
+			for i=1, 4 do
+				HandleFrame(('ArenaEnemyFrame%d'):format(i))
+			end
+		end
 
-	if(baseName) then
-		return HandleFrame(baseName)
+		-- Blizzard_ArenaUI should not be loaded
+		Arena_LoadUI = function() end
+		SetCVar('showArenaEnemyFrames', '0', 'SHOW_ARENA_ENEMY_FRAMES_TEXT')
 	end
 end
