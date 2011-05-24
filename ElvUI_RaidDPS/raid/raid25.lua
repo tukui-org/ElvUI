@@ -337,6 +337,12 @@ oUF:Factory(function(self)
 					ChangeVisibility("custom [@raid6,noexists][@raid26,exists] hide;show")
 				end
 			end
+			
+			if inInstance and instanceType == "raid" and maxPlayers == 10 then
+				raid:SetAttribute("groupFilter", "1,2")
+			else
+				raid:SetAttribute("groupFilter", "1,2,3,4,5")
+			end
 		else
 			self:RegisterEvent("PLAYER_REGEN_ENABLED")
 		end
