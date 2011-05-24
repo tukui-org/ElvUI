@@ -3603,6 +3603,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 				
 				WorldMapZoneInfo:SetFont(C["media"].font, 27, "OUTLINE")
 				WorldMapZoneInfo:SetShadowOffset(2, -2)		
+				WorldMapFrame:SetFrameLevel(10)
 			end
 			
 			WorldMapFrame:HookScript("OnShow", FixSkin)
