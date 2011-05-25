@@ -169,6 +169,7 @@ E.DebuffBlacklist = {
 	[SpellName(24755)] = true, --gay homosexual tricked or treated debuff
 	[SpellName(25163)] = true, --fucking annoying pet debuff oozeling disgusting aura
 	[SpellName(80354)] = true, --timewarp debuff
+	[SpellName(95223)] = true, --group res debuff
 }
 
 --RAID DEBUFFS
