@@ -79,14 +79,15 @@ local function Shared(self, unit)
 	if unit == "player" then
 		local POWERBAR_WIDTH = C["unitframes"].playtarwidth/2*E.ResScale
 		local CLASSBAR_WIDTH = (C["unitframes"].playtarwidth - (2*2))*E.ResScale
-		local POWERBAR_HEIGHT = 10*E.ResScale
+		local CLASSBAR_HEIGHT = (C["unitframes"].classbar_height)*E.ResScale
+		local POWERBAR_HEIGHT = (C["unitframes"].powerbar_height)*E.ResScale
 		local CASTBAR_HEIGHT = C["unitframes"].castplayerheight*E.ResScale
 		local CASTBAR_WIDTH = C["unitframes"].castplayerwidth*E.ResScale
 		local PORTRAIT_WIDTH = 45*E.ResScale
 
 		local mini_classbarY = 0
 		if MINI_CLASSBAR then
-			mini_classbarY = -(SPACING+(POWERBAR_HEIGHT/2))
+			mini_classbarY = -(SPACING+(CLASSBAR_HEIGHT/2))
 		end
 		
 		--Threat Glow
@@ -184,7 +185,7 @@ local function Shared(self, unit)
 				portrait.backdrop = CreateFrame("Frame", nil, portrait)
 				portrait.backdrop:SetTemplate("Default")
 				if MINI_CLASSBAR and C["unitframes"].classbar == true and (E.myclass == "PALADIN" or E.myclass == "SHAMAN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK") then
-					portrait.backdrop:Point("TOPLEFT", self, "TOPLEFT", 0, -((POWERBAR_HEIGHT/2)))
+					portrait.backdrop:Point("TOPLEFT", self, "TOPLEFT", 0, -((CLASSBAR_HEIGHT/2)))
 				else
 					portrait.backdrop:SetPoint("TOPLEFT", self, "TOPLEFT")
 				end
@@ -439,9 +440,9 @@ local function Shared(self, unit)
 			--Reposition Health Bar for ClassBars
 			local DEPTH
 			if MINI_CLASSBAR == true then
-				DEPTH = -(BORDER+(POWERBAR_HEIGHT/2))
+				DEPTH = -(BORDER+(CLASSBAR_HEIGHT/2))
 			else
-				DEPTH = -(BORDER+POWERBAR_HEIGHT+SPACING)
+				DEPTH = -(BORDER+CLASSBAR_HEIGHT+SPACING)
 			end
 			
 			if USE_POWERBAR_OFFSET then
@@ -463,7 +464,7 @@ local function Shared(self, unit)
 					bars:SetFrameStrata("LOW")
 				end
 				bars:Width(CLASSBAR_WIDTH)
-				bars:Height(POWERBAR_HEIGHT - (BORDER*2))
+				bars:Height(CLASSBAR_HEIGHT - (BORDER*2))
 
 				
 				for i = 1, 3 do					
@@ -517,11 +518,11 @@ local function Shared(self, unit)
 					
 					bars:SetScript("OnShow", function()
 						if USE_POWERBAR_OFFSET then
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET), -(BORDER+POWERBAR_HEIGHT+SPACING))
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET), -(BORDER+CLASSBAR_HEIGHT+SPACING))
 						else
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+POWERBAR_HEIGHT+SPACING))
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING))
 						end
-						health:Point("TOPLEFT", self, "TOPLEFT", PORTRAIT_WIDTH+BORDER, -(BORDER+POWERBAR_HEIGHT+SPACING))
+						health:Point("TOPLEFT", self, "TOPLEFT", PORTRAIT_WIDTH+BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING))
 					end)
 					bars:HookScript("OnHide", function()	
 						if USE_POWERBAR_OFFSET then
@@ -555,7 +556,7 @@ local function Shared(self, unit)
 					runes:SetFrameStrata("LOW")
 				end
 				runes:Width(CLASSBAR_WIDTH)
-				runes:Height(POWERBAR_HEIGHT - (BORDER*2))
+				runes:Height(CLASSBAR_HEIGHT - (BORDER*2))
 
 				for i = 1, 6 do
 					runes[i] = CreateFrame("StatusBar", nil, runes)
@@ -592,11 +593,11 @@ local function Shared(self, unit)
 
 					runes:HookScript("OnShow", function()
 						if USE_POWERBAR_OFFSET then
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET), -(BORDER+POWERBAR_HEIGHT+SPACING))
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET), -(BORDER+CLASSBAR_HEIGHT+SPACING))
 						else
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+POWERBAR_HEIGHT+SPACING))
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING))
 						end
-						health:Point("TOPLEFT", self, "TOPLEFT", PORTRAIT_WIDTH+BORDER, -(BORDER+POWERBAR_HEIGHT+SPACING))
+						health:Point("TOPLEFT", self, "TOPLEFT", PORTRAIT_WIDTH+BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING))
 					end)
 					runes:HookScript("OnHide", function()
 						if USE_POWERBAR_OFFSET then
@@ -624,7 +625,7 @@ local function Shared(self, unit)
 					totems:SetFrameStrata("MEDIUM")			
 				end
 				totems:Width(CLASSBAR_WIDTH)
-				totems:Height(POWERBAR_HEIGHT - (BORDER*2))
+				totems:Height(CLASSBAR_HEIGHT - (BORDER*2))
 				totems.Destroy = true
 
 				for i = 1, 4 do
@@ -671,11 +672,11 @@ local function Shared(self, unit)
 					
 					totems:HookScript("OnShow", function()
 						if USE_POWERBAR_OFFSET then
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET), -(BORDER+POWERBAR_HEIGHT+SPACING))
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET), -(BORDER+CLASSBAR_HEIGHT+SPACING))
 						else
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+POWERBAR_HEIGHT+SPACING))
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING))
 						end
-						health:Point("TOPLEFT", self, "TOPLEFT", PORTRAIT_WIDTH+BORDER, -(BORDER+POWERBAR_HEIGHT+SPACING))
+						health:Point("TOPLEFT", self, "TOPLEFT", PORTRAIT_WIDTH+BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING))
 					end)
 					totems:HookScript("OnHide", function()
 						if USE_POWERBAR_OFFSET then
@@ -701,7 +702,7 @@ local function Shared(self, unit)
 					eclipseBar:SetFrameStrata("MEDIUM")						
 				end
 				eclipseBar:Width(CLASSBAR_WIDTH)
-				eclipseBar:Height(POWERBAR_HEIGHT - (BORDER*2))
+				eclipseBar:Height(CLASSBAR_HEIGHT - (BORDER*2))
 
 				local lunarBar = CreateFrame('StatusBar', nil, eclipseBar)
 				lunarBar:SetPoint('LEFT', eclipseBar)
@@ -730,11 +731,11 @@ local function Shared(self, unit)
 				if not MINI_CLASSBAR then
 					eclipseBar:HookScript("OnShow", function()
 						if USE_POWERBAR_OFFSET then
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET), -(BORDER+POWERBAR_HEIGHT+SPACING))
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET), -(BORDER+CLASSBAR_HEIGHT+SPACING))
 						else
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+POWERBAR_HEIGHT+SPACING))
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING))
 						end
-						health:Point("TOPLEFT", self, "TOPLEFT", PORTRAIT_WIDTH+BORDER, -(BORDER+POWERBAR_HEIGHT+SPACING))
+						health:Point("TOPLEFT", self, "TOPLEFT", PORTRAIT_WIDTH+BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING))
 					end)
 					eclipseBar:HookScript("OnHide", function()
 						if USE_POWERBAR_OFFSET then
@@ -809,7 +810,8 @@ local function Shared(self, unit)
 	if unit == "target" then
 		local POWERBAR_WIDTH = C["unitframes"].playtarwidth/2*E.ResScale
 		local CLASSBAR_WIDTH = (C["unitframes"].playtarwidth - (2*2))*E.ResScale
-		local POWERBAR_HEIGHT = 10*E.ResScale
+		local CLASSBAR_HEIGHT = (C["unitframes"].classbar_height)*E.ResScale
+		local POWERBAR_HEIGHT = (C["unitframes"].powerbar_height)*E.ResScale
 		local CASTBAR_HEIGHT = C["unitframes"].casttargetheight*E.ResScale
 		local CASTBAR_WIDTH = C["unitframes"].casttargetwidth*E.ResScale
 		local PORTRAIT_WIDTH = 45*E.ResScale		
@@ -1018,7 +1020,7 @@ local function Shared(self, unit)
 			combo:SetFrameStrata("LOW")
 		end
 		combo:Width(CLASSBAR_WIDTH)
-		combo:Height(POWERBAR_HEIGHT - (BORDER*2))
+		combo:Height(CLASSBAR_HEIGHT - (BORDER*2))
 
 		for i = 1, 5 do					
 			combo[i] = CreateFrame("StatusBar", nil, combo)
@@ -1150,7 +1152,7 @@ local function Shared(self, unit)
 	------------------------------------------------------------------------
 	if (unit == "targettarget" or unit == "pet" or unit == "pettarget" or unit == "focustarget" or unit == "focus") then
 		local POWERBAR_WIDTH = C["unitframes"].smallwidth/1.5*E.ResScale
-		local POWERBAR_HEIGHT = 8
+		local POWERBAR_HEIGHT = C["unitframes"].powerbar_height*0.8
 		local CASTBAR_WIDTH = C["unitframes"].castfocuswidth*E.ResScale
 		local CASTBAR_HEIGHT = C["unitframes"].castfocusheight*E.ResScale
 		
@@ -1251,7 +1253,7 @@ local function Shared(self, unit)
 	if (unit and unit:find("arena%d") and C["unitframes"].arena == true) or (unit and unit:find("boss%d") and C["unitframes"].showboss == true) then
 		local POWERBAR_WIDTH = C["unitframes"].arenabosswidth/2*E.ResScale
 		local TRINKET_WIDTH = BOSS_HEIGHT * 0.9
-		local POWERBAR_HEIGHT = 7
+		local POWERBAR_HEIGHT = C["unitframes"].powerbar_height*0.7
 		local CASTBAR_HEIGHT = 16*E.ResScale
 		local CASTBAR_WIDTH = BOSS_WIDTH
 

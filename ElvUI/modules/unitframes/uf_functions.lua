@@ -86,8 +86,14 @@ E.LoadUFFunctions = function(layout)
 			power.value:SetParent(self)
 		end
 		
+		if C["unitframes"].classcolorpower == true then
+			power.colorClass = true
+			power.colorReaction = true
+		else
+			power.colorPower = true
+		end
+		
 		power.colorDisconnected = true
-		power.colorPower = true
 		power.colorTapping = false
 		
 		power.backdrop = CreateFrame('Frame', nil, power)

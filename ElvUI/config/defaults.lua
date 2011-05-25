@@ -110,6 +110,7 @@ DB["unitframes"] = {
 	["charportrait"] = true,              -- enable character portrait
 	["charportraithealth"] = false,			-- portrait overlay healthbar
 	["classcolor"] = false,                  -- color unitframes by class
+	["classcolorpower"] = false,
 	["healthcolor"] = DB["media"].bordercolor, --color of the unitframe
 	["healthcolorbyvalue"] = true,			-- color health by current health remaining
 	["healthbackdrop"] = false,				-- enable using custom healthbackdrop color
@@ -125,6 +126,8 @@ DB["unitframes"] = {
 	["arena"] = true,                 -- enable elvui arena unitframes (requirement : Elvui unitframes enabled)	
 	["swing"] = false,
 	["displayaggro"] = true,
+	["powerbar_height"] = 10,
+	["classbar_height"] = 10,
 	
 	--frame sizes
 	["playtarwidth"] = 275,					--width of player/target frame
