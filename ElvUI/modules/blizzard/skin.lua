@@ -4566,8 +4566,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 						icon:SetTexCoord(.08, .92, .08, .92)
 						icon:ClearAllPoints()
 						icon:SetAllPoints()
-						
-						button:SetFrameLevel(button:GetFrameLevel() + 2)
+
 						if not button.backdrop then
 							button:CreateBackdrop("Default", true)	
 						end
