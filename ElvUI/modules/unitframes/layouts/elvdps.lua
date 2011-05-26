@@ -168,12 +168,12 @@ local function Shared(self, unit)
 				self.Portrait = portrait
 				
 				local overlay = CreateFrame("Frame", nil, self)
-				overlay:SetFrameLevel(self:GetFrameLevel() - 2)
+				overlay:SetFrameLevel(self:GetFrameLevel() - 5)
 				
 				health.bg:ClearAllPoints()
 				health.bg:Point('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
 				health.bg:Point('TOPRIGHT', health)
-				health.bg:SetDrawLayer("OVERLAY", 7)
+				health.bg:SetDrawLayer("OVERLAY")
 				health.bg:SetParent(overlay)
 			else
 				--Reposition Health
@@ -778,14 +778,16 @@ local function Shared(self, unit)
 		
 		--Incoming Heals
 		if C["raidframes"].healcomm == true then
-			local mhpb = CreateFrame('StatusBar', nil, health)
+			local mhpb = CreateFrame('StatusBar', nil, self)
+			mhpb:SetFrameLevel(self:GetFrameLevel() - 2)
 			mhpb:SetPoint('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
 			mhpb:SetPoint('TOPLEFT', health:GetStatusBarTexture(), 'TOPRIGHT')	
 			mhpb:SetWidth(POWERBAR_WIDTH)
 			mhpb:SetStatusBarTexture(C["media"].blank)
 			mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
 			
-			local ohpb = CreateFrame('StatusBar', nil, health)
+			local ohpb = CreateFrame('StatusBar', nil, self)
+			ohpb:SetFrameLevel(self:GetFrameLevel() - 2)
 			ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
 			ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)		
 			ohpb:SetWidth(mhpb:GetWidth())
@@ -884,12 +886,12 @@ local function Shared(self, unit)
 				self.Portrait = portrait
 				
 				local overlay = CreateFrame("Frame", nil, self)
-				overlay:SetFrameLevel(self:GetFrameLevel() - 2)
+				overlay:SetFrameLevel(self:GetFrameLevel() - 5)
 				
 				health.bg:ClearAllPoints()
 				health.bg:Point('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
 				health.bg:Point('TOPRIGHT', health)
-				health.bg:SetDrawLayer("OVERLAY", 7)
+				health.bg:SetDrawLayer("OVERLAY")
 				health.bg:SetParent(overlay)
 			else
 				--Reposition Health
@@ -1121,14 +1123,16 @@ local function Shared(self, unit)
 		
 		--Incoming Heals
 		if C["raidframes"].healcomm == true then
-			local mhpb = CreateFrame('StatusBar', nil, health)
+			local mhpb = CreateFrame('StatusBar', nil, self)
+			mhpb:SetFrameLevel(self:GetFrameLevel() - 2)
 			mhpb:SetPoint('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
 			mhpb:SetPoint('TOPLEFT', health:GetStatusBarTexture(), 'TOPRIGHT')	
 			mhpb:SetWidth(POWERBAR_WIDTH)
 			mhpb:SetStatusBarTexture(C["media"].blank)
 			mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
 			
-			local ohpb = CreateFrame('StatusBar', nil, health)
+			local ohpb = CreateFrame('StatusBar', nil, self)
+			ohpb:SetFrameLevel(self:GetFrameLevel() - 2)
 			ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
 			ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)		
 			ohpb:SetWidth(mhpb:GetWidth())
@@ -1144,7 +1148,7 @@ local function Shared(self, unit)
 					if self.otherBar:GetValue() == 0 then self.otherBar:SetAlpha(0) else self.otherBar:SetAlpha(1) end
 				end
 			}
-		end				
+		end					
 	end
 	
 	------------------------------------------------------------------------
