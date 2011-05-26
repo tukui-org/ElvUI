@@ -8,18 +8,22 @@ tinymap:EnableMouse(true)
 tinymap:SetMovable(true)
 tinymap:RegisterEvent("ADDON_LOADED")
 tinymap:SetPoint("CENTER", UIParent, 0, 0)
-tinymap:SetFrameLevel(20)
+tinymap:SetFrameLevel(7)
 tinymap:Hide()
 
 -- create minimap background
 local tinymapbg = CreateFrame("Frame", nil, tinymap)
 tinymapbg:SetAllPoints()
-tinymapbg:SetFrameLevel(tinymap:GetFrameLevel() - 10)
+tinymapbg:SetFrameLevel(0)
 tinymapbg:SetTemplate("Default")
+
+
 
 tinymap:SetScript("OnEvent", function(self, event, addon)
 	if addon ~= "Blizzard_BattlefieldMinimap" then return end
 
+
+	
 	BattlefieldMinimap:SetScript("OnShow", function(self)
 		-- show holder
 		tinymap:Show()
@@ -32,12 +36,14 @@ tinymap:SetScript("OnEvent", function(self, event, addon)
 		self:SetParent(tinymap)
 		self:SetPoint("TOPLEFT", tinymap, "TOPLEFT", 2, -2)
 		self:SetFrameStrata(tinymap:GetFrameStrata())
-		self:SetFrameLevel(tinymap:GetFrameLevel() + 1)
 		BattlefieldMinimapCloseButton:ClearAllPoints()
 		BattlefieldMinimapCloseButton:SetPoint("TOPRIGHT", -4, 0)
-		BattlefieldMinimapCloseButton:SetFrameLevel(tinymap:GetFrameLevel() + 1)
+		BattlefieldMinimap:SetFrameLevel(6)
+		BattlefieldMinimapCloseButton:SetFrameLevel(8)				
 		tinymap:SetScale(1)
 		tinymap:SetAlpha(1)
+		
+		BattlefieldMinimap_Update() --BugFix map not update on initial show
 	end)
 
 	BattlefieldMinimap:SetScript("OnHide", function(self)
