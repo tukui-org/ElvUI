@@ -24,7 +24,7 @@ local NORMTEX = C["media"].normTex
 local POWERTHEME = C["unitframes"].mini_powerbar
 local USE_POWERBAR_OFFSET = C["unitframes"].powerbar_offset ~= 0
 local POWERBAR_OFFSET = C["unitframes"].powerbar_offset
-local MINI_CLASSBAR = C["unitframes"].mini_classbar
+local MINI_CLASSBAR = C["unitframes"].mini_classbar and (E.myclass == "PALADIN" or E.myclass == "SHAMAN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK")
 
 --[[
 	Constuctor Functions (inside uf_functions.lua)
@@ -184,7 +184,7 @@ local function Shared(self, unit)
 				portrait:SetFrameStrata("LOW")
 				portrait.backdrop = CreateFrame("Frame", nil, portrait)
 				portrait.backdrop:SetTemplate("Default")
-				if MINI_CLASSBAR and C["unitframes"].classbar == true and (E.myclass == "PALADIN" or E.myclass == "SHAMAN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK") then
+				if MINI_CLASSBAR and C["unitframes"].classbar == true then
 					portrait.backdrop:Point("TOPLEFT", self, "TOPLEFT", 0, -((CLASSBAR_HEIGHT/2)))
 				else
 					portrait.backdrop:SetPoint("TOPLEFT", self, "TOPLEFT")
