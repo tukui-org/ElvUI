@@ -3181,6 +3181,15 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 				
 				navButtonFrameLevel(self)
 			end)
+			
+			SkinButton(HelpFrameGM_ResponseNeedMoreHelp)
+			SkinButton(HelpFrameGM_ResponseCancel)
+			for i=1, HelpFrameGM_Response:GetNumChildren() do
+				local child = select(i, HelpFrameGM_Response:GetChildren())
+				if child and child:GetObjectType() == "Frame" and not child:GetName() then
+					child:SetTemplate("Default")
+				end
+			end
 		end
 	
 		--Trade Frame
@@ -3523,7 +3532,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		--WorldMap
 		if C["skin"].worldmap == true then	
 			WorldMapFrame:CreateBackdrop("Transparent")
-			WorldMapDetailFrame:SetFrameLevel(WorldMapDetailFrame:GetFrameLevel() + 1)
+			--WorldMapDetailFrame:SetFrameLevel(WorldMapDetailFrame:GetFrameLevel() + 1) --BUGFIX: I DON'T REMEMBER WHY I HAD THIS, BUT THIS BREAKS ARCH DIG SITES
 			WorldMapDetailFrame.backdrop = CreateFrame("Frame", nil, WorldMapFrame)
 			WorldMapDetailFrame.backdrop:SetTemplate("Default")
 			WorldMapDetailFrame.backdrop:Point("TOPLEFT", WorldMapDetailFrame, "TOPLEFT", -2, 2)
