@@ -3820,6 +3820,18 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 				SkinCheckBox(_G[object]:GetChildren())
 			end
 			
+			hooksecurefunc("LFDQueueFrameSpecificListButton_SetDungeon", function(button, dungeonID, mode, submode)
+				for _, object in pairs(checkButtons) do
+					local button = _G[object]
+					if not ( button.checkButton:GetChecked() ) then
+						button.checkButton:SetDisabledTexture(nil)	
+					else
+						button.checkButton:SetDisabledTexture("Interface\\Buttons\\UI-CheckBox-Check-Disabled")	
+					end
+				end
+			end)
+			
+			
 			for _, object in pairs(StripAllTextures) do
 				_G[object]:StripTextures()
 			end
