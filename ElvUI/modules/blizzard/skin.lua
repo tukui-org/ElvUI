@@ -1118,6 +1118,30 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		for i=1, 4 do
 			SkinTab(_G["GuildBankFrameTab"..i])
 		end
+		
+		--Popup
+		GuildBankPopupFrame:StripTextures()
+		GuildBankPopupScrollFrame:StripTextures()
+		GuildBankPopupFrame:SetTemplate("Transparent")
+		GuildBankPopupFrame:Point("TOPLEFT", GuildBankFrame, "TOPRIGHT", 1, -30)
+		SkinButton(GuildBankPopupOkayButton)
+		SkinButton(GuildBankPopupCancelButton)
+		SkinEditBox(GuildBankPopupEditBox)
+		GuildBankPopupNameLeft:Kill()
+		GuildBankPopupNameRight:Kill()
+		GuildBankPopupNameMiddle:Kill()
+		
+		for i=1, 16 do
+			local button = _G["GuildBankPopupButton"..i]
+			local icon = _G[button:GetName().."Icon"]
+			button:StripTextures()
+			button:SetTemplate("Default")
+			button:StyleButton(true)
+			icon:ClearAllPoints()
+			icon:Point("TOPLEFT", 2, -2)
+			icon:Point("BOTTOMRIGHT", -2, 2)
+			icon:SetTexCoord(.08, .92, .08, .92)
+		end
 	end
 	
 	--Archaeology
