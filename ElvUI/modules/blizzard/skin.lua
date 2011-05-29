@@ -2336,11 +2336,20 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			button:GetPushedTexture():SetAllPoints(button:GetHighlightTexture())			
 		end
 		
+		--[[for i=1, AuctionFrameBrowse:GetNumRegions() do 
+			local region = select(i, AuctionFrameBrowse:GetRegions());
+			if region:GetObjectType() == "FontString" then 
+				print(region:GetText(), region:GetName()) 
+			end 
+		end]]
+		
 		--Custom Backdrops
 		AuctionFrameBrowse.bg1 = CreateFrame("Frame", nil, AuctionFrameBrowse)
 		AuctionFrameBrowse.bg1:SetTemplate("Default")
 		AuctionFrameBrowse.bg1:Point("TOPLEFT", 20, -103)
 		AuctionFrameBrowse.bg1:Point("BOTTOMRIGHT", -575, 40)
+		BrowseNoResultsText:SetParent(AuctionFrameBrowse.bg1)
+		BrowseSearchCountText:SetParent(AuctionFrameBrowse.bg1)
 		BrowseFilterScrollFrame:Height(300) --Adjust scrollbar height a little off
 
 		AuctionFrameBrowse.bg2 = CreateFrame("Frame", nil, AuctionFrameBrowse)
