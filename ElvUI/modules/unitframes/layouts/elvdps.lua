@@ -1503,7 +1503,7 @@ local function LoadDPSLayout()
 		for i = 1, 5 do
 			arena[i] = oUF:Spawn("arena"..i, "ElvDPSArena"..i)
 			if i == 1 then
-				arena[i]:Point("BOTTOMLEFT", ChatRBackground2, "TOPLEFT", -80, 185)
+				arena[i]:Point("BOTTOMLEFT", ChatRBackground, "TOPLEFT", -80, 185)
 			else
 				arena[i]:Point("BOTTOM", arena[i-1], "TOP", 0, 25)
 			end
@@ -1516,7 +1516,7 @@ local function LoadDPSLayout()
 		for i = 1, MAX_BOSS_FRAMES do
 			boss[i] = oUF:Spawn("boss"..i, "ElvDPSBoss"..i)
 			if i == 1 then
-				boss[i]:Point("BOTTOMLEFT", ChatRBackground2, "TOPLEFT", -80, 185)
+				boss[i]:Point("BOTTOMLEFT", ChatRBackground, "TOPLEFT", -80, 185)
 			else
 				boss[i]:Point('BOTTOM', boss[i-1], 'TOP', 0, 25)             
 			end

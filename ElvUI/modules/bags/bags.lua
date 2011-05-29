@@ -476,9 +476,9 @@ function Stuffing:CreateBagFrame(w)
 	f:SetFrameLevel(20)
 
 	if w == "Bank" then
-		f:SetPoint("BOTTOMLEFT", ChatLBackground2, "BOTTOMLEFT")
+		f:SetPoint("BOTTOMLEFT", ChatLBackground, "BOTTOMLEFT")
 	else
-		f:SetPoint("BOTTOMRIGHT", ChatRBackground2, "BOTTOMRIGHT")
+		f:SetPoint("BOTTOMRIGHT", ChatRBackground, "BOTTOMRIGHT")
 	end
 	
 	-- close button
@@ -1620,3 +1620,65 @@ function Stuffing.Menu2(self, level)
 	info.tooltipTitle = CLOSE
 	UIDropDownMenu_AddButton(info, level)
 end
+--[[if not C["others"].enablebag == true then return end
+
+local function SkinBagButtons(id, slots)
+	for i=1, slots do
+		local button = _G["ContainerFrame"..id.."Item"..i]
+		if not button.skinned then
+			button:StripTextures()
+			button:SetTemplate("Default")
+			button:StyleButton()
+			
+			local icon = _G[button:GetName().."IconTexture"]
+			icon:ClearAllPoints()
+			icon:Point("TOPLEFT", 2, -2)
+			icon:Point("BOTTOMRIGHT", -2, 2)
+			icon:SetTexCoord(.08, .92, .08, .92)
+			
+			button.skinned = true
+		end
+		
+		local quest = _G["ContainerFrame"..id.."Item"..i.."IconQuestTexture"]
+		print(quest:IsVisible())
+		if quest:IsShown() then
+			quest:Hide()
+			button:SetBackdropBorderColor(1, 0, 0)
+		end
+	end
+end
+
+local function SkinBags()
+	for i=1, NUM_BAG_FRAMES + 1 do
+		local container = _G["ContainerFrame"..i]
+		if container and not container.backdrop then
+			container:StripTextures(true)
+			container:CreateBackdrop("Transparent")
+			container.backdrop:Point("TOPLEFT", 2, -2)
+			container.backdrop:Point("BOTTOMRIGHT", -2, 2)
+		end
+		
+		if i == 1 then
+			SkinBagButtons(i, 16)
+		else
+			SkinBagButtons(i, GetContainerNumSlots(i-1))
+		end
+	end
+	
+	BackpackTokenFrame:StripTextures(true)
+end
+
+local function OnEvent(self, event, ...)
+	if event == "PLAYER_LOGIN" then
+		SkinBags()
+		self:RegisterEvent("BAG_UPDATE")
+		self:RegisterEvent("ITEM_LOCK_CHANGED")
+		self:RegisterEvent("BAG_CLOSED")
+	else
+		SkinBags()
+	end
+end
+
+local bags = CreateFrame("Frame")
+bags:RegisterEvent("PLAYER_LOGIN")
+bags:SetScript("OnEvent", OnEvent)]]

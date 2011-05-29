@@ -4,7 +4,7 @@ assert(oUF, "ElvUI was unable to locate oUF.")
 
 if not C["raidframes"].enable == true then return end
 
-local RAID_WIDTH = ((ChatLBackground2:GetWidth() / 5) - 2.5)*C["raidframes"].scale
+local RAID_WIDTH = ((ChatLBackground:GetWidth() / 5) - 2.5)*C["raidframes"].scale
 local RAID_HEIGHT = E.Scale(32)*C["raidframes"].scale
 
 local BORDER = 2
@@ -154,7 +154,7 @@ oUF:Factory(function(self)
 		"columnSpacing", 3,
 		"columnAnchorPoint", "TOP"		
 	)		
-	raid:Point("BOTTOMLEFT", ChatLBackground2, "TOPLEFT", 1, 35)
+	raid:Point("BOTTOMLEFT", ChatLBackground, "TOPLEFT", 1, 35)
 
 	local raidToggle = CreateFrame("Frame")
 	raidToggle:RegisterEvent("PLAYER_ENTERING_WORLD")

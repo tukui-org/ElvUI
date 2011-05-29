@@ -174,31 +174,19 @@ if C["actionbar"].enable == true then
 	vbarbg:SetFrameLevel(barbg:GetFrameLevel())
 end
 
--- CHAT BACKGROUND LEFT (MOVES)
+-- CHAT BACKGROUND LEFT
 local chatlbgdummy = CreateFrame("Frame", "ChatLBackground", UIParent)
 chatlbgdummy:SetWidth(C["chat"].chatwidth)
 chatlbgdummy:SetHeight(C["chat"].chatheight+6)
 chatlbgdummy:SetPoint("BOTTOMLEFT", ElvuiBottomPanel, "TOPLEFT", E.Scale(4),  E.Scale(7))
 
--- CHAT BACKGROUND LEFT (DOESN'T MOVE THIS IS WHAT WE ATTACH FRAMES TO)
-local chatlbgdummy2 = CreateFrame("Frame", "ChatLBackground2", UIParent)
-chatlbgdummy2:SetWidth(C["chat"].chatwidth)
-chatlbgdummy2:SetHeight(C["chat"].chatheight+6)
-chatlbgdummy2:SetPoint("BOTTOMLEFT", ElvuiBottomPanel, "TOPLEFT", E.Scale(4),  E.Scale(7))
-
--- CHAT BACKGROUND RIGHT (MOVES)
+-- CHAT BACKGROUND RIGHT
 local chatrbgdummy = CreateFrame("Frame", "ChatRBackground", UIParent)
 chatrbgdummy:SetWidth(C["chat"].chatwidth)
 chatrbgdummy:SetHeight(C["chat"].chatheight+6)
 chatrbgdummy:SetPoint("BOTTOMRIGHT", ElvuiBottomPanel, "TOPRIGHT", E.Scale(-4),  E.Scale(7))
-
--- CHAT BACKGROUND RIGHT (DOESN'T MOVE THIS IS WHAT WE ATTACH FRAMES TO)
-local chatrbgdummy2 = CreateFrame("Frame", "ChatRBackground2", UIParent)
-chatrbgdummy2:SetWidth(C["chat"].chatwidth)
-chatrbgdummy2:SetHeight(C["chat"].chatheight+6)
-chatrbgdummy2:SetPoint("BOTTOMRIGHT", ElvuiBottomPanel, "TOPRIGHT", E.Scale(-4),  E.Scale(7))
-
 E.ChatRightShown = true
+
 if C["chat"].showbackdrop == true then
 	local chatlbg = CreateFrame("Frame", "ChatLBG", ChatLBackground)
 	chatlbg:SetTemplate("Transparent")
@@ -238,20 +226,20 @@ local infoleft = CreateFrame("Frame", "ElvuiInfoLeft", UIParent)
 infoleft:SetFrameLevel(2)
 infoleft:SetTemplate("Default", true)
 infoleft:CreateShadow("Default")
-infoleft:SetPoint("TOPLEFT", chatlbgdummy2, "BOTTOMLEFT", E.Scale(17), E.Scale(-4))
-infoleft:SetPoint("BOTTOMRIGHT", chatlbgdummy2, "BOTTOMRIGHT", E.Scale(-17), E.Scale(-26))
+infoleft:SetPoint("TOPLEFT", chatlbgdummy, "BOTTOMLEFT", E.Scale(17), E.Scale(-4))
+infoleft:SetPoint("BOTTOMRIGHT", chatlbgdummy, "BOTTOMRIGHT", E.Scale(-17), E.Scale(-26))
 
 	--INFOLEFT L BUTTON
 	local infoleftLbutton = CreateFrame("Button", "ElvuiInfoLeftLButton", ElvuiInfoLeft)
 	infoleftLbutton:SetTemplate("Default", true)
 	infoleftLbutton:SetPoint("TOPRIGHT", infoleft, "TOPLEFT", E.Scale(-2), 0)
-	infoleftLbutton:SetPoint("BOTTOMLEFT", chatlbgdummy2, "BOTTOMLEFT", 0, E.Scale(-26))
+	infoleftLbutton:SetPoint("BOTTOMLEFT", chatlbgdummy, "BOTTOMLEFT", 0, E.Scale(-26))
 
 	--INFOLEFT R BUTTON
 	local infoleftRbutton = CreateFrame("Button", "ElvuiInfoLeftRButton", ElvuiInfoLeft)
 	infoleftRbutton:SetTemplate("Default", true)
 	infoleftRbutton:SetPoint("TOPLEFT", infoleft, "TOPRIGHT", E.Scale(2), 0)
-	infoleftRbutton:SetPoint("BOTTOMRIGHT", chatlbgdummy2, "BOTTOMRIGHT", 0, E.Scale(-26))
+	infoleftRbutton:SetPoint("BOTTOMRIGHT", chatlbgdummy, "BOTTOMRIGHT", 0, E.Scale(-26))
 	
 	infoleft.shadow:ClearAllPoints()
 	infoleft.shadow:SetPoint("TOPLEFT", infoleftLbutton, "TOPLEFT", E.Scale(-4), E.Scale(4))
@@ -270,20 +258,20 @@ local inforight = CreateFrame("Frame", "ElvuiInfoRight", UIParent)
 inforight:SetTemplate("Default", true)
 inforight:SetFrameLevel(2)
 inforight:CreateShadow("Default")
-inforight:SetPoint("TOPLEFT", chatrbgdummy2, "BOTTOMLEFT", E.Scale(17), E.Scale(-4))
-inforight:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", E.Scale(-17), E.Scale(-26))
+inforight:SetPoint("TOPLEFT", chatrbgdummy, "BOTTOMLEFT", E.Scale(17), E.Scale(-4))
+inforight:SetPoint("BOTTOMRIGHT", chatrbgdummy, "BOTTOMRIGHT", E.Scale(-17), E.Scale(-26))
 
 	--INFORIGHT L BUTTON
 	local inforightLbutton = CreateFrame("Button", "ElvuiInfoRightLButton", ElvuiInfoRight)
 	inforightLbutton:SetTemplate("Default", true)
 	inforightLbutton:SetPoint("TOPRIGHT", inforight, "TOPLEFT", E.Scale(-2), 0)
-	inforightLbutton:SetPoint("BOTTOMLEFT", chatrbgdummy2, "BOTTOMLEFT", 0, E.Scale(-26))
+	inforightLbutton:SetPoint("BOTTOMLEFT", chatrbgdummy, "BOTTOMLEFT", 0, E.Scale(-26))
 
 	--INFORIGHT R BUTTON
 	local inforightRbutton = CreateFrame("Button", "ElvuiInfoRightRButton", ElvuiInfoRight)
 	inforightRbutton:SetTemplate("Default", true)
 	inforightRbutton:SetPoint("TOPLEFT", inforight, "TOPRIGHT", E.Scale(2), 0)
-	inforightRbutton:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", 0, E.Scale(-26))
+	inforightRbutton:SetPoint("BOTTOMRIGHT", chatrbgdummy, "BOTTOMRIGHT", 0, E.Scale(-26))
 	
 	inforight.shadow:ClearAllPoints()
 	inforight.shadow:SetPoint("TOPLEFT", inforightLbutton, "TOPLEFT", E.Scale(-4), E.Scale(4))
