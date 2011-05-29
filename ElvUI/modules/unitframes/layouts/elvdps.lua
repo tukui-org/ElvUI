@@ -410,6 +410,12 @@ local function Shared(self, unit)
 			experience:Point("TOPRIGHT", self, "BOTTOMRIGHT", -BORDER, -(BORDER*2+BORDER))
 			experience:SetFrameStrata("LOW")
 			
+			if C["unitframes"].combat == true then
+				experience:HookScript("OnEnter", function(self) E.Fader(self:GetParent(), true) end)
+				experience:HookScript("OnLeave", function(self) E.Fader(self:GetParent(), false) end)
+			end
+
+			
 			experience.Rested = CreateFrame('StatusBar', nil, experience)
 			experience.Rested:SetStatusBarTexture(NORMTEX)
 			experience.Rested:SetStatusBarColor(1, 0, 1, 0.2)
@@ -443,7 +449,10 @@ local function Shared(self, unit)
 			reputation:SetFrameStrata("LOW")
 
 			reputation.Tooltip = true
-
+			if C["unitframes"].combat == true then
+				reputation:HookScript("OnEnter", function(self) E.Fader(self:GetParent(), true) end)
+				reputation:HookScript("OnLeave", function(self) E.Fader(self:GetParent(), false) end)
+			end
 
 			reputation.backdrop = CreateFrame("Frame", nil, reputation)
 			reputation.backdrop:SetTemplate("Default")
