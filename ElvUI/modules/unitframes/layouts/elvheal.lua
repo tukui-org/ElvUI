@@ -157,6 +157,24 @@ local function Shared(self, unit)
 		end
 		power.value:Point("LEFT", health, "LEFT", 4, 0)
 		self.Power = power
+
+		--Druid Power Bar
+		local dpower = CreateFrame('Frame', nil, self)
+		dpower:SetFrameStrata("LOW")
+		dpower:Point("TOPLEFT", power, "BOTTOMLEFT", -BORDER, -(BORDER+SPACING))
+		dpower:Point("BOTTOMRIGHT", power, "BOTTOMRIGHT", BORDER, -((BORDER+SPACING)+POWERBAR_HEIGHT))
+		dpower:SetTemplate("Default")
+		dpower:SetFrameLevel(dpower:GetFrameLevel() + 1)
+		dpower.ManaBar = CreateFrame('StatusBar', nil, dpower)
+		dpower.ManaBar:SetStatusBarTexture(C["media"].normTex)
+		dpower.ManaBar:Point("TOPLEFT", dpower, "TOPLEFT", BORDER, -BORDER)		
+		dpower.ManaBar:Point("BOTTOMRIGHT", dpower, "BOTTOMRIGHT", -BORDER, BORDER)	
+		dpower.bg = dpower:CreateTexture(nil, "BORDER")
+		dpower.bg:SetAllPoints(dpower.ManaBar)
+		dpower.bg:SetTexture(C["media"].blank)
+		dpower.bg.multiplier = 0.3
+		dpower.colorPower = true
+		self.DruidAltMana = dpower
 		
 		--Portrait
 		if C["unitframes"].charportrait == true then
