@@ -3807,7 +3807,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 				"LFDQueueFramePartyBackfillBackfillButton",
 				"LFDQueueFramePartyBackfillNoBackfillButton",
 			}
-			
+
 			local checkButtons = {
 				"LFDQueueFrameRoleButtonTank",
 				"LFDQueueFrameRoleButtonHealer",
@@ -3816,9 +3816,53 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			}
 			
 			for _, object in pairs(checkButtons) do
-				_G[object]:GetChildren():SetFrameLevel(_G[object]:GetChildren():GetFrameLevel() + 2)
-				SkinCheckBox(_G[object]:GetChildren())
+				_G[object].checkButton:SetFrameLevel(_G[object].checkButton:GetFrameLevel() + 2)
+				SkinCheckBox(_G[object].checkButton)
 			end
+			
+			hooksecurefunc("LFDQueueFrameRandom_UpdateFrame", function()
+				local dungeonID = LFDQueueFrame.type
+				local _, _, _, _, _, numRewards = GetLFGDungeonRewards(dungeonID)
+				
+				for i=1, LFD_MAX_REWARDS do
+					local button = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i]
+					local icon = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i.."IconTexture"]
+					local count = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i.."Count"]
+					local role1 = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i.."RoleIcon1"]
+					local role2 = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i.."RoleIcon2"]
+					local role3 = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i.."RoleIcon3"]
+					
+					if button then
+						local __texture = _G[button:GetName().."IconTexture"]:GetTexture()
+						button:StripTextures()
+						icon:SetTexture(__texture)
+						icon:SetTexCoord(.08, .92, .08, .92)
+						icon:Point("TOPLEFT", 2, -2)
+						icon:SetDrawLayer("OVERLAY")
+						count:SetDrawLayer("OVERLAY")
+						if not button.backdrop then
+							button:CreateBackdrop("Default")
+							button.backdrop:Point("TOPLEFT", icon, "TOPLEFT", -2, 2)
+							button.backdrop:Point("BOTTOMRIGHT", icon, "BOTTOMRIGHT", 2, -2)
+							icon:SetParent(button.backdrop)
+							icon.SetPoint = E.dummy
+							
+							if count then
+								count:SetParent(button.backdrop)
+							end
+							if role1 then
+								role1:SetParent(button.backdrop)
+							end
+							if role2 then
+								role2:SetParent(button.backdrop)
+							end
+							if role3 then
+								role3:SetParent(button.backdrop)
+							end							
+						end
+					end
+				end				
+			end)
 			
 			hooksecurefunc("LFDQueueFrameSpecificListButton_SetDungeon", function(button, dungeonID, mode, submode)
 				for _, object in pairs(checkButtons) do
@@ -3850,44 +3894,6 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			end
 			
 			LFDQueueFrameCapBar:SetPoint("LEFT", 40, 0)
-			LFDQueueFrameRandom:HookScript("OnShow", function()
-				for i=1, LFD_MAX_REWARDS do
-					local button = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i]
-					local icon = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i.."IconTexture"]
-					local count = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i.."Count"]
-					local role1 = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i.."RoleIcon1"]
-					local role2 = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i.."RoleIcon2"]
-					local role3 = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i.."RoleIcon3"]
-					
-					if button then
-						button:StripTextures()
-						icon:SetTexCoord(.08, .92, .08, .92)
-						icon:Point("TOPLEFT", 2, -2)
-						icon:SetDrawLayer("OVERLAY")
-						count:SetDrawLayer("OVERLAY")
-						if not button.backdrop then
-							button:CreateBackdrop("Default")
-							button.backdrop:Point("TOPLEFT", icon, "TOPLEFT", -2, 2)
-							button.backdrop:Point("BOTTOMRIGHT", icon, "BOTTOMRIGHT", 2, -2)
-							icon:SetParent(button.backdrop)
-							icon.SetPoint = E.dummy
-							
-							if count then
-								count:SetParent(button.backdrop)
-							end
-							if role1 then
-								role1:SetParent(button.backdrop)
-							end
-							if role2 then
-								role2:SetParent(button.backdrop)
-							end
-							if role3 then
-								role3:SetParent(button.backdrop)
-							end							
-						end
-					end
-				end
-			end)
 			
 			LFDQueueFrameSpecificListScrollFrame:StripTextures()
 			LFDQueueFrameSpecificListScrollFrame:Height(LFDQueueFrameSpecificListScrollFrame:GetHeight() - 8)
