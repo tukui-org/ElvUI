@@ -96,7 +96,7 @@ end
 local function SkinNextPrevButton(btn, horizonal)
 	btn:SetTemplate("Default")
 	btn:Size(btn:GetWidth() - 7, btn:GetHeight() - 7)	
-	
+
 	if horizonal then
 		btn:GetNormalTexture():SetTexCoord(0.3, 0.29, 0.3, 0.72, 0.65, 0.29, 0.65, 0.72)
 		btn:GetPushedTexture():SetTexCoord(0.3, 0.35, 0.3, 0.8, 0.65, 0.35, 0.65, 0.8)
@@ -1128,6 +1128,7 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 		ArchaeologyFrame:CreateShadow("Default")
 		
 		SkinButton(ArchaeologyFrameArtifactPageSolveFrameSolveButton, true)
+		SkinButton(ArchaeologyFrameArtifactPageBackButton, true)
 		SkinDropDownBox(ArchaeologyFrameRaceFilter, 125)
 		
 		ArchaeologyFrameRankBar:StripTextures()
@@ -1652,16 +1653,9 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			_G[object]:StripTextures()
 		end
 
-		local function raidskinupdate()
-			nummembers = GetNumRaidMembers();
-
-			for i=1,nummembers do
-				SkinButton(_G["RaidGroupButton"..i])
-			end
+		for i=1, MAX_RAID_GROUPS*5 do
+			SkinButton(_G["RaidGroupButton"..i], true)
 		end
-		raidskinupdate()
-		RaidFrame:HookScript("OnShow", raidskinupdate)
-		hooksecurefunc("RaidGroupFrame_OnEvent", raidskinupdate)
 
 		for i=1,8 do
 			for j=1,5 do
