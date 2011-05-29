@@ -422,7 +422,7 @@ ElvuiTooltip:SetScript("OnEvent", function(self, event, addon)
 	DropDownList2MenuBackdrop:SetTemplate("Default", true)
 	DropDownList1Backdrop:SetTemplate("Default", true)
 	DropDownList2Backdrop:SetTemplate("Default", true)
-	
+
 	BNToastFrame:HookScript("OnShow", function(self)
 		self:ClearAllPoints()
 		self:SetPoint("TOPLEFT", UIParent, "TOPLEFT", E.Scale(5), E.Scale(-5))
