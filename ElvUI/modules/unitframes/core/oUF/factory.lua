@@ -16,20 +16,12 @@ function _FACTORY:PLAYER_LOGIN()
 	for _, func in next, _QUEUE do
 		func(oUF)
 	end
-
-	-- Avoid creating dupes.
-	wipe(_QUEUE)
 end
 
 function oUF:Factory(func)
 	argcheck(func, 2, 'function')
 
-	-- Call the function directly if we're active and logged in.
-	if(IsLoggedIn() and _FACTORY.active) then
-		return func(self)
-	else
-		table.insert(_QUEUE, func)
-	end
+	table.insert(_QUEUE, func)
 end
 
 function oUF:EnableFactory()
@@ -38,8 +30,4 @@ end
 
 function oUF:DisableFactory()
 	_FACTORY.active = nil
-end
-
-function oUF:RunFactoryQueue()
-	_FACTORY:PLAYER_LOGIN()
 end

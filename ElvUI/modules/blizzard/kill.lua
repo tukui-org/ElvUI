@@ -42,6 +42,7 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 		
 		GuildChallengeAlertFrame:Kill()
 		PlayerTalentFrameLearnButtonTutorialArrow:Kill()
+		HelpOpenTicketButtonTutorial:Kill()
 		StreamingIcon:Kill()
 		Advanced_UseUIScale:Kill()
 		Advanced_UIScaleSlider:Kill()
