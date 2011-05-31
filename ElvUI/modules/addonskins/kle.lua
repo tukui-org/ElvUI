@@ -130,11 +130,11 @@ if not KLEDB then KLEDB = {} end
 if not KLEDB["profiles"] then KLEDB["profiles"] = {} end
 if not KLEDB["profiles"][E.myname.." - "..GetRealmName()] then KLEDB["profiles"][E.myname.." - "..E.myrealm] = {} end
 if not KLEDB["profiles"][E.myname.." - "..GetRealmName()]["Globals"] then KLEDB["profiles"][E.myname.." - "..E.myrealm]["Globals"] = {} end
-KLEDB["profiles"][E.myname.." - "..E.myrealm]["Globals"]["BackgroundTexture"] = "Elvui Blank"
-KLEDB["profiles"][E.myname.." - "..E.myrealm]["Globals"]["BarTexture"] = "Elvui Norm"
+KLEDB["profiles"][E.myname.." - "..E.myrealm]["Globals"]["BackgroundTexture"] = "ElvUI Blank"
+KLEDB["profiles"][E.myname.." - "..E.myrealm]["Globals"]["BarTexture"] = "ElvUI Norm"
 KLEDB["profiles"][E.myname.." - "..E.myrealm]["Globals"]["Border"] = "None"
-KLEDB["profiles"][E.myname.." - "..E.myrealm]["Globals"]["Font"] = "Elvui Font"
-KLEDB["profiles"][E.myname.." - "..E.myrealm]["Globals"]["TimerFont"] = "Elvui Font"
+KLEDB["profiles"][E.myname.." - "..E.myrealm]["Globals"]["Font"] = "ElvUI Font"
+KLEDB["profiles"][E.myname.." - "..E.myrealm]["Globals"]["TimerFont"] = "ElvUI Font"
 
 local function PositionKLEAnchor()
 	if not KLEAlertsTopStackAnchor then return end

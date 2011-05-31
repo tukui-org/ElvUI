@@ -240,8 +240,8 @@ local ForceOptions = function()
 	DBT_SavedOptions["DBM"].HugeScale = 1
 	DBT_SavedOptions["DBM"].BarXOffset = 0
 	DBT_SavedOptions["DBM"].BarYOffset = 9
-	DBT_SavedOptions["DBM"].Texture = "Elvui Norm"
-	DBT_SavedOptions["DBM"].Font = "Elvui Font"
+	DBT_SavedOptions["DBM"].Texture = "ElvUI Norm"
+	DBT_SavedOptions["DBM"].Font = "ElvUI Font"
 end
 
 local loadOptions = CreateFrame("Frame")
