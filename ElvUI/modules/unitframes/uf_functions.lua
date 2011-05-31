@@ -104,7 +104,7 @@ E.LoadUFFunctions = function(layout)
 	
 		return power
 	end	
-		
+
 	function E.ConstructCastBar(self, width, height, direction)
 		local castbar = CreateFrame("StatusBar", nil, self)
 		castbar:SetStatusBarTexture(C["media"].normTex)
@@ -113,7 +113,9 @@ E.LoadUFFunctions = function(layout)
 		castbar.CustomDelayText = E.CustomCastDelayText
 		castbar.PostCastStart = E.PostCastStart
 		castbar.PostChannelStart = E.PostCastStart		
-				
+		castbar.PostCastInterruptible = E.PostCastInterruptible
+		castbar.PostCastNotInterruptible = E.PostCastNotInterruptible
+		
 		castbar.bg = CreateFrame("Frame", nil, castbar)
 		castbar.bg:SetTemplate("Default")
 		castbar.bg:SetBackdropBorderColor(unpack(C["media"].bordercolor))
@@ -749,15 +751,25 @@ E.LoadUFFunctions = function(layout)
 			end
 		end
 	end
+
+	function E.PostCastInterruptible(self, unit)
+		if unit == "vehicle" then unit = "player" end
+		if unit ~= "player" then
+			if UnitCanAttack("player", unit) then
+				self:SetStatusBarColor(unpack(C["unitframes"].nointerruptcolor))
+			else
+				self:SetStatusBarColor(unpack(C["unitframes"].castbarcolor))	
+			end		
+		end
+	end
+	
+	function E.PostCastNotInterruptible(self, unit)
+		self:SetStatusBarColor(unpack(C["unitframes"].castbarcolor))
+	end
 	
 	E.PostCastStart = function(self, unit, name, rank, castid)
 		if unit == "vehicle" then unit = "player" end
-		--Fix blank castbar with opening text
-		if name == "Opening" then
-			self.Text:SetText(OPENING)
-		else
-			self.Text:SetText(string.sub(name, 0, math.floor((((32/245) * self:GetWidth()) / C["unitframes"].fontsize) * 12)))
-		end
+		self.Text:SetText(string.sub(name, 0, math.floor((((32/245) * self:GetWidth()) / C["unitframes"].fontsize) * 12)))
 		
 		if C["unitframes"].cbticks == true and unit == "player" then
 			if E.ChannelTicks[name] then
