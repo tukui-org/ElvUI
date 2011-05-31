@@ -63,6 +63,7 @@ local function BuildGuildTable()
 	for i = 1, GetNumGuildMembers() do
 		name, rank, rankIndex, level, _, zone, note, officernote, connected, status, class = GetGuildRosterInfo(i)
 		-- we are only interested in online members
+		
 		if connected then 
 			count = count + 1
 			guildTable[count] = { name, rank, level, zone, note, officernote, connected, status, class, rankIndex }
@@ -144,7 +145,7 @@ end
 
 Stat:SetScript("OnMouseUp", function(self, btn)
 	if btn ~= "RightButton" or not IsInGuild() then return end
-	if InCombatLockdown() or not IsInGuild() then return end
+	if InCombatLockdown() then return end
 	
 	GameTooltip:Hide()
 
@@ -184,7 +185,9 @@ Stat:SetScript("OnEnter", function(self)
 	if InCombatLockdown() or not IsInGuild() then return end
 	
 	local total, online = GetNumGuildMembers()
+	GuildRoster()
 	BuildGuildTable()
+	
 	
 	local guildName, guildRank = GetGuildInfo('player')
 	local guildLevel = GetGuildLevel()
@@ -219,33 +222,29 @@ Stat:SetScript("OnEnter", function(self)
 		GameTooltip:AddLine(format(standingString, COMBAT_FACTION_CHANGE, E.ShortValue(barValue), E.ShortValue(barMax), ceil((barValue / barMax) * 100)))
 	end
 	
-	if online > 1 then
-		local zonec, classc, levelc, info
-		local shown = 0
-		
-		GameTooltip:AddLine(' ')
-		for i = 1, #guildTable do
-			-- if more then 30 guild members are online, we don't Show any more, but inform user there are more
-			if 30 - shown <= 1 then
-				if online - 30 > 1 then GameTooltip:AddLine(format(moreMembersOnlineString, online - 30), ttsubh.r, ttsubh.g, ttsubh.b) end
-				break
-			end
-
-			info = guildTable[i]
-			if info[7] and info[1] ~= E.myname then
-				if GetRealZoneText() == info[4] then zonec = activezone else zonec = inactivezone end
-				classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
-				
-				if IsShiftKeyDown() then
-					GameTooltip:AddDoubleLine(format(nameRankString, info[1], info[2]), info[4], classc.r, classc.g, classc.b, zonec.r, zonec.g, zonec.b)
-					if info[5] ~= "" then GameTooltip:AddLine(format(noteString, info[5]), ttsubh.r, ttsubh.g, ttsubh.b, 1) end
-					if info[6] ~= "" then GameTooltip:AddLine(format(officerNoteString, info[6]), ttoff.r, ttoff.g, ttoff.b, 1) end
-				else
-					GameTooltip:AddDoubleLine(format(levelNameStatusString, levelc.r*255, levelc.g*255, levelc.b*255, info[3], info[1], info[8]), info[4], classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
-				end
-				shown = shown + 1
-			end
+	local zonec, classc, levelc, info
+	local shown = 0
+	
+	GameTooltip:AddLine(' ')
+	for i = 1, #guildTable do
+		-- if more then 30 guild members are online, we don't Show any more, but inform user there are more
+		if 30 - shown <= 1 then
+			if online - 30 > 1 then GameTooltip:AddLine(format(moreMembersOnlineString, online - 30), ttsubh.r, ttsubh.g, ttsubh.b) end
+			break
 		end
+
+		info = guildTable[i]
+		if GetRealZoneText() == info[4] then zonec = activezone else zonec = inactivezone end
+		classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
+		
+		if IsShiftKeyDown() then
+			GameTooltip:AddDoubleLine(format(nameRankString, info[1], info[2]), info[4], classc.r, classc.g, classc.b, zonec.r, zonec.g, zonec.b)
+			if info[5] ~= "" then GameTooltip:AddLine(format(noteString, info[5]), ttsubh.r, ttsubh.g, ttsubh.b, 1) end
+			if info[6] ~= "" then GameTooltip:AddLine(format(officerNoteString, info[6]), ttoff.r, ttoff.g, ttoff.b, 1) end
+		else
+			GameTooltip:AddDoubleLine(format(levelNameStatusString, levelc.r*255, levelc.g*255, levelc.b*255, info[3], info[1], info[8]), info[4], classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
+		end
+		shown = shown + 1
 	end
 	GameTooltip:Show()
 end)
