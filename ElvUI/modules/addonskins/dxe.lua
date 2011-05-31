@@ -1,7 +1,7 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if not IsAddOnLoaded("DXE") or not C["skin"].dxe == true then return end
-print('s')
+
 local DXE = DXE
 local _G = getfenv(0)
 local barSpacing = E.Scale(1, 1)
