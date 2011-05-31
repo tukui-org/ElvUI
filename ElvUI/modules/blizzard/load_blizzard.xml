@@ -1,4 +1,5 @@
 ﻿<Ui xmlns="http://www.blizzard.com/wow/ui/">	
+	<Include file="skins\load_skins.xml"/>
 	<Script file='capturebar.lua'/>
 	<Script file='gm.lua'/>
 	<Script file='vehicle.lua'/>
@@ -6,7 +7,6 @@
 	<Script file='durability.lua'/>
 	<Script file='achievements.lua'/>
 	<Script file='bubbles.lua'/>
-	<Script file='skin.lua'/>
 	<Script file='kill.lua'/>
 	<Script file='fonts.lua'/>	
 	<Script file='worldstate.lua'/>

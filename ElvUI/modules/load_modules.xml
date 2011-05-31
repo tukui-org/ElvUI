@@ -1,4 +1,5 @@
 ﻿<Ui xmlns="http://www.blizzard.com/wow/ui/">	
+	<Include file="blizzard\load_blizzard.xml"/>
 	<Include file="actionbars\load_actionbars.xml"/>
 	<Include file="datatexts\load_datatexts.xml"/>
 	<Include file="buffs\load_buffs.xml"/>
@@ -11,6 +12,5 @@
 	<Include file="classtimer\load_classtimer.xml"/>
 	<Include file="misc\load_misc.xml"/>
 	<Include file="addonskins\load_addonskins.xml"/>
-	<Include file="blizzard\load_blizzard.xml"/>
 	<Include file="unitframes\load_unitframes.xml"/>
 </Ui>
