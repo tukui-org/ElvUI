@@ -2637,6 +2637,18 @@ function ElvuiConfig.GenerateOptionsInternal()
 								name = L["Hook KLE Bars"],
 								desc = L["Attach KLE's Bars to the right window"],
 							},	
+							dxe = {
+								order = 4,
+								type = "toggle",
+								name = "DXE",
+								desc = L["Enable this skin"],
+							},
+							hookdxeright = {
+								order = 5,
+								type = "toggle",
+								name = L["Hook DXE Bars"],
+								desc = L["Attach DXE's Bars to the right window"],
+							},								
 							dbm = {
 								order = 6,
 								type = "toggle",

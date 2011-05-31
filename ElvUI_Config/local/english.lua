@@ -469,7 +469,9 @@ L["Skins"] = true
 	L["Attach KLE's Bars to the right window"] = true
 	L["Hook BigWigs Bars"] = true
 	L["Attach BigWigs's Bars to the right window"] = true
-
+	L["Hook DXE Bars"] = true
+	L["Attach DXE's Bars to the right window"] = true
+	
 --Misc
 L["Misc"] = true
 	L["MISC_DESC"] = "Configure all other options"

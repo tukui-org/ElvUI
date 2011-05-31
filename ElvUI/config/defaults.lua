@@ -90,10 +90,13 @@ DB["skin"] = {
 	["skada"] = true,
 	["omen"] = true,
 	["kle"] = true,
+	["dxe"] = true,
 	["dbm"] = true,
 	["bigwigs"] = true,
+	["hookdxeright"] = false,			-- force DXE's top bar anchor to be hooked onto the right chat window
 	["hookkleright"] = false,			-- force KLE's top bar anchor to be hooked onto the right chat window
 	["hookbwright"] = false,			-- force BigWig's bar anchor to be hooked onto the right chat window
+	["hookdxeright"] = false,
 	["embedright"] = "NONE",				-- Addon to embed to the right frame ("Omen", "Recount", "Skada")
 }
 

@@ -1,5 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
 	<Script file='kle.lua' />
+	<Script file='dxe.lua' />
 	<Script file='dbm.lua' />
 	<Script file='bigwigs.lua' />
 	<Script file='omen.lua' />
