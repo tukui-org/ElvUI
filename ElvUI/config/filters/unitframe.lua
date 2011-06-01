@@ -71,7 +71,6 @@ E.ArenaBuffWhiteList = {
 -- Target/Arena Frames/ Nameplates use these
 E.DebuffWhiteList = {
 	-- Death Knight
-		[SpellName(51209)] = true, --hungering cold
 		[SpellName(47476)] = true, --strangulate
 	-- Druid
 		[SpellName(33786)] = true, --Cyclone
@@ -128,6 +127,11 @@ E.DebuffWhiteList = {
 		[SpellName(20549)] = true, --War Stomp
 	--PVE
 }
+
+if not E.IsPTRVersion() then
+	E.DebuffWhiteList[SpellName(51209)] = true --hungering cold
+end
+
 
 --List of debuffs for targetframe for pvp only (when inside a bg/arena
 --We do this because in PVE Situations we don't want to see these debuffs on our target frame, arena frames will always show these.
