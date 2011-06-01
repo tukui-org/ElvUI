@@ -201,12 +201,11 @@ local function LoadSkin()
 	ReadyCheckFrame:HookScript("OnShow", function(self) if UnitIsUnit("player", self.initiator) then self:Hide() end end) -- bug fix, don't show it if initiator
 	StackSplitFrame:GetRegions():Hide()
 
-	RolePollPopup:SetTemplate("Transparent")
-	RolePollPopup:CreateShadow("Default")
-	LFDDungeonReadyDialog:SetTemplate("Transparent")
-	LFDDungeonReadyDialog:CreateShadow("Default")
 	E.SkinButton(LFDDungeonReadyDialogEnterDungeonButton)
 	E.SkinButton(LFDDungeonReadyDialogLeaveQueueButton)
+
+	RolePollPopup:SetTemplate("Transparent")
+	RolePollPopup:CreateShadow("Default")
 
 	-- mac menu/option panel, made by affli.
 	if IsMacClient() then

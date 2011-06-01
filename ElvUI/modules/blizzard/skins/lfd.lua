@@ -11,7 +11,7 @@ local function LoadSkin()
 		"LFDQueueFrameCapBar",
 		"LFDDungeonReadyDialog",
 	}
-
+	
 	local KillTextures = {
 		"LFDQueueFrameBackground",
 		"LFDParentFrameInset",
@@ -115,7 +115,8 @@ local function LoadSkin()
 	end
 	
 	LFDQueueFrameCapBar:SetPoint("LEFT", 40, 0)
-	
+	LFDDungeonReadyDialog:SetTemplate("Transparent")
+	LFDDungeonReadyDialog:CreateShadow("Default")			
 	LFDQueueFrameSpecificListScrollFrame:StripTextures()
 	LFDQueueFrameSpecificListScrollFrame:Height(LFDQueueFrameSpecificListScrollFrame:GetHeight() - 8)
 	LFDParentFrame:CreateBackdrop("Transparent")
