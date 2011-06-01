@@ -19,15 +19,6 @@ E.Layouts = {} --Unitframe Layouts
 --Keybind Header
 BINDING_HEADER_ELVUI = GetAddOnMetadata("ElvUI", "Title") --Header name inside keybinds menu
 
-function E.IsPTRVersion()
-	local _, version = GetBuildInfo()
-	if tonumber(version) > 14007 then
-		return true
-	else
-		return false
-	end
-end
-
 --Check Player's Role
 local RoleUpdater = CreateFrame("Frame")
 local function CheckRole(self, event, unit)
