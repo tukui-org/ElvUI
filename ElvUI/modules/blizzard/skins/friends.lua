@@ -164,6 +164,32 @@ local function LoadSkin()
 		end
 	end
 	hooksecurefunc("ChannelList_Update", Channel)
+	
+	--View Friends BN Frame
+	FriendsFriendsFrame:CreateBackdrop("Transparent")
+
+	local StripAllTextures = {
+		"FriendsFriendsFrame",
+		"FriendsFriendsList",
+		"FriendsFriendsNoteFrame",
+	}
+
+	local buttons = {
+		"FriendsFriendsSendRequestButton",
+		"FriendsFriendsCloseButton",
+	}
+
+	for _, object in pairs(StripAllTextures) do
+		_G[object]:StripTextures()
+	end
+
+	for _, button in pairs(buttons) do
+		E.SkinButton(_G[button])
+	end
+
+	E.SkinEditBox(FriendsFriendsList)
+	E.SkinEditBox(FriendsFriendsNoteFrame)
+	E.SkinDropDownBox(FriendsFriendsFrameDropDown,150)
 end
 
 tinsert(E.SkinFuncs["ElvUI"], LoadSkin)
