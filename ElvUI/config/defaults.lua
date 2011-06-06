@@ -170,11 +170,11 @@ DB["unitframes"] = {
 	["cblatency"] = false, -- enable castbar latency
 	["cbicons"] = true, -- enable icons on castbar
 	["cbticks"] = true,
-	["castplayerwidth"] = 275,
+	["castplayerwidth"] = 276,
 	["castplayerheight"] = 20,
-	["casttargetwidth"] = 275,
+	["casttargetwidth"] = 276,
 	["casttargetheight"] = 20,
-	["castfocuswidth"] = 275,
+	["castfocuswidth"] = 276,
 	["castfocusheight"] = 20,
 	["castbarcolor"] = DB["media"].bordercolor, -- Color of player castbar
 	["nointerruptcolor"] = {r = 0.78, g = 0.25, b = 0.25}, -- Color of target castbar
