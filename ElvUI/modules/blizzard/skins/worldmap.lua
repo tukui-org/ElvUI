@@ -147,7 +147,7 @@ local function LoadSkin()
 			WorldMapFrameSizeUpButton:Disable()
 		else
 			WorldMapFrameSizeDownButton:Enable()
-			WorldMapFrameSizeUpButton:Enable()			
+			WorldMapFrameSizeUpButton:Enable()	
 		end
 		
 		if WORLDMAP_SETTINGS.size == WORLDMAP_FULLMAP_SIZE then
@@ -192,8 +192,12 @@ local function LoadSkin()
 			end
 			
 			int = 0
-		end				
-	end)		
+		end	
+		
+		if DropDownList1:GetScale() ~= UIParent:GetScale() then
+			DropDownList1:SetScale(UIParent:GetScale())
+		end
+	end)	
 end
 
 tinsert(E.SkinFuncs["ElvUI"], LoadSkin)
