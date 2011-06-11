@@ -42,6 +42,7 @@ DB["general"] = {
 
 DB["skin"] = {
 	["enable"] = true,
+		["bags"] = true,
 		["reforge"] = true,
 		["calendar"] = true,
 		["achievement"] = true,

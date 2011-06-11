@@ -289,8 +289,8 @@ end
 local function UpdateObjects(frame)
 	local frame = frame:GetParent()
 	
-	local r, g, b = frame.hp:GetStatusBarColor()
-
+	local r, g, b = frame.hp:GetStatusBarColor()	
+	
 	--Have to reposition this here so it doesnt resize after being hidden
 	frame.hp:ClearAllPoints()
 	frame.hp:SetSize(hpWidth, hpHeight)	
@@ -299,11 +299,7 @@ local function UpdateObjects(frame)
 
 	--Match values
 	frame.hp:SetMinMaxValues(frame.healthOriginal:GetMinMaxValues())
-	frame.hp:SetValue(frame.healthOriginal:GetValue())
-	frame.healthOriginal:SetScript("OnValueChanged", function()
-		frame.hp:SetMinMaxValues(frame.healthOriginal:GetMinMaxValues())
-		frame.hp:SetValue(frame.healthOriginal:GetValue())
-	end)
+	frame.hp:SetValue(frame.healthOriginal:GetValue() - 1)
 	
 	--Colorize Plate
 	Colorize(frame)
@@ -561,6 +557,10 @@ local function ShowHealth(frame, ...)
 	local minHealth, maxHealth = frame.healthOriginal:GetMinMaxValues()
 	local valueHealth = frame.healthOriginal:GetValue()
 	local d =(valueHealth/maxHealth)*100
+	
+	--Match values
+	frame.hp:SetMinMaxValues(minHealth, maxHealth)
+	frame.hp:SetValue(valueHealth)	
 	
 	if C["nameplate"].showhealth == true then
 		frame.hp.value:SetText(E.ShortValue(valueHealth).." - "..(string.format("%d%%", math.floor((valueHealth/maxHealth)*100))))

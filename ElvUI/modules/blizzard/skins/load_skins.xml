@@ -45,4 +45,5 @@
 	<Script file='guildregistrar.lua'/>
 	<Script file='timemanager.lua'/>	
 	<Script file='encounterjournal.lua'/>
+	<Script file='bags.lua'/>
 </Ui>
