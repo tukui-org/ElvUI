@@ -42,6 +42,7 @@ local function LoadSkin()
 		local isQuestItem = GetContainerItemQuestInfo(container:GetID(), button:GetID())
 		_G[button:GetName().."IconTexture"]:SetTexture(texture)
 		button.type = nil
+		button.quality = nil
 		button.ilink = itemLink
 		if button.ilink then
 			button.name, _, button.quality, _, _, button.type = GetItemInfo(button.ilink)
@@ -133,6 +134,8 @@ local function LoadSkin()
 			local isQuestItem = GetContainerItemQuestInfo(BANK_CONTAINER, button:GetID())
 			button.type = nil
 			button.ilink = itemLink
+			button.quality = nil
+			
 			if button.ilink then
 				button.name, _, button.quality, _, _, button.type = GetItemInfo(button.ilink)
 			end
