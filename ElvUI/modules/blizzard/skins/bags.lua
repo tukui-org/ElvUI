@@ -2,13 +2,7 @@ local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config
 if C["skin"].enable ~= true or C["skin"].bags ~= true or C["others"].enablebag == true then return end
 
 local function LoadSkin()
-
-	local BAGS_BACKPACK = {0, 1, 2, 3, 4}
-	local BAGS_BANK = {-1, 5, 6, 7, 8, 9, 10, 11}
 	local QUEST_ITEM_STRING = select(10, GetAuctionItemClasses())
-	local ElvBagTT = CreateFrame("GameTooltip", "ElvBagTT", nil, "GameTooltipTemplate")
-	ElvBagTT:Hide()
-	
 	
 	local function UpdateBorderColors(button)
 		button:SetBackdropBorderColor(unpack(C["media"].bordercolor))
@@ -44,31 +38,19 @@ local function LoadSkin()
 	local function SkinBagButtons(container, button)
 		SkinButton(button)
 		
-		local texture, itemCount, locked, quality, readable, lootable, itemLink = GetContainerItemInfo(container:GetID(), button:GetID())
+		local texture, _, _, _, _, _, itemLink = GetContainerItemInfo(container:GetID(), button:GetID())
+		local isQuestItem = GetContainerItemQuestInfo(container:GetID(), button:GetID())
 		_G[button:GetName().."IconTexture"]:SetTexture(texture)
-
-		--Setup some button variables
 		button.type = nil
 		button.ilink = itemLink
-		button.quality = quality
-		button.locked = locked
 		if button.ilink then
-			button.name, _, _, _, _, button.type = GetItemInfo(button.ilink)
+			button.name, _, button.quality, _, _, button.type = GetItemInfo(button.ilink)
 		end
 		
-		ElvBagTT:SetOwner(WorldFrame, "ANCHOR_NONE")
-		ElvBagTT:ClearLines()
-		ElvBagTT:SetBagItem(container:GetID(), button:GetID())
-		for i = 1, ElvBagTT:NumLines() do
-			local txt = getglobal("ElvBagTTTextLeft" .. i)
-			if txt then
-				local text = txt:GetText()
-				if string.find (txt:GetText(), ITEM_BIND_QUEST) then
-					button.type = QUEST_ITEM_STRING
-				end
-			end
-		end		
-			
+		if isQuestItem then
+			button.type = QUEST_ITEM_STRING
+		end
+
 		UpdateBorderColors(button)
 	end
 	
@@ -140,16 +122,14 @@ local function LoadSkin()
 		end
 		
 		if not button.isBag then		
-			local texture, itemCount, locked, quality, readable, lootable, itemLink = GetContainerItemInfo(BANK_CONTAINER, button:GetID())
+			local texture, _, _, _, _, _, itemLink = GetContainerItemInfo(BANK_CONTAINER, button:GetID())
+			local isQuestItem = GetContainerItemQuestInfo(BANK_CONTAINER, button:GetID())
 			button.type = nil
 			button.ilink = itemLink
-			button.quality = quality
-			button.locked = locked
 			if button.ilink then
-				button.name, _, _, _, _, button.type = GetItemInfo(button.ilink)
+				button.name, _, button.quality, _, _, button.type = GetItemInfo(button.ilink)
 			end
 			
-			local isQuestItem = GetContainerItemQuestInfo(BANK_CONTAINER, button:GetID())
 			if isQuestItem then
 				button.type = QUEST_ITEM_STRING
 			end
