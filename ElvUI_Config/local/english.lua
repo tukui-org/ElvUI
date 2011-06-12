@@ -415,6 +415,7 @@ L["Skins"] = true
 	L["Enable/disable skinning of the entire BlizzardUI."] = true
 	L["TOGGLESKIN_DESC"] = "Enable/Disable this skin."
 	
+	L["Bags"] = true
 	L["Reforge Frame"] = true
 	L["Calendar Frame"] = true
 	L["Achievement Frame"] = true
@@ -510,7 +511,14 @@ L["Misc"] = true
 		L["Enable/Disable the All-In-One Bag, you must disable this if you wish to run another bag addon"] = true
 	L["Map Skin"] = true
 		L["Enable/Disable the map skin"] = true
-		
+	L["Vertical"] = true
+	L["Horizontal"] = true
+	L["Bag Bar on mouseover"] = true
+		L["Only show the bag bar when you mouseover it"] = true
+	L["Bar Bar Direction"] = true
+		L["Set the direction you want the bag bar to grow"] = true
+	L["Bag Bar"] = true 
+		L["Enable a clickable bar of buttons that allow you to click which bag you wish to open"] = true
 L["Filters"] = true
 L["SPELL_FILTER_DESC"] = "Filter everything from spell names to nameplate names."
 	L["Auras"] = true

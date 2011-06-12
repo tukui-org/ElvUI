@@ -2586,7 +2586,12 @@ function ElvuiConfig.GenerateOptionsInternal()
 								type = "toggle",
 								name = L["Guild Registrar"],
 								desc = L["TOGGLESKIN_DESC"],								
-							},									
+							},		
+							bags = {
+								type = "toggle",
+								name = L["Bags"],
+								desc = L["TOGGLESKIN_DESC"],									
+							},
 						},
 					},					
 					embedright = {
@@ -2903,7 +2908,29 @@ function ElvuiConfig.GenerateOptionsInternal()
 								order = 4,
 								name = L["All-In-One Bag"],
 								desc = L["Enable/Disable the All-In-One Bag, you must disable this if you wish to run another bag addon"],										
-							},						
+							},		
+							bagbar = {
+								type = "toggle",
+								order = 5,
+								name = L["Bag Bar"],
+								desc = L["Enable a clickable bar of buttons that allow you to click which bag you wish to open"],
+							},
+							bagbardirection = {
+								type = "select",
+								order = 6,
+								name = L["Bar Bar Direction"],
+								desc = L["Set the direction you want the bag bar to grow"],
+								values = {
+									["VERTICAL"] = L["Vertical"],
+									["HORIZONTAL"] = L["Horizontal"],
+								},								
+							},
+							bagbarmouseover = {
+								type = "toggle",
+								order = 7,
+								name = L["Bag Bar on mouseover"],
+								desc = L["Only show the bag bar when you mouseover it"],
+							},
 						},
 					},
 					LootGroup = {

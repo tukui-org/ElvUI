@@ -1,4 +1,4 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">	
-	<Script file='disableblizz.lua'/>
+	<Script file='bagbar.lua'/>
 	<Script file='bags.lua'/>
 </Ui>

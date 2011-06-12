@@ -323,7 +323,9 @@ DB["others"] = {
 	["errorenable"] = true,                     -- true to enable this mod, false to disable
 	["autoacceptinv"] = true,                 -- auto-accept invite from guildmate and friends.
 	["enablebag"] = true,                     -- enable an all in one bag mod that fit Elvui perfectly
-	
+	["bagbar"] = false,
+	["bagbardirection"] = "VERTICAL",
+	["bagbarmouseover"] = true,
 
 	["lootframe"] = true,                  -- reskin the loot frame to fit Elvui
 	["rolllootframe"] = true,              -- reskin the roll frame to fit Elvui
