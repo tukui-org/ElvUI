@@ -76,6 +76,13 @@ local function LoadSkin()
 				
 				if i == 1 then
 					BackpackTokenFrame:StripTextures(true)
+					for i=1, MAX_WATCHED_TOKENS do
+						_G["BackpackTokenFrameToken"..i].icon:SetTexCoord(.08, .92, .08, .92)
+						_G["BackpackTokenFrameToken"..i]:CreateBackdrop("Default")
+						_G["BackpackTokenFrameToken"..i].backdrop:Point("TOPLEFT", _G["BackpackTokenFrameToken"..i].icon, "TOPLEFT", -2, 2)
+						_G["BackpackTokenFrameToken"..i].backdrop:Point("BOTTOMRIGHT", _G["BackpackTokenFrameToken"..i].icon, "BOTTOMRIGHT", 2, -2)
+						_G["BackpackTokenFrameToken"..i].icon:Point("LEFT", _G["BackpackTokenFrameToken"..i].count, "RIGHT", 2, 0)
+					end
 				end
 			end
 			
