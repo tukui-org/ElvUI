@@ -1041,7 +1041,7 @@ E.LoadUFFunctions = function(layout)
 				border:SetVertexColor(0, 0, 0)
 
 				local count = icon:CreateFontString(nil, "OVERLAY")
-				count:SetFont(C["media"].uffont, 8, "THINOUTLINE")
+				count:SetFont(C["media"].uffont, C["raidframes"].buffindicatorsize + 3, "THINOUTLINE")
 				count:SetPoint("CENTER", unpack(E.countOffsets[spell["point"]]))
 				icon.count = count
 
