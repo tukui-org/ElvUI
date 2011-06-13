@@ -40,6 +40,33 @@ local function LoadSkin()
 		slot.backdrop:SetAllPoints()
 	end
 	
+	-- a request by diftraku to color item by rarity on character frame.
+	local function ColorItemBorder()
+		for _, slot in pairs(slots) do
+			-- Colour the equipment slots by rarity
+			local target = _G["Character"..slot]
+			local slotId, _, _ = GetInventorySlotInfo(slot)
+			local itemId = GetInventoryItemID("player", slotId)
+
+			if itemId then
+				local _, _, rarity, _, _, _, _, _, _, _, _ = GetItemInfo(itemId)
+				if rarity and rarity > 1 then
+					target.backdrop:SetBackdropBorderColor(GetItemQualityColor(rarity))
+				else
+					target.backdrop:SetBackdropBorderColor(unpack(C.media.bordercolor))
+				end
+			else
+				target.backdrop:SetBackdropBorderColor(unpack(C.media.bordercolor))
+			end
+		end
+	end
+
+	local CheckItemBorderColor = CreateFrame("Frame")
+	CheckItemBorderColor:RegisterEvent("PLAYER_ENTERING_WORLD")
+	CheckItemBorderColor:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
+	CheckItemBorderColor:SetScript("OnEvent", ColorItemBorder)	
+	ColorItemBorder()
+	
 	--Strip Textures
 	local charframe = {
 		"CharacterFrame",
