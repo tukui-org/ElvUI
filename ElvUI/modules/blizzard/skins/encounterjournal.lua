@@ -90,8 +90,20 @@ local function LoadSkin()
 		
 		EncounterJournalEncounterFrameInfoBossTab:SetScale(0.75)
 		EncounterJournalEncounterFrameInfoLootTab:SetScale(0.75)
+		
+		EncounterJournalEncounterFrameInfoLootScrollFrameFilter:SetScript("OnShow", function()
+			EncounterJournalEncounterFrameInfoBossTab:ClearAllPoints()
+			EncounterJournalEncounterFrameInfoBossTab:Point("LEFT", EncounterJournalEncounterFrameInfoLootScrollFrameFilter, "RIGHT", 0, 0)	
+			EncounterJournalEncounterFrameInfoEncounterTile:Hide()
+		end)
+
+		EncounterJournalEncounterFrameInfoLootScrollFrameFilter:SetScript("OnHide", function()
+			EncounterJournalEncounterFrameInfoBossTab:ClearAllPoints()
+			EncounterJournalEncounterFrameInfoBossTab:Point("LEFT", EncounterJournalEncounterFrameInfoEncounterTile, "RIGHT", -10, 4)	
+			EncounterJournalEncounterFrameInfoEncounterTile:Show()
+		end)		
 	end)
-	
+		
 	E.SkinScrollBar(EncounterJournalInstanceSelectScrollFrameScrollBar)
 
 	EncounterJournalEncounterFrameInfoBossTab:GetNormalTexture():SetTexture(nil)
