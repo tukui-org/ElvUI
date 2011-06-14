@@ -84,8 +84,7 @@ local function LoadSkin()
 	CharacterModelFrameRotateLeftButton:Point("TOPLEFT", CharacterModelFrame, "TOPLEFT", 4, -4)
 	CharacterModelFrameRotateRightButton:Point("TOPLEFT", CharacterModelFrameRotateLeftButton, "TOPRIGHT", 4, 0)
 	
-	--Swap item flyout frame (shown when holding alt over a slot)
-	PaperDollFrameItemFlyout:HookScript("OnShow", function()
+	local function SkinItemFlyouts()
 		PaperDollFrameItemFlyoutButtons:StripTextures()
 		
 		for i=1, PDFITEMFLYOUT_MAXITEMS do
@@ -106,8 +105,12 @@ local function LoadSkin()
 					button.backdrop:SetAllPoints()			
 				end
 			end
-		end
-	end)
+		end	
+	end
+	
+	--Swap item flyout frame (shown when holding alt over a slot)
+	PaperDollFrameItemFlyout:HookScript("OnShow", SkinItemFlyouts)
+	hooksecurefunc("PaperDollItemSlotButton_UpdateFlyout", SkinItemFlyouts)
 	
 	--Icon in upper right corner of character frame
 	CharacterFramePortrait:Kill()
