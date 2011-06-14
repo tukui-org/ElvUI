@@ -59,7 +59,6 @@ local function LoadSkin()
 	end
 
 	local CheckItemBorderColor = CreateFrame("Frame")
-	CheckItemBorderColor:RegisterEvent("PLAYER_ENTERING_WORLD")
 	CheckItemBorderColor:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
 	CheckItemBorderColor:SetScript("OnEvent", ColorItemBorder)	
 	CharacterFrame:HookScript("OnShow", ColorItemBorder)
