@@ -8,10 +8,10 @@ local FONT = C["media"].font
 local FONTSIZE = 10
 local FONTFLAG = "THINOUTLINE"
 local hpHeight = 12
-local hpWidth = 110
+local hpWidth = C["nameplate"].width
 local iconSize = 25		--Size of all Icons, RaidIcon/ClassIcon/Castbar Icon
 local cbHeight = 5
-local cbWidth = 110
+local cbWidth = C["nameplate"].width
 local blankTex = C["media"].blank
 local OVERLAY = [=[Interface\TargetingFrame\UI-TargetingFrame-Flash]=]
 local numChildren = -1
@@ -314,24 +314,26 @@ local function UpdateObjects(frame)
 	frame.hp.name:SetText(frame.hp.oldname:GetText())
 	
 	--Setup level text
-	local level, elite, mylevel = tonumber(frame.hp.oldlevel:GetText()), frame.hp.elite:IsShown(), UnitLevel("player")
-	frame.hp.level:ClearAllPoints()
-	if C["nameplate"].showhealth == true then
-		frame.hp.level:SetPoint("RIGHT", frame.hp, "RIGHT", 2, 0)
-	else
-		frame.hp.level:SetPoint("RIGHT", frame.hp, "LEFT", -1, 0)
-	end
-	
-	frame.hp.level:SetTextColor(frame.hp.oldlevel:GetTextColor())
-	if frame.hp.boss:IsShown() then
-		frame.hp.level:SetText("??")
-		frame.hp.level:SetTextColor(0.8, 0.05, 0)
-		frame.hp.level:Show()
-	elseif not elite and level == mylevel then
-		frame.hp.level:Hide()
-	else
-		frame.hp.level:SetText(level..(elite and "+" or ""))
-		frame.hp.level:Show()
+	if C["nameplate"].showlevel == true then
+		local level, elite, mylevel = tonumber(frame.hp.oldlevel:GetText()), frame.hp.elite:IsShown(), UnitLevel("player")
+		frame.hp.level:ClearAllPoints()
+		if C["nameplate"].showhealth == true then
+			frame.hp.level:SetPoint("RIGHT", frame.hp, "RIGHT", 2, 0)
+		else
+			frame.hp.level:SetPoint("RIGHT", frame.hp, "LEFT", -1, 0)
+		end
+		
+		frame.hp.level:SetTextColor(frame.hp.oldlevel:GetTextColor())
+		if frame.hp.boss:IsShown() then
+			frame.hp.level:SetText("??")
+			frame.hp.level:SetTextColor(0.8, 0.05, 0)
+			frame.hp.level:Show()
+		elseif not elite and level == mylevel then
+			frame.hp.level:Hide()
+		else
+			frame.hp.level:SetText(level..(elite and "+" or ""))
+			frame.hp.level:Show()
+		end
 	end
 	
 	frame.overlay:ClearAllPoints()
@@ -367,14 +369,16 @@ local function SkinObjects(frame)
 	CreateVirtualFrame(hp)
 	
 	--Create Level
-	hp.level = hp:CreateFontString(nil, "OVERLAY")
-	hp.level:SetFont(FONT, FONTSIZE, FONTFLAG)
-	hp.level:SetShadowColor(0, 0, 0, 0.4)
-	hp.level:SetTextColor(1, 1, 1)
-	hp.level:SetShadowOffset(E.mult, -E.mult)	
-	hp.oldlevel = oldlevel
-	hp.boss = bossicon
-	hp.elite = elite
+	if C["nameplate"].showlevel == true then
+		hp.level = hp:CreateFontString(nil, "OVERLAY")
+		hp.level:SetFont(FONT, FONTSIZE, FONTFLAG)
+		hp.level:SetShadowColor(0, 0, 0, 0.4)
+		hp.level:SetTextColor(1, 1, 1)
+		hp.level:SetShadowOffset(E.mult, -E.mult)	
+		hp.oldlevel = oldlevel
+		hp.boss = bossicon
+		hp.elite = elite
+	end
 	
 	--Create Health Text
 	if C["nameplate"].showhealth == true then

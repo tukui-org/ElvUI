@@ -844,9 +844,23 @@ function ElvuiConfig.GenerateOptionsInternal()
 								name = L["Track CC Debuffs"],
 								desc = L["Tracks CC debuffs on nameplates from you or a friendly player"],										
 							},
+							width = {
+								type = "range",
+								order = 6,
+								name = L["Width"],
+								desc = L["Controls the width of the nameplate"],
+								type = "range",
+								min = 50, max = 150, step = 1,								
+							},
+							showlevel = {
+								type = "toggle",
+								order = 7,
+								name = L["Display Level"],
+								desc = L["Display level text on nameplate for nameplates that belong to units that aren't your level."],	
+							},
 							Colors = {
 								type = "group",
-								order = 6,
+								order = 8,
 								name = L["Colors"],
 								guiInline = true,	
 								get = function(info)
@@ -1674,11 +1688,11 @@ function ElvuiConfig.GenerateOptionsInternal()
 							buffindicatorsize = {
 								type = "range",
 								order = 22,
-								name = L["Raid Buff Display Size"],
+								name = L["Buff Icon Size"],
 								desc = L["Size of the buff icon on raidframes"],
 								disabled = function() return not db.raidframes.enable and not db.unitframes.enable end,
 								type = "range",
-								min = 3, max = 9, step = 1,									
+								min = 3, max = 18, step = 1,									
 							},
 						},
 					},

@@ -256,6 +256,8 @@ DB["actionbar"] = {
 
 DB["nameplate"] = {
 	["enable"] = true,                     -- enable nice skinned nameplates that fit into Elvui
+	["showlevel"] = true,
+	["width"] = 105,
 	["showhealth"] = false,					-- show health text on nameplate
 	["enhancethreat"] = true,				-- threat features based on if your a tank or not
 	["combat"] = false,					--only show enemy nameplates in-combat.
