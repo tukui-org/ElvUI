@@ -296,10 +296,6 @@ local function UpdateObjects(frame)
 	frame.hp:SetSize(hpWidth, hpHeight)	
 	frame.hp:SetPoint('TOP', frame, 'TOP', 0, -15)
 	frame.hp:GetStatusBarTexture():SetHorizTile(true)
-
-	--Match values
-	frame.hp:SetMinMaxValues(frame.healthOriginal:GetMinMaxValues())
-	frame.hp:SetValue(frame.healthOriginal:GetValue() - 1)
 	
 	--Colorize Plate
 	Colorize(frame)
@@ -559,7 +555,7 @@ local function ShowHealth(frame, ...)
 	local d =(valueHealth/maxHealth)*100
 	
 	--Match values
-	frame.hp:SetMinMaxValues(minHealth, maxHealth)
+	frame.hp:SetValue(valueHealth - 1)	--Bug Fix 4.1
 	frame.hp:SetValue(valueHealth)	
 	
 	if C["nameplate"].showhealth == true then
