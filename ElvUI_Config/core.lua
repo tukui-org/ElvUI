@@ -875,13 +875,20 @@ function ElvuiConfig.GenerateOptionsInternal()
 										desc = L["This is displayed when you don't have threat as a tank, if you do have threat it is displayed as a DPS/Healer"],
 										hasAlpha = false,
 									},
-									transitioncolor = {
+									goodtransitioncolor = {
 										type = "color",
 										order = 3,
-										name = L["Transition Color"],
-										desc = L["This color is displayed when gaining/losing threat"],
+										name = L["Good Transition Color"],
+										desc = L["This color is displayed when gaining/losing threat, for a tank it would be displayed when gaining threat, for a dps/healer it would be displayed when losing threat"],
 										hasAlpha = false,									
 									},
+									badtransitioncolor = {
+										type = "color",
+										order = 4,
+										name = L["Bad Transition Color"],
+										desc = L["This color is displayed when gaining/losing threat, for a tank it would be displayed when losing threat, for a dps/healer it would be displayed when gaining threat"],
+										hasAlpha = false,									
+									},									
 								},
 							},
 						},

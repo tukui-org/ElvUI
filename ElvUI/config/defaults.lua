@@ -261,7 +261,8 @@ DB["nameplate"] = {
 	["combat"] = false,					--only show enemy nameplates in-combat.
 	["goodcolor"] = {r = 75/255,  g = 175/255, b = 76/255},			--good threat color (tank shows this with threat, everyone else without)
 	["badcolor"] = {r = 0.78, g = 0.25, b = 0.25},			--bad threat color (opposite of above)
-	["transitioncolor"] = {r = 218/255, g = 197/255, b = 92/255},	--threat color when gaining threat
+	["goodtransitioncolor"] = {r = 218/255, g = 197/255, b = 92/255},	--threat color when gaining threat
+	["badtransitioncolor"] = {r = 240/255, g = 154/255, b = 17/255}, 
 	["trackauras"] = false,		--track players debuffs only (debuff list derived from classtimer spell list)
 	["trackccauras"] = true,			--track all CC debuffs
 }

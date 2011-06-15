@@ -235,6 +235,7 @@ local function OnHide(frame)
 	frame.overlay:Hide()
 	frame.cb:Hide()
 	frame.unit = nil
+	frame.threatStatus = nil
 	frame.guid = nil
 	frame.hasClass = nil
 	frame.isFriendly = nil
@@ -296,6 +297,9 @@ local function UpdateObjects(frame)
 	frame.hp:SetSize(hpWidth, hpHeight)	
 	frame.hp:SetPoint('TOP', frame, 'TOP', 0, -15)
 	frame.hp:GetStatusBarTexture():SetHorizTile(true)
+	
+	frame.hp:SetMinMaxValues(frame.healthOriginal:GetMinMaxValues())
+	frame.hp:SetValue(frame.healthOriginal:GetValue())
 	
 	--Colorize Plate
 	Colorize(frame)
@@ -467,7 +471,8 @@ end
 
 local goodR, goodG, goodB = unpack(C["nameplate"].goodcolor)
 local badR, badG, badB = unpack(C["nameplate"].badcolor)
-local transitionR, transitionG, transitionB = unpack(C["nameplate"].transitioncolor)
+local transitionR, transitionG, transitionB = unpack(C["nameplate"].goodtransitioncolor)
+local transitionR2, transitionG2, transitionB2 = unpack(C["nameplate"].badtransitioncolor)
 local function UpdateThreat(frame, elapsed)
 	frame.hp:Show()
 	if frame.hasClass == true then return end
@@ -490,14 +495,17 @@ local function UpdateThreat(frame, elapsed)
 				if E.Role == "Tank" then
 					frame.hp:SetStatusBarColor(badR, badG, badB)
 					frame.hp.hpbg:SetTexture(badR, badG, badB, 0.25)
+					frame.threatStatus = "BAD"
 				else
 					frame.hp:SetStatusBarColor(goodR, goodG, goodB)
 					frame.hp.hpbg:SetTexture(goodR, goodG, goodB, 0.25)
+					frame.threatStatus = "GOOD"
 				end		
 			else
 				--Set colors to their original, not in combat
 				frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
 				frame.hp.hpbg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, 0.25)
+				frame.threatStatus = nil
 			end
 		else
 			--Ok we either have threat or we're losing/gaining it
@@ -507,14 +515,35 @@ local function UpdateThreat(frame, elapsed)
 				if E.Role == "Tank" then
 					frame.hp:SetStatusBarColor(goodR, goodG, goodB)
 					frame.hp.hpbg:SetTexture(goodR, goodG, goodB, 0.25)
+					frame.threatStatus = "GOOD"
 				else
 					frame.hp:SetStatusBarColor(badR, badG, badB)
 					frame.hp.hpbg:SetTexture(badR, badG, badB, 0.25)
+					frame.threatStatus = "BAD"
 				end
 			else
 				--Losing/Gaining Threat
-				frame.hp:SetStatusBarColor(transitionR, transitionG, transitionB)	
-				frame.hp.hpbg:SetTexture(transitionR, transitionG, transitionB, 0.25)
+				if E.Role == "Tank" then
+					if frame.threatStatus == "GOOD" then
+						--Losing Threat
+						frame.hp:SetStatusBarColor(transitionR2, transitionG2, transitionB2)	
+						frame.hp.hpbg:SetTexture(transitionR2, transitionG2, transitionB2, 0.25)				
+					else
+						--Gaining Threat
+						frame.hp:SetStatusBarColor(transitionR, transitionG, transitionB)	
+						frame.hp.hpbg:SetTexture(transitionR, transitionG, transitionB, 0.25)	
+					end
+				else
+					if frame.threatStatus == "GOOD" then
+						--Losing Threat
+						frame.hp:SetStatusBarColor(transitionR, transitionG, transitionB)	
+						frame.hp.hpbg:SetTexture(transitionR, transitionG, transitionB, 0.25)				
+					else
+						--Gaining Threat
+						frame.hp:SetStatusBarColor(transitionR2, transitionG2, transitionB2)	
+						frame.hp.hpbg:SetTexture(transitionR2, transitionG2, transitionB2, 0.25)	
+					end				
+				end
 			end
 		end
 	end

@@ -87,8 +87,10 @@ L["Nameplates"] = true
 		L["This is displayed when you have threat as a tank, if you don't have threat it is displayed as a DPS/Healer"] = true
 	L["Bad Color"] = true
 		L["This is displayed when you don't have threat as a tank, if you do have threat it is displayed as a DPS/Healer"] = true
-	L["Transition Color"] = true
-		L["This color is displayed when gaining/losing threat"] = true
+	L["Good Transition Color"] = true
+		L["This color is displayed when gaining/losing threat, for a tank it would be displayed when gaining threat, for a dps/healer it would be displayed when losing threat"] = true
+	L["Bad Transition Color"] = true
+		L["This color is displayed when gaining/losing threat, for a tank it would be displayed when losing threat, for a dps/healer it would be displayed when gaining threat"] = true
 	
 --Unitframes
 L["Unit Frames"] = true
