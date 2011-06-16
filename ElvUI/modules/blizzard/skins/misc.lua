@@ -206,7 +206,22 @@ local function LoadSkin()
 
 	RolePollPopup:SetTemplate("Transparent")
 	RolePollPopup:CreateShadow("Default")
-
+	
+	InterfaceOptionsFrame:SetClampedToScreen(true)
+	InterfaceOptionsFrame:SetMovable(true)
+	InterfaceOptionsFrame:EnableMouse(true)
+	InterfaceOptionsFrame:RegisterForDrag("LeftButton", "RightButton")
+	InterfaceOptionsFrame:SetScript("OnDragStart", function(self) 
+		if InCombatLockdown() then return end
+		
+		if IsShiftKeyDown() then
+			self:StartMoving() 
+		end
+	end)
+	InterfaceOptionsFrame:SetScript("OnDragStop", function(self) 
+		self:StopMovingOrSizing()
+	end)
+	
 	-- mac menu/option panel, made by affli.
 	if IsMacClient() then
 		-- Skin main frame and reposition the header
