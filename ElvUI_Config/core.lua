@@ -850,7 +850,8 @@ function ElvuiConfig.GenerateOptionsInternal()
 								name = L["Width"],
 								desc = L["Controls the width of the nameplate"],
 								type = "range",
-								min = 50, max = 150, step = 1,								
+								min = 50, max = 150, step = 1,		
+								set = function(info, value) C.nameplate[ info[#info] ] = value end,
 							},
 							showlevel = {
 								type = "toggle",

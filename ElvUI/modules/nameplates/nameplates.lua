@@ -625,6 +625,15 @@ local function CheckUnit_Guid(frame, ...)
 	end	
 end
 
+--Update settings for nameplate to match config
+local function CheckSettings(frame, ...)
+	--Width
+	if frame.hp:GetWidth() ~= C["nameplate"].width then
+		frame.hp:Width(C["nameplate"].width)
+		hpWidth = C["nameplate"].width
+	end
+end
+
 --Attempt to match a nameplate with a GUID from the combat log
 local function MatchGUID(frame, destGUID, spellID)
 	if not frame.guid then return end
@@ -681,6 +690,7 @@ CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
 	ForEachPlate(CheckBlacklist)
 	ForEachPlate(HideDrunkenText)
 	ForEachPlate(CheckUnit_Guid)
+	ForEachPlate(CheckSettings)
 end)
 
 function NamePlates:COMBAT_LOG_EVENT_UNFILTERED(_, event, _, _, sourceName, _, destGUID, _, _, spellID)
