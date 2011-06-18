@@ -101,20 +101,11 @@ local function CheckElixir(unit)
 	end
 end
 
-local function Pulse(self)
-	E.Flash(self, 0.3)
-end
-
-
 --Main Script
 RaidReminderShown = true
 local function OnAuraChange(self, event, arg1, unit)
 	if (event == "UNIT_AURA" and arg1 ~= "player") then 
 		return
-	end
-	
-	if event == "PLAYER_ENTERING_WORLD" then
-		reminderoverride = false
 	end
 	
 	--If We're a caster we may want to see differant buffs
@@ -199,43 +190,17 @@ local function OnAuraChange(self, event, arg1, unit)
 			Spell6Frame:SetAlpha(1)
 			Spell6Frame.t:SetTexture(select(3, GetSpellInfo(Spell6Buff)))
 		end
-	end
-	
-	
-	local inInstance, instanceType = IsInInstance()
-	if inInstance and (instanceType ==  "party" or instanceType == "raid" or instanceType == "pvp" or instanceType == "arena") then
-		if RaidReminderShown ~= true and reminderoverride ~= true then
-			UIFrameFadeIn(self, 0.4)
-			ElvuiInfoRightLButton.text:SetTextColor(1,1,1)
-			RaidReminderShown = true
-		end
-	else
-		if RaidReminderShown ~= false and reminderoverride ~= true then
-			ElvuiInfoRightLButton.text:SetTextColor(unpack(C["media"].valuecolor))
-			UIFrameFadeOut(self, 0.4)
-			RaidReminderShown = false
-		end
-	end
-	
-	--Check if your incombat and are missing a buff
-	if RaidReminderShown == true and inInstance and (instanceType == "raid") and InCombatLockdown() and (FlaskFrame:GetAlpha() == 1 or Spell3Frame:GetAlpha() == 1 or Spell4Frame:GetAlpha() == 1 or Spell5Frame:GetAlpha() == 1 or Spell6Frame:GetAlpha() == 1) then
-		self:SetScript("OnUpdate", function(self)
-			if reminderoverride == true then return end
-			Pulse(self)
-		end)
-	else
-		self:SetScript("OnUpdate", function() end)
-		E.StopFlash(self)
-	end
-	
-	
+	end	
 end
 
-local bsize = (((E.minimapsize) - (E.Scale(4) * 7)) / 6)
+local bsize = ((E.minimapsize - 9) / 6)
 
 --Create the Main bar
 local raidbuff_reminder = CreateFrame("Frame", "RaidBuffReminder", ElvuiMinimap)
-raidbuff_reminder:CreatePanel("Default", E.minimapsize, bsize + E.Scale(8), "TOPLEFT", ElvuiMinimapStatsLeft, "BOTTOMLEFT", 0, E.Scale(-3))
+raidbuff_reminder:CreatePanel("Default", bsize + 4, E.minimapsize, "TOPLEFT", Minimap, "TOPRIGHT", 3, 2)
+raidbuff_reminder:CreateShadow("Default")
+raidbuff_reminder:SetFrameLevel(Minimap:GetFrameLevel() + 2)
+RaidBuffReminder.shadow:SetFrameLevel(0)
 raidbuff_reminder:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 raidbuff_reminder:RegisterEvent("UNIT_INVENTORY_CHANGED")
 raidbuff_reminder:RegisterEvent("UNIT_AURA")
@@ -246,39 +211,21 @@ raidbuff_reminder:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
 raidbuff_reminder:RegisterEvent("CHARACTER_POINTS_CHANGED")
 raidbuff_reminder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 raidbuff_reminder:SetScript("OnEvent", OnAuraChange)
-E.SetUpAnimGroup(RaidBuffReminder)
-
-
 
 --Function to create buttons
 local function CreateButton(name, relativeTo, firstbutton)
 	local button = CreateFrame("Frame", name, RaidBuffReminder)
 	if firstbutton == true then
-		button:CreatePanel("Default", bsize, bsize, "LEFT", relativeTo, "LEFT", E.Scale(4), 0)
+		button:CreatePanel("Default", bsize, bsize, "TOP", relativeTo, "TOP", 0, -2)
 	else
-		button:CreatePanel("Default", bsize, bsize, "LEFT", relativeTo, "RIGHT", E.Scale(4), 0)
+		button:CreatePanel("Default", bsize, bsize, "TOP", relativeTo, "BOTTOM", 0, -1)
 	end
 	button:SetFrameLevel(RaidBuffReminder:GetFrameLevel() + 2)
-	button:SetBackdropBorderColor(0,0,0,0)
-	if C["general"].sharpborders == true then
-		button.iborder:SetBackdropBorderColor(0, 0, 0, 0)
-		button.oborder:SetBackdropBorderColor(0, 0, 0, 0)
-	end
 	
-	button.FrameBackdrop = CreateFrame("Frame", nil, button)
-	button.FrameBackdrop:SetTemplate("Default")
-	
-	if C["general"].sharpborders == true then
-		button.FrameBackdrop.iborder:SetBackdropBorderColor(0, 0, 0, 0)
-		button.FrameBackdrop.oborder:SetBackdropBorderColor(0, 0, 0, 0)
-	end
-	
-	button.FrameBackdrop:SetPoint("TOPLEFT", E.Scale(-2), E.Scale(2))
-	button.FrameBackdrop:SetPoint("BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
-	button.FrameBackdrop:SetFrameLevel(button:GetFrameLevel() - 1)	
 	button.t = button:CreateTexture(name..".t", "OVERLAY")
 	button.t:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-	button.t:SetAllPoints(button)
+	button.t:Point("TOPLEFT", 2, -2)
+	button.t:Point("BOTTOMRIGHT", -2, 2)
 end
 
 --Create Buttons
@@ -289,50 +236,4 @@ do
 	CreateButton("Spell4Frame", Spell3Frame, false)
 	CreateButton("Spell5Frame", Spell4Frame, false)
 	CreateButton("Spell6Frame", Spell5Frame, false)
-end
-
---Setup toggle button
-do
-	--Toggle lock button
-	ElvuiInfoRightLButton.hovered = false
-	ElvuiInfoRightLButton:SetScript("OnMouseDown", function(self)
-		
-		if ElvuiInfoRightLButton.hovered == true then
-			GameTooltip:ClearLines()
-			if RaidReminderShown == true then
-				GameTooltip:AddDoubleLine(L.raidbufftoggler, SHOW,1,1,1,unpack(C["media"].valuecolor))
-				ElvuiInfoRightLButton.text:SetTextColor(unpack(C["media"].valuecolor))
-				UIFrameFadeOut(RaidBuffReminder, 0.4)
-				RaidReminderShown = false
-				reminderoverride = true
-			else
-				GameTooltip:AddDoubleLine(L.raidbufftoggler, HIDE,1,1,1,unpack(C["media"].valuecolor))
-				ElvuiInfoRightLButton.text:SetTextColor(1,1,1)
-				UIFrameFadeIn(RaidBuffReminder, 0.4)
-				RaidReminderShown = true
-				reminderoverride = true
-			end
-		end
-	end)
-		
-	ElvuiInfoRightLButton:SetScript("OnEnter", function(self)
-		ElvuiInfoRightLButton.hovered = true
-		if InCombatLockdown() then return end
-		GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, E.Scale(6));
-		GameTooltip:ClearAllPoints()
-		GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, E.mult)
-		GameTooltip:ClearLines()
-		
-		if RaidReminderShown == true then
-			GameTooltip:AddDoubleLine(L.raidbufftoggler, HIDE,1,1,1,unpack(C["media"].valuecolor))
-		else
-			GameTooltip:AddDoubleLine(L.raidbufftoggler, SHOW,1,1,1,unpack(C["media"].valuecolor))
-		end
-		GameTooltip:Show()
-	end)
-	
-	ElvuiInfoRightLButton:SetScript("OnLeave", function(self)
-		ElvuiInfoRightLButton.hovered = false
-		GameTooltip:Hide()
-	end)
 end

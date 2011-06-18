@@ -85,8 +85,8 @@ function SlashCmdList.FARMMODE(msg, editbox)
 		farm = false
 	end
 
-	ElvuiMinimapStatsLeft:SetWidth((Minimap:GetWidth() / 2) - 1)
-	ElvuiMinimapStatsRight:SetWidth((Minimap:GetWidth() / 2) - 1)
+	ElvuiMinimapStatsLeft:SetWidth((Minimap:GetWidth() / 2) + 2)
+	ElvuiMinimapStatsRight:SetWidth((Minimap:GetWidth() / 2) + 1)
 	
 	if E.Movers["AurasMover"]["moved"] ~= true then
 		AurasMover:ClearAllPoints()

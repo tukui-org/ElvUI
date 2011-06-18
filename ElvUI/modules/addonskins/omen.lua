@@ -85,7 +85,7 @@ if C["skin"].embedright == "Omen" then
 		Omen.UpdateTitleBar = function() end
 		OmenTitle:Kill()
 		OmenBarList:ClearAllPoints()
-		OmenBarList:SetAllPoints(ChatRBackground)
+		OmenBarList:SetAllPoints(ChatRPlaceHolder)
 		Omen.db.profile.FrameStrata = "4-HIGH"
 	end)
 end

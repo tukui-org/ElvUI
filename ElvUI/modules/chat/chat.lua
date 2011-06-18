@@ -290,7 +290,6 @@ ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 		end
 		
 		E.RightChat = chatfound
-		
 		if chatfound == true then
 			if ChatRBG then ChatRBG:SetAlpha(1) end
 			E.RightChatWindowID = id
@@ -323,70 +322,29 @@ ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 			if point == "BOTTOMRIGHT" and chat:IsShown() and not (id > NUM_CHAT_WINDOWS) and id == E.RightChatWindowID then
 				if id ~= 2 then
 					chat:ClearAllPoints()
-					chat:SetPoint("BOTTOMLEFT", ChatRBackground, "BOTTOMLEFT", E.Scale(2), E.Scale(4))
+					chat:SetPoint("BOTTOMLEFT", ChatRPlaceHolder, "BOTTOMLEFT", E.Scale(2), E.Scale(4))
 					chat:SetSize(E.Scale(C["chat"].chatwidth - 4), E.Scale(C["chat"].chatheight))
 				else
 					chat:ClearAllPoints()
-					chat:SetPoint("BOTTOMLEFT", ChatRBackground, "BOTTOMLEFT", E.Scale(2), E.Scale(4))
+					chat:SetPoint("BOTTOMLEFT", ChatRPlaceHolder, "BOTTOMLEFT", E.Scale(2), E.Scale(4))
 					chat:SetSize(E.Scale(C["chat"].chatwidth - 4), E.Scale(C["chat"].chatheight - CombatLogQuickButtonFrame_Custom:GetHeight()))				
 				end
 				FCF_SavePositionAndDimensions(chat)			
 				
 				tab:SetParent(ChatRBackground)
 				chat:SetParent(tab)
-				
-				if not button then E.ChatCopyButtons(id) button = _G[format("ButtonCF%d", id)] end
-				button:ClearAllPoints()
-				if ChatRBG then
-					button:SetAlpha(1)
-					button:SetPoint("BOTTOMRIGHT", ChatRBackground, "TOPRIGHT", 0, E.Scale(3))
-					button:SetScript("OnEnter", nil)
-					button:SetScript("OnLeave", nil)	
-				else
-					if not button:GetScript("OnEnter") then
-						button:SetAlpha(0)
-						button:SetScript("OnEnter", function(self) self:SetAlpha(1) end)
-						button:SetScript("OnLeave", function(self) self:SetAlpha(0) end)	
-					end				
-					button:SetPoint("TOPRIGHT")
-				end
 			elseif not docked and chat:IsShown() then
-				if not button then E.ChatCopyButtons(id) button = _G[format("ButtonCF%d", id)] end
-				if not button:GetScript("OnEnter") then
-					button:SetAlpha(0)
-					button:SetScript("OnEnter", function(self) self:SetAlpha(1) end)
-					button:SetScript("OnLeave", function(self) self:SetAlpha(0) end)	
-				end
-				
-				button:ClearAllPoints()
-				button:SetPoint("TOPRIGHT")
 				tab:SetParent(UIParent)
 				chat:SetParent(UIParent)
 			else
 				if chat:GetID() ~= 2 and not (id > NUM_CHAT_WINDOWS) then
 					chat:ClearAllPoints()
-					chat:SetPoint("BOTTOMLEFT", ChatLBackground, "BOTTOMLEFT", E.Scale(2), E.Scale(4))
+					chat:SetPoint("BOTTOMLEFT", ChatLPlaceHolder, "BOTTOMLEFT", E.Scale(2), E.Scale(4))
 					chat:SetSize(E.Scale(C["chat"].chatwidth - 4), E.Scale(C["chat"].chatheight))
 					FCF_SavePositionAndDimensions(chat)		
 				end
 				chat:SetParent(ChatLBackground)
 				tab:SetParent(GeneralDockManager)
-				
-				if not button then E.ChatCopyButtons(id) button = _G[format("ButtonCF%d", id)] end
-				if ChatRBG then
-					button:ClearAllPoints()
-					button:SetAlpha(1)
-					button:SetPoint("BOTTOMRIGHT", ChatLBackground, "TOPRIGHT", 0, E.Scale(3))
-					button:SetScript("OnEnter", nil)
-					button:SetScript("OnLeave", nil)	
-				else
-					if not button:GetScript("OnEnter") then
-						button:SetAlpha(0)
-						button:SetScript("OnEnter", function(self) self:SetAlpha(1) end)
-						button:SetScript("OnLeave", function(self) self:SetAlpha(0) end)	
-					end				
-					button:SetPoint("TOPRIGHT")
-				end		
 			end
 		end
 		
@@ -525,7 +483,6 @@ function E.ChatCopyButtons(id)
 		button:SetAlpha(0)
 		button:SetPoint("TOPRIGHT", 0, 0)
 		button:SetTemplate("Default", true)
-		button:CreateShadow("Default")
 		
 		local buttontext = button:CreateFontString(nil,"OVERLAY",nil)
 		buttontext:SetFont(C["media"].font,C["general"].fontscale,"THINOUTLINE")
@@ -683,8 +640,10 @@ local function CheckWhisperWindows(self, event)
 				E.Flash(self.shadow, 0.5)
 			else
 				E.StopFlash(self.shadow)
-				self:SetScript("OnUpdate", nil)
-				self.shadow:SetBackdropBorderColor(0,0,0)
+				self:SetScript('OnUpdate', nil)				
+				E.Delay(1, function()
+					self.shadow:SetBackdropBorderColor(0,0,0,0) 	
+				end)
 			end
 		end)
 	elseif E.RightChatWindowID and chat == _G[format("ChatFrame%s", E.RightChatWindowID)]:GetName() and E.RightChat == true and E.ChatRIn == false then
@@ -698,8 +657,10 @@ local function CheckWhisperWindows(self, event)
 				E.Flash(self.shadow, 0.5)
 			else
 				E.StopFlash(self.shadow)
-				self:SetScript("OnUpdate", nil)
-				self.shadow:SetBackdropBorderColor(0,0,0)
+				self:SetScript('OnUpdate', nil)				
+				E.Delay(1, function()
+					self.shadow:SetBackdropBorderColor(0,0,0,0) 	
+				end)
 			end
 		end)	
 	end

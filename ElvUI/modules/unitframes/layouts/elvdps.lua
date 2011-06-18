@@ -408,9 +408,10 @@ local function Shared(self, unit)
 			local experience = CreateFrame("StatusBar", nil, self)
 			experience:SetStatusBarTexture(NORMTEX)
 			experience:SetStatusBarColor(0, 0.4, 1, .8)
-			experience:Size(PLAYER_WIDTH -(BORDER*2), POWERBAR_HEIGHT -(BORDER*2))
-			experience:Point("TOPRIGHT", self, "BOTTOMRIGHT", -BORDER, -(BORDER*2+BORDER))
-			experience:SetFrameStrata("LOW")
+			experience:Size((E.minimapsize - 4) + 1 + (((E.minimapsize - 9) / 6)) + 4, 10)
+			experience:Point("TOPLEFT", ElvuiMinimapStatsLeft, "BOTTOMLEFT", 2, -3)
+			experience:SetFrameLevel(Minimap:GetFrameLevel() + 1)
+			experience:SetFrameStrata(Minimap:GetFrameStrata())
 			
 			if C["unitframes"].combat == true then
 				experience:HookScript("OnEnter", function(self) E.Fader(self:GetParent(), true) end)
@@ -439,17 +440,20 @@ local function Shared(self, unit)
 			experience.backdrop:Point("TOPLEFT", experience, "TOPLEFT", -2, 2)
 			experience.backdrop:Point("BOTTOMRIGHT", experience, "BOTTOMRIGHT", 2, -2)
 			experience.backdrop:SetFrameLevel(experience:GetFrameLevel() - 1)
+			experience.backdrop:CreateShadow("Default")
+			experience.backdrop.shadow:SetFrameLevel(0)
 			self.Experience = experience
 		end
 		
 		if E.level == MAX_PLAYER_LEVEL then
 			local reputation = CreateFrame("StatusBar", nil, self)
 			reputation:SetStatusBarTexture(NORMTEX)
-			reputation:SetStatusBarColor(0, 0.4, 1, .8)
-			reputation:Size(PLAYER_WIDTH -(BORDER*2), POWERBAR_HEIGHT -(BORDER*2))
-			reputation:Point("TOPRIGHT", self, "BOTTOMRIGHT", -BORDER, -(BORDER*2+BORDER))
-			reputation:SetFrameStrata("LOW")
-
+			reputation:SetStatusBarColor(0, 1, 0.2, 1)
+			reputation:Size((E.minimapsize - 4) + 1 + (((E.minimapsize - 9) / 6)) + 4, 10)
+			reputation:Point("TOPLEFT", ElvuiMinimapStatsLeft, "BOTTOMLEFT", 2, -3)
+			reputation:SetFrameLevel(Minimap:GetFrameLevel() + 1)
+			reputation:SetFrameStrata(Minimap:GetFrameStrata())
+			
 			reputation.Tooltip = true
 			if C["unitframes"].combat == true then
 				reputation:HookScript("OnEnter", function(self) E.Fader(self:GetParent(), true) end)
@@ -461,6 +465,8 @@ local function Shared(self, unit)
 			reputation.backdrop:Point("TOPLEFT", reputation, "TOPLEFT", -2, 2)
 			reputation.backdrop:Point("BOTTOMRIGHT", reputation, "BOTTOMRIGHT", 2, -2)
 			reputation.backdrop:SetFrameLevel(reputation:GetFrameLevel() - 1)
+			reputation.backdrop:CreateShadow("Default")
+			reputation.backdrop.shadow:SetFrameLevel(0)			
 			self.Reputation = reputation
 		end
 

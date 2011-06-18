@@ -4,6 +4,8 @@ E.client = GetLocale()
 L.core_resowarning = "|cff1784d1ElvUI:|r the current resolution you are using (%s), is not your monitor's native resolution. To fix this problem please press escape go to video settings and set your resolution to %s."
 L.colorpicker_warning = "|cff1784d1ElvUI|r: Disable ColorPickerPlus AddOn, ElvUI includes the same functionality, type '/disable ColorPickerPlus'"
 
+L.openConfigTooltip = 'Open In-Game Config'
+
 -- localization for enUS and enGB
 L.chat_BATTLEGROUND_GET = "[B]"
 L.chat_BATTLEGROUND_LEADER_GET = "[B]"
