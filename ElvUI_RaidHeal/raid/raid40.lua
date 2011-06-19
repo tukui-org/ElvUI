@@ -6,7 +6,7 @@ assert(oUF, "ElvUI was unable to locate oUF.")
 if not C["raidframes"].enable == true then return end
 if IsAddOnLoaded("ElvUI_Dps_Layout") then return end
 
-local RAID_WIDTH = ((ElvuiActionBarBackground:GetWidth() / 5) - 2.5)*C["raidframes"].scale
+local RAID_WIDTH = (((ElvuiActionBarBackground:GetWidth() - (3*4)) / 5))*C["raidframes"].scale
 local RAID_HEIGHT = E.Scale(32)*C["raidframes"].scale
 
 local BORDER = 2

@@ -264,7 +264,7 @@ oUF:Factory(function(self)
 			'template', 'DPSPartyTarget'
 		)	
 	end
-	party:SetPoint("BOTTOMLEFT", ChatLBackground, "TOPLEFT", E.Scale(2), E.Scale(40))
+	party:Point("BOTTOMLEFT", ChatLBackground, "TOPLEFT", 0, 10)
 	
 	
 	local partyToggle = CreateFrame("Frame")
