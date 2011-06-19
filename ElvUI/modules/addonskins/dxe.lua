@@ -139,12 +139,12 @@ local function PositionDXEAnchor()
 	DXEAlertsTopStackAnchor:ClearAllPoints()
 	if E.CheckAddOnShown() == true then
 		if C["chat"].showbackdrop == true and E.ChatRightShown == true then
-			DXEAlertsTopStackAnchor:Point("TOP", ChatRBackground, "TOP", 12, 0)	
+			DXEAlertsTopStackAnchor:Point("TOP", ChatRBackground, "TOP", 16, 4)	
 		else
-			DXEAlertsTopStackAnchor:Point("TOP", ChatRBackground, "TOP", 12, -32)
+			DXEAlertsTopStackAnchor:Point("TOP", ChatRBackground, "TOP", 16, -28)
 		end	
 	else
-		DXEAlertsTopStackAnchor:Point("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -5, 8)		
+		DXEAlertsTopStackAnchor:Point("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -49, 25)		
 	end
 end
 

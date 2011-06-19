@@ -476,9 +476,9 @@ function Stuffing:CreateBagFrame(w)
 	f:SetFrameLevel(20)
 
 	if w == "Bank" then
-		f:SetPoint("BOTTOMLEFT", ChatLBackground, "BOTTOMLEFT")
+		f:SetPoint("BOTTOMLEFT", ChatLPlaceHolder, "BOTTOMLEFT", -7, 0)
 	else
-		f:SetPoint("BOTTOMRIGHT", ChatRBackground, "BOTTOMRIGHT")
+		f:SetPoint("BOTTOMRIGHT", ChatRPlaceHolder, "BOTTOMRIGHT", 7, 0)
 	end
 	
 	-- close button
@@ -852,7 +852,7 @@ function Stuffing:Layout(lb)
 		rows = rows + 1
 	end
 
-	f:SetWidth(E.Scale(C["chat"].chatwidth))
+	f:SetWidth(E.Scale(C["chat"].chatwidth) + 14)
 	f:SetHeight(E.Scale(rows * 31 + (rows - 1) * 4 + off + 12 * 2))
 
 	local bf = CreateFrame("Frame", "BagHolderFrame", f)
