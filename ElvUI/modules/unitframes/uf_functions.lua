@@ -268,19 +268,13 @@ E.LoadUFFunctions = function(layout)
 		icon.isStealable = isStealable
 		
 		if (unit and unit:find("arena%d")) then --Arena frames
-			if dtype then
-				if E.DebuffWhiteList[name] then
-					return true
-				else
-					return false
-				end			
+			if E.DebuffWhiteList[name] then
+				return true
+			elseif E.ArenaBuffWhiteList[name] then
+				return true
 			else
-				if E.ArenaBuffWhiteList[name] then
-					return true
-				else
-					return false
-				end		
-			end
+				return false
+			end	
 		elseif unit == "target" or (unit and unit:find("boss%d")) then --Target/Boss Only
 			if C["unitframes"].playerdebuffsonly == true then
 				-- Show all debuffs on friendly targets
