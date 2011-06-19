@@ -112,8 +112,8 @@ if ElvuiMinimap then
 		maptoggle.text:SetTextColor(unpack(C["media"].valuecolor))
 		maptoggle.text:SetPoint("CENTER")
 		maptoggle:SetScript("OnClick", function() ToggleFrame(WorldMapFrame) end)
-		WorldMapFrame:HookScript("OnShow", function() maptoggle.text:SetTextColor(1, 1, 1) end)
-		WorldMapFrame:HookScript("OnHide", function() maptoggle.text:SetTextColor(unpack(C["media"].valuecolor)) end)
+		WorldMapFrame:HookScript("OnShow", function() maptoggle.text:SetTextColor(unpack(C["media"].valuecolor)) end)
+		WorldMapFrame:HookScript("OnHide", function() maptoggle.text:SetTextColor(1, 1, 1) end)
 	end
 	
 	TukuiMinimapStatsLeft = ElvuiMinimapStatsLeft -- conversion
