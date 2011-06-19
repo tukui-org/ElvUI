@@ -30,7 +30,7 @@ L["General Settings"] = true
 	L["Upper Frame"] = true
 		L["Enable a bar accross the top of the screen, doing this will move the location and coords texts to that bar, and also allow for spaces nine and ten of the datatexts to be used."] = true
 	L["Lower Frame"] = true
-		L["Enable a bar accross the bottom of the screen, mostly for decoration."] = true
+		L["Enable a bar accross the bottom of the screen, doing this will allow for four extra datatext positions."] = true
 		
 --Media
 L["Media"] = true
@@ -324,6 +324,8 @@ L["Data Texts"] = true
 	L["DATATEXT_DESC"] = "Edit display of informational text on panels"
 	L["DATATEXT_POS"] = "\n\n0 - Disabled\n1 - LEFT PANEL, LEFT\n2 - LEFT PANEL, CENTER\n3 - LEFT PANEL, RIGHT\n4 - RIGHT PANEL, LEFT\n5 - RIGHT PANEL, CENTER\n6 - RIGHT PANEL, RIGHT\n7 - MINIMAP LEFT\n8 - MINIMAP RIGHT"
 	L["DATATEXT_POS2"] = "\n\n0 - Disabled\n1 - LEFT PANEL, LEFT\n2 - LEFT PANEL, CENTER\n3 - LEFT PANEL, RIGHT\n4 - RIGHT PANEL, LEFT\n5 - RIGHT PANEL, CENTER\n6 - RIGHT PANEL, RIGHT\n7 - MINIMAP LEFT\n8 - MINIMAP RIGHT\n9 - TOPBAR LEFT\n10 - TOPBAR RIGHT"
+	L["DATATEXT_POS3"] = "\n\n0 - Disabled\n1 - LEFT PANEL, LEFT\n2 - LEFT PANEL, CENTER\n3 - LEFT PANEL, RIGHT\n4 - RIGHT PANEL, LEFT\n5 - RIGHT PANEL, CENTER\n6 - RIGHT PANEL, RIGHT\n7 - MINIMAP LEFT\n8 - MINIMAP RIGHT\n9 - TOPBAR LEFT\n10 - TOPBAR RIGHT\n11 - BOTTOMBAR LEFT\n12 - BOTTOMBAR LEFT-MIDDLE\n13 - BOTTOMBAR RIGHT-MIDDLE\n14 - BOTTOMBAR RIGHT"
+	L["DATATEXT_POS4"] = "\n\n0 - Disabled\n1 - LEFT PANEL, LEFT\n2 - LEFT PANEL, CENTER\n3 - LEFT PANEL, RIGHT\n4 - RIGHT PANEL, LEFT\n5 - RIGHT PANEL, CENTER\n6 - RIGHT PANEL, RIGHT\n7 - MINIMAP LEFT\n8 - MINIMAP RIGHT\n9 - BOTTOMBAR LEFT\n10 - BOTTOMBAR LEFT-MIDDLE\n11 - BOTTOMBAR RIGHT-MIDDLE\n12 - BOTTOMBAR RIGHT"
 	L["Text Positions"] = true
 	L["Mastery Spell"] = true
 		L["Display the mastery spell on the mastery datatext"] = true

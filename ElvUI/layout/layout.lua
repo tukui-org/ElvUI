@@ -17,12 +17,7 @@ f:SetWidth(UIParent:GetWidth() + (E.mult * 2))
 f:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", -E.mult, -E.mult)
 f:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", E.mult, -E.mult)
 f:SetFrameStrata("BACKGROUND")
-f:SetFrameLevel(0)
-
-if C["general"].lowerpanel == true then	
-	f:SetTemplate("Transparent")
-	f:CreateShadow("Default")
-end
+f:SetFrameLevel(1)
 
 --TOP PANEL
 if C["general"].upperpanel == true then
@@ -334,3 +329,18 @@ inforight:SetPoint("BOTTOMRIGHT", chatrph, "BOTTOMRIGHT", E.Scale(-17), E.Scale(
 	
 TukuiInfoLeft = ElvuiInfoLeft -- conversion
 TukuiInfoRight = ElvuiInfoRight -- conversion	
+
+if C["general"].lowerpanel == true then	
+	ElvuiBottomPanel:SetTemplate("Transparent")
+	ElvuiBottomPanel:CreateShadow("Default")
+	
+	local f = CreateFrame("Frame", "ElvUILowerStatPanel", UIParent)
+	f:SetHeight(23)
+	f:Point("TOPRIGHT", ElvuiSplitActionBarRightBackground, "BOTTOMRIGHT", 0, -4)
+	f:Point("TOPLEFT", ElvuiSplitActionBarLeftBackground, "BOTTOMLEFT", 0, -4)
+	f:SetTemplate("Default", true)
+	f:SetFrameStrata("BACKGROUND")
+	f:SetFrameLevel(3)
+	f:CreateShadow("Default")
+	f.shadow:SetFrameLevel(0)
+end

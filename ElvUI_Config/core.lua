@@ -119,10 +119,14 @@ function ElvuiConfig.GenerateOptionsInternal()
 		timeout = 0,
 		whileDead = 1,
 	}
-
-	if C["general"].upperpanel == true then
+	
+	if C["general"].upperpanel == true and C["general"].lowerpanel == true then
+		L["DATATEXT_POS"] = L["DATATEXT_POS3"]	
+	elseif C["general"].upperpanel == true and C["general"].lowerpanel ~= true then
 		L["DATATEXT_POS"] = L["DATATEXT_POS2"]
-	end
+	elseif C["general"].lowerpanel == true and C["general"].upperpanel ~= true then
+		L["DATATEXT_POS"] = L["DATATEXT_POS4"]		
+	end	
 	
 	local RaidBuffs = {
 		["HealerBuffIDs"] = true,
@@ -596,7 +600,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 						order = 11,
 						type = "toggle",
 						name = L["Lower Frame"],
-						desc = L["Enable a bar accross the bottom of the screen, mostly for decoration."],					
+						desc = L["Enable a bar accross the bottom of the screen, doing this will allow for four extra datatext positions."],					
 					},
 				},
 			},
@@ -3045,12 +3049,18 @@ function ElvuiConfig.GenerateOptionsInternal()
 			},
 		},
 	}
-	
-	if C["general"].upperpanel == true then
+	if C["general"].upperpanel == true and C["general"].lowerpanel == true then
+		for _, option in pairs(ElvuiConfig.Options.args.datatext.args.DataGroup.args) do
+			option.max = 14
+		end
+	elseif C["general"].upperpanel == true and C["general"].lowerpanel ~= true then
 		for _, option in pairs(ElvuiConfig.Options.args.datatext.args.DataGroup.args) do
 			option.max = 10
 		end
-		L["DATATEXT_POS"] = L["DATATEXT_POS2"]
+	elseif C["general"].lowerpanel == true and C["general"].upperpanel ~= true then
+		for _, option in pairs(ElvuiConfig.Options.args.datatext.args.DataGroup.args) do
+			option.max = 12
+		end	
 	end
 end
 
