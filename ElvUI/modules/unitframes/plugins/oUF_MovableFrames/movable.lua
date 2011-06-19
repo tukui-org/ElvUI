@@ -295,8 +295,8 @@ do
 
 	function frame:VARIABLES_LOADED()
 		-- I honestly don't trust the load order of SVs.
-		_DB = ElvuiUFpos or {}
-		ElvuiUFpos = _DB
+		_DB = E.SavePath["UFPos"] or {}
+		E.SavePath["UFPos"] = _DB
 
 		-- Got to catch them all!
 		for _, obj in next, oUF.objects do
@@ -426,7 +426,7 @@ end
 
 -- reset data
 function E.ResetUF()
-	ElvuiUFpos = {}
+	E.SavePath["UFPos"] = {}
 end
 
 function E.MoveUF()

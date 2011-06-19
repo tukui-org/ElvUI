@@ -15,11 +15,7 @@ function E.Install()
 	end
 	
 	local function ResetUFPos()
-		if C["unitframes"].positionbychar == true then
-			ElvuiUFpos = {}
-		else
-			ElvuiData.ufpos = {}
-		end	
+		E.SavePath["UFPos"] = {}
 		print(L.ElvUIInstall_UFSet)
 	end
 	

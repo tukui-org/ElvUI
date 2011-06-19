@@ -13,15 +13,12 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	
 	if overlay == nil then overlay = true end
 	
-	if ElvuiData == nil then ElvuiData = {} end
-	if ElvuiData[E.myrealm] == nil then ElvuiData[E.myrealm] = {} end
-	if ElvuiData[E.myrealm][E.myname] == nil then ElvuiData[E.myrealm][E.myname] = {} end
-	if ElvuiData[E.myrealm][E.myname]["movers"] == nil then ElvuiData[E.myrealm][E.myname]["movers"] = {} end
-	if ElvuiData[E.myrealm][E.myname]["movers"][name] == nil then ElvuiData[E.myrealm][E.myname]["movers"][name] = {} end
-	ElvuiData["Movers"] = nil -- old
+	if not E.SavePath["movers"] then E.SavePath["movers"] = {} end
 	
-	E.Movers = ElvuiData[E.myrealm][E.myname]["movers"]
+	E.Movers = E.SavePath["movers"]
 	
+	if not E.Movers[name] then E.Movers[name] = {} end
+
 	local p, p2, p3, p4, p5 = parent:GetPoint()
 	
 	

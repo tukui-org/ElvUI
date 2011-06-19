@@ -91,12 +91,9 @@ barloader:SetScript("OnEvent", function(self, addon)
 	if not IsAddOnLoaded("ElvUI") then return end
 	self:UnregisterEvent("ADDON_LOADED")
 	
-	if ElvuiData == nil then ElvuiData = {} end
-	if ElvuiData[E.myrealm] == nil then ElvuiData[E.myrealm] = {} end
-	if ElvuiData[E.myrealm][E.myname] == nil then ElvuiData[E.myrealm][E.myname] = {} end
-	if ElvuiData[E.myrealm][E.myname]["actionbar"] == nil then ElvuiData[E.myrealm][E.myname]["actionbar"] = {} end
+	if E.SavePath["actionbar"] == nil then E.SavePath["actionbar"] = {} end
 	
-	E["actionbar"] = ElvuiData[E.myrealm][E.myname]["actionbar"]
+	E["actionbar"] = E.SavePath["actionbar"]
 	
 	--Default settings
 	if E["actionbar"].splitbar == nil then E["actionbar"].splitbar = true end

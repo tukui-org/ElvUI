@@ -3,9 +3,9 @@
 ## Version: 2.0.6
 ## Title: |cff1784d1ElvUI|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
-## SavedVariables: ElvuiData, ElvuiArena
-## SavedVariablesPerCharacter: ElvuiUFpos, ElementsPos
-## OptionalDeps: ElvUI_Config, SharedMedia, SharedMediaAdditionalFonts, Recount, Omen, Skada, Blizzard_CombatText, OptionHouse, ACP, Who Framed Watcher Wabbit, Aurora, !ClassColors, HealBot, Fux, OmniCC, ncCooldown, KLE, KLE_AutoRespond, DXE, DBM-Core, BigWigs
+## SavedVariables: ElvuiData
+## RequiredDeps: ElvUI_Config
+## OptionalDeps: SharedMedia, SharedMediaAdditionalFonts, Recount, Omen, Skada, Blizzard_CombatText, OptionHouse, ACP, Who Framed Watcher Wabbit, Aurora, !ClassColors, HealBot, Fux, OmniCC, ncCooldown, KLE, KLE_AutoRespond, DXE, DBM-Core, BigWigs
 ## X-oUF: ElvUF
 
 init.lua
