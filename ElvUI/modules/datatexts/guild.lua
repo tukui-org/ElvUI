@@ -43,6 +43,7 @@ Text:SetShadowOffset(E.mult, -E.mult)
 Text:SetShadowColor(0, 0, 0, 0.4)
 E.PP(C["datatext"].guild, Text)
 Stat:SetAllPoints(Text)
+Stat:SetParent(Text:GetParent())
 
 local function SortGuildTable(shift)
 	sort(guildTable, function(a, b)

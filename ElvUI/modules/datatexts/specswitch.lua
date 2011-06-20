@@ -15,6 +15,7 @@ Text:SetFont(C["media"].font, C["datatext"].fontsize, "THINOUTLINE")
 Text:SetShadowOffset(E.mult, -E.mult)
 Text:SetShadowColor(0, 0, 0, 0.4)
 E.PP(C["datatext"].specswitch, Text)
+Stat:SetParent(Text:GetParent())
 
 local talent = {}
 local active
@@ -71,7 +72,7 @@ local function OnEvent(self, event, ...)
 
 	-- Setup Talents Tooltip
 	self:SetAllPoints(Text)
-
+	
 	-- update datatext
 	if event ~= "PLAYER_ENTERING_WORLD" then
 		self:SetScript("OnUpdate", Update)

@@ -20,9 +20,10 @@ if C["datatext"].dps_text and C["datatext"].dps_text > 0 then
 	dText:SetShadowOffset(E.mult, -E.mult)
 	dText:SetShadowColor(0, 0, 0, 0.4)
 	dText:SetText("DPS: "..E.ValColor.."0.0|r")
-
+	
 	E.PP(C["datatext"].dps_text, dText)
-
+	DPS_FEED:SetParent(dText:GetParent())
+	
 	DPS_FEED:EnableMouse(true)
 	DPS_FEED:SetFrameStrata("MEDIUM")
 	DPS_FEED:SetFrameLevel(3)

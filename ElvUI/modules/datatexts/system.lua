@@ -16,6 +16,7 @@ Text:SetFont(C["media"].font, C["datatext"].fontsize, "THINOUTLINE")
 Text:SetShadowOffset(E.mult, -E.mult)
 Text:SetShadowColor(0, 0, 0, 0.4)
 E.PP(C["datatext"].system, Text)
+Stat:SetParent(Text:GetParent())
 
 local bandwidthString = "%.2f Mbps"
 local percentageString = "%.2f%%"

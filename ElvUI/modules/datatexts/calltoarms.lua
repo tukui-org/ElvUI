@@ -15,6 +15,7 @@ if C["datatext"].calltoarms and C["datatext"].calltoarms > 0 then
 	Text:SetShadowOffset(E.mult, -E.mult)
 	Text:SetShadowColor(0, 0, 0, 0.4)
 	E.PP(C["datatext"].calltoarms, Text)
+	Stat:SetParent(Text:GetParent())
 	
 	local TANK_ICON = "|TInterface\\LFGFRAME\\UI-LFG-ICON-PORTRAITROLES.blp:14:14:0:0:64:64:0:18:22:40|t"
 	local HEALER_ICON = "|TInterface\\LFGFRAME\\UI-LFG-ICON-PORTRAITROLES.blp:14:14:0:0:64:64:20:38:1:19|t"

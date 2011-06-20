@@ -13,6 +13,7 @@ local Text  = ElvuiInfoLeft:CreateFontString(nil, "LOW")
 Text:SetFont(C["media"].font, C["datatext"].fontsize, "THINOUTLINE")
 Text:SetShadowOffset(E.mult, -E.mult)
 E.PP(C["datatext"].manaregen, Text)
+Stat:SetParent(Text:GetParent())
 
 local _G = getfenv(0)
 local format = string.format

@@ -340,17 +340,36 @@ TukuiInfoRight = ElvuiInfoRight -- conversion
 if C["general"].lowerpanel == true then	
 	ElvuiBottomPanel:SetTemplate("Transparent")
 	ElvuiBottomPanel:CreateShadow("Default")
-	
+
 	local yoffset = 0
-	if C["actionbar"].bottompetbar == true then yoffset = yoffset + 42 end
-	
+	if C["actionbar"].bottompetbar == true then yoffset = yoffset + 42 end		
 	local f = CreateFrame("Frame", "ElvUILowerStatPanel", UIParent)
 	f:SetHeight(23)
-	f:Point("TOPRIGHT", ElvuiSplitActionBarRightBackground, "BOTTOM", 0, -(4 + yoffset))
-	f:Point("TOPLEFT", ElvuiSplitActionBarLeftBackground, "BOTTOM", 0, -(4 + yoffset))
+	f:Point("TOPRIGHT", ElvuiActionBarBackground, "BOTTOMRIGHT", 0, -(4 + yoffset))
+	f:Point("TOPLEFT", ElvuiActionBarBackground, "BOTTOMLEFT", 0, -(4 + yoffset))		
 	f:SetTemplate("Default", true)
 	f:SetFrameStrata("BACKGROUND")
 	f:SetFrameLevel(3)
 	f:CreateShadow("Default")
 	f.shadow:SetFrameLevel(0)
+	
+	local f = CreateFrame("Frame", "ElvUILowerStatPanelLeft", ElvuiSplitActionBarLeftBackground)
+	f:SetHeight(23)
+	f:Point("TOPRIGHT", ElvuiSplitActionBarLeftBackground, "BOTTOMRIGHT", 0, -(4 + yoffset))
+	f:Point("TOPLEFT", ElvuiSplitActionBarLeftBackground, "BOTTOMLEFT", 0, -(4 + yoffset))		
+	f:SetTemplate("Default", true)
+	f:SetFrameStrata("BACKGROUND")
+	f:SetFrameLevel(3)
+	f:CreateShadow("Default")
+	f.shadow:SetFrameLevel(0)	
+	
+	local f = CreateFrame("Frame", "ElvUILowerStatPanelRight", ElvuiSplitActionBarRightBackground)
+	f:SetHeight(23)
+	f:Point("TOPRIGHT", ElvuiSplitActionBarRightBackground, "BOTTOMRIGHT", 0, -(4 + yoffset))
+	f:Point("TOPLEFT", ElvuiSplitActionBarRightBackground, "BOTTOMLEFT", 0, -(4 + yoffset))		
+	f:SetTemplate("Default", true)
+	f:SetFrameStrata("BACKGROUND")
+	f:SetFrameLevel(3)
+	f:CreateShadow("Default")
+	f.shadow:SetFrameLevel(0)	
 end

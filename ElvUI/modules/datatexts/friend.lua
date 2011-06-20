@@ -40,6 +40,7 @@ Text:SetFont(C["media"].font, C["datatext"].fontsize, "THINOUTLINE")
 Text:SetShadowColor(0, 0, 0, 0.4)
 Text:SetShadowOffset(E.mult, -E.mult)
 E.PP(C["datatext"].friends, Text)
+Stat:SetParent(Text:GetParent())
 
 local menuFrame = CreateFrame("Frame", "ElvuiFriendRightClickMenu", UIParent, "UIDropDownMenuTemplate")
 local menuList = {

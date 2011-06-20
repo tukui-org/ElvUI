@@ -19,7 +19,7 @@ if C["datatext"].hps_text and C["datatext"].hps_text > 0 then
 	hText:SetText("HPS: "..E.ValColor.."0.0")
  
 	E.PP(C["datatext"].hps_text, hText)
- 
+	HPS_FEED:SetParent(hText:GetParent())
 	HPS_FEED:EnableMouse(true)
 	HPS_FEED:SetFrameStrata("MEDIUM")
 	HPS_FEED:SetFrameLevel(3)

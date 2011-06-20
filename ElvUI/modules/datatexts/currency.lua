@@ -17,6 +17,7 @@ if C["datatext"].currency and C["datatext"].currency > 0 then
 	Text:SetShadowOffset(E.mult, -E.mult)
 	Text:SetShadowColor(0, 0, 0, 0.4)
 	E.PP(C["datatext"].currency, Text)
+	Stat:SetParent(Text:GetParent())
 	
 	local function update()
 		local _text = "---"
