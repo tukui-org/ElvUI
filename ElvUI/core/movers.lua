@@ -23,7 +23,11 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	end
 	
 	local f = CreateFrame("Frame", nil, UIParent)
-	f:SetPoint(p, p2, p3, p4, p5)
+	if E["Movers"] and E["Movers"][name] then
+		f:SetPoint(E["Movers"][name]["p"], UIParent, E["Movers"][name]["p2"], E["Movers"][name]["p3"], E["Movers"][name]["p4"])
+	else
+		f:SetPoint(p, p2, p3, p4, p5)
+	end
 	f:SetWidth(parent:GetWidth())
 	f:SetHeight(parent:GetHeight())
 
@@ -31,6 +35,7 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	f2:SetFrameLevel(parent:GetFrameLevel() + 1)
 	f2:SetWidth(parent:GetWidth())
 	f2:SetHeight(parent:GetHeight())
+	
 	if overlay == true then
 		f2:SetFrameStrata("DIALOG")
 	else
@@ -62,6 +67,8 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 		if postdrag ~= nil and type(postdrag) == 'function' then
 			postdrag(self)
 		end
+		
+		self:SetUserPlaced(false)
 	end)	
 	
 	parent:ClearAllPoints()
@@ -69,12 +76,7 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	parent.ClearAllPoints = E.dummy
 	parent.SetAllPoints = E.dummy
 	parent.SetPoint = E.dummy
-	
-	if E.Movers and E.Movers[name] then
-		f:ClearAllPoints()
-		f:SetPoint(E.Movers[name]["p"], UIParent, E.Movers[name]["p3"], E.Movers[name]["p4"], E.Movers[name]["p5"])
-	end
-	
+
 	local fs = f2:CreateFontString(nil, "OVERLAY")
 	fs:SetFont(C["media"].font, C["general"].fontscale, "THINOUTLINE")
 	fs:SetShadowOffset(E.mult*1.2, -E.mult*1.2)

@@ -20,9 +20,12 @@ local function CreateFrameOverlay(parent, name)
 		E["elements"][name] = nil
 	end	
 
-	
 	local f2 = CreateFrame("Frame", nil, UIParent)
-	f2:SetPoint(p, p2, p3, p4, p5)
+	if E["elements"] and E["elements"][name] then
+		f2:SetPoint(E["elements"][name]["p"], UIParent, E["elements"][name]["p2"], E["elements"][name]["p3"], E["elements"][name]["p4"])
+	else
+		f2:SetPoint(p, p2, p3, p4, p5)
+	end
 	f2:SetWidth(parent:GetWidth())
 	f2:SetHeight(parent:GetHeight())
 	
@@ -63,6 +66,8 @@ local function CreateFrameOverlay(parent, name)
 		E["elements"][name]["p2"] = p2
 		E["elements"][name]["p3"] = p3
 		E["elements"][name]["p4"] = p4
+		
+		self:SetUserPlaced(false)
 	end)
 		
 	local x = tostring(name)
@@ -79,11 +84,9 @@ local function CreateFrameOverlay(parent, name)
 	
 	parent:ClearAllPoints()
 	parent:SetAllPoints(f)
-	
-	if E["elements"] and E["elements"][name] then
-		f2:ClearAllPoints()
-		f2:SetPoint(E["elements"][name]["p"], UIParent, E["elements"][name]["p3"], E["elements"][name]["p4"], E["elements"][name]["p5"])
-	end
+	parent.ClearAllPoints = E.dummy
+	parent.SetAllPoints = E.dummy
+	parent.SetPoint = E.dummy
 	
 	local fs = f:CreateFontString(nil, "OVERLAY")
 	fs:SetFont(C["media"].font, C["unitframes"].auratextscale, "THINOUTLINE")
@@ -124,7 +127,9 @@ local function ShowCBOverlay()
 			_G[frame.."Move"] = false
 			_G[frame]:SetAlpha(0)
 			_G[frame]:EnableMouse(false)
-			StaticPopup_Show("RELOAD_UI")
+			if (E["elements"] and E["elements"]["DPSComboBar"] and ElvDPS_target) or (E["elements"] and E["elements"]["HealComboBar"] and ElvHeal_target) then
+				StaticPopup_Show("RELOAD_UI")
+			end
 		end
 	end
 end
