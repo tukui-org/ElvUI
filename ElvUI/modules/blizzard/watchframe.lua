@@ -23,7 +23,7 @@ local function init()
 end
 
 function E.PostWatchMove()
-	if E.Movers and not E.Movers["WatchFrameMover"] then
+	if E.Movers and not E.Movers["WatchFrameMover"] or not E.Movers then
 		E.PositionWatchFrame()
 	end
 end
