@@ -426,7 +426,7 @@ end
 
 -- reset data
 function E.ResetUF()
-	E.SavePath["UFPos"] = {}
+	E.SavePath["UFPos"] = nil
 end
 
 function E.MoveUF()

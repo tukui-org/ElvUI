@@ -57,7 +57,7 @@ local function SetRightTooltipPos(self)
 			self:SetPoint("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", -1, E.Scale(18))	
 		elseif #ContainerFrame1.bags > 0 and _G[ContainerFrame1.bags[#ContainerFrame1.bags]]:IsShown() then
 			self:Point("BOTTOMRIGHT", _G[ContainerFrame1.bags[#ContainerFrame1.bags]], "TOPRIGHT", -2, 18)
-		elseif TooltipMover and E.Movers["TooltipMover"]["moved"] == true then
+		elseif TooltipMover and E.Movers and E.Movers["TooltipMover"] then
 			local point, _, _, _, _ = TooltipMover:GetPoint()
 			if point == "TOPLEFT" then
 				self:SetPoint("TOPLEFT", TooltipMover, "BOTTOMLEFT", 1, E.Scale(-4))

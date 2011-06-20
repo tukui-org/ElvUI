@@ -15,7 +15,7 @@ function E.Install()
 	end
 	
 	local function ResetUFPos()
-		E.SavePath["UFPos"] = {}
+		E.SavePath["UFPos"] = nil
 		print(L.ElvUIInstall_UFSet)
 	end
 	

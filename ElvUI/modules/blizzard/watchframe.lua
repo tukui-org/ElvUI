@@ -23,16 +23,16 @@ local function init()
 end
 
 function E.PostWatchMove()
-	if E.Movers["WatchFrameMover"]["moved"] ~= true then
+	if E.Movers and not E.Movers["WatchFrameMover"] then
 		E.PositionWatchFrame()
 	end
 end
 
 function E.PositionWatchFrame()
-	if fired == true and E.Movers["WatchFrameMover"]["moved"] == true then return end
+	if fired == true and E.Movers and E.Movers["WatchFrameMover"] then return end
 	
 	if WatchFrameMover then
-		if E.Movers["WatchFrameMover"]["moved"] == true then return end
+		if E.Movers and E.Movers["WatchFrameMover"] then return end
 		
 		WatchFrameMover:ClearAllPoints()
 		if E.actionbar then	

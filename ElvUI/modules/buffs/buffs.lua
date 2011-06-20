@@ -230,7 +230,7 @@ function E.AurasPostDrag(frame)
 	UpdateBuffAnchors()
 	BuffFrame_UpdateAllBuffAnchors()
 	
-	if E.Movers["AurasMover"]["moved"] ~= true then
+	if E.Movers and not E.Movers["AurasMover"] then
 		AurasMover:ClearAllPoints()
 		AurasMover:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", E.Scale(-8), E.Scale(2))
 	end

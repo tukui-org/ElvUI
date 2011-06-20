@@ -1112,7 +1112,7 @@ local function Shared(self, unit)
 			the combobar is movable with the /moveele command, this should make it work correctly only 
 			after a reloadui.]]
 			combo:HookScript("OnShow", function()		
-				if E["elements"] and DPSComboBar and E["elements"]["DPSComboBar"]["moved"] == true and E.CreatedMoveEleFrames["DPSComboBar"] then return end
+				if E["elements"] and DPSComboBar and E["elements"]["DPSComboBar"] and E.CreatedMoveEleFrames["DPSComboBar"] then return end
 				combo:ClearAllPoints()
 				combo:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
 				
@@ -1123,7 +1123,7 @@ local function Shared(self, unit)
 			end)
 		else
 			combo:HookScript("OnShow", function()
-				if E["elements"] and DPSComboBar and E["elements"]["DPSComboBar"]["moved"] == true and E.CreatedMoveEleFrames["DPSComboBar"] then return end
+				if E["elements"] and DPSComboBar and E["elements"]["DPSComboBar"] and E.CreatedMoveEleFrames["DPSComboBar"] then return end
 				combo:ClearAllPoints()
 				combo:Point("CENTER", health.backdrop, "TOP", -(BORDER*3 + 6), 0)
 
