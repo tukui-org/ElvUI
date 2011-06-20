@@ -14,6 +14,7 @@ local function CreateFrameOverlay(parent, name)
 	HealElementsCharPos = nil
 	
 	local p, p2, p3, p4, p5 = parent:GetPoint()
+	E["elements"] = E.SavePath["elements"]
 	if E["elements"] == {} then E["elements"] = nil end
 	if E["elements"] and E["elements"][name] == {} or (E["elements"] and E["elements"][name] and E["elements"][name]["moved"] == false) then 
 		E["elements"][name] = nil

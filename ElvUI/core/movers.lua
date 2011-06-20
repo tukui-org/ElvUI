@@ -15,6 +15,8 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	
 	local p, p2, p3, p4, p5 = parent:GetPoint()
 	
+	E.Movers = E.SavePath["movers"]
+	
 	if E.Movers == {} then E.Movers = nil end
 	if E.Movers and E.Movers[name] == {} or (E.Movers and E.Movers[name] and E.Movers[name]["moved"] == false) then 
 		E.Movers[name] = nil
