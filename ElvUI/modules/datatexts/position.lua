@@ -8,13 +8,13 @@ function E.PP(p, obj)
 	local right = ElvuiInfoRight
 	local mapleft = ElvuiMinimapStatsLeft
 	local mapright = ElvuiMinimapStatsRight
-	local t, bottom, x, bottomleft, bottomright
+	local t, x, bottom, bottomleft, bottomright
 	
 	if ElvUILowerStatPanel then
 		bottom = ElvUILowerStatPanel
 		bottomleft = ElvUILowerStatPanelLeft
 		bottomright = ElvUILowerStatPanelRight
-		x = bottom:GetWidth()/5	
+		x = ElvUILowerStatPanel:GetWidth()/3
 	end
 	
 	if obj:GetParent():GetName() == "TimeDataText" or obj:GetParent():GetName() == "DurabilityDataText" then t = true else t = false end
@@ -85,11 +85,11 @@ function E.PP(p, obj)
 			if t ~= true then obj:SetParent(bottomleft) else obj:GetParent():SetParent(bottomleft) end
 		elseif p == 12 then
 			obj:SetHeight(bottom:GetHeight())
-			obj:SetPoint('CENTER', bottom, -E.Scale(0.5 * x), 0)
+			obj:SetPoint('CENTER', bottom, 'LEFT', x, 0)
 			if t ~= true then obj:SetParent(bottom) else obj:GetParent():SetParent(bottom) end
 		elseif p == 13 then
 			obj:SetHeight(bottom:GetHeight())
-			obj:SetPoint('CENTER', bottom, E.Scale(0.5 * x), 0)
+			obj:SetPoint('CENTER', bottom, 'RIGHT', -x, 0)
 			if t ~= true then obj:SetParent(bottom) else obj:GetParent():SetParent(bottom) end
 		elseif p == 14 then
 			obj:SetHeight(bottomright:GetHeight())
@@ -105,11 +105,11 @@ function E.PP(p, obj)
 			if t ~= true then obj:SetParent(bottomleft) else obj:GetParent():SetParent(bottomleft) end
 		elseif p == 10 then
 			obj:SetHeight(bottom:GetHeight())
-			obj:SetPoint('CENTER', bottom, -E.Scale(0.9 * x), 0)
+			obj:SetPoint('CENTER', bottom, 'LEFT', x, 0)
 			if t ~= true then obj:SetParent(bottom) else obj:GetParent():SetParent(bottom) end
 		elseif p == 11 then
 			obj:SetHeight(bottom:GetHeight())
-			obj:SetPoint('CENTER', bottom, E.Scale(0.9 * x), 0)
+			obj:SetPoint('CENTER', bottom, 'RIGHT', -x, 0)
 			if t ~= true then obj:SetParent(bottom) else obj:GetParent():SetParent(bottom) end
 		elseif p == 12 then
 			obj:SetHeight(bottomright:GetHeight())
