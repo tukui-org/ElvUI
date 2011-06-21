@@ -325,7 +325,8 @@ E.LoadUFFunctions = function(layout)
 				health:GetParent().Portrait.backdrop:SetBackdropBorderColor(r, g, b)
 			end
 		end
-		
+	
+
 		if C["unitframes"].classcolor == true and C["unitframes"].healthcolorbyvalue == true and not (UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit)) then
 			local newr, newg, newb = ElvUF.ColorGradient(min / max, 1, 0, 0, 1, 1, 0, r, g, b)
 	
@@ -333,6 +334,20 @@ E.LoadUFFunctions = function(layout)
 			if health.bg and health.bg.multiplier then
 				local mu = health.bg.multiplier
 				health.bg:SetVertexColor(newr * mu, newg * mu, newb * mu)
+			end
+		end
+
+		if C["unitframes"].classcolorbackdrop == true then
+			local t
+				if UnitIsPlayer(unit) then
+					local _, class = UnitClass(unit)
+					t = health:GetParent().colors.class[class]
+				elseif UnitReaction(unit, 'player') then
+					t = health:GetParent().colors.reaction[UnitReaction(unit, "player")]
+				end
+				
+			if t then
+				health.bg:SetVertexColor(t[1], t[2], t[3])
 			end
 		end
 		
