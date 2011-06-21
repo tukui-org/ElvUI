@@ -222,7 +222,7 @@ chatrbgdummy:Point("CENTER", chatrph, "CENTER")
 E.ChatRightShown = true
 
 if C["chat"].showbackdrop == true then
-	local chatlbg = CreateFrame("Frame", "ChatLBG", ChatLBackground)
+	local chatlbg = CreateFrame("Frame", "ChatLBG", chatlbgdummy)
 	chatlbg:SetTemplate("Transparent")
 	chatlbg:SetAllPoints(chatlbgdummy)
 	chatlbg:SetFrameStrata("LOW")
@@ -237,7 +237,7 @@ if C["chat"].showbackdrop == true then
 end
 
 if C["chat"].showbackdrop == true then
-	local chatrbg = CreateFrame("Frame", "ChatRBG", ChatRBackground)
+	local chatrbg = CreateFrame("Frame", "ChatRBG", chatrbgdummy)
 	chatrbg:SetAllPoints(chatrbgdummy)
 	chatrbg:SetTemplate("Transparent")
 	chatrbg:SetFrameStrata("LOW")

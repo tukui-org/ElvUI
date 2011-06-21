@@ -206,7 +206,7 @@ hooksecurefunc("DebuffButton_UpdateAnchors", UpdateDebuffAnchors)
 
 function E.AurasPostDrag(frame)
 	local point = select(1, frame:GetPoint())
-	
+
 	if string.find(point, "LEFT") then
 		TempEnchant1:ClearAllPoints()
 		TempEnchant2:ClearAllPoints()

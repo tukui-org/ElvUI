@@ -22,34 +22,29 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 		E.Movers[name] = nil
 	end
 	
-	local f = CreateFrame("Frame", nil, UIParent)
+	local f = CreateFrame("Button", name, UIParent)
+	f:SetFrameLevel(parent:GetFrameLevel() + 1)
+	f:SetWidth(parent:GetWidth())
+	f:SetHeight(parent:GetHeight())
+	
+	if overlay == true then
+		f:SetFrameStrata("DIALOG")
+	else
+		f:SetFrameStrata("BACKGROUND")
+	end
 	if E["Movers"] and E["Movers"][name] then
 		f:SetPoint(E["Movers"][name]["p"], UIParent, E["Movers"][name]["p2"], E["Movers"][name]["p3"], E["Movers"][name]["p4"])
 	else
 		f:SetPoint(p, p2, p3, p4, p5)
 	end
-	f:SetWidth(parent:GetWidth())
-	f:SetHeight(parent:GetHeight())
-
-	local f2 = CreateFrame("Button", name, UIParent)
-	f2:SetFrameLevel(parent:GetFrameLevel() + 1)
-	f2:SetWidth(parent:GetWidth())
-	f2:SetHeight(parent:GetHeight())
-	
-	if overlay == true then
-		f2:SetFrameStrata("DIALOG")
-	else
-		f2:SetFrameStrata("BACKGROUND")
-	end
-	f2:SetPoint("CENTER", f, "CENTER")
-	f2:SetTemplate("Default", true)
-	f2:RegisterForDrag("LeftButton", "RightButton")
-	f2:SetScript("OnDragStart", function(self) 
+	f:SetTemplate("Default", true)
+	f:RegisterForDrag("LeftButton", "RightButton")
+	f:SetScript("OnDragStart", function(self) 
 		if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end
 		self:StartMoving() 
 	end)
 	
-	f2:SetScript("OnDragStop", function(self) 
+	f:SetScript("OnDragStop", function(self) 
 		if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end
 		self:StopMovingOrSizing()
 		
@@ -72,37 +67,37 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	end)	
 	
 	parent:ClearAllPoints()
-	parent:SetPoint(p3, f2, p3, 0, 0)
+	parent:SetPoint(p3, f, p3, 0, 0)
 	parent.ClearAllPoints = E.dummy
 	parent.SetAllPoints = E.dummy
 	parent.SetPoint = E.dummy
 
-	local fs = f2:CreateFontString(nil, "OVERLAY")
+	local fs = f:CreateFontString(nil, "OVERLAY")
 	fs:SetFont(C["media"].font, C["general"].fontscale, "THINOUTLINE")
 	fs:SetShadowOffset(E.mult*1.2, -E.mult*1.2)
 	fs:SetJustifyH("CENTER")
 	fs:SetPoint("CENTER")
 	fs:SetText(text or name)
 	fs:SetTextColor(unpack(C["media"].valuecolor))
-	f2:SetFontString(fs)
-	f2.text = fs
+	f:SetFontString(fs)
+	f.text = fs
 	
-	f2:SetScript("OnEnter", function(self) 
+	f:SetScript("OnEnter", function(self) 
 		self.text:SetTextColor(1, 1, 1)
 		self:SetBackdropBorderColor(unpack(C["media"].valuecolor))
 	end)
-	f2:SetScript("OnLeave", function(self)
+	f:SetScript("OnLeave", function(self)
 		self.text:SetTextColor(unpack(C["media"].valuecolor))
 		self:SetTemplate("Default", true)
 	end)
 	
-	f2:SetMovable(true)
-	f2:Hide()	
+	f:SetMovable(true)
+	f:Hide()	
 	
 	if postdrag ~= nil and type(postdrag) == 'function' then
 		f:RegisterEvent("PLAYER_ENTERING_WORLD")
 		f:SetScript("OnEvent", function(self, event)
-			postdrag(f2)
+			postdrag(f)
 			self:UnregisterAllEvents()
 		end)
 	end	
