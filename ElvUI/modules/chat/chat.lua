@@ -396,14 +396,7 @@ local isf = nil
 
 local function CreatCopyFrame()
 	frame = CreateFrame("Frame", "CopyFrame", UIParent)
-	frame:SetBackdrop({
-			bgFile = C["media"].blank, 
-			edgeFile = C["media"].blank, 
-			tile = 0, tileSize = 0, edgeSize = E.mult, 
-			insets = { left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult }
-	})
-	frame:SetBackdropColor(unpack(C["media"].backdropcolor))
-	frame:SetBackdropBorderColor(unpack(C["media"].bordercolor))
+	frame:SetTemplate('Transparent')
 	frame:SetHeight(E.Scale(200))
 	frame:SetScale(1)
 	frame:SetPoint("BOTTOMLEFT", ElvuiSplitActionBarLeftBackground, "BOTTOMLEFT", 0, 0)
@@ -484,16 +477,10 @@ function E.ChatCopyButtons(id)
 		button:SetPoint("TOPRIGHT", 0, 0)
 		button:SetTemplate("Default", true)
 		
-		local buttontext = button:CreateFontString(nil,"OVERLAY",nil)
-		buttontext:SetFont(C["media"].font,C["general"].fontscale,"THINOUTLINE")
-		buttontext:SetShadowColor(0, 0, 0, 0.4)
-		buttontext:SetShadowOffset(E.mult, -E.mult)
-		buttontext:SetText("C")
-		buttontext:SetPoint("CENTER", E.Scale(1), 0)
-		buttontext:SetJustifyH("CENTER")
-		buttontext:SetJustifyV("CENTER")
-		buttontext:SetTextColor(unpack(C["media"].valuecolor))
-		
+		local buttontex = button:CreateTexture(nil, 'OVERLAY')
+		buttontex:SetPoint('TOPLEFT', button, 'TOPLEFT', 2, -2)
+		buttontex:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', -2, 2)
+		buttontex:SetTexture([[Interface\AddOns\ElvUI\media\textures\copy.tga]])
 		
 		if id == 1 then
 			button:SetScript("OnMouseUp", function(self, btn)
