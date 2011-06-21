@@ -502,6 +502,26 @@ E.LoadUFFunctions = function(layout)
 		end
 	end
 	
+	E.RoleIconUpdate = function(self, event)
+		local lfdrole = self.LFDRole
+
+		local role = UnitGroupRolesAssigned(self.unit)
+
+		if(role == 'TANK' or role == 'HEALER' or role == 'DAMAGER') and UnitIsConnected(self.unit) then
+			if role == 'TANK' then
+				lfdrole:SetTexture([[Interface\AddOns\ElvUI\media\textures\tank.tga]])
+			elseif role == 'HEALER' then
+				lfdrole:SetTexture([[Interface\AddOns\ElvUI\media\textures\healer.tga]])
+			elseif role == 'DAMAGER' then
+				lfdrole:SetTexture([[Interface\AddOns\ElvUI\media\textures\dps.tga]])
+			end
+			
+			lfdrole:Show()
+		else
+			lfdrole:Hide()
+		end	
+	end
+	
 	E.UpdateShards = function(self, event, unit, powerType)
 		if(self.unit ~= unit or (powerType and powerType ~= 'SOUL_SHARDS')) then return end
 		local num = UnitPower(unit, SPELL_POWER_SOUL_SHARDS)

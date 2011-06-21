@@ -70,10 +70,11 @@ local function Shared(self, unit)
 
 	if C["raidframes"].role == true then
 		local LFDRole = self:CreateTexture(nil, "OVERLAY")
-		LFDRole:Size(6, 6)
+		LFDRole:Size(17, 17)
 		LFDRole:Point("TOP", self.Name, "BOTTOM", 0, -1)
-		LFDRole:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\lfdicons.blp")
-		self.LFDRole = LFDRole
+		self:RegisterEvent("UNIT_CONNECTION", E.RoleIconUpdate)
+		LFDRole.Override = E.RoleIconUpdate
+		self.LFDRole = LFDRole		
 	end
 	
 	--Aggro Glow

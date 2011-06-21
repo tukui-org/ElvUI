@@ -103,13 +103,14 @@ local function Shared(self, unit)
 
 	if C["raidframes"].role == true then
 		local LFDRole = self:CreateTexture(nil, "OVERLAY")
-		LFDRole:Size(6, 6)
+		LFDRole:Size(17, 17)
+		LFDRole.Override = E.RoleIconUpdate
 		if C["raidframes"].griddps ~= true then
 			LFDRole:Point("TOPRIGHT", self.Health, "TOPRIGHT", -2, -2)
 		else
 			LFDRole:Point("TOP", self.Name, "BOTTOM", 0, -1)
 		end
-		LFDRole:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\lfdicons.blp")
+		self:RegisterEvent("UNIT_CONNECTION", E.RoleIconUpdate)
 		self.LFDRole = LFDRole
 	end
 	
