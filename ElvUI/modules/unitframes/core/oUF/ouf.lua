@@ -88,7 +88,7 @@ for k, v in pairs{
 		argcheck(unit, 3, 'string', 'nil')
 
 		local element = elements[name]
-		if(not element) then return end
+		if(not element or self:IsElementEnabled(name)) then return end
 
 		if(element.enable(self, unit or self.unit)) then
 			table.insert(self.__elements, element.update)
@@ -97,23 +97,32 @@ for k, v in pairs{
 
 	DisableElement = function(self, name)
 		argcheck(name, 2, 'string')
+
+		local enabled, k = self:IsElementEnabled(name)
+		if(not enabled) then return end
+
+		table.remove(self.__elements, k)
+
+		-- We need to run a new update cycle incase we knocked ourself out of sync.
+		-- The main reason we do this is to make sure the full update is completed
+		-- if an element for some reason removes itself _during_ the update
+		-- progress.
+		self:UpdateAllElements('DisableElement', name)
+
+		return elements[name].disable(self)
+	end,
+
+	IsElementEnabled = function(self, name)
+		argcheck(name, 2, 'string')
+
 		local element = elements[name]
 		if(not element) then return end
 
 		for k, update in next, self.__elements do
 			if(update == element.update) then
-				table.remove(self.__elements, k)
-
-				-- We need to run a new update cycle incase we knocked ourself out of sync.
-				-- The main reason we do this is to make sure the full update is completed
-				-- if an element for some reason removes itself _during_ the update
-				-- progress.
-				self:UpdateAllElements('DisableElement', name)
-				break
+				return true, k
 			end
 		end
-
-		return element.disable(self)
 	end,
 
 	Enable = RegisterUnitWatch,

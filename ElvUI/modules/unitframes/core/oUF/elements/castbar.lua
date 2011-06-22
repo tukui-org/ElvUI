@@ -187,6 +187,12 @@ local UNIT_SPELLCAST_CHANNEL_START = function(self, event, unit, spellname)
 	castbar.channeling = true
 	castbar.interrupt = interrupt
 
+	-- We have to do this, as it's possible for spell casts to never have _STOP
+	-- executed or be fully completed by the OnUpdate handler before CHANNEL_START
+	-- is called.
+	castbar.casting = nil
+	castbar.castid = nil
+
 	castbar:SetMinMaxValues(0, max)
 	castbar:SetValue(duration)
 
@@ -341,7 +347,10 @@ local onUpdate = function(self, elapsed)
 		end
 	else
 		self.unitName = nil
+		self.casting = nil
+		self.castid = nil
 		self.channeling = nil
+
 		self:SetValue(1)
 		self:Hide()
 	end

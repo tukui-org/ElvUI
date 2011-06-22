@@ -10,8 +10,9 @@ local Update = function(self, event, unit)
 	unit = unit or self.unit
 	local status = UnitThreatSituation(unit)
 
+	local r, g, b
 	if(status and status > 0) then
-		local r, g, b = GetThreatStatusColor(status)
+		r, g, b = GetThreatStatusColor(status)
 		threat:SetVertexColor(r, g, b)
 		threat:Show()
 	else
@@ -19,7 +20,7 @@ local Update = function(self, event, unit)
 	end
 
 	if(threat.PostUpdate) then
-		return threat:PostUpdate(unit, status)
+		return threat:PostUpdate(unit, status, r, g, b)
 	end
 end
 
