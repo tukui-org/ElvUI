@@ -286,6 +286,7 @@ DB["datatext"] = {
 	["currency"] = 0,						-- show watched items in backpack
 	["specswitch"] = 0,
 	["hit"] = 0,
+	["expertise"] = 0,
 	["haste"] = 0,
 	["mastery"] = 0,
 	["crit"] = 0,
