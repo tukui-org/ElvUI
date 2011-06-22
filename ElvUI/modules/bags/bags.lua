@@ -476,9 +476,9 @@ function Stuffing:CreateBagFrame(w)
 	f:SetFrameLevel(20)
 
 	if w == "Bank" then
-		f:SetPoint("BOTTOMLEFT", ChatLPlaceHolder, "BOTTOMLEFT", -7, 0)
+		f:SetPoint("BOTTOMLEFT", ChatLPlaceHolder, "BOTTOMLEFT")
 	else
-		f:SetPoint("BOTTOMRIGHT", ChatRPlaceHolder, "BOTTOMRIGHT", 7, 0)
+		f:SetPoint("BOTTOMRIGHT", ChatRPlaceHolder, "BOTTOMRIGHT")
 	end
 	
 	-- close button
@@ -852,7 +852,7 @@ function Stuffing:Layout(lb)
 		rows = rows + 1
 	end
 
-	f:SetWidth(E.Scale(C["chat"].chatwidth) + 14)
+	f:Width(C["chat"].chatwidth)
 	f:SetHeight(E.Scale(rows * 31 + (rows - 1) * 4 + off + 12 * 2))
 
 	local bf = CreateFrame("Frame", "BagHolderFrame", f)
@@ -1620,89 +1620,3 @@ function Stuffing.Menu2(self, level)
 	info.tooltipTitle = CLOSE
 	UIDropDownMenu_AddButton(info, level)
 end
---[[if not C["others"].enablebag == true then return end
-
-local BAGS_BACKPACK = {0, 1, 2, 3, 4}
-local BAGS_BANK = {-1, 5, 6, 7, 8, 9, 10, 11}
-
-local function UpdateBorderColors(button)
-	button:SetBackdropBorderColor(unpack(C["media"].bordercolor))
-
-	if button.rarity and button.rarity > 1 then
-		button:SetBackdropBorderColor(GetItemQualityColor(button.rarity))
-	end
-end
-
-local function SkinBagButtons(container, button)
-	if not button.skinned then
-		button:StripTextures()
-		button:SetTemplate("Default", true)
-		button:StyleButton()
-		
-		local icon = _G[button:GetName().."IconTexture"]
-		icon:ClearAllPoints()
-		icon:Point("TOPLEFT", 2, -2)
-		icon:Point("BOTTOMRIGHT", -2, 2)
-		icon:SetTexCoord(.08, .92, .08, .92)
-		
-		_G[button:GetName().."IconQuestTexture"]:Kill()
-		
-		button.skinned = true
-	end
-	
-	
-
-	
-	local texture, itemCount, locked, quality, readable, lootable, itemLink = GetContainerItemInfo(container:GetID(), button:GetID())
-	_G[button:GetName().."IconTexture"]:SetTexture(texture)
-	
-	--Setup some button variables
-	button.ilink = itemLink
-	button.quality = quality
-	button.locked = locked
-	print(button.ilink)
-	if button.ilink then
-		button.name, _, _, _, _, button.type = GetItemInfo(button.ilink)
-	end
-		
-	UpdateBorderColors(button)
-end
-
-local function SkinBags()	
-	for i=1, NUM_CONTAINER_FRAMES, 1 do
-		local container = _G["ContainerFrame"..i]
-		if container and not container.backdrop then
-			container:StripTextures(true)
-			container:CreateBackdrop("Transparent")
-			container.backdrop:Point("TOPLEFT", 2, -2)
-			container.backdrop:Point("BOTTOMRIGHT", -2, 2)
-			E.SkinCloseButton(_G[container:GetName().."CloseButton"])
-		end
-		
-		container:HookScript("OnShow", function()
-			if container and container.size then
-				for b=1, container.size, 1 do
-					local button = _G[container:GetName().."Item"..b]
-					SkinBagButtons(container, button)
-				end
-			end		
-		end)
-	end
-	
-	BackpackTokenFrame:StripTextures(true)
-end
-
-local function OnEvent(self, event, ...)
-	if event == "PLAYER_LOGIN" then
-		SkinBags()
-		self:RegisterEvent("BAG_UPDATE")
-		self:RegisterEvent("ITEM_LOCK_CHANGED")
-		self:RegisterEvent("BAG_CLOSED")
-	else
-		SkinBags()
-	end
-end
-
-local bags = CreateFrame("Frame")
-bags:RegisterEvent("PLAYER_LOGIN")
-bags:SetScript("OnEvent", OnEvent)]]
