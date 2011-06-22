@@ -17,9 +17,7 @@ Stat:SetParent(Text:GetParent())
 
 local _G = getfenv(0)
 local format = string.format
-local displayNumberString = string.join("", "%s", E.ValColor, "%d|r")
-local displayFloatString = string.join("", "%s", E.ValColor, "%.2f%%|r")
-local displayModifierString = string.join("", "%s", E.ValColor, "%d (+%.2f%%)|r")
+local displayModifierString = string.join("", "%s", E.ValColor, "%.2f%%|r")
 
 -- initial delay for update (let the ui load)
 local int = 5
@@ -40,7 +38,7 @@ local function Update(self, t)
 			hasteRatingBonus = GetCombatRatingBonus(CR_HASTE_MELEE)
 		end
 	end
-	Text:SetFormattedText(displayModifierString, STAT_HASTE..": ", hasteRating, hasteRatingBonus)
+	Text:SetFormattedText(displayModifierString, STAT_HASTE..": ", hasteRatingBonus)
 	int = 2
 end
 
