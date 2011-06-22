@@ -4,29 +4,27 @@ local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config
 -- Chat Toggle Functions
 ------------------------------------------------------------------------
 E.ToggleSlideChatL = function()
-	if InCombatLockdown() then return end
 	if E.ChatLIn == true then
-		ChatLBackground:Hide()
+		ChatLBG:Hide()
 		E.ChatLIn = false
 		ElvuiInfoLeftLButton.text:SetTextColor(unpack(C["media"].valuecolor))
 	else
-		ChatLBackground:Show()
+		ChatLBG:Show()
 		E.ChatLIn = true
 		ElvuiInfoLeftLButton.text:SetTextColor(1,1,1,1)
 	end
 end
 
 E.ToggleSlideChatR = function()
-	if InCombatLockdown() then return end
 	if E.RightChat ~= true then return end
 	if E.ChatRIn == true then
 		E.ChatRightShown = false
-		ChatRBackground:Hide()	
+		ChatRBG:Hide()	
 		E.ChatRIn = false
 		ElvuiInfoRightRButton.text:SetTextColor(unpack(C["media"].valuecolor))
 	else
 		E.ChatRightShown = true
-		ChatRBackground:Show()
+		ChatRBG:Show()
 		E.ChatRIn = true
 		ElvuiInfoRightRButton.text:SetTextColor(1,1,1,1)
 	end

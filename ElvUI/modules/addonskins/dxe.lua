@@ -139,9 +139,9 @@ local function PositionDXEAnchor()
 	DXEAlertsTopStackAnchor:ClearAllPoints()
 	if E.CheckAddOnShown() == true then
 		if C["chat"].showbackdrop == true and E.ChatRightShown == true then
-			DXEAlertsTopStackAnchor:Point("TOP", ChatRBackground, "TOP", 16, 4)	
+			DXEAlertsTopStackAnchor:Point("TOP", ChatRBGDummy, "TOP", 16, 4)	
 		else
-			DXEAlertsTopStackAnchor:Point("TOP", ChatRBackground, "TOP", 16, -28)
+			DXEAlertsTopStackAnchor:Point("TOP", ChatRBGDummy, "TOP", 16, -28)
 		end	
 	else
 		DXEAlertsTopStackAnchor:Point("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -49, 25)		
@@ -193,11 +193,11 @@ if C["skin"].hookdxeright == true then
 	DXE_Skin:RegisterEvent("PLAYER_REGEN_ENABLED")
 	DXE_Skin:RegisterEvent("PLAYER_REGEN_DISABLED")
 
-	ChatRBackground:HookScript("OnHide", function(self)
+	ChatRBG:HookScript("OnHide", function(self)
 		PositionDXEAnchor()
 	end)
 	
-	ChatRBackground:HookScript("OnShow", function(self)
+	ChatRBG:HookScript("OnShow", function(self)
 		PositionDXEAnchor()
 	end)	
 end

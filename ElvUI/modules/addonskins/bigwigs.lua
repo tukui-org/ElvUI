@@ -173,9 +173,9 @@ local function PositionBWAnchor()
 	BigWigsAnchor:ClearAllPoints()
 	if E.CheckAddOnShown() == true then
 		if C["chat"].showbackdrop == true and E.ChatRightShown == true then
-			BigWigsAnchor:Point("TOP", ChatRBackground, "TOP", 12, 0)	
+			BigWigsAnchor:Point("TOP", ChatRBGDummy, "TOP", 12, 0)	
 		else
-			BigWigsAnchor:Point("TOP", ChatRBackground, "TOP", 12, -32)
+			BigWigsAnchor:Point("TOP", ChatRBGDummy, "TOP", 12, -32)
 		end	
 	else
 		BigWigsAnchor:Point("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -5, 8)		
@@ -234,11 +234,11 @@ if C["skin"].hookbwright == true then
 	f:RegisterEvent("PLAYER_REGEN_DISABLED")
 	f:RegisterEvent("PLAYER_ENTERING_WORLD")
 
-	ChatRBackground:HookScript("OnHide", function(self)
+	ChatRBG:HookScript("OnHide", function(self)
 		PositionBWAnchor()
 	end)
 	
-	ChatRBackground:HookScript("OnShow", function(self)
+	ChatRBG:HookScript("OnShow", function(self)
 		PositionBWAnchor()
 	end)		
 end

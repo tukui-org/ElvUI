@@ -268,7 +268,7 @@ ElvuiChat:SetScript("OnEvent", function(self, event, ...)
 	elseif event == "PLAYER_ENTERING_WORLD" then
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 		SetupChatFont(self)
-		GeneralDockManager:SetParent(ChatLBackground)
+		GeneralDockManager:SetParent(ChatLBG)
 	end
 end)
 
@@ -331,7 +331,7 @@ ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 				end
 				FCF_SavePositionAndDimensions(chat)			
 				
-				tab:SetParent(ChatRBackground)
+				tab:SetParent(ChatRBG)
 				chat:SetParent(tab)
 			elseif not docked and chat:IsShown() then
 				tab:SetParent(UIParent)
@@ -343,7 +343,7 @@ ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 					chat:SetSize(E.Scale(C["chat"].chatwidth - 4), E.Scale(C["chat"].chatheight))
 					FCF_SavePositionAndDimensions(chat)		
 				end
-				chat:SetParent(ChatLBackground)
+				chat:SetParent(ChatLBG)
 				tab:SetParent(GeneralDockManager)
 			end
 		end
@@ -558,26 +558,26 @@ ChatCombatHider:SetScript("OnEvent", function(self, event)
 	if event == "PLAYER_REGEN_DISABLED" then
 		if C["chat"].combathide == "Both" then	
 			if E.ChatRIn ~= false then
-				ChatRBackground:Hide()			
+				ChatRBG:Hide()			
 				E.ChatRightShown = false
 				E.ChatRIn = false
 				ElvuiInfoRightRButton.text:SetTextColor(unpack(C["media"].valuecolor))			
 			end
 			if E.ChatLIn ~= false then
-				ChatLBackground:Hide()	
+				ChatLBG:Hide()	
 				E.ChatLIn = false
 				ElvuiInfoLeftLButton.text:SetTextColor(unpack(C["media"].valuecolor))
 			end
 		elseif C["chat"].combathide == "Right" then
 			if E.ChatRIn ~= false then
-				ChatRBackground:Hide()				
+				ChatRBG:Hide()				
 				E.ChatRightShown = false
 				E.ChatRIn = false
 				ElvuiInfoRightRButton.text:SetTextColor(unpack(C["media"].valuecolor))			
 			end		
 		elseif C["chat"].combathide == "Left" then
 			if E.ChatLIn ~= false then
-				ChatLBackground:Hide()
+				ChatLBG:Hide()
 				E.ChatLIn = false
 				ElvuiInfoLeftLButton.text:SetTextColor(unpack(C["media"].valuecolor))
 			end		
@@ -585,26 +585,26 @@ ChatCombatHider:SetScript("OnEvent", function(self, event)
 	else
 		if C["chat"].combathide == "Both" then
 			if E.ChatRIn ~= true then
-				ChatRBackground:Show()							
+				ChatRBG:Show()							
 				E.ChatRightShown = true
 				E.ChatRIn = true
 				ElvuiInfoRightRButton.text:SetTextColor(1,1,1)			
 			end
 			if E.ChatLIn ~= true then
-				ChatLBackground:Show()
+				ChatLBG:Show()
 				E.ChatLIn = true
 				ElvuiInfoLeftLButton.text:SetTextColor(1,1,1)
 			end
 		elseif C["chat"].combathide == "Right" then
 			if E.ChatRIn ~= true then
-				ChatRBackground:Show()					
+				ChatRBG:Show()					
 				E.ChatRightShown = true
 				E.ChatRIn = true
 				ElvuiInfoRightRButton.text:SetTextColor(1,1,1)			
 			end		
 		elseif C["chat"].combathide == "Left" then
 			if E.ChatLIn ~= true then
-				ChatLBackground:Show()
+				ChatLBG:Show()
 				E.ChatLIn = true
 				ElvuiInfoLeftLButton.text:SetTextColor(1,1,1)
 			end		

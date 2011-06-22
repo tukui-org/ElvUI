@@ -71,9 +71,9 @@ local function SetRightTooltipPos(self)
 		else
 			if E.CheckAddOnShown() == true then
 				if C["chat"].showbackdrop == true and E.ChatRightShown == true then
-					self:Point("BOTTOMRIGHT", ChatRBackground, "TOPRIGHT", 0, 18)	
+					self:Point("BOTTOMRIGHT", ChatRBGDummy, "TOPRIGHT", 0, 18)	
 				else
-					self:Point("BOTTOMRIGHT", ChatRBackground, "TOPRIGHT", -8, -14)		
+					self:Point("BOTTOMRIGHT", ChatRBGDummy, "TOPRIGHT", -8, -14)		
 				end	
 			else
 				self:Point("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -12, 47)	
