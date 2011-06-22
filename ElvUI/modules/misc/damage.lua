@@ -13,38 +13,74 @@ local displaydot = GetCVar("CombatLogPeriodicSpells")
 local gflags = bit.bor(COMBATLOG_OBJECT_AFFILIATION_MINE, COMBATLOG_OBJECT_REACTION_FRIENDLY, COMBATLOG_OBJECT_CONTROL_PLAYER, COMBATLOG_OBJECT_TYPE_GUARDIAN)
 
 local function OnEvent(self, event, ...)
-	local timestamp, eventType, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags = select(1,...)
+	local eventType, sourceGUID, sourceFlags
+	
+	if E.IsPTRVersion() then
+		_, eventType, _, sourceGUID, _, sourceFlags = ...
+	else
+		_, eventType, _, sourceGUID, _, sourceFlags = ...
+	end
 
 	if sourceGUID == UnitGUID("player") or sourceGUID == UnitGUID("pet") or sourceFlags == gflags then
 		-- dmg
 		if displaydamage then
 			if eventType == "SWING_DAMAGE" then
-				local amount, _, _, _, _, _, critical = select(9, ...)
+				local amount, critical
+				if E.IsPTRVersion() then
+					_, _, _, amount, _, _, _, _, critical = select(9, ...)
+				else
+					_, amount, _, _, _, _, critical = select(9, ...)
+				end
 				self:AddMessage(amount, 1, 1, 1)
 			elseif eventType == "SPELL_DAMAGE" or eventType == "SPELL_PERIODIC_DAMAGE" then
-				local spellId, _, spellSchool, amount, _, _, _, _, _, critical = select(9, ...)
+				local spellId, spellSchool, amount, critical
+				if E.IsPTRVersion() then
+					_, _, _, spellId, _, spellSchool, amount, _, _, _, _, _, critical = select(9, ...)
+				else
+					_, spellId, _, spellSchool, amount, _, _, _, _, _, critical = select(9, ...)
+				end
 				if eventType == "SPELL_PERIODIC_DAMAGE" then
 					if displaydot then self:AddMessage(amount, 151/255, 70/255, 194/255) end
 				else
 					self:AddMessage(amount, 1, 1, 0)
 				end
 			elseif eventType == "RANGE_DAMAGE" then
-				local spellId, _, _, amount, _, _, _, _, _, critical = select(9, ...)
+				local spellId, amount, critical
+				if E.IsPTRVersion() then
+					_, _, _, spellId, _, _, amount, _, _, _, _, _, critical = select(9, ...)
+				else
+					_, spellId, _, _, amount, _, _, _, _, _, critical = select(9, ...)	
+				end
 				self:AddMessage(amount, 1, 1, 1)
 			elseif eventType == "SWING_MISSED" then
-				local missType, _ = select(9, ...)
+				local missType
+				if E.IsPTRVersion() then
+					_, _, _, missType, _ = select(9, ...)
+				else
+					_, missType, _ = select(9, ...)
+				end
 				self:AddMessage(missType, 1, 1, 1)
 			elseif eventType == "SPELL_MISSED" or eventType == "RANGE_MISSED" then
-				local spellId, _, _, missType, _ = select(9,...)
+				local spellId, missType
+				if E.IsPTRVersion() then
+					_, _, _, spellId, _, _, missType, _ = select(9,...)
+				else
+					_, spellId, _, _, missType, _ = select(9,...)
+				end
 				self:AddMessage(missType, 1, 1, 1)
 			end
 		end
-
+		
 		-- heal
 		if displayheal then
 			if eventType == "SPELL_HEAL" or eventType== "SPELL_PERIODIC_HEAL" then
-				local spellId, spellName, spellSchool, amount, overhealing, absorbed, critical = select(9,...)
-				self:AddMessage(amount, 0, 1, 0)
+				local amount
+				if E.IsPTRVersion() then
+					_, _, _, _, _, _, amount, _, _, _ = select(9,...)
+				else
+					_, _, _, _, amount, _, _, _ = select(9,...)
+				end
+				self:AddMessage(amount, 0, 1, 0)			
 			end
 		end
 	end

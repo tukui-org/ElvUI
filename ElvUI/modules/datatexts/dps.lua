@@ -66,10 +66,18 @@ if C["datatext"].dps_text and C["datatext"].dps_text > 0 then
 		local id = select(4, ...)
 		   
 		if id == player_id or id == pet_id then
-			if select(2, ...) == "SWING_DAMAGE" then
-				last_dmg_amount = select(10, ...)
+			if E.IsPTRVersion() then
+				if select(2, ...) == "SWING_DAMAGE" then
+					last_dmg_amount = select(12, ...)
+				else
+					last_dmg_amount = select(15, ...)
+				end			
 			else
-				last_dmg_amount = select(13, ...)
+				if select(2, ...) == "SWING_DAMAGE" then
+					last_dmg_amount = select(10, ...)
+				else
+					last_dmg_amount = select(13, ...)
+				end
 			end
 			dmg_total = dmg_total + last_dmg_amount
 		end       

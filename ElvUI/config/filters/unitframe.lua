@@ -128,7 +128,9 @@ E.DebuffWhiteList = {
 	--PVE
 }
 
-if not E.IsPTRVersion() then
+if E.IsPTRVersion() then
+	E.DebuffWhiteList[SpellName(49203)] = true
+else
 	E.DebuffWhiteList[SpellName(51209)] = true --hungering cold
 end
 

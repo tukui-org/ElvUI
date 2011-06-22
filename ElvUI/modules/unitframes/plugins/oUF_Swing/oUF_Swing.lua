@@ -37,6 +37,7 @@
 	 - :OverrideText(now)
 --]]
 
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 local addon, ns = ...
 local oUF = oUF or ns.oUF
 
@@ -306,7 +307,13 @@ local function Melee(self, event, _, subevent, _, GUID)
 	lasthit = GetTime()
 end
 
-local function ParryHaste(self, event, _, subevent, _, _, _, _, _, tarGUID, _, missType)
+local function ParryHaste(self, event, ...)
+	local subevent, tarGUID, missType
+	if E.IsPTRVersion() then
+		_, subevent, _, _, _, _, _, tarGUID, _, _, _, missType = ...
+	else
+		_, subevent, _, _, _, _, tarGUID, _, _, missType = ...
+	end
 	if UnitGUID("player") ~= tarGUID then return end
 	
 	if not meleeing then return end
