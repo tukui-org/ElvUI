@@ -370,6 +370,14 @@ local function LoadSkin()
 		
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 	end)]]
+	
+	--DROPDOWN MENU
+	hooksecurefunc("UIDropDownMenu_InitializeHelper", function(frame)
+		for i = 1, UIDROPDOWNMENU_MAXLEVELS do
+			_G["DropDownList"..i.."Backdrop"]:SetTemplate("Default", true)
+			_G["DropDownList"..i.."MenuBackdrop"]:SetTemplate("Default", true)
+		end
+	end)	
 end
 
 tinsert(E.SkinFuncs["ElvUI"], LoadSkin)
