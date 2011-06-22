@@ -29,6 +29,8 @@ L.raidbufftoggler = "Raid Buff Reminder: "
 L.disband = "Disbanding group."
 L.chat_trade = "Trade"
 
+L.addons_toggle = "Toggle"
+
 L.datatext_homelatency = "Home Latency: "
 L.datatext_download = "Download: "
 L.datatext_bandwidth = "Bandwidth: "
