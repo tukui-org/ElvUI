@@ -42,7 +42,15 @@ function E.Install()
 				-- this is the default width and height of Elvui chats.
 				SetChatWindowSavedDimensions(chatFrameId, E.Scale(C["chat"].chatwidth + -4), E.Scale(C["chat"].chatheight))
 
-				-- save new default position and dimension
+				-- move general bottom left
+				if i == 1 then
+					frame:ClearAllPoints()
+					frame:Point("BOTTOMLEFT", ChatLPlaceHolder, "BOTTOMLEFT", 2, 4)
+				elseif i == 3 then
+					frame:ClearAllPoints()
+					frame:Point("BOTTOMRIGHT", ChatRPlaceHolder, "BOTTOMRIGHT", -2, 4)
+				end
+				
 				FCF_SavePositionAndDimensions(frame)
 				
 				-- set default Elvui font size
