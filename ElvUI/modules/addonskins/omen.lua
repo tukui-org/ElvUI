@@ -86,7 +86,7 @@ if C["skin"].embedright == "Omen" then
 		OmenTitle:Kill()
 		OmenBarList:ClearAllPoints()
 		OmenBarList:SetAllPoints(ChatRPlaceHolder)
-		Omen.db.profile.FrameStrata = "4-HIGH"
+		Omen.db.profile.FrameStrata = "3-MEDIUM"
 	end)
 	
 	if ChatRBGTab then

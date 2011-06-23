@@ -213,6 +213,7 @@ local chatlbg = CreateFrame("Frame", "ChatLBG", UIParent)
 chatlbg:SetWidth(C["chat"].chatwidth + 14)
 chatlbg:SetHeight(C["chat"].chatheight + 68)
 chatlbg:Point("CENTER", chatlph, "CENTER")
+chatlbg:SetFrameStrata("BACKGROUND")
 
 -- CHAT BACKGROUND LEFT DUMMY (WHEN WE NEED TO ANCHOR SOMETHING TO THE LEFT CHAT BACKGROUND, ANCHOR IT TO THIS, OTHERWISE IF THE ANCHOR FRAME IS PROTECTED THEN WE CANNOT TOGGLE CHAT IN COMBAT
 local chatlbgdummy = CreateFrame("Frame", "ChatLBGDummy", UIParent)
@@ -225,6 +226,7 @@ local chatrbg = CreateFrame("Frame", "ChatRBG", UIParent)
 chatrbg:SetWidth(C["chat"].chatwidth + 14)
 chatrbg:SetHeight(C["chat"].chatheight + 68)
 chatrbg:Point("CENTER", chatrph, "CENTER")
+chatrbg:SetFrameStrata("BACKGROUND")
 
 -- CHAT BACKGROUND RIGHT DUMMY (WHEN WE NEED TO ANCHOR SOMETHING TO THE RIGHT CHAT BACKGROUND, ANCHOR IT TO THIS, OTHERWISE IF THE ANCHOR FRAME IS PROTECTED THEN WE CANNOT TOGGLE CHAT IN COMBAT
 local chatrbgdummy = CreateFrame("Frame", "ChatRBGDummy", UIParent)

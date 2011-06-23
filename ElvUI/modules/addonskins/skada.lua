@@ -90,12 +90,10 @@ barmod.ApplySettings = function(self, win)
 		end
 	end
 	
-	if C["skin"].embedright == "Skada" then
-		win.bargroup.button:SetFrameStrata("HIGH")
-		win.bargroup.button:SetFrameLevel(5)	
-		win.bargroup.bgframe:SetFrameStrata("HIGH")
-		win.bargroup:SetFrameStrata("HIGH")
-	end
+	win.bargroup.button:SetFrameStrata("MEDIUM")
+	win.bargroup.button:SetFrameLevel(5)	
+	win.bargroup.bgframe:SetFrameStrata("MEDIUM")
+	win.bargroup:SetFrameStrata("MEDIUM")
 	
 	self:AdjustBackgroundHeight(win)
 	win.bargroup:SetMaxBars(win.db.barmax)
