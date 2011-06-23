@@ -73,6 +73,7 @@ local Enable = function(self, unit)
 
 		if(health.frequentUpdates) then
 			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
+			self:RegisterEvent('UNIT_HEALTH', Path)
 		else
 			self:RegisterEvent('UNIT_HEALTH', Path)
 		end
