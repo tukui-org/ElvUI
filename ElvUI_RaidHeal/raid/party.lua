@@ -54,7 +54,7 @@ local function Shared(self, unit)
 		if C["raidframes"].gridhealthvertical == true then
 			health:SetOrientation("VERTICAL")
 		end		
-		health.value:Point("BOTTOM", health, "BOTTOM", 0, 3)
+		health.value:Point("BOTTOM", health, "BOTTOM", 0, 7)
 		health.value:SetFont(C["media"].uffont, (C["raidframes"].fontsize-1)*C["raidframes"].scale, "THINOUTLINE")
 		
 		self.Health = health
@@ -192,6 +192,19 @@ local function Shared(self, unit)
 		
 		if C["raidframes"].raidunitbuffwatch == true then
 			E.createAuraWatch(self,unit)
+		end	
+		
+		--Resurrect Indicator
+		if E.IsPTRVersion() then
+			local Resurrect = CreateFrame('Frame', nil, self)
+			Resurrect:SetFrameLevel(20)
+
+			local ResurrectIcon = Resurrect:CreateTexture(nil, "OVERLAY")
+			ResurrectIcon:Point(health.value:GetPoint())
+			ResurrectIcon:Size(30, 25)
+			ResurrectIcon:SetDrawLayer('OVERLAY', 7)
+
+			self.ResurrectIcon = ResurrectIcon
 		end	
 	end
 	
