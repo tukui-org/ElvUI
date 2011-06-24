@@ -1,9 +1,9 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if not LibStub then return end
-
+if not IsAddOnLoaded("CLCRet") or C["skin"].clcret ~= true then return end
 local clcret = LibStub("AceAddon-3.0"):GetAddon("clcret")
-if not clcret or C["skin"].clcret ~= true then return end
+
 
 
 function clcret:CreateButton(name, size, point, parent, pointParent, offsetx, offsety, bfGroup, isChecked)
