@@ -1,11 +1,11 @@
 ﻿## Interface: 40100
 ## Author: Elv, Tukz
-## Version: 2.0.6
+## Version: 2.0.9
 ## Title: |cff1784d1ElvUI|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvuiData
 ## RequiredDeps: ElvUI_Config
-## OptionalDeps: SharedMedia, SharedMediaAdditionalFonts, Recount, Omen, Skada, Blizzard_CombatText, OptionHouse, ACP, Who Framed Watcher Wabbit, Aurora, !ClassColors, HealBot, Fux, OmniCC, ncCooldown, KLE, KLE_AutoRespond, DXE, DBM-Core, BigWigs
+## OptionalDeps: SharedMedia, SharedMediaAdditionalFonts, Recount, Omen, Skada, Blizzard_CombatText, OptionHouse, ACP, Who Framed Watcher Wabbit, Aurora, !ClassColors, HealBot, Fux, OmniCC, ncCooldown, KLE, KLE_AutoRespond, DXE, DBM-Core, BigWigs, CLCRet
 ## X-oUF: ElvUF
 
 init.lua

@@ -2700,14 +2700,20 @@ function ElvuiConfig.GenerateOptionsInternal()
 								name = "DBM",
 								desc = L["Enable this skin"],
 							},		
+							clcret = {
+								order = 7,
+								type = "toggle",
+								name = "CLCRet",
+								desc = L["Enable this skin"],							
+							},
 							bigwigs = {
-								order = 1,
+								order = 8,
 								type = "toggle",
 								name = "BigWigs",
 								desc = L["Enable this skin"],
 							},
 							hookbwright = {
-								order = 2,
+								order = 9,
 								type = "toggle",
 								name = L["Hook BigWigs Bars"],
 								desc = L["Attach BigWigs's Bars to the right window"],

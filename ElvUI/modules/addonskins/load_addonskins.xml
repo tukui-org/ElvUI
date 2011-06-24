@@ -6,4 +6,5 @@
 	<Script file='omen.lua' />
 	<Script file='recount.lua' />
 	<Script file='skada.lua' />
+	<Script file='clcret.lua' />
 </Ui>
