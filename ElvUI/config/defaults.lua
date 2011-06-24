@@ -95,6 +95,7 @@ DB["skin"] = {
 	["dbm"] = true,
 	["bigwigs"] = true,
 	["clcret"] = true,
+	["clcprot"] = true,
 	["hookkleright"] = false,			-- force KLE's top bar anchor to be hooked onto the right chat window
 	["hookbwright"] = false,			-- force BigWig's bar anchor to be hooked onto the right chat window
 	["hookdxeright"] = false,

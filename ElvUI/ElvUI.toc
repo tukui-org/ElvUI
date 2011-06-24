@@ -5,7 +5,7 @@
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvuiData
 ## RequiredDeps: ElvUI_Config
-## OptionalDeps: SharedMedia, SharedMediaAdditionalFonts, Recount, Omen, Skada, Blizzard_CombatText, OptionHouse, ACP, Who Framed Watcher Wabbit, Aurora, !ClassColors, HealBot, Fux, OmniCC, ncCooldown, KLE, KLE_AutoRespond, DXE, DBM-Core, BigWigs, CLCRet
+## OptionalDeps: SharedMedia, SharedMediaAdditionalFonts, Recount, Omen, Skada, Blizzard_CombatText, OptionHouse, ACP, Who Framed Watcher Wabbit, Aurora, !ClassColors, HealBot, Fux, OmniCC, ncCooldown, KLE, KLE_AutoRespond, DXE, DBM-Core, BigWigs, CLCRet, CLCProt
 ## X-oUF: ElvUF
 
 init.lua
