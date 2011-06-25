@@ -1,27 +1,88 @@
 --This file contains the Install process and everything we do after PLAYER_ENTERING_WORLD event.
 
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
-
+	
 --Install UI
-function E.Install()
+function E.Install()	
+	if not InstallStepComplete then
+		local imsg = CreateFrame("Frame", "InstallStepComplete", UIParent)
+		imsg:Size(418, 72)
+		imsg:Point("TOP", 0, -190)
+		imsg:Hide()
+		imsg:SetScript('OnShow', function(self)
+			if self.message then 
+				PlaySoundFile([[Sound\Interface\LevelUp.wav]])
+				self.text:SetText(self.message)
+				UIFrameFadeOut(self, 3.5, 1, 0)
+				E.Delay(5, function() self:Hide() end)	
+				self.message = nil
+				
+				if imsg.firstShow == false then
+					if GetCVarBool("Sound_EnableMusic") then
+						PlayMusic([[Sound\Music\ZoneMusic\DMF_L70ETC01.mp3]])
+					else
+						PlaySoundFile([[Sound\Music\ZoneMusic\DMF_L70ETC01.mp3]])
+					end					
+					imsg.firstShow = true
+				end
+			else
+				self:Hide()
+			end
+		end)
+		
+		imsg.firstShow = false
+		
+		imsg.bg = imsg:CreateTexture(nil, 'BACKGROUND')
+		imsg.bg:SetTexture([[Interface\LevelUp\LevelUpTex]])
+		imsg.bg:SetPoint('BOTTOM')
+		imsg.bg:Size(326, 103)
+		imsg.bg:SetTexCoord(0.00195313, 0.63867188, 0.03710938, 0.23828125)
+		imsg.bg:SetVertexColor(1, 1, 1, 0.6)
+		
+		imsg.lineTop = imsg:CreateTexture(nil, 'BACKGROUND')
+		imsg.lineTop:SetDrawLayer('BACKGROUND', 2)
+		imsg.lineTop:SetTexture([[Interface\LevelUp\LevelUpTex]])
+		imsg.lineTop:SetPoint("TOP")
+		imsg.lineTop:Size(418, 7)
+		imsg.lineTop:SetTexCoord(0.00195313, 0.81835938, 0.01953125, 0.03320313)
+		
+		imsg.lineBottom = imsg:CreateTexture(nil, 'BACKGROUND')
+		imsg.lineBottom:SetDrawLayer('BACKGROUND', 2)
+		imsg.lineBottom:SetTexture([[Interface\LevelUp\LevelUpTex]])
+		imsg.lineBottom:SetPoint("BOTTOM")
+		imsg.lineBottom:Size(418, 7)
+		imsg.lineBottom:SetTexCoord(0.00195313, 0.81835938, 0.01953125, 0.03320313)
+		
+		imsg.text = imsg:CreateFontString(nil, 'ARTWORK', 'GameFont_Gigantic')
+		imsg.text:Point("BOTTOM", 0, 12)
+		imsg.text:SetTextColor(1, 0.82, 0)
+		imsg.text:SetJustifyH("CENTER")
+	end
+
 	local CURRENT_PAGE = 0
 	local MAX_PAGE = 7
 	
 	local function InstallComplete()
 		ElvuiData[E.myrealm][E.myname].v2_installed = true
 		FoolsDay = nil
-	
+		
+		if GetCVarBool("Sound_EnableMusic") then
+			StopMusic()
+		end
+		
 		ReloadUI()
 	end
 	
 	local function ResetUFPos()
 		E.SavePath["UFPos"] = nil
-		print(L.ElvUIInstall_UFSet)
+		InstallStepComplete.message = L.ElvUIInstall_UFSet
+		InstallStepComplete:Show()
 	end
 	
 	local function SetupChat()
 		if (C.chat.enable == true) and (not IsAddOnLoaded("Prat") or not IsAddOnLoaded("Chatter")) then	
-			print(L.ElvUIInstall_ChatSet)
+			InstallStepComplete.message = L.ElvUIInstall_ChatSet
+			InstallStepComplete:Show()			
 			FCF_ResetChatWindows()
 			FCF_SetLocked(ChatFrame1, 1)
 			FCF_DockFrame(ChatFrame2)
@@ -181,7 +242,8 @@ function E.Install()
 		SetCVar("UberTooltips", 1)
 		SetCVar("removeChatDelay", 1)
 		SetCVar("gxTextureCacheSize", 512)	
-		print(L.ElvUIInstall_CVarSet)
+		InstallStepComplete.message = L.ElvUIInstall_CVarSet
+		InstallStepComplete:Show()					
 	end	
 	
 	local function ResetAll()
