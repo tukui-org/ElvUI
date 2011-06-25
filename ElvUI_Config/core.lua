@@ -2646,8 +2646,15 @@ function ElvuiConfig.GenerateOptionsInternal()
 							["Skada"] = "Skada",
 						},						
 					},
-					AddOnSkins = {
+					embedrighttoggle = {
 						order = 5,
+						type = "toggle",
+						name = L["Toggle Embedded with right chat"],
+						desc = L["When the right chat gets shown the embedded addon will hide, when the right chat gets hidden the embedded addon will show."],
+						disabled = function() return db.skin.embedright == "NONE" end,
+					},
+					AddOnSkins = {
+						order = 6,
 						type = "group",
 						name = L["Addon Skins"],
 						guiInline = true,

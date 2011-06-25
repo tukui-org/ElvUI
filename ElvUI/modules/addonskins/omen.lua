@@ -111,4 +111,9 @@ if C["skin"].embedright == "Omen" then
 		button:SetScript('OnMouseUp', function(self) self.tex:Point('TOPRIGHT', -2, -2) end)
 		button:SetScript('OnClick', function(self) ToggleFrame(OmenBarList) end)
 	end		
+	
+	if C["skin"].embedrighttoggle == true then
+		ChatRBG:HookScript("OnShow", function() OmenBarList:Hide() end)
+		ChatRBG:HookScript("OnHide", function() OmenBarList:Show() end)
+	end		
 end

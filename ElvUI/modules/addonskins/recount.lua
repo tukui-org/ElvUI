@@ -96,4 +96,9 @@ if C["skin"].embedright == "Recount" then
 		button:SetScript('OnMouseUp', function(self) self.tex:Point('TOPRIGHT', -2, -2) end)
 		button:SetScript('OnClick', function(self) ToggleFrame(Recount_MainWindow) end)
 	end	
+	
+	if C["skin"].embedrighttoggle == true then
+		ChatRBG:HookScript("OnShow", function() Recount_MainWindow:Hide() end)
+		ChatRBG:HookScript("OnHide", function() Recount_MainWindow:Show() end)
+	end	
 end

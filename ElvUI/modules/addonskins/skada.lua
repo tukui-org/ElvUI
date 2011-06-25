@@ -189,4 +189,9 @@ if C["skin"].embedright == "Skada" then
 		button:SetScript('OnMouseUp', function(self) self.tex:Point('TOPRIGHT', -2, -2) end)
 		button:SetScript('OnClick', function(self) Skada:ToggleWindow() end)
 	end
+	
+	if C["skin"].embedrighttoggle == true then
+		ChatRBG:HookScript("OnShow", function() Skada:SetActive(false) end)
+		ChatRBG:HookScript("OnHide", function() Skada:SetActive(true) end)
+	end
 end

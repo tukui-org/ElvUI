@@ -100,6 +100,7 @@ DB["skin"] = {
 	["hookbwright"] = false,			-- force BigWig's bar anchor to be hooked onto the right chat window
 	["hookdxeright"] = false,
 	["embedright"] = "NONE",				-- Addon to embed to the right frame ("Omen", "Recount", "Skada")
+	["embedrighttoggle"] = false,
 }
 
 DB["unitframes"] = {
