@@ -73,7 +73,7 @@ local function SetRightTooltipPos(self)
 				if C["chat"].showbackdrop == true and E.ChatRightShown == true then
 					self:Point("BOTTOMRIGHT", ChatRBGDummy, "TOPRIGHT", 0, 18)	
 				else
-					self:Point("BOTTOMRIGHT", ChatRBGDummy, "TOPRIGHT", -8, -14)		
+					self:Point("BOTTOMRIGHT", ChatRBGDummy, "TOPRIGHT", -8, -14)				
 				end	
 			else
 				self:Point("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -12, 47)	
@@ -407,6 +407,47 @@ local SetStyle = function(self)
 	self:SetClampedToScreen(true)
 end
 
+local function PositionBGToastFrame(self, elapsed)
+	if(self.elapsed and self.elapsed > 0.2) then
+		local inInstance, instanceType = IsInInstance()
+		self:ClearAllPoints()
+		if InCombatLockdown() and C["tooltip"].hidecombat == true and (C["tooltip"].hidecombatraid == true and inInstance and (instanceType == "raid")) then
+			self:Hide()
+		elseif InCombatLockdown() and C["tooltip"].hidecombat == true and C["tooltip"].hidecombatraid == false then
+			self:Hide()
+		else
+			if C["others"].enablebag == true and StuffingFrameBags and StuffingFrameBags:IsShown() then
+				self:Point("BOTTOMRIGHT", StuffingFrameBags, "TOPRIGHT", 0, 4)
+			elseif #ContainerFrame1.bags > 0 and _G[ContainerFrame1.bags[#ContainerFrame1.bags]]:IsShown() then
+				self:Point("BOTTOMRIGHT", _G[ContainerFrame1.bags[#ContainerFrame1.bags]], "TOPRIGHT", 0, 4)
+			elseif TooltipMover and E.Movers and E.Movers["TooltipMover"] then
+				local point, _, _, _, _ = TooltipMover:GetPoint()
+				if point == "TOPLEFT" then
+					self:Point("TOPLEFT", TooltipMover, "BOTTOMLEFT", 0, -4)
+				elseif point == "TOPRIGHT" then
+					self:Point("TOPRIGHT", TooltipMover, "BOTTOMRIGHT", 0, -4)
+				elseif point == "BOTTOMLEFT" or point == "LEFT" then
+					self:Point("BOTTOMLEFT", TooltipMover, "TOPLEFT", 0, 4)
+				else
+					self:Point("BOTTOMRIGHT", TooltipMover, "TOPRIGHT", 0, 4)
+				end
+			else
+				if E.CheckAddOnShown() == true then
+					if C["chat"].showbackdrop == true and E.ChatRightShown == true then
+						self:Point("BOTTOMRIGHT", ChatRBGDummy, "TOPRIGHT", 0, 4)
+					else
+						self:Point("BOTTOMRIGHT", ChatRBGDummy, "TOPRIGHT", -7, -25)					
+					end	
+				else
+					self:Point("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -11, 36)	
+				end
+			end
+		end
+	else
+		self.elapsed = (self.elapsed or 0) + elapsed
+	end
+end
+
 ElvuiTooltip:RegisterEvent("PLAYER_ENTERING_WORLD")
 ElvuiTooltip:SetScript("OnEvent", function(self, event, addon)
 	for _, tt in pairs(Tooltips) do
@@ -416,11 +457,10 @@ ElvuiTooltip:SetScript("OnEvent", function(self, event, addon)
 	ItemRefTooltip:HookScript("OnTooltipSetItem", SetStyle)
 	FriendsTooltip:SetTemplate("Default", true)
 	BNToastFrame:SetTemplate("Default", true)
-	BNToastFrame:HookScript("OnShow", function(self)
-		self:ClearAllPoints()
-		self:SetPoint("TOPLEFT", UIParent, "TOPLEFT", E.Scale(5), E.Scale(-5))
-	end)
-		
+	BNToastFrame.elapsed = 0.3
+	BNToastFrame:HookScript('OnUpdate', PositionBGToastFrame)
+	BNToastFrame:SetFrameStrata('TOOLTIP')
+	BNToastFrame:SetFrameLevel(20)
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 	self:SetScript("OnEvent", nil)
 	
