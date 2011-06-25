@@ -300,6 +300,7 @@ local function UpdateObjects(frame)
 	
 	frame.hp:SetMinMaxValues(frame.healthOriginal:GetMinMaxValues())
 	frame.hp:SetValue(frame.healthOriginal:GetValue())
+
 	
 	--Colorize Plate
 	Colorize(frame)
@@ -367,7 +368,7 @@ local function SkinObjects(frame)
 	hp:SetFrameStrata(oldhp:GetFrameStrata())
 	hp:SetStatusBarTexture(TEXTURE)
 	CreateVirtualFrame(hp)
-	
+
 	--Create Level
 	if C["nameplate"].showlevel == true then
 		hp.level = hp:CreateFontString(nil, "OVERLAY")
@@ -471,6 +472,7 @@ local function SkinObjects(frame)
 	
 	frame:HookScript('OnHide', OnHide)
 	frames[frame] = true
+	frame.ElvUIPlate = true
 end
 
 local goodR, goodG, goodB = unpack(C["nameplate"].goodcolor)
