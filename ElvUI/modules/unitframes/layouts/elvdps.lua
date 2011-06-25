@@ -257,7 +257,7 @@ local function Shared(self, unit)
 			buffs["growth-x"] = "RIGHT"
 			buffs.PostCreateIcon = E.PostCreateAura
 			buffs.PostUpdateIcon = E.PostUpdateAura
-			self.Buffs = buffs	
+			self.Buffs = buffs
 		end
 		
 		if C["unitframes"].playerdebuffs == true then
