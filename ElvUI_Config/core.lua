@@ -2407,6 +2407,12 @@ function ElvuiConfig.GenerateOptionsInternal()
 						guiInline = true,
 						disabled = function() return not db.skin.enable end,	
 						args = {
+							encounterjournal = {
+								type = "toggle",
+								name = L["Encounter Journal"],
+								desc = L["TOGGLESKIN_DESC"],
+								disabled = function() return not db.skin.enable or not E.IsPTRVersion() end,
+							},
 							reforge = {
 								type = "toggle",
 								name = L["Reforge Frame"],

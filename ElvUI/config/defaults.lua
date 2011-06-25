@@ -87,6 +87,7 @@ DB["skin"] = {
 		["tabard"] = true,
 		["guildregistrar"] = true,
 		["timemanager"] = true,
+		["encounterjournal"] = true,
 	["recount"] = true,
 	["skada"] = true,
 	["omen"] = true,

@@ -425,7 +425,7 @@ L["Tooltip"] = true
 L["Skins"] = true
 	L["Enable/disable skinning of the entire BlizzardUI."] = true
 	L["TOGGLESKIN_DESC"] = "Enable/Disable this skin."
-	
+	L["Encounter Journal"] = true
 	L["Bags"] = true
 	L["Reforge Frame"] = true
 	L["Calendar Frame"] = true
