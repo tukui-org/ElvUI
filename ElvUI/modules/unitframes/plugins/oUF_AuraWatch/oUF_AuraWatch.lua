@@ -171,7 +171,7 @@ local function resetIcon(icon, frame, count, duration, remaining)
 		if icon.overlay then
 			icon.overlay:Hide()
 		end
-		icon:SetAlpha(frame.presentAlpha)
+		icon:SetAlpha(icon.presentAlpha)
 	end
 end
 
@@ -181,7 +181,7 @@ local function expireIcon(icon, frame)
 	else
 		if (icon.cd) then icon.cd:Hide() end
 		if (icon.count) then icon.count:SetText() end
-		icon:SetAlpha(frame.missingAlpha)
+		icon:SetAlpha(icon.missingAlpha)
 		if icon.overlay then
 			icon.overlay:Show()
 		end
@@ -201,7 +201,9 @@ local function Update(frame, event, unit)
 	if not GUIDs[guid] then setupGUID(guid) end
 	
 	for key, icon in pairs(icons) do
-		icon:Hide()
+		if not icon.onlyShowMissing then
+			icon:Hide()
+		end
 	end
 	
 	while true do
@@ -245,8 +247,6 @@ local function setupIcons(self)
 	local watch = self.AuraWatch
 	local icons = watch.icons
 	watch.watched = {}
-	if not watch.missingAlpha then watch.missingAlpha = 0.75 end
-	if not watch.presentAlpha then watch.presentAlpha = 1 end
 	
 	for _,icon in pairs(icons) do
 	
@@ -288,6 +288,12 @@ local function setupIcons(self)
 		if icon.onlyShowPresent == nil then
 			icon.onlyShowPresent = watch.onlyShowPresent
 		end
+		if icon.presentAlpha == nil then
+			icon.presentAlpha = watch.presentAlpha
+		end
+		if icon.missingAlpha == nil then
+			icon.missingAlpha = watch.missingAlpha
+		end		
 		if icon.fromUnits == nil then
 			icon.fromUnits = watch.fromUnits or PLAYER_UNITS
 		end

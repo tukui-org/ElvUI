@@ -1065,6 +1065,14 @@ E.LoadUFFunctions = function(layout)
 				local icon = CreateFrame("Frame", nil, auras)
 				icon.spellID = spell["id"]
 				icon.anyUnit = spell["anyUnit"]
+				icon.onlyShowMissing = spell["onlyShowMissing"]
+				if spell["onlyShowMissing"] then
+					icon.presentAlpha = 0
+					icon.missingAlpha = 1
+				else
+					icon.presentAlpha = 1
+					icon.missingAlpha = 0				
+				end
 				icon:SetWidth(E.Scale(C["raidframes"].buffindicatorsize))
 				icon:SetHeight(E.Scale(C["raidframes"].buffindicatorsize))
 				icon:SetPoint(spell["point"], 0, 0)
@@ -1079,6 +1087,7 @@ E.LoadUFFunctions = function(layout)
 					else
 						tex:SetVertexColor(0.8, 0.8, 0.8)
 					end
+					icon.icon = tex
 				else
 					local _, _, image = GetSpellInfo(icon.spellID)
 					local tex = icon:CreateTexture(nil, 'ARTWORK')

@@ -5,9 +5,9 @@ local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config
 
 -- Classbuffs { enabled, spell ID, position [, {r,g,b,a}][, anyUnit] }
 
-local function ClassBuff(id, point, color, anyUnit)
+local function ClassBuff(id, point, color, anyUnit, onlyShowMissing)
 	local r, g, b = unpack(color)
-	return {["enabled"] = true, ["id"] = id, ["point"] = point, ["color"] = {["r"] = r, ["g"] = g, ["b"] = b}, ["anyUnit"] = anyUnit}
+	return {["enabled"] = true, ["id"] = id, ["point"] = point, ["color"] = {["r"] = r, ["g"] = g, ["b"] = b}, ["anyUnit"] = anyUnit, ["onlyShowMissing"] = onlyShowMissing}
 end
 
 --Healer

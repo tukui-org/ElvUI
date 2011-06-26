@@ -424,9 +424,17 @@ function ElvuiConfig.GenerateOptionsInternal()
 								get = function(info) return db.spellfilter[tab][E.myclass][i]["anyUnit"] end,
 								set = function(info, value) db.spellfilter[tab][E.myclass][i]["anyUnit"] = value; StaticPopup_Show("CFG_RELOAD") end,									
 							},
+							onlyShowMissing = {
+								type = "toggle",
+								order = 4,
+								name = L["Display when missing"],
+								desc = L["Only display the icon when the unit doesn't have the buff."],
+								get = function(info) return db.spellfilter[tab][E.myclass][i]["onlyShowMissing"] end,
+								set = function(info, value) db.spellfilter[tab][E.myclass][i]["onlyShowMissing"] = value; StaticPopup_Show("CFG_RELOAD") end,								
+							},
 							Color = {
 								type = "color",
-								order = 4,
+								order = 5,
 								name = L["Color"],
 								hasAlpha = false,
 								get = function(info)
@@ -439,7 +447,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 									t.r, t.g, t.b = r, g, b
 									StaticPopup_Show("CFG_RELOAD")
 								end,																	
-							},					
+							},
 						},
 					}
 				end
