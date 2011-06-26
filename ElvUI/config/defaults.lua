@@ -212,6 +212,7 @@ DB["raidframes"] = {
 	["mouseglow"] = true,					--glow the class/reaction color of the unit that you mouseover
 	["raidunitbuffwatch"] = true,       -- track important spell to watch in pve for grid mode.
 	["buffindicatorsize"] = 6,				-- size of the buff indicator on raid/party frames
+	["buffindicatorcoloricons"] = true,
 	["debuffs"] = true,
 	["displayaggro"] = true,
 	["mini_powerbar"] = true,

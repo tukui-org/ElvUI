@@ -1015,7 +1015,9 @@ E.LoadUFFunctions = function(layout)
 
 	function E.CreateAuraWatchIcon(self, icon)
 		if (icon.cd) then
-			icon.cd:SetReverse()
+			if C["raidframes"].buffindicatorcoloricons == true then
+				icon.cd:SetReverse()
+			end
 		end 	
 	end
 
@@ -1066,18 +1068,27 @@ E.LoadUFFunctions = function(layout)
 				icon:SetWidth(E.Scale(C["raidframes"].buffindicatorsize))
 				icon:SetHeight(E.Scale(C["raidframes"].buffindicatorsize))
 				icon:SetPoint(spell["point"], 0, 0)
-
-				local tex = icon:CreateTexture(nil, "OVERLAY")
-				tex:SetAllPoints(icon)
-				tex:SetTexture(C["media"].blank)
-				if (spell["color"]) then
-					local color = spell["color"]
-					tex:SetVertexColor(color.r, color.g, color.b)
+				
+				if C["raidframes"].buffindicatorcoloricons == true then
+					local tex = icon:CreateTexture(nil, "OVERLAY")
+					tex:SetAllPoints(icon)
+					tex:SetTexture(C["media"].blank)
+					if (spell["color"]) then
+						local color = spell["color"]
+						tex:SetVertexColor(color.r, color.g, color.b)
+					else
+						tex:SetVertexColor(0.8, 0.8, 0.8)
+					end
 				else
-					tex:SetVertexColor(0.8, 0.8, 0.8)
+					local _, _, image = GetSpellInfo(icon.spellID)
+					local tex = icon:CreateTexture(nil, 'ARTWORK')
+					tex:SetAllPoints(icon)
+					tex:SetTexCoord(.18, .82, .18, .82)
+					tex:SetTexture(image)
+					icon.icon = tex
 				end
 				
-				local border = icon:CreateTexture(nil, "ARTWORK")
+				local border = icon:CreateTexture(nil, "BACKGROUND")
 				border:Point("TOPLEFT", -E.mult, E.mult)
 				border:Point("BOTTOMRIGHT", E.mult, -E.mult)
 				border:SetTexture(C["media"].blank)

@@ -1706,6 +1706,12 @@ function ElvuiConfig.GenerateOptionsInternal()
 								type = "range",
 								min = 3, max = 18, step = 1,									
 							},
+							buffindicatorcoloricons = {
+								type = "toggle",
+								order = 23,
+								name = L["Color Buff Icons"],
+								desc = L["If turned off the buff icon on raid/party frames will be displayed as the actual texture of the icon instead of a color icon"],
+							},
 						},
 					},
 				},

@@ -264,7 +264,9 @@ L["Raid Frames"] = true
 	L["25 Man Layout Party"] = true
 		L["Use the 25 man layout inside a party group"] = true
 	L["Display Debuffs"] = true
-	
+	L["Color Buff Icons"] = true
+		L["If turned off the buff icon on raid/party frames will be displayed as the actual texture of the icon instead of a color icon"] = true
+		
 --Classtimer		
 L["Class Timers"] = true
 	L["CLASSTIMER_DESC"] = "Adjust settings for classtimers"
