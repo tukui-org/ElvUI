@@ -276,7 +276,8 @@ local function LoadSkin()
 		ReputationDetailFrame:Point("TOPLEFT", ReputationFrame, "TOPRIGHT", 4, -28)			
 	end	
 	ReputationFrame:HookScript("OnShow", UpdateFactionSkins)
-	hooksecurefunc("ReputationFrame_OnEvent", UpdateFactionSkins)
+	hooksecurefunc("ExpandFactionHeader", UpdateFactionSkins)
+	hooksecurefunc("CollapseFactionHeader", UpdateFactionSkins)
 	
 	--Currency
 	TokenFrame:HookScript("OnShow", function()
