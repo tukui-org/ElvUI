@@ -824,6 +824,18 @@ E.LoadUFFunctions = function(layout)
 			end	
 		end
 	end
+	
+	E.ReputationPositionUpdate = function(self)
+		if not self:GetName() then self = self:GetParent() end
+		if not self.Reputation then return end
+		self.Reputation:ClearAllPoints()
+		
+		if self.Experience and self.Experience:IsShown() then
+			self.Reputation:Point("TOPLEFT", self.Experience, "BOTTOMLEFT", 0, -5)
+		else
+			self.Reputation:Point("TOPLEFT", ElvuiMinimapStatsLeft, "BOTTOMLEFT", 2, -3)
+		end
+	end
 
 	E.PortraitUpdate = function(self, unit) 
 		if C["unitframes"].charportraithealth == true then

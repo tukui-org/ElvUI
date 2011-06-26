@@ -50,9 +50,12 @@ local function Update(self, event, owner)
 	if(event == 'UNIT_PET' and owner ~= 'player') then return end
 
 	local experience = self.Experience
+	
 	-- Conditional hiding
 	if(self.unit == 'player') then
 		if(UnitLevel('player') == MAX_PLAYER_LEVEL) then
+			return experience:Hide()
+		elseif IsXPUserDisabled() then
 			return experience:Hide()
 		end
 	elseif(self.unit == 'pet') then
@@ -103,7 +106,9 @@ local function Enable(self, unit)
 		self:RegisterEvent('PLAYER_XP_UPDATE', Update)
 		self:RegisterEvent('PLAYER_LEVEL_UP', Update)
 		self:RegisterEvent('UNIT_PET', Update)
-
+		self:RegisterEvent("DISABLE_XP_GAIN", Update)
+		self:RegisterEvent("ENABLE_XP_GAIN", Update)
+		
 		if(experience.Rested) then
 			self:RegisterEvent('UPDATE_EXHAUSTION', Update)
 			experience.Rested:SetFrameLevel(1)
