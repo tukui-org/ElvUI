@@ -158,7 +158,7 @@ E.LoadUFFunctions = function(layout)
 			castbar.Icon:Point("TOPLEFT", button, 2*E.ResScale, -2*E.ResScale)
 			castbar.Icon:Point("BOTTOMRIGHT", button, -2*E.ResScale, 2*E.ResScale)
 			castbar.Icon:SetTexCoord(0.08, 0.92, 0.08, .92)
-			
+			castbar.Icon.bg = button
 			castbar:Width(width - button:GetWidth() - 6)
 		end
 	
@@ -821,6 +821,8 @@ E.LoadUFFunctions = function(layout)
 				self:SetStatusBarColor(unpack(C["unitframes"].castbarcolor))
 			else
 				self:SetStatusBarColor(self:GetParent().Health.backdrop:GetBackdropBorderColor())
+				if self.bg then self.bg:SetBackdropBorderColor(self:GetStatusBarColor()) end
+				if self.Icon and self.Icon.bg then self.Icon.bg:SetBackdropBorderColor(self:GetStatusBarColor()) end				
 			end	
 		end
 	end
