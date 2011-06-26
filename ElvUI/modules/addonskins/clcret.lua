@@ -1,7 +1,7 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if not LibStub then return end
-if not IsAddOnLoaded("CLCRet") or C["skin"].clcret ~= true then return end
+if not IsAddOnLoaded("CLCRet") or C["skin"].clcret ~= true or E.myclass ~= "PALADIN" then return end
 local clcret = LibStub("AceAddon-3.0"):GetAddon("clcret")
 
 
