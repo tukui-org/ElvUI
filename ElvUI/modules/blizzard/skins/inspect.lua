@@ -89,7 +89,7 @@ local function LoadSkin()
 	end
 	
 	local function ColorItemBorder(self)
-		if not ScanSlots() then
+		if self and not ScanSlots() then
 			self:SetScript("OnUpdate", ScanSlots) --Run function until all items borders are colored, sometimes when you have never seen an item before GetItemInfo will return nil, when this happens we have to wait for the server to send information.
 		end 
 	end
@@ -99,7 +99,7 @@ local function LoadSkin()
 	CheckItemBorderColor:RegisterEvent("PARTY_MEMBERS_CHANGED")
 	CheckItemBorderColor:SetScript("OnEvent", ColorItemBorder)	
 	InspectFrame:HookScript("OnShow", ColorItemBorder)
-	ColorItemBorder()	
+	ColorItemBorder(CheckItemBorderColor)	
 	
 	E.SkinRotateButton(InspectModelFrameRotateLeftButton)
 	E.SkinRotateButton(InspectModelFrameRotateRightButton)
