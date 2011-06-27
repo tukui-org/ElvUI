@@ -256,6 +256,31 @@ E.RaidDebuffs = {
 	[SpellName(93295)] = true, -- Lightning Rod
 }
 
+if E.IsPTRVersion() then
+	--Beth'tilac
+	E.RaidDebuffs[SpellName(99506)] = true -- Widows Kiss
+	
+	--Alysrazor
+	E.RaidDebuffs[SpellName(101296)] = true -- Fiero Blast
+	E.RaidDebuffs[SpellName(100723)] = true -- Gushing Wound
+	
+	--Shannox
+	E.RaidDebuffs[SpellName(99837)] = true -- Crystal Prison
+	E.RaidDebuffs[SpellName(99937)] = true -- Jagged Tear
+	
+	--Baleroc
+	E.RaidDebuffs[SpellName(99403)] = true -- Tormented
+	
+	--Lord Rhyolith
+		--<< NONE KNOWN YET >>
+	
+	--Majordomo Staghelm
+		--<< NONE KNOWN YET >>
+	
+	--Ragnaros
+		--<< NONE KNOWN YET >>
+end
+
 
 E.ReverseTimer = {
 	[92956] = true, -- Sinestra (Wrack)
