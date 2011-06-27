@@ -178,7 +178,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 				config.args.spellfilter.args.SpellListTable.args = CreateFilterTable(curfilter)		
 
 				E.ReminderBuffs[E.myclass][curfilter] = db.spellfilter[tab][E.myclass][curfilter]	
-				
+				StaticPopup_Show("CFG_RELOAD")
 			end
 			
 			newtable["SelectGroup"] = {
@@ -3129,6 +3129,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								if not name_list[E.myclass] then name_list[E.myclass] = {} end
 								name_list[E.myclass][value] = {}
 								UpdateSpellFilter()
+								StaticPopup_Show("CFG_RELOAD")
 							elseif db.spellfilter.FilterPicker == "ChannelTicks" then
 								local name_list = db.spellfilter[db.spellfilter.FilterPicker]
 								name_list[value] = 0
@@ -3186,6 +3187,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								if not name_list[E.myclass] then name_list[E.myclass] = {} end
 								name_list[E.myclass][value] = nil
 								UpdateSpellFilter()
+								StaticPopup_Show("CFG_RELOAD")
 							elseif ClassTimer[db.spellfilter.FilterPicker] then
 								if not GetSpellInfo(value) then
 									print(L["Not valid spell id"])
