@@ -189,7 +189,9 @@ function ElvuiConfig.GenerateOptionsInternal()
 				values = groupTable,
 				set = function(info, value)
 					db.spellfilter[ info[#info] ] = value;
-					Update()						
+					local config = LibStub("AceConfigRegistry-3.0"):GetOptionsTable("ElvuiConfig", "dialog", "MyLib-1.2")
+					local curfilter = db.spellfilter.FilterPicker
+					config.args.spellfilter.args.SpellListTable.args = CreateFilterTable(curfilter)							
 				end,
 			}
 			local curfilter = db.spellfilter["SelectGroup"]
