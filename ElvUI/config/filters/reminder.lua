@@ -28,10 +28,10 @@ local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config
 
 E.ReminderBuffs = {
 	PRIEST = {
-		[1] = { --inner fire/will group
+		["Shields"] = { --inner fire/will group
 			["spells"] = {
-				588, -- inner fire
-				73413, -- inner will			
+				[588] = true, -- inner fire
+				[73413] = true, -- inner will			
 			},
 			["combat"] = true,
 			["instance"] = true,
@@ -39,23 +39,23 @@ E.ReminderBuffs = {
 		},
 	},
 	HUNTER = {
-		[1] = { --aspects group
+		["Aspects"] = { --aspects group
 			["spells"] = {
-				13165, -- hawk
-				5118, -- cheetah
-				20043, -- wild
-				82661, -- fox	
+				[13165] = true, -- hawk
+				[5118] = true, -- cheetah
+				[20043] = true, -- wild
+				[82661] = true, -- fox	
 			},
 			["instance"] = true,
 			["personal"] = true,
 		},				
 	},
 	MAGE = {
-		[1] = { --armors group
+		["Armors"] = { --armors group
 			["spells"] = {
-				7302, -- frost armor
-				6117, -- mage armor
-				30482, -- molten armor		
+				[7302] = true, -- frost armor
+				[6117] = true, -- mage armor
+				[30482] = true, -- molten armor		
 			},
 			["combat"] = true,
 			["instance"] = true,
@@ -63,10 +63,10 @@ E.ReminderBuffs = {
 		},		
 	},
 	WARLOCK = {
-		[1] = { --armors group
+		["Armors"] = { --armors group
 			["spells"] = {
-				28176, -- fel armor
-				687, -- demon armor			
+				[28176] = true, -- fel armor
+				[687] = true, -- demon armor			
 			},
 			["combat"] = true,
 			["instance"] = true,
@@ -74,48 +74,48 @@ E.ReminderBuffs = {
 		},
 	},
 	PALADIN = {
-		[1] = { --Seals group
+		["Seals"] = { --Seals group
 			["spells"] = {
-				20154, -- seal of righteousness
-				20164, -- seal of justice
-				20165, -- seal of insight
-				31801, -- seal of truth				
+				[20154] = true, -- seal of righteousness
+				[20164] = true, -- seal of justice
+				[20165] = true, -- seal of insight
+				[31801] = true, -- seal of truth				
 			},
 			["combat"] = true,
 			["instance"] = true,
 			["pvp"] = true,
 		},
-		[2] = { -- righteous fury group
+		["Righteous Fury"] = { -- righteous fury group
 			["spells"] = {
-				25780, 
+				[25780] = true, 
 			},
 			["role"] = "Tank",
 			["instance"] = true,
 			["reversecheck"] = true,
 			["negate_reversecheck"] = 1, --Holy paladins use RF sometimes
 		},
-		[3] = { -- auras
+		["Auras"] = { -- auras
 			["spells"] = {
-				465, --devo
-				7294, --retr
-				19746, -- conc
-				19891, -- resist
+				[465] = true, --devo
+				[7294] = true, --retr
+				[19746] = true, -- conc
+				[19891] = true, -- resist
 			},
 			["instance"] = true,
 			["personal"] = true,
 		},
 	},
 	SHAMAN = {
-		[1] = { --shields group
+		["Shields"] = { --shields group
 			["spells"] = {
-				52127, -- water shield
-				324, -- lightning shield			
+				[52127] = true, -- water shield
+				[324] = true, -- lightning shield			
 			},
 			["combat"] = true,
 			["instance"] = true,
 			["pvp"] = true,
 		},
-		[2] = { --check weapons for enchants
+		["Weapon Enchants"] = { --check weapons for enchants
 			["weapon"] = true,
 			["combat"] = true,
 			["instance"] = true,
@@ -124,47 +124,47 @@ E.ReminderBuffs = {
 		},
 	},
 	WARRIOR = {
-		[1] = { -- commanding Shout group
+		["Commanding Shout"] = { -- commanding Shout group
 			["spells"] = {
-				469, 
+				[469] = true, 
 			},
 			["negate_spells"] = {
-				6307, -- Blood Pact
-				90364, -- Qiraji Fortitude
-				72590, -- Drums of fortitude
-				21562, -- Fortitude				
+				[6307] = true, -- Blood Pact
+				[90364] = true, -- Qiraji Fortitude
+				[72590] = true, -- Drums of fortitude
+				[21562] = true, -- Fortitude				
 			},
 			["combat"] = true,
 			["role"] = "Tank",
 		},
-		[2] = { -- battle Shout group
+		["Battle Shout"] = { -- battle Shout group
 			["spells"] = {
-				6673, 
+				[6673] = true, 
 			},
 			["negate_spells"] = {
-				8076, -- strength of earth
-				57330, -- horn of Winter
-				93435, -- roar of courage (hunter pet)						
+				[8076] = true, -- strength of earth
+				[57330] = true, -- horn of Winter
+				[93435] = true, -- roar of courage (hunter pet)						
 			},
 			["combat"] = true,
 			["role"] = "Melee",
 		},
 	},
 	DEATHKNIGHT = {
-		[1] = { -- horn of Winter group
+		["Horn of Winter"] = { -- horn of Winter group
 			["spells"] = {
-				57330, 
+				[57330] = true, 
 			},
 			["negate_spells"] = {
-				8076, -- strength of earth totem
-				6673, -- battle Shout
-				93435, -- roar of courage (hunter pet)			
+				[8076] = true, -- strength of earth totem
+				[6673] = true, -- battle Shout
+				[93435] = true, -- roar of courage (hunter pet)			
 			},
 			["combat"] = true,
 		},
-		[2] = { -- blood presence group
+		["Blood Presence"] = { -- blood presence group
 			["spells"] = {
-				48263, 
+				[48263] = true, 
 			},
 			["role"] = "Tank",
 			["instance"] = true,	
@@ -172,7 +172,7 @@ E.ReminderBuffs = {
 		},
 	},
 	ROGUE = { 
-		[1] = { --weapons enchant group
+		["Weapon Enchants"] = { --weapons enchant group
 			["weapon"] = true,
 			["combat"] = true,
 			["instance"] = true,

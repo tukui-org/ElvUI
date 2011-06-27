@@ -19,10 +19,12 @@ local function OnEvent(self, event, arg1, arg2)
 	self.icon:SetTexture(nil)
 	self:Hide()
 	if group.negate_spells then
-		for _, buff in pairs(group.negate_spells) do
-			local name = GetSpellInfo(buff)
-			if (name and UnitBuff("player", name)) then
-				return
+		for buff, value in pairs(group.negate_spells) do
+			if value == true then
+				local name = GetSpellInfo(buff)
+				if (name and UnitBuff("player", name)) then
+					return
+				end
 			end
 		end
 	end
@@ -30,13 +32,15 @@ local function OnEvent(self, event, arg1, arg2)
 	local hasOffhandWeapon = OffhandHasWeapon()
 	local hasMainHandEnchant, _, _, hasOffHandEnchant, _, _ = GetWeaponEnchantInfo()
 	if not group.weapon then
-		for _, buff in pairs(group.spells) do
-			local name = GetSpellInfo(buff)
-			local usable, nomana = IsUsableSpell(name)
-			if (usable or nomana) then
-				self.icon:SetTexture(select(3, GetSpellInfo(buff)))
-				break
-			end			
+		for buff, value in pairs(group.spells) do
+			if value == true then
+				local name = GetSpellInfo(buff)
+				local usable, nomana = IsUsableSpell(name)
+				if (usable or nomana) then
+					self.icon:SetTexture(select(3, GetSpellInfo(buff)))
+					break
+				end		
+			end
 		end
 		
 		if (not self.icon:GetTexture() and event == "PLAYER_LOGIN") then
@@ -132,18 +136,20 @@ local function OnEvent(self, event, arg1, arg2)
 	if not group.weapon then
 		if ((combat and UnitAffectingCombat("player")) or (instance and (instanceType == "party" or instanceType == "raid")) or (pvp and (instanceType == "arena" or instanceType == "pvp"))) and 
 		treepass == true and rolepass == true and not (UnitInVehicle("player") and self.icon:GetTexture()) then
-			for _, buff in pairs(group.spells) do
-				local name = GetSpellInfo(buff)
-				local _, _, icon, _, _, _, _, unitCaster, _, _, _ = UnitBuff("player", name)
-				if personal and personal == true then
-					if (name and icon and unitCaster == "player") then
-						self:Hide()
-						return
-					end
-				else
-					if (name and icon) then
-						self:Hide()
-						return
+			for buff, value in pairs(group.spells) do
+				if value == true then
+					local name = GetSpellInfo(buff)
+					local _, _, icon, _, _, _, _, unitCaster, _, _, _ = UnitBuff("player", name)
+					if personal and personal == true then
+						if (name and icon and unitCaster == "player") then
+							self:Hide()
+							return
+						end
+					else
+						if (name and icon) then
+							self:Hide()
+							return
+						end
 					end
 				end
 			end
@@ -152,14 +158,16 @@ local function OnEvent(self, event, arg1, arg2)
 		elseif ((combat and UnitAffectingCombat("player")) or (instance and (instanceType == "party" or instanceType == "raid"))) and 
 		reversecheck == true and not (UnitInVehicle("player") and self.icon:GetTexture()) then
 			if negate_reversecheck and negate_reversecheck == GetPrimaryTalentTree() then self:Hide() return end
-			for _, buff in pairs(group.spells) do
-				local name = GetSpellInfo(buff)
-				local _, _, icon, _, _, _, _, unitCaster, _, _, _ = UnitBuff("player", name)
-				if (name and icon and unitCaster == "player") then
-					self:Show()
-					if canplaysound == true then PlaySoundFile(C["media"].warning) end
-					return
-				end			
+			for buff, value in pairs(group.spells) do
+				if value == true then
+					local name = GetSpellInfo(buff)
+					local _, _, icon, _, _, _, _, unitCaster, _, _, _ = UnitBuff("player", name)
+					if (name and icon and unitCaster == "player") then
+						self:Show()
+						if canplaysound == true then PlaySoundFile(C["media"].warning) end
+						return
+					end	
+				end
 			end			
 		else
 			self:Hide()
@@ -197,11 +205,13 @@ local function OnEvent(self, event, arg1, arg2)
 	end
 end
 
-for i=1, #tab do
+local i = 0
+for groupName, _ in pairs(tab) do
+	i = i + 1
 	local frame = CreateFrame("Frame", "ReminderFrame"..i, UIParent)
 	frame:CreatePanel("Default", E.Scale(40), E.Scale(40), "CENTER", UIParent, "CENTER", 0, E.Scale(200))
 	frame:SetFrameLevel(1)
-	frame.id = i
+	frame.id = groupName
 	frame.icon = frame:CreateTexture(nil, "OVERLAY")
 	frame.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	frame.icon:SetPoint("CENTER")

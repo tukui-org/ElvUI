@@ -59,6 +59,9 @@ if IsAddOnLoaded("ElvUI_Config") then
 		--CastTicks
 		E.ChannelTicks = ElvuiConfig.db.profile.spellfilter.ChannelTicks
 		
+		--Reminders
+		E.ReminderBuffs = ElvuiConfig.db.profile.spellfilter.ReminderBuffs
+		
 		E.SavePath = ElvuiConfig.db.profile
 end
 

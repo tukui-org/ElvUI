@@ -38,7 +38,8 @@ function ElvuiConfig:LoadDefaults()
 				PetBuffs = E["PetBuffs"],
 				TRINKET_FILTER = TRINKET_FILTER,
 				CLASS_FILTERS = CLASS_FILTERS,
-				ChannelTicks = E["ChannelTicks"]
+				ChannelTicks = E["ChannelTicks"],
+				ReminderBuffs = E["ReminderBuffs"],
 			},
 		},
 	}
@@ -142,12 +143,321 @@ function ElvuiConfig.GenerateOptionsInternal()
 		["CLASS_FILTERS"] = true
 	}
 	
+	local ReminderBuffs = {
+		["ReminderBuffs"] = true
+	}
+	
 	local function CreateFilterTable(tab)
 		local spelltable = db.spellfilter[tab]
 		if not spelltable then error("db.spellfilter could not find value 'tab'") return {} end
 		local newtable = {}
 		
-		if tab == "ChannelTicks" then
+		if tab == "ReminderBuffs" then
+			local groupTable = {}
+			local spellTable = {}
+			if not spelltable[E.myclass] then spelltable[E.myclass] = {} end
+			for group, table in pairs(spelltable[E.myclass]) do
+				groupTable[group] = tostring(group)
+				spellTable = table["spells"]
+			end
+			
+			local s = spellTable
+			spellTable = {}
+			for id, value in pairs(s) do
+				local name = GetSpellInfo(id)
+				name = name.." ("..id..")"
+				spellTable[id] = name
+			end
+			s = nil
+			
+			local function Update()
+				local config = LibStub("AceConfigRegistry-3.0"):GetOptionsTable("ElvuiConfig", "dialog", "MyLib-1.2")
+				local curfilter = db.spellfilter.FilterPicker
+				config.args.spellfilter.args.SpellListTable.args = CreateFilterTable(curfilter)		
+
+				E.ReminderBuffs[E.myclass][curfilter] = db.spellfilter[tab][E.myclass][curfilter]	
+				
+			end
+			
+			newtable["SelectGroup"] = {
+				name = L["Choose Group"],
+				desc = L["Choose the group you want to modify."],
+				type = "select",
+				order = 1,
+				values = groupTable,
+				set = function(info, value)
+					db.spellfilter[ info[#info] ] = value;
+					Update()						
+				end,
+			}
+			local curfilter = db.spellfilter["SelectGroup"]
+			
+			if curfilter ~= nil and db.spellfilter[tab][E.myclass][curfilter] then
+				newtable["weapon"] = {
+					type = "toggle",
+					name = L["Check Weapon Enchants"],
+					desc = L["Run a check to see if you have all of your weapons enchanted (Typically for Rogue, Shamans)"],
+					order = 2,
+					get = function(info) return db.spellfilter[tab][E.myclass][curfilter]["weapon"] end,
+					set = function(info, value) 
+						db.spellfilter[tab][E.myclass][curfilter]["weapon"] = value 
+						Update()
+					end,
+				}
+				
+				newtable["role"] = {
+					type = 'select',
+					name = L["Role"],
+					desc = L["You must be a certain role for the icon to display"],
+					values = {
+						["Tank"] = L["Tank"],
+						["Melee"] = L["Melee"],
+						["Caster"] = L["Caster"],
+						["ANY"] = L["Any"],
+					},
+					get = function(info) 
+						if db.spellfilter[tab][E.myclass][curfilter]["role"] then 
+							return db.spellfilter[tab][E.myclass][curfilter]["role"] 
+						else 
+							return "ANY" 
+						end 
+					end,
+					set = function(info, value)
+						if value == "ANY" then 
+							db.spellfilter[tab][E.myclass][curfilter]["role"] = nil 
+						else 
+							db.spellfilter[tab][E.myclass][curfilter]["role"] = value 
+						end
+						Update()
+					end,
+					order = 3,
+				}
+				
+				local spec1, spec2, spec3 = select(2, GetTalentTabInfo(1)), select(2, GetTalentTabInfo(2)), select(2, GetTalentTabInfo(3))
+				newtable["tree"] = {
+					type = 'select',
+					name = L["Talent Tree"],
+					desc = L["You must be using a certain talent tree for the icon to show"],
+					order = 4,
+					get = function(info) if db.spellfilter[tab][E.myclass][curfilter]["tree"] then return tostring(db.spellfilter[tab][E.myclass][curfilter]["tree"]) else return "ANY" end end,
+					set = function(info, value) if value == "ANY" then db.spellfilter[tab][E.myclass][curfilter]["tree"] = nil else db.spellfilter[tab][E.myclass][curfilter]["tree"] = tonumber(value) end; Update() end,	
+					values = {
+						["1"] = spec1,
+						["2"] = spec2,
+						["3"] = spec3,
+						["ANY"] = L["Any"],
+					},
+				}
+				
+				newtable["level"] = {
+					type = "input",
+					name = L["Level Requirement"],
+					desc = L["Level requirement for the icon to be able to display."],
+					order = 5,
+					get = function(info) if db.spellfilter[tab][E.myclass][curfilter]["level"] then return db.spellfilter[tab][E.myclass][curfilter]["level"] else return '' end end,
+					set = function(info, value) 
+						if not tonumber(value) then
+							print(L["Value must be a number"])
+						elseif db.spellfilter[tab][E.myclass][curfilter]["level"] ~= '' then 
+							db.spellfilter[tab][E.myclass][curfilter]["level"] = tonumber(value)
+							Update()
+						else 
+							db.spellfilter[tab][E.myclass][curfilter]["level"] = nil
+							Update()
+						end 
+					end,
+				}
+				
+				newtable["personal"] = {
+					type = "toggle",
+					name = L["Personal Buffs Only"],
+					desc = L["Only check if the buff is coming from you"],
+					order = 6,
+					get = function(info) return db.spellfilter[tab][E.myclass][curfilter]["personal"] end,
+					set = function(info, value) db.spellfilter[tab][E.myclass][curfilter]["personal"] = value; Update() end,
+				}
+				
+				newtable["instance"] = {
+					type = "toggle",
+					name = L["Inside Raid/Party"],
+					desc = L["Only run checks inside raid/party instances"],
+					order = 7,
+					get = function(info) return db.spellfilter[tab][E.myclass][curfilter]["instance"] end,
+					set = function(info, value) db.spellfilter[tab][E.myclass][curfilter]["instance"] = value; Update() end,
+				}
+
+				newtable["pvp"] = {
+					type = "toggle",
+					name = L["Inside BG/Arena"],
+					desc = L["Only run checks inside BG/Arena instances"],
+					order = 8,
+					get = function(info) return db.spellfilter[tab][E.myclass][curfilter]["pvp"] end,
+					set = function(info, value) db.spellfilter[tab][E.myclass][curfilter]["pvp"] = value; Update() end,
+				}	
+
+				newtable["combat"] = {
+					type = "toggle",
+					name = L["During Combat"],
+					desc = L["Only run checks during combat"],
+					order = 9,
+					get = function(info) return db.spellfilter[tab][E.myclass][curfilter]["combat"] end,
+					set = function(info, value) db.spellfilter[tab][E.myclass][curfilter]["combat"] = value; Update() end,
+				}
+
+				if db.spellfilter[tab][E.myclass][curfilter]["weapon"] ~= true then
+					newtable["ReverseCheck"] = {
+						type = "toggle",
+						name = L["Reverse Check"],
+						desc = L["Instead of hiding the frame when you have the buff, show the frame when you have the buff."],
+						order = 10,
+						get = function(info) return db.spellfilter[tab][E.myclass][curfilter]["reversecheck"] end,
+						set = function(info, value) db.spellfilter[tab][E.myclass][curfilter]["reversecheck"] = value; Update() end,
+					}
+					
+					newtable["NegateReverseCheck"] = {
+						type = "select",
+						name = L["Negate Reverse Check"],
+						desc = L["Set a talent tree to not follow the reverse check"],
+						order = 11,
+						get = function(info) if db.spellfilter[tab][E.myclass][curfilter]["negate_reversecheck"] then return tostring(db.spellfilter[tab][E.myclass][curfilter]["negate_reversecheck"]) else return "NONE" end end,
+						set = function(info, value) if value == "NONE" then db.spellfilter[tab][E.myclass][curfilter]["negate_reversecheck"] = nil else db.spellfilter[tab][E.myclass][curfilter]["negate_reversecheck"] = tonumber(value) end; Update() end,	
+						disabled = function() return not db.spellfilter[tab][E.myclass][curfilter]["reversecheck"] end,
+						values = {
+							["1"] = spec1,
+							["2"] = spec2,
+							["3"] = spec3,
+							["NONE"] = L["None"],
+						},
+					}
+					
+					newtable["SpellGroup"] = {
+						type = "group",
+						name = L["Spells"],
+						guiInline = true,	
+						order = 12,
+						args = {},
+					}
+					
+					if not spelltable[E.myclass][curfilter]["spells"] then spelltable[E.myclass][curfilter]["spells"] = {} end
+					for spell, value in pairs(spelltable[E.myclass][curfilter]["spells"]) do
+						local name = GetSpellInfo(spell)
+						if newtable["SpellGroup"]["args"][name] == nil then
+							local sname = GetSpellInfo(spell)
+							sname = sname.." ("..spell..")"					
+							newtable["SpellGroup"]["args"][name] = {
+								name = sname,
+								type = "toggle",
+								get = function(info) if db.spellfilter[tab][E.myclass][curfilter]["spells"][spell] then return true else return false end end,
+								set = function(info, value) db.spellfilter[tab][E.myclass][curfilter]["spells"][spell] = value; E[tab] = db.spellfilter[tab]; Update() end,
+							}
+						end
+					end			
+
+					newtable["AddSpell"] = {
+						type = 'input',
+						name = L["New ID"],
+						get = function(info) return "" end,
+						set = function(info, value)	
+							if not tonumber(value) then
+								print(L["Value must be a number"])
+							elseif not GetSpellInfo(value) then
+								print(L["Not valid spell id"])
+							else							
+								value = tonumber(value)
+								db.spellfilter[tab][E.myclass][curfilter]["spells"][value] = true
+
+								Update()
+							end					
+						end,
+						order = 13,
+					}
+					
+					newtable["RemoveSpell"] = {
+						type = 'input',
+						name = L["Remove ID"],
+						get = function(info) return "" end,
+						set = function(info, value)			
+							if not tonumber(value) then
+								print(L["Value must be a number"])							
+							elseif not GetSpellInfo(value) then
+								print(L["Not valid spell id"])
+							elseif db.spellfilter[tab][E.myclass][curfilter]["spells"][tonumber(value)] == nil then
+								print(L["Spell not found in list"])
+							else
+								value = tonumber(value)
+								db.spellfilter[tab][E.myclass][curfilter]["spells"][value] = nil
+								Update()									
+							end					
+						end,
+						order = 14,
+					}	
+					
+					newtable["NegateSpellGroup"] = {
+						type = "group",
+						name = L["Negate Spells"],
+						guiInline = true,	
+						order = 15,
+						args = {},
+					}
+					
+					if not spelltable[E.myclass][curfilter]["negate_spells"] then spelltable[E.myclass][curfilter]["negate_spells"] = {} end
+					for spell, value in pairs(spelltable[E.myclass][curfilter]["negate_spells"]) do
+						local name = GetSpellInfo(spell)
+						if newtable["NegateSpellGroup"]["args"][name] == nil then
+							local sname = GetSpellInfo(spell)
+							sname = sname.." ("..spell..")"					
+							newtable["NegateSpellGroup"]["args"][name] = {
+								name = sname,
+								type = "toggle",
+								get = function(info) if db.spellfilter[tab][E.myclass][curfilter]["negate_spells"][spell] then return true else return false end end,
+								set = function(info, value) db.spellfilter[tab][E.myclass][curfilter]["negate_spells"][spell] = value; E[tab] = db.spellfilter[tab]; Update() end,
+							}
+						end
+					end			
+
+					newtable["AddNegateSpell"] = {
+						type = 'input',
+						name = L["New ID (Negate)"],
+						desc = L["If any spell found inside this list is found the icon will hide as well"],
+						get = function(info) return "" end,
+						set = function(info, value)		
+							if not tonumber(value) then
+								print(L["Value must be a number"])								
+							elseif not GetSpellInfo(value) then
+								print(L["Not valid spell id"])
+							else
+								value = tonumber(value)
+								db.spellfilter[tab][E.myclass][curfilter]["negate_spells"][value] = true
+								Update()										
+							end					
+						end,
+						order = 16,
+					}
+					
+					newtable["RemoveNegateSpell"] = {
+						type = 'input',
+						name = L["Remove ID (Negate)"],
+						get = function(info) return "" end,
+						set = function(info, value)	
+							if not tonumber(value) then
+								print(L["Value must be a number"])						
+							elseif not GetSpellInfo(value) then
+								print(L["Not valid spell id"])
+							elseif db.spellfilter[tab][E.myclass][curfilter]["negate_spells"][tonumber(value)] == nil then
+								print(L["Spell not found in list"])
+							else
+								value = tonumber(value)
+								db.spellfilter[tab][E.myclass][curfilter]["negate_spells"][value] = nil
+								Update()									
+							end					
+						end,
+						order = 17,
+					}						
+				end
+			end
+			groupTable = nil
+			spellTable = nil
+		elseif tab == "ChannelTicks" then
 			for spell, value in pairs(spelltable) do
 				if db.spellfilter[tab][spell] ~= nil then
 					newtable[spell] = {
@@ -493,6 +803,8 @@ function ElvuiConfig.GenerateOptionsInternal()
 			return L["These buffs/debuffs are displayed as a classtimer, where they get positioned is based on your layout option choice"]
 		elseif db.spellfilter.FilterPicker == "ChannelTicks" then
 			return L["These spells when cast will display tick marks on the castbar"]
+		elseif db.spellfilter.FilterPicker == "ReminderBuffs" then
+			return L["These are warning icons that appear on the center of the screen"]			
 		else
 			return ""
 		end
@@ -503,6 +815,8 @@ function ElvuiConfig.GenerateOptionsInternal()
 			return L["Spells"]
 		elseif db.spellfilter.FilterPicker == "PlateBlacklist" then
 			return L["Nameplate Names"]
+		elseif db.spellfilter.FilterPicker == "ReminderBuffs" then
+			return L["Warning Groups"]
 		else
 			return L["Auras"]
 		end	
@@ -2778,6 +3092,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 							UpdateSpellFilter()
 						end,
 						values = {
+							["ReminderBuffs"] = L["Buff Reminders"],
 							["RaidDebuffs"] = L["Raid Debuffs"],
 							["DebuffBlacklist"] = L["Debuff Blacklist"],	
 							["DebuffWhiteList"] = L["Debuff Whitelist"],
@@ -2805,11 +3120,15 @@ function ElvuiConfig.GenerateOptionsInternal()
 					},						
 					NewName = {
 						type = 'input',
-						name = function() if ClassTimerShared[db.spellfilter.FilterPicker] or ClassTimer[db.spellfilter.FilterPicker] or RaidBuffs[db.spellfilter.FilterPicker] then return L["New ID"] else return L["New name"] end end,
-						desc = L["Add a new spell name / ID to the list."],
+						name = function() if ClassTimerShared[db.spellfilter.FilterPicker] or ClassTimer[db.spellfilter.FilterPicker] or RaidBuffs[db.spellfilter.FilterPicker] then return L["New ID"] elseif ReminderBuffs[db.spellfilter.FilterPicker] then return L["New Group"] else return L["New name"] end end,
 						get = function(info) return "" end,
 						set = function(info, value)
-							if db.spellfilter.FilterPicker == "ChannelTicks" then
+							if ReminderBuffs[db.spellfilter.FilterPicker] then
+								local name_list = db.spellfilter[db.spellfilter.FilterPicker]
+								if not name_list[E.myclass] then name_list[E.myclass] = {} end
+								name_list[E.myclass][value] = {}
+								UpdateSpellFilter()
+							elseif db.spellfilter.FilterPicker == "ChannelTicks" then
 								local name_list = db.spellfilter[db.spellfilter.FilterPicker]
 								name_list[value] = 0
 								UpdateSpellFilter()
@@ -2857,12 +3176,16 @@ function ElvuiConfig.GenerateOptionsInternal()
 					},
 					DeleteName = {
 						type = 'input',
-						name = function() if ClassTimerShared[db.spellfilter.FilterPicker] or ClassTimer[db.spellfilter.FilterPicker] or RaidBuffs[db.spellfilter.FilterPicker] then return L["Remove ID"] else return L["Remove Name"] end end,
-						desc = L["You may only delete spells that you have added. Default spells can be disabled by unchecking the option"],
+						name = function() if ClassTimerShared[db.spellfilter.FilterPicker] or ClassTimer[db.spellfilter.FilterPicker] or RaidBuffs[db.spellfilter.FilterPicker] then return L["Remove ID"] elseif ReminderBuffs[db.spellfilter.FilterPicker] then return L["Remove Group"] else return L["Remove Name"] end end,
 						get = function(info) return "" end,
 						set = function(info, value)
 
-							if ClassTimer[db.spellfilter.FilterPicker] then
+							if ReminderBuffs[db.spellfilter.FilterPicker] then
+								local name_list = db.spellfilter[db.spellfilter.FilterPicker]
+								if not name_list[E.myclass] then name_list[E.myclass] = {} end
+								name_list[E.myclass][value] = nil
+								UpdateSpellFilter()
+							elseif ClassTimer[db.spellfilter.FilterPicker] then
 								if not GetSpellInfo(value) then
 									print(L["Not valid spell id"])
 								elseif not db.spellfilter["SelectSpellFilter"] then
