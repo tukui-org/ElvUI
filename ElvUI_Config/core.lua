@@ -158,8 +158,10 @@ function ElvuiConfig.GenerateOptionsInternal()
 			if not spelltable[E.myclass] then spelltable[E.myclass] = {} end
 			for group, table in pairs(spelltable[E.myclass]) do
 				groupTable[group] = tostring(group)
+				if not table["spells"] then table["spells"] = {} end
 				spellTable = table["spells"]
 			end
+			
 			
 			local s = spellTable
 			spellTable = {}
@@ -250,16 +252,15 @@ function ElvuiConfig.GenerateOptionsInternal()
 				}
 				
 				newtable["level"] = {
-					type = "input",
+					type = "range",
 					name = L["Level Requirement"],
-					desc = L["Level requirement for the icon to be able to display."],
+					desc = L["Level requirement for the icon to be able to display. 0 for disabled."],
 					order = 5,
-					get = function(info) if db.spellfilter[tab][E.myclass][curfilter]["level"] then return db.spellfilter[tab][E.myclass][curfilter]["level"] else return '' end end,
+					min = 0, max = MAX_PLAYER_LEVEL, step = 1,
+					get = function(info) if db.spellfilter[tab][E.myclass][curfilter]["level"] then return db.spellfilter[tab][E.myclass][curfilter]["level"] else return 0 end end,
 					set = function(info, value) 
-						if not tonumber(value) then
-							print(L["Value must be a number"])
-						elseif db.spellfilter[tab][E.myclass][curfilter]["level"] ~= '' then 
-							db.spellfilter[tab][E.myclass][curfilter]["level"] = tonumber(value)
+						if db.spellfilter[tab][E.myclass][curfilter]["level"] ~= 0 then 
+							db.spellfilter[tab][E.myclass][curfilter]["level"] = value
 							Update()
 						else 
 							db.spellfilter[tab][E.myclass][curfilter]["level"] = nil
