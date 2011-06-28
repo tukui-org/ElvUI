@@ -14,7 +14,7 @@ function E.PP(p, obj)
 		bottom = ElvUILowerStatPanel
 		bottomleft = ElvUILowerStatPanelLeft
 		bottomright = ElvUILowerStatPanelRight
-		x = ElvUILowerStatPanel:GetWidth()/3
+		x = ElvuiActionBarBackground:GetWidth()/3
 	end
 	
 	if obj:GetParent():GetName() == "TimeDataText" or obj:GetParent():GetName() == "DurabilityDataText" then t = true else t = false end
