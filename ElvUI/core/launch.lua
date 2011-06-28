@@ -20,8 +20,6 @@ function E.Install()
 				if imsg.firstShow == false then
 					if GetCVarBool("Sound_EnableMusic") then
 						PlayMusic([[Sound\Music\ZoneMusic\DMF_L70ETC01.mp3]])
-					else
-						PlaySoundFile([[Sound\Music\ZoneMusic\DMF_L70ETC01.mp3]])
 					end					
 					imsg.firstShow = true
 				end
