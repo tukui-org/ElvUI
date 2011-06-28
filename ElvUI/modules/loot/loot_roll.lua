@@ -380,8 +380,8 @@ anchor:SetScript("OnEvent", function(frame, event, addon)
 	anchor:UnregisterEvent("ADDON_LOADED")
 	anchor:RegisterEvent("START_LOOT_ROLL")
 	anchor:RegisterEvent("CHAT_MSG_LOOT")
-	E.UIParent:UnregisterEvent("START_LOOT_ROLL")
-	E.UIParent:UnregisterEvent("CANCEL_LOOT_ROLL")
+	UIParent:UnregisterEvent("START_LOOT_ROLL")
+	UIParent:UnregisterEvent("CANCEL_LOOT_ROLL")
 
 	anchor:SetScript("OnEvent", function(frame, event, ...) if event == "CHAT_MSG_LOOT" then return CHAT_MSG_LOOT(...) else return START_LOOT_ROLL(...) end end)
 	
