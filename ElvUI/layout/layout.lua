@@ -11,21 +11,21 @@ E.minimapsize = E.Scale(165)
 
 --BOTTOM PANEL
 
-local f = CreateFrame("Frame", "ElvuiBottomPanel", UIParent)
+local f = CreateFrame("Frame", "ElvuiBottomPanel", E.UIParent)
 f:SetHeight(23)
-f:SetWidth(UIParent:GetWidth() + (E.mult * 2))
-f:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", -E.mult, -E.mult)
-f:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", E.mult, -E.mult)
+f:SetWidth(E.UIParent:GetWidth() + (E.mult * 2))
+f:SetPoint("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", -E.mult, -E.mult)
+f:SetPoint("BOTTOMRIGHT", E.UIParent, "BOTTOMRIGHT", E.mult, -E.mult)
 f:SetFrameStrata("BACKGROUND")
 f:SetFrameLevel(1)
 
 --TOP PANEL
 if C["general"].upperpanel == true then
-	local f = CreateFrame("Frame", "ElvuiTopPanel", UIParent)
+	local f = CreateFrame("Frame", "ElvuiTopPanel", E.UIParent)
 	f:SetHeight(23)
-	f:SetWidth(UIParent:GetWidth() + (E.mult * 2))
-	f:SetPoint("TOPLEFT", UIParent, "TOPLEFT", -E.mult, E.mult)
-	f:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", E.mult, E.mult)
+	f:SetWidth(E.UIParent:GetWidth() + (E.mult * 2))
+	f:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", -E.mult, E.mult)
+	f:SetPoint("TOPRIGHT", E.UIParent, "TOPRIGHT", E.mult, E.mult)
 	f:SetFrameStrata("BACKGROUND")
 	f:SetFrameLevel(0)
 	f:SetTemplate("Transparent")
@@ -117,11 +117,11 @@ if ElvuiMinimap then
 end
 
 -- MAIN ACTION BAR
-local barbg = CreateFrame("Frame", "ElvuiActionBarBackground", UIParent)
+local barbg = CreateFrame("Frame", "ElvuiActionBarBackground", E.UIParent)
 if C["actionbar"].bottompetbar ~= true then
-	barbg:CreatePanel("Default", 1, 1, "BOTTOM", UIParent, "BOTTOM", 0, E.Scale(4))
+	barbg:CreatePanel("Default", 1, 1, "BOTTOM", E.UIParent, "BOTTOM", 0, E.Scale(4))
 else
-	barbg:CreatePanel("Default", 1, 1, "BOTTOM", UIParent, "BOTTOM", 0, (E.buttonsize + (E.buttonspacing * 2)) + E.Scale(8))
+	barbg:CreatePanel("Default", 1, 1, "BOTTOM", E.UIParent, "BOTTOM", 0, (E.buttonsize + (E.buttonspacing * 2)) + E.Scale(8))
 end
 barbg:SetWidth(math.ceil((E.buttonsize * 12) + (E.buttonspacing * 13)))
 barbg:SetFrameStrata("BACKGROUND")
@@ -151,13 +151,13 @@ splitright:CreateShadow("Default")
 -- RIGHT BAR
 if C["actionbar"].enable == true then
 	local barbgr = CreateFrame("Frame", "ElvuiActionBarBackgroundRight", ElvuiActionBarBackground)
-	barbgr:CreatePanel("Default", 1, (E.buttonsize * 12) + (E.buttonspacing * 13), "RIGHT", UIParent, "RIGHT", E.Scale(-4), E.Scale(-8))
+	barbgr:CreatePanel("Default", 1, (E.buttonsize * 12) + (E.buttonspacing * 13), "RIGHT", E.UIParent, "RIGHT", E.Scale(-4), E.Scale(-8))
 	barbgr:Hide()
 	barbgr:SetFrameLevel(2)
 	
-	local petbg = CreateFrame("Frame", "ElvuiPetActionBarBackground", UIParent)
+	local petbg = CreateFrame("Frame", "ElvuiPetActionBarBackground", E.UIParent)
 	if C["actionbar"].bottompetbar ~= true then
-		petbg:CreatePanel("Default", E.petbuttonsize + (E.buttonspacing * 2), (E.petbuttonsize * 10) + (E.buttonspacing * 11), "RIGHT", UIParent, "RIGHT", E.Scale(-6), E.Scale(-13.5))
+		petbg:CreatePanel("Default", E.petbuttonsize + (E.buttonspacing * 2), (E.petbuttonsize * 10) + (E.buttonspacing * 11), "RIGHT", E.UIParent, "RIGHT", E.Scale(-6), E.Scale(-13.5))
 	else
 		petbg:CreatePanel("Default", (E.petbuttonsize * 10) + (E.buttonspacing * 11), E.petbuttonsize + (E.buttonspacing * 2), "TOP", ElvuiActionBarBackground, "BOTTOM", 0, -5)
 	end
@@ -186,8 +186,8 @@ if C["actionbar"].enable == true then
 		yoffset = yoffset + 30
 	end
 
-	local vbarbg = CreateFrame("Frame", "ElvuiVehicleBarBackground", UIParent)
-	vbarbg:CreatePanel("Default", 1, 1, "BOTTOM", UIParent, "BOTTOM", 0, 4+yoffset)
+	local vbarbg = CreateFrame("Frame", "ElvuiVehicleBarBackground", E.UIParent)
+	vbarbg:CreatePanel("Default", 1, 1, "BOTTOM", E.UIParent, "BOTTOM", 0, 4+yoffset)
 	vbarbg:SetWidth((E.buttonsize * 12) + (E.buttonspacing * 13))
 	vbarbg:SetHeight(E.buttonsize + (E.buttonspacing * 2))
 	vbarbg:CreateShadow("Default")
@@ -197,39 +197,39 @@ end
 
 -- CHAT PLACEHOLDER LEFT
 local PADDING = 12
-local chatlph = CreateFrame("Frame", "ChatLPlaceHolder", UIParent)
+local chatlph = CreateFrame("Frame", "ChatLPlaceHolder", E.UIParent)
 chatlph:SetWidth(C["chat"].chatwidth)
 chatlph:SetHeight(C["chat"].chatheight+6)
 chatlph:Point("BOTTOMLEFT", ElvuiBottomPanel, "TOPLEFT", PADDING,  PADDING)
 
 -- CHAT PLACEHOLDER RIGHT
-local chatrph = CreateFrame("Frame", "ChatRPlaceHolder", UIParent)
+local chatrph = CreateFrame("Frame", "ChatRPlaceHolder", E.UIParent)
 chatrph:SetWidth(C["chat"].chatwidth)
 chatrph:SetHeight(C["chat"].chatheight+6)
 chatrph:Point("BOTTOMRIGHT", ElvuiBottomPanel, "TOPRIGHT", -PADDING,  PADDING)
 
 -- CHAT BACKGROUND LEFT
-local chatlbg = CreateFrame("Frame", "ChatLBG", UIParent)
+local chatlbg = CreateFrame("Frame", "ChatLBG", E.UIParent)
 chatlbg:SetWidth(C["chat"].chatwidth + 14)
 chatlbg:SetHeight(C["chat"].chatheight + 68)
 chatlbg:Point("CENTER", chatlph, "CENTER")
 chatlbg:SetFrameStrata("BACKGROUND")
 
 -- CHAT BACKGROUND LEFT DUMMY (WHEN WE NEED TO ANCHOR SOMETHING TO THE LEFT CHAT BACKGROUND, ANCHOR IT TO THIS, OTHERWISE IF THE ANCHOR FRAME IS PROTECTED THEN WE CANNOT TOGGLE CHAT IN COMBAT
-local chatlbgdummy = CreateFrame("Frame", "ChatLBGDummy", UIParent)
+local chatlbgdummy = CreateFrame("Frame", "ChatLBGDummy", E.UIParent)
 chatlbgdummy:SetWidth(C["chat"].chatwidth + 14)
 chatlbgdummy:SetHeight(C["chat"].chatheight + 68)
 chatlbgdummy:Point("CENTER", chatlph, "CENTER")
 
 -- CHAT BACKGROUND RIGHT
-local chatrbg = CreateFrame("Frame", "ChatRBG", UIParent)
+local chatrbg = CreateFrame("Frame", "ChatRBG", E.UIParent)
 chatrbg:SetWidth(C["chat"].chatwidth + 14)
 chatrbg:SetHeight(C["chat"].chatheight + 68)
 chatrbg:Point("CENTER", chatrph, "CENTER")
 chatrbg:SetFrameStrata("BACKGROUND")
 
 -- CHAT BACKGROUND RIGHT DUMMY (WHEN WE NEED TO ANCHOR SOMETHING TO THE RIGHT CHAT BACKGROUND, ANCHOR IT TO THIS, OTHERWISE IF THE ANCHOR FRAME IS PROTECTED THEN WE CANNOT TOGGLE CHAT IN COMBAT
-local chatrbgdummy = CreateFrame("Frame", "ChatRBGDummy", UIParent)
+local chatrbgdummy = CreateFrame("Frame", "ChatRBGDummy", E.UIParent)
 chatrbgdummy:SetWidth(C["chat"].chatwidth + 14)
 chatrbgdummy:SetHeight(C["chat"].chatheight + 68)
 chatrbgdummy:Point("CENTER", chatrph, "CENTER")
@@ -257,7 +257,7 @@ if C["chat"].showbackdrop == true then
 end
 
 --INFO LEFT
-local infoleft = CreateFrame("Frame", "ElvuiInfoLeft", UIParent)
+local infoleft = CreateFrame("Frame", "ElvuiInfoLeft", E.UIParent)
 infoleft:SetFrameLevel(2)
 infoleft:SetTemplate("Default", true)
 infoleft:SetPoint("TOPLEFT", chatlph, "BOTTOMLEFT", E.Scale(17), E.Scale(-4))
@@ -290,7 +290,7 @@ infoleft:SetPoint("BOTTOMRIGHT", chatlph, "BOTTOMRIGHT", E.Scale(-17), E.Scale(-
 	infoleft.shadow:SetBackdropBorderColor(0, 0, 0, 0)
 
 --INFO RIGHT
-local inforight = CreateFrame("Frame", "ElvuiInfoRight", UIParent)
+local inforight = CreateFrame("Frame", "ElvuiInfoRight", E.UIParent)
 inforight:SetTemplate("Default", true)
 inforight:SetFrameLevel(2)
 inforight:SetPoint("TOPLEFT", chatrph, "BOTTOMLEFT", E.Scale(17), E.Scale(-4))
@@ -347,7 +347,7 @@ if C["general"].lowerpanel == true then
 
 	local yoffset = 0
 	if C["actionbar"].bottompetbar == true then yoffset = yoffset + 42 end		
-	local f = CreateFrame("Frame", "ElvUILowerStatPanel", UIParent)
+	local f = CreateFrame("Frame", "ElvUILowerStatPanel", E.UIParent)
 	f:SetHeight(23)
 	f:Point("TOPRIGHT", ElvuiActionBarBackground, "BOTTOMRIGHT", 0, -(4 + yoffset))
 	f:Point("TOPLEFT", ElvuiActionBarBackground, "BOTTOMLEFT", 0, -(4 + yoffset))		

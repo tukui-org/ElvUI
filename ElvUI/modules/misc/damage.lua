@@ -86,7 +86,7 @@ local function OnEvent(self, event, ...)
 	end
 end
 
-local f = CreateFrame("ScrollingMessageFrame", "TukuiEyefinityDamage", UIParent)
+local f = CreateFrame("ScrollingMessageFrame", "TukuiEyefinityDamage", E.UIParent)
 f:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 f:SetScript("OnEvent",OnEvent)
 f:SetSize(200, 200)

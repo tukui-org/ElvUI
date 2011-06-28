@@ -51,7 +51,7 @@ FriendsMicroButton:Kill()
 -- hide chat bubble menu button
 ChatFrameMenuButton:Kill()
 
-local EditBoxDummy = CreateFrame("Frame", "EditBoxDummy", UIParent)
+local EditBoxDummy = CreateFrame("Frame", "EditBoxDummy", E.UIParent)
 EditBoxDummy:SetAllPoints(ElvuiInfoLeft)
 
 -- set the chat style
@@ -334,8 +334,8 @@ ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 				tab:SetParent(ChatRBG)
 				chat:SetParent(tab)
 			elseif not docked and chat:IsShown() then
-				tab:SetParent(UIParent)
-				chat:SetParent(UIParent)
+				tab:SetParent(E.UIParent)
+				chat:SetParent(E.UIParent)
 			else
 				if chat:GetID() ~= 2 and not (id > NUM_CHAT_WINDOWS) then
 					chat:ClearAllPoints()
@@ -403,7 +403,7 @@ local sizes = {
 }
 
 local function CreatCopyFrame()
-	frame = CreateFrame("Frame", "CopyFrame", UIParent)
+	frame = CreateFrame("Frame", "CopyFrame", E.UIParent)
 	frame:SetTemplate('Transparent')
 	frame:SetHeight(E.Scale(200))
 	frame:SetScale(1)

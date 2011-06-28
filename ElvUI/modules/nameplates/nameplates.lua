@@ -24,7 +24,7 @@ if C["nameplate"].showhealth ~= true then
 	iconSize = 20
 end
 
-local NamePlates = CreateFrame("Frame", nil, UIParent)
+local NamePlates = CreateFrame("Frame", nil, E.UIParent)
 NamePlates:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
 if C["nameplate"].trackauras == true or C["nameplate"].trackccauras == true then
 	NamePlates:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")

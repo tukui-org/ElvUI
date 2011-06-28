@@ -2,7 +2,7 @@ local E, C, L, DB = unpack(select(2, ...)) -- Import: E - functions, constants, 
 if C["others"].minimapauras ~= true then return end
 
 --Holder frame for mover
-local holder = CreateFrame("Frame", "AurasHolder", UIParent)
+local holder = CreateFrame("Frame", "AurasHolder", E.UIParent)
 holder:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", E.Scale(-8), E.Scale(2))
 holder:SetWidth(E.Scale(456)) --(30 + 8) * 12)
 holder:SetHeight(ElvuiMinimap:GetHeight() + E.Scale(3 + 19))
@@ -153,7 +153,7 @@ local function CreateAuraHeader(filter, ...)
 	local name	
 	if filter == "HELPFUL" then name = "ElvuiPlayerBuffs" else name = "ElvuiPlayerDebuffs" end
 
-	local header = CreateFrame("Frame", name, UIParent, "SecureAuraHeaderTemplate")
+	local header = CreateFrame("Frame", name, E.UIParent, "SecureAuraHeaderTemplate")
 	header:SetPoint(...)
 	header:SetClampedToScreen(true)
 	header:HookScript("OnEvent", ScanAuras)

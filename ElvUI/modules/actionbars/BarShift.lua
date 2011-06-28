@@ -9,9 +9,9 @@ if not C["actionbar"].enable == true then return end
 -- used for anchor totembar or shapeshiftbar
 local ElvuiShift = CreateFrame("Frame","ElvuiShiftBar",ElvuiActionBarBackground)
 if C["actionbar"].microbar == true then
-	ElvuiShift:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 3, -38)
+	ElvuiShift:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", 3, -38)
 else
-	ElvuiShift:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 2, -2)
+	ElvuiShift:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", 2, -2)
 end
 ElvuiShift:SetWidth(200)
 ElvuiShift:SetHeight(E.petbuttonsize)

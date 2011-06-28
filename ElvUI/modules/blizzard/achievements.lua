@@ -1,10 +1,10 @@
 --Reposition achievement frames
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-local AchievementHolder = CreateFrame("Frame", "AchievementHolder", UIParent)
+local AchievementHolder = CreateFrame("Frame", "AchievementHolder", E.UIParent)
 AchievementHolder:SetWidth(180)
 AchievementHolder:SetHeight(20)
-AchievementHolder:SetPoint("CENTER", UIParent, "CENTER", 0, 170)
+AchievementHolder:SetPoint("CENTER", E.UIParent, "CENTER", 0, 170)
 
 local pos = "TOP"
 

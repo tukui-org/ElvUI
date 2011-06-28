@@ -4,13 +4,13 @@ local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config
 
 if not C["tooltip"].enable then return end
 
-local ElvuiTooltip = CreateFrame("Frame", nil, UIParent)
+local ElvuiTooltip = CreateFrame("Frame", nil, E.UIParent)
 
 local _G = getfenv(0)
 
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
 
-local TooltipHolder = CreateFrame("Frame", "TooltipHolder", UIParent)
+local TooltipHolder = CreateFrame("Frame", "TooltipHolder", E.UIParent)
 TooltipHolder:SetWidth(130)
 TooltipHolder:SetHeight(22)
 TooltipHolder:SetPoint("BOTTOMRIGHT", ElvuiInfoRight, "BOTTOMRIGHT")
@@ -34,7 +34,7 @@ local NeedBackdropBorderRefresh = false
 
 hooksecurefunc("GameTooltip_SetDefaultAnchor", function(self, parent)
 	if C["tooltip"].cursor == true then
-		if IsAddOnLoaded("Elvui_RaidHeal") and parent ~= UIParent then 
+		if IsAddOnLoaded("Elvui_RaidHeal") and parent ~= E.UIParent then 
 			self:SetOwner(parent, "ANCHOR_NONE")	
 		else
 			self:SetOwner(parent, "ANCHOR_CURSOR")
@@ -76,7 +76,7 @@ local function SetRightTooltipPos(self)
 					self:Point("BOTTOMRIGHT", ChatRBGDummy, "TOPRIGHT", -8, -14)				
 				end	
 			else
-				self:Point("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -12, 47)	
+				self:Point("BOTTOMRIGHT", E.UIParent, "BOTTOMRIGHT", -12, 47)	
 			end
 		end
 	end
@@ -87,7 +87,7 @@ GameTooltip:HookScript("OnUpdate",function(self, ...)
 		local x, y = GetCursorPosition();
 		local effScale = self:GetEffectiveScale();
 		self:ClearAllPoints();
-		self:SetPoint("BOTTOMLEFT","UIParent","BOTTOMLEFT",(x / effScale + (15)),(y / effScale + (7)))		
+		self:SetPoint("BOTTOMLEFT",E.UIParent,"BOTTOMLEFT",(x / effScale + (15)),(y / effScale + (7)))		
 	end
 	
 	if self:GetAnchorType() == "ANCHOR_CURSOR" and NeedBackdropBorderRefresh == true and C["tooltip"].cursor ~= true then
@@ -253,9 +253,9 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 	if not unit then self:Hide() return end
 	
 	-- for hiding tooltip on unitframes
-	if (self:GetOwner() ~= UIParent and C["tooltip"].hideuf) then self:Hide() return end
+	if (self:GetOwner() ~= E.UIParent and C["tooltip"].hideuf) then self:Hide() return end
 
-	if self:GetOwner() ~= UIParent and unit then
+	if self:GetOwner() ~= E.UIParent and unit then
 		SetRightTooltipPos(self)
 	end	
 	
@@ -439,7 +439,7 @@ local function PositionBGToastFrame(self, elapsed)
 						self:Point("BOTTOMRIGHT", ChatRBGDummy, "TOPRIGHT", -7, -25)					
 					end	
 				else
-					self:Point("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -11, 36)	
+					self:Point("BOTTOMRIGHT", E.UIParent, "BOTTOMRIGHT", -11, 36)	
 				end
 			end
 		end

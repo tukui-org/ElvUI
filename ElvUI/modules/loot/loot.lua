@@ -154,12 +154,12 @@ end)
 addon:SetMovable(true)
 addon:RegisterForClicks"anyup"
 
-local x = CreateFrame("Frame", "LootFrameHolder", UIParent)
+local x = CreateFrame("Frame", "LootFrameHolder", E.UIParent)
 x:Point("TOPLEFT", 36, -195)
 x:SetWidth(150)
 x:SetHeight(22)
 
-addon:SetParent(UIParent)
+addon:SetParent(E.UIParent)
 addon:SetUserPlaced(true)
 addon:SetPoint("TOPLEFT", LootFrameHolder, "TOPLEFT", 0, 0)
 addon:SetBackdrop{

@@ -58,7 +58,7 @@ function E.Delay(delay, func, ...)
 		return false
 	end
 	if(waitFrame == nil) then
-		waitFrame = CreateFrame("Frame","WaitFrame", UIParent)
+		waitFrame = CreateFrame("Frame","WaitFrame", E.UIParent)
 		waitFrame:SetScript("onUpdate",function (self,elapse)
 			local count = #waitTable
 			local i = 1

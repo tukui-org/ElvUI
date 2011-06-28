@@ -2,7 +2,7 @@ local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config
 
 if C["chat"].bubbles ~= true or IsAddOnLoaded("BossEncounter2") then return end
 
-local chatbubblehook = CreateFrame("Frame", nil, UIParent)
+local chatbubblehook = CreateFrame("Frame", nil, E.UIParent)
 local noscalemult = E.mult * C["general"].uiscale
 local tslu = 0
 local numkids = 0

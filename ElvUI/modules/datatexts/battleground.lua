@@ -124,8 +124,8 @@ ElvuiInfoRight:SetScript("OnEvent", function(self, event)
 	shownbg = true
 end)
 
-local bgframeL = CreateFrame("Frame", "ElvuiInfoBattleGroundL", UIParent)
-bgframeL:CreatePanel("Default", 1, 1, "TOPLEFT", UIParent, "BOTTOMLEFT", 0, 0)
+local bgframeL = CreateFrame("Frame", "ElvuiInfoBattleGroundL", E.UIParent)
+bgframeL:CreatePanel("Default", 1, 1, "TOPLEFT", E.UIParent, "BOTTOMLEFT", 0, 0)
 bgframeL:SetAllPoints(ElvuiInfoLeft)
 bgframeL:SetFrameLevel(ElvuiInfoLeft:GetFrameLevel() + 1)
 bgframeL:SetTemplate("Default", true)
@@ -137,8 +137,8 @@ bgframeL:SetScript("OnEnter", function(self)
 	end
 end) 
 
-local bgframeR = CreateFrame("Frame", "ElvuiInfoBattleGroundR", UIParent)
-bgframeR:CreatePanel("Default", 1, 1, "TOPLEFT", UIParent, "BOTTOMLEFT", 0, 0)
+local bgframeR = CreateFrame("Frame", "ElvuiInfoBattleGroundR", E.UIParent)
+bgframeR:CreatePanel("Default", 1, 1, "TOPLEFT", E.UIParent, "BOTTOMLEFT", 0, 0)
 bgframeR:SetTemplate("Default", true)
 bgframeR:SetAllPoints(ElvuiInfoRight)
 bgframeR:SetFrameLevel(ElvuiInfoRight:GetFrameLevel() + 1)

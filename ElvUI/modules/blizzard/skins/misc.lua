@@ -117,7 +117,7 @@ local function LoadSkin()
 		GhostFrame.SetBackdropColor = E.dummy
 		GhostFrame.SetBackdropBorderColor = E.dummy
 		GhostFrame:ClearAllPoints()
-		GhostFrame:SetPoint("TOP", UIParent, "TOP", 0, -150)
+		GhostFrame:SetPoint("TOP", E.UIParent, "TOP", 0, -150)
 		E.SkinButton(GhostFrameContentsFrame)
 		GhostFrameContentsFrameIcon:SetTexture(nil)
 		local x = CreateFrame("Frame", nil, GhostFrame)

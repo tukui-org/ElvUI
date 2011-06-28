@@ -144,7 +144,7 @@ local function PositionDXEAnchor()
 			DXEAlertsTopStackAnchor:Point("TOP", ChatRBGDummy, "TOP", 16, -28)
 		end	
 	else
-		DXEAlertsTopStackAnchor:Point("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -49, 25)		
+		DXEAlertsTopStackAnchor:Point("BOTTOMRIGHT", E.UIParent, "BOTTOMRIGHT", -49, 25)		
 	end
 end
 

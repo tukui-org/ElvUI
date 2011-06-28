@@ -27,7 +27,7 @@ local hide_soulbag = C["others"].soulbag
 -- hide bags options in default interface
 InterfaceOptionsDisplayPanelShowFreeBagSpace:Hide()
 
-Stuffing = CreateFrame ("Frame", nil, UIParent)
+Stuffing = CreateFrame ("Frame", nil, E.UIParent)
 Stuffing:RegisterEvent("ADDON_LOADED")
 Stuffing:RegisterEvent("PLAYER_ENTERING_WORLD")
 Stuffing:SetScript("OnEvent", function(self, event, ...)
@@ -84,42 +84,42 @@ local function MoveChar()
 	if StuffingFrameBank and StuffingFrameBank:IsShown() then		
 		if PlayerTalentFrame and PlayerTalentFrame:IsShown() then
 			PlayerTalentFrame:ClearAllPoints()
-			PlayerTalentFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)
+			PlayerTalentFrame:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)
 		end
 		
 		if AchievementFrame and AchievementFrame:IsShown() then
 			AchievementFrame:ClearAllPoints()
-			AchievementFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)		
+			AchievementFrame:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)		
 		end
 		
 		if QuestLogFrame and QuestLogFrame:IsShown() then
 			QuestLogFrame:ClearAllPoints()
-			QuestLogFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)			
+			QuestLogFrame:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)			
 		end
 		
 		if FriendsFrame and FriendsFrame:IsShown() and not (CharacterFrame:IsShown() or (PVPFrame and PVPFrame:IsShown()) or (GuildFrame and GuildFrame:IsShown()) or (LFDParentFrame and LFDParentFrame:IsShown())) then
 			FriendsFrame:ClearAllPoints()
-			FriendsFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)				
+			FriendsFrame:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)				
 		end
 		
 		if PVPFrame and PVPFrame:IsShown() and not (CharacterFrame:IsShown() or (FriendsFrame and FriendsFrame:IsShown()) or (GuildFrame and GuildFrame:IsShown()) or (LFDParentFrame and LFDParentFrame:IsShown())) then
 			PVPFrame:ClearAllPoints()
-			PVPFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)				
+			PVPFrame:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)				
 		end
 		
 		if GuildFrame and GuildFrame:IsShown() and not (CharacterFrame:IsShown() or (FriendsFrame and FriendsFrame:IsShown()) or (PVPFrame and PVPFrame:IsShown()) or (LFDParentFrame and LFDParentFrame:IsShown())) then
 			GuildFrame:ClearAllPoints()
-			GuildFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)		
+			GuildFrame:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)		
 		end
 		
 		if LFDParentFrame and LFDParentFrame:IsShown() and not (CharacterFrame:IsShown() or (FriendsFrame and FriendsFrame:IsShown()) or (PVPFrame and PVPFrame:IsShown()) or (GuildFrame and GuildFrame:IsShown())) then
 			LFDParentFrame:ClearAllPoints()
-			LFDParentFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)				
+			LFDParentFrame:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)				
 		end
 		
 		if CharacterFrame:IsShown() then
 			CharacterFrame:ClearAllPoints()
-			CharacterFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)
+			CharacterFrame:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", C["chat"].chatwidth+30, -116)
 		end
 		DressUpFrame:ClearAllPoints()
 		DressUpFrame:SetPoint("TOPLEFT", CharacterFrame, "TOPRIGHT", 15, 0)
@@ -183,7 +183,7 @@ end
 --
 -- bag slot stuff
 --
-local trashParent = CreateFrame("Frame", nil, UIParent)
+local trashParent = CreateFrame("Frame", nil, E.UIParent)
 local trashButton = {}
 local trashBag = {}
 
@@ -468,7 +468,7 @@ end
 
 function Stuffing:CreateBagFrame(w)
 	local n = "StuffingFrame"  .. w
-	local f = CreateFrame ("Frame", n, UIParent)
+	local f = CreateFrame ("Frame", n, E.UIParent)
 	f:EnableMouse(1)
 	f:SetMovable(1)
 	f:SetToplevel(1)

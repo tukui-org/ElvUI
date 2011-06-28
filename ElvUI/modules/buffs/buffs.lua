@@ -14,7 +14,7 @@ local rowbuffs = 12
 local warningtime = 6
 
 --Holder frame for mover
-local holder = CreateFrame("Frame", "AurasHolder", UIParent)
+local holder = CreateFrame("Frame", "AurasHolder", E.UIParent)
 holder:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", E.Scale(-8), E.Scale(2))
 holder:SetWidth(E.Scale(456)) --(30 + 8) * 12)
 holder:SetHeight(ElvuiMinimap:GetHeight() + E.Scale(3 + 19))

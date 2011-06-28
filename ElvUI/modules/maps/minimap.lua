@@ -6,7 +6,7 @@ local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config
 --------------------------------------------------------------------
 
 Minimap:ClearAllPoints()
-Minimap:Point("TOPRIGHT", UIParent, "TOPRIGHT", -25, -5)
+Minimap:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -25, -5)
 Minimap:SetSize(E.minimapsize - E.Scale(4), E.minimapsize - E.Scale(4))
 
 function E.PostMinimapMove(frame)
@@ -15,9 +15,9 @@ function E.PostMinimapMove(frame)
 		point, _, _, _, _ = Minimap:GetPoint()
 		frame:ClearAllPoints()
 		if RaidBuffReminder then
-			frame:Point("TOPRIGHT", UIParent, "TOPRIGHT", -(6 + RaidBuffReminder:GetWidth()), -6)
+			frame:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -(6 + RaidBuffReminder:GetWidth()), -6)
 		else
-			frame:Point("TOPRIGHT", UIParent, "TOPRIGHT", -6, -6)
+			frame:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -6, -6)
 		end
 	end
 	
@@ -153,7 +153,7 @@ end
 local calendar_string = string.gsub(SLASH_CALENDAR1, "/", "")
 calendar_string = string.gsub(calendar_string, "^%l", string.upper)
 
-local menuFrame = CreateFrame("Frame", "MinimapRightClickMenu", UIParent, "UIDropDownMenuTemplate")
+local menuFrame = CreateFrame("Frame", "MinimapRightClickMenu", E.UIParent, "UIDropDownMenuTemplate")
 local menuList = {
     {text = CHARACTER_BUTTON,
     func = function() ToggleCharacter("PaperDollFrame") end},
@@ -310,7 +310,7 @@ end
 
 if C["general"].upperpanel ~= true then
 	--Style Zone and Coord panels
-	local m_zone = CreateFrame("Frame",nil,UIParent)
+	local m_zone = CreateFrame("Frame",nil,E.UIParent)
 	m_zone:Height(20)
 	m_zone:SetFrameLevel(5)
 	m_zone:SetFrameStrata("LOW")
@@ -324,7 +324,7 @@ if C["general"].upperpanel ~= true then
 	m_zone_text:SetJustifyV("MIDDLE")
 	m_zone_text:SetHeight(E.Scale(12))
 
-	local m_coord = CreateFrame("Frame",nil,UIParent)
+	local m_coord = CreateFrame("Frame",nil,E.UIParent)
 	m_coord:Width(40)
 	m_coord:Height(20)
 	m_coord:Point("BOTTOMLEFT", Minimap, "BOTTOMLEFT", 2, 2)

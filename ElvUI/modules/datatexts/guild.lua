@@ -116,7 +116,7 @@ local function Update(self, event, ...)
 	end
 end
 	
-local menuFrame = CreateFrame("Frame", "ElvuiGuildRightClickMenu", UIParent, "UIDropDownMenuTemplate")
+local menuFrame = CreateFrame("Frame", "ElvuiGuildRightClickMenu", E.UIParent, "UIDropDownMenuTemplate")
 local menuList = {
 	{ text = OPTIONS_MENU, isTitle = true, notCheckable=true},
 	{ text = INVITE, hasArrow = true, notCheckable=true,},

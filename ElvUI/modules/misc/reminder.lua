@@ -242,8 +242,8 @@ end
 local i = 0
 for groupName, _ in pairs(tab) do
 	i = i + 1
-	local frame = CreateFrame("Frame", "ReminderFrame"..i, UIParent)
-	frame:CreatePanel("Default", E.Scale(40), E.Scale(40), "CENTER", UIParent, "CENTER", 0, E.Scale(200))
+	local frame = CreateFrame("Frame", "ReminderFrame"..i, E.UIParent)
+	frame:CreatePanel("Default", E.Scale(40), E.Scale(40), "CENTER", E.UIParent, "CENTER", 0, E.Scale(200))
 	frame:SetFrameLevel(1)
 	frame.id = groupName
 	frame.icon = frame:CreateTexture(nil, "OVERLAY")

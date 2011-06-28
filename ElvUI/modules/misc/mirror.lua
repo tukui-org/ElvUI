@@ -69,7 +69,7 @@ do
 
 	function Spawn(type)
 		if(barPool[type]) then return barPool[type] end
-		local frame = CreateFrame('StatusBar', nil, UIParent)
+		local frame = CreateFrame('StatusBar', nil, E.UIParent)
 
 		frame:SetScript("OnUpdate", OnUpdate)
 

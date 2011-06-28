@@ -1,13 +1,13 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 -- BG TINY MAP (BG, mining, etc)
-local tinymap = CreateFrame("Frame", "ElvuiTinyMapMover", UIParent)
+local tinymap = CreateFrame("Frame", "ElvuiTinyMapMover", E.UIParent)
 tinymap:SetPoint("CENTER")
 tinymap:SetSize(223, 150)
 tinymap:EnableMouse(true)
 tinymap:SetMovable(true)
 tinymap:RegisterEvent("ADDON_LOADED")
-tinymap:SetPoint("CENTER", UIParent, 0, 0)
+tinymap:SetPoint("CENTER", E.UIParent, 0, 0)
 tinymap:SetFrameLevel(7)
 tinymap:Hide()
 

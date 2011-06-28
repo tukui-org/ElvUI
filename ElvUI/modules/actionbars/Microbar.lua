@@ -33,7 +33,7 @@ if not E.IsPTRVersion() then
 	}
 end
 
-local f = CreateFrame("Frame", "MicroParent", UIParent)
+local f = CreateFrame("Frame", "MicroParent", E.UIParent)
 MicroParent.shown = false
 if C["actionbar"].mousemicro == true then f:SetAlpha(0) end
 
@@ -153,7 +153,7 @@ do
 	GuildMicroButtonTabard.ClearAllPoints = E.dummy
 end
 
-MicroParent:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 2, -2) --Default microbar position
+MicroParent:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", 2, -2) --Default microbar position
 
 if not E.IsPTRVersion() then
 	MicroParent:SetWidth(((CharacterMicroButton:GetWidth() + 4) * 5) + 2)

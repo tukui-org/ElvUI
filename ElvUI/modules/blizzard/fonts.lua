@@ -1,6 +1,6 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-local ElvuiFonts = CreateFrame("Frame", nil, UIParent)
+local ElvuiFonts = CreateFrame("Frame", nil, E.UIParent)
 
 
 SetFont = function(obj, font, size, style, r, g, b, sr, sg, sb, sox, soy)

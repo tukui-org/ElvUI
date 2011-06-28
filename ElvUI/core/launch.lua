@@ -5,7 +5,7 @@ local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config
 --Install UI
 function E.Install()	
 	if not InstallStepComplete then
-		local imsg = CreateFrame("Frame", "InstallStepComplete", UIParent)
+		local imsg = CreateFrame("Frame", "InstallStepComplete", E.UIParent)
 		imsg:Size(418, 72)
 		imsg:Point("TOP", 0, -190)
 		imsg:Hide()
@@ -350,7 +350,7 @@ function E.Install()
 
 	--Create Frame
 	if not ElvUIInstallFrame then
-		local f = CreateFrame("Frame", "ElvUIInstallFrame", UIParent)
+		local f = CreateFrame("Frame", "ElvUIInstallFrame", E.UIParent)
 		f:Size(550, 400)
 		f:SetTemplate("Transparent")
 		f:CreateShadow("Default")
@@ -483,12 +483,12 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 	E.ChatLIn = true
 	E.ChatRIn = true
 	
-	-- we adjust UIParent to screen #1 if Eyefinity is found
+	-- we adjust E.UIParent to screen #1 if Eyefinity is found
 	if E.eyefinity then
 		local width = E.eyefinity
 		local height = E.getscreenheight
 		
-		-- if autoscale is off, find a new width value of UIParent for screen #1.
+		-- if autoscale is off, find a new width value of E.UIParent for screen #1.
 		if not C.general.autoscale or height > 1200 then
 			local h = UIParent:GetHeight()
 			local ratio = E.getscreenheight / h
@@ -498,9 +498,14 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 			height = h			
 		end
 		
-		UIParent:SetSize(width, height)
-		UIParent:ClearAllPoints()
-		UIParent:SetPoint("CENTER")		
+		E.UIParent:SetSize(width, height)
+		E.UIParent:ClearAllPoints()
+		E.UIParent:SetPoint("CENTER")	
+	else
+		E.UIParent:SetSize(UIParent:GetSize())
+		E.UIParent:ClearAllPoints()
+		E.UIParent:SetPoint("CENTER")		
+		E.UIParent:SetScale(UIParent:GetScale())
 	end	
 	
 

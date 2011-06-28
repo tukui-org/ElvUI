@@ -3,7 +3,7 @@ local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config
 if C["others"].bagbar ~= true then return end
 
 
-local ElvUIBags = CreateFrame("Frame", "ElvUIBags", UIParent)
+local ElvUIBags = CreateFrame("Frame", "ElvUIBags", E.UIParent)
 
 local function OnEnter()
 	ElvUIBags:SetAlpha(1)

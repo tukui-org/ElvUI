@@ -1,6 +1,8 @@
 --Credit Baudzilla
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+
 local ButtonIsDown
-local RaidMarkFrame = CreateFrame("Frame", nil, UIParent)
+local RaidMarkFrame = CreateFrame("Frame", nil, E.UIParent)
 RaidMarkFrame:EnableMouse(true)
 RaidMarkFrame:SetSize(100, 100)
 RaidMarkFrame:SetFrameStrata("DIALOG")
@@ -42,8 +44,8 @@ function RaidMarkShowIcons()
 		return
 	end
 	local X, Y = GetCursorPosition()
-	local Scale = UIParent:GetEffectiveScale()
-	RaidMarkFrame:SetPoint("CENTER", UIParent, "BOTTOMLEFT", X / Scale, Y / Scale)
+	local Scale = E.UIParent:GetEffectiveScale()
+	RaidMarkFrame:SetPoint("CENTER", E.UIParent, "BOTTOMLEFT", X / Scale, Y / Scale)
 	RaidMarkFrame:Show()
 end
 

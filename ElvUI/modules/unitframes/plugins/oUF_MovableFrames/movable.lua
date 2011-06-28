@@ -23,16 +23,16 @@ local backdropPool = {}
 
 local getPoint = function(obj, anchor)
 	if(not anchor) then
-		local UIx, UIy = UIParent:GetCenter()
+		local UIx, UIy = E.UIParent:GetCenter()
 		local Ox, Oy = obj:GetCenter()
 
 		-- Frame doesn't really have a positon yet.
 		if(not Ox) then return end
 
-		local UIS = UIParent:GetEffectiveScale()
+		local UIS = E.UIParent:GetEffectiveScale()
 		local OS = obj:GetEffectiveScale()
 
-		local UIWidth, UIHeight = UIParent:GetRight(), UIParent:GetTop()
+		local UIWidth, UIHeight = E.UIParent:GetRight(), E.UIParent:GetTop()
 
 		local LEFT = UIWidth / 3
 		local RIGHT = UIWidth * 2 / 3
@@ -64,14 +64,14 @@ local getPoint = function(obj, anchor)
 
 		return string.format(
 			'%s\031%s\031%d\031%d',
-			point, 'UIParent', round(x * UIS / OS),  round(y * UIS / OS)
+			point, 'E.UIParent', round(x * UIS / OS),  round(y * UIS / OS)
 		)
 	else
 		local point, parent, _, x, y = anchor:GetPoint()
 
 		return string.format(
 			'%s\031%s\031%d\031%d',
-			point, 'UIParent', round(x), round(y)
+			point, 'E.UIParent', round(x), round(y)
 		)
 	end
 end
@@ -354,7 +354,7 @@ do
 		if(backdropPool[target]) then return backdropPool[target] end
 
 		local backdrop = CreateFrame"Frame"
-		backdrop:SetParent(UIParent)
+		backdrop:SetParent(E.UIParent)
 		backdrop:Hide()
 
 		backdrop:SetBackdrop(_BACKDROP)

@@ -17,7 +17,7 @@
 	 .Swing = CreateFrame("Frame", nil, self)
 	 .Swing:SetWidth(400)
 	 .Swing:SetHeight(20)
-	 .Swing:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 100)
+	 .Swing:SetPoint("BOTTOM", E.UIParent, "BOTTOM", 0, 100)
 	 .Swing.texture = [=[Interface\TargetingFrame\UI-StatusBar]=]
 	 .Swing.color = {1, 0, 0, 0.8}
 	 .Swing.textureBG = [=[Interface\TargetingFrame\UI-StatusBar]=]

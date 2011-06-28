@@ -22,7 +22,7 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 		E.Movers[name] = nil
 	end
 	
-	local f = CreateFrame("Button", name, UIParent)
+	local f = CreateFrame("Button", name, E.UIParent)
 	f:SetFrameLevel(parent:GetFrameLevel() + 1)
 	f:SetWidth(parent:GetWidth())
 	f:SetHeight(parent:GetHeight())
@@ -33,7 +33,7 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 		f:SetFrameStrata("BACKGROUND")
 	end
 	if E["Movers"] and E["Movers"][name] then
-		f:SetPoint(E["Movers"][name]["p"], UIParent, E["Movers"][name]["p2"], E["Movers"][name]["p3"], E["Movers"][name]["p4"])
+		f:SetPoint(E["Movers"][name]["p"], E.UIParent, E["Movers"][name]["p2"], E["Movers"][name]["p3"], E["Movers"][name]["p4"])
 	else
 		f:SetPoint(p, p2, p3, p4, p5)
 	end
@@ -113,7 +113,7 @@ function E.CreateMover(parent, name, text, overlay, postdrag)
 		E.CreatedMovers[name]["overlay"] = overlay
 		E.CreatedMovers[name]["postdrag"] = postdrag
 		E.CreatedMovers[name]["p"] = p
-		E.CreatedMovers[name]["p2"] = p2 or "UIParent"
+		E.CreatedMovers[name]["p2"] = p2 or "E.UIParent"
 		E.CreatedMovers[name]["p3"] = p3
 		E.CreatedMovers[name]["p4"] = p4
 		E.CreatedMovers[name]["p5"] = p5

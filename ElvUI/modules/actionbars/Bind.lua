@@ -1,6 +1,6 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-local bind = CreateFrame("Frame", "ElvuiHoverBind", UIParent)
+local bind = CreateFrame("Frame", "ElvuiHoverBind", E.UIParent)
 -- SLASH COMMAND
 SlashCmdList.MOUSEOVERBIND = function()
 	if InCombatLockdown() then print(L.bind_combat) return end

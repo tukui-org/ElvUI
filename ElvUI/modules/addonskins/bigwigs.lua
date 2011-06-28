@@ -25,7 +25,7 @@ local function freestyle(bar)
 	local bg = bar:Get("bigwigs:elvui:barbg")
 	if bg then
 		bg:ClearAllPoints()
-		bg:SetParent(UIParent)
+		bg:SetParent(E.UIParent)
 		bg:Hide()
 		freebg[#freebg + 1] = bg
 	end
@@ -34,7 +34,7 @@ local function freestyle(bar)
 	local ibg = bar:Get("bigwigs:elvui:iconbg")
 	if ibg then
 		ibg:ClearAllPoints()
-		ibg:SetParent(UIParent)
+		ibg:SetParent(E.UIParent)
 		ibg:Hide()
 		freebg[#freebg + 1] = ibg
 	end
@@ -178,7 +178,7 @@ local function PositionBWAnchor()
 			BigWigsAnchor:Point("TOP", ChatRBGDummy, "TOP", 12, -32)
 		end	
 	else
-		BigWigsAnchor:Point("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -5, 8)		
+		BigWigsAnchor:Point("BOTTOMRIGHT", E.UIParent, "BOTTOMRIGHT", -5, 8)		
 	end
 end
 

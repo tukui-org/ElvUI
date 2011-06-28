@@ -99,7 +99,7 @@ local function Timer_OnUpdate(self, elapsed)
 	else
 		local remain = self.duration - (GetTime() - self.start)
 		if remain > 0.01 then
-			if (self.fontScale * self:GetEffectiveScale() / UIParent:GetScale()) < MIN_SCALE then
+			if (self.fontScale * self:GetEffectiveScale() / E.UIParent:GetScale()) < MIN_SCALE then
 				self.text:SetText('')
 				self.nextUpdate  = 1
 			else

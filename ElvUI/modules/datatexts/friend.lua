@@ -42,7 +42,7 @@ Text:SetShadowOffset(E.mult, -E.mult)
 E.PP(C["datatext"].friends, Text)
 Stat:SetParent(Text:GetParent())
 
-local menuFrame = CreateFrame("Frame", "ElvuiFriendRightClickMenu", UIParent, "UIDropDownMenuTemplate")
+local menuFrame = CreateFrame("Frame", "ElvuiFriendRightClickMenu", E.UIParent, "UIDropDownMenuTemplate")
 local menuList = {
 	{ text = OPTIONS_MENU, isTitle = true,notCheckable=true},
 	{ text = INVITE, hasArrow = true,notCheckable=true, },

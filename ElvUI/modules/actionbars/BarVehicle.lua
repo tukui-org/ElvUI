@@ -86,7 +86,7 @@ VehTextUpdate:RegisterEvent("UNIT_ENTERED_VEHICLE")
 VehTextUpdate:SetScript("OnEvent", UpdateVehHotkeys)
 
 -- vehicle button under minimap
-local vehicle = CreateFrame("Button", nil, UIParent, "SecureHandlerClickTemplate")
+local vehicle = CreateFrame("Button", nil, E.UIParent, "SecureHandlerClickTemplate")
 vehicle:SetWidth(E.Scale(26))
 vehicle:SetHeight(E.Scale(26))
 vehicle:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", E.Scale(2), E.Scale(2))

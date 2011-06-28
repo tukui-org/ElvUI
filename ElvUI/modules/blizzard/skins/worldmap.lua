@@ -39,7 +39,7 @@ local function LoadSkin()
 	--Large
 	local function LargeSkin()
 		if not InCombatLockdown() then
-			WorldMapFrame:SetParent(UIParent)
+			WorldMapFrame:SetParent(E.UIParent)
 			WorldMapFrame:EnableMouse(false)
 			WorldMapFrame:EnableKeyboard(false)
 			SetUIPanelAttribute(WorldMapFrame, "area", "center");
@@ -53,7 +53,7 @@ local function LoadSkin()
 	
 	local function QuestSkin()
 		if not InCombatLockdown() then
-			WorldMapFrame:SetParent(UIParent)
+			WorldMapFrame:SetParent(E.UIParent)
 			WorldMapFrame:EnableMouse(false)
 			WorldMapFrame:EnableKeyboard(false)
 			SetUIPanelAttribute(WorldMapFrame, "area", "center");
@@ -194,8 +194,8 @@ local function LoadSkin()
 			int = 0
 		end	
 		
-		if DropDownList1:GetScale() ~= UIParent:GetScale() then
-			DropDownList1:SetScale(UIParent:GetScale())
+		if DropDownList1:GetScale() ~= E.UIParent:GetScale() then
+			DropDownList1:SetScale(E.UIParent:GetScale())
 		end
 	end)	
 end

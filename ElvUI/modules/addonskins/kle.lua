@@ -146,7 +146,7 @@ local function PositionKLEAnchor()
 			KLEAlertsTopStackAnchor:Point("TOP", ChatRBGDummy, "TOP", 16, -28)
 		end	
 	else
-		KLEAlertsTopStackAnchor:Point("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -49, 25)		
+		KLEAlertsTopStackAnchor:Point("BOTTOMRIGHT", E.UIParent, "BOTTOMRIGHT", -49, 25)		
 	end
 end
 
