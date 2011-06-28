@@ -15,7 +15,7 @@ E.getscreenresolution = select(E.resolution, GetScreenResolutions())
 E.getscreenheight = tonumber(string.match(({GetScreenResolutions()})[GetCurrentResolution()], "%d+x(%d+)"))
 E.getscreenwidth = tonumber(string.match(({GetScreenResolutions()})[GetCurrentResolution()], "(%d+)x+%d"))
 E.Layouts = {} --Unitframe Layouts
-E.UIParent = CreateFrame('Frame', 'ElvUIParent', E.UIParent)
+E.UIParent = CreateFrame('Frame', 'ElvUIParent', UIParent)
 E.UIParent:SetFrameLevel(E.UIParent:GetFrameLevel())
 E.UIParent:SetFrameStrata(E.UIParent:GetFrameStrata())
 E.UIParent:SetPoint('CENTER', UIParent, 'CENTER')

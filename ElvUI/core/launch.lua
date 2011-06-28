@@ -505,7 +505,6 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 		E.UIParent:SetSize(UIParent:GetSize())
 		E.UIParent:ClearAllPoints()
 		E.UIParent:SetPoint("CENTER")		
-		E.UIParent:SetScale(UIParent:GetScale())
 	end	
 	
 
