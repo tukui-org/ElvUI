@@ -87,7 +87,7 @@ GameTooltip:HookScript("OnUpdate",function(self, ...)
 		local x, y = GetCursorPosition();
 		local effScale = self:GetEffectiveScale();
 		self:ClearAllPoints();
-		self:SetPoint("BOTTOMLEFT",E.UIParent,"BOTTOMLEFT",(x / effScale + (15)),(y / effScale + (7)))		
+		self:SetPoint("BOTTOMLEFT", UIParent,"BOTTOMLEFT",(x / effScale + (15)),(y / effScale + (7)))		
 	end
 	
 	if self:GetAnchorType() == "ANCHOR_CURSOR" and NeedBackdropBorderRefresh == true and C["tooltip"].cursor ~= true then
