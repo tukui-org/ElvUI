@@ -1616,7 +1616,9 @@ local function LoadHealLayout()
 		local blizzloader = CreateFrame("Frame")
 		blizzloader:RegisterEvent("ADDON_LOADED")
 		blizzloader:SetScript("OnEvent", function(self, event, addon)
-			if addon == "Elvui_RaidHeal" then 
+			if addon == "ElvUI_RaidHeal" then 
+				CompactRaidFrameContainer:UnregisterAllEvents()
+				CompactPartyFrame:UnregisterAllEvents()
 				CompactRaidFrameContainer:Kill()
 				CompactPartyFrame:Kill()
 			end

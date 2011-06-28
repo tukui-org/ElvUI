@@ -8,6 +8,7 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 	if event == "PLAYER_ENTERING_WORLD" then
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 		
+		
 		if IsAddOnLoaded("Elvui_RaidDPS") or IsAddOnLoaded("Elvui_RaidHeal") then
 			InterfaceOptionsFrameCategoriesButton11:SetScale(0.00001)
 			InterfaceOptionsFrameCategoriesButton11:SetAlpha(0)
@@ -23,7 +24,8 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 		if C["raidframes"].disableblizz == true then 
 			InterfaceOptionsFrameCategoriesButton10:SetScale(0.00001)
 			InterfaceOptionsFrameCategoriesButton10:SetAlpha(0)	
-			CompactRaidFrameContainer:Kill()
+			CompactRaidFrameContainer:UnregisterAllEvents()
+			CompactRaidFrameContainer:Kill()	
 			SetCVar("useCompactPartyFrames", 0)
 		end
 

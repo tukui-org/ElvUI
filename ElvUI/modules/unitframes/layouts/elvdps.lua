@@ -1623,7 +1623,9 @@ local function LoadDPSLayout()
 		local blizzloader = CreateFrame("Frame")
 		blizzloader:RegisterEvent("ADDON_LOADED")
 		blizzloader:SetScript("OnEvent", function(self, event, addon)
-			if addon == "Elvui_RaidDPS" then 
+			if addon == "ElvUI_RaidDPS" then 
+				CompactRaidFrameContainer:UnregisterAllEvents()
+				CompactPartyFrame:UnregisterAllEvents()
 				CompactRaidFrameContainer:Kill()
 				CompactPartyFrame:Kill()
 			end
