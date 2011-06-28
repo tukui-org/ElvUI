@@ -360,6 +360,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 85510 ), --Denounce
 			CreateSpellEntry( 88063 ), --Guarded by the light
 			CreateSpellEntry( 82327	), --Holy Radiance
+			CreateSpellEntry( 20925 ), --Holy Shield
 		},
 		procs = {
 			CreateSpellEntry( 59578 ), -- The Art of War

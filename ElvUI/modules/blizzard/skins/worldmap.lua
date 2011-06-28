@@ -194,8 +194,8 @@ local function LoadSkin()
 			int = 0
 		end	
 		
-		if DropDownList1:GetScale() ~= E.UIParent:GetScale() then
-			DropDownList1:SetScale(E.UIParent:GetScale())
+		if DropDownList1:GetScale() ~= UIParent:GetScale() then
+			DropDownList1:SetScale(UIParent:GetScale())
 		end
 	end)	
 end
