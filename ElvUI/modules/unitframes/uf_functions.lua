@@ -958,6 +958,12 @@ E.LoadUFFunctions = function(layout)
 		else
 			for _, text in pairs(E.LeftDatatexts) do text:Show() end		
 		end
+		
+		if E["elements"] and DPSAltPowerBar and E["elements"]["DPSAltPowerBar"] and E.CreatedMoveEleFrames["DPSAltPowerBar"] then 
+			for _, text in pairs(E.LeftDatatexts) do text:Show() end	
+		elseif	E["elements"] and HealAltPowerBar and E["elements"]["HealAltPowerBar"] and E.CreatedMoveEleFrames["HealAltPowerBar"] then 
+			for _, text in pairs(E.LeftDatatexts) do text:Show() end	
+		end
 	end
 	
 	function E.AltPowerBarPostUpdate(self, min, cur, max)
