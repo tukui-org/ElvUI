@@ -19,6 +19,7 @@ E.UIParent = CreateFrame('Frame', 'ElvUIParent', UIParent)
 E.UIParent:SetFrameLevel(E.UIParent:GetFrameLevel())
 E.UIParent:SetFrameStrata(E.UIParent:GetFrameStrata())
 E.UIParent:SetPoint('CENTER', UIParent, 'CENTER')
+E.UIParent:SetSize(UIParent:GetSize())
 
 --Keybind Header
 BINDING_HEADER_ELVUI = GetAddOnMetadata("ElvUI", "Title") --Header name inside keybinds menu

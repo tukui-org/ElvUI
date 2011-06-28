@@ -1,4 +1,4 @@
-## Interface: 40100
+## Interface: 40200
 ## Title: |cff1784d1ElvUI Config|r
 ## Notes: Config for ElvUI
 ## Author: Elv
