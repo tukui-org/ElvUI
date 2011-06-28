@@ -110,7 +110,7 @@ local function BuildBNTable(total)
 		presenceID, givenName, surname, toonName, toonID, client, isOnline, _, isAFK, isDND, _, noteText = BNGetFriendInfo(i)
 		
 		if isOnline then 
-			_, _, _, realmName, faction, race, class, _, zoneName, level = BNGetToonInfo(presenceID)
+			_, _, _, realmName, faction, _, race, class, _, zoneName, level = BNGetToonInfo(presenceID)
 			for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
 			BNTable[i] = { presenceID, givenName, surname, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 		end
@@ -247,8 +247,8 @@ Stat:SetScript("OnEnter", function(self)
 			if info[7] then
 				if info[6] == wowString then
 					if (info[8] == true) then status = 1 elseif (info[9] == true) then status = 2 else status = 3 end
-
 					classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[14]], GetQuestDifficultyColor(info[16])
+					
 					if classc == nil then classc = GetQuestDifficultyColor(info[16]) end
 					
 					if UnitInParty(info[4]) or UnitInRaid(info[4]) then grouped = 1 else grouped = 2 end
