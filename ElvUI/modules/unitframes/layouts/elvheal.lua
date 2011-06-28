@@ -814,8 +814,10 @@ local function Shared(self, unit)
 		altpower:EnableMouse(true)
 		altpower:SetFrameStrata("MEDIUM")
 		altpower.PostUpdate = E.AltPowerBarPostUpdate
-		altpower:Point("TOPLEFT", ElvuiInfoLeft, "TOPLEFT", BORDER, -BORDER)
-		altpower:Point("BOTTOMRIGHT", ElvuiInfoLeft, "BOTTOMRIGHT", -BORDER, BORDER)
+		altpower:CreateBackdrop("Default", true)
+		altpower:Point("TOPLEFT", ElvuiInfoLeft, "TOPLEFT", 2, -2)
+		altpower:Width(ChatLBG:GetWidth() - 52)
+		altpower:Height(18)
 		altpower:HookScript("OnShow", E.AltPowerBarOnToggle)
 		altpower:HookScript("OnHide", E.AltPowerBarOnToggle)
 		
