@@ -3154,8 +3154,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 									print(L["You must select a filter first"])
 								else
 									local curfilter = db.spellfilter["SelectSpellFilter"]
-									local num = #db.spellfilter[db.spellfilter.FilterPicker] + 1
-									db.spellfilter[db.spellfilter.FilterPicker][E.myclass][curfilter][num] = { enabled = true, id = tonumber(value), castByAnyone = false, color = nil, unitType = 0, castSpellId = nil }
+									table.insert(db.spellfilter[db.spellfilter.FilterPicker][E.myclass][curfilter], { enabled = true, id = tonumber(value), castByAnyone = false, color = nil, unitType = 0, castSpellId = nil })
 									UpdateSpellFilter()								
 									StaticPopup_Show("CFG_RELOAD")
 								end									
@@ -3163,8 +3162,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								if not GetSpellInfo(value) then
 									print(L["Not valid spell id"])
 								else
-									local num = #db.spellfilter[db.spellfilter.FilterPicker] + 1
-									db.spellfilter[db.spellfilter.FilterPicker][num] = { enabled = true, id = tonumber(value), castByAnyone = false, color = nil, unitType = 0, castSpellId = nil }
+									table.insert(db.spellfilter[db.spellfilter.FilterPicker], { enabled = true, id = tonumber(value), castByAnyone = false, color = nil, unitType = 0, castSpellId = nil })
 									UpdateSpellFilter()								
 									StaticPopup_Show("CFG_RELOAD")
 								end							
@@ -3172,8 +3170,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								if not GetSpellInfo(value) then
 									print(L["Not valid spell id"])
 								else
-									local num = #db.spellfilter[db.spellfilter.FilterPicker][E.myclass] + 1
-									db.spellfilter[db.spellfilter.FilterPicker][E.myclass][num] = {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = false}
+									table.insert(db.spellfilter[db.spellfilter.FilterPicker][E.myclass], {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = false})
 									UpdateSpellFilter()								
 									StaticPopup_Show("CFG_RELOAD")
 								end
@@ -3214,6 +3211,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 											db.spellfilter[db.spellfilter.FilterPicker][E.myclass][curfilter][x] = nil
 										end
 									end
+									db.spellfilter["SelectSpell"] = nil
 									if match == nil then
 										print(L["Spell not found in list"])
 									else
