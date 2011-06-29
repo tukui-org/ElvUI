@@ -6,7 +6,7 @@ local _G = _G
 local media = C["media"]
 local securehandler = CreateFrame("Frame", nil, nil, "SecureHandlerBaseTemplate")
 
-function Style(self, totem)
+function Style(self, totem, flyout)
 	local name = self:GetName()
 	
 	if name:match("MultiCast") then return end 
@@ -24,11 +24,10 @@ function Style(self, totem)
 	if Flash then
 		Flash:SetTexture("")
 	end
-	Button:SetNormalTexture("")
+	
 	
 	if Border then
-		Border:Hide()
-		Border = E.dummy
+		Border:Kill()
 	end
 	
 	if Count then
@@ -36,6 +35,12 @@ function Style(self, totem)
 		Count:SetPoint("BOTTOMRIGHT", 0, E.Scale(2))
 		Count:SetFont(C["media"].font, C["general"].fontscale, "OUTLINE")
 	end
+	
+	if normal then
+		normal:SetTexture(nil)
+	end
+		
+	if self.styled then return end	
 	
 	if Btname then
 		if C["actionbar"].macrotext ~= true then
@@ -45,22 +50,21 @@ function Style(self, totem)
 		end
 	end
 	
-	if not _G[name.."Panel"] then
+	if not self.backdrop then
 		if not totem then
-			self:SetWidth(E.buttonsize)
-			self:SetHeight(E.buttonsize)
+			if not flyout then
+				self:SetWidth(E.buttonsize)
+				self:SetHeight(E.buttonsize)
+			end
  
-			local panel = CreateFrame("Frame", name.."Panel", self)
-			panel:CreatePanel("Default", E.buttonsize, E.buttonsize, "CENTER", self, "CENTER", 0, 0)
-			panel:SetTemplate("Default", true)
-			panel:SetFrameStrata(self:GetFrameStrata())
-			panel:SetFrameLevel(self:GetFrameLevel() - 1 or 0)
+			self:CreateBackdrop("Default", true)
+			self.backdrop:SetAllPoints()
 		end
 		
 		if Icon then
 			Icon:SetTexCoord(.08, .92, .08, .92)
-			Icon:SetPoint("TOPLEFT", Button, E.Scale(2), E.Scale(-2))
-			Icon:SetPoint("BOTTOMRIGHT", Button, E.Scale(-2), E.Scale(2))
+			Icon:SetPoint("TOPLEFT", Button, 2, -2)
+			Icon:SetPoint("BOTTOMRIGHT", Button, -2, 2)
 		end
 	end
 	
@@ -83,6 +87,8 @@ function Style(self, totem)
 		normal:SetPoint("TOPLEFT")
 		normal:SetPoint("BOTTOMRIGHT")
 	end
+	
+	self.styled = true
 end
 
 local function Stylesmallbutton(normal, button, icon, name, pet)
@@ -172,10 +178,9 @@ local buttons = 0
 local function SetupFlyoutButton()
 	for i=1, buttons do
 		--prevent error if you don't have max ammount of buttons
-		if _G["SpellFlyoutButton"..i] then
-			Style(_G["SpellFlyoutButton"..i], false)
+		if _G["SpellFlyoutButton"..i] and not _G["SpellFlyoutButton"..i].styled then
+			Style(_G["SpellFlyoutButton"..i], nil, true)
 			_G["SpellFlyoutButton"..i]:StyleButton(true)
-			_G["SpellFlyoutButton"..i]:SetFrameLevel(_G["SpellFlyoutButton"..i]:GetParent():GetFrameLevel() + 5)
 			if C["actionbar"].rightbarmouseover == true then
 				SpellFlyout:HookScript("OnEnter", function(self) RightBarMouseOver(1) end)
 				SpellFlyout:HookScript("OnLeave", function(self) RightBarMouseOver(0) end)
