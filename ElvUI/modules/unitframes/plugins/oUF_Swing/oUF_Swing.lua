@@ -308,12 +308,7 @@ local function Melee(self, event, _, subevent, _, GUID)
 end
 
 local function ParryHaste(self, event, ...)
-	local subevent, tarGUID, missType
-	if E.IsPTRVersion() then
-		_, subevent, _, _, _, _, _, tarGUID, _, _, _, missType = ...
-	else
-		_, subevent, _, _, _, _, tarGUID, _, _, missType = ...
-	end
+	local _, subevent, _, _, _, _, _, tarGUID, _, _, _, missType = ...
 	if UnitGUID("player") ~= tarGUID then return end
 	
 	if not meleeing then return end

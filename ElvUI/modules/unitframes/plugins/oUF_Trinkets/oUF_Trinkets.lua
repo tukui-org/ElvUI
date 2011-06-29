@@ -52,12 +52,7 @@ end
 
 local Update = function(self, event, ...)
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
-		local eventType, sourceGUID, spellID
-		if E.IsPTRVersion() then
-			_, eventType, _, sourceGUID, _, _, _, _, _, _, _, spellID = ...
-		else
-			_, eventType, _, sourceGUID, _, _, _, _, _, spellID = ...
-		end
+		local _, eventType, _, sourceGUID, _, _, _, _, _, _, _, spellID = ...
 		if eventType == "SPELL_CAST_SUCCESS" then
 			-- enemy trinket usage
 			if spellID == 59752 or spellID == 42292 then

@@ -83,10 +83,7 @@ local function LoadSkin()
 	HelpFrameKnowledgebaseSearchBox:ClearAllPoints()
 	HelpFrameKnowledgebaseSearchBox:Point("TOPLEFT", HelpFrameMainInset, "TOPLEFT", 13, -10)
 	HelpFrameKnowledgebaseNavBarOverlay:Kill()
-	
-	if E.IsPTRVersion() then
-		HelpFrameKnowledgebaseNavBar:StripTextures()
-	end
+	HelpFrameKnowledgebaseNavBar:StripTextures()
 	
 	HelpFrame:StripTextures(true)
 	HelpFrame:CreateBackdrop("Transparent")

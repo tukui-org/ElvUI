@@ -29,7 +29,6 @@ InterfaceOptionsDisplayPanelShowFreeBagSpace:Hide()
 
 Stuffing = CreateFrame ("Frame", nil, E.UIParent)
 Stuffing:RegisterEvent("ADDON_LOADED")
-Stuffing:RegisterEvent("PLAYER_ENTERING_WORLD")
 Stuffing:SetScript("OnEvent", function(self, event, ...)
 	Stuffing[event](self, ...)
 end)
@@ -1026,47 +1025,6 @@ function Stuffing:ADDON_LOADED(addon)
 	BankFrame:UnregisterAllEvents()
 end
 
-function Stuffing:PLAYER_ENTERING_WORLD()
-	if E.IsPTRVersion() then return end
-	
-	-- setting key ring bag
-	-- this is just a reskin of Blizzard key bag to fit Elvui
-
-	local keybackdrop = CreateFrame("Frame", nil, ContainerFrame1)
-	keybackdrop:SetPoint("TOPLEFT", E.Scale(9), E.Scale(-40))
-	keybackdrop:SetPoint("BOTTOMLEFT", 0, 0)
-	keybackdrop:Size(179, 215)
-	keybackdrop:SetTemplate("Transparent")
-	ContainerFrame1CloseButton:Hide()
-	ContainerFrame1Portrait:Hide()
-	ContainerFrame1Name:Hide()
-	ContainerFrame1BackgroundTop:SetAlpha(0)
-	ContainerFrame1BackgroundMiddle1:SetAlpha(0)
-	ContainerFrame1BackgroundMiddle2:SetAlpha(0)
-	ContainerFrame1BackgroundBottom:SetAlpha(0)
-	for i=1, GetKeyRingSize() do
-		local slot = _G["ContainerFrame1Item"..i]
-		local t = _G["ContainerFrame1Item"..i.."IconTexture"]
-		slot:SetPushedTexture("")
-		slot:SetNormalTexture("")
-		t:SetTexCoord(.08, .92, .08, .92)
-		t:SetPoint("TOPLEFT", slot, E.Scale(2), E.Scale(-2))
-		t:SetPoint("BOTTOMRIGHT", slot, E.Scale(-2), E.Scale(2))
-		slot:SetTemplate("Default", true)
-		
-		slot:StyleButton()
-	end
-
-
-	ContainerFrame1:HookScript("OnShow", function(self)
-		ContainerFrame1:ClearAllPoints()
-		ContainerFrame1:SetPoint("TOPRIGHT", StuffingFrameBags, "TOPLEFT", E.Scale(2), E.Scale(40))
-		ContainerFrame1.SetPoint = E.dummy
-		ContainerFrame1.ClearAllPoints = E.dummy
-	end)
-	ContainerFrame1:SetParent(StuffingFrameBags)
-end
-
 function Stuffing:PLAYERBANKSLOTS_CHANGED(id)
 	if id > 28 then
 		for _, v in ipairs(self.bagframe_buttons) do
@@ -1513,28 +1471,7 @@ function Stuffing.Menu(self, level)
 		Stuffing:Layout()
 	end
 	UIDropDownMenu_AddButton(info, level)
-	
-	if not E.IsPTRVersion() then
-		wipe(info)
-		info.text = "Show Keyring"
-		info.checked = function()
-			return key_ring == 1
-		end
 		
-		info.func = function()
-			if key_ring == 1 then
-				key_ring = 0
-			else
-				key_ring = 1
-			end
-			ToggleKeyRing()
-			Stuffing:Layout()
-		end
-		
-		
-		UIDropDownMenu_AddButton(info, level)
-	end
-	
 	wipe(info)
 	info.disabled = nil
 	info.notCheckable = 1

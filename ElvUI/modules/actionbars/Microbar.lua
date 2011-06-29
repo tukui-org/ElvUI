@@ -18,21 +18,6 @@ local microbuttons = {
 	"AchievementMicroButton"
 }
 
-if not E.IsPTRVersion() then
-	microbuttons = {
-		"CharacterMicroButton",
-		"SpellbookMicroButton",
-		"TalentMicroButton",
-		"QuestLogMicroButton",
-		"MainMenuMicroButton",
-		"PVPMicroButton",
-		"GuildMicroButton",
-		"LFDMicroButton",
-		"HelpMicroButton",
-		"AchievementMicroButton"
-	}
-end
-
 local f = CreateFrame("Frame", "MicroParent", E.UIParent)
 MicroParent.shown = false
 if C["actionbar"].mousemicro == true then f:SetAlpha(0) end
@@ -155,11 +140,7 @@ end
 
 MicroParent:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", 2, -2) --Default microbar position
 
-if not E.IsPTRVersion() then
-	MicroParent:SetWidth(((CharacterMicroButton:GetWidth() + 4) * 5) + 2)
-else
-	MicroParent:SetWidth(((CharacterMicroButton:GetWidth() + 4) * 9) + 12)
-end
+MicroParent:SetWidth(((CharacterMicroButton:GetWidth() + 4) * 9) + 12)
 MicroParent:SetHeight(CharacterMicroButton:GetHeight() - 28)
 
 CharacterMicroButton:ClearAllPoints()

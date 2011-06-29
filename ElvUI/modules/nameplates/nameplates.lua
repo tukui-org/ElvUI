@@ -697,12 +697,7 @@ end)
 
 function NamePlates:COMBAT_LOG_EVENT_UNFILTERED(_, event, ...)
 	if event == "SPELL_AURA_REMOVED" then
-		local sourceGUID, destGUID, spellID
-		if E.IsPTRVersion() then
-			_, sourceGUID, _, _, _, destGUID, _, _, _, spellID = ...
-		else
-			_, sourceGUID, _, _, destGUID, _, _, spellID = ...	
-		end
+		local _, sourceGUID, _, _, _, destGUID, _, _, _, spellID = ...
 		
 		if sourceGUID == UnitGUID("player") then
 			ForEachPlate(MatchGUID, destGUID, spellID)

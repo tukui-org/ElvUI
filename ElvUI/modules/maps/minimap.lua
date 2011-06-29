@@ -155,11 +155,11 @@ calendar_string = string.gsub(calendar_string, "^%l", string.upper)
 
 local menuFrame = CreateFrame("Frame", "MinimapRightClickMenu", E.UIParent, "UIDropDownMenuTemplate")
 local menuList = {
-    {text = CHARACTER_BUTTON,
-    func = function() ToggleCharacter("PaperDollFrame") end},
-    {text = SPELLBOOK_ABILITIES_BUTTON,
-    func = function() if InCombatLockdown() then return end ToggleFrame(SpellBookFrame) end},
-    {text = TALENTS_BUTTON,
+	{text = CHARACTER_BUTTON,
+	func = function() ToggleCharacter("PaperDollFrame") end},
+	{text = SPELLBOOK_ABILITIES_BUTTON,
+	func = function() if InCombatLockdown() then return end ToggleFrame(SpellBookFrame) end},
+	{text = TALENTS_BUTTON,
 	func = function()
 		if not PlayerTalentFrame then
 			LoadAddOn("Blizzard_TalentUI")
@@ -171,18 +171,18 @@ local menuList = {
 		PlayerTalentFrame_Toggle()
 	end},
 	{text = TIMEMANAGER_TITLE,
-	func = function() ToggleFrame(TimeManagerFrame) end},
-    {text = ACHIEVEMENT_BUTTON,
-    func = function() ToggleAchievementFrame() end},
-    {text = QUESTLOG_BUTTON,
-    func = function() ToggleFrame(QuestLogFrame) end},
-    {text = SOCIAL_BUTTON,
-    func = function() ToggleFriendsFrame(1) end},
+	func = function() ToggleFrame(TimeManagerFrame) end},		
+	{text = ACHIEVEMENT_BUTTON,
+	func = function() ToggleAchievementFrame() end},
+	{text = QUESTLOG_BUTTON,
+	func = function() ToggleFrame(QuestLogFrame) end},
+	{text = SOCIAL_BUTTON,
+	func = function() ToggleFriendsFrame(1) end},
 	{text = calendar_string,
 	func = function() GameTimeFrame:Click() end},
-    {text = PLAYER_V_PLAYER,
-    func = function() ToggleFrame(PVPFrame) end},
-    {text = ACHIEVEMENTS_GUILD_TAB,
+	{text = PLAYER_V_PLAYER,
+	func = function() ToggleFrame(PVPFrame) end},
+	{text = ACHIEVEMENTS_GUILD_TAB,
 	func = function()
 		if IsInGuild() then
 			if not GuildFrame then LoadAddOn("Blizzard_GuildUI") end
@@ -193,74 +193,20 @@ local menuList = {
 			LookingForGuildFrame_Toggle()
 		end
 	end},
-    {text = LFG_TITLE,
-    func = function() ToggleFrame(LFDParentFrame) end},
-    {text = LOOKING_FOR_RAID,
-    func = function() ToggleFrame(LFRParentFrame) end},
-    {text = HELP_BUTTON,
-    func = function() ToggleHelpFrame() end},
-    {text = L_CALENDAR,
-    func = function()
-    if(not CalendarFrame) then LoadAddOn("Blizzard_Calendar") end
-        Calendar_Toggle()
-    end},
+	{text = LFG_TITLE,
+	func = function() ToggleFrame(LFDParentFrame) end},
+	{text = LOOKING_FOR_RAID,
+	func = function() ToggleFrame(LFRParentFrame) end},
+	{text = ENCOUNTER_JOURNAL, 
+	func = function() ToggleFrame(EncounterJournal) end},	
+	{text = L_CALENDAR,
+	func = function()
+	if(not CalendarFrame) then LoadAddOn("Blizzard_Calendar") end
+		Calendar_Toggle()
+	end},			
+	{text = HELP_BUTTON,
+	func = function() ToggleHelpFrame() end},
 }
-
-if E.IsPTRVersion() then
-	menuList = {
-		{text = CHARACTER_BUTTON,
-		func = function() ToggleCharacter("PaperDollFrame") end},
-		{text = SPELLBOOK_ABILITIES_BUTTON,
-		func = function() if InCombatLockdown() then return end ToggleFrame(SpellBookFrame) end},
-		{text = TALENTS_BUTTON,
-		func = function()
-			if not PlayerTalentFrame then
-				LoadAddOn("Blizzard_TalentUI")
-			end
-
-			if not GlyphFrame then
-				LoadAddOn("Blizzard_GlyphUI")
-			end
-			PlayerTalentFrame_Toggle()
-		end},
-		{text = TIMEMANAGER_TITLE,
-		func = function() ToggleFrame(TimeManagerFrame) end},		
-		{text = ACHIEVEMENT_BUTTON,
-		func = function() ToggleAchievementFrame() end},
-		{text = QUESTLOG_BUTTON,
-		func = function() ToggleFrame(QuestLogFrame) end},
-		{text = SOCIAL_BUTTON,
-		func = function() ToggleFriendsFrame(1) end},
-		{text = calendar_string,
-		func = function() GameTimeFrame:Click() end},
-		{text = PLAYER_V_PLAYER,
-		func = function() ToggleFrame(PVPFrame) end},
-		{text = ACHIEVEMENTS_GUILD_TAB,
-		func = function()
-			if IsInGuild() then
-				if not GuildFrame then LoadAddOn("Blizzard_GuildUI") end
-				GuildFrame_Toggle()
-			else
-				if not LookingForGuildFrame then LoadAddOn("Blizzard_LookingForGuildUI") end
-				if not LookingForGuildFrame then return end
-				LookingForGuildFrame_Toggle()
-			end
-		end},
-		{text = LFG_TITLE,
-		func = function() ToggleFrame(LFDParentFrame) end},
-		{text = LOOKING_FOR_RAID,
-		func = function() ToggleFrame(LFRParentFrame) end},
-		{text = ENCOUNTER_JOURNAL, 
-		func = function() ToggleFrame(EncounterJournal) end},	
-		{text = L_CALENDAR,
-		func = function()
-		if(not CalendarFrame) then LoadAddOn("Blizzard_Calendar") end
-			Calendar_Toggle()
-		end},			
-		{text = HELP_BUTTON,
-		func = function() ToggleHelpFrame() end},
-	}
-end
 
 Minimap:SetScript("OnMouseUp", function(self, btn)
 	local position = TukuiMinimap:GetPoint()

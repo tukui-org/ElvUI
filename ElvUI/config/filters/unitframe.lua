@@ -72,6 +72,7 @@ E.ArenaBuffWhiteList = {
 E.DebuffWhiteList = {
 	-- Death Knight
 		[SpellName(47476)] = true, --strangulate
+		[SpellName(49203)] = true, --hungering cold
 	-- Druid
 		[SpellName(33786)] = true, --Cyclone
 		[SpellName(2637)] = true, --Hibernate
@@ -127,13 +128,6 @@ E.DebuffWhiteList = {
 		[SpellName(20549)] = true, --War Stomp
 	--PVE
 }
-
-if E.IsPTRVersion() then
-	E.DebuffWhiteList[SpellName(49203)] = true
-else
-	E.DebuffWhiteList[SpellName(51209)] = true --hungering cold
-end
-
 
 --List of debuffs for targetframe for pvp only (when inside a bg/arena
 --We do this because in PVE Situations we don't want to see these debuffs on our target frame, arena frames will always show these.
@@ -254,35 +248,36 @@ E.RaidDebuffs = {
 	--Al'Akir
 	[SpellName(93260)] = true, -- Ice Storm
 	[SpellName(93295)] = true, -- Lightning Rod
-}
-
-if E.IsPTRVersion() then
+	
+--Firelands	
 	--Beth'tilac
-	E.RaidDebuffs[SpellName(99506)] = true -- Widows Kiss
+	[SpellName(99506)] = true, -- Widows Kiss
 	
 	--Alysrazor
-	E.RaidDebuffs[SpellName(101296)] = true -- Fiero Blast
-	E.RaidDebuffs[SpellName(100723)] = true -- Gushing Wound
+	[SpellName(101296)] = true, -- Fiero Blast
+	[SpellName(100723)] = true, -- Gushing Wound
 	
 	--Shannox
-	E.RaidDebuffs[SpellName(99837)] = true -- Crystal Prison
-	E.RaidDebuffs[SpellName(99937)] = true -- Jagged Tear
+	[SpellName(99837)] = true, -- Crystal Prison
+	[SpellName(99937)] = true, -- Jagged Tear
 	
 	--Baleroc
-	E.RaidDebuffs[SpellName(99403)] = true -- Tormented
+	[SpellName(99403)] = true, -- Tormented
 	
 	--Lord Rhyolith
 		--<< NONE KNOWN YET >>
 	
 	--Majordomo Staghelm
-	E.RaidDebuffs[SpellName(98450)] = true
+	[SpellName(98450)] = true, -- Searing Seeds
 	
 	--Ragnaros
 		--<< NONE KNOWN YET >>
 		
 	--Trash
-	E.RaidDebuffs[SpellName(99532)] = true
-end
+	[SpellName(99532)] = true, -- Melt Armor	
+}
+
+
 
 
 E.ReverseTimer = {
