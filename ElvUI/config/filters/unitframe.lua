@@ -275,10 +275,13 @@ if E.IsPTRVersion() then
 		--<< NONE KNOWN YET >>
 	
 	--Majordomo Staghelm
-		--<< NONE KNOWN YET >>
+	E.RaidDebuffs[SpellName(98450)] = true
 	
 	--Ragnaros
 		--<< NONE KNOWN YET >>
+		
+	--Trash
+	E.RaidDebuffs[SpellName(99532)] = true
 end
 
 
