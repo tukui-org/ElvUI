@@ -2624,6 +2624,16 @@ function ElvuiConfig.GenerateOptionsInternal()
 									["Both"] = L["Both"],
 								},
 							},
+							style = {
+								type = "select",
+								order = 8,
+								name = L["Styling Theme"],
+								desc = L["Select the theme you want to use for your chat backdrop."],
+								values = {
+									["ElvUI"] = "ElvUI",
+									["ClASSIC"] = L["Classic"],
+								},
+							},
 							bubbles = {
 								type = "toggle",
 								order = 8,

@@ -402,6 +402,9 @@ L["Chat"] = true
 	L["Left"] = true
 	L["Right"] = true
 	L["Both"] = true
+	L["Styling Theme"] = true
+	L["Select the theme you want to use for your chat backdrop."] = true
+	L["Classic"] = true
 
 --tooltip
 L["Tooltip"] = true	

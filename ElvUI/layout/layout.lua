@@ -197,16 +197,25 @@ end
 
 -- CHAT PLACEHOLDER LEFT
 local PADDING = 12
+local xOffset = 0
+local yOffset = 0
+
+if C["chat"].style ~= "ElvUI" then
+	xOffset = -8
+	yOffset = -6
+end
+
+-- CHAT PLACEHOLDER LEFT
 local chatlph = CreateFrame("Frame", "ChatLPlaceHolder", E.UIParent)
 chatlph:SetWidth(C["chat"].chatwidth)
 chatlph:SetHeight(C["chat"].chatheight+6)
-chatlph:Point("BOTTOMLEFT", ElvuiBottomPanel, "TOPLEFT", PADDING,  PADDING)
+chatlph:Point("BOTTOMLEFT", ElvuiBottomPanel, "TOPLEFT", PADDING + xOffset,  PADDING + yOffset)
 
 -- CHAT PLACEHOLDER RIGHT
 local chatrph = CreateFrame("Frame", "ChatRPlaceHolder", E.UIParent)
 chatrph:SetWidth(C["chat"].chatwidth)
 chatrph:SetHeight(C["chat"].chatheight+6)
-chatrph:Point("BOTTOMRIGHT", ElvuiBottomPanel, "TOPRIGHT", -PADDING,  PADDING)
+chatrph:Point("BOTTOMRIGHT", ElvuiBottomPanel, "TOPRIGHT", -PADDING + math.abs(xOffset),  PADDING + yOffset)
 
 -- CHAT BACKGROUND LEFT
 local chatlbg = CreateFrame("Frame", "ChatLBG", E.UIParent)
@@ -236,44 +245,24 @@ chatrbgdummy:Point("CENTER", chatrph, "CENTER")
 
 E.ChatRightShown = true
 
-if C["chat"].showbackdrop == true then
-	chatlbg:SetTemplate("Transparent")
-	
-	local chatltbg = CreateFrame("Frame", "ChatLBGTab", chatlbg)
-	chatltbg:SetTemplate("Default", true)
-	chatltbg:SetPoint("BOTTOMLEFT", chatlph, "TOPLEFT", 0, E.Scale(3))
-	chatltbg:SetPoint("BOTTOMRIGHT", chatlph, "TOPRIGHT", 0, E.Scale(3))
-	chatltbg:SetHeight(E.Scale(22))
-end
-
-if C["chat"].showbackdrop == true then
-	chatrbg:SetTemplate("Transparent")
-	
-	local chatrtbg = CreateFrame("Frame","ChatRBGTab", chatrbg)
-	chatrtbg:SetTemplate("Default", true)
-	chatrtbg:SetPoint("BOTTOMLEFT", chatrph, "TOPLEFT", 0, E.Scale(3))
-	chatrtbg:SetPoint("BOTTOMRIGHT", chatrph, "TOPRIGHT", 0, E.Scale(3))
-	chatrtbg:SetHeight(E.Scale(22))
-end
-
 --INFO LEFT
 local infoleft = CreateFrame("Frame", "ElvuiInfoLeft", E.UIParent)
 infoleft:SetFrameLevel(2)
 infoleft:SetTemplate("Default", true)
-infoleft:SetPoint("TOPLEFT", chatlph, "BOTTOMLEFT", E.Scale(17), E.Scale(-4))
-infoleft:SetPoint("BOTTOMRIGHT", chatlph, "BOTTOMRIGHT", E.Scale(-17), E.Scale(-26))
+infoleft:SetPoint("TOPLEFT", chatlph, "BOTTOMLEFT", E.Scale(17), E.Scale(-3))
+infoleft:SetPoint("BOTTOMRIGHT", chatlph, "BOTTOMRIGHT", E.Scale(-17), E.Scale(-25))
 
 	--INFOLEFT L BUTTON
 	local infoleftLbutton = CreateFrame("Button", "ElvuiInfoLeftLButton", ElvuiInfoLeft)
 	infoleftLbutton:SetTemplate("Default", true)
 	infoleftLbutton:Point("TOPRIGHT", infoleft, "TOPLEFT", -1, 0)
-	infoleftLbutton:Point("BOTTOMLEFT", chatlph, "BOTTOMLEFT", 0, -26)
+	infoleftLbutton:Point("BOTTOMLEFT", chatlph, "BOTTOMLEFT", 0, -25)
 
 	--INFOLEFT R BUTTON
 	local infoleftRbutton = CreateFrame("Button", "ElvuiInfoLeftRButton", ElvuiInfoLeft)
 	infoleftRbutton:SetTemplate("Default", true)
 	infoleftRbutton:Point("TOPLEFT", infoleft, "TOPRIGHT", 1, 0)
-	infoleftRbutton:Point("BOTTOMRIGHT", chatlph, "BOTTOMRIGHT", 0, -26)
+	infoleftRbutton:Point("BOTTOMRIGHT", chatlph, "BOTTOMRIGHT", 0, -25)
 
 	infoleftLbutton:FontString(nil, C["media"].font, C["general"].fontscale, "THINOUTLINE")
 	infoleftLbutton.text:SetText("<")
@@ -285,28 +274,28 @@ infoleft:SetPoint("BOTTOMRIGHT", chatlph, "BOTTOMRIGHT", E.Scale(-17), E.Scale(-
 	
 	infoleft:CreateShadow("Default")
 	infoleft.shadow:ClearAllPoints()
-	infoleft.shadow:Point("TOPLEFT", infoleftLbutton, "TOPLEFT", -4, 4)
-	infoleft.shadow:Point("BOTTOMRIGHT", infoleftRbutton, "BOTTOMRIGHT", 4, -4)
+	infoleft.shadow:Point("TOPLEFT", infoleftLbutton, "TOPLEFT", -3, 3)
+	infoleft.shadow:Point("BOTTOMRIGHT", infoleftRbutton, "BOTTOMRIGHT", 3, -3)
 	infoleft.shadow:SetBackdropBorderColor(0, 0, 0, 0)
 
 --INFO RIGHT
 local inforight = CreateFrame("Frame", "ElvuiInfoRight", E.UIParent)
 inforight:SetTemplate("Default", true)
 inforight:SetFrameLevel(2)
-inforight:SetPoint("TOPLEFT", chatrph, "BOTTOMLEFT", E.Scale(17), E.Scale(-4))
-inforight:SetPoint("BOTTOMRIGHT", chatrph, "BOTTOMRIGHT", E.Scale(-17), E.Scale(-26))
+inforight:SetPoint("TOPLEFT", chatrph, "BOTTOMLEFT", E.Scale(17), E.Scale(-3))
+inforight:SetPoint("BOTTOMRIGHT", chatrph, "BOTTOMRIGHT", E.Scale(-17), E.Scale(-25))
 
 	--INFORIGHT L BUTTON
 	local inforightLbutton = CreateFrame("Button", "ElvuiInfoRightLButton", ElvuiInfoRight)
 	inforightLbutton:SetTemplate("Default", true)
 	inforightLbutton:Point("TOPRIGHT", inforight, "TOPLEFT", -1, 0)
-	inforightLbutton:Point("BOTTOMLEFT", chatrph, "BOTTOMLEFT", 0, -26)
+	inforightLbutton:Point("BOTTOMLEFT", chatrph, "BOTTOMLEFT", 0, -25)
 
 	--INFORIGHT R BUTTON
 	local inforightRbutton = CreateFrame("Button", "ElvuiInfoRightRButton", ElvuiInfoRight)
 	inforightRbutton:SetTemplate("Default", true)
 	inforightRbutton:Point("TOPLEFT", inforight, "TOPRIGHT", 1, 0)
-	inforightRbutton:Point("BOTTOMRIGHT", chatrph, "BOTTOMRIGHT", 0, -26)
+	inforightRbutton:Point("BOTTOMRIGHT", chatrph, "BOTTOMRIGHT", 0, -25)
 	
 	inforightLbutton:FontString(nil, C["media"].font, C["general"].fontscale, "THINOUTLINE")
 	inforightLbutton.text:SetText("C")
@@ -334,12 +323,56 @@ inforight:SetPoint("BOTTOMRIGHT", chatrph, "BOTTOMRIGHT", E.Scale(-17), E.Scale(
 	
 	inforight:CreateShadow("Default")
 	inforight.shadow:ClearAllPoints()
-	inforight.shadow:Point("TOPLEFT", inforightLbutton, "TOPLEFT", -4, 4)
-	inforight.shadow:Point("BOTTOMRIGHT", inforightRbutton, "BOTTOMRIGHT", 4, -4)
+	inforight.shadow:Point("TOPLEFT", inforightLbutton, "TOPLEFT", -3, 3)
+	inforight.shadow:Point("BOTTOMRIGHT", inforightRbutton, "BOTTOMRIGHT", 3, -3)
 	inforight.shadow:SetBackdropBorderColor(0, 0, 0, 0)		
 	
 TukuiInfoLeft = ElvuiInfoLeft -- conversion
 TukuiInfoRight = ElvuiInfoRight -- conversion	
+
+if C["chat"].showbackdrop == true then
+	local chatltbg = CreateFrame("Frame", "ChatLBGTab", chatlbg)
+	chatltbg:SetTemplate("Default", true)
+	chatltbg:SetPoint("BOTTOMLEFT", chatlph, "TOPLEFT", 0, E.Scale(3))
+	chatltbg:SetPoint("BOTTOMRIGHT", chatlph, "TOPRIGHT", 0, E.Scale(3))
+	chatltbg:SetHeight(E.Scale(22))
+	
+	if C["chat"].style == "ElvUI" then
+		chatlbg:SetTemplate("Transparent")
+	else
+		chatlph:SetTemplate("Transparent")
+		chatlph:SetParent(ChatLBG)
+		chatlph:CreateShadow("Default")
+		chatltbg:CreateShadow("Default")
+		infoleft.shadow:SetBackdropBorderColor(0, 0, 0, 0.9)
+		
+		ChatLBG:Width(chatlph:GetWidth())
+		ChatLBG:Height(chatlph:GetHeight() + 47)
+		ChatLBGDummy:Width(chatlph:GetWidth())
+		ChatLBGDummy:Height(chatlph:GetHeight() + 47)
+	end	
+
+	local chatrtbg = CreateFrame("Frame","ChatRBGTab", chatrbg)
+	chatrtbg:SetTemplate("Default", true)
+	chatrtbg:SetPoint("BOTTOMLEFT", chatrph, "TOPLEFT", 0, E.Scale(3))
+	chatrtbg:SetPoint("BOTTOMRIGHT", chatrph, "TOPRIGHT", 0, E.Scale(3))
+	chatrtbg:SetHeight(E.Scale(22))
+	
+	if C["chat"].style == "ElvUI" then
+		chatrbg:SetTemplate("Transparent")
+	else
+		chatrph:SetTemplate("Transparent")
+		chatrph:SetParent(ChatRBG)
+		chatrph:CreateShadow("Default")
+		chatrtbg:CreateShadow("Default")
+		inforight.shadow:SetBackdropBorderColor(0, 0, 0, 0.9)
+		
+		ChatRBG:Width(chatrph:GetWidth())
+		ChatRBG:Height(chatrph:GetHeight() + 47)
+		ChatRBGDummy:Width(chatrph:GetWidth())
+		ChatRBGDummy:Height(chatrph:GetHeight() + 47)		
+	end		
+end
 
 if C["general"].lowerpanel == true then	
 	ElvuiBottomPanel:SetTemplate("Transparent")

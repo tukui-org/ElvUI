@@ -306,6 +306,7 @@ DB["datatext"] = {
 
 DB["chat"] = {
 	["enable"] = true,                     -- blah
+	["style"] = "ElvUI",
 	["whispersound"] = true,               -- play a sound when receiving whisper
 	["showbackdrop"] = true,				-- show a backdrop on the chat panels
 	["chatwidth"] = 348,					-- width of chat frame

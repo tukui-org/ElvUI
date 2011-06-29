@@ -628,7 +628,11 @@ local function CheckWhisperWindows(self, event)
 				E.StopFlash(self.shadow)
 				self:SetScript('OnUpdate', nil)				
 				E.Delay(1, function()
-					self.shadow:SetBackdropBorderColor(0,0,0,0) 	
+					if C["chat"].style ~= "ElvUI" then
+						self.shadow:SetBackdropBorderColor(0,0,0,0.9) 	
+					else
+						self.shadow:SetBackdropBorderColor(0,0,0,0) 
+					end
 				end)
 			end
 		end)
@@ -645,7 +649,11 @@ local function CheckWhisperWindows(self, event)
 				E.StopFlash(self.shadow)
 				self:SetScript('OnUpdate', nil)				
 				E.Delay(1, function()
-					self.shadow:SetBackdropBorderColor(0,0,0,0) 	
+					if C["chat"].style ~= "ElvUI" then
+						self.shadow:SetBackdropBorderColor(0,0,0,0.9) 
+					else
+						self.shadow:SetBackdropBorderColor(0,0,0,0) 	
+					end
 				end)
 			end
 		end)	
