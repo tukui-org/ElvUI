@@ -91,8 +91,6 @@ DXE.Alerts.RefreshBars = function(self)
 	while _G["DXEAlertBar"..i] do
 		local bar = _G["DXEAlertBar"..i]
 		bar:SetScale(1)
-		bar:SetAlpha(1)
-		bar.SetAlpha = E.dummy
 		bar.SetScale = E.dummy
 		SkinDXEBar(bar)
 		i = i + 1
