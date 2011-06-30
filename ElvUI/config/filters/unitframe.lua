@@ -271,7 +271,7 @@ E.RaidDebuffs = {
 	[SpellName(98450)] = true, -- Searing Seeds
 	
 	--Ragnaros
-		--<< NONE KNOWN YET >>
+	[SpellName(99399)] = true, -- Burning Wound
 		
 	--Trash
 	[SpellName(99532)] = true, -- Melt Armor	
