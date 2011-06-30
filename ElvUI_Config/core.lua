@@ -2752,7 +2752,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								type = "toggle",
 								name = L["Encounter Journal"],
 								desc = L["TOGGLESKIN_DESC"],
-								disabled = function() return not db.skin.enable or not E.IsPTRVersion() end,
+								disabled = function() return not db.skin.enable end,
 							},
 							reforge = {
 								type = "toggle",

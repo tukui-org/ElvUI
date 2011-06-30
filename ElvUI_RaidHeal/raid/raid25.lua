@@ -191,17 +191,15 @@ local function Shared(self, unit)
     end
 
 	--Resurrect Indicator
-	if E.IsPTRVersion() then
-		local Resurrect = CreateFrame('Frame', nil, self)
-		Resurrect:SetFrameLevel(20)
+	local Resurrect = CreateFrame('Frame', nil, self)
+	Resurrect:SetFrameLevel(20)
 
-		local ResurrectIcon = Resurrect:CreateTexture(nil, "OVERLAY")
-		ResurrectIcon:Point(health.value:GetPoint())
-		ResurrectIcon:Size(30, 25)
-		ResurrectIcon:SetDrawLayer('OVERLAY', 7)
+	local ResurrectIcon = Resurrect:CreateTexture(nil, "OVERLAY")
+	ResurrectIcon:Point(health.value:GetPoint())
+	ResurrectIcon:Size(30, 25)
+	ResurrectIcon:SetDrawLayer('OVERLAY', 7)
 
-		self.ResurrectIcon = ResurrectIcon
-	end	
+	self.ResurrectIcon = ResurrectIcon
 	
 	if C["raidframes"].mouseglow == true then
 		self:CreateShadow("Default")
