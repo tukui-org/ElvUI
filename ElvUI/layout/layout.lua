@@ -340,9 +340,11 @@ if C["chat"].showbackdrop == true then
 	if C["chat"].style == "ElvUI" then
 		chatlbg:SetTemplate("Transparent")
 	else
-		chatlph:SetTemplate("Transparent")
-		chatlph:SetParent(ChatLBG)
-		chatlph:CreateShadow("Default")
+		local classicbg = CreateFrame('Frame', nil, ChatLBG) 
+		classicbg:SetTemplate("Transparent")
+		classicbg:SetPoint('CENTER', chatlph, 'CENTER')
+		classicbg:Size(chatlph:GetSize())
+		classicbg:CreateShadow("Default")
 		chatltbg:CreateShadow("Default")
 		infoleft.shadow:SetBackdropBorderColor(0, 0, 0, 0.9)
 		
@@ -361,9 +363,11 @@ if C["chat"].showbackdrop == true then
 	if C["chat"].style == "ElvUI" then
 		chatrbg:SetTemplate("Transparent")
 	else
-		chatrph:SetTemplate("Transparent")
-		chatrph:SetParent(ChatRBG)
-		chatrph:CreateShadow("Default")
+		local classicbg = CreateFrame('Frame', nil, ChatRBG) 
+		classicbg:SetTemplate("Transparent")
+		classicbg:SetPoint('CENTER', chatrph, 'CENTER')
+		classicbg:Size(chatrph:GetSize())
+		classicbg:CreateShadow("Default")
 		chatrtbg:CreateShadow("Default")
 		inforight.shadow:SetBackdropBorderColor(0, 0, 0, 0.9)
 		
