@@ -13,11 +13,13 @@ function HideRaid()
 	end
 end
 
-hooksecurefunc("CompactRaidFrameManager_UpdateShown",function()
-	HideRaid()
-end)
-CompactRaidFrameManager:HookScript('OnShow', HideRaid)
-
+if C["raidframes"].disableblizz == true then 
+	hooksecurefunc("CompactRaidFrameManager_UpdateShown",function()
+		HideRaid()
+	end)
+	CompactRaidFrameManager:HookScript('OnShow', HideRaid)
+	CompactRaidFrameManager:SetScale(0.000001) --- BAHAHAHA FUCK YOU RAID FRAMES!
+end
 
 local Kill = CreateFrame("Frame")
 Kill:RegisterEvent("ADDON_LOADED")

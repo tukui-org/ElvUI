@@ -256,7 +256,7 @@ local chat, tab, id, point, button, docked, chatfound
 E.RightChat = true
 ElvuiChat:SetScript("OnUpdate", function(self, elapsed)
 	if(self.elapsed and self.elapsed > 1) then
-		if InCombatLockdown() or insidetab == true or IsMouseButtonDown("LeftButton") then self.elapsed = 0 return end
+		if insidetab == true or IsMouseButtonDown("LeftButton") then self.elapsed = 0 return end
 		chatfound = false
 		for i = 1, NUM_CHAT_WINDOWS do
 			chat = _G[format("ChatFrame%d", i)]
