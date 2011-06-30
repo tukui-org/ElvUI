@@ -449,11 +449,15 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 			SetCVar("useUiScale", 0)
 			StaticPopup_Show("DISABLE_UI")
 	else
-		SetCVar("useUiScale", 1)
+		
 		if C["general"].multisampleprotect == true then
 			SetMultisampleFormat(1)
 		end
-		SetCVar("uiScale", C["general"].uiscale)
+		
+		if E.Round(UIParent:GetScale(), 5) ~= E.Round(C["general"].uiscale, 5) then
+			SetCVar("useUiScale", 1)
+			SetCVar("uiScale", C["general"].uiscale)
+		end
 		
 		if ElvuiData == nil then ElvuiData = {} end
 		if ElvuiData[E.myrealm] == nil then ElvuiData[E.myrealm] = {} end
