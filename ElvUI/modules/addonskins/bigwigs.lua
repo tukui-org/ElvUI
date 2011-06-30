@@ -206,6 +206,7 @@ f:SetScript("OnEvent", function(self, event, addon)
 		LoadAddOn("BigWigs_Core")
 		LoadAddOn("BigWigs_Plugins")
 		LoadAddOn("BigWigs_Options")
+		if not BigWigs then return end
 		BigWigs:Enable()
 		BigWigsOptions:SendMessage("BigWigs_StartConfigureMode", true)
 		BigWigsOptions:SendMessage("BigWigs_StopConfigureMode")

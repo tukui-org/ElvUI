@@ -8,7 +8,6 @@
 	<Script file="friend.lua"/>
 	<Script file="gold.lua"/>
 	<Script file="guild.lua"/>
-	<Script file="loc.lua"/>
 	<Script file="time.lua"/>
 	<Script file="bags.lua"/>
 	<Script file="dps.lua"/>

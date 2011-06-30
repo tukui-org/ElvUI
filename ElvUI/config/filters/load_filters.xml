@@ -1,5 +1,4 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">	
-	<Script file="filters.lua"/>
 	<Script file="classtimer.lua"/>
 	<Script file="reminder.lua"/>
 	<Script file="raid_reminder.lua"/>
