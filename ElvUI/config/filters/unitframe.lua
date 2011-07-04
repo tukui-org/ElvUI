@@ -263,6 +263,7 @@ E.RaidDebuffs = {
 	
 	--Baleroc
 	[SpellName(99403)] = true, -- Tormented
+	[SpellName(99256)] = true, -- Torment
 	
 	--Lord Rhyolith
 		--<< NONE KNOWN YET >>
