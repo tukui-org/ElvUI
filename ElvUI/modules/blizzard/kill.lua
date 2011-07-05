@@ -27,7 +27,7 @@ Kill:RegisterEvent("PLAYER_ENTERING_WORLD")
 Kill:RegisterEvent("RAID_ROSTER_UPDATE")
 Kill:RegisterEvent("PLAYER_REGEN_ENABLED")
 Kill:SetScript("OnEvent", function(self, event, addon)
-	if event == "PLAYER_ENTERING_WORLD" or event == "RAID_ROSTER_UPDATE" or event == "PLAYER_REGEN_ENABLED" then
+	if (event == "PLAYER_ENTERING_WORLD" or event == "RAID_ROSTER_UPDATE" or event == "PLAYER_REGEN_ENABLED") and C["raidframes"].disableblizz == true then
 		HideRaid()
 	end
 	if event == "PLAYER_ENTERING_WORLD" and not self.run then
