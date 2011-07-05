@@ -110,7 +110,7 @@ local function BuildBNTable(total)
 		presenceID, givenName, surname, toonName, toonID, client, isOnline, _, isAFK, isDND, _, noteText = BNGetFriendInfo(i)
 		
 		if isOnline then 
-			_, _, _, realmName, faction, _, race, class, _, zoneName, level = BNGetToonInfo(presenceID)
+			_, _, _, realmName, _, faction, race, class, _, zoneName, level = BNGetToonInfo(presenceID)
 			for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
 			BNTable[i] = { presenceID, givenName, surname, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 		end
@@ -170,15 +170,16 @@ Stat:SetScript("OnMouseUp", function(self, btn)
 		end
 	end
 	if #BNTable > 0 then
-		local realID, grouped
+		local realID, playerFaction, grouped
 		for i = 1, #BNTable do
 			info = BNTable[i]
 			if (info[7]) then
 				realID = (BATTLENET_NAME_FORMAT):format(info[2], info[3])
 				menuCountWhispers = menuCountWhispers + 1
 				menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID,notCheckable=true, func = whisperClick}
-
-				if info[6] == wowString and info[11] == E.myrealm then
+				
+				if select(1, UnitFactionGroup("player")) == "Horde" then playerFaction = 0 else playerFaction = 1 end
+				if info[6] == wowString and info[11] == E.myrealm and playerFaction == info[12] then
 					classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[14]], GetQuestDifficultyColor(info[16])
 					if classc == nil then classc = GetQuestDifficultyColor(info[16]) end
 
