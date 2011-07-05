@@ -721,7 +721,7 @@ E.LoadUFFunctions = function(layout)
 				icon.icon:SetDesaturated(false)
 			end
 		else
-			if (icon.isStealable or ((E.myclass == "PRIEST" or E.myclass == "SHAMAN") and dtype == "Magic")) and not UnitIsFriend("player", unit) then
+			if (icon.isStealable or ((E.myclass == "PRIEST" or E.myclass == "SHAMAN" or E.myclass == "MAGE") and dtype == "Magic")) and not UnitIsFriend("player", unit) then
 				icon:SetBackdropBorderColor(237/255, 234/255, 142/255)
 			else
 				if C["general"].classcolortheme == true then
