@@ -17,6 +17,7 @@ CreateSpellEntry = function( id, castByAnyone, color, unitType, castSpellId )
 end
 
 TRINKET_FILTER = {
+	CreateSpellEntry( 96881 ), --Weight of a feather
 	CreateSpellEntry( 73422 ), -- Chaos Bane
 	CreateSpellEntry( 71905 ), -- Soul Fragment
 	CreateSpellEntry( 67671 ), -- Fury(Banner of Victory)

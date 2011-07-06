@@ -137,9 +137,9 @@ local function PositionDXEAnchor()
 	DXEAlertsTopStackAnchor:ClearAllPoints()
 	if E.CheckAddOnShown() == true then
 		if C["chat"].showbackdrop == true and E.ChatRightShown == true then
-			DXEAlertsTopStackAnchor:Point("TOP", ChatRBGDummy, "TOP", 16, 4)	
+			DXEAlertsTopStackAnchor:Point("TOP", ChatRBGDummy, "TOP", 14, 4)	
 		else
-			DXEAlertsTopStackAnchor:Point("TOP", ChatRBGDummy, "TOP", 16, -28)
+			DXEAlertsTopStackAnchor:Point("TOP", ChatRBGDummy, "TOP", 14, -28)
 		end	
 	else
 		DXEAlertsTopStackAnchor:Point("BOTTOMRIGHT", E.UIParent, "BOTTOMRIGHT", -49, 25)		
@@ -159,9 +159,7 @@ DXE_Skin:SetScript("OnEvent", function(self, event)
 		DXE.Pane.timer.right:SetFont(C["media"].font, 12)
 		
 		for i=1, #movers do
-			if not _G[movers[i]] then
-				print(movers[i])
-			else
+			if _G[movers[i]] then
 				_G[movers[i]]:SetTemplate("Transparent")
 			end
 		end
