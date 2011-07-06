@@ -1,6 +1,6 @@
 ﻿## Interface: 40200
 ## Author: Elv, Tukz
-## Version: 2.1.4
+## Version: 2.1.5
 ## Title: |cff1784d1ElvUI|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvuiData
