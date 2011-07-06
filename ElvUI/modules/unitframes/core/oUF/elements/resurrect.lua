@@ -8,7 +8,7 @@ local Update = function(self, event)
 	local incomingResurrect = UnitHasIncomingResurrection(self.unit)
 	local resurrect = self.ResurrectIcon
 
-	if(incomingResurrect) then
+	if(incomingResurrect) and UnitIsDeadOrGhost(self.unit) and UnitIsConnected(self.unit) then
 		resurrect:Show()
 	else
 		resurrect:Hide()
