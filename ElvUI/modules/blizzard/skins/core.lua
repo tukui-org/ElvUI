@@ -49,7 +49,7 @@ function E.SkinButton(f, strip)
 	f:HookScript("OnLeave", SetOriginalBackdrop)
 end
 
-function E.SkinScrollBar(frame)
+function E.SkinScrollBar(frame, thumbTrim)
 	if _G[frame:GetName().."BG"] then _G[frame:GetName().."BG"]:SetTexture(nil) end
 	if _G[frame:GetName().."Track"] then _G[frame:GetName().."Track"]:SetTexture(nil) end
 	
@@ -58,6 +58,78 @@ function E.SkinScrollBar(frame)
 		_G[frame:GetName().."Bottom"]:SetTexture(nil)
 		_G[frame:GetName().."Middle"]:SetTexture(nil)
 	end
+
+	if _G[frame:GetName().."ScrollUpButton"] and _G[frame:GetName().."ScrollDownButton"] then
+		_G[frame:GetName().."ScrollUpButton"]:StripTextures()
+		_G[frame:GetName().."ScrollUpButton"]:SetTemplate("Default", true)
+		if not _G[frame:GetName().."ScrollUpButton"].texture then
+			_G[frame:GetName().."ScrollUpButton"].texture = _G[frame:GetName().."ScrollUpButton"]:CreateTexture(nil, 'OVERLAY')
+			_G[frame:GetName().."ScrollUpButton"].texture:Point("TOPLEFT", 2, -2)
+			_G[frame:GetName().."ScrollUpButton"].texture:Point("BOTTOMRIGHT", -2, 2)
+			_G[frame:GetName().."ScrollUpButton"].texture:SetTexture([[Interface\AddOns\ElvUI\media\textures\arrowup.tga]])
+			_G[frame:GetName().."ScrollUpButton"].texture:SetVertexColor(unpack(C["media"].bordercolor))
+		end
+		_G[frame:GetName().."ScrollUpButton"]:HookScript('OnEnter', function(self)
+			SetModifiedBackdrop(self)
+			if C["general"].classcolortheme == true then
+				local color = RAID_CLASS_COLORS[E.myclass]
+				self.texture:SetVertexColor(color.r, color.g, color.b)
+			else
+				self.texture:SetVertexColor(unpack(C["media"].valuecolor))	
+			end			
+		end)	
+		_G[frame:GetName().."ScrollUpButton"]:HookScript('OnLeave', function(self)
+			SetOriginalBackdrop(self)
+			self.texture:SetVertexColor(unpack(C["media"].bordercolor))	
+		end)		
+		
+		_G[frame:GetName().."ScrollDownButton"]:StripTextures()
+		_G[frame:GetName().."ScrollDownButton"]:SetTemplate("Default", true)
+		_G[frame:GetName().."ScrollDownButton"]:HookScript('OnEnter', SetModifiedBackdrop)
+		_G[frame:GetName().."ScrollDownButton"]:HookScript('OnLeave', SetOriginalBackdrop)		
+		if not _G[frame:GetName().."ScrollDownButton"].texture then
+			_G[frame:GetName().."ScrollDownButton"].texture = _G[frame:GetName().."ScrollDownButton"]:CreateTexture(nil, 'OVERLAY')
+			_G[frame:GetName().."ScrollDownButton"].texture:Point("TOPLEFT", 2, -2)
+			_G[frame:GetName().."ScrollDownButton"].texture:Point("BOTTOMRIGHT", -2, 2)
+			_G[frame:GetName().."ScrollDownButton"].texture:SetTexture([[Interface\AddOns\ElvUI\media\textures\arrowdown.tga]])
+			_G[frame:GetName().."ScrollDownButton"].texture:SetVertexColor(unpack(C["media"].bordercolor))
+		end
+		
+		_G[frame:GetName().."ScrollDownButton"]:HookScript('OnEnter', function(self)
+			SetModifiedBackdrop(self)
+			if C["general"].classcolortheme == true then
+				local color = RAID_CLASS_COLORS[E.myclass]
+				self.texture:SetVertexColor(color.r, color.g, color.b)
+			else
+				self.texture:SetVertexColor(unpack(C["media"].valuecolor))	
+			end			
+		end)	
+		_G[frame:GetName().."ScrollDownButton"]:HookScript('OnLeave', function(self)
+			SetOriginalBackdrop(self)
+			self.texture:SetVertexColor(unpack(C["media"].bordercolor))	
+		end)				
+		
+		if not frame.trackbg then
+			frame.trackbg = CreateFrame("Frame", nil, frame)
+			frame.trackbg:Point("TOPLEFT", _G[frame:GetName().."ScrollUpButton"], "BOTTOMLEFT", 0, -1)
+			frame.trackbg:Point("BOTTOMRIGHT", _G[frame:GetName().."ScrollDownButton"], "TOPRIGHT", 0, 1)
+			frame.trackbg:SetTemplate("Transparent")
+		end
+		
+		if frame:GetThumbTexture() then
+			if not thumbTrim then thumbTrim = 3 end
+			frame:GetThumbTexture():SetTexture(nil)
+			if not frame.thumbbg then
+				frame.thumbbg = CreateFrame("Frame", nil, frame)
+				frame.thumbbg:Point("TOPLEFT", frame:GetThumbTexture(), "TOPLEFT", 2, -thumbTrim)
+				frame.thumbbg:Point("BOTTOMRIGHT", frame:GetThumbTexture(), "BOTTOMRIGHT", -2, thumbTrim)
+				frame.thumbbg:SetTemplate("Default", true)
+				if frame.trackbg then
+					frame.thumbbg:SetFrameLevel(frame.trackbg:GetFrameLevel())
+				end
+			end
+		end	
+	end	
 end
 
 --Tab Regions

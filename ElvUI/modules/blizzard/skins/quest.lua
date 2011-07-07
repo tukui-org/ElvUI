@@ -3,6 +3,8 @@ if C["skin"].enable ~= true or C["skin"].quest ~= true then return end
 
 local function LoadSkin()
 	E.SkinCloseButton(QuestLogFrameCloseButton)
+	E.SkinScrollBar(QuestLogDetailScrollFrameScrollBar)
+	E.SkinScrollBar(QuestLogScrollFrameScrollBar, 5)
 	QuestLogFrame:StripTextures()
 	QuestLogFrame:SetTemplate("Transparent")
 	QuestLogFrame:CreateShadow("Default")

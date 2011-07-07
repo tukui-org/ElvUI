@@ -103,7 +103,9 @@ local function LoadSkin()
 		end)		
 	end)
 		
-	E.SkinScrollBar(EncounterJournalInstanceSelectScrollFrameScrollBar)
+	E.SkinScrollBar(EncounterJournalInstanceSelectScrollFrameScrollBar, 4)
+	E.SkinScrollBar(EncounterJournalEncounterFrameInfoDetailsScrollFrameScrollBar, 4)
+	E.SkinScrollBar(EncounterJournalEncounterFrameInfoLootScrollFrameScrollBar, 4)
 
 	EncounterJournalEncounterFrameInfoBossTab:GetNormalTexture():SetTexture(nil)
 	EncounterJournalEncounterFrameInfoBossTab:GetPushedTexture():SetTexture(nil)

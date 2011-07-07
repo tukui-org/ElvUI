@@ -95,7 +95,7 @@ local function LoadSkin()
 	GuildXPFrame:ClearAllPoints()
 	GuildXPFrame:Point("TOP", GuildFrame, "TOP", 0, -40)
 	
-	E.SkinScrollBar(GuildPerksContainerScrollBar)
+	E.SkinScrollBar(GuildPerksContainerScrollBar, 4)
 	
 	GuildFactionBar:StripTextures()
 	GuildFactionBar.progress:SetTexture(C["media"].normTex)
@@ -147,7 +147,7 @@ local function LoadSkin()
 	end
 	
 	--Roster
-	E.SkinScrollBar(GuildRosterContainerScrollBar)
+	E.SkinScrollBar(GuildRosterContainerScrollBar, 5)
 	E.SkinCheckBox(GuildRosterShowOfflineButton)
 	
 	
@@ -183,10 +183,10 @@ local function LoadSkin()
 	end
 	
 	GuildNewsFiltersFrame:Point("TOPLEFT", GuildFrame, "TOPRIGHT", 4, -20)
-	E.SkinScrollBar(GuildNewsContainerScrollBar)
+	E.SkinScrollBar(GuildNewsContainerScrollBar, 4)
 	
 	--Info Frame
-	E.SkinScrollBar(GuildInfoDetailsFrameScrollBar)
+	E.SkinScrollBar(GuildInfoDetailsFrameScrollBar, 4)
 	
 	for i=1, 3 do
 		_G["GuildInfoFrameTab"..i]:StripTextures()
@@ -220,7 +220,7 @@ local function LoadSkin()
 	
 	--Text Edit Frame
 	GuildTextEditFrame:SetTemplate("Transparent")
-	E.SkinScrollBar(GuildTextEditScrollFrameScrollBar)
+	E.SkinScrollBar(GuildTextEditScrollFrameScrollBar, 5)
 	GuildTextEditContainer:SetTemplate("Default")
 	for i=1, GuildTextEditFrame:GetNumChildren() do
 		local child = select(i, GuildTextEditFrame:GetChildren())
@@ -232,7 +232,7 @@ local function LoadSkin()
 	end
 	
 	--Guild Log
-	E.SkinScrollBar(GuildLogScrollFrameScrollBar)
+	E.SkinScrollBar(GuildLogScrollFrameScrollBar, 4)
 	GuildLogFrame:SetTemplate("Transparent")
 
 	--Blizzard has two buttons with the same name, this is a fucked up way of determining that it isn't the other button
@@ -246,7 +246,10 @@ local function LoadSkin()
 	end
 	
 	--Rewards
-	E.SkinScrollBar(GuildRewardsContainerScrollBar)
+	E.SkinScrollBar(GuildRewardsContainerScrollBar, 5)
+	GuildRewardsContainerScrollBar.thumbbg:ClearAllPoints()
+	GuildRewardsContainerScrollBar.thumbbg:Point('TOPLEFT', GuildRewardsContainerScrollBar:GetThumbTexture(), 'TOPLEFT', 6, -5)
+	GuildRewardsContainerScrollBar.thumbbg:Point('BOTTOMRIGHT', GuildRewardsContainerScrollBar:GetThumbTexture(), 'BOTTOMRIGHT', -6, 5)
 	
 	for i=1, 8 do
 		local button = _G["GuildRewardsContainerButton"..i]

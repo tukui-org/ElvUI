@@ -3,6 +3,8 @@ if C["skin"].enable ~= true or C["skin"].character ~= true then return end
 
 local function LoadSkin()
 	E.SkinCloseButton(CharacterFrameCloseButton)
+	E.SkinScrollBar(CharacterStatsPaneScrollBar)
+	E.SkinScrollBar(ReputationListScrollFrameScrollBar)
 	
 	local slots = {
 		"HeadSlot",
@@ -122,7 +124,7 @@ local function LoadSkin()
 	}
 	
 	for _, scrollbar in pairs(scrollbars) do
-		E.SkinScrollBar(_G[scrollbar])
+		E.SkinScrollBar(_G[scrollbar], 5)
 	end
 	
 	for _, object in pairs(charframe) do

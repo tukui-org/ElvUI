@@ -27,6 +27,9 @@ local function SkinSocialHeaderTab(tab)
 end
 
 local function LoadSkin()
+	E.SkinScrollBar(FriendsFrameFriendsScrollFrameScrollBar, 5)
+	E.SkinScrollBar(WhoListScrollFrameScrollBar, 5)
+	E.SkinScrollBar(ChannelRosterScrollFrameScrollBar, 5)
 	local StripAllTextures = {
 		"FriendsListFrame",
 		"FriendsTabHeader",
