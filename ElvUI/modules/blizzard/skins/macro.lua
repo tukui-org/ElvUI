@@ -3,10 +3,15 @@ if C["skin"].enable ~= true or C["skin"].macro ~= true then return end
 
 local function LoadSkin()
 	E.SkinCloseButton(MacroFrameCloseButton)
+	E.SkinScrollBar(MacroButtonScrollFrameScrollBar, 5)
+	E.SkinScrollBar(MacroFrameScrollFrameScrollBar, 5)
+	E.SkinScrollBar(MacroPopupScrollFrameScrollBar, 5)
 	
 	MacroFrame:Width(360)
 	
 	local buttons = {
+		"MacroSaveButton",
+		"MacroCancelButton",
 		"MacroDeleteButton",
 		"MacroNewButton",
 		"MacroExitButton",
@@ -34,7 +39,7 @@ local function LoadSkin()
 	MacroFrame:StripTextures()
 	MacroFrame:SetTemplate("Transparent")
 	MacroFrameTextBackground:StripTextures()
-	MacroFrameTextBackground:CreateBackdrop()
+	MacroFrameTextBackground:SetTemplate('Default')
 	MacroButtonScrollFrame:CreateBackdrop()
 	MacroPopupFrame:StripTextures()
 	MacroPopupFrame:SetTemplate("Transparent")
