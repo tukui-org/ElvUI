@@ -198,6 +198,11 @@ local function LoadSkin()
 			DropDownList1:SetScale(UIParent:GetScale())
 		end
 	end)	
+	
+	WorldMapZoneDropDownButton:HookScript('OnClick', function(self) 
+		DropDownList1:ClearAllPoints()
+		DropDownList1:Point("TOPRIGHT", self, "BOTTOMRIGHT", -17, -4)
+	end)
 end
 
 tinsert(E.SkinFuncs["ElvUI"], LoadSkin)
