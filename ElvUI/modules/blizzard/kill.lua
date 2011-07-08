@@ -4,8 +4,6 @@ local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config
 local compact_raid
 function HideRaid()
 	if InCombatLockdown() then return end
-	CompactRaidFrameManager:UnregisterEvent("RAID_ROSTER_UPDATE")
-	CompactRaidFrameManager:UnregisterEvent("PLAYER_ENTERING_WORLD")
 	CompactRaidFrameManager:Hide()
 	compact_raid = CompactRaidFrameManager_GetSetting("IsShown")
 	if compact_raid and compact_raid ~= "0" then 
