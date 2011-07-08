@@ -276,6 +276,10 @@ E.RaidDebuffs = {
 		
 	--Trash
 	[SpellName(99532)] = true, -- Melt Armor	
+	
+--Baradin Hold
+	--Occu'thar
+	[SpellName(96913)] = true, -- Searing Shadows
 }
 
 

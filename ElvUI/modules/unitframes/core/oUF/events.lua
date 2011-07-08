@@ -9,6 +9,7 @@ local frame_metatable = Private.frame_metatable
 -- Events
 Private.OnEvent = function(self, event, ...)
 	if(not self:IsShown()) then return end
+	if not self or not event or not self[event] then return end
 	return self[event](self, event, ...)
 end
 

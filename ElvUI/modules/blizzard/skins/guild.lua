@@ -247,9 +247,6 @@ local function LoadSkin()
 	
 	--Rewards
 	E.SkinScrollBar(GuildRewardsContainerScrollBar, 5)
-	GuildRewardsContainerScrollBar.thumbbg:ClearAllPoints()
-	GuildRewardsContainerScrollBar.thumbbg:Point('TOPLEFT', GuildRewardsContainerScrollBar:GetThumbTexture(), 'TOPLEFT', 6, -5)
-	GuildRewardsContainerScrollBar.thumbbg:Point('BOTTOMRIGHT', GuildRewardsContainerScrollBar:GetThumbTexture(), 'BOTTOMRIGHT', -6, 5)
 	
 	for i=1, 8 do
 		local button = _G["GuildRewardsContainerButton"..i]
