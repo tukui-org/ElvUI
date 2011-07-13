@@ -46,6 +46,7 @@ function E.PostMinimapMove(frame)
 		if bar then
 			bar:ClearAllPoints()
 			bar:Point("BOTTOMLEFT", ElvuiMinimapStatsLeft, "TOPLEFT", 2, 3)
+			E.ReputationPositionUpdate(bar)
 		end
 	else
 		ElvuiMinimapStatsLeft:ClearAllPoints()
@@ -56,6 +57,7 @@ function E.PostMinimapMove(frame)
 		if bar then
 			bar:ClearAllPoints()
 			bar:Point("TOPLEFT", ElvuiMinimapStatsLeft, "BOTTOMLEFT", 2, -3)
+			E.ReputationPositionUpdate(bar)
 		end		
 	end
 end

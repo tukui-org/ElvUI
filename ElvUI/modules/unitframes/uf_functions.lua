@@ -832,10 +832,24 @@ E.LoadUFFunctions = function(layout)
 		if not self.Reputation then return end
 		self.Reputation:ClearAllPoints()
 		
-		if self.Experience and self.Experience:IsShown() then
-			self.Reputation:Point("TOPLEFT", self.Experience, "BOTTOMLEFT", 0, -5)
+		local point, _, _, _, _ = MinimapMover:GetPoint()
+		
+		if point:match("BOTTOM") then
+			if self.Experience and self.Experience:IsShown() then
+				self.Reputation:Point("BOTTOMLEFT", self.Experience, "TOPLEFT", 0, 5)
+			elseif self.Experience and self.Experience:IsShown() then
+				self.Reputation:Point("TOPLEFT", self.Experience, "BOTTOMLEFT", 0, -5)
+			else
+				self.Reputation:Point("BOTTOMLEFT", ElvuiMinimapStatsLeft, "TOPLEFT", 2, 3)
+			end
 		else
-			self.Reputation:Point("TOPLEFT", ElvuiMinimapStatsLeft, "BOTTOMLEFT", 2, -3)
+			if self.Experience and self.Experience:IsShown() then
+				self.Reputation:Point("TOPLEFT", self.Experience, "BOTTOMLEFT", 0, -5)
+			elseif self.Experience and self.Experience:IsShown() then
+				self.Reputation:Point("BOTTOMLEFT", self.Experience, "TOPLEFT", 0, 5)
+			else
+				self.Reputation:Point("TOPLEFT", ElvuiMinimapStatsLeft, "BOTTOMLEFT", 2, -3)
+			end		
 		end
 	end
 
