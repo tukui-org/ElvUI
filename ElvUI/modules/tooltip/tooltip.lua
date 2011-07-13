@@ -454,6 +454,7 @@ ElvuiTooltip:SetScript("OnEvent", function(self, event, addon)
 		tt:HookScript("OnShow", SetStyle)
 	end
 	
+	E.SkinCloseButton(ItemRefCloseButton)
 	ItemRefTooltip:HookScript("OnTooltipSetItem", SetStyle)
 	FriendsTooltip:SetTemplate("Default", true)
 	BNToastFrame:SetTemplate("Default", true)
