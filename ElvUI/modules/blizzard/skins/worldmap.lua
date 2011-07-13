@@ -10,8 +10,8 @@ local function LoadSkin()
 	WorldMapDetailFrame.backdrop:SetFrameLevel(WorldMapDetailFrame:GetFrameLevel() - 2)
 
 	E.SkinCloseButton(WorldMapFrameCloseButton)
-	E.SkinCloseButton(WorldMapFrameSizeDownButton)
-	E.SkinCloseButton(WorldMapFrameSizeUpButton)
+	E.SkinCloseButton(WorldMapFrameSizeDownButton, nil, '-')
+	E.SkinCloseButton(WorldMapFrameSizeUpButton, nil, '+')
 							
 	E.SkinDropDownBox(WorldMapLevelDropDown)
 	E.SkinDropDownBox(WorldMapZoneMinimapDropDown)

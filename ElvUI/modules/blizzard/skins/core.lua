@@ -267,7 +267,7 @@ function E.SkinCheckBox(frame)
 	frame.SetHighlightTexture = E.dummy
 end
 
-function E.SkinCloseButton(f, point)
+function E.SkinCloseButton(f, point, text)
 	f:StripTextures()
 	
 	if not f.backdrop then
@@ -277,11 +277,11 @@ function E.SkinCloseButton(f, point)
 		f:HookScript('OnEnter', SetModifiedBackdrop)
 		f:HookScript('OnLeave', SetOriginalBackdrop)	
 	end
-	
+	if not text then text = 'x' end
 	if not f.text then
 		f.text = f:CreateFontString(nil, 'OVERLAY')
 		f.text:SetFont([[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], 16, 'THINOUTLINE')
-		f.text:SetText('x')
+		f.text:SetText(text)
 		f.text:SetJustifyH('CENTER')
 		f.text:SetPoint('CENTER', f, 'CENTER')
 	end

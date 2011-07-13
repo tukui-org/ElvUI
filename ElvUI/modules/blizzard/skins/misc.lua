@@ -277,7 +277,12 @@ local function LoadSkin()
 	
 	OpacityFrame:StripTextures()
 	OpacityFrame:SetTemplate("Transparent")	
-	E.SkinCloseButton(WatchFrameCollapseExpandButton)
+	for i=1, WatchFrameCollapseExpandButton:GetNumRegions() do
+		local region = select(i, WatchFrameCollapseExpandButton:GetRegions())
+		if region:GetObjectType() == 'Texture' then
+			region:SetDesaturated(true)
+		end
+	end
 	
 	--Chat Config
 	local StripAllTextures = {
