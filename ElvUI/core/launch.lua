@@ -420,6 +420,8 @@ function E.Install()
 		close:SetScript("OnClick", function()
 			f:Hide()
 		end)		
+		
+		E.SkinCloseButton(close)
 	end
 	
 	ElvUIInstallFrame:Show()

@@ -1,11 +1,10 @@
 local E, C, L, DB = unpack(select(2, ...))
 
-if C["skin"].enable ~= true then return end
-
 E.SkinFuncs = {}
 E.SkinFuncs["ElvUI"] = {}
 
 local function SetModifiedBackdrop(self)
+	if self.backdrop then self = self.backdrop end
 	if C["general"].classcolortheme == true then
 		self:SetBackdropBorderColor(unpack(C["media"].bordercolor))		
 	else
@@ -14,6 +13,7 @@ local function SetModifiedBackdrop(self)
 end
 
 local function SetOriginalBackdrop(self)
+	if self.backdrop then self = self.backdrop end
 	local color = RAID_CLASS_COLORS[E.myclass]
 	if C["general"].classcolortheme == true then
 		self:SetBackdropBorderColor(color.r, color.g, color.b)
@@ -268,16 +268,23 @@ function E.SkinCheckBox(frame)
 end
 
 function E.SkinCloseButton(f, point)
-	for i=1, f:GetNumRegions() do
-		local region = select(i, f:GetRegions())
-		if region:GetObjectType() == "Texture" then
-			region:SetDesaturated(1)
-			
-			if region:GetTexture() == "Interface\\DialogFrame\\UI-DialogBox-Corner" then
-				region:Kill()
-			end
-		end
-	end	
+	f:StripTextures()
+	
+	if not f.backdrop then
+		f:CreateBackdrop('Default', true)
+		f.backdrop:Point('TOPLEFT', 7, -8)
+		f.backdrop:Point('BOTTOMRIGHT', -8, 8)
+		f:HookScript('OnEnter', SetModifiedBackdrop)
+		f:HookScript('OnLeave', SetOriginalBackdrop)	
+	end
+	
+	if not f.text then
+		f.text = f:CreateFontString(nil, 'OVERLAY')
+		f.text:SetFont([[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], 16, 'THINOUTLINE')
+		f.text:SetText('x')
+		f.text:SetJustifyH('CENTER')
+		f.text:SetPoint('CENTER', f, 'CENTER')
+	end
 	
 	if point then
 		f:Point("TOPRIGHT", point, "TOPRIGHT", 2, 2)

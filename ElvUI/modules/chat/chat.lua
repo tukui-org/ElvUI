@@ -397,7 +397,8 @@ local function CreatCopyFrame()
 	local scrollArea = CreateFrame("ScrollFrame", "CopyScroll", frame, "UIPanelScrollFrameTemplate")
 	scrollArea:SetPoint("TOPLEFT", frame, "TOPLEFT", E.Scale(8), E.Scale(-30))
 	scrollArea:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", E.Scale(-30), E.Scale(8))
-
+	
+	E.SkinScrollBar(CopyScrollScrollBar)
 
 	editBox = CreateFrame("EditBox", "CopyBox", frame)
 	editBox:SetMultiLine(true)
@@ -430,6 +431,8 @@ local function CreatCopyFrame()
 	close:SetScript("OnMouseUp", function()
 		frame:Hide()
 	end)
+	
+	E.SkinCloseButton(close)
 	
 	isf = true
 end
