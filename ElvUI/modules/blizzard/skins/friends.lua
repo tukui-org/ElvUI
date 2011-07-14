@@ -193,6 +193,17 @@ local function LoadSkin()
 	E.SkinEditBox(FriendsFriendsList)
 	E.SkinEditBox(FriendsFriendsNoteFrame)
 	E.SkinDropDownBox(FriendsFriendsFrameDropDown,150)
+	
+	BNConversationInviteDialog:StripTextures()
+	BNConversationInviteDialog:CreateBackdrop('Transparent')
+	BNConversationInviteDialogList:StripTextures()
+	BNConversationInviteDialogList:SetTemplate('Default')
+	E.SkinButton(BNConversationInviteDialogInviteButton)
+	E.SkinButton(BNConversationInviteDialogCancelButton)
+	
+	for i=1, BN_CONVERSATION_INVITE_NUM_DISPLAYED do
+		E.SkinCheckBox(_G["BNConversationInviteDialogListFriend"..i].checkButton)
+	end
 end
 
 tinsert(E.SkinFuncs["ElvUI"], LoadSkin)
