@@ -106,6 +106,7 @@ local function Stylesmallbutton(normal, button, icon, name, pet)
 		
 		local panel = CreateFrame("Frame", name.."Panel", button)
 		panel:CreatePanel("Default", E.petbuttonsize, E.petbuttonsize, "CENTER", button, "CENTER", 0, 0)
+		panel:SetTemplate('Default', true)
 		panel:SetBackdropColor(unpack(media.backdropcolor))
 		panel:SetFrameStrata(button:GetFrameStrata())
 		panel:SetFrameLevel(button:GetFrameLevel() - 1)
