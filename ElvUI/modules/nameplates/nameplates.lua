@@ -734,7 +734,7 @@ function NamePlates:PLAYER_ENTERING_WORLD()
 	end
 	
 	SetCVar("bloatthreat", 0)
-	SetCVar("bloattest", 0)
+	SetCVar("bloattest", 1)
 	SetCVar("bloatnameplates", 0)
 	if E.eyefinity then
 		SetCVar("nameplateMotion", "0")
