@@ -135,7 +135,7 @@ local function LoadSkin()
 			button:GetPushedTexture():SetAllPoints(icon)
 			
 			if button.Rank then
-				button.Rank:SetFont(C["media"].font, 12, C["media"].fontFLAG)
+				button.Rank:SetFont(C["media"].font, 12, 'THINOUTLINE')
 				button.Rank:ClearAllPoints()
 				button.Rank:SetPoint("BOTTOMRIGHT")
 			end		

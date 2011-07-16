@@ -62,6 +62,8 @@ local function LoadSkin()
 	ClassTrainerFrameSkillStepButton.backdrop:Point("TOPLEFT", ClassTrainerFrameSkillStepButton.icon, "TOPLEFT", -2, 2)
 	ClassTrainerFrameSkillStepButton.backdrop:Point("BOTTOMRIGHT", ClassTrainerFrameSkillStepButton.icon, "BOTTOMRIGHT", 2, -2)
 	ClassTrainerFrameSkillStepButton.icon:SetParent(ClassTrainerFrameSkillStepButton.backdrop)
+	ClassTrainerFrameSkillStepButtonHighlight:SetTexture(1,1,1,0.3)
+	ClassTrainerFrameSkillStepButton.selectedTex:SetTexture(1,1,1,0.3)
 
 	ClassTrainerStatusBar:StripTextures()
 	ClassTrainerStatusBar:SetStatusBarTexture(C["media"].normTex)

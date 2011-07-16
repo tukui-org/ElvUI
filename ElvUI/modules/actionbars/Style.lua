@@ -305,6 +305,7 @@ local function StyleTotemFlyout(flyout)
 	-- remove blizzard flyout texture
 	flyout.top:SetTexture(nil)
 	flyout.middle:SetTexture(nil)
+	flyout:SetFrameStrata('MEDIUM')
 	
 	-- Skin buttons
 	local last = nil
