@@ -68,9 +68,6 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	
 	parent:ClearAllPoints()
 	parent:SetPoint(p3, f, p3, 0, 0)
-	parent.ClearAllPoints = E.dummy
-	parent.SetAllPoints = E.dummy
-	parent.SetPoint = E.dummy
 
 	local fs = f:CreateFontString(nil, "OVERLAY")
 	fs:SetFont(C["media"].font, C["general"].fontscale, "THINOUTLINE")
