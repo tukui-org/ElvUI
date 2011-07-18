@@ -15,6 +15,8 @@ local function LoadSkin()
 	E.SkinDropDownBox(BrowseDropDown)
 	E.SkinDropDownBox(PriceDropDown)
 	E.SkinDropDownBox(DurationDropDown)
+	E.SkinScrollBar(BrowseFilterScrollFrameScrollBar)
+	E.SkinScrollBar(BrowseScrollFrameScrollBar)
 	
 	E.SkinCheckBox(IsUsableCheckButton)
 	E.SkinCheckBox(ShowOnPlayerCheckButton)
