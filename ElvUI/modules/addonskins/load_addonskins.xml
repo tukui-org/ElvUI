@@ -8,4 +8,5 @@
 	<Script file='skada.lua' />
 	<Script file='clcret.lua' />
 	<Script file='clcprot.lua' />
+	<Script file='ace3.lua' />
 </Ui>
