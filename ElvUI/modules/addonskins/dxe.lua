@@ -146,6 +146,15 @@ local function PositionDXEAnchor()
 	end
 end
 
+local c = {}
+function SkinRWIcon(addon, text, r, g, b, _, _, _, _, _, icon)
+	if not c[r] then c[r] = {} end
+	if not c[r][g] then c[r][g] = {} end
+	if not c[r][g][b] then c[r][g][b] = {r = r, g = g, b = b} end
+	if icon then text = "|T"..icon..":16:16:-3:0:256:256:20:235:20:235|t"..text end
+	RaidNotice_AddMessage(RaidWarningFrame, text, c[r][g][b])
+end
+	
 --Hook bar to chatframe, rest of this is handled inside chat.lua and chatanimation.lua
 local DXE_Skin = CreateFrame("Frame")
 DXE_Skin:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -177,6 +186,10 @@ DXE_Skin:SetScript("OnEvent", function(self, event)
 				OmenAnchor:HookScript("OnShow", function() PositionDXEAnchor() end)
 				OmenAnchor:HookScript("OnHide", function() PositionDXEAnchor() end)		
 			end	
+		end
+		local sink = LibStub:GetLibrary("LibSink-2.0")
+		if sink and sink.handlers and sink.handlers.RaidWarning then
+			sink.handlers.RaidWarning = SkinRWIcon
 		end
 	elseif event == "PLAYER_REGEN_DISABLED" then
 		PositionDXEAnchor()
