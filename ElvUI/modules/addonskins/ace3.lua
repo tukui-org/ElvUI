@@ -123,7 +123,7 @@ AceGUI.RegisterAsWidget = function(self, widget)
 		frame:GetThumbTexture():Size(HEIGHT-2,HEIGHT+2)
 		
 		editbox:SetTemplate('Default')
-		editbox:Height(HEIGHT + 2)
+		editbox:Height(15)
 		editbox:Point("TOP", frame, "BOTTOM", 0, -1)
 		
 		lowtext:SetPoint("TOPLEFT", frame, "BOTTOMLEFT", 2, -2)
@@ -145,8 +145,19 @@ AceGUI.RegisterAsContainer = function(self, widget)
 	if TYPE == "ScrollFrame" then
 		local frame = widget.scrollbar
 		E.SkinScrollBar(frame)
-	elseif TYPE == "InlineGroup" or TYPE == "TreeGroup" or TYPE == "TabGroup" or TYPE == "SimpleGroup" or TYPE == "Frame" then
+	elseif TYPE == "InlineGroup" or TYPE == "TreeGroup" or TYPE == "TabGroup" or TYPE == "SimpleGroup" or TYPE == "Frame" or TYPE == "DropdownGroup" then
 		local frame = widget.content:GetParent()
+		if TYPE == "Frame" then
+			frame:StripTextures()
+			for i=1, frame:GetNumChildren() do
+				local child = select(i, frame:GetChildren())
+				if child:GetObjectType() == "Button" and child:GetText() then
+					E.SkinButton(child)
+				else
+					child:StripTextures()
+				end
+			end
+		end	
 		frame:SetTemplate('Transparent')
 		
 		if widget.treeframe then

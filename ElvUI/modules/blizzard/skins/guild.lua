@@ -224,7 +224,7 @@ local function LoadSkin()
 	GuildTextEditContainer:SetTemplate("Default")
 	for i=1, GuildTextEditFrame:GetNumChildren() do
 		local child = select(i, GuildTextEditFrame:GetChildren())
-		if child:GetName() == "GuildTextEditFrameCloseButton" and child:GetWidth() == 32 then
+		if child:GetName() == "GuildTextEditFrameCloseButton" and child:GetWidth() < 33 then
 			E.SkinCloseButton(child)
 		elseif child:GetName() == "GuildTextEditFrameCloseButton" then
 			E.SkinButton(child, true)
@@ -238,7 +238,7 @@ local function LoadSkin()
 	--Blizzard has two buttons with the same name, this is a fucked up way of determining that it isn't the other button
 	for i=1, GuildLogFrame:GetNumChildren() do
 		local child = select(i, GuildLogFrame:GetChildren())
-		if child:GetName() == "GuildLogFrameCloseButton" and child:GetWidth() == 32 then
+		if child:GetName() == "GuildLogFrameCloseButton" and child:GetWidth() < 33 then
 			E.SkinCloseButton(child)
 		elseif child:GetName() == "GuildLogFrameCloseButton" then
 			E.SkinButton(child, true)

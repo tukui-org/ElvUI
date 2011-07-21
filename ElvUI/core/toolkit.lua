@@ -171,6 +171,11 @@ local function CreateShadow(f, t)
 end
 
 local function Kill(object)
+	if object.IsProtected then 
+		if object:IsProtected() then
+			error("Attempted to kill a protected object: <"..object:GetName()..">")
+		end
+	end
 	if object.UnregisterAllEvents then
 		object:UnregisterAllEvents()
 	end

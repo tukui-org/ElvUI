@@ -304,8 +304,7 @@ inforight:SetPoint("BOTTOMRIGHT", chatrph, "BOTTOMRIGHT", E.Scale(-17), E.Scale(
 		if not IsAddOnLoaded("ElvUI_Config") then return end
 		local ElvuiConfig = LibStub("AceAddon-3.0"):GetAddon("ElvuiConfig")
 		if not ElvuiConfig then return end
-		InterfaceOptionsFrame_OpenToCategory(ElvuiConfig.optionsFrames.Profiles)
-		InterfaceOptionsFrame_OpenToCategory(ElvuiConfig.optionsFrames.ElvuiConfig)
+		ElvuiConfig:ShowConfig() 
 	end)
 	inforightLbutton:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, E.Scale(6));

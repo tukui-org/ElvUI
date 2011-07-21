@@ -112,7 +112,7 @@ function E.LoadMoveElements(layout)
 	CreateFrameOverlay(_G["Elv"..layout.."_player"].AltPowerBar, layout.."AltPowerBar")
 end
 
-local function ShowCBOverlay()
+function E.ToggleElements()
 	if DPSComboBar then DPSComboBar:SetFrameLevel(DPSComboBar:GetFrameLevel() + 1) end
 	if HealComboBar then HealComboBar:SetFrameLevel(HealComboBar:GetFrameLevel() + 1) end
 	
@@ -135,7 +135,7 @@ local function ShowCBOverlay()
 	end
 end
 SLASH_SHOWCBOVERLAY1 = "/moveele"
-SlashCmdList["SHOWCBOVERLAY"] = ShowCBOverlay
+SlashCmdList["SHOWCBOVERLAY"] = E.ToggleElements
 
 local function ResetElements(arg1)
 	if InCombatLockdown() then print(ERR_NOT_IN_COMBAT) return end

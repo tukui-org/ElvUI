@@ -5,6 +5,18 @@ if not L then return end
 
 --General
 L["General Settings"] = true
+L["General"] = true
+L["Version"] = true
+L["Toggle Anchors"] = true
+L["Open Config"] = true
+L["Open the standalone config"] = true
+L["Unlock various elements of the UI to be repositioned."] = true
+L["Toggle Elements"] = true
+L["Login Message"] = true
+L["Display login message"] = true
+L["Install"] = true
+L["Re-run the installation process"] = true
+	L["Unlock various elements of the unitframes to be repositioned."] = true
 	L["ELVUI_DESC"] = "User Interface replacement AddOn for World of Warcraft."
 	L["Auto Scale"] = true
 		L["Automatically scale the User Interface based on your screen resolution"] = true
