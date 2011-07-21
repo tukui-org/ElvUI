@@ -850,7 +850,13 @@ function ElvuiConfig.GenerateOptionsInternal()
 				type = "execute",
 				name = L["Toggle Anchors"],
 				desc = L["Unlock various elements of the UI to be repositioned."],
-				func = function() E.ToggleMovers() end,
+				func = function() 
+					local func = ElvuiInfoLeftRButton:GetScript("OnMouseDown")
+					
+					if func then
+						func()
+					end					
+				end,
 			},	
 			ToggleElements = {
 				order = 4,
@@ -3100,7 +3106,12 @@ function ElvuiConfig.GenerateOptionsInternal()
 								type = "toggle",
 								name = L["Hook BigWigs Bars"],
 								desc = L["Attach BigWigs's Bars to the right window"],
-							},								
+							},	
+							ace3 = {
+								order = 11,
+								type = "toggle",
+								name = "Ace3",
+							},
 						},
 					},
 				},

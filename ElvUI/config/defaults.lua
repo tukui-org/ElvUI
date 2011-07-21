@@ -95,6 +95,7 @@ DB["skin"] = {
 	["kle"] = true,
 	["dxe"] = true,
 	["dbm"] = true,
+	["ace3"] = true,
 	["bigwigs"] = true,
 	["clcret"] = true,
 	["clcprot"] = true,
