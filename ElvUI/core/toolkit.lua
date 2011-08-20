@@ -59,7 +59,7 @@ end
 
 local function SetTemplate(f, t, texture)
 	GetTemplate(t)
-		
+	f.template = t
 	f:SetBackdrop({
 	  bgFile = C["media"].blank, 
 	  edgeFile = C["media"].blank, 

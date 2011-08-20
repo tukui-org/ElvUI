@@ -270,6 +270,7 @@ E.RaidDebuffs = {
 	
 	--Majordomo Staghelm
 	[SpellName(98450)] = true, -- Searing Seeds
+	[SpellName(98565)] = true, -- Burning Orb
 	
 	--Ragnaros
 	[SpellName(99399)] = true, -- Burning Wound

@@ -280,7 +280,6 @@ oUF:Factory(function(self)
 	end
 	party:Point("BOTTOMLEFT", ChatLBGDummy, "TOPLEFT", 0, 10)
 	
-	
 	local partyToggle = CreateFrame("Frame")
 	partyToggle:RegisterEvent("PLAYER_ENTERING_WORLD")
 	partyToggle:RegisterEvent("ZONE_CHANGED_NEW_AREA")

@@ -66,14 +66,20 @@ if E.myname == "Elv" then
 		end
 	end
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", TRADE_FILTER)
-
+	
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", function(self, event, arg1) 
+		if strfind(arg1, 'has been dropped') then 
+			RaidNotice_AddMessage( RaidBossEmoteFrame, arg1, ChatTypeInfo["RAID_BOSS_EMOTE"] ); 
+		end 
+	end)
+	
 	local function SPELL_FILTER(self, event, arg1)
 		if strfind(arg1,"is not ready") or strfind(arg1,"The following players are Away") then
 			SendChatMessage(arg1, "RAID_WARNING", nil ,nil)
 		end
 	end
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", SPELL_FILTER)
-
+	
 	local whispered = {}
 	local responses = {
 		"kill monsters on the shore of Desolace until it drops",

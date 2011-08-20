@@ -17,6 +17,7 @@ CreateSpellEntry = function( id, castByAnyone, color, unitType, castSpellId )
 end
 
 TRINKET_FILTER = {
+	CreateSpellEntry( 99090 ), --Flaming Aegis, Paladin 4-Piece
 	CreateSpellEntry( 96881 ), --Weight of a feather
 	CreateSpellEntry( 73422 ), -- Chaos Bane
 	CreateSpellEntry( 71905 ), -- Soul Fragment
@@ -131,6 +132,8 @@ TRINKET_FILTER = {
 	CreateSpellEntry( 91048 ), -- Stump of Time
 	CreateSpellEntry( 90019 ), -- Soul Casket	
 	CreateSpellEntry( 75170 ), -- Lightweave
+	CreateSpellEntry( 97129 ), --Loom of fate
+	CreateSpellEntry( 96945 ), --Loom of fate
 	
 	--Turtle Shit
 	CreateSpellEntry( 63877, true ), -- Pain Suppression
@@ -347,7 +350,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 498 ), -- Divine Protection
 			CreateSpellEntry( 84963 ), -- Inquisition
 			CreateSpellEntry( 31884 ), -- Avenging Wrath
-			CreateSpellEntry( 87342 ), -- Holy Shield
+			CreateSpellEntry( 87342, nil, {r=235/255, g=232/255, b=101/255}), -- Holy Shield
 			CreateSpellEntry( 85433 ), -- Sacred Duty
 			CreateSpellEntry( 85416 ), --Grand Crusader
 			CreateSpellEntry( 85696 ), -- Zealotry
@@ -362,6 +365,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 88063 ), --Guarded by the light
 			CreateSpellEntry( 82327	), --Holy Radiance
 			CreateSpellEntry( 20925 ), --Holy Shield
+			CreateSpellEntry( 94686, nil, {r=235/255, g=232/255, b=101/255}), -- Crusade
 		},
 		procs = {
 			CreateSpellEntry( 59578 ), -- The Art of War
