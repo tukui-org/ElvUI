@@ -21,7 +21,8 @@ StaticPopupDialogs.SET_BN_BROADCAST = {
 	timeout = 0,
 	exclusive = 1,
 	whileDead = 1,
-	hideOnEscape = 1
+	hideOnEscape = 1,
+	preferredIndex = 3
 }
 
 -- localized references for global functions (about 50% faster)

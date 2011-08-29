@@ -236,7 +236,8 @@ SlashCmdList.MOUSEOVERBIND = function()
 			OnCancel = function() bind:Deactivate(false) end,
 			timeout = 0,
 			whileDead = 1,
-			hideOnEscape = false
+			hideOnEscape = false,
+			preferredIndex = 3
 		}
 
 		-- REGISTERING

@@ -10,6 +10,7 @@ StaticPopupDialogs["DISABLE_UI"] = {
 	OnAccept = DisableElvui,
 	timeout = 0,
 	whileDead = 1,
+	preferredIndex = 3
 }
 
 StaticPopupDialogs["RELOAD_UI"] = {
@@ -19,6 +20,7 @@ StaticPopupDialogs["RELOAD_UI"] = {
 	OnAccept = function() ReloadUI() end,
 	timeout = 0,
 	whileDead = 1,
+	preferredIndex = 3
 }
 
 StaticPopupDialogs["RESET_UF"] = {
@@ -28,16 +30,8 @@ StaticPopupDialogs["RESET_UF"] = {
 	OnAccept = function() E.ResetUF() ReloadUI() end,
 	timeout = 0,
 	whileDead = 1,
+	preferredIndex = 3
 }
-
---[[StaticPopupDialogs["INSTALL_UI"] = {
-	text = L.popup_install,
-	button1 = ACCEPT,
-	button2 = CANCEL,
-    OnAccept = function() E.ResetMovers() E.Install() end,
-    timeout = 0,
-    whileDead = 1,
-}]]
 
 StaticPopupDialogs["DISABLE_RAID"] = {
 	text = L.popup_2raidactive,
@@ -47,6 +41,7 @@ StaticPopupDialogs["DISABLE_RAID"] = {
 	OnCancel = function() EnableAddOn("Elvui_RaidHeal") DisableAddOn("Elvui_RaidDPS") ReloadUI() end,
 	timeout = 0,
 	whileDead = 1,
+	preferredIndex = 3
 }
 
 StaticPopupDialogs["DISBAND_RAID"] = {
@@ -56,6 +51,7 @@ StaticPopupDialogs["DISBAND_RAID"] = {
 	OnAccept = DisbandRaidGroup,
 	timeout = 0,
 	whileDead = 1,
+	preferredIndex = 3
 }
 
 StaticPopupDialogs["BUY_BANK_SLOT"] = {
@@ -71,6 +67,7 @@ StaticPopupDialogs["BUY_BANK_SLOT"] = {
 	hasMoneyFrame = 1,
 	timeout = 0,
 	hideOnEscape = 1,
+	preferredIndex = 3
 }
 
 StaticPopupDialogs["CANNOT_BUY_BANK_SLOT"] = {
@@ -78,6 +75,7 @@ StaticPopupDialogs["CANNOT_BUY_BANK_SLOT"] = {
 	button1 = ACCEPT,
 	timeout = 0,
 	whileDead = 1,	
+	preferredIndex = 3
 }
 
 StaticPopupDialogs["NO_BANK_BAGS"] = {
@@ -85,4 +83,5 @@ StaticPopupDialogs["NO_BANK_BAGS"] = {
 	button1 = ACCEPT,
 	timeout = 0,
 	whileDead = 1,	
+	preferredIndex = 3
 }

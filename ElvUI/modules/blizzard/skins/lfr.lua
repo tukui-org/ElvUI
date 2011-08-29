@@ -33,17 +33,6 @@ local function LoadSkin()
 
 	E.SkinDropDownBox(LFRBrowseFrameRaidDropDown)
 
-	for i=1, 20 do
-	  local button = _G["LFRQueueFrameSpecificListButton"..i.."ExpandOrCollapseButton"]
-
-	  if button then
-		button:HookScript("OnClick", function()
-		  E.SkinCloseButton(button)
-		end)
-		E.SkinCloseButton(button)
-	  end
-	end
-
 	LFRQueueFrameCommentTextButton:CreateBackdrop("Default")
 	LFRQueueFrameCommentTextButton:Height(35)
 
