@@ -30,7 +30,7 @@ local function CheckRole(self, event, unit)
 	local tree = GetPrimaryTalentTree()
 	local resilience
 	local resilperc = GetCombatRatingBonus(COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN)
-	if resilperc > GetDodgeChance() and resilperc > GetParryChance() then
+	if resilperc > GetDodgeChance() and resilperc > GetParryChance() and UnitLevel('player') == MAX_PLAYER_LEVEL then
 		resilience = true
 	else
 		resilience = false
