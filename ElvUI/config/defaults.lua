@@ -338,7 +338,7 @@ DB["others"] = {
 	["enablebag"] = true,                     -- enable an all in one bag mod that fit Elvui perfectly
 	["bagbar"] = false,
 	["bagbardirection"] = "VERTICAL",
-	["bagbarmouseover"] = true,
+	["bagbarmouseover"] = false,
 
 	["lootframe"] = true,                  -- reskin the loot frame to fit Elvui
 	["rolllootframe"] = true,              -- reskin the roll frame to fit Elvui
