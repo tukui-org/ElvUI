@@ -15,7 +15,6 @@ local function LoadSkin()
 	ScriptErrorsFrame:SetBackdropBorderColor(unpack(C.media.bordercolor))	
 
 	EventTraceFrame:SetTemplate("Transparent")
-	
 	local texs = {
 		"TopLeft",
 		"TopRight",

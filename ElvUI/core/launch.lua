@@ -507,7 +507,6 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 		E.UIParent:SetPoint("CENTER")		
 	end	
 	
-	
 	if C["general"].loginmessage == true then
 		print(format(L.core_welcome1, E.version))
 		print(L.core_welcome2)
