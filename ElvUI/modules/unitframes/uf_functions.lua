@@ -829,7 +829,7 @@ E.LoadUFFunctions = function(layout)
 	
 	E.ReputationPositionUpdate = function(self)
 		if not self:GetName() then self = self:GetParent() end
-		if not self.Reputation then return end
+		if not self.Reputation or not MinimapMover then return end
 		self.Reputation:ClearAllPoints()
 		
 		local point, _, _, _, _ = MinimapMover:GetPoint()
