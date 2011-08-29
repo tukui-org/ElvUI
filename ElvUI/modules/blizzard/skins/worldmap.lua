@@ -3,6 +3,9 @@ if C["skin"].enable ~= true or C["skin"].worldmap ~= true then return end
 
 local function LoadSkin()
 	E.SkinScrollBar(WorldMapQuestScrollFrameScrollBar)
+	E.SkinScrollBar(WorldMapQuestDetailScrollFrameScrollBar, 4)
+	E.SkinScrollBar(WorldMapQuestRewardScrollFrameScrollBar, 4)
+	
 	WorldMapFrame:CreateBackdrop("Transparent")
 	WorldMapDetailFrame.backdrop = CreateFrame("Frame", nil, WorldMapFrame)
 	WorldMapDetailFrame.backdrop:SetTemplate("Default")
