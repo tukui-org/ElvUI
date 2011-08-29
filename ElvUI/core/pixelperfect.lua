@@ -2,16 +2,16 @@ local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config
 
 function E.UIScale()
 	if C["general"].autoscale == true then
-		C["general"].uiscale = min(1, max(.64, 768/E.getscreenheight))
+		C["general"].uiscale = min(2, max(.64, 768/string.match(E.resolution, "%d+x(%d+)")))
 	end
 
 	E.lowversion = false
 
-	if E.getscreenwidth < 1600 then
+	if E.screenwidth < 1600 then
 			E.lowversion = true
-	elseif E.getscreenwidth >= 3840 or (UIParent:GetWidth() + 1 > E.getscreenwidth) then
-		local width = E.getscreenwidth
-		local height = E.getscreenheight
+	elseif E.screenwidth >= 3840 or (UIParent:GetWidth() + 1 > E.screenwidth) then
+		local width = E.screenwidth
+		local height = E.screenheight
 	
 		-- because some user enable bezel compensation, we need to find the real width of a single monitor.
 		-- I don't know how it really work, but i'm assuming they add pixel to width to compensate the bezel. :P
