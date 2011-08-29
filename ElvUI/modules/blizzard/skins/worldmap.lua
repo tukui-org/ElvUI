@@ -2,6 +2,7 @@ local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config
 if C["skin"].enable ~= true or C["skin"].worldmap ~= true then return end
 
 local function LoadSkin()
+	E.SkinScrollBar(WorldMapQuestScrollFrameScrollBar)
 	WorldMapFrame:CreateBackdrop("Transparent")
 	WorldMapDetailFrame.backdrop = CreateFrame("Frame", nil, WorldMapFrame)
 	WorldMapDetailFrame.backdrop:SetTemplate("Default")
@@ -78,7 +79,7 @@ local function LoadSkin()
 		if not WorldMapQuestScrollFrame.backdrop then
 			WorldMapQuestScrollFrame:CreateBackdrop("Default")
 			WorldMapQuestScrollFrame.backdrop:Point("TOPLEFT", 0, 2)
-			WorldMapQuestScrollFrame.backdrop:Point("BOTTOMRIGHT", 24, -3)				
+			WorldMapQuestScrollFrame.backdrop:Point("BOTTOMRIGHT", 25, -3)				
 		end
 	end			
 	
