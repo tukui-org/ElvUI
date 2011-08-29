@@ -733,6 +733,7 @@ function NamePlates:PLAYER_ENTERING_WORLD()
 		SetCVar("threatWarning", 3)
 	end
 	
+	SetCVar('threatWarning', '3')
 	SetCVar("bloatthreat", 0)
 	SetCVar("bloattest", 1)
 	SetCVar("bloatnameplates", 0)
