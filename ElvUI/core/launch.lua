@@ -507,8 +507,16 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 		E.UIParent:SetPoint("CENTER")		
 	end	
 	
+
 	if C["general"].loginmessage == true then
-		print(format(L.core_welcome1, E.version))
+		--Noob filter
+		local _, _, _, completed = GetAchievementInfo(5807)
+		if completed then
+			print(format(L.core_welcome1, E.version))
+		else
+			print(format(L.core_welcome1alt, E.version))
+		end
+		
 		print(L.core_welcome2)
 	end
 	
