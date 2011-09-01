@@ -434,6 +434,10 @@ ElvuiOnLogon:RegisterEvent("PLAYER_ENTERING_WORLD")
 ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 	
+	--Taint Fix
+	ShowUIPanel(SpellBookFrame)
+	HideUIPanel(SpellBookFrame)
+	
 	--reset april fools day for next year
 	if not E.FoolDayCheck() then
 		FoolsDay = nil
