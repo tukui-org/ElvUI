@@ -302,7 +302,7 @@ function E.Install()
 			end
 			
 			f.SubTitle:SetText(L.ElvUIInstall_page4_subtitle)
-			f.Desc1:SetText(format(L.ElvUIInstall_page4_desc1, E.getscreenresolution, string_))
+			f.Desc1:SetText(format(L.ElvUIInstall_page4_desc1, E.resolution, string_))
 			f.Desc2:SetText(L.ElvUIInstall_page4_desc2)			
 			f.Desc3:SetText(L.ElvUIInstall_ContinueMessage)
 		elseif PageNum == 5 then
