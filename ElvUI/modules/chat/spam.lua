@@ -16,3 +16,34 @@ local function SPELL_FILTER(self, event, arg1)
     end
 end
 ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", SPELL_FILTER)
+
+if C.chat.spamFilter ~= true then return end
+
+local authorList = {}
+local responseMessage = C.chat.spamResponsMessage
+local blackList = {
+	'Cheapest Gold',
+}
+
+local function SPAM_FILTER(self, event, msg, author)	
+	--Block the response message from being seen
+	if strfind(msg, responseMessage) and event == "CHAT_MSG_WHISPER_INFORM" then
+		return true
+	end
+
+	for _, spam in pairs(blackList) do
+		if strfind(msg, spam) then
+			SendChatMessage(responseMessage, 'WHISPER', nil, author)
+			
+			--Don't report the same author more than once per session, abusing the ComplainChat can be bad.
+			if not authorList[author] then
+				ComplainChat(author, msg)
+				authorList[author] = true
+			end
+			
+			return true
+		end
+	end
+end
+ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", SPAM_FILTER)
+ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", SPAM_FILTER)

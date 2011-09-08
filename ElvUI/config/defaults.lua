@@ -317,6 +317,8 @@ DB["chat"] = {
 	["sticky"] = true,						-- when opening the chat edit box resort to previous channel
 	["combathide"] = "NONE",			-- Set to "Left", "Right", "Both", or "NONE"
 	["bubbles"] = true,							--skin blizzard chat bubbles
+	['spamFilter'] = false,
+	['spamResponsMessage'] = 'Stop spamming trade, get a real job loser. Have fun being reported.',
 }
 
 DB["tooltip"] = {

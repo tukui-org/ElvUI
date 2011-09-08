@@ -9,9 +9,21 @@ local function SkinFrame(frame)
 	frame.bgMain:SetTemplate("Transparent")
 	frame.bgMain:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT")
 	frame.bgMain:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT")
-	frame.bgMain:SetPoint("TOP", frame, "TOP", 0, -7)
+	frame.bgMain:SetPoint("TOP", frame, "TOP", 0, -30)
 	frame.bgMain:SetFrameLevel(frame:GetFrameLevel())
+	
+	frame.bgTitle = CreateFrame('Frame', nil, frame)
+	frame.bgTitle:SetTemplate('Default', true)
+	frame.bgTitle:Point("TOPRIGHT", frame, "TOPRIGHT", 0, -10)
+	frame.bgTitle:Point("TOPLEFT", frame, "TOPLEFT", 0, -9)
+	frame.bgTitle:Point("BOTTOM", frame, "TOP", 0, -29)
+	frame.bgTitle.tex:SetVertexColor(unpack(C['media'].bordercolor))
+	frame.bgTitle:SetFrameLevel(frame:GetFrameLevel())
+	
 	frame.CloseButton:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -1, -9)
+	E.SkinCloseButton(frame.CloseButton)
+	E.SkinScrollBar(Recount_MainWindow_ScrollBarScrollBar)
+	--/run Recount_MainWindow.RightButton:Hide()
 	frame:SetBackdrop(nil)
 end
 

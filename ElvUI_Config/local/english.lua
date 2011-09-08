@@ -643,6 +643,10 @@ L["SPELL_FILTER_DESC"] = "Filter everything from spell names to nameplate names.
 		L["Only run checks inside BG/Arena instances"] = true
 	L["During Combat"] = true
 		L["Only run checks during combat"] = true
+		
+	L['Gold Spam Block'] = true
+		L['Block messages containing common phrases used by gold sellers, report the player and also send a custom message to the player each time they spam.'] = true
+	L['Spam response'] = true
 	
 --Profiles
 L["Profiles"] = true
