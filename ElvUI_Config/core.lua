@@ -2676,7 +2676,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								desc = L['Block messages containing common phrases used by gold sellers, report the player and also send a custom message to the player each time they spam.'],
 								disabled = function() return E.client ~= "enUS" and E.client ~= "enGB" end,
 							},
-							spamResponsMessage = {
+							spamResponseMessage = {
 								type = 'input',
 								order = 10,
 								name = L['Spam response'],

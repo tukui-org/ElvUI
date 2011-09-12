@@ -345,6 +345,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 6940 ), -- Hand of Sacrifice
 		},
 		player = {
+			CreateSpellEntry( 20178 ), -- Reckoning
 			CreateSpellEntry( 642 ), -- Divine Shield
 			CreateSpellEntry( 31850 ), -- Ardent Defender
 			CreateSpellEntry( 498 ), -- Divine Protection

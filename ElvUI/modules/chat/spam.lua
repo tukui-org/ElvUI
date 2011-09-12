@@ -20,9 +20,10 @@ ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", SPELL_FILTER)
 if C.chat.spamFilter ~= true then return end
 
 local authorList = {}
-local responseMessage = C.chat.spamResponsMessage
+local responseMessage = C.chat.spamResponseMessage
 local blackList = {
 	'Cheapest Gold',
+	'discount code',
 }
 
 local function SPAM_FILTER(self, event, msg, author)	
