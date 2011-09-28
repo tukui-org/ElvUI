@@ -21,6 +21,10 @@ function Style(self, totem, flyout)
 	local Btname = _G[name.."Name"]
 	local normal  = _G[name.."NormalTexture"]
 	
+	if E.IsPTRVersion() and _G[name..'FloatingBG'] then
+		_G[name..'FloatingBG']:Kill()
+	end
+	
 	if Flash then
 		Flash:SetTexture("")
 	end

@@ -200,9 +200,9 @@ local menuList = {
 	{text = LFG_TITLE,
 	func = function() ToggleFrame(LFDParentFrame) end},
 	{text = LOOKING_FOR_RAID,
-	func = function() ToggleFrame(LFRParentFrame) end},
+	func = function() if E.IsPTRVersion() then ToggleFriendsFrame(4) else ToggleFrame(LFRParentFrame) end end},
 	{text = ENCOUNTER_JOURNAL, 
-	func = function() ToggleFrame(EncounterJournal) end},	
+	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') and E.IsPTRVersion() then LoadAddOn('Blizzard_EncounterJournal'); end ToggleFrame(EncounterJournal) end},	
 	{text = L_CALENDAR,
 	func = function()
 	if(not CalendarFrame) then LoadAddOn("Blizzard_Calendar") end

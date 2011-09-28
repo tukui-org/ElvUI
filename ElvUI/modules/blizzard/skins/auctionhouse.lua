@@ -22,19 +22,27 @@ local function LoadSkin()
 	E.SkinCheckBox(ShowOnPlayerCheckButton)
 	
 	--Dress Up Frame
-	AuctionDressUpFrame:StripTextures()
-	AuctionDressUpFrame:SetTemplate("Transparent")
-	AuctionDressUpFrame:Point("TOPLEFT", AuctionFrame, "TOPRIGHT", 2, 0)
-	E.SkinButton(AuctionDressUpFrameResetButton)
-	AuctionDressUpFrameCloseButton:StripTextures()
-	AuctionDressUpFrameCloseButton:SetNormalTexture(AuctionFrameCloseButton:GetNormalTexture():GetTexture())
-	AuctionDressUpFrameCloseButton:SetPushedTexture(AuctionFrameCloseButton:GetPushedTexture():GetTexture())
-	AuctionDressUpFrameCloseButton:SetHighlightTexture(AuctionFrameCloseButton:GetHighlightTexture():GetTexture())
-	AuctionDressUpFrameCloseButton:SetDisabledTexture(AuctionFrameCloseButton:GetDisabledTexture():GetTexture())
-	
-	E.SkinRotateButton(AuctionDressUpModelRotateLeftButton)
-	E.SkinRotateButton(AuctionDressUpModelRotateRightButton)
-	AuctionDressUpModelRotateRightButton:Point("TOPLEFT", AuctionDressUpModelRotateLeftButton, "TOPRIGHT", 4, 0)
+	if not E.IsPTRVersion() then
+		AuctionDressUpFrame:StripTextures()
+		AuctionDressUpFrame:SetTemplate("Transparent")
+		AuctionDressUpFrame:Point("TOPLEFT", AuctionFrame, "TOPRIGHT", 2, 0)
+		E.SkinButton(AuctionDressUpFrameResetButton)
+		AuctionDressUpFrameCloseButton:StripTextures()
+		AuctionDressUpFrameCloseButton:SetNormalTexture(AuctionFrameCloseButton:GetNormalTexture():GetTexture())
+		AuctionDressUpFrameCloseButton:SetPushedTexture(AuctionFrameCloseButton:GetPushedTexture():GetTexture())
+		AuctionDressUpFrameCloseButton:SetHighlightTexture(AuctionFrameCloseButton:GetHighlightTexture():GetTexture())
+		AuctionDressUpFrameCloseButton:SetDisabledTexture(AuctionFrameCloseButton:GetDisabledTexture():GetTexture())
+
+		E.SkinRotateButton(AuctionDressUpModelRotateLeftButton)
+		E.SkinRotateButton(AuctionDressUpModelRotateRightButton)
+		AuctionDressUpModelRotateRightButton:Point("TOPLEFT", AuctionDressUpModelRotateLeftButton, "TOPRIGHT", 4, 0)
+	else
+		SideDressUpFrame:StripTextures()
+		SideDressUpFrame:SetTemplate("Transparent")
+		SideDressUpFrame:Point("TOPLEFT", AuctionFrame, "TOPRIGHT", 2, 0)
+		E.SkinButton(SideDressUpModelResetButton)
+		E.SkinCloseButton(SideDressUpModelCloseButton)
+	end
 	
 	--Progress Frame
 	AuctionProgressFrame:StripTextures()

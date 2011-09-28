@@ -1,6 +1,6 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 if C["skin"].enable ~= true or not C["skin"].encounterjournal == true then return end
-if E.IsPTRVersion() then return end
+
 
 local function LoadSkin()
 	EncounterJournal:StripTextures(true)
@@ -119,4 +119,8 @@ local function LoadSkin()
 	EncounterJournalEncounterFrameInfoLootTab:GetHighlightTexture():SetTexture(nil)		
 end
 
-tinsert(E.SkinFuncs["ElvUI"], LoadSkin)
+if E.IsPTRVersion() then
+	E.SkinFuncs['Blizzard_EncounterJournal'] = LoadSkin
+else
+	tinsert(E.SkinFuncs["ElvUI"], LoadSkin)
+end
