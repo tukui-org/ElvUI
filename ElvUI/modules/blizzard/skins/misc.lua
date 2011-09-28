@@ -11,20 +11,23 @@ local function LoadSkin()
 		"InterfaceOptionsFrame",
 		"VideoOptionsFrame",
 		"AudioOptionsFrame",
-		"LFDDungeonReadyStatus",
 		"BNToastFrame",
 		"TicketStatusFrameButton",
 		"DropDownList1MenuBackdrop",
 		"DropDownList2MenuBackdrop",
 		"DropDownList1Backdrop",
 		"DropDownList2Backdrop",
-		"LFDSearchStatus",
 		"AutoCompleteBox",
 		"ConsolidatedBuffsTooltip",
 		"ReadyCheckFrame",
 		"StackSplitFrame",
 		"CharacterFrame",
 	}
+	
+	if not E.IsPTRVersion() then
+		tinsert(skins, 'LFDDungeonReadyStatus')
+		tinsert(skins, 'LFDSearchStatus')
+	end
 	
 	for i = 1, getn(skins) do
 		_G[skins[i]]:SetTemplate("Transparent")
@@ -200,10 +203,12 @@ local function LoadSkin()
 	ReadyCheckListenerFrame:SetAlpha(0)
 	ReadyCheckFrame:HookScript("OnShow", function(self) if UnitIsUnit("player", self.initiator) then self:Hide() end end) -- bug fix, don't show it if initiator
 	StackSplitFrame:GetRegions():Hide()
-
-	E.SkinButton(LFDDungeonReadyDialogEnterDungeonButton)
-	E.SkinButton(LFDDungeonReadyDialogLeaveQueueButton)
-
+	
+	if not E.IsPTRVersion() then
+		E.SkinButton(LFDDungeonReadyDialogEnterDungeonButton)
+		E.SkinButton(LFDDungeonReadyDialogLeaveQueueButton)
+	end
+	
 	RolePollPopup:SetTemplate("Transparent")
 	RolePollPopup:CreateShadow("Default")
 	

@@ -65,8 +65,10 @@ end
 E.CreateMover(Minimap, "MinimapMover", "Minimap", nil, E.PostMinimapMove) --Too easy muahaha
 
 --just incase these dont fit on the screen when you move the minimap
-LFDSearchStatus:SetClampedToScreen(true)
-LFDDungeonReadyStatus:SetClampedToScreen(true)
+if not E.IsPTRVersion() then
+	LFDSearchStatus:SetClampedToScreen(true)
+	LFDDungeonReadyStatus:SetClampedToScreen(true)
+end
 
 -- Hide Border
 MinimapBorder:Hide()
@@ -235,7 +237,9 @@ Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
 function GetMinimapShape() return 'SQUARE' end
 
 -- reskin LFG dropdown
-LFDSearchStatus:SetTemplate("Default")
+if not E.IsPTRVersion() then
+	LFDSearchStatus:SetTemplate("Default")
+end
 
 local function GetLocTextColor()
 	local pvpType = GetZonePVPInfo()

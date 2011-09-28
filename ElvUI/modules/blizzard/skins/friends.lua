@@ -1,6 +1,8 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 if C["skin"].enable ~= true or C["skin"].friends ~= true then return end
 
+if E.IsPTRVersion() then return end
+
 --Tab Regions
 local tabs = {
 	"LeftDisabled",

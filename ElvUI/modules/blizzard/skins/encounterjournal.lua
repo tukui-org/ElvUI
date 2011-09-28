@@ -1,5 +1,6 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 if C["skin"].enable ~= true or not C["skin"].encounterjournal == true then return end
+if E.IsPTRVersion() then return end
 
 local function LoadSkin()
 	EncounterJournal:StripTextures(true)

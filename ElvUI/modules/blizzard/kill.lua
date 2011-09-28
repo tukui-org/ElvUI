@@ -95,7 +95,9 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 			InterfaceOptionsCombatPanelTargetOfTarget:Kill()
 			InterfaceOptionsDisplayPanelShowAggroPercentage:Kill()
 			InterfaceOptionsBuffsPanelDispellableDebuffs:Kill()
-			InterfaceOptionsBuffsPanelShowCastableDebuffs:Kill()
+			if not E.IsPTRVersion() then
+				InterfaceOptionsBuffsPanelShowCastableDebuffs:Kill()
+			end
 			InterfaceOptionsBuffsPanelCastableBuffs:Kill()
 		end
 		

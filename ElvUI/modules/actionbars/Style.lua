@@ -196,8 +196,10 @@ SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
  
 --Hide the Mouseover texture and attempt to find the ammount of buttons to be skinned
 local function StyleFlyout(self)
-	self.FlyoutBorder:SetAlpha(0)
-	self.FlyoutBorderShadow:SetAlpha(0)
+	if not E.IsPTRVersion() then
+		self.FlyoutBorder:SetAlpha(0)
+		self.FlyoutBorderShadow:SetAlpha(0)
+	end
 	
 	SpellFlyoutHorizontalBackground:SetAlpha(0)
 	SpellFlyoutVerticalBackground:SetAlpha(0)
