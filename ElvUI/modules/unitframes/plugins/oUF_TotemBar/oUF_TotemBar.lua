@@ -90,7 +90,7 @@ local function UpdateSlot(self, slot)
 		if totem[slot].Name then
 			totem[slot].Name:SetText(Abbrev(name))
 		end					
-		if(duration >= 0) then	
+		if(duration > 0) then	
 			totem[slot]:SetValue(1 - ((GetTime() - startTime) / duration))	
 			-- Status bar update
 			totem[slot]:SetScript("OnUpdate",function(self,elapsed)

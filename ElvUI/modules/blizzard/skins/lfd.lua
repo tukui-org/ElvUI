@@ -31,7 +31,7 @@ local function LoadSkin()
 		E.SkinButton(LFGDungeonReadyDialogEnterDungeonButton)
 		E.SkinButton(LFGDungeonReadyDialogLeaveQueueButton)
 	else
-		tinsert(StripAllTextures, 'LFDDungeonReadyDialogBackground')
+		LFDDungeonReadyDialogBackground:Kill()
 	end
 	
 	local buttons = {

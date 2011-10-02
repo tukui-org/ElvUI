@@ -71,11 +71,11 @@ local function LoadSkin()
 		LFRQueueFrameRoleInset:StripTextures()
 		LFRQueueFrameCommentInset:StripTextures()
 	else
-		FriendsFrameTopLeft:StripTextures()
-		FriendsFrameTopRight:StripTextures()
-		FriendsFrameBottomLeft:StripTextures()
-		FriendsFrameBottomRight:StripTextures()
-		ChannelFrameVerticalBar:StripTextures()
+		FriendsFrameTopLeft:Kill()
+		FriendsFrameTopRight:Kill()
+		FriendsFrameBottomLeft:Kill()
+		FriendsFrameBottomRight:Kill()
+		ChannelFrameVerticalBar:Kill()
 	end
 
 	local buttons = {
