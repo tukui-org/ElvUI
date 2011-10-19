@@ -169,6 +169,8 @@ L["Unit Frames"] = true
 		L["Set the height of the powerbar, this is void if you don't have powerbar offset set to zero."] = true
 	L["Classbar Height"] = true
 		L["Set the height of the classbar."] = true
+	L['Vengeance Bar'] = true;
+		L['Display a bar on the player unitframe while tanking that shows your current vengeance verse your maximum vengeance you can obtain.'] = true;
 	
 L["Frame Sizes"] = true
 	L["Controls the size of the frame"] = true

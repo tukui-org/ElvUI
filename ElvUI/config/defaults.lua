@@ -138,6 +138,7 @@ DB["unitframes"] = {
 	["displayaggro"] = true,
 	["powerbar_height"] = 10,
 	["classbar_height"] = 10,
+	['vengeancebar'] = true,
 	
 	--frame sizes
 	["playtarwidth"] = 275,					--width of player/target frame

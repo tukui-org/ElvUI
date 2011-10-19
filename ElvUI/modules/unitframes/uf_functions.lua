@@ -931,6 +931,38 @@ E.LoadUFFunctions = function(layout)
 			self.DruidMana:SetAlpha(0)
 		end
 	end
+	
+	function E.PostVengeanceUpdate(self, name)
+		local VBAR_OFFSET = self.offset
+		local health = self:GetParent().Health
+		local BORDER = 2*E.ResScale
+		local SPACING = 1*E.ResScale		
+		local CLASSBAR_HEIGHT = (C["unitframes"].classbar_height)*E.ResScale
+		if not name then
+			VBAR_OFFSET = 0
+		end
+		
+		if C["unitframes"].classbar == true and E.myclass ~= "WARRIOR" then
+			local DEPTH
+			if C["unitframes"].mini_classbar then
+				DEPTH = -(BORDER+(CLASSBAR_HEIGHT/2))
+			else
+				DEPTH = -(BORDER+CLASSBAR_HEIGHT+SPACING)
+			end
+			
+			if C["unitframes"].powerbar_offset ~= 0 then
+				health:Point("TOPRIGHT", self:GetParent(), "TOPRIGHT", -(BORDER + C["unitframes"].powerbar_offset + VBAR_OFFSET), DEPTH)
+			else
+				health:Point("TOPRIGHT", self:GetParent(), "TOPRIGHT", -(BORDER + VBAR_OFFSET), DEPTH)
+			end		
+		else
+			if C["unitframes"].powerbar_offset ~= 0 then
+				health:Point("TOPRIGHT", self:GetParent(), "TOPRIGHT", -(BORDER + C["unitframes"].powerbar_offset + VBAR_OFFSET), -BORDER)
+			else
+				health:Point("TOPRIGHT", self:GetParent(), "TOPRIGHT", -(BORDER + VBAR_OFFSET), -BORDER)
+			end
+		end
+	end
 
 	function E.UpdateThreat(self, event, unit)
 		if (self.unit ~= unit) or not unit then return end
