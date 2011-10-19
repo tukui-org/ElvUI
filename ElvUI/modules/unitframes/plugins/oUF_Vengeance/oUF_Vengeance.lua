@@ -61,6 +61,10 @@ local function valueChanged(self, event, unit)
 		return
 	end
 	
+	if bar.PreUpdate then
+		return bar:PreUpdate(name)
+	end	
+	
 	local name = UnitAura("player", vengeance, nil, "PLAYER|HELPFUL")
 	
 	if name then
@@ -93,6 +97,10 @@ local function valueChanged(self, event, unit)
 	else
 		bar:Hide()
 		bar.value = 0
+	end
+	
+	if bar.PostUpdate then
+		return bar:PostUpdate(name)
 	end
 end
 
