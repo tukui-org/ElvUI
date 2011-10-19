@@ -490,12 +490,12 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 	-- we adjust E.UIParent to screen #1 if Eyefinity is found
 	if E.eyefinity then
 		local width = E.eyefinity
-		local height = E.getscreenheight
+		local height = E.screenheight
 		
 		-- if autoscale is off, find a new width value of E.UIParent for screen #1.
 		if not C.general.autoscale or height > 1200 then
 			local h = UIParent:GetHeight()
-			local ratio = E.getscreenheight / h
+			local ratio = height / h
 			local w = E.eyefinity / ratio
 			
 			width = w
