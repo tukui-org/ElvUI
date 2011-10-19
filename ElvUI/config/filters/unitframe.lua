@@ -79,6 +79,7 @@ E.DebuffWhiteList = {
 		[SpellName(339)] = true, --Entangling Roots
 		[SpellName(80964)] = true, --Skull Bash
 		[SpellName(78675)] = true, --Solar Beam
+		[SpellName(91565)] = 'DRUID', --Fearie Fire
 	-- Hunter
 		[SpellName(3355)] = true, --Freezing Trap Effect
 		--[SpellName(60210)] = true, --Freezing Arrow Effect

@@ -212,13 +212,12 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 33876, true ), -- Mangle (Cat)
 			CreateSpellEntry( 9007 ), -- Pounce bleed
 			CreateSpellEntry( 9005 ), -- Pounce stun
-			CreateSpellEntry( 16857, true ), -- Faerie Fire (Feral)
-			CreateSpellEntry( 770, true ), -- Farie Fire
 			CreateSpellEntry( 467 ), -- Thorns
 			CreateSpellEntry( 78675 ), -- Solar Beam
 			CreateSpellEntry( 93402 ), -- Sunfire
 			CreateSpellEntry( 77758 ), -- Thrash
-			CreateSpellEntry( 91565 ), --Fearie Fire
+			CreateSpellEntry( 91565, true ), --Fearie Fire
+			CreateSpellEntry( 99002 ), -- Firey Claws
 		},
 		player = {
 			CreateSpellEntry( 48505 ), -- Starfall
@@ -250,7 +249,6 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 69369 ), -- Predator's Swiftness
 			CreateSpellEntry( 93400 ), -- Shooting Stars
 			CreateSpellEntry( 81192 ), -- Lunar Shower
-			CreateSpellEntry( 99002 ), -- Firey Claws
 		},
 	},
 	HUNTER = { 

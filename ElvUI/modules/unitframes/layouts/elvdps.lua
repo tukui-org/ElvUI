@@ -899,8 +899,8 @@ local function Shared(self, unit)
 		
 		--Druid Mana
 		if E.myclass == "DRUID" then
-			self:FontString("DruidMana", FONT, FONTSIZE, "THINOUTLINE")
-			self.DruidMana:SetTextColor(1, 0.49, 0.04)	
+			self:FontString("DruidManaText", FONT, FONTSIZE, "THINOUTLINE")
+			self.DruidManaText:SetTextColor(1, 0.49, 0.04)	
 			self:HookScript("OnUpdate", E.UpdateDruidMana)
 		end
 		

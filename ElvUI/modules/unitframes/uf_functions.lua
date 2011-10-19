@@ -290,7 +290,7 @@ E.LoadUFFunctions = function(layout)
 
 				if isPlayer then
 					return true
-				elseif E.DebuffWhiteList[name] or (inInstance and ((instanceType == "pvp" or instanceType == "arena") and E.TargetPVPOnly[name])) then
+				elseif (E.DebuffWhiteList[name] == E.myclass or E.DebuffWhiteList[name] == true) or (inInstance and ((instanceType == "pvp" or instanceType == "arena") and E.TargetPVPOnly[name])) then
 					return true
 				else
 					return false
@@ -916,19 +916,19 @@ E.LoadUFFunctions = function(layout)
 
 			if min ~= max then
 				if self.Power.value:GetText() then
-					self.DruidMana:SetPoint("LEFT", self.Power.value, "RIGHT", -3, 0)
-					self.DruidMana:SetFormattedText("|cffD7BEA5-|r %d%%|r", floor(min / max * 100))
+					self.DruidManaText:SetPoint("LEFT", self.Power.value, "RIGHT", -3, 0)
+					self.DruidManaText:SetFormattedText("|cffD7BEA5-|r %d%%|r", floor(min / max * 100))
 				else
-					self.DruidMana:SetPoint("LEFT", self.Health, "LEFT", 4, 1)
-					self.DruidMana:SetFormattedText("%d%%", floor(min / max * 100))
+					self.DruidManaText:SetPoint("LEFT", self.Health, "LEFT", 4, 1)
+					self.DruidManaText:SetFormattedText("%d%%", floor(min / max * 100))
 				end
 			else
-				self.DruidMana:SetText()
+				self.DruidManaText:SetText()
 			end
 
-			self.DruidMana:SetAlpha(1)
+			self.DruidManaText:SetAlpha(1)
 		else
-			self.DruidMana:SetAlpha(0)
+			self.DruidManaText:SetAlpha(0)
 		end
 	end
 	

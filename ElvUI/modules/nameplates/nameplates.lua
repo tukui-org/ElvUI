@@ -173,7 +173,7 @@ local function OnAura(frame, unit)
 		end
 		
 		if C["nameplate"].trackccauras == true then
-			if E.DebuffWhiteList[name] then match = true end
+			if (E.DebuffWhiteList[name] == E.myclass or E.DebuffWhiteList[name] == true) then match = true end
 		end
 		
 		if duration and match == true then
