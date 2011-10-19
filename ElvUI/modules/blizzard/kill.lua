@@ -35,7 +35,7 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 		end	
 
 
-		if E.myclass == "DEATHKNIGHT" then
+		if E.myclass == "DEATHKNIGHT" and C["raidframes"].disableblizz == true and C['unitframes'].enable == true then
 			RuneFrame:Kill()
 		end
 		

@@ -503,76 +503,81 @@ function ElvuiConfig.GenerateOptionsInternal()
 				
 				for i, spell in pairs(spelltable[E.myclass][curfilter]) do
 					local id = spell["id"]
-					newtable["SelectSpell"]["values"][id] = GetSpellInfo(id)
+					local name = GetSpellInfo(id)
+					if not name then
+						spelltable[E.myclass][curfilter][i] = nil
+					else
+						newtable["SelectSpell"]["values"][id] = GetSpellInfo(id)
 
-					if id == db.spellfilter["SelectSpell"] then
-						newtable["SpellGroup"] = {
-							order = 3,
-							type = "group",
-							name = GetSpellInfo(id).." ("..id..")",
-							guiInline = true,				
-							args = {
-								Enabled = {
-									type = "toggle",
-									order = 1,
-									name = L["Enabled"],
-									get = function(info) return db.spellfilter[tab][E.myclass][curfilter][i]["enabled"] end,
-									set = function(info, value) db.spellfilter[tab][E.myclass][curfilter][i]["enabled"] = value; StaticPopup_Show("CFG_RELOAD") end,										
-								},
-								CastByAnyone = {
-									type = "toggle",
-									order = 2,
-									name = L["Any Unit"],
-									desc = L["Display the buff if cast by anyone?"],
-									get = function(info) return db.spellfilter[tab][E.myclass][curfilter][i]["castByAnyone"] end,
-									set = function(info, value) db.spellfilter[tab][E.myclass][curfilter][i]["castByAnyone"] = value; StaticPopup_Show("CFG_RELOAD") end,									
-								},
-								Color = {
-									type = "color",
-									order = 3,
-									name = L["Color"],
-									hasAlpha = false,
-									get = function(info)
-										local t = db.spellfilter[tab][E.myclass][curfilter][i]["color"]
-										if not t then
-											t = {}
-											t.r = 0
-											t.g = 0
-											t.b = 0
-										end
-										
-										return t.r, t.g, t.b
-									end,
-									set = function(info, r, g, b)
-										db.spellfilter[tab][E.myclass][curfilter][i]["color"] = {}
-										local t = db.spellfilter[tab][E.myclass][curfilter][i]["color"]
-										t.r, t.g, t.b = r, g, b
-										StaticPopup_Show("CFG_RELOAD")
-									end,							
-								},
-								UnitType = {
-									type = "select",
-									order = 4,
-									name = L["Unit Type"],
-									desc = L["Only display on this type of unit"],
-									values = {
-										[0] = L["All"],
-										[1] = L["Friendly"],
-										[2] = L["Enemy"],
+						if id == db.spellfilter["SelectSpell"] then
+							newtable["SpellGroup"] = {
+								order = 3,
+								type = "group",
+								name = GetSpellInfo(id).." ("..id..")",
+								guiInline = true,				
+								args = {
+									Enabled = {
+										type = "toggle",
+										order = 1,
+										name = L["Enabled"],
+										get = function(info) return db.spellfilter[tab][E.myclass][curfilter][i]["enabled"] end,
+										set = function(info, value) db.spellfilter[tab][E.myclass][curfilter][i]["enabled"] = value; StaticPopup_Show("CFG_RELOAD") end,										
 									},
-									get = function(info) if db.spellfilter[tab][E.myclass][curfilter][i]["unitType"] == nil then return 0 else return db.spellfilter[tab][E.myclass][curfilter][i]["unitType"] end end,
-									set = function(info, value) db.spellfilter[tab][E.myclass][curfilter][i]["unitType"] = value; StaticPopup_Show("CFG_RELOAD") end,									
+									CastByAnyone = {
+										type = "toggle",
+										order = 2,
+										name = L["Any Unit"],
+										desc = L["Display the buff if cast by anyone?"],
+										get = function(info) return db.spellfilter[tab][E.myclass][curfilter][i]["castByAnyone"] end,
+										set = function(info, value) db.spellfilter[tab][E.myclass][curfilter][i]["castByAnyone"] = value; StaticPopup_Show("CFG_RELOAD") end,									
+									},
+									Color = {
+										type = "color",
+										order = 3,
+										name = L["Color"],
+										hasAlpha = false,
+										get = function(info)
+											local t = db.spellfilter[tab][E.myclass][curfilter][i]["color"]
+											if not t then
+												t = {}
+												t.r = 0
+												t.g = 0
+												t.b = 0
+											end
+											
+											return t.r, t.g, t.b
+										end,
+										set = function(info, r, g, b)
+											db.spellfilter[tab][E.myclass][curfilter][i]["color"] = {}
+											local t = db.spellfilter[tab][E.myclass][curfilter][i]["color"]
+											t.r, t.g, t.b = r, g, b
+											StaticPopup_Show("CFG_RELOAD")
+										end,							
+									},
+									UnitType = {
+										type = "select",
+										order = 4,
+										name = L["Unit Type"],
+										desc = L["Only display on this type of unit"],
+										values = {
+											[0] = L["All"],
+											[1] = L["Friendly"],
+											[2] = L["Enemy"],
+										},
+										get = function(info) if db.spellfilter[tab][E.myclass][curfilter][i]["unitType"] == nil then return 0 else return db.spellfilter[tab][E.myclass][curfilter][i]["unitType"] end end,
+										set = function(info, value) db.spellfilter[tab][E.myclass][curfilter][i]["unitType"] = value; StaticPopup_Show("CFG_RELOAD") end,									
+									},
+									CastSpellID = {
+										type = "input",
+										order = 5,
+										name = L["Show Ticks"],
+										desc = L["Fill only if you want to see line on bar that indicates if its safe to start casting spell and not clip the last tick, also note that this can be different from aura id."],
+										get = function(info) if db.spellfilter[tab][E.myclass][curfilter][i]["castSpellId"] == nil then return "" else return db.spellfilter[tab][E.myclass][curfilter][i]["castSpellId"] end end,
+										set = function(info, value) db.spellfilter[tab][E.myclass][curfilter][i]["castSpellId"] = value; StaticPopup_Show("CFG_RELOAD") end,									
+									},
 								},
-								CastSpellID = {
-									type = "input",
-									order = 5,
-									name = L["Show Ticks"],
-									desc = L["Fill only if you want to see line on bar that indicates if its safe to start casting spell and not clip the last tick, also note that this can be different from aura id."],
-									get = function(info) if db.spellfilter[tab][E.myclass][curfilter][i]["castSpellId"] == nil then return "" else return db.spellfilter[tab][E.myclass][curfilter][i]["castSpellId"] end end,
-									set = function(info, value) db.spellfilter[tab][E.myclass][curfilter][i]["castSpellId"] = value; StaticPopup_Show("CFG_RELOAD") end,									
-								},
-							},
-						}					
+							}					
+						end
 					end
 				end
 			end
