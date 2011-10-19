@@ -382,7 +382,7 @@ E.LoadUFFunctions = function(layout)
 			else
 				if min ~= max then
 					local r, g, b
-					r, g, b = oUF.ColorGradient(min/max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
+					r, g, b = oUF.ColorGradient(min, max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
 					if unit == "player" and health:GetAttribute("normalUnit") ~= "pet" then
 						if C["unitframes"].showtotalhpmp == true then
 							health.value:SetFormattedText("|cff559655%s|r |cffD7BEA5|||r |cff559655%s|r", E.ShortValue(min), E.ShortValue(max))
