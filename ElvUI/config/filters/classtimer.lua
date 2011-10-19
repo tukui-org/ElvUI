@@ -218,6 +218,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 78675 ), -- Solar Beam
 			CreateSpellEntry( 93402 ), -- Sunfire
 			CreateSpellEntry( 77758 ), -- Thrash
+			CreateSpellEntry( 91565 ), --Fearie Fire
 		},
 		player = {
 			CreateSpellEntry( 48505 ), -- Starfall
@@ -249,6 +250,7 @@ CLASS_FILTERS = {
 			CreateSpellEntry( 69369 ), -- Predator's Swiftness
 			CreateSpellEntry( 93400 ), -- Shooting Stars
 			CreateSpellEntry( 81192 ), -- Lunar Shower
+			CreateSpellEntry( 99002 ), -- Firey Claws
 		},
 	},
 	HUNTER = { 

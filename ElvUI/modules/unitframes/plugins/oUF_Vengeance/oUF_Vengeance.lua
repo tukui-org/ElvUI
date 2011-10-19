@@ -80,7 +80,6 @@ local function valueChanged(self, event, unit)
 		tooltip:SetUnitBuff("player", name)
 		local text = GetTooltipText(tooltip:GetRegions())
 		local value = tonumber(string.match(text,"%d+"))
-		print(text, value)
 		if value then
 			if value > bar.max then value = bar.max end
 			if value == bar.value then return end

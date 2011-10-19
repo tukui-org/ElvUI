@@ -586,10 +586,13 @@ local function Shared(self, unit)
 					bars.backdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
 					
 					bars:SetScript("OnShow", function()
-						local VBAR_OFFSET = self.Vengeance.offset
-						
-						if not self.Vengeance:IsShown() then
-							VBAR_OFFSET = 0
+						local VBAR_OFFSET = 0
+						if self.Vengeance then
+							VBAR_OFFSET = self.Vengeance.offset
+							
+							if not self.Vengeance:IsShown() then
+								VBAR_OFFSET = 0
+							end
 						end
 						
 						if USE_POWERBAR_OFFSET then
@@ -600,10 +603,14 @@ local function Shared(self, unit)
 						health:Point("TOPLEFT", self, "TOPLEFT", PORTRAIT_WIDTH+BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING))
 					end)
 					bars:HookScript("OnHide", function()
-						local VBAR_OFFSET = self.Vengeance.offset
+						local VBAR_OFFSET = 0
 						
-						if not self.Vengeance:IsShown() then
-							VBAR_OFFSET = 0
+						if self.Vengeance then
+							VBAR_OFFSET = self.Vengeance.offset
+							
+							if not self.Vengeance:IsShown() then
+								VBAR_OFFSET = 0
+							end
 						end
 						
 						if USE_POWERBAR_OFFSET then
@@ -673,10 +680,13 @@ local function Shared(self, unit)
 					runes.backdrop:SetFrameLevel(runes:GetFrameLevel() - 1)
 
 					runes:SetScript("OnShow", function()
-						local VBAR_OFFSET = self.Vengeance.offset
-						
-						if not self.Vengeance:IsShown() then
-							VBAR_OFFSET = 0
+						local VBAR_OFFSET = 0
+						if self.Vengeance then
+							VBAR_OFFSET = self.Vengeance.offset
+							
+							if not self.Vengeance:IsShown() then
+								VBAR_OFFSET = 0
+							end
 						end
 						
 						if USE_POWERBAR_OFFSET then
@@ -687,10 +697,14 @@ local function Shared(self, unit)
 						health:Point("TOPLEFT", self, "TOPLEFT", PORTRAIT_WIDTH+BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING))
 					end)
 					runes:HookScript("OnHide", function()
-						local VBAR_OFFSET = self.Vengeance.offset
+						local VBAR_OFFSET = 0
 						
-						if not self.Vengeance:IsShown() then
-							VBAR_OFFSET = 0
+						if self.Vengeance then
+							VBAR_OFFSET = self.Vengeance.offset
+							
+							if not self.Vengeance:IsShown() then
+								VBAR_OFFSET = 0
+							end
 						end
 						
 						if USE_POWERBAR_OFFSET then
@@ -699,7 +713,7 @@ local function Shared(self, unit)
 							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+VBAR_OFFSET), -BORDER)
 						end
 						health:Point("TOPLEFT", self, "TOPLEFT", PORTRAIT_WIDTH+BORDER, -BORDER)		
-					end)	
+					end)
 				end
 				
 				self.Runes = runes
@@ -764,10 +778,13 @@ local function Shared(self, unit)
 					totems.backdrop:SetFrameLevel(totems:GetFrameLevel() - 1)
 					
 					totems:SetScript("OnShow", function()
-						local VBAR_OFFSET = self.Vengeance.offset
-						
-						if not self.Vengeance:IsShown() then
-							VBAR_OFFSET = 0
+						local VBAR_OFFSET = 0
+						if self.Vengeance then
+							VBAR_OFFSET = self.Vengeance.offset
+							
+							if not self.Vengeance:IsShown() then
+								VBAR_OFFSET = 0
+							end
 						end
 						
 						if USE_POWERBAR_OFFSET then
@@ -778,10 +795,14 @@ local function Shared(self, unit)
 						health:Point("TOPLEFT", self, "TOPLEFT", PORTRAIT_WIDTH+BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING))
 					end)
 					totems:HookScript("OnHide", function()
-						local VBAR_OFFSET = self.Vengeance.offset
+						local VBAR_OFFSET = 0
 						
-						if not self.Vengeance:IsShown() then
-							VBAR_OFFSET = 0
+						if self.Vengeance then
+							VBAR_OFFSET = self.Vengeance.offset
+							
+							if not self.Vengeance:IsShown() then
+								VBAR_OFFSET = 0
+							end
 						end
 						
 						if USE_POWERBAR_OFFSET then
@@ -835,10 +856,13 @@ local function Shared(self, unit)
 				
 				if not MINI_CLASSBAR then
 					eclipseBar:SetScript("OnShow", function()
-						local VBAR_OFFSET = self.Vengeance.offset
-						
-						if not self.Vengeance:IsShown() then
-							VBAR_OFFSET = 0
+						local VBAR_OFFSET = 0
+						if self.Vengeance then
+							VBAR_OFFSET = self.Vengeance.offset
+							
+							if not self.Vengeance:IsShown() then
+								VBAR_OFFSET = 0
+							end
 						end
 						
 						if USE_POWERBAR_OFFSET then
@@ -849,10 +873,14 @@ local function Shared(self, unit)
 						health:Point("TOPLEFT", self, "TOPLEFT", PORTRAIT_WIDTH+BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING))
 					end)
 					eclipseBar:HookScript("OnHide", function()
-						local VBAR_OFFSET = self.Vengeance.offset
+						local VBAR_OFFSET = 0
 						
-						if not self.Vengeance:IsShown() then
-							VBAR_OFFSET = 0
+						if self.Vengeance then
+							VBAR_OFFSET = self.Vengeance.offset
+							
+							if not self.Vengeance:IsShown() then
+								VBAR_OFFSET = 0
+							end
 						end
 						
 						if USE_POWERBAR_OFFSET then
