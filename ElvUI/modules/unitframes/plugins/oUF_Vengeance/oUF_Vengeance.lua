@@ -47,10 +47,18 @@ local UnitAura = UnitAura
 local InCombatLockdown = InCombatLockdown
 
 local tooltip = CreateFrame("GameTooltip", "VengeanceTooltip", UIParent, "GameTooltipTemplate")
-local tooltiptext = _G[tooltip:GetName().."TextLeft2"]
-
 tooltip:SetOwner(UIParent, "ANCHOR_NONE")
-tooltiptext:SetText("")
+
+local function GetTooltipText(...)
+	local text = ""
+	for i=1,select("#",...) do
+		local rgn = select(i,...)
+		if rgn and rgn:GetObjectType() == "FontString" then
+			text = text .. (rgn:GetText() or "")
+		end
+	end
+	return text
+end
 
 local function valueChanged(self, event, unit)
 	if unit ~= "player" then return end
@@ -66,13 +74,14 @@ local function valueChanged(self, event, unit)
 	end	
 	
 	local name = UnitAura("player", vengeance, nil, "PLAYER|HELPFUL")
-	
+
 	if name then
 		tooltip:ClearLines()
 		tooltip:SetUnitBuff("player", name)
-		local value = (tooltiptext:GetText() and tonumber(string.match(tostring(tooltiptext:GetText()), "%d+"))) or -1
-		
-		if value > 0 then
+		local text = GetTooltipText(tooltip:GetRegions())
+		local value = tonumber(string.match(text,"%d+"))
+		print(text, value)
+		if value then
 			if value > bar.max then value = bar.max end
 			if value == bar.value then return end
 			
@@ -127,6 +136,8 @@ end
 local function isTank(self, event)
 	local masteryIndex = GetPrimaryTalentTree()
 	local bar = self.Vengeance
+	
+	tooltip:SetOwner(UIParent, "ANCHOR_NONE")
 	
 	if masteryIndex then
 		if class == "DRUID" and masteryIndex == 2 then

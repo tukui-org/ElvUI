@@ -9,7 +9,7 @@ local securehandler = CreateFrame("Frame", nil, nil, "SecureHandlerBaseTemplate"
 function Style(self, totem, flyout)
 	local name = self:GetName()
 	
-	if name:match("MultiCast") then return end 
+	if name:match("MultiCast") or name:match("ExtraActionButton") then return end 
 	
 	local action = self.action
 	local Button = self

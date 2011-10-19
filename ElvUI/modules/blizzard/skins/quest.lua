@@ -13,6 +13,8 @@ local function LoadSkin()
 	
 	EmptyQuestLogFrame:StripTextures()
 	
+	E.SkinScrollBar(QuestDetailScrollFrameScrollBar)
+	
 	QuestLogFrameShowMapButton:StripTextures()
 	E.SkinButton(QuestLogFrameShowMapButton)
 	QuestLogFrameShowMapButton.text:ClearAllPoints()

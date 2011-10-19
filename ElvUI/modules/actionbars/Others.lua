@@ -40,4 +40,8 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 			ActionButton_ShowGrid(button)
 		end
 	end
+	
+	if ExtraActionBarFrame then
+		ExtraActionBarFrame:SetParent(UIParent)
+	end
 end)

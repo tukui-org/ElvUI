@@ -22,6 +22,9 @@ local function LoadSkin()
 	E.SkinButton(TradeSkillCreateAllButton, true)
 	E.SkinButton(TradeSkillViewGuildCraftersButton, true)
 	
+	E.SkinScrollBar(TradeSkillListScrollFrameScrollBar)
+	E.SkinScrollBar(TradeSkillDetailScrollFrameScrollBar)	
+	
 	TradeSkillLinkButton:GetNormalTexture():SetTexCoord(0.25, 0.7, 0.37, 0.75)
 	TradeSkillLinkButton:GetPushedTexture():SetTexCoord(0.25, 0.7, 0.45, 0.8)
 	TradeSkillLinkButton:GetHighlightTexture():Kill()

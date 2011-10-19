@@ -37,7 +37,9 @@ local function LoadSkin()
 		_G["ClassTrainerScrollFrameButton"..i].selectedTex:Point("TOPLEFT", 2, -2)
 		_G["ClassTrainerScrollFrameButton"..i].selectedTex:Point("BOTTOMRIGHT", -2, 2)
 	end
-
+	
+	E.SkinScrollBar(ClassTrainerScrollFrameScrollBar)
+	
 	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()
 	end

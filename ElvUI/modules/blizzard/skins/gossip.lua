@@ -14,6 +14,8 @@ local function LoadSkin()
 	local StripAllTextures = {
 		"GossipFrameGreetingPanel",
 	}			
+	
+	E.SkinScrollBar(GossipGreetingScrollFrameScrollBar, 5)
 
 	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()
