@@ -938,7 +938,7 @@ E.LoadUFFunctions = function(layout)
 		local BORDER = 2*E.ResScale
 		local SPACING = 1*E.ResScale		
 		local CLASSBAR_HEIGHT = (C["unitframes"].classbar_height)*E.ResScale
-		if not name then
+		if not name or not self:IsShown() then
 			VBAR_OFFSET = 0
 		end
 		

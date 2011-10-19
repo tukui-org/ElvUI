@@ -84,7 +84,7 @@ local function Shared(self, unit)
 		local CASTBAR_HEIGHT = C["unitframes"].castplayerheight*E.ResScale
 		local CASTBAR_WIDTH = C["unitframes"].castplayerwidth*E.ResScale
 		local PORTRAIT_WIDTH = 45*E.ResScale
-		local VBAR_WIDTH = 15*E.ResScale
+		local VBAR_WIDTH = 12*E.ResScale
 		local USE_VENGEANCE_BAR = C['unitframes'].vengeancebar
 
 		local mini_classbarY = 0
