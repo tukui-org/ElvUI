@@ -62,6 +62,27 @@ local function LoadSkin()
 	LFRQueueFrameRoleButtonDPS:GetChildren():SetFrameLevel(LFRQueueFrameRoleButtonDPS:GetChildren():GetFrameLevel() + 2)
 	
 	LFRQueueFrameSpecificListScrollFrame:StripTextures()
+	
+	--Skill Line Tabs
+	for i=1, 2 do
+		local tab = _G["LFRParentFrameSideTab"..i]
+		if tab then
+			local tex = tab:GetNormalTexture():GetTexture()
+			tab:StripTextures()
+			tab:GetNormalTexture():SetTexCoord(.08, .92, .08, .92)
+			tab:GetNormalTexture():ClearAllPoints()
+			tab:GetNormalTexture():Point("TOPLEFT", 2, -2)
+			tab:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+			tab:SetNormalTexture(tex)
+			
+			tab:CreateBackdrop("Default")
+			tab.backdrop:SetAllPoints()
+			tab:StyleButton(true)				
+			
+			local point, relatedTo, point2, x, y = tab:GetPoint()
+			tab:Point(point, relatedTo, point2, 1, y)
+		end
+	end
 end
 
 tinsert(E.SkinFuncs["ElvUI"], LoadSkin)

@@ -9,8 +9,107 @@ local frame_metatable = Private.frame_metatable
 -- Events
 Private.OnEvent = function(self, event, ...)
 	if(not self:IsShown()) then return end
-	if not self or not event or not self[event] then return end
 	return self[event](self, event, ...)
+end
+
+local RegisterEvent, UnregisterEvent, IsEventRegistered
+
+do
+	local eventFrame = CreateFrame("Frame")
+	local registry = {}
+	local framesForUnit = {}
+
+	local RegisterFrameForUnit = function(frame, unit)
+		if not unit then return end
+		if framesForUnit[unit] then
+			framesForUnit[unit][frame] = true
+		else
+			framesForUnit[unit] = { [frame] = true }
+		end
+	end
+
+	local UnregisterFrameForUnit = function(frame, unit)
+		if not unit then return end
+		local frames = framesForUnit[unit]
+		if frames and frames[frame] then
+			frames[frame] = nil
+			if not next(frames) then
+				framesForUnit[unit] = nil
+			end
+		end
+	end
+
+	Private.UpdateUnits = function(frame, unit, realUnit)
+		if unit == realUnit then
+			realUnit = nil
+		end
+		if frame.unit ~= unit or frame.realUnit ~= realUnit then
+			if not frame:GetScript('OnUpdate') then
+				UnregisterFrameForUnit(frame, frame.unit)
+				UnregisterFrameForUnit(frame, frame.realUnit)
+				RegisterFrameForUnit(frame, unit)
+				RegisterFrameForUnit(frame, realUnit)
+			end
+			frame.unit = unit
+			frame.realUnit = realUnit
+			frame.id = unit:match'^.-(%d+)'
+			return true
+		end
+	end
+
+	-- Holds true for every event, where the first (unit) argument should be ignored.
+	local sharedUnitEvents = {
+		UNIT_ENTERED_VEHICLE = true,
+		UNIT_EXITED_VEHICLE = true,
+		UNIT_PET = true,
+	}
+
+	eventFrame:SetScript('OnEvent', function(_, event, arg1, ...)
+		local listeners = registry[event]
+		if arg1 and not sharedUnitEvents[event] then
+			local frames = framesForUnit[arg1]
+			if frames then
+				for frame in next, frames do
+					if listeners[frame] and frame:IsVisible() then
+						frame[event](frame, event, arg1, ...)
+					end
+				end
+			end
+		else
+			for frame in next, listeners do
+				if frame:IsVisible() then
+					frame[event](frame, event, arg1, ...)
+				end
+			end
+		end
+	end)
+
+	function RegisterEvent(self, event, unitless)
+		if(unitless) then
+			sharedUnitEvents[event] = true
+		end
+
+		if not registry[event] then
+			registry[event] = { [self] = true }
+			eventFrame:RegisterEvent(event)
+		else
+			registry[event][self] = true
+		end
+	end
+
+	function UnregisterEvent(self, event)
+		if registry[event] then
+			registry[event][self] = nil
+			if not next(registry[event]) then
+				registry[event] = nil
+				eventFrame:UnregisterEvent(event)
+			end
+		end
+	end
+
+	function IsEventRegistered(self, event)
+		return registry[event] and registry[event][self]
+	end
 end
 
 local event_metatable = {
@@ -21,8 +120,10 @@ local event_metatable = {
 	end,
 }
 
-local RegisterEvent = frame_metatable.__index.RegisterEvent
-function frame_metatable.__index:RegisterEvent(event, func)
+function frame_metatable.__index:RegisterEvent(event, func, unitless)
+	-- Block OnUpdate polled frames from registering events.
+	if(self.__eventless) then return end
+
 	argcheck(event, 2, 'string')
 
 	if(type(func) == 'string' and type(self[func]) == 'function') then
@@ -41,7 +142,7 @@ function frame_metatable.__index:RegisterEvent(event, func)
 
 			table.insert(curev, func)
 		end
-	elseif(self:IsEventRegistered(event)) then
+	elseif(IsEventRegistered(self, event)) then
 		return
 	else
 		if(type(func) == 'function') then
@@ -50,11 +151,10 @@ function frame_metatable.__index:RegisterEvent(event, func)
 			return error("Style [%s] attempted to register event [%s] on unit [%s] with a handler that doesn't exist.", self.style, event, self.unit or 'unknown')
 		end
 
-		RegisterEvent(self, event)
+		RegisterEvent(self, event, unitless)
 	end
 end
 
-local UnregisterEvent = frame_metatable.__index.UnregisterEvent
 function frame_metatable.__index:UnregisterEvent(event, func)
 	argcheck(event, 2, 'string')
 
@@ -79,4 +179,8 @@ function frame_metatable.__index:UnregisterEvent(event, func)
 		self[event] = nil
 		UnregisterEvent(self, event)
 	end
+end
+
+function frame_metatable.__index:IsEventRegistered(event)
+	return IsEventRegistered(self, event)
 end

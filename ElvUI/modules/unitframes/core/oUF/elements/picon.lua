@@ -26,7 +26,7 @@ local Enable = function(self)
 		picon.__owner = self
 		picon.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('UNIT_PHASE', Path)
+		self:RegisterEvent('UNIT_PHASE', Path, true)
 
 		if(picon:IsObjectType'Texture' and not picon:GetTexture()) then
 			picon:SetTexture[[Interface\TargetingFrame\UI-PhasingIcon]]

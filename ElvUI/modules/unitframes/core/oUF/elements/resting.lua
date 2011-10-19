@@ -23,7 +23,7 @@ local Enable = function(self, unit)
 		resting.__owner = self
 		resting.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent("PLAYER_UPDATE_RESTING", Path)
+		self:RegisterEvent("PLAYER_UPDATE_RESTING", Path, true)
 
 		if(resting:IsObjectType"Texture" and not resting:GetTexture()) then
 			resting:SetTexture[[Interface\CharacterFrame\UI-StateIcon]]

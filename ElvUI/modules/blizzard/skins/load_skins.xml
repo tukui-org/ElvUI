@@ -46,4 +46,5 @@
 	<Script file='timemanager.lua'/>	
 	<Script file='encounterjournal.lua'/>
 	<Script file='bags.lua'/>
+	<Script file='transmogrification.lua'/>
 </Ui>

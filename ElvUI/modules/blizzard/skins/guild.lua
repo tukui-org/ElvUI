@@ -171,7 +171,9 @@ local function LoadSkin()
 	--News
 	GuildNewsFrame:StripTextures()
 	for i=1, 17 do
-		_G["GuildNewsContainerButton"..i].header:Kill()
+		if _G["GuildNewsContainerButton"..i] then
+			_G["GuildNewsContainerButton"..i].header:Kill()
+		end
 	end
 	
 	GuildNewsFiltersFrame:StripTextures()

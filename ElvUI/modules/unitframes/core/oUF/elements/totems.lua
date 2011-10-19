@@ -10,6 +10,8 @@ oUF.colors.totems = {
 	[AIR_TOTEM_SLOT] = { 132/255, 056/255, 231/255 }
 }
 
+local tmap = SHAMAN_TOTEM_PRIORITIES
+
 local OnClick = function(self)
 	DestroyTotem(self:GetID())
 end
@@ -32,9 +34,9 @@ end
 local UpdateTotem = function(self, event, slot)
 	local totems = self.Totems
 
-	if(totems.PreUpdate) then totems:PreUpdate(slot) end
+	if(totems.PreUpdate) then totems:PreUpdate(tmap[slot]) end
 
-	local totem = totems[slot]
+	local totem = totems[tmap[slot]]
 	local haveTotem, name, start, duration, icon = GetTotemInfo(slot)
 	if(duration > 0) then
 		if(totem.Icon) then
@@ -51,7 +53,7 @@ local UpdateTotem = function(self, event, slot)
 	end
 
 	if(totems.PostUpdate) then
-		return totems:PostUpdate(slot, haveTotem, name, start, duration, icon)
+		return totems:PostUpdate(tmap[slot], haveTotem, name, start, duration, icon)
 	end
 end
 
@@ -79,7 +81,7 @@ local Enable = function(self)
 		for i = 1, MAX_TOTEMS do
 			local totem = totems[i]
 
-			totem:SetID(i)
+			totem:SetID(tmap[i])
 
 			if(totem:HasScript'OnClick') then
 				totem:SetScript('OnClick', OnClick)
@@ -95,7 +97,7 @@ local Enable = function(self)
 			end
 		end
 
-		self:RegisterEvent('PLAYER_TOTEM_UPDATE', Path)
+		self:RegisterEvent('PLAYER_TOTEM_UPDATE', Path, true)
 
 		TotemFrame.Show = TotemFrame.Hide
 		TotemFrame:Hide()

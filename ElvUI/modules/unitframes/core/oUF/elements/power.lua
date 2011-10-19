@@ -56,7 +56,7 @@ local Update = function(self, event, unit)
 	elseif(power.colorReaction and UnitReaction(unit, 'player')) then
 		t = self.colors.reaction[UnitReaction(unit, "player")]
 	elseif(power.colorSmooth) then
-		r, g, b = self.ColorGradient(min / max, unpack(power.smoothGradient or self.colors.smooth))
+		r, g, b = self.ColorGradient(min, max, unpack(power.smoothGradient or self.colors.smooth))
 	end
 
 	if(t) then
@@ -123,7 +123,7 @@ local Enable = function(self, unit)
 		-- For tapping.
 		self:RegisterEvent('UNIT_FACTION', Path)
 
-		if(not power:GetStatusBarTexture()) then
+		if(power:IsObjectType'StatusBar' and not power:GetStatusBarTexture()) then
 			power:SetStatusBarTexture[[Interface\TargetingFrame\UI-StatusBar]]
 		end
 
@@ -140,6 +140,9 @@ local Disable = function(self)
 			self:UnregisterEvent('UNIT_POWER', Path)
 		end
 
+		self:UnregisterEvent('UNIT_POWER_BAR_SHOW', Path)
+		self:UnregisterEvent('UNIT_POWER_BAR_HIDE', Path)
+		self:UnregisterEvent('UNIT_DISPLAYPOWER', Path)
 		self:UnregisterEvent('UNIT_CONNECTION', Path)
 		self:UnregisterEvent('UNIT_MAXPOWER', Path)
 		self:UnregisterEvent('UNIT_FACTION', Path)

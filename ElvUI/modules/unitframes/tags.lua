@@ -8,15 +8,15 @@ if not C["unitframes"].enable == true and not C["raidframes"].enable == true the
 ------------------------------------------------------------------------
 --	Tags
 ------------------------------------------------------------------------
-oUF.TagEvents['Elvui:threat'] = 'UNIT_THREAT_LIST_UPDATE'
-oUF.Tags['Elvui:threat'] = function(unit)
+oUF.Tags.Events['Elvui:threat'] = 'UNIT_THREAT_LIST_UPDATE'
+oUF.Tags.Methods['Elvui:threat'] = function(unit)
 	local tanking, status, percent = UnitDetailedThreatSituation('player', 'target')
 	if(percent and percent > 0) then
 		return ('%s%d%%|r'):format(Hex(GetThreatStatusColor(status)), percent)
 	end
 end
 
-oUF.Tags['Elvui:health'] = function(unit)
+oUF.Tags.Methods['Elvui:health'] = function(unit)
 	if not unit then return end
 	local min, max = UnitHealth(unit), UnitHealthMax(unit)
 	local status = not UnitIsConnected(unit) and 'Offline' or UnitIsGhost(unit) and 'Ghost' or UnitIsDead(unit) and 'Dead'
@@ -34,7 +34,7 @@ oUF.Tags['Elvui:health'] = function(unit)
 	end
 end
 
-oUF.Tags['Elvui:power'] = function(unit)
+oUF.Tags.Methods['Elvui:power'] = function(unit)
 	if not unit then return end
 	local power = UnitPower(unit)
 	if(power > 0 and not UnitIsDeadOrGhost(unit)) then
@@ -44,7 +44,7 @@ oUF.Tags['Elvui:power'] = function(unit)
 	end
 end
 
-oUF.Tags['Elvui:druid'] = function(unit)
+oUF.Tags.Methods['Elvui:druid'] = function(unit)
 	if not unit then return end
 	local min, max = UnitPower(unit, 0), UnitPowerMax(unit, 0)
 	if(UnitPowerType(unit) ~= 0 and min ~= max) then
@@ -52,8 +52,8 @@ oUF.Tags['Elvui:druid'] = function(unit)
 	end
 end
 
-oUF.TagEvents['Elvui:diffcolor'] = 'UNIT_LEVEL'
-oUF.Tags['Elvui:diffcolor'] = function(unit)
+oUF.Tags.Events['Elvui:diffcolor'] = 'UNIT_LEVEL'
+oUF.Tags.Methods['Elvui:diffcolor'] = function(unit)
 	if not unit then return end
 	local r, g, b
 	local level = UnitLevel(unit)
@@ -106,8 +106,8 @@ local utf8sub = function(string, i, dots)
 	end
 end
 
-oUF.TagEvents['Elvui:getnamecolor'] = 'UNIT_POWER'
-oUF.Tags['Elvui:getnamecolor'] = function(unit)
+oUF.Tags.Events['Elvui:getnamecolor'] = 'UNIT_POWER'
+oUF.Tags.Methods['Elvui:getnamecolor'] = function(unit)
 	if not unit then return end
 	local reaction = UnitReaction(unit, 'player')
 	if (UnitIsPlayer(unit)) then
@@ -121,8 +121,8 @@ oUF.Tags['Elvui:getnamecolor'] = function(unit)
 	end
 end
 
-oUF.TagEvents['Elvui:nameshort'] = 'UNIT_NAME_UPDATE'
-oUF.Tags['Elvui:nameshort'] = function(unit)
+oUF.Tags.Events['Elvui:nameshort'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['Elvui:nameshort'] = function(unit)
 	if not unit then return end
 	local name = UnitName(unit)
 	local colorblind = GetCVarBool("colorblindMode")
@@ -139,8 +139,8 @@ oUF.Tags['Elvui:nameshort'] = function(unit)
 	end
 end
 
-oUF.TagEvents['Elvui:namemedium'] = 'UNIT_NAME_UPDATE'
-oUF.Tags['Elvui:namemedium'] = function(unit)
+oUF.Tags.Events['Elvui:namemedium'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['Elvui:namemedium'] = function(unit)
 	if not unit then return end
 	local name = UnitName(unit)
 	local colorblind = GetCVarBool("colorblindMode")
@@ -157,8 +157,8 @@ oUF.Tags['Elvui:namemedium'] = function(unit)
 	end
 end
 
-oUF.TagEvents['Elvui:namelong'] = 'UNIT_NAME_UPDATE'
-oUF.Tags['Elvui:namelong'] = function(unit)
+oUF.Tags.Events['Elvui:namelong'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['Elvui:namelong'] = function(unit)
 	if not unit then return end
 	local name = UnitName(unit)
 	local colorblind = GetCVarBool("colorblindMode")

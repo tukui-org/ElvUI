@@ -41,8 +41,8 @@ local function Enable(self, unit)
 		masterlooter.__owner = self
 		masterlooter.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('PARTY_LOOT_METHOD_CHANGED', Path)
-		self:RegisterEvent('PARTY_MEMBERS_CHANGED', Path)
+		self:RegisterEvent('PARTY_LOOT_METHOD_CHANGED', Path, true)
+		self:RegisterEvent('PARTY_MEMBERS_CHANGED', Path, true)
 
 		if(masterlooter:IsObjectType('Texture') and not masterlooter:GetTexture()) then
 			masterlooter:SetTexture([[Interface\GroupFrame\UI-Group-MasterLooter]])

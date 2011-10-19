@@ -61,10 +61,10 @@ local function Enable(self)
 			hp.maxOverflow = 1.05
 		end
 
-		if(hp.myBar and not hp.myBar:GetStatusBarTexture()) then
+		if(hp.myBar and hp.myBar:IsObjectType'StatusBar' and not hp.myBar:GetStatusBarTexture()) then
 			hp.myBar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 		end
-		if(hp.otherBar and not hp.otherBar:GetStatusBarTexture()) then
+		if(hp.otherBar and hp.otherBar:IsObjectType'StatusBar' and not hp.otherBar:GetStatusBarTexture()) then
 			hp.otherBar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 		end
 

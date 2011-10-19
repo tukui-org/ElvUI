@@ -1,8 +1,6 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 if C["skin"].enable ~= true or C["skin"].dressingroom ~= true then return end
 
-if E.IsPTRVersion() then return end
-
 local function LoadSkin()
 	DressUpFrame:StripTextures(true)
 	DressUpFrame:CreateBackdrop("Transparent")
@@ -13,9 +11,13 @@ local function LoadSkin()
 	E.SkinButton(DressUpFrameResetButton)
 	E.SkinButton(DressUpFrameCancelButton)
 	E.SkinCloseButton(DressUpFrameCloseButton, DressUpFrame.backdrop)
-	E.SkinRotateButton(DressUpModelRotateLeftButton)
-	E.SkinRotateButton(DressUpModelRotateRightButton)
-	DressUpModelRotateRightButton:Point("TOPLEFT", DressUpModelRotateLeftButton, "TOPRIGHT", 2, 0)
+	
+	if not E.IsPTRVersion() then
+		E.SkinRotateButton(DressUpModelRotateLeftButton)
+		E.SkinRotateButton(DressUpModelRotateRightButton)
+		DressUpModelRotateRightButton:Point("TOPLEFT", DressUpModelRotateLeftButton, "TOPRIGHT", 2, 0)
+	end
+	
 	DressUpFrameResetButton:Point("RIGHT", DressUpFrameCancelButton, "LEFT", -2, 0)
 end
 

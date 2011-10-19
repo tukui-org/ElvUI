@@ -105,9 +105,9 @@ local Enable = function(self, unit)
 			ReadyCheckFrame:SetScript('OnUpdate', OnUpdate)
 		end
 
-		self:RegisterEvent('READY_CHECK', Path)
-		self:RegisterEvent('READY_CHECK_CONFIRM', Path)
-		self:RegisterEvent('READY_CHECK_FINISHED', Path)
+		self:RegisterEvent('READY_CHECK', Path, true)
+		self:RegisterEvent('READY_CHECK_CONFIRM', Path, true)
+		self:RegisterEvent('READY_CHECK_FINISHED', Path, true)
 
 		return true
 	end

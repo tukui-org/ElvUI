@@ -1,6 +1,3 @@
-local WoW42 = select(4, GetBuildInfo()) == 40200
-if(not WoW42) then return end
-
 local parent, ns = ...
 local oUF = ns.oUF
 
@@ -8,7 +5,7 @@ local Update = function(self, event)
 	local incomingResurrect = UnitHasIncomingResurrection(self.unit)
 	local resurrect = self.ResurrectIcon
 
-	if(incomingResurrect) and UnitIsDeadOrGhost(self.unit) and UnitIsConnected(self.unit) then
+	if(incomingResurrect) then
 		resurrect:Show()
 	else
 		resurrect:Hide()
@@ -29,7 +26,7 @@ local Enable = function(self)
 		resurrect.__owner = self
 		resurrect.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('INCOMING_RESURRECT_CHANGED', Path)
+		self:RegisterEvent('INCOMING_RESURRECT_CHANGED', Path, true)
 
 		if(resurrect:IsObjectType('Texture') and not resurrect:GetTexture()) then
 			resurrect:SetTexture[[Interface\RaidFrame\Raid-Icon-Rez]]

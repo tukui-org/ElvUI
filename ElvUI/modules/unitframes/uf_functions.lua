@@ -624,7 +624,7 @@ E.LoadUFFunctions = function(layout)
 					self.text:Hide()
 					self:SetScript("OnUpdate", nil)
 				end
-				if (not self.debuff) and C["general"].classcolortheme == true then
+				if (not self.isDebuff) and C["general"].classcolortheme == true then
 					local r, g, b = self:GetParent():GetParent().Health.backdrop:GetBackdropBorderColor()
 					self:SetBackdropBorderColor(r, g, b)
 				end
@@ -707,7 +707,7 @@ E.LoadUFFunctions = function(layout)
 	function E.PostUpdateAura(icons, unit, icon, index, offset, filter, isDebuff, duration, timeLeft)
 		local name, _, _, _, dtype, duration, expirationTime, unitCaster, _, _, spellID = UnitAura(unit, index, icon.filter)
 		
-		if(icon.debuff) then
+		if(icon.isDebuff) then
 			if(not UnitIsFriend("player", unit) and icon.owner ~= "player" and icon.owner ~= "vehicle") and (not E.DebuffWhiteList[name]) then
 				icon:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 				icon.icon:SetDesaturated(true)

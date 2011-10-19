@@ -255,8 +255,6 @@ local tagStrings = {
 		end
 	end]],
 
-
-
 	['pereclipse'] = [[function(u)
 		local m = UnitPowerMax('player', SPELL_POWER_ECLIPSE)
 		if(m == 0) then
@@ -265,50 +263,59 @@ local tagStrings = {
 			return math.abs(UnitPower('player', SPELL_POWER_ECLIPSE)/m*100)
 		end
 	end]],
+
+	['curmana'] = [[function(unit)
+		return UnitPower(unit, SPELL_POWER_MANA)
+	end]],
+
+	['maxmana'] = [[function(unit)
+		return UnitPowerMax(unit, SPELL_POWER_MANA)
+	end]],
 }
 
 local tags = setmetatable(
-{
-	curhp = UnitHealth,
-	curpp = UnitPower,
-	maxhp = UnitHealthMax,
-	maxpp = UnitPowerMax,
-	class = UnitClass,
-	faction = UnitFactionGroup,
-	race = UnitRace,
-},
+	{
+		curhp = UnitHealth,
+		curpp = UnitPower,
+		maxhp = UnitHealthMax,
+		maxpp = UnitPowerMax,
+		class = UnitClass,
+		faction = UnitFactionGroup,
+		race = UnitRace,
+	},
 
-{
-	__index = function(self, key)
-		local tagFunc = tagStrings[key]
-		if(tagFunc) then
-			local func, err = loadstring('return ' .. tagFunc)
-			if(func) then
-				func = func()
+	{
+		__index = function(self, key)
+			local tagFunc = tagStrings[key]
+			if(tagFunc) then
+				local func, err = loadstring('return ' .. tagFunc)
+				if(func) then
+					func = func()
 
-				-- Want to trigger __newindex, so no rawset.
-				self[key] = func
-				tagStrings[key] = nil
+					-- Want to trigger __newindex, so no rawset.
+					self[key] = func
+					tagStrings[key] = nil
 
-				return func
-			else
-				error(err, 3)
+					return func
+				else
+					error(err, 3)
+				end
 			end
-		end
-	end,
-	__newindex = function(self, key, val)
-		if(type(val) == 'string') then
-			tagStrings[key] = val
-		elseif(type(val) == 'function') then
-			-- So we don't clash with any custom envs.
-			if(getfenv(val) == _G) then
-				setfenv(val, _PROXY)
-			end
+		end,
+		__newindex = function(self, key, val)
+			if(type(val) == 'string') then
+				tagStrings[key] = val
+			elseif(type(val) == 'function') then
+				-- So we don't clash with any custom envs.
+				if(getfenv(val) == _G) then
+					setfenv(val, _PROXY)
+				end
 
-			rawset(self, key, val)
-		end
-	end,
-})
+				rawset(self, key, val)
+			end
+		end,
+	}
+)
 
 _ENV._TAGS = tags
 
@@ -339,6 +346,8 @@ local tagEvents = {
 	["offline"]             = "UNIT_HEALTH UNIT_CONNECTION",
 	["status"]              = "UNIT_HEALTH PLAYER_UPDATE_RESTING UNIT_CONNECTION",
 	["pereclipse"]          = 'UNIT_POWER',
+	['curmana']             = 'UNIT_POWER UNIT_MAXPOWER',
+	['maxmana']             = 'UNIT_POWER UNIT_MAXPOWER',
 }
 
 local unitlessEvents = {
@@ -633,9 +642,11 @@ local Untag = function(self, fs)
 	fs.UpdateTag = nil
 end
 
-oUF.Tags = tags
-oUF.TagEvents = tagEvents
-oUF.UnitlessTagEvents = unitlessEvents
+oUF.Tags = {
+	Methods = tags,
+	Events = tagEvents,
+	SharedEvents = unitlessEvents,
 
+}
 oUF:RegisterMetaFunction('Tag', Tag)
 oUF:RegisterMetaFunction('Untag', Untag)

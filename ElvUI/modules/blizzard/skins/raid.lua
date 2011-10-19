@@ -1,5 +1,6 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 if C["skin"].enable ~= true or C["skin"].raid ~= true then return end
+if E.IsPTRVersion() then return end
 
 local function LoadSkin()
 	local buttons = {
@@ -24,7 +25,11 @@ local function LoadSkin()
 	}
 
 	for _, object in pairs(StripAllTextures) do
-		_G[object]:StripTextures()
+		if not _G[object] then print(object) end
+		
+		if _G[object] then
+			_G[object]:StripTextures()
+		end
 	end
 
 	for i=1, MAX_RAID_GROUPS*5 do

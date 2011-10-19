@@ -1,29 +1,34 @@
-local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
-if C["skin"].enable ~= true or C["skin"].reforge ~= true then return end
-
-if E.IsPTRVersion() then return end
+local E, C, L = unpack(select(2, ...))
 
 local function LoadSkin()
 	ReforgingFrame:StripTextures()
 	ReforgingFrame:SetTemplate("Transparent")
-	
-	ReforgingFrameTopInset:StripTextures()
-	ReforgingFrameInset:StripTextures()
-	ReforgingFrameBottomInset:StripTextures()
-	
+	ReforgingFrame:CreateShadow('Default')
+
+	if not E.IsPTRVersion() then
+		ReforgingFrameTopInset:StripTextures()
+		ReforgingFrameInset:StripTextures()
+		ReforgingFrameBottomInset:StripTextures()
+		E.SkinDropDownBox(ReforgingFrameFilterOldStat, 180)
+		E.SkinDropDownBox(ReforgingFrameFilterNewStat, 180)
+	else
+		ReforgingFrameButtonFrame:StripTextures()
+		ReforgingFrameReforgeButton:ClearAllPoints()
+		ReforgingFrameReforgeButton:Point("LEFT", ReforgingFrameRestoreButton, "RIGHT", 2, 0)
+		ReforgingFrameReforgeButton:Point("BOTTOMRIGHT", -3, 3)
+		ReforgingFrameRestoreMessage:SetTextColor(1, 1, 1);
+	end
+
 	E.SkinButton(ReforgingFrameRestoreButton, true)
 	E.SkinButton(ReforgingFrameReforgeButton, true)
-	
-	E.SkinDropDownBox(ReforgingFrameFilterOldStat, 180)
-	E.SkinDropDownBox(ReforgingFrameFilterNewStat, 180)
-	
+
 	ReforgingFrameItemButton:StripTextures()
 	ReforgingFrameItemButton:SetTemplate("Default", true)
 	ReforgingFrameItemButton:StyleButton()
 	ReforgingFrameItemButtonIconTexture:ClearAllPoints()
 	ReforgingFrameItemButtonIconTexture:Point("TOPLEFT", 2, -2)
 	ReforgingFrameItemButtonIconTexture:Point("BOTTOMRIGHT", -2, 2)
-	
+
 	hooksecurefunc("ReforgingFrame_Update", function(self)
 		local currentReforge, icon, name, quality, bound, cost = GetReforgeItemInfo()
 		if icon then
@@ -32,7 +37,7 @@ local function LoadSkin()
 			ReforgingFrameItemButtonIconTexture:SetTexture(nil)
 		end
 	end)
-	
+
 	E.SkinCloseButton(ReforgingFrameCloseButton)
 end
 
