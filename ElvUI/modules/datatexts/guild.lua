@@ -204,17 +204,19 @@ Stat:SetScript("OnEnter", function(self)
 	GameTooltip:ClearLines()
 	GameTooltip:AddDoubleLine(format(guildInfoString, guildName, guildLevel), format(guildInfoString2, online, total),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
 	GameTooltip:AddLine(guildRank, unpack(tthead))
-	GameTooltip:AddLine(' ')
 	
-	if guildMotD ~= "" then GameTooltip:AddLine(format(guildMotDString, GUILD_MOTD, guildMotD), ttsubh.r, ttsubh.g, ttsubh.b, 1) end
+	if guildMotD ~= "" then 
+		GameTooltip:AddLine(' ')
+		GameTooltip:AddLine(format(guildMotDString, GUILD_MOTD, guildMotD), ttsubh.r, ttsubh.g, ttsubh.b, 1) 
+	end
 	
 	local col = E.RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b)
-	GameTooltip:AddLine(' ')
 	if GetGuildLevel() ~= 25 then
 		if guildXP[0] and guildXP[1] then
 			local currentXP, nextLevelXP, percentTotal = unpack(guildXP[0])
 			local dailyXP, maxDailyXP, percentDaily = unpack(guildXP[1])
-					
+			
+			GameTooltip:AddLine(' ')
 			GameTooltip:AddLine(format(guildXpCurrentString, E.ShortValue(currentXP), E.ShortValue(nextLevelXP), percentTotal))
 			GameTooltip:AddLine(format(guildXpDailyString, E.ShortValue(dailyXP), E.ShortValue(maxDailyXP), percentDaily))
 		end
