@@ -352,13 +352,17 @@ function AB:ResetMovers(bar)
 			mover:ClearAllPoints()
 			mover:Point(self.movers[name]["p"], self.movers[name]["p2"], self.movers[name]["p3"], self.movers[name]["p4"], self.movers[name]["p5"])
 			
-			self.db[name]['position'] = nil		
+			if self.db[name] then
+				self.db[name]['position'] = nil		
+			end
 		elseif name == bar then
 			local mover = self.movers[name].bar
 			mover:ClearAllPoints()
 			mover:Point(self.movers[name]["p"], self.movers[name]["p2"], self.movers[name]["p3"], self.movers[name]["p4"], self.movers[name]["p5"])
 			
-			self.db[name]['position'] = nil
+			if self.db[name] then
+				self.db[name]['position'] = nil
+			end
 		end
 	end
 end

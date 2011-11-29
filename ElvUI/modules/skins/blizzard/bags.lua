@@ -214,7 +214,7 @@ local function LoadSkin()
 			frame:SetScale(1);
 			if ( index == 1 ) then
 				-- First bag
-				frame:SetPoint("BOTTOMRIGHT", ChatRPlaceHolder, "BOTTOMRIGHT", 2, -2 );
+				frame:SetPoint("BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", 2, 2);
 				bagsPerColumn = bagsPerColumn + 1
 			elseif ( freeScreenHeight < frame:GetHeight() ) then
 				-- Start a new column

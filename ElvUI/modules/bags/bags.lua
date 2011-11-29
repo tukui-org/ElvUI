@@ -1169,6 +1169,7 @@ function B:Sort(frame, args, bank)
 end
 
 function B:Initialize()
+	if not E.db.core.bags then return end
 	self:InitBags()
 	
 	--Register Events
