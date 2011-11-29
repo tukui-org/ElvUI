@@ -1,25 +1,9 @@
---------------------------------------------------------------------
--- GOLD
---------------------------------------------------------------------
-local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
-
-if not C["datatext"].gold or C["datatext"].gold == 0 then return end
-
-local Stat = CreateFrame("Frame")
-Stat:EnableMouse(true)
-Stat:SetFrameStrata("MEDIUM")
-Stat:SetFrameLevel(3)
-
-local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
-Text:SetFont(C["media"].font, C["datatext"].fontsize, "THINOUTLINE")
-Text:SetShadowOffset(E.mult, -E.mult)
-E.PP(C["datatext"].gold, Text)
-Stat:SetParent(Text:GetParent())
+local E, L, DF = unpack(select(2, ...)); --Engine
+local DT = E:GetModule('DataTexts')
 
 local defaultColor = { 1, 1, 1 }
 local Profit	= 0
 local Spent		= 0
-local OldMoney	= 0
 
 local function formatMoney(money)
 	local gold = floor(math.abs(money) / 10000)
@@ -40,56 +24,17 @@ local function FormatTooltipMoney(money)
 	local cash = ""
 	cash = format("%d"..L.goldabbrev.." %d"..L.silverabbrev.." %d"..L.copperabbrev, gold, silver, copper)		
 	return cash
-end	
+end
 
-Stat:SetScript("OnEnter", function(self)
-	if not InCombatLockdown() then
-		local anchor, panel, xoff, yoff = E.DataTextTooltipAnchor(Text)
-		GameTooltip:SetOwner(panel, anchor, xoff, yoff)
-		GameTooltip:ClearLines()
-		GameTooltip:AddLine(L.datatext_session)
-		GameTooltip:AddDoubleLine(L.datatext_earned, formatMoney(Profit), 1, 1, 1, 1, 1, 1)
-		GameTooltip:AddDoubleLine(L.datatext_spent, formatMoney(Spent), 1, 1, 1, 1, 1, 1)
-		if Profit < Spent then
-			GameTooltip:AddDoubleLine(L.datatext_deficit, formatMoney(Profit-Spent), 1, 0, 0, 1, 1, 1)
-		elseif (Profit-Spent)>0 then
-			GameTooltip:AddDoubleLine(L.datatext_profit, formatMoney(Profit-Spent), 0, 1, 0, 1, 1, 1)
-		end				
-		GameTooltip:AddLine' '								
+local function OnEvent(self, event, ...)
+	local NewMoney = GetMoney()
+	if (ElvData == nil) then ElvData = {}; end
+	if (ElvData['gold'] == nil) then ElvData['gold'] = {}; end
+	if (ElvData['gold'][E.myrealm] == nil) then ElvData['gold'][E.myrealm] = {} end
+	if (ElvData['gold'][E.myrealm][E.myname] == nil) then ElvData['gold'][E.myrealm][E.myname] = NewMoney end
 	
-		local totalGold = 0				
-		GameTooltip:AddLine(L.datatext_character)			
-
-		for k,_ in pairs(ElvuiData[E.myrealm]) do
-			if ElvuiData[E.myrealm][k]["gold"] then 
-				GameTooltip:AddDoubleLine(k, FormatTooltipMoney(ElvuiData[E.myrealm][k]["gold"]), 1, 1, 1, 1, 1, 1)
-				totalGold=totalGold+ElvuiData[E.myrealm][k]["gold"]
-			end
-		end 
-		GameTooltip:AddLine' '
-		GameTooltip:AddLine(L.datatext_server)
-		GameTooltip:AddDoubleLine(L.datatext_totalgold, FormatTooltipMoney(totalGold), 1, 1, 1, 1, 1, 1)
-
-		for i = 1, MAX_WATCHED_TOKENS do
-			local name, count, extraCurrencyType, icon, itemID = GetBackpackCurrencyInfo(i)
-			if name and i == 1 then
-				GameTooltip:AddLine(" ")
-				GameTooltip:AddLine(CURRENCY)
-			end
-			if name and count then GameTooltip:AddDoubleLine(name, count, 1, 1, 1) end
-		end
-		GameTooltip:Show()
-	end
-end)
-
-Stat:SetScript("OnLeave", function() GameTooltip:Hide() end)
-
-local function OnEvent(self, event)
-	if event == "PLAYER_ENTERING_WORLD" then
-		OldMoney = GetMoney()
-	end
+	local OldMoney = ElvData['gold'][E.myrealm][E.myname] or NewMoney
 	
-	local NewMoney	= GetMoney()
 	local Change = NewMoney-OldMoney -- Positive if we gain money
 	
 	if OldMoney>NewMoney then		-- Lost Money
@@ -98,51 +43,63 @@ local function OnEvent(self, event)
 		Profit = Profit + Change
 	end
 	
-	Text:SetText(formatMoney(NewMoney))
-	-- Setup Money Tooltip
-	self:SetAllPoints(Text)
+	self.text:SetText(formatMoney(NewMoney))
 
-	if (ElvuiData == nil) then ElvuiData = {}; end
-	if (ElvuiData[E.myrealm] == nil) then ElvuiData[E.myrealm] = {} end
-	if (ElvuiData[E.myrealm][E.myname] == nil) then ElvuiData[E.myrealm][E.myname] = {} end
-	ElvuiData[E.myrealm][E.myname]["gold"] = GetMoney()
-	ElvuiData.gold = nil -- old
-		
-	OldMoney = NewMoney
+	ElvData['gold'][E.myrealm][E.myname] = NewMoney
 end
 
-Stat:RegisterEvent("PLAYER_MONEY")
-Stat:RegisterEvent("SEND_MAIL_MONEY_CHANGED")
-Stat:RegisterEvent("SEND_MAIL_COD_CHANGED")
-Stat:RegisterEvent("PLAYER_TRADE_MONEY")
-Stat:RegisterEvent("TRADE_MONEY_CHANGED")
-Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
-Stat:SetScript("OnMouseDown", function() 
-	--Check if any bag is open
-	local opened = false
-	for i=1, NUM_CONTAINER_FRAMES do
-		if IsBagOpen(i) then
-			opened = true
+local function Click()
+	ToggleAllBags()
+end
+
+local function OnEnter(self)
+	DT:SetupTooltip(self)
+
+	GameTooltip:AddLine(L['Session:'])
+	GameTooltip:AddDoubleLine(L["Earned:"], formatMoney(Profit), 1, 1, 1, 1, 1, 1)
+	GameTooltip:AddDoubleLine(L["Spent:"], formatMoney(Spent), 1, 1, 1, 1, 1, 1)
+	if Profit < Spent then
+		GameTooltip:AddDoubleLine(L["Deficit:"], formatMoney(Profit-Spent), 1, 0, 0, 1, 1, 1)
+	elseif (Profit-Spent)>0 then
+		GameTooltip:AddDoubleLine(L["Profit:"	], formatMoney(Profit-Spent), 0, 1, 0, 1, 1, 1)
+	end				
+	GameTooltip:AddLine' '								
+
+	local totalGold = 0				
+	GameTooltip:AddLine(L["Character: "])			
+
+	for k,_ in pairs(ElvData['gold'][E.myrealm]) do
+		if ElvData['gold'][E.myrealm][k] then 
+			GameTooltip:AddDoubleLine(k, FormatTooltipMoney(ElvData['gold'][E.myrealm][k]), 1, 1, 1, 1, 1, 1)
+			totalGold=totalGold+ElvData['gold'][E.myrealm][k]
 		end
 	end
 	
-	if opened == true then
-		CloseAllBags()
-	else
-		OpenAllBags()
-	end
-end)
-Stat:SetScript("OnEvent", OnEvent)
+	GameTooltip:AddLine' '
+	GameTooltip:AddLine(L["Server: "])
+	GameTooltip:AddDoubleLine(L["Total: "], FormatTooltipMoney(totalGold), 1, 1, 1, 1, 1, 1)
 
--- reset gold data
-local function RESETGOLD()		
-	for k,_ in pairs(ElvuiData[E.myrealm]) do
-		ElvuiData[E.myrealm][k].gold = nil
-	end 
-	if (ElvuiData == nil) then ElvuiData = {}; end
-	if (ElvuiData[E.myrealm] == nil) then ElvuiData[E.myrealm] = {} end
-	if (ElvuiData[E.myrealm][E.myname] == nil) then ElvuiData[E.myrealm][E.myname] = {} end
-	ElvuiData[E.myrealm][E.myname]["gold"] = GetMoney()		
+	for i = 1, MAX_WATCHED_TOKENS do
+		local name, count, extraCurrencyType, icon, itemID = GetBackpackCurrencyInfo(i)
+		if name and i == 1 then
+			GameTooltip:AddLine(" ")
+			GameTooltip:AddLine(CURRENCY)
+		end
+		if name and count then GameTooltip:AddDoubleLine(name, count, 1, 1, 1) end
+	end	
+	
+	GameTooltip:Show()
 end
-SLASH_RESETGOLD1 = "/resetgold"
-SlashCmdList["RESETGOLD"] = RESETGOLD
+
+--[[
+	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc)
+	
+	name - name of the datatext (required)
+	events - must be a table with string values of event names to register 
+	eventFunc - function that gets fired when an event gets triggered
+	updateFunc - onUpdate script target function
+	click - function to fire when clicking the datatext
+	onEnterFunc - function to fire OnEnter
+]]
+DT:RegisterDatatext('Gold', {'PLAYER_ENTERING_WORLD', 'PLAYER_MONEY', 'SEND_MAIL_MONEY_CHANGED', 'SEND_MAIL_COD_CHANGED', 'PLAYER_TRADE_MONEY', 'TRADE_MONEY_CHANGED'}, OnEvent, nil, Click, OnEnter)
+

@@ -1,12 +1,9 @@
---------------------------------------------------------------------
--- TIME
---------------------------------------------------------------------
-local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, L, DF = unpack(select(2, ...)); --Engine
+local DT = E:GetModule('DataTexts')
 
-if not C["datatext"].wowtime or C["datatext"].wowtime == 0 then return end
-
-local europeDisplayFormat = string.join("", "%02d", E.ValColor, ":|r%02d")
-local ukDisplayFormat = string.join("", "", "%d", E.ValColor, ":|r%02d", E.ValColor, " %s|r")
+local APM = { TIMEMANAGER_PM, TIMEMANAGER_AM }
+local europeDisplayFormat = '';
+local ukDisplayFormat = '';
 local europeDisplayFormat_nocolor = string.join("", "%02d", ":|r%02d")
 local ukDisplayFormat_nocolor = string.join("", "", "%d", ":|r%02d", " %s|r")
 local timerLongFormat = "%d:%02d:%02d"
@@ -18,31 +15,23 @@ local difficultyInfo = { "N", "N", "H", "H" }
 local lockoutFormatString = { "%dd %02dh %02dm", "%dd %dh %02dm", "%02dh %02dm", "%dh %02dm", "%dh %02dm", "%dm" }
 local curHr, curMin, curAmPm
 
-local Stat = CreateFrame("Frame")
-Stat:EnableMouse(true)
-Stat:SetFrameStrata("MEDIUM")
-Stat:SetFrameLevel(3)
-
-local fader = CreateFrame("Frame", "TimeDataText", ElvuiInfoLeft)
-
-local Text = fader:CreateFontString(nil, "OVERLAY")
-Text:SetFont(C["media"].font, C["datatext"].fontsize, "THINOUTLINE")
-Text:SetShadowOffset(E.mult, -E.mult)
-Text:SetShadowColor(0, 0, 0, 0.4)
-E.PP(C["datatext"].wowtime, Text)
-Stat:SetParent(Text:GetParent())
-
-fader:SetFrameLevel(fader:GetParent():GetFrameLevel())
-fader:SetFrameStrata(fader:GetParent():GetFrameStrata())
+local Update, LastPanel; -- UpValue
+local function ValueColorUpdate(hex, r, g, b)
+	europeDisplayFormat = string.join("", "%02d", hex, ":|r%02d")
+	ukDisplayFormat = string.join("", "", "%d", hex, ":|r%02d", hex, " %s|r")
 	
-local APM = { TIMEMANAGER_PM, TIMEMANAGER_AM }
+	if LastPanel ~= nil then
+		Update(LastPanel, 20000)
+	end
+end
+E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
 local function CalculateTimeValues(tt)
 	local Hr, Min, AmPm
 	if tt and tt == true then
-		if C["datatext"].localtime == true then
+		if E.db.datatexts.localtime == true then
 			Hr, Min = GetGameTime()
-			if C["datatext"].time24 == true then
+			if E.db.datatexts.time24 == true then
 				return Hr, Min, -1
 			else
 				if Hr>=12 then
@@ -58,7 +47,7 @@ local function CalculateTimeValues(tt)
 			local Hr24 = tonumber(date("%H"))
 			Hr = tonumber(date("%I"))
 			Min = tonumber(date("%M"))
-			if C["datatext"].time24 == true then
+			if E.db.datatexts.time24 == true then
 				return Hr24, Min, -1
 			else
 				if Hr24>=12 then AmPm = 1 else AmPm = 2 end
@@ -66,11 +55,11 @@ local function CalculateTimeValues(tt)
 			end
 		end
 	else
-		if C["datatext"].localtime == true then
+		if E.db.datatexts.localtime == true then
 			local Hr24 = tonumber(date("%H"))
 			Hr = tonumber(date("%I"))
 			Min = tonumber(date("%M"))
-			if C["datatext"].time24 == true then
+			if E.db.datatexts.time24 == true then
 				return Hr24, Min, -1
 			else
 				if Hr24>=12 then AmPm = 1 else AmPm = 2 end
@@ -78,7 +67,7 @@ local function CalculateTimeValues(tt)
 			end
 		else
 			Hr, Min = GetGameTime()
-			if C["datatext"].time24 == true then
+			if E.db.datatexts.time24 == true then
 				return Hr, Min, -1
 			else
 				if Hr>=12 then
@@ -95,11 +84,11 @@ local function CalculateTimeValues(tt)
 end
 
 local function CalculateTimeLeft(time)
-		local hour = floor(time / 3600)
-		local min = floor(time / 60 - (hour*60))
-		local sec = time - (hour * 3600) - (min * 60)
-		
-		return hour, min, sec
+	local hour = floor(time / 3600)
+	local min = floor(time / 60 - (hour*60))
+	local sec = time - (hour * 3600) - (min * 60)
+	
+	return hour, min, sec
 end
 
 local function formatResetTime(sec)
@@ -116,21 +105,19 @@ local function formatResetTime(sec)
 end
 
 local int = 1
-E.SetUpAnimGroup(TimeDataText)
-local function Update(self, t)
+function Update(self, t)
 	int = int - t
 	if int > 0 then return end
 	
 	local Hr, Min, AmPm = CalculateTimeValues(false)
-	
 	if GameTimeFrame.flashInvite then
-		E.Flash(TimeDataText, 0.53)
+		--E.Flash(TimeDataText, 0.53)
 	else
-		E.StopFlash(TimeDataText)
+		--E.StopFlash(TimeDataText)
 	end
 	
 	-- no update quick exit
-	if (Hr == curHr and Min == curMin and AmPm == curAmPm) then
+	if (Hr == curHr and Min == curMin and AmPm == curAmPm) and not (int < -15000) then
 		int = 2
 		return
 	end
@@ -140,21 +127,20 @@ local function Update(self, t)
 	curAmPm = AmPm
 		
 	if AmPm == -1 then
-		Text:SetFormattedText(europeDisplayFormat, Hr, Min)
+		self.text:SetFormattedText(europeDisplayFormat, Hr, Min)
 	else
-		Text:SetFormattedText(ukDisplayFormat, Hr, Min, APM[AmPm])
+		self.text:SetFormattedText(ukDisplayFormat, Hr, Min, APM[AmPm])
 	end
-	
-	self:SetAllPoints(Text)
+	LastPanel = self
 	int = 2
 end
 
-Stat:SetScript("OnEnter", function(self)
-	if InCombatLockdown() then return end
-	OnLoad = function(self) RequestRaidInfo() end
-	local anchor, panel, xoff, yoff = E.DataTextTooltipAnchor(fader)
-	GameTooltip:SetOwner(panel, anchor, xoff, yoff)
-	GameTooltip:ClearLines()
+local function Click()
+	GameTimeFrame:Click();
+end
+
+local function OnEnter(self)
+	DT:SetupTooltip(self)
 
 	GameTooltip:AddLine(VOICE_CHAT_BATTLEGROUND);
 	local localizedName, isActive, canQueue, startTime, canEnter
@@ -181,7 +167,7 @@ Stat:SetScript("OnEnter", function(self)
 	local Hr, Min, AmPm = CalculateTimeValues(true)
 
 	GameTooltip:AddLine(" ")
-	timeText = C["datatext"].localtime == true and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME
+	timeText = E.db.datatexts.localtime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME
 	if AmPm == -1 then
 			GameTooltip:AddDoubleLine(timeText, string.format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	else
@@ -195,21 +181,25 @@ Stat:SetScript("OnEnter", function(self)
 			local tr,tg,tb,diff
 			if not oneraid then
 				GameTooltip:AddLine(" ")
-				GameTooltip:AddLine(L.datatext_savedraid)
+				GameTooltip:AddLine(L["Saved Raid(s)"])
 				oneraid = true
 			end
 			if extended then lockoutColor = lockoutColorExtended else lockoutColor = lockoutColorNormal end
 			GameTooltip:AddDoubleLine(format(lockoutInfoFormat, maxPlayers, difficultyInfo[difficulty], name, encounterProgress, numEncounters), formatResetTime(reset), 1,1,1, lockoutColor.r,lockoutColor.g,lockoutColor.b)
 		end
-	end
+	end	
+	
 	GameTooltip:Show()
-end)
+end
 
-Stat:RegisterEvent("CALENDAR_UPDATE_PENDING_INVITES")
-Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
-Stat:RegisterEvent("UPDATE_INSTANCE_INFO")
-
-Stat:SetScript("OnLeave", function() GameTooltip:Hide() end)
-Stat:SetScript("OnMouseDown", function() GameTimeFrame:Click() end)
-Stat:SetScript("OnUpdate", Update)
-Update(Stat, 6)
+--[[
+	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc)
+	
+	name - name of the datatext (required)
+	events - must be a table with string values of event names to register 
+	eventFunc - function that gets fired when an event gets triggered
+	updateFunc - onUpdate script target function
+	click - function to fire when clicking the datatext
+	onEnterFunc - function to fire OnEnter
+]]
+DT:RegisterDatatext('Time', nil, nil, Update, Click, OnEnter)

@@ -1,22 +1,25 @@
--- reposition capture bar to top/center of the screen
-local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, L, DF = unpack(select(2, ...))
+local B = E:GetModule('Blizzard');
 
 local function CaptureUpdate()
 	if NUM_EXTENDED_UI_FRAMES then
 		local captureBar
 		for i=1, NUM_EXTENDED_UI_FRAMES do
-			captureBar = getglobal("WorldStateCaptureBar" .. i)
+			captureBar = _G["WorldStateCaptureBar" .. i]
 
 			if captureBar and captureBar:IsVisible() then
 				captureBar:ClearAllPoints()
 				
 				if( i == 1 ) then
-					captureBar:SetPoint("TOP", E.UIParent, "TOP", 0, E.Scale(-170))
+					captureBar:Point("TOP", E.UIParent, "TOP", 0, -170)
 				else
-					captureBar:SetPoint("TOPLEFT", getglobal("WorldStateCaptureBar" .. i - 1 ), "TOPLEFT", 0, E.Scale(-45))
+					captureBar:Point("TOPLEFT", _G["WorldStateCaptureBar" .. i - 1], "TOPLEFT", 0, -45)
 				end
 			end	
 		end	
 	end
 end
-hooksecurefunc("UIParent_ManageFramePositions", CaptureUpdate)
+
+function B:PositionCaptureBar()
+	hooksecurefunc("UIParent_ManageFramePositions", CaptureUpdate)
+end

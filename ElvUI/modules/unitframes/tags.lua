@@ -1,22 +1,20 @@
 local E, C, L, DB = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 local _, ns = ...
-local oUF = ElvUF or ns.oUF or oUF
-assert(oUF, "ElvUI was unable to locate oUF.")
-
-if not C["unitframes"].enable == true and not C["raidframes"].enable == true then return end
+local ElvUF = ns.oUF
+assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 ------------------------------------------------------------------------
 --	Tags
 ------------------------------------------------------------------------
-oUF.Tags.Events['Elvui:threat'] = 'UNIT_THREAT_LIST_UPDATE'
-oUF.Tags.Methods['Elvui:threat'] = function(unit)
+ElvUF.Tags.Events['Elv:threat'] = 'UNIT_THREAT_LIST_UPDATE'
+ElvUF.Tags.Methods['Elv:threat'] = function(unit)
 	local tanking, status, percent = UnitDetailedThreatSituation('player', 'target')
 	if(percent and percent > 0) then
 		return ('%s%d%%|r'):format(Hex(GetThreatStatusColor(status)), percent)
 	end
 end
 
-oUF.Tags.Methods['Elvui:health'] = function(unit)
+ElvUF.Tags.Methods['Elv:health'] = function(unit)
 	if not unit then return end
 	local min, max = UnitHealth(unit), UnitHealthMax(unit)
 	local status = not UnitIsConnected(unit) and 'Offline' or UnitIsGhost(unit) and 'Ghost' or UnitIsDead(unit) and 'Dead'
@@ -34,7 +32,7 @@ oUF.Tags.Methods['Elvui:health'] = function(unit)
 	end
 end
 
-oUF.Tags.Methods['Elvui:power'] = function(unit)
+ElvUF.Tags.Methods['Elv:power'] = function(unit)
 	if not unit then return end
 	local power = UnitPower(unit)
 	if(power > 0 and not UnitIsDeadOrGhost(unit)) then
@@ -44,7 +42,7 @@ oUF.Tags.Methods['Elvui:power'] = function(unit)
 	end
 end
 
-oUF.Tags.Methods['Elvui:druid'] = function(unit)
+ElvUF.Tags.Methods['Elv:druid'] = function(unit)
 	if not unit then return end
 	local min, max = UnitPower(unit, 0), UnitPowerMax(unit, 0)
 	if(UnitPowerType(unit) ~= 0 and min ~= max) then
@@ -52,8 +50,8 @@ oUF.Tags.Methods['Elvui:druid'] = function(unit)
 	end
 end
 
-oUF.Tags.Events['Elvui:diffcolor'] = 'UNIT_LEVEL'
-oUF.Tags.Methods['Elvui:diffcolor'] = function(unit)
+ElvUF.Tags.Events['Elv:diffcolor'] = 'UNIT_LEVEL'
+ElvUF.Tags.Methods['Elv:diffcolor'] = function(unit)
 	if not unit then return end
 	local r, g, b
 	local level = UnitLevel(unit)
@@ -106,14 +104,14 @@ local utf8sub = function(string, i, dots)
 	end
 end
 
-oUF.Tags.Events['Elvui:getnamecolor'] = 'UNIT_POWER'
-oUF.Tags.Methods['Elvui:getnamecolor'] = function(unit)
+ElvUF.Tags.Events['Elv:getnamecolor'] = 'UNIT_POWER'
+ElvUF.Tags.Methods['Elv:getnamecolor'] = function(unit)
 	if not unit then return end
 	local reaction = UnitReaction(unit, 'player')
 	if (UnitIsPlayer(unit)) then
 		return _TAGS['raidcolor'](unit)
 	elseif (reaction) then
-		local c = E.oUF_colors.reaction[reaction]
+		local c = ElvUF['colors'].reaction[reaction]
 		return string.format('|cff%02x%02x%02x', c[1] * 255, c[2] * 255, c[3] * 255)
 	else
 		r, g, b = .84,.75,.65
@@ -121,8 +119,8 @@ oUF.Tags.Methods['Elvui:getnamecolor'] = function(unit)
 	end
 end
 
-oUF.Tags.Events['Elvui:nameshort'] = 'UNIT_NAME_UPDATE'
-oUF.Tags.Methods['Elvui:nameshort'] = function(unit)
+ElvUF.Tags.Events['Elv:nameshort'] = 'UNIT_NAME_UPDATE'
+ElvUF.Tags.Methods['Elv:nameshort'] = function(unit)
 	if not unit then return end
 	local name = UnitName(unit)
 	local colorblind = GetCVarBool("colorblindMode")
@@ -139,8 +137,8 @@ oUF.Tags.Methods['Elvui:nameshort'] = function(unit)
 	end
 end
 
-oUF.Tags.Events['Elvui:namemedium'] = 'UNIT_NAME_UPDATE'
-oUF.Tags.Methods['Elvui:namemedium'] = function(unit)
+ElvUF.Tags.Events['Elv:namemedium'] = 'UNIT_NAME_UPDATE'
+ElvUF.Tags.Methods['Elv:namemedium'] = function(unit)
 	if not unit then return end
 	local name = UnitName(unit)
 	local colorblind = GetCVarBool("colorblindMode")
@@ -157,8 +155,8 @@ oUF.Tags.Methods['Elvui:namemedium'] = function(unit)
 	end
 end
 
-oUF.Tags.Events['Elvui:namelong'] = 'UNIT_NAME_UPDATE'
-oUF.Tags.Methods['Elvui:namelong'] = function(unit)
+ElvUF.Tags.Events['Elv:namelong'] = 'UNIT_NAME_UPDATE'
+ElvUF.Tags.Methods['Elv:namelong'] = function(unit)
 	if not unit then return end
 	local name = UnitName(unit)
 	local colorblind = GetCVarBool("colorblindMode")

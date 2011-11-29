@@ -3,37 +3,66 @@
 	
 	Add the nameplates name that you do NOT want to see.
 ]]
-local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, L = unpack(select(2, ...)); --Engine
+local DF = E.DF["profile"]["nameplate"]
 
-E.PlateBlacklist = {
-	--Shaman Totems
-	["Earth Elemental Totem"] = true,
-	["Fire Elemental Totem"] = true,
-	["Fire Resistance Totem"] = true,
-	["Flametongue Totem"] = true,
-	["Frost Resistance Totem"] = true,
-	["Healing Stream Totem"] = true,
-	["Magma Totem"] = true,
-	["Mana Spring Totem"] = true,
-	["Nature Resistance Totem"] = true,
-	["Searing Totem"] = true,
-	["Stoneclaw Totem"] = true,
-	["Stoneskin Totem"] = true,
-	["Strength of Earth Totem"] = true,
-	["Windfury Totem"] = true,
-	["Totem of Wrath"] = true,
-	["Wrath of Air Totem"] = true,
-
+DF["filter"] = {
 	--Army of the Dead
-	["Army of the Dead Ghoul"] = true,
+	["Army of the Dead Ghoul"] = {
+		['enable'] = true,
+		['hide'] = true,
+		['customColor'] = false,
+		['color'] = {r = 104/255, g = 138/255, b = 217/255},
+		['customScale'] = 1,
+	},
 
 	--Hunter Trap
-	["Venomous Snake"] = true,
-	["Viper"] = true,
+	["Venomous Snake"] = {
+		['enable'] = true,
+		['hide'] = true,
+		['customColor'] = false,
+		['color'] = {r = 104/255, g = 138/255, b = 217/255},
+		['customScale'] = 1,
+	},
+	["Viper"] = {
+		['enable'] = true,
+		['hide'] = true,
+		['customColor'] = false,
+		['color'] = {r = 104/255, g = 138/255, b = 217/255},
+		['customScale'] = 1,
+	},
 	
-	--Misc
-	["Lava Parasite"] = true,
-
+	--Magmaw
+	["Lava Parasite"] = {
+		['enable'] = true,
+		['hide'] = true,
+		['customColor'] = false,
+		['color'] = {r = 104/255, g = 138/255, b = 217/255},
+		['customScale'] = 1,
+	},
+	
+	--Lord Rhyolith
+	['Liquid Obsidian'] = {
+		['enable'] = true,
+		['hide'] = true,
+		['customColor'] = false,
+		['color'] = {r = 104/255, g = 138/255, b = 217/255},
+		['customScale'] = 1,
+	},
+	['Spark of Rhyolith'] = {
+		['enable'] = true,
+		['hide'] = false,
+		['customColor'] = true,
+		['color'] = {r = 255/255, g = 140/255, b = 200/255},
+		['customScale'] = 1,
+	},
+	
 	--Test
-	--["Unbound Seer"] = true,
+	--[[['Bloodtalon Scythemaw'] = {
+		['enable'] = true,
+		['hide'] = false,
+		['customColor'] = true,
+		['color'] = {r = 255/255, g = 140/255, b = 200/255},
+		['customScale'] = 1.2,
+	},]]
 }

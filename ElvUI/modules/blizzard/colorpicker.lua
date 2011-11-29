@@ -1,72 +1,13 @@
 --[[
 	Credit to Jaslm, most of this code is his from the addon ColorPickerPlus
 ]]
-local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, L, DF = unpack(select(2, ...))
+local B = E:GetModule('Blizzard');
+local S = E:GetModule('Skins');
 
 local initialized = nil
 local colorBuffer = {}
 local editingText
-
-local function SetModifiedBackdrop(self)
-	if C["general"].classcolortheme == true then
-		self:SetBackdropBorderColor(unpack(C["media"].bordercolor))		
-	else
-		self:SetBackdropBorderColor(unpack(C["media"].valuecolor))	
-	end
-end
-
-local function SetOriginalBackdrop(self)
-	local color = RAID_CLASS_COLORS[E.myclass]
-	if C["general"].classcolortheme == true then
-		self:SetBackdropBorderColor(color.r, color.g, color.b)
-	else
-		self:SetTemplate("Default")
-	end
-end
-
-local function SkinEditBox(f)
-	if not f:GetName() then return end
-	local name = f:GetName()
-	_G[name.."Left"]:SetTexture(nil)
-	_G[name.."Right"]:SetTexture(nil)
-	_G[name.."Middle"]:SetTexture(nil)
-	
-	f:SetTemplate("Default")
-end
-
-local function SkinButton(f)
-	if f:GetName() then
-		local l = _G[f:GetName().."Left"]
-		local m = _G[f:GetName().."Middle"]
-		local r = _G[f:GetName().."Right"]
-		
-		
-		if l then l:SetAlpha(0) end
-		if m then m:SetAlpha(0) end
-		if r then r:SetAlpha(0) end
-	end
-	
-	if f.SetNormalTexture then
-		f:SetNormalTexture("")
-	end
-	
-	if f.SetHighlightTexture then
-		f:SetHighlightTexture("")
-	end
-	
-	if f.SetPushedTexture then
-		f:SetPushedTexture("")
-	end
-	
-	if f.SetDisabledTexture then
-		f:SetDisabledTexture("")
-	end
-	f:SetTemplate("Default", true)
-	
-	f:HookScript("OnEnter", SetModifiedBackdrop)
-	f:HookScript("OnLeave", SetOriginalBackdrop)
-end
-
 
 local function UpdateAlphaText()
 	local a = OpacitySliderFrame:GetValue()
@@ -136,14 +77,8 @@ local function UpdateColor(tbox)
 	editingText = nil
 end		
 
-
-local load = CreateFrame("Frame")
-load:RegisterEvent("PLAYER_ENTERING_WORLD")
-load:SetScript("OnEvent", function(self, event)
-	self:UnregisterAllEvents()
-
+function B:EnhanceColorPicker()
 	if IsAddOnLoaded("ColorPickerPlus") then
-		print(L.colorpicker_warning)
 		return
 	end
 	
@@ -153,14 +88,14 @@ load:SetScript("OnEvent", function(self, event)
 	ColorPickerFrameHeader:SetTexture("")
 	ColorPickerFrameHeader:ClearAllPoints()
 	ColorPickerFrameHeader:SetPoint("TOP", ColorPickerFrame, 0, 0)
-	SkinButton(ColorPickerOkayButton)
-	SkinButton(ColorPickerCancelButton)
+	S:HandleButton(ColorPickerOkayButton)
+	S:HandleButton(ColorPickerCancelButton)
 	ColorPickerCancelButton:ClearAllPoints()
 	ColorPickerOkayButton:ClearAllPoints()
 	ColorPickerCancelButton:Point("BOTTOMRIGHT", ColorPickerFrame, "BOTTOMRIGHT", -6, 6)
 	ColorPickerOkayButton:Point("BOTTOMLEFT", ColorPickerFrame,"BOTTOMLEFT", 6,6)
 	ColorPickerOkayButton:Point("RIGHT", ColorPickerCancelButton,"LEFT", -4,0)	
-	
+	S:HandleSliderFrame(OpacitySliderFrame)
 	ColorPickerFrame:HookScript("OnShow", function(self)
 		-- get color that will be replaced
 		local r, g, b = ColorPickerFrame:GetColorRGB()
@@ -180,10 +115,17 @@ load:SetScript("OnEvent", function(self, event)
 		end			
 	end)
 
-	ColorPickerFrame:HookScript("OnColorSelect", function(self, r, g, b)
+	--Memory Fix, Colorpicker will call the self.func() 100x per second, causing fps/memory issues, 
+	--this little script will make you have to press ok for you to notice any changes.
+	ColorPickerFrame:SetScript('OnColorSelect', function(s, r, g, b) 
+		ColorSwatch:SetTexture(r, g, b) 
 		if not editingText then
 			UpdateColorTexts(arg1, arg2, arg3)
-		end			
+		end					
+	end)		
+	
+	ColorPickerOkayButton:HookScript('OnClick', function()
+		collectgarbage("collect"); --Couldn't hurt to do this, this button usually executes a lot of code.
 	end)
 
 	OpacitySliderFrame:HookScript("OnValueChanged", function(self)
@@ -216,10 +158,10 @@ load:SetScript("OnEvent", function(self, event)
 
 	-- add copy button to the ColorPickerFrame
 	local b = CreateFrame("Button", "ColorPPCopy", ColorPickerFrame, "UIPanelButtonTemplate")
-	SkinButton(b)
+	S:HandleButton(b)
 	b:SetText(CALENDAR_COPY_EVENT)
-	b:SetWidth("70")
-	b:SetHeight("22")
+	b:SetWidth(50)
+	b:SetHeight(22)
 	b:SetPoint("TOPLEFT", "ColorSwatch", "BOTTOMLEFT", -15, -5)			
 
 	-- copy color into buffer on button click
@@ -238,11 +180,28 @@ load:SetScript("OnEvent", function(self, event)
 			colorBuffer.a = nil
 		end
 	end)			
+	
+	--class color button
+	b = CreateFrame('Button', 'ColorPPClass', ColorPickerFrame, 'UIPanelButtonTemplate')
+	b:SetText('C')
+	S:HandleButton(b)
+	b:Width(18)
+	b:Height(22)
+	b:Point('TOPLEFT', 'ColorPPCopy', 'TOPRIGHT', 2, 0)
+	
+	b:SetScript('OnClick', function()
+		local color = RAID_CLASS_COLORS[E.myclass];
+		ColorPickerFrame:SetColorRGB(color.r, color.g, color.b)
+		ColorSwatch:SetTexture(color.r, color.g, color.b)
+		if ColorPickerFrame.hasOpacity then
+			OpacitySliderFrame:SetValue(0)
+		end	
+	end)
 
 	-- add paste button to the ColorPickerFrame		
 	b = CreateFrame("Button", "ColorPPPaste", ColorPickerFrame, "UIPanelButtonTemplate")
 	b:SetText(CALENDAR_PASTE_EVENT)
-	SkinButton(b)
+	S:HandleButton(b)
 	b:Width(70)
 	b:Height(22)
 	b:Point("TOPLEFT", "ColorPPCopy", "BOTTOMLEFT", 0, -7)
@@ -274,7 +233,7 @@ load:SetScript("OnEvent", function(self, event)
 
 		local rgb = boxes[i]
 		local box = CreateFrame("EditBox", "ColorPPBox"..rgb, ColorPickerFrame, "InputBoxTemplate")
-		SkinEditBox(box)
+		S:HandleEditBox(box)
 		box:SetID(i)
 		box:SetFrameStrata("DIALOG")
 		box:SetAutoFocus(false)
@@ -342,5 +301,5 @@ load:SetScript("OnEvent", function(self, event)
 	mover:SetScript('OnMouseDown', function() ColorPickerFrame:StartMoving() end)
 	mover:SetScript('OnMouseUp', function() ColorPickerFrame:StopMovingOrSizing() end)
 	ColorPickerFrame:SetUserPlaced(true)
-	ColorPickerFrame:EnableKeyboard(false)			
-end)
+	ColorPickerFrame:EnableKeyboard(false)	
+end

@@ -1,57 +1,23 @@
-------------------------------------------------------------------------
---	Popups
-------------------------------------------------------------------------
-local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, L, DF = unpack(select(2, ...)); --Engine
 
-StaticPopupDialogs["DISABLE_UI"] = {
-	text = L.popup_disableui,
-	button1 = ACCEPT,
-	button2 = CANCEL,
-	OnAccept = DisableElvui,
-	timeout = 0,
-	whileDead = 1,
-	preferredIndex = 3
-}
-
-StaticPopupDialogs["RELOAD_UI"] = {
-	text = L.popup_reloadui,
+StaticPopupDialogs["CONFIG_RL"] = {
+	text = L["One or more of the changes you have made require a ReloadUI."],
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = function() ReloadUI() end,
 	timeout = 0,
 	whileDead = 1,
-	preferredIndex = 3
 }
 
-StaticPopupDialogs["RESET_UF"] = {
-	text = L.popup_resetuf,
-	button1 = YES,
-	button2 = NO,
-	OnAccept = function() E.ResetUF() ReloadUI() end,
+StaticPopupDialogs["KEYBIND_MODE"] = {
+	text = L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."],
+	button1 = L['Save'],
+	button2 = L['Discard'],
+	OnAccept = function() local AB = E:GetModule('ActionBars'); AB:DeactivateBindMode(true) end,
+	OnCancel = function() local AB = E:GetModule('ActionBars'); AB:DeactivateBindMode(false) end,
 	timeout = 0,
 	whileDead = 1,
-	preferredIndex = 3
-}
-
-StaticPopupDialogs["DISABLE_RAID"] = {
-	text = L.popup_2raidactive,
-	button1 = "DPS - TANK",
-	button2 = "HEAL",
-	OnAccept = function() DisableAddOn("Elvui_RaidHeal") EnableAddOn("Elvui_RaidDPS") ReloadUI() end,
-	OnCancel = function() EnableAddOn("Elvui_RaidHeal") DisableAddOn("Elvui_RaidDPS") ReloadUI() end,
-	timeout = 0,
-	whileDead = 1,
-	preferredIndex = 3
-}
-
-StaticPopupDialogs["DISBAND_RAID"] = {
-	text = "Are you sure you want to disband the group?",
-	button1 = ACCEPT,
-	button2 = CANCEL,
-	OnAccept = DisbandRaidGroup,
-	timeout = 0,
-	whileDead = 1,
-	preferredIndex = 3
+	hideOnEscape = false
 }
 
 StaticPopupDialogs["BUY_BANK_SLOT"] = {
@@ -71,7 +37,7 @@ StaticPopupDialogs["BUY_BANK_SLOT"] = {
 }
 
 StaticPopupDialogs["CANNOT_BUY_BANK_SLOT"] = {
-	text = L.bags_noslots,
+	text = L["Can't buy anymore slots!"],
 	button1 = ACCEPT,
 	timeout = 0,
 	whileDead = 1,	
@@ -79,7 +45,7 @@ StaticPopupDialogs["CANNOT_BUY_BANK_SLOT"] = {
 }
 
 StaticPopupDialogs["NO_BANK_BAGS"] = {
-	text = L.bags_need_purchase,
+	text = L['You must purchase a bank slot first!'],
 	button1 = ACCEPT,
 	timeout = 0,
 	whileDead = 1,	

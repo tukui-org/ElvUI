@@ -1,7 +1,5 @@
-local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
-
---Dummy Bar
---/run TimerTracker_OnLoad(TimerTracker); TimerTracker_OnEvent(TimerTracker, "START_TIMER", 1, 30, 30)
+local E, L, DF = unpack(select(2, ...))
+local B = E:GetModule('Blizzard');
 
 local function SkinIt(bar)
 	for i=1, bar:GetNumRegions() do
@@ -9,22 +7,23 @@ local function SkinIt(bar)
 		if region:GetObjectType() == "Texture" then
 			region:SetTexture(nil)
 		elseif region:GetObjectType() == "FontString" then
-			region:SetFont(C["media"].font,C["general"].fontscale, "THINOUTLINE")
-			region:SetShadowColor(0,0,0,0)
+			region:FontTemplate(nil, 12, 'OUTLINE')
 		end
 	end
 	
-	bar:SetStatusBarTexture(C["media"].normTex)
-	bar:SetStatusBarColor(unpack(C["media"].bordercolor))
+	bar:SetStatusBarTexture(E["media"].normTex)
+	bar:SetStatusBarColor(unpack(E["media"].bordercolor))
 	
-	bar.backdrop = CreateFrame("Frame", nil, bar)
-	bar.backdrop:SetFrameLevel(0)
-	bar.backdrop:SetTemplate("Transparent")
-	bar.backdrop:Point("TOPLEFT", bar, "TOPLEFT", -2, 2)
-	bar.backdrop:Point("BOTTOMRIGHT", bar, "BOTTOMRIGHT", 2, -2)
+	if not bar.backdrop then
+		bar.backdrop = CreateFrame("Frame", nil, bar)
+		bar.backdrop:SetFrameLevel(0)
+		bar.backdrop:SetTemplate("Transparent")
+		bar.backdrop:Point("TOPLEFT", bar, "TOPLEFT", -2, 2)
+		bar.backdrop:Point("BOTTOMRIGHT", bar, "BOTTOMRIGHT", 2, -2)
+	end
 end
 
-local function SkinBlizzTimer()	
+function B:START_TIMER(event)
 	for _, b in pairs(TimerTracker.timerList) do
 		if b["bar"] and not b["bar"].skinned then
 			SkinIt(b["bar"])
@@ -33,6 +32,6 @@ local function SkinBlizzTimer()
 	end
 end
 
-local load = CreateFrame("Frame")
-load:RegisterEvent("START_TIMER")
-load:SetScript("OnEvent", SkinBlizzTimer)
+function B:SkinBlizzTimers()
+	self:RegisterEvent('START_TIMER')
+end

@@ -1,20 +1,21 @@
---[[ $Id: CallbackHandler-1.0.lua 3 2008-09-29 16:54:20Z nevcairiel $ ]]
-local MAJOR, MINOR = "CallbackHandler-1.0", 3
+--[[ $Id: CallbackHandler-1.0.lua 965 2010-08-09 00:47:52Z mikk $ ]]
+local MAJOR, MINOR = "CallbackHandler-1.0", 6
 local CallbackHandler = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not CallbackHandler then return end -- No upgrade needed
 
 local meta = {__index = function(tbl, key) tbl[key] = {} return tbl[key] end}
 
-local type = type
-local pcall = pcall
-local pairs = pairs
-local assert = assert
-local concat = table.concat
-local loadstring = loadstring
-local next = next
-local select = select
-local type = type
+-- Lua APIs
+local tconcat = table.concat
+local assert, error, loadstring = assert, error, loadstring
+local setmetatable, rawset, rawget = setmetatable, rawset, rawget
+local next, select, pairs, type, tostring = next, select, pairs, type, tostring
+
+-- Global vars/functions that we don't upvalue since they might get hooked, or upgraded
+-- List them here for Mikk's FindGlobals script
+-- GLOBALS: geterrorhandler
+
 local xpcall = xpcall
 
 local function errorhandler(err)
@@ -46,7 +47,7 @@ local function CreateDispatcher(argCount)
 
 	local ARGS, OLD_ARGS = {}, {}
 	for i = 1, argCount do ARGS[i], OLD_ARGS[i] = "arg"..i, "old_arg"..i end
-	code = code:gsub("OLD_ARGS", concat(OLD_ARGS, ", ")):gsub("ARGS", concat(ARGS, ", "))
+	code = code:gsub("OLD_ARGS", tconcat(OLD_ARGS, ", ")):gsub("ARGS", tconcat(ARGS, ", "))
 	return assert(loadstring(code, "safecall Dispatcher["..argCount.."]"))(next, xpcall, errorhandler)
 end
 
@@ -146,9 +147,9 @@ function CallbackHandler:New(target, RegisterName, UnregisterName, UnregisterAll
 				regfunc = function(...) self[method](self,...) end
 			end
 		else
-			-- function ref with self=object or self="addonId"
-			if type(self)~="table" and type(self)~="string" then
-				error("Usage: "..RegisterName.."(self or \"addonId\", eventname, method): 'self or addonId': table or string expected.", 2)
+			-- function ref with self=object or self="addonId" or self=thread
+			if type(self)~="table" and type(self)~="string" and type(self)~="thread" then
+				error("Usage: "..RegisterName.."(self or \"addonId\", eventname, method): 'self or addonId': table or string or thread expected.", 2)
 			end
 
 			if select("#",...)>=1 then	-- this is not the same as testing for arg==nil!

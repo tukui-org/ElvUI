@@ -1,263 +1,666 @@
-local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
-E.client = GetLocale() 
+﻿-- English localization file for enUS and enGB.
+local AceLocale = LibStub:GetLibrary("AceLocale-3.0");
+local L = AceLocale:NewLocale("ElvUI", "enUS", true);
+if not L then return; end
 
-L.core_resowarning = "|cff1784d1ElvUI:|r the current resolution you are using (%s), is not your monitor's native resolution. To fix this problem please press escape go to video settings and set your resolution to %s."
-L.colorpicker_warning = "|cff1784d1ElvUI|r: Disable ColorPickerPlus AddOn, ElvUI includes the same functionality, type '/disable ColorPickerPlus'"
+--Static Popup
+do
+	L["One or more of the changes you have made require a ReloadUI."] = true;
+end
 
-L.openConfigTooltip = 'Open In-Game Config'
+--General
+do
+	L["Version"] = true;
+	L["Enable"] = true;
 
--- localization for enUS and enGB
-L.chat_BATTLEGROUND_GET = "[B]"
-L.chat_BATTLEGROUND_LEADER_GET = "[B]"
-L.chat_BN_WHISPER_GET = "From"
-L.chat_GUILD_GET = "[G]"
-L.chat_OFFICER_GET = "[O]"
-L.chat_PARTY_GET = "[P]"
-L.chat_PARTY_GUIDE_GET = "[P]"
-L.chat_PARTY_LEADER_GET = "[P]"
-L.chat_RAID_GET = "[R]"
-L.chat_RAID_LEADER_GET = "[R]"
-L.chat_RAID_WARNING_GET = "[W]"
-L.chat_WHISPER_GET = "From"
-L.chat_FLAG_AFK = "[AFK]"
-L.chat_FLAG_DND = "[DND]"
-L.chat_FLAG_GM = "[GM]"
-L.chat_ERR_FRIEND_ONLINE_SS = "is now |cff298F00online|r"
-L.chat_ERR_FRIEND_OFFLINE_S = "is now |cffff0000offline|r"
-L.raidbufftoggler = "Raid Buff Reminder: "
-
-L.disband = "Disbanding group."
-L.chat_trade = "Trade"
-
-L.addons_toggle = "Toggle"
-
-L.datatext_homelatency = "Home Latency: "
-L.datatext_download = "Download: "
-L.datatext_bandwidth = "Bandwidth: "
-L.datatext_noguild = "No Guild"
-L.datatext_bags = "Bags: "
-L.datatext_friends = "Friends"
-L.datatext_earned = "Earned:"
-L.datatext_spent = "Spent:"
-L.datatext_deficit = "Deficit:"
-L.datatext_profit = "Profit:"
-L.datatext_wg = "Time to:"
-L.datatext_friendlist = "Friends list:"
-L.datatext_playersp = "SP: "
-L.datatext_playerap = "AP: "
-L.datatext_session = "Session: "
-L.datatext_character = "Character: "
-L.datatext_server = "Server: "
-L.datatext_totalgold = "Total: "
-L.datatext_savedraid = "Saved Raid(s)"
-L.datatext_currency = "Currency:"
-L.datatext_playercrit = "Crit: "
-L.datatext_playerheal = "Heal"
-L.datatext_avoidancebreakdown = "Avoidance Breakdown"
-L.datatext_lvl = "lvl"
-L.datatext_boss = "Boss"
-L.datatext_playeravd = "AVD: "
-L.datatext_mitigation = "Mitigation By Level: "
-L.datatext_healing = "Healing: "
-L.datatext_damage = "Damage: "
-L.datatext_honor = "Honor: "
-L.datatext_killingblows = "Killing Blows: "
-L.datatext_ttstatsfor = "Stats for"
-L.datatext_ttkillingblows = "Killing Blows: "
-L.datatext_tthonorkills = "Honorable Kills: "
-L.datatext_ttdeaths = "Deaths: "
-L.datatext_tthonorgain = "Honor Gained: "
-L.datatext_ttdmgdone = "Damage Done: "
-L.datatext_tthealdone = "Healing Done :"
-L.datatext_basesassaulted = "Bases Assaulted:"
-L.datatext_basesdefended = "Bases Defended:"
-L.datatext_towersassaulted = "Towers Assaulted:"
-L.datatext_towersdefended = "Towers Defended:"
-L.datatext_flagscaptured = "Flags Captured:"
-L.datatext_flagsreturned = "Flags Returned:"
-L.datatext_graveyardsassaulted = "Graveyards Assaulted:"
-L.datatext_graveyardsdefended = "Graveyards Defended:"
-L.datatext_demolishersdestroyed = "Demolishers Destroyed:"
-L.datatext_gatesdestroyed = "Gates Destroyed:"
-L.datatext_totalmemusage = "Total Memory Usage:"
-L.datatext_control = "Controlled by:"
-L.datatext_cta_allunavailable = "Could not get Call To Arms information."
-L.datatext_cta_nodungeons = "No dungeons are currently offering a Call To Arms."
-
-
-L.Slots = {
-	[1] = {1, "Head", 1000},
-	[2] = {3, "Shoulder", 1000},
-	[3] = {5, "Chest", 1000},
-	[4] = {6, "Waist", 1000},
-	[5] = {9, "Wrist", 1000},
-	[6] = {10, "Hands", 1000},
-	[7] = {7, "Legs", 1000},
-	[8] = {8, "Feet", 1000},
-	[9] = {16, "Main Hand", 1000},
-	[10] = {17, "Off Hand", 1000},
-	[11] = {18, "Ranged", 1000}
-}
-
-L.popup_disableui = "Elvui doesn't work for this resolution, do you want to disable Elvui? (Cancel if you want to try another resolution)"
-L.popup_install = "First time running Elvui on this character, you need to setup chat windows and actionbars."
-L.popup_2raidactive = "2 raid layouts are active, please select a layout."
-L.popup_reloadui = "The action you have performed requires a ReloadUI."
-L.popup_resetuf = "Do you wish to reset your unitframe positions?"
-
-L.merchant_repairnomoney = "You don't have enough money for repair!"
-L.merchant_repaircost = "Your items have been repaired for"
-L.merchant_trashsell = "Your vendor trash has been sold and you earned"
-
-L.goldabbrev = "|cffffd700g|r"
-L.silverabbrev = "|cffc7c7cfs|r"
-L.copperabbrev = "|cffeda55fc|r"
-
-L.unitframes_ouf_offline = "Offline"
-L.unitframes_ouf_dead = "Dead"
-L.unitframes_ouf_ghost = "Ghost"
-L.unitframes_ouf_lowmana = "LOW MANA"
-L.unitframes_ouf_offlinedps = "Offline"
-L.unitframes_ouf_deaddps = "Dead"
-L.unitframes_ouf_ghostheal = "GHOST"
-L.unitframes_ouf_deadheal = "DEAD"
-L.unitframes_disconnected = "D/C"
-L.unitframes_ouf_threattext = "Threat on current target:"
-
-L.tooltip_count = "Count"
-
-L.bags_noslots = "Can't buy anymore slots!"
-L.bags_need_purchase = "You must purchase a bank slot first!"
-L.bags_costs = "Cost: %.2f gold"
-L.bags_buyslots = "Buy new slot with /bags purchase yes"
-L.bags_openbank = "You need to open your bank first."
-L.bags_sort = "Sort your bags or your bank, if open."
-L.bags_stack = "Fill up partial stacks in your bags or bank, if open."
-L.bags_buybankslot = "Buy bank slot. (need to have bank open)"
-L.bags_search = "Search"
-L.bags_sortmenu = "Sort"
-L.bags_sortspecial = "Sort Special"
-L.bags_stackmenu = "Stack"
-L.bags_stackspecial = "Stack Special"
-L.bags_showbags = "Show Bags"
-L.bags_sortingbags = "Sorting finished."
-L.bags_nothingsort= "Nothing to sort."
-L.bags_bids = "Using bags: "
-L.bags_stackend = "Restacking finished."
-L.bags_rightclick_search = "Right-click to search."
-L.bags_leftclick = "Left Click:"
-L.bags_rightclick = "Right Click:"
-
-L.chat_invalidtarget = "Invalid Target"
-
-L.core_autoinv_enable = "Autoinvite ON: invite"
-L.core_autoinv_enable_c = "Autoinvite ON: "
-L.core_autoinv_disable = "Autoinvite OFF"
-L.core_welcome1 = "Welcome to |cff1784d1ElvUI|r, version %s brought to you by <|cff1784d1tys|r> Spirestone[US] http://tys.wowstead.com, Now Recruiting!"
-L.core_welcome1alt = "Welcome to |cff1784d1ElvUI|r, version %s brought to you by <|cff1784d1tys|r> Spirestone[US]."
-L.core_welcome2 = "Type |cff1784d1/uihelp|r for more info, type |cff1784d1/ec|r or |cff1784d1/elvui|r to config, or visit http://www.tukui.org/forums/forum.php?id=84"
-
-L.core_uihelp1 = "|cff00ff00General Slash Commands|r"
-L.core_uihelp2 = "|cff1784d1/tracker|r - Elvui Arena Enemy Cooldown Tracker - Low-memory enemy PVP cooldown tracker. (Icon only)"
-L.core_uihelp3 = "|cff1784d1/rl|r - Reloads your User Interface."
-L.core_uihelp4 = "|cff1784d1/gm|r - Send GM tickets or show WoW in-game help."
-L.core_uihelp5 = "|cff1784d1/frame|r - Detect frame name you currently mouseover. (very useful for lua editor)"
-L.core_uihelp6 = "|cff1784d1/heal|r - Enable healing raid layout."
-L.core_uihelp7 = "|cff1784d1/dps|r - Enable Dps/Tank raid layout."
-L.core_uihelp9 = "|cff1784d1/bags|r - for sorting, buying bank slot or stacking items in your bags."
-L.core_uihelp10 = "|cff1784d1/installui|r - reset cVar and Chat Frames to default."
-L.core_uihelp11 = "|cff1784d1/rd|r - disband raid."
-L.core_uihelp12 = "|cff1784d1/hb|r - set keybinds to your action buttons."
-L.core_uihelp15 = "|cff1784d1/ainv|r - Enable autoinvite via keyword on whisper. You can set your own keyword by typing `/ainv myword`"
-L.core_uihelp16 = "|cff1784d1/resetgold|r - reset the gold datatext"
-L.core_uihelp17 = "|cff1784d1/moveele <arg>|r - Toggles the unlocking of various unitframe elements, if argument is provided it will reset only the name of frame."
-L.core_uihelp18 = "|cff1784d1/resetele|r - Resets all elements to their default position. You can also just reset a specific element by typing /resetele <elementname>."
-L.core_uihelp19 = "|cff1784d1/farmmode|r - Toggles increasing/decreasing the size of the minimap, useful when farming."
-L.core_uihelp21 = "|cff1784d1/moveui|r - Toggles the unlocking of various UI objects."
-L.core_uihelp22 = "|cff1784d1/resetui <arg>|r - Resets all moved UI objects to their default position (including unitframes), if argument is provided it will reset only the name of frame (this doesn't include unitframes). To only reset unitframes type '/resetui uf'"
-L.core_uihelp14 = "(Scroll up for more commands ...)"
-
-L.tooltip_whotarget = "Targeted By"
-
-L.bind_combat = "You can't bind keys in combat."
-L.bind_saved = "All keybindings have been saved."
-L.bind_discard = "All newly set keybindings have been discarded."
-L.bind_instruct = "Hover your mouse over any actionbutton to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."
-L.bind_save = "Save bindings"
-L.bind_discardbind = "Discard bindings"
-
-L.core_raidutil = "Raid Utility"
-L.core_raidutil_disbandgroup = "Disband Group"
-
-L.ElvUIInstall_Title = "ElvUI Installation"
-L.ElvUIInstall_ContinueMessage = "Please press the continue button to go onto the next step."
-L.ElvUIInstall_HighRecommended = "Importance: |cff07D400High|r"
-L.ElvUIInstall_MediumRecommended = "Importance: |cffD3CF00Medium|r"
-
-L.ElvUIInstall_page1_subtitle = "Welcome to ElvUI version %s!"
-L.ElvUIInstall_page1_desc1 = "This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."
-L.ElvUIInstall_page1_desc2 = "You can type the /uihelp command to display a list of commands. The in-game configuration menu can be accessed with either the /ec or the /elvui commands. Press the button below if you wish to skip the installation process."
-L.ElvUIInstall_page1_button1 = "Skip Process"
-
-L.ElvUIInstall_page2_subtitle = "CVars"
-L.ElvUIInstall_page2_desc1 = "This part of the installation process sets up your World of Warcraft default options it is recommended you should do this step for everything to behave properly."
-L.ElvUIInstall_page2_desc2 = "Please click the button below to setup your CVars."
-L.ElvUIInstall_page2_button1 = "Setup CVars"
-
-L.ElvUIInstall_page3_subtitle = "Chat"
-L.ElvUIInstall_page3_desc1 = "This part of the installation process sets up your chat windows names, positions and colors."
-L.ElvUIInstall_page3_desc2 = "Please click the button below to setup your chat windows. You will have to finish the installation process for the chat tabs to correct themselves."
-L.ElvUIInstall_page3_button1 = "Setup Chat"
-
-L.ElvUIInstall_page4_subtitle = "Resolution"
-L.ElvUIInstall_page4_desc1 = "Your current resolution is: %s, ElvUI has automatically selected the %s version for you based on your screen size."
-L.ElvUIInstall_page4_desc2 = "This controls various settings including how the actionbars are displayed and the scale of the unitframes. You can change this setting by using the in-game config (/ec) and setting the resolution override to what you want."
-L.ElvUIInstall_Low = "Low"
-L.ElvUIInstall_High = "High"
-
-L.ElvUIInstall_page5_subtitle = "Action Bars"
-L.ElvUIInstall_page5_desc1 = "Once the installation process is complete you will be able to setup your actionbars. This can be done by clicking the 'L' button that is located on the right side of the left chat panel."
-L.ElvUIInstall_page5_desc2 = "You can quickly setup your actionbar keybinds by using the /hb command. You can move the action buttons around by holding 'shift' and dragging a button."
-
-L.ElvUIInstall_page6_subtitle = "UnitFrames"
-L.ElvUIInstall_page6_desc1 = "Once the installation process is complete you will be able to reposition your unitframes. This can be done by clicking the 'L' button that is located on the right side of the left chat panel."
-L.ElvUIInstall_page6_desc2 = "You can quickly swap between DPS and Healer layouts by typing the /dps and /heal commands."
-L.ElvUIInstall_page6_desc3 = "If you wish to set the unitframe positions to their default spot please click the button below"
-L.ElvUIInstall_page6_button1 = "Set UnitFrame Position"
-
-L.ElvUIInstall_page7_subtitle = "Installation Complete"
-L.ElvUIInstall_page7_desc1 = "You are now finished with the installation process. If you are in need technical support please visit us at www.tukui.org."
-L.ElvUIInstall_page7_desc2 = "Please click the button below so you can setup variables and ReloadUI."
-L.ElvUIInstall_page7_button1 = "Finished"
-L.ElvUIInstall_CVarSet = "CVars Set"
-L.ElvUIInstall_ChatSet = "Chat Positions Set"
-L.ElvUIInstall_UFSet = "UnitFrame Positions Set"
-
-
-function E.UpdateHotkey(self, actionButtonType)
-	local hotkey = _G[self:GetName() .. 'HotKey']
-	local text = hotkey:GetText()
+	L["General"] = true;
+	L["ELVUI_DESC"] = "ElvUI is a complete User Interface replacement addon for World of Warcraft.";
+	L["Auto Scale"] = true;
+		L["Automatically scale the User Interface based on your screen resolution"] = true;
+	L["Scale"] = true;
+		L["Controls the scaling of the entire User Interface"] = true;
+	L["None"] = true;
+	L["You don't have permission to mark targets."] = true;
+	L['LOGIN_MSG'] = 'Welcome to %sElvUI|r version %s%s|r, type /ec to access the in-game configuration menu. If you are in need of technical support you can visit us at http://www.tukui.org/forums/forum.php?id=84';
+	L['Login Message'] = true;
 	
-	text = string.gsub(text, '(s%-)', 'S')
-	text = string.gsub(text, '(a%-)', 'A')
-	text = string.gsub(text, '(c%-)', 'C')
-	text = string.gsub(text, '(Mouse Button )', 'M')
-	text = string.gsub(text, '(Mouse Wheel Up)', 'MU')
-	text = string.gsub(text, '(Mouse Wheel Down)', 'MD')	
-	text = string.gsub(text, KEY_BUTTON3, 'M3')
-	text = string.gsub(text, '(Num Pad )', 'N')
-	text = string.gsub(text, KEY_PAGEUP, 'PU')
-	text = string.gsub(text, KEY_PAGEDOWN, 'PD')
-	text = string.gsub(text, KEY_SPACE, 'SpB')
-	text = string.gsub(text, KEY_INSERT, 'Ins')
-	text = string.gsub(text, KEY_HOME, 'Hm')
-	text = string.gsub(text, KEY_DELETE, 'Del')
-	text = string.gsub(text, KEY_MOUSEWHEELUP, 'MwU')
-	text = string.gsub(text, KEY_MOUSEWHEELDOWN, 'MwD')
+	L["Reset Anchors"] = true;
+	L["Reset all frames to their original positions."] = true;
 	
-	if hotkey:GetText() == _G['RANGE_INDICATOR'] then
-		hotkey:SetText('')
-	else
-		hotkey:SetText(text)
-	end
+	L['Install'] = true;
+	L['Run the installation process.'] = true;
+	
+	L["Credits"] = true;
+	L['ELVUI_CREDITS'] = "I would like to give out a special shout out to the following people for helping me maintain this addon with testing and coding and people who also have helped me through donations. Please note for donations I'm only posting the names of people who PM'd me on the forums, if your name is missing and you wish to have your name added please PM me."
+	L['Coding:'] = true;
+	L['Testing:'] = true;
+	L['Donations:'] = true;
+	
+	--Installation
+	L["Welcome to ElvUI version %s!"] = true;
+	L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."] = true;
+	L["The in-game configuration menu can be accesses by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."] = true;
+	L["Please press the continue button to go onto the next step."] = true;
+	L["Skip Process"] = true;
+	L["ElvUI Installation"] = true;
+	
+	L["CVars"] = true;
+	L["This part of the installation process sets up your World of Warcraft default options it is recommended you should do this step for everything to behave properly."] = true;
+	L["Please click the button below to setup your CVars."] = true;
+	L["Setup CVars"] = true;
+	
+	L["Importance: |cff07D400High|r"] = true;
+	L["Importance: |cffD3CF00Medium|r"] = true;
+
+	L["Chat"] = true;
+	L["This part of the installation process sets up your chat windows names, positions and colors."] = true;
+	L["The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows."] = true;
+	L["Setup Chat"] = true;
+	L['AutoHide Panels'] = true;
+	L['When a chat frame does not exist, hide the panel.'] = true;
+	
+	L["Installation Complete"] = true;
+	L["You are now finished with the installation process. If you are in need technical support please visit us at www.tukui.org."] = true;
+	L["Please click the button below so you can setup variables and ReloadUI."] = true;
+	L["Finished"] = true;
+	L["CVars Set"] = true;
+	L["Chat Set"] = true;
+	L['Trade'] = true;
+	
+	L['Panels'] = true;
+	L['Announce Interrupts'] = true;
+	L['Announce when you interrupt a spell to the specified chat channel.'] = true;
+	L["Movers unlocked. Move them now and click Lock when you are done."] = true;
+	L['Lock'] = true;
+end
+
+--Media	
+do
+	L["Media"] = true;
+	L["Fonts"] = true;
+	L["Font Size"] = true;
+		L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"] = true;
+	L["Default Font"] = true;
+		L["The font that the core of the UI will use."] = true;
+	L["UnitFrame Font"] = true;
+		L["The font that unitframes will use"] = true;
+	L["CombatText Font"] = true;
+		L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = true;
+	L["Textures"] = true;
+	L["StatusBar Texture"] = true;
+		L["Main statusbar texture."] = true;
+	L["Gloss Texture"] = true;
+		L["This gets used by some objects."] = true;
+	L["Colors"] = true;	
+	L["Border Color"] = true;
+		L["Main border color of the UI."] = true;
+	L["Backdrop Color"] = true;
+		L["Main backdrop color of the UI."] = true;
+	L["Backdrop Faded Color"] = true;
+		L["Backdrop color of transparent frames"] = true;
+	L["Restore Defaults"] = true;
+		
+	L["Toggle Anchors"] = true;
+	L["Unlock various elements of the UI to be repositioned."] = true;
+	
+	L["Value Color"] = true;
+	L["Color some texts use."] = true;
+end
+
+--NamePlate Config
+do
+	L["NamePlates"] = true;
+	L["NAMEPLATE_DESC"] = "Modify the nameplate settings."
+	L["Width"] = true;
+		L["Controls the width of the nameplate"] = true;
+	L["Height"] = true;
+		L["Controls the height of the nameplate"] = true;
+	L["Good Color"] = true;
+		L["This is displayed when you have threat as a tank, if you don't have threat it is displayed as a DPS/Healer"] = true;
+	L["Bad Color"] = true;
+		L["This is displayed when you don't have threat as a tank, if you do have threat it is displayed as a DPS/Healer"] = true;
+	L["Good Transition Color"] = true;
+		L["This color is displayed when gaining/losing threat, for a tank it would be displayed when gaining threat, for a dps/healer it would be displayed when losing threat"] = true;
+	L["Bad Transition Color"] = true;
+		L["This color is displayed when gaining/losing threat, for a tank it would be displayed when losing threat, for a dps/healer it would be displayed when gaining threat"] = true;	
+	L["Castbar Height"] = true;
+		L["Controls the height of the nameplate's castbar"] = true;
+	L["Health Text"] = true;
+		L["Toggles health text display"] = true;
+	L["Personal Debuffs"] = true;
+		L["Display your personal debuffs over the nameplate."] = true;
+	L["Display level text on nameplate for nameplates that belong to units that aren't your level."] = true;
+	L["Enhance Threat"] = true;
+		L["Color the nameplate's healthbar by your current threat, Example: good threat color is used if your a tank when you have threat, opposite for DPS."] = true;
+	L["Combat Toggle"] = true;
+		L["Toggles the nameplates off when not in combat."] = true;
+	L["Friendly NPC"] = true;
+	L["Friendly Player"] = true;
+	L["Neutral"] = true;
+	L["Enemy"] = true;
+	L["Threat"] = true;
+	L["Reactions"] = true;
+	L["Filters"] = true;
+	L['Add Name'] = true;
+	L['Remove Name'] = true;
+	L['Use this filter.'] = true;
+	L["You can't remove a default name from the filter, disabling the name."] = true;
+	L['Hide'] = true;
+		L['Prevent any nameplate with this unit name from showing.'] = true;
+	L['Custom Color'] = true;
+		L['Disable threat coloring for this plate and use the custom color.'] = true;
+	L['Custom Scale'] = true;
+		L['Set the scale of the nameplate.'] = true;
+	L['Good Scale'] = true;
+	L['Bad Scale'] = true;
+	L["Auras"] = true;
+end
+
+--ClassTimers
+do
+	L['ClassTimers'] = true;
+	L["CLASSTIMER_DESC"] = 'Display status bars above your player and target frame that show buff/debuff information.';
+	
+	L['Player Anchor'] = true;
+	L['What frame to anchor the class timer bars to.'] = true;
+	L['Target Anchor'] = true;
+	L['Trinket Anchor'] = true;
+	L['Player Buffs'] = true;
+	L['Target Buffs']  = true;
+	L['Player Debuffs'] = true;
+	L['Target Debuffs']  = true;	
+	L['Player'] = true;
+	L['Target'] = true;
+	L['Trinket'] = true;
+	L['Procs'] = true;
+	L['Any Unit'] = true;
+	L['Unit Type'] = true;
+	L["Buff Color"] = true;
+	L["Debuff Color"] = true;
+	L['Attempting to position a frame to a frame that is dependant, try another anchor point.'] = true;
+	L['Remove Color'] = true;
+	L['Reset color back to the bar default.'] = true;
+	L['Add SpellID'] = true;
+	L['Remove SpellID'] = true;
+	L['You cannot remove a spell that is default, disabling the spell for you however.'] = true;
+	L['Spell already exists in filter.'] = true;
+	L['Spell not found.'] = true;
+	L["All"] = true;
+	L["Friendly"] = true;
+	L["Enemy"] = true;
+end
+	
+--ACTIONBARS
+do
+	--HOTKEY TEXTS
+	L['KEY_SHIFT'] = 'S';
+	L['KEY_ALT'] = 'A';
+	L['KEY_CTRL'] = 'C';
+	L['KEY_MOUSEBUTTON'] = 'M';
+	L['KEY_MOUSEWHEELUP'] = 'MU';
+	L['KEY_MOUSEWHEELDOWN'] = 'MD';
+	L['KEY_BUTTON3'] = 'M3';
+	L['KEY_NUMPAD'] = 'N';
+	L['KEY_PAGEUP'] = 'PU';
+	L['KEY_PAGEDOWN'] = 'PD';
+	L['KEY_SPACE'] = 'SpB';
+	L['KEY_INSERT'] = 'Ins';
+	L['KEY_HOME'] = 'Hm';
+	L['KEY_DELETE'] = 'Del';
+	L['KEY_MOUSEWHEELUP'] = 'MwU';
+	L['KEY_MOUSEWHEELDOWN'] = 'MwD';
+
+	--BLIZZARD MODIFERS TO SEARCH FOR
+	L['KEY_LOCALE_SHIFT'] = '(s%-)';
+	L['KEY_LOCALE_ALT'] = '(a%-)';
+	L['KEY_LOCALE_CTRL'] = '(c%-)';
+	
+	--KEYBINDING
+	L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = true;
+	L['Save'] = true;
+	L['Discard'] = true;
+	L['Binds Saved'] = true;
+	L['Binds Discarded'] = true;
+	L["All keybindings cleared for |cff00ff00%s|r."] = true;
+	L[" |cff00ff00bound to |r"] = true;
+	L["No bindings set."] = true;
+	L["Binding"] = true;
+	L["Key"] = true;	
+	L['Trigger'] = true;
+	
+	--CONFIG
+	L["ActionBars"] = true;
+		L["Keybind Mode"] = true;
+		
+	L['Macro Text'] = true;
+		L['Display macro names on action buttons.'] = true;
+	L['Keybind Text'] = true;
+		L['Display bind names on action buttons.'] = true;
+	L['Button Size'] = true;
+		L['The size of the main action buttons.'] = true;
+	L['Button Spacing'] = true;
+		L['The spacing between buttons.'] = true;
+	L['Bar '] = true;
+	L['Backdrop'] = true;
+		L['Toggles the display of the actionbars backdrop.'] = true;
+	L['Buttons'] = true;
+		L['The ammount of buttons to display.'] = true;
+	L['Buttons Per Row'] = true;
+		L['The ammount of buttons to display per row.'] = true;
+	L['Anchor Point'] = true;
+		L['The first button anchors itself to this point on the bar.'] = true;
+	L['Height Multiplier'] = true;
+	L['Width Multiplier'] = true;
+		L['Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop.'] = true;
+	L['Action Paging'] = true;
+		L["This works like a macro, you can run differant situations to get the actionbar to page differantly.\n Example: '[combat] 2;'"] = true;
+	L['Visibility State'] = true;
+		L["This works like a macro, you can run differant situations to get the actionbar to show/hide differantly.\n Example: '[combat] show;hide'"] = true;
+	L['Restore Bar'] = true;
+		L['Restore the actionbars default settings'] = true;
+		L['Set the font size of the action buttons.'] = true;
+	L['Mouse Over'] = true;
+		L['The frame is not shown unless you mouse over the frame.'] = true;
+	L['Pet Bar'] = true;
+	L['Alt-Button Size'] = true;
+		L['The size of the Pet and Shapeshift bar buttons.'] = true;
+	L['ShapeShift Bar'] = true;
+	L['Cooldown Text'] = true;
+		L['Display cooldown text on anything with the cooldown spiril.'] = true;
+	L['Low Threshold'] = true;
+		L['Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red'] = true;
+	L['Expiring'] = true;
+		L['Color when the text is about to expire'] = true;
+	L['Seconds'] = true;
+		L['Color when the text is in the seconds format.'] = true;
+	L['Minutes'] = true;
+		L['Color when the text is in the minutes format.'] = true;
+	L['Hours'] = true;
+		L['Color when the text is in the hours format.'] = true;
+	L['Days'] = true;
+		L['Color when the text is in the days format.'] = true;
+	L['Totem Bar'] = true;
+end
+
+--UNITFRAMES
+do	
+	L['X Offset'] = true;
+	L['Y Offset'] = true;
+	L['RaidDebuff Indicator'] = true;
+	L['Debuff Highlighting'] = true;
+		L['Color the unit healthbar if there is a debuff that can be dispelled by you.'] = true;
+	L['Disable Blizzard'] = true;
+		L['Disables the blizzard party/raid frames.'] = true;
+	L['OOR Alpha'] = true;
+		L['The alpha to set units that are out of range to.'] = true;
+	L['You cannot set the Group Point and Column Point so they are opposite of each other.'] = true;
+	L['Orientation'] = true;
+		L['Direction the health bar moves when gaining/losing health.'] = true;
+		L['Horizontal'] = true;
+		L['Vertical'] = true;
+	L['Camera Distance Scale'] = true;
+		L['How far away the portrait is from the camera.'] = true;
+	L['Offline'] = true;
+	L['UnitFrames'] = true;
+	L['Ghost'] = true;
+	L['Smooth Bars'] = true;
+		L['Bars will transition smoothly.'] = true;
+	L["The font that the unitframes will use."] = true;
+		L["Set the font size for unitframes."] = true;
+	L['Font Outline'] = true;
+		L["Set the font outline."] = true;
+	L['Bars'] = true;
+	L['Fonts'] = true;
+	L['Class Health'] = true;
+		L['Color health by classcolor or reaction.'] = true;
+	L['Class Power'] = true;
+		L['Color power by classcolor or reaction.'] = true;
+	L['Health By Value'] = true;
+		L['Color health by ammount remaining.'] = true;
+	L['Custom Health Backdrop'] = true;
+		L['Use the custom health backdrop color instead of a multiple of the main health color.'] = true;
+	L['Class Backdrop'] = true;
+		L['Color the health backdrop by class or reaction.'] = true;
+	L['Health'] = true;
+	L['Health Backdrop'] = true;
+	L['Tapped'] = true;
+	L['Disconnected'] = true;
+	L['Powers'] = true;
+	L['Reactions'] = true;
+	L['Bad'] = true;
+	L['Neutral'] = true;
+	L['Good'] = true;
+	L['Player Frame'] = true;
+	L['Width'] = true;
+	L['Height'] = true;
+	L['Low Mana Threshold'] = true;
+		L['When you mana falls below this point, text will flash on the player frame.'] = true;
+	L['Combat Fade'] = true;
+		L['Fade the unitframe when out of combat, not casting, no target exists.'] = true;
+	L['Health'] = true;
+		L['Text'] = true;
+		L['Text Format'] = true;	
+	L['Current - Percent'] = true;
+	L['Current - Max'] = true;
+	L['Current'] = true;
+	L['Percent'] = true;
+	L['Deficit'] = true;
+	L['Filled'] = true;
+	L['Spaced'] = true;
+	L['Power'] = true;
+	L['Offset'] = true;
+		L['Offset of the powerbar to the healthbar, set to 0 to disable.'] = true;
+	L['Alt-Power'] = true;
+	L['Overlay'] = true;
+		L['Overlay the healthbar']= true;
+	L['Portrait'] = true;
+	L['Name'] = true;
+	L['Up'] = true;
+	L['Down'] = true;
+	L['Left'] = true;
+	L['Right'] = true;
+	L['Num Rows'] = true;
+	L['Per Row'] = true;
+	L['Buffs'] = true;
+	L['Debuffs'] = true;
+	L['Y-Growth'] = true;
+	L['X-Growth'] = true;
+		L['Growth direction of the buffs'] = true;
+	L['Initial Anchor'] = true;
+		L['The initial anchor point of the buffs on the frame'] = true;
+	L['Castbar'] = true;
+	L['Icon'] = true;
+	L['Latency'] = true;
+	L['Color'] = true;
+	L['Interrupt Color'] = true;
+	L['Match Frame Width'] = true;
+	L['Fill'] = true;
+	L['Classbar'] = true;
+	L['Position'] = true;
+	L['Target Frame'] = true;
+	L['Text Toggle On NPC'] = true;
+		L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'] = true;
+	L['Combobar'] = true;
+	L['Use Filter'] = true;
+		L['Select a filter to use.'] = true;
+		L['Select a filter to use. These are imported from the unitframe aura filter.'] = true;
+	L['Personal Auras'] = true;
+	L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'] = true;
+	L['Create Filter'] = true;
+		L['Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit.'] = true;
+	L['Delete Filter'] = true;
+		L['Delete a created filter, you cannot delete pre-existing filters, only custom ones.'] = true;
+	L["You can't remove a pre-existing filter."] = true;
+	L['Select Filter'] = true;
+	L['Whitelist'] = true;
+	L['Blacklist'] = true;
+	L['Filter Type'] = true;
+		L['Set the filter type, blacklisted filters hide any aura on the like and show all else, whitelisted filters show any aura on the filter and hide all else.'] = true;
+	L['Add Spell'] = true;
+		L['Add a spell to the filter.'] = true;
+	L['Remove Spell'] = true;
+		L['Remove a spell from the filter.'] = true;
+	L['You may not remove a spell from a default filter that is not customly added. Setting spell to false instead.'] = true;
+	L['Unit Reaction'] = true;
+		L['This filter only works for units with the set reaction.'] = true;
+		L['All'] = true;
+		L['Friend'] = true;
+		L['Enemy'] = true;
+	L['Duration Limit'] = true;
+		L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'] = true;
+	L['TargetTarget Frame'] = true;
+	L['Attach To'] = true;
+		L['What to attach the buff anchor frame to.'] = true;
+		L['Frame'] = true;
+	L['Anchor Point'] = true;
+		L['What point to anchor to the frame you set to attach to.'] = true;
+	L['Focus Frame'] = true;
+	L['FocusTarget Frame'] = true;
+	L['Pet Frame'] = true;
+	L['PetTarget Frame'] = true;
+	L['Boss Frames'] = true;
+	L['Growth Direction'] = true;
+	L['Arena Frames'] = true;
+	L['Profiles'] = true;
+	L['New Profile'] = true;
+	L['Delete Profile'] = true;
+	L['Copy From'] = true;
+	L['Talent Spec #1'] = true;
+	L['Talent Spec #2'] = true;
+	L['NEW_PROFILE_DESC'] = 'Here is where you can create new unitframe profiles, you can assign certain profiles to load based on what talent specialization you are currently using. You can also delete, copy or reset profiles here.';
+	L["Delete a profile, doing this will permanently remove the profile from this character's settings."] = true;
+	L["Copy a profile, you can copy the settings from a selected profile to the currently active profile."] = true;
+	L["Assign profile to active talent specialization."] = true;
+	L['Active Profile'] = true;
+	L['Reset Profile'] = true;
+		L['Reset the current profile to match default settings from the primary layout.'] = true;
+	L['Party Frames'] = true;
+	L['Group Point'] = true;
+		L['What each frame should attach itself to, example setting it to TOP every unit will attach its top to the last point bottom.'] = true;
+	L['Column Point'] = true;
+		L['The anchor point for each new column. A value of LEFT will cause the columns to grow to the right.'] = true;
+	L['Max Columns'] = true;
+		L['The maximum number of columns that the header will create.'] = true;
+	L['Units Per Column'] = true;
+		L['The maximum number of units that will be displayed in a single column.'] = true;
+	L['Column Spacing'] = true;
+		L['The amount of space (in pixels) between the columns.'] = true;
+	L['xOffset'] = true;
+		L['An X offset (in pixels) to be used when anchoring new frames.'] = true;
+	L['yOffset'] = true;
+		L['An Y offset (in pixels) to be used when anchoring new frames.'] = true;
+	L['Show Party'] = true;
+		L['When true, the group header is shown when the player is in a party.'] = true;
+	L['Show Raid'] = true;
+		L['When true, the group header is shown when the player is in a raid.'] = true;
+	L['Show Solo'] = true;
+		L['When true, the header is shown when the player is not in any group.'] = true;
+	L['Display Player'] = true;
+		L['When true, the header includes the player when not in a raid.'] = true;
+	L['Visibility'] = true;
+		L['The following macro must be true in order for the group to be shown, in addition to any filter that may already be set.'] = true;
+	L['Blank'] = true;
+	L['Buff Indicator'] = true;
+	L['Color Icons'] = true;
+		L['Color the icon to their set color in the filters section, otherwise use the icon texture.'] = true;
+	L['Size'] = true;
+		L['Size of the indicator icon.'] = true;
+	L["Select Spell"] = true;
+	L['Add SpellID'] = true;
+	L['Remove SpellID'] = true;
+	L["Not valid spell id"] = true;
+	L["Spell not found in list."] = true;
+	L['Show Missing'] = true;
+	L['Any Unit'] = true;
+	L['Move UnitFrames'] = true;
+	L['Reset Positions'] = true;
+	L['Sticky Frames'] = true;
+	L['Attempt to snap frames to nearby frames.'] = true;
+	L['Raid625 Frames'] = true;
+	L['Raid2640 Frames'] = true;
+	L['Copy From'] = true;
+	L['Select a unit to copy settings from.'] = true;
+	L['You cannot copy settings from the same unit.'] = true;
+	L['Restore Defaults'] = true;
+	L['Role Icon'] = true;
+	L['Smart Raid Filter'] = true;
+	L['Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance.'] = true;
+end
+
+--Datatext
+do
+	L['Bandwidth'] = true;
+	L['Download'] = true;
+	L['Total Memory:'] = true;
+	L['Home Latency:'] = true;
+	
+	L.goldabbrev = "|cffffd700g|r"
+	L.silverabbrev = "|cffc7c7cfs|r"
+	L.copperabbrev = "|cffeda55fc|r"	
+	
+	L['Session:'] = true;
+	L["Character: "] = true;
+	L["Server: "] = true;
+	L["Total: "] = true;
+	L["Saved Raid(s)"]= true;
+	L["Currency:"] = true;	
+	L["Earned:"] = true;	
+	L["Spent:"] = true;	
+	L["Deficit:"] = true;	
+	L["Profit:"	] = true;	
+	
+	L["DataTexts"] = true;
+	L["DATATEXT_DESC"] = "Setup the on-screen display of info-texts.";
+	L["Multi-Spec Swap"] = true;
+	L['Swap to an alternative layout when changing talent specs. If turned off only the spec #1 layout will be used.'] = true;
+	L['24-Hour Time'] = true;
+	L['Toggle 24-hour mode for the time datatext.'] = true;
+	L['Local Time'] = true;
+	L['If not set to true then the server time will be displayed instead.'] = true;
+	L['Primary Talents'] = true;
+	L['Secondary Talents'] = true;
+	L['left'] = 'Left';
+	L['middle'] = 'Middle';
+	L['right'] = 'Right';
+	L['LeftChatDataPanel'] = 'Left Chat';
+	L['RightChatDataPanel'] = 'Right Chat';
+	L['LeftMiniPanel'] = 'Minimap Left';
+	L['RightMiniPanel'] = 'Minimap Right';
+	L['Friends'] = true;
+	L['Friends List'] = true;
+	
+	L['Head'] = true;
+	L['Shoulder'] = true;
+	L['Chest'] = true;
+	L['Waist'] = true;
+	L['Wrist'] = true;
+	L['Hands'] = true;
+	L['Legs'] = true;
+	L['Feet'] = true;
+	L['Main Hand'] = true;
+	L['Offhand'] = true;
+	L['Ranged'] = true;
+	L['Mitigation By Level: '] = true;
+	L['lvl'] = true;
+	L["Avoidance Breakdown"] = true;
+	L['AVD: '] = true;
+	L['Unhittable:'] = true;
+	L['AP'] = true;
+	L['SP'] = true;
+	L['HP'] = true;
+end
+
+--Tooltip
+do
+	L["TOOLTIP_DESC"] = 'Setup options for the Tooltip.';
+	L['Targeted By:'] = true;
+	L['Tooltip'] = true;
+	L['Count'] = true;
+	L['Anchor Mode'] = true;
+	L['Set the type of anchor mode the tooltip should use.'] = true;
+	L['Smart'] = true;
+	L['Cursor'] = true;
+	L['Anchor'] = true;
+	L['UF Hide'] = true;
+	L["Don't display the tooltip when mousing over a unitframe."] = true;
+	L["Who's targetting who?"] = true;
+	L["When in a raid group display if anyone in your raid is targetting the current tooltip unit."] = true;
+	L["Combat Hide"] = true;
+	L["Hide tooltip while in combat."] = true;
+	L['Item-ID'] = true;
+	L['Display the item id on item tooltips.'] = true;
+end
+
+--Chat
+do
+	L["Chat"] = true;
+	L['Invalid Target'] = true;
+end
+
+--Skins
+do
+	L["Skins"] = true;
+	L["SKINS_DESC"] = 'Adjust Skin settings.';
+	L['Spacing'] = true;
+	L['The spacing in between bars.'] = true;
+	L["TOGGLESKIN_DESC"] = "Enable/Disable this skin.";
+	L["Encounter Journal"] = true;
+	L["Bags"] = true;
+	L["Reforge Frame"] = true;
+	L["Calendar Frame"] = true;
+	L["Achievement Frame"] = true;
+	L["LF Guild Frame"] = true;
+	L["Inspect Frame"] = true;
+	L["KeyBinding Frame"] = true;
+	L["Guild Bank"] = true;
+	L["Archaeology Frame"] = true;
+	L["Guild Control Frame"] = true;
+	L["Guild Frame"] = true;
+	L["TradeSkill Frame"] = true;
+	L["Raid Frame"] = true;
+	L["Talent Frame"] = true;
+	L["Glyph Frame"] = true;
+	L["Auction Frame"] = true;
+	L["Barbershop Frame"] = true;
+	L["Macro Frame"] = true;
+	L["Debug Tools"] = true;
+	L["Trainer Frame"] = true;
+	L["Socket Frame"] = true;
+	L["Achievement Popup Frames"] = true;
+	L["BG Score"] = true;
+	L["Merchant Frame"] = true;
+	L["Mail Frame"] = true;
+	L["Help Frame"] = true;
+	L["Trade Frame"] = true;
+	L["Gossip Frame"] = true;
+	L["Greeting Frame"] = true;
+	L["World Map"] = true;
+	L["Taxi Frame"] = true;
+	L["LFD Frame"] = true;
+	L["Quest Frames"] = true;
+	L["Petition Frame"] = true;
+	L["Dressing Room"] = true;
+	L["PvP Frames"] = true;
+	L["Non-Raid Frame"] = true;
+	L["Friends"] = true;
+	L["Spellbook"] = true;
+	L["Character Frame"] = true;
+	L["LFR Frame"] = true;
+	L["Misc Frames"] = true;
+	L["Tabard Frame"] = true;
+	L["Guild Registrar"] = true;
+	L["Time Manager"] = true;	
+end
+
+--Misc
+do
+	L['Experience'] = true;
+	L['Bars'] = true;
+	L['XP:'] = true;
+	L['Remaining:'] = true;
+	L['Rested:'] = true;
+	
+	L['Empty Slot'] = true;
+	L['Fishy Loot'] = true;
+	L["Can't Roll"] = true;
+	L['Disband Group'] = true;
+	L['Raid Menu'] = true;
+end
+
+--Bags
+do
+	L['Click to search..'] = true;
+	L['Sort Bags'] = true;
+	L['Stack Items'] = true;
+	L['Vender Grays'] = true;
+	L['Toggle Bags'] = true;
+	L['You must be at a vender.'] = true;
+	L['Vendered gray items for:'] = true;
+	L['No gray items to sell.'] = true;
+	L['Hold Shift:'] = true;
+	L['Stack Special'] = true;
+	L['Sort Special'] = true;
+	L['Purchase'] = true;
+	L["Can't buy anymore slots!"] = true;
+	L['You must purchase a bank slot first!'] = true;
 end

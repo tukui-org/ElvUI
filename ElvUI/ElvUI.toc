@@ -1,19 +1,18 @@
-﻿## Interface: 40200
-## Author: Elv, Tukz
-## Version: 2.3.3
+﻿## Interface: 40300
+## Author: Elv
+## Version: 3.0.0
 ## Title: |cff1784d1ElvUI|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
-## SavedVariables: ElvuiData
-## RequiredDeps: ElvUI_Config
-## OptionalDeps: SharedMedia, SharedMediaAdditionalFonts, Recount, Omen, Skada, Blizzard_CombatText, OptionHouse, ACP, Who Framed Watcher Wabbit, Aurora, !ClassColors, HealBot, Fux, OmniCC, ncCooldown, KLE, KLE_AutoRespond, DXE, DBM-Core, BigWigs, CLCRet, CLCProt
+## SavedVariables: ElvData
+## OptionalDeps: BigWigs, DBM-Core, DXE, Recount, Omen, Skada
 ## X-oUF: ElvUF
 
-init.lua
 developer\load_developer.xml
 libs\load_libs.xml
-media\load_media.xml
-config\load_config.xml
 locales\load_locales.xml
+media\load_media.xml
+init.lua
+config\load_config.xml
 core\load_core.xml
 layout\load_layout.xml
 modules\load_modules.xml

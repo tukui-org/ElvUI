@@ -1,90 +1,81 @@
---------------------------------------------------------------------
--- DURABILITY
---------------------------------------------------------------------
-local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, L, DF = unpack(select(2, ...)); --Engine
+local DT = E:GetModule('DataTexts')
+
+local displayString = ""
+local tooltipString = "%d%%"
+local total, totalDurability, totalPerc = 0, 0, 0
+local current, max, LastPanel
+local invDurability = {}
+local slots = {
+	["RangedSlot"] = L['Ranged'],
+	["SecondaryHandSlot"] = L['Offhand'],
+	["MainHandSlot"] = L['Main Hand'],
+	["FeetSlot"] = L['Feet'],
+	["LegsSlot"] = L['Legs'],
+	["HandsSlot"] = L['Hands'],
+	["WristSlot"] = L['Wrist'],
+	["WaistSlot"] = L['Waist'],
+	["ChestSlot"] = L['Chest'],
+	["ShoulderSlot"] = L['Shoulder'],
+	["HeadSlot"] = L['Head'],
+}
+
+local function OnEvent(self, event, ...)
+	LastPanel = self
+	total = 0
+	totalDurability = 0
+	totalPerc = 0
 	
-if not C["datatext"].dur or C["datatext"].dur == 0 then return end
-
-local join = string.join
-local floor = math.floor
-
-local displayString = string.join("", DURABILITY, ": ", E.ValColor, "%d%%|r")
-local tooltipString = "%d %%"
-
-local Stat = CreateFrame("Frame")
-Stat:EnableMouse(true)
-Stat:SetFrameStrata("MEDIUM")
-Stat:SetFrameLevel(3)
-
-local fader = CreateFrame("Frame", "DurabilityDataText", ElvuiInfoLeft)
-
-local Text  = DurabilityDataText:CreateFontString(nil, "OVERLAY")
-Text:SetFont(C["media"].font, C["datatext"].fontsize, "THINOUTLINE")
-Text:SetShadowOffset(E.mult, -E.mult)
-Text:SetShadowColor(0, 0, 0, 0.4)
-E.PP(C["datatext"].dur, Text)
-Stat:SetParent(Text:GetParent())
-fader:SetFrameLevel(fader:GetParent():GetFrameLevel())
-fader:SetFrameStrata(fader:GetParent():GetFrameStrata())
-
-local Total = 0
-local current, max
-
-E.SetUpAnimGroup(DurabilityDataText)
-local function OnEvent(self)
-	Total = 0
-	for i = 1, 11 do
-		if GetInventoryItemLink("player", L.Slots[i][1]) ~= nil then
-			current, max = GetInventoryItemDurability(L.Slots[i][1])
-			if current then 
-				L.Slots[i][3] = current/max
-				Total = Total + 1
-			end
+	for index, value in pairs(slots) do
+		local slot = GetInventorySlotInfo(index)
+		current, max = GetInventoryItemDurability(slot)
+		
+		if current then
+			totalDurability = totalDurability + current
+			invDurability[value] = (current/max)*100
+			totalPerc = totalPerc + (current/max)*100
+			total = total + 1
 		end
 	end
-	table.sort(L.Slots, function(a, b) return a[3] < b[3] end)
-
-	if Total > 0 then
-		Text:SetFormattedText(displayString, floor(L.Slots[1][3]*100))
-		if floor(L.Slots[1][3]*100) <= 20 then
-			local int = -1
-			Stat:SetScript("OnUpdate", function(self, t)
-				int = int - t
-				if int < 0 then
-					E.Flash(DurabilityDataText, 0.53)
-					int = 1
-				end
-			end)				
-		else
-			Stat:SetScript("OnUpdate", function() end)
-			E.StopFlash(DurabilityDataText)
-		end
-	else
-		Text:SetFormattedText(displayString, 100)
+	
+	if total > 0 then
+		self.text:SetFormattedText(displayString, totalPerc/total)
 	end
-	-- Setup Durability Tooltip
-	self:SetAllPoints(Text)
 end
 
-Stat:SetScript("OnEnter", function()
-	if not InCombatLockdown() then
-		local anchor, panel, xoff, yoff = E.DataTextTooltipAnchor(fader)
-		GameTooltip:SetOwner(panel, anchor, xoff, yoff)
-		GameTooltip:ClearLines()
-		for i = 1, 11 do
-			if L.Slots[i][3] ~= 1000 then
-				green = L.Slots[i][3]*2
-				red = 1 - green
-				GameTooltip:AddDoubleLine(L.Slots[i][2], format(tooltipString, floor(L.Slots[i][3]*100)), 1 ,1 , 1, red + 1, green, 0)
-			end
-		end
-		GameTooltip:Show()
-	end
-end)
-Stat:SetScript("OnLeave", function() GameTooltip:Hide() end)
+local function Click()
+	ToggleCharacter("PaperDollFrame")
+end
 
-Stat:RegisterEvent("UPDATE_INVENTORY_DURABILITY")
-Stat:RegisterEvent("MERCHANT_SHOW")
-Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
-Stat:SetScript("OnMouseDown", function() ToggleCharacter("PaperDollFrame") end)
-Stat:SetScript("OnEvent", OnEvent)
+local function OnEnter(self)
+	DT:SetupTooltip(self)
+	
+	for slot, durability in pairs(invDurability) do
+		GameTooltip:AddDoubleLine(slot, format(tooltipString, durability), 1, 1, 1, E:ColorGradient(durability * 0.01, 1, 0, 0, 1, 1, 0, 0, 1, 0))
+	end
+		
+	GameTooltip:Show()
+end
+
+local function ValueColorUpdate(hex, r, g, b)
+	displayString = string.join("", DURABILITY, ": ", hex, "%d%%|r")
+	
+	if LastPanel ~= nil then
+		OnEvent(LastPanel, 'ELVUI_COLOR_UPDATE')
+	end
+end
+E['valueColorUpdateFuncs'][ValueColorUpdate] = true
+
+
+--[[
+	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc)
+	
+	name - name of the datatext (required)
+	events - must be a table with string values of event names to register 
+	eventFunc - function that gets fired when an event gets triggered
+	updateFunc - onUpdate script target function
+	click - function to fire when clicking the datatext
+	onEnterFunc - function to fire OnEnter
+]]
+DT:RegisterDatatext('Durability', {'PLAYER_ENTERING_WORLD', "UPDATE_INVENTORY_DURABILITY", "MERCHANT_SHOW"}, OnEvent, nil, Click, OnEnter)
+

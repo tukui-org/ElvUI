@@ -1,159 +1,6 @@
+local E, L, DF = unpack(select(2, ...)); --Engine
+local M = E:GetModule('Maps');
 
-local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
-
---------------------------------------------------------------------
--- MINIMAP ROUND TO SQUARE AND MINIMAP SETTING
---------------------------------------------------------------------
-
-Minimap:ClearAllPoints()
-Minimap:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -25, -5)
-Minimap:SetSize(E.minimapsize - E.Scale(4), E.minimapsize - E.Scale(4))
-
-function E.PostMinimapMove(frame)
-	local point, _, _, _, _ = frame:GetPoint()
-	if E.Movers and E.Movers[frame:GetName()] == nil or E.Movers == nil then
-		point, _, _, _, _ = Minimap:GetPoint()
-		frame:ClearAllPoints()
-		if RaidBuffReminder then
-			frame:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -(6 + RaidBuffReminder:GetWidth()), -6)
-		else
-			frame:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -6, -6)
-		end
-	end
-	
-	local playerFrame
-	local bar
-	if ElvDPS_player then
-		playerFrame = ElvDPS_player
-	elseif ElvHeal_player then
-		playerFrame = ElvHeal_player
-	end
-	
-	if playerFrame then
-		if E.level ~= MAX_PLAYER_LEVEL then
-			bar = playerFrame.Experience
-		else
-			bar = playerFrame.Reputation
-		end	
-	end
-	
-	if point:match("BOTTOM") then
-		ElvuiMinimapStatsLeft:ClearAllPoints()
-		ElvuiMinimapStatsLeft:Point("BOTTOMLEFT", ElvuiMinimap, "TOPLEFT", 0, 1)
-		ElvuiMinimapStatsRight:ClearAllPoints()
-		ElvuiMinimapStatsRight:Point("BOTTOMRIGHT", ElvuiMinimap, "TOPRIGHT", 0, 1)	
-		
-		if bar then
-			bar:ClearAllPoints()
-			bar:Point("BOTTOMLEFT", ElvuiMinimapStatsLeft, "TOPLEFT", 2, 3)
-			E.ReputationPositionUpdate(bar)
-		end
-	else
-		ElvuiMinimapStatsLeft:ClearAllPoints()
-		ElvuiMinimapStatsLeft:Point("TOPLEFT", ElvuiMinimap, "BOTTOMLEFT", 0, -1)
-		ElvuiMinimapStatsRight:ClearAllPoints()
-		ElvuiMinimapStatsRight:Point("TOPRIGHT", ElvuiMinimap, "BOTTOMRIGHT", 0, -1)
-		
-		if bar then
-			bar:ClearAllPoints()
-			bar:Point("TOPLEFT", ElvuiMinimapStatsLeft, "BOTTOMLEFT", 2, -3)
-			E.ReputationPositionUpdate(bar)
-		end		
-	end
-end
-
-E.CreateMover(Minimap, "MinimapMover", "Minimap", nil, E.PostMinimapMove) --Too easy muahaha
-
---just incase these dont fit on the screen when you move the minimap
-if not E.IsPTRVersion() then
-	LFDSearchStatus:SetClampedToScreen(true)
-	LFDDungeonReadyStatus:SetClampedToScreen(true)
-end
-
--- Hide Border
-MinimapBorder:Hide()
-MinimapBorderTop:Hide()
-
--- Hide Zoom Buttons
-MinimapZoomIn:Hide()
-MinimapZoomOut:Hide()
-
--- Hide Voice Chat Frame
-MiniMapVoiceChatFrame:Hide()
-
--- Hide North texture at top
-MinimapNorthTag:SetTexture(nil)
-
--- Hide Game Time
-GameTimeFrame:Hide()
-
--- Hide Zone Frame
-MinimapZoneTextButton:Hide()
-
--- Hide Tracking Button
-MiniMapTracking:Hide()
-
--- Hide Mail Button
-MiniMapMailFrame:ClearAllPoints()
-MiniMapMailFrame:SetPoint("TOPRIGHT", Minimap, E.Scale(3), E.Scale(4))
-MiniMapMailBorder:Hide()
-MiniMapMailIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\mail")
-
--- Move battleground icon
-MiniMapBattlefieldFrame:ClearAllPoints()
-MiniMapBattlefieldFrame:SetPoint("BOTTOMRIGHT", Minimap, E.Scale(3), 0)
-MiniMapBattlefieldBorder:Hide()
-
--- Hide world map button
-MiniMapWorldMapButton:Hide()
-
--- shitty 3.3 flag to move
-MiniMapInstanceDifficulty:ClearAllPoints()
-MiniMapInstanceDifficulty:SetParent(Minimap)
-MiniMapInstanceDifficulty:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 0, 0)
-
-GuildInstanceDifficulty:ClearAllPoints()
-GuildInstanceDifficulty:SetParent(Minimap)
-GuildInstanceDifficulty:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 0, 0)
-
-local function UpdateLFG()
-	MiniMapLFGFrame:ClearAllPoints()
-	MiniMapLFGFrame:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", E.Scale(2), E.Scale(1))
-	MiniMapLFGFrameBorder:Hide()
-end
-hooksecurefunc("MiniMapLFG_UpdateIsShown", UpdateLFG)
-
--- Enable mouse scrolling
-Minimap:EnableMouseWheel(true)
-Minimap:SetScript("OnMouseWheel", function(self, d)
-	if d > 0 then
-		_G.MinimapZoomIn:Click()
-	elseif d < 0 then
-		_G.MinimapZoomOut:Click()
-	end
-end)
-
-ElvuiMinimap:RegisterEvent("ADDON_LOADED")
-ElvuiMinimap:SetScript("OnEvent", function(self, event, addon)
-	if addon == "Blizzard_TimeManager" then
-		-- Hide Game Time
-		TimeManagerClockButton:Kill()
-		--InterfaceOptionsDisplayPanelShowClock:Kill()
-	elseif addon == "Blizzard_FeedbackUI" then
-		FeedbackUIButton:Kill()
-	end
-end)
-
-if FeedbackUIButton then
-	FeedbackUIButton:Kill()
-end
-
-
-----------------------------------------------------------------------------------------
--- Right click menu
-----------------------------------------------------------------------------------------
-
---Hax so i don't have to localize this word, remove '/' and capitalize first letter
 local calendar_string = string.gsub(SLASH_CALENDAR1, "/", "")
 calendar_string = string.gsub(calendar_string, "^%l", string.upper)
 
@@ -199,10 +46,10 @@ local menuList = {
 	end},
 	{text = LFG_TITLE,
 	func = function() ToggleFrame(LFDParentFrame) end},
-	{text = LOOKING_FOR_RAID,
-	func = function() if E.IsPTRVersion() then ToggleFriendsFrame(4) else ToggleFrame(LFRParentFrame) end end},
+	{text = E:IsPTRVersion() and RAID_FINDER or LOOKING_FOR_RAID,
+	func = function() if E:IsPTRVersion() then RaidMicroButton:Click() else ToggleFrame(LFRParentFrame) end end},
 	{text = ENCOUNTER_JOURNAL, 
-	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') and E.IsPTRVersion() then LoadAddOn('Blizzard_EncounterJournal'); end ToggleFrame(EncounterJournal) end},	
+	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') and E:IsPTRVersion() then LoadAddOn('Blizzard_EncounterJournal'); end ToggleFrame(EncounterJournal) end},	
 	{text = L_CALENDAR,
 	func = function()
 	if(not CalendarFrame) then LoadAddOn("Blizzard_Calendar") end
@@ -212,36 +59,12 @@ local menuList = {
 	func = function() ToggleHelpFrame() end},
 }
 
-Minimap:SetScript("OnMouseUp", function(self, btn)
-	local position = TukuiMinimap:GetPoint()
-	if btn == "RightButton" then
-		local xoff = 0
-		
-		if position:match("RIGHT") then xoff = E.Scale(-16) end
-		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, TukuiMinimap, xoff, E.Scale(-2))
-	elseif btn == "MiddleButton" and C["actionbar"].enable == true and C["actionbar"].microbar ~= true then
-		if position:match("LEFT") then
-			EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
-		else
-			EasyMenu(menuList, menuFrame, "cursor", -160, 0, "MENU", 2)
-		end
-	else
-		Minimap_OnClick(self)
-	end
-end)
-
--- Set Square Map Mask
-Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
-
--- For others mods with a minimap button, set minimap buttons position in square mode.
-function GetMinimapShape() return 'SQUARE' end
-
--- reskin LFG dropdown
-if not E.IsPTRVersion() then
-	LFDSearchStatus:SetTemplate("Default")
+--Support for other mods
+function GetMinimapShape() 
+	return 'SQUARE' 
 end
 
-local function GetLocTextColor()
+function M:GetLocTextColor()
 	local pvpType = GetZonePVPInfo()
 	if pvpType == "arena" then
 		return 0.84, 0.03, 0.03
@@ -260,124 +83,153 @@ local function GetLocTextColor()
 	end	
 end
 
-if C["general"].upperpanel ~= true then
-	--Style Zone and Coord panels
-	local m_zone = CreateFrame("Frame",nil,E.UIParent)
-	m_zone:Height(20)
-	m_zone:SetFrameLevel(5)
-	m_zone:SetFrameStrata("LOW")
-	m_zone:Point("TOPLEFT", Minimap, "TOPLEFT", 2, -2)
-	m_zone:Point("TOPRIGHT",Minimap,-2,-2)
+function M:ADDON_LOADED(event, addon)
+	if addon == "Blizzard_TimeManager" then
+		TimeManagerClockButton:Kill()
+	elseif addon == "Blizzard_FeedbackUI" then
+		FeedbackUIButton:Kill()
+	end
+end
 
-	local m_zone_text = m_zone:CreateFontString(nil,"Overlay")
-	m_zone_text:SetFont(C["media"].font,C["general"].fontscale,"OUTLINE")
-	m_zone_text:SetPoint("Center",0,0)
-	m_zone_text:SetJustifyH("CENTER")
-	m_zone_text:SetJustifyV("MIDDLE")
-	m_zone_text:SetHeight(E.Scale(12))
+function M:Minimap_OnMouseUp(btn)
+	local position = Minimap:GetPoint()
+	if btn == "RightButton" then
+		local xoff = 0
 
-	local m_coord = CreateFrame("Frame",nil,E.UIParent)
-	m_coord:Width(40)
-	m_coord:Height(20)
-	m_coord:Point("BOTTOMLEFT", Minimap, "BOTTOMLEFT", 2, 2)
-	m_coord:SetFrameStrata("LOW")
-
-	local m_coord_text = m_coord:CreateFontString(nil,"Overlay")
-	m_coord_text:SetFont(C["media"].font,C["general"].fontscale,"OUTLINE")
-	m_coord_text:SetPoint("Center",E.Scale(-1),0)
-	m_coord_text:SetJustifyH("CENTER")
-	m_coord_text:SetJustifyV("MIDDLE")
-	 
-
-	local ela = 0
-	local coord_Update = function(self,t)
-		local inInstance, _ = IsInInstance()
-		ela = ela - t
-		if ela > 0 then return end
-		local x,y = GetPlayerMapPosition("player")
-		local xt,yt
-		x = math.floor(100 * x)
-		y = math.floor(100 * y)
-		if x ==0 and y==0 then
-			m_coord_text:SetText(" ")	
+		if position:match("RIGHT") then xoff = E:Scale(-16) end
+	
+		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, Minimap, xoff, E:Scale(-2))
+	elseif btn == "MiddleButton" then
+		if position:match("LEFT") then
+			EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
 		else
-			if x < 10 then
-				xt = "0"..x
-			else
-				xt = x
-			end
-			if y < 10 then
-				yt = "0"..y
-			else
-				yt = y
-			end
-			m_coord_text:SetText(xt..E.ValColor..",|r"..yt)
+			EasyMenu(menuList, menuFrame, "cursor", -160, 0, "MENU", 2)
 		end
-		ela = .2
+	else
+		Minimap_OnClick(self)
 	end
-	 
-	m_coord:SetScript("OnUpdate",coord_Update)
-	 
-	local zone_Update = function()
-		local pvpType = GetZonePVPInfo()
-		m_zone_text:SetText(strsub(GetMinimapZoneText(),1,23))
-		m_zone_text:SetTextColor(GetLocTextColor())
+end
+
+function M:Minimap_OnMouseWheel(d)
+	if d > 0 then
+		_G.MinimapZoomIn:Click()
+	elseif d < 0 then
+		_G.MinimapZoomOut:Click()
 	end
-	 
-	m_zone:RegisterEvent("PLAYER_ENTERING_WORLD")
-	m_zone:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-	m_zone:RegisterEvent("ZONE_CHANGED")
-	m_zone:RegisterEvent("ZONE_CHANGED_INDOORS")
-	m_zone:SetScript("OnEvent",zone_Update) 
-	 
-	local a,k = CreateFrame("Frame"),4
-	a:SetScript("OnUpdate",function(self,t)
-		k = k - t
-		if k > 0 then return end
-		self:Hide()
-		zone_Update()
-	end)
-else
-	local x,y = GetPlayerMapPosition("player")
-	x = math.floor(100 * x)
-	y = math.floor(100 * y)	
+end
+
+function M:Update_ZoneText()
+	Minimap.location:SetText(strsub(GetMinimapZoneText(),1,25))
+	Minimap.location:SetTextColor(M:GetLocTextColor())
+end
+
+function M:UpdateLFG()
+	MiniMapLFGFrame:ClearAllPoints()
+	MiniMapLFGFrame:Point("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", 2, 1)
+	MiniMapLFGFrameBorder:Hide()
+end
+
+function M:Minimap_UpdateSettings()
+	Minimap:Size(E.MinimapSize, E.MinimapSize)
+	MMHolder:Width((Minimap:GetWidth() + 4) + E.RBRWidth)
+	MMHolder:Height(Minimap:GetHeight() + 27)	
+	Minimap.location:Width(E.MinimapSize)
 	
-	ElvuiLoc:FontString("zone", C["media"].font, C["datatext"].fontsize, "THINOUTLINE")
-	ElvuiLoc.zone:SetPoint("CENTER")
-	ElvuiLoc.zone:SetText(strsub(GetMinimapZoneText(),1,23))
-	ElvuiLoc:EnableMouse(true)
-	ElvuiLoc:SetScript("OnMouseDown", function() ToggleFrame(WorldMapFrame) end)
+	E.MinimapHeight = E.MinimapSize + 5
+	E.MinimapWidth = E.MinimapSize
+end
+
+function M:LoadMinimap()	
+	local mmholder = CreateFrame('Frame', 'MMHolder', E.UIParent)
+	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
+	mmholder:Width((Minimap:GetWidth() + 29) + E.RBRWidth)
+	mmholder:Height(Minimap:GetHeight() + 53)
 	
+	Minimap:ClearAllPoints()
+	Minimap:Point("TOPLEFT", mmholder, "TOPLEFT", 2, -2)
+	Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
+	Minimap:CreateBackdrop('Default')
 	
-	ElvuiLocX:FontString("coord", C["media"].font, C["datatext"].fontsize, "THINOUTLINE")
-	ElvuiLocX.coord:SetPoint("CENTER", ElvuiLocX, "CENTER")
-	ElvuiLocX.coord:SetText(x)	
-	ElvuiLocX.coord:SetTextColor(unpack(C["media"].valuecolor))
+	--Fix spellbook taint
+	ShowUIPanel(SpellBookFrame)
+	HideUIPanel(SpellBookFrame)	
 	
-	ElvuiLocY:FontString("coord", C["media"].font, C["datatext"].fontsize, "THINOUTLINE")
-	ElvuiLocY.coord:SetPoint("CENTER", ElvuiLocY, "CENTER")
-	ElvuiLocY.coord:SetText(y)	
-	ElvuiLocY.coord:SetTextColor(unpack(C["media"].valuecolor))
+	Minimap.location = Minimap:CreateFontString(nil, 'OVERLAY')
+	Minimap.location:FontTemplate(nil, nil, 'OUTLINE')
+	Minimap.location:Point('TOP', Minimap, 'TOP', 0, -2)
+	Minimap.location:SetJustifyH("CENTER")
+	Minimap.location:SetJustifyV("MIDDLE")			
 	
-	ElvuiLoc:SetScript("OnUpdate", function(self, elapsed)
-		if(self.elapsed and self.elapsed > 0.2) then
-			local x,y = GetPlayerMapPosition("player")
-			x = math.floor(100 * x)
-			y = math.floor(100 * y)			
-			self.zone:SetText(strsub(GetMinimapZoneText(),1,23))
-			self.zone:SetTextColor(GetLocTextColor())
-			
-			if x ==0 and y==0 then
-				ElvuiLocX.coord:SetText("??")
-				ElvuiLocY.coord:SetText("??")
-			else
-				ElvuiLocX.coord:SetText(x)
-				ElvuiLocY.coord:SetText(y)				
-			end
-			self.elapsed = 0
-		else
-			self.elapsed = (self.elapsed or 0) + elapsed
-		end	
-	end)
+	if not E:IsPTRVersion() then
+		LFDSearchStatus:SetTemplate("Default")
+		LFDSearchStatus:SetClampedToScreen(true)
+		LFDDungeonReadyStatus:SetClampedToScreen(true)
+	else
+		LFGSearchStatus:SetTemplate("Default")
+		LFGSearchStatus:SetClampedToScreen(true)
+		LFGDungeonReadyStatus:SetClampedToScreen(true)	
+	end 
 	
+	MinimapBorder:Hide()
+	MinimapBorderTop:Hide()
+
+	MinimapZoomIn:Hide()
+	MinimapZoomOut:Hide()
+
+	MiniMapVoiceChatFrame:Hide()
+
+	MinimapNorthTag:Kill()
+
+	GameTimeFrame:Hide()
+
+	MinimapZoneTextButton:Hide()
+
+	MiniMapTracking:Hide()
+
+	MiniMapMailFrame:ClearAllPoints()
+	MiniMapMailFrame:Point("TOPRIGHT", Minimap, 3, 4)
+	MiniMapMailBorder:Hide()
+	MiniMapMailIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\mail")
+
+	MiniMapBattlefieldFrame:ClearAllPoints()
+	MiniMapBattlefieldFrame:Point("BOTTOMRIGHT", Minimap, 3, 0)
+	MiniMapBattlefieldBorder:Hide()
+
+	MiniMapWorldMapButton:Hide()
+
+	MiniMapInstanceDifficulty:ClearAllPoints()
+	MiniMapInstanceDifficulty:SetParent(Minimap)
+	MiniMapInstanceDifficulty:Point("TOPLEFT", Minimap, "TOPLEFT", 0, 0)
+
+	GuildInstanceDifficulty:ClearAllPoints()
+	GuildInstanceDifficulty:SetParent(Minimap)
+	GuildInstanceDifficulty:Point("TOPLEFT", Minimap, "TOPLEFT", 0, 0)
+	
+	if TimeManagerClockButton then
+		TimeManagerClockButton:Kill()
+	end
+	
+	if FeedbackUIButton then
+		FeedbackUIButton:Kill()
+	end
+	
+	E:CreateMover(MMHolder, 'MinimapMover', 'Minimap', nil, nil)
+	
+	Minimap:EnableMouseWheel(true)
+	Minimap:SetScript("OnMouseWheel", M.Minimap_OnMouseWheel)	
+	Minimap:SetScript("OnMouseUp", M.Minimap_OnMouseUp)
+	
+	if not E:IsPTRVersion() then
+		self:SecureHook("MiniMapLFG_UpdateIsShown", "UpdateLFG")
+	else
+		MiniMapLFGFrame:ClearAllPoints()
+		MiniMapLFGFrame:Point("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", 2, 1)
+		MiniMapLFGFrameBorder:Hide()		
+	end
+	self:RegisterEvent("PLAYER_ENTERING_WORLD", "Update_ZoneText")
+	self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "Update_ZoneText")
+	self:RegisterEvent("ZONE_CHANGED", "Update_ZoneText")
+	self:RegisterEvent("ZONE_CHANGED_INDOORS", "Update_ZoneText")		
+	self:RegisterEvent('ADDON_LOADED')
+	self:Minimap_UpdateSettings()
 end

@@ -1,22 +1,14 @@
---------------------------------------------------------------------
--- System Stats
---------------------------------------------------------------------
-local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, L, DF = unpack(select(2, ...)); --Engine
+local DT = E:GetModule('DataTexts')
 
-if not C["datatext"].system or C["datatext"].system == 0 then return end
-
-local Stat = CreateFrame("Frame")
-Stat:SetFrameStrata("MEDIUM")
-Stat:SetFrameLevel(3)
-Stat:EnableMouse(true)
-Stat.tooltip = false
-
-local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
-Text:SetFont(C["media"].font, C["datatext"].fontsize, "THINOUTLINE")
-Text:SetShadowOffset(E.mult, -E.mult)
-Text:SetShadowColor(0, 0, 0, 0.4)
-E.PP(C["datatext"].system, Text)
-Stat:SetParent(Text:GetParent())
+-- initial delay for update (let the ui load)
+local int, int2 = 6, 5
+local statusColors = {
+	"|cff0CD809",
+	"|cffE8DA0F",
+	"|cffFF9000",
+	"|cffD80909"
+}
 
 local bandwidthString = "%.2f Mbps"
 local percentageString = "%.2f%%"
@@ -36,17 +28,15 @@ local function formatMem(memory)
 end
 
 local memoryTable = {}
-
-local function RebuildAddonList(self)
+local function RebuildAddonList()
 	local addOnCount = GetNumAddOns()
-	if (addOnCount == #memoryTable) or self.tooltip == true then return end
+	if (addOnCount == #memoryTable) then return end
 
 	-- Number of loaded addons changed, create new memoryTable for all addons
 	memoryTable = {}
 	for i = 1, addOnCount do
 		memoryTable[i] = { i, select(2, GetAddOnInfo(i)), 0, IsAddOnLoaded(i) }
 	end
-	self:SetAllPoints(Text)
 end
 
 local function UpdateMemory()
@@ -70,21 +60,12 @@ local function UpdateMemory()
 	return totalMemory
 end
 
--- initial delay for update (let the ui load)
-local int, int2 = 6, 5
-local statusColors = {
-	"|cff0CD809",
-	"|cffE8DA0F",
-	"|cffFF9000",
-	"|cffD80909"
-}
-
 local function Update(self, t)
 	int = int - t
 	int2 = int2 - t
 	
 	if int < 0 then
-		RebuildAddonList(self)
+		RebuildAddonList()
 		int = 10
 	end
 	if int2 < 0 then
@@ -108,27 +89,31 @@ local function Update(self, t)
 			fpscolor = 3
 		end
 		local displayFormat = string.join("", "FPS: ", statusColors[fpscolor], "%d|r MS: ", statusColors[latencycolor], "%d|r")
-		Text:SetFormattedText(displayFormat, framerate, latency)
+		self.text:SetFormattedText(displayFormat, framerate, latency)
 		int2 = 1
 	end
 end
-Stat:SetScript("OnMouseDown", function () collectgarbage("collect") Update(Stat, 20) end)
-Stat:SetScript("OnEnter", function(self)
+
+local function Click()
+	collectgarbage("collect");
+end
+
+local function OnEnter(self)
+	DT:SetupTooltip(self)
+
 	local bandwidth = GetAvailableBandwidth()
 	local home_latency = select(3, GetNetStats()) 
-	local anchor, panel, xoff, yoff = E.DataTextTooltipAnchor(Text)
-	GameTooltip:SetOwner(panel, anchor, xoff, yoff)
-	GameTooltip:ClearLines()
 	
-	GameTooltip:AddDoubleLine(L.datatext_homelatency, string.format(homeLatencyString, home_latency), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+	GameTooltip:AddDoubleLine(L['Home Latency:'], string.format(homeLatencyString, home_latency), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	
 	if bandwidth ~= 0 then
-		GameTooltip:AddDoubleLine(L.datatext_bandwidth , string.format(bandwidthString, bandwidth),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
-		GameTooltip:AddDoubleLine(L.datatext_download , string.format(percentageString, GetDownloadedPercentage() *100),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
+		GameTooltip:AddDoubleLine(L['Bandwidth'] , string.format(bandwidthString, bandwidth),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+		GameTooltip:AddDoubleLine(L['Download'] , string.format(percentageString, GetDownloadedPercentage() *100),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
 		GameTooltip:AddLine(" ")
 	end
+	
 	local totalMemory = UpdateMemory()
-	GameTooltip:AddDoubleLine(L.datatext_totalmemusage, formatMem(totalMemory), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+	GameTooltip:AddDoubleLine(L['Total Memory:'], formatMem(totalMemory), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	GameTooltip:AddLine(" ")
 	for i = 1, #memoryTable do
 		if (memoryTable[i][4]) then
@@ -138,7 +123,17 @@ Stat:SetScript("OnEnter", function(self)
 		end						
 	end
 	GameTooltip:Show()
-end)
-Stat:SetScript("OnLeave", function() GameTooltip:Hide() end)
-Stat:SetScript("OnUpdate", Update) 
-Update(Stat, 6)
+end
+
+--[[
+	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc)
+	
+	name - name of the datatext (required)
+	events - must be a table with string values of event names to register 
+	eventFunc - function that gets fired when an event gets triggered
+	updateFunc - onUpdate script target function
+	click - function to fire when clicking the datatext
+	onEnterFunc - function to fire OnEnter
+]]
+DT:RegisterDatatext('System', nil, nil, Update, Click, OnEnter)
+
