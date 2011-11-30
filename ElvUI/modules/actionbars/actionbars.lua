@@ -464,8 +464,36 @@ local function SetupFlyoutButton()
 		if _G["SpellFlyoutButton"..i] then
 			AB:StyleButton(_G["SpellFlyoutButton"..i], true)
 			_G["SpellFlyoutButton"..i]:StyleButton()
+			_G["SpellFlyoutButton"..i]:HookScript('OnEnter', function(self)
+				local parent = self:GetParent()
+				local parentAnchorButton = select(2, parent:GetPoint())
+				
+				local enterFunc = parentAnchorButton:GetScript('OnEnter')
+				enterFunc(parentAnchorButton)
+			end)
+			_G["SpellFlyoutButton"..i]:HookScript('OnLeave', function(self)
+				local parent = self:GetParent()
+				local parentAnchorButton = select(2, parent:GetPoint())
+				
+				local leaveFunc = parentAnchorButton:GetScript('OnLeave')
+				leaveFunc(parentAnchorButton)			
+			end)
 		end
 	end
+	
+	SpellFlyout:HookScript('OnEnter', function(self)
+		local anchorButton = select(2, self:GetPoint())
+		
+		local enterFunc = anchorButton:GetScript('OnEnter')
+		enterFunc(anchorButton)	
+	end)
+	
+	SpellFlyout:HookScript('OnLeave', function(self)
+		local anchorButton = select(2, self:GetPoint())
+		
+		local laeveFunc = anchorButton:GetScript('OnLeave')
+		laeveFunc(anchorButton)		
+	end)	
 end
 SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
 
