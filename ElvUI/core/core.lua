@@ -314,14 +314,14 @@ function E:MoveUI(override, type)
 	end	
 end
 
-function E:ResetUI()
-	self:ResetMovers()
+function E:ResetUI(...)
+	self:ResetMovers(...)
 	
 	if self.UnitFrames then
-		ElvUF:ResetUF()	
+		ElvUF:ResetUF(...)	
 	end
 	
 	if self.ActionBars then
-		self.ActionBars:ResetMovers()
+		self.ActionBars:ResetMovers(...)
 	end	
 end
