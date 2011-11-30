@@ -964,7 +964,7 @@ DF['unitframe'] = {
 				},
 				['roleIcon'] = {
 					['enable'] = false,
-					['position'] = 'TOPRIGHT',
+					['position'] = 'BOTTOM',
 				},					
 			},					
 			['raid2640'] = {
@@ -1037,11 +1037,7 @@ DF['unitframe'] = {
 					['size'] = 6,
 					['fontsize'] = 8,
 					['colorIcons'] = true,
-				},
-				['roleIcon'] = {
-					['enable'] = false,
-					['position'] = 'TOPRIGHT',
-				},					
+				},			
 			},			
 		},
 	},

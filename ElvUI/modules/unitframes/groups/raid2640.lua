@@ -21,7 +21,6 @@ function UF:Construct_Raid2640Frames(unitGroup)
 	self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
 	self.DebuffHighlight = UF:Construct_DebuffHighlight(self)
 	self.ResurrectIcon = UF:Construct_ResurectionIcon(self)
-	self.LFDRole = UF:Construct_RoleIcon(self)
 	
 	table.insert(self.__elements, UF.UpdateThreat)
 	self:RegisterEvent('PLAYER_TARGET_CHANGED', UF.UpdateThreat)
@@ -364,25 +363,6 @@ function UF:Update_Raid2640Frames(frame, db)
 			if frame:IsElementEnabled('DebuffHighlight') then
 				frame:DisableElement('DebuffHighlight')
 			end		
-		end
-	end
-
-	--Role Icon
-	do
-		local role = frame.LFDRole
-		if db.roleIcon.enable then
-			if not frame:IsElementEnabled('LFDRole') then
-				frame:EnableElement('LFDRole')				
-			end			
-			
-			local x, y = self:GetPositionOffset(db.roleIcon.position, 1)
-			role:ClearAllPoints()
-			role:Point(db.roleIcon.position, frame.Health, db.roleIcon.position, x, y)
-		else
-			if frame:IsElementEnabled('LFDRole') then
-				frame:DisableElement('LFDRole')
-			end		
-			role:Hide()
 		end
 	end
 	

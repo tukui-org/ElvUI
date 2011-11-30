@@ -5418,8 +5418,8 @@ E.Options.args.unitframe.args.raid625 = {
 			order = 700,
 			type = 'group',
 			name = L['Role Icon'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['party']['roleIcon'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['party']['roleIcon'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,	
+			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['raid625']['roleIcon'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid625']['roleIcon'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625') end,	
 			args = {
 				enable = {
 					type = 'toggle',
@@ -5927,26 +5927,6 @@ E.Options.args.unitframe.args.raid2640 = {
 					order = 3,
 					min = 7, max = 22, step = 1,
 				},				
-			},
-		},
-		roleIcon = {
-			order = 700,
-			type = 'group',
-			name = L['Role Icon'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['party']['roleIcon'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['party']['roleIcon'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,	
-			args = {
-				enable = {
-					type = 'toggle',
-					name = L['Enable'],
-					order = 1,
-				},
-				position = {
-					type = 'select',
-					order = 2,
-					name = L['Position'],
-					values = positionValues,
-				},							
 			},
 		},		
 	},
