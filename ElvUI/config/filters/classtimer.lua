@@ -161,7 +161,7 @@ DF['spells_filter'] = {
 			CreateSpellEntry(45529), -- Blood Tap
 			CreateSpellEntry(49222), -- Bone sheild
 			CreateSpellEntry(48792), -- Ice Bound Fortitude
-			CreateSpellEntry(49028), -- Dancing Rune Weapon
+			CreateSpellEntry(81256), -- Dancing Rune Weapon
 			CreateSpellEntry(51271), -- Pillar of Frost
 			CreateSpellEntry(48707), -- Anti-Magic Shell
 			CreateSpellEntry(49039), -- Lichborne			

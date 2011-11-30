@@ -276,9 +276,7 @@ function CH:URL_AddLinkSyntax(chatstring)
 	return chatstring
 end
 
-function CH:SetupChat(event, ...)
-	LoadAddOn('Blizzard_CombatLog')
-	
+function CH:SetupChat(event, ...)	
 	for i = 1, NUM_CHAT_WINDOWS do
 		local frame = _G[format("ChatFrame%s", i)]
 		self:StyleChat(frame)

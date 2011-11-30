@@ -156,6 +156,7 @@ function NP:CreateAuraIcon(parent)
 	button.cd = CreateFrame("Cooldown",nil,button)
 	button.cd:SetAllPoints(button)
 	button.cd:SetReverse(true)
+	button.cd.noOCC = true
 	button.cd.SizeOverride = 8
 	button.count = button:CreateFontString(nil,"OVERLAY")
 	button.count:FontTemplate(nil,7,'OUTLINE')
