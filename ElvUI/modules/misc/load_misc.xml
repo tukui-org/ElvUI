@@ -1,0 +1,10 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">	
+	<Script file='misc.lua'/>
+	<Script file='raidmarker.lua'/>
+	<Script file='exprepbar.lua'/>
+	<Script file='mirror.lua'/>
+	<Script file='loot.lua'/>
+	<Script file='loot_roll.lua'/>
+	<Script file='raidutility.lua'/>
+	<Script file='raidbuffreminder.lua'/>
+</Ui>
