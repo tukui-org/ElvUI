@@ -93,18 +93,18 @@ end
 
 function M:Minimap_OnMouseUp(btn)
 	local position = Minimap:GetPoint()
-	if btn == "RightButton" then
+	if btn == "MiddleButton" or (btn == "RightButton" and IsShiftKeyDown()) then
+		if position:match("LEFT") then
+			EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
+		else
+			EasyMenu(menuList, menuFrame, "cursor", -160, 0, "MENU", 2)
+		end	
+	elseif btn == "RightButton" then
 		local xoff = 0
 
 		if position:match("RIGHT") then xoff = E:Scale(-16) end
 	
 		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, Minimap, xoff, E:Scale(-2))
-	elseif btn == "MiddleButton" then
-		if position:match("LEFT") then
-			EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
-		else
-			EasyMenu(menuList, menuFrame, "cursor", -160, 0, "MENU", 2)
-		end
 	else
 		Minimap_OnClick(self)
 	end
