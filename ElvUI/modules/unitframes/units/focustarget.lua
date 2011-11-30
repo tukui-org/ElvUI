@@ -13,7 +13,7 @@ function UF:Construct_FocusTargetFrame(frame)
 	frame.Name = self:Construct_NameText(frame)
 	
 	frame.Buffs = self:Construct_Buffs(frame)
-	
+	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
 end
 

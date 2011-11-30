@@ -23,7 +23,7 @@ function UF:Construct_TargetFrame(frame)
 	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT')
 	frame.Castbar.SafeZone = nil
 	frame.Castbar.LatencyTexture:Hide()
-			
+	frame.RaidIcon = UF:Construct_RaidIcon(frame)		
 	frame.CPoints = self:Construct_Combobar(frame)
 	
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)

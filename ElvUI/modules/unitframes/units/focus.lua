@@ -17,7 +17,7 @@ function UF:Construct_FocusFrame(frame)
 	frame.Castbar = self:Construct_Castbar(frame, 'LEFT')
 	frame.Castbar.SafeZone = nil
 	frame.Castbar.LatencyTexture:Hide()
-		
+	frame.RaidIcon = UF:Construct_RaidIcon(frame)	
 	frame.Debuffs = self:Construct_Debuffs(frame)
 end
 

@@ -38,7 +38,7 @@ function UF:Construct_PlayerFrame(frame)
 		frame.EclipseBar = self:Construct_DruidResourceBar(frame)
 		frame.DruidAltMana = self:Construct_DruidAltManaBar(frame)
 	end
-	
+	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.Resting = self:Construct_RestingIndicator(frame)
 	frame.Combat = self:Construct_CombatIndicator(frame)
 	frame.PvPText = self:Construct_PvPIndicator(frame)
