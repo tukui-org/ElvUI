@@ -210,11 +210,11 @@ function M:UpdateRepBar(event)
 end
 
 function M:LoadExpRepBar()
-	BAR_WIDTH = E.MinimapSize
+	BAR_WIDTH = E.UIParent:GetWidth() / 5
 	
 	local holder = CreateFrame('Button', 'UpperRepExpBarHolder', E.UIParent)
 	holder:Size(BAR_WIDTH, TOPBAR_HEIGHT)
-	holder:Point('TOP', MMHolder, 'BOTTOM', 0, 2)	
+	holder:Point('TOP', E.UIParent, 'TOP', 0, 2)  
 	holder:SetScript('OnEnter', OnEnter)
 	holder:SetScript('OnLeave', OnLeave)	
 	holder:SetScript('OnClick', OnClick)	
