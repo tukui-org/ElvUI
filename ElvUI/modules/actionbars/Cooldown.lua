@@ -65,8 +65,9 @@ end
 
 function AB:Cooldown_OnSizeChanged(cd, width, height)
 	local fontScale = E:Round(width) / ICON_SIZE
-	if cd:GetParent():GetParent().SizeOverride then 
-		fontScale = cd:GetParent():GetParent().SizeOverride / FONT_SIZE  
+	local override = cd:GetParent():GetParent().SizeOverride
+	if override then 
+		fontScale = override / FONT_SIZE  
 	end
 	
 	if fontScale == cd.fontScale then
@@ -74,9 +75,10 @@ function AB:Cooldown_OnSizeChanged(cd, width, height)
 	end
 
 	cd.fontScale = fontScale
-	if fontScale < MIN_SCALE then
+	if fontScale < MIN_SCALE and not override then
 		cd:Hide()
 	else
+		cd:Show()
 		cd.text:FontTemplate(nil, fontScale * FONT_SIZE, 'OUTLINE')
 		if cd.enabled then
 			self:Cooldown_ForceUpdate(cd)
@@ -107,8 +109,8 @@ function AB:CreateCooldownTimer(parent)
 	text:SetJustifyH("CENTER")
 	timer.text = text
 
-	self:Cooldown_OnSizeChanged(timer, scaler:GetSize())
-	scaler:SetScript('OnSizeChanged', function(_, ...) self:Cooldown_OnSizeChanged(timer, ...) end)
+	self:Cooldown_OnSizeChanged(timer, parent:GetSize())
+	parent:SetScript('OnSizeChanged', function(_, ...) self:Cooldown_OnSizeChanged(timer, ...) end)
 
 	parent.timer = timer
 	return timer
@@ -163,17 +165,24 @@ function AB:EnableCooldown()
 				self:RegisterCooldown(frame)
 			end
 		end	
+		
+		if not self.hooks[cooldown] then
+			self:SecureHook(cooldown, 'SetCooldown', 'OnSetCooldown')
+		end		
 	else
 		if not self.hooks[cooldown] then
 			self:SecureHook(cooldown, 'SetCooldown', 'OnSetCooldown')
 		end
 	end
 end
-AB:EnableCooldown()
 
 function AB:DisableCooldown()
 	if E:IsPTRVersion() then
 		self:UnregisterEvent('ACTIONBAR_UPDATE_COOLDOWN')
+		if self.hooks[cooldown] then
+			self:Unhook(cooldown, 'SetCooldown')
+			self.hooks[cooldown] = nil
+		end		
 	else
 		if self.hooks[cooldown] then
 			self:Unhook(cooldown, 'SetCooldown')

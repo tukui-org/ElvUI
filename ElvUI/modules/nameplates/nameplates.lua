@@ -153,10 +153,10 @@ function NP:CreateAuraIcon(parent)
 	button.icon:SetPoint("TOPLEFT",button,"TOPLEFT", noscalemult*3,-noscalemult*3)
 	button.icon:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-noscalemult*3,noscalemult*3)
 	button.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+	
 	button.cd = CreateFrame("Cooldown",nil,button)
 	button.cd:SetAllPoints(button)
 	button.cd:SetReverse(true)
-	button.cd.noOCC = true
 	button.cd.SizeOverride = 8
 	button.count = button:CreateFontString(nil,"OVERLAY")
 	button.count:FontTemplate(nil,7,'OUTLINE')
