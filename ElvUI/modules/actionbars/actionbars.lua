@@ -49,6 +49,7 @@ function AB:CreateActionBars()
 	self:CreateBar4()
 	self:CreateBar5()
 	self:CreateBarPet()
+	self:CreateVehicleLeave()
 	self:CreateBarShapeShift()
 	if E.myclass == "SHAMAN" then
 		self:CreateTotemBar()
@@ -66,6 +67,19 @@ end
 function AB:PLAYER_REGEN_ENABLED()
 	self:UpdateButtonSettings()
 	self:UnregisterEvent('PLAYER_REGEN_ENABLED')
+end
+
+function AB:CreateVehicleLeave()
+	local vehicle = CreateFrame("Button", 'LeaveVehicleButton', E.UIParent, "SecureHandlerClickTemplate")
+	vehicle:Size(26)
+	vehicle:Point("BOTTOMLEFT", Minimap, "BOTTOMLEFT", 2, 2)
+	vehicle:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
+	vehicle:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
+	vehicle:SetHighlightTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
+	vehicle:SetTemplate("Default")
+	vehicle:RegisterForClicks("AnyUp")
+	vehicle:SetScript("OnClick", function() VehicleExit() end)
+	RegisterStateDriver(vehicle, "visibility", "[vehicleui] show;[target=vehicle,exists] show;hide")
 end
 
 function AB:UpdateButtonSettings()
@@ -86,7 +100,6 @@ function AB:UpdateButtonSettings()
 	self:PositionAndSizeBar5()
 	self:PositionAndSizeBarPet()
 	self:PositionAndSizeBarShapeShift()
-	
 	--Movers snap update
 	for _, mover in pairs(AB['movers']) do
 		mover.bar:SetScript("OnDragStart", function(mover) 
