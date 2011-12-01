@@ -485,7 +485,9 @@ local function SetupFlyoutButton()
 				if not AB["handledbuttons"][parentAnchorButton] then return end
 				
 				local parentAnchorBar = parentAnchorButton:GetParent()
-				AB:Bar_OnEnter(parentAnchorBar)
+				if parentAnchorBar.mouseover then
+					AB:Bar_OnEnter(parentAnchorBar)
+				end
 			end)
 			_G["SpellFlyoutButton"..i]:HookScript('OnLeave', function(self)
 				local parent = self:GetParent()
@@ -494,7 +496,9 @@ local function SetupFlyoutButton()
 				
 				local parentAnchorBar = parentAnchorButton:GetParent()
 				
-				AB:Bar_OnLeave(parentAnchorBar)	
+				if parentAnchorBar.mouseover then
+					AB:Bar_OnLeave(parentAnchorBar)	
+				end
 			end)
 		end
 	end
@@ -504,7 +508,9 @@ local function SetupFlyoutButton()
 		if not AB["handledbuttons"][anchorButton] then return end
 		
 		local parentAnchorBar = anchorButton:GetParent()
-		AB:Bar_OnEnter(parentAnchorBar)
+		if parentAnchorBar.mouseover then
+			AB:Bar_OnEnter(parentAnchorBar)
+		end
 	end)
 	
 	SpellFlyout:HookScript('OnLeave', function(self)
@@ -512,7 +518,9 @@ local function SetupFlyoutButton()
 		if not AB["handledbuttons"][anchorButton] then return end
 		
 		local parentAnchorBar = anchorButton:GetParent()
-		AB:Bar_OnLeave(parentAnchorBar)	
+		if parentAnchorBar.mouseover then
+			AB:Bar_OnLeave(parentAnchorBar)	
+		end
 	end)	
 end
 SpellFlyout:HookScript("OnShow", SetupFlyoutButton)

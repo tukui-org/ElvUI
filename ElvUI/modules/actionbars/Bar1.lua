@@ -30,10 +30,11 @@ function AB:PositionAndSizeBar1()
 		bar:SetScale(0.000001);
 		bar:SetAlpha(0);
 	end
-
+	
 	bar:SetWidth(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
 	bar:SetHeight(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
 	bar.mover:SetSize(bar:GetSize());
+	bar.mouseover = self.db['bar1'].mouseover
 	
 	if self.db['bar1'].backdrop == true then
 		bar.backdrop:Show();
