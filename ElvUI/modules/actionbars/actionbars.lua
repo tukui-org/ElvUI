@@ -13,6 +13,8 @@ KEY_MOUSEBUTTON = gsub(KEY_MOUSEBUTTON, '10', '');
 local KEY_NUMPAD = KEY_NUMPAD0;
 KEY_NUMPAD = gsub(KEY_NUMPAD, '0', '');
 
+E.ActionBars = AB
+
 AB["handledbuttons"] = {} --List of all buttons that have been modified.
 AB["movers"] = {} --List of all created movers.
 E['snapBars'] = { E.UIParent }
@@ -347,16 +349,15 @@ end
 
 function AB:ResetMovers(bar)
 	for name, _ in pairs(self.movers) do
-		if bar == nil then
-			local mover = self.movers[name].bar
+		local mover = self.movers[name].bar
+		if bar == '' then
 			mover:ClearAllPoints()
 			mover:Point(self.movers[name]["p"], self.movers[name]["p2"], self.movers[name]["p3"], self.movers[name]["p4"], self.movers[name]["p5"])
 			
 			if self.db[name] then
 				self.db[name]['position'] = nil		
 			end
-		elseif name == bar then
-			local mover = self.movers[name].bar
+		elseif name == mover.textString then
 			mover:ClearAllPoints()
 			mover:Point(self.movers[name]["p"], self.movers[name]["p2"], self.movers[name]["p3"], self.movers[name]["p4"], self.movers[name]["p5"])
 			
@@ -441,6 +442,7 @@ function AB:CreateMover(bar, text, name, padding)
 	fs:SetTextColor(unpack(E["media"].rgbvaluecolor))
 	mover:SetFontString(fs)
 	mover.text = fs
+	mover.textString = text
 	
 	mover:SetScript("OnEnter", function(self) 
 		self.text:SetTextColor(1, 1, 1)
