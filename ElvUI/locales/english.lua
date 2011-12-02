@@ -72,6 +72,7 @@ do
 	L['Announce when you interrupt a spell to the specified chat channel.'] = true;
 	L["Movers unlocked. Move them now and click Lock when you are done."] = true;
 	L['Lock'] = true;
+	L["This can't be right, you must of broke something! Please turn on lua errors and report the issue to Elv http://www.tukui.org/forums/forum.php?id=146"] = true;
 end
 
 --Media	
@@ -177,7 +178,7 @@ do
 	L['Unit Type'] = true;
 	L["Buff Color"] = true;
 	L["Debuff Color"] = true;
-	L['Attempting to position a frame to a frame that is dependant, try another anchor point.'] = true;
+	L['You have attempted to anchor a classtimer frame to a frame that is dependant on this classtimer frame, try changing your anchors again.'] = true;
 	L['Remove Color'] = true;
 	L['Reset color back to the bar default.'] = true;
 	L['Add SpellID'] = true;
