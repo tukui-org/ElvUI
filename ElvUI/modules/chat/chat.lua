@@ -124,7 +124,7 @@ function CH:SetupTempChat()
 end
 
 function CH:PositionChat(override)
-	if (InCombatLockdown() and not override) or (IsMouseButtonDown("LeftButton") and not override) then return end
+	if (InCombatLockdown() and not override and self.initialMove) or (IsMouseButtonDown("LeftButton") and not override) then return end
 	
 	local chat, chatbg, tab, id, point, button, isDocked, chatFound
 	for i = 1, NUM_CHAT_WINDOWS do
@@ -208,6 +208,8 @@ function CH:PositionChat(override)
 			tab:SetParent(GeneralDockManager)
 		end		
 	end
+	
+	self.initialMove = true;
 end
 
 local function UpdateChatTabColor(hex, r, g, b)
@@ -299,13 +301,9 @@ local sizes = {
 	":14",
 }
 
-function CH:Initialize()
+function CH:Initialize(event)
 	if E.db.core.chat ~= true then return end
 	E.Chat = self
-	
-	if not IsAddOnLoaded('Blizzard_CombatLog') and not InCombatLockdown() then
-		LoadAddOn('Blizzard_CombatLog')
-	end
 	
 	FriendsMicroButton:Kill()
 	ChatFrameMenuButton:Kill()
@@ -320,7 +318,11 @@ function CH:Initialize()
 	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	
-	
+	if event == 'PLAYER_LOGIN' then
+		self:SetupChat()
+		self:UnregisterEvent('PLAYER_LOGIN')
+	end
+
 	local S = E:GetModule('Skins')
 	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)
 	frame:SetTemplate('Transparent')
