@@ -123,8 +123,6 @@ function E:CreateMover(parent, name, text, overlay, postdrag)
 end
 
 function E:ToggleMovers(show)
-	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
-	
 	for name, _ in pairs(E.CreatedMovers) do
 		if not show then
 			_G[name]:Hide()
@@ -135,7 +133,6 @@ function E:ToggleMovers(show)
 end
 
 function E:ResetMovers(arg)
-	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
 	if arg == "" or arg == nil then
 		for name, _ in pairs(E.CreatedMovers) do
 			local f = _G[name]

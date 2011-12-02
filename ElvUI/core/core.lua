@@ -245,6 +245,13 @@ function E:CreateMoverPopup()
 	
 	S:HandleCheckBox(snapping)
 	S:HandleButton(lock)
+	
+	f:RegisterEvent('PLAYER_REGEN_DISABLED')
+	f:SetScript('OnEvent', function(self)
+		if self:IsShown() then
+			self:Hide()
+		end
+	end)
 end
 
 function E:Initialize()
@@ -278,6 +285,8 @@ end
 
 local toggle
 function E:MoveUI(override, type)
+	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
+	
 	if toggle ~= nil then
 		toggle = nil
 	else
@@ -314,6 +323,7 @@ function E:MoveUI(override, type)
 end
 
 function E:ResetUI(...)
+	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
 	self:ResetMovers(...)
 	
 	if self.UnitFrames then
