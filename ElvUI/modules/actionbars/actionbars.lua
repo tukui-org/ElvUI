@@ -325,10 +325,11 @@ function AB:FixKeybindText(button, type)
 		text = gsub(text, KEY_DELETE, L['KEY_DELETE']);
 		text = gsub(text, KEY_MOUSEWHEELUP, L['KEY_MOUSEWHEELUP']);
 		text = gsub(text, KEY_MOUSEWHEELDOWN, L['KEY_MOUSEWHEELDOWN']);
-		
+
 		if hotkey:GetText() == RANGE_INDICATOR then
-			hotkey:SetText('');
+			hotkey:SetAlpha(0)
 		else
+			hotkey:SetAlpha(1)
 			hotkey:SetText(text);
 		end
 	end
