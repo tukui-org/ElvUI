@@ -303,6 +303,10 @@ function CH:Initialize()
 	if E.db.core.chat ~= true then return end
 	E.Chat = self
 	
+	if not IsAddOnLoaded('Blizzard_CombatLog') and not InCombatLockdown() then
+		LoadAddOn('Blizzard_CombatLog')
+	end
+	
 	FriendsMicroButton:Kill()
 	ChatFrameMenuButton:Kill()
 	
