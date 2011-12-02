@@ -360,6 +360,10 @@ function UF:UpdateAllHeaders(event)
 		UF["Update_"..E:StringTitle(header.groupName).."Header"](self, header, self.db['layouts'][self.ActiveLayout][header.groupName])
 	end	
 	
+	if self.db.disableBlizzard then
+		ElvUF:DisableBlizzard('party')	
+	end
+	
 	if event == 'PLAYER_ENTERING_WORLD' then
 		self:UnregisterEvent('PLAYER_ENTERING_WORLD')
 	end	
@@ -374,11 +378,10 @@ function HideRaid()
 	end
 end
 
-function UF:DisableBlizzard()
+function UF:DisableBlizzard(event)
 	hooksecurefunc("CompactRaidFrameManager_UpdateShown", HideRaid)
 	CompactRaidFrameManager:HookScript('OnShow', HideRaid)
 	CompactRaidFrameManager:SetScale(0.000001)
-	ElvUF:DisableBlizzard('party')	
 end
 
 function UF:Initialize()	
