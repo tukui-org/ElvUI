@@ -14,7 +14,10 @@ function AB:SetupExtraButton()
 	--ExtraActionBarFrame.SetPoint = E.noop; ExtraActionBarFrame.ClearAllPoints = E.noop;
 	UIPARENT_MANAGED_FRAME_POSITIONS.ExtraActionBarFrame = nil;
 	UIPARENT_MANAGED_FRAME_POSITIONS.PlayerPowerBarAlt.extraActionBarFrame = nil;
-	UIPARENT_MANAGED_FRAME_POSITIONS.CastingBarFrame.extraActionBarFrame = nil;
+	
+	if UIPARENT_MANAGED_FRAME_POSITIONS.CastingBarFrame then
+		UIPARENT_MANAGED_FRAME_POSITIONS.CastingBarFrame.extraActionBarFrame = nil;
+	end
 	--[[ExtraActionBarFrame:Show(); ExtraActionBarFrame:SetAlpha(1); ExtraActionBarFrame.Hide = ExtraActionBarFrame.Show; ExtraActionBarFrame.SetAlpha = E.noop
 	ExtraActionButton1.action = 2; ExtraActionButton1:Show(); ExtraActionButton1:SetAlpha(1); ExtraActionButton1.Hide = ExtraActionButton1.Show; ExtraActionButton1.SetAlpha = E.noop]]
 	ExtraActionButton1.noResize = true;
