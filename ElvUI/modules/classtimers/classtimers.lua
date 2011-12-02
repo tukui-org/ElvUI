@@ -557,25 +557,23 @@ function CT:PositionTimers()
 	local playerAnchor, playerY = self:GetAnchor(self.db.player.anchor, self.playerFrame)
 	local targetAnchor, targetY = self:GetAnchor(self.db.target.anchor, self.targetFrame)
 	local trinketAnchor, trinketY = self:GetAnchor(self.db.trinket.anchor, self.trinketFrame)
+
+	if self:FrameCheck(playerAnchor, self.playerFrame) and self.db.player.enable then
+		self.playerFrame:ClearAllPoints()
+		self.playerFrame:Point("BOTTOMLEFT", playerAnchor, "TOPLEFT", 0, playerY);
+		self.playerFrame:Point("BOTTOMRIGHT", playerAnchor, "TOPRIGHT", 0, playerY);	
+	end
 	
-	if self.playerFrame and self.targetFrame and self.trinketFrame then
-		if self:FrameCheck(playerAnchor, self.playerFrame) and self.db.player.enable then
-			self.playerFrame:ClearAllPoints()
-			self.playerFrame:Point("BOTTOMLEFT", playerAnchor, "TOPLEFT", 0, playerY);
-			self.playerFrame:Point("BOTTOMRIGHT", playerAnchor, "TOPRIGHT", 0, playerY);	
-		end
-		
-		if self:FrameCheck(trinketFrame, self.trinketFrame) and self.db.trinket.enable then
-			self.trinketFrame:ClearAllPoints()
-			self.trinketFrame:Point("BOTTOMLEFT", trinketAnchor, "TOPLEFT", 0, trinketY);
-			self.trinketFrame:Point("BOTTOMRIGHT", trinketAnchor, "TOPRIGHT", 0, trinketY);
-		end
-		
-		if self:FrameCheck(targetFrame, self.targetFrame) and self.db.target.enable then
-			self.targetFrame:ClearAllPoints()		
-			self.targetFrame:Point("BOTTOMLEFT", targetAnchor, "TOPLEFT", 0, targetY);
-			self.targetFrame:Point("BOTTOMRIGHT", targetAnchor, "TOPRIGHT", 0, targetY);	
-		end
+	if self:FrameCheck(trinketFrame, self.trinketFrame) and self.db.trinket.enable then
+		self.trinketFrame:ClearAllPoints()
+		self.trinketFrame:Point("BOTTOMLEFT", trinketAnchor, "TOPLEFT", 0, trinketY);
+		self.trinketFrame:Point("BOTTOMRIGHT", trinketAnchor, "TOPRIGHT", 0, trinketY);
+	end
+	
+	if self:FrameCheck(targetFrame, self.targetFrame) and self.db.target.enable then
+		self.targetFrame:ClearAllPoints()		
+		self.targetFrame:Point("BOTTOMLEFT", targetAnchor, "TOPLEFT", 0, targetY);
+		self.targetFrame:Point("BOTTOMRIGHT", targetAnchor, "TOPRIGHT", 0, targetY);	
 	end
 end
 
@@ -618,7 +616,7 @@ end
 
 function CT:Initialize()
 	self.db = E.db.classtimer
-	if not self.db.enable then return end
+	if not self.db.enable or not ElvUF_Player or not ElvUF_Target then return end
 	
 	self.target = self:CreateUnitAuraDataSource("target");
 	self.player = self:CreateUnitAuraDataSource("player");
@@ -626,12 +624,10 @@ function CT:Initialize()
 	
 	self:UpdateFiltersAndColors()
 	
-	if ElvUF_Player and ElvUF_Target then
-		self.playerFrame = self:CreateAuraBarFrame(self.player, ElvUF_Player, 'player');
-		self.targetFrame = self:CreateAuraBarFrame(self.target, ElvUF_Target, 'target');		
-		self.trinketFrame = self:CreateAuraBarFrame(self.trinket, ElvUF_Player, 'trinket');
-	end
-		
+	self.playerFrame = self:CreateAuraBarFrame(self.player, ElvUF_Player, 'player');
+	self.targetFrame = self:CreateAuraBarFrame(self.target, ElvUF_Target, 'target');		
+	self.trinketFrame = self:CreateAuraBarFrame(self.trinket, ElvUF_Player, 'trinket');
+
 	self:PositionTimers()
 	self:ToggleTimers()
 end
