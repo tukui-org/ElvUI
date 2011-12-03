@@ -30,7 +30,7 @@ function AB:Initialize()
 	self:SecureHook('PetActionBar_Update', 'UpdatePet')
 	self:SecureHook('ActionButton_UpdateHotkeys', 'FixKeybindText')
 	self:SecureHook("ActionButton_UpdateFlyout", 'StyleFlyout')
-
+	
 	self:CreateActionBars()
 	self:LoadKeyBinder()
 	self:LoadButtonColoring()
@@ -208,7 +208,7 @@ function AB:StyleButton(button, noResize, noBackdrop)
 		button.style:SetParent(button.backdrop)
 		button.style:SetDrawLayer('BACKGROUND', -7)	
 	end
-	
+		
 	self:FixKeybindText(button);
 	button:StyleButton();
 	self["handledbuttons"][button] = true;
@@ -277,8 +277,6 @@ function AB:DisableBlizzard()
 		"PETACTIONBAR_YPOS",
 		"MultiCastActionBarFrame",
 		"MULTICASTACTIONBAR_YPOS",
-		--"ChatFrame1",
-		--"ChatFrame2",
 	};
 	for _, frame in pairs(uiManagedFrames) do
 		UIPARENT_MANAGED_FRAME_POSITIONS[frame] = nil;
