@@ -791,15 +791,19 @@ function B:BAG_CLOSED(event, id)
 end
 
 function B:CloseBags()
-	bagFrame:Hide()
-	
-	if bankFrame then
-		bankFrame:Hide()
+	if bagFrame:IsShown() then
+		bagFrame:Hide()
+		
+		if bankFrame then
+			bankFrame:Hide()
+		end
 	end
 end
 
 function B:OpenBags()
-	bagFrame:Show()
+	if not bagFrame:IsShown() then
+		bagFrame:Show()
+	end
 end
 
 function B:ToggleBags()
@@ -1181,16 +1185,17 @@ function B:Initialize()
 	self:RegisterEvent("BAG_CLOSED")	
 	self:RegisterEvent('BAG_UPDATE_COOLDOWN')
 	self:RegisterEvent('GUILDBANKBAGSLOTS_CHANGED')
+	self:SecureHook('BankFrameItemButton_Update', 'PLAYERBANKSLOTS_CHANGED')
 	
-	--Hook onto Blizzard Functions
-	self:RawHook('ToggleBackpack', 'ToggleBags', true)
-	self:RawHook('ToggleBag', 'ToggleBags', true)
-	self:RawHook('ToggleAllBags', 'ToggleBags', true)
-	self:RawHook('OpenAllBags', 'OpenBags', true)
-	self:RawHook('OpenBackpack', 'OpenBags', true)
-	self:RawHook('CloseAllBags', 'CloseBags', true)
-	self:RawHook('CloseBackpack', 'CloseBags', true)
-	
+	--Hook onto Blizzard Bags
+	for i=1, NUM_CONTAINER_FRAMES, 1 do
+		local container = _G["ContainerFrame"..i]
+		container:HookScript('OnShow', self.OpenBags)
+		container:HookScript('OnHide', self.CloseBags)
+		container:SetScale(0.00001)
+		container:SetAlpha(0)
+	end
+			
 	--Stop Blizzard bank bags from functioning.
 	BankFrame:UnregisterAllEvents()
 	
