@@ -6,8 +6,4 @@
 	<Script file='focustarget.lua'/>
 	<Script file='pet.lua'/>
 	<Script file='pettarget.lua'/>
-	<Script file='arena.lua'/>
-	<Script file='boss.lua'/>
-	<Script file='tank.lua'/>
-	<Script file='assist.lua'/>
 </Ui>
