@@ -170,6 +170,10 @@ function AB:UpdateButtonStatus()
 	else
 		ButtonsToUpdate[self] = nil
 	end
+	
+	self:HookScript('OnShow', AB.UpdateButtonStatus)
+	self:HookScript('OnHide', AB.UpdateButtonStatus)
+	
 	AB:UpdateActive()
 	
 	self.rangeTimer = nil
@@ -180,16 +184,9 @@ function AB:OnUpdateUsable()
 	AB:UpdateUsable(self);
 end
 
-local function RegisterButton(button, elapsed)
-	button:SetScript('OnShow', AB.UpdateButtonStatus)
-	button:SetScript('OnHide', AB.UpdateButtonStatus)
-	button:SetScript('OnUpdate', nil)
-	
-	AB.UpdateButtonStatus(button)
-end
+
 
 function AB:LoadButtonColoring()	
-	hooksecurefunc('ActionButton_OnUpdate', RegisterButton)
 	hooksecurefunc('ActionButton_UpdateUsable', AB.OnUpdateUsable)
 	hooksecurefunc('ActionButton_Update', AB.UpdateButtonStatus)
 end
