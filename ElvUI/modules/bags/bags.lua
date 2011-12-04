@@ -1224,11 +1224,7 @@ hooksecurefunc("updateContainerFrameAnchors", function()
 	local bagsPerColumn = 0
 	for index, frameName in ipairs(ContainerFrame1.bags) do
 		frame = _G[frameName];
-		if E.db.core.bags then
-			frame:SetScale(0.00001)
-		else
-			frame:SetScale(1);
-		end
+		frame:SetScale(1);
 		if ( index == 1 ) then
 			-- First bag
 			frame:SetPoint("BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", 2, 2);
@@ -1272,15 +1268,16 @@ function B:Initialize()
 	self:RegisterEvent('PLAYER_LOGIN')
 	self:RegisterEvent('GUILDBANKBAGSLOTS_CHANGED')
 	self:SecureHook('BankFrameItemButton_Update', 'PLAYERBANKSLOTS_CHANGED')
-	
-	--Hook onto Blizzard Bags
-	for i=1, NUM_CONTAINER_FRAMES, 1 do
-		local container = _G["ContainerFrame"..i]
-		container:HookScript('OnShow', self.OpenBags)
-		container:HookScript('OnHide', self.CloseBags)
-		container:SetAlpha(0)
-	end
-	
+
+	--Hook onto Blizzard Functions
+	self:RawHook('ToggleBackpack', 'ToggleBags', true)
+	self:RawHook('ToggleBag', 'ToggleBags', true)
+	self:RawHook('ToggleAllBags', 'ToggleBags', true)
+	self:RawHook('OpenAllBags', 'OpenBags', true)
+	self:RawHook('OpenBackpack', 'OpenBags', true)
+	self:RawHook('CloseAllBags', 'CloseBags', true)
+	self:RawHook('CloseBackpack', 'CloseBags', true)
+
 	--Stop Blizzard bank bags from functioning.
 	BankFrame:UnregisterAllEvents()
 	
