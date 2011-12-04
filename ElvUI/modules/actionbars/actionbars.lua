@@ -32,6 +32,7 @@ function AB:Initialize()
 	self:LoadKeyBinder()
 	self:UpdateCooldownSettings()
 	self:UnregisterEvent('PLAYER_ENTERING_WORLD')
+	self:RegisterEvent("UPDATE_BINDINGS", "ReassignBindings")
 end
 
 function AB:CreateActionBars()
@@ -43,6 +44,11 @@ function AB:CreateActionBars()
 	self:CreateBar5()
 	self:CreateBarPet()
 	self:CreateBarShapeShift()
+	self:CreateVehicleLeave()
+
+	if E.myclass == "SHAMAN" then
+		self:CreateTotemBar()
+	end  
 	
 	self:UpdateButtonSettings()
 end
@@ -63,6 +69,23 @@ function AB:CreateVehicleLeave()
 	vehicle:RegisterForClicks("AnyUp")
 	vehicle:SetScript("OnClick", function() VehicleExit() end)
 	RegisterStateDriver(vehicle, "visibility", "[vehicleui] show;[target=vehicle,exists] show;hide")
+end
+
+function AB:ReassignBindings()
+	if InCombatLockdown() then return end
+	if not ElvUI_Bar1 then return end
+	local frame = ElvUI_Bar1
+
+	ClearOverrideBindings(frame)
+	for i = 1, #frame.buttons do
+		local button, real_button = ("ACTIONBUTTON%d"):format(i), ("ElvUI_Bar1Button%d"):format(i)
+		for k=1, select('#', GetBindingKey(button)) do
+			local key = select(k, GetBindingKey(button))
+			if key and key ~= "" then
+				SetOverrideBindingClick(frame, false, key, real_button)
+			end
+		end
+	end
 end
 
 function AB:UpdateButtonSettings()
@@ -325,6 +348,9 @@ function AB:FixKeybindText(button)
 
 		hotkey:SetText(text);
 	end
+	
+	hotkey:ClearAllPoints()
+	hotkey:Point("TOPRIGHT", 0, -3);  
 end
 
 function AB:ToggleMovers(move)
