@@ -14,6 +14,8 @@ function B:PositionVehicleFrame()
 			end
 			
 			VehicleSeatIndicator:SetScale(0.8)
+			VehicleSeatIndicator:SetWidth(130);
+			VehicleSeatIndicator:SetHeight(130);			
 		end
 	end)
 end
