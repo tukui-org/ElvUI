@@ -210,8 +210,8 @@ function M:UpdateRepBar(event)
 end
 
 function M:LoadExpRepBar()
-	BAR_WIDTH = E.UIParent:GetWidth() / 5
-	
+	BAR_WIDTH = E.eyefinity or E.UIParent:GetWidth(); BAR_WIDTH = BAR_WIDTH / 5
+
 	local holder = CreateFrame('Button', 'UpperRepExpBarHolder', E.UIParent)
 	holder:Size(BAR_WIDTH, TOPBAR_HEIGHT)
 	holder:Point('TOP', E.UIParent, 'TOP', 0, 2)  
