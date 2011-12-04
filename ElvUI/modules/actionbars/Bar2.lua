@@ -4,16 +4,19 @@ local AB = E:GetModule('ActionBars');
 local ceil = math.ceil;
 local condition = "";
 local bar = CreateFrame('Frame', 'ElvUI_Bar2', E.UIParent, 'SecureHandlerStateTemplate');
+local LAB = LibStub("LibActionButton-1.0")
 
+local barName = 'bar2'
+AB["handledBars"][bar] = barName;
 function AB:PositionAndSizeBar2()
 	local spacing = E:Scale(self.db.buttonspacing);
-	local buttonsPerRow = self.db['bar2'].buttonsPerRow;
-	local numButtons = self.db['bar2'].buttons;
+	local buttonsPerRow = self.db[barName].buttonsPerRow;
+	local numButtons = self.db[barName].buttons;
 	local size = E:Scale(self.db.buttonsize);
-	local point = self.db['bar2'].point;
+	local point = self.db[barName].point;
 	local numColumns = ceil(numButtons / buttonsPerRow);
-	local widthMult = self.db['bar2'].widthMult;
-	local heightMult = self.db['bar2'].heightMult;
+	local widthMult = self.db[barName].widthMult;
+	local heightMult = self.db[barName].heightMult;
 	
 	if numButtons < buttonsPerRow then
 		buttonsPerRow = numButtons;
@@ -22,20 +25,13 @@ function AB:PositionAndSizeBar2()
 	if numColumns < 1 then
 		numColumns = 1;
 	end
-	
-	if self.db['bar2'].enabled then
-		bar:SetScale(1);
-		bar:SetAlpha(1);
-	else
-		bar:SetScale(0.000001);
-		bar:SetAlpha(0);
-	end
 
 	bar:SetWidth(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
 	bar:SetHeight(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
-	bar.mover:Size(bar:GetSize());
-	bar.mouseover = self.db['bar2'].mouseover
-	if self.db['bar2'].backdrop == true then
+	bar.mover:SetSize(bar:GetSize());
+	bar.mouseover = self.db[barName].mouseover
+	
+	if self.db[barName].backdrop == true then
 		bar.backdrop:Show();
 	else
 		bar.backdrop:Hide();
@@ -54,23 +50,25 @@ function AB:PositionAndSizeBar2()
 		horizontalGrowth = "LEFT";
 	end
 	
-	local button, lastButton, lastColumnButton;
+	local button, lastButton, lastColumnButton ;
 	local possibleButtons = {};
 	for i=1, NUM_ACTIONBAR_BUTTONS do
-		button = _G["MultiBarBottomRightButton"..i];
-		lastButton = _G["MultiBarBottomRightButton"..i-1];
-		lastColumnButton = _G["MultiBarBottomRightButton"..i-buttonsPerRow];
-		button:ClearAllPoints();
+		button = bar.buttons[i];
+		lastButton = bar.buttons[i-1];
+		lastColumnButton = bar.buttons[i-buttonsPerRow];
 		button:SetParent(bar);
-		possibleButtons[((i * buttonsPerRow) + 1)] = true;
+		button:ClearAllPoints();
+		
 		button:SetAttribute("showgrid", 1);
 		ActionButton_ShowGrid(button);
+			
+		possibleButtons[((i * buttonsPerRow) + 1)] = true;
 
-		if self.db['bar2'].mouseover == true then
+		if self.db[barName].mouseover == true then
 			bar:SetAlpha(0);
 			if not self.hooks[bar] then
 				self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
-				self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');
+				self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');	
 			end
 			
 			if not self.hooks[button] then
@@ -86,7 +84,7 @@ function AB:PositionAndSizeBar2()
 			
 			if self.hooks[button] then
 				self:Unhook(button, 'OnEnter');	
-				self:Unhook(button, 'OnLeave');		
+				self:Unhook(button, 'OnLeave');	
 			end
 		end
 		
@@ -112,7 +110,7 @@ function AB:PositionAndSizeBar2()
 				buttonPoint = "BOTTOM";
 				anchorPoint = "TOP";
 			end
-			button:Point(buttonPoint, lastColumnButton, anchorPoint, x, y);			
+			button:Point(buttonPoint, lastColumnButton, anchorPoint, x, y);		
 		else
 			local x = spacing;
 			local y = 0;
@@ -137,32 +135,37 @@ function AB:PositionAndSizeBar2()
 		self:StyleButton(button);
 	end
 	possibleButtons = nil;
-	RegisterStateDriver(bar, "page", self:GetPage('bar2', 5, condition));
-	RegisterStateDriver(bar, "show", self.db['bar2'].visibility);
+
+	if self.db[barName].enabled then
+		bar:SetScale(1);
+		bar:SetAlpha(1);
+	else
+		bar:SetScale(0.000001);
+		bar:SetAlpha(0);
+	end
+	
+	RegisterStateDriver(bar, "page", self:GetPage(barName, 5, condition));
+	RegisterStateDriver(bar, "show", self.db[barName].visibility);
 end
 
 function AB:CreateBar2()
 	bar:CreateBackdrop('Default');
 	bar.backdrop:SetAllPoints();
 	bar:Point('BOTTOM', ElvUI_Bar1, 'TOP', 0, 1);
-
-	local button;
+	bar.buttons = {}
+	bar.bindButtons = 'MULTIACTIONBAR2BUTTON'
+	
 	for i=1, NUM_ACTIONBAR_BUTTONS do
-		button = _G["MultiBarBottomRightButton"..i];
-		bar:SetFrameRef("MultiBarBottomRightButton"..i, button);
+		bar.buttons[i] = LAB:CreateButton(i, format(bar:GetName().."Button%d", i), bar, nil)
+		bar.buttons[i]:SetState(0, "action", i)
+		for k = 1, 11 do
+			bar.buttons[i]:SetState(k, "action", (k - 1) * 12 + i)
+		end
 	end
-	
-	bar:Execute([[
-		buttons2 = table.new();
-		for i = 1, 12 do
-			table.insert(buttons2, self:GetFrameRef("MultiBarBottomRightButton"..i));
-		end
-	]]);
-	
+	self:UpdateButtonConfig(bar, bar.bindButtons)
 	bar:SetAttribute("_onstate-page", [[ 
-		for i, button in ipairs(buttons2) do
-			button:SetAttribute("actionpage", tonumber(newstate));
-		end
+		self:SetAttribute("state", newstate)
+		control:ChildUpdate("state", newstate)
 	]]);
 	
 	bar:SetAttribute("_onstate-show", [[		
@@ -171,8 +174,8 @@ function AB:CreateBar2()
 		else
 			self:Show();
 		end	
-	]])
+	]])	
 	
-	self:CreateMover(bar, 'AB2', 'bar2');
+	self:CreateMover(bar, 'AB2', barName);
 	self:PositionAndSizeBar2();
 end

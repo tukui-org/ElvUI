@@ -4,6 +4,7 @@ local AB = E:NewModule('ActionBars', 'AceHook-3.0', 'AceEvent-3.0');
 
 local Sticky = LibStub("LibSimpleSticky-1.0");
 local _LOCK
+local LAB = LibStub("LibActionButton-1.0")
 
 local gsub = string.gsub
 
@@ -15,6 +16,7 @@ KEY_NUMPAD = gsub(KEY_NUMPAD, '0', '');
 
 E.ActionBars = AB
 
+AB["handledBars"] = {} --List of all bars
 AB["handledbuttons"] = {} --List of all buttons that have been modified.
 AB["movers"] = {} --List of all created movers.
 E['snapBars'] = { E.UIParent }
@@ -25,15 +27,9 @@ function AB:Initialize()
 	E.ActionBars = AB;
 	
 	self:DisableBlizzard()
-	self:SecureHook('TalentFrame_LoadUI', 'FixKeybinds')
-	self:SecureHook('ActionButton_Update', 'StyleButton')
-	self:SecureHook('PetActionBar_Update', 'UpdatePet')
-	self:SecureHook('ActionButton_UpdateHotkeys', 'FixKeybindText')
-	self:SecureHook("ActionButton_UpdateFlyout", 'StyleFlyout')
 	
 	self:CreateActionBars()
 	self:LoadKeyBinder()
-	self:LoadButtonColoring()
 	self:UpdateCooldownSettings()
 	self:UnregisterEvent('PLAYER_ENTERING_WORLD')
 end
@@ -46,19 +42,9 @@ function AB:CreateActionBars()
 	self:CreateBar4()
 	self:CreateBar5()
 	self:CreateBarPet()
-	self:CreateVehicleLeave()
 	self:CreateBarShapeShift()
-	if E.myclass == "SHAMAN" then
-		self:CreateTotemBar()
-	end	
 	
-	for button, _ in pairs(self["handledbuttons"]) do
-		if button then
-			self:StyleFlyout(button)
-		else
-			self["handledbuttons"][button] = nil
-		end
-	end	
+	self:UpdateButtonSettings()
 end
 
 function AB:PLAYER_REGEN_ENABLED()
@@ -97,6 +83,7 @@ function AB:UpdateButtonSettings()
 	self:PositionAndSizeBar5()
 	self:PositionAndSizeBarPet()
 	self:PositionAndSizeBarShapeShift()
+	
 	--Movers snap update
 	for _, mover in pairs(AB['movers']) do
 		mover.bar:SetScript("OnDragStart", function(mover) 
@@ -110,6 +97,10 @@ function AB:UpdateButtonSettings()
 				mover:StartMoving()
 			end
 		end)	
+	end
+	
+	for bar, barName in pairs(self["handledBars"]) do
+		self:UpdateButtonConfig(bar, bar.bindButtons)
 	end
 end
 
@@ -156,22 +147,9 @@ function AB:StyleButton(button, noResize, noBackdrop)
 		count:FontTemplate(nil, 11, "OUTLINE");
 	end
 	
-	if E:IsPTRVersion() and _G[name..'FloatingBG'] then
-		_G[name..'FloatingBG']:Hide()
-		_G[name..'FloatingBG']:SetAlpha(0)
+	if _G[name..'FloatingBG'] then
+
 	end	
-	
-	if macroName then
-		if self.db.macrotext then
-			macroName:Show()
-			macroName:FontTemplate(nil, 11, 'OUTLINE')
-			macroName:ClearAllPoints()
-			macroName:Point('BOTTOM', 2, 2)
-			macroName:SetJustifyH('CENTER')
-		else
-			macroName:Hide()
-		end
-	end
 	
 	if not button.noBackdrop and not button.backdrop then
 		button:CreateBackdrop('Default', true)
@@ -198,8 +176,6 @@ function AB:StyleButton(button, noResize, noBackdrop)
 	end
 	
 	if self.db.hotkeytext then
-		hotkey:ClearAllPoints();
-		hotkey:Point("TOPRIGHT", 0, -3);
 		hotkey:FontTemplate(nil, E.db.actionbar.fontsize, "OUTLINE");
 	end
 	
@@ -208,7 +184,8 @@ function AB:StyleButton(button, noResize, noBackdrop)
 		button.style:SetParent(button.backdrop)
 		button.style:SetDrawLayer('BACKGROUND', -7)	
 	end
-		
+	
+	button.FlyoutUpdateFunc = AB.StyleFlyout
 	self:FixKeybindText(button);
 	button:StyleButton();
 	self["handledbuttons"][button] = true;
@@ -233,68 +210,99 @@ function AB:Button_OnLeave(button)
 end
 
 function AB:DisableBlizzard()
-	MainMenuBar:SetScale(0.00001);
-	MainMenuBar:EnableMouse(false);
-	VehicleMenuBar:SetScale(0.00001);
-	PetActionBarFrame:EnableMouse(false);
-	ShapeshiftBarFrame:EnableMouse(false);
-	
-	local elements = {
-		MainMenuBar, 
-		MainMenuBarArtFrame, 
-		BonusActionBarFrame, 
-		VehicleMenuBar,
-		PossessBarFrame, 
-		PetActionBarFrame, 
-		ShapeshiftBarFrame,
-		ShapeshiftBarLeft, 
-		ShapeshiftBarMiddle, 
-		ShapeshiftBarRight,
-	};
-	for _, element in pairs(elements) do
-		if element:GetObjectType() == "Frame" then
-			element:UnregisterAllEvents();
-			
-			if element == MainMenuBarArtFrame then
-				element:RegisterEvent("CURRENCY_DISPLAY_UPDATE");
-			end
-		end
+	-- Hidden parent frame
+	local UIHider = CreateFrame("Frame")
+	UIHider:Hide()
+
+	MultiBarBottomLeft:SetParent(UIHider)
+	MultiBarBottomRight:SetParent(UIHider)
+	MultiBarLeft:SetParent(UIHider)
+	MultiBarRight:SetParent(UIHider)
+
+	-- Hide MultiBar Buttons, but keep the bars alive
+	for i=1,12 do
+		_G["ActionButton" .. i]:Hide()
+		_G["ActionButton" .. i]:UnregisterAllEvents()
+		_G["ActionButton" .. i]:SetAttribute("statehidden", true)
+
+		_G["MultiBarBottomLeftButton" .. i]:Hide()
+		_G["MultiBarBottomLeftButton" .. i]:UnregisterAllEvents()
+		_G["MultiBarBottomLeftButton" .. i]:SetAttribute("statehidden", true)
+
+		_G["MultiBarBottomRightButton" .. i]:Hide()
+		_G["MultiBarBottomRightButton" .. i]:UnregisterAllEvents()
+		_G["MultiBarBottomRightButton" .. i]:SetAttribute("statehidden", true)
+
+		_G["MultiBarRightButton" .. i]:Hide()
+		_G["MultiBarRightButton" .. i]:UnregisterAllEvents()
+		_G["MultiBarRightButton" .. i]:SetAttribute("statehidden", true)
+
+		_G["MultiBarLeftButton" .. i]:Hide()
+		_G["MultiBarLeftButton" .. i]:UnregisterAllEvents()
+		_G["MultiBarLeftButton" .. i]:SetAttribute("statehidden", true)
 		
-		if element ~= MainMenuBar then
-			element:Hide();
+		if _G["VehicleMenuBarActionButton" .. i] then
+			_G["VehicleMenuBarActionButton" .. i]:Hide()
+			_G["VehicleMenuBarActionButton" .. i]:UnregisterAllEvents()
+			_G["VehicleMenuBarActionButton" .. i]:SetAttribute("statehidden", true)
 		end
-		element:SetAlpha(0);
 	end
-	elements = nil;
+	UIPARENT_MANAGED_FRAME_POSITIONS["MainMenuBar"] = nil
+	UIPARENT_MANAGED_FRAME_POSITIONS["ShapeshiftBarFrame"] = nil
+	UIPARENT_MANAGED_FRAME_POSITIONS["PossessBarFrame"] = nil
+	UIPARENT_MANAGED_FRAME_POSITIONS["PETACTIONBAR_YPOS"] = nil
+
+	MainMenuBar:UnregisterAllEvents()
+	MainMenuBar:Hide()
+	MainMenuBar:SetParent(UIHider)
+
+	MainMenuBarArtFrame:UnregisterEvent("ACTIONBAR_PAGE_CHANGED")
+	MainMenuBarArtFrame:UnregisterEvent("ADDON_LOADED")
+	MainMenuBarArtFrame:Hide()
+	MainMenuBarArtFrame:SetParent(UIHider)
+
+	ShapeshiftBarFrame:UnregisterAllEvents()
+	ShapeshiftBarFrame:Hide()
+	ShapeshiftBarFrame:SetParent(UIHider)
+
+	BonusActionBarFrame:UnregisterAllEvents()
+	BonusActionBarFrame:Hide()
+	BonusActionBarFrame:SetParent(UIHider)
+
+	PossessBarFrame:UnregisterAllEvents()
+	PossessBarFrame:Hide()
+	PossessBarFrame:SetParent(UIHider)
+
+	PetActionBarFrame:UnregisterAllEvents()
+	PetActionBarFrame:Hide()
+	PetActionBarFrame:SetParent(UIHider)
 	
-	local uiManagedFrames = {
-		"MultiBarLeft",
-		"MultiBarRight",
-		"MultiBarBottomLeft",
-		"MultiBarBottomRight",
-		"ShapeshiftBarFrame",
-		"PossessBarFrame",
-		"PETACTIONBAR_YPOS",
-		"MultiCastActionBarFrame",
-		"MULTICASTACTIONBAR_YPOS",
-	};
-	for _, frame in pairs(uiManagedFrames) do
-		UIPARENT_MANAGED_FRAME_POSITIONS[frame] = nil;
-	end
-	uiManagedFrames = nil;
+	VehicleMenuBar:UnregisterAllEvents()
+	VehicleMenuBar:Hide()
+	VehicleMenuBar:SetParent(UIHider)
 
 	if PlayerTalentFrame then
 		PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 	else
 		hooksecurefunc("TalentFrame_LoadUI", function() PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED") end)
-	end	
+	end
 end
 
-function AB:FixKeybinds()
-	PlayerTalentFrame:UnregisterEvent('ACTIVE_TALENT_GROUP_CHANGED');
+function AB:UpdateButtonConfig(bar, buttonName)
+	if not bar.buttonConfig then bar.buttonConfig = { hideElements = {} } end
+	bar.buttonConfig.hideElements.macro = self.db.macrotext
+	bar.buttonConfig.hideElements.hotkey = self.db.hotkeytext
+	bar.buttonConfig.showGrid = true
+
+	for i, button in pairs(bar.buttons) do
+		bar.buttonConfig.keyBoundTarget = format(buttonName.."%d", i)
+		button.keyBoundTarget = bar.buttonConfig.keyBoundTarget
+		button.postKeybind = AB.FixKeybindText
+		button:UpdateConfig(bar.buttonConfig)
+	end
 end
 
-function AB:FixKeybindText(button, type)
+function AB:FixKeybindText(button)
 	local hotkey = _G[button:GetName()..'HotKey'];
 	local text = hotkey:GetText();
 	
@@ -303,6 +311,7 @@ function AB:FixKeybindText(button, type)
 		text = gsub(text, L['KEY_LOCALE_ALT'], L['KEY_ALT']);
 		text = gsub(text, L['KEY_LOCALE_CTRL'], L['KEY_CTRL']);
 		text = gsub(text, KEY_MOUSEBUTTON, L['KEY_MOUSEBUTTON']);
+		text = gsub(text, 'BUTTON', L['KEY_MOUSEBUTTON']);
 		text = gsub(text, KEY_MOUSEWHEELUP, L['KEY_MOUSEWHEELUP']);
 		text = gsub(text, KEY_MOUSEWHEELDOWN, L['KEY_MOUSEWHEELDOWN']);
 		text = gsub(text, KEY_BUTTON3, L['KEY_BUTTON3']);
@@ -316,22 +325,8 @@ function AB:FixKeybindText(button, type)
 		text = gsub(text, KEY_MOUSEWHEELUP, L['KEY_MOUSEWHEELUP']);
 		text = gsub(text, KEY_MOUSEWHEELDOWN, L['KEY_MOUSEWHEELDOWN']);
 
-		if hotkey:GetText() == RANGE_INDICATOR then
-			hotkey:SetAlpha(0)
-		else
-			hotkey:SetAlpha(1)
-			hotkey:SetText(text);
-		end
+		hotkey:SetText(text);
 	end
-	
-	if self.db.hotkeytext == true then
-		hotkey:Show();
-	else
-		hotkey:Hide();
-	end
-	
-	hotkey:ClearAllPoints();
-	hotkey:Point("TOPRIGHT", 0, -3);	
 end
 
 function AB:ToggleMovers(move)
@@ -525,9 +520,10 @@ SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
 
 
 function AB:StyleFlyout(button)
+	if not LAB.buttonRegistry[button] then return end
 	if not button.FlyoutBorder then return end
 	local combat = InCombatLockdown()
-	
+
 	button.FlyoutBorder:SetAlpha(0)
 	button.FlyoutBorderShadow:SetAlpha(0)
 	

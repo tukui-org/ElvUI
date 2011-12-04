@@ -8,7 +8,7 @@ local _G = getfenv(0);
 function AB:ActivateBindMode()
 	bind.active = true;
 	StaticPopup_Show("KEYBIND_MODE");
-	self:RegisterEvent('PLAYER_REGEN_DISABLED', 'DeactivateBindMode', false);
+	AB:RegisterEvent('PLAYER_REGEN_DISABLED', 'DeactivateBindMode', false);
 end
 
 function AB:DeactivateBindMode(save)
@@ -160,9 +160,10 @@ function AB:BindUpdate(button, spellmacro)
 		bind.button.name = button:GetName();
 		
 		if not bind.button.name then return; end
-		
-		if not bind.button.action or bind.button.action < 1 or bind.button.action > 132 then
+		if (not bind.button.action or bind.button.action < 1 or bind.button.action > 132) and not (bind.button.keyBoundTarget) then
 			bind.button.bindstring = "CLICK "..bind.button.name..":LeftButton";
+		elseif bind.button.keyBoundTarget then
+			bind.button.bindstring = bind.button.keyBoundTarget
 		else
 			local modact = 1+(bind.button.action-1)%12;
 			if bind.button.action < 25 or bind.button.action > 72 then
@@ -199,13 +200,13 @@ function AB:BindUpdate(button, spellmacro)
 	end
 end
 
-function AB:RegisterButton(b)
+function AB:RegisterButton(b, override)
 	local stance = ShapeshiftButton1:GetScript("OnClick");
 	local pet = PetActionButton1:GetScript("OnClick");
 	local button = SecureActionButton_OnClick;
 	if b.IsProtected and b.GetObjectType and b.GetScript and b:GetObjectType()=="CheckButton" and b:IsProtected() then
 		local script = b:GetScript("OnClick");
-		if script==button then
+		if script==button or override then
 			b:HookScript("OnEnter", function(b) self:BindUpdate(b); end);
 		elseif script==stance then
 			b:HookScript("OnEnter", function(b) self:BindUpdate(b, "STANCE"); end);
@@ -267,6 +268,10 @@ function AB:LoadKeyBinder()
 		local b = _G["SpellButton"..i];
 		b:HookScript("OnEnter", function(b) AB:BindUpdate(b, "SPELL"); end);
 	end
+	
+	for b, _ in pairs(self["handledbuttons"]) do
+		self:RegisterButton(b, true);
+	end	
 
 	if not IsAddOnLoaded("Blizzard_MacroUI") then
 		self:SecureHook("LoadAddOn", "RegisterMacro");

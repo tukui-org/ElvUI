@@ -4,16 +4,19 @@ local AB = E:GetModule('ActionBars');
 local ceil = math.ceil;
 local condition = "[bonusbar:5] 11; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;";
 local bar = CreateFrame('Frame', 'ElvUI_Bar1', E.UIParent, 'SecureHandlerStateTemplate');
+local LAB = LibStub("LibActionButton-1.0")
 
+local barName = 'bar1'
+AB["handledBars"][bar] = barName;
 function AB:PositionAndSizeBar1()
 	local spacing = E:Scale(self.db.buttonspacing);
-	local buttonsPerRow = self.db['bar1'].buttonsPerRow;
-	local numButtons = self.db['bar1'].buttons;
+	local buttonsPerRow = self.db[barName].buttonsPerRow;
+	local numButtons = self.db[barName].buttons;
 	local size = E:Scale(self.db.buttonsize);
-	local point = self.db['bar1'].point;
+	local point = self.db[barName].point;
 	local numColumns = ceil(numButtons / buttonsPerRow);
-	local widthMult = self.db['bar1'].widthMult;
-	local heightMult = self.db['bar1'].heightMult;
+	local widthMult = self.db[barName].widthMult;
+	local heightMult = self.db[barName].heightMult;
 	
 	if numButtons < buttonsPerRow then
 		buttonsPerRow = numButtons;
@@ -23,20 +26,12 @@ function AB:PositionAndSizeBar1()
 		numColumns = 1;
 	end
 
-	if self.db['bar1'].enabled then
-		bar:SetScale(1);
-		bar:SetAlpha(1);
-	else
-		bar:SetScale(0.000001);
-		bar:SetAlpha(0);
-	end
-	
 	bar:SetWidth(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
 	bar:SetHeight(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
 	bar.mover:SetSize(bar:GetSize());
-	bar.mouseover = self.db['bar1'].mouseover
+	bar.mouseover = self.db[barName].mouseover
 	
-	if self.db['bar1'].backdrop == true then
+	if self.db[barName].backdrop == true then
 		bar.backdrop:Show();
 	else
 		bar.backdrop:Hide();
@@ -58,9 +53,9 @@ function AB:PositionAndSizeBar1()
 	local button, lastButton, lastColumnButton ;
 	local possibleButtons = {};
 	for i=1, NUM_ACTIONBAR_BUTTONS do
-		button = _G["ActionButton"..i];
-		lastButton = _G["ActionButton"..i-1];
-		lastColumnButton = _G["ActionButton"..i-buttonsPerRow];
+		button = bar.buttons[i];
+		lastButton = bar.buttons[i-1];
+		lastColumnButton = bar.buttons[i-buttonsPerRow];
 		button:SetParent(bar);
 		button:ClearAllPoints();
 		
@@ -69,7 +64,7 @@ function AB:PositionAndSizeBar1()
 			
 		possibleButtons[((i * buttonsPerRow) + 1)] = true;
 
-		if self.db['bar1'].mouseover == true then
+		if self.db[barName].mouseover == true then
 			bar:SetAlpha(0);
 			if not self.hooks[bar] then
 				self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
@@ -140,33 +135,50 @@ function AB:PositionAndSizeBar1()
 		self:StyleButton(button);
 	end
 	possibleButtons = nil;
+
+	if self.db[barName].enabled then
+		bar:SetScale(1);
+		bar:SetAlpha(1);
+	else
+		bar:SetScale(0.000001);
+		bar:SetAlpha(0);
+	end
 	
-	RegisterStateDriver(bar, "page", self:GetPage('bar1', 1, condition));
-	RegisterStateDriver(bar, "show", self.db['bar1'].visibility);
+	RegisterStateDriver(bar, "page", self:GetPage(barName, 1, condition));
+	RegisterStateDriver(bar, "show", self.db[barName].visibility);
 end
+
+local customExitButton = {
+	func = function(button)
+		VehicleExit()
+	end,
+	texture = "Interface\\Icons\\Spell_Shadow_SacrificialShield",
+	tooltip = LEAVE_VEHICLE,
+}
 
 function AB:CreateBar1()
 	bar:CreateBackdrop('Default');
 	bar.backdrop:SetAllPoints();
 	bar:Point('BOTTOM', 0, 3);
-
-	local button;
-	for i=1, NUM_ACTIONBAR_BUTTONS do
-		button = _G["ActionButton"..i];
-		bar:SetFrameRef("ActionButton"..i, button);
-	end
+	bar.buttons = {}
+	bar.bindButtons = 'ACTIONBUTTON'
 	
-	bar:Execute([[
-		buttons = table.new();
-		for i = 1, 12 do
-			table.insert(buttons, self:GetFrameRef("ActionButton"..i));
+	for i=1, NUM_ACTIONBAR_BUTTONS do
+		bar.buttons[i] = LAB:CreateButton(i, format(bar:GetName().."Button%d", i), bar, nil)
+		bar.buttons[i]:SetState(0, "action", i)
+		for k = 1, 11 do
+			bar.buttons[i]:SetState(k, "action", (k - 1) * 12 + i)
 		end
-	]]);
+		
+		if i == 12 then
+			bar.buttons[i]:SetState(11, "custom", customExitButton)
+		end		
+	end
+	self:UpdateButtonConfig(bar, bar.bindButtons)
 	
 	bar:SetAttribute("_onstate-page", [[ 
-		for i, button in ipairs(buttons) do
-			button:SetAttribute("actionpage", tonumber(newstate));
-		end
+		self:SetAttribute("state", newstate)
+		control:ChildUpdate("state", newstate)
 	]]);
 	
 	bar:SetAttribute("_onstate-show", [[		
@@ -175,8 +187,8 @@ function AB:CreateBar1()
 		else
 			self:Show();
 		end	
-	]])
+	]])	
 	
-	self:CreateMover(bar, 'AB1', 'bar1');
+	self:CreateMover(bar, 'AB1', barName);
 	self:PositionAndSizeBar1();
 end
