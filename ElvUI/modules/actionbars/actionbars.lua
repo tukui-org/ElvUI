@@ -325,6 +325,10 @@ function AB:DisableBlizzard()
 	else
 		hooksecurefunc("TalentFrame_LoadUI", function() PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED") end)
 	end
+	
+	ActionBarButtonEventsFrame:UnregisterAllEvents()
+	ActionBarButtonEventsFrame:RegisterEvent("ACTIONBAR_UPDATE_COOLDOWN")
+	ActionBarActionEventsFrame:UnregisterAllEvents()
 end
 
 function AB:UpdateButtonConfig(bar, buttonName)
