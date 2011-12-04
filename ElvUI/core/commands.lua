@@ -6,4 +6,8 @@ function E:LoadCommands()
 	
 	self:RegisterChatCommand("moveui", "MoveUI")
 	self:RegisterChatCommand("resetui", "ResetUI")
+	
+	if E.ActionBars then
+		self:RegisterChatCommand('kb', E.ActionBars.ActivateBindMode)
+	end
 end
