@@ -317,7 +317,7 @@ E.Options.args.credits = {
 		text = {
 			order = 1,
 			type = "description",
-			name = L['ELVUI_CREDITS']..'\n\n'..L['Coding:']..'\nTukz\nHaste\nNightcracker\nOmega1970\nHydrazine\n\n'..L['Testing:']..'\nTukui Community\nAffinity\nModarch\nBladesdruid\nTirain\nPhima\n\n'..L['Donations:']..'\nDandruff\nTobur/Tarilya\nNetu\nAlluren\nThorgnir\nEmalal\nDandruff\nBendmeova\nCurl\nZarac\nEmmo\nOz\nHawké\nAynya\nTahira\nKarsten Lumbye Thomsen\nThomas B. aka Pitschiqüü\nSea Garnet\nPaul Storry\nAzagar\nArchury',
+			name = L['ELVUI_CREDITS']..'\n\n'..L['Coding:']..'\nTukz\nHaste\nNightcracker\nOmega1970\nHydrazine\n\n'..L['Testing:']..'\nTukui Community\nAffinity\nModarch\nBladesdruid\nTirain\nPhima\n\n'..L['Donations:']..'\nDandruff\nTobur/Tarilya\nNetu\nAlluren\nThorgnir\nEmalal\nDandruff\nBendmeova\nCurl\nZarac\nEmmo\nOz\nHawké\nAynya\nTahira\nKarsten Lumbye Thomsen\nThomas B. aka Pitschiqüü\nSea Garnet\nPaul Storry\nAzagar\nArchury\nDonhorn\nWoodson Harmon\nPhoenyx\nFeat\nKonungr',
 		},
 	},
 }
