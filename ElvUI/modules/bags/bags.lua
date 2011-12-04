@@ -141,8 +141,13 @@ function B:SlotUpdate(b)
 	end
 	
 	if b.Cooldown then
-		local cd_start, cd_finish, cd_enable = GetContainerItemCooldown(b.bag, b.slot)
-		CooldownFrame_SetTimer(b.Cooldown, cd_start, cd_finish, cd_enable)	
+		local start, duration, enable = GetContainerItemCooldown(b.bag, b.slot)
+		CooldownFrame_SetTimer(b.Cooldown, start, duration, enable)	
+		if ( duration > 0 and enable == 0 ) then
+			SetItemButtonTextureVertexColor(b.frame, 0.4, 0.4, 0.4);
+		else
+			SetItemButtonTextureVertexColor(b.frame, 1, 1, 1);
+		end		
 	end
 
 	if(clink) then
