@@ -26,14 +26,6 @@ function AB:PositionAndSizeBar3()
 		numColumns = 1;
 	end
 
-	if self.db[barName].enabled then
-		bar:SetScale(1);
-		bar:SetAlpha(1);
-	else
-		bar:SetScale(0.000001);
-		bar:SetAlpha(0);
-	end
-	
 	bar:SetWidth(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
 	bar:SetHeight(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
 	bar.mover:SetSize(bar:GetSize());
@@ -143,6 +135,17 @@ function AB:PositionAndSizeBar3()
 		self:StyleButton(button);
 	end
 	possibleButtons = nil;
+
+	if self.db[barName].enabled then
+		bar:SetScale(1);
+		
+		if not self.db[barName].mouseover then
+			bar:SetAlpha(1);
+		end
+	else
+		bar:SetScale(0.000001);
+		bar:SetAlpha(0);
+	end
 	
 	RegisterStateDriver(bar, "page", self:GetPage(barName, 6, condition));
 	RegisterStateDriver(bar, "show", self.db[barName].visibility);

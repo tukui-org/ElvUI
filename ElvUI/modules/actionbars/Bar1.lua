@@ -138,7 +138,10 @@ function AB:PositionAndSizeBar1()
 
 	if self.db[barName].enabled then
 		bar:SetScale(1);
-		bar:SetAlpha(1);
+		
+		if not self.db[barName].mouseover then
+			bar:SetAlpha(1);
+		end
 	else
 		bar:SetScale(0.000001);
 		bar:SetAlpha(0);

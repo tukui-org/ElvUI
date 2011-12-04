@@ -138,11 +138,14 @@ function AB:PositionAndSizeBar4()
 	
 	if self.db[barName].enabled then
 		bar:SetScale(1);
-		bar:SetAlpha(1);
+		
+		if not self.db[barName].mouseover then
+			bar:SetAlpha(1);
+		end
 	else
 		bar:SetScale(0.000001);
 		bar:SetAlpha(0);
-	end	
+	end
 	
 	RegisterStateDriver(bar, "page", self:GetPage(barName, 4, condition));
 	RegisterStateDriver(bar, "show", self.db[barName].visibility);
