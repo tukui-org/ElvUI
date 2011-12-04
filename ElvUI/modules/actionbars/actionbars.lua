@@ -7,13 +7,6 @@ local _LOCK
 local LAB = LibStub("LibActionButton-1.0")
 
 local gsub = string.gsub
-
---Make our own strings
-local KEY_MOUSEBUTTON = KEY_BUTTON10;
-KEY_MOUSEBUTTON = gsub(KEY_MOUSEBUTTON, '10', '');
-local KEY_NUMPAD = KEY_NUMPAD0;
-KEY_NUMPAD = gsub(KEY_NUMPAD, '0', '');
-
 E.ActionBars = AB
 
 AB["handledBars"] = {} --List of all bars
@@ -33,6 +26,7 @@ function AB:Initialize()
 	self:UpdateCooldownSettings()
 	self:UnregisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent("UPDATE_BINDINGS", "ReassignBindings")
+	self:RegisterEvent('CVAR_UPDATE')
 end
 
 function AB:CreateActionBars()
@@ -122,6 +116,12 @@ function AB:UpdateButtonSettings()
 		end)	
 	end
 	
+	for bar, barName in pairs(self["handledBars"]) do
+		self:UpdateButtonConfig(bar, bar.bindButtons)
+	end
+end
+
+function AB:CVAR_UPDATE(event)
 	for bar, barName in pairs(self["handledBars"]) do
 		self:UpdateButtonConfig(bar, bar.bindButtons)
 	end
@@ -269,6 +269,16 @@ function AB:DisableBlizzard()
 			_G["VehicleMenuBarActionButton" .. i]:UnregisterAllEvents()
 			_G["VehicleMenuBarActionButton" .. i]:SetAttribute("statehidden", true)
 		end
+
+		_G['BonusActionButton'..i]:Hide()
+		_G['BonusActionButton'..i]:UnregisterAllEvents()
+		_G['BonusActionButton'..i]:SetAttribute("statehidden", true)
+		
+		if E.myclass ~= 'SHAMAN' then
+			_G['MultiCastActionButton'..i]:Hide()
+			_G['MultiCastActionButton'..i]:UnregisterAllEvents()
+			_G['MultiCastActionButton'..i]:SetAttribute("statehidden", true)
+		end
 	end
 	UIPARENT_MANAGED_FRAME_POSITIONS["MainMenuBar"] = nil
 	UIPARENT_MANAGED_FRAME_POSITIONS["ShapeshiftBarFrame"] = nil
@@ -303,6 +313,12 @@ function AB:DisableBlizzard()
 	VehicleMenuBar:UnregisterAllEvents()
 	VehicleMenuBar:Hide()
 	VehicleMenuBar:SetParent(UIHider)
+	
+	if E.myclass ~= 'SHAMAN' then
+		MultiCastActionBarFrame:UnregisterAllEvents()
+		MultiCastActionBarFrame:Hide()
+		MultiCastActionBarFrame:SetParent(UIHider)
+	end
 
 	if PlayerTalentFrame then
 		PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
@@ -312,15 +328,20 @@ function AB:DisableBlizzard()
 end
 
 function AB:UpdateButtonConfig(bar, buttonName)
+	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return; end
 	if not bar.buttonConfig then bar.buttonConfig = { hideElements = {} } end
 	bar.buttonConfig.hideElements.macro = self.db.macrotext
 	bar.buttonConfig.hideElements.hotkey = self.db.hotkeytext
-	bar.buttonConfig.showGrid = true
+	bar.buttonConfig.showGrid = GetCVar('alwaysShowActionBars') == '1' and true or false
 
 	for i, button in pairs(bar.buttons) do
 		bar.buttonConfig.keyBoundTarget = format(buttonName.."%d", i)
 		button.keyBoundTarget = bar.buttonConfig.keyBoundTarget
 		button.postKeybind = AB.FixKeybindText
+		button:SetAttribute("buttonlock", GetCVar('lockActionBars') == '1' and true or false)
+		button:SetAttribute("checkselfcast", true)
+		button:SetAttribute("checkfocuscast", true)
+		
 		button:UpdateConfig(bar.buttonConfig)
 	end
 end
