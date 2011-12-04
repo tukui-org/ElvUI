@@ -307,9 +307,9 @@ function AB:FixKeybindText(button)
 	local text = hotkey:GetText();
 	
 	if text then
-		text = gsub(text, 'SHIFT', L['KEY_SHIFT']);
-		text = gsub(text, 'ALT', L['KEY_ALT']);
-		text = gsub(text, 'CTRL', L['KEY_CTRL']);
+		text = gsub(text, 'SHIFT%-', L['KEY_SHIFT']);
+		text = gsub(text, 'ALT%-', L['KEY_ALT']);
+		text = gsub(text, 'CTRL%-', L['KEY_CTRL']);
 		text = gsub(text, 'BUTTON', L['KEY_MOUSEBUTTON']);
 		text = gsub(text, 'MOUSEWHEELUP', L['KEY_MOUSEWHEELUP']);
 		text = gsub(text, 'MOUSEWHEELDOWN', L['KEY_MOUSEWHEELDOWN']);
