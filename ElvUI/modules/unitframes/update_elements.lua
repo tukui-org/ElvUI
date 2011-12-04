@@ -393,7 +393,41 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 end
 
 function UF:CustomCastDelayText(duration)
-	self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(self.channeling and duration or self.max - duration, self.channeling and "- " or "+", self.delay))
+	local db = GetSavePath(self:GetParent(), self:GetParent().unit)
+	
+	
+	if db then
+		local text		
+		if self.channeling then
+			self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(math.abs(duration - self.max), "- ", self.delay))
+		else
+			if db.castbar.format == 'CURRENT' then
+				self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(duration, "+ ", self.delay))
+			elseif db.castbar.format == 'CURRENTMAX' then
+				self.Time:SetText(("%.1f / %.1f |cffaf5050%s %.1f|r"):format(duration, self.max, "+ ", self.delay))
+			elseif db.castbar.format == 'REMAINING' then
+				self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(math.abs(duration - self.max), "+ ", self.delay))
+			end		
+		end
+	end
+end
+
+function UF:CustomTimeText(duration)
+	local db = GetSavePath(self:GetParent(), self:GetParent().unit)
+	if not db then return end
+	
+	local text
+	if self.channeling then
+		self.Time:SetText(("%.1f"):format(math.abs(duration - self.max)))
+	else
+		if db.castbar.format == 'CURRENT' then
+			self.Time:SetText(("%.1f"):format(duration))
+		elseif db.castbar.format == 'CURRENTMAX' then
+			self.Time:SetText(("%.1f / %.1f"):format(duration, self.max))
+		elseif db.castbar.format == 'REMAINING' then
+			self.Time:SetText(("%.1f"):format(math.abs(duration - self.max)))
+		end		
+	end
 end
 
 function UF:PostCastStart(unit, name, rank, castid)
@@ -401,9 +435,8 @@ function UF:PostCastStart(unit, name, rank, castid)
 	self.Text:SetText(string.sub(name, 0, math.floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontsize) * 12)))
 
 	local db = GetSavePath(self:GetParent(), unit)
-	
-	local color
-	if not db then return end
+	local color		
+	self.unit = unit
 	if self.interrupt and unit ~= "player" then
 		if UnitCanAttack("player", unit) then
 			color = db['castbar']['interruptcolor']

@@ -174,6 +174,7 @@ function UF:Construct_Castbar(self, direction)
 	local castbar = CreateFrame("StatusBar", nil, self)
 	UF['statusbars'][castbar] = true
 	castbar.CustomDelayText = UF.CustomCastDelayText
+	castbar.CustomTimeText = UF.CustomTimeText
 	castbar.PostCastStart = UF.PostCastStart
 	castbar.PostChannelStart = UF.PostCastStart		
 	castbar.PostCastInterruptible = UF.PostCastInterruptible
@@ -186,7 +187,6 @@ function UF:Construct_Castbar(self, direction)
 	castbar.Time:Point("RIGHT", castbar, "RIGHT", -4, 0)
 	castbar.Time:SetTextColor(0.84, 0.75, 0.65)
 	castbar.Time:SetJustifyH("RIGHT")
-	castbar.CustomTimeText = UF.CustomCastTimeText
 	
 	castbar.Text = castbar:CreateFontString(nil, 'OVERLAY')	
 	UF['fontstrings'][castbar.Text] = true

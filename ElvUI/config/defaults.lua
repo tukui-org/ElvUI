@@ -331,6 +331,7 @@ DF['unitframe'] = {
 					['interruptcolor'] = { r = 0.78, g = 0.25, b = 0.25 },
 					['xOffset'] = 0,
 					['yOffset'] = 0,
+					['format'] = 'REMAINING',
 				},
 				['classbar'] = {
 					['enable'] = true,
@@ -404,6 +405,7 @@ DF['unitframe'] = {
 					['interruptcolor'] = { r = 0.78, g = 0.25, b = 0.25 },
 					['xOffset'] = 0,
 					['yOffset'] = 0,
+					['format'] = 'REMAINING',
 				},	
 				['combobar'] = {
 					['enable'] = true,
@@ -523,6 +525,7 @@ DF['unitframe'] = {
 					['interruptcolor'] = { r = 0.78, g = 0.25, b = 0.25 },
 					['xOffset'] = 0,
 					['yOffset'] = 0,
+					['format'] = 'REMAINING',
 				},					
 			},	
 			['focustarget'] = {
@@ -746,6 +749,7 @@ DF['unitframe'] = {
 					['icon'] = true,
 					['color'] = DF.core.bordercolor,
 					['interruptcolor'] = { r = 0.78, g = 0.25, b = 0.25 },
+					['format'] = 'REMAINING',
 				},					
 			},	
 			['arena'] = {
@@ -808,6 +812,7 @@ DF['unitframe'] = {
 					['icon'] = true,
 					['color'] = DF.core.bordercolor,
 					['interruptcolor'] = { r = 0.78, g = 0.25, b = 0.25 },
+					['format'] = 'REMAINING',
 				},					
 			},
 			['party'] = {

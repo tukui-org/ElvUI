@@ -1149,6 +1149,16 @@ E.Options.args.unitframe.args.player = {
 						UF:CreateAndUpdateUF('player')
 					end,					
 				},
+				format = {
+					order = 12,
+					type = 'select',
+					name = L['Format'],
+					values = {
+						['CURRENTMAX'] = L['Current / Max'],
+						['CURRENT'] = L['Current'],
+						['REMAINING'] = L['Remaining'],
+					},
+				},
 			},
 		},
 		classbar = {
@@ -1663,6 +1673,16 @@ E.Options.args.unitframe.args.target = {
 						UF:CreateAndUpdateUF('target')
 					end,					
 				},
+				format = {
+					order = 11,
+					type = 'select',
+					name = L['Format'],
+					values = {
+						['CURRENTMAX'] = L['Current / Max'],
+						['CURRENT'] = L['Current'],
+						['REMAINING'] = L['Remaining'],
+					},
+				},				
 			},
 		},
 		combobar = {
@@ -2487,6 +2507,16 @@ E.Options.args.unitframe.args.focus = {
 						UF:CreateAndUpdateUF('focus')
 					end,					
 				},
+				format = {
+					order = 11,
+					type = 'select',
+					name = L['Format'],
+					values = {
+						['CURRENTMAX'] = L['Current / Max'],
+						['CURRENT'] = L['Current'],
+						['REMAINING'] = L['Remaining'],
+					},
+				},				
 			},
 		},		
 	},
@@ -4011,6 +4041,16 @@ E.Options.args.unitframe.args.boss = {
 						UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES)
 					end,					
 				},
+				format = {
+					order = 9,
+					type = 'select',
+					name = L['Format'],
+					values = {
+						['CURRENTMAX'] = L['Current / Max'],
+						['CURRENT'] = L['Current'],
+						['REMAINING'] = L['Remaining'],
+					},
+				},				
 			},
 		},	
 	},
@@ -4449,6 +4489,16 @@ E.Options.args.unitframe.args.arena = {
 						UF:CreateAndUpdateUFGroup('arena', MAX_arena_FRAMES)
 					end,					
 				},
+				format = {
+					order = 9,
+					type = 'select',
+					name = L['Format'],
+					values = {
+						['CURRENTMAX'] = L['Current / Max'],
+						['CURRENT'] = L['Current'],
+						['REMAINING'] = L['Remaining'],
+					},
+				},				
 			},
 		},	
 	},

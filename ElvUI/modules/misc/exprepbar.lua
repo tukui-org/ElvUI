@@ -269,4 +269,5 @@ function M:LoadExpRepBar()
 	self:RegisterEvent('UPDATE_FACTION', 'UpdateRepBar')
 	
 	self:UpdateExpBar()
+	OnLeave()
 end

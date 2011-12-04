@@ -280,6 +280,10 @@ end
 
 --UNITFRAMES
 do	
+	L['Current / Max'] = true;
+	L['Current'] = true;
+	L['Remaining'] = true;
+	L['Format'] = true;
 	L['X Offset'] = true;
 	L['Y Offset'] = true;
 	L['RaidDebuff Indicator'] = true;
