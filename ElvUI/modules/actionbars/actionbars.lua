@@ -307,23 +307,21 @@ function AB:FixKeybindText(button)
 	local text = hotkey:GetText();
 	
 	if text then
-		text = gsub(text, L['KEY_LOCALE_SHIFT'], L['KEY_SHIFT']);
-		text = gsub(text, L['KEY_LOCALE_ALT'], L['KEY_ALT']);
-		text = gsub(text, L['KEY_LOCALE_CTRL'], L['KEY_CTRL']);
-		text = gsub(text, KEY_MOUSEBUTTON, L['KEY_MOUSEBUTTON']);
+		text = gsub(text, 'SHIFT', L['KEY_SHIFT']);
+		text = gsub(text, 'ALT', L['KEY_ALT']);
+		text = gsub(text, 'CTRL', L['KEY_CTRL']);
 		text = gsub(text, 'BUTTON', L['KEY_MOUSEBUTTON']);
-		text = gsub(text, KEY_MOUSEWHEELUP, L['KEY_MOUSEWHEELUP']);
-		text = gsub(text, KEY_MOUSEWHEELDOWN, L['KEY_MOUSEWHEELDOWN']);
-		text = gsub(text, KEY_BUTTON3, L['KEY_BUTTON3']);
-		text = gsub(text, KEY_NUMPAD, L['KEY_NUMPAD']);
-		text = gsub(text, KEY_PAGEUP, L['KEY_PAGEUP']);
-		text = gsub(text, KEY_PAGEDOWN, L['KEY_PAGEDOWN']);
-		text = gsub(text, KEY_SPACE, L['KEY_SPACE']);
-		text = gsub(text, KEY_INSERT, L['KEY_INSERT']);
-		text = gsub(text, KEY_HOME, L['KEY_HOME']);
-		text = gsub(text, KEY_DELETE, L['KEY_DELETE']);
-		text = gsub(text, KEY_MOUSEWHEELUP, L['KEY_MOUSEWHEELUP']);
-		text = gsub(text, KEY_MOUSEWHEELDOWN, L['KEY_MOUSEWHEELDOWN']);
+		text = gsub(text, 'MOUSEWHEELUP', L['KEY_MOUSEWHEELUP']);
+		text = gsub(text, 'MOUSEWHEELDOWN', L['KEY_MOUSEWHEELDOWN']);
+		text = gsub(text, 'NUMPAD', L['KEY_NUMPAD']);
+		text = gsub(text, 'PAGEUP', L['KEY_PAGEUP']);
+		text = gsub(text, 'PAGEDOWN', L['KEY_PAGEDOWN']);
+		text = gsub(text, 'SPACE', L['KEY_SPACE']);
+		text = gsub(text, 'INSERT', L['KEY_INSERT']);
+		text = gsub(text, 'HOME', L['KEY_HOME']);
+		text = gsub(text, 'DELETE', L['KEY_DELETE']);
+		text = gsub(text, 'MOUSEWHEELUP', L['KEY_MOUSEWHEELUP']);
+		text = gsub(text, 'MOUSEWHEELDOWN', L['KEY_MOUSEWHEELDOWN']);
 
 		hotkey:SetText(text);
 	end

@@ -210,11 +210,6 @@ do
 	L['KEY_DELETE'] = 'Del';
 	L['KEY_MOUSEWHEELUP'] = 'MwU';
 	L['KEY_MOUSEWHEELDOWN'] = 'MwD';
-
-	--BLIZZARD MODIFERS TO SEARCH FOR
-	L['KEY_LOCALE_SHIFT'] = '(SHIFT%-)';
-	L['KEY_LOCALE_ALT'] = '(ALT%-)';
-	L['KEY_LOCALE_CTRL'] = '(CTRL%-)';
 	
 	--KEYBINDING
 	L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = true;
