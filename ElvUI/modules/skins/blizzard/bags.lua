@@ -2,7 +2,8 @@ local E, L, DF = unpack(select(2, ...)); --Engine
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
-	if E.db.skins.blizzard.enable ~= true or E.db.skins.blizzard.bags ~= true then return end
+	if E.db.skins.blizzard.enable ~= true or E.db.skins.blizzard.bags ~= true or E.db.core.bags then return end
+	
 	local QUEST_ITEM_STRING = select(10, GetAuctionItemClasses())
 	
 	local function UpdateBorderColors(button)
@@ -158,83 +159,12 @@ local function LoadSkin()
 			highlight.skinned = true
 		end
 	end)
-
-	--Frame Anchors
-	hooksecurefunc("updateContainerFrameAnchors", function()
-		local frame, xOffset, yOffset, screenHeight, freeScreenHeight, leftMostPoint, column;
-		local screenWidth = GetScreenWidth();
-		local containerScale = 1;
-		local leftLimit = 0;
-		if ( BankFrame:IsShown() ) then
-			leftLimit = BankFrame:GetRight() - 25;
-		end	
-		
-		while ( containerScale > CONTAINER_SCALE ) do
-			screenHeight = GetScreenHeight() / containerScale;
-			-- Adjust the start anchor for bags depending on the multibars
-			xOffset = CONTAINER_OFFSET_X / containerScale; 
-			yOffset = CONTAINER_OFFSET_Y / containerScale; 
-			-- freeScreenHeight determines when to start a new column of bags
-			freeScreenHeight = screenHeight - yOffset;
-			leftMostPoint = screenWidth - xOffset;
-			column = 1;
-			local frameHeight;
-			for index, frameName in ipairs(ContainerFrame1.bags) do
-				frameHeight = _G[frameName]:GetHeight();
-				if ( freeScreenHeight < frameHeight ) then
-					-- Start a new column
-					column = column + 1;
-					leftMostPoint = screenWidth - ( column * CONTAINER_WIDTH * containerScale ) - xOffset;
-					freeScreenHeight = screenHeight - yOffset;
-				end
-				freeScreenHeight = freeScreenHeight - frameHeight - VISIBLE_CONTAINER_SPACING;
-			end
-			if ( leftMostPoint < leftLimit ) then
-				containerScale = containerScale - 0.01;
-			else
-				break;
-			end
-		end
-		
-		if ( containerScale < CONTAINER_SCALE ) then
-			containerScale = CONTAINER_SCALE;
-		end
-		
-		screenHeight = GetScreenHeight() / containerScale;
-		-- Adjust the start anchor for bags depending on the multibars
-		xOffset = CONTAINER_OFFSET_X / containerScale;
-		yOffset = CONTAINER_OFFSET_Y / containerScale;
-		-- freeScreenHeight determines when to start a new column of bags
-		freeScreenHeight = screenHeight - yOffset;
-		column = 0;		
-		
-		local bagsPerColumn = 0
-		for index, frameName in ipairs(ContainerFrame1.bags) do
-			frame = _G[frameName];
-			frame:SetScale(1);
-			if ( index == 1 ) then
-				-- First bag
-				frame:SetPoint("BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", 2, 2);
-				bagsPerColumn = bagsPerColumn + 1
-			elseif ( freeScreenHeight < frame:GetHeight() ) then
-				-- Start a new column
-				column = column + 1;
-				freeScreenHeight = screenHeight - yOffset;
-				if column > 1 then
-					frame:SetPoint("BOTTOMRIGHT", ContainerFrame1.bags[(index - bagsPerColumn) - 1], "BOTTOMLEFT", -CONTAINER_SPACING, 0 );
-				else
-					frame:SetPoint("BOTTOMRIGHT", ContainerFrame1.bags[index - bagsPerColumn], "BOTTOMLEFT", -CONTAINER_SPACING, 0 );
-				end
-				bagsPerColumn = 0
-			else
-				-- Anchor to the previous bag
-				frame:SetPoint("BOTTOMRIGHT", ContainerFrame1.bags[index - 1], "TOPRIGHT", 0, CONTAINER_SPACING);	
-				bagsPerColumn = bagsPerColumn + 1
-			end
-			freeScreenHeight = freeScreenHeight - frame:GetHeight() - VISIBLE_CONTAINER_SPACING;
-		end		
-	end)
-
+	
+	S:HandleEditBox(BagItemSearchBox)
+	BagItemSearchBox:Height(BagItemSearchBox:GetHeight() - 5)
+	BagItemSearchBox:Point('TOPRIGHT', ContainerFrame1, 'TOPRIGHT', -10, -28)
+	BagItemSearchBox.SetPoint = E.noop
+	
 	local bags = CreateFrame("Frame")
 	bags:RegisterEvent("BAG_UPDATE")
 	bags:RegisterEvent("ITEM_LOCK_CHANGED")

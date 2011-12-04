@@ -1172,6 +1172,91 @@ function B:Sort(frame, args, bank)
 	self:SortBags(frame)
 end
 
+--Frame Anchors
+hooksecurefunc("updateContainerFrameAnchors", function()
+	local frame, xOffset, yOffset, screenHeight, freeScreenHeight, leftMostPoint, column;
+	local screenWidth = GetScreenWidth();
+	local containerScale = 1;
+	local leftLimit = 0;
+	if ( BankFrame:IsShown() ) then
+		leftLimit = BankFrame:GetRight() - 25;
+	end	
+	
+	while ( containerScale > CONTAINER_SCALE ) do
+		screenHeight = GetScreenHeight() / containerScale;
+		-- Adjust the start anchor for bags depending on the multibars
+		xOffset = CONTAINER_OFFSET_X / containerScale; 
+		yOffset = CONTAINER_OFFSET_Y / containerScale; 
+		-- freeScreenHeight determines when to start a new column of bags
+		freeScreenHeight = screenHeight - yOffset;
+		leftMostPoint = screenWidth - xOffset;
+		column = 1;
+		local frameHeight;
+		for index, frameName in ipairs(ContainerFrame1.bags) do
+			frameHeight = _G[frameName]:GetHeight();
+			if ( freeScreenHeight < frameHeight ) then
+				-- Start a new column
+				column = column + 1;
+				leftMostPoint = screenWidth - ( column * CONTAINER_WIDTH * containerScale ) - xOffset;
+				freeScreenHeight = screenHeight - yOffset;
+			end
+			freeScreenHeight = freeScreenHeight - frameHeight - VISIBLE_CONTAINER_SPACING;
+		end
+		if ( leftMostPoint < leftLimit ) then
+			containerScale = containerScale - 0.01;
+		else
+			break;
+		end
+	end
+	
+	if ( containerScale < CONTAINER_SCALE ) then
+		containerScale = CONTAINER_SCALE;
+	end
+	
+	screenHeight = GetScreenHeight() / containerScale;
+	-- Adjust the start anchor for bags depending on the multibars
+	xOffset = CONTAINER_OFFSET_X / containerScale;
+	yOffset = CONTAINER_OFFSET_Y / containerScale;
+	-- freeScreenHeight determines when to start a new column of bags
+	freeScreenHeight = screenHeight - yOffset;
+	column = 0;		
+	
+	local bagsPerColumn = 0
+	for index, frameName in ipairs(ContainerFrame1.bags) do
+		frame = _G[frameName];
+		if E.db.core.bags then
+			frame:SetScale(0.00001)
+		else
+			frame:SetScale(1);
+		end
+		if ( index == 1 ) then
+			-- First bag
+			frame:SetPoint("BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", 2, 2);
+			bagsPerColumn = bagsPerColumn + 1
+		elseif ( freeScreenHeight < frame:GetHeight() ) then
+			-- Start a new column
+			column = column + 1;
+			freeScreenHeight = screenHeight - yOffset;
+			if column > 1 then
+				frame:SetPoint("BOTTOMRIGHT", ContainerFrame1.bags[(index - bagsPerColumn) - 1], "BOTTOMLEFT", -CONTAINER_SPACING, 0 );
+			else
+				frame:SetPoint("BOTTOMRIGHT", ContainerFrame1.bags[index - bagsPerColumn], "BOTTOMLEFT", -CONTAINER_SPACING, 0 );
+			end
+			bagsPerColumn = 0
+		else
+			-- Anchor to the previous bag
+			frame:SetPoint("BOTTOMRIGHT", ContainerFrame1.bags[index - 1], "TOPRIGHT", 0, CONTAINER_SPACING);	
+			bagsPerColumn = bagsPerColumn + 1
+		end
+		freeScreenHeight = freeScreenHeight - frame:GetHeight() - VISIBLE_CONTAINER_SPACING;
+	end		
+end)
+
+function B:PLAYER_LOGIN() --Taint Fix
+	ToggleBackpack()
+	ToggleBackpack()
+end
+
 function B:Initialize()
 	if not E.db.core.bags then return end
 	self:InitBags()
@@ -1184,6 +1269,7 @@ function B:Initialize()
 	self:RegisterEvent("PLAYERBANKSLOTS_CHANGED")
 	self:RegisterEvent("BAG_CLOSED")	
 	self:RegisterEvent('BAG_UPDATE_COOLDOWN')
+	self:RegisterEvent('PLAYER_LOGIN')
 	self:RegisterEvent('GUILDBANKBAGSLOTS_CHANGED')
 	self:SecureHook('BankFrameItemButton_Update', 'PLAYERBANKSLOTS_CHANGED')
 	
@@ -1192,10 +1278,9 @@ function B:Initialize()
 		local container = _G["ContainerFrame"..i]
 		container:HookScript('OnShow', self.OpenBags)
 		container:HookScript('OnHide', self.CloseBags)
-		container:SetScale(0.00001)
 		container:SetAlpha(0)
 	end
-			
+	
 	--Stop Blizzard bank bags from functioning.
 	BankFrame:UnregisterAllEvents()
 	
