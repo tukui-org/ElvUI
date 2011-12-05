@@ -48,7 +48,7 @@ function UF:Construct_UF(frame, unit)
 	end
 	
 	self:Update_StatusBars()
-	self:Update_FontStrings()	
+	self:Update_FontStrings()
 	return frame
 end
 

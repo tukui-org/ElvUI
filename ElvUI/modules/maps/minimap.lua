@@ -141,7 +141,7 @@ end
 
 function M:LoadMinimap()	
 	local mmholder = CreateFrame('Frame', 'MMHolder', E.UIParent)
-	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
+	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -10, -10)
 	mmholder:Width((Minimap:GetWidth() + 29) + E.RBRWidth)
 	mmholder:Height(Minimap:GetHeight() + 53)
 	

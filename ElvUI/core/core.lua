@@ -14,7 +14,7 @@ _, E.wowbuild = GetBuildInfo(); E.wowbuild = tonumber(E.wowbuild);
 E.noop = function() end;
 E.screenheight = tonumber(string.match(({GetScreenResolutions()})[GetCurrentResolution()], "%d+x(%d+)"));
 E.screenwidth = tonumber(string.match(({GetScreenResolutions()})[GetCurrentResolution()], "(%d+)x+%d"));
-E.MinimapSize = 175
+E.MinimapSize = 150
 E.RBRWidth = ((E.MinimapSize - 6) / 6) + 4
 E.ValColor = '|cff1784d1' -- DEPRECIATED SOON, REMEMBER TO REMOVE THIS AND CODE AROUND IT
 E.TexCoords = {.08, .92, .08, .92}
@@ -44,6 +44,7 @@ function E:UpdateMedia()
 	--Fonts
 	self["media"].normFont = LSM:Fetch("font", self.db["core"].font)
 	self["media"].combatFont = LSM:Fetch("font", self.db["core"].dmgfont)
+	self["media"].chatFont = LSM:Fetch("font", self.db["core"].chatfont)
 
 	--Textures
 	self["media"].blankTex = LSM:Fetch("background", "ElvUI Blank")

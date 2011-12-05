@@ -213,7 +213,7 @@ end
 function AB:CreateBarPet()
 	bar:CreateBackdrop('Default');
 	bar.backdrop:SetAllPoints();
-	bar:Point('RIGHT', ElvUI_Bar4, 'LEFT', -4, 0);
+	bar:Point('BOTTOM', 0, 5);
 
 	bar:SetAttribute("_onstate-show", [[		
 		if newstate == "hide" then

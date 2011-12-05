@@ -221,7 +221,7 @@ function AB:AdjustTotemSettings()
 end
 
 function AB:CreateTotemBar()
-	bar:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 250)
+	bar:Point('BOTTOMLEFT', LeftChatPanel, 'BOTTOMRIGHT', 2, 0)
 
 	MultiCastActionBarFrame:SetParent(bar)
 	MultiCastActionBarFrame:ClearAllPoints()
