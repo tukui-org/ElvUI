@@ -112,7 +112,7 @@ local function ExpOnEnter(self)
 	GameTooltip:Show()
 end
 
-function M:UpdateExpBar()
+function M:UpdateExpBar(event)
 	local bar = UpperExperienceBar
 	if not bar then
 		bar = CreateFrame('StatusBar', 'UpperExperienceBar', UpperRepExpBar)
@@ -258,6 +258,7 @@ function M:LoadExpRepBar()
 		self:RegisterEvent("DISABLE_XP_GAIN", 'UpdateExpBar')
 		self:RegisterEvent("ENABLE_XP_GAIN", 'UpdateExpBar')
 		self:RegisterEvent('UPDATE_EXHAUSTION', 'UpdateExpBar')
+		self:RegisterEvent('PLAYER_LOGIN', 'UpdateExpBar')
 	end
 	
 	--[[if E.myclass == 'HUNTER' then
@@ -267,7 +268,5 @@ function M:LoadExpRepBar()
 	
 	--Reputation Events
 	self:RegisterEvent('UPDATE_FACTION', 'UpdateRepBar')
-	
-	self:UpdateExpBar()
 	OnLeave()
 end
