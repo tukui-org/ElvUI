@@ -1253,6 +1253,11 @@ hooksecurefunc("updateContainerFrameAnchors", function()
 	end		
 end)
 
+function B:PLAYERBANKBAGSLOTS_CHANGED()
+	B:PLAYERBANKSLOTS_CHANGED(29)
+	B:Layout(true)
+end
+
 function B:PLAYER_LOGIN() --Taint Fix
 	ToggleBackpack()
 	ToggleBackpack()
@@ -1270,6 +1275,7 @@ function B:Initialize()
 	self:RegisterEvent("PLAYERBANKSLOTS_CHANGED")
 	self:RegisterEvent("BAG_CLOSED")	
 	self:RegisterEvent('BAG_UPDATE_COOLDOWN')
+	self:RegisterEvent('PLAYERBANKBAGSLOTS_CHANGED')
 	self:RegisterEvent('PLAYER_LOGIN')
 	self:RegisterEvent('GUILDBANKBAGSLOTS_CHANGED')
 	self:SecureHook('BankFrameItemButton_Update', 'PLAYERBANKSLOTS_CHANGED')
