@@ -32,7 +32,7 @@ DF["core"] = {
 	['panelHeight'] = 200,
 	
 	--bags
-	['bags'] = true,
+	['bags'] = false,
 	
 	--chat
 	['chat'] = true,
@@ -41,7 +41,7 @@ DF["core"] = {
 
 --NamePlate
 DF["nameplate"] = {
-	["enable"] = true,
+	["enable"] = false,
 	["width"] = 113,
 	["height"] = 8,
 	["cbheight"] = 5,
@@ -201,7 +201,7 @@ DF['datatexts'] = {
 		},
 	},
 	['localtime'] = true,
-	['time24'] = false,
+	['time24'] = true,
 	['specswap'] = true,
 }
 
@@ -324,8 +324,9 @@ DF['unitframe'] = {
 				},
 				['castbar'] = {
 					['enable'] = true,
+					['snaptoab'] = true,	-- Position the player castbar above actionbar 1 and size it automatically. This disables the 'width' option.
 					['width'] = 260,
-					['height'] = 18,
+					['height'] = 20,
 					['icon'] = true,
 					['latency'] = true,
 					['color'] = DF.core.bordercolor,
@@ -687,7 +688,7 @@ DF['unitframe'] = {
 			},	
 			['boss'] = {
 				['enable'] = true,
-				['growthDirection'] = 'UP',
+				['growthDirection'] = 'DOWN',
 				['width'] = 200,
 				['height'] = 45,
 				['health'] = {
