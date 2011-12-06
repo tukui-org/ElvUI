@@ -428,13 +428,13 @@ function UF:Update_PlayerFrame(frame, db)
 		local buttonsize = E.db.actionbar.buttonsize
 		local buttonspacing = E.db.actionbar.buttonspacing
 		local bar1buttons = E.db.actionbar.bar1.buttons
-		local CASTBAR_WIDTH = ((buttonsize * bar1buttons) + (buttonspacing * bar1buttons))
+		local CASTBAR_WIDTH = ElvUI_Bar1:GetWidth()
 		
 		local castbar = frame.Castbar
 		if CASTBAR_SNAP == true then
-			castbar:Width(CASTBAR_WIDTH - 1)
+			castbar:Width(CASTBAR_WIDTH - E:Scale(4))
 		else
-			castbar:Width(db.castbar.width - 4)
+			castbar:Width(db.castbar.width - E:Scale(4))
 		end
 		castbar:Height(db.castbar.height)
 		
@@ -450,13 +450,13 @@ function UF:Update_PlayerFrame(frame, db)
 		--Icon
 		if db.castbar.icon then
 			castbar.Icon = castbar.ButtonIcon
-			castbar.Icon.bg:Width(db.castbar.height + 4)
-			castbar.Icon.bg:Height(db.castbar.height + 4)
+			castbar.Icon.bg:Width(db.castbar.height + E:Scale(4))
+			castbar.Icon.bg:Height(db.castbar.height + E:Scale(4))
 		
 			if CASTBAR_SNAP == true then
-				castbar:Width(CASTBAR_WIDTH - castbar.Icon.bg:GetWidth() - 2)
+				castbar:Width(CASTBAR_WIDTH - castbar.Icon.bg:GetWidth() - E:Scale(5))
 			else
-				castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - 5)
+				castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - E:Scale(5))
 			end
 			castbar.Icon.bg:Show()
 		else
