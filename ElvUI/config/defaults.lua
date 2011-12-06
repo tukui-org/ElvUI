@@ -338,7 +338,7 @@ DF['unitframe'] = {
 				['classbar'] = {
 					['enable'] = true,
 					['fill'] = 'spaced',
-					['height'] = 10,
+					['height'] = 8,
 				},
 			},	
 			['target'] = {
@@ -1145,7 +1145,7 @@ DF["actionbar"] = {
 	['barShapeShift'] = {
 		['enabled'] = true,
 		['mouseover'] = false,
-		['buttonsPerRow'] = NUM_SHAPESHIFT_SLOTS,
+		['buttonsPerRow'] = 1,
 		['buttons'] = NUM_SHAPESHIFT_SLOTS,
 		['point'] = 'TOPLEFT',
 		['backdrop'] = false,
