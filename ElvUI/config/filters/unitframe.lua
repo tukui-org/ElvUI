@@ -3,7 +3,12 @@ local DF = E.DF["profile"]['unitframe']['aurafilters']
 
 local function SpellName(id)
 	local name, _, _, _, _, _, _, _, _ = GetSpellInfo(id) 	
-	return name
+	if not name then
+		print('|cff1784d1ElvUI:|r SpellID is not valid: '..id..'. Please check for an updated version, if none exists report to ElvUI author.')
+		return 'Impale'
+	else
+		return name
+	end
 end
 
 DF['CCDebuffs'] = {

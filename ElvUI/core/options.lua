@@ -56,14 +56,12 @@ E.Options.args.core = {
 			guiInline = true,
 			args = {	
 				autoscale = {
-					order = 1,
 					name = L["Auto Scale"],
 					desc = L["Automatically scale the User Interface based on your screen resolution"],
 					type = "toggle",	
 					set = function(info, value) E.db.core[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end
 				},
 				uiscale = {
-					order = 2,
 					name = L["Scale"],
 					desc = L["Controls the scaling of the entire User Interface"],
 					disabled = function(info) return E.db["core"].autoscale end,
@@ -73,13 +71,27 @@ E.Options.args.core = {
 					set = function(info, value) E.db.core[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end
 				},		
 				stickyFrames = {
-					order = 3,
 					name = L['Sticky Frames'],
 					desc = L['Attempt to snap frames to nearby frames.'],
 					type = 'toggle',
 				},
+				bags = {
+					type = "toggle",
+					name = L['Bags'],
+					get = function(info) return E.db.core.bags end,
+					set = function(info, value) E.db.core.bags = value; StaticPopup_Show("CONFIG_RL") end
+				},	
+				autoRepair = {
+					name = L['Auto Repair'],
+					desc = L['Automatically repair using the following method when visiting a merchant.'],
+					type = 'select',
+					values = {
+						['NONE'] = NONE,
+						['GUILD'] = GUILD,
+						['PLAYER'] = PLAYER,
+					},				
+				},
 				interruptAnnounce = {
-					order = 4,
 					name = L['Announce Interrupts'],
 					desc = L['Announce when you interrupt a spell to the specified chat channel.'],
 					type = 'select',
@@ -89,7 +101,21 @@ E.Options.args.core = {
 						['PARTY'] = PARTY,
 						['RAID'] = RAID,
 					},
+				},					
+				panelWidth = {
+					type = 'range',
+					name = L['Panel Width'],
+					desc = L['PANEL_DESC'],
+					set = function(info, value) E.db.core.panelWidth = value; E:GetModule('Chat'):PositionChat(true); local bags = E:GetModule('Bags'); bags:Layout(); bags:Layout(true); end,
+					min = 315, max = 700, step = 1,
 				},
+				panelHeight = {
+					type = 'range',
+					name = L['Panel Height'],
+					desc = L['PANEL_DESC'],
+					set = function(info, value) E.db.core.panelHeight = value; E:GetModule('Chat'):PositionChat(true) end,
+					min = 150, max = 600, step = 1,
+				},					
 			},
 		},
 		media = {
@@ -247,65 +273,7 @@ E.Options.args.core = {
 					},
 				},
 			},
-		},
-		panelGroup = {
-			name = L['Panels'],
-			guiInline = true,
-			type = 'group',
-			order = 3,
-			args = {
-				panelWidth = {
-					order = 3,
-					type = 'range',
-					name = L['Width'],
-					set = function(info, value) E.db.core.panelWidth = value; E:GetModule('Chat'):PositionChat(true); local bags = E:GetModule('Bags'); bags:Layout(); bags:Layout(true); end,
-					min = 315, max = 700, step = 1,
-				},
-				panelHeight = {
-					order = 3,
-					type = 'range',
-					name = L['Height'],
-					set = function(info, value) E.db.core.panelHeight = value; E:GetModule('Chat'):PositionChat(true) end,
-					min = 150, max = 600, step = 1,
-				},	
-			},
-		},
-		chatGroup = {
-			name = L['Chat'],
-			type = 'group',
-			guiInline = true,
-			order = 4,
-			args = {
-				enable = {
-					order = 1,
-					type = "toggle",
-					name = L["Enable"],
-					get = function(info) return E.db.core.chat end,
-					set = function(info, value) E.db.core.chat = value; StaticPopup_Show("CONFIG_RL") end
-				},			
-				autohide = {
-					order = 2,
-					type = 'toggle',
-					name = L['AutoHide Panels'],
-					desc = L['When a chat frame does not exist, hide the panel.'],
-				},
-			},
-		},
-		bagGroup = {
-			name = L['Bags'],
-			type = 'group',
-			guiInline = true,
-			order = 5,
-			args = {
-				enable = {
-					order = 1,
-					type = "toggle",
-					name = L["Enable"],
-					get = function(info) return E.db.core.bags end,
-					set = function(info, value) E.db.core.bags = value; StaticPopup_Show("CONFIG_RL") end
-				},			
-			},
-		},			
+		},	
 	},
 }
 

@@ -10,6 +10,7 @@ DF["core"] = {
 	["stickyFrames"] = true,
 	['loginmessage'] = true,
 	["interruptAnnounce"] = "NONE",
+	["autoRepair"] = "NONE",
 	
 	-- fonts
 	["fontsize"] = 12,
@@ -32,10 +33,6 @@ DF["core"] = {
 	
 	--bags
 	['bags'] = true,
-	
-	--chat
-	['chat'] = true,
-	['autohide'] = true,
 };
 
 --NamePlate
@@ -66,6 +63,14 @@ DF["nameplate"] = {
 DF['auras'] = {
 	['enable'] = true,
 	['perRow'] = 12,
+}
+
+--Chat
+DF['chat'] = {
+	['enable'] = true,
+	['autohide'] = true,
+	['url'] = true;
+	['shortChannels'] = true;
 }
 
 --ClassTimers

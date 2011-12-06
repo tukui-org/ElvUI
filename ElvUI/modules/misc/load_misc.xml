@@ -7,4 +7,5 @@
 	<Script file='loot_roll.lua'/>
 	<Script file='raidutility.lua'/>
 	<Script file='raidbuffreminder.lua'/>
+	<Script file='autoRepair.lua'/>
 </Ui>

@@ -205,6 +205,7 @@ function E:CreateMoverPopup()
 	header:SetTemplate('Default', true)
 	header:SetWidth(100); header:SetHeight(25)
 	header:SetPoint("CENTER", f, 'TOP')
+	header:SetFrameLevel(header:GetFrameLevel() + 2)
 
 	local title = header:CreateFontString("OVERLAY")
 	title:FontTemplate()

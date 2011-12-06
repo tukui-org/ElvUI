@@ -73,6 +73,14 @@ do
 	L["Movers unlocked. Move them now and click Lock when you are done."] = true;
 	L['Lock'] = true;
 	L["This can't be right, you must of broke something! Please turn on lua errors and report the issue to Elv http://www.tukui.org/forums/forum.php?id=146"] = true;
+	
+	L['Panel Width'] = true;
+	L['Panel Height'] = true;
+	L['PANEL_DESC'] = 'Adjust the size of your left and right panels, this will effect your chat and bags.';
+	L['URL Links'] = true;
+	L['Attempt to create URL links inside the chat.'] = true;
+	L['Short Channels'] = true;
+	L['Shorten the channel names in chat.'] = true;
 end
 
 --Media	
@@ -573,8 +581,24 @@ end
 
 --Chat
 do
+	L['CHAT_DESC'] = 'Adjust chat settings for ElvUI.';
 	L["Chat"] = true;
 	L['Invalid Target'] = true;
+	L['BG'] = true;
+	L['BGL'] = true;
+	L['G'] = true;
+	L['O'] = true;
+	L['P'] = true;
+	L['PG'] = true;
+	L['PL'] = true;
+	L['R'] = true;
+	L['RL'] = true;
+	L['RW'] = true;
+	L['DND'] = true;
+	L['AFK'] = true;
+	L['whispers'] = true;
+	L['says'] = true;
+	L['yells'] = true;
 end
 
 --Skins
@@ -645,6 +669,11 @@ do
 	L["Can't Roll"] = true;
 	L['Disband Group'] = true;
 	L['Raid Menu'] = true;
+	L['Your items have been repaired for: '] = true;
+	L["You don't have enough money to repair."] = true;
+	L['Auto Repair'] = true;
+	L['Automatically repair using the following method when visiting a merchant.'] = true;
+	L['Your items have been repaired using guild bank funds for: '] = true;
 end
 
 --Bags
