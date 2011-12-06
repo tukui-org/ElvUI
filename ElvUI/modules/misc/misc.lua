@@ -37,6 +37,7 @@ end
 function M:Initialize()
 	self:LoadRaidMarker()
 	self:LoadExpRepBar()
+	self:LoadMerchant()
 	self:LoadMirrorBars()
 	self:RegisterEvent('PLAYER_REGEN_DISABLED', 'ErrorFrameToggle')
 	self:RegisterEvent('PLAYER_REGEN_ENABLED', 'ErrorFrameToggle')
