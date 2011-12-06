@@ -66,17 +66,19 @@ function AB:CreateVehicleLeave()
 end
 
 function AB:ReassignBindings()
-	if InCombatLockdown() then return end
-	if not ElvUI_Bar1 then return end
-	local frame = ElvUI_Bar1
-
-	ClearOverrideBindings(frame)
-	for i = 1, #frame.buttons do
-		local button, real_button = ("ACTIONBUTTON%d"):format(i), ("ElvUI_Bar1Button%d"):format(i)
-		for k=1, select('#', GetBindingKey(button)) do
-			local key = select(k, GetBindingKey(button))
-			if key and key ~= "" then
-				SetOverrideBindingClick(frame, false, key, real_button)
+	if InCombatLockdown() then return end	
+	for bar, _ in pairs(self["handledBars"]) do
+		if not bar then return end
+		
+		ClearOverrideBindings(bar)
+		for i = 1, #bar.buttons do
+			local button = (bar.bindButtons.."%d"):format(i)
+			local real_button = (bar:GetName().."Button%d"):format(i)
+			for k=1, select('#', GetBindingKey(button)) do
+				local key = select(k, GetBindingKey(button))
+				if key and key ~= "" then
+					SetOverrideBindingClick(bar, false, key, real_button)
+				end
 			end
 		end
 	end
