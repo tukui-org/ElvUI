@@ -434,7 +434,7 @@ function UF:Update_PlayerFrame(frame, db)
 		if CASTBAR_SNAP == true then
 			castbar:Width(CASTBAR_WIDTH - 3)
 		else
-			castbar:Width(db.castbar.width - 3)
+			castbar:Width(db.castbar.width - 4)
 		end
 		castbar:Height(db.castbar.height)
 		
@@ -456,7 +456,7 @@ function UF:Update_PlayerFrame(frame, db)
 		if CASTBAR_SNAP == true then
 			castbar:Width(CASTBAR_WIDTH - castbar.Icon.bg:GetWidth() - 4)
 		else
-			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - 5)
+			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - 6)
 		end
 			castbar.Icon.bg:Show()
 		else
