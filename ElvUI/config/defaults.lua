@@ -372,7 +372,7 @@ DF['unitframe'] = {
 				},
 				['buffs'] = {
 					['enable'] = true,
-					['perrow'] = 7,
+					['perrow'] = 8,
 					['numrows'] = 2,
 					['growth-x'] = 'RIGHT',
 					['growth-y'] = 'DOWN',
@@ -386,7 +386,7 @@ DF['unitframe'] = {
 				},
 				['debuffs'] = {
 					['enable'] = true,
-					['perrow'] = 7,
+					['perrow'] = 8,
 					['numrows'] = 2,
 					['growth-x'] = 'RIGHT',
 					['growth-y'] = 'DOWN',
