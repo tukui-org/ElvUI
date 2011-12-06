@@ -287,7 +287,7 @@ function UF:Update_FocusFrame(frame, db)
 		
 	if not frame.mover then
 		frame:ClearAllPoints()
-		frame:Point('TOPLEFT', ElvUF_Target, 'BOTTOMLEFT', 0, -220) --Set to default position
+		frame:Point('TOPLEFT', ElvUF_Target, 'BOTTOMLEFT', 0, -170) --Set to default position
 	end
 	
 	frame:UpdateAllElements()

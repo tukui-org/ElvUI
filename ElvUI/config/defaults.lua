@@ -5,8 +5,8 @@ E.DF["global"] = {};
 
 --Core
 DF["core"] = {
-	["uiscale"] = 0.71,
-	["autoscale"] = true,
+	["uiscale"] = 0.65,
+	["autoscale"] = false,
 	["stickyFrames"] = true,
 	['loginmessage'] = true,
 	["interruptAnnounce"] = "RAID",
@@ -66,7 +66,7 @@ DF["nameplate"] = {
 --Auras
 DF['auras'] = {
 	['enable'] = true,
-	['perRow'] = 12,
+	['perRow'] = 16,
 }
 
 --ClassTimers
@@ -173,17 +173,17 @@ DF['datatexts'] = {
 	['panels'] = {
 		['spec1'] = {
 			['LeftChatDataPanel'] = {
-				['left'] = 'Armor',
+				['left'] = 'Spell/Heal Power',
 				['middle'] = 'Durability',
-				['right'] = 'Avoidance',
+				['right'] = 'Crit Chance',
 			},
 			['RightChatDataPanel'] = {
 				['left'] = 'System',
-				['middle'] = 'Time',	
+				['middle'] = 'Friends',	
 				['right'] = 'Gold',
 			},
 			['LeftMiniPanel'] = 'Guild',
-			['RightMiniPanel'] = 'Friends',
+			['RightMiniPanel'] = 'Time',
 		},
 		['spec2'] = {
 			['LeftChatDataPanel'] = {
@@ -418,7 +418,7 @@ DF['unitframe'] = {
 			['targettarget'] = {
 				['enable'] = true,
 				['width'] = 130,
-				['height'] = 55,
+				['height'] = 50,
 				['health'] = {
 					['text'] = false,
 					['text_format'] = 'current-percent',
@@ -429,7 +429,7 @@ DF['unitframe'] = {
 					['text'] = false,
 					['text_format'] = 'current',	
 					['width'] = 'fill',
-					['height'] = 15,
+					['height'] = 10,
 					['offset'] = 0,
 					['position'] = 'LEFT',
 					['hideonnpc'] = false,					
@@ -481,7 +481,7 @@ DF['unitframe'] = {
 					['text'] = false,
 					['text_format'] = 'current',	
 					['width'] = 'fill',
-					['height'] = 7,
+					['height'] = 10,
 					['offset'] = 0,
 					['position'] = 'BOTTOMRIGHT',
 					['hideonnpc'] = false,					
@@ -532,7 +532,7 @@ DF['unitframe'] = {
 			},	
 			['focustarget'] = {
 				['enable'] = true,
-				['width'] = 190,
+				['width'] = 150,
 				['height'] = 50,
 				['health'] = {
 					['text'] = true,
@@ -555,7 +555,7 @@ DF['unitframe'] = {
 				},
 				['buffs'] = {
 					['enable'] = true,
-					['perrow'] = 7,
+					['perrow'] = 6,
 					['numrows'] = 1,
 					['growth-x'] = 'RIGHT',
 					['growth-y'] = 'DOWN',
@@ -569,7 +569,7 @@ DF['unitframe'] = {
 				},
 				['debuffs'] = {
 					['enable'] = true,
-					['perrow'] = 7,
+					['perrow'] = 6,
 					['numrows'] = 1,
 					['growth-x'] = 'RIGHT',
 					['growth-y'] = 'DOWN',
@@ -718,13 +718,13 @@ DF['unitframe'] = {
 				},
 				['buffs'] = {
 					['enable'] = true,
-					['perrow'] = 3,
-					['numrows'] = 2,
+					['perrow'] = 8,
+					['numrows'] = 1,
 					['growth-x'] = 'LEFT',
-					['growth-y'] = 'DOWN',
-					['initialAnchor'] = 'RIGHT',
-					['attachTo'] = 'FRAME',
-					['anchorPoint'] = 'LEFT',					
+					['growth-y'] = 'UP',
+					['initialAnchor'] = 'BOTTOMRIGHT',
+					['attachTo'] = 'DEBUFFS',
+					['anchorPoint'] = 'TOPRIGHT',					
 					['fontsize'] = 10,
 					['showPlayerOnly'] = false,
 					['useFilter'] = '',		
@@ -732,13 +732,13 @@ DF['unitframe'] = {
 				},
 				['debuffs'] = {
 					['enable'] = true,
-					['perrow'] = 3,
-					['numrows'] = 2,
+					['perrow'] = 8,
+					['numrows'] = 1,
 					['growth-x'] = 'RIGHT',
-					['growth-y'] = 'DOWN',
-					['initialAnchor'] = 'LEFT',
+					['growth-y'] = 'UP',
+					['initialAnchor'] = 'BOTTOMLEFT',
 					['attachTo'] = 'FRAME',
-					['anchorPoint'] = 'RIGHT',					
+					['anchorPoint'] = 'TOPLEFT',					
 					['fontsize'] = 10,
 					['showPlayerOnly'] = true,
 					['useFilter'] = '',	
@@ -1112,7 +1112,7 @@ DF["actionbar"] = {
 		['mouseover'] = true,
 		['buttons'] = 9,
 		['buttonsPerRow'] = 3,
-		['point'] = 'TOPRIGHT',
+		['point'] = 'BOTTOMLEFT',
 		['backdrop'] = true,
 		['heightMult'] = 1,
 		['widthMult'] = 1,
