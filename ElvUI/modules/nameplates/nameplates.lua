@@ -134,6 +134,7 @@ function NP:CreateAuraIcon(parent)
 	local button = CreateFrame("Frame",nil,parent)
 	button:SetWidth(20)
 	button:SetHeight(20)
+	button:SetScript('OnHide', function(self) NP:UpdateAuraAnchors(self:GetParent()) end)
 	
 	button.bg = button:CreateTexture(nil, "BACKGROUND")
 	button.bg:SetTexture(unpack(E["media"].backdropcolor))
@@ -205,6 +206,7 @@ function NP:UpdateAuraTimer(elapsed)
 		else
 			self.text:SetText('')
 			self:SetScript("OnUpdate", nil)
+			self:Hide()
 		end
 		self.elapsed = 0
 	end
@@ -234,9 +236,12 @@ end
 
 function NP:UpdateAuraAnchors(frame)
 	for i = 1, 5 do
-		if frame.icons[i] and frame.icons[i]:IsShown() then
-			if i == 1 then frame.icons[i]:SetPoint("RIGHT",frame.icons,"RIGHT") end
-			if i ~= 1 and i <= 5 then frame.icons[i]:SetPoint("RIGHT", frame.icons.lastShown or frame.icons[i-1], "LEFT", -2, 0) end
+		if frame.icons and frame.icons[i] and frame.icons[i]:IsShown() then
+			if frame.icons.lastShown then 
+				frame.icons[i]:SetPoint("RIGHT", frame.icons.lastShown, "LEFT", -2, 0)
+			else
+				frame.icons[i]:SetPoint("RIGHT",frame.icons,"RIGHT")
+			end
 			frame.icons.lastShown = frame.icons[i]
 		end
 	end
