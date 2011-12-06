@@ -176,6 +176,7 @@ function StickyFrames:SnapFrame(frameA, frameB, left, top, right, bottom)
 	if not bottom then bottom = 0 end
 	
 	-- Lets translate B's coords into A's scale
+	if not xB or not yB or not sB or not sA or not sB then return end
 	xB, yB = (xB*sB) / sA, (yB*sB) / sA
 
 	local stickyAx, stickyAy = wA * 0.75, hA * 0.75

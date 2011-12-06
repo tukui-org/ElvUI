@@ -139,37 +139,84 @@ function NP:CreateAuraIcon(parent)
 	button.bg:SetTexture(unpack(E["media"].backdropcolor))
 	button.bg:SetAllPoints(button)
 	
-	button.bord = button:CreateTexture(nil, "BORDER")
+	button.bord = button:CreateTexture(nil, "BACKGROUND")
+	button.bord:SetDrawLayer('BACKGROUND', 2)
 	button.bord:SetTexture(unpack(E["media"].bordercolor))
 	button.bord:SetPoint("TOPLEFT",button,"TOPLEFT", noscalemult,-noscalemult)
 	button.bord:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-noscalemult,noscalemult)
 	
-	button.bg2 = button:CreateTexture(nil, "ARTWORK")
+	button.bg2 = button:CreateTexture(nil, "BACKGROUND")
+	button.bg2:SetDrawLayer('BACKGROUND', 3)
 	button.bg2:SetTexture(unpack(E["media"].backdropcolor))
 	button.bg2:SetPoint("TOPLEFT",button,"TOPLEFT", noscalemult*2,-noscalemult*2)
 	button.bg2:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-noscalemult*2,noscalemult*2)	
 	
-	button.icon = button:CreateTexture(nil, "OVERLAY")
+	button.icon = button:CreateTexture(nil, "BORDER")
 	button.icon:SetPoint("TOPLEFT",button,"TOPLEFT", noscalemult*3,-noscalemult*3)
 	button.icon:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-noscalemult*3,noscalemult*3)
 	button.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	
-	button.cd = CreateFrame("Cooldown",nil,button)
-	button.cd:SetAllPoints(button)
-	button.cd:SetReverse(true)
-	button.cd.SizeOverride = 8
+	button.text = button:CreateFontString(nil, 'OVERLAY')
+	button.text:Point('CENTER', 1, 1)
+	button.text:SetJustifyH('CENTER')	
+	button.text:FontTemplate(nil, 7, 'OUTLINE')
+	button.text:SetShadowColor(0, 0, 0, 0)
+	
 	button.count = button:CreateFontString(nil,"OVERLAY")
 	button.count:FontTemplate(nil,7,'OUTLINE')
-	button.count:SetShadowColor(0, 0, 0, 0.4)
+	button.count:SetShadowColor(0, 0, 0, 0)
 	button.count:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 2)
 	return button
 end
 
+local day, hour, minute, second = 86400, 3600, 60, 1
+function NP:FormatTime(s)
+	if s >= day then
+		return format("%dd", ceil(s / hour))
+	elseif s >= hour then
+		return format("%dh", ceil(s / hour))
+	elseif s >= minute then
+		return format("%dm", ceil(s / minute))
+	elseif s >= minute / 12 then
+		return floor(s)
+	end
+	
+	return format("%.1f", s)
+end
+
+function NP:UpdateAuraTimer(elapsed)
+	if not self.timeLeft then return end
+	self.elapsed = (self.elapsed or 0) + elapsed
+	if self.elapsed >= 0.1 then
+		if not self.firstUpdate then
+			self.timeLeft = self.timeLeft - self.elapsed
+		else
+			self.timeLeft = self.timeLeft - GetTime()
+			self.firstUpdate = false
+		end
+		if self.timeLeft > 0 then
+			local time = NP:FormatTime(self.timeLeft)
+			self.text:SetText(time)
+			if self.timeLeft <= 5 then
+				self.text:SetTextColor(0.99, 0.31, 0.31)
+			else
+				self.text:SetTextColor(1, 1, 1)
+			end
+		else
+			self.text:SetText('')
+			self:SetScript("OnUpdate", nil)
+		end
+		self.elapsed = 0
+	end
+end
+
 function NP:UpdateAuraIcon(button, unit, index, filter)
 	local name,_,icon,count,debuffType,duration,expirationTime,_,_,_,spellID = UnitAura(unit,index,filter)
-	
+
 	button.icon:SetTexture(icon)
-	button.cd:SetCooldown(expirationTime-duration,duration)
+	button.firstUpdate = true;
+	button.duration = duration
+	button.timeLeft = expirationTime
 	button.expirationTime = expirationTime
 	button.duration = duration
 	button.spellID = spellID
@@ -178,11 +225,31 @@ function NP:UpdateAuraIcon(button, unit, index, filter)
 	else
 		button.count:SetText("")
 	end
+
 	button:Show()
+	if not button:GetScript('OnUpdate') then
+		button:SetScript('OnUpdate', NP.UpdateAuraTimer)
+	end
+end
+
+function NP:UpdateAuraAnchors(frame)
+	for i = 1, 5 do
+		if frame.icons[i] and frame.icons[i]:IsShown() then
+			if i == 1 then frame.icons[i]:SetPoint("RIGHT",frame.icons,"RIGHT") end
+			if i ~= 1 and i <= 5 then frame.icons[i]:SetPoint("RIGHT", frame.icons.lastShown or frame.icons[i-1], "LEFT", -2, 0) end
+			frame.icons.lastShown = frame.icons[i]
+		end
+	end
+	
+	frame.icons.lastShown = nil;
 end
 
 function NP:OnAura(frame, unit)
-	if not frame.icons or not frame.unit then return end
+	if not frame.icons then return end
+	if not frame.unit then
+		NP:UpdateAuraAnchors(frame)
+		return;
+	end
 	local i = 1
 	for index = 1,40 do
 		if i > 5 then return end
