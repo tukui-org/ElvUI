@@ -27,6 +27,7 @@ local function FormatTooltipMoney(money)
 end
 
 local function OnEvent(self, event, ...)
+	if not IsLoggedIn() then return end
 	local NewMoney = GetMoney()
 	if (ElvData == nil) then ElvData = {}; end
 	if (ElvData['gold'] == nil) then ElvData['gold'] = {}; end
@@ -36,7 +37,6 @@ local function OnEvent(self, event, ...)
 	local OldMoney = ElvData['gold'][E.myrealm][E.myname] or NewMoney
 	
 	local Change = NewMoney-OldMoney -- Positive if we gain money
-	
 	if OldMoney>NewMoney then		-- Lost Money
 		Spent = Spent - Change
 	else							-- Gained Moeny
