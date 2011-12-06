@@ -5,8 +5,8 @@ E.DF["global"] = {};
 
 --Core
 DF["core"] = {
-	["uiscale"] = 0.64,
-	["autoscale"] = false,
+	["uiscale"] = 0.71,
+	["autoscale"] = true,
 	["stickyFrames"] = true,
 	['loginmessage'] = true,
 	["interruptAnnounce"] = "RAID",

@@ -428,11 +428,11 @@ function UF:Update_PlayerFrame(frame, db)
 		local buttonsize = E.db.actionbar.buttonsize
 		local buttonspacing = E.db.actionbar.buttonspacing
 		local bar1buttons = E.db.actionbar.bar1.buttons
-		local CASTBAR_WIDTH = math.ceil((buttonsize * bar1buttons) + (buttonspacing * (bar1buttons + 2)))
+		local CASTBAR_WIDTH = ((buttonsize * bar1buttons) + (buttonspacing * bar1buttons))
 		
 		local castbar = frame.Castbar
 		if CASTBAR_SNAP == true then
-			castbar:Width(CASTBAR_WIDTH - 3)
+			castbar:Width(CASTBAR_WIDTH - 1)
 		else
 			castbar:Width(db.castbar.width - 4)
 		end
@@ -453,11 +453,11 @@ function UF:Update_PlayerFrame(frame, db)
 			castbar.Icon.bg:Width(db.castbar.height + 4)
 			castbar.Icon.bg:Height(db.castbar.height + 4)
 		
-		if CASTBAR_SNAP == true then
-			castbar:Width(CASTBAR_WIDTH - castbar.Icon.bg:GetWidth() - 4)
-		else
-			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - 6)
-		end
+			if CASTBAR_SNAP == true then
+				castbar:Width(CASTBAR_WIDTH - castbar.Icon.bg:GetWidth() - 2)
+			else
+				castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - 5)
+			end
 			castbar.Icon.bg:Show()
 		else
 			castbar.ButtonIcon.bg:Hide()
@@ -466,7 +466,7 @@ function UF:Update_PlayerFrame(frame, db)
 		
 		if CASTBAR_SNAP then
 			castbar:ClearAllPoints()
-			castbar:Point("BOTTOMRIGHT", ElvUI_Bar1, "TOPRIGHT", -BORDER + db.castbar.xOffset, ((BORDER*2+BORDER) + db.castbar.yOffset))
+			castbar:Point("BOTTOMRIGHT", ElvUI_Bar1, "TOPRIGHT", -(BORDER + db.castbar.xOffset), ((BORDER*2+BORDER) + db.castbar.yOffset))
 		else
 			castbar:ClearAllPoints()
 			castbar:Point("TOPRIGHT", frame, "BOTTOMRIGHT", -(BORDER + db.castbar.xOffset), -((BORDER*2+BORDER) + db.castbar.yOffset))
