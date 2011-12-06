@@ -85,13 +85,24 @@ local UpdateFlyout, ShowGrid, HideGrid, UpdateGrid, SetupSecureSnippets, WrapOnC
 
 local InitializeEventHandler, OnEvent, ForAllButtons, OnUpdate
 
+
+local SPELL_POWER_HOLY_POWER = SPELL_POWER_HOLY_POWER;
+local HAND_OF_LIGHT = GetSpellInfo(90174);
+local PLAYERCLASS = select(2, UnitClass('player'))
+local HOLY_POWER_SPELLS = {
+	[85256] = GetSpellInfo(85256), --Templar's Verdict
+	[53600] = GetSpellInfo(53600), --Shield of the Righteous
+};
+
+
 local DefaultConfig = {
 	outOfRangeColoring = "button",
 	tooltip = "enabled",
 	showGrid = false,
 	colors = {
 		range = { 0.8, 0.1, 0.1 },
-		mana = { 0.5, 0.5, 1.0 }
+		mana = { 0.5, 0.5, 1.0 },
+		hp = {0.45, 0.45, 1}
 	},
 	hideElements = {
 		macro = false,
@@ -982,6 +993,24 @@ function UpdateButtonState(self)
 	lib.callbacks:Fire("OnButtonState", self)
 end
 
+local function IsHolyPowerAbility(actionId)
+	if not actionId then return false; end
+	local actionType, id = GetActionInfo(actionId);
+	if actionType == 'macro' then
+		local macroSpell = GetMacroSpell(id);
+		if macroSpell then
+			for spellId, spellName in pairs(HOLY_POWER_SPELLS) do
+				if macroSpell == spellName then
+					return true;
+				end
+			end
+		end
+	else
+		return HOLY_POWER_SPELLS[id];
+	end
+	return false;
+end
+
 function UpdateUsable(self)
 	-- TODO: make the colors configurable
 	-- TODO: allow disabling of the whole recoloring
@@ -989,7 +1018,10 @@ function UpdateUsable(self)
 		self.icon:SetVertexColor(unpack(self.config.colors.range))
 	else
 		local isUsable, notEnoughMana = self:IsUsable()
-		if isUsable then
+		local action = self._state_action
+		if PLAYERCLASS == 'PALADIN' and IsHolyPowerAbility(action) and not(UnitPower('player', SPELL_POWER_HOLY_POWER) == 3 or UnitBuff('player', HAND_OF_LIGHT)) then
+			self.icon:SetVertexColor(unpack(self.config.colors.hp))
+		elseif isUsable then
 			self.icon:SetVertexColor(1.0, 1.0, 1.0)
 			--self.normalTexture:SetVertexColor(1.0, 1.0, 1.0)
 		elseif notEnoughMana then
