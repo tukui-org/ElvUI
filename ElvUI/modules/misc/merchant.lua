@@ -18,41 +18,11 @@ function M:LoadMerchant()
 				end
 			end
 		end
-		local goldabbrev = "|cffffd700g|r"
-		local silverabbrev = "|cffc7c7cfs|r"
-		local copperabbrev = "|cffeda55fc|r"
-		local merchant_repairnomoney = "You don't have enough money for repair!"
-		local merchant_repaircost = "Your items have been repaired for"
-		local merchant_trashsell = "Your vendor trash has been sold and you earned"
 		if c>0 then
 			local g, s, c = math.floor(c/10000) or 0, math.floor((c%10000)/100) or 0, c%100
 			DEFAULT_CHAT_FRAME:AddMessage(merchant_trashsell.." |cffffffff"..g..goldabbrev.." |cffffffff"..s..silverabbrev.." |cffffffff"..c..copperabbrev..".",255,255,0)
 		end
-		if not IsShiftKeyDown() then
-			if CanMerchantRepair() then
-				guildRepairFlag = 0
-				local cost, possible = GetRepairAllCost()
-				-- additional checks for guild repairs
-				if (IsInGuild()) and (CanGuildBankRepair()) then
-					 if cost <= GetGuildBankWithdrawMoney() or GetGuildBankWithdrawMoney() == -1 then
-						guildRepairFlag = 1
-					 end
-				end
-				if cost>0 then
-					if (possible or guildRepairFlag) then
-						RepairAllItems(guildRepairFlag)
-						local c = cost%100
-						local s = math.floor((cost%10000)/100)
-						local g = math.floor(cost/10000)
-						DEFAULT_CHAT_FRAME:AddMessage(merchant_repaircost.." |cffffffff"..g..goldabbrev.." |cffffffff"..s..silverabbrev.." |cffffffff"..c..copperabbrev..".",255,255,0)
-					else
-						DEFAULT_CHAT_FRAME:AddMessage(merchant_repairnomoney,255,0,0)
-					end
-				end
-			end
-		end
 	end)
-	f:RegisterEvent("MERCHANT_SHOW")
 
 	-- buy max number value with alt
 	local savedMerchantItemButton_OnModifiedClick = MerchantItemButton_OnModifiedClick
