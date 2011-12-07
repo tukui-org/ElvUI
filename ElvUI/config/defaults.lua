@@ -10,7 +10,7 @@ DF["core"] = {
 	["stickyFrames"] = true,
 	['loginmessage'] = true,
 	["interruptAnnounce"] = "RAID",
-	["autoRepair"] = "NONE",
+	["autoRepair"] = "GUILD",
 	
 	-- fonts
 	["fontsize"] = 12,

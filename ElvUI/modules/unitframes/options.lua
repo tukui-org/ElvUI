@@ -1067,7 +1067,7 @@ E.Options.args.unitframe.args.player = {
 					order = 2,
 					name = L['Snap To Actionbars'],
 					desc = L['Position the castbar above Actionbar 1. Size is set automatically.'],
-				},				
+				},
 				matchsize = {
 					order = 3,
 					type = 'execute',
