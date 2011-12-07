@@ -3,6 +3,16 @@ local CH = E:NewModule('Chat', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 
 local CreatedFrames = 0;
 local lines = {};
+local DEFAULT_STRINGS = {
+	BATTLEGROUND = L['BG'],
+	GUILD = L['G'],
+	PARTY = L['P'],
+	RAID = L['R'],
+	OFFICER = L['O'],
+	BATTLEGROUND_LEADER = L['BGL'],
+	PARTY_LEADER = L['PL'],
+	RAID_LEADER = L['RL'],	
+}
 
 function CH:StyleChat(frame)
 	if frame.styled then return end
@@ -65,6 +75,9 @@ function CH:StyleChat(frame)
 			editbox:SetBackdropBorderColor(ChatTypeInfo[type].r,ChatTypeInfo[type].g,ChatTypeInfo[type].b)
 		end
 	end)
+	
+	frame.OldAddMessage = frame.AddMessage
+	frame.AddMessage = CH.AddMessage
 	
 	--copy chat button
 	frame.button = CreateFrame('Frame', format("CopyChatButton%d", id), frame)
@@ -141,17 +154,17 @@ function CH:PositionChat(override)
 	RightChatPanel:Size(E.db.core.panelWidth, E.db.core.panelHeight)
 	LeftChatPanel:Size(E.db.core.panelWidth, E.db.core.panelHeight)
 	
-	if not chatFound and RightChatPanel:GetAlpha() == 1 and E.db.core.autohide then	
+	if not chatFound and RightChatPanel:GetAlpha() == 1 and self.db.autohide then	
 		RightChatToggleButton:Click()
 		RightChatToggleButton:Disable()
 		self.RightChatWindowID = nil
-	elseif chatFound and not RightChatToggleButton:IsEnabled() and E.db.core.autohide then	
+	elseif chatFound and not RightChatToggleButton:IsEnabled() and self.db.autohide then	
 		RightChatToggleButton:Enable()
 		RightChatToggleButton:Click()
 		self.RightChatWindowID = id
 	elseif chatFound then
 		self.RightChatWindowID = id
-	elseif not chatFound and not E.db.core.autohide then
+	elseif not chatFound and not self.db.autohide then
 		self.RightChatWindowID = nil;
 		RightChatToggleButton:Enable()
 	end
@@ -278,6 +291,30 @@ function CH:URL_AddLinkSyntax(chatstring)
 	return chatstring
 end
 
+function CH:ShortChannel()
+	return string.format("|Hchannel:%s|h[%s]|h", self, DEFAULT_STRINGS[self] or self:gsub("channel:", ""))
+end
+
+function CH:AddMessage(text, ...)
+	if type(text) == "string" then
+		if CH.db.url then
+			text = CH:URL_AddLinkSyntax(text)
+		end
+		
+		if CH.db.shortChannels then
+			text = text:gsub("|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
+			text = text:gsub("^(.-|h) "..L['whispers'], "%1")
+			text = text:gsub("^(.-|h) "..L['says'], "%1")
+			text = text:gsub("^(.-|h) "..L['yells'], "%1")
+			text = text:gsub("<"..AFK..">", "[|cffFF0000"..L['AFK'].."|r] ")
+			text = text:gsub("<"..DND..">", "[|cffE7E716"..L['DND'].."|r] ")
+			text = text:gsub("^%["..RAID_WARNING.."%]", '['..L['RW']..']')		
+		end
+	end
+	
+	self.OldAddMessage(self, text, ...)
+end
+
 function CH:SetupChat(event, ...)	
 	for i = 1, NUM_CHAT_WINDOWS do
 		local frame = _G[format("ChatFrame%s", i)]
@@ -302,17 +339,12 @@ local sizes = {
 }
 
 function CH:Initialize(event)
-	if E.db.core.chat ~= true then return end
+	self.db = E.db.chat
+	if self.db.enable ~= true then return end
 	E.Chat = self
 	
 	FriendsMicroButton:Kill()
 	ChatFrameMenuButton:Kill()
-	
-	for i = 1, NUM_CHAT_WINDOWS do
-		local frame = _G[format("ChatFrame%s", i)]
-		local addmessage = frame.AddMessage
-		frame.AddMessage = function(self, text, ...) addmessage(self, CH:URL_AddLinkSyntax(text), ...) end
-	end
 	
 	SetItemRef = URL_SetItemRef
 	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')

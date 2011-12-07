@@ -102,7 +102,7 @@ local DefaultConfig = {
 	colors = {
 		range = { 0.8, 0.1, 0.1 },
 		mana = { 0.5, 0.5, 1.0 },
-		hp = {0.45, 0.45, 1}
+		hp = { 0.5, 0.5, 1.0 }
 	},
 	hideElements = {
 		macro = false,

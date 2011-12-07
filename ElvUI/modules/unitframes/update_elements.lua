@@ -803,10 +803,6 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 				return true
 			end				
 		end
-	elseif unit:find('raid%d') then --Raid Frames
-	
-	elseif unit:find('arena%d') then --Arena Frames
-	
 	else
 		if db and not db[self.type].showPlayerOnly then
 			return true
