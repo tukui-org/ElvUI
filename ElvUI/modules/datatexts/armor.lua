@@ -7,8 +7,7 @@ local chanceString = "%.2f%%";
 local format = string.format
 local displayString = ''; 
 local baseArmor, effectiveArmor, armor, posBuff, negBuff
-local int = 5	
-
+	
 local function CalculateMitigation(level, effective)
 	local mitigation
 	
@@ -27,11 +26,7 @@ local function CalculateMitigation(level, effective)
 	return mitigation
 end
 
-local function Update(self, t)
-	int = int - t
-	
-	if int > 0 then return end
-	
+local function OnEvent(self, event)
 	lastPanel = self
 	
 	baseArmor, effectiveArmor, armor, posBuff, negBuff = UnitArmor("player");
@@ -65,7 +60,7 @@ local function ValueColorUpdate(hex, r, g, b)
 	displayString = string.join("", "%s", hex, "%d|r")
 	
 	if lastPanel ~= nil then
-		Update(lastPanel, 200000)
+		OnEvent(lastPanel)
 	end
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true
@@ -80,5 +75,5 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	click - function to fire when clicking the datatext
 	onEnterFunc - function to fire OnEnter
 ]]
-DT:RegisterDatatext('Armor', nil, nil, Update, nil, OnEnter)
+DT:RegisterDatatext('Armor', {"UNIT_STATS", "UNIT_AURA", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent, nil, nil, OnEnter)
 
