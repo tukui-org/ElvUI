@@ -60,6 +60,15 @@ function M:MERCHANT_SHOW()
 	end
 end
 
+function M:ForceProfanity()
+	local isOnline = BNConnected()
+	if(isOnline) then
+		BNSetMatureLanguageFilter(false)
+	end
+	
+	SetCVar("profanityFilter", 0)
+end
+
 function M:Initialize()
 	self:LoadRaidMarker()
 	self:LoadExpRepBar()
@@ -70,6 +79,10 @@ function M:Initialize()
 	self:RegisterEvent('PLAYER_REGEN_DISABLED', 'ErrorFrameToggle')
 	self:RegisterEvent('PLAYER_REGEN_ENABLED', 'ErrorFrameToggle')
 	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	
+	--%TEMP BLIZZARD FIX%
+	self:RegisterEvent('CVAR_UPDATE', 'ForceProfanity')
+	self:RegisterEvent('BN_MATURE_LANGUAGE_FILTER', 'ForceProfanity')
 end
 
 E:RegisterModule(M:GetName())
