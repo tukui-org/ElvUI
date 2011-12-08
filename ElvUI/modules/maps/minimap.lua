@@ -214,7 +214,10 @@ function M:LoadMinimap()
 	end
 	
 	E:CreateMover(MMHolder, 'MinimapMover', 'Minimap', nil, nil)
-	
+	Minimap.SetPoint = E.noop;
+	MMHolder.SetPoint = E.noop;
+	Minimap.ClearAllPoints = E.noop;
+	MMHolder.ClearAllPoints = E.noop;	
 	Minimap:EnableMouseWheel(true)
 	Minimap:SetScript("OnMouseWheel", M.Minimap_OnMouseWheel)	
 	Minimap:SetScript("OnMouseUp", M.Minimap_OnMouseUp)
