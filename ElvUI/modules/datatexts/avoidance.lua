@@ -2,7 +2,7 @@ local E, L, DF = unpack(select(2, ...)); --Engine
 local DT = E:GetModule('DataTexts')
 
 --[[This file is a blank datatext example template, this file will not be loaded.]]
-local displayString, LastPanel
+local displayString, lastPanel
 local int = 5
 local format = string.format
 local targetlv, playerlv
@@ -59,7 +59,7 @@ local function Update(self, t)
 	self.text:SetFormattedText(displayString, L['AVD: '], avoidance)
 
 	
-	LastPanel = self
+	lastPanel = self
 end
 
 local function OnEnter(self)
@@ -92,8 +92,8 @@ end
 local function ValueColorUpdate(hex, r, g, b)
 	displayString = string.join("", "%s", hex, "%.2f%%|r")
 	
-	if LastPanel ~= nil then
-		Update(LastPanel, 200000)
+	if lastPanel ~= nil then
+		Update(lastPanel, 200000)
 	end
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true

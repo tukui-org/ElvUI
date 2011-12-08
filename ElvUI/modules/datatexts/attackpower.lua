@@ -4,7 +4,7 @@ local DT = E:GetModule('DataTexts')
 local base, posBuff, negBuff, effective, Rbase, RposBuff, RnegBuff, Reffective, pwr
 local int = 5
 local displayModifierString = ''
-local LastPanel;
+local lastPanel;
 
 local function OnUpdate(self, t)
 	int = int - t
@@ -22,14 +22,14 @@ local function OnUpdate(self, t)
 	
 	self.text:SetFormattedText(displayNumberString, L['AP'], pwr) 	
 	int = 2
-	LastPanel = self
+	lastPanel = self
 end
 
 local function ValueColorUpdate(hex, r, g, b)
 	displayNumberString = string.join("", "%s: ", hex, "%d|r")
 	
-	if LastPanel ~= nil then
-		OnUpdate(LastPanel, 200000)
+	if lastPanel ~= nil then
+		OnUpdate(lastPanel, 200000)
 	end
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true

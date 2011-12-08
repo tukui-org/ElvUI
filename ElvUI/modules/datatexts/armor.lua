@@ -1,7 +1,7 @@
 local E, L, DF = unpack(select(2, ...)); --Engine
 local DT = E:GetModule('DataTexts')
 
-local LastPanel
+local lastPanel
 local armorString = ARMOR..": "
 local chanceString = "%.2f%%";
 local format = string.format
@@ -32,7 +32,7 @@ local function Update(self, t)
 	
 	if int > 0 then return end
 	
-	LastPanel = self
+	lastPanel = self
 	
 	baseArmor, effectiveArmor, armor, posBuff, negBuff = UnitArmor("player");
 
@@ -64,8 +64,8 @@ end
 local function ValueColorUpdate(hex, r, g, b)
 	displayString = string.join("", "%s", hex, "%d|r")
 	
-	if LastPanel ~= nil then
-		Update(LastPanel, 200000)
+	if lastPanel ~= nil then
+		Update(lastPanel, 200000)
 	end
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true

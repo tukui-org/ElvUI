@@ -2,10 +2,10 @@ local E, L, DF = unpack(select(2, ...)); --Engine
 local DT = E:GetModule('DataTexts')
 
 local displayString = '';
-local LastPanel
+local lastPanel
 
 local function OnEvent(self, event, ...)
-	LastPanel = self
+	lastPanel = self
 	local free, total,used = 0, 0, 0
 	for i = 0, NUM_BAG_SLOTS do
 		free, total = free + GetContainerNumFreeSlots(i), total + GetContainerNumSlots(i)
@@ -21,8 +21,8 @@ end
 local function ValueColorUpdate(hex, r, g, b)
 	displayString = string.join("", "%s", hex, "%d/%d|r")
 
-	if LastPanel ~= nil then
-		OnEvent(LastPanel)
+	if lastPanel ~= nil then
+		OnEvent(lastPanel)
 	end
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true

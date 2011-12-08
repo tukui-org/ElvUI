@@ -5,7 +5,7 @@ local TANK_ICON = "|TInterface\\AddOns\\ElvUI\\media\\textures\\tank.tga:14:14|t
 local HEALER_ICON = "|TInterface\\AddOns\\ElvUI\\media\\textures\\healer.tga:14:14|t"
 local DPS_ICON = "|TInterface\\AddOns\\ElvUI\\media\\textures\\dps.tga:14:14|t"
 local NOBONUSREWARDS = BATTLEGROUND_HOLIDAY..": N/A"
-local LastPanel
+local lastPanel
 
 local function MakeIconString(tank, healer, damage)
 	local str = ""
@@ -42,7 +42,7 @@ local function OnEvent(self, event, ...)
 	else
 		self.text:SetText(BATTLEGROUND_HOLIDAY..": "..MakeIconString(tankReward, healerReward, dpsReward))
 	end
-	LastPanel = self
+	lastPanel = self
 end
 
 local function OnClick()
@@ -52,8 +52,8 @@ end
 local function ValueColorUpdate(hex, r, g, b)
 	NOBONUSREWARDS = BATTLEGROUND_HOLIDAY..": "..hex.."N/A|r"
 	
-	if LastPanel ~= nil then
-		OnEvent(LastPanel)
+	if lastPanel ~= nil then
+		OnEvent(lastPanel)
 	end
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true
