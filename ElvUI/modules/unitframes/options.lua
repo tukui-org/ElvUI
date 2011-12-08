@@ -6018,7 +6018,7 @@ E.Options.args.unitframe.args.profileGroup = {
 			type = 'select',
 			get = function() return end,
 			set = function(info, value)
-				if value ~= 'Primary' then
+				if value ~= 'Primary' and value ~= 'Secondary' then
 					UF.db['layouts'][value] = nil;
 				end
 				
@@ -6032,7 +6032,7 @@ E.Options.args.unitframe.args.profileGroup = {
 			values = function()
 				profiles = {}
 				for layout in pairs(UF.db['layouts']) do
-					if layout ~= 'Primary' then
+					if layout ~= 'Primary' and value ~= 'Secondary' then
 						profiles[layout] = layout
 					end
 				end
