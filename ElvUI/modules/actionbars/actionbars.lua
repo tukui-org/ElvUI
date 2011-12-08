@@ -286,7 +286,9 @@ function AB:DisableBlizzard()
 	UIPARENT_MANAGED_FRAME_POSITIONS["ShapeshiftBarFrame"] = nil
 	UIPARENT_MANAGED_FRAME_POSITIONS["PossessBarFrame"] = nil
 	UIPARENT_MANAGED_FRAME_POSITIONS["PETACTIONBAR_YPOS"] = nil
-
+	UIPARENT_MANAGED_FRAME_POSITIONS["MultiCastActionBarFrame"] = nil
+	UIPARENT_MANAGED_FRAME_POSITIONS["MULTICASTACTIONBAR_YPOS"] = nil
+	
 	MainMenuBar:UnregisterAllEvents()
 	MainMenuBar:Hide()
 	MainMenuBar:SetParent(UIHider)

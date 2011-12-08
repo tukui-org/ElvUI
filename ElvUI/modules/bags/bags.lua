@@ -1288,7 +1288,10 @@ function B:Initialize()
 	self:RawHook('OpenBackpack', 'OpenBags', true)
 	self:RawHook('CloseAllBags', 'CloseBags', true)
 	self:RawHook('CloseBackpack', 'CloseBags', true)
-
+	
+	UIPARENT_MANAGED_FRAME_POSITIONS["CONTAINER_OFFSET_X"] = nil;
+	UIPARENT_MANAGED_FRAME_POSITIONS["CONTAINER_OFFSET_Y"] = nil;
+	
 	--Stop Blizzard bank bags from functioning.
 	BankFrame:UnregisterAllEvents()
 	
