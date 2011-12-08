@@ -560,6 +560,7 @@ do
 	L['SP'] = true;
 	L['HP'] = true;
 	L["DPS"] = true;
+	L["HPS"] = true;
 end
 
 --Tooltip

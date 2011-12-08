@@ -52,14 +52,11 @@ local function OnEvent(self, event, ...)
 				lastDMGAmount = select(15, ...)
 			end
 			DMGTotal = DMGTotal + lastDMGAmount
-			GetDPS(self)
 		end
 	elseif event == UNIT_PET then
-		if unit == "player" then
-			petID = UnitGUID("pet")
-		end
-		GetDPS(self)
+		petID = UnitGUID("pet")
 	end
+	
 	GetDPS(self)
 end
 
