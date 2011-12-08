@@ -681,10 +681,10 @@ do
 	L['Click to search..'] = true;
 	L['Sort Bags'] = true;
 	L['Stack Items'] = true;
-	L['Vender Grays'] = true;
+	L['Vendor Grays'] = true;
 	L['Toggle Bags'] = true;
-	L['You must be at a vender.'] = true;
-	L['Vendered gray items for:'] = true;
+	L['You must be at a vendor.'] = true;
+	L['Vendored gray items for:'] = true;
 	L['No gray items to sell.'] = true;
 	L['Hold Shift:'] = true;
 	L['Stack Special'] = true;
