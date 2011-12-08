@@ -31,8 +31,10 @@ DF["core"] = {
 	['panelWidth'] = 420,
 	['panelHeight'] = 180,
 	
-	--bags
+	--misc
 	['bags'] = true,
+	['loot'] = true,
+	['lootRoll'] = true,
 };
 
 --NamePlate

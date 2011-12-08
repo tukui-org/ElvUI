@@ -70,17 +70,27 @@ E.Options.args.core = {
 					isPercent = true,
 					set = function(info, value) E.db.core[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end
 				},		
-				stickyFrames = {
-					name = L['Sticky Frames'],
-					desc = L['Attempt to snap frames to nearby frames.'],
-					type = 'toggle',
-				},
 				bags = {
 					type = "toggle",
 					name = L['Bags'],
+					desc = L['Enable\Disable the all-in-one bag.'],
 					get = function(info) return E.db.core.bags end,
 					set = function(info, value) E.db.core.bags = value; StaticPopup_Show("CONFIG_RL") end
 				},	
+				lootRoll = {
+					type = "toggle",
+					name = L['Loot Roll'],
+					desc = L['Enable\Disable the loot roll frame.'],
+					get = function(info) return E.db.core.lootRoll end,
+					set = function(info, value) E.db.core.lootRoll = value; StaticPopup_Show("CONFIG_RL") end
+				},	
+				loot = {
+					type = "toggle",
+					name = L['Loot'],
+					desc = L['Enable\Disable the loot frame.'],
+					get = function(info) return E.db.core.loot end,
+					set = function(info, value) E.db.core.loot = value; StaticPopup_Show("CONFIG_RL") end
+				},					
 				autoRepair = {
 					name = L['Auto Repair'],
 					desc = L['Automatically repair using the following method when visiting a merchant.'],

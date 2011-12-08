@@ -487,7 +487,6 @@ do
 	L['Move UnitFrames'] = true;
 	L['Reset Positions'] = true;
 	L['Sticky Frames'] = true;
-	L['Attempt to snap frames to nearby frames.'] = true;
 	L['Raid625 Frames'] = true;
 	L['Raid2640 Frames'] = true;
 	L['Copy From'] = true;
@@ -678,6 +677,10 @@ do
 	L['Auto Repair'] = true;
 	L['Automatically repair using the following method when visiting a merchant.'] = true;
 	L['Your items have been repaired using guild bank funds for: '] = true;
+	L['Loot Roll'] = true;
+	L['Enable\Disable the loot roll frame.'] = true;
+	L['Loot'] = true;
+	L['Enable\Disable the loot frame.'] = true;
 end
 
 --Bags
@@ -696,4 +699,5 @@ do
 	L['Purchase'] = true;
 	L["Can't buy anymore slots!"] = true;
 	L['You must purchase a bank slot first!'] = true;
+	L['Enable\Disable the all-in-one bag.'] = true;
 end
