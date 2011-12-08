@@ -51,3 +51,15 @@ StaticPopupDialogs["NO_BANK_BAGS"] = {
 	whileDead = 1,	
 	preferredIndex = 3
 }
+
+StaticPopupDialogs["RESETUI_CHECK"] = {
+	text = L["Are you sure you want to reset every mover back to it's default position?"],
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	OnAccept = function(self)
+		E:ResetAllUI()
+	end,
+	timeout = 0,
+	whileDead = 1,
+	preferredIndex = 3
+}

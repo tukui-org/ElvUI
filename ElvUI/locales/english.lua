@@ -81,6 +81,7 @@ do
 	L['Attempt to create URL links inside the chat.'] = true;
 	L['Short Channels'] = true;
 	L['Shorten the channel names in chat.'] = true;
+	L["Are you sure you want to reset every mover back to it's default position?"] = true;
 end
 
 --Media	
