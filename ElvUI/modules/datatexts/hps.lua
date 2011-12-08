@@ -2,8 +2,7 @@ local E, L, DF = unpack(select(2, ...)); --Engine
 local DT = E:GetModule('DataTexts')
 
 local events = {SPELL_HEAL = true, SPELL_PERIODIC_HEAL = true}
-local playerID = UnitGUID("player")
-local petID = UnitGUID("pet")
+local playerID, petID
 local healTotal, lastHealAmount = 0, 0
 local combatTime = 0
 local timeStamp = 0
@@ -30,7 +29,10 @@ end
 
 local function OnEvent(self, event, ...)
 	lastPanel = self
-	if event == 'PLAYER_REGEN_DISABLED' or event == "PLAYER_LEAVE_COMBAT" then
+	
+	if event == 'PLAYER_LOGIN' then
+		playerID = UnitGUID('player')
+	elseif event == 'PLAYER_REGEN_DISABLED' or event == "PLAYER_LEAVE_COMBAT" then
 		local now = time()
 		if now - lastSegment > 20 then
 			Reset()
@@ -79,4 +81,4 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true;
 	click - function to fire when clicking the datatext
 	onEnterFunc - function to fire OnEnter
 ]]
-DT:RegisterDatatext('HPS', {'COMBAT_LOG_EVENT_UNFILTERED', "PLAYER_LEAVE_COMBAT", 'PLAYER_REGEN_DISABLED', 'UNIT_PET'}, OnEvent, nil, OnClick)
+DT:RegisterDatatext('HPS', {'PLAYER_LOGIN', 'COMBAT_LOG_EVENT_UNFILTERED', "PLAYER_LEAVE_COMBAT", 'PLAYER_REGEN_DISABLED', 'UNIT_PET'}, OnEvent, nil, OnClick)

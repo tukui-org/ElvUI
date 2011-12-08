@@ -2,8 +2,7 @@ local E, L, DF = unpack(select(2, ...)); --Engine
 local DT = E:GetModule('DataTexts')
 
 local events = {SWING_DAMAGE = true, RANGE_DAMAGE = true, SPELL_DAMAGE = true, SPELL_PERIODIC_DAMAGE = true, DAMAGE_SHIELD = true, DAMAGE_SPLIT = true, SPELL_EXTRA_ATTACKS = true}
-local playerID = UnitGUID("player")
-local petID = UnitGUID("pet")
+local playerID, petID
 local DMGTotal, lastDMGAmount = 0, 0
 local combatTime = 0
 local timeStamp = 0
@@ -30,7 +29,10 @@ end
 
 local function OnEvent(self, event, ...)
 	lastPanel = self
-	if event == 'PLAYER_REGEN_DISABLED' or event == "PLAYER_LEAVE_COMBAT" then
+	
+	if event == "PLAYER_LOGIN" then
+		playerID = UnitGUID('player')
+	elseif event == 'PLAYER_REGEN_DISABLED' or event == "PLAYER_LEAVE_COMBAT" then
 		local now = time()
 		if now - lastSegment > 20 then --time since the last segment
 			Reset()
@@ -51,6 +53,7 @@ local function OnEvent(self, event, ...)
 			else
 				lastDMGAmount = select(15, ...)
 			end
+
 			DMGTotal = DMGTotal + lastDMGAmount
 		end
 	elseif event == UNIT_PET then
@@ -84,4 +87,4 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true;
 	click - function to fire when clicking the datatext
 	onEnterFunc - function to fire OnEnter
 ]]
-DT:RegisterDatatext('DPS', {'COMBAT_LOG_EVENT_UNFILTERED', "PLAYER_LEAVE_COMBAT", 'PLAYER_REGEN_DISABLED', 'UNIT_PET'}, OnEvent, nil, OnClick)
+DT:RegisterDatatext('DPS', {'PLAYER_LOGIN', 'COMBAT_LOG_EVENT_UNFILTERED', "PLAYER_LEAVE_COMBAT", 'PLAYER_REGEN_DISABLED', 'UNIT_PET'}, OnEvent, nil, OnClick)
