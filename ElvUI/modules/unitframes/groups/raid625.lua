@@ -110,7 +110,7 @@ function UF:Update_Raid625Header(header, db)
 
 	if not header.mover then
 		header:ClearAllPoints()
-		header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 210)
+		header:Point("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 4, 210)
 		
 		header:RegisterEvent("PLAYER_ENTERING_WORLD")
 		header:RegisterEvent("ZONE_CHANGED_NEW_AREA")

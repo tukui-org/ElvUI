@@ -5,15 +5,15 @@ E.DF["global"] = {};
 
 --Core
 DF["core"] = {
-	["uiscale"] = 0.65,
-	["autoscale"] = false,
+	["uiscale"] = 0.71,
+	["autoscale"] = true,
 	["stickyFrames"] = true,
 	['loginmessage'] = true,
 	["interruptAnnounce"] = "RAID",
 	["autoRepair"] = "GUILD",
 	
 	-- fonts
-	["fontsize"] = 12,
+	["fontsize"] = 11,
 	["font"] = "Friz Quadrata TT",
 	["dmgfont"] = "ElvUI Combat",
 	["chatfont"] = "Chat",
@@ -29,7 +29,7 @@ DF["core"] = {
 	["valuecolor"] = {r = 23/255,g = 132/255,b = 209/255},
 	
 	--panels
-	['panelWidth'] = 420,
+	['panelWidth'] = 380,
 	['panelHeight'] = 200,
 	
 	--bags
@@ -475,7 +475,7 @@ DF['unitframe'] = {
 			['focus'] = {
 				['enable'] = true,
 				['width'] = 200,
-				['height'] = 50,
+				['height'] = 40,
 				['health'] = {
 					['text'] = true,
 					['text_format'] = 'current-percent',
@@ -526,19 +526,19 @@ DF['unitframe'] = {
 				['castbar'] = {
 					['enable'] = true,
 					['width'] = 200,
-					['height'] = 18,
+					['height'] = 15,
 					['icon'] = false,
 					['color'] = { r = .66,g = .66,b = .66 },
 					['interruptcolor'] = { r = 0.78, g = 0.25, b = 0.25 },
 					['xOffset'] = 0,
-					['yOffset'] = 80,
+					['yOffset'] = 65,
 					['format'] = 'REMAINING',
 				},					
 			},	
 			['focustarget'] = {
 				['enable'] = true,
 				['width'] = 150,
-				['height'] = 50,
+				['height'] = 40,
 				['health'] = {
 					['text'] = true,
 					['text_format'] = 'current-percent',
@@ -546,7 +546,7 @@ DF['unitframe'] = {
 				},
 				['power'] = {
 					['enable'] = true,
-					['text'] = true,
+					['text'] = false,
 					['text_format'] = 'current',	
 					['width'] = 'fill',
 					['height'] = 10,
@@ -913,7 +913,7 @@ DF['unitframe'] = {
 				["showSolo"] = false,
 				["showPlayer"] = true,
 				['columnAnchorPoint'] = "TOP",
-				['width'] = 80,
+				['width'] = 73,
 				['height'] = 44,
 				['health'] = {
 					['text'] = false,
@@ -994,7 +994,7 @@ DF['unitframe'] = {
 				["showSolo"] = false,
 				["showPlayer"] = true,
 				['columnAnchorPoint'] = "TOP",
-				['width'] = 80,
+				['width'] = 73,
 				['height'] = 44,
 				['health'] = {
 					['text'] = false,
