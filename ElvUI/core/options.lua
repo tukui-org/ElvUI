@@ -277,6 +277,44 @@ E.Options.args.core = {
 	},
 }
 
+local DONATOR_STRING = ""
+local LINE_BREAK = "\n"
+local DONATORS = {
+	"Dandruff",
+	"Tobur/Tarilya",
+	"Netu",
+	"Alluren",
+	"Thorgnir",
+	"Emalal",
+	"Bendmeova",
+	"Curl",
+	"Zarac",
+	"Emmo",
+	"Oz",
+	"Hawké",
+	"Aynya",
+	"Tahira",
+	"Karsten Lumbye Thomsen",
+	"Thomas B. aka Pitschiqüü",
+	"Sea Garnet",
+	"Paul Storry",
+	"Azagar",
+	"Archury",
+	"Donhorn",
+	"Woodson Harmon",
+	"Phoenyx",
+	"Feat",
+	"Konungr",
+	"Leyrin",
+	"Woodson Harmon",
+	"Dragonsys",
+}
+
+table.sort(DONATORS, function(a,b) return a < b end) --Alphabetize
+for _, donatorName in pairs(DONATORS) do
+	DONATOR_STRING = DONATOR_STRING..LINE_BREAK..donatorName
+end
+
 E.Options.args.credits = {
 	type = "group",
 	name = L["Credits"],
@@ -285,7 +323,7 @@ E.Options.args.credits = {
 		text = {
 			order = 1,
 			type = "description",
-			name = L['ELVUI_CREDITS']..'\n\n'..L['Coding:']..'\nTukz\nHaste\nNightcracker\nOmega1970\nHydrazine\n\n'..L['Testing:']..'\nTukui Community\nAffinity\nModarch\nBladesdruid\nTirain\nPhima\n\n'..L['Donations:']..'\nDandruff\nTobur/Tarilya\nNetu\nAlluren\nThorgnir\nEmalal\nDandruff\nBendmeova\nCurl\nZarac\nEmmo\nOz\nHawké\nAynya\nTahira\nKarsten Lumbye Thomsen\nThomas B. aka Pitschiqüü\nSea Garnet\nPaul Storry\nAzagar\nArchury\nDonhorn\nWoodson Harmon\nPhoenyx\nFeat\nKonungr',
+			name = L['ELVUI_CREDITS']..'\n\n'..L['Coding:']..'\nTukz\nHaste\nNightcracker\nOmega1970\nHydrazine\n\n'..L['Testing:']..'\nTukui Community\nAffinity\nModarch\nBladesdruid\nTirain\nPhima\n\n'..L['Donations:']..DONATOR_STRING,
 		},
 	},
 }

@@ -303,6 +303,7 @@ function CH:AddMessage(text, ...)
 		
 		if CH.db.shortChannels then
 			text = text:gsub("|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
+			text = text:gsub('CHANNEL:', '')
 			text = text:gsub("^(.-|h) "..L['whispers'], "%1")
 			text = text:gsub("^(.-|h) "..L['says'], "%1")
 			text = text:gsub("^(.-|h) "..L['yells'], "%1")
