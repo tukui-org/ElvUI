@@ -49,6 +49,30 @@ local function ChatButton_OnClick(self, ...)
 	end
 end
 
+function LO:ToggleChatPanels()
+	if E.db.core.panelBackdrop == 'SHOWBOTH' then
+		LeftChatPanel.backdrop:Show()
+		LeftChatTab:Show()
+		RightChatPanel.backdrop:Show()
+		RightChatTab:Show()		
+	elseif E.db.core.panelBackdrop == 'HIDEBOTH' then
+		LeftChatPanel.backdrop:Hide()
+		LeftChatTab:Hide()
+		RightChatPanel.backdrop:Hide()
+		RightChatTab:Hide()		
+	elseif E.db.core.panelBackdrop == 'LEFT' then
+		LeftChatPanel.backdrop:Show()
+		LeftChatTab:Show()
+		RightChatPanel.backdrop:Hide()
+		RightChatTab:Hide()		
+	else
+		LeftChatPanel.backdrop:Hide()
+		LeftChatTab:Hide()
+		RightChatPanel.backdrop:Show()
+		RightChatTab:Show()			
+	end
+end
+
 function LO:CreateChatPanels()
 	--Left Chat
 	local lchat = CreateFrame('Frame', 'LeftChatPanel', E.UIParent)
@@ -56,7 +80,8 @@ function LO:CreateChatPanels()
 	lchat:Width(420)
 	lchat:Height(180)
 	lchat:Point('BOTTOMLEFT', E.UIParent, 4, 4)
-	lchat:SetTemplate('Transparent')
+	lchat:CreateBackdrop('Transparent')
+	lchat.backdrop:SetAllPoints()
 	
 	--Left Chat Tab
 	local lchattab = CreateFrame('Frame', 'LeftChatTab', LeftChatPanel)
@@ -92,8 +117,9 @@ function LO:CreateChatPanels()
 	rchat:Width(420)
 	rchat:Height(180)
 	rchat:Point('BOTTOMRIGHT', E.UIParent, -4, 4)
-	rchat:SetTemplate('Transparent')	
-
+	rchat:CreateBackdrop('Transparent')
+	rchat.backdrop:SetAllPoints()
+	
 	--Right Chat Tab
 	local rchattab = CreateFrame('Frame', 'RightChatTab', RightChatPanel)
 	rchattab:Point('TOPRIGHT', rchat, 'TOPRIGHT', -5, -5)
@@ -132,6 +158,8 @@ function LO:CreateChatPanels()
 		RightChatToggleButton:SetAlpha(0)
 		RightChatPanel:Hide()
 	end		
+	
+	self:ToggleChatPanels()
 end
 
 function LO:CreateMinimapPanels()

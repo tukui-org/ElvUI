@@ -56,7 +56,7 @@ do
 	L["This part of the installation process sets up your chat windows names, positions and colors."] = true;
 	L["The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows."] = true;
 	L["Setup Chat"] = true;
-	
+		
 	L["Installation Complete"] = true;
 	L["You are now finished with the installation process. If you are in need technical support please visit us at www.tukui.org."] = true;
 	L["Please click the button below so you can setup variables and ReloadUI."] = true;
@@ -80,6 +80,13 @@ do
 	L['Short Channels'] = true;
 	L['Shorten the channel names in chat.'] = true;
 	L["Are you sure you want to reset every mover back to it's default position?"] = true;
+	
+	L['Panel Backdrop'] = true;
+	L['Toggle showing of the left and right chat panels.'] = true;
+	L['Hide Both'] = true;
+	L['Show Both'] = true;
+	L['Left Only'] = true;
+	L['Right Only'] = true;
 end
 
 --Media	
