@@ -2,11 +2,6 @@ local E, L, DF = unpack(select(2, ...)); --Engine
 local M = E:GetModule('Misc');
 
 function M:LoadMerchant()
-	local merchant_trashsell = "Your vendor trash has been sold and you earned"
-	local goldabbrev = "|cffffd700g|r"
-	local silverabbrev = "|cffc7c7cfs|r"
-	local copperabbrev = "|cffeda55fc|r"
-
 	local f = CreateFrame("Frame")
 	f:SetScript("OnEvent", function()
 		local c = 0
@@ -23,9 +18,12 @@ function M:LoadMerchant()
 				end
 			end
 		end
+
 		if c>0 then
 			local g, s, c = math.floor(c/10000) or 0, math.floor((c%10000)/100) or 0, c%100
-			DEFAULT_CHAT_FRAME:AddMessage(merchant_trashsell.." |cffffffff"..g..goldabbrev.." |cffffffff"..s..silverabbrev.." |cffffffff"..c..copperabbrev..".",255,255,0)
+			E:Print(L['Vendored gray items for:'].." |cffffffff"..g..L.goldabbrev.." |cffffffff"..s..L.silverabbrev.." |cffffffff"..c..L.copperabbrev..".")
+		else
+			E:Print(L['No gray items to sell.'])
 		end
 	end)
 	f:RegisterEvent("MERCHANT_SHOW")

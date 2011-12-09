@@ -834,7 +834,7 @@ function B:VendorGrays()
 				end
 			end
 		end
-	end	
+	end
 	
 	if c>0 then
 		local g, s, c = math.floor(c/10000) or 0, math.floor((c%10000)/100) or 0, c%100
