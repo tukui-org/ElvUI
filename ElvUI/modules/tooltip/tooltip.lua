@@ -554,11 +554,6 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 	end
 end
 
-function TT:BNToastFrame_UpdateAnchor()
-	BNToastFrame:ClearAllPoints();
-	BNToastFrame:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -4);
-end
-
 function TT:Initialize()
 	self.db = E.db["tooltip"]
 	if self.db.enable ~= true then return end
@@ -632,7 +627,11 @@ function TT:Initialize()
 		end
 	end)
 	
-	self:SecureHook('BNToastFrame_UpdateAnchor')
+	
+	BNToastFrame:Point('TOPRIGHT', MMHolder, 'BOTTOMRIGHT', 0, -10);
+	E:CreateMover(BNToastFrame, 'BNETMover', 'BNet Frame')
+	BNToastFrame.SetPoint = E.noop
+	BNToastFrame.ClearAllPoints = E.noop	
 end
 
 E:RegisterModule(TT:GetName())
