@@ -684,6 +684,11 @@ do
 	L['Enable\Disable the loot roll frame.'] = true;
 	L['Loot'] = true;
 	L['Enable\Disable the loot frame.'] = true;
+	
+	L['Exp/Rep Position'] = true;
+	L['Change the position of the experience/reputation bar.'] = true;
+	L['Top Screen'] = true;
+	L["Below Minimap"] = true;
 end
 
 --Bags

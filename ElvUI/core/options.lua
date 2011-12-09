@@ -125,7 +125,17 @@ E.Options.args.core = {
 					desc = L['PANEL_DESC'],
 					set = function(info, value) E.db.core.panelHeight = value; E:GetModule('Chat'):PositionChat(true) end,
 					min = 150, max = 600, step = 1,
-				},					
+				},		
+				expRepPos = {
+					type = 'select',
+					name = L['Exp/Rep Position'],
+					desc = L['Change the position of the experience/reputation bar.'],
+					set = function(info, value) E.db.core.expRepPos = value; E:GetModule('Misc'):UpdateExpRepBarAnchor() end,
+					values = {
+						['TOP_SCREEN'] = L['Top Screen'],
+						['MINIMAP_BOTTOM'] = L["Below Minimap"],
+					},
+				},
 			},
 		},
 		media = {

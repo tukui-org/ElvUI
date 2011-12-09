@@ -209,11 +209,31 @@ function M:UpdateRepBar(event)
 	M:PositionBars(self:GetNumShownBars())
 end
 
-function M:LoadExpRepBar()
-	BAR_WIDTH = E.eyefinity or E.UIParent:GetWidth(); BAR_WIDTH = BAR_WIDTH / 5
+function M:UpdateExpRepBarAnchor()
+	UpperRepExpBarHolder:ClearAllPoints()
+	if E.db.core.expRepPos == 'TOP_SCREEN' then
+		BAR_WIDTH = E.eyefinity or E.UIParent:GetWidth(); BAR_WIDTH = BAR_WIDTH / 5
+		UpperRepExpBarHolder:Point('TOP', E.UIParent, 'TOP', 0, 2)  
+	else
+		BAR_WIDTH = E.MinimapSize
+		UpperRepExpBarHolder:Point('TOP', MMHolder, 'BOTTOM', 0, 2)  
+	end
+	
+	UpperRepExpBarHolder:Size(BAR_WIDTH, TOPBAR_HEIGHT)
 
+	if UpperReputationBar then
+		UpperReputationBar:Size(BAR_WIDTH + 20, BAR_HEIGHT)
+	end
+	
+	if UpperExperienceBar then
+		UpperExperienceBar:Size(BAR_WIDTH + 20, BAR_HEIGHT)
+	end	
+	
+	self:PositionBars(self:GetNumShownBars())
+end
+
+function M:LoadExpRepBar()
 	local holder = CreateFrame('Button', 'UpperRepExpBarHolder', E.UIParent)
-	holder:Size(BAR_WIDTH, TOPBAR_HEIGHT)
 	holder:Point('TOP', E.UIParent, 'TOP', 0, 2)  
 	holder:SetScript('OnEnter', OnEnter)
 	holder:SetScript('OnLeave', OnLeave)	
@@ -221,8 +241,7 @@ function M:LoadExpRepBar()
 	holder:SetFrameStrata('BACKGROUND')
 	
 	local bar = CreateFrame('Frame', 'UpperRepExpBar', holder)
-	bar:Size(BAR_WIDTH, TOPBAR_HEIGHT)
-	bar:Point('TOP', holder, 'TOP')	
+	bar:SetAllPoints(holder)
 	bar:Hide()
 		
 	bar.left = CreateFrame('Frame', nil, bar)
@@ -250,6 +269,8 @@ function M:LoadExpRepBar()
 	bar.middle:Width(bar:GetWidth() + 2)
 	bar.middle:Height(2)
 	bar.middle:SetFrameLevel(bar:GetFrameLevel())
+
+	self:UpdateExpRepBarAnchor()
 	
 	--Register experience bar related events..
 	if UnitLevel('player') ~= MAX_PLAYER_LEVEL then
@@ -260,12 +281,7 @@ function M:LoadExpRepBar()
 		self:RegisterEvent('UPDATE_EXHAUSTION', 'UpdateExpBar')
 		self:RegisterEvent('PLAYER_LOGIN', 'UpdateExpBar')
 	end
-	
-	--[[if E.myclass == 'HUNTER' then
-		self:RegisterEvent('UNIT_PET', 'UpdateExpPetBar')
-		self:RegisterEvent('UNIT_PET_EXPERIENCE', 'UpdateExpPetBar')
-	end]]
-	
+
 	--Reputation Events
 	self:RegisterEvent('UPDATE_FACTION', 'UpdateRepBar')
 	OnLeave()
