@@ -2,6 +2,11 @@ local E, L, DF = unpack(select(2, ...)); --Engine
 local M = E:GetModule('Misc');
 
 function M:LoadMerchant()
+	local merchant_trashsell = "Your vendor trash has been sold and you earned"
+	local goldabbrev = "|cffffd700g|r"
+	local silverabbrev = "|cffc7c7cfs|r"
+	local copperabbrev = "|cffeda55fc|r"
+
 	local f = CreateFrame("Frame")
 	f:SetScript("OnEvent", function()
 		local c = 0
@@ -23,7 +28,8 @@ function M:LoadMerchant()
 			DEFAULT_CHAT_FRAME:AddMessage(merchant_trashsell.." |cffffffff"..g..goldabbrev.." |cffffffff"..s..silverabbrev.." |cffffffff"..c..copperabbrev..".",255,255,0)
 		end
 	end)
-
+	f:RegisterEvent("MERCHANT_SHOW")
+	
 	-- buy max number value with alt
 	local savedMerchantItemButton_OnModifiedClick = MerchantItemButton_OnModifiedClick
 	function MerchantItemButton_OnModifiedClick(self, ...)
