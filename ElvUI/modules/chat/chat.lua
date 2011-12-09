@@ -392,4 +392,24 @@ function CH:Initialize(event)
 	S:HandleCloseButton(close)	
 end
 
+-- Remember last channel
+ChatTypeInfo.WHISPER.sticky = 0
+ChatTypeInfo.BN_WHISPER.sticky = 0
+ChatTypeInfo.OFFICER.sticky = 1
+ChatTypeInfo.RAID_WARNING.sticky = 1
+ChatTypeInfo.CHANNEL.sticky = 1
+ChatTypeInfo.GUILD.sticky = 1
+
+------------------------------------------------------------------------
+--	Play sound files system
+------------------------------------------------------------------------
+local SoundSys = CreateFrame("Frame")
+SoundSys:RegisterEvent("CHAT_MSG_WHISPER")
+SoundSys:RegisterEvent("CHAT_MSG_BN_WHISPER")
+SoundSys:HookScript("OnEvent", function(self, event, ...)
+	if event == "CHAT_MSG_WHISPER" or "CHAT_MSG_BN_WHISPER" then
+		PlaySoundFile(E.media.whisper,"Master")
+	end
+end)
+
 E:RegisterModule(CH:GetName())

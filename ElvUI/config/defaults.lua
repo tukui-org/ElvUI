@@ -22,6 +22,9 @@ DF["core"] = {
 	["normTex"] = "ElvUI Norm",
 	["glossTex"] = "ElvUI Gloss",
 	
+	-- sounds
+	["whisper"] = "ElvUI Whisper",
+	
 	--colors
 	["bordercolor"] = { r = .23,g = .23,b = .23 },
 	["backdropcolor"] = { r = .07,g = .07,b = .07 },

@@ -50,6 +50,9 @@ function E:UpdateMedia()
 	self["media"].blankTex = LSM:Fetch("background", "ElvUI Blank")
 	self["media"].normTex = LSM:Fetch("statusbar", self.db["core"].normTex)
 	self["media"].glossTex = LSM:Fetch("statusbar", self.db["core"].glossTex)
+	
+	--Sounds
+	self["media"].whisper = LSM:Fetch("sound", "ElvUI Whisper")
 
 	--Border Color
 	local border = self.db["core"].bordercolor
