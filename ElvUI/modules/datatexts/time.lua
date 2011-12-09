@@ -15,13 +15,13 @@ local difficultyInfo = { "N", "N", "H", "H" }
 local lockoutFormatString = { "%dd %02dh %02dm", "%dd %dh %02dm", "%02dh %02dm", "%dh %02dm", "%dh %02dm", "%dm" }
 local curHr, curMin, curAmPm
 
-local Update, LastPanel; -- UpValue
+local Update, lastPanel; -- UpValue
 local function ValueColorUpdate(hex, r, g, b)
 	europeDisplayFormat = string.join("", "%02d", hex, ":|r%02d")
 	ukDisplayFormat = string.join("", "", "%d", hex, ":|r%02d", hex, " %s|r")
 	
-	if LastPanel ~= nil then
-		Update(LastPanel, 20000)
+	if lastPanel ~= nil then
+		Update(lastPanel, 20000)
 	end
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true
@@ -131,7 +131,7 @@ function Update(self, t)
 	else
 		self.text:SetFormattedText(ukDisplayFormat, Hr, Min, APM[AmPm])
 	end
-	LastPanel = self
+	lastPanel = self
 	int = 2
 end
 

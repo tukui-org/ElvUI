@@ -2,14 +2,10 @@ local E, L, DF = unpack(select(2, ...)); --Engine
 local DT = E:GetModule('DataTexts')
 
 local critRating
-local int = 5
 local displayModifierString = ''
-local LastPanel;
+local lastPanel;
 
-local function OnUpdate(self, t)
-	int = int - t
-	if int > 0 then return end
-	
+local function OnEvent(self, event)
 	if E.role == "Caster" then
 		critRating = GetSpellCritChance(1)
 	else
@@ -20,16 +16,15 @@ local function OnUpdate(self, t)
 		end
 	end
 	self.text:SetFormattedText(displayModifierString, CRIT_ABBR, critRating)
-	
-	int = 2
-	LastPanel = self
+
+	lastPanel = self
 end
 
 local function ValueColorUpdate(hex, r, g, b)
 	displayModifierString = string.join("", "%s: ", hex, "%.2f%%|r")
 	
-	if LastPanel ~= nil then
-		OnUpdate(LastPanel, 200000)
+	if lastPanel ~= nil then
+		OnEvent(lastPanel)
 	end
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true
@@ -44,5 +39,5 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	click - function to fire when clicking the datatext
 	onEnterFunc - function to fire OnEnter
 ]]
-DT:RegisterDatatext('Crit Chance', nil, nil, OnUpdate, nil, nil)
+DT:RegisterDatatext('Crit Chance', {"UNIT_STATS", "UNIT_AURA", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent)
 

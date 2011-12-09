@@ -2,18 +2,14 @@ local E, L, DF = unpack(select(2, ...)); --Engine
 local DT = E:GetModule('DataTexts')
 
 --[[This file is a blank datatext example template, this file will not be loaded.]]
-local displayString, LastPanel
-local int = 5
+local displayString, lastPanel
 local format = string.format
 local targetlv, playerlv
 local basemisschance, leveldifference, dodge, parry, block, avoidance, unhittable
 local chanceString = "%.2f%%"
 local modifierString = string.join("", "%d (+", chanceString, ")")
 
-local function Update(self, t)
-	int = int - t
-	if int > 0 then return end	
-
+local function OnEvent(self, event)
 	targetlv, playerlv = UnitLevel("target"), UnitLevel("player")
 			
 	-- the 5 is for base miss chance
@@ -59,7 +55,7 @@ local function Update(self, t)
 	self.text:SetFormattedText(displayString, L['AVD: '], avoidance)
 
 	
-	LastPanel = self
+	lastPanel = self
 end
 
 local function OnEnter(self)
@@ -92,8 +88,8 @@ end
 local function ValueColorUpdate(hex, r, g, b)
 	displayString = string.join("", "%s", hex, "%.2f%%|r")
 	
-	if LastPanel ~= nil then
-		Update(LastPanel, 200000)
+	if lastPanel ~= nil then
+		OnEvent(lastPanel)
 	end
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true
@@ -109,5 +105,5 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	click - function to fire when clicking the datatext
 	onEnterFunc - function to fire OnEnter
 ]]
-DT:RegisterDatatext('Avoidance', nil, nil, Update, nil, OnEnter)
+DT:RegisterDatatext('Avoidance', {"UNIT_STATS", "UNIT_AURA", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent, nil, nil, OnEnter)
 

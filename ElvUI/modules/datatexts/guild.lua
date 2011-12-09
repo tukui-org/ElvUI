@@ -27,7 +27,7 @@ local noteString = join("", "|cff999999   ", LABEL_NOTE, ":|r %s")
 local officerNoteString = join("", "|cff999999   ", GUILD_RANK1_DESC, ":|r %s")
 local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
 local guildTable, guildXP, guildMotD = {}, {}, ""
-local LastPanel
+local lastPanel
 
 local function SortGuildTable(shift)
 	sort(guildTable, function(a, b)
@@ -81,7 +81,7 @@ local function UpdateGuildMessage()
 end
 
 local function OnEvent(self, event, ...)
-	LastPanel = self
+	lastPanel = self
 	
 	if IsInGuild() then
 		-- special handler to request guild roster updates when guild members come online or go
@@ -247,8 +247,8 @@ local function ValueColorUpdate(hex, r, g, b)
 	displayString = join("", GUILD, ": ", hex, "%d|r")
 	noGuildString = join("", hex, NO..' '..GUILD)
 	
-	if LastPanel ~= nil then
-		OnEvent(LastPanel, 'ELVUI_COLOR_UPDATE')
+	if lastPanel ~= nil then
+		OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE')
 	end
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true

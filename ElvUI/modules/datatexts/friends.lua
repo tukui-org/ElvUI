@@ -69,7 +69,7 @@ local groupedTable = { "|cffaaaaaa*|r", "" }
 local friendTable, BNTable = {}, {}
 local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
 local dataValid = false
-local LastPanel
+local lastPanel
 
 local function BuildFriendTable(total)
 	wipe(friendTable)
@@ -125,7 +125,7 @@ local function OnEvent(self, event, ...)
 	dataValid = false
 
 	self.text:SetFormattedText(displayString, L['Friends'], onlineFriends + numBNetOnline)
-	LastPanel = self
+	lastPanel = self
 end
 
 local function Click(self, btn)
@@ -253,8 +253,8 @@ end
 local function ValueColorUpdate(hex, r, g, b)
 	displayString = join("", "%s: ", hex, "%d|r")
 	
-	if LastPanel ~= nil then
-		OnEvent(LastPanel, 'ELVUI_COLOR_UPDATE')
+	if lastPanel ~= nil then
+		OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE')
 	end
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true

@@ -25,20 +25,14 @@ E.Options.args.chat = {
 			name = L["General"],
 			guiInline = true,
 			args = {	
-				autohide = {
-					order = 1,
-					type = 'toggle',
-					name = L['AutoHide Panels'],
-					desc = L['When a chat frame does not exist, hide the panel.'],
-				},
 				url = {
-					order = 2,
+					order = 1,
 					type = 'toggle',
 					name = L['URL Links'],
 					desc = L['Attempt to create URL links inside the chat.'],
 				},
 				shortChannels = {
-					order = 3,
+					order = 2,
 					type = 'toggle',
 					name = L['Short Channels'],
 					desc = L['Shorten the channel names in chat.'],

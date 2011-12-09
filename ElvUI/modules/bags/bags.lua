@@ -591,17 +591,17 @@ function B:InitBags()
 	f.stackButton:SetScript("OnLeave", Tooltip_Hide)	
 	f.stackButton:SetScript('OnClick', function() if IsShiftKeyDown() then B:SetBagsForSorting("c/p"); B:Restack(f); else B:SetBagsForSorting("d"); B:Restack(f); end end)
 	
-	--Vender Button
-	f.venderButton = CreateFrame('Button', nil, f)
-	f.venderButton:Point('RIGHT', f.sortButton, 'LEFT', -3, 0)
-	f.venderButton:Size(55, 10)
-	f.venderButton:SetTemplate('Default', true)
-	f.venderButton.backdropTexture:SetVertexColor(unpack(E.media.bordercolor))
-	f.venderButton.backdropTexture.SetVertexColor = E.noop
-	f.venderButton.ttText = L['Vender Grays']
-	f.venderButton:SetScript("OnEnter", Tooltip_Show)
-	f.venderButton:SetScript("OnLeave", Tooltip_Hide)	
-	f.venderButton:SetScript('OnClick', function() B:VenderGrays() end)
+	--Vendor Button
+	f.vendorButton = CreateFrame('Button', nil, f)
+	f.vendorButton:Point('RIGHT', f.sortButton, 'LEFT', -3, 0)
+	f.vendorButton:Size(55, 10)
+	f.vendorButton:SetTemplate('Default', true)
+	f.vendorButton.backdropTexture:SetVertexColor(unpack(E.media.bordercolor))
+	f.vendorButton.backdropTexture.SetVertexColor = E.noop
+	f.vendorButton.ttText = L['Vendor Grays']
+	f.vendorButton:SetScript("OnEnter", Tooltip_Show)
+	f.vendorButton:SetScript("OnLeave", Tooltip_Hide)	
+	f.vendorButton:SetScript('OnClick', function() B:VendorGrays() end)
 	
 	--Bags Button
 	f.bagsButton = CreateFrame('Button', nil, f)
@@ -815,9 +815,9 @@ function B:ToggleBags()
 	ToggleFrame(bagFrame)
 end
 
-function B:VenderGrays()
+function B:VendorGrays()
 	if not MerchantFrame or not MerchantFrame:IsShown() then
-		E:Print(L['You must be at a vender.'])
+		E:Print(L['You must be at a vendor.'])
 		return
 	end
 	
@@ -838,7 +838,7 @@ function B:VenderGrays()
 	
 	if c>0 then
 		local g, s, c = math.floor(c/10000) or 0, math.floor((c%10000)/100) or 0, c%100
-		E:Print(L['Vendered gray items for:'].." |cffffffff"..g..L.goldabbrev.." |cffffffff"..s..L.silverabbrev.." |cffffffff"..c..L.copperabbrev..".")
+		E:Print(L['Vendored gray items for:'].." |cffffffff"..g..L.goldabbrev.." |cffffffff"..s..L.silverabbrev.." |cffffffff"..c..L.copperabbrev..".")
 	else
 		E:Print(L['No gray items to sell.'])
 	end	
@@ -1288,7 +1288,10 @@ function B:Initialize()
 	self:RawHook('OpenBackpack', 'OpenBags', true)
 	self:RawHook('CloseAllBags', 'CloseBags', true)
 	self:RawHook('CloseBackpack', 'CloseBags', true)
-
+	
+	UIPARENT_MANAGED_FRAME_POSITIONS["CONTAINER_OFFSET_X"] = nil;
+	UIPARENT_MANAGED_FRAME_POSITIONS["CONTAINER_OFFSET_Y"] = nil;
+	
 	--Stop Blizzard bank bags from functioning.
 	BankFrame:UnregisterAllEvents()
 	

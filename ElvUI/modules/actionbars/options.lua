@@ -493,6 +493,17 @@ E.Options.args.actionbar = {
 			order = 9, 
 			disabled = function() return not E.db.actionbar.enable end,		
 		},
+		buttonActionMode = {
+			type = 'select',
+			name = L['Action Mode'],
+			desc = L['Use the button when clicking or pressing the keybind on the keydown motion or on the keyup motion.'],
+			values = {
+				['UP'] = L['Up'],
+				['DOWN'] = L['Down'],
+			},
+			order = 10,
+			disabled = function() return not E.db.actionbar.enable end,	
+		},
 	},
 }
 group = E.Options.args.actionbar.args

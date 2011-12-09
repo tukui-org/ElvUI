@@ -4,7 +4,7 @@ local DT = E:GetModule('DataTexts')
 local displayString = ""
 local tooltipString = "%d%%"
 local total, totalDurability, totalPerc = 0, 0, 0
-local current, max, LastPanel
+local current, max, lastPanel
 local invDurability = {}
 local slots = {
 	["RangedSlot"] = L['Ranged'],
@@ -21,7 +21,7 @@ local slots = {
 }
 
 local function OnEvent(self, event, ...)
-	LastPanel = self
+	lastPanel = self
 	total = 0
 	totalDurability = 0
 	totalPerc = 0
@@ -60,8 +60,8 @@ end
 local function ValueColorUpdate(hex, r, g, b)
 	displayString = string.join("", DURABILITY, ": ", hex, "%d%%|r")
 	
-	if LastPanel ~= nil then
-		OnEvent(LastPanel, 'ELVUI_COLOR_UPDATE')
+	if lastPanel ~= nil then
+		OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE')
 	end
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true

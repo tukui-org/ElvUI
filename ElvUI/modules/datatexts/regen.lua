@@ -1,25 +1,28 @@
 local E, L, DF = unpack(select(2, ...)); --Engine
 local DT = E:GetModule('DataTexts')
 
---[[This file is a blank datatext example template, this file will not be loaded.]]
-
-local function Update(self, t)
-
-end
+local displayNumberString = ''
+local lastPanel;
 
 local function OnEvent(self, event, ...)
-
+	lastPanel = self
+	
+	local baseMR, castingMR = GetManaRegen()
+	if InCombatLockdown() then
+		self.text:SetFormattedText(displayNumberString, MANA_REGEN..": ", castingMR*5)
+	else
+		self.text:SetFormattedText(displayNumberString, MANA_REGEN..": ", baseMR*5)
+	end
 end
 
-local function Click()
-
+local function ValueColorUpdate(hex, r, g, b)
+	displayNumberString = string.join("", "%s: ", hex, "%.2f|r")
+	
+	if lastPanel ~= nil then
+		OnEvent(lastPanel)
+	end
 end
-
-local function OnEnter(self)
-	DT:SetupTooltip(self)
-
-	GameTooltip:Show()
-end
+E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
 --[[
 	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc)
@@ -31,5 +34,4 @@ end
 	click - function to fire when clicking the datatext
 	onEnterFunc - function to fire OnEnter
 ]]
-DT:RegisterDatatext('DTName', {'PLAYER_ENTERING_WORLD'}, OnEvent, Update, Click, OnEnter)
-
+DT:RegisterDatatext('Haste', {"UNIT_STATS", "UNIT_AURA", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent)

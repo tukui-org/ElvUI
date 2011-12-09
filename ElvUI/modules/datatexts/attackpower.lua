@@ -2,14 +2,10 @@ local E, L, DF = unpack(select(2, ...)); --Engine
 local DT = E:GetModule('DataTexts')
 
 local base, posBuff, negBuff, effective, Rbase, RposBuff, RnegBuff, Reffective, pwr
-local int = 5
 local displayModifierString = ''
-local LastPanel;
+local lastPanel;
 
-local function OnUpdate(self, t)
-	int = int - t
-	if int > 0 then return end
-	
+local function OnEvent(self, event)	
 	if E.myclass == "HUNTER" then
 		Rbase, RposBuff, RnegBuff = UnitRangedAttackPower("player");
 		Reffective = Rbase + RposBuff + RnegBuff;
@@ -21,15 +17,14 @@ local function OnUpdate(self, t)
 	end
 	
 	self.text:SetFormattedText(displayNumberString, L['AP'], pwr) 	
-	int = 2
-	LastPanel = self
+	lastPanel = self
 end
 
 local function ValueColorUpdate(hex, r, g, b)
 	displayNumberString = string.join("", "%s: ", hex, "%d|r")
 	
-	if LastPanel ~= nil then
-		OnUpdate(LastPanel, 200000)
+	if lastPanel ~= nil then
+		OnUpdate(lastPanel, 200000)
 	end
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true
@@ -44,5 +39,5 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	click - function to fire when clicking the datatext
 	onEnterFunc - function to fire OnEnter
 ]]
-DT:RegisterDatatext('Attack Power', nil, nil, OnUpdate, nil, nil)
+DT:RegisterDatatext('Attack Power', {"UNIT_STATS", "UNIT_AURA", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent)
 
