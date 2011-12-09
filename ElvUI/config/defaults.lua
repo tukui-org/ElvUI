@@ -71,7 +71,6 @@ DF['auras'] = {
 --Chat
 DF['chat'] = {
 	['enable'] = true,
-	['autohide'] = true,
 	['url'] = true;
 	['shortChannels'] = true;
 }

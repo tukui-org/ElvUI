@@ -154,19 +154,10 @@ function CH:PositionChat(override)
 	RightChatPanel:Size(E.db.core.panelWidth, E.db.core.panelHeight)
 	LeftChatPanel:Size(E.db.core.panelWidth, E.db.core.panelHeight)
 	
-	if not chatFound and RightChatPanel:GetAlpha() == 1 and self.db.autohide then	
-		RightChatToggleButton:Click()
-		RightChatToggleButton:Disable()
+	if chatFound then
+		self.RightChatWindowID = id
+	else
 		self.RightChatWindowID = nil
-	elseif chatFound and not RightChatToggleButton:IsEnabled() and self.db.autohide then	
-		RightChatToggleButton:Enable()
-		RightChatToggleButton:Click()
-		self.RightChatWindowID = id
-	elseif chatFound then
-		self.RightChatWindowID = id
-	elseif not chatFound and not self.db.autohide then
-		self.RightChatWindowID = nil;
-		RightChatToggleButton:Enable()
 	end
 	
 	for i=1, CreatedFrames do
