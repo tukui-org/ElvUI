@@ -263,10 +263,12 @@ function UF:Update_Raid625Frames(frame, db)
 				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + SPACING))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER), BORDER)
 			end
-		elseif frame:IsElementEnabled('Power') then
-			frame:DisableElement('Power')
-			power:Hide()
-			power.value:Hide()
+		else
+			if frame:IsElementEnabled('Power') then
+				frame:DisableElement('Power')
+				power:Hide()
+				power.value:Hide()
+			end
 		end
 	end
 
