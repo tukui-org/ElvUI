@@ -31,7 +31,7 @@ DF["core"] = {
 	--panels
 	['panelWidth'] = 380,
 	['panelHeight'] = 200,
-	['expRepPos'] = 'TOP_SCREEN',
+	['expRepPos'] = '',				-- TOP_SCREEN for top of the screen or leave blank for below minimap
 	
 	--misc
 	['bags'] = false,
@@ -1866,7 +1866,7 @@ DF["actionbar"] = {
 	["buttonspacing"] = 4,
 	['fontsize'] = 11,
 	["enablecd"] = true,
-	["buttonActionMode"] = 'DOWN';
+	["buttonActionMode"] = 'UP';
 	["treshold"] = 3,
 	["expiringcolor"] = { r = 1, g = 0, b = 0 },
 	["secondscolor"] = { r = 1, g = 1, b = 0 },
