@@ -259,16 +259,16 @@ function UF:Update_FocusFrame(frame, db)
 	--Castbar
 	do
 		local castbar = frame.Castbar
-		castbar:Width(db.castbar.width - 3)
+		castbar:Width(db.castbar.width - E:Scale(4))
 		castbar:Height(db.castbar.height)
 
 		--Icon
 		if db.castbar.icon then
 			castbar.Icon = castbar.ButtonIcon
-			castbar.Icon.bg:Width(db.castbar.height + 4)
-			castbar.Icon.bg:Height(db.castbar.height + 4)
+			castbar.Icon.bg:Width(db.castbar.height + E:Scale(4))
+			castbar.Icon.bg:Height(db.castbar.height + E:Scale(4))
 			
-			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - 4)
+			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - E:Scale(5))
 			castbar.Icon.bg:Show()
 		else
 			castbar.ButtonIcon.bg:Hide()
