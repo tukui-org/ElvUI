@@ -146,6 +146,19 @@ E.Options.args.core = {
 					set = function(info, value) E.db.core.panelHeight = value; E:GetModule('Chat'):PositionChat(true) end,
 					min = 150, max = 600, step = 1,
 				},
+				panelBackdrop = {
+					order = 11,
+					type = 'select',
+					name = L['Panel Backdrop'],
+					desc = L['Toggle showing of the left and right chat panels.'],
+					set = function(info, value) E.db.core.panelBackdrop = value; E:GetModule('Layout'):ToggleChatPanels() end,
+					values = {
+						['HIDEBOTH'] = L['Hide Both'],
+						['SHOWBOTH'] = L['Show Both'],
+						['LEFT'] = L['Left Only'],
+						['RIGHT'] = L['Right Only'],
+					},
+				},
 			},
 		},
 		media = {

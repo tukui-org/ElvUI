@@ -31,8 +31,9 @@ DF["core"] = {
 	--panels
 	['panelWidth'] = 380,
 	['panelHeight'] = 200,
+	['panelBackdrop'] = 'SHOWBOTH',
 	['expRepPos'] = 'MINIMAP_BOTTOM',				-- TOP_SCREEN or MINIMAP_BOTTOM
-	
+
 	--misc
 	['bags'] = false,
 	['loot'] = false,
