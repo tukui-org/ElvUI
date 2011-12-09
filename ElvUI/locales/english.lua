@@ -561,6 +561,7 @@ do
 	L['HP'] = true;
 	L["DPS"] = true;
 	L["HPS"] = true;
+	L['Hit'] = true;
 end
 
 --Tooltip

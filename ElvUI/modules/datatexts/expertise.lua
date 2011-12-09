@@ -2,11 +2,11 @@ local E, L, DF = unpack(select(2, ...)); --Engine
 local DT = E:GetModule('DataTexts')
 
 local format = string.format
-local LastPanel
+local lastPanel
 local displayString = '';
 
 local function OnEvent(self, event)
-	LastPanel = self
+	lastPanel = self
 
 	local expertise, offhandExpertise = GetExpertise();
 	local speed, offhandSpeed = UnitAttackSpeed("player");
@@ -21,21 +21,18 @@ end
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)
-	local expertise, offhandExpertise = GetExpertise();
+	
 	local expertisePercent, offhandExpertisePercent = GetExpertisePercent();
 	expertisePercent = format("%.2f", expertisePercent);
 	offhandExpertisePercent = format("%.2f", offhandExpertisePercent);
 
-	local expertiseDisplay, expertisePercentDisplay;
+	local expertisePercentDisplay;
 	if (IsDualWielding()) then
-		expertiseDisplay = expertise.." / "..offhandExpertise;
 		expertisePercentDisplay = expertisePercent.."% / "..offhandExpertisePercent.."%";
 	else
-		expertiseDisplay = expertise;
 		expertisePercentDisplay = expertisePercent.."%";
 	end
-
-	GameTooltip:SetText(HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, _G["COMBAT_RATING_NAME"..CR_EXPERTISE]).." "..expertiseDisplay..FONT_COLOR_CODE_CLOSE);
+	
 	GameTooltip:AddLine(format(CR_EXPERTISE_TOOLTIP, expertisePercentDisplay, GetCombatRating(CR_EXPERTISE), GetCombatRatingBonus(CR_EXPERTISE)), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, true);
 	GameTooltip:AddLine(" ");
 
@@ -85,8 +82,8 @@ end
 local function ValueColorUpdate(hex, r, g, b)
 	displayString = string.join("", "%s", hex, "%d|r")
 
-	if LastPanel ~= nil then
-		OnEvent(LastPanel, 2000)
+	if lastPanel ~= nil then
+		OnEvent(lastPanel, 2000)
 	end
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true
