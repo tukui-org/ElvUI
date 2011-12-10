@@ -18,9 +18,6 @@ local function LoadTalentTrees()
 end
 
 local function OnEvent(self, event)
-	if not GetTalentTabInfo( 1 ) then
-		return -- Talents aren't loaded yet!
-	end
 	lastPanel = self
 	if not GetTalentTabInfo(1) then
 		return
