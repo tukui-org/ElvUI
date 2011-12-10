@@ -1865,7 +1865,7 @@ DF["actionbar"] = {
 	["buttonspacing"] = 4,
 	['fontsize'] = 11,
 	["enablecd"] = true,
-	["buttonActionMode"] = 'UP',
+	["buttonActionMode"] = 'DOWN';
 	["treshold"] = 3,
 	["expiringcolor"] = { r = 1, g = 0, b = 0 },
 	["secondscolor"] = { r = 1, g = 1, b = 0 },

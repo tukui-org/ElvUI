@@ -54,54 +54,9 @@ E.Options.args.core = {
 			type = "group",
 			name = L["General"],
 			guiInline = true,
-			args = {	
-				autoscale = {
-					name = L["Auto Scale"],
-					desc = L["Automatically scale the User Interface based on your screen resolution"],
-					type = "toggle",	
-					set = function(info, value) E.db.core[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end
-				},
-				uiscale = {
-					name = L["Scale"],
-					desc = L["Controls the scaling of the entire User Interface"],
-					disabled = function(info) return E.db["core"].autoscale end,
-					type = "range",
-					min = 0.64, max = 1, step = 0.01,
-					isPercent = true,
-					set = function(info, value) E.db.core[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end
-				},		
-				bags = {
-					type = "toggle",
-					name = L['Bags'],
-					desc = L['Enable\Disable the all-in-one bag.'],
-					get = function(info) return E.db.core.bags end,
-					set = function(info, value) E.db.core.bags = value; StaticPopup_Show("CONFIG_RL") end
-				},	
-				lootRoll = {
-					type = "toggle",
-					name = L['Loot Roll'],
-					desc = L['Enable\Disable the loot roll frame.'],
-					get = function(info) return E.db.core.lootRoll end,
-					set = function(info, value) E.db.core.lootRoll = value; StaticPopup_Show("CONFIG_RL") end
-				},	
-				loot = {
-					type = "toggle",
-					name = L['Loot'],
-					desc = L['Enable\Disable the loot frame.'],
-					get = function(info) return E.db.core.loot end,
-					set = function(info, value) E.db.core.loot = value; StaticPopup_Show("CONFIG_RL") end
-				},					
-				autoRepair = {
-					name = L['Auto Repair'],
-					desc = L['Automatically repair using the following method when visiting a merchant.'],
-					type = 'select',
-					values = {
-						['NONE'] = NONE,
-						['GUILD'] = GUILD,
-						['PLAYER'] = PLAYER,
-					},				
-				},
+			args = {
 				interruptAnnounce = {
+					order = 1,
 					name = L['Announce Interrupts'],
 					desc = L['Announce when you interrupt a spell to the specified chat channel.'],
 					type = 'select',
@@ -111,22 +66,20 @@ E.Options.args.core = {
 						['PARTY'] = PARTY,
 						['RAID'] = RAID,
 					},
-				},					
-				panelWidth = {
-					type = 'range',
-					name = L['Panel Width'],
-					desc = L['PANEL_DESC'],
-					set = function(info, value) E.db.core.panelWidth = value; E:GetModule('Chat'):PositionChat(true); local bags = E:GetModule('Bags'); bags:Layout(); bags:Layout(true); end,
-					min = 315, max = 700, step = 1,
 				},
-				panelHeight = {
-					type = 'range',
-					name = L['Panel Height'],
-					desc = L['PANEL_DESC'],
-					set = function(info, value) E.db.core.panelHeight = value; E:GetModule('Chat'):PositionChat(true) end,
-					min = 150, max = 600, step = 1,
-				},		
+				autoRepair = {
+					order = 2,
+					name = L['Auto Repair'],
+					desc = L['Automatically repair using the following method when visiting a merchant.'],
+					type = 'select',
+					values = {
+						['NONE'] = NONE,
+						['GUILD'] = GUILD,
+						['PLAYER'] = PLAYER,
+					},				
+				},
 				expRepPos = {
+					order = 3,
 					type = 'select',
 					name = L['Exp/Rep Position'],
 					desc = L['Change the position of the experience/reputation bar.'],
@@ -134,6 +87,76 @@ E.Options.args.core = {
 					values = {
 						['TOP_SCREEN'] = L['Top Screen'],
 						['MINIMAP_BOTTOM'] = L["Below Minimap"],
+					},
+				},
+				bags = {
+					order = 4,
+					type = "toggle",
+					name = L['Bags'],
+					desc = L['Enable\Disable the all-in-one bag.'],
+					get = function(info) return E.db.core.bags end,
+					set = function(info, value) E.db.core.bags = value; StaticPopup_Show("CONFIG_RL") end
+				},
+				loot = {
+					order = 5,
+					type = "toggle",
+					name = L['Loot'],
+					desc = L['Enable\Disable the loot frame.'],
+					get = function(info) return E.db.core.loot end,
+					set = function(info, value) E.db.core.loot = value; StaticPopup_Show("CONFIG_RL") end
+				},
+				lootRoll = {
+					order = 6,
+					type = "toggle",
+					name = L['Loot Roll'],
+					desc = L['Enable\Disable the loot roll frame.'],
+					get = function(info) return E.db.core.lootRoll end,
+					set = function(info, value) E.db.core.lootRoll = value; StaticPopup_Show("CONFIG_RL") end
+				},
+				autoscale = {
+					order = 7,
+					name = L["Auto Scale"],
+					desc = L["Automatically scale the User Interface based on your screen resolution"],
+					type = "toggle",	
+					set = function(info, value) E.db.core[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end
+				},
+				uiscale = {
+					order = 8,
+					name = L["Scale"],
+					desc = L["Controls the scaling of the entire User Interface"],
+					disabled = function(info) return E.db["core"].autoscale end,
+					type = "range",
+					min = 0.64, max = 1, step = 0.01,
+					isPercent = true,
+					set = function(info, value) E.db.core[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end
+				},		
+				panelWidth = {
+					order = 9,
+					type = 'range',
+					name = L['Panel Width'],
+					desc = L['PANEL_DESC'],
+					set = function(info, value) E.db.core.panelWidth = value; E:GetModule('Chat'):PositionChat(true); local bags = E:GetModule('Bags'); bags:Layout(); bags:Layout(true); end,
+					min = 315, max = 700, step = 1,
+				},
+				panelHeight = {
+					order = 10,
+					type = 'range',
+					name = L['Panel Height'],
+					desc = L['PANEL_DESC'],
+					set = function(info, value) E.db.core.panelHeight = value; E:GetModule('Chat'):PositionChat(true) end,
+					min = 150, max = 600, step = 1,
+				},
+				panelBackdrop = {
+					order = 11,
+					type = 'select',
+					name = L['Panel Backdrop'],
+					desc = L['Toggle showing of the left and right chat panels.'],
+					set = function(info, value) E.db.core.panelBackdrop = value; E:GetModule('Layout'):ToggleChatPanels() end,
+					values = {
+						['HIDEBOTH'] = L['Hide Both'],
+						['SHOWBOTH'] = L['Show Both'],
+						['LEFT'] = L['Left Only'],
+						['RIGHT'] = L['Right Only'],
 					},
 				},
 				panelBackdrop = {
