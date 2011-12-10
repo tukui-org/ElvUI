@@ -262,6 +262,7 @@ end
 
 function E:Initialize()
 	self:UpdateMedia();
+	self:UpdateSounds();
 	if self.db.core.loginmessage then
 		print(format(L['LOGIN_MSG'], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version))
 	end
