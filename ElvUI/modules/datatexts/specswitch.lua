@@ -19,6 +19,10 @@ end
 
 local function OnEvent(self, event)
 	lastPanel = self
+	if not GetTalentTabInfo(1) then
+		return
+	end	
+	
 	
 	LoadTalentTrees()
 	
