@@ -11,6 +11,9 @@ local BAGS_BANK = {-1, 5, 6, 7, 8, 9, 10, 11}
 local trashParent = CreateFrame("Frame", nil, E.UIParent)
 local trashButton, trashBag = {}, {}
 
+B.buttons = {};
+B.bags = {};
+
 local function ResetAndClear(self)
 	if not self then return end
 	
@@ -67,8 +70,7 @@ function B:BagFrameSlotNew(frame, slot)
 	
 	ret.frame:SetScript('OnClick', nil)
 
-	ret.frame:CreateBackdrop('Default', true)
-	ret.frame.backdrop:SetAllPoints()
+	ret.frame:SetTemplate('Default', true)
 	ret.frame:StyleButton()		
 	ret.frame:SetFrameLevel(ret.frame:GetFrameLevel() + 1)
 	
@@ -87,10 +89,10 @@ local BAGTYPE_PROFESSION = 0x0008 + 0x0010 + 0x0020 + 0x0040 + 0x0080 + 0x0200 +
 local BAGTYPE_FISHING = 32768
 function B:BagType(bag)
 	local bagType = select(2, GetContainerNumFreeSlots(bag))
-	
-	if bit.band(bagType, BAGTYPE_FISHING) > 0 then
+
+	if bagType and bit.band(bagType, BAGTYPE_FISHING) > 0 then
 		return ST_FISHBAG
-	elseif bit.band(bagType, BAGTYPE_PROFESSION) > 0 then		
+	elseif bagType and bit.band(bagType, BAGTYPE_PROFESSION) > 0 then		
 		return ST_SPECIAL
 	end
 
@@ -137,7 +139,7 @@ function B:SlotUpdate(b)
 	local clink = GetContainerItemLink(b.bag, b.slot)
 	
 	if not b.frame.lock then
-		b.frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		b.frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end
 	
 	if b.Cooldown then
@@ -156,9 +158,9 @@ function B:SlotUpdate(b)
 		
 		-- color slot according to item quality
 		if not b.frame.lock and b.rarity and b.rarity > 1 then
-			b.frame.backdrop:SetBackdropBorderColor(GetItemQualityColor(b.rarity))
+			b.frame:SetBackdropBorderColor(GetItemQualityColor(b.rarity))
 		elseif GetContainerItemQuestInfo(b.bag, b.slot) then
-			b.frame.backdrop:SetBackdropBorderColor(1.0, 0.3, 0.3)
+			b.frame:SetBackdropBorderColor(1.0, 0.3, 0.3)
 		end
 	else
 		b.name, b.rarity = nil, nil
@@ -209,8 +211,7 @@ function B:SlotNew(bag, slot)
 	if not ret.frame then
 		ret.frame = CreateFrame("CheckButton", "ElvUINormBag" .. bag .. "_" .. slot, self.bags[bag], tpl)
 		ret.frame:StyleButton()		
-		ret.frame:CreateBackdrop('Default', true)
-		ret.frame.backdrop:SetAllPoints()
+		ret.frame:SetTemplate('Default', true)
 		
 		local t = _G[ret.frame:GetName().."IconTexture"]
 		ret.frame:SetNormalTexture(nil)
@@ -343,14 +344,14 @@ function B:Layout(isBank)
 				
 				local clink = GetContainerItemLink
 				if (clink and b.rarity and b.rarity > 1) then
-					b.frame.backdrop:SetBackdropBorderColor(GetItemQualityColor(b.rarity))
+					b.frame:SetBackdropBorderColor(GetItemQualityColor(b.rarity))
 				elseif (clink and b.qitem) then
-					b.frame.backdrop:SetBackdropBorderColor(1.0, 0.3, 0.3)				
+					b.frame:SetBackdropBorderColor(1.0, 0.3, 0.3)				
 				elseif bagType == ST_QUIVER then
-					b.frame.backdrop:SetBackdropBorderColor(0.8, 0.8, 0.2, 1)
+					b.frame:SetBackdropBorderColor(0.8, 0.8, 0.2, 1)
 					b.frame.lock = true
 				elseif bagType == ST_SOULBAG then
-					b.frame.backdrop:SetBackdropBorderColor(0.5, 0.2, 0.2)
+					b.frame:SetBackdropBorderColor(0.5, 0.2, 0.2)
 					b.frame.lock = true
 				elseif bagType == ST_SPECIAL then
 					b.frame:SetBackdropBorderColor(0.2, 0.2, 0.8)
@@ -358,7 +359,7 @@ function B:Layout(isBank)
 				end
 				
 				-- color profession bag slot border ~yellow
-				if bagType == ST_SPECIAL then b.frame.backdrop:SetBackdropBorderColor(255/255, 243/255,  82/255) b.frame.lock = true end
+				if bagType == ST_SPECIAL then b.frame:SetBackdropBorderColor(255/255, 243/255,  82/255) b.frame.lock = true end
 				
 				idx = idx + 1
 			end
@@ -462,9 +463,6 @@ function B:CreateBagFrame(type)
 	else
 		f:Point('BOTTOMLEFT', LeftChatToggleButton, 'TOPLEFT', 0, 4)
 	end
-	
-	self.buttons = {}
-	self.bags = {}
 	
 	f.HolderFrame = CreateFrame("Frame", name.."HolderFrame", f)
 	
