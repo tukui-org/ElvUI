@@ -76,7 +76,7 @@ DF['chat'] = {
 	['url'] = true,
 	['shortChannels'] = true,
 	['whisperwarning'] = true,
-	['whispersound'] = 'Simon Chime',
+	['whispersound'] = 'ElvUI Whisper',
 }
 
 --ClassTimers

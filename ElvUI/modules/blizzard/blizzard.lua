@@ -13,6 +13,7 @@ function B:Initialize()
 	self:SkinBlizzTimers()
 	self:PositionVehicleFrame()
 	self:MoveWatchFrame()
+	self:Bubbles()
 end
 
 E:RegisterModule(B:GetName())

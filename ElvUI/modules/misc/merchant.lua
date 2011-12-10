@@ -22,8 +22,6 @@ function M:LoadMerchant()
 		if c>0 then
 			local g, s, c = math.floor(c/10000) or 0, math.floor((c%10000)/100) or 0, c%100
 			E:Print(L['Vendored gray items for:'].." |cffffffff"..g..L.goldabbrev.." |cffffffff"..s..L.silverabbrev.." |cffffffff"..c..L.copperabbrev..".")
-		else
-			E:Print(L['No gray items to sell.'])
 		end
 	end)
 	f:RegisterEvent("MERCHANT_SHOW")

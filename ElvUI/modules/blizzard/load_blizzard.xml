@@ -9,4 +9,5 @@
 	<Script file='durability.lua'/>
 	<Script file='capturebar.lua'/>
 	<Script file='achievements.lua'/>
+	<Script file='bubbles.lua'/>
 </Ui>
