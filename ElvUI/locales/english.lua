@@ -612,6 +612,11 @@ do
 	L['whispers'] = true;
 	L['says'] = true;
 	L['yells'] = true;
+	L['Sounds'] = true;
+	L['Whisper Warning'] = true;
+	L['Plays a sound when you receive a whisper.'] = true;
+	L['Warning Sound'] = true;
+	L['Choose what sound to play.'] = true;
 end
 
 --Skins

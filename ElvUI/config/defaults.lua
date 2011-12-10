@@ -22,9 +22,6 @@ DF["core"] = {
 	["normTex"] = "ElvUI Norm",
 	["glossTex"] = "ElvUI Gloss",
 	
-	-- sounds
-	["whisper"] = "ElvUI Whisper",
-	
 	--colors
 	["bordercolor"] = { r = .23,g = .23,b = .23 },
 	["backdropcolor"] = { r = .07,g = .07,b = .07 },
@@ -76,8 +73,10 @@ DF['auras'] = {
 --Chat
 DF['chat'] = {
 	['enable'] = true,
-	['url'] = true;
-	['shortChannels'] = true;
+	['url'] = true,
+	['shortChannels'] = true,
+	['whisperwarning'] = true,
+	['whispersound'] = 'Simon Chime',
 }
 
 --ClassTimers

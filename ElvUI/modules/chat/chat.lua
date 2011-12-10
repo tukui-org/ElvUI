@@ -389,7 +389,21 @@ function CH:Initialize(event)
 	close:SetFrameLevel(close:GetFrameLevel() + 1)
 	close:EnableMouse(true)
 	
-	S:HandleCloseButton(close)	
+	S:HandleCloseButton(close)
+	
+	------------------------------------------------------------------------
+	--	Play sound files system
+	------------------------------------------------------------------------
+	if self.db.whisperwarning == true then
+		local SoundSys = CreateFrame("Frame")
+		SoundSys:RegisterEvent("CHAT_MSG_WHISPER")
+		SoundSys:RegisterEvent("CHAT_MSG_BN_WHISPER")
+		SoundSys:HookScript("OnEvent", function(self, event, ...)
+			if event == "CHAT_MSG_WHISPER" or "CHAT_MSG_BN_WHISPER" then
+				PlaySoundFile(E.media.whispersound,"Master")
+			end
+		end)
+	end
 end
 
 -- Remember last channel
@@ -399,17 +413,5 @@ ChatTypeInfo.OFFICER.sticky = 1
 ChatTypeInfo.RAID_WARNING.sticky = 1
 ChatTypeInfo.CHANNEL.sticky = 1
 ChatTypeInfo.GUILD.sticky = 1
-
-------------------------------------------------------------------------
---	Play sound files system
-------------------------------------------------------------------------
-local SoundSys = CreateFrame("Frame")
-SoundSys:RegisterEvent("CHAT_MSG_WHISPER")
-SoundSys:RegisterEvent("CHAT_MSG_BN_WHISPER")
-SoundSys:HookScript("OnEvent", function(self, event, ...)
-	if event == "CHAT_MSG_WHISPER" or "CHAT_MSG_BN_WHISPER" then
-		PlaySoundFile(E.media.whisper,"Master")
-	end
-end)
 
 E:RegisterModule(CH:GetName())
