@@ -11,6 +11,9 @@ local BAGS_BANK = {-1, 5, 6, 7, 8, 9, 10, 11}
 local trashParent = CreateFrame("Frame", nil, E.UIParent)
 local trashButton, trashBag = {}, {}
 
+B.buttons = {};
+B.bags = {};
+
 local function ResetAndClear(self)
 	if not self then return end
 	
@@ -87,10 +90,10 @@ local BAGTYPE_PROFESSION = 0x0008 + 0x0010 + 0x0020 + 0x0040 + 0x0080 + 0x0200 +
 local BAGTYPE_FISHING = 32768
 function B:BagType(bag)
 	local bagType = select(2, GetContainerNumFreeSlots(bag))
-	
-	if bit.band(bagType, BAGTYPE_FISHING) > 0 then
+
+	if bagType and bit.band(bagType, BAGTYPE_FISHING) > 0 then
 		return ST_FISHBAG
-	elseif bit.band(bagType, BAGTYPE_PROFESSION) > 0 then		
+	elseif bagType and bit.band(bagType, BAGTYPE_PROFESSION) > 0 then		
 		return ST_SPECIAL
 	end
 
@@ -462,9 +465,6 @@ function B:CreateBagFrame(type)
 	else
 		f:Point('BOTTOMLEFT', LeftChatToggleButton, 'TOPLEFT', 0, 4)
 	end
-	
-	self.buttons = {}
-	self.bags = {}
 	
 	f.HolderFrame = CreateFrame("Frame", name.."HolderFrame", f)
 	
