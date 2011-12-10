@@ -59,7 +59,7 @@ E.Options.args.chat = {
 					desc = L['Choose what sound to play.'],
 					disabled = function() return not E.db.chat.whisperwarning end,
 					values = AceGUIWidgetLSMlists.sound,
-					set = function(info, value) E.db.chat[ info[#info] ] = value; E:UpdateMedia(); end,
+					set = function(info, value) E.db.chat[ info[#info] ] = value; E:UpdateSounds(); end,
 				},
 			},
 		},
