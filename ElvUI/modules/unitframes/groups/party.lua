@@ -37,17 +37,19 @@ function UF:Construct_PartyFrames(unitGroup)
 	return self
 end
 
+local database
 function UF:PartySmartVisibility(event)
+	if not UF.db.smartRaidFilter then return end
 	local inInstance, instanceType = IsInInstance()
 	local _, _, _, _, maxPlayers, _, _ = GetInstanceInfo()
 	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
 	if not InCombatLockdown() then		
-		if inInstance and instanceType == "raid" and maxPlayers ~= 40 and UF.db.smartRaidFilter and self.SetAttribute then
+		if inInstance and instanceType == "raid" and maxPlayers ~= 40 and self.SetAttribute then
 			self:SetAttribute("showRaid", false)
 			self:SetAttribute("showParty", false)			
-		elseif self.SetAttribute and self.db then
-			self:SetAttribute("showParty", self.db.showParty)
-			self:SetAttribute("showRaid", self.db.showRaid)
+		elseif self.SetAttribute and database then
+			self:SetAttribute("showParty", database.showParty)
+			self:SetAttribute("showRaid", database.showRaid)
 		end
 	else
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")
@@ -56,7 +58,7 @@ end
 
 function UF:Update_PartyHeader(header, db)
 	header:Hide()
-	
+	database = db
 	header:SetAttribute('oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height))
 
 	--User Error Check
