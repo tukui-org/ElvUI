@@ -9,9 +9,9 @@ local function OnEvent(self, event, ...)
 	
 	local baseMR, castingMR = GetManaRegen()
 	if InCombatLockdown() then
-		self.text:SetFormattedText(displayNumberString, MANA_REGEN..": ", castingMR*5)
+		self.text:SetFormattedText(displayNumberString, MANA_REGEN, castingMR*5)
 	else
-		self.text:SetFormattedText(displayNumberString, MANA_REGEN..": ", baseMR*5)
+		self.text:SetFormattedText(displayNumberString, MANA_REGEN, baseMR*5)
 	end
 end
 
@@ -34,4 +34,4 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	click - function to fire when clicking the datatext
 	onEnterFunc - function to fire OnEnter
 ]]
-DT:RegisterDatatext('Haste', {"UNIT_STATS", "UNIT_AURA", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent)
+DT:RegisterDatatext('Mana Regen', {"UNIT_STATS", "UNIT_AURA", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent)
