@@ -272,7 +272,7 @@ function E:Initialize()
 	
 	self.initialized = true
 
-	if not self.db.install_complete then
+	if self.db.install_complete == nil or type(self.db.install_complete) == 'boolean' or tonumber(self.db.install_complete) <= 3.05 then
 		self:Install()
 	end
 	

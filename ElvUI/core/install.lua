@@ -1,7 +1,7 @@
 local E, L, DF = unpack(select(2, ...)); --Engine
 
 local CURRENT_PAGE = 0
-local MAX_PAGE = 4
+local MAX_PAGE = 6
 
 local function SetupChat()
 	InstallStepComplete.message = L["Chat Set"]
@@ -171,8 +171,78 @@ local function SetupCVars()
 	InstallStepComplete:Show()					
 end	
 
+local function SetupLayout(isPrimary, layout)
+	if isPrimary then
+		if layout == 'tank' then
+			--datatexts
+			E.db.datatexts.panels.spec1.LeftChatDataPanel.left = 'Armor';
+			E.db.datatexts.panels.spec1.LeftChatDataPanel.right = 'Avoidance';
+			
+			--unitframes
+			E.db.unitframe.mainSpec = 'Primary';
+		elseif layout == 'healer' then
+			--datatexts
+			E.db.datatexts.panels.spec1.LeftChatDataPanel.left = 'Spell/Heal Power';
+			E.db.datatexts.panels.spec1.LeftChatDataPanel.right = 'Haste';
+			
+			--unitframes
+			E.db.unitframe.mainSpec = 'Secondary';		
+		elseif layout == 'dpsCaster' then
+			--datatexts
+			E.db.datatexts.panels.spec1.LeftChatDataPanel.left = 'Spell/Heal Power';
+			E.db.datatexts.panels.spec1.LeftChatDataPanel.right = 'Haste';
+			
+			--unitframes
+			E.db.unitframe.mainSpec = 'Primary';			
+		else
+			--datatexts
+			E.db.datatexts.panels.spec1.LeftChatDataPanel.left = 'Attack Power';
+			E.db.datatexts.panels.spec1.LeftChatDataPanel.right = 'Crit Chance';
+			
+			--unitframes
+			E.db.unitframe.mainSpec = 'Primary';			
+		end
+		
+		InstallStepComplete.message = L["Primary Layout Set"]
+		InstallStepComplete:Show()	
+	else
+		if layout == 'tank' then
+			--datatexts
+			E.db.datatexts.panels.spec2.LeftChatDataPanel.left = 'Armor';
+			E.db.datatexts.panels.spec2.LeftChatDataPanel.right = 'Avoidance';
+			
+			--unitframes
+			E.db.unitframe.offSpec = 'Primary';
+		elseif layout == 'healer' then
+			--datatexts
+			E.db.datatexts.panels.spec2.LeftChatDataPanel.left = 'Spell/Heal Power';
+			E.db.datatexts.panels.spec2.LeftChatDataPanel.right = 'Haste';
+			
+			--unitframes
+			E.db.unitframe.offSpec = 'Secondary';		
+		elseif layout == 'dpsCaster' then
+			--datatexts
+			E.db.datatexts.panels.spec2.LeftChatDataPanel.left = 'Spell/Heal Power';
+			E.db.datatexts.panels.spec2.LeftChatDataPanel.right = 'Haste';
+			
+			--unitframes
+			E.db.unitframe.offSpec = 'Primary';			
+		else
+			--datatexts
+			E.db.datatexts.panels.spec2.LeftChatDataPanel.left = 'Attack Power';
+			E.db.datatexts.panels.spec2.LeftChatDataPanel.right = 'Crit Chance';
+			
+			--unitframes
+			E.db.unitframe.offSpec = 'Primary';			
+		end
+		
+		InstallStepComplete.message = L["Secondary Layout Set"]
+		InstallStepComplete:Show()			
+	end
+end
+
 local function InstallComplete()
-	E.db.install_complete = true
+	E.db.install_complete = E.version
 	
 	if GetCVarBool("Sound_EnableMusic") then
 		StopMusic()
@@ -187,6 +257,14 @@ local function ResetAll()
 	InstallOption1Button:Hide()
 	InstallOption1Button:SetScript("OnClick", nil)
 	InstallOption1Button:SetText("")
+	InstallRoleOptionTank:Hide()
+	InstallRoleOptionTank:SetScript('OnClick', nil)
+	InstallRoleOptionHealer:Hide()
+	InstallRoleOptionHealer:SetScript('OnClick', nil)
+	InstallRoleOptionMeleeDPS:Hide()
+	InstallRoleOptionMeleeDPS:SetScript('OnClick', nil)	
+	InstallRoleOptionCasterDPS:Hide()
+	InstallRoleOptionCasterDPS:SetScript('OnClick', nil)		
 	ElvUIInstallFrame.SubTitle:SetText("")
 	ElvUIInstallFrame.Desc1:SetText("")
 	ElvUIInstallFrame.Desc2:SetText("")
@@ -236,6 +314,32 @@ local function SetPage(PageNum)
 		InstallOption1Button:SetScript("OnClick", SetupChat)
 		InstallOption1Button:SetText(L["Setup Chat"])
 	elseif PageNum == 4 then
+		f.SubTitle:SetText(L["Primary Layout"])
+		f.Desc1:SetText(L["You can now choose what layout you wish to use for your primary talents."])
+		f.Desc2:SetText(L["This will change the layout of your unitframes, raidframes, and datatexts."])
+		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
+		InstallRoleOptionTank:Show()
+		InstallRoleOptionTank:SetScript('OnClick', function() SetupLayout(true, 'tank') end)
+		InstallRoleOptionHealer:Show()
+		InstallRoleOptionHealer:SetScript('OnClick', function() SetupLayout(true, 'healer') end)
+		InstallRoleOptionMeleeDPS:Show()
+		InstallRoleOptionMeleeDPS:SetScript('OnClick', function() SetupLayout(true, 'dpsMelee') end)
+		InstallRoleOptionCasterDPS:Show()
+		InstallRoleOptionCasterDPS:SetScript('OnClick', function() SetupLayout(true, 'dpsCaster') end)		
+	elseif PageNum == 5 then
+		f.SubTitle:SetText(L["Secondary Layout"])
+		f.Desc1:SetText(L["You can now choose what layout you wish to use for your secondary talents."])
+		f.Desc2:SetText(L["This will change the layout of your unitframes, raidframes, and datatexts."])
+		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
+		InstallRoleOptionTank:Show()
+		InstallRoleOptionTank:SetScript('OnClick', function() SetupLayout(false, 'tank') end)
+		InstallRoleOptionHealer:Show()
+		InstallRoleOptionHealer:SetScript('OnClick', function() SetupLayout(false, 'healer') end)
+		InstallRoleOptionMeleeDPS:Show()
+		InstallRoleOptionMeleeDPS:SetScript('OnClick', function() SetupLayout(false, 'dpsMelee') end)
+		InstallRoleOptionCasterDPS:Show()
+		InstallRoleOptionCasterDPS:SetScript('OnClick', function() SetupLayout(false, 'dpsCaster') end)	
+	elseif PageNum == 6 then
 		f.SubTitle:SetText(L["Installation Complete"])
 		f.Desc1:SetText(L["You are now finished with the installation process. If you are in need technical support please visit us at www.tukui.org."])
 		f.Desc2:SetText(L["Please click the button below so you can setup variables and ReloadUI."])			
@@ -371,6 +475,42 @@ function E:Install()
 		f.Option1:SetText("")
 		f.Option1:Hide()
 		E.Skins:HandleButton(f.Option1, true)
+		
+		f.RoleOptionTank = CreateFrame('Button', 'InstallRoleOptionTank', f, 'UIPanelButtonTemplate2')
+		f.RoleOptionTank:StripTextures()
+		f.RoleOptionTank:SetTemplate("Default", true)
+		f.RoleOptionTank:Size(100, 30)
+		f.RoleOptionTank:Point("BOTTOM", 50, 45)
+		f.RoleOptionTank:SetText(L['Tank'])
+		f.RoleOptionTank:Hide()
+		E.Skins:HandleButton(f.RoleOptionTank, true)
+		
+		f.RoleOptionHealer = CreateFrame('Button', 'InstallRoleOptionHealer', f, 'UIPanelButtonTemplate2')
+		f.RoleOptionHealer:StripTextures()
+		f.RoleOptionHealer:SetTemplate("Default", true)
+		f.RoleOptionHealer:Size(100, 30)
+		f.RoleOptionHealer:Point("LEFT", f.RoleOptionTank, 'RIGHT', 3, 0)
+		f.RoleOptionHealer:SetText(L['Healer'])
+		f.RoleOptionHealer:Hide()
+		E.Skins:HandleButton(f.RoleOptionHealer, true)		
+		
+		f.RoleOptionMeleeDPS = CreateFrame('Button', 'InstallRoleOptionMeleeDPS', f, 'UIPanelButtonTemplate2')
+		f.RoleOptionMeleeDPS:StripTextures()
+		f.RoleOptionMeleeDPS:SetTemplate("Default", true)
+		f.RoleOptionMeleeDPS:Size(100, 30)
+		f.RoleOptionMeleeDPS:Point("RIGHT", f.RoleOptionTank, 'LEFT', -3, 0)
+		f.RoleOptionMeleeDPS:SetText(L['Melee DPS'])
+		f.RoleOptionMeleeDPS:Hide()
+		E.Skins:HandleButton(f.RoleOptionMeleeDPS, true)			
+
+		f.RoleOptionCasterDPS = CreateFrame('Button', 'InstallRoleOptionCasterDPS', f, 'UIPanelButtonTemplate2')
+		f.RoleOptionCasterDPS:StripTextures()
+		f.RoleOptionCasterDPS:SetTemplate("Default", true)
+		f.RoleOptionCasterDPS:Size(100, 30)
+		f.RoleOptionCasterDPS:Point("RIGHT", f.RoleOptionMeleeDPS, 'LEFT', -3, 0)
+		f.RoleOptionCasterDPS:SetText(L['Caster DPS'])
+		f.RoleOptionCasterDPS:Hide()
+		E.Skins:HandleButton(f.RoleOptionCasterDPS, true)		
 		
 		f.SubTitle = f:CreateFontString(nil, 'OVERLAY')
 		f.SubTitle:FontTemplate(nil, 15, nil)		
