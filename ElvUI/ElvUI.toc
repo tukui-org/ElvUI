@@ -1,10 +1,10 @@
 ﻿## Interface: 40300
 ## Author: Elv
-## Version: 3.0.5
+## Version: 3.08
 ## Title: |cff1784d1ElvUI|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvData
-## OptionalDeps: BigWigs, DBM-Core, DXE, Recount, Omen, Skada
+## OptionalDeps: BigWigs, DBM-Core, DXE, Recount, Omen, Skada, SharedMedia
 ## X-oUF: ElvUF
 
 developer\load_developer.xml

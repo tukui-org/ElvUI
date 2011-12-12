@@ -13,8 +13,10 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Threat = self:Construct_ThreatGlow(frame, true)
 	
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
+	frame.Health.frequentUpdates = true;
 	
 	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT', true)
+	frame.Power.frequentUpdates = true;
 	
 	frame.Name = self:Construct_NameText(frame)
 	

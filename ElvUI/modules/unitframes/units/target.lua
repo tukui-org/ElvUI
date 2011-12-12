@@ -9,8 +9,10 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 function UF:Construct_TargetFrame(frame)	
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
+	frame.Health.frequentUpdates = true;
 	
 	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT', false)
+	frame.Power.frequentUpdates = true;
 	
 	frame.Name = self:Construct_NameText(frame)
 	

@@ -181,7 +181,12 @@ function E:CheckRole()
 end
 
 function E:RegisterModule(name)
-	tinsert(self['RegisteredModules'], name)
+	if self.initialized then
+		self:GetModule(name):Initialize()
+		tinsert(self['RegisteredModules'], name)
+	else
+		tinsert(self['RegisteredModules'], name)
+	end
 end
 
 function E:InitializeModules()	
@@ -278,7 +283,7 @@ function E:Initialize()
 	
 	self.initialized = true
 
-	if not self.db.install_complete then
+	if self.db.install_complete == nil or (self.db.install_complete and type(self.db.install_complete) == 'boolean') or (self.db.install_complete and type(tonumber(self.db.install_complete)) == 'number' and tonumber(self.db.install_complete) <= 3.05) then
 		self:Install()
 	end
 	

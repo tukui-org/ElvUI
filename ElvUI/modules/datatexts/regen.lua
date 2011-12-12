@@ -9,9 +9,9 @@ local function OnEvent(self, event, ...)
 	
 	local baseMR, castingMR = GetManaRegen()
 	if InCombatLockdown() then
-		self.text:SetFormattedText(displayNumberString, MANA_REGEN..": ", castingMR*5)
+		self.text:SetFormattedText(displayNumberString, MANA_REGEN, castingMR*5)
 	else
-		self.text:SetFormattedText(displayNumberString, MANA_REGEN..": ", baseMR*5)
+		self.text:SetFormattedText(displayNumberString, MANA_REGEN, baseMR*5)
 	end
 end
 

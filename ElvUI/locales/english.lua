@@ -1,6 +1,12 @@
 ﻿-- English localization file for enUS and enGB.
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0");
-local L = AceLocale:NewLocale("ElvUI", "enUS", true);
+local L 
+if UnitName('player') ~= 'Elv' then
+	L = AceLocale:NewLocale("ElvUI", "enUS", true, true);
+else
+	L = AceLocale:NewLocale("ElvUI", "enUS", true);
+end
+
 if not L then return; end
 
 --Static Popup
@@ -87,6 +93,18 @@ do
 	L['Show Both'] = true;
 	L['Left Only'] = true;
 	L['Right Only'] = true;
+	
+	L['Tank'] = true;
+	L['Healer'] = true;
+	L['Melee DPS'] = true;
+	L['Caster DPS'] = true;
+	L["Primary Layout"] = true;
+	L["Secondary Layout"] = true;
+	L["Primary Layout Set"] = true;
+	L["Secondary Layout Set"] = true;
+	L["You can now choose what layout you wish to use for your primary talents."] = true;
+	L["You can now choose what layout you wish to use for your secondary talents."] = true;
+	L["This will change the layout of your unitframes, raidframes, and datatexts."] = true;
 end
 
 --Media	
