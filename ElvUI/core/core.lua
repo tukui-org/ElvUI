@@ -68,23 +68,26 @@ function E:UpdateMedia()
 	self["media"].glossTex = LSM:Fetch("statusbar", self.db["core"].glossTex)
 
 	--Border Color
-	local border = self.db["core"].bordercolor
-	self["media"].bordercolor = {border.r, border.g, border.b}
+	if IsLoggedIn() then
+		local border = self.db["core"].bordercolor
+		self["media"].bordercolor = {border.r, border.g, border.b}
 
-	--Backdrop Color
-	local backdrop = self.db["core"].backdropcolor
-	self["media"].backdropcolor = {backdrop.r, backdrop.g, backdrop.b}
+		--Backdrop Color
+		local backdrop = self.db["core"].backdropcolor
+		self["media"].backdropcolor = {backdrop.r, backdrop.g, backdrop.b}
 
-	--Backdrop Fade Color
-	backdrop = self.db["core"].backdropfadecolor
-	self["media"].backdropfadecolor = {backdrop.r, backdrop.g, backdrop.b, backdrop.a}
+		--Backdrop Fade Color
+		backdrop = self.db["core"].backdropfadecolor
+		self["media"].backdropfadecolor = {backdrop.r, backdrop.g, backdrop.b, backdrop.a}
+		
+		--Value Color
+		local value = self.db["core"].valuecolor
+		self["media"].hexvaluecolor = self:RGBToHex(value.r, value.g, value.b)
+		self["media"].rgbvaluecolor = {value.r, value.g, value.b}
+		
+		self:ValueFuncCall()
+	end
 	
-	--Value Color
-	local value = self.db["core"].valuecolor
-	self["media"].hexvaluecolor = self:RGBToHex(value.r, value.g, value.b)
-	self["media"].rgbvaluecolor = {value.r, value.g, value.b}
-	
-	self:ValueFuncCall()
 	self:UpdateBlizzardFonts()
 end
 
