@@ -12,60 +12,31 @@ function DT:PanelLayoutOptions()
 	for i = 1, 2 do
 		local table = E.Options.args.datatexts.args['spec'..i].args
 		for pointLoc, tab in pairs(E.db.datatexts.panels['spec'..i]) do
-			if DF.datatexts.panels['spec'..i][pointLoc] then
-				if type(tab) == 'table' then
-					table[pointLoc] = {
-						type = 'group',
-						args = {},
-						name = L[pointLoc] or pointLoc,
-						guiInline = true,
-						order = i + -10,
-					}			
-					for option, value in pairs(tab) do
-						table[pointLoc].args[option] = {
-							type = 'select',
-							name = L[option] or option:upper(),
-							values = datatexts,
-							get = function(info) return E.db.datatexts.panels['spec'..i][pointLoc][ info[#info] ] end,
-							set = function(info, value) E.db.datatexts.panels['spec'..i][pointLoc][ info[#info] ] = value; DT:LoadDataTexts() end,									
-						}
-					end
-				elseif type(tab) == 'string' then
-					table[pointLoc] = {
+			if type(tab) == 'table' then
+				table[pointLoc] = {
+					type = 'group',
+					args = {},
+					name = L[pointLoc] or pointLoc,
+					guiInline = true,
+					order = i + -10,
+				}			
+				for option, value in pairs(tab) do
+					table[pointLoc].args[option] = {
 						type = 'select',
-						name = L[pointLoc] or pointLoc,
+						name = L[option] or option:upper(),
 						values = datatexts,
-						get = function(info) return E.db.datatexts.panels['spec'..i][pointLoc] end,
-						set = function(info, value) E.db.datatexts.panels['spec'..i][pointLoc] = value; DT:LoadDataTexts() end,	
-					}						
+						get = function(info) return E.db.datatexts.panels['spec'..i][pointLoc][ info[#info] ] end,
+						set = function(info, value) E.db.datatexts.panels['spec'..i][pointLoc][ info[#info] ] = value; DT:LoadDataTexts() end,									
+					}
 				end
-			else
-				if type(tab) == 'table' then
-					table[pointLoc] = {
-						type = 'group',
-						args = {},
-						name = pointLoc,
-						guiInline = true,
-						order = i + -10,
-					}			
-					for option, value in pairs(tab) do
-						table[pointLoc].args[option] = {
-							type = 'select',
-							name = L[option] or option:upper(),
-							values = datatexts,
-							get = function(info) return E.db.datatexts.panels['spec'..i][pointLoc][ info[#info] ] end,
-							set = function(info, value) E.db.datatexts.panels['spec'..i][pointLoc][ info[#info] ] = value; DT:LoadDataTexts() end,									
-						}
-					end
-				elseif type(tab) == 'string' then
-					table[pointLoc] = {
-						type = 'select',
-						name = pointLoc,
-						values = datatexts,
-						get = function(info) return E.db.datatexts.panels['spec'..i][pointLoc] end,
-						set = function(info, value) E.db.datatexts.panels['spec'..i][pointLoc] = value; DT:LoadDataTexts() end,	
-					}						
-				end			
+			elseif type(tab) == 'string' then
+				table[pointLoc] = {
+					type = 'select',
+					name = L[pointLoc] or pointLoc,
+					values = datatexts,
+					get = function(info) return E.db.datatexts.panels['spec'..i][pointLoc] end,
+					set = function(info, value) E.db.datatexts.panels['spec'..i][pointLoc] = value; DT:LoadDataTexts() end,	
+				}						
 			end
 		end
 	end
