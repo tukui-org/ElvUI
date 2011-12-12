@@ -36,6 +36,7 @@ function AB:CreateActionBars()
 	self:CreateBar3()
 	self:CreateBar4()
 	self:CreateBar5()
+	self:CreateBar6()
 	self:CreateBarPet()
 	self:CreateBarShapeShift()
 	self:CreateVehicleLeave()
@@ -100,6 +101,7 @@ function AB:UpdateButtonSettings()
 	self:PositionAndSizeBar3()
 	self:PositionAndSizeBar4()
 	self:PositionAndSizeBar5()
+	self:PositionAndSizeBar6()
 	self:PositionAndSizeBarPet()
 	self:PositionAndSizeBarShapeShift()
 	
@@ -408,14 +410,14 @@ function AB:ResetMovers(...)
 		local mover = self.movers[name].bar
 		if bar == '' then
 			mover:ClearAllPoints()
-			mover:Point(self.movers[name]["p"], self.movers[name]["p2"], self.movers[name]["p3"], self.movers[name]["p4"], self.movers[name]["p5"])
+			mover:Point(self.movers[name]["p"], self.movers[name]["p2"], self.movers[name]["p3"], self.movers[name]["p4"], self.movers[name]["p5"], self.movers[name]["p6"])
 			
 			if self.db[name] then
 				self.db[name]['position'] = nil		
 			end
 		elseif bar == mover.textString then
 			mover:ClearAllPoints()
-			mover:Point(self.movers[name]["p"], self.movers[name]["p2"], self.movers[name]["p3"], self.movers[name]["p4"], self.movers[name]["p5"])
+			mover:Point(self.movers[name]["p"], self.movers[name]["p2"], self.movers[name]["p3"], self.movers[name]["p4"], self.movers[name]["p5"], self.movers[name]["p6"])
 			
 			if self.db[name] then
 				self.db[name]['position'] = nil
@@ -425,7 +427,7 @@ function AB:ResetMovers(...)
 end
 
 function AB:CreateMover(bar, text, name, padding)
-	local p, p2, p3, p4, p5 = bar:GetPoint()
+	local p, p2, p3, p4, p5, p6 = bar:GetPoint()
 
 	local mover = CreateFrame('Button', nil, bar)
 	mover:SetSize(bar:GetSize())
@@ -442,12 +444,13 @@ function AB:CreateMover(bar, text, name, padding)
 		self.movers[name]["p3"] = p3
 		self.movers[name]["p4"] = p4
 		self.movers[name]["p5"] = p5
+		self.movers[name]["p6"] = p6
 	end	
 
 	if self.db and self.db[name] and self.db[name]["position"] then
 		mover:SetPoint(self.db[name]["position"].p, UIParent, self.db[name]["position"].p2, self.db[name]["position"].p3, self.db[name]["position"].p4)
 	else
-		mover:SetPoint(p, p2, p3, p4, p5)
+		mover:SetPoint(p, p2, p3, p4, p5, p6)
 	end
 	
 	mover.padding = padding
