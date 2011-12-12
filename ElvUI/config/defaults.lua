@@ -1847,8 +1847,8 @@ DF['unitframe'] = {
 				},			
 			},
 			["positions"] = {
-				["ElvUF_Player"] = "BOTTOMLEFTUIParent464220",
-				["ElvUF_Target"] = "BOTTOMRIGHTUIParent-464220",
+				["ElvUF_Player"] = "BOTTOMLEFTUIParent464230",
+				["ElvUF_Target"] = "BOTTOMRIGHTUIParent-464230",
 				["ElvUF_Raid2640"] = "BOTTOMUIParent0250",
 				["ElvUF_Raid625"] = "BOTTOMUIParent0250",
 				["ElvUF_Targettarget"] = "BOTTOMRIGHTElvUF_Target0150",

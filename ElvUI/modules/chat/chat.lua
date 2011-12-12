@@ -410,8 +410,8 @@ end
 ChatTypeInfo.WHISPER.sticky = 0
 ChatTypeInfo.BN_WHISPER.sticky = 0
 ChatTypeInfo.OFFICER.sticky = 1
-ChatTypeInfo.RAID_WARNING.sticky = 1
-ChatTypeInfo.CHANNEL.sticky = 1
+ChatTypeInfo.RAID_WARNING.sticky = 0
+ChatTypeInfo.CHANNEL.sticky = 0
 ChatTypeInfo.GUILD.sticky = 1
 
 E:RegisterModule(CH:GetName())
