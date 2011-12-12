@@ -1,0 +1,21 @@
+## Interface: 40200
+## Author: Lockslap
+## Title: |cff1784d1ElvUI|r Chat Tweaks
+## Version: 3.7
+## Notes: Provides various tweaks to the Chat windows.
+## RequiredDeps: ElvUI
+## OptionalDeps: SharedMedia
+## SavedVariables: ElvUI_ChatTweaksDB
+
+## X-Author-Faction: Alliance
+## X-Author-Server: Bleeding Hollow
+## X-Category: Chat & Communications, ElvUI
+## X-License: GNU General Public License 3
+## X-Email: adam AT lockslap DOT com
+## X-Website: http://wowhead-tooltips.com http://ba-guild.com
+## X-Credits: Borderline Amazing
+
+Libraries.xml
+Locales.xml
+ElvUI_ChatTweaks.lua
+Modules.xml

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.blizzard.com/wow/ui/" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+
+	<Script file="Libraries\LibStub\LibStub.lua" />
+	<Include file="Libraries\CallbackHandler-1.0\CallbackHandler-1.0.xml" />
+
+	<!-- Ace Shizzle -->
+	<Include file="Libraries\AceAddon-3.0\AceAddon-3.0.xml" />
+	<Include file="Libraries\AceConfig-3.0\AceConfig-3.0.xml" />
+	<Include file="Libraries\AceConsole-3.0\AceConsole-3.0.xml" />
+	<Include file="Libraries\AceDB-3.0\AceDB-3.0.xml" />
+	<Include file="Libraries\AceDBOptions-3.0\AceDBOptions-3.0.xml" />
+	<Include file="Libraries\AceEvent-3.0\AceEvent-3.0.xml" />
+	<Include file="Libraries\AceHook-3.0\AceHook-3.0.xml" />
+	<Include file="Libraries\AceLocale-3.0\AceLocale-3.0.xml" />
+	<Include file="Libraries\AceTab-3.0\AceTab-3.0.xml" />
+	<Include file="Libraries\AceTimer-3.0\AceTimer-3.0.xml" />
+	
+	<!-- Misc Goodies -->
+	<Include file="Libraries\LibAboutPanel\lib.xml" />
+	<Include file="Libraries\LibSharedMedia-3.0\lib.xml" />
+	<Include file="Libraries\AceGUI-3.0-SharedMediaWidgets\widget.xml" />
+</Ui>

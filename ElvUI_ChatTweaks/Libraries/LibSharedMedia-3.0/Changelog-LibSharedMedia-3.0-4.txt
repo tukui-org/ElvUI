@@ -1,0 +1,25 @@
+------------------------------------------------------------------------
+r63 | elkano | 2010-11-05 10:35:23 +0000 (Fri, 05 Nov 2010) | 1 line
+Changed paths:
+   A /tags/4 (from /trunk:62)
+
+Tagging as 4
+------------------------------------------------------------------------
+r62 | elkano | 2010-10-27 09:05:19 +0000 (Wed, 27 Oct 2010) | 11 lines
+Changed paths:
+   M /trunk/CallbackHandler-1.0/CallbackHandler-1.0.lua
+   M /trunk/LibSharedMedia-3.0/LibSharedMedia-3.0.lua
+   M /trunk/LibSharedMedia-3.0.toc
+
+- pushed TOC to 40000
+- updated CallbackHandler-1.0 to version 6
+- added/changed some data
+  - BACKGROUND
+    [ADDED] Blizzard Dialog Background Dark
+    [ADDED] Blizzard Dialog Background Gold
+    [ADDED] Blizzard Marble
+    [ADDED] Blizzard Rock
+    [CHANGED] Blizzard Parchment 2
+  - STATUSBAR
+    [ADDED] Blizzard Character Skills Bar
+------------------------------------------------------------------------
