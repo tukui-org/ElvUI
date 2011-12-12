@@ -1,5 +1,6 @@
 ﻿local E, L, DF = unpack(select(2, ...)); --Engine
-
+local _, myclasscolor = UnitClass("player");
+local valuer, valueg, valueb = RAID_CLASS_COLORS[myclasscolor].r, RAID_CLASS_COLORS[myclasscolor].g, RAID_CLASS_COLORS[myclasscolor].b
 --Global defaults
 E.DF["global"] = {};
 
@@ -19,14 +20,14 @@ DF["core"] = {
 	["chatfont"] = "Chat",
 		
 	-- textures
-	["normTex"] = "ElvUI Norm",
-	["glossTex"] = "ElvUI Gloss",
+	["normTex"] = "Minimalist",
+	["glossTex"] = "Minimalist",
 	
 	--colors
-	["bordercolor"] = { r = .23,g = .23,b = .23 },
-	["backdropcolor"] = { r = .07,g = .07,b = .07 },
-	["backdropfadecolor"] = { r = .07,g = .07,b = .07, a = 0.9 },
-	["valuecolor"] = {r = 23/255,g = 132/255,b = 209/255},
+	["bordercolor"] = { r = .20,g = .20,b = .20 },
+	["backdropcolor"] = { r = .16,g = .16,b = .16 },
+	["backdropfadecolor"] = { r = .10,g = .10,b = .10, a = 0.9 },
+	["valuecolor"] = {r = valuer,g = valueg,b = valueb},
 	
 	--panels
 	['panelWidth'] = 380,
