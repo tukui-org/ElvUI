@@ -74,7 +74,7 @@ DF['auras'] = {
 DF['chat'] = {
 	['enable'] = true,
 	['url'] = true,
-	['shortChannels'] = true,
+	['shortChannels'] = false,
 	['whisperwarning'] = true,
 	['whispersound'] = 'ElvUI Whisper',
 }
