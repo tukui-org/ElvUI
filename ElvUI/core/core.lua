@@ -49,11 +49,19 @@ function E:UpdateMedia(loggedIn)
 		local path = ElvData["profiles"][profile]
 		self.db = DF
 		
-		for key, tab in pairs(DF) do
-			if type(DF[key]) == 'table' and key == 'core' then
+		for key, val in pairs(DF) do
+			if type(DF[key]) == 'table' then
 				for k, v in pairs(DF[key]) do
-					self.db[key][k] = v;
+					if type(DF[key][k]) == 'table' then
+						for x, y in pairs(DF[key][k]) do
+							self.db[key][k][x] = y
+						end
+					else
+						self.db[key][k] = v;
+					end
 				end
+			else
+				self.db[key] = val
 			end
 		end
 	end
@@ -89,10 +97,6 @@ function E:UpdateMedia(loggedIn)
 		self["media"].rgbvaluecolor = {value.r, value.g, value.b}
 		
 		self:ValueFuncCall()
-	end
-	
-	if not loggedIn then
-		self.db = nil;
 	end
 end
 
@@ -293,7 +297,7 @@ function E:Initialize()
 	end
 	
 	self:UIScale();
-	self:CheckRole()
+	self:CheckRole();
 
 	self:LoadConfig(); --Load In-Game Config
 	self:LoadCommands(); --Load Commands
