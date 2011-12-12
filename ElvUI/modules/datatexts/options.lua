@@ -40,7 +40,6 @@ function DT:PanelLayoutOptions()
 					}						
 				end
 			else
-				print(pointLoc)
 				if type(tab) == 'table' then
 					table[pointLoc] = {
 						type = 'group',
