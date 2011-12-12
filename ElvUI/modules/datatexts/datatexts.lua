@@ -1,12 +1,16 @@
 local E, L, DF = unpack(select(2, ...)); --Engine
 local DT = E:NewModule('DataTexts', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 
+function DT:PLAYER_LOGIN()
+	self:LoadDataTexts()
+	self:PanelLayoutOptions()
+end
+
 function DT:Initialize()
 	--if E.db["datatexts"].enable ~= true then return end
 	E.DataTexts = DT
 	
-	self:LoadDataTexts()
-	self:PanelLayoutOptions()
+	self:RegisterEvent('PLAYER_LOGIN')
 end
 
 DT.RegisteredPanels = {}
