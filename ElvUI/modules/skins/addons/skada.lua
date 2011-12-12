@@ -10,8 +10,8 @@ local function StripOptions(options)
 	options.titleoptions.args.margin = nil
 	options.titleoptions.args.color = nil
 	options.windowoptions = nil
-	options.baroptions.args.barfont = nil
-	options.titleoptions.args.font = nil
+	--options.baroptions.args.barfont = nil
+	--options.titleoptions.args.font = nil
 end
 
 local function LoadSkin()
@@ -52,6 +52,7 @@ local function LoadSkin()
 		skada:SetTexture(E["media"].normTex)
 		skada:SetSpacing(barSpacing)
 		skada:SetFrameLevel(5)
+		skada:SetBarBackgroundColor(win.db.barbgcolor.r, win.db.barbgcolor.g, win.db.barbgcolor.b, win.db.barbgcolor.a or 0)
 		
 		local titlefont = CreateFont("TitleFont"..win.db.name)
 		win.bargroup.button:SetNormalFontObject(titlefont)
@@ -61,7 +62,7 @@ local function LoadSkin()
 
 		skada:SetBackdrop(nil)
 		if not skada.backdrop then
-			skada:CreateBackdrop('Default')
+			skada:CreateBackdrop('Transparent')
 		end
 		skada.backdrop:ClearAllPoints()
 		if win.db.enabletitle then

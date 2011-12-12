@@ -249,10 +249,10 @@ DF['unitframe'] = {
 		['customhealthbackdrop'] = true,
 		['classbackdrop'] = false,
 	
-		['health'] = DF.core.bordercolor,
+		['health'] = { r = 65/255,g = 65/255,b = 65/255 },
 		['health_backdrop'] = { r = 97/255,g = 97/255,b = 97/255 },
 		['tapped'] = { r = 0.55, g = 0.57, b = 0.61},
-		['disconnected'] = { r = 0.84, g = 0.75, b = 0.65},
+		['disconnected'] = { r = 0, g = 0, b = 0},
 		['power'] = {
 			["MANA"] = {r = 0.31, g = 0.45, b = 0.63},
 			["RAGE"] = {r = 0.78, g = 0.25, b = 0.25},
