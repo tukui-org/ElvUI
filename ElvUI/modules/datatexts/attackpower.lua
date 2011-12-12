@@ -24,7 +24,7 @@ local function ValueColorUpdate(hex, r, g, b)
 	displayNumberString = string.join("", "%s: ", hex, "%d|r")
 	
 	if lastPanel ~= nil then
-		OnUpdate(lastPanel, 200000)
+		OnEvent(lastPanel)
 	end
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true
