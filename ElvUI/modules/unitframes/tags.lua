@@ -123,18 +123,7 @@ ElvUF.Tags.Events['Elv:nameshort'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['Elv:nameshort'] = function(unit)
 	if not unit then return end
 	local name = UnitName(unit)
-	local colorblind = GetCVarBool("colorblindMode")
-	if colorblind ~= 1 then
-		return utf8sub(name, 10, false)
-	else
-		if (UnitIsPlayer(unit)) then
-			local class = select(2, UnitClass(unit))
-			local texcoord = CLASS_BUTTONS[class]
-			return (utf8sub((name), 10, false)).." |TInterface\\WorldStateFrame\\Icons-Classes:25:25:0:0:256:256:"..tostring(texcoord[1]*256)..":"..tostring(texcoord[2]*256)..":"..tostring(texcoord[3]*256)..":"..tostring(texcoord[4]*256).."|t"
-		else
-			return utf8sub(name, 10, false)
-		end
-	end
+	return utf8sub(name, 10, false)
 end
 
 ElvUF.Tags.Events['Elv:namemedium'] = 'UNIT_NAME_UPDATE'
@@ -142,17 +131,7 @@ ElvUF.Tags.Methods['Elv:namemedium'] = function(unit)
 	if not unit then return end
 	local name = UnitName(unit)
 	local colorblind = GetCVarBool("colorblindMode")
-	if colorblind ~= 1 then
-		return utf8sub(name, 15, false)
-	else
-		if (UnitIsPlayer(unit)) then
-			local class = select(2, UnitClass(unit))
-			local texcoord = CLASS_BUTTONS[class]
-			return (utf8sub((name), 15, false)).." |TInterface\\WorldStateFrame\\Icons-Classes:25:25:0:0:256:256:"..tostring(texcoord[1]*256)..":"..tostring(texcoord[2]*256)..":"..tostring(texcoord[3]*256)..":"..tostring(texcoord[4]*256).."|t"
-		else
-			return utf8sub(name, 15, false)
-		end
-	end
+	return utf8sub(name, 15, false)
 end
 
 ElvUF.Tags.Events['Elv:namelong'] = 'UNIT_NAME_UPDATE'
@@ -160,15 +139,5 @@ ElvUF.Tags.Methods['Elv:namelong'] = function(unit)
 	if not unit then return end
 	local name = UnitName(unit)
 	local colorblind = GetCVarBool("colorblindMode")
-	if colorblind ~= 1 then
-		return utf8sub(name, 20, false)
-	else
-		if (UnitIsPlayer(unit)) then
-			local class = select(2, UnitClass(unit))
-			local texcoord = CLASS_BUTTONS[class]
-			return (utf8sub((name), 20, false)).." |TInterface\\WorldStateFrame\\Icons-Classes:25:25:0:0:256:256:"..tostring(texcoord[1]*256)..":"..tostring(texcoord[2]*256)..":"..tostring(texcoord[3]*256)..":"..tostring(texcoord[4]*256).."|t"
-		else
-			return utf8sub(name, 20, false)
-		end
-	end
+	return utf8sub(name, 20, false)
 end
