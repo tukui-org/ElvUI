@@ -21,10 +21,6 @@ function CH:StyleChat(frame)
 	local tab = _G[name..'Tab']
 	local editbox = _G[name..'EditBox']
 
-		
-	local fontSize = select(2, frame:GetFont())
-	frame:SetFont(E['media'].normFont, fontSize)
-	
 	tab:StripTextures()
 	tab:SetAlpha(1)
 	tab.SetAlpha = UIFrameFadeRemoveFrame	
