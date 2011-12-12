@@ -16,10 +16,10 @@ local defaults = {
 	profile = {
 		linkAll		= false,
 		spamDelay	= 60,
-		minDelay	= 1,
-		maxDelay	= 5,
-		afk			= true,
-		dnd			= true,
+		minDelay	= 2,
+		maxDelay	= 2,
+		afk			= false,
+		dnd			= false,
 		keywords	= {
 			"link", "show", "!", "list", "lf"
 		},	
@@ -44,7 +44,7 @@ local events = {
 local professions	= {
 	[L["Enchanting"]]		= {"enchant", "enchanting"},
 	[L["Jewelcrafting"]]	= {"jewelcrafting", "jc"},
-	[L["Alchemy"]]			= "alch",
+	[L["Alchemy"]]			= {"alch", "alchemy"},
 	[L["Blacksmithing"]]	= {"blacksmith", "bs"},
 	[L["Engineering"]]		= "eng",
 	[L["Leatherworking"]]	= {"leather", "lw"},
@@ -274,7 +274,7 @@ function Module:GetOptions()
 						name		= L["Busy"],
 						desc		= L["Disable while you're DND flagged."],
 						get			= function() return db.dnd end,
-						set			= function(_, value) db.dbd = value end,
+						set			= function(_, value) db.dnd = value end,
 					},
 				}
 			},
