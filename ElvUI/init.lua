@@ -33,6 +33,7 @@ local ACD = LibStub("AceConfigDialog-3.0")
 local ACR = LibStub("AceConfigRegistry-3.0")
 
 function AddOn:OnInitialize()
+	self:UpdateMedia()
 	self:RegisterEvent('PLAYER_LOGIN', 'Initialize')
 end
 

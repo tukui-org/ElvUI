@@ -41,6 +41,23 @@ function E:Print(msg)
 end
 
 function E:UpdateMedia()	
+	--[[This is extremely hackish but it is the only way to load our last known 
+		combatFont setting. Because this has to be set pre-login.
+	]]
+	if not self.db then
+		local profile = ElvData["profileKeys"][E.myname.." - "..E.myrealm]
+		local path = ElvData["profiles"][profile]
+		self.db = DF
+		
+		for key, tab in pairs(path) do
+			if type(self.db[key]) == 'table' and key == 'core' then
+				for k, v in pairs(tab) do
+					self.db[key][k] = v;
+				end
+			end
+		end
+	end
+	
 	--Fonts
 	self["media"].normFont = LSM:Fetch("font", self.db["core"].font)
 	self["media"].combatFont = LSM:Fetch("font", self.db["core"].dmgfont)
