@@ -69,7 +69,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos, lowtext)
 	local power = CreateFrame('StatusBar', nil, frame)
 	UF['statusbars'][power] = true
 	
-	--power.frequentUpdates = true
+	power.frequentUpdates = true
 	power:SetFrameStrata("LOW")
 	power.PostUpdate = self.PostUpdatePower
 

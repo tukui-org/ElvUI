@@ -361,7 +361,6 @@ local DONATORS = {
 	"Feat",
 	"Konungr",
 	"Leyrin",
-	"Woodson Harmon",
 	"Dragonsys",
 	"Tkalec",
 	"Paavi",
