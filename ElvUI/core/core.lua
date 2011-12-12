@@ -176,7 +176,12 @@ function E:CheckRole()
 end
 
 function E:RegisterModule(name)
-	tinsert(self['RegisteredModules'], name)
+	if self.initialized then
+		self:GetModule(name):Initialize()
+		tinsert(self['RegisteredModules'], name)
+	else
+		tinsert(self['RegisteredModules'], name)
+	end
 end
 
 function E:InitializeModules()	
