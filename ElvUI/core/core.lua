@@ -44,7 +44,7 @@ function E:UpdateMedia(loggedIn)
 	--[[This is extremely hackish but it is the only way to load our last known 
 		combatFont setting. Because this has to be set pre-login.
 	]]
-	if not loggedIn then
+	if not loggedIn and ElvData then
 		local profile = ElvData["profileKeys"][E.myname.." - "..E.myrealm]
 		local path = ElvData["profiles"][profile]
 		self.db = DF
@@ -64,6 +64,8 @@ function E:UpdateMedia(loggedIn)
 				self.db[key] = val
 			end
 		end
+	elseif not ElvData then
+		return
 	end
 
 	
