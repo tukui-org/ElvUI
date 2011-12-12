@@ -12,7 +12,7 @@ function DT:PanelLayoutOptions()
 	for i = 1, 2 do
 		local table = E.Options.args.datatexts.args['spec'..i].args
 		for pointLoc, tab in pairs(E.db.datatexts.panels['spec'..i]) do
-			if not _G[pointLoc] then E.db.datatexts.panels['spec'..i][pointLoc] = nil; return end
+			if not _G[pointLoc] then E.db.datatexts.panels['spec'..i][pointLoc] = nil; return; end
 			if type(tab) == 'table' then
 				table[pointLoc] = {
 					type = 'group',
