@@ -120,7 +120,7 @@ function B:EnhanceColorPicker()
 	ColorPickerFrame:SetScript('OnColorSelect', function(s, r, g, b) 
 		ColorSwatch:SetTexture(r, g, b) 
 		if not editingText then
-			UpdateColorTexts(arg1, arg2, arg3)
+			UpdateColorTexts(r, g, b)
 		end					
 	end)		
 	
