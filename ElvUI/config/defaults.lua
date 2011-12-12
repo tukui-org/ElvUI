@@ -1948,6 +1948,18 @@ DF["actionbar"] = {
 		['paging'] = {},
 		['visibility'] = "[vehicleui] hide;show",
 	},
+	['bar6'] = {
+		['enabled'] = true,
+		['mouseover'] = false,
+		['buttons'] = 12,
+		['buttonsPerRow'] = 12,
+		['point'] = 'BOTTOMLEFT',
+		['backdrop'] = true,
+		['heightMult'] = 1,
+		['widthMult'] = 1,
+		['paging'] = {},
+		['visibility'] = "[vehicleui] hide;show",
+	},
 	['barPet'] = {
 		['enabled'] = true,
 		['mouseover'] = false,
