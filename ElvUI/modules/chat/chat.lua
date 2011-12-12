@@ -21,6 +21,9 @@ function CH:StyleChat(frame)
 	local tab = _G[name..'Tab']
 	local editbox = _G[name..'EditBox']
 
+		
+	local fontSize = select(2, frame:GetFont())
+	frame:SetFont(E['media'].normFont, fontSize)
 	
 	tab:StripTextures()
 	tab:SetAlpha(1)
@@ -330,7 +333,7 @@ local sizes = {
 	":14",
 }
 
-function CH:Initialize(event)
+function CH:Initialize()
 	self.db = E.db.chat
 	if self.db.enable ~= true then return end
 	E.Chat = self
@@ -342,10 +345,7 @@ function CH:Initialize(event)
 	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	
-	if event == 'PLAYER_LOGIN' then
-		self:SetupChat()
-		self:UnregisterEvent('PLAYER_LOGIN')
-	end
+	self:SetupChat()
 
 	local S = E:GetModule('Skins')
 	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)

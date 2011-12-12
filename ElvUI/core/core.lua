@@ -256,15 +256,20 @@ function E:CreateMoverPopup()
 end
 
 function E:Initialize()
+	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF);
+	self.data.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
+	self.data.RegisterCallback(self, "OnProfileCopied", "OnProfileChanged")
+	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileChanged")
+	self.db = self.data.profile;
+
 	self:UpdateMedia();
 	if self.db.core.loginmessage then
 		print(format(L['LOGIN_MSG'], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version))
 	end
-	self:RegisterEvent('PLAYER_LOGIN', 'UIScale')
-
-	self:CheckRole()
-	self:UIScale();
 	
+	self:UIScale();
+	self:CheckRole()
+
 	self:LoadConfig(); --Load In-Game Config
 	self:LoadCommands(); --Load Commands
 	self:InitializeModules(); --Load Modules	
