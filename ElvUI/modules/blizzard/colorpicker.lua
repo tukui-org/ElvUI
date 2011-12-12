@@ -81,6 +81,7 @@ function B:EnhanceColorPicker()
 	if IsAddOnLoaded("ColorPickerPlus") then
 		return
 	end
+	ColorPickerFrame:SetClampedToScreen(true)
 	
 	--Skin the default frame, move default buttons into place
 	ColorPickerFrame:SetTemplate("Transparent")
