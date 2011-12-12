@@ -266,15 +266,19 @@ function E:CreateMoverPopup()
 end
 
 function E:Initialize()
-	self:UpdateMedia();
-	self:UpdateSounds();
+	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF);
+	self.data.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
+	self.data.RegisterCallback(self, "OnProfileCopied", "OnProfileChanged")
+	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileChanged")
+	
+	self.db = self.data.profile;
+	
 	if self.db.core.loginmessage then
 		print(format(L['LOGIN_MSG'], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version))
 	end
-	self:RegisterEvent('PLAYER_LOGIN', 'UIScale')
 
 	self:CheckRole()
-	self:UIScale();
+	self:UIScale('PLAYER_LOGIN');
 	
 	self:LoadConfig(); --Load In-Game Config
 	self:LoadCommands(); --Load Commands
@@ -287,6 +291,8 @@ function E:Initialize()
 		self:Install()
 	end
 	
+	self:UpdateSounds();
+	self:UpdateMedia();
 	self:CreateMoverPopup()
 	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", "CheckRole");
 	self:RegisterEvent("PLAYER_TALENT_UPDATE", "CheckRole");
@@ -342,9 +348,10 @@ function E:ResetAllUI()
 	end
 	
 	if self.ActionBars then
-		self.ActionBars:ResetMovers()
+		self.ActionBars:ResetMovers('')
 	end	
 end
+
 
 function E:ResetUI(...)
 	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end

@@ -279,7 +279,7 @@ function M:LoadExpRepBar()
 		self:RegisterEvent("DISABLE_XP_GAIN", 'UpdateExpBar')
 		self:RegisterEvent("ENABLE_XP_GAIN", 'UpdateExpBar')
 		self:RegisterEvent('UPDATE_EXHAUSTION', 'UpdateExpBar')
-		self:RegisterEvent('PLAYER_LOGIN', 'UpdateExpBar')
+		self:UpdateExpBar()
 	end
 
 	--Reputation Events

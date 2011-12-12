@@ -330,7 +330,7 @@ local sizes = {
 	":14",
 }
 
-function CH:Initialize(event)
+function CH:Initialize()
 	self.db = E.db.chat
 	if self.db.enable ~= true then return end
 	E.Chat = self
@@ -342,10 +342,7 @@ function CH:Initialize(event)
 	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	
-	if event == 'PLAYER_LOGIN' then
-		self:SetupChat()
-		self:UnregisterEvent('PLAYER_LOGIN')
-	end
+	self:SetupChat()
 
 	local S = E:GetModule('Skins')
 	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)

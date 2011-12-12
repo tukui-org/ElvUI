@@ -402,7 +402,8 @@ function AB:ToggleMovers(move)
 	end
 end
 
-function AB:ResetMovers(bar)
+function AB:ResetMovers(...)
+	local bar = ...
 	for name, _ in pairs(self.movers) do
 		local mover = self.movers[name].bar
 		if bar == '' then
@@ -412,7 +413,7 @@ function AB:ResetMovers(bar)
 			if self.db[name] then
 				self.db[name]['position'] = nil		
 			end
-		elseif name == mover.textString then
+		elseif bar == mover.textString then
 			mover:ClearAllPoints()
 			mover:Point(self.movers[name]["p"], self.movers[name]["p2"], self.movers[name]["p3"], self.movers[name]["p4"], self.movers[name]["p5"])
 			

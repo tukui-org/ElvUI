@@ -612,12 +612,7 @@ function B:InitBags()
 	f.bagsButton:SetScript("OnEnter", Tooltip_Show)
 	f.bagsButton:SetScript("OnLeave", Tooltip_Hide)	
 	f.bagsButton:SetScript('OnClick', function() 
-		local numSlots, full = GetNumBankSlots()
-		if numSlots >= 1 then
-			ToggleFrame(f.ContainerHolder) 
-		else
-			StaticPopup_Show("NO_BANK_BAGS")
-		end	
+		ToggleFrame(f.ContainerHolder) 
 	end)
 	
 	tinsert(UISpecialFrames, f:GetName())
@@ -1256,11 +1251,6 @@ function B:PLAYERBANKBAGSLOTS_CHANGED()
 	B:Layout(true)
 end
 
-function B:PLAYER_LOGIN() --Taint Fix
-	ToggleBackpack()
-	ToggleBackpack()
-end
-
 function B:Initialize()
 	if not E.db.core.bags then return end
 	self:InitBags()
@@ -1274,7 +1264,7 @@ function B:Initialize()
 	self:RegisterEvent("BAG_CLOSED")	
 	self:RegisterEvent('BAG_UPDATE_COOLDOWN')
 	self:RegisterEvent('PLAYERBANKBAGSLOTS_CHANGED')
-	self:RegisterEvent('PLAYER_LOGIN')
+	
 	self:RegisterEvent('GUILDBANKBAGSLOTS_CHANGED')
 	self:SecureHook('BankFrameItemButton_Update', 'PLAYERBANKSLOTS_CHANGED')
 
@@ -1294,6 +1284,8 @@ function B:Initialize()
 	BankFrame:UnregisterAllEvents()
 	
 	StackSplitFrame:SetFrameStrata('DIALOG')
+	ToggleBackpack()
+	ToggleBackpack()	
 end
 
 E:RegisterModule(B:GetName())

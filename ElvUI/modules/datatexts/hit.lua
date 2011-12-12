@@ -8,7 +8,7 @@ local hitRating, hitRatingBonus;
 local function OnEvent(self, event, ...)
 	lastPanel = self
 
-	if E.Role == "Caster" then
+	if E.role == "Caster" then
 		hitRating = GetCombatRating(CR_HIT_SPELL)
 		hitRatingBonus = GetCombatRatingBonus(CR_HIT_SPELL)
 	else
@@ -27,7 +27,7 @@ end
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 	
-	if E.Role == "Caster" then
+	if E.role == "Caster" then
 		GameTooltip:AddLine(format(STAT_HIT_SPELL_TOOLTIP, GetCombatRating(CR_HIT_SPELL), GetCombatRatingBonus(CR_HIT_SPELL)));
 		GameTooltip:AddLine(" ");
 		GameTooltip:AddDoubleLine(STAT_TARGET_LEVEL, MISS_CHANCE, HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b, HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b);
