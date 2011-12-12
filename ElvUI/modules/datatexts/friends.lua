@@ -112,7 +112,7 @@ end
 local function OnEvent(self, event, ...)
 	local _, onlineFriends = GetNumFriends()
 	local _, numBNetOnline = BNGetNumFriends()
-	
+
 	-- special handler to detect friend coming online or going offline
 	-- when this is the case, we invalidate our buffered table and update the 
 	-- datatext information
@@ -123,6 +123,7 @@ local function OnEvent(self, event, ...)
 
 	-- force update when showing tooltip
 	dataValid = false
+
 	self.text:SetFormattedText(displayString, L['Friends'], onlineFriends + numBNetOnline)
 	lastPanel = self
 end

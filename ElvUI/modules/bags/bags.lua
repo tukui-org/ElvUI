@@ -1256,10 +1256,9 @@ function B:PLAYERBANKBAGSLOTS_CHANGED()
 	B:Layout(true)
 end
 
-function B:PLAYER_ENTERING_WORLD() --Taint Fix
+function B:PLAYER_LOGIN() --Taint Fix
 	ToggleBackpack()
 	ToggleBackpack()
-	self:UnregisterEvent('PLAYER_ENTERING_WORLD')
 end
 
 function B:Initialize()
@@ -1275,7 +1274,7 @@ function B:Initialize()
 	self:RegisterEvent("BAG_CLOSED")	
 	self:RegisterEvent('BAG_UPDATE_COOLDOWN')
 	self:RegisterEvent('PLAYERBANKBAGSLOTS_CHANGED')
-	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+	self:RegisterEvent('PLAYER_LOGIN')
 	self:RegisterEvent('GUILDBANKBAGSLOTS_CHANGED')
 	self:SecureHook('BankFrameItemButton_Update', 'PLAYERBANKSLOTS_CHANGED')
 

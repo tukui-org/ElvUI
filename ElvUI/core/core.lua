@@ -40,35 +40,7 @@ function E:Print(msg)
 	print(self["media"].hexvaluecolor..'ElvUI:|r', msg)
 end
 
-function E:UpdateMedia(loggedIn)	
-	--[[This is extremely hackish but it is the only way to load our last known 
-		combatFont setting. Because this has to be set pre-login.
-	]]
-	if not loggedIn and ElvData then
-		local profile = ElvData["profileKeys"][E.myname.." - "..E.myrealm]
-		local path = ElvData["profiles"][profile]
-		self.db = DF
-		
-		for key, val in pairs(DF) do
-			if type(DF[key]) == 'table' then
-				for k, v in pairs(DF[key]) do
-					if type(DF[key][k]) == 'table' then
-						for x, y in pairs(DF[key][k]) do
-							self.db[key][k][x] = y
-						end
-					else
-						self.db[key][k] = v;
-					end
-				end
-			else
-				self.db[key] = val
-			end
-		end
-	elseif not ElvData then
-		return
-	end
-
-	
+function E:UpdateMedia()	
 	--Fonts
 	self["media"].normFont = LSM:Fetch("font", self.db["core"].font)
 	self["media"].combatFont = LSM:Fetch("font", self.db["core"].dmgfont)
@@ -77,29 +49,26 @@ function E:UpdateMedia(loggedIn)
 	self["media"].blankTex = LSM:Fetch("background", "ElvUI Blank")
 	self["media"].normTex = LSM:Fetch("statusbar", self.db["core"].normTex)
 	self["media"].glossTex = LSM:Fetch("statusbar", self.db["core"].glossTex)
-	
-	self:UpdateBlizzardFonts()
-	
+
 	--Border Color
-	if loggedIn then
-		local border = self.db["core"].bordercolor
-		self["media"].bordercolor = {border.r, border.g, border.b}
+	local border = self.db["core"].bordercolor
+	self["media"].bordercolor = {border.r, border.g, border.b}
 
-		--Backdrop Color
-		local backdrop = self.db["core"].backdropcolor
-		self["media"].backdropcolor = {backdrop.r, backdrop.g, backdrop.b}
+	--Backdrop Color
+	local backdrop = self.db["core"].backdropcolor
+	self["media"].backdropcolor = {backdrop.r, backdrop.g, backdrop.b}
 
-		--Backdrop Fade Color
-		backdrop = self.db["core"].backdropfadecolor
-		self["media"].backdropfadecolor = {backdrop.r, backdrop.g, backdrop.b, backdrop.a}
-		
-		--Value Color
-		local value = self.db["core"].valuecolor
-		self["media"].hexvaluecolor = self:RGBToHex(value.r, value.g, value.b)
-		self["media"].rgbvaluecolor = {value.r, value.g, value.b}
-		
-		self:ValueFuncCall()
-	end
+	--Backdrop Fade Color
+	backdrop = self.db["core"].backdropfadecolor
+	self["media"].backdropfadecolor = {backdrop.r, backdrop.g, backdrop.b, backdrop.a}
+	
+	--Value Color
+	local value = self.db["core"].valuecolor
+	self["media"].hexvaluecolor = self:RGBToHex(value.r, value.g, value.b)
+	self["media"].rgbvaluecolor = {value.r, value.g, value.b}
+	
+	self:ValueFuncCall()
+	self:UpdateBlizzardFonts()
 end
 
 function E:ValueFuncCall()
@@ -287,20 +256,15 @@ function E:CreateMoverPopup()
 end
 
 function E:Initialize()
-	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF);
-	self.data.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
-	self.data.RegisterCallback(self, "OnProfileCopied", "OnProfileChanged")
-	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileChanged")
-	self.db = self.data.profile;
-
-	self:UpdateMedia(true);
+	self:UpdateMedia();
 	if self.db.core.loginmessage then
 		print(format(L['LOGIN_MSG'], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version))
 	end
-	
-	self:UIScale();
-	self:CheckRole();
+	self:RegisterEvent('PLAYER_LOGIN', 'UIScale')
 
+	self:CheckRole()
+	self:UIScale();
+	
 	self:LoadConfig(); --Load In-Game Config
 	self:LoadCommands(); --Load Commands
 	self:InitializeModules(); --Load Modules	

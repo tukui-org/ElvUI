@@ -21,6 +21,7 @@ function CH:StyleChat(frame)
 	local tab = _G[name..'Tab']
 	local editbox = _G[name..'EditBox']
 
+	
 	tab:StripTextures()
 	tab:SetAlpha(1)
 	tab.SetAlpha = UIFrameFadeRemoveFrame	
@@ -329,7 +330,7 @@ local sizes = {
 	":14",
 }
 
-function CH:Initialize()
+function CH:Initialize(event)
 	self.db = E.db.chat
 	if self.db.enable ~= true then return end
 	E.Chat = self
@@ -341,7 +342,10 @@ function CH:Initialize()
 	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	
-	self:SetupChat()
+	if event == 'PLAYER_LOGIN' then
+		self:SetupChat()
+		self:UnregisterEvent('PLAYER_LOGIN')
+	end
 
 	local S = E:GetModule('Skins')
 	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)

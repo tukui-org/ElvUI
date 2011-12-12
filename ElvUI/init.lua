@@ -33,8 +33,14 @@ local ACD = LibStub("AceConfigDialog-3.0")
 local ACR = LibStub("AceConfigRegistry-3.0")
 
 function AddOn:OnInitialize()
-	self:UpdateMedia();
-	self:RegisterEvent('PLAYER_LOGIN', 'Initialize')
+	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF);
+	self.data.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
+	self.data.RegisterCallback(self, "OnProfileCopied", "OnProfileChanged")
+	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileChanged")
+	
+	self.db = self.data.profile;
+	
+	self:Initialize()
 end
 
 function AddOn:OnProfileChanged()
