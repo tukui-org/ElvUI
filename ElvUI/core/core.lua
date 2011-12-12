@@ -40,23 +40,24 @@ function E:Print(msg)
 	print(self["media"].hexvaluecolor..'ElvUI:|r', msg)
 end
 
-function E:UpdateMedia()	
+function E:UpdateMedia(loggedIn)	
 	--[[This is extremely hackish but it is the only way to load our last known 
 		combatFont setting. Because this has to be set pre-login.
 	]]
-	if not self.db then
+	if not loggedIn then
 		local profile = ElvData["profileKeys"][E.myname.." - "..E.myrealm]
 		local path = ElvData["profiles"][profile]
 		self.db = DF
 		
-		for key, tab in pairs(path) do
-			if type(self.db[key]) == 'table' and key == 'core' then
-				for k, v in pairs(tab) do
+		for key, tab in pairs(DF) do
+			if type(DF[key]) == 'table' and key == 'core' then
+				for k, v in pairs(DF[key]) do
 					self.db[key][k] = v;
 				end
 			end
 		end
 	end
+
 	
 	--Fonts
 	self["media"].normFont = LSM:Fetch("font", self.db["core"].font)
@@ -66,9 +67,11 @@ function E:UpdateMedia()
 	self["media"].blankTex = LSM:Fetch("background", "ElvUI Blank")
 	self["media"].normTex = LSM:Fetch("statusbar", self.db["core"].normTex)
 	self["media"].glossTex = LSM:Fetch("statusbar", self.db["core"].glossTex)
-
+	
+	self:UpdateBlizzardFonts()
+	
 	--Border Color
-	if IsLoggedIn() then
+	if loggedIn then
 		local border = self.db["core"].bordercolor
 		self["media"].bordercolor = {border.r, border.g, border.b}
 
@@ -88,7 +91,9 @@ function E:UpdateMedia()
 		self:ValueFuncCall()
 	end
 	
-	self:UpdateBlizzardFonts()
+	if not loggedIn then
+		self.db = nil;
+	end
 end
 
 function E:ValueFuncCall()
@@ -282,7 +287,7 @@ function E:Initialize()
 	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileChanged")
 	self.db = self.data.profile;
 
-	self:UpdateMedia();
+	self:UpdateMedia(true);
 	if self.db.core.loginmessage then
 		print(format(L['LOGIN_MSG'], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version))
 	end
