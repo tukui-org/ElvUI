@@ -52,7 +52,6 @@ local function LoadSkin()
 		skada:SetTexture(E["media"].normTex)
 		skada:SetSpacing(barSpacing)
 		skada:SetFrameLevel(5)
-		skada:SetBarBackgroundColor(win.db.barbgcolor.r, win.db.barbgcolor.g, win.db.barbgcolor.b, win.db.barbgcolor.a or 0)
 		
 		local titlefont = CreateFont("TitleFont"..win.db.name)
 		win.bargroup.button:SetNormalFontObject(titlefont)
