@@ -343,9 +343,10 @@ function E:ResetAllUI()
 	end
 	
 	if self.ActionBars then
-		self.ActionBars:ResetMovers()
+		self.ActionBars:ResetMovers('')
 	end	
 end
+
 
 function E:ResetUI(...)
 	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
