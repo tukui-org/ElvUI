@@ -1949,7 +1949,7 @@ DF["actionbar"] = {
 		['visibility'] = "[vehicleui] hide;show",
 	},
 	['bar6'] = {
-		['enabled'] = true,
+		['enabled'] = false,
 		['mouseover'] = false,
 		['buttons'] = 12,
 		['buttonsPerRow'] = 12,
