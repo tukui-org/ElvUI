@@ -14,7 +14,7 @@ AB["handledbuttons"] = {} --List of all buttons that have been modified.
 AB["movers"] = {} --List of all created movers.
 E['snapBars'] = { E.UIParent }
 
-function AB:OnEnable()
+function AB:LoadActionBars()
 	self.db = E.db.actionbar
 	if self.db.enable ~= true then return; end
 	E.ActionBars = AB;
