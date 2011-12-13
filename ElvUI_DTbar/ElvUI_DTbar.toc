@@ -1,0 +1,13 @@
+## Interface: 40300
+## Title: |cff1784d1ElvUI |rDatabar
+## Author: BlackNet
+## Version: 1.3
+## eMail: edstreet@street-tek.com
+## URL: 
+## RequiredDeps: ElvUI
+## DefaultState: Enabled
+## SavedVariablesPerCharacter: 
+## LoadOnDemand: 0
+
+ElvUI_DTbar.lua
+
