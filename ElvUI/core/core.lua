@@ -264,13 +264,6 @@ function E:CreateMoverPopup()
 end
 
 function E:Initialize()
-	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF);
-	self.data.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
-	self.data.RegisterCallback(self, "OnProfileCopied", "OnProfileChanged")
-	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileChanged")
-	
-	self.db = self.data.profile;
-	
 	if self.db.core.loginmessage then
 		print(format(L['LOGIN_MSG'], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version))
 	end
