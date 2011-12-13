@@ -14,7 +14,7 @@ AB["handledbuttons"] = {} --List of all buttons that have been modified.
 AB["movers"] = {} --List of all created movers.
 E['snapBars'] = { E.UIParent }
 
-function AB:LoadActionBars()
+function AB:Initialize()
 	self.db = E.db.actionbar
 	if self.db.enable ~= true then return; end
 	E.ActionBars = AB;
@@ -24,9 +24,9 @@ function AB:LoadActionBars()
 	self:CreateActionBars()
 	self:LoadKeyBinder()
 	self:UpdateCooldownSettings()
-	self:UnregisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent("UPDATE_BINDINGS", "ReassignBindings")
 	self:RegisterEvent('CVAR_UPDATE')
+	self:ReassignBindings()
 end
 
 function AB:CreateActionBars()
