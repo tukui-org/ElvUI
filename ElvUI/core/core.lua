@@ -187,7 +187,9 @@ end
 
 function E:InitializeModules()	
 	for _, module in pairs(E['RegisteredModules']) do
-		self:GetModule(module):Initialize()
+		if self:GetModule(module).Initialize then
+			self:GetModule(module):Initialize()
+		end
 	end
 end
 
