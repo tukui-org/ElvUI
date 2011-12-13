@@ -107,9 +107,9 @@ local function LoadSkin()
 				EmbedWindow(windows[1], (mwidth / 2) - (borderWidth + E.mult), (mheight - (barSpacing * 10)) / 10, mheight + 1,  "BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", -2, 4)
 				EmbedWindow(windows[2], (mwidth / 2) - (borderWidth + E.mult), (mheight - (barSpacing * 10)) / 10, mheight + 1,  "BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 2, 4)
 			elseif #windows > 2 then
-				EmbedWindow(windows[1], (mwidth / 2) - (borderWidth + E.mult), (mheight - (barSpacing * 10)) / 10, mheight + 1,  "BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", -2, 6)
-				EmbedWindow(windows[2], (mwidth / 2) - (borderWidth + E.mult), ((mheight/2) - (barSpacing * 6)) / 4, mheight / 2 - 2,  "BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 2, 6)
-				EmbedWindow(windows[3], windows[2].db.barwidth, ((E.db['chat'].height/2) - (barSpacing * 6)) / 4, mheight / 2 - 2,  "BOTTOMLEFT", windows[2].bargroup.backdrop, "TOPLEFT", 2, 4)
+				EmbedWindow(windows[1], (mwidth / 2) - (borderWidth + E.mult), (mheight - (barSpacing * 10)) / 10, mheight + 1,  "BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", -2, 4)
+				EmbedWindow(windows[2], (mwidth / 2) - (borderWidth + E.mult), ((mheight/2) - (barSpacing * 6)) / 4, mheight / 2 - 2,  "BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 2, 4)
+				EmbedWindow(windows[3], windows[2].db.barwidth, ((mheight/2) - (barSpacing * 6)) / 4, mheight / 2 - 2,  "BOTTOMLEFT", windows[2].bargroup.backdrop, "TOPLEFT", 2, 3)
 			end
 		end
 
