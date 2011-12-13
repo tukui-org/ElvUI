@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 L.addons_toggle = "Toggle"
 -- Used to strip unecessary options from the in-game config
 local function StripOptions(options)
-	options.baroptions.args.barspacing = nil
+	--options.baroptions.args.barspacing = nil
 	options.titleoptions.args.texture = nil
 	options.titleoptions.args.bordertexture = nil
 	options.titleoptions.args.thickness = nil
@@ -82,6 +82,7 @@ local function LoadSkin()
 	if E.db['skins']['embedright'] == "Skada" then
 
 		local function EmbedWindow(window, width, barheight, height, point, relativeFrame, relativePoint, ofsx, ofsy)
+			local barheight = 16
 			window.db.barwidth = width
 			window.db.barheight = barheight
 			if window.db.enabletitle then
@@ -104,11 +105,11 @@ local function LoadSkin()
 			if #windows == 1 then
 				EmbedWindow(windows[1], mwidth, (mheight - (barSpacing * 6)) / 11, (mheight + 1), "BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", -2, 4)
 			elseif #windows == 2 then
-				EmbedWindow(windows[1], (mwidth / 2) - (borderWidth + E.mult), (mheight - (barSpacing * 10)) / 10, mheight + 1,  "BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", -2, 4)
-				EmbedWindow(windows[2], (mwidth / 2) - (borderWidth + E.mult), (mheight - (barSpacing * 10)) / 10, mheight + 1,  "BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 2, 4)
+				EmbedWindow(windows[1], ((mwidth / 3)*2) - (borderWidth + E.mult) -1, (mheight - (barSpacing * 10)) / 10, mheight + 1,  "BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", -2, 4)
+				EmbedWindow(windows[2], (mwidth / 3) - (borderWidth + E.mult) -1, (mheight - (barSpacing * 10)) / 10, mheight + 1,  "BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 2, 4)
 			elseif #windows > 2 then
-				EmbedWindow(windows[1], (mwidth / 2) - (borderWidth + E.mult), (mheight - (barSpacing * 10)) / 10, mheight + 1,  "BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", -2, 4)
-				EmbedWindow(windows[2], (mwidth / 2) - (borderWidth + E.mult), ((mheight/2) - (barSpacing * 6)) / 4, mheight / 2 - 2,  "BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 2, 4)
+				EmbedWindow(windows[1], ((mwidth / 3)*2) - (borderWidth + E.mult) -1, (mheight - (barSpacing * 10)) / 10, mheight + 1,  "BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", -2, 4)
+				EmbedWindow(windows[2], (mwidth / 3) - (borderWidth + E.mult) -1, ((mheight/2) - (barSpacing * 6)) / 4, mheight / 2 - 2,  "BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 2, 4)
 				EmbedWindow(windows[3], windows[2].db.barwidth, ((mheight/2) - (barSpacing * 6)) / 4, mheight / 2 - 2,  "BOTTOMLEFT", windows[2].bargroup.backdrop, "TOPLEFT", 2, 3)
 			end
 		end
