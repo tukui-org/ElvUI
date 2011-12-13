@@ -60,7 +60,7 @@ end
 local function rchat_tab2_setup()
 	do
 		rchat_tab2:Size((RightChatPanel:GetWidth() / 3),PANEL_HEIGHT)
-		rchat_tab2:Point("TOPRIGHT", RightChatTab, "TOPRIGHT")
+		rchat_tab2:Point("TOPRIGHT", RightChatTab, "TOPRIGHT", -16, 0)
 		rchat_tab2:SetFrameStrata('LOW')
 		RightChatTab:HookScript("OnHide", function() rchat_tab2:Hide() end)
 		RightChatTab:HookScript("OnShow", function() rchat_tab2:Show() end)		

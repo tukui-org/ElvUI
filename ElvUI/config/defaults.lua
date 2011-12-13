@@ -104,6 +104,7 @@ DF['classtimer'] = {
 
 --Skins
 DF['skins'] = {
+	["embedright"] = "Skada",
 	['bigwigs'] = {
 		['enable'] = true,
 		['spacing'] = 7,
