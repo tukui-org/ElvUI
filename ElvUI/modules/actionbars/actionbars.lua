@@ -24,9 +24,9 @@ function AB:Initialize()
 	self:CreateActionBars()
 	self:LoadKeyBinder()
 	self:UpdateCooldownSettings()
-	self:UnregisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent("UPDATE_BINDINGS", "ReassignBindings")
 	self:RegisterEvent('CVAR_UPDATE')
+	self:ReassignBindings()
 end
 
 function AB:CreateActionBars()

@@ -136,7 +136,7 @@ E.Options.args.core = {
 					name = L['Panel Width'],
 					desc = L['PANEL_DESC'],
 					set = function(info, value) E.db.core.panelWidth = value; E:GetModule('Chat'):PositionChat(true); local bags = E:GetModule('Bags'); bags:Layout(); bags:Layout(true); end,
-					min = 315, max = 700, step = 1,
+					min = 150, max = 700, step = 1,
 				},
 				panelHeight = {
 					order = 10,

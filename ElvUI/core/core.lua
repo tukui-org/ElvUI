@@ -191,7 +191,9 @@ end
 
 function E:InitializeModules()	
 	for _, module in pairs(E['RegisteredModules']) do
-		self:GetModule(module):Initialize()
+		if self:GetModule(module).Initialize then
+			self:GetModule(module):Initialize()
+		end
 	end
 end
 
@@ -270,9 +272,8 @@ function E:Initialize()
 	self.data.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
 	self.data.RegisterCallback(self, "OnProfileCopied", "OnProfileChanged")
 	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileChanged")
-	
 	self.db = self.data.profile;
-	
+
 	if self.db.core.loginmessage then
 		print(format(L['LOGIN_MSG'], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version))
 	end

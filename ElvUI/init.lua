@@ -42,6 +42,7 @@ function AddOn:OnInitialize()
 	self:UIScale();
 	self:UpdateMedia();
 	self:UpdateSounds();
+
 	self:RegisterEvent('PLAYER_LOGIN', 'Initialize')
 end
 
