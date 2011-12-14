@@ -4,7 +4,7 @@
 ## Title: |cff1784d1ElvUI|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvData
-## OptionalDeps: BigWigs, DBM-Core, DXE, Recount, Omen, Skada, SharedMedia
+## OptionalDeps: BigWigs, DBM-Core, DXE, SharedMedia
 ## X-oUF: ElvUF
 
 developer\load_developer.xml
