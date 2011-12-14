@@ -37,6 +37,7 @@ function CH:StyleChat(frame)
 	frame:SetClampedToScreen(false)
 	frame:StripTextures(true)
 	_G[name..'ButtonFrame']:Kill()
+	_G[name]:SetFading(false)
 
 	local a, b, c = select(6, editbox:GetRegions()); a:Kill(); b:Kill(); c:Kill()
 	_G[format(editbox:GetName().."FocusLeft", id)]:Kill()
