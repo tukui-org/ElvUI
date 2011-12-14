@@ -175,7 +175,9 @@ end
 
 function UF:Update_StatusBars()
 	for statusbar in pairs(UF['statusbars']) do
-		statusbar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+		if statusbar and statusbar:GetObjectType() == 'StatusBar' then
+			statusbar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+		end
 	end
 end
 
