@@ -156,7 +156,6 @@ DF['RaidDebuffs'] = {
 		[SpellName(92878)] = true, -- Blackout
 		[SpellName(86840)] = true, -- Devouring Flames
 		[SpellName(95639)] = true, -- Engulfing Magic
-		[SpellName(93051)] = true, -- Twilight Shift
 		[SpellName(92886)] = true, -- Twilight Zone
 		[SpellName(88518)] = true, -- Twilight Meteorite
 
