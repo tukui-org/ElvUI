@@ -269,6 +269,9 @@ local function ResetAll()
 	ElvUIInstallFrame.Desc1:SetText("")
 	ElvUIInstallFrame.Desc2:SetText("")
 	ElvUIInstallFrame.Desc3:SetText("")
+	InstallTutorialImage:SetTexture(nil)
+	InstallTutorialImage:Hide()
+	ElvUIInstallFrame:Size(550, 400)
 end
 
 local function SetPage(PageNum)
@@ -341,11 +344,14 @@ local function SetPage(PageNum)
 		InstallRoleOptionCasterDPS:SetScript('OnClick', function() SetupLayout(false, 'dpsCaster') end)	
 	elseif PageNum == 6 then
 		f.SubTitle:SetText(L["Installation Complete"])
-		f.Desc1:SetText(L["You are now finished with the installation process. If you are in need technical support please visit us at www.tukui.org."])
+		f.Desc1:SetText(L["You are now finished with the installation process. Bonus Hint: If you wish to access blizzard micro menu, middle click on the minimap. If you don't have a middle click button then hold down shift and right click the minimap. If you are in need of technical support please visit us at www.tukui.org."])
 		f.Desc2:SetText(L["Please click the button below so you can setup variables and ReloadUI."])			
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript("OnClick", InstallComplete)
-		InstallOption1Button:SetText(L["Finished"])								
+		InstallOption1Button:SetText(L["Finished"])				
+		InstallTutorialImage:Show()
+		InstallTutorialImage:SetTexture([[Interface\AddOns\ElvUI\media\textures\micromenu_tutorial.tga]])
+		ElvUIInstallFrame:Size(550, 500)
 	end
 end
 
@@ -536,8 +542,12 @@ function E:Install()
 		close:SetScript("OnClick", function()
 			f:Hide()
 		end)		
-		
 		E.Skins:HandleCloseButton(close)
+		
+		f.tutorialImage = f:CreateTexture('InstallTutorialImage', 'OVERLAY')
+		f.tutorialImage:Size(250)
+		f.tutorialImage:Point('BOTTOM', f.Option1, 'TOP', 0, 4)
+
 	end
 	
 	ElvUIInstallFrame:Show()
