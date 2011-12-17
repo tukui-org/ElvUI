@@ -158,7 +158,7 @@ DF['skins'] = {
 		["trade"] = true,
 		["gossip"] = true,
 		["greeting"] = true,
-		["worldmap"] = false,
+		["worldmap"] = true,
 		["taxi"] = true,
 		["lfd"] = true,
 		["quest"] = true,
@@ -1974,4 +1974,9 @@ DF["actionbar"] = {
 		['enabled'] = true,
 		['mouseover'] = false,
 	},
+};
+
+DF["broker_datatext"] = {
+	["Scrooge"] = true,
+	["Skada"] = true,
 };
