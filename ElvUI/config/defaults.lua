@@ -1975,8 +1975,3 @@ DF["actionbar"] = {
 		['mouseover'] = false,
 	},
 };
-
-DF["broker_datatext"] = {
-	["Scrooge"] = true,
-	["Skada"] = true,
-};
