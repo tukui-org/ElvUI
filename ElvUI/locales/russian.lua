@@ -58,7 +58,7 @@ do
 	L["Setup Chat"] = "Настроить чат";
 		
 	L["Installation Complete"] = "Установка завершена";
-	L["You are now finished with the installation process. If you are in need technical support please visit us at www.tukui.org."] = "Вы завершили процесс установки. Если вам требуется техническая поддержка, посетите сайт www.tukui.org";
+	L["You are now finished with the installation process. Bonus Hint: If you wish to access blizzard micro menu, middle click on the minimap. If you don't have a middle click button then hold down shift and right click the minimap. If you are in need of technical support please visit us at www.tukui.org."] = "Вы завершили процесс установки. Если вам требуется техническая поддержка, посетите сайт www.tukui.org";
 	L["Please click the button below so you can setup variables and ReloadUI."] = "Пожалуйста, нажмите кнопку ниже для установки переменных и перезагрузки интерфейса.";
 	L["Finished"] = "Завершить";
 	L["CVars Set"] = "Настройки сброшены";

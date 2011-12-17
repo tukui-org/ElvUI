@@ -69,7 +69,7 @@ do
 	L['When a chat frame does not exist, hide the panel.'] = "当聊天框不存在时,自动隐藏面板";
 	
 	L["Installation Complete"] = "安装过程";
-	L["You are now finished with the installation process. If you are in need technical support please visit us at www.tukui.org."] = "你已经完成安装过程. 如需技术支持请访问 www.tukui.org.";
+	L["You are now finished with the installation process. Bonus Hint: If you wish to access blizzard micro menu, middle click on the minimap. If you don't have a middle click button then hold down shift and right click the minimap. If you are in need of technical support please visit us at www.tukui.org."] = "你已经完成安装过程. 如需技术支持请访问 www.tukui.org.";
 	L["Please click the button below so you can setup variables and ReloadUI."] = "请点击下面的按钮设置变量并重载界面";
 	L["Finished"] = "完成";
 	L["CVars Set"] = "CVars 设置";

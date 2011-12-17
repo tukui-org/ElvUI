@@ -64,7 +64,7 @@ do
 	L["Setup Chat"] = true;
 		
 	L["Installation Complete"] = true;
-	L["You are now finished with the installation process. If you are in need technical support please visit us at www.tukui.org."] = true;
+	L["You are now finished with the installation process. Bonus Hint: If you wish to access blizzard micro menu, middle click on the minimap. If you don't have a middle click button then hold down shift and right click the minimap. If you are in need of technical support please visit us at www.tukui.org."] = true;
 	L["Please click the button below so you can setup variables and ReloadUI."] = true;
 	L["Finished"] = true;
 	L["CVars Set"] = true;
