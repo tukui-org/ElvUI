@@ -119,6 +119,7 @@ function UF:Update_PartyHeader(header, db)
 end
 
 function UF:Update_PartyFrames(frame, db)
+	frame.db = db
 	local BORDER = E:Scale(2)
 	local SPACING = E:Scale(1)
 	local UNIT_WIDTH = db.width

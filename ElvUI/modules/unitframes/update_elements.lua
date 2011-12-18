@@ -7,25 +7,9 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
-local function GetSavePath(frame, unit)
-	local db = E.db['unitframe']['layouts'][UF.ActiveLayout][unit]
-	
-	if UF['handledgroupunits'][unit] then
-		db = E.db['unitframe']['layouts'][UF.ActiveLayout][UF['handledgroupunits'][unit]]
-	end
-	
-	for _, header in pairs(UF['handledheaders']) do
-		if frame:GetParent() == header then
-			db = E.db['unitframe']['layouts'][UF.ActiveLayout][header.groupName]
-		end
-	end
-	
-	return db
-end
-
 local function GetInfoText(frame, unit, r, g, b, min, max, reverse, type)
 	local value
-	local db = GetSavePath(frame, unit)
+	local db = frame.db
 	
 	if not db then return '' end
 	
@@ -196,7 +180,7 @@ end
 
 function UF:PostNamePosition(frame, unit)
 	if frame.Power.value:GetText() and UnitIsPlayer(unit) and frame.Power.value:IsShown() then
-		local db = GetSavePath(frame, unit)
+		local db = frame.db
 		
 		local position = db.name.position
 		local x, y = self:GetPositionOffset(position)
@@ -252,7 +236,7 @@ function UF:PostUpdatePower(unit, min, max)
 		end
 	end
 
-	local db = GetSavePath(self:GetParent(), unit)
+	local db = self:GetParent().db
 	
 	if self.LowManaText then
 		if pToken == 'MANA' then
@@ -275,7 +259,7 @@ function UF:PostUpdatePower(unit, min, max)
 end
 
 function UF:PortraitUpdate(unit)
-	local db = GetSavePath(self:GetParent(), unit)
+	local db = self:GetParent().db
 	
 	if not db then return end
 	
@@ -347,7 +331,7 @@ end
 function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, duration, timeLeft)
 	local name, _, _, _, dtype, duration, expirationTime, unitCaster, _, _, spellID = UnitAura(unit, index, button.filter)
 
-	local db = GetSavePath(self:GetParent(), unit)
+	local db = self:GetParent().db
 	
 	button.text:Show()
 	button.text:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db[self.type].fontsize, 'OUTLINE')
@@ -393,7 +377,7 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 end
 
 function UF:CustomCastDelayText(duration)
-	local db = GetSavePath(self:GetParent(), self:GetParent().unit)
+	local db = self:GetParent().db
 	
 	
 	if db then
@@ -413,7 +397,7 @@ function UF:CustomCastDelayText(duration)
 end
 
 function UF:CustomTimeText(duration)
-	local db = GetSavePath(self:GetParent(), self:GetParent().unit)
+	local db = self:GetParent().db
 	if not db then return end
 	
 	local text
@@ -434,7 +418,7 @@ function UF:PostCastStart(unit, name, rank, castid)
 	if unit == "vehicle" then unit = "player" end
 	self.Text:SetText(string.sub(name, 0, math.floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontsize) * 12)))
 
-	local db = GetSavePath(self:GetParent(), unit)
+	local db = self:GetParent().db
 	local color		
 	self.unit = unit
 	if self.interrupt and unit ~= "player" then
@@ -452,7 +436,7 @@ function UF:PostCastStart(unit, name, rank, castid)
 end
 
 function UF:PostCastInterruptible(unit)
-	local db = GetSavePath(self:GetParent(), unit)
+	local db = self:GetParent().db
 	
 	if not db then return end
 	
@@ -469,7 +453,7 @@ function UF:PostCastInterruptible(unit)
 end
 
 function UF:PostCastNotInterruptible(unit)
-	local db = GetSavePath(self:GetParent(), unit)
+	local db = self:GetParent().db
 	
 	local color = db['castbar'].interruptcolor
 	self:SetStatusBarColor(color.r, color.g, color.b)
@@ -760,7 +744,7 @@ end
 function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster)	
 	local isPlayer, isFriend
 
-	local db = GetSavePath(self:GetParent(), unit)
+	local db = self:GetParent().db
 
 	if(caster == 'player' or caster == 'vehicle') then
 		isPlayer = true

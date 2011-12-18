@@ -24,6 +24,7 @@ function UF:Construct_BossFrames(frame)
 end
 
 function UF:Update_BossFrames(frame, db)
+	frame.db = db
 	local BORDER = E:Scale(2)
 	local SPACING = E:Scale(1)
 	local INDEX = frame.index
