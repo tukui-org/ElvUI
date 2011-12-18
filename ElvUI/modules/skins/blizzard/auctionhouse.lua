@@ -4,6 +4,7 @@ local S = E:GetModule('Skins')
 local function LoadSkin()
 	if E.db.skins.blizzard.enable ~= true or E.db.skins.blizzard.auctionhouse ~= true then return end
 	S:HandleCloseButton(AuctionFrameCloseButton)
+	S:HandleScrollBar(AuctionsScrollFrameScrollBar)
 	AuctionFrame:StripTextures(true)
 	AuctionFrame:SetTemplate("Transparent")
 	AuctionFrame:CreateShadow("Default")
