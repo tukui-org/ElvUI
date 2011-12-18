@@ -57,6 +57,8 @@ function UF:Raid625SmartVisibility(event)
 	else
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")
 	end
+	
+	UF:UpdateGroupChildren(self, self.db)
 end
 
 function UF:Update_Raid625Header(header, db)
@@ -70,7 +72,8 @@ function UF:Update_Raid625Header(header, db)
 		E:Print(L['You cannot set the Group Point and Column Point so they are opposite of each other.'])
 	end
 	
-	self:UpdateGroupChildren(db, header:GetChildren())
+	UF:ClearChildPoints(header:GetChildren())
+	
 	if not header.mover then
 		self:ChangeVisibility(header, 'custom [@raid6,exists] hide;show') --fucking retarded bug fix
 	end
@@ -98,13 +101,11 @@ function UF:Update_Raid625Header(header, db)
 	header:SetAttribute("maxColumns", db.maxColumns)
 	header:SetAttribute("unitsPerColumn", db.unitsPerColumn)
 
-
+	UF:ClearChildPoints(header:GetChildren())
 	header:SetAttribute('columnSpacing', db.columnSpacing)
 	header:SetAttribute("xOffset", db.xOffset)	
 	header:SetAttribute("yOffset", db.yOffset)
-	
-	
-	self:UpdateGroupChildren(db, header:GetChildren())
+
 	header:SetAttribute('columnAnchorPoint', db.columnAnchorPoint)
 	header:SetAttribute('point', db.point)
 
