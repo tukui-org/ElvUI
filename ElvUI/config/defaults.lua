@@ -9,7 +9,7 @@ DF["core"] = {
 	["uiscale"] = 0.71,
 	["autoscale"] = true,
 	["stickyFrames"] = true,
-	['loginmessage'] = true,
+	['loginmessage'] = false,
 	["interruptAnnounce"] = "RAID",
 	["autoRepair"] = "GUILD",
 	
@@ -406,8 +406,8 @@ DF['unitframe'] = {
 					['attachTo'] = 'BUFFS',
 					['anchorPoint'] = 'BOTTOMLEFT',
 					['fontsize'] = 10,
-					['showPlayerOnly'] = true,
-					['useFilter'] = 'CCDebuffs',	
+					['showPlayerOnly'] = false,
+					['useFilter'] = '',	
 					['durationLimit'] = 0,
 				},
 				['castbar'] = {
