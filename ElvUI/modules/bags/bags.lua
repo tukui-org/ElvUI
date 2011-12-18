@@ -53,6 +53,7 @@ function B:BagFrameSlotNew(frame, slot)
 	
 	ret.frame:HookScript("OnEnter", function()
 		local bag
+		if ret.slot < 5 then bag = ret.slot + 1 else bag = ret.slot end
 		for ind, val in ipairs(self.buttons) do
 			if val.bag == ret.slot then
 				val.frame:SetAlpha(1)
