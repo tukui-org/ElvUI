@@ -47,7 +47,7 @@ function UF:PartySmartVisibility(event)
 		if inInstance and instanceType == "raid" and maxPlayers ~= 40 and self.SetAttribute then
 			self:SetAttribute("showRaid", false)
 			self:SetAttribute("showParty", false)			
-		elseif self.SetAttribute and database then
+		elseif self.SetAttribute and database and database.enable then
 			self:SetAttribute("showParty", database.showParty)
 			self:SetAttribute("showRaid", database.showRaid)
 		end
@@ -119,6 +119,7 @@ function UF:Update_PartyHeader(header, db)
 end
 
 function UF:Update_PartyFrames(frame, db)
+	frame.db = db
 	local BORDER = E:Scale(2)
 	local SPACING = E:Scale(1)
 	local UNIT_WIDTH = db.width

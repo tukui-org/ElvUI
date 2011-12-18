@@ -50,6 +50,7 @@ function UF:Construct_PlayerFrame(frame)
 end
 
 function UF:Update_PlayerFrame(frame, db)
+	frame.db = db
 	local BORDER = E:Scale(2)
 	local SPACING = E:Scale(1)
 	local UNIT_WIDTH = db.width

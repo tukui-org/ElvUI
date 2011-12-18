@@ -18,6 +18,7 @@ function UF:Construct_PetTargetFrame(frame)
 end
 
 function UF:Update_PetTargetFrame(frame, db)
+	frame.db = db
 	local BORDER = E:Scale(2)
 	local SPACING = E:Scale(1)
 	local UNIT_WIDTH = db.width

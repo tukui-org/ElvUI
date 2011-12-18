@@ -45,7 +45,7 @@ function UF:Raid2640SmartVisibility(event)
 		if inInstance and instanceType == "raid" and maxPlayers ~= 40 and UF.db and UF.db.smartRaidFilter and self.SetAttribute then
 			self:SetAttribute("showRaid", false)
 			self:SetAttribute("showParty", false)			
-		elseif self.SetAttribute and self.db and self.db.showParty then
+		elseif self.SetAttribute and self.db and self.db.showParty and self.db.enable then
 			self:SetAttribute("showParty", self.db.showParty)
 			self:SetAttribute("showRaid", self.db.showRaid)
 		end
@@ -117,6 +117,7 @@ function UF:Update_Raid2640Header(header, db)
 end
 
 function UF:Update_Raid2640Frames(frame, db)
+	frame.db = db
 	local BORDER = E:Scale(2)
 	local SPACING = E:Scale(1)
 	local UNIT_WIDTH = db.width

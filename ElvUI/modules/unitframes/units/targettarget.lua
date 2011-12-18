@@ -1,8 +1,6 @@
 local E, L, DF = unpack(select(2, ...)); --Engine
 local UF = E:GetModule('UnitFrames');
 
-
-
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
@@ -20,6 +18,7 @@ function UF:Construct_TargetTargetFrame(frame)
 end
 
 function UF:Update_TargetTargetFrame(frame, db)
+	frame.db = db
 	local BORDER = E:Scale(2)
 	local SPACING = E:Scale(1)
 	local UNIT_WIDTH = db.width
