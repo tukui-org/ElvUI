@@ -269,12 +269,12 @@ end
 
 function TT:SetStyle(tt)
 	if not tt.backdropTexture then
-		tt:SetTemplate("Default", true)
+		tt:SetTemplate("Transparent")
 		tt:SetClampedToScreen(true)
 	end
 	
 	tt:SetBackdropBorderColor(unpack(E.media.bordercolor))
-	tt:SetBackdropColor(unpack(E.media.backdropcolor))
+	tt:SetBackdropColor(unpack(E.media.backdropfadecolor))
 	self:Colorize(tt)
 end
 
@@ -524,7 +524,7 @@ end
 
 function TT:GameTooltip_OnUpdate(tt)
 	if tt.needRefresh and tt:GetAnchorType() == 'ANCHOR_CURSOR' and E.db.tooltip.anchor ~= 'CURSOR' then
-		tt:SetBackdropColor(unpack(E["media"].backdropcolor))
+		tt:SetBackdropColor(unpack(E["media"].backdropfadecolor))
 		tt:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 		tt.needRefresh = nil
 	end
