@@ -47,7 +47,7 @@ function UF:PartySmartVisibility(event)
 		if inInstance and instanceType == "raid" and maxPlayers ~= 40 and self.SetAttribute then
 			self:SetAttribute("showRaid", false)
 			self:SetAttribute("showParty", false)			
-		elseif self.SetAttribute and database then
+		elseif self.SetAttribute and database and database.enable then
 			self:SetAttribute("showParty", database.showParty)
 			self:SetAttribute("showRaid", database.showRaid)
 		end
