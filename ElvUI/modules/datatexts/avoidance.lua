@@ -9,7 +9,8 @@ local basemisschance, leveldifference, dodge, parry, block, avoidance, unhittabl
 local chanceString = "%.2f%%"
 local modifierString = string.join("", "%d (+", chanceString, ")")
 
-local function OnEvent(self, event)
+local function OnEvent(self, event, unit)
+	if event == "UNIT_AURA" and unit ~= 'player' then return end
 	targetlv, playerlv = UnitLevel("target"), UnitLevel("player")
 			
 	-- the 5 is for base miss chance
@@ -105,5 +106,5 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	click - function to fire when clicking the datatext
 	onEnterFunc - function to fire OnEnter
 ]]
-DT:RegisterDatatext('Avoidance', {"UNIT_STATS", "UNIT_AURA", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent, nil, nil, OnEnter)
+DT:RegisterDatatext('Avoidance', {"UNIT_TARGET", "UNIT_STATS", "UNIT_AURA", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent, nil, nil, OnEnter)
 

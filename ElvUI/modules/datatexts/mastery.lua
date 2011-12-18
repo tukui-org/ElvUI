@@ -4,7 +4,7 @@ local DT = E:GetModule('DataTexts')
 local lastPanel
 local displayString = '';
 
-local function OnEvent(self, event, ...)
+local function OnEvent(self, event)
 	lastPanel = self
 	--STAT_MASTERY
 	local masteryspell, masteryTag
@@ -51,4 +51,4 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	click - function to fire when clicking the datatext
 	onEnterFunc - function to fire OnEnter
 ]]
-DT:RegisterDatatext('Mastery', {"UNIT_STATS", "UNIT_AURA", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent, nil, nil, OnEnter)
+DT:RegisterDatatext('Mastery', {"MASTERY_UPDATE"}, OnEvent, nil, nil, OnEnter)

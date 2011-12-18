@@ -5,7 +5,8 @@ local spellpwr, healpwr
 local displayModifierString = ''
 local lastPanel;
 
-local function OnEvent(self, event)
+local function OnEvent(self, event, unit)
+	if event == "UNIT_AURA" and unit ~= 'player' then return end
 	spellpwr = GetSpellBonusDamage(7)
 	healpwr = GetSpellBonusHealing()
 	

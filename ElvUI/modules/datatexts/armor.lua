@@ -26,7 +26,8 @@ local function CalculateMitigation(level, effective)
 	return mitigation
 end
 
-local function OnEvent(self, event)
+local function OnEvent(self, event, unit)
+	if event == "UNIT_RESISTANCES" and unit ~= 'player' then return end
 	lastPanel = self
 	
 	baseArmor, effectiveArmor, armor, posBuff, negBuff = UnitArmor("player");
@@ -75,5 +76,5 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	click - function to fire when clicking the datatext
 	onEnterFunc - function to fire OnEnter
 ]]
-DT:RegisterDatatext('Armor', {"UNIT_STATS", "UNIT_AURA", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent, nil, nil, OnEnter)
+DT:RegisterDatatext('Armor', {"UNIT_STATS", "UNIT_RESISTANCES", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent, nil, nil, OnEnter)
 
