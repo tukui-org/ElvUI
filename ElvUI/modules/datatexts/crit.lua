@@ -5,7 +5,8 @@ local critRating
 local displayModifierString = ''
 local lastPanel;
 
-local function OnEvent(self, event)
+local function OnEvent(self, event, unit)
+	if event == "UNIT_AURA" and unit ~= 'player' then return end
 	if E.role == "Caster" then
 		critRating = GetSpellCritChance(1)
 	else

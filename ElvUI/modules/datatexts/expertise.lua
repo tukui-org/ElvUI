@@ -5,7 +5,8 @@ local format = string.format
 local lastPanel
 local displayString = '';
 
-local function OnEvent(self, event)
+local function OnEvent(self, event, unit)
+	if event == "UNIT_AURA" and unit ~= 'player' then return end
 	lastPanel = self
 
 	local expertise, offhandExpertise = GetExpertise();
