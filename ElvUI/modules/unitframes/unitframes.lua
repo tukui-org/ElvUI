@@ -393,7 +393,7 @@ function UF:DisableBlizzard(event)
 	hooksecurefunc("CompactRaidFrameManager_UpdateShown", HideRaid)
 	CompactRaidFrameManager:HookScript('OnShow', HideRaid)
 	CompactRaidFrameManager:SetScale(0.000001)
-	RaidFrame:UnregisterAllEvents()
+	CompactRaidFrameManager:UnregisterAllEvents()
 end
 
 function UF:Initialize()	
