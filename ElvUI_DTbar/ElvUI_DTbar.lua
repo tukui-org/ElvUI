@@ -13,26 +13,23 @@ local DT = E:GetModule('DataTexts')
 
 ElvUI_DTbar = CreateFrame('Frame', 'ElvUI_DTbar', E.UIParent)
 
-local bottom_bar, rchat_tab1, rchat_tab2
+local bottom_bar, rchat_tab, rchat_tab2
 local PANEL_HEIGHT = 22 -- taken from Layout.lua
 
-
+db = db or {}
 --------------------------------------------------------
--- DB Variables --
+-- Language Variables --
 --------------------------------------------------------
-db = db or { -- saved variables
-	Bottom_Datatext_Panel = true,
-	RightChatTab_Datatext_Panel1 = true,
-	RightChatTab_Datatext_Panel2 = true,
-}
 
 -- description as shown in /ec -> datatext;  L['panel name'] = 'description';
 L['Bottom_Datatext_Panel'] = 'Action Bar 1 (Bottom) Data Panel';
-L['RightChatTab_Datatext_Panel1'] = "Upper Right Chat Panel 1";
-L['RightChatTab_Datatext_Panel2'] = "Upper Right Chat Panel 2";
+L['RightChatTab_Datatext_Panel'] = 'Upper Right Chat';
+L['RightChatTab_Datatext_Panel2'] = 'Upper Right Chat 2';
 --------------------------------------------------------
 
 
+--------------------------------------------------------
+-- default values for datatext
 --------------------------------------------------------
 --Bottom_Datatext_Panel
 DF.datatexts.panels.spec1.Bottom_Datatext_Panel = {
@@ -46,14 +43,13 @@ DF.datatexts.panels.spec2.Bottom_Datatext_Panel = {
 	middle = 'Spec Switch',
 	right = 'Guild',
 }
- 
--- Right Chat Tab Panel 1
-DF.datatexts.panels.spec1.RightChatTab_Datatext_Panel1 = 'Call to Arms'
-DF.datatexts.panels.spec2.RightChatTab_Datatext_Panel1 = 'Call to Arms'
 
--- Right Chat Tab Panel 2
+DF.datatexts.panels.spec1.RightChatTab_Datatext_Panel = 'Call to Arms'
+DF.datatexts.panels.spec2.RightChatTab_Datatext_Panel = 'Call to Arms'
+
 DF.datatexts.panels.spec1.RightChatTab_Datatext_Panel2 = 'Bags'
 DF.datatexts.panels.spec2.RightChatTab_Datatext_Panel2 = 'Bags'
+
 --------------------------------------------------
 
 
@@ -61,53 +57,55 @@ DF.datatexts.panels.spec2.RightChatTab_Datatext_Panel2 = 'Bags'
 -- Code  --
 --------------------------------------------------------
 
-
 --------------------------------------------------------
--- right chat tabbar1
+ -- right chat tabbar
 --------------------------------------------------------
-local function rchat_tab1_setup()
+local function rchat_tab_setup()
 	do
-		rchat_tab1:Size((RightChatPanel:GetWidth() / 3),PANEL_HEIGHT)
-		rchat_tab1:Point("RIGHT", RightChatTab_Datatext_Panel2, "LEFT")
-		rchat_tab1:SetFrameStrata('LOW')
-		RightChatTab:HookScript("OnHide", function() rchat_tab1:Hide() end)
-		RightChatTab:HookScript("OnShow", function() rchat_tab1:Show() end)		
+		rchat_tab:Size(RightChatPanel:GetWidth() /3,PANEL_HEIGHT)
+		rchat_tab:Point("RIGHT", RightChatTab_Datatext_Panel2, "LEFT")
+		rchat_tab:SetFrameStrata('LOW')
+
+		rchat_tab2:Size((RightChatPanel:GetWidth() / 3),PANEL_HEIGHT)
+		rchat_tab2:Point("TOPRIGHT", RightChatTab, "TOPRIGHT", -16, 0) -- if you use the skada embed code you might need to adjust the x-offset to allow room for the arrow button
+		rchat_tab2:SetFrameStrata('LOW')
+
+		RightChatTab:HookScript("OnHide", function() 
+			rchat_tab:Hide() 
+			rchat_tab2:Hide() 
+		end)
+		RightChatTab:HookScript("OnShow", function() 
+			rchat_tab:Show() 
+			rchat_tab:SetAlpha(RightChatTab:GetAlpha()) 
+			rchat_tab2:Show() 
+			rchat_tab2:SetAlpha(RightChatTab:GetAlpha()) 
+		end)
 	end
 end
 
  do
-	rchat_tab1 = CreateFrame('Frame', 'RightChatTab_Datatext_Panel1', E.UIParent)
-	DT:RegisterPanel(rchat_tab1, 1, 'ANCHOR_BOTTOM', 0, -4)
-	rchat_tab1:Hide()
+	rchat_tab = CreateFrame('Frame', 'RightChatTab_Datatext_Panel', E.UIParent)
+	rchat_tab.db ={key='RightChatTab_Datatext_Panel', value = true}
+	DT:RegisterPanel(rchat_tab, 1, 'ANCHOR_BOTTOM', 0, -4)
+	rchat_tab:Hide()
 end
---- 
- 
- 
+
 --------------------------------------------------------
 -- right chat tabbar2
 --------------------------------------------------------
-local function rchat_tab2_setup()
-	do
-		rchat_tab2:Size((RightChatPanel:GetWidth() / 3),PANEL_HEIGHT)
-		rchat_tab2:Point("TOPRIGHT", RightChatTab, "TOPRIGHT", -16, 0)
-		rchat_tab2:SetFrameStrata('LOW')
-		RightChatTab:HookScript("OnHide", function() rchat_tab2:Hide() end)
-		RightChatTab:HookScript("OnShow", function() rchat_tab2:Show() end)		
-	end
-end
-
  do
 	rchat_tab2 = CreateFrame('Frame', 'RightChatTab_Datatext_Panel2', E.UIParent)
+	rchat_tab2.db = {key='RightChatTab_Datatext_Panel2', value = true}
 	DT:RegisterPanel(rchat_tab2, 1, 'ANCHOR_BOTTOM', 0, -4)
 	rchat_tab2:Hide()
 end
-
 
 --------------------------------------------------------
 -- bottom bar					
 --------------------------------------------------------
 do
 	bottom_bar = CreateFrame('Frame', 'Bottom_Datatext_Panel', E.UIParent)
+	bottom_bar.db = {key ='Bottom_Datatext_Panel', value = true}
 	bottom_bar:SetTemplate('Default', true)
 	bottom_bar:SetFrameStrata('BACKGROUND')
 	bottom_bar:SetScript('OnShow', function(self) 
@@ -119,14 +117,15 @@ do
 	DT:RegisterPanel(bottom_bar, 3, 'ANCHOR_BOTTOM', 0, -4)
 end
 
--- table O tables! we parse and check for GetName() to toggle show/hide :) saves some very nasty lines of code.
+
+--
+-- Table O' Frame tables! we parse and check for GetName() to toggle show/hide :) saves some very nasty lines of code.
+--
 ElvUI_DTbar._table = {
 	bottom_bar,
-	rchat_tab1,
+	rchat_tab,
 	rchat_tab2,
 }
-
-ElvUI_DTbar.db = db
 
  local function SlashHandler(command)
 	if command == 'show all' then						-- show all
@@ -153,16 +152,29 @@ ElvUI_DTbar.db = db
 	end	
 end
 
+ function ElvUI_DTbar.db_check()
+
+	for k,v in ipairs(ElvUI_DTbar._table) do
+		local _name = v.db.key
+
+		if db[_name] == true then
+			v:Show()
+		elseif db[_name] == false then
+		else								--missing entry
+			db[_name] = v.db.value
+			v:Show()
+
+		end 
+	end
+end
 
 function DT:PLAYER_ENTERING_WORLD(...)
 	SlashCmdList["ElvUI_DTbar"] = SlashHandler
 	SLASH_ElvUI_DTbar1 = "/dtbar"
 
-	rchat_tab1_setup()
-	rchat_tab2_setup()
-	if db.Bottom_Datatext_Panel then bottom_bar:Show() end
-	if db.RightChatTab_Datatext_Panel1 then rchat_tab1:Show() end
-	if db.RightChatTab_Datatext_Panel2 then rchat_tab2:Show() end
+	rchat_tab_setup()
+	ElvUI_DTbar.db_check()
+
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD");
 end
 
