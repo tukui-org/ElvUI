@@ -131,8 +131,8 @@ local function LoadSkin()
 	hooksecurefunc("WorldMapFrame_SetQuestMapView", QuestSkin)
 	hooksecurefunc("WorldMap_ToggleSizeUp", FixSkin)
 	
-	ToggleFrame(WorldMapFrame)				
-	ToggleFrame(WorldMapFrame)
+	WorldMapFrame:Show()
+	WorldMapFrame:Hide()
 	
 	local coords = CreateFrame("Frame", "CoordsFrame", WorldMapFrame)
 	local fontheight = select(2, WorldMapQuestShowObjectivesText:GetFont())*1.1
