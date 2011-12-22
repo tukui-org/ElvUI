@@ -343,7 +343,7 @@ function AB:UpdateButtonConfig(bar, buttonName)
 	bar.buttonConfig.hideElements.macro = self.db.macrotext
 	bar.buttonConfig.hideElements.hotkey = self.db.hotkeytext
 	bar.buttonConfig.showGrid = GetCVar('alwaysShowActionBars') == '1' and true or false
-	bar.buttonConfig.clickOnDown = self.db.buttonActionMode == 'DOWN' and true or false
+	bar.buttonConfig.clickOnDown = GetCVar('ActionButtonUseKeyDown') == '1' and true or false
 	
 	for i, button in pairs(bar.buttons) do
 		bar.buttonConfig.keyBoundTarget = format(buttonName.."%d", i)

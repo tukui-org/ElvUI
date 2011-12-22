@@ -304,9 +304,6 @@ do
 	L['Days'] = "Jours";
 		L['Color when the text is in the days format.'] = "Couleur quand le texte est exprimé en jours.";
 	L['Totem Bar'] = "Barre de Totems";
-
-	L['Action Mode'] = "Mode Action"; -- Trad à corriger.
-	L['Use the button when clicking or pressing the keybind on the keydown motion or on the keyup motion.'] = "Utilisez ce bouton quand vous cliquez ou pressez la touche Défilement haut / bas sur le clavier.";
 end
 
 --UNITFRAMES

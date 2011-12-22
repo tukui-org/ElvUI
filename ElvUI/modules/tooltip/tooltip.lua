@@ -308,7 +308,7 @@ function TT:PLAYER_ENTERING_WORLD()
 		end
 		
 		self:HookScript(ItemRefTooltip, "OnTooltipSetItem", 'SetStyle')
-		FriendsTooltip:SetTemplate("Default", true)
+		FriendsTooltip:SetTemplate("Transparent")
 		
 		if IsAddOnLoaded('Blizzard_DebugTools') and not self.debugloaded then
 			self:ADDON_LOADED('ADDON_LOADED', 'Blizzard_DebugTools')
@@ -564,7 +564,7 @@ function TT:Initialize()
 	GameTooltipStatusBar:Point("TOPLEFT", GameTooltipStatusBar:GetParent(), "BOTTOMLEFT", 2, -5)
 	GameTooltipStatusBar:Point("TOPRIGHT", GameTooltipStatusBar:GetParent(), "BOTTOMRIGHT", -2, -5)
 	GameTooltipStatusBar:SetStatusBarTexture(E["media"].normTex)
-	GameTooltipStatusBar:CreateBackdrop('Default')
+	GameTooltipStatusBar:CreateBackdrop('Transparent')
 	GameTooltipStatusBar.ColorBar = GameTooltipStatusBar.SetStatusBarColor
 	GameTooltipStatusBar.SetStatusBarColor = E.noop
 	GameTooltipStatusBar.text = GameTooltipStatusBar:CreateFontString(nil, "OVERLAY")
