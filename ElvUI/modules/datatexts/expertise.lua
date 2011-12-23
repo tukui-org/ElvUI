@@ -81,7 +81,7 @@ local function OnEnter(self)
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayString = string.join("", "%s", hex, "%d|r")
+	displayString = string.join("", "%s", hex, "%s|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel, 2000)
