@@ -317,7 +317,7 @@ function M:LoadLootRoll()
 		local function moveLootRoll(self, ...)
 			self:ClearAllPoints()
 			if self:GetName() == "GroupLootFrame1" then
-				self:SetPoint("TOPLEFT", LootRollAnchorFrame, "TOPLEFT", 0, 0)
+				self:SetPoint("BOTTOMLEFT", LootRollAnchorFrame, "BOTTOMLEFT", 0, 0)
 			else
 				local _, _, num = self:GetName():find("GroupLootFrame(%d)")
 				self:SetPoint("TOP", _G[string.format("GroupLootFrame%d", num-1)], "BOTTOM", 0, -5)
