@@ -302,9 +302,6 @@ do
 	L['Days'] = "天";
 		L['Color when the text is in the days format.'] = "以天顯示的文字顏色";
 	L['Totem Bar'] = "圖騰列";
-
-	L['Action Mode'] = "按鍵模式";
-	L['Use the button when clicking or pressing the keybind on the keydown motion or on the keyup motion.'] = "當你點擊或按下快捷鍵是按下還是鬆開時執行這個按鈕.";
 end
 
 --UNITFRAMES 頭像介面

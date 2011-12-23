@@ -302,9 +302,6 @@ do
 	L['Days'] = "Дни";
 		L['Color when the text is in the days format.'] = "Цвет текста времени восстановления в днях.";
 	L['Totem Bar'] = "Панель тотемов";
-	
-	L['Action Mode'] = "Режим выполнения";
-	L['Use the button when clicking or pressing the keybind on the keydown motion or on the keyup motion.'] = "Использовать кнопку по клику или нажатию, когда клавиша нажимается (вниз) или отпускается (вверх).";
 end
 
 --UNITFRAMES / Фреймы

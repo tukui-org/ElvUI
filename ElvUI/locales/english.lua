@@ -308,9 +308,6 @@ do
 	L['Days'] = true;
 		L['Color when the text is in the days format.'] = true;
 	L['Totem Bar'] = true;
-	
-	L['Action Mode'] = true;
-	L['Use the button when clicking or pressing the keybind on the keydown motion or on the keyup motion.'] = true;
 end
 
 --UNITFRAMES
