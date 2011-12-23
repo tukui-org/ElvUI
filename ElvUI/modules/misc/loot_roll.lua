@@ -309,17 +309,18 @@ function M:LoadLootRoll()
 	local LootRollFrame = CreateFrame("frame","LootRollAnchorFrame",UIParent)
 	LootRollFrame:SetWidth(GroupLootFrame1:GetWidth())
 	LootRollFrame:SetHeight(GroupLootFrame1:GetHeight())
-	LootRollFrame:SetPoint("CENTER",UIParent,"CENTER",0,0)
+	LootRollFrame:ClearAllPoints()
+	LootRollFrame:SetPoint("TOP",UIParent,"TOP",0,-175)
 		----------------------------------------
 		-- Move the standard loot roll frame
 		----------------------------------------
 		local function moveLootRoll(self, ...)
 			self:ClearAllPoints()
 			if self:GetName() == "GroupLootFrame1" then
-				self:SetPoint("BOTTOMLEFT", LootRollAnchorFrame, "BOTTOMLEFT", 0, 0)
+				self:SetPoint("TOPLEFT", LootRollAnchorFrame, "TOPLEFT", 0, 0)
 			else
 				local _, _, num = self:GetName():find("GroupLootFrame(%d)")
-				self:SetPoint("BOTTOM", _G[string.format("GroupLootFrame%d", num-1)], "TOP", 0, 5)
+				self:SetPoint("TOP", _G[string.format("GroupLootFrame%d", num-1)], "BOTTOM", 0, -5)
 				self:SetFrameLevel(0)
 			end
 			
