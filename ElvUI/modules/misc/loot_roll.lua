@@ -305,19 +305,44 @@ function M:CHAT_MSG_LOOT(event, msg)
 end
 
 function M:LoadLootRoll()	
-	if not E.db.core.lootRoll then return end
-	anchor = CreateFrame("Frame", nil, anchorHolder)
-	anchor:Point('TOP', E.UIParent, 'TOP', 0, -200)
-	anchor:Size(300, 22)
-	
-	self:RegisterEvent('CHAT_MSG_LOOT')
-	self:RegisterEvent("START_LOOT_ROLL")
-	UIParent:UnregisterEvent("START_LOOT_ROLL")
-	UIParent:UnregisterEvent("CANCEL_LOOT_ROLL")
-	
-	E:CreateMover(anchor, "LootRollMover", "LootRoll Frame", nil, PostMoveLootRoll)
-	
-	local f = self:CreateRollFrame() -- Create one for good measure
-	f:Point("TOPLEFT", next(frames) and frames[#frames] or anchor, "BOTTOMLEFT", 0, -4)
-	table.insert(frames, f)	
+	if not E.db.core.lootRoll then
+		----------------------------------------
+		-- Move the standard loot roll frame
+		----------------------------------------
+		local function moveLootRoll(self, ...)
+			self:ClearAllPoints()
+			if self:GetName() == "GroupLootFrame1" then
+				self:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+			else
+				local _, _, num = self:GetName():find("GroupLootFrame(%d)")
+				self:SetPoint("BOTTOM", _G[string.format("GroupLootFrame%d", num-1)], "TOP", 0, 5)
+				self:SetFrameLevel(0)
+			end
+			
+			if self.oOnShow then
+				self:oOnShow(...)
+			end
+		end
+
+		for i = 1, NUM_GROUP_LOOT_FRAMES do
+			local LootRoll = _G["GroupLootFrame"..i]
+			LootRoll.oOnShow = LootRoll:GetScript("OnShow")
+			LootRoll:SetScript("OnShow", moveLootRoll)
+		end
+	else
+		anchor = CreateFrame("Frame", nil, anchorHolder)
+		anchor:Point('TOP', E.UIParent, 'TOP', 0, -200)
+		anchor:Size(300, 22)
+		
+		self:RegisterEvent('CHAT_MSG_LOOT')
+		self:RegisterEvent("START_LOOT_ROLL")
+		UIParent:UnregisterEvent("START_LOOT_ROLL")
+		UIParent:UnregisterEvent("CANCEL_LOOT_ROLL")
+		
+		E:CreateMover(anchor, "LootRollMover", "LootRoll Frame", nil, PostMoveLootRoll)
+		
+		local f = self:CreateRollFrame() -- Create one for good measure
+		f:Point("TOPLEFT", next(frames) and frames[#frames] or anchor, "BOTTOMLEFT", 0, -4)
+		table.insert(frames, f)
+	end
 end
