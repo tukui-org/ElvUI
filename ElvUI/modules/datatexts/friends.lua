@@ -79,6 +79,7 @@ local function BuildFriendTable(total)
 		
 		if connected then 
 			for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
+			for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
 			friendTable[i] = { name, level, class, area, connected, status, note }
 		end
 	end
