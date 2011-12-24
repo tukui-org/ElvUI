@@ -264,7 +264,7 @@ function E:CreateMoverPopup()
 end
 
 function E:CheckIncompatible()
-	if IsAddOnLoaded('Prat') and E.db.chat.enable then
+	if IsAddOnLoaded('Prat-3.0') and E.db.chat.enable then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Prat', 'Chat'))
 	end
 	
