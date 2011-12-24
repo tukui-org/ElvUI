@@ -266,6 +266,8 @@ end
 function E:CheckIncompatible()
 	if IsAddOnLoaded('Prat-3.0') and E.db.chat.enable then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Prat', 'Chat'))
+	elseif IsAddOnLoaded('Chatter') and E.db.chat.enable then
+		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Chatter', 'Chat'))
 	end
 	
 	if IsAddOnLoaded('Bartender4') and E.db.actionbar.enable then
@@ -279,6 +281,16 @@ function E:CheckIncompatible()
 	elseif IsAddOnLoaded('Aloft') and E.db.nameplate.enable then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Aloft', 'NamePlate'))
 	end	
+	
+	if IsAddOnLoaded('ArkInventory') and E.db.core.bags then
+		E:Print(format(L['INCOMPATIBLE_ADDON'], 'ArkInventory', 'Bags'))
+	elseif IsAddOnLoaded('Bagnon') and E.db.core.bags then
+		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Bagnon', 'Bags'))
+	elseif IsAddOnLoaded('OneBag3') and E.db.core.bags then
+		E:Print(format(L['INCOMPATIBLE_ADDON'], 'OneBag3', 'Bags'))
+	elseif IsAddOnLoaded('OneBank3') and E.db.core.bags then
+		E:Print(format(L['INCOMPATIBLE_ADDON'], 'OneBank3', 'Bags'))
+	end
 end
 
 function E:Initialize()
@@ -291,7 +303,9 @@ function E:Initialize()
 	if self.db.core.loginmessage then
 		print(format(L['LOGIN_MSG'], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version))
 	end
-
+	
+	self:CheckIncompatible()
+	
 	self:CheckRole()
 	self:UIScale('PLAYER_LOGIN');
 	
@@ -313,8 +327,6 @@ function E:Initialize()
 	self:RegisterEvent("CHARACTER_POINTS_CHANGED", "CheckRole");
 	self:RegisterEvent("UNIT_INVENTORY_CHANGED", "CheckRole");
 	self:RegisterEvent("UPDATE_BONUS_ACTIONBAR", "CheckRole");	
-	
-	self:CheckIncompatible()
 end
 
 local toggle
