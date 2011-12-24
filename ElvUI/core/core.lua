@@ -263,6 +263,24 @@ function E:CreateMoverPopup()
 	end)
 end
 
+function E:CheckIncompatible()
+	if IsAddOnLoaded('Prat') and E.db.chat.enable then
+		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Prat', 'Chat'))
+	end
+	
+	if IsAddOnLoaded('Bartender4') and E.db.actionbar.enable then
+		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Bartender', 'ActionBar'))
+	elseif IsAddOnLoaded('Dominos') and E.db.actionbar.enable then
+		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Dominos', 'ActionBar'))
+	end	
+	
+	if IsAddOnLoaded('TidyPlates') and E.db.nameplate.enable then
+		E:Print(format(L['INCOMPATIBLE_ADDON'], 'TidyPlates', 'NamePlate'))
+	elseif IsAddOnLoaded('Aloft') and E.db.nameplate.enable then
+		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Aloft', 'NamePlate'))
+	end	
+end
+
 function E:Initialize()
 	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF);
 	self.data.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
@@ -295,6 +313,8 @@ function E:Initialize()
 	self:RegisterEvent("CHARACTER_POINTS_CHANGED", "CheckRole");
 	self:RegisterEvent("UNIT_INVENTORY_CHANGED", "CheckRole");
 	self:RegisterEvent("UPDATE_BONUS_ACTIONBAR", "CheckRole");	
+	
+	self:CheckIncompatible()
 end
 
 local toggle

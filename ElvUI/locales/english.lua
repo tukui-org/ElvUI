@@ -105,6 +105,8 @@ do
 	L["You can now choose what layout you wish to use for your primary talents."] = true;
 	L["You can now choose what layout you wish to use for your secondary talents."] = true;
 	L["This will change the layout of your unitframes, raidframes, and datatexts."] = true;
+	
+	L['INCOMPATIBLE_ADDON'] = "The addon %s is not compatible with ElvUI's %s module. Please disable the incompatible addon or module.";
 end
 
 --Media	
