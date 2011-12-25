@@ -267,6 +267,36 @@ function E:CreateMoverPopup()
 	end)
 end
 
+function E:CheckIncompatible()
+	if IsAddOnLoaded('Prat-3.0') and E.db.chat.enable then
+		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Prat', 'Chat'))
+	elseif IsAddOnLoaded('Chatter') and E.db.chat.enable then
+		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Chatter', 'Chat'))
+	end
+	
+	if IsAddOnLoaded('Bartender4') and E.db.actionbar.enable then
+		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Bartender', 'ActionBar'))
+	elseif IsAddOnLoaded('Dominos') and E.db.actionbar.enable then
+		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Dominos', 'ActionBar'))
+	end	
+	
+	if IsAddOnLoaded('TidyPlates') and E.db.nameplate.enable then
+		E:Print(format(L['INCOMPATIBLE_ADDON'], 'TidyPlates', 'NamePlate'))
+	elseif IsAddOnLoaded('Aloft') and E.db.nameplate.enable then
+		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Aloft', 'NamePlate'))
+	end	
+	
+	if IsAddOnLoaded('ArkInventory') and E.db.core.bags then
+		E:Print(format(L['INCOMPATIBLE_ADDON'], 'ArkInventory', 'Bags'))
+	elseif IsAddOnLoaded('Bagnon') and E.db.core.bags then
+		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Bagnon', 'Bags'))
+	elseif IsAddOnLoaded('OneBag3') and E.db.core.bags then
+		E:Print(format(L['INCOMPATIBLE_ADDON'], 'OneBag3', 'Bags'))
+	elseif IsAddOnLoaded('OneBank3') and E.db.core.bags then
+		E:Print(format(L['INCOMPATIBLE_ADDON'], 'OneBank3', 'Bags'))
+	end
+end
+
 function E:Initialize()
 	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF);
 	self.data.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
@@ -277,7 +307,9 @@ function E:Initialize()
 	if self.db.core.loginmessage then
 		print(format(L['LOGIN_MSG'], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version))
 	end
-
+	
+	self:CheckIncompatible()
+	
 	self:CheckRole()
 	self:UIScale('PLAYER_LOGIN');
 	

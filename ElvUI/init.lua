@@ -43,6 +43,7 @@ function AddOn:OnInitialize()
 	self:UpdateMedia();
 	self:UpdateSounds();
 
+	self:GetModule('RaidUtility'):Initialize()
 	self:RegisterEvent('PLAYER_LOGIN', 'Initialize')
 end
 
