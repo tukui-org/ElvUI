@@ -11,12 +11,30 @@
 local E, L, DF = unpack(ElvUI); --Engine
 local DT = E:GetModule('DataTexts')
 
+Broker = CreateFrame('Frame', 'Broker', E.UIParent)
+Broker.ldb = LibStub:GetLibrary("LibDataBroker-1.1")
+pluginObjects = {}
+
 ElvUI_DTbar = CreateFrame('Frame', 'ElvUI_DTbar', E.UIParent)
+ElvUI_DTbar.version = '2.1b'
 
 local bottom_bar, rchat_tab, rchat_tab2
 local PANEL_HEIGHT = 22 -- taken from Layout.lua
 
 db = db or {}
+
+-------------
+---  LDB  ---
+-------------
+-- Use 'LDB_name', format here.  if unsure do a /dtbar showldb in game.  CASE SENSITIVE
+-------------
+
+DTBar_ldb = {
+	'Scrooge',
+	'Skada',
+	'AtlasLoot',
+}
+-------------
 --------------------------------------------------------
 -- Language Variables --
 --------------------------------------------------------
@@ -31,6 +49,7 @@ L['RightChatTab_Datatext_Panel2'] = 'Upper Right Chat 2';
 --------------------------------------------------------
 -- default values for datatext
 --------------------------------------------------------
+ 
 --Bottom_Datatext_Panel
 DF.datatexts.panels.spec1.Bottom_Datatext_Panel = {
 	left = 'Friends',
@@ -56,7 +75,7 @@ DF.datatexts.panels.spec2.RightChatTab_Datatext_Panel2 = 'Bags'
 --------------------------------------------------------
 -- Code  --
 --------------------------------------------------------
-
+ 
 --------------------------------------------------------
  -- right chat tabbar
 --------------------------------------------------------
@@ -140,6 +159,12 @@ ElvUI_DTbar._table = {
 		for k,v in ipairs(ElvUI_DTbar._table) do if (v:GetName():lower():match(command:lower())) then v:Hide() db[v:GetName()] = false end end
 	elseif command == 'list' then						-- list
 		for k,v in ipairs(ElvUI_DTbar._table) do print ('Frame: '..v:GetName()) end 
+	elseif command == 'showldb' then
+		for name, obj in Broker.ldb:DataObjectIterator() do
+			print(name)
+		end
+	elseif command == 'ver' then
+		print (ElvUI_DTbar.version)
 	else							-- syntax
 		print ('\
 			commands are:\
@@ -168,14 +193,126 @@ end
 	end
 end
 
+
 function DT:PLAYER_ENTERING_WORLD(...)
 	SlashCmdList["ElvUI_DTbar"] = SlashHandler
 	SLASH_ElvUI_DTbar1 = "/dtbar"
 
 	rchat_tab_setup()
+
 	ElvUI_DTbar.db_check()
+
+	for name, obj in Broker.ldb:DataObjectIterator() do
+		if obj.OnCreate then obj.OnCreate(obj, Frame) end
+		pluginObject[name] = obj
+	end
+	
+	-- this is 'pass #2' here we setup call back functions for whatever ldb's we have listed.
+	-- problem is we can't reg the callback's on pass #1 because not all of the ldb's are loaded at that tiem.
+	for k,v in ipairs(DTBar_ldb) do
+		local textUpdate = function(_, name, _, data)
+			if Broker.ldb[v] and Broker.ldb[v].Update then
+				pluginObjects[v] = data
+				Broker.ldb[v].Update(data)
+			end
+		end
+		
+		local ValueUpdate = function(_, name, _, data, obj)
+			if Broker.ldb[v] then 
+				pluginObjects[v] = data
+			end
+		end
+		
+		print ('LDB registered call back: '..v)
+		Broker.ldb.RegisterCallback(Broker, "LibDataBroker_AttributeChanged_"..v.."_text", textUpdate)
+		Broker.ldb.RegisterCallback(Broker, "LibDataBroker_AttributeChanged_"..v.."_value", ValueUpdate)
+	end
 
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD");
 end
+
+Broker:SetScript("OnEvent", function(_, event, ...) Broker[event](Broker, ...) end)
+
+local _self = {}  --local table to discover WTF we are.
+
+pluginObject = pluginObject or {}
+
+local Frame = CreateFrame('Frame', 'ldb frame', E.UIParent)
+	Frame:EnableMouse(true)
+	Frame:SetBackdropColor(0,0,0,0) 
+--	Frame:SetFrameStrata('BACKGROUND')
+--	Frame:SetFrameLevel(3)
+--	Frame:Size(400, PANEL_HEIGHT)
+--	Frame:Point("CENTER", E.UIParent, "CENTER", 0, -E.mult);
+--	Frame:SetTemplate()
+	Frame:Hide()
+
+Broker.ldb.frame = Frame
+Broker.ldb.obj = pluginObject
+
+	
+-- this is 'pass #1', initial pass that registers the datatext.  Problem here is we do not know what ldb's we are working wtih.
+-- dynamic register datatext ;) --==> ## SavedVariables: DTBar_ldb
+for k,v in ipairs(DTBar_ldb) do
+	Broker.ldb[v] = Broker.ldb[v] or {
+		OnEvent = function (self, event, ...)
+		_self[v] = self
+			if self and self.text then 
+				self.text:SetText(pluginObjects[v] or v)
+			end	
+		end,
+
+		Update = function (t)
+			if _self[v] and _self[v].text then 
+				_self[v].text:SetText(pluginObjects[v])
+			end
+		end,
+		
+		Click = function (self, button)
+			if pluginObject[v].OnClick then
+				pluginObject[v].OnClick(Frame, button)
+			end
+		end,
+
+		OnEnter = function (self)
+			_self[v] = self
+			DT:SetupTooltip(self)
+			------------------
+			if not InCombatLockdown() and not E.db.tooltip.combathide then
+				local obj = pluginObject[v]
+
+				if (type(obj.OnLeave) == 'function') then
+					self:SetScript("OnLeave", function () GameTooltip:Hide() if obj.OnLeave then obj.OnLeave(frame) end end)						
+				end
+
+				if not Frame.isMoving and obj.OnTooltipShow then
+					Broker.ldb.debug1 = pluginObject[v]
+					Broker.ldb.debug2 = self
+					Broker.ldb.debug3 = Frame
+					GameTooltip:SetOwner(E.UIParent, "ANCHOR_NONE")
+					GameTooltip:ClearAllPoints()
+					GameTooltip:SetPoint("BOTTOM", Frame, "TOP", 0, E.mult)
+					GameTooltip:ClearLines()	
+					obj.OnTooltipShow(GameTooltip, Frame)
+					GameTooltip:Show()
+					
+					
+				elseif obj.OnEnter then
+					Frame:Size( self:GetWidth(), self:GetHeight() )
+					Frame:Point("TOPLEFT",self, "TOPLEFT")
+					Frame:Point("BOTTOMRIGHT",self, "BOTTOMRIGHT")					
+
+					obj.OnEnter(Frame)
+				end
+			end	
+			------------------
+			GameTooltip:Show()
+		end,
+		----
+	}
+	print ('LDB registered Datatext: '..v)
+	DT:RegisterDatatext('LDB_'..v, {}, Broker.ldb[v].OnEvent, Broker.ldb[v].Update, Broker.ldb[v].Click, Broker.ldb[v].OnEnter)
+end
+
 
 DT:RegisterEvent('PLAYER_ENTERING_WORLD')
