@@ -4062,7 +4062,7 @@ E.Options.args.unitframe.args.arena = {
 	type = 'group',
 	order = 1000,
 	get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['arena'][ info[#info] ] end,
-	set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['arena'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', MAX_arena_FRAMES) end,
+	set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['arena'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
 	args = {
 		enable = {
 			type = 'toggle',
@@ -4098,7 +4098,7 @@ E.Options.args.unitframe.args.arena = {
 				end
 				
 				E.db.unitframe.layouts[UF.ActiveLayout]['arena'][ info[#info] ] = value; 
-				UF:CreateAndUpdateUFGroup('arena', MAX_arena_FRAMES);
+				UF:CreateAndUpdateUFGroup('arena', 5);
 			end,			
 		},
 		height = {
@@ -4121,7 +4121,7 @@ E.Options.args.unitframe.args.arena = {
 			type = 'group',
 			name = L['Health'],
 			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['arena']['health'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['arena']['health'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', MAX_arena_FRAMES) end,
+			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['arena']['health'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
 			args = {
 				text = {
 					type = 'toggle',
@@ -4147,7 +4147,7 @@ E.Options.args.unitframe.args.arena = {
 			type = 'group',
 			name = L['Power'],
 			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['arena']['power'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['arena']['power'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', MAX_arena_FRAMES) end,
+			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['arena']['power'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -4203,7 +4203,7 @@ E.Options.args.unitframe.args.arena = {
 			type = 'group',
 			name = L['Name'],
 			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['arena']['name'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['arena']['name'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', MAX_arena_FRAMES) end,
+			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['arena']['name'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -4223,7 +4223,7 @@ E.Options.args.unitframe.args.arena = {
 			type = 'group',
 			name = L['Buffs'],
 			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['arena']['buffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['arena']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', MAX_arena_FRAMES) end,
+			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['arena']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -4326,7 +4326,7 @@ E.Options.args.unitframe.args.arena = {
 			type = 'group',
 			name = L['Debuffs'],
 			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['arena']['debuffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['arena']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', MAX_arena_FRAMES) end,
+			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['arena']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -4429,7 +4429,7 @@ E.Options.args.unitframe.args.arena = {
 			type = 'group',
 			name = L['Castbar'],
 			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['arena']['castbar'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['arena']['castbar'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', MAX_arena_FRAMES) end,
+			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['arena']['castbar'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -4440,7 +4440,7 @@ E.Options.args.unitframe.args.arena = {
 					order = 2,
 					type = 'execute',
 					name = L['Match Frame Width'],
-					func = function() E.db.unitframe.layouts[UF.ActiveLayout]['arena']['castbar']['width'] = E.db.unitframe.layouts[UF.ActiveLayout]['arena']['width']; UF:CreateAndUpdateUFGroup('arena', MAX_arena_FRAMES) end,
+					func = function() E.db.unitframe.layouts[UF.ActiveLayout]['arena']['castbar']['width'] = E.db.unitframe.layouts[UF.ActiveLayout]['arena']['width']; UF:CreateAndUpdateUFGroup('arena', 5) end,
 				},				
 				width = {
 					order = 3,
@@ -4471,7 +4471,7 @@ E.Options.args.unitframe.args.arena = {
 						E.db.core[ info[#info] ] = {}
 						local t = E.db.unitframe.layouts[UF.ActiveLayout]['arena']['castbar'][ info[#info] ]
 						t.r, t.g, t.b = r, g, b
-						UF:CreateAndUpdateUFGroup('arena', MAX_arena_FRAMES)
+						UF:CreateAndUpdateUFGroup('arena', 5)
 					end,													
 				},
 				interruptcolor = {
@@ -4486,7 +4486,7 @@ E.Options.args.unitframe.args.arena = {
 						E.db.core[ info[#info] ] = {}
 						local t = E.db.unitframe.layouts[UF.ActiveLayout]['arena']['castbar'][ info[#info] ]
 						t.r, t.g, t.b = r, g, b
-						UF:CreateAndUpdateUFGroup('arena', MAX_arena_FRAMES)
+						UF:CreateAndUpdateUFGroup('arena', 5)
 					end,					
 				},
 				format = {
