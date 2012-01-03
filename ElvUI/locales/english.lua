@@ -107,6 +107,9 @@ do
 	L["This will change the layout of your unitframes, raidframes, and datatexts."] = true;
 	
 	L['INCOMPATIBLE_ADDON'] = "The addon %s is not compatible with ElvUI's %s module. Please disable the incompatible addon or module.";
+	
+	L['Panel Texture'] = true;
+	L['Specify a filename located inside the Interface\\AddOns\\ElvUI\\media\\textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.'] = true;
 end
 
 --Media	
