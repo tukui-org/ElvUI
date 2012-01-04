@@ -1897,6 +1897,7 @@ DF['unitframe'] = {
 				["ElvUF_Boss2"] = "BOTTOMLEFTUIParent30375",
 				["ElvUF_Boss3"] = "BOTTOMLEFTUIParent30500",
 				["ElvUF_Boss4"] = "BOTTOMLEFTUIParent30625",
+				["ElvUF_Tank"] = "LEFTUIParent30350",
 			},			
 		},	
 	},
