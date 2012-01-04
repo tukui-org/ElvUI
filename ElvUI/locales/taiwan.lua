@@ -287,9 +287,9 @@ do
 	L['Width Multiplier'] = "寬度倍增";
 		L['Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop.'] = "根據此值增加背景的高度或寬度. 一般用來在一個背景框裏放置多條快捷列";
 	L['Action Paging'] = "快捷列翻頁";
-		L["This works like a macro, you can run differant situations to get the actionbar to page differantly.\n Example: '[combat] 2;'"] = "和巨集寫法類似, 能根據不同姿切換快捷列.\n 比如: '[combat] 2;'";
+		L["This works like a macro, you can run different situations to get the actionbar to page differently.\n Example: '[combat] 2;'"] = "和巨集寫法類似, 能根據不同姿切換快捷列.\n 比如: '[combat] 2;'";
 	L['Visibility State'] = "可見狀態";
-		L["This works like a macro, you can run differant situations to get the actionbar to show/hide differantly.\n Example: '[combat] show;hide'"] = "和巨集寫法類似, 能根據不同姿態切換快捷列顯示或隱藏.\n 比如: '[combat] show;hide'";
+		L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = "和巨集寫法類似, 能根據不同姿態切換快捷列顯示或隱藏.\n 比如: '[combat] show;hide'";
 	L['Restore Bar'] = "還原快捷列";
 		L['Restore the actionbars default settings'] = "恢復此快捷列的預設設定";
 		L['Set the font size of the action buttons.'] = "設定此快捷列按鈕的字型尺寸";
@@ -523,7 +523,7 @@ do
 	L['Smart Raid Filter'] = "智能團隊過濾";
 	L['Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance.'] = "覆寫可見性的設定, 比如: 在10人副本裡只顯示1隊和2隊";
 	L['Heal Prediction'] = "治療量預測";
-	L['Show a incomming heal prediction bar on the unitframe. Also display a slightly differant colored bar for incoming overheals.'] = "在單位框架中顯示即將回復的的預測治療量，過量治療則以不同顏色顯示。";
+	L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'] = "在單位框架中顯示即將回復的的預測治療量，過量治療則以不同顏色顯示。";
 	L['Assist Frames'] = "助攻框架";
 	L['Tank Frames'] = "坦克框架";
 end

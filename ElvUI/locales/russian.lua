@@ -281,9 +281,9 @@ do
 	L['Width Multiplier'] = "Множитель ширины";
 		L['Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop.'] = "Умножает высоту или ширину фона панели на это значение. Это полезно, когда вы хотите иметь более одной панели на данном фоне.";
 	L['Action Paging'] = "Пролистывание панелей";
-		L["This works like a macro, you can run differant situations to get the actionbar to page differantly.\n Example: '[combat] 2;'"] = "Работает как макрос. Вы можете установить различные условия для вывода разных панелей.\n Пример: '[combat] 2;'";
+		L["This works like a macro, you can run different situations to get the actionbar to page differently.\n Example: '[combat] 2;'"] = "Работает как макрос. Вы можете установить различные условия для вывода разных панелей.\n Пример: '[combat] 2;'";
 	L['Visibility State'] = "Статус отображения";
-		L["This works like a macro, you can run differant situations to get the actionbar to show/hide differantly.\n Example: '[combat] show;hide'"] = "Работает как макрос. Вы можете установить различные условия для показа/скрытия панели.\n Пример: '[combat] show;hide'" ;
+		L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = "Работает как макрос. Вы можете установить различные условия для показа/скрытия панели.\n Пример: '[combat] show;hide'" ;
 	L['Restore Bar'] = "Восстановить панель";
 		L['Restore the actionbars default settings'] = "Устанавливает настройки панели на умолчания.";
 		L['Set the font size of the action buttons.'] = "Устанавливает размер шрифта на кнопках.";

@@ -85,7 +85,7 @@ local function BuildABConfig()
 					type = 'input',
 					order = 10,
 					name = L['Action Paging'],
-					desc = L["This works like a macro, you can run differant situations to get the actionbar to page differantly.\n Example: '[combat] 2;'"],
+					desc = L["This works like a macro, you can run different situations to get the actionbar to page differently.\n Example: '[combat] 2;'"],
 					width = 'full',
 					multiline = true,
 					get = function(info) return E.db.actionbar['bar'..i]['paging'][E.myclass] end,
@@ -102,7 +102,7 @@ local function BuildABConfig()
 					type = 'input',
 					order = 11,
 					name = L['Visibility State'],
-					desc = L["This works like a macro, you can run differant situations to get the actionbar to show/hide differantly.\n Example: '[combat] show;hide'"],
+					desc = L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"],
 					width = 'full',
 					multiline = true,
 					set = function(info, value) 						
@@ -187,7 +187,7 @@ local function BuildABConfig()
 				type = 'input',
 				order = 10,
 				name = L['Visibility State'],
-				desc = L["This works like a macro, you can run differant situations to get the actionbar to show/hide differantly.\n Example: '[combat] show;hide'"],
+				desc = L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"],
 				width = 'full',
 				multiline = true,
 				set = function(info, value) 						

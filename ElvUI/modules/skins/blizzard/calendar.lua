@@ -18,7 +18,7 @@ local function LoadSkin()
 	S:HandleNextPrevButton(CalendarPrevMonthButton)
 	S:HandleNextPrevButton(CalendarNextMonthButton)
 	
-	do --Handle drop down button, this one is differant than the others
+	do --Handle drop down button, this one is different than the others
 		local frame = CalendarFilterFrame
 		local button = CalendarFilterButton
 
