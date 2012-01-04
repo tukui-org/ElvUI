@@ -536,3 +536,25 @@ function UF:Construct_Trinket(frame)
 	
 	return trinket
 end
+
+function UF:Construct_HealComm(frame)
+	local mhpb = CreateFrame('StatusBar', nil, frame)
+	mhpb:SetStatusBarTexture(E["media"].blankTex)
+	mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
+	mhpb:SetFrameLevel(frame.Health:GetFrameLevel() - 2)
+	
+	local ohpb = CreateFrame('StatusBar', nil, frame)
+	ohpb:SetStatusBarTexture(E["media"].blankTex)
+	ohpb:SetStatusBarColor(0, 1, 0, 0.25)
+	mhpb:SetFrameLevel(mhpb:GetFrameLevel())	
+	
+	return {
+		myBar = mhpb,
+		otherBar = ohpb,
+		maxOverflow = 1,
+		PostUpdate = function(self)
+			if self.myBar:GetValue() == 0 then self.myBar:SetAlpha(0) else self.myBar:SetAlpha(1) end
+			if self.otherBar:GetValue() == 0 then self.otherBar:SetAlpha(0) else self.otherBar:SetAlpha(1) end
+		end
+	}
+end

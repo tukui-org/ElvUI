@@ -7,6 +7,7 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 function UF:Construct_FocusFrame(frame)	
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
+	frame.Health.frequentUpdates = true;
 	
 	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT', false)
 	
@@ -19,6 +20,7 @@ function UF:Construct_FocusFrame(frame)
 	frame.Castbar.LatencyTexture:Hide()
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)	
 	frame.Debuffs = self:Construct_Debuffs(frame)
+	frame.HealPrediction = self:Construct_HealComm(frame)
 end
 
 function UF:Update_FocusFrame(frame, db)
@@ -284,6 +286,31 @@ function UF:Update_FocusFrame(frame, db)
 		elseif not db.castbar.enable and frame:IsElementEnabled('Castbar') then
 			frame:DisableElement('Castbar')	
 		end			
+	end	
+	
+	--OverHealing
+	do
+		local healPrediction = frame.HealPrediction
+		
+		if db.healPrediction then
+			if not frame:IsElementEnabled('HealPrediction') then
+				frame:EnableElement('HealPrediction')
+			end
+
+			healPrediction.myBar:ClearAllPoints()
+			healPrediction.myBar:Width(db.width - (BORDER*2))
+			healPrediction.myBar:SetPoint('BOTTOMLEFT', frame.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
+			healPrediction.myBar:SetPoint('TOPLEFT', frame.Health:GetStatusBarTexture(), 'TOPRIGHT')	
+
+			healPrediction.otherBar:ClearAllPoints()
+			healPrediction.otherBar:SetPoint('TOPLEFT', healPrediction.myBar:GetStatusBarTexture(), 'TOPRIGHT')	
+			healPrediction.otherBar:SetPoint('BOTTOMLEFT', healPrediction.myBar:GetStatusBarTexture(), 'BOTTOMRIGHT')	
+			healPrediction.otherBar:Width(db.width - (BORDER*2))
+		else
+			if frame:IsElementEnabled('HealPrediction') then
+				frame:DisableElement('HealPrediction')
+			end		
+		end
 	end	
 		
 	if not frame.mover then
