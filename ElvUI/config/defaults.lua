@@ -1065,7 +1065,17 @@ DF['unitframe'] = {
 					['fontsize'] = 8,
 					['colorIcons'] = true,
 				},			
-			},			
+			},	
+			['tank'] = {
+				['enable'] = true,
+				['width'] = 120,
+				['height'] = 28,
+			},	
+			['assist'] = {
+				['enable'] = true,
+				['width'] = 120,
+				['height'] = 28,
+			},					
 		},
 		['Secondary'] = {
 			['player'] = {
@@ -1863,6 +1873,16 @@ DF['unitframe'] = {
 					['colorIcons'] = true,
 				},			
 			},
+			['tank'] = {
+				['enable'] = true,
+				['width'] = 120,
+				['height'] = 28,
+			},	
+			['assist'] = {
+				['enable'] = true,
+				['width'] = 120,
+				['height'] = 28,
+			},					
 			["positions"] = {
 				["ElvUF_Player"] = "BOTTOMLEFTUIParent464230",
 				["ElvUF_Target"] = "BOTTOMRIGHTUIParent-464230",

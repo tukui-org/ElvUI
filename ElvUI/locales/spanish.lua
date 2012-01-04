@@ -276,9 +276,9 @@ do
 	L['Width Multiplier'] = 'Multiplicador de Ancho';
 		L['Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop.'] = 'Multiplica el ancho o alto de los fondos por este valor. Es útil se deseas tener más de una barra con fondo.';
 	L['Action Paging'] = 'Paginación de Acción';
-		L["This works like a macro, you can run differant situations to get the actionbar to page differantly.\n Example: '[combat] 2;'"] = "Funciona como una macro. Puedes ejecutar diferentes condiciones para hacer que la barra de acción pagine de forma differente. Ejemplo: '[combat] 2;'";
+		L["This works like a macro, you can run different situations to get the actionbar to page differently.\n Example: '[combat] 2;'"] = "Funciona como una macro. Puedes ejecutar diferentes condiciones para hacer que la barra de acción pagine de forma differente. Ejemplo: '[combat] 2;'";
 	L['Visibility State'] = 'Estado de Visibilidad';
-		L["This works like a macro, you can run differant situations to get the actionbar to show/hide differantly.\n Example: '[combat] show;hide'"] = "Funciona como una macro. Puedes ejecutar diferentes condiciones para hacer que la barra de acción se muestre u oculte de forma differente. Ejemplo: '[combat] show;hide'";
+		L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = "Funciona como una macro. Puedes ejecutar diferentes condiciones para hacer que la barra de acción se muestre u oculte de forma differente. Ejemplo: '[combat] show;hide'";
 	L['Restore Bar'] = 'Restaurar Barra';
 		L['Restore the actionbars default settings'] = 'Restaura las barras de acción a los ajustes predeterminados.';
 		L['Set the font size of the action buttons.'] = 'Establece el tamaño de la fuente de las barras de acción.';

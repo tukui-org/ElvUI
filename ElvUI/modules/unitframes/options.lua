@@ -686,7 +686,7 @@ E.Options.args.unitframe.args.player = {
 		healPrediction = {
 			order = 8,
 			name = L['Heal Prediction'],
-			desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly differant colored bar for incoming overheals.'],
+			desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
 			type = 'toggle',
 		},
 		health = {
@@ -1255,7 +1255,7 @@ E.Options.args.unitframe.args.target = {
 		healPrediction = {
 			order = 6,
 			name = L['Heal Prediction'],
-			desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly differant colored bar for incoming overheals.'],
+			desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
 			type = 'toggle',
 		},		
 		health = {
@@ -2128,7 +2128,7 @@ E.Options.args.unitframe.args.focus = {
 		healPrediction = {
 			order = 6,
 			name = L['Heal Prediction'],
-			desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly differant colored bar for incoming overheals.'],
+			desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
 			type = 'toggle',
 		},
 		health = {
@@ -2942,7 +2942,7 @@ E.Options.args.unitframe.args.pet = {
 		healPrediction = {
 			order = 6,
 			name = L['Heal Prediction'],
-			desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly differant colored bar for incoming overheals.'],
+			desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
 			type = 'toggle',
 		},		
 		health = {
@@ -4651,7 +4651,7 @@ E.Options.args.unitframe.args.party = {
 				healPrediction = {
 					order = 15,
 					name = L['Heal Prediction'],
-					desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly differant colored bar for incoming overheals.'],
+					desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
 					type = 'toggle',
 				},						
 				visibility = {
@@ -5145,7 +5145,7 @@ E.Options.args.unitframe.args.raid625 = {
 				healPrediction = {
 					order = 15,
 					name = L['Heal Prediction'],
-					desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly differant colored bar for incoming overheals.'],
+					desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
 					type = 'toggle',
 				},						
 				visibility = {
@@ -5554,7 +5554,32 @@ E.Options.args.unitframe.args.raid625 = {
 				},							
 			},
 		},		
-		
+		rdebuffs = {
+			order = 800,
+			type = 'group',
+			name = L['RaidDebuff Indicator'],
+			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['raid625']['rdebuffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid625']['rdebuffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625') end,
+			args = {
+				enable = {
+					type = 'toggle',
+					name = L['Enable'],
+					order = 1,
+				},	
+				size = {
+					type = 'range',
+					name = L['Size'],
+					order = 2,
+					min = 8, max = 35, step = 1,
+				},				
+				fontsize = {
+					type = 'range',
+					name = L['Font Size'],
+					order = 3,
+					min = 7, max = 22, step = 1,
+				},				
+			},
+		},		
 	},
 }
 
@@ -5666,7 +5691,7 @@ E.Options.args.unitframe.args.raid2640 = {
 				healPrediction = {
 					order = 15,
 					name = L['Heal Prediction'],
-					desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly differant colored bar for incoming overheals.'],
+					desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
 					type = 'toggle',
 				},						
 				visibility = {
@@ -6028,7 +6053,79 @@ E.Options.args.unitframe.args.raid2640 = {
 					min = 7, max = 22, step = 1,
 				},
 			},
+		},		
+	},
+}
+
+--Tank Frames
+E.Options.args.unitframe.args.tank = {
+	name = L['Tank Frames'],
+	type = 'group',
+	order = 1100,
+	get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['tank'][ info[#info] ] end,
+	set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['tank'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('tank') end,
+	args = {
+		enable = {
+			type = 'toggle',
+			order = 1,
+			name = L['Enable'],
 		},
+		general = {
+			order = 2,
+			type = 'group',
+			name = L['General'],
+			guiInline = true,
+			args = {
+				width = {
+					order = 2,
+					name = L['Width'],
+					type = 'range',
+					min = 50, max = 500, step = 1,
+				},			
+				height = {
+					order = 3,
+					name = L['Height'],
+					type = 'range',
+					min = 10, max = 250, step = 1,
+				},					
+			},
+		},	
+	},
+}
+
+--Assist Frames
+E.Options.args.unitframe.args.assist = {
+	name = L['Assist Frames'],
+	type = 'group',
+	order = 1100,
+	get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['assist'][ info[#info] ] end,
+	set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['assist'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('assist') end,
+	args = {
+		enable = {
+			type = 'toggle',
+			order = 1,
+			name = L['Enable'],
+		},
+		general = {
+			order = 2,
+			type = 'group',
+			name = L['General'],
+			guiInline = true,
+			args = {
+				width = {
+					order = 2,
+					name = L['Width'],
+					type = 'range',
+					min = 50, max = 500, step = 1,
+				},			
+				height = {
+					order = 3,
+					name = L['Height'],
+					type = 'range',
+					min = 10, max = 250, step = 1,
+				},					
+			},
+		},	
 	},
 }
 

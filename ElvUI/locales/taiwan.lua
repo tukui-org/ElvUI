@@ -1,7 +1,13 @@
-﻿-- 繁體中文化
+﻿-- 繁體中文化 由ghosti168翻譯；niise、elmush協助翻譯 v3.11
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI", "zhTW")
 if not L then return end
+
+
+
+
+
+
 
 --Static Popup 靜態彈出式視窗
 do
@@ -58,7 +64,7 @@ do
 	L["Setup Chat"] = "設定對話視窗";
 
 	L["Installation Complete"] = "安裝完成";
-	L["You are now finished with the installation process. If you are in need technical support please visit us at http://www.tukui.org."] = "你已經完成安裝程序. 如需技術支援請訪問 http://www.tukui.org ";
+	L["You are now finished with the installation process. Bonus Hint: If you wish to access blizzard micro menu, middle click on the minimap. If you don't have a middle click button then hold down shift and right click the minimap. If you are in need of technical support please visit us at www.tukui.org."] = "你已經完成安裝程序。額外提示：如果你想開啟微型選單，在小地圖點擊滑鼠中鍵；如果沒有中鍵按鈕，在小地圖按住Shift並單擊滑鼠右鍵。如需技術支援請訪問 http://www.tukui.org 。";
 	L["Please click the button below so you can setup variables and ReloadUI."] = "請點擊下面的按鈕設定變數並重載介面";
 	L["Finished"] = "完成";
 	L["CVars Set"] = "參數設定";
@@ -99,6 +105,12 @@ do
 	L["You can now choose what layout you wish to use for your primary talents."] = "你現在可以選擇主要天賦想使用的版面配置.";
 	L["You can now choose what layout you wish to use for your secondary talents."] = "你現在可以選擇第二天賦想使用的版面配置.";
 	L["This will change the layout of your unitframes, raidframes, and datatexts."] = "此設定將變更頭像介面、團隊框架、資訊文字等的版面配置.";
+
+	L['INCOMPATIBLE_ADDON'] = "插件 %s 與ElvUI的 %s 模組不相容。請關閉不相容的插件或模組。";
+
+	L['Panel Texture'] = "對話框材質";
+	L['Specify a filename located inside the Interface\\AddOns\\ElvUI\\media\\textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.'] = "若要設定對話框背景，請於此資料夾中指定你希望設定為背景的檔案：\nInterface\\AddOns\\ElvUI\\media\\textures \n\n請注意：\n影像尺寸建議為 256 x 128\n在此資料夾新增檔案後，請務必重新啟動遊戲。\n檔案必須為 tga 格式。";
+	L["Are you sure you want to disband the group?"] = "確定要解散隊伍?";
 end
 
 --Media	材質字型
@@ -275,9 +287,9 @@ do
 	L['Width Multiplier'] = "寬度倍增";
 		L['Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop.'] = "根據此值增加背景的高度或寬度. 一般用來在一個背景框裏放置多條快捷列";
 	L['Action Paging'] = "快捷列翻頁";
-		L["This works like a macro, you can run differant situations to get the actionbar to page differantly.\n Example: '[combat] 2;'"] = "和巨集寫法類似, 能根據不同姿切換快捷列.\n 比如: '[combat] 2;'";
+		L["This works like a macro, you can run different situations to get the actionbar to page differently.\n Example: '[combat] 2;'"] = "和巨集寫法類似, 能根據不同姿切換快捷列.\n 比如: '[combat] 2;'";
 	L['Visibility State'] = "可見狀態";
-		L["This works like a macro, you can run differant situations to get the actionbar to show/hide differantly.\n Example: '[combat] show;hide'"] = "和巨集寫法類似, 能根據不同姿態切換快捷列顯示或隱藏.\n 比如: '[combat] show;hide'";
+		L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = "和巨集寫法類似, 能根據不同姿態切換快捷列顯示或隱藏.\n 比如: '[combat] show;hide'";
 	L['Restore Bar'] = "還原快捷列";
 		L['Restore the actionbars default settings'] = "恢復此快捷列的預設設定";
 		L['Set the font size of the action buttons.'] = "設定此快捷列按鈕的字型尺寸";
@@ -398,10 +410,10 @@ do
 	L['Icon'] = "圖示";
 	L['Latency'] = "延遲";
 	L['Color'] = "顏色";
-	L['Interrupt Color'] = "可打斷顏色";
+	L['Interrupt Color'] = "不可打斷顏色";
 	L['Match Frame Width'] = "匹配視窗寬度";
 	L['Fill'] = "填充";
-	L['Classbar'] = "施法條";
+	L['Classbar'] = "職業特有條";
 	L['Position'] = "位置";
 	L['Target Frame'] = "目標視窗";
 	L['Text Toggle On NPC'] = "NPC 文字顯示開關";
@@ -509,7 +521,11 @@ do
 	L['Restore Defaults'] = "恢復預設";
 	L['Role Icon'] = "角色定位圖示";
 	L['Smart Raid Filter'] = "智能團隊過濾";
-	L['Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance.'] = "覆寫可見性的設定, 比如: 在10人副本裏只顯示1隊和2隊";
+	L['Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance.'] = "覆寫可見性的設定, 比如: 在10人副本裡只顯示1隊和2隊";
+	L['Heal Prediction'] = "治療量預測";
+	L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'] = "在單位框架中顯示即將回復的的預測治療量，過量治療則以不同顏色顯示。";
+	L['Assist Frames'] = "助攻框架";
+	L['Tank Frames'] = "坦克框架";
 end
 
 --Datatext 資料文字
@@ -537,7 +553,7 @@ do
 	L["DataTexts"] = "資訊文字";
 	L["DATATEXT_DESC"] = "設定在螢幕上顯示的一些資訊文字.";
 	L["Multi-Spec Swap"] = "多天賦切換";
-	L['Swap to an alternative layout when changing talent specs. If turned off only the spec #1 layout will be used.'] = "當改變天賦時切換到另一個配置. 當關閉時只有 #1配置被使用.";
+	L['Swap to an alternative layout when changing talent specs. If turned off only the spec #1 layout will be used.'] = '當改變天賦時切換到另一個配置. 當關閉時只有 #1 配置被使用.';
 	L['24-Hour Time'] = "24小時制";
 	L['Toggle 24-hour mode for the time datatext.'] = "切換時間顯示為24小時制.";
 	L['Local Time'] = "本地時間";
@@ -554,21 +570,21 @@ do
 	L['Friends'] = "好友";
 	L['Friends List'] = "好友列表";
 
-	L['Head'] = "頭盔";
-	L['Shoulder'] = "肩甲";
-	L['Chest'] = "胸甲";
+	L['Head'] = "頭";
+	L['Shoulder'] = "肩";
+	L['Chest'] = "胸";
 	L['Waist'] = "腰帶";
 	L['Wrist'] = "護腕";
 	L['Hands'] = "手";
-	L['Legs'] = "腿部";
-	L['Feet'] = "靴子";
+	L['Legs'] = "腿";
+	L['Feet'] = "腳";
 	L['Main Hand'] = "主手";
 	L['Offhand'] = "副手";
 	L['Ranged'] = "遠程武器";
 	L['Mitigation By Level: '] = "等級減傷: ";
 	L['lvl'] = "等級";
 	L["Avoidance Breakdown"] = "免傷統計";
-	L['AVD: '] = "免傷：";
+	L['AVD: '] = "免傷: ";
 	L['Unhittable:'] = "未命中:";
 	L['AP'] = "攻擊強度";
 	L['SP'] = "法能強度";
@@ -699,7 +715,7 @@ do
 	L['Loot'] = "拾取";
 	L['Enable\Disable the loot frame.'] = "啟用\禁用拾取框架";
 
-	L['Exp/Rep Position'] = "Exp/Rep位置";
+	L['Exp/Rep Position'] = "經驗條/聲望條 位置";
 	L['Change the position of the experience/reputation bar.'] = "改變 經驗條/聲望條 位置";
 	L['Top Screen'] = "畫面最上方";
 	L["Below Minimap"] = "小地圖下方";
@@ -722,4 +738,26 @@ do
 	L["Can't buy anymore slots!"] = "銀行背包欄位已達最大值";
 	L['You must purchase a bank slot first!'] = "你必需購買一個銀行背包欄位";
 	L['Enable\Disable the all-in-one bag.'] = "啟用\禁用整合包";
+end
+
+--add
+do
+	L['Armor'] = "護甲";
+	L['Attack Power'] = "攻擊強度";
+	L['Avoidance'] = "免傷";
+	L['Bags'] = "背包";
+	L['Call to Arms'] = "戰鬥的號角";
+	L['Crit Chance'] = "致命一擊";
+	L['Durability'] = "耐久度";
+	L['Expertise'] = "熟練";
+	L['Gold'] = "金錢統計";
+	L['Guild'] = "公會";
+	L['Haste'] = "加速";
+	L['Hit Rating'] = "命中等級";
+	L['Mastery'] = "精通";
+	L['Mana Regen'] = "法力恢復";
+	L['Spec Switch'] = "天賦";
+	L['Spell/Heal Power'] = "法能強度";
+	L['System'] = "系統資訊";
+	L['Time'] = "時間";
 end

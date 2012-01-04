@@ -262,9 +262,9 @@ do
 	L['Width Multiplier'] = "宽度倍增";
 		L['Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop.'] = "根据此值增加背景的高度或宽度. 一般用来在一个背景框里放置多条动作条";
 	L['Action Paging'] = "动作条翻页";
-		L["This works like a macro, you can run differant situations to get the actionbar to page differantly.\n Example: '[combat] 2;'"] = "和宏一样工作, 能根据你不同的状态得到不同的动作条翻页.\n 比如: '[combat] 2;'";
+		L["This works like a macro, you can run different situations to get the actionbar to page differently.\n Example: '[combat] 2;'"] = "和宏一样工作, 能根据你不同的状态得到不同的动作条翻页.\n 比如: '[combat] 2;'";
 	L['Visibility State'] = "可见状态";
-		L["This works like a macro, you can run differant situations to get the actionbar to show/hide differantly.\n Example: '[combat] show;hide'"] = "和宏一样工作, 能根据你不同的状态使动作条显示或隐藏.\n 比如: '[combat] show;hide'";
+		L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = "和宏一样工作, 能根据你不同的状态使动作条显示或隐藏.\n 比如: '[combat] show;hide'";
 	L['Restore Bar'] = "还原动作条";
 		L['Restore the actionbars default settings'] = "恢复此功能条的默认设置";
 		L['Set the font size of the action buttons.'] = "设置此动作条按钮的字体尺寸";

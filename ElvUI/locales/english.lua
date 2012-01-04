@@ -110,6 +110,7 @@ do
 	
 	L['Panel Texture'] = true;
 	L['Specify a filename located inside the Interface\\AddOns\\ElvUI\\media\\textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.'] = true;
+	L["Are you sure you want to disband the group?"] = true;
 end
 
 --Media	
@@ -286,9 +287,9 @@ do
 	L['Width Multiplier'] = true;
 		L['Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop.'] = true;
 	L['Action Paging'] = true;
-		L["This works like a macro, you can run differant situations to get the actionbar to page differantly.\n Example: '[combat] 2;'"] = true;
+		L["This works like a macro, you can run different situations to get the actionbar to page differently.\n Example: '[combat] 2;'"] = true;
 	L['Visibility State'] = true;
-		L["This works like a macro, you can run differant situations to get the actionbar to show/hide differantly.\n Example: '[combat] show;hide'"] = true;
+		L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = true;
 	L['Restore Bar'] = true;
 		L['Restore the actionbars default settings'] = true;
 		L['Set the font size of the action buttons.'] = true;
@@ -524,7 +525,9 @@ do
 	L['Smart Raid Filter'] = true;
 	L['Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance.'] = true;
 	L['Heal Prediction'] = true;
-	L['Show a incomming heal prediction bar on the unitframe. Also display a slightly differant colored bar for incoming overheals.'] = true;
+	L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'] = true;
+	L['Assist Frames'] = true;
+	L['Tank Frames'] = true;
 end
 
 --Datatext

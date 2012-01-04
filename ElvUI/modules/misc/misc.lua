@@ -69,6 +69,26 @@ function M:ForceProfanity()
 	SetCVar("profanityFilter", 0)
 end
 
+function M:DisbandRaidGroup()
+	if InCombatLockdown() then return end -- Prevent user error in combat
+
+	if UnitInRaid("player") then
+		for i = 1, GetNumRaidMembers() do
+			local name, _, _, _, _, _, _, online = GetRaidRosterInfo(i)
+			if online and name ~= E.myname then
+				UninviteUnit(name)
+			end
+		end
+	else
+		for i = MAX_PARTY_MEMBERS, 1, -1 do
+			if GetPartyMember(i) then
+				UninviteUnit(UnitName("party"..i))
+			end
+		end
+	end
+	LeaveParty()
+end
+
 function M:Initialize()
 	self:LoadRaidMarker()
 	self:LoadExpRepBar()

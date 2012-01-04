@@ -58,7 +58,7 @@ do
 	L["Setup Chat"] = "Настроить чат";
 		
 	L["Installation Complete"] = "Установка завершена";
-	L["You are now finished with the installation process. Bonus Hint: If you wish to access blizzard micro menu, middle click on the minimap. If you don't have a middle click button then hold down shift and right click the minimap. If you are in need of technical support please visit us at www.tukui.org."] = "Вы завершили процесс установки. Если вам требуется техническая поддержка, посетите сайт www.tukui.org";
+	L["You are now finished with the installation process. Bonus Hint: If you wish to access blizzard micro menu, middle click on the minimap. If you don't have a middle click button then hold down shift and right click the minimap. If you are in need of technical support please visit us at www.tukui.org."] = "Вы завершили процесс установки. Если вам требуется техническая поддержка, посетите сайт www.tukui.org. Дполнительный совет: если вы хотите получить доступ к микроменю blizzard, нажмите средней кнопкой мыши на миникарте. Если у вас нет средней кнопки, то нажмите правой с зажатой клавишей shift.";
 	L["Please click the button below so you can setup variables and ReloadUI."] = "Пожалуйста, нажмите кнопку ниже для установки переменных и перезагрузки интерфейса.";
 	L["Finished"] = "Завершить";
 	L["CVars Set"] = "Настройки сброшены";
@@ -99,6 +99,12 @@ do
    	L["You can now choose what layout you wish to use for your primary talents."] = "Теперь вы можете выбрать раскладку для основного набора талантов";
    	L["You can now choose what layout you wish to use for your secondary talents."] = "Теперь вы можете выбрать раскладку для второго набора талантов";
    	L["This will change the layout of your unitframes, raidframes, and datatexts."] = "Это изменит расположение ваших рамок юнитов, рейда и информационных текстов"
+	
+	L['INCOMPATIBLE_ADDON'] = "Аддон %s не совместим с модулем %s ElvUI. Пожалуйста, отключите не совместимый аддон или модуль.";
+
+	L['Panel Texture'] = "Текстура панелей";
+	L['Specify a filename located inside the Interface\\AddOns\\ElvUI\\media\\textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.'] = "Укажите имя файла в папке Interface\\AddOns\\ElvUI\\media\\textures , который вы хотите использовать в качестве фона панелей.\n\nПожалуйста, учтите:\n-Рекомендованый размер изображения 256x128\n-Вы должны полностью перезапустить игру после добавления нового файла в папку.\n-Тип файла должен быть tga.";
+	L["Are you sure you want to disband the group?"] = "Вы уверены, что хотите распустить группу?";
 end
 
 --Media	/ Медиа
@@ -275,9 +281,9 @@ do
 	L['Width Multiplier'] = "Множитель ширины";
 		L['Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop.'] = "Умножает высоту или ширину фона панели на это значение. Это полезно, когда вы хотите иметь более одной панели на данном фоне.";
 	L['Action Paging'] = "Пролистывание панелей";
-		L["This works like a macro, you can run differant situations to get the actionbar to page differantly.\n Example: '[combat] 2;'"] = "Работает как макрос. Вы можете установить различные условия для вывода разных панелей.\n Пример: '[combat] 2;'";
+		L["This works like a macro, you can run different situations to get the actionbar to page differently.\n Example: '[combat] 2;'"] = "Работает как макрос. Вы можете установить различные условия для вывода разных панелей.\n Пример: '[combat] 2;'";
 	L['Visibility State'] = "Статус отображения";
-		L["This works like a macro, you can run differant situations to get the actionbar to show/hide differantly.\n Example: '[combat] show;hide'"] = "Работает как макрос. Вы можете установить различные условия для показа/скрытия панели.\n Пример: '[combat] show;hide'" ;
+		L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = "Работает как макрос. Вы можете установить различные условия для показа/скрытия панели.\n Пример: '[combat] show;hide'" ;
 	L['Restore Bar'] = "Восстановить панель";
 		L['Restore the actionbars default settings'] = "Устанавливает настройки панели на умолчания.";
 		L['Set the font size of the action buttons.'] = "Устанавливает размер шрифта на кнопках.";
@@ -343,7 +349,7 @@ do
 		L['Color power by classcolor or reaction.'] = "Окрашивает полосу ресурсов по цвету класса или реакции";
 	L['Health By Value'] = "Здоровье по значению";
 		L['Color health by ammount remaining.'] = "Окрашивает полосу здоровья в зависимости от оставшегося количества.";
-	L['Custom Health Backdrop'] = "Свой фон полоы здоровья";
+	L['Custom Health Backdrop'] = "Свой фон полосы здоровья";
 		L['Use the custom health backdrop color instead of a multiple of the main health color.'] = "Использовать свой фоновый цвет вместо основанного на основном цвете полосы здоровья.";
 	L['Class Backdrop'] = "Фон по классу";
 		L['Color the health backdrop by class or reaction.'] = "Окрасить фон полосы здоровья по цвету класса или реакции.";
@@ -510,6 +516,10 @@ do
 	L['Role Icon'] = "Иконка роли";
 	L['Smart Raid Filter'] = "Умный фильтр рейда";
 	L['Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance.'] = "Игнорировать пользовательские настройки отображения в определенных ситуациях. Пример: показывать только группы 1 и 2 в подземелье на 10 человек.";
+	L['Heal Prediction'] = "Входящее исцеление";
+	L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'] = "Отображать объем входящего исцеления на фреймах. Также отображает немного по другому окрашеную полосу для избыточного исцеления.";
+	L['Assist Frames'] = "Фреймы помошников";
+	L['Tank Frames'] = "Фреймы танков";
 end
 
 --Datatext / Текст данных
@@ -570,12 +580,12 @@ do
 	L["Avoidance Breakdown"] = "Распределение защиты";
 	L['AVD: '] = "Защита: ";
 	L['Unhittable:'] = "Полная защита от ударов";
-	L['AP'] = "Сила атаки";
-	L['SP'] = "Сила заклинаний";
-	L['HP'] = "ХП";
+	L['AP'] = "Сила Ат.";
+	L['SP'] = "+ Закл.";
+	L['HP'] = "+ Исцел.";
 	L["DPS"] = "УВС";
 	L["HPS"] = "ИВС";
-	L['Hit'] = "Меткость";
+	L['Hit'] = "Метк.";
 end
 
 --Tooltip / Подсказка
@@ -679,13 +689,13 @@ end
 --Misc / Прочее
 do
 	L['Experience'] = "Опыт";
-	L['Bars'] = "полосок";
+	L['Bars'] = "Полосы";
 	L['XP:'] = "Опыт:";
 	L['Remaining:'] = "Осталось:";
 	L['Rested:'] = "Бодрость:";
 	
 	L['Empty Slot'] = "Пустой слот";
-	L['Fishy Loot'] = true;
+	L['Fishy Loot'] = "Улов";
 	L["Can't Roll"] = "Не могу роллить";
 	L['Disband Group'] = "Распустить группу";
 	L['Raid Menu'] = "Рейдовое меню";
