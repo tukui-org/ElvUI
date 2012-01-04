@@ -159,18 +159,6 @@ E.Options.args.core = {
 						['RIGHT'] = L['Right Only'],
 					},
 				},
-				panelBackdrop = {
-					type = 'select',
-					name = L['Panel Backdrop'],
-					desc = L['Toggle showing of the left and right chat panels.'],
-					set = function(info, value) E.db.core.panelBackdrop = value; E:GetModule('Layout'):ToggleChatPanels() end,
-					values = {
-						['HIDEBOTH'] = L['Hide Both'],
-						['SHOWBOTH'] = L['Show Both'],
-						['LEFT'] = L['Left Only'],
-						['RIGHT'] = L['Right Only'],
-					},
-				},
 				panelBackdropName = {
 					type = 'input',
 					name = L['Panel Texture'],
