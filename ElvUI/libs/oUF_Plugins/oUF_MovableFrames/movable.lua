@@ -336,7 +336,8 @@ do
 		local target = isHeader or obj
 		if(not target:GetCenter()) then return end
 		if(backdropPool[target]) then return backdropPool[target] end
-
+		if target.isChild then return end
+		
 		local p, p2, p3, p4, p5 = target:GetPoint()
 		local E = select(1, unpack(ElvUI))
 		local UF = E:GetModule('UnitFrames')

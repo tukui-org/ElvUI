@@ -6024,6 +6024,76 @@ E.Options.args.unitframe.args.raid2640 = {
 	},
 }
 
+--Tank Frames
+E.Options.args.unitframe.args.tank = {
+	name = L['Tank Frames'],
+	type = 'group',
+	order = 1100,
+	get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['tank'][ info[#info] ] end,
+	set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['tank'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('tank') end,
+	args = {
+		enable = {
+			type = 'toggle',
+			order = 1,
+			name = L['Enable'],
+		},
+		general = {
+			order = 2,
+			type = 'group',
+			name = L['General'],
+			args = {
+				width = {
+					order = 2,
+					name = L['Width'],
+					type = 'range',
+					min = 50, max = 500, step = 1,
+				},			
+				height = {
+					order = 3,
+					name = L['Height'],
+					type = 'range',
+					min = 10, max = 250, step = 1,
+				},					
+			},
+		},	
+	},
+}
+
+--Assist Frames
+E.Options.args.unitframe.args.assist = {
+	name = L['Assist Frames'],
+	type = 'group',
+	order = 1100,
+	get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['assist'][ info[#info] ] end,
+	set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['assist'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('assist') end,
+	args = {
+		enable = {
+			type = 'toggle',
+			order = 1,
+			name = L['Enable'],
+		},
+		general = {
+			order = 2,
+			type = 'group',
+			name = L['General'],
+			args = {
+				width = {
+					order = 2,
+					name = L['Width'],
+					type = 'range',
+					min = 50, max = 500, step = 1,
+				},			
+				height = {
+					order = 3,
+					name = L['Height'],
+					type = 'range',
+					min = 10, max = 250, step = 1,
+				},					
+			},
+		},	
+	},
+}
+
 local profiles, selectedProfile = {}, nil
 E.Options.args.unitframe.args.profileGroup = {
 	type = 'group',

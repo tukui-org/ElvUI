@@ -523,6 +523,8 @@ do
 	L['Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance.'] = true;
 	L['Heal Prediction'] = true;
 	L['Show a incomming heal prediction bar on the unitframe. Also display a slightly differant colored bar for incoming overheals.'] = true;
+	L['Assist Frames'] = true;
+	L['Tank Frames'] = true;
 end
 
 --Datatext

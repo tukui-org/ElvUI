@@ -258,7 +258,7 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 	end
 end
 
-function UF:CreateAndUpdateHeaderGroup(group)
+function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
 	
 	self:UpdateColors()
@@ -266,9 +266,14 @@ function UF:CreateAndUpdateHeaderGroup(group)
 	if self.db['layouts'][self.ActiveLayout][group].enable then
 		local db = self.db['layouts'][self.ActiveLayout][group]
 		if not self[group] then
-			ElvUF:RegisterStyle("ElvUF_"..group, UF["Construct_"..E:StringTitle(group).."Frames"])
-			ElvUF:SetActiveStyle("ElvUF_"..group)
-			self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, nil, 'point', self.db['layouts'][self.ActiveLayout][group].point, 'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height))
+			ElvUF:RegisterStyle("ElvUF_"..E:StringTitle(group), UF["Construct_"..E:StringTitle(group).."Frames"])
+			ElvUF:SetActiveStyle("ElvUF_"..E:StringTitle(group))
+
+			if template then
+				self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 'point', self.db['layouts'][self.ActiveLayout][group].point, 'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 'groupFilter', groupFilter, 'template', template)
+			else
+				self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 'point', self.db['layouts'][self.ActiveLayout][group].point, 'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 'groupFilter', groupFilter)
+			end
 			self['handledheaders'][group] = self[group]
 			self[group].groupName = group
 		end
@@ -327,8 +332,12 @@ function UF:LoadUnits()
 	end
 	self['unitgroupstoload'] = nil
 	
-	for group, numGroup in pairs(self['headerstoload']) do
-		self:CreateAndUpdateHeaderGroup(group, numGroup)
+	for group, groupOptions in pairs(self['headerstoload']) do
+		local groupFilter, template
+		if type(groupOptions) == 'table' then
+			groupFilter, template = unpack(groupOptions)
+		end
+		self:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 	end
 	self['headerstoload'] = nil
 end
