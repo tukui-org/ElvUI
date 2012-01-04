@@ -103,7 +103,7 @@ local function GetInfoText(frame, unit, r, g, b, min, max, reverse, type)
 				if min == max then
 					value = format("%s", E:ShortValue(max))	
 				else
-					value = format("%s |cffD7BEA5-|r %s", E:ShortValue(min), r * 255, g * 255, b * 255, E:ShortValue(max))
+					value = format("%s |cffD7BEA5-|r %s", E:ShortValue(min), E:ShortValue(max))
 				end
 			elseif db[type].text_format == 'current' then
 				value = format("%s", E:ShortValue(min))	
