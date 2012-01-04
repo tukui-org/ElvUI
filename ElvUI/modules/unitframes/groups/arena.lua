@@ -21,6 +21,8 @@ function UF:Construct_ArenaFrames(frame)
 	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT')
 	
 	frame.Trinket = self:Construct_Trinket(frame)
+	
+	frame:SetAttribute("type2", "focus")
 end
 
 function UF:Update_ArenaFrames(frame, db)

@@ -13,6 +13,8 @@ function UF:Construct_Raid2640Frames(unitGroup)
 	self.menu = UF.SpawnMenu
 
 	self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
+	self.Health.frequentUpdates = true;
+	
 	self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT', false)
 	self.Name = UF:Construct_NameText(self)
 	self.Buffs = UF:Construct_Buffs(self)
@@ -29,6 +31,7 @@ function UF:Construct_Raid2640Frames(unitGroup)
 
 	self.RaidIcon = UF:Construct_RaidIcon(self)
 	self.ReadyCheck = UF:Construct_ReadyCheckIcon(self)	
+	self.HealPrediction = UF:Construct_HealComm(self)
 	
 	UF:Update_Raid2640Frames(self, E.db['unitframe']['layouts'][UF.ActiveLayout]['raid2640'])
 	UF:Update_StatusBars()
@@ -369,6 +372,45 @@ function UF:Update_Raid2640Frames(frame, db)
 			end		
 		end
 	end
+
+	--OverHealing
+	do
+		local healPrediction = frame.HealPrediction
+		
+		if db.healPrediction then
+			if not frame:IsElementEnabled('HealPrediction') then
+				frame:EnableElement('HealPrediction')
+			end
+			
+			healPrediction.myBar:ClearAllPoints()
+			healPrediction.myBar:SetOrientation(db.health.orientation)
+			healPrediction.otherBar:ClearAllPoints()
+			healPrediction.otherBar:SetOrientation(db.health.orientation)
+			
+			if db.health.orientation == 'HORIZONTAL' then
+				healPrediction.myBar:Width(db.width - (BORDER*2))
+				healPrediction.myBar:SetPoint('BOTTOMLEFT', frame.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
+				healPrediction.myBar:SetPoint('TOPLEFT', frame.Health:GetStatusBarTexture(), 'TOPRIGHT')	
+
+				healPrediction.otherBar:SetPoint('TOPLEFT', healPrediction.myBar:GetStatusBarTexture(), 'TOPRIGHT')	
+				healPrediction.otherBar:SetPoint('BOTTOMLEFT', healPrediction.myBar:GetStatusBarTexture(), 'BOTTOMRIGHT')	
+				healPrediction.otherBar:Width(db.width - (BORDER*2))
+			else
+				healPrediction.myBar:Height(db.height - (BORDER*2))
+				healPrediction.myBar:SetPoint('BOTTOMLEFT', frame.Health:GetStatusBarTexture(), 'TOPLEFT')
+				healPrediction.myBar:SetPoint('BOTTOMRIGHT', frame.Health:GetStatusBarTexture(), 'TOPRIGHT')				
+
+				healPrediction.otherBar:SetPoint('BOTTOMLEFT', healPrediction.myBar:GetStatusBarTexture(), 'TOPLEFT')
+				healPrediction.otherBar:SetPoint('BOTTOMRIGHT', healPrediction.myBar:GetStatusBarTexture(), 'TOPRIGHT')				
+				healPrediction.otherBar:Height(db.height - (BORDER*2))	
+			end
+			
+		else
+			if frame:IsElementEnabled('HealPrediction') then
+				frame:DisableElement('HealPrediction')
+			end		
+		end
+	end	
 	
 	UF:UpdateAuraWatch(frame)
 

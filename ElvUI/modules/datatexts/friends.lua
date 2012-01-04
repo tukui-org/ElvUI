@@ -44,7 +44,12 @@ local menuList = {
 
 local function inviteClick(self, arg1, arg2, checked)
 	menuFrame:Hide()
-	InviteUnit(arg1)
+	
+	if type(arg1) ~= 'number' then
+		InviteUnit(arg1)
+	else
+		BNInviteFriend(arg1);
+	end
 end
 
 local function whisperClick(self,arg1,arg2,checked)
@@ -165,13 +170,14 @@ local function Click(self, btn)
 					menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID,notCheckable=true, func = whisperClick}
 					
 					if select(1, UnitFactionGroup("player")) == "Horde" then playerFaction = 0 else playerFaction = 1 end
-					if info[6] == wowString and info[11] == E.myrealm and playerFaction == info[12] then
+					if info[6] == wowString and playerFaction == info[12] then
 						classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[14]], GetQuestDifficultyColor(info[16])
 						if classc == nil then classc = GetQuestDifficultyColor(info[16]) end
 
 						if UnitInParty(info[4]) or UnitInRaid(info[4]) then grouped = 1 else grouped = 2 end
 						menuCountInvites = menuCountInvites + 1
-						menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[16],classc.r*255,classc.g*255,classc.b*255,info[4]), arg1 = info[4],notCheckable=true, func = inviteClick}
+						
+						menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[16],classc.r*255,classc.g*255,classc.b*255,info[4]), arg1 = info[5], notCheckable=true, func = inviteClick}
 					end
 				end
 			end

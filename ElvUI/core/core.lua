@@ -68,6 +68,14 @@ function E:UpdateMedia()
 	self["media"].hexvaluecolor = self:RGBToHex(value.r, value.g, value.b)
 	self["media"].rgbvaluecolor = {value.r, value.g, value.b}
 	
+	if LeftChatPanel and LeftChatPanel.tex and RightChatPanel and RightChatPanel.tex then
+		LeftChatPanel.tex:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\'..E.db.core.panelBackdropName..'.tga')
+		LeftChatPanel.tex:SetAlpha(E.db.core.backdropfadecolor.a - 0.55 > 0 and E.db.core.backdropfadecolor.a - 0.55 or 0.5)		
+		
+		RightChatPanel.tex:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\'..E.db.core.panelBackdropName..'.tga')
+		RightChatPanel.tex:SetAlpha(E.db.core.backdropfadecolor.a - 0.55 > 0 and E.db.core.backdropfadecolor.a - 0.55 or 0.5)		
+	end
+	
 	self:ValueFuncCall()
 	self:UpdateBlizzardFonts()
 end

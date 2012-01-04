@@ -159,6 +159,16 @@ E.Options.args.core = {
 						['RIGHT'] = L['Right Only'],
 					},
 				},
+				panelBackdropName = {
+					order = 12,
+					type = 'input',
+					name = L['Panel Texture'],
+					desc = L['Specify a filename located inside the Interface\\AddOns\\ElvUI\\media\\textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.'],
+					set = function(info, value) 
+						E.db.core[ info[#info] ] = value
+						E:UpdateMedia()
+					end,
+				},
 			},
 		},
 		media = {

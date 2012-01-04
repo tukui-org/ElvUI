@@ -27,7 +27,7 @@ function UF:Construct_TargetFrame(frame)
 	frame.Castbar.LatencyTexture:Hide()
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)		
 	frame.CPoints = self:Construct_Combobar(frame)
-	
+	frame.HealPrediction = self:Construct_HealComm(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
 end
 
@@ -443,6 +443,31 @@ function UF:Update_TargetFrame(frame, db)
 			end		
 		end
 	end
+	
+	--OverHealing
+	do
+		local healPrediction = frame.HealPrediction
+		
+		if db.healPrediction then
+			if not frame:IsElementEnabled('HealPrediction') then
+				frame:EnableElement('HealPrediction')
+			end
+
+			healPrediction.myBar:ClearAllPoints()
+			healPrediction.myBar:Width(db.width - (BORDER*2))
+			healPrediction.myBar:SetPoint('BOTTOMLEFT', frame.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
+			healPrediction.myBar:SetPoint('TOPLEFT', frame.Health:GetStatusBarTexture(), 'TOPRIGHT')	
+
+			healPrediction.otherBar:ClearAllPoints()
+			healPrediction.otherBar:SetPoint('TOPLEFT', healPrediction.myBar:GetStatusBarTexture(), 'TOPRIGHT')	
+			healPrediction.otherBar:SetPoint('BOTTOMLEFT', healPrediction.myBar:GetStatusBarTexture(), 'BOTTOMRIGHT')	
+			healPrediction.otherBar:Width(db.width - (BORDER*2))
+		else
+			if frame:IsElementEnabled('HealPrediction') then
+				frame:DisableElement('HealPrediction')
+			end		
+		end
+	end	
 	
 	frame.snapOffset = -(12 + db.castbar.height)
 	

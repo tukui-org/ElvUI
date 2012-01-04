@@ -109,6 +109,13 @@ function LO:CreateChatPanels()
 	lchat:CreateBackdrop('Transparent')
 	lchat.backdrop:SetAllPoints()
 	
+	--Background Texture
+	lchat.tex = lchat:CreateTexture(nil, 'OVERLAY')
+	lchat.tex:Point('TOPLEFT', lchat, 'TOPLEFT', 2, -2)
+	lchat.tex:Point('BOTTOMRIGHT', lchat, 'BOTTOMRIGHT', -2, 2)
+	lchat.tex:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\'..E.db.core.panelBackdropName..'.tga')
+	lchat.tex:SetAlpha(E.db.core.backdropfadecolor.a - 0.7 > 0 and E.db.core.backdropfadecolor.a - 0.7 or 0.5)
+	
 	--Left Chat Tab
 	local lchattab = CreateFrame('Frame', 'LeftChatTab', LeftChatPanel)
 	lchattab:Point('TOPLEFT', lchat, 'TOPLEFT', 5, -5)
@@ -145,6 +152,13 @@ function LO:CreateChatPanels()
 	rchat:Point('BOTTOMRIGHT', E.UIParent, -4, 4)
 	rchat:CreateBackdrop('Transparent')
 	rchat.backdrop:SetAllPoints()
+	
+	--Background Texture
+	rchat.tex = rchat:CreateTexture(nil, 'OVERLAY')
+	rchat.tex:Point('TOPLEFT', rchat, 'TOPLEFT', 2, -2)
+	rchat.tex:Point('BOTTOMRIGHT', rchat, 'BOTTOMRIGHT', -2, 2)
+	rchat.tex:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\'..E.db.core.panelBackdropName..'.tga')
+	rchat.tex:SetAlpha(E.db.core.backdropfadecolor.a - 0.7 > 0 and E.db.core.backdropfadecolor.a - 0.7 or 0.5)	
 	
 	--Right Chat Tab
 	local rchattab = CreateFrame('Frame', 'RightChatTab', RightChatPanel)

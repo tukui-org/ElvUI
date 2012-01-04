@@ -21,6 +21,8 @@ function UF:Construct_BossFrames(frame)
 	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT')
 	
 	frame.AltPowerBar = self:Construct_AltPowerBar(frame)
+	
+	frame:SetAttribute("type2", "focus")
 end
 
 function UF:Update_BossFrames(frame, db)
