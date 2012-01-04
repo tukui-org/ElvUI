@@ -93,6 +93,10 @@ end
 
 local function formatResetTime(sec)
 	local d,h,m,s = ChatFrame_TimeBreakDown(floor(sec))
+	if not d or not h or not m or not s then
+		return 'N/A'
+	end
+	
 	if d > 0 and lockoutFormatString[h>10 and 1 or 2] then 
 		return format(lockoutFormatString[h>10 and 1 or 2], d, h, m)
 	end
