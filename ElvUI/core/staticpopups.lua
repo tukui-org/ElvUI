@@ -63,3 +63,13 @@ StaticPopupDialogs["RESETUI_CHECK"] = {
 	whileDead = 1,
 	preferredIndex = 3
 }
+
+StaticPopupDialogs["DISBAND_RAID"] = {
+	text = L["Are you sure you want to disband the group?"],
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	OnAccept = function() E:GetModule('Misc'):DisbandRaidGroup() end,
+	timeout = 0,
+	whileDead = 1,
+	preferredIndex = 3
+}
