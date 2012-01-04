@@ -5520,7 +5520,32 @@ E.Options.args.unitframe.args.raid625 = {
 				},							
 			},
 		},		
-		
+		rdebuffs = {
+			order = 800,
+			type = 'group',
+			name = L['RaidDebuff Indicator'],
+			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['raid625']['rdebuffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid625']['rdebuffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625') end,
+			args = {
+				enable = {
+					type = 'toggle',
+					name = L['Enable'],
+					order = 1,
+				},	
+				size = {
+					type = 'range',
+					name = L['Size'],
+					order = 2,
+					min = 8, max = 35, step = 1,
+				},				
+				fontsize = {
+					type = 'range',
+					name = L['Font Size'],
+					order = 3,
+					min = 7, max = 22, step = 1,
+				},				
+			},
+		},		
 	},
 }
 
@@ -5993,32 +6018,6 @@ E.Options.args.unitframe.args.raid2640 = {
 					order = 4,
 					min = 7, max = 22, step = 1,
 				},
-			},
-		},
-		rdebuffs = {
-			order = 700,
-			type = 'group',
-			name = L['RaidDebuff Indicator'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['raid2640']['rdebuffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid2640']['rdebuffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid2640') end,
-			args = {
-				enable = {
-					type = 'toggle',
-					name = L['Enable'],
-					order = 1,
-				},	
-				size = {
-					type = 'range',
-					name = L['Size'],
-					order = 2,
-					min = 8, max = 35, step = 1,
-				},				
-				fontsize = {
-					type = 'range',
-					name = L['Font Size'],
-					order = 3,
-					min = 7, max = 22, step = 1,
-				},				
 			},
 		},		
 	},
