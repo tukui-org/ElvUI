@@ -409,6 +409,13 @@ function UF:Initialize()
 	self.db = E.db["unitframe"]
 	if self.db.enable ~= true then return; end
 	E.UnitFrames = UF;
+
+	--Update all created profiles just in case.			
+	for layout in pairs(DF['unitframe']['layouts']) do	
+		if layout ~= 'Primary' then
+			self:CopySettings('Primary', layout)
+		end
+	end
 	
 	ElvUF:RegisterStyle('ElvUF', function(frame, unit)
 		self:Construct_UF(frame, unit)
