@@ -974,7 +974,7 @@ DF['unitframe'] = {
 					['anchorPoint'] = 'LEFT',					
 					['fontsize'] = 10,
 					['showPlayerOnly'] = false,
-					['useFilter'] = 'RaidDebuffs',	
+					['useFilter'] = 'DebuffBlacklist',	
 					['durationLimit'] = 0,
 				},	
 				['buffIndicator'] = {
@@ -1781,7 +1781,7 @@ DF['unitframe'] = {
 					['anchorPoint'] = 'LEFT',					
 					['fontsize'] = 10,
 					['showPlayerOnly'] = false,
-					['useFilter'] = 'RaidDebuffs',	
+					['useFilter'] = 'DebuffBlacklist',	
 					['durationLimit'] = 0,
 				},	
 				['buffIndicator'] = {

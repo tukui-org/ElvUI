@@ -108,6 +108,12 @@ DF['DebuffBlacklist'] = {
 		[SpellName(25163)] = true, --fucking annoying pet debuff oozeling disgusting aura
 		[SpellName(80354)] = true, --timewarp debuff
 		[SpellName(95223)] = true, --group res debuff
+		[SpellName(36900)] = true, --Soul Split: Evil
+		[SpellName(36901)] = true, --Soul Split: Good
+		[SpellName(36897)] = true, --Transporter Malfunction
+		[SpellName(36899)] = true, --Transporter Malfunction
+		[SpellName(36895)] = true, --Transporter Malfunction
+		[SpellName(36893)] = true, --Transporter Malfunction
 	},
 }
 

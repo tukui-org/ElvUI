@@ -117,7 +117,7 @@ end
 function RBR:UpdateReminder(event, unit)
 	if (event == "UNIT_AURA" and unit ~= "player") then return end
 	local frame = self.frame
-	
+
 	if E.role == 'Caster' then
 		self.Spell5Buffs = self.CasterSpell5Buffs
 		self.Spell6Buffs = self.CasterSpell6Buffs
