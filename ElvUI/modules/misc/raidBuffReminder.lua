@@ -77,9 +77,16 @@ RBR.Spell4Buffs = {
 	21562, -- Fortitude	
 }
 
-RBR.Spell5Buffs = {
+RBR.CasterSpell5Buffs = {
 	61316, --"Dalaran Brilliance"
 	1459, --"Arcane Brilliance"	
+}
+
+RBR.MeleeSpell5Buffs = {
+	6673, --Battle Shout
+	57330, --Horn of Winter
+	93435, --Roar of Courage
+	8076, --Strength of Earth
 }
 
 RBR.CasterSpell6Buffs = {
@@ -112,8 +119,10 @@ function RBR:UpdateReminder(event, unit)
 	local frame = self.frame
 	
 	if E.Role == 'Caster' then
+		self.Spell5Buffs = self.CasterSpell5Buffs
 		self.Spell6Buffs = self.CasterSpell6Buffs
 	else
+		self.Spell5Buffs = self.MeleeSpell5Buffs
 		self.Spell6Buffs = self.MeleeSpell6Buffs
 	end
 	
