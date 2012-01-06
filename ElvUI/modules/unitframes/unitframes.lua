@@ -391,6 +391,7 @@ end
 
 function HideRaid()
 	if InCombatLockdown() then return end
+	CompactRaidFrameManager:SetScale(0.000001)
 	CompactRaidFrameManager:Hide()
 	local compact_raid = CompactRaidFrameManager_GetSetting("IsShown")
 	if compact_raid and compact_raid ~= "0" then 
@@ -401,8 +402,11 @@ end
 function UF:DisableBlizzard(event)
 	hooksecurefunc("CompactRaidFrameManager_UpdateShown", HideRaid)
 	CompactRaidFrameManager:HookScript('OnShow', HideRaid)
-	CompactRaidFrameManager:SetScale(0.000001)
 	CompactRaidFrameManager:UnregisterAllEvents()
+	
+	RaidGroupFrame_Update = nil;
+	
+	HideRaid()
 end
 
 function UF:Initialize()	
@@ -436,11 +440,13 @@ function UF:Initialize()
 		UnitPopupMenus["PLAYER"] = { "WHISPER", "INSPECT", "INVITE", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "RAID_TARGET_ICON", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL" };
 		UnitPopupMenus["RAID_PLAYER"] = { "MUTE", "UNMUTE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "WHISPER", "INSPECT", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "RAID_TARGET_ICON", "SELECT_ROLE", "RAID_LEADER", "RAID_PROMOTE", "RAID_DEMOTE", "LOOT_PROMOTE", "VOTE_TO_KICK", "RAID_REMOVE", "PVP_REPORT_AFK", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL" };
 		UnitPopupMenus["RAID"] = { "MUTE", "UNMUTE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "RAID_LEADER", "RAID_PROMOTE", "RAID_MAINTANK", "RAID_MAINASSIST", "RAID_TARGET_ICON", "SELECT_ROLE", "LOOT_PROMOTE", "RAID_DEMOTE", "VOTE_TO_KICK", "RAID_REMOVE", "PVP_REPORT_AFK", "CANCEL" };
-		UnitPopupMenus["VEHICLE"] = { "RAID_TARGET_ICON", "VEHICLE_LEAVE", "CANCEL" };
-		UnitPopupMenus["TARGET"] = { "RAID_TARGET_ICON", "CANCEL" };
-		UnitPopupMenus["ARENAENEMY"] = { "CANCEL" };
-		UnitPopupMenus["FOCUS"] = { "RAID_TARGET_ICON", "CANCEL" };
-		UnitPopupMenus["BOSS"] = { "RAID_TARGET_ICON", "CANCEL" };
+		UnitPopupMenus["VEHICLE"] = { "RAID_TARGET_ICON", "VEHICLE_LEAVE", "CANCEL" }
+		UnitPopupMenus["TARGET"] = { "RAID_TARGET_ICON", "CANCEL" }
+		UnitPopupMenus["ARENAENEMY"] = { "CANCEL" }
+		UnitPopupMenus["FOCUS"] = { "RAID_TARGET_ICON", "CANCEL" }
+		UnitPopupMenus["BOSS"] = { "RAID_TARGET_ICON", "CANCEL" }	
+		
+		self:RegisterEvent('RAID_ROSTER_UPDATE', 'DisableBlizzard')
 	end
 		
 	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs

@@ -1,5 +1,5 @@
 local E, L, DF = unpack(select(2, ...)); --Engine
-local M = E:NewModule('Misc', 'AceEvent-3.0');
+local M = E:NewModule('Misc', 'AceEvent-3.0', 'AceTimer-3.0');
 
 E.Misc = M;
 local UIErrorsFrame = UIErrorsFrame;
@@ -89,6 +89,20 @@ function M:DisbandRaidGroup()
 	LeaveParty()
 end
 
+local oldX, oldY
+function M:CheckMovement()	
+	local curX, curY = GetPlayerMapPosition("player")
+	curX = E:Round(curX, 3) * 100
+	curY = E:Round(curY, 3) * 100
+
+	if oldX == curX and oldY == curY then
+		WorldMapFrame:SetAlpha(1)
+	else
+		oldX, oldY = curX, curY
+		WorldMapFrame:SetAlpha(E.db.core.mapTransparency)
+	end
+end
+
 function M:Initialize()
 	self:LoadRaidMarker()
 	self:LoadExpRepBar()
@@ -104,6 +118,8 @@ function M:Initialize()
 	--%TEMP BLIZZARD FIX%
 	self:RegisterEvent('CVAR_UPDATE', 'ForceProfanity')
 	self:RegisterEvent('BN_MATURE_LANGUAGE_FILTER', 'ForceProfanity')
+	
+	--self.MovingTimer = self:ScheduleRepeatingTimer("CheckMovement", 0.4)
 end
 
 E:RegisterModule(M:GetName())

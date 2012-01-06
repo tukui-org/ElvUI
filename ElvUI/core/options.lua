@@ -130,8 +130,16 @@ E.Options.args.core = {
 					isPercent = true,
 					set = function(info, value) E.db.core[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end
 				},		
-				panelWidth = {
+				--[[mapTransparency = {
 					order = 9,
+					name = L['Map Transparency'],
+					desc = L['Controls what the transparency of the worldmap will be set to when you are moving.'],
+					type = 'range',
+					isPercent = true,
+					min = 0, max = 1, step = 0.01,
+				},]]
+				panelWidth = {
+					order = 100,
 					type = 'range',
 					name = L['Panel Width'],
 					desc = L['PANEL_DESC'],
@@ -139,7 +147,7 @@ E.Options.args.core = {
 					min = 150, max = 700, step = 1,
 				},
 				panelHeight = {
-					order = 10,
+					order = 101,
 					type = 'range',
 					name = L['Panel Height'],
 					desc = L['PANEL_DESC'],
@@ -147,7 +155,7 @@ E.Options.args.core = {
 					min = 150, max = 600, step = 1,
 				},
 				panelBackdrop = {
-					order = 11,
+					order = 102,
 					type = 'select',
 					name = L['Panel Backdrop'],
 					desc = L['Toggle showing of the left and right chat panels.'],
@@ -160,7 +168,7 @@ E.Options.args.core = {
 					},
 				},
 				panelBackdropName = {
-					order = 12,
+					order = 103,
 					type = 'input',
 					name = L['Panel Texture'],
 					desc = L['Specify a filename located inside the Interface\\AddOns\\ElvUI\\media\\textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.'],
