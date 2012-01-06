@@ -90,7 +90,7 @@ function M:DisbandRaidGroup()
 end
 
 local oldX, oldY
-function M:CheckMovement()
+function M:CheckMovement()	
 	local curX, curY = GetPlayerMapPosition("player")
 	curX = E:Round(curX, 3) * 100
 	curY = E:Round(curY, 3) * 100
@@ -118,7 +118,7 @@ function M:Initialize()
 	self:RegisterEvent('CVAR_UPDATE', 'ForceProfanity')
 	self:RegisterEvent('BN_MATURE_LANGUAGE_FILTER', 'ForceProfanity')
 	
-	self.MovingTimer = self:ScheduleRepeatingTimer("CheckMovement", 0.3)
+	--self.MovingTimer = self:ScheduleRepeatingTimer("CheckMovement", 0.4)
 end
 
 E:RegisterModule(M:GetName())
