@@ -391,6 +391,7 @@ end
 
 function HideRaid()
 	if InCombatLockdown() then return end
+	CompactRaidFrameManager:SetScale(0.000001)
 	CompactRaidFrameManager:Hide()
 	local compact_raid = CompactRaidFrameManager_GetSetting("IsShown")
 	if compact_raid and compact_raid ~= "0" then 
@@ -401,8 +402,11 @@ end
 function UF:DisableBlizzard(event)
 	hooksecurefunc("CompactRaidFrameManager_UpdateShown", HideRaid)
 	CompactRaidFrameManager:HookScript('OnShow', HideRaid)
-	CompactRaidFrameManager:SetScale(0.000001)
 	CompactRaidFrameManager:UnregisterAllEvents()
+	
+	RaidGroupFrame_Update = nil;
+	
+	HideRaid()
 end
 
 function UF:Initialize()	
@@ -441,6 +445,8 @@ function UF:Initialize()
 		UnitPopupMenus["ARENAENEMY"] = { "CANCEL" }
 		UnitPopupMenus["FOCUS"] = { "RAID_TARGET_ICON", "CANCEL" }
 		UnitPopupMenus["BOSS"] = { "RAID_TARGET_ICON", "CANCEL" }	
+		
+		self:RegisterEvent('RAID_ROSTER_UPDATE', 'DisableBlizzard')
 	end
 		
 	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs
