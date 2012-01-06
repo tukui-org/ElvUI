@@ -984,7 +984,7 @@ DF['unitframe'] = {
 					['colorIcons'] = true,
 				},
 				['rdebuffs'] = {
-					['enable'] = true,
+					['enable'] = false,
 					['fontsize'] = 10,
 					['size'] = 26,
 				},
@@ -1791,7 +1791,7 @@ DF['unitframe'] = {
 					['colorIcons'] = true,
 				},
 				['rdebuffs'] = {
-					['enable'] = true,
+					['enable'] = false,
 					['fontsize'] = 10,
 					['size'] = 26,
 				},
