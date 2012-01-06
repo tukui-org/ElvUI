@@ -38,6 +38,7 @@ DF["core"] = {
 	['bags'] = true,
 	['loot'] = true,
 	['lootRoll'] = true,
+	['mapTransparency'] = 0.5,
 };
 
 --NamePlate

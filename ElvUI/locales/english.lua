@@ -719,6 +719,8 @@ do
 	L['Change the position of the experience/reputation bar.'] = true;
 	L['Top Screen'] = true;
 	L["Below Minimap"] = true;
+	L['Map Transparency'] = true;
+	L['Controls what the transparency of the worldmap will be set to when you are moving.'] = true;
 end
 
 --Bags
