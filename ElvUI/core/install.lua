@@ -153,11 +153,8 @@ end
 
 local function SetupCVars()
 	SetCVar("mapQuestDifficulty", 1)
-	SetCVar("scriptErrors", 0)
 	SetCVar("ShowClassColorInNameplate", 1)
 	SetCVar("screenshotQuality", 10)
-	SetCVar("cameraDistanceMax", 50)
-	SetCVar("cameraDistanceMaxFactor", 3.4)
 	SetCVar("chatMouseScroll", 1)
 	SetCVar("chatStyle", "classic")
 	SetCVar("WholeChatWindowClickable", 0)
@@ -166,7 +163,8 @@ local function SetupCVars()
 	SetCVar("showNewbieTips", 0)
 	SetCVar("showLootSpam", 1)
 	SetCVar("UberTooltips", 1)
-	SetCVar("gxTextureCacheSize", 512)	
+	SetCVar("threatWarning", 3)
+	SetCVar('alwaysShowActionBars', 1)
 	InstallStepComplete.message = L["CVars Set"]
 	InstallStepComplete:Show()					
 end	
