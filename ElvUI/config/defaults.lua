@@ -28,7 +28,7 @@ DF["core"] = {
 	["valuecolor"] = {r = 23/255,g = 132/255,b = 209/255},
 	
 	--panels
-	['panelWidth'] = 420,
+	['panelWidth'] = 412,
 	['panelHeight'] = 180,
 	['panelBackdropName'] = '',
 	['panelBackdrop'] = 'SHOWBOTH',
