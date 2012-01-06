@@ -399,7 +399,9 @@ function CH:Initialize()
 		SoundSys:RegisterEvent("CHAT_MSG_BN_WHISPER")
 		SoundSys:HookScript("OnEvent", function(self, event, ...)
 			if event == "CHAT_MSG_WHISPER" or "CHAT_MSG_BN_WHISPER" then
-				PlaySoundFile(E.media.whispersound,"Master")
+				if E.db.chat.whisperwarning == true then
+					PlaySoundFile(E.media.whispersound,"Master")
+				end
 			end
 		end)
 	end

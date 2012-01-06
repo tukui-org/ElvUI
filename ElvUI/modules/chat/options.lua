@@ -50,7 +50,7 @@ E.Options.args.chat = {
 					type = 'toggle',
 					name = L['Whisper Warning'],
 					desc = L['Plays a sound when you receive a whisper.'],
-					set = function(info, value) E.db.chat.whisperwarning = value; StaticPopup_Show("CONFIG_RL") end,
+					set = function(info, value) E.db.chat.whisperwarning = value; end,
 				},
 				whispersound = {
 					order = 2,
