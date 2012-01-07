@@ -134,7 +134,6 @@ end
 
 local function SetupCVars()
 	SetCVar("scriptErrors", 1)
-	SetCVar("gxTextureCacheSize", 512)
 	SetCVar("buffDurations", 1)
 	SetCVar("consolidateBuffs", 0)
 	SetCVar("lootUnderMouse", 1)
@@ -173,6 +172,7 @@ local function SetupCVars()
 	SetCVar("bloattest", 0)
 	SetCVar("bloatnameplates", 0)
 	SetCVar("threatWarning", 3)
+	SetCVar('alwaysShowActionBars', 1)
 	InstallStepComplete.message = L["CVars Set"]
 	InstallStepComplete:Show()					
 end	
