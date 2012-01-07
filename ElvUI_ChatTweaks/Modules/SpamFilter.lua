@@ -473,6 +473,9 @@ Module.triggers = {
 	"专业代练.*安全快速发货", --17美元=10k  大量金币薄利多销，货比三家，专业代练1-85，练技能，账号，火箭月卡，还有各种378BOE装备，各种新材料，大小幽灵虎，专业团队代打ICC成就龙，刷荣誉等，安全快速发货
 	"cheap.*sale.*囤货", --WTS [Blazing Hippogryph] [Amani Dragonhawk]cheapest for sale,pst,plz 龙鹰和角鹰兽囤货，需要速密，谢谢
 	"金币.*卖.*买金币", --感恩大回馈金币大甩卖 ,买金币送坐骑，送代练，需要的请M,另外有378装备，代练，帐号，月卡出售。大、小幽灵虎，犀牛，角鹰兽， 魔法公鸡，赤红DK战马,战斗熊等
+	"wts.*%[.*%].*gear.*%d+k.*gift", --WTS大卖 [Dragonbelly Bracers] [Boots of Fungoid Growth] lvl384 or 397 pattern gear Gem 150$=100k+a free gift,17$=10k, pst withi more offer
+	"wts.*%[.*%].*cheap.*囤货甩卖", --WTS [Savage Raptor] [Blazing Hippogryph] [X-51 Nether-Rocket X-TREME] cheap pst,囤货甩卖，需要的
+	"wts.*%[.*%].*cheapgold.*%d+k", --WTS大卖 [Pattern: Bladeshadow Wristguards] [Pattern: World Mender's Pants] and cheap gold 10k for 15,100k for 140 pst
 
 	--Advanced URL's/Misc
 	"%d+eu.*deliver.*credible.*kcq[%.,]", --12.66EUR/10000G 10 minutes delivery.absolutely credible. K C Q .< 0 M
@@ -550,6 +553,13 @@ Module.triggers = {
 	"boe.*sale.*upitems", --wts [Krol Decapitator] we have all the Boe items,mats and 378 items for sale .<www.upitems.com>!!
 	"wts.*rocket.*deliver", --WTSx-53 touring rocketinstant delivery,pst！！！！！
 	"wts.*%[.*%].*$%d+.*%[.*%].*$%d+" --wts[Blauvelt's Family Crest]$34.00[Gilnean Ring of Ruination]$34.99[Signet of High Arcanist Savor]$34.90pst
+	"luckygolds.*%d+k", --@@@@@@@@@ www  luckygolds  c@m   only 10K=6.99EURO 100K+10K=65.99EUROwww  luckygolds  c@m @@@@@@@@@
+	"k4p[o0]wer.*%d+k", --WWW K4POWER C0M {Code:Xmas}->>Xmas Promotions{18th Dec-26th Dec}->35% Free,0rder 50k More->X-53 Rocket Mount For Free!
+	"sell.*rocket.*pet.*gametimecard", --sell  [X-53 Touring Rocket] &2mounts,6pets,gametimecard,CATA/WLK CD-key
+	--WTS[Bladeshatter Treads][Splinterfoot Sandals][Rooftop Griptoes]&all 397 epic boot on <g2500 dot com>. 
+	"wts.*%[.*%].*g2500.*com", --WTS[Foundations of Courage][Leggings of Nature's Champion]Search for more wow items on <g2500 dot com>. With discount code G2500OKYO5097 to order now.
+	"g[öo]+ld4rpg.*%d+k", --! vv w vv .Göld4RPG. c ö m Chóosë thè lêgal wëbsîte Chëapest Gôld,10K=13 USD,500K în Stôck> Dëlivëry in 7mins,--Chëap pôwer lëveling- Welcöme tö w vv w .Göld4RPG. c ö m disc?unt cöde : MEITBX *
+	"%d+k.*deliver.*kk4g", --revelry of christmas present10% code =Lucky11.5k=8.27GBP=9.53EUR=13.04USDdelivery within 5-10mins KK4g. COM
 	},
 	["Guild"] = {	-- guild recruitment
 	"%.wowstead%.com",
