@@ -301,7 +301,7 @@ function CH:AddMessage(text, ...)
 			text = text:gsub("<"..AFK..">", "[|cffFF0000"..L['AFK'].."|r] ")
 			text = text:gsub("<"..DND..">", "[|cffE7E716"..L['DND'].."|r] ")
 			text = text:gsub("^%["..RAID_WARNING.."%]", '['..L['RW']..']')	
-			--text = text:gsub('|Hplayer:Elv|h', '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t|Hplayer:Elv') --GAMEMASTER ELV!!
+			--text = text:gsub('|Hplayer:Elv|h', '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t|Hplayer:Elv|h') --GAMEMASTER ELV!!
 		end
 	end
 	
