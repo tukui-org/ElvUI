@@ -1,21 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\FrameXML\UI.xsd">
-	<Script file="Modules\AutoProfessionLink.lua" />
-	<Script file="Modules\ChannelColors.lua" />		
 	<Script file="Modules\ChannelNames.lua" />		
-	<Script file="Modules\ChannelSounds.lua" />		
-	<Script file="Modules\ClearChat.lua" />
-	<Script file="Modules\CustomEmotes.lua" />
-	<Script file="Modules\CustomFilters.lua" />
-	<Script file="Modules\DamageMeters.lua" />
-	<Script file="Modules\EditBoxHistory.lua" />	
-	<Script file="Modules\GKickCommand.lua" />
-	<Script file="Modules\GInvCommand.lua" />
-	<Script file="Modules\GroupSay.lua" />			
-	<Script file="Modules\InviteLinks.lua" />
-	<Script file="Modules\RaidHelper.lua" />
-	<Script file="Modules\SpamFilter.lua" />			
-	<Script file="Modules\SpamThrottle.lua" />		
-	<Script file="Modules\Timestamps.lua" />
-	<Script file="Modules\WhisperFilter.lua" />		
+	<Script file="Modules\EditBoxHistory.lua" />			
+	<Script file="Modules\Timestamps.lua" />	
 </Ui>

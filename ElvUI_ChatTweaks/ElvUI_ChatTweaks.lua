@@ -260,23 +260,9 @@ ElvUI_ChatTweaks.options = {
 ElvUI_ChatTweaks.defaults = {
 	profile	= {
 		modules = {
-			["Auto Profession Link"]		= false,
-			["Channel Colors"]				= false,
 			["Channel Names"]				= true,
-			["Channel Sounds"]				= false,
-			["Clear Chat Commands"]			= false,
-			["Custom Emotes"]				= false,
-			["Custom Chat Filters"]			= true,
-			["Damage Meters"]				= false,
-			["GInvite Alternate Command"]	= false,
-			["GKick Command"]				= false,
-			["Group Say Command"]			= false,
-			["Invite Links"]				= false,
-			["Raid Helper"]					= true,
-			["Spam Filter"]					= true,
-			["Spam Throttle"]				= true,
+			["Editbox History"]				= true,
 			["Timestamps"]					= true,
-			["Whisper Filter"]				= true,
 		}
 	}
 }
