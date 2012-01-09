@@ -404,8 +404,6 @@ function UF:DisableBlizzard(event)
 	CompactRaidFrameManager:HookScript('OnShow', HideRaid)
 	CompactRaidFrameManager:UnregisterAllEvents()
 	
-	RaidGroupFrame_Update = nil;
-	
 	HideRaid()
 end
 
