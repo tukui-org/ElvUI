@@ -393,18 +393,16 @@ function CH:Initialize()
 	------------------------------------------------------------------------
 	--	Play sound files system
 	------------------------------------------------------------------------
-	if self.db.whisperwarning == true then
-		local SoundSys = CreateFrame("Frame")
-		SoundSys:RegisterEvent("CHAT_MSG_WHISPER")
-		SoundSys:RegisterEvent("CHAT_MSG_BN_WHISPER")
-		SoundSys:HookScript("OnEvent", function(self, event, ...)
-			if event == "CHAT_MSG_WHISPER" or "CHAT_MSG_BN_WHISPER" then
-				if E.db.chat.whisperwarning == true then
-					PlaySoundFile(E.media.whispersound,"Master")
-				end
+	local SoundSys = CreateFrame("Frame")
+	SoundSys:RegisterEvent("CHAT_MSG_WHISPER")
+	SoundSys:RegisterEvent("CHAT_MSG_BN_WHISPER")
+	SoundSys:HookScript("OnEvent", function(self, event, ...)
+		if event == "CHAT_MSG_WHISPER" or "CHAT_MSG_BN_WHISPER" then
+			if E.db.chat.whisperwarning == true then
+				PlaySoundFile(E.media.whispersound,"Master")
 			end
-		end)
-	end
+		end
+	end)
 end
 
 -- Remember last channel
