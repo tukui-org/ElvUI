@@ -301,6 +301,15 @@ function E:CheckIncompatible()
 	end
 end
 
+function E:IsFoolsDay()
+	local date = date()
+	if string.find(date, '04/01/') then
+		return true;
+	else
+		return false;
+	end
+end
+
 function E:Initialize()
 	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF);
 	self.data.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")

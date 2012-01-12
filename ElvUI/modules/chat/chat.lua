@@ -301,11 +301,36 @@ function CH:AddMessage(text, ...)
 			text = text:gsub("<"..AFK..">", "[|cffFF0000"..L['AFK'].."|r] ")
 			text = text:gsub("<"..DND..">", "[|cffE7E716"..L['DND'].."|r] ")
 			text = text:gsub("^%["..RAID_WARNING.."%]", '['..L['RW']..']')	
-			--text = text:gsub('|Hplayer:Elv|h', '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t|Hplayer:Elv|h') --GAMEMASTER ELV!!
 		end
 	end
 	
 	self.OldAddMessage(self, text, ...)
+end
+
+if E:IsFoolsDay() then
+	local playerName = UnitName('player')
+	function CH:AddMessage(text, ...)
+		if type(text) == "string" then
+			if CH.db.url then
+				text = CH:URL_AddLinkSyntax(text)
+			end
+			
+			if CH.db.shortChannels then
+				text = text:gsub("|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
+				text = text:gsub('CHANNEL:', '')
+				text = text:gsub("^(.-|h) "..L['whispers'], "%1")
+				text = text:gsub("^(.-|h) "..L['says'], "%1")
+				text = text:gsub("^(.-|h) "..L['yells'], "%1")
+				text = text:gsub("<"..AFK..">", "[|cffFF0000"..L['AFK'].."|r] ")
+				text = text:gsub("<"..DND..">", "[|cffE7E716"..L['DND'].."|r] ")
+				text = text:gsub("^%["..RAID_WARNING.."%]", '['..L['RW']..']')	
+			end
+			
+			text = text:gsub('|Hplayer:'..playerName..':', '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t|Hplayer:'..playerName..':')
+		end
+		
+		self.OldAddMessage(self, text, ...)
+	end
 end
 
 function CH:SetupChat(event, ...)	
