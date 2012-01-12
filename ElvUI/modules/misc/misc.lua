@@ -103,6 +103,10 @@ function M:CheckMovement()
 	end
 end
 
+function M:PVPMessageEnhancement(_, msg)
+	RaidNotice_AddMessage(RaidBossEmoteFrame, msg, ChatTypeInfo["RAID_BOSS_EMOTE"]);
+end
+
 function M:Initialize()
 	self:LoadRaidMarker()
 	self:LoadExpRepBar()
@@ -113,6 +117,9 @@ function M:Initialize()
 	self:RegisterEvent('PLAYER_REGEN_DISABLED', 'ErrorFrameToggle')
 	self:RegisterEvent('PLAYER_REGEN_ENABLED', 'ErrorFrameToggle')
 	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	self:RegisterEvent('CHAT_MSG_BG_SYSTEM_HORDE', 'PVPMessageEnhancement')
+	self:RegisterEvent('CHAT_MSG_BG_SYSTEM_ALLIANCE', 'PVPMessageEnhancement')
+	self:RegisterEvent('CHAT_MSG_BG_SYSTEM_NEUTRAL', 'PVPMessageEnhancement')
 	
 	--%TEMP BLIZZARD FIX%
 	self:RegisterEvent('CVAR_UPDATE', 'ForceProfanity')
