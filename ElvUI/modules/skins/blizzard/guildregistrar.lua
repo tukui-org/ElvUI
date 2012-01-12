@@ -13,7 +13,7 @@ local function LoadSkin()
 	S:HandleEditBox(GuildRegistrarFrameEditBox)
 	for i=1, GuildRegistrarFrameEditBox:GetNumRegions() do
 		local region = select(i, GuildRegistrarFrameEditBox:GetRegions())
-		if region:GetObjectType() == "Texture" then
+		if region and region:GetObjectType() == "Texture" then
 			if region:GetTexture() == "Interface\\ChatFrame\\UI-ChatInputBorder-Left" or region:GetTexture() == "Interface\\ChatFrame\\UI-ChatInputBorder-Right" then
 				region:Kill()
 			end

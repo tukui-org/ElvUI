@@ -160,15 +160,13 @@ local function CreateShadow(f)
 end
 
 local function Kill(object)
-	if object.IsProtected then 
-		if object:IsProtected() then
-			error("Attempted to kill a protected "..object:GetObjectType()..": <"..object:GetName()..">")
-		end
-	end
 	if object.UnregisterAllEvents then
 		object:UnregisterAllEvents()
+		object:SetParent(E.HiddenFrame)
+	else
+		object.Show = E.noop
 	end
-	object.Show = E.noop
+
 	object:Hide()
 end
 

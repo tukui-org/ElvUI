@@ -143,6 +143,9 @@ E.UIParent:SetPoint('CENTER', UIParent, 'CENTER');
 E.UIParent:SetSize(UIParent:GetSize());
 tinsert(E['snapBars'], E.UIParent)
 
+E.HiddenFrame = CreateFrame('Frame')
+E.HiddenFrame:Hide()
+
 --Check if PTR version of WoW is loaded
 function E:IsPTRVersion()
 	if self.wowbuild > 14545 then
