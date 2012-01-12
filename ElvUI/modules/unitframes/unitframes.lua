@@ -389,10 +389,11 @@ function UF:UpdateAllHeaders(event)
 	end	
 end
 
+local hiddenParent = CreateFrame("Frame")
+hiddenParent:Hide()
 function HideRaid()
 	if InCombatLockdown() then return end
-	CompactRaidFrameManager:SetScale(0.000001)
-	CompactRaidFrameManager:Hide()
+	CompactRaidFrameManager:SetParent(hiddenParent)
 	local compact_raid = CompactRaidFrameManager_GetSetting("IsShown")
 	if compact_raid and compact_raid ~= "0" then 
 		CompactRaidFrameManager_SetSetting("IsShown", "0")
@@ -403,7 +404,7 @@ function UF:DisableBlizzard(event)
 	hooksecurefunc("CompactRaidFrameManager_UpdateShown", HideRaid)
 	CompactRaidFrameManager:HookScript('OnShow', HideRaid)
 	CompactRaidFrameManager:UnregisterAllEvents()
-	
+	CompactRaidFrameContainer:UnregisterAllEvents()
 	HideRaid()
 end
 
