@@ -193,6 +193,8 @@ do
 	L['Good Scale'] = true;
 	L['Bad Scale'] = true;
 	L["Auras"] = true;
+	L['Healer Icon'] = true;
+	L['Display a healer icon over known healers inside battlegrounds.'] = true;
 end
 
 --ClassTimers
