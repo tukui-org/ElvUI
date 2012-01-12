@@ -12,6 +12,7 @@ NP.NonHealers = {
 	['MAGE'] = true,
 	['WARLOCK'] = true,
 	['ROGUE'] = true,
+	['HUNTER'] = true,
 }
 
 function NP:Initialize()
