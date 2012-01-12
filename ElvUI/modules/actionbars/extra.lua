@@ -5,7 +5,7 @@ function AB:SetupExtraButton()
 	if not E:IsPTRVersion() then return end
 
 	local holder = CreateFrame('Frame', nil, E.UIParent)
-	holder:Point('TOP', E.UIParent, 'TOP', 0, -250)
+	holder:Point('BOTTOM', ElvUI_Bar1, 'TOP', 0, 100)
 	holder:Size(ExtraActionBarFrame:GetSize())
 	
 	ExtraActionBarFrame:SetParent(holder)
