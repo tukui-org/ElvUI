@@ -249,7 +249,7 @@ function NP:UpdateAuraAnchors(frame)
 			if frame.icons.lastShown then 
 				frame.icons[i]:SetPoint("RIGHT", frame.icons.lastShown, "LEFT", -2, 0)
 			else
-				frame.icons[i]:SetPoint("RIGHT",frame.icons,"RIGHT")
+				frame.icons[i]:SetPoint("RIGHT",frame.icons,"RIGHT", -10, 0)
 			end
 			frame.icons.lastShown = frame.icons[i]
 		end
@@ -265,32 +265,50 @@ function NP:OnAura(frame, unit)
 		return;
 	end
 	local i = 1
+	local curTime = GetTime()
 	for index = 1,40 do
-		if i > 5 then return end
-		local match
-		local name = UnitAura(frame.unit,index)
-		local debuffName,_,_,_,_,_,_,caster = UnitAura(frame.unit,index, 'HARMFUL')
+		local buffMatch, debuffMatch
+		local name,_,_,_,_,_,expTimeBuff = UnitAura(frame.unit,index)
+		local debuffName,_,_,_,_,_,expTimeDebuff,caster = UnitAura(frame.unit,index, 'HARMFUL')
 		
-		if self.db.trackauras == true then
-			if caster == "player" then match = 'HARMFUL' end
+		if expTimeBuff then
+			expTimeBuff = expTimeBuff - curTime
+			if expTimeBuff < 0 then
+				name = nil;
+				buffMatch = nil;
+			end
 		end
+
+		if self.db.trackauras then
+			if caster == "player" then 
+				debuffMatch = 'HARMFUL' 
+			end
+		end	
 		
+		if expTimeDebuff then
+			expTimeDebuff = expTimeDebuff - curTime
+			if expTimeDebuff < 0 then
+				debuffName = nil;
+				debuffMatch = nil;
+			end			
+		end
+
 		if self.db.trackfilter and #self.db.trackfilter > 1 and (name or debuffName) then
 			local spellList = E.db['unitframe']['aurafilters'][self.db.trackfilter].spells
 			if spellList[name] then
-				match = 'HELPFUL'
+				buffMatch = 'HELPFUL'
 			elseif spellList[debuffName] then
-				match = 'HARMFUL'
-			end				
+				debuffMatch = 'HARMFUL'
+			end			
 		end
 		
-		if match then
+		if buffMatch or debuffMatch and i <= 5 then
 			if not frame.icons[i] then frame.icons[i] = self:CreateAuraIcon(frame) end
 			local icon = frame.icons[i]
-			if i == 1 then icon:SetPoint("RIGHT",frame.icons,"RIGHT") end
+			if i == 1 then icon:SetPoint("RIGHT",frame.icons,"RIGHT", -10, 0) end
 			if i ~= 1 and i <= 5 then icon:SetPoint("RIGHT", frame.icons[i-1], "LEFT", -2, 0) end
 			i = i + 1
-			self:UpdateAuraIcon(icon, frame.unit, index, match)
+			self:UpdateAuraIcon(icon, frame.unit, index, buffMatch or debuffMatch)
 		end
 	end
 	for index = i, #frame.icons do frame.icons[index]:Hide() end	
