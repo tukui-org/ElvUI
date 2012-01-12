@@ -909,7 +909,7 @@ DF['unitframe'] = {
 				},
 				['roleIcon'] = {
 					['enable'] = true,
-					['position'] = 'CENTER',
+					['position'] = 'BOTTOMRIGHT',
 				},					
 			},
 			['raid625'] = {
@@ -990,8 +990,8 @@ DF['unitframe'] = {
 					['size'] = 26,
 				},
 				['roleIcon'] = {
-					['enable'] = false,
-					['position'] = 'BOTTOM',
+					['enable'] = true,
+					['position'] = 'BOTTOMRIGHT',
 				},					
 			},					
 			['raid2640'] = {
@@ -1716,7 +1716,7 @@ DF['unitframe'] = {
 				},
 				['roleIcon'] = {
 					['enable'] = true,
-					['position'] = 'CENTER',
+					['position'] = 'BOTTOMRIGHT',
 				},					
 			},
 			['raid625'] = {
@@ -1797,8 +1797,8 @@ DF['unitframe'] = {
 					['size'] = 26,
 				},
 				['roleIcon'] = {
-					['enable'] = false,
-					['position'] = 'BOTTOM',
+					['enable'] = true,
+					['position'] = 'BOTTOMRIGHT',
 				},					
 			},					
 			['raid2640'] = {
