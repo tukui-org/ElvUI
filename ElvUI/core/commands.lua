@@ -20,6 +20,11 @@ function E:DisableAddon(addon)
 	end
 end
 
+function E:ResetGold()
+	ElvData.gold = nil;
+	ReloadUI();
+end
+
 function E:LoadCommands()
 	self:RegisterChatCommand("ec", "ToggleConfig")
 	self:RegisterChatCommand("elvui", "ToggleConfig")
@@ -28,6 +33,7 @@ function E:LoadCommands()
 	self:RegisterChatCommand("resetui", "ResetUI")
 	self:RegisterChatCommand("enable", "EnableAddon")
 	self:RegisterChatCommand("disable", "DisableAddon")
+	self:RegisterChatCommand('resetgold', 'ResetGold')
 	
 	if E.ActionBars then
 		self:RegisterChatCommand('kb', E.ActionBars.ActivateBindMode)
