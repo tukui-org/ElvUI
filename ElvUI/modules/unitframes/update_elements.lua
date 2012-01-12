@@ -272,9 +272,35 @@ function UF:PortraitUpdate(unit)
 	if self:GetModel() and self:GetModel().find and self:GetModel():find("worgenmale") then
 		self:SetCamera(1)
 	end	
-	
-	self:SetCamDistanceScale(db['portrait'].camDistanceScale - 0.01) --Blizzard bug fix
+
+	self:SetCamDistanceScale(db['portrait'].camDistanceScale - 0.01 >= 0.01 and db['portrait'].camDistanceScale - 0.01 or 0.01) --Blizzard bug fix
 	self:SetCamDistanceScale(db['portrait'].camDistanceScale)
+end
+
+if E:IsFoolsDay() then
+	function UF:PortraitUpdate(unit)
+		local db = self:GetParent().db
+		
+		if not db then return end
+		
+		if db['portrait'].enable and db['portrait'].overlay then
+			self:SetAlpha(0) self:SetAlpha(0.35) 
+		else
+			self:SetAlpha(1)
+		end
+		
+		if self:GetModel() and self:GetModel().find and self:GetModel():find("worgenmale") then
+			self:SetCamera(1)
+		end	
+		
+		if self:GetModel() and unit == 'player'	then
+			self:SetModel('Creature\\Therazane\\therazane.m2')
+			self:SetCamera(1)
+		end
+
+		self:SetCamDistanceScale(db['portrait'].camDistanceScale - 0.01 >= 0.01 and db['portrait'].camDistanceScale - 0.01 or 0.01) --Blizzard bug fix
+		self:SetCamDistanceScale(db['portrait'].camDistanceScale)
+	end
 end
 
 local day, hour, minute, second = 86400, 3600, 60, 1

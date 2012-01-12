@@ -128,7 +128,14 @@ local function LoadSkin()
 	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()
 	end
-	FriendsFrame:StripTextures(true)
+
+	for i=1, FriendsFrame:GetNumRegions() do
+		local region = select(i, FriendsFrame:GetRegions())
+		if region:GetObjectType() == "Texture" then
+			region:SetTexture(nil)
+			region:SetAlpha(0)
+		end
+	end	
 
 	S:HandleEditBox(AddFriendNameEditBox)
 	AddFriendFrame:SetTemplate("Transparent")			
