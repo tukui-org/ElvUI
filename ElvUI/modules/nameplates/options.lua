@@ -133,8 +133,15 @@ E.Options.args.nameplate = {
 					name = L["Combat Toggle"],
 					desc = L["Toggles the nameplates off when not in combat."],							
 				},	
-				auras = {
+				markBGHealers = {
+					type = 'toggle',
 					order = 7,
+					name = L['Healer Icon'],
+					desc = L['Display a healer icon over known healers inside battlegrounds.'],
+					set = function(info, value) E.db.nameplate[ info[#info] ] = value; NP:PLAYER_ENTERING_WORLD(); NP:UpdateAllPlates() end,
+				},
+				auras = {
+					order = 8,
 					type = "group",
 					name = L["Auras"],
 					guiInline = true,	
@@ -162,7 +169,7 @@ E.Options.args.nameplate = {
 					},
 				},
 				reactions = {
-					order = 8,
+					order = 9,
 					type = "group",
 					name = L["Reactions"],
 					guiInline = true,
@@ -204,7 +211,7 @@ E.Options.args.nameplate = {
 					},		
 				},				
 				threat = {
-					order = 9,
+					order = 10,
 					type = "group",
 					name = L["Threat"],
 					guiInline = true,

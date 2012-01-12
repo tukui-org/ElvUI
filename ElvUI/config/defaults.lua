@@ -44,6 +44,7 @@ DF["core"] = {
 --NamePlate
 DF["nameplate"] = {
 	["enable"] = true,
+	["markBGHealers"] = true,
 	["width"] = 113,
 	["height"] = 8,
 	["cbheight"] = 5,

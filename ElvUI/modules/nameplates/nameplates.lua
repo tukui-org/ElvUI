@@ -1,10 +1,18 @@
 local E, L, DF = unpack(select(2, ...)); --Engine
-local NP = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0')
+local NP = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 
 local OVERLAY = [=[Interface\TargetingFrame\UI-TargetingFrame-Flash]=]
 local numChildren = -1
 local backdrop
 NP.Handled = {} --Skinned Nameplates
+NP.BattleGroundHealers = {};
+NP.NonHealers = {
+	['WARRIOR'] = true,
+	['DEATHKNIGHT'] = true,
+	['MAGE'] = true,
+	['WARLOCK'] = true,
+	['ROGUE'] = true,
+}
 
 function NP:Initialize()
 	self.db = E.db["nameplate"]
@@ -548,6 +556,14 @@ function NP:SkinPlate(frame)
 		frame.raidicon = raidicon	
 	end
 	
+	--Heal Icon
+	if not frame.healerIcon then
+		frame.healerIcon = frame:CreateTexture(nil, 'ARTWORK')
+		frame.healerIcon:SetPoint("BOTTOM", frame.hp, "TOP", 0, 16)
+		frame.healerIcon:SetSize(35, 35)
+		frame.healerIcon:SetTexture([[Interface\AddOns\ElvUI\media\textures\healer.tga]])	
+	end
+	
 	-- Aura tracking
 	if (self.db.trackauras == true or (self.db.trackfilter and #self.db.trackfilter > 1)) then
 		if not frame.icons then
@@ -842,6 +858,17 @@ function NP:CheckFilter(frame, ...)
 	else
 		self:TogglePlate(frame, false)
 	end
+	
+	--Check For Healers
+	if self.BattleGroundHealers[name] then
+		if not NP.NonHealers[self.BattleGroundHealers[name]] then
+			frame.healerIcon:Show()
+		else
+			frame.healerIcon:Hide()
+		end
+	else
+		frame.healerIcon:Hide()
+	end
 end
 
 function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
@@ -861,16 +888,41 @@ function NP:PLAYER_REGEN_DISABLED()
 	SetCVar("nameplateShowEnemies", 1)
 end
 
+function NP:CheckHealers()
+	for i = 1, GetNumBattlefieldScores() do
+		local name, _, _, _, _, faction, _, _, classToken, damageDone, healingDone = GetBattlefieldScore(i);
+		if (healingDone > damageDone * 1.2) and faction == 1 then
+			name = name:match("(.+)%-.+") or name
+			self.BattleGroundHealers[name] = classToken
+		elseif self.BattleGroundHealers[name] then
+			self.BattleGroundHealers[name] = nil;
+		end
+	end
+end
+
 function NP:PLAYER_ENTERING_WORLD()
-	if InCombatLockdown() then 
+	if InCombatLockdown() and self.db.combat then 
 		SetCVar("nameplateShowEnemies", 1) 
-	else 
+	elseif self.db.combat then
 		SetCVar("nameplateShowEnemies", 0) 
+	end
+	
+	
+	table.wipe(self.BattleGroundHealers)
+	local inInstance, instanceType = IsInInstance()
+	if inInstance and instanceType == 'pvp' and self.db.markBGHealers then
+		self.CheckHealerTimer = self:ScheduleRepeatingTimer("CheckHealers", 5)
+		self:CheckHealers()
+	else
+		if self.CheckHealerTimer then
+			self:CancelTimer(self.CheckHealerTimer)
+			self.CheckHealerTimer = nil;
+		end
 	end
 end
 
 function NP:UpdateAllPlates()
-	for frame, _ in pairs(NP.Handled) do
+	for frame, _ in pairs(self.Handled) do
 		frame = _G[frame]
 		self:SkinPlate(frame)
 	end
@@ -881,15 +933,15 @@ function NP:UpdateAllPlates()
 		self:UnregisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	end
 	
+	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+
 	if self.db.combat then
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
 		self:RegisterEvent('PLAYER_REGEN_DISABLED')
-		self:RegisterEvent('PLAYER_ENTERING_WORLD')
 		self:PLAYER_ENTERING_WORLD()
 	else
 		self:UnregisterEvent('PLAYER_REGEN_ENABLED')
-		self:UnregisterEvent('PLAYER_REGEN_DISABLED')
-		self:UnregisterEvent('PLAYER_ENTERING_WORLD')		
+		self:UnregisterEvent('PLAYER_REGEN_DISABLED')	
 	end
 end
 
