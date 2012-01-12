@@ -273,7 +273,7 @@ function UF:PortraitUpdate(unit)
 		self:SetCamera(1)
 	end	
 
-	self:SetCamDistanceScale(db['portrait'].camDistanceScale - 0.01) --Blizzard bug fix
+	self:SetCamDistanceScale(db['portrait'].camDistanceScale - 0.01 >= 0.01 and db['portrait'].camDistanceScale - 0.01 or 0.01) --Blizzard bug fix
 	self:SetCamDistanceScale(db['portrait'].camDistanceScale)
 end
 
@@ -298,7 +298,7 @@ if E:IsFoolsDay() then
 			self:SetCamera(1)
 		end
 
-		self:SetCamDistanceScale(db['portrait'].camDistanceScale - 0.01) --Blizzard bug fix
+		self:SetCamDistanceScale(db['portrait'].camDistanceScale - 0.01 >= 0.01 and db['portrait'].camDistanceScale - 0.01 or 0.01) --Blizzard bug fix
 		self:SetCamDistanceScale(db['portrait'].camDistanceScale)
 	end
 end
