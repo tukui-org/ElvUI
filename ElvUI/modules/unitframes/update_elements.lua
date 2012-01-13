@@ -443,15 +443,12 @@ end
 --Credit Monolit
 local ticks = {}
 local function SetCastTicks(self, num)
-	local db = self:GetParent().db
-	local color = db['castbar']['cbtickscolor']
 	if num and num > 0 then
 		local d = self:GetWidth() / num
 		for i = 1, num do
 			if not ticks[i] then
 				ticks[i] = self:CreateTexture(nil, 'OVERLAY')
 				ticks[i]:SetTexture(E["media"].blankTex)
-				ticks[i]:SetVertexColor(color.r, color.g, color.b)
 				ticks[i]:SetWidth(2)
 				ticks[i]:SetHeight(self:GetHeight())
 			end
@@ -488,7 +485,11 @@ function UF:PostCastStart(unit, name, rank, castid)
 	
 	if db['castbar']['cbticks'] == true and unit == "player" then
 		if E.db['unitframe']['aurafilters']['ChannelTicks']['spells'][name] then
+			local color = db['castbar']['cbtickscolor']
 			SetCastTicks(self, E.DF["profile"]['unitframe']['aurafilters']['ChannelTicks']['spells'][name])
+			for _, tick in pairs(ticks) do
+				tick:SetVertexColor(color.r, color.g, color.b)
+			end
 		else
 			for _, tick in pairs(ticks) do
 				tick:Hide()
