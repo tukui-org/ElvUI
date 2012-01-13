@@ -10,19 +10,19 @@ local Update = function(self, event, unit, powerType)
 	if(self.unit ~= unit or (powerType and powerType ~= 'HOLY_POWER')) then return end
 
 	local hp = self.HolyPower
-	if(hp.PreUpdate) then hp:PreUpdate(unit) end
+	if(hp.PreUpdate) then hp:PreUpdate() end
 
 	local num = UnitPower('player', SPELL_POWER_HOLY_POWER)
 	for i = 1, MAX_HOLY_POWER do
 		if(i <= num) then
-			hp[i]:SetAlpha(1)
+			hp[i]:Show()
 		else
-			hp[i]:SetAlpha(0)
+			hp[i]:Hide()
 		end
 	end
 
 	if(hp.PostUpdate) then
-		return hp:PostUpdate(unit)
+		return hp:PostUpdate(num)
 	end
 end
 

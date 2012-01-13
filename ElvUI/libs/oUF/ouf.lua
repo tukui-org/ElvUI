@@ -9,13 +9,9 @@ local argcheck = Private.argcheck
 
 local print = Private.print
 local error = Private.error
-local OnEvent = Private.OnEvent
 
 local styles, style = {}
 local callback, objects = {}, {}
-
-local select = select
-local UnitExists = UnitExists
 
 local elements = {}
 local activeElements = {}
@@ -39,7 +35,31 @@ local enableTargetUpdate = function(object)
 end
 Private.enableTargetUpdate = enableTargetUpdate
 
-local updateActiveUnit
+local updateActiveUnit = function(self, event, unit)
+	-- Calculate units to work with
+	local realUnit, modUnit = SecureButton_GetUnit(self), SecureButton_GetModifiedUnit(self)
+
+	-- _GetUnit() doesn't rewrite playerpet -> pet like _GetModifiedUnit does.
+	if(realUnit == 'playerpet') then
+		realUnit = 'pet'
+	elseif(realUnit == 'playertarget') then
+		realUnit = 'target'
+	end
+
+	if(modUnit == "pet" and realUnit ~= "pet") then
+		modUnit = "vehicle"
+	end
+
+	-- Drop out if the event unit doesn't match any of the frame units.
+	if(not UnitExists(modUnit) or unit and unit ~= realUnit and unit ~= modUnit) then return end
+
+	-- Change the active unit and run a full update.
+	if Private.UpdateUnits(self, modUnit, realUnit) then
+		self:UpdateAllElements('RefreshUnit')
+
+		return true
+	end
+end
 
 local iterateChildren = function(...)
 	for l = 1, select("#", ...) do
@@ -74,13 +94,12 @@ for k, v in pairs{
 		argcheck(unit, 3, 'string', 'nil')
 
 		local element = elements[name]
+		if not activeElements[self] then activeElements[self] = {}; end
 		if(not element or self:IsElementEnabled(name)) then return end
-
+		
 		if(element.enable(self, unit or self.unit)) then
-			if activeElements[self] then
-				activeElements[self][name] = true
-			end
-			
+			activeElements[self][name] = true
+
 			if(element.update) then
 				table.insert(self.__elements, element.update)
 			end
@@ -91,6 +110,7 @@ for k, v in pairs{
 		argcheck(name, 2, 'string')
 
 		local enabled = self:IsElementEnabled(name)
+		if not activeElements[self] then activeElements[self] = {}; end
 		if(not enabled) then return end
 
 		local update = elements[name].update
@@ -103,7 +123,7 @@ for k, v in pairs{
 
 		activeElements[self][name] = nil
 
-		-- We need to run a new update cycle incase we knocked ourself out of sync.
+		-- We need to run a new update cycle in-case we knocked ourself out of sync.
 		-- The main reason we do this is to make sure the full update is completed
 		-- if an element for some reason removes itself _during_ the update
 		-- progress.
@@ -148,35 +168,26 @@ for k, v in pairs{
 	frame_metatable.__index[k] = v
 end
 
-updateActiveUnit = function(self, event, unit)
-	-- Calculate units to work with
-	local realUnit, modUnit = SecureButton_GetUnit(self), SecureButton_GetModifiedUnit(self)
-
-	-- _GetUnit() doesn't rewrite playerpet -> pet like _GetModifiedUnit does.
-	if(realUnit == 'playerpet') then
-		realUnit = 'pet'
-	elseif(realUnit == 'playertarget') then
-		realUnit = 'target'
-	end
-
-	if(modUnit == "pet" and realUnit ~= "pet") then
-		modUnit = "vehicle"
-	end
-
-	-- Drop out if the event unit doesn't match any of the frame units.
-	if(not UnitExists(modUnit) or unit and unit ~= realUnit and unit ~= modUnit) then return end
-
-	-- Change the active unit and run a full update.
-	if Private.UpdateUnits(self, modUnit, realUnit) then
-		self:UpdateAllElements('RefreshUnit')
-
-		return true
-	end
-end
-
 local OnShow = function(self)
 	if(not updateActiveUnit(self, 'OnShow')) then
 		return self:UpdateAllElements'OnShow'
+	end
+end
+
+local UpdatePet = function(self, event, unit)
+	local petUnit
+	if(unit == 'target') then
+		return
+	elseif(unit == 'player') then
+		petUnit = 'pet'
+	else
+		-- Convert raid26 -> raidpet26
+		petUnit = unit:gsub('^(%a+)(%d+)', '%1pet%2')
+	end
+
+	if(self.unit ~= petUnit) then return end
+	if(not updateActiveUnit(self, event)) then
+		return self:UpdateAllElements(event)
 	end
 end
 
@@ -207,11 +218,11 @@ local initObject = function(unit, style, styleFunc, header, ...)
 			object:RegisterEvent('UNIT_ENTERED_VEHICLE', updateActiveUnit)
 			object:RegisterEvent('UNIT_EXITED_VEHICLE', updateActiveUnit)
 
-			-- We don't need to register UNIT_PET for the player unit. We rigester it
+			-- We don't need to register UNIT_PET for the player unit. We register it
 			-- mainly because UNIT_EXITED_VEHICLE and UNIT_ENTERED_VEHICLE doesn't always
 			-- have pet information when they fire for party and raid units.
 			if(objectUnit ~= 'player') then
-				object:RegisterEvent('UNIT_PET', updateActiveUnit)
+				object:RegisterEvent('UNIT_PET', UpdatePet)
 			end
 		end
 
@@ -384,7 +395,7 @@ local generateName = function(unit, ...)
 			else
 				local _, count = groupFilter:gsub(',', '')
 				if(count == 0) then
-					append = groupFilter
+					append = 'Raid' .. groupFilter
 				else
 					append = 'Raid'
 				end
@@ -404,6 +415,8 @@ local generateName = function(unit, ...)
 
 	-- Change oUF_LilyRaidRaid into oUF_LilyRaid
 	name = name:gsub('(%u%l+)([%u%l]*)%1', '%1')
+	-- Change oUF_LilyTargettarget into oUF_LilyTargetTarget
+	name = name:gsub('t(arget)', 'T%1')
 
 	local base = name
 	local i = 2

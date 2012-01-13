@@ -3,7 +3,7 @@ local oUF = ns.oUF
 
 oUF.colors.health = {49/255, 207/255, 37/255}
 
-local Update = function(self, event, unit, powerType)
+local Update = function(self, event, unit)
 	if(self.unit ~= unit) then return end
 	local health = self.Health
 

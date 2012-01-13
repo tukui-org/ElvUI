@@ -7,11 +7,6 @@ local error = Private.error
 local frame_metatable = Private.frame_metatable
 
 -- Events
-Private.OnEvent = function(self, event, ...)
-	if(not self:IsShown()) then return end
-	return self[event](self, event, ...)
-end
-
 local RegisterEvent, UnregisterEvent, IsEventRegistered
 
 do

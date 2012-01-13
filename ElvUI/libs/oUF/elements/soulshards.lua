@@ -10,19 +10,19 @@ local Update = function(self, event, unit, powerType)
 	if(self.unit ~= unit or (powerType and powerType ~= 'SOUL_SHARDS')) then return end
 
 	local ss = self.SoulShards
-	if(ss.PreUpdate) then ss:PreUpdate(unit) end
+	if(ss.PreUpdate) then ss:PreUpdate() end
 
 	local num = UnitPower('player', SPELL_POWER_SOUL_SHARDS)
 	for i = 1, SHARD_BAR_NUM_SHARDS do
 		if(i <= num) then
-			ss[i]:SetAlpha(1)
+			ss[i]:Show()
 		else
-			ss[i]:SetAlpha(0)
+			ss[i]:Hide()
 		end
 	end
 
 	if(ss.PostUpdate) then
-		return ss:PostUpdate(unit)
+		return ss:PostUpdate(num)
 	end
 end
 
@@ -40,7 +40,7 @@ local function Enable(self)
 		ss.__owner = self
 		ss.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('UNIT_POWER', Path)
+		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 
 		return true
 	end
@@ -49,7 +49,7 @@ end
 local function Disable(self)
 	local ss = self.SoulShards
 	if(ss) then
-		self:UnregisterEvent('UNIT_POWER', Path)
+		self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 	end
 end
 

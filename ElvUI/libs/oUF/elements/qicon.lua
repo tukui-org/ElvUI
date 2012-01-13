@@ -5,10 +5,19 @@ local Update = function(self, event, unit)
 	if(unit ~= self.unit) then return end
 
 	local qicon = self.QuestIcon
-	if(UnitIsQuestBoss(unit)) then
-		return qicon:Show()
+	if(qicon.PreUpdate) then
+		qicon:PreUpdate()
+	end
+
+	local isQuestBoss = UnitIsQuestBoss(unit)
+	if(isQuestBoss) then
+		qicon:Show()
 	else
-		return qicon:Hide()
+		qicon:Hide()
+	end
+
+	if(qicon.PostUpdate) then
+		return qicon:PostUpdate(isQuestBoss)
 	end
 end
 

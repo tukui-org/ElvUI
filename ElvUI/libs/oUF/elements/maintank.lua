@@ -5,11 +5,20 @@ local Update = function(self, event)
 	local raidID = UnitInRaid(self.unit)
 	if(not raidID) then return end
 
+	local maintank = self.MainTank
+	if(maintank.PreUpdate) then
+		maintank:PreUpdate()
+	end
+
 	local _, _, _, _, _, _, _, _, _, rinfo = GetRaidRosterInfo(raidID)
 	if(rinfo == 'MAINTANK' and not UnitHasVehicleUI(self.unit)) then
 		self.MainTank:Show()
 	else
 		self.MainTank:Hide()
+	end
+
+	if(maintank.PostUpdate) then
+		return maintank:PostUpdate(rinfo)
 	end
 end
 

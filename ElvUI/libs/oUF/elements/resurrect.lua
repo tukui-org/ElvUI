@@ -2,13 +2,20 @@ local parent, ns = ...
 local oUF = ns.oUF
 
 local Update = function(self, event)
-	local incomingResurrect = UnitHasIncomingResurrection(self.unit)
 	local resurrect = self.ResurrectIcon
+	if(resurrect.PreUpdate) then
+		resurrect:PreUpdate()
+	end
 
+	local incomingResurrect = UnitHasIncomingResurrection(self.unit)
 	if(incomingResurrect) then
 		resurrect:Show()
 	else
 		resurrect:Hide()
+	end
+
+	if(resurrect.PostUpdate) then
+		return resurrect:PostUpdate(incomingResurrect)
 	end
 end
 

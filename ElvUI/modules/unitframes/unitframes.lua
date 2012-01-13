@@ -245,13 +245,18 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			local unit = group..i
 			if not self[unit] then
 				self['handledgroupunits'][unit] = group;
-				self[unit] = ElvUF:Spawn(unit, 'ElvUF_'..E:StringTitle(unit))
+				
+				local frameName = E:StringTitle(unit)
+				frameName = frameName:gsub('t(arget)', 'T%1')				
+				self[unit] = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
 				self[unit].index = i
 			else
 				self[unit]:Enable()
 			end
 			
-			UF["Update_"..E:StringTitle(group).."Frames"](self, self[unit], self.db['layouts'][self.ActiveLayout][group])	
+			local frameName = E:StringTitle(group)
+			frameName = frameName:gsub('t(arget)', 'T%1')				
+			UF["Update_"..E:StringTitle(frameName).."Frames"](self, self[unit], self.db['layouts'][self.ActiveLayout][group])	
 		elseif self[unit] then
 			self[unit]:Disable()
 		end
@@ -304,17 +309,18 @@ function UF:CreateAndUpdateUF(unit)
 	
 	if self.db['layouts'][self.ActiveLayout][unit].enable then
 		if not self[unit] then
-			self[unit] = ElvUF:Spawn(unit, 'ElvUF_'..E:StringTitle(unit))
+			local frameName = E:StringTitle(unit)
+			frameName = frameName:gsub('t(arget)', 'T%1')
+			
+			self[unit] = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
 			self['handledunits'][unit] = unit
 		else
 			self[unit]:Enable()
 		end
 		
-		local stringTitle = E:StringTitle(unit)
-		if stringTitle:find('target') then
-			stringTitle = gsub(stringTitle, 'target', 'Target')
-		end
-		UF["Update_"..stringTitle.."Frame"](self, self[unit], self.db['layouts'][self.ActiveLayout][unit])
+		local frameName = E:StringTitle(unit)
+		frameName = frameName:gsub('t(arget)', 'T%1')
+		UF["Update_"..frameName.."Frame"](self, self[unit], self.db['layouts'][self.ActiveLayout][unit])
 	elseif self[unit] then
 		self[unit]:Disable()
 	end

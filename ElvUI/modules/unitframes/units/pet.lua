@@ -1,8 +1,6 @@
 local E, L, DF = unpack(select(2, ...)); --Engine
 local UF = E:GetModule('UnitFrames');
 
-
-
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")

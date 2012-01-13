@@ -2,10 +2,20 @@ local parent, ns = ...
 local oUF = ns.oUF
 
 local Update = function(self, event)
-	if(IsResting()) then
-		self.Resting:Show()
+	local resting = self.Resting
+	if(resting.PreUpdate) then
+		resting:PreUpdate()
+	end
+
+	local isResting = IsResting()
+	if(isResting) then
+		resting:Show()
 	else
-		self.Resting:Hide()
+		resting:Hide()
+	end
+
+	if(resting.PostUpdate) then
+		return resting:PostUpdate(isResting)
 	end
 end
 

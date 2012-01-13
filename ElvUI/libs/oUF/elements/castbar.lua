@@ -11,6 +11,23 @@ local GetTime = GetTime
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
 
+local updateSafeZone = function(self)
+	local sz = self.SafeZone
+	local width = self:GetWidth()
+	local _, _, _, ms = GetNetStats()
+
+	-- Guard against GetNetStats returning latencies of 0.
+	if(ms ~= 0) then
+		-- MADNESS!
+		local safeZonePercent = (width / self.max) * (ms / 1e5)
+		if(safeZonePercent > 1) then safeZonePercent = 1 end
+		sz:SetWidth(width * safeZonePercent)
+		sz:Show()
+	else
+		sz:Hide()
+	end
+end
+
 local UNIT_SPELLCAST_START = function(self, event, unit, spell)
 	if(self.unit ~= unit) then return end
 
@@ -52,6 +69,7 @@ local UNIT_SPELLCAST_START = function(self, event, unit, spell)
 		sf:SetPoint'RIGHT'
 		sf:SetPoint'TOP'
 		sf:SetPoint'BOTTOM'
+		updateSafeZone(castbar)
 	end
 
 	if(castbar.PostCastStart) then
@@ -208,6 +226,7 @@ local UNIT_SPELLCAST_CHANNEL_START = function(self, event, unit, spellname)
 		sf:SetPoint'LEFT'
 		sf:SetPoint'TOP'
 		sf:SetPoint'BOTTOM'
+		updateSafeZone(castbar)
 	end
 
 	if(castbar.PostChannelStart) then castbar:PostChannelStart(unit, name) end
@@ -265,15 +284,6 @@ local onUpdate = function(self, elapsed)
 			return
 		end
 
-		if(self.SafeZone) then
-			local width = self:GetWidth()
-			local _, _, _, ms = GetNetStats()
-			-- MADNESS!
-			local safeZonePercent = (width / self.max) * (ms / 1e5)
-			if(safeZonePercent > 1) then safeZonePercent = 1 end
-			self.SafeZone:SetWidth(width * safeZonePercent)
-		end
-
 		if(self.Time) then
 			if(self.delay ~= 0) then
 				if(self.CustomDelayText) then
@@ -305,15 +315,6 @@ local onUpdate = function(self, elapsed)
 
 			if(self.PostChannelStop) then self:PostChannelStop(self.__owner.unit) end
 			return
-		end
-
-		if(self.SafeZone) then
-			local width = self:GetWidth()
-			local _, _, _, ms = GetNetStats()
-			-- MADNESS!
-			local safeZonePercent = (width / self.max) * (ms / 1e5)
-			if(safeZonePercent > 1) then safeZonePercent = 1 end
-			self.SafeZone:SetWidth(width * safeZonePercent)
 		end
 
 		if(self.Time) then
