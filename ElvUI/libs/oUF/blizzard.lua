@@ -3,6 +3,7 @@ local oUF = ns.oUF
 
 local hiddenParent = CreateFrame("Frame")
 hiddenParent:Hide()
+
 local HandleFrame = function(baseName)
 	local frame
 	if(type(baseName) == 'string') then
@@ -14,7 +15,9 @@ local HandleFrame = function(baseName)
 	if(frame) then
 		frame:UnregisterAllEvents()
 		frame:Hide()
-		frame:SetParent(hiddenParent) -- Keep frame hidden without causing taint
+
+		-- Keep frame hidden without causing taint
+		frame:SetParent(hiddenParent)
 
 		local health = frame.healthbar
 		if(health) then
@@ -49,8 +52,9 @@ function oUF:DisableBlizzard(unit)
 		PlayerFrame:RegisterEvent('UNIT_ENTERED_VEHICLE')
 		PlayerFrame:RegisterEvent('UNIT_EXITING_VEHICLE')
 		PlayerFrame:RegisterEvent('UNIT_EXITED_VEHICLE')
-		-- Disable vehicle transition animations while hidden
-		PlayerFrame:SetUserPlaced(true) -- User placed frames don't animate
+
+		-- User placed frames don't animate
+		PlayerFrame:SetUserPlaced(true)
 		PlayerFrame:SetDontSavePosition(true)
 	elseif(unit == 'pet') then
 		HandleFrame(PetFrame)

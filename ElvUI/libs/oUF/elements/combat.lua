@@ -2,10 +2,20 @@ local parent, ns = ...
 local oUF = ns.oUF
 
 local Update = function(self, event)
-	if(UnitAffectingCombat"player") then
-		self.Combat:Show()
+	local combat = self.Combat
+	if(combat.PreUpdate) then
+		combat:PreUpdate()
+	end
+
+	local inCombat = UnitAffectingCombat('player')
+	if(inCombat) then
+		combat:Show()
 	else
-		self.Combat:Hide()
+		combat:Hide()
+	end
+
+	if(combat.PostUpdate) then
+		return combat:PostUpdate(inCombat)
 	end
 end
 

@@ -78,14 +78,6 @@ local function Disable(self)
 		self:UnregisterEvent('UNIT_HEAL_PREDICTION', Path)
 		self:UnregisterEvent('UNIT_MAXHEALTH', Path)
 		self:UnregisterEvent('UNIT_HEALTH', Path)
-		
-		if(hp.myBar) then
-			hp.myBar:Hide();
-		end
-		
-		if(hp.otherBar) then
-			hp.myBar:Hide();
-		end
 	end
 end
 

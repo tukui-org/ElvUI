@@ -2,13 +2,20 @@ local parent, ns = ...
 local oUF = ns.oUF
 
 local Update = function(self, event)
-	local inPhase = UnitInPhase(self.unit)
 	local picon = self.PhaseIcon
+	if(picon.PreUpdate) then
+		picon:PreUpdate()
+	end
 
+	local inPhase = UnitInPhase(self.unit)
 	if(inPhase) then
 		picon:Hide()
 	else
 		picon:Show()
+	end
+
+	if(picon.PostUpdate) then
+		return picon:PostUpdate(inPhase)
 	end
 end
 
