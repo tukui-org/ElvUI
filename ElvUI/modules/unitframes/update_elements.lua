@@ -440,12 +440,38 @@ function UF:CustomTimeText(duration)
 	end
 end
 
+--Credit Monolit
+local ticks = {}
+local function SetCastTicks(self, num)
+	local db = self:GetParent().db
+	local color = db['castbar']['cbtickscolor']
+	if num and num > 0 then
+		local d = self:GetWidth() / num
+		for i = 1, num do
+			if not ticks[i] then
+				ticks[i] = self:CreateTexture(nil, 'OVERLAY')
+				ticks[i]:SetTexture(E["media"].blankTex)
+				ticks[i]:SetVertexColor(color.r, color.g, color.b)
+				ticks[i]:SetWidth(2)
+				ticks[i]:SetHeight(self:GetHeight())
+			end
+			ticks[i]:ClearAllPoints()
+			ticks[i]:SetPoint("RIGHT", self, "RIGHT", -(d * i), 0)
+			ticks[i]:Show()
+		end
+	else
+		for _, tick in pairs(ticks) do
+			tick:Hide()
+		end
+	end
+end
+
 function UF:PostCastStart(unit, name, rank, castid)
 	if unit == "vehicle" then unit = "player" end
 	self.Text:SetText(string.sub(name, 0, math.floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontsize) * 12)))
-
+	
 	local db = self:GetParent().db
-	local color		
+	local color
 	self.unit = unit
 	if self.interrupt and unit ~= "player" then
 		if UnitCanAttack("player", unit) then
@@ -458,6 +484,20 @@ function UF:PostCastStart(unit, name, rank, castid)
 	else
 		color = db['castbar']['color']
 		self:SetStatusBarColor(color.r, color.g, color.b)
+	end
+	
+	if db['castbar']['cbticks'] == true and unit == "player" then
+		if E.db['unitframe']['aurafilters']['ChannelTicks']['spells'][name] then
+			SetCastTicks(self, E.DF["profile"]['unitframe']['aurafilters']['ChannelTicks']['spells'][name])
+		else
+			for _, tick in pairs(ticks) do
+				tick:Hide()
+			end		
+		end
+	else
+		for _, tick in pairs(ticks) do
+			tick:Hide()
+		end
 	end
 end
 

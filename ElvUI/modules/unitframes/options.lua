@@ -1116,25 +1116,50 @@ E.Options.args.unitframe.args.player = {
 					name = L['Icon'],
 					type = 'toggle',
 				},
-				xOffset = {
+				latency = {
 					order = 8,
+					name = L['Latency'],
+					type = 'toggle',				
+				},
+				xOffset = {
+					order = 9,
 					name = L['X Offset'],
 					type = 'range',
 					min = -E.screenwidth, max = E.screenwidth, step = 1,
 				},
 				yOffset = {
-					order = 9,
+					order = 10,
 					name = L['Y Offset'],
 					type = 'range',
 					min = -E.screenheight, max = E.screenheight, step = 1,
-				},				
-				latency = {
-					order = 10,
-					name = L['Latency'],
-					type = 'toggle',				
+				},
+				cbticks = {
+					order = 11,
+					name = L['Castbar Ticks'],
+					desc = L['Enable Showing of Castbar Ticks on the Player Castbar. Spells can be chosen in the ChannelTicks filter.'],
+					type = 'toggle',
+					get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['player']['castbar'][ info[#info] ] end,
+					set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['player']['castbar'][ info[#info] ] = value; end,
+					
+				},
+				cbtickscolor = {
+					order = 12,
+					name = L['Castbar Ticks Color'],
+					type = 'color',
+					disabled = function() return not E.db.unitframe.layouts[UF.ActiveLayout]['player']['castbar']['cbticks'] end,
+					get = function(info)
+						local t = E.db.unitframe.layouts[UF.ActiveLayout]['player']['castbar'][ info[#info] ]
+						return t.r, t.g, t.b, t.a
+					end,
+					set = function(info, r, g, b)
+						E.db.core[ info[#info] ] = {}
+						local t = E.db.unitframe.layouts[UF.ActiveLayout]['player']['castbar'][ info[#info] ]
+						t.r, t.g, t.b = r, g, b
+						UF:CreateAndUpdateUF('player')
+					end,
 				},
 				color = {
-					order = 11,
+					order = 13,
 					type = 'color',
 					name = L['Color'],
 					get = function(info)
@@ -1149,7 +1174,7 @@ E.Options.args.unitframe.args.player = {
 					end,													
 				},
 				interruptcolor = {
-					order = 12,
+					order = 14,
 					type = 'color',
 					name = L['Interrupt Color'],
 					get = function(info)
@@ -1164,7 +1189,7 @@ E.Options.args.unitframe.args.player = {
 					end,					
 				},
 				format = {
-					order = 13,
+					order = 15,
 					type = 'select',
 					name = L['Format'],
 					values = {
