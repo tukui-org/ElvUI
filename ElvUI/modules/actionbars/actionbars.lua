@@ -427,7 +427,7 @@ end
 function AB:CreateMover(bar, text, name, padding)
 	local p, p2, p3, p4, p5 = bar:GetPoint()
 
-	local mover = CreateFrame('Button', nil, bar)
+	local mover = CreateFrame('Button', nil, E.UIParent)
 	mover:SetSize(bar:GetSize())
 	mover:SetFrameStrata('HIGH')
 	mover:SetTemplate('Default', true)	
@@ -451,7 +451,6 @@ function AB:CreateMover(bar, text, name, padding)
 	end
 	
 	mover.padding = padding
-	
 	mover:RegisterForDrag("LeftButton", "RightButton")
 	mover:SetScript("OnDragStart", function(self) 
 		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
@@ -463,7 +462,7 @@ function AB:CreateMover(bar, text, name, padding)
 			self:StartMoving()
 		end
 	end)
-	
+
 	mover:SetScript("OnDragStop", function(frame) 
 		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
 		if E.db.core.stickyFrames then
