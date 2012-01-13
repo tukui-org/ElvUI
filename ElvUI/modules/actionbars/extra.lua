@@ -29,5 +29,18 @@ function AB:SetupExtraButton()
 		end
 	end
 	
+	-- hook the texture, idea by roth via WoWInterface forums
+	-- code taken from Tukui
+	local button = ExtraActionButton1
+	local icon = button.icon
+	local texture = button.style
+	local disableTexture = function(style, texture)
+		if string.sub(texture,1,9) == "Interface" then
+			style:SetTexture("")
+		end
+	end
+	button.style:SetTexture("")
+	hooksecurefunc(texture, "SetTexture", disableTexture)
+	
 	self:CreateMover(holder, 'BossButton', 'BossButton');
 end
