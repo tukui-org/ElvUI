@@ -1138,9 +1138,6 @@ E.Options.args.unitframe.args.player = {
 					name = L['Castbar Ticks'],
 					desc = L['Enable Showing of Castbar Ticks on the Player Castbar. Spells can be chosen in the ChannelTicks filter.'],
 					type = 'toggle',
-					get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['player']['castbar'][ info[#info] ] end,
-					set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['player']['castbar'][ info[#info] ] = value; end,
-					
 				},
 				cbtickscolor = {
 					order = 12,
