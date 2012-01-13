@@ -1,8 +1,6 @@
 local E, L, DF = unpack(select(2, ...)); --Engine
 local UF = E:GetModule('UnitFrames');
 
-
-
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
@@ -287,7 +285,7 @@ function UF:Update_PetFrame(frame, db)
 	
 	if not frame.mover then
 		frame:ClearAllPoints()
-		frame:Point('BOTTOM', ElvUF_Targettarget, 'TOP', 0, 7) --Set to default position
+		frame:Point('BOTTOM', ElvUF_TargetTarget, 'TOP', 0, 7) --Set to default position
 	end
 	
 	frame:UpdateAllElements()
