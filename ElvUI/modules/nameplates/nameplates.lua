@@ -6,6 +6,10 @@ local numChildren = -1
 local backdrop
 NP.Handled = {} --Skinned Nameplates
 NP.BattleGroundHealers = {};
+NP.factionOpposites = {
+	['Horde'] = 1,
+	['Alliance'] = 0,
+}
 NP.Healers = {
 	[L['Restoration']] = true,
 	[L['Holy']] = true,
@@ -904,7 +908,7 @@ function NP:CheckHealers()
 	for i = 1, GetNumBattlefieldScores() do
 		local name, _, _, _, _, faction, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i);
 		name = name:match("(.+)%-.+") or name
-		if self.Healers[talentSpec] and faction == 1 then
+		if self.Healers[talentSpec] and self.factionOpposites[self.PlayerFaction] == faction then
 			self.BattleGroundHealers[name] = talentSpec
 		elseif self.BattleGroundHealers[name] then
 			self.BattleGroundHealers[name] = nil;
@@ -931,6 +935,8 @@ function NP:PLAYER_ENTERING_WORLD()
 			self.CheckHealerTimer = nil;
 		end
 	end
+	
+	self.PlayerFaction = UnitFactionGroup("player")
 end
 
 function NP:UpdateAllPlates()
