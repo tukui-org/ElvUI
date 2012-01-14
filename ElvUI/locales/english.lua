@@ -195,6 +195,9 @@ do
 	L["Auras"] = true;
 	L['Healer Icon'] = true;
 	L['Display a healer icon over known healers inside battlegrounds.'] = true;
+	L['Restoration'] = true;
+	L['Holy'] = true;
+	L['Discipline'] = true;
 end
 
 --ClassTimers
