@@ -4645,7 +4645,13 @@ E.Options.args.unitframe.args.party = {
 					name = L['Heal Prediction'],
 					desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
 					type = 'toggle',
-				},						
+				},					
+				pets = {
+					order = 16,
+					name = L['Display Pets'],
+					desc = L['Display group members pets above the unitframe.'],
+					type = 'toggle',
+				},
 				visibility = {
 					order = 200,
 					type = 'input',

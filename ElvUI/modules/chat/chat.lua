@@ -302,6 +302,8 @@ function CH:AddMessage(text, ...)
 			text = text:gsub("<"..DND..">", "[|cffE7E716"..L['DND'].."|r] ")
 			text = text:gsub("^%["..RAID_WARNING.."%]", '['..L['RW']..']')	
 		end
+		
+		text = text:gsub('|Hplayer:Elv:', '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t|Hplayer:Elv:')
 	end
 	
 	self.OldAddMessage(self, text, ...)

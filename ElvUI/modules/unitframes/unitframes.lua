@@ -275,7 +275,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 			ElvUF:SetActiveStyle("ElvUF_"..E:StringTitle(group))
 
 			if template then
-				self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 'point', self.db['layouts'][self.ActiveLayout][group].point, 'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 'groupFilter', groupFilter, 'template', template)
+				self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 'point', self.db['layouts'][self.ActiveLayout][group].point, 'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 'template', template, 'groupFilter', groupFilter)
 			else
 				self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 'point', self.db['layouts'][self.ActiveLayout][group].point, 'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 'groupFilter', groupFilter)
 			end
@@ -288,6 +288,10 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 		for i=1, self[group]:GetNumChildren() do
 			local child = select(i, self[group]:GetChildren())
 			UF["Update_"..E:StringTitle(group).."Frames"](self, child, self.db['layouts'][self.ActiveLayout][group])
+			
+			if _G[child:GetName()..'Pet'] then
+				UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Pet'], self.db['layouts'][self.ActiveLayout][group])
+			end
 		end
 	elseif self[group] then
 		self[group]:SetAttribute("showParty", false)
@@ -343,6 +347,7 @@ function UF:LoadUnits()
 		if type(groupOptions) == 'table' then
 			groupFilter, template = unpack(groupOptions)
 		end
+
 		self:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 	end
 	self['headerstoload'] = nil

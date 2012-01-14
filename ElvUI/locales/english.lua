@@ -531,6 +531,9 @@ do
 	L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'] = true;
 	L['Assist Frames'] = true;
 	L['Tank Frames'] = true;
+	
+	L['Display Pets'] = true;
+	L['Display group members pets above the unitframe.'] = true;
 end
 
 --Datatext
