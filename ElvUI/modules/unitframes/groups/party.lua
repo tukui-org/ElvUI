@@ -11,7 +11,7 @@ function UF:Construct_PartyFrames(unitGroup)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)	
 	
 	if self.isChild then
-		self.Health = UF:Construct_HealthBar(self)
+		self.Health = UF:Construct_HealthBar(self, true)
 		self.Health.frequentUpdates = true;	
 		
 		self.Name = UF:Construct_NameText(self)
