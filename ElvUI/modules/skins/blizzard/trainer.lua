@@ -39,7 +39,7 @@ local function LoadSkin()
 		_G["ClassTrainerScrollFrameButton"..i].selectedTex:Point("BOTTOMRIGHT", -2, 2)
 	end
 	
-	S:HandleScrollBar(ClassTrainerScrollFrameScrollBar)
+	S:HandleScrollBar(ClassTrainerScrollFrameScrollBar, 5)
 	
 	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()
@@ -56,6 +56,7 @@ local function LoadSkin()
 
 	S:HandleDropDownBox(ClassTrainerFrameFilterDropDown, 155)
 
+	ClassTrainerFrame:SetHeight(ClassTrainerFrame:GetHeight() + 42)
 	ClassTrainerFrame:CreateBackdrop("Transparent")
 	ClassTrainerFrame.backdrop:Point("TOPLEFT", ClassTrainerFrame, "TOPLEFT")
 	ClassTrainerFrame.backdrop:Point("BOTTOMRIGHT", ClassTrainerFrame, "BOTTOMRIGHT")

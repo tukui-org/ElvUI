@@ -6,13 +6,14 @@ local numChildren = -1
 local backdrop
 NP.Handled = {} --Skinned Nameplates
 NP.BattleGroundHealers = {};
-NP.NonHealers = {
-	['WARRIOR'] = true,
-	['DEATHKNIGHT'] = true,
-	['MAGE'] = true,
-	['WARLOCK'] = true,
-	['ROGUE'] = true,
-	['HUNTER'] = true,
+NP.factionOpposites = {
+	['Horde'] = 1,
+	['Alliance'] = 0,
+}
+NP.Healers = {
+	[L['Restoration']] = true,
+	[L['Holy']] = true,
+	[L['Discipline']] = true,
 }
 
 function NP:Initialize()
@@ -880,11 +881,7 @@ function NP:CheckFilter(frame, ...)
 	
 	--Check For Healers
 	if self.BattleGroundHealers[name] then
-		if not NP.NonHealers[self.BattleGroundHealers[name]] then
-			frame.healerIcon:Show()
-		else
-			frame.healerIcon:Hide()
-		end
+		frame.healerIcon:Show()
 	else
 		frame.healerIcon:Hide()
 	end
@@ -909,10 +906,10 @@ end
 
 function NP:CheckHealers()
 	for i = 1, GetNumBattlefieldScores() do
-		local name, _, _, _, _, faction, _, _, classToken, damageDone, healingDone = GetBattlefieldScore(i);
-		if (healingDone > damageDone * 1.2) and faction == 1 then
-			name = name:match("(.+)%-.+") or name
-			self.BattleGroundHealers[name] = classToken
+		local name, _, _, _, _, faction, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i);
+		name = name:match("(.+)%-.+") or name
+		if self.Healers[talentSpec] and self.factionOpposites[self.PlayerFaction] == faction then
+			self.BattleGroundHealers[name] = talentSpec
 		elseif self.BattleGroundHealers[name] then
 			self.BattleGroundHealers[name] = nil;
 		end
@@ -938,6 +935,8 @@ function NP:PLAYER_ENTERING_WORLD()
 			self.CheckHealerTimer = nil;
 		end
 	end
+	
+	self.PlayerFaction = UnitFactionGroup("player")
 end
 
 function NP:UpdateAllPlates()

@@ -275,7 +275,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 			ElvUF:SetActiveStyle("ElvUF_"..E:StringTitle(group))
 
 			if template then
-				self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 'point', self.db['layouts'][self.ActiveLayout][group].point, 'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 'groupFilter', groupFilter, 'template', template)
+				self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 'point', self.db['layouts'][self.ActiveLayout][group].point, 'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 'template', template, 'groupFilter', groupFilter)
 			else
 				self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 'point', self.db['layouts'][self.ActiveLayout][group].point, 'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 'groupFilter', groupFilter)
 			end
@@ -288,6 +288,10 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 		for i=1, self[group]:GetNumChildren() do
 			local child = select(i, self[group]:GetChildren())
 			UF["Update_"..E:StringTitle(group).."Frames"](self, child, self.db['layouts'][self.ActiveLayout][group])
+			
+			if _G[child:GetName()..'Pet'] then
+				UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Pet'], self.db['layouts'][self.ActiveLayout][group])
+			end
 		end
 	elseif self[group] then
 		self[group]:SetAttribute("showParty", false)
@@ -343,6 +347,7 @@ function UF:LoadUnits()
 		if type(groupOptions) == 'table' then
 			groupFilter, template = unpack(groupOptions)
 		end
+
 		self:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 	end
 	self['headerstoload'] = nil
@@ -436,6 +441,7 @@ function UF:Initialize()
 	if self.db.disableBlizzard then
 		self:DisableBlizzard()	
 
+
 		UnitPopupMenus["SELF"] = { "PVP_FLAG", "LOOT_METHOD", "LOOT_THRESHOLD", "OPT_OUT_LOOT_TITLE", "LOOT_PROMOTE", "DUNGEON_DIFFICULTY", "RAID_DIFFICULTY", "RESET_INSTANCES", "RAID_TARGET_ICON", "SELECT_ROLE", "CONVERT_TO_PARTY", "CONVERT_TO_RAID", "LEAVE", "CANCEL" };
 		UnitPopupMenus["PET"] = { "PET_PAPERDOLL", "PET_RENAME", "PET_ABANDON", "PET_DISMISS", "CANCEL" };
 		UnitPopupMenus["PARTY"] = { "MUTE", "UNMUTE", "PARTY_SILENCE", "PARTY_UNSILENCE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "WHISPER", "PROMOTE", "PROMOTE_GUIDE", "LOOT_PROMOTE", "VOTE_TO_KICK", "UNINVITE", "INSPECT", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "RAID_TARGET_ICON", "SELECT_ROLE", "PVP_REPORT_AFK", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL" };
@@ -447,6 +453,10 @@ function UF:Initialize()
 		UnitPopupMenus["ARENAENEMY"] = { "CANCEL" }
 		UnitPopupMenus["FOCUS"] = { "RAID_TARGET_ICON", "CANCEL" }
 		UnitPopupMenus["BOSS"] = { "RAID_TARGET_ICON", "CANCEL" }	
+		
+		if E.myclass == 'HUNTER' then
+			UnitPopupMenus["PET"] = { "PET_PAPERDOLL", "PET_RENAME", "PET_ABANDON", "CANCEL" };
+		end
 		
 		self:RegisterEvent('RAID_ROSTER_UPDATE', 'DisableBlizzard')
 	end

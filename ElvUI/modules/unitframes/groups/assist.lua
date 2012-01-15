@@ -114,4 +114,4 @@ function UF:Update_AssistFrames(frame, db)
 	frame:UpdateAllElements()
 end
 
-UF['headerstoload']['assist'] = {'MAINASSIST', 'ELVUI_TARGETTARGET'}
+UF['headerstoload']['assist'] = {'MAINASSIST', 'ELVUI_UNITTARGET'}

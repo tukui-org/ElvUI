@@ -78,7 +78,7 @@ local function Spawn(type)
 	text:Point('TOP', frame, 0, 2)
 	text:SetPoint('BOTTOM', frame)
 
-	frame:Size(222, 14)
+	frame:Size(222, 18)
 
 	frame:SetStatusBarTexture(E['media'].normTex)
 	frame:SetStatusBarColor(r, g, b)

@@ -114,4 +114,4 @@ function UF:Update_TankFrames(frame, db)
 	frame:UpdateAllElements()
 end
 
-UF['headerstoload']['tank'] = {'MAINTANK', 'ELVUI_TARGETTARGET'}
+UF['headerstoload']['tank'] = {'MAINTANK', 'ELVUI_UNITTARGET'}

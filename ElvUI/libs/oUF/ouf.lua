@@ -210,7 +210,7 @@ local initObject = function(unit, style, styleFunc, header, ...)
 
 		-- Handle the case where someone has modified the unitsuffix attribute in
 		-- oUF-initialConfigFunction.
-		if(suffix and not objectUnit:match(suffix)) then
+		if(suffix and objectUnit and not objectUnit:match(suffix)) then
 			objectUnit = objectUnit .. suffix
 		end
 
