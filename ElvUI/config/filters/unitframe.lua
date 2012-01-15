@@ -18,7 +18,9 @@ DF['ChannelTicks'] = {
 	['spells'] = {
 		-- Warlock
 			[SpellName(689)] = 3, -- "Drain Life"
+			[SpellName(1120)] = 5, -- "Drain Soul"
 			[SpellName(5740)] = 4, -- "Rain of Fire"
+			[SpellName(1949)] = 15, -- Hellfire
 			[SpellName(755)] = 3, -- Health Funnel
 		-- Druid
 			[SpellName(44203)] = 4, -- "Tranquility"

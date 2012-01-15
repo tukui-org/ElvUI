@@ -486,6 +486,7 @@ function UF:PostCastStart(unit, name, rank, castid)
 	if db['castbar']['cbticks'] == true and unit == "player" then
 		if E.db['unitframe']['aurafilters']['ChannelTicks']['spells'][name] then
 			local color = db['castbar']['cbtickscolor']
+			SetCastTicks(self, 0)
 			SetCastTicks(self, E.DF["profile"]['unitframe']['aurafilters']['ChannelTicks']['spells'][name])
 			for _, tick in pairs(ticks) do
 				tick:SetVertexColor(color.r, color.g, color.b)
