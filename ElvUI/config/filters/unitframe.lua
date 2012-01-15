@@ -18,7 +18,7 @@ DF['ChannelTicks'] = {
 	['spells'] = {
 		-- Warlock
 			[SpellName(689)] = 3, -- "Drain Life"
-			[SpellName(1120)] = 5, -- "Drain Soul"
+			--[SpellName(1120)] = 5, -- "Drain Soul" -- Commented out for the time being. Drain Soul ticks scale with haste, people will need to set their own value if they want to use it.
 			[SpellName(5740)] = 4, -- "Rain of Fire"
 			[SpellName(1949)] = 15, -- Hellfire
 			[SpellName(755)] = 3, -- Health Funnel

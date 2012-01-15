@@ -127,7 +127,7 @@ local updateIcon = function(unit, icons, index, offset, filter, isDebuff, visibl
 			icon.count:SetText((count > 1 and count))
 
 			icon.filter = filter
-			icon.debuff = isDebuff
+			icon.isDebuff = isDebuff
 
 			icon:SetID(index)
 			icon:Show()
