@@ -240,6 +240,7 @@ DF['unitframe'] = {
 	['OORAlpha'] = 0.35,
 	['debuffHighlighting'] = true,
 	["smartRaidFilter"] = true,
+	["castBarTicks"] = true,
 	
 	['colors'] = {
 		['healthclass'] = false,
