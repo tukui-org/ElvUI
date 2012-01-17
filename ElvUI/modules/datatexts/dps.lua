@@ -45,6 +45,7 @@ local function OnEvent(self, event, ...)
 		local id = select(4, ...)
 
 		if id == playerID or id == petID then
+			--print(select(13, ...))
 			if timeStamp == 0 then timeStamp = select(1, ...) end
 			lastSegment = timeStamp
 			combatTime = select(1, ...) - timeStamp

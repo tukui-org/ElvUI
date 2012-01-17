@@ -121,9 +121,12 @@ end
 
 function CH:CopyChat(frame)
 	if not CopyChatFrame:IsShown() then
+		local _, fontSize = FCF_GetChatWindowInfo(frame:GetID());
+		FCF_SetChatWindowFontSize(frame, frame, 0.01)
 		CopyChatFrame:Show()
 		local lineCt = self:GetLines(frame:GetRegions())
 		local text = table.concat(lines, "\n", 1, lineCt)
+		FCF_SetChatWindowFontSize(frame, frame, fontSize)
 		CopyChatFrameEditBox:SetText(text)
 	else
 		CopyChatFrame:Hide()
@@ -370,6 +373,7 @@ function CH:Initialize()
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_CONVERSATION", CH.FindURL)	
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", CH.FindURL)
 	
 	local S = E:GetModule('Skins')
 	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)
