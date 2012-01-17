@@ -245,6 +245,7 @@ DF['unitframe'] = {
 	['OORAlpha'] = 0.55,
 	['debuffHighlighting'] = false,
 	["smartRaidFilter"] = true,
+	["castBarTicks"] = true,
 	
 	['colors'] = {
 		['healthclass'] = false,
@@ -350,8 +351,6 @@ DF['unitframe'] = {
 					['xOffset'] = 0,
 					['yOffset'] = 0,
 					['format'] = 'CURRENTMAX',
-					['cbticks'] = true,
-					['cbtickscolor'] = { r = 0.00, g = 0.00, b = 0.00 },
 				},
 				['classbar'] = {
 					['enable'] = true,
@@ -1160,8 +1159,6 @@ DF['unitframe'] = {
 					['xOffset'] = 0,
 					['yOffset'] = 0,
 					['format'] = 'CURRENTMAX',
-					['cbticks'] = true,
-					['cbtickscolor'] = { r = 0.00, g = 0.00, b = 0.00 },
 				},
 				['classbar'] = {
 					['enable'] = true,

@@ -234,6 +234,10 @@ function UF:Construct_PaladinWarlockResourceBar(frame, class)
 		
 		if class == "PALADIN" then
 			bars[i]:SetStatusBarColor(228/255,225/255,16/255)
+			
+			bars[i].backdrop:CreateShadow('Default')
+			bars[i].backdrop.shadow:SetBackdropBorderColor(228/255,225/255,16/255)
+			bars[i].backdrop.shadow:Point("TOPLEFT", -4, 4)
 		else
 			bars[i]:SetStatusBarColor(148/255, 130/255, 201/255)
 		end

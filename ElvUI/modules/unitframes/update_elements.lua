@@ -440,20 +440,20 @@ function UF:CustomTimeText(duration)
 	end
 end
 
---Credit Monolit
 local ticks = {}
-local function SetCastTicks(self, num)
-	if num and num > 0 then
-		local d = self:GetWidth() / num
-		for i = 1, num do
+function UF:SetCastTicks(frame, numTicks)
+	if numTicks and numTicks > 0 then
+		local d = frame:GetWidth() / numTicks
+		for i = 1, numTicks do
 			if not ticks[i] then
-				ticks[i] = self:CreateTexture(nil, 'OVERLAY')
-				ticks[i]:SetTexture(E["media"].blankTex)
-				ticks[i]:SetWidth(2)
-				ticks[i]:SetHeight(self:GetHeight())
+				ticks[i] = frame:CreateTexture(nil, 'OVERLAY')
+				ticks[i]:SetTexture(E["media"].normTex)
+				ticks[i]:SetVertexColor(0, 0, 0)
+				ticks[i]:SetWidth(1)
+				ticks[i]:SetHeight(frame:GetHeight())
 			end
 			ticks[i]:ClearAllPoints()
-			ticks[i]:SetPoint("RIGHT", self, "RIGHT", -(d * i), 0)
+			ticks[i]:SetPoint("CENTER", frame, "LEFT", d * i, 0)
 			ticks[i]:Show()
 		end
 	else
@@ -470,6 +470,18 @@ function UF:PostCastStart(unit, name, rank, castid)
 	local db = self:GetParent().db
 	local color
 	self.unit = unit
+
+	if UF.db.castBarTicks and unit == "player" then
+		local numTicks = UF.db.ChannelTicks[name]
+		if numTicks then
+			UF:SetCastTicks(self, numTicks)
+		else
+			for _, tick in pairs(ticks) do
+				tick:Hide()
+			end		
+		end
+	end	
+	
 	if self.interrupt and unit ~= "player" then
 		if UnitCanAttack("player", unit) then
 			color = db['castbar']['interruptcolor']
@@ -530,12 +542,30 @@ end
 function UF:UpdateHoly(event, unit, powerType)
 	if(self.unit ~= unit or (powerType and powerType ~= 'HOLY_POWER')) then return end
 	local num = UnitPower(unit, SPELL_POWER_HOLY_POWER)
-
+	local db = self.db
 	for i = 1, MAX_HOLY_POWER do
 		if(i <= num) then
 			self.HolyPower[i]:SetAlpha(1)
+			
+			if i == 3 and db.classbar.fill == 'spaced' then
+				for h = 1, MAX_HOLY_POWER do
+					self.HolyPower[h].backdrop.shadow:Show()
+					self.HolyPower[h]:SetScript('OnUpdate', function(self)
+						E:Flash(self.backdrop.shadow, 0.6)
+					end)
+				end
+			else
+				for h = 1, MAX_HOLY_POWER do
+					self.HolyPower[h].backdrop.shadow:Hide()
+					self.HolyPower[h]:SetScript('OnUpdate', nil)
+				end
+			end
 		else
 			self.HolyPower[i]:SetAlpha(.2)
+			for h = 1, MAX_HOLY_POWER do
+				self.HolyPower[h].backdrop.shadow:Hide()
+				self.HolyPower[h]:SetScript('OnUpdate', nil)
+			end		
 		end
 	end
 end	

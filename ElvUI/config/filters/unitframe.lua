@@ -11,29 +11,23 @@ local function SpellName(id)
 	end
 end
 
--- List of spells to display ticks. They need to be added manually for the time being, since the ElvUI filter module only handles true/false statements and as such does not support the tick value added in this table.
--- [SpellName(Spell_ID)] = NUMBER_OF_TICKS, -- "Name of Spell"
+--List of spells to display ticks
 DF['ChannelTicks'] = {
-	['type'] = 'Whitelist',
-	['spells'] = {
-		-- Warlock
-			[SpellName(689)] = 3, -- "Drain Life"
-			--[SpellName(1120)] = 5, -- "Drain Soul" -- Commented out for the time being. Drain Soul ticks scale with haste, people will need to set their own value if they want to use it.
-			[SpellName(5740)] = 4, -- "Rain of Fire"
-			[SpellName(1949)] = 15, -- Hellfire
-			[SpellName(755)] = 3, -- Health Funnel
-		-- Druid
-			[SpellName(44203)] = 4, -- "Tranquility"
-			[SpellName(16914)] = 10, -- "Hurricane"
-		-- Priest
-			[SpellName(15407)] = 3, -- "Mind Flay"
-			[SpellName(48045)] = 5, -- "Mind Sear"
-			[SpellName(47540)] = 2, -- "Penance"
-		-- Mage
-			[SpellName(5143)] = 5, -- "Arcane Missiles"
-			[SpellName(10)] = 5, -- "Blizzard"
-			[SpellName(12051)] = 4, -- "Evocation"
-	},
+	-- Warlock
+	[SpellName(689)] = 3, -- "Drain Life"
+	[SpellName(5740)] = 4, -- "Rain of Fire"
+	[SpellName(755)] = 3, -- Health Funnel
+	-- Druid
+	[SpellName(44203)] = 4, -- "Tranquility"
+	[SpellName(16914)] = 10, -- "Hurricane"
+	-- Priest
+	[SpellName(15407)] = 3, -- "Mind Flay"
+	[SpellName(48045)] = 5, -- "Mind Sear"
+	[SpellName(47540)] = 2, -- "Penance"
+	-- Mage
+	[SpellName(5143)] = 5, -- "Arcane Missiles"
+	[SpellName(10)] = 5, -- "Blizzard"
+	[SpellName(12051)] = 4, -- "Evocation"
 }
 
 DF['CCDebuffs'] = {
@@ -356,5 +350,24 @@ DF.buffwatch = {
 		ClassBuff(51945, "BOTTOMRIGHT", {0.7, 0.4, 0}), -- Earthliving
 		ClassBuff(974, "TOPRIGHT", {221/255, 117/255, 0}, true), -- Earth Shield
 	},	
+}
+
+--List of spells to display ticks
+DF.ChannelTicks = {
+	--Warlock
+	[SpellName(689)] = 3, -- "Drain Life"
+	[SpellName(5740)] = 4, -- "Rain of Fire"
+	[SpellName(755)] = 3, -- Health Funnel
+	--Druid
+	[SpellName(44203)] = 4, -- "Tranquility"
+	[SpellName(16914)] = 10, -- "Hurricane"
+	--Priest
+	[SpellName(15407)] = 3, -- "Mind Flay"
+	[SpellName(48045)] = 5, -- "Mind Sear"
+	[SpellName(47540)] = 2, -- "Penance"
+	--Mage
+	[SpellName(5143)] = 5, -- "Arcane Missiles"
+	[SpellName(10)] = 5, -- "Blizzard"
+	[SpellName(12051)] = 4, -- "Evocation"
 }
 
