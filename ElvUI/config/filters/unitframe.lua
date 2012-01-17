@@ -297,6 +297,8 @@ DF.ChannelTicks = {
 	[SpellName(15407)] = 3, -- "Mind Flay"
 	[SpellName(48045)] = 5, -- "Mind Sear"
 	[SpellName(47540)] = 2, -- "Penance"
+	[SpellName(64901)] = 4, -- Hymn of Hope
+	[SpellName(64843)] = 4, -- Divine Hymn
 	--Mage
 	[SpellName(5143)] = 5, -- "Arcane Missiles"
 	[SpellName(10)] = 5, -- "Blizzard"
@@ -305,7 +307,8 @@ DF.ChannelTicks = {
 
 --Spells Effected By Haste
 DF.HastedChannelTicks = {
-	[SpellName(15407)] = true, -- Mind Flay
+	[SpellName(64901)] = true, -- Hymn of Hope
+	[SpellName(64843)] = true, -- Divine Hymn
 	[SpellName(1120)] = true, -- Drain Soul
 }
 
