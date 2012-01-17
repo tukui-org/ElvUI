@@ -274,10 +274,6 @@ local function URLChatFrame_OnHyperlinkShow(self, link, ...)
 	OldChatFrame_OnHyperlinkShow(self, link, ...)
 end
 
-function CH:URL_Link(url)
-	return " "..E['media'].hexvaluecolor.."|Hurl:"..url.."|h"..url.."|h|r "
-end
-
 function CH:ShortChannel()
 	return string.format("|Hchannel:%s|h[%s]|h", self, DEFAULT_STRINGS[self] or self:gsub("channel:", ""))
 end
