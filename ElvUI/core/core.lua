@@ -313,6 +313,18 @@ function E:IsFoolsDay()
 	end
 end
 
+function E:SendRecieve(event, prefix, message, channel, sender)
+	if event == "CHAT_MSG_ADDON" then
+		if (prefix ~= "ElvUI") then return end
+		if tonumber(message) > tonumber(E.version) then
+			E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.curse.com"])
+			self:UnregisterEvent("CHAT_MSG_ADDON")
+		end
+	else
+		SendAddonMessage("ElvUI", E.version, "RAID")
+	end
+end
+
 function E:Initialize()
 	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF);
 	self.data.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
@@ -340,6 +352,8 @@ function E:Initialize()
 		self:Install()
 	end
 	
+	RegisterAddonMessagePrefix('ElvUI')
+	
 	self:UpdateMedia()
 	self:CreateMoverPopup()
 	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", "CheckRole");
@@ -347,6 +361,10 @@ function E:Initialize()
 	self:RegisterEvent("CHARACTER_POINTS_CHANGED", "CheckRole");
 	self:RegisterEvent("UNIT_INVENTORY_CHANGED", "CheckRole");
 	self:RegisterEvent("UPDATE_BONUS_ACTIONBAR", "CheckRole");	
+	self:RegisterEvent("PLAYER_ENTERING_WORLD", "SendRecieve")
+	self:RegisterEvent("RAID_ROSTER_UPDATE", "SendRecieve")
+	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "SendRecieve")
+	self:RegisterEvent("CHAT_MSG_ADDON", "SendRecieve")
 end
 
 local toggle
