@@ -494,25 +494,6 @@ function UF:PostCastStart(unit, name, rank, castid)
 		color = db['castbar']['color']
 		self:SetStatusBarColor(color.r, color.g, color.b)
 	end
-	
-	if db['castbar']['cbticks'] == true and unit == "player" then
-		if E.db['unitframe']['aurafilters']['ChannelTicks']['spells'][name] then
-			local color = db['castbar']['cbtickscolor']
-			SetCastTicks(self, 0)
-			SetCastTicks(self, E.DF["profile"]['unitframe']['aurafilters']['ChannelTicks']['spells'][name])
-			for _, tick in pairs(ticks) do
-				tick:SetVertexColor(color.r, color.g, color.b)
-			end
-		else
-			for _, tick in pairs(ticks) do
-				tick:Hide()
-			end		
-		end
-	else
-		for _, tick in pairs(ticks) do
-			tick:Hide()
-		end
-	end
 end
 
 function UF:PostCastInterruptible(unit)
