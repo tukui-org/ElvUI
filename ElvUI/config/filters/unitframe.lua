@@ -286,6 +286,7 @@ DF.buffwatch = {
 --List of spells to display ticks
 DF.ChannelTicks = {
 	--Warlock
+	[SpellName(1120)] = 5, --"Drain Soul"
 	[SpellName(689)] = 3, -- "Drain Life"
 	[SpellName(5740)] = 4, -- "Rain of Fire"
 	[SpellName(755)] = 3, -- Health Funnel
@@ -300,5 +301,11 @@ DF.ChannelTicks = {
 	[SpellName(5143)] = 5, -- "Arcane Missiles"
 	[SpellName(10)] = 5, -- "Blizzard"
 	[SpellName(12051)] = 4, -- "Evocation"
+}
+
+--Spells Effected By Haste
+DF.HastedChannelTicks = {
+	[SpellName(15407)] = true, -- Mind Flay
+	[SpellName(1120)] = true, -- Drain Soul
 }
 

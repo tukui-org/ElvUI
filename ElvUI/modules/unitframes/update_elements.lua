@@ -472,9 +472,27 @@ function UF:PostCastStart(unit, name, rank, castid)
 	self.unit = unit
 
 	if UF.db.castBarTicks and unit == "player" then
-		local numTicks = UF.db.ChannelTicks[name]
-		if numTicks then
-			UF:SetCastTicks(self, numTicks)
+		local baseTicks = UF.db.ChannelTicks[name]
+		if baseTicks and UF.db.HastedChannelTicks[name] then
+			local tickIncRate = 1 / baseTicks
+			local curHaste = UnitSpellHaste("player") * 0.01
+			local firstTickInc = tickIncRate / 2
+			local bonusTicks = 0
+			if curHaste > firstTickInc then
+				bonusTicks = bonusTicks + 1
+			end
+			
+			local x = (firstTickInc + tickIncRate)
+			while curHaste >= x do
+				x = (firstTickInc + (tickIncRate * bonusTicks))
+				bonusTicks = bonusTicks + 1
+
+				if curHaste > x then break; end
+			end
+
+			UF:SetCastTicks(self, baseTicks + bonusTicks)
+		elseif baseTicks then
+			UF:SetCastTicks(self, baseTicks)
 		else
 			for _, tick in pairs(ticks) do
 				tick:Hide()
