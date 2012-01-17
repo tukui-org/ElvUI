@@ -1133,28 +1133,6 @@ E.Options.args.unitframe.args.player = {
 					type = 'range',
 					min = -E.screenheight, max = E.screenheight, step = 1,
 				},
-				cbticks = {
-					order = 11,
-					name = L['Castbar Ticks'],
-					desc = L['Enable Showing of Castbar Ticks on the Player Castbar. Spells can be chosen in the ChannelTicks filter.'],
-					type = 'toggle',
-				},
-				cbtickscolor = {
-					order = 12,
-					name = L['Castbar Ticks Color'],
-					type = 'color',
-					disabled = function() return not E.db.unitframe.layouts[UF.ActiveLayout]['player']['castbar']['cbticks'] end,
-					get = function(info)
-						local t = E.db.unitframe.layouts[UF.ActiveLayout]['player']['castbar'][ info[#info] ]
-						return t.r, t.g, t.b, t.a
-					end,
-					set = function(info, r, g, b)
-						E.db.core[ info[#info] ] = {}
-						local t = E.db.unitframe.layouts[UF.ActiveLayout]['player']['castbar'][ info[#info] ]
-						t.r, t.g, t.b = r, g, b
-						UF:CreateAndUpdateUF('player')
-					end,
-				},
 				color = {
 					order = 13,
 					type = 'color',
