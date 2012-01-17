@@ -243,43 +243,39 @@ function FloatingChatFrame_OnMouseScroll(frame, delta)
 	end
 end
 
-local OldSetItemRef = SetItemRef
-local function URL_SetItemRef(link, text, button, chatFrame)
-	if (strsub(link, 1, 3) == "url") then
+function CH:PrintURL(url)
+	return E['media'].hexvaluecolor.."|Hurl:"..url.."|h"..url.."|h|r "
+end
+
+function CH:FindURL(event, msg, ...)
+	if not CH.db.url then return false, msg, ... end
+	local newMsg, found = gsub(msg, "(%a+)://(%S+)%s?", CH:PrintURL("%1://%2"))
+	if found > 0 then return false, newMsg, ... end
+	
+	newMsg, found = gsub(msg, "www%.([_A-Za-z0-9-]+)%.(%S+)%s?", CH:PrintURL("www.%1.%2"))
+	if found > 0 then return false, newMsg, ... end
+
+	newMsg, found = gsub(msg, "([_A-Za-z0-9-%.]+)@([_A-Za-z0-9-]+)(%.+)([_A-Za-z0-9-%.]+)%s?", CH:PrintURL("%1@%2%3%4"))
+	if found > 0 then return false, newMsg, ... end
+end
+
+local OldChatFrame_OnHyperlinkShow = ChatFrame_OnHyperlinkShow
+local function URLChatFrame_OnHyperlinkShow(self, link, ...)
+	if (link):sub(1, 3) == "url" then
 		local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
-		local url = strsub(link, 5);
+		local currentLink = (link):sub(5)
 		if (not ChatFrameEditBox:IsShown()) then
 			ChatEdit_ActivateChat(ChatFrameEditBox)
 		end
-		ChatFrameEditBox:Insert(url)
+		ChatFrameEditBox:Insert(currentLink)
 		ChatFrameEditBox:HighlightText()
-
-	else
-		OldSetItemRef(link, text, button, chatFrame)
+		return
 	end
+	OldChatFrame_OnHyperlinkShow(self, link, ...)
 end
 
 function CH:URL_Link(url)
 	return " "..E['media'].hexvaluecolor.."|Hurl:"..url.."|h"..url.."|h|r "
-end
-
-function CH:URL_AddLinkSyntax(chatstring)
-	if (type(chatstring) == "string") then
-		local extraspace;
-		if (not strfind(chatstring, "^ ")) then
-			extraspace = true;
-			chatstring = " "..chatstring;
-		end
-		chatstring = gsub (chatstring, " www%.([_A-Za-z0-9-]+)%.(%S+)%s?", CH:URL_Link("www.%1.%2"))
-		chatstring = gsub (chatstring, " (%a+)://(%S+)%s?", CH:URL_Link("%1://%2"))
-		chatstring = gsub (chatstring, " ([_A-Za-z0-9-%.]+)@([_A-Za-z0-9-]+)(%.+)([_A-Za-z0-9-%.]+)%s?", CH:URL_Link("%1@%2%3%4"))
-		chatstring = gsub (chatstring, " (%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?):(%d%d?%d?%d?%d?)%s?", CH:URL_Link("%1.%2.%3.%4:%5"))
-		chatstring = gsub (chatstring, " (%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%s?", CH:URL_Link("%1.%2.%3.%4"))
-		if (extraspace) then
-			chatstring = strsub(chatstring, 2);
-		end
-	end
-	return chatstring
 end
 
 function CH:ShortChannel()
@@ -287,11 +283,7 @@ function CH:ShortChannel()
 end
 
 function CH:AddMessage(text, ...)
-	if type(text) == "string" then
-		if CH.db.url then
-			text = CH:URL_AddLinkSyntax(text)
-		end
-		
+	if type(text) == "string" then		
 		if CH.db.shortChannels then
 			text = text:gsub("|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
 			text = text:gsub('CHANNEL:', '')
@@ -313,10 +305,6 @@ if E:IsFoolsDay() then
 	local playerName = UnitName('player')
 	function CH:AddMessage(text, ...)
 		if type(text) == "string" then
-			if CH.db.url then
-				text = CH:URL_AddLinkSyntax(text)
-			end
-			
 			if CH.db.shortChannels then
 				text = text:gsub("|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
 				text = text:gsub('CHANNEL:', '')
@@ -365,13 +353,27 @@ function CH:Initialize()
 	
 	FriendsMicroButton:Kill()
 	ChatFrameMenuButton:Kill()
-	
-	SetItemRef = URL_SetItemRef
+	ChatFrame_OnHyperlinkShow = URLChatFrame_OnHyperlinkShow
 	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	
 	self:SetupChat()
 
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_YELL", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_GUILD", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_OFFICER", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY_LEADER", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_LEADER", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_BATTLEGROUND", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_BATTLEGROUND_LEADER", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_SAY", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_CONVERSATION", CH.FindURL)	
+	
 	local S = E:GetModule('Skins')
 	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)
 	frame:SetTemplate('Transparent')
