@@ -109,7 +109,7 @@ do
 	L['INCOMPATIBLE_ADDON'] = "The addon %s is not compatible with ElvUI's %s module. Please disable the incompatible addon or module.";
 	
 	L['Panel Texture'] = true;
-	L['Specify a filename located inside the Interface\\AddOns\\ElvUI\\media\\textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.'] = true;
+	L['Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.\n\nExample: Interface\\AddOns\\ElvUI\\media\\textures\\copy'] = true;
 	L["Are you sure you want to disband the group?"] = true;
 	
 	L["Your version of ElvUI is out of date. You can download the latest version from www.curse.com"] = true;
