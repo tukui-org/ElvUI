@@ -463,6 +463,7 @@ function UF:SetCastTicks(frame, numTicks)
 	end
 end
 
+
 function UF:PostCastStart(unit, name, rank, castid)
 	if unit == "vehicle" then unit = "player" end
 	self.Text:SetText(string.sub(name, 0, math.floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontsize) * 12)))
@@ -478,16 +479,16 @@ function UF:PostCastStart(unit, name, rank, castid)
 			local curHaste = UnitSpellHaste("player") * 0.01
 			local firstTickInc = tickIncRate / 2
 			local bonusTicks = 0
-			if curHaste > firstTickInc then
+			if curHaste >= firstTickInc then
 				bonusTicks = bonusTicks + 1
 			end
 			
-			local x = (firstTickInc + tickIncRate)
+			local x = tonumber(E:Round(firstTickInc + tickIncRate, 2))
 			while curHaste >= x do
-				x = (firstTickInc + (tickIncRate * bonusTicks))
-				bonusTicks = bonusTicks + 1
-
-				if curHaste > x then break; end
+				x = tonumber(E:Round(firstTickInc + (tickIncRate * bonusTicks), 2))
+				if curHaste >= x then
+					bonusTicks = bonusTicks + 1
+				end
 			end
 
 			UF:SetCastTicks(self, baseTicks + bonusTicks)

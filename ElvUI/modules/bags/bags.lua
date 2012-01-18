@@ -54,9 +54,10 @@ function B:BagFrameSlotNew(frame, slot)
 
 	ret.frame:HookScript("OnEnter", function()
 		local bag
-		for ind, val in ipairs(self.buttons) do
-			if val.bag == ret.slot then
+		for ind, val in ipairs(B.buttons) do
+			if val.bagOwner == ret.slot then
 				val.frame:SetAlpha(1)
+				--E:Print('Matched Bag Slot: '..val.bagOwner..' to button: '..ind)
 			else
 				val.frame:SetAlpha(0.2)
 			end
@@ -322,7 +323,6 @@ function B:Layout(isBank)
 			self.bags[i] = B:BagNew(i, f)
 			local bagType = self.bags[i].bagType
 			self.bags[i]:Show()
-
 			for j = 1, bag_cnt do
 				local b, isnew = self:SlotNew(i, j)
 				local xOff
@@ -332,6 +332,12 @@ function B:Layout(isBank)
 
 				if isnew then
 					table.insert(self.buttons, idx + 1, b)
+					
+					if not isBank then
+						b.bagOwner = i - 1
+					else
+						b.bagOwner = i
+					end
 				end
 
 				xOff = (x * 31) + (x * 2.5)
