@@ -908,9 +908,9 @@ function NP:CheckHealers()
 	for i = 1, GetNumBattlefieldScores() do
 		local name, _, _, _, _, faction, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i);
 		name = name:match("(.+)%-.+") or name
-		if self.Healers[talentSpec] and self.factionOpposites[self.PlayerFaction] == faction then
+		if name and self.Healers[talentSpec] and self.factionOpposites[self.PlayerFaction] == faction then
 			self.BattleGroundHealers[name] = talentSpec
-		elseif self.BattleGroundHealers[name] then
+		elseif name and self.BattleGroundHealers[name] then
 			self.BattleGroundHealers[name] = nil;
 		end
 	end
