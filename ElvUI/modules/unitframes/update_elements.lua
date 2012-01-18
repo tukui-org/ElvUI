@@ -441,6 +441,12 @@ function UF:CustomTimeText(duration)
 end
 
 local ticks = {}
+function UF:HideTicks()
+	for _, tick in pairs(ticks) do
+		tick:Hide()
+	end		
+end
+
 function UF:SetCastTicks(frame, numTicks)
 	if numTicks and numTicks > 0 then
 		local d = frame:GetWidth() / numTicks
@@ -457,12 +463,9 @@ function UF:SetCastTicks(frame, numTicks)
 			ticks[i]:Show()
 		end
 	else
-		for _, tick in pairs(ticks) do
-			tick:Hide()
-		end
+		UF:HideTicks()
 	end
 end
-
 
 function UF:PostCastStart(unit, name, rank, castid)
 	if unit == "vehicle" then unit = "player" end
@@ -471,8 +474,8 @@ function UF:PostCastStart(unit, name, rank, castid)
 	local db = self:GetParent().db
 	local color
 	self.unit = unit
-
-	if UF.db.castBarTicks and unit == "player" then
+	
+	if db.castbar.ticks and unit == "player" then
 		local baseTicks = UF.db.ChannelTicks[name]
 		if baseTicks and UF.db.HastedChannelTicks[name] then
 			local tickIncRate = 1 / baseTicks
@@ -495,10 +498,10 @@ function UF:PostCastStart(unit, name, rank, castid)
 		elseif baseTicks then
 			UF:SetCastTicks(self, baseTicks)
 		else
-			for _, tick in pairs(ticks) do
-				tick:Hide()
-			end		
+			UF:HideTicks()
 		end
+	else
+		UF:HideTicks()			
 	end	
 	
 	if self.interrupt and unit ~= "player" then
