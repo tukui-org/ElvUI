@@ -620,6 +620,17 @@ local auraAnchors = {
 	BOTTOMRIGHT = 'BOTTOMRIGHT',
 };
 
+local petAnchors = {
+	TOPLEFT = 'TOPLEFT',
+	LEFT = 'LEFT',
+	BOTTOMLEFT = 'BOTTOMLEFT',
+	RIGHT = 'RIGHT',
+	TOPRIGHT = 'TOPRIGHT',
+	BOTTOMRIGHT = 'BOTTOMRIGHT',
+	TOP = 'TOP',
+	BOTTOM = 'BOTTOM',
+};
+
 local filters = {};
 
 --Player
@@ -4646,12 +4657,6 @@ E.Options.args.unitframe.args.party = {
 					desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
 					type = 'toggle',
 				},					
-				pets = {
-					order = 16,
-					name = L['Display Pets'],
-					desc = L['Display group members pets above the unitframe.'],
-					type = 'toggle',
-				},
 				visibility = {
 					order = 200,
 					type = 'input',
@@ -5030,6 +5035,59 @@ E.Options.args.unitframe.args.party = {
 					name = L['Position'],
 					values = positionValues,
 				},							
+			},
+		},
+		petsGroup = {
+			order = 800,
+			type = 'group',
+			name = L['Party Pets'],
+			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['party']['petsGroup'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['party']['petsGroup'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,	
+			args = {		
+				enable = {
+					type = 'toggle',
+					name = L['Enable'],
+					order = 1,
+				},
+				width = {
+					order = 2,
+					name = L['Width'],
+					type = 'range',
+					min = 10, max = 500, step = 1,
+				},			
+				height = {
+					order = 3,
+					name = L['Height'],
+					type = 'range',
+					min = 10, max = 250, step = 1,
+				},	
+				initialAnchor = {
+					type = 'select',
+					order = 4,
+					name = L['Initial Anchor'],
+					values = petAnchors,
+				},	
+				anchorPoint = {
+					type = 'select',
+					order = 5,
+					name = L['Anchor Point'],
+					desc = L['What point to anchor to the frame you set to attach to.'],
+					values = petAnchors,				
+				},	
+				xOffset = {
+					order = 6,
+					type = 'range',
+					name = L['xOffset'],
+					desc = L['An X offset (in pixels) to be used when anchoring new frames.'],
+					min = -15, max = 15, step = 1,		
+				},
+				yOffset = {
+					order = 7,
+					type = 'range',
+					name = L['yOffset'],
+					desc = L['An Y offset (in pixels) to be used when anchoring new frames.'],
+					min = -15, max = 15, step = 1,		
+				},					
 			},
 		},
 	},

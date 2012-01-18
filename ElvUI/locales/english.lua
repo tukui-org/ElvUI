@@ -534,8 +534,7 @@ do
 	L['Assist Frames'] = true;
 	L['Tank Frames'] = true;
 	
-	L['Display Pets'] = true;
-	L['Display group members pets above the unitframe.'] = true;
+	L['Party Pets'] = true;
 end
 
 --Datatext
