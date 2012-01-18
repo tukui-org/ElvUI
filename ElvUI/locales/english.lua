@@ -535,6 +535,8 @@ do
 	L['Tank Frames'] = true;
 	
 	L['Party Pets'] = true;
+	L['Ticks'] = true;
+	L['Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste.'] = true;
 end
 
 --Datatext

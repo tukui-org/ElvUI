@@ -1160,6 +1160,7 @@ DF['unitframe'] = {
 					['xOffset'] = 0,
 					['yOffset'] = 0,
 					['format'] = 'REMAINING',
+					["ticks"] = true,
 				},
 				['classbar'] = {
 					['enable'] = true,
