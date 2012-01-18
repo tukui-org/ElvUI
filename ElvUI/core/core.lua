@@ -69,10 +69,10 @@ function E:UpdateMedia()
 	self["media"].rgbvaluecolor = {value.r, value.g, value.b}
 	
 	if LeftChatPanel and LeftChatPanel.tex and RightChatPanel and RightChatPanel.tex then
-		LeftChatPanel.tex:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\'..E.db.core.panelBackdropName..'.tga')
+		LeftChatPanel.tex:SetTexture(E.db.core.panelBackdropName)
 		LeftChatPanel.tex:SetAlpha(E.db.core.backdropfadecolor.a - 0.55 > 0 and E.db.core.backdropfadecolor.a - 0.55 or 0.5)		
 		
-		RightChatPanel.tex:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\'..E.db.core.panelBackdropName..'.tga')
+		RightChatPanel.tex:SetTexture(E.db.core.panelBackdropName)
 		RightChatPanel.tex:SetAlpha(E.db.core.backdropfadecolor.a - 0.55 > 0 and E.db.core.backdropfadecolor.a - 0.55 or 0.5)		
 	end
 	
