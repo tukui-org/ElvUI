@@ -57,7 +57,7 @@ function B:BagFrameSlotNew(frame, slot)
 		for ind, val in ipairs(B.buttons) do
 			if val.bagOwner == ret.slot then
 				val.frame:SetAlpha(1)
-				E:Print('Matched Bag Slot: '..val.bagOwner..' to button: '..ind)
+				--E:Print('Matched Bag Slot: '..val.bagOwner..' to button: '..ind)
 			else
 				val.frame:SetAlpha(0.2)
 			end
