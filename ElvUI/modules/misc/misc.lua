@@ -1,5 +1,5 @@
 local E, L, DF = unpack(select(2, ...)); --Engine
-local M = E:NewModule('Misc', 'AceEvent-3.0', 'AceHook-3.0');
+local M = E:NewModule('Misc', 'AceEvent-3.0', 'AceTimer-3.0');
 
 E.Misc = M;
 local UIErrorsFrame = UIErrorsFrame;
@@ -89,12 +89,18 @@ function M:DisbandRaidGroup()
 	LeaveParty()
 end
 
-function M:PlayerStartMoving()
-	WorldMapFrame:SetAlpha(E.db.core.mapTransparency)
+function M:IsPlayerMoving()
+	local val = GetUnitSpeed('player')
+	return val ~= 0
 end
 
-function M:PlayerStopMoving()
-	WorldMapFrame:SetAlpha(1)
+function M:CheckMovement()
+	if not WorldMapFrame:IsShown() then return; end
+	if self:IsPlayerMoving() then
+		WorldMapFrame:SetAlpha(E.db.core.mapTransparency)
+	else
+		WorldMapFrame:SetAlpha(1)
+	end
 end
 
 function M:PVPMessageEnhancement(_, msg)
@@ -119,33 +125,7 @@ function M:Initialize()
 	self:RegisterEvent('CVAR_UPDATE', 'ForceProfanity')
 	self:RegisterEvent('BN_MATURE_LANGUAGE_FILTER', 'ForceProfanity')
 	
-
-	--[[self:SecureHook('MoveAndSteerStart', 'PlayerStartMoving')
-	self:SecureHook('MoveBackwardStart', 'PlayerStartMoving')
-	self:SecureHook('MoveForwardStart', 'PlayerStartMoving', 'MoveForwardStart')
-	self:SecureHook('StrafeLeftStart', 'PlayerStartMoving')
-	self:SecureHook('StrafeRightStart', 'PlayerStartMoving')
-	self:SecureHook('CameraOrSelectOrMoveStart', 'PlayerStartMoving')
-	self:SecureHook('TurnLeftStart', 'PlayerStartMoving')
-	self:SecureHook('TurnRightStart', 'PlayerStartMoving')
-	self:SecureHook('TurnOrActionStart', 'PlayerStartMoving')
-	self:SecureHook('JumpOrAscendStart', 'PlayerStartMoving')
-	self:SecureHook('PitchUpStart', 'PlayerStartMoving')
-	self:SecureHook('PitchDownStart', 'PlayerStartMoving')
-	
-	self:SecureHook('MoveAndSteerStop', 'PlayerStopMoving')
-	self:SecureHook('MoveBackwardStop', 'PlayerStopMoving')
-	self:SecureHook('MoveForwardStop', 'PlayerStopMoving')
-	self:SecureHook('StrafeLeftStop', 'PlayerStopMoving')
-	self:SecureHook('StrafeRightStop', 'PlayerStopMoving')
-	self:SecureHook('CameraOrSelectOrMoveStop', 'PlayerStartMoving')
-	self:SecureHook('TurnLeftStop', 'PlayerStartMoving')
-	self:SecureHook('TurnRightStop', 'PlayerStartMoving')
-	self:SecureHook('TurnOrActionStop', 'PlayerStartMoving')
-	self:SecureHook('PitchUpStop', 'PlayerStartMoving')
-	self:SecureHook('PitchDownStop', 'PlayerStartMoving')
-	self:SecureHook('AscendStop', 'PlayerStartMoving')
-	self:SecureHook('DescendStop', 'PlayerStartMoving')]]
+	self.MovingTimer = self:ScheduleRepeatingTimer("CheckMovement", 0.1)
 end
 
 E:RegisterModule(M:GetName())

@@ -130,14 +130,14 @@ E.Options.args.core = {
 					isPercent = true,
 					set = function(info, value) E.db.core[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end
 				},		
-				--[[mapTransparency = {
+				mapTransparency = {
 					order = 9,
 					name = L['Map Transparency'],
 					desc = L['Controls what the transparency of the worldmap will be set to when you are moving.'],
 					type = 'range',
 					isPercent = true,
 					min = 0, max = 1, step = 0.01,
-				},]]
+				},
 				panelWidth = {
 					order = 100,
 					type = 'range',
