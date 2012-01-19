@@ -1,5 +1,5 @@
 local E, L, DF = unpack(select(2, ...)); --Engine
-local M = E:NewModule('Misc', 'AceEvent-3.0', 'AceTimer-3.0');
+local M = E:NewModule('Misc', 'AceEvent-3.0', 'AceHook-3.0');
 
 E.Misc = M;
 local UIErrorsFrame = UIErrorsFrame;
@@ -89,18 +89,12 @@ function M:DisbandRaidGroup()
 	LeaveParty()
 end
 
-local oldX, oldY
-function M:CheckMovement()	
-	local curX, curY = GetPlayerMapPosition("player")
-	curX = E:Round(curX, 3) * 100
-	curY = E:Round(curY, 3) * 100
+function M:PlayerStartMoving()
+	WorldMapFrame:SetAlpha(E.db.core.mapTransparency)
+end
 
-	if oldX == curX and oldY == curY then
-		WorldMapFrame:SetAlpha(1)
-	else
-		oldX, oldY = curX, curY
-		WorldMapFrame:SetAlpha(E.db.core.mapTransparency)
-	end
+function M:PlayerStopMoving()
+	WorldMapFrame:SetAlpha(1)
 end
 
 function M:PVPMessageEnhancement(_, msg)
@@ -125,7 +119,33 @@ function M:Initialize()
 	self:RegisterEvent('CVAR_UPDATE', 'ForceProfanity')
 	self:RegisterEvent('BN_MATURE_LANGUAGE_FILTER', 'ForceProfanity')
 	
-	--self.MovingTimer = self:ScheduleRepeatingTimer("CheckMovement", 0.4)
+
+	--[[self:SecureHook('MoveAndSteerStart', 'PlayerStartMoving')
+	self:SecureHook('MoveBackwardStart', 'PlayerStartMoving')
+	self:SecureHook('MoveForwardStart', 'PlayerStartMoving', 'MoveForwardStart')
+	self:SecureHook('StrafeLeftStart', 'PlayerStartMoving')
+	self:SecureHook('StrafeRightStart', 'PlayerStartMoving')
+	self:SecureHook('CameraOrSelectOrMoveStart', 'PlayerStartMoving')
+	self:SecureHook('TurnLeftStart', 'PlayerStartMoving')
+	self:SecureHook('TurnRightStart', 'PlayerStartMoving')
+	self:SecureHook('TurnOrActionStart', 'PlayerStartMoving')
+	self:SecureHook('JumpOrAscendStart', 'PlayerStartMoving')
+	self:SecureHook('PitchUpStart', 'PlayerStartMoving')
+	self:SecureHook('PitchDownStart', 'PlayerStartMoving')
+	
+	self:SecureHook('MoveAndSteerStop', 'PlayerStopMoving')
+	self:SecureHook('MoveBackwardStop', 'PlayerStopMoving')
+	self:SecureHook('MoveForwardStop', 'PlayerStopMoving')
+	self:SecureHook('StrafeLeftStop', 'PlayerStopMoving')
+	self:SecureHook('StrafeRightStop', 'PlayerStopMoving')
+	self:SecureHook('CameraOrSelectOrMoveStop', 'PlayerStartMoving')
+	self:SecureHook('TurnLeftStop', 'PlayerStartMoving')
+	self:SecureHook('TurnRightStop', 'PlayerStartMoving')
+	self:SecureHook('TurnOrActionStop', 'PlayerStartMoving')
+	self:SecureHook('PitchUpStop', 'PlayerStartMoving')
+	self:SecureHook('PitchDownStop', 'PlayerStartMoving')
+	self:SecureHook('AscendStop', 'PlayerStartMoving')
+	self:SecureHook('DescendStop', 'PlayerStartMoving')]]
 end
 
 E:RegisterModule(M:GetName())

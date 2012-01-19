@@ -448,6 +448,7 @@ function UF:HideTicks()
 end
 
 function UF:SetCastTicks(frame, numTicks)
+	UF:HideTicks()
 	if numTicks and numTicks > 0 then
 		local d = frame:GetWidth() / numTicks
 		for i = 1, numTicks do
@@ -462,8 +463,6 @@ function UF:SetCastTicks(frame, numTicks)
 			ticks[i]:SetPoint("CENTER", frame, "LEFT", d * i, 0)
 			ticks[i]:Show()
 		end
-	else
-		UF:HideTicks()
 	end
 end
 
