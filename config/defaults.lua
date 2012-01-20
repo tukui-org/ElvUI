@@ -1,6 +1,7 @@
 ﻿local E, L, DF = unpack(select(2, ...)); --Engine
 local _, myclasscolor = UnitClass("player");
 local valuer, valueg, valueb = RAID_CLASS_COLORS[myclasscolor].r, RAID_CLASS_COLORS[myclasscolor].g, RAID_CLASS_COLORS[myclasscolor].b
+
 --Global defaults
 E.DF["global"] = {};
 
@@ -531,7 +532,7 @@ DF['unitframe'] = {
 					['growth-y'] = 'DOWN',
 					['initialAnchor'] = 'TOPLEFT',
 					['attachTo'] = 'BUFFS',
-					['anchorPoint'] = 'BOTTOMLEFT',					
+					['anchorPoint'] = 'BOTTOMLEFT',
 					['fontsize'] = 10,
 					['showPlayerOnly'] = false,
 					['useFilter'] = 'DebuffBlacklist',	

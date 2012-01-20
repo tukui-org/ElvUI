@@ -150,15 +150,17 @@ function E:ResetMovers(arg)
 				local mover
 				if key == "text" then
 					if arg == value then 
-						_G[name]:ClearAllPoints()
-						_G[name]:SetPoint(E.CreatedMovers[name]["p"], E.CreatedMovers[name]["p2"], E.CreatedMovers[name]["p3"], E.CreatedMovers[name]["p4"], E.CreatedMovers[name]["p5"])						
+
+						local f = _G[name]
+						f:ClearAllPoints()
+						f:SetPoint(E.CreatedMovers[name]["p"], E.CreatedMovers[name]["p2"], E.CreatedMovers[name]["p3"], E.CreatedMovers[name]["p4"], E.CreatedMovers[name]["p5"])						
 						
 						if self.db.movers then
 							self.db.movers[name] = nil
 						end
 						
 						if E.CreatedMovers[name]["postdrag"] ~= nil and type(E.CreatedMovers[name]["postdrag"]) == 'function' then
-							E.CreatedMovers[name]["postdrag"](_G[name])
+							E.CreatedMovers[name]["postdrag"](f, E:GetScreenQuadrant(f))
 						end
 					end
 				end

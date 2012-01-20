@@ -118,7 +118,6 @@ local function SetupChat()
 	ToggleChatColorNamesByClassGroup(false, "CHANNEL9")
 	ToggleChatColorNamesByClassGroup(false, "CHANNEL10")
 	ToggleChatColorNamesByClassGroup(false, "CHANNEL11")
-	
 
 	if E.Chat then
 		E.Chat:PositionChat(true)

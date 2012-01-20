@@ -418,9 +418,6 @@ do
 	L['Castbar'] = true;
 	L['Icon'] = true;
 	L['Latency'] = true;
-	L['Castbar Ticks'] = true;
-		L['Enable Showing of Castbar Ticks on the Player Castbar. Spells can be chosen in the ChannelTicks filter.'] = true;
-	L['Castbar Ticks Color'] = true;
 	L['Color'] = true;
 	L['Interrupt Color'] = true;
 	L['Match Frame Width'] = true;

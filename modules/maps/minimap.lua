@@ -92,7 +92,7 @@ function M:ADDON_LOADED(event, addon)
 end
 
 function M:Minimap_OnMouseUp(btn)
-	local position = Minimap:GetPoint()
+	local position = self:GetPoint()
 	if btn == "MiddleButton" or (btn == "RightButton" and IsShiftKeyDown()) then
 		if position:match("LEFT") then
 			EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
@@ -100,11 +100,11 @@ function M:Minimap_OnMouseUp(btn)
 			EasyMenu(menuList, menuFrame, "cursor", -160, 0, "MENU", 2)
 		end	
 	elseif btn == "RightButton" then
-		local xoff = 0
+		local xoff = -1
 
 		if position:match("RIGHT") then xoff = E:Scale(-16) end
 	
-		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, Minimap, xoff, E:Scale(-2))
+		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, self, xoff, E:Scale(-3))
 	else
 		Minimap_OnClick(self)
 	end
@@ -244,4 +244,37 @@ function M:LoadMinimap()
 	self:RegisterEvent("ZONE_CHANGED_INDOORS", "Update_ZoneText")		
 	self:RegisterEvent('ADDON_LOADED')
 	self:Minimap_UpdateSettings()
+	
+	--Create Farmmode Minimap
+	local fm = CreateFrame('Minimap', 'FarmModeMap', E.UIParent)
+	fm:Size(340)
+	fm:Point('TOP', E.UIParent, 'TOP', 0, -120)
+	
+	fm:CreateBackdrop('Default')
+	fm:EnableMouseWheel(true)
+	fm:SetScript("OnMouseWheel", M.Minimap_OnMouseWheel)	
+	fm:SetScript("OnMouseUp", M.Minimap_OnMouseUp)	
+	fm:RegisterForDrag("LeftButton", "RightButton")
+	fm:SetMovable(true)
+	fm:SetScript("OnDragStart", function(self) self:StartMoving() end)
+	fm:SetScript("OnDragStop", function(self) self:StopMovingOrSizing() end)
+	fm:Hide()
+	
+	Minimap:SetScript('OnHide', function() 
+		UIFrameFadeIn(FarmModeMap, 0.3) 
+		if not (E.db["movers"] and E.db["movers"]['Auras Frame']) then
+			AurasMover:ClearAllPoints()
+			AurasMover:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
+		end
+		Minimap:SetAlpha(1)
+	end)
+	FarmModeMap:SetScript('OnHide', function() UIFrameFadeIn(Minimap, 0.3) end)
+	Minimap:SetScript('OnShow', function() 
+		_G.MinimapZoomIn:Click(); 
+		_G.MinimapZoomOut:Click(); 
+		if not (E.db["movers"] and E.db["movers"]['Auras Frame']) then
+			E:ResetMovers('Auras Frame')
+		end	
+	end)
+	FarmModeMap:SetScript('OnShow', function() _G.MinimapZoomIn:Click(); _G.MinimapZoomOut:Click(); end)
 end
