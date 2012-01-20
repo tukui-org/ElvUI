@@ -1,0 +1,10 @@
+## Interface: 40100
+## Title: oUF Druid Mana
+## Notes: Adds Druid Mana Bar to oUF.
+## Author: Elv
+## Version: 1.0
+## X-Category: UnitFrame
+## Dependencies: oUF
+
+oUF_DruidMana.lua
+

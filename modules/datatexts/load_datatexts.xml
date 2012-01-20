@@ -1,0 +1,25 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">	
+	<Script file='datatexts.lua'/>
+	<Script file='system.lua'/>
+	<Script file='armor.lua'/>
+	<Script file='avoidance.lua'/>
+	<Script file='bags.lua'/>
+	<Script file='calltoarms.lua'/>
+	<Script file='crit.lua'/>
+	<Script file='dps.lua'/>
+	<Script file='durability.lua'/>
+	<Script file='expertise.lua'/>
+	<Script file='friends.lua'/>
+	<Script file='guild.lua'/>
+	<Script file='haste.lua'/>
+	<Script file='hit.lua'/>
+	<Script file='hps.lua'/>
+	<Script file='mastery.lua'/>
+	<Script file='regen.lua'/>
+	<Script file='time.lua'/>
+	<Script file='gold.lua'/>
+	<Script file='specswitch.lua'/>
+	<Script file='attackpower.lua'/>
+	<Script file='spellpower.lua'/>
+	<Script file='options.lua'/>
+</Ui>
