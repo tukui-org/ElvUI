@@ -1,0 +1,9 @@
+## Interface: 30300
+## Title: oUF Trinkets
+## Notes: Adds PvP trinket status to oUF frames.
+## Author: Allez
+## Version: 30300.4-Beta
+## X-Category: oUF
+## Dependencies: oUF
+
+oUF_Trinkets.lua
