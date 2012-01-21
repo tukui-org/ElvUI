@@ -268,4 +268,8 @@ function M:LoadMinimap()
 		end	
 	end)
 	FarmModeMap:SetScript('OnShow', function() _G.MinimapZoomIn:Click(); _G.MinimapZoomOut:Click(); end)
+	
+	UIParent:HookScript('OnShow', function()
+		FarmModeMap:Hide()
+	end)
 end
