@@ -33,7 +33,8 @@ DF["core"] = {
 	--panels
 	['panelWidth'] = 380,
 	['panelHeight'] = 200,
-	['panelBackdropName'] = '',
+	['panelBackdropNameLeft'] = '',
+	['panelBackdropNameRight'] = '',
 	['panelBackdrop'] = 'SHOWBOTH',
 	['expRepPos'] = 'MINIMAP_BOTTOM',				-- TOP_SCREEN or MINIMAP_BOTTOM
 

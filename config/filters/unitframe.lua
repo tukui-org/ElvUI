@@ -229,6 +229,9 @@ DF['RaidDebuffs'] = {
 	--Baradin Hold
 		--Occu'thar
 		[SpellName(96913)] = true, -- Searing Shadows
+
+		--Alizabal
+		[SpellName(104936)] = true, -- Skewer
 		
 	--Dragon Soul
 	    --Morchok
