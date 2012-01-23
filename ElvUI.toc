@@ -6,7 +6,7 @@
 ## SavedVariables: ElvData
 ## OptionalDeps: BigWigs, DBM-Core, DXE, SharedMedia
 ## X-oUF: ElvUF
-
+ 
 developer\load_developer.xml
 libs\load_libs.xml
 locales\load_locales.xml
