@@ -167,17 +167,28 @@ E.Options.args.core = {
 						['RIGHT'] = L['Right Only'],
 					},
 				},
-				panelBackdropName = {
+				panelBackdropNameLeft = {
 					order = 103,
 					type = 'input',
 					width = 'full',
-					name = L['Panel Texture'],
+					name = L['Panel Texture (Left)'],
 					desc = L['Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.\n\nExample: Interface\\AddOns\\ElvUI\\media\\textures\\copy\n\nOr for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.'],
 					set = function(info, value) 
 						E.db.core[ info[#info] ] = value
 						E:UpdateMedia()
 					end,
 				},
+				panelBackdropNameRight = {
+					order = 104,
+					type = 'input',
+					width = 'full',
+					name = L['Panel Texture (Right)'],
+					desc = L['Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.\n\nExample: Interface\\AddOns\\ElvUI\\media\\textures\\copy\n\nOr for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.'],
+					set = function(info, value) 
+						E.db.core[ info[#info] ] = value
+						E:UpdateMedia()
+					end,
+				},				
 			},
 		},
 		media = {

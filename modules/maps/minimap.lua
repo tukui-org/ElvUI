@@ -253,7 +253,7 @@ function M:LoadMinimap()
 	
 	Minimap:SetScript('OnHide', function() 
 		UIFrameFadeIn(FarmModeMap, 0.3) 
-		if not (E.db["movers"] and E.db["movers"]['Auras Frame']) then
+		if E.db["movers"] ~= nil and E.db["movers"]['AurasMover'] == nil then
 			AurasMover:ClearAllPoints()
 			AurasMover:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
 		end
@@ -263,9 +263,13 @@ function M:LoadMinimap()
 	Minimap:SetScript('OnShow', function() 
 		_G.MinimapZoomIn:Click(); 
 		_G.MinimapZoomOut:Click(); 
-		if not (E.db["movers"] and E.db["movers"]['Auras Frame']) then
+		if E.db["movers"] ~= nil and E.db["movers"]['AurasMover'] == nil then
 			E:ResetMovers('Auras Frame')
 		end	
 	end)
 	FarmModeMap:SetScript('OnShow', function() _G.MinimapZoomIn:Click(); _G.MinimapZoomOut:Click(); end)
+	
+	UIParent:HookScript('OnShow', function()
+		FarmModeMap:Hide()
+	end)
 end

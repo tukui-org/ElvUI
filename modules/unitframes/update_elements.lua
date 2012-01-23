@@ -943,6 +943,7 @@ function UF:UpdateAuraWatch(frame)
 		end		
 		icon:Width(db.size);
 		icon:Height(db.size);
+		icon:ClearAllPoints()
 		icon:SetPoint(spell["point"], 0, 0);
 
 		if not icon.icon then

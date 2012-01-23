@@ -221,6 +221,50 @@ DF['RaidDebuffs'] = {
 	--Baradin Hold
 		--Occu'thar
 		[SpellName(96913)] = true, -- Searing Shadows
+		--Alizabal
+		[SpellName(104936)] = true, -- Skewer
+		
+	--Dragon Soul
+	    --Morchok
+		[SpellName(103541)] = true, -- Safe
+		[SpellName(103536)] = true, -- Warning
+		[SpellName(103534)] = true, -- Danger
+		[SpellName(108570)] = true, -- Black Blood of the Earth
+
+		--Warlord Zon'ozz
+		[SpellName(103434)] = true, -- Disrupting Shadows
+
+		--Yor'sahj the Unsleeping
+		[SpellName(105171)] = true, -- Deep Corruption
+
+		--Hagara the Stormbinder
+		[SpellName(105465)] = true, -- Lighting Storm
+		[SpellName(104451)] = true, -- Ice Tomb
+		[SpellName(109325)] = true, -- Frostflake
+		[SpellName(105289)] = true, -- Shattered Ice
+		[SpellName(105285)] = true, -- Target
+
+		--Ultraxion
+		[SpellName(110079)] = true, -- Fading Light
+		[SpellName(109075)] = true, -- Fading Light
+
+		--Warmaster Blackhorn
+		[SpellName(108043)] = true, -- Sunder Armor
+		[SpellName(107558)] = true, -- Degeneration
+		[SpellName(107567)] = true, -- Brutal Strike
+		[SpellName(108046)] = true, -- Shockwave
+
+		--Spine of Deathwing
+		[SpellName(105479)] = true, -- Searing Plasma
+		[SpellName(105490)] = true, -- Fiery Grip
+
+		--Madness of Deathwing
+		[SpellName(105445)] = true, -- Blistering Heat
+		[SpellName(105841)] = true, -- Degenerative Bite
+		[SpellName(106385)] = true, -- Crush
+		[SpellName(106730)] = true, -- Tetanus
+		[SpellName(106444)] = true, -- Impale
+		[SpellName(106794)] = true, -- Shrapnel (target)		
 	},
 }
 
