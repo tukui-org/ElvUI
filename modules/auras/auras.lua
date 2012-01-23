@@ -196,6 +196,7 @@ function A:Initialize()
 	ConsolidatedBuffs:ClearAllPoints()
 	ConsolidatedBuffs:Point("LEFT", Minimap, "LEFT", 0, 3)
 	ConsolidatedBuffs:Size(16, 16)
+	ConsolidatedBuffs:SetParent(Minimap)
 	ConsolidatedBuffsIcon:SetTexture(nil)
 	ConsolidatedBuffs.SetPoint = E.noop
 	
