@@ -205,13 +205,13 @@ end
 function LO:CreateMinimapPanels()
 	local lminipanel = CreateFrame('Frame', 'LeftMiniPanel', Minimap)
 	lminipanel:Point('TOPLEFT', Minimap, 'BOTTOMLEFT', -2, -3)
-	lminipanel:Point('BOTTOMRIGHT', Minimap, 'BOTTOM', -1, -(3 + PANEL_HEIGHT))
+	lminipanel:Point('BOTTOMRIGHT', Minimap, 'BOTTOM', -21, -(3 + PANEL_HEIGHT))
 	lminipanel:SetTemplate('Default', true)
 	E:GetModule('DataTexts'):RegisterPanel(lminipanel, 1, 'ANCHOR_BOTTOMLEFT', lminipanel:GetWidth() * 2, -4)
 	
 	local rminipanel = CreateFrame('Frame', 'RightMiniPanel', Minimap)
 	rminipanel:Point('TOPRIGHT', Minimap, 'BOTTOMRIGHT', 2, -3)
-	rminipanel:Point('BOTTOMLEFT', Minimap, 'BOTTOM', 0, -(3 + PANEL_HEIGHT))
+	rminipanel:Point('BOTTOMLEFT', Minimap, 'BOTTOM', -20, -(3 + PANEL_HEIGHT))
 	rminipanel:SetTemplate('Default', true)
 	E:GetModule('DataTexts'):RegisterPanel(rminipanel, 1, 'ANCHOR_BOTTOM', 0, -4)
 	

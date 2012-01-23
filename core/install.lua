@@ -10,11 +10,20 @@ local function SetupChat()
 	FCF_SetLocked(ChatFrame1, 1)
 	FCF_DockFrame(ChatFrame2)
 	FCF_SetLocked(ChatFrame2, 1)
+	FCF_OpenNewWindow(GUILD)
+	FCF_DockFrame(ChatFrame3)
+	FCF_SetLocked(ChatFrame3, 1)
+	FCF_OpenNewWindow(PARTY)
+	FCF_DockFrame(ChatFrame4)
+	FCF_SetLocked(ChatFrame4, 1)
+	FCF_OpenNewWindow(WHISPER)
+	FCF_DockFrame(ChatFrame5)
+	FCF_SetLocked(ChatFrame5, 1)
 
 	FCF_OpenNewWindow(LOOT)
-	FCF_UnDockFrame(ChatFrame3)
-	FCF_SetLocked(ChatFrame3, 1)
-	ChatFrame3:Show()			
+	FCF_UnDockFrame(ChatFrame6)
+	FCF_SetLocked(ChatFrame6, 1)
+	ChatFrame6:Show()
 			
 	for i = 1, NUM_CHAT_WINDOWS do
 		local frame = _G[format("ChatFrame%s", i)]
@@ -25,7 +34,7 @@ local function SetupChat()
 		if i == 1 then
 			frame:ClearAllPoints()
 			frame:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPLEFT", 1, 3)			
-		elseif i == 3 then
+		elseif i == 6 then
 			frame:ClearAllPoints()
 			frame:Point("BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 1, 3)
 		end
@@ -34,111 +43,82 @@ local function SetupChat()
 		FCF_StopDragging(frame)
 		
 		-- set default Elvui font size
-		FCF_SetChatWindowFontSize(nil, frame, 12)
+		FCF_SetChatWindowFontSize(nil, frame, 13)
 		
 		-- rename windows general because moved to chat #3
 		if i == 1 then
-			FCF_SetWindowName(frame, GENERAL)
+			FCF_SetWindowName(frame, "All")
 		elseif i == 2 then
-			FCF_SetWindowName(frame, GUILD_EVENT_LOG)
-		elseif i == 3 then 
-			FCF_SetWindowName(frame, LOOT.." / "..TRADE) 
+			FCF_SetWindowName(frame, "Log")
 		end
 	end
 	
-	ChatFrame_RemoveAllMessageGroups(ChatFrame1)
-	ChatFrame_AddMessageGroup(ChatFrame1, "SAY")
-	ChatFrame_AddMessageGroup(ChatFrame1, "EMOTE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "YELL")
-	ChatFrame_AddMessageGroup(ChatFrame1, "GUILD")
-	ChatFrame_AddMessageGroup(ChatFrame1, "OFFICER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "GUILD_ACHIEVEMENT")
-	ChatFrame_AddMessageGroup(ChatFrame1, "WHISPER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_SAY")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_EMOTE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_YELL")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_BOSS_EMOTE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "PARTY")
-	ChatFrame_AddMessageGroup(ChatFrame1, "PARTY_LEADER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "RAID")
-	ChatFrame_AddMessageGroup(ChatFrame1, "RAID_LEADER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "RAID_WARNING")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BATTLEGROUND")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BATTLEGROUND_LEADER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BG_HORDE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BG_ALLIANCE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BG_NEUTRAL")
-	ChatFrame_AddMessageGroup(ChatFrame1, "SYSTEM")
-	ChatFrame_AddMessageGroup(ChatFrame1, "ERRORS")
-	ChatFrame_AddMessageGroup(ChatFrame1, "AFK")
-	ChatFrame_AddMessageGroup(ChatFrame1, "DND")
-	ChatFrame_AddMessageGroup(ChatFrame1, "IGNORED")
-	ChatFrame_AddMessageGroup(ChatFrame1, "ACHIEVEMENT")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BN_WHISPER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BN_CONVERSATION")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BN_INLINE_TOAST_ALERT")
+	-- setup the "All" chat frame to filter out stuff shown in the right chat
+	ChatFrame_RemoveMessageGroup(ChatFrame1, "COMBAT_XP_GAIN")
+	ChatFrame_RemoveMessageGroup(ChatFrame1, "COMBAT_HONOR_GAIN")
+	ChatFrame_RemoveMessageGroup(ChatFrame1, "COMBAT_FACTION_CHANGE")
+	ChatFrame_RemoveMessageGroup(ChatFrame1, "LOOT")
+	ChatFrame_RemoveMessageGroup(ChatFrame1, "MONEY")
 	
-
-	ChatFrame_RemoveAllMessageGroups(ChatFrame3)	
-	ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_FACTION_CHANGE")
-	ChatFrame_AddMessageGroup(ChatFrame3, "SKILL")
-	ChatFrame_AddMessageGroup(ChatFrame3, "LOOT")
-	ChatFrame_AddMessageGroup(ChatFrame3, "MONEY")
-	ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_XP_GAIN")
-	ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_HONOR_GAIN")
-	ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_GUILD_XP_GAIN")
-	ChatFrame_AddChannel(ChatFrame1, GENERAL)
-	ChatFrame_RemoveChannel(ChatFrame1, L['Trade'])
-	ChatFrame_AddChannel(ChatFrame3, L['Trade'])
-
+	-- Setup the Guild chat frame
+	ChatFrame_RemoveAllMessageGroups(ChatFrame3)
+	ChatFrame_AddMessageGroup(ChatFrame3, "GUILD") 
+	ChatFrame_AddMessageGroup(ChatFrame3, "OFFICER") 
+	ChatFrame_AddMessageGroup(ChatFrame3, "GUILD_ACHIEVEMENT")
 	
-	if E.myname == "Elv" then
-		--keep losing my god damn channels everytime i resetui
-		ChatFrame_AddChannel(DEFAULT_CHAT_FRAME, "tystank")
-		ChatFrame_AddChannel(DEFAULT_CHAT_FRAME, "tys")
-		ChatFrame_AddChannel(DEFAULT_CHAT_FRAME, "crusaderaura")
-		ChangeChatColor("CHANNEL5", 147/255, 112/255, 219/255)
-		ChangeChatColor("CHANNEL6", 139/255, 115/255, 85/255)
-		ChangeChatColor("CHANNEL7", RAID_CLASS_COLORS["PALADIN"].r, RAID_CLASS_COLORS["PALADIN"].g, RAID_CLASS_COLORS["PALADIN"].b)
-		SetCVar("scriptErrors", 1)
-	end	
+	-- Setup the Party chat frame
+	ChatFrame_RemoveAllMessageGroups(ChatFrame4)
+	ChatFrame_AddMessageGroup(ChatFrame4, "PARTY")
+	ChatFrame_AddMessageGroup(ChatFrame4, "PARTY_LEADER")
+	ChatFrame_AddMessageGroup(ChatFrame4, "RAID") 
+	ChatFrame_AddMessageGroup(ChatFrame4, "RAID_LEADER") 
+	ChatFrame_AddMessageGroup(ChatFrame4, "RAID_WARNING")
+	ChatFrame_AddMessageGroup(ChatFrame4, "BATTLEGROUND")
+	ChatFrame_AddMessageGroup(ChatFrame4, "BATTLEGROUND_LEADER")
+
+	-- Setup the Whisper chat frame
+	ChatFrame_RemoveAllMessageGroups(ChatFrame5)
+	ChatFrame_AddMessageGroup(ChatFrame5, "WHISPER")
+	ChatFrame_AddMessageGroup(ChatFrame5, "BN_WHISPER")
+	ChatFrame_AddMessageGroup(ChatFrame5, "BN_CONVERSATION")
+
+	-- Setup the right chat
+	ChatFrame_RemoveAllMessageGroups(ChatFrame6)
+	ChatFrame_AddMessageGroup(ChatFrame6, "COMBAT_XP_GAIN")
+	ChatFrame_AddMessageGroup(ChatFrame6, "COMBAT_HONOR_GAIN")
+	ChatFrame_AddMessageGroup(ChatFrame6, "COMBAT_FACTION_CHANGE")
+	ChatFrame_AddMessageGroup(ChatFrame6, "LOOT")
+	ChatFrame_AddMessageGroup(ChatFrame6, "MONEY")
+
 	
 	-- enable classcolor automatically on login and on each character without doing /configure each time.
-	ToggleChatColorNamesByClassGroup(true, "SAY")
-	ToggleChatColorNamesByClassGroup(true, "EMOTE")
-	ToggleChatColorNamesByClassGroup(true, "YELL")
-	ToggleChatColorNamesByClassGroup(true, "GUILD")
-	ToggleChatColorNamesByClassGroup(true, "OFFICER")
-	ToggleChatColorNamesByClassGroup(true, "GUILD_ACHIEVEMENT")
-	ToggleChatColorNamesByClassGroup(true, "ACHIEVEMENT")
+	ToggleChatColorNamesByClassGroup(false, "SAY")
+	ToggleChatColorNamesByClassGroup(false, "EMOTE")
+	ToggleChatColorNamesByClassGroup(false, "YELL")
+	ToggleChatColorNamesByClassGroup(false, "GUILD")
+	ToggleChatColorNamesByClassGroup(false, "OFFICER")
+	ToggleChatColorNamesByClassGroup(false, "GUILD_ACHIEVEMENT")
+	ToggleChatColorNamesByClassGroup(false, "ACHIEVEMENT")
 	ToggleChatColorNamesByClassGroup(true, "WHISPER")
-	ToggleChatColorNamesByClassGroup(true, "PARTY")
-	ToggleChatColorNamesByClassGroup(true, "PARTY_LEADER")
-	ToggleChatColorNamesByClassGroup(true, "RAID")
-	ToggleChatColorNamesByClassGroup(true, "RAID_LEADER")
-	ToggleChatColorNamesByClassGroup(true, "RAID_WARNING")
-	ToggleChatColorNamesByClassGroup(true, "BATTLEGROUND")
-	ToggleChatColorNamesByClassGroup(true, "BATTLEGROUND_LEADER")	
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL1")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL2")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL3")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL4")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL5")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL6")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL7")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL8")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL9")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL10")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL11")
-	
-	--Adjust Chat Colors
-	--General
-	ChangeChatColor("CHANNEL1", 195/255, 230/255, 232/255)
-	--Trade
-	ChangeChatColor("CHANNEL2", 232/255, 158/255, 121/255)
-	--Local Defense
-	ChangeChatColor("CHANNEL3", 232/255, 228/255, 121/255)
-	
+	ToggleChatColorNamesByClassGroup(false, "PARTY")
+	ToggleChatColorNamesByClassGroup(false, "PARTY_LEADER")
+	ToggleChatColorNamesByClassGroup(false, "RAID")
+	ToggleChatColorNamesByClassGroup(false, "RAID_LEADER")
+	ToggleChatColorNamesByClassGroup(false, "RAID_WARNING")
+	ToggleChatColorNamesByClassGroup(false, "BATTLEGROUND")
+	ToggleChatColorNamesByClassGroup(false, "BATTLEGROUND_LEADER")	
+	ToggleChatColorNamesByClassGroup(false, "CHANNEL1")
+	ToggleChatColorNamesByClassGroup(false, "CHANNEL2")
+	ToggleChatColorNamesByClassGroup(false, "CHANNEL3")
+	ToggleChatColorNamesByClassGroup(false, "CHANNEL4")
+	ToggleChatColorNamesByClassGroup(false, "CHANNEL5")
+	ToggleChatColorNamesByClassGroup(false, "CHANNEL6")
+	ToggleChatColorNamesByClassGroup(false, "CHANNEL7")
+	ToggleChatColorNamesByClassGroup(false, "CHANNEL8")
+	ToggleChatColorNamesByClassGroup(false, "CHANNEL9")
+	ToggleChatColorNamesByClassGroup(false, "CHANNEL10")
+	ToggleChatColorNamesByClassGroup(false, "CHANNEL11")
+
 	if E.Chat then
 		E.Chat:PositionChat(true)
 		if E.db['RightChatPanelFaded'] then
@@ -152,17 +132,44 @@ local function SetupChat()
 end
 
 local function SetupCVars()
+	SetCVar("scriptErrors", 1)
+	SetCVar("buffDurations", 1)
+	SetCVar("consolidateBuffs", 0)
+	SetCVar("lootUnderMouse", 1)
+	SetCVar("autoSelfCast", 1)
 	SetCVar("mapQuestDifficulty", 1)
+	SetCVar("scriptErrors", 1)
+	SetCVar("nameplateShowFriends", 0)
+	SetCVar("nameplateShowFriendlyPets", 0)
+	SetCVar("nameplateShowFriendlyGuardians", 0)
+	SetCVar("nameplateShowFriendlyTotems", 0)
+	SetCVar("nameplateShowEnemies", 1)
+	SetCVar("nameplateShowEnemyPets", 1)
 	SetCVar("ShowClassColorInNameplate", 1)
 	SetCVar("screenshotQuality", 10)
+	SetCVar("cameraDistanceMax", 50)
+	SetCVar("cameraDistanceMaxFactor", 4)
 	SetCVar("chatMouseScroll", 1)
 	SetCVar("chatStyle", "classic")
 	SetCVar("WholeChatWindowClickable", 0)
 	SetCVar("ConversationMode", "inline")
+	SetCVar("CombatDamage", 1)
+	SetCVar("CombatHealing", 1)
 	SetCVar("showTutorials", 0)
 	SetCVar("showNewbieTips", 0)
+	SetCVar("autoDismountFlying", 1)
+	SetCVar("autoQuestWatch", 1)
+	SetCVar("autoQuestProgress", 1)
 	SetCVar("showLootSpam", 1)
+	SetCVar("guildMemberNotify", 0)
 	SetCVar("UberTooltips", 1)
+	SetCVar("removeChatDelay", 1)
+	SetCVar("showVKeyCastbar", 1)
+	SetCVar("colorblindMode", 0)
+	SetCVar("autoLootDefault", 1)
+	SetCVar("bloatthreat", 0)
+	SetCVar("bloattest", 0)
+	SetCVar("bloatnameplates", 0)
 	SetCVar("threatWarning", 3)
 	SetCVar('alwaysShowActionBars', 1)
 	InstallStepComplete.message = L["CVars Set"]
@@ -174,6 +181,7 @@ local function SetupLayout(isPrimary, layout)
 		if layout == 'tank' then
 			--datatexts
 			E.db.datatexts.panels.spec1.LeftChatDataPanel.left = 'Armor';
+			E.db.datatexts.panels.spec1.LeftChatDataPanel.middle = 'Attack Power';
 			E.db.datatexts.panels.spec1.LeftChatDataPanel.right = 'Avoidance';
 			
 			--unitframes
@@ -181,6 +189,7 @@ local function SetupLayout(isPrimary, layout)
 		elseif layout == 'healer' then
 			--datatexts
 			E.db.datatexts.panels.spec1.LeftChatDataPanel.left = 'Spell/Heal Power';
+			E.db.datatexts.panels.spec1.LeftChatDataPanel.middle = 'Crit Chance';
 			E.db.datatexts.panels.spec1.LeftChatDataPanel.right = 'Haste';
 			
 			--unitframes
@@ -188,13 +197,15 @@ local function SetupLayout(isPrimary, layout)
 		elseif layout == 'dpsCaster' then
 			--datatexts
 			E.db.datatexts.panels.spec1.LeftChatDataPanel.left = 'Spell/Heal Power';
-			E.db.datatexts.panels.spec1.LeftChatDataPanel.right = 'Haste';
+			E.db.datatexts.panels.spec1.LeftChatDataPanel.middle = 'Haste';
+			E.db.datatexts.panels.spec1.LeftChatDataPanel.right = 'Mastery';
 			
 			--unitframes
 			E.db.unitframe.mainSpec = 'Primary';			
 		else
 			--datatexts
 			E.db.datatexts.panels.spec1.LeftChatDataPanel.left = 'Attack Power';
+			E.db.datatexts.panels.spec1.LeftChatDataPanel.middle = 'Haste';
 			E.db.datatexts.panels.spec1.LeftChatDataPanel.right = 'Crit Chance';
 			
 			--unitframes
@@ -207,6 +218,7 @@ local function SetupLayout(isPrimary, layout)
 		if layout == 'tank' then
 			--datatexts
 			E.db.datatexts.panels.spec2.LeftChatDataPanel.left = 'Armor';
+			E.db.datatexts.panels.spec2.LeftChatDataPanel.middle = 'Attack Power';
 			E.db.datatexts.panels.spec2.LeftChatDataPanel.right = 'Avoidance';
 			
 			--unitframes
@@ -214,6 +226,7 @@ local function SetupLayout(isPrimary, layout)
 		elseif layout == 'healer' then
 			--datatexts
 			E.db.datatexts.panels.spec2.LeftChatDataPanel.left = 'Spell/Heal Power';
+			E.db.datatexts.panels.spec2.LeftChatDataPanel.middle = 'Crit Chance';
 			E.db.datatexts.panels.spec2.LeftChatDataPanel.right = 'Haste';
 			
 			--unitframes
@@ -221,13 +234,15 @@ local function SetupLayout(isPrimary, layout)
 		elseif layout == 'dpsCaster' then
 			--datatexts
 			E.db.datatexts.panels.spec2.LeftChatDataPanel.left = 'Spell/Heal Power';
-			E.db.datatexts.panels.spec2.LeftChatDataPanel.right = 'Haste';
+			E.db.datatexts.panels.spec2.LeftChatDataPanel.middle = 'Haste';
+			E.db.datatexts.panels.spec2.LeftChatDataPanel.right = 'Mastery';
 			
 			--unitframes
 			E.db.unitframe.offSpec = 'Primary';			
 		else
 			--datatexts
 			E.db.datatexts.panels.spec2.LeftChatDataPanel.left = 'Attack Power';
+			E.db.datatexts.panels.spec2.LeftChatDataPanel.middle = 'Haste';
 			E.db.datatexts.panels.spec2.LeftChatDataPanel.right = 'Crit Chance';
 			
 			--unitframes

@@ -257,7 +257,7 @@ function UF:Update_TargetTargetFrame(frame, db)
 	
 	if not frame.mover then
 		frame:ClearAllPoints()
-		frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 75) --Set to default position
+		frame:Point('TOPLEFT', ElvUF_Target, 'TOPRIGHT', 30, 0) --Set to default position
 	end
 	
 	frame:UpdateAllElements()

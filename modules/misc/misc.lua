@@ -110,6 +110,7 @@ end
 function M:Initialize()
 	self:LoadRaidMarker()
 	self:LoadExpRepBar()
+	self:LoadMerchant()
 	self:LoadMirrorBars()
 	self:LoadLoot()
 	self:LoadLootRoll()
@@ -129,3 +130,10 @@ function M:Initialize()
 end
 
 E:RegisterModule(M:GetName())
+
+local FuckShitBalls = CreateFrame("Frame")
+FuckShitBalls:RegisterEvent("CVAR_UPDATE")
+FuckShitBalls:RegisterEvent("PLAYER_ENTERING_WORLD")
+FuckShitBalls:SetScript("OnEvent", function()
+	SetCVar("profanityFilter", 0)
+end)

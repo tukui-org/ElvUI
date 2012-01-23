@@ -121,6 +121,15 @@ end
 function M:Update_ZoneText()
 	Minimap.location:SetText(strsub(GetMinimapZoneText(),1,25))
 	Minimap.location:SetTextColor(M:GetLocTextColor())
+	Minimap.location:SetAlpha(0)
+	
+	Minimap:SetScript("OnEnter",function()
+		Minimap.location:SetAlpha(1)
+	end)
+
+	Minimap:SetScript("OnLeave",function()
+		Minimap.location:SetAlpha(0)
+	end)
 end
 
 function M:UpdateLFG()
@@ -141,7 +150,7 @@ end
 
 function M:LoadMinimap()	
 	local mmholder = CreateFrame('Frame', 'MMHolder', E.UIParent)
-	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
+	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -10, -10)
 	mmholder:Width((Minimap:GetWidth() + 29) + E.RBRWidth)
 	mmholder:Height(Minimap:GetHeight() + 53)
 	
@@ -158,7 +167,7 @@ function M:LoadMinimap()
 	Minimap.location:FontTemplate(nil, nil, 'OUTLINE')
 	Minimap.location:Point('TOP', Minimap, 'TOP', 0, -2)
 	Minimap.location:SetJustifyH("CENTER")
-	Minimap.location:SetJustifyV("MIDDLE")			
+	Minimap.location:SetJustifyV("MIDDLE")
 	
 	if not E:IsPTRVersion() then
 		LFDSearchStatus:SetTemplate("Default")

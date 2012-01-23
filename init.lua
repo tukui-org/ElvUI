@@ -41,6 +41,8 @@ function AddOn:OnInitialize()
 	self.db = self.data.profile;
 	self:UIScale();
 	self:UpdateMedia();
+	self:UpdateSounds();
+
 	self:GetModule('RaidUtility'):Initialize()
 	self:RegisterEvent('PLAYER_LOGIN', 'Initialize')
 end

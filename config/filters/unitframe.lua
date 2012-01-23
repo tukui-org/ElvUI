@@ -108,6 +108,14 @@ DF['DebuffBlacklist'] = {
 		[SpellName(25163)] = true, --fucking annoying pet debuff oozeling disgusting aura
 		[SpellName(80354)] = true, --timewarp debuff
 		[SpellName(95223)] = true, --group res debuff
+		[SpellName(97821)] = true, --Void-Touched (DK combat ress)
+		[SpellName(36900)] = true, --Soul Split: Evil
+		[SpellName(36901)] = true, --Soul Split: Good
+		[SpellName(36897)] = true, --Transporter Malfunction
+		[SpellName(36899)] = true, --Transporter Malfunction
+		[SpellName(36895)] = true, --Transporter Malfunction
+		[SpellName(36893)] = true, --Transporter Malfunction
+		[SpellName(106369)] = true, --Twilight Shift (Ultraxion)
 	},
 }
 
@@ -221,6 +229,7 @@ DF['RaidDebuffs'] = {
 	--Baradin Hold
 		--Occu'thar
 		[SpellName(96913)] = true, -- Searing Shadows
+
 		--Alizabal
 		[SpellName(104936)] = true, -- Skewer
 		
@@ -264,7 +273,7 @@ DF['RaidDebuffs'] = {
 		[SpellName(106385)] = true, -- Crush
 		[SpellName(106730)] = true, -- Tetanus
 		[SpellName(106444)] = true, -- Impale
-		[SpellName(106794)] = true, -- Shrapnel (target)		
+		[SpellName(106794)] = true, -- Shrapnel (target)
 	},
 }
 

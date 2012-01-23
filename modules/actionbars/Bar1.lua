@@ -163,7 +163,7 @@ local customExitButton = {
 function AB:CreateBar1()
 	bar:CreateBackdrop('Default');
 	bar.backdrop:SetAllPoints();
-	bar:Point('BOTTOM', 0, 3);
+	bar:Point('BOTTOM', 0, E:Scale(27));
 	bar.buttons = {}
 	bar.bindButtons = 'ACTIONBUTTON'
 	

@@ -384,12 +384,12 @@ function UF:Update_BossFrames(frame, db)
 	if not frame.mover then
 		frame:ClearAllPoints()	
 		if INDEX == 1 then
-			frame:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOM', 700, 325) --Set to default position
+			frame:Point('TOPLEFT', ElvUF_FocusTarget, 'BOTTOMRIGHT', 30, 0) --Set to default position
 		else
 			if db.growthDirection == 'UP' then
-				frame:Point('BOTTOMRIGHT', _G['ElvUF_Boss'..INDEX-1], 'TOPRIGHT', 0, 12 + db.castbar.height)
+				frame:Point('BOTTOMRIGHT', _G['ElvUF_Boss'..INDEX-1], 'TOPRIGHT', 0, 65 + db.castbar.height)
 			else
-				frame:Point('TOPRIGHT', _G['ElvUF_Boss'..INDEX-1], 'BOTTOMRIGHT', 0, -(12 + db.castbar.height))
+				frame:Point('TOPRIGHT', _G['ElvUF_Boss'..INDEX-1], 'BOTTOMRIGHT', 0, -(65 + db.castbar.height))
 			end
 		end
 	end

@@ -1078,15 +1078,22 @@ E.Options.args.unitframe.args.player = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},	
-				matchsize = {
+				},
+				snaptoab = {
+					type = 'toggle',
 					order = 2,
+					name = L['Snap To Actionbars'],
+					desc = L['Position the castbar above Actionbar 1. Size is set automatically.'],
+				},
+				matchsize = {
+					order = 3,
 					type = 'execute',
 					name = L['Match Frame Width'],
 					func = function() E.db.unitframe.layouts[UF.ActiveLayout]['player']['castbar']['width'] = E.db.unitframe.layouts[UF.ActiveLayout]['player']['width']; UF:CreateAndUpdateUF('player') end,
+					disabled = function() return E.db.unitframe.layouts[UF.ActiveLayout]['player']['castbar']['snaptoab'] end,
 				},			
 				forceshow = {
-					order = 3,
+					order = 4,
 					name = SHOW..' / '..HIDE,
 					func = function() 
 						local castbar = ElvUF_Player.Castbar
@@ -1103,41 +1110,42 @@ E.Options.args.unitframe.args.player = {
 					type = 'execute',
 				},
 				width = {
-					order = 4,
+					order = 5,
 					name = L['Width'],
 					type = 'range',
 					min = 50, max = 600, step = 1,
+					disabled = function() return E.db.unitframe.layouts[UF.ActiveLayout]['player']['castbar']['snaptoab'] end,
 				},
 				height = {
-					order = 5,
+					order = 6,
 					name = L['Height'],
 					type = 'range',
 					min = 10, max = 85, step = 1,
 				},		
 				icon = {
-					order = 6,
+					order = 7,
 					name = L['Icon'],
 					type = 'toggle',
 				},
+				latency = {
+					order = 8,
+					name = L['Latency'],
+					type = 'toggle',				
+				},
 				xOffset = {
-					order = 7,
+					order = 9,
 					name = L['X Offset'],
 					type = 'range',
 					min = -E.screenwidth, max = E.screenwidth, step = 1,
 				},
 				yOffset = {
-					order = 8,
+					order = 10,
 					name = L['Y Offset'],
 					type = 'range',
 					min = -E.screenheight, max = E.screenheight, step = 1,
-				},				
-				latency = {
-					order = 9,
-					name = L['Latency'],
-					type = 'toggle',				
 				},
 				color = {
-					order = 10,
+					order = 13,
 					type = 'color',
 					name = L['Color'],
 					get = function(info)
@@ -1152,7 +1160,7 @@ E.Options.args.unitframe.args.player = {
 					end,													
 				},
 				interruptcolor = {
-					order = 11,
+					order = 14,
 					type = 'color',
 					name = L['Interrupt Color'],
 					get = function(info)
@@ -1167,7 +1175,7 @@ E.Options.args.unitframe.args.player = {
 					end,					
 				},
 				format = {
-					order = 12,
+					order = 15,
 					type = 'select',
 					name = L['Format'],
 					values = {

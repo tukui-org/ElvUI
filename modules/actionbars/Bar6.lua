@@ -3,12 +3,12 @@ local AB = E:GetModule('ActionBars');
 
 local ceil = math.ceil;
 local condition = "";
-local bar = CreateFrame('Frame', 'ElvUI_Bar4', E.UIParent, 'SecureHandlerStateTemplate');
+local bar = CreateFrame('Frame', 'ElvUI_Bar6', E.UIParent, 'SecureHandlerStateTemplate');
 local LAB = LibStub("LibActionButton-1.0")
 
-local barName = 'bar4'
+local barName = 'bar6'
 AB["handledBars"][bar] = barName;
-function AB:PositionAndSizeBar4()
+function AB:PositionAndSizeBar6()
 	local spacing = E:Scale(self.db.buttonspacing);
 	local buttonsPerRow = self.db[barName].buttonsPerRow;
 	local numButtons = self.db[barName].buttons;
@@ -28,8 +28,7 @@ function AB:PositionAndSizeBar4()
 	
 	bar:SetWidth(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
 	bar:SetHeight(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
-	bar.mover:SetWidth(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
-	bar.mover:SetHeight(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
+	bar.mover:SetSize(bar:GetSize());
 	bar.mouseover = self.db[barName].mouseover
 	
 	if self.db[barName].backdrop == true then
@@ -136,7 +135,7 @@ function AB:PositionAndSizeBar4()
 		self:StyleButton(button);
 	end
 	possibleButtons = nil;
-	
+
 	if self.db[barName].enabled then
 		bar:SetScale(1);
 		
@@ -148,16 +147,16 @@ function AB:PositionAndSizeBar4()
 		bar:SetAlpha(0);
 	end
 	
-	RegisterStateDriver(bar, "page", self:GetPage(barName, 4, condition));
+	RegisterStateDriver(bar, "page", self:GetPage(barName, 3, condition));
 	RegisterStateDriver(bar, "show", self.db[barName].visibility);
 end
 
-function AB:CreateBar4()
+function AB:CreateBar6()
 	bar:CreateBackdrop('Default');
 	bar.backdrop:SetAllPoints();
-	bar:Point('BOTTOMLEFT', ElvUI_Bar1, 'BOTTOMRIGHT', 3, 0);
+	bar:Point('BOTTOM', ElvUI_Bar2, 'TOP', 0, 1);
 	bar.buttons = {}
-	bar.bindButtons = 'MULTIACTIONBAR4BUTTON'
+	bar.bindButtons = 'MULTIACTIONBAR3BUTTON'
 	
 	for i=1, NUM_ACTIONBAR_BUTTONS do
 		bar.buttons[i] = LAB:CreateButton(i, format(bar:GetName().."Button%d", i), bar, nil)
@@ -180,6 +179,6 @@ function AB:CreateBar4()
 		end	
 	]])	
 	
-	self:CreateMover(bar, 'AB4', barName);
-	self:PositionAndSizeBar4();
+	self:CreateMover(bar, 'AB6', barName);
+	self:PositionAndSizeBar6();
 end

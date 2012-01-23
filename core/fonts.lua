@@ -13,6 +13,7 @@ function E:UpdateBlizzardFonts()
 	local NORMAL     = self["media"].normFont
 	local COMBAT     = LSM:Fetch('font', self.db.core.dmgfont)
 	local NUMBER     = self["media"].normFont
+	local NUMBER2    = self["media"].chatFont
 	local _, editBoxFontSize, _, _, _, _, _, _, _, _ = GetChatWindowInfo(1)
 	
 	UIDROPDOWNMENU_DEFAULT_TEXT_HEIGHT = 12
@@ -45,12 +46,12 @@ function E:UpdateBlizzardFonts()
 	SetFont(NumberFont_Outline_Huge,            NUMBER, 28, "THICKOUTLINE", 28)
 	SetFont(NumberFont_Outline_Large,           NUMBER, 15, "OUTLINE")
 	SetFont(NumberFont_Outline_Med,             NUMBER, self.db.core.fontsize*1.1, "OUTLINE")
-	SetFont(NumberFont_Shadow_Med,              NORMAL, self.db.core.fontsize) --chat editbox uses this
-	SetFont(NumberFont_Shadow_Small,            NORMAL, self.db.core.fontsize)
+	SetFont(NumberFont_Shadow_Med,              NUMBER2, self.db.core.fontsize*1.1) --chat editbox uses this
+	SetFont(NumberFont_Shadow_Small,            NUMBER, self.db.core.fontsize)
 	SetFont(QuestFont,                          NORMAL, self.db.core.fontsize)
 	SetFont(QuestFont_Large,                    NORMAL, 14)
 	SetFont(SystemFont_Large,                   NORMAL, 15)
-	SetFont(SystemFont_Shadow_Huge1,			NORMAL, 20, "OUTLINE") -- Raid Warning, Boss emote frame too
+	SetFont(SystemFont_Shadow_Huge1,			NORMAL, 20, "THINOUTLINE") -- Raid Warning, Boss emote frame too
 	SetFont(SystemFont_Med1,                    NORMAL, self.db.core.fontsize)
 	SetFont(SystemFont_Med3,                    NORMAL, self.db.core.fontsize*1.1)
 	SetFont(SystemFont_OutlineThick_Huge2,      NORMAL, 20, "THICKOUTLINE")
@@ -66,7 +67,7 @@ function E:UpdateBlizzardFonts()
 	SetFont(Tooltip_Small,                      NORMAL, self.db.core.fontsize)
 	SetFont(ZoneTextString,						NORMAL, 32, "OUTLINE")
 	SetFont(SubZoneTextString,					NORMAL, 25, "OUTLINE")
-	SetFont(PVPInfoTextString,					NORMAL, 22, "OUTLINE")
-	SetFont(PVPArenaTextString,					NORMAL, 22, "OUTLINE")
-	SetFont(CombatTextFont,                     COMBAT, 100, "OUTLINE") -- number here just increase the font quality.
+	SetFont(PVPInfoTextString,					NORMAL, 22, "THINOUTLINE")
+	SetFont(PVPArenaTextString,					NORMAL, 22, "THINOUTLINE")
+	SetFont(CombatTextFont,                     COMBAT, 100, "THINOUTLINE") -- number here just increase the font quality.
 end

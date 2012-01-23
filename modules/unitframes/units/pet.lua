@@ -285,7 +285,7 @@ function UF:Update_PetFrame(frame, db)
 	
 	if not frame.mover then
 		frame:ClearAllPoints()
-		frame:Point('BOTTOM', ElvUF_TargetTarget, 'TOP', 0, 7) --Set to default position
+		frame:Point('TOPLEFT', ElvUF_Player, 'BOTTOMLEFT', 0, -30) --Set to default position
 	end
 	
 	frame:UpdateAllElements()

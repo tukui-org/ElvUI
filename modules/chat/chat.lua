@@ -37,6 +37,7 @@ function CH:StyleChat(frame)
 	frame:SetClampedToScreen(false)
 	frame:StripTextures(true)
 	_G[name..'ButtonFrame']:Kill()
+	_G[name]:SetFading(false)
 
 	local a, b, c = select(6, editbox:GetRegions()); a:Kill(); b:Kill(); c:Kill()
 	_G[format(editbox:GetName().."FocusLeft", id)]:Kill()
@@ -369,7 +370,6 @@ function CH:Initialize()
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BATTLEGROUND", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BATTLEGROUND_LEADER", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_SAY", CH.FindURL)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_CONVERSATION", CH.FindURL)	
@@ -417,7 +417,29 @@ function CH:Initialize()
 	close:SetFrameLevel(close:GetFrameLevel() + 1)
 	close:EnableMouse(true)
 	
-	S:HandleCloseButton(close)	
+	S:HandleCloseButton(close)
+	
+	------------------------------------------------------------------------
+	--	Play sound files system
+	------------------------------------------------------------------------
+	local SoundSys = CreateFrame("Frame")
+	SoundSys:RegisterEvent("CHAT_MSG_WHISPER")
+	SoundSys:RegisterEvent("CHAT_MSG_BN_WHISPER")
+	SoundSys:HookScript("OnEvent", function(self, event, ...)
+		if event == "CHAT_MSG_WHISPER" or "CHAT_MSG_BN_WHISPER" then
+			if E.db.chat.whisperwarning == true then
+				PlaySoundFile(E.media.whispersound,"Master")
+			end
+		end
+	end)
 end
+
+-- Remember last channel
+ChatTypeInfo.WHISPER.sticky = 0
+ChatTypeInfo.BN_WHISPER.sticky = 0
+ChatTypeInfo.OFFICER.sticky = 1
+ChatTypeInfo.RAID_WARNING.sticky = 0
+ChatTypeInfo.CHANNEL.sticky = 0
+ChatTypeInfo.GUILD.sticky = 1
 
 E:RegisterModule(CH:GetName())

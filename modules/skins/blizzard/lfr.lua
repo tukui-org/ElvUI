@@ -33,7 +33,7 @@ local function LoadSkin()
 		S:HandleCloseButton(child)
 	  end
 	end
-
+	
 	S:HandleTab(LFRParentFrameTab1)
 	S:HandleTab(LFRParentFrameTab2)
 

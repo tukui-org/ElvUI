@@ -44,7 +44,7 @@ function E:UpdateMedia()
 	--Fonts
 	self["media"].normFont = LSM:Fetch("font", self.db["core"].font)
 	self["media"].combatFont = LSM:Fetch("font", self.db["core"].dmgfont)
-	
+	self["media"].chatFont = LSM:Fetch("font", self.db["core"].chatfont)
 
 	--Textures
 	self["media"].blankTex = LSM:Fetch("background", "ElvUI Blank")
@@ -78,6 +78,10 @@ function E:UpdateMedia()
 	
 	self:ValueFuncCall()
 	self:UpdateBlizzardFonts()
+end
+
+function E:UpdateSounds()
+	self["media"].whispersound = LSM:Fetch("sound", self.db["chat"].whispersound)
 end
 
 function E:ValueFuncCall()
@@ -351,10 +355,11 @@ function E:Initialize()
 	if self.db.install_complete == nil or (self.db.install_complete and type(self.db.install_complete) == 'boolean') or (self.db.install_complete and type(tonumber(self.db.install_complete)) == 'number' and tonumber(self.db.install_complete) <= 3.05) then
 		self:Install()
 	end
-	
+
 	RegisterAddonMessagePrefix('ElvUI')
 	
-	self:UpdateMedia()
+	self:UpdateSounds();
+	self:UpdateMedia();
 	self:CreateMoverPopup()
 	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", "CheckRole");
 	self:RegisterEvent("PLAYER_TALENT_UPDATE", "CheckRole");
