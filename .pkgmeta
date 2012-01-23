@@ -1,5 +1,3 @@
 package-as: ElvUI
 
 manual-changelog: CHANGELOG.txt
-
-license-output: LICENSE.txt
