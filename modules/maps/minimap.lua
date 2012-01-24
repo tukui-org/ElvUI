@@ -149,7 +149,7 @@ function M:Minimap_UpdateSettings()
 end
 
 function M:LoadMinimap()	
-	local mmholder = CreateFrame('Frame', 'MMHolder', E.UIParent)
+	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
 	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -10, -10)
 	mmholder:Width((Minimap:GetWidth() + 29) + E.RBRWidth)
 	mmholder:Height(Minimap:GetHeight() + 53)
@@ -262,19 +262,23 @@ function M:LoadMinimap()
 	
 	Minimap:SetScript('OnHide', function() 
 		UIFrameFadeIn(FarmModeMap, 0.3) 
-		if E.db["movers"] ~= nil and E.db["movers"]['AurasMover'] == nil then
+		if E.db["movers"] == nil or (E.db["movers"] and E.db["movers"]['AurasMover'] == nil) then
 			AurasMover:ClearAllPoints()
 			AurasMover:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
 		end
 		Minimap:SetAlpha(1)
+		MinimapCluster:ClearAllPoints()
+		MinimapCluster:SetAllPoints(FarmModeMap)
 	end)
 	FarmModeMap:SetScript('OnHide', function() UIFrameFadeIn(Minimap, 0.3) end)
 	Minimap:SetScript('OnShow', function() 
 		_G.MinimapZoomIn:Click(); 
 		_G.MinimapZoomOut:Click(); 
-		if E.db["movers"] ~= nil and E.db["movers"]['AurasMover'] == nil then
+		if E.db["movers"] == nil or (E.db["movers"] and E.db["movers"]['AurasMover'] == nil) then
 			E:ResetMovers('Auras Frame')
 		end	
+		MinimapCluster:ClearAllPoints()
+		MinimapCluster:SetAllPoints(Minimap)		
 	end)
 	FarmModeMap:SetScript('OnShow', function() _G.MinimapZoomIn:Click(); _G.MinimapZoomOut:Click(); end)
 	
