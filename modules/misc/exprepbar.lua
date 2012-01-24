@@ -214,11 +214,14 @@ function M:UpdateExpRepBarAnchor()
 	if E.db.core.expRepPos == 'TOP_SCREEN' then
 		BAR_WIDTH = E.eyefinity or E.UIParent:GetWidth(); BAR_WIDTH = BAR_WIDTH / 5
 		UpperRepExpBarHolder:Point('TOP', E.UIParent, 'TOP', 0, 2)  
+		UpperRepExpBarHolder:SetParent(E.UIParent)
 	else
 		BAR_WIDTH = E.MinimapSize
 		UpperRepExpBarHolder:Point('TOP', MMHolder, 'BOTTOM', 0, 2)  
+		UpperRepExpBarHolder:SetParent(Minimap)
 	end
 	
+	UpperRepExpBarHolder:SetFrameLevel(0)
 	UpperRepExpBarHolder:Size(BAR_WIDTH, TOPBAR_HEIGHT)
 
 	if UpperReputationBar then
