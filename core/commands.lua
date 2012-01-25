@@ -25,7 +25,7 @@ function E:ResetGold()
 	ReloadUI();
 end
 
-function E:FarmMode()
+function FarmMode()
 	if Minimap:IsShown() then
 		UIFrameFadeOut(Minimap, 0.3)
 		UIFrameFadeIn(FarmModeMap, 0.3) 
@@ -35,6 +35,10 @@ function E:FarmMode()
 		UIFrameFadeIn(Minimap, 0.3) 
 		FarmModeMap.fadeInfo.finishedFunc = function() FarmModeMap:Hide(); _G.MinimapZoomIn:Click(); _G.MinimapZoomOut:Click(); Minimap:SetAlpha(1) end
 	end
+end
+
+function E:FarmMode()
+	FarmMode()
 end
 
 function E:LoadCommands()
