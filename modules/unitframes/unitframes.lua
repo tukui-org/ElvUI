@@ -228,6 +228,14 @@ function UF:Update_AllFrames()
 			local frame = select(i, header:GetChildren())
 			if frame and frame.unit then
 				UF["Update_"..E:StringTitle(header.groupName).."Frames"](self, frame, self.db['layouts'][self.ActiveLayout][header.groupName])
+				
+				if frame.childList then
+					for child, _ in pairs(frame.childList) do
+						if child and child.isChild then
+							UF["Update_"..E:StringTitle(header.groupName).."Frames"](self, child, self.db['layouts'][self.ActiveLayout][header.groupName])
+						end
+					end	
+				end
 			end
 		end	
 	end	
