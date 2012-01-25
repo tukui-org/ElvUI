@@ -366,6 +366,7 @@ function E:Initialize()
 	self:RegisterEvent("RAID_ROSTER_UPDATE", "SendRecieve")
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "SendRecieve")
 	self:RegisterEvent("CHAT_MSG_ADDON", "SendRecieve")
+	collectgarbage("collect");
 end
 
 local toggle
