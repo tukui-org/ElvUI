@@ -19,7 +19,12 @@ local function LoadSkin()
 	
 	local function SkinButton(button)
 		if not button.skinned then
-			button:StripTextures()
+			for i=1, button:GetNumRegions() do
+				local region = select(i, button:GetRegions())
+				if region and region:GetObjectType() == 'Texture' and region ~= button.searchOverlay then
+					region:SetTexture(nil)
+				end
+			end
 			button:SetTemplate("Default", true)
 			button:StyleButton()
 			
@@ -28,6 +33,9 @@ local function LoadSkin()
 			icon:Point("TOPLEFT", 2, -2)
 			icon:Point("BOTTOMRIGHT", -2, 2)
 			icon:SetTexCoord(unpack(E.TexCoords))
+			
+			button.searchOverlay:ClearAllPoints()
+			button.searchOverlay:SetAllPoints(icon)
 			
 			if _G[button:GetName().."IconQuestTexture"] then
 				_G[button:GetName().."IconQuestTexture"]:Kill()
@@ -162,8 +170,9 @@ local function LoadSkin()
 	
 	S:HandleEditBox(BagItemSearchBox)
 	BagItemSearchBox:Height(BagItemSearchBox:GetHeight() - 5)
-	BagItemSearchBox:Point('TOPRIGHT', ContainerFrame1, 'TOPRIGHT', -10, -28)
+	BagItemSearchBox:Point('TOPRIGHT', ContainerFrame1, 'TOPRIGHT', -16, -28)
 	BagItemSearchBox.SetPoint = E.noop
+	BagItemSearchBox:Width(166)
 	
 	local bags = CreateFrame("Frame")
 	bags:RegisterEvent("BAG_UPDATE")
