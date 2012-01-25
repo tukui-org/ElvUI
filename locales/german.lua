@@ -1,6 +1,6 @@
 ﻿-- German localisation file for deDE
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
-local L = AceLocale:NewLocale("ElvuiConfig", "deDE")
+local L = AceLocale:NewLocale("ElvUI", "deDE")
 if not L then return end
 
 L["24-Hour Time"] = "24-Stunden Format"
