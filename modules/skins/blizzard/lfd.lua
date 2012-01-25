@@ -40,6 +40,7 @@ local function LoadSkin()
 		"LFDQueueFrameCancelButton",
 		"LFDQueueFramePartyBackfillBackfillButton",
 		"LFDQueueFramePartyBackfillNoBackfillButton",
+		"LFDQueueFrameNoLFDWhileLFRLeaveQueueButton",
 	}
 
 	local checkButtons = {
