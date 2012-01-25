@@ -260,27 +260,23 @@ function M:LoadMinimap()
 	fm:SetScript("OnDragStop", function(self) self:StopMovingOrSizing() end)
 	fm:Hide()
 	
-	Minimap:SetScript('OnHide', function() 
-		UIFrameFadeIn(FarmModeMap, 0.3) 
+	FarmModeMap:SetScript('OnShow', function() 	
 		if E.db["movers"] == nil or (E.db["movers"] and E.db["movers"]['AurasMover'] == nil) then
 			AurasMover:ClearAllPoints()
 			AurasMover:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
 		end
-		Minimap:SetAlpha(1)
 		MinimapCluster:ClearAllPoints()
 		MinimapCluster:SetAllPoints(FarmModeMap)
 	end)
-	FarmModeMap:SetScript('OnHide', function() UIFrameFadeIn(Minimap, 0.3) end)
-	Minimap:SetScript('OnShow', function() 
-		_G.MinimapZoomIn:Click(); 
-		_G.MinimapZoomOut:Click(); 
+	
+	FarmModeMap:SetScript('OnHide', function() 
 		if E.db["movers"] == nil or (E.db["movers"] and E.db["movers"]['AurasMover'] == nil) then
 			E:ResetMovers('Auras Frame')
 		end	
 		MinimapCluster:ClearAllPoints()
 		MinimapCluster:SetAllPoints(Minimap)		
 	end)
-	FarmModeMap:SetScript('OnShow', function() _G.MinimapZoomIn:Click(); _G.MinimapZoomOut:Click(); end)
+
 	
 	UIParent:HookScript('OnShow', function()
 		FarmModeMap:Hide()

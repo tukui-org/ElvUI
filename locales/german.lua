@@ -1,6 +1,6 @@
 ﻿-- German localisation file for deDE
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
-local L = AceLocale:NewLocale("ElvuiConfig", "deDE")
+local L = AceLocale:NewLocale("ElvUI", "deDE")
 if not L then return end
 
 L["24-Hour Time"] = "24-Stunden Format"
@@ -308,7 +308,7 @@ L["LF Guild Frame"] = "LF Gilde Frame"
 L["Local Time"] = "Lokale Zeit"
 L["Lock"] = "Sperren"
 L["Login Message"] = "Login Nachricht"
-L["LOGIN_MSG"] = "Willkommen zu %sElvUI|r Version %s%s|r, Tippe /ec um das Ingame Konfigurations Menüaufzurufen. Für technischen Support, besuche das Supportforum unter http://www.tukui.org/forums/forum.php?id=84"
+--L["LOGIN_MSG"] = ""
 L["Loot"] = "Beute"
 L["Loot Roll"] = "Würfel Fenster"
 -- L["Low Mana Threshold"] = ""

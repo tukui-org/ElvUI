@@ -20,7 +20,6 @@ function UF:Construct_Raid2640Frames(unitGroup)
 	self.Buffs = UF:Construct_Buffs(self)
 	self.Debuffs = UF:Construct_Debuffs(self)
 	self.AuraWatch = UF:Construct_AuraWatch(self)
-	self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
 	self.DebuffHighlight = UF:Construct_DebuffHighlight(self)
 	self.ResurrectIcon = UF:Construct_ResurectionIcon(self)
 	
@@ -413,7 +412,9 @@ function UF:Update_Raid2640Frames(frame, db)
 	end	
 	
 	UF:UpdateAuraWatch(frame)
-
+	if not frame:IsElementEnabled('ReadyCheck') then
+		frame:EnableElement('ReadyCheck')
+	end		
 	frame:UpdateAllElements()
 end
 

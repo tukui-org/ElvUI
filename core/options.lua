@@ -238,16 +238,16 @@ E.Options.args.core = {
 						normTex = {
 							type = "select", dialogControl = 'LSM30_Statusbar',
 							order = 1,
-							name = L["StatusBar Texture"],
-							desc = L["Main statusbar texture."],
+							name = L["Primary Texture"],
+							desc = L["The texture that will be used mainly for statusbars."],
 							values = AceGUIWidgetLSMlists.statusbar,
 							set = function(info, value) E.db.core[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end							
 						},
 						glossTex = {
 							type = "select", dialogControl = 'LSM30_Statusbar',
 							order = 2,
-							name = L["Gloss Texture"],
-							desc = L["This gets used by some objects."],
+							name = L["Secondary Texture"],
+							desc = L["This texture will get used on objects like chat windows and dropdown menus."],
 							values = AceGUIWidgetLSMlists.statusbar,	
 							set = function(info, value) E.db.core[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end
 						},				
