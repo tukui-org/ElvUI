@@ -430,7 +430,7 @@ function UF:Initialize()
 	E.UnitFrames = UF;
 
 	--Update all created profiles just in case.			
-	for layout in pairs(DF['unitframe']['layouts']) do	
+	for layout in pairs(E.db["unitframe"]['layouts']) do	
 		if layout ~= 'Primary' then
 			self:CopySettings('Primary', layout)
 		end
