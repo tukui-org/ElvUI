@@ -76,26 +76,72 @@ end
 
 function RU:Initialize()
 	--Create main frame
-	local RaidUtilityPanel = CreateFrame("Frame", "RaidUtilityPanel", E.UIParent)
+	local RaidUtilityPanel = CreateFrame("Frame", "RaidUtilityPanel", E.UIParent, "SecureHandlerClickTemplate")
 	RaidUtilityPanel:SetTemplate('Transparent')
 	RaidUtilityPanel:Width(230)
 	RaidUtilityPanel:Height(PANEL_HEIGHT)
 	RaidUtilityPanel:Point('TOP', E.UIParent, 'TOP', -400, 1)
 	RaidUtilityPanel:SetFrameLevel(3)
 	RaidUtilityPanel.toggled = false
+	RaidUtilityPanel:SetFrameStrata("HIGH")
 
 	--Show Button
 	self:CreateUtilButton("ShowButton", E.UIParent, "UIMenuButtonStretchTemplate, SecureHandlerClickTemplate", 80, 18, "TOP", E.UIParent, "TOP", -400, 2, RAID_CONTROL, nil)
 	ShowButton:SetFrameRef("RaidUtilityPanel", RaidUtilityPanel)
-	ShowButton:SetAttribute("_onclick", [=[self:Hide(); self:GetFrameRef("RaidUtilityPanel"):Show();]=])
+	ShowButton:SetAttribute("_onclick", [=[
+		local raidUtil = self:GetFrameRef("RaidUtilityPanel")
+		local closeButton = raidUtil:GetFrameRef("CloseButton")
+		self:Hide(); 
+		raidUtil:Show(); 
+
+		local point = self:GetPoint();		
+		local raidUtilPoint, closeButtonPoint, yOffset
+		if string.find(point, "BOTTOM") then
+			raidUtilPoint = "BOTTOM"
+			closeButtonPoint = "TOP"
+			yOffset = 1						
+		else
+			raidUtilPoint = "TOP"
+			closeButtonPoint = "BOTTOM"
+			yOffset = -1			
+		end
+		
+		raidUtil:ClearAllPoints()
+		closeButton:ClearAllPoints()
+		raidUtil:SetPoint(raidUtilPoint, self, raidUtilPoint)
+		closeButton:SetPoint(raidUtilPoint, raidUtil, closeButtonPoint, 0, yOffset)
+	]=])
 	ShowButton:SetScript("OnMouseUp", function(self) RaidUtilityPanel.toggled = true end)
+	ShowButton:SetMovable(true)
+	ShowButton:SetClampedToScreen(true)
+	ShowButton:SetClampRectInsets(0, 0, -1, 1)
+	ShowButton:RegisterForDrag("RightButton")
+	ShowButton:SetFrameStrata("HIGH")
+	ShowButton:SetScript("OnDragStart", function(self) 
+		self:StartMoving()
+	end)
+	
+	ShowButton:SetScript("OnDragStop", function(self) 
+		self:StopMovingOrSizing()
+		local point = self:GetPoint()
+		local xOffset = self:GetCenter()
+		local screenWidth = E.UIParent:GetWidth() / 2
+		xOffset = xOffset - screenWidth
+		self:ClearAllPoints()
+		if string.find(point, "BOTTOM") then
+			self:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', xOffset, -1)
+		else
+			self:SetPoint('TOP', E.UIParent, 'TOP', xOffset, 1)		
+		end
+	end)
 
 	--Close Button
 	self:CreateUtilButton("CloseButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate, SecureHandlerClickTemplate", 80, 18, "TOP", RaidUtilityPanel, "BOTTOM", 0, -1, CLOSE, nil)
 	CloseButton:SetFrameRef("ShowButton", ShowButton)
 	CloseButton:SetAttribute("_onclick", [=[self:GetParent():Hide(); self:GetFrameRef("ShowButton"):Show();]=])
 	CloseButton:SetScript("OnMouseUp", function(self) RaidUtilityPanel.toggled = false end)
-
+	RaidUtilityPanel:SetFrameRef("CloseButton", CloseButton)
+	
 	--Disband Raid button
 	self:CreateUtilButton("DisbandRaidButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate", RaidUtilityPanel:GetWidth() * 0.8, 18, "TOP", RaidUtilityPanel, "TOP", 0, -5, L['Disband Group'], nil)
 	DisbandRaidButton:SetScript("OnMouseUp", function(self)
