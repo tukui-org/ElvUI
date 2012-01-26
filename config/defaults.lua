@@ -309,7 +309,7 @@ DF['unitframe'] = {
 				['portrait'] = {
 					['enable'] = false,
 					['width'] = 45,
-					['overlay'] = true,
+					['overlay'] = false,
 					['camDistanceScale'] = 1,
 				},
 				['buffs'] = {
@@ -1092,58 +1092,70 @@ DF['unitframe'] = {
 			},					
 		},
 		['Secondary'] = {
-			['boss'] = {
-				['width'] = 200,
+			['target'] = {
+				['buffs'] = {
+					['numrows'] = 1,
+					['growth-x'] = 'LEFT',
+					['growth-y'] = 'UP',
+					['initialAnchor'] = 'BOTTOMRIGHT',
+					['anchorPoint'] = 'TOPRIGHT',
+				},
+				['debuffs'] = {
+					['numrows'] = 1,
+					['growth-x'] = 'LEFT',
+					['growth-y'] = 'UP',
+					['initialAnchor'] = 'BOTTOMRIGHT',
+					['anchorPoint'] = 'TOPRIGHT',
+				},
 				['castbar'] = {
-					['width'] = 200,
-				},				
+					['yOffset'] = 0,
+				},			
 			},
+			['targettarget'] = {
+				['height'] = 35,			
+			},
+			['focus'] = {
+				['buffs'] = {
+					['growth-y'] = 'UP',
+					['initialAnchor'] = 'BOTTOMLEFT',
+					['anchorPoint'] = 'TOPLEFT',
+				},
+				['debuffs'] = {
+					['growth-y'] = 'UP',
+					['initialAnchor'] = 'BOTTOMLEFT',
+					['anchorPoint'] = 'TOPLEFT',
+				},
+				['castbar'] = {
+					['yOffset'] = 65,
+				},
+			},	
+			['focustarget'] = {
+				['buffs'] = {
+					['growth-y'] = 'UP',
+					['initialAnchor'] = 'BOTTOMLEFT',
+					['anchorPoint'] = 'TOPLEFT',
+				},
+				['debuffs'] = {
+					['growth-y'] = 'UP',
+					['initialAnchor'] = 'BOTTOMLEFT',
+					['anchorPoint'] = 'TOPLEFT',
+				},
+			},
+			['boss'] = {
+				['growthDirection'] = 'UP',				
+			},	
 			['arena'] = {
 				['width'] = 200,
 				['castbar'] = {
 					['width'] = 200,
-				},				
-			},
-			['party'] = {
-				['point'] = 'LEFT',
-				['xOffset'] = 1,
-				['healPrediction'] = true,
-				["columnAnchorPoint"] = "LEFT",
-				["width"] = 80,
-				["height"] = 52,
-				['health'] = {
-					["text_format"] = "deficit",
-					["position"] = "BOTTOM",
-					['orientation'] = 'VERTICAL',
-				},
-				['name'] = {
-					["position"] = "TOP",
-				},
-				['debuffs'] = {
-					["anchorPoint"] = "BOTTOMLEFT",
-					["initialAnchor"] = "TOPLEFT",					
-				},
-				['petsGroup'] = {
-					['enable'] = true,
-					['width'] = 80,
-					['initialAnchor'] = 'BOTTOM',
-					['anchorPoint'] = 'TOP',
-					['xOffset'] = 0,
-					['yOffset'] = 1,
 				},					
 			},
 			['raid625'] = {
 				['healPrediction'] = true,
-				['health'] = {
-					['orientation'] = 'VERTICAL',
-				},
-			},
+			},					
 			['raid2640'] = {
-				['healPrediction'] = true,
-				['health'] = {
-					['orientation'] = 'VERTICAL',
-				},				
-			},
+				['healPrediction'] = true,			
+			},					
 			["positions"] = {
 				["ElvUF_Player"] = "BOTTOMLEFTUIParent464230",
 				["ElvUF_Target"] = "BOTTOMRIGHTUIParent-464230",
@@ -1160,7 +1172,7 @@ DF['unitframe'] = {
 				["ElvUF_Boss4"] = "BOTTOMLEFTUIParent30625",
 				["ElvUF_Tank"] = "LEFTUIParent30350",
 			},			
-		},
+		},	
 	},
 }
 
