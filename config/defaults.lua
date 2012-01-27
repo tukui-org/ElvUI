@@ -1114,7 +1114,8 @@ DF['unitframe'] = {
 				},
 				['debuffs'] = {
 					["anchorPoint"] = "BOTTOMLEFT",
-					["initialAnchor"] = "TOPLEFT",					
+					["initialAnchor"] = "TOPLEFT",
+					['useFilter'] = 'DebuffBlacklist',		
 				},
 				['petsGroup'] = {
 					['enable'] = true,
