@@ -322,8 +322,4 @@ function M:LoadLootRoll()
 	UIParent:UnregisterEvent("CANCEL_LOOT_ROLL")
 	
 	E:CreateMover(anchor, "LootRollMover", "LootRoll Frame", nil, PostMoveLootRoll)
-	
-	local f = self:CreateRollFrame() -- Create one for good measure
-	f:Point("TOPLEFT", next(frames) and frames[#frames] or anchor, "BOTTOMLEFT", 0, -4)
-	table.insert(frames, f)	
 end
