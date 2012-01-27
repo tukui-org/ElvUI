@@ -18,11 +18,11 @@ DF["core"] = {
 	["dmgfont"] = "ElvUI Combat",
 		
 	-- textures
-	["normTex"] = "ElvUI Norm",
-	["glossTex"] = "ElvUI Gloss",
+	["normTex"] = "Minimalist",
+	["glossTex"] = "Minimalist",
 	
 	--colors
-	["bordercolor"] = { r = .23,g = .23,b = .23 },
+	["bordercolor"] = { r = .27,g = .27,b = .27 },
 	["backdropcolor"] = { r = .07,g = .07,b = .07 },
 	["backdropfadecolor"] = { r = .07,g = .07,b = .07, a = 0.9 },
 	["valuecolor"] = {r = 23/255,g = 132/255,b = 209/255},
@@ -229,7 +229,7 @@ DF['tooltip'] = {
 DF['unitframe'] = {
 	['enable'] = true,
 	['smoothbars'] = true,
-	['statusbar'] = 'ElvUI Norm',
+	['statusbar'] = "Minimalist",
 	['font'] = 'ElvUI Font',
 	['fontsize'] = 12,
 	['fontoutline'] = 'OUTLINE',
