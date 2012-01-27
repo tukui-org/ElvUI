@@ -423,6 +423,8 @@ function UF:Construct_Combobar(frame)
 		
 		CPoints[i]:CreateBackdrop('Default')
 		CPoints[i].backdrop:SetParent(CPoints)
+		CPoints[i].backdrop:CreateShadow('Default')
+		CPoints[i].backdrop.shadow:Point("TOPLEFT", -4, 4)
 	end
 	
 	CPoints[1]:SetStatusBarColor(0.69, 0.31, 0.31)		
@@ -430,6 +432,10 @@ function UF:Construct_Combobar(frame)
 	CPoints[3]:SetStatusBarColor(0.65, 0.63, 0.35)
 	CPoints[4]:SetStatusBarColor(0.65, 0.63, 0.35)
 	CPoints[5]:SetStatusBarColor(0.33, 0.59, 0.33)	
+	
+	for i = 1, MAX_COMBO_POINTS do
+		CPoints[i].backdrop.shadow:SetBackdropBorderColor(CPoints[i]:GetStatusBarColor())
+	end
 	
 	return CPoints
 end

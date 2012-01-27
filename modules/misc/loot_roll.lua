@@ -21,11 +21,12 @@ local rollpairs = locale == "deDE" and {
 	["(.*) a choisi Besoin pour : (.+)"]  = "need",
 	["(.*) a choisi Désenchantement pour : (.+)"]  = "disenchant",
 } or locale == "zhTW" and {
-	["(.*)自動放棄:(.+)，因為"]  = "pass",
-	["(.*)放棄了:(.+)"] = "pass",
-	["(.*)選擇了貪婪優先:(.+)"] = "greed",
-	["(.*)選擇了需求優先:(.+)"] = "need",
-	["(.*)選擇分解:(.+)"] = "disenchant",
+    ["(.*)自動放棄:(.+)，因為他無法拾取該物品$"]  = "pass",
+    ["(.*)自動放棄:(.+)，因為她無法拾取該物品$"]  = "pass",
+    ["(.*)放棄了:(.+)"] = "pass",
+    ["(.*)選擇了貪婪:(.+)"] = "greed",
+    ["(.*)選擇了需求:(.+)"] = "need",
+    ["(.*)選擇了分解:(.+)"] = "disenchant",
 } or locale == "ruRU" and {
 	["(.*) автоматически передает предмет (.+), поскольку не может его забрать"] = "pass",
 	["(.*) пропускает розыгрыш предмета \"(.+)\", поскольку не может его забрать"] = "pass",
@@ -351,9 +352,5 @@ function M:LoadLootRoll()
 		UIParent:UnregisterEvent("CANCEL_LOOT_ROLL")
 		
 		E:CreateMover(anchor, "LootRollMover", "LootRoll Frame", nil, PostMoveLootRoll)
-		
-		local f = self:CreateRollFrame() -- Create one for good measure
-		f:Point("TOPLEFT", next(frames) and frames[#frames] or anchor, "BOTTOMLEFT", 0, -4)
-		table.insert(frames, f)
 	end
 end
