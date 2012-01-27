@@ -426,7 +426,7 @@ function E:Install()
 	if not ElvUIInstallFrame then
 		local f = CreateFrame("Frame", "ElvUIInstallFrame", E.UIParent)
 		f:Size(550, 400)
-		f:SetTemplate("Default")
+		f:SetTemplate("Transparent")
 		f:CreateShadow("Default")
 		f:SetPoint("CENTER")
 		

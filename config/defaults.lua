@@ -22,9 +22,9 @@ DF["core"] = {
 	["glossTex"] = "Minimalist",
 	
 	--colors
-	["bordercolor"] = { r = .27,g = .27,b = .27 },
-	["backdropcolor"] = { r = .07,g = .07,b = .07 },
-	["backdropfadecolor"] = { r = .07,g = .07,b = .07, a = 0.9 },
+	["bordercolor"] = { r = .31,g = .31,b = .31 },
+	["backdropcolor"] = { r = .1,g = .1,b = .1 },
+	["backdropfadecolor"] = { r = .06,g = .06,b = .06, a = 0.9 },
 	["valuecolor"] = {r = 23/255,g = 132/255,b = 209/255},
 	
 	--panels
