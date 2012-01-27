@@ -796,7 +796,7 @@ end
 
 function UF:UpdateComboDisplay(event, unit)
 	if(unit == 'pet') then return end
-	
+	local db = UF.player.db
 	local cpoints = self.CPoints
 	local cp
 	if (UnitHasVehicleUI("player") or UnitHasVehicleUI("vehicle")) then
@@ -805,12 +805,31 @@ function UF:UpdateComboDisplay(event, unit)
 		cp = GetComboPoints('player', 'target')
 	end
 
+
 	for i=1, MAX_COMBO_POINTS do
 		if(i <= cp) then
 			cpoints[i]:SetAlpha(1)
+			
+			if i == MAX_COMBO_POINTS and db.classbar.fill == 'spaced' then
+				for c = 1, MAX_COMBO_POINTS do
+					cpoints[c].backdrop.shadow:Show()
+					cpoints[c]:SetScript('OnUpdate', function(self)
+						E:Flash(self.backdrop.shadow, 0.6)
+					end)
+				end
+			else
+				for c = 1, MAX_COMBO_POINTS do
+					cpoints[c].backdrop.shadow:Hide()
+					cpoints[c]:SetScript('OnUpdate', nil)
+				end
+			end
 		else
-			cpoints[i]:SetAlpha(0.15)
-		end
+			cpoints[i]:SetAlpha(.15)
+			for c = 1, MAX_COMBO_POINTS do
+				cpoints[c].backdrop.shadow:Hide()
+				cpoints[c]:SetScript('OnUpdate', nil)
+			end		
+		end	
 	end
 	
 	local BORDER = E:Scale(2)
