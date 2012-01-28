@@ -515,7 +515,7 @@ function UF:Construct_ReadyCheckIcon(frame)
 	local f = CreateFrame('Frame', nil, frame)
 	f:SetFrameLevel(20)
 	
-	local tex = f:CreateTexture(nil, "OVERLAY")
+	local tex = f:CreateTexture(nil, "OVERLAY", nil, 7)
 	tex:Size(12)
 	tex:Point("BOTTOM", frame.Health, "BOTTOM", 0, 2)
 	
