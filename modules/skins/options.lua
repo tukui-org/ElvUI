@@ -131,7 +131,21 @@ E.Options.args.skins = {
 					order = 1,				
 				},			
 			},
-		},			
+		},	
+		tinydps = {
+			order = 10,
+			type = 'group',
+			name = 'TinyDPS',
+			get = function(info) return E.db.skins.tinydps[ info[#info] ] end,
+			set = function(info, value) E.db.skins.tinydps[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
+			args = {
+				enable = {
+					name = L['Enable'],
+					type = 'toggle',
+					order = 1,				
+				},			
+			},
+		},		
 		blizzard = {
 			order = 300,
 			type = 'group',

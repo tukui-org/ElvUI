@@ -132,6 +132,9 @@ DF['skins'] = {
 	['skada'] = {
 		['enable'] = true,
 	},		
+	['tinydps'] = {
+		['enable'] = true,
+	},			
 	['blizzard'] = {
 		['enable'] = true,
 		["bags"] = true,
