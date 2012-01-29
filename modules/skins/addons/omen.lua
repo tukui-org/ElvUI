@@ -44,8 +44,8 @@ local function LoadSkin()
 		Omen.db.profile.Background.EdgeSize = 1
 		Omen.db.profile.Background.BarInset = borderWidth
 		self:UpdateBackdrop_()
-		self.BarList:SetTemplate("Transparent")
-		self.Title:SetTemplate("Transparent")
+		self.BarList:SetTemplate("Default")
+		self.Title:SetTemplate("Default", true)
 		self.BarList:SetPoint("TOPLEFT", self.Title, "BOTTOMLEFT", 0, -1)
 	end
 
@@ -61,10 +61,6 @@ local function LoadSkin()
 
 	-- Option Overrides
 	Omen.db.profile.Bar.Spacing = 1
-	Omen.db.profile.Bar.Texture = "ElvUI Norm"
-	Omen.db.profile.Bar.Font = "ElvUI Font"
-	Omen.db.profile.Bar.Height = 18
-	Omen.db.profile.TitleBar.Font = "ElvUI Font"
 	Omen.db.profile.Background.Texture = "ElvUI Blank"
 
 	-- Force updates

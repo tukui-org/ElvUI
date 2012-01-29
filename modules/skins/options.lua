@@ -11,8 +11,22 @@ E.Options.args.skins = {
 			type = "description",
 			name = L["SKINS_DESC"],
 		},	
-		bigwigs = {
+		embedRight = {
 			order = 2,
+			type = 'select',
+			name = L['Embedded Addon'],
+			desc = L['Select an addon to embed to the right chat window. This will resize the addon to fit perfectly into the chat window, it will also parent it to the chat window so hiding the chat window will also hide the addon.'],
+			values = {
+				[''] = ' ',
+				['Recount'] = "Recount",
+				['Omen'] = "Omen",
+				--['Skada'] = "Skada",
+			},
+			get = function(info) return E.db.skins[ info[#info] ] end,
+			set = function(info, value) E.db.skins[ info[#info] ] = value; S:SetEmbedRight(value) end,
+		},
+		bigwigs = {
+			order = 3,
 			type = 'group',
 			name = 'BigWigs',
 			get = function(info) return E.db.skins.bigwigs[ info[#info] ] end,
@@ -35,7 +49,7 @@ E.Options.args.skins = {
 			},
 		},
 		ace3 = {
-			order = 3,
+			order = 4,
 			type = 'group',
 			name = 'Ace3',
 			get = function(info) return E.db.skins.ace3[ info[#info] ] end,
@@ -49,7 +63,7 @@ E.Options.args.skins = {
 			},
 		},
 		recount = {
-			order = 4,
+			order = 5,
 			type = 'group',
 			name = 'Recount',
 			get = function(info) return E.db.skins.recount[ info[#info] ] end,
@@ -63,7 +77,7 @@ E.Options.args.skins = {
 			},
 		},
 		omen = {
-			order = 5,
+			order = 6,
 			type = 'group',
 			name = 'Omen',
 			get = function(info) return E.db.skins.omen[ info[#info] ] end,
@@ -77,7 +91,7 @@ E.Options.args.skins = {
 			},
 		},	
 		skada = {
-			order = 6,
+			order = 7,
 			type = 'group',
 			name = 'Skada',
 			get = function(info) return E.db.skins.skada[ info[#info] ] end,
@@ -91,7 +105,7 @@ E.Options.args.skins = {
 			},
 		},	
 		dxe = {
-			order = 7,
+			order = 8,
 			type = 'group',
 			name = 'DXE',
 			get = function(info) return E.db.skins.dxe[ info[#info] ] end,
@@ -105,7 +119,7 @@ E.Options.args.skins = {
 			},
 		},	
 		dbm = {
-			order = 4,
+			order = 9,
 			type = 'group',
 			name = 'DBM',
 			get = function(info) return E.db.skins.dbm[ info[#info] ] end,
