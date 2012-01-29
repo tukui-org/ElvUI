@@ -5,6 +5,11 @@ E.Skins = S
 S.addonsToLoad = {}
 S.nonAddonsToLoad = {}
 S.allowBypass = {}
+S.EmbeddableAddons = {
+	['Recount'] = true,
+	['Omen'] = true,
+	['Skada'] = true,
+}
 
 local function SetModifiedBackdrop(self)
 	if self.backdrop then self = self.backdrop end
@@ -319,6 +324,7 @@ function S:RegisterSkin(name, loadFunc, forceLoad, bypass)
 end
 
 function S:Initialize()
+	self.db = E.db.skins
 	for addon, loadFunc in pairs(self.addonsToLoad) do
 		if IsAddOnLoaded(addon) then
 			loadFunc();
@@ -330,6 +336,11 @@ function S:Initialize()
 		loadFunc();
 	end
 	wipe(self.nonAddonsToLoad)
+	
+	for addon, _ in pairs(self.EmbeddableAddons) do
+		self:SaveEmbeddedAddonPoints(addon)
+	end
+	self:SetEmbedRight(self.db.embedRight)
 end
 
 S:RegisterEvent('ADDON_LOADED')
