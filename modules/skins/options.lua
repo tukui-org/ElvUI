@@ -20,7 +20,7 @@ E.Options.args.skins = {
 				[''] = ' ',
 				['Recount'] = "Recount",
 				['Omen'] = "Omen",
-				--['Skada'] = "Skada",
+				['Skada'] = "Skada",
 			},
 			get = function(info) return E.db.skins[ info[#info] ] end,
 			set = function(info, value) E.db.skins[ info[#info] ] = value; S:SetEmbedRight(value) end,

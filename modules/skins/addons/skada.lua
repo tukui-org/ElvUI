@@ -70,14 +70,14 @@ local function LoadSkin()
 		end
 		skada.backdrop:Point('BOTTOMRIGHT', win.bargroup, 'BOTTOMRIGHT', 2, -2)
 		
-		if E.db['skins']['embedright'] == "Skada" then
+		if E.db['skins']['embedRight'] == "Skada" then
 			win.bargroup.button:SetFrameStrata("MEDIUM")
 			win.bargroup.button:SetFrameLevel(5)
 			win.bargroup:SetFrameStrata("MEDIUM")
 		end
 	end
 
-	if E.db['skins']['embedright'] == "Skada" then
+	if E.db['skins']['embedRight'] == "Skada" then
 
 		local function EmbedWindow(window, width, barheight, height, point, relativeFrame, relativePoint, ofsx, ofsy)
 			local barheight = 16
