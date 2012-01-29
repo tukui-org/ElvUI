@@ -255,7 +255,7 @@ DF['unitframe'] = {
 		['customhealthbackdrop'] = true,
 		['classbackdrop'] = false,
 	
-		['health'] = { r = 65/255,g = 65/255,b = 65/255 },
+		['health'] = { r = 68/255,g = 68/255,b = 68/255 },
 		['health_backdrop'] = { r = 97/255,g = 97/255,b = 97/255 },
 		['tapped'] = { r = 0.55, g = 0.57, b = 0.61},
 		['disconnected'] = { r = 0, g = 0, b = 0},
