@@ -453,6 +453,7 @@ end
 
 function UF:Construct_RaidDebuffs(frame)
 	local rdebuff = CreateFrame('Frame', nil, frame)
+	rdebuff:SetFrameLevel(rdebuff:GetFrameLevel() + 5)
 	rdebuff:Point('BOTTOM', frame, 'BOTTOM', 0, 2)
 	rdebuff:SetTemplate("Default")
 	
@@ -524,9 +525,8 @@ end
 
 function UF:Construct_RoleIcon(frame)
 	local f = CreateFrame('Frame', nil, frame)
-	f:SetFrameLevel(20)
 	
-	local tex = f:CreateTexture(nil, "OVERLAY")
+	local tex = f:CreateTexture(nil, "ARTWORK")
 	tex:Size(17)
 	tex:Point("BOTTOM", frame.Health, "BOTTOM", 0, 2)
 	tex.Override = UF.UpdateRoleIcon
