@@ -3,11 +3,13 @@ local S = E:GetModule('Skins')
 
 local function SkinFrame(frame)
 	frame.bgMain = CreateFrame("Frame", nil, frame)
-	frame.bgMain:SetTemplate("Transparent")
+	frame.bgMain:SetTemplate("Default")
 	frame.bgMain:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT")
 	frame.bgMain:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT")
 	frame.bgMain:SetPoint("TOP", frame, "TOP", 0, -30)
 	frame.bgMain:SetFrameLevel(frame:GetFrameLevel())
+	frame.bgMain:SetScale(1)
+	frame.bgMain.SetScale = E.noop
 	
 	frame.bgTitle = CreateFrame('Frame', nil, frame)
 	frame.bgTitle:SetTemplate('Default', true)
@@ -16,6 +18,8 @@ local function SkinFrame(frame)
 	frame.bgTitle:Point("BOTTOM", frame, "TOP", 0, -29)
 	frame.bgTitle.backdropTexture:SetVertexColor(unpack(E['media'].bordercolor))
 	frame.bgTitle:SetFrameLevel(frame:GetFrameLevel())
+	frame.bgTitle:SetScale(1)
+	frame.bgTitle.SetScale = E.noop
 	
 	frame.CloseButton:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -1, -9)
 	S:HandleCloseButton(frame.CloseButton)
