@@ -49,15 +49,13 @@ local function LoadSkin()
 			skada.button:SetBackdrop(titleBG)
 		end
 
-		skada:SetTexture(E["media"].normTex)
 		skada:SetSpacing(barSpacing)
 		skada:SetFrameLevel(5)
 		
 		local titlefont = CreateFont("TitleFont"..win.db.name)
 		win.bargroup.button:SetNormalFontObject(titlefont)
 
-		local color = win.db.title.color
-		win.bargroup.button:SetBackdropColor(unpack(E["media"].bordercolor))
+		win.bargroup.button:SetBackdropColor(unpack(E["media"].backdropcolor))
 
 		skada:SetBackdrop(nil)
 		if not skada.backdrop then
