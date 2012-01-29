@@ -24,8 +24,7 @@ end
 --Reset points of previous addon
 function S:RemovePrevious(current)
 	local lastAddon = self.lastAddon
-	if lastAddon == current then return; end
-	
+
 	if lastAddon == 'Recount' then
 		Recount_MainWindow:ClearAllPoints()
 		local point, attachTo, anchor, x, y = unpack(AddonPoints[lastAddon])
@@ -54,11 +53,11 @@ function S:RemovePrevious(current)
 end
 
 function S:SetEmbedRight(addon)
+	self:RemovePrevious(addon)
 	if not IsAddOnLoaded(addon) then return; end
 	if self.lastAddon == nil then self.lastAddon = addon; end
-	
+
 	if addon == 'Recount' then
-		self:RemovePrevious(addon)
 		Recount:LockWindows(true)
 		
 		Recount_MainWindow:ClearAllPoints()
@@ -68,8 +67,6 @@ function S:SetEmbedRight(addon)
 		Recount_MainWindow:SetParent(RightChatPanel)	
 		self.lastAddon = addon
 	elseif addon == 'Omen' then
-		self:RemovePrevious(addon)
-		
 		Omen.db.profile.Locked = true
 		Omen:UpdateGrips()
 		if not Omen.oldUpdateGrips then
