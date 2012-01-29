@@ -226,13 +226,14 @@ function UF:Update_PartyFrames(frame, db)
 			--Text
 			if db.health.text then
 				health.value:Show()
-				
-				local x, y = self:GetPositionOffset(db.health.position)
-				health.value:ClearAllPoints()
-				health.value:Point(db.health.position, health, db.health.position, x, y)
 			else
 				health.value:Hide()
 			end
+			
+			--Position this even if disabled because resurrection icon depends on the position
+			local x, y = self:GetPositionOffset(db.health.position)
+			health.value:ClearAllPoints()
+			health.value:Point(db.health.position, health, db.health.position, x, y)
 			
 			--Colors
 			health.colorSmooth = nil
