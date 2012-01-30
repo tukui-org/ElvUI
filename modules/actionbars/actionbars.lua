@@ -31,11 +31,9 @@ end
 
 function AB:CreateActionBars()
 	self:SetupExtraButton()
-	self:CreateBar1()
-	self:CreateBar2()
-	self:CreateBar3()
-	self:CreateBar4()
-	self:CreateBar5()
+	for i=1, 5 do
+		self['CreateBar'..i](self)
+	end
 	self:CreateBarPet()
 	self:CreateBarShapeShift()
 	self:CreateVehicleLeave()
@@ -94,12 +92,10 @@ function AB:UpdateButtonSettings()
 			self["handledbuttons"][button] = nil
 		end
 	end
-	
-	self:PositionAndSizeBar1()
-	self:PositionAndSizeBar2()
-	self:PositionAndSizeBar3()
-	self:PositionAndSizeBar4()
-	self:PositionAndSizeBar5()
+
+	for i=1, 5 do
+		self['PositionAndSizeBar'..i](self)
+	end	
 	self:PositionAndSizeBarPet()
 	self:PositionAndSizeBarShapeShift()
 	
@@ -179,14 +175,6 @@ function AB:StyleButton(button, noResize, noBackdrop)
 	if not button.noBackdrop and not button.backdrop then
 		button:CreateBackdrop('Default', true)
 		button.backdrop:SetAllPoints()
-	end
-	
-	if not button.noResize and not combat then
-		if button.sizeOverride then
-			button:Size(button.sizeOverride)
-		else
-			button:Size(self.db.buttonsize)
-		end
 	end
 	
 	if icon then
