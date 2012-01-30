@@ -126,6 +126,9 @@ function M:Initialize()
 	self:RegisterEvent('BN_MATURE_LANGUAGE_FILTER', 'ForceProfanity')
 	
 	self.MovingTimer = self:ScheduleRepeatingTimer("CheckMovement", 0.1)
+	
+	--Kill Frames
+	HelpOpenTicketButtonTutorial:Kill()
 end
 
 E:RegisterModule(M:GetName())
