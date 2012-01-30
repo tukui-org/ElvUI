@@ -204,7 +204,7 @@ function AB:PositionAndSizeBarPet()
 			button:SetAlpha(1);
 		end
 		
-		self:StyleButton(button, true);
+		self:StyleButton(button);
 	end
 	possibleButtons = nil;
 	

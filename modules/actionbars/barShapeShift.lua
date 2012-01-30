@@ -212,7 +212,7 @@ function AB:PositionAndSizeBarShapeShift()
 			button:SetAlpha(1);
 		end
 		
-		self:StyleButton(button, true);
+		self:StyleButton(button);
 		self:StyleShapeShift();
 	end
 	possibleButtons = nil;

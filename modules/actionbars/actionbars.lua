@@ -86,7 +86,7 @@ function AB:UpdateButtonSettings()
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return; end
 	for button, _ in pairs(self["handledbuttons"]) do
 		if button then
-			self:StyleButton(button, button.noResize, button.noBackdrop)
+			self:StyleButton(button, button.noBackdrop)
 			self:StyleFlyout(button)
 		else
 			self["handledbuttons"][button] = nil
@@ -105,7 +105,7 @@ function AB:UpdateButtonSettings()
 			if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
 			
 			if E.db.core.stickyFrames then
-				local offset = self.db.buttonspacing/2
+				local offset = self.db[mover.name].buttonspacing/2
 				if mover.padding then offset = mover.padding end
 				Sticky:StartMoving(mover, E['snapBars'], offset, offset, offset, offset)
 			else
@@ -136,7 +136,7 @@ function AB:GetPage(bar, defaultPage, condition)
 	return condition
 end
 
-function AB:StyleButton(button, noResize, noBackdrop)	
+function AB:StyleButton(button, noBackdrop)	
 	local name = button:GetName();
 	local icon = _G[name.."Icon"];
 	local count = _G[name.."Count"];
@@ -154,10 +154,6 @@ function AB:StyleButton(button, noResize, noBackdrop)
 	if normal2 then normal2:SetTexture(nil); normal2:Hide(); normal2:SetAlpha(0); end	
 	if border then border:Kill(); end
 			
-	if not button.noResize then
-		button.noResize = noResize;
-	end
-	
 	if not button.noBackdrop then
 		button.noBackdrop = noBackdrop;
 	end
@@ -167,11 +163,7 @@ function AB:StyleButton(button, noResize, noBackdrop)
 		count:SetPoint("BOTTOMRIGHT", 0, 2);
 		count:FontTemplate(nil, 11, "OUTLINE");
 	end
-	
-	if _G[name..'FloatingBG'] then
 
-	end	
-	
 	if not button.noBackdrop and not button.backdrop then
 		button:CreateBackdrop('Default', true)
 		button.backdrop:SetAllPoints()
@@ -419,7 +411,7 @@ function AB:CreateMover(bar, text, name, padding)
 	mover:SetSize(bar:GetSize())
 	mover:SetFrameStrata('HIGH')
 	mover:SetTemplate('Default', true)	
-	
+	mover.name = name
 	tinsert(E['snapBars'], mover)
 	
 	if self.movers[name] == nil then 
@@ -443,7 +435,7 @@ function AB:CreateMover(bar, text, name, padding)
 	mover:SetScript("OnDragStart", function(self) 
 		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
 		if E.db.core.stickyFrames then
-			local offset = AB.db.buttonspacing/2
+			local offset = AB.db[name].buttonspacing/2
 			if padding then offset = padding end
 			Sticky:StartMoving(self, E['snapBars'], offset, offset, offset, offset)
 		else
@@ -514,7 +506,7 @@ local function SetupFlyoutButton()
 	for i=1, buttons do
 		--prevent error if you don't have max ammount of buttons
 		if _G["SpellFlyoutButton"..i] then
-			AB:StyleButton(_G["SpellFlyoutButton"..i], true)
+			AB:StyleButton(_G["SpellFlyoutButton"..i])
 			_G["SpellFlyoutButton"..i]:StyleButton()
 			_G["SpellFlyoutButton"..i]:HookScript('OnEnter', function(self)
 				local parent = self:GetParent()
