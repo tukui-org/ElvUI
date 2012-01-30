@@ -11,10 +11,13 @@ function LO:Initialize()
 	self:CreateMinimapPanels()
 end
 
-local panel
-local function ChatPanel_OnFade()
-	panel:Hide()
-	panel = nil;
+
+local function ChatPanelLeft_OnFade(self)
+	LeftChatPanel:Hide()
+end
+
+local function ChatPanelRight_OnFade(self)
+	RightChatPanel:Hide()
 end
 
 local function ChatButton_OnEnter(self, ...)
@@ -29,24 +32,34 @@ local function ChatButton_OnLeave(self, ...)
 	if E.db[self.parent:GetName()..'Faded'] then
 		UIFrameFadeOut(self.parent, 0.2, self.parent:GetAlpha(), 0)
 		UIFrameFadeOut(self, 0.2, self:GetAlpha(), 0)
-		panel = self.parent
-		self.parent.fadeInfo.finishedFunc = ChatPanel_OnFade
+		self.parent.fadeInfo.finishedFunc = self.parent.fadeFunc
 	end
 end
 
 local function ChatButton_OnClick(self, ...)
 	if E.db[self.parent:GetName()..'Faded'] then
 		E.db[self.parent:GetName()..'Faded'] = nil
-		self.parent:Show()
 		UIFrameFadeIn(self.parent, 0.2, self.parent:GetAlpha(), 1)
 		UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
 	else
 		E.db[self.parent:GetName()..'Faded'] = true
-		panel = self.parent
 		UIFrameFadeOut(self.parent, 0.2, self.parent:GetAlpha(), 0)
 		UIFrameFadeOut(self, 0.2, self:GetAlpha(), 0)
-		self.parent.fadeInfo.finishedFunc = ChatPanel_OnFade
+		self.parent.fadeInfo.finishedFunc = self.parent.fadeFunc
 	end
+end
+
+function HideLeftChat()
+	ChatButton_OnClick(LeftChatToggleButton)
+end
+
+function HideRightChat()
+	ChatButton_OnClick(RightChatToggleButton)
+end
+
+function HideBothChat()
+	ChatButton_OnClick(LeftChatToggleButton)
+	ChatButton_OnClick(RightChatToggleButton)
 end
 
 function LO:ToggleChatPanels()
@@ -132,6 +145,7 @@ function LO:CreateChatPanels()
 	--Left Chat Toggle Button
 	local lchattb = CreateFrame('Button', 'LeftChatToggleButton', E.UIParent)
 	lchattb.parent = LeftChatPanel
+	LeftChatPanel.fadeFunc = ChatPanelLeft_OnFade
 	lchattb:Point('TOPRIGHT', lchatdp, 'TOPLEFT', -1, 0)
 	lchattb:Point('BOTTOMLEFT', lchat, 'BOTTOMLEFT', 5, 5)
 	lchattb:SetTemplate('Default', true)
@@ -176,6 +190,7 @@ function LO:CreateChatPanels()
 	--Right Chat Toggle Button
 	local rchattb = CreateFrame('Button', 'RightChatToggleButton', E.UIParent)
 	rchattb.parent = RightChatPanel
+	RightChatPanel.fadeFunc = ChatPanelRight_OnFade
 	rchattb:Point('TOPLEFT', rchatdp, 'TOPRIGHT', 1, 0)
 	rchattb:Point('BOTTOMRIGHT', rchat, 'BOTTOMRIGHT', -5, 5)
 	rchattb:SetTemplate('Default', true)
