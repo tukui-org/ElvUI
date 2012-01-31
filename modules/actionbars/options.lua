@@ -10,7 +10,7 @@ local points = {
 }
 
 local function BuildABConfig()
-	for i=1, 5 do
+	for i=1, 6 do
 		local name = L['Bar ']..i
 		group['bar'..i] = {
 			order = i,
