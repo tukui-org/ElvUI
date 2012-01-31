@@ -154,8 +154,8 @@ function AB:PositionAndSizeBar2()
 end
 
 function AB:CreateBar2()
-	local spacing = E:Scale(self.db.buttonspacing);
-	local size = E:Scale(self.db.buttonsize);
+	local spacing = E:Scale(self.db[barName].buttonspacing);
+	local size = E:Scale(self.db[barName].buttonsize);
 	bar:CreateBackdrop('Default');
 	bar.backdrop:SetAllPoints();
 	bar:Point('TOP', ElvUI_Bar1, 'BOTTOM', 0, ((size * 2) + (spacing * 3)));
