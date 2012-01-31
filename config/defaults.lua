@@ -1289,7 +1289,7 @@ DF["actionbar"] = {
 		['backdrop'] = false,
 		['heightMult'] = 1,
 		['widthMult'] = 1,
-		["buttonsize"] = 30,
+		["buttonsize"] = 28,
 		["buttonspacing"] = 4,
 	},
 	['barTotem'] = {
