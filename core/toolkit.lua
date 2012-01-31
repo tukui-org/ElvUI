@@ -55,7 +55,7 @@ local function Point(obj, arg1, arg2, arg3, arg4, arg5)
 	obj:SetPoint(arg1, arg2, arg3, arg4, arg5)
 end
 
-local function SetTemplate(f, t, glossTex)
+local function SetTemplate(f, t, glossTex, ignoreUpdates)
 	GetTemplate(t)
 	
 	f.template = t
@@ -117,7 +117,9 @@ local function SetTemplate(f, t, glossTex)
 	
 	f:SetBackdropBorderColor(borderr, borderg, borderb)
 	
-	E["frames"][f] = true
+	if not ignoreUpdates then
+		E["frames"][f] = true
+	end
 end
 
 local function CreateBackdrop(f, t, tex)

@@ -109,7 +109,8 @@ local function LoadSkin()
 		_G[highlight:GetName().."Middle"]:SetAllPoints(frame)
 	end
 	
-	AchievementFrame:HookScript("OnShow", function()
+	AchievementFrame:SetScript("OnShow", function(self)
+		if self.containerSkined then return; end
 		for i=1, 20 do
 			local frame = _G["AchievementFrameCategoriesContainerButton"..i]
 			local lastframe = _G["AchievementFrameCategoriesContainerButton"..i-1]
@@ -117,6 +118,7 @@ local function LoadSkin()
 			frame:StripTextures()
 			frame:StyleButton()				
 		end	
+		self.containerSkined = true
 	end)
 	
 	hooksecurefunc("AchievementFrameSummary_UpdateAchievements", function()

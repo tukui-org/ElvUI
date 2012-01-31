@@ -74,10 +74,10 @@ function AB:UpdatePet()
 end
 
 function AB:PositionAndSizeBarPet()
-	local spacing = E:Scale(self.db.buttonspacing);
+	local spacing = E:Scale(self.db['barPet'].buttonspacing);
 	local buttonsPerRow = self.db['barPet'].buttonsPerRow;
 	local numButtons = self.db['barPet'].buttons;
-	local size = E:Scale(self.db.altbuttonsize);
+	local size = E:Scale(self.db['barPet'].buttonsize);
 	local point = self.db['barPet'].point;
 	local numColumns = ceil(numButtons / buttonsPerRow);
 	local widthMult = self.db['barPet'].widthMult;
@@ -131,7 +131,7 @@ function AB:PositionAndSizeBarPet()
 		lastColumnButton = _G["PetActionButton"..i-buttonsPerRow];
 		button:SetParent(bar);
 		button:ClearAllPoints();
-		button:Size(self.db.altbuttonsize);
+		button:Size(size);
 		
 		possibleButtons[((i * buttonsPerRow) + 1)] = true;
 		button:SetAttribute("showgrid", 1);
@@ -204,7 +204,7 @@ function AB:PositionAndSizeBarPet()
 			button:SetAlpha(1);
 		end
 		
-		self:StyleButton(button, true);
+		self:StyleButton(button);
 	end
 	possibleButtons = nil;
 	

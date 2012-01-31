@@ -75,10 +75,10 @@ function AB:AdjustMaxShapeShiftButtons()
 end
 
 function AB:PositionAndSizeBarShapeShift()
-	local spacing = E:Scale(self.db.buttonspacing);
+	local spacing = E:Scale(self.db['barShapeShift'].buttonspacing);
 	local buttonsPerRow = self.db['barShapeShift'].buttonsPerRow;
 	local numButtons = self.db['barShapeShift'].buttons;
-	local size = E:Scale(self.db.altbuttonsize);
+	local size = E:Scale(self.db['barShapeShift'].buttonsize);
 	local point = self.db['barShapeShift'].point;
 	local widthMult = self.db['barShapeShift'].widthMult;
 	local heightMult = self.db['barShapeShift'].heightMult;
@@ -140,7 +140,7 @@ function AB:PositionAndSizeBarShapeShift()
 		lastColumnButton = _G["ShapeshiftButton"..i-buttonsPerRow];
 		button:SetParent(bar);
 		button:ClearAllPoints();
-		button:Size(self.db.altbuttonsize);
+		button:Size(size);
 		
 		possibleButtons[((i * buttonsPerRow) + 1)] = true;
 
@@ -212,7 +212,7 @@ function AB:PositionAndSizeBarShapeShift()
 			button:SetAlpha(1);
 		end
 		
-		self:StyleButton(button, true);
+		self:StyleButton(button);
 		self:StyleShapeShift();
 	end
 	possibleButtons = nil;

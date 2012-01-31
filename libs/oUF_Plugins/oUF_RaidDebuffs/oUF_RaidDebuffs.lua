@@ -223,6 +223,10 @@ end
 local blackList = {
 	[105171] = true, -- Deep Corruption
 	[108220] = true, -- Deep Corruption
+	[101108] = true, -- Rage of Ragnaros
+	[101109] = true, -- Rage of Ragnaros
+	[101110] = true, -- Rage of Ragnaros
+	[101228] = true, -- Rage of Ragnaros		
 }
 	
 local function Update(self, event, unit)

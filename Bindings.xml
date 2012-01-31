@@ -5,4 +5,13 @@
    <Binding name="Farm Mode" header="ELVUI" runOnUp="false">
     FarmMode()
   </Binding> 
+   <Binding name="Toggle Chat (Left)" header="ELVUI" runOnUp="false">
+    HideLeftChat()
+  </Binding> 
+   <Binding name="Toggle Chat (Right)" header="ELVUI" runOnUp="false">
+    HideRightChat()
+  </Binding> 
+   <Binding name="Toggle Chat (Both)" header="ELVUI" runOnUp="false">
+    HideBothChat()
+  </Binding>   
 </Bindings>
