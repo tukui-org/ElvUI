@@ -9,10 +9,10 @@ local LAB = LibStub("LibActionButton-1.0")
 local barName = 'bar4'
 AB["handledBars"][bar] = barName;
 function AB:PositionAndSizeBar4()
-	local spacing = E:Scale(self.db.buttonspacing);
+	local spacing = E:Scale(self.db[barName].buttonspacing);
 	local buttonsPerRow = self.db[barName].buttonsPerRow;
 	local numButtons = self.db[barName].buttons;
-	local size = E:Scale(self.db.buttonsize);
+	local size = E:Scale(self.db[barName].buttonsize);
 	local point = self.db[barName].point;
 	local numColumns = ceil(numButtons / buttonsPerRow);
 	local widthMult = self.db[barName].widthMult;
@@ -58,6 +58,7 @@ function AB:PositionAndSizeBar4()
 		lastButton = bar.buttons[i-1];
 		lastColumnButton = bar.buttons[i-buttonsPerRow];
 		button:SetParent(bar);
+		button:Size(size);
 		button:ClearAllPoints();
 		
 		button:SetAttribute("showgrid", 1);

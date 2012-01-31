@@ -66,7 +66,7 @@ local function LoadSkin()
 	QuestInfoSkillPointFramePoints:Point("BOTTOMRIGHT", QuestInfoSkillPointFrameIconTexture, "BOTTOMRIGHT")
 	
 	QuestInfoItemHighlight:StripTextures()
-	QuestInfoItemHighlight:SetTemplate("Default")
+	QuestInfoItemHighlight:SetTemplate("Default", nil, true)
 	QuestInfoItemHighlight:SetBackdropBorderColor(1, 1, 0)
 	QuestInfoItemHighlight:SetBackdropColor(0, 0, 0, 0)
 	QuestInfoItemHighlight.backdropTexture:SetAlpha(0)

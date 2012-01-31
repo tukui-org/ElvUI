@@ -17,7 +17,7 @@ local function LoadSkin()
 	end
 	
 	frame:SetTemplate("Default")
-	frame:CreateShadow("Default")
+
 	
 	if status then
 		status:SetBackdrop({bgFile = E["media"].normTex, edgeFile = E["media"].blank, tile = false, tileSize = 0, edgeSize = 1, insets = { left = 0, right = 0, top = 0, bottom = 0}})

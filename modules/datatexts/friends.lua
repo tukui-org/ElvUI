@@ -81,6 +81,12 @@ local function BuildFriendTable(total)
 	local name, level, class, area, connected, status, note
 	for i = 1, total do
 		name, level, class, area, connected, status, note = GetFriendInfo(i)
+
+		if status == "<"..AFK..">" then
+			status = "|cffFFFFFF[|r|cffFF0000"..L['AFK'].."|r|cffFFFFFF]|r"
+		elseif status == "<"..DND..">" then
+			status = "|cffFFFFFF[|r|cffFF0000"..L['DND'].."|r|cffFFFFFF]|r"
+		end
 		
 		if connected then 
 			for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end

@@ -67,15 +67,31 @@ local function BuildABConfig()
 					desc = L['The ammount of buttons to display per row.'],
 					min = 1, max = NUM_ACTIONBAR_BUTTONS, step = 1,					
 				},
-				heightMult = {
+				buttonsize = {
+					type = 'range',
+					name = L['Button Size'],
+					desc = L['The size of the action buttons.'],
+					min = 15, max = 60, step = 1,
 					order = 8,
+					disabled = function() return not E.db.actionbar.enable end,
+				},
+				buttonspacing = {
+					type = 'range',
+					name = L['Button Spacing'],
+					desc = L['The spacing between buttons.'],
+					min = 1, max = 10, step = 1,	
+					order = 9, 
+					disabled = function() return not E.db.actionbar.enable end,
+				},				
+				heightMult = {
+					order = 10,
 					type = 'range',
 					name = L['Height Multiplier'],
 					desc = L['Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop.'],
 					min = 1, max = 5, step = 1,					
 				},
 				widthMult = {
-					order = 9,
+					order = 11,
 					type = 'range',
 					name = L['Width Multiplier'],
 					desc = L['Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop.'],
@@ -83,7 +99,7 @@ local function BuildABConfig()
 				},
 				paging = {
 					type = 'input',
-					order = 10,
+					order = 12,
 					name = L['Action Paging'],
 					desc = L["This works like a macro, you can run different situations to get the actionbar to page differently.\n Example: '[combat] 2;'"],
 					width = 'full',
@@ -100,7 +116,7 @@ local function BuildABConfig()
 				},
 				visibility = {
 					type = 'input',
-					order = 11,
+					order = 13,
 					name = L['Visibility State'],
 					desc = L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"],
 					width = 'full',
@@ -169,15 +185,31 @@ local function BuildABConfig()
 				desc = L['The ammount of buttons to display per row.'],
 				min = 1, max = NUM_PET_ACTION_SLOTS, step = 1,					
 			},
-			heightMult = {
+			buttonsize = {
+				type = 'range',
+				name = L['Button Size'],
+				desc = L['The size of the action buttons.'],
+				min = 15, max = 60, step = 1,
 				order = 8,
+				disabled = function() return not E.db.actionbar.enable end,
+			},
+			buttonspacing = {
+				type = 'range',
+				name = L['Button Spacing'],
+				desc = L['The spacing between buttons.'],
+				min = 1, max = 10, step = 1,	
+				order = 9, 
+				disabled = function() return not E.db.actionbar.enable end,
+			},				
+			heightMult = {
+				order = 10,
 				type = 'range',
 				name = L['Height Multiplier'],
 				desc = L['Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop.'],
 				min = 1, max = 5, step = 1,					
 			},
 			widthMult = {
-				order = 9,
+				order = 11,
 				type = 'range',
 				name = L['Width Multiplier'],
 				desc = L['Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop.'],
@@ -185,7 +217,7 @@ local function BuildABConfig()
 			},
 			visibility = {
 				type = 'input',
-				order = 10,
+				order = 12,
 				name = L['Visibility State'],
 				desc = L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"],
 				width = 'full',
@@ -252,15 +284,31 @@ local function BuildABConfig()
 				desc = L['The ammount of buttons to display per row.'],
 				min = 1, max = NUM_PET_ACTION_SLOTS, step = 1,					
 			},
-			heightMult = {
+			buttonsize = {
+				type = 'range',
+				name = L['Button Size'],
+				desc = L['The size of the action buttons.'],
+				min = 15, max = 60, step = 1,
 				order = 8,
+				disabled = function() return not E.db.actionbar.enable end,
+			},
+			buttonspacing = {
+				type = 'range',
+				name = L['Button Spacing'],
+				desc = L['The spacing between buttons.'],
+				min = 1, max = 10, step = 1,	
+				order = 9, 
+				disabled = function() return not E.db.actionbar.enable end,
+			},				
+			heightMult = {
+				order = 10,
 				type = 'range',
 				name = L['Height Multiplier'],
 				desc = L['Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop.'],
 				min = 1, max = 5, step = 1,					
 			},
 			widthMult = {
-				order = 9,
+				order = 11,
 				type = 'range',
 				name = L['Width Multiplier'],
 				desc = L['Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop.'],
@@ -410,11 +458,11 @@ local function BuildABConfig()
 					func = function() E.db.actionbar['barTotem'] = DF.actionbar['barTotem']; AB:ResetMovers('barTotem'); AB:AdjustTotemSettings() end,
 				},			
 				mouseover = {
-					order = 5,
+					order = 3,
 					name = L['Mouse Over'],
 					desc = L['The frame is not shown unless you mouse over the frame.'],
 					type = "toggle",
-				},
+				},				
 			},
 		}
 	end
@@ -469,30 +517,6 @@ E.Options.args.actionbar = {
 			order = 6,
 			disabled = function() return not E.db.actionbar.enable end,
 		},		
-		buttonsize = {
-			type = 'range',
-			name = L['Button Size'],
-			desc = L['The size of the main action buttons.'],
-			min = 15, max = 60, step = 1,
-			order = 7,
-			disabled = function() return not E.db.actionbar.enable end,
-		},
-		buttonspacing = {
-			type = 'range',
-			name = L['Button Spacing'],
-			desc = L['The spacing between buttons.'],
-			min = 1, max = 10, step = 1,	
-			order = 8, 
-			disabled = function() return not E.db.actionbar.enable end,
-		},
-		altbuttonsize = {
-			type = 'range',
-			name = L['Alt-Button Size'],
-			desc = L['The size of the Pet and Shapeshift bar buttons.'],
-			min = 15, max = 60, step = 1,	
-			order = 9, 
-			disabled = function() return not E.db.actionbar.enable end,		
-		},
 	},
 }
 group = E.Options.args.actionbar.args

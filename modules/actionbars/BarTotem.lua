@@ -153,9 +153,8 @@ function AB:StyleTotemActionButton(button, _, index)
 	button:SetBackdropColor(0,0,0,0)
 	button:StyleButton()
 	button.noBackdrop = true
-	button.noResize = true
 	bar.buttons[button] = true
-	self:StyleButton(button, true, true)
+	self:StyleButton(button, true)
 	self:AdjustTotemSettings()
 end
 AB:SecureHook("MultiCastActionButton_Update", "StyleTotemActionButton")
