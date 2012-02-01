@@ -51,12 +51,7 @@ function DT:RegisterLDB()
 		local function OnClick(self, button)
 			obj.OnClick(self, button)
 		end
-		
-		local function OnEvent(self)
-			curFrame = self
-			LDB.callbacks:Fire("LibDataBroker_AttributeChanged_"..name.."_text", name, nil, obj.text, obj)
-		end
-		
+
 		local function textUpdate(event, name, key, value, dataobj)
 			if value == nil or (string.len(value) > 5) then
 				curFrame.text:SetText(value or name)
@@ -65,9 +60,14 @@ function DT:RegisterLDB()
 			end
 		end
 		
+		local function OnEvent(self)
+			curFrame = self
+			LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_text", textUpdate)
+			LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_value", textUpdate)					
+			LDB.callbacks:Fire("LibDataBroker_AttributeChanged_"..name.."_text", name, nil, obj.text, obj)	
+		end
+
 		self:RegisterDatatext(name, {'PLAYER_ENTER_WORLD'}, OnEvent, nil, OnClick, OnEnter, OnLeave)
-		LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_text", textUpdate)
-		LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_value", textUpdate)
 	end	
 end
 
@@ -179,6 +179,10 @@ function DT:LoadDataTexts()
 		spec = 'spec2'
 	end
 
+	for name, obj in LDB:DataObjectIterator() do
+		LDB:UnregisterAllCallbacks(self)
+	end	
+	
 	for panelName, panel in pairs(DT.RegisteredPanels) do
 		--Restore Panels
 		for i=1, panel.numPoints do
