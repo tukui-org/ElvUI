@@ -48,10 +48,13 @@ local function BuildGuildTable()
 	for i = 1, GetNumGuildMembers() do
 		name, rank, rankIndex, level, _, zone, note, officernote, connected, status, class = GetGuildRosterInfo(i)
 		-- we are only interested in online members
-		if status == "<"..AFK..">" then
+		
+		if status == 1 then
 			status = "|cffFFFFFF[|r|cffFF0000"..L['AFK'].."|r|cffFFFFFF]|r"
-		elseif status == "<"..DND..">" then
+		elseif status == 2 then
 			status = "|cffFFFFFF[|r|cffFF0000"..L['DND'].."|r|cffFFFFFF]|r"
+		else 
+			status = '';
 		end
 		
 		if connected then 

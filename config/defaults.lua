@@ -927,6 +927,15 @@ DF['unitframe'] = {
 					['xOffset'] = -1,
 					['yOffset'] = 0,
 				},
+				['targetsGroup'] = {
+					['enable'] = false,
+					['width'] = 100,
+					['height'] = 22,
+					['initialAnchor'] = 'TOPRIGHT',
+					['anchorPoint'] = 'TOPLEFT',
+					['xOffset'] = -1,
+					['yOffset'] = 0,
+				},				
 			},
 			['raid625'] = {
 				['enable'] = true,
@@ -1151,6 +1160,43 @@ DF['unitframe'] = {
 				['width'] = 200,
 				['castbar'] = {
 					['width'] = 200,
+				},					
+			},
+			['party'] = {
+				['point'] = 'LEFT',
+				['xOffset'] = 1,
+				['healPrediction'] = true,
+				["columnAnchorPoint"] = "LEFT",
+				["width"] = 80,
+				["height"] = 52,
+				['health'] = {
+					["text_format"] = "deficit",
+					["position"] = "BOTTOM",
+					['orientation'] = 'VERTICAL',
+				},
+				['name'] = {
+					["position"] = "TOP",
+				},
+				['debuffs'] = {
+					["anchorPoint"] = "BOTTOMLEFT",
+					["initialAnchor"] = "TOPLEFT",
+					['useFilter'] = 'DebuffBlacklist',		
+				},
+				['petsGroup'] = {
+					['enable'] = true,
+					['width'] = 80,
+					['initialAnchor'] = 'BOTTOM',
+					['anchorPoint'] = 'TOP',
+					['xOffset'] = 0,
+					['yOffset'] = 1,
+				},		
+				['targetsGroup'] = {
+					['enable'] = false,
+					['width'] = 80,
+					['initialAnchor'] = 'BOTTOM',
+					['anchorPoint'] = 'TOP',
+					['xOffset'] = 0,
+					['yOffset'] = 1,
 				},					
 			},
 			['raid625'] = {

@@ -159,17 +159,22 @@ function UF:Update_PartyFrames(frame, db)
 	end
 
 	if frame.isChild then
+		local childDB = db.petsGroup
+		if frame == _G[frame.originalParent:GetName()..'Target'] then
+			childDB = db.targetsGroup
+		end
+		
 		if not frame.originalParent.childList then
 			frame.originalParent.childList = {}
 		end	
 		frame.originalParent.childList[frame] = true;
 		
 		if not InCombatLockdown() then
-			if db.petsGroup.enable then
+			if childDB.enable then
 				frame:SetParent(frame.originalParent)
-				frame:Size(db.petsGroup.width, db.petsGroup.height)
+				frame:Size(childDB.width, childDB.height)
 				frame:ClearAllPoints()
-				frame:Point(db.petsGroup.initialAnchor, frame.originalParent, db.petsGroup.anchorPoint, db.petsGroup.xOffset, db.petsGroup.yOffset)
+				frame:Point(childDB.initialAnchor, frame.originalParent, childDB.anchorPoint, childDB.xOffset, childDB.yOffset)
 			else
 				frame:SetParent(E.HiddenFrame)
 			end
@@ -205,13 +210,8 @@ function UF:Update_PartyFrames(frame, db)
 		--Name
 		do
 			local name = frame.Name
-			if db.name.enable then
-				name:Show()
-				name:ClearAllPoints()
-				name:SetPoint('CENTER', frame.Health, 'CENTER')
-			else
-				name:Hide()
-			end
+			name:ClearAllPoints()
+			name:SetPoint('CENTER', frame.Health, 'CENTER')
 		end			
 	else
 		if not InCombatLockdown() then
@@ -507,4 +507,4 @@ function UF:Update_PartyFrames(frame, db)
 	frame:UpdateAllElements()
 end
 
-UF['headerstoload']['party'] = {nil, 'ELVUI_UNITPET'}
+UF['headerstoload']['party'] = {nil, 'ELVUI_UNITPET, ELVUI_UNITTARGET'}

@@ -11,8 +11,12 @@ local Update = function(self, event, unit)
 
 	local min, max = UnitHealth(unit), UnitHealthMax(unit)
 	local disconnected = not UnitIsConnected(unit)
+	if max == 0 then
+		max = 1
+	end
+	
 	health:SetMinMaxValues(0, max)
-
+	
 	if(disconnected) then
 		health:SetValue(max)
 	else

@@ -1,9 +1,12 @@
 local E, L, DF = unpack(select(2, ...)); --Engine
 local DT = E:NewModule('DataTexts', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
+local LDB = CreateFrame('Frame')
+LDB.Lib = LibStub:GetLibrary("LibDataBroker-1.1");
 
 function DT:Initialize()
 	--if E.db["datatexts"].enable ~= true then return end
 	E.DataTexts = DT
+	self:RegisterLDB()
 	self:LoadDataTexts()
 	self:PanelLayoutOptions()	
 end
@@ -16,6 +19,44 @@ DT.PointLocation = {
 	[2] = 'left',
 	[3] = 'right',
 }
+
+local hex = '|cffFFFFFF'
+function DT:RegisterLDB()
+	for name, obj in LDB.Lib:DataObjectIterator() do
+		local OnEnter = nil;
+		if obj.OnTooltipShow then
+			function OnEnter(self)
+				DT:SetupTooltip(self)
+				obj.OnTooltipShow(GameTooltip)
+				GameTooltip:Show()
+			end
+		end
+		
+		local function OnUpdate(self, elapsed)
+			if(self.elapsed and self.elapsed > 0.2) then
+				if obj.text and name ~= obj.text then
+					self.text:SetText(name..': '..hex..obj.text..'|r')
+				else
+					self.text:SetText(obj.label or name)
+				end
+			else
+				self.elapsed = (self.elapsed or 0) + elapsed
+			end
+		end
+		
+		local function OnClick(self, button)
+			obj.OnClick(obj, button)
+		end
+		
+		self:RegisterDatatext(name, nil, nil, OnUpdate, OnClick, OnEnter)
+		--DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc)
+	end	
+end
+
+local function ValueColorUpdate(newHex)
+	hex = newHex
+end
+E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
 function DT:GetDataPanelPoint(panel, i, numPoints)
 	if numPoints == 1 then
