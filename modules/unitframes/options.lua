@@ -5096,6 +5096,59 @@ E.Options.args.unitframe.args.party = {
 				},					
 			},
 		},
+		targetsGroup = {
+			order = 900,
+			type = 'group',
+			name = L['Party Targets'],
+			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['party']['targetsGroup'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['party']['targetsGroup'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,	
+			args = {		
+				enable = {
+					type = 'toggle',
+					name = L['Enable'],
+					order = 1,
+				},
+				width = {
+					order = 2,
+					name = L['Width'],
+					type = 'range',
+					min = 10, max = 500, step = 1,
+				},			
+				height = {
+					order = 3,
+					name = L['Height'],
+					type = 'range',
+					min = 10, max = 250, step = 1,
+				},	
+				initialAnchor = {
+					type = 'select',
+					order = 4,
+					name = L['Initial Anchor'],
+					values = petAnchors,
+				},	
+				anchorPoint = {
+					type = 'select',
+					order = 5,
+					name = L['Anchor Point'],
+					desc = L['What point to anchor to the frame you set to attach to.'],
+					values = petAnchors,				
+				},	
+				xOffset = {
+					order = 6,
+					type = 'range',
+					name = L['xOffset'],
+					desc = L['An X offset (in pixels) to be used when anchoring new frames.'],
+					min = -15, max = 15, step = 1,		
+				},
+				yOffset = {
+					order = 7,
+					type = 'range',
+					name = L['yOffset'],
+					desc = L['An Y offset (in pixels) to be used when anchoring new frames.'],
+					min = -15, max = 15, step = 1,		
+				},					
+			},
+		},		
 	},
 }
 

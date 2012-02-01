@@ -14,7 +14,7 @@
 					<Attribute name="useparent-unit" type="boolean" value="true"/>
 					<Attribute name="type1" type="string" value="target"/>
 					<Attribute name="initial-unitWatch" type="boolean" value="true"/>
-				</Attributes>
+				</Attributes>			
 			</Button>
 		</Frames>
 	</Button>
@@ -34,7 +34,7 @@
 					<Attribute name="useparent-unit" type="boolean" value="true"/>
 					<Attribute name="type1" type="string" value="target"/>
 					<Attribute name="initial-unitWatch" type="boolean" value="true"/>
-				</Attributes>
+				</Attributes>				
 			</Button>
 		</Frames>
 	</Button>

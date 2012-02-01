@@ -296,10 +296,14 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 		for i=1, self[group]:GetNumChildren() do
 			local child = select(i, self[group]:GetChildren())
 			UF["Update_"..E:StringTitle(group).."Frames"](self, child, self.db['layouts'][self.ActiveLayout][group])
-			
+
 			if _G[child:GetName()..'Pet'] then
 				UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Pet'], self.db['layouts'][self.ActiveLayout][group])
 			end
+			
+			if _G[child:GetName()..'Target'] then
+				UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Target'], self.db['layouts'][self.ActiveLayout][group])
+			end			
 		end
 	elseif self[group] then
 		self[group]:SetAttribute("showParty", false)
