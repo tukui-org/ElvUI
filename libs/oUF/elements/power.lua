@@ -26,6 +26,9 @@ local Update = function(self, event, unit)
 	local displayType = GetDisplayPower(power, unit)
 	local min, max = UnitPower(unit, displayType), UnitPowerMax(unit, displayType)
 	local disconnected = not UnitIsConnected(unit)
+	if max == 0 then
+		max = 1
+	end
 	power:SetMinMaxValues(0, max)
 
 	if(disconnected) then
