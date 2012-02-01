@@ -8,7 +8,6 @@ else
 end
 
 if not L then return; end
-
 L["24-Hour Time"] = "24-Hour Time"
 L["Achievement Frame"] = "Achievement Frame"
 L["Achievement Popup Frames"] = "Achievement Popup Frames"
@@ -193,6 +192,7 @@ L["Earned:"] = "Earned:"
 L["ELVUI_CREDITS"] = "I would like to give out a special shout out to the following people for helping me maintain this addon with testing and coding and people who also have helped me through donations. Please note for donations I'm only posting the names of people who PM'd me on the forums, if your name is missing and you wish to have your name added please PM me."
 L["ELVUI_DESC"] = "ElvUI is a complete User Interface replacement addon for World of Warcraft."
 L["ElvUI Installation"] = "ElvUI Installation"
+L["Embedded Addon"] = "Embedded Addon"
 L["Empty Slot"] = "Empty Slot"
 L["Enable"] = "Enable"
 L["EnableDisable the all-in-one bag."] = "EnableDisable the all-in-one bag."
@@ -374,6 +374,7 @@ L["Panel Texture (Right)"] = "Panel Texture (Right)"
 L["Panel Width"] = "Panel Width"
 L["Party Frames"] = "Party Frames"
 L["Party Pets"] = "Party Pets"
+L["Party Targets"] = "Party Targets"
 L["Percent"] = "Percent"
 L["Per Row"] = "Per Row"
 L["Personal Auras"] = "Personal Auras"
@@ -455,6 +456,7 @@ L["Secondary Texture"] = "Secondary Texture"
 L["Seconds"] = "Seconds"
 L["Select a filter to use."] = "Select a filter to use."
 L["Select a filter to use. These are imported from the unitframe aura filter."] = "Select a filter to use. These are imported from the unitframe aura filter."
+L["Select an addon to embed to the right chat window. This will resize the addon to fit perfectly into the chat window, it will also parent it to the chat window so hiding the chat window will also hide the addon."] = "Select an addon to embed to the right chat window. This will resize the addon to fit perfectly into the chat window, it will also parent it to the chat window so hiding the chat window will also hide the addon."
 L["Select a unit to copy settings from."] = "Select a unit to copy settings from."
 L["Select Filter"] = "Select Filter"
 L["Select Spell"] = "Select Spell"
@@ -561,7 +563,7 @@ L["The in-game configuration menu can be accesses by typing the /ec command or b
 L["The initial anchor point of the buffs on the frame"] = "The initial anchor point of the buffs on the frame"
 L["The maximum number of columns that the header will create."] = "The maximum number of columns that the header will create."
 L["The maximum number of units that will be displayed in a single column."] = "The maximum number of units that will be displayed in a single column."
-L['The size of the action buttons.'] = 'The size of the action buttons.'
+L["The size of the action buttons."] = "The size of the action buttons."
 L["The spacing between buttons."] = "The spacing between buttons."
 L["The spacing in between bars."] = "The spacing in between bars."
 L["The texture that will be used mainly for statusbars."] = "The texture that will be used mainly for statusbars."
@@ -672,6 +674,3 @@ L["You must purchase a bank slot first!"] = "You must purchase a bank slot first
 L["Your items have been repaired for: "] = "Your items have been repaired for: "
 L["Your items have been repaired using guild bank funds for: "] = "Your items have been repaired using guild bank funds for: "
 L["Your version of ElvUI is out of date. You can download the latest version from www.curse.com"] = "Your version of ElvUI is out of date. You can download the latest version from www.curse.com"
-L['Embedded Addon'] = true;
-L['Select an addon to embed to the right chat window. This will resize the addon to fit perfectly into the chat window, it will also parent it to the chat window so hiding the chat window will also hide the addon.'] = true;
-L['Party Targets'] = true;
