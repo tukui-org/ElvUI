@@ -120,10 +120,3 @@ function M:Initialize()
 end
 
 E:RegisterModule(M:GetName())
-
-local FuckShitBalls = CreateFrame("Frame")
-FuckShitBalls:RegisterEvent("CVAR_UPDATE")
-FuckShitBalls:RegisterEvent("PLAYER_ENTERING_WORLD")
-FuckShitBalls:SetScript("OnEvent", function()
-	SetCVar("profanityFilter", 0)
-end)
