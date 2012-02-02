@@ -676,4 +676,5 @@ L["You must purchase a bank slot first!"] = "You must purchase a bank slot first
 L["Your items have been repaired for: "] = "Your items have been repaired for: "
 L["Your items have been repaired using guild bank funds for: "] = "Your items have been repaired using guild bank funds for: "
 L["Your version of ElvUI is out of date. You can download the latest version from www.curse.com"] = "Your version of ElvUI is out of date. You can download the latest version from www.curse.com"
-
+L['Accept Invites'] = true;
+L['Automatically accept invites from guild/friends.'] = true;

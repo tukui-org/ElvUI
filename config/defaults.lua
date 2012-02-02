@@ -11,6 +11,7 @@ DF["core"] = {
 	['loginmessage'] = true,
 	["interruptAnnounce"] = "NONE",
 	["autoRepair"] = "NONE",
+	['autoAcceptInvite'] = false,
 	
 	-- fonts
 	["fontsize"] = 12,
