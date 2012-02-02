@@ -263,7 +263,7 @@ function CH:FindURL(event, msg, ...)
 	if found > 0 then return false, newMsg, ... end
 end
 
-local OldChatFrame_OnHyperlinkShow = ChatFrame_OnHyperlinkShow
+local OldChatFrame_OnHyperlinkShow
 local function URLChatFrame_OnHyperlinkShow(self, link, ...)
 	if (link):sub(1, 3) == "url" then
 		local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
@@ -353,6 +353,7 @@ function CH:Initialize()
 	
 	FriendsMicroButton:Kill()
 	ChatFrameMenuButton:Kill()
+	OldChatFrame_OnHyperlinkShow = ChatFrame_OnHyperlinkShow
 	ChatFrame_OnHyperlinkShow = URLChatFrame_OnHyperlinkShow
 	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
@@ -374,6 +375,7 @@ function CH:Initialize()
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_CONVERSATION", CH.FindURL)	
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_INLINE_TOAST_BROADCAST", CH.FindURL)
 	
 	local S = E:GetModule('Skins')
 	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)

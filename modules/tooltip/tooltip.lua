@@ -523,7 +523,7 @@ function TT:GameTooltip_OnTooltipCleared(tt)
 end
 
 function TT:GameTooltip_OnUpdate(tt)
-	if tt.needRefresh and tt:GetAnchorType() == 'ANCHOR_CURSOR' and E.db.tooltip.anchor ~= 'CURSOR' then
+	if (tt.needRefresh and tt:GetAnchorType() == 'ANCHOR_CURSOR' and E.db.tooltip.anchor ~= 'CURSOR') then
 		tt:SetBackdropColor(unpack(E["media"].backdropfadecolor))
 		tt:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 		tt.needRefresh = nil
@@ -626,7 +626,6 @@ function TT:Initialize()
 			self:Show()
 		end
 	end)
-	
 	
 	BNToastFrame:Point('TOPRIGHT', MMHolder, 'BOTTOMRIGHT', 0, -10);
 	E:CreateMover(BNToastFrame, 'BNETMover', 'BNet Frame')

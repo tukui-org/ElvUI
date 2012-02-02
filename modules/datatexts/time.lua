@@ -14,6 +14,7 @@ local lockoutColorExtended, lockoutColorNormal = { r=0.3,g=1,b=0.3 }, { r=.8,g=.
 local difficultyInfo = { "N", "N", "H", "H" }
 local lockoutFormatString = { "%dd %02dh %02dm", "%dd %dh %02dm", "%02dh %02dm", "%dh %02dm", "%dh %02dm", "%dm" }
 local curHr, curMin, curAmPm
+local enteredFrame = false;
 
 local Update, lastPanel; -- UpValue
 local function ValueColorUpdate(hex, r, g, b)
@@ -108,44 +109,18 @@ local function formatResetTime(sec)
 	end
 end
 
-local int = 1
-function Update(self, t)
-	int = int - t
-	if int > 0 then return end
-	
-	local Hr, Min, AmPm = CalculateTimeValues(false)
-	if GameTimeFrame.flashInvite then
-		--E.Flash(TimeDataText, 0.53)
-	else
-		--E.StopFlash(TimeDataText)
-	end
-	
-	-- no update quick exit
-	if (Hr == curHr and Min == curMin and AmPm == curAmPm) and not (int < -15000) then
-		int = 2
-		return
-	end
-	
-	curHr = Hr
-	curMin = Min
-	curAmPm = AmPm
-		
-	if AmPm == -1 then
-		self.text:SetFormattedText(europeDisplayFormat, Hr, Min)
-	else
-		self.text:SetFormattedText(ukDisplayFormat, Hr, Min, APM[AmPm])
-	end
-	lastPanel = self
-	int = 2
-end
-
 local function Click()
 	GameTimeFrame:Click();
 end
 
+local function OnLeave(self)
+	GameTooltip:Hide();
+	enteredFrame = false;
+end
+
 local function OnEnter(self)
 	DT:SetupTooltip(self)
-
+	enteredFrame = true;
 	GameTooltip:AddLine(VOICE_CHAT_BATTLEGROUND);
 	local localizedName, isActive, canQueue, startTime, canEnter
 	for i = 1, GetNumWorldPVPAreas() do
@@ -196,8 +171,45 @@ local function OnEnter(self)
 	GameTooltip:Show()
 end
 
+local int = 1
+function Update(self, t)
+	int = int - t
+	
+	if enteredFrame then
+		OnEnter(self)
+	end
+	
+	if GameTimeFrame.flashInvite then
+		E:Flash(self, 0.53)
+	else
+		E:StopFlash(self)
+	end
+	
+	if int > 0 then return end
+	
+	local Hr, Min, AmPm = CalculateTimeValues(false)
+
+	-- no update quick exit
+	if (Hr == curHr and Min == curMin and AmPm == curAmPm) and not (int < -15000) then
+		int = 2
+		return
+	end
+	
+	curHr = Hr
+	curMin = Min
+	curAmPm = AmPm
+		
+	if AmPm == -1 then
+		self.text:SetFormattedText(europeDisplayFormat, Hr, Min)
+	else
+		self.text:SetFormattedText(ukDisplayFormat, Hr, Min, APM[AmPm])
+	end
+	lastPanel = self
+	int = 2
+end
+
 --[[
-	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc)
+	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc)
 	
 	name - name of the datatext (required)
 	events - must be a table with string values of event names to register 
@@ -205,5 +217,6 @@ end
 	updateFunc - onUpdate script target function
 	click - function to fire when clicking the datatext
 	onEnterFunc - function to fire OnEnter
+	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 ]]
-DT:RegisterDatatext('Time', nil, nil, Update, Click, OnEnter)
+DT:RegisterDatatext('Time', nil, nil, Update, Click, OnEnter, OnLeave)

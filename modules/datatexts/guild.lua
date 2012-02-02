@@ -262,7 +262,7 @@ end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
 --[[
-	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc)
+	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc)
 	
 	name - name of the datatext (required)
 	events - must be a table with string values of event names to register 
@@ -270,6 +270,7 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	updateFunc - onUpdate script target function
 	click - function to fire when clicking the datatext
 	onEnterFunc - function to fire OnEnter
+	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 ]]
 
 DT:RegisterDatatext('Guild', {'PLAYER_ENTERING_WORLD', "GUILD_ROSTER_SHOW", "GUILD_ROSTER_UPDATE", "GUILD_XP_UPDATE", "PLAYER_GUILD_UPDATE", "GUILD_MOTD", "CHAT_MSG_SYSTEM"}, OnEvent, nil, Click, OnEnter)

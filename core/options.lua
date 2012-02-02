@@ -88,9 +88,15 @@ E.Options.args.core = {
 						['TOP_SCREEN'] = L['Top Screen'],
 						['MINIMAP_BOTTOM'] = L["Below Minimap"],
 					},
+				},				
+				autoAcceptInvite = {
+					order = 4,
+					name = L['Accept Invites'],
+					desc = L['Automatically accept invites from guild/friends.'],
+					type = 'toggle',
 				},
 				bags = {
-					order = 4,
+					order = 5,
 					type = "toggle",
 					name = L['Bags'],
 					desc = L['Enable\Disable the all-in-one bag.'],
@@ -98,7 +104,7 @@ E.Options.args.core = {
 					set = function(info, value) E.db.core.bags = value; StaticPopup_Show("CONFIG_RL") end
 				},
 				loot = {
-					order = 5,
+					order = 6,
 					type = "toggle",
 					name = L['Loot'],
 					desc = L['Enable\Disable the loot frame.'],
@@ -106,7 +112,7 @@ E.Options.args.core = {
 					set = function(info, value) E.db.core.loot = value; StaticPopup_Show("CONFIG_RL") end
 				},
 				lootRoll = {
-					order = 6,
+					order = 7,
 					type = "toggle",
 					name = L['Loot Roll'],
 					desc = L['Enable\Disable the loot roll frame.'],
@@ -114,14 +120,14 @@ E.Options.args.core = {
 					set = function(info, value) E.db.core.lootRoll = value; StaticPopup_Show("CONFIG_RL") end
 				},
 				autoscale = {
-					order = 7,
+					order = 8,
 					name = L["Auto Scale"],
 					desc = L["Automatically scale the User Interface based on your screen resolution"],
 					type = "toggle",	
 					set = function(info, value) E.db.core[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end
 				},
 				uiscale = {
-					order = 8,
+					order = 9,
 					name = L["Scale"],
 					desc = L["Controls the scaling of the entire User Interface"],
 					disabled = function(info) return E.db["core"].autoscale end,
@@ -131,7 +137,7 @@ E.Options.args.core = {
 					set = function(info, value) E.db.core[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end
 				},		
 				mapTransparency = {
-					order = 9,
+					order = 10,
 					name = L['Map Transparency'],
 					desc = L['Controls what the transparency of the worldmap will be set to when you are moving.'],
 					type = 'range',
@@ -143,7 +149,7 @@ E.Options.args.core = {
 					type = 'range',
 					name = L['Panel Width'],
 					desc = L['PANEL_DESC'],
-					set = function(info, value) E.db.core.panelWidth = value; E:GetModule('Chat'):PositionChat(true); local bags = E:GetModule('Bags'); bags:Layout(); bags:Layout(true); end,
+					set = function(info, value) E.db.core.panelWidth = value; E:GetModule('Chat'):PositionChat(true); local bags = E:GetModule('Bags'); bags:Layout(); bags:Layout(true); E:GetModule('Skins'):SetEmbedRight(E.db.skins.embedRight) end,
 					min = 150, max = 700, step = 1,
 				},
 				panelHeight = {
@@ -151,7 +157,7 @@ E.Options.args.core = {
 					type = 'range',
 					name = L['Panel Height'],
 					desc = L['PANEL_DESC'],
-					set = function(info, value) E.db.core.panelHeight = value; E:GetModule('Chat'):PositionChat(true) end,
+					set = function(info, value) E.db.core.panelHeight = value; E:GetModule('Chat'):PositionChat(true); E:GetModule('Skins'):SetEmbedRight(E.db.skins.embedRight) end,
 					min = 150, max = 600, step = 1,
 				},
 				panelBackdrop = {
