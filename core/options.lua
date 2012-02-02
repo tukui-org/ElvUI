@@ -143,7 +143,7 @@ E.Options.args.core = {
 					type = 'range',
 					name = L['Panel Width'],
 					desc = L['PANEL_DESC'],
-					set = function(info, value) E.db.core.panelWidth = value; E:GetModule('Chat'):PositionChat(true); local bags = E:GetModule('Bags'); bags:Layout(); bags:Layout(true); end,
+					set = function(info, value) E.db.core.panelWidth = value; E:GetModule('Chat'):PositionChat(true); local bags = E:GetModule('Bags'); bags:Layout(); bags:Layout(true); E:GetModule('Skins'):SetEmbedRight(E.db.skins.embedRight) end,
 					min = 150, max = 700, step = 1,
 				},
 				panelHeight = {
@@ -151,7 +151,7 @@ E.Options.args.core = {
 					type = 'range',
 					name = L['Panel Height'],
 					desc = L['PANEL_DESC'],
-					set = function(info, value) E.db.core.panelHeight = value; E:GetModule('Chat'):PositionChat(true) end,
+					set = function(info, value) E.db.core.panelHeight = value; E:GetModule('Chat'):PositionChat(true); E:GetModule('Skins'):SetEmbedRight(E.db.skins.embedRight) end,
 					min = 150, max = 600, step = 1,
 				},
 				panelBackdrop = {
