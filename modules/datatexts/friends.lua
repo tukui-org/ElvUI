@@ -273,7 +273,7 @@ end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
 --[[
-	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc)
+	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc)
 	
 	name - name of the datatext (required)
 	events - must be a table with string values of event names to register 
@@ -281,6 +281,7 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	updateFunc - onUpdate script target function
 	click - function to fire when clicking the datatext
 	onEnterFunc - function to fire OnEnter
+	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 ]]
 
 DT:RegisterDatatext('Friends', {'PLAYER_ENTERING_WORLD', "BN_FRIEND_ACCOUNT_ONLINE", "BN_FRIEND_ACCOUNT_OFFLINE", "BN_FRIEND_INFO_CHANGED", "BN_FRIEND_TOON_ONLINE",

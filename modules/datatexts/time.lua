@@ -197,7 +197,7 @@ local function OnEnter(self)
 end
 
 --[[
-	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc)
+	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc)
 	
 	name - name of the datatext (required)
 	events - must be a table with string values of event names to register 
@@ -205,5 +205,6 @@ end
 	updateFunc - onUpdate script target function
 	click - function to fire when clicking the datatext
 	onEnterFunc - function to fire OnEnter
+	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 ]]
 DT:RegisterDatatext('Time', nil, nil, Update, Click, OnEnter)
