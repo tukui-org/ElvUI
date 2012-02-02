@@ -13,6 +13,7 @@ DF["core"] = {
 	['loginmessage'] = false,
 	["interruptAnnounce"] = "RAID",
 	["autoRepair"] = "GUILD",
+	['autoAcceptInvite'] = false,
 	
 	-- fonts
 	["fontsize"] = 11,
