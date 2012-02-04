@@ -465,11 +465,10 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		local isInspectOpen = (InspectFrame and InspectFrame:IsShown()) or (Examiner and Examiner:IsShown())
 		if ((unit) and (CanInspect(unit)) and (not isInspectOpen)) then
 			NotifyInspect(unit)
-			ClearInspectPlayer(unit)
-			NotifyInspect(unit)
-			local ilvl = TT:GetItemLvL(unit)
-			ClearInspectPlayer(unit)			
 			
+			local ilvl = TT:GetItemLvL(unit)
+			
+			ClearInspectPlayer(unit)
 			
 			if ilvl > 1 then
 				GameTooltip:AddDoubleLine(STAT_AVERAGE_ITEM_LEVEL..":", "|cffFFFFFF"..ilvl.."|r")

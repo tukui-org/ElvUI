@@ -66,7 +66,7 @@ local function LoadSkin()
 		Recount:ShowScrollbarElements("Recount_MainWindow_ScrollBar")
 	else
 		Recount:HideScrollbarElements("Recount_MainWindow_ScrollBar")
-	end
+	end 
 	
 	if Recount.MainWindow then SkinFrame(Recount.MainWindow) end
 	if Recount.ConfigWindow then SkinFrame(Recount.ConfigWindow) end
