@@ -46,7 +46,28 @@ local function LoadSkin()
 		SkinFrame(frame)
 		return frame
 	end
+	
+	Recount.HideScrollbarElements_ = Recount.HideScrollbarElements
+	Recount.ShowScrollbarElements_ = Recount.ShowScrollbarElements
+	
+	function Recount.ShowScrollbarElements(self, name)
+		local scrollbar=getglobal(name.."ScrollBar")
+		scrollbar:Show()
+		Recount.ShowScrollbarElements_(self, name)
+	end
 
+	function Recount.HideScrollbarElements(self, name)
+		local scrollbar=getglobal(name.."ScrollBar")
+		scrollbar:Hide()
+		Recount.HideScrollbarElements_(self, name)
+	end	
+	
+	if Recount.db.profile.MainWindow.ShowScrollbar then
+		Recount:ShowScrollbarElements("Recount_MainWindow_ScrollBar")
+	else
+		Recount:HideScrollbarElements("Recount_MainWindow_ScrollBar")
+	end
+	
 	if Recount.MainWindow then SkinFrame(Recount.MainWindow) end
 	if Recount.ConfigWindow then SkinFrame(Recount.ConfigWindow) end
 	if Recount.GraphWindow then SkinFrame(Recount.GraphWindow) end
