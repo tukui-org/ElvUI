@@ -8,7 +8,6 @@ S.allowBypass = {}
 S.EmbeddableAddons = {
 	['Recount'] = true,
 	['Omen'] = true,
-	['Skada'] = true,
 }
 
 local function SetModifiedBackdrop(self)
