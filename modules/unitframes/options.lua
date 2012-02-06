@@ -693,6 +693,7 @@ E.Options.args.unitframe.args.player = {
 			name = L['Combat Fade'],
 			desc = L['Fade the unitframe when out of combat, not casting, no target exists.'],
 			type = 'toggle',
+			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['player'][ info[#info] ] = value; UF:CreateAndUpdateUF('player'); UF:CreateAndUpdateUF('pet') end,
 		},
 		healPrediction = {
 			order = 8,

@@ -284,6 +284,15 @@ function UF:Update_PetFrame(frame, db)
 		end
 	end	
 	
+	--Combat Fade
+	do
+		if ElvUF_Player.db.combatfade and not frame:IsElementEnabled('CombatFade') then
+			frame:EnableElement('CombatFade')
+		elseif not ElvUF_Player.db.combatfade and frame:IsElementEnabled('CombatFade') then
+			frame:DisableElement('CombatFade')
+		end		
+	end	
+	
 	if not frame.mover then
 		frame:ClearAllPoints()
 		frame:Point('BOTTOM', ElvUF_TargetTarget, 'TOP', 0, 7) --Set to default position
