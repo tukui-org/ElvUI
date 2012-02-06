@@ -14,4 +14,7 @@ function B:MoveWatchFrame()
 	WatchFrame:Height(E.screenheight / 2)
 	
 	E:CreateMover(WatchFrameHolder, 'WatchFrameMover', 'Watch Frame')
+	WatchFrameHolder:SetAllPoints(WatchFrameMover)
+	WatchFrameHolder.ClearAllPoints = E.noop
+	WatchFrameHolder.SetPoint = E.noop
 end
