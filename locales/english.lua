@@ -9,6 +9,7 @@ end
 
 if not L then return; end
 L["24-Hour Time"] = "24-Hour Time"
+L["Accept Invites"] = "Accept Invites"
 L["Achievement Frame"] = "Achievement Frame"
 L["Achievement Popup Frames"] = "Achievement Popup Frames"
 L["ActionBars"] = "ActionBars"
@@ -41,6 +42,7 @@ L["Attach To"] = "Attach To"
 L["Attempt to create URL links inside the chat."] = "Attempt to create URL links inside the chat."
 L["Auction Frame"] = "Auction Frame"
 L["Auras"] = "Auras"
+L["Automatically accept invites from guild/friends."] = "Automatically accept invites from guild/friends."
 L["Automatically repair using the following method when visiting a merchant."] = "Automatically repair using the following method when visiting a merchant."
 L["Automatically scale the User Interface based on your screen resolution"] = "Automatically scale the User Interface based on your screen resolution"
 L["Auto Repair"] = "Auto Repair"
@@ -676,5 +678,3 @@ L["You must purchase a bank slot first!"] = "You must purchase a bank slot first
 L["Your items have been repaired for: "] = "Your items have been repaired for: "
 L["Your items have been repaired using guild bank funds for: "] = "Your items have been repaired using guild bank funds for: "
 L["Your version of ElvUI is out of date. You can download the latest version from www.curse.com"] = "Your version of ElvUI is out of date. You can download the latest version from www.curse.com"
-L['Accept Invites'] = true;
-L['Automatically accept invites from guild/friends.'] = true;
