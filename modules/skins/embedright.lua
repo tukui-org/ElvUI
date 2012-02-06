@@ -9,6 +9,7 @@ S.AddonPoints = {
 }
 
 function S:EmbedSkadaWindow(window, width, barheight, height, point, relativeFrame, relativePoint, ofsx, ofsy)
+	local barheight = 16
 	window.db.barwidth = width
 	window.db.barheight = barheight
 	if window.db.enabletitle then 
