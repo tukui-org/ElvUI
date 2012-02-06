@@ -1,23 +1,37 @@
 local E, L, DF = unpack(select(2, ...)); --Engine
 local S = E:GetModule('Skins')
 
-local AddonPoints = {
+skadaWindows = {}
+S.AddonPoints = {
 	['Recount'] = {},
 	['Omen'] = {},
 	['Skada'] = {},
 }
+
+function S:EmbedSkadaWindow(window, width, barheight, height, point, relativeFrame, relativePoint, ofsx, ofsy)
+	window.db.barwidth = width
+	window.db.barheight = barheight
+	if window.db.enabletitle then 
+		height = height - barheight
+	end
+	window.db.background.height = height
+	window.db.spark = false
+	window.db.barslocked = true
+	window.bargroup:ClearAllPoints()
+	window.bargroup:SetPoint(point, relativeFrame, relativePoint, ofsx, ofsy)
+	
+	Skada.displays["bar"].ApplySettings(Skada.displays["bar"], window)
+end
 
 function S:SaveEmbeddedAddonPoints(addon)
 	if not IsAddOnLoaded(addon) then return; end
 	
 	if addon == 'Recount' then
 		local point, _, anchor, x, y = Recount_MainWindow:GetPoint()
-		AddonPoints[addon] = {point, UIParent, anchor, x, y}
+		S.AddonPoints[addon] = {point, UIParent, anchor, x, y}
 	elseif addon == 'Omen' then
 		local point, _, anchor, x, y = OmenAnchor:GetPoint()
-		AddonPoints[addon] = {point, UIParent, anchor, x, y}
-	elseif addon == 'Skada' then
-
+		S.AddonPoints[addon] = {point, UIParent, anchor, x, y}
 	end	
 end
 
@@ -27,13 +41,13 @@ function S:RemovePrevious(current)
 
 	if lastAddon == 'Recount' then
 		Recount_MainWindow:ClearAllPoints()
-		local point, attachTo, anchor, x, y = unpack(AddonPoints[lastAddon])
+		local point, attachTo, anchor, x, y = unpack(S.AddonPoints[lastAddon])
 		Recount_MainWindow:SetPoint(point, attachTo, anchor, x, y)
 		Recount:LockWindows(false)
 		Recount_MainWindow:SetParent(UIParent)
 	elseif lastAddon == 'Omen' then
 		OmenAnchor:ClearAllPoints()
-		local point, attachTo, anchor, x, y = unpack(AddonPoints[lastAddon])
+		local point, attachTo, anchor, x, y = unpack(S.AddonPoints[lastAddon])
 		OmenAnchor:SetPoint(point, attachTo, anchor, x, y)
 		OmenAnchor:SetParent(UIParent)	
 		OmenAnchor.SetFrameStrata = OmenAnchor.SetFrameStrataOld
@@ -48,8 +62,42 @@ function S:RemovePrevious(current)
 			end			
 		end
 	elseif lastAddon == 'Skada' then
-	
+		if not Skada.CreateWindow_ then
+			Skada.CreateWindow_ = Skada.CreateWindow
+			Skada.DeleteWindow_ = Skada.DeleteWindow
+		end
+		for _, window in pairs(skadaWindows) do
+			window.bargroup:SetParent(UIParent)
+		end		
 	end
+end
+
+
+function S:EmbedSkada()
+	local barSpacing = E:Scale(1)
+	local borderWidth = E:Scale(2)
+	local widthOffset = 4
+	local heightOffset = 33
+	
+	if E.db.core.panelBackdrop == 'SHOWBOTH' or E.db.core.panelBackdrop == 'SHOWRIGHT' then
+		widthOffset = 14
+		heightOffset = 39
+	end
+	
+	for _, window in pairs(skadaWindows) do
+		window.bargroup:SetParent(RightChatPanel)
+	end
+	
+	if #skadaWindows == 1 then
+		self:EmbedSkadaWindow(skadaWindows[1], E.db.core.panelWidth - widthOffset, (E.db.core.panelHeight - (barSpacing * 6)) / 8, E.db.core.panelHeight - heightOffset, "BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", -2, 6)
+	elseif #skadaWindows == 2 then
+		self:EmbedSkadaWindow(skadaWindows[1], ((E.db.core.panelWidth - widthOffset) / 2) - (borderWidth + E.mult) + 1, ((E.db.core.panelHeight - heightOffset) - (barSpacing * 6)) / 8, E.db.core.panelHeight - heightOffset,  "BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", -2, 6)
+		self:EmbedSkadaWindow(skadaWindows[2], ((E.db.core.panelWidth - widthOffset) / 2) - (borderWidth + E.mult), ((E.db.core.panelHeight - heightOffset) - (barSpacing * 6)) / 8, E.db.core.panelHeight - heightOffset,  "BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 2, 6)
+	elseif #skadaWindows > 2 then
+		self:EmbedSkadaWindow(skadaWindows[1], ((E.db.core.panelWidth - widthOffset) / 2) - (borderWidth + E.mult) + 1, ((E.db.core.panelHeight - heightOffset) - (barSpacing * 6)) / 8, E.db.core.panelHeight - heightOffset,  "BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", -2, 6)
+		self:EmbedSkadaWindow(skadaWindows[2], ((E.db.core.panelWidth - widthOffset) / 2) - (borderWidth + E.mult), (((E.db.core.panelHeight - heightOffset)/2) - (barSpacing * 6)) / 4, (E.db.core.panelHeight - heightOffset) / 2 - 3,  "BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 2, 6)
+		self:EmbedSkadaWindow(skadaWindows[3], skadaWindows[2].db.barwidth, (((E.db.core.panelHeight - heightOffset)/2) - (barSpacing * 6)) / 4, (E.db.core.panelHeight - heightOffset) / 2 - 2,  "BOTTOMLEFT", skadaWindows[2].bargroup.backdrop, "TOPLEFT", 2, 3)
+	end	
 end
 
 function S:SetEmbedRight(addon)
@@ -62,8 +110,14 @@ function S:SetEmbedRight(addon)
 		
 		Recount_MainWindow:ClearAllPoints()
 		Recount_MainWindow:SetPoint("BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 0, 4)
-		Recount_MainWindow:SetWidth(E.db.core.panelWidth - 10)
-		Recount_MainWindow:SetHeight(E.db.core.panelHeight - 26)
+
+		if E.db.core.panelBackdrop == 'SHOWBOTH' or E.db.core.panelBackdrop == 'SHOWRIGHT' then
+			Recount_MainWindow:SetWidth(E.db.core.panelWidth - 10)
+			Recount_MainWindow:SetHeight(E.db.core.panelHeight - 26)
+		else
+			Recount_MainWindow:SetWidth(E.db.core.panelWidth)
+			Recount_MainWindow:SetHeight(E.db.core.panelHeight - 20)		
+		end		
 		Recount_MainWindow:SetParent(RightChatPanel)	
 		self.lastAddon = addon
 	elseif addon == 'Omen' then
@@ -148,8 +202,42 @@ function S:SetEmbedRight(addon)
 		
 		self.lastAddon = addon
 	elseif addon == 'Skada' then
+		-- Update pre-existing displays
+		for _, window in ipairs(Skada:GetWindows()) do
+			window:UpdateDisplay()
+			tinsert(skadaWindows, window)
+		end
+	
 		self:RemovePrevious(addon)
+
+		function Skada:CreateWindow(name, db)
+			Skada:CreateWindow_(name, db)
+			
+			table.wipe(skadaWindows)
+			for _, window in ipairs(Skada:GetWindows()) do
+				tinsert(skadaWindows, window)
+			end	
+			
+			if S.db.embedRight == 'Skada' then
+				S:EmbedSkada()
+			end
+		end
 		
+		function Skada:DeleteWindow(name)
+			Skada:DeleteWindow_(name)
+			
+			table.wipe(skadaWindows)
+			skadaWindows = Skada:GetWindows()
+			for _, window in ipairs(Skada:GetWindows()) do
+				tinsert(skadaWindows, window)
+			end	
+			
+			if S.db.embedRight == 'Skada' then
+				S:EmbedSkada()
+			end
+		end
+		
+		self:EmbedSkada()
 		self.lastAddon = addon
 	end
 end
