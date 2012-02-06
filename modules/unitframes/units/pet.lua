@@ -20,6 +20,7 @@ function UF:Construct_PetFrame(frame)
 	frame.Castbar = CreateFrame("StatusBar", nil, frame) -- Dummy Bar
 	
 	frame.HealPrediction = self:Construct_HealComm(frame)
+	frame.CombatFade = true
 end
 
 function UF:Update_PetFrame(frame, db)
