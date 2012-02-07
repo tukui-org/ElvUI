@@ -228,7 +228,6 @@ function S:SetEmbedRight(addon)
 			Skada:DeleteWindow_(name)
 			
 			table.wipe(skadaWindows)
-			skadaWindows = Skada:GetWindows()
 			for _, window in ipairs(Skada:GetWindows()) do
 				tinsert(skadaWindows, window)
 			end	

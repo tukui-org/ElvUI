@@ -106,8 +106,9 @@ function AB:UpdateButtonSettings()
 			
 			if E.db.core.stickyFrames then
 				local offset = 2
-				if self.db[mover.name].buttonspacing then
-					offset = self.db[mover.name].buttonspacing / 2
+				local name = mover.name
+				if name and self.db[name] and self.db[name].buttonspacing then
+					offset = self.db[name].buttonspacing / 2
 				end
 				if mover.padding then offset = mover.padding end
 				Sticky:StartMoving(mover, E['snapBars'], offset, offset, offset, offset)
