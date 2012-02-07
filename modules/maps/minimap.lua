@@ -281,4 +281,13 @@ function M:LoadMinimap()
 	UIParent:HookScript('OnShow', function()
 		FarmModeMap:Hide()
 	end)
+	
+	
+	if IsAddOnLoaded('Routes') then
+		LibStub("AceAddon-3.0"):GetAddon('Routes'):ReparentMinimap(FarmModeMap)
+	end
+
+	if IsAddOnLoaded('GatherMate2') then
+		LibStub('AceAddon-3.0'):GetAddon('GatherMate2'):GetModule('Display'):ReparentMinimapPins(FarmModeMap)
+	end
 end
