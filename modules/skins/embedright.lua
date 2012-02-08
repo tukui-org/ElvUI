@@ -78,6 +78,7 @@ function S:EmbedSkada()
 	local borderWidth = E:Scale(2)
 	local widthOffset = 4
 	local heightOffset = 33
+	local numBars = 8
 	
 	if E.db.core.panelBackdrop == 'SHOWBOTH' or E.db.core.panelBackdrop == 'SHOWRIGHT' then
 		widthOffset = 14
@@ -89,14 +90,14 @@ function S:EmbedSkada()
 	end
 	
 	if #skadaWindows == 1 then
-		self:EmbedSkadaWindow(skadaWindows[1], E.db.core.panelWidth - widthOffset, (E.db.core.panelHeight - (barSpacing * 6)) / 8, E.db.core.panelHeight - heightOffset, "BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", -2, 6)
+		self:EmbedSkadaWindow(skadaWindows[1], E.db.core.panelWidth - widthOffset, (E.db.core.panelHeight - ((barSpacing * skadaWindows[1].db.barheight) + barSpacing * (numBars - 1))) / numBars, E.db.core.panelHeight - heightOffset, "BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", -2, 6)
 	elseif #skadaWindows == 2 then
-		self:EmbedSkadaWindow(skadaWindows[1], ((E.db.core.panelWidth - widthOffset) / 2) - (borderWidth + E.mult) + 1, ((E.db.core.panelHeight - heightOffset) - (barSpacing * 6)) / 8, E.db.core.panelHeight - heightOffset,  "BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", -2, 6)
-		self:EmbedSkadaWindow(skadaWindows[2], ((E.db.core.panelWidth - widthOffset) / 2) - (borderWidth + E.mult), ((E.db.core.panelHeight - heightOffset) - (barSpacing * 6)) / 8, E.db.core.panelHeight - heightOffset,  "BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 2, 6)
+		self:EmbedSkadaWindow(skadaWindows[1], ((E.db.core.panelWidth - widthOffset) / 2) - (borderWidth + E.mult) + 1, (E.db.core.panelHeight - ((barSpacing * skadaWindows[1].db.barheight) + barSpacing * (numBars - 1))) / numBars, E.db.core.panelHeight - heightOffset,  "BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", -2, 6)
+		self:EmbedSkadaWindow(skadaWindows[2], ((E.db.core.panelWidth - widthOffset) / 2) - (borderWidth + E.mult), (E.db.core.panelHeight - ((barSpacing * skadaWindows[2].db.barheight) + barSpacing * (numBars - 1))) / numBars, E.db.core.panelHeight - heightOffset,  "BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 2, 6)
 	elseif #skadaWindows > 2 then
-		self:EmbedSkadaWindow(skadaWindows[1], ((E.db.core.panelWidth - widthOffset) / 2) - (borderWidth + E.mult) + 1, ((E.db.core.panelHeight - heightOffset) - (barSpacing * 6)) / 8, E.db.core.panelHeight - heightOffset,  "BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", -2, 6)
-		self:EmbedSkadaWindow(skadaWindows[2], ((E.db.core.panelWidth - widthOffset) / 2) - (borderWidth + E.mult), (((E.db.core.panelHeight - heightOffset)/2) - (barSpacing * 6)) / 4, (E.db.core.panelHeight - heightOffset) / 2 - 3,  "BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 2, 6)
-		self:EmbedSkadaWindow(skadaWindows[3], skadaWindows[2].db.barwidth, (((E.db.core.panelHeight - heightOffset)/2) - (barSpacing * 6)) / 4, (E.db.core.panelHeight - heightOffset) / 2 - 2,  "BOTTOMLEFT", skadaWindows[2].bargroup.backdrop, "TOPLEFT", 2, 3)
+		self:EmbedSkadaWindow(skadaWindows[1], ((E.db.core.panelWidth - widthOffset) / 2) - (borderWidth + E.mult) + 1, (E.db.core.panelHeight - ((barSpacing * skadaWindows[1].db.barheight) + barSpacing * (numBars - 1))) / numBars, E.db.core.panelHeight - heightOffset,  "BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", -2, 6)
+		self:EmbedSkadaWindow(skadaWindows[2], ((E.db.core.panelWidth - widthOffset) / 2) - (borderWidth + E.mult), (E.db.core.panelHeight - ((barSpacing * skadaWindows[2].db.barheight) + barSpacing * (numBars - 1))) / numBars, (E.db.core.panelHeight - heightOffset) / 2 - 3,  "BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 2, 6)
+		self:EmbedSkadaWindow(skadaWindows[3], skadaWindows[2].db.barwidth, (E.db.core.panelHeight - ((barSpacing * skadaWindows[3].db.barheight) + barSpacing * (numBars - 1))) / numBars, (E.db.core.panelHeight - heightOffset) / 2 - 2,  "BOTTOMLEFT", skadaWindows[2].bargroup.backdrop, "TOPLEFT", 2, 3)
 	end	
 end
 
@@ -203,6 +204,7 @@ function S:SetEmbedRight(addon)
 		self.lastAddon = addon
 	elseif addon == 'Skada' then
 		-- Update pre-existing displays
+		table.wipe(skadaWindows)
 		for _, window in ipairs(Skada:GetWindows()) do
 			window:UpdateDisplay()
 			tinsert(skadaWindows, window)
