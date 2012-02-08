@@ -96,6 +96,8 @@ local function LoadSkin()
 				button.text:SetPoint('CENTER')
 				button:ClearAllPoints()
 				button:SetPoint("RIGHT", PB, "LEFT", -2, 0)
+			end
+			if button:IsShown() then
 				PB = button
 			end
 		end
