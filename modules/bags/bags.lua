@@ -606,9 +606,11 @@ function B:InitBags()
 	f.vendorButton.backdropTexture:SetVertexColor(unpack(E.media.bordercolor))
 	f.vendorButton.backdropTexture.SetVertexColor = E.noop
 	f.vendorButton.ttText = L['Vendor Grays']
+	f.vendorButton.ttText2 = L['Hold Shift:']
+	f.vendorButton.ttText2desc = L['Delete Grays']	
 	f.vendorButton:SetScript("OnEnter", Tooltip_Show)
 	f.vendorButton:SetScript("OnLeave", Tooltip_Hide)
-	f.vendorButton:SetScript('OnClick', function() B:VendorGrays() end)
+	f.vendorButton:SetScript('OnClick', function() B:VendorGrayCheck() end)
 
 	--Bags Button
 	f.bagsButton = CreateFrame('Button', nil, f)
@@ -817,32 +819,56 @@ function B:ToggleBags()
 	ToggleFrame(bagFrame)
 end
 
-function B:VendorGrays()
-	if not MerchantFrame or not MerchantFrame:IsShown() then
+function B:VendorGrays(delete)
+	if (not MerchantFrame or not MerchantFrame:IsShown()) and not delete then
 		E:Print(L['You must be at a vendor.'])
 		return
 	end
 
 	local c = 0
+	local count = 0
 	for b=0,4 do
 		for s=1,GetContainerNumSlots(b) do
 			local l = GetContainerItemLink(b, s)
 			if l then
 				local p = select(11, GetItemInfo(l))*select(2, GetContainerItemInfo(b, s))
-				if select(3, GetItemInfo(l))==0 and p>0 then
-					UseContainerItem(b, s)
-					PickupMerchantItem()
-					c = c+p
+				
+				if delete then
+					if string.find(l,"ff9d9d9d") then
+						PickupContainerItem(b, s)
+						DeleteCursorItem()
+						c = c+p
+						count = count + 1
+					end
+				else
+					if select(3, GetItemInfo(l))==0 and p>0 then
+						UseContainerItem(b, s)
+						PickupMerchantItem()
+						c = c+p
+					end
 				end
 			end
 		end
 	end
 
-	if c>0 then
+	if c>0 and not delete then
 		local g, s, c = math.floor(c/10000) or 0, math.floor((c%10000)/100) or 0, c%100
 		E:Print(L['Vendored gray items for:'].." |cffffffff"..g..L.goldabbrev.." |cffffffff"..s..L.silverabbrev.." |cffffffff"..c..L.copperabbrev..".")
-	else
+	elseif not delete then
 		E:Print(L['No gray items to sell.'])
+	elseif count > 0 then
+		local g, s, c = math.floor(c/10000) or 0, math.floor((c%10000)/100) or 0, c%100
+		E:Print(string.format(L['Deleted %d gray items. Total Worth: %s'], count, " |cffffffff"..g..L.goldabbrev.." |cffffffff"..s..L.silverabbrev.." |cffffffff"..c..L.copperabbrev.."."))
+	else
+		E:Print(L['No gray items to delete.'])
+	end
+end
+
+function B:VendorGrayCheck()
+	if IsShiftKeyDown() then
+		StaticPopup_Show('DELETE_GRAYS')
+	else
+		self:VendorGrays()
 	end
 end
 
