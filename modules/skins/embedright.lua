@@ -204,6 +204,7 @@ function S:SetEmbedRight(addon)
 		self.lastAddon = addon
 	elseif addon == 'Skada' then
 		-- Update pre-existing displays
+		table.wipe(skadaWindows)
 		for _, window in ipairs(Skada:GetWindows()) do
 			window:UpdateDisplay()
 			tinsert(skadaWindows, window)
