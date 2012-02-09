@@ -20,6 +20,16 @@ StaticPopupDialogs["KEYBIND_MODE"] = {
 	hideOnEscape = false
 }
 
+StaticPopupDialogs["DELETE_GRAYS"] = {
+	text = L["Are you sure you want to delete all your gray items?"],
+	button1 = YES,
+	button2 = NO,
+	OnAccept = function() local B = E:GetModule('Bags'); B:VendorGrays(true) end,
+	timeout = 0,
+	whileDead = 1,
+	hideOnEscape = false
+}
+
 StaticPopupDialogs["BUY_BANK_SLOT"] = {
 	text = CONFIRM_BUY_BANK_SLOT,
 	button1 = YES,

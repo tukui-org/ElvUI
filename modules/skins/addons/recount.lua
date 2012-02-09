@@ -82,26 +82,31 @@ local function LoadSkin()
 	for i = 1, getn(MWbuttons) do
 		local button = MWbuttons[i]
 		if button then
-			button:SetNormalTexture("")
-			button:SetPushedTexture("")	
-			button:SetHighlightTexture("")
-			button:SetSize(16, 16)
-			button.text = button:CreateFontString(nil, 'OVERLAY')
-			button.text:FontTemplate()
-			button.text:SetPoint('CENTER')
-			button:ClearAllPoints()
-			button:SetPoint("RIGHT", PB, "LEFT", -2, 0)
-			PB = button
+			if i > 2 then
+				button:GetNormalTexture():SetDesaturated(true)
+				button:GetHighlightTexture():SetDesaturated(true)
+				button:Size(16)
+			else
+				button:SetNormalTexture("")
+				button:SetPushedTexture("")	
+				button:SetHighlightTexture("")
+				button:SetSize(16, 16)
+				button.text = button:CreateFontString(nil, 'OVERLAY')
+				button.text:FontTemplate()
+				button.text:SetPoint('CENTER')
+				button:ClearAllPoints()
+				button:SetPoint("RIGHT", PB, "LEFT", -2, 0)
+			end
+			if button:IsShown() then
+				PB = button
+			end
 		end
 	end
 
 	-- set our custom text inside main window buttons
 	Recount.MainWindow.RightButton.text:SetText(">")
 	Recount.MainWindow.LeftButton.text:SetText("<")
-	Recount.MainWindow.ResetButton.text:SetText("R")
-	Recount.MainWindow.FileButton.text:SetText("F")
-	Recount.MainWindow.ConfigButton.text:SetText("C")
-	Recount.MainWindow.ReportButton.text:SetText("S")	
+
 	
 	if Recount.MainWindow then SkinFrame(Recount.MainWindow) end
 	if Recount.ConfigWindow then SkinFrame(Recount.ConfigWindow) end
