@@ -147,6 +147,21 @@ function M:AutoInvite(event, leaderName)
 	end
 end
 
+function M:ForceCVars()
+	if not GetCVarBool('lockActionBars') and E.db.actionbar.enable then
+		SetCVar('lockActionBars', 1)
+	end
+end
+
+function M:PLAYER_ENTERING_WORLD()
+	self:ForceCVars()
+end
+
+function M:Kill()
+	--Kill Frames
+	HelpOpenTicketButtonTutorial:Kill()
+end
+
 function M:Initialize()
 	self:LoadRaidMarker()
 	self:LoadExpRepBar()
@@ -162,11 +177,11 @@ function M:Initialize()
 	self:RegisterEvent('CHAT_MSG_BG_SYSTEM_NEUTRAL', 'PVPMessageEnhancement')
 	self:RegisterEvent('PARTY_INVITE_REQUEST', 'AutoInvite')
 	self:RegisterEvent('PARTY_MEMBERS_CHANGED', 'AutoInvite')
+	self:RegisterEvent('CVAR_UPDATE', 'ForceCVars')
+	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	
 	self.MovingTimer = self:ScheduleRepeatingTimer("CheckMovement", 0.1)
-	
-	--Kill Frames
-	HelpOpenTicketButtonTutorial:Kill()
+	self:Kill()
 end
 
 E:RegisterModule(M:GetName())
