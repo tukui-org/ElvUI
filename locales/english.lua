@@ -8,6 +8,9 @@ else
 end
 
 if not L then return; end
+L["ChatTab_Datatext_Panel1"] = "Right Chat Tab Right"
+L["ChatTab_Datatext_Panel2"] = "Right Chat Tab Middle"
+L["Bottom_Datatext_Panel"] = "Bottom Datatext Panel"
 L["24-Hour Time"] = "24-Hour Time"
 L["Accept Invites"] = "Accept Invites"
 L["Achievement Frame"] = "Achievement Frame"
