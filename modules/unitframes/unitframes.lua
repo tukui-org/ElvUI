@@ -87,8 +87,17 @@ function UF:GetAuraOffset(p1, p2)
 	return E:Scale(x), E:Scale(y)
 end
 
-function UF:GetAuraAnchorFrame(frame, attachTo, otherAuraAnchor)
-	if attachTo == otherAuraAnchor or attachTo == 'FRAME' then
+local opposites = {
+	['DEBUFFS'] = 'BUFFS',
+	['BUFFS'] = 'DEBUFFS'
+}
+
+function UF:GetAuraAnchorFrame(frame, attachTo, isConflict)
+	if isConflict then
+		E:Print(string.format(L['%s frame(s) has a conflicting anchor point, please change either the buff or debuff anchor point so they are not attached to each other. Forcing the debuffs to be attached to the main unitframe until fixed.'], E:StringTitle(frame:GetName())))
+	end
+	
+	if isConflict or attachTo == 'FRAME' then
 		return frame
 	elseif attachTo == 'BUFFS' then
 		return frame.Buffs

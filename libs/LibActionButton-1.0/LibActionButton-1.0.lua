@@ -493,6 +493,25 @@ local function PickupAny(kind, target, detail, ...)
 	end
 end
 
+function Generic:OnUpdate()
+	if not GetCVarBool('lockActionBars') then return; end
+	
+	local isDragKeyDown = IsShiftKeyDown()
+	if GetModifiedClick("PICKUPACTION") == 'ALT' then
+		isDragKeyDown = IsAltKeyDown()
+	elseif GetModifiedClick("PICKUPACTION") == 'CTRL' then
+		isDragKeyDown = IsControlKeyDown()
+	end
+	
+	if isDragKeyDown and (self.clickState == 'AnyDown' or self.clickState == nil) then
+		self.clickState = 'AnyUp'
+		self:RegisterForClicks(self.clickState)
+	elseif self.clickState == 'AnyUp' and not isDragKeyDown then
+		self.clickState = 'AnyDown'
+		self:RegisterForClicks(self.clickState)
+	end
+end
+
 function Generic:OnEnter()
 	if self.config.tooltip ~= "disabled" and (self.config.tooltip ~= "nocombat" or not InCombatLockdown()) then
 		UpdateTooltip(self)
@@ -500,10 +519,15 @@ function Generic:OnEnter()
 	if KeyBound then
 		KeyBound:Set(self)
 	end
+	
+	if self.config.clickOnDown then
+		self:SetScript('OnUpdate', Generic.OnUpdate)
+	end
 end
 
 function Generic:OnLeave()
 	GameTooltip:Hide()
+	self:SetScript('OnUpdate', nil)
 end
 
 -- Insecure drag handler to allow clicking on the button with an action on the cursor
@@ -751,7 +775,7 @@ function OnUpdate(_, elapsed)
 					button.flash:Show()
 				end
 			end
-
+			
 			-- Range
 			if rangeTimer <= 0 then
 				local inRange = button:IsInRange()
