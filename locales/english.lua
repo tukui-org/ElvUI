@@ -681,3 +681,4 @@ L["Your version of ElvUI is out of date. You can download the latest version fro
 L['Delete Grays'] = true;
 L['Deleted %d gray items. Total Worth: %s'] = true;
 L['%s frame(s) has a conflicting anchor point, please change either the buff or debuff anchor point so they are not attached to each other. Forcing the debuffs to be attached to the main unitframe until fixed.'] = true;
+L["Are you sure you want to delete all your gray items?"] = true;
