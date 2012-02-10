@@ -7,6 +7,7 @@ local function LoadSkin()
 	S:HandleScrollBar(CharacterStatsPaneScrollBar)
 	S:HandleScrollBar(ReputationListScrollFrameScrollBar)
 	S:HandleScrollBar(TokenFrameContainerScrollBar)
+	S:HandleScrollBar(GearManagerDialogPopupScrollFrameScrollBar)
 	
 	local slots = {
 		"HeadSlot",
