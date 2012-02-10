@@ -345,6 +345,31 @@ local sizes = {
 	":14",
 }
 
+local locale = GetLocale()
+function CH:CHAT_MSG_CHANNEL(...)
+	CH.FindURL(self, ...)
+	
+	if locale == 'enUS' or locale == 'enGB' then
+		return CH.SpamFilter(self, ...)
+	end
+end
+
+function CH:CHAT_MSG_YELL(...)
+	CH.FindURL(self, ...)
+
+	if locale == 'enUS' or locale == 'enGB' then
+		return CH.SpamFilter(self, ...)
+	end
+end
+
+function CH:CHAT_MSG_SAY(...)
+	CH.FindURL(self, ...)
+
+	if locale == 'enUS' or locale == 'enGB' then
+		return CH.SpamFilter(self, ...)
+	end
+end
+
 function CH:Initialize()
 	self.db = E.db.chat
 	if self.db.enable ~= true then return end
@@ -359,8 +384,9 @@ function CH:Initialize()
 	
 	self:SetupChat()
 
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", CH.FindURL)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_YELL", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", CH.CHAT_MSG_CHANNEL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_YELL", CH.CHAT_MSG_YELL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_SAY", CH.CHAT_MSG_SAY)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_GUILD", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_OFFICER", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY", CH.FindURL)
@@ -369,7 +395,6 @@ function CH:Initialize()
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_LEADER", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BATTLEGROUND", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BATTLEGROUND_LEADER", CH.FindURL)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_SAY", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", CH.FindURL)
