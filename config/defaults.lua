@@ -205,8 +205,10 @@ DF['datatexts'] = {
 			},
 			['LeftMiniPanel'] = 'Time',
 			['RightMiniPanel'] = 'System',
-			['ChatTab_Datatext_Panel1'] = 'Bags',
-			['ChatTab_Datatext_Panel2'] = 'Call to Arms',
+			['ChatTab_Datatext_Panel'] = {
+				['left'] = 'Call to Arms',
+				['middle'] = 'Bags',
+			},
 			['Bottom_Datatext_Panel'] = {
 				['left'] = 'Friends',
 				['middle'] = 'Spec Switch',
@@ -221,13 +223,15 @@ DF['datatexts'] = {
 			},
 			['RightChatDataPanel'] = {
 				['left'] = 'HPS',
-				['middle'] = 'Durability',	
+				['middle'] = 'Durability',
 				['right'] = 'Gold',
 			},
 			['LeftMiniPanel'] = 'Time',
 			['RightMiniPanel'] = 'System',
-			['ChatTab_Datatext_Panel1'] = 'Bags',
-			['ChatTab_Datatext_Panel2'] = 'Call to Arms',
+			['ChatTab_Datatext_Panel'] = {
+				['left'] = 'Call to Arms',
+				['middle'] = 'Bags',
+			},
 			['Bottom_Datatext_Panel'] = {
 				['left'] = 'Friends',
 				['middle'] = 'Spec Switch',

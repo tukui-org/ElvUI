@@ -245,21 +245,13 @@ function LO:CreateMinimapPanels()
 end
 
 function LO:CreateExtraDataBarPanels()
-	local chattab1 = CreateFrame('Frame', 'ChatTab_Datatext_Panel1', E.UIParent)
+	local chattab1 = CreateFrame('Frame', 'ChatTab_Datatext_Panel', E.UIParent)
 	chattab1:SetScript('OnShow', function(self)
-		chattab1:Size((RightChatTab:GetWidth() / 3), PANEL_HEIGHT)
 		chattab1:Point("TOPRIGHT", RightChatTab, "TOPRIGHT", -16, 0)
+		chattab1:Point("BOTTOMLEFT", RightChatTab, "BOTTOMLEFT", (E.db.core.panelWidth / 3), 0)
 	end)
 	chattab1:Hide()
-	E:GetModule('DataTexts'):RegisterPanel(chattab1, 1, 'ANCHOR_BOTTOM', 0, -4)
-	
-	local chattab2 = CreateFrame('Frame', 'ChatTab_Datatext_Panel2', E.UIParent)
-	chattab2:SetScript('OnShow', function(self)
-		chattab2:Size((RightChatTab:GetWidth() / 3), PANEL_HEIGHT)
-		chattab2:Point("RIGHT", chattab1, "LEFT")
-	end)
-	chattab2:Hide()
-	E:GetModule('DataTexts'):RegisterPanel(chattab2, 1, 'ANCHOR_BOTTOM', 0, -4)
+	E:GetModule('DataTexts'):RegisterPanel(chattab1, 2, 'ANCHOR_BOTTOM', 0, -4)
 	
 	local bottom_bar = CreateFrame('Frame', 'Bottom_Datatext_Panel', E.UIParent)
 	bottom_bar:SetTemplate('Default', true)
@@ -274,19 +266,15 @@ function LO:CreateExtraDataBarPanels()
 	
 	RightChatTab:HookScript("OnHide", function() 
 		chattab1:Hide() 
-		chattab2:Hide() 
 	end)
 	RightChatTab:HookScript("OnShow", function() 
 		chattab1:Show() 
 		chattab1:SetAlpha(RightChatTab:GetAlpha()) 
-		chattab2:Show() 
-		chattab2:SetAlpha(RightChatTab:GetAlpha()) 
 	end)
 end
 
 function ExtraDataBarSetup()
-	ChatTab_Datatext_Panel1:Show()
-	ChatTab_Datatext_Panel2:Show()
+	ChatTab_Datatext_Panel:Show()
 	Bottom_Datatext_Panel:Show()
 end
 
