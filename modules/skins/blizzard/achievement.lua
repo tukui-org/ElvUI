@@ -109,7 +109,7 @@ local function LoadSkin()
 		_G[highlight:GetName().."Middle"]:SetAllPoints(frame)
 	end
 	
-	AchievementFrame:SetScript("OnShow", function(self)
+	AchievementFrame:HookScript("OnShow", function(self)
 		if self.containerSkined then return; end
 		for i=1, 20 do
 			local frame = _G["AchievementFrameCategoriesContainerButton"..i]
