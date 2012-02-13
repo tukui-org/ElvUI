@@ -36,7 +36,10 @@ local function LoadSkin()
 		for x=1, NUM_SLOTS_PER_GUILDBANK_GROUP do
 			local button = _G["GuildBankColumn"..i.."Button"..x]
 			local icon = _G["GuildBankColumn"..i.."Button"..x.."IconTexture"]
-			button:StripTextures()
+			local texture = _G["GuildBankColumn"..i.."Button"..x.."NormalTexture"]
+			if texture then
+				texture:Hide()
+			end
 			button:StyleButton()
 			button:SetTemplate("Default", true)
 			
@@ -77,6 +80,11 @@ local function LoadSkin()
 	GuildBankPopupNameLeft:Kill()
 	GuildBankPopupNameRight:Kill()
 	GuildBankPopupNameMiddle:Kill()
+		
+	GuildItemSearchBox:StripTextures()
+	GuildItemSearchBox:CreateBackdrop("Overlay")
+	GuildItemSearchBox.backdrop:Point("TOPLEFT", 10, -1)
+	GuildItemSearchBox.backdrop:Point("BOTTOMRIGHT", 4, 1)	
 	
 	for i=1, 16 do
 		local button = _G["GuildBankPopupButton"..i]
