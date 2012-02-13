@@ -317,12 +317,12 @@ function E:SendMessage()
 	local numParty, numRaid = GetNumPartyMembers(), GetNumRaidMembers();
 	local inInstance, instanceType = IsInInstance()
 	if inInstance and instanceType == 'pvp' or instanceType == 'arena' then
-		SendAddonMessage("ElvUIVersionCheck", E.version, "BATTLEGROUND")	
+		SendAddonMessage("ElvUIVC", E.version, "BATTLEGROUND")	
 	else
 		if numRaid > 0 then
-			SendAddonMessage("ElvUIVersionCheck", E.version, "RAID")
+			SendAddonMessage("ElvUIVC", E.version, "RAID")
 		elseif numParty > 0 then
-			SendAddonMessage("ElvUIVersionCheck", E.version, "PARTY")
+			SendAddonMessage("ElvUIVC", E.version, "PARTY")
 		end
 	end
 	
@@ -331,7 +331,7 @@ end
 
 function E:SendRecieve(event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
-		if (prefix ~= "ElvUIVersionCheck" or sender == E.myname) then return end
+		if (prefix ~= "ElvUIVC" or sender == E.myname) then return end
 		--print(sender)
 		if tonumber(message) > tonumber(E.version) then
 			E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.curse.com"])
@@ -371,7 +371,7 @@ function E:Initialize()
 		self:Install()
 	end
 	
-	RegisterAddonMessagePrefix('ElvUIVersionCheck')
+	RegisterAddonMessagePrefix('ElvUIVC')
 	
 	self:UpdateMedia()
 	self:UpdateFrameTemplates()
