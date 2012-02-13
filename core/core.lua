@@ -313,25 +313,33 @@ function E:IsFoolsDay()
 	end
 end
 
+function E:SendMessage()
+	local numParty, numRaid = GetNumPartyMembers(), GetNumRaidMembers();
+	local inInstance, instanceType = IsInInstance()
+	if inInstance and instanceType == 'pvp' or instanceType == 'arena' then
+		SendAddonMessage("ElvUI", E.version, "BATTLEGROUND")	
+	else
+		if numRaid > 0 then
+			SendAddonMessage("ElvUI", E.version, "RAID")
+		elseif numParty > 0 then
+			SendAddonMessage("ElvUI", E.version, "PARTY")
+		end
+	end
+	
+	self:CancelAllTimers()
+end
+
 function E:SendRecieve(event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
-		if (prefix ~= "ElvUI") then return end
+		if (prefix ~= "ElvUI" or sender == E.myname) then return end
 		if tonumber(message) > tonumber(E.version) then
 			E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.curse.com"])
 			self:UnregisterEvent("CHAT_MSG_ADDON")
+			self:UnregisterEvent("PARTY_MEMBERS_CHANGED")
+			self:UnregisterEvent("RAID_ROSTER_UPDATE")
 		end
 	else
-		local numParty, numRaid = GetNumPartyMembers(), GetNumRaidMembers();
-		local inInstance, instanceType = IsInInstance()
-		if inInstance and instanceType == 'pvp' or instanceType == 'arena' then
-			SendAddonMessage("ElvUI", E.version, "BATTLEGROUND")	
-		else
-			if numRaid > 0 then
-				SendAddonMessage("ElvUI", E.version, "RAID")
-			elseif numParty > 0 then
-				SendAddonMessage("ElvUI", E.version, "PARTY")
-			end
-		end
+		E:ScheduleTimer('SendMessage', 12)
 	end
 end
 
@@ -372,7 +380,6 @@ function E:Initialize()
 	self:RegisterEvent("CHARACTER_POINTS_CHANGED", "CheckRole");
 	self:RegisterEvent("UNIT_INVENTORY_CHANGED", "CheckRole");
 	self:RegisterEvent("UPDATE_BONUS_ACTIONBAR", "CheckRole");	
-	self:RegisterEvent("PLAYER_ENTERING_WORLD", "SendRecieve")
 	self:RegisterEvent("RAID_ROSTER_UPDATE", "SendRecieve")
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "SendRecieve")
 	self:RegisterEvent("CHAT_MSG_ADDON", "SendRecieve")
