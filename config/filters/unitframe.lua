@@ -67,6 +67,7 @@ DF['CCDebuffs'] = {
 			[SpellName(89605)] = true, --Aura of Foreboding
 		-- Warrior
 			[SpellName(20511)] = true, --Intimidating Shout
+			[SpellName(12809)] = true, --Concussion Blow
 		-- Racial
 			[SpellName(25046)] = true, --Arcane Torrent
 			[SpellName(20549)] = true, --War Stomp		
