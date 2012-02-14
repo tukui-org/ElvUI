@@ -347,26 +347,41 @@ local sizes = {
 
 local locale = GetLocale()
 function CH:CHAT_MSG_CHANNEL(...)
-	CH.FindURL(self, ...)
-	
+	local isSpam = nil
 	if locale == 'enUS' or locale == 'enGB' then
-		return CH.SpamFilter(self, ...)
+		isSpam = CH.SpamFilter(self, ...)
+	end
+	
+	if isSpam then
+		return true;
+	else
+		return CH.FindURL(self, ...)
 	end
 end
 
 function CH:CHAT_MSG_YELL(...)
-	CH.FindURL(self, ...)
-
+	local isSpam = nil
 	if locale == 'enUS' or locale == 'enGB' then
-		return CH.SpamFilter(self, ...)
+		isSpam = CH.SpamFilter(self, ...)
+	end
+	
+	if isSpam then
+		return true;
+	else
+		return CH.FindURL(self, ...)
 	end
 end
 
 function CH:CHAT_MSG_SAY(...)
-	CH.FindURL(self, ...)
-
+	local isSpam = nil
 	if locale == 'enUS' or locale == 'enGB' then
-		return CH.SpamFilter(self, ...)
+		isSpam = CH.SpamFilter(self, ...)
+	end
+	
+	if isSpam then
+		return true;
+	else
+		return CH.FindURL(self, ...)
 	end
 end
 
