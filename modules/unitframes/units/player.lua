@@ -454,6 +454,12 @@ function UF:Update_PlayerFrame(frame, db)
 			castbar.ButtonIcon.bg:Hide()
 			castbar.Icon = nil
 		end
+
+		if db.castbar.spark then
+			castbar.Spark:Show()
+		else
+			castbar.Spark:Hide()
+		end
 		
 		castbar:Point("TOPRIGHT", frame, "BOTTOMRIGHT", -(BORDER + db.castbar.xOffset), -((BORDER*2+BORDER) + db.castbar.yOffset))
 		
