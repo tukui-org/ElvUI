@@ -22,7 +22,6 @@ local function LoadSkin()
 		"ConsolidatedBuffsTooltip",
 		"ReadyCheckFrame",
 		"StackSplitFrame",
-		"CharacterFrame",
 	}
 	
 	if not E:IsPTRVersion() then

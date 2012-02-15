@@ -220,13 +220,7 @@ function UF:Update_AllFrames()
 	for unit in pairs(self['handledunits']) do
 		if self.db['layouts'][self.ActiveLayout][unit].enable then
 			self[unit]:Enable()
-			
-			local stringTitle = E:StringTitle(unit)
-			if stringTitle:find('target') then
-				stringTitle = gsub(stringTitle, 'target', 'Target')
-			end			
-			
-			UF["Update_"..stringTitle.."Frame"](self, self[unit], self.db['layouts'][self.ActiveLayout][unit])
+			self[unit]:Update()
 		else
 			self[unit]:Disable()
 		end
@@ -236,15 +230,7 @@ function UF:Update_AllFrames()
 		for i=1, header:GetNumChildren() do
 			local frame = select(i, header:GetChildren())
 			if frame and frame.unit then
-				UF["Update_"..E:StringTitle(header.groupName).."Frames"](self, frame, self.db['layouts'][self.ActiveLayout][header.groupName])
-				
-				if frame.childList then
-					for child, _ in pairs(frame.childList) do
-						if child and child.isChild then
-							UF["Update_"..E:StringTitle(header.groupName).."Frames"](self, child, self.db['layouts'][self.ActiveLayout][header.groupName])
-						end
-					end	
-				end
+				frame:Update()
 			end
 		end	
 	end	
@@ -272,8 +258,12 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			end
 			
 			local frameName = E:StringTitle(group)
-			frameName = frameName:gsub('t(arget)', 'T%1')				
-			UF["Update_"..E:StringTitle(frameName).."Frames"](self, self[unit], self.db['layouts'][self.ActiveLayout][group])	
+			frameName = frameName:gsub('t(arget)', 'T%1')		
+			self[unit].Update = function()
+				UF["Update_"..E:StringTitle(frameName).."Frames"](self, self[unit], self.db['layouts'][self.ActiveLayout][group])	
+			end
+			
+			self[unit].Update()
 		elseif self[unit] then
 			self[unit]:Disable()
 		end
@@ -300,20 +290,24 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 			self[group].groupName = group
 		end
 		
-		UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
-		
-		for i=1, self[group]:GetNumChildren() do
-			local child = select(i, self[group]:GetChildren())
-			UF["Update_"..E:StringTitle(group).."Frames"](self, child, self.db['layouts'][self.ActiveLayout][group])
-
-			if _G[child:GetName()..'Pet'] then
-				UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Pet'], self.db['layouts'][self.ActiveLayout][group])
-			end
+		self[group].Update = function()
+			UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
 			
-			if _G[child:GetName()..'Target'] then
-				UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Target'], self.db['layouts'][self.ActiveLayout][group])
+			for i=1, self[group]:GetNumChildren() do
+				local child = select(i, self[group]:GetChildren())
+				UF["Update_"..E:StringTitle(group).."Frames"](self, child, self.db['layouts'][self.ActiveLayout][group])
+
+				if _G[child:GetName()..'Pet'] then
+					UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Pet'], self.db['layouts'][self.ActiveLayout][group])
+				end
+				
+				if _G[child:GetName()..'Target'] then
+					UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Target'], self.db['layouts'][self.ActiveLayout][group])
+				end			
 			end			
-		end
+		end	
+
+		self[group].Update()
 	elseif self[group] then
 		self[group]:SetAttribute("showParty", false)
 		self[group]:SetAttribute("showRaid", false)
@@ -345,7 +339,11 @@ function UF:CreateAndUpdateUF(unit)
 		
 		local frameName = E:StringTitle(unit)
 		frameName = frameName:gsub('t(arget)', 'T%1')
-		UF["Update_"..frameName.."Frame"](self, self[unit], self.db['layouts'][self.ActiveLayout][unit])
+		self[unit].Update = function()
+			UF["Update_"..frameName.."Frame"](self, self[unit], self.db['layouts'][self.ActiveLayout][unit])
+		end
+		
+		self[unit].Update()
 	elseif self[unit] then
 		self[unit]:Disable()
 	end
@@ -409,7 +407,7 @@ function UF:UpdateAllHeaders(event)
 	end	
 	
 	for _, header in pairs(UF['handledheaders']) do
-		UF["Update_"..E:StringTitle(header.groupName).."Header"](self, header, self.db['layouts'][self.ActiveLayout][header.groupName])
+		header:Update()
 	end	
 	
 	if self.db.disableBlizzard then
@@ -435,6 +433,38 @@ function UF:DisableBlizzard(event)
 	CompactRaidFrameManager:HookScript('OnShow', HideRaid)
 	CompactRaidFrameContainer:UnregisterAllEvents()
 	HideRaid()
+end
+
+function UF:ForceShow(frame)
+	if not frame.isForced then
+		UnregisterUnitWatch(frame)
+		RegisterUnitWatch(frame, true)
+		
+		frame.oldUnit = frame.unit
+		frame.unit = 'dummy'
+		frame.isForced = true;
+	end
+	
+	frame:Show()
+end
+
+function UF:UnforceShow(frame)
+	if not frame.isForced then
+		return
+	end
+	frame.isForced = nil
+	
+	-- Ask the SecureStateDriver to show/hide the frame for us
+	UnregisterUnitWatch(frame)
+	RegisterUnitWatch(frame)
+	
+	frame.unit = frame.oldUnit or frame.unit
+	
+	-- If we're visible force an udpate so everything is properly in a
+	-- non-config mode state
+	if frame:IsVisible() then
+		frame:Update()
+	end	
 end
 
 function UF:Initialize()	
