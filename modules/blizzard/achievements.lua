@@ -48,6 +48,7 @@ local function PostAchievementMove(frame, pos)
 	B:AchievementMove()
 end
 
+--/run GuildChallengeAlertFrame_ShowAlert(3, 2, 5)
 function B:AchievementMovers()
 	hooksecurefunc("AchievementAlertFrame_FixAnchors", B.AchievementMove)
 	hooksecurefunc("DungeonCompletionAlertFrame_FixAnchors", function()
@@ -72,6 +73,30 @@ function B:AchievementMovers()
 			end
 		end
 	end)	
+	
+	hooksecurefunc('GuildChallengeAlertFrame_FixAnchors', function()
+		local aFrame
+		for i=MAX_ACHIEVEMENT_ALERTS, 1, -1 do
+			if _G["AchievementAlertFrame"..i] and _G["AchievementAlertFrame"..i]:IsShown() then
+				aFrame = _G["AchievementAlertFrame"..i]
+			end
+		end
+		
+		if DungeonCompletionAlertFrame1:IsShown() then
+			aFrame = DungeonCompletionAlertFrame1
+		end
+		
+		if aFrame == nil then
+			aFrame = AchievementHolder
+		end
+		
+		GuildChallengeAlertFrame:ClearAllPoints()
+		if pos == "TOP" then
+			GuildChallengeAlertFrame:SetPoint("TOP", aFrame, "BOTTOM", 0, -10)
+		else
+			GuildChallengeAlertFrame:SetPoint("BOTTOM", aFrame, "TOP", 0, 10)
+		end
+	end)
 	
 	self:RegisterEvent("ACHIEVEMENT_EARNED", 'AchievementMove')
 	E:CreateMover(AchievementHolder, "AchievementMover", "Achievement Frames", nil, PostAchievementMove)
