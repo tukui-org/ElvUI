@@ -1,10 +1,7 @@
-﻿local E, L, DF = unpack(select(2, ...)); --Engine
-
---Global defaults
-E.DF["global"] = {};
+﻿local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 
 --Core
-DF["core"] = {
+P["core"] = {
 	["uiscale"] = 0.71,
 	["autoscale"] = true,
 	["stickyFrames"] = true,
@@ -44,7 +41,7 @@ DF["core"] = {
 };
 
 --NamePlate
-DF["nameplate"] = {
+P["nameplate"] = {
 	["enable"] = true,
 	["markBGHealers"] = true,
 	["width"] = 113,
@@ -69,31 +66,31 @@ DF["nameplate"] = {
 };
 
 --Auras
-DF['auras'] = {
+P['auras'] = {
 	['enable'] = true,
 	['perRow'] = 12,
 }
 
 --Chat
-DF['chat'] = {
+P['chat'] = {
 	['enable'] = true,
 	['url'] = true;
 	['shortChannels'] = true;
 }
 
 --ClassTimers
-DF['classtimer'] = {
+P['classtimer'] = {
 	['enable'] = true,
 	['player'] = {
 		['enable'] = true,
 		['anchor'] = 'PLAYERDEBUFFS',
-		["buffcolor"] = DF.core.bordercolor,
+		["buffcolor"] = P.core.bordercolor,
 		["debuffcolor"] = {r = 0.78, g = 0.25, b = 0.25},		
 	},
 	['target'] = {
 		['enable'] = true,
 		['anchor'] = 'TARGETDEBUFFS',
-		["buffcolor"] = DF.core.bordercolor,
+		["buffcolor"] = P.core.bordercolor,
 		["debuffcolor"] = {r = 0.78, g = 0.25, b = 0.25},			
 	},	
 	['trinket'] = {
@@ -104,7 +101,7 @@ DF['classtimer'] = {
 }
 
 --Skins
-DF['skins'] = {
+P['skins'] = {
 	['embedRight'] = '',
 	['bigwigs'] = {
 		['enable'] = true,
@@ -185,7 +182,7 @@ DF['skins'] = {
 }
 
 --Datatexts
-DF['datatexts'] = {
+P['datatexts'] = {
 	['panels'] = {
 		['spec1'] = {
 			['LeftChatDataPanel'] = {
@@ -222,7 +219,7 @@ DF['datatexts'] = {
 }
 
 --Tooltip
-DF['tooltip'] = {
+P['tooltip'] = {
 	['enable'] = true,
 	['anchor'] = 'SMART',
 	['ufhide'] = false,
@@ -231,7 +228,7 @@ DF['tooltip'] = {
 }
 
 --UnitFrame
-DF['unitframe'] = {
+P['unitframe'] = {
 	['enable'] = true,
 	['smoothbars'] = true,
 	['statusbar'] = "Minimalist",
@@ -254,7 +251,7 @@ DF['unitframe'] = {
 		['customhealthbackdrop'] = false,
 		['classbackdrop'] = false,
 	
-		['health'] = DF.core.bordercolor,
+		['health'] = P.core.bordercolor,
 		['health_backdrop'] = { r = .8,g = .01,b = .01 },
 		['tapped'] = { r = 0.55, g = 0.57, b = 0.61},
 		['disconnected'] = { r = 0.84, g = 0.75, b = 0.65},
@@ -345,7 +342,7 @@ DF['unitframe'] = {
 					['height'] = 18,
 					['icon'] = true,
 					['latency'] = true,
-					['color'] = DF.core.bordercolor,
+					['color'] = P.core.bordercolor,
 					['interruptcolor'] = { r = 0.78, g = 0.25, b = 0.25 },
 					['xOffset'] = 0,
 					['yOffset'] = 0,
@@ -422,7 +419,7 @@ DF['unitframe'] = {
 					['width'] = 260,
 					['height'] = 18,
 					['icon'] = true,
-					['color'] = DF.core.bordercolor,
+					['color'] = P.core.bordercolor,
 					['interruptcolor'] = { r = 0.78, g = 0.25, b = 0.25 },
 					['xOffset'] = 0,
 					['yOffset'] = 0,
@@ -544,7 +541,7 @@ DF['unitframe'] = {
 					['width'] = 190,
 					['height'] = 18,
 					['icon'] = true,
-					['color'] = DF.core.bordercolor,
+					['color'] = P.core.bordercolor,
 					['interruptcolor'] = { r = 0.78, g = 0.25, b = 0.25 },
 					['xOffset'] = 0,
 					['yOffset'] = 0,
@@ -772,7 +769,7 @@ DF['unitframe'] = {
 					['width'] = 215,
 					['height'] = 18,
 					['icon'] = true,
-					['color'] = DF.core.bordercolor,
+					['color'] = P.core.bordercolor,
 					['interruptcolor'] = { r = 0.78, g = 0.25, b = 0.25 },
 					['format'] = 'REMAINING',
 					['spark'] = true,
@@ -836,7 +833,7 @@ DF['unitframe'] = {
 					['width'] = 240,
 					['height'] = 18,
 					['icon'] = true,
-					['color'] = DF.core.bordercolor,
+					['color'] = P.core.bordercolor,
 					['interruptcolor'] = { r = 0.78, g = 0.25, b = 0.25 },
 					['format'] = 'REMAINING',
 					['spark'] = true,
@@ -1180,7 +1177,7 @@ DF['unitframe'] = {
 }
 
 --Actionbar
-DF["actionbar"] = {
+P["actionbar"] = {
 	["enable"] = true,
 	["macrotext"] = false,
 	["hotkeytext"] = true,

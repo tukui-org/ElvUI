@@ -1,4 +1,4 @@
-local E, L, DF = unpack(select(2, ...)); --Engine
+local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local LO = E:NewModule('Layout', 'AceEvent-3.0');
 
 local PANEL_HEIGHT = 22;

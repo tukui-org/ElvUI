@@ -3,17 +3,17 @@
 
 To load the AddOn engine add this to the top of your file:
 	
-	local E, L, DF = unpack(select(2, ...)); --Engine
+	local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 	
 To load the AddOn engine inside another addon add this to the top of your file:
 	
-	local E, L, DF = unpack(AddOn); --Engine
+	local E, L, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
 ]]
 local AddOnName, Engine = ...;
 local AddOn = LibStub("AceAddon-3.0"):NewAddon(AddOnName, "AceConsole-3.0", "AceEvent-3.0", 'AceTimer-3.0');
 local DEFAULT_WIDTH = 890;
 local DEFAULT_HEIGHT = 650;
-AddOn.DF = {}; AddOn.DF["profile"] = {}; -- Defaults
+AddOn.DF = {}; AddOn.DF["profile"] = {}; AddOn.DF["global"] = {}; -- Defaults
 AddOn.Options = {
 	type = "group",
 	name = AddOnName,

@@ -1,4 +1,4 @@
-﻿local E, L, DF = unpack(select(2, ...)); --Engine
+﻿local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 
 E.Options.args = {
 	ElvUI_Header = {
@@ -341,10 +341,10 @@ E.Options.args.core = {
 							order = 5,
 							name = L["Restore Defaults"],
 							func = function() 
-								E.db.core.backdropcolor = DF.core.backdropcolor
-								E.db.core.backdropfadecolor = DF.core.backdropfadecolor
-								E.db.core.bordercolor = DF.core.bordercolor
-								E.db.core.valuecolor = DF.core.valuecolor
+								E.db.core.backdropcolor = P.core.backdropcolor
+								E.db.core.backdropfadecolor = P.core.backdropfadecolor
+								E.db.core.bordercolor = P.core.bordercolor
+								E.db.core.valuecolor = P.core.valuecolor
 								E:UpdateMedia()
 								E:UpdateFrameTemplates()								
 							end,

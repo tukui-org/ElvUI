@@ -1,4 +1,4 @@
-local E, L, DF = unpack(select(2, ...)); --Engine
+local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local M = E:GetModule('Maps');
 
 local calendar_string = string.gsub(SLASH_CALENDAR1, "/", "")
