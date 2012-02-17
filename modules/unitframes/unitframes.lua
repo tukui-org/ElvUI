@@ -213,7 +213,7 @@ function UF:ChangeVisibility(header, visibility)
 		end
 	end	
 end
-
+local UNITFRAMES = UF
 function UF:Update_AllFrames()
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
 	self:UpdateColors()
@@ -225,16 +225,7 @@ function UF:Update_AllFrames()
 			self[unit]:Disable()
 		end
 	end
-	
-	for _, header in pairs(UF['handledheaders']) do
-		for i=1, header:GetNumChildren() do
-			local frame = select(i, header:GetChildren())
-			if frame and frame.unit then
-				frame:Update()
-			end
-		end	
-	end	
-	
+
 	self:UpdateAllHeaders()
 end
 
