@@ -1,4 +1,4 @@
-local E, L, DF = unpack(select(2, ...)); --Engine
+local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -22,7 +22,6 @@ local function LoadSkin()
 		"ConsolidatedBuffsTooltip",
 		"ReadyCheckFrame",
 		"StackSplitFrame",
-		"CharacterFrame",
 	}
 	
 	if not E:IsPTRVersion() then

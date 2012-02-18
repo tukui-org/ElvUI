@@ -1,4 +1,4 @@
-local E, L, DF = unpack(select(2, ...)); --Engine
+local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local rwiconsize = 18			-- RaidWarning icon size, because 12 is small for me.

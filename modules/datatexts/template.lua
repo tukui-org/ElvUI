@@ -1,4 +1,4 @@
-local E, L, DF = unpack(select(2, ...)); --Engine
+local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
 --[[This file is a blank datatext example template, this file will not be loaded.]]

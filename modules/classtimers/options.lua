@@ -1,4 +1,4 @@
-local E, L, DF = unpack(select(2, ...));
+local E, L, P, G = unpack(select(2, ...));
 local CT = E:GetModule('ClassTimers')
 
 local selectedFilter, selectedSpell, compareTable = nil, nil, {};
@@ -7,19 +7,19 @@ local function UpdateFilterGroup()
 	if selectedFilter == 'PLAYER' then
 		name = PLAYER;
 		filterTable = CT.db.spells_filter[E.myclass].player
-		defaultTable = DF.classtimer.spells_filter[E.myclass].player
+		defaultTable = P.classtimer.spells_filter[E.myclass].player
 	elseif selectedFilter == 'TARGET' then
 		name = TARGET;
 		filterTable = CT.db.spells_filter[E.myclass].target
-		defaultTable = DF.classtimer.spells_filter[E.myclass].target
+		defaultTable = P.classtimer.spells_filter[E.myclass].target
 	elseif selectedFilter == 'TRINKET' then
 		name = L['Trinket']
 		filterTable = CT.db.trinkets_filter
-		defaultTable = DF.classtimer.trinkets_filter
+		defaultTable = P.classtimer.trinkets_filter
 	elseif selectedFilter == 'PROCS' then
 		name = L['Procs']
 		filterTable = CT.db.spells_filter[E.myclass].procs
-		defaultTable = DF.classtimer.spells_filter[E.myclass].procs
+		defaultTable = P.classtimer.spells_filter[E.myclass].procs
 	end
 	
 	E.Options.args.classtimer.args.filters.args.filterGroup = {

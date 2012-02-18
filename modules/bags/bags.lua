@@ -1,4 +1,4 @@
-local E, L, DF = unpack(select(2, ...)); --Engine
+local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local B = E:NewModule('Bags', 'AceHook-3.0', 'AceEvent-3.0');
 
 local ST_NORMAL = 1

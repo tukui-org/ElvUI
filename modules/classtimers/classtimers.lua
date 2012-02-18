@@ -1,4 +1,4 @@
-local E, L, DF = unpack(select(2, ...));
+local E, L, P, G = unpack(select(2, ...));
 local CT = E:NewModule('ClassTimers')
 
 E.ClassTimers = CT

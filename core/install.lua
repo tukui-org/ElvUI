@@ -1,4 +1,4 @@
-local E, L, DF = unpack(select(2, ...)); --Engine
+local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 
 local CURRENT_PAGE = 0
 local MAX_PAGE = 6

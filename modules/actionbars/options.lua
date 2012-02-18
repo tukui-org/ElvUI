@@ -1,4 +1,4 @@
-local E, L, DF = unpack(select(2, ...)); --Engine
+local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars')
 local group
 
@@ -32,7 +32,7 @@ local function BuildABConfig()
 					type = 'execute',
 					name = L['Restore Bar'],
 					desc = L['Restore the actionbars default settings'],
-					func = function() E.db.actionbar['bar'..i] = DF.actionbar['bar'..i]; AB:ResetMovers('bar'..i); AB:UpdateButtonSettings() end,
+					func = function() E.db.actionbar['bar'..i] = P.actionbar['bar'..i]; AB:ResetMovers('bar'..i); AB:UpdateButtonSettings() end,
 				},	
 				point = {
 					order = 3,
@@ -150,7 +150,7 @@ local function BuildABConfig()
 				type = 'execute',
 				name = L['Restore Bar'],
 				desc = L['Restore the actionbars default settings'],
-				func = function() E.db.actionbar['barPet'] = DF.actionbar['barPet']; AB:ResetMovers('barPet'); AB:UpdateButtonSettings() end,
+				func = function() E.db.actionbar['barPet'] = P.actionbar['barPet']; AB:ResetMovers('barPet'); AB:UpdateButtonSettings() end,
 			},	
 			point = {
 				order = 3,
@@ -249,7 +249,7 @@ local function BuildABConfig()
 				type = 'execute',
 				name = L['Restore Bar'],
 				desc = L['Restore the actionbars default settings'],
-				func = function() E.db.actionbar['barShapeShift'] = DF.actionbar['barShapeShift']; AB:ResetMovers('barShapeShift'); AB:UpdateButtonSettings() end,
+				func = function() E.db.actionbar['barShapeShift'] = P.actionbar['barShapeShift']; AB:ResetMovers('barShapeShift'); AB:UpdateButtonSettings() end,
 			},	
 			point = {
 				order = 3,
@@ -455,7 +455,7 @@ local function BuildABConfig()
 					type = 'execute',
 					name = L['Restore Bar'],
 					desc = L['Restore the actionbars default settings'],
-					func = function() E.db.actionbar['barTotem'] = DF.actionbar['barTotem']; AB:ResetMovers('barTotem'); AB:AdjustTotemSettings() end,
+					func = function() E.db.actionbar['barTotem'] = P.actionbar['barTotem']; AB:ResetMovers('barTotem'); AB:AdjustTotemSettings() end,
 				},			
 				mouseover = {
 					order = 3,

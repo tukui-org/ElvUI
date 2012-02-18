@@ -1,4 +1,4 @@
-local E, L, DF = unpack(select(2, ...)); --Engine
+local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
@@ -1191,6 +1191,12 @@ E.Options.args.unitframe.args.player = {
 					name = L['Ticks'],
 					desc = L['Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste.'],
 				},
+				spark = {
+					order = 14,
+					type = 'toggle',
+					name = L['Spark'],
+					desc = L['Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop.'],
+				},
 			},
 		},
 		classbar = {
@@ -1720,6 +1726,12 @@ E.Options.args.unitframe.args.target = {
 						['CURRENT'] = L['Current'],
 						['REMAINING'] = L['Remaining'],
 					},
+				},		
+				spark = {
+					order = 12,
+					type = 'toggle',
+					name = L['Spark'],
+					desc = L['Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop.'],
 				},				
 			},
 		},
@@ -2560,6 +2572,12 @@ E.Options.args.unitframe.args.focus = {
 						['CURRENT'] = L['Current'],
 						['REMAINING'] = L['Remaining'],
 					},
+				},	
+				spark = {
+					order = 12,
+					type = 'toggle',
+					name = L['Spark'],
+					desc = L['Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop.'],
 				},				
 			},
 		},		
@@ -4100,6 +4118,12 @@ E.Options.args.unitframe.args.boss = {
 						['CURRENT'] = L['Current'],
 						['REMAINING'] = L['Remaining'],
 					},
+				},		
+				spark = {
+					order = 10,
+					type = 'toggle',
+					name = L['Spark'],
+					desc = L['Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop.'],
 				},				
 			},
 		},	
@@ -4548,6 +4572,12 @@ E.Options.args.unitframe.args.arena = {
 						['CURRENT'] = L['Current'],
 						['REMAINING'] = L['Remaining'],
 					},
+				},	
+				spark = {
+					order = 10,
+					type = 'toggle',
+					name = L['Spark'],
+					desc = L['Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop.'],
 				},				
 			},
 		},	
