@@ -1,4 +1,4 @@
-local E, L, DF = unpack(select(2, ...)); --Engine
+local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
 local _, ns = ...
@@ -276,6 +276,12 @@ function UF:Update_FocusFrame(frame, db)
 		else
 			castbar.ButtonIcon.bg:Hide()
 			castbar.Icon = nil
+		end
+		
+		if db.castbar.spark then
+			castbar.Spark:Show()
+		else
+			castbar.Spark:Hide()
 		end
 		
 		castbar:ClearAllPoints()

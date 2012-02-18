@@ -1,4 +1,4 @@
-local E, L, DF = unpack(select(2, ...)); --Engine
+local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
 
@@ -363,6 +363,12 @@ function UF:Update_TargetFrame(frame, db)
 			castbar.ButtonIcon.bg:Hide()
 			castbar.Icon = nil
 		end
+		
+		if db.castbar.spark then
+			castbar.Spark:Show()
+		else
+			castbar.Spark:Hide()
+		end		
 		
 		castbar:ClearAllPoints()
 		castbar:Point("TOPLEFT", frame, "BOTTOMLEFT", (BORDER + db.castbar.xOffset), (-(BORDER*2+BORDER) + db.castbar.yOffset))

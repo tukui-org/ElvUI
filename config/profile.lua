@@ -1,12 +1,9 @@
-﻿local E, L, DF = unpack(select(2, ...)); --Engine
+local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local _, myclasscolor = UnitClass("player");
 local valuer, valueg, valueb = RAID_CLASS_COLORS[myclasscolor].r, RAID_CLASS_COLORS[myclasscolor].g, RAID_CLASS_COLORS[myclasscolor].b
 
---Global defaults
-E.DF["global"] = {};
-
 --Core
-DF["core"] = {
+P["core"] = {
 	["uiscale"] = 0.71,
 	["autoscale"] = true,
 	["stickyFrames"] = true,
@@ -47,7 +44,7 @@ DF["core"] = {
 };
 
 --NamePlate
-DF["nameplate"] = {
+P["nameplate"] = {
 	["enable"] = false,
 	["markBGHealers"] = true,
 	["width"] = 113,
@@ -72,13 +69,13 @@ DF["nameplate"] = {
 };
 
 --Auras
-DF['auras'] = {
+P['auras'] = {
 	['enable'] = true,
 	['perRow'] = 16,
 }
 
 --Chat
-DF['chat'] = {
+P['chat'] = {
 	['enable'] = true,
 	['url'] = true,
 	['shortChannels'] = false,
@@ -87,18 +84,18 @@ DF['chat'] = {
 }
 
 --ClassTimers
-DF['classtimer'] = {
+P['classtimer'] = {
 	['enable'] = false,
 	['player'] = {
 		['enable'] = true,
 		['anchor'] = 'PLAYERDEBUFFS',
-		["buffcolor"] = DF.core.bordercolor,
+		["buffcolor"] = P.core.bordercolor,
 		["debuffcolor"] = {r = 0.78, g = 0.25, b = 0.25},		
 	},
 	['target'] = {
 		['enable'] = true,
 		['anchor'] = 'TARGETDEBUFFS',
-		["buffcolor"] = DF.core.bordercolor,
+		["buffcolor"] = P.core.bordercolor,
 		["debuffcolor"] = {r = 0.78, g = 0.25, b = 0.25},			
 	},	
 	['trinket'] = {
@@ -109,7 +106,7 @@ DF['classtimer'] = {
 }
 
 --Skins
-DF['skins'] = {
+P['skins'] = {
 	['embedRight'] = 'Skada',
 	['bigwigs'] = {
 		['enable'] = true,
@@ -190,7 +187,7 @@ DF['skins'] = {
 }
 
 --Datatexts
-DF['datatexts'] = {
+P['datatexts'] = {
 	['panels'] = {
 		['spec1'] = {
 			['LeftChatDataPanel'] = {
@@ -245,7 +242,7 @@ DF['datatexts'] = {
 }
 
 --Tooltip
-DF['tooltip'] = {
+P['tooltip'] = {
 	['enable'] = true,
 	['anchor'] = 'SMART',
 	['ufhide'] = false,
@@ -254,7 +251,7 @@ DF['tooltip'] = {
 }
 
 --UnitFrame
-DF['unitframe'] = {
+P['unitframe'] = {
 	['enable'] = true,
 	['smoothbars'] = true,
 	['statusbar'] = "Minimalist",
@@ -276,7 +273,6 @@ DF['unitframe'] = {
 		['colorhealthbyvalue'] = false,
 		['customhealthbackdrop'] = true,
 		['classbackdrop'] = false,
-	
 		['health'] = { r = 68/255,g = 68/255,b = 68/255 },
 		['health_backdrop'] = { r = 97/255,g = 97/255,b = 97/255 },
 		['tapped'] = { r = 0.55, g = 0.57, b = 0.61},
@@ -375,6 +371,7 @@ DF['unitframe'] = {
 					['yOffset'] = 0,
 					['format'] = 'CURRENTMAX',
 					["ticks"] = true,
+					['spark'] = true,
 				},
 				['classbar'] = {
 					['enable'] = true,
@@ -450,6 +447,7 @@ DF['unitframe'] = {
 					['xOffset'] = 0,
 					['yOffset'] = 86,
 					['format'] = 'REMAINING',
+					['spark'] = true,
 				},	
 				['combobar'] = {
 					['enable'] = true,
@@ -571,6 +569,7 @@ DF['unitframe'] = {
 					['xOffset'] = 0,
 					['yOffset'] = 65,
 					['format'] = 'REMAINING',
+					['spark'] = true,
 				},					
 			},	
 			['focustarget'] = {
@@ -796,6 +795,7 @@ DF['unitframe'] = {
 					['color'] = { r = .66,g = .66,b = .66 },
 					['interruptcolor'] = { r = 0.78, g = 0.25, b = 0.25 },
 					['format'] = 'REMAINING',
+					['spark'] = true,
 				},					
 			},	
 			['arena'] = {
@@ -859,6 +859,7 @@ DF['unitframe'] = {
 					['color'] = { r = .66,g = .66,b = .66 },
 					['interruptcolor'] = { r = 0.78, g = 0.25, b = 0.25 },
 					['format'] = 'REMAINING',
+					['spark'] = true,
 				},					
 			},
 			['party'] = {
@@ -1245,7 +1246,7 @@ DF['unitframe'] = {
 }
 
 --Actionbar
-DF["actionbar"] = {
+P["actionbar"] = {
 	["enable"] = true,
 	["macrotext"] = true,
 	["hotkeytext"] = true,

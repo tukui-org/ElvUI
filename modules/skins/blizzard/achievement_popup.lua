@@ -1,4 +1,4 @@
-local E, L, DF = unpack(select(2, ...)); --Engine
+local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -90,6 +90,20 @@ local function LoadSkin()
 	end
 	
 	hooksecurefunc("DungeonCompletionAlertFrame_FixAnchors", SkinDungeonPopUP)
+	
+	
+	--Guild Alert
+	for i=1, GuildChallengeAlertFrame:GetNumRegions() do
+		local region = select(i, GuildChallengeAlertFrame:GetRegions()) 
+		if region and region:GetObjectType() == "Texture" and not region:GetName() then
+			region:SetTexture(nil)
+		end
+	end
+	
+	GuildChallengeAlertFrame:SetTemplate('Default', true)
+	GuildChallengeAlertFrame.backdropTexture:SetVertexColor(unpack(E.media.bordercolor))
+	GuildChallengeAlertFrame.backdropTexture.SetVertexColor = E.noop
+	GuildChallengeAlertFrame:Height(65)
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)
