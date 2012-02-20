@@ -8,11 +8,17 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 function UF:Construct_PartyFrames(unitGroup)
 	self:RegisterForClicks("AnyUp")
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
-	self:SetScript('OnLeave', UnitFrame_OnLeave)	
+	self:SetScript('OnLeave', UnitFrame_OnLeave)
+	local frqHValue
+	if E.db['unitframe']['layouts'][UF.ActiveLayout]['party'].frequentHealth == true then
+		frqHValue = true
+	else
+		frqHValue = false
+	end
 	
 	if self.isChild then
 		self.Health = UF:Construct_HealthBar(self, true)
-		self.Health.frequentUpdates = true;	
+		self.Health.frequentUpdates = frqHValue;
 		
 		self.Name = UF:Construct_NameText(self)
 		self.originalParent = self:GetParent()
@@ -20,7 +26,7 @@ function UF:Construct_PartyFrames(unitGroup)
 		self.menu = UF.SpawnMenu
 		
 		self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
-		self.Health.frequentUpdates = true;
+		self.Health.frequentUpdates = frqHValue;
 		
 		self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT', false)
 		self.Name = UF:Construct_NameText(self)

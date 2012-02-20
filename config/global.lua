@@ -574,6 +574,7 @@ E.DF["global"]['unitframe'] = {
 		},
 		['party'] = {
 			['enable'] = false,
+			['frequentHealth'] = false,
 			['visibility'] = "[@raid6,exists] hide;show",
 			['point'] = 'TOP', --Requires ReloadUI()
 			['maxColumns'] = 1,
@@ -668,6 +669,7 @@ E.DF["global"]['unitframe'] = {
 			},				
 		},
 		['raid625'] = {
+			['frequentHealth'] = false,
 			['enable'] = true,
 			['visibility'] = '[@raid26,exists] hide;show',
 			['point'] = 'LEFT',
@@ -750,6 +752,7 @@ E.DF["global"]['unitframe'] = {
 			},					
 		},					
 		['raid2640'] = {
+			['frequentHealth'] = false,
 			['enable'] = true,
 			['visibility'] = '[@raid26,noexists] hide;show',
 			['point'] = 'LEFT',
@@ -893,6 +896,7 @@ E.DF["global"]['unitframe'] = {
 			},					
 		},
 		['party'] = {
+			['frequentHealth'] = false,
 			['point'] = 'LEFT',
 			['xOffset'] = 1,
 			['healPrediction'] = true,
@@ -930,9 +934,11 @@ E.DF["global"]['unitframe'] = {
 			},					
 		},
 		['raid625'] = {
+			['frequentHealth'] = false,
 			['healPrediction'] = true,
 		},					
 		['raid2640'] = {
+			['frequentHealth'] = false,
 			['healPrediction'] = true,			
 		},					
 		["positions"] = {

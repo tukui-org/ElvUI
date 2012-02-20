@@ -8,6 +8,8 @@ else
 end
 
 if not L then return; end
+L["Health Frequent Update"] = "Health Frequent Update"
+L["Enable / Disable Health Frequent Updates"] = "Enable / Disable Health Frequent Updates"
 L["ChatTab_Datatext_Panel"] = "Right Chat Tab"
 L["Bottom_Datatext_Panel"] = "Bottom Datatext Panel"
 L["24-Hour Time"] = "24-Hour Time"

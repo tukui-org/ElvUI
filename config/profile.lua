@@ -863,6 +863,7 @@ P['unitframe'] = {
 				},					
 			},
 			['party'] = {
+				['frequentHealth'] = false,
 				['enable'] = false,
 				['visibility'] = "[@raid6,exists] hide;show",
 				['point'] = 'TOP', --Requires ReloadUI()
@@ -958,6 +959,7 @@ P['unitframe'] = {
 				},				
 			},
 			['raid625'] = {
+				['frequentHealth'] = false,
 				['enable'] = true,
 				['visibility'] = '[@raid26,exists] hide;show',
 				['point'] = 'LEFT',
@@ -1040,6 +1042,7 @@ P['unitframe'] = {
 				},					
 			},					
 			['raid2640'] = {
+				['frequentHealth'] = false,
 				['enable'] = true,
 				['visibility'] = '[@raid26,noexists] hide;show',
 				['point'] = 'LEFT',
@@ -1183,6 +1186,7 @@ P['unitframe'] = {
 				},					
 			},
 			['party'] = {
+				['frequentHealth'] = false,
 				['point'] = 'LEFT',
 				['xOffset'] = 1,
 				['healPrediction'] = true,
@@ -1220,9 +1224,11 @@ P['unitframe'] = {
 				},					
 			},
 			['raid625'] = {
+				['frequentHealth'] = false,
 				['healPrediction'] = true,
 			},					
 			['raid2640'] = {
+				['frequentHealth'] = false,
 				['healPrediction'] = true,			
 			},					
 			["positions"] = {
