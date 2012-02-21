@@ -34,7 +34,7 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	f:SetScript("OnDragStart", function(self) 
 		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end	
 		
-		if E.db['core'].stickyFrames then
+		if E.db['general'].stickyFrames then
 			local offset = 2
 			Sticky:StartMoving(self, E['snapBars'], offset, offset, offset, offset)
 		else
@@ -44,7 +44,7 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	
 	f:SetScript("OnDragStop", function(self) 
 		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
-		if E.db['core'].stickyFrames then
+		if E.db['general'].stickyFrames then
 			Sticky:StopMoving(self)
 		else
 			self:StopMovingOrSizing()
@@ -164,6 +164,20 @@ function E:ResetMovers(arg)
 					end
 				end
 			end	
+		end
+	end
+end
+
+--Profile Change
+function E:SetMoversPositions()
+	for name, _ in pairs(E.CreatedMovers) do
+		local f = _G[name]
+		if E.db["movers"] and E.db["movers"][name] then
+			f:ClearAllPoints()
+			f:SetPoint(E.db["movers"][name]["p"], UIParent, E.db["movers"][name]["p2"], E.db["movers"][name]["p3"], E.db["movers"][name]["p4"])
+		elseif f then
+			f:ClearAllPoints()
+			f:SetPoint(E.CreatedMovers[name]["p"], E.CreatedMovers[name]["p2"], E.CreatedMovers[name]["p3"], E.CreatedMovers[name]["p4"], E.CreatedMovers[name]["p5"])		
 		end
 	end
 end

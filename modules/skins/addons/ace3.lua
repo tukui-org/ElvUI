@@ -155,7 +155,7 @@ end
 local function SkinAce3()
 	local oldRegisterAsWidget = AceGUI.RegisterAsWidget
 	AceGUI.RegisterAsWidget = function(self, widget)
-		if not E.db.skins.ace3.enable then
+		if not E.global.skins.ace3.enable then
 			return oldRegisterAsWidget(self, widget)
 		end
 		local TYPE = widget.type
@@ -307,7 +307,7 @@ local function SkinAce3()
 	local oldRegisterAsContainer = AceGUI.RegisterAsContainer
 
 	AceGUI.RegisterAsContainer = function(self, widget)
-		if not E.db.skins.ace3.enable then
+		if not E.global.skins.ace3.enable then
 			return oldRegisterAsContainer(self, widget)
 		end	
 		local TYPE = widget.type

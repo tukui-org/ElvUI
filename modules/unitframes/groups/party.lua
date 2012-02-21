@@ -41,7 +41,7 @@ function UF:Construct_PartyFrames(unitGroup)
 		self.HealPrediction = UF:Construct_HealComm(self)
 	end
 	
-	UF:Update_PartyFrames(self, E.db['unitframe']['layouts'][UF.ActiveLayout]['party'])
+	UF:Update_PartyFrames(self, E.db['unitframe']['units']['party'])
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()	
 

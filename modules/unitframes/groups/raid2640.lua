@@ -32,7 +32,7 @@ function UF:Construct_Raid2640Frames(unitGroup)
 	self.ReadyCheck = UF:Construct_ReadyCheckIcon(self)	
 	self.HealPrediction = UF:Construct_HealComm(self)
 	
-	UF:Update_Raid2640Frames(self, E.db['unitframe']['layouts'][UF.ActiveLayout]['raid2640'])
+	UF:Update_Raid2640Frames(self, E.db['unitframe']['units']['raid2640'])
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()	
 	

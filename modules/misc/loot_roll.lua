@@ -312,7 +312,7 @@ function M:CHAT_MSG_LOOT(event, msg)
 end
 
 function M:LoadLootRoll()	
-	if not E.db.core.lootRoll then return end
+	if not E.global.general.lootRoll then return end
 	anchor = CreateFrame("Frame", nil, anchorHolder)
 	anchor:Point('TOP', E.UIParent, 'TOP', 0, -200)
 	anchor:Size(300, 22)

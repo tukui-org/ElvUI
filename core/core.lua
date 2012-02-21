@@ -42,38 +42,38 @@ end
 
 function E:UpdateMedia()	
 	--Fonts
-	self["media"].normFont = LSM:Fetch("font", self.db["core"].font)
-	self["media"].combatFont = LSM:Fetch("font", self.db["core"].dmgfont)
+	self["media"].normFont = LSM:Fetch("font", self.db['general'].font)
+	self["media"].combatFont = LSM:Fetch("font", self.db['general'].dmgfont)
 	
 
 	--Textures
 	self["media"].blankTex = LSM:Fetch("background", "ElvUI Blank")
-	self["media"].normTex = LSM:Fetch("statusbar", self.db["core"].normTex)
-	self["media"].glossTex = LSM:Fetch("statusbar", self.db["core"].glossTex)
+	self["media"].normTex = LSM:Fetch("statusbar", self.global['general'].normTex)
+	self["media"].glossTex = LSM:Fetch("statusbar", self.global['general'].glossTex)
 
 	--Border Color
-	local border = self.db["core"].bordercolor
+	local border = self.db['general'].bordercolor
 	self["media"].bordercolor = {border.r, border.g, border.b}
 
 	--Backdrop Color
-	local backdrop = self.db["core"].backdropcolor
+	local backdrop = self.db['general'].backdropcolor
 	self["media"].backdropcolor = {backdrop.r, backdrop.g, backdrop.b}
 
 	--Backdrop Fade Color
-	backdrop = self.db["core"].backdropfadecolor
+	backdrop = self.db['general'].backdropfadecolor
 	self["media"].backdropfadecolor = {backdrop.r, backdrop.g, backdrop.b, backdrop.a}
 	
 	--Value Color
-	local value = self.db["core"].valuecolor
+	local value = self.db['general'].valuecolor
 	self["media"].hexvaluecolor = self:RGBToHex(value.r, value.g, value.b)
 	self["media"].rgbvaluecolor = {value.r, value.g, value.b}
 	
 	if LeftChatPanel and LeftChatPanel.tex and RightChatPanel and RightChatPanel.tex then
-		LeftChatPanel.tex:SetTexture(E.db.core.panelBackdropNameLeft)
-		LeftChatPanel.tex:SetAlpha(E.db.core.backdropfadecolor.a - 0.55 > 0 and E.db.core.backdropfadecolor.a - 0.55 or 0.5)		
+		LeftChatPanel.tex:SetTexture(E.db.general.panelBackdropNameLeft)
+		LeftChatPanel.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.55 > 0 and E.db.general.backdropfadecolor.a - 0.55 or 0.5)		
 		
-		RightChatPanel.tex:SetTexture(E.db.core.panelBackdropNameRight)
-		RightChatPanel.tex:SetAlpha(E.db.core.backdropfadecolor.a - 0.55 > 0 and E.db.core.backdropfadecolor.a - 0.55 or 0.5)		
+		RightChatPanel.tex:SetTexture(E.db.general.panelBackdropNameRight)
+		RightChatPanel.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.55 > 0 and E.db.general.backdropfadecolor.a - 0.55 or 0.5)		
 	end
 	
 	self:ValueFuncCall()
@@ -243,11 +243,11 @@ function E:CreateMoverPopup()
 	_G[snapping:GetName() .. "Text"]:SetText(L["Sticky Frames"])
 
 	snapping:SetScript("OnShow", function(self)
-		self:SetChecked(E.db.core.stickyFrames)
+		self:SetChecked(E.db.general.stickyFrames)
 	end)
 
 	snapping:SetScript("OnClick", function(self)
-		E.db.core.stickyFrames = self:GetChecked()
+		E.db.general.stickyFrames = self:GetChecked()
 	end)
 
 	local lock = CreateFrame("Button", "ElvUILock", f, "OptionsButtonTemplate")
@@ -293,13 +293,13 @@ function E:CheckIncompatible()
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Aloft', 'NamePlate'))
 	end	
 	
-	if IsAddOnLoaded('ArkInventory') and E.db.core.bags then
+	if IsAddOnLoaded('ArkInventory') and E.db.general.bags then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'ArkInventory', 'Bags'))
-	elseif IsAddOnLoaded('Bagnon') and E.db.core.bags then
+	elseif IsAddOnLoaded('Bagnon') and E.db.general.bags then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Bagnon', 'Bags'))
-	elseif IsAddOnLoaded('OneBag3') and E.db.core.bags then
+	elseif IsAddOnLoaded('OneBag3') and E.db.general.bags then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'OneBag3', 'Bags'))
-	elseif IsAddOnLoaded('OneBank3') and E.db.core.bags then
+	elseif IsAddOnLoaded('OneBank3') and E.db.general.bags then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'OneBank3', 'Bags'))
 	end
 end
@@ -344,12 +344,73 @@ function E:SendRecieve(event, prefix, message, channel, sender)
 	end
 end
 
-function E:Initialize()
-	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF);
-	self.data.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
-	self.data.RegisterCallback(self, "OnProfileCopied", "OnProfileChanged")
-	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileChanged")
+local _, ns = ...
+local ElvUF = ns.oUF
+
+function E:UpdateAll()
+	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF, true);
+	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
+	self.data.RegisterCallback(self, "OnProfileCopied", "UpdateAll")
+	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
 	self.db = self.data.profile;
+	self.global = self.data.global;
+		
+	self:UpdateMedia()
+	self:UpdateFrameTemplates()
+	self:SetMoversPositions()
+	
+	local CH = self:GetModule('Chat')
+	CH.db = self.db.chat
+	CH:PositionChat(true); 
+	
+	local AB = self:GetModule('ActionBars')
+	AB.db = self.db.actionbar
+	AB:UpdateButtonSettings()
+	AB:SetMoverPositions()
+	 
+	local bags = E:GetModule('Bags'); 
+	bags:Layout(); 
+	bags:Layout(true); 
+	
+	self:GetModule('Skins'):SetEmbedRight(E.db.skins.embedRight)
+	self:GetModule('Layout'):ToggleChatPanels()
+	
+	local CT = self:GetModule('ClassTimers')
+	CT.db = self.db.classtimer
+	CT:PositionTimers()
+	CT:ToggleTimers()
+	
+	local DT = self:GetModule('DataTexts')
+	DT.db = self.db.datatexts
+	DT:LoadDataTexts()
+	
+	local NP = self:GetModule('NamePlates')
+	NP.db = self.db.nameplate
+	NP:UpdateAllPlates()
+	
+	local UF = self:GetModule('UnitFrames')
+	UF.db = self.db.unitframe
+	UF:Update_AllFrames()
+	ElvUF:ResetDB()
+	ElvUF:PositionUF()
+	
+	self:GetModule('Auras').db = self.db.auras
+	self:GetModule('Tooltip').db = self.db.tooltip
+
+	if self.db.install_complete == nil or (self.db.install_complete and type(self.db.install_complete) == 'boolean') or (self.db.install_complete and type(tonumber(self.db.install_complete)) == 'number' and tonumber(self.db.install_complete) <= 3.05) then
+		self:Install()
+	end
+	
+	collectgarbage('collect');
+end
+
+function E:Initialize()
+	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF, true);
+	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
+	self.data.RegisterCallback(self, "OnProfileCopied", "UpdateAll")
+	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
+	self.db = self.data.profile;
+	self.global = self.data.global;
 
 	self:CheckIncompatible()
 	
@@ -361,7 +422,7 @@ function E:Initialize()
 	self:InitializeModules(); --Load Modules	
 	self:LoadMovers(); --Load Movers
 
-	if self.db.core.loginmessage then
+	if self.db.general.loginmessage then
 		print(select(2, self:GetModule('Chat'):FindURL(nil, format(L['LOGIN_MSG'], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version))))
 	end
 

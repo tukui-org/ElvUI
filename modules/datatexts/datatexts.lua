@@ -173,12 +173,7 @@ function DT:AssignPanelToDataText(panel, data)
 end
 
 function DT:LoadDataTexts()
-	local spec = 'spec1'
 	if not self.db then self.db = E.db.datatexts end
-	if self.db.specswap and GetActiveTalentGroup() == 2 then
-		spec = 'spec2'
-	end
-
 	for name, obj in LDB:DataObjectIterator() do
 		LDB:UnregisterAllCallbacks(self)
 	end	
@@ -196,13 +191,13 @@ function DT:LoadDataTexts()
 			
 			--Register Panel to Datatext
 			for name, data in pairs(DT.RegisteredDataTexts) do
-				for option, value in pairs(self.db.panels[spec]) do
+				for option, value in pairs(self.db.panels) do
 					if value and type(value) == 'table' then
-						if option == panelName and self.db.panels[spec][option][pointIndex] and self.db.panels[spec][option][pointIndex] == name then
+						if option == panelName and self.db.panels[option][pointIndex] and self.db.panels[option][pointIndex] == name then
 							DT:AssignPanelToDataText(panel.dataPanels[pointIndex], data)
 						end
 					elseif value and type(value) == 'string' and value == name then
-						if self.db.panels[spec][option] == name and option == panelName then
+						if self.db.panels[option] == name and option == panelName then
 							DT:AssignPanelToDataText(panel.dataPanels[pointIndex], data)
 						end
 					end
@@ -211,7 +206,6 @@ function DT:LoadDataTexts()
 		end
 	end
 end
-DT:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED', 'LoadDataTexts')
 
 --[[
 	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc)

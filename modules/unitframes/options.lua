@@ -10,12 +10,12 @@ local filters;
 local function UpdateFilterGroup()
 	if selectedFilter == 'Buff Indicator' then
 		local buffs = {};
-		for _, value in pairs(UF.db.buffwatch[E.myclass]) do
+		for _, value in pairs(E.global.unitframe.buffwatch[E.myclass]) do
 			tinsert(buffs, value);
 		end		
 		
-		if not UF.db.buffwatch[E.myclass] then
-			UF.db.buffwatch[E.myclass] = {};
+		if not E.global.unitframe.buffwatch[E.myclass] then
+			E.global.unitframe.buffwatch[E.myclass] = {};
 		end		
 
 		
@@ -36,7 +36,7 @@ local function UpdateFilterGroup()
 						if not GetSpellInfo(value) then
 							E:Print(L["Not valid spell id"])
 						else
-							table.insert(UF.db.buffwatch[E.myclass], {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = false})
+							table.insert(E.global.unitframe.buffwatch[E.myclass], {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = false})
 							UpdateFilterGroup();
 							UF:Update_AllFrames();
 							selectedSpell = nil;
@@ -54,10 +54,10 @@ local function UpdateFilterGroup()
 							E:Print(L["Not valid spell id"])
 						else
 							local match
-							for x, y in pairs(UF.db.buffwatch[E.myclass]) do
+							for x, y in pairs(E.global.unitframe.buffwatch[E.myclass]) do
 								if y["id"] == tonumber(value) then
 									match = y
-									UF.db.buffwatch[E.myclass][x] = nil
+									E.global.unitframe.buffwatch[E.myclass][x] = nil
 								end
 							end
 							if match == nil then
@@ -79,7 +79,7 @@ local function UpdateFilterGroup()
 					values = function()
 						local values = {};
 						buffs = {};
-						for _, value in pairs(UF.db.buffwatch[E.myclass]) do
+						for _, value in pairs(E.global.unitframe.buffwatch[E.myclass]) do
 							tinsert(buffs, value);
 						end			
 						
@@ -99,7 +99,7 @@ local function UpdateFilterGroup()
 		}
 		
 		local tableIndex
-		for i, spell in pairs(UF.db.buffwatch[E.myclass]) do
+		for i, spell in pairs(E.global.unitframe.buffwatch[E.myclass]) do
 			if spell.id == selectedSpell then
 				tableIndex = i;
 			end
@@ -109,8 +109,8 @@ local function UpdateFilterGroup()
 			E.Options.args.unitframe.args.filters.args.filterGroup.args[name] = {
 				name = name..' ('..selectedSpell..')',
 				type = 'group',
-				get = function(info) return UF.db.buffwatch[E.myclass][tableIndex][ info[#info] ] end,
-				set = function(info, value) UF.db.buffwatch[E.myclass][tableIndex][ info[#info] ] = value; UF:Update_AllFrames() end,
+				get = function(info) return E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ] end,
+				set = function(info, value) E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ] = value; UF:Update_AllFrames() end,
 				order = -10,
 				args = {
 					enabled = {
@@ -138,11 +138,11 @@ local function UpdateFilterGroup()
 						type = 'color',
 						order = 3,
 						get = function(info)
-							local t = UF.db.buffwatch[E.myclass][tableIndex][ info[#info] ]
+							local t = E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ]
 							return t.r, t.g, t.b, t.a
 						end,
 						set = function(info, r, g, b)
-							local t = UF.db.buffwatch[E.myclass][tableIndex][ info[#info] ]
+							local t = E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ]
 							t.r, t.g, t.b = r, g, b
 							UF:Update_AllFrames()
 						end,						
@@ -163,7 +163,7 @@ local function UpdateFilterGroup()
 	
 		buffs = nil;
 	else
-		if not selectedFilter or not UF.db['aurafilters'][selectedFilter] then
+		if not selectedFilter or not E.global.unitframe['aurafilters'][selectedFilter] then
 			E.Options.args.unitframe.args.filters.args.filterGroup = nil
 			return
 		end
@@ -181,7 +181,7 @@ local function UpdateFilterGroup()
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value) 
-						UF.db['aurafilters'][selectedFilter]['spells'][value] = true;
+						E.global.unitframe['aurafilters'][selectedFilter]['spells'][value] = true;
 						UpdateFilterGroup();
 						UF:Update_AllFrames();
 					end,					
@@ -195,13 +195,13 @@ local function UpdateFilterGroup()
 					set = function(info, value) 
 						if DF['unitframe']['aurafilters'][selectedFilter] then
 							if DF['unitframe']['aurafilters'][selectedFilter]['spells'][value] then
-								UF.db['aurafilters'][selectedFilter]['spells'][value] = false;
+								E.global.unitframe['aurafilters'][selectedFilter]['spells'][value] = false;
 								E:Print(L['You may not remove a spell from a default filter that is not customly added. Setting spell to false instead.'])
 							else
-								UF.db['aurafilters'][selectedFilter]['spells'][value] = nil;
+								E.global.unitframe['aurafilters'][selectedFilter]['spells'][value] = nil;
 							end
 						else
-							UF.db['aurafilters'][selectedFilter]['spells'][value] = nil;
+							E.global.unitframe['aurafilters'][selectedFilter]['spells'][value] = nil;
 						end
 						
 						UpdateFilterGroup();
@@ -223,8 +223,8 @@ local function UpdateFilterGroup()
 						['Whitelist'] = L['Whitelist'],
 						['Blacklist'] = L['Blacklist'],
 					},
-					get = function() return UF.db['aurafilters'][selectedFilter].type end,
-					set = function(info, value) UF.db['aurafilters'][selectedFilter].type = value; UF:Update_AllFrames(); end,
+					get = function() return E.global.unitframe['aurafilters'][selectedFilter].type end,
+					set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter].type = value; UF:Update_AllFrames(); end,
 				},	
 				spellGroup = {
 					name = SPELLS,
@@ -236,12 +236,12 @@ local function UpdateFilterGroup()
 		}
 		
 
-		for spell, value in pairs(UF.db['aurafilters'][selectedFilter]['spells']) do
+		for spell, value in pairs(E.global.unitframe['aurafilters'][selectedFilter]['spells']) do
 			E.Options.args.unitframe.args.filters.args.filterGroup.args.spellGroup.args[spell] = {
 				name = spell,
 				type = 'toggle',
-				get = function() return UF.db['aurafilters'][selectedFilter]['spells'][spell] end,
-				set = function(info, value) UF.db['aurafilters'][selectedFilter]['spells'][spell] = value; UpdateFilterGroup(); UF:Update_AllFrames(); end,
+				get = function() return E.global.unitframe['aurafilters'][selectedFilter]['spells'][spell] end,
+				set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][spell] = value; UpdateFilterGroup(); UF:Update_AllFrames(); end,
 			}
 		end
 	end
@@ -258,7 +258,8 @@ E.Options.args.unitframe = {
 			order = 1,
 			type = "toggle",
 			name = L["Enable"],
-			set = function(info, value) E.db.unitframe[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end
+			get = function(info) return E.global.unitframe[ info[#info] ] end,
+			set = function(info, value) E.global.unitframe[ info[#info] ] = value; StaticPopup_Show("GLOBAL_RL") end
 		},
 		moveuf = {
 			order = 2,
@@ -276,7 +277,7 @@ E.Options.args.unitframe = {
 			order = 200,
 			type = 'group',
 			name = L['General'],
-			disabled = function() return not E.db.unitframe.enable end,
+			disabled = function() return not E.global.unitframe.enable end,
 			set = function(info, value) E.db.unitframe[ info[#info] ] = value; UF:Update_AllFrames() end,
 			args = {
 				generalGroup = {
@@ -290,7 +291,8 @@ E.Options.args.unitframe = {
 							name = L['Disable Blizzard'],
 							desc = L['Disables the blizzard party/raid frames.'],
 							type = 'toggle',
-							set = function(info, value) E.db.unitframe[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end
+							get = function(info) return E.global.unitframe[ info[#info] ] end,
+							set = function(info, value) E.global["unitframe"][ info[#info] ] = value; StaticPopup_Show("GLOBAL_RL") end
 						},
 						OORAlpha = {
 							order = 2,
@@ -422,7 +424,7 @@ E.Options.args.unitframe = {
 								return t.r, t.g, t.b, t.a
 							end,
 							set = function(info, r, g, b)
-								E.db.core[ info[#info] ] = {}
+								E.db.general[ info[#info] ] = {}
 								local t = E.db.unitframe.colors[ info[#info] ]
 								t.r, t.g, t.b = r, g, b
 								UF:Update_AllFrames()
@@ -460,7 +462,7 @@ E.Options.args.unitframe = {
 								return t.r, t.g, t.b, t.a
 							end,
 							set = function(info, r, g, b)
-								E.db.core[ info[#info] ] = {}
+								E.db.general[ info[#info] ] = {}
 								local t = E.db.unitframe.colors.power[ info[#info] ]
 								t.r, t.g, t.b = r, g, b
 								UF:Update_AllFrames()
@@ -503,7 +505,7 @@ E.Options.args.unitframe = {
 								return t.r, t.g, t.b, t.a
 							end,
 							set = function(info, r, g, b)
-								E.db.core[ info[#info] ] = {}
+								E.db.general[ info[#info] ] = {}
 								local t = E.db.unitframe.colors.reaction[ info[#info] ]
 								t.r, t.g, t.b = r, g, b
 								UF:Update_AllFrames()
@@ -542,8 +544,8 @@ E.Options.args.unitframe = {
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value) 
-						UF.db['aurafilters'][value] = {};
-						UF.db['aurafilters'][value]['spells'] = {};
+						E.global.unitframe['aurafilters'][value] = {};
+						E.global.unitframe['aurafilters'][value]['spells'] = {};
 					end,					
 				},
 				deleteFilter = {
@@ -553,10 +555,10 @@ E.Options.args.unitframe = {
 					desc = L['Delete a created filter, you cannot delete pre-existing filters, only custom ones.'],
 					get = function(info) return "" end,
 					set = function(info, value) 
-						if DF['unitframe']['aurafilters'][value] then
+						if G['unitframe']['aurafilters'][value] then
 							E:Print(L["You can't remove a pre-existing filter."])
 						else
-							UF.db['aurafilters'][value] = nil;
+							E.global.unitframe['aurafilters'][value] = nil;
 							selectedFilter = nil;
 							E.Options.args.unitframe.args.filters.args.filterGroup = nil;
 						end
@@ -571,7 +573,7 @@ E.Options.args.unitframe = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						
@@ -638,14 +640,14 @@ E.Options.args.unitframe.args.player = {
 	name = L['Player Frame'],
 	type = 'group',
 	order = 300,
-	get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['player'][ info[#info] ] end,
-	set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['player'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+	get = function(info) return E.db.unitframe.units['player'][ info[#info] ] end,
+	set = function(info, value) E.db.unitframe.units['player'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
 	args = {
 		enable = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['player'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
+			set = function(info, value) E.db.unitframe.units['player'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -667,11 +669,11 @@ E.Options.args.unitframe.args.player = {
 			type = 'range',
 			min = 50, max = 500, step = 1,
 			set = function(info, value) 
-				if E.db.unitframe.layouts[UF.ActiveLayout]['player'].castbar.width == E.db.unitframe.layouts[UF.ActiveLayout]['player'][ info[#info] ] then
-					E.db.unitframe.layouts[UF.ActiveLayout]['player'].castbar.width = value;
+				if E.db.unitframe.units['player'].castbar.width == E.db.unitframe.units['player'][ info[#info] ] then
+					E.db.unitframe.units['player'].castbar.width = value;
 				end
 				
-				E.db.unitframe.layouts[UF.ActiveLayout]['player'][ info[#info] ] = value; 
+				E.db.unitframe.units['player'][ info[#info] ] = value; 
 				UF:CreateAndUpdateUF('player');
 			end,
 		},
@@ -693,7 +695,7 @@ E.Options.args.unitframe.args.player = {
 			name = L['Combat Fade'],
 			desc = L['Fade the unitframe when out of combat, not casting, no target exists.'],
 			type = 'toggle',
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['player'][ info[#info] ] = value; UF:CreateAndUpdateUF('player'); UF:CreateAndUpdateUF('pet') end,
+			set = function(info, value) E.db.unitframe.units['player'][ info[#info] ] = value; UF:CreateAndUpdateUF('player'); UF:CreateAndUpdateUF('pet') end,
 		},
 		healPrediction = {
 			order = 8,
@@ -705,8 +707,8 @@ E.Options.args.unitframe.args.player = {
 			order = 100,
 			type = 'group',
 			name = L['Health'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['player']['health'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['player']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+			get = function(info) return E.db.unitframe.units['player']['health'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['player']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
 			args = {
 				text = {
 					type = 'toggle',
@@ -731,8 +733,8 @@ E.Options.args.unitframe.args.player = {
 			order = 200,
 			type = 'group',
 			name = L['Power'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['player']['power'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['player']['power'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+			get = function(info) return E.db.unitframe.units['player']['power'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['player']['power'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -787,8 +789,8 @@ E.Options.args.unitframe.args.player = {
 			order = 300,
 			type = 'group',
 			name = L['Alt-Power'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['player']['altpower'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['player']['altpower'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+			get = function(info) return E.db.unitframe.units['player']['altpower'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['player']['altpower'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -813,8 +815,8 @@ E.Options.args.unitframe.args.player = {
 			order = 400,
 			type = 'group',
 			name = L['Name'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['player']['name'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['player']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+			get = function(info) return E.db.unitframe.units['player']['name'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['player']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -833,8 +835,8 @@ E.Options.args.unitframe.args.player = {
 			order = 500,
 			type = 'group',
 			name = L['Portrait'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['player']['portrait'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['player']['portrait'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+			get = function(info) return E.db.unitframe.units['player']['portrait'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['player']['portrait'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -866,8 +868,8 @@ E.Options.args.unitframe.args.player = {
 			order = 600,
 			type = 'group',
 			name = L['Buffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['player']['buffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['player']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+			get = function(info) return E.db.unitframe.units['player']['buffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['player']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -944,7 +946,7 @@ E.Options.args.unitframe.args.player = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -969,8 +971,8 @@ E.Options.args.unitframe.args.player = {
 			order = 700,
 			type = 'group',
 			name = L['Debuffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['player']['debuffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['player']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+			get = function(info) return E.db.unitframe.units['player']['debuffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['player']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -1047,7 +1049,7 @@ E.Options.args.unitframe.args.player = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -1072,8 +1074,8 @@ E.Options.args.unitframe.args.player = {
 			order = 800,
 			type = 'group',
 			name = L['Castbar'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['player']['castbar'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['player']['castbar'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+			get = function(info) return E.db.unitframe.units['player']['castbar'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['player']['castbar'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -1084,7 +1086,7 @@ E.Options.args.unitframe.args.player = {
 					order = 2,
 					type = 'execute',
 					name = L['Match Frame Width'],
-					func = function() E.db.unitframe.layouts[UF.ActiveLayout]['player']['castbar']['width'] = E.db.unitframe.layouts[UF.ActiveLayout]['player']['width']; UF:CreateAndUpdateUF('player') end,
+					func = function() E.db.unitframe.units['player']['castbar']['width'] = E.db.unitframe.units['player']['width']; UF:CreateAndUpdateUF('player') end,
 				},			
 				forceshow = {
 					order = 3,
@@ -1142,12 +1144,12 @@ E.Options.args.unitframe.args.player = {
 					type = 'color',
 					name = L['Color'],
 					get = function(info)
-						local t = E.db.unitframe.layouts[UF.ActiveLayout]['player']['castbar'][ info[#info] ]
+						local t = E.db.unitframe.units['player']['castbar'][ info[#info] ]
 						return t.r, t.g, t.b, t.a
 					end,
 					set = function(info, r, g, b)
-						E.db.core[ info[#info] ] = {}
-						local t = E.db.unitframe.layouts[UF.ActiveLayout]['player']['castbar'][ info[#info] ]
+						E.db.general[ info[#info] ] = {}
+						local t = E.db.unitframe.units['player']['castbar'][ info[#info] ]
 						t.r, t.g, t.b = r, g, b
 						UF:CreateAndUpdateUF('player')
 					end,													
@@ -1157,12 +1159,12 @@ E.Options.args.unitframe.args.player = {
 					type = 'color',
 					name = L['Interrupt Color'],
 					get = function(info)
-						local t = E.db.unitframe.layouts[UF.ActiveLayout]['player']['castbar'][ info[#info] ]
+						local t = E.db.unitframe.units['player']['castbar'][ info[#info] ]
 						return t.r, t.g, t.b, t.a
 					end,
 					set = function(info, r, g, b)
-						E.db.core[ info[#info] ] = {}
-						local t = E.db.unitframe.layouts[UF.ActiveLayout]['player']['castbar'][ info[#info] ]
+						E.db.general[ info[#info] ] = {}
+						local t = E.db.unitframe.units['player']['castbar'][ info[#info] ]
 						t.r, t.g, t.b = r, g, b
 						UF:CreateAndUpdateUF('player')
 					end,					
@@ -1195,8 +1197,8 @@ E.Options.args.unitframe.args.player = {
 			order = 1000,
 			type = 'group',
 			name = L['Classbar'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['player']['classbar'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['player']['classbar'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+			get = function(info) return E.db.unitframe.units['player']['classbar'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['player']['classbar'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -1225,14 +1227,14 @@ E.Options.args.unitframe.args.target = {
 	name = L['Target Frame'],
 	type = 'group',
 	order = 400,
-	get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['target'][ info[#info] ] end,
-	set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['target'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
+	get = function(info) return E.db.unitframe.units['target'][ info[#info] ] end,
+	set = function(info, value) E.db.unitframe.units['target'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
 	args = {
 		enable = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['target'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
+			set = function(info, value) E.db.unitframe.units['target'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -1254,11 +1256,11 @@ E.Options.args.unitframe.args.target = {
 			type = 'range',
 			min = 50, max = 500, step = 1,
 			set = function(info, value) 
-				if E.db.unitframe.layouts[UF.ActiveLayout]['target'].castbar.width == E.db.unitframe.layouts[UF.ActiveLayout]['target'][ info[#info] ] then
-					E.db.unitframe.layouts[UF.ActiveLayout]['target'].castbar.width = value;
+				if E.db.unitframe.units['target'].castbar.width == E.db.unitframe.units['target'][ info[#info] ] then
+					E.db.unitframe.units['target'].castbar.width = value;
 				end
 				
-				E.db.unitframe.layouts[UF.ActiveLayout]['target'][ info[#info] ] = value; 
+				E.db.unitframe.units['target'][ info[#info] ] = value; 
 				UF:CreateAndUpdateUF('target');
 			end,			
 		},
@@ -1278,8 +1280,8 @@ E.Options.args.unitframe.args.target = {
 			order = 100,
 			type = 'group',
 			name = L['Health'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['target']['health'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['target']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
+			get = function(info) return E.db.unitframe.units['target']['health'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['target']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
 			args = {
 				text = {
 					type = 'toggle',
@@ -1304,8 +1306,8 @@ E.Options.args.unitframe.args.target = {
 			order = 200,
 			type = 'group',
 			name = L['Power'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['target']['power'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['target']['power'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
+			get = function(info) return E.db.unitframe.units['target']['power'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['target']['power'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -1360,8 +1362,8 @@ E.Options.args.unitframe.args.target = {
 			order = 300,
 			type = 'group',
 			name = L['Name'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['target']['name'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['target']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
+			get = function(info) return E.db.unitframe.units['target']['name'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['target']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -1380,8 +1382,8 @@ E.Options.args.unitframe.args.target = {
 			order = 400,
 			type = 'group',
 			name = L['Portrait'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['target']['portrait'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['target']['portrait'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
+			get = function(info) return E.db.unitframe.units['target']['portrait'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['target']['portrait'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -1413,8 +1415,8 @@ E.Options.args.unitframe.args.target = {
 			order = 500,
 			type = 'group',
 			name = L['Buffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['target']['buffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['target']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
+			get = function(info) return E.db.unitframe.units['target']['buffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['target']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -1491,7 +1493,7 @@ E.Options.args.unitframe.args.target = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -1516,8 +1518,8 @@ E.Options.args.unitframe.args.target = {
 			order = 600,
 			type = 'group',
 			name = L['Debuffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['target']['debuffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['target']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
+			get = function(info) return E.db.unitframe.units['target']['debuffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['target']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -1594,7 +1596,7 @@ E.Options.args.unitframe.args.target = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -1619,8 +1621,8 @@ E.Options.args.unitframe.args.target = {
 			order = 700,
 			type = 'group',
 			name = L['Castbar'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['target']['castbar'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['target']['castbar'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
+			get = function(info) return E.db.unitframe.units['target']['castbar'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['target']['castbar'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -1631,7 +1633,7 @@ E.Options.args.unitframe.args.target = {
 					order = 2,
 					type = 'execute',
 					name = L['Match Frame Width'],
-					func = function() E.db.unitframe.layouts[UF.ActiveLayout]['target']['castbar']['width'] = E.db.unitframe.layouts[UF.ActiveLayout]['target']['width']; UF:CreateAndUpdateUF('target') end,
+					func = function() E.db.unitframe.units['target']['castbar']['width'] = E.db.unitframe.units['target']['width']; UF:CreateAndUpdateUF('target') end,
 				},			
 				forceshow = {
 					order = 3,
@@ -1684,12 +1686,12 @@ E.Options.args.unitframe.args.target = {
 					type = 'color',
 					name = L['Color'],
 					get = function(info)
-						local t = E.db.unitframe.layouts[UF.ActiveLayout]['target']['castbar'][ info[#info] ]
+						local t = E.db.unitframe.units['target']['castbar'][ info[#info] ]
 						return t.r, t.g, t.b, t.a
 					end,
 					set = function(info, r, g, b)
-						E.db.core[ info[#info] ] = {}
-						local t = E.db.unitframe.layouts[UF.ActiveLayout]['target']['castbar'][ info[#info] ]
+						E.db.general[ info[#info] ] = {}
+						local t = E.db.unitframe.units['target']['castbar'][ info[#info] ]
 						t.r, t.g, t.b = r, g, b
 						UF:CreateAndUpdateUF('target')
 					end,													
@@ -1699,12 +1701,12 @@ E.Options.args.unitframe.args.target = {
 					type = 'color',
 					name = L['Interrupt Color'],
 					get = function(info)
-						local t = E.db.unitframe.layouts[UF.ActiveLayout]['target']['castbar'][ info[#info] ]
+						local t = E.db.unitframe.units['target']['castbar'][ info[#info] ]
 						return t.r, t.g, t.b, t.a
 					end,
 					set = function(info, r, g, b)
-						E.db.core[ info[#info] ] = {}
-						local t = E.db.unitframe.layouts[UF.ActiveLayout]['target']['castbar'][ info[#info] ]
+						E.db.general[ info[#info] ] = {}
+						local t = E.db.unitframe.units['target']['castbar'][ info[#info] ]
 						t.r, t.g, t.b = r, g, b
 						UF:CreateAndUpdateUF('target')
 					end,					
@@ -1731,8 +1733,8 @@ E.Options.args.unitframe.args.target = {
 			order = 800,
 			type = 'group',
 			name = L['Combobar'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['target']['combobar'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['target']['combobar'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
+			get = function(info) return E.db.unitframe.units['target']['combobar'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['target']['combobar'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -1761,14 +1763,14 @@ E.Options.args.unitframe.args.targettarget = {
 	name = L['TargetTarget Frame'],
 	type = 'group',
 	order = 500,
-	get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['targettarget'][ info[#info] ] end,
-	set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['targettarget'][ info[#info] ] = value; UF:CreateAndUpdateUF('targettarget') end,
+	get = function(info) return E.db.unitframe.units['targettarget'][ info[#info] ] end,
+	set = function(info, value) E.db.unitframe.units['targettarget'][ info[#info] ] = value; UF:CreateAndUpdateUF('targettarget') end,
 	args = {
 		enable = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['targettarget'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
+			set = function(info, value) E.db.unitframe.units['targettarget'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -1800,8 +1802,8 @@ E.Options.args.unitframe.args.targettarget = {
 			order = 6,
 			type = 'group',
 			name = L['Health'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['targettarget']['health'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['targettarget']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('targettarget') end,
+			get = function(info) return E.db.unitframe.units['targettarget']['health'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['targettarget']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('targettarget') end,
 			args = {
 				text = {
 					type = 'toggle',
@@ -1826,8 +1828,8 @@ E.Options.args.unitframe.args.targettarget = {
 			order = 7,
 			type = 'group',
 			name = L['Power'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['targettarget']['power'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['targettarget']['power'][ info[#info] ] = value; UF:CreateAndUpdateUF('targettarget') end,
+			get = function(info) return E.db.unitframe.units['targettarget']['power'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['targettarget']['power'][ info[#info] ] = value; UF:CreateAndUpdateUF('targettarget') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -1882,8 +1884,8 @@ E.Options.args.unitframe.args.targettarget = {
 			order = 9,
 			type = 'group',
 			name = L['Name'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['targettarget']['name'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['targettarget']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('targettarget') end,
+			get = function(info) return E.db.unitframe.units['targettarget']['name'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['targettarget']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('targettarget') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -1902,8 +1904,8 @@ E.Options.args.unitframe.args.targettarget = {
 			order = 11,
 			type = 'group',
 			name = L['Buffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['targettarget']['buffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['targettarget']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('targettarget') end,
+			get = function(info) return E.db.unitframe.units['targettarget']['buffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['targettarget']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('targettarget') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -1980,7 +1982,7 @@ E.Options.args.unitframe.args.targettarget = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -2005,8 +2007,8 @@ E.Options.args.unitframe.args.targettarget = {
 			order = 12,
 			type = 'group',
 			name = L['Debuffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['targettarget']['debuffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['targettarget']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('targettarget'); end,
+			get = function(info) return E.db.unitframe.units['targettarget']['debuffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['targettarget']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('targettarget'); end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -2083,7 +2085,7 @@ E.Options.args.unitframe.args.targettarget = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -2112,14 +2114,14 @@ E.Options.args.unitframe.args.focus = {
 	name = L['Focus Frame'],
 	type = 'group',
 	order = 600,
-	get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['focus'][ info[#info] ] end,
-	set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['focus'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
+	get = function(info) return E.db.unitframe.units['focus'][ info[#info] ] end,
+	set = function(info, value) E.db.unitframe.units['focus'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
 	args = {
 		enable = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['focus'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
+			set = function(info, value) E.db.unitframe.units['focus'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -2157,8 +2159,8 @@ E.Options.args.unitframe.args.focus = {
 			order = 100,
 			type = 'group',
 			name = L['Health'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['focus']['health'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['focus']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
+			get = function(info) return E.db.unitframe.units['focus']['health'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['focus']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
 			args = {
 				text = {
 					type = 'toggle',
@@ -2183,8 +2185,8 @@ E.Options.args.unitframe.args.focus = {
 			order = 200,
 			type = 'group',
 			name = L['Power'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['focus']['power'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['focus']['power'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
+			get = function(info) return E.db.unitframe.units['focus']['power'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['focus']['power'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -2239,8 +2241,8 @@ E.Options.args.unitframe.args.focus = {
 			order = 300,
 			type = 'group',
 			name = L['Name'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['focus']['name'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['focus']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
+			get = function(info) return E.db.unitframe.units['focus']['name'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['focus']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -2259,8 +2261,8 @@ E.Options.args.unitframe.args.focus = {
 			order = 400,
 			type = 'group',
 			name = L['Buffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['focus']['buffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['focus']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
+			get = function(info) return E.db.unitframe.units['focus']['buffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['focus']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -2337,7 +2339,7 @@ E.Options.args.unitframe.args.focus = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -2362,8 +2364,8 @@ E.Options.args.unitframe.args.focus = {
 			order = 500,
 			type = 'group',
 			name = L['Debuffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['focus']['debuffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['focus']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
+			get = function(info) return E.db.unitframe.units['focus']['debuffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['focus']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -2440,7 +2442,7 @@ E.Options.args.unitframe.args.focus = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -2465,8 +2467,8 @@ E.Options.args.unitframe.args.focus = {
 			order = 600,
 			type = 'group',
 			name = L['Castbar'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['focus']['castbar'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['focus']['castbar'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
+			get = function(info) return E.db.unitframe.units['focus']['castbar'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['focus']['castbar'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -2477,7 +2479,7 @@ E.Options.args.unitframe.args.focus = {
 					order = 2,
 					type = 'execute',
 					name = L['Match Frame Width'],
-					func = function() E.db.unitframe.layouts[UF.ActiveLayout]['focus']['castbar']['width'] = E.db.unitframe.layouts[UF.ActiveLayout]['focus']['width']; UF:CreateAndUpdateUF('focus') end,
+					func = function() E.db.unitframe.units['focus']['castbar']['width'] = E.db.unitframe.units['focus']['width']; UF:CreateAndUpdateUF('focus') end,
 				},			
 				forceshow = {
 					order = 3,
@@ -2530,12 +2532,12 @@ E.Options.args.unitframe.args.focus = {
 					type = 'color',
 					name = L['Color'],
 					get = function(info)
-						local t = E.db.unitframe.layouts[UF.ActiveLayout]['focus']['castbar'][ info[#info] ]
+						local t = E.db.unitframe.units['focus']['castbar'][ info[#info] ]
 						return t.r, t.g, t.b, t.a
 					end,
 					set = function(info, r, g, b)
-						E.db.core[ info[#info] ] = {}
-						local t = E.db.unitframe.layouts[UF.ActiveLayout]['focus']['castbar'][ info[#info] ]
+						E.db.general[ info[#info] ] = {}
+						local t = E.db.unitframe.units['focus']['castbar'][ info[#info] ]
 						t.r, t.g, t.b = r, g, b
 						UF:CreateAndUpdateUF('focus')
 					end,													
@@ -2545,12 +2547,12 @@ E.Options.args.unitframe.args.focus = {
 					type = 'color',
 					name = L['Interrupt Color'],
 					get = function(info)
-						local t = E.db.unitframe.layouts[UF.ActiveLayout]['focus']['castbar'][ info[#info] ]
+						local t = E.db.unitframe.units['focus']['castbar'][ info[#info] ]
 						return t.r, t.g, t.b, t.a
 					end,
 					set = function(info, r, g, b)
-						E.db.core[ info[#info] ] = {}
-						local t = E.db.unitframe.layouts[UF.ActiveLayout]['focus']['castbar'][ info[#info] ]
+						E.db.general[ info[#info] ] = {}
+						local t = E.db.unitframe.units['focus']['castbar'][ info[#info] ]
 						t.r, t.g, t.b = r, g, b
 						UF:CreateAndUpdateUF('focus')
 					end,					
@@ -2581,14 +2583,14 @@ E.Options.args.unitframe.args.focustarget = {
 	name = L['FocusTarget Frame'],
 	type = 'group',
 	order = 700,
-	get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['focustarget'][ info[#info] ] end,
-	set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['focustarget'][ info[#info] ] = value; UF:CreateAndUpdateUF('focustarget') end,
+	get = function(info) return E.db.unitframe.units['focustarget'][ info[#info] ] end,
+	set = function(info, value) E.db.unitframe.units['focustarget'][ info[#info] ] = value; UF:CreateAndUpdateUF('focustarget') end,
 	args = {
 		enable = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['focustarget'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
+			set = function(info, value) E.db.unitframe.units['focustarget'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -2620,8 +2622,8 @@ E.Options.args.unitframe.args.focustarget = {
 			order = 6,
 			type = 'group',
 			name = L['Health'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['focustarget']['health'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['focustarget']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('focustarget') end,
+			get = function(info) return E.db.unitframe.units['focustarget']['health'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['focustarget']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('focustarget') end,
 			args = {
 				text = {
 					type = 'toggle',
@@ -2646,8 +2648,8 @@ E.Options.args.unitframe.args.focustarget = {
 			order = 7,
 			type = 'group',
 			name = L['Power'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['focustarget']['power'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['focustarget']['power'][ info[#info] ] = value; UF:CreateAndUpdateUF('focustarget') end,
+			get = function(info) return E.db.unitframe.units['focustarget']['power'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['focustarget']['power'][ info[#info] ] = value; UF:CreateAndUpdateUF('focustarget') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -2702,8 +2704,8 @@ E.Options.args.unitframe.args.focustarget = {
 			order = 9,
 			type = 'group',
 			name = L['Name'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['focustarget']['name'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['focustarget']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('focustarget') end,
+			get = function(info) return E.db.unitframe.units['focustarget']['name'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['focustarget']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('focustarget') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -2722,8 +2724,8 @@ E.Options.args.unitframe.args.focustarget = {
 			order = 11,
 			type = 'group',
 			name = L['Buffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['focustarget']['buffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['focustarget']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('focustarget') end,
+			get = function(info) return E.db.unitframe.units['focustarget']['buffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['focustarget']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('focustarget') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -2800,7 +2802,7 @@ E.Options.args.unitframe.args.focustarget = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -2825,8 +2827,8 @@ E.Options.args.unitframe.args.focustarget = {
 			order = 12,
 			type = 'group',
 			name = L['Debuffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['focustarget']['debuffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['focustarget']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('focustarget') end,
+			get = function(info) return E.db.unitframe.units['focustarget']['debuffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['focustarget']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('focustarget') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -2903,7 +2905,7 @@ E.Options.args.unitframe.args.focustarget = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -2932,14 +2934,14 @@ E.Options.args.unitframe.args.pet = {
 	name = L['Pet Frame'],
 	type = 'group',
 	order = 800,
-	get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['pet'][ info[#info] ] end,
-	set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['pet'][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
+	get = function(info) return E.db.unitframe.units['pet'][ info[#info] ] end,
+	set = function(info, value) E.db.unitframe.units['pet'][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
 	args = {
 		enable = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['pet'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
+			set = function(info, value) E.db.unitframe.units['pet'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -2977,8 +2979,8 @@ E.Options.args.unitframe.args.pet = {
 			order = 100,
 			type = 'group',
 			name = L['Health'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['pet']['health'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['pet']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
+			get = function(info) return E.db.unitframe.units['pet']['health'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['pet']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
 			args = {
 				text = {
 					type = 'toggle',
@@ -3003,8 +3005,8 @@ E.Options.args.unitframe.args.pet = {
 			order = 200,
 			type = 'group',
 			name = L['Power'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['pet']['power'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['pet']['power'][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
+			get = function(info) return E.db.unitframe.units['pet']['power'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['pet']['power'][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -3059,8 +3061,8 @@ E.Options.args.unitframe.args.pet = {
 			order = 300,
 			type = 'group',
 			name = L['Name'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['pet']['name'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['pet']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
+			get = function(info) return E.db.unitframe.units['pet']['name'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['pet']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -3079,8 +3081,8 @@ E.Options.args.unitframe.args.pet = {
 			order = 400,
 			type = 'group',
 			name = L['Buffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['pet']['buffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['pet']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
+			get = function(info) return E.db.unitframe.units['pet']['buffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['pet']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -3157,7 +3159,7 @@ E.Options.args.unitframe.args.pet = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -3182,8 +3184,8 @@ E.Options.args.unitframe.args.pet = {
 			order = 500,
 			type = 'group',
 			name = L['Debuffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['pet']['debuffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['pet']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
+			get = function(info) return E.db.unitframe.units['pet']['debuffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['pet']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -3260,7 +3262,7 @@ E.Options.args.unitframe.args.pet = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -3289,14 +3291,14 @@ E.Options.args.unitframe.args.pettarget = {
 	name = L['PetTarget Frame'],
 	type = 'group',
 	order = 900,
-	get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['pettarget'][ info[#info] ] end,
-	set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['pettarget'][ info[#info] ] = value; UF:CreateAndUpdateUF('pettarget') end,
+	get = function(info) return E.db.unitframe.units['pettarget'][ info[#info] ] end,
+	set = function(info, value) E.db.unitframe.units['pettarget'][ info[#info] ] = value; UF:CreateAndUpdateUF('pettarget') end,
 	args = {
 		enable = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['pettarget'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
+			set = function(info, value) E.db.unitframe.units['pettarget'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -3328,8 +3330,8 @@ E.Options.args.unitframe.args.pettarget = {
 			order = 6,
 			type = 'group',
 			name = L['Health'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['pettarget']['health'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['pettarget']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('pettarget') end,
+			get = function(info) return E.db.unitframe.units['pettarget']['health'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['pettarget']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('pettarget') end,
 			args = {
 				text = {
 					type = 'toggle',
@@ -3354,8 +3356,8 @@ E.Options.args.unitframe.args.pettarget = {
 			order = 7,
 			type = 'group',
 			name = L['Power'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['pettarget']['power'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['pettarget']['power'][ info[#info] ] = value; UF:CreateAndUpdateUF('pettarget') end,
+			get = function(info) return E.db.unitframe.units['pettarget']['power'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['pettarget']['power'][ info[#info] ] = value; UF:CreateAndUpdateUF('pettarget') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -3410,8 +3412,8 @@ E.Options.args.unitframe.args.pettarget = {
 			order = 9,
 			type = 'group',
 			name = L['Name'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['pettarget']['name'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['pettarget']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('pettarget') end,
+			get = function(info) return E.db.unitframe.units['pettarget']['name'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['pettarget']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('pettarget') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -3430,8 +3432,8 @@ E.Options.args.unitframe.args.pettarget = {
 			order = 11,
 			type = 'group',
 			name = L['Buffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['pettarget']['buffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['pettarget']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('pettarget') end,
+			get = function(info) return E.db.unitframe.units['pettarget']['buffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['pettarget']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('pettarget') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -3508,7 +3510,7 @@ E.Options.args.unitframe.args.pettarget = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -3533,8 +3535,8 @@ E.Options.args.unitframe.args.pettarget = {
 			order = 12,
 			type = 'group',
 			name = L['Debuffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['pettarget']['debuffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['pettarget']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('pettarget') end,
+			get = function(info) return E.db.unitframe.units['pettarget']['debuffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['pettarget']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateUF('pettarget') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -3611,7 +3613,7 @@ E.Options.args.unitframe.args.pettarget = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -3640,14 +3642,14 @@ E.Options.args.unitframe.args.boss = {
 	name = L['Boss Frames'],
 	type = 'group',
 	order = 1000,
-	get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['boss'][ info[#info] ] end,
-	set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['boss'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
+	get = function(info) return E.db.unitframe.units['boss'][ info[#info] ] end,
+	set = function(info, value) E.db.unitframe.units['boss'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
 	args = {
 		enable = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['boss'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
+			set = function(info, value) E.db.unitframe.units['boss'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -3672,11 +3674,11 @@ E.Options.args.unitframe.args.boss = {
 			type = 'range',
 			min = 50, max = 500, step = 1,
 			set = function(info, value) 
-				if E.db.unitframe.layouts[UF.ActiveLayout]['boss'].castbar.width == E.db.unitframe.layouts[UF.ActiveLayout]['boss'][ info[#info] ] then
-					E.db.unitframe.layouts[UF.ActiveLayout]['boss'].castbar.width = value;
+				if E.db.unitframe.units['boss'].castbar.width == E.db.unitframe.units['boss'][ info[#info] ] then
+					E.db.unitframe.units['boss'].castbar.width = value;
 				end
 				
-				E.db.unitframe.layouts[UF.ActiveLayout]['boss'][ info[#info] ] = value; 
+				E.db.unitframe.units['boss'][ info[#info] ] = value; 
 				UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES);
 			end,			
 		},
@@ -3699,8 +3701,8 @@ E.Options.args.unitframe.args.boss = {
 			order = 7,
 			type = 'group',
 			name = L['Health'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['boss']['health'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['boss']['health'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
+			get = function(info) return E.db.unitframe.units['boss']['health'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['boss']['health'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
 			args = {
 				text = {
 					type = 'toggle',
@@ -3725,8 +3727,8 @@ E.Options.args.unitframe.args.boss = {
 			order = 8,
 			type = 'group',
 			name = L['Power'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['boss']['power'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['boss']['power'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
+			get = function(info) return E.db.unitframe.units['boss']['power'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['boss']['power'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -3781,8 +3783,8 @@ E.Options.args.unitframe.args.boss = {
 			order = 9,
 			type = 'group',
 			name = L['Name'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['boss']['name'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['boss']['name'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
+			get = function(info) return E.db.unitframe.units['boss']['name'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['boss']['name'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -3801,8 +3803,8 @@ E.Options.args.unitframe.args.boss = {
 			order = 10,
 			type = 'group',
 			name = L['Portrait'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['boss']['portrait'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['boss']['portrait'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
+			get = function(info) return E.db.unitframe.units['boss']['portrait'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['boss']['portrait'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -3834,8 +3836,8 @@ E.Options.args.unitframe.args.boss = {
 			order = 11,
 			type = 'group',
 			name = L['Buffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['boss']['buffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['boss']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
+			get = function(info) return E.db.unitframe.units['boss']['buffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['boss']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -3912,7 +3914,7 @@ E.Options.args.unitframe.args.boss = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -3937,8 +3939,8 @@ E.Options.args.unitframe.args.boss = {
 			order = 12,
 			type = 'group',
 			name = L['Debuffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['boss']['debuffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['boss']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
+			get = function(info) return E.db.unitframe.units['boss']['debuffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['boss']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -4015,7 +4017,7 @@ E.Options.args.unitframe.args.boss = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -4040,8 +4042,8 @@ E.Options.args.unitframe.args.boss = {
 			order = 13,
 			type = 'group',
 			name = L['Castbar'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['boss']['castbar'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['boss']['castbar'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
+			get = function(info) return E.db.unitframe.units['boss']['castbar'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['boss']['castbar'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -4052,7 +4054,7 @@ E.Options.args.unitframe.args.boss = {
 					order = 2,
 					type = 'execute',
 					name = L['Match Frame Width'],
-					func = function() E.db.unitframe.layouts[UF.ActiveLayout]['boss']['castbar']['width'] = E.db.unitframe.layouts[UF.ActiveLayout]['boss']['width']; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
+					func = function() E.db.unitframe.units['boss']['castbar']['width'] = E.db.unitframe.units['boss']['width']; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
 				},				
 				width = {
 					order = 3,
@@ -4076,12 +4078,12 @@ E.Options.args.unitframe.args.boss = {
 					type = 'color',
 					name = L['Color'],
 					get = function(info)
-						local t = E.db.unitframe.layouts[UF.ActiveLayout]['boss']['castbar'][ info[#info] ]
+						local t = E.db.unitframe.units['boss']['castbar'][ info[#info] ]
 						return t.r, t.g, t.b, t.a
 					end,
 					set = function(info, r, g, b)
-						E.db.core[ info[#info] ] = {}
-						local t = E.db.unitframe.layouts[UF.ActiveLayout]['boss']['castbar'][ info[#info] ]
+						E.db.general[ info[#info] ] = {}
+						local t = E.db.unitframe.units['boss']['castbar'][ info[#info] ]
 						t.r, t.g, t.b = r, g, b
 						UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES)
 					end,													
@@ -4091,12 +4093,12 @@ E.Options.args.unitframe.args.boss = {
 					type = 'color',
 					name = L['Interrupt Color'],
 					get = function(info)
-						local t = E.db.unitframe.layouts[UF.ActiveLayout]['boss']['castbar'][ info[#info] ]
+						local t = E.db.unitframe.units['boss']['castbar'][ info[#info] ]
 						return t.r, t.g, t.b, t.a
 					end,
 					set = function(info, r, g, b)
-						E.db.core[ info[#info] ] = {}
-						local t = E.db.unitframe.layouts[UF.ActiveLayout]['boss']['castbar'][ info[#info] ]
+						E.db.general[ info[#info] ] = {}
+						local t = E.db.unitframe.units['boss']['castbar'][ info[#info] ]
 						t.r, t.g, t.b = r, g, b
 						UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES)
 					end,					
@@ -4127,14 +4129,14 @@ E.Options.args.unitframe.args.arena = {
 	name = L['Arena Frames'],
 	type = 'group',
 	order = 1000,
-	get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['arena'][ info[#info] ] end,
-	set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['arena'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
+	get = function(info) return E.db.unitframe.units['arena'][ info[#info] ] end,
+	set = function(info, value) E.db.unitframe.units['arena'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
 	args = {
 		enable = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['arena'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
+			set = function(info, value) E.db.unitframe.units['arena'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -4159,11 +4161,11 @@ E.Options.args.unitframe.args.arena = {
 			type = 'range',
 			min = 50, max = 500, step = 1,
 			set = function(info, value) 
-				if E.db.unitframe.layouts[UF.ActiveLayout]['arena'].castbar.width == E.db.unitframe.layouts[UF.ActiveLayout]['arena'][ info[#info] ] then
-					E.db.unitframe.layouts[UF.ActiveLayout]['arena'].castbar.width = value;
+				if E.db.unitframe.units['arena'].castbar.width == E.db.unitframe.units['arena'][ info[#info] ] then
+					E.db.unitframe.units['arena'].castbar.width = value;
 				end
 				
-				E.db.unitframe.layouts[UF.ActiveLayout]['arena'][ info[#info] ] = value; 
+				E.db.unitframe.units['arena'][ info[#info] ] = value; 
 				UF:CreateAndUpdateUFGroup('arena', 5);
 			end,			
 		},
@@ -4186,8 +4188,8 @@ E.Options.args.unitframe.args.arena = {
 			order = 7,
 			type = 'group',
 			name = L['Health'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['arena']['health'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['arena']['health'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
+			get = function(info) return E.db.unitframe.units['arena']['health'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['arena']['health'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
 			args = {
 				text = {
 					type = 'toggle',
@@ -4212,8 +4214,8 @@ E.Options.args.unitframe.args.arena = {
 			order = 8,
 			type = 'group',
 			name = L['Power'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['arena']['power'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['arena']['power'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
+			get = function(info) return E.db.unitframe.units['arena']['power'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['arena']['power'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -4268,8 +4270,8 @@ E.Options.args.unitframe.args.arena = {
 			order = 9,
 			type = 'group',
 			name = L['Name'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['arena']['name'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['arena']['name'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
+			get = function(info) return E.db.unitframe.units['arena']['name'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['arena']['name'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -4288,8 +4290,8 @@ E.Options.args.unitframe.args.arena = {
 			order = 11,
 			type = 'group',
 			name = L['Buffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['arena']['buffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['arena']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
+			get = function(info) return E.db.unitframe.units['arena']['buffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['arena']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -4366,7 +4368,7 @@ E.Options.args.unitframe.args.arena = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -4391,8 +4393,8 @@ E.Options.args.unitframe.args.arena = {
 			order = 12,
 			type = 'group',
 			name = L['Debuffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['arena']['debuffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['arena']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
+			get = function(info) return E.db.unitframe.units['arena']['debuffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['arena']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -4469,7 +4471,7 @@ E.Options.args.unitframe.args.arena = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -4494,8 +4496,8 @@ E.Options.args.unitframe.args.arena = {
 			order = 13,
 			type = 'group',
 			name = L['Castbar'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['arena']['castbar'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['arena']['castbar'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
+			get = function(info) return E.db.unitframe.units['arena']['castbar'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['arena']['castbar'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -4506,7 +4508,7 @@ E.Options.args.unitframe.args.arena = {
 					order = 2,
 					type = 'execute',
 					name = L['Match Frame Width'],
-					func = function() E.db.unitframe.layouts[UF.ActiveLayout]['arena']['castbar']['width'] = E.db.unitframe.layouts[UF.ActiveLayout]['arena']['width']; UF:CreateAndUpdateUFGroup('arena', 5) end,
+					func = function() E.db.unitframe.units['arena']['castbar']['width'] = E.db.unitframe.units['arena']['width']; UF:CreateAndUpdateUFGroup('arena', 5) end,
 				},				
 				width = {
 					order = 3,
@@ -4530,12 +4532,12 @@ E.Options.args.unitframe.args.arena = {
 					type = 'color',
 					name = L['Color'],
 					get = function(info)
-						local t = E.db.unitframe.layouts[UF.ActiveLayout]['arena']['castbar'][ info[#info] ]
+						local t = E.db.unitframe.units['arena']['castbar'][ info[#info] ]
 						return t.r, t.g, t.b, t.a
 					end,
 					set = function(info, r, g, b)
-						E.db.core[ info[#info] ] = {}
-						local t = E.db.unitframe.layouts[UF.ActiveLayout]['arena']['castbar'][ info[#info] ]
+						E.db.general[ info[#info] ] = {}
+						local t = E.db.unitframe.units['arena']['castbar'][ info[#info] ]
 						t.r, t.g, t.b = r, g, b
 						UF:CreateAndUpdateUFGroup('arena', 5)
 					end,													
@@ -4545,12 +4547,12 @@ E.Options.args.unitframe.args.arena = {
 					type = 'color',
 					name = L['Interrupt Color'],
 					get = function(info)
-						local t = E.db.unitframe.layouts[UF.ActiveLayout]['arena']['castbar'][ info[#info] ]
+						local t = E.db.unitframe.units['arena']['castbar'][ info[#info] ]
 						return t.r, t.g, t.b, t.a
 					end,
 					set = function(info, r, g, b)
-						E.db.core[ info[#info] ] = {}
-						local t = E.db.unitframe.layouts[UF.ActiveLayout]['arena']['castbar'][ info[#info] ]
+						E.db.general[ info[#info] ] = {}
+						local t = E.db.unitframe.units['arena']['castbar'][ info[#info] ]
 						t.r, t.g, t.b = r, g, b
 						UF:CreateAndUpdateUFGroup('arena', 5)
 					end,					
@@ -4588,8 +4590,8 @@ E.Options.args.unitframe.args.party = {
 	name = L['Party Frames'],
 	type = 'group',
 	order = 1100,
-	get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['party'][ info[#info] ] end,
-	set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
+	get = function(info) return E.db.unitframe.units['party'][ info[#info] ] end,
+	set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 	args = {
 		enable = {
 			type = 'toggle',
@@ -4619,7 +4621,7 @@ E.Options.args.unitframe.args.party = {
 					name = L['Group Point'],
 					desc = L['What each frame should attach itself to, example setting it to TOP every unit will attach its top to the last point bottom.'],
 					values = groupPoints,
-					set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party'); end,
+					set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party'); end,
 				},
 				columnAnchorPoint = {
 					order = 5,
@@ -4627,7 +4629,7 @@ E.Options.args.unitframe.args.party = {
 					name = L['Column Point'],
 					desc = L['The anchor point for each new column. A value of LEFT will cause the columns to grow to the right.'],
 					values = groupPoints,	
-					set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party'); end,
+					set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party'); end,
 				},
 				maxColumns = {
 					order = 6,
@@ -4707,8 +4709,8 @@ E.Options.args.unitframe.args.party = {
 			order = 100,
 			type = 'group',
 			name = L['Health'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['party']['health'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['party']['health'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party'); end,
+			get = function(info) return E.db.unitframe.units['party']['health'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['party']['health'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party'); end,
 			args = {
 				text = {
 					type = 'toggle',
@@ -4743,8 +4745,8 @@ E.Options.args.unitframe.args.party = {
 			order = 200,
 			type = 'group',
 			name = L['Power'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['party']['power'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['party']['power'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
+			get = function(info) return E.db.unitframe.units['party']['power'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['party']['power'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -4799,8 +4801,8 @@ E.Options.args.unitframe.args.party = {
 			order = 300,
 			type = 'group',
 			name = L['Name'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['party']['name'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['party']['name'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
+			get = function(info) return E.db.unitframe.units['party']['name'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['party']['name'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -4819,8 +4821,8 @@ E.Options.args.unitframe.args.party = {
 			order = 400,
 			type = 'group',
 			name = L['Buffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['party']['buffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['party']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
+			get = function(info) return E.db.unitframe.units['party']['buffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['party']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -4897,7 +4899,7 @@ E.Options.args.unitframe.args.party = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -4922,8 +4924,8 @@ E.Options.args.unitframe.args.party = {
 			order = 500,
 			type = 'group',
 			name = L['Debuffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['party']['debuffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['party']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
+			get = function(info) return E.db.unitframe.units['party']['debuffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['party']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -5000,7 +5002,7 @@ E.Options.args.unitframe.args.party = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -5025,8 +5027,8 @@ E.Options.args.unitframe.args.party = {
 			order = 600,
 			type = 'group',
 			name = L['Buff Indicator'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['party']['buffIndicator'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['party']['buffIndicator'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
+			get = function(info) return E.db.unitframe.units['party']['buffIndicator'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['party']['buffIndicator'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -5058,8 +5060,8 @@ E.Options.args.unitframe.args.party = {
 			order = 700,
 			type = 'group',
 			name = L['Role Icon'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['party']['roleIcon'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['party']['roleIcon'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,	
+			get = function(info) return E.db.unitframe.units['party']['roleIcon'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['party']['roleIcon'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,	
 			args = {
 				enable = {
 					type = 'toggle',
@@ -5078,8 +5080,8 @@ E.Options.args.unitframe.args.party = {
 			order = 800,
 			type = 'group',
 			name = L['Party Pets'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['party']['petsGroup'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['party']['petsGroup'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,	
+			get = function(info) return E.db.unitframe.units['party']['petsGroup'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['party']['petsGroup'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,	
 			args = {		
 				enable = {
 					type = 'toggle',
@@ -5131,8 +5133,8 @@ E.Options.args.unitframe.args.party = {
 			order = 900,
 			type = 'group',
 			name = L['Party Targets'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['party']['targetsGroup'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['party']['targetsGroup'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,	
+			get = function(info) return E.db.unitframe.units['party']['targetsGroup'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['party']['targetsGroup'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,	
 			args = {		
 				enable = {
 					type = 'toggle',
@@ -5188,8 +5190,8 @@ E.Options.args.unitframe.args.raid625 = {
 	name = L['Raid625 Frames'],
 	type = 'group',
 	order = 1100,
-	get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['raid625'][ info[#info] ] end,
-	set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid625'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625') end,
+	get = function(info) return E.db.unitframe.units['raid625'][ info[#info] ] end,
+	set = function(info, value) E.db.unitframe.units['raid625'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625') end,
 	args = {
 		enable = {
 			type = 'toggle',
@@ -5219,7 +5221,7 @@ E.Options.args.unitframe.args.raid625 = {
 					name = L['Group Point'],
 					desc = L['What each frame should attach itself to, example setting it to TOP every unit will attach its top to the last point bottom.'],
 					values = groupPoints,
-					set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid625'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625'); end,
+					set = function(info, value) E.db.unitframe.units['raid625'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625'); end,
 				},
 				columnAnchorPoint = {
 					order = 5,
@@ -5227,7 +5229,7 @@ E.Options.args.unitframe.args.raid625 = {
 					name = L['Column Point'],
 					desc = L['The anchor point for each new column. A value of LEFT will cause the columns to grow to the right.'],
 					values = groupPoints,	
-					set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid625'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625'); end,
+					set = function(info, value) E.db.unitframe.units['raid625'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625'); end,
 				},
 				maxColumns = {
 					order = 6,
@@ -5307,8 +5309,8 @@ E.Options.args.unitframe.args.raid625 = {
 			order = 100,
 			type = 'group',
 			name = L['Health'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['raid625']['health'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid625']['health'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625'); end,
+			get = function(info) return E.db.unitframe.units['raid625']['health'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid625']['health'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625'); end,
 			args = {
 				text = {
 					type = 'toggle',
@@ -5343,8 +5345,8 @@ E.Options.args.unitframe.args.raid625 = {
 			order = 200,
 			type = 'group',
 			name = L['Power'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['raid625']['power'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid625']['power'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625') end,
+			get = function(info) return E.db.unitframe.units['raid625']['power'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid625']['power'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -5399,8 +5401,8 @@ E.Options.args.unitframe.args.raid625 = {
 			order = 300,
 			type = 'group',
 			name = L['Name'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['raid625']['name'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid625']['name'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625') end,
+			get = function(info) return E.db.unitframe.units['raid625']['name'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid625']['name'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -5419,8 +5421,8 @@ E.Options.args.unitframe.args.raid625 = {
 			order = 400,
 			type = 'group',
 			name = L['Buffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['raid625']['buffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid625']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625') end,
+			get = function(info) return E.db.unitframe.units['raid625']['buffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid625']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -5497,7 +5499,7 @@ E.Options.args.unitframe.args.raid625 = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -5522,8 +5524,8 @@ E.Options.args.unitframe.args.raid625 = {
 			order = 500,
 			type = 'group',
 			name = L['Debuffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['raid625']['debuffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid625']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625') end,
+			get = function(info) return E.db.unitframe.units['raid625']['debuffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid625']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -5600,7 +5602,7 @@ E.Options.args.unitframe.args.raid625 = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -5625,8 +5627,8 @@ E.Options.args.unitframe.args.raid625 = {
 			order = 600,
 			type = 'group',
 			name = L['Buff Indicator'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['raid625']['buffIndicator'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid625']['buffIndicator'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625') end,
+			get = function(info) return E.db.unitframe.units['raid625']['buffIndicator'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid625']['buffIndicator'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -5658,8 +5660,8 @@ E.Options.args.unitframe.args.raid625 = {
 			order = 700,
 			type = 'group',
 			name = L['Role Icon'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['raid625']['roleIcon'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid625']['roleIcon'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625') end,	
+			get = function(info) return E.db.unitframe.units['raid625']['roleIcon'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid625']['roleIcon'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625') end,	
 			args = {
 				enable = {
 					type = 'toggle',
@@ -5678,8 +5680,8 @@ E.Options.args.unitframe.args.raid625 = {
 			order = 800,
 			type = 'group',
 			name = L['RaidDebuff Indicator'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['raid625']['rdebuffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid625']['rdebuffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625') end,
+			get = function(info) return E.db.unitframe.units['raid625']['rdebuffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid625']['rdebuffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -5708,8 +5710,8 @@ E.Options.args.unitframe.args.raid2640 = {
 	name = L['Raid2640 Frames'],
 	type = 'group',
 	order = 1100,
-	get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['raid2640'][ info[#info] ] end,
-	set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid2640'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid2640') end,
+	get = function(info) return E.db.unitframe.units['raid2640'][ info[#info] ] end,
+	set = function(info, value) E.db.unitframe.units['raid2640'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid2640') end,
 	args = {
 		enable = {
 			type = 'toggle',
@@ -5739,7 +5741,7 @@ E.Options.args.unitframe.args.raid2640 = {
 					name = L['Group Point'],
 					desc = L['What each frame should attach itself to, example setting it to TOP every unit will attach its top to the last point bottom.'],
 					values = groupPoints,
-					set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid2640'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid2640'); end,
+					set = function(info, value) E.db.unitframe.units['raid2640'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid2640'); end,
 				},
 				columnAnchorPoint = {
 					order = 5,
@@ -5747,7 +5749,7 @@ E.Options.args.unitframe.args.raid2640 = {
 					name = L['Column Point'],
 					desc = L['The anchor point for each new column. A value of LEFT will cause the columns to grow to the right.'],
 					values = groupPoints,	
-					set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid2640'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid2640'); end,
+					set = function(info, value) E.db.unitframe.units['raid2640'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid2640'); end,
 				},
 				maxColumns = {
 					order = 6,
@@ -5827,8 +5829,8 @@ E.Options.args.unitframe.args.raid2640 = {
 			order = 100,
 			type = 'group',
 			name = L['Health'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['raid2640']['health'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid2640']['health'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid2640'); end,
+			get = function(info) return E.db.unitframe.units['raid2640']['health'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid2640']['health'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid2640'); end,
 			args = {
 				text = {
 					type = 'toggle',
@@ -5863,8 +5865,8 @@ E.Options.args.unitframe.args.raid2640 = {
 			order = 200,
 			type = 'group',
 			name = L['Power'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['raid2640']['power'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid2640']['power'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid2640') end,
+			get = function(info) return E.db.unitframe.units['raid2640']['power'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid2640']['power'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid2640') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -5919,8 +5921,8 @@ E.Options.args.unitframe.args.raid2640 = {
 			order = 300,
 			type = 'group',
 			name = L['Name'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['raid2640']['name'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid2640']['name'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid2640') end,
+			get = function(info) return E.db.unitframe.units['raid2640']['name'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid2640']['name'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid2640') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -5939,8 +5941,8 @@ E.Options.args.unitframe.args.raid2640 = {
 			order = 400,
 			type = 'group',
 			name = L['Buffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['raid2640']['buffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid2640']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid2640') end,
+			get = function(info) return E.db.unitframe.units['raid2640']['buffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid2640']['buffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid2640') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -6017,7 +6019,7 @@ E.Options.args.unitframe.args.raid2640 = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -6042,8 +6044,8 @@ E.Options.args.unitframe.args.raid2640 = {
 			order = 500,
 			type = 'group',
 			name = L['Debuffs'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['raid2640']['debuffs'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid2640']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid2640') end,
+			get = function(info) return E.db.unitframe.units['raid2640']['debuffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid2640']['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid2640') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -6120,7 +6122,7 @@ E.Options.args.unitframe.args.raid2640 = {
 					values = function()
 						filters = {}
 						filters[''] = ''
-						for filter in pairs(UF.db['aurafilters']) do
+						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
@@ -6145,8 +6147,8 @@ E.Options.args.unitframe.args.raid2640 = {
 			order = 600,
 			type = 'group',
 			name = L['Buff Indicator'],
-			get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['raid2640']['buffIndicator'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['raid2640']['buffIndicator'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid2640') end,
+			get = function(info) return E.db.unitframe.units['raid2640']['buffIndicator'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid2640']['buffIndicator'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid2640') end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -6182,8 +6184,8 @@ E.Options.args.unitframe.args.tank = {
 	name = L['Tank Frames'],
 	type = 'group',
 	order = 1100,
-	get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['tank'][ info[#info] ] end,
-	set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['tank'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('tank') end,
+	get = function(info) return E.db.unitframe.units['tank'][ info[#info] ] end,
+	set = function(info, value) E.db.unitframe.units['tank'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('tank') end,
 	args = {
 		enable = {
 			type = 'toggle',
@@ -6218,8 +6220,8 @@ E.Options.args.unitframe.args.assist = {
 	name = L['Assist Frames'],
 	type = 'group',
 	order = 1100,
-	get = function(info) return E.db.unitframe.layouts[UF.ActiveLayout]['assist'][ info[#info] ] end,
-	set = function(info, value) E.db.unitframe.layouts[UF.ActiveLayout]['assist'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('assist') end,
+	get = function(info) return E.db.unitframe.units['assist'][ info[#info] ] end,
+	set = function(info, value) E.db.unitframe.units['assist'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('assist') end,
 	args = {
 		enable = {
 			type = 'toggle',
@@ -6246,164 +6248,5 @@ E.Options.args.unitframe.args.assist = {
 				},					
 			},
 		},	
-	},
-}
-
-local profiles, selectedProfile = {}, nil
-E.Options.args.unitframe.args.profileGroup = {
-	type = 'group',
-	name = L['Profiles'],
-	order = -200,
-	get = function(info) return E.db.unitframe[ info[#info] ] end,
-	set = function(info, value) E.db.unitframe[ info[#info] ] = value; UF:ACTIVE_TALENT_GROUP_CHANGED(); end,
-	args = {
-		newProfileDesc = {
-				order = 1,
-				type = "description",
-				name = L['NEW_PROFILE_DESC'],
-				width = 'full',	
-		},
-		newProfile = {
-			order = 2,
-			name = L['New Profile'],
-			type = 'input',
-			get = function() return '' end,
-			set = function(info, value)
-				UF:CopySettings(UF.ActiveLayout, value)
-				UF:ACTIVE_TALENT_GROUP_CHANGED()
-			end,
-		},
-		deleteProfileDesc = {
-				order = 3,
-				type = "description",
-				name = L["Delete a profile, doing this will permanently remove the profile from this character's settings."],
-				width = 'full',	
-		},		
-		deleteProfile = {
-			order = 4,
-			name = L['Delete Profile'],
-			type = 'select',
-			get = function() return end,
-			set = function(info, value)
-				if value ~= 'Primary' and value ~= 'Secondary' then
-					UF.db['layouts'][value] = nil;
-				end
-				
-				if UF.db.mainSpec == value then
-					UF.db.mainSpec = 'Primary';
-				elseif UF.db.offSpec == value then
-					UF.db.offSpec = 'Primary';
-				end
-				UF:ACTIVE_TALENT_GROUP_CHANGED()
-			end,
-			values = function()
-				profiles = {}
-				for layout in pairs(UF.db['layouts']) do
-					if layout ~= 'Primary' and value ~= 'Secondary' then
-						profiles[layout] = layout
-					end
-				end
-				return profiles
-			end,		
-			disabled = function()
-				local found
-				for layout in pairs(UF.db['layouts']) do
-					if layout ~= 'Primary' then
-						found = true
-					end
-				end
-				
-				if found then
-					return false;
-				else
-					return true;
-				end
-			end,
-		},
-		resetProfile = {
-			order = 5,
-			type = 'execute',
-			name = L['Reset Profile'],
-			desc = L['Reset the current profile to match default settings from the primary layout.'],
-			func = function()
-				UF:CopySettings(UF.ActiveLayout);
-				UF:Update_AllFrames()
-			end,
-		},
-		copyProfileDesc = {
-				order = 6,
-				type = "description",
-				name = L["Copy a profile, you can copy the settings from a selected profile to the currently active profile."],
-				width = 'full',	
-		},			
-		copyFrom = {
-			order = 7,
-			name = L['Copy From'],
-			type = 'select',
-			get = function() return end,
-			set = function(info, value)
-				UF:CopySettings(value, UF.ActiveLayout, true)
-				UF:Update_AllFrames()
-			end,
-			values = function()
-				profiles = {}
-				for layout in pairs(UF.db['layouts']) do
-					if layout ~= UF.ActiveLayout then
-						profiles[layout] = layout
-					end
-				end
-				return profiles
-			end,
-			disabled = function()
-				local found
-				for layout in pairs(UF.db['layouts']) do
-					if layout ~= UF.ActiveLayout then
-						found = true
-					end
-				end
-				
-				if found then
-					return false;
-				else
-					return true;
-				end
-			end,			
-		},
-		specProfileDesc = {
-				order = 8,
-				type = "description",
-				name = L["Assign profile to active talent specialization."],
-				width = 'full',	
-		},			
-		mainSpec = {
-			order = 9,
-			name = L['Talent Spec #1'],
-			type = 'select',
-			values = function()
-				profiles = {}
-				for layout in pairs(UF.db['layouts']) do
-					profiles[layout] = layout
-				end
-				return profiles
-			end,
-		},
-		offSpec = {
-			order = 10,
-			name = L['Talent Spec #2'],
-			type = 'select',
-			values = function()
-				profiles = {}
-				for layout in pairs(UF.db['layouts']) do
-					profiles[layout] = layout
-				end
-				return profiles
-			end,
-		},	
-		currentProfile = {
-			order = 11,
-			type = "description",
-			name = function() return format('%s: |cff00D919%s|r', L['Active Profile'], UF.ActiveLayout) end,
-			width = 'full',				
-		},
 	},
 }

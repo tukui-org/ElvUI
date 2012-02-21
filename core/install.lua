@@ -169,7 +169,7 @@ local function SetupCVars()
 	InstallStepComplete:Show()					
 end	
 
-local function SetupLayout(isPrimary, layout)
+local function SetupLayout(layout)
 	if isPrimary then
 		if layout == 'tank' then
 			--datatexts

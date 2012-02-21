@@ -281,7 +281,7 @@ end
 function TT:ADDON_LOADED(event, addon)
 	if addon == 'Blizzard_DebugTools' then
 		FrameStackTooltip:HookScript("OnShow", function(self)
-			local noscalemult = E.mult * E.db["core"].uiscale
+			local noscalemult = E.mult * E.db['general'].uiscale
 			self:SetBackdrop({
 			  bgFile = E["media"].blankTex, 
 			  edgeFile = E["media"].blankTex, 
@@ -556,7 +556,7 @@ end
 
 function TT:Initialize()
 	self.db = E.db["tooltip"]
-	if self.db.enable ~= true then return end
+	if E.global["tooltip"].enable ~= true then return end
 	E.Tooltip = TT
 
 	GameTooltipStatusBar:ClearAllPoints()

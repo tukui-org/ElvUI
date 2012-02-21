@@ -214,7 +214,7 @@ end
 
 
 local function LoadSkin()
-	if E.db.skins.dbm.enable ~= true then return end
+	if E.global.skins.dbm.enable ~= true then return end
 	hooksecurefunc(DBT,"CreateBar",SkinBars)
 	hooksecurefunc(DBM.BossHealth,"Show",SkinBossTitle)
 	hooksecurefunc(DBM.BossHealth,"AddBoss",SkinBoss)

@@ -34,7 +34,7 @@ function UF:Construct_Raid625Frames(unitGroup)
 	self.ReadyCheck = UF:Construct_ReadyCheckIcon(self)	
 	self.HealPrediction = UF:Construct_HealComm(self)
 	
-	UF:Update_Raid625Frames(self, E.db['unitframe']['layouts'][UF.ActiveLayout]['raid625'])
+	UF:Update_Raid625Frames(self, E.db['unitframe']['units']['raid625'])
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()	
 	

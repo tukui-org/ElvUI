@@ -22,7 +22,7 @@ function UF:Construct_TankFrames(unitGroup)
 	
 	self.RaidIcon = UF:Construct_RaidIcon(self)
 	
-	UF:Update_TankFrames(self, E.db['unitframe']['layouts'][UF.ActiveLayout]['tank'])
+	UF:Update_TankFrames(self, E.db['unitframe']['units']['tank'])
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()	
 	

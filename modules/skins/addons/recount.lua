@@ -28,7 +28,7 @@ local function SkinFrame(frame)
 end
 
 local function LoadSkin()
-	if E.db.skins.recount.enable ~= true then return end
+	if E.global.skins.recount.enable ~= true then return end
 	-- Override bar textures
 	Recount.UpdateBarTextures = function(self)
 		for k, v in pairs(Recount.MainWindow.Rows) do

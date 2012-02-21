@@ -11,8 +11,8 @@ local function GetInfoText(frame, unit, r, g, b, min, max, reverse, type)
 	local value
 	local db = frame.db
 	
-	if not db then return '' end
-	
+	if not db or not db[type] then return '' end
+
 	if db[type].text_format == 'blank' then
 		return '';
 	end
@@ -345,7 +345,7 @@ function UF:UpdateAuraTimer(elapsed)
 				self.text:Hide()
 				self:SetScript("OnUpdate", nil)
 			end
-			if (not self.isDebuff) and E.db["core"].classtheme == true then
+			if (not self.isDebuff) and E.db['general'].classtheme == true then
 				local r, g, b = self:GetParent():GetParent().Health.backdrop:GetBackdropBorderColor()
 				self:SetBackdropBorderColor(r, g, b)
 			end
@@ -360,8 +360,10 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 	local db = self:GetParent().db
 	
 	button.text:Show()
-	button.text:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db[self.type].fontsize, 'OUTLINE')
-	button.count:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db[self.type].fontsize, 'OUTLINE')
+	if db and db[self.type] then
+		button.text:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db[self.type].fontsize, 'OUTLINE')
+		button.count:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db[self.type].fontsize, 'OUTLINE')
+	end
 	
 	if button.isDebuff then
 		if(not UnitIsFriend("player", unit) and button.owner ~= "player" and button.owner ~= "vehicle") --[[and (not E.isDebuffWhiteList[name])]] then
@@ -473,14 +475,14 @@ end
 function UF:PostCastStart(unit, name, rank, castid)
 	if unit == "vehicle" then unit = "player" end
 	self.Text:SetText(string.sub(name, 0, math.floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontsize) * 12)))
-
+	self.Spark:Height(self:GetHeight() * 2)
 	local db = self:GetParent().db
 	local color		
 	self.unit = unit
-	
+
 	if db.castbar.ticks and unit == "player" then
-		local baseTicks = UF.db.ChannelTicks[name]
-		if baseTicks and UF.db.HastedChannelTicks[name] then
+		local baseTicks = E.global.unitframe.ChannelTicks[name]
+		if baseTicks and E.global.unitframe.HastedChannelTicks[name] then
 			local tickIncRate = 1 / baseTicks
 			local curHaste = UnitSpellHaste("player") * 0.01
 			local firstTickInc = tickIncRate / 2
@@ -602,7 +604,7 @@ function UF:EclipseDirection()
 end
 
 function UF:DruidResourceBarVisibilityUpdate(unit)
-	local db = E.db['unitframe']['layouts'][UF.ActiveLayout].player
+	local db = E.db['unitframe']['units'].player
 	local health = self:GetParent().Health
 	local frame = self:GetParent()
 	local PORTRAIT_WIDTH = db.portrait.width
@@ -834,7 +836,7 @@ function UF:UpdateComboDisplay(event, unit)
 	
 	local BORDER = E:Scale(2)
 	local SPACING = E:Scale(1)
-	local db = E.db['unitframe']['layouts'][UF.ActiveLayout].target
+	local db = E.db['unitframe']['units'].target
 	local USE_COMBOBAR = db.combobar.enable
 	local USE_MINI_COMBOBAR = db.combobar.fill == "spaced" and USE_COMBOBAR
 	local COMBOBAR_HEIGHT = db.combobar.height
@@ -880,17 +882,17 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	icon.isPlayer = isPlayer
 	icon.owner = caster
 	
-	if db and db[self.type].durationLimit ~= 0 then
+	if db and db[self.type] and db[self.type].durationLimit ~= 0 then
 		if duration > db[self.type].durationLimit or duration == 0 then
 			return false
 		end
 	end
 	
-	if db and db[self.type].showPlayerOnly and isPlayer then
+	if db and db[self.type] and db[self.type].showPlayerOnly and isPlayer then
 		return true
-	elseif db and db[self.type].useFilter and E.db['unitframe']['aurafilters'][db[self.type].useFilter] then
-		local type = E.db['unitframe']['aurafilters'][db[self.type].useFilter].type
-		local spellList = E.db['unitframe']['aurafilters'][db[self.type].useFilter].spells
+	elseif db and db[self.type] and db[self.type].useFilter and E.global['unitframe']['aurafilters'][db[self.type].useFilter] then
+		local type = E.global['unitframe']['aurafilters'][db[self.type].useFilter].type
+		local spellList = E.global['unitframe']['aurafilters'][db[self.type].useFilter].spells
 		
 		--Prevent filtering on friendly target's debuffs.
 		if (unit:find('target') or unit == 'focus') and isFriend and self.type == 'debuffs' and type == 'Whitelist' then
@@ -910,13 +912,15 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 				return true
 			end				
 		end
-	else
+	elseif db and db[self.type] then
 		if db and not db[self.type].showPlayerOnly then
 			return true
 		else
 			return false
 		end
 	end	
+	
+	return true
 end
 
 local counterOffsets = {
@@ -935,8 +939,8 @@ function UF:UpdateAuraWatch(frame)
 	local auras = frame.AuraWatch;
 	local db = frame.db.buffIndicator;
 	
-	if not E.db['unitframe'].buffwatch[E.myclass] then E.db['unitframe'].buffwatch[E.myclass] = {} end
-	for _, value in pairs(E.db['unitframe'].buffwatch[E.myclass]) do
+	if not E.global['unitframe'].buffwatch[E.myclass] then E.global['unitframe'].buffwatch[E.myclass] = {} end
+	for _, value in pairs(E.global['unitframe'].buffwatch[E.myclass]) do
 		tinsert(buffs, value);
 	end
 	

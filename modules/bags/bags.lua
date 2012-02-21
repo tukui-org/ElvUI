@@ -244,12 +244,12 @@ function B:Layout(isBank)
 
 	if not isBank then
 		bs = BAGS_BACKPACK
-		cols = (floor((E.db.core.panelWidth - 10)/370 * 10))
+		cols = (floor((E.db.general.panelWidth - 10)/370 * 10))
 		f = bagFrame
 		bSize = 30
 	else
 		bs = BAGS_BANK
-		cols = (floor((E.db.core.panelWidth - 10)/370 * 10))
+		cols = (floor((E.db.general.panelWidth - 10)/370 * 10))
 		f = bankFrame
 		bSize = 30
 	end
@@ -307,7 +307,7 @@ function B:Layout(isBank)
 		rows = rows + 1
 	end
 
-	f:Width((E.db.core.panelWidth - 10))
+	f:Width((E.db.general.panelWidth - 10))
 	f:Height(rows * 31 + (rows - 1) * 4 + offset + 24)
 
 	f.HolderFrame:SetWidth(33.5 * cols)
@@ -1359,7 +1359,7 @@ function B:PLAYERBANKBAGSLOTS_CHANGED()
 end
 
 function B:Initialize()
-	if not E.db.core.bags then return end
+	if not E.global.general.bags then return end
 	self:InitBags()
 
 	--Register Events

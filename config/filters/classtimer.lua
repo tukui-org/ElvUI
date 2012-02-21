@@ -1,11 +1,10 @@
-local E, L = unpack(select(2, ...)); --Engine
-local DF = E.DF["profile"]["classtimer"]
+local E, L, P, G = unpack(select(2, ...)); --Engine
 
 local function CreateSpellEntry(id, castByAnyone, color, unitType, castSpellId)
 	return { enabled = true, id = id, castByAnyone = castByAnyone, color = color, unitType = unitType or 0, castSpellId = castSpellId };
 end
 
-DF['trinkets_filter'] = {
+G['classtimer']['trinkets_filter'] = {
 	CreateSpellEntry(97010), --Essence of the Eternal Flame
 	CreateSpellEntry(99090), --Flaming Aegis, Paladin 4-Piece
 	CreateSpellEntry(96881), --Weight of a feather
@@ -139,7 +138,7 @@ DF['trinkets_filter'] = {
 	CreateSpellEntry(74497), CreateSpellEntry(55503), CreateSpellEntry(55502), CreateSpellEntry(55501), CreateSpellEntry(55500), CreateSpellEntry(55480), CreateSpellEntry(55428), CreateSpellEntry(81708), -- Lifeblood
 }
 
-DF['spells_filter'] = {
+G['classtimer']['spells_filter'] = {
 	DEATHKNIGHT = { 
 		target = {
 			CreateSpellEntry(55095), -- Frost Fever

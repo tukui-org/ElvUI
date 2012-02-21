@@ -684,4 +684,5 @@ L['%s frame(s) has a conflicting anchor point, please change either the buff or 
 L["Are you sure you want to delete all your gray items?"] = true;
 L['No gray items to delete.'] = true;
 L['Spark'] = true;
+L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = true;
 L['Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop.'] = true;

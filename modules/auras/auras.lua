@@ -188,7 +188,7 @@ end
 
 function A:Initialize()
 	self.db = E.db.auras
-	if self.db.enable ~= true then 
+	if E.global.auras.enable ~= true then 
 		BuffFrame:Kill();
 		return 
 	end

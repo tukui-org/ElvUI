@@ -3,10 +3,10 @@ local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB,
 --Determine if Eyefinity is being used, setup the pixel perfect script.
 local scale
 function E:UIScale(event)
-	if self.db.core.autoscale == true then
+	if self.db.general.autoscale == true then
 		scale = min(1, max(.64, 768/self.screenheight));
 	else
-		scale = self.db["core"].uiscale
+		scale = min(1, max(.64, GetCVar('uiScale')));
 	end
 
 	if self.screenwidth < 1600 then
@@ -56,7 +56,7 @@ function E:UIScale(event)
 			local height = self.screenheight;
 			
 			-- if autoscale is off, find a new width value of self.UIParent for screen #1.
-			if not self.db["core"].autoscale or height > 1200 then
+			if not self.db['general'].autoscale or height > 1200 then
 				local h = UIParent:GetHeight();
 				local ratio = self.screenheight / h;
 				local w = self.eyefinity / ratio;

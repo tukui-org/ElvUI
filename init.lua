@@ -25,27 +25,27 @@ local Locale = LibStub("AceLocale-3.0"):GetLocale(AddOnName, false);
 Engine[1] = AddOn;
 Engine[2] = Locale;
 Engine[3] = AddOn.DF["profile"];
+Engine[4] = AddOn.DF["global"];
 
 _G[AddOnName] = Engine;
 
 local AC = LibStub("AceConfig-3.0")
 local ACD = LibStub("AceConfigDialog-3.0")
 local ACR = LibStub("AceConfigRegistry-3.0")
+local LibDualSpec = LibStub('LibDualSpec-1.0')
 
 function AddOn:OnInitialize()
-	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF);
-	self.data.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
-	self.data.RegisterCallback(self, "OnProfileCopied", "OnProfileChanged")
-	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileChanged")
-	
+	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF, true);	
 	self.db = self.data.profile;
+	self.global = self.data.global;
+	
 	self:UIScale();
 	self:UpdateMedia();
 	self:GetModule('RaidUtility'):Initialize()
 	self:RegisterEvent('PLAYER_LOGIN', 'Initialize')
 end
 
-function AddOn:OnProfileChanged()
+function AddOn:OnProfileReset()
 	StaticPopup_Show("CONFIG_RL")
 end
 
@@ -56,7 +56,10 @@ function AddOn:LoadConfig()
 	--Create Profiles Table
 	self.Options.args.profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.data);
 	AC:RegisterOptionsTable("ElvProfiles", self.Options.args.profiles)
-	self.Options.args.profiles.order = -10		
+	self.Options.args.profiles.order = -10
+	
+	LibDualSpec:EnhanceDatabase(self.data, AddOnName)
+	LibDualSpec:EnhanceOptions(self.Options.args.profiles, self.data)
 end
 
 function AddOn:ToggleConfig() 

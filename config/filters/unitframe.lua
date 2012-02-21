@@ -1,5 +1,4 @@
-local E, L = unpack(select(2, ...)); --Engine
-local P = E.DF["profile"]['unitframe']['aurafilters']
+local E, L, P, G = unpack(select(2, ...)); --Engine
 
 local function SpellName(id)
 	local name, _, _, _, _, _, _, _, _ = GetSpellInfo(id) 	
@@ -10,8 +9,9 @@ local function SpellName(id)
 		return name
 	end
 end
+G.unitframe.aurafilters = {};
 
-P['CCDebuffs'] = {
+G.unitframe.aurafilters['CCDebuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 		-- Death Knight
@@ -74,7 +74,7 @@ P['CCDebuffs'] = {
 	},
 }
 
-P['TurtleBuffs'] = {
+G.unitframe.aurafilters['TurtleBuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 		[SpellName(33206)] = true, -- Pain Suppression
@@ -89,7 +89,7 @@ P['TurtleBuffs'] = {
 	},
 }
 
-P['DebuffBlacklist'] = {
+G.unitframe.aurafilters['DebuffBlacklist'] = {
 	['type'] = 'Blacklist',
 	['spells'] = {
 		[SpellName(8733)] = true, --Blessing of Blackfathom
@@ -113,7 +113,7 @@ P['DebuffBlacklist'] = {
 }
 
 --RAID DEBUFFS
-P['RaidDebuffs'] = {
+G.unitframe.aurafilters['RaidDebuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 	--Test
@@ -277,14 +277,13 @@ E.ReverseTimer = {
 }
 
 --BuffWatch
-local P = E.DF["profile"]['unitframe']
 
 local function ClassBuff(id, point, color, anyUnit, onlyShowMissing)
 	local r, g, b = unpack(color)
 	return {["enabled"] = true, ["id"] = id, ["point"] = point, ["color"] = {["r"] = r, ["g"] = g, ["b"] = b}, ["anyUnit"] = anyUnit, ["onlyShowMissing"] = onlyShowMissing}
 end
 
-P.buffwatch = {
+G.unitframe.buffwatch = {
 	PRIEST = {
 		ClassBuff(6788, "TOPLEFT", {1, 0, 0}, true), -- Weakened Soul
 		ClassBuff(33076, "TOPRIGHT", {0.2, 0.7, 0.2}), -- Prayer of Mending
@@ -329,7 +328,7 @@ P.buffwatch = {
 }
 
 --List of spells to display ticks
-P.ChannelTicks = {
+G.unitframe.ChannelTicks = {
 	--Warlock
 	[SpellName(1120)] = 5, --"Drain Soul"
 	[SpellName(689)] = 3, -- "Drain Life"
@@ -351,7 +350,7 @@ P.ChannelTicks = {
 }
 
 --Spells Effected By Haste
-P.HastedChannelTicks = {
+G.unitframe.HastedChannelTicks = {
 	[SpellName(64901)] = true, -- Hymn of Hope
 	[SpellName(64843)] = true, -- Divine Hymn
 	[SpellName(1120)] = true, -- Drain Soul

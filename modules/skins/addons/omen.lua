@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local borderWidth = 2
 
 local function LoadSkin()
-	if E.db.skins.omen.enable ~= true then return end
+	if E.global.skins.omen.enable ~= true then return end
 	
 	-- Skin Bar Texture
 	Omen.UpdateBarTextureSettings_ = Omen.UpdateBarTextureSettings

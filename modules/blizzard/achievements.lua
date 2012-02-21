@@ -34,16 +34,11 @@ function B:AchievementMove()
 	
 end
 
-local initialize = 0
 local function PostAchievementMove(frame, pos)
-	initialize = initialize + 1
-	if ( not AchievementFrame ) and initialize > 2 then
+	if ( not AchievementFrame ) then
 		AchievementFrame_LoadUI()
 	end
 	POSITION = pos	
-	if initialize > 2 then
-		AchievementAlertFrame_ShowAlert(50)
-	end
 	
 	B:AchievementMove()
 end

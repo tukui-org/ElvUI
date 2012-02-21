@@ -323,7 +323,7 @@ function S:RegisterSkin(name, loadFunc, forceLoad, bypass)
 end
 
 function S:Initialize()
-	self.db = E.db.skins
+	self.db = E.global.skins
 	for addon, loadFunc in pairs(self.addonsToLoad) do
 		if IsAddOnLoaded(addon) then
 			loadFunc();
