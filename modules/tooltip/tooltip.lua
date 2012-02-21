@@ -281,7 +281,7 @@ end
 function TT:ADDON_LOADED(event, addon)
 	if addon == 'Blizzard_DebugTools' then
 		FrameStackTooltip:HookScript("OnShow", function(self)
-			local noscalemult = E.mult * E.db['general'].uiscale
+			local noscalemult = E.mult * GetCVar('uiScale')
 			self:SetBackdrop({
 			  bgFile = E["media"].blankTex, 
 			  edgeFile = E["media"].blankTex, 

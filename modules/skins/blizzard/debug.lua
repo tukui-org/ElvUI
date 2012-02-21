@@ -5,7 +5,7 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.global.skins.blizzard.enable ~= true or E.global.skins.blizzard.debug ~= true then return end
-	local noscalemult = E.mult * E.db.general.uiscale
+	local noscalemult = E.mult * GetCVar('uiScale')
 	
 
 	ScriptErrorsFrame:Size(500, 300)
