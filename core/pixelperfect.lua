@@ -44,12 +44,12 @@ function E:UIScale(event)
 	self.mult = 768/string.match(GetCVar("gxResolution"), "%d+x(%d+)")/scale;
 
 	--Set UIScale, NOTE: SetCVar for UIScale can cause taints so only do this when we need to..
-	if E.Round and E:Round(UIParent:GetScale(), 5) ~= E:Round(scale, 5) and event == 'PLAYER_LOGIN' then
+	if E.Round and E:Round(UIParent:GetScale(), 5) ~= E:Round(scale, 5) and (event == 'PLAYER_LOGIN') then
 		SetCVar("useUiScale", 1);
 		SetCVar("uiScale", scale);	
 	end	
 	
-	if event == 'PLAYER_LOGIN' then
+	if (event == 'PLAYER_LOGIN' or event == 'UI_SCALE_CHANGED') then
 		--Resize self.UIParent if Eyefinity is on.
 		if self.eyefinity then
 			local width = self.eyefinity;
@@ -79,6 +79,10 @@ function E:UIScale(event)
 		self.UIParent:ClearAllPoints();
 		self.UIParent:SetPoint("CENTER");	
 
+		if event == 'UI_SCALE_CHANGED' then
+			StaticPopup_Show('CONFIG_RL')
+		end
+		
 		self:UnregisterEvent('PLAYER_LOGIN')		
 	end
 end
