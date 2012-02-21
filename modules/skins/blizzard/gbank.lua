@@ -38,7 +38,7 @@ local function LoadSkin()
 			local icon = _G["GuildBankColumn"..i.."Button"..x.."IconTexture"]
 			local texture = _G["GuildBankColumn"..i.."Button"..x.."NormalTexture"]
 			if texture then
-				texture:Hide()
+				texture:SetTexture(nil)
 			end
 			button:StyleButton()
 			button:SetTemplate("Default", true)
