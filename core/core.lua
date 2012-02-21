@@ -344,8 +344,43 @@ function E:SendRecieve(event, prefix, message, channel, sender)
 	end
 end
 
-local _, ns = ...
-local ElvUF = ns.oUF
+--[[
+WTHAT THE F'ING FUCK IS WRONG WITH THIS
+function E:SaveKeybinds()
+	if not E.db.keybinds then
+		E.db.keybinds = {};
+	end
+	local TotalBinds = GetNumBindings();
+	for i = 1, TotalBinds do
+		local TheAction, BindingOne, BindingTwo = GetBinding(i);
+		if BindingOne then
+			E.db.keybinds[TheAction] = {BindingOne, BindingTwo};
+		else
+			E.db.keybinds[TheAction] = nil;
+		end
+	end
+end
+
+function E:LoadKeybinds()
+	if not E.db.keybinds then
+		E:SaveKeybinds()
+		return
+	end
+
+	for action, actionBind in pairs(E.db.keybinds) do
+		local BindingOne, BindingTwo = unpack(actionBind)
+
+		if BindingOne then
+			SetBinding(BindingOne, action)
+		end
+		
+		if BindingTwo then
+			SetBinding(BindingTwo, action)
+		end
+	end
+	
+	SaveBindings(GetCurrentBindingSet());
+end]]
 
 function E:UpdateAll()
 	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF, true);
@@ -401,6 +436,8 @@ function E:UpdateAll()
 		self:Install()
 	end
 	
+	--self:LoadKeybinds()
+	
 	collectgarbage('collect');
 end
 
@@ -446,6 +483,8 @@ function E:Initialize()
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "SendRecieve")
 	self:RegisterEvent("CHAT_MSG_ADDON", "SendRecieve")
 	self:RegisterEvent('UI_SCALE_CHANGED', 'UIScale')
+	--self:RegisterEvent('UPDATE_BINDINGS', 'SaveKeybinds')
+	--self:SaveKeybinds()
 	collectgarbage("collect");
 end
 

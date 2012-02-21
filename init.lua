@@ -35,7 +35,7 @@ local ACR = LibStub("AceConfigRegistry-3.0")
 local LibDualSpec = LibStub('LibDualSpec-1.0')
 
 function AddOn:OnInitialize()
-	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF, true);	
+	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF);	
 	self.db = self.data.profile;
 	self.global = self.data.global;
 	
