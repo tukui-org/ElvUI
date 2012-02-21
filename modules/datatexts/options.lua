@@ -11,7 +11,7 @@ function DT:PanelLayoutOptions()
 	
 	local table = E.Options.args.datatexts.args.panels.args
 	local i = 0
-	for pointLoc, tab in pairs(E.db.datatexts.panels) do
+	for pointLoc, tab in pairs(P.datatexts.panels) do
 		i = i + 1
 		if not _G[pointLoc] then table[pointLoc] = nil; return; end
 		if type(tab) == 'table' then
