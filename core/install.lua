@@ -369,6 +369,7 @@ end
 
 --Install UI
 function E:Install()	
+	if not adada then return end
 	if not InstallStepComplete then
 		local imsg = CreateFrame("Frame", "InstallStepComplete", E.UIParent)
 		imsg:Size(418, 72)
