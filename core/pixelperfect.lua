@@ -6,7 +6,7 @@ function E:UIScale(event)
 	if self.db.general.autoscale == true then
 		scale = min(1, max(.64, 768/self.screenheight));
 	else
-		scale = min(1, max(.64, GetCVar('uiScale')));
+		scale = min(1, max(.64, GetCVar('uiScale') or UIParent:GetScale() or 768/self.screenheight));
 	end
 
 	if self.screenwidth < 1600 then
