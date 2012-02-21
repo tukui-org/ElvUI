@@ -73,7 +73,7 @@ local function BuildABConfig()
 					desc = L['The size of the action buttons.'],
 					min = 15, max = 60, step = 1,
 					order = 8,
-					disabled = function() return not E.db.actionbar.enable end,
+					disabled = function() return not E.global.actionbar.enable end,
 				},
 				buttonspacing = {
 					type = 'range',
@@ -81,7 +81,7 @@ local function BuildABConfig()
 					desc = L['The spacing between buttons.'],
 					min = 1, max = 10, step = 1,	
 					order = 9, 
-					disabled = function() return not E.db.actionbar.enable end,
+					disabled = function() return not E.global.actionbar.enable end,
 				},				
 				heightMult = {
 					order = 10,
@@ -136,7 +136,7 @@ local function BuildABConfig()
 		type = 'group',
 		order = 200,
 		guiInline = false,
-		disabled = function() return not E.db.actionbar.enable end,
+		disabled = function() return not E.global.actionbar.enable end,
 		get = function(info) return E.db.actionbar['barPet'][ info[#info] ] end,
 		set = function(info, value) E.db.actionbar['barPet'][ info[#info] ] = value; AB:UpdateButtonSettings() end,
 		args = {
@@ -191,7 +191,7 @@ local function BuildABConfig()
 				desc = L['The size of the action buttons.'],
 				min = 15, max = 60, step = 1,
 				order = 8,
-				disabled = function() return not E.db.actionbar.enable end,
+				disabled = function() return not E.global.actionbar.enable end,
 			},
 			buttonspacing = {
 				type = 'range',
@@ -199,7 +199,7 @@ local function BuildABConfig()
 				desc = L['The spacing between buttons.'],
 				min = 1, max = 10, step = 1,	
 				order = 9, 
-				disabled = function() return not E.db.actionbar.enable end,
+				disabled = function() return not E.global.actionbar.enable end,
 			},				
 			heightMult = {
 				order = 10,
@@ -235,7 +235,7 @@ local function BuildABConfig()
 		type = 'group',
 		order = 200,
 		guiInline = false,
-		disabled = function() return not E.db.actionbar.enable end,
+		disabled = function() return not E.global.actionbar.enable end,
 		get = function(info) return E.db.actionbar['barShapeShift'][ info[#info] ] end,
 		set = function(info, value) E.db.actionbar['barShapeShift'][ info[#info] ] = value; AB:UpdateButtonSettings() end,
 		args = {
@@ -290,7 +290,7 @@ local function BuildABConfig()
 				desc = L['The size of the action buttons.'],
 				min = 15, max = 60, step = 1,
 				order = 8,
-				disabled = function() return not E.db.actionbar.enable end,
+				disabled = function() return not E.global.actionbar.enable end,
 			},
 			buttonspacing = {
 				type = 'range',
@@ -298,7 +298,7 @@ local function BuildABConfig()
 				desc = L['The spacing between buttons.'],
 				min = 1, max = 10, step = 1,	
 				order = 9, 
-				disabled = function() return not E.db.actionbar.enable end,
+				disabled = function() return not E.global.actionbar.enable end,
 			},				
 			heightMult = {
 				order = 10,
@@ -321,7 +321,7 @@ local function BuildABConfig()
 		type = "group",
 		order = 500,
 		name = L['Cooldown Text'],
-		disabled = function() return not E.db.actionbar.enable or not E.db.actionbar.enablecd end,
+		disabled = function() return not E.global.actionbar.enable or not E.db.actionbar.enablecd end,
 		set = function(info, value) E.db.actionbar[ info[#info] ] = value; AB:UpdateCooldownSettings() end,
 		args = {
 			enablecd = {
@@ -329,7 +329,7 @@ local function BuildABConfig()
 				order = 1,
 				name = L['Enable'],
 				desc = L['Display cooldown text on anything with the cooldown spiril.'],
-				disabled = function() return not E.db.actionbar.enable end,
+				disabled = function() return not E.global.actionbar.enable end,
 			},			
 			treshold = {
 				type = 'range',
@@ -441,7 +441,7 @@ local function BuildABConfig()
 			type = 'group',
 			order = 200,
 			guiInline = false,
-			disabled = function() return not E.db.actionbar.enable or not E.myclass == "SHAMAN" end,
+			disabled = function() return not E.global.actionbar.enable or not E.myclass == "SHAMAN" end,
 			get = function(info) return E.db.actionbar['barTotem'][ info[#info] ] end,
 			set = function(info, value) E.db.actionbar['barTotem'][ info[#info] ] = value; AB:AdjustTotemSettings() end,
 			args = {
