@@ -449,6 +449,7 @@ end
 
 function oUF:ResetDB()
 	local E = select(1, unpack(ElvUI))
+	if E.global["unitframe"].enable ~= true then return; end
 	_DB = E.db['unitframe']	
 end
 
@@ -459,6 +460,8 @@ function oUF:ResetUF()
 end
 
 function oUF:PositionUF()
+	local E = select(1, unpack(ElvUI))
+	if E.global["unitframe"].enable ~= true then return; end
 	for object, _ in pairs(initialPositions) do
 		LoadObjectPosition(_G[object])
 	end

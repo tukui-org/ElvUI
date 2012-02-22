@@ -955,6 +955,7 @@ function NP:PLAYER_ENTERING_WORLD()
 end
 
 function NP:UpdateAllPlates()
+	if E.global["nameplate"].enable ~= true then return end
 	for frame, _ in pairs(self.Handled) do
 		frame = _G[frame]
 		self:SkinPlate(frame)

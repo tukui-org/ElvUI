@@ -215,6 +215,7 @@ end
 local UNITFRAMES = UF
 function UF:Update_AllFrames()
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
+	if E.global["unitframe"].enable ~= true then return; end
 	self:UpdateColors()
 	for unit in pairs(self['handledunits']) do
 		if self.db['units'][unit].enable then

@@ -83,6 +83,7 @@ function AB:ReassignBindings()
 end
 
 function AB:UpdateButtonSettings()
+	if E.global.actionbar.enable ~= true then return end
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return; end
 	for button, _ in pairs(self["handledbuttons"]) do
 		if button then
@@ -409,6 +410,7 @@ function AB:ResetMovers(...)
 end
 
 function AB:SetMoverPositions()
+	if E.global.actionbar.enable ~= true then return end
 	for name, _ in pairs(self.movers) do
 		local f = self.movers[name].bar
 		if f and self.db[name] and self.db[name]['position'] then

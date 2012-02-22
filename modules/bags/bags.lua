@@ -240,6 +240,7 @@ function B:SlotNew(bag, slot)
 end
 
 function B:Layout(isBank)
+	if E.global.general.bags ~= true then return end
 	local slots = 0
 	local rows = 0
 	local offset = 26

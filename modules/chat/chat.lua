@@ -140,6 +140,7 @@ function CH:SetupTempChat()
 end
 
 function CH:PositionChat(override)
+	if E.global.chat.enable ~= true then return end
 	if (InCombatLockdown() and not override and self.initialMove) or (IsMouseButtonDown("LeftButton") and not override) then return end
 	
 	local chat, chatbg, tab, id, point, button, isDocked, chatFound

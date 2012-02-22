@@ -554,6 +554,7 @@ function CT:GetAnchor(option, frame)
 end
 
 function CT:PositionTimers()
+	if not E.global.classtimer.enable or not ElvUF_Player or not ElvUF_Target then return end
 	local playerAnchor, playerY = self:GetAnchor(self.db.player.anchor, self.playerFrame)
 	local targetAnchor, targetY = self:GetAnchor(self.db.target.anchor, self.targetFrame)
 	local trinketAnchor, trinketY = self:GetAnchor(self.db.trinket.anchor, self.trinketFrame)
@@ -578,6 +579,7 @@ function CT:PositionTimers()
 end
 
 function CT:ToggleTimers()
+	if not E.global.classtimer.enable or not ElvUF_Player or not ElvUF_Target then return end
 	if self.db.player.enable then
 		self:EnableAuraBarFrame(self.playerFrame)
 	else
