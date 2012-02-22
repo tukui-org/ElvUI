@@ -456,8 +456,9 @@ function UF:Initialize()
 	
 	--Database conversion from ElvUI v3.2.2 and below.
 	local specToCopy = E.db.unitframe.mainSpec
+	if not specToCopy then specToCopy = 'Primary' end
 	if specToCopy and E.db.unitframe.layouts and E.db.unitframe.layouts[specToCopy] then
-		self:CopyTable(E.db.unitframe.units, E.db.unitframe.layouts[specToCopy])
+		E:CopyTable(E.db.unitframe.units, E.db.unitframe.layouts[specToCopy])
 		E.db.unitframe.layouts = nil;
 	end
 
