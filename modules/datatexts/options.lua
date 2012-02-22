@@ -55,20 +55,14 @@ E.Options.args.datatexts = {
 			type = "description",
 			name = L["DATATEXT_DESC"],
 		},
-		specswap = {
-			order = 2,
-			type = "toggle",
-			name = L["Multi-Spec Swap"],
-			desc = L['Swap to an alternative layout when changing talent specs. If turned off only the spec #1 layout will be used.'],
-		},
 		time24 = {
-			order = 3,
+			order = 2,
 			type = 'toggle',
 			name = L['24-Hour Time'],
 			desc = L['Toggle 24-hour mode for the time datatext.'],
 		},
 		localtime = {
-			order = 4,
+			order = 3,
 			type = 'toggle',
 			name = L['Local Time'],
 			desc = L['If not set to true then the server time will be displayed instead.'],
