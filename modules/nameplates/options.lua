@@ -321,7 +321,7 @@ E.Options.args.nameplate = {
 					name = L['Add Name'],
 					get = function(info) return "" end,
 					set = function(info, value) 
-						E.db['nameplate']['filter'][value] = {
+						E.global['nameplate']['filter'][value] = {
 							['enable'] = true,
 							['hide'] = false,
 							['customColor'] = false,
@@ -338,11 +338,11 @@ E.Options.args.nameplate = {
 					name = L['Remove Name'],
 					get = function(info) return "" end,
 					set = function(info, value) 
-						if DF['nameplate']['filter'][value] then
-							E.db['nameplate']['filter'][value].enable = false;
+						if G['nameplate']['filter'][value] then
+							E.global['nameplate']['filter'][value].enable = false;
 							E:Print(L["You can't remove a default name from the filter, disabling the name."])
 						else
-							E.db['nameplate']['filter'][value] = nil;
+							E.global['nameplate']['filter'][value] = nil;
 							E.Options.args.nameplate.args.filters.args.filterGroup = nil;
 						end
 						UpdateFilterGroup()
