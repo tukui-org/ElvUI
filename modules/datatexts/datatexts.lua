@@ -5,6 +5,13 @@ local LDB = LibStub:GetLibrary("LibDataBroker-1.1");
 function DT:Initialize()
 	--if E.db["datatexts"].enable ~= true then return end
 	E.DataTexts = DT
+	
+	if E.db.datatexts.panels.spec1 then
+		E:CopyTable(E.db.datatexts.panels, E.db.datatexts.panels.spec1)
+		E.db.datatexts.panels.spec1 = nil;
+		E.db.datatexts.panels.spec2 = nil;
+	end	
+	
 	self:RegisterLDB()
 	self:LoadDataTexts()
 	self:PanelLayoutOptions()	
