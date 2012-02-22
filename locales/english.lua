@@ -689,3 +689,4 @@ L["Importance: |cffFF0000Low|r"] = true;
 L["This is completely optional."] = true;
 L["You may need to further alter these settings depending how low you resolution is."] = true;
 L["Resolution Style Set"] = true;
+L['Layout Set'] = true;

