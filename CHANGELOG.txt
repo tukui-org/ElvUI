@@ -1,4 +1,4 @@
-[b]v3.3[/b]
+[b]v3.3 Alpha[/b]
 
 [b]New Additions:[/b]
 *Changing Profiles in ElvUI should no longer require a reload.
