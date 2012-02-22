@@ -22,7 +22,9 @@ local function SkinFrame(frame)
 	frame.bgTitle.SetScale = E.noop
 	
 	frame.CloseButton:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -1, -9)
-	S:HandleCloseButton(frame.CloseButton)
+	if frame ~= Recount_MainWindow then
+		S:HandleCloseButton(frame.CloseButton)
+	end
 	S:HandleScrollBar(Recount_MainWindow_ScrollBarScrollBar)
 	frame:SetBackdrop(nil)
 end
@@ -69,8 +71,8 @@ local function LoadSkin()
 	end 
 	
 	-- skin the buttons o main window
-	local PB = Recount.MainWindow.CloseButton
 	local MWbuttons = {
+		Recount.MainWindow.CloseButton,
 		Recount.MainWindow.RightButton,
 		Recount.MainWindow.LeftButton,
 		Recount.MainWindow.ResetButton,
@@ -82,32 +84,11 @@ local function LoadSkin()
 	for i = 1, getn(MWbuttons) do
 		local button = MWbuttons[i]
 		if button then
-			if i > 2 then
-				button:GetNormalTexture():SetDesaturated(true)
-				button:GetHighlightTexture():SetDesaturated(true)
-				button:Size(16)
-			else
-				button:SetNormalTexture("")
-				button:SetPushedTexture("")	
-				button:SetHighlightTexture("")
-				button:SetSize(16, 16)
-				button.text = button:CreateFontString(nil, 'OVERLAY')
-				button.text:FontTemplate()
-				button.text:SetPoint('CENTER')
-				button:ClearAllPoints()
-				button:SetPoint("RIGHT", PB, "LEFT", -2, 0)
-			end
-			if button:IsShown() then
-				PB = button
-			end
+			button:GetNormalTexture():SetDesaturated(true)
+			button:GetHighlightTexture():SetDesaturated(true)
 		end
 	end
 
-	-- set our custom text inside main window buttons
-	Recount.MainWindow.RightButton.text:SetText(">")
-	Recount.MainWindow.LeftButton.text:SetText("<")
-
-	
 	if Recount.MainWindow then SkinFrame(Recount.MainWindow) end
 	if Recount.ConfigWindow then SkinFrame(Recount.ConfigWindow) end
 	if Recount.GraphWindow then SkinFrame(Recount.GraphWindow) end
