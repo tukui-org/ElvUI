@@ -616,8 +616,8 @@ end
 
 function CT:Initialize()
 	self.db = E.db.classtimer
-	if not E.global.classtimer or not ElvUF_Player or not ElvUF_Target then return end
-	
+	if not E.global.classtimer.enable or not ElvUF_Player or not ElvUF_Target then return end
+
 	self.target = self:CreateUnitAuraDataSource("target");
 	self.player = self:CreateUnitAuraDataSource("player");
 	self.trinket = self:CreateUnitAuraDataSource("player");
