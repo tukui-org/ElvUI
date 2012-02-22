@@ -10,7 +10,8 @@ local bagFrame, bankFrame
 local BAGS_BACKPACK = {0, 1, 2, 3, 4}
 local BAGS_BANK = {-1, 5, 6, 7, 8, 9, 10, 11}
 local trashParent = CreateFrame("Frame", nil, E.UIParent)
-trashButton, trashBag = {}, {}
+local trashButton, trashBag = {}, {}
+local allButtons = {}
 
 B.buttons = {};
 B.bags = {};
@@ -178,6 +179,7 @@ end
 function B:SlotNew(bag, slot)
 	for _, v in ipairs(self.buttons) do
 		if v.bag == bag and v.slot == slot then
+			v.lock = false;
 			return v, false
 		end
 	end
@@ -336,6 +338,7 @@ function B:Layout(isBank)
 
 				if isnew then
 					table.insert(self.buttons, idx + 1, b)
+					table.insert(allButtons, b)
 					
 					if not isBank then
 						b.bagOwner = i - 1
@@ -406,12 +409,6 @@ function B:BagSlotUpdate(bag)
 end
 
 function B:Bags_OnShow()
-	if self.bags and #self.bags > 0 then
-		for i, bag in pairs(self.bags) do
-			bag.bagType = nil;
-		end
-	end
-	
 	B:PLAYERBANKSLOTS_CHANGED(29)
 	B:Layout()
 end
@@ -419,6 +416,15 @@ end
 function B:Bags_OnHide()
 	if bankFrame then
 		bankFrame:Hide()
+	end
+	
+	if B.buttons then
+		for _, v in ipairs(allButtons) do
+			v.frame.lock = false
+			if not B.buttons[v] and not trashButton[v.frame] then
+				v.frame:Hide()
+			end
+		end
 	end
 end
 
@@ -802,7 +808,7 @@ function B:BAG_CLOSED(event, id)
 		for i, v in ipairs(self.buttons) do
 			if v.bag == id then
 				v.frame:Hide()
-
+				v.frame.lock = false;
 				table.insert(trashButton, #trashButton + 1, v.frame)
 				table.remove(self.buttons, i)
 
