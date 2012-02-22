@@ -11,7 +11,7 @@ end
 
 function E:UpdateBlizzardFonts()	
 	local NORMAL     = self["media"].normFont
-	local COMBAT     = LSM:Fetch('font', self.db.general.dmgfont)
+	local COMBAT     = LSM:Fetch('font', self.global.general.dmgfont)
 	local NUMBER     = self["media"].normFont
 	local _, editBoxFontSize, _, _, _, _, _, _, _, _ = GetChatWindowInfo(1)
 	
