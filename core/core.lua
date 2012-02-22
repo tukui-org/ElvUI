@@ -537,6 +537,15 @@ function E:ResetAllUI()
 	if self.ActionBars then
 		self.ActionBars:ResetMovers('')
 	end	
+
+	if E.db.lowresolutionset then
+		E:SetupResolution()
+	end	
+	
+	
+	if E.db.layoutSet then
+		E:SetupLayout(E.db.layoutSet)
+	end
 end
 
 

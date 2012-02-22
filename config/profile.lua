@@ -110,7 +110,6 @@ P['datatexts'] = {
 	},
 	['localtime'] = true,
 	['time24'] = false,
-	['specswap'] = true,
 }
 
 --Tooltip
@@ -989,81 +988,6 @@ P['unitframe'] = {
 	},
 }
 
---[[
-Healer Layout Settings
-['Secondary'] = {
-	['boss'] = {
-	['width'] = 200,
-	['castbar'] = {
-		['width'] = 200,
-	},				
-	},
-	['arena'] = {
-	['width'] = 200,
-	['castbar'] = {
-		['width'] = 200,
-	},				
-	},
-	['party'] = {
-	['point'] = 'LEFT',
-	['xOffset'] = 1,
-	['healPrediction'] = true,
-	["columnAnchorPoint"] = "LEFT",
-	["width"] = 80,
-	["height"] = 52,
-	['health'] = {
-		["text_format"] = "deficit",
-		["position"] = "BOTTOM",
-		['orientation'] = 'VERTICAL',
-	},
-	['name'] = {
-		["position"] = "TOP",
-	},
-	['debuffs'] = {
-		["anchorPoint"] = "BOTTOMLEFT",
-		["initialAnchor"] = "TOPLEFT",
-		['useFilter'] = 'DebuffBlacklist',		
-	},
-	['petsGroup'] = {
-		['enable'] = true,
-		['width'] = 80,
-		['initialAnchor'] = 'BOTTOM',
-		['anchorPoint'] = 'TOP',
-		['xOffset'] = 0,
-		['yOffset'] = 1,
-	},		
-	['targetsGroup'] = {
-		['enable'] = false,
-		['width'] = 80,
-		['initialAnchor'] = 'BOTTOM',
-		['anchorPoint'] = 'TOP',
-		['xOffset'] = 0,
-		['yOffset'] = 1,
-	},					
-	},
-	['raid625'] = {
-	['healPrediction'] = true,
-	['health'] = {
-		['orientation'] = 'VERTICAL',
-	},
-	},
-	['raid2640'] = {
-	['healPrediction'] = true,
-	['health'] = {
-		['orientation'] = 'VERTICAL',
-	},				
-	},
-	["positions"] = {
-	["ElvUF_Player"] = "BOTTOMLEFTUIParent464242",
-	["ElvUF_Target"] = "BOTTOMRIGHTUIParent-464242",
-	["ElvUF_Raid2640"] = "BOTTOMUIParent050",
-	["ElvUF_Raid625"] = "BOTTOMUIParent050",
-	["ElvUF_TargetTarget"] = "BOTTOMRIGHTUIParent-464151",
-	["ElvUF_Focus"] = "RIGHTUIParent-475-143",
-	["ElvUF_Party"] = "BOTTOMUIParent074",
-	["ElvUF_Pet"] = "BOTTOMLEFTUIParent464151",
-	},					
-}]]
 
 --Actionbar
 P["actionbar"] = {
