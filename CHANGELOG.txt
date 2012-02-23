@@ -1,6 +1,5 @@
 [b]New Additions:[/b]
-*Changing Profiles in ElvUI should no longer require a reload.
-*Add support to switch ElvUI profiles with dual spec. This can be turned on in /ec -> Profiles
+*Add support to switch ElvUI profiles with dual spec. This can be turned on in /ec -> Profiles. (LibDualSpec-1.0)
 *Add a white glow to nameplates when you target someone.
 *Add support to the Routes and Gathermate2 addons for the /farmmode minimap.
 *Holding down shift while clicking on the vendor gray items button on the bags frame will now prompt you to delete all your gray items.
@@ -9,14 +8,14 @@
 *Skin and position the guild challenge alert frame to the achievements anchor.
 *Add a resolution step to the installation process.
 
-
 [b]General Changes:[/b]
-*Change recount icon skins again, this time desaturate them to match the skin.
-*Throttle the number of times a user can send the version of ElvUI he's using to a maximum of one time per 12 seconds to cut back on lag when first joining BG/Raid groups.
+*Changing Profiles in ElvUI should no longer require a reload.
 *The profiles section of unitframes has been removed. The unitframe options have technically been reset, however if you load in with older data the UI will attempt to convert the database. If all is well you shouldn't notice any change.
 *Replaced the Primary/Secondary layout portions of the Installation process with just a single layout section, this is due to being able to swap ElvUI profiles with your current spec.
 *Any option that requires a reloadui is now a global option for all of your characters, in addition any option that may of required a reloadui has been reset to its default setting.
 *Removed Spec 1 / Spec 2 sections of the datatext menu, there is now only one section to set your datatexts.
+*Change recount icon skins again, this time desaturate them to match the skin.
+*Throttle the number of times a user can send the version of ElvUI he's using to a maximum of one time per 12 seconds to cut back on lag when first joining BG/Raid groups.
 *The UIScale option inside ElvUI has been removed. Use the blizzard option if you wish to scale the UI. 
 *Changing the UIScale should now prompt you to reloadui.
 *Profession bags should now appear to be differant colors depending on the type of bag.
