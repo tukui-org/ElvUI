@@ -2,7 +2,7 @@ local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB,
 local B = E:GetModule('Blizzard');
 
 local chatbubblehook = CreateFrame("Frame", nil, E.UIParent)
-local noscalemult = E.mult * GetCVar('uiScale')
+local noscalemult = E.mult * (GetCVar('uiScale') or UIParent:GetScale())
 local tslu = 0
 local numkids = 0
 local bubbles = {}
