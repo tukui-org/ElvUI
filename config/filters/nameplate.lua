@@ -3,10 +3,9 @@
 	
 	Add the nameplates name that you do NOT want to see.
 ]]
-local E, L = unpack(select(2, ...)); --Engine
-local DF = E.DF["profile"]["nameplate"]
+local E, L, P, G = unpack(select(2, ...)); --Engine
 
-DF["filter"] = {
+G["nameplate"]["filter"] = {
 	--Army of the Dead
 	["Army of the Dead Ghoul"] = {
 		['enable'] = true,

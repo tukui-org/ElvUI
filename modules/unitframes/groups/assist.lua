@@ -22,7 +22,7 @@ function UF:Construct_AssistFrames(unitGroup)
 	
 	self.RaidIcon = UF:Construct_RaidIcon(self)
 	
-	UF:Update_AssistFrames(self, E.db['unitframe']['layouts'][UF.ActiveLayout]['assist'])
+	UF:Update_AssistFrames(self, E.db['unitframe']['units']['assist'])
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()	
 	

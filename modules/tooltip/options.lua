@@ -18,7 +18,8 @@ E.Options.args.tooltip = {
 			order = 2,
 			type = "toggle",
 			name = L["Enable"],
-			set = function(info, value) E.db.tooltip[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end
+			get = function(info) return E.global.tooltip[ info[#info] ] end,
+			set = function(info, value) E.global.tooltip[ info[#info] ] = value; StaticPopup_Show("GLOBAL_RL") end
 		},
 		anchor = {
 			order = 3,

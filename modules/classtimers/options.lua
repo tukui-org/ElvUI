@@ -6,20 +6,20 @@ local function UpdateFilterGroup()
 	local filterTable, defaultTable, name
 	if selectedFilter == 'PLAYER' then
 		name = PLAYER;
-		filterTable = CT.db.spells_filter[E.myclass].player
-		defaultTable = P.classtimer.spells_filter[E.myclass].player
+		filterTable = E.global.classtimer.spells_filter[E.myclass].player
+		defaultTable = G.classtimer.spells_filter[E.myclass].player
 	elseif selectedFilter == 'TARGET' then
 		name = TARGET;
-		filterTable = CT.db.spells_filter[E.myclass].target
-		defaultTable = P.classtimer.spells_filter[E.myclass].target
+		filterTable = E.global.classtimer.spells_filter[E.myclass].target
+		defaultTable = G.classtimer.spells_filter[E.myclass].target
 	elseif selectedFilter == 'TRINKET' then
 		name = L['Trinket']
-		filterTable = CT.db.trinkets_filter
-		defaultTable = P.classtimer.trinkets_filter
+		filterTable = E.global.classtimer.trinkets_filter
+		defaultTable = G.classtimer.trinkets_filter
 	elseif selectedFilter == 'PROCS' then
 		name = L['Procs']
-		filterTable = CT.db.spells_filter[E.myclass].procs
-		defaultTable = P.classtimer.spells_filter[E.myclass].procs
+		filterTable = E.global.classtimer.spells_filter[E.myclass].procs
+		defaultTable = G.classtimer.spells_filter[E.myclass].procs
 	end
 	
 	E.Options.args.classtimer.args.filters.args.filterGroup = {
@@ -210,7 +210,8 @@ E.Options.args.classtimer = {
 			order = 2,
 			type = "toggle",
 			name = L["Enable"],
-			set = function(info, value) E.db.classtimer[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end
+			get = function(info) return E.global.classtimer[ info[#info] ] end,
+			set = function(info, value) E.global.classtimer[ info[#info] ] = value; StaticPopup_Show("GLOBAL_RL") end
 		},
 		general = {
 			order = 3,

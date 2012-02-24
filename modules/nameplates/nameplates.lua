@@ -18,7 +18,7 @@ NP.Healers = {
 
 function NP:Initialize()
 	self.db = E.db["nameplate"]
-	if self.db.enable ~= true then return end
+	if E.global["nameplate"].enable ~= true then return end
 	E.NamePlates = NP
 	
 	CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
@@ -295,7 +295,7 @@ function NP:OnAura(frame, unit)
 		end
 
 		if self.db.trackfilter and #self.db.trackfilter > 1 and (name or debuffName) then
-			local spellList = E.db['unitframe']['aurafilters'][self.db.trackfilter].spells
+			local spellList = E.global['unitframe']['aurafilters'][self.db.trackfilter].spells
 			if spellList[name] then
 				buffMatch = 'HELPFUL'
 			elseif spellList[debuffName] then
@@ -864,7 +864,7 @@ end
 --Create our blacklist for nameplates, so prevent a certain nameplate from ever showing
 function NP:CheckFilter(frame, ...)
 	local name = frame.hp.oldname:GetText()
-	local db = self.db["filter"][name]
+	local db = E.global.nameplate["filter"][name]
 
 	if db and db.enable then
 		if db.hide then
@@ -955,6 +955,7 @@ function NP:PLAYER_ENTERING_WORLD()
 end
 
 function NP:UpdateAllPlates()
+	if E.global["nameplate"].enable ~= true then return end
 	for frame, _ in pairs(self.Handled) do
 		frame = _G[frame]
 		self:SkinPlate(frame)

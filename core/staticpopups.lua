@@ -9,6 +9,15 @@ StaticPopupDialogs["CONFIG_RL"] = {
 	whileDead = 1,
 }
 
+StaticPopupDialogs["GLOBAL_RL"] = {
+	text = L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."],
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	OnAccept = function() ReloadUI() end,
+	timeout = 0,
+	whileDead = 1,
+}
+
 StaticPopupDialogs["KEYBIND_MODE"] = {
 	text = L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."],
 	button1 = L['Save'],

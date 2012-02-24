@@ -554,6 +554,7 @@ function CT:GetAnchor(option, frame)
 end
 
 function CT:PositionTimers()
+	if not E.global.classtimer.enable or not ElvUF_Player or not ElvUF_Target then return end
 	local playerAnchor, playerY = self:GetAnchor(self.db.player.anchor, self.playerFrame)
 	local targetAnchor, targetY = self:GetAnchor(self.db.target.anchor, self.targetFrame)
 	local trinketAnchor, trinketY = self:GetAnchor(self.db.trinket.anchor, self.trinketFrame)
@@ -578,6 +579,7 @@ function CT:PositionTimers()
 end
 
 function CT:ToggleTimers()
+	if not E.global.classtimer.enable or not ElvUF_Player or not ElvUF_Target then return end
 	if self.db.player.enable then
 		self:EnableAuraBarFrame(self.playerFrame)
 	else
@@ -602,10 +604,10 @@ function CT:UpdateFiltersAndColors()
 	self.target:RemoveAllFilters()
 	self.trinket:RemoveAllFilters()
 	
-	self.target:AddFilter(self.db.spells_filter[E.myclass].target, self.db.target.buffcolor, self.db.target.debuffcolor);		
-	self.player:AddFilter(self.db.spells_filter[E.myclass].player, self.db.player.buffcolor, self.db.player.debuffcolor);
-	self.trinket:AddFilter(self.db.spells_filter[E.myclass].procs, self.db.trinket.color);
-	self.trinket:AddFilter(self.db.trinkets_filter, self.db.trinket.color);	
+	self.target:AddFilter(E.global.classtimer.spells_filter[E.myclass].target, self.db.target.buffcolor, self.db.target.debuffcolor);		
+	self.player:AddFilter(E.global.classtimer.spells_filter[E.myclass].player, self.db.player.buffcolor, self.db.player.debuffcolor);
+	self.trinket:AddFilter(E.global.classtimer.spells_filter[E.myclass].procs, self.db.trinket.color);
+	self.trinket:AddFilter(E.global.classtimer.trinkets_filter, self.db.trinket.color);	
 	
 	if self.playerFrame then
 		OnEvent(self.playerFrame, 'UNIT_AURA', 'player')
@@ -616,8 +618,8 @@ end
 
 function CT:Initialize()
 	self.db = E.db.classtimer
-	if not self.db.enable or not ElvUF_Player or not ElvUF_Target then return end
-	
+	if not E.global.classtimer.enable or not ElvUF_Player or not ElvUF_Target then return end
+
 	self.target = self:CreateUnitAuraDataSource("target");
 	self.player = self:CreateUnitAuraDataSource("player");
 	self.trinket = self:CreateUnitAuraDataSource("player");

@@ -27,7 +27,7 @@ local function SkinSocialHeaderTab(tab)
 end
 
 local function LoadSkin()
-	if E.db.skins.blizzard.enable ~= true or E.db.skins.blizzard.friends ~= true then return end
+	if E.global.skins.blizzard.enable ~= true or E.global.skins.blizzard.friends ~= true then return end
 	S:HandleScrollBar(FriendsFrameFriendsScrollFrameScrollBar, 5)
 	S:HandleScrollBar(WhoListScrollFrameScrollBar, 5)
 	S:HandleScrollBar(ChannelRosterScrollFrameScrollBar, 5)

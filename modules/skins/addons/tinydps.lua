@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 
 local function LoadSkin()
-	if E.db.skins.tinydps.enable ~= true then return end
+	if E.global.skins.tinydps.enable ~= true then return end
 	
 	local frame = tdpsFrame
 	
