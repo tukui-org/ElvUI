@@ -4,6 +4,9 @@ local CH = E:NewModule('Chat', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 local CreatedFrames = 0;
 local lines = {};
 local msgList, msgCount, msgTime = {}, {}, {}
+local response		= L["You need to be at least level %d to whisper me."]
+local friendError	= L["You have reached the maximum amount of friends, remove 2 for this module to function properly."]
+local good, maybe, filter, login = {}, {}, {}, false
 
 local DEFAULT_STRINGS = {
 	BATTLEGROUND = L['BG'],
@@ -396,6 +399,17 @@ function CH:DisableChatThrottle()
 	table.wipe(msgList); table.wipe(msgCount); table.wipe(msgTime)
 end
 
+function CH:EnableMinLevelWhisper()
+	self:RegisterEvent("FRIENDLIST_UPDATE")
+	self:PLAYER_LOGIN()
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", CH.CHAT_MSG_SYSTEM)
+end
+
+function CH:DisableMinLevelWhisper()
+	self:UnregisterEvent("FRIENDLIST_UPDATE")
+	ChatFrame_RemoveMessageEventFilter("CHAT_MSG_SYSTEM", CH.CHAT_MSG_SYSTEM)
+end
+
 function CH:SetupChat(event, ...)	
 	for i = 1, NUM_CHAT_WINDOWS do
 		local frame = _G[format("ChatFrame%s", i)]
@@ -409,6 +423,10 @@ function CH:SetupChat(event, ...)
 	
 	if self.db.throttleInterval ~= 0 then
 		self:EnableChatThrottle()
+	end
+	
+	if self.db.minWhisperLevel ~= 0 then
+		CH:EnableMinLevelWhisper()
 	end
 		
 	GeneralDockManager:SetParent(LeftChatPanel)
@@ -529,6 +547,126 @@ function CH:CHAT_MSG_SAY(...)
 	end
 end
 
+function CH:CHAT_MSG_WHISPER(...)
+	local player, flag = select(3, ...), select(7, ...)
+	if good[player] or player:find("%-") or flag == "GM" or CH.db.minWhisperLevel == 0 then return CH.FindURL(self, ...) end
+	
+	for i = 1, select(2, BNGetNumFriends()) do
+		local toon = BNGetNumFriendToons(i)
+		for j = 1, toon do
+			local _, rName, rGame, rServer = BNGetFriendToonInfo(i, j)
+			if rName == player and rGame == "WoW" and rServer == GetRealmName() then
+				good[player] = true
+				return CH.FindURL(self, ...)
+			end
+		end
+	end
+	
+	if not maybe[player] then maybe[player] = {} end
+	local frame = self:GetName()
+	if IsAddOnLoaded("WIM") and not frame:find("WIM") then return true end
+	if not maybe[player][frame] then maybe[player][frame] = {} end
+	
+	local id = select(12, ...)
+	maybe[player][frame][id] = {}
+	local n = IsAddOnLoaded("WIM") and 2 or 0
+	for i = 1, select("#", ...) do
+		maybe[player][frame][id][i] = select(i + n, ...)
+	end
+	
+	local guid = select(13, ...)
+	local _, class = GetPlayerInfoByGUID(guid)
+	local level = (class == "DEATHKNIGHT") and 55 + CH.db.minWhisperLevel or CH.db.minWhisperLevel + 1
+	if not filter[player] or filter[player] ~= level then
+		filter[player] = level
+		AddFriend(player, true)	-- for FriendsWithBenefits compatibility
+	end
+	return true
+end
+
+function CH:CHAT_MSG_WHISPER_INFORM(...)
+	local _, message, player = ...
+	if good[player] or CH.db.minWhisperLevel == 0 then return CH.FindURL(self, ...) end
+	if filter[player] and message:find(format(response, filter[player])) then return true end
+	good[player] = true
+end
+
+function CH:CHAT_MSG_SYSTEM(_, message)
+	if message == ERR_FRIEND_LIST_FULL then
+		E:Print(friendError)
+		return
+	end
+	
+	if CH.db.minWhisperLevel ~= 0 then
+		for k in pairs(filter) do
+			if message == ERR_FRIEND_ADDED_S:format(k) or message == ERR_FRIEND_REMOVED_S:format(k) then
+				return true
+			end
+		end
+	end
+end
+
+function CH:PLAYER_LOGIN()
+	ShowFriends()
+	good[E.myname] = true -- we're good
+end
+
+function CH:ExcludeFriends()
+	for i = 1, GetNumFriends() do
+		local friend = GetFriendInfo(i)
+		if friend then good[friend] = true end
+	end
+	
+	for i = 1, GetNumGuildMembers() do
+		local guild = GetGuildRosterInfo(i)
+		if guild then good[guild] = true end
+	end
+end
+
+function CH:FRIENDLIST_UPDATE()
+	if not login then
+		login = true
+		CH:ExcludeFriends()
+		return
+	end
+	
+	for i = 1, GetNumFriends() do
+		local player, level = GetFriendInfo(i)
+		
+		if not player then
+			ShowFriends()
+		else
+			if maybe[player] then
+				RemoveFriend(player, true)
+				if level < filter[player] then
+					SendChatMessage(response:format(filter[player]), "WHISPER", nil, player)
+					for _, v in pairs(maybe[player]) do
+						for _, p in pairs(v) do
+							wipe(p)
+						end
+						wipe(v)
+					end
+				else
+					good[player] = true
+					for _, v in pairs(maybe[player]) do
+						for _, p in pairs(v) do
+							if IsAddOnLoaded("WIM") then
+								WIM.modules.WhisperEngine:CHAT_MSG_WHISPER(unpack(p))
+							else
+								ChatFrame_MessageEventHandler(unpack(p))
+							end
+							wipe(p)
+						end
+						wipe(v)
+					end
+				end
+				wipe(maybe[player])
+				maybe[player] = nil
+			end
+		end
+	end
+end
+
 function CH:Initialize()
 	self.db = E.db.chat
 	if E.global.chat.enable ~= true then return end
@@ -546,6 +684,8 @@ function CH:Initialize()
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", CH.CHAT_MSG_CHANNEL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_YELL", CH.CHAT_MSG_YELL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_SAY", CH.CHAT_MSG_SAY)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", CH.CHAT_MSG_WHISPER_INFORM)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", CH.CHAT_MSG_WHISPER)	
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_GUILD", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_OFFICER", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY", CH.FindURL)
@@ -554,10 +694,8 @@ function CH:Initialize()
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_LEADER", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BATTLEGROUND", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BATTLEGROUND_LEADER", CH.FindURL)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", CH.FindURL)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", CH.FindURL)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_CONVERSATION", CH.FindURL)	
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_INLINE_TOAST_BROADCAST", CH.FindURL)
 	

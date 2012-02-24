@@ -67,6 +67,7 @@ P['chat'] = {
 	['hyperlinkHover'] = true,
 	['throttleInterval'] = 45,
 	['scrollDownInterval'] = 15,
+	['minWhisperLevel'] = 5,
 }
 
 --ClassTimers
