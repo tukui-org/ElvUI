@@ -11,7 +11,7 @@
 *Add chat option for hyperlink hover.
 *Add chat option to throttle messages in chat. So you don't see the same message in chat for 'X' amount of seconds.
 *Add chat option to automatically scroll to the bottom of the frame after 'X' amount of seconds.
-*Add chat option to incoming whisper messages from players level 'X' and below.
+*Add chat option to block incoming whisper messages from players level 'X' and below.
 
 [b]General Changes:[/b]
 *Changing Profiles in ElvUI should no longer require a reload.
