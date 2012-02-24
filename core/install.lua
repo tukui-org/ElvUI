@@ -180,12 +180,14 @@ function E:SetupResolution()
 		E.db.actionbar.bar2.enabled = true;
 		E.db.actionbar.bar3.enabled = false;
 		E.db.actionbar.bar5.enabled = false;
+		E:GetModule('ActionBars'):ResetMovers('')
 		E.db.actionbar.bar2["position"] = {
 			["p2"] = "BOTTOM",
 			["p"] = "CENTER",
 			["p3"] = 0,
 			["p4"] = 56.18668365478516,
 		}
+
 		
 		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
 		
@@ -229,6 +231,7 @@ function E:SetupResolution()
 		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
 		E.db.unitframe.fontsize = 12
 		E.db.unitframe.units["positions"] = nil;
+		E:GetModule('ActionBars'):ResetMovers('')
 		E.db.lowresolutionset = nil;
 	end
 
@@ -497,7 +500,7 @@ end
 --Install UI
 function E:Install()	
 	if not InstallStepComplete then
-		local imsg = CreateFrame("Frame", "InstallStepComplete", E.UIParent)
+		local imsg = CreateFrame("Button", "InstallStepComplete", E.UIParent)
 		imsg:Size(418, 72)
 		imsg:Point("TOP", 0, -190)
 		imsg:Hide()
