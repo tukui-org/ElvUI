@@ -9,7 +9,8 @@ function UF:Construct_Raid625Frames(unitGroup)
 	self:RegisterForClicks("AnyUp")
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)
-	if E.db['unitframe']['layouts'][UF.ActiveLayout]['raid625'].frequentHealth == true then
+	local frqHValue
+	if E.db['unitframe']['units']['raid625'].frequentHealth == true then
 		frqHValue = true
 	else
 		frqHValue = false

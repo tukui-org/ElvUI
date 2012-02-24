@@ -10,7 +10,7 @@ function UF:Construct_PartyFrames(unitGroup)
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)
 	local frqHValue
-	if E.db['unitframe']['layouts'][UF.ActiveLayout]['party'].frequentHealth == true then
+	if E.db['unitframe']['units']['party'].frequentHealth == true then
 		frqHValue = true
 	else
 		frqHValue = false

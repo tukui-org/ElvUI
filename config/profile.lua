@@ -14,6 +14,7 @@ P['general'] = {
 	-- fonts
 	["fontsize"] = 11,
 	["font"] = "Friz Quadrata TT",
+	["chatfont"] = "Chat",
 	
 	--colors
 	["bordercolor"] = { r = .20,g = .20,b = .20 },
@@ -837,7 +838,7 @@ P['unitframe'] = {
 		['raid625'] = {
 			['enable'] = true,
 			['frequentHealth'] = false,
-			['visibility'] = '[@raid26,exists] hide;show'
+			['visibility'] = '[@raid26,exists] hide;show',
 			['point'] = 'LEFT',
 			['maxColumns'] = 5,
 			['unitsPerColumn'] = 5,
