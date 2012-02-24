@@ -503,15 +503,15 @@ end
 function UF:ResetUnitSettings(unit)
 	local db = self.db['units'][unit]
 	
-	for option, value in pairs(DF['unitframe']['units'][unit]) do
+	for option, value in pairs(P['unitframe']['units'][unit]) do
 		if type(value) ~= 'table' then
 			db[option] = value
 		else
-			for opt, val in pairs(DF['unitframe']['units'][unit][option]) do
+			for opt, val in pairs(P['unitframe']['units'][unit][option]) do
 				if type(val) ~= 'table' then
 					db[option][opt] = val
 				else
-					for o, v in pairs(DF['unitframe']['units'][unit][option][opt]) do
+					for o, v in pairs(P['unitframe']['units'][unit][option][opt]) do
 						db[option][opt][o] = v
 					end
 				end
