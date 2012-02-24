@@ -1004,7 +1004,7 @@ function UF:UpdateAuraWatch(frame)
 		end
 		
 		if not icon.count then
-			icon.count = icon:CreateFontString(nil, "OVERLAY");
+			icon.count = icon:CreateFontString(nil, "OVERLAY", 7);
 			icon.count:SetPoint("CENTER", unpack(counterOffsets[spell["point"]]));
 		end
 		icon.count:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db.fontsize, 'OUTLINE');
