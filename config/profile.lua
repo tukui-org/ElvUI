@@ -67,6 +67,10 @@ P['auras'] = {
 P['chat'] = {
 	['url'] = true,
 	['shortChannels'] = false,
+	['hyperlinkHover'] = false,
+	['throttleInterval'] = 60,
+	['scrollDownInterval'] = 0,
+	['minWhisperLevel'] = 0,
 	['whisperwarning'] = true,
 	['whispersound'] = 'ElvUI Whisper',
 }

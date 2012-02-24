@@ -17,7 +17,9 @@ local FadeFramesInOut = function(fade)
 	for frame, unit in pairs(frames) do
 		if not UnitExists(unit) then return end
 		if fade then
-			UIFrameFadeIn(frame, 0.15)
+			if frame:GetAlpha() ~= 1 then
+				UIFrameFadeIn(frame, 0.15)
+			end
 		else
 			UIFrameFadeOut(frame, 0.15)
 			frame.fadeInfo.finishedFunc = CheckForReset
@@ -32,8 +34,8 @@ local Update = function(self, arg1, arg2)
 	if type(arg1) == 'boolean' and not frames[self] then
 		return
 	end
-	
-	if not frames[self] then
+
+	if not frames[self] and self.CombatFade and self:GetAlpha() ~= 1 then
 		UIFrameFadeIn(self, 0.15)
 		self.fadeInfo.reset = true
 		return
