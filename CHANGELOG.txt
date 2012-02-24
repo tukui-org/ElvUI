@@ -7,6 +7,7 @@
 *Add a castbar spark option to all castbars on the unitframes.
 *Skin and position the guild challenge alert frame to the achievements anchor.
 *Add a resolution step to the installation process.
+*Add option for the Party, Raid 6-25, Raid 26-40 groups to enable/disable frequent updates for the health bar. This should only be turned on if you're healing. 
 
 [b]General Changes:[/b]
 *Changing Profiles in ElvUI should no longer require a reload.
@@ -19,6 +20,7 @@
 *The UIScale option inside ElvUI has been removed. Use the blizzard option if you wish to scale the UI. 
 *Changing the UIScale should now prompt you to reloadui.
 *Profession bags should now appear to be differant colors depending on the type of bag.
+*Frequent updates are no longer being used for on the power bar for the Party, Raid 6-25, Raid 26-40 groups. This should greatly increase performance inside a raid setting.
 
 [b]Fixes:[/b]
 *Fix action buttons being used while repositioning buttons.

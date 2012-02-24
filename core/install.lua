@@ -293,7 +293,7 @@ function E:SetupLayout(layout)
 		E.db.unitframe.units.party.point = 'LEFT';
 		E.db.unitframe.units.party.xOffset = 1;
 		E.db.unitframe.units.party.healPrediction = true;
-		E.db.unitframe.units.party.frequentHealth = true;
+		E.db.unitframe.units.party.health.frequentUpdates = true;
 		E.db.unitframe.units.party.columnAnchorPoint = 'LEFT';
 		E.db.unitframe.units.party.width = 80;
 		E.db.unitframe.units.party.height = 52;
@@ -318,10 +318,10 @@ function E:SetupLayout(layout)
 		E.db.unitframe.units.party.targetsGroup.yOffset = 1;
 
 		E.db.unitframe.units.raid625.healPrediction = true;
-		E.db.unitframe.units.raid625.frequentHealth = true;
+		E.db.unitframe.units.raid625.health.frequentUpdates = true;
 
 		E.db.unitframe.units.raid2640.healPrediction = true;
-		E.db.unitframe.units.raid2640.frequentHealth = true;	
+		E.db.unitframe.units.raid2640.health.frequentUpdates = true;	
 		
 		if E.db.lowresolutionset then
 			E.db.unitframe.units["positions"] = {
