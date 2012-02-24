@@ -34,3 +34,4 @@
 *Fix default bank search function not working with skin.
 *Fix achievement points not displaying on achievement window due to skin.
 *Character frame should no longer be skinned when the misc skin box is checked and the character frame skin is disabled.
+*Fix issue with unitframe combat fade not working as intended.
