@@ -13,9 +13,9 @@ function UF:Construct_Raid2640Frames(unitGroup)
 	self.menu = UF.SpawnMenu
 
 	self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
-	self.Health.frequentUpdates = true;
 	
 	self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT', false)
+	self.Power.frequentUpdates = false;
 	self.Name = UF:Construct_NameText(self)
 	self.Buffs = UF:Construct_Buffs(self)
 	self.Debuffs = UF:Construct_Debuffs(self)
@@ -166,6 +166,7 @@ function UF:Update_Raid2640Frames(frame, db)
 		local x, y = self:GetPositionOffset(db.health.position)
 		health.value:ClearAllPoints()
 		health.value:Point(db.health.position, health, db.health.position, x, y)
+		health.frequentUpdates = db.health.frequentUpdates
 		
 		--Colors
 		health.colorSmooth = nil

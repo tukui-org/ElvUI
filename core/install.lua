@@ -247,6 +247,10 @@ function E:SetupLayout(layout)
 	--Unitframes
 	E:CopyTable(E.db.unitframe.units, P.unitframe.units)
 	if layout == 'healer' then
+		E.db.unitframe.units.party.health.frequentUpdates = true;
+		E.db.unitframe.units.raid625.health.frequentUpdates = true;
+		E.db.unitframe.units.raid2640.health.frequentUpdates = true;
+		
 		E.db.unitframe.units.boss.width = 200;
 		E.db.unitframe.units.boss.castbar.width = 200;
 		E.db.unitframe.units.arena.width = 200;

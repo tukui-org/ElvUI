@@ -12,7 +12,6 @@ function UF:Construct_PartyFrames(unitGroup)
 	
 	if self.isChild then
 		self.Health = UF:Construct_HealthBar(self, true)
-		self.Health.frequentUpdates = true;	
 		
 		self.Name = UF:Construct_NameText(self)
 		self.originalParent = self:GetParent()
@@ -20,9 +19,10 @@ function UF:Construct_PartyFrames(unitGroup)
 		self.menu = UF.SpawnMenu
 		
 		self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
-		self.Health.frequentUpdates = true;
-		
+
 		self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT', false)
+		self.Power.frequentUpdates = false;
+		
 		self.Name = UF:Construct_NameText(self)
 		self.Buffs = UF:Construct_Buffs(self)
 		self.Debuffs = UF:Construct_Debuffs(self)
@@ -184,7 +184,8 @@ function UF:Update_PartyFrames(frame, db)
 		do
 			local health = frame.Health
 			health.Smooth = self.db.smoothbars
-
+			health.frequentUpdates = db.health.frequentUpdates
+			
 			--Colors
 			health.colorSmooth = nil
 			health.colorHealth = nil
@@ -234,7 +235,7 @@ function UF:Update_PartyFrames(frame, db)
 			local x, y = self:GetPositionOffset(db.health.position)
 			health.value:ClearAllPoints()
 			health.value:Point(db.health.position, health, db.health.position, x, y)
-			
+			health.frequentUpdates = db.health.frequentUpdates
 			--Colors
 			health.colorSmooth = nil
 			health.colorHealth = nil
