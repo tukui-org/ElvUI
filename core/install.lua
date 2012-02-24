@@ -504,7 +504,7 @@ end
 --Install UI
 function E:Install()	
 	if not InstallStepComplete then
-		local imsg = CreateFrame("Button", "InstallStepComplete", E.UIParent)
+		local imsg = CreateFrame("Frame", "InstallStepComplete", E.UIParent)
 		imsg:Size(418, 72)
 		imsg:Point("TOP", 0, -190)
 		imsg:Hide()
@@ -558,7 +558,7 @@ function E:Install()
 
 	--Create Frame
 	if not ElvUIInstallFrame then
-		local f = CreateFrame("Frame", "ElvUIInstallFrame", E.UIParent)
+		local f = CreateFrame("Button", "ElvUIInstallFrame", E.UIParent)
 		f:Size(550, 400)
 		f:SetTemplate("Transparent")
 		f:CreateShadow("Default")

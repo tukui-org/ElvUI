@@ -321,6 +321,7 @@ function E:CopyTable(currentTable, defaultTable)
 			if type(value) == "table" then
 				value = self:CopyTable(currentTable[option], value)
 			end
+			
 			currentTable[option] = value			
 		end
 	end

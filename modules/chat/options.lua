@@ -36,6 +36,45 @@ E.Options.args.chat = {
 					type = 'toggle',
 					name = L['Short Channels'],
 					desc = L['Shorten the channel names in chat.'],
+				},		
+				hyperlinkHover = {
+					order = 3,
+					type = 'toggle',
+					name = L['Hyperlink Hover'],
+					desc = L['Display the hyperlink tooltip while hovering over a hyperlink.'],
+					set = function(info, value) 
+						E.db.chat[ info[#info] ] = value 
+						if value == true then
+							CH:EnableHyperlink()
+						else
+							CH:DisableHyperlink()
+						end
+					end,
+				},
+				throttleInterval = {
+					order = 4,
+					type = 'range',
+					name = L['Spam Interval'],
+					desc = L['Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable.'],
+					min = 0, max = 120, step = 1,
+					set = function(info, value) 
+						E.db.chat[ info[#info] ] = value 
+						if value ~= 0 then
+							CH:EnableChatThrottle()
+						else
+							CH:DisableChatThrottle()
+						end
+					end,					
+				},
+				scrollDownInterval = {
+					order = 5,
+					type = 'range',
+					name = L['Scroll Interval'],
+					desc = L['Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely.'],
+					min = 0, max = 120, step = 5,
+					set = function(info, value) 
+						E.db.chat[ info[#info] ] = value 
+					end,					
 				},				
 			},
 		},
