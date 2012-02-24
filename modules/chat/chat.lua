@@ -569,7 +569,7 @@ function CH:CHAT_MSG_WHISPER(...)
 	
 	local id = select(12, ...)
 	maybe[player][frame][id] = {}
-	local n = IsAddOnLoaded("WIM") and 2 or 0
+	local n = IsAddOnLoaded("WIM") and 1 or 0
 	for i = 1, select("#", ...) do
 		maybe[player][frame][id][i] = select(i + n, ...)
 	end

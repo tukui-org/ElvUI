@@ -17,7 +17,7 @@ local FadeFramesInOut = function(fade, unit)
 	for frame, unit in pairs(frames) do
 		if not UnitExists(unit) then return end
 		if fade then
-			if frame:GetAlpha() ~= 1 or frame.fadeInfo.endAlpha == 0 then
+			if frame:GetAlpha() ~= 1 or (frame.fadeInfo and frame.fadeInfo.endAlpha == 0) then
 				UIFrameFadeIn(frame, 0.15)
 			end
 		else	
