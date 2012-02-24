@@ -250,15 +250,47 @@ function E:SetupLayout(layout)
 	
 	--Unitframes
 	E:CopyTable(E.db.unitframe.units, P.unitframe.units)
-	if layout == 'healer' then
+	if layout == 'healer' then		
+		E.db.unitframe.units.target.buffs.numrows = 1;
+		E.db.unitframe.units.target.buffs.growth-x = 'LEFT';
+		E.db.unitframe.units.target.buffs.growth-y = 'UP';
+		E.db.unitframe.units.target.buffs.initialAnchor = 'BOTTOMRIGHT';
+		E.db.unitframe.units.target.buffs.anchorPoint = 'TOPRIGHT';
+		E.db.unitframe.units.target.debuffs.numrows = 1;
+		E.db.unitframe.units.target.debuffs.growth-x = 'LEFT';
+		E.db.unitframe.units.target.debuffs.growth-y = 'UP';
+		E.db.unitframe.units.target.debuffs.initialAnchor = 'BOTTOMRIGHT';
+		E.db.unitframe.units.target.debuffs.anchorPoint = 'TOPRIGHT';
+		E.db.unitframe.units.target.castbar.yOffset = 0;
+		
+		E.db.unitframe.units.targettarget.height = 35;
+		
+		E.db.unitframe.units.focus.buffs.growth-y = 'UP';
+		E.db.unitframe.units.focus.buffs.growth-y = 'BOTTOMLEFT';
+		E.db.unitframe.units.focus.buffs.growth-y = 'TOPLEFT';
+		E.db.unitframe.units.focus.debuffs.growth-y = 'UP';
+		E.db.unitframe.units.focus.debuffs.growth-y = 'BOTTOMLEFT';
+		E.db.unitframe.units.focus.debuffs.growth-y = 'TOPLEFT';
+		E.db.unitframe.units.focus.castbar.yOffset = 65;
+		
+		E.db.unitframe.units.focustarget.buffs.growth-y = 'UP';
+		E.db.unitframe.units.focustarget.buffs.initialAnchor = 'BOTTOMLEFT';
+		E.db.unitframe.units.focustarget.buffs.anchorPoint = 'TOPLEFT';
+		E.db.unitframe.units.focustarget.debuffs.growth-y = 'UP';
+		E.db.unitframe.units.focustarget.debuffs.initialAnchor = 'BOTTOMLEFT';
+		E.db.unitframe.units.focustarget.debuffs.anchorPoint = 'TOPLEFT';
+		
 		E.db.unitframe.units.boss.width = 200;
 		E.db.unitframe.units.boss.castbar.width = 200;
+		E.db.unitframe.units.boss.growthDirection = 'UP';
+		
 		E.db.unitframe.units.arena.width = 200;
 		E.db.unitframe.units.arena.castbar.width = 200;
 		
 		E.db.unitframe.units.party.point = 'LEFT';
 		E.db.unitframe.units.party.xOffset = 1;
 		E.db.unitframe.units.party.healPrediction = true;
+		E.db.unitframe.units.party.frequentHealth = true;
 		E.db.unitframe.units.party.columnAnchorPoint = 'LEFT';
 		E.db.unitframe.units.party.width = 80;
 		E.db.unitframe.units.party.height = 52;
@@ -283,34 +315,44 @@ function E:SetupLayout(layout)
 		E.db.unitframe.units.party.targetsGroup.yOffset = 1;
 
 		E.db.unitframe.units.raid625.healPrediction = true;
-		E.db.unitframe.units.raid625.health.orientation = 'VERTICAL';
+		E.db.unitframe.units.raid625.frequentHealth = true;
 
 		E.db.unitframe.units.raid2640.healPrediction = true;
-		E.db.unitframe.units.raid2640.health.orientation = 'VERTICAL';		
+		E.db.unitframe.units.raid2640.frequentHealth = true;	
 		
 		if E.db.lowresolutionset then
 			E.db.unitframe.units["positions"] = {
-				["ElvUF_Player"] = "BOTTOMUIParent-305242",
-				["ElvUF_Target"] = "BOTTOMUIParent305242",
-				["ElvUF_Raid2640"] = "BOTTOMUIParent080",
-				["ElvUF_Raid625"] = "BOTTOMUIParent080",
-				["ElvUF_TargetTarget"] = "BOTTOMUIParent305187",
-				["ElvUF_Focus"] = "RIGHTUIParent-264-43",
-				["ElvUF_Party"] = "BOTTOMUIParent0104",
-				["ElvUF_Pet"] = "BOTTOMUIParent-305187",
-				['ElvUF_Focus'] = "BOTTOMUIParent310432",
+				["ElvUF_Player"] = "BOTTOMLEFTUIParent464230",
+				["ElvUF_Target"] = "BOTTOMRIGHTUIParent-464230",
+				["ElvUF_Raid2640"] = "BOTTOMUIParent0170",
+				["ElvUF_Raid625"] = "BOTTOMUIParent0170",
+				["ElvUF_TargetTarget"] = "BOTTOMRIGHTElvUF_Target0150",
+				["ElvUF_Focus"] = "BOTTOMLEFTElvUF_Player0150",
+				["ElvUF_FocusTarget"] = "BOTTOMLEFTElvUF_Focus0150",
+				["ElvUF_Party"] = "BOTTOMUIParent0170",
+				["ElvUF_Pet"] = "BOTTOMLEFTUIParent464151",
+				["ElvUF_Boss1"] = "BOTTOMLEFTUIParent30250",
+				["ElvUF_Boss2"] = "BOTTOMLEFTUIParent30375",
+				["ElvUF_Boss3"] = "BOTTOMLEFTUIParent30500",
+				["ElvUF_Boss4"] = "BOTTOMLEFTUIParent30625",
+				["ElvUF_Tank"] = "LEFTUIParent30350",
 			}			
 		else
 			E.db.unitframe.units["positions"] = {
-				["ElvUF_Player"] = "BOTTOMLEFTUIParent464242",
-				["ElvUF_Target"] = "BOTTOMRIGHTUIParent-464242",
-				["ElvUF_Raid2640"] = "BOTTOMUIParent050",
-				["ElvUF_Raid625"] = "BOTTOMUIParent050",
-				["ElvUF_TargetTarget"] = "BOTTOMRIGHTUIParent-464151",
-				["ElvUF_Focus"] = "RIGHTUIParent-475-143",
-				["ElvUF_Party"] = "BOTTOMUIParent074",
+				["ElvUF_Player"] = "BOTTOMLEFTUIParent464230",
+				["ElvUF_Target"] = "BOTTOMRIGHTUIParent-464230",
+				["ElvUF_Raid2640"] = "BOTTOMUIParent0170",
+				["ElvUF_Raid625"] = "BOTTOMUIParent0170",
+				["ElvUF_TargetTarget"] = "BOTTOMRIGHTElvUF_Target0150",
+				["ElvUF_Focus"] = "BOTTOMLEFTElvUF_Player0150",
+				["ElvUF_FocusTarget"] = "BOTTOMLEFTElvUF_Focus0150",
+				["ElvUF_Party"] = "BOTTOMUIParent0170",
 				["ElvUF_Pet"] = "BOTTOMLEFTUIParent464151",
-				['ElvUF_Focus'] = "BOTTOMUIParent280332",
+				["ElvUF_Boss1"] = "BOTTOMLEFTUIParent30250",
+				["ElvUF_Boss2"] = "BOTTOMLEFTUIParent30375",
+				["ElvUF_Boss3"] = "BOTTOMLEFTUIParent30500",
+				["ElvUF_Boss4"] = "BOTTOMLEFTUIParent30625",
+				["ElvUF_Tank"] = "LEFTUIParent30350",
 			}
 		end
 	elseif E.db.lowresolutionset then
@@ -354,12 +396,15 @@ function E:SetupLayout(layout)
 	E:CopyTable(E.db.datatexts.panels, P.datatexts.panels)
 	if layout == 'tank' then
 		E.db.datatexts.panels.LeftChatDataPanel.left = 'Armor';
+		E.db.datatexts.panels.LeftChatDataPanel.middle = 'Attack Power';
 		E.db.datatexts.panels.LeftChatDataPanel.right = 'Avoidance';
 	elseif layout == 'healer' or layout == 'dpsCaster' then
 		E.db.datatexts.panels.LeftChatDataPanel.left = 'Spell/Heal Power';
-		E.db.datatexts.panels.LeftChatDataPanel.right = 'Haste';
+		E.db.datatexts.panels.LeftChatDataPanel.middle = 'Haste';
+		E.db.datatexts.panels.LeftChatDataPanel.right = 'Mastery';
 	else
 		E.db.datatexts.panels.LeftChatDataPanel.left = 'Attack Power';
+		E.db.datatexts.panels.LeftChatDataPanel.middle = 'Haste';
 		E.db.datatexts.panels.LeftChatDataPanel.right = 'Crit Chance';
 	end
 	

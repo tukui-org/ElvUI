@@ -44,6 +44,7 @@ function E:UpdateMedia()
 	--Fonts
 	self["media"].normFont = LSM:Fetch("font", self.db['general'].font)
 	self["media"].combatFont = LSM:Fetch("font", self.db['general'].dmgfont)
+	self["media"].chatFont = LSM:Fetch("font", self.db['general'].chatfont)
 
 	--Textures
 	self["media"].blankTex = LSM:Fetch("background", "ElvUI Blank")
@@ -420,7 +421,8 @@ function E:UpdateAll()
 	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
 	self.db = self.data.profile;
 	self.global = self.data.global;
-		
+	
+	self:UpdateSounds()
 	self:UpdateMedia()
 	self:UpdateFrameTemplates()
 	self:SetMoversPositions()
@@ -503,7 +505,7 @@ function E:Initialize()
 	RegisterAddonMessagePrefix('ElvUIVC')
 	RegisterAddonMessagePrefix('ElvSays')
 	
-	self:UpdateSounds()	
+	self:UpdateSounds()
 	self:UpdateMedia()
 	self:UpdateFrameTemplates()
 	self:CreateMoverPopup()

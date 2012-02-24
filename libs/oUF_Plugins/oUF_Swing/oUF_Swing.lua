@@ -37,7 +37,7 @@
 	 - :OverrideText(now)
 --]]
 
-local E, L, DF = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 
 local addon, ns = ...
 local oUF = oUF or ns.oUF or ElvUF

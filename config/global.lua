@@ -9,6 +9,7 @@ G['general'] = {
 	["normTex"] = "Minimalist",
 	["glossTex"] = "Minimalist",	
 	["dmgfont"] = "ElvUI Combat",
+	["chatfont"] = "Chat",
 }
 
 G['classtimer'] = {

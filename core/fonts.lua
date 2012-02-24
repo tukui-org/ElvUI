@@ -46,8 +46,8 @@ function E:UpdateBlizzardFonts()
 	SetFont(NumberFont_Outline_Huge,            NUMBER, 28, "THICKOUTLINE", 28)
 	SetFont(NumberFont_Outline_Large,           NUMBER, 15, "OUTLINE")
 	SetFont(NumberFont_Outline_Med,             NUMBER, self.db.general.fontsize*1.1, "OUTLINE")
-	SetFont(NumberFont_Shadow_Med,              NORMAL, self.db.general.fontsize) --chat editbox uses this
-	SetFont(NumberFont_Shadow_Small,            NORMAL, self.db.general.fontsize)
+	SetFont(NumberFont_Shadow_Med,              NUMBER2, self.db.general.fontsize*1.1) --chat editbox uses this
+	SetFont(NumberFont_Shadow_Small,            NUMBER, self.db.general.fontsize)
 	SetFont(QuestFont,                          NORMAL, self.db.general.fontsize)
 	SetFont(QuestFont_Large,                    NORMAL, 14)
 	SetFont(SystemFont_Large,                   NORMAL, 15)
