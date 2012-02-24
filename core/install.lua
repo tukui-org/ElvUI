@@ -367,7 +367,22 @@ function E:SetupLayout(layout)
 			['ElvUF_Focus'] = "BOTTOMUIParent310332",
 		}		
 	else
-		E.db.unitframe.units["positions"] = nil;
+		E.db.unitframe.units["positions"] = {
+			["ElvUF_Player"] = "TOPLEFTUIParent30-30",
+			["ElvUF_Target"] = "TOPLEFTUIParent320-30",
+			["ElvUF_Raid2640"] = "BOTTOMLEFTUIParent4210",
+			["ElvUF_Raid625"] = "BOTTOMLEFTUIParent4210",
+			["ElvUF_TargetTarget"] = "TOPLEFTUIParent610-30",
+			["ElvUF_Focus"] = "TOPLEFTUIParent30-265",
+			["ElvUF_FocusTarget"] = "TOPLEFTUIParent260-265",
+			["ElvUF_Party"] = "BOTTOMLEFTUIParent4210",
+			["ElvUF_Pet"] = "TOPLEFTUIParent30-115",
+			["ElvUF_Boss1"] = "TOPLEFTUIParent440-305",
+			["ElvUF_Boss2"] = "TOPLEFTUIParent440-430",
+			["ElvUF_Boss3"] = "TOPLEFTUIParent440-555",
+			["ElvUF_Boss4"] = "TOPLEFTUIParent440-680",
+			["ElvUF_Tank"] = "LEFTUIParent30150",
+		}
 	end
 	
 	if E.db.lowresolutionset then
