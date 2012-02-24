@@ -20,7 +20,6 @@ function UF:Construct_PetFrame(frame)
 	frame.Castbar = CreateFrame("StatusBar", nil, frame) -- Dummy Bar
 	
 	frame.HealPrediction = self:Construct_HealComm(frame)
-	frame.CombatFade = true
 end
 
 function UF:Update_PetFrame(frame, db)
@@ -286,11 +285,9 @@ function UF:Update_PetFrame(frame, db)
 	
 	--Combat Fade
 	do
-		if ElvUF_Player.db.combatfade and not frame:IsElementEnabled('CombatFade') then
-			frame:EnableElement('CombatFade')
-		elseif not ElvUF_Player.db.combatfade and frame:IsElementEnabled('CombatFade') then
-			frame:DisableElement('CombatFade')
-		end		
+		if ElvUF_Player then
+			frame:SetParent(ElvUF_Player)
+		end
 	end	
 	
 	if not frame.mover then
