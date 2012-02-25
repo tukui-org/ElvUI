@@ -4606,12 +4606,6 @@ E.Options.args.unitframe.args.party = {
 			order = 1,
 			name = L['Enable'],
 		},
-		frequentHealth = {
-			type = 'toggle',
-			order = 2,
-			name = L['Health Frequent Update'],
-			desc = L['Enable / Disable Health Frequent Updates'],
-		},
 		general = {
 			order = 3,
 			type = 'group',
@@ -5218,12 +5212,6 @@ E.Options.args.unitframe.args.raid625 = {
 			order = 1,
 			name = L['Enable'],
 		},
-		frequentHealth = {
-			type = 'toggle',
-			order = 2,
-			name = L['Health Frequent Update'],
-			desc = L['Enable / Disable Health Frequent Updates'],
-		},
 		general = {
 			order = 3,
 			type = 'group',
@@ -5749,12 +5737,6 @@ E.Options.args.unitframe.args.raid2640 = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-		},
-		frequentHealth = {
-			type = 'toggle',
-			order = 2,
-			name = L['Health Frequent Update'],
-			desc = L['Enable / Disable Health Frequent Updates'],
 		},
 		general = {
 			order = 3,
