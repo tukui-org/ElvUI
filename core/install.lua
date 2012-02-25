@@ -253,7 +253,11 @@ function E:SetupLayout(layout)
 	
 	--Unitframes
 	E:CopyTable(E.db.unitframe.units, P.unitframe.units)
-	if layout == 'healer' then		
+	if layout == 'healer' then
+		if not IsAddOnLoaded('Clique') then
+			E:Print(L['Using the healer layout it is highly recommended you download the addon Clique to work side by side with ElvUI.'])
+		end
+		
 		E.db.unitframe.units.target.buffs.numrows = 1;
 		E.db.unitframe.units.target.buffs['growth-x'] = 'LEFT';
 		E.db.unitframe.units.target.buffs['growth-y'] = 'UP';
