@@ -198,7 +198,12 @@ end
 
 function UF:PostUpdatePower(unit, min, max)
 	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
-	local color = ElvUF['colors'].power[pToken]
+	local color
+	if pToken then
+		color = ElvUF['colors'].power[pToken]
+	else
+	
+	end
 	local perc
 	if max == 0 then
 		perc = 0
