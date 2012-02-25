@@ -462,6 +462,8 @@ function E:UpdateAll()
 		self:Install()
 	end
 	
+	self:GetModule('Maps'):Minimap_UpdateSettings()
+	
 	--self:LoadKeybinds()
 	
 	collectgarbage('collect');
@@ -512,6 +514,8 @@ function E:Initialize()
 	self:RegisterEvent('UI_SCALE_CHANGED', 'UIScale')
 	--self:RegisterEvent('UPDATE_BINDINGS', 'SaveKeybinds')
 	--self:SaveKeybinds()
+	
+	self:GetModule('Maps'):Minimap_UpdateSettings()
 	
 	if IsAddOnLoaded('Routes') or IsAddOnLoaded('GatherMate2') then
 		E:Print(L['Detected either the Routes or GatherMate2 addon running, if you wish to use these addons with ElvUI you must type the /farmmode command.'])
