@@ -1117,7 +1117,7 @@ E.Options.args.unitframe.args.player = {
 					name = L['Width'],
 					type = 'range',
 					min = 50, max = 600, step = 1,
-					disabled = function() return E.db.unitframe.layouts[UF.ActiveLayout]['player']['castbar']['snaptoab'] end,
+					disabled = function() return E.db.unitframe['units']['player']['castbar']['snaptoab'] end,
 				},
 				height = {
 					order = 6,
