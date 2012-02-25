@@ -91,6 +91,26 @@ E.Options.args.chat = {
 						end
 					end,						
 				},
+				font = {
+					type = "select", dialogControl = 'LSM30_Font',
+					order = 7,
+					name = L["Font"],
+					values = AceGUIWidgetLSMlists.font,
+					set = function(info, value) E.db.chat[ info[#info] ] = value ; CH:SetupChat() end,
+				},
+				fontoutline = {
+					order = 8,
+					name = L["Font Outline"],
+					desc = L["Set the font outline."],
+					type = "select",
+					values = {
+						['NONE'] = L['None'],
+						['OUTLINE'] = 'OUTLINE',
+						['MONOCHROME'] = 'MONOCHROME',
+						['THICKOUTLINE'] = 'THICKOUTLINE',
+					},
+					set = function(info, value) E.db.chat[ info[#info] ] = value; CH:SetupChat() end,
+				},					
 			},
 		},
 	},

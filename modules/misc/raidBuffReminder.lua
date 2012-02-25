@@ -211,14 +211,13 @@ function RBR:Initialize()
 	frame.spell4 = self:CreateButton(frame.spell3)
 	frame.spell5 = self:CreateButton(frame.spell4)
 	frame.spell6 = self:CreateButton(frame.spell5, nil, true)
-		
+	self.frame = frame
+	
 	if E.db.general.raidReminder then
 		self:Enable()
 	else
 		self:Disable()
 	end
-	
-	self.frame = frame
 end
 
 E:RegisterModule(RBR:GetName())

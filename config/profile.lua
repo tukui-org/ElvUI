@@ -70,6 +70,8 @@ P['chat'] = {
 	['throttleInterval'] = 45,
 	['scrollDownInterval'] = 15,
 	['minWhisperLevel'] = 4,
+	['font'] = 'ElvUI Font',
+	['fontoutline'] = 'NONE',
 }
 
 --ClassTimers
