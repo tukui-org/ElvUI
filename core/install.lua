@@ -247,6 +247,10 @@ function E:SetupLayout(layout)
 	--Unitframes
 	E:CopyTable(E.db.unitframe.units, P.unitframe.units)
 	if layout == 'healer' then
+		if not IsAddOnLoaded('Clique') then
+			E:Print(L['Using the healer layout it is highly recommended you download the addon Clique to work side by side with ElvUI.'])
+		end
+		
 		E.db.unitframe.units.party.health.frequentUpdates = true;
 		E.db.unitframe.units.raid625.health.frequentUpdates = true;
 		E.db.unitframe.units.raid2640.health.frequentUpdates = true;
