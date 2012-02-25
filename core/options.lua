@@ -99,7 +99,7 @@ E.Options.args.general = {
 					order = 5,
 					type = "toggle",
 					name = L['Bags'],
-					desc = L['Enable\Disable the all-in-one bag.'],
+					desc = L['Enable/Disable the all-in-one bag.'],
 					get = function(info) return E.global.general.bags end,
 					set = function(info, value) E.global.general.bags = value; StaticPopup_Show("GLOBAL_RL") end
 				},
@@ -107,7 +107,7 @@ E.Options.args.general = {
 					order = 6,
 					type = "toggle",
 					name = L['Loot'],
-					desc = L['Enable\Disable the loot frame.'],
+					desc = L['Enable/Disable the loot frame.'],
 					get = function(info) return E.global.general.loot end,
 					set = function(info, value) E.global.general.loot = value; StaticPopup_Show("GLOBAL_RL") end
 				},
@@ -115,7 +115,7 @@ E.Options.args.general = {
 					order = 7,
 					type = "toggle",
 					name = L['Loot Roll'],
-					desc = L['Enable\Disable the loot roll frame.'],
+					desc = L['Enable/Disable the loot roll frame.'],
 					get = function(info) return E.global.general.lootRoll end,
 					set = function(info, value) E.global.general.lootRoll = value; StaticPopup_Show("GLOBAL_RL") end
 				},
