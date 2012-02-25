@@ -29,6 +29,8 @@ P['general'] = {
 	
 	--misc
 	['mapTransparency'] = 0.5,
+	['minimapSize'] = 175,
+	['raidReminder'] = true,
 };
 
 --NamePlate

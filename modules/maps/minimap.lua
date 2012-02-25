@@ -130,13 +130,69 @@ function M:UpdateLFG()
 end
 
 function M:Minimap_UpdateSettings()
-	Minimap:Size(E.MinimapSize, E.MinimapSize)
-	MMHolder:Width((Minimap:GetWidth() + 4) + E.RBRWidth)
-	MMHolder:Height(Minimap:GetHeight() + 27)	
-	Minimap.location:Width(E.MinimapSize)
+	E.MinimapSize = E.db.general.minimapSize
 	
+	if E.db.general.raidReminder then
+		E.RBRWidth = ((E.MinimapSize - 6) / 6) + 4
+	else
+		E.RBRWidth = 0;
+	end
+	
+	E.MinimapWidth = E.MinimapSize	
 	E.MinimapHeight = E.MinimapSize + 5
-	E.MinimapWidth = E.MinimapSize
+	Minimap:Size(E.MinimapSize, E.MinimapSize)
+	
+	if MMHolder then
+		MMHolder:Width((Minimap:GetWidth() + 4) + E.RBRWidth)
+		MMHolder:Height(Minimap:GetHeight() + 27)	
+	end
+	
+	if Minimap.location then
+		Minimap.location:Width(E.MinimapSize)
+	end
+	
+	if MinimapMover then
+		MinimapMover:Size(MMHolder:GetSize())
+	end
+
+	if AurasHolder then
+		AurasHolder:Height(E.MinimapHeight)
+		if AurasMover and not E:HasMoverBeenMoved('AurasMover') and not E:HasMoverBeenMoved('MinimapMover') then
+			AurasMover:ClearAllPoints()
+			AurasMover:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -((E.MinimapSize + 4) + E.RBRWidth + 7), -3)
+			E:SaveMoverDefaultPosition('AurasMover')
+		end
+		
+		if AurasMover then
+			AurasMover:Height(E.MinimapHeight)
+		end
+	end
+	
+	if UpperRepExpBarHolder then
+		E:GetModule('Misc'):UpdateExpRepBarAnchor()
+	end
+	
+	if ElvConfigToggle then
+		if E.db.general.raidReminder then
+			ElvConfigToggle:Show()
+			ElvConfigToggle:Width(E.RBRWidth)
+		else
+			ElvConfigToggle:Hide()
+		end
+	end
+	
+	if RaidBuffReminder then
+		RaidBuffReminder:Width(E.RBRWidth)
+		for i=1, 6 do
+			RaidBuffReminder['spell'..i]:Size(E.RBRWidth - 4)
+		end
+		
+		if E.db.general.raidReminder then
+			E:GetModule('RaidBuffReminder'):Enable()
+		else
+			E:GetModule('RaidBuffReminder'):Disable()
+		end
+	end
 end
 
 function M:LoadMinimap()	
@@ -252,7 +308,7 @@ function M:LoadMinimap()
 	fm:Hide()
 	
 	FarmModeMap:SetScript('OnShow', function() 	
-		if E.db["movers"] == nil or (E.db["movers"] and E.db["movers"]['AurasMover'] == nil) then
+		if not E:HasMoverBeenMoved('AurasMover') then
 			AurasMover:ClearAllPoints()
 			AurasMover:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
 		end
@@ -261,7 +317,7 @@ function M:LoadMinimap()
 	end)
 	
 	FarmModeMap:SetScript('OnHide', function() 
-		if E.db["movers"] == nil or (E.db["movers"] and E.db["movers"]['AurasMover'] == nil) then
+		if not E:HasMoverBeenMoved('AurasMover') then
 			E:ResetMovers('Auras Frame')
 		end	
 		MinimapCluster:ClearAllPoints()

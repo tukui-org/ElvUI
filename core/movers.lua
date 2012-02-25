@@ -18,7 +18,12 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	f:SetFrameLevel(parent:GetFrameLevel() + 1)
 	f:SetWidth(parent:GetWidth())
 	f:SetHeight(parent:GetHeight())
-	
+	f.parent = parent
+	f.name = name
+	f.textSting = text
+	f.postdrag = postdrag
+	f.overlay = overlay
+
 	if overlay == true then
 		f:SetFrameStrata("DIALOG")
 	else
@@ -50,14 +55,7 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 			self:StopMovingOrSizing()
 		end
 		
-		if not E.db.movers then E.db.movers = {} end
-		
-		E.db.movers[name] = {}
-		local p, _, p2, p3, p4 = self:GetPoint()
-		E.db.movers[name]["p"] = p
-		E.db.movers[name]["p2"] = p2
-		E.db.movers[name]["p3"] = p3
-		E.db.movers[name]["p4"] = p4
+		E:SaveMoverPosition(name)
 		
 		if postdrag ~= nil and type(postdrag) == 'function' then
 			postdrag(self, E:GetScreenQuadrant(self))
@@ -99,6 +97,38 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 			self:UnregisterAllEvents()
 		end)
 	end	
+end
+
+function E:HasMoverBeenMoved(name)
+	if E.db["movers"] and E.db["movers"][name] then
+		return true
+	else
+		return false
+	end
+end
+
+function E:SaveMoverPosition(name)
+	if not _G[name] then return end
+	if not E.db.movers then E.db.movers = {} end
+	
+	E.db.movers[name] = {}
+	local p, _, p2, p3, p4 = _G[name]:GetPoint()
+	E.db.movers[name]["p"] = p
+	E.db.movers[name]["p2"] = p2
+	E.db.movers[name]["p3"] = p3
+	E.db.movers[name]["p4"] = p4	
+end
+
+function E:SaveMoverDefaultPosition(name)
+	if not _G[name] then return end
+	local p, p2, p3, p4, p5 = _G[name]:GetPoint()
+
+	E.CreatedMovers[name]["p"] = p
+	E.CreatedMovers[name]["p2"] = p2 or "E.UIParent"
+	E.CreatedMovers[name]["p3"] = p3
+	E.CreatedMovers[name]["p4"] = p4
+	E.CreatedMovers[name]["p5"] = p5
+	E.CreatedMovers[name]["postdrag"](_G[name], E:GetScreenQuadrant(_G[name]))
 end
 
 function E:CreateMover(parent, name, text, overlay, postdrag)

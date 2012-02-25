@@ -171,6 +171,33 @@ function RBR:CreateButton(relativeTo, isFirst, isLast)
 	return button
 end
 
+function RBR:Enable()
+	RaidBuffReminder:Show()
+	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", 'UpdateReminder')
+	self:RegisterEvent("UNIT_INVENTORY_CHANGED", 'UpdateReminder')
+	self:RegisterEvent("UNIT_AURA", 'UpdateReminder')
+	self:RegisterEvent("PLAYER_REGEN_ENABLED", 'UpdateReminder')
+	self:RegisterEvent("PLAYER_REGEN_DISABLED", 'UpdateReminder')
+	self:RegisterEvent("PLAYER_ENTERING_WORLD", 'UpdateReminder')
+	self:RegisterEvent("UPDATE_BONUS_ACTIONBAR", 'UpdateReminder')
+	self:RegisterEvent("CHARACTER_POINTS_CHANGED", 'UpdateReminder')
+	self:RegisterEvent("ZONE_CHANGED_NEW_AREA", 'UpdateReminder')
+	self:UpdateReminder()
+end
+
+function RBR:Disable()
+	RaidBuffReminder:Hide()
+	self:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+	self:UnregisterEvent("UNIT_INVENTORY_CHANGED")
+	self:UnregisterEvent("UNIT_AURA", 'UpdateReminder')
+	self:UnregisterEvent("PLAYER_REGEN_ENABLED")
+	self:UnregisterEvent("PLAYER_REGEN_DISABLED")
+	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+	self:UnregisterEvent("UPDATE_BONUS_ACTIONBAR")
+	self:UnregisterEvent("CHARACTER_POINTS_CHANGED")
+	self:UnregisterEvent("ZONE_CHANGED_NEW_AREA")
+end
+
 function RBR:Initialize()
 	local frame = CreateFrame('Frame', 'RaidBuffReminder', Minimap)
 	frame:SetTemplate('Default')
@@ -184,16 +211,13 @@ function RBR:Initialize()
 	frame.spell4 = self:CreateButton(frame.spell3)
 	frame.spell5 = self:CreateButton(frame.spell4)
 	frame.spell6 = self:CreateButton(frame.spell5, nil, true)
+		
+	if E.db.general.raidReminder then
+		self:Enable()
+	else
+		self:Disable()
+	end
 	
-	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", 'UpdateReminder')
-	self:RegisterEvent("UNIT_INVENTORY_CHANGED", 'UpdateReminder')
-	self:RegisterEvent("UNIT_AURA", 'UpdateReminder')
-	self:RegisterEvent("PLAYER_REGEN_ENABLED", 'UpdateReminder')
-	self:RegisterEvent("PLAYER_REGEN_DISABLED", 'UpdateReminder')
-	self:RegisterEvent("PLAYER_ENTERING_WORLD", 'UpdateReminder')
-	self:RegisterEvent("UPDATE_BONUS_ACTIONBAR", 'UpdateReminder')
-	self:RegisterEvent("CHARACTER_POINTS_CHANGED", 'UpdateReminder')
-	self:RegisterEvent("ZONE_CHANGED_NEW_AREA", 'UpdateReminder')
 	self.frame = frame
 end
 

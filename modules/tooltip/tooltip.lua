@@ -430,7 +430,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		local offset = 2
 		if guildName then
 			if UnitIsInMyGuild(unit) then
-				GameTooltipTextLeft2:SetText("<"..E["media"].hexvaluecolor..guildName.."|r> ["..E.ValColor..guildRankName.."|r]")
+				GameTooltipTextLeft2:SetText("<"..E["media"].hexvaluecolor..guildName.."|r> ["..E["media"].hexvaluecolor..guildRankName.."|r]")
 			else
 				GameTooltipTextLeft2:SetText("<|cff00ff10"..guildName.."|r> [|cff00ff10"..guildRankName.."|r]")
 			end

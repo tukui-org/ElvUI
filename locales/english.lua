@@ -702,3 +702,7 @@ L["Your current resolution is %s, this is considered a %s resolution."] = "Your 
 L["Your items have been repaired for: "] = "Your items have been repaired for: "
 L["Your items have been repaired using guild bank funds for: "] = "Your items have been repaired using guild bank funds for: "
 L["Your version of ElvUI is out of date. You can download the latest version from www.curse.com"] = "Your version of ElvUI is out of date. You can download the latest version from www.curse.com"
+L['Minimap Size'] = true;
+L['Adjust the size of the minimap.'] = true;
+L['Raid Reminder'] = true;
+L['Display raid reminder bar on the minimap.'] = true;
