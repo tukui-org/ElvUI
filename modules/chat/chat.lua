@@ -354,6 +354,7 @@ if E:IsFoolsDay() then
 	end
 end
 
+local hyperLinkEntered
 function CH:OnHyperlinkEnter(frame, refString)
 	if InCombatLockdown() then return; end
 	local linkToken = refString:match("^([^:]+)")
@@ -361,6 +362,7 @@ function CH:OnHyperlinkEnter(frame, refString)
 		ShowUIPanel(GameTooltip)
 		GameTooltip:SetOwner(frame, "ANCHOR_CURSOR")
 		GameTooltip:SetHyperlink(refString)
+		hyperLinkEntered = frame;
 		GameTooltip:Show()
 	end
 end
@@ -369,6 +371,14 @@ function CH:OnHyperlinkLeave(frame, refString)
 	local linkToken = refString:match("^([^:]+)")
 	if hyperlinkTypes[linkToken] then
 		HideUIPanel(GameTooltip)
+		hyperLinkEntered = nil;
+	end
+end
+
+function CH:OnMessageScrollChanged(frame)
+	if hyperLinkEntered == frame then
+		HideUIPanel(GameTooltip)
+		hyperLinkEntered = false;
 	end
 end
 
@@ -378,6 +388,7 @@ function CH:EnableHyperlink()
 		if not self.hooks[frame] then
 			self:HookScript(frame, 'OnHyperlinkEnter')
 			self:HookScript(frame, 'OnHyperlinkLeave')
+			self:HookScript(frame, 'OnMessageScrollChanged')
 		end
 	end
 end
@@ -388,6 +399,7 @@ function CH:DisableHyperlink()
 		if self.hooks[frame] then
 			self:Unhook(frame, 'OnHyperlinkEnter')
 			self:Unhook(frame, 'OnHyperlinkLeave')
+			self:Unhook(frame, 'OnMessageScrollChanged')
 		end
 	end
 end
