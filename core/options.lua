@@ -99,7 +99,7 @@ E.Options.args.general = {
 					order = 5,
 					type = "toggle",
 					name = L['Bags'],
-					desc = L['Enable\Disable the all-in-one bag.'],
+					desc = L['Enable/Disable the all-in-one bag.'],
 					get = function(info) return E.global.general.bags end,
 					set = function(info, value) E.global.general.bags = value; StaticPopup_Show("GLOBAL_RL") end
 				},
@@ -107,7 +107,7 @@ E.Options.args.general = {
 					order = 6,
 					type = "toggle",
 					name = L['Loot'],
-					desc = L['Enable\Disable the loot frame.'],
+					desc = L['Enable/Disable the loot frame.'],
 					get = function(info) return E.global.general.loot end,
 					set = function(info, value) E.global.general.loot = value; StaticPopup_Show("GLOBAL_RL") end
 				},
@@ -115,7 +115,7 @@ E.Options.args.general = {
 					order = 7,
 					type = "toggle",
 					name = L['Loot Roll'],
-					desc = L['Enable\Disable the loot roll frame.'],
+					desc = L['Enable/Disable the loot roll frame.'],
 					get = function(info) return E.global.general.lootRoll end,
 					set = function(info, value) E.global.general.lootRoll = value; StaticPopup_Show("GLOBAL_RL") end
 				},
@@ -126,6 +126,16 @@ E.Options.args.general = {
 					type = "toggle",	
 					set = function(info, value) E.db.general[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end
 				},	
+				raidReminder = {
+					order = 9,
+					name = L['Raid Reminder'],
+					desc = L['Display raid reminder bar on the minimap.'],
+					type = 'toggle',
+					set = function(info, value) 
+						E.db.general[ info[#info] ] = value
+						E:GetModule('Maps'):Minimap_UpdateSettings()
+					end,					
+				},
 				mapTransparency = {
 					order = 10,
 					name = L['Map Transparency'],
@@ -133,6 +143,17 @@ E.Options.args.general = {
 					type = 'range',
 					isPercent = true,
 					min = 0, max = 1, step = 0.01,
+				},
+				minimapSize = {
+					order = 11,
+					name = L['Minimap Size'],
+					desc = L['Adjust the size of the minimap.'],
+					type = 'range',
+					min = 120, max = 250, step = 1,
+					set = function(info, value) 
+						E.db.general[ info[#info] ] = value
+						E:GetModule('Maps'):Minimap_UpdateSettings()
+					end,
 				},
 				panelWidth = {
 					order = 100,

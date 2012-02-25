@@ -32,6 +32,8 @@ P['general'] = {
 
 	--misc
 	['mapTransparency'] = 0.5,
+	['minimapSize'] = 175,
+	['raidReminder'] = true,
 };
 
 --NamePlate
@@ -71,6 +73,8 @@ P['chat'] = {
 	['throttleInterval'] = 60,
 	['scrollDownInterval'] = 0,
 	['minWhisperLevel'] = 0,
+	['font'] = 'Chat',
+	['fontoutline'] = 'NONE',
 	['whisperwarning'] = true,
 	['whispersound'] = 'ElvUI Whisper',
 }
