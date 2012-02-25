@@ -193,8 +193,8 @@ local function UpdateFilterGroup()
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value) 
-						if P['unitframe']['aurafilters'][selectedFilter] then
-							if P['unitframe']['aurafilters'][selectedFilter]['spells'][value] then
+						if G['unitframe']['aurafilters'][selectedFilter] then
+							if G['unitframe']['aurafilters'][selectedFilter]['spells'][value] then
 								E.global.unitframe['aurafilters'][selectedFilter]['spells'][value] = false;
 								E:Print(L['You may not remove a spell from a default filter that is not customly added. Setting spell to false instead.'])
 							else
