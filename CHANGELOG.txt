@@ -29,6 +29,7 @@
 *Changing the UIScale should now prompt you to reloadui.
 *Profession bags should now appear to be different colors depending on the type of bag.
 *Frequent updates are no longer being used for on the power bar for the Party, Raid 6-25, Raid 26-40 groups. This should greatly increase performance inside a raid setting.
+*Prevent the Resurrection Icon from ever displaying on a unit with health, this is a workaround for the Blizzard bug that has been reported several times but has failed to become fixed.
 
 [b]Fixes:[/b]
 *Fix action buttons being used while repositioning buttons.

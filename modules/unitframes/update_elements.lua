@@ -167,13 +167,21 @@ function UF:PostUpdateHealth(unit, min, max)
 		elseif ghost then
 			self.value:SetText("|cffD7BEA5"..L['Ghost'].."|r")
 		end
+		
+		if self:GetParent().ResurrectIcon then
+			self:GetParent().ResurrectIcon:SetAlpha(1)
+		end
 	else
 		local r, g, b = ElvUF.ColorGradient(min, max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
 		local reverse
 		if unit == "target" then
 			reverse = true
 		end
-				
+		
+		if self:GetParent().ResurrectIcon then
+			self:GetParent().ResurrectIcon:SetAlpha(0)
+		end
+		
 		self.value:SetText(GetInfoText(self:GetParent(), unit, r, g, b, min, max, reverse, 'health'))
 	end
 end
