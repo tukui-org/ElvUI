@@ -3,7 +3,7 @@
 *Add a white glow to nameplates when you target someone.
 *Add support to the Routes and Gathermate2 addons for the /farmmode minimap.
 *Holding down shift while clicking on the vendor gray items button on the bags frame will now prompt you to delete all your gray items.
-*Add a small spam filter for enUS, enGB clients. At the moment it only blocks some chinease letters from beind displayed.
+*Add a small spam filter for enUS, enGB clients. At the moment it only blocks some Chinese letters from being displayed.
 *Add a castbar spark option to all castbars on the unitframes.
 *Skin and position the guild challenge alert frame to the achievements anchor.
 *Add a resolution step to the installation process.
@@ -19,20 +19,21 @@
 *Replaced the Primary/Secondary layout portions of the Installation process with just a single layout section, this is due to being able to swap ElvUI profiles with your current spec.
 *Any option that requires a reloadui is now a global option for all of your characters, in addition any option that may of required a reloadui has been reset to its default setting.
 *Removed Spec 1 / Spec 2 sections of the datatext menu, there is now only one section to set your datatexts.
-*Change recount icon skins again, this time desaturate them to match the skin.
+*Change recount icon skins again, this time de-saturate them to match the skin.
 *Throttle the number of times a user can send the version of ElvUI he's using to a maximum of one time per 12 seconds to cut back on lag when first joining BG/Raid groups.
 *The UIScale option inside ElvUI has been removed. Use the blizzard option if you wish to scale the UI. 
 *Changing the UIScale should now prompt you to reloadui.
-*Profession bags should now appear to be differant colors depending on the type of bag.
+*Profession bags should now appear to be different colors depending on the type of bag.
 *Frequent updates are no longer being used for on the power bar for the Party, Raid 6-25, Raid 26-40 groups. This should greatly increase performance inside a raid setting.
 
 [b]Fixes:[/b]
 *Fix action buttons being used while repositioning buttons.
 *Add sanity check to unitframes. Users were able to attach buffs frame to debuffs frame and vice versa at the same time, causing the UI not to load properly on the next load. Adding a warning to the chat frame when a user attempts to do this, and forcing the anchor to the actual unitframe when it occurs to prevent users from making this mistake.
-*Fix skada lua error when repeatidly setting embed right to skada.
+*Fix skada lua error when repeatedly setting embed right to skada.
 *Reverting font outline to how it was in previous versions.
 *Fix default bank search function not working with skin.
 *Fix achievement points not displaying on achievement window due to skin.
 *Character frame should no longer be skinned when the misc skin box is checked and the character frame skin is disabled.
 *Fix issue with unitframe combat fade not working as intended.
 *Fix "Loop in Gettable" lua error for the power bar when blizzards function returns a nil value.
+*Fix an issue with the auras mover, after moving the frame once the next time you go to move it the auras would become "unattached" from the mover.
