@@ -34,6 +34,7 @@
 
 [b]Fixes:[/b]
 *Fix action buttons being used while repositioning buttons.
+*Fix major memory issue with raidframes. (They were being updated a lot more frequently than intended.)
 *Add sanity check to unitframes. Users were able to attach buffs frame to debuffs frame and vice versa at the same time, causing the UI not to load properly on the next load. Adding a warning to the chat frame when a user attempts to do this, and forcing the anchor to the actual unitframe when it occurs to prevent users from making this mistake.
 *Fix skada lua error when repeatedly setting embed right to skada.
 *Reverting font outline to how it was in previous versions.

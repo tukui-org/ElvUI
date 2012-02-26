@@ -64,9 +64,12 @@ function UF:PartySmartVisibility(event)
 		end
 	else
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")
+		return
 	end
 	
-	UF:UpdateGroupChildren(self, self.db)
+	if event == 'PARTY_MEMBERS_CHANGED' then
+		UF:UpdateGroupChildren(self, self.db)
+	end
 end
 
 function UF:Update_PartyHeader(header, db)

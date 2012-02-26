@@ -1,5 +1,5 @@
 local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
-local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0');
+local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 local LSM = LibStub("LibSharedMedia-3.0");
 
 local _, ns = ...
@@ -107,13 +107,22 @@ function UF:GetAuraAnchorFrame(frame, attachTo, isConflict)
 	end
 end
 
+function UF:GarbageCollect()
+	collectgarbage('collect')
+	self:CancelAllTimers()
+end
+
 function UF:UpdateGroupChildren(header, db)
-	for i=1, header:GetNumChildren() do
-		local frame = select(i, header:GetChildren())
-		if frame and frame.unit then
-			UF["Update_"..E:StringTitle(header.groupName).."Frames"](self, frame, self.db['units'][header.groupName])
-		end
-	end	
+	if header:IsShown() then --No need to update groups that aren't even shown
+		for i=1, header:GetNumChildren() do
+			local frame = select(i, header:GetChildren())
+			if frame and frame.unit then
+				UF["Update_"..E:StringTitle(header.groupName).."Frames"](self, frame, self.db['units'][header.groupName])
+			end
+		end	
+	
+		UF:ScheduleTimer('GarbageCollect', 10)
+	end
 end
 
 function UF:ClearChildPoints(...)

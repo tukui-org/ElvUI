@@ -60,9 +60,12 @@ function UF:Raid625SmartVisibility(event)
 		end
 	else
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")
+		return
 	end
-	
-	UF:UpdateGroupChildren(self, self.db)
+
+	if event == 'PARTY_MEMBERS_CHANGED' then
+		UF:UpdateGroupChildren(self, self.db)
+	end
 end
 
 function UF:Update_Raid625Header(header, db)
