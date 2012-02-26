@@ -819,6 +819,33 @@ function UF:UpdateThreat(event, unit)
 	end
 end
 
+function UF:UpdateTargetGlow(event)
+	if not self.unit then return; end
+	local unit = self.unit
+	
+	if UnitIsUnit(unit, 'target') then
+		self.TargetGlow:Show()
+		local reaction = UnitReaction(unit, 'player')
+		
+		if UnitIsPlayer(unit) then
+			local _, class = UnitClass(unit)
+			if class then
+				local color = RAID_CLASS_COLORS[class]
+				self.TargetGlow:SetBackdropBorderColor(color.r, color.g, color.b)
+			else
+				self.TargetGlow:SetBackdropBorderColor(1, 1, 1)
+			end
+		elseif reaction then
+			local color = FACTION_BAR_COLORS[reaction]
+			self.TargetGlow:SetBackdropBorderColor(color.r, color.g, color.b)
+		else
+			self.TargetGlow:SetBackdropBorderColor(1, 1, 1)
+		end
+	else
+		self.TargetGlow:Hide()
+	end
+end
+
 function UF:AltPowerBarPostUpdate(min, cur, max)
 	local perc = math.floor((cur/max)*100)
 	

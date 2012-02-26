@@ -16,6 +16,7 @@
 *Add chat option to allow changing of the font outline.
 *Add option under general settings to allow resizing of the Minimap.
 *Add option under general settings to enable/disable the Raid Reminder bar.
+*Add a target glow feature to all party/raid frames. The frame should now glow to the unit's class.
 
 [b]General Changes:[/b]
 *Changing Profiles in ElvUI should no longer require a reload.
@@ -46,3 +47,4 @@
 *Fix an issue with the auras mover, after moving the frame once the next time you go to move it the auras would become "unattached" from the mover.
 *Fix the threat glow positioning for druids on the player frame. It wasn't adjusting size when the classbars were appearing.
 *Fix rare case where experience bar wasn't displaying accurate information when loading into the game and the bar was hidden.
+*Prevent a lua error from occuring with the tooltip, when you mouseover an unknown unit.
