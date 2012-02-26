@@ -188,9 +188,9 @@ function M:Minimap_UpdateSettings()
 		end
 		
 		if E.db.general.raidReminder then
-			E:GetModule('RaidBuffReminder'):Enable()
+			E:GetModule('RaidBuffReminder'):EnableRBR()
 		else
-			E:GetModule('RaidBuffReminder'):Disable()
+			E:GetModule('RaidBuffReminder'):DisableRBR()
 		end
 	end
 end

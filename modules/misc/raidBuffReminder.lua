@@ -171,7 +171,7 @@ function RBR:CreateButton(relativeTo, isFirst, isLast)
 	return button
 end
 
-function RBR:Enable()
+function RBR:EnableRBR()
 	RaidBuffReminder:Show()
 	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", 'UpdateReminder')
 	self:RegisterEvent("UNIT_INVENTORY_CHANGED", 'UpdateReminder')
@@ -185,7 +185,7 @@ function RBR:Enable()
 	self:UpdateReminder()
 end
 
-function RBR:Disable()
+function RBR:DisableRBR()
 	RaidBuffReminder:Hide()
 	self:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 	self:UnregisterEvent("UNIT_INVENTORY_CHANGED")
@@ -214,9 +214,9 @@ function RBR:Initialize()
 	self.frame = frame
 	
 	if E.db.general.raidReminder then
-		self:Enable()
+		self:EnableRBR()
 	else
-		self:Disable()
+		self:DisableRBR()
 	end
 end
 
