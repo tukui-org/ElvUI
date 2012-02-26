@@ -46,6 +46,11 @@ local function OnFade()
 	UpperRepExpBar:Hide()
 end
 
+local function OnShow()
+	M:UpdateExpBar()
+	M:UpdateRepBar()
+end
+
 function M:GetNumShownBars()
 	local shownBars = 0
 	if showRepBar and showExpBar then
@@ -145,6 +150,7 @@ function M:UpdateExpBar(event)
 		
 		local cur, max = GetXP('player')
 		bar:SetMinMaxValues(0, max)
+		bar:SetValue(cur - 1 >= 0 and cur - 1 or 0)
 		bar:SetValue(cur)
 		
 		local rested = GetXPExhaustion()
@@ -241,6 +247,7 @@ function M:LoadExpRepBar()
 	holder:SetScript('OnEnter', OnEnter)
 	holder:SetScript('OnLeave', OnLeave)	
 	holder:SetScript('OnClick', OnClick)	
+	holder:SetScript('OnShow', OnShow)
 	holder:SetFrameStrata('BACKGROUND')
 	
 	local bar = CreateFrame('Frame', 'UpperRepExpBar', holder)
