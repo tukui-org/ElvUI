@@ -16,7 +16,7 @@
 *Add chat option to allow changing of the font outline.
 *Add option under general settings to allow resizing of the Minimap.
 *Add option under general settings to enable/disable the Raid Reminder bar.
-*Add a target glow feature to all party/raid frames. The frame should now glow to the unit's class.
+*Add a target glow feature to all party/raid frames. The frame should now glow to the unit's class, or reaction if in a vehicle.
 
 [b]General Changes:[/b]
 *Changing Profiles in ElvUI should no longer require a reload.
