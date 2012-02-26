@@ -168,7 +168,7 @@ function M:Minimap_UpdateSettings()
 		AurasHolder:Height(E.MinimapHeight)
 		if AurasMover and not E:HasMoverBeenMoved('AurasMover') and not E:HasMoverBeenMoved('MinimapMover') then
 			AurasMover:ClearAllPoints()
-			AurasMover:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -((E.MinimapSize + 4) + E.RBRWidth + 7), -3)
+			AurasMover:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -((E.MinimapSize + 14) + E.RBRWidth + 7), -10)
 			E:SaveMoverDefaultPosition('AurasMover')
 		end
 		
