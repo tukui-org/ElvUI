@@ -30,9 +30,9 @@ function UF:Construct_PartyFrames(unitGroup)
 		self.DebuffHighlight = UF:Construct_DebuffHighlight(self)
 		self.ResurrectIcon = UF:Construct_ResurectionIcon(self)
 		self.LFDRole = UF:Construct_RoleIcon(self)
-		
+		self.TargetGlow = UF:Construct_TargetGlow(self)
 		table.insert(self.__elements, UF.UpdateThreat)
-		self:RegisterEvent('PLAYER_TARGET_CHANGED', UF.UpdateThreat)
+		self:RegisterEvent('PLAYER_TARGET_CHANGED', function(...) UF.UpdateThreat(...); UF.UpdateTargetGlow(...) end)
 		self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', UF.UpdateThreat)
 		self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', UF.UpdateThreat)	
 		
@@ -64,9 +64,12 @@ function UF:PartySmartVisibility(event)
 		end
 	else
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")
+		return
 	end
 	
-	UF:UpdateGroupChildren(self, self.db)
+	if event == 'PARTY_MEMBERS_CHANGED' then
+		UF:UpdateGroupChildren(self, self.db)
+	end
 end
 
 function UF:Update_PartyHeader(header, db)
@@ -338,6 +341,29 @@ function UF:Update_PartyFrames(frame, db)
 				power.value:Hide()
 			end
 		end
+		
+		--Target Glow
+		do
+			local tGlow = frame.TargetGlow
+			tGlow:ClearAllPoints()
+			tGlow:Point("TOPLEFT", -4, 4)
+			tGlow:Point("TOPRIGHT", 4, 4)
+			
+			if USE_MINI_POWERBAR then
+				tGlow:Point("BOTTOMLEFT", -4, -4 + (POWERBAR_HEIGHT/2))
+				tGlow:Point("BOTTOMRIGHT", 4, -4 + (POWERBAR_HEIGHT/2))		
+			else
+				tGlow:Point("BOTTOMLEFT", -4, -4)
+				tGlow:Point("BOTTOMRIGHT", 4, -4)
+			end
+			
+			if USE_POWERBAR_OFFSET then
+				tGlow:Point("TOPLEFT", -4+POWERBAR_OFFSET, 4)
+				tGlow:Point("TOPRIGHT", 4, 4)
+				tGlow:Point("BOTTOMLEFT", -4+POWERBAR_OFFSET, -4+POWERBAR_OFFSET)
+				tGlow:Point("BOTTOMRIGHT", 4, -4+POWERBAR_OFFSET)				
+			end				
+		end		
 
 		--Auras Disable/Enable
 		--Only do if both debuffs and buffs aren't being used.

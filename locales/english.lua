@@ -710,6 +710,7 @@ L["You can't remove a pre-existing filter."] = "You can't remove a pre-existing 
 L["You don't have enough money to repair."] = "You don't have enough money to repair."
 L["You don't have permission to mark targets."] = "You don't have permission to mark targets."
 L["You have attempted to anchor a classtimer frame to a frame that is dependant on this classtimer frame, try changing your anchors again."] = "You have attempted to anchor a classtimer frame to a frame that is dependant on this classtimer frame, try changing your anchors again."
+L["You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option."] = "You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option."
 L["You have reached the maximum amount of friends, remove 2 for this module to function properly."] = "You have reached the maximum amount of friends, remove 2 for this module to function properly."
 L["You may need to further alter these settings depending how low you resolution is."] = "You may need to further alter these settings depending how low you resolution is."
 L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."] = "You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."

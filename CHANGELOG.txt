@@ -16,6 +16,7 @@
 *Add chat option to allow changing of the font outline.
 *Add option under general settings to allow resizing of the Minimap.
 *Add option under general settings to enable/disable the Raid Reminder bar.
+*Add a target glow feature to all party/raid frames. The frame should now glow to the unit's class, or reaction while the unit is being targetted.
 
 [b]General Changes:[/b]
 *Changing Profiles in ElvUI should no longer require a reload.
@@ -27,12 +28,14 @@
 *Throttle the number of times a user can send the version of ElvUI he's using to a maximum of one time per 12 seconds to cut back on lag when first joining BG/Raid groups.
 *The UIScale option inside ElvUI has been removed. Use the blizzard option if you wish to scale the UI. 
 *Changing the UIScale should now prompt you to reloadui.
+*Changing the UIScale while autoscale is still enabled will prompt you to disable the autoscale option.
 *Profession bags should now appear to be different colors depending on the type of bag.
 *Frequent updates are no longer being used for on the power bar for the Party, Raid 6-25, Raid 26-40 groups. This should greatly increase performance inside a raid setting.
 *Prevent the Resurrection Icon from ever displaying on a unit with health, this is a workaround for the Blizzard bug that has been reported several times but has failed to become fixed.
 
 [b]Fixes:[/b]
 *Fix action buttons being used while repositioning buttons.
+*Fix major memory issue with raidframes. (They were being updated a lot more frequently than intended.)
 *Add sanity check to unitframes. Users were able to attach buffs frame to debuffs frame and vice versa at the same time, causing the UI not to load properly on the next load. Adding a warning to the chat frame when a user attempts to do this, and forcing the anchor to the actual unitframe when it occurs to prevent users from making this mistake.
 *Fix skada lua error when repeatedly setting embed right to skada.
 *Reverting font outline to how it was in previous versions.
@@ -42,3 +45,6 @@
 *Fix issue with unitframe combat fade not working as intended.
 *Fix "Loop in Gettable" lua error for the power bar when blizzards function returns a nil value.
 *Fix an issue with the auras mover, after moving the frame once the next time you go to move it the auras would become "unattached" from the mover.
+*Fix the threat glow positioning for druids on the player frame. It wasn't adjusting size when the classbars were appearing.
+*Fix rare case where experience bar wasn't displaying accurate information when loading into the game and the bar was hidden.
+*Prevent a lua error from occuring with the tooltip, when you mouseover an unknown unit.
