@@ -1,5 +1,16 @@
 local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 
+StaticPopupDialogs['FAILED_UISCALE'] = {
+	text = L['You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option.'],
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	OnAccept = function() E.db.general.autoscale = false; ReloadUI(); end,
+	timeout = 0,
+	whileDead = 1,	
+	hideOnEscape = false,
+	preferredIndex = 3,
+}
+
 StaticPopupDialogs["CONFIG_RL"] = {
 	text = L["One or more of the changes you have made require a ReloadUI."],
 	button1 = ACCEPT,
@@ -7,6 +18,8 @@ StaticPopupDialogs["CONFIG_RL"] = {
 	OnAccept = function() ReloadUI() end,
 	timeout = 0,
 	whileDead = 1,
+	hideOnEscape = false,
+	preferredIndex = 3,
 }
 
 StaticPopupDialogs["GLOBAL_RL"] = {
@@ -16,6 +29,8 @@ StaticPopupDialogs["GLOBAL_RL"] = {
 	OnAccept = function() ReloadUI() end,
 	timeout = 0,
 	whileDead = 1,
+	hideOnEscape = false,
+	preferredIndex = 3,
 }
 
 StaticPopupDialogs["KEYBIND_MODE"] = {
@@ -26,7 +41,8 @@ StaticPopupDialogs["KEYBIND_MODE"] = {
 	OnCancel = function() local AB = E:GetModule('ActionBars'); AB:DeactivateBindMode(false) end,
 	timeout = 0,
 	whileDead = 1,
-	hideOnEscape = false
+	hideOnEscape = false,
+	preferredIndex = 3,
 }
 
 StaticPopupDialogs["DELETE_GRAYS"] = {
@@ -36,7 +52,8 @@ StaticPopupDialogs["DELETE_GRAYS"] = {
 	OnAccept = function() local B = E:GetModule('Bags'); B:VendorGrays(true) end,
 	timeout = 0,
 	whileDead = 1,
-	hideOnEscape = false
+	hideOnEscape = false,
+	preferredIndex = 3,
 }
 
 StaticPopupDialogs["BUY_BANK_SLOT"] = {
@@ -52,7 +69,7 @@ StaticPopupDialogs["BUY_BANK_SLOT"] = {
 	hasMoneyFrame = 1,
 	timeout = 0,
 	hideOnEscape = 1,
-	preferredIndex = 3
+	preferredIndex = 3,
 }
 
 StaticPopupDialogs["CANNOT_BUY_BANK_SLOT"] = {
@@ -60,7 +77,7 @@ StaticPopupDialogs["CANNOT_BUY_BANK_SLOT"] = {
 	button1 = ACCEPT,
 	timeout = 0,
 	whileDead = 1,	
-	preferredIndex = 3
+	preferredIndex = 3,
 }
 
 StaticPopupDialogs["NO_BANK_BAGS"] = {
@@ -80,7 +97,7 @@ StaticPopupDialogs["RESETUI_CHECK"] = {
 	end,
 	timeout = 0,
 	whileDead = 1,
-	preferredIndex = 3
+	preferredIndex = 3,
 }
 
 StaticPopupDialogs["DISBAND_RAID"] = {
@@ -90,5 +107,5 @@ StaticPopupDialogs["DISBAND_RAID"] = {
 	OnAccept = function() E:GetModule('Misc'):DisbandRaidGroup() end,
 	timeout = 0,
 	whileDead = 1,
-	preferredIndex = 3
+	preferredIndex = 3,
 }

@@ -3,7 +3,7 @@ local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB,
 --Determine if Eyefinity is being used, setup the pixel perfect script.
 local scale
 function E:UIScale(event)
-	if self.db.general.autoscale == true then
+	if self.db.general.autoscale then
 		scale = min(1, max(.64, 768/self.screenheight));
 	else
 		scale = min(1, max(.64, GetCVar('uiScale') or UIParent:GetScale() or 768/self.screenheight));
@@ -79,8 +79,10 @@ function E:UIScale(event)
 		self.UIParent:ClearAllPoints();
 		self.UIParent:SetPoint("CENTER");	
 
-		if event == 'UI_SCALE_CHANGED' then
-			StaticPopup_Show('CONFIG_RL')
+		if event == 'UI_SCALE_CHANGED' and E.Round and E:Round(UIParent:GetScale(), 5) ~= E:Round(scale, 5) and self.db.general.autoscale then
+			StaticPopup_Show('FAILED_UISCALE')
+		elseif event == 'UI_SCALE_CHANGED' and E.Round and E:Round(UIParent:GetScale(), 5) ~= E:Round(scale, 5) then
+			StaticPopup_Show('CONFIG_RL')	
 		end
 		
 		self:UnregisterEvent('PLAYER_LOGIN')		
