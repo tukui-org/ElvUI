@@ -43,5 +43,5 @@
 *Fix issue with unitframe combat fade not working as intended.
 *Fix "Loop in Gettable" lua error for the power bar when blizzards function returns a nil value.
 *Fix an issue with the auras mover, after moving the frame once the next time you go to move it the auras would become "unattached" from the mover.
-*Fix the threat glow positioning for druids. It wasn't adjusting size when the classbars were appearing.
+*Fix the threat glow positioning for druids on the player frame. It wasn't adjusting size when the classbars were appearing.
 *Fix rare case where experience bar wasn't displaying accurate information when loading into the game and the bar was hidden.
