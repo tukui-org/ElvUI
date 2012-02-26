@@ -241,11 +241,12 @@ function TT:Colorize(tt)
 		GameTooltipStatusBar:ColorBar(r, g, b)
 	elseif player then
 		local class = select(2, UnitClass(unit))
-		local color = RAID_CLASS_COLORS[class]
-		
-		tt:SetBackdropBorderColor(color.r, color.g, color.b)
-		GameTooltipStatusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-		GameTooltipStatusBar:ColorBar(color.r, color.g, color.b)
+		if class then
+			local color = RAID_CLASS_COLORS[class]
+			tt:SetBackdropBorderColor(color.r, color.g, color.b)
+			GameTooltipStatusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+			GameTooltipStatusBar:ColorBar(color.r, color.g, color.b)
+		end
 	elseif reaction then
 		local color = FACTION_BAR_COLORS[reaction]
 		tt:SetBackdropBorderColor(color.r, color.g, color.b)
