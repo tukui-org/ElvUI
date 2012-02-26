@@ -19,6 +19,8 @@ local function OnClick()
 		E.db['UpperRepExpBarFaded'] = nil
 		UpperRepExpBar:Show()
 		UIFrameFadeIn(UpperRepExpBar, 0.2, UpperRepExpBar:GetAlpha(), 1)
+		M:UpdateExpBar()
+		M:UpdateRepBar()			
 	else
 		E.db['UpperRepExpBarFaded'] = true
 		UIFrameFadeOut(UpperRepExpBar, 0.2, UpperRepExpBar:GetAlpha(), 0)
@@ -39,16 +41,13 @@ local function OnEnter()
 	if E.db['UpperRepExpBarFaded'] then
 		UpperRepExpBar:Show()
 		UIFrameFadeIn(UpperRepExpBar, 0.2, UpperRepExpBar:GetAlpha(), 1)
+		M:UpdateExpBar()
+		M:UpdateRepBar()		
 	end
 end
 
 local function OnFade()
 	UpperRepExpBar:Hide()
-end
-
-local function OnShow()
-	M:UpdateExpBar()
-	M:UpdateRepBar()
 end
 
 function M:GetNumShownBars()
@@ -247,7 +246,6 @@ function M:LoadExpRepBar()
 	holder:SetScript('OnEnter', OnEnter)
 	holder:SetScript('OnLeave', OnLeave)	
 	holder:SetScript('OnClick', OnClick)	
-	holder:SetScript('OnShow', OnShow)
 	holder:SetFrameStrata('BACKGROUND')
 	
 	local bar = CreateFrame('Frame', 'UpperRepExpBar', holder)
