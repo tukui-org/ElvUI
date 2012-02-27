@@ -13,10 +13,10 @@ end
 
 function AB:DeactivateBindMode(save)
 	if save then
-		SaveBindings(2);
+		SaveBindings(GetCurrentBindingSet());
 		E:Print(L['Binds Saved']);
 	else
-		LoadBindings(2);
+		LoadBindings(GetCurrentBindingSet());
 		E:Print(L['Binds Discarded']);
 	end
 	bind.active = false;

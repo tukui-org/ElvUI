@@ -5,7 +5,7 @@ local selectedFilter
 local filters
 
 local function UpdateFilterGroup()
-	if not selectedFilter or not E.db['nameplate']['filter'][selectedFilter] then
+	if not selectedFilter or not E.global['nameplate']['filter'][selectedFilter] then
 		E.Options.args.nameplate.args.filters.args.filterGroup = nil
 		return
 	end
@@ -15,8 +15,8 @@ local function UpdateFilterGroup()
 		name = selectedFilter,
 		guiInline = true,
 		order = -10,
-		get = function(info) return E.db["nameplate"]['filter'][selectedFilter][ info[#info] ] end,
-		set = function(info, value) E.db["nameplate"]['filter'][selectedFilter][ info[#info] ] = value; NP:UpdateAllPlates(); UpdateFilterGroup() end,		
+		get = function(info) return E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] end,
+		set = function(info, value) E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] = value; NP:UpdateAllPlates(); UpdateFilterGroup() end,		
 		args = {
 			enable = {
 				type = 'toggle',
@@ -41,14 +41,14 @@ local function UpdateFilterGroup()
 				order = 4,
 				name = L['Color'],
 				get = function(info)
-					local t = E.db["nameplate"]['filter'][selectedFilter][ info[#info] ]
+					local t = E.global["nameplate"]['filter'][selectedFilter][ info[#info] ]
 					if t then
 						return t.r, t.g, t.b, t.a
 					end
 				end,
 				set = function(info, r, g, b)
-					E.db["nameplate"]['filter'][selectedFilter][ info[#info] ] = {}
-					local t = E.db["nameplate"]['filter'][selectedFilter][ info[#info] ]
+					E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] = {}
+					local t = E.global["nameplate"]['filter'][selectedFilter][ info[#info] ]
 					if t then
 						t.r, t.g, t.b = r, g, b
 						UpdateFilterGroup()
@@ -60,8 +60,8 @@ local function UpdateFilterGroup()
 				name = L['Custom Scale'],
 				desc = L['Set the scale of the nameplate.'],
 				min = 0.67, max = 2, step = 0.01,
-				get = function(info) return E.db["nameplate"]['filter'][selectedFilter][ info[#info] ] end,
-				set = function(info, value) E.db["nameplate"]['filter'][selectedFilter][ info[#info] ] = value; UpdateFilterGroup() end,						
+				get = function(info) return E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] end,
+				set = function(info, value) E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] = value; UpdateFilterGroup() end,						
 			},
 		},	
 	}
@@ -83,7 +83,8 @@ E.Options.args.nameplate = {
 			order = 2,
 			type = "toggle",
 			name = L["Enable"],
-			set = function(info, value) E.db.nameplate[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end
+			get = function(info) return E.global.nameplate[ info[#info] ] end,
+			set = function(info, value) E.global.nameplate[ info[#info] ] = value; StaticPopup_Show("GLOBAL_RL") end
 		},
 		general = {
 			order = 3,
@@ -160,7 +161,7 @@ E.Options.args.nameplate = {
 							values = function()
 								filters = {}
 								filters[''] = ''
-								for filter in pairs(E.db['unitframe']['aurafilters']) do
+								for filter in pairs(E.global['unitframe']['aurafilters']) do
 									filters[filter] = filter
 								end
 								return filters
@@ -320,7 +321,7 @@ E.Options.args.nameplate = {
 					name = L['Add Name'],
 					get = function(info) return "" end,
 					set = function(info, value) 
-						E.db['nameplate']['filter'][value] = {
+						E.global['nameplate']['filter'][value] = {
 							['enable'] = true,
 							['hide'] = false,
 							['customColor'] = false,
@@ -337,11 +338,11 @@ E.Options.args.nameplate = {
 					name = L['Remove Name'],
 					get = function(info) return "" end,
 					set = function(info, value) 
-						if DF['nameplate']['filter'][value] then
-							E.db['nameplate']['filter'][value].enable = false;
+						if G['nameplate']['filter'][value] then
+							E.global['nameplate']['filter'][value].enable = false;
 							E:Print(L["You can't remove a default name from the filter, disabling the name."])
 						else
-							E.db['nameplate']['filter'][value] = nil;
+							E.global['nameplate']['filter'][value] = nil;
 							E.Options.args.nameplate.args.filters.args.filterGroup = nil;
 						end
 						UpdateFilterGroup()
@@ -356,7 +357,7 @@ E.Options.args.nameplate = {
 					set = function(info, value) selectedFilter = value; UpdateFilterGroup() end,							
 					values = function()
 						filters = {}
-						for filter in pairs(E.db['nameplate']['filter']) do
+						for filter in pairs(E.global['nameplate']['filter']) do
 							filters[filter] = filter
 						end
 						return filters

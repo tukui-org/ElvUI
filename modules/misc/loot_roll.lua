@@ -311,8 +311,8 @@ function M:CHAT_MSG_LOOT(event, msg)
 	end
 end
 
-function M:LoadLootRoll()	
-	if not E.db.core.lootRoll then
+function M:LoadLootRoll()
+	if not E.global.general.lootRoll then
 	local LootRollFrame = CreateFrame("frame","LootRollAnchorFrame",UIParent)
 	LootRollFrame:SetWidth(GroupLootFrame1:GetWidth())
 	LootRollFrame:SetHeight(GroupLootFrame1:GetHeight())

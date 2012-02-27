@@ -241,11 +241,12 @@ function TT:Colorize(tt)
 		GameTooltipStatusBar:ColorBar(r, g, b)
 	elseif player then
 		local class = select(2, UnitClass(unit))
-		local color = RAID_CLASS_COLORS[class]
-		
-		tt:SetBackdropBorderColor(color.r, color.g, color.b)
-		GameTooltipStatusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-		GameTooltipStatusBar:ColorBar(color.r, color.g, color.b)
+		if class then
+			local color = RAID_CLASS_COLORS[class]
+			tt:SetBackdropBorderColor(color.r, color.g, color.b)
+			GameTooltipStatusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+			GameTooltipStatusBar:ColorBar(color.r, color.g, color.b)
+		end
 	elseif reaction then
 		local color = FACTION_BAR_COLORS[reaction]
 		tt:SetBackdropBorderColor(color.r, color.g, color.b)
@@ -281,7 +282,7 @@ end
 function TT:ADDON_LOADED(event, addon)
 	if addon == 'Blizzard_DebugTools' then
 		FrameStackTooltip:HookScript("OnShow", function(self)
-			local noscalemult = E.mult * E.db["core"].uiscale
+			local noscalemult = E.mult * GetCVar('uiScale')
 			self:SetBackdrop({
 			  bgFile = E["media"].blankTex, 
 			  edgeFile = E["media"].blankTex, 
@@ -430,7 +431,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		local offset = 2
 		if guildName then
 			if UnitIsInMyGuild(unit) then
-				GameTooltipTextLeft2:SetText("<"..E["media"].hexvaluecolor..guildName.."|r> ["..E.ValColor..guildRankName.."|r]")
+				GameTooltipTextLeft2:SetText("<"..E["media"].hexvaluecolor..guildName.."|r> ["..E["media"].hexvaluecolor..guildRankName.."|r]")
 			else
 				GameTooltipTextLeft2:SetText("<|cff00ff10"..guildName.."|r> [|cff00ff10"..guildRankName.."|r]")
 			end
@@ -556,7 +557,7 @@ end
 
 function TT:Initialize()
 	self.db = E.db["tooltip"]
-	if self.db.enable ~= true then return end
+	if E.global["tooltip"].enable ~= true then return end
 	E.Tooltip = TT
 
 	GameTooltipStatusBar:ClearAllPoints()

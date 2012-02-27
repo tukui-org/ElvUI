@@ -1,5 +1,5 @@
 local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
-local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0');
+local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 local LSM = LibStub("LibSharedMedia-3.0");
 
 local _, ns = ...
@@ -17,7 +17,6 @@ UF['handledunits'] = {}
 
 UF['statusbars'] = {}
 UF['fontstrings'] = {}
-UF['aurafilters'] = {}
 UF['badHeaderPoints'] = {
 	['TOP'] = 'BOTTOM',
 	['LEFT'] = 'RIGHT',
@@ -108,13 +107,22 @@ function UF:GetAuraAnchorFrame(frame, attachTo, isConflict)
 	end
 end
 
+function UF:GarbageCollect()
+	collectgarbage('collect')
+	self:CancelAllTimers()
+end
+
 function UF:UpdateGroupChildren(header, db)
-	for i=1, header:GetNumChildren() do
-		local frame = select(i, header:GetChildren())
-		if frame and frame.unit then
-			UF["Update_"..E:StringTitle(header.groupName).."Frames"](self, frame, self.db['layouts'][self.ActiveLayout][header.groupName])
-		end
-	end	
+	if header:IsShown() then --No need to update groups that aren't even shown
+		for i=1, header:GetNumChildren() do
+			local frame = select(i, header:GetChildren())
+			if frame and frame.unit then
+				UF["Update_"..E:StringTitle(header.groupName).."Frames"](self, frame, self.db['units'][header.groupName])
+			end
+		end	
+	
+		UF:ScheduleTimer('GarbageCollect', 10)
+	end
 end
 
 function UF:ClearChildPoints(...)
@@ -216,9 +224,10 @@ end
 local UNITFRAMES = UF
 function UF:Update_AllFrames()
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
+	if E.global["unitframe"].enable ~= true then return; end
 	self:UpdateColors()
 	for unit in pairs(self['handledunits']) do
-		if self.db['layouts'][self.ActiveLayout][unit].enable then
+		if self.db['units'][unit].enable then
 			self[unit]:Enable()
 			self[unit]:Update()
 		else
@@ -226,6 +235,15 @@ function UF:Update_AllFrames()
 		end
 	end
 
+	for unit, group in pairs(self['handledgroupunits']) do
+		if self.db['units'][group].enable then
+			self[unit]:Enable()
+			self[unit]:Update()
+		else
+			self[unit]:Disable()
+		end
+	end	
+	
 	self:UpdateAllHeaders()
 end
 
@@ -235,7 +253,7 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 	self:UpdateColors()
 	
 	for i=1, numGroup do
-		if self.db['layouts'][self.ActiveLayout][group].enable then
+		if self.db['units'][group].enable then
 			local unit = group..i
 			if not self[unit] then
 				self['handledgroupunits'][unit] = group;
@@ -251,7 +269,7 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			local frameName = E:StringTitle(group)
 			frameName = frameName:gsub('t(arget)', 'T%1')		
 			self[unit].Update = function()
-				UF["Update_"..E:StringTitle(frameName).."Frames"](self, self[unit], self.db['layouts'][self.ActiveLayout][group])	
+				UF["Update_"..E:StringTitle(frameName).."Frames"](self, self[unit], self.db['units'][group])	
 			end
 			
 			self[unit].Update()
@@ -266,34 +284,35 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 	
 	self:UpdateColors()
 	
-	if self.db['layouts'][self.ActiveLayout][group].enable then
-		local db = self.db['layouts'][self.ActiveLayout][group]
+	if self.db['units'][group].enable then
+		local db = self.db['units'][group]
 		if not self[group] then
 			ElvUF:RegisterStyle("ElvUF_"..E:StringTitle(group), UF["Construct_"..E:StringTitle(group).."Frames"])
 			ElvUF:SetActiveStyle("ElvUF_"..E:StringTitle(group))
 
 			if template then
-				self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 'point', self.db['layouts'][self.ActiveLayout][group].point, 'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 'template', template, 'groupFilter', groupFilter)
+				self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 'point', self.db['units'][group].point, 'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 'template', template, 'groupFilter', groupFilter)
 			else
-				self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 'point', self.db['layouts'][self.ActiveLayout][group].point, 'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 'groupFilter', groupFilter)
+				self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 'point', self.db['units'][group].point, 'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 'groupFilter', groupFilter)
 			end
 			self['handledheaders'][group] = self[group]
 			self[group].groupName = group
 		end
 		
 		self[group].Update = function()
+			local db = self.db['units'][group]
 			UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
 			
 			for i=1, self[group]:GetNumChildren() do
 				local child = select(i, self[group]:GetChildren())
-				UF["Update_"..E:StringTitle(group).."Frames"](self, child, self.db['layouts'][self.ActiveLayout][group])
+				UF["Update_"..E:StringTitle(group).."Frames"](self, child, self.db['units'][group])
 
 				if _G[child:GetName()..'Pet'] then
-					UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Pet'], self.db['layouts'][self.ActiveLayout][group])
+					UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Pet'], self.db['units'][group])
 				end
 				
 				if _G[child:GetName()..'Target'] then
-					UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Target'], self.db['layouts'][self.ActiveLayout][group])
+					UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Target'], self.db['units'][group])
 				end			
 			end			
 		end	
@@ -317,7 +336,7 @@ function UF:CreateAndUpdateUF(unit)
 	
 	self:UpdateColors()
 	
-	if self.db['layouts'][self.ActiveLayout][unit].enable then
+	if self.db['units'][unit].enable then
 		if not self[unit] then
 			local frameName = E:StringTitle(unit)
 			frameName = frameName:gsub('t(arget)', 'T%1')
@@ -331,7 +350,7 @@ function UF:CreateAndUpdateUF(unit)
 		local frameName = E:StringTitle(unit)
 		frameName = frameName:gsub('t(arget)', 'T%1')
 		self[unit].Update = function()
-			UF["Update_"..frameName.."Frame"](self, self[unit], self.db['layouts'][self.ActiveLayout][unit])
+			UF["Update_"..frameName.."Frame"](self, self[unit], self.db['units'][unit])
 		end
 		
 		self[unit].Update()
@@ -363,24 +382,6 @@ function UF:LoadUnits()
 	self['headerstoload'] = nil
 end
 
-function UF:UpdateActiveProfile()
-	self.ActiveLayout = self.db.mainSpec
-	if GetActiveTalentGroup() == 2 then
-		self:CopySettings(self.ActiveLayout, self.db.offSpec)
-		self.ActiveLayout = self.db.offSpec
-	end
-end
-
-function UF:ACTIVE_TALENT_GROUP_CHANGED()
-	local oldLayout = self.ActiveLayout
-	self:UpdateActiveProfile()
-	
-	if oldLayout ~= self.ActiveLayout then
-		self:Update_AllFrames()
-		ElvUF:PositionUF()
-	end
-end
-
 function UF:UpdateAllHeaders(event)	
 	if InCombatLockdown() then
 		self:RegisterEvent('PLAYER_REGEN_ENABLED', 'UpdateAllHeaders')
@@ -394,14 +395,14 @@ function UF:UpdateAllHeaders(event)
 	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs
 	if ORD then
 		ORD:ResetDebuffData()
-		ORD:RegisterDebuffs(E.db.unitframe.aurafilters.RaidDebuffs.spells)		
+		ORD:RegisterDebuffs(E.global.unitframe.aurafilters.RaidDebuffs.spells)		
 	end	
 	
 	for _, header in pairs(UF['handledheaders']) do
 		header:Update()
 	end	
 	
-	if self.db.disableBlizzard then
+	if E.global.unitframe.disableBlizzard then
 		ElvUF:DisableBlizzard('party')	
 	end
 	
@@ -460,29 +461,27 @@ end
 
 function UF:Initialize()	
 	self.db = E.db["unitframe"]
-	if self.db.enable ~= true then return; end
+	if E.global["unitframe"].enable ~= true then return; end
 	E.UnitFrames = UF;
-
-	--Update all created profiles just in case.			
-	for layout in pairs(E.db["unitframe"]['layouts']) do	
-		if layout ~= 'Primary' then
-			self:CopySettings('Primary', layout)
-		end
+	
+	--Database conversion from ElvUI v3.2.2 and below.
+	local specToCopy = E.db.unitframe.mainSpec
+	if not specToCopy then specToCopy = 'Primary' end
+	if specToCopy and E.db.unitframe.layouts and E.db.unitframe.layouts[specToCopy] then
+		E:CopyTable(E.db.unitframe.units, E.db.unitframe.layouts[specToCopy])
+		E.db.unitframe.layouts = nil;
 	end
+
 	
 	ElvUF:RegisterStyle('ElvUF', function(frame, unit)
 		self:Construct_UF(frame, unit)
 	end)
-	
-	self:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
-	self:UpdateActiveProfile()
-	
+		
 	self:LoadUnits()
 	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'UpdateAllHeaders')
 	
-	if self.db.disableBlizzard then
+	if E.global["unitframe"].disableBlizzard then
 		self:DisableBlizzard()	
-
 
 		UnitPopupMenus["SELF"] = { "PVP_FLAG", "LOOT_METHOD", "LOOT_THRESHOLD", "OPT_OUT_LOOT_TITLE", "LOOT_PROMOTE", "DUNGEON_DIFFICULTY", "RAID_DIFFICULTY", "RESET_INSTANCES", "RAID_TARGET_ICON", "SELECT_ROLE", "CONVERT_TO_PARTY", "CONVERT_TO_RAID", "LEAVE", "CANCEL" };
 		UnitPopupMenus["PET"] = { "PET_PAPERDOLL", "PET_RENAME", "PET_ABANDON", "PET_DISMISS", "CANCEL" };
@@ -511,17 +510,17 @@ function UF:Initialize()
 end
 
 function UF:ResetUnitSettings(unit)
-	local db = self.db['layouts'][UF.ActiveLayout][unit]
+	local db = self.db['units'][unit]
 	
-	for option, value in pairs(DF['unitframe']['layouts']['Primary'][unit]) do
+	for option, value in pairs(P['unitframe']['units'][unit]) do
 		if type(value) ~= 'table' then
 			db[option] = value
 		else
-			for opt, val in pairs(DF['unitframe']['layouts']['Primary'][unit][option]) do
+			for opt, val in pairs(P['unitframe']['units'][unit][option]) do
 				if type(val) ~= 'table' then
 					db[option][opt] = val
 				else
-					for o, v in pairs(DF['unitframe']['layouts']['Primary'][unit][option][opt]) do
+					for o, v in pairs(P['unitframe']['units'][unit][option][opt]) do
 						db[option][opt][o] = v
 					end
 				end
@@ -536,7 +535,7 @@ local ignoreSettings = {
 	['position'] = true
 }
 function UF:MergeUnitSettings(fromUnit, toUnit)
-	local db = self.db['layouts'][UF.ActiveLayout]
+	local db = self.db['units']
 	
 	if fromUnit ~= toUnit then
 		for option, value in pairs(db[fromUnit]) do
@@ -573,97 +572,5 @@ function UF:MergeUnitSettings(fromUnit, toUnit)
 	self:Update_AllFrames()
 end
 
-function UF:CopySettings(from, to, wipe)
-	if from and not to then
-		self.db['layouts'][from] = {}
-			
-		for unit in pairs(DF['unitframe']['layouts']['Primary']) do
-			self.db['layouts'][from][unit] = {}
-			
-			for option, value in pairs(DF['unitframe']['layouts']['Primary'][unit]) do
-				if type(value) ~= 'table' then
-					self.db['layouts'][from][unit][option] = value
-				else
-					self.db['layouts'][from][unit][option] = {}
-					
-					for opt, val in pairs(DF['unitframe']['layouts']['Primary'][unit][option]) do
-						if type(val) ~= 'table' then
-							self.db['layouts'][from][unit][option][opt] = val
-						else
-							self.db['layouts'][from][unit][option][opt] = {}
-							for o, v in pairs(DF['unitframe']['layouts']['Primary'][unit][option][opt]) do
-								self.db['layouts'][from][unit][option][opt][o] = v							
-							end
-						end
-					end
-				end
-			end
-		end	
-	elseif not wipe then		
-		if self.db['layouts'][to] == nil then
-			self.db['layouts'][to] = {}
-		end
-			
-		for unit in pairs(self.db['layouts'][from]) do
-			if self.db['layouts'][to][unit] == nil then 
-				self.db['layouts'][to][unit] = {}
-			end
-			
-			for option, value in pairs(self.db['layouts'][from][unit]) do
-				if type(value) ~= 'table' then
-					if self.db['layouts'][to][unit][option] == nil then
-						self.db['layouts'][to][unit][option] = value
-					end
-				else
-					if self.db['layouts'][to][unit][option] == nil then
-						self.db['layouts'][to][unit][option] = {}
-					end
-					
-					for opt, val in pairs(self.db['layouts'][from][unit][option]) do
-						if type(val) ~= 'table' then
-							if self.db['layouts'][to][unit][option][opt] == nil then
-								self.db['layouts'][to][unit][option][opt] = val
-							end
-						else
-							if self.db['layouts'][to][unit][option][opt] == nil then
-								self.db['layouts'][to][unit][option][opt] = {}
-							end
-							for o, v in pairs(self.db['layouts'][from][unit][option][opt]) do
-								if self.db['layouts'][to][unit][option][opt][o] == nil then
-									self.db['layouts'][to][unit][option][opt][o] = v
-								end								
-							end
-						end
-					end
-				end
-			end
-		end
-	else
-		self.db['layouts'][to] = {}
-			
-		for unit in pairs(self.db['layouts'][from]) do
-			self.db['layouts'][to][unit] = {}
-			
-			for option, value in pairs(self.db['layouts'][from][unit]) do
-				if type(value) ~= 'table' then
-					self.db['layouts'][to][unit][option] = value
-				else
-					self.db['layouts'][to][unit][option] = {}
-					
-					for opt, val in pairs(self.db['layouts'][from][unit][option]) do
-						if type(val) ~= 'table' then
-							self.db['layouts'][to][unit][option][opt] = val
-						else
-							self.db['layouts'][to][unit][option][opt] = {}
-							for o, v in pairs(self.db['layouts'][from][unit][option][opt]) do
-								self.db['layouts'][to][unit][option][opt][o] = v							
-							end
-						end
-					end
-				end
-			end
-		end
-	end
-end
 
 E:RegisterModule(UF:GetName())

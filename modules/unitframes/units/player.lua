@@ -140,7 +140,7 @@ function UF:Update_PlayerFrame(frame, db)
 			threat:Point("BOTTOMRIGHT", 4-POWERBAR_OFFSET, -4)	
 		end		
 
-		if POWERTHEME == true or USE_POWERBAR_OFFSET == true then
+		if USE_POWERBAR_OFFSET == true then
 			if USE_PORTRAIT == true and not USE_PORTRAIT_OVERLAY then
 				threat:Point("BOTTOMLEFT", frame.Portrait.backdrop, "BOTTOMLEFT", -4, -4)
 			else

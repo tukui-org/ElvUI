@@ -176,81 +176,266 @@ local function SetupCVars()
 	InstallStepComplete:Show()					
 end	
 
-local function SetupLayout(isPrimary, layout)
-	if isPrimary then
-		if layout == 'tank' then
-			--datatexts
-			E.db.datatexts.panels.spec1.LeftChatDataPanel.left = 'Armor';
-			E.db.datatexts.panels.spec1.LeftChatDataPanel.middle = 'Attack Power';
-			E.db.datatexts.panels.spec1.LeftChatDataPanel.right = 'Avoidance';
-			
-			--unitframes
-			E.db.unitframe.mainSpec = 'Primary';
-		elseif layout == 'healer' then
-			--datatexts
-			E.db.datatexts.panels.spec1.LeftChatDataPanel.left = 'Spell/Heal Power';
-			E.db.datatexts.panels.spec1.LeftChatDataPanel.middle = 'Crit Chance';
-			E.db.datatexts.panels.spec1.LeftChatDataPanel.right = 'Haste';
-			
-			--unitframes
-			E.db.unitframe.mainSpec = 'Secondary';		
-		elseif layout == 'dpsCaster' then
-			--datatexts
-			E.db.datatexts.panels.spec1.LeftChatDataPanel.left = 'Spell/Heal Power';
-			E.db.datatexts.panels.spec1.LeftChatDataPanel.middle = 'Haste';
-			E.db.datatexts.panels.spec1.LeftChatDataPanel.right = 'Mastery';
-			
-			--unitframes
-			E.db.unitframe.mainSpec = 'Primary';			
-		else
-			--datatexts
-			E.db.datatexts.panels.spec1.LeftChatDataPanel.left = 'Attack Power';
-			E.db.datatexts.panels.spec1.LeftChatDataPanel.middle = 'Haste';
-			E.db.datatexts.panels.spec1.LeftChatDataPanel.right = 'Crit Chance';
-			
-			--unitframes
-			E.db.unitframe.mainSpec = 'Primary';			
-		end
+function E:SetupResolution()
+	if E.lowversion then
+		E.db.general.panelWidth = 400
+		E.db.general.panelHeight = 180
 		
-		InstallStepComplete.message = L["Primary Layout Set"]
-		InstallStepComplete:Show()	
+		E:CopyTable(E.db.actionbar, P.actionbar)
+		
+		E.db.actionbar.bar1.heightMult = 2;
+		E.db.actionbar.bar2.enabled = true;
+		E.db.actionbar.bar3.enabled = false;
+		E.db.actionbar.bar5.enabled = false;
+		E:GetModule('ActionBars'):ResetMovers('')
+		E.db.actionbar.bar2["position"] = {
+			["p2"] = "BOTTOM",
+			["p"] = "CENTER",
+			["p3"] = 0,
+			["p4"] = 56.18668365478516,
+		}
+
+		
+		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
+		
+		E.db.unitframe.fontsize = 11
+		
+		E.db.unitframe.units.player.width = 200;
+		E.db.unitframe.units.player.castbar.width = 200;
+		E.db.unitframe.units.player.classbar.fill = 'fill';
+		
+		E.db.unitframe.units.target.width = 200;
+		E.db.unitframe.units.target.castbar.width = 200;
+		
+		E.db.unitframe.units.pet.power.enable = false;
+		E.db.unitframe.units.pet.width = 200;
+		E.db.unitframe.units.pet.height = 26;
+		
+		E.db.unitframe.units.targettarget.debuffs.enable = false;
+		E.db.unitframe.units.targettarget.power.enable = false;
+		E.db.unitframe.units.targettarget.width = 200;
+		E.db.unitframe.units.targettarget.height = 26;	
+		
+		E.db.unitframe.units.boss.width = 200;
+		E.db.unitframe.units.boss.castbar.width = 200;
+		E.db.unitframe.units.arena.width = 200;
+		E.db.unitframe.units.arena.castbar.width = 200;			
+		
+		E.db.unitframe.units["positions"] = {
+			["ElvUF_TargetTarget"] = "BOTTOMUIParent10680",
+			["ElvUF_Player"] = "BOTTOMUIParent-106135",
+			["ElvUF_Target"] = "BOTTOMUIParent106135",
+			["ElvUF_Pet"] = "BOTTOMUIParent-10680",
+			['ElvUF_Focus'] = "BOTTOMUIParent310332",
+		}
+		
+		E.db.lowresolutionset = true;
 	else
-		if layout == 'tank' then
-			--datatexts
-			E.db.datatexts.panels.spec2.LeftChatDataPanel.left = 'Armor';
-			E.db.datatexts.panels.spec2.LeftChatDataPanel.middle = 'Attack Power';
-			E.db.datatexts.panels.spec2.LeftChatDataPanel.right = 'Avoidance';
-			
-			--unitframes
-			E.db.unitframe.offSpec = 'Primary';
-		elseif layout == 'healer' then
-			--datatexts
-			E.db.datatexts.panels.spec2.LeftChatDataPanel.left = 'Spell/Heal Power';
-			E.db.datatexts.panels.spec2.LeftChatDataPanel.middle = 'Crit Chance';
-			E.db.datatexts.panels.spec2.LeftChatDataPanel.right = 'Haste';
-			
-			--unitframes
-			E.db.unitframe.offSpec = 'Secondary';		
-		elseif layout == 'dpsCaster' then
-			--datatexts
-			E.db.datatexts.panels.spec2.LeftChatDataPanel.left = 'Spell/Heal Power';
-			E.db.datatexts.panels.spec2.LeftChatDataPanel.middle = 'Haste';
-			E.db.datatexts.panels.spec2.LeftChatDataPanel.right = 'Mastery';
-			
-			--unitframes
-			E.db.unitframe.offSpec = 'Primary';			
-		else
-			--datatexts
-			E.db.datatexts.panels.spec2.LeftChatDataPanel.left = 'Attack Power';
-			E.db.datatexts.panels.spec2.LeftChatDataPanel.middle = 'Haste';
-			E.db.datatexts.panels.spec2.LeftChatDataPanel.right = 'Crit Chance';
-			
-			--unitframes
-			E.db.unitframe.offSpec = 'Primary';			
+		E.db.general.panelWidth = P.general.panelWidth
+		E.db.general.panelHeight = P.general.panelHeight
+		
+		E:CopyTable(E.db.actionbar, P.actionbar)
+		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
+		E.db.unitframe.fontsize = 12
+		E.db.unitframe.units["positions"] = nil;
+		E:GetModule('ActionBars'):ResetMovers('')
+		E.db.lowresolutionset = nil;
+	end
+
+	E:UpdateAll()
+	if InstallStepComplete then
+		InstallStepComplete.message = L["Resolution Style Set"]
+		InstallStepComplete:Show()		
+	end
+end
+
+function E:SetupLayout(layout)
+	
+	--Unitframes
+	E:CopyTable(E.db.unitframe.units, P.unitframe.units)
+	if layout == 'healer' then
+		if not IsAddOnLoaded('Clique') then
+			E:Print(L['Using the healer layout it is highly recommended you download the addon Clique to work side by side with ElvUI.'])
 		end
 		
-		InstallStepComplete.message = L["Secondary Layout Set"]
-		InstallStepComplete:Show()			
+		E.db.unitframe.units.target.buffs.numrows = 1;
+		E.db.unitframe.units.target.buffs['growth-x'] = 'LEFT';
+		E.db.unitframe.units.target.buffs['growth-y'] = 'UP';
+		E.db.unitframe.units.target.buffs.initialAnchor = 'BOTTOMRIGHT';
+		E.db.unitframe.units.target.buffs.anchorPoint = 'TOPRIGHT';
+		E.db.unitframe.units.target.debuffs.numrows = 1;
+		E.db.unitframe.units.target.debuffs['growth-x'] = 'LEFT';
+		E.db.unitframe.units.target.debuffs['growth-y'] = 'UP';
+		E.db.unitframe.units.target.debuffs.initialAnchor = 'BOTTOMRIGHT';
+		E.db.unitframe.units.target.debuffs.anchorPoint = 'TOPRIGHT';
+		E.db.unitframe.units.target.castbar.yOffset = 0;
+		
+		E.db.unitframe.units.targettarget.height = 35;
+		
+		E.db.unitframe.units.focus.buffs['growth-y'] = 'UP';
+		E.db.unitframe.units.focus.buffs.initialAnchor = 'BOTTOMLEFT';
+		E.db.unitframe.units.focus.buffs.anchorPoint = 'TOPLEFT';
+		E.db.unitframe.units.focus.debuffs['growth-y'] = 'UP';
+		E.db.unitframe.units.focus.debuffs.initialAnchor = 'BOTTOMLEFT';
+		E.db.unitframe.units.focus.debuffs.anchorPoint = 'TOPLEFT';
+		E.db.unitframe.units.focus.castbar.yOffset = 65;
+		
+		E.db.unitframe.units.focustarget.buffs['growth-y'] = 'UP';
+		E.db.unitframe.units.focustarget.buffs.initialAnchor = 'BOTTOMLEFT';
+		E.db.unitframe.units.focustarget.buffs.anchorPoint = 'TOPLEFT';
+		E.db.unitframe.units.focustarget.debuffs['growth-y'] = 'UP';
+		E.db.unitframe.units.focustarget.debuffs.initialAnchor = 'BOTTOMLEFT';
+		E.db.unitframe.units.focustarget.debuffs.anchorPoint = 'TOPLEFT';
+		
+		E.db.unitframe.units.boss.width = 200;
+		E.db.unitframe.units.boss.castbar.width = 200;
+		E.db.unitframe.units.boss.growthDirection = 'UP';
+		
+		E.db.unitframe.units.arena.width = 200;
+		E.db.unitframe.units.arena.castbar.width = 200;
+		
+		E.db.unitframe.units.party.point = 'LEFT';
+		E.db.unitframe.units.party.xOffset = 1;
+		E.db.unitframe.units.party.healPrediction = true;
+		E.db.unitframe.units.party.health.frequentUpdates = true;
+		E.db.unitframe.units.party.columnAnchorPoint = 'LEFT';
+		E.db.unitframe.units.party.width = 80;
+		E.db.unitframe.units.party.height = 52;
+		E.db.unitframe.units.party.health.text_format = 'deficit';
+		E.db.unitframe.units.party.health.position = 'BOTTOM';
+		E.db.unitframe.units.party.health.orientation = 'VERTICAL';
+		E.db.unitframe.units.party.name.position = 'TOP';
+		E.db.unitframe.units.party.debuffs.anchorPoint = 'BOTTOMLEFT';
+		E.db.unitframe.units.party.debuffs.initialAnchor = 'TOPLEFT';
+		E.db.unitframe.units.party.debuffs.useFilter = 'DebuffBlacklist';
+		E.db.unitframe.units.party.petsGroup.enable = true;
+		E.db.unitframe.units.party.petsGroup.width = 80;
+		E.db.unitframe.units.party.petsGroup.initialAnchor = 'BOTTOM';
+		E.db.unitframe.units.party.petsGroup.anchorPoint = 'TOP';
+		E.db.unitframe.units.party.petsGroup.xOffset = 0;
+		E.db.unitframe.units.party.petsGroup.yOffset = 1;
+		E.db.unitframe.units.party.targetsGroup.enable = false;
+		E.db.unitframe.units.party.targetsGroup.width = 80;
+		E.db.unitframe.units.party.targetsGroup.initialAnchor = 'BOTTOM';
+		E.db.unitframe.units.party.targetsGroup.anchorPoint = 'TOP';
+		E.db.unitframe.units.party.targetsGroup.xOffset = 0;
+		E.db.unitframe.units.party.targetsGroup.yOffset = 1;
+
+		E.db.unitframe.units.raid625.healPrediction = true;
+		E.db.unitframe.units.raid625.health.frequentUpdates = true;
+
+		E.db.unitframe.units.raid2640.healPrediction = true;
+		E.db.unitframe.units.raid2640.health.frequentUpdates = true;	
+		
+		if E.db.lowresolutionset then
+			E.db.unitframe.units["positions"] = {
+				["ElvUF_Player"] = "BOTTOMLEFTUIParent464230",
+				["ElvUF_Target"] = "BOTTOMRIGHTUIParent-464230",
+				["ElvUF_Raid2640"] = "BOTTOMUIParent0170",
+				["ElvUF_Raid625"] = "BOTTOMUIParent0170",
+				["ElvUF_TargetTarget"] = "BOTTOMRIGHTElvUF_Target0150",
+				["ElvUF_Focus"] = "BOTTOMLEFTElvUF_Player0150",
+				["ElvUF_FocusTarget"] = "BOTTOMLEFTElvUF_Focus0150",
+				["ElvUF_Party"] = "BOTTOMUIParent0170",
+				["ElvUF_Pet"] = "BOTTOMLEFTUIParent464151",
+				["ElvUF_Boss1"] = "BOTTOMLEFTUIParent30250",
+				["ElvUF_Boss2"] = "BOTTOMLEFTUIParent30375",
+				["ElvUF_Boss3"] = "BOTTOMLEFTUIParent30500",
+				["ElvUF_Boss4"] = "BOTTOMLEFTUIParent30625",
+				["ElvUF_Tank"] = "LEFTUIParent30350",
+			}			
+		else
+			E.db.unitframe.units["positions"] = {
+				["ElvUF_Player"] = "BOTTOMLEFTUIParent464230",
+				["ElvUF_Target"] = "BOTTOMRIGHTUIParent-464230",
+				["ElvUF_Raid2640"] = "BOTTOMUIParent0170",
+				["ElvUF_Raid625"] = "BOTTOMUIParent0170",
+				["ElvUF_TargetTarget"] = "BOTTOMRIGHTElvUF_Target0150",
+				["ElvUF_Focus"] = "BOTTOMLEFTElvUF_Player0150",
+				["ElvUF_FocusTarget"] = "BOTTOMLEFTElvUF_Focus0150",
+				["ElvUF_Party"] = "BOTTOMUIParent0170",
+				["ElvUF_Pet"] = "BOTTOMLEFTUIParent464151",
+				["ElvUF_Boss1"] = "BOTTOMLEFTUIParent30250",
+				["ElvUF_Boss2"] = "BOTTOMLEFTUIParent30375",
+				["ElvUF_Boss3"] = "BOTTOMLEFTUIParent30500",
+				["ElvUF_Boss4"] = "BOTTOMLEFTUIParent30625",
+				["ElvUF_Tank"] = "LEFTUIParent30350",
+			}
+		end
+	elseif E.db.lowresolutionset then
+		E.db.unitframe.units["positions"] = {
+			["ElvUF_TargetTarget"] = "BOTTOMUIParent10680",
+			["ElvUF_Player"] = "BOTTOMUIParent-106135",
+			["ElvUF_Target"] = "BOTTOMUIParent106135",
+			["ElvUF_Pet"] = "BOTTOMUIParent10680",
+			['ElvUF_Focus'] = "BOTTOMUIParent310332",
+		}		
+	else
+		E.db.unitframe.units["positions"] = {
+			["ElvUF_Player"] = "TOPLEFTUIParent30-30",
+			["ElvUF_Target"] = "TOPLEFTUIParent320-30",
+			["ElvUF_Raid2640"] = "BOTTOMLEFTUIParent4210",
+			["ElvUF_Raid625"] = "BOTTOMLEFTUIParent4210",
+			["ElvUF_TargetTarget"] = "TOPLEFTUIParent610-30",
+			["ElvUF_Focus"] = "TOPLEFTUIParent30-265",
+			["ElvUF_FocusTarget"] = "TOPLEFTUIParent260-265",
+			["ElvUF_Party"] = "BOTTOMLEFTUIParent4210",
+			["ElvUF_Pet"] = "TOPLEFTUIParent30-115",
+			["ElvUF_Boss1"] = "TOPLEFTUIParent440-305",
+			["ElvUF_Boss2"] = "TOPLEFTUIParent440-430",
+			["ElvUF_Boss3"] = "TOPLEFTUIParent440-555",
+			["ElvUF_Boss4"] = "TOPLEFTUIParent440-680",
+			["ElvUF_Tank"] = "LEFTUIParent30150",
+		}
+	end
+	
+	if E.db.lowresolutionset then
+		E.db.unitframe.fontsize = 11
+		
+		E.db.unitframe.units.player.width = 200;
+		E.db.unitframe.units.player.castbar.width = 200;
+		E.db.unitframe.units.player.classbar.fill = 'fill';
+		
+		E.db.unitframe.units.target.width = 200;
+		E.db.unitframe.units.target.castbar.width = 200;
+		
+		E.db.unitframe.units.pet.power.enable = false;
+		E.db.unitframe.units.pet.width = 200;
+		E.db.unitframe.units.pet.height = 26;
+		
+		E.db.unitframe.units.targettarget.debuffs.enable = false;
+		E.db.unitframe.units.targettarget.power.enable = false;
+		E.db.unitframe.units.targettarget.width = 200;
+		E.db.unitframe.units.targettarget.height = 26;	
+		
+		E.db.unitframe.units.boss.width = 200;
+		E.db.unitframe.units.boss.castbar.width = 200;
+		E.db.unitframe.units.arena.width = 200;
+		E.db.unitframe.units.arena.castbar.width = 200;		
+	end
+	
+	--Datatexts
+	E:CopyTable(E.db.datatexts.panels, P.datatexts.panels)
+	if layout == 'tank' then
+		E.db.datatexts.panels.LeftChatDataPanel.left = 'Armor';
+		E.db.datatexts.panels.LeftChatDataPanel.middle = 'Attack Power';
+		E.db.datatexts.panels.LeftChatDataPanel.right = 'Avoidance';
+	elseif layout == 'healer' or layout == 'dpsCaster' then
+		E.db.datatexts.panels.LeftChatDataPanel.left = 'Spell/Heal Power';
+		E.db.datatexts.panels.LeftChatDataPanel.middle = 'Haste';
+		E.db.datatexts.panels.LeftChatDataPanel.right = 'Mastery';
+	else
+		E.db.datatexts.panels.LeftChatDataPanel.left = 'Attack Power';
+		E.db.datatexts.panels.LeftChatDataPanel.middle = 'Haste';
+		E.db.datatexts.panels.LeftChatDataPanel.right = 'Crit Chance';
+	end
+	
+	E.db.layoutSet = layout
+	
+	E:UpdateAll()
+	if InstallStepComplete then
+		InstallStepComplete.message = L["Layout Set"]
+		InstallStepComplete:Show()	
 	end
 end
 
@@ -330,31 +515,32 @@ local function SetPage(PageNum)
 		InstallOption1Button:SetScript("OnClick", SetupChat)
 		InstallOption1Button:SetText(L["Setup Chat"])
 	elseif PageNum == 4 then
-		f.SubTitle:SetText(L["Primary Layout"])
-		f.Desc1:SetText(L["You can now choose what layout you wish to use for your primary talents."])
-		f.Desc2:SetText(L["This will change the layout of your unitframes, raidframes, and datatexts."])
-		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
-		InstallRoleOptionTank:Show()
-		InstallRoleOptionTank:SetScript('OnClick', function() SetupLayout(true, 'tank') end)
-		InstallRoleOptionHealer:Show()
-		InstallRoleOptionHealer:SetScript('OnClick', function() SetupLayout(true, 'healer') end)
-		InstallRoleOptionMeleeDPS:Show()
-		InstallRoleOptionMeleeDPS:SetScript('OnClick', function() SetupLayout(true, 'dpsMelee') end)
-		InstallRoleOptionCasterDPS:Show()
-		InstallRoleOptionCasterDPS:SetScript('OnClick', function() SetupLayout(true, 'dpsCaster') end)		
+		f.SubTitle:SetText(L["Resolution"])
+		f.Desc1:SetText(format(L["Your current resolution is %s, this is considered a %s resolution."], ({GetScreenResolutions()})[GetCurrentResolution()], E.lowversion == true and L["low"] or L["high"]))
+		if E.lowversion then
+			f.Desc2:SetText(L["This resolution requires that you change some settings to get everything to fit on your screen."].." "..L["Click the button below to resize your chat frames, unitframes, and reposition your actionbars."].." "..L["You may need to further alter these settings depending how low you resolution is."])
+			f.Desc3:SetText(L["Importance: |cff07D400High|r"])
+		else
+			f.Desc2:SetText(L["This resolution doesn't require that you change settings for the UI to fit on your screen."].." "..L["Click the button below to resize your chat frames, unitframes, and reposition your actionbars."].." "..L["This is completely optional."])
+			f.Desc3:SetText(L["Importance: |cffFF0000Low|r"])
+		end
+		
+		InstallOption1Button:Show()
+		InstallOption1Button:SetScript("OnClick", E.SetupResolution)
+		InstallOption1Button:SetText(L["Resolution Setup"])	
 	elseif PageNum == 5 then
-		f.SubTitle:SetText(L["Secondary Layout"])
-		f.Desc1:SetText(L["You can now choose what layout you wish to use for your secondary talents."])
+		f.SubTitle:SetText(L["Layout"])
+		f.Desc1:SetText(L["You can now choose what layout you wish to use based on your combat role."])
 		f.Desc2:SetText(L["This will change the layout of your unitframes, raidframes, and datatexts."])
 		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
 		InstallRoleOptionTank:Show()
-		InstallRoleOptionTank:SetScript('OnClick', function() SetupLayout(false, 'tank') end)
+		InstallRoleOptionTank:SetScript('OnClick', function() E:SetupLayout('tank') end)
 		InstallRoleOptionHealer:Show()
-		InstallRoleOptionHealer:SetScript('OnClick', function() SetupLayout(false, 'healer') end)
+		InstallRoleOptionHealer:SetScript('OnClick', function() E:SetupLayout('healer') end)
 		InstallRoleOptionMeleeDPS:Show()
-		InstallRoleOptionMeleeDPS:SetScript('OnClick', function() SetupLayout(false, 'dpsMelee') end)
+		InstallRoleOptionMeleeDPS:SetScript('OnClick', function() E:SetupLayout('dpsMelee') end)
 		InstallRoleOptionCasterDPS:Show()
-		InstallRoleOptionCasterDPS:SetScript('OnClick', function() SetupLayout(false, 'dpsCaster') end)	
+		InstallRoleOptionCasterDPS:SetScript('OnClick', function() E:SetupLayout('dpsCaster') end)
 	elseif PageNum == 6 then
 		f.SubTitle:SetText(L["Installation Complete"])
 		f.Desc1:SetText(L["You are now finished with the installation process. Bonus Hint: If you wish to access blizzard micro menu, middle click on the minimap. If you don't have a middle click button then hold down shift and right click the minimap. If you are in need of technical support please visit us at www.tukui.org."])
@@ -439,11 +625,12 @@ function E:Install()
 
 	--Create Frame
 	if not ElvUIInstallFrame then
-		local f = CreateFrame("Frame", "ElvUIInstallFrame", E.UIParent)
+		local f = CreateFrame("Button", "ElvUIInstallFrame", E.UIParent)
 		f:Size(550, 400)
 		f:SetTemplate("Transparent")
 		f:CreateShadow("Default")
 		f:SetPoint("CENTER")
+		f:SetFrameStrata('TOOLTIP')
 		
 		f.Title = f:CreateFontString(nil, 'OVERLAY')
 		f.Title:FontTemplate(nil, 17, nil)
@@ -518,7 +705,7 @@ function E:Install()
 		f.RoleOptionMeleeDPS:SetTemplate("Default", true)
 		f.RoleOptionMeleeDPS:Size(100, 30)
 		f.RoleOptionMeleeDPS:Point("RIGHT", f.RoleOptionTank, 'LEFT', -3, 0)
-		f.RoleOptionMeleeDPS:SetText(L['Melee DPS'])
+		f.RoleOptionMeleeDPS:SetText(L['Physical DPS'])
 		f.RoleOptionMeleeDPS:Hide()
 		E.Skins:HandleButton(f.RoleOptionMeleeDPS, true)			
 

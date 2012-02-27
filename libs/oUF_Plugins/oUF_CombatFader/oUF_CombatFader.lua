@@ -13,17 +13,27 @@ local CheckForReset = function()
 	end
 end
 
-local FadeFramesInOut = function(fade)
+local FadeFramesInOut = function(fade, unit)
 	for frame, unit in pairs(frames) do
 		if not UnitExists(unit) then return end
 		if fade then
-			UIFrameFadeIn(frame, 0.15)
-		else
-			UIFrameFadeOut(frame, 0.15)
-			frame.fadeInfo.finishedFunc = CheckForReset
+			if frame:GetAlpha() ~= 1 or (frame.fadeInfo and frame.fadeInfo.endAlpha == 0) then
+				UIFrameFadeIn(frame, 0.15)
+			end
+		else	
+			if frame:GetAlpha() ~= 0 then
+				UIFrameFadeOut(frame, 0.15)
+				frame.fadeInfo.finishedFunc = CheckForReset
+			else
+				showStatus = true;
+				return
+			end
 		end
 	end
-	showStatus = fade
+	
+	if unit == 'player' then
+		showStatus = fade
+	end
 end
 
 local Update = function(self, arg1, arg2)
@@ -43,20 +53,20 @@ local Update = function(self, arg1, arg2)
 	local cur, max = UnitHealth("player"), UnitHealthMax("player")
 	local cast, channel = UnitCastingInfo("player"), UnitChannelInfo("player")
 	local target, focus = UnitExists("target"), UnitExists("focus")
-		
+
 	if (cast or channel) and showStatus ~= true then
-		FadeFramesInOut(true)
+		FadeFramesInOut(true, frames[self])
 	elseif cur ~= max and showStatus ~= true then
-		FadeFramesInOut(true)
+		FadeFramesInOut(true, frames[self])
 	elseif (target or focus) and showStatus ~= true then
-		FadeFramesInOut(true)
+		FadeFramesInOut(true, frames[self])
 	elseif arg1 == true and showStatus ~= true then
-		FadeFramesInOut(true)
+		FadeFramesInOut(true, frames[self])
 	else
 		if combat and showStatus ~= true then
-			FadeFramesInOut(true)
+			FadeFramesInOut(true, frames[self])
 		elseif not target and not combat and not focus and (cur == max) and not (cast or channel) then
-			FadeFramesInOut(false)
+			FadeFramesInOut(false, frames[self])
 		end
 	end	
 end
@@ -65,6 +75,10 @@ local Enable = function(self, unit)
 	if self.CombatFade then
 		frames[self] = self.unit
 		allFrames[self] = self.unit
+		
+		if unit == 'player' then
+			showStatus = false;
+		end
 		
 		self:RegisterEvent("PLAYER_ENTERING_WORLD", Update)
 		self:RegisterEvent("PLAYER_REGEN_ENABLED", Update)
@@ -91,7 +105,6 @@ end
 local Disable = function(self)
 	if(self.CombatFade) then
 		frames[self] = nil
-		
 		Update(self)
 
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD", Update)

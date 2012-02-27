@@ -30,6 +30,16 @@ function UF:Construct_ThreatGlow(frame, glow)
 	return threat
 end
 
+function UF:Construct_TargetGlow(frame)
+	frame:CreateShadow('Default')
+	local x = frame.shadow
+	frame.shadow = nil
+	x:SetFrameStrata('BACKGROUND')
+	x:Hide();
+	
+	return x
+end
+
 function UF:Construct_HealthBar(frame, bg, text, textPos)
 	local health = CreateFrame('StatusBar', nil, frame)	
 	UF['statusbars'][health] = true

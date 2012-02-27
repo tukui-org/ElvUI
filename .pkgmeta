@@ -1,0 +1,3 @@
+manual-changelog:
+    filename: CHANGELOG.txt
+    markup-type: bbcode

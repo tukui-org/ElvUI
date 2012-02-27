@@ -15,7 +15,7 @@ local function StripOptions(options)
 end
 
 local function LoadSkin()
-	if E.db.skins.skada.enable ~= true then return end
+	if E.global.skins.skada.enable ~= true then return end
 	local Skada = Skada
 	local barSpacing = 1
 	local borderWidth = 1

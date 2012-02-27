@@ -188,7 +188,7 @@ end
 
 function A:Initialize()
 	self.db = E.db.auras
-	if self.db.enable ~= true then 
+	if E.global.auras.enable ~= true then 
 		BuffFrame:Kill();
 		return 
 	end
@@ -232,6 +232,9 @@ function A:Initialize()
 	self:SecureHook("BuffFrame_UpdateAllBuffAnchors", "UpdateBuffAnchors")
 	self:SecureHook("DebuffButton_UpdateAnchors", "UpdateDebuffAnchors")	
 	E:CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, A.AurasPostDrag)
+	AurasHolder.ClearAllPoints = E.noop
+	AurasHolder.SetPoint = E.noop
+	AurasHolder.SetAllPoints = E.noop
 end
 
 E:RegisterModule(A:GetName())

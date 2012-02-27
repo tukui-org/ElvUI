@@ -8,7 +8,7 @@ if not E:IsPTRVersion() then return end
 ----------------------------------------------------------------------------------------
 
 local function LoadSkin()
-	if E.db.skins.blizzard.enable ~= true or E.db.skins.blizzard.transmogrify ~= true then return end
+	if E.global.skins.blizzard.enable ~= true or E.global.skins.blizzard.transmogrify ~= true then return end
 	TransmogrifyFrame:StripTextures()
 	TransmogrifyFrame:SetTemplate("Transparent")
 	TransmogrifyModelFrame:SetFrameLevel(TransmogrifyFrame:GetFrameLevel() + 2)

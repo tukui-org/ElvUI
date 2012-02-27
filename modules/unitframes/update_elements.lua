@@ -11,8 +11,8 @@ local function GetInfoText(frame, unit, r, g, b, min, max, reverse, type)
 	local value
 	local db = frame.db
 	
-	if not db then return '' end
-	
+	if not db or not db[type] then return '' end
+
 	if db[type].text_format == 'blank' then
 		return '';
 	end
@@ -167,13 +167,21 @@ function UF:PostUpdateHealth(unit, min, max)
 		elseif ghost then
 			self.value:SetText("|cffD7BEA5"..L['Ghost'].."|r")
 		end
+		
+		if self:GetParent().ResurrectIcon then
+			self:GetParent().ResurrectIcon:SetAlpha(1)
+		end
 	else
 		local r, g, b = ElvUF.ColorGradient(min, max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
 		local reverse
 		if unit == "target" then
 			reverse = true
 		end
-				
+		
+		if self:GetParent().ResurrectIcon then
+			self:GetParent().ResurrectIcon:SetAlpha(0)
+		end
+		
 		self.value:SetText(GetInfoText(self:GetParent(), unit, r, g, b, min, max, reverse, 'health'))
 	end
 end
@@ -198,7 +206,12 @@ end
 
 function UF:PostUpdatePower(unit, min, max)
 	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
-	local color = ElvUF['colors'].power[pToken]
+	local color
+	if pToken then
+		color = ElvUF['colors'].power[pToken]
+	else
+	
+	end
 	local perc
 	if max == 0 then
 		perc = 0
@@ -345,7 +358,7 @@ function UF:UpdateAuraTimer(elapsed)
 				self.text:Hide()
 				self:SetScript("OnUpdate", nil)
 			end
-			if (not self.isDebuff) and E.db["core"].classtheme == true then
+			if (not self.isDebuff) and E.db['general'].classtheme == true then
 				local r, g, b = self:GetParent():GetParent().Health.backdrop:GetBackdropBorderColor()
 				self:SetBackdropBorderColor(r, g, b)
 			end
@@ -360,8 +373,10 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 	local db = self:GetParent().db
 	
 	button.text:Show()
-	button.text:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db[self.type].fontsize, 'OUTLINE')
-	button.count:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db[self.type].fontsize, 'OUTLINE')
+	if db and db[self.type] then
+		button.text:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db[self.type].fontsize, 'OUTLINE')
+		button.count:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db[self.type].fontsize, 'OUTLINE')
+	end
 	
 	if button.isDebuff then
 		if(not UnitIsFriend("player", unit) and button.owner ~= "player" and button.owner ~= "vehicle") --[[and (not E.isDebuffWhiteList[name])]] then
@@ -473,14 +488,14 @@ end
 function UF:PostCastStart(unit, name, rank, castid)
 	if unit == "vehicle" then unit = "player" end
 	self.Text:SetText(string.sub(name, 0, math.floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontsize) * 12)))
-	
+	self.Spark:Height(self:GetHeight() * 2)
 	local db = self:GetParent().db
 	local color
 	self.unit = unit
-	
+
 	if db.castbar.ticks and unit == "player" then
-		local baseTicks = UF.db.ChannelTicks[name]
-		if baseTicks and UF.db.HastedChannelTicks[name] then
+		local baseTicks = E.global.unitframe.ChannelTicks[name]
+		if baseTicks and E.global.unitframe.HastedChannelTicks[name] then
 			local tickIncRate = 1 / baseTicks
 			local curHaste = UnitSpellHaste("player") * 0.01
 			local firstTickInc = tickIncRate / 2
@@ -602,9 +617,10 @@ function UF:EclipseDirection()
 end
 
 function UF:DruidResourceBarVisibilityUpdate(unit)
-	local db = E.db['unitframe']['layouts'][UF.ActiveLayout].player
+	local db = E.db['unitframe']['units'].player
 	local health = self:GetParent().Health
 	local frame = self:GetParent()
+	local threat = frame.Threat
 	local PORTRAIT_WIDTH = db.portrait.width
 	local USE_PORTRAIT = db.portrait.enable
 	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
@@ -616,6 +632,13 @@ function UF:DruidResourceBarVisibilityUpdate(unit)
 	local USE_POWERBAR = db.power.enable
 	local USE_MINI_POWERBAR = db.power.width ~= 'fill' and USE_POWERBAR
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
+	local POWERBAR_OFFSET = db.power.offset
+	local POWERBAR_HEIGHT = db.power.height
+	local SPACING = 1;
+	
+	if not USE_POWERBAR then
+		POWERBAR_HEIGHT = 0
+	end
 	
 	if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
 		PORTRAIT_WIDTH = 0
@@ -632,6 +655,28 @@ function UF:DruidResourceBarVisibilityUpdate(unit)
 			health:Point("TOPRIGHT", frame, "TOPRIGHT", -2, -(2 + CLASSBAR_HEIGHT + 1))
 		end
 		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + 2, -(2 + CLASSBAR_HEIGHT + 1))	
+
+		local mini_classbarY = 0
+		if USE_MINI_CLASSBAR then
+			mini_classbarY = -(SPACING+(CLASSBAR_HEIGHT))
+		end		
+		
+		threat:Point("TOPLEFT", -4, 4+mini_classbarY)
+		threat:Point("TOPRIGHT", 4, 4+mini_classbarY)
+		
+		if USE_MINI_POWERBAR then
+			threat:Point("BOTTOMLEFT", -4, -4 + (POWERBAR_HEIGHT/2))
+			threat:Point("BOTTOMRIGHT", 4, -4 + (POWERBAR_HEIGHT/2))		
+		else
+			threat:Point("BOTTOMLEFT", -4, -4)
+			threat:Point("BOTTOMRIGHT", 4, -4)
+		end		
+		
+		if USE_POWERBAR_OFFSET then
+			threat:Point("TOPRIGHT", 4-POWERBAR_OFFSET, 4+mini_classbarY)
+			threat:Point("BOTTOMRIGHT", 4-POWERBAR_OFFSET, -4)	
+		end				
+
 		
 		if db.portrait.enable and not db.portrait.overlay then
 			local portrait = self:GetParent().Portrait
@@ -655,6 +700,22 @@ function UF:DruidResourceBarVisibilityUpdate(unit)
 			health:Point("TOPRIGHT", frame, "TOPRIGHT", -2, -2)
 		end
 		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + 2, -2)	
+
+		threat:Point("TOPLEFT", -4, 4)
+		threat:Point("TOPRIGHT", 4, 4)
+		
+		if USE_MINI_POWERBAR then
+			threat:Point("BOTTOMLEFT", -4, -4 + (POWERBAR_HEIGHT/2))
+			threat:Point("BOTTOMRIGHT", 4, -4 + (POWERBAR_HEIGHT/2))		
+		else
+			threat:Point("BOTTOMLEFT", -4, -4)
+			threat:Point("BOTTOMRIGHT", 4, -4)
+		end		
+		
+		if USE_POWERBAR_OFFSET then
+			threat:Point("TOPRIGHT", 4-POWERBAR_OFFSET, 4)
+			threat:Point("BOTTOMRIGHT", 4-POWERBAR_OFFSET, -4)	
+		end				
 
 		if db.portrait.enable and not db.portrait.overlay then
 			local portrait = self:GetParent().Portrait
@@ -758,6 +819,33 @@ function UF:UpdateThreat(event, unit)
 	end
 end
 
+function UF:UpdateTargetGlow(event)
+	if not self.unit then return; end
+	local unit = self.unit
+	
+	if UnitIsUnit(unit, 'target') then
+		self.TargetGlow:Show()
+		local reaction = UnitReaction(unit, 'player')
+		
+		if UnitIsPlayer(unit) then
+			local _, class = UnitClass(unit)
+			if class then
+				local color = RAID_CLASS_COLORS[class]
+				self.TargetGlow:SetBackdropBorderColor(color.r, color.g, color.b)
+			else
+				self.TargetGlow:SetBackdropBorderColor(1, 1, 1)
+			end
+		elseif reaction then
+			local color = FACTION_BAR_COLORS[reaction]
+			self.TargetGlow:SetBackdropBorderColor(color.r, color.g, color.b)
+		else
+			self.TargetGlow:SetBackdropBorderColor(1, 1, 1)
+		end
+	else
+		self.TargetGlow:Hide()
+	end
+end
+
 function UF:AltPowerBarPostUpdate(min, cur, max)
 	local perc = math.floor((cur/max)*100)
 	
@@ -834,7 +922,7 @@ function UF:UpdateComboDisplay(event, unit)
 	
 	local BORDER = E:Scale(2)
 	local SPACING = E:Scale(1)
-	local db = E.db['unitframe']['layouts'][UF.ActiveLayout].target
+	local db = E.db['unitframe']['units'].target
 	local USE_COMBOBAR = db.combobar.enable
 	local USE_MINI_COMBOBAR = db.combobar.fill == "spaced" and USE_COMBOBAR
 	local COMBOBAR_HEIGHT = db.combobar.height
@@ -880,17 +968,17 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	icon.isPlayer = isPlayer
 	icon.owner = caster
 	
-	if db and db[self.type].durationLimit ~= 0 then
+	if db and db[self.type] and db[self.type].durationLimit ~= 0 then
 		if duration > db[self.type].durationLimit or duration == 0 then
 			return false
 		end
 	end
 	
-	if db and db[self.type].showPlayerOnly and isPlayer then
+	if db and db[self.type] and db[self.type].showPlayerOnly and isPlayer then
 		return true
-	elseif db and db[self.type].useFilter and E.db['unitframe']['aurafilters'][db[self.type].useFilter] then
-		local type = E.db['unitframe']['aurafilters'][db[self.type].useFilter].type
-		local spellList = E.db['unitframe']['aurafilters'][db[self.type].useFilter].spells
+	elseif db and db[self.type] and db[self.type].useFilter and E.global['unitframe']['aurafilters'][db[self.type].useFilter] then
+		local type = E.global['unitframe']['aurafilters'][db[self.type].useFilter].type
+		local spellList = E.global['unitframe']['aurafilters'][db[self.type].useFilter].spells
 		
 		--Prevent filtering on friendly target's debuffs.
 		if (unit:find('target') or unit == 'focus') and isFriend and self.type == 'debuffs' and type == 'Whitelist' then
@@ -910,13 +998,15 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 				return true
 			end				
 		end
-	else
+	elseif db and db[self.type] then
 		if db and not db[self.type].showPlayerOnly then
 			return true
 		else
 			return false
 		end
 	end	
+	
+	return true
 end
 
 local counterOffsets = {
@@ -935,8 +1025,8 @@ function UF:UpdateAuraWatch(frame)
 	local auras = frame.AuraWatch;
 	local db = frame.db.buffIndicator;
 	
-	if not E.db['unitframe'].buffwatch[E.myclass] then E.db['unitframe'].buffwatch[E.myclass] = {} end
-	for _, value in pairs(E.db['unitframe'].buffwatch[E.myclass]) do
+	if not E.global['unitframe'].buffwatch[E.myclass] then E.global['unitframe'].buffwatch[E.myclass] = {} end
+	for _, value in pairs(E.global['unitframe'].buffwatch[E.myclass]) do
 		tinsert(buffs, value);
 	end
 	
@@ -1000,7 +1090,7 @@ function UF:UpdateAuraWatch(frame)
 		end
 		
 		if not icon.count then
-			icon.count = icon:CreateFontString(nil, "OVERLAY");
+			icon.count = icon:CreateFontString(nil, "OVERLAY", 7);
 			icon.count:SetPoint("CENTER", unpack(counterOffsets[spell["point"]]));
 		end
 		icon.count:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db.fontsize, 'OUTLINE');

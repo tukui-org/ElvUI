@@ -9,36 +9,36 @@ function DT:PanelLayoutOptions()
 	end
 	datatexts[''] = ''
 	
-	for i = 1, 2 do
-		local table = E.Options.args.datatexts.args['spec'..i].args
-		for pointLoc, tab in pairs(E.db.datatexts.panels['spec'..i]) do
-			if not _G[pointLoc] then E.db.datatexts.panels['spec'..i][pointLoc] = nil; return; end
-			if type(tab) == 'table' then
-				table[pointLoc] = {
-					type = 'group',
-					args = {},
-					name = L[pointLoc] or pointLoc,
-					guiInline = true,
-					order = i + -10,
-				}			
-				for option, value in pairs(tab) do
-					table[pointLoc].args[option] = {
-						type = 'select',
-						name = L[option] or option:upper(),
-						values = datatexts,
-						get = function(info) return E.db.datatexts.panels['spec'..i][pointLoc][ info[#info] ] end,
-						set = function(info, value) E.db.datatexts.panels['spec'..i][pointLoc][ info[#info] ] = value; DT:LoadDataTexts() end,									
-					}
-				end
-			elseif type(tab) == 'string' then
-				table[pointLoc] = {
+	local table = E.Options.args.datatexts.args.panels.args
+	local i = 0
+	for pointLoc, tab in pairs(P.datatexts.panels) do
+		i = i + 1
+		if not _G[pointLoc] then table[pointLoc] = nil; return; end
+		if type(tab) == 'table' then
+			table[pointLoc] = {
+				type = 'group',
+				args = {},
+				name = L[pointLoc] or pointLoc,
+				guiInline = true,
+				order = i + -10,
+			}			
+			for option, value in pairs(tab) do
+				table[pointLoc].args[option] = {
 					type = 'select',
-					name = L[pointLoc] or pointLoc,
+					name = L[option] or option:upper(),
 					values = datatexts,
-					get = function(info) return E.db.datatexts.panels['spec'..i][pointLoc] end,
-					set = function(info, value) E.db.datatexts.panels['spec'..i][pointLoc] = value; DT:LoadDataTexts() end,	
-				}						
+					get = function(info) return E.db.datatexts.panels[pointLoc][ info[#info] ] end,
+					set = function(info, value) E.db.datatexts.panels[pointLoc][ info[#info] ] = value; DT:LoadDataTexts() end,									
+				}
 			end
+		elseif type(tab) == 'string' then
+			table[pointLoc] = {
+				type = 'select',
+				name = L[pointLoc] or pointLoc,
+				values = datatexts,
+				get = function(info) return E.db.datatexts.panels[pointLoc] end,
+				set = function(info, value) E.db.datatexts.panels[pointLoc] = value; DT:LoadDataTexts() end,	
+			}						
 		end
 	end
 end
@@ -55,36 +55,24 @@ E.Options.args.datatexts = {
 			type = "description",
 			name = L["DATATEXT_DESC"],
 		},
-		specswap = {
-			order = 2,
-			type = "toggle",
-			name = L["Multi-Spec Swap"],
-			desc = L['Swap to an alternative layout when changing talent specs. If turned off only the spec #1 layout will be used.'],
-		},
 		time24 = {
-			order = 3,
+			order = 2,
 			type = 'toggle',
 			name = L['24-Hour Time'],
 			desc = L['Toggle 24-hour mode for the time datatext.'],
 		},
 		localtime = {
-			order = 4,
+			order = 3,
 			type = 'toggle',
 			name = L['Local Time'],
 			desc = L['If not set to true then the server time will be displayed instead.'],
 		},
-		spec1 = {
+		panels = {
 			type = 'group',
-			name = L['Primary Talents'],
+			name = L['Panels'],
 			order = 100,	
 			args = {},
-		},
-		spec2 = {
-			type = 'group',
-			name = L['Secondary Talents'],
-			order = 200,				
-			args = {},		
-			disabled = function() return not E.db.datatexts.specswap end,
-		},
+			guiInline = true,
+		},		
 	},
 }

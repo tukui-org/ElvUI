@@ -41,6 +41,26 @@ function E:FarmMode()
 	FarmMode()
 end
 
+local channel = 'PARTY'
+local target = nil;
+function E:ElvSaysChannel(chnl)
+	channel = chnl
+	E:Print(string.format('ElvSays channel has been changed to %s.', chnl))
+end
+
+function E:ElvSaysTarget(tgt)
+	target = tgt
+	E:Print(string.format('ElvSays target has been changed to %s.', tgt))
+end
+
+function E:ElvSays(msg)
+	if channel == 'WHISPER' and target == nil then
+		E:Print('You need to set a whisper target.')
+		return
+	end
+	SendAddonMessage('ElvSays', msg, channel, target)
+end
+
 function E:LoadCommands()
 	self:RegisterChatCommand("ec", "ToggleConfig")
 	self:RegisterChatCommand("elvui", "ToggleConfig")
@@ -51,7 +71,9 @@ function E:LoadCommands()
 	self:RegisterChatCommand("disable", "DisableAddon")
 	self:RegisterChatCommand('resetgold', 'ResetGold')
 	self:RegisterChatCommand('farmmode', 'FarmMode')
-	
+	self:RegisterChatCommand('elvsays', 'ElvSays')
+	self:RegisterChatCommand('elvsayschannel', 'ElvSaysChannel')
+	self:RegisterChatCommand('elvsaystarget', 'ElvSaysTarget')
 	if E.ActionBars then
 		self:RegisterChatCommand('kb', E.ActionBars.ActivateBindMode)
 	end

@@ -126,10 +126,10 @@ local RestoreDefaultPosition = function(style, identifier)
 			backdrop:Point(point, _G[parentName], point, x / scale, y / scale)	
 		end		
 		
-		if _DB['layouts'][UF.ActiveLayout].positions then
-			_DB['layouts'][UF.ActiveLayout].positions[identifier] = nil
-			if not next(_DB['layouts'][UF.ActiveLayout].positions) then
-				_DB['layouts'][UF.ActiveLayout].positions = nil
+		if _DB['units'].positions then
+			_DB['units'].positions[identifier] = nil
+			if not next(_DB['units'].positions) then
+				_DB['units'].positions = nil
 			end		
 		end
 	end	
@@ -142,7 +142,7 @@ local function LoadObjectPosition(obj)
 	local UF = E:GetModule('UnitFrames')
 	
 	if not identifier then identifier = obj:GetName() end
-	if not _DB['layouts'][UF.ActiveLayout].positions or not _DB['layouts'][UF.ActiveLayout].positions[identifier] then
+	if not _DB['units'].positions or not _DB['units'].positions[identifier] then
 		local scale = obj:GetScale()
 		local target = isHeader or obj
 		
@@ -159,7 +159,7 @@ local function LoadObjectPosition(obj)
 		local target = isHeader or obj
 		
 
-		local point, parentName, x, y = string.split('\031', _DB['layouts'][UF.ActiveLayout].positions[identifier])
+		local point, parentName, x, y = string.split('\031', _DB['units'].positions[identifier])
 		local backdrop = backdropPool[target]
 		if(backdrop) then
 			backdrop:ClearAllPoints()
@@ -180,8 +180,8 @@ local function SaveCurrentPosition(obj, anchor)
 	local E = select(1, unpack(ElvUI))
 	local UF = E:GetModule('UnitFrames')
 	
-	if not _DB['layouts'][UF.ActiveLayout].positions then
-		_DB['layouts'][UF.ActiveLayout].positions = {}
+	if not _DB['units'].positions then
+		_DB['units'].positions = {}
 	end
 	
 	local point
@@ -191,7 +191,7 @@ local function SaveCurrentPosition(obj, anchor)
 		point = GetObjectPoint(anchor)
 	end
 
-	_DB['layouts'][UF.ActiveLayout].positions[identifier] = point
+	_DB['units'].positions[identifier] = point
 end
 
 -- Attempt to figure out a more sane name to dispaly.
@@ -306,7 +306,7 @@ do
 
 	local OnDragStart = function(self)
 		local E = select(1, unpack(ElvUI))
-		if E.db['core'].stickyFrames then
+		if E.db['general'].stickyFrames then
 			local offset = self.obj.snapOffset or snapOffset
 			Sticky:StartMoving(self, E['snapBars'], offset, offset, offset, offset)
 		else
@@ -316,7 +316,7 @@ do
 
 	local OnDragStop = function(self)
 		local E = select(1, unpack(ElvUI))
-		if E.db['core'].stickyFrames then
+		if E.db['general'].stickyFrames then
 			Sticky:StopMoving(self)
 		else
 			self:StopMovingOrSizing()
@@ -447,6 +447,12 @@ do
 	frame:RegisterEvent"PLAYER_REGEN_DISABLED"
 end
 
+function oUF:ResetDB()
+	local E = select(1, unpack(ElvUI))
+	if E.global["unitframe"].enable ~= true then return; end
+	_DB = E.db['unitframe']	
+end
+
 function oUF:ResetUF()	
 	for object, _ in pairs(initialPositions) do
 		RestoreDefaultPosition(_G[object].style, object)	
@@ -454,6 +460,8 @@ function oUF:ResetUF()
 end
 
 function oUF:PositionUF()
+	local E = select(1, unpack(ElvUI))
+	if E.global["unitframe"].enable ~= true then return; end
 	for object, _ in pairs(initialPositions) do
 		LoadObjectPosition(_G[object])
 	end

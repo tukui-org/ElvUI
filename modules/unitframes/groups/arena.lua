@@ -315,7 +315,7 @@ function UF:Update_ArenaFrames(frame, db)
 	if not frame.mover then
 		frame:ClearAllPoints()
 		if INDEX == 1 then
-			frame:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOM', 700, 325) --Set to default position
+			frame:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165) --Set to default position
 		else
 			if db.growthDirection == 'UP' then
 				frame:Point('BOTTOMRIGHT', _G['ElvUF_Arena'..INDEX-1], 'TOPRIGHT', 0, 12 + db.castbar.height)

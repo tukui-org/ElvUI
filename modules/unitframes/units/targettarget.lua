@@ -253,7 +253,7 @@ function UF:Update_TargetTargetFrame(frame, db)
 		end
 	end	
 	
-	frame.snapOffset = -(12 + self.db['layouts'][UF.ActiveLayout].player.castbar.height)
+	frame.snapOffset = -(12 + self.db['units'].player.castbar.height)
 	
 	if not frame.mover then
 		frame:ClearAllPoints()

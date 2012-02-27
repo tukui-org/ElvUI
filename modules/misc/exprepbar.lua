@@ -19,6 +19,8 @@ local function OnClick()
 		E.db['UpperRepExpBarFaded'] = nil
 		UpperRepExpBar:Show()
 		UIFrameFadeIn(UpperRepExpBar, 0.2, UpperRepExpBar:GetAlpha(), 1)
+		M:UpdateExpBar()
+		M:UpdateRepBar()			
 	else
 		E.db['UpperRepExpBarFaded'] = true
 		UIFrameFadeOut(UpperRepExpBar, 0.2, UpperRepExpBar:GetAlpha(), 0)
@@ -39,6 +41,8 @@ local function OnEnter()
 	if E.db['UpperRepExpBarFaded'] then
 		UpperRepExpBar:Show()
 		UIFrameFadeIn(UpperRepExpBar, 0.2, UpperRepExpBar:GetAlpha(), 1)
+		M:UpdateExpBar()
+		M:UpdateRepBar()		
 	end
 end
 
@@ -145,6 +149,7 @@ function M:UpdateExpBar(event)
 		
 		local cur, max = GetXP('player')
 		bar:SetMinMaxValues(0, max)
+		bar:SetValue(cur - 1 >= 0 and cur - 1 or 0)
 		bar:SetValue(cur)
 		
 		local rested = GetXPExhaustion()
@@ -211,7 +216,7 @@ end
 
 function M:UpdateExpRepBarAnchor()
 	UpperRepExpBarHolder:ClearAllPoints()
-	if E.db.core.expRepPos == 'TOP_SCREEN' then
+	if E.db.general.expRepPos == 'TOP_SCREEN' then
 		BAR_WIDTH = E.eyefinity or E.UIParent:GetWidth(); BAR_WIDTH = BAR_WIDTH / 5
 		UpperRepExpBarHolder:Point('TOP', E.UIParent, 'TOP', 0, 2)  
 		UpperRepExpBarHolder:SetParent(E.UIParent)

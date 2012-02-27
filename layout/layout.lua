@@ -66,7 +66,7 @@ end
 function LO:ToggleChatPanels()
 	LeftChatDataPanel:ClearAllPoints()
 	RightChatDataPanel:ClearAllPoints()
-	if E.db.core.panelBackdrop == 'SHOWBOTH' then
+	if E.db.general.panelBackdrop == 'SHOWBOTH' then
 		LeftChatPanel.backdrop:Show()
 		LeftChatTab:Show()
 		RightChatPanel.backdrop:Show()
@@ -77,7 +77,7 @@ function LO:ToggleChatPanels()
 		RightChatDataPanel:Point('TOPRIGHT', RightChatPanel, 'BOTTOMRIGHT', -(5 + SIDE_BUTTON_WIDTH), 5 + PANEL_HEIGHT)		
 		LeftChatToggleButton:Point('BOTTOMLEFT', LeftChatPanel, 'BOTTOMLEFT', 5, 5)
 		RightChatToggleButton:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', -5, 5)
-	elseif E.db.core.panelBackdrop == 'HIDEBOTH' then
+	elseif E.db.general.panelBackdrop == 'HIDEBOTH' then
 		LeftChatPanel.backdrop:Hide()
 		LeftChatTab:Hide()
 		RightChatPanel.backdrop:Hide()
@@ -88,7 +88,7 @@ function LO:ToggleChatPanels()
 		RightChatDataPanel:Point('TOPRIGHT', RightChatPanel, 'BOTTOMRIGHT', -SIDE_BUTTON_WIDTH, PANEL_HEIGHT)		
 		LeftChatToggleButton:Point('BOTTOMLEFT', LeftChatPanel, 'BOTTOMLEFT')
 		RightChatToggleButton:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT')
-	elseif E.db.core.panelBackdrop == 'LEFT' then
+	elseif E.db.general.panelBackdrop == 'LEFT' then
 		LeftChatPanel.backdrop:Show()
 		LeftChatTab:Show()
 		RightChatPanel.backdrop:Hide()
@@ -127,8 +127,8 @@ function LO:CreateChatPanels()
 	lchat.tex = lchat:CreateTexture(nil, 'OVERLAY')
 	lchat.tex:Point('TOPLEFT', lchat, 'TOPLEFT', 2, -2)
 	lchat.tex:Point('BOTTOMRIGHT', lchat, 'BOTTOMRIGHT', -2, 2)
-	lchat.tex:SetTexture(E.db.core.panelBackdropNameLeft)
-	lchat.tex:SetAlpha(E.db.core.backdropfadecolor.a - 0.7 > 0 and E.db.core.backdropfadecolor.a - 0.7 or 0.5)
+	lchat.tex:SetTexture(E.db.general.panelBackdropNameLeft)
+	lchat.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.7 > 0 and E.db.general.backdropfadecolor.a - 0.7 or 0.5)
 	
 	--Left Chat Tab
 	local lchattab = CreateFrame('Frame', 'LeftChatTab', LeftChatPanel)
@@ -172,8 +172,8 @@ function LO:CreateChatPanels()
 	rchat.tex = rchat:CreateTexture(nil, 'OVERLAY')
 	rchat.tex:Point('TOPLEFT', rchat, 'TOPLEFT', 2, -2)
 	rchat.tex:Point('BOTTOMRIGHT', rchat, 'BOTTOMRIGHT', -2, 2)
-	rchat.tex:SetTexture(E.db.core.panelBackdropNameRight)
-	rchat.tex:SetAlpha(E.db.core.backdropfadecolor.a - 0.7 > 0 and E.db.core.backdropfadecolor.a - 0.7 or 0.5)	
+	rchat.tex:SetTexture(E.db.general.panelBackdropNameRight)
+	rchat.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.7 > 0 and E.db.general.backdropfadecolor.a - 0.7 or 0.5)	
 	
 	--Right Chat Tab
 	local rchattab = CreateFrame('Frame', 'RightChatTab', RightChatPanel)
@@ -248,7 +248,7 @@ function LO:CreateExtraDataBarPanels()
 	local chattab1 = CreateFrame('Frame', 'ChatTab_Datatext_Panel', E.UIParent)
 	chattab1:SetScript('OnShow', function(self)
 		chattab1:Point("TOPRIGHT", RightChatTab, "TOPRIGHT", -16, 0)
-		chattab1:Point("BOTTOMLEFT", RightChatTab, "BOTTOMLEFT", (E.db.core.panelWidth / 3), 0)
+		chattab1:Point("BOTTOMLEFT", RightChatTab, "BOTTOMLEFT", (E.db.general.panelWidth / 3), 0)
 	end)
 	chattab1:Hide()
 	E:GetModule('DataTexts'):RegisterPanel(chattab1, 2, 'ANCHOR_BOTTOM', 0, -4)

@@ -55,7 +55,7 @@ local function SkinDXEBar(bar)
 end
 
 local function LoadSkin()
-	if E.db.skins.dxe.enable ~= true then return end
+	if E.global.skins.dxe.enable ~= true then return end
 
 	--Kill DXE's skinning
 	DXE.NotifyBarTextureChanged = E.noop

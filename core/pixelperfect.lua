@@ -3,10 +3,10 @@ local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB,
 --Determine if Eyefinity is being used, setup the pixel perfect script.
 local scale
 function E:UIScale(event)
-	if self.db.core.autoscale == true then
+	if self.db.general.autoscale then
 		scale = min(1, max(.64, 768/self.screenheight));
 	else
-		scale = self.db["core"].uiscale
+		scale = min(1, max(.64, GetCVar('uiScale') or UIParent:GetScale() or 768/self.screenheight));
 	end
 
 	if self.screenwidth < 1600 then
@@ -44,19 +44,19 @@ function E:UIScale(event)
 	self.mult = 768/string.match(GetCVar("gxResolution"), "%d+x(%d+)")/scale;
 
 	--Set UIScale, NOTE: SetCVar for UIScale can cause taints so only do this when we need to..
-	if E.Round and E:Round(UIParent:GetScale(), 5) ~= E:Round(scale, 5) and event == 'PLAYER_LOGIN' then
+	if E.Round and E:Round(UIParent:GetScale(), 5) ~= E:Round(scale, 5) and (event == 'PLAYER_LOGIN') then
 		SetCVar("useUiScale", 1);
 		SetCVar("uiScale", scale);	
 	end	
 	
-	if event == 'PLAYER_LOGIN' then
+	if (event == 'PLAYER_LOGIN' or event == 'UI_SCALE_CHANGED') then
 		--Resize self.UIParent if Eyefinity is on.
 		if self.eyefinity then
 			local width = self.eyefinity;
 			local height = self.screenheight;
 			
 			-- if autoscale is off, find a new width value of self.UIParent for screen #1.
-			if not self.db["core"].autoscale or height > 1200 then
+			if not self.db['general'].autoscale or height > 1200 then
 				local h = UIParent:GetHeight();
 				local ratio = self.screenheight / h;
 				local w = self.eyefinity / ratio;
@@ -79,6 +79,12 @@ function E:UIScale(event)
 		self.UIParent:ClearAllPoints();
 		self.UIParent:SetPoint("CENTER");	
 
+		if event == 'UI_SCALE_CHANGED' and E.Round and E:Round(UIParent:GetScale(), 5) ~= E:Round(scale, 5) and self.db.general.autoscale then
+			StaticPopup_Show('FAILED_UISCALE')
+		elseif event == 'UI_SCALE_CHANGED' and E.Round and E:Round(UIParent:GetScale(), 5) ~= E:Round(scale, 5) then
+			StaticPopup_Show('CONFIG_RL')	
+		end
+		
 		self:UnregisterEvent('PLAYER_LOGIN')		
 	end
 end
