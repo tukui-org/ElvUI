@@ -1,5 +1,7 @@
 ﻿local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 
+P.gridSize = 64
+
 --Core
 P['general'] = {
 	["autoscale"] = true,

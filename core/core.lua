@@ -201,6 +201,72 @@ function E:InitializeModules()
 	end
 end
 
+local grid
+function E:Grid_Show()
+	if not grid then
+        E:Grid_Create()
+	elseif grid.boxSize ~= E.db.gridSize then
+        grid:Hide()
+        E:Grid_Create()
+    else
+		grid:Show()
+	end
+end
+
+function E:Grid_Hide()
+	if grid then
+		grid:Hide()
+	end
+end
+
+function E:Grid_Create() 
+	grid = CreateFrame('Frame', nil, UIParent) 
+	grid.boxSize = E.db.gridSize
+	grid:SetAllPoints(E.UIParent) 
+	grid:Show()
+
+	local size = 1 
+	local width = E.eyefinity or GetScreenWidth()
+	local ratio = width / GetScreenHeight()
+	local height = GetScreenHeight() * ratio
+
+	local wStep = width / E.db.gridSize
+	local hStep = height / E.db.gridSize
+
+	for i = 0, E.db.gridSize do 
+		local tx = grid:CreateTexture(nil, 'BACKGROUND') 
+		if i == E.db.gridSize / 2 then 
+			tx:SetTexture(1, 0, 0) 
+		else 
+			tx:SetTexture(0, 0, 0) 
+		end 
+		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", i*wStep - (size/2), 0) 
+		tx:SetPoint('BOTTOMRIGHT', grid, 'BOTTOMLEFT', i*wStep + (size/2), 0) 
+	end 
+	height = GetScreenHeight()
+	
+	do
+		local tx = grid:CreateTexture(nil, 'BACKGROUND') 
+		tx:SetTexture(1, 0, 0)
+		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2) + (size/2))
+		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2 + size/2))
+	end
+	
+	for i = 1, math.floor((height/2)/hStep) do
+		local tx = grid:CreateTexture(nil, 'BACKGROUND') 
+		tx:SetTexture(0, 0, 0)
+		
+		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2+i*hStep) + (size/2))
+		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2+i*hStep + size/2))
+		
+		tx = grid:CreateTexture(nil, 'BACKGROUND') 
+		tx:SetTexture(0, 0, 0)
+		
+		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2-i*hStep) + (size/2))
+		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2-i*hStep + size/2))
+	end
+end
+
 function E:CreateMoverPopup()
 	local f = CreateFrame("Frame", "ElvUIMoverPopupWindow", UIParent)
 	f:SetFrameStrata("DIALOG")
@@ -212,8 +278,8 @@ function E:CreateMoverPopup()
 	f:SetTemplate('Transparent')
 	f:SetPoint("TOP", 0, -50)
 	f:Hide()
-	f:SetScript("OnShow", function() PlaySound("igMainMenuOption") end)
-	f:SetScript("OnHide", function() PlaySound("gsTitleOptionExit") end)
+	f:SetScript("OnShow", function() PlaySound("igMainMenuOption"); E:Grid_Show() end)
+	f:SetScript("OnHide", function() PlaySound("gsTitleOptionExit"); E:Grid_Hide() end)
 
 	local S = self:GetModule('Skins')
 
@@ -255,13 +321,50 @@ function E:CreateMoverPopup()
 		self:GetParent():Hide()
 		ACD['Open'](ACD, 'ElvUI') 
 	end)
+	
+	local align = CreateFrame('EditBox', 'AlignBox', f, 'InputBoxTemplate')
+	align:Width(24)
+	align:Height(17)
+	align:SetAutoFocus(false)
+	align:SetScript("OnEscapePressed", function(self)
+		self:SetText(E.db.gridSize)
+		EditBox_ClearFocus(self)
+	end)
+	align:SetScript("OnEnterPressed", function(self)
+		local text = self:GetText()
+		if tonumber(text) then
+			if tonumber(text) <= 256 and tonumber(text) >= 4 then
+				E.db.gridSize = tonumber(text)
+			else
+				self:SetText(E.db.gridSize)
+			end
+		else
+			self:SetText(E.db.gridSize)
+		end
+		E:Grid_Show()
+		EditBox_ClearFocus(self)
+	end)
+	align:SetScript("OnEditFocusLost", function(self)
+		self:SetText(E.db.gridSize)
+	end)
+	align:SetScript("OnEditFocusGained", align.HighlightText)
+	align:SetScript('OnShow', function(self)
+		EditBox_ClearFocus(self)
+		self:SetText(E.db.gridSize)
+	end)
+	
+	align.text = align:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
+	align.text:SetPoint('RIGHT', align, 'LEFT', -4, 0)
+	align.text:SetText(L['Grid Size:'])
 
 	--position buttons
 	snapping:SetPoint("BOTTOMLEFT", 14, 10)
 	lock:SetPoint("BOTTOMRIGHT", -14, 14)
+	align:SetPoint('TOPRIGHT', lock, 'TOPLEFT', -4, -2)
 	
 	S:HandleCheckBox(snapping)
 	S:HandleButton(lock)
+	S:HandleEditBox(align)
 	
 	f:RegisterEvent('PLAYER_REGEN_DISABLED')
 	f:SetScript('OnEvent', function(self)
