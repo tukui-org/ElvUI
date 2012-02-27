@@ -31,18 +31,28 @@ local hyperlinkTypes = {
 	['glyph'] = true,
 }
 
+local tabTexs = {
+	'',
+	'Selected',
+	'Highlight'
+}
+
 function CH:StyleChat(frame)
 	if frame.styled then return end
 	local id = frame:GetID()
 	local name = frame:GetName()
 	local tab = _G[name..'Tab']
 	local editbox = _G[name..'EditBox']
-
 	
-	tab:StripTextures()
+	for _, texName in pairs(tabTexs) do
+		_G[tab:GetName()..texName..'Left']:Kill()
+		_G[tab:GetName()..texName..'Middle']:Kill()
+		_G[tab:GetName()..texName..'Right']:Kill()	
+	end
+
 	tab:SetAlpha(1)
 	tab.SetAlpha = UIFrameFadeRemoveFrame	
-	_G[tab:GetName()..'Glow']:SetTexture('Interface\\ChatFrame\\ChatFrameTab-NewMessage')
+
 	
 	tab.text = _G[name.."TabText"]
 	tab.text:FontTemplate()
