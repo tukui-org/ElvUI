@@ -2,6 +2,7 @@
 *Add support to switch ElvUI profiles with dual spec. This can be turned on in /ec -> Profiles. (LibDualSpec-1.0)
 *Add a white glow to nameplates when you target someone.
 *Add support to the Routes and Gathermate2 addons for the /farmmode minimap.
+*Entering the moveui mode will now spawn a grid on your screen. You can modify the grid size on the lockui window.
 *Holding down shift while clicking on the vendor gray items button on the bags frame will now prompt you to delete all your gray items.
 *Add a small spam filter for enUS, enGB clients. At the moment it only blocks some Chinese letters from being displayed.
 *Add a castbar spark option to all castbars on the unitframes.

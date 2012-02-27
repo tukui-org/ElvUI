@@ -2,6 +2,8 @@ local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB,
 local _, myclasscolor = UnitClass("player");
 local valuer, valueg, valueb = RAID_CLASS_COLORS[myclasscolor].r, RAID_CLASS_COLORS[myclasscolor].g, RAID_CLASS_COLORS[myclasscolor].b
 
+P.gridSize = 64
+
 --Core
 P['general'] = {
 	["autoscale"] = true,
