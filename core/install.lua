@@ -322,7 +322,7 @@ function E:SetupLayout(layout)
 			["ElvUF_TargetTarget"] = "BOTTOMUIParent10680",
 			["ElvUF_Player"] = "BOTTOMUIParent-106135",
 			["ElvUF_Target"] = "BOTTOMUIParent106135",
-			["ElvUF_Pet"] = "BOTTOMUIParent10680",
+			["ElvUF_Pet"] = "BOTTOMUIParent-10680",
 			['ElvUF_Focus'] = "BOTTOMUIParent310332",
 		}		
 	else
