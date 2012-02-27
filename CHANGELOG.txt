@@ -1,2 +1,2 @@
 [b]Fixes:[/b]
-*Fix install process position of pet frame for lower resolution. Was being positioned on top of the targettarget frame.
+*Attempt to fix playerframe becoming unvisable when combat fade is checked on the player frame and you zone in-out of a portal.

@@ -25,7 +25,7 @@ local FadeFramesInOut = function(fade, unit)
 				UIFrameFadeOut(frame, 0.15)
 				frame.fadeInfo.finishedFunc = CheckForReset
 			else
-				showStatus = true;
+				showStatus = false;
 				return
 			end
 		end
@@ -38,7 +38,6 @@ end
 
 local Update = function(self, arg1, arg2)
 	if arg1 == "UNIT_HEALTH" and self and self.unit ~= arg2 then return end
-	
 	if type(arg1) == 'boolean' and not frames[self] then
 		return
 	end
