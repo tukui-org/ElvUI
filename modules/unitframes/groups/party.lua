@@ -33,6 +33,7 @@ function UF:Construct_PartyFrames(unitGroup)
 		self.TargetGlow = UF:Construct_TargetGlow(self)
 		table.insert(self.__elements, UF.UpdateThreat)
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', function(...) UF.UpdateThreat(...); UF.UpdateTargetGlow(...) end)
+		self:RegisterEvent('PLAYER_ENTERING_WORLD', UF.UpdateTargetGlow)
 		self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', UF.UpdateThreat)
 		self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', UF.UpdateThreat)	
 		
