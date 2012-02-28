@@ -323,9 +323,11 @@ function E:SetupLayout(layout)
 
 		E.db.unitframe.units.raid625.healPrediction = true;
 		E.db.unitframe.units.raid625.health.frequentUpdates = true;
+		E.db.unitframe.units.raid625.debuffs.enable = true;
 
 		E.db.unitframe.units.raid2640.healPrediction = true;
-		E.db.unitframe.units.raid2640.health.frequentUpdates = true;	
+		E.db.unitframe.units.raid2640.health.frequentUpdates = true;
+		E.db.unitframe.units.raid2640.debuffs.enable = true;
 		
 		if E.db.lowresolutionset then
 			E.db.unitframe.units["positions"] = {
