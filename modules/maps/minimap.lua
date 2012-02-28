@@ -314,6 +314,13 @@ function M:LoadMinimap()
 		end
 		MinimapCluster:ClearAllPoints()
 		MinimapCluster:SetAllPoints(FarmModeMap)
+		if IsAddOnLoaded('Routes') then
+			LibStub("AceAddon-3.0"):GetAddon('Routes'):ReparentMinimap(FarmModeMap)
+		end
+
+		if IsAddOnLoaded('GatherMate2') then
+			LibStub('AceAddon-3.0'):GetAddon('GatherMate2'):GetModule('Display'):ReparentMinimapPins(FarmModeMap)
+		end		
 	end)
 	
 	FarmModeMap:SetScript('OnHide', function() 
@@ -321,20 +328,18 @@ function M:LoadMinimap()
 			E:ResetMovers('Auras Frame')
 		end	
 		MinimapCluster:ClearAllPoints()
-		MinimapCluster:SetAllPoints(Minimap)		
+		MinimapCluster:SetAllPoints(Minimap)	
+		if IsAddOnLoaded('Routes') then
+			LibStub("AceAddon-3.0"):GetAddon('Routes'):ReparentMinimap(Minimap)
+		end
+
+		if IsAddOnLoaded('GatherMate2') then
+			LibStub('AceAddon-3.0'):GetAddon('GatherMate2'):GetModule('Display'):ReparentMinimapPins(Minimap)
+		end	
 	end)
 
 	
 	UIParent:HookScript('OnShow', function()
 		FarmModeMap:Hide()
 	end)
-	
-	
-	if IsAddOnLoaded('Routes') then
-		LibStub("AceAddon-3.0"):GetAddon('Routes'):ReparentMinimap(FarmModeMap)
-	end
-
-	if IsAddOnLoaded('GatherMate2') then
-		LibStub('AceAddon-3.0'):GetAddon('GatherMate2'):GetModule('Display'):ReparentMinimapPins(FarmModeMap)
-	end
 end

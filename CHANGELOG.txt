@@ -1,2 +1,2 @@
-[b]Fixes:[/b]
-*Attempt to fix playerframe becoming unvisable when combat fade is checked on the player frame and you zone in-out of a portal.
+[b]Changes:[/b]
+*Routes and GatherMate2 addons will now use both minimaps instead of just the farmmode map.
