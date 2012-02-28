@@ -1,2 +1,3 @@
 [b]Changes:[/b]
 *Routes and GatherMate2 addons will now use both minimaps instead of just the farmmode map.
+*Change the default value of the chat block incoming whisper by level option to disabled. To prevent confussion.
