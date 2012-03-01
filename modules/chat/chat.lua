@@ -427,7 +427,7 @@ end
 function CH:EnableHyperlink()
 	for _, frameName in pairs(CHAT_FRAMES) do
 		local frame = _G[frameName]
-		if self.hooks and self.hooks[frame] and not self.hooks[frame].OnHyperlinkEnter then
+		if (not self.hooks or not self.hooks[frame] or not self.hooks[frame].OnEnter) then
 			self:HookScript(frame, 'OnHyperlinkEnter')
 			self:HookScript(frame, 'OnHyperlinkLeave')
 			self:HookScript(frame, 'OnMessageScrollChanged')
@@ -438,7 +438,7 @@ end
 function CH:DisableHyperlink()
 	for _, frameName in pairs(CHAT_FRAMES) do
 		local frame = _G[frameName]
-		if not self.hooks or not self.hooks[frame] or not self.hooks[frame].OnHyperlinkEnter then
+		if self.hooks and self.hooks[frame] and self.hooks[frame].OnHyperlinkEnter then
 			self:Unhook(frame, 'OnHyperlinkEnter')
 			self:Unhook(frame, 'OnHyperlinkLeave')
 			self:Unhook(frame, 'OnMessageScrollChanged')
