@@ -159,6 +159,31 @@ function CH:CopyChat(frame)
 	end
 end
 
+function CH:OnEnter(frame)
+	_G[frame:GetName().."Text"]:Show()
+end
+
+function CH:OnLeave(frame)
+	_G[frame:GetName().."Text"]:Hide()
+end
+
+local x = CreateFrame('Frame')
+function CH:SetupChatTabs(frame, hook)
+	if hook and (not self.hooks or not self.hooks[frame] or not self.hooks[frame].OnEnter) then
+		self:HookScript(frame, 'OnEnter')
+		self:HookScript(frame, 'OnLeave')
+	elseif not hook and self.hooks and self.hooks[frame] and self.hooks[frame].OnEnter then
+		self:Unhook(frame, 'OnEnter')
+		self:Unhook(frame, 'OnLeave')	
+	end
+	
+	if not hook then
+		_G[frame:GetName().."Text"]:Show()
+	elseif GetMouseFocus() ~= frame then
+		_G[frame:GetName().."Text"]:Hide()
+	end
+end
+
 function CH:PositionChat(override)
 	if E.global.chat.enable ~= true then return end
 	if (InCombatLockdown() and not override and self.initialMove) or (IsMouseButtonDown("LeftButton") and not override) then return end
@@ -222,9 +247,17 @@ function CH:PositionChat(override)
 			
 			tab:SetParent(RightChatPanel)
 			chat:SetParent(tab)
+			
+			if E.db.general.panelBackdrop == 'HIDEBOTH' or E.db.general.panelBackdrop == 'LEFT' then
+				CH:SetupChatTabs(tab, true)
+			else
+				CH:SetupChatTabs(tab, false)
+			end
 		elseif not isDocked and chat:IsShown() then
 			tab:SetParent(E.UIParent)
 			chat:SetParent(E.UIParent)
+			
+			CH:SetupChatTabs(tab, true)
 		else
 			if id ~= 2 and not (id > NUM_CHAT_WINDOWS) then
 				chat:ClearAllPoints()
@@ -234,6 +267,12 @@ function CH:PositionChat(override)
 			end
 			chat:SetParent(LeftChatPanel)
 			tab:SetParent(GeneralDockManager)
+			
+			if E.db.general.panelBackdrop == 'HIDEBOTH' or E.db.general.panelBackdrop == 'RIGHT' then
+				CH:SetupChatTabs(tab, true)
+			else
+				CH:SetupChatTabs(tab, false)
+			end			
 		end		
 	end
 	
@@ -388,7 +427,7 @@ end
 function CH:EnableHyperlink()
 	for _, frameName in pairs(CHAT_FRAMES) do
 		local frame = _G[frameName]
-		if not self.hooks[frame] then
+		if self.hooks and self.hooks[frame] and not self.hooks[frame].OnHyperlinkEnter then
 			self:HookScript(frame, 'OnHyperlinkEnter')
 			self:HookScript(frame, 'OnHyperlinkLeave')
 			self:HookScript(frame, 'OnMessageScrollChanged')
@@ -399,7 +438,7 @@ end
 function CH:DisableHyperlink()
 	for _, frameName in pairs(CHAT_FRAMES) do
 		local frame = _G[frameName]
-		if self.hooks[frame] then
+		if not self.hooks or not self.hooks[frame] or not self.hooks[frame].OnHyperlinkEnter then
 			self:Unhook(frame, 'OnHyperlinkEnter')
 			self:Unhook(frame, 'OnHyperlinkLeave')
 			self:Unhook(frame, 'OnMessageScrollChanged')
