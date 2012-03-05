@@ -37,6 +37,20 @@ local tabTexs = {
 	'Highlight'
 }
 
+function CH:GetGroupDistribution()
+	local inInstance, kind = IsInInstance()
+	if inInstance and (kind == "pvp") then
+		return "/bg "
+	end
+	if GetNumRaidMembers() > 0 then
+		return "/ra "
+	end
+	if GetNumPartyMembers() > 0 then
+		return "/p "
+	end
+	return "/s "
+end
+
 function CH:StyleChat(frame)
 	if frame.styled then return end
 	local id = frame:GetID()
@@ -85,6 +99,11 @@ function CH:StyleChat(frame)
 				unitname = unitname .. "-" .. gsub(realm, " ", "")
 			 end
 			 ChatFrame_SendTell((unitname or L['Invalid Target']), ChatFrame1)
+		  end
+		  
+		  if text:sub(1, 4) == "/gr " then
+			self:SetText(CH:GetGroupDistribution() .. text:sub(5));
+			ChatEdit_ParseText(self, 0)		  
 		  end
 	   end
 	end)
