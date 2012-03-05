@@ -10,3 +10,4 @@
 [b]Fixes[/b]
 *Fix the BNConversation prefix in chat.
 *The glow feature when targeting other raid/party members wasn't updating when someone joined the party. This sometimes produced unintended results.
+*Fix pvp text not working after joining a group.
