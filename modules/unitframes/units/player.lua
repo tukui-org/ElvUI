@@ -150,6 +150,19 @@ function UF:Update_PlayerFrame(frame, db)
 		end				
 	end
 	
+	--Rest Icon
+	do
+		local rIcon = frame.Resting
+		if db.restIcon then
+			if not frame:IsElementEnabled('Resting') then
+				frame:EnableElement('Resting')
+			end				
+		elseif frame:IsElementEnabled('Resting') then
+			frame:DisableElement('Resting')
+			rIcon:Hide()
+		end
+	end
+	
 	--Health
 	do
 		local health = frame.Health

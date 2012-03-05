@@ -173,6 +173,7 @@ P['unitframe'] = {
 			['lowmana'] = 30,
 			['combatfade'] = false,
 			['healPrediction'] = true,
+			['restIcon'] = true,
 			['health'] = {
 				['text'] = true,
 				['text_format'] = 'current-percent',

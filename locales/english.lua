@@ -711,3 +711,5 @@ L["Your version of ElvUI is out of date. You can download the latest version fro
 L["BN:"] = true;
 L['Profile Binds'] = true;
 L['Save your keybinds with your ElvUI profile. That way if you have the dual spec feature enabled in ElvUI you can swap keybinds with your specs.'] = true;
+L['Rest Icon'] = true;
+L['Display the rested icon on the unitframe.'] = true;
