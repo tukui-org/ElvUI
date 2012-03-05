@@ -1,3 +1,6 @@
 *Routes and GatherMate2 addons will now use both minimaps instead of just the farmmode map.
 *Change the default value of the chat block incoming whisper by level option to disabled. To prevent confussion.
 *Chat frames without backdrops should now properly hide their chat tabs unless mouseovered.
+
+[b]Additions:[/b]
+*Add experimental keybind option to save keybinds with your profile. This is extremely experimental, you should see debug statements when your keybinds get saved and loaded in chat.
