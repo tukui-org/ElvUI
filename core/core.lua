@@ -477,11 +477,8 @@ end
 --WTHAT THE F'ING FUCK IS WRONG WITH THIS
 local localBindsSet = false
 function E:SaveKeybinds()
-	if localBindsSet then
-		return
-	end
+	if not E.global.general.profileBinds or localBindsSet then return end
 	
-	print('keybinds saved')
 	if not E.db.keybinds then
 		E.db.keybinds = {};
 	else
@@ -499,7 +496,7 @@ function E:SaveKeybinds()
 end
 
 function E:LoadKeybinds()
-	print('keybinds loaded')
+	if not E.global.general.profileBinds then E.db.keybinds = nil; return end
 	if not E.db.keybinds then
 		E:SaveKeybinds()
 		return
