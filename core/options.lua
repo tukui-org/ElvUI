@@ -160,7 +160,7 @@ E.Options.args.general = {
 					name = L['Profile Binds'],
 					desc = L['Save your keybinds with your ElvUI profile. That way if you have the dual spec feature enabled in ElvUI you can swap keybinds with your specs.'],
 					type = 'toggle',
-					set = function(info, value) E.db.general[ info[#info] ] = value; StaticPopup_Show("GLOBAL_RL") end
+					set = function(info, value) E.global.general[ info[#info] ] = value; StaticPopup_Show("GLOBAL_RL") end
 				},
 				panelWidth = {
 					order = 100,
