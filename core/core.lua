@@ -220,7 +220,7 @@ function E:Grid_Hide()
 end
 
 function E:Grid_Create() 
-	grid = CreateFrame('Frame', nil, UIParent) 
+	grid = CreateFrame('Frame', 'EGrid', UIParent) 
 	grid.boxSize = E.db.gridSize
 	grid:SetAllPoints(E.UIParent) 
 	grid:Show()

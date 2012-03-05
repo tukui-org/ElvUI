@@ -61,10 +61,24 @@ function E:ElvSays(msg)
 	SendAddonMessage('ElvSays', msg, channel, target)
 end
 
+function E:Grid(msg)
+	if msg and type(tonumber(msg))=="number" and tonumber(msg) <= 256 and tonumber(msg) >= 4 then
+		E.db.gridSize = msg
+		E:Grid_Show()
+	else 
+		if EGrid then		
+			E:Grid_Hide()
+		else 
+			E:Grid_Show()
+		end
+	end
+end
+
 function E:LoadCommands()
 	self:RegisterChatCommand("ec", "ToggleConfig")
 	self:RegisterChatCommand("elvui", "ToggleConfig")
 	
+	self:RegisterChatCommand('grid', 'Grid')
 	self:RegisterChatCommand("moveui", "MoveUI")
 	self:RegisterChatCommand("resetui", "ResetUI")
 	self:RegisterChatCommand("enable", "EnableAddon")
