@@ -3,6 +3,7 @@
 *Add option under the player unitframe section to Enable/Disable the Rested Icon.
 *Add slash command "/grid" it's arguements can be 4-256. If no arguements then the grid will be hidden.
 *Add slash command "/gr" to automatically change the channel you're talking in to the highest channel available.
+*Right clicking the right chat toggle button should now toggle whatever addon is embedded to that window. In addition add a tooltip to each of the chat toggle buttons to explain what they do.
 
 [b]Changes[/b]
 *Removed the WhisperLevel option I added previously because it was a pain to debug myself. And it was flawed.
@@ -16,3 +17,4 @@
 *The glow feature when targeting other raid/party members wasn't updating when someone joined the party. This sometimes produced unintended results.
 *Fix pvp text on the player frame not working after joining a group.
 *Users were unable to change the left and right panel sizes while chat was disabled.
+*EmbedRight wasn't working as intended.

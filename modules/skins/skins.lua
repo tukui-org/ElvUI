@@ -339,7 +339,7 @@ function S:Initialize()
 	for addon, _ in pairs(self.EmbeddableAddons) do
 		self:SaveEmbeddedAddonPoints(addon)
 	end
-	self:SetEmbedRight(self.db.embedRight)
+	self:SetEmbedRight(E.db.skins.embedRight)
 end
 
 S:RegisterEvent('ADDON_LOADED')
