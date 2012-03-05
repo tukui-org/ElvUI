@@ -3,7 +3,6 @@
 *Add option under the player unitframe section to Enable/Disable the Rested Icon.
 *Add slash command "/egrid" it's arguements can be 4-256. If no arguements then the grid will be hidden.
 *Add slash command "/gr" to automatically change the channel you're talking in to the highest channel available.
-*Right clicking the right chat toggle button should now toggle whatever addon is embedded to that window. In addition add a tooltip to each of the chat toggle buttons to explain what they do.
 
 [b]Changes[/b]
 *Removed the WhisperLevel option I added previously because it was a pain to debug myself. And it was flawed.
@@ -11,6 +10,7 @@
 *Chat frames without backdrops should now properly hide their chat tabs unless mouseovered.
 *Remove the minimum requirement of .64 to the UIScale. It still however cannot go over 1.
 *The slash command "/farmmode" now accepts arguements to set the size of the FarmMode map.
+*Right clicking the right chat toggle button should now toggle whatever addon is embedded to that window. In addition add a tooltip to each of the chat toggle buttons to explain what they do.
 
 [b]Fixes[/b]
 *Fix the BNConversation prefix in chat.
