@@ -1,5 +1,5 @@
 [b]Additions[/b]
-*Add Profile Binds option to the general section of the config. This is a global setting for all ElvUI profiles. When enabled it snapshots your keybinds to your ElvUI profile. That way when you change talent specializations and you have the Dual Profile feature enabled your keybinds change with your spec.
+*Add Profile Binds option to the general section of the config. This is a global setting for all ElvUI profiles. Is is disabled by default. When enabled it snapshots your keybinds to your ElvUI profile. That way when you change talent specializations and you have the Dual Profile feature enabled your keybinds change with your spec.
 
 [b]General Changes[/b]
 *Routes and GatherMate2 addons will now use both minimaps instead of just the farmmode map.
