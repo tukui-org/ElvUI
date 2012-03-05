@@ -71,7 +71,6 @@ P['chat'] = {
 	['hyperlinkHover'] = true,
 	['throttleInterval'] = 45,
 	['scrollDownInterval'] = 15,
-	['minWhisperLevel'] = 0,
 	['font'] = 'ElvUI Font',
 	['fontoutline'] = 'NONE',
 }

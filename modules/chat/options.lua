@@ -76,21 +76,6 @@ E.Options.args.chat = {
 						E.db.chat[ info[#info] ] = value 
 					end,					
 				},			
-				minWhisperLevel = {
-					order = 6,
-					type = 'range',
-					name = L['Whisper Level'],
-					desc = L["Minimum level of the sender to able to whisper you."],
-					min = 0, max = GetMaxPlayerLevel(), step = 1,
-					set = function(info, value) 
-						E.db.chat[ info[#info] ] = value 
-						if value ~= 0 then
-							CH:EnableMinLevelWhisper()
-						else
-							CH:DisableMinLevelWhisper()
-						end
-					end,						
-				},
 				font = {
 					type = "select", dialogControl = 'LSM30_Font',
 					order = 7,
