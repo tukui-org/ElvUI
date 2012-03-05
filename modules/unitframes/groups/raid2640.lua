@@ -25,6 +25,7 @@ function UF:Construct_Raid2640Frames(unitGroup)
 	
 	self.TargetGlow = UF:Construct_TargetGlow(self)
 	table.insert(self.__elements, UF.UpdateThreat)
+	table.insert(self.__elements, UF.UpdateTargetGlow)
 	self:RegisterEvent('PLAYER_TARGET_CHANGED', function(...) UF.UpdateThreat(...); UF.UpdateTargetGlow(...) end)
 	self:RegisterEvent('PLAYER_ENTERING_WORLD', UF.UpdateTargetGlow)
 	self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', UF.UpdateThreat)
