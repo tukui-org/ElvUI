@@ -83,7 +83,7 @@ function E:LoadCommands()
 	self:RegisterChatCommand("ec", "ToggleConfig")
 	self:RegisterChatCommand("elvui", "ToggleConfig")
 	
-	self:RegisterChatCommand('grid', 'Grid')
+	self:RegisterChatCommand('egrid', 'Grid')
 	self:RegisterChatCommand("moveui", "MoveUI")
 	self:RegisterChatCommand("resetui", "ResetUI")
 	self:RegisterChatCommand("enable", "EnableAddon")

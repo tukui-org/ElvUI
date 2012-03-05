@@ -1,7 +1,7 @@
 [b]Additions[/b]
 *Add Profile Binds option to the general section of the config. This is a global setting for all ElvUI profiles. Is is disabled by default. When enabled it snapshots your keybinds to your ElvUI profile. That way when you change talent specializations and you have the Dual Profile feature enabled your keybinds change with your spec.
 *Add option under the player unitframe section to Enable/Disable the Rested Icon.
-*Add slash command "/grid" it's arguements can be 4-256. If no arguements then the grid will be hidden.
+*Add slash command "/egrid" it's arguements can be 4-256. If no arguements then the grid will be hidden.
 *Add slash command "/gr" to automatically change the channel you're talking in to the highest channel available.
 *Right clicking the right chat toggle button should now toggle whatever addon is embedded to that window. In addition add a tooltip to each of the chat toggle buttons to explain what they do.
 
