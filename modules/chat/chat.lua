@@ -185,8 +185,12 @@ function CH:SetupChatTabs(frame, hook)
 end
 
 function CH:PositionChat(override)
-	if E.global.chat.enable ~= true then return end
 	if (InCombatLockdown() and not override and self.initialMove) or (IsMouseButtonDown("LeftButton") and not override) then return end
+	
+	RightChatPanel:Size(E.db.general.panelWidth, E.db.general.panelHeight)
+	LeftChatPanel:Size(E.db.general.panelWidth, E.db.general.panelHeight)	
+	
+	if E.global.chat.enable ~= true then return end
 	
 	local chat, chatbg, tab, id, point, button, isDocked, chatFound
 	for _, frameName in pairs(CHAT_FRAMES) do
@@ -199,10 +203,7 @@ function CH:PositionChat(override)
 			break
 		end
 	end	
-	
-	RightChatPanel:Size(E.db.general.panelWidth, E.db.general.panelHeight)
-	LeftChatPanel:Size(E.db.general.panelWidth, E.db.general.panelHeight)
-	
+
 	if chatFound then
 		self.RightChatWindowID = id
 	else
