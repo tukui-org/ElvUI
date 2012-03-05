@@ -37,7 +37,12 @@ function FarmMode()
 	end
 end
 
-function E:FarmMode()
+function E:FarmMode(msg)
+	if msg and type(tonumber(msg))=="number" and tonumber(msg) <= 500 and tonumber(msg) >= 20 then
+		E.db.farmSize = tonumber(msg)
+		FarmModeMap:Size(tonumber(msg))
+	end
+	
 	FarmMode()
 end
 

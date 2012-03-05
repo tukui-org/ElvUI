@@ -294,7 +294,7 @@ function M:LoadMinimap()
 	
 	--Create Farmmode Minimap
 	local fm = CreateFrame('Minimap', 'FarmModeMap', E.UIParent)
-	fm:Size(340)
+	fm:Size(E.db.farmSize)
 	fm:Point('TOP', E.UIParent, 'TOP', 0, -120)
 	
 	fm:CreateBackdrop('Default')
