@@ -3,6 +3,7 @@ local _, myclasscolor = UnitClass("player");
 local valuer, valueg, valueb = RAID_CLASS_COLORS[myclasscolor].r, RAID_CLASS_COLORS[myclasscolor].g, RAID_CLASS_COLORS[myclasscolor].b
 
 P.gridSize = 64
+P.farmSize = 340
 
 --Core
 P['general'] = {
@@ -74,7 +75,6 @@ P['chat'] = {
 	['hyperlinkHover'] = false,
 	['throttleInterval'] = 60,
 	['scrollDownInterval'] = 0,
-	['minWhisperLevel'] = 0,
 	['font'] = 'Arial Narrow',
 	['fontoutline'] = 'NONE',
 	['whisperwarning'] = true,
@@ -187,6 +187,7 @@ P['unitframe'] = {
 			['lowmana'] = 30,
 			['combatfade'] = false,
 			['healPrediction'] = true,
+			['restIcon'] = true,
 			['health'] = {
 				['text'] = true,
 				['text_format'] = 'current-percent',

@@ -3,6 +3,7 @@
 --Global Settings
 
 G['general'] = {
+	['profileBinds'] = false,
 	['bags'] = false,
 	['loot'] = false,
 	['lootRoll'] = false,
