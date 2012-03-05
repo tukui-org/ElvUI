@@ -703,6 +703,12 @@ E.Options.args.unitframe.args.player = {
 			desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
 			type = 'toggle',
 		},
+		restIcon = {
+			order = 9,
+			name = L['Rest Icon'],
+			desc = L['Display the rested icon on the unitframe.'],
+			type = 'toggle',
+		},
 		health = {
 			order = 100,
 			type = 'group',

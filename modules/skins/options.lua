@@ -22,8 +22,8 @@ E.Options.args.skins = {
 				['Omen'] = "Omen",
 				['Skada'] = "Skada",
 			},
-			get = function(info) return E.global.skins[ info[#info] ] end,
-			set = function(info, value) E.global.skins[ info[#info] ] = value; S:SetEmbedRight(value) end,
+			get = function(info) return E.db.skins[ info[#info] ] end,
+			set = function(info, value) E.db.skins[ info[#info] ] = value; S:SetEmbedRight(value) end,
 		},
 		bigwigs = {
 			order = 3,

@@ -4,9 +4,9 @@ local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB,
 local scale
 function E:UIScale(event)
 	if self.db.general.autoscale then
-		scale = min(1, max(.64, 768/self.screenheight));
+		scale = min(1, 768/self.screenheight);
 	else
-		scale = min(1, max(.64, GetCVar('uiScale') or UIParent:GetScale() or 768/self.screenheight));
+		scale = min(1, GetCVar('uiScale') or UIParent:GetScale() or 768/self.screenheight);
 	end
 
 	if self.screenwidth < 1600 then

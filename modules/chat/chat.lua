@@ -37,6 +37,20 @@ local tabTexs = {
 	'Highlight'
 }
 
+function CH:GetGroupDistribution()
+	local inInstance, kind = IsInInstance()
+	if inInstance and (kind == "pvp") then
+		return "/bg "
+	end
+	if GetNumRaidMembers() > 0 then
+		return "/ra "
+	end
+	if GetNumPartyMembers() > 0 then
+		return "/p "
+	end
+	return "/s "
+end
+
 function CH:StyleChat(frame)
 	if frame.styled then return end
 	local id = frame:GetID()
@@ -86,6 +100,11 @@ function CH:StyleChat(frame)
 				unitname = unitname .. "-" .. gsub(realm, " ", "")
 			 end
 			 ChatFrame_SendTell((unitname or L['Invalid Target']), ChatFrame1)
+		  end
+		  
+		  if text:sub(1, 4) == "/gr " then
+			self:SetText(CH:GetGroupDistribution() .. text:sub(5));
+			ChatEdit_ParseText(self, 0)		  
 		  end
 	   end
 	end)
@@ -160,9 +179,38 @@ function CH:CopyChat(frame)
 	end
 end
 
+function CH:OnEnter(frame)
+	_G[frame:GetName().."Text"]:Show()
+end
+
+function CH:OnLeave(frame)
+	_G[frame:GetName().."Text"]:Hide()
+end
+
+local x = CreateFrame('Frame')
+function CH:SetupChatTabs(frame, hook)
+	if hook and (not self.hooks or not self.hooks[frame] or not self.hooks[frame].OnEnter) then
+		self:HookScript(frame, 'OnEnter')
+		self:HookScript(frame, 'OnLeave')
+	elseif not hook and self.hooks and self.hooks[frame] and self.hooks[frame].OnEnter then
+		self:Unhook(frame, 'OnEnter')
+		self:Unhook(frame, 'OnLeave')	
+	end
+	
+	if not hook then
+		_G[frame:GetName().."Text"]:Show()
+	elseif GetMouseFocus() ~= frame then
+		_G[frame:GetName().."Text"]:Hide()
+	end
+end
+
 function CH:PositionChat(override)
-	if E.global.chat.enable ~= true then return end
 	if (InCombatLockdown() and not override and self.initialMove) or (IsMouseButtonDown("LeftButton") and not override) then return end
+	
+	RightChatPanel:Size(E.db.general.panelWidth, E.db.general.panelHeight)
+	LeftChatPanel:Size(E.db.general.panelWidth, E.db.general.panelHeight)	
+	
+	if E.global.chat.enable ~= true then return end
 	
 	local chat, chatbg, tab, id, point, button, isDocked, chatFound
 	for _, frameName in pairs(CHAT_FRAMES) do
@@ -175,10 +223,7 @@ function CH:PositionChat(override)
 			break
 		end
 	end	
-	
-	RightChatPanel:Size(E.db.general.panelWidth, E.db.general.panelHeight)
-	LeftChatPanel:Size(E.db.general.panelWidth, E.db.general.panelHeight)
-	
+
 	if chatFound then
 		self.RightChatWindowID = id
 	else
@@ -223,9 +268,17 @@ function CH:PositionChat(override)
 			
 			tab:SetParent(RightChatPanel)
 			chat:SetParent(tab)
+			
+			if E.db.general.panelBackdrop == 'HIDEBOTH' or E.db.general.panelBackdrop == 'LEFT' then
+				CH:SetupChatTabs(tab, true)
+			else
+				CH:SetupChatTabs(tab, false)
+			end
 		elseif not isDocked and chat:IsShown() then
 			tab:SetParent(E.UIParent)
 			chat:SetParent(E.UIParent)
+			
+			CH:SetupChatTabs(tab, true)
 		else
 			if id ~= 2 and not (id > NUM_CHAT_WINDOWS) then
 				chat:ClearAllPoints()
@@ -235,6 +288,12 @@ function CH:PositionChat(override)
 			end
 			chat:SetParent(LeftChatPanel)
 			tab:SetParent(GeneralDockManager)
+			
+			if E.db.general.panelBackdrop == 'HIDEBOTH' or E.db.general.panelBackdrop == 'RIGHT' then
+				CH:SetupChatTabs(tab, true)
+			else
+				CH:SetupChatTabs(tab, false)
+			end			
 		end		
 	end
 	
@@ -328,6 +387,7 @@ function CH:AddMessage(text, ...)
 			text = text:gsub("<"..AFK..">", "[|cffFF0000"..L['AFK'].."|r] ")
 			text = text:gsub("<"..DND..">", "[|cffE7E716"..L['DND'].."|r] ")
 			text = text:gsub("^%["..RAID_WARNING.."%]", '['..L['RW']..']')	
+			text = text:gsub("BN_CONVERSATION:", L["BN:"])
 		end
 		
 		text = text:gsub('|Hplayer:Elv:', '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t|Hplayer:Elv:')
@@ -389,7 +449,7 @@ end
 function CH:EnableHyperlink()
 	for _, frameName in pairs(CHAT_FRAMES) do
 		local frame = _G[frameName]
-		if not self.hooks[frame] then
+		if (not self.hooks or not self.hooks[frame] or not self.hooks[frame].OnHyperlinkEnter) then
 			self:HookScript(frame, 'OnHyperlinkEnter')
 			self:HookScript(frame, 'OnHyperlinkLeave')
 			self:HookScript(frame, 'OnMessageScrollChanged')
@@ -400,7 +460,7 @@ end
 function CH:DisableHyperlink()
 	for _, frameName in pairs(CHAT_FRAMES) do
 		local frame = _G[frameName]
-		if self.hooks[frame] then
+		if self.hooks and self.hooks[frame] and self.hooks[frame].OnHyperlinkEnter then
 			self:Unhook(frame, 'OnHyperlinkEnter')
 			self:Unhook(frame, 'OnHyperlinkLeave')
 			self:Unhook(frame, 'OnMessageScrollChanged')
@@ -417,17 +477,6 @@ function CH:DisableChatThrottle()
 	self:UnregisterEvent("CHAT_MSG_CHANNEL")
 	self:UnregisterEvent("CHAT_MSG_YELL")	
 	table.wipe(msgList); table.wipe(msgCount); table.wipe(msgTime)
-end
-
-function CH:EnableMinLevelWhisper()
-	self:RegisterEvent("FRIENDLIST_UPDATE")
-	self:PLAYER_LOGIN()
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", CH.CHAT_MSG_SYSTEM)
-end
-
-function CH:DisableMinLevelWhisper()
-	self:UnregisterEvent("FRIENDLIST_UPDATE")
-	ChatFrame_RemoveMessageEventFilter("CHAT_MSG_SYSTEM", CH.CHAT_MSG_SYSTEM)
 end
 
 function CH:SetupChat(event, ...)	
@@ -453,10 +502,6 @@ function CH:SetupChat(event, ...)
 		self:EnableChatThrottle()
 	end
 	
-	if self.db.minWhisperLevel ~= 0 then
-		CH:EnableMinLevelWhisper()
-	end
-
 	GeneralDockManager:SetParent(LeftChatPanel)
 	self:ScheduleRepeatingTimer('PositionChat', 1)
 	self:PositionChat(true)
@@ -579,125 +624,6 @@ function CH:CHAT_MSG_SAY(...)
 	end
 end
 
-function CH:CHAT_MSG_WHISPER(...)
-	local player, flag = select(3, ...), select(7, ...)
-	if good[player] or player:find("%-") or flag == "GM" or CH.db.minWhisperLevel == 0 then return CH.FindURL(self, ...) end
-	
-	for i = 1, select(2, BNGetNumFriends()) do
-		local toon = BNGetNumFriendToons(i)
-		for j = 1, toon do
-			local _, rName, rGame, rServer = BNGetFriendToonInfo(i, j)
-			if rName == player and rGame == "WoW" and rServer == GetRealmName() then
-				good[player] = true
-				return CH.FindURL(self, ...)
-			end
-		end
-	end
-	
-	if not maybe[player] then maybe[player] = {} end
-	local frame = self:GetName()
-	if IsAddOnLoaded("WIM") and not frame:find("WIM") then return true end
-	if not maybe[player][frame] then maybe[player][frame] = {} end
-	
-	local id = select(12, ...)
-	maybe[player][frame][id] = {}
-	local n = IsAddOnLoaded("WIM") and 1 or 0
-	for i = 1, select("#", ...) do
-		maybe[player][frame][id][i] = select(i + n, ...)
-	end
-	
-	local guid = select(13, ...)
-	local _, class = GetPlayerInfoByGUID(guid)
-	local level = (class == "DEATHKNIGHT") and 55 + CH.db.minWhisperLevel or CH.db.minWhisperLevel + 1
-	if not filter[player] or filter[player] ~= level then
-		filter[player] = level
-		AddFriend(player, true)	-- for FriendsWithBenefits compatibility
-	end
-	return true
-end
-
-function CH:CHAT_MSG_WHISPER_INFORM(...)
-	local _, message, player = ...
-	if good[player] or CH.db.minWhisperLevel == 0 then return CH.FindURL(self, ...) end
-	if filter[player] and message:find(format(response, filter[player])) then return true end
-	good[player] = true
-end
-
-function CH:CHAT_MSG_SYSTEM(_, message)
-	if message == ERR_FRIEND_LIST_FULL then
-		E:Print(friendError)
-		return
-	end
-	
-	if CH.db.minWhisperLevel ~= 0 then
-		for k in pairs(filter) do
-			if message == ERR_FRIEND_ADDED_S:format(k) or message == ERR_FRIEND_REMOVED_S:format(k) then
-				return true
-			end
-		end
-	end
-end
-
-function CH:PLAYER_LOGIN()
-	ShowFriends()
-	good[E.myname] = true -- we're good
-end
-
-function CH:ExcludeFriends()
-	for i = 1, GetNumFriends() do
-		local friend = GetFriendInfo(i)
-		if friend then good[friend] = true end
-	end
-	
-	for i = 1, GetNumGuildMembers() do
-		local guild = GetGuildRosterInfo(i)
-		if guild then good[guild] = true end
-	end
-end
-
-function CH:FRIENDLIST_UPDATE()
-	if not login then
-		login = true
-		CH:ExcludeFriends()
-		return
-	end
-	
-	for i = 1, GetNumFriends() do
-		local player, level = GetFriendInfo(i)
-		
-		if not player then
-			ShowFriends()
-		else
-			if maybe[player] then
-				RemoveFriend(player, true)
-				if level < filter[player] then
-					SendChatMessage(response:format(filter[player]), "WHISPER", nil, player)
-					for _, v in pairs(maybe[player]) do
-						for _, p in pairs(v) do
-							wipe(p)
-						end
-						wipe(v)
-					end
-				else
-					good[player] = true
-					for _, v in pairs(maybe[player]) do
-						for _, p in pairs(v) do
-							if IsAddOnLoaded("WIM") then
-								WIM.modules.WhisperEngine:CHAT_MSG_WHISPER(unpack(p))
-							else
-								ChatFrame_MessageEventHandler(unpack(p))
-							end
-							wipe(p)
-						end
-						wipe(v)
-					end
-				end
-				wipe(maybe[player])
-				maybe[player] = nil
-			end
-		end
-	end
-end
 
 function CH:Initialize()
 	self.db = E.db.chat
@@ -716,8 +642,8 @@ function CH:Initialize()
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", CH.CHAT_MSG_CHANNEL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_YELL", CH.CHAT_MSG_YELL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_SAY", CH.CHAT_MSG_SAY)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", CH.CHAT_MSG_WHISPER_INFORM)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", CH.CHAT_MSG_WHISPER)	
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", CH.FindURL)	
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_GUILD", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_OFFICER", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY", CH.FindURL)
