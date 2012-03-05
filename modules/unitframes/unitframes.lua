@@ -1,10 +1,10 @@
 local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
-local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
+local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0');
 local LSM = LibStub("LibSharedMedia-3.0");
 
 local _, ns = ...
 local ElvUF = ns.oUF
-
+local AceTimer = LibStub:GetLibrary("AceTimer-3.0")
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 UF['headerstoload'] = {}
@@ -109,7 +109,16 @@ end
 
 function UF:GarbageCollect()
 	collectgarbage('collect')
-	self:CancelAllTimers()
+	
+	--This is a hackish way to disable all created timers except the UpdatePvPText one..
+	local timersList = AceTimer.selfs[self]
+	if timersList then
+		for handle, v in pairs(timersList) do
+			if type(v) == "table" and v.callback ~= 'UpdatePvPText' then
+				AceTimer.CancelTimer(self, handle, true)
+			end
+		end
+	end
 end
 
 function UF:UpdateGroupChildren(header, db)
