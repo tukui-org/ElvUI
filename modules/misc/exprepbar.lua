@@ -227,14 +227,14 @@ function M:UpdateExpRepBarAnchor()
 	end
 	
 	UpperRepExpBarHolder:SetFrameLevel(0)
-	UpperRepExpBarHolder:Size(BAR_WIDTH, TOPBAR_HEIGHT)
+	UpperRepExpBarHolder:Size(BAR_WIDTH - 30 + E.RBRWidth, TOPBAR_HEIGHT)
 
 	if UpperReputationBar then
-		UpperReputationBar:Size(BAR_WIDTH + 20, BAR_HEIGHT)
+		UpperReputationBar:Size(BAR_WIDTH + E.RBRWidth, BAR_HEIGHT)
 	end
 	
 	if UpperExperienceBar then
-		UpperExperienceBar:Size(BAR_WIDTH + 20, BAR_HEIGHT)
+		UpperExperienceBar:Size(BAR_WIDTH + E.RBRWidth, BAR_HEIGHT)
 	end	
 	
 	self:PositionBars(self:GetNumShownBars())
