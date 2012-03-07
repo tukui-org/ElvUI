@@ -18,4 +18,4 @@
 *Fix pvp text on the player frame not working after joining a group.
 *Users were unable to change the left and right panel sizes while chat was disabled.
 *EmbedRight wasn't working as intended.
-*Experience/Reputation bar size should now properly take into consideration if you do or don't have the RaidReminder Bar turned on when getting sized and placed below the minimap.
+*Experience/Reputation bar should now properly take into consideration if you do or don't have the RaidReminder Bar turned on when getting sized and placed below the minimap.
