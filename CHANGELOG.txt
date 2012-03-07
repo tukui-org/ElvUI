@@ -1,5 +1,5 @@
 [b]Additions[/b]
-*Add Profile Binds option to the general section of the config. This is a global setting for all ElvUI profiles. Is is disabled by default. When enabled it snapshots your keybinds to your ElvUI profile. That way when you change talent specializations and you have the Dual Profile feature enabled your keybinds change with your spec.
+*Add Profile Binds option to the general section of the config. This is a global setting for all ElvUI profiles. Is is disabled by default. When enabled it snapshots your keybinds to your ElvUI profile. That way when you change talent specializations and you have the Dual Profile feature enabled your keybinds change with your spec. Having this option turned on will greatly increase the amount of memory used by the addon. Don't worry it shouldn't effect performance.
 *Add option under the player unitframe section to Enable/Disable the Rested Icon.
 *Add slash command "/egrid" it's arguements can be 4-256. If no arguements then the grid will be hidden.
 *Add slash command "/gr" to automatically change the channel you're talking in to the highest channel available.
@@ -18,3 +18,4 @@
 *Fix pvp text on the player frame not working after joining a group.
 *Users were unable to change the left and right panel sizes while chat was disabled.
 *EmbedRight wasn't working as intended.
+*Experience/Reputation bar should now properly take into consideration if you do or don't have the RaidReminder Bar turned on when getting sized and placed below the minimap.
