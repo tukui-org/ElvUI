@@ -32,6 +32,8 @@ local function LoadSkin()
 	S:HandleScrollBar(WhoListScrollFrameScrollBar, 5)
 	S:HandleScrollBar(ChannelRosterScrollFrameScrollBar, 5)
 	local StripAllTextures = {
+		"ScrollOfResurrectionSelectionFrame",
+		"ScrollOfResurrectionSelectionFrameList",
 		"FriendsListFrame",
 		"FriendsTabHeader",
 		"FriendsFrameFriendsScrollFrame",
@@ -101,6 +103,8 @@ local function LoadSkin()
 		"AddFriendEntryFrameAcceptButton",
 		"AddFriendEntryFrameCancelButton",
 		"AddFriendInfoFrameContinueButton",
+		"ScrollOfResurrectionSelectionFrameAcceptButton",
+		"ScrollOfResurrectionSelectionFrameCancelButton",
 	}			
 
 	for _, button in pairs(buttons) do
@@ -139,6 +143,10 @@ local function LoadSkin()
 
 	S:HandleEditBox(AddFriendNameEditBox)
 	AddFriendFrame:SetTemplate("Transparent")			
+	ScrollOfResurrectionSelectionFrame:SetTemplate('Transparent')
+	ScrollOfResurrectionSelectionFrameList:SetTemplate('Default')
+	S:HandleScrollBar(ScrollOfResurrectionSelectionFrameListScrollFrameScrollBar, 4)
+	S:HandleEditBox(ScrollOfResurrectionSelectionFrameTargetEditBox)
 	
 	--Who Frame
 	local function UpdateWhoSkins()
