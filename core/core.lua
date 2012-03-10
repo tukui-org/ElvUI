@@ -12,8 +12,9 @@ E.version = GetAddOnMetadata("ElvUI", "Version");
 E.myrealm = GetRealmName();
 _, E.wowbuild = GetBuildInfo(); E.wowbuild = tonumber(E.wowbuild);
 E.noop = function() end;
-E.screenheight = tonumber(string.match(({GetScreenResolutions()})[GetCurrentResolution()], "%d+x(%d+)"));
-E.screenwidth = tonumber(string.match(({GetScreenResolutions()})[GetCurrentResolution()], "(%d+)x+%d"));
+E.resolution = GetCVar("gxResolution")
+E.screenheight = tonumber(string.match(E.resolution, "%d+x(%d+)"))
+E.screenwidth = tonumber(string.match(E.resolution, "(%d+)x+%d"))
 E.TexCoords = {.08, .92, .08, .92}
 
 E['valueColorUpdateFuncs'] = {};
