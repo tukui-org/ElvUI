@@ -453,7 +453,7 @@ local function SetPage(PageNum)
 		InstallOption1Button:SetText(L["Setup Chat"])
 	elseif PageNum == 4 then
 		f.SubTitle:SetText(L["Resolution"])
-		f.Desc1:SetText(format(L["Your current resolution is %s, this is considered a %s resolution."], (E.resolution, E.lowversion == true and L["low"] or L["high"]))
+		f.Desc1:SetText(format(L["Your current resolution is %s, this is considered a %s resolution."], E.resolution, E.lowversion == true and L["low"] or L["high"]))
 		if E.lowversion then
 			f.Desc2:SetText(L["This resolution requires that you change some settings to get everything to fit on your screen."].." "..L["Click the button below to resize your chat frames, unitframes, and reposition your actionbars."].." "..L["You may need to further alter these settings depending how low you resolution is."])
 			f.Desc3:SetText(L["Importance: |cff07D400High|r"])
