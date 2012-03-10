@@ -14,9 +14,11 @@
 *Right clicking the right chat toggle button should now toggle whatever addon is embedded to that window. In addition add a tooltip to each of the chat toggle buttons to explain what they do.
 
 [b]Fixes[/b]
+*Created workaround for Blizzard issue with the UI and people using dual montiors. Wasn't returning the correct screen resolution value.
 *Fix the BNConversation prefix in chat.
 *The glow feature when targeting other raid/party members wasn't updating when someone joined the party. This sometimes produced unintended results.
 *Fix pvp text on the player frame not working after joining a group.
 *Users were unable to change the left and right panel sizes while chat was disabled.
 *EmbedRight wasn't working as intended.
 *Experience/Reputation bar should now properly take into consideration if you do or don't have the RaidReminder Bar turned on when getting sized and placed below the minimap.
+*Add additional events to the Attack Power datatext. Wasn't updated under some cases for Hunters.
