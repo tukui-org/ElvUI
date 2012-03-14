@@ -1,6 +1,7 @@
 [b]Additions[/b]
 *Add skin for the blizzard stable frame.
 *Add auctionator skin.
+*Minimap icons should now be skinned to match ElvUI.
 
 [b]Fixes[/b]
 *The Reputation bar should have its width correctly set on login.

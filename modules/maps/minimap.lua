@@ -195,7 +195,49 @@ function M:Minimap_UpdateSettings()
 	end
 end
 
+function M:SkinMinimapButton(f)
+	if f:GetName() == "MiniMapBattlefieldFrame" or f:GetName() == "ElvConfigToggle" or f:GetName() == 'UpperRepExpBarHolder' then return end
+	
+	f:SetPushedTexture(nil)
+	f:SetHighlightTexture(nil)
+	f:SetDisabledTexture(nil)
+	f:SetSize(22, 22)
+
+	for i = 1, f:GetNumRegions() do
+		local region = select(i, f:GetRegions())
+		if region:GetObjectType() == "Texture" then
+			local tex = region:GetTexture()
+			if tex and (tex:find("Border") or tex:find("Background")) then
+				region:SetTexture(nil)
+			else
+				region:SetDrawLayer("OVERLAY", 5)
+				region:ClearAllPoints()
+				region:Point("TOPLEFT", f, "TOPLEFT", 2, -2)
+				region:Point("BOTTOMRIGHT", f, "BOTTOMRIGHT", -2, 2)
+				region:SetTexCoord(.08, .92, .08, .92)
+			end
+		end
+	end
+
+	f:SetTemplate("Default")
+	f:SetFrameLevel(f:GetFrameLevel() + 2)
+	-- Set flag to indicate that this button has already been skinned
+	f.skinned = true
+end
+
+function M:CheckForNewMinimapButtons()
+	for i = 1, Minimap:GetNumChildren() do
+		local f = select(i, Minimap:GetChildren())
+		if not f.skinned and f:GetObjectType() == 'Button' then
+			self:SkinMinimapButton(f)
+		end
+	end
+end
+
 function M:LoadMinimap()	
+	self:ScheduleRepeatingTimer('CheckForNewMinimapButtons', 15)
+	self:CheckForNewMinimapButtons() --Initial check
+	
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
 	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
 	mmholder:Width((Minimap:GetWidth() + 29) + E.RBRWidth)
