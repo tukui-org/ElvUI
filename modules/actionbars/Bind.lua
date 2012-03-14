@@ -72,7 +72,7 @@ end
 
 function AB:BindUpdate(button, spellmacro)
 	if not bind.active or InCombatLockdown() then return; end
-
+	
 	bind.button = button;
 	bind.spellmacro = spellmacro;
 	
@@ -253,7 +253,8 @@ function AB:LoadKeyBinder()
 	self:HookScript(GameTooltip, "OnUpdate", "Tooltip_OnUpdate");
 	hooksecurefunc(GameTooltip, "Hide", function(tooltip) for _, tt in pairs(tooltip.shoppingTooltips) do tt:Hide(); end end);
 	
-	bind:SetScript("OnLeave", function() self:BindHide() end);
+	bind:SetScript('OnEnter', function(self) local db = self.button:GetParent().db if db.mouseover then AB:Button_OnEnter(self.button) end end)
+	bind:SetScript("OnLeave", function(self) AB:BindHide(); local db = self.button:GetParent().db if db.mouseover then AB:Button_OnLeave(self.button) end end)
 	bind:SetScript("OnKeyUp", function(_, key) self:BindListener(key) end);
 	bind:SetScript("OnMouseUp", function(_, key) self:BindListener(key) end);
 	bind:SetScript("OnMouseWheel", function(_, delta) if delta>0 then self:BindListener("MOUSEWHEELUP") else self:BindListener("MOUSEWHEELDOWN"); end end);

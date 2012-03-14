@@ -14,3 +14,4 @@
 
 [b]Fixes[/b]
 *The Reputation bar should have its width correctly set on login.
+*Using the keybind mode on a bar that is set to mouseover should properly retain its visibility state.

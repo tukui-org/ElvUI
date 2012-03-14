@@ -82,7 +82,7 @@ function AB:PositionAndSizeBarShapeShift()
 	local point = self.db['barShapeShift'].point;
 	local widthMult = self.db['barShapeShift'].widthMult;
 	local heightMult = self.db['barShapeShift'].heightMult;
-
+	bar.db = self.db['barShapeShift']
 	if bar.LastButton and numButtons > bar.LastButton then	
 		numButtons = bar.LastButton;
 	end
