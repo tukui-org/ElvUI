@@ -387,7 +387,12 @@ E.Options.args.skins = {
 					type = "toggle",
 					name = L["Bags"],
 					desc = L["TOGGLESKIN_DESC"],									
-				},				
+				},
+				stable = {
+					type = "toggle",
+					name = L["Stable"],
+					desc = L["TOGGLESKIN_DESC"],									
+				},
 			},
 		},
 	},
