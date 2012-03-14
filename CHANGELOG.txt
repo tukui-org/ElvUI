@@ -1,5 +1,6 @@
 [b]Additions[/b]
 *Add skin for the blizzard stable frame.
+*Add auctionator skin.
 
 [b]Fixes[/b]
 *The Reputation bar should have its width correctly set on login.
