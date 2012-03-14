@@ -7,6 +7,7 @@
 *Minimap icons should now be skinned to match ElvUI. (Credit: Tomkuzyno)
 *Add skin for Addon Control Panel (Credit: Camealion)
 *Add an option under the skada skin section of the config to control the bar height of the individual bars.
+*Add skin for the Blizzard Guild Invite Frame.
 
 [b]General Changes[/b]
 *The World Map Alpha setting should properly change Opacity, it was working the opposite of how it was intended before. 100% Opacity means the frame is fully faded away now.
