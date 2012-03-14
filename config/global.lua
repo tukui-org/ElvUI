@@ -30,7 +30,6 @@ G['chat'] = {
 }
 
 G['skins'] = {
-	['embedRight'] = '',
 	['bigwigs'] = {
 		['enable'] = true,
 		['spacing'] = 7,
@@ -52,6 +51,7 @@ G['skins'] = {
 	},
 	['skada'] = {
 		['enable'] = true,
+		['barHeight'] = 17,
 	},		
 	['tinydps'] = {
 		['enable'] = true,

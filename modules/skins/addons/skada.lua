@@ -10,8 +10,6 @@ local function StripOptions(options)
 	options.titleoptions.args.margin = nil
 	options.titleoptions.args.color = nil
 	options.windowoptions = nil
-	options.baroptions.args.barfont = nil
-	options.titleoptions.args.font = nil
 end
 
 local function LoadSkin()
