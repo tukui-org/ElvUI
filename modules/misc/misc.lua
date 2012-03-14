@@ -88,7 +88,8 @@ end
 function M:CheckMovement()
 	if not WorldMapFrame:IsShown() then return; end
 	if self:IsPlayerMoving() then
-		WorldMapFrame:SetAlpha(E.db.general.mapTransparency)
+		local alpha = 1.0 - E.db.general.mapTransparency;
+		WorldMapFrame:SetAlpha(alpha)
 	else
 		WorldMapFrame:SetAlpha(1)
 	end
@@ -168,6 +169,7 @@ function M:Initialize()
 	self:LoadMirrorBars()
 	self:LoadLoot()
 	self:LoadLootRoll()
+	self:LoadChatBubbles()
 	self:RegisterEvent('MERCHANT_SHOW')
 	self:RegisterEvent('PLAYER_REGEN_DISABLED', 'ErrorFrameToggle')
 	self:RegisterEvent('PLAYER_REGEN_ENABLED', 'ErrorFrameToggle')
