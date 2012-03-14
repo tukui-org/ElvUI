@@ -1,7 +1,10 @@
 [b]Additions[/b]
-*Add skin for the blizzard stable frame.
-*Add auctionator skin.
-*Minimap icons should now be skinned to match ElvUI.
+*Add skin for the Blizzard Stable Frame. (Credit: Tomkuzyno)
+*Add skin the the Blizzard BG-Map.
+*Add Auctionator skin. (Credit: Tomkuzyno)
+*Add Clique Skin. (Credit: Nidra)
+*Minimap icons should now be skinned to match ElvUI. (Credit: Tomkuzyno)
+*Add skin for Addon Control Panel (Credit: Camealion)
 
 [b]Fixes[/b]
 *The Reputation bar should have its width correctly set on login.

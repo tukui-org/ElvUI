@@ -133,7 +133,7 @@ E.Options.args.general = {
 					type = 'toggle',
 					set = function(info, value) 
 						E.db.general[ info[#info] ] = value
-						E:GetModule('Maps'):Minimap_UpdateSettings()
+						E:GetModule('Minimap'):UpdateSettings()
 					end,					
 				},
 				mapTransparency = {
@@ -152,7 +152,7 @@ E.Options.args.general = {
 					min = 120, max = 250, step = 1,
 					set = function(info, value) 
 						E.db.general[ info[#info] ] = value
-						E:GetModule('Maps'):Minimap_UpdateSettings()
+						E:GetModule('Minimap'):UpdateSettings()
 					end,
 				},
 				profileBinds = {

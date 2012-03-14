@@ -153,6 +153,17 @@ function S:HandleTab(tab)
 end
 
 function S:HandleNextPrevButton(btn, horizonal)
+	if btn:GetName() then
+		local l = _G[btn:GetName().."Left"]
+		local m = _G[btn:GetName().."Middle"]
+		local r = _G[btn:GetName().."Right"]
+		
+		
+		if l then l:SetAlpha(0) end
+		if m then m:SetAlpha(0) end
+		if r then r:SetAlpha(0) end
+	end
+	
 	btn:SetTemplate("Default")
 	btn:Size(btn:GetWidth() - 7, btn:GetHeight() - 7)	
 

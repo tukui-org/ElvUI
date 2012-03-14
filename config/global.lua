@@ -106,6 +106,7 @@ G['skins'] = {
 		["voidstorage"] = true,
 		["transmogrify"] = true,
 		["stable"] = true,
+		["bgmap"] = true,
 	},
 }
 

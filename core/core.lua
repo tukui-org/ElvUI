@@ -587,7 +587,7 @@ function E:UpdateAll()
 		self:Install()
 	end
 	
-	self:GetModule('Maps'):Minimap_UpdateSettings()
+	self:GetModule('Minimap'):UpdateSettings()
 	
 	self:LoadKeybinds()
 	
@@ -640,7 +640,7 @@ function E:Initialize()
 	self:RegisterEvent('UPDATE_BINDINGS', 'SaveKeybinds')
 	self:SaveKeybinds()
 	
-	self:GetModule('Maps'):Minimap_UpdateSettings()
+	self:GetModule('Minimap'):UpdateSettings()
 	
 	collectgarbage("collect");
 end

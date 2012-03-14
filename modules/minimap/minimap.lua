@@ -1,5 +1,6 @@
 local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
-local M = E:GetModule('Maps');
+local M = E:NewModule('Minimap', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
+E.Minimap = M
 
 local calendar_string = string.gsub(SLASH_CALENDAR1, "/", "")
 calendar_string = string.gsub(calendar_string, "^%l", string.upper)
@@ -129,7 +130,7 @@ function M:UpdateLFG()
 	MiniMapLFGFrameBorder:Hide()
 end
 
-function M:Minimap_UpdateSettings()
+function M:UpdateSettings()
 	E.MinimapSize = E.db.general.minimapSize
 	
 	if E.db.general.raidReminder then
@@ -234,7 +235,7 @@ function M:CheckForNewMinimapButtons()
 	end
 end
 
-function M:LoadMinimap()	
+function M:Initialize()	
 	self:ScheduleRepeatingTimer('CheckForNewMinimapButtons', 15)
 	self:CheckForNewMinimapButtons() --Initial check
 	
@@ -332,7 +333,7 @@ function M:LoadMinimap()
 	self:RegisterEvent("ZONE_CHANGED", "Update_ZoneText")
 	self:RegisterEvent("ZONE_CHANGED_INDOORS", "Update_ZoneText")		
 	self:RegisterEvent('ADDON_LOADED')
-	self:Minimap_UpdateSettings()
+	self:UpdateSettings()
 	
 	--Create Farmmode Minimap
 	local fm = CreateFrame('Minimap', 'FarmModeMap', E.UIParent)
@@ -385,3 +386,5 @@ function M:LoadMinimap()
 		FarmModeMap:Hide()
 	end)
 end
+
+E:RegisterModule(M:GetName())

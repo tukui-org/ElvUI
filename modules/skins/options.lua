@@ -393,6 +393,11 @@ E.Options.args.skins = {
 					name = L["Stable"],
 					desc = L["TOGGLESKIN_DESC"],									
 				},
+				bgmap = {
+					type = "toggle",
+					name = L["BG Map"],
+					desc = L["TOGGLESKIN_DESC"],									
+				},				
 			},
 		},
 	},

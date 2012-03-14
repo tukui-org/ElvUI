@@ -42,7 +42,7 @@ function AddOn:OnInitialize()
 	self:UIScale();
 	self:UpdateMedia();
 	self:GetModule('RaidUtility'):Initialize()
-	self:GetModule('Maps'):Minimap_UpdateSettings()
+	self:GetModule('Minimap'):UpdateSettings()
 	self:RegisterEvent('PLAYER_LOGIN', 'Initialize')
 end
 
