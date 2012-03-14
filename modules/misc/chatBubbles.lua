@@ -23,32 +23,24 @@ function M:SkinBubble(frame)
 		bgFile = E["media"].blankTex,
 		edgeFile = E["media"].blankTex,
 		tile = false, tileSize = 0, edgeSize = noscalemult,
-		insets = {left = -noscalemult, right = -noscalemult, top = -noscalemult, bottom = -noscalemult}
 	})
 	
 	local border = CreateFrame("Frame", nil, frame)
-	border:Point("TOPLEFT", noscalemult, -noscalemult)
-	border:Point("BOTTOMRIGHT", -noscalemult, noscalemult)
+	border:SetPoint('TOPLEFT', -noscalemult, noscalemult)
+	border:SetPoint('BOTTOMRIGHT', noscalemult, -noscalemult)
 	border:SetBackdrop({
+		bgFile = E["media"].blankTex,
 		edgeFile = E["media"].blankTex, 
-		edgeSize = noscalemult, 
-		insets = { left = noscalemult, right = noscalemult, top = noscalemult, bottom = noscalemult }
+		edgeSize = noscalemult * 3, 
 	})
 	border:SetBackdropBorderColor(0, 0, 0, 1)
+	border:SetFrameLevel(frame:GetFrameLevel() - 1)
 	
-	local border = CreateFrame("Frame", nil, frame)
-	border:Point("TOPLEFT", -noscalemult, noscalemult)
-	border:Point("BOTTOMRIGHT", noscalemult, -noscalemult)
-	border:SetFrameLevel(frame:GetFrameLevel() + 1)
-	border:SetBackdrop({
-		edgeFile = E["media"].blankTex, 
-		edgeSize = noscalemult, 
-		insets = { left = noscalemult, right = noscalemult, top = noscalemult, bottom = noscalemult }
-	})
-	border:SetBackdropBorderColor(0, 0, 0, 1)
 		
 	frame:SetBackdropBorderColor(frame.text:GetTextColor())	
-	frame:SetBackdropColor(unpack(E["media"].backdropfadecolor))
+	frame:SetBackdropColor(0,0,0,0)
+	border:SetBackdropColor(unpack(E["media"].backdropfadecolor))
+	
 	frame:SetClampedToScreen(false)
 	frame.isBubblePowered = true
 	frame:HookScript('OnUpdate', M.UpdateBubbleBorder)
