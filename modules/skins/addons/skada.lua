@@ -72,24 +72,6 @@ local function LoadSkin()
 	for _, window in ipairs(Skada:GetWindows()) do
 		window:UpdateDisplay()
 	end
-
-
-	if RightChatTab then
-		local button = CreateFrame('Button', 'SkadaToggleSwitch', RightChatTab)
-		button:Width(16)
-		button:Height(RightChatTab:GetHeight() - 4)
-		button:Point("RIGHT", RightChatTab, "RIGHT", -2, 0)
-
-		button.tex = button:CreateTexture(nil, 'OVERLAY')
-		button.tex:SetTexture([[Interface\AddOns\ElvUI\media\textures\vehicleexit.tga]])
-		button.tex:Point('TOPRIGHT', -2, -2)
-		button.tex:Height(button:GetHeight() - 4)
-		button.tex:Width(16)
-
-		button:SetScript('OnMouseDown', function(self) self.tex:Point('TOPRIGHT', -4, -4) end)
-		button:SetScript('OnMouseUp', function(self) self.tex:Point('TOPRIGHT', -2, -2) end)
-		button:SetScript('OnClick', function(self) Skada:ToggleWindow() end)
-	end
 end
 
 S:RegisterSkin('Skada', LoadSkin)
