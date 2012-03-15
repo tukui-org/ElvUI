@@ -359,6 +359,7 @@ end
 
 local OldChatFrame_OnHyperlinkShow
 local function URLChatFrame_OnHyperlinkShow(self, link, ...)
+	CH.clickedframe = self
 	if (link):sub(1, 3) == "url" then
 		local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
 		local currentLink = (link):sub(5)
@@ -405,7 +406,7 @@ function CH:AddMessage(text, ...)
 			timestamp = timestamp:gsub('PM', ' PM')
 			text = '|cffB3B3B3['..timestamp..'] |r'..text
 		end
-	
+			
 		text = text:gsub('|Hplayer:Elv:', '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t|Hplayer:Elv:')
 	end
 
@@ -656,9 +657,70 @@ function CH:CHAT_MSG_SAY(...)
 	end
 end
 
+function CH:AddLines(lines, ...)
+  for i=select("#", ...),1,-1 do
+    local x = select(i, ...)
+    if x:GetObjectType() == "FontString" and not x:GetName() then
+        table.insert(lines, x:GetText())
+    end
+  end
+end
+
+
+function CH:CopyLineFromPlayerlinkToEdit(origin_frame, ...)
+    local frame = (origin_frame and origin_frame:GetObjectType() == "ScrollingMessageFrame" and origin_frame) or self.clickedframe
+	
+	self.lines = {};
+	
+    for i=1, #self.lines do
+        self.lines[i] = nil
+    end
+
+    self:AddLines(self.lines, frame:GetRegions())
+
+    local dropdownFrame = UIDROPDOWNMENU_INIT_MENU
+
+    local name = dropdownFrame.name
+    local server = dropdownFrame.server  or ""
+    local linenum = dropdownFrame.lineID
+
+    local fullname = name;
+
+    if server:len()>0 then
+        fullname = name.."-"..server;
+    end
+
+    local findname = "|Hplayer:"..fullname..":"..tostring(linenum)
+    for i=1, #self.lines do
+        if self.lines[i]:find(findname:gsub("%-", "%%-")) then
+            local text = self.lines[i]:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", ""):gsub("|H.-|h", ""):gsub("|h", "")
+            local editBox = ChatEdit_ChooseBoxForSend(frame);
+            if ( editBox ~= ChatEdit_GetActiveWindow() ) then
+                ChatFrame_OpenChat(text, frame);
+            else
+                editBox:SetText(text);
+            end
+        end
+    end
+end
+
 function CH:Initialize()
 	self.db = E.db.chat
 	if E.global.chat.enable ~= true then return end
+	
+    UnitPopupButtons["COPYCHAT"] = { 
+		text =L["Copy Text"], 
+		dist = 0 , 
+		func = function(a1, a2) 
+			CH:CopyLineFromPlayerlinkToEdit(a1, a2) 
+		end, 
+		arg1 = "", 
+		arg2 = ""
+	};
+	
+	tinsert(UnitPopupMenus["FRIEND"],#UnitPopupMenus["FRIEND"]-1,"COPYCHAT");    
+	E:RegisterDropdownButton("COPYCHAT", function(menu, button) button.arg1 = CH.clickedFrame end )
+	
 	E.Chat = self
 	
 	FriendsMicroButton:Kill()
