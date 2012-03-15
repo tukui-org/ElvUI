@@ -694,6 +694,8 @@ function CH:CopyLineFromPlayerlinkToEdit(origin_frame, ...)
     for i=1, #self.lines do
         if self.lines[i]:find(findname:gsub("%-", "%%-")) then
             local text = self.lines[i]:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", ""):gsub("|H.-|h", ""):gsub("|h", "")
+			text = text:gsub('|', '')
+			
             local editBox = ChatEdit_ChooseBoxForSend(frame);
             if ( editBox ~= ChatEdit_GetActiveWindow() ) then
                 ChatFrame_OpenChat(text, frame);
