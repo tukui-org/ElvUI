@@ -8,6 +8,7 @@ local response		= L["You need to be at least level %d to whisper me."]
 local friendError	= L["You have reached the maximum amount of friends, remove 2 for this module to function properly."]
 local good, maybe, filter, login = {}, {}, {}, false
 
+local TIMESTAMP_FORMAT
 local DEFAULT_STRINGS = {
 	BATTLEGROUND = L['BG'],
 	GUILD = L['G'],
@@ -388,10 +389,26 @@ function CH:AddMessage(text, ...)
 			text = text:gsub("^%["..RAID_WARNING.."%]", '['..L['RW']..']')	
 			text = text:gsub("BN_CONVERSATION:", L["BN:"])
 		end
+	
+		if CHAT_TIMESTAMP_FORMAT ~= nil then
+			TIMESTAMP_FORMAT = CHAT_TIMESTAMP_FORMAT
+			CHAT_TIMESTAMP_FORMAT = nil;
+		elseif GetCVar('showTimestamps') == 'none' then
+			TIMESTAMP_FORMAT = nil;
+		end
 		
+		--Add Timestamps
+		if ( TIMESTAMP_FORMAT ) then
+			local timestamp = BetterDate(TIMESTAMP_FORMAT, time())
+			timestamp = timestamp:gsub(' ', '')
+			timestamp = timestamp:gsub('AM', ' AM')
+			timestamp = timestamp:gsub('PM', ' PM')
+			text = '|cffB3B3B3['..timestamp..'] |r'..text
+		end
+	
 		text = text:gsub('|Hplayer:Elv:', '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t|Hplayer:Elv:')
 	end
-	
+
 	self.OldAddMessage(self, text, ...)
 end
 
@@ -409,6 +426,22 @@ if E:IsFoolsDay() then
 				text = text:gsub("<"..DND..">", "[|cffE7E716"..L['DND'].."|r] ")
 				text = text:gsub("^%["..RAID_WARNING.."%]", '['..L['RW']..']')	
 			end
+				
+			if CHAT_TIMESTAMP_FORMAT ~= nil then
+				TIMESTAMP_FORMAT = CHAT_TIMESTAMP_FORMAT
+				CHAT_TIMESTAMP_FORMAT = nil;
+			elseif GetCVar('showTimestamps') == 'none' then
+				TIMESTAMP_FORMAT = nil;
+			end
+			
+			--Add Timestamps
+			if ( TIMESTAMP_FORMAT ) then
+				local timestamp = BetterDate(TIMESTAMP_FORMAT, time())
+				timestamp = timestamp:gsub(' ', '')
+				timestamp = timestamp:gsub('AM', ' AM')
+				timestamp = timestamp:gsub('PM', ' PM')
+				text = '|cffB3B3B3['..timestamp..'] |r'..text
+			end			
 			
 			text = text:gsub('|Hplayer:'..playerName..':', '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t|Hplayer:'..playerName..':')
 		end
@@ -622,7 +655,6 @@ function CH:CHAT_MSG_SAY(...)
 		return CH.FindURL(self, ...)
 	end
 end
-
 
 function CH:Initialize()
 	self.db = E.db.chat
