@@ -18,6 +18,21 @@ local function OnClick()
 	ToggleAllBags()
 end
 
+local function OnEnter(self)
+	DT:SetupTooltip(self)
+
+	for i = 1, MAX_WATCHED_TOKENS do
+		local name, count, extraCurrencyType, icon, itemID = GetBackpackCurrencyInfo(i)
+		if name and i == 1 then
+			GameTooltip:AddLine(CURRENCY)
+			GameTooltip:AddLine(" ")
+		end
+		if name and count then GameTooltip:AddDoubleLine(name, count, 1, 1, 1) end
+	end	
+	
+	GameTooltip:Show()
+end
+
 local function ValueColorUpdate(hex, r, g, b)
 	displayString = string.join("", "%s", hex, "%d/%d|r")
 
@@ -37,4 +52,4 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	click - function to fire when clicking the datatext
 	onEnterFunc - function to fire OnEnter
 ]]
-DT:RegisterDatatext('Bags', {"PLAYER_ENTERING_WORLD", "BAG_UPDATE"}, OnEvent, nil, OnClick)
+DT:RegisterDatatext('Bags', {"PLAYER_ENTERING_WORLD", "BAG_UPDATE"}, OnEvent, nil, OnClick, OnEnter)

@@ -54,9 +54,9 @@ function UF:Update_AssistHeader(header, db)
 	header:SetAttribute('columnAnchorPoint', 'TOP')
 	header:SetAttribute('point', 'BOTTOM')
 
-	if not header.mover and ElvUF_Tank then
+	if not header.mover then
 		header:ClearAllPoints()
-		header:Point("TOPLEFT", ElvUF_Tank, "BOTTOMLEFT", 0, -30)
+		header:Point("LEFT", E.UIParent, "LEFT", 6, 100)
 	end
 end
 

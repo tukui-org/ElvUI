@@ -1,5 +1,6 @@
 local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
-local M = E:GetModule('Maps');
+local M = E:NewModule('Minimap', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
+E.Minimap = M
 
 local calendar_string = string.gsub(SLASH_CALENDAR1, "/", "")
 calendar_string = string.gsub(calendar_string, "^%l", string.upper)
@@ -138,7 +139,7 @@ function M:UpdateLFG()
 	MiniMapLFGFrameBorder:Hide()
 end
 
-function M:Minimap_UpdateSettings()
+function M:UpdateSettings()
 	E.MinimapSize = E.db.general.minimapSize
 	
 	if E.db.general.raidReminder then
@@ -204,7 +205,49 @@ function M:Minimap_UpdateSettings()
 	end
 end
 
-function M:LoadMinimap()	
+function M:SkinMinimapButton(f)
+	if f:GetName() == "MiniMapBattlefieldFrame" or f:GetName() == "ElvConfigToggle" or f:GetName() == 'UpperRepExpBarHolder' then return end
+	
+	f:SetPushedTexture(nil)
+	f:SetHighlightTexture(nil)
+	f:SetDisabledTexture(nil)
+	f:SetSize(22, 22)
+
+	for i = 1, f:GetNumRegions() do
+		local region = select(i, f:GetRegions())
+		if region:GetObjectType() == "Texture" then
+			local tex = region:GetTexture()
+			if tex and (tex:find("Border") or tex:find("Background")) then
+				region:SetTexture(nil)
+			else
+				region:SetDrawLayer("OVERLAY", 5)
+				region:ClearAllPoints()
+				region:Point("TOPLEFT", f, "TOPLEFT", 2, -2)
+				region:Point("BOTTOMRIGHT", f, "BOTTOMRIGHT", -2, 2)
+				region:SetTexCoord(.08, .92, .08, .92)
+			end
+		end
+	end
+
+	f:SetTemplate("Default")
+	f:SetFrameLevel(f:GetFrameLevel() + 2)
+	-- Set flag to indicate that this button has already been skinned
+	f.skinned = true
+end
+
+function M:CheckForNewMinimapButtons()
+	for i = 1, Minimap:GetNumChildren() do
+		local f = select(i, Minimap:GetChildren())
+		if not f.skinned and f:GetObjectType() == 'Button' then
+			self:SkinMinimapButton(f)
+		end
+	end
+end
+
+function M:Initialize()	
+	self:ScheduleRepeatingTimer('CheckForNewMinimapButtons', 15)
+	self:CheckForNewMinimapButtons() --Initial check
+	
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
 	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -10, -10)
 	mmholder:Width((Minimap:GetWidth() + 29) + E.RBRWidth)
@@ -299,7 +342,7 @@ function M:LoadMinimap()
 	self:RegisterEvent("ZONE_CHANGED", "Update_ZoneText")
 	self:RegisterEvent("ZONE_CHANGED_INDOORS", "Update_ZoneText")		
 	self:RegisterEvent('ADDON_LOADED')
-	self:Minimap_UpdateSettings()
+	self:UpdateSettings()
 	
 	--Create Farmmode Minimap
 	local fm = CreateFrame('Minimap', 'FarmModeMap', E.UIParent)
@@ -352,3 +395,5 @@ function M:LoadMinimap()
 		FarmModeMap:Hide()
 	end)
 end
+
+E:RegisterModule(M:GetName())

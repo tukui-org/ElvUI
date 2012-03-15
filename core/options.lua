@@ -133,7 +133,7 @@ E.Options.args.general = {
 					type = 'toggle',
 					set = function(info, value) 
 						E.db.general[ info[#info] ] = value
-						E:GetModule('Maps'):Minimap_UpdateSettings()
+						E:GetModule('Minimap'):UpdateSettings()
 					end,					
 				},
 				mapTransparency = {
@@ -152,7 +152,7 @@ E.Options.args.general = {
 					min = 120, max = 250, step = 1,
 					set = function(info, value) 
 						E.db.general[ info[#info] ] = value
-						E:GetModule('Maps'):Minimap_UpdateSettings()
+						E:GetModule('Minimap'):UpdateSettings()
 					end,
 				},
 				profileBinds = {
@@ -163,6 +163,19 @@ E.Options.args.general = {
 					get = function(info) return E.global.general.profileBinds end,		
 					set = function(info, value) E.global.general.profileBinds = value; StaticPopup_Show("GLOBAL_RL") end
 				},
+				bubbles = {
+					order = 13,
+					type = "toggle",
+					name = L['Chat Bubbles'],
+					desc = L['Skin the blizzard chat bubbles.'],
+					get = function(info) return E.global.general.bubbles end,
+					set = function(info, value) E.global.general.bubbles = value; StaticPopup_Show("GLOBAL_RL") end
+				},		
+				spacer = {
+					order = 99,
+					type = "description",
+					name = "",
+				},						
 				panelWidth = {
 					order = 100,
 					type = 'range',

@@ -82,7 +82,7 @@ function AB:PositionAndSizeBarPet()
 	local numColumns = ceil(numButtons / buttonsPerRow);
 	local widthMult = self.db['barPet'].widthMult;
 	local heightMult = self.db['barPet'].heightMult;
-	
+	bar.db = self.db['barPet']
 	if numButtons < buttonsPerRow then
 		buttonsPerRow = numButtons;
 	end

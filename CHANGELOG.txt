@@ -1,24 +1,22 @@
 [b]Additions[/b]
-*Add Profile Binds option to the general section of the config. This is a global setting for all ElvUI profiles. Is is disabled by default. When enabled it snapshots your keybinds to your ElvUI profile. That way when you change talent specializations and you have the Dual Profile feature enabled your keybinds change with your spec. Having this option turned on will greatly increase the amount of memory used by the addon. Don't worry it shouldn't effect performance. Please note that this is still very experimental.
-*Add option under the player unitframe section to Enable/Disable the Rested Icon.
-*Add slash command "/egrid" it's arguements can be 4-256. If no arguements then the grid will be hidden.
-*Add slash command "/gr" to automatically change the channel you're talking in to the highest channel available.
-*Add skin for the Blizzard Scroll Of Resurrection frame.
+*Add new option to skin the Blizzard Chat Bubbles. ->(General Settings)
+*Add skin for the Blizzard Stable Frame. (Credit: Tomkuzyno)
+*Add skin the the Blizzard BG-Map.
+*Add Auctionator skin. (Credit: Tomkuzyno)
+*Add Clique Skin. (Credit: Nidra)
+*Minimap icons should now be skinned to match ElvUI. (Credit: Tomkuzyno)
+*Add skin for Addon Control Panel (Credit: Camealion)
+*Add an option under the skada skin section of the config to control the bar height of the individual bars.
+*Add skin for the Blizzard Guild Invite Frame.
+*Add a button to the right click menu of someones name in chat. This allows you to copy that specific line of chat of the person you right clicked.
 
-[b]Changes[/b]
-*Removed the WhisperLevel option I added previously because it was a pain to debug myself. And it was flawed.
-*Routes and GatherMate2 addons will now use both minimaps instead of just the farmmode map.
-*Chat frames without backdrops should now properly hide their chat tabs unless mouseovered.
-*Remove the minimum requirement of .64 to the UIScale. It still however cannot go over 1.
-*The slash command "/farmmode" now accepts arguements to set the size of the FarmMode map.
-*Right clicking the right chat toggle button should now toggle whatever addon is embedded to that window. In addition add a tooltip to each of the chat toggle buttons to explain what they do.
+[b]General Changes[/b]
+*The World Map Alpha setting should properly change Opacity, it was working the opposite of how it was intended before. 100% Opacity means the frame is fully faded away now.
+*Add currency information to the bags datatext tooltip.
+*UIScale must be changed by at least 1% in order to recieve a UIScale popup warning to reload.
+*Chat Timestamps should now all have brackets around them, and be colored gray.
 
 [b]Fixes[/b]
-*Created workaround for Blizzard issue with the UI and people using dual montiors. Wasn't returning the correct screen resolution value.
-*Fix the BNConversation prefix in chat.
-*The glow feature when targeting other raid/party members wasn't updating when someone joined the party. This sometimes produced unintended results.
-*Fix pvp text on the player frame not working after joining a group.
-*Users were unable to change the left and right panel sizes while chat was disabled.
-*EmbedRight wasn't working as intended.
-*Experience/Reputation bar should now properly take into consideration if you do or don't have the RaidReminder Bar turned on when getting sized and placed below the minimap.
-*Add additional events to the Attack Power datatext. Wasn't updated under some cases for Hunters.
+*The Reputation bar should have its width correctly set on login.
+*Using the keybind mode on a bar that is set to mouseover should properly retain its visibility state.
+*The Main Assist frame should no longer re-attach itself to the Main Tank frame after the PLAYER_ENTERING_WORLD event fires, or logging into the game.

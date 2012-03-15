@@ -10,6 +10,7 @@ G['general'] = {
 	["normTex"] = "Minimalist",
 	["glossTex"] = "Minimalist",	
 	["dmgfont"] = "ElvUI Combat",
+	['bubbles'] = true,
 }
 
 G['classtimer'] = {
@@ -29,7 +30,6 @@ G['chat'] = {
 }
 
 G['skins'] = {
-	['embedRight'] = 'Skada',
 	['bigwigs'] = {
 		['enable'] = true,
 		['spacing'] = 7,
@@ -51,6 +51,7 @@ G['skins'] = {
 	},
 	['skada'] = {
 		['enable'] = true,
+		['barHeight'] = 16,
 	},		
 	['tinydps'] = {
 		['enable'] = true,
@@ -105,6 +106,8 @@ G['skins'] = {
 		["encounterjournal"] = true,
 		["voidstorage"] = true,
 		["transmogrify"] = true,
+		["stable"] = true,
+		["bgmap"] = true,
 	},
 }
 
