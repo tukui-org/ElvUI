@@ -88,8 +88,7 @@ end
 function M:CheckMovement()
 	if not WorldMapFrame:IsShown() then return; end
 	if self:IsPlayerMoving() then
-		local alpha = 1.0 - E.db.general.mapTransparency;
-		WorldMapFrame:SetAlpha(alpha)
+		WorldMapFrame:SetAlpha(E.db.general.mapTransparency)
 	else
 		WorldMapFrame:SetAlpha(1)
 	end
