@@ -1,4 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">	
+	<Script file='auctionator.lua'/>
+	<Script file='clique.lua'/>
+	<Script file='acp.lua'/>
 	<Script file='bigwigs.lua'/>
 	<Script file='dbm.lua'/>
 	<Script file='dxe.lua'/>

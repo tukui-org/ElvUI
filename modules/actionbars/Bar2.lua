@@ -17,6 +17,7 @@ function AB:PositionAndSizeBar2()
 	local numColumns = ceil(numButtons / buttonsPerRow);
 	local widthMult = self.db[barName].widthMult;
 	local heightMult = self.db[barName].heightMult;
+	bar.db = self.db[barName]
 	
 	if numButtons < buttonsPerRow then
 		buttonsPerRow = numButtons;

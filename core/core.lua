@@ -34,6 +34,12 @@ BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title")
 --Modules List
 E["RegisteredModules"] = {}
 
+local registry = {}
+
+function E:RegisterDropdownButton(name, callback)
+  registry[name] = callback or true
+end
+
 function E:Print(msg)
 	print(self["media"].hexvaluecolor..'ElvUI:|r', msg)
 end
@@ -592,12 +598,29 @@ function E:UpdateAll()
 		self:Install()
 	end
 	
-	self:GetModule('Maps'):Minimap_UpdateSettings()
+	self:GetModule('Minimap'):UpdateSettings()
 	
 	self:LoadKeybinds()
 	
 	collectgarbage('collect');
 end
+
+local function showMenu(dropdownMenu, which, unit, name, userData, ...)
+  for i=1,UIDROPDOWNMENU_MAXBUTTONS do
+    local button = _G["DropDownList" .. UIDROPDOWNMENU_MENU_LEVEL .. "Button" .. i];
+
+    local f = registry[button.value]
+    -- Patch our handler function back in
+    if f then
+      button.func = UnitPopupButtons[button.value].func
+      if type(f) == "function" then
+        f(dropdownMenu, button)
+      end
+    end
+  end
+end
+
+hooksecurefunc("UnitPopup_ShowMenu", showMenu)
 
 function E:Initialize()
 	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF, true);
@@ -646,7 +669,7 @@ function E:Initialize()
 	self:RegisterEvent('UPDATE_BINDINGS', 'SaveKeybinds')
 	self:SaveKeybinds()
 	
-	self:GetModule('Maps'):Minimap_UpdateSettings()
+	self:GetModule('Minimap'):UpdateSettings()
 	
 	collectgarbage("collect");
 end
@@ -710,7 +733,6 @@ function E:ResetAllUI()
 		E:SetupLayout(E.db.layoutSet)
 	end
 end
-
 
 function E:ResetUI(...)
 	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end

@@ -295,7 +295,7 @@ function E:SetupLayout(layout)
 		E.db.unitframe.units.arena.castbar.width = 200;
 		
 		E.db.unitframe.units.party.point = 'LEFT';
-		E.db.unitframe.units.party.xOffset = 1;
+		E.db.unitframe.units.party.xOffset = 5;
 		E.db.unitframe.units.party.healPrediction = true;
 		E.db.unitframe.units.party.health.frequentUpdates = true;
 		E.db.unitframe.units.party.columnAnchorPoint = 'LEFT';

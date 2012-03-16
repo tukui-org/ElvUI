@@ -271,7 +271,7 @@ end
 function LO:CreateExtraDataBarPanels()
 	local chattab1 = CreateFrame('Frame', 'ChatTab_Datatext_Panel', E.UIParent)
 	chattab1:SetScript('OnShow', function(self)
-		chattab1:Point("TOPRIGHT", RightChatTab, "TOPRIGHT", -16, 0)
+		chattab1:Point("TOPRIGHT", RightChatTab, "TOPRIGHT", 0, 0)
 		chattab1:Point("BOTTOMLEFT", RightChatTab, "BOTTOMLEFT", (E.db.general.panelWidth / 3), 0)
 	end)
 	chattab1:Hide()

@@ -34,7 +34,7 @@ P['general'] = {
 	['expRepPos'] = 'MINIMAP_BOTTOM',				-- TOP_SCREEN or MINIMAP_BOTTOM
 
 	--misc
-	['mapTransparency'] = 0.5,
+	['mapTransparency'] = 1,
 	['minimapSize'] = 175,
 	['raidReminder'] = true,
 };

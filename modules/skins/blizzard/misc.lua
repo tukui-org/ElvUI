@@ -388,6 +388,15 @@ local function LoadSkin()
 			_G["DropDownList"..i.."MenuBackdrop"]:SetTemplate("Default", true)
 		end
 	end)	
+	
+	GuildInviteFrame:StripTextures()
+	GuildInviteFrame:SetTemplate('Transparent')
+	GuildInviteFrame:CreateShadow()
+	GuildInviteFrameLevel:Kill()
+	S:HandleButton(GuildInviteFrameJoinButton)
+	S:HandleButton(GuildInviteFrameDeclineButton)
+	GuildInviteFrame:Height(125)
+	GuildInviteFrame.SetHeight = E.noop
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)
