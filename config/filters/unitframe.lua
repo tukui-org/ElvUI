@@ -117,6 +117,7 @@ G.unitframe.aurafilters['DebuffBlacklist'] = {
 		[SpellName(36895)] = true, --Transporter Malfunction
 		[SpellName(36893)] = true, --Transporter Malfunction
 		[SpellName(106369)] = true, --Twilight Shift (Ultraxion)
+		[SpellName(95809)] = true, --Insanity (Hunter Pet Heroism Debuff)
 	},
 }
 
