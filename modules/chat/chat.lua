@@ -388,7 +388,7 @@ function CH:AddMessage(text, ...)
 			text = text:gsub("<"..AFK..">", "[|cffFF0000"..L['AFK'].."|r] ")
 			text = text:gsub("<"..DND..">", "[|cffE7E716"..L['DND'].."|r] ")
 			text = text:gsub("^%["..RAID_WARNING.."%]", '['..L['RW']..']')	
-			text = text:gsub("BN_CONVERSATION:", L["BN:"])
+			text = text:gsub("%[BN_CONVERSATION:", '%['..L["BN:"])
 		end
 	
 		if CHAT_TIMESTAMP_FORMAT ~= nil then
@@ -426,6 +426,7 @@ if E:IsFoolsDay() then
 				text = text:gsub("<"..AFK..">", "[|cffFF0000"..L['AFK'].."|r] ")
 				text = text:gsub("<"..DND..">", "[|cffE7E716"..L['DND'].."|r] ")
 				text = text:gsub("^%["..RAID_WARNING.."%]", '['..L['RW']..']')	
+				text = text:gsub("%[BN_CONVERSATION:", '%['..L["BN:"])
 			end
 				
 			if CHAT_TIMESTAMP_FORMAT ~= nil then
