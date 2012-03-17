@@ -481,8 +481,7 @@ function E:SendRecieve(event, prefix, message, channel, sender)
 end
 
 
---WTHAT THE F'ING FUCK IS WRONG WITH THIS
-local localBindsSet = false
+--[[local localBindsSet = false
 function E:SaveKeybinds()
 	if not E.global.general.profileBinds or localBindsSet then return end
 	
@@ -537,7 +536,7 @@ function E:LoadKeybinds()
 
 	SaveBindings(GetCurrentBindingSet());
 	localBindsSet = false;
-end
+end]]
 
 function E:UpdateAll()
 	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF, true);
@@ -595,7 +594,7 @@ function E:UpdateAll()
 	
 	self:GetModule('Minimap'):UpdateSettings()
 	
-	self:LoadKeybinds()
+	--self:LoadKeybinds()
 	
 	collectgarbage('collect');
 end
@@ -660,8 +659,8 @@ function E:Initialize()
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "SendRecieve")
 	self:RegisterEvent("CHAT_MSG_ADDON", "SendRecieve")
 	self:RegisterEvent('UI_SCALE_CHANGED', 'UIScale')
-	self:RegisterEvent('UPDATE_BINDINGS', 'SaveKeybinds')
-	self:SaveKeybinds()
+	--self:RegisterEvent('UPDATE_BINDINGS', 'SaveKeybinds')
+	--self:SaveKeybinds()
 	
 	self:GetModule('Minimap'):UpdateSettings()
 	

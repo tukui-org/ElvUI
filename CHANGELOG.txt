@@ -11,6 +11,7 @@
 *Add a button to the right click menu of someones name in chat. This allows you to copy that specific line of chat of the person you right clicked.
 
 [b]General Changes[/b]
+*Removed the experimental Profile Binds option. See: http://wow.curseforge.com/addons/elvui/tickets/258-improvements-to-profile-binds/#comments
 *Add currency information to the bags datatext tooltip.
 *UIScale must be changed by at least 1% in order to recieve a UIScale popup warning to reload.
 *Chat Timestamps should now all have brackets around them, and be colored gray.

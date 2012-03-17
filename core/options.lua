@@ -155,14 +155,14 @@ E.Options.args.general = {
 						E:GetModule('Minimap'):UpdateSettings()
 					end,
 				},
-				profileBinds = {
+				--[[profileBinds = {
 					order = 12,
 					name = L['Profile Binds'],
 					desc = L['Save your keybinds with your ElvUI profile. That way if you have the dual spec feature enabled in ElvUI you can swap keybinds with your specs.'],
 					type = 'toggle',
 					get = function(info) return E.global.general.profileBinds end,		
 					set = function(info, value) E.global.general.profileBinds = value; StaticPopup_Show("GLOBAL_RL") end
-				},
+				},]]
 				bubbles = {
 					order = 13,
 					type = "toggle",
