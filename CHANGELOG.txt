@@ -19,3 +19,5 @@
 *The Reputation bar should have its width correctly set on login.
 *Using the keybind mode on a bar that is set to mouseover should properly retain its visibility state.
 *The Main Assist frame should no longer re-attach itself to the Main Tank frame after the PLAYER_ENTERING_WORLD event fires, or logging into the game.
+*Fix lua error when using Dual Profiles and someone has the a role icon on their unitframe.
+*Fix lua error when using Dual Profiles and someone has a debuff/buff on their unitframe.

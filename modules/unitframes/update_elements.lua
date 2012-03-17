@@ -967,8 +967,8 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	
 	icon.isPlayer = isPlayer
 	icon.owner = caster
-	
-	if db and db[self.type] and db[self.type].durationLimit ~= 0 then
+
+	if db and db[self.type] and db[self.type].durationLimit ~= 0 and db[self.type].durationLimit ~= nil and duration ~= nil then
 		if duration > db[self.type].durationLimit or duration == 0 then
 			return false
 		end
@@ -1116,7 +1116,8 @@ end
 function UF:UpdateRoleIcon()
 	local lfdrole = self.LFDRole
 	local db = self.db.roleIcon;
-
+	
+	if not db then return; end
 	local role = UnitGroupRolesAssigned(self.unit)
 	if(role == 'TANK' or role == 'HEALER' or role == 'DAMAGER') and UnitIsConnected(self.unit) and db.enable then
 		if role == 'TANK' then
