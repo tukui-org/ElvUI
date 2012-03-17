@@ -56,7 +56,7 @@ function UF:Update_AssistHeader(header, db)
 
 	if not header.mover then
 		header:ClearAllPoints()
-		header:Point("LEFT", E.UIParent, "LEFT", 6, 100)
+		header:Point("LEFT", E.UIParent, "LEFT", 30, 100)
 	end
 end
 
