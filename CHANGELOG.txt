@@ -9,6 +9,7 @@
 *Add an option under the skada skin section of the config to control the bar height of the individual bars.
 *Add skin for the Blizzard Guild Invite Frame.
 *Add a button to the right click menu of someones name in chat. This allows you to copy that specific line of chat of the person you right clicked.
+*Add option to player unitframe's castbar section to display the current target on the castbar. (Default is Off)
 
 [b]General Changes[/b]
 *Removed the experimental Profile Binds option. See: http://wow.curseforge.com/addons/elvui/tickets/258-improvements-to-profile-binds/#comments

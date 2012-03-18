@@ -1197,6 +1197,12 @@ E.Options.args.unitframe.args.player = {
 					name = L['Spark'],
 					desc = L['Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop.'],
 				},
+				displayTarget = {
+					order = 15,
+					type = "toggle",
+					name = L["Display Target"],
+					desc = L["Display the target of the cast on the castbar."],
+				},
 			},
 		},
 		classbar = {

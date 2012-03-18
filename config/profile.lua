@@ -239,6 +239,7 @@ P['unitframe'] = {
 				['height'] = 18,
 				['icon'] = true,
 				['latency'] = true,
+				['displayTarget'] = false,
 				['color'] = P.general.bordercolor,
 				['interruptcolor'] = { r = 0.78, g = 0.25, b = 0.25 },
 				['xOffset'] = 0,
