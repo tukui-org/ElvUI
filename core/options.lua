@@ -95,16 +95,8 @@ E.Options.args.general = {
 					desc = L['Automatically accept invites from guild/friends.'],
 					type = 'toggle',
 				},
-				bags = {
-					order = 5,
-					type = "toggle",
-					name = L['Bags'],
-					desc = L['Enable/Disable the all-in-one bag.'],
-					get = function(info) return E.global.general.bags end,
-					set = function(info, value) E.global.general.bags = value; StaticPopup_Show("GLOBAL_RL") end
-				},
 				loot = {
-					order = 6,
+					order = 5,
 					type = "toggle",
 					name = L['Loot'],
 					desc = L['Enable/Disable the loot frame.'],
@@ -112,7 +104,7 @@ E.Options.args.general = {
 					set = function(info, value) E.global.general.loot = value; StaticPopup_Show("GLOBAL_RL") end
 				},
 				lootRoll = {
-					order = 7,
+					order = 6,
 					type = "toggle",
 					name = L['Loot Roll'],
 					desc = L['Enable/Disable the loot roll frame.'],
@@ -120,14 +112,14 @@ E.Options.args.general = {
 					set = function(info, value) E.global.general.lootRoll = value; StaticPopup_Show("GLOBAL_RL") end
 				},
 				autoscale = {
-					order = 8,
+					order = 7,
 					name = L["Auto Scale"],
 					desc = L["Automatically scale the User Interface based on your screen resolution"],
 					type = "toggle",	
 					set = function(info, value) E.db.general[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end
 				},	
 				raidReminder = {
-					order = 9,
+					order = 8,
 					name = L['Raid Reminder'],
 					desc = L['Display raid reminder bar on the minimap.'],
 					type = 'toggle',
@@ -137,7 +129,7 @@ E.Options.args.general = {
 					end,					
 				},
 				mapTransparency = {
-					order = 10,
+					order = 9,
 					name = L['Map Transparency'],
 					desc = L['Controls what the transparency of the worldmap will be set to when you are moving.'],
 					type = 'range',
@@ -145,7 +137,7 @@ E.Options.args.general = {
 					min = 0, max = 1, step = 0.01,
 				},
 				minimapSize = {
-					order = 11,
+					order = 10,
 					name = L['Minimap Size'],
 					desc = L['Adjust the size of the minimap.'],
 					type = 'range',
@@ -155,16 +147,16 @@ E.Options.args.general = {
 						E:GetModule('Minimap'):UpdateSettings()
 					end,
 				},
-				profileBinds = {
+				--[[profileBinds = {
 					order = 12,
 					name = L['Profile Binds'],
 					desc = L['Save your keybinds with your ElvUI profile. That way if you have the dual spec feature enabled in ElvUI you can swap keybinds with your specs.'],
 					type = 'toggle',
 					get = function(info) return E.global.general.profileBinds end,		
 					set = function(info, value) E.global.general.profileBinds = value; StaticPopup_Show("GLOBAL_RL") end
-				},
+				},]]
 				bubbles = {
-					order = 13,
+					order = 11,
 					type = "toggle",
 					name = L['Chat Bubbles'],
 					desc = L['Skin the blizzard chat bubbles.'],

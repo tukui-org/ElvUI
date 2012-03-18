@@ -206,7 +206,7 @@ function AB:UpdateCooldownSettings()
 	HOURS_FORMAT = E:RGBToHex(color.r, color.g, color.b)..'%dh|r' --format for timers that have hours remaining
 	
 	color = self.db.dayscolor
-	DAYS_FORMAT = E:RGBToHex(color.r, color.g, color.b)..'%dh|r' --format for timers that have days remaining
+	DAYS_FORMAT = E:RGBToHex(color.r, color.g, color.b)..'%dd|r' --format for timers that have days remaining
 	
 	
 	EXPIRING_DURATION = self.db.treshold

@@ -487,9 +487,16 @@ end
 
 function UF:PostCastStart(unit, name, rank, castid)
 	if unit == "vehicle" then unit = "player" end
-	self.Text:SetText(string.sub(name, 0, math.floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontsize) * 12)))
-	self.Spark:Height(self:GetHeight() * 2)
 	local db = self:GetParent().db
+
+	if db.castbar.displayTarget and self.curTarget then
+		self.Text:SetText(string.sub(name..' --> '..self.curTarget, 0, math.floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontsize) * 12)))
+	else
+		self.Text:SetText(string.sub(name, 0, math.floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontsize) * 12)))
+	end
+
+	self.Spark:Height(self:GetHeight() * 2)
+	
 	local color
 	self.unit = unit
 
@@ -967,8 +974,8 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	
 	icon.isPlayer = isPlayer
 	icon.owner = caster
-	
-	if db and db[self.type] and db[self.type].durationLimit ~= 0 then
+
+	if db and db[self.type] and db[self.type].durationLimit ~= 0 and db[self.type].durationLimit ~= nil and duration ~= nil then
 		if duration > db[self.type].durationLimit or duration == 0 then
 			return false
 		end
@@ -1116,7 +1123,8 @@ end
 function UF:UpdateRoleIcon()
 	local lfdrole = self.LFDRole
 	local db = self.db.roleIcon;
-
+	
+	if not db then return; end
 	local role = UnitGroupRolesAssigned(self.unit)
 	if(role == 'TANK' or role == 'HEALER' or role == 'DAMAGER') and UnitIsConnected(self.unit) and db.enable then
 		if role == 'TANK' then

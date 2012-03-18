@@ -70,7 +70,7 @@ end
 E.Options.args.nameplate = {
 	type = "group",
 	name = L["NamePlates"],
-	childGroups = "select",
+	childGroups = "tree",
 	get = function(info) return E.db.nameplate[ info[#info] ] end,
 	set = function(info, value) E.db.nameplate[ info[#info] ] = value; NP:UpdateAllPlates() end,
 	args = {
@@ -90,6 +90,7 @@ E.Options.args.nameplate = {
 			order = 3,
 			type = "group",
 			name = L["General"],
+			guiInline = true,
 			disabled = function() return not E.NamePlates; end,
 			args = {
 				width = {

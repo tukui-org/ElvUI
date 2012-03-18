@@ -9,13 +9,29 @@
 *Add an option under the skada skin section of the config to control the bar height of the individual bars.
 *Add skin for the Blizzard Guild Invite Frame.
 *Add a button to the right click menu of someones name in chat. This allows you to copy that specific line of chat of the person you right clicked.
+*Add option to player unitframe's castbar section to display the current target on the castbar. (Default is Off)
+*Add option to the Bags Module to change the amount of columns displayed for the Bags Frame
+*Add option to the Bags Module to change the amount of columns displayed for the Bank Frame
+*Add option to the Bags Module to change the sort orientation. This can be set to BOTTOM-TOP or TOP-BOTTOM
+*Add option to the Bags Module to change the xOffset of both the bags and bank frame.
+*Add option to the Bags Module to change the yOffset of both the bags and bank frame.
 
 [b]General Changes[/b]
+*The In-Game config has recieved a bit of a overhaul to make finding stuff a little easier.
+*The Bags module now has its own category inside the In-Game Config.
+*Removed the experimental Profile Binds option. See: http://wow.curseforge.com/addons/elvui/tickets/258-improvements-to-profile-binds/#comments
 *Add currency information to the bags datatext tooltip.
 *UIScale must be changed by at least 1% in order to recieve a UIScale popup warning to reload.
 *Chat Timestamps should now all have brackets around them, and be colored gray.
+*Minimap Location text is now only displayed when mousing over the minimap.
 
 [b]Fixes[/b]
 *The Reputation bar should have its width correctly set on login.
 *Using the keybind mode on a bar that is set to mouseover should properly retain its visibility state.
 *The Main Assist frame should no longer re-attach itself to the Main Tank frame after the PLAYER_ENTERING_WORLD event fires, or logging into the game.
+*Fix lua error when using Dual Profiles and someone has the a role icon on their unitframe.
+*Fix lua error when using Dual Profiles and someone has a debuff/buff on their unitframe.
+*Fix issue where right clicking on B.Net conversation to invite more friends caused a lua error with the blizzard API.
+*Fix lua error for Spanish/Mexican clients. Caused in the lootframe.lua file.
+*Fix issue with cooldown text. Days were being displayed in hour format.
+*Fix a few compatibility issues with WIM.

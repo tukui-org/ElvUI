@@ -114,7 +114,7 @@ function AB:BindUpdate(button, spellmacro)
 		GameTooltip:SetOwner(bind, "ANCHOR_TOP");
 		GameTooltip:SetPoint("BOTTOM", bind, "TOP", 0, 1);
 		GameTooltip:AddLine(bind.button.name, 1, 1, 1);
-		
+
 		bind.button.bindings = {GetBindingKey(spellmacro.." "..bind.button.name)};
 			if #bind.button.bindings == 0 then
 				GameTooltip:AddLine(L["No bindings set."], .6, .6, .6);
@@ -253,8 +253,8 @@ function AB:LoadKeyBinder()
 	self:HookScript(GameTooltip, "OnUpdate", "Tooltip_OnUpdate");
 	hooksecurefunc(GameTooltip, "Hide", function(tooltip) for _, tt in pairs(tooltip.shoppingTooltips) do tt:Hide(); end end);
 	
-	bind:SetScript('OnEnter', function(self) local db = self.button:GetParent().db if db.mouseover then AB:Button_OnEnter(self.button) end end)
-	bind:SetScript("OnLeave", function(self) AB:BindHide(); local db = self.button:GetParent().db if db.mouseover then AB:Button_OnLeave(self.button) end end)
+	bind:SetScript('OnEnter', function(self) local db = self.button:GetParent().db if db and  db.mouseover then AB:Button_OnEnter(self.button) end end)
+	bind:SetScript("OnLeave", function(self) AB:BindHide(); local db = self.button:GetParent().db if db and db.mouseover then AB:Button_OnLeave(self.button) end end)
 	bind:SetScript("OnKeyUp", function(_, key) self:BindListener(key) end);
 	bind:SetScript("OnMouseUp", function(_, key) self:BindListener(key) end);
 	bind:SetScript("OnMouseWheel", function(_, delta) if delta>0 then self:BindListener("MOUSEWHEELUP") else self:BindListener("MOUSEWHEELDOWN"); end end);

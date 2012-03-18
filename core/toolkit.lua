@@ -162,20 +162,21 @@ local function CreateShadow(f)
 end
 
 local function Kill(object)
+	
 	if object.UnregisterAllEvents then
 		object:UnregisterAllEvents()
 		object:SetParent(E.HiddenFrame)
 	else
-		object.Show = E.noop
+		object.Show = object.Hide
 	end
-
+	
 	object:Hide()
 end
 
 local function StripTextures(object, kill)
 	for i=1, object:GetNumRegions() do
 		local region = select(i, object:GetRegions())
-		if region:GetObjectType() == "Texture" then
+		if region and region:GetObjectType() == "Texture" then
 			if kill then
 				region:Kill()
 			else
