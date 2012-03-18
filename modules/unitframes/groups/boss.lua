@@ -216,7 +216,7 @@ function UF:Update_BossFrames(frame, db)
 				portrait.backdrop:ClearAllPoints()
 				portrait.backdrop:SetPoint("TOPRIGHT", frame, "TOPRIGHT")
 						
-				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET then
+				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR then
 					portrait.backdrop:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", SPACING, 0)
 				else
 					portrait.backdrop:Point("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", SPACING, 0)

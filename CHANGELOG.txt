@@ -27,6 +27,7 @@
 *Minimap Location text is now only displayed when moussing over the minimap.
 
 [b]Fixes[/b]
+*Fix several cases where disabling the Power Bar would prevent the portrait frame from displaying next time you logged in. (Player Frame, Target Frame, Boss Frames)
 *The Reputation bar should have its width correctly set on login.
 *Using the key bind mode on a bar that is set to mouse over should properly retain its visibility state.
 *The Main Assist frame should no longer re-attach itself to the Main Tank frame after the PLAYER_ENTERING_WORLD event fires, or logging into the game.
