@@ -172,6 +172,10 @@ local function SetupCVars()
 	SetCVar("bloatnameplates", 0)
 	SetCVar("threatWarning", 3)
 	SetCVar('alwaysShowActionBars', 1)
+	SetCVar('lockActionBars', 1)
+	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
+	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
+	
 	InstallStepComplete.message = L["CVars Set"]
 	InstallStepComplete:Show()					
 end	
