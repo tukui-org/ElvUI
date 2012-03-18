@@ -34,3 +34,4 @@
 *Fix issue where right clicking on B.Net conversation to invite more friends caused a lua error with the blizzard API.
 *Fix lua error for Spanish/Mexican clients. Caused in the lootframe.lua file.
 *Fix issue with cooldown text. Days were being displayed in hour format.
+*Fix a few compatibility issues with WIM.

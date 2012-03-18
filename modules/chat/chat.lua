@@ -342,7 +342,7 @@ function FloatingChatFrame_OnMouseScroll(frame, delta)
 end
 
 function CH:PrintURL(url)
-	return E['media'].hexvaluecolor.."|Hurl:"..url.."|h"..url.."|h|r "
+	return "|cFFFFFFFF[|Hurl:"..url.."|h"..url.."|h]|r "
 end
 
 function CH:FindURL(event, msg, ...)
@@ -371,6 +371,19 @@ local function URLChatFrame_OnHyperlinkShow(self, link, ...)
 		return
 	end
 	OldChatFrame_OnHyperlinkShow(self, link, ...)
+end
+
+local function WIM_URLLink(link)
+	if (link):sub(1, 3) == "url" then
+		local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
+		local currentLink = (link):sub(5)
+		if (not ChatFrameEditBox:IsShown()) then
+			ChatEdit_ActivateChat(ChatFrameEditBox)
+		end
+		ChatFrameEditBox:Insert(currentLink)
+		ChatFrameEditBox:HighlightText()
+		return
+	end
 end
 
 function CH:ShortChannel()
@@ -736,6 +749,12 @@ function CH:Initialize()
 	ChatFrameMenuButton:Kill()
 	OldChatFrame_OnHyperlinkShow = ChatFrame_OnHyperlinkShow
 	ChatFrame_OnHyperlinkShow = URLChatFrame_OnHyperlinkShow
+	
+    if WIM then
+      WIM.RegisterWidgetTrigger("chat_display", "whisper,chat,w2w,demo", "OnHyperlinkClick", function(self) CH.clickedframe = self end);
+	  WIM.RegisterItemRefHandler('url', WIM_URLLink)
+    end
+	
 	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	
