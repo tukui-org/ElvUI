@@ -202,7 +202,7 @@ local function SkinAce3()
 			
 			if not frame.backdrop then
 				frame:CreateBackdrop("Default")
-				frame.backdrop:Point("TOPLEFT", 20, -3)
+				frame.backdrop:Point("TOPLEFT", 20, -2)
 				frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
 			end
 			button:SetParent(frame.backdrop)
