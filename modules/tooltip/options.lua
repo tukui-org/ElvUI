@@ -21,34 +21,43 @@ E.Options.args.tooltip = {
 			get = function(info) return E.global.tooltip[ info[#info] ] end,
 			set = function(info, value) E.global.tooltip[ info[#info] ] = value; StaticPopup_Show("GLOBAL_RL") end
 		},
-		anchor = {
+		general = {
 			order = 3,
-			type = 'select',
-			name = L['Anchor Mode'],
-			desc = L['Set the type of anchor mode the tooltip should use.'],
-			values = {
-				['SMART'] = L['Smart'],
-				['CURSOR'] = L['Cursor'],
-				['ANCHOR'] = L['Anchor'],
+			type = "group",
+			name = L["General"],
+			guiInline = true,
+			disabled = function() return not E.Tooltip; end,
+			args = {
+				anchor = {
+					order = 1,
+					type = 'select',
+					name = L['Anchor Mode'],
+					desc = L['Set the type of anchor mode the tooltip should use.'],
+					values = {
+						['SMART'] = L['Smart'],
+						['CURSOR'] = L['Cursor'],
+						['ANCHOR'] = L['Anchor'],
+					},
+				},
+				ufhide = {
+					order = 2,
+					type = 'toggle',
+					name = L['UF Hide'],
+					desc = L["Don't display the tooltip when mousing over a unitframe."],
+				},
+				whostarget = {
+					order = 3,
+					type = 'toggle',
+					name = L["Who's targetting who?"],
+					desc = L["When in a raid group display if anyone in your raid is targetting the current tooltip unit."],
+				},
+				combathide = {
+					order = 4,
+					type = 'toggle',
+					name = L["Combat Hide"],
+					desc = L["Hide tooltip while in combat."],
+				},
 			},
-		},
-		ufhide = {
-			order = 4,
-			type = 'toggle',
-			name = L['UF Hide'],
-			desc = L["Don't display the tooltip when mousing over a unitframe."],
-		},
-		whostarget = {
-			order = 5,
-			type = 'toggle',
-			name = L["Who's targetting who?"],
-			desc = L["When in a raid group display if anyone in your raid is targetting the current tooltip unit."],
-		},
-		combathide = {
-			order = 6,
-			type = 'toggle',
-			name = L["Combat Hide"],
-			desc = L["Hide tooltip while in combat."],
 		},
 	},
 }

@@ -250,7 +250,7 @@ end
 E.Options.args.unitframe = {
 	type = "group",
 	name = L["UnitFrames"],
-	childGroups = "select",
+	childGroups = "tree",
 	get = function(info) return E.db.unitframe[ info[#info] ] end,
 	set = function(info, value) E.db.unitframe[ info[#info] ] = value end,
 	args = {
@@ -277,6 +277,7 @@ E.Options.args.unitframe = {
 			order = 200,
 			type = 'group',
 			name = L['General'],
+			guiInline = true,
 			disabled = function() return not E.global.unitframe.enable end,
 			set = function(info, value) E.db.unitframe[ info[#info] ] = value; UF:Update_AllFrames() end,
 			args = {
@@ -640,6 +641,7 @@ E.Options.args.unitframe.args.player = {
 	name = L['Player Frame'],
 	type = 'group',
 	order = 300,
+	childGroups = "select",
 	get = function(info) return E.db.unitframe.units['player'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['player'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
 	args = {
@@ -1205,6 +1207,12 @@ E.Options.args.unitframe.args.player = {
 					name = L['Spark'],
 					desc = L['Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop.'],
 				},
+				displayTarget = {
+					order = 15,
+					type = "toggle",
+					name = L["Display Target"],
+					desc = L["Display the target of the cast on the castbar."],
+				},
 			},
 		},
 		classbar = {
@@ -1241,6 +1249,7 @@ E.Options.args.unitframe.args.target = {
 	name = L['Target Frame'],
 	type = 'group',
 	order = 400,
+	childGroups = "select",
 	get = function(info) return E.db.unitframe.units['target'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['target'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
 	args = {
@@ -1777,6 +1786,7 @@ E.Options.args.unitframe.args.targettarget = {
 	name = L['TargetTarget Frame'],
 	type = 'group',
 	order = 500,
+	childGroups = "select",
 	get = function(info) return E.db.unitframe.units['targettarget'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['targettarget'][ info[#info] ] = value; UF:CreateAndUpdateUF('targettarget') end,
 	args = {
@@ -2128,6 +2138,7 @@ E.Options.args.unitframe.args.focus = {
 	name = L['Focus Frame'],
 	type = 'group',
 	order = 600,
+	childGroups = "select",
 	get = function(info) return E.db.unitframe.units['focus'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['focus'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
 	args = {
@@ -2597,6 +2608,7 @@ E.Options.args.unitframe.args.focustarget = {
 	name = L['FocusTarget Frame'],
 	type = 'group',
 	order = 700,
+	childGroups = "select",
 	get = function(info) return E.db.unitframe.units['focustarget'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['focustarget'][ info[#info] ] = value; UF:CreateAndUpdateUF('focustarget') end,
 	args = {
@@ -2948,6 +2960,7 @@ E.Options.args.unitframe.args.pet = {
 	name = L['Pet Frame'],
 	type = 'group',
 	order = 800,
+	childGroups = "select",
 	get = function(info) return E.db.unitframe.units['pet'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['pet'][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
 	args = {
@@ -3305,6 +3318,7 @@ E.Options.args.unitframe.args.pettarget = {
 	name = L['PetTarget Frame'],
 	type = 'group',
 	order = 900,
+	childGroups = "select",
 	get = function(info) return E.db.unitframe.units['pettarget'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['pettarget'][ info[#info] ] = value; UF:CreateAndUpdateUF('pettarget') end,
 	args = {
@@ -3656,6 +3670,7 @@ E.Options.args.unitframe.args.boss = {
 	name = L['Boss Frames'],
 	type = 'group',
 	order = 1000,
+	childGroups = "select",
 	get = function(info) return E.db.unitframe.units['boss'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['boss'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
 	args = {
@@ -4143,6 +4158,7 @@ E.Options.args.unitframe.args.arena = {
 	name = L['Arena Frames'],
 	type = 'group',
 	order = 1000,
+	childGroups = "select",
 	get = function(info) return E.db.unitframe.units['arena'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['arena'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
 	args = {
@@ -4604,6 +4620,7 @@ E.Options.args.unitframe.args.party = {
 	name = L['Party Frames'],
 	type = 'group',
 	order = 1100,
+	childGroups = "select",
 	get = function(info) return E.db.unitframe.units['party'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 	args = {
@@ -5210,6 +5227,7 @@ E.Options.args.unitframe.args.raid625 = {
 	name = L['Raid625 Frames'],
 	type = 'group',
 	order = 1100,
+	childGroups = "select",
 	get = function(info) return E.db.unitframe.units['raid625'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['raid625'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625') end,
 	args = {
@@ -5736,6 +5754,7 @@ E.Options.args.unitframe.args.raid2640 = {
 	name = L['Raid2640 Frames'],
 	type = 'group',
 	order = 1100,
+	childGroups = "select",
 	get = function(info) return E.db.unitframe.units['raid2640'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['raid2640'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid2640') end,
 	args = {

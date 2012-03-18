@@ -39,6 +39,15 @@ P['general'] = {
 	['raidReminder'] = true,
 };
 
+--Bags
+P['bags'] = {
+    ['bagCols'] = 0,
+    ['bankCols'] = 0,
+    ['sortOrientation'] = 'BOTTOM-TOP',
+	['xOffset'] = 0,
+	['yOffset'] = 0,
+};
+
 --NamePlate
 P["nameplate"] = {
 	["markBGHealers"] = true,
@@ -253,6 +262,7 @@ P['unitframe'] = {
 				['height'] = 20,
 				['icon'] = false,
 				['latency'] = true,
+				['displayTarget'] = false,
 				['color'] = { r = .66,g = .66,b = .66 },
 				['interruptcolor'] = { r = 0.78, g = 0.25, b = 0.25 },
 				['xOffset'] = 0,

@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 E.Options.args.skins = {
 	type = "group",
 	name = L["Skins"],
-	childGroups = "select",
+	childGroups = "tree",
 	args = {
 		intro = {
 			order = 1,
@@ -160,6 +160,7 @@ E.Options.args.skins = {
 			name = 'Blizzard',
 			get = function(info) return E.global.skins.blizzard[ info[#info] ] end,
 			set = function(info, value) E.global.skins.blizzard[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,	
+			guiInline = true,
 			args = {
 				enable = {
 					name = L['Enable'],

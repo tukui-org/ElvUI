@@ -4,13 +4,17 @@
 
 G['general'] = {
 	['profileBinds'] = false,
-	['bags'] = false,
 	['loot'] = false,
 	['lootRoll'] = false,
 	["normTex"] = "Minimalist",
 	["glossTex"] = "Minimalist",	
 	["dmgfont"] = "ElvUI Combat",
 	['bubbles'] = true,
+	['bags'] = true,
+}
+
+G['bags'] = {
+	['enable'] = true,
 }
 
 G['classtimer'] = {
