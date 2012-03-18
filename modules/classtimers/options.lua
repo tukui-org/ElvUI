@@ -197,7 +197,7 @@ end
 E.Options.args.classtimer = {
 	type = "group",
 	name = L["ClassTimers"],
-	childGroups = "select",
+	childGroups = "tree",
 	get = function(info) return E.db.classtimer[ info[#info] ] end,
 	set = function(info, value) E.db.classtimer[ info[#info] ] = value; end,
 	args = {
@@ -217,6 +217,7 @@ E.Options.args.classtimer = {
 			order = 3,
 			type = 'group',
 			name = L['General'],
+			guiInline = true,
 			disabled = function() return not E.ClassTimers; end,
 			args = {
 				player = {
