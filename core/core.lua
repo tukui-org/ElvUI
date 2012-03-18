@@ -562,6 +562,7 @@ function E:UpdateAll()
 	local bags = E:GetModule('Bags'); 
 	bags:Layout(); 
 	bags:Layout(true); 
+	bags:PositionBagFrames()
 	
 	self:GetModule('Skins'):SetEmbedRight(E.db.skins.embedRight)
 	self:GetModule('Layout'):ToggleChatPanels()
