@@ -36,6 +36,15 @@ P['general'] = {
 	['raidReminder'] = true,
 };
 
+--Bags
+P['bags'] = {
+    ['bagCols'] = 0,
+    ['bankCols'] = 0,
+    ['sortOrientation'] = 'BOTTOM-TOP',
+	['xOffset'] = 0,
+	['yOffset'] = 0,
+};
+
 --NamePlate
 P["nameplate"] = {
 	["markBGHealers"] = true,
