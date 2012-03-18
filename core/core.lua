@@ -567,6 +567,7 @@ function E:UpdateAll()
 	local bags = E:GetModule('Bags'); 
 	bags:Layout(); 
 	bags:Layout(true); 
+	bags:PositionBagFrames()
 	
 	self:GetModule('Skins'):SetEmbedRight(E.db.skins.embedRight)
 	self:GetModule('Layout'):ToggleChatPanels()
@@ -685,11 +686,11 @@ function E:MoveUI(override, type)
 	
 	if override then toggle = override end
 	
-	if toggle then
+	if toggle and ElvUIMoverPopupWindow then
 		ElvUIMoverPopupWindow:Show()
 		ACD['Close'](ACD, 'ElvUI') 
 		GameTooltip:Hide()
-	else
+	elseif ElvUIMoverPopupWindow then
 		ElvUIMoverPopupWindow:Hide()
 	end
 	

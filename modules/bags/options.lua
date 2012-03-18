@@ -6,7 +6,6 @@ E.Options.args.bags = {
 	name = L['Bags'],
 	get = function(info) return E.db.bags[ info[#info] ] end,
 	set = function(info, value) E.db.bags[ info[#info] ] = value end,
-	disabled = function() return not E.global.bags.enable end,
 	args = {
 		intro = {
 			order = 1,
@@ -26,6 +25,7 @@ E.Options.args.bags = {
 			type = "group",
 			name = L["General"],
 			guiInline = true,
+			disabled = function() return not E.global.bags.enable end,
 			args = {			
 				bagCols = {
 					order = 1,
