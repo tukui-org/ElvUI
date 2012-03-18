@@ -259,6 +259,13 @@ function M:Initialize()
 	Minimap:Point("TOPLEFT", mmholder, "TOPLEFT", 2, -2)
 	Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
 	Minimap:CreateBackdrop('Default')
+	Minimap:HookScript('OnEnter', function(self)
+		self.location:Show()
+	end)
+	
+	Minimap:HookScript('OnLeave', function(self)
+		self.location:Hide()
+	end)	
 	
 	--Fix spellbook taint
 	ShowUIPanel(SpellBookFrame)
@@ -268,7 +275,8 @@ function M:Initialize()
 	Minimap.location:FontTemplate(nil, nil, 'OUTLINE')
 	Minimap.location:Point('TOP', Minimap, 'TOP', 0, -2)
 	Minimap.location:SetJustifyH("CENTER")
-	Minimap.location:SetJustifyV("MIDDLE")			
+	Minimap.location:SetJustifyV("MIDDLE")		
+	Minimap.location:Hide()
 	
 	if not E:IsPTRVersion() then
 		LFDSearchStatus:SetTemplate("Default")
