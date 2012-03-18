@@ -14,7 +14,7 @@ G['general'] = {
 }
 
 G['bags'] = {
-	['enable'] = true,
+	['enable'] = false,
 }
 
 G['classtimer'] = {
