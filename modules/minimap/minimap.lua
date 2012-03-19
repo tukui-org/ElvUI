@@ -237,8 +237,11 @@ function M:IsMinimapButton(f)
 		local region = select(i, f:GetRegions())
 		if region:GetObjectType() == 'Texture' then
 			local tex = region:GetTexture()
-			if tex and tex:find('TrackingBorder') then
-				return true
+			if tex then
+				tex = string.lower(tex)
+				if tex:find('trackingborder') or tex:find('minimap') then
+					return true
+				end
 			end
 		end
 	end

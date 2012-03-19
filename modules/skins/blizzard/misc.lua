@@ -143,8 +143,6 @@ local function LoadSkin()
 		"VideoOptionsFrame",
 	}
 	
-	GameMenuFrame:FixDimensions('+')
-	
 	for i = 1, getn(BlizzardHeader) do
 		local title = _G[BlizzardHeader[i].."Header"]			
 		if title then

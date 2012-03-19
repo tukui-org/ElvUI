@@ -29,24 +29,31 @@ end
 	Multisample stuff
 	Basically if a frames width/height is an odd number, it will appear blurry
 ]]
-local function FixDimensions(frame, type)
-	local width, height = frame:GetSize()
-	if E:IsEvenNumber(width + 1) then
-		if type == '+' then
-			frame:SetWidth(width + 1)
-		else
-			frame:SetWidth(width - 1)
-		end
-	end
 
-	if E:IsEvenNumber(height + 1) then
-		if type == '+' then
-			frame:SetHeight(height + 1)
-		else
-			frame:SetHeight(height - 1)
-		end
-	end
+--[[local function SetWidth(self, width)
+	print(width)
+	self:SetWidth(E:Round(width))
 end
+
+local function SetHeight(self, height)
+	print('height changed')
+end
+
+local function SetSize(self, width, height)
+	print('size changed')
+end
+
+local objectTypes = {}
+local function FixDimensions(frame)
+	if objectTypes[frame:GetObjectType()] then return end
+	local index = getmetatable(frame).__index
+	
+	E:SecureHook(index, 'SetWidth', SetWidth)
+	E:SecureHook(index, 'SetHeight', SetHeight)
+	E:SecureHook(index, 'SetSize', SetSize)
+	print('Hooked for: '..frame:GetObjectType())
+	objectTypes[frame:GetObjectType()] = true;
+end]]
 
 local function Size(frame, width, height)
 	frame:SetSize(E:Scale(width), E:Scale(height or width))
