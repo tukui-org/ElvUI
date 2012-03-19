@@ -167,18 +167,22 @@ function A:AurasPostDrag(point)
 	if string.find(point, "LEFT") then
 		TempEnchant1:ClearAllPoints()
 		TempEnchant2:ClearAllPoints()
+		TempEnchant3:ClearAllPoints()
 		TemporaryEnchantFrame:ClearAllPoints()
 		aurapos = "LEFT"
 		TempEnchant1:SetPoint("TOPLEFT", AurasHolder, "TOPLEFT", 0, 0)
-		TempEnchant2:SetPoint("LEFT", TempEnchant1, "RIGHT", -(btnspace), 0)		
+		TempEnchant2:SetPoint("LEFT", TempEnchant1, "RIGHT", -(btnspace), 0)	
+		TempEnchant3:SetPoint("LEFT", TempEnchant2, "RIGHT", -(btnspace), 0)		
 		TemporaryEnchantFrame:SetPoint("TOPLEFT", AurasHolder, "TOPLEFT", 0, 0)	
 	elseif string.find(point, "RIGHT") then
 		TempEnchant1:ClearAllPoints()
 		TempEnchant2:ClearAllPoints()
+		TempEnchant3:ClearAllPoints()
 		TemporaryEnchantFrame:ClearAllPoints()
 		aurapos = "RIGHT"
 		TempEnchant1:SetPoint("TOPRIGHT", AurasHolder, "TOPRIGHT", 0, 0)
 		TempEnchant2:SetPoint("RIGHT", TempEnchant1, "LEFT", btnspace, 0)	
+		TempEnchant3:SetPoint("RIGHT", TempEnchant2, "LEFT", btnspace, 0)	
 		TemporaryEnchantFrame:SetPoint("TOPRIGHT", AurasHolder, "TOPRIGHT", 0, 0)			
 	end
 	
@@ -210,8 +214,10 @@ function A:Initialize()
 
 	TempEnchant1:ClearAllPoints()
 	TempEnchant2:ClearAllPoints()
+	TempEnchant3:ClearAllPoints()
 	TempEnchant1:Point("TOPRIGHT", AurasHolder, "TOPRIGHT")
 	TempEnchant2:Point("RIGHT", TempEnchant1, "LEFT", btnspace, 0)
+	TempEnchant3:Point("RIGHT", TempEnchant2, "LEFT", btnspace, 0)
 	
 	for i = 1, 3 do
 		_G["TempEnchant"..i]:Size(30)
