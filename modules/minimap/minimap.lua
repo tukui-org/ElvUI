@@ -260,6 +260,7 @@ end
 function M:Initialize()	
 	self:ScheduleRepeatingTimer('CheckForNewMinimapButtons', 15)
 	self:CheckForNewMinimapButtons() --Initial check
+	self:RegisterEvent('ADDON_LOADED', 'CheckForNewMinimapButtons') --Gotta catch em all
 	
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
 	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
