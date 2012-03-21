@@ -15,6 +15,7 @@ local function LoadSkin()
 		_G[v]:SetTemplate("Default", true)
 	end
 	
+	S:HandleScrollBar(KeyBindingFrameScrollFrameScrollBar)
 	S:HandleCheckBox(KeyBindingFrameCharacterButton)
 	KeyBindingFrameHeaderText:ClearAllPoints()
 	KeyBindingFrameHeaderText:Point("TOP", KeyBindingFrame, "TOP", 0, -4)
