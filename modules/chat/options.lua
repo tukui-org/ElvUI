@@ -75,7 +75,16 @@ E.Options.args.chat = {
 					set = function(info, value) 
 						E.db.chat[ info[#info] ] = value 
 					end,					
-				},			
+				},		
+				sticky = {
+					order = 6,
+					type = 'toggle',
+					name = L['Sticky Chat'],
+					desc = L['When opening the Chat Editbox to type a message having this option set means it will retain the last channel you spoke in. If this option is turned off opening the Chat Editbox should always default to the SAY channel.'],
+					set = function(info, value)
+						E.db.chat[ info[#info] ] = value 
+					end,
+				},
 				font = {
 					type = "select", dialogControl = 'LSM30_Font',
 					order = 7,

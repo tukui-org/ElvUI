@@ -726,6 +726,17 @@ function CH:CopyLineFromPlayerlinkToEdit(origin_frame, ...)
     end
 end
 
+
+function CH:ChatEdit_OnEnterPressed(editBox)
+	local type = editBox:GetAttribute("chatType");
+	local chatFrame = editBox:GetParent();
+	if not chatFrame.isTemporary and ChatTypeInfo[type].sticky == 1 then
+		if not self.db.sticky then type = 'SAY'; end
+		editBox:SetAttribute("chatType", type);
+	end
+end
+
+
 function CH:Initialize()
 	self.db = E.db.chat
 	if E.global.chat.enable ~= true then return end
@@ -744,7 +755,7 @@ function CH:Initialize()
 	E:RegisterDropdownButton("COPYCHAT", function(menu, button) button.arg1 = CH.clickedFrame end )
 	
 	E.Chat = self
-	
+	self:SecureHook('ChatEdit_OnEnterPressed')
 	FriendsMicroButton:Kill()
 	ChatFrameMenuButton:Kill()
 	OldChatFrame_OnHyperlinkShow = ChatFrame_OnHyperlinkShow

@@ -83,6 +83,7 @@ P['chat'] = {
 	['scrollDownInterval'] = 15,
 	['font'] = 'ElvUI Font',
 	['fontoutline'] = 'NONE',
+	['sticky'] = true,
 }
 
 --ClassTimers
