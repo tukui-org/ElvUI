@@ -27,7 +27,7 @@
 [b]General Changes[/b]
 *Update ElvUI for all languages.
 *Weapon enchant Icons should appear with a purple border color.
-*Running the SetCVar portion of the Install process will now lock your action bars and set a value of the key you need to use to drag your buttons around to the Shift Key. This is to prevent any users from having issues with dragging action buttons using the action button abilities.
+*Running the SetCVar portion of the Install process will now lock your action bars and set a value of the key you need to use to drag your buttons around to the Shift Key. This is to prevent any users from having issues with dragging action buttons using the action button abilities. A message will also appear in chat while ElvUI actionbars are loaded to warn users if this CVar isn't set.
 *The In-Game config has received a bit of a overhaul to make finding stuff a little easier.
 *The Bags module now has its own category inside the In-Game Configuration.
 *Removed the experimental Profile Binds option. See: http://wow.curseforge.com/addons/elvui/tickets/258-improvements-to-profile-binds/#comments

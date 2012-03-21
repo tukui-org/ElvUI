@@ -351,6 +351,7 @@ L["LF Guild Frame"] = "LF Guild Frame"
 L["LFR Frame"] = "LFR Frame"
 L["Local Time"] = "Local Time"
 L["Lock"] = "Lock"
+L["LOCK_AB_ERROR"] = "It has come to our attention that you do not have your actionbars locked. This may cause abilities to be used while dragging buttons to differant slots. Please run the Set CVar portion of the Installation process (Step 2). This can be done by typing /ec and clicking the Install button."
 L["Login Message"] = "Login Message"
 L["LOGIN_MSG"] = "Welcome to %sElvUI|r version %s%s|r, type /ec to access the in-game configuration menu. If you are in need of technical support you can visit us at www.tukui.org. You can report bugs, add suggestions here: http://wow.curseforge.com/addons/elvui/tickets."
 L["Loot"] = "Loot"
@@ -747,3 +748,4 @@ L["Your current resolution is %s, this is considered a %s resolution."] = "Your 
 L["Your items have been repaired for: "] = "Your items have been repaired for: "
 L["Your items have been repaired using guild bank funds for: "] = "Your items have been repaired using guild bank funds for: "
 L["Your version of ElvUI is out of date. You can download the latest version from www.curse.com"] = "Your version of ElvUI is out of date. You can download the latest version from www.curse.com"
+
