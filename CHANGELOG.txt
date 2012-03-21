@@ -22,6 +22,7 @@
 *Add option to the Bag-Bar Module to set the bar direction of the Bag-Bar.
 *Add option to the Bag-Bar Module to set the sort direction of the Bag-Bar.
 *Add option to the Chat Module called "Sticky Chat", this option toggles whether or not opening up the chat edit box uses the last channel you spoke in.
+*Add slash command /luaerror, arguements are "On" and "Off". This is intended for technical support use.
 
 [b]General Changes[/b]
 *Update ElvUI for all languages.
