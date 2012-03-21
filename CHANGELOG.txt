@@ -4,7 +4,6 @@
 *Add skin for the Blizzard BG-Map.
 *Add Auctionator skin. (Credit: Tomkuzyno)
 *Add Clique Skin. (Credit: Nidra)
-*Minimap icons should now be skinned to match ElvUI. (Credit: Tomkuzyno)
 *Add skin for Add-on Control Panel (Credit: Camealion)
 *Add an option under the skada skin section of the config to control the bar height of the individual bars.
 *Add skin for the Blizzard Guild Invite Frame.
