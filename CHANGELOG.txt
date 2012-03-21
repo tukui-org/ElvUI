@@ -29,7 +29,8 @@
 *Minimap Location text is now only displayed when moussing over the minimap.
 
 [b]Fixes[/b]
-*Attempt to fix aura icon position issues when you have three enchant icons shown. (Rogues)
+*Fix issue with auto-accept invite only working one time.
+*Fix aura icon position issues when you have three enchant icons shown. (Rogues)
 *Fix a lua error seen on ragnaros encounter from the debuffs.
 *Fix several cases where disabling the Power Bar would prevent the portrait frame from displaying next time you logged in. (Player Frame, Target Frame, Boss Frames)
 *The Reputation bar should have its width correctly set on login.
