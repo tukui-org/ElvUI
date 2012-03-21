@@ -196,72 +196,7 @@ function M:UpdateSettings()
 	end
 end
 
-function M:SkinMinimapButton(f)	
-	f:SetPushedTexture(nil)
-	f:SetHighlightTexture(nil)
-	f:SetDisabledTexture(nil)
-	f:SetSize(22, 22)
-
-	for i = 1, f:GetNumRegions() do
-		local region = select(i, f:GetRegions())
-		if region:GetObjectType() == "Texture" then
-			local tex = region:GetTexture()
-			if tex and (tex:find("Border") or tex:find("Background")) then
-				region:SetTexture(nil)
-			else
-				region:SetDrawLayer("OVERLAY", 5)
-				region:ClearAllPoints()
-				region:Point("TOPLEFT", f, "TOPLEFT", 2, -2)
-				region:Point("BOTTOMRIGHT", f, "BOTTOMRIGHT", -2, 2)
-				region:SetTexCoord(.08, .92, .08, .92)
-			end
-		end
-	end
-
-	f:SetTemplate("Default")
-	f:SetFrameLevel(f:GetFrameLevel() + 2)
-	-- Set flag to indicate that this button has already been skinned
-	f.skinned = true
-end
-
-local blackList = {
-	['MiniMapBattlefieldFrame'] = true,
-}
-
-function M:IsMinimapButton(f)
-	if f:GetName() and blackList[f:GetName()] then
-		return false;
-	end
-	
-	for i=1, f:GetNumRegions() do
-		local region = select(i, f:GetRegions())
-		if region:GetObjectType() == 'Texture' then
-			local tex = region:GetTexture()
-			if tex then
-				tex = string.lower(tex)
-				if tex:find('trackingborder') or tex:find('minimap') then
-					return true
-				end
-			end
-		end
-	end
-	return false
-end
-
-function M:CheckForNewMinimapButtons()
-	for i = 1, Minimap:GetNumChildren() do
-		local f = select(i, Minimap:GetChildren())
-		if not f.skinned and f:GetObjectType() == 'Button' and self:IsMinimapButton(f) then
-			self:SkinMinimapButton(f)
-		end
-	end
-end
-
 function M:Initialize()	
-	self:ScheduleRepeatingTimer('CheckForNewMinimapButtons', 15)
-	self:CheckForNewMinimapButtons() --Initial check
-	self:RegisterEvent('ADDON_LOADED', 'CheckForNewMinimapButtons') --Gotta catch em all
-	
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
 	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
 	mmholder:Width((Minimap:GetWidth() + 29) + E.RBRWidth)
