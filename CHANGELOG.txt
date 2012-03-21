@@ -14,6 +14,13 @@
 *Add option to the Bags Module to change the sort orientation. This can be set to BOTTOM-TOP or TOP-BOTTOM  (Credit: Caliburnus)
 *Add option to the Bags Module to change the xOffset of both the bags and bank frame.
 *Add option to the Bags Module to change the yOffset of both the bags and bank frame.
+*Add global option to the Bags Section for when the Bags Module is disabled you can display a Bag-Bar.
+*Add option to the Bag-Bar Module to set the size of the individual bag slots.
+*Add option to the Bag-Bar Module to set the spacing of the individual bag slots.
+*Add option to the Bag-Bar Module to show/hide the Bag-Bar backdrop.
+*Add option to the Bag-Bar Module to fade in/fade out the Bag-Bar on mouseover.
+*Add option to the Bag-Bar Module to set the growth direction of the Bag-Bar.
+*Add option to the Bag-Bar Module to set the sort direction of the Bag-Bar.
 *Add option to the Chat Module called "Sticky Chat", this option toggles whether or not opening up the chat edit box uses the last channel you spoke in.
 
 [b]General Changes[/b]
