@@ -28,6 +28,7 @@ function B:SkinBag(bag)
 end
 
 function B:SizeAndPositionBagBar()
+	if E.global.bags.bagBar.enable ~= true or not ElvUIBags then return; end
 	if E.db.bags.bagBar.mouseover then
 		ElvUIBags:SetAlpha(0)
 	else
