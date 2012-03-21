@@ -83,7 +83,7 @@ E.Options.args.bags = {
 			type = "group",
 			name = L["Bag-Bar"],
 			guiInline = true,
-			disabled = function() return not E.global.bags.bagBar.enable end,
+			disabled = function() return E.bags end,
 			get = function(info) return E.db.bags.bagBar[ info[#info] ] end,
 			set = function(info, value) E.db.bags.bagBar[ info[#info] ] = value; B:SizeAndPositionBagBar() end,
 			args = {
@@ -125,7 +125,7 @@ E.Options.args.bags = {
 				growthDirection = {
 					order = 6,
 					type = 'select',
-					name = L['Growth Direction'],
+					name = L['Bar Direction'],
 					desc = L['The direction that the bag frames will grow from the anchor.'],
 					values = {
 						['VERTICAL'] = L['Vertical'],

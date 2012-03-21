@@ -19,7 +19,7 @@
 *Add option to the Bag-Bar Module to set the spacing of the individual bag slots.
 *Add option to the Bag-Bar Module to show/hide the Bag-Bar backdrop.
 *Add option to the Bag-Bar Module to fade in/fade out the Bag-Bar on mouseover.
-*Add option to the Bag-Bar Module to set the growth direction of the Bag-Bar.
+*Add option to the Bag-Bar Module to set the bar direction of the Bag-Bar.
 *Add option to the Bag-Bar Module to set the sort direction of the Bag-Bar.
 *Add option to the Chat Module called "Sticky Chat", this option toggles whether or not opening up the chat edit box uses the last channel you spoke in.
 
