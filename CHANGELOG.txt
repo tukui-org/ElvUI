@@ -7,8 +7,8 @@
 *Add skin for Add-on Control Panel (Credit: Camealion)
 *Add an option under the Skada skin section of the config to control the bar height of the individual bars.
 *Add skin for the Blizzard Guild Invite Frame.
-*Add a button to the right click menu of someone’s name in chat. This allows you to copy that specific line of chat of the person you right clicked.
-*Add option to player unit frame’s cast bar section to display the current target on the castbar. (Default is off)
+*Add a button to the right click menu of someone's name in chat. This allows you to copy that specific line of chat of the person you right clicked.
+*Add option to player unit frame's cast bar section to display the current target on the castbar. (Default is off)
 *Add option to the Bags Module to change the amount of columns displayed for the Bags Frame (Credit: Caliburnus)
 *Add option to the Bags Module to change the amount of columns displayed for the Bank Frame (Credit: Caliburnus)
 *Add option to the Bags Module to change the sort orientation. This can be set to BOTTOM-TOP or TOP-BOTTOM  (Credit: Caliburnus)
