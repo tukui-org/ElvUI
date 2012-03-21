@@ -16,6 +16,7 @@
 *Add option to the Bags Module to change the yOffset of both the bags and bank frame.
 
 [b]General Changes[/b]
+*Weapon enchant Icons should appear with a purple border color.
 *Running the SetCVar portion of the Install process will now lock your action bars and set a value of the key you need to use to drag your buttons around to the Shift Key. This is to prevent any users from having issues with dragging action buttons using the action button abilities.
 *The In-Game config has received a bit of a overhaul to make finding stuff a little easier.
 *The Bags module now has its own category inside the In-Game Configuration.

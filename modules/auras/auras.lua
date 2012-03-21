@@ -157,6 +157,10 @@ function A:UpdateBuffAnchors()
 			end
 		end		
 	end
+	
+	for i = 1, 3 do
+		_G["TempEnchant"..i].backdrop:SetBackdropBorderColor(137/255, 0, 191/255)
+	end	
 end
 
 function A:Update_WeaponEnchantInfo()
