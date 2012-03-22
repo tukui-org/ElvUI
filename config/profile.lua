@@ -35,7 +35,7 @@ P['general'] = {
 
 	--misc
 	['mapTransparency'] = 1,
-	['minimapSize'] = 175,
+	['minimapSize'] = 176,
 	['raidReminder'] = true,
 };
 
@@ -46,12 +46,21 @@ P['bags'] = {
     ['sortOrientation'] = 'BOTTOM-TOP',
 	['xOffset'] = 0,
 	['yOffset'] = 0,
+	
+	['bagBar'] = {
+		['growthDirection'] = 'VERTICAL',
+		['sortDirection'] = 'ASCENDING',
+		['size'] = 30,
+		['spacing'] = 4,
+		['showBackdrop'] = false,
+		['mouseover'] = false,
+	},
 };
 
 --NamePlate
 P["nameplate"] = {
 	["markBGHealers"] = true,
-	["width"] = 113,
+	["width"] = 114,
 	["height"] = 8,
 	["cbheight"] = 5,
 	["showlevel"] = true,
@@ -86,6 +95,7 @@ P['chat'] = {
 	['scrollDownInterval'] = 0,
 	['font'] = 'Arial Narrow',
 	['fontoutline'] = 'NONE',
+	['sticky'] = true,
 	['whisperwarning'] = true,
 	['whispersound'] = 'ElvUI Whisper',
 }
@@ -193,6 +203,7 @@ P['unitframe'] = {
 			['enable'] = true,
 			['width'] = 260,
 			['height'] = 55,
+			['height'] = 54,
 			['lowmana'] = 30,
 			['combatfade'] = false,
 			['healPrediction'] = true,
@@ -280,7 +291,7 @@ P['unitframe'] = {
 		['target'] = {
 			['enable'] = true,
 			['width'] = 260,
-			['height'] = 55,
+			['height'] = 54,
 			['healPrediction'] = true,
 			['health'] = {
 				['text'] = true,
@@ -525,7 +536,7 @@ P['unitframe'] = {
 		['pet'] = {
 			['enable'] = true,
 			['width'] = 130,
-			['height'] = 35,
+			['height'] = 36,
 			['healPrediction'] = true,
 			['health'] = {
 				['text'] = false,
@@ -578,7 +589,7 @@ P['unitframe'] = {
 		['pettarget'] = {
 			['enable'] = false,
 			['width'] = 130,
-			['height'] = 25,
+			['height'] = 26,
 			['health'] = {
 				['text'] = false,
 				['text_format'] = 'current-percent',
@@ -631,7 +642,7 @@ P['unitframe'] = {
 			['enable'] = true,
 			['growthDirection'] = 'DOWN',
 			['width'] = 200,
-			['height'] = 45,
+			['height'] = 46,
 			['health'] = {
 				['text'] = true,
 				['text_format'] = 'current-percent',
@@ -701,7 +712,7 @@ P['unitframe'] = {
 			['growthDirection'] = 'UP',
 			['pvpTrinket'] = true,
 			['width'] = 240,
-			['height'] = 45,
+			['height'] = 46,
 			['health'] = {
 				['text'] = true,
 				['text_format'] = 'current-percent',
@@ -778,7 +789,7 @@ P['unitframe'] = {
 			['healPrediction'] = false,
 			['columnAnchorPoint'] = "TOP",
 			['width'] = 180,
-			['height'] = 43,
+			['height'] = 44,
 			['health'] = {
 				['text'] = false,
 				['text_format'] = 'current-percent',

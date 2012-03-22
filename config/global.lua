@@ -15,6 +15,9 @@ G['general'] = {
 
 G['bags'] = {
 	['enable'] = true,
+	['bagBar'] = {
+		['enable'] = true,
+	},
 }
 
 G['classtimer'] = {

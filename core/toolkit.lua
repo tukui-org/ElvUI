@@ -7,9 +7,6 @@ local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0,
 --Preload shit..
 E.mult = 1;
 
----------------------------------------------------
--- TEMPLATES
----------------------------------------------------
 local function GetTemplate(t)
 	backdropa = 1
 	if t == "ClassColor" then
@@ -28,9 +25,35 @@ local function GetTemplate(t)
 	end
 end
 
----------------------------------------------------
--- END OF TEMPLATES
----------------------------------------------------
+--[[
+	Multisample stuff
+	Basically if a frames width/height is an odd number, it will appear blurry
+]]
+
+--[[local function SetWidth(self, width)
+	print(width)
+	self:SetWidth(E:Round(width))
+end
+
+local function SetHeight(self, height)
+	print('height changed')
+end
+
+local function SetSize(self, width, height)
+	print('size changed')
+end
+
+local objectTypes = {}
+local function FixDimensions(frame)
+	if objectTypes[frame:GetObjectType()] then return end
+	local index = getmetatable(frame).__index
+	
+	E:SecureHook(index, 'SetWidth', SetWidth)
+	E:SecureHook(index, 'SetHeight', SetHeight)
+	E:SecureHook(index, 'SetSize', SetSize)
+	print('Hooked for: '..frame:GetObjectType())
+	objectTypes[frame:GetObjectType()] = true;
+end]]
 
 local function Size(frame, width, height)
 	frame:SetSize(E:Scale(width), E:Scale(height or width))
@@ -57,7 +80,7 @@ end
 
 local function SetTemplate(f, t, glossTex, ignoreUpdates)
 	GetTemplate(t)
-	
+
 	f.template = t
 	f.glossTex = glossTex
 
@@ -243,6 +266,7 @@ end
 
 local function addapi(object)
 	local mt = getmetatable(object).__index
+	if not object.FixDimensions then mt.FixDimensions = FixDimensions end
 	if not object.Size then mt.Size = Size end
 	if not object.Point then mt.Point = Point end
 	if not object.SetTemplate then mt.SetTemplate = SetTemplate end

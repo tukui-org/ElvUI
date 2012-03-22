@@ -380,8 +380,6 @@ G['classtimer']['spells_filter'] = {
 			CreateSpellEntry(47788	), -- Guardian Spirit
 			CreateSpellEntry(77489), -- Echo of Light
 			CreateSpellEntry(9484), -- Shackle Undead
-			CreateSpellEntry(34914, false, nil, nil, 34914), -- Vampiric Touch
-			CreateSpellEntry(34914), -- Vampiric Touch	
 		},
 		player = {
 			CreateSpellEntry(10060), -- Power Infusion

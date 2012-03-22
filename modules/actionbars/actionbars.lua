@@ -27,6 +27,10 @@ function AB:Initialize()
 	self:RegisterEvent("UPDATE_BINDINGS", "ReassignBindings")
 	self:RegisterEvent('CVAR_UPDATE')
 	self:ReassignBindings()
+	
+	if not GetCVarBool('lockActionBars') then
+		E:Print(L['LOCK_AB_ERROR'])
+	end	
 end
 
 function AB:CreateActionBars()

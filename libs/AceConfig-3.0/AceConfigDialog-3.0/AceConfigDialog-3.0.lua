@@ -580,6 +580,7 @@ local function confirmPopup(appName, rootframe, basepath, info, message, func, .
 	t.text = message
 	t.button1 = ACCEPT
 	t.button2 = CANCEL
+	t.preferredIndex = 3
 	local dialog, oldstrata
 	t.OnAccept = function()
 		safecall(func, unpack(t))
