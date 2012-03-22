@@ -11,6 +11,14 @@ function E:ShortValue(v)
 	end
 end
 
+function E:IsEvenNumber(num)
+	if math.fmod(num, 2) == 0 then
+		return true;
+	else
+		return false;
+	end
+end
+
 -- http://www.wowwiki.com/ColorGradient
 function E:ColorGradient(perc, ...)
 	if perc >= 1 then

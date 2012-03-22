@@ -9,6 +9,7 @@ end
 
 local function CreateMover(parent, name, text, overlay, postdrag)
 	if not parent then return end --If for some reason the parent isnt loaded yet
+	if E.CreatedMovers[name].Created then return end
 	
 	if overlay == nil then overlay = true end
 	
@@ -97,6 +98,8 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 			self:UnregisterAllEvents()
 		end)
 	end	
+	
+	E.CreatedMovers[name].Created = true;
 end
 
 function E:HasMoverBeenMoved(name)

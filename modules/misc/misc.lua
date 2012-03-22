@@ -101,7 +101,7 @@ end
 local hideStatic = false;
 function M:AutoInvite(event, leaderName)
 	if not E.db.general.autoAcceptInvite then return; end
-	
+
 	if event == "PARTY_INVITE_REQUEST" then
 		if MiniMapLFGFrame:IsShown() then return end -- Prevent losing que inside LFD if someone invites you to group
 		if GetNumPartyMembers() > 0 or GetNumRaidMembers() > 0 then return end
@@ -110,28 +110,29 @@ function M:AutoInvite(event, leaderName)
 		-- Update Guild and Friendlist
 		if GetNumFriends() > 0 then ShowFriends() end
 		if IsInGuild() then GuildRoster() end
+		local inGroup = false;
 		
 		for friendIndex = 1, GetNumFriends() do
 			local friendName = GetFriendInfo(friendIndex)
 			if friendName == leaderName then
 				AcceptGroup()
-				ingroup = true
+				inGroup = true
 				break
 			end
 		end
 		
-		if not ingroup then
+		if not inGroup then
 			for guildIndex = 1, GetNumGuildMembers(true) do
 				local guildMemberName = GetGuildRosterInfo(guildIndex)
 				if guildMemberName == leaderName then
 					AcceptGroup()
-					ingroup = true
+					inGroup = true
 					break
 				end
 			end
 		end
 		
-		if not ingroup then
+		if not inGroup then
 			for bnIndex = 1, BNGetNumFriends() do
 				local _, _, _, name = BNGetFriendInfo(bnIndex)
 				leaderName = leaderName:match("(.+)%-.+") or leaderName

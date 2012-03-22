@@ -79,10 +79,24 @@ function E:Grid(msg)
 	end
 end
 
+function E:LuaError(msg)
+	msg = string.lower(msg)
+	if (msg == 'on') then
+		SetCVar("scriptErrors", 1)
+		ReloadUI()
+	elseif (msg == 'off') then
+		SetCVar("scriptErrors", 0)
+		E:Print("Lua errors off.")
+	else
+		E:Print("/luaerror on - /luaerror off")
+	end
+end
+
 function E:LoadCommands()
 	self:RegisterChatCommand("ec", "ToggleConfig")
 	self:RegisterChatCommand("elvui", "ToggleConfig")
 	
+	self:RegisterChatCommand('luaerror', 'LuaError')
 	self:RegisterChatCommand('egrid', 'Grid')
 	self:RegisterChatCommand("moveui", "MoveUI")
 	self:RegisterChatCommand("resetui", "ResetUI")
