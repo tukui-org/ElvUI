@@ -4,17 +4,9 @@ local S = E:GetModule('Skins')
 local function LoadSkin()
 	if E.global.skins.blizzard.enable ~= true or E.global.skins.blizzard.raid ~= true then return end
 	local buttons = {
-		"RaidFrameRaidBrowserButton",
 		"RaidFrameRaidInfoButton",
 		"RaidFrameReadyCheckButton",
 	}
-	
-	if E:IsPTRVersion() then
-		buttons = {
-			"RaidFrameRaidInfoButton",
-			"RaidFrameReadyCheckButton",
-		}	
-	end
 
 	for i = 1, #buttons do
 		S:HandleButton(_G[buttons[i]])

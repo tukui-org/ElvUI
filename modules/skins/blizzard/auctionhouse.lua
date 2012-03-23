@@ -23,26 +23,11 @@ local function LoadSkin()
 	S:HandleCheckBox(IsUsableCheckButton)
 	S:HandleCheckBox(ShowOnPlayerCheckButton)
 	
-	if not E:IsPTRVersion() then
-		S:HandleRotateButton(AuctionDressUpModelRotateLeftButton)
-		S:HandleRotateButton(AuctionDressUpModelRotateRightButton)
-		AuctionDressUpModelRotateRightButton:Point("TOPLEFT", AuctionDressUpModelRotateLeftButton, "TOPRIGHT", 4, 0)
-		AuctionDressUpFrame:StripTextures()
-		AuctionDressUpFrame:SetTemplate("Transparent")
-		AuctionDressUpFrame:Point("TOPLEFT", AuctionFrame, "TOPRIGHT", 2, 0)
-		S:HandleButton(AuctionDressUpFrameResetButton)
-		AuctionDressUpFrameCloseButton:StripTextures()
-		AuctionDressUpFrameCloseButton:SetNormalTexture(AuctionFrameCloseButton:GetNormalTexture():GetTexture())
-		AuctionDressUpFrameCloseButton:SetPushedTexture(AuctionFrameCloseButton:GetPushedTexture():GetTexture())
-		AuctionDressUpFrameCloseButton:SetHighlightTexture(AuctionFrameCloseButton:GetHighlightTexture():GetTexture())
-		AuctionDressUpFrameCloseButton:SetDisabledTexture(AuctionFrameCloseButton:GetDisabledTexture():GetTexture())			
-	else
-		SideDressUpFrame:StripTextures()
-		SideDressUpFrame:SetTemplate("Transparent")
-		SideDressUpFrame:Point("TOPLEFT", AuctionFrame, "TOPRIGHT", 2, 0)
-		S:HandleButton(SideDressUpModelResetButton)
-		S:HandleCloseButton(SideDressUpModelCloseButton)
-	end
+	SideDressUpFrame:StripTextures()
+	SideDressUpFrame:SetTemplate("Transparent")
+	SideDressUpFrame:Point("TOPLEFT", AuctionFrame, "TOPRIGHT", 2, 0)
+	S:HandleButton(SideDressUpModelResetButton)
+	S:HandleCloseButton(SideDressUpModelCloseButton)
 	
 	--Progress Frame
 	AuctionProgressFrame:StripTextures()

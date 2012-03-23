@@ -24,10 +24,8 @@ local function LoadSkin()
 	S:HandleDropDownBox(WorldMapContinentDropDown)
 	S:HandleDropDownBox(WorldMapZoneDropDown)
 	
-	if E:IsPTRVersion() then
-		S:HandleDropDownBox(WorldMapShowDropDown)
-		WorldMapShowDropDown:Point('BOTTOMRIGHT', WorldMapPositioningGuide, 'BOTTOMRIGHT', -2, -4)
-	end
+	S:HandleDropDownBox(WorldMapShowDropDown)
+	WorldMapShowDropDown:Point('BOTTOMRIGHT', WorldMapPositioningGuide, 'BOTTOMRIGHT', -2, -4)
 	
 	S:HandleButton(WorldMapZoomOutButton)
 	WorldMapZoomOutButton:Point("LEFT", WorldMapZoneDropDown, "RIGHT", 0, 4)

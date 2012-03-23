@@ -102,12 +102,6 @@ local function LoadSkin()
 	InspectFrame:HookScript("OnShow", ColorItemBorder)
 	ColorItemBorder(CheckItemBorderColor)	
 	
-	if not E:IsPTRVersion() then
-		S:HandleRotateButton(InspectModelFrameRotateLeftButton)
-		S:HandleRotateButton(InspectModelFrameRotateRightButton)
-		InspectModelFrameRotateRightButton:Point("TOPLEFT", InspectModelFrameRotateLeftButton, "TOPRIGHT", 3, 0)
-	end
-	
 	InspectPVPFrameBottom:Kill()
 	InspectGuildFrameBG:Kill()
 	InspectPVPFrame:HookScript("OnShow", function() InspectPVPFrameBG:Kill() end)

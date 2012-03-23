@@ -1,8 +1,6 @@
 local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
-if not E:IsPTRVersion() then return end
-
 local function LoadSkin()
 	if E.global.skins.blizzard.enable ~= true or E.global.skins.blizzard.voidstorage ~= true then return end
 	local StripAllTextures = {

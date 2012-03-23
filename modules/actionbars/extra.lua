@@ -2,8 +2,6 @@ local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB,
 local AB = E:GetModule('ActionBars');
 
 function AB:SetupExtraButton()
-	if not E:IsPTRVersion() then return end
-
 	local holder = CreateFrame('Frame', nil, E.UIParent)
 	holder:Point('TOP', E.UIParent, 'TOP', 0, -250)
 	holder:Size(ExtraActionBarFrame:GetSize())

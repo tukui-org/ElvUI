@@ -47,10 +47,10 @@ local menuList = {
 	end},
 	{text = LFG_TITLE,
 	func = function() ToggleFrame(LFDParentFrame) end},
-	{text = E:IsPTRVersion() and RAID_FINDER or LOOKING_FOR_RAID,
-	func = function() if E:IsPTRVersion() then RaidMicroButton:Click() else ToggleFrame(LFRParentFrame) end end},
+	{text = RAID_FINDER,
+	func = function() RaidMicroButton:Click() end},
 	{text = ENCOUNTER_JOURNAL, 
-	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') and E:IsPTRVersion() then LoadAddOn('Blizzard_EncounterJournal'); end ToggleFrame(EncounterJournal) end},	
+	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then LoadAddOn('Blizzard_EncounterJournal'); end ToggleFrame(EncounterJournal) end},	
 	{text = L_CALENDAR,
 	func = function()
 	if(not CalendarFrame) then LoadAddOn("Blizzard_Calendar") end
@@ -225,15 +225,9 @@ function M:Initialize()
 	Minimap.location:SetJustifyV("MIDDLE")		
 	Minimap.location:Hide()
 	
-	if not E:IsPTRVersion() then
-		LFDSearchStatus:SetTemplate("Default")
-		LFDSearchStatus:SetClampedToScreen(true)
-		LFDDungeonReadyStatus:SetClampedToScreen(true)
-	else
-		LFGSearchStatus:SetTemplate("Default")
-		LFGSearchStatus:SetClampedToScreen(true)
-		LFGDungeonReadyStatus:SetClampedToScreen(true)	
-	end 
+	LFGSearchStatus:SetTemplate("Default")
+	LFGSearchStatus:SetClampedToScreen(true)
+	LFGDungeonReadyStatus:SetClampedToScreen(true)	
 	
 	MinimapBorder:Hide()
 	MinimapBorderTop:Hide()
@@ -287,13 +281,9 @@ function M:Initialize()
 	Minimap:SetScript("OnMouseWheel", M.Minimap_OnMouseWheel)	
 	Minimap:SetScript("OnMouseUp", M.Minimap_OnMouseUp)
 	
-	if not E:IsPTRVersion() then
-		self:SecureHook("MiniMapLFG_UpdateIsShown", "UpdateLFG")
-	else
-		MiniMapLFGFrame:ClearAllPoints()
-		MiniMapLFGFrame:Point("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", 2, 1)
-		MiniMapLFGFrameBorder:Hide()		
-	end
+	MiniMapLFGFrame:ClearAllPoints()
+	MiniMapLFGFrame:Point("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", 2, 1)
+	MiniMapLFGFrameBorder:Hide()	
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "Update_ZoneText")
 	self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "Update_ZoneText")
 	self:RegisterEvent("ZONE_CHANGED", "Update_ZoneText")

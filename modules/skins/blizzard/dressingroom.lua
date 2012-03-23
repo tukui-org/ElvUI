@@ -12,13 +12,7 @@ local function LoadSkin()
 	S:HandleButton(DressUpFrameResetButton)
 	S:HandleButton(DressUpFrameCancelButton)
 	S:HandleCloseButton(DressUpFrameCloseButton, DressUpFrame.backdrop)
-	
-	if not E:IsPTRVersion() then
-		S:HandleRotateButton(DressUpModelRotateLeftButton)
-		S:HandleRotateButton(DressUpModelRotateRightButton)
-		DressUpModelRotateRightButton:Point("TOPLEFT", DressUpModelRotateLeftButton, "TOPRIGHT", 2, 0)
-	end
-	
+		
 	DressUpFrameResetButton:Point("RIGHT", DressUpFrameCancelButton, "LEFT", -2, 0)
 end
 
