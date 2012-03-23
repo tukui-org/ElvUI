@@ -145,6 +145,7 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff)
 	end
 	
 	panel:SetScript('OnSizeChanged', DT.UpdateAllDimensions)
+	DT.UpdateAllDimensions(panel)
 end
 
 function DT:AssignPanelToDataText(panel, data)	
