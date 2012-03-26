@@ -1,2 +1,3 @@
 *Removed some old code that was used to keep ElvUI working with patch 4.2.
 *Re-Add scale restriction so you can't set UIScale below .64.
+*Add support to the keybind mode for all gaming mouses.
