@@ -8,3 +8,4 @@
 *Fix Raid Icon size not adjusting when changing the option.
 *40 Man layout can now have role icons and raid icons displayed. They are off by Default.
 *Copying a message from a B.Net friend to the chat edit box should no longer display as "[|Kf11|kBNET_NAME|k]"
+*Fix issue with restore bar button on Action Bars module not working more than one time.
