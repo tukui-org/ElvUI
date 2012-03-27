@@ -107,13 +107,12 @@ function CH:StyleChat(frame)
 			ChatEdit_ParseText(self, 0)		  
 		  end
 	   end
-		
-		local sub, found = gsub(text, "|Kf(%S+)|([_A-Za-z0-9-]+)%s([_A-Za-z0-9-]+)(%S+)", "%2 %3]:")
-		
+
+		local new, found = gsub(text, "|Kf(%S+)|k(%S+)%s(%S+)|k", "%2 %3")
 		if found > 0 then
-			sub = sub:gsub('|k', '')
-			self:SetText(sub)
-		end		
+			new = new:gsub('|', '')
+			self:SetText(new)
+		end
 	end)
 	
 	hooksecurefunc("ChatEdit_UpdateHeader", function()
