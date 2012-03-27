@@ -618,6 +618,12 @@ end
 
 hooksecurefunc("UnitPopup_ShowMenu", showMenu)
 
+function E:FoolsJoke()
+	TIME_PLAYED_TOTAL = "Total life wasted: %s";
+	TIME_PLAYED_LEVEL = "Life wasted at this level: %s";
+	RequestTimePlayed();
+end
+
 function E:Initialize()
 	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF, true);
 	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
@@ -661,6 +667,9 @@ function E:Initialize()
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "SendRecieve")
 	self:RegisterEvent("CHAT_MSG_ADDON", "SendRecieve")
 	self:RegisterEvent('UI_SCALE_CHANGED', 'UIScale')
+	if E:IsFoolsDay() then
+		self:RegisterEvent('PLAYER_ENTERING_WORLD', 'FoolsJoke')
+	end
 	--self:RegisterEvent('UPDATE_BINDINGS', 'SaveKeybinds')
 	--self:SaveKeybinds()
 	
