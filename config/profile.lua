@@ -1002,6 +1002,15 @@ P['unitframe'] = {
 				['useFilter'] = '',	
 				['durationLimit'] = 0,
 			},	
+			['rdebuffs'] = {
+				['enable'] = false,
+				['fontsize'] = 10,
+				['size'] = 22,
+			},
+			['roleIcon'] = {
+				['enable'] = false,
+				['position'] = 'BOTTOM',
+			},				
 			['buffIndicator'] = {
 				['enable'] = true,
 				['size'] = 6,

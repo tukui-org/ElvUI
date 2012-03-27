@@ -22,6 +22,8 @@ function UF:Construct_Raid2640Frames(unitGroup)
 	self.AuraWatch = UF:Construct_AuraWatch(self)
 	self.DebuffHighlight = UF:Construct_DebuffHighlight(self)
 	self.ResurrectIcon = UF:Construct_ResurectionIcon(self)
+	self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
+	self.LFDRole = UF:Construct_RoleIcon(self)
 	
 	self.TargetGlow = UF:Construct_TargetGlow(self)
 	table.insert(self.__elements, UF.UpdateThreat)
@@ -386,6 +388,45 @@ function UF:Update_Raid2640Frames(frame, db)
 			debuffs:Show()
 		else
 			debuffs:Hide()
+		end
+	end	
+	
+	--RaidDebuffs
+	do
+		local rdebuffs = frame.RaidDebuffs
+		if db.rdebuffs.enable then
+			if not frame:IsElementEnabled('RaidDebuffs') then
+				frame:EnableElement('RaidDebuffs')
+			end					
+
+			rdebuffs:Size(db.rdebuffs.size)
+			
+			rdebuffs.count:FontTemplate(nil, db.rdebuffs.fontsize, 'OUTLINE')
+			rdebuffs.time:FontTemplate(nil, db.rdebuffs.fontsize, 'OUTLINE')
+		else
+			if frame:IsElementEnabled('RaidDebuffs') then
+				frame:DisableElement('RaidDebuffs')
+				rdebuffs:Hide()
+			end						
+		end
+	end	
+	
+	--Role Icon
+	do
+		local role = frame.LFDRole
+		if db.roleIcon.enable then
+			if not frame:IsElementEnabled('LFDRole') then
+				frame:EnableElement('LFDRole')				
+			end			
+			
+			local x, y = self:GetPositionOffset(db.roleIcon.position, 1)
+			role:ClearAllPoints()
+			role:Point(db.roleIcon.position, frame.Health, db.roleIcon.position, x, y)
+		else
+			if frame:IsElementEnabled('LFDRole') then
+				frame:DisableElement('LFDRole')
+			end		
+			role:Hide()
 		end
 	end	
 	

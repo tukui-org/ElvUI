@@ -402,7 +402,7 @@ function UF:Update_Raid625Frames(frame, db)
 				frame:EnableElement('RaidDebuffs')
 			end					
 
-			rdebuffs:Size(UNIT_HEIGHT * 0.6)
+			rdebuffs:Size(db.rdebuffs.size)
 			
 			rdebuffs.count:FontTemplate(nil, db.rdebuffs.fontsize, 'OUTLINE')
 			rdebuffs.time:FontTemplate(nil, db.rdebuffs.fontsize, 'OUTLINE')

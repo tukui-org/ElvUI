@@ -5,3 +5,5 @@
 *Fix strata issue I noticed on shaman, debuff highlighting and incomming heals were appearing above the Totem bar.
 *Fix logic error with the BGMap skin, should now set alphas correctly when mousing in and out of the frame.
 *Fix issue with datatext getting reset when using the reset anchors button.
+*Fix Raid Icon size not adjusting when changing the option.
+*40 Man layout can now have role icons and raid icons displayed. They are off by Default.
