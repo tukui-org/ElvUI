@@ -3,3 +3,4 @@
 *Add support to the keybind mode for all gaming mouses.
 *Enable/Disable unitframes should no longer require reload ui. This change also fixes people disabling a frame and seeing the default Blizzard frame popping up after a reload or restart.
 *Fix strata issue I noticed on shaman, debuff highlighting and incomming heals were appearing above the Totem bar.
+*Fix logic error with the BGMap skin, should now set alphas correctly when mousing in and out of the frame.

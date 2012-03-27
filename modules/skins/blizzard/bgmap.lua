@@ -13,7 +13,7 @@ local function LoadSkin()
 	
 	BattlefieldMinimap:CreateBackdrop('Default')
 	BattlefieldMinimap.backdrop:Point('BOTTOMRIGHT', -4, 2)
-	
+	BattlefieldMinimap:SetFrameStrata('LOW')
 	BattlefieldMinimapCloseButton:ClearAllPoints()
 	BattlefieldMinimapCloseButton:SetPoint("TOPRIGHT", -4, 0)	
 	S:HandleCloseButton(BattlefieldMinimapCloseButton)
@@ -23,6 +23,7 @@ local function LoadSkin()
 	
 	BattlefieldMinimap:EnableMouse(true)
 	BattlefieldMinimap:SetMovable(true)
+	BattlefieldMinimap.backdrop:SetAlpha(1.0 - BattlefieldMinimapOptions.opacity)
 	
 	BattlefieldMinimap:SetScript("OnMouseUp", function(self, btn)
 		if btn == "LeftButton" then
@@ -45,27 +46,35 @@ local function LoadSkin()
 		end
 	end)	
 	
+	
 	hooksecurefunc('BattlefieldMinimap_UpdateOpacity', function(opacity)
-		local opacity = opacity or OpacityFrameSlider:GetValue();
 		local alpha = 1.0 - BattlefieldMinimapOptions.opacity;
 		BattlefieldMinimap.backdrop:SetAlpha(alpha)
 	end)
 	
-	
+	local oldAlpha
 	BattlefieldMinimap:HookScript('OnEnter', function()
+		oldAlpha = BattlefieldMinimapOptions.opacity;
 		BattlefieldMinimap_UpdateOpacity(0)
 	end)
 	
 	BattlefieldMinimap:HookScript('OnLeave', function()
-		BattlefieldMinimap_UpdateOpacity(OpacityFrameSlider:GetValue())
+		if oldAlpha then
+			BattlefieldMinimap_UpdateOpacity(oldAlpha)
+			oldAlpha = nil;
+		end
 	end)
 	
 	BattlefieldMinimapCloseButton:HookScript('OnEnter', function()
+		oldAlpha = BattlefieldMinimapOptions.opacity;
 		BattlefieldMinimap_UpdateOpacity(0)
 	end)
 	
 	BattlefieldMinimapCloseButton:HookScript('OnLeave', function()
-		BattlefieldMinimap_UpdateOpacity(OpacityFrameSlider:GetValue())
+		if oldAlpha then
+			BattlefieldMinimap_UpdateOpacity(oldAlpha)
+			oldAlpha = nil;
+		end
 	end)	
 end
 
