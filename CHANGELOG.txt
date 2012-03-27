@@ -1,14 +1,15 @@
 [b]Additions[/b]
+*Add Postal addon skin. To disable you must simply disable the ElvUI mailbox skin.
 *Add support to the keybind mode for all gaming mouses.
-*40 Man layout can now have role icons and raid icons displayed. They are off by Default.
+*40 Man layout can now have role icons and raid debuff icons displayed. They are off by Default.
 *Add Restore Defaults buttons to Assist/Tank, Group Frames. In the UnitFrames section.
 
 [b]Changes[/b]
 *Removed some old code that was used to keep ElvUI working with patch 4.2.
-*Re-Add scale restriction so you can't set UIScale below .64.
 *Enable/Disable unitframes should no longer require reload ui. This change also fixes people disabling a frame and seeing the default Blizzard frame popping up after a reload or restart.
 
 [b]Fixes[/b]
+*Fix issue with some high resolutions scale becomeing lower than .64, which would cause the borders to look messed up.
 *Fix strata issue I noticed on shaman, debuff highlighting and incomming heals were appearing above the Totem bar.
 *Fix logic error with the BGMap skin, should now set alphas correctly when mousing in and out of the frame.
 *Fix issue with datatext getting reset when using the reset anchors button.

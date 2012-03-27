@@ -10,4 +10,5 @@
 	<Script file='recount.lua'/>
 	<Script file='skada.lua'/>
 	<Script file='tinydps.lua'/>
+	<Script file='postal.lua'/>
 </Ui>
