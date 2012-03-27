@@ -7,3 +7,4 @@
 *Fix issue with datatext getting reset when using the reset anchors button.
 *Fix Raid Icon size not adjusting when changing the option.
 *40 Man layout can now have role icons and raid icons displayed. They are off by Default.
+*Copying a message from a B.Net friend to the chat edit box should no longer display as "[|Kf11|kBNET_NAME|k]"
