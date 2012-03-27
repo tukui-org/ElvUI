@@ -1,11 +1,17 @@
+[b]Additions[/b]
+*Add support to the keybind mode for all gaming mouses.
+*40 Man layout can now have role icons and raid icons displayed. They are off by Default.
+*Add Restore Defaults buttons to Assist/Tank, Group Frames. In the UnitFrames section.
+
+[b]Changes[/b]
 *Removed some old code that was used to keep ElvUI working with patch 4.2.
 *Re-Add scale restriction so you can't set UIScale below .64.
-*Add support to the keybind mode for all gaming mouses.
 *Enable/Disable unitframes should no longer require reload ui. This change also fixes people disabling a frame and seeing the default Blizzard frame popping up after a reload or restart.
+
+[b]Fixes[/b]
 *Fix strata issue I noticed on shaman, debuff highlighting and incomming heals were appearing above the Totem bar.
 *Fix logic error with the BGMap skin, should now set alphas correctly when mousing in and out of the frame.
 *Fix issue with datatext getting reset when using the reset anchors button.
 *Fix Raid Icon size not adjusting when changing the option.
-*40 Man layout can now have role icons and raid icons displayed. They are off by Default.
 *Copying a message from a B.Net friend to the chat edit box should no longer display as "[|Kf11|kBNET_NAME|k]"
 *Fix issue with restore bar button on Action Bars module not working more than one time.

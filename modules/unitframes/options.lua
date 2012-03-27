@@ -4612,8 +4612,14 @@ E.Options.args.unitframe.args.party = {
 			order = 1,
 			name = L['Enable'],
 		},
-		general = {
+		resetSettings = {
+			type = 'execute',
 			order = 2,
+			name = L['Restore Defaults'],
+			func = function(info, value) UF:ResetUnitSettings('party') end,
+		},		
+		general = {
+			order = 5,
 			type = 'group',
 			name = L['General'],
 			args = {
@@ -5219,8 +5225,14 @@ E.Options.args.unitframe.args.raid625 = {
 			order = 1,
 			name = L['Enable'],
 		},
-		general = {
+		resetSettings = {
+			type = 'execute',
 			order = 2,
+			name = L['Restore Defaults'],
+			func = function(info, value) UF:ResetUnitSettings('raid625') end,
+		},			
+		general = {
+			order = 5,
 			type = 'group',
 			name = L['General'],
 			args = {
@@ -5746,8 +5758,14 @@ E.Options.args.unitframe.args.raid2640 = {
 			order = 1,
 			name = L['Enable'],
 		},
-		general = {
+		resetSettings = {
+			type = 'execute',
 			order = 2,
+			name = L['Restore Defaults'],
+			func = function(info, value) UF:ResetUnitSettings('raid2640') end,
+		},			
+		general = {
+			order = 5,
 			type = 'group',
 			name = L['General'],
 			args = {
@@ -6272,8 +6290,14 @@ E.Options.args.unitframe.args.tank = {
 			order = 1,
 			name = L['Enable'],
 		},
-		general = {
+		resetSettings = {
+			type = 'execute',
 			order = 2,
+			name = L['Restore Defaults'],
+			func = function(info, value) UF:ResetUnitSettings('tank') end,
+		},		
+		general = {
+			order = 3,
 			type = 'group',
 			name = L['General'],
 			guiInline = true,
@@ -6308,8 +6332,14 @@ E.Options.args.unitframe.args.assist = {
 			order = 1,
 			name = L['Enable'],
 		},
-		general = {
+		resetSettings = {
+			type = 'execute',
 			order = 2,
+			name = L['Restore Defaults'],
+			func = function(info, value) UF:ResetUnitSettings('assist') end,
+		},		
+		general = {
+			order = 3,
 			type = 'group',
 			name = L['General'],
 			guiInline = true,
