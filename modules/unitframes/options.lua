@@ -649,7 +649,6 @@ E.Options.args.unitframe.args.player = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.units['player'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -1249,7 +1248,6 @@ E.Options.args.unitframe.args.target = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.units['target'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -1786,7 +1784,6 @@ E.Options.args.unitframe.args.targettarget = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.units['targettarget'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -2138,7 +2135,6 @@ E.Options.args.unitframe.args.focus = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.units['focus'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -2608,7 +2604,6 @@ E.Options.args.unitframe.args.focustarget = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.units['focustarget'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -2960,7 +2955,6 @@ E.Options.args.unitframe.args.pet = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.units['pet'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -3318,7 +3312,6 @@ E.Options.args.unitframe.args.pettarget = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.units['pettarget'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -3670,7 +3663,6 @@ E.Options.args.unitframe.args.boss = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.units['boss'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -4158,7 +4150,6 @@ E.Options.args.unitframe.args.arena = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.units['arena'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
