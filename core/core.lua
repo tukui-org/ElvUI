@@ -619,8 +619,8 @@ end
 hooksecurefunc("UnitPopup_ShowMenu", showMenu)
 
 function E:FoolsJoke()
-	TIME_PLAYED_TOTAL = "Total life wasted: %s";
-	TIME_PLAYED_LEVEL = "Life wasted at this level: %s";
+	TIME_PLAYED_TOTAL = "Total time wasted: %s";
+	TIME_PLAYED_LEVEL = "Time wasted at this level: %s";
 	RequestTimePlayed();
 end
 
