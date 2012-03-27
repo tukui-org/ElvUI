@@ -45,14 +45,15 @@ function UF:Construct_Raid2640Frames(unitGroup)
 end
 
 function UF:Raid2640SmartVisibility(event)
+	if not self.db or not self.SetAttribute or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) then return; end
 	local inInstance, instanceType = IsInInstance()
 	local _, _, _, _, maxPlayers, _, _ = GetInstanceInfo()
 	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
 	if not InCombatLockdown() then		
-		if inInstance and instanceType == "raid" and maxPlayers ~= 40 and UF.db and UF.db.smartRaidFilter and self.SetAttribute then
+		if inInstance and instanceType == "raid" and maxPlayers ~= 40 then
 			self:SetAttribute("showRaid", false)
 			self:SetAttribute("showParty", false)			
-		elseif self.SetAttribute and self.db and self.db.showParty and self.db.enable then
+		elseif self.db.showParty then
 			self:SetAttribute("showParty", self.db.showParty)
 			self:SetAttribute("showRaid", self.db.showRaid)
 		end
@@ -61,7 +62,7 @@ function UF:Raid2640SmartVisibility(event)
 		return
 	end
 
-	if event == 'PARTY_MEMBERS_CHANGED' then
+	if event == 'PARTY_MEMBERS_CHANGED' or event == "PLAYER_REGEN_ENABLED" then
 		UF:UpdateGroupChildren(self, self.db)
 	end
 end

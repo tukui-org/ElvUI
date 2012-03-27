@@ -307,6 +307,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 	
 	self[group].Update = function()
 		local db = self.db['units'][group]
+		if db.enable ~= true then return end
 		UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
 		
 		for i=1, self[group]:GetNumChildren() do
