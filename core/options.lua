@@ -95,8 +95,14 @@ E.Options.args.general = {
 					desc = L['Automatically accept invites from guild/friends.'],
 					type = 'toggle',
 				},
-				loot = {
+				vendorGrays = {
 					order = 5,
+					name = L['Vendor Grays'],
+					desc = L['Automatically vendor gray items when visiting a vendor.'],
+					type = 'toggle',				
+				},				
+				loot = {
+					order = 6,
 					type = "toggle",
 					name = L['Loot'],
 					desc = L['Enable/Disable the loot frame.'],
@@ -104,7 +110,7 @@ E.Options.args.general = {
 					set = function(info, value) E.global.general.loot = value; StaticPopup_Show("GLOBAL_RL") end
 				},
 				lootRoll = {
-					order = 6,
+					order = 7,
 					type = "toggle",
 					name = L['Loot Roll'],
 					desc = L['Enable/Disable the loot roll frame.'],
@@ -112,14 +118,14 @@ E.Options.args.general = {
 					set = function(info, value) E.global.general.lootRoll = value; StaticPopup_Show("GLOBAL_RL") end
 				},
 				autoscale = {
-					order = 7,
+					order = 8,
 					name = L["Auto Scale"],
 					desc = L["Automatically scale the User Interface based on your screen resolution"],
 					type = "toggle",	
 					set = function(info, value) E.db.general[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end
 				},	
 				raidReminder = {
-					order = 8,
+					order = 9,
 					name = L['Raid Reminder'],
 					desc = L['Display raid reminder bar on the minimap.'],
 					type = 'toggle',
@@ -129,7 +135,7 @@ E.Options.args.general = {
 					end,					
 				},
 				mapTransparency = {
-					order = 9,
+					order = 10,
 					name = L['Map Transparency'],
 					desc = L['Controls what the transparency of the worldmap will be set to when you are moving.'],
 					type = 'range',
@@ -137,7 +143,7 @@ E.Options.args.general = {
 					min = 0, max = 1, step = 0.01,
 				},
 				minimapSize = {
-					order = 10,
+					order = 11,
 					name = L['Minimap Size'],
 					desc = L['Adjust the size of the minimap.'],
 					type = 'range',
@@ -156,7 +162,7 @@ E.Options.args.general = {
 					set = function(info, value) E.global.general.profileBinds = value; StaticPopup_Show("GLOBAL_RL") end
 				},]]
 				bubbles = {
-					order = 11,
+					order = 12,
 					type = "toggle",
 					name = L['Chat Bubbles'],
 					desc = L['Skin the blizzard chat bubbles.'],

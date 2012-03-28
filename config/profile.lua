@@ -10,6 +10,7 @@ P['general'] = {
 	['loginmessage'] = true,
 	["interruptAnnounce"] = "NONE",
 	["autoRepair"] = "NONE",
+	['vendorGrays'] = false,
 	['autoAcceptInvite'] = false,
 	
 	-- fonts
