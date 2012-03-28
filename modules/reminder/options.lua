@@ -306,14 +306,23 @@ E.Options.args.reminder = {
 			get = function(info) return E.global.reminder[ info[#info] ] end,
 			set = function(info, value) E.global.reminder[ info[#info] ] = value; StaticPopup_Show("GLOBAL_RL") end
 		},
-		spacer = {
+		sound = {
+			type = "select", dialogControl = 'LSM30_Sound',
 			order = 3,
+			name = L["Sound"],
+			desc = L["Sound that will play when you have a warning icon displayed."],
+			values = AceGUIWidgetLSMlists.sound,
+			get = function(info) return E.global.reminder.sound end,
+			set = function(info, value) E.global.reminder.sound = value; end		
+		},
+		spacer = {
+			order = 4,
 			type = "description",
 			name = '',
 		},	
 		addGroup = {
 			type = 'input',
-			order = 4,
+			order = 5,
 			name = L['Add Group'],
 			get = function(info) return "" end,
 			set = function(info, value) 
@@ -330,7 +339,7 @@ E.Options.args.reminder = {
 		},
 		deleteGroup = {
 			type = 'input',
-			order = 5,
+			order = 6,
 			name = L['Remove Group'],
 			get = function(info) return "" end,
 			set = function(info, value) 
@@ -348,7 +357,7 @@ E.Options.args.reminder = {
 			end,				
 		},
 		selectGroup = {
-			order = 6,
+			order = 7,
 			type = 'select',
 			name = L['Select Group'],
 			get = function(info) return selectedFilter end,

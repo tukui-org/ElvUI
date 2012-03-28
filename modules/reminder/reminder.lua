@@ -1,5 +1,6 @@
 local E, L, P, G = unpack(select(2, ...));
-local R = E:NewModule('Reminder')
+local R = E:NewModule('Reminder', 'AceTimer-3.0');
+local LSM = LibStub("LibSharedMedia-3.0");
 R.CreatedReminders = {};
 
 function R:PlayerHasFilteredBuff(db, checkPersonal)
@@ -174,6 +175,19 @@ function R:UpdateReminderIcon(event, unit)
 			end
 		end
 	end
+	
+	if self:IsShown() then
+		if not R.SoundThrottled then
+			R.SoundThrottled = true;
+			PlaySoundFile(LSM:Fetch("sound", E.global['reminder'].sound));
+			R:ScheduleTimer('ThrottleSound', 10);
+		end
+	end
+end
+
+function R:ThrottleSound()
+	self.SoundThrottled = nil;
+	self:CancelAllTimers();
 end
 
 function R:CreateReminder(name, index)

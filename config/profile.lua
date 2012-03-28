@@ -12,6 +12,7 @@ P['general'] = {
 	['loginmessage'] = false,
 	["interruptAnnounce"] = "RAID",
 	["autoRepair"] = "GUILD",
+	['vendorGrays'] = false,
 	['autoAcceptInvite'] = false,
 	
 	-- fonts

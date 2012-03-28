@@ -881,7 +881,7 @@ function B:ToggleBags()
 	ToggleFrame(bagFrame)
 end
 
-function B:VendorGrays(delete)
+function B:VendorGrays(delete, nomsg)
 	if (not MerchantFrame or not MerchantFrame:IsShown()) and not delete then
 		E:Print(L['You must be at a vendor.'])
 		return
@@ -916,12 +916,12 @@ function B:VendorGrays(delete)
 	if c>0 and not delete then
 		local g, s, c = math.floor(c/10000) or 0, math.floor((c%10000)/100) or 0, c%100
 		E:Print(L['Vendored gray items for:'].." |cffffffff"..g..L.goldabbrev.." |cffffffff"..s..L.silverabbrev.." |cffffffff"..c..L.copperabbrev..".")
-	elseif not delete then
+	elseif not delete and not nomsg then
 		E:Print(L['No gray items to sell.'])
 	elseif count > 0 then
 		local g, s, c = math.floor(c/10000) or 0, math.floor((c%10000)/100) or 0, c%100
 		E:Print(string.format(L['Deleted %d gray items. Total Worth: %s'], count, " |cffffffff"..g..L.goldabbrev.." |cffffffff"..s..L.silverabbrev.." |cffffffff"..c..L.copperabbrev.."."))
-	else
+	elseif not nomsg then
 		E:Print(L['No gray items to delete.'])
 	end
 end
