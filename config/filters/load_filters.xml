@@ -2,4 +2,5 @@
 	<Script file='unitframe.lua'/>
 	<Script file="nameplate.lua"/>
 	<Script file='classtimer.lua'/>
+	<Script file='reminders.lua'/>
 </Ui>

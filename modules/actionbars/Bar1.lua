@@ -153,14 +153,6 @@ function AB:PositionAndSizeBar1()
 	RegisterStateDriver(bar, "show", self.db[barName].visibility);
 end
 
-local customExitButton = {
-	func = function(button)
-		VehicleExit()
-	end,
-	texture = "Interface\\Icons\\Spell_Shadow_SacrificialShield",
-	tooltip = LEAVE_VEHICLE,
-}
-
 function AB:CreateBar1()
 	bar:CreateBackdrop('Default');
 	bar.backdrop:SetAllPoints();
@@ -176,7 +168,7 @@ function AB:CreateBar1()
 		end
 		
 		if i == 12 then
-			bar.buttons[i]:SetState(11, "custom", customExitButton)
+			bar.buttons[i]:SetState(11, "custom", AB.customExitButton)
 		end		
 	end
 	self:UpdateButtonConfig(bar, bar.bindButtons)

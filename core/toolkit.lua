@@ -30,30 +30,57 @@ end
 	Basically if a frames width/height is an odd number, it will appear blurry
 ]]
 
---[[local function SetWidth(self, width)
-	print(width)
-	self:SetWidth(E:Round(width))
+local index = getmetatable(CreateFrame('Frame')).__index
+local floor = math.floor
+local function SetWidth(self, width)
+	if width and width ~= 0 then
+		width = floor(width)
+		if not E:IsEvenNumber(width) then
+			width = width - 1
+		end
+	end
+	
+	index.SetWidth(self, width)
 end
 
 local function SetHeight(self, height)
-	print('height changed')
+	if height and height ~= 0 then
+		height = floor(height)
+		if not E:IsEvenNumber(height) then
+			--height = height - 1
+		end
+	end
+	
+	index.SetHeight(self, height)
 end
 
 local function SetSize(self, width, height)
-	print('size changed')
+	if width and width ~= 0 then
+		width = floor(width)
+		if not E:IsEvenNumber(width) then
+			width = width - 1
+		end
+	end
+	
+	if height and height ~= 0 then
+		height = floor(height)
+		if not E:IsEvenNumber(height) then
+			--height = height - 1
+		end
+	end
+	
+	index.SetSize(self, width, height)
 end
 
-local objectTypes = {}
 local function FixDimensions(frame)
-	if objectTypes[frame:GetObjectType()] then return end
-	local index = getmetatable(frame).__index
+	--VERY EXPERIMENTAL, UNCOMMENT THIS SHIT IF YOU WANT TO TEST
+	--[[frame.SetWidth = SetWidth
+	frame.SetHeight = SetHeight
+	frame.SetSize = SetSize
 	
-	E:SecureHook(index, 'SetWidth', SetWidth)
-	E:SecureHook(index, 'SetHeight', SetHeight)
-	E:SecureHook(index, 'SetSize', SetSize)
-	print('Hooked for: '..frame:GetObjectType())
-	objectTypes[frame:GetObjectType()] = true;
-end]]
+	frame:SetWidth(frame:GetWidth())
+	frame:SetHeight(frame:GetHeight())]]
+end
 
 local function Size(frame, width, height)
 	frame:SetSize(E:Scale(width), E:Scale(height or width))
@@ -80,7 +107,8 @@ end
 
 local function SetTemplate(f, t, glossTex, ignoreUpdates)
 	GetTemplate(t)
-
+	f:FixDimensions()
+	
 	f.template = t
 	f.glossTex = glossTex
 

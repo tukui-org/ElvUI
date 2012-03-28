@@ -157,38 +157,25 @@ function AB:RegisterCooldown(frame)
 end
 
 function AB:EnableCooldown()
-	if E:IsPTRVersion() then
-		self:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN')
-		
-		if ActionBarButtonEventsFrame.frames then
-			for i, frame in pairs(ActionBarButtonEventsFrame.frames) do
-				self:RegisterCooldown(frame)
-			end
-		end	
-		
-		if not self.hooks[cooldown] then
-			self:SecureHook(cooldown, 'SetCooldown', 'OnSetCooldown')
-		end		
-	else
-		if not self.hooks[cooldown] then
-			self:SecureHook(cooldown, 'SetCooldown', 'OnSetCooldown')
+	self:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN')
+	
+	if ActionBarButtonEventsFrame.frames then
+		for i, frame in pairs(ActionBarButtonEventsFrame.frames) do
+			self:RegisterCooldown(frame)
 		end
-	end
+	end	
+	
+	if not self.hooks[cooldown] then
+		self:SecureHook(cooldown, 'SetCooldown', 'OnSetCooldown')
+	end		
 end
 
 function AB:DisableCooldown()
-	if E:IsPTRVersion() then
-		self:UnregisterEvent('ACTIONBAR_UPDATE_COOLDOWN')
-		if self.hooks[cooldown] then
-			self:Unhook(cooldown, 'SetCooldown')
-			self.hooks[cooldown] = nil
-		end		
-	else
-		if self.hooks[cooldown] then
-			self:Unhook(cooldown, 'SetCooldown')
-			self.hooks[cooldown] = nil
-		end
-	end
+	self:UnregisterEvent('ACTIONBAR_UPDATE_COOLDOWN')
+	if self.hooks[cooldown] then
+		self:Unhook(cooldown, 'SetCooldown')
+		self.hooks[cooldown] = nil
+	end		
 end
 
 local color

@@ -649,7 +649,6 @@ E.Options.args.unitframe.args.player = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.units['player'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -1257,7 +1256,6 @@ E.Options.args.unitframe.args.target = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.units['target'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -1794,7 +1792,6 @@ E.Options.args.unitframe.args.targettarget = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.units['targettarget'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -2146,7 +2143,6 @@ E.Options.args.unitframe.args.focus = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.units['focus'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -2616,7 +2612,6 @@ E.Options.args.unitframe.args.focustarget = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.units['focustarget'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -2968,7 +2963,6 @@ E.Options.args.unitframe.args.pet = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.units['pet'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -3326,7 +3320,6 @@ E.Options.args.unitframe.args.pettarget = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.units['pettarget'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -3678,7 +3671,6 @@ E.Options.args.unitframe.args.boss = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.units['boss'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -4166,7 +4158,6 @@ E.Options.args.unitframe.args.arena = {
 			type = 'toggle',
 			order = 1,
 			name = L['Enable'],
-			set = function(info, value) E.db.unitframe.units['arena'][ info[#info] ] = value; StaticPopup_Show("CONFIG_RL"); end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -4629,8 +4620,14 @@ E.Options.args.unitframe.args.party = {
 			order = 1,
 			name = L['Enable'],
 		},
+		resetSettings = {
+			type = 'execute',
+			order = 2,
+			name = L['Restore Defaults'],
+			func = function(info, value) UF:ResetUnitSettings('party') end,
+		},		
 		general = {
-			order = 3,
+			order = 5,
 			type = 'group',
 			name = L['General'],
 			args = {
@@ -5236,8 +5233,14 @@ E.Options.args.unitframe.args.raid625 = {
 			order = 1,
 			name = L['Enable'],
 		},
+		resetSettings = {
+			type = 'execute',
+			order = 2,
+			name = L['Restore Defaults'],
+			func = function(info, value) UF:ResetUnitSettings('raid625') end,
+		},			
 		general = {
-			order = 3,
+			order = 5,
 			type = 'group',
 			name = L['General'],
 			args = {
@@ -5763,8 +5766,14 @@ E.Options.args.unitframe.args.raid2640 = {
 			order = 1,
 			name = L['Enable'],
 		},
+		resetSettings = {
+			type = 'execute',
+			order = 2,
+			name = L['Restore Defaults'],
+			func = function(info, value) UF:ResetUnitSettings('raid2640') end,
+		},			
 		general = {
-			order = 3,
+			order = 5,
 			type = 'group',
 			name = L['General'],
 			args = {
@@ -6226,6 +6235,52 @@ E.Options.args.unitframe.args.raid2640 = {
 					min = 7, max = 22, step = 1,
 				},
 			},
+		},	
+		roleIcon = {
+			order = 700,
+			type = 'group',
+			name = L['Role Icon'],
+			get = function(info) return E.db.unitframe.units['raid625']['roleIcon'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid625']['roleIcon'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625') end,	
+			args = {
+				enable = {
+					type = 'toggle',
+					name = L['Enable'],
+					order = 1,
+				},
+				position = {
+					type = 'select',
+					order = 2,
+					name = L['Position'],
+					values = positionValues,
+				},							
+			},
+		},		
+		rdebuffs = {
+			order = 800,
+			type = 'group',
+			name = L['RaidDebuff Indicator'],
+			get = function(info) return E.db.unitframe.units['raid625']['rdebuffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid625']['rdebuffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid625') end,
+			args = {
+				enable = {
+					type = 'toggle',
+					name = L['Enable'],
+					order = 1,
+				},	
+				size = {
+					type = 'range',
+					name = L['Size'],
+					order = 2,
+					min = 8, max = 35, step = 1,
+				},				
+				fontsize = {
+					type = 'range',
+					name = L['Font Size'],
+					order = 3,
+					min = 7, max = 22, step = 1,
+				},				
+			},
 		},		
 	},
 }
@@ -6243,8 +6298,14 @@ E.Options.args.unitframe.args.tank = {
 			order = 1,
 			name = L['Enable'],
 		},
-		general = {
+		resetSettings = {
+			type = 'execute',
 			order = 2,
+			name = L['Restore Defaults'],
+			func = function(info, value) UF:ResetUnitSettings('tank') end,
+		},		
+		general = {
+			order = 3,
 			type = 'group',
 			name = L['General'],
 			guiInline = true,
@@ -6279,8 +6340,14 @@ E.Options.args.unitframe.args.assist = {
 			order = 1,
 			name = L['Enable'],
 		},
-		general = {
+		resetSettings = {
+			type = 'execute',
 			order = 2,
+			name = L['Restore Defaults'],
+			func = function(info, value) UF:ResetUnitSettings('assist') end,
+		},		
+		general = {
+			order = 3,
 			type = 'group',
 			name = L['General'],
 			guiInline = true,

@@ -465,7 +465,7 @@ function E:SendRecieve(event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
 		if sender == E.myname then return end
 
-		if prefix == "ElvUIVC" and sender ~= 'Elv' and not string.find(sender, 'Elv-') then
+		if prefix == "ElvUIVC" and sender ~= 'Elv' and not string.find(sender, 'Elv%-') then
 			if tonumber(message) > tonumber(E.version) then
 				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.curse.com"])
 				self:UnregisterEvent("CHAT_MSG_ADDON")
@@ -623,6 +623,12 @@ end
 
 hooksecurefunc("UnitPopup_ShowMenu", showMenu)
 
+function E:FoolsJoke()
+	TIME_PLAYED_TOTAL = "Total time wasted: %s";
+	TIME_PLAYED_LEVEL = "Time wasted at this level: %s";
+	RequestTimePlayed();
+end
+
 function E:Initialize()
 	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF, true);
 	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
@@ -667,6 +673,9 @@ function E:Initialize()
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "SendRecieve")
 	self:RegisterEvent("CHAT_MSG_ADDON", "SendRecieve")
 	self:RegisterEvent('UI_SCALE_CHANGED', 'UIScale')
+	if E:IsFoolsDay() then
+		self:RegisterEvent('PLAYER_ENTERING_WORLD', 'FoolsJoke')
+	end
 	--self:RegisterEvent('UPDATE_BINDINGS', 'SaveKeybinds')
 	--self:SaveKeybinds()
 	

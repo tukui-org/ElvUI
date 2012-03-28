@@ -12,11 +12,7 @@ local function LoadSkin()
 		"LFDQueueFrameCapBar",
 	}
 
-	if E:IsPTRVersion() then
-		tinsert(StripAllTextures, 'LFGDungeonReadyDialog')
-	else
-		tinsert(StripAllTextures, 'LFDDungeonReadyDialog')
-	end
+	tinsert(StripAllTextures, 'LFGDungeonReadyDialog')
 
 	local KillTextures = {
 		"LFDQueueFrameBackground",
@@ -27,13 +23,9 @@ local function LoadSkin()
 		"LFDQueueFrameRoleButtonDPSBackground",
 	}
 
-	if E:IsPTRVersion() then
-		LFGDungeonReadyDialogBackground:Kill()
-		S:HandleButton(LFGDungeonReadyDialogEnterDungeonButton)
-		S:HandleButton(LFGDungeonReadyDialogLeaveQueueButton)
-	else
-		LFDDungeonReadyDialogBackground:Kill()
-	end
+	LFGDungeonReadyDialogBackground:Kill()
+	S:HandleButton(LFGDungeonReadyDialogEnterDungeonButton)
+	S:HandleButton(LFGDungeonReadyDialogLeaveQueueButton)
 
 	local buttons = {
 		"LFDQueueFrameFindGroupButton",
@@ -137,13 +129,8 @@ local function LoadSkin()
 
 	LFDQueueFrameCapBar:SetPoint("LEFT", 40, 0)
 
-	if not E:IsPTRVersion() then
-		LFDDungeonReadyDialog:SetTemplate("Transparent")
-		LFDDungeonReadyDialog:CreateShadow("Default")
-	else
-		LFGDungeonReadyDialog:SetTemplate("Transparent")
-		LFGDungeonReadyDialog:CreateShadow("Default")
-	end
+	LFGDungeonReadyDialog:SetTemplate("Transparent")
+	LFGDungeonReadyDialog:CreateShadow("Default")
 
 	LFDQueueFrameSpecificListScrollFrame:StripTextures()
 	LFDQueueFrameSpecificListScrollFrame:Height(LFDQueueFrameSpecificListScrollFrame:GetHeight() - 8)
@@ -152,11 +139,7 @@ local function LoadSkin()
 	LFDParentFrame.backdrop:Point( "BOTTOMRIGHT", LFDParentFrame, "BOTTOMRIGHT")
 	S:HandleCloseButton(LFDParentFrameCloseButton,LFDParentFrame)
 
-	if not E:IsPTRVersion() then
-		S:HandleCloseButton(LFDDungeonReadyDialogCloseButton,LFDDungeonReadyDialog)
-	else
-		S:HandleCloseButton(LFGDungeonReadyDialogCloseButton, LFGDungeonReadyDialog)
-	end
+	S:HandleCloseButton(LFGDungeonReadyDialogCloseButton, LFGDungeonReadyDialog)
 
 	S:HandleDropDownBox(LFDQueueFrameTypeDropDown, 300)
 	LFDQueueFrameTypeDropDown:Point("RIGHT",-10,0)

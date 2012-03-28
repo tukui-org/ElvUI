@@ -78,80 +78,41 @@ local function LoadSkin()
 		"PaperDollSidebarTabs",
 		"PaperDollEquipmentManagerPane",
 	}
-	
-	if not E:IsPTRVersion() then
-		tinsert(charframe, 'PaperDollFrameItemFlyout')
-	end
+
 	
 	CharacterFrameExpandButton:Size(CharacterFrameExpandButton:GetWidth() - 7, CharacterFrameExpandButton:GetHeight() - 7)
 	S:HandleNextPrevButton(CharacterFrameExpandButton)
-	
-	if not E:IsPTRVersion() then
-		S:HandleRotateButton(CharacterModelFrameRotateLeftButton)
-		S:HandleRotateButton(CharacterModelFrameRotateRightButton)
-		CharacterModelFrameRotateLeftButton:Point("TOPLEFT", CharacterModelFrame, "TOPLEFT", 4, -4)
-		CharacterModelFrameRotateRightButton:Point("TOPLEFT", CharacterModelFrameRotateLeftButton, "TOPRIGHT", 4, 0)
-	end
-	
-	if E:IsPTRVersion() then
-		EquipmentFlyoutFrameHighlight:Kill()
-		local function SkinItemFlyouts()
-			EquipmentFlyoutFrameButtons:StripTextures()
 
-			
-			for i=1, EQUIPMENTFLYOUT_MAXITEMS do
-				local button = _G["EquipmentFlyoutFrameButton"..i]
-				local icon = _G["EquipmentFlyoutFrameButton"..i.."IconTexture"]
-				if button then
-					button:StyleButton(false)
-					
-					icon:SetTexCoord(unpack(E.TexCoords))
-					button:GetNormalTexture():SetTexture(nil)
-					
-					icon:ClearAllPoints()
-					icon:Point("TOPLEFT", 2, -2)
-					icon:Point("BOTTOMRIGHT", -2, 2)	
-					button:SetFrameLevel(button:GetFrameLevel() + 2)
-					if not button.backdrop then
-						button:CreateBackdrop("Default")
-						button.backdrop:SetAllPoints()			
-					end
-				end
-			end	
-		end
+
+	EquipmentFlyoutFrameHighlight:Kill()
+	local function SkinItemFlyouts()
+		EquipmentFlyoutFrameButtons:StripTextures()
+
 		
-		--Swap item flyout frame (shown when holding alt over a slot)
-		EquipmentFlyoutFrame:HookScript("OnShow", SkinItemFlyouts)
-		hooksecurefunc("EquipmentFlyout_Show", SkinItemFlyouts)	
-	else
-		local function SkinItemFlyouts()
-			PaperDollFrameItemFlyoutButtons:StripTextures()
-			
-			for i=1, PDFITEMFLYOUT_MAXITEMS do
-				local button = _G["PaperDollFrameItemFlyoutButtons"..i]
-				local icon = _G["PaperDollFrameItemFlyoutButtons"..i.."IconTexture"]
-				if button then
-					button:StyleButton(false)
-					
-					icon:SetTexCoord(unpack(E.TexCoords))
-					button:GetNormalTexture():SetTexture(nil)
-					
-					icon:ClearAllPoints()
-					icon:Point("TOPLEFT", 2, -2)
-					icon:Point("BOTTOMRIGHT", -2, 2)	
-					button:SetFrameLevel(button:GetFrameLevel() + 2)
-					if not button.backdrop then
-						button:CreateBackdrop("Default")
-						button.backdrop:SetAllPoints()			
-					end
+		for i=1, EQUIPMENTFLYOUT_MAXITEMS do
+			local button = _G["EquipmentFlyoutFrameButton"..i]
+			local icon = _G["EquipmentFlyoutFrameButton"..i.."IconTexture"]
+			if button then
+				button:StyleButton(false)
+				
+				icon:SetTexCoord(unpack(E.TexCoords))
+				button:GetNormalTexture():SetTexture(nil)
+				
+				icon:ClearAllPoints()
+				icon:Point("TOPLEFT", 2, -2)
+				icon:Point("BOTTOMRIGHT", -2, 2)	
+				button:SetFrameLevel(button:GetFrameLevel() + 2)
+				if not button.backdrop then
+					button:CreateBackdrop("Default")
+					button.backdrop:SetAllPoints()			
 				end
-			end	
-		end
-		
-		--Swap item flyout frame (shown when holding alt over a slot)
-		PaperDollFrameItemFlyout:HookScript("OnShow", SkinItemFlyouts)
-		hooksecurefunc("PaperDollItemSlotButton_UpdateFlyout", SkinItemFlyouts)
+			end
+		end	
 	end
+	
+	--Swap item flyout frame (shown when holding alt over a slot)
+	EquipmentFlyoutFrame:HookScript("OnShow", SkinItemFlyouts)
+	hooksecurefunc("EquipmentFlyout_Show", SkinItemFlyouts)	
 	
 	--Icon in upper right corner of character frame
 	CharacterFramePortrait:Kill()

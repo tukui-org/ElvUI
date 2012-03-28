@@ -51,33 +51,31 @@ function UF:Construct_PartyFrames(unitGroup)
 	return self
 end
 
-local database
 function UF:PartySmartVisibility(event)
-	if not UF.db.smartRaidFilter then return end
+	if not self.db or not self.SetAttribute or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) then return; end
 	local inInstance, instanceType = IsInInstance()
 	local _, _, _, _, maxPlayers, _, _ = GetInstanceInfo()
 	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
 	if not InCombatLockdown() then		
-		if inInstance and instanceType == "raid" and maxPlayers ~= 40 and self.SetAttribute then
+		if inInstance and instanceType == "raid" and maxPlayers ~= 40 then
 			self:SetAttribute("showRaid", false)
 			self:SetAttribute("showParty", false)			
-		elseif self.SetAttribute and database and database.enable then
-			self:SetAttribute("showParty", database.showParty)
-			self:SetAttribute("showRaid", database.showRaid)
+		else
+			self:SetAttribute("showParty", self.db.showParty)
+			self:SetAttribute("showRaid", self.db.showRaid)
 		end
 	else
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")
 		return
 	end
 	
-	if event == 'PARTY_MEMBERS_CHANGED' then
+	if event == 'PARTY_MEMBERS_CHANGED' or event == "PLAYER_REGEN_ENABLED" then
 		UF:UpdateGroupChildren(self, self.db)
 	end
 end
 
 function UF:Update_PartyHeader(header, db)
 	header:Hide()
-	database = db
 	header:SetAttribute('oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height))
 
 	--User Error Check
