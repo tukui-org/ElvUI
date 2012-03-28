@@ -25,11 +25,11 @@ end
 
 function R:UpdateReminderIcon(event, unit)
 	local db = E.global.reminder.filters[E.myclass][self.groupName];
-	self:Hide();
-	self.icon:SetTexture(nil);
-	
-	
+
 	if not db or not db.enable or (not db.spellGroup and not db.weaponCheck) or (event == 'UNIT_AURA' and unit ~= "player") then return; end
+		
+	self:Hide();
+	self.icon:SetTexture(nil);		
 		
 	--Level Check
 	if db.level and UnitLevel('player') < db.level then return; end
@@ -150,10 +150,10 @@ function R:UpdateReminderIcon(event, unit)
 		PVPCheck = true;
 		instanceCheck = true;
 	end
-	
+
 	if db.reverseCheck and not (db.role or db.tree) then db.reverseCheck = nil; end
 	if not self.icon:GetTexture() or UnitInVehicle("player") then return; end
-
+	
 	if db.spellGroup then
 		if roleCheck and treeCheck and combatCheck and (instanceCheck or PVPCheck) and not R:PlayerHasFilteredBuff(db.spellGroup, db.personal) then
 			self:Show();
