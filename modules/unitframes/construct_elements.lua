@@ -498,6 +498,10 @@ function UF:Construct_DebuffHighlight(frame)
 	dbh:SetBlendMode("ADD")
 	frame.DebuffHighlightFilter = true
 	frame.DebuffHighlightAlpha = 0.45
+	
+	if frame.Health then
+		dbh:SetParent(frame.Health)
+	end
 			
 	return dbh
 end
@@ -571,6 +575,11 @@ function UF:Construct_HealComm(frame)
 	ohpb:SetStatusBarTexture(E["media"].blankTex)
 	ohpb:SetStatusBarColor(0, 1, 0, 0.25)
 	mhpb:SetFrameLevel(mhpb:GetFrameLevel())	
+
+	if frame.Health then
+		ohpb:SetParent(frame.Health)
+		mhpb:SetParent(frame.Health)
+	end
 	
 	return {
 		myBar = mhpb,

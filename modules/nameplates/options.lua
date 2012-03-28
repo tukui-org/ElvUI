@@ -322,6 +322,11 @@ E.Options.args.nameplate = {
 					name = L['Add Name'],
 					get = function(info) return "" end,
 					set = function(info, value) 
+						if E.global['nameplate']['filter'][value] then
+							E:Print(L['Filter already exists!'])
+							return
+						end
+						
 						E.global['nameplate']['filter'][value] = {
 							['enable'] = true,
 							['hide'] = false,

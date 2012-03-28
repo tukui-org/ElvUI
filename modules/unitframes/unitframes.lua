@@ -262,27 +262,25 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 	self:UpdateColors()
 	
 	for i=1, numGroup do
+		local unit = group..i
+		local frameName = E:StringTitle(unit)
+		frameName = frameName:gsub('t(arget)', 'T%1')		
+		if not self[unit] then
+			self['handledgroupunits'][unit] = group;	
+			self[unit] = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
+			self[unit].index = i
+		end
+		
+		local frameName = E:StringTitle(group)
+		frameName = frameName:gsub('t(arget)', 'T%1')		
+		self[unit].Update = function()
+			UF["Update_"..E:StringTitle(frameName).."Frames"](self, self[unit], self.db['units'][group])	
+		end
+
 		if self.db['units'][group].enable then
-			local unit = group..i
-			if not self[unit] then
-				self['handledgroupunits'][unit] = group;
-				
-				local frameName = E:StringTitle(unit)
-				frameName = frameName:gsub('t(arget)', 'T%1')				
-				self[unit] = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
-				self[unit].index = i
-			else
-				self[unit]:Enable()
-			end
-			
-			local frameName = E:StringTitle(group)
-			frameName = frameName:gsub('t(arget)', 'T%1')		
-			self[unit].Update = function()
-				UF["Update_"..E:StringTitle(frameName).."Frames"](self, self[unit], self.db['units'][group])	
-			end
-			
+			self[unit]:Enable()
 			self[unit].Update()
-		elseif self[unit] then
+		else
 			self[unit]:Disable()
 		end
 	end
@@ -293,41 +291,42 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 	
 	self:UpdateColors()
 	
-	if self.db['units'][group].enable then
-		local db = self.db['units'][group]
-		if not self[group] then
-			ElvUF:RegisterStyle("ElvUF_"..E:StringTitle(group), UF["Construct_"..E:StringTitle(group).."Frames"])
-			ElvUF:SetActiveStyle("ElvUF_"..E:StringTitle(group))
+	local db = self.db['units'][group]
+	if not self[group] then
+		ElvUF:RegisterStyle("ElvUF_"..E:StringTitle(group), UF["Construct_"..E:StringTitle(group).."Frames"])
+		ElvUF:SetActiveStyle("ElvUF_"..E:StringTitle(group))
 
-			if template then
-				self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 'point', self.db['units'][group].point, 'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 'template', template, 'groupFilter', groupFilter)
-			else
-				self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 'point', self.db['units'][group].point, 'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 'groupFilter', groupFilter)
-			end
-			self['handledheaders'][group] = self[group]
-			self[group].groupName = group
+		if template then
+			self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 'point', self.db['units'][group].point, 'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 'template', template, 'groupFilter', groupFilter)
+		else
+			self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 'point', self.db['units'][group].point, 'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 'groupFilter', groupFilter)
 		end
+		self['handledheaders'][group] = self[group]
+		self[group].groupName = group
+	end
+	
+	self[group].Update = function()
+		local db = self.db['units'][group]
+		if db.enable ~= true then return end
+		UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
 		
-		self[group].Update = function()
-			local db = self.db['units'][group]
-			UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
+		for i=1, self[group]:GetNumChildren() do
+			local child = select(i, self[group]:GetChildren())
+			UF["Update_"..E:StringTitle(group).."Frames"](self, child, self.db['units'][group])
+
+			if _G[child:GetName()..'Pet'] then
+				UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Pet'], self.db['units'][group])
+			end
 			
-			for i=1, self[group]:GetNumChildren() do
-				local child = select(i, self[group]:GetChildren())
-				UF["Update_"..E:StringTitle(group).."Frames"](self, child, self.db['units'][group])
-
-				if _G[child:GetName()..'Pet'] then
-					UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Pet'], self.db['units'][group])
-				end
-				
-				if _G[child:GetName()..'Target'] then
-					UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Target'], self.db['units'][group])
-				end			
+			if _G[child:GetName()..'Target'] then
+				UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Target'], self.db['units'][group])
 			end			
-		end	
+		end			
+	end	
 
+	if self.db['units'][group].enable then
 		self[group].Update()
-	elseif self[group] then
+	else
 		self[group]:SetAttribute("showParty", false)
 		self[group]:SetAttribute("showRaid", false)
 		self[group]:SetAttribute("showSolo", false)
@@ -344,26 +343,22 @@ function UF:CreateAndUpdateUF(unit)
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
 	
 	self:UpdateColors()
-	
+
+	local frameName = E:StringTitle(unit)
+	frameName = frameName:gsub('t(arget)', 'T%1')
+	if not self[unit] then
+		self[unit] = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
+		self['handledunits'][unit] = unit
+	end
+
+	self[unit].Update = function()
+		UF["Update_"..frameName.."Frame"](self, self[unit], self.db['units'][unit])
+	end
+
 	if self.db['units'][unit].enable then
-		if not self[unit] then
-			local frameName = E:StringTitle(unit)
-			frameName = frameName:gsub('t(arget)', 'T%1')
-			
-			self[unit] = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
-			self['handledunits'][unit] = unit
-		else
-			self[unit]:Enable()
-		end
-		
-		local frameName = E:StringTitle(unit)
-		frameName = frameName:gsub('t(arget)', 'T%1')
-		self[unit].Update = function()
-			UF["Update_"..frameName.."Frame"](self, self[unit], self.db['units'][unit])
-		end
-		
+		self[unit]:Enable()
 		self[unit].Update()
-	elseif self[unit] then
+	else
 		self[unit]:Disable()
 	end
 end
@@ -519,23 +514,7 @@ function UF:Initialize()
 end
 
 function UF:ResetUnitSettings(unit)
-	local db = self.db['units'][unit]
-	
-	for option, value in pairs(P['unitframe']['units'][unit]) do
-		if type(value) ~= 'table' then
-			db[option] = value
-		else
-			for opt, val in pairs(P['unitframe']['units'][unit][option]) do
-				if type(val) ~= 'table' then
-					db[option][opt] = val
-				else
-					for o, v in pairs(P['unitframe']['units'][unit][option][opt]) do
-						db[option][opt][o] = v
-					end
-				end
-			end
-		end
-	end	
+	E:CopyTable(self.db['units'][unit], P['unitframe']['units'][unit]); 
 	
 	self:Update_AllFrames()
 end

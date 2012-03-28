@@ -63,23 +63,15 @@ local function LoadSkin()
 		"ChannelFrameDaughterFrameChannelPasswordRight",				
 		"ChannelFrameDaughterFrameChannelPasswordMiddle",			
 	}
-	
-	if E:IsPTRVersion() then
-		FriendsFrameInset:StripTextures()
-		WhoFrameListInset:StripTextures()
-		WhoFrameEditBoxInset:StripTextures()
-		ChannelFrameRightInset:StripTextures()
-		ChannelFrameLeftInset:StripTextures()
-		LFRQueueFrameListInset:StripTextures()
-		LFRQueueFrameRoleInset:StripTextures()
-		LFRQueueFrameCommentInset:StripTextures()
-	else
-		FriendsFrameTopLeft:Kill()
-		FriendsFrameTopRight:Kill()
-		FriendsFrameBottomLeft:Kill()
-		FriendsFrameBottomRight:Kill()
-		ChannelFrameVerticalBar:Kill()
-	end
+
+	FriendsFrameInset:StripTextures()
+	WhoFrameListInset:StripTextures()
+	WhoFrameEditBoxInset:StripTextures()
+	ChannelFrameRightInset:StripTextures()
+	ChannelFrameLeftInset:StripTextures()
+	LFRQueueFrameListInset:StripTextures()
+	LFRQueueFrameRoleInset:StripTextures()
+	LFRQueueFrameCommentInset:StripTextures()
 
 	local buttons = {
 		"FriendsFrameAddFriendButton",
@@ -109,20 +101,6 @@ local function LoadSkin()
 
 	for _, button in pairs(buttons) do
 		S:HandleButton(_G[button])
-	end
-	--Reposition buttons
-	if not E:IsPTRVersion() then
-		WhoFrameWhoButton:Point("RIGHT", WhoFrameAddFriendButton, "LEFT", -2, 0)
-		WhoFrameAddFriendButton:Point("RIGHT", WhoFrameGroupInviteButton, "LEFT", -2, 0)
-		WhoFrameGroupInviteButton:Point("BOTTOMRIGHT", WhoFrame, "BOTTOMRIGHT", -44, 82)
-		--Resize Buttons
-		WhoFrameWhoButton:Size(WhoFrameWhoButton:GetWidth() - 4, WhoFrameWhoButton:GetHeight())
-		WhoFrameAddFriendButton:Size(WhoFrameAddFriendButton:GetWidth() - 4, WhoFrameAddFriendButton:GetHeight())
-		WhoFrameGroupInviteButton:Size(WhoFrameGroupInviteButton:GetWidth() - 4, WhoFrameGroupInviteButton:GetHeight())
-		S:HandleEditBox(WhoFrameEditBox)
-		WhoFrameEditBox:Height(WhoFrameEditBox:GetHeight() - 15)
-		WhoFrameEditBox:Point("BOTTOM", WhoFrame, "BOTTOM", -10, 108)
-		WhoFrameEditBox:Width(WhoFrameEditBox:GetWidth() + 17)
 	end
 	
 	for _, texture in pairs(KillTextures) do
@@ -169,13 +147,7 @@ local function LoadSkin()
 
 	ChannelFrameDaughterFrame:CreateBackdrop("Transparent")
 	
-	if E:IsPTRVersion() then
-		FriendsFrame:SetTemplate('Transparent')
-	else
-		FriendsFrame:CreateBackdrop("Transparent")
-		FriendsFrame.backdrop:Point( "TOPLEFT", FriendsFrame, "TOPLEFT", 11,-12)
-		FriendsFrame.backdrop:Point( "BOTTOMRIGHT", FriendsFrame, "BOTTOMRIGHT", -35, 76)
-	end
+	FriendsFrame:SetTemplate('Transparent')
 	
 	S:HandleCloseButton(ChannelFrameDaughterFrameDetailCloseButton,ChannelFrameDaughterFrame)
 	S:HandleCloseButton(FriendsFrameCloseButton,FriendsFrame.backdrop)
@@ -241,35 +213,33 @@ local function LoadSkin()
 		S:HandleCheckBox(_G["BNConversationInviteDialogListFriend"..i].checkButton)
 	end
 	
-	if E:IsPTRVersion() then
-		FriendsTabHeaderSoRButton:SetTemplate('Default')
-		FriendsTabHeaderSoRButton:StyleButton()
-		FriendsTabHeaderSoRButtonIcon:SetDrawLayer('OVERLAY')
-		FriendsTabHeaderSoRButtonIcon:SetTexCoord(unpack(E.TexCoords))
-		FriendsTabHeaderSoRButtonIcon:ClearAllPoints()
-		FriendsTabHeaderSoRButtonIcon:Point('TOPLEFT', 2, -2)
-		FriendsTabHeaderSoRButtonIcon:Point('BOTTOMRIGHT', -2, 2)
-		FriendsTabHeaderSoRButton:Point('TOPRIGHT', FriendsTabHeader, 'TOPRIGHT', -8, -56)
-		
-		S:HandleScrollBar(FriendsFrameIgnoreScrollFrameScrollBar, 4)
-		S:HandleScrollBar(FriendsFramePendingScrollFrameScrollBar, 4)
-		
-		IgnoreListFrame:StripTextures()
-		PendingListFrame:StripTextures()
-		
-		ScrollOfResurrectionFrame:StripTextures()
-		S:HandleButton(ScrollOfResurrectionFrameAcceptButton)
-		S:HandleButton(ScrollOfResurrectionFrameCancelButton)
-		
-		ScrollOfResurrectionFrameTargetEditBoxLeft:SetTexture(nil)
-		ScrollOfResurrectionFrameTargetEditBoxMiddle:SetTexture(nil)
-		ScrollOfResurrectionFrameTargetEditBoxRight:SetTexture(nil)
-		ScrollOfResurrectionFrameNoteFrame:StripTextures()
-		ScrollOfResurrectionFrameNoteFrame:SetTemplate()
-		ScrollOfResurrectionFrameTargetEditBox:SetTemplate()
-		ScrollOfResurrectionFrame:SetTemplate('Transparent')
-		ScrollOfResurrectionFrame:CreateShadow()
-	end
+	FriendsTabHeaderSoRButton:SetTemplate('Default')
+	FriendsTabHeaderSoRButton:StyleButton()
+	FriendsTabHeaderSoRButtonIcon:SetDrawLayer('OVERLAY')
+	FriendsTabHeaderSoRButtonIcon:SetTexCoord(unpack(E.TexCoords))
+	FriendsTabHeaderSoRButtonIcon:ClearAllPoints()
+	FriendsTabHeaderSoRButtonIcon:Point('TOPLEFT', 2, -2)
+	FriendsTabHeaderSoRButtonIcon:Point('BOTTOMRIGHT', -2, 2)
+	FriendsTabHeaderSoRButton:Point('TOPRIGHT', FriendsTabHeader, 'TOPRIGHT', -8, -56)
+	
+	S:HandleScrollBar(FriendsFrameIgnoreScrollFrameScrollBar, 4)
+	S:HandleScrollBar(FriendsFramePendingScrollFrameScrollBar, 4)
+	
+	IgnoreListFrame:StripTextures()
+	PendingListFrame:StripTextures()
+	
+	ScrollOfResurrectionFrame:StripTextures()
+	S:HandleButton(ScrollOfResurrectionFrameAcceptButton)
+	S:HandleButton(ScrollOfResurrectionFrameCancelButton)
+	
+	ScrollOfResurrectionFrameTargetEditBoxLeft:SetTexture(nil)
+	ScrollOfResurrectionFrameTargetEditBoxMiddle:SetTexture(nil)
+	ScrollOfResurrectionFrameTargetEditBoxRight:SetTexture(nil)
+	ScrollOfResurrectionFrameNoteFrame:StripTextures()
+	ScrollOfResurrectionFrameNoteFrame:SetTemplate()
+	ScrollOfResurrectionFrameTargetEditBox:SetTemplate()
+	ScrollOfResurrectionFrame:SetTemplate('Transparent')
+	ScrollOfResurrectionFrame:CreateShadow()
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

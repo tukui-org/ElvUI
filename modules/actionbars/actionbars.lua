@@ -13,6 +13,14 @@ AB["handledBars"] = {} --List of all bars
 AB["handledbuttons"] = {} --List of all buttons that have been modified.
 AB["movers"] = {} --List of all created movers.
 E['snapBars'] = { E.UIParent }
+AB.customExitButton = {
+	func = function(button)
+		VehicleExit()
+	end,
+	texture = "Interface\\Icons\\Spell_Shadow_SacrificialShield",
+	tooltip = LEAVE_VEHICLE,
+}
+
 
 function AB:Initialize()
 	self.db = E.db.actionbar

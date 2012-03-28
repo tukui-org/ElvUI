@@ -1,8 +1,6 @@
 local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
-if not E:IsPTRVersion() then return end
-
 ----------------------------------------------------------------------------------------
 --	Transmogrify skin (written by shestak)
 ----------------------------------------------------------------------------------------

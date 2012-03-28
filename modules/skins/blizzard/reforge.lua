@@ -6,20 +6,12 @@ local function LoadSkin()
 	ReforgingFrame:StripTextures()
 	ReforgingFrame:SetTemplate("Transparent")
 	ReforgingFrame:CreateShadow('Default')
-
-	if not E:IsPTRVersion() then
-		ReforgingFrameTopInset:StripTextures()
-		ReforgingFrameInset:StripTextures()
-		ReforgingFrameBottomInset:StripTextures()
-		S:HandleDropDownBox(ReforgingFrameFilterOldStat, 180)
-		S:HandleDropDownBox(ReforgingFrameFilterNewStat, 180)
-	else
-		ReforgingFrameButtonFrame:StripTextures()
-		ReforgingFrameReforgeButton:ClearAllPoints()
-		ReforgingFrameReforgeButton:Point("LEFT", ReforgingFrameRestoreButton, "RIGHT", 2, 0)
-		ReforgingFrameReforgeButton:Point("BOTTOMRIGHT", -3, 3)
-		ReforgingFrameRestoreMessage:SetTextColor(1, 1, 1);
-	end
+	
+	ReforgingFrameButtonFrame:StripTextures()
+	ReforgingFrameReforgeButton:ClearAllPoints()
+	ReforgingFrameReforgeButton:Point("LEFT", ReforgingFrameRestoreButton, "RIGHT", 2, 0)
+	ReforgingFrameReforgeButton:Point("BOTTOMRIGHT", -3, 3)
+	ReforgingFrameRestoreMessage:SetTextColor(1, 1, 1);
 
 	S:HandleButton(ReforgingFrameRestoreButton, true)
 	S:HandleButton(ReforgingFrameReforgeButton, true)

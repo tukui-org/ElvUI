@@ -80,31 +80,7 @@ local function LoadSkin()
 			EncounterJournalEncounterFrameInfo.backdrop3:Point("TOPLEFT", EncounterJournalEncounterFrameInfoBG, "TOPLEFT", -E.mult, E.mult)
 			EncounterJournalEncounterFrameInfo.backdrop3:Point("BOTTOMRIGHT", EncounterJournalEncounterFrameInfoBG, "BOTTOMRIGHT", E.mult, -E.mult)								
 		end	
-		
-		if not E:IsPTRVersion() then
-			EncounterJournalEncounterFrameInfoBossTab:ClearAllPoints()
-			EncounterJournalEncounterFrameInfoBossTab:Point("LEFT", EncounterJournalEncounterFrameInfoEncounterTile, "RIGHT", -10, 4)
-			EncounterJournalEncounterFrameInfoLootTab:ClearAllPoints()
-			EncounterJournalEncounterFrameInfoLootTab:Point("LEFT", EncounterJournalEncounterFrameInfoBossTab, "RIGHT", -24, 0)
-			
-			EncounterJournalEncounterFrameInfoBossTab:SetFrameStrata("HIGH")
-			EncounterJournalEncounterFrameInfoLootTab:SetFrameStrata("HIGH")
-			
-			EncounterJournalEncounterFrameInfoBossTab:SetScale(0.75)
-			EncounterJournalEncounterFrameInfoLootTab:SetScale(0.75)
-			
-			EncounterJournalEncounterFrameInfoLootScrollFrameFilter:SetScript("OnShow", function()
-				EncounterJournalEncounterFrameInfoBossTab:ClearAllPoints()
-				EncounterJournalEncounterFrameInfoBossTab:Point("LEFT", EncounterJournalEncounterFrameInfoLootScrollFrameFilter, "RIGHT", 0, 0)	
-				EncounterJournalEncounterFrameInfoEncounterTile:Hide()
-			end)
 
-			EncounterJournalEncounterFrameInfoLootScrollFrameFilter:SetScript("OnHide", function()
-				EncounterJournalEncounterFrameInfoBossTab:ClearAllPoints()
-				EncounterJournalEncounterFrameInfoBossTab:Point("LEFT", EncounterJournalEncounterFrameInfoEncounterTile, "RIGHT", -10, 4)	
-				EncounterJournalEncounterFrameInfoEncounterTile:Show()
-			end)		
-		end
 	end)
 		
 	S:HandleScrollBar(EncounterJournalInstanceSelectScrollFrameScrollBar, 4)
@@ -121,31 +97,25 @@ local function LoadSkin()
 	EncounterJournalEncounterFrameInfoLootTab:GetPushedTexture():SetTexture(nil)
 	EncounterJournalEncounterFrameInfoLootTab:GetDisabledTexture():SetTexture(nil)
 	EncounterJournalEncounterFrameInfoLootTab:GetHighlightTexture():SetTexture(nil)	
+		
+	EncounterJournalEncounterFrameInfoBossTab:Point('TOPLEFT', EncounterJournalEncounterFrameInfo, 'TOPRIGHT', 0, -35)
+	EncounterJournalEncounterFrameInfoBossTab.SetPoint = E.noop
 	
-	if E:IsPTRVersion() then
-		EncounterJournalEncounterFrameInfoBossTab:Point('TOPLEFT', EncounterJournalEncounterFrameInfo, 'TOPRIGHT', 0, -35)
-		EncounterJournalEncounterFrameInfoBossTab.SetPoint = E.noop
-		
-		EncounterJournalEncounterFrameInfoBossTab:CreateBackdrop('Default')
-		EncounterJournalEncounterFrameInfoBossTab.backdrop:Point('TOPLEFT', 11, -8)
-		EncounterJournalEncounterFrameInfoBossTab.backdrop:Point('BOTTOMRIGHT', -6, 8)
-		EncounterJournalEncounterFrameInfoLootTab:CreateBackdrop('Default')
-		EncounterJournalEncounterFrameInfoLootTab.backdrop:Point('TOPLEFT', 11, -8)
-		EncounterJournalEncounterFrameInfoLootTab.backdrop:Point('BOTTOMRIGHT', -6, 8)		
-		
-		EncounterJournalEncounterFrameInfoBossTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)
-		EncounterJournalEncounterFrameInfoLootTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)
-		
-		EncounterJournalEncounterFrameInfoLootTab:SetScript('OnShow', function(self)
-			EncounterJournalEncounterFrameInfoLootTab:Click()
-			EncounterJournalEncounterFrameInfoBossTab:Click()
-			self:SetScript('OnShow', nil)
-		end)
-	end
+	EncounterJournalEncounterFrameInfoBossTab:CreateBackdrop('Default')
+	EncounterJournalEncounterFrameInfoBossTab.backdrop:Point('TOPLEFT', 11, -8)
+	EncounterJournalEncounterFrameInfoBossTab.backdrop:Point('BOTTOMRIGHT', -6, 8)
+	EncounterJournalEncounterFrameInfoLootTab:CreateBackdrop('Default')
+	EncounterJournalEncounterFrameInfoLootTab.backdrop:Point('TOPLEFT', 11, -8)
+	EncounterJournalEncounterFrameInfoLootTab.backdrop:Point('BOTTOMRIGHT', -6, 8)		
+	
+	EncounterJournalEncounterFrameInfoBossTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)
+	EncounterJournalEncounterFrameInfoLootTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)
+	
+	EncounterJournalEncounterFrameInfoLootTab:SetScript('OnShow', function(self)
+		EncounterJournalEncounterFrameInfoLootTab:Click()
+		EncounterJournalEncounterFrameInfoBossTab:Click()
+		self:SetScript('OnShow', nil)
+	end)
 end
 
-if E:IsPTRVersion() then
-	S:RegisterSkin('Blizzard_EncounterJournal', LoadSkin)
-else
-	S:RegisterSkin('ElvUI', LoadSkin)
-end
+S:RegisterSkin('Blizzard_EncounterJournal', LoadSkin)

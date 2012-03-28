@@ -13,11 +13,7 @@ local function LoadSkin()
 	}
 
 	LFRParentFrame:StripTextures()
-	
-	if not E:IsPTRVersion() then
-		LFRParentFrame:SetTemplate("Transparent")
-	end
-	
+
 	LFRQueueFrame:StripTextures()
 	LFRBrowseFrame:StripTextures()
 
@@ -85,67 +81,64 @@ local function LoadSkin()
 		end
 	end
 	
-	--PTR
-	if E:IsPTRVersion() then
-		RaidParentFrame:StripTextures()
-		RaidParentFrame:SetTemplate('Transparent')
-		
-		for i=1, 3 do 
-			S:HandleTab(_G['RaidParentFrameTab'..i])
-		end
-		
-		S:HandleButton(RaidFinderFrameFindRaidButton, true)
-		S:HandleButton(RaidFinderFrameCancelButton, true)
-		S:HandleDropDownBox(RaidFinderQueueFrameSelectionDropDown)
-		RaidFinderQueueFrame:StripTextures()
-		RaidParentFrameInset:StripTextures()
-		RaidFinderQueueFrame:StripTextures(true)
-		RaidFinderFrameRoleInset:StripTextures()
-		
-		RaidFinderQueueFrameSelectionDropDown:Width(225)
-		RaidFinderQueueFrameSelectionDropDown.SetWidth = E.noop
-
-		local checkButtons = {
-			"RaidFinderQueueFrameRoleButtonTank",
-			"RaidFinderQueueFrameRoleButtonHealer",
-			"RaidFinderQueueFrameRoleButtonDPS",
-			"RaidFinderQueueFrameRoleButtonLeader",
-		}
-		
-		for _, object in pairs(checkButtons) do
-			_G[object].checkButton:SetFrameLevel(_G[object].checkButton:GetFrameLevel() + 2)
-			S:HandleCheckBox(_G[object].checkButton)
-		end
+	RaidParentFrame:StripTextures()
+	RaidParentFrame:SetTemplate('Transparent')
 	
-		for i=1, 1 do
-			local button = _G["RaidFinderQueueFrameScrollFrameChildFrameItem"..i]
-			local icon = _G["RaidFinderQueueFrameScrollFrameChildFrameItem"..i.."IconTexture"]
-			local count = _G["RaidFinderQueueFrameScrollFrameChildFrameItem"..i.."Count"]
-			
-			if button then
-				local __texture = _G[button:GetName().."IconTexture"]:GetTexture()
-				button:StripTextures()
-				icon:SetTexture(__texture)
-				icon:SetTexCoord(unpack(E.TexCoords))
-				icon:Point("TOPLEFT", 2, -2)
-				icon:SetDrawLayer("OVERLAY")
-				count:SetDrawLayer("OVERLAY")
-				if not button.backdrop then
-					button:CreateBackdrop("Default")
-					button.backdrop:Point("TOPLEFT", icon, "TOPLEFT", -2, 2)
-					button.backdrop:Point("BOTTOMRIGHT", icon, "BOTTOMRIGHT", 2, -2)
-					icon:SetParent(button.backdrop)
-					icon.SetPoint = E.noop
-					
-					if count then
-						count:SetParent(button.backdrop)
-					end					
-				end
-			end
-		end			
-		
-		S:HandleCloseButton(RaidParentFrameCloseButton)
+	for i=1, 3 do 
+		S:HandleTab(_G['RaidParentFrameTab'..i])
 	end
+	
+	S:HandleButton(RaidFinderFrameFindRaidButton, true)
+	S:HandleButton(RaidFinderFrameCancelButton, true)
+	S:HandleDropDownBox(RaidFinderQueueFrameSelectionDropDown)
+	RaidFinderQueueFrame:StripTextures()
+	RaidParentFrameInset:StripTextures()
+	RaidFinderQueueFrame:StripTextures(true)
+	RaidFinderFrameRoleInset:StripTextures()
+	
+	RaidFinderQueueFrameSelectionDropDown:Width(225)
+	RaidFinderQueueFrameSelectionDropDown.SetWidth = E.noop
+
+	local checkButtons = {
+		"RaidFinderQueueFrameRoleButtonTank",
+		"RaidFinderQueueFrameRoleButtonHealer",
+		"RaidFinderQueueFrameRoleButtonDPS",
+		"RaidFinderQueueFrameRoleButtonLeader",
+	}
+	
+	for _, object in pairs(checkButtons) do
+		_G[object].checkButton:SetFrameLevel(_G[object].checkButton:GetFrameLevel() + 2)
+		S:HandleCheckBox(_G[object].checkButton)
+	end
+
+	for i=1, 1 do
+		local button = _G["RaidFinderQueueFrameScrollFrameChildFrameItem"..i]
+		local icon = _G["RaidFinderQueueFrameScrollFrameChildFrameItem"..i.."IconTexture"]
+		local count = _G["RaidFinderQueueFrameScrollFrameChildFrameItem"..i.."Count"]
+		
+		if button then
+			local __texture = _G[button:GetName().."IconTexture"]:GetTexture()
+			button:StripTextures()
+			icon:SetTexture(__texture)
+			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:Point("TOPLEFT", 2, -2)
+			icon:SetDrawLayer("OVERLAY")
+			count:SetDrawLayer("OVERLAY")
+			if not button.backdrop then
+				button:CreateBackdrop("Default")
+				button.backdrop:Point("TOPLEFT", icon, "TOPLEFT", -2, 2)
+				button.backdrop:Point("BOTTOMRIGHT", icon, "BOTTOMRIGHT", 2, -2)
+				icon:SetParent(button.backdrop)
+				icon.SetPoint = E.noop
+				
+				if count then
+					count:SetParent(button.backdrop)
+				end					
+			end
+		end
+	end			
+	
+	S:HandleCloseButton(RaidParentFrameCloseButton)
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

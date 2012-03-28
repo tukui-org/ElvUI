@@ -53,9 +53,10 @@ function AB:BindListener(key)
 	then return; end
 	
 	if key == "MiddleButton" then key = "BUTTON3"; end
-	if key == "Button4" then key = "BUTTON4"; end
-	if key == "Button5" then key = "BUTTON5"; end
-	
+	if key:find('Button%d') then
+		key = key:upper()
+	end
+		
 	local alt = IsAltKeyDown() and "ALT-" or "";
 	local ctrl = IsControlKeyDown() and "CTRL-" or "";
 	local shift = IsShiftKeyDown() and "SHIFT-" or "";
