@@ -24,6 +24,10 @@ G['classtimer'] = {
 	['enable'] = true,
 }
 
+G['reminder'] = {
+	['enable'] = true,
+}
+
 G["nameplate"] = {
 	["enable"] = true,
 }

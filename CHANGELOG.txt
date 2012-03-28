@@ -1,4 +1,5 @@
 [b]Additions[/b]
+*Add new module "Reminders". It has it's own section in the In-Game config. This module will show warning icons on your screen when you are missing buffs or have buffs when you shouldn't.
 *Add Postal addon skin. To disable you must simply disable the ElvUI mailbox skin.
 *Add support to the keybind mode for all gaming mouses.
 *40 Man layout can now have role icons and raid debuff icons displayed. They are off by Default.

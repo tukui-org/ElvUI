@@ -12,4 +12,5 @@
 	<Include file='skins\load_skins.xml'/>
 	<Include file='blizzard\load_blizzard.xml'/>
 	<Include file='classtimers\load_classtimers.xml'/>
+	<Include file='reminder\load_reminder.xml'/>
 </Ui>
