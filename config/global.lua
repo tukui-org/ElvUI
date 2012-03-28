@@ -26,6 +26,7 @@ G['classtimer'] = {
 
 G['reminder'] = {
 	['enable'] = true,
+	['sound'] = "ElvUI Warning",
 }
 
 G["nameplate"] = {
