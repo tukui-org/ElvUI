@@ -789,3 +789,5 @@ L["Your items have been repaired using guild bank funds for: "] = "Your items ha
 L["Your version of ElvUI is out of date. You can download the latest version from www.curse.com"] = "Your version of ElvUI is out of date. You can download the latest version from www.curse.com"
 L['Vendor Grays'] = true;
 L['Automatically vendor gray items when visiting a vendor.'] = true;
+L['Set the order that the group will sort.'] = true;
+L['Group By'] = true;

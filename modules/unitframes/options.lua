@@ -4715,7 +4715,18 @@ E.Options.args.unitframe.args.party = {
 					name = L['Heal Prediction'],
 					desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
 					type = 'toggle',
-				},					
+				},		
+				--[[groupBy = {
+					order = 16,
+					name = L['Group By'],
+					desc = L['Set the order that the group will sort.'],
+					type = 'select',		
+					values = {
+						['CLASS'] = CLASS,
+						['ROLE'] = ROLE,
+						['GROUP'] = GROUP,
+					},
+				},]]
 				visibility = {
 					order = 200,
 					type = 'input',
@@ -5328,7 +5339,18 @@ E.Options.args.unitframe.args.raid625 = {
 					name = L['Heal Prediction'],
 					desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
 					type = 'toggle',
-				},						
+				},	
+				--[[groupBy = {
+					order = 16,
+					name = L['Group By'],
+					desc = L['Set the order that the group will sort.'],
+					type = 'select',		
+					values = {
+						['CLASS'] = CLASS,
+						['ROLE'] = ROLE,
+						['GROUP'] = GROUP,
+					},
+				},]]				
 				visibility = {
 					order = 200,
 					type = 'input',
@@ -5861,7 +5883,18 @@ E.Options.args.unitframe.args.raid2640 = {
 					name = L['Heal Prediction'],
 					desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
 					type = 'toggle',
-				},						
+				},		
+				--[[groupBy = {
+					order = 16,
+					name = L['Group By'],
+					desc = L['Set the order that the group will sort.'],
+					type = 'select',		
+					values = {
+						['CLASS'] = CLASS,
+						['ROLE'] = ROLE,
+						['GROUP'] = GROUP,
+					},
+				},]]				
 				visibility = {
 					order = 200,
 					type = 'input',
