@@ -139,6 +139,7 @@ local function UpdateFilterGroup()
 			order = 10,
 			get = function(info) return E.global['reminder']['filters'][E.myclass][selectedFilter] and E.global['reminder']['filters'][E.myclass][selectedFilter]["reverseCheck"] end,
 			set = function(info, value) E.global['reminder']['filters'][E.myclass][selectedFilter]["reverseCheck"] = value; R:CheckForNewReminders() end,
+			disabled = function() return E.global['reminder']['filters'][E.myclass][selectedFilter] and not E.global['reminder']['filters'][E.myclass][selectedFilter]["tree"] and not E.global['reminder']['filters'][E.myclass][selectedFilter]["role"] end,
 		}
 		
 		E.Options.args.reminder.args.filterGroup.args["talentTreeException"] = {
