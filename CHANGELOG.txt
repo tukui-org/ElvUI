@@ -1,3 +1,13 @@
+[b]v3.48[/b]
+*Fix issue with Pet Unitframe not displaying on non healer high resolutions when you disable the TargetTarget frame.
+
+[b]v3.47[/b]
+*Fix issue with Party frames not taking advantage of the Smart Visibility option. (Party frames were being displayed and overlapping raid frames when entering a raid instance.)
+
+[b]v3.46[/b]
+*Add option to reminder module to change the type of filter. (Spell or Weapon)
+*Fix issue with weapon filter, was never performing checks on weapons.
+
 [b]v3.45[/b]
 *Fix a few filter issues with the new Reminder Module.
 
