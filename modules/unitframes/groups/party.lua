@@ -59,7 +59,7 @@ function UF:PartySmartVisibility(event)
 	if not InCombatLockdown() then		
 		if inInstance and instanceType == "raid" and maxPlayers ~= 40 then
 			self:SetAttribute("showRaid", false)
-			self:SetAttribute("showParty", false)			
+			self:SetAttribute("showParty", false)		
 		else
 			self:SetAttribute("showParty", self.db.showParty)
 			self:SetAttribute("showRaid", self.db.showRaid)
@@ -76,6 +76,7 @@ end
 
 function UF:Update_PartyHeader(header, db)
 	header:Hide()
+	header.db = db
 	header:SetAttribute('oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height))
 
 	--User Error Check
