@@ -1,3 +1,6 @@
+[b]v3.45[/b]
+*Fix a few filter issues with the new Reminder Module.
+
 [b]Additions[/b]
 *Add new module "Reminders". It has its own section in the In-Game config. This module will show warning icons on your screen when you are missing buffs or have buffs when you shouldn't.
 *Add option under General section to automatically vendor gray items for lazy people that can't click a button.
