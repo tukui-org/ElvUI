@@ -41,7 +41,7 @@ function R:UpdateReminderIcon(event, unit)
 	
 	local hasOffhandWeapon = OffhandHasWeapon();
 	local hasMainHandEnchant, _, _, hasOffHandEnchant, _, _ = GetWeaponEnchantInfo();
-	if db.spellGroup then
+	if db.spellGroup and not db.weaponCheck then
 		for buff, value in pairs(db.spellGroup) do
 			if value == true then
 				local name = GetSpellInfo(buff);
@@ -156,7 +156,7 @@ function R:UpdateReminderIcon(event, unit)
 	if db.reverseCheck and not (db.role or db.tree) then db.reverseCheck = nil; end
 	if not self.icon:GetTexture() or UnitInVehicle("player") then return; end
 	
-	if db.spellGroup then
+	if db.spellGroup and not db.weaponCheck then
 		if roleCheck and treeCheck and combatCheck and (instanceCheck or PVPCheck) and not R:PlayerHasFilteredBuff(db.spellGroup, db.personal) then
 			self:Show();
 		elseif combatCheck and (instanceCheck or PVPCheck) and db.reverseCheck and (not roleCheck or not treeCheck) and R:PlayerHasFilteredBuff(db.spellGroup, db.personal) and not db.talentTreeException == GetPrimaryTalentTree() then

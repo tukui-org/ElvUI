@@ -1,3 +1,7 @@
+[b]v3.46[/b]
+*Add option to reminder module to change the type of filter. (Spell or Weapon)
+*Fix issue with weapon filter, was never performing checks on weapons.
+
 [b]v3.45[/b]
 *Fix a few filter issues with the new Reminder Module.
 

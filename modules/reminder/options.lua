@@ -26,15 +26,36 @@ local function UpdateFilterGroup()
 		set = function(info, value) E.global['reminder']['filters'][E.myclass][selectedFilter]['enable'] = value; R:CheckForNewReminders() end,			
 	}
 	
-	E.Options.args.reminder.args.filterGroup.args.spacer = {
+	E.Options.args.reminder.args.filterGroup.args.filterType = {
 		order = 2,
+		type = "select",
+		name = L["Filter Type"],
+		desc = L['Change this if you want the Reminder module to check for weapon enchants, setting this will cause it to ignore any spells listed.'],
+		get = function(info) if E.global['reminder']['filters'][E.myclass][selectedFilter]['weaponCheck'] then return 'WEAPON' else return 'SPELL' end end,
+		set = function(info, value) 
+			if value == 'WEAPON' then
+				E.global['reminder']['filters'][E.myclass][selectedFilter].weaponCheck = true;
+			else
+				E.global['reminder']['filters'][E.myclass][selectedFilter].weaponCheck = false;	
+			end
+			R:CheckForNewReminders()
+			UpdateFilterGroup()
+		end,	
+		values = {
+			['WEAPON'] = L['Weapon'],
+			['SPELL'] = L['Spell'],
+		},
+	}	
+	
+	E.Options.args.reminder.args.filterGroup.args.spacer = {
+		order = 3,
 		type = "description",
 		name = '',
 	}
 			
 	E.Options.args.reminder.args.filterGroup.args.Role = {
 		type = 'select',
-		order = 3,
+		order = 4,
 		name = L['Role'],
 		desc = L['You must be a certain role for the icon to appear.'],
 		values = {
@@ -67,7 +88,7 @@ local function UpdateFilterGroup()
 		type = 'select',
 		name = L["Talent Tree"],
 		desc = L["You must be using a certain talent tree for the icon to show."],
-		order = 4,
+		order = 5,
 		get = function(info) if E.global['reminder']['filters'][E.myclass][selectedFilter] and E.global['reminder']['filters'][E.myclass][selectedFilter]["tree"] then return tostring(E.global['reminder']['filters'][E.myclass][selectedFilter].tree) else return "ANY" end end,
 		set = function(info, value) if value == "ANY" then E.global['reminder']['filters'][E.myclass][selectedFilter].tree = nil else E.global['reminder']['filters'][E.myclass][selectedFilter].tree = tonumber(value) end; R:CheckForNewReminders() end,	
 		values = {
@@ -82,7 +103,7 @@ local function UpdateFilterGroup()
 		type = "range",
 		name = L["Level Requirement"],
 		desc = L["Level requirement for the icon to be able to display. 0 for disabled."],
-		order = 5,
+		order = 6,
 		min = 0, max = MAX_PLAYER_LEVEL, step = 1,
 		get = function(info) if E.global['reminder']['filters'][E.myclass][selectedFilter] and E.global['reminder']['filters'][E.myclass][selectedFilter]["level"] then return E.global['reminder']['filters'][E.myclass][selectedFilter]["level"] else return 0 end end,
 		set = function(info, value) 
@@ -99,7 +120,7 @@ local function UpdateFilterGroup()
 		type = "toggle",
 		name = L["Personal Buffs"],
 		desc = L["Only check if the buff is coming from you."],
-		order = 6,
+		order = 7,
 		get = function(info) return E.global['reminder']['filters'][E.myclass][selectedFilter] and E.global['reminder']['filters'][E.myclass][selectedFilter]["personal"] end,
 		set = function(info, value) E.global['reminder']['filters'][E.myclass][selectedFilter]["personal"] = value; R:CheckForNewReminders() end,
 	}
@@ -108,7 +129,7 @@ local function UpdateFilterGroup()
 		type = "toggle",
 		name = L["Inside Raid/Party"],
 		desc = L["Only run checks inside raid/party instances."],
-		order = 7,
+		order = 8,
 		get = function(info) return E.global['reminder']['filters'][E.myclass][selectedFilter] and E.global['reminder']['filters'][E.myclass][selectedFilter]["instance"] end,
 		set = function(info, value) E.global['reminder']['filters'][E.myclass][selectedFilter]["instance"] = value; R:CheckForNewReminders() end,
 	}
@@ -117,7 +138,7 @@ local function UpdateFilterGroup()
 		type = "toggle",
 		name = L["Inside BG/Arena"],
 		desc = L["Only run checks inside BG/Arena instances."],
-		order = 8,
+		order = 9,
 		get = function(info) return E.global['reminder']['filters'][E.myclass][selectedFilter] and E.global['reminder']['filters'][E.myclass][selectedFilter]["pvp"] end,
 		set = function(info, value) E.global['reminder']['filters'][E.myclass][selectedFilter]["pvp"] = value; R:CheckForNewReminders() end,
 	}	
@@ -126,17 +147,17 @@ local function UpdateFilterGroup()
 		type = "toggle",
 		name = L["Combat"],
 		desc = L["Only run checks during combat."],
-		order = 9,
+		order = 10,
 		get = function(info) return E.global['reminder']['filters'][E.myclass][selectedFilter] and E.global['reminder']['filters'][E.myclass][selectedFilter]["combat"] end,
 		set = function(info, value) E.global['reminder']['filters'][E.myclass][selectedFilter]["combat"] = value; R:CheckForNewReminders() end,
 	}	
 
-	if E.global['reminder']['filters'][E.myclass][selectedFilter]["weapon"] ~= true then
+	if E.global['reminder']['filters'][E.myclass][selectedFilter]["weaponCheck"] ~= true then
 		E.Options.args.reminder.args.filterGroup.args["reverseCheck"] = {
 			type = "toggle",
 			name = L["Reverse Check"],
 			desc = L["Instead of hiding the frame when you have the buff, show the frame when you have the buff. You must have either a Role or Spec set for this option to work."],
-			order = 10,
+			order = 11,
 			get = function(info) return E.global['reminder']['filters'][E.myclass][selectedFilter] and E.global['reminder']['filters'][E.myclass][selectedFilter]["reverseCheck"] end,
 			set = function(info, value) E.global['reminder']['filters'][E.myclass][selectedFilter]["reverseCheck"] = value; R:CheckForNewReminders() end,
 			disabled = function() return E.global['reminder']['filters'][E.myclass][selectedFilter] and not E.global['reminder']['filters'][E.myclass][selectedFilter]["tree"] and not E.global['reminder']['filters'][E.myclass][selectedFilter]["role"] end,
@@ -146,7 +167,7 @@ local function UpdateFilterGroup()
 			type = "select",
 			name = L["Tree Exception"],
 			desc = L["Set a talent tree to not follow the reverse check."],
-			order = 11,
+			order = 12,
 			get = function(info) if E.global['reminder']['filters'][E.myclass][selectedFilter] and E.global['reminder']['filters'][E.myclass][selectedFilter]["talentTreeException"] then return tostring(E.global['reminder']['filters'][E.myclass][selectedFilter]["talentTreeException"]) else return "NONE" end end,
 			set = function(info, value) if value == "NONE" then E.global['reminder']['filters'][E.myclass][selectedFilter]["talentTreeException"] = nil else E.global['reminder']['filters'][E.myclass][selectedFilter]["talentTreeException"] = tonumber(value) end; R:CheckForNewReminders() end,	
 			disabled = function() return E.global['reminder']['filters'][E.myclass][selectedFilter] and not E.global['reminder']['filters'][E.myclass][selectedFilter]["reverseCheck"] end,
@@ -162,7 +183,7 @@ local function UpdateFilterGroup()
 			type = "group",
 			name = L["Spells"],
 			guiInline = true,	
-			order = 12,
+			order = 13,
 			args = {},
 		}
 		
@@ -198,7 +219,7 @@ local function UpdateFilterGroup()
 					UpdateFilterGroup()
 				end					
 			end,
-			order = 13,
+			order = 14,
 		}
 		
 		E.Options.args.reminder.args.filterGroup.args["RemoveSpell"] = {
@@ -219,14 +240,14 @@ local function UpdateFilterGroup()
 					UpdateFilterGroup()
 				end					
 			end,
-			order = 14,
+			order = 15,
 		}	
 		
 		E.Options.args.reminder.args.filterGroup.args["negateGroup"] = {
 			type = "group",
 			name = L["Negate Spells"],
 			guiInline = true,	
-			order = 15,
+			order = 16,
 			args = {},
 		}
 
@@ -262,7 +283,7 @@ local function UpdateFilterGroup()
 					UpdateFilterGroup()
 				end					
 			end,
-			order = 16,
+			order = 17,
 		}
 		
 		E.Options.args.reminder.args.filterGroup.args["RemoveNegateSpell"] = {
@@ -283,7 +304,7 @@ local function UpdateFilterGroup()
 					UpdateFilterGroup()
 				end					
 			end,
-			order = 17,
+			order = 18,
 		}						
 	end
 	
