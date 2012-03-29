@@ -1,3 +1,6 @@
+[b]v3.48[/b]
+*Fix issue with Pet Unitframe not displaying on non healer high resolutions when you disable the TargetTarget frame.
+
 [b]v3.47[/b]
 *Fix issue with Party frames not taking advantage of the Smart Visibility option. (Party frames were being displayed and overlapping raid frames when entering a raid instance.)
 
