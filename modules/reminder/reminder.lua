@@ -167,7 +167,7 @@ function R:UpdateReminderIcon(event, unit)
 			if not hasOffhandWeapon and not hasMainHandEnchant then
 				self:Show();
 				self.icon:SetTexture(GetInventoryItemTexture("player", 16));
-			elseif not hasMainHandEnchant or not hasOffHandEnchant then				
+			elseif hasOffhandWeapon and (not hasMainHandEnchant or not hasOffHandEnchant) then				
 				if not hasMainHandEnchant then
 					self.icon:SetTexture(GetInventoryItemTexture("player", 16));
 				else

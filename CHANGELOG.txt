@@ -1,3 +1,7 @@
+[b]v3.49[/b]
+*Fix issue with Reminder Icon, was showing shamans to enchant their shield, when we all know thats not possible.
+*Fix postal skin lua error. Occurs when disabling some elements of Postal.
+
 [b]v3.48[/b]
 *Fix issue with Pet Unitframe not displaying on non healer high resolutions when you disable the TargetTarget frame.
 
