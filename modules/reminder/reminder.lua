@@ -31,13 +31,13 @@ function R:UpdateReminderIcon(event, unit)
 	self:Hide();
 	self.icon:SetTexture(nil);
 	
-	if not db or not db.enable or (not db.spellGroup and not db.weaponCheck) then return; end
+	if not db or not db.enable or (not db.spellGroup and not db.weaponCheck) or UnitIsDeadOrGhost('player') then return; end
 
 	--Level Check
-	if db.level and UnitLevel('player') < db.level then return; end
+	if db.level and UnitLevel('player') < db.level and not self.ForceShow then return; end
 	
 	--Negate Spells Check
-	if db.negateGroup and R:PlayerHasFilteredBuff(db.negateGroup) then return; end
+	if db.negateGroup and R:PlayerHasFilteredBuff(db.negateGroup) and not self.ForceShow then return; end
 	
 	local hasOffhandWeapon = OffhandHasWeapon();
 	local hasMainHandEnchant, _, _, hasOffHandEnchant, _, _ = GetWeaponEnchantInfo();
@@ -46,7 +46,7 @@ function R:UpdateReminderIcon(event, unit)
 			if value == true then
 				local name = GetSpellInfo(buff);
 				local usable, nomana = IsUsableSpell(name);
-				if (usable or nomana) then
+				if (usable or nomana) or not db.strictFilter or self.ForceShow then
 					self.icon:SetTexture(select(3, GetSpellInfo(buff)));
 					break
 				end		
@@ -103,6 +103,14 @@ function R:UpdateReminderIcon(event, unit)
 		end
 	end
 	
+	if self.ForceShow and self.icon:GetTexture() then
+		self:Show();
+		return;
+	elseif self.ForceShow then
+		E:Print(L['Attempted to show a reminder icon that does not have any spells. You must add a spell first.'])
+		return;
+	end
+	
 	local _, instanceType = IsInInstance();
 	local roleCheck, treeCheck, combatCheck, instanceCheck, PVPCheck;
 	
@@ -156,6 +164,8 @@ function R:UpdateReminderIcon(event, unit)
 	if db.reverseCheck and not (db.role or db.tree) then db.reverseCheck = nil; end
 	if not self.icon:GetTexture() or UnitInVehicle("player") then return; end
 	
+	R:SetIconPosition(self.groupName)
+	
 	if db.spellGroup and not db.weaponCheck then
 		if roleCheck and treeCheck and combatCheck and (instanceCheck or PVPCheck) and not R:PlayerHasFilteredBuff(db.spellGroup, db.personal) then
 			self:Show();
@@ -192,12 +202,40 @@ function R:ThrottleSound()
 	self:CancelAllTimers();
 end
 
+function R:GetReminderIcon(name)
+	return self.CreatedReminders[name]
+end
+
+function R:SetIconPosition(name)
+	local db = E.global.reminder.filters[E.myclass][name];
+	local xOffset = db.xOffset or 0
+	local yOffset = db.yOffset or 0
+	local frame = self:GetReminderIcon(name)
+	
+	if not db or not frame then return; end
+	frame:ClearAllPoints()
+	frame:Point('CENTER', E.UIParent, 'CENTER', 0 + xOffset, 200 + yOffset);
+end
+
+function R:ToggleIcon(name)
+	local frame = self:GetReminderIcon(name)
+	if not frame then return; end
+	if not frame.ForceShow then
+		frame.ForceShow = true;
+	else
+		frame.ForceShow = nil;
+	end
+	
+	R.UpdateReminderIcon(frame);
+end
+
 function R:CreateReminder(name, index)
 	if self.CreatedReminders[name] then return; end
 
 	local frame = CreateFrame("Frame", 'ReminderIcon'..index, E.UIParent);
 	frame:SetTemplate('Default');
 	frame:Size(40);
+	frame:SetClampedToScreen(true);
 	frame.groupName = name;
 	frame:Point('CENTER', E.UIParent, 'CENTER', 0, 200);
 	frame.icon = frame:CreateTexture(nil, "OVERLAY");

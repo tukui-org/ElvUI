@@ -34,7 +34,8 @@ G['reminder']['filters'] = {
 			},
 			["instance"] = true,
 			["pvp"] = true,
-			['enable'] = true;
+			['enable'] = true,
+			['strictFilter'] = true,
 		},
 	},
 	HUNTER = {
@@ -48,7 +49,8 @@ G['reminder']['filters'] = {
 			["combat"] = true,
 			["instance"] = true,
 			["personal"] = true,
-			['enable'] = true;
+			['enable'] = true,
+			['strictFilter'] = true,
 		},				
 	},
 	MAGE = {
@@ -60,7 +62,8 @@ G['reminder']['filters'] = {
 			},
 			["instance"] = true,
 			["pvp"] = true,
-			['enable'] = true;
+			['enable'] = true,
+			['strictFilter'] = true,
 		},		
 	},
 	WARLOCK = {
@@ -71,7 +74,8 @@ G['reminder']['filters'] = {
 			},
 			["instance"] = true,
 			["pvp"] = true,
-			['enable'] = true;
+			['enable'] = true,
+			['strictFilter'] = true,
 		},
 	},
 	PALADIN = {
@@ -84,7 +88,8 @@ G['reminder']['filters'] = {
 			},
 			["instance"] = true,
 			["pvp"] = true,
-			['enable'] = true;
+			['enable'] = true,
+			['strictFilter'] = true,
 		},
 		["Righteous Fury"] = { -- righteous fury group
 			["spellGroup"] = {
@@ -94,7 +99,8 @@ G['reminder']['filters'] = {
 			["instance"] = true,
 			["reverseCheck"] = true,
 			["talentTreeException"] = 1, --Holy paladins use RF sometimes
-			['enable'] = true;
+			['enable'] = true,
+			['strictFilter'] = true,
 		},
 		["Auras"] = { -- auras
 			["spellGroup"] = {
@@ -105,7 +111,8 @@ G['reminder']['filters'] = {
 			},
 			["instance"] = true,
 			["personal"] = true,
-			['enable'] = true;
+			['enable'] = true,
+			['strictFilter'] = true,
 		},
 	},
 	SHAMAN = {
@@ -123,7 +130,7 @@ G['reminder']['filters'] = {
 			["instance"] = true,
 			["pvp"] = true,
 			["minLevel"] = 10,
-			['enable'] = true;
+			['enable'] = true,
 		},
 	},
 	WARRIOR = {
@@ -140,7 +147,8 @@ G['reminder']['filters'] = {
 			["role"] = "Tank",
 			["instance"] = true,
 			["pvp"] = true,
-			['enable'] = true;			
+			['enable'] = true,
+			['strictFilter'] = true,		
 		},
 		["Battle Shout"] = { -- battle Shout group
 			["spellGroup"] = {
@@ -154,7 +162,8 @@ G['reminder']['filters'] = {
 			["instance"] = true,
 			["pvp"] = true,	
 			["role"] = "Melee",
-			['enable'] = true;
+			['enable'] = true,
+			['strictFilter'] = true,
 		},
 	},
 	DEATHKNIGHT = {
@@ -169,7 +178,8 @@ G['reminder']['filters'] = {
 			},
 			["instance"] = true,
 			["pvp"] = true,	
-			['enable'] = true;
+			['enable'] = true,
+			['strictFilter'] = true,
 		},
 		["Blood Presence"] = { -- blood presence group
 			["spellGroup"] = {
@@ -178,7 +188,8 @@ G['reminder']['filters'] = {
 			["role"] = "Tank",
 			["instance"] = true,	
 			["reverseCheck"] = true,
-			['enable'] = true;
+			['enable'] = true,
+			['strictFilter'] = true,
 		},
 	},
 	ROGUE = { 
@@ -187,7 +198,7 @@ G['reminder']['filters'] = {
 			["instance"] = true,
 			["pvp"] = true,
 			["minLevel"] = 10,
-			['enable'] = true;
+			['enable'] = true,
 		},
 	},
 	DRUID = {

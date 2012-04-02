@@ -1,37 +1,4 @@
-[b]v3.49[/b]
-*Fix issue with Reminder Icon, was showing shamans to enchant their shield, when we all know thats not possible.
-*Fix postal skin lua error. Occurs when disabling some elements of Postal.
-
-[b]v3.48[/b]
-*Fix issue with Pet Unitframe not displaying on non healer high resolutions when you disable the TargetTarget frame.
-
-[b]v3.47[/b]
-*Fix issue with Party frames not taking advantage of the Smart Visibility option. (Party frames were being displayed and overlapping raid frames when entering a raid instance.)
-
-[b]v3.46[/b]
-*Add option to reminder module to change the type of filter. (Spell or Weapon)
-*Fix issue with weapon filter, was never performing checks on weapons.
-
-[b]v3.45[/b]
-*Fix a few filter issues with the new Reminder Module.
-
-[b]Additions[/b]
-*Add new module "Reminders". It has its own section in the In-Game config. This module will show warning icons on your screen when you are missing buffs or have buffs when you shouldn't.
-*Add option under General section to automatically vendor gray items for lazy people that can't click a button.
-*Add Postal add-on skin. To disable you must simply disable the ElvUI mailbox skin.
-*40 Man layout can now have role icons and raid debuff icons displayed. They are off by Default.
-*Add Restore Defaults buttons to Assist/Tank, Group Frames. In the UnitFrames section.
-
-[b]Changes[/b] 
-*Removed some old code that was used to keep ElvUI working with patch 4.2.
-*Enable/Disable individual unit frames or unit frame groups should no longer require Reload UI. This change also fixes people disabling a frame and seeing the default Blizzard frame popping up after a reload or restart.
-*Action-Bar key bind mode should now accept incoming clicks from most gaming mice.
-
-[b]Fixes[/b]
-*Fix issue with some high resolutions scale becoming lower than .64, which would cause the borders to look messed up.
-*Fix strata issue on shaman, debuff highlighting and incoming heals were appearing above the Totem bar.
-*Fix logic error with the BGMap skin, should now set alphas correctly when moussing in and out of the frame.
-*Fix issue with data text getting reset when using the reset anchors button.
-*Fix Raid Icon size not adjusting when changing the option.
-*Copying a message from a B.Net friend to the chat edit box should no longer display as "[|Kf11|kBNET_NAME|k]"
-*Fix issue with restore bar button on Action-Bars module not working more than one time.
+*Add option to the Reminders module to toggle strict filters. Having this option off will allow you to use the Reminders module for spells that aren't in your spellbook. I.E: Spell Proc's.
+*Add button in the reminders module to toggle Show/Hide of your reminder icon.
+*Add option to the Reminders module to set the xOffset of the icon.
+*Add option to the Reminders module to set the yOffset of the icon.
