@@ -1,4 +1,8 @@
+[b]Additions:[/b]
 *Add option to the Reminders module to toggle strict filters. Having this option off will allow you to use the Reminders module for spells that aren't in your spellbook. I.E: Spell Proc's.
 *Add button in the reminders module to toggle Show/Hide of your reminder icon.
 *Add option to the Reminders module to set the xOffset of the icon.
 *Add option to the Reminders module to set the yOffset of the icon.
+
+[b]Fixes:[/b]
+*Fix issue with having the portrait overlay option turned on was causing the incoming heals to not display for the player and target frames.
