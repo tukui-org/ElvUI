@@ -5,4 +5,5 @@
 *Add option to the Reminders module to set the yOffset of the icon.
 
 [b]Fixes:[/b]
+*Raid Debuff module was not using a filter and displaying all icons. This was caused when I attempted to fix a lua error a while ago.
 *Fix issue with having the portrait overlay option turned on was causing the incoming heals to not display for the player and target frames.
