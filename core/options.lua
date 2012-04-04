@@ -168,7 +168,15 @@ E.Options.args.general = {
 					desc = L['Skin the blizzard chat bubbles.'],
 					get = function(info) return E.global.general.bubbles end,
 					set = function(info, value) E.global.general.bubbles = value; StaticPopup_Show("GLOBAL_RL") end
-				},		
+				},	
+				multisampleFix = {
+					order = 12,
+					type = "toggle",
+					name = L['Multisample Fix'],
+					desc = L['Attempt to fix blurry borders when using a multisample setting that is greater than one. |cffFF0000WARNING: This is extremely experimental and may cause issues with gameplay.|r'],
+					get = function(info) return E.global.general.multisampleFix end,
+					set = function(info, value) E.global.general.multisampleFix = value; StaticPopup_Show("GLOBAL_RL") end				
+				},
 				spacer = {
 					order = 99,
 					type = "description",

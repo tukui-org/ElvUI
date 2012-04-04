@@ -54,6 +54,9 @@ end
 
 function CH:StyleChat(frame)
 	if frame.styled then return end
+	
+	frame.IgnoreFixDimensions = true; --no need to run this constantly
+	
 	local id = frame:GetID()
 	local name = frame:GetName()
 	local tab = _G[name..'Tab']

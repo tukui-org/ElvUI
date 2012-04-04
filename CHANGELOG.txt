@@ -1,4 +1,5 @@
 [b]Additions:[/b]
+*Add an exprimental option to fix blurry borders when using multisampling over 1x. This option is turned off by default, located under general settings.
 *Add option to the Reminders module to toggle strict filters. Having this option off will allow you to use the Reminders module for spells that aren't in your spellbook. I.E: Spell Proc's.
 *Add button in the reminders module to toggle Show/Hide of your reminder icon.
 *Add option to the Reminders module to set the xOffset of the icon.

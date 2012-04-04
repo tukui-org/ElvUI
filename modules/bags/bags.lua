@@ -339,6 +339,7 @@ function B:Layout(isBank)
 	f.HolderFrame:SetWidth(33.5 * cols)
 	f.HolderFrame:SetHeight(f:GetHeight() - 8)
 	f.HolderFrame:SetPoint("BOTTOM", f, "BOTTOM")
+	f.HolderFrame:FixDimensions()
 
 	--Fun Part, Position Actual Bag Buttons
 	local idx = 0
