@@ -83,7 +83,12 @@ local blackList = {
 }
 
 local function FixDimensions(frame)
-	if not ( E.global and E.global.general.multisampleFix ) or frame:IsProtected() or (frame:GetName() and blackList[frame:GetName()]) or frame.IgnoreFixDimensions then frame.IgnoreFixDimensions = true; return; end
+	if not ( E.global and E.global.general.multisampleFix ) or frame:IsProtected() or (frame:GetName() and blackList[frame:GetName()]) or frame.IgnoreFixDimensions then 
+		if E.global then
+			frame.IgnoreFixDimensions = true; 
+		end
+		return; 
+	end
 	frame.SetWidth = SetWidth
 	frame.SetHeight = SetHeight
 	frame.SetSize = SetSize
