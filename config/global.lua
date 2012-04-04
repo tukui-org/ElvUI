@@ -11,7 +11,6 @@ G['general'] = {
 	["dmgfont"] = "ElvUI Combat",
 	['bubbles'] = true,
 	['bags'] = true,
-	['multisampleFix'] = false,
 }
 
 G['bags'] = {
