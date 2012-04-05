@@ -16,6 +16,24 @@ NP.Healers = {
 	[L['Discipline']] = true,
 }
 
+NP.RaidTargetReference = {
+	["STAR"] = 0x00000001,
+	["CIRCLE"] = 0x00000002,
+	["DIAMOND"] = 0x00000004,
+	["TRIANGLE"] = 0x00000008,
+	["MOON"] = 0x00000010,
+	["SQUARE"] = 0x00000020,
+	["CROSS"] = 0x00000040,
+	["SKULL"] = 0x00000080,
+}
+
+NP.RaidIconCoordinate = {
+	[0]		= { [0]		= "STAR", [0.25]	= "MOON", },
+	[0.25]	= { [0]		= "CIRCLE", [0.25]	= "SQUARE",	},
+	[0.5]	= { [0]		= "DIAMOND", [0.25]	= "CROSS", },
+	[0.75]	= { [0]		= "TRIANGLE", [0.25]	= "SKULL", }, 
+}
+
 function NP:Initialize()
 	self.db = E.db["nameplate"]
 	if E.global["nameplate"].enable ~= true then return end
@@ -33,6 +51,7 @@ function NP:Initialize()
 			NP:ForEachPlate(NP.ScanHealth)
 			NP:ForEachPlate(NP.CheckUnit_Guid)
 			NP:ForEachPlate(NP.UpdateThreat)
+			NP:ForEachPlate(NP.CheckRaidIcon)
 			self.elapsed = 0
 		else
 			self.elapsed = (self.elapsed or 0) + elapsed
@@ -54,9 +73,6 @@ function NP:QueueObject(frame, object)
 	if object.OldTexture then
 		object:SetTexture(object.OldTexture)
 	end
-	
-	frame.hp:Hide()
-	frame.hp:Show()
 end
 
 function NP:CreateVirtualFrame(parent, point)
@@ -315,17 +331,18 @@ function NP:OnAura(frame, unit)
 	for index = i, #frame.icons do frame.icons[index]:Hide() end	
 end
 
-function NP:CastBar_OnShow(self, frame)
-	if self.GetParent then frame = self; self = NP end
+function NP:CastBar_OnShow(frame)
 	frame:ClearAllPoints()
 	frame:SetSize(frame:GetParent().hp:GetWidth(), self.db.cbheight)
 	frame:SetPoint('TOP', frame:GetParent().hp, 'BOTTOM', 0, -8)
+	frame:SetStatusBarTexture(E["media"].normTex)
 	frame:GetStatusBarTexture():SetHorizTile(true)
 	if(frame.shield:IsShown()) then
 		frame:SetStatusBarColor(0.78, 0.25, 0.25, 1)
+	else
+		frame:SetStatusBarColor(1, 208/255, 0)
 	end	
 	
-	frame:SetStatusBarTexture(E["media"].normTex)
 	self:SetVirtualBorder(frame, unpack(E["media"].bordercolor))
 	self:SetVirtualBackdrop(frame, unpack(E["media"].backdropcolor))	
 	
@@ -334,34 +351,20 @@ function NP:CastBar_OnShow(self, frame)
 	self:SetVirtualBackdrop(frame.icon, unpack(E["media"].backdropcolor))		
 end
 
-function NP:CastBar_UpdateText(self, frame)
-	if self.GetParent then frame = self; self = NP end
-	local minValue, maxValue = frame:GetMinMaxValues()
-	local curValue = frame:GetValue()
+function NP:CastBar_OnValueChanged(frame)
+	local channel
+	local spell, _, name, icon, start, finish, _, spellid, nonInt = UnitCastingInfo("target")
 	
-	if UnitChannelInfo("target") then
-		frame.time:SetFormattedText("%.1f ", curValue)
-		frame.name:SetText(select(1, (UnitChannelInfo("target"))))
-	end
-	
-	if UnitCastingInfo("target") then
-		frame.time:SetFormattedText("%.1f ", maxValue - curValue)
-		frame.name:SetText(select(1, (UnitCastingInfo("target"))))
-	end
-end
-
-function NP:CastBar_OnSizeChanged(self, frame)
-	if self.GetParent then frame = self; self = NP end
-	frame.needFix = true
-end
-
-function NP:CastBar_OnValueChanged(self, frame, curValue)
-	if self.GetParent then frame = self; self = NP end
-	self:CastBar_UpdateText(frame, curValue)
-	if frame.needFix then
-		self:CastBar_OnShow(frame)
-		frame.needFix = nil
+	if not spell then 
+		spell, _, name, icon, start, finish, spellid, nonInt = UnitChannelInfo("target"); 
+		channel = true 
 	end	
+	
+	if spell then 
+		NP:StartCastAnimationOnNameplate(frame:GetParent(), spell, spellid, icon, start/1000, finish/1000, nonInt, channel) 
+	else 
+		NP:StopCastAnimation(frame:GetParent()) 
+	end
 end
 
 function NP:Colorize(frame)
@@ -375,6 +378,8 @@ function NP:Colorize(frame)
 			return
 		end
 	end
+	
+	frame.isPlayer = nil
 	
 	local color
 	if g+b == 0 then -- hostile
@@ -470,6 +475,8 @@ function NP:OnHide(frame)
 	frame.overlay:Hide()
 	frame.cb:Hide()
 	frame.unit = nil
+	frame.isMarked = nil
+	frame.raidIconType = nil
 	frame.threatStatus = nil
 	frame.guid = nil
 	frame.hasClass = nil
@@ -489,9 +496,9 @@ function NP:OnHide(frame)
 end
 
 function NP:SkinPlate(frame)
-	local oldhp, cb = frame:GetChildren()
+	local oldhp, oldcb = frame:GetChildren()
 	local threat, hpborder, overlay, oldname, oldlevel, bossicon, raidicon, elite = frame:GetRegions()
-	local _, cbborder, cbshield, cbicon = cb:GetRegions()
+	local _, cbborder, cbshield, cbicon = oldcb:GetRegions()
 	
 	--Health Bar
 	if not frame.hp then
@@ -548,33 +555,40 @@ function NP:SkinPlate(frame)
 	
 	--Cast Bar
 	if not frame.cb then
-		self:CreateVirtualFrame(cb)
-		frame.cb = cb
+		frame.oldcb = oldcb
+		frame.cb = CreateFrame("Statusbar", nil, frame)
+		frame.cb:SetFrameLevel(oldcb:GetFrameLevel())
+		frame.cb:SetFrameStrata(oldcb:GetFrameStrata())
+		self:CreateVirtualFrame(frame.cb)	
+		frame.cb:Hide()
 	end
 
 	--Cast Time
-	if not cb.time then
-		cb.time = cb:CreateFontString(nil, "ARTWORK")
-		cb.time:SetPoint("RIGHT", cb, "LEFT", -1, 0)
-		cb.time:FontTemplate(nil, 10, 'OUTLINE')
+	if not frame.cb.time then
+		frame.cb.time = frame.cb:CreateFontString(nil, "ARTWORK")
+		frame.cb.time:SetPoint("RIGHT", frame.cb, "LEFT", -1, 0)
+		frame.cb.time:FontTemplate(nil, 10, 'OUTLINE')
 	end
 	
 	--Cast Name
-	if not cb.name then
-		cb.name = cb:CreateFontString(nil, "ARTWORK")
-		cb.name:SetPoint("TOP", cb, "BOTTOM", 0, -3)
-		cb.name:FontTemplate(nil, 10, 'OUTLINE')
+	if not frame.cb.name then
+		frame.cb.name = frame.cb:CreateFontString(nil, "ARTWORK")
+		frame.cb.name:SetPoint("TOP", frame.cb, "BOTTOM", 0, -3)
+		frame.cb.name:FontTemplate(nil, 10, 'OUTLINE')
 	end
 	
 	--Cast Icon
-	if not cb.icon then
+	if not frame.cb.icon then
+		oldcb:SetAlpha(0)
+		oldcb:SetScale(0.000001)
 		cbicon:ClearAllPoints()
 		cbicon:SetPoint("TOPLEFT", frame.hp, "TOPRIGHT", 8, 0)		
 		cbicon:SetTexCoord(.07, .93, .07, .93)
 		cbicon:SetDrawLayer("OVERLAY")
-		cb.icon = cbicon
-		cb.shield = cbshield
-		self:CreateVirtualFrame(cb, cb.icon)
+		cbicon:SetParent(frame.cb)
+		frame.cb.icon = cbicon
+		frame.cb.shield = cbshield
+		self:CreateVirtualFrame(frame.cb, frame.cb.icon)
 	end
 
 	--Raid Icon
@@ -627,14 +641,25 @@ function NP:SkinPlate(frame)
 	self:CastBar_OnShow(frame.cb)
 	if not self.hooks[frame] then
 		self:HookScript(frame.cb, 'OnShow', 'CastBar_OnShow')
-		self:HookScript(frame.cb, 'OnSizeChanged', 'CastBar_OnSizeChanged')
-		self:HookScript(frame.cb, 'OnValueChanged', 'CastBar_OnValueChanged')				
+		self:HookScript(oldcb, 'OnValueChanged', 'CastBar_OnValueChanged')				
 		self:HookScript(frame.hp, 'OnShow', 'HealthBar_OnShow')		
 		self:HookScript(oldhp, 'OnValueChanged', 'HealthBar_ValueChanged')
 		self:HookScript(frame, "OnHide", "OnHide")	
 	end
 	
 	NP.Handled[frame:GetName()] = true
+end
+
+function NP:CheckRaidIcon(frame)
+	frame.isMarked = frame.raidicon:IsShown() or false
+	
+	if frame.isMarked then
+		local ux, uy = frame.raidicon:GetTexCoord()
+		frame.raidIconType = NP.RaidIconCoordinate[ux][uy]	
+	else
+		frame.isMarked = nil;
+		frame.raidIconType = nil;
+	end
 end
 
 local good, bad, transition, transition2, combat, goodscale, badscale
@@ -816,19 +841,6 @@ function NP:ScanHealth(frame)
 	end
 end
 
---Attempt to match a nameplate with a GUID from the combat log
-function NP:MatchGUID(frame, destGUID, spellID)
-	if not frame.guid then return end
-
-	if frame.guid == destGUID then
-		for _,icon in ipairs(frame.icons) do 
-			if icon.spellID == spellID then 
-				icon:Hide() 
-			end 
-		end
-	end
-end
-
 --Scan all visible nameplate for a known unit.
 function NP:CheckUnit_Guid(frame, ...)
 	--local numParty, numRaid = GetNumPartyMembers(), GetNumRaidMembers()
@@ -900,12 +912,182 @@ function NP:CheckFilter(frame, ...)
 	end
 end
 
+function NP:StopCastAnimation(frame)
+	frame.cb:Hide()	
+	frame.cb:SetScript("OnUpdate", nil)
+end
+
+function NP:UpdateCastAnimation()
+	local currentTime = GetTime()
+	if currentTime > (self.endTime or 0) then
+		NP:StopCastAnimation(self:GetParent())
+	else 
+		self:SetValue(currentTime)
+		self.time:SetFormattedText("%.1f ", self.endTime - currentTime)
+	end
+end
+
+function NP:UpdateChannelAnimation()
+	local currentTime = GetTime()
+	if currentTime > (self.endTime or 0) then
+		NP:StopCastAnimation(self:GetParent())
+	else 
+		self:SetValue(self.startTime + (self.endTime - currentTime)) 
+		self.time:SetFormattedText("%.1f ", self.endTime - (self.startTime + (self.endTime - currentTime)))
+	end
+end
+
+function NP:StartCastAnimationOnNameplate(frame, spellName, spellID, icon, startTime, endTime, notInterruptible, channel)
+	if not (tonumber(GetCVar("showVKeyCastbar")) == 1) or not spellName then return; end
+	local castbar = frame.cb
+	
+	castbar:SetMinMaxValues(startTime, endTime)
+	castbar.name:SetText(spellName)
+	castbar.icon:SetTexture(icon)
+	
+	if notInterruptible then 
+		castbar.shield:Show()
+	else 
+		castbar.shield:Hide()
+	end
+	
+	castbar.endTime = endTime
+	castbar.startTime = startTime	
+	
+	castbar:Show()	
+	if channel then 
+		castbar:SetValue(endTime - GetTime())
+		castbar:SetScript("OnUpdate", NP.UpdateChannelAnimation)	
+	else 
+		castbar:SetValue(GetTime())
+		castbar:SetScript("OnUpdate", NP.UpdateCastAnimation)	
+	end	
+end
+
+function NP:SearchNameplateByGUID(guid)
+	for frame, _ in pairs(NP.Handled) do
+		frame = _G[frame]
+		if frame and frame:IsShown() and frame.guid == guid then
+			return frame
+		end
+	end
+end
+
+function NP:SearchNameplateByName(sourceName)
+	if not sourceName then return; end
+	local SearchFor = strsplit("-", sourceName)
+	for frame, _ in pairs(NP.Handled) do
+		frame = _G[frame]
+		if frame and frame:IsShown() and frame.hp.name:GetText() == SearchFor and frame.hasClass then
+			return frame
+		end
+	end
+end
+
+function NP:SearchNameplateByIcon(UnitFlags)
+	local UnitIcon
+	for iconname, bitmask in pairs(NP.RaidTargetReference) do
+		if bit.band(UnitFlags, bitmask) > 0  then
+			UnitIcon = iconname
+			break
+		end
+	end	
+
+	for frame, _ in pairs(NP.Handled) do
+		frame = _G[frame]
+		if frame and frame:IsShown() and frame.isMarked and (frame.raidIconType == UnitIcon) then
+			return frame
+		end
+	end	
+end
+
 function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 	if event == "SPELL_AURA_REMOVED" then
-		local _, sourceGUID, _, _, _, destGUID, _, _, _, spellID = ...
+		local _, sourceGUID, _, _, _, destGUID, destName, _, _, spellID = ...
 		if sourceGUID == UnitGUID("player") then
-			self:ForEachPlate(NP.MatchGUID, destGUID, spellID)
+			local frame = NP:SearchNameplateByGUID(destGUID)
+			if frame then
+				for _,icon in ipairs(frame.icons) do 
+					if icon.spellID == spellID then 
+						icon:Hide() 
+					end 
+				end				
+			end
 		end
+	elseif event == "SPELL_CAST_START" then
+		local _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, _, _, _, _, spellID = ...
+		local FoundPlate = nil;
+		-- Gather Spell Info
+		local spell, _, icon, _, _, _, castTime, _, _ = GetSpellInfo(spellID)
+		if not (castTime > 0) then return end		
+		if bit.band(sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) > 0 then 
+			if bit.band(sourceFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 then 
+				--	destination plate, by name
+				FoundPlate = NP:SearchNameplateByName(sourceName)
+			elseif bit.band(sourceFlags, COMBATLOG_OBJECT_CONTROL_NPC) > 0 then 
+				--	destination plate, by GUID
+				FoundPlate = NP:SearchNameplateByGUID(sourceGUID)
+				if not FoundPlate then 
+					FoundPlate = NP:SearchNameplateByIcon(sourceRaidFlags) 
+				end
+			else 
+				return	
+			end
+		else 
+			return 
+		end	
+
+		if FoundPlate and FoundPlate:IsShown() and FoundPlate.unit ~= "target" then 
+			FoundPlate.guid = sourceGUID
+			local currentTime = GetTime()
+			
+			castTime = (castTime / 1000)	-- Convert to seconds
+			NP:StartCastAnimationOnNameplate(FoundPlate, spell, spellID, icon, currentTime, currentTime + castTime, false, false)
+		end		
+	elseif event == "SPELL_CAST_FAILED" then
+		local FoundPlate = nil;
+		local _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags = ...
+
+		if bit.band(sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) > 0 then 
+			if bit.band(sourceFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 then 
+				--	destination plate, by name
+				FoundPlate = NP:SearchNameplateByName(sourceName)
+			elseif bit.band(sourceFlags, COMBATLOG_OBJECT_CONTROL_NPC) > 0 then 
+				--	destination plate, by GUID
+				FoundPlate = NP:SearchNameplateByGUID(sourceGUID)
+				if not FoundPlate then 
+					FoundPlate = NP:SearchNameplateByIcon(sourceRaidFlags) 
+				end
+			else 
+				return	
+			end
+		else 
+			return 
+		end	
+
+		if FoundPlate and FoundPlate:IsShown() and FoundPlate.unit ~= "target" then 
+			FoundPlate.guid = sourceGUID
+			NP:StopCastAnimation(FoundPlate)
+		end		
+	else
+		local _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags = ...
+		if bit.band(sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) > 0 then 
+			if bit.band(sourceFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 then 
+				--	destination plate, by name
+				FoundPlate = NP:SearchNameplateByName(sourceName)
+			elseif bit.band(sourceFlags, COMBATLOG_OBJECT_CONTROL_NPC) > 0 then 
+				--	destination plate, by raid icon
+				FoundPlate = NP:SearchNameplateByIcon(sourceRaidFlags) 
+			else 
+				return	
+			end
+		else 
+			return 
+		end	
+		
+		if FoundPlate and FoundPlate:IsShown() and FoundPlate.unit ~= "target" then 
+			FoundPlate.guid = sourceGUID
+		end			
 	end
 end
 
