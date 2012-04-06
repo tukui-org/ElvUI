@@ -2,6 +2,11 @@ local E, L, P, G = unpack(select(2, ...)); --Engine
 --[[
 	Spell Reminder Arguments
 	
+	General:
+		enable - turn the reminder off and on.
+		strictFilter - allow the use of spells that are not actually in your spellbook (Spell Procs)
+		disableSound - Don't play the warning sound.
+		
 	Type of Check:
 		spellGroup - List of spells in a group, if you have anyone of these spells the icon will hide.
 		weaponCheck - Run a weapon enchant check instead of a spell check
@@ -21,7 +26,7 @@ local E, L, P, G = unpack(select(2, ...)); --Engine
 		instance - check when entering a party/raid instance
 		pvp - check when entering a bg/arena
 		combat - check when entering combat
-	
+
 	For every group created a new frame is created, it's a lot easier this way.
 ]]
 
@@ -34,8 +39,10 @@ G['reminder']['filters'] = {
 			},
 			["instance"] = true,
 			["pvp"] = true,
-			['enable'] = true;
+			['enable'] = true,
+			['strictFilter'] = true,
 		},
+
 	},
 	HUNTER = {
 		["Aspects"] = { --aspects group
@@ -48,8 +55,9 @@ G['reminder']['filters'] = {
 			["combat"] = true,
 			["instance"] = true,
 			["personal"] = true,
-			['enable'] = true;
-		},				
+			['enable'] = true,
+			['strictFilter'] = true,
+		},	
 	},
 	MAGE = {
 		["Armors"] = { --armors group
@@ -60,7 +68,8 @@ G['reminder']['filters'] = {
 			},
 			["instance"] = true,
 			["pvp"] = true,
-			['enable'] = true;
+			['enable'] = true,
+			['strictFilter'] = true,
 		},		
 	},
 	WARLOCK = {
@@ -71,7 +80,8 @@ G['reminder']['filters'] = {
 			},
 			["instance"] = true,
 			["pvp"] = true,
-			['enable'] = true;
+			['enable'] = true,
+			['strictFilter'] = true,
 		},
 	},
 	PALADIN = {
@@ -84,7 +94,8 @@ G['reminder']['filters'] = {
 			},
 			["instance"] = true,
 			["pvp"] = true,
-			['enable'] = true;
+			['enable'] = true,
+			['strictFilter'] = true,
 		},
 		["Righteous Fury"] = { -- righteous fury group
 			["spellGroup"] = {
@@ -94,7 +105,8 @@ G['reminder']['filters'] = {
 			["instance"] = true,
 			["reverseCheck"] = true,
 			["talentTreeException"] = 1, --Holy paladins use RF sometimes
-			['enable'] = true;
+			['enable'] = true,
+			['strictFilter'] = true,
 		},
 		["Auras"] = { -- auras
 			["spellGroup"] = {
@@ -105,8 +117,9 @@ G['reminder']['filters'] = {
 			},
 			["instance"] = true,
 			["personal"] = true,
-			['enable'] = true;
-		},
+			['enable'] = true,
+			['strictFilter'] = true,
+		},	
 	},
 	SHAMAN = {
 		["Shields"] = { --shields group
@@ -123,8 +136,9 @@ G['reminder']['filters'] = {
 			["instance"] = true,
 			["pvp"] = true,
 			["minLevel"] = 10,
-			['enable'] = true;
-		},
+			['enable'] = true,
+			['disableSound'] = true,
+		},		
 	},
 	WARRIOR = {
 		["Commanding Shout"] = { -- commanding Shout group
@@ -140,7 +154,8 @@ G['reminder']['filters'] = {
 			["role"] = "Tank",
 			["instance"] = true,
 			["pvp"] = true,
-			['enable'] = true;			
+			['enable'] = true,
+			['strictFilter'] = true,		
 		},
 		["Battle Shout"] = { -- battle Shout group
 			["spellGroup"] = {
@@ -154,8 +169,9 @@ G['reminder']['filters'] = {
 			["instance"] = true,
 			["pvp"] = true,	
 			["role"] = "Melee",
-			['enable'] = true;
-		},
+			['enable'] = true,
+			['strictFilter'] = true,
+		},	
 	},
 	DEATHKNIGHT = {
 		["Horn of Winter"] = { -- horn of Winter group
@@ -169,7 +185,8 @@ G['reminder']['filters'] = {
 			},
 			["instance"] = true,
 			["pvp"] = true,	
-			['enable'] = true;
+			['enable'] = true,
+			['strictFilter'] = true,
 		},
 		["Blood Presence"] = { -- blood presence group
 			["spellGroup"] = {
@@ -178,8 +195,9 @@ G['reminder']['filters'] = {
 			["role"] = "Tank",
 			["instance"] = true,	
 			["reverseCheck"] = true,
-			['enable'] = true;
-		},
+			['enable'] = true,
+			['strictFilter'] = true,
+		},	
 	},
 	ROGUE = { 
 		["Weapon Enchants"] = { --weapons enchant group
@@ -187,8 +205,9 @@ G['reminder']['filters'] = {
 			["instance"] = true,
 			["pvp"] = true,
 			["minLevel"] = 10,
-			['enable'] = true;
-		},
+			['enable'] = true,
+			['disableSound'] = true,
+		},	
 	},
 	DRUID = {
 	},

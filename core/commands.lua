@@ -26,6 +26,7 @@ function E:ResetGold()
 end
 
 function FarmMode()
+	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT); return; end
 	if Minimap:IsShown() then
 		UIFrameFadeOut(Minimap, 0.3)
 		UIFrameFadeIn(FarmModeMap, 0.3) 
@@ -38,7 +39,7 @@ function FarmMode()
 end
 
 function E:FarmMode(msg)
-	if msg and type(tonumber(msg))=="number" and tonumber(msg) <= 500 and tonumber(msg) >= 20 then
+	if msg and type(tonumber(msg))=="number" and tonumber(msg) <= 500 and tonumber(msg) >= 20 and not InCombatLockdown() then
 		E.db.farmSize = tonumber(msg)
 		FarmModeMap:Size(tonumber(msg))
 	end
@@ -92,10 +93,21 @@ function E:LuaError(msg)
 	end
 end
 
+function E:FoolsHowTo()
+	E:Print('Thank you for using ElvUI and participating in this years april fools day joke. Type "/aprilfools" in chat without quotes to fix your UI back to normal. If you liked this years joke please let us know about it at tukui.org.')
+end
+
+function E:DisableAprilFools()
+	E.global.aprilFools = true;
+	ReloadUI();
+end
+
 function E:LoadCommands()
 	self:RegisterChatCommand("ec", "ToggleConfig")
 	self:RegisterChatCommand("elvui", "ToggleConfig")
 	
+	self:RegisterChatCommand('moreinfo', 'FoolsHowTo')
+	self:RegisterChatCommand('aprilfools', 'DisableAprilFools')
 	self:RegisterChatCommand('luaerror', 'LuaError')
 	self:RegisterChatCommand('egrid', 'Grid')
 	self:RegisterChatCommand("moveui", "MoveUI")

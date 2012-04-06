@@ -170,9 +170,13 @@ local function LoadSkin()
 	
 	S:HandleEditBox(BagItemSearchBox)
 	BagItemSearchBox:Height(BagItemSearchBox:GetHeight() - 5)
-	BagItemSearchBox:Point('TOPRIGHT', ContainerFrame1, 'TOPRIGHT', -16, -28)
-	BagItemSearchBox.SetPoint = E.noop
 	BagItemSearchBox:Width(166)
+	
+	hooksecurefunc('ContainerFrame_Update', function(frame)
+		if frame:GetID() == 0 then
+			BagItemSearchBox:Point('TOPRIGHT', frame, 'TOPRIGHT', -16, -28)	
+		end
+	end)
 	
 	BankItemSearchBox:StripTextures()
 	BankItemSearchBox:CreateBackdrop("Overlay")

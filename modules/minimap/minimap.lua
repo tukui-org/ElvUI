@@ -130,7 +130,15 @@ function M:UpdateLFG()
 	MiniMapLFGFrameBorder:Hide()
 end
 
+function M:PLAYER_REGEN_ENABLED()
+	self:UnregisterEvent('PLAYER_REGEN_ENABLED')
+	self:UpdateSettings()
+end
+
 function M:UpdateSettings()
+	if InCombatLockdown() then
+		self:RegisterEvent('PLAYER_REGEN_ENABLED')
+	end
 	E.MinimapSize = E.db.general.minimapSize
 	
 	if E.db.general.raidReminder then
