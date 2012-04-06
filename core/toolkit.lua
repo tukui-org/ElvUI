@@ -40,18 +40,22 @@ local function SetWidth(self, width)
 		end
 	end
 	
-	index.SetWidth(self, width)
+	if not self.IgnoreFixDimensions then
+		index.SetWidth(self, width)
+	end
 end
 
 local function SetHeight(self, height)
 	if height and height ~= 0 then
 		height = floor(height)
 		if not E:IsEvenNumber(height) then
-			--height = height - 1
+			height = height - 1
 		end
 	end
 	
-	index.SetHeight(self, height)
+	if not self.IgnoreFixDimensions then
+		index.SetHeight(self, height)
+	end
 end
 
 local function SetSize(self, width, height)
@@ -65,21 +69,29 @@ local function SetSize(self, width, height)
 	if height and height ~= 0 then
 		height = floor(height)
 		if not E:IsEvenNumber(height) then
-			--height = height - 1
+			height = height - 1
 		end
 	end
 	
-	index.SetSize(self, width, height)
+	if not self.IgnoreFixDimensions then
+		index.SetSize(self, width, height)
+	end
 end
 
+local blackList = {
+	['TemporaryEnchantFrame'] = true;
+}
+
 local function FixDimensions(frame)
-	--VERY EXPERIMENTAL, UNCOMMENT THIS SHIT IF YOU WANT TO TEST
-	--[[frame.SetWidth = SetWidth
+	if frame:IsProtected() or (frame:GetName() and blackList[frame:GetName()]) or not frame.IgnoreFixDimensions then 
+		return; 
+	end
+	frame.SetWidth = SetWidth
 	frame.SetHeight = SetHeight
 	frame.SetSize = SetSize
 	
 	frame:SetWidth(frame:GetWidth())
-	frame:SetHeight(frame:GetHeight())]]
+	frame:SetHeight(frame:GetHeight())
 end
 
 local function Size(frame, width, height)
@@ -107,7 +119,6 @@ end
 
 local function SetTemplate(f, t, glossTex, ignoreUpdates)
 	GetTemplate(t)
-	f:FixDimensions()
 	
 	f.template = t
 	f.glossTex = glossTex
@@ -213,7 +224,6 @@ local function CreateShadow(f)
 end
 
 local function Kill(object)
-	
 	if object.UnregisterAllEvents then
 		object:UnregisterAllEvents()
 		object:SetParent(E.HiddenFrame)
@@ -321,5 +331,9 @@ while object do
 		handled[object:GetObjectType()] = true
 	end
 
+	if object.FixDimensions then
+		object:FixDimensions()
+	end	
+	
 	object = EnumerateFrames(object)
 end

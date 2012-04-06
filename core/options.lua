@@ -168,7 +168,7 @@ E.Options.args.general = {
 					desc = L['Skin the blizzard chat bubbles.'],
 					get = function(info) return E.global.general.bubbles end,
 					set = function(info, value) E.global.general.bubbles = value; StaticPopup_Show("GLOBAL_RL") end
-				},		
+				},	
 				spacer = {
 					order = 99,
 					type = "description",

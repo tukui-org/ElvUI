@@ -339,6 +339,7 @@ function B:Layout(isBank)
 	f.HolderFrame:SetWidth(33.5 * cols)
 	f.HolderFrame:SetHeight(f:GetHeight() - 8)
 	f.HolderFrame:SetPoint("BOTTOM", f, "BOTTOM")
+	f.HolderFrame:FixDimensions()
 
 	--Fun Part, Position Actual Bag Buttons
 	local idx = 0
@@ -449,24 +450,29 @@ function B:Bags_OnHide()
 	end
 end
 
-local UpdateSearch = function(self, t)
-	if t == true then
-		B:SearchUpdate(self:GetText(), self:GetParent())
+local UpdateSearch = function(self)
+	local text = self:GetText()
+	if ( text == SEARCH ) then
+		text = "";
 	end
+	SetItemSearch(text);
 end
 
-function B:SearchUpdate(str, frameMatch)
-	str = string.lower(str)
-
-	for _, b in ipairs(self.buttons) do
-		if b.name then
-			if not string.find (string.lower(b.name), str) and b.frame:GetParent():GetParent() == frameMatch then
-				SetItemButtonDesaturated(b.frame, 1, 1, 1, 1)
-				b.frame:SetAlpha(0.4)
-			else
-				SetItemButtonDesaturated(b.frame, 0, 1, 1, 1)
-				b.frame:SetAlpha(1)
+local BagSearch_OnChar = function(self)
+	-- clear focus if the player is repeating keys (ie - trying to move)
+	-- TODO: move into base editbox code?
+	local MIN_REPEAT_CHARACTERS = 3
+	local searchString = self:GetText();
+	if (string.len(searchString) > MIN_REPEAT_CHARACTERS) then
+		local repeatChar = true;
+		for i=1, MIN_REPEAT_CHARACTERS, 1 do 
+			if ( string.sub(searchString,(0-i), (0-i)) ~= string.sub(searchString,(-1-i),(-1-i)) ) then
+				repeatChar = false;
+				break;
 			end
+		end
+		if ( repeatChar ) then
+			ResetAndClear(self);
 		end
 	end
 end
@@ -569,6 +575,7 @@ function B:CreateBagFrame(type)
 	f.editBox:SetScript("OnEditFocusLost", f.editBox.Hide)
 	f.editBox:SetScript("OnEditFocusGained", f.editBox.HighlightText)
 	f.editBox:SetScript("OnTextChanged", UpdateSearch)
+	f.editBox:SetScript('OnChar', BagSearch_OnChar)
 	f.editBox:SetText(SEARCH)
 	f.editBox:FontTemplate()
 
@@ -1446,6 +1453,21 @@ function B:PLAYERBANKBAGSLOTS_CHANGED()
 	B:Layout(true)
 end
 
+function B:INVENTORY_SEARCH_UPDATE()
+	local isFiltered;
+
+	for _, btn in ipairs(self.buttons) do
+		_, _, _, _, _, _, _, isFiltered = GetContainerItemInfo(btn.bag, btn.frame:GetID());	
+		if ( isFiltered ) then
+			SetItemButtonDesaturated(btn.frame, 1, 1, 1, 1)
+			btn.frame:SetAlpha(0.4)
+		else
+			SetItemButtonDesaturated(btn.frame, 0, 1, 1, 1)
+			btn.frame:SetAlpha(1)
+		end		
+	end	
+end
+
 function B:Initialize()
 	if not E.global.bags.enable then 
 		self:LoadBagBar()
@@ -1462,7 +1484,7 @@ function B:Initialize()
 	self:RegisterEvent("BAG_CLOSED")
 	self:RegisterEvent('BAG_UPDATE_COOLDOWN')
 	self:RegisterEvent('PLAYERBANKBAGSLOTS_CHANGED')
-
+	self:RegisterEvent('INVENTORY_SEARCH_UPDATE')
 	self:RegisterEvent('GUILDBANKBAGSLOTS_CHANGED')
 	self:SecureHook('BankFrameItemButton_Update', 'PLAYERBANKSLOTS_CHANGED')
 
