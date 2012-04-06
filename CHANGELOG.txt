@@ -8,7 +8,7 @@
 *Add option to the Reminders module to Disable Sound for the icon.
 
 [b]Fixes:[/b]
-*Fix possible taint by users adjusting minimap settings in combat.
+*Fix possible taint caused by users adjusting minimap settings in combat.
 *Fix issue with default Blizzard bag skin, search box wasn't always attached to the main bag frame.
 *Fix graphical issue on some Next/Previous button skins.
 *Raid Debuff module was not using a filter and displaying all icons. This was caused when I attempted to fix a lua error a while ago.
