@@ -26,6 +26,7 @@ function E:ResetGold()
 end
 
 function FarmMode()
+	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT); return; end
 	if Minimap:IsShown() then
 		UIFrameFadeOut(Minimap, 0.3)
 		UIFrameFadeIn(FarmModeMap, 0.3) 
@@ -38,7 +39,7 @@ function FarmMode()
 end
 
 function E:FarmMode(msg)
-	if msg and type(tonumber(msg))=="number" and tonumber(msg) <= 500 and tonumber(msg) >= 20 then
+	if msg and type(tonumber(msg))=="number" and tonumber(msg) <= 500 and tonumber(msg) >= 20 and not InCombatLockdown() then
 		E.db.farmSize = tonumber(msg)
 		FarmModeMap:Size(tonumber(msg))
 	end

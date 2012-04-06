@@ -1,5 +1,7 @@
 [b]General:[/b]
 *Remove code used for April Fools joke. Thank you everyone for participating. If you missed out on the action this year had three jokes. 1.) Player portraits appeared as Therazane. 2.) Players saw GM icons on their personal name if the chat module was turned on. 3.) Time wasted playing this game was displayed in chat after every loading screen.
+*Prevent possible taint caused by users adjusting minimap settings in combat.
+*Prevent possible taint caused by a user using the /farmmode command while in combat.
 
 [b]Additions:[/b]
 *Nameplates will now attempt to display castbars on non-targeted units.
@@ -11,7 +13,6 @@
 *Add option to the Reminders module to Disable Sound for the icon.
 
 [b]Fixes:[/b]
-*Fix possible taint caused by users adjusting minimap settings in combat.
 *Fix issue with default Blizzard bag skin, search box wasn't always attached to the main bag frame.
 *Fix graphical issue on some Next/Previous button skins.
 *Raid Debuff module was not using a filter and displaying all icons. This was caused when I attempted to fix a lua error a while ago.
