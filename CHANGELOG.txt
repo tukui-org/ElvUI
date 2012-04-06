@@ -1,6 +1,6 @@
 [b]Additions:[/b]
 *Nameplates will now attempt to display castbars on non-targeted units.
-*The All-In-One bag search feature can now handle several more search options, including: Search by usable Class, Search by Item Set, Search by Item Type. Example: If you have a gear set named "PVE", searching "PVE would highlight all those items.
+*The All-In-One bag search feature can now handle several more search options, including: Search by usable Class, Search by Item Set, Search by Item Type. Example: If you have a gear set named "PVE", searching "PVE would highlight all those items. Searching "Trinket" will highlight all of your trinkets.
 *Add option to the Reminders module to toggle strict filters. Having this option off will allow you to use the Reminders module for spells that aren't in your spellbook. I.E: Spell Proc's.
 *Add button in the reminders module to toggle Show/Hide of your reminder icon.
 *Add option to the Reminders module to set the xOffset of the icon.
