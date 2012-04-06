@@ -5,6 +5,7 @@
 *Add button in the reminders module to toggle Show/Hide of your reminder icon.
 *Add option to the Reminders module to set the xOffset of the icon.
 *Add option to the Reminders module to set the yOffset of the icon.
+*Add option to the Reminders module to Disable Sound for the icon.
 
 [b]Fixes:[/b]
 *Fix issue with default Blizzard bag skin, search box wasn't always attached to the main bag frame.

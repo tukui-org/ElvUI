@@ -186,6 +186,15 @@ local function UpdateFilterGroup()
 		set = function(info, value) E.global['reminder']['filters'][E.myclass][selectedFilter]["strictFilter"] = value; R:CheckForNewReminders() end,
 	}	
 
+	E.Options.args.reminder.args.filterGroup.args["disableSound"] = {
+		type = "toggle",
+		name = L["Disable Sound"],
+		desc = L["Don't play the warning sound."],
+		order = 18,
+		get = function(info) return E.global['reminder']['filters'][E.myclass][selectedFilter] and E.global['reminder']['filters'][E.myclass][selectedFilter]["disableSound"] end,
+		set = function(info, value) E.global['reminder']['filters'][E.myclass][selectedFilter]["disableSound"] = value; R:CheckForNewReminders() end,
+	}		
+	
 	if E.global['reminder']['filters'][E.myclass][selectedFilter]["weaponCheck"] ~= true then
 		E.Options.args.reminder.args.filterGroup.args["reverseCheck"] = {
 			type = "toggle",

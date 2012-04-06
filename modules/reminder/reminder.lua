@@ -188,7 +188,7 @@ function R:UpdateReminderIcon(event, unit)
 		end
 	end
 	
-	if self:IsShown() then
+	if self:IsShown() and not db.disableSound then
 		if not R.SoundThrottled then
 			R.SoundThrottled = true;
 			PlaySoundFile(LSM:Fetch("sound", E.global['reminder'].sound));

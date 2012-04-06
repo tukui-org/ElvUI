@@ -2,6 +2,11 @@ local E, L, P, G = unpack(select(2, ...)); --Engine
 --[[
 	Spell Reminder Arguments
 	
+	General:
+		enable - turn the reminder off and on.
+		strictFilter - allow the use of spells that are not actually in your spellbook (Spell Procs)
+		disableSound - Don't play the warning sound.
+		
 	Type of Check:
 		spellGroup - List of spells in a group, if you have anyone of these spells the icon will hide.
 		weaponCheck - Run a weapon enchant check instead of a spell check
@@ -21,7 +26,7 @@ local E, L, P, G = unpack(select(2, ...)); --Engine
 		instance - check when entering a party/raid instance
 		pvp - check when entering a bg/arena
 		combat - check when entering combat
-	
+
 	For every group created a new frame is created, it's a lot easier this way.
 ]]
 
@@ -37,6 +42,7 @@ G['reminder']['filters'] = {
 			['enable'] = true,
 			['strictFilter'] = true,
 		},
+
 	},
 	HUNTER = {
 		["Aspects"] = { --aspects group
@@ -51,7 +57,7 @@ G['reminder']['filters'] = {
 			["personal"] = true,
 			['enable'] = true,
 			['strictFilter'] = true,
-		},				
+		},	
 	},
 	MAGE = {
 		["Armors"] = { --armors group
@@ -113,7 +119,7 @@ G['reminder']['filters'] = {
 			["personal"] = true,
 			['enable'] = true,
 			['strictFilter'] = true,
-		},
+		},	
 	},
 	SHAMAN = {
 		["Shields"] = { --shields group
@@ -131,7 +137,8 @@ G['reminder']['filters'] = {
 			["pvp"] = true,
 			["minLevel"] = 10,
 			['enable'] = true,
-		},
+			['disableSound'] = true,
+		},		
 	},
 	WARRIOR = {
 		["Commanding Shout"] = { -- commanding Shout group
@@ -164,7 +171,7 @@ G['reminder']['filters'] = {
 			["role"] = "Melee",
 			['enable'] = true,
 			['strictFilter'] = true,
-		},
+		},	
 	},
 	DEATHKNIGHT = {
 		["Horn of Winter"] = { -- horn of Winter group
@@ -190,7 +197,7 @@ G['reminder']['filters'] = {
 			["reverseCheck"] = true,
 			['enable'] = true,
 			['strictFilter'] = true,
-		},
+		},	
 	},
 	ROGUE = { 
 		["Weapon Enchants"] = { --weapons enchant group
@@ -199,7 +206,8 @@ G['reminder']['filters'] = {
 			["pvp"] = true,
 			["minLevel"] = 10,
 			['enable'] = true,
-		},
+			['disableSound'] = true,
+		},	
 	},
 	DRUID = {
 	},

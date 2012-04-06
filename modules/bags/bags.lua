@@ -1454,7 +1454,7 @@ function B:PLAYERBANKBAGSLOTS_CHANGED()
 end
 
 function B:INVENTORY_SEARCH_UPDATE()
-	local _, isFiltered;
+	local isFiltered;
 
 	for _, btn in ipairs(self.buttons) do
 		_, _, _, _, _, _, _, isFiltered = GetContainerItemInfo(btn.bag, btn.frame:GetID());	
