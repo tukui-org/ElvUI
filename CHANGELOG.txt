@@ -1,3 +1,6 @@
+[b]General:[/b]
+*Remove code used for April Fools joke. Thank you everyone for participating. If you missed out on the action this year had three jokes. 1.) Player portraits appeared as Therazane. 2.) Players saw GM icons on their personal name if the chat module was turned on. 3.) Time wasted playing this game was displayed in chat after every loading screen.
+
 [b]Additions:[/b]
 *Nameplates will now attempt to display castbars on non-targeted units.
 *The All-In-One bag search feature can now handle several more search options, including: Search by usable Class, Search by Item Set, Search by Item Type. Example: If you have a gear set named "PVE", searching "PVE would highlight all those items. Searching "Trinket" will highlight all of your trinkets.

@@ -412,8 +412,7 @@ function E:CheckIncompatible()
 end
 
 function E:IsFoolsDay()
-	local date = date()
-	if string.find(date, '04/01/') then
+	if string.find(date(), '04/01/') and not E.global.aprilFools then
 		return true;
 	else
 		return false;
@@ -618,12 +617,6 @@ end
 
 hooksecurefunc("UnitPopup_ShowMenu", showMenu)
 
-function E:FoolsJoke()
-	TIME_PLAYED_TOTAL = "Total time wasted: %s";
-	TIME_PLAYED_LEVEL = "Time wasted at this level: %s";
-	RequestTimePlayed();
-end
-
 function E:Initialize()
 	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF, true);
 	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
@@ -652,6 +645,20 @@ function E:Initialize()
 		self:Install()
 	end
 	
+	if not string.find(date(), '04/01/') then	
+		E.global.aprilFools = nil;
+	end
+	
+	if E:IsFoolsDay() then
+		function GetMoney()
+			return 0;
+		end
+		E:Delay(45, function()
+			E:Print('|cFFFF0000We have taken the liberty of donating all of your hard earned gold to help needy Pandaren children, thank you for your generous donation. Type /moreinfo for details.|r')
+		end)
+	end
+
+	
 	RegisterAddonMessagePrefix('ElvUIVC')
 	RegisterAddonMessagePrefix('ElvSays')
 	
@@ -667,9 +674,6 @@ function E:Initialize()
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "SendRecieve")
 	self:RegisterEvent("CHAT_MSG_ADDON", "SendRecieve")
 	self:RegisterEvent('UI_SCALE_CHANGED', 'UIScale')
-	if E:IsFoolsDay() then
-		self:RegisterEvent('PLAYER_ENTERING_WORLD', 'FoolsJoke')
-	end
 	--self:RegisterEvent('UPDATE_BINDINGS', 'SaveKeybinds')
 	--self:SaveKeybinds()
 	

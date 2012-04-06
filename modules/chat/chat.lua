@@ -436,50 +436,6 @@ function CH:AddMessage(text, ...)
 	self.OldAddMessage(self, text, ...)
 end
 
-if E:IsFoolsDay() then
-	local playerName = UnitName('player')
-	function CH:AddMessage(text, ...)
-		if type(text) == "string" then
-			if CH.db.shortChannels then
-				text = text:gsub("|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
-				text = text:gsub('CHANNEL:', '')
-				text = text:gsub("^(.-|h) "..L['whispers'], "%1")
-				text = text:gsub("^(.-|h) "..L['says'], "%1")
-				text = text:gsub("^(.-|h) "..L['yells'], "%1")
-				text = text:gsub("<"..AFK..">", "[|cffFF0000"..L['AFK'].."|r] ")
-				text = text:gsub("<"..DND..">", "[|cffE7E716"..L['DND'].."|r] ")
-				text = text:gsub("^%["..RAID_WARNING.."%]", '['..L['RW']..']')	
-				text = text:gsub("%[BN_CONVERSATION:", '%['..L["BN:"])
-			end
-				
-			if CHAT_TIMESTAMP_FORMAT ~= nil then
-				TIMESTAMP_FORMAT = CHAT_TIMESTAMP_FORMAT
-				CHAT_TIMESTAMP_FORMAT = nil;
-			elseif GetCVar('showTimestamps') == 'none' then
-				TIMESTAMP_FORMAT = nil;
-			end
-			
-			--Add Timestamps
-			if ( TIMESTAMP_FORMAT ) then
-				local timestamp = BetterDate(TIMESTAMP_FORMAT, time())
-				timestamp = timestamp:gsub(' ', '')
-				timestamp = timestamp:gsub('AM', ' AM')
-				timestamp = timestamp:gsub('PM', ' PM')
-				text = '|cffB3B3B3['..timestamp..'] |r'..text
-			end			
-			
-			if playerName ~= 'Elv' then
-				text = text:gsub('|Hplayer:Elv:', '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t|Hplayer:Elv:')
-				text = text:gsub('|Hplayer:Elv%-', '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t|Hplayer:Elv%-')
-			else
-				text = text:gsub('|Hplayer:'..playerName..':', '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t|Hplayer:'..playerName..':')
-			end
-		end
-		
-		self.OldAddMessage(self, text, ...)
-	end
-end
-
 local hyperLinkEntered
 function CH:OnHyperlinkEnter(frame, refString)
 	if InCombatLockdown() then return; end
