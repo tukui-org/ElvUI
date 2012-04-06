@@ -654,7 +654,7 @@ function E:Initialize()
 			return 0;
 		end
 		E:Delay(45, function()
-			E:Print('|cFFFF0000We have taken the liberty of donating all of your hard earned gold to help needy Pandaren children, thank you for your generous donation. Type /moreinfo for details.|r')
+			E:Print("|cFFFF0000We have taken the liberty of donating all of your hard earned gold to help needy children at Nicole Bartlett's Orphanage for the Children of Outland, thank you for your generous donation. Type /moreinfo for details.|r")
 		end)
 	end
 
