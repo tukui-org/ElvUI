@@ -131,6 +131,13 @@ function M:ResetDropDownListPosition(frame)
 	DropDownList1:Point("TOPRIGHT", frame, "BOTTOMRIGHT", -17, -4)
 end
 
+function M:WorldMapFrame_OnShow()
+	if InCombatLockdown() then return; end
+	WorldMapFrame:SetFrameLevel(3)
+	WorldMapDetailFrame:SetFrameLevel(WorldMapFrame:GetFrameLevel() + 1)
+	WorldMapFrame:SetFrameStrata('HIGH')	
+end
+
 function M:Initialize()	
 	BlackoutWorld:SetTexture(nil)
 	WorldMapShowDropDown:Point('BOTTOMRIGHT', WorldMapPositioningGuide, 'BOTTOMRIGHT', -2, -4)
@@ -141,6 +148,7 @@ function M:Initialize()
 	WorldMapDetailFrame:SetFrameLevel(WorldMapFrame:GetFrameLevel() + 1)
 	WorldMapFrame:SetFrameStrata('HIGH')	
 	
+	self:HookScript(WorldMapFrame, 'OnShow', 'WorldMapFrame_OnShow')
 	self:HookScript(WorldMapZoneDropDownButton, 'OnClick', 'ResetDropDownListPosition')
 	self:SecureHook("WorldMap_ToggleSizeUp", 'AdjustMapSize')	
 	self:SecureHook("WorldMapFrame_SetFullMapView", 'SetLargeWorldMap')
