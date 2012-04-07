@@ -60,7 +60,7 @@ function M:PLAYER_REGEN_ENABLED()
 	WorldMapQuestShowObjectives:Enable()
 	WorldMapTrackQuest:Enable()
 	
-	--[[if WorldMapFrame.hasTaint then		
+	if WorldMapFrame.hasTaint then		
 		WatchFrame.showObjectives = WatchFrame.oldShowObjectives or true
 		WorldMapBlobFrame.Show = WorldMapBlobFrame:Show()
 		WorldMapPOIFrame.Show = WorldMapPOIFrame:Show()		
@@ -68,7 +68,7 @@ function M:PLAYER_REGEN_ENABLED()
 		WorldMapPOIFrame:Show()
 		
 		WatchFrame_Update()
-	end]]
+	end
 end
 
 function M:PLAYER_REGEN_DISABLED()
@@ -78,7 +78,7 @@ function M:PLAYER_REGEN_DISABLED()
 	WorldMapQuestShowObjectives:Disable()
 	WorldMapTrackQuest:Disable()
 
-	--[[if WorldMapFrame.hasTaint then
+	if WorldMapFrame.hasTaint then
 		if WorldMapQuestShowObjectives:GetChecked() then
 			if WORLDMAP_SETTINGS.size == WORLDMAP_QUESTLIST_SIZE then
 				WorldMapFrame_SetFullMapView()
@@ -94,7 +94,7 @@ function M:PLAYER_REGEN_DISABLED()
 
 			WatchFrame_Update()
 		end		
-	end]]
+	end
 end
 
 function M:UpdateCoords()
