@@ -1,3 +1,6 @@
+3.51a
+*Fix WorldMapFrame combat taint. Occured when toggling to quest view. 
+
 [b]General:[/b]
 *Remove code used for April Fools joke. Thank you everyone for participating. If you missed out on the action this year had three jokes. 1.) Player portraits appeared as Therazane. 2.) Players saw GM icons on their personal name if the chat module was turned on. 3.) Time wasted playing this game was displayed in chat after every loading screen.
 *Prevent possible taint caused by users adjusting minimap settings in combat.
