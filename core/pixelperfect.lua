@@ -47,6 +47,7 @@ function E:UIScale(event)
 	if E.Round and E:Round(UIParent:GetScale(), 5) ~= E:Round(scale, 5) and (event == 'PLAYER_LOGIN') then
 		SetCVar("useUiScale", 1);
 		SetCVar("uiScale", scale);	
+		WorldMapFrame.hasTaint = true;
 	end	
 	
 	if (event == 'PLAYER_LOGIN' or event == 'UI_SCALE_CHANGED') then

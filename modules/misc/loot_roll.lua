@@ -246,6 +246,9 @@ function M:START_LOOT_ROLL(event, rollid, time)
 	SetDesaturation(f.needbutt:GetNormalTexture(), not canNeed)
 	SetDesaturation(f.greedbutt:GetNormalTexture(), not canGreed)
 	SetDesaturation(f.disenchantbutt:GetNormalTexture(), not canDisenchant)
+	if canNeed then f.needbutt:SetAlpha(1) else f.needbutt:SetAlpha(0.2) end
+	if canGreed then f.greedbutt:SetAlpha(1) else f.greedbutt:SetAlpha(0.2) end
+	if canDisenchant then f.disenchantbutt:SetAlpha(1) else f.disenchantbutt:SetAlpha(0.2) end
 
 	f.fsbind:SetText(bop and "BoP" or "BoE")
 	f.fsbind:SetVertexColor(bop and 1 or .3, bop and .3 or 1, bop and .1 or .3)
