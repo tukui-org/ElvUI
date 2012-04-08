@@ -3,7 +3,7 @@
 	<Include file="datatexts\load_datatexts.xml"/>
 	<Include file="actionbars\load_actionbars.xml"/>
 	<Include file="unitframes\load_unitframes.xml"/>
-	<Include file="minimap\load_minimap.xml"/>
+	<Include file="maps\load_maps.xml"/>
 	<Include file="auras\load_auras.xml"/>
 	<Include file="tooltip\load_tooltip.xml"/>
 	<Include file="chat\load_chat.xml"/>

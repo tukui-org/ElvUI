@@ -1018,6 +1018,7 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 		local _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, _, _, _, _, spellID = ...
 		local FoundPlate = nil;
 		-- Gather Spell Info
+
 		local spell, _, icon, _, _, _, castTime, _, _ = GetSpellInfo(spellID)
 		if not (castTime > 0) then return end		
 		if bit.band(sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) > 0 then 
@@ -1044,10 +1045,10 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 			castTime = (castTime / 1000)	-- Convert to seconds
 			NP:StartCastAnimationOnNameplate(FoundPlate, spell, spellID, icon, currentTime, currentTime + castTime, false, false)
 		end		
-	elseif event == "SPELL_CAST_FAILED" then
+	elseif event == "SPELL_CAST_FAILED" or event == "SPELL_INTERRUPT" then
 		local FoundPlate = nil;
 		local _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags = ...
-
+		if sourceGUID == UnitGUID('player') and event == "SPELL_CAST_FAILED" then return; end
 		if bit.band(sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) > 0 then 
 			if bit.band(sourceFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 then 
 				--	destination plate, by name
@@ -1143,12 +1144,7 @@ function NP:UpdateAllPlates()
 		self:SkinPlate(frame)
 	end
 	
-	if self.db.trackauras == true or self.db.trackccauras == true then
-		self:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
-	else
-		self:UnregisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
-	end
-	
+	self:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 
 	if self.db.combat then

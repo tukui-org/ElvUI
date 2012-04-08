@@ -1,3 +1,12 @@
+[b][u]3.51:[/u][/b]
+
+*Fix chat font not being correctly set on initial login.
+*Make loot roll buttons more noticble when you cannot roll need.
+*Fix WorldMapFrame combat taint. Occured when toggling to quest view. 
+*Nameplate castbars wern't being shown correctly on nontargetted units if you didn't have spell icons on the nameplate enabled, this has been fixed.
+
+[b][u]3.5:[/u][/b]
+
 [b]General:[/b]
 *Remove code used for April Fools joke. Thank you everyone for participating. If you missed out on the action this year had three jokes. 1.) Player portraits appeared as Therazane. 2.) Players saw GM icons on their personal name if the chat module was turned on. 3.) Time wasted playing this game was displayed in chat after every loading screen.
 *Prevent possible taint caused by users adjusting minimap settings in combat.
