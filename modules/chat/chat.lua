@@ -528,9 +528,6 @@ function CH:SetupChat(event, ...)
 		self:SecureHook('FCF_OpenTemporaryWindow', 'SetupChat')
 		self.HookSecured = true;
 	end
-	
-	self:UnregisterEvent('UPDATE_CHAT_WINDOWS')
-	self:UnregisterEvent('UPDATE_FLOATING_CHAT_WINDOWS')
 end
 
 local sizes = {
@@ -701,6 +698,22 @@ function CH:ChatEdit_OnEnterPressed(editBox)
 	end
 end
 
+function CH:SetChatFont(dropDown, chatFrame, fontSize)
+	if ( not chatFrame ) then
+		chatFrame = FCF_GetCurrentChatFrame();
+	end
+	if ( not fontSize ) then
+		fontSize = dropDown.value;
+	end
+	chatFrame:SetFont(LSM:Fetch("font", self.db.font), fontSize, self.db.fontoutline)
+	if self.db.fontoutline ~= 'NONE' then
+		chatFrame:SetShadowColor(0, 0, 0, 0.2)
+	else
+		chatFrame:SetShadowColor(0, 0, 0, 1)
+	end
+	chatFrame:SetShadowOffset((E.mult or 1), -(E.mult or 1))	
+end
+
 
 function CH:Initialize()
 	self.db = E.db.chat
@@ -731,6 +744,7 @@ function CH:Initialize()
 	  WIM.RegisterItemRefHandler('url', WIM_URLLink)
     end
 	
+	self:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
 	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	
