@@ -944,17 +944,18 @@ function NP:StartCastAnimationOnNameplate(frame, spellName, spellID, icon, start
 	castbar:SetMinMaxValues(startTime, endTime)
 	castbar.name:SetText(spellName)
 	castbar.icon:SetTexture(icon)
+	castbar.endTime = endTime
+	castbar.startTime = startTime		
+	castbar:Show();
 	
 	if notInterruptible then 
 		castbar.shield:Show()
+		castbar:SetStatusBarColor(0.78, 0.25, 0.25, 1)
 	else 
 		castbar.shield:Hide()
+		castbar:SetStatusBarColor(1, 208/255, 0)
 	end
 	
-	castbar.endTime = endTime
-	castbar.startTime = startTime	
-	
-	castbar:Show()	
 	if channel then 
 		castbar:SetValue(endTime - GetTime())
 		castbar:SetScript("OnUpdate", NP.UpdateChannelAnimation)	
@@ -1037,13 +1038,19 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 		else 
 			return 
 		end	
-
-		if FoundPlate and FoundPlate:IsShown() and FoundPlate.unit ~= "target" then 
+		
+		if not FoundPlate or not FoundPlate:IsShown() then return; end
+		
+		if FoundPlate.unit == 'mouseover' then
+			NP:UpdateCastInfo('UPDATE_MOUSEOVER_UNIT', true)	
+		elseif FoundPlate.unit == 'target' then
+			NP:UpdateCastInfo('UNIT_TARGET_CHANGED')
+		else
 			FoundPlate.guid = sourceGUID
 			local currentTime = GetTime()
 			
 			castTime = (castTime / 1000)	-- Convert to seconds
-			NP:StartCastAnimationOnNameplate(FoundPlate, spell, spellID, icon, currentTime, currentTime + castTime, false, false)
+			NP:StartCastAnimationOnNameplate(FoundPlate, spell, spellID, icon, currentTime, currentTime + castTime, true, false)
 		end		
 	elseif event == "SPELL_CAST_FAILED" or event == "SPELL_INTERRUPT" then
 		local FoundPlate = nil;
@@ -1114,6 +1121,35 @@ function NP:CheckHealers()
 	end
 end
 
+function NP:UpdateCastInfo(event, ignoreInt)
+	local unit = 'target'
+	if event == 'UPDATE_MOUSEOVER_UNIT' then
+		unit = 'mouseover'
+	end
+	
+	local GUID = UnitGUID(unit)
+	if not GUID then return; end
+	
+	local targetPlate = NP:SearchNameplateByGUID(GUID)
+	local channel
+	local spell, _, name, icon, start, finish, _, spellid, nonInt = UnitCastingInfo(unit)
+	
+	if not spell then 
+		spell, _, name, icon, start, finish, spellid, nonInt = UnitChannelInfo(unit); 
+		channel = true 
+	end	
+	
+	if ignoreInt then
+		nonInt = true;
+	end
+	
+	if spell and targetPlate then 
+		NP:StartCastAnimationOnNameplate(targetPlate, spell, spellid, icon, start/1000, finish/1000, nonInt, channel) 
+	elseif targetPlate then
+		NP:StopCastAnimation(targetPlate) 
+	end
+end
+
 function NP:PLAYER_ENTERING_WORLD()
 	if InCombatLockdown() and self.db.combat then 
 		SetCVar("nameplateShowEnemies", 1) 
@@ -1144,6 +1180,8 @@ function NP:UpdateAllPlates()
 		self:SkinPlate(frame)
 	end
 	
+	self:RegisterEvent('UPDATE_MOUSEOVER_UNIT', 'UpdateCastInfo')
+	self:RegisterEvent('PLAYER_TARGET_CHANGED', 'UpdateCastInfo')
 	self:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 
