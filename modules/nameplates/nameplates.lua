@@ -361,7 +361,7 @@ function NP:CastBar_OnValueChanged(frame)
 	end	
 	
 	if spell then 
-		NP:StartCastAnimationOnNameplate(frame:GetParent(), spell, spellid, icon, start/1000, finish/1000, nonInt, channel) 
+		NP:StartCastAnimationOnNameplate(frame:GetParent(), spell, spellid, icon, start, finish, nonInt, channel) 
 	else 
 		NP:StopCastAnimation(frame:GetParent()) 
 	end
@@ -918,34 +918,36 @@ function NP:StopCastAnimation(frame)
 end
 
 function NP:UpdateCastAnimation()
-	local currentTime = GetTime()
-	if currentTime > (self.endTime or 0) then
+	local duration = GetTime() - self.startTime
+	if duration > self.max then
 		NP:StopCastAnimation(self:GetParent())
 	else 
-		self:SetValue(currentTime)
-		self.time:SetFormattedText("%.1f ", self.endTime - currentTime)
+		self:SetValue(duration)
+		self.time:SetFormattedText("%.1f ", (self.endTime - self.startTime) - duration)
 	end
 end
 
 function NP:UpdateChannelAnimation()
-	local currentTime = GetTime()
-	if currentTime > (self.endTime or 0) then
+	local duration = self.endTime - GetTime()
+	if duration < 0 then
 		NP:StopCastAnimation(self:GetParent())
 	else 
-		self:SetValue(self.startTime + (self.endTime - currentTime)) 
-		self.time:SetFormattedText("%.1f ", self.endTime - (self.startTime + (self.endTime - currentTime)))
+		self:SetValue(duration) 
+		self.time:SetFormattedText("%.1f ", duration)
 	end
 end
 
 function NP:StartCastAnimationOnNameplate(frame, spellName, spellID, icon, startTime, endTime, notInterruptible, channel)
 	if not (tonumber(GetCVar("showVKeyCastbar")) == 1) or not spellName then return; end
 	local castbar = frame.cb
-	
-	castbar:SetMinMaxValues(startTime, endTime)
+
 	castbar.name:SetText(spellName)
 	castbar.icon:SetTexture(icon)
-	castbar.endTime = endTime
-	castbar.startTime = startTime		
+	castbar.endTime = endTime / 1e3
+	castbar.startTime = startTime / 1e3
+	castbar.max = (castbar.endTime - castbar.startTime)
+	castbar:SetMinMaxValues(0, castbar.max)
+	
 	castbar:Show();
 	
 	if notInterruptible then 
@@ -957,10 +959,8 @@ function NP:StartCastAnimationOnNameplate(frame, spellName, spellID, icon, start
 	end
 	
 	if channel then 
-		castbar:SetValue(endTime - GetTime())
 		castbar:SetScript("OnUpdate", NP.UpdateChannelAnimation)	
 	else 
-		castbar:SetValue(GetTime())
 		castbar:SetScript("OnUpdate", NP.UpdateCastAnimation)	
 	end	
 end
@@ -1047,10 +1047,8 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 			NP:UpdateCastInfo('UNIT_TARGET_CHANGED')
 		else
 			FoundPlate.guid = sourceGUID
-			local currentTime = GetTime()
-			
-			castTime = (castTime / 1000)	-- Convert to seconds
-			NP:StartCastAnimationOnNameplate(FoundPlate, spell, spellID, icon, currentTime, currentTime + castTime, true, false)
+			local currentTime = GetTime() * 1e3
+			NP:StartCastAnimationOnNameplate(FoundPlate, spell, spellID, icon, currentTime, currentTime + castTime, false, false)
 		end		
 	elseif event == "SPELL_CAST_FAILED" or event == "SPELL_INTERRUPT" then
 		local FoundPlate = nil;
@@ -1139,12 +1137,12 @@ function NP:UpdateCastInfo(event, ignoreInt)
 		channel = true 
 	end	
 	
-	if ignoreInt then
-		nonInt = true;
+	if event == 'UPDATE_MOUSEOVER_UNIT' then
+		nonInt = false
 	end
-	
+
 	if spell and targetPlate then 
-		NP:StartCastAnimationOnNameplate(targetPlate, spell, spellid, icon, start/1000, finish/1000, nonInt, channel) 
+		NP:StartCastAnimationOnNameplate(targetPlate, spell, spellid, icon, start, finish, nonInt, channel) 
 	elseif targetPlate then
 		NP:StopCastAnimation(targetPlate) 
 	end
