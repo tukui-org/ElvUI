@@ -1,3 +1,8 @@
+[b][u]3.52:[/u][/b]
+*Fix issue with nameplate castbars, would appear choppy if you left your computer on for more than 3 days straight. (Yep you read that right.)
+*Targeting a nameplate that is mid cast should now properly show the castbar and update if its interruptible or not.
+*Attempt to fix compatibility issue with Gladius Arena Frames.
+
 [b][u]3.51:[/u][/b]
 
 *Fix chat font not being correctly set on initial login.
