@@ -374,7 +374,8 @@ function AB:FixKeybindText(button)
 		text = gsub(text, 'DELETE', L['KEY_DELETE']);
 		text = gsub(text, 'MOUSEWHEELUP', L['KEY_MOUSEWHEELUP']);
 		text = gsub(text, 'MOUSEWHEELDOWN', L['KEY_MOUSEWHEELDOWN']);
-
+		text = gsub(text, 'NMULTIPLY', "*");
+		
 		hotkey:SetText(text);
 	end
 	
