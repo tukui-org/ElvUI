@@ -398,7 +398,7 @@ function NP:SkinPlate(frame)
 		
 		-- Functions
 		f._Hide = f.Hide
-		f.Hide = function() ClearAuraContext(f); f:_Hide() end
+		f.Hide = function() NP:ClearAuraContext(f); f:_Hide() end
 		f:SetScript("OnHide", function() for index = 1, 4 do NP.PolledHideIn(AuraIconFrames[index], 0) end end)	
 		f.Filter = DefaultFilterFunction
 		f.UpdateContext = NP.UpdateAuraContext
