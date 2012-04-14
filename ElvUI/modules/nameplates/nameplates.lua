@@ -394,7 +394,7 @@ function NP:SkinPlate(frame)
 		for index = 1, NP.MAX_DISPLAYABLE_DEBUFFS do AuraIconFrames[index] = NP:CreateAuraIcon(f);  end
 		local FirstRowCount = min(NP.MAX_DISPLAYABLE_DEBUFFS/2)
 		-- Set Anchors	
-		AuraIconFrames[1]:SetPoint("RIGHT", f)
+		AuraIconFrames[1]:SetPoint("RIGHT", f, -1, 0)
 		for index = 2, NP.MAX_DISPLAYABLE_DEBUFFS do AuraIconFrames[index]:SetPoint("RIGHT", AuraIconFrames[index-1], "LEFT", -3, 0) end
 		
 		-- Functions
