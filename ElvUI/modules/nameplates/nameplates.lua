@@ -383,8 +383,9 @@ function NP:SkinPlate(frame)
 		--if not WatcherIsEnabled then Enable() end
 		-- Create Base frame
 		local f = CreateFrame("Frame", nil, frame)
-		f:SetWidth(128); f:SetHeight(32); f:Show()
-		f:SetPoint('BOTTOM', frame.hp, 'TOP', 0, 10)
+		f:SetHeight(32); f:Show()
+		f:SetPoint('BOTTOMRIGHT', frame.hp, 'TOPRIGHT', 0, 10)
+		f:SetPoint('BOTTOMLEFT', frame.hp, 'TOPLEFT', 0, 10)
 		
 		-- Create Icon Array
 		f.PollFunction = NP.UpdateAuraTime
@@ -394,7 +395,7 @@ function NP:SkinPlate(frame)
 		local FirstRowCount = min(NP.MAX_DISPLAYABLE_DEBUFFS/2)
 		-- Set Anchors	
 		AuraIconFrames[1]:SetPoint("RIGHT", f)
-		for index = 2, NP.MAX_DISPLAYABLE_DEBUFFS do AuraIconFrames[index]:SetPoint("RIGHT", AuraIconFrames[index-1], "LEFT", -5, 0) end
+		for index = 2, NP.MAX_DISPLAYABLE_DEBUFFS do AuraIconFrames[index]:SetPoint("RIGHT", AuraIconFrames[index-1], "LEFT", -3, 0) end
 		
 		-- Functions
 		f._Hide = f.Hide
