@@ -615,13 +615,15 @@ end
 --Scan all visible nameplate for a known unit.
 function NP:CheckUnit_Guid(frame, ...)
 	--local numParty, numRaid = GetNumPartyMembers(), GetNumRaidMembers()
-	if UnitExists("target") and frame:GetAlpha() == 1 and UnitName("target") == frame.hp.name:GetText() then
+	if UnitExists("target") and frame:GetAlpha() == 1 and UnitName("target") == frame.hp.name:GetText() and frame.guid ~= UnitGUID('target') then
 		frame.guid = UnitGUID("target")
 		frame.unit = "target"
+		NP:UpdateAurasByUnitID("target")
 		frame.hp.shadow:SetAlpha(1)
-	elseif frame.overlay:IsShown() and UnitExists("mouseover") and UnitName("mouseover") == frame.hp.name:GetText() then
+	elseif frame.overlay:IsShown() and UnitExists("mouseover") and UnitName("mouseover") == frame.hp.name:GetText() and frame.guid ~= UnitGUID('mouseover') then
 		frame.guid = UnitGUID("mouseover")
 		frame.unit = "mouseover"
+		NP:UpdateAurasByUnitID("mouseover")
 		frame.hp.shadow:SetAlpha(0)
 	else
 		frame.unit = nil
