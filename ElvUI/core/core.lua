@@ -462,7 +462,7 @@ function E:SendRecieve(event, prefix, message, channel, sender)
 
 		if prefix == "ElvUIVC" and sender ~= 'Elv' and not string.find(sender, 'Elv%-') then
 			if tonumber(message) > tonumber(E.version) then
-				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.curse.com"])
+				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.tukui.org"])
 				self:UnregisterEvent("CHAT_MSG_ADDON")
 				self:UnregisterEvent("PARTY_MEMBERS_CHANGED")
 				self:UnregisterEvent("RAID_ROSTER_UPDATE")
@@ -657,7 +657,6 @@ function E:Initialize()
 			StaticPopup_Show('APRIL_FOOLS')
 		end)
 	end
-
 	
 	RegisterAddonMessagePrefix('ElvUIVC')
 	RegisterAddonMessagePrefix('ElvSays')
