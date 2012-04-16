@@ -10,6 +10,11 @@ function D:ModifyErrorFrame()
 	
 	local Orig_ScriptErrorsFrame_Update = ScriptErrorsFrame_Update
 	ScriptErrorsFrame_Update = function(...)
+		if GetCVarBool('scriptErrors') ~= 1 then
+			Orig_ScriptErrorsFrame_Update(...)
+			return
+		end
+		
 		-- Sometimes the locals table does not have an entry for an index, which can cause an argument #6 error
 		-- in Blizzard_DebugTools.lua:430 and then cause a C stack overflow, this will prevent that
 		local index = ScriptErrorsFrame.index
@@ -100,7 +105,7 @@ function D:ScriptErrorsFrame_UpdateButtons()
 end
 
 function D:ScriptErrorsFrame_OnError(_, keepHidden)
-	if keepHidden or self.MessagePrinted or not InCombatLockdown() then return; end
+	if keepHidden or self.MessagePrinted or not InCombatLockdown() or GetCVarBool('scriptErrors') ~= 1 then return; end
 	
 	E:Print(L['|cFFE30000Lua error recieved. You can view the error message when you exit combat.'])
 	self.MessagePrinted = true;
@@ -116,6 +121,7 @@ function D:PLAYER_REGEN_DISABLED()
 end
 
 function D:TaintError(event, addonName, addonFunc)
+	if GetCVarBool('scriptErrors') ~= 1 then return; end
 	ScriptErrorsFrame_OnError(L["%s: %s tried to call the protected function '%s'."]:format(event, addonName or "<name>", addonFunc or "<func>"), false)
 end
 
