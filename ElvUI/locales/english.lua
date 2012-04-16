@@ -798,5 +798,5 @@ L["Your current resolution is %s, this is considered a %s resolution."] = "Your 
 L["Your items have been repaired for: "] = "Your items have been repaired for: "
 L["Your items have been repaired using guild bank funds for: "] = "Your items have been repaired using guild bank funds for: "
 L["Your version of ElvUI is out of date. You can download the latest version from www.tukui.org"] = "Your version of ElvUI is out of date. You can download the latest version from www.tukui.org"
-L['Lua error recieved. You will see it displayed when you exit combat.'] = true;
+L['|cFFE30000Lua error recieved. You can view the error message when you exit combat.'] = true;
 L["%s: %s tried to call the protected function '%s'."] = true;
