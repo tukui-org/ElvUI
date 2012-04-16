@@ -214,21 +214,21 @@ function AB:StyleButton(button, noBackdrop)
 end
 
 function AB:Bar_OnEnter(bar)
-	UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), 1)
+	E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), 1)
 end
 
 function AB:Bar_OnLeave(bar)
-	UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
+	E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
 end
 
 function AB:Button_OnEnter(button)
 	local bar = button:GetParent()
-	UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), 1)
+	E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), 1)
 end
 
 function AB:Button_OnLeave(button)
 	local bar = button:GetParent()
-	UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
+	E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
 end
 
 function AB:DisableBlizzard()
