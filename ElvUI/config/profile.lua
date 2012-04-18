@@ -18,6 +18,7 @@ P['general'] = {
 	-- fonts
 	["fontsize"] = 11,
 	["font"] = "Friz Quadrata TT",
+	["chatfont"] = "Chat",
 	
 	--colors
 	["bordercolor"] = { r = .20,g = .20,b = .20 },

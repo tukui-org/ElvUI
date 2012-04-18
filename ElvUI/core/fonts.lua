@@ -13,7 +13,7 @@ function E:UpdateBlizzardFonts()
 	local NORMAL     = self["media"].normFont
 	local COMBAT     = LSM:Fetch('font', self.global.general.dmgfont)
 	local NUMBER     = self["media"].normFont
-	local NUMBER2    = [=[Fonts\ARIALN.TTF]=]
+	local NUMBER2    = self["media"].chatFont
 	local _, editBoxFontSize, _, _, _, _, _, _, _, _ = GetChatWindowInfo(1)
 	
 	UIDROPDOWNMENU_DEFAULT_TEXT_HEIGHT = 12
