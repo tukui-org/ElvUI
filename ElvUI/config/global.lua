@@ -4,8 +4,8 @@
 
 G['general'] = {
 	['profileBinds'] = false,
-	['loot'] = true,
-	['lootRoll'] = true,
+	['loot'] = false,
+	['lootRoll'] = false,
 	["normTex"] = "Minimalist",
 	["glossTex"] = "Minimalist",	
 	["dmgfont"] = "ElvUI Combat",
@@ -14,14 +14,14 @@ G['general'] = {
 }
 
 G['bags'] = {
-	['enable'] = true,
+	['enable'] = false,
 	['bagBar'] = {
-		['enable'] = true,
+		['enable'] = false,
 	},
 }
 
 G['classtimer'] = {
-	['enable'] = true,
+	['enable'] = false,
 }
 
 G['reminder'] = {
@@ -30,7 +30,7 @@ G['reminder'] = {
 }
 
 G["nameplate"] = {
-	["enable"] = true,
+	["enable"] = false,
 }
 
 G['auras'] = {
@@ -63,7 +63,7 @@ G['skins'] = {
 	},
 	['skada'] = {
 		['enable'] = true,
-		['barHeight'] = 17,
+		['barHeight'] = 16,
 	},		
 	['tinydps'] = {
 		['enable'] = true,

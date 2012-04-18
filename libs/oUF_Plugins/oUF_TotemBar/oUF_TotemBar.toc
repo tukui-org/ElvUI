@@ -1,8 +1,0 @@
-## Interface: 30300
-## Author: Soeters
-## Version: r4
-## Title: oUF TotemBar
-## Notes: Totem bars support for oUF layouts.
-## Dependencies: oUF
-
-oUF_TotemBar.lua

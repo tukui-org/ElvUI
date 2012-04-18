@@ -109,6 +109,15 @@ G.unitframe.aurafilters['DebuffBlacklist'] = {
 		[SpellName(25163)] = true, --fucking annoying pet debuff oozeling disgusting aura
 		[SpellName(80354)] = true, --timewarp debuff
 		[SpellName(95223)] = true, --group res debuff
+		[SpellName(97821)] = true, --Void-Touched (DK combat ress)
+		[SpellName(36900)] = true, --Soul Split: Evil
+		[SpellName(36901)] = true, --Soul Split: Good
+		[SpellName(36897)] = true, --Transporter Malfunction
+		[SpellName(36899)] = true, --Transporter Malfunction
+		[SpellName(36895)] = true, --Transporter Malfunction
+		[SpellName(36893)] = true, --Transporter Malfunction
+		[SpellName(106369)] = true, --Twilight Shift (Ultraxion)
+		[SpellName(95809)] = true, --Insanity (Hunter Pet Heroism Debuff)
 	},
 }
 
@@ -222,6 +231,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 	--Baradin Hold
 		--Occu'thar
 		[SpellName(96913)] = true, -- Searing Shadows
+
 		--Alizabal
 		[SpellName(104936)] = true, -- Skewer
 		
@@ -246,6 +256,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[SpellName(105285)] = true, -- Target
 
 		--Ultraxion
+		[SpellName(110079)] = true, -- Fading Light
 		[SpellName(109075)] = true, -- Fading Light
 
 		--Warmaster Blackhorn
@@ -259,11 +270,12 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[SpellName(105490)] = true, -- Fiery Grip
 
 		--Madness of Deathwing
+		[SpellName(105445)] = true, -- Blistering Heat
 		[SpellName(105841)] = true, -- Degenerative Bite
 		[SpellName(106385)] = true, -- Crush
 		[SpellName(106730)] = true, -- Tetanus
 		[SpellName(106444)] = true, -- Impale
-		[SpellName(106794)] = true, -- Shrapnel (target)		
+		[SpellName(106794)] = true, -- Shrapnel (target)
 	},
 }
 

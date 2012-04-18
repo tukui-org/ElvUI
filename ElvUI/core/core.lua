@@ -48,7 +48,6 @@ function E:UpdateMedia()
 	--Fonts
 	self["media"].normFont = LSM:Fetch("font", self.db['general'].font)
 	self["media"].combatFont = LSM:Fetch("font", self.db['general'].dmgfont)
-	
 
 	--Textures
 	self["media"].blankTex = LSM:Fetch("background", "ElvUI Blank")
@@ -82,6 +81,10 @@ function E:UpdateMedia()
 	
 	self:ValueFuncCall()
 	self:UpdateBlizzardFonts()
+end
+
+function E:UpdateSounds()
+	self["media"].whispersound = LSM:Fetch("sound", self.db["chat"].whispersound)
 end
 
 function E:ValueFuncCall()
@@ -462,7 +465,7 @@ function E:SendRecieve(event, prefix, message, channel, sender)
 
 		if prefix == "ElvUIVC" and sender ~= 'Elv' and not string.find(sender, 'Elv%-') then
 			if tonumber(message) > tonumber(E.version) then
-				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.tukui.org"])
+				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.curse.com"])
 				self:UnregisterEvent("CHAT_MSG_ADDON")
 				self:UnregisterEvent("PARTY_MEMBERS_CHANGED")
 				self:UnregisterEvent("RAID_ROSTER_UPDATE")
@@ -544,7 +547,8 @@ function E:UpdateAll()
 	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
 	self.db = self.data.profile;
 	self.global = self.data.global;
-		
+	
+	self:UpdateSounds()
 	self:UpdateMedia()
 	self:UpdateFrameTemplates()
 	self:SetMoversPositions()
@@ -657,10 +661,12 @@ function E:Initialize()
 			StaticPopup_Show('APRIL_FOOLS')
 		end)
 	end
+
 	
 	RegisterAddonMessagePrefix('ElvUIVC')
 	RegisterAddonMessagePrefix('ElvSays')
 	
+	self:UpdateSounds()
 	self:UpdateMedia()
 	self:UpdateFrameTemplates()
 	self:CreateMoverPopup()

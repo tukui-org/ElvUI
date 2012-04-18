@@ -21,7 +21,7 @@ local function GetInfoText(frame, unit, r, g, b, min, max, reverse, type)
 		if type == 'health' then
 			if db[type].text_format == 'current-percent' then
 				if min ~= max then
-					value = format("|cff%02x%02x%02x%d%%|r |cffD7BEA5-|r |cffAF5050%s|r", r * 255, g * 255, b * 255, floor(min / max * 100), E:ShortValue(min))
+					value = format("|cff%02x%02x%02x%.1f%%|r |cffD7BEA5-|r |cffAF5050%s|r", r * 255, g * 255, b * 255, format("%.1f", min / max * 100), E:ShortValue(min))
 				else
 					value = format("|cff%02x%02x%02x%s|r", r * 255, g * 255, b * 255, E:ShortValue(max))	
 				end
@@ -34,7 +34,7 @@ local function GetInfoText(frame, unit, r, g, b, min, max, reverse, type)
 			elseif db[type].text_format == 'current' then
 				value = format("|cff%02x%02x%02x%s|r", r * 255, g * 255, b * 255, E:ShortValue(min))	
 			elseif db[type].text_format == 'percent' then
-				value = format("|cff%02x%02x%02x%d%%|r", r * 255, g * 255, b * 255, floor(min / max * 100))
+				value = format("|cff%02x%02x%02x%.1f%%|r", r * 255, g * 255, b * 255, format("%.1f", min / max * 100))
 			elseif db[type].text_format == 'deficit' then
 				if min == max then
 					value = ""
@@ -71,7 +71,7 @@ local function GetInfoText(frame, unit, r, g, b, min, max, reverse, type)
 		if type == 'health' then
 			if db[type].text_format == 'current-percent' then
 				if min ~= max then
-					value = format("|cffAF5050%s|r |cffD7BEA5-|r |cff%02x%02x%02x%d%%|r", E:ShortValue(min), r * 255, g * 255, b * 255, floor(min / max * 100))
+					value = format("|cffAF5050%s|r |cffD7BEA5-|r |cff%02x%02x%02x%.1f%%|r", E:ShortValue(min), r * 255, g * 255, b * 255, format("%.1f", min / max * 100))
 				else
 					value = format("|cff%02x%02x%02x%s|r", r * 255, g * 255, b * 255, E:ShortValue(max))
 				end
@@ -84,7 +84,7 @@ local function GetInfoText(frame, unit, r, g, b, min, max, reverse, type)
 			elseif db[type].text_format == 'current' then
 				value = format("|cff%02x%02x%02x%s|r", r * 255, g * 255, b * 255, E:ShortValue(min))	
 			elseif db[type].text_format == 'percent' then
-				value = format("|cff%02x%02x%02x%d%%|r", r * 255, g * 255, b * 255, floor(min / max * 100))
+				value = format("|cff%02x%02x%02x%.1f%%|r", r * 255, g * 255, b * 255, format("%.1f", min / max * 100))
 			elseif db[type].text_format == 'deficit' then
 				if min == max then
 					value = ""
@@ -420,9 +420,9 @@ function UF:CustomTimeText(duration)
 	if not db then return end
 	
 	local text
-	if self.channeling then
-		self.Time:SetText(("%.1f"):format(math.abs(duration - self.max)))
-	else
+	-- if self.channeling then
+		-- self.Time:SetText(("%.1f"):format(math.abs(duration - self.max)))
+	-- else
 		if db.castbar.format == 'CURRENT' then
 			self.Time:SetText(("%.1f"):format(duration))
 		elseif db.castbar.format == 'CURRENTMAX' then
@@ -430,7 +430,7 @@ function UF:CustomTimeText(duration)
 		elseif db.castbar.format == 'REMAINING' then
 			self.Time:SetText(("%.1f"):format(math.abs(duration - self.max)))
 		end		
-	end
+	-- end
 end
 
 local ticks = {}
@@ -471,7 +471,7 @@ function UF:PostCastStart(unit, name, rank, castid)
 
 	self.Spark:Height(self:GetHeight() * 2)
 	
-	local color		
+	local color
 	self.unit = unit
 
 	if db.castbar.ticks and unit == "player" then

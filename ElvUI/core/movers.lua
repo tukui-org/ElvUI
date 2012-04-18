@@ -183,6 +183,7 @@ function E:ResetMovers(arg)
 				local mover
 				if key == "text" then
 					if arg == value then 
+
 						local f = _G[name]
 						f:ClearAllPoints()
 						f:SetPoint(E.CreatedMovers[name]["p"], E.CreatedMovers[name]["p2"], E.CreatedMovers[name]["p3"], E.CreatedMovers[name]["p4"], E.CreatedMovers[name]["p5"])						

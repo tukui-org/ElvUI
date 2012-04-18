@@ -56,7 +56,7 @@ function UF:Update_TankHeader(header, db)
 
 	if not header.mover then
 		header:ClearAllPoints()
-		header:Point("LEFT", E.UIParent, "LEFT", 6, 250)
+		header:Point("LEFT", E.UIParent, "LEFT", 30, 150)
 	end
 end
 

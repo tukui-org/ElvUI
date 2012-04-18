@@ -209,7 +209,7 @@ function A:Initialize()
 	ConsolidatedBuffs.SetPoint = E.noop
 	
 	local holder = CreateFrame("Frame", "AurasHolder", E.UIParent)
-	holder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -((E.MinimapSize + 4) + E.RBRWidth + 7), -3)
+	holder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -((E.MinimapSize + 14) + E.RBRWidth + 7), -10)
 	holder:Width(456)
 	holder:Height(E.MinimapHeight)
 	

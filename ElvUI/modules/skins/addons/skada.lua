@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 -- Used to strip unecessary options from the in-game config
 local function StripOptions(options)
-	options.baroptions.args.barspacing = nil
+	--options.baroptions.args.barspacing = nil
 	options.titleoptions.args.texture = nil
 	options.titleoptions.args.bordertexture = nil
 	options.titleoptions.args.thickness = nil
@@ -57,7 +57,7 @@ local function LoadSkin()
 
 		skada:SetBackdrop(nil)
 		if not skada.backdrop then
-			skada:CreateBackdrop('Default')
+			skada:CreateBackdrop('Transparent')
 		end
 		skada.backdrop:ClearAllPoints()
 		if win.db.enabletitle then
@@ -66,12 +66,12 @@ local function LoadSkin()
 			skada.backdrop:Point('TOPLEFT', win.bargroup, 'TOPLEFT', -2, 2)
 		end
 		skada.backdrop:Point('BOTTOMRIGHT', win.bargroup, 'BOTTOMRIGHT', 2, -2)
-	end	
-	
+	end
+
 	-- Update pre-existing displays
 	for _, window in ipairs(Skada:GetWindows()) do
 		window:UpdateDisplay()
-	end	
+	end
 end
 
 S:RegisterSkin('Skada', LoadSkin)

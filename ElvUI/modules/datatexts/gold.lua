@@ -37,6 +37,7 @@ local function OnEvent(self, event, ...)
 	local OldMoney = ElvData['gold'][E.myrealm][E.myname] or NewMoney
 	
 	local Change = NewMoney-OldMoney -- Positive if we gain money
+	
 	if OldMoney>NewMoney then		-- Lost Money
 		Spent = Spent - Change
 	else							-- Gained Moeny

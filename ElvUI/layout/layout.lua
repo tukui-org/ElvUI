@@ -9,6 +9,7 @@ E.Layout = LO;
 function LO:Initialize()
 	self:CreateChatPanels()
 	self:CreateMinimapPanels()
+	self:CreateExtraDataBarPanels()
 end
 
 
@@ -245,13 +246,13 @@ end
 function LO:CreateMinimapPanels()
 	local lminipanel = CreateFrame('Frame', 'LeftMiniPanel', Minimap)
 	lminipanel:Point('TOPLEFT', Minimap, 'BOTTOMLEFT', -2, -3)
-	lminipanel:Point('BOTTOMRIGHT', Minimap, 'BOTTOM', -1, -(3 + PANEL_HEIGHT))
+	lminipanel:Point('BOTTOMRIGHT', Minimap, 'BOTTOM', -21, -(3 + PANEL_HEIGHT))
 	lminipanel:SetTemplate('Default', true)
 	E:GetModule('DataTexts'):RegisterPanel(lminipanel, 1, 'ANCHOR_BOTTOMLEFT', lminipanel:GetWidth() * 2, -4)
 	
 	local rminipanel = CreateFrame('Frame', 'RightMiniPanel', Minimap)
 	rminipanel:Point('TOPRIGHT', Minimap, 'BOTTOMRIGHT', 2, -3)
-	rminipanel:Point('BOTTOMLEFT', Minimap, 'BOTTOM', 0, -(3 + PANEL_HEIGHT))
+	rminipanel:Point('BOTTOMLEFT', Minimap, 'BOTTOM', -20, -(3 + PANEL_HEIGHT))
 	rminipanel:SetTemplate('Default', true)
 	E:GetModule('DataTexts'):RegisterPanel(rminipanel, 1, 'ANCHOR_BOTTOM', 0, -4)
 	
@@ -268,4 +269,44 @@ function LO:CreateMinimapPanels()
 	configtoggle:SetScript('OnClick', function() E:ToggleConfig() end)
 end
 
+function LO:CreateExtraDataBarPanels()
+	local chattab1 = CreateFrame('Frame', 'ChatTab_Datatext_Panel', E.UIParent)
+	chattab1:SetScript('OnShow', function(self)
+		chattab1:Point("TOPRIGHT", RightChatTab, "TOPRIGHT", 0, 0)
+		chattab1:Point("BOTTOMLEFT", RightChatTab, "BOTTOMLEFT", (E.db.general.panelWidth / 3), 0)
+	end)
+	chattab1:Hide()
+	E:GetModule('DataTexts'):RegisterPanel(chattab1, 2, 'ANCHOR_BOTTOM', 0, -4)
+	
+	local bottom_bar = CreateFrame('Frame', 'Bottom_Datatext_Panel', E.UIParent)
+	bottom_bar:SetTemplate('Default', true)
+	bottom_bar:SetFrameStrata('BACKGROUND')
+	bottom_bar:SetScript('OnShow', function(self)
+		self:Point("TOPLEFT", ElvUI_Bar1, "BOTTOMLEFT", 0, -E.mult); 
+		self:Size(ElvUI_Bar1:GetWidth(), PANEL_HEIGHT); 
+		E:CreateMover(self, "BottomBarMover", "Bottom Datatext Frame") 
+	end)
+	E:GetModule('DataTexts'):RegisterPanel(Bottom_Datatext_Panel, 3, 'ANCHOR_BOTTOM', 0, -4)
+	bottom_bar:Hide()
+	
+	RightChatTab:HookScript("OnHide", function() 
+		chattab1:Hide() 
+	end)
+	RightChatTab:HookScript("OnShow", function() 
+		chattab1:Show() 
+		chattab1:SetAlpha(RightChatTab:GetAlpha()) 
+	end)
+end
+
+function ExtraDataBarSetup()
+	ChatTab_Datatext_Panel:Show()
+	Bottom_Datatext_Panel:Show()
+end
+
+function LO:PLAYER_ENTERING_WORLD(...)
+	ExtraDataBarSetup()
+	self:UnregisterEvent("PLAYER_ENTERING_WORLD");
+end
+
+LO:RegisterEvent('PLAYER_ENTERING_WORLD')
 E:RegisterModule(LO:GetName())

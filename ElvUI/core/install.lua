@@ -10,11 +10,20 @@ local function SetupChat()
 	FCF_SetLocked(ChatFrame1, 1)
 	FCF_DockFrame(ChatFrame2)
 	FCF_SetLocked(ChatFrame2, 1)
+	FCF_OpenNewWindow(GUILD)
+	FCF_DockFrame(ChatFrame3)
+	FCF_SetLocked(ChatFrame3, 1)
+	FCF_OpenNewWindow(PARTY)
+	FCF_DockFrame(ChatFrame4)
+	FCF_SetLocked(ChatFrame4, 1)
+	FCF_OpenNewWindow(WHISPER)
+	FCF_DockFrame(ChatFrame5)
+	FCF_SetLocked(ChatFrame5, 1)
 
 	FCF_OpenNewWindow(LOOT)
-	FCF_UnDockFrame(ChatFrame3)
-	FCF_SetLocked(ChatFrame3, 1)
-	ChatFrame3:Show()			
+	FCF_UnDockFrame(ChatFrame6)
+	FCF_SetLocked(ChatFrame6, 1)
+	ChatFrame6:Show()
 			
 	for i = 1, NUM_CHAT_WINDOWS do
 		local frame = _G[format("ChatFrame%s", i)]
@@ -25,7 +34,7 @@ local function SetupChat()
 		if i == 1 then
 			frame:ClearAllPoints()
 			frame:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPLEFT", 1, 3)			
-		elseif i == 3 then
+		elseif i == 6 then
 			frame:ClearAllPoints()
 			frame:Point("BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 1, 3)
 		end
@@ -34,111 +43,82 @@ local function SetupChat()
 		FCF_StopDragging(frame)
 		
 		-- set default Elvui font size
-		FCF_SetChatWindowFontSize(nil, frame, 12)
+		FCF_SetChatWindowFontSize(nil, frame, 13)
 		
 		-- rename windows general because moved to chat #3
 		if i == 1 then
-			FCF_SetWindowName(frame, GENERAL)
+			FCF_SetWindowName(frame, "All")
 		elseif i == 2 then
-			FCF_SetWindowName(frame, GUILD_EVENT_LOG)
-		elseif i == 3 then 
-			FCF_SetWindowName(frame, LOOT.." / "..TRADE) 
+			FCF_SetWindowName(frame, "Log")
 		end
 	end
 	
-	ChatFrame_RemoveAllMessageGroups(ChatFrame1)
-	ChatFrame_AddMessageGroup(ChatFrame1, "SAY")
-	ChatFrame_AddMessageGroup(ChatFrame1, "EMOTE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "YELL")
-	ChatFrame_AddMessageGroup(ChatFrame1, "GUILD")
-	ChatFrame_AddMessageGroup(ChatFrame1, "OFFICER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "GUILD_ACHIEVEMENT")
-	ChatFrame_AddMessageGroup(ChatFrame1, "WHISPER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_SAY")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_EMOTE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_YELL")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_BOSS_EMOTE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "PARTY")
-	ChatFrame_AddMessageGroup(ChatFrame1, "PARTY_LEADER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "RAID")
-	ChatFrame_AddMessageGroup(ChatFrame1, "RAID_LEADER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "RAID_WARNING")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BATTLEGROUND")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BATTLEGROUND_LEADER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BG_HORDE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BG_ALLIANCE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BG_NEUTRAL")
-	ChatFrame_AddMessageGroup(ChatFrame1, "SYSTEM")
-	ChatFrame_AddMessageGroup(ChatFrame1, "ERRORS")
-	ChatFrame_AddMessageGroup(ChatFrame1, "AFK")
-	ChatFrame_AddMessageGroup(ChatFrame1, "DND")
-	ChatFrame_AddMessageGroup(ChatFrame1, "IGNORED")
-	ChatFrame_AddMessageGroup(ChatFrame1, "ACHIEVEMENT")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BN_WHISPER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BN_CONVERSATION")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BN_INLINE_TOAST_ALERT")
+	-- setup the "All" chat frame to filter out stuff shown in the right chat
+	ChatFrame_RemoveMessageGroup(ChatFrame1, "COMBAT_XP_GAIN")
+	ChatFrame_RemoveMessageGroup(ChatFrame1, "COMBAT_HONOR_GAIN")
+	ChatFrame_RemoveMessageGroup(ChatFrame1, "COMBAT_FACTION_CHANGE")
+	ChatFrame_RemoveMessageGroup(ChatFrame1, "LOOT")
+	ChatFrame_RemoveMessageGroup(ChatFrame1, "MONEY")
 	
-
-	ChatFrame_RemoveAllMessageGroups(ChatFrame3)	
-	ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_FACTION_CHANGE")
-	ChatFrame_AddMessageGroup(ChatFrame3, "SKILL")
-	ChatFrame_AddMessageGroup(ChatFrame3, "LOOT")
-	ChatFrame_AddMessageGroup(ChatFrame3, "MONEY")
-	ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_XP_GAIN")
-	ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_HONOR_GAIN")
-	ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_GUILD_XP_GAIN")
-	ChatFrame_AddChannel(ChatFrame1, GENERAL)
-	ChatFrame_RemoveChannel(ChatFrame1, L['Trade'])
-	ChatFrame_AddChannel(ChatFrame3, L['Trade'])
-
+	-- Setup the Guild chat frame
+	ChatFrame_RemoveAllMessageGroups(ChatFrame3)
+	ChatFrame_AddMessageGroup(ChatFrame3, "GUILD") 
+	ChatFrame_AddMessageGroup(ChatFrame3, "OFFICER") 
+	ChatFrame_AddMessageGroup(ChatFrame3, "GUILD_ACHIEVEMENT")
 	
-	if E.myname == "Elv" then
-		--keep losing my god damn channels everytime i resetui
-		ChatFrame_AddChannel(DEFAULT_CHAT_FRAME, "tystank")
-		ChatFrame_AddChannel(DEFAULT_CHAT_FRAME, "tys")
-		ChatFrame_AddChannel(DEFAULT_CHAT_FRAME, "crusaderaura")
-		ChangeChatColor("CHANNEL5", 147/255, 112/255, 219/255)
-		ChangeChatColor("CHANNEL6", 139/255, 115/255, 85/255)
-		ChangeChatColor("CHANNEL7", RAID_CLASS_COLORS["PALADIN"].r, RAID_CLASS_COLORS["PALADIN"].g, RAID_CLASS_COLORS["PALADIN"].b)
-		SetCVar("scriptErrors", 1)
-	end	
+	-- Setup the Party chat frame
+	ChatFrame_RemoveAllMessageGroups(ChatFrame4)
+	ChatFrame_AddMessageGroup(ChatFrame4, "PARTY")
+	ChatFrame_AddMessageGroup(ChatFrame4, "PARTY_LEADER")
+	ChatFrame_AddMessageGroup(ChatFrame4, "RAID") 
+	ChatFrame_AddMessageGroup(ChatFrame4, "RAID_LEADER") 
+	ChatFrame_AddMessageGroup(ChatFrame4, "RAID_WARNING")
+	ChatFrame_AddMessageGroup(ChatFrame4, "BATTLEGROUND")
+	ChatFrame_AddMessageGroup(ChatFrame4, "BATTLEGROUND_LEADER")
+
+	-- Setup the Whisper chat frame
+	ChatFrame_RemoveAllMessageGroups(ChatFrame5)
+	ChatFrame_AddMessageGroup(ChatFrame5, "WHISPER")
+	ChatFrame_AddMessageGroup(ChatFrame5, "BN_WHISPER")
+	ChatFrame_AddMessageGroup(ChatFrame5, "BN_CONVERSATION")
+
+	-- Setup the right chat
+	ChatFrame_RemoveAllMessageGroups(ChatFrame6)
+	ChatFrame_AddMessageGroup(ChatFrame6, "COMBAT_XP_GAIN")
+	ChatFrame_AddMessageGroup(ChatFrame6, "COMBAT_HONOR_GAIN")
+	ChatFrame_AddMessageGroup(ChatFrame6, "COMBAT_FACTION_CHANGE")
+	ChatFrame_AddMessageGroup(ChatFrame6, "LOOT")
+	ChatFrame_AddMessageGroup(ChatFrame6, "MONEY")
+
 	
 	-- enable classcolor automatically on login and on each character without doing /configure each time.
-	ToggleChatColorNamesByClassGroup(true, "SAY")
-	ToggleChatColorNamesByClassGroup(true, "EMOTE")
-	ToggleChatColorNamesByClassGroup(true, "YELL")
-	ToggleChatColorNamesByClassGroup(true, "GUILD")
-	ToggleChatColorNamesByClassGroup(true, "OFFICER")
-	ToggleChatColorNamesByClassGroup(true, "GUILD_ACHIEVEMENT")
-	ToggleChatColorNamesByClassGroup(true, "ACHIEVEMENT")
+	ToggleChatColorNamesByClassGroup(false, "SAY")
+	ToggleChatColorNamesByClassGroup(false, "EMOTE")
+	ToggleChatColorNamesByClassGroup(false, "YELL")
+	ToggleChatColorNamesByClassGroup(false, "GUILD")
+	ToggleChatColorNamesByClassGroup(false, "OFFICER")
+	ToggleChatColorNamesByClassGroup(false, "GUILD_ACHIEVEMENT")
+	ToggleChatColorNamesByClassGroup(false, "ACHIEVEMENT")
 	ToggleChatColorNamesByClassGroup(true, "WHISPER")
-	ToggleChatColorNamesByClassGroup(true, "PARTY")
-	ToggleChatColorNamesByClassGroup(true, "PARTY_LEADER")
-	ToggleChatColorNamesByClassGroup(true, "RAID")
-	ToggleChatColorNamesByClassGroup(true, "RAID_LEADER")
-	ToggleChatColorNamesByClassGroup(true, "RAID_WARNING")
-	ToggleChatColorNamesByClassGroup(true, "BATTLEGROUND")
-	ToggleChatColorNamesByClassGroup(true, "BATTLEGROUND_LEADER")	
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL1")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL2")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL3")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL4")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL5")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL6")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL7")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL8")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL9")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL10")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL11")
-	
-	--Adjust Chat Colors
-	--General
-	ChangeChatColor("CHANNEL1", 195/255, 230/255, 232/255)
-	--Trade
-	ChangeChatColor("CHANNEL2", 232/255, 158/255, 121/255)
-	--Local Defense
-	ChangeChatColor("CHANNEL3", 232/255, 228/255, 121/255)
-	
+	ToggleChatColorNamesByClassGroup(false, "PARTY")
+	ToggleChatColorNamesByClassGroup(false, "PARTY_LEADER")
+	ToggleChatColorNamesByClassGroup(false, "RAID")
+	ToggleChatColorNamesByClassGroup(false, "RAID_LEADER")
+	ToggleChatColorNamesByClassGroup(false, "RAID_WARNING")
+	ToggleChatColorNamesByClassGroup(false, "BATTLEGROUND")
+	ToggleChatColorNamesByClassGroup(false, "BATTLEGROUND_LEADER")	
+	ToggleChatColorNamesByClassGroup(false, "CHANNEL1")
+	ToggleChatColorNamesByClassGroup(false, "CHANNEL2")
+	ToggleChatColorNamesByClassGroup(false, "CHANNEL3")
+	ToggleChatColorNamesByClassGroup(false, "CHANNEL4")
+	ToggleChatColorNamesByClassGroup(false, "CHANNEL5")
+	ToggleChatColorNamesByClassGroup(false, "CHANNEL6")
+	ToggleChatColorNamesByClassGroup(false, "CHANNEL7")
+	ToggleChatColorNamesByClassGroup(false, "CHANNEL8")
+	ToggleChatColorNamesByClassGroup(false, "CHANNEL9")
+	ToggleChatColorNamesByClassGroup(false, "CHANNEL10")
+	ToggleChatColorNamesByClassGroup(false, "CHANNEL11")
+
 	if E.Chat then
 		E.Chat:PositionChat(true)
 		if E.db['RightChatPanelFaded'] then
@@ -152,17 +132,44 @@ local function SetupChat()
 end
 
 local function SetupCVars()
+	SetCVar("scriptErrors", 1)
+	SetCVar("buffDurations", 1)
+	SetCVar("consolidateBuffs", 0)
+	SetCVar("lootUnderMouse", 1)
+	SetCVar("autoSelfCast", 1)
 	SetCVar("mapQuestDifficulty", 1)
+	SetCVar("scriptErrors", 1)
+	SetCVar("nameplateShowFriends", 0)
+	SetCVar("nameplateShowFriendlyPets", 0)
+	SetCVar("nameplateShowFriendlyGuardians", 0)
+	SetCVar("nameplateShowFriendlyTotems", 0)
+	SetCVar("nameplateShowEnemies", 1)
+	SetCVar("nameplateShowEnemyPets", 1)
 	SetCVar("ShowClassColorInNameplate", 1)
 	SetCVar("screenshotQuality", 10)
+	SetCVar("cameraDistanceMax", 50)
+	SetCVar("cameraDistanceMaxFactor", 4)
 	SetCVar("chatMouseScroll", 1)
 	SetCVar("chatStyle", "classic")
 	SetCVar("WholeChatWindowClickable", 0)
 	SetCVar("ConversationMode", "inline")
+	SetCVar("CombatDamage", 1)
+	SetCVar("CombatHealing", 1)
 	SetCVar("showTutorials", 0)
 	SetCVar("showNewbieTips", 0)
+	SetCVar("autoDismountFlying", 1)
+	SetCVar("autoQuestWatch", 1)
+	SetCVar("autoQuestProgress", 1)
 	SetCVar("showLootSpam", 1)
+	SetCVar("guildMemberNotify", 0)
 	SetCVar("UberTooltips", 1)
+	SetCVar("removeChatDelay", 1)
+	SetCVar("showVKeyCastbar", 1)
+	SetCVar("colorblindMode", 0)
+	SetCVar("autoLootDefault", 1)
+	SetCVar("bloatthreat", 0)
+	SetCVar("bloattest", 0)
+	SetCVar("bloatnameplates", 0)
 	SetCVar("threatWarning", 3)
 	SetCVar('alwaysShowActionBars', 1)
 	SetCVar('lockActionBars', 1)
@@ -255,18 +262,46 @@ function E:SetupLayout(layout)
 			E:Print(L['Using the healer layout it is highly recommended you download the addon Clique to work side by side with ElvUI.'])
 		end
 		
-		E.db.unitframe.units.party.health.frequentUpdates = true;
-		E.db.unitframe.units.raid625.health.frequentUpdates = true;
-		E.db.unitframe.units.raid2640.health.frequentUpdates = true;
+		E.db.unitframe.units.target.buffs.numrows = 1;
+		E.db.unitframe.units.target.buffs['growth-x'] = 'LEFT';
+		E.db.unitframe.units.target.buffs['growth-y'] = 'UP';
+		E.db.unitframe.units.target.buffs.initialAnchor = 'BOTTOMRIGHT';
+		E.db.unitframe.units.target.buffs.anchorPoint = 'TOPRIGHT';
+		E.db.unitframe.units.target.debuffs.numrows = 1;
+		E.db.unitframe.units.target.debuffs['growth-x'] = 'LEFT';
+		E.db.unitframe.units.target.debuffs['growth-y'] = 'UP';
+		E.db.unitframe.units.target.debuffs.initialAnchor = 'BOTTOMRIGHT';
+		E.db.unitframe.units.target.debuffs.anchorPoint = 'TOPRIGHT';
+		E.db.unitframe.units.target.castbar.yOffset = 0;
+		
+		E.db.unitframe.units.targettarget.height = 35;
+		
+		E.db.unitframe.units.focus.buffs['growth-y'] = 'UP';
+		E.db.unitframe.units.focus.buffs.initialAnchor = 'BOTTOMLEFT';
+		E.db.unitframe.units.focus.buffs.anchorPoint = 'TOPLEFT';
+		E.db.unitframe.units.focus.debuffs['growth-y'] = 'UP';
+		E.db.unitframe.units.focus.debuffs.initialAnchor = 'BOTTOMLEFT';
+		E.db.unitframe.units.focus.debuffs.anchorPoint = 'TOPLEFT';
+		E.db.unitframe.units.focus.castbar.yOffset = 65;
+		
+		E.db.unitframe.units.focustarget.buffs['growth-y'] = 'UP';
+		E.db.unitframe.units.focustarget.buffs.initialAnchor = 'BOTTOMLEFT';
+		E.db.unitframe.units.focustarget.buffs.anchorPoint = 'TOPLEFT';
+		E.db.unitframe.units.focustarget.debuffs['growth-y'] = 'UP';
+		E.db.unitframe.units.focustarget.debuffs.initialAnchor = 'BOTTOMLEFT';
+		E.db.unitframe.units.focustarget.debuffs.anchorPoint = 'TOPLEFT';
 		
 		E.db.unitframe.units.boss.width = 200;
 		E.db.unitframe.units.boss.castbar.width = 200;
+		E.db.unitframe.units.boss.growthDirection = 'UP';
+		
 		E.db.unitframe.units.arena.width = 200;
 		E.db.unitframe.units.arena.castbar.width = 200;
 		
 		E.db.unitframe.units.party.point = 'LEFT';
 		E.db.unitframe.units.party.xOffset = 5;
 		E.db.unitframe.units.party.healPrediction = true;
+		E.db.unitframe.units.party.health.frequentUpdates = true;
 		E.db.unitframe.units.party.columnAnchorPoint = 'LEFT';
 		E.db.unitframe.units.party.width = 80;
 		E.db.unitframe.units.party.height = 52;
@@ -291,34 +326,46 @@ function E:SetupLayout(layout)
 		E.db.unitframe.units.party.targetsGroup.yOffset = 1;
 
 		E.db.unitframe.units.raid625.healPrediction = true;
-		E.db.unitframe.units.raid625.health.orientation = 'VERTICAL';
+		E.db.unitframe.units.raid625.health.frequentUpdates = true;
+		E.db.unitframe.units.raid625.debuffs.enable = true;
 
 		E.db.unitframe.units.raid2640.healPrediction = true;
-		E.db.unitframe.units.raid2640.health.orientation = 'VERTICAL';		
+		E.db.unitframe.units.raid2640.health.frequentUpdates = true;
+		E.db.unitframe.units.raid2640.debuffs.enable = true;
 		
 		if E.db.lowresolutionset then
 			E.db.unitframe.units["positions"] = {
-				["ElvUF_Player"] = "BOTTOMUIParent-305242",
-				["ElvUF_Target"] = "BOTTOMUIParent305242",
-				["ElvUF_Raid2640"] = "BOTTOMUIParent080",
-				["ElvUF_Raid625"] = "BOTTOMUIParent080",
-				["ElvUF_TargetTarget"] = "BOTTOMUIParent305187",
-				["ElvUF_Focus"] = "RIGHTUIParent-264-43",
-				["ElvUF_Party"] = "BOTTOMUIParent0104",
-				["ElvUF_Pet"] = "BOTTOMUIParent-305187",
-				['ElvUF_Focus'] = "BOTTOMUIParent310432",
+				["ElvUF_Player"] = "BOTTOMLEFTUIParent464230",
+				["ElvUF_Target"] = "BOTTOMRIGHTUIParent-464230",
+				["ElvUF_Raid2640"] = "BOTTOMUIParent0170",
+				["ElvUF_Raid625"] = "BOTTOMUIParent0170",
+				["ElvUF_TargetTarget"] = "BOTTOMRIGHTElvUF_Target0150",
+				["ElvUF_Focus"] = "BOTTOMLEFTElvUF_Player0150",
+				["ElvUF_FocusTarget"] = "BOTTOMLEFTElvUF_Focus0150",
+				["ElvUF_Party"] = "BOTTOMUIParent0170",
+				["ElvUF_Pet"] = "BOTTOMLEFTUIParent464151",
+				["ElvUF_Boss1"] = "BOTTOMLEFTUIParent30250",
+				["ElvUF_Boss2"] = "BOTTOMLEFTUIParent30375",
+				["ElvUF_Boss3"] = "BOTTOMLEFTUIParent30500",
+				["ElvUF_Boss4"] = "BOTTOMLEFTUIParent30625",
+				["ElvUF_Tank"] = "LEFTUIParent30350",
 			}			
 		else
 			E.db.unitframe.units["positions"] = {
-				["ElvUF_Player"] = "BOTTOMLEFTUIParent464242",
-				["ElvUF_Target"] = "BOTTOMRIGHTUIParent-464242",
-				["ElvUF_Raid2640"] = "BOTTOMUIParent050",
-				["ElvUF_Raid625"] = "BOTTOMUIParent050",
-				["ElvUF_TargetTarget"] = "BOTTOMRIGHTUIParent-464151",
-				["ElvUF_Focus"] = "RIGHTUIParent-475-143",
-				["ElvUF_Party"] = "BOTTOMUIParent074",
+				["ElvUF_Player"] = "BOTTOMLEFTUIParent464230",
+				["ElvUF_Target"] = "BOTTOMRIGHTUIParent-464230",
+				["ElvUF_Raid2640"] = "BOTTOMUIParent0170",
+				["ElvUF_Raid625"] = "BOTTOMUIParent0170",
+				["ElvUF_TargetTarget"] = "BOTTOMRIGHTElvUF_Target0150",
+				["ElvUF_Focus"] = "BOTTOMLEFTElvUF_Player0150",
+				["ElvUF_FocusTarget"] = "BOTTOMLEFTElvUF_Focus0150",
+				["ElvUF_Party"] = "BOTTOMUIParent0170",
 				["ElvUF_Pet"] = "BOTTOMLEFTUIParent464151",
-				['ElvUF_Focus'] = "BOTTOMUIParent280332",
+				["ElvUF_Boss1"] = "BOTTOMLEFTUIParent30250",
+				["ElvUF_Boss2"] = "BOTTOMLEFTUIParent30375",
+				["ElvUF_Boss3"] = "BOTTOMLEFTUIParent30500",
+				["ElvUF_Boss4"] = "BOTTOMLEFTUIParent30625",
+				["ElvUF_Tank"] = "LEFTUIParent30350",
 			}
 		end
 	elseif E.db.lowresolutionset then
@@ -330,7 +377,22 @@ function E:SetupLayout(layout)
 			['ElvUF_Focus'] = "BOTTOMUIParent310332",
 		}		
 	else
-		E.db.unitframe.units["positions"] = nil;
+		E.db.unitframe.units["positions"] = {
+			["ElvUF_Player"] = "TOPLEFTUIParent30-30",
+			["ElvUF_Target"] = "TOPLEFTUIParent320-30",
+			["ElvUF_Raid2640"] = "BOTTOMLEFTUIParent4210",
+			["ElvUF_Raid625"] = "BOTTOMLEFTUIParent4210",
+			["ElvUF_TargetTarget"] = "TOPLEFTUIParent610-30",
+			["ElvUF_Focus"] = "TOPLEFTUIParent30-265",
+			["ElvUF_FocusTarget"] = "TOPLEFTUIParent260-265",
+			["ElvUF_Party"] = "BOTTOMLEFTUIParent4210",
+			["ElvUF_Pet"] = "TOPLEFTUIParent30-115",
+			["ElvUF_Boss1"] = "TOPLEFTUIParent440-305",
+			["ElvUF_Boss2"] = "TOPLEFTUIParent440-430",
+			["ElvUF_Boss3"] = "TOPLEFTUIParent440-555",
+			["ElvUF_Boss4"] = "TOPLEFTUIParent440-680",
+			["ElvUF_Tank"] = "LEFTUIParent30150",
+		}
 	end
 	
 	if E.db.lowresolutionset then
@@ -363,19 +425,22 @@ function E:SetupLayout(layout)
 		E:CopyTable(E.db.datatexts.panels, P.datatexts.panels)
 		if layout == 'tank' then
 			E.db.datatexts.panels.LeftChatDataPanel.left = 'Armor';
+			E.db.datatexts.panels.LeftChatDataPanel.middle = 'Attack Power';
 			E.db.datatexts.panels.LeftChatDataPanel.right = 'Avoidance';
 		elseif layout == 'healer' or layout == 'dpsCaster' then
 			E.db.datatexts.panels.LeftChatDataPanel.left = 'Spell/Heal Power';
-			E.db.datatexts.panels.LeftChatDataPanel.right = 'Haste';
+			E.db.datatexts.panels.LeftChatDataPanel.middle = 'Haste';
+			E.db.datatexts.panels.LeftChatDataPanel.right = 'Mastery';
 		else
 			E.db.datatexts.panels.LeftChatDataPanel.left = 'Attack Power';
+			E.db.datatexts.panels.LeftChatDataPanel.middle = 'Haste';
 			E.db.datatexts.panels.LeftChatDataPanel.right = 'Crit Chance';
 		end
-		
+
 		if InstallStepComplete then
 			InstallStepComplete.message = L["Layout Set"]
 			InstallStepComplete:Show()	
-		end		
+		end	
 	end
 	
 	E.db.layoutSet = layout

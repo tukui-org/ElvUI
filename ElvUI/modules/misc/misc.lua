@@ -170,6 +170,7 @@ end
 function M:Initialize()
 	self:LoadRaidMarker()
 	self:LoadExpRepBar()
+	self:LoadMerchant()
 	self:LoadMirrorBars()
 	self:LoadLoot()
 	self:LoadLootRoll()

@@ -1,4 +1,4 @@
-local E, L, DF = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 
 
 local _, ns = ...
@@ -222,29 +222,30 @@ end
 
 local blackList = {
 	[105171] = true, -- Deep Corruption
+	[108220] = true, -- Deep Corruption
+	[101108] = true, -- Rage of Ragnaros
+	[101109] = true, -- Rage of Ragnaros
+	[101110] = true, -- Rage of Ragnaros
+	[101228] = true, -- Rage of Ragnaros		
 }
 	
 local function Update(self, event, unit)
 	if unit ~= self.unit then return end
 	local _name, _icon, _count, _dtype, _duration, _endTime, _spellId
-	local _priority, priority = 0, 0
+	local _priority, priority = 0
 	for i = 1, 40 do
 		local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellId = UnitAura(unit, i, 'HARMFUL')
 		if (not name) then break end
 
 		if addon.ShowDispelableDebuff and debuffType then
-			if addon.FilterDispellableDebuff then
+			if addon.FilterDispellableDebuff then -- SUPER CODE PROTECTION OF THE /FLEX
 				DispellPriority[debuffType] = DispellPriority[debuffType] + addon.priority --Make Dispell buffs on top of Boss Debuffs
-				priority = DispellFilter[debuffType] and DispellPriority[debuffType] or 0
-				
-				if priority == 0 then
-					debuffType = nil
-				end
+				priority = DispellFilter[debuffType] and DispellPriority[debuffType]
 			else
 				priority = DispellPriority[debuffType]
 			end
-
-			if priority > _priority then
+			
+			if priority and (priority > _priority) then
 				_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellId = priority, name, icon, count, debuffType, duration, expirationTime, spellId
 			end
 		end

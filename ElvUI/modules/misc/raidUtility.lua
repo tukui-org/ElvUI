@@ -1,4 +1,4 @@
-local E, L, DF = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local RU = E:NewModule('RaidUtility', 'AceEvent-3.0');
 
 E.RaidUtility = RU
@@ -80,13 +80,13 @@ function RU:Initialize()
 	RaidUtilityPanel:SetTemplate('Transparent')
 	RaidUtilityPanel:Width(230)
 	RaidUtilityPanel:Height(PANEL_HEIGHT)
-	RaidUtilityPanel:Point('TOP', E.UIParent, 'TOP', -400, 1)
+	RaidUtilityPanel:Point('TOP', E.UIParent, 'TOP', 0, 1)
 	RaidUtilityPanel:SetFrameLevel(3)
 	RaidUtilityPanel.toggled = false
 	RaidUtilityPanel:SetFrameStrata("HIGH")
 
 	--Show Button
-	self:CreateUtilButton("ShowButton", E.UIParent, "UIMenuButtonStretchTemplate, SecureHandlerClickTemplate", 136, 18, "TOP", E.UIParent, "TOP", -400, 2, RAID_CONTROL, nil)
+	self:CreateUtilButton("ShowButton", E.UIParent, "UIMenuButtonStretchTemplate, SecureHandlerClickTemplate", 136, 18, "TOP", E.UIParent, "TOP", 0, 2, RAID_CONTROL, nil)
 	ShowButton:SetFrameRef("RaidUtilityPanel", RaidUtilityPanel)
 	ShowButton:SetAttribute("_onclick", [=[
 		local raidUtil = self:GetFrameRef("RaidUtilityPanel")
