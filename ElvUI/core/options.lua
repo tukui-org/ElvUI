@@ -425,6 +425,8 @@ local DONATORS = {
 	"Bearscantank",
 	"Varok",
 	"Cosmo",
+	"domoaligato",
+	"Adorno",
 }
 
 table.sort(DONATORS, function(a,b) return a < b end) --Alphabetize
