@@ -17,6 +17,9 @@ local function LoadSkin()
 		S:HandleButton(_G[buttons[i]])
 	end
 	
+	WarGamesFrameInfoScrollFrameScrollBar:StripTextures()
+    S:HandleScrollBar(WarGamesFrameInfoScrollFrameScrollBar, 5)	
+	
 	local KillTextures = {
 		"PVPHonorFrameBGTex",
 		"PVPHonorFrameInfoScrollFrameScrollBar",
