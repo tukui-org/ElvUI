@@ -741,4 +741,4 @@ L["You need to be at least level %d to whisper me."] = "당신은 저에게 귓�
 L["Your current resolution is %s, this is considered a %s resolution."] = "당신의 현재 해상도는 %s 이며, 이것은 %s 해상도로 간주됩니다."
 L["Your items have been repaired for: "] = "수리 비용:"
 L["Your items have been repaired using guild bank funds for: "] = "길드금고에서 사용된 수리 비용:"
-L["Your version of ElvUI is out of date. You can download the latest version from www.curse.com"] = "당신의 ElvUI 버전이 구버전입니다. 당신은 www.curse.com에서 최신 버전을 다운로드하실 수 있습니다."
+L["Your version of ElvUI is out of date. You can download the latest version from www.tukui.org"] = "당신의 ElvUI 버전이 구버전입니다. 당신은 www.tukui.org에서 최신 버전을 다운로드하실 수 있습니다."

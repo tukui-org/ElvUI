@@ -48,7 +48,6 @@ function E:UpdateMedia()
 	--Fonts
 	self["media"].normFont = LSM:Fetch("font", self.db['general'].font)
 	self["media"].combatFont = LSM:Fetch("font", self.db['general'].dmgfont)
-	self["media"].chatFont = LSM:Fetch("font", self.db['general'].chatfont)
 
 	--Textures
 	self["media"].blankTex = LSM:Fetch("background", "ElvUI Blank")
@@ -466,7 +465,7 @@ function E:SendRecieve(event, prefix, message, channel, sender)
 
 		if prefix == "ElvUIVC" and sender ~= 'Elv' and not string.find(sender, 'Elv%-') then
 			if tonumber(message) > tonumber(E.version) then
-				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.curse.com"])
+				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.tukui.org"])
 				self:UnregisterEvent("CHAT_MSG_ADDON")
 				self:UnregisterEvent("PARTY_MEMBERS_CHANGED")
 				self:UnregisterEvent("RAID_ROSTER_UPDATE")
@@ -482,7 +481,6 @@ function E:SendRecieve(event, prefix, message, channel, sender)
 		E:ScheduleTimer('SendMessage', 12)
 	end
 end
-
 
 --[[local localBindsSet = false
 function E:SaveKeybinds()
@@ -663,7 +661,6 @@ function E:Initialize()
 		end)
 	end
 
-	
 	RegisterAddonMessagePrefix('ElvUIVC')
 	RegisterAddonMessagePrefix('ElvSays')
 	

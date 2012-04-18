@@ -13,7 +13,7 @@ function E:UpdateBlizzardFonts()
 	local NORMAL     = self["media"].normFont
 	local COMBAT     = LSM:Fetch('font', self.global.general.dmgfont)
 	local NUMBER     = self["media"].normFont
-	local NUMBER2    = self["media"].chatFont
+	local NUMBER2    = [=[Fonts\ARIALN.TTF]=]
 	local _, editBoxFontSize, _, _, _, _, _, _, _, _ = GetChatWindowInfo(1)
 	
 	UIDROPDOWNMENU_DEFAULT_TEXT_HEIGHT = 12
@@ -51,6 +51,7 @@ function E:UpdateBlizzardFonts()
 	SetFont(QuestFont,                          NORMAL, self.db.general.fontsize)
 	SetFont(QuestFont_Large,                    NORMAL, 14)
 	SetFont(SystemFont_Large,                   NORMAL, 15)
+	SetFont(GameFontNormalMed3,					NORMAL, 15)
 	SetFont(SystemFont_Shadow_Huge1,			NORMAL, 20, "THINOUTLINE") -- Raid Warning, Boss emote frame too
 	SetFont(SystemFont_Med1,                    NORMAL, self.db.general.fontsize)
 	SetFont(SystemFont_Med3,                    NORMAL, self.db.general.fontsize*1.1)

@@ -8,8 +8,6 @@ else
 end
 
 if not L then return; end
-L["Health Frequent Update"] = "Health Frequent Update"
-L["Enable / Disable Health Frequent Updates"] = "Enable / Disable Health Frequent Updates"
 L["ChatTab_Datatext_Panel"] = "Right Chat Tab"
 L["Bottom_Datatext_Panel"] = "Bottom Datatext Panel"
 L["24-Hour Time"] = "24-Hour Time"
@@ -376,7 +374,7 @@ L["Local Time"] = "Local Time"
 L["Lock"] = "Lock"
 L["LOCK_AB_ERROR"] = "It has come to our attention that you do not have your actionbars locked. This may cause abilities to be used while dragging buttons to differant slots. Please run the Set CVar portion of the Installation process (Step 2). This can be done by typing /ec and clicking the Install button."
 L["Login Message"] = "Login Message"
-L["LOGIN_MSG"] = "Welcome to %sElvUI|r version %s%s|r, type /ec to access the in-game configuration menu. If you are in need of technical support you can visit us at www.tukui.org. You can report bugs, add suggestions here: http://wow.curseforge.com/addons/elvui/tickets."
+L["LOGIN_MSG"] = "Welcome to %sElvUI|r version %s%s|r, type /ec to access the in-game configuration menu. If you are in need of technical support you can visit us at www.tukui.org. You can report bugs, add suggestions here: http://www.tukui.org/tickets/elvui/."
 L["Loot"] = "Loot"
 L["Loot Roll"] = "Loot Roll"
 L["low"] = "low"
@@ -806,5 +804,7 @@ L["You need to be at least level %d to whisper me."] = "You need to be at least 
 L["Your current resolution is %s, this is considered a %s resolution."] = "Your current resolution is %s, this is considered a %s resolution."
 L["Your items have been repaired for: "] = "Your items have been repaired for: "
 L["Your items have been repaired using guild bank funds for: "] = "Your items have been repaired using guild bank funds for: "
-L["Your version of ElvUI is out of date. You can download the latest version from www.curse.com"] = "Your version of ElvUI is out of date. You can download the latest version from www.curse.com"
-
+L[L["Your version of ElvUI is out of date. You can download the latest version from www.tukui.org"] = "Your version of ElvUI is out of date. You can download the latest version from www.tukui.org"
+L['|cFFE30000Lua error recieved. You can view the error message when you exit combat.'] = true;
+L["%s: %s tried to call the protected function '%s'."] = true;
+L["No locals to dump"] = true;
