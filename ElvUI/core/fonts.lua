@@ -50,6 +50,7 @@ function E:UpdateBlizzardFonts()
 	SetFont(QuestFont,                          NORMAL, self.db.general.fontsize)
 	SetFont(QuestFont_Large,                    NORMAL, 14)
 	SetFont(SystemFont_Large,                   NORMAL, 15)
+	SetFont(GameFontNormalMed3,					NORMAL, 15)
 	SetFont(SystemFont_Shadow_Huge1,			NORMAL, 20, "OUTLINE") -- Raid Warning, Boss emote frame too
 	SetFont(SystemFont_Med1,                    NORMAL, self.db.general.fontsize)
 	SetFont(SystemFont_Med3,                    NORMAL, self.db.general.fontsize*1.1)
