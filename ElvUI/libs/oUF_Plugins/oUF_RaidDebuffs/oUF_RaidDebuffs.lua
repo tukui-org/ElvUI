@@ -228,6 +228,10 @@ local blackList = {
 	[101110] = true, -- Rage of Ragnaros
 	[101228] = true, -- Rage of Ragnaros		
 }
+
+local highPriority = {
+	[106199] = true, -- Blood Corruption: Death
+}
 	
 local function Update(self, event, unit)
 	if unit ~= self.unit then return end
@@ -240,7 +244,11 @@ local function Update(self, event, unit)
 		if addon.ShowDispelableDebuff and debuffType then
 			if addon.FilterDispellableDebuff then -- SUPER CODE PROTECTION OF THE /FLEX
 				DispellPriority[debuffType] = DispellPriority[debuffType] + addon.priority --Make Dispell buffs on top of Boss Debuffs
-				priority = DispellFilter[debuffType] and DispellPriority[debuffType]
+				priority = DispellFilter[debuffType] and DispellPriority[debuffType] or 0
+				if highPriority[spellId] then priority = priority + 5 end --this should be enough i hope.
+				if priority == 0 then
+					debuffType = nil
+				end
 			else
 				priority = DispellPriority[debuffType]
 			end
