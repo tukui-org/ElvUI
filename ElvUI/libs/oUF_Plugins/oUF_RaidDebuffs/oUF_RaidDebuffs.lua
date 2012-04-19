@@ -222,6 +222,7 @@ end
 
 local blackList = {
 	[105171] = true, -- Deep Corruption
+	[106200] = true, -- Blood Corruption: Earth
 }
 	
 local function Update(self, event, unit)
