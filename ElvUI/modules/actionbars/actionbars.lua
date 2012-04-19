@@ -246,7 +246,7 @@ function AB:DisableBlizzard()
 		_G["ActionButton" .. i]:Hide()
 		_G["ActionButton" .. i]:UnregisterAllEvents()
 		_G["ActionButton" .. i]:SetAttribute("statehidden", true)
-
+	
 		_G["MultiBarBottomLeftButton" .. i]:Hide()
 		_G["MultiBarBottomLeftButton" .. i]:UnregisterAllEvents()
 		_G["MultiBarBottomLeftButton" .. i]:SetAttribute("statehidden", true)
@@ -254,11 +254,11 @@ function AB:DisableBlizzard()
 		_G["MultiBarBottomRightButton" .. i]:Hide()
 		_G["MultiBarBottomRightButton" .. i]:UnregisterAllEvents()
 		_G["MultiBarBottomRightButton" .. i]:SetAttribute("statehidden", true)
-
+		
 		_G["MultiBarRightButton" .. i]:Hide()
 		_G["MultiBarRightButton" .. i]:UnregisterAllEvents()
 		_G["MultiBarRightButton" .. i]:SetAttribute("statehidden", true)
-
+		
 		_G["MultiBarLeftButton" .. i]:Hide()
 		_G["MultiBarLeftButton" .. i]:UnregisterAllEvents()
 		_G["MultiBarLeftButton" .. i]:SetAttribute("statehidden", true)
@@ -277,6 +277,14 @@ function AB:DisableBlizzard()
 			_G['MultiCastActionButton'..i]:Hide()
 			_G['MultiCastActionButton'..i]:UnregisterAllEvents()
 			_G['MultiCastActionButton'..i]:SetAttribute("statehidden", true)
+		end
+		
+		for index, button in pairs(ActionBarButtonEventsFrame.frames) do			
+			if E.myclass ~= 'SHAMAN' and button:GetName():find('MultiCastActionButton') then
+				table.remove(ActionBarButtonEventsFrame.frames, index)
+			elseif button:GetName() ~= "ExtraActionButton1" then
+				table.remove(ActionBarButtonEventsFrame.frames, index)
+			end
 		end
 	end
 	UIPARENT_MANAGED_FRAME_POSITIONS["MainMenuBar"] = nil
