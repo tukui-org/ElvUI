@@ -246,37 +246,45 @@ function AB:DisableBlizzard()
 		_G["ActionButton" .. i]:Hide()
 		_G["ActionButton" .. i]:UnregisterAllEvents()
 		_G["ActionButton" .. i]:SetAttribute("statehidden", true)
-
+		table.remove(ActionBarButtonEventsFrame.frames, _G["ActionButton" .. i])
+		
 		_G["MultiBarBottomLeftButton" .. i]:Hide()
 		_G["MultiBarBottomLeftButton" .. i]:UnregisterAllEvents()
 		_G["MultiBarBottomLeftButton" .. i]:SetAttribute("statehidden", true)
-
+		table.remove(ActionBarButtonEventsFrame.frames, _G["MultiBarBottomLeftButton" .. i])
+		
 		_G["MultiBarBottomRightButton" .. i]:Hide()
 		_G["MultiBarBottomRightButton" .. i]:UnregisterAllEvents()
 		_G["MultiBarBottomRightButton" .. i]:SetAttribute("statehidden", true)
-
+		table.remove(ActionBarButtonEventsFrame.frames, _G["MultiBarBottomRightButton" .. i])
+		
 		_G["MultiBarRightButton" .. i]:Hide()
 		_G["MultiBarRightButton" .. i]:UnregisterAllEvents()
 		_G["MultiBarRightButton" .. i]:SetAttribute("statehidden", true)
-
+		table.remove(ActionBarButtonEventsFrame.frames, _G["MultiBarRightButton" .. i])
+		
 		_G["MultiBarLeftButton" .. i]:Hide()
 		_G["MultiBarLeftButton" .. i]:UnregisterAllEvents()
 		_G["MultiBarLeftButton" .. i]:SetAttribute("statehidden", true)
+		table.remove(ActionBarButtonEventsFrame.frames, _G["MultiBarLeftButton" .. i])
 		
 		if _G["VehicleMenuBarActionButton" .. i] then
 			_G["VehicleMenuBarActionButton" .. i]:Hide()
 			_G["VehicleMenuBarActionButton" .. i]:UnregisterAllEvents()
 			_G["VehicleMenuBarActionButton" .. i]:SetAttribute("statehidden", true)
+			table.remove(ActionBarButtonEventsFrame.frames, _G["VehicleMenuBarActionButton" .. i])
 		end
 
 		_G['BonusActionButton'..i]:Hide()
 		_G['BonusActionButton'..i]:UnregisterAllEvents()
 		_G['BonusActionButton'..i]:SetAttribute("statehidden", true)
+		table.remove(ActionBarButtonEventsFrame.frames, _G['BonusActionButton'..i])
 		
 		if E.myclass ~= 'SHAMAN' then
 			_G['MultiCastActionButton'..i]:Hide()
 			_G['MultiCastActionButton'..i]:UnregisterAllEvents()
 			_G['MultiCastActionButton'..i]:SetAttribute("statehidden", true)
+			table.remove(ActionBarButtonEventsFrame.frames, _G['MultiCastActionButton'..i])
 		end
 	end
 	UIPARENT_MANAGED_FRAME_POSITIONS["MainMenuBar"] = nil
