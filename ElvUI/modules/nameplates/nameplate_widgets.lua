@@ -362,6 +362,7 @@ end
 
 function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 	local _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellid, spellName, _, auraType, stackCount  = ...
+
 	if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" then
 		local duration = NP:GetSpellDuration(spellid)
 		local texture = GetSpellTexture(spellid)
@@ -407,7 +408,7 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 			local currentTime = GetTime() * 1e3
 			NP:StartCastAnimationOnNameplate(FoundPlate, spell, spellid, icon, currentTime, currentTime + castTime, false, false)
 		end		
-	elseif event == "SPELL_CAST_FAILED" or event == "SPELL_INTERRUPT" then
+	elseif event == "SPELL_CAST_FAILED" or event == "SPELL_INTERRUPT" or event == "SPELL_CAST_SUCCESS" or event == "SPELL_HEAL" then
 		local FoundPlate = nil;
 		if sourceGUID == UnitGUID('player') and event == "SPELL_CAST_FAILED" then return; end
 		if bit.band(sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) > 0 then 
@@ -427,7 +428,7 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 			return 
 		end	
 
-		if FoundPlate and FoundPlate:IsShown() and FoundPlate.unit ~= "target" then 
+		if FoundPlate and FoundPlate:IsShown() then 
 			FoundPlate.guid = sourceGUID
 			NP:StopCastAnimation(FoundPlate)
 		end		
