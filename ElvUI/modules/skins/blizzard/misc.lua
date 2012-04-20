@@ -406,7 +406,7 @@ local function LoadSkin()
 		end	
 	end
 	SkinWatchFrameItems()
-	hooksecurefunc("WatchFrame_DisplayTrackedQuests", SkinWatchFrameItems)
+	hooksecurefunc("WatchFrame_Update", SkinWatchFrameItems)
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)
