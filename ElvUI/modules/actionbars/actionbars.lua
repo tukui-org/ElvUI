@@ -282,7 +282,7 @@ function AB:DisableBlizzard()
 		for index, button in pairs(ActionBarButtonEventsFrame.frames) do			
 			if E.myclass ~= 'SHAMAN' and button:GetName():find('MultiCastActionButton') then
 				table.remove(ActionBarButtonEventsFrame.frames, index)
-			elseif button:GetName() ~= "ExtraActionButton1" then
+			elseif button:GetName() ~= "ExtraActionButton1" and not button:GetName():find('MultiCastActionButton') then
 				table.remove(ActionBarButtonEventsFrame.frames, index)
 			end
 		end

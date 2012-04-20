@@ -429,6 +429,7 @@ function UF:DisableBlizzard(event)
 	CompactRaidFrameManager:HookScript('OnShow', HideRaid)
 	CompactRaidFrameContainer:UnregisterAllEvents()
 	HideRaid()
+	hooksecurefunc("CompactUnitFrame_RegisterEvents", CompactUnitFrame_UnregisterEvents)
 end
 
 function UF:ForceShow(frame)
@@ -504,7 +505,7 @@ local HandleFrame = function(baseName)
 end
 
 function ElvUF:DisableBlizzard(unit)
-	if(not unit) then return end
+	if(not unit) or InCombatLockdown() then return end
 
 	if(unit == 'player') then
 		HandleFrame(PlayerFrame)
