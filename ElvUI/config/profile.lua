@@ -167,7 +167,8 @@ P['unitframe'] = {
 		['colorhealthbyvalue'] = true,
 		['customhealthbackdrop'] = false,
 		['classbackdrop'] = false,
-	
+		['classNames'] = true,
+		
 		['health'] = P.general.bordercolor,
 		['health_backdrop'] = { r = .8,g = .01,b = .01 },
 		['tapped'] = { r = 0.55, g = 0.57, b = 0.61},
