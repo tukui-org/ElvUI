@@ -321,7 +321,7 @@ local function BuildABConfig()
 		type = "group",
 		order = 500,
 		name = L['Cooldown Text'],
-		disabled = function() return not E.global.actionbar.enable or not E.db.actionbar.enablecd end,
+		disabled = function() return not E.global.actionbar.enable end,
 		set = function(info, value) E.db.actionbar[ info[#info] ] = value; AB:UpdateCooldownSettings() end,
 		args = {
 			enablecd = {
