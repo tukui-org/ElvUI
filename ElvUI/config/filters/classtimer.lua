@@ -499,7 +499,7 @@ G['classtimer']['spells_filter'] = {
 				CreateSpellEntry(5782, false, nil, nil, 5782), -- Fear
 				CreateSpellEntry(702), -- Curse of Weakness
 				CreateSpellEntry(710, false, nil, nil, 710), -- Banish
-				CreateSpellEntry(17801), -- Shadow and Flame
+				CreateSpellEntry(17800), -- Shadow and Flame
 				CreateSpellEntry(80240), -- Bane of Havoc
 		},
 		player = {
