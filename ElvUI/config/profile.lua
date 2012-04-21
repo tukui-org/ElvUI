@@ -180,6 +180,7 @@ P['unitframe'] = {
 		['colorhealthbyvalue'] = false,
 		['customhealthbackdrop'] = true,
 		['classbackdrop'] = false,
+		['classNames'] = false,
 		['health'] = { r = 68/255,g = 68/255,b = 68/255 },
 		['health_backdrop'] = { r = 97/255,g = 97/255,b = 97/255 },
 		['tapped'] = { r = 0.55, g = 0.57, b = 0.61},

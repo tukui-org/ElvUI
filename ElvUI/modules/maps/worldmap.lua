@@ -178,9 +178,9 @@ function M:Initialize()
 		self:SetQuestWorldMap()
 	end	
 
-	DropDownList1:SetScript('OnUpdate', function(self)
-		if self:GetScale() ~= UIParent:GetScale() then
-			self:SetScale(UIParent:GetScale())
+	DropDownList1:HookScript('OnShow', function(self)
+		if DropDownList1:GetScale() ~= UIParent:GetScale() then
+			DropDownList1:SetScale(UIParent:GetScale())
 		end		
 	end)
 end

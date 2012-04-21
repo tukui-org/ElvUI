@@ -415,8 +415,14 @@ E.Options.args.unitframe = {
 							name = L['Class Backdrop'],
 							desc = L['Color the health backdrop by class or reaction.'],
 						},
-						colorsGroup = {
+						classNames = {
 							order = 6,
+							type = 'toggle',
+							name = L['Class Names'],
+							desc = L['Color the name text by class or reaction.'],
+						},						
+						colorsGroup = {
+							order = 7,
 							type = 'group',
 							guiInline = true,
 							name = HEALTH,
@@ -454,7 +460,7 @@ E.Options.args.unitframe = {
 							},
 						},
 						powerGroup = {
-							order = 7,
+							order = 8,
 							type = 'group',
 							guiInline = true,
 							name = L['Powers'],
@@ -497,7 +503,7 @@ E.Options.args.unitframe = {
 							},
 						},
 						reactionGroup = {
-							order = 8,
+							order = 9,
 							type = 'group',
 							guiInline = true,
 							name = L['Reactions'],

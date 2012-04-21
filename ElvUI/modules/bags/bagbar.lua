@@ -10,7 +10,7 @@ end
 
 local function OnLeave()
 	if E.db.bags.bagBar.mouseover ~= true then return; end
-	UIFrameFadeOut(ElvUIBags, 0.2, ElvUIBags:GetAlpha(), 0)
+	E:UIFrameFadeOut(ElvUIBags, 0.2, ElvUIBags:GetAlpha(), 0)
 end
 
 function B:SkinBag(bag)
