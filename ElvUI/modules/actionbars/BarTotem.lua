@@ -178,11 +178,11 @@ hooksecurefunc("MultiCastSummonSpellButton_Update", function(self) AB:StyleTotem
 hooksecurefunc("MultiCastRecallSpellButton_Update", function(self) AB:StyleTotemSpellButton(self,5) end)
 
 function AB:TotemOnEnter()
-	UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), 1)
+	E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), 1)
 end
 
 function AB:TotemOnLeave()
-	UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
+	E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
 end
 
 function AB:AdjustTotemSettings()
