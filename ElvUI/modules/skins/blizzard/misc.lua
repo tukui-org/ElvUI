@@ -402,11 +402,12 @@ local function LoadSkin()
 				_G["WatchFrameItem"..i.."IconTexture"]:SetPoint("TOPLEFT", 2, -2)
 				_G["WatchFrameItem"..i.."IconTexture"]:SetPoint("BOTTOMRIGHT", -2, 2)
 				_G["WatchFrameItem"..i.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
+				button.skinned = true
 			end
 		end	
 	end
-	SkinWatchFrameItems()
-	hooksecurefunc("WatchFrame_Update", SkinWatchFrameItems)
+	
+	WatchFrame:HookScript("OnEvent", SkinWatchFrameItems)
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)
