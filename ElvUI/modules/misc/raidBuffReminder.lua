@@ -94,6 +94,7 @@ RBR.MeleeSpell5Buffs = {
 
 RBR.CasterSpell6Buffs = {
 	5675, --"Mana Spring Totem"
+	54424, --"Fel Intelligence"
 	19740, --"Blessing of Might"
 }
 

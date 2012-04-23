@@ -169,6 +169,12 @@ E.Options.args.general = {
 					get = function(info) return E.global.general.bubbles end,
 					set = function(info, value) E.global.general.bubbles = value; StaticPopup_Show("GLOBAL_RL") end
 				},	
+				taintLog = {
+					order = 13,
+					type = "toggle",
+					name = L["Log Taints"],
+					desc = L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."],
+				},
 				spacer = {
 					order = 99,
 					type = "description",
