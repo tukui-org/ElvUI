@@ -121,7 +121,7 @@ function D:PLAYER_REGEN_DISABLED()
 end
 
 function D:TaintError(event, addonName, addonFunc)
-	if GetCVarBool('scriptErrors') ~= 1 or GetCVarBool('taintLog') then return; end
+	if GetCVarBool('scriptErrors') ~= 1 or E.db.general.taintLog ~= true then return end
 	ScriptErrorsFrame_OnError(L["%s: %s tried to call the protected function '%s'."]:format(event, addonName or "<name>", addonFunc or "<func>"), false)
 end
 
