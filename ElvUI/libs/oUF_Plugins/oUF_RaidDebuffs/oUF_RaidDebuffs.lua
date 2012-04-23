@@ -238,14 +238,14 @@ local function Update(self, event, unit)
 
 		if addon.ShowDispelableDebuff and debuffType then
 			if addon.FilterDispellableDebuff then
-				DispellPriority[debuffType] = DispellPriority[debuffType] + addon.priority --Make Dispell buffs on top of Boss Debuffs
+				DispellPriority[debuffType] = (DispellPriority[debuffType] or 0) + addon.priority --Make Dispell buffs on top of Boss Debuffs
 				priority = DispellFilter[debuffType] and DispellPriority[debuffType] or 0
 				if highPriority[spellId] then priority = priority + 5 end --this should be enough i hope.
 				if priority == 0 then
 					debuffType = nil
 				end
 			else
-				priority = DispellPriority[debuffType]
+				priority = DispellPriority[debuffType] or 0
 			end
 
 			if priority > _priority then
