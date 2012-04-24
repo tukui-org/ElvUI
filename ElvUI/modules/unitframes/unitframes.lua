@@ -657,4 +657,4 @@ function UF:MergeUnitSettings(fromUnit, toUnit)
 end
 
 
-E:RegisterModule(UF:GetName())
+E:RegisterInitialModule(UF:GetName())

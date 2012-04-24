@@ -58,32 +58,28 @@ local function LoadSkin()
 					frame.backdrop:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 6)		
 				end
 				
-				-- Background
-				for i=1, frame:GetNumRegions() do
-					local region = select(i, frame:GetRegions())
-					if region:GetObjectType() == "Texture" then
-						if region:GetTexture() == "Interface\\LFGFrame\\UI-LFG-DUNGEONTOAST" then
-							region:Kill()
-						end
-					end
-				end
+				frame.shine:Kill()
+				frame.glowFrame:Kill()
+				frame.glowFrame.glow:Kill()
 				
-				_G["DungeonCompletionAlertFrame"..i.."Shine"]:Kill()
-				_G["DungeonCompletionAlertFrame"..i.."GlowFrame"]:Kill()
-				_G["DungeonCompletionAlertFrame"..i.."GlowFrame"].glow:Kill()
+				frame.raidArt:Kill()
+				frame.dungeonArt1:Kill()
+				frame.dungeonArt2:Kill()
+				frame.dungeonArt3:Kill()
+				frame.dungeonArt4:Kill()
 				
 				-- Icon
-				_G["DungeonCompletionAlertFrame"..i.."DungeonTexture"]:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+				frame.dungeonTexture:SetTexCoord(0.08, 0.92, 0.08, 0.92)
 				
-				_G["DungeonCompletionAlertFrame"..i.."DungeonTexture"]:ClearAllPoints()
-				_G["DungeonCompletionAlertFrame"..i.."DungeonTexture"]:Point("LEFT", frame, 7, 0)
+				frame.dungeonTexture:ClearAllPoints()
+				frame.dungeonTexture:Point("LEFT", frame, 7, 0)
 				
-				if not _G["DungeonCompletionAlertFrame"..i.."DungeonTexture"].b then
-					_G["DungeonCompletionAlertFrame"..i.."DungeonTexture"].b = CreateFrame("Frame", nil, _G["DungeonCompletionAlertFrame"..i])
-					_G["DungeonCompletionAlertFrame"..i.."DungeonTexture"].b:SetFrameLevel(0)
-					_G["DungeonCompletionAlertFrame"..i.."DungeonTexture"].b:SetTemplate("Default")
-					_G["DungeonCompletionAlertFrame"..i.."DungeonTexture"].b:Point("TOPLEFT", _G["DungeonCompletionAlertFrame"..i.."DungeonTexture"], "TOPLEFT", -2, 2)
-					_G["DungeonCompletionAlertFrame"..i.."DungeonTexture"].b:Point("BOTTOMRIGHT", _G["DungeonCompletionAlertFrame"..i.."DungeonTexture"], "BOTTOMRIGHT", 2, -2)
+				if not frame.dungeonTexture.b then
+					frame.dungeonTexture.b = CreateFrame("Frame", nil, frame)
+					frame.dungeonTexture.b:SetFrameLevel(0)
+					frame.dungeonTexture.b:SetTemplate("Default")
+					frame.dungeonTexture.b:Point("TOPLEFT", frame.dungeonTexture, "TOPLEFT", -2, 2)
+					frame.dungeonTexture.b:Point("BOTTOMRIGHT", frame.dungeonTexture, "BOTTOMRIGHT", 2, -2)
 				end
 			end
 		end				

@@ -205,6 +205,7 @@ function M:UpdateSettings()
 end
 
 function M:Initialize()	
+	self:UpdateSettings()
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
 	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -10, -10)
 	mmholder:Width((Minimap:GetWidth() + 29) + E.RBRWidth)
@@ -347,8 +348,10 @@ function M:Initialize()
 
 	
 	UIParent:HookScript('OnShow', function()
-		FarmModeMap:Hide()
+		if not FarmModeMap.enabled then
+			FarmModeMap:Hide()
+		end
 	end)
 end
 
-E:RegisterModule(M:GetName())
+E:RegisterInitialModule(M:GetName())
