@@ -205,6 +205,7 @@ function M:UpdateSettings()
 end
 
 function M:Initialize()	
+	self:UpdateSettings()
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
 	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
 	mmholder:Width((Minimap:GetWidth() + 29) + E.RBRWidth)
@@ -353,4 +354,4 @@ function M:Initialize()
 	end)
 end
 
-E:RegisterModule(M:GetName())
+E:RegisterInitialModule(M:GetName())

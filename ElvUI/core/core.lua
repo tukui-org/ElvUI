@@ -33,7 +33,7 @@ BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title")
 
 --Modules List
 E["RegisteredModules"] = {}
-
+E['RegisteredInitialModules'] = {}
 local registry = {}
 
 function E:RegisterDropdownButton(name, callback)
@@ -197,6 +197,19 @@ function E:RegisterModule(name)
 		tinsert(self['RegisteredModules'], name)
 	else
 		tinsert(self['RegisteredModules'], name)
+	end
+end
+
+function E:RegisterInitialModule(name)
+	tinsert(self['RegisteredInitialModules'], name)
+end
+
+function E:InitializeInitialModules()
+	for _, module in pairs(E['RegisteredInitialModules']) do
+		local module = self:GetModule(module, true)
+		if module and module.Initialize then
+			module:Initialize()
+		end
 	end
 end
 

@@ -231,3 +231,5 @@ function RU:Initialize()
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", 'ToggleRaidUtil')
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", 'ToggleRaidUtil')
 end
+
+E:RegisterInitialModule(RU:GetName())
