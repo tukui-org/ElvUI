@@ -302,7 +302,7 @@ function AB:DisableBlizzard()
 	MainMenuBarArtFrame:UnregisterEvent("ADDON_LOADED")
 	MainMenuBarArtFrame:Hide()
 	MainMenuBarArtFrame:SetParent(UIHider)
-
+	
 	ShapeshiftBarFrame:UnregisterAllEvents()
 	ShapeshiftBarFrame:Hide()
 	ShapeshiftBarFrame:SetParent(UIHider)
