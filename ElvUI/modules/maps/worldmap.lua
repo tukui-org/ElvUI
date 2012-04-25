@@ -11,6 +11,7 @@ function M:AdjustMapSize()
 		self:SetSmallWorldMap()
 	elseif WORLDMAP_SETTINGS.size == WORLDMAP_QUESTLIST_SIZE then
 		self:SetQuestWorldMap()
+		WorldMapFrame.hasTaint = true;
 	end
 		
 	WorldMapFrame:SetFrameLevel(3)
@@ -58,14 +59,16 @@ function M:PLAYER_REGEN_ENABLED()
 	WorldMapShowDigSites:Enable()
 	WorldMapQuestShowObjectives:Enable()
 	WorldMapTrackQuest:Enable()
-
-	WatchFrame.showObjectives = WatchFrame.oldShowObjectives or true
-	WorldMapBlobFrame.Show = WorldMapBlobFrame:Show()
-	WorldMapPOIFrame.Show = WorldMapPOIFrame:Show()		
-	WorldMapBlobFrame:Show()
-	WorldMapPOIFrame:Show()
 	
-	WatchFrame_Update()
+	if WorldMapFrame.hasTaint then
+		WatchFrame.showObjectives = WatchFrame.oldShowObjectives or true
+		WorldMapBlobFrame.Show = WorldMapBlobFrame:Show()
+		WorldMapPOIFrame.Show = WorldMapPOIFrame:Show()		
+		WorldMapBlobFrame:Show()
+		WorldMapPOIFrame:Show()
+		
+		WatchFrame_Update()
+	end
 end
 
 function M:PLAYER_REGEN_DISABLED()
@@ -75,7 +78,7 @@ function M:PLAYER_REGEN_DISABLED()
 	WorldMapQuestShowObjectives:Disable()
 	WorldMapTrackQuest:Disable()
 
-	if WorldMapQuestShowObjectives:GetChecked() then
+	if WorldMapFrame.hasTaint then
 		if WORLDMAP_SETTINGS.size == WORLDMAP_QUESTLIST_SIZE then
 			WorldMapFrame_SetFullMapView()
 		end
