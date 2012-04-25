@@ -270,7 +270,6 @@ P['unitframe'] = {
 			},
 			['castbar'] = {
 				['enable'] = true,
-				['snaptoab'] = true,  -- Position the player castbar above actionbar 1 and size it automatically. This disables the 'width' option.
 				['width'] = 260,
 				['height'] = 20,
 				['icon'] = false,
