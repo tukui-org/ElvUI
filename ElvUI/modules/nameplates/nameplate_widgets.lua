@@ -295,17 +295,24 @@ end
 function NP:SetAuraInstance(guid, spellid, expiration, stacks, caster, duration, texture, auratype, auratarget)
 	local filter = false
 	if (self.db.trackauras and caster == UnitGUID('player')) then
-		filter = true;
-	end	
-
-	if self.db.trackfilter and #self.db.trackfilter > 1 then
-		local name = GetSpellInfo(spellid)
-		local spellList = E.global['unitframe']['aurafilters'][self.db.trackfilter].spells
-		if spellList[name] then
+		if self.db.trackfilter and #self.db.trackfilter > 1 then
+			local name = GetSpellInfo(spellid)
+			local spellList = E.global['unitframe']['aurafilters'][self.db.trackfilter].spells
+			local type = E.global['unitframe']['aurafilters'][self.db.trackfilter].type
+			if type == 'Blacklist' then
+				if not spellList[name] then
+					filter = true;
+				end
+			else
+				if spellList[name] then
+					filter = true;
+				end
+			end
+		elseif self.db.trackfilter ~= true then
 			filter = true;
 		end
 	end
-	
+
 	if filter ~= true then
 		return;
 	end
