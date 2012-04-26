@@ -251,7 +251,7 @@ function UF:PostUpdatePower(unit, min, max)
 
 	local db = self:GetParent().db
 	
-	if self.LowManaText then
+	if self.LowManaText and db then
 		if pToken == 'MANA' then
 			if perc <= db.lowmana and not dead and not ghost then
 				self.LowManaText:SetText(LOW..' '..MANA)
