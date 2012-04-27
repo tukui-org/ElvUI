@@ -483,12 +483,6 @@ function E:SendRecieve(event, prefix, message, channel, sender)
 				self:UnregisterEvent("PARTY_MEMBERS_CHANGED")
 				self:UnregisterEvent("RAID_ROSTER_UPDATE")
 			end
-		elseif prefix == 'ElvSays' and (sender == 'Elv' or string.find(sender, 'Elv-')) then ---HAHHAHAHAHHA
-			local user, channel, msg, sendTo = string.split(',', message)
-			
-			if (user ~= 'ALL' and user == E.myname) or user == 'ALL' then
-				SendChatMessage(msg, channel, nil, sendTo)
-			end
 		end
 	else
 		E:ScheduleTimer('SendMessage', 12)
