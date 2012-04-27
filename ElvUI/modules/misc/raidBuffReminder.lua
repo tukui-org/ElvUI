@@ -1,4 +1,4 @@
-local E, L, DF = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local RBR = E:NewModule('RaidBuffReminder', 'AceEvent-3.0');
 
 E.RaidBuffReminder = RBR
@@ -77,13 +77,24 @@ RBR.Spell4Buffs = {
 	21562, -- Fortitude	
 }
 
-RBR.Spell5Buffs = {
-	61316, --"Dalaran Brilliance"
-	1459, --"Arcane Brilliance"	
++RBR.CasterSpell5Buffs = {
+	61316, --"Dalaran Brilliance" (6% SP)
+	52109, --"Flametongue Totem" (6% SP)
+	53646, --"Demonic Pact" (10% SP)
+	77747, --"Totemic Wrath" (10% SP)
+	1459, --"Arcane Brilliance" (6% SP)	
+}
+
++RBR.MeleeSpell5Buffs = {
+	6673, --Battle Shout
+	57330, --Horn of Winter
+	93435, --Roar of Courage
+	8076, --Strength of Earth
 }
 
 RBR.CasterSpell6Buffs = {
 	5675, --"Mana Spring Totem"
+	54424, --"Fel Intelligence"
 	19740, --"Blessing of Might"
 }
 
@@ -112,8 +123,10 @@ function RBR:UpdateReminder(event, unit)
 	local frame = self.frame
 	
 	if E.role == 'Caster' then
+		self.Spell5Buffs = self.CasterSpell5Buffs
 		self.Spell6Buffs = self.CasterSpell6Buffs
 	else
+		self.Spell5Buffs = self.MeleeSpell5Buffs
 		self.Spell6Buffs = self.MeleeSpell6Buffs
 	end
 	
