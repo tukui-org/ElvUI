@@ -77,7 +77,7 @@ RBR.Spell4Buffs = {
 	21562, -- Fortitude	
 }
 
-+RBR.CasterSpell5Buffs = {
+RBR.CasterSpell5Buffs = {
 	61316, --"Dalaran Brilliance" (6% SP)
 	52109, --"Flametongue Totem" (6% SP)
 	53646, --"Demonic Pact" (10% SP)
@@ -85,7 +85,7 @@ RBR.Spell4Buffs = {
 	1459, --"Arcane Brilliance" (6% SP)	
 }
 
-+RBR.MeleeSpell5Buffs = {
+RBR.MeleeSpell5Buffs = {
 	6673, --Battle Shout
 	57330, --Horn of Winter
 	93435, --Roar of Courage
