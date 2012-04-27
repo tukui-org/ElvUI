@@ -638,6 +638,11 @@ function E:Initialize()
 	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
 	self.data.RegisterCallback(self, "OnProfileCopied", "UpdateAll")
 	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
+	
+	if self.data and self.data.profile and self.data.profile.keybinds then
+		self.data.profile.keybinds = nil;
+	end
+	
 	self.db = self.data.profile;
 	self.global = self.data.global;
 

@@ -1,6 +1,7 @@
 ﻿local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI", "ruRU")
 if not L then return; end
+
 L["24-Hour Time"] = "24х часовой формат"
 L["Accept Invites"] = "Принимать приглашения"
 L["Achievement Frame"] = "Достижения"
@@ -792,4 +793,7 @@ L["Your items have been repaired for: "] = "Ваши предметы отрем
 L["Your items have been repaired using guild bank funds for: "] = "Ваши предметы отремонтированы за счет гильдии на: "
 L["Your version of ElvUI is out of date. You can download the latest version from www.tukui.org"] = "Ваша версия ElvUI устарела. Вы можете скачать последнюю версию на www.tukui.org"
 L['|cFFE30000Lua error recieved. You can view the error message when you exit combat.'] = "|cFFE30000Обнаружена ошибка lua. Вы получите отчет о ней после завершения боя."
-L["%s: %s tried to call the protected function '%s'."] = "%s: %s попытался вызвать защищенную функцию '%s'."
+L['Class Names'] = "Имена по классу"
+L['Color the name text by class or reaction.'] = "Окрашивает имена по цвету класса или отношению."
+L["Log Taints"] = "Отслеживать недочеты"
+L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = "Отображать ошибки типа ADDON_ACTION_BLOCKED в фрейме ошибок lua. Эти ошибки в большинстве случаев не сильно важны и не влияют на производительность. Также многие из этих ошибок не могут быть исправлены. Пожалуйста, сообщайте об этих ошибках только если вы заметите дефект в игре."
