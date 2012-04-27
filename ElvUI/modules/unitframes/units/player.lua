@@ -474,7 +474,8 @@ function UF:Update_PlayerFrame(frame, db)
 			castbar.Spark:Hide()
 		end
 		
-		castbar:Point("TOPRIGHT", frame, "BOTTOMRIGHT", -(BORDER + db.castbar.xOffset), -((BORDER*2+BORDER) + db.castbar.yOffset))
+		castbar:ClearAllPoints()
+		castbar:Point("TOPRIGHT", frame, "BOTTOMRIGHT", (-BORDER + db.castbar.xOffset), (-(BORDER*2+BORDER) + db.castbar.yOffset))
 		
 		if db.castbar.enable and not frame:IsElementEnabled('Castbar') then
 			frame:EnableElement('Castbar')
