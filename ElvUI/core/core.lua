@@ -84,6 +84,11 @@ function E:UpdateMedia()
 	self:UpdateBlizzardFonts()
 end
 
+function E:PLAYER_ENTERING_WORLD()
+	self:UpdateMedia()
+	self:UnregisterEvent('PLAYER_ENTERING_WORLD')
+end
+
 function E:ValueFuncCall()
 	for func, _ in pairs(self['valueColorUpdateFuncs']) do
 		func(self["media"].hexvaluecolor, unpack(self["media"].rgbvaluecolor))
@@ -691,6 +696,7 @@ function E:Initialize()
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "SendRecieve")
 	self:RegisterEvent("CHAT_MSG_ADDON", "SendRecieve")
 	self:RegisterEvent('UI_SCALE_CHANGED', 'UIScale')
+	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	--self:RegisterEvent('UPDATE_BINDINGS', 'SaveKeybinds')
 	--self:SaveKeybinds()
 	
