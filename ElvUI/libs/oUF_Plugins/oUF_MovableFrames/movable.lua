@@ -351,7 +351,7 @@ do
 		backdrop:SetFrameStrata"TOOLTIP"
 		backdrop:SetSize(target:GetSize())
 		backdrop:SetPoint(p, p2, p3, p4, p5)
-		
+
 		SaveDefaultPosition(target)
 		LoadObjectPosition(target)
 		
@@ -371,9 +371,9 @@ do
 		name:SetTextColor(unpack(E["media"].rgbvaluecolor))
 		
 		backdrop.name = name
-		backdrop.obj = obj
+		backdrop.obj = target
 		backdrop.header = isHeader
-
+		target.mover = backdrop
 		backdrop:SetTemplate("Default", true)
 
 		if (isHeader and (not isHeader:GetAttribute'minHeight' and math.floor(isHeader:GetHeight()) == 0 or not isHeader:GetAttribute'minWidth' and math.floor(isHeader:GetWidth()) == 0)) then
