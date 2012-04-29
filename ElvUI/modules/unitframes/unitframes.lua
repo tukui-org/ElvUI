@@ -172,10 +172,10 @@ function UF:UpdateColors()
 			["POWER_TYPE_PYRITE"] = {0.60, 0.09, 0.17},
 		}, {__index = ElvUF['colors'].power}),
 		runes = setmetatable({
-				[1] = {.69,.31,.31},
-				[2] = {.33,.59,.33},
-				[3] = {.31,.45,.63},
-				[4] = {.84,.75,.65},
+				[1] = {1, 0, 0},
+				[2] = {0, .5, 0},
+				[3] = {0, 1, 1},
+				[4] = {.9, .1, 1},
 		}, {__index = ElvUF['colors'].runes}),
 		reaction = setmetatable({
 			[1] = {bad.r, bad.g, bad.b}, -- Hated

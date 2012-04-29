@@ -1,3 +1,54 @@
+--[[ Element: Heal Prediction Bar
+ Handle updating and visibility of the heal prediction status bars.
+
+ Widget
+
+ HealPrediction - A table containing `myBar` and `otherBar`.
+
+ Sub-Widgets
+
+ myBar    - A StatusBar used to represent your incoming heals.
+ otherBar - A StatusBar used to represent other peoples incoming heals.
+
+ Notes
+
+ The default StatusBar texture will be applied if the UI widget doesn't have a
+ status bar texture or color defined.
+
+ Options
+
+ .maxOverflow - Defines the maximum amount of overflow past the end of the
+                health bar.
+
+ Examples
+
+   -- Position and size
+   local myBar = CreateFrame('StatusBar', nil, self.Health)
+   myBar:SetPoint('TOP')
+   myBar:SetPoint('BOTTOM')
+   myBar:SetPoint('LEFT', self.Health:GetStatusBarTexture(), 'RIGHT')
+   myBar:SetWidth(200)
+   
+   local otherBar = CreateFrame('StatusBar', nil, self.Health)
+   otherBar:SetPoint('TOP')
+   otherBar:SetPoint('BOTTOM')
+   otherBar:SetPoint('LEFT', self.Health:GetStatusBarTexture(), 'RIGHT')
+   otherBar:SetWidth(200)
+   
+   -- Register with oUF
+   self.HealPrediction = {
+      myBar = myBar,
+      otherBar = otherBar,
+      maxOverflow = 1.05,
+   }
+
+ Hooks
+
+ Override(self) - Used to completely override the internal update function.
+                  Removing the table key entry will make the element fall-back
+                  to its internal function again.
+]]
+
 local _, ns = ...
 local oUF = ns.oUF
 

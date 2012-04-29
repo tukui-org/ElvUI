@@ -1,3 +1,40 @@
+--[[ Element: Ready Check Icon
+
+ Handles updating and visibility of `self.ReadyCheck` based upon the units
+ ready check status.
+
+ Widget
+
+ ReadyCheck - A Texture representing ready check status.
+
+ Notes
+
+ This element updates by changing the texture.
+
+ Options
+
+ .finishedTime - The number of seconds the icon should stick after a check has
+                 completed. Defaults to 10 seconds.
+ .fadeTime     - The number of seconds the icon should used to fade away after
+                 the stick duration has completed. Defaults to 1.5 seconds.
+
+ Examples
+
+   -- Position and size
+   local ReadyCheck = self:CreateTexture(nil, 'OVERLAY')
+   ReadyCheck:SetSize(16, 16)
+   ReadyCheck:SetPoint('TOP')
+   
+   -- Register with oUF
+   self.ReadyCheck = ReadyCheck
+
+ Hooks
+
+ Override(self) - Used to completely override the internal update function.
+                  Removing the table key entry will make the element fall-back
+                  to its internal function again.
+]]
+
 local parent, ns = ...
 local oUF = ns.oUF
 

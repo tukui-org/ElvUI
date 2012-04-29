@@ -94,10 +94,10 @@ for k, v in pairs{
 		argcheck(unit, 3, 'string', 'nil')
 
 		local element = elements[name]
-		if not activeElements[self] then activeElements[self] = {}; end
 		if(not element or self:IsElementEnabled(name)) then return end
-		
+
 		if(element.enable(self, unit or self.unit)) then
+			if not activeElements[self] then activeElements[self] = {}; end
 			activeElements[self][name] = true
 
 			if(element.update) then
@@ -110,7 +110,6 @@ for k, v in pairs{
 		argcheck(name, 2, 'string')
 
 		local enabled = self:IsElementEnabled(name)
-		if not activeElements[self] then activeElements[self] = {}; end
 		if(not enabled) then return end
 
 		local update = elements[name].update
@@ -120,7 +119,8 @@ for k, v in pairs{
 				break
 			end
 		end
-
+		
+		if not activeElements[self] then activeElements[self] = {}; end
 		activeElements[self][name] = nil
 
 		-- We need to run a new update cycle in-case we knocked ourself out of sync.

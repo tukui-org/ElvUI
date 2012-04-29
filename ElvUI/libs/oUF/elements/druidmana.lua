@@ -1,19 +1,74 @@
--- Druid Mana Bar for Cat and Bear forms
--- Authors: Califpornia aka Ennie // some code taken from oUF`s EclipseBar element
+--[[ Element: Druid Mana Bar
+ Handles updating and visibility of a status bar displaying the druid's mana
+ while outside of caster form.
+
+ Widget
+
+ DruidMana - A StatusBar to represent current caster mana.
+
+ Sub-Widgets
+
+ .bg - A Texture which functions as a background. It will inherit the color of
+       the main StatusBar.
+
+ Notes
+
+ The default StatusBar texture will be applied if the UI widget doesn't have a
+ status bar texture or color defined.
+
+ Options
+
+ .colorClass  - Use `self.colors.class[class]` to color the bar. This will
+                always use DRUID as class.
+ .colorSmooth - Use `self.colors.smooth` to color the bar with a smooth
+                gradient based on the players current mana percentage.
+ .colorPower  - Use `self.colors.power[token]` to color the bar. This will
+                always use MANA as token.
+
+ Sub-Widget Options
+
+ .multiplier - Defines a multiplier, which is used to tint the background based
+               on the main widgets R, G and B values. Defaults to 1 if not
+               present.
+
+ Examples
+
+   -- Position and size
+   local DruidMana = CreateFrame("StatusBar", nil, self)
+   DruidMana:SetSize(20, 20)
+   DruidMana:SetPoint('TOP')
+   DruidMana:SetPoint('LEFT')
+   DruidMana:SetPoint('RIGHT')
+   
+   -- Add a background
+   local Background = DruidMana:CreateTexture(nil, 'BACKGROUND')
+   Background:SetAllPoints(DruidMana)
+   Background:SetTexture(1, 1, 1, .5)
+   
+   -- Register it with oUF
+   self.DruidMana = DruidMana
+   self.DruidMana.bg = Background
+
+ Hooks
+
+ Override(self) - Used to completely override the internal update function.
+                  Removing the table key entry will make the element fall-back
+                  to its internal function again.
+
+]]
+
 if(select(2, UnitClass('player')) ~= 'DRUID') then return end
 
 local _, ns = ...
 local oUF = ns.oUF
 
 local function Update(self, event, unit, powertype)
-	--only the player frame will have this unit enabled
-	--i mainly place this check for UNIT_DISPLAYPOWER and entering a vehicle
 	if(unit ~= 'player' or (powertype and powertype ~= 'MANA')) then return end
 
 	local druidmana = self.DruidMana
 	if(druidmana.PreUpdate) then druidmana:PreUpdate(unit) end
 
-	--check form
+	-- Hide the bar if the active power type is mana.
 	if(UnitPowerType('player') == SPELL_POWER_MANA) then
 		return druidmana:Hide()
 	else
