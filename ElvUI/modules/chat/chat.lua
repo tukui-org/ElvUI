@@ -719,35 +719,17 @@ function CH:SetChatFont(dropDown, chatFrame, fontSize)
 	chatFrame:SetShadowOffset((E.mult or 1), -(E.mult or 1))	
 end
 
-function CH:ChatEdit_AddHistory(editBox)
-	local text = "";
-	local type = editBox:GetAttribute("chatType");
-	local header = _G["SLASH_"..type.."1"];
-	if ( header ) then
-		text = header;
-	end
-
-	if ( type == "WHISPER" ) then
-		text = text.." "..editBox:GetAttribute("tellTarget");
-	elseif ( type == "CHANNEL" ) then
-		text = "/"..editBox:GetAttribute("channelTarget");
-	end
-
-	local editBoxText = editBox:GetText();
-	if ( strlen(editBoxText) > 0 ) then
-		text = text.." "..editBox:GetText();
-	end
+function CH:ChatEdit_AddHistory(editBox, line)
+	if line:find("/rl") then return; end
 	
-	if text:find("/rl") then return; end
-	
-	if ( strlen(text) > 0 ) then
-		for i, t in pairs(ElvCharacterData.ChatEditHistory) do
-			if t == text then
+	if ( strlen(line) > 0 ) then
+		for i, text in pairs(ElvCharacterData.ChatEditHistory) do
+			if text == line then
 				return
 			end
 		end
 		
-		table.insert(ElvCharacterData.ChatEditHistory, #ElvCharacterData.ChatEditHistory + 1, text)
+		table.insert(ElvCharacterData.ChatEditHistory, #ElvCharacterData.ChatEditHistory + 1, line)
 		if #ElvCharacterData.ChatEditHistory > 5 then
 			table.remove(ElvCharacterData.ChatEditHistory, 1)
 		end
