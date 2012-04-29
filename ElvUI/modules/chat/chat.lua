@@ -878,4 +878,29 @@ ChatTypeInfo.RAID_WARNING.sticky = 0
 ChatTypeInfo.CHANNEL.sticky = 0
 ChatTypeInfo.GUILD.sticky = 1
 
+-------------------------------------------------------
+-- Highlight your own name when someone mentions you
+-- Credit: Hydra
+-- Todo: Add some options for it later
+-------------------------------------------------------
+local Wrapper = "|cff71D5FF[%s]|r"
+local MyName = UnitName("player"):gsub(UnitName("player"):sub(1, 1), string.lower)
+local NameList = {MyName, "blaze", "blazeflack", "blazeflake", "steffen"}
+
+local FindMyName = function(self, event, message, author, ...)
+	local msg = message:lower()
+
+	for i = 1, #NameList do
+		if msg:find(NameList[i]) then
+			local Name = message:sub(msg:find(NameList[i]))
+			
+			return false, message:gsub(Name, Wrapper:format(Name)), author, ...
+		end
+	end
+end
+
+ChatFrame_AddMessageEventFilter("CHAT_MSG_GUILD", FindMyName)
+ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY", FindMyName)
+ChatFrame_AddMessageEventFilter("CHAT_MSG_BATTLEGROUND", FindMyName)
+
 E:RegisterModule(CH:GetName())
