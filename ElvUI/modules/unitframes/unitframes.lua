@@ -230,7 +230,7 @@ function UF:ChangeVisibility(header, visibility)
 		end
 	end	
 end
-local UNITFRAMES = UF
+
 function UF:Update_AllFrames()
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
 	if E.global["unitframe"].enable ~= true then return; end
