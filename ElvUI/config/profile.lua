@@ -36,6 +36,7 @@ P['general'] = {
 	['mapTransparency'] = 1,
 	['minimapSize'] = 176,
 	['raidReminder'] = true,
+	['tinyWorldMap'] = true,
 };
 
 --Bags

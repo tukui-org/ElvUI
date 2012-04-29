@@ -805,3 +805,5 @@ L['Color the name text by class or reaction.'] = true;
 L["No locals to dump"] = true;
 L["Log Taints"] = true;
 L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = true;
+L["Tiny Map"] = true;
+L["Don't scale the large world map to block out sides of the screen."] = true;
