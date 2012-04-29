@@ -240,7 +240,7 @@ function DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onE
 		DT.RegisteredDataTexts[name]['eventFunc'] = eventFunc
 	end
 	
-	if events == nil and updateFunc and type(updateFunc) == 'function' then
+	if updateFunc and type(updateFunc) == 'function' then
 		DT.RegisteredDataTexts[name]['onUpdate'] = updateFunc
 	end
 	
