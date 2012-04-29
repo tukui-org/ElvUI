@@ -868,6 +868,10 @@ ChatTypeInfo.GUILD.sticky = 1
 local Wrapper = "|cff71D5FF[%s]|r"
 local MyName = UnitName("player"):gsub(UnitName("player"):sub(1, 1), string.lower)
 local NameList = {MyName, "blaze", "blazeflack", "blazeflake", "steffen"}
+local string = string
+local find = string.find
+local gsub = string.gsub
+local sub = string.sub
 
 local FindMyName = function(self, event, message, author, ...)
 	local msg = message:lower()
