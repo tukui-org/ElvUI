@@ -892,9 +892,12 @@ local FindMyName = function(self, event, message, author, ...)
 
 	for i = 1, #NameList do
 		if msg:find(NameList[i]) then
+			local Start = msg:find(NameList[i])
 			local Name = message:sub(msg:find(NameList[i]))
 			
-			return false, message:gsub(Name, Wrapper:format(Name)), author, ...
+			if (message:sub(Start - 1, Start - 1) == "") then
+				return false, message:gsub(Name, Wrapper:format(Name)), author, ...
+			end
 		end
 	end
 end
