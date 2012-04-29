@@ -37,7 +37,7 @@ function UF:Update_AssistHeader(header, db)
 	UF:ClearChildPoints(header:GetChildren())
 	
 	if not header.mover then
-		self:ChangeVisibility(header, 'raid') --fucking retarded bug fix
+		self:ChangeVisibility(header, 'custom show') --fucking retarded bug fix
 	end
 	
 	self:ChangeVisibility(header, 'raid')

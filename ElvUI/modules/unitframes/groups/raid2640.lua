@@ -61,10 +61,6 @@ function UF:Raid2640SmartVisibility(event)
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")
 		return
 	end
-
-	if event == 'PARTY_MEMBERS_CHANGED' or event == "PLAYER_REGEN_ENABLED" then
-		UF:UpdateGroupChildren(self, self.db)
-	end
 end
 
 function UF:Update_Raid2640Header(header, db)
@@ -231,10 +227,8 @@ function UF:Update_Raid2640Frames(frame, db)
 		local power = frame.Power
 		
 		if USE_POWERBAR then
-			if not frame:IsElementEnabled('Power') then
-				frame:EnableElement('Power')
-				power:Show()
-			end				
+			frame:EnableElement('Power')
+			power:Show()		
 			power.Smooth = self.db.smoothbars
 			
 			--Text
@@ -277,11 +271,9 @@ function UF:Update_Raid2640Frames(frame, db)
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER), BORDER)
 			end
 		else
-			if frame:IsElementEnabled('Power') then
-				frame:DisableElement('Power')
-				power:Hide()
-				power.value:Hide()
-			end
+			frame:DisableElement('Power')
+			power:Hide()
+			power.value:Hide()
 		end
 	end
 

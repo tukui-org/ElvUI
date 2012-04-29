@@ -4,6 +4,7 @@ local LSM = LibStub("LibSharedMedia-3.0");
 
 function UF:SpawnMenu()
 	local unit = E:StringTitle(self.unit)
+	if self.unit:find("targettarget") then return; end
 	if _G[unit.."FrameDropDown"] then
 		ToggleDropDownMenu(1, nil, _G[unit.."FrameDropDown"], "cursor")
 	elseif (self.unit:match("party")) then

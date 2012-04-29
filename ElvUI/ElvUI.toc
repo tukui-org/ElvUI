@@ -1,9 +1,10 @@
 ﻿## Interface: 40300
 ## Author: Elv
-## Version: 3.65
+## Version: 3.66
 ## Title: |cff1784d1ElvUI|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvData
+## SavedVariablesPerCharacter: ElvCharacterData
 ## OptionalDeps: BigWigs, DBM-Core, DXE, SharedMedia
 ## X-oUF: ElvUF
 

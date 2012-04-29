@@ -71,6 +71,10 @@ local function LoadSkin()
 	
 	local function FixSkin()
 		WorldMapFrame:StripTextures()
+		if not E.db.general.tinyWorldMap then
+			BlackoutWorld:SetTexture(0, 0, 0, 1)
+		end
+		
 		if WORLDMAP_SETTINGS.size == WORLDMAP_FULLMAP_SIZE then
 			LargeSkin()
 		elseif WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE then
@@ -88,12 +92,16 @@ local function LoadSkin()
 		
 		WorldMapZoneInfo:FontTemplate(nil, 27, "OUTLINE")
 		WorldMapZoneInfo:SetShadowOffset(2, -2)		
+		WorldMapFrame:SetFrameLevel(3)
+		WorldMapDetailFrame:SetFrameLevel(WorldMapFrame:GetFrameLevel() + 1)
+		WorldMapFrame:SetFrameStrata('HIGH')			
 	end
 	
 	WorldMapFrame:HookScript("OnShow", FixSkin)
 	hooksecurefunc("WorldMapFrame_SetFullMapView", LargeSkin)
 	hooksecurefunc("WorldMapFrame_SetQuestMapView", QuestSkin)
 	hooksecurefunc("WorldMap_ToggleSizeUp", FixSkin)
+	BlackoutWorld:SetParent(WorldMapFrame.backdrop)
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

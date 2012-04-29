@@ -83,8 +83,14 @@ function E:UpdateMedia()
 	self:UpdateBlizzardFonts()
 end
 
+
 function E:UpdateSounds()
 	self["media"].whispersound = LSM:Fetch("sound", self.db["chat"].whispersound)
+end
+
+function E:PLAYER_ENTERING_WORLD()
+	self:UpdateMedia()
+	self:UnregisterEvent('PLAYER_ENTERING_WORLD')
 end
 
 function E:ValueFuncCall()
@@ -689,6 +695,7 @@ function E:Initialize()
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "SendRecieve")
 	self:RegisterEvent("CHAT_MSG_ADDON", "SendRecieve")
 	self:RegisterEvent('UI_SCALE_CHANGED', 'UIScale')
+	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	--self:RegisterEvent('UPDATE_BINDINGS', 'SaveKeybinds')
 	--self:SaveKeybinds()
 	
