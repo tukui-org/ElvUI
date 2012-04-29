@@ -93,7 +93,7 @@ function CH:StyleChat(frame)
 	editbox:HookScript("OnEditFocusGained", function(self) self:Show(); if not LeftChatPanel:IsShown() then LeftChatPanel.editboxforced = true; LeftChatToggleButton:GetScript('OnEnter')(LeftChatToggleButton) end end)
 	editbox:HookScript("OnEditFocusLost", function(self) if LeftChatPanel.editboxforced then LeftChatPanel.editboxforced = nil; if LeftChatPanel:IsShown() then LeftChatToggleButton:GetScript('OnLeave')(LeftChatToggleButton) end end self:Hide() end)	
 	editbox:SetAllPoints(LeftChatDataPanel)
-	self:HookScript(editbox, "OnEnterPressed", "ChatEdit_AddHistory")
+	self:SecureHook(editbox, "AddHistoryLine", "ChatEdit_AddHistory")
 	editbox:HookScript("OnTextChanged", function(self)
 	   local text = self:GetText()
 	   if text:len() < 5 then
@@ -720,35 +720,17 @@ function CH:SetChatFont(dropDown, chatFrame, fontSize)
 	chatFrame:SetShadowOffset((E.mult or 1), -(E.mult or 1))	
 end
 
-function CH:ChatEdit_AddHistory(editBox)
-	local text = "";
-	local type = editBox:GetAttribute("chatType");
-	local header = _G["SLASH_"..type.."1"];
-	if ( header ) then
-		text = header;
-	end
-
-	if ( type == "WHISPER" ) then
-		text = text.." "..editBox:GetAttribute("tellTarget");
-	elseif ( type == "CHANNEL" ) then
-		text = "/"..editBox:GetAttribute("channelTarget");
-	end
-
-	local editBoxText = editBox:GetText();
-	if ( strlen(editBoxText) > 0 ) then
-		text = text.." "..editBox:GetText();
-	end
+function CH:ChatEdit_AddHistory(editBox, line)
+	if line:find("/rl") then return; end
 	
-	if text:find("/rl") then return; end
-	
-	if ( strlen(text) > 0 ) then
-		for i, t in pairs(ElvCharacterData.ChatEditHistory) do
-			if t == text then
+	if ( strlen(line) > 0 ) then
+		for i, text in pairs(ElvCharacterData.ChatEditHistory) do
+			if text == line then
 				return
 			end
 		end
 		
-		table.insert(ElvCharacterData.ChatEditHistory, #ElvCharacterData.ChatEditHistory + 1, text)
+		table.insert(ElvCharacterData.ChatEditHistory, #ElvCharacterData.ChatEditHistory + 1, line)
 		if #ElvCharacterData.ChatEditHistory > 15 then
 			table.remove(ElvCharacterData.ChatEditHistory, 1)
 		end
