@@ -749,7 +749,7 @@ function CH:ChatEdit_AddHistory(editBox)
 		end
 		
 		table.insert(ElvCharacterData.ChatEditHistory, #ElvCharacterData.ChatEditHistory + 1, text)
-		if #ElvCharacterData.ChatEditHistory > 5 then
+		if #ElvCharacterData.ChatEditHistory > 15 then
 			table.remove(ElvCharacterData.ChatEditHistory, 1)
 		end
 	end
