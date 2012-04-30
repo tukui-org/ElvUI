@@ -858,24 +858,26 @@ end
 -- Todo: Add some options for it later
 -------------------------------------------------------
 local string = string
-local find = string.find
 local gsub = string.gsub
-local sub = string.sub
+local strsub = string.sub
+local strfind = string.find
+local format = string.format
+local strlower = string.lower
 local Wrapper = "|cff71D5FF[%s]|r"
-local MyName = UnitName("player"):gsub(UnitName("player"):sub(1, 1), string.lower)
+local MyName = gsub(UnitName("player"), strsub(UnitName("player"), 1, 1), strlower)
 local NameList = {MyName, "blaze", "blazeflake", "steffen"}
 
 local FindMyName = function(self, event, message, author, ...)
-	local msg = message:lower()
+	local msg = strlower(message)
 
 	for i = 1, #NameList do
-		if msg:find(NameList[i]) then
-			local Start = msg:find(NameList[i])
-			local Name = message:sub(msg:find(NameList[i]))
-			
-			if (message:sub(Start - 1, Start - 1) ~= "=") then
-				PlaySoundFile(E.media.whispersound,"Master")
-				return false, message:gsub(Name, Wrapper:format(Name)), author, ...
+		if strfind(msg, NameList[i]) then
+			local Start = strfind(msg, NameList[i])
+			local Name = strsub(message, strfind(msg, NameList[i]))
+
+			if strsub(message, Start - 1, Start - 1) ~= "=" then
+				-- PlaySoundFile(E.media.whispersound, "Master")
+				return false, gsub(message, Name, format(Wrapper, Name)), author, ...
 			end
 		end
 	end
