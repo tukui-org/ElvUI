@@ -852,26 +852,18 @@ function CH:Initialize()
 	end)
 end
 
--- Remember last channel
-ChatTypeInfo.WHISPER.sticky = 0
-ChatTypeInfo.BN_WHISPER.sticky = 0
-ChatTypeInfo.OFFICER.sticky = 1
-ChatTypeInfo.RAID_WARNING.sticky = 0
-ChatTypeInfo.CHANNEL.sticky = 0
-ChatTypeInfo.GUILD.sticky = 1
-
 -------------------------------------------------------
 -- Highlight your own name when someone mentions you
 -- Credit: Hydra
 -- Todo: Add some options for it later
 -------------------------------------------------------
-local Wrapper = "|cff71D5FF[%s]|r"
-local MyName = UnitName("player"):gsub(UnitName("player"):sub(1, 1), string.lower)
-local NameList = {MyName, "blaze", "blazeflack", "blazeflake", "steffen"}
 local string = string
 local find = string.find
 local gsub = string.gsub
 local sub = string.sub
+local Wrapper = "|cff71D5FF[%s]|r"
+local MyName = UnitName("player"):gsub(UnitName("player"):sub(1, 1), string.lower)
+local NameList = {MyName, "blaze", "blazeflake", "steffen"}
 
 local FindMyName = function(self, event, message, author, ...)
 	local msg = message:lower()
@@ -881,7 +873,8 @@ local FindMyName = function(self, event, message, author, ...)
 			local Start = msg:find(NameList[i])
 			local Name = message:sub(msg:find(NameList[i]))
 			
-			if (message:sub(Start - 1, Start - 1) == "") then
+			if (message:sub(Start - 1, Start - 1) ~= "=") then
+				PlaySoundFile(E.media.whispersound,"Master")
 				return false, message:gsub(Name, Wrapper:format(Name)), author, ...
 			end
 		end
