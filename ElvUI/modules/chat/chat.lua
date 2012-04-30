@@ -864,18 +864,31 @@ local strfind = string.find
 local format = string.format
 local strlower = string.lower
 local Wrapper = "|cff71D5FF[%s]|r"
-local MyName = gsub(UnitName("player"), strsub(UnitName("player"), 1, 1), strlower)
+local MyName = gsub(UnitName("player"), "%u", strlower, 1)
 local NameList = {MyName, "blaze", "blazeflake", "steffen"}
+
+-- Finding our name in a URL breaks the hyperlink, so check & exclude them
+local FindURL = function(msg)
+	local NewString, Found = gsub(msg, "(%a+)://(%S+)%s?", "%1://%2")
+	if Found > 0 then return NewString end
+	
+	NewString, Found = gsub(msg, "www%.([_A-Za-z0-9-]+)%.(%S+)%s?", "www.%1.%2")
+	if Found > 0 then return NewString end
+	
+	NewString, Found = gsub(msg, "([_A-Za-z0-9-%.]+)@([_A-Za-z0-9-]+)(%.+)([_A-Za-z0-9-%.]+)%s?", "%1@%2%3%4")
+	if Found > 0 then return NewString end
+end
 
 local FindMyName = function(self, event, message, author, ...)
 	local msg = strlower(message)
 
 	for i = 1, #NameList do
 		if strfind(msg, NameList[i]) then
-			local Start = strfind(msg, NameList[i])
-			local Name = strsub(message, strfind(msg, NameList[i]))
+			local Start, Stop = strfind(msg, NameList[i])
+			local Name = strsub(message, Start, Stop)
+			local Link = FindURL(message)
 
-			if strsub(message, Start - 1, Start - 1) ~= "=" then
+			if (not Link) or (Link and not strfind(Link, Name)) then
 				PlaySoundFile(E.media.whispersound, "Master")
 				return false, gsub(message, Name, format(Wrapper, Name)), author, ...
 			end
