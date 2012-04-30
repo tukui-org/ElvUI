@@ -93,13 +93,6 @@ local function SetupChat()
 
 	
 	if E.myname == "Elv" then
-		--keep losing my god damn channels everytime i resetui
-		ChatFrame_AddChannel(DEFAULT_CHAT_FRAME, "tystank")
-		ChatFrame_AddChannel(DEFAULT_CHAT_FRAME, "tys")
-		ChatFrame_AddChannel(DEFAULT_CHAT_FRAME, "crusaderaura")
-		ChangeChatColor("CHANNEL5", 147/255, 112/255, 219/255)
-		ChangeChatColor("CHANNEL6", 139/255, 115/255, 85/255)
-		ChangeChatColor("CHANNEL7", RAID_CLASS_COLORS["PALADIN"].r, RAID_CLASS_COLORS["PALADIN"].g, RAID_CLASS_COLORS["PALADIN"].b)
 		SetCVar("scriptErrors", 1)
 	end	
 	
@@ -274,6 +267,7 @@ function E:SetupLayout(layout)
 		E.db.unitframe.units.party.health.position = 'BOTTOM';
 		E.db.unitframe.units.party.health.orientation = 'VERTICAL';
 		E.db.unitframe.units.party.name.position = 'TOP';
+		E.db.unitframe.units.party.name.length = "SHORT";
 		E.db.unitframe.units.party.debuffs.anchorPoint = 'BOTTOMLEFT';
 		E.db.unitframe.units.party.debuffs.initialAnchor = 'TOPLEFT';
 		E.db.unitframe.units.party.debuffs.useFilter = 'DebuffBlacklist';
