@@ -876,7 +876,7 @@ local FindMyName = function(self, event, message, author, ...)
 			local Name = strsub(message, strfind(msg, NameList[i]))
 
 			if strsub(message, Start - 1, Start - 1) ~= "=" then
-				-- PlaySoundFile(E.media.whispersound, "Master")
+				PlaySoundFile(E.media.whispersound, "Master")
 				return false, gsub(message, Name, format(Wrapper, Name)), author, ...
 			end
 		end
