@@ -758,13 +758,9 @@ function UF:Update_PlayerFrame(frame, db)
 	do
 		local dbh = frame.DebuffHighlight
 		if E.db.unitframe.debuffHighlighting then
-			if not frame:IsElementEnabled('DebuffHighlight') then
-				frame:EnableElement('DebuffHighlight')
-			end
+			frame:EnableElement('DebuffHighlight')
 		else
-			if frame:IsElementEnabled('DebuffHighlight') then
-				frame:DisableElement('DebuffHighlight')
-			end		
+			frame:DisableElement('DebuffHighlight')	
 		end
 	end
 	

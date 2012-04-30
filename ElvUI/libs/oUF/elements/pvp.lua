@@ -1,32 +1,3 @@
---[[ Element: PvP Icon
-
- Handles updating and toggles visibility based upon the units PvP status.
-
- Widget
-
- PvP - A Texture used to display the faction or FFA icon.
-
- Notes
-
- This element updates by changing the texture.
-
- Examples
-
-   -- Position and size
-   local PvP = self:CreateTexture(nil, 'OVERLAY')
-   PvP:SetSize(16, 16)
-   PvP:SetPoint('TOPRIGHT', self)
-   
-   -- Register it with oUF
-   self.PvP = PvP
-
- Hooks
-
- Override(self) - Used to completely override the internal update function.
-                  Removing the table key entry will make the element fall-back
-                  to its internal function again.
-]]
-
 local parent, ns = ...
 local oUF = ns.oUF
 

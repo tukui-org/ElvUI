@@ -1,34 +1,3 @@
---[[ Element: Master Looter Icon
-
- Toggles visibility of the master looter icon.
-
- Widget
-
- MasterLooter - Any UI widget.
-
- Notes
-
- The default master looter icon will be applied if the UI widget is a texture
- and doesn't have a texture or color defined.
-
- Examples
-
-   -- Position and size
-   local MasterLooter = self:CreateTexture(nil, 'OVERLAY')
-   MasterLooter:SetSize(16, 16)
-   MasterLooter:SetPoint('TOPRIGHT', self)
-   
-   -- Register it with oUF
-   self.MasterLooter = MasterLooter
-
- Hooks
-
- Override(self) - Used to completely override the internal update function.
-                  Removing the table key entry will make the element fall-back
-                  to its internal function again.
-
-]]
-
 local parent, ns = ...
 local oUF = ns.oUF
 
