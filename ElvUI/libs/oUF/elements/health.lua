@@ -157,6 +157,10 @@ local Enable = function(self, unit)
 		health.ForceUpdate = ForceUpdate
 
 		if(health.frequentUpdates) then
+			if GetCVarBool("predictedHealth") ~= 1 then
+				SetCVar("predictedHealth", 1)
+			end
+		
 			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
 		else
 			self:RegisterEvent('UNIT_HEALTH', Path)
