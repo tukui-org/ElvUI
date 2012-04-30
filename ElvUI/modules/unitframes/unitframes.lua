@@ -583,7 +583,7 @@ function UF:Initialize()
 	end)
 		
 	self:LoadUnits()
-	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'UpdateAllHeaders')
+	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update_AllFrames')
 	
 	if E.global["unitframe"].disableBlizzard then
 		self:DisableBlizzard()	
