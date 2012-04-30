@@ -138,11 +138,9 @@ local function Enable(object)
 end
  
 local function Disable(object)
-	if object.DebuffHighlightBackdrop or object.DebuffHighlight then
-		object:UnregisterEvent("UNIT_AURA", Update)
-		object:UnregisterEvent("PLAYER_TALENT_UPDATE", CheckSpec)
-		object:UnregisterEvent("CHARACTER_POINTS_CHANGED", CheckSpec)
-	end
+	object:UnregisterEvent("UNIT_AURA", Update)
+	object:UnregisterEvent("PLAYER_TALENT_UPDATE", CheckSpec)
+	object:UnregisterEvent("CHARACTER_POINTS_CHANGED", CheckSpec)
 end
  
 oUF:AddElement('DebuffHighlight', Update, Enable, Disable)

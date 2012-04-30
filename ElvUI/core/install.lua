@@ -90,7 +90,6 @@ local function SetupChat()
 	ChatFrame_AddMessageGroup(ChatFrame6, "LOOT")
 	ChatFrame_AddMessageGroup(ChatFrame6, "MONEY")
 
-	
 	-- enable classcolor automatically on login and on each character without doing /configure each time.
 	ToggleChatColorNamesByClassGroup(false, "SAY")
 	ToggleChatColorNamesByClassGroup(false, "EMOTE")
@@ -309,6 +308,7 @@ function E:SetupLayout(layout)
 		E.db.unitframe.units.party.health.position = 'BOTTOM';
 		E.db.unitframe.units.party.health.orientation = 'VERTICAL';
 		E.db.unitframe.units.party.name.position = 'TOP';
+		E.db.unitframe.units.party.name.length = "SHORT";
 		E.db.unitframe.units.party.debuffs.anchorPoint = 'BOTTOMLEFT';
 		E.db.unitframe.units.party.debuffs.initialAnchor = 'TOPLEFT';
 		E.db.unitframe.units.party.debuffs.useFilter = 'DebuffBlacklist';

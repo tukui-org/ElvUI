@@ -620,6 +620,13 @@ local positionValues = {
 	BOTTOM = 'BOTTOM',
 };
 
+local lengthValues = {
+	["SHORT"] = L["Short"],
+	["MEDIUM"] = L["Medium"],
+	["LONG"] = L["Long"],
+	["LONGLEVEL"] = L["Long (Include Level)"],
+};
+
 local auraAnchors = {
 	TOPLEFT = 'TOPLEFT',
 	LEFT = 'LEFT',
@@ -4859,7 +4866,13 @@ E.Options.args.unitframe.args.party = {
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
-				},					
+				},			
+				length = {
+					type = 'select',
+					order = 3,
+					name = L['Length'],
+					values = lengthValues,				
+				},
 			},
 		},
 		buffs = {
@@ -5483,7 +5496,13 @@ E.Options.args.unitframe.args.raid625 = {
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
-				},					
+				},		
+				length = {
+					type = 'select',
+					order = 3,
+					name = L['Length'],
+					values = lengthValues,				
+				},				
 			},
 		},
 		buffs = {
@@ -6027,7 +6046,13 @@ E.Options.args.unitframe.args.raid2640 = {
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
-				},					
+				},	
+				length = {
+					type = 'select',
+					order = 3,
+					name = L['Length'],
+					values = lengthValues,				
+				},				
 			},
 		},
 		buffs = {
