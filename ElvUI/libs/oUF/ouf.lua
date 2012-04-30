@@ -94,8 +94,8 @@ for k, v in pairs{
 		argcheck(unit, 3, 'string', 'nil')
 
 		local element = elements[name]
-		if not activeElements[self] then activeElements[self] = {}; end
-		if(not element or self:IsElementEnabled(name)) then return end
+
+		if(not element or self:IsElementEnabled(name) or not activeElements[self]) then return end
 		
 		if(element.enable(self, unit or self.unit)) then
 			activeElements[self][name] = true
@@ -110,7 +110,6 @@ for k, v in pairs{
 		argcheck(name, 2, 'string')
 
 		local enabled = self:IsElementEnabled(name)
-		if not activeElements[self] then activeElements[self] = {}; end
 		if(not enabled) then return end
 
 		local update = elements[name].update

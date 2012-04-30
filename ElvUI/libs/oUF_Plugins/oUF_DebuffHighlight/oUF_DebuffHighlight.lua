@@ -128,8 +128,7 @@ local function Enable(object)
 		origColors[object] = { r = r, g = g, b = b, a = a}
 		r, g, b, a = object:GetBackdropBorderColor()
 		origBorderColors[object] = { r = r, g = g, b = b, a = a}
-	elseif not object.DebuffHighlightUseTexture then -- color debuffs
-		-- object.DebuffHighlight
+	elseif not object.DebuffHighlightUseTexture then
 		local r, g, b, a = object.DebuffHighlight:GetVertexColor()
 		origColors[object] = { r = r, g = g, b = b, a = a}
 	end
@@ -141,8 +140,20 @@ local function Disable(object)
 	object:UnregisterEvent("UNIT_AURA", Update)
 	object:UnregisterEvent("PLAYER_TALENT_UPDATE", CheckSpec)
 	object:UnregisterEvent("CHARACTER_POINTS_CHANGED", CheckSpec)
+	
+	if object.DebuffHighlightBackdrop then
+		local color = origColors[object]
+		if color then
+			object:SetBackdropColor(color.r, color.g, color.b, color.a)
+			color = origBorderColors[object]
+			object:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
+		end
+	elseif not object.DebuffHighlightUseTexture then -- color debuffs
+		local color = origColors[object]
+		if color then
+			object.DebuffHighlight:SetVertexColor(color.r, color.g, color.b, color.a)
+		end
+	end	
 end
  
 oUF:AddElement('DebuffHighlight', Update, Enable, Disable)
- 
-for i, frame in ipairs(oUF.objects) do Enable(frame) end

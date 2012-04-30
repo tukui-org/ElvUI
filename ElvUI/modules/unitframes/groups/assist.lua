@@ -15,7 +15,7 @@ function UF:Construct_AssistFrames(unitGroup)
 	self.Health = UF:Construct_HealthBar(self, true)
 	self.Name = UF:Construct_NameText(self)
 
-	table.insert(self.__elements, UF.UpdateThreat)
+	self.__elements["Threat"] = UF.UpdateThreat
 	self:RegisterEvent('PLAYER_TARGET_CHANGED', UF.UpdateThreat)
 	self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', UF.UpdateThreat)
 	self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', UF.UpdateThreat)		
