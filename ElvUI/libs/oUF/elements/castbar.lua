@@ -1,81 +1,8 @@
---[[ Element: Castbar
-
- Handles updating and visibility of unit castbars.
-
- Widget
-
- Castbar - A StatusBar to represent spell progress.
-
- Sub-Widgets
-
- .Text     - A FontString to represent spell name.
- .Icon     - A Texture to represent spell icon.
- .Time     - A FontString to represent spell duration.
- .Shield   - A Texture to represent if it's possible to interrupt or spell
-             steal.
- .SafeZone - A Texture to represent latency.
-
- Credits
-
- Based upon oUF_Castbar by starlon.
-
- Notes
-
- The default texture will be applied if the UI widget doesn't have a texture or
- color defined.
-
- Examples
-
-   -- Position and size
-   local Castbar = CreateFrame("StatusBar", nil, self)
-   Castbar:SetSize(20, 20)
-   Castbar:SetPoint('TOP')
-   Castbar:SetPoint('LEFT')
-   Castbar:SetPoint('RIGHT')
-   
-   -- Add a background
-   local Background = Castbar:CreateTexture(nil, 'BACKGROUND')
-   Background:SetAllPoints(Castbar)
-   Background:SetTexture(1, 1, 1, .5)
-   
-   -- Add a spark
-   local Spark = Castbar:CreateTexture(nil, "OVERLAY")
-   Spark:SetSize(20, 20)
-   Spark:SetBlendMode("ADD")
-   
-   -- Add a timer
-   local Time = Castbar:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-   Time:SetPoint("RIGHT", Castbar)
-   
-   -- Add spell text
-   local Text = Castbar:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-   Text:SetPoint("LEFT", Castbar)
-   
-   -- Add spell icon
-   local Icon = Castbar:CreateTexture(nil, "OVERLAY")
-   Icon:SetSize(20, 20)
-   Icon:SetPoint("TOPLEFT", Castbar, "TOPLEFT")
-   
-   -- Add Shield
-   local Shield = Castbar:CreateTexture(nil, "OVERLAY")
-   Shield:SetSize(20, 20)
-   Shield:SetPoint("CENTER", Castbar)
-   
-   -- Add safezone
-   local SafeZone = Castbar:CreateTexture(nil, "OVERLAY")
-   
-   -- Register it with oUF
-   self.Castbar = Castbar
-   self.Castbar.bg = Background
-   self.Castbar.Spark = Spark
-   self.Castbar.Time = Time
-   self.Castbar.Text = Text
-   self.Castbar.Icon = Icon
-   self.Castbar.SafeZone = SafeZone
-
- Hooks and Callbacks
-
-]]
+--[[
+	Original codebase:
+		oUF_Castbar by starlon.
+		http://svn.wowace.com/wowace/trunk/oUF_Castbar/
+--]]
 local parent, ns = ...
 local oUF = ns.oUF
 

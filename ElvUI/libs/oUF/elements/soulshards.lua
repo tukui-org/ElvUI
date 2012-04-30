@@ -1,27 +1,3 @@
---[[ Element: Sould Shards Indicator
-
- Toggles the visibility of the player's should shard indicator.
-
- Widget
-
- SoulShards - An array consisting of three UI widgets.
-
- Examples
-
-   local SoulShards = {}
-   for index = 1, SHARD_BAR_NUM_SHARDS do
-      local Shard = self:CreateTexture(nil, 'BACKGROUND')
-   
-      -- Position and size
-      Shard:SetSize(16, 16)
-      Shard:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', index * Shard:GetWidth(), 0)
-   
-      SoulShards[index] = Shard
-   end
-   
-   -- Register with oUF
-   self.SoulShards = SoulShards
-]]
 if(select(2, UnitClass('player')) ~= 'WARLOCK') then return end
 
 local parent, ns = ...

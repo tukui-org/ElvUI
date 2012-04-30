@@ -172,10 +172,10 @@ function UF:UpdateColors()
 			["POWER_TYPE_PYRITE"] = {0.60, 0.09, 0.17},
 		}, {__index = ElvUF['colors'].power}),
 		runes = setmetatable({
-				[1] = {1, 0, 0},
-				[2] = {0, .5, 0},
-				[3] = {0, 1, 1},
-				[4] = {.9, .1, 1},
+				[1] = {1, 0, 0},   -- blood
+				[2] = {0, .5, 0},  -- unholy
+				[3] = {0, 1, 1},   -- frost
+				[4] = {.9, .1, 1}, -- death				
 		}, {__index = ElvUF['colors'].runes}),
 		reaction = setmetatable({
 			[1] = {bad.r, bad.g, bad.b}, -- Hated
@@ -581,7 +581,7 @@ function UF:Initialize()
 	end)
 		
 	self:LoadUnits()
-	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'UpdateAllHeaders')
+	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update_AllFrames')
 	
 	if E.global["unitframe"].disableBlizzard then
 		self:DisableBlizzard()	

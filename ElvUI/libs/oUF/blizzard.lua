@@ -99,14 +99,3 @@ function oUF:DisableBlizzard(unit)
 		SetCVar('showArenaEnemyFrames', '0', 'SHOW_ARENA_ENEMY_FRAMES_TEXT')
 	end
 end
-
-for _, menu in pairs(UnitPopupMenus) do
-	for index = #menu, 1, -1 do
-		if
-			menu[index] == 'SET_FOCUS' or
-			menu[index] == 'CLEAR_FOCUS'
-		then
-			table.remove(menu, index)
-		end
-	end
-end
