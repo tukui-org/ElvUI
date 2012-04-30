@@ -50,6 +50,8 @@ oUF.colors.runes = {
 	{.9, .1, 1}, -- death
 }
 
+local runemap = { 1, 2, 5, 6, 3, 4 }
+
 local OnUpdate = function(self, elapsed)
 	local duration = self.duration + elapsed
 	if(duration >= self.max) then
@@ -60,9 +62,9 @@ local OnUpdate = function(self, elapsed)
 	end
 end
 
-local UpdateType = function(self, event, rid)
-	local rune = self.Runes[rid]
-	local colors = self.colors.runes[GetRuneType(rid)]
+local UpdateType = function(self, event, rid, alt)
+	local rune = self.Runes[runemap[rid]]
+	local colors = self.colors.runes[GetRuneType(rid) or alt]
 	local r, g, b = colors[1], colors[2], colors[3]
 
 	rune:SetStatusBarColor(r, g, b)
@@ -74,7 +76,7 @@ local UpdateType = function(self, event, rid)
 end
 
 local UpdateRune = function(self, event, rid)
-	local rune = self.Runes[rid]
+	local rune = self.Runes[runemap[rid]]
 	if(rune) then
 		local start, duration, runeReady = GetRuneCooldown(rid)
 		if(runeReady) then
@@ -96,6 +98,17 @@ local Update = function(self, event)
 	end
 end
 
+local function UpdateAllRuneTypes(self)
+	if GetPrimaryTalentTree() == nil then return; end
+	local runes = self:GetParent()
+	if(runes) then
+		for i=1, 6 do
+			UpdateType(runes, nil, i)
+		end
+	end
+	self:SetScript('OnUpdate', nil)
+end
+
 local ForceUpdate = function(element)
 	return Update(element.__owner, 'ForceUpdate')
 end
@@ -106,17 +119,20 @@ local Enable = function(self, unit)
 		runes.__owner = self
 		runes.ForceUpdate = ForceUpdate
 
+		self:RegisterEvent("RUNE_POWER_UPDATE", UpdateRune, true)
+		self:RegisterEvent("RUNE_TYPE_UPDATE", UpdateType, true)	--I have no idea why this won't fire on initial login.
+		runes:SetScript('OnUpdate', UpdateAllRuneTypes)
+		
 		for i=1, 6 do
-			local rune = runes[i]
+			local rune = runes[runemap[i]]
 			if(rune:IsObjectType'StatusBar' and not rune:GetStatusBarTexture()) then
 				rune:SetStatusBarTexture[[Interface\TargetingFrame\UI-StatusBar]]
 			end
 
-			UpdateType(self, nil, i)
+			-- From my minor testing this is a okey solution. A full login always remove
+			-- the death runes, or at least the clients knowledge about them.
+			UpdateType(self, nil, i, math.floor((runemap[i]+1)/2))
 		end
-
-		self:RegisterEvent("RUNE_POWER_UPDATE", UpdateRune, true)
-		self:RegisterEvent("RUNE_TYPE_UPDATE", UpdateType, true)
 
 		-- oUF leaves the vehicle events registered on the player frame, so
 		-- buffs and such are correctly updated when entering/exiting vehicles.
@@ -132,6 +148,11 @@ end
 local Disable = function(self)
 	RuneFrame.Show = nil
 	RuneFrame:Show()
+	
+	local runes = self.Runes
+	if(runes) then
+		runes:SetScript('OnUpdate', nil)
+	end
 
 	self:UnregisterEvent("RUNE_POWER_UPDATE", UpdateRune)
 	self:UnregisterEvent("RUNE_TYPE_UPDATE", UpdateType)
