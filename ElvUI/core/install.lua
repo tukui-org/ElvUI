@@ -349,6 +349,7 @@ function E:SetupLayout(layout)
 				["ElvUF_Boss3"] = "BOTTOMLEFTUIParent30500",
 				["ElvUF_Boss4"] = "BOTTOMLEFTUIParent30625",
 				["ElvUF_Tank"] = "LEFTUIParent30350",
+				["ElvUF_Assist"] = "LEFTUIParent30250",
 			}			
 		else
 			E.db.unitframe.units["positions"] = {
@@ -366,6 +367,7 @@ function E:SetupLayout(layout)
 				["ElvUF_Boss3"] = "BOTTOMLEFTUIParent30500",
 				["ElvUF_Boss4"] = "BOTTOMLEFTUIParent30625",
 				["ElvUF_Tank"] = "LEFTUIParent30350",
+				["ElvUF_Assist"] = "LEFTUIParent30250",
 			}
 		end
 	elseif E.db.lowresolutionset then
@@ -392,6 +394,7 @@ function E:SetupLayout(layout)
 			["ElvUF_Boss3"] = "TOPLEFTUIParent440-555",
 			["ElvUF_Boss4"] = "TOPLEFTUIParent440-680",
 			["ElvUF_Tank"] = "LEFTUIParent30150",
+			["ElvUF_Assist"] = "LEFTUIParent3050",
 		}
 	end
 	
