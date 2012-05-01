@@ -72,7 +72,7 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	health.colorTapping = true	
 	health.colorDisconnected = true
 	health:CreateBackdrop('Default')	
-	
+
 	return health
 end
 

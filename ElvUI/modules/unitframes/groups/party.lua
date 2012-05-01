@@ -378,13 +378,9 @@ function UF:Update_PartyFrames(frame, db)
 		--Only do if both debuffs and buffs aren't being used.
 		do
 			if db.debuffs.enable or db.buffs.enable then
-				if not frame:IsElementEnabled('Aura') then
-					frame:EnableElement('Aura')
-				end	
+				frame:EnableElement('Aura')
 			else
-				if frame:IsElementEnabled('Aura') then
-					frame:DisableElement('Aura')
-				end			
+				frame:DisableElement('Aura')		
 			end
 			
 			frame.Buffs:ClearAllPoints()
@@ -465,13 +461,9 @@ function UF:Update_PartyFrames(frame, db)
 		do
 			local dbh = frame.DebuffHighlight
 			if E.db.unitframe.debuffHighlighting then
-				if not frame:IsElementEnabled('DebuffHighlight') then
-					frame:EnableElement('DebuffHighlight')
-				end
+				frame:EnableElement('DebuffHighlight')
 			else
-				if frame:IsElementEnabled('DebuffHighlight') then
-					frame:DisableElement('DebuffHighlight')
-				end		
+				frame:DisableElement('DebuffHighlight')	
 			end
 		end
 		
@@ -479,17 +471,13 @@ function UF:Update_PartyFrames(frame, db)
 		do
 			local role = frame.LFDRole
 			if db.roleIcon.enable then
-				if not frame:IsElementEnabled('LFDRole') then
-					frame:EnableElement('LFDRole')				
-				end			
+				frame:EnableElement('LFDRole')				
 				
 				local x, y = self:GetPositionOffset(db.roleIcon.position, 1)
 				role:ClearAllPoints()
 				role:Point(db.roleIcon.position, frame.Health, db.roleIcon.position, x, y)
 			else
-				if frame:IsElementEnabled('LFDRole') then
-					frame:DisableElement('LFDRole')
-				end		
+				frame:DisableElement('LFDRole')	
 				role:Hide()
 			end
 		end
@@ -499,9 +487,7 @@ function UF:Update_PartyFrames(frame, db)
 			local healPrediction = frame.HealPrediction
 			
 			if db.healPrediction then
-				if not frame:IsElementEnabled('HealPrediction') then
-					frame:EnableElement('HealPrediction')
-				end
+				frame:EnableElement('HealPrediction')
 				
 				healPrediction.myBar:ClearAllPoints()
 				healPrediction.myBar:SetOrientation(db.health.orientation)
@@ -527,18 +513,14 @@ function UF:Update_PartyFrames(frame, db)
 				end
 				
 			else
-				if frame:IsElementEnabled('HealPrediction') then
-					frame:DisableElement('HealPrediction')
-				end		
+				frame:DisableElement('HealPrediction')	
 			end
 		end	
 		
 		UF:UpdateAuraWatch(frame)
 	end
 	
-	if not frame:IsElementEnabled('ReadyCheck') then
-		frame:EnableElement('ReadyCheck')
-	end		
+	frame:EnableElement('ReadyCheck')		
 	
 	frame:UpdateAllElements()
 end
