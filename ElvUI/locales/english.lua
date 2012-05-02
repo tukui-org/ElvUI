@@ -816,4 +816,5 @@ L["Medium"] = true;
 L["Long"] = true;
 L["Long (Include Level)"] = true;
 L["Length"] = true;
+L["Tanks First"] = true;
 L["Don't scale the large world map to block out sides of the screen."] = true;
