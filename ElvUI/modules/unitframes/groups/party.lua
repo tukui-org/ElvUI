@@ -92,7 +92,7 @@ function UF:Update_PartyHeader(header, db)
 	if db.groupBy == 'CLASS' then
 		header:SetAttribute("groupingOrder", "DEATHKNIGHT, DRUID, HUNTER, MAGE, PALADIN, PRIEST, SHAMAN, WARLOCK, WARRIOR")
 		header:SetAttribute('sortMethod', 'NAME')
-	elseif db.groupBy == 'ISTANK' then
+	elseif db.groupBy == 'TANK' then
 		header:SetAttribute("groupingOrder", "MAINTANK,MAINASSIST,1,2,3,4,5,6,7,8")
 		header:SetAttribute('sortMethod', 'NAME')
 	else
