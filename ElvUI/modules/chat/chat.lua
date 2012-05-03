@@ -898,6 +898,10 @@ end
 
 ChatFrame_AddMessageEventFilter("CHAT_MSG_GUILD", FindMyName)
 ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY", FindMyName)
+ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY_LEADER", FindMyName)
+ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID", FindMyName)
+ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_LEADER", FindMyName)
 ChatFrame_AddMessageEventFilter("CHAT_MSG_BATTLEGROUND", FindMyName)
+ChatFrame_AddMessageEventFilter("CHAT_MSG_BATTLEGROUND_LEADER", FindMyName)
 
 E:RegisterModule(CH:GetName())

@@ -4738,7 +4738,7 @@ E.Options.args.unitframe.args.party = {
 					type = 'select',		
 					values = {
 						['CLASS'] = CLASS,
-						['TANK'] = L["Tanks First"],
+						['ISTANK'] = L["Tanks First"],
 						['GROUP'] = GROUP,
 					},
 				},
@@ -5368,7 +5368,7 @@ E.Options.args.unitframe.args.raid625 = {
 					type = 'select',		
 					values = {
 						['CLASS'] = CLASS,
-						['TANK'] = L["Tanks First"],
+						['ISTANK'] = L["Tanks First"],
 						['GROUP'] = GROUP,
 					},
 				},			
@@ -5918,7 +5918,7 @@ E.Options.args.unitframe.args.raid2640 = {
 					type = 'select',		
 					values = {
 						['CLASS'] = CLASS,
-						['TANK'] = L["Tanks First"],
+						['ISTANK'] = L["Tanks First"],
 						['GROUP'] = GROUP,
 					},
 				},		
