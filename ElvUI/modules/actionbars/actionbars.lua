@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:NewModule('ActionBars', 'AceHook-3.0', 'AceEvent-3.0');
 --/run E, C, L = unpack(ElvUI); AB = E:GetModule('ActionBars'); AB:ToggleMovers()
 
@@ -24,7 +24,7 @@ AB.customExitButton = {
 
 function AB:Initialize()
 	self.db = E.db.actionbar
-	if E.global.actionbar.enable ~= true then return; end
+	if E.private.actionbar.enable ~= true then return; end
 	E.ActionBars = AB;
 	
 	self:DisableBlizzard()
@@ -95,7 +95,7 @@ function AB:ReassignBindings()
 end
 
 function AB:UpdateButtonSettings()
-	if E.global.actionbar.enable ~= true then return end
+	if E.private.actionbar.enable ~= true then return end
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return; end
 	for button, _ in pairs(self["handledbuttons"]) do
 		if button then
@@ -429,7 +429,7 @@ function AB:ResetMovers(...)
 end
 
 function AB:SetMoverPositions()
-	if E.global.actionbar.enable ~= true then return end
+	if E.private.actionbar.enable ~= true then return end
 	for name, _ in pairs(self.movers) do
 		local f = self.movers[name].bar
 		if f and self.db[name] and self.db[name]['position'] then

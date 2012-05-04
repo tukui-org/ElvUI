@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local function SkinFrame(frame)
@@ -30,7 +30,7 @@ local function SkinFrame(frame)
 end
 
 local function LoadSkin()
-	if E.global.skins.recount.enable ~= true then return end
+	if E.private.skins.recount.enable ~= true then return end
 	-- Override bar textures
 	Recount.UpdateBarTextures = function(self)
 		for k, v in pairs(Recount.MainWindow.Rows) do

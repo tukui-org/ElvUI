@@ -1,4 +1,4 @@
-﻿local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+﻿local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Misc');
 
 local anchor
@@ -321,7 +321,7 @@ function M:CHAT_MSG_LOOT(event, msg)
 end
 
 function M:LoadLootRoll()	
-	if not E.global.general.lootRoll then return end
+	if not E.private.general.lootRoll then return end
 	anchor = CreateFrame("Frame", nil, anchorHolder)
 	anchor:Point('TOP', E.UIParent, 'TOP', 0, -200)
 	anchor:Size(300, 22)

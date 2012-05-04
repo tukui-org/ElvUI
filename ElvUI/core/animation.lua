@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- Animation Functions
 ------------------------------------------------------------------------
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 function E:SetUpAnimGroup(object, type, ...)
 	if not type then type = 'Flash' end

@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 StaticPopupDialogs['FAILED_UISCALE'] = {
 	text = L['You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option.'],
@@ -24,6 +24,17 @@ StaticPopupDialogs["CONFIG_RL"] = {
 
 StaticPopupDialogs["GLOBAL_RL"] = {
 	text = L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."],
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	OnAccept = function() ReloadUI() end,
+	timeout = 0,
+	whileDead = 1,
+	hideOnEscape = false,
+	preferredIndex = 3,
+}
+
+StaticPopupDialogs["PRIVATE_RL"] = {
+	text = L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."],
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = function() ReloadUI() end,

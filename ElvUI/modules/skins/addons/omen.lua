@@ -1,10 +1,10 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local borderWidth = 2
 
 local function LoadSkin()
-	if E.global.skins.omen.enable ~= true then return end
+	if E.private.skins.omen.enable ~= true then return end
 	
 	-- Skin Bar Texture
 	Omen.UpdateBarTextureSettings_ = Omen.UpdateBarTextureSettings

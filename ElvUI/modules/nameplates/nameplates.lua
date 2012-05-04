@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 
 local OVERLAY = [=[Interface\TargetingFrame\UI-TargetingFrame-Flash]=]
@@ -19,7 +19,7 @@ NP.Healers = {
 
 function NP:Initialize()
 	self.db = E.db["nameplate"]
-	if E.global["nameplate"].enable ~= true then return end
+	if E.private["nameplate"].enable ~= true then return end
 	E.NamePlates = NP
 	
 	CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
@@ -723,7 +723,7 @@ function NP:PLAYER_ENTERING_WORLD()
 end
 
 function NP:UpdateAllPlates()
-	if E.global["nameplate"].enable ~= true then return end
+	if E.private["nameplate"].enable ~= true then return end
 	for frame, _ in pairs(self.Handled) do
 		frame = _G[frame]
 		self:SkinPlate(frame)

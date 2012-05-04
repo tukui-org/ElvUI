@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Bags');
 
 local TOTAL_BAGS = NUM_BAG_FRAMES + 1
@@ -28,7 +28,7 @@ function B:SkinBag(bag)
 end
 
 function B:SizeAndPositionBagBar()
-	if E.global.bags.bagBar.enable ~= true or not ElvUIBags then return; end
+	if E.private.bags.bagBar.enable ~= true or not ElvUIBags then return; end
 	if E.db.bags.bagBar.mouseover then
 		ElvUIBags:SetAlpha(0)
 	else
@@ -83,7 +83,7 @@ function B:SizeAndPositionBagBar()
 end
 
 function B:LoadBagBar()
-	if E.global.bags.bagBar.enable ~= true then return; end
+	if E.private.bags.bagBar.enable ~= true then return; end
 
 	local ElvUIBags = CreateFrame("Frame", "ElvUIBags", E.UIParent)
 	ElvUIBags:SetPoint('TOPLEFT', LeftChatPanel, 'TOPRIGHT', 4)

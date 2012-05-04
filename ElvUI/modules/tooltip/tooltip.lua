@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TT = E:NewModule('Tooltip', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 
 local _G = getfenv(0)
@@ -567,7 +567,7 @@ end
 
 function TT:Initialize()
 	self.db = E.db["tooltip"]
-	if E.global["tooltip"].enable ~= true then return end
+	if E.private["tooltip"].enable ~= true then return end
 	E.Tooltip = TT
 
 	GameTooltipStatusBar:ClearAllPoints()

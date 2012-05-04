@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:NewModule('Skins', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 
 E.Skins = S
@@ -362,7 +362,7 @@ function S:RegisterSkin(name, loadFunc, forceLoad, bypass)
 end
 
 function S:Initialize()
-	self.db = E.global.skins
+	self.db = E.private.skins
 	for addon, loadFunc in pairs(self.addonsToLoad) do
 		if IsAddOnLoaded(addon) then
 			loadFunc();

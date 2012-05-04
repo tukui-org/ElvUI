@@ -3,7 +3,7 @@
 ## Version: 3.69
 ## Title: |cff1784d1ElvUI|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
-## SavedVariables: ElvData
+## SavedVariables: ElvData, ElvPrivateData
 ## SavedVariablesPerCharacter: ElvCharacterData
 ## OptionalDeps: BigWigs, DBM-Core, DXE, SharedMedia
 ## X-oUF: ElvUF

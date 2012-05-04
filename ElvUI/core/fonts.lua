@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LSM = LibStub("LibSharedMedia-3.0")
 
 local function SetFont(obj, font, size, style, r, g, b, sr, sg, sb, sox, soy)
@@ -11,7 +11,7 @@ end
 
 function E:UpdateBlizzardFonts()	
 	local NORMAL     = self["media"].normFont
-	local COMBAT     = LSM:Fetch('font', self.global.general.dmgfont)
+	local COMBAT     = LSM:Fetch('font', self.private.general.dmgfont)
 	local NUMBER     = self["media"].normFont
 	local _, editBoxFontSize, _, _, _, _, _, _, _, _ = GetChatWindowInfo(1)
 	

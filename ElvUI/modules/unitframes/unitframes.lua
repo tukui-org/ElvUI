@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0');
 local LSM = LibStub("LibSharedMedia-3.0");
 
@@ -233,7 +233,7 @@ end
 
 function UF:Update_AllFrames()
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
-	if E.global["unitframe"].enable ~= true then return; end
+	if E.private["unitframe"].enable ~= true then return; end
 	self:UpdateColors()
 	self:Update_FontStrings()
 	self:Update_StatusBars()	
@@ -415,7 +415,7 @@ function UF:UpdateAllHeaders(event)
 		header:Update()
 	end	
 	
-	if E.global.unitframe.disableBlizzard then
+	if E.private.unitframe.disableBlizzard then
 		ElvUF:DisableBlizzard('party')	
 	end
 end
@@ -566,7 +566,7 @@ end
 
 function UF:Initialize()	
 	self.db = E.db["unitframe"]
-	if E.global["unitframe"].enable ~= true then return; end
+	if E.private["unitframe"].enable ~= true then return; end
 	E.UnitFrames = UF;
 	
 	--Database conversion from ElvUI v3.2.2 and below.
@@ -585,7 +585,7 @@ function UF:Initialize()
 	self:LoadUnits()
 	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update_AllFrames')
 	
-	if E.global["unitframe"].disableBlizzard then
+	if E.private["unitframe"].disableBlizzard then
 		self:DisableBlizzard()	
 
 		UnitPopupMenus["SELF"] = { "PVP_FLAG", "LOOT_METHOD", "LOOT_THRESHOLD", "OPT_OUT_LOOT_TITLE", "LOOT_PROMOTE", "DUNGEON_DIFFICULTY", "RAID_DIFFICULTY", "RESET_INSTANCES", "RAID_TARGET_ICON", "SELECT_ROLE", "CONVERT_TO_PARTY", "CONVERT_TO_RAID", "LEAVE", "CANCEL" };

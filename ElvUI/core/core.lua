@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LSM = LibStub("LibSharedMedia-3.0")
 local _, ns = ...
 local ElvUF = ns.oUF
@@ -52,8 +52,8 @@ function E:UpdateMedia()
 
 	--Textures
 	self["media"].blankTex = LSM:Fetch("background", "ElvUI Blank")
-	self["media"].normTex = LSM:Fetch("statusbar", self.global['general'].normTex)
-	self["media"].glossTex = LSM:Fetch("statusbar", self.global['general'].glossTex)
+	self["media"].normTex = LSM:Fetch("statusbar", self.private['general'].normTex)
+	self["media"].glossTex = LSM:Fetch("statusbar", self.private['general'].glossTex)
 
 	--Border Color
 	local border = self.db['general'].bordercolor
@@ -400,31 +400,31 @@ function E:CreateMoverPopup()
 end
 
 function E:CheckIncompatible()
-	if IsAddOnLoaded('Prat-3.0') and E.db.chat.enable then
+	if IsAddOnLoaded('Prat-3.0') and E.private.chat.enable then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Prat', 'Chat'))
-	elseif IsAddOnLoaded('Chatter') and E.db.chat.enable then
+	elseif IsAddOnLoaded('Chatter') and E.private.chat.enable then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Chatter', 'Chat'))
 	end
 	
-	if IsAddOnLoaded('Bartender4') and E.db.actionbar.enable then
+	if IsAddOnLoaded('Bartender4') and E.private.actionbar.enable then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Bartender', 'ActionBar'))
-	elseif IsAddOnLoaded('Dominos') and E.db.actionbar.enable then
+	elseif IsAddOnLoaded('Dominos') and E.private.actionbar.enable then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Dominos', 'ActionBar'))
 	end	
 	
-	if IsAddOnLoaded('TidyPlates') and E.db.nameplate.enable then
+	if IsAddOnLoaded('TidyPlates') and E.private.nameplate.enable then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'TidyPlates', 'NamePlate'))
-	elseif IsAddOnLoaded('Aloft') and E.db.nameplate.enable then
+	elseif IsAddOnLoaded('Aloft') and E.private.nameplate.enable then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Aloft', 'NamePlate'))
 	end	
 	
-	if IsAddOnLoaded('ArkInventory') and E.db.general.bags then
+	if IsAddOnLoaded('ArkInventory') and E.private.general.bags then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'ArkInventory', 'Bags'))
-	elseif IsAddOnLoaded('Bagnon') and E.db.general.bags then
+	elseif IsAddOnLoaded('Bagnon') and E.private.general.bags then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Bagnon', 'Bags'))
-	elseif IsAddOnLoaded('OneBag3') and E.db.general.bags then
+	elseif IsAddOnLoaded('OneBag3') and E.private.general.bags then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'OneBag3', 'Bags'))
-	elseif IsAddOnLoaded('OneBank3') and E.db.general.bags then
+	elseif IsAddOnLoaded('OneBank3') and E.private.general.bags then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'OneBank3', 'Bags'))
 	end
 end

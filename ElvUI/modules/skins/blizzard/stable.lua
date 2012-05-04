@@ -1,8 +1,8 @@
-local E, L, P, G = unpack(select(2, ...)) --Import: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
-	if E.global.skins.blizzard.enable ~= true or E.global.skins.blizzard.stable ~= true then return end
+	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.stable ~= true then return end
 
 	PetStableFrame:StripTextures()
 	PetStableFrameInset:StripTextures()

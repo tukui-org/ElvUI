@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...));
+local E, L, V, P, G = unpack(select(2, ...));
 local CT = E:GetModule('ClassTimers')
 
 local selectedFilter, selectedSpell, compareTable = nil, nil, {};
@@ -210,8 +210,8 @@ E.Options.args.classtimer = {
 			order = 2,
 			type = "toggle",
 			name = L["Enable"],
-			get = function(info) return E.global.classtimer[ info[#info] ] end,
-			set = function(info, value) E.global.classtimer[ info[#info] ] = value; StaticPopup_Show("GLOBAL_RL") end
+			get = function(info) return E.private.classtimer[ info[#info] ] end,
+			set = function(info, value) E.private.classtimer[ info[#info] ] = value; StaticPopup_Show("PRIVATE_RL") end
 		},
 		general = {
 			order = 3,

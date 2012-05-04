@@ -1,4 +1,4 @@
-﻿local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+﻿local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local CH = E:NewModule('Chat', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
 local CreatedFrames = 0;
@@ -224,7 +224,7 @@ function CH:PositionChat(override)
 	RightChatPanel:Size(E.db.general.panelWidth, E.db.general.panelHeight)
 	LeftChatPanel:Size(E.db.general.panelWidth, E.db.general.panelHeight)	
 	
-	if E.global.chat.enable ~= true then return end
+	if E.private.chat.enable ~= true then return end
 	
 	local chat, chatbg, tab, id, point, button, isDocked, chatFound
 	for _, frameName in pairs(CHAT_FRAMES) do
@@ -738,7 +738,7 @@ end
 
 function CH:Initialize()
 	self.db = E.db.chat
-	if E.global.chat.enable ~= true then return end
+	if E.private.chat.enable ~= true then return end
 	if not ElvCharacterData.ChatEditHistory then
 		ElvCharacterData.ChatEditHistory = {};
 	end

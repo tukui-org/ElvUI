@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 E.Options.args.skins = {
@@ -29,15 +29,15 @@ E.Options.args.skins = {
 			order = 3,
 			type = 'group',
 			name = 'BigWigs',
-			get = function(info) return E.global.skins.bigwigs[ info[#info] ] end,
-			set = function(info, value) E.global.skins.bigwigs[ info[#info] ] = value; end,
+			get = function(info) return E.private.skins.bigwigs[ info[#info] ] end,
+			set = function(info, value) E.private.skins.bigwigs[ info[#info] ] = value; end,
 			args = {
 				enable = {
 					name = L['Enable'],
 					type = 'toggle',
 					order = 1,
-					get = function(info) return E.global.skins.bigwigs[ info[#info] ] end,
-					set = function(info, value) E.global.skins.bigwigs[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,					
+					get = function(info) return E.private.skins.bigwigs[ info[#info] ] end,
+					set = function(info, value) E.private.skins.bigwigs[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,					
 				},
 				spacing = {
 					name = L['Spacing'],
@@ -52,8 +52,8 @@ E.Options.args.skins = {
 			order = 4,
 			type = 'group',
 			name = 'Ace3',
-			get = function(info) return E.global.skins.ace3[ info[#info] ] end,
-			set = function(info, value) E.global.skins.ace3[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
+			get = function(info) return E.private.skins.ace3[ info[#info] ] end,
+			set = function(info, value) E.private.skins.ace3[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
 			args = {
 				enable = {
 					name = L['Enable'],
@@ -66,8 +66,8 @@ E.Options.args.skins = {
 			order = 5,
 			type = 'group',
 			name = 'Recount',
-			get = function(info) return E.global.skins.recount[ info[#info] ] end,
-			set = function(info, value) E.global.skins.recount[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
+			get = function(info) return E.private.skins.recount[ info[#info] ] end,
+			set = function(info, value) E.private.skins.recount[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
 			args = {
 				enable = {
 					name = L['Enable'],
@@ -80,8 +80,8 @@ E.Options.args.skins = {
 			order = 6,
 			type = 'group',
 			name = 'Omen',
-			get = function(info) return E.global.skins.omen[ info[#info] ] end,
-			set = function(info, value) E.global.skins.omen[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
+			get = function(info) return E.private.skins.omen[ info[#info] ] end,
+			set = function(info, value) E.private.skins.omen[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
 			args = {
 				enable = {
 					name = L['Enable'],
@@ -94,8 +94,8 @@ E.Options.args.skins = {
 			order = 7,
 			type = 'group',
 			name = 'Skada',
-			get = function(info) return E.global.skins.skada[ info[#info] ] end,
-			set = function(info, value) E.global.skins.skada[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
+			get = function(info) return E.private.skins.skada[ info[#info] ] end,
+			set = function(info, value) E.private.skins.skada[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
 			args = {
 				enable = {
 					name = L['Enable'],
@@ -108,7 +108,7 @@ E.Options.args.skins = {
 					order = 2,
 					type = 'range',
 					min = 10, max = 30, step = 1,
-					set = function(info, value) E.global.skins.skada.barHeight = value; S:SetEmbedRight(E.db.skins.embedRight) end,
+					set = function(info, value) E.private.skins.skada.barHeight = value; S:SetEmbedRight(E.db.skins.embedRight) end,
 				},
 			},
 		},	
@@ -116,8 +116,8 @@ E.Options.args.skins = {
 			order = 8,
 			type = 'group',
 			name = 'DXE',
-			get = function(info) return E.global.skins.dxe[ info[#info] ] end,
-			set = function(info, value) E.global.skins.dxe[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
+			get = function(info) return E.private.skins.dxe[ info[#info] ] end,
+			set = function(info, value) E.private.skins.dxe[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
 			args = {
 				enable = {
 					name = L['Enable'],
@@ -130,8 +130,8 @@ E.Options.args.skins = {
 			order = 9,
 			type = 'group',
 			name = 'DBM',
-			get = function(info) return E.global.skins.dbm[ info[#info] ] end,
-			set = function(info, value) E.global.skins.dbm[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
+			get = function(info) return E.private.skins.dbm[ info[#info] ] end,
+			set = function(info, value) E.private.skins.dbm[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
 			args = {
 				enable = {
 					name = L['Enable'],
@@ -144,8 +144,8 @@ E.Options.args.skins = {
 			order = 10,
 			type = 'group',
 			name = 'TinyDPS',
-			get = function(info) return E.global.skins.tinydps[ info[#info] ] end,
-			set = function(info, value) E.global.skins.tinydps[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
+			get = function(info) return E.private.skins.tinydps[ info[#info] ] end,
+			set = function(info, value) E.private.skins.tinydps[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
 			args = {
 				enable = {
 					name = L['Enable'],
@@ -158,8 +158,8 @@ E.Options.args.skins = {
 			order = 300,
 			type = 'group',
 			name = 'Blizzard',
-			get = function(info) return E.global.skins.blizzard[ info[#info] ] end,
-			set = function(info, value) E.global.skins.blizzard[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,	
+			get = function(info) return E.private.skins.blizzard[ info[#info] ] end,
+			set = function(info, value) E.private.skins.blizzard[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,	
 			guiInline = true,
 			args = {
 				enable = {

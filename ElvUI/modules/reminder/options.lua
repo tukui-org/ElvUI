@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...));
+local E, L, V, P, G = unpack(select(2, ...));
 local R = E:GetModule('Reminder')
 
 local selectedFilter
@@ -367,8 +367,8 @@ E.Options.args.reminder = {
 			order = 2,
 			type = "toggle",
 			name = L["Enable"],
-			get = function(info) return E.global.reminder[ info[#info] ] end,
-			set = function(info, value) E.global.reminder[ info[#info] ] = value; StaticPopup_Show("GLOBAL_RL") end
+			get = function(info) return E.private.reminder[ info[#info] ] end,
+			set = function(info, value) E.private.reminder[ info[#info] ] = value; StaticPopup_Show("PRIVATE_RL") end
 		},
 		sound = {
 			type = "select", dialogControl = 'LSM30_Sound',
@@ -376,8 +376,8 @@ E.Options.args.reminder = {
 			name = L["Sound"],
 			desc = L["Sound that will play when you have a warning icon displayed."],
 			values = AceGUIWidgetLSMlists.sound,
-			get = function(info) return E.global.reminder.sound end,
-			set = function(info, value) E.global.reminder.sound = value; end		
+			get = function(info) return E.private.reminder.sound end,
+			set = function(info, value) E.private.reminder.sound = value; end		
 		},
 		spacer = {
 			order = 4,
