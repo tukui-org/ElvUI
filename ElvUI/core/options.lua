@@ -1,4 +1,4 @@
-﻿local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+﻿local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 E.Options.args = {
 	ElvUI_Header = {
@@ -106,16 +106,16 @@ E.Options.args.general = {
 					type = "toggle",
 					name = L['Loot'],
 					desc = L['Enable/Disable the loot frame.'],
-					get = function(info) return E.global.general.loot end,
-					set = function(info, value) E.global.general.loot = value; StaticPopup_Show("GLOBAL_RL") end
+					get = function(info) return E.private.general.loot end,
+					set = function(info, value) E.private.general.loot = value; StaticPopup_Show("PRIVATE_RL") end
 				},
 				lootRoll = {
 					order = 7,
 					type = "toggle",
 					name = L['Loot Roll'],
 					desc = L['Enable/Disable the loot roll frame.'],
-					get = function(info) return E.global.general.lootRoll end,
-					set = function(info, value) E.global.general.lootRoll = value; StaticPopup_Show("GLOBAL_RL") end
+					get = function(info) return E.private.general.lootRoll end,
+					set = function(info, value) E.private.general.lootRoll = value; StaticPopup_Show("PRIVATE_RL") end
 				},
 				autoscale = {
 					order = 8,
@@ -158,16 +158,16 @@ E.Options.args.general = {
 					name = L['Profile Binds'],
 					desc = L['Save your keybinds with your ElvUI profile. That way if you have the dual spec feature enabled in ElvUI you can swap keybinds with your specs.'],
 					type = 'toggle',
-					get = function(info) return E.global.general.profileBinds end,		
-					set = function(info, value) E.global.general.profileBinds = value; StaticPopup_Show("GLOBAL_RL") end
+					get = function(info) return E.private.general.profileBinds end,		
+					set = function(info, value) E.private.general.profileBinds = value; StaticPopup_Show("PRIVATE_RL") end
 				},]]
 				bubbles = {
 					order = 12,
 					type = "toggle",
 					name = L['Chat Bubbles'],
 					desc = L['Skin the blizzard chat bubbles.'],
-					get = function(info) return E.global.general.bubbles end,
-					set = function(info, value) E.global.general.bubbles = value; StaticPopup_Show("GLOBAL_RL") end
+					get = function(info) return E.private.general.bubbles end,
+					set = function(info, value) E.private.general.bubbles = value; StaticPopup_Show("PRIVATE_RL") end
 				},	
 				taintLog = {
 					order = 13,
@@ -275,8 +275,8 @@ E.Options.args.general = {
 							name = L["CombatText Font"],
 							desc = L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"],
 							values = AceGUIWidgetLSMlists.font,
-							get = function(info) return E.global.general[ info[#info] ] end,							
-							set = function(info, value) E.global.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); StaticPopup_Show("GLOBAL_RL"); end,
+							get = function(info) return E.private.general[ info[#info] ] end,							
+							set = function(info, value) E.private.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); StaticPopup_Show("PRIVATE_RL"); end,
 						},							
 					},
 				},	
@@ -292,8 +292,8 @@ E.Options.args.general = {
 							name = L["Primary Texture"],
 							desc = L["The texture that will be used mainly for statusbars."],
 							values = AceGUIWidgetLSMlists.statusbar,
-							get = function(info) return E.global.general[ info[#info] ] end,
-							set = function(info, value) E.global.general[ info[#info] ] = value; StaticPopup_Show("GLOBAL_RL") end							
+							get = function(info) return E.private.general[ info[#info] ] end,
+							set = function(info, value) E.private.general[ info[#info] ] = value; StaticPopup_Show("PRIVATE_RL") end							
 						},
 						glossTex = {
 							type = "select", dialogControl = 'LSM30_Statusbar',
@@ -301,8 +301,8 @@ E.Options.args.general = {
 							name = L["Secondary Texture"],
 							desc = L["This texture will get used on objects like chat windows and dropdown menus."],
 							values = AceGUIWidgetLSMlists.statusbar,	
-							get = function(info) return E.global.general[ info[#info] ] end,
-							set = function(info, value) E.global.general[ info[#info] ] = value; StaticPopup_Show("GLOBAL_RL") end
+							get = function(info) return E.private.general[ info[#info] ] end,
+							set = function(info, value) E.private.general[ info[#info] ] = value; StaticPopup_Show("PRIVATE_RL") end
 						},				
 					},
 				},

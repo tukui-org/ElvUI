@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local A = E:NewModule('Auras', 'AceHook-3.0', 'AceEvent-3.0');
 
 local warningTime = 5
@@ -196,7 +196,7 @@ end
 
 function A:Initialize()
 	self.db = E.db.auras
-	if E.global.auras.enable ~= true then 
+	if E.private.auras.enable ~= true then 
 		BuffFrame:Kill();
 		return 
 	end

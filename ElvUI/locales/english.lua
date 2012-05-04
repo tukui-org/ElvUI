@@ -817,4 +817,5 @@ L["Long"] = true;
 L["Long (Include Level)"] = true;
 L["Length"] = true;
 L["Tanks First"] = true;
+L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."] = true;
 L["Don't scale the large world map to block out sides of the screen."] = true;

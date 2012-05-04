@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Misc');
 
 --Credit Haste
@@ -248,7 +248,7 @@ function M:LOOT_OPENED(event, autoloot)
 end
 
 function M:LoadLoot()
-	if not E.global.general.loot then return end
+	if not E.private.general.loot then return end
 	lootFrameHolder = CreateFrame("Frame", "ElvLootFrameHolder", E.UIParent)
 	lootFrameHolder:Point("TOPLEFT", 36, -195)
 	lootFrameHolder:Width(150)

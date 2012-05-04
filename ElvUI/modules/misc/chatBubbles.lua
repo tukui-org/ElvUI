@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Misc');
 local NP = E:GetModule("NamePlates");
 local numChildren = -1
@@ -43,7 +43,7 @@ function M:HookBubbles(...)
 end
 
 function M:LoadChatBubbles()
-	if not E.global.general.bubbles then return; end
+	if not E.private.general.bubbles then return; end
 	CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
 		if(WorldFrame:GetNumChildren() ~= numChildren) then
 			numChildren = WorldFrame:GetNumChildren()

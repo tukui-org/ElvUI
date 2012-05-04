@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
@@ -258,8 +258,8 @@ E.Options.args.unitframe = {
 			order = 1,
 			type = "toggle",
 			name = L["Enable"],
-			get = function(info) return E.global.unitframe[ info[#info] ] end,
-			set = function(info, value) E.global.unitframe[ info[#info] ] = value; StaticPopup_Show("GLOBAL_RL") end
+			get = function(info) return E.private.unitframe.enable end,
+			set = function(info, value) E.private.unitframe.enable = value; StaticPopup_Show("PRIVATE_RL") end
 		},
 		moveuf = {
 			order = 2,
@@ -278,7 +278,7 @@ E.Options.args.unitframe = {
 			type = 'group',
 			name = L['General'],
 			guiInline = true,
-			disabled = function() return not E.global.unitframe.enable end,
+			disabled = function() return not E.private.unitframe.enable end,
 			set = function(info, value) E.db.unitframe[ info[#info] ] = value; UF:Update_AllFrames() end,
 			args = {
 				generalGroup = {
@@ -293,7 +293,7 @@ E.Options.args.unitframe = {
 							desc = L['Disables the blizzard party/raid frames.'],
 							type = 'toggle',
 							get = function(info) return E.global.unitframe[ info[#info] ] end,
-							set = function(info, value) E.global["unitframe"][ info[#info] ] = value; StaticPopup_Show("GLOBAL_RL") end
+							set = function(info, value) E.global["unitframe"][ info[#info] ] = value; StaticPopup_Show("PRIVATE_RL") end
 						},
 						OORAlpha = {
 							order = 2,

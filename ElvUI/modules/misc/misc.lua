@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:NewModule('Misc', 'AceEvent-3.0', 'AceTimer-3.0');
 
 E.Misc = M;
@@ -153,7 +153,7 @@ function M:AutoInvite(event, leaderName)
 end
 
 function M:ForceCVars()
-	if not GetCVarBool('lockActionBars') and E.db.actionbar.enable then
+	if not GetCVarBool('lockActionBars') and E.private.actionbar.enable then
 		SetCVar('lockActionBars', 1)
 	end
 end

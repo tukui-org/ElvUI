@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Engine
+local E, L, V, P, G = unpack(select(2, ...)); --Engine
 
 local function CreateSpellEntry(id, castByAnyone, color, unitType, castSpellId)
 	return { enabled = true, id = id, castByAnyone = castByAnyone, color = color, unitType = unitType or 0, castSpellId = castSpellId };

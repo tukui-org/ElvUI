@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 skadaWindows = {}
@@ -9,7 +9,7 @@ S.AddonPoints = {
 }
 
 function S:EmbedSkadaWindow(window, width, height, point, relativeFrame, relativePoint, ofsx, ofsy)
-	local barheight = E.global.skins.skada.barHeight
+	local barheight = E.private.skins.skada.barHeight
 	window.db.barwidth = width
 	window.db.barheight = barheight
 	if window.db.enabletitle then 

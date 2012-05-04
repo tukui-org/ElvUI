@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...));
+local E, L, V, P, G = unpack(select(2, ...));
 local R = E:NewModule('Reminder', 'AceTimer-3.0');
 local LSM = LibStub("LibSharedMedia-3.0");
 R.CreatedReminders = {};
@@ -279,7 +279,7 @@ function R:CheckForNewReminders()
 end
 
 function R:Initialize()
-	if not E.global.reminder.enable then return end
+	if not E.private.reminder.enable then return end
 	E.Reminder = R;
 
 	R:CheckForNewReminders();

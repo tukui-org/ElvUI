@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local rwiconsize = 18			-- RaidWarning icon size, because 12 is small for me.
@@ -214,7 +214,7 @@ end
 
 
 local function LoadSkin()
-	if E.global.skins.dbm.enable ~= true then return end
+	if E.private.skins.dbm.enable ~= true then return end
 	hooksecurefunc(DBT,"CreateBar",SkinBars)
 	hooksecurefunc(DBM.BossHealth,"Show",SkinBossTitle)
 	hooksecurefunc(DBM.BossHealth,"AddBoss",SkinBoss)

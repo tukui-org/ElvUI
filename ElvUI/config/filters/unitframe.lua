@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Engine
+local E, L, V, P, G = unpack(select(2, ...)); --Engine
 
 local function SpellName(id)
 	local name, _, _, _, _, _, _, _, _ = GetSpellInfo(id) 	

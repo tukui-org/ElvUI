@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TT = E:GetModule('Tooltip')
 
 
@@ -18,8 +18,8 @@ E.Options.args.tooltip = {
 			order = 2,
 			type = "toggle",
 			name = L["Enable"],
-			get = function(info) return E.global.tooltip[ info[#info] ] end,
-			set = function(info, value) E.global.tooltip[ info[#info] ] = value; StaticPopup_Show("GLOBAL_RL") end
+			get = function(info) return E.private.tooltip[ info[#info] ] end,
+			set = function(info, value) E.private.tooltip[ info[#info] ] = value; StaticPopup_Show("PRIVATE_RL") end
 		},
 		general = {
 			order = 3,

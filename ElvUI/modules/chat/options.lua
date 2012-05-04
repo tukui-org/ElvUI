@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local CH = E:GetModule('Chat')
 
 E.Options.args.chat = {
@@ -16,8 +16,8 @@ E.Options.args.chat = {
 			order = 2,
 			type = "toggle",
 			name = L["Enable"],
-			get = function(info) return E.global.chat.enable end,
-			set = function(info, value) E.global.chat.enable = value; StaticPopup_Show("GLOBAL_RL") end
+			get = function(info) return E.private.chat.enable end,
+			set = function(info, value) E.private.chat.enable = value; StaticPopup_Show("PRIVATE_RL") end
 		},				
 		general = {
 			order = 3,

@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local buttonsize = 19
@@ -155,7 +155,7 @@ local function RegisterStyle()
 	bars:RegisterBarStyle("ElvUI", {
 		apiVersion = 1,
 		version = 1,
-		GetSpacing = function(bar) return E.global.skins.bigwigs.spacing end,
+		GetSpacing = function(bar) return E.private.skins.bigwigs.spacing end,
 		ApplyStyle = applystyle,
 		BarStopped = freestyle,
 		GetStyleName = function() return "ElvUI" end,
@@ -163,7 +163,7 @@ local function RegisterStyle()
 
 	
 	local path = bars.db.profile
-	if not E.global.skins.bigwigs.enable then 
+	if not E.private.skins.bigwigs.enable then 
 		if path.barStyle == 'ElvUI' then
 			path.barStyle = 'Default'
 		end
