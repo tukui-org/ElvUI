@@ -3,8 +3,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 --Locked Settings, These settings are stored for your character only regardless of profile options.
 
 V['general'] = {
-	['loot'] = true,
-	['lootRoll'] = true,
+	['loot'] = false,
+	['lootRoll'] = false,
 	["normTex"] = "Minimalist",
 	["glossTex"] = "Minimalist",	
 	["dmgfont"] = "ElvUI Combat",
@@ -13,14 +13,14 @@ V['general'] = {
 }
 
 V['bags'] = {
-	['enable'] = true,
+	['enable'] = false,
 	['bagBar'] = {
-		['enable'] = true,
+		['enable'] = false,
 	},
 }
 
 V['classtimer'] = {
-	['enable'] = true,
+	['enable'] = false,
 }
 
 V['reminder'] = {
@@ -29,7 +29,7 @@ V['reminder'] = {
 }
 
 V["nameplate"] = {
-	["enable"] = true,
+	["enable"] = false,
 }
 
 V['auras'] = {
@@ -62,7 +62,7 @@ V['skins'] = {
 	},
 	['skada'] = {
 		['enable'] = true,
-		['barHeight'] = 17,
+		['barHeight'] = 16,
 	},		
 	['tinydps'] = {
 		['enable'] = true,
