@@ -562,7 +562,7 @@ function NP:UpdateRoster()
 	local groupType, groupSize, unitId, unitName
 	if UnitInRaid("player") then 
 		groupType = "raid"
-		groupSize = GetNumRaidMembers() - 1
+		groupSize = GetNumGroupMembers() - 1
 	elseif UnitInParty("player") then 
 		groupType = "party"
 		groupSize = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME) 

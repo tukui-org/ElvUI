@@ -614,7 +614,7 @@ end
 
 --Scan all visible nameplate for a known unit.
 function NP:CheckUnit_Guid(frame, ...)
-	--local numParty, numRaid = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME), GetNumRaidMembers()
+	--local numParty, numRaid = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME), GetNumGroupMembers()
 	if UnitExists("target") and frame:GetAlpha() == 1 and UnitName("target") == frame.hp.name:GetText() then
 		frame.guid = UnitGUID("target")
 		frame.unit = "target"
@@ -729,7 +729,6 @@ function NP:UpdateAllPlates()
 		self:SkinPlate(frame)
 	end
 
-	self:RegisterEvent("GROUP_ROSTER_UPDATE", "UpdateRoster")
 	self:RegisterEvent("GROUP_ROSTER_UPDATE", "UpdateRoster")
 	self:RegisterEvent("PARTY_CONVERTED_TO_RAID", "UpdateRoster")
 	self:RegisterEvent('UPDATE_MOUSEOVER_UNIT', 'UpdateCastInfo')

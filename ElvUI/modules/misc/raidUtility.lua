@@ -227,7 +227,6 @@ function RU:Initialize()
 	end
 
 	--Automatically show/hide the frame if we have RaidLeader or RaidOfficer
-	self:RegisterEvent("GROUP_ROSTER_UPDATE", 'ToggleRaidUtil')
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", 'ToggleRaidUtil')
 	self:RegisterEvent("GROUP_ROSTER_UPDATE", 'ToggleRaidUtil')
 end

@@ -43,7 +43,7 @@ function CH:GetGroupDistribution()
 	if inInstance and (kind == "pvp") then
 		return "/bg "
 	end
-	if GetNumRaidMembers() > 0 then
+	if GetNumGroupMembers() > 0 then
 		return "/ra "
 	end
 	if GetNumGroupMembers(LE_PARTY_CATEGORY_HOME) > 0 then

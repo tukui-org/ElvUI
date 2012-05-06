@@ -455,14 +455,13 @@ function E:CopyTable(currentTable, defaultTable)
 end
 
 function E:SendMessage()
-	local numParty, numRaid = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME), GetNumRaidMembers();
 	local inInstance, instanceType = IsInInstance()
 	if inInstance and instanceType == 'pvp' or instanceType == 'arena' then
 		SendAddonMessage("ElvUIVC", E.version, "BATTLEGROUND")	
 	else
-		if numRaid > 0 then
+		if IsInRaid() then
 			SendAddonMessage("ElvUIVC", E.version, "RAID")
-		elseif numParty > 0 then
+		elseif IsInGroup() then
 			SendAddonMessage("ElvUIVC", E.version, "PARTY")
 		end
 	end
@@ -483,7 +482,6 @@ function E:SendRecieve(event, prefix, message, channel, sender)
 			if tonumber(message) > tonumber(E.version) then
 				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.tukui.org"])
 				self:UnregisterEvent("CHAT_MSG_ADDON")
-				self:UnregisterEvent("GROUP_ROSTER_UPDATE")
 				self:UnregisterEvent("GROUP_ROSTER_UPDATE")
 			end
 		elseif prefix == 'ElvSays' and (sender == 'Elv' or string.find(sender, 'Elv-')) then ---HAHHAHAHAHHA
@@ -693,7 +691,6 @@ function E:Initialize()
 	self:RegisterEvent("CHARACTER_POINTS_CHANGED", "CheckRole");
 	self:RegisterEvent("UNIT_INVENTORY_CHANGED", "CheckRole");
 	self:RegisterEvent("UPDATE_BONUS_ACTIONBAR", "CheckRole");	
-	self:RegisterEvent("GROUP_ROSTER_UPDATE", "SendRecieve")
 	self:RegisterEvent("GROUP_ROSTER_UPDATE", "SendRecieve")
 	self:RegisterEvent("CHAT_MSG_ADDON", "SendRecieve")
 	self:RegisterEvent('UI_SCALE_CHANGED', 'UIScale')
