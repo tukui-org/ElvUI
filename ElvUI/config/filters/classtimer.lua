@@ -9,6 +9,17 @@ G['classtimer']['trinkets_filter'] = {
 }
 
 G['classtimer']['spells_filter'] = {
+	MONK = { 
+		target = { 
+
+		},
+		player = {
+
+		},
+		procs = {
+
+		},
+	},
 	DEATHKNIGHT = { 
 		target = {
 
