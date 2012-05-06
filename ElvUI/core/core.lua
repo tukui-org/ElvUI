@@ -166,35 +166,65 @@ function E:IsPTRVersion()
 end
 
 --Check the player's role
+local roles = {
+	PALADIN = {
+		[1] = "Caster",
+		[2] = "Tank",
+		[3] = "Melee",
+	},
+	PRIEST = "Caster",
+	WARLOCK = "Caster",
+	WARRIOR = {
+		[1] = "Melee",
+		[2] = "Melee",
+		[3] = "Tank",	
+	},
+	HUNTER = "Melee",
+	SHAMAN = {
+		[1] = "Caster",
+		[2] = "Melee",
+		[3] = "Caster",	
+	},
+	ROGUE = "Melee",
+	MAGE = "Caster",
+	DEATHKNIGHT = {
+		[1] = "Tank",
+		[2] = "Melee",
+		[3] = "Melee",	
+	},
+	DRUID = {
+		[1] = "Caster",
+		[2] = "Melee",
+		[3] = "Tank",	
+		[4] = "Caster"
+	},
+	MONK = {
+		[1] = "Tank",
+		[2] = "Caster",
+		[3] = "Melee",	
+	},
+}
+
 function E:CheckRole()
 	local tree = GetSpecialization()
-	local resilience;
+	local IsInPvPGear = false;
 	local resilperc = GetCombatRatingBonus(COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN)
 	if resilperc > GetDodgeChance() and resilperc > GetParryChance() then
-		resilience = true;
-	else
-		resilience = false;
+		IsInPvPGear = true;
 	end
-	if ((self.myclass == "PALADIN" and tree == 2) or 
-	(self.myclass == "WARRIOR" and tree == 3) or 
-	(self.myclass == "DEATHKNIGHT" and tree == 1)) and
-	resilience == false or
-	(self.myclass == "DRUID" and tree == 2 and GetBonusBarOffset() == 3) then
-		self.role = "Tank";
+	
+	local role
+	if type(roles[E.myclass]) == "string" then
+		role = roles[E.myclass]
 	else
-		local playerint = select(2, UnitStat("player", 4));
-		local playeragi	= select(2, UnitStat("player", 2));
-		local base, posBuff, negBuff = UnitAttackPower("player");
-		local playerap = base + posBuff + negBuff;
-
-		if ((playerap > playerint) or (playeragi > playerint)) and not (self.myclass == "SHAMAN" and tree ~= 1 and tree ~= 3) or self.myclass == "HUNTER" or (self.myclass == "SHAMAN" and tree == 2) or self.myclass == "ROGUE" then
-		--and not 
-		--[[(UnitBuff("player", GetSpellInfo(24858)) or UnitBuff("player", GetSpellInfo(65139)))) or self.myclass == "ROGUE"]] 
-			self.role = "Melee";
-		else
-			self.role = "Caster";
-		end
+		role = roles[E.myclass][tree] or "Melee"
 	end
+	
+	if role == "Tank" and IsInPvPGear then
+		role = "Melee"
+	end
+	
+	self.role = role
 end
 
 function E:RegisterModule(name)
@@ -690,7 +720,6 @@ function E:Initialize()
 	self:RegisterEvent("PLAYER_TALENT_UPDATE", "CheckRole");
 	self:RegisterEvent("CHARACTER_POINTS_CHANGED", "CheckRole");
 	self:RegisterEvent("UNIT_INVENTORY_CHANGED", "CheckRole");
-	self:RegisterEvent("UPDATE_BONUS_ACTIONBAR", "CheckRole");	
 	self:RegisterEvent("GROUP_ROSTER_UPDATE", "SendRecieve")
 	self:RegisterEvent("CHAT_MSG_ADDON", "SendRecieve")
 	self:RegisterEvent('UI_SCALE_CHANGED', 'UIScale')
