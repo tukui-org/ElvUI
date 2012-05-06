@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:NewModule('ActionBars', 'AceHook-3.0', 'AceEvent-3.0');
---/run E, C, L = unpack(ElvUI); AB = E:GetModule('ActionBars'); AB:ToggleMovers()
 
 local Sticky = LibStub("LibSimpleSticky-1.0");
 local _LOCK
