@@ -11,6 +11,10 @@ local menuList = {
 	func = function() ToggleCharacter("PaperDollFrame") end},
 	{text = SPELLBOOK_ABILITIES_BUTTON,
 	func = function() if not SpellBookFrame:IsShown() then ShowUIPanel(SpellBookFrame) else HideUIPanel(SpellBookFrame) end end},
+	{text = MOUNTS_AND_PETS,
+	func = function()
+		TogglePetJournal();
+	end},
 	{text = TALENTS_BUTTON,
 	func = function()
 		if not PlayerTalentFrame then
@@ -46,7 +50,7 @@ local menuList = {
 		end
 	end},
 	{text = LFG_TITLE,
-	func = function() ToggleFrame(LFDParentFrame) end},
+	func = function() PVEFrame_ToggleFrame(); end},
 	{text = ENCOUNTER_JOURNAL, 
 	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then LoadAddOn('Blizzard_EncounterJournal'); end ToggleFrame(EncounterJournal) end},	
 	{text = L_CALENDAR,
