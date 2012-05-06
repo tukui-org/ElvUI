@@ -210,7 +210,7 @@ function AB:PositionAndSizeBarShapeShift()
 			button:SetScale(1);
 			button:SetAlpha(1);
 		end
-		
+				
 		self:StyleButton(button);
 		self:StyleShapeShift();
 	end
@@ -235,6 +235,9 @@ function AB:CreateBarShapeShift()
 	self:RegisterEvent('UPDATE_SHAPESHIFT_COOLDOWN', 'StyleShapeShift');
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', 'StyleShapeShift');
 	self:RegisterEvent('ACTIONBAR_PAGE_CHANGED', 'StyleShapeShift');
+	
+	StanceBarFrame:ClearAllPoints()
+	StanceBarFrame:SetAllPoints(bar)
 	
 	self:CreateMover(bar, 'ShiftAB', 'barShapeShift', -3);
 	self:AdjustMaxStanceButtons();

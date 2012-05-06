@@ -300,10 +300,11 @@ function AB:DisableBlizzard()
 	MainMenuBarArtFrame:SetParent(UIHider)
 	
 	--BETA REMOVE
-	--[[ShapeshiftBarFrame:UnregisterAllEvents()
-	ShapeshiftBarFrame:Hide()
-	ShapeshiftBarFrame:SetParent(UIHider)]]
-	
+	StanceBarFrame:UnregisterAllEvents()
+	StanceBarFrame:Hide()
+	StanceBarFrame:SetParent(UIHider)
+	StanceBarFrame.ignoreFramePositionManager = true
+
 	--BETA REMOVE
 	--[[BonusActionBarFrame:UnregisterAllEvents()
 	BonusActionBarFrame:Hide()
