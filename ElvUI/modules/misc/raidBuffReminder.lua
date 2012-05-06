@@ -3,44 +3,47 @@ local RBR = E:NewModule('RaidBuffReminder', 'AceEvent-3.0');
 
 E.RaidBuffReminder = RBR
 
-RBR.Spell1Buffs = {
+--Stats, Stamina, Attack Power, Attack Speed, SpellPower, Spell Haste, Critical Strike, Mastery
 
-}
-
-RBR.BattleElixir = {
-
-}
+RBR.Stats = {
 	
-RBR.GuardianElixir = {
-
-}
-	
-RBR.Spell2Buffs = {
-
 }
 
-RBR.Spell3Buffs = {
-
+RBR.Stamina = {
+	469, -- Commanding Shout
 }
 
-RBR.Spell4Buffs = {
+RBR.AttackPower = {
+	6673, -- Battle Shout
+}
+
+RBR.SpellPower = {
 
 }
 
-RBR.CasterSpell5Buffs = {
+RBR.AttackSpeed = {
 
 }
 
-RBR.MeleeSpell5Buffs = {
+RBR.SpellHaste = {
 
 }
 
-RBR.CasterSpell6Buffs = {
+RBR.CriticalStrike = {
 
 }
 
-RBR.MeleeSpell6Buffs = {
+RBR.Mastery = {
 
+}
+
+RBR.IndexTable = {
+	[1] = RBR.Stats,
+	[2] = RBR.Stamina,
+	[3] = RBR.AttackPower,
+	[4] = RBR.AttackSpeed,
+	[5] = RBR.CriticalStrike,
+	[6] = RBR.Mastery,
 }
 
 function RBR:CheckFilterForActiveBuff(filter)
@@ -61,35 +64,16 @@ function RBR:UpdateReminder(event, unit)
 	local frame = self.frame
 	
 	if E.role == 'Caster' then
-		self.Spell5Buffs = self.CasterSpell5Buffs
-		self.Spell6Buffs = self.CasterSpell6Buffs
+		RBR.IndexTable[3] = RBR.SpellPower
+		RBR.IndexTable[4] = RBR.SpellHaste
 	else
-		self.Spell5Buffs = self.MeleeSpell5Buffs
-		self.Spell6Buffs = self.MeleeSpell6Buffs
+		RBR.IndexTable[3] = RBR.AttackPower
+		RBR.IndexTable[4] = RBR.AttackSpeed
 	end
 	
-	local hasFlask, flaskTex = self:CheckFilterForActiveBuff(self.Spell1Buffs)
-	if hasFlask then
-		frame.spell1.t:SetTexture(flaskTex)
-		frame.spell1:SetAlpha(0.2)
-	else
-		local hasBattle, battleTex = self:CheckFilterForActiveBuff(self.BattleElixir)
-		local hasGuardian, guardianTex = self:CheckFilterForActiveBuff(self.GuardianElixir)
-
-		if (hasBattle and hasGuardian) or not hasGuardian and hasBattle then
-			frame.spell1:SetAlpha(1)
-			frame.spell1.t:SetTexture(battleTex)				
-		elseif hasGuardian then
-			frame.spell1:SetAlpha(1)
-			frame.spell1.t:SetTexture(guardianTex)		
-		else
-			frame.spell1:SetAlpha(1)
-			frame.spell1.t:SetTexture(flaskTex)
-		end
-	end
 	
-	for i = 2, 6 do
-		local hasBuff, texture = self:CheckFilterForActiveBuff(self['Spell'..i..'Buffs'])
+	for i = 1, 6 do
+		local hasBuff, texture = self:CheckFilterForActiveBuff(self.IndexTable[i])
 		frame['spell'..i].t:SetTexture(texture)
 		if hasBuff then
 			frame['spell'..i]:SetAlpha(0.2)
