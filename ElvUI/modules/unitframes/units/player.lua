@@ -33,7 +33,7 @@ function UF:Construct_PlayerFrame(frame)
 	elseif E.myclass == "WARLOCK" then
 		--frame.SoulShards = self:Construct_PaladinWarlockResourceBar(frame, E.myclass)
 	elseif E.myclass == "DEATHKNIGHT" then
-		--frame.Runes = self:Construct_DeathKnightResourceBar(frame)
+		frame.Runes = self:Construct_DeathKnightResourceBar(frame)
 	elseif E.myclass == "SHAMAN" then
 		frame.TotemBar = self:Construct_ShamanTotemBar(frame)
 	elseif E.myclass == "DRUID" then
@@ -583,7 +583,7 @@ function UF:Update_PlayerFrame(frame, db)
 				bars:Hide()
 			end]]
 		elseif E.myclass == "DEATHKNIGHT" then
-			--[[local runes = frame.Runes
+			local runes = frame.Runes
 			runes:ClearAllPoints()
 			if USE_MINI_CLASSBAR then
 				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 3/2 --Multiply by reciprocal to reset previous setting
@@ -638,7 +638,7 @@ function UF:Update_PlayerFrame(frame, db)
 				runes:Hide()
 				RuneFrame.Show = RuneFrame.Hide
 				RuneFrame:Hide()				
-			end]]			
+			end
 		elseif E.myclass == "SHAMAN" then
 			local totems = frame.TotemBar
 			
