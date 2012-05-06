@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local AB = E:GetModule('ActionBars');
 
 local ceil = math.ceil;
-local condition = "[bonusbar:5] 11; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;";
+local condition = "[vehicleui] 12; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;";
 local bar = CreateFrame('Frame', 'ElvUI_Bar1', E.UIParent, 'SecureHandlerStateTemplate');
 local LAB = LibStub("LibActionButton-1.0")
 
@@ -163,12 +163,12 @@ function AB:CreateBar1()
 	for i=1, NUM_ACTIONBAR_BUTTONS do
 		bar.buttons[i] = LAB:CreateButton(i, format(bar:GetName().."Button%d", i), bar, nil)
 		bar.buttons[i]:SetState(0, "action", i)
-		for k = 1, 11 do
+		for k = 1, 12 do
 			bar.buttons[i]:SetState(k, "action", (k - 1) * 12 + i)
 		end
 		
 		if i == 12 then
-			bar.buttons[i]:SetState(11, "custom", AB.customExitButton)
+			bar.buttons[i]:SetState(12, "custom", AB.customExitButton)
 		end		
 	end
 	self:UpdateButtonConfig(bar, bar.bindButtons)
