@@ -1,6 +1,8 @@
 local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 
+if not asdasdh then return end
+
 local AchievementHolder = CreateFrame("Frame", "AchievementHolder", E.UIParent)
 AchievementHolder:SetWidth(180)
 AchievementHolder:SetHeight(20)

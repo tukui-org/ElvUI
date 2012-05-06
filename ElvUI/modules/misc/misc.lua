@@ -108,7 +108,7 @@ function M:AutoInvite(event, leaderName)
 
 	if event == "PARTY_INVITE_REQUEST" then
 		if MiniMapLFGFrame:IsShown() then return end -- Prevent losing que inside LFD if someone invites you to group
-		if GetNumPartyMembers() > 0 or GetNumRaidMembers() > 0 then return end
+		if GetNumGroupMembers(LE_PARTY_CATEGORY_HOME) > 0 or GetNumRaidMembers() > 0 then return end
 		hideStatic = true
 	
 		-- Update Guild and Friendlist
@@ -146,7 +146,7 @@ function M:AutoInvite(event, leaderName)
 				end
 			end
 		end
-	elseif event == "PARTY_MEMBERS_CHANGED" and hideStatic == true then
+	elseif event == "GROUP_ROSTER_UPDATE" and hideStatic == true then
 		StaticPopup_Hide("PARTY_INVITE")
 		hideStatic = false
 	end
@@ -182,7 +182,7 @@ function M:Initialize()
 	self:RegisterEvent('CHAT_MSG_BG_SYSTEM_ALLIANCE', 'PVPMessageEnhancement')
 	self:RegisterEvent('CHAT_MSG_BG_SYSTEM_NEUTRAL', 'PVPMessageEnhancement')
 	self:RegisterEvent('PARTY_INVITE_REQUEST', 'AutoInvite')
-	self:RegisterEvent('PARTY_MEMBERS_CHANGED', 'AutoInvite')
+	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'AutoInvite')
 	self:RegisterEvent('CVAR_UPDATE', 'ForceCVars')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	

@@ -46,6 +46,8 @@ function AddOn:OnInitialize()
 	self.global = self.data.global;
 	self.private = self.charSettings.profile
 	
+	self.private.skins.blizzard.enable = false
+	
 	self:UIScale();
 	self:UpdateMedia();
 	

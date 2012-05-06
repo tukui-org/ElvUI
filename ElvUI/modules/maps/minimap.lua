@@ -47,8 +47,6 @@ local menuList = {
 	end},
 	{text = LFG_TITLE,
 	func = function() ToggleFrame(LFDParentFrame) end},
-	{text = RAID_FINDER,
-	func = function() RaidMicroButton:Click() end},
 	{text = ENCOUNTER_JOURNAL, 
 	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then LoadAddOn('Blizzard_EncounterJournal'); end ToggleFrame(EncounterJournal) end},	
 	{text = L_CALENDAR,

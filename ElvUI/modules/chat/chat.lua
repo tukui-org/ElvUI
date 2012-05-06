@@ -46,7 +46,7 @@ function CH:GetGroupDistribution()
 	if GetNumRaidMembers() > 0 then
 		return "/ra "
 	end
-	if GetNumPartyMembers() > 0 then
+	if GetNumGroupMembers(LE_PARTY_CATEGORY_HOME) > 0 then
 		return "/p "
 	end
 	return "/s "

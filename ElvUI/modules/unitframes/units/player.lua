@@ -499,9 +499,9 @@ function UF:Update_PlayerFrame(frame, db)
 			bars:Width(CLASSBAR_WIDTH)
 			bars:Height(CLASSBAR_HEIGHT - (BORDER*2))
 		
-			for i = 1, MAX_HOLY_POWER do
+			for i = 1, HOLY_POWER_FULL do
 				bars[i]:SetHeight(bars:GetHeight())	
-				bars[i]:SetWidth(E:Scale(bars:GetWidth() - 2)/MAX_HOLY_POWER)	
+				bars[i]:SetWidth(E:Scale(bars:GetWidth() - 2)/HOLY_POWER_FULL)	
 				bars[i]:GetStatusBarTexture():SetHorizTile(false)
 				bars[i]:ClearAllPoints()
 				if i == 1 then

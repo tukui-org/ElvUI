@@ -565,7 +565,7 @@ function NP:UpdateRoster()
 		groupSize = GetNumRaidMembers() - 1
 	elseif UnitInParty("player") then 
 		groupType = "party"
-		groupSize = GetNumPartyMembers() 
+		groupSize = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME) 
 	else 
 		groupType = "solo"
 		groupSize = 1

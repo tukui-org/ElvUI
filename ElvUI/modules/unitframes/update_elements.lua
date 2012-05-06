@@ -545,26 +545,26 @@ function UF:UpdateHoly(event, unit, powerType)
 	if(self.unit ~= unit or (powerType and powerType ~= 'HOLY_POWER')) then return end
 	local num = UnitPower(unit, SPELL_POWER_HOLY_POWER)
 	local db = self.db
-	for i = 1, MAX_HOLY_POWER do
+	for i = 1, HOLY_POWER_FULL do
 		if(i <= num) then
 			self.HolyPower[i]:SetAlpha(1)
 			
 			if i == 3 and db.classbar.fill == 'spaced' then
-				for h = 1, MAX_HOLY_POWER do
+				for h = 1, HOLY_POWER_FULL do
 					self.HolyPower[h].backdrop.shadow:Show()
 					self.HolyPower[h]:SetScript('OnUpdate', function(self)
 						E:Flash(self.backdrop.shadow, 0.6)
 					end)
 				end
 			else
-				for h = 1, MAX_HOLY_POWER do
+				for h = 1, HOLY_POWER_FULL do
 					self.HolyPower[h].backdrop.shadow:Hide()
 					self.HolyPower[h]:SetScript('OnUpdate', nil)
 				end
 			end
 		else
 			self.HolyPower[i]:SetAlpha(.2)
-			for h = 1, MAX_HOLY_POWER do
+			for h = 1, HOLY_POWER_FULL do
 				self.HolyPower[h].backdrop.shadow:Hide()
 				self.HolyPower[h]:SetScript('OnUpdate', nil)
 			end		

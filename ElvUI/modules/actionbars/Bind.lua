@@ -135,7 +135,7 @@ function AB:BindUpdate(button, spellmacro)
 		if not bind.button.id or bind.button.id < 1 or bind.button.id > (spellmacro=="STANCE" and 10 or 12) then
 			bind.button.bindstring = "CLICK "..bind.button.name..":LeftButton";
 		else
-			bind.button.bindstring = (spellmacro=="STANCE" and "SHAPESHIFTBUTTON" or "BONUSACTIONBUTTON")..bind.button.id;
+			bind.button.bindstring = (spellmacro=="STANCE" and "STANCEBUTTON" or "BONUSACTIONBUTTON")..bind.button.id;
 		end
 		
 		GameTooltip:AddLine(L['Trigger']);
@@ -202,7 +202,7 @@ function AB:BindUpdate(button, spellmacro)
 end
 
 function AB:RegisterButton(b, override)
-	local stance = ShapeshiftButton1:GetScript("OnClick");
+	local stance = StanceButton1:GetScript("OnClick");
 	local pet = PetActionButton1:GetScript("OnClick");
 	local button = SecureActionButton_OnClick;
 	if b.IsProtected and b.GetObjectType and b.GetScript and b:GetObjectType()=="CheckButton" and b:IsProtected() then

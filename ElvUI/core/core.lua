@@ -167,7 +167,7 @@ end
 
 --Check the player's role
 function E:CheckRole()
-	local tree = GetPrimaryTalentTree();
+	local tree = GetSpecialization()
 	local resilience;
 	local resilperc = GetCombatRatingBonus(COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN)
 	if resilperc > GetDodgeChance() and resilperc > GetParryChance() then
@@ -187,8 +187,9 @@ function E:CheckRole()
 		local base, posBuff, negBuff = UnitAttackPower("player");
 		local playerap = base + posBuff + negBuff;
 
-		if (((playerap > playerint) or (playeragi > playerint)) and not (self.myclass == "SHAMAN" and tree ~= 1 and tree ~= 3) and not 
-		(UnitBuff("player", GetSpellInfo(24858)) or UnitBuff("player", GetSpellInfo(65139)))) or self.myclass == "ROGUE" or self.myclass == "HUNTER" or (self.myclass == "SHAMAN" and tree == 2) then
+		if ((playerap > playerint) or (playeragi > playerint)) and not (self.myclass == "SHAMAN" and tree ~= 1 and tree ~= 3) or self.myclass == "HUNTER" or (self.myclass == "SHAMAN" and tree == 2) or self.myclass == "ROGUE" then
+		--and not 
+		--[[(UnitBuff("player", GetSpellInfo(24858)) or UnitBuff("player", GetSpellInfo(65139)))) or self.myclass == "ROGUE"]] 
 			self.role = "Melee";
 		else
 			self.role = "Caster";
@@ -454,7 +455,7 @@ function E:CopyTable(currentTable, defaultTable)
 end
 
 function E:SendMessage()
-	local numParty, numRaid = GetNumPartyMembers(), GetNumRaidMembers();
+	local numParty, numRaid = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME), GetNumRaidMembers();
 	local inInstance, instanceType = IsInInstance()
 	if inInstance and instanceType == 'pvp' or instanceType == 'arena' then
 		SendAddonMessage("ElvUIVC", E.version, "BATTLEGROUND")	
@@ -482,8 +483,8 @@ function E:SendRecieve(event, prefix, message, channel, sender)
 			if tonumber(message) > tonumber(E.version) then
 				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.tukui.org"])
 				self:UnregisterEvent("CHAT_MSG_ADDON")
-				self:UnregisterEvent("PARTY_MEMBERS_CHANGED")
-				self:UnregisterEvent("RAID_ROSTER_UPDATE")
+				self:UnregisterEvent("GROUP_ROSTER_UPDATE")
+				self:UnregisterEvent("GROUP_ROSTER_UPDATE")
 			end
 		elseif prefix == 'ElvSays' and (sender == 'Elv' or string.find(sender, 'Elv-')) then ---HAHHAHAHAHHA
 			local user, channel, msg, sendTo = string.split(',', message)
@@ -692,8 +693,8 @@ function E:Initialize()
 	self:RegisterEvent("CHARACTER_POINTS_CHANGED", "CheckRole");
 	self:RegisterEvent("UNIT_INVENTORY_CHANGED", "CheckRole");
 	self:RegisterEvent("UPDATE_BONUS_ACTIONBAR", "CheckRole");	
-	self:RegisterEvent("RAID_ROSTER_UPDATE", "SendRecieve")
-	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "SendRecieve")
+	self:RegisterEvent("GROUP_ROSTER_UPDATE", "SendRecieve")
+	self:RegisterEvent("GROUP_ROSTER_UPDATE", "SendRecieve")
 	self:RegisterEvent("CHAT_MSG_ADDON", "SendRecieve")
 	self:RegisterEvent('UI_SCALE_CHANGED', 'UIScale')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')

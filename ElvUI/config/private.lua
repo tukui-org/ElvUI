@@ -68,7 +68,7 @@ V['skins'] = {
 		['enable'] = true,
 	},			
 	['blizzard'] = {
-		['enable'] = true,
+		['enable'] = false,
 		["bags"] = true,
 		["reforge"] = true,
 		["calendar"] = true,

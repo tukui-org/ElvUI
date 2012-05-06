@@ -3,6 +3,8 @@ local B = E:NewModule('Blizzard', 'AceEvent-3.0');
 
 E.Blizzard = B;
 
+if not asdasdh then return end
+
 function B:Initialize()
 	self:EnhanceColorPicker()
 	self:KillBlizzard()
