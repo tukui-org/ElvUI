@@ -38,7 +38,7 @@ function UF:Construct_PlayerFrame(frame)
 		frame.TotemBar = self:Construct_ShamanTotemBar(frame)
 	elseif E.myclass == "DRUID" then
 		--frame.EclipseBar = self:Construct_DruidResourceBar(frame)
-		frame.DruidAltMana = self:Construct_DruidAltManaBar(frame)
+		--frame.DruidAltMana = self:Construct_DruidAltManaBar(frame)
 	end
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.Resting = self:Construct_RestingIndicator(frame)
