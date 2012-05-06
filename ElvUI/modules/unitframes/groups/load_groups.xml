@@ -1,0 +1,9 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">	
+	<Script file='party.lua'/>
+	<Script file='raid625.lua'/>
+	<Script file='raid2640.lua'/>
+	<Script file='arena.lua'/>
+	<Script file='boss.lua'/>
+	<Script file='tank.lua'/>
+	<Script file='assist.lua'/>
+</Ui>
