@@ -31,13 +31,13 @@ function UF:Construct_PlayerFrame(frame)
 	if E.myclass == "PALADIN" then
 		frame.HolyPower = self:Construct_PaladinWarlockResourceBar(frame, E.myclass)
 	elseif E.myclass == "WARLOCK" then
-		frame.SoulShards = self:Construct_PaladinWarlockResourceBar(frame, E.myclass)
+		--frame.SoulShards = self:Construct_PaladinWarlockResourceBar(frame, E.myclass)
 	elseif E.myclass == "DEATHKNIGHT" then
-		frame.Runes = self:Construct_DeathKnightResourceBar(frame)
+		--frame.Runes = self:Construct_DeathKnightResourceBar(frame)
 	elseif E.myclass == "SHAMAN" then
 		frame.TotemBar = self:Construct_ShamanTotemBar(frame)
 	elseif E.myclass == "DRUID" then
-		frame.EclipseBar = self:Construct_DruidResourceBar(frame)
+		--frame.EclipseBar = self:Construct_DruidResourceBar(frame)
 		frame.DruidAltMana = self:Construct_DruidAltManaBar(frame)
 	end
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
@@ -536,7 +536,7 @@ function UF:Update_PlayerFrame(frame, db)
 			end		
 			
 		elseif E.myclass == "WARLOCK" then
-			local bars = frame.SoulShards
+			--[[local bars = frame.SoulShards
 			bars:ClearAllPoints()
 			if USE_MINI_CLASSBAR then
 				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), -SPACING)
@@ -581,9 +581,9 @@ function UF:Update_PlayerFrame(frame, db)
 			elseif not USE_CLASSBAR and frame:IsElementEnabled('SoulShards') then
 				frame:DisableElement('SoulShards')
 				bars:Hide()
-			end					
+			end]]
 		elseif E.myclass == "DEATHKNIGHT" then
-			local runes = frame.Runes
+			--[[local runes = frame.Runes
 			runes:ClearAllPoints()
 			if USE_MINI_CLASSBAR then
 				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 3/2 --Multiply by reciprocal to reset previous setting
@@ -638,7 +638,7 @@ function UF:Update_PlayerFrame(frame, db)
 				runes:Hide()
 				RuneFrame.Show = RuneFrame.Hide
 				RuneFrame:Hide()				
-			end					
+			end]]			
 		elseif E.myclass == "SHAMAN" then
 			local totems = frame.TotemBar
 			
@@ -698,7 +698,7 @@ function UF:Update_PlayerFrame(frame, db)
 				totems:Hide()
 			end					
 		elseif E.myclass == "DRUID" then
-			local eclipseBar = frame.EclipseBar
+			--[[local eclipseBar = frame.EclipseBar
 
 			eclipseBar:ClearAllPoints()
 			if not USE_MINI_CLASSBAR then
@@ -726,7 +726,7 @@ function UF:Update_PlayerFrame(frame, db)
 			elseif not USE_CLASSBAR and frame:IsElementEnabled('EclipseBar') then
 				frame:DisableElement('EclipseBar')	
 				eclipseBar:Hide()
-			end					
+			end]]				
 		end
 	end
 	
