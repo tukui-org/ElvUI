@@ -201,12 +201,7 @@ function A:Initialize()
 		return 
 	end
 	
-	ConsolidatedBuffs:ClearAllPoints()
-	ConsolidatedBuffs:Point("LEFT", Minimap, "LEFT", 0, 3)
-	ConsolidatedBuffs:Size(16, 16)
-	ConsolidatedBuffs:SetParent(Minimap)
-	ConsolidatedBuffsIcon:SetTexture(nil)
-	ConsolidatedBuffs.SetPoint = E.noop
+	ConsolidatedBuffs:Kill()
 	
 	local holder = CreateFrame("Frame", "AurasHolder", E.UIParent)
 	holder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -((E.MinimapSize + 4) + E.RBRWidth + 7), -3)
