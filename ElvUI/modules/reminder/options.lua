@@ -267,11 +267,10 @@ local function UpdateFilterGroup(reset)
 		E.Options.args.reminder.args.filterGroup.args["reverseCheck"] = {
 			type = "toggle",
 			name = L["Reverse Check"],
-			desc = L["Instead of hiding the frame when you have the buff, show the frame when you have the buff. You must have either a Role or Spec set for this option to work."],
+			desc = L["Instead of hiding the frame when you have the buff, show the frame when you have the buff."],
 			order = 100,
 			get = function(info) return E.global['reminder']['filters'][E.myclass][selectedFilter] and E.global['reminder']['filters'][E.myclass][selectedFilter]["reverseCheck"] end,
 			set = function(info, value) E.global['reminder']['filters'][E.myclass][selectedFilter]["reverseCheck"] = value; R:CheckForNewReminders() end,
-			disabled = function() return E.global['reminder']['filters'][E.myclass][selectedFilter] and not E.global['reminder']['filters'][E.myclass][selectedFilter]["tree"] and not E.global['reminder']['filters'][E.myclass][selectedFilter]["role"] end,
 		}
 		
 		E.Options.args.reminder.args.filterGroup.args["talentTreeException"] = {
@@ -465,6 +464,8 @@ E.Options.args.reminder = {
 				
 				E.Options.args.reminder.args.filterGroup = nil
 				E.global['reminder']['filters'][E.myclass][value] = {};	
+				E.global['reminder']['filters'][E.myclass][value].enable = true
+				E.global['reminder']['filters'][E.myclass][value].size = 50
 				UpdateFilterGroup()
 				R:CheckForNewReminders()
 			end,
