@@ -7,7 +7,7 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
-local function GetInfoText(frame, unit, r, g, b, min, max, reverse, type)
+function UF:GetInfoText(frame, unit, r, g, b, min, max, reverse, type)
 	local value
 	local db = frame.db
 	
@@ -182,7 +182,7 @@ function UF:PostUpdateHealth(unit, min, max)
 			self:GetParent().ResurrectIcon:SetAlpha(0)
 		end
 		
-		self.value:SetText(GetInfoText(self:GetParent(), unit, r, g, b, min, max, reverse, 'health'))
+		self.value:SetText(UF:GetInfoText(self:GetParent(), unit, r, g, b, min, max, reverse, 'health'))
 	end
 end
 
@@ -242,7 +242,7 @@ function UF:PostUpdatePower(unit, min, max)
 					reverse = true
 				end
 				
-				self.value:SetText(GetInfoText(self:GetParent(), unit, nil, nil, nil, min, max, reverse, 'power'))
+				self.value:SetText(UF:GetInfoText(self:GetParent(), unit, nil, nil, nil, min, max, reverse, 'power'))
 			else
 				self.value:SetText(max - (max - min))
 			end
