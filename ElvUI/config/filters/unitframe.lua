@@ -361,6 +361,10 @@ G.unitframe.aurafilters['DebuffBlacklist'] = {
 			['enable'] = true,
 			['priority'] = 0,
 		}, --Insanity (Hunter Pet Heroism Debuff)
+		[SpellName(106005)] = {
+			['enable'] = true,
+			['priority'] = 0,
+		}, --Degradation (Spine of Deathwing)
 	},
 }
 
@@ -719,6 +723,10 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 			['enable'] = true,
 			['priority'] = 5,
 		}, -- Blood Corruption: Death
+		[SpellName(106200)] = { 
+			['enable'] = true,
+			['priority'] = 4,
+		}, -- Blood Corruption: Earth
 		--Madness of Deathwing
 		[SpellName(105445)] = {
 			['enable'] = true,
@@ -746,6 +754,18 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		}, -- Shrapnel (target)		
 	},
 }
+
+--Custom filter used for buffs on raidframes during Spine of Deathwing
+G.unitframe.aurafilters['Blood of Neltharion'] = {
+	['type'] = 'Whitelist',
+	['spells'] = {
+		[SpellName(106213)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Blood of Neltharion
+	},
+}
+	
 
 E.ReverseTimer = {
 	[92956] = true, -- Sinestra (Wrack)
