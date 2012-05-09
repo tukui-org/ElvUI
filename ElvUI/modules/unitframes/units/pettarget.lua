@@ -193,15 +193,14 @@ function UF:Update_PetTargetFrame(frame, db)
 		else
 			buffs:SetWidth(UNIT_WIDTH)
 		end
+
+		buffs.num = db.buffs.perrow * rows
+		buffs.size = db.buffs.sizeOverride ~= 0 and db.buffs.sizeOverride or ((((buffs:GetWidth() - (buffs.spacing*(buffs.num/rows - 1))) / buffs.num)) * rows)
 		
-		if db.buffs.initialAnchor == "RIGHT" or db.buffs.initialAnchor == "LEFT" then
-			rows = 1;
-			buffs:SetWidth(UNIT_WIDTH / 2)
+		if db.buffs.sizeOverride then
+			buffs:SetWidth(db.buffs.perrow * db.buffs.sizeOverride)
 		end
 		
-		buffs.num = db.buffs.perrow * rows
-		buffs.size = ((((buffs:GetWidth() - (buffs.spacing*(buffs.num/rows - 1))) / buffs.num)) * rows)
-
 		local x, y = self:GetAuraOffset(db.buffs.initialAnchor, db.buffs.anchorPoint)
 		local attachTo = self:GetAuraAnchorFrame(frame, db.buffs.attachTo)
 
@@ -228,17 +227,16 @@ function UF:Update_PetTargetFrame(frame, db)
 		else
 			debuffs:SetWidth(UNIT_WIDTH)
 		end
+
+		debuffs.num = db.debuffs.perrow * rows
+		debuffs.size = db.debuffs.sizeOverride ~= 0 and db.debuffs.sizeOverride or ((((debuffs:GetWidth() - (debuffs.spacing*(debuffs.num/rows - 1))) / debuffs.num)) * rows)
 		
-		if db.debuffs.initialAnchor == "RIGHT" or db.debuffs.initialAnchor == "LEFT" then
-			rows = 1;
-			debuffs:SetWidth(UNIT_WIDTH / 2)
+		if db.debuffs.sizeOverride then
+			debuffs:SetWidth(db.debuffs.perrow * db.debuffs.sizeOverride)
 		end
 		
-		debuffs.num = db.debuffs.perrow * rows
-		debuffs.size = ((((debuffs:GetWidth() - (debuffs.spacing*(debuffs.num/rows - 1))) / debuffs.num)) * rows)
-
 		local x, y = self:GetAuraOffset(db.debuffs.initialAnchor, db.debuffs.anchorPoint)
-		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.buffs.attachTo == 'DEBUFFS' and db.debuffs.attachTo == 'BUFFS')
+		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo)
 
 		debuffs:Point(db.debuffs.initialAnchor, attachTo, db.debuffs.anchorPoint, x, y)
 		debuffs:Height(debuffs.size * rows)

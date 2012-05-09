@@ -1013,81 +1013,83 @@ function UF:UpdateAuraWatch(frame)
 	
 	for _, spell in pairs(buffs) do
 		local icon;
-		local name, _, image = GetSpellInfo(spell["id"]);
-		if not auras.icons[spell.id] then
-			icon = CreateFrame("Frame", nil, auras);
-		else
-			icon = auras.icons[spell.id];
-		end
-		icon.name = name
-		icon.image = image
-		icon.spellID = spell["id"];
-		icon.anyUnit = spell["anyUnit"];
-		icon.onlyShowMissing = spell["onlyShowMissing"];
-		if spell["onlyShowMissing"] then
-			icon.presentAlpha = 0;
-			icon.missingAlpha = 1;
-		else
-			icon.presentAlpha = 1;
-			icon.missingAlpha = 0;		
-		end		
-		icon:Width(db.size);
-		icon:Height(db.size);
-		icon:ClearAllPoints()
-		icon:SetPoint(spell["point"], 0, 0);
-
-		if not icon.icon then
-			icon.icon = icon:CreateTexture(nil, "OVERLAY");
-			icon.icon:SetAllPoints(icon);
-		end
-		
-		if db.colorIcons then
-			icon.icon:SetDrawLayer('OVERLAY');
-			icon.icon:SetTexture(E["media"].blankTex);
-			
-			if (spell["color"]) then
-				icon.icon:SetVertexColor(spell["color"].r, spell["color"].g, spell["color"].b);
+		if spell["id"] then
+			local name, _, image = GetSpellInfo(spell["id"]);
+			if not auras.icons[spell.id] then
+				icon = CreateFrame("Frame", nil, auras);
 			else
-				icon.icon:SetVertexColor(0.8, 0.8, 0.8);
-			end			
-		else
-			icon.icon:SetDrawLayer('ARTWORK');
-			icon.icon:SetTexCoord(.18, .82, .18, .82);
-			icon.icon:SetTexture(icon.image);
-		end
-		
-		if not icon.cd then
-			icon.cd = CreateFrame("Cooldown", nil, icon)
-			icon.cd:SetAllPoints(icon)
-			icon.cd:SetReverse(true)
-		end
-		
-		if not icon.border then
-			icon.border = icon:CreateTexture(nil, "BACKGROUND");
-			icon.border:Point("TOPLEFT", -E.mult, E.mult);
-			icon.border:Point("BOTTOMRIGHT", E.mult, -E.mult);
-			icon.border:SetTexture(E["media"].blankTex);
-			icon.border:SetVertexColor(0, 0, 0);
-		end
-		
-		if not icon.count then
-			icon.count = icon:CreateFontString(nil, "OVERLAY", 7);
-			icon.count:SetPoint("CENTER", unpack(counterOffsets[spell["point"]]));
-		end
-		icon.count:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db.fontsize, 'OUTLINE');
-		
-		if spell["enabled"] then
-			auras.icons[spell.id] = icon;
-			if auras.watched then
-				auras.watched[name..image] = icon;
+				icon = auras.icons[spell.id];
 			end
-		else	
-			auras.icons[spell.id] = nil;
-			if auras.watched then
-				auras.watched[name..image] = nil;
+			icon.name = name
+			icon.image = image
+			icon.spellID = spell["id"];
+			icon.anyUnit = spell["anyUnit"];
+			icon.onlyShowMissing = spell["onlyShowMissing"];
+			if spell["onlyShowMissing"] then
+				icon.presentAlpha = 0;
+				icon.missingAlpha = 1;
+			else
+				icon.presentAlpha = 1;
+				icon.missingAlpha = 0;		
+			end		
+			icon:Width(db.size);
+			icon:Height(db.size);
+			icon:ClearAllPoints()
+			icon:SetPoint(spell["point"], 0, 0);
+
+			if not icon.icon then
+				icon.icon = icon:CreateTexture(nil, "OVERLAY");
+				icon.icon:SetAllPoints(icon);
 			end
-			icon:Hide();
-			icon = nil;
+			
+			if db.colorIcons then
+				icon.icon:SetDrawLayer('OVERLAY');
+				icon.icon:SetTexture(E["media"].blankTex);
+				
+				if (spell["color"]) then
+					icon.icon:SetVertexColor(spell["color"].r, spell["color"].g, spell["color"].b);
+				else
+					icon.icon:SetVertexColor(0.8, 0.8, 0.8);
+				end			
+			else
+				icon.icon:SetDrawLayer('ARTWORK');
+				icon.icon:SetTexCoord(.18, .82, .18, .82);
+				icon.icon:SetTexture(icon.image);
+			end
+			
+			if not icon.cd then
+				icon.cd = CreateFrame("Cooldown", nil, icon)
+				icon.cd:SetAllPoints(icon)
+				icon.cd:SetReverse(true)
+			end
+			
+			if not icon.border then
+				icon.border = icon:CreateTexture(nil, "BACKGROUND");
+				icon.border:Point("TOPLEFT", -E.mult, E.mult);
+				icon.border:Point("BOTTOMRIGHT", E.mult, -E.mult);
+				icon.border:SetTexture(E["media"].blankTex);
+				icon.border:SetVertexColor(0, 0, 0);
+			end
+			
+			if not icon.count then
+				icon.count = icon:CreateFontString(nil, "OVERLAY", 7);
+				icon.count:SetPoint("CENTER", unpack(counterOffsets[spell["point"]]));
+			end
+			icon.count:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db.fontsize, 'OUTLINE');
+			
+			if spell["enabled"] then
+				auras.icons[spell.id] = icon;
+				if auras.watched then
+					auras.watched[name..image] = icon;
+				end
+			else	
+				auras.icons[spell.id] = nil;
+				if auras.watched then
+					auras.watched[name..image] = nil;
+				end
+				icon:Hide();
+				icon = nil;
+			end
 		end
 	end
 	
