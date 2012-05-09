@@ -16,19 +16,19 @@ function M:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, _, sourceGUID, _, _, _, _, d
 	if not (event == "SPELL_INTERRUPT" and sourceGUID == UnitGUID('player')) then return end
 	
 	if E.db.general.interruptAnnounce == "PARTY" then
-		if GetRealNumPartyMembers() > 0 then
+		if IsInGroup() then
 			SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", "PARTY", nil, nil)
 		end
 	elseif E.db.general.interruptAnnounce == "RAID" then
-		if GetRealNumRaidMembers() > 0 then
+		if IsInRaid() then
 			SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", "RAID", nil, nil)		
-		elseif GetRealNumPartyMembers() > 0 then
+		elseif IsInGroup() then
 			SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", "PARTY", nil, nil)
 		end	
 	elseif E.db.general.interruptAnnounce == "SAY" then
-		if GetRealNumRaidMembers() > 0 then
+		if IsInRaid() then
 			SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", "SAY", nil, nil)		
-		elseif GetRealNumPartyMembers() > 0 then
+		elseif IsInGroup() then
 			SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", "SAY", nil, nil)
 		end		
 	end
