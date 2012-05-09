@@ -40,10 +40,25 @@ function AddOn:OnInitialize()
 		ElvCharacterData = {};
 	end
 	
-	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF);	
+	self.db = table.copy(self.DF.profile, true);
+	self.global = table.copy(self.DF.global, true);
+	
+	if ElvData then
+		if ElvData.global then
+			self:CopyTable(self.global, ElvData.global)
+		end
+		
+		local profileKey
+		if ElvData.profileKeys then
+			profileKey = ElvData.profileKeys[self.myname..' - '..self.myrealm]
+		end
+		
+		if profileKey and ElvData.profiles and ElvData.profiles[profileKey] then
+			self:CopyTable(self.db, ElvData.profiles[profileKey])
+		end
+	end
+	
 	self.charSettings = LibStub("AceDB-3.0"):New("ElvPrivateData", self.privateVars);	
-	self.db = self.data.profile;
-	self.global = self.data.global;
 	self.private = self.charSettings.profile
 	
 	self:UIScale();
