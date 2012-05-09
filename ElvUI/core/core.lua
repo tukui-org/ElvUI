@@ -556,9 +556,6 @@ function E:LoadKeybinds()
 end]]
 
 function E:UpdateAll()
-	E:CopyTable(self.data.profile, P)
-	E:CopyTable(self.data.global, G)
-		
 	self:UpdateMedia()
 	self:UpdateFrameTemplates()
 	self:SetMoversPositions()
@@ -632,9 +629,6 @@ end
 hooksecurefunc("UnitPopup_ShowMenu", showMenu)
 
 function E:Initialize()
-	E:CopyTable(self.data.profile, P)
-	E:CopyTable(self.data.global, G)
-
 	self:CheckIncompatible()
 	
 	self:CheckRole()
