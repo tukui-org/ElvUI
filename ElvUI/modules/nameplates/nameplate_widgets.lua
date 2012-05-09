@@ -303,11 +303,11 @@ function NP:SetAuraInstance(guid, spellid, expiration, stacks, caster, duration,
 		local spellList = E.global['unitframe']['aurafilters'][self.db.trackfilter].spells
 		local type = E.global['unitframe']['aurafilters'][self.db.trackfilter].type
 		if type == 'Blacklist' then
-			if spellList[name] then
+			if spellList[name] and spellList[name].enable then
 				filter = false;
 			end
 		else
-			if spellList[name] then
+			if spellList[name] and spellList[name].enable then
 				filter = true;
 			end
 		end

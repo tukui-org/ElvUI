@@ -821,3 +821,5 @@ L["Spell ID"] = true;
 L["Don't scale the large world map to block out sides of the screen."] = true;
 L['Minimap Panels'] = true;
 L['Display minimap panels below the minimap, used for datatexts.'] = true;
+L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."] = true;
+L["Priority"] = true;

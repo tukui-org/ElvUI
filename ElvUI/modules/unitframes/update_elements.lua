@@ -967,13 +967,13 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 		end
 		
 		if type == 'Whitelist' then
-			if spellList[name] then
+			if spellList[name] and spellList[name].enable then
 				return true
 			else
 				return false
 			end		
 		elseif type == 'Blacklist' then
-			if spellList[name] then
+			if spellList[name] and spellList[name].enable then
 				return false
 			else
 				return true

@@ -15,100 +15,316 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 		-- Death Knight
-			[SpellName(47476)] = true, --strangulate
-			[SpellName(49203)] = true, --hungering cold
+			[SpellName(47476)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --strangulate
+			[SpellName(49203)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --hungering cold
 		-- Druid
-			[SpellName(33786)] = true, --Cyclone
-			[SpellName(2637)] = true, --Hibernate
-			[SpellName(339)] = true, --Entangling Roots
-			[SpellName(80964)] = true, --Skull Bash
-			[SpellName(78675)] = true, --Solar Beam
+			[SpellName(33786)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Cyclone
+			[SpellName(2637)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Hibernate
+			[SpellName(339)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Entangling Roots
+			[SpellName(80964)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Skull Bash
+			[SpellName(78675)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Solar Beam
 		-- Hunter
-			[SpellName(3355)] = true, --Freezing Trap Effect
-			--[SpellName(60210)] = true, --Freezing Arrow Effect
-			[SpellName(1513)] = true, --scare beast
-			[SpellName(19503)] = true, --scatter shot
-			[SpellName(34490)] = true, --silence shot
+			[SpellName(3355)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Freezing Trap Effect
+			--[[[SpellName(60210)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			},]] --Freezing Arrow Effect
+			[SpellName(1513)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --scare beast
+			[SpellName(19503)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --scatter shot
+			[SpellName(34490)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --silence shot
 		-- Mage
-			[SpellName(31661)] = true, --Dragon's Breath
-			[SpellName(61305)] = true, --Polymorph
-			[SpellName(18469)] = true, --Silenced - Improved Counterspell
-			[SpellName(122)] = true, --Frost Nova
-			[SpellName(55080)] = true, --Shattered Barrier
-			[SpellName(82691)] = true, --Ring of Frost
+			[SpellName(31661)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Dragon's Breath
+			[SpellName(61305)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Polymorph
+			[SpellName(18469)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Silenced - Improved Counterspell
+			[SpellName(122)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Frost Nova
+			[SpellName(55080)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Shattered Barrier
+			[SpellName(82691)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Ring of Frost
 		-- Paladin
-			[SpellName(20066)] = true, --Repentance
-			[SpellName(10326)] = true, --Turn Evil
-			[SpellName(853)] = true, --Hammer of Justice
+			[SpellName(20066)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Repentance
+			[SpellName(10326)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Turn Evil
+			[SpellName(853)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Hammer of Justice
 		-- Priest
-			[SpellName(605)] = true, --Mind Control
-			[SpellName(64044)] = true, --Psychic Horror
-			[SpellName(8122)] = true, --Psychic Scream
-			[SpellName(9484)] = true, --Shackle Undead
-			[SpellName(15487)] = true, --Silence
+			[SpellName(605)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Mind Control
+			[SpellName(64044)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Psychic Horror
+			[SpellName(8122)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Psychic Scream
+			[SpellName(9484)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Shackle Undead
+			[SpellName(15487)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Silence
 		-- Rogue
-			[SpellName(2094)] = true, --Blind
-			[SpellName(1776)] = true, --Gouge
-			[SpellName(6770)] = true, --Sap
-			[SpellName(18425)] = true, --Silenced - Improved Kick
+			[SpellName(2094)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Blind
+			[SpellName(1776)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Gouge
+			[SpellName(6770)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Sap
+			[SpellName(18425)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Silenced - Improved Kick
 		-- Shaman
-			[SpellName(51514)] = true, --Hex
-			[SpellName(3600)] = true, --Earthbind
-			[SpellName(8056)] = true, --Frost Shock
-			[SpellName(63685)] = true, --Freeze
-			[SpellName(39796)] = true, --Stoneclaw Stun
+			[SpellName(51514)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Hex
+			[SpellName(3600)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Earthbind
+			[SpellName(8056)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Frost Shock
+			[SpellName(63685)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Freeze
+			[SpellName(39796)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Stoneclaw Stun
 		-- Warlock
-			[SpellName(710)] = true, --Banish
-			[SpellName(6789)] = true, --Death Coil
-			[SpellName(5782)] = true, --Fear
-			[SpellName(5484)] = true, --Howl of Terror
-			[SpellName(6358)] = true, --Seduction
-			[SpellName(30283)] = true, --Shadowfury
-			[SpellName(89605)] = true, --Aura of Foreboding
+			[SpellName(710)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Banish
+			[SpellName(6789)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Death Coil
+			[SpellName(5782)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Fear
+			[SpellName(5484)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Howl of Terror
+			[SpellName(6358)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Seduction
+			[SpellName(30283)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Shadowfury
+			[SpellName(89605)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Aura of Foreboding
 		-- Warrior
-			[SpellName(20511)] = true, --Intimidating Shout
-			[SpellName(12809)] = true, --Concussion Blow
+			[SpellName(20511)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Intimidating Shout
+			[SpellName(12809)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Concussion Blow
 		-- Racial
-			[SpellName(25046)] = true, --Arcane Torrent
-			[SpellName(20549)] = true, --War Stomp		
+			[SpellName(25046)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --Arcane Torrent
+			[SpellName(20549)] = { 
+				['enable'] = true,
+				['priority'] = 0,
+			}, --War Stomp		
 	},
 }
 
 G.unitframe.aurafilters['TurtleBuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
-		[SpellName(33206)] = true, -- Pain Suppression
-		[SpellName(47788)] = true, -- Guardian Spirit	
-		[SpellName(1044)] = true, -- Hand of Freedom
-		[SpellName(1022)] = true, -- Hand of Protection
-		[SpellName(1038)] = true, -- Hand of Salvation
-		[SpellName(6940)] = true, -- Hand of Sacrifice
-		[SpellName(62618)] = true, --Power Word: Barrier
-		[SpellName(70940)] = true, -- Divine Guardian 	
-		[SpellName(53480)] = true, -- Roar of Sacrifice
+		[SpellName(33206)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Pain Suppression
+		[SpellName(47788)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Guardian Spirit	
+		[SpellName(1044)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Hand of Freedom
+		[SpellName(1022)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Hand of Protection
+		[SpellName(1038)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Hand of Salvation
+		[SpellName(6940)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Hand of Sacrifice
+		[SpellName(62618)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --Power Word: Barrier
+		[SpellName(70940)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Divine Guardian 	
+		[SpellName(53480)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Roar of Sacrifice
 	},
 }
 
 G.unitframe.aurafilters['DebuffBlacklist'] = {
 	['type'] = 'Blacklist',
 	['spells'] = {
-		[SpellName(8733)] = true, --Blessing of Blackfathom
-		[SpellName(57724)] = true, --Sated
-		[SpellName(25771)] = true, --forbearance
-		[SpellName(57723)] = true, --Exhaustion
-		[SpellName(36032)] = true, --arcane blast
-		[SpellName(58539)] = true, --watchers corpse
-		[SpellName(26013)] = true, --deserter
-		[SpellName(6788)] = true, --weakended soul
-		[SpellName(71041)] = true, --dungeon deserter
-		[SpellName(41425)] = true, --"Hypothermia"
-		[SpellName(55711)] = true, --Weakened Heart
-		[SpellName(8326)] = true, --ghost
-		[SpellName(23445)] = true, --evil twin
-		[SpellName(24755)] = true, --gay homosexual tricked or treated debuff
-		[SpellName(25163)] = true, --fucking annoying pet debuff oozeling disgusting aura
-		[SpellName(80354)] = true, --timewarp debuff
-		[SpellName(95223)] = true, --group res debuff
+		[SpellName(8733)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --Blessing of Blackfathom
+		[SpellName(57724)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --Sated
+		[SpellName(25771)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --forbearance
+		[SpellName(57723)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --Exhaustion
+		[SpellName(36032)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --arcane blast
+		[SpellName(58539)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --watchers corpse
+		[SpellName(26013)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --deserter
+		[SpellName(6788)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --weakended soul
+		[SpellName(71041)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --dungeon deserter
+		[SpellName(41425)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --"Hypothermia"
+		[SpellName(55711)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --Weakened Heart
+		[SpellName(8326)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --ghost
+		[SpellName(23445)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --evil twin
+		[SpellName(24755)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --gay homosexual tricked or treated debuff
+		[SpellName(25163)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --fucking annoying pet debuff oozeling disgusting aura
+		[SpellName(80354)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --timewarp debuff
+		[SpellName(95223)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --group res debuff
 	},
 }
 
@@ -116,154 +332,374 @@ G.unitframe.aurafilters['DebuffBlacklist'] = {
 G.unitframe.aurafilters['RaidDebuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
-	--Test
-		--[SpellName(25771)] = true, --Forbearance
 
 	-- Other debuff
-		[SpellName(67479)] = true, -- Impale
+		[SpellName(67479)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Impale
 
 	--Blackwing Descent
 		--Magmaw
-		[SpellName(91911)] = true, -- Constricting Chains
-		[SpellName(94679)] = true, -- Parasitic Infection
-		[SpellName(94617)] = true, -- Mangle
-		[SpellName(78199)] = true, -- Sweltering Armor
+		[SpellName(91911)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Constricting Chains
+		[SpellName(94679)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Parasitic Infection
+		[SpellName(94617)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Mangle
+		[SpellName(78199)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Sweltering Armor
 
 		--Omintron Defense System
-		[SpellName(91433)] = true, --Lightning Conductor
-		[SpellName(91521)] = true, --Incineration Security Measure
-		[SpellName(80094)] = true, --Fixate 
+		[SpellName(91433)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --Lightning Conductor
+		[SpellName(91521)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --Incineration Security Measure
+		[SpellName(80094)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --Fixate 
 
 		--Maloriak
-		[SpellName(77699)] = true, -- Flash Freeze
-		[SpellName(77760)] = true, -- Biting Chill
+		[SpellName(77699)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Flash Freeze
+		[SpellName(77760)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Biting Chill
 
 		--Atramedes
-		[SpellName(92423)] = true, -- Searing Flame
-		[SpellName(92485)] = true, -- Roaring Flame
-		[SpellName(92407)] = true, -- Sonic Breath
+		[SpellName(92423)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Searing Flame
+		[SpellName(92485)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Roaring Flame
+		[SpellName(92407)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Sonic Breath
 
 		--Chimaeron
-		[SpellName(82881)] = true, -- Break
-		[SpellName(89084)] = true, -- Low Health
+		[SpellName(82881)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Break
+		[SpellName(89084)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Low Health
 
 		--Nefarian
 
 		--Sinestra
-		[SpellName(92956)] = true, --Wrack
+		[SpellName(92956)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --Wrack
 
 	--The Bastion of Twilight
 		--Valiona & Theralion
-		[SpellName(92878)] = true, -- Blackout
-		[SpellName(86840)] = true, -- Devouring Flames
-		[SpellName(95639)] = true, -- Engulfing Magic
-		[SpellName(92886)] = true, -- Twilight Zone
-		[SpellName(88518)] = true, -- Twilight Meteorite
+		[SpellName(92878)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Blackout
+		[SpellName(86840)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Devouring Flames
+		[SpellName(95639)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Engulfing Magic
+		[SpellName(92886)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Twilight Zone
+		[SpellName(88518)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Twilight Meteorite
 
 		--Halfus Wyrmbreaker
-		[SpellName(39171)] = true, -- Malevolent Strikes
+		[SpellName(39171)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Malevolent Strikes
 
 		--Twilight Ascendant Council
-		[SpellName(92511)] = true, -- Hydro Lance
-		[SpellName(82762)] = true, -- Waterlogged
-		[SpellName(92505)] = true, -- Frozen
-		[SpellName(92518)] = true, -- Flame Torrent
-		[SpellName(83099)] = true, -- Lightning Rod
-		[SpellName(92075)] = true, -- Gravity Core
-		[SpellName(92488)] = true, -- Gravity Crush
+		[SpellName(92511)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Hydro Lance
+		[SpellName(82762)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Waterlogged
+		[SpellName(92505)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Frozen
+		[SpellName(92518)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Flame Torrent
+		[SpellName(83099)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Lightning Rod
+		[SpellName(92075)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Gravity Core
+		[SpellName(92488)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Gravity Crush
 
 		--Cho'gall
-		[SpellName(86028)] = true, -- Cho's Blast
-		[SpellName(86029)] = true, -- Gall's Blast
+		[SpellName(86028)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Cho's Blast
+		[SpellName(86029)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Gall's Blast
 
 	--Throne of the Four Winds
 		--Conclave of Wind
 			--Nezir <Lord of the North Wind>
-			[SpellName(93131)] = true, --Ice Patch
+			[SpellName(93131)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --Ice Patch
 			--Anshal <Lord of the West Wind>
-			[SpellName(86206)] = true, --Soothing Breeze
-			[SpellName(93122)] = true, --Toxic Spores
+			[SpellName(86206)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --Soothing Breeze
+			[SpellName(93122)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --Toxic Spores
 			--Rohash <Lord of the East Wind>
-			[SpellName(93058)] = true, --Slicing Gale
+			[SpellName(93058)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, --Slicing Gale
 			
 		--Al'Akir
-		[SpellName(93260)] = true, -- Ice Storm
-		[SpellName(93295)] = true, -- Lightning Rod
+		[SpellName(93260)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Ice Storm
+		[SpellName(93295)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Lightning Rod
 		
 	--Firelands	
 		--Beth'tilac
-		[SpellName(99506)] = true, -- Widows Kiss
+		[SpellName(99506)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Widows Kiss
 		
 		--Alysrazor
-		[SpellName(101296)] = true, -- Fiero Blast
-		[SpellName(100723)] = true, -- Gushing Wound
+		[SpellName(101296)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Fiero Blast
+		[SpellName(100723)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Gushing Wound
 		
 		--Shannox
-		[SpellName(99837)] = true, -- Crystal Prison
-		[SpellName(99937)] = true, -- Jagged Tear
+		[SpellName(99837)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Crystal Prison
+		[SpellName(99937)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Jagged Tear
 		
 		--Baleroc
-		[SpellName(99403)] = true, -- Tormented
-		[SpellName(99256)] = true, -- Torment
+		[SpellName(99403)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Tormented
+		[SpellName(99256)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Torment
 		
 		--Lord Rhyolith
 			--<< NONE KNOWN YET >>
 		
 		--Majordomo Staghelm
-		[SpellName(98450)] = true, -- Searing Seeds
-		[SpellName(98565)] = true, -- Burning Orb
+		[SpellName(98450)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Searing Seeds
+		[SpellName(98565)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Burning Orb
 		
 		--Ragnaros
-		[SpellName(99399)] = true, -- Burning Wound
+		[SpellName(99399)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Burning Wound
 			
 		--Trash
-		[SpellName(99532)] = true, -- Melt Armor	
+		[SpellName(99532)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Melt Armor	
 		
 	--Baradin Hold
 		--Occu'thar
-		[SpellName(96913)] = true, -- Searing Shadows
+		[SpellName(96913)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Searing Shadows
 		--Alizabal
-		[SpellName(104936)] = true, -- Skewer
+		[SpellName(104936)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Skewer
 		
 	--Dragon Soul
 	    --Morchok
-		[SpellName(103541)] = true, -- Safe
-		[SpellName(103536)] = true, -- Warning
-		[SpellName(103534)] = true, -- Danger
-		[SpellName(108570)] = true, -- Black Blood of the Earth
+		[SpellName(103541)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Safe
+		[SpellName(103536)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Warning
+		[SpellName(103534)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Danger
+		[SpellName(108570)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Black Blood of the Earth
 
 		--Warlord Zon'ozz
-		[SpellName(103434)] = true, -- Disrupting Shadows
+		[SpellName(103434)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Disrupting Shadows
 
 		--Yor'sahj the Unsleeping
-		[SpellName(105171)] = true, -- Deep Corruption
+		[SpellName(105171)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Deep Corruption
 
 		--Hagara the Stormbinder
-		[SpellName(105465)] = true, -- Lighting Storm
-		[SpellName(104451)] = true, -- Ice Tomb
-		[SpellName(109325)] = true, -- Frostflake
-		[SpellName(105289)] = true, -- Shattered Ice
-		[SpellName(105285)] = true, -- Target
+		[SpellName(105465)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Lighting Storm
+		[SpellName(104451)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Ice Tomb
+		[SpellName(109325)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Frostflake
+		[SpellName(105289)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Shattered Ice
+		[SpellName(105285)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Target
 
 		--Ultraxion
-		[SpellName(109075)] = true, -- Fading Light
+		[SpellName(109075)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Fading Light
 
 		--Warmaster Blackhorn
-		[SpellName(108043)] = true, -- Sunder Armor
-		[SpellName(107558)] = true, -- Degeneration
-		[SpellName(107567)] = true, -- Brutal Strike
-		[SpellName(108046)] = true, -- Shockwave
+		[SpellName(108043)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Sunder Armor
+		[SpellName(107558)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Degeneration
+		[SpellName(107567)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Brutal Strike
+		[SpellName(108046)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Shockwave
 
 		--Spine of Deathwing
-		[SpellName(105479)] = true, -- Searing Plasma
-		[SpellName(105490)] = true, -- Fiery Grip
-
+		[SpellName(105479)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Searing Plasma
+		[SpellName(105490)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Fiery Grip
+		[SpellName(106199)] = { 
+			['enable'] = true,
+			['priority'] = 5,
+		}, -- Blood Corruption: Death
 		--Madness of Deathwing
-		[SpellName(105841)] = true, -- Degenerative Bite
-		[SpellName(106385)] = true, -- Crush
-		[SpellName(106730)] = true, -- Tetanus
-		[SpellName(106444)] = true, -- Impale
-		[SpellName(106794)] = true, -- Shrapnel (target)		
+		[SpellName(105841)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Degenerative Bite
+		[SpellName(106385)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Crush
+		[SpellName(106730)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Tetanus
+		[SpellName(106444)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Impale
+		[SpellName(106794)] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, -- Shrapnel (target)		
 	},
 }
 
@@ -278,7 +714,10 @@ E.ReverseTimer = {
 
 local function ClassBuff(id, point, color, anyUnit, onlyShowMissing)
 	local r, g, b = unpack(color)
-	return {["enabled"] = true, ["id"] = id, ["point"] = point, ["color"] = {["r"] = r, ["g"] = g, ["b"] = b}, ["anyUnit"] = anyUnit, ["onlyShowMissing"] = onlyShowMissing}
+	return {["enabled"] = { 
+			['enable'] = true,
+			['priority'] = 0,
+		}, ["id"] = id, ["point"] = point, ["color"] = {["r"] = r, ["g"] = g, ["b"] = b}, ["anyUnit"] = anyUnit, ["onlyShowMissing"] = onlyShowMissing}
 end
 
 G.unitframe.buffwatch = {

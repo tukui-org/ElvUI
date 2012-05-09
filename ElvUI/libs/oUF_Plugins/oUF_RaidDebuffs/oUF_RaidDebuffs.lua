@@ -22,26 +22,24 @@ addon.MatchBySpellName = true
 
 addon.priority = 10
 
-local function add(spell)
+local function add(spell, priority)
 	if addon.MatchBySpellName and type(spell) == 'number' then
 		spell = GetSpellInfo(spell)
 	end
 	
-	debuff_data[spell] = addon.priority
-	addon.priority = addon.priority + 1
+	debuff_data[spell] = addon.priority + priority
 end
 
 function addon:RegisterDebuffs(t)
 	for spell, value in pairs(t) do
-		if value == true then
-			add(spell)
+		if t[spell].enable then
+			add(spell, t[spell].priority)
 		end
 	end
 end
 
 function addon:ResetDebuffData()
 	wipe(debuff_data)
-	addon.priority = 10
 end
 
 local DispellColor = {
@@ -224,10 +222,6 @@ local blackList = {
 	[105171] = true, -- Deep Corruption
 }
 
-local highPriority = {
-	[106199] = true, -- Blood Corruption: Death
-}
-	
 local function Update(self, event, unit)
 	if unit ~= self.unit then return end
 	local _name, _icon, _count, _dtype, _duration, _endTime, _spellId
@@ -240,7 +234,6 @@ local function Update(self, event, unit)
 			if addon.FilterDispellableDebuff then
 				DispellPriority[debuffType] = (DispellPriority[debuffType] or 0) + addon.priority --Make Dispell buffs on top of Boss Debuffs
 				priority = DispellFilter[debuffType] and DispellPriority[debuffType] or 0
-				if highPriority[spellId] then priority = priority + 5 end --this should be enough i hope.
 				if priority == 0 then
 					debuffType = nil
 				end
