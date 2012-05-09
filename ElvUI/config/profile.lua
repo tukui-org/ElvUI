@@ -684,7 +684,7 @@ P['unitframe'] = {
 				['showPlayerOnly'] = false,
 				['useFilter'] = '',		
 				['durationLimit'] = 0,
-				['overrideSize'] = 45,
+				['sizeOverride'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = true,
@@ -699,7 +699,7 @@ P['unitframe'] = {
 				['showPlayerOnly'] = true,
 				['useFilter'] = '',	
 				['durationLimit'] = 0,
-				['sizeOverride'] = 44,
+				['sizeOverride'] = 0,
 			},	
 			['castbar'] = {
 				['enable'] = true,
@@ -750,7 +750,7 @@ P['unitframe'] = {
 				['showPlayerOnly'] = false,
 				['useFilter'] = 'TurtleBuffs',		
 				['durationLimit'] = 0,
-				['overrideSize'] = 45,
+				['sizeOverride'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = true,
@@ -765,7 +765,7 @@ P['unitframe'] = {
 				['showPlayerOnly'] = false,
 				['useFilter'] = 'CCDebuffs',	
 				['durationLimit'] = 0,
-				['sizeOverride'] = 44,
+				['sizeOverride'] = 0,
 			},	
 			['castbar'] = {
 				['enable'] = true,
@@ -846,7 +846,7 @@ P['unitframe'] = {
 				['showPlayerOnly'] = false,
 				['useFilter'] = '',	
 				['durationLimit'] = 0,
-				['sizeOverride'] = 44,
+				['sizeOverride'] = 0,
 			},	
 			['buffIndicator'] = {
 				['enable'] = true,
