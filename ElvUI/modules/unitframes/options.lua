@@ -171,6 +171,7 @@ local function UpdateFilterGroup()
 	else
 		if not selectedFilter or not E.global.unitframe['aurafilters'][selectedFilter] then
 			E.Options.args.unitframe.args.filters.args.filterGroup = nil
+			E.Options.args.unitframe.args.filters.args.spellGroup = nil
 			return
 		end
 	
@@ -178,7 +179,7 @@ local function UpdateFilterGroup()
 			type = 'group',
 			name = selectedFilter,
 			guiInline = true,
-			order = -10,
+			order = 10,
 			args = {
 				addSpell = {
 					order = 1,
@@ -187,7 +188,12 @@ local function UpdateFilterGroup()
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value) 
-						E.global.unitframe['aurafilters'][selectedFilter]['spells'][value] = true;
+						if not E.global.unitframe['aurafilters'][selectedFilter]['spells'][value] then
+							E.global.unitframe['aurafilters'][selectedFilter]['spells'][value] = { 
+								['enable'] = true,
+								['priority'] = 0,
+							}
+						end
 						UpdateFilterGroup();
 						UF:Update_AllFrames();
 					end,					
@@ -201,7 +207,7 @@ local function UpdateFilterGroup()
 					set = function(info, value) 
 						if G['unitframe']['aurafilters'][selectedFilter] then
 							if G['unitframe']['aurafilters'][selectedFilter]['spells'][value] then
-								E.global.unitframe['aurafilters'][selectedFilter]['spells'][value] = false;
+								E.global.unitframe['aurafilters'][selectedFilter]['spells'][value].enable = false;
 								E:Print(L['You may not remove a spell from a default filter that is not customly added. Setting spell to false instead.'])
 							else
 								E.global.unitframe['aurafilters'][selectedFilter]['spells'][value] = nil;
@@ -213,13 +219,7 @@ local function UpdateFilterGroup()
 						UpdateFilterGroup();
 						UF:Update_AllFrames();
 					end,				
-				},
-				spacer = {
-					order = 3,
-					type = "description",
-					name = "",
-					width = 'full',
-				},			
+				},		
 				filterType = {
 					order = 4,
 					name = L['Filter Type'],
@@ -232,24 +232,53 @@ local function UpdateFilterGroup()
 					get = function() return E.global.unitframe['aurafilters'][selectedFilter].type end,
 					set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter].type = value; UF:Update_AllFrames(); end,
 				},	
-				spellGroup = {
-					name = SPELLS,
-					type = 'group',
+				selectSpell = {
+					name = L["Select Spell"],
+					type = 'select',
+					order = -9,
 					guiInline = true,
-					args = {},
-				},
+					get = function(info) return selectedSpell end,
+					set = function(info, value) selectedSpell = value; UpdateFilterGroup() end,							
+					values = function()
+						local filters = {}
+						filters[''] = ''
+						for filter in pairs(E.global.unitframe['aurafilters'][selectedFilter]['spells']) do
+							filters[filter] = filter
+						end
+
+						return filters
+					end,
+				},			
 			},	
 		}
-		
-
-		for spell, value in pairs(E.global.unitframe['aurafilters'][selectedFilter]['spells']) do
-			E.Options.args.unitframe.args.filters.args.filterGroup.args.spellGroup.args[spell] = {
-				name = spell,
-				type = 'toggle',
-				get = function() return E.global.unitframe['aurafilters'][selectedFilter]['spells'][spell] end,
-				set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][spell] = value; UpdateFilterGroup(); UF:Update_AllFrames(); end,
-			}
+	
+		if not selectedSpell or not E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell] then
+			E.Options.args.unitframe.args.filters.args.spellGroup = nil
+			return
 		end
+		
+		E.Options.args.unitframe.args.filters.args.spellGroup = {
+			type = "group",
+			name = selectedSpell,
+			order = 15,
+			guiInline = true,
+			args = {
+				enable = {
+					name = L["Enable"],
+					type = "toggle",
+					get = function() return E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].enable end,
+					set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].enable = value; UpdateFilterGroup(); UF:Update_AllFrames(); end
+				},
+				priority = {
+					name = L["Priority"],
+					type = "range",
+					get = function() return E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].priority end,
+					set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].priority = value; UpdateFilterGroup(); UF:Update_AllFrames(); end,
+					min = 0, max = 10, step = 1,
+				},			
+			},
+		}
+		
 	end
 end
 
@@ -573,6 +602,7 @@ E.Options.args.unitframe = {
 						else
 							E.global.unitframe['aurafilters'][value] = nil;
 							selectedFilter = nil;
+							selectedSpell = nil;
 							E.Options.args.unitframe.args.filters.args.filterGroup = nil;
 						end
 					end,				
@@ -582,7 +612,7 @@ E.Options.args.unitframe = {
 					type = 'select',
 					name = L['Select Filter'],
 					get = function(info) return selectedFilter end,
-					set = function(info, value) selectedFilter = value; UpdateFilterGroup() end,							
+					set = function(info, value) if value == '' then selectedFilter = nil; selectedSpell = nil; else selectedFilter = value end; UpdateFilterGroup() end,							
 					values = function()
 						filters = {}
 						filters[''] = ''

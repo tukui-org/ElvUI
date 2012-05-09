@@ -83,7 +83,7 @@ function UF:Update_Raid2640Header(header, db)
 	self:ChangeVisibility(header, 'custom '..db.visibility)
 	
 	if db.groupBy == 'CLASS' then
-		header:SetAttribute("groupingOrder", "DEATHKNIGHT, DRUID, HUNTER, MAGE, PALADIN, PRIEST, SHAMAN, WARLOCK, WARRIOR")
+		header:SetAttribute("groupingOrder", "DEATHKNIGHT,DRUID,HUNTER,MAGE,PALADIN,PRIEST,SHAMAN,WARLOCK,WARRIOR")
 		header:SetAttribute('sortMethod', 'NAME')
 	elseif db.groupBy == 'TANK' then
 		header:SetAttribute("groupingOrder", "MAINTANK,MAINASSIST,1,2,3,4,5,6,7,8")
