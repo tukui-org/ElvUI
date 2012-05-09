@@ -384,7 +384,7 @@ function UF:Update_PlayerFrame(frame, db)
 		buffs.num = db.buffs.perrow * rows
 		buffs.size = db.buffs.sizeOverride ~= 0 and db.buffs.sizeOverride or ((((buffs:GetWidth() - (buffs.spacing*(buffs.num/rows - 1))) / buffs.num)) * rows)
 		
-		if db.buffs.sizeOverride then
+		if db.buffs.sizeOverride > 0 then
 			buffs:SetWidth(db.buffs.perrow * db.buffs.sizeOverride)
 		end
 		
@@ -418,7 +418,7 @@ function UF:Update_PlayerFrame(frame, db)
 		debuffs.num = db.debuffs.perrow * rows
 		debuffs.size = db.debuffs.sizeOverride ~= 0 and db.debuffs.sizeOverride or ((((debuffs:GetWidth() - (debuffs.spacing*(debuffs.num/rows - 1))) / debuffs.num)) * rows)
 		
-		if db.debuffs.sizeOverride then
+		if db.debuffs.sizeOverride > 0 then
 			debuffs:SetWidth(db.debuffs.perrow * db.debuffs.sizeOverride)
 		end
 		
