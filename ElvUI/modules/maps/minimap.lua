@@ -151,9 +151,24 @@ function M:UpdateSettings()
 	E.MinimapHeight = E.MinimapSize + 5
 	Minimap:Size(E.MinimapSize, E.MinimapSize)
 	
+	if LeftMiniPanel and RightMiniPanel then
+		if E.db.general.minimapPanels then
+			LeftMiniPanel:Show()
+			RightMiniPanel:Show()
+		else
+			LeftMiniPanel:Hide()
+			RightMiniPanel:Hide()
+		end
+	end	
+	
 	if MMHolder then
 		MMHolder:Width((Minimap:GetWidth() + 4) + E.RBRWidth)
-		MMHolder:Height(Minimap:GetHeight() + 27)	
+		
+		if E.db.general.minimapPanels then
+			MMHolder:Height(Minimap:GetHeight() + 27)
+		else
+			MMHolder:Height(Minimap:GetHeight() + 5)	
+		end
 	end
 	
 	if Minimap.location then
@@ -180,9 +195,9 @@ function M:UpdateSettings()
 	if UpperRepExpBarHolder then
 		E:GetModule('Misc'):UpdateExpRepBarAnchor()
 	end
-	
+		
 	if ElvConfigToggle then
-		if E.db.general.raidReminder then
+		if E.db.general.raidReminder and E.db.general.minimapPanels then
 			ElvConfigToggle:Show()
 			ElvConfigToggle:Width(E.RBRWidth)
 		else
@@ -304,7 +319,7 @@ function M:Initialize()
 	local fm = CreateFrame('Minimap', 'FarmModeMap', E.UIParent)
 	fm:Size(E.db.farmSize)
 	fm:Point('TOP', E.UIParent, 'TOP', 0, -120)
-	
+	fm:SetClampedToScreen(true)
 	fm:CreateBackdrop('Default')
 	fm:EnableMouseWheel(true)
 	fm:SetScript("OnMouseWheel", M.Minimap_OnMouseWheel)	

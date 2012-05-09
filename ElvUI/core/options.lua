@@ -153,6 +153,16 @@ E.Options.args.general = {
 						E:GetModule('Minimap'):UpdateSettings()
 					end,
 				},
+				minimapPanels = {
+					order = 12,
+					name = L['Minimap Panels'],
+					desc = L['Display minimap panels below the minimap, used for datatexts.'],
+					type = 'toggle',
+					set = function(info, value) 
+						E.db.general[ info[#info] ] = value
+						E:GetModule('Minimap'):UpdateSettings()
+					end,					
+				},
 				--[[profileBinds = {
 					order = 12,
 					name = L['Profile Binds'],

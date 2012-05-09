@@ -15,7 +15,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Engine
 	Spells only Requirements:
 		negateGroup - List of spells in a group, if you have anyone of these spells the icon will immediately hide and stop running the spell check (these should be other peoples spells)
 		reverseCheck - only works if you provide a role or a tree, instead of hiding the frame when you have the buff, it shows the frame when you have the buff, doesn't work with weapons
-		talentTreeException - if reverseCheck is set you can set a talent tree to not follow the reverse check, doesn't work with weapons
+		talentTreeException - if reverseCheck is set you can set a talent tree to follow the reverse check if not set then all trees follow the reverse check, doesn't work with weapons
 	
 	Cooldown only Requirements:
 		OnCooldown - Set to "SHOW or "HIDE".
@@ -108,7 +108,7 @@ G['reminder']['filters'] = {
 			["role"] = "Tank",
 			["instance"] = true,
 			["reverseCheck"] = true,
-			["talentTreeException"] = 1, --Holy paladins use RF sometimes
+			["talentTreeException"] = 3, --Holy paladins use RF sometimes, only run the reverse check for retribution.
 			['enable'] = true,
 			['strictFilter'] = true,
 		},
