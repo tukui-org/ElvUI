@@ -220,6 +220,7 @@ end
 
 function E:RefreshModulesDB()
 	local UF = self:GetModule('UnitFrames')
+	table.wipe(UF.db)
 	UF.db = self.db.unitframe
 	ElvUF:ResetDB()
 end
