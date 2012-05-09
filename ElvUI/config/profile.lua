@@ -36,6 +36,7 @@ P['general'] = {
 	['mapTransparency'] = 1,
 	['minimapSize'] = 176,
 	['raidReminder'] = true,
+	['minimapPanels'] = true,
 	['tinyWorldMap'] = true,
 };
 
@@ -670,6 +671,7 @@ P['unitframe'] = {
 				['showPlayerOnly'] = false,
 				['useFilter'] = '',		
 				['durationLimit'] = 0,
+				['overrideSize'] = 45,
 			},
 			['debuffs'] = {
 				['enable'] = true,
@@ -684,6 +686,7 @@ P['unitframe'] = {
 				['showPlayerOnly'] = true,
 				['useFilter'] = '',	
 				['durationLimit'] = 0,
+				['sizeOverride'] = 44,
 			},	
 			['castbar'] = {
 				['enable'] = true,
@@ -734,6 +737,7 @@ P['unitframe'] = {
 				['showPlayerOnly'] = false,
 				['useFilter'] = 'TurtleBuffs',		
 				['durationLimit'] = 0,
+				['overrideSize'] = 45,
 			},
 			['debuffs'] = {
 				['enable'] = true,
@@ -748,6 +752,7 @@ P['unitframe'] = {
 				['showPlayerOnly'] = false,
 				['useFilter'] = 'CCDebuffs',	
 				['durationLimit'] = 0,
+				['sizeOverride'] = 44,
 			},	
 			['castbar'] = {
 				['enable'] = true,
@@ -827,6 +832,7 @@ P['unitframe'] = {
 				['showPlayerOnly'] = false,
 				['useFilter'] = 'DebuffBlacklist',	
 				['durationLimit'] = 0,
+				['sizeOverride'] = 44,
 			},	
 			['buffIndicator'] = {
 				['enable'] = true,

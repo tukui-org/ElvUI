@@ -255,6 +255,14 @@ function LO:CreateMinimapPanels()
 	rminipanel:SetTemplate('Default', true)
 	E:GetModule('DataTexts'):RegisterPanel(rminipanel, 1, 'ANCHOR_BOTTOM', 0, -4)
 	
+	if E.db.general.minimapPanels then
+		LeftMiniPanel:Show()
+		RightMiniPanel:Show()
+	else
+		LeftMiniPanel:Hide()
+		RightMiniPanel:Hide()
+	end
+	
 	local configtoggle = CreateFrame('Button', 'ElvConfigToggle', Minimap)
 	configtoggle:Point('TOPLEFT', rminipanel, 'TOPRIGHT', 1, 0)
 	configtoggle:Point('BOTTOMLEFT', rminipanel, 'BOTTOMRIGHT', 1, 0)
