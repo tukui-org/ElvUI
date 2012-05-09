@@ -31,6 +31,21 @@ function R:PlayerHasFilteredBuff(frame, db, checkPersonal)
 	return false;
 end
 
+function R:PlayerHasFilteredDebuff(frame, db)
+	for debuff, value in pairs(db) do
+		if value == true then
+			local name = GetSpellInfo(debuff);
+			local _, _, icon, _, _, _, _, unitCaster, _, _, _ = UnitDebuff("player", name)
+		
+			if (name and icon) then
+				return true;
+			end
+		end
+	end
+	
+	return false;
+end
+
 function R:CanSpellBeUsed(id)
 	local name = GetSpellInfo(id);
 	local start, duration, enabled = GetSpellCooldown(name)
@@ -108,7 +123,7 @@ function R:ReminderIcon_OnUpdate(elapsed)
 	end
 end
 
-function R:FilterCheck(frame)
+function R:FilterCheck(frame, isReverse)
 	local _, instanceType = IsInInstance();
 	local roleCheck, treeCheck, combatCheck, instanceCheck, PVPCheck;
 	
@@ -161,7 +176,9 @@ function R:FilterCheck(frame)
 		instanceCheck = true;
 	end
 	
-	if roleCheck and treeCheck and combatCheck and (instanceCheck or PVPCheck) then
+	if isReverse and combatCheck and (instanceCheck or PVPCheck) and (not roleCheck or not treeCheck) then
+		return true;
+	elseif roleCheck and treeCheck and combatCheck and (instanceCheck or PVPCheck) then
 		return true;
 	else
 		return false;
@@ -186,12 +203,13 @@ function R:ReminderIcon_OnEvent(event, unit)
 	
 	local hasOffhandWeapon = OffhandHasWeapon();
 	local hasMainHandEnchant, _, _, hasOffHandEnchant, _, _ = GetWeaponEnchantInfo();
+	local hasBuff, hasDebuff;
 	if db.spellGroup and not db.CDSpell then
 		for buff, value in pairs(db.spellGroup) do
 			if value == true then
 				local name = GetSpellInfo(buff);
 				local usable, nomana = IsUsableSpell(name);
-				if not R:CanSpellBeUsed(buff) then
+				if usable and not R:CanSpellBeUsed(buff) then
 					self:SetScript("OnUpdate", R.ReminderIcon_OnUpdate)
 					return
 				end
@@ -224,6 +242,8 @@ function R:ReminderIcon_OnEvent(event, unit)
 				self:RegisterEvent("UNIT_INVENTORY_CHANGED");
 			end
 		end	
+		
+		hasBuff, hasDebuff = R:PlayerHasFilteredBuff(self, db.spellGroup, db.personal), R:PlayerHasFilteredDebuff(self, db.spellGroup)
 	end
 	
 	if db.weaponCheck then
@@ -257,6 +277,11 @@ function R:ReminderIcon_OnEvent(event, unit)
 	end
 	
 	if db.CDSpell then
+		if type(db.CDSpell) == "boolean" then return; end
+		local name = GetSpellInfo(db.CDSpell);
+		local usable, nomana = IsUsableSpell(name);
+		if not usable then return; end
+		
 		self:SetScript("OnUpdate", R.ReminderIcon_OnUpdate)
 		
 		self.icon:SetTexture(select(3, GetSpellInfo(db.CDSpell)));
@@ -273,7 +298,7 @@ function R:ReminderIcon_OnEvent(event, unit)
 	end
 	
 	local filterCheck = R:FilterCheck(self)
-	if db.reverseCheck and not (db.role or db.tree) then db.reverseCheck = nil; end
+	local reverseCheck = R:FilterCheck(self, true)
 	if not self.icon:GetTexture() or UnitInVehicle("player") then return; end
 	
 	R:SetIconPosition(self.groupName)
@@ -284,11 +309,11 @@ function R:ReminderIcon_OnEvent(event, unit)
 		end
 		return;
 	end
-	
+
 	if db.spellGroup and not db.weaponCheck then
-		if filterCheck and not R:PlayerHasFilteredBuff(self, db.spellGroup, db.personal) then
+		if filterCheck and ((not hasBuff) and (not hasDebuff)) and not db.reverseCheck then
 			self:SetAlpha(1);
-		elseif combatCheck and (instanceCheck or PVPCheck) and db.reverseCheck and (not roleCheck or not treeCheck) and R:PlayerHasFilteredBuff(self, db.spellGroup, db.personal) and not db.talentTreeException == GetPrimaryTalentTree() then
+		elseif reverseCheck and db.reverseCheck and (hasBuff or hasDebuff) and ((db.talentTreeException == GetPrimaryTalentTree()) or not db.talentTreeException) then
 			self:SetAlpha(1);
 		end
 	elseif db.weaponCheck then
