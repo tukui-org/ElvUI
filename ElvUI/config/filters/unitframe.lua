@@ -728,10 +728,6 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 			['priority'] = 4,
 		}, -- Blood Corruption: Earth
 		--Madness of Deathwing
-		[SpellName(105445)] = {
-			['enable'] = true,
-			['priority'] = 0,
-		}, -- Blistering Heat
 		[SpellName(105841)] = { 
 			['enable'] = true,
 			['priority'] = 0,
