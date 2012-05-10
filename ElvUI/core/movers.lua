@@ -127,7 +127,7 @@ function E:SaveMoverDefaultPosition(name)
 	local p, p2, p3, p4, p5 = _G[name]:GetPoint()
 
 	E.CreatedMovers[name]["p"] = p
-	E.CreatedMovers[name]["p2"] = p2 or "E.UIParent"
+	E.CreatedMovers[name]["p2"] = p2 or E.UIParent
 	E.CreatedMovers[name]["p3"] = p3
 	E.CreatedMovers[name]["p4"] = p4
 	E.CreatedMovers[name]["p5"] = p5
@@ -144,7 +144,7 @@ function E:CreateMover(parent, name, text, overlay, postdrag)
 		E.CreatedMovers[name]["overlay"] = overlay
 		E.CreatedMovers[name]["postdrag"] = postdrag
 		E.CreatedMovers[name]["p"] = p
-		E.CreatedMovers[name]["p2"] = p2 or "E.UIParent"
+		E.CreatedMovers[name]["p2"] = p2 or E.UIParent
 		E.CreatedMovers[name]["p3"] = p3
 		E.CreatedMovers[name]["p4"] = p4
 		E.CreatedMovers[name]["p5"] = p5

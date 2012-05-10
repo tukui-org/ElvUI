@@ -443,7 +443,7 @@ function UF:ForceShow(frame)
 		RegisterUnitWatch(frame, true)
 		
 		frame.oldUnit = frame.unit
-		frame.unit = 'dummy'
+		frame.unit = 'player'
 		frame.isForced = true;
 	end
 	
@@ -625,6 +625,16 @@ function UF:ResetUnitSettings(unit)
 	E:CopyTable(self.db['units'][unit], P['unitframe']['units'][unit]); 
 	
 	self:Update_AllFrames()
+end
+
+function UF:ToggleForceShowGroupFrames(unitGroup, numGroup)
+	for i=1, numGroup do
+		if self[unitGroup..i] and not self[unitGroup..i].isForced then
+			UF:ForceShow(self[unitGroup..i])
+		elseif self[unitGroup..i] then
+			UF:UnforceShow(self[unitGroup..i])
+		end
+	end
 end
 
 local ignoreSettings = {
