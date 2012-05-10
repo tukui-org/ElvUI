@@ -820,6 +820,7 @@ L["Length"] = true;
 L["MT, MA First"] = true;
 L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."] = true;
 L["Cooldown"] = true;
+L['On Cooldown'] = true;
 L['Size Override'] = true;
 L['If not set to 0 then override the size of the aura icon to this.'] = true;
 L["Spell ID"] = true;

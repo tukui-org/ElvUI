@@ -86,17 +86,26 @@ function R:ReminderIcon_OnUpdate(elapsed)
 				
 		if db.CDSpell then
 			local filterCheck = R:FilterCheck(self)
+			local name = GetSpellInfo(db.CDSpell);
+			local start, duration, enabled = GetSpellCooldown(name)
+			if(duration and duration > 0) then
+				self.cooldown:SetCooldown(start, duration)
+				self.cooldown:Show()
+			else
+				self.cooldown:Hide()
+			end
+					
 			if R:CanSpellBeUsed(db.CDSpell) and filterCheck then				
-				if db.OnCooldown == "SHOW" then
+				if db.OnCooldown == "HIDE" then				
 					R:UpdateColors(self, db.CDSpell)
 					R.ReminderIcon_OnEvent(self)
 				else
 					self:SetAlpha(db.cdFade or 0)
 				end
 			elseif filterCheck then
-				if db.OnCooldown == "SHOW" then
+				if db.OnCooldown == "HIDE" then
 					self:SetAlpha(db.cdFade or 0)
-				else
+				else					
 					R:UpdateColors(self, db.CDSpell)
 					R.ReminderIcon_OnEvent(self)
 				end
@@ -110,7 +119,7 @@ function R:ReminderIcon_OnUpdate(elapsed)
 	
 		if db.spellGroup then
 			for buff, value in pairs(db.spellGroup) do
-				if value == true and R:CanSpellBeUsed(buff) then
+				if value == true and R:CanSpellBeUsed(buff) then				
 					self:SetScript("OnUpdate", nil)
 					R.ReminderIcon_OnEvent(self)
 				end
@@ -190,10 +199,20 @@ function R:ReminderIcon_OnEvent(event, unit)
 	
 	local db = E.global.reminder.filters[E.myclass][self.groupName];
 	
+	self.cooldown:Hide()
 	self:SetAlpha(0)
 	self.icon:SetTexture(nil);
-	
-	if not db or not db.enable or (not db.spellGroup and not db.weaponCheck and not db.CDSpell) or UnitIsDeadOrGhost('player') then return; end
+
+	if not db or not db.enable or (not db.spellGroup and not db.weaponCheck and not db.CDSpell) or UnitIsDeadOrGhost('player') then 
+		self:SetScript('OnUpdate', nil)
+		self:SetAlpha(0)
+		self.icon:SetTexture(nil);	
+		
+		if not db then
+			R.CreatedReminders[self.groupName] = nil;
+		end
+		return; 
+	end
 	
 	--Level Check
 	if db.level and UnitLevel('player') < db.level and not self.ForceShow then return; end
@@ -300,6 +319,9 @@ function R:ReminderIcon_OnEvent(event, unit)
 	if not self.icon:GetTexture() or UnitInVehicle("player") then return; end
 	
 	R:SetIconPosition(self.groupName)
+
+	local filterCheck = R:FilterCheck(self)
+	local reverseCheck = R:FilterCheck(self, true)
 	
 	if db.CDSpell then
 		if filterCheck then
@@ -307,9 +329,7 @@ function R:ReminderIcon_OnEvent(event, unit)
 		end
 		return;
 	end
-
-	local filterCheck = R:FilterCheck(self)
-	local reverseCheck = R:FilterCheck(self, true)	
+	
 	local activeTree = GetPrimaryTalentTree()
 	if db.spellGroup and not db.weaponCheck then
 		if filterCheck and ((not hasBuff) and (not hasDebuff)) and not db.reverseCheck then
@@ -392,6 +412,10 @@ function R:CreateReminder(name, index)
 	frame.icon:Point('TOPLEFT', 2, -2);
 	frame.icon:Point('BOTTOMRIGHT', -2, 2);
 	frame:SetAlpha(0);
+	
+	local cd = CreateFrame("Cooldown", nil, frame)
+	cd:SetAllPoints(frame.icon)	
+	frame.cooldown = cd
 
 	frame:RegisterEvent("UNIT_AURA");
 	frame:RegisterEvent("PLAYER_ENTERING_WORLD");
