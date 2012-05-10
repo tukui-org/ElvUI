@@ -654,6 +654,20 @@ function E:Initialize()
 	self.global = self.data.global;
 	self:CheckIncompatible()
 	
+	--Database conversion for aura filters
+	for spellList, _ in pairs(self.global.unitframe.aurafilters) do
+		if self.global.unitframe.aurafilters[spellList] and self.global.unitframe.aurafilters[spellList].spells then
+			for spell, value in pairs(self.global.unitframe.aurafilters[spellList].spells) do
+				if type(self.global.unitframe.aurafilters[spellList].spells[spell]) == "boolean" then
+					self.global.unitframe.aurafilters[spellList].spells[spell] = {
+						['enable'] = true,
+						['priority'] = 0,
+					}
+				end		
+			end
+		end
+	end		
+	
 	self:CheckRole()
 	self:UIScale('PLAYER_LOGIN');
 
