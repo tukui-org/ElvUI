@@ -98,12 +98,7 @@ local function UpdateFilterGroup(reset)
 		get = function(info) return E.global['reminder']['filters'][E.myclass][selectedFilter]["size"] or 0 end,
 		set = function(info, value) E.global['reminder']['filters'][E.myclass][selectedFilter]["size"] = value; R:SetIconPosition(selectedFilter) end,		
 	}	
-	
-	E.Options.args.reminder.args.filterGroup.args.spacer = {
-		order = 7,
-		type = "description",
-		name = '',
-	}	
+
 	
 	E.Options.args.reminder.args.filterGroup.args.Role = {
 		type = 'select',
@@ -233,7 +228,19 @@ local function UpdateFilterGroup(reset)
 			min = 0, max = 1, step = 0.1,
 			get = function(info) return E.global['reminder']['filters'][E.myclass][selectedFilter]["cdFade"] or 0 end,
 			set = function(info, value) E.global['reminder']['filters'][E.myclass][selectedFilter]["cdFade"] = value; R:CheckForNewReminders() end,		
-		}			
+		}		
+
+		E.Options.args.reminder.args.filterGroup.args.OnCooldown = {
+			order = 7,
+			name = L['On Cooldown'],
+			type = 'select',
+			get = function(info) return E.global['reminder']['filters'][E.myclass][selectedFilter]["OnCooldown"] or "SHOW" end,
+			set = function(info, value) E.global['reminder']['filters'][E.myclass][selectedFilter]["OnCooldown"] = value; R:CheckForNewReminders() end,			
+			values = {
+				['SHOW'] = SHOW,
+				['HIDE'] = HIDE,
+			}
+		}
 		
 		E.Options.args.reminder.args.filterGroup.args["Spell ID"] = {
 			type = 'input',
@@ -482,7 +489,6 @@ E.Options.args.reminder = {
 				else
 					E.global.reminder.filters[E.myclass][value] = nil;
 					selectedFilter = nil;
-					R.CreatedReminders[value] = nil;
 				end
 				E.Options.args.reminder.args.filterGroup = nil
 				UpdateFilterGroup()
