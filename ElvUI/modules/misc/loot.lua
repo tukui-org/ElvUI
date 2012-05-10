@@ -32,6 +32,10 @@ local OnLeave = function(self)
 end
 
 local OnClick = function(self)
+	LootFrame.selectedQuality = self.quality;
+	LootFrame.selectedItemName = self.name:GetText()
+	LootFrame.selectedSlot = self:GetID()
+	
 	if(IsModifiedClick()) then
 		HandleModifiedItemClick(GetLootSlotLink(self:GetID()))
 	else
