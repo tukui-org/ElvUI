@@ -804,7 +804,6 @@ L["Long"] = "Полные";
 L["Long (Include Level)"] = "Полные + уровень";
 L["Length"] = "Длина";
 L["Don't scale the large world map to block out sides of the screen."] = "Сжимать карту мира, чтобы она не занимала весь экран.";
-L["Tanks First"] = "Сперва танки"
 L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."] = "Настройка, которую вы только что изменили, будет влиять только на этого персонажа. Она не будет изменяться при смене профиля. Также это изменение требует перезагрузки интерфейса для вступления в силу."
 L["Cooldown"] = "Восстановление";
 L["Spell ID"] = "ID заклинания";
