@@ -335,7 +335,7 @@ function R:ReminderIcon_OnEvent(event, unit)
 	if not db.disableSound and self:GetAlpha() == 1 then
 		if not R.SoundThrottled then
 			R.SoundThrottled = true;
-			PlaySoundFile(LSM:Fetch("sound", E.global['reminder'].sound));
+			PlaySoundFile(LSM:Fetch("sound", E.private['reminder'].sound));
 			R:ScheduleTimer('ThrottleSound', 10);
 		end
 	end
