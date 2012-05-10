@@ -671,7 +671,7 @@ P['unitframe'] = {
 				['showPlayerOnly'] = false,
 				['useFilter'] = '',		
 				['durationLimit'] = 0,
-				['overrideSize'] = 45,
+				['sizeOverride'] = 45,
 			},
 			['debuffs'] = {
 				['enable'] = true,
@@ -737,7 +737,7 @@ P['unitframe'] = {
 				['showPlayerOnly'] = false,
 				['useFilter'] = 'TurtleBuffs',		
 				['durationLimit'] = 0,
-				['overrideSize'] = 45,
+				['sizeOverride'] = 45,
 			},
 			['debuffs'] = {
 				['enable'] = true,
