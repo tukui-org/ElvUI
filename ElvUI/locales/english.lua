@@ -817,7 +817,7 @@ L["Medium"] = true;
 L["Long"] = true;
 L["Long (Include Level)"] = true;
 L["Length"] = true;
-L["Tanks First"] = true;
+L["MT, MA First"] = true;
 L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."] = true;
 L["Cooldown"] = true;
 L['Size Override'] = true;
@@ -826,6 +826,8 @@ L["Spell ID"] = true;
 L["Don't scale the large world map to block out sides of the screen."] = true;
 L['Minimap Panels'] = true;
 L['Display minimap panels below the minimap, used for datatexts.'] = true;
+L['Display Frames'] = true;
+L['Force the frames to show, they will act as if they are the player frame.'] = true;
 L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."] = true;
 L["Priority"] = true;
 

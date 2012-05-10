@@ -107,8 +107,7 @@ G['reminder']['filters'] = {
 			},
 			["role"] = "Tank",
 			["instance"] = true,
-			["reverseCheck"] = true,
-			["talentTreeException"] = 3, --Holy paladins use RF sometimes, only run the reverse check for retribution.
+			["talentTreeException"] = 2, --Don't run reverse check for prot paladins, holy paladins you have to disable this if it annoys you sorry.
 			['enable'] = true,
 			['strictFilter'] = true,
 		},
@@ -199,6 +198,7 @@ G['reminder']['filters'] = {
 			["role"] = "Tank",
 			["instance"] = true,	
 			["reverseCheck"] = true,
+			["talentTreeException"] = 1, --Don't run reverse check for blood.
 			['enable'] = true,
 			['strictFilter'] = true,
 		},	

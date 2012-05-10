@@ -303,7 +303,7 @@ function UF:Update_BossFrames(frame, db)
 		end
 		
 		local x, y = self:GetAuraOffset(db.debuffs.initialAnchor, db.debuffs.anchorPoint)
-		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo)
+		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.buffs.attachTo == 'DEBUFFS' and db.debuffs.attachTo == 'BUFFS')
 
 		debuffs:Point(db.debuffs.initialAnchor, attachTo, db.debuffs.anchorPoint, x, y)
 		debuffs:Height(debuffs.size * rows)
@@ -321,7 +321,7 @@ function UF:Update_BossFrames(frame, db)
 	--Castbar
 	do
 		local castbar = frame.Castbar
-		castbar:Width(db.castbar.width - 3)
+		castbar:Width(db.castbar.width - 4)
 		castbar:Height(db.castbar.height)
 		
 		--Icon

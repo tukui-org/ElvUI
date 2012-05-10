@@ -79,9 +79,6 @@ RBR.Spell4Buffs = {
 
 RBR.CasterSpell5Buffs = {
 	61316, --"Dalaran Brilliance" (6% SP)
-	52109, --"Flametongue Totem" (6% SP)
-	53646, --"Demonic Pact" (10% SP)
-	77747, --"Totemic Wrath" (10% SP)
 	1459, --"Arcane Brilliance" (6% SP)	
 }
 

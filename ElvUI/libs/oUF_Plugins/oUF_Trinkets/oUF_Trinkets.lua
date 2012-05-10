@@ -89,6 +89,7 @@ local Enable = function(self)
 		self.Trinket.Icon = self.Trinket:CreateTexture(nil, "BORDER")
 		self.Trinket.Icon:SetAllPoints(self.Trinket)
 		self.Trinket.Icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+		self.Trinket.Icon:SetTexture(GetTrinketIcon('player'))
 		arenaFrame[self.unit] = self
 	end
 end

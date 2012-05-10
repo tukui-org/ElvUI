@@ -275,6 +275,7 @@ local function UpdateFilterGroup()
 					get = function() return E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].priority end,
 					set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].priority = value; UpdateFilterGroup(); UF:Update_AllFrames(); end,
 					min = 0, max = 10, step = 1,
+					desc = L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."],
 				},			
 			},
 		}
@@ -3829,7 +3830,14 @@ E.Options.args.unitframe.args.boss = {
 			order = 3,
 			name = L['Restore Defaults'],
 			func = function(info, value) UF:ResetUnitSettings('boss') end,
-		},		
+		},	
+		displayFrames = {
+			type = 'execute',
+			order = 3,
+			name = L['Display Frames'],
+			desc = L['Force the frames to show, they will act as if they are the player frame.'],
+			func = function() UF:ToggleForceShowGroupFrames('boss', 4) end,
+		},
 		width = {
 			order = 4,
 			name = L['Width'],
@@ -4330,6 +4338,13 @@ E.Options.args.unitframe.args.arena = {
 			order = 3,
 			name = L['Restore Defaults'],
 			func = function(info, value) UF:ResetUnitSettings('arena') end,
+		},		
+		displayFrames = {
+			type = 'execute',
+			order = 3,
+			name = L['Display Frames'],
+			desc = L['Force the frames to show, they will act as if they are the player frame.'],
+			func = function() UF:ToggleForceShowGroupFrames('arena', 5) end,
 		},		
 		width = {
 			order = 4,
@@ -4900,7 +4915,7 @@ E.Options.args.unitframe.args.party = {
 					type = 'select',		
 					values = {
 						['CLASS'] = CLASS,
-						['TANK'] = L["Tanks First"],
+						['TANK'] = L["MT, MA First"],
 						['GROUP'] = GROUP,
 					},
 				},
@@ -5544,7 +5559,7 @@ E.Options.args.unitframe.args.raid625 = {
 					type = 'select',		
 					values = {
 						['CLASS'] = CLASS,
-						['TANK'] = L["Tanks First"],
+						['TANK'] = L["MT, MA First"],
 						['GROUP'] = GROUP,
 					},
 				},			
@@ -6108,7 +6123,7 @@ E.Options.args.unitframe.args.raid2640 = {
 					type = 'select',		
 					values = {
 						['CLASS'] = CLASS,
-						['TANK'] = L["Tanks First"],
+						['TANK'] = L["MT, MA First"],
 						['GROUP'] = GROUP,
 					},
 				},		

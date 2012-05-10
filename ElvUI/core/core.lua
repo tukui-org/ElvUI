@@ -560,6 +560,13 @@ function E:LoadKeybinds()
 end]]
 
 function E:UpdateAll()
+	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF);
+	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
+	self.data.RegisterCallback(self, "OnProfileCopied", "UpdateAll")
+	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
+	self.db = self.data.profile;
+	self.global = self.data.global;
+
 	self:UpdateMedia()
 	self:UpdateFrameTemplates()
 	self:SetMoversPositions()
@@ -636,7 +643,7 @@ function E:Initialize()
 	table.wipe(self.db)
 	table.wipe(self.global)
 
-	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF, true);
+	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF);
 	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
 	self.data.RegisterCallback(self, "OnProfileCopied", "UpdateAll")
 	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileReset")

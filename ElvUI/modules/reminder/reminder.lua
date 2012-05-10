@@ -176,7 +176,7 @@ function R:FilterCheck(frame, isReverse)
 		instanceCheck = true;
 	end
 	
-	if isReverse and combatCheck and (instanceCheck or PVPCheck) and (not roleCheck or not treeCheck) then
+	if isReverse and combatCheck and (instanceCheck or PVPCheck) then
 		return true;
 	elseif roleCheck and treeCheck and combatCheck and (instanceCheck or PVPCheck) then
 		return true;
@@ -297,8 +297,6 @@ function R:ReminderIcon_OnEvent(event, unit)
 		return;
 	end
 	
-	local filterCheck = R:FilterCheck(self)
-	local reverseCheck = R:FilterCheck(self, true)
 	if not self.icon:GetTexture() or UnitInVehicle("player") then return; end
 	
 	R:SetIconPosition(self.groupName)
@@ -310,10 +308,15 @@ function R:ReminderIcon_OnEvent(event, unit)
 		return;
 	end
 
+	local filterCheck = R:FilterCheck(self)
+	local reverseCheck = R:FilterCheck(self, true)	
+	local activeTree = GetPrimaryTalentTree()
 	if db.spellGroup and not db.weaponCheck then
 		if filterCheck and ((not hasBuff) and (not hasDebuff)) and not db.reverseCheck then
 			self:SetAlpha(1);
-		elseif reverseCheck and db.reverseCheck and (hasBuff or hasDebuff) and ((db.talentTreeException == GetPrimaryTalentTree()) or not db.talentTreeException) then
+		elseif reverseCheck and db.reverseCheck and (hasBuff or hasDebuff) and not (db.talentTreeException == activeTree) then
+			self:SetAlpha(1);
+		elseif reverseCheck and db.reverseCheck and ((not hasBuff) and (not hasDebuff)) and (db.talentTreeException == activeTree) then
 			self:SetAlpha(1);
 		end
 	elseif db.weaponCheck then
@@ -335,7 +338,7 @@ function R:ReminderIcon_OnEvent(event, unit)
 	if not db.disableSound and self:GetAlpha() == 1 then
 		if not R.SoundThrottled then
 			R.SoundThrottled = true;
-			PlaySoundFile(LSM:Fetch("sound", E.global['reminder'].sound));
+			PlaySoundFile(LSM:Fetch("sound", E.private['reminder'].sound));
 			R:ScheduleTimer('ThrottleSound', 10);
 		end
 	end
