@@ -568,13 +568,20 @@ function UF:Initialize()
 	self.db = E.db["unitframe"]
 	if E.private["unitframe"].enable ~= true then return; end
 	E.UnitFrames = UF;
+
 	
-	--Database conversion from ElvUI v3.2.2 and below.
-	local specToCopy = E.db.unitframe.mainSpec
-	if not specToCopy then specToCopy = 'Primary' end
-	if specToCopy and E.db.unitframe.layouts and E.db.unitframe.layouts[specToCopy] then
-		E:CopyTable(E.db.unitframe.units, E.db.unitframe.layouts[specToCopy])
-		E.db.unitframe.layouts = nil;
+	--Database conversion for aura filters
+	for spellList, _ in pairs(E.global.unitframe.aurafilters) do
+		if E.global.unitframe.aurafilters[spellList] and E.global.unitframe.aurafilters[spellList].spells then
+			for spell, value in pairs(E.global.unitframe.aurafilters[spellList].spells) do
+				if type(value) == "boolean" then
+					spell = {
+						['enable'] = true,
+						['priority'] = 0,
+					}
+				end		
+			end
+		end
 	end
 
 	
