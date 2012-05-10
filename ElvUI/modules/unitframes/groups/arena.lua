@@ -266,7 +266,7 @@ function UF:Update_ArenaFrames(frame, db)
 	--Castbar
 	do
 		local castbar = frame.Castbar
-		castbar:Width(db.castbar.width - 3)
+		castbar:Width(db.castbar.width - 4)
 		castbar:Height(db.castbar.height)
 		
 		--Icon
