@@ -15,7 +15,8 @@ local OnRangeUpdate = function(self, elapsed)
 		for _, object in next, _FRAMES do
 			if(object:IsShown()) then
 				local range = object.Range
-				if(object.unit and UnitIsConnected(object.unit)) then
+				local connected = UnitIsConnected(object.unit)
+				if(object.unit and connected) then
 					local inRange, checkedRange = UnitInRange(object.unit)
 					if(checkedRange and not inRange) then
 						if(range.Override) then
@@ -30,6 +31,8 @@ local OnRangeUpdate = function(self, elapsed)
 							object:SetAlpha(range.insideAlpha)
 						end
 					end
+				elseif not connected then
+					object:SetAlpha(range.outsideAlpha)
 				else
 					object:SetAlpha(range.insideAlpha)	
 				end
