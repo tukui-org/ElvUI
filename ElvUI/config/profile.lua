@@ -741,7 +741,7 @@ P['unitframe'] = {
 			},
 			['debuffs'] = {
 				['enable'] = true,
-				['perrow'] = 3,
+				['perrow'] = 1,
 				['numrows'] = 1,
 				['growth-x'] = 'RIGHT',
 				['growth-y'] = 'DOWN',
