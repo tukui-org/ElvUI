@@ -279,10 +279,16 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 		self[unit].Update = function()
 			UF["Update_"..E:StringTitle(frameName).."Frames"](self, self[unit], self.db['units'][group])	
 		end
-
+		
 		if self.db['units'][group].enable then
 			self[unit]:Enable()
 			self[unit].Update()
+			
+			if self[unit].isForced then
+				self:ForceShow(self[unit])
+				UnregisterUnitWatch(self[unit])
+				RegisterUnitWatch(self[unit], true)				
+			end
 		else
 			self[unit]:Disable()
 		end
