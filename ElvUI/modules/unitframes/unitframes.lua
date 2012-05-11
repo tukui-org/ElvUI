@@ -398,7 +398,8 @@ function UF:UpdateAllHeaders(event)
 	if event == 'PLAYER_REGEN_ENABLED' then
 		self:UnregisterEvent('PLAYER_REGEN_ENABLED')
 	end
-
+		
+	local _, instanceType = IsInInstance();
 	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs
 	if ORD then
 		ORD:ResetDebuffData()
@@ -567,22 +568,6 @@ function UF:Initialize()
 	if E.private["unitframe"].enable ~= true then return; end
 	E.UnitFrames = UF;
 
-	
-	--Database conversion for aura filters
-	for spellList, _ in pairs(E.global.unitframe.aurafilters) do
-		if E.global.unitframe.aurafilters[spellList] and E.global.unitframe.aurafilters[spellList].spells then
-			for spell, value in pairs(E.global.unitframe.aurafilters[spellList].spells) do
-				if type(value) == "boolean" then
-					spell = {
-						['enable'] = true,
-						['priority'] = 0,
-					}
-				end		
-			end
-		end
-	end
-
-	
 	ElvUF:RegisterStyle('ElvUF', function(frame, unit)
 		self:Construct_UF(frame, unit)
 	end)
