@@ -826,3 +826,4 @@ L['Display Frames'] = true;
 L['Force the frames to show, they will act as if they are the player frame.'] = true;
 L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."] = true;
 L["Priority"] = true;
+L['Show Auras'] = true;
