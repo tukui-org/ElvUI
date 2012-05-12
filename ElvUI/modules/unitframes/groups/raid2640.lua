@@ -45,7 +45,7 @@ function UF:Construct_Raid2640Frames(unitGroup)
 end
 
 function UF:Raid2640SmartVisibility(event)
-	if not self.db or not self.SetAttribute or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) then return; end
+	if not self.db or not self.SetAttribute or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) or self.isForced then return; end
 	local inInstance, instanceType = IsInInstance()
 	local _, _, _, _, maxPlayers, _, _ = GetInstanceInfo()
 	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
@@ -64,9 +64,12 @@ function UF:Raid2640SmartVisibility(event)
 end
 
 function UF:Update_Raid2640Header(header, db)
-	header:Hide()
 	header.db = db
-	header:SetAttribute('oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height))
+	
+	if not header.isForced then
+		header:Hide()
+		header:SetAttribute('oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height))
+	end
 	
 	--User Error Check
 	if UF['badHeaderPoints'][db.point] == db.columnAnchorPoint then
@@ -76,11 +79,13 @@ function UF:Update_Raid2640Header(header, db)
 	
 	UF:ClearChildPoints(header:GetChildren())
 	
-	if not header.mover then
-		self:ChangeVisibility(header, 'custom [@raid6,exists] hide;show') --fucking retarded bug fix
+	if not header.isForced then
+		if not header.mover then
+			self:ChangeVisibility(header, 'custom [@raid6,exists] hide;show') --fucking retarded bug fix
+		end
+		
+		self:ChangeVisibility(header, 'custom '..db.visibility)
 	end
-	
-	self:ChangeVisibility(header, 'custom '..db.visibility)
 	
 	if db.groupBy == 'CLASS' then
 		header:SetAttribute("groupingOrder", "DEATHKNIGHT,DRUID,HUNTER,MAGE,PALADIN,PRIEST,SHAMAN,WARLOCK,WARRIOR")
@@ -94,11 +99,13 @@ function UF:Update_Raid2640Header(header, db)
 	end
 	
 	header:SetAttribute("groupBy", db.groupBy)
-
-	header:SetAttribute("showParty", db.showParty)
-	header:SetAttribute("showRaid", db.showRaid)
-	header:SetAttribute("showSolo", db.showSolo)
-	header:SetAttribute("showPlayer", db.showPlayer)
+	
+	if not header.isForced then
+		header:SetAttribute("showParty", db.showParty)
+		header:SetAttribute("showRaid", db.showRaid)
+		header:SetAttribute("showSolo", db.showSolo)
+		header:SetAttribute("showPlayer", db.showPlayer)
+	end
 	
 	header:SetAttribute('point', db.point)
 	

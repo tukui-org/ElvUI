@@ -125,7 +125,7 @@ end
 function UF:PostUpdateHealth(unit, min, max)
 	local r, g, b = self:GetStatusBarColor()
 	self.defaultColor = {r, g, b}
-	
+
 	if E.db['unitframe']['colors'].healthclass == true and E.db['unitframe']['colors'].colorhealthbyvalue == true and not (UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit)) then
 		local newr, newg, newb = ElvUF.ColorGradient(min, max, 1, 0, 0, 1, 1, 0, r, g, b)
 
