@@ -180,7 +180,7 @@ local function SetupCVars()
 end	
 
 function E:SetupResolution()
-	if E.lowversion then
+	if self == 'low' then
 		E.db.general.panelWidth = 400
 		E.db.general.panelHeight = 180
 		
@@ -468,6 +468,9 @@ local function ResetAll()
 	InstallOption1Button:Hide()
 	InstallOption1Button:SetScript("OnClick", nil)
 	InstallOption1Button:SetText("")
+	InstallOption2Button:Hide()
+	InstallOption2Button:SetScript('OnClick', nil)
+	InstallOption2Button:SetText('')
 	InstallRoleOptionTank:Hide()
 	InstallRoleOptionTank:SetScript('OnClick', nil)
 	InstallRoleOptionHealer:Hide()
@@ -480,6 +483,7 @@ local function ResetAll()
 	ElvUIInstallFrame.Desc1:SetText("")
 	ElvUIInstallFrame.Desc2:SetText("")
 	ElvUIInstallFrame.Desc3:SetText("")
+	InstallTutorialImage:Size(250)
 	InstallTutorialImage:SetTexture(nil)
 	InstallTutorialImage:Hide()
 	ElvUIInstallFrame:Size(550, 400)
@@ -503,11 +507,16 @@ local function SetPage(PageNum)
 		InstallPrevButton:Enable()
 	end
 	
+	InstallTutorialImage:Size(256, 128)
+	InstallTutorialImage:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\logo_elvui.tga')
+	InstallTutorialImage:Show()	
+	
 	if PageNum == 1 then
 		f.SubTitle:SetText(format(L["Welcome to ElvUI version %s!"], E.version))
 		f.Desc1:SetText(L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."])
 		f.Desc2:SetText(L["The in-game configuration menu can be accesses by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."])
 		f.Desc3:SetText(L["Please press the continue button to go onto the next step."])
+				
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript("OnClick", InstallComplete)
 		InstallOption1Button:SetText(L["Skip Process"])			
@@ -540,7 +549,10 @@ local function SetPage(PageNum)
 		
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript("OnClick", E.SetupResolution)
-		InstallOption1Button:SetText(L["Resolution Setup"])	
+		InstallOption1Button:SetText(L["High Resolution"])	
+		InstallOption2Button:Show()
+		InstallOption2Button:SetScript('OnClick', function() E.SetupResolution('low') end)
+		InstallOption2Button:SetText(L['Low Resolution'])
 	elseif PageNum == 5 then
 		f.SubTitle:SetText(L["Layout"])
 		f.Desc1:SetText(L["You can now choose what layout you wish to use based on your combat role."])
@@ -564,6 +576,7 @@ local function SetPage(PageNum)
 		InstallTutorialImage:Show()
 		InstallTutorialImage:SetTexture([[Interface\AddOns\ElvUI\media\textures\micromenu_tutorial.tga]])
 		ElvUIInstallFrame:Size(550, 500)
+		InstallTutorialImage:Size(250)
 	end
 end
 
@@ -695,6 +708,17 @@ function E:Install()
 		f.Option1:Hide()
 		E.Skins:HandleButton(f.Option1, true)
 		
+		f.Option2 = CreateFrame("Button", "InstallOption2Button", f, "UIPanelButtonTemplate2")
+		f.Option2:StripTextures()
+		f.Option2:SetTemplate("Default", true)
+		f.Option2:Size(110, 30)
+		f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45)
+		f.Option2:SetText("")
+		f.Option2:Hide()
+		f.Option2:SetScript('OnShow', function() f.Option1:SetWidth(110); f.Option1:ClearAllPoints(); f.Option1:Point('BOTTOMRIGHT', f, 'BOTTOM', -4, 45) end)
+		f.Option2:SetScript('OnHide', function() f.Option1:SetWidth(160); f.Option1:ClearAllPoints(); f.Option1:Point("BOTTOM", 0, 45) end)
+		E.Skins:HandleButton(f.Option1, true)		
+		
 		f.RoleOptionTank = CreateFrame('Button', 'InstallRoleOptionTank', f, 'UIPanelButtonTemplate2')
 		f.RoleOptionTank:StripTextures()
 		f.RoleOptionTank:SetTemplate("Default", true)
@@ -759,7 +783,7 @@ function E:Install()
 		
 		f.tutorialImage = f:CreateTexture('InstallTutorialImage', 'OVERLAY')
 		f.tutorialImage:Size(250)
-		f.tutorialImage:Point('BOTTOM', f.Option1, 'TOP', 0, 4)
+		f.tutorialImage:Point('BOTTOM', 0, 70)
 
 	end
 	
