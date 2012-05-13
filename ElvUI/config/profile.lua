@@ -1038,7 +1038,7 @@ P['unitframe'] = {
 			},
 			['roleIcon'] = {
 				['enable'] = false,
-				['position'] = 'BOTTOM',
+				['position'] = 'BOTTOMRIGHT',
 			},				
 			['buffIndicator'] = {
 				['enable'] = true,

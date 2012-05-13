@@ -452,6 +452,7 @@ local DONATORS = {
 	"Adorno",
 	"domoaligato",
 }
+E.DONATORS = DONATORS
 
 table.sort(DONATORS, function(a,b) return a < b end) --Alphabetize
 for _, donatorName in pairs(DONATORS) do

@@ -167,6 +167,13 @@ end
 
 local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTime, spellId)
 	local f = self.RaidDebuffs
+
+	if self.isForced and self:GetID() and unpack(ElvUI):IsEvenNumber(self:GetID()) then
+		spellId = 47540
+		name, _, icon = GetSpellInfo(spellId)
+		count, debuffType, duration, timeLeft = 5, 'Magic', 0, 60
+	end
+	
 	if name then
 		f.icon:SetTexture(icon)
 		f.icon:Show()

@@ -705,7 +705,7 @@ E.Options.args.unitframe.args.player = {
 			order = 2,
 			name = L['Copy From'],
 			desc = L['Select a unit to copy settings from.'],
-			values = UF['handledunits'],
+			values = UF['units'],
 			set = function(info, value) UF:MergeUnitSettings(value, 'player'); end,
 		},
 		resetSettings = {
@@ -1335,7 +1335,7 @@ E.Options.args.unitframe.args.target = {
 			order = 2,
 			name = L['Copy From'],
 			desc = L['Select a unit to copy settings from.'],
-			values = UF['handledunits'],
+			values = UF['units'],
 			set = function(info, value) UF:MergeUnitSettings(value, 'target'); end,
 		},
 		resetSettings = {
@@ -1900,7 +1900,7 @@ E.Options.args.unitframe.args.targettarget = {
 			order = 2,
 			name = L['Copy From'],
 			desc = L['Select a unit to copy settings from.'],
-			values = UF['handledunits'],
+			values = UF['units'],
 			set = function(info, value) UF:MergeUnitSettings(value, 'targettarget'); end,
 		},
 		resetSettings = {
@@ -2280,7 +2280,7 @@ E.Options.args.unitframe.args.focus = {
 			order = 2,
 			name = L['Copy From'],
 			desc = L['Select a unit to copy settings from.'],
-			values = UF['handledunits'],
+			values = UF['units'],
 			set = function(info, value) UF:MergeUnitSettings(value, 'focus'); end,
 		},
 		resetSettings = {
@@ -2778,7 +2778,7 @@ E.Options.args.unitframe.args.focustarget = {
 			order = 2,
 			name = L['Copy From'],
 			desc = L['Select a unit to copy settings from.'],
-			values = UF['handledunits'],
+			values = UF['units'],
 			set = function(info, value) UF:MergeUnitSettings(value, 'focustarget'); end,
 		},
 		resetSettings = {
@@ -3158,7 +3158,7 @@ E.Options.args.unitframe.args.pet = {
 			order = 2,
 			name = L['Copy From'],
 			desc = L['Select a unit to copy settings from.'],
-			values = UF['handledunits'],
+			values = UF['units'],
 			set = function(info, value) UF:MergeUnitSettings(value, 'pet'); end,
 		},
 		resetSettings = {
@@ -3544,7 +3544,7 @@ E.Options.args.unitframe.args.pettarget = {
 			order = 2,
 			name = L['Copy From'],
 			desc = L['Select a unit to copy settings from.'],
-			values = UF['handledunits'],
+			values = UF['units'],
 			set = function(info, value) UF:MergeUnitSettings(value, 'pettarget'); end,
 		},
 		resetSettings = {
@@ -3935,24 +3935,7 @@ E.Options.args.unitframe.args.boss = {
 			order = 3,
 			name = L['Restore Defaults'],
 			func = function(info, value) UF:ResetUnitSettings('boss') end,
-		},	
-		showAuras = {
-			order = 4,
-			type = 'execute',
-			name = L['Show Auras'],
-			func = function() 
-				for i=1, 4 do
-					local frame = _G['ElvUF_Boss'..i]
-					if frame.forceShowAuras then
-						frame.forceShowAuras = nil; 
-					else
-						frame.forceShowAuras = true; 
-					end
-					
-					UF:Update_BossFrames(frame, frame.db)
-				end
-			end,
-		},			
+		},		
 		displayFrames = {
 			type = 'execute',
 			order = 3,
@@ -4460,23 +4443,6 @@ E.Options.args.unitframe.args.arena = {
 			order = 3,
 			name = L['Restore Defaults'],
 			func = function(info, value) UF:ResetUnitSettings('arena') end,
-		},		
-		showAuras = {
-			order = 4,
-			type = 'execute',
-			name = L['Show Auras'],
-			func = function() 
-				for i=1, 5 do
-					local frame = _G['ElvUF_Arena'..i]
-					if frame.forceShowAuras then
-						frame.forceShowAuras = nil; 
-					else
-						frame.forceShowAuras = true; 
-					end
-					
-					UF:Update_ArenaFrames(frame, frame.db)
-				end
-			end,
 		},			
 		displayFrames = {
 			type = 'execute',
@@ -4949,19 +4915,12 @@ E.Options.args.unitframe.args.party = {
 			name = L['Restore Defaults'],
 			func = function(info, value) UF:ResetUnitSettings('party') end,
 		},		
-		showAuras = {
+		configureToggle = {
 			order = 4,
 			type = 'execute',
-			name = L['Show Auras'],
+			name = L['Display Frames'],
 			func = function() 
-				local frame = ElvUF_Party
-				if frame.forceShowAuras then
-					frame.forceShowAuras = nil; 
-				else
-					frame.forceShowAuras = true; 
-				end
-				
-				UF:CreateAndUpdateHeaderGroup('party')
+				UF:HeaderConfig(ElvUF_Party, ElvUF_Party.forceShow ~= true or nil)
 			end,
 		},			
 		general = {
@@ -5608,19 +5567,12 @@ E.Options.args.unitframe.args.raid625 = {
 			name = L['Restore Defaults'],
 			func = function(info, value) UF:ResetUnitSettings('raid625') end,
 		},		
-		showAuras = {
+		configureToggle = {
 			order = 4,
 			type = 'execute',
-			name = L['Show Auras'],
+			name = L['Display Frames'],
 			func = function() 
-				local frame = ElvUF_Raid625
-				if frame.forceShowAuras then
-					frame.forceShowAuras = nil; 
-				else
-					frame.forceShowAuras = true; 
-				end
-				
-				UF:CreateAndUpdateHeaderGroup('raid625')
+				UF:HeaderConfig(ElvUF_Raid625, ElvUF_Raid625.forceShow ~= true or nil)
 			end,
 		},		
 		general = {
@@ -6187,19 +6139,12 @@ E.Options.args.unitframe.args.raid2640 = {
 			name = L['Restore Defaults'],
 			func = function(info, value) UF:ResetUnitSettings('raid2640') end,
 		},	
-		showAuras = {
+		configureToggle = {
 			order = 4,
 			type = 'execute',
-			name = L['Show Auras'],
+			name = L['Display Frames'],
 			func = function() 
-				local frame = ElvUF_Raid2640
-				if frame.forceShowAuras then
-					frame.forceShowAuras = nil; 
-				else
-					frame.forceShowAuras = true; 
-				end
-				
-				UF:CreateAndUpdateHeaderGroup('raid2640')
+				UF:HeaderConfig(ElvUF_Raid2640, ElvUF_Raid2640.forceShow ~= true or nil)
 			end,
 		},		
 		general = {
