@@ -481,7 +481,7 @@ end
 --MESSAGE = Actual Message
 --SENDTO = For whispers, force users to whisper other users
 --/run SendAddonMessage('ElvSays', '<SENDTO>,<CHANNEL>,<MESSAGE>,<SENDTO>', 'PARTY')
-local function SendRecieve(event, prefix, message, channel, sender)
+local function SendRecieve(self, event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
 		if sender == E.myname then return end
 
@@ -585,18 +585,18 @@ end
 
 hooksecurefunc("UnitPopup_ShowMenu", showMenu)
 
-E:RegisterEvent("RAID_ROSTER_UPDATE", SendRecieve)
-E:RegisterEvent("PARTY_MEMBERS_CHANGED", SendRecieve)
-E:RegisterEvent("CHAT_MSG_ADDON", SendRecieve)
-
 function E:Initialize()
 	table.wipe(self.db)
 	table.wipe(self.global)
-
+	table.wipe(self.private)
+	
 	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF);
 	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
 	self.data.RegisterCallback(self, "OnProfileCopied", "UpdateAll")
 	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
+	
+	self.charSettings = LibStub("AceDB-3.0"):New("ElvPrivateData", self.privateVars);	
+	self.private = self.charSettings.profile
 	self.db = self.data.profile;
 	self.global = self.data.global;
 	self:CheckIncompatible()
@@ -745,3 +745,9 @@ function E:ResetUI(...)
 		self.ActionBars:ResetMovers(...)
 	end	
 end
+
+local f = CreateFrame('Frame')
+f:RegisterEvent("RAID_ROSTER_UPDATE")
+f:RegisterEvent("PARTY_MEMBERS_CHANGED")
+f:RegisterEvent("CHAT_MSG_ADDON")
+f:SetScript('OnEvent', SendRecieve)
