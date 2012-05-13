@@ -112,8 +112,11 @@ ElvUF.Tags.Methods['Elv:getnamecolor'] = function(unit)
 		return string.format('|cff%02x%02x%02x', 214, 191, 166)	
 	else
 		local reaction = UnitReaction(unit, 'player')
+		local _, unitClass = UnitClass(unit)
 		if (UnitIsPlayer(unit)) then
-			return _TAGS['raidcolor'](unit)
+			local c = ElvUF['colors'].class[unitClass]
+			if not c then return "" end
+			return string.format('|cff%02x%02x%02x', c[1] * 255, c[2] * 255, c[3] * 255)
 		elseif (reaction) then
 			local c = ElvUF['colors'].reaction[reaction]
 			return string.format('|cff%02x%02x%02x', c[1] * 255, c[2] * 255, c[3] * 255)

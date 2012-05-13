@@ -944,7 +944,7 @@ P['unitframe'] = {
 			},
 			['roleIcon'] = {
 				['enable'] = false,
-				['position'] = 'BOTTOM',
+				['position'] = 'BOTTOMRIGHT',
 			},					
 		},					
 		['raid2640'] = {
@@ -1022,7 +1022,7 @@ P['unitframe'] = {
 			},
 			['roleIcon'] = {
 				['enable'] = false,
-				['position'] = 'BOTTOM',
+				['position'] = 'BOTTOMRIGHT',
 			},				
 			['buffIndicator'] = {
 				['enable'] = true,
