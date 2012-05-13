@@ -4,15 +4,9 @@ local _, ns = ...
 local ElvUF = ns.oUF
 
 local attributeBlacklist = {["showplayer"] = true, ["showraid"] = true, ["showparty"] = true, ["showsolo"] = true}
+local configEnv
 local originalEnvs = {}
 local overrideFuncs = {}
-local unitConfig = {}
-
-local function getValue(func, unit, value)
-	unit = string.gsub(unit, "(%d+)", "")
-	if( unitConfig[func .. unit] == nil ) then unitConfig[func .. unit] = value end
-	return unitConfig[func .. unit]
-end
 
 local function createConfigEnv()
 	if( configEnv ) then return end
@@ -47,6 +41,7 @@ local function createConfigEnv()
 end
 
 function UF:ForceShow(frame)
+	if InCombatLockdown() then return; end
 	if not frame.isForced then		
 		frame.oldUnit = frame.unit
 		frame.unit = 'player'
@@ -63,6 +58,7 @@ function UF:ForceShow(frame)
 end
 
 function UF:UnforceShow(frame)
+	if InCombatLockdown() then return; end
 	if not frame.isForced then
 		return
 	end
@@ -114,6 +110,8 @@ local function OnAttributeChanged(self, name)
 end
 
 function UF:HeaderConfig(header, configMode)
+	if InCombatLockdown() then return; end
+	
 	createConfigEnv()
 	local db = header.db
 	header.forceShow = configMode
