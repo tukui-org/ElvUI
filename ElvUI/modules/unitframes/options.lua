@@ -407,6 +407,7 @@ E.Options.args.unitframe = {
 								['NONE'] = L['None'],
 								['OUTLINE'] = 'OUTLINE',
 								['MONOCHROME'] = 'MONOCHROME',
+								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 								['THICKOUTLINE'] = 'THICKOUTLINE',
 							},
 							set = function(info, value) E.db.unitframe[ info[#info] ] = value; UF:Update_FontStrings() end,
