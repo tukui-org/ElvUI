@@ -303,11 +303,45 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 		ElvUF:RegisterStyle("ElvUF_"..E:StringTitle(group), UF["Construct_"..E:StringTitle(group).."Frames"])
 		ElvUF:SetActiveStyle("ElvUF_"..E:StringTitle(group))
 
-		if template then
-			self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 'point', self.db['units'][group].point, 'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 'template', template, 'groupFilter', groupFilter)
-		else
-			self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 'point', self.db['units'][group].point, 'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 'groupFilter', groupFilter)
+		local maxUnits, startingIndex = MAX_RAID_MEMBERS, 1
+		if db.maxColumns and db.unitsPerColumn then
+			startingIndex = -math.min(db.maxColumns * db.unitsPerColumn, maxUnits) + 1		
 		end
+
+		if template then
+			self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 
+				'point', self.db['units'][group].point, 
+				'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 
+				'template', template, 
+				'columnAnchorPoint', db.columnAnchorPoint,
+				'maxColumns', db.maxColumns,
+				'unitsPerColumn', db.unitsPerColumn,
+				'point', db.point,
+				'columnSpacing', db.columnSpacing,
+				'xOffset', db.xOffset,
+				'yOffset', db.yOffset,
+				'startingIndex', startingIndex,
+				'groupFilter', groupFilter)
+		else
+			self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 
+				'point', self.db['units'][group].point, 
+				'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 
+				'columnAnchorPoint', db.columnAnchorPoint,
+				'maxColumns', db.maxColumns,
+				'unitsPerColumn', db.unitsPerColumn,
+				'point', db.point,
+				'columnSpacing', db.columnSpacing,
+				'xOffset', db.xOffset,
+				'yOffset', db.yOffset,
+				'startingIndex', startingIndex,
+				'groupFilter', groupFilter)
+		end
+		
+		if db.maxColumns then
+			RegisterAttributeDriver(self[group], 'state-visibility', 'show')	
+			RegisterAttributeDriver(self[group], 'state-visibility', 'hide')	
+		end
+		
 		self['headers'][group] = self[group]
 		self[group].groupName = group
 	end
@@ -336,7 +370,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 	else
 		self[group]:SetAttribute("showParty", false)
 		self[group]:SetAttribute("showRaid", false)
-		self[group]:SetAttribute("showSolo", false)
+		self[group]:SetAttribute("showSolo", false)	
 	end
 end
 
