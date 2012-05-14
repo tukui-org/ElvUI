@@ -74,6 +74,7 @@ function UF:Update_PartyHeader(header, db)
 	if not header.isForced then
 		header:Hide()
 		header:SetAttribute('oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height))
+		header:SetAttribute('startingIndex', 1)
 	end
 	
 	header.db = db
@@ -84,20 +85,15 @@ function UF:Update_PartyHeader(header, db)
 		E:Print(L['You cannot set the Group Point and Column Point so they are opposite of each other.'])
 	end	
 	
-	UF:ClearChildPoints(header:GetChildren())
 	
-	if not header.isForced then
-		if not header.mover then
-			self:ChangeVisibility(header, 'custom [@raid6,exists] hide;show') --fucking retarded bug fix
-		end
-		
+	if not header.isForced then	
 		self:ChangeVisibility(header, 'custom '..db.visibility)
 	end
 	
 	if db.groupBy == 'CLASS' then
 		header:SetAttribute("groupingOrder", "DEATHKNIGHT,DRUID,HUNTER,MAGE,PALADIN,PRIEST,SHAMAN,WARLOCK,WARRIOR")
 		header:SetAttribute('sortMethod', 'NAME')
-	elseif db.groupBy == 'TANK' then
+	elseif db.groupBy == 'ROLE' then
 		header:SetAttribute("groupingOrder", "MAINTANK,MAINASSIST,1,2,3,4,5,6,7,8")
 		header:SetAttribute('sortMethod', 'NAME')
 	else
@@ -113,18 +109,19 @@ function UF:Update_PartyHeader(header, db)
 		header:SetAttribute("showSolo", db.showSolo)
 		header:SetAttribute("showPlayer", db.showPlayer)
 	end
-	
-	header:SetAttribute('columnAnchorPoint', db.columnAnchorPoint)
+
 	header:SetAttribute("maxColumns", db.maxColumns)
 	header:SetAttribute("unitsPerColumn", db.unitsPerColumn)
 	
-	header:SetAttribute('point', db.point)
-	UF:ClearChildPoints(header:GetChildren())
 	header:SetAttribute('columnSpacing', db.columnSpacing)
 	header:SetAttribute("xOffset", db.xOffset)	
 	header:SetAttribute("yOffset", db.yOffset)
 
+	
 	header:SetAttribute('columnAnchorPoint', db.columnAnchorPoint)
+	
+	UF:ClearChildPoints(header:GetChildren())
+	
 	header:SetAttribute('point', db.point)
 	
 
