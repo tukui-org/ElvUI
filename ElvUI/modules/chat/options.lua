@@ -101,6 +101,7 @@ E.Options.args.chat = {
 						['NONE'] = L['None'],
 						['OUTLINE'] = 'OUTLINE',
 						['MONOCHROME'] = 'MONOCHROME',
+						['MONOCHROMEOUTLINE'] = 'MONOCHROMEOUTLINE',
 						['THICKOUTLINE'] = 'THICKOUTLINE',
 					},
 					set = function(info, value) E.db.chat[ info[#info] ] = value; CH:SetupChat() end,
