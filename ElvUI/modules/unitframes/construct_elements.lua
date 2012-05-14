@@ -204,7 +204,7 @@ function UF:Construct_Castbar(self, direction)
 	castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 0)
 	castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 	
-	castbar.Spark = castbar:CreateTexture(nil, 'ARTWORK')
+	castbar.Spark = castbar:CreateTexture(nil, 'OVERLAY')
 	castbar.Spark:SetBlendMode('ADD')
 	castbar.Spark:SetVertexColor(1, 1, 1)
 
