@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, DF = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 local _, ns = ...
 local oUF = ns.oUF or oUF

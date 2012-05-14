@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, DF = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 local _, ns = ...
@@ -227,17 +227,12 @@ end
 
 local blackList = {
 	[105171] = true, -- Deep Corruption
-	[108220] = true, -- Deep Corruption
-	[101108] = true, -- Rage of Ragnaros
-	[101109] = true, -- Rage of Ragnaros
-	[101110] = true, -- Rage of Ragnaros
-	[101228] = true, -- Rage of Ragnaros		
 }
 
 local function Update(self, event, unit)
 	if unit ~= self.unit then return end
 	local _name, _icon, _count, _dtype, _duration, _endTime, _spellId
-	local _priority, priority = 0
+	local _priority, priority = 0, 0
 	for i = 1, 40 do
 		local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellId = UnitAura(unit, i, 'HARMFUL')
 		if (not name) then break end
@@ -252,8 +247,8 @@ local function Update(self, event, unit)
 			else
 				priority = DispellPriority[debuffType] or 0
 			end
-			
-			if priority and (priority > _priority) then
+
+			if priority > _priority then
 				_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellId = priority, name, icon, count, debuffType, duration, expirationTime, spellId
 			end
 		end
