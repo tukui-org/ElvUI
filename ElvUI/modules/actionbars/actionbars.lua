@@ -446,6 +446,7 @@ function AB:CreateMover(bar, text, name, padding)
 	local p, p2, p3, p4, p5 = bar:GetPoint()
 
 	local mover = CreateFrame('Button', nil, E.UIParent)
+	mover:SetClampedToScreen(true)
 	mover:SetSize(bar:GetSize())
 	mover:SetFrameStrata('HIGH')
 	mover:SetTemplate('Default', true)	
