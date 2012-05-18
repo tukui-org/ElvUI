@@ -346,6 +346,8 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 		self[group].groupName = group
 	end
 	
+	self[group].db = db
+	
 	self[group].Update = function()
 		local db = self.db['units'][group]
 		if db.enable ~= true then return end
