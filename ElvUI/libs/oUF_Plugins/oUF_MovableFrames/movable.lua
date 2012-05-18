@@ -343,6 +343,7 @@ do
 		local UF = E:GetModule('UnitFrames')
 		
 		local backdrop = CreateFrame"Button"
+		backdrop:SetClampedToScreen(true)
 		backdropPool[target] = backdrop
 		tinsert(E['snapBars'], backdrop)
 		

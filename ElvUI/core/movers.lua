@@ -17,6 +17,7 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	
 	local f = CreateFrame("Button", name, E.UIParent)
 	f:SetFrameLevel(parent:GetFrameLevel() + 1)
+	f:SetClampedToScreen(true)
 	f:SetWidth(parent:GetWidth())
 	f:SetHeight(parent:GetHeight())
 	f.parent = parent
