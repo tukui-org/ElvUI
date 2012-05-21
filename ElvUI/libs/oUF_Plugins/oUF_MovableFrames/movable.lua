@@ -458,7 +458,7 @@ function oUF:ResetUF(frame)
 	for object, _ in pairs(initialPositions) do
 		local _, _, isHeader = GetObjectInfo(_G[object])
 		local name = smartName(_G[object], isHeader)
-		if frame and name:find(frame) then
+		if frame and frame == name then
 			RestoreDefaultPosition(_G[object].style, object)
 		elseif frame == nil or frame == '' or frame == ' ' then
 			RestoreDefaultPosition(_G[object].style, object)	
