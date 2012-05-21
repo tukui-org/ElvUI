@@ -7,14 +7,19 @@ local function SizeChanged(frame)
 	frame.mover:Size(frame:GetSize())
 end
 
+local function GetPoint(obj)
+	local point, anchor, secondaryPoint, x, y = obj:GetPoint()
+
+	return string.format('%s\031%s\031%s\031%d\031%d', point, anchor:GetName() or "UIParent", secondaryPoint, x, y)
+end
+
 local function CreateMover(parent, name, text, overlay, postdrag)
 	if not parent then return end --If for some reason the parent isnt loaded yet
 	if E.CreatedMovers[name].Created then return end
 	
 	if overlay == nil then overlay = true end
 	
-	local p, p2, p3, p4, p5 = parent:GetPoint()
-	
+	local point, anchor, secondaryPoint, x, y = string.split('\031', GetPoint(parent))
 	local f = CreateFrame("Button", name, E.UIParent)
 	f:SetFrameLevel(parent:GetFrameLevel() + 1)
 	f:SetClampedToScreen(true)
@@ -31,10 +36,19 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	else
 		f:SetFrameStrata("BACKGROUND")
 	end
-	if E.db["movers"] and E.db["movers"][name] then
-		f:SetPoint(E.db["movers"][name]["p"], UIParent, E.db["movers"][name]["p2"], E.db["movers"][name]["p3"], E.db["movers"][name]["p4"])
+	
+	if E.db['movers'] and E.db['movers'][name] then
+		if type(E.db['movers'][name]) == 'table' then
+			f:SetPoint(E.db["movers"][name]["p"], UIParent, E.db["movers"][name]["p2"], E.db["movers"][name]["p3"], E.db["movers"][name]["p4"])
+			E.db['movers'][name] = GetPoint(f)
+			f:ClearAllPoints()
+		end
+		
+		local point, anchor, secondaryPoint, x, y = string.split('\031', E.db['movers'][name])
+		f:SetPoint(point, anchor, secondaryPoint, x, y)
 	else
-		f:SetPoint(p, p2, p3, p4, p5)
+
+		f:SetPoint(point, UIParent, secondaryPoint, x, y)
 	end
 	f:SetTemplate("Default", true)
 	f:RegisterForDrag("LeftButton", "RightButton")
@@ -69,7 +83,7 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	parent:SetScript('OnSizeChanged', SizeChanged)
 	parent.mover = f
 	parent:ClearAllPoints()
-	parent:SetPoint(p or p3, f, p or p3, 0, 0)
+	parent:SetPoint(point, f, 0, 0)
 	
 	local fs = f:CreateFontString(nil, "OVERLAY")
 	fs:FontTemplate()
@@ -114,24 +128,14 @@ end
 function E:SaveMoverPosition(name)
 	if not _G[name] then return end
 	if not E.db.movers then E.db.movers = {} end
-	
-	E.db.movers[name] = {}
-	local p, _, p2, p3, p4 = _G[name]:GetPoint()
-	E.db.movers[name]["p"] = p
-	E.db.movers[name]["p2"] = p2
-	E.db.movers[name]["p3"] = p3
-	E.db.movers[name]["p4"] = p4	
+
+	E.db.movers[name] = GetPoint(_G[name])
 end
 
 function E:SaveMoverDefaultPosition(name)
 	if not _G[name] then return end
-	local p, p2, p3, p4, p5 = _G[name]:GetPoint()
 
-	E.CreatedMovers[name]["p"] = p
-	E.CreatedMovers[name]["p2"] = p2 or E.UIParent
-	E.CreatedMovers[name]["p3"] = p3
-	E.CreatedMovers[name]["p4"] = p4
-	E.CreatedMovers[name]["p5"] = p5
+	E.CreatedMovers[name]["point"] = GetPoint(_G[name])
 	E.CreatedMovers[name]["postdrag"](_G[name], E:GetScreenQuadrant(_G[name]))
 end
 
@@ -144,11 +148,8 @@ function E:CreateMover(parent, name, text, overlay, postdrag)
 		E.CreatedMovers[name]["text"] = text
 		E.CreatedMovers[name]["overlay"] = overlay
 		E.CreatedMovers[name]["postdrag"] = postdrag
-		E.CreatedMovers[name]["p"] = p
-		E.CreatedMovers[name]["p2"] = p2 or E.UIParent
-		E.CreatedMovers[name]["p3"] = p3
-		E.CreatedMovers[name]["p4"] = p4
-		E.CreatedMovers[name]["p5"] = p5
+		
+		E.CreatedMovers[name]["point"] = GetPoint(parent)
 	end	
 	
 	CreateMover(parent, name, text, overlay, postdrag)
@@ -168,8 +169,9 @@ function E:ResetMovers(arg)
 	if arg == "" or arg == nil then
 		for name, _ in pairs(E.CreatedMovers) do
 			local f = _G[name]
+			local point, anchor, secondaryPoint, x, y = string.split('\031', E.CreatedMovers[name]['point'])
 			f:ClearAllPoints()
-			f:SetPoint(E.CreatedMovers[name]["p"], E.CreatedMovers[name]["p2"], E.CreatedMovers[name]["p3"], E.CreatedMovers[name]["p4"], E.CreatedMovers[name]["p5"])
+			f:SetPoint(point, UIParent, secondaryPoint, x, y)
 			
 			for key, value in pairs(E.CreatedMovers[name]) do
 				if key == "postdrag" and type(value) == 'function' then
@@ -185,8 +187,9 @@ function E:ResetMovers(arg)
 				if key == "text" then
 					if arg == value then 
 						local f = _G[name]
+						local point, anchor, secondaryPoint, x, y = string.split('\031', E.CreatedMovers[name]['point'])
 						f:ClearAllPoints()
-						f:SetPoint(E.CreatedMovers[name]["p"], E.CreatedMovers[name]["p2"], E.CreatedMovers[name]["p3"], E.CreatedMovers[name]["p4"], E.CreatedMovers[name]["p5"])						
+						f:SetPoint(point, UIParent, secondaryPoint, x, y)				
 						
 						if self.db.movers then
 							self.db.movers[name] = nil
@@ -206,13 +209,16 @@ end
 function E:SetMoversPositions()
 	for name, _ in pairs(E.CreatedMovers) do
 		local f = _G[name]
+		local point, anchor, secondaryPoint, x, y
 		if E.db["movers"] and E.db["movers"][name] then
+			point, anchor, secondaryPoint, x, y = string.split('\031', E.db["movers"][name])
 			f:ClearAllPoints()
-			f:SetPoint(E.db["movers"][name]["p"], UIParent, E.db["movers"][name]["p2"], E.db["movers"][name]["p3"], E.db["movers"][name]["p4"])
+			f:SetPoint(point, UIParent, secondaryPoint, x, y)
 		elseif f then
+			point, anchor, secondaryPoint, x, y = string.split('\031', E.CreatedMovers[name]['point'])
 			f:ClearAllPoints()
-			f:SetPoint(E.CreatedMovers[name]["p"], E.CreatedMovers[name]["p2"], E.CreatedMovers[name]["p3"], E.CreatedMovers[name]["p4"], E.CreatedMovers[name]["p5"])		
-		end
+			f:SetPoint(point, UIParent, secondaryPoint, x, y)
+		end		
 	end
 end
 
