@@ -48,7 +48,7 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 		f:SetPoint(point, anchor, secondaryPoint, x, y)
 	else
 
-		f:SetPoint(point, UIParent, secondaryPoint, x, y)
+		f:SetPoint(point, anchor, secondaryPoint, x, y)
 	end
 	f:SetTemplate("Default", true)
 	f:RegisterForDrag("LeftButton", "RightButton")
@@ -171,7 +171,7 @@ function E:ResetMovers(arg)
 			local f = _G[name]
 			local point, anchor, secondaryPoint, x, y = string.split('\031', E.CreatedMovers[name]['point'])
 			f:ClearAllPoints()
-			f:SetPoint(point, UIParent, secondaryPoint, x, y)
+			f:SetPoint(point, anchor, secondaryPoint, x, y)
 			
 			for key, value in pairs(E.CreatedMovers[name]) do
 				if key == "postdrag" and type(value) == 'function' then
@@ -189,7 +189,7 @@ function E:ResetMovers(arg)
 						local f = _G[name]
 						local point, anchor, secondaryPoint, x, y = string.split('\031', E.CreatedMovers[name]['point'])
 						f:ClearAllPoints()
-						f:SetPoint(point, UIParent, secondaryPoint, x, y)				
+						f:SetPoint(point, anchor, secondaryPoint, x, y)				
 						
 						if self.db.movers then
 							self.db.movers[name] = nil
@@ -213,11 +213,11 @@ function E:SetMoversPositions()
 		if E.db["movers"] and E.db["movers"][name] then
 			point, anchor, secondaryPoint, x, y = string.split('\031', E.db["movers"][name])
 			f:ClearAllPoints()
-			f:SetPoint(point, UIParent, secondaryPoint, x, y)
+			f:SetPoint(point, anchor, secondaryPoint, x, y)
 		elseif f then
 			point, anchor, secondaryPoint, x, y = string.split('\031', E.CreatedMovers[name]['point'])
 			f:ClearAllPoints()
-			f:SetPoint(point, UIParent, secondaryPoint, x, y)
+			f:SetPoint(point, anchor, secondaryPoint, x, y)
 		end		
 	end
 end
