@@ -454,9 +454,15 @@ function oUF:ResetDB()
 	_DB = E.db['unitframe']	
 end
 
-function oUF:ResetUF()	
+function oUF:ResetUF(frame)	
 	for object, _ in pairs(initialPositions) do
-		RestoreDefaultPosition(_G[object].style, object)	
+		local _, _, isHeader = GetObjectInfo(_G[object])
+		local name = smartName(_G[object], isHeader)
+		if frame and frame == name then
+			RestoreDefaultPosition(_G[object].style, object)
+		elseif frame == nil or frame == '' or frame == ' ' then
+			RestoreDefaultPosition(_G[object].style, object)	
+		end
 	end
 end
 

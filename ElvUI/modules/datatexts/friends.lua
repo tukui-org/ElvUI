@@ -62,7 +62,7 @@ local clientLevelNameString = "%s |cff%02x%02x%02x(%d|r |cff%02x%02x%02x%s|r%s) 
 local levelNameClassString = "|cff%02x%02x%02x%d|r %s%s%s"
 local worldOfWarcraftString = WORLD_OF_WARCRAFT
 local battleNetString = BATTLENET_OPTIONS_LABEL
-local wowString = BNET_CLIENT_WOW
+local wowString, scString, d3String = BNET_CLIENT_WOW, BNET_CLIENT_SC2, BNET_CLIENT_D3
 local otherGameInfoString = "%s (%s)"
 local otherGameInfoString2 = "%s %s"
 local totalOnlineString = join("", FRIENDS_LIST_ONLINE, ": %s/%s")
@@ -71,7 +71,8 @@ local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
 local displayString = ''
 local statusTable = { "|cffFFFFFF[|r|cffFF0000"..L['AFK'].."|r|cffFFFFFF]|r", "|cffFFFFFF[|r|cffFF0000"..L['DND'].."|r|cffFFFFFF]|r", "" }
 local groupedTable = { "|cffaaaaaa*|r", "" } 
-local friendTable, BNTable = {}, {}
+local friendTable, BNTable, BNTableWoW, BNTableD3, BNTableSC = {}, {}, {}, {}, {}
+local tableList = {[wowString] = BNTableWoW, [d3String] = BNTableD3, [scString] = BNTableSC}
 local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
 local dataValid = false
 local lastPanel
@@ -103,6 +104,9 @@ end
 
 local function BuildBNTable(total)
 	wipe(BNTable)
+	wipe(BNTableWoW)
+	wipe(BNTableD3)
+	wipe(BNTableSC)
 	local presenceID, givenName, surname, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level
 	for i = 1, total do
 		presenceID, givenName, surname, toonName, toonID, client, isOnline, _, isAFK, isDND, _, noteText = BNGetFriendInfo(i)
@@ -110,15 +114,47 @@ local function BuildBNTable(total)
 		if isOnline then 
 			_, _, _, realmName, _, faction, race, class, _, zoneName, level = BNGetToonInfo(presenceID)
 			for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
+			
 			BNTable[i] = { presenceID, givenName, surname, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
+			
+			if client == scString then
+				BNTableSC[#BNTableSC + 1] = { presenceID, givenName, surname, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
+			elseif client == d3String then
+				BNTableD3[#BNTableD3 + 1] = { presenceID, givenName, surname, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
+			else
+				BNTableWoW[#BNTableWoW + 1] = { presenceID, givenName, surname, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
+			end
 		end
 	end
+	
 	sort(BNTable, function(a, b)
 		if a[2] and b[2] then
 			if a[2] == b[2] then return a[3] < b[3] end
 			return a[2] < b[2]
 		end
+	end)	
+	
+	sort(BNTableWoW, function(a, b)
+		if a[2] and b[2] then
+			if a[2] == b[2] then return a[3] < b[3] end
+			return a[2] < b[2]
+		end
 	end)
+	
+	sort(BNTableSC, function(a, b)
+		if a[2] and b[2] then
+			if a[2] == b[2] then return a[3] < b[3] end
+			return a[2] < b[2]
+		end
+	end)
+	
+	sort(BNTableD3, function(a, b)
+		if a[2] and b[2] then
+			if a[2] == b[2] then return a[3] < b[3] end
+			return a[2] < b[2]
+		end
+	end)
+	
 end
 
 local function OnEvent(self, event, ...)
@@ -233,28 +269,31 @@ local function OnEnter(self)
 	end
 
 	if numBNetOnline > 0 then
-		GameTooltip:AddLine(' ')
-		GameTooltip:AddLine(battleNetString)
-
 		local status = 0
-		for i = 1, #BNTable do
-			info = BNTable[i]
-			if info[7] then
-				if info[6] == wowString then
-					if (info[8] == true) then status = 1 elseif (info[9] == true) then status = 2 else status = 3 end
-					classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[14]], GetQuestDifficultyColor(info[16])
-					
-					if classc == nil then classc = GetQuestDifficultyColor(info[16]) end
-					
-					if UnitInParty(info[4]) or UnitInRaid(info[4]) then grouped = 1 else grouped = 2 end
-					GameTooltip:AddDoubleLine(format(clientLevelNameString, info[6],levelc.r*255,levelc.g*255,levelc.b*255,info[16],classc.r*255,classc.g*255,classc.b*255,info[4],groupedTable[grouped], 255, 0, 0, statusTable[status]),info[2].." "..info[3],238,238,238,238,238,238)
-					if IsShiftKeyDown() then
-						if GetRealZoneText() == info[15] then zonec = activezone else zonec = inactivezone end
-						if GetRealmName() == info[11] then realmc = activezone else realmc = inactivezone end
-						GameTooltip:AddDoubleLine(info[15], info[11], zonec.r, zonec.g, zonec.b, realmc.r, realmc.g, realmc.b)
+		for client, BNTable in pairs(tableList) do
+			if #BNTable > 0 then
+				GameTooltip:AddLine(' ')
+				GameTooltip:AddLine(battleNetString..' ('..client..')')			
+				for i = 1, #BNTable do
+					info = BNTable[i]
+					if info[7] then
+						if info[6] == wowString then
+							if (info[8] == true) then status = 1 elseif (info[9] == true) then status = 2 else status = 3 end
+							classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[14]], GetQuestDifficultyColor(info[16])
+							
+							if classc == nil then classc = GetQuestDifficultyColor(info[16]) end
+							
+							if UnitInParty(info[4]) or UnitInRaid(info[4]) then grouped = 1 else grouped = 2 end
+							GameTooltip:AddDoubleLine(format(clientLevelNameString, info[6],levelc.r*255,levelc.g*255,levelc.b*255,info[16],classc.r*255,classc.g*255,classc.b*255,info[4],groupedTable[grouped], 255, 0, 0, statusTable[status]),info[2].." "..info[3],238,238,238,238,238,238)
+							if IsShiftKeyDown() then
+								if GetRealZoneText() == info[15] then zonec = activezone else zonec = inactivezone end
+								if GetRealmName() == info[11] then realmc = activezone else realmc = inactivezone end
+								GameTooltip:AddDoubleLine(info[15], info[11], zonec.r, zonec.g, zonec.b, realmc.r, realmc.g, realmc.b)
+							end
+						else
+							GameTooltip:AddDoubleLine(format(otherGameInfoString, info[6], info[4]), format(otherGameInfoString2, info[2], info[3]), .9, .9, .9, .9, .9, .9)
+						end
 					end
-				else
-					GameTooltip:AddDoubleLine(format(otherGameInfoString, info[6], info[4]), format(otherGameInfoString2, info[2], info[3]), .9, .9, .9, .9, .9, .9)
 				end
 			end
 		end
