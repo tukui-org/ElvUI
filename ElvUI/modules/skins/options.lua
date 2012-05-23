@@ -154,6 +154,34 @@ E.Options.args.skins = {
 				},			
 			},
 		},		
+		clcret = {
+			order = 11,
+			type = 'group',
+			name = 'CLCRet',
+			get = function(info) return E.private.skins.clcret[ info[#info] ] end,
+			set = function(info, value) E.private.skins.clcret[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
+			args = {
+				enable = {
+					name = L['Enable'],
+					type = 'toggle',
+					order = 1,				
+				},			
+			},
+		},	
+		clcprot = {
+			order = 12,
+			type = 'group',
+			name = 'CLCProt',
+			get = function(info) return E.private.skins.clcprot[ info[#info] ] end,
+			set = function(info, value) E.private.skins.clcprot[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
+			args = {
+				enable = {
+					name = L['Enable'],
+					type = 'toggle',
+					order = 1,				
+				},			
+			},
+		},			
 		blizzard = {
 			order = 300,
 			type = 'group',
