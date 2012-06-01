@@ -94,7 +94,10 @@ local function New(self, index)
 	self.oldNew(self, index)
 	local icon = self.active[index]
 	if icon then
-		icon.OldUpdateLayout = icon.UpdateLayout
+		if not icon.OldUpdateLayout then
+			icon.OldUpdateLayout = icon.UpdateLayout
+		end
+		
 		icon.UpdateLayout = UpdateLayout
 		icon:UpdateLayout()
 	end
