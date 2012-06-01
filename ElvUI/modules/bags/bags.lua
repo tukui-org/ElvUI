@@ -862,10 +862,7 @@ function B:BAG_CLOSED(event, id)
 		end
 	end
 
-	if bagFrame:IsShown() then
-		ToggleFrame(bagFrame)
-		ToggleFrame(bagFrame)
-	end
+	bagFrame:Hide()
 end
 
 function B:CloseBags()
