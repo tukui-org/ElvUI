@@ -22,5 +22,5 @@ function AB:SetupExtraButton()
 		end
 	end
 	
-	self:CreateMover(holder, 'BossButton', 'BossButton');
+	E:CreateMover(holder, 'BossButton', 'Boss Button');
 end

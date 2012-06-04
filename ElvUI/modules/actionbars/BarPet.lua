@@ -93,8 +93,6 @@ function AB:PositionAndSizeBarPet()
 
 	bar:SetWidth(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
 	bar:SetHeight(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
-	bar.mover:SetWidth(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
-	bar.mover:SetHeight(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
 	bar.mouseover = self.db['barPet'].mouseover
 	if self.db['barPet'].enabled then
 		bar:SetScale(1);
@@ -237,6 +235,6 @@ function AB:CreateBarPet()
 	self:RegisterEvent('PLAYER_FARSIGHT_FOCUS_CHANGED', 'UpdatePet');
 	self:RegisterEvent('PET_BAR_UPDATE_COOLDOWN', PetActionBar_UpdateCooldowns);
 	
-	self:CreateMover(bar, 'PetAB', 'barPet');
+	E:CreateMover(bar, 'PetAB', 'Pet Bar');
 	self:PositionAndSizeBarPet();
 end

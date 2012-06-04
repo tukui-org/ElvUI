@@ -102,8 +102,6 @@ function AB:PositionAndSizeBarShapeShift()
 
 	bar:SetWidth(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
 	bar:SetHeight(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
-	bar.mover:SetWidth(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
-	bar.mover:SetHeight(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
 	bar.mouseover = self.db['barShapeShift'].mouseover
 	if self.db['barShapeShift'].enabled then
 		bar:SetScale(1);
@@ -237,7 +235,7 @@ function AB:CreateBarShapeShift()
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', 'StyleShapeShift');
 	self:RegisterEvent('ACTIONBAR_PAGE_CHANGED', 'StyleShapeShift');
 	
-	self:CreateMover(bar, 'ShiftAB', 'barShapeShift', -3);
+	E:CreateMover(bar, 'ShiftAB', 'Stance Bar', nil, -3);
 	self:AdjustMaxShapeShiftButtons();
 	self:PositionAndSizeBarShapeShift();
 	RegisterStateDriver(bar, "show", states[E.myclass] or "hide");

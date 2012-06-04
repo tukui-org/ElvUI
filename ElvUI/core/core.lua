@@ -524,7 +524,6 @@ function E:UpdateAll()
 	local AB = self:GetModule('ActionBars')
 	AB.db = self.db.actionbar
 	AB:UpdateButtonSettings()
-	AB:SetMoverPositions()
 	 
 	local bags = E:GetModule('Bags'); 
 	bags:Layout(); 
@@ -690,9 +689,6 @@ function E:MoveUI(override, type)
 	if type == 'unitframes' and self.UnitFrames then
 		ElvUF:MoveUF(toggle)
 		return
-	elseif type == 'actionbars' and self.ActionBars then
-		self.ActionBars:ToggleMovers(toggle)
-		return
 	end
 	
 	self:ToggleMovers(toggle)
@@ -700,10 +696,6 @@ function E:MoveUI(override, type)
 	if self.UnitFrames then
 		ElvUF:MoveUF(toggle)
 	end
-	
-	if self.ActionBars then
-		self.ActionBars:ToggleMovers(toggle)
-	end	
 end
 
 function E:ResetAllUI()
@@ -712,10 +704,6 @@ function E:ResetAllUI()
 	if self.UnitFrames then
 		ElvUF:ResetUF()	
 	end
-	
-	if self.ActionBars then
-		self.ActionBars:ResetMovers('')
-	end	
 
 	if E.db.lowresolutionset then
 		E:SetupResolution()

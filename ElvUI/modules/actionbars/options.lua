@@ -32,7 +32,7 @@ local function BuildABConfig()
 					type = 'execute',
 					name = L['Restore Bar'],
 					desc = L['Restore the actionbars default settings'],
-					func = function() E:CopyTable(E.db.actionbar['bar'..i], P.actionbar['bar'..i]); AB:ResetMovers('bar'..i); AB:UpdateButtonSettings() end,
+					func = function() E:CopyTable(E.db.actionbar['bar'..i], P.actionbar['bar'..i]); E:ResetMovers('Bar '..i); AB:UpdateButtonSettings() end,
 				},	
 				point = {
 					order = 3,
@@ -150,7 +150,7 @@ local function BuildABConfig()
 				type = 'execute',
 				name = L['Restore Bar'],
 				desc = L['Restore the actionbars default settings'],
-				func = function() E:CopyTable(E.db.actionbar['barPet'], P.actionbar['barPet']); AB:ResetMovers('barPet'); AB:UpdateButtonSettings() end,
+				func = function() E:CopyTable(E.db.actionbar['barPet'], P.actionbar['barPet']); E:ResetMovers('Pet Bar'); AB:UpdateButtonSettings() end,
 			},	
 			point = {
 				order = 3,
@@ -249,7 +249,7 @@ local function BuildABConfig()
 				type = 'execute',
 				name = L['Restore Bar'],
 				desc = L['Restore the actionbars default settings'],
-				func = function() E:CopyTable(E.db.actionbar['barShapeShift'], P.actionbar['barShapeShift']); AB:ResetMovers('barShapeShift'); AB:UpdateButtonSettings() end,
+				func = function() E:CopyTable(E.db.actionbar['barShapeShift'], P.actionbar['barShapeShift']); E:ResetMovers('Stance Bar'); AB:UpdateButtonSettings() end,
 			},	
 			point = {
 				order = 3,
@@ -455,7 +455,7 @@ local function BuildABConfig()
 					type = 'execute',
 					name = L['Restore Bar'],
 					desc = L['Restore the actionbars default settings'],
-					func = function() E:CopyTable(E.db.actionbar['barTotem'], P.actionbar['barTotem']); AB:ResetMovers('barTotem'); AB:AdjustTotemSettings() end,
+					func = function() E:CopyTable(E.db.actionbar['barTotem'], P.actionbar['barTotem']); E:ResetMovers('Totem Bar'); AB:AdjustTotemSettings() end,
 				},			
 				mouseover = {
 					order = 3,

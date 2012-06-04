@@ -94,5 +94,5 @@ function B:AchievementMovers()
 	end)
 	
 	self:RegisterEvent("ACHIEVEMENT_EARNED", 'AchievementMove')
-	E:CreateMover(AchievementHolder, "AchievementMover", "Achievement Frames", nil, PostAchievementMove)
+	E:CreateMover(AchievementHolder, "AchievementMover", "Achievement Frames", nil, nil, PostAchievementMove)
 end

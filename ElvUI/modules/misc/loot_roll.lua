@@ -331,5 +331,5 @@ function M:LoadLootRoll()
 	UIParent:UnregisterEvent("START_LOOT_ROLL")
 	UIParent:UnregisterEvent("CANCEL_LOOT_ROLL")
 	
-	E:CreateMover(anchor, "LootRollMover", "LootRoll Frame", nil, PostMoveLootRoll)
+	E:CreateMover(anchor, "LootRollMover", "LootRoll Frame", nil, nil, PostMoveLootRoll)
 end
