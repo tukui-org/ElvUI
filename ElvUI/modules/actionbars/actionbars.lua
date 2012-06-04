@@ -63,6 +63,7 @@ function AB:PositionAndSizeBar(barName)
 	local bar = self["handledBars"][barName]
 
 	bar.db = self.db[barName]
+	bar.db.position = nil; --Depreciated
 	
 	if numButtons < buttonsPerRow then
 		buttonsPerRow = numButtons;

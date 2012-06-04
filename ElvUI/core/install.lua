@@ -167,25 +167,26 @@ local function SetupCVars()
 end	
 
 function E:SetupResolution()
+	for i=1, 5 do
+		E:ResetMovers('Bar '..i)
+	end
+	
+	E:ResetMovers('Pet Bar')
+	E:ResetMovers('Stance Bar')
+	E:ResetMovers('Totem Bar')
+
 	if self == 'low' then
 		E.db.general.panelWidth = 400
 		E.db.general.panelHeight = 180
 		
 		E:CopyTable(E.db.actionbar, P.actionbar)
-		
+				
 		E.db.actionbar.bar1.heightMult = 2;
 		E.db.actionbar.bar2.enabled = true;
 		E.db.actionbar.bar3.enabled = false;
 		E.db.actionbar.bar5.enabled = false;
-		E:GetModule('ActionBars'):ResetMovers('')
-		E.db.actionbar.bar2["position"] = {
-			["p2"] = "BOTTOM",
-			["p"] = "CENTER",
-			["p3"] = 0,
-			["p4"] = 56.18668365478516,
-		}
-
-		
+		E.db.movers.ElvAB_2 = "CENTER\031UIParent\031BOTTOM\0310\03156.18"
+	
 		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
 		
 		E.db.unitframe.fontsize = 11
@@ -228,7 +229,7 @@ function E:SetupResolution()
 		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
 		E.db.unitframe.fontsize = 12
 		E.db.unitframe.units["positions"] = nil;
-		E:GetModule('ActionBars'):ResetMovers('')
+
 		E.db.lowresolutionset = nil;
 	end
 
