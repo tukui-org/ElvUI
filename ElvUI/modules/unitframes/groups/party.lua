@@ -51,25 +51,6 @@ function UF:Construct_PartyFrames(unitGroup)
 	return self
 end
 
-function UF:PartySmartVisibility(event)
-	if not self.db or not self.SetAttribute or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) or self.isForced then return; end
-	local inInstance, instanceType = IsInInstance()
-	local _, _, _, _, maxPlayers, _, _ = GetInstanceInfo()
-	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
-	if not InCombatLockdown() then		
-		if inInstance and instanceType == "raid" and maxPlayers ~= 40 then
-			self:SetAttribute("showRaid", false)
-			self:SetAttribute("showParty", false)		
-		else
-			self:SetAttribute("showParty", self.db.showParty)
-			self:SetAttribute("showRaid", self.db.showRaid)
-		end
-	else
-		self:RegisterEvent("PLAYER_REGEN_ENABLED")
-		return
-	end
-end
-
 function UF:Update_PartyHeader(header, db)
 	if not header.isForced then
 		header:Hide()
@@ -134,12 +115,9 @@ function UF:Update_PartyHeader(header, db)
 		header:SetAttribute('minWidth', header.dirtyWidth)
 	
 		header:RegisterEvent("PLAYER_ENTERING_WORLD")
-		header:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-		header:HookScript("OnEvent", UF.PartySmartVisibility)		
+		header:RegisterEvent("ZONE_CHANGED_NEW_AREA")	
 		header.positioned = true;
 	end		
-	
-	UF.PartySmartVisibility(header)
 end
 
 function UF:Update_PartyFrames(frame, db)
