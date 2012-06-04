@@ -79,7 +79,10 @@ function AddOn:OnInitialize()
 end
 
 function AddOn:OnProfileReset()
-	StaticPopup_Show("CONFIG_RL")
+	ElvData = nil;
+	ElvPrivateData = nil;
+	ElvCharacterData = nil;
+	ReloadUI()
 end
 
 function AddOn:OnProfileCopied(arg1, arg2, arg3)
