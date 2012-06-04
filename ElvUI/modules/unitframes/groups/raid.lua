@@ -52,7 +52,7 @@ for i=10, 40, 15 do
 		local _, _, _, _, maxPlayers, _, _ = GetInstanceInfo()
 		if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
 		if not InCombatLockdown() then		
-			if inInstance and instanceType == "raid" and maxPlayers < i then
+			if inInstance and instanceType == "raid" and maxPlayers < math.min(self.db.maxColumns * self.db.unitsPerColumn, MAX_RAID_MEMBERS) then
 				self:SetAttribute("showRaid", false)
 				self:SetAttribute("showParty", false)			
 			elseif self.db.showParty then
