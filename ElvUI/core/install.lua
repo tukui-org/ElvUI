@@ -242,8 +242,8 @@ function E:SetupLayout(layout)
 		end
 		
 		E.db.unitframe.units.party.health.frequentUpdates = true;
-		E.db.unitframe.units.raid625.health.frequentUpdates = true;
-		E.db.unitframe.units.raid2640.health.frequentUpdates = true;
+		E.db.unitframe.units.raid25.health.frequentUpdates = true;
+		E.db.unitframe.units.raid40.health.frequentUpdates = true;
 		
 		E.db.unitframe.units.boss.width = 200;
 		E.db.unitframe.units.boss.castbar.width = 200;
@@ -278,19 +278,19 @@ function E:SetupLayout(layout)
 		E.db.unitframe.units.party.targetsGroup.xOffset = 0;
 		E.db.unitframe.units.party.targetsGroup.yOffset = 1;
 
-		E.db.unitframe.units.raid625.healPrediction = true;
-		E.db.unitframe.units.raid625.health.orientation = 'VERTICAL';
+		E.db.unitframe.units.raid25.healPrediction = true;
+		E.db.unitframe.units.raid25.health.orientation = 'VERTICAL';
 
-		E.db.unitframe.units.raid2640.healPrediction = true;
-		E.db.unitframe.units.raid2640.health.orientation = 'VERTICAL';		
+		E.db.unitframe.units.raid40.healPrediction = true;
+		E.db.unitframe.units.raid40.health.orientation = 'VERTICAL';		
 		
 		
 		if not E.db.movers then E.db.movers = {}; end
 		if E.db.lowresolutionset then
 			E.db.movers.ElvUF_PlayerMover = "BOTTOMUIParentBOTTOM-305242"
 			E.db.movers.ElvUF_TargetMover = "BOTTOMUIParentBOTTOM305242"
-			E.db.movers.ElvUF_Raid2640Mover = "BOTTOMUIParentBOTTOM080"
-			E.db.movers.ElvUF_Raid625Mover = "BOTTOMUIParentBOTTOM080"
+			E.db.movers.ElvUF_Raid40Mover = "BOTTOMUIParentBOTTOM080"
+			E.db.movers.ElvUF_Raid25Mover = "BOTTOMUIParentBOTTOM080"
 			E.db.movers.ElvUF_TargetTargetMover = "BOTTOMUIParentBOTTOM305187"
 			E.db.movers.ElvUF_PartyMover = "BOTTOMUIParentBOTTOM0104"
 			E.db.movers.ElvUF_PetMover = "BOTTOMUIParentBOTTOM-305187"
@@ -299,8 +299,8 @@ function E:SetupLayout(layout)
 		else
 			E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTUIParentBOTTOMLEFT464242"
 			E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTUIParentBOTTOMRIGHT-464242"
-			E.db.movers.ElvUF_Raid2640Mover = "BOTTOMUIParentBOTTOM050"
-			E.db.movers.ElvUF_Raid625Mover = "BOTTOMUIParentBOTTOM050"
+			E.db.movers.ElvUF_Raid40Mover = "BOTTOMUIParentBOTTOM050"
+			E.db.movers.ElvUF_Raid25Mover = "BOTTOMUIParentBOTTOM050"
 			E.db.movers.ElvUF_TargetTargetMover = "BOTTOMRIGHTUIParentBOTTOMRIGHT-464151"
 			E.db.movers.ElvUF_PartyMover = "BOTTOMUIParentBOTTOM074"
 			E.db.movers.ElvUF_PetMover = "BOTTOMLEFTUIParentBOTTOMLEFT464151"
