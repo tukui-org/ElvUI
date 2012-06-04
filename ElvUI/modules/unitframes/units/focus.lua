@@ -21,6 +21,9 @@ function UF:Construct_FocusFrame(frame)
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)	
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
+	
+	frame:Point('BOTTOMRIGHT', ElvUF_Target, 'TOPRIGHT', 0, 220)
+	E:CreateMover(frame, frame:GetName()..'Mover', 'Focus Frame')
 end
 
 function UF:Update_FocusFrame(frame, db)
@@ -41,6 +44,7 @@ function UF:Update_FocusFrame(frame, db)
 	
 	frame.colors = ElvUF.colors
 	frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
+	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 	
 	--Adjust some variables
 	do
@@ -319,11 +323,6 @@ function UF:Update_FocusFrame(frame, db)
 		end
 	end	
 		
-	if not frame.mover then
-		frame:ClearAllPoints()
-		frame:Point('BOTTOMRIGHT', ElvUF_Target, 'TOPRIGHT', 0, 220) --Set to default position
-	end
-	
 	frame:UpdateAllElements()
 end
 

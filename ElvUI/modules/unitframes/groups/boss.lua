@@ -5,6 +5,7 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
+local BossHeader = CreateFrame('Frame', 'BossHeader', UIParent)
 function UF:Construct_BossFrames(frame)	
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
 	
@@ -23,6 +24,9 @@ function UF:Construct_BossFrames(frame)
 	frame.AltPowerBar = self:Construct_AltPowerBar(frame)
 	
 	frame:SetAttribute("type2", "focus")
+	
+	BossHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165) 
+	E:CreateMover(BossHeader, BossHeader:GetName()..'Mover', 'Boss Frames')
 end
 
 function UF:Update_BossFrames(frame, db)
@@ -383,26 +387,25 @@ function UF:Update_BossFrames(frame, db)
 			altpower.text:SetText("")
 		end)		
 	end
-	
-	
-	frame.snapOffset = -(12 + db.castbar.height)
-	
-	if not frame.mover then
-		frame:ClearAllPoints()	
-		if INDEX == 1 then
-			frame:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165) --Set to default position
+
+	frame:ClearAllPoints()
+	if INDEX == 1 then
+		if db.growthDirection == 'UP' then
+			frame:Point('BOTTOMRIGHT', BossHeaderMover, 'BOTTOMRIGHT') --Set to default position
 		else
-			if db.growthDirection == 'UP' then
-				frame:Point('BOTTOMRIGHT', _G['ElvUF_Boss'..INDEX-1], 'TOPRIGHT', 0, 12 + db.castbar.height)
-			else
-				frame:Point('TOPRIGHT', _G['ElvUF_Boss'..INDEX-1], 'BOTTOMRIGHT', 0, -(12 + db.castbar.height))
-			end
+			frame:Point('TOPRIGHT', BossHeaderMover, 'TOPRIGHT') --Set to default position
 		end
-	end
+	else
+		if db.growthDirection == 'UP' then
+			frame:Point('BOTTOMRIGHT', _G['ElvUF_Boss'..INDEX-1], 'TOPRIGHT', 0, 12 + db.castbar.height)
+		else
+			frame:Point('TOPRIGHT', _G['ElvUF_Boss'..INDEX-1], 'BOTTOMRIGHT', 0, -(12 + db.castbar.height))
+		end
+	end	
+
+	BossHeader:Width(UNIT_WIDTH)
+	BossHeader:Height(UNIT_HEIGHT + (UNIT_HEIGHT + 12 + db.castbar.height) * 3)
 	
-	--[[frame:Show()
-	frame.Hide = frame.Show
-	frame.unit = 'player']]
 	frame:UpdateAllElements()
 end
 

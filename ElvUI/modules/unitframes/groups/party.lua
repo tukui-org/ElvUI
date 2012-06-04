@@ -123,16 +123,21 @@ function UF:Update_PartyHeader(header, db)
 	UF:ClearChildPoints(header:GetChildren())
 	
 	header:SetAttribute('point', db.point)
-	
-
-	if not header.mover then
+		
+	if not header.positioned then
 		header:ClearAllPoints()
 		header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
 		
+		E:CreateMover(header, header:GetName()..'Mover', 'Party Frames')
+		
+		header:SetAttribute('minHeight', header.dirtyHeight)
+		header:SetAttribute('minWidth', header.dirtyWidth)
+	
 		header:RegisterEvent("PLAYER_ENTERING_WORLD")
 		header:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 		header:HookScript("OnEvent", UF.PartySmartVisibility)		
-	end
+		header.positioned = true;
+	end		
 	
 	UF.PartySmartVisibility(header)
 end

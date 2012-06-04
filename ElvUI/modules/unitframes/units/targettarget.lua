@@ -15,6 +15,9 @@ function UF:Construct_TargetTargetFrame(frame)
 	frame.Buffs = self:Construct_Buffs(frame)
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
+	
+	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 75) --Set to default position
+	E:CreateMover(frame, frame:GetName()..'Mover', 'TargetTarget Frame')
 end
 
 function UF:Update_TargetTargetFrame(frame, db)
@@ -35,6 +38,7 @@ function UF:Update_TargetTargetFrame(frame, db)
 	
 	frame.colors = ElvUF.colors
 	frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
+	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 	
 	--Adjust some variables
 	do
@@ -252,14 +256,8 @@ function UF:Update_TargetTargetFrame(frame, db)
 			debuffs:Hide()
 		end
 	end	
-	
-	frame.snapOffset = -(12 + self.db['units'].player.castbar.height)
-	
-	if not frame.mover then
-		frame:ClearAllPoints()
-		frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 75) --Set to default position
-	end
-	
+
+	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + self.db['units'].player.castbar.height))
 	frame:UpdateAllElements()
 end
 

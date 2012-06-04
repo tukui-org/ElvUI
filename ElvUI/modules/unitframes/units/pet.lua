@@ -20,6 +20,9 @@ function UF:Construct_PetFrame(frame)
 	frame.Castbar = CreateFrame("StatusBar", nil, frame) -- Dummy Bar
 	
 	frame.HealPrediction = self:Construct_HealComm(frame)
+	
+	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 118)
+	E:CreateMover(frame, frame:GetName()..'Mover', 'Pet Frame')
 end
 
 function UF:Update_PetFrame(frame, db)
@@ -40,6 +43,7 @@ function UF:Update_PetFrame(frame, db)
 	
 	frame.colors = ElvUF.colors
 	frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
+	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 	
 	--Adjust some variables
 	do
@@ -289,11 +293,6 @@ function UF:Update_PetFrame(frame, db)
 			frame:SetParent(ElvUF_Player)
 		end
 	end	
-	
-	if not frame.mover then
-		frame:ClearAllPoints()
-		frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 118)
-	end
 	
 	frame:UpdateAllElements()
 end

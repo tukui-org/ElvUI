@@ -117,14 +117,19 @@ function UF:Update_Raid2640Header(header, db)
 	
 	header:SetAttribute('point', db.point)
 
-	if not header.mover then
+	if not header.positioned then
 		header:ClearAllPoints()
-		header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
+		header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)	
+		E:CreateMover(header, header:GetName()..'Mover', 'Raid 26-40 Frames')
+		
+		header:SetAttribute('minHeight', header.dirtyHeight)
+		header:SetAttribute('minWidth', header.dirtyWidth)
 		
 		header:RegisterEvent("PLAYER_ENTERING_WORLD")
 		header:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-		header:HookScript("OnEvent", UF.Raid2640SmartVisibility)		
-	end
+		header:HookScript("OnEvent", UF.Raid2640SmartVisibility)	
+		header.positioned = true;
+	end	
 	
 	UF.Raid2640SmartVisibility(header)
 end

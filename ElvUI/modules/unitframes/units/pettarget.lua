@@ -15,6 +15,9 @@ function UF:Construct_PetTargetFrame(frame)
 	frame.Buffs = self:Construct_Buffs(frame)
 	
 	frame.Debuffs = self:Construct_Debuffs(frame)
+	
+	frame:Point('BOTTOM', ElvUF_Pet, 'TOP', 0, 7) --Set to default position
+	E:CreateMover(frame, frame:GetName()..'Mover', 'PetTarget Frame', nil, -7)
 end
 
 function UF:Update_PetTargetFrame(frame, db)
@@ -35,7 +38,7 @@ function UF:Update_PetTargetFrame(frame, db)
 	
 	frame.colors = ElvUF.colors
 	frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
-	
+	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 	--Adjust some variables
 	do
 		if not USE_POWERBAR then
@@ -252,12 +255,7 @@ function UF:Update_PetTargetFrame(frame, db)
 			debuffs:Hide()
 		end
 	end	
-	
-	if not frame.mover then
-		frame:ClearAllPoints()
-		frame:Point('BOTTOM', ElvUF_Pet, 'TOP', 0, 7) --Set to default position
-	end
-	
+		
 	frame:UpdateAllElements()
 end
 

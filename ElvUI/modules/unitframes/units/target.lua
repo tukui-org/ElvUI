@@ -29,6 +29,9 @@ function UF:Construct_TargetFrame(frame)
 	frame.CPoints = self:Construct_Combobar(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
+	
+	frame:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOM', 417, 75)
+	E:CreateMover(frame, frame:GetName()..'Mover', 'Target Frame')
 end
 
 function UF:Update_TargetFrame(frame, db)
@@ -58,7 +61,8 @@ function UF:Update_TargetFrame(frame, db)
 	
 	frame.colors = ElvUF.colors
 	frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
-		
+	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
+	
 	--Adjust some variables
 	do
 		if not USE_POWERBAR then
@@ -483,13 +487,7 @@ function UF:Update_TargetFrame(frame, db)
 		end
 	end	
 	
-	frame.snapOffset = -(12 + db.castbar.height)
-	
-	if not frame.mover then
-		frame:ClearAllPoints()
-		frame:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOM', 417, 75) --Set to default position
-	end
-	
+	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))
 	frame:UpdateAllElements()
 end
 

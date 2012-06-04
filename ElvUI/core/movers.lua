@@ -9,8 +9,9 @@ end
 
 local function GetPoint(obj)
 	local point, anchor, secondaryPoint, x, y = obj:GetPoint()
-
-	return string.format('%s\031%s\031%s\031%d\031%d', point, anchor:GetName() or "UIParent", secondaryPoint, x, y)
+	if not anchor then anchor = UIParent end
+	
+	return string.format('%s\031%s\031%s\031%d\031%d', point, anchor:GetName(), secondaryPoint, x, y)
 end
 
 local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
@@ -18,7 +19,6 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	if E.CreatedMovers[name].Created then return end
 	
 	if overlay == nil then overlay = true end
-	
 	local point, anchor, secondaryPoint, x, y = string.split('\031', GetPoint(parent))
 	local f = CreateFrame("Button", name, E.UIParent)
 	f:SetFrameLevel(parent:GetFrameLevel() + 1)
@@ -30,11 +30,10 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	f.textSting = text
 	f.postdrag = postdrag
 	f.overlay = overlay
-	f.snapOffset = snapOffset or 2
+	f.snapOffset = snapOffset or -2
+	E.CreatedMovers[name].mover = f
 	
-	if snapOffset then
-		tinsert(E['snapBars'], f)
-	end
+	tinsert(E['snapBars'], f)
 	
 	if overlay == true then
 		f:SetFrameStrata("DIALOG")
@@ -59,7 +58,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	f:RegisterForDrag("LeftButton", "RightButton")
 	f:SetScript("OnDragStart", function(self) 
 		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end	
-		
+
 		if E.db['general'].stickyFrames then
 			Sticky:StartMoving(self, E['snapBars'], f.snapOffset, f.snapOffset, f.snapOffset, f.snapOffset)
 		else
@@ -87,6 +86,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	parent:SetScript('OnSizeChanged', SizeChanged)
 	parent.mover = f
 	parent:ClearAllPoints()
+
 	parent:SetPoint(point, f, 0, 0)
 	
 	local fs = f:CreateFontString(nil, "OVERLAY")
@@ -138,8 +138,8 @@ end
 
 function E:SetMoverSnapOffset(name, offset)
 	if not _G[name] or not E.CreatedMovers[name] then return end
-	_G[name].snapOffset = offset or 2
-	E.CreatedMovers[name]["snapoffset"] = offset or 2
+	E.CreatedMovers[name].mover.snapOffset = offset or -2
+	E.CreatedMovers[name]["snapoffset"] = offset or -2
 end
 
 function E:SaveMoverDefaultPosition(name)

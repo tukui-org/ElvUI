@@ -1,8 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
-
-
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
@@ -49,6 +47,9 @@ function UF:Construct_PlayerFrame(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 
 	frame.CombatFade = true
+
+	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -417, 75) --Set to default position	
+	E:CreateMover(frame, frame:GetName()..'Mover', 'Player Frame')
 end
 
 function UF:Update_PlayerFrame(frame, db)
@@ -78,6 +79,7 @@ function UF:Update_PlayerFrame(frame, db)
 	
 	frame.colors = ElvUF.colors
 	frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
+	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 	
 	--Adjust some variables
 	do
@@ -796,14 +798,8 @@ function UF:Update_PlayerFrame(frame, db)
 			end		
 		end
 	end
-	
-	frame.snapOffset = -(12 + db.castbar.height)
-	
-	if not frame.mover then
-		frame:ClearAllPoints()
-		frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -417, 75) --Set to default position
-	end
 
+	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))
 	frame:UpdateAllElements()
 end
 

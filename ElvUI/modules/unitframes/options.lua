@@ -297,18 +297,6 @@ E.Options.args.unitframe = {
 			get = function(info) return E.private.unitframe.enable end,
 			set = function(info, value) E.private.unitframe.enable = value; StaticPopup_Show("PRIVATE_RL") end
 		},
-		moveuf = {
-			order = 2,
-			type = 'execute',
-			name = L['Move UnitFrames'],
-			func = function() E:MoveUI(true, 'unitframes'); end,
-		},
-		resetuf = {
-			order = 3,
-			type = 'execute',
-			name = L['Reset Positions'],
-			func = function() ElvUF:ResetUF() end,
-		},
 		general = {
 			order = 200,
 			type = 'group',

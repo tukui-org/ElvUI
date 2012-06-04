@@ -482,13 +482,6 @@ E.Options.args.actionbar = {
 			get = function(info) return E.private.actionbar[ info[#info] ] end,
 			set = function(info, value) E.private.actionbar[ info[#info] ] = value; StaticPopup_Show("PRIVATE_RL") end
 		},
-		toggleAnchors = {
-			order = 2,
-			type = "execute",
-			name = L["Toggle Anchors"],
-			func = function() E:MoveUI(true, 'actionbars'); end,
-			disabled = function() return not E.private.actionbar.enable end,
-		},
 		toggleKeybind = {
 			order = 3,
 			type = "execute",
