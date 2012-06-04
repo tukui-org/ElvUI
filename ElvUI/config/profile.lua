@@ -15,13 +15,13 @@ P['general'] = {
 	['autoAcceptInvite'] = false,
 	
 	-- fonts
-	["fontsize"] = 12,
-	["font"] = "ElvUI Font",
+	["fontsize"] = 11,
+	["font"] = "ElvUI Pixel",
 	
 	--colors
-	["bordercolor"] = { r = .31,g = .31,b = .31 },
-	["backdropcolor"] = { r = .1,g = .1,b = .1 },
-	["backdropfadecolor"] = { r = .06,g = .06,b = .06, a = 0.9 },
+	["bordercolor"] = { r = 0.1,g = 0.1,b = 0.1 },
+	["backdropcolor"] = { r = 0.1,g = 0.1,b = 0.1 },
+	["backdropfadecolor"] = { r = .054,g = .054,b = .054, a = 0.8 },
 	["valuecolor"] = {r = 23/255,g = 132/255,b = 209/255},
 	
 	--panels
@@ -157,9 +157,9 @@ P['tooltip'] = {
 P['unitframe'] = {
 	['smoothbars'] = true,
 	['statusbar'] = "Minimalist",
-	['font'] = 'ElvUI Font',
-	['fontsize'] = 12,
-	['fontoutline'] = 'OUTLINE',
+	['font'] = 'ElvUI Pixel',
+	['fontsize'] = 10,
+	['fontoutline'] = 'MONOCHROMEOUTLINE',
 	['OORAlpha'] = 0.35,
 	['debuffHighlighting'] = true,
 	["smartRaidFilter"] = true,
@@ -943,7 +943,7 @@ P['unitframe'] = {
 				['size'] = 26,
 			},
 			['roleIcon'] = {
-				['enable'] = false,
+				['enable'] = true,
 				['position'] = 'BOTTOMRIGHT',
 			},					
 		},					
@@ -1021,7 +1021,7 @@ P['unitframe'] = {
 				['size'] = 22,
 			},
 			['roleIcon'] = {
-				['enable'] = false,
+				['enable'] = true,
 				['position'] = 'BOTTOMRIGHT',
 			},				
 			['buffIndicator'] = {
