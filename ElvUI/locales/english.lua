@@ -831,3 +831,5 @@ L['Raid-10 Frames'] = true;
 L['Raid-40 Frames'] = true;
 L["Priority"] = true;
 L['Show Auras'] = true;
+L['Max Paging'] = true;
+L['When enabled the main actionbar will use the maximum amount of pages available. This means if you have another actionbar disabled, the actionbar page will become available on the main actionbar. Having this disabled will limit the main actionbar to two pages.'] = true;

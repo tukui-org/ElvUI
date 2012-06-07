@@ -670,29 +670,36 @@ end
 
 --BugFix: Prevent the main actionbar from displaying other actionbar pages..
 function AB:MultiActionBar_Update()
-	if self.db['bar2'].enabled then
+	if self.db.useMaxPaging then
+		if self.db['bar2'].enabled then
+			VIEWABLE_ACTION_BAR_PAGES[BOTTOMRIGHT_ACTIONBAR_PAGE] = nil;
+		else
+			VIEWABLE_ACTION_BAR_PAGES[BOTTOMRIGHT_ACTIONBAR_PAGE] = 1;
+		end
+
+		if self.db['bar3'].enabled then
+			VIEWABLE_ACTION_BAR_PAGES[BOTTOMLEFT_ACTIONBAR_PAGE] = nil;
+		else
+			VIEWABLE_ACTION_BAR_PAGES[BOTTOMLEFT_ACTIONBAR_PAGE] = 1;
+		end
+
+		if self.db['bar4'].enabled then
+			VIEWABLE_ACTION_BAR_PAGES[LEFT_ACTIONBAR_PAGE] = nil;
+		else
+			VIEWABLE_ACTION_BAR_PAGES[LEFT_ACTIONBAR_PAGE] = 1;
+		end	
+
+		if self.db['bar5'].enabled then
+			VIEWABLE_ACTION_BAR_PAGES[RIGHT_ACTIONBAR_PAGE] = nil;
+		else
+			VIEWABLE_ACTION_BAR_PAGES[RIGHT_ACTIONBAR_PAGE] = 1;
+		end	
+	else
 		VIEWABLE_ACTION_BAR_PAGES[BOTTOMRIGHT_ACTIONBAR_PAGE] = nil;
-	else
-		VIEWABLE_ACTION_BAR_PAGES[BOTTOMRIGHT_ACTIONBAR_PAGE] = 1;
-	end
-
-	if self.db['bar3'].enabled then
 		VIEWABLE_ACTION_BAR_PAGES[BOTTOMLEFT_ACTIONBAR_PAGE] = nil;
-	else
-		VIEWABLE_ACTION_BAR_PAGES[BOTTOMLEFT_ACTIONBAR_PAGE] = 1;
-	end
-
-	if self.db['bar4'].enabled then
 		VIEWABLE_ACTION_BAR_PAGES[LEFT_ACTIONBAR_PAGE] = nil;
-	else
-		VIEWABLE_ACTION_BAR_PAGES[LEFT_ACTIONBAR_PAGE] = 1;
-	end	
-
-	if self.db['bar5'].enabled then
 		VIEWABLE_ACTION_BAR_PAGES[RIGHT_ACTIONBAR_PAGE] = nil;
-	else
-		VIEWABLE_ACTION_BAR_PAGES[RIGHT_ACTIONBAR_PAGE] = 1;
-	end	
+	end
 end
 
 function AB:Initialize()
