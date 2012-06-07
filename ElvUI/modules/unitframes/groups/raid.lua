@@ -52,10 +52,10 @@ for i=10, 40, 15 do
 		local _, _, _, _, maxPlayers, _, _ = GetInstanceInfo()
 		if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
 		if not InCombatLockdown() then		
-			if inInstance and instanceType == "raid" and maxPlayers < math.min(self.db.maxColumns * self.db.unitsPerColumn, MAX_RAID_MEMBERS) then
-				RegisterAttributeDriver(self, 'state-visibility', 'hide')
-			elseif inInstance and instanceType == "raid" then
+			if inInstance and instanceType == "raid" and maxPlayers == i then
 				RegisterAttributeDriver(self, 'state-visibility', 'show')
+			elseif inInstance and instanceType == "raid" then
+				RegisterAttributeDriver(self, 'state-visibility', 'hide')
 			elseif self.db.visibility then
 				UF:ChangeVisibility(self, 'custom '..self.db.visibility)
 			end
@@ -129,7 +129,7 @@ for i=10, 40, 15 do
 			
 			header:RegisterEvent("PLAYER_ENTERING_WORLD")
 			header:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-			header:HookScript("OnEvent", UF.Raid25SmartVisibility)
+			header:HookScript("OnEvent", UF['Raid'..i..'SmartVisibility'])
 			header.positioned = true;
 		end
 			
