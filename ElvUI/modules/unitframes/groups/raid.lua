@@ -55,11 +55,11 @@ for i=10, 40, 15 do
 			if inInstance and instanceType == "raid" and maxPlayers < math.min(self.db.maxColumns * self.db.unitsPerColumn, MAX_RAID_MEMBERS) then
 				self:SetAttribute("showRaid", false)
 				self:SetAttribute("showParty", false)	
-				RegisterAttributeDriver(self, 'state-visibility', 'show')	
+				self:ChangeVisibility(self, 'custom '..self.db.visibility)
 			elseif self.db.showParty then
 				self:SetAttribute("showParty", self.db.showParty)
 				self:SetAttribute("showRaid", self.db.showRaid)
-				self:ChangeVisibility(self, 'custom '..self.db.visibility)
+				RegisterAttributeDriver(self, 'state-visibility', 'show')	
 			end
 		else
 			self:RegisterEvent("PLAYER_REGEN_ENABLED")
