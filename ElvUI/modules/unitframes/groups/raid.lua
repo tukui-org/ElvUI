@@ -53,13 +53,11 @@ for i=10, 40, 15 do
 		if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
 		if not InCombatLockdown() then		
 			if inInstance and instanceType == "raid" and maxPlayers < math.min(self.db.maxColumns * self.db.unitsPerColumn, MAX_RAID_MEMBERS) then
-				self:SetAttribute("showRaid", false)
-				self:SetAttribute("showParty", false)	
-				self:ChangeVisibility(self, 'custom '..self.db.visibility)
-			elseif self.db.showParty then
-				self:SetAttribute("showParty", self.db.showParty)
-				self:SetAttribute("showRaid", self.db.showRaid)
-				RegisterAttributeDriver(self, 'state-visibility', 'show')	
+				RegisterAttributeDriver(self, 'state-visibility', 'hide')
+			elseif inInstance and instanceType == "raid" then
+				RegisterAttributeDriver(self, 'state-visibility', 'show')
+			elseif self.db.visibility then
+				UF:ChangeVisibility(self, 'custom '..self.db.visibility)
 			end
 		else
 			self:RegisterEvent("PLAYER_REGEN_ENABLED")
