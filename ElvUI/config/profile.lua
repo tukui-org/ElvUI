@@ -97,6 +97,7 @@ P['chat'] = {
 	['font'] = 'ElvUI Font',
 	['fontoutline'] = 'NONE',
 	['sticky'] = true,
+	['keywords'] = '%MYNAME%, ElvUI'
 }
 
 --ClassTimers
