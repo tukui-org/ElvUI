@@ -365,7 +365,11 @@ function CH:PrintURL(url)
 end
 
 function CH:FindURL(event, msg, ...)
-	if not CH.db.url then return false, msg, ... end
+	if not CH.db.url then 
+		msg = CH:CheckKeyword(msg)
+		return false, msg, ... 
+	end
+	
 	local newMsg, found = gsub(msg, "(%a+)://(%S+)%s?", CH:PrintURL("%1://%2"))
 	if found > 0 then return false, newMsg, ... end
 	
@@ -374,6 +378,8 @@ function CH:FindURL(event, msg, ...)
 
 	newMsg, found = gsub(msg, "([_A-Za-z0-9-%.]+)@([_A-Za-z0-9-]+)(%.+)([_A-Za-z0-9-%.]+)%s?", CH:PrintURL("%1@%2%3%4"))
 	if found > 0 then return false, newMsg, ... end
+	
+	msg = CH:CheckKeyword(msg)
 	
 	return false, msg, ...
 end
@@ -581,10 +587,7 @@ function CH:CHAT_MSG_CHANNEL(event, message, author, ...)
 		local blockFlag = false
 		local msg = PrepareMessage(author, message)
 		
-		if msg == nil then return CH.FindURL(self, event, message, author, ...) end	
-		
-		message = CH:CheckKeyword(message)
-		
+
 		-- ignore player messages
 		if author == UnitName("player") then return CH.FindURL(self, ...) end
 		if msgList[msg] and CH.db.throttleInterval ~= 0 then
@@ -619,8 +622,6 @@ function CH:CHAT_MSG_YELL(event, message, author, ...)
 		
 		if msg == nil then return CH.FindURL(self, ...) end	
 
-		message = CH:CheckKeyword(message)
-		
 		-- ignore player messages
 		if author == UnitName("player") then return CH.FindURL(self, ...) end
 		if msgList[msg] and msgCount[msg] > 1 and CH.db.throttleInterval ~= 0 then
@@ -647,8 +648,6 @@ function CH:CHAT_MSG_SAY(event, message, author, ...)
 		isSpam = CH.SpamFilter(self, event, message, author, ...)
 	end
 	
-	message = CH:CheckKeyword(message)
-	
 	if isSpam then
 		return true;
 	else
@@ -671,12 +670,6 @@ function CH:CheckKeyword(message)
 	end
 	
 	return message
-end
-
-function CH:Filter(event, message, author, ...)
-	message = CH:CheckKeyword(message)
-
-	return CH.FindURL(self, event, message, author, ...)
 end
 
 function CH:AddLines(lines, ...)
@@ -829,20 +822,20 @@ function CH:Initialize()
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", CH.CHAT_MSG_CHANNEL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_YELL", CH.CHAT_MSG_YELL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_SAY", CH.CHAT_MSG_SAY)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", CH.Filter)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", CH.Filter)	
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_GUILD", CH.Filter)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_OFFICER", CH.Filter)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY", CH.Filter)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY_LEADER", CH.Filter)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID", CH.Filter)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_LEADER", CH.Filter)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_BATTLEGROUND", CH.Filter)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_BATTLEGROUND_LEADER", CH.Filter)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_CONVERSATION", CH.Filter)	
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", CH.Filter)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", CH.Filter)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_INLINE_TOAST_BROADCAST", CH.Filter)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", CH.FindURL)	
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_GUILD", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_OFFICER", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY_LEADER", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_LEADER", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_BATTLEGROUND", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_BATTLEGROUND_LEADER", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_CONVERSATION", CH.FindURL)	
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_INLINE_TOAST_BROADCAST", CH.FindURL)
 	
 	local S = E:GetModule('Skins')
 	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)
