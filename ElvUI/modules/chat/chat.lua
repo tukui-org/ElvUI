@@ -99,23 +99,41 @@ function CH:StyleChat(frame)
 	editbox:SetAllPoints(LeftChatDataPanel)
 	self:SecureHook(editbox, "AddHistoryLine", "ChatEdit_AddHistory")
 	editbox:HookScript("OnTextChanged", function(self)
-	   local text = self:GetText()
-	   if text:len() < 5 then
-		  if text:sub(1, 4) == "/tt " then
-			 local unitname, realm
-			 unitname, realm = UnitName("target")
-			 if unitname then unitname = gsub(unitname, " ", "") end
-			 if unitname and not UnitIsSameServer("player", "target") then
-				unitname = unitname .. "-" .. gsub(realm, " ", "")
-			 end
-			 ChatFrame_SendTell((unitname or L['Invalid Target']), ChatFrame1)
-		  end
-		  
-		  if text:sub(1, 4) == "/gr " then
-			self:SetText(CH:GetGroupDistribution() .. text:sub(5));
-			ChatEdit_ParseText(self, 0)		  
-		  end
-	   end
+		local text = self:GetText()
+		
+		if InCombatLockdown() then
+			local MIN_REPEAT_CHARACTERS = 5
+			if (string.len(text) > MIN_REPEAT_CHARACTERS) then
+			local repeatChar = true;
+			for i=1, MIN_REPEAT_CHARACTERS, 1 do 
+				if ( string.sub(text,(0-i), (0-i)) ~= string.sub(text,(-1-i),(-1-i)) ) then
+					repeatChar = false;
+					break;
+				end
+			end
+				if ( repeatChar ) then
+					self:Hide()
+					return;
+				end
+			end
+		end
+		
+		if text:len() < 5 then
+			if text:sub(1, 4) == "/tt " then
+				local unitname, realm
+				unitname, realm = UnitName("target")
+				if unitname then unitname = gsub(unitname, " ", "") end
+				if unitname and not UnitIsSameServer("player", "target") then
+					unitname = unitname .. "-" .. gsub(realm, " ", "")
+				end
+				ChatFrame_SendTell((unitname or L['Invalid Target']), ChatFrame1)
+			end
+
+			if text:sub(1, 4) == "/gr " then
+				self:SetText(CH:GetGroupDistribution() .. text:sub(5));
+				ChatEdit_ParseText(self, 0)		  
+			end
+		end
 
 		local new, found = gsub(text, "|Kf(%S+)|k(%S+)%s(%S+)|k", "%2 %3")
 		if found > 0 then
@@ -371,13 +389,13 @@ function CH:FindURL(event, msg, ...)
 	end
 	
 	local newMsg, found = gsub(msg, "(%a+)://(%S+)%s?", CH:PrintURL("%1://%2"))
-	if found > 0 then return false, newMsg, ... end
+	if found > 0 then return false, CH:CheckKeyword(newMsg), ... end
 	
 	newMsg, found = gsub(msg, "www%.([_A-Za-z0-9-]+)%.(%S+)%s?", CH:PrintURL("www.%1.%2"))
-	if found > 0 then return false, newMsg, ... end
+	if found > 0 then return false, CH:CheckKeyword(newMsg), ... end
 
 	newMsg, found = gsub(msg, "([_A-Za-z0-9-%.]+)@([_A-Za-z0-9-]+)(%.+)([_A-Za-z0-9-%.]+)%s?", CH:PrintURL("%1@%2%3%4"))
-	if found > 0 then return false, newMsg, ... end
+	if found > 0 then return false, CH:CheckKeyword(newMsg), ... end
 	
 	msg = CH:CheckKeyword(msg)
 	
@@ -657,16 +675,26 @@ end
 
 function CH:CheckKeyword(message)
 	local replaceWords = {};
-	for word in string.gmatch(message, "%a+") do
-		for keyword, _ in pairs(CH.Keywords) do
-			if word:lower() == keyword:lower() then
-				replaceWords[word] = E.media.hexvaluecolor..word..'|r'
-			end	
+
+	for i=1, #{string.split(' ', message)} do
+		local word = select(i, string.split(' ', message));
+		if not word:find('|') then
+			for keyword, _ in pairs(CH.Keywords) do
+				if word:lower() == keyword:lower() then
+					replaceWords[word] = E.media.hexvaluecolor..word..'|r'
+				end	
+			end
 		end
 	end
 	
 	for word, replaceWord in pairs(replaceWords) do
-		message = message:gsub(word, replaceWord)
+		if message == word then
+			message = message:gsub(word, replaceWord)
+		elseif message:find(' '..word) then
+			message = message:gsub(' '..word, ' '..replaceWord)
+		elseif message:find(word..' ') then
+			message = message:gsub(word..' ', replaceWord..' ')
+		end
 	end
 	
 	return message
