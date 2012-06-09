@@ -15,7 +15,7 @@ AB["barDefaults"] = {
 		['page'] = 1,
 		['bindButtons'] = "ACTIONBUTTON",
 		['conditions'] = "[bonusbar:5] 11; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;",
-		['position'] = "BOTTOM,ElvUIParent,BOTTOM,0,4",
+		['position'] = "BOTTOM,ElvUIParent,BOTTOM,0,27",
 	},
 	["bar2"] = {
 		['page'] = 5,
@@ -33,7 +33,7 @@ AB["barDefaults"] = {
 		['page'] = 4,
 		['bindButtons'] = "MULTIACTIONBAR4BUTTON",
 		['conditions'] = "",
-		['position'] = "RIGHT,ElvUIParent,RIGHT,-4,0",
+		['position'] = "BOTTOMLEFT,ElvUI_Bar1,BOTTOMRIGHT,3,0",
 	},
 	["bar5"] = {
 		['page'] = 3,
@@ -209,7 +209,7 @@ function AB:CreateBar(id)
 	bar.backdrop:SetAllPoints();
 	bar.buttons = {}
 	bar.bindButtons = self['barDefaults']['bar'..id].bindButtons
-	
+
 	for i=1, 12 do
 		bar.buttons[i] = LAB:CreateButton(i, format(bar:GetName().."Button%d", i), bar, nil)
 		bar.buttons[i]:SetState(0, "action", i)
@@ -737,6 +737,17 @@ function AB:Initialize()
 	SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
 	
 	self:SecureHook('MultiActionBar_Update')
+
+	local spacing = E:Scale(self.db.bar1.buttonspacing);
+	local size = E:Scale(self.db.bar1.buttonsize);
+	if not E:HasMoverBeenMoved('ElvAB_2') then
+		ElvAB_2:ClearAllPoints()
+		ElvAB_2:Point('TOP', ElvUI_Bar1, 'BOTTOM', 0, ((size * 2) + (spacing * 3)))
+	end
+	if not E:HasMoverBeenMoved('ElvAB_3') then
+		ElvAB_3:ClearAllPoints()
+		ElvAB_3:Point('TOP', ElvUI_Bar1, 'BOTTOM', 0, ((size * 3) + (spacing * 4)))
+	end
 end
 
 E:RegisterModule(AB:GetName())

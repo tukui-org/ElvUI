@@ -21,7 +21,7 @@ function UF:Construct_PetFrame(frame)
 	
 	frame.HealPrediction = self:Construct_HealComm(frame)
 	
-	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 118)
+	frame:Point('TOPLEFT', ElvUF_Player, 'BOTTOMLEFT', 0, -30)
 	E:CreateMover(frame, frame:GetName()..'Mover', 'Pet Frame')
 end
 

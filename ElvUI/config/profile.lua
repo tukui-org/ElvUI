@@ -27,7 +27,7 @@ P['general'] = {
 	["valuecolor"] = {r = valuer,g = valueg,b = valueb},
 	
 	--panels
-	['panelWidth'] = 380,
+	['panelWidth'] = 382,
 	['panelHeight'] = 200,
 	['panelBackdropNameLeft'] = '',
 	['panelBackdropNameRight'] = '',
@@ -99,7 +99,7 @@ P['chat'] = {
 	['font'] = 'Arial Narrow',
 	['fontoutline'] = 'NONE',
 	['sticky'] = true,
-	['keywords'] = '%MYNAME%, ElvUI'
+	['keywords'] = '%MYNAME%, ElvUI',
 	['whisperwarning'] = true,
 	['whispersound'] = 'ElvUI Whisper',
 }
@@ -780,7 +780,7 @@ P['unitframe'] = {
 			},					
 		},
 		['party'] = {
-			['enable'] = false,
+			['enable'] = true,
 			['frequentHealth'] = false,
 			['visibility'] = "[@raid6,exists] hide;show",
 			['point'] = 'TOP', --Requires ReloadUI()
@@ -1043,7 +1043,6 @@ P['unitframe'] = {
 			},
 			['roleIcon'] = {
 				['enable'] = true,
->>>>>>> ElvUI/master
 				['position'] = 'BOTTOMRIGHT',
 			},					
 		},					

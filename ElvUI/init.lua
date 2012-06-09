@@ -80,7 +80,7 @@ function AddOn:OnInitialize()
 end
 
 function AddOn:OnProfileReset()
-	ElvData = nil;
+	-- ElvData = nil; --Comment out, I hardly think this was intended.
 	ElvPrivateData = nil;
 	ElvCharacterData = nil;
 	ReloadUI()

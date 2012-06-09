@@ -30,7 +30,7 @@ function UF:Construct_TargetFrame(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
 	
-	frame:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOM', 417, 75)
+	frame:Point('TOPLEFT', ElvUF_Player, 'TOPRIGHT', 30, 0)
 	E:CreateMover(frame, frame:GetName()..'Mover', 'Target Frame')
 end
 
