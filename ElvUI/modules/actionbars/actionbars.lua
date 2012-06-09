@@ -737,16 +737,20 @@ function AB:Initialize()
 	SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
 	
 	self:SecureHook('MultiActionBar_Update')
+	
+	self:PositionBar2And3()
+end
 
-	local spacing = E:Scale(self.db.bar1.buttonspacing);
-	local size = E:Scale(self.db.bar1.buttonsize);
+function AB:PositionBar2And3()
+	local spacing = E:Scale(E.db.actionbar.bar1.buttonspacing);
+	local size = E:Scale(E.db.actionbar.bar1.buttonsize);
 	if not E:HasMoverBeenMoved('ElvAB_2') then
 		ElvAB_2:ClearAllPoints()
-		ElvAB_2:Point('TOP', ElvUI_Bar1, 'BOTTOM', 0, ((size * 2) + (spacing * 3)))
+		ElvAB_2:SetPoint('TOP', ElvUI_Bar1, 'BOTTOM', 0, ((size * 2) + (spacing * 3)))
 	end
 	if not E:HasMoverBeenMoved('ElvAB_3') then
 		ElvAB_3:ClearAllPoints()
-		ElvAB_3:Point('TOP', ElvUI_Bar1, 'BOTTOM', 0, ((size * 3) + (spacing * 4)))
+		ElvAB_3:SetPoint('TOP', ElvUI_Bar1, 'BOTTOM', 0, ((size * 3) + (spacing * 4)))
 	end
 end
 
