@@ -236,7 +236,7 @@ function AB:CreateTotemBar()
 	bar:Height(MultiCastActionBarFrame:GetHeight())
 
 	bar.buttons[MultiCastActionBarFrame] = true
-	self:CreateMover(bar, 'TotemAB', 'barTotem', -5)
+	E:CreateMover(bar, 'TotemAB', 'Totem Bar', nil, -5)
 	self:AdjustTotemSettings()
 end
 

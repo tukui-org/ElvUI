@@ -8,11 +8,41 @@ local LAB = LibStub("LibActionButton-1.0")
 
 local gsub = string.gsub
 E.ActionBars = AB
-
 AB["handledBars"] = {} --List of all bars
 AB["handledbuttons"] = {} --List of all buttons that have been modified.
-AB["movers"] = {} --List of all created movers.
-E['snapBars'] = { E.UIParent }
+AB["barDefaults"] = {
+	["bar1"] = {
+		['page'] = 1,
+		['bindButtons'] = "ACTIONBUTTON",
+		['conditions'] = "[bonusbar:5] 11; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;",
+		['position'] = "BOTTOM,ElvUIParent,BOTTOM,0,4",
+	},
+	["bar2"] = {
+		['page'] = 5,
+		['bindButtons'] = "MULTIACTIONBAR2BUTTON",
+		['conditions'] = "",
+		['position'] = "BOTTOM,ElvUI_Bar1,TOP,0,2",
+	},
+	["bar3"] = {
+		['page'] = 6,
+		['bindButtons'] = "MULTIACTIONBAR1BUTTON",
+		['conditions'] = "",
+		['position'] = "LEFT,ElvUI_Bar1,RIGHT,4,0",
+	},
+	["bar4"] = {
+		['page'] = 4,
+		['bindButtons'] = "MULTIACTIONBAR4BUTTON",
+		['conditions'] = "",
+		['position'] = "RIGHT,ElvUIParent,RIGHT,-4,0",
+	},
+	["bar5"] = {
+		['page'] = 3,
+		['bindButtons'] = "MULTIACTIONBAR3BUTTON",
+		['conditions'] = "",
+		['position'] = "RIGHT,ElvUI_Bar1,LEFT,-4,0",
+	},	
+}
+
 AB.customExitButton = {
 	func = function(button)
 		VehicleExit()
@@ -21,40 +51,195 @@ AB.customExitButton = {
 	tooltip = LEAVE_VEHICLE,
 }
 
+function AB:PositionAndSizeBar(barName)
+	local spacing = E:Scale(self.db[barName].buttonspacing);
+	local buttonsPerRow = self.db[barName].buttonsPerRow;
+	local numButtons = self.db[barName].buttons;
+	local size = E:Scale(self.db[barName].buttonsize);
+	local point = self.db[barName].point;
+	local numColumns = ceil(numButtons / buttonsPerRow);
+	local widthMult = self.db[barName].widthMult;
+	local heightMult = self.db[barName].heightMult;
+	local bar = self["handledBars"][barName]
 
-function AB:Initialize()
-	self.db = E.db.actionbar
-	if E.private.actionbar.enable ~= true then return; end
-	E.ActionBars = AB;
+	bar.db = self.db[barName]
+	bar.db.position = nil; --Depreciated
 	
-	self:DisableBlizzard()
+	if numButtons < buttonsPerRow then
+		buttonsPerRow = numButtons;
+	end
+
+	if numColumns < 1 then
+		numColumns = 1;
+	end
+
+	bar:SetWidth(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
+	bar:SetHeight(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
 	
-	self:CreateActionBars()
-	self:LoadKeyBinder()
-	self:UpdateCooldownSettings()
-	self:RegisterEvent("UPDATE_BINDINGS", "ReassignBindings")
-	self:RegisterEvent('CVAR_UPDATE')
-	self:ReassignBindings()
+	bar.mouseover = self.db[barName].mouseover
 	
-	if not GetCVarBool('lockActionBars') then
-		E:Print(L['LOCK_AB_ERROR'])
-	end	
+	if self.db[barName].backdrop == true then
+		bar.backdrop:Show();
+	else
+		bar.backdrop:Hide();
+	end
+	
+	local horizontalGrowth, verticalGrowth;
+	if point == "TOPLEFT" or point == "TOPRIGHT" then
+		verticalGrowth = "DOWN";
+	else
+		verticalGrowth = "UP";
+	end
+	
+	if point == "BOTTOMLEFT" or point == "TOPLEFT" then
+		horizontalGrowth = "RIGHT";
+	else
+		horizontalGrowth = "LEFT";
+	end
+	
+	local button, lastButton, lastColumnButton ;
+	local possibleButtons = {};
+	for i=1, NUM_ACTIONBAR_BUTTONS do
+		button = bar.buttons[i];
+		lastButton = bar.buttons[i-1];
+		lastColumnButton = bar.buttons[i-buttonsPerRow];
+		button:SetParent(bar);
+		button:ClearAllPoints();
+		button:Size(size)
+		button:SetAttribute("showgrid", 1);
+		ActionButton_ShowGrid(button);
+			
+		possibleButtons[((i * buttonsPerRow) + 1)] = true;
+
+		if self.db[barName].mouseover == true then
+			bar:SetAlpha(0);
+			if not self.hooks[bar] then
+				self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
+				self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');	
+			end
+			
+			if not self.hooks[button] then
+				self:HookScript(button, 'OnEnter', 'Button_OnEnter');
+				self:HookScript(button, 'OnLeave', 'Button_OnLeave');					
+			end
+		else
+			bar:SetAlpha(1);
+			if self.hooks[bar] then
+				self:Unhook(bar, 'OnEnter');
+				self:Unhook(bar, 'OnLeave');
+			end
+			
+			if self.hooks[button] then
+				self:Unhook(button, 'OnEnter');	
+				self:Unhook(button, 'OnLeave');	
+			end
+		end
+		
+		if i == 1 then
+			local x, y;
+			if point == "BOTTOMLEFT" then
+				x, y = spacing, spacing;
+			elseif point == "TOPRIGHT" then
+				x, y = -spacing, -spacing;
+			elseif point == "TOPLEFT" then
+				x, y = spacing, -spacing;
+			else
+				x, y = -spacing, spacing;
+			end
+
+			button:Point(point, bar, point, x, y);
+		elseif possibleButtons[i] then
+			local x = 0;
+			local y = -spacing;
+			local buttonPoint, anchorPoint = "TOP", "BOTTOM";
+			if verticalGrowth == 'UP' then
+				y = spacing;
+				buttonPoint = "BOTTOM";
+				anchorPoint = "TOP";
+			end
+			button:Point(buttonPoint, lastColumnButton, anchorPoint, x, y);		
+		else
+			local x = spacing;
+			local y = 0;
+			local buttonPoint, anchorPoint = "LEFT", "RIGHT";
+			if horizontalGrowth == 'LEFT' then
+				x = -spacing;
+				buttonPoint = "RIGHT";
+				anchorPoint = "LEFT";
+			end
+			
+			button:Point(buttonPoint, lastButton, anchorPoint, x, y);
+		end
+		
+		if i > numButtons then
+			button:SetScale(0.000001);
+			button:SetAlpha(0);
+		else
+			button:SetScale(1);
+			button:SetAlpha(1);
+		end
+		
+		self:StyleButton(button);
+	end
+
+	if self.db[barName].enabled then
+		bar:SetScale(1);
+		
+		if not self.db[barName].mouseover then
+			bar:SetAlpha(1);
+		end
+	else
+		bar:SetScale(0.000001);
+		bar:SetAlpha(0);
+	end
+	
+	RegisterStateDriver(bar, "page", self:GetPage(barName, self['barDefaults'][barName].page, self['barDefaults'][barName].conditions));
+	RegisterStateDriver(bar, "show", self.db[barName].visibility);
+	
+	E:SetMoverSnapOffset('ElvAB_'..bar.id, bar.db.buttonspacing / 2)
+	self:MultiActionBar_Update()
 end
 
-function AB:CreateActionBars()
-	self:SetupExtraButton()
-	for i=1, 5 do
-		self['CreateBar'..i](self)
-	end
-	self:CreateBarPet()
-	self:CreateBarShapeShift()
-	self:CreateVehicleLeave()
-
-	if E.myclass == "SHAMAN" then
-		self:CreateTotemBar()
-	end  
+function AB:CreateBar(id)
+	local bar = CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate');
+	local point, anchor, attachTo, x, y = string.split(',', self['barDefaults']['bar'..id].position)
+	bar:Point(point, anchor, attachTo, x, y)
+	bar.id = id
+	bar:CreateBackdrop('Default');
+	bar.backdrop:SetAllPoints();
+	bar.buttons = {}
+	bar.bindButtons = self['barDefaults']['bar'..id].bindButtons
 	
-	self:UpdateButtonSettings()
+	for i=1, 12 do
+		bar.buttons[i] = LAB:CreateButton(i, format(bar:GetName().."Button%d", i), bar, nil)
+		bar.buttons[i]:SetState(0, "action", i)
+		for k = 1, 11 do
+			bar.buttons[i]:SetState(k, "action", (k - 1) * 12 + i)
+		end
+		
+		if i == 12 then
+			bar.buttons[i]:SetState(11, "custom", AB.customExitButton)
+		end		
+	end
+	self:UpdateButtonConfig(bar, bar.bindButtons)
+	
+	bar:SetAttribute("_onstate-page", [[ 
+		self:SetAttribute("state", newstate)
+		control:ChildUpdate("state", newstate)
+	]]);
+	
+	bar:SetAttribute("_onstate-show", [[		
+		if newstate == "hide" then
+			self:Hide();
+		else
+			self:Show();
+		end	
+	]])	
+	
+	self["handledBars"]['bar'..id] = bar;
+	self:PositionAndSizeBar('bar'..id);
+	E:CreateMover(bar, 'ElvAB_'..id, 'Bar '..id)
+	return bar
 end
 
 function AB:PLAYER_REGEN_ENABLED()
@@ -77,7 +262,7 @@ end
 
 function AB:ReassignBindings()
 	if InCombatLockdown() then return end	
-	for bar, _ in pairs(self["handledBars"]) do
+	for _, bar in pairs(self["handledBars"]) do
 		if not bar then return end
 		
 		ClearOverrideBindings(bar)
@@ -107,37 +292,18 @@ function AB:UpdateButtonSettings()
 	end
 
 	for i=1, 5 do
-		self['PositionAndSizeBar'..i](self)
+		self:PositionAndSizeBar('bar'..i)
 	end	
 	self:PositionAndSizeBarPet()
 	self:PositionAndSizeBarShapeShift()
-	
-	--Movers snap update
-	for _, mover in pairs(AB['movers']) do
-		mover.bar:SetScript("OnDragStart", function(mover) 
-			if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
-			
-			if E.db.general.stickyFrames then
-				local offset = 2
-				local name = mover.name
-				if name and self.db[name] and self.db[name].buttonspacing then
-					offset = self.db[name].buttonspacing / 2
-				end
-				if mover.padding then offset = mover.padding end
-				Sticky:StartMoving(mover, E['snapBars'], offset, offset, offset, offset)
-			else
-				mover:StartMoving()
-			end
-		end)	
-	end
-	
-	for bar, barName in pairs(self["handledBars"]) do
+		
+	for barName, bar in pairs(self["handledBars"]) do
 		self:UpdateButtonConfig(bar, bar.bindButtons)
 	end
 end
 
 function AB:CVAR_UPDATE(event)
-	for bar, barName in pairs(self["handledBars"]) do
+	for barName, bar in pairs(self["handledBars"]) do
 		self:UpdateButtonConfig(bar, bar.bindButtons)
 	end
 end
@@ -389,157 +555,6 @@ function AB:FixKeybindText(button)
 	hotkey:Point("TOPRIGHT", 0, -3);  
 end
 
-function AB:ToggleMovers(move)
-	if InCombatLockdown() then return end
-	if move then
-		for name, _ in pairs(self.movers) do
-			local mover = self.movers[name].bar
-			mover:Show()
-		end
-		_LOCK = true
-	else
-		for name, _ in pairs(self.movers) do
-			local mover = self.movers[name].bar
-			mover:Hide()
-		end
-		_LOCK = nil
-	end
-end
-
-function AB:ResetMovers(...)
-	local bar = ...
-	for name, _ in pairs(self.movers) do
-		local mover = self.movers[name].bar
-		if bar == '' then
-			mover:ClearAllPoints()
-			mover:Point(self.movers[name]["p"], self.movers[name]["p2"], self.movers[name]["p3"], self.movers[name]["p4"], self.movers[name]["p5"])
-			
-			if self.db[name] then
-				self.db[name]['position'] = nil		
-			end
-		elseif bar == mover.textString then
-			mover:ClearAllPoints()
-			mover:Point(self.movers[name]["p"], self.movers[name]["p2"], self.movers[name]["p3"], self.movers[name]["p4"], self.movers[name]["p5"])
-			
-			if self.db[name] then
-				self.db[name]['position'] = nil
-			end
-		end
-	end
-end
-
-function AB:SetMoverPositions()
-	if E.private.actionbar.enable ~= true then return end
-	for name, _ in pairs(self.movers) do
-		local f = self.movers[name].bar
-		if f and self.db[name] and self.db[name]['position'] then
-			f:ClearAllPoints()
-			f:SetPoint(self.db[name]["position"].p, UIParent, self.db[name]["position"].p2, self.db[name]["position"].p3, self.db[name]["position"].p4)
-		elseif f then
-			f:ClearAllPoints()
-			f:Point(self.movers[name]["p"], self.movers[name]["p2"], self.movers[name]["p3"], self.movers[name]["p4"], self.movers[name]["p5"])		
-		end	
-	end
-end
-
-function AB:CreateMover(bar, text, name, padding)
-	local p, p2, p3, p4, p5 = bar:GetPoint()
-
-	local mover = CreateFrame('Button', nil, E.UIParent)
-	mover:SetClampedToScreen(true)
-	mover:SetSize(bar:GetSize())
-	mover:SetFrameStrata('HIGH')
-	mover:SetTemplate('Default', true)	
-	mover.name = name
-	tinsert(E['snapBars'], mover)
-	
-	if self.movers[name] == nil then 
-		self.movers[name] = {}
-		self.movers[name]["bar"] = mover
-		self.movers[name]["p"] = p
-		self.movers[name]["p2"] = p2 or UIParent
-		self.movers[name]["p3"] = p3
-		self.movers[name]["p4"] = p4
-		self.movers[name]["p5"] = p5
-	end	
-
-	if self.db and self.db[name] and self.db[name]["position"] then
-		mover:SetPoint(self.db[name]["position"].p, UIParent, self.db[name]["position"].p2, self.db[name]["position"].p3, self.db[name]["position"].p4)
-	else
-		mover:SetPoint(p, p2, p3, p4, p5)
-	end
-	
-	mover.padding = padding
-	mover:RegisterForDrag("LeftButton", "RightButton")
-	mover:SetScript("OnDragStart", function(self) 
-		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
-		if E.db.general.stickyFrames then
-			local offset = AB.db[name].buttonspacing/2
-			if padding then offset = padding end
-			Sticky:StartMoving(self, E['snapBars'], offset, offset, offset, offset)
-		else
-			self:StartMoving()
-		end
-	end)
-
-	mover:SetScript("OnDragStop", function(frame) 
-		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
-		if E.db.general.stickyFrames then
-			Sticky:StopMoving(frame)
-		else
-			frame:StopMovingOrSizing()
-		end
-		
-		if self.db[name] == nil then self.db[name] = {} end
-		if self.db[name]['position'] == nil then self.db[name]['position'] = {} end
-		
-		self.db[name]['position'] = {}
-		
-		local p, _, p2, p3, p4 = frame:GetPoint()
-		self.db[name]['position']["p"] = p
-		self.db[name]['position']["p2"] = p2
-		self.db[name]['position']["p3"] = p3
-		self.db[name]['position']["p4"] = p4
-		AB:UpdateButtonSettings()
-		
-		frame:SetUserPlaced(false)
-	end)	
-	
-	bar:ClearAllPoints()
-	bar:SetPoint(p3, mover, p3, 0, 0)
-
-	local fs = mover:CreateFontString(nil, "OVERLAY")
-	fs:FontTemplate()
-	fs:SetJustifyH("CENTER")
-	fs:SetPoint("CENTER")
-	fs:SetText(text or name)
-	fs:SetTextColor(unpack(E["media"].rgbvaluecolor))
-	mover:SetFontString(fs)
-	mover.text = fs
-	mover.textString = text
-	
-	mover:SetScript("OnEnter", function(self) 
-		self.text:SetTextColor(1, 1, 1)
-		self:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
-	end)
-	mover:SetScript("OnLeave", function(self)
-		self.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
-		self:SetTemplate("Default", true)
-	end)
-	
-	mover:RegisterEvent('PLAYER_REGEN_DISABLED')
-	mover:SetScript('OnEvent', function(self)
-		if self:IsShown() then
-			self:Hide()
-		end
-	end)
-	
-	mover:SetMovable(true)
-	mover:Hide()	
-	bar.mover = mover
-end
-
-
 local buttons = 0
 local function SetupFlyoutButton()
 	for i=1, buttons do
@@ -591,8 +606,6 @@ local function SetupFlyoutButton()
 		end
 	end)	
 end
-SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
-
 
 function AB:StyleFlyout(button)
 	if not LAB.buttonRegistry[button] then return end
@@ -653,6 +666,77 @@ function AB:StyleFlyout(button)
 			if not combat then button:SetAttribute("flyoutDirection", "UP") end
 		end
 	end
+end
+
+--BugFix: Prevent the main actionbar from displaying other actionbar pages..
+function AB:MultiActionBar_Update()
+	if self.db.useMaxPaging then
+		if self.db['bar2'].enabled then
+			VIEWABLE_ACTION_BAR_PAGES[BOTTOMRIGHT_ACTIONBAR_PAGE] = nil;
+		else
+			VIEWABLE_ACTION_BAR_PAGES[BOTTOMRIGHT_ACTIONBAR_PAGE] = 1;
+		end
+
+		if self.db['bar3'].enabled then
+			VIEWABLE_ACTION_BAR_PAGES[BOTTOMLEFT_ACTIONBAR_PAGE] = nil;
+		else
+			VIEWABLE_ACTION_BAR_PAGES[BOTTOMLEFT_ACTIONBAR_PAGE] = 1;
+		end
+
+		if self.db['bar4'].enabled then
+			VIEWABLE_ACTION_BAR_PAGES[LEFT_ACTIONBAR_PAGE] = nil;
+		else
+			VIEWABLE_ACTION_BAR_PAGES[LEFT_ACTIONBAR_PAGE] = 1;
+		end	
+
+		if self.db['bar5'].enabled then
+			VIEWABLE_ACTION_BAR_PAGES[RIGHT_ACTIONBAR_PAGE] = nil;
+		else
+			VIEWABLE_ACTION_BAR_PAGES[RIGHT_ACTIONBAR_PAGE] = 1;
+		end	
+	else
+		VIEWABLE_ACTION_BAR_PAGES[BOTTOMRIGHT_ACTIONBAR_PAGE] = nil;
+		VIEWABLE_ACTION_BAR_PAGES[BOTTOMLEFT_ACTIONBAR_PAGE] = nil;
+		VIEWABLE_ACTION_BAR_PAGES[LEFT_ACTIONBAR_PAGE] = nil;
+		VIEWABLE_ACTION_BAR_PAGES[RIGHT_ACTIONBAR_PAGE] = nil;
+	end
+end
+
+function AB:Initialize()
+	self.db = E.db.actionbar
+	if E.private.actionbar.enable ~= true then return; end
+	E.ActionBars = AB;
+	
+	self:DisableBlizzard()
+	
+	self:SetupExtraButton()
+	
+	for i=1, 5 do
+		self:CreateBar(i)
+	end
+	self:CreateBarPet()
+	self:CreateBarShapeShift()
+	self:CreateVehicleLeave()
+
+	if E.myclass == "SHAMAN" then
+		self:CreateTotemBar()
+	end  
+	
+	self:UpdateButtonSettings()
+	
+	self:LoadKeyBinder()
+	self:UpdateCooldownSettings()
+	self:RegisterEvent("UPDATE_BINDINGS", "ReassignBindings")
+	self:RegisterEvent('CVAR_UPDATE')
+	self:ReassignBindings()
+	
+	if not GetCVarBool('lockActionBars') then
+		E:Print(L['LOCK_AB_ERROR'])
+	end	
+	
+	SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
+	
+	self:SecureHook('MultiActionBar_Update')
 end
 
 E:RegisterModule(AB:GetName())

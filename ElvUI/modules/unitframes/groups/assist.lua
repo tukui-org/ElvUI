@@ -54,9 +54,15 @@ function UF:Update_AssistHeader(header, db)
 	header:SetAttribute('columnAnchorPoint', 'TOP')
 	header:SetAttribute('point', 'BOTTOM')
 
-	if not header.mover then
+	if not header.positioned then
 		header:ClearAllPoints()
-		header:Point("LEFT", E.UIParent, "LEFT", 30, 50)
+		header:Point("LEFT", E.UIParent, "LEFT", 6, 100)
+		E:CreateMover(header, header:GetName()..'Mover', 'MA Frames')
+		
+		header:SetAttribute('minHeight', header.dirtyHeight)
+		header:SetAttribute('minWidth', header.dirtyWidth)
+
+		header.positioned = true;
 	end
 end
 

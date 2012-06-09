@@ -180,28 +180,24 @@ local function SetupCVars()
 end	
 
 function E:SetupResolution()
+	E:ResetMovers('')
+
 	if self == 'low' then
+		if not E.db.movers then E.db.movers = {}; end
 		E.db.general.panelWidth = 400
 		E.db.general.panelHeight = 180
 		
 		E:CopyTable(E.db.actionbar, P.actionbar)
-		
+				
 		E.db.actionbar.bar1.heightMult = 2;
 		E.db.actionbar.bar2.enabled = true;
 		E.db.actionbar.bar3.enabled = false;
 		E.db.actionbar.bar5.enabled = false;
-		E:GetModule('ActionBars'):ResetMovers('')
-		E.db.actionbar.bar2["position"] = {
-			["p2"] = "BOTTOM",
-			["p"] = "CENTER",
-			["p3"] = 0,
-			["p4"] = 56.18668365478516,
-		}
-
-		
+		E.db.movers.ElvAB_2 = "CENTERUIParentBOTTOM056.18"
+	
 		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
 		
-		E.db.unitframe.fontsize = 11
+		E.db.unitframe.fontsize = 10
 		
 		E.db.unitframe.units.player.width = 200;
 		E.db.unitframe.units.player.castbar.width = 200;
@@ -224,13 +220,12 @@ function E:SetupResolution()
 		E.db.unitframe.units.arena.width = 200;
 		E.db.unitframe.units.arena.castbar.width = 200;			
 		
-		E.db.unitframe.units["positions"] = {
-			["ElvUF_TargetTarget"] = "BOTTOMUIParent10680",
-			["ElvUF_Player"] = "BOTTOMUIParent-106135",
-			["ElvUF_Target"] = "BOTTOMUIParent106135",
-			["ElvUF_Pet"] = "BOTTOMUIParent-10680",
-			['ElvUF_Focus'] = "BOTTOMUIParent310332",
-		}
+		
+		E.db.movers.ElvUF_PlayerMover = "BOTTOMUIParentBOTTOM-106135"
+		E.db.movers.ElvUF_TargetTargetMover = "BOTTOMUIParentBOTTOM10680"
+		E.db.movers.ElvUF_TargetMover = "BOTTOMUIParentBOTTOM106135"
+		E.db.movers.ElvUF_PetMover = "BOTTOMUIParentBOTTOM-10680"
+		E.db.movers.ElvUF_FocusMover = "BOTTOMUIParentBOTTOM310332"
 		
 		E.db.lowresolutionset = true;
 	else
@@ -239,9 +234,7 @@ function E:SetupResolution()
 		
 		E:CopyTable(E.db.actionbar, P.actionbar)
 		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
-		E.db.unitframe.fontsize = 12
-		E.db.unitframe.units["positions"] = nil;
-		E:GetModule('ActionBars'):ResetMovers('')
+
 		E.db.lowresolutionset = nil;
 	end
 
@@ -260,7 +253,7 @@ function E:SetupLayout(layout)
 		if not IsAddOnLoaded('Clique') then
 			E:Print(L['Using the healer layout it is highly recommended you download the addon Clique to work side by side with ElvUI.'])
 		end
-		
+
 		E.db.unitframe.units.target.buffs.numrows = 1;
 		E.db.unitframe.units.target.buffs['growth-x'] = 'LEFT';
 		E.db.unitframe.units.target.buffs['growth-y'] = 'UP';
@@ -326,82 +319,53 @@ function E:SetupLayout(layout)
 		E.db.unitframe.units.party.targetsGroup.xOffset = 0;
 		E.db.unitframe.units.party.targetsGroup.yOffset = 1;
 
-		E.db.unitframe.units.raid625.healPrediction = true;
-		E.db.unitframe.units.raid625.health.frequentUpdates = true;
-		E.db.unitframe.units.raid625.debuffs.enable = true;
+		E.db.unitframe.units.raid25.healPrediction = true;
+		E.db.unitframe.units.raid25.health.frequentUpdates = true;
+		E.db.unitframe.units.raid25.debuffs.enable = true;
 
-		E.db.unitframe.units.raid2640.healPrediction = true;
-		E.db.unitframe.units.raid2640.health.frequentUpdates = true;
-		E.db.unitframe.units.raid2640.debuffs.enable = true;
-		
+		E.db.unitframe.units.raid40.healPrediction = true;
+		E.db.unitframe.units.raid40.health.frequentUpdates = true;
+		E.db.unitframe.units.raid40.debuffs.enable = true;
+
+		if not E.db.movers then E.db.movers = {}; end
 		if E.db.lowresolutionset then
-			E.db.unitframe.units["positions"] = {
-				["ElvUF_Player"] = "BOTTOMLEFTUIParent464230",
-				["ElvUF_Target"] = "BOTTOMRIGHTUIParent-464230",
-				["ElvUF_Raid2640"] = "BOTTOMUIParent0170",
-				["ElvUF_Raid625"] = "BOTTOMUIParent0170",
-				["ElvUF_TargetTarget"] = "BOTTOMRIGHTElvUF_Target0150",
-				["ElvUF_Focus"] = "BOTTOMLEFTElvUF_Player0150",
-				["ElvUF_FocusTarget"] = "BOTTOMLEFTElvUF_Focus0150",
-				["ElvUF_Party"] = "BOTTOMUIParent0170",
-				["ElvUF_Pet"] = "BOTTOMLEFTUIParent464151",
-				["ElvUF_Boss1"] = "BOTTOMLEFTUIParent30250",
-				["ElvUF_Boss2"] = "BOTTOMLEFTUIParent30375",
-				["ElvUF_Boss3"] = "BOTTOMLEFTUIParent30500",
-				["ElvUF_Boss4"] = "BOTTOMLEFTUIParent30625",
-				["ElvUF_Tank"] = "LEFTUIParent30350",
-				["ElvUF_Assist"] = "LEFTUIParent30250",
-			}			
+			E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTUIParentBOTTOMLEFT464230"
+			E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTUIParentBOTTOMRIGHT-464230"
+			E.db.movers.ElvUF_Raid40Mover = "BOTTOMUIParentBOTTOM0170"
+			E.db.movers.ElvUF_Raid25Mover = "BOTTOMUIParentBOTTOM0170"
+			E.db.movers.ElvUF_TargetTargetMover = "BOTTOMRIGHTElvUF_TargetBOTTOMRIGHT0150"
+			E.db.movers.ElvUF_PartyMover = "BOTTOMUIParentBOTTOM0170"
+			E.db.movers.ElvUF_PetMover = "BOTTOMLEFTUIParentBOTTOMLEFT464151"
+			E.db.movers.ElvUF_FocusMover = "BOTTOMLEFTElvUF_PlayerBOTTOMLEFT0150"
+			E.db.movers.ElvUF_FocusTargetMover = "BOTTOMLEFTElvUF_FocusBOTTOMLEFT0150"
+			E.db.movers.ElvUF_TankMover = "LEFTUIParentLEFT30350"
+			E.db.movers.ElvUF_AssistMover = "LEFTUIParentLEFT30250"
+			E.db.movers.ElvUF_Boss1Mover = "BOTTOMLEFTUIParentBOTTOMLEFT30250"
+			E.db.movers.ElvUF_Boss2Mover = "BOTTOMLEFTUIParentBOTTOMLEFT30375"
+			E.db.movers.ElvUF_Boss3Mover = "BOTTOMLEFTUIParentBOTTOMLEFT30500"
+			E.db.movers.ElvUF_Boss4Mover = "BOTTOMLEFTUIParentBOTTOMLEFT30625"
 		else
-			E.db.unitframe.units["positions"] = {
-				["ElvUF_Player"] = "BOTTOMLEFTUIParent464230",
-				["ElvUF_Target"] = "BOTTOMRIGHTUIParent-464230",
-				["ElvUF_Raid2640"] = "BOTTOMUIParent0170",
-				["ElvUF_Raid625"] = "BOTTOMUIParent0170",
-				["ElvUF_TargetTarget"] = "BOTTOMRIGHTElvUF_Target0150",
-				["ElvUF_Focus"] = "BOTTOMLEFTElvUF_Player0150",
-				["ElvUF_FocusTarget"] = "BOTTOMLEFTElvUF_Focus0150",
-				["ElvUF_Party"] = "BOTTOMUIParent0170",
-				["ElvUF_Pet"] = "BOTTOMLEFTUIParent464151",
-				["ElvUF_Boss1"] = "BOTTOMLEFTUIParent30250",
-				["ElvUF_Boss2"] = "BOTTOMLEFTUIParent30375",
-				["ElvUF_Boss3"] = "BOTTOMLEFTUIParent30500",
-				["ElvUF_Boss4"] = "BOTTOMLEFTUIParent30625",
-				["ElvUF_Tank"] = "LEFTUIParent30350",
-				["ElvUF_Assist"] = "LEFTUIParent30250",
-			}
+			E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTUIParentBOTTOMLEFT464242"
+			E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTUIParentBOTTOMRIGHT-464242"
+			E.db.movers.ElvUF_Raid40Mover = "BOTTOMUIParentBOTTOM050"
+			E.db.movers.ElvUF_Raid25Mover = "BOTTOMUIParentBOTTOM050"
+			E.db.movers.ElvUF_TargetTargetMover = "BOTTOMRIGHTUIParentBOTTOMRIGHT-464151"
+			E.db.movers.ElvUF_PartyMover = "BOTTOMUIParentBOTTOM074"
+			E.db.movers.ElvUF_PetMover = "BOTTOMLEFTUIParentBOTTOMLEFT464151"
+			E.db.movers.ElvUF_FocusMover = "BOTTOMUIParentBOTTOM280332"
 		end
 	elseif E.db.lowresolutionset then
-		E.db.unitframe.units["positions"] = {
-			["ElvUF_TargetTarget"] = "BOTTOMUIParent10680",
-			["ElvUF_Player"] = "BOTTOMUIParent-106135",
-			["ElvUF_Target"] = "BOTTOMUIParent106135",
-			["ElvUF_Pet"] = "BOTTOMUIParent-10680",
-			['ElvUF_Focus'] = "BOTTOMUIParent310332",
-		}		
+		if not E.db.movers then E.db.movers = {}; end
+		E.db.movers.ElvUF_PlayerMover = "BOTTOMUIParentBOTTOM-106135"
+		E.db.movers.ElvUF_TargetMover = "BOTTOMUIParentBOTTOM106135"
+		E.db.movers.ElvUF_TargetTargetMover = "BOTTOMUIParentBOTTOM10680"
+		E.db.movers.ElvUF_PetMover = "BOTTOMUIParentBOTTOM-10680"
+		E.db.movers.ElvUF_FocusMover = "BOTTOMUIParentBOTTOM310332"			
 	else
-		E.db.unitframe.units["positions"] = {
-			["ElvUF_Player"] = "TOPLEFTUIParent30-30",
-			["ElvUF_Target"] = "TOPLEFTUIParent320-30",
-			["ElvUF_Raid2640"] = "BOTTOMLEFTUIParent4210",
-			["ElvUF_Raid625"] = "BOTTOMLEFTUIParent4210",
-			["ElvUF_TargetTarget"] = "TOPLEFTUIParent610-30",
-			["ElvUF_Focus"] = "TOPLEFTUIParent30-265",
-			["ElvUF_FocusTarget"] = "TOPLEFTUIParent260-265",
-			["ElvUF_Party"] = "BOTTOMLEFTUIParent4210",
-			["ElvUF_Pet"] = "TOPLEFTUIParent30-115",
-			["ElvUF_Boss1"] = "TOPLEFTUIParent440-305",
-			["ElvUF_Boss2"] = "TOPLEFTUIParent440-430",
-			["ElvUF_Boss3"] = "TOPLEFTUIParent440-555",
-			["ElvUF_Boss4"] = "TOPLEFTUIParent440-680",
-			["ElvUF_Tank"] = "LEFTUIParent30150",
-			["ElvUF_Assist"] = "LEFTUIParent3050",
-		}
+		E:ResetMovers('')
 	end
 	
 	if E.db.lowresolutionset then
-		E.db.unitframe.fontsize = 11
-		
 		E.db.unitframe.units.player.width = 200;
 		E.db.unitframe.units.player.castbar.width = 200;
 		E.db.unitframe.units.player.classbar.fill = 'fill';

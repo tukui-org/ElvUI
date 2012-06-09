@@ -433,6 +433,10 @@ end
 function B:Bags_OnShow()
 	B:PLAYERBANKSLOTS_CHANGED()
 	B:Layout()
+	
+	for _, x in ipairs(BAGS_BACKPACK) do
+		B:BagSlotUpdate(x)
+	end	
 end
 
 function B:Bags_OnHide()
@@ -862,10 +866,7 @@ function B:BAG_CLOSED(event, id)
 		end
 	end
 
-	if bagFrame:IsShown() then
-		ToggleFrame(bagFrame)
-		ToggleFrame(bagFrame)
-	end
+	bagFrame:Hide()
 end
 
 function B:CloseBags()

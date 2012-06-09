@@ -9,16 +9,16 @@ end
 
 local function GetPoint(obj)
 	local point, anchor, secondaryPoint, x, y = obj:GetPoint()
-
-	return string.format('%s\031%s\031%s\031%d\031%d', point, anchor:GetName() or "UIParent", secondaryPoint, x, y)
+	if not anchor then anchor = UIParent end
+	
+	return string.format('%s\031%s\031%s\031%d\031%d', point, anchor:GetName(), secondaryPoint, x, y)
 end
 
-local function CreateMover(parent, name, text, overlay, postdrag)
+local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	if not parent then return end --If for some reason the parent isnt loaded yet
 	if E.CreatedMovers[name].Created then return end
 	
 	if overlay == nil then overlay = true end
-	
 	local point, anchor, secondaryPoint, x, y = string.split('\031', GetPoint(parent))
 	local f = CreateFrame("Button", name, E.UIParent)
 	f:SetFrameLevel(parent:GetFrameLevel() + 1)
@@ -30,7 +30,11 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	f.textSting = text
 	f.postdrag = postdrag
 	f.overlay = overlay
-
+	f.snapOffset = snapOffset or -2
+	E.CreatedMovers[name].mover = f
+	
+	tinsert(E['snapBars'], f)
+	
 	if overlay == true then
 		f:SetFrameStrata("DIALOG")
 	else
@@ -54,10 +58,9 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	f:RegisterForDrag("LeftButton", "RightButton")
 	f:SetScript("OnDragStart", function(self) 
 		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end	
-		
+
 		if E.db['general'].stickyFrames then
-			local offset = 2
-			Sticky:StartMoving(self, E['snapBars'], offset, offset, offset, offset)
+			Sticky:StartMoving(self, E['snapBars'], f.snapOffset, f.snapOffset, f.snapOffset, f.snapOffset)
 		else
 			self:StartMoving() 
 		end
@@ -83,6 +86,7 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	parent:SetScript('OnSizeChanged', SizeChanged)
 	parent.mover = f
 	parent:ClearAllPoints()
+
 	parent:SetPoint(point, f, 0, 0)
 	
 	local fs = f:CreateFontString(nil, "OVERLAY")
@@ -132,6 +136,12 @@ function E:SaveMoverPosition(name)
 	E.db.movers[name] = GetPoint(_G[name])
 end
 
+function E:SetMoverSnapOffset(name, offset)
+	if not _G[name] or not E.CreatedMovers[name] then return end
+	E.CreatedMovers[name].mover.snapOffset = offset or -2
+	E.CreatedMovers[name]["snapoffset"] = offset or -2
+end
+
 function E:SaveMoverDefaultPosition(name)
 	if not _G[name] then return end
 
@@ -139,7 +149,7 @@ function E:SaveMoverDefaultPosition(name)
 	E.CreatedMovers[name]["postdrag"](_G[name], E:GetScreenQuadrant(_G[name]))
 end
 
-function E:CreateMover(parent, name, text, overlay, postdrag)
+function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag)
 	local p, p2, p3, p4, p5 = parent:GetPoint()
 
 	if E.CreatedMovers[name] == nil then 
@@ -148,11 +158,11 @@ function E:CreateMover(parent, name, text, overlay, postdrag)
 		E.CreatedMovers[name]["text"] = text
 		E.CreatedMovers[name]["overlay"] = overlay
 		E.CreatedMovers[name]["postdrag"] = postdrag
-		
+		E.CreatedMovers[name]["snapoffset"] = snapOffset
 		E.CreatedMovers[name]["point"] = GetPoint(parent)
 	end	
 	
-	CreateMover(parent, name, text, overlay, postdrag)
+	CreateMover(parent, name, text, overlay, snapoffset, postdrag)
 end
 
 function E:ToggleMovers(show)
@@ -211,7 +221,7 @@ function E:SetMoversPositions()
 	for name, _ in pairs(E.CreatedMovers) do
 		local f = _G[name]
 		local point, anchor, secondaryPoint, x, y
-		if E.db["movers"] and E.db["movers"][name] then
+		if E.db["movers"] and E.db["movers"][name] and type(E.db["movers"][name]) == 'string' then
 			point, anchor, secondaryPoint, x, y = string.split('\031', E.db["movers"][name])
 			f:ClearAllPoints()
 			f:SetPoint(point, anchor, secondaryPoint, x, y)
@@ -226,7 +236,7 @@ end
 --Called from core.lua
 function E:LoadMovers()
 	for n, _ in pairs(E.CreatedMovers) do
-		local p, t, o, pd
+		local p, t, o, so, pd
 		for key, value in pairs(E.CreatedMovers[n]) do
 			if key == "parent" then
 				p = value
@@ -234,18 +244,20 @@ function E:LoadMovers()
 				t = value
 			elseif key == "overlay" then
 				o = value
+			elseif key == "snapoffset" then
+				so = value
 			elseif key == "postdrag" then
 				pd = value
 			end
 		end
-		CreateMover(p, n, t, o, pd)
+		CreateMover(p, n, t, o, so, pd)
 	end
 end
 
 function E:PLAYER_REGEN_DISABLED()
 	local err = false
 	for name, _ in pairs(E.CreatedMovers) do
-		if _G[name]:IsShown() then
+		if _G[name] and _G[name]:IsShown() then
 			err = true
 			_G[name]:Hide()
 		end

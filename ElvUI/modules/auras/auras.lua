@@ -241,7 +241,7 @@ function A:Initialize()
 	self:SecureHook("AuraButton_OnUpdate", "UpdateFlash")
 	self:SecureHook("BuffFrame_UpdateAllBuffAnchors", "UpdateBuffAnchors")
 	self:SecureHook("DebuffButton_UpdateAnchors", "UpdateDebuffAnchors")	
-	E:CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, A.AurasPostDrag)
+	E:CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, nil, A.AurasPostDrag)
 	AurasHolder.ClearAllPoints = E.noop
 	AurasHolder.SetPoint = E.noop
 	AurasHolder.SetAllPoints = E.noop

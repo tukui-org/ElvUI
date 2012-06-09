@@ -303,9 +303,9 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 		ElvUF:RegisterStyle("ElvUF_"..E:StringTitle(group), UF["Construct_"..E:StringTitle(group).."Frames"])
 		ElvUF:SetActiveStyle("ElvUF_"..E:StringTitle(group))
 
-		local maxUnits, startingIndex = MAX_RAID_MEMBERS, 1
+		local maxUnits, startingIndex = MAX_RAID_MEMBERS, -1
 		if db.maxColumns and db.unitsPerColumn then
-			startingIndex = -math.min(db.maxColumns * db.unitsPerColumn, maxUnits) + 1		
+			startingIndex = -math.min(db.maxColumns * db.unitsPerColumn, maxUnits) + 1			
 		end
 
 		if template then
@@ -336,10 +336,13 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 				'startingIndex', startingIndex,
 				'groupFilter', groupFilter)
 		end
-		
-		if db.maxColumns then
-			RegisterAttributeDriver(self[group], 'state-visibility', 'show')	
-			RegisterAttributeDriver(self[group], 'state-visibility', 'hide')	
+
+		RegisterAttributeDriver(self[group], 'state-visibility', 'show')	
+		self[group].dirtyWidth, self[group].dirtyHeight = self[group]:GetSize()
+		RegisterAttributeDriver(self[group], 'state-visibility', 'hide')	
+
+		if not db.maxColumns then
+			self[group]:SetAttribute('startingIndex', 1)
 		end
 		
 		self['headers'][group] = self[group]

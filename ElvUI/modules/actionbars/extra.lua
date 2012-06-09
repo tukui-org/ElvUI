@@ -21,7 +21,7 @@ function AB:SetupExtraButton()
 			self:StyleButton(_G["ExtraActionButton"..i])
 		end
 	end
-	
+
 	-- hook the texture, idea by roth via WoWInterface forums
 	-- code taken from Tukui
 	local button = ExtraActionButton1
@@ -35,5 +35,5 @@ function AB:SetupExtraButton()
 	button.style:SetTexture("")
 	hooksecurefunc(texture, "SetTexture", disableTexture)
 	
-	self:CreateMover(holder, 'BossButton', 'BossButton');
+	E:CreateMover(holder, 'BossButton', 'Boss Button');
 end

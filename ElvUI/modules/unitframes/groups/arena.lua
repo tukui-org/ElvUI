@@ -1,11 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
-
-
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
+
+local ArenaHeader = CreateFrame('Frame', 'ArenaHeader', UIParent)
 
 function UF:Construct_ArenaFrames(frame)	
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
@@ -23,6 +23,9 @@ function UF:Construct_ArenaFrames(frame)
 	frame.Trinket = self:Construct_Trinket(frame)
 	
 	frame:SetAttribute("type2", "focus")
+	
+	ArenaHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165) 
+	E:CreateMover(ArenaHeader, ArenaHeader:GetName()..'Mover', 'Arena Frames')	
 end
 
 function UF:Update_ArenaFrames(frame, db)
@@ -310,24 +313,25 @@ function UF:Update_ArenaFrames(frame, db)
 		end
 	end
 	
-	frame.snapOffset = -(12 + db.castbar.height)
-	
-	if not frame.mover then
-		frame:ClearAllPoints()
-		if INDEX == 1 then
-			frame:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165) --Set to default position
+
+	frame:ClearAllPoints()
+	if INDEX == 1 then
+		if db.growthDirection == 'UP' then
+			frame:Point('BOTTOMRIGHT', ArenaHeaderMover, 'BOTTOMRIGHT') --Set to default position
 		else
-			if db.growthDirection == 'UP' then
-				frame:Point('BOTTOMRIGHT', _G['ElvUF_Arena'..INDEX-1], 'TOPRIGHT', 0, 12 + db.castbar.height)
-			else
-				frame:Point('TOPRIGHT', _G['ElvUF_Arena'..INDEX-1], 'BOTTOMRIGHT', 0, -(12 + db.castbar.height))
-			end
+			frame:Point('TOPRIGHT', ArenaHeaderMover, 'TOPRIGHT') --Set to default position
 		end
-	end
+	else
+		if db.growthDirection == 'UP' then
+			frame:Point('BOTTOMRIGHT', _G['ElvUF_Arena'..INDEX-1], 'TOPRIGHT', 0, 12 + db.castbar.height)
+		else
+			frame:Point('TOPRIGHT', _G['ElvUF_Arena'..INDEX-1], 'BOTTOMRIGHT', 0, -(12 + db.castbar.height))
+		end
+	end	
+
+	ArenaHeader:Width(UNIT_WIDTH)
+	ArenaHeader:Height(UNIT_HEIGHT + (UNIT_HEIGHT + 12 + db.castbar.height) * 4)
 	
-	--[[frame:Show()
-	frame.Hide = frame.Show
-	frame.unit = 'player']]
 	frame:UpdateAllElements()
 end
 

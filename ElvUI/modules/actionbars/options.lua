@@ -32,7 +32,7 @@ local function BuildABConfig()
 					type = 'execute',
 					name = L['Restore Bar'],
 					desc = L['Restore the actionbars default settings'],
-					func = function() E:CopyTable(E.db.actionbar['bar'..i], P.actionbar['bar'..i]); AB:ResetMovers('bar'..i); AB:UpdateButtonSettings() end,
+					func = function() E:CopyTable(E.db.actionbar['bar'..i], P.actionbar['bar'..i]); E:ResetMovers('Bar '..i); AB:UpdateButtonSettings() end,
 				},	
 				point = {
 					order = 3,
@@ -150,7 +150,7 @@ local function BuildABConfig()
 				type = 'execute',
 				name = L['Restore Bar'],
 				desc = L['Restore the actionbars default settings'],
-				func = function() E:CopyTable(E.db.actionbar['barPet'], P.actionbar['barPet']); AB:ResetMovers('barPet'); AB:UpdateButtonSettings() end,
+				func = function() E:CopyTable(E.db.actionbar['barPet'], P.actionbar['barPet']); E:ResetMovers('Pet Bar'); AB:UpdateButtonSettings() end,
 			},	
 			point = {
 				order = 3,
@@ -249,7 +249,7 @@ local function BuildABConfig()
 				type = 'execute',
 				name = L['Restore Bar'],
 				desc = L['Restore the actionbars default settings'],
-				func = function() E:CopyTable(E.db.actionbar['barShapeShift'], P.actionbar['barShapeShift']); AB:ResetMovers('barShapeShift'); AB:UpdateButtonSettings() end,
+				func = function() E:CopyTable(E.db.actionbar['barShapeShift'], P.actionbar['barShapeShift']); E:ResetMovers('Stance Bar'); AB:UpdateButtonSettings() end,
 			},	
 			point = {
 				order = 3,
@@ -455,7 +455,7 @@ local function BuildABConfig()
 					type = 'execute',
 					name = L['Restore Bar'],
 					desc = L['Restore the actionbars default settings'],
-					func = function() E:CopyTable(E.db.actionbar['barTotem'], P.actionbar['barTotem']); AB:ResetMovers('barTotem'); AB:AdjustTotemSettings() end,
+					func = function() E:CopyTable(E.db.actionbar['barTotem'], P.actionbar['barTotem']); E:ResetMovers('Totem Bar'); AB:AdjustTotemSettings() end,
 				},			
 				mouseover = {
 					order = 3,
@@ -482,13 +482,6 @@ E.Options.args.actionbar = {
 			get = function(info) return E.private.actionbar[ info[#info] ] end,
 			set = function(info, value) E.private.actionbar[ info[#info] ] = value; StaticPopup_Show("PRIVATE_RL") end
 		},
-		toggleAnchors = {
-			order = 2,
-			type = "execute",
-			name = L["Toggle Anchors"],
-			func = function() E:MoveUI(true, 'actionbars'); end,
-			disabled = function() return not E.private.actionbar.enable end,
-		},
 		toggleKeybind = {
 			order = 3,
 			type = "execute",
@@ -510,12 +503,19 @@ E.Options.args.actionbar = {
 			order = 5,
 			disabled = function() return not E.private.actionbar.enable end,
 		},
+		useMaxPaging = {
+			type = 'toggle',
+			name = L['Max Paging'],
+			desc = L['When enabled the main actionbar will use the maximum amount of pages available. This means if you have another actionbar disabled, the actionbar page will become available on the main actionbar. Having this disabled will limit the main actionbar to two pages.'],
+			order = 6,
+			disabled = function() return not E.private.actionbar.enable end,
+		},
 		fontsize = {
 			type = 'range',
 			name = L['Font Size'],
 			desc = L['Set the font size of the action buttons.'],
 			min = 5, max = 18, step = 1,
-			order = 6,
+			order = 7,
 			disabled = function() return not E.private.actionbar.enable end,
 		},		
 	},

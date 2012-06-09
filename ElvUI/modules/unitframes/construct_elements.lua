@@ -190,7 +190,7 @@ function UF:Construct_Castbar(self, direction)
 	castbar.PostChannelStart = UF.PostCastStart		
 	castbar.PostCastInterruptible = UF.PostCastInterruptible
 	castbar.PostCastNotInterruptible = UF.PostCastNotInterruptible
-	
+	castbar:SetClampedToScreen(true)
 	castbar:CreateBackdrop('Default')
 	
 	castbar.Time = castbar:CreateFontString(nil, 'OVERLAY')	
@@ -576,12 +576,14 @@ function UF:Construct_HealComm(frame)
 	mhpb:SetStatusBarTexture(E["media"].blankTex)
 	mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
 	mhpb:SetFrameLevel(frame.Health:GetFrameLevel() - 2)
+	mhpb:Hide()
 	
 	local ohpb = CreateFrame('StatusBar', nil, frame)
 	ohpb:SetStatusBarTexture(E["media"].blankTex)
 	ohpb:SetStatusBarColor(0, 1, 0, 0.25)
 	mhpb:SetFrameLevel(mhpb:GetFrameLevel())	
-
+	ohpb:Hide()
+	
 	if frame.Health then
 		ohpb:SetParent(frame.Health)
 		mhpb:SetParent(frame.Health)
