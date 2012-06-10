@@ -122,21 +122,51 @@ E.Options.args.chat = {
 			name = L["Sounds"],
 			guiInline = true,
 			args = {
-				whisperwarning = {
+				whispers = {
 					order = 1,
-					type = 'toggle',
-					name = L['Whisper Warning'],
-					desc = L['Plays a sound when you receive a whisper.'],
-					set = function(info, value) E.db.chat.whisperwarning = value; end,
+					type = "group",
+					name = L["Whispers"],
+					args = {
+						whisperwarning = {
+							order = 1,
+							type = 'toggle',
+							name = L['Whisper Warning'],
+							desc = L['Plays a sound when you receive a whisper.'],
+							set = function(info, value) E.db.chat.whisperwarning = value; end,
+						},
+						whispersound = {
+							order = 2,
+							type = 'select', dialogControl = 'LSM30_Sound',
+							name = L['Warning Sound'],
+							desc = L['Choose what sound to play.'],
+							disabled = function() return not E.db.chat.whisperwarning end,
+							values = AceGUIWidgetLSMlists.sound,
+							set = function(info, value) E.db.chat[ info[#info] ] = value; E:UpdateSounds(); end,
+						},
+					},
 				},
-				whispersound = {
+				keywords = {
 					order = 2,
-					type = 'select', dialogControl = 'LSM30_Sound',
-					name = L['Warning Sound'],
-					desc = L['Choose what sound to play.'],
-					disabled = function() return not E.db.chat.whisperwarning end,
-					values = AceGUIWidgetLSMlists.sound,
-					set = function(info, value) E.db.chat[ info[#info] ] = value; E:UpdateSounds(); end,
+					type = "group",
+					name = L["Keywords"],
+					args = {
+						keywordwarning = {
+							order = 3,
+							type = 'toggle',
+							name = L['Keyword Warning'],
+							desc = L['Plays a sound when a keyword is found in a message.'],
+							set = function(info, value) E.db.chat.keywordwarning = value; end,
+						},
+						keywordsound = {
+							order = 4,
+							type = 'select', dialogControl = 'LSM30_Sound',
+							name = L['Warning Sound'],
+							desc = L['Choose what sound to play.'],
+							disabled = function() return not E.db.chat.keywordwarning end,
+							values = AceGUIWidgetLSMlists.sound,
+							set = function(info, value) E.db.chat[ info[#info] ] = value; E:UpdateSounds(); end,
+						},
+					},
 				},
 			},
 		},

@@ -86,6 +86,7 @@ end
 
 function E:UpdateSounds()
 	self["media"].whispersound = LSM:Fetch("sound", self.db["chat"].whispersound)
+	self["media"].keywordsound = LSM:Fetch("sound", self.db["chat"].keywordsound)
 end
 
 function E:PLAYER_ENTERING_WORLD()
