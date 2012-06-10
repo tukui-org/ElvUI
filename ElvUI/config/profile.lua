@@ -783,7 +783,6 @@ P['unitframe'] = {
 		},
 		['party'] = {
 			['enable'] = true,
-			['frequentHealth'] = false,
 			['visibility'] = "[@raid6,exists] hide;show",
 			['point'] = 'LEFT', --Requires ReloadUI()
 			['maxColumns'] = 1,
@@ -1050,7 +1049,6 @@ P['unitframe'] = {
 		},					
 		['raid40'] = {
 			['enable'] = true,
-			['frequentHealth'] = false,
 			['visibility'] = '[@raid26,noexists] hide;show',
 			['point'] = 'LEFT',
 			['maxColumns'] = 8,
