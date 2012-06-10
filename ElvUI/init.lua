@@ -79,8 +79,15 @@ function AddOn:OnInitialize()
 end
 
 function AddOn:OnProfileReset()
-	ElvData = nil;
-	ElvPrivateData = nil;
+	local profileKey
+	if ElvPrivateData.profileKeys then
+		profileKey = ElvPrivateData.profileKeys[self.myname..' - '..self.myrealm]
+	end
+	
+	if profileKey and ElvPrivateData.profiles and ElvPrivateData.profiles[profileKey] then
+		ElvPrivateData.profiles[profileKey] = nil;
+	end	
+		
 	ElvCharacterData = nil;
 	ReloadUI()
 end
