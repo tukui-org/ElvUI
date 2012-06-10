@@ -179,47 +179,53 @@ local function SetupCVars()
 	InstallStepComplete:Show()					
 end	
 
-function E:SetupResolution()
-	E:ResetMovers('')
-
+function E:SetupResolution(noDataReset)
+	if not noDataReset then
+		E:ResetMovers('')
+	end
+	
 	if self == 'low' then
 		if not E.db.movers then E.db.movers = {}; end
-		E.db.general.panelWidth = 400
-		E.db.general.panelHeight = 180
+		if not noDataReset then
+			E.db.general.panelWidth = 400
+			E.db.general.panelHeight = 180
+			
+			E:CopyTable(E.db.actionbar, P.actionbar)
+					
+			E.db.actionbar.bar1.heightMult = 2;
+			E.db.actionbar.bar2.enabled = true;
+			E.db.actionbar.bar3.enabled = false;
+			E.db.actionbar.bar5.enabled = false;
+		end
 		
-		E:CopyTable(E.db.actionbar, P.actionbar)
-				
-		E.db.actionbar.bar1.heightMult = 2;
-		E.db.actionbar.bar2.enabled = true;
-		E.db.actionbar.bar3.enabled = false;
-		E.db.actionbar.bar5.enabled = false;
 		E.db.movers.ElvAB_2 = "CENTERUIParentBOTTOM056.18"
-	
-		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
 		
-		E.db.unitframe.fontsize = 10
-		
-		E.db.unitframe.units.player.width = 200;
-		E.db.unitframe.units.player.castbar.width = 200;
-		E.db.unitframe.units.player.classbar.fill = 'fill';
-		
-		E.db.unitframe.units.target.width = 200;
-		E.db.unitframe.units.target.castbar.width = 200;
-		
-		E.db.unitframe.units.pet.power.enable = false;
-		E.db.unitframe.units.pet.width = 200;
-		E.db.unitframe.units.pet.height = 26;
-		
-		E.db.unitframe.units.targettarget.debuffs.enable = false;
-		E.db.unitframe.units.targettarget.power.enable = false;
-		E.db.unitframe.units.targettarget.width = 200;
-		E.db.unitframe.units.targettarget.height = 26;	
-		
-		E.db.unitframe.units.boss.width = 200;
-		E.db.unitframe.units.boss.castbar.width = 200;
-		E.db.unitframe.units.arena.width = 200;
-		E.db.unitframe.units.arena.castbar.width = 200;			
-		
+		if not noDataReset then
+			E:CopyTable(E.db.unitframe.units, P.unitframe.units)
+			
+			E.db.unitframe.fontsize = 10
+			
+			E.db.unitframe.units.player.width = 200;
+			E.db.unitframe.units.player.castbar.width = 200;
+			E.db.unitframe.units.player.classbar.fill = 'fill';
+			
+			E.db.unitframe.units.target.width = 200;
+			E.db.unitframe.units.target.castbar.width = 200;
+			
+			E.db.unitframe.units.pet.power.enable = false;
+			E.db.unitframe.units.pet.width = 200;
+			E.db.unitframe.units.pet.height = 26;
+			
+			E.db.unitframe.units.targettarget.debuffs.enable = false;
+			E.db.unitframe.units.targettarget.power.enable = false;
+			E.db.unitframe.units.targettarget.width = 200;
+			E.db.unitframe.units.targettarget.height = 26;	
+			
+			E.db.unitframe.units.boss.width = 200;
+			E.db.unitframe.units.boss.castbar.width = 200;
+			E.db.unitframe.units.arena.width = 200;
+			E.db.unitframe.units.arena.castbar.width = 200;			
+		end
 		
 		E.db.movers.ElvUF_PlayerMover = "BOTTOMUIParentBOTTOM-106135"
 		E.db.movers.ElvUF_TargetTargetMover = "BOTTOMUIParentBOTTOM10680"
@@ -228,7 +234,7 @@ function E:SetupResolution()
 		E.db.movers.ElvUF_FocusMover = "BOTTOMUIParentBOTTOM310332"
 		
 		E.db.lowresolutionset = true;
-	else
+	elseif not noDataReset then
 		E.db.general.panelWidth = P.general.panelWidth
 		E.db.general.panelHeight = P.general.panelHeight
 		
@@ -239,93 +245,98 @@ function E:SetupResolution()
 	end
 
 	E:UpdateAll()
-	if InstallStepComplete then
+	
+	if InstallStepComplete and not noDataReset then
 		InstallStepComplete.message = L["Resolution Style Set"]
 		InstallStepComplete:Show()		
 	end
 end
 
-function E:SetupLayout(layout)
+function E:SetupLayout(layout, noDataReset)
 	
 	--Unitframes
-	E:CopyTable(E.db.unitframe.units, P.unitframe.units)
+	if not noDataReset then
+		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
+	end
 	if layout == 'healer' then
 		if not IsAddOnLoaded('Clique') then
 			E:Print(L['Using the healer layout it is highly recommended you download the addon Clique to work side by side with ElvUI.'])
 		end
 
-		E.db.unitframe.units.target.buffs.numrows = 1;
-		E.db.unitframe.units.target.buffs['growth-x'] = 'LEFT';
-		E.db.unitframe.units.target.buffs['growth-y'] = 'UP';
-		E.db.unitframe.units.target.buffs.initialAnchor = 'BOTTOMRIGHT';
-		E.db.unitframe.units.target.buffs.anchorPoint = 'TOPRIGHT';
-		E.db.unitframe.units.target.debuffs.numrows = 1;
-		E.db.unitframe.units.target.debuffs['growth-x'] = 'LEFT';
-		E.db.unitframe.units.target.debuffs['growth-y'] = 'UP';
-		E.db.unitframe.units.target.debuffs.initialAnchor = 'BOTTOMRIGHT';
-		E.db.unitframe.units.target.debuffs.anchorPoint = 'TOPRIGHT';
-		E.db.unitframe.units.target.castbar.yOffset = 0;
-		
-		E.db.unitframe.units.targettarget.height = 35;
-		
-		E.db.unitframe.units.focus.buffs['growth-y'] = 'UP';
-		E.db.unitframe.units.focus.buffs.initialAnchor = 'BOTTOMLEFT';
-		E.db.unitframe.units.focus.buffs.anchorPoint = 'TOPLEFT';
-		E.db.unitframe.units.focus.debuffs['growth-y'] = 'UP';
-		E.db.unitframe.units.focus.debuffs.initialAnchor = 'BOTTOMLEFT';
-		E.db.unitframe.units.focus.debuffs.anchorPoint = 'TOPLEFT';
-		E.db.unitframe.units.focus.castbar.yOffset = 65;
-		
-		E.db.unitframe.units.focustarget.buffs['growth-y'] = 'UP';
-		E.db.unitframe.units.focustarget.buffs.initialAnchor = 'BOTTOMLEFT';
-		E.db.unitframe.units.focustarget.buffs.anchorPoint = 'TOPLEFT';
-		E.db.unitframe.units.focustarget.debuffs['growth-y'] = 'UP';
-		E.db.unitframe.units.focustarget.debuffs.initialAnchor = 'BOTTOMLEFT';
-		E.db.unitframe.units.focustarget.debuffs.anchorPoint = 'TOPLEFT';
-		
-		E.db.unitframe.units.boss.width = 200;
-		E.db.unitframe.units.boss.castbar.width = 200;
-		E.db.unitframe.units.boss.growthDirection = 'UP';
-		
-		E.db.unitframe.units.arena.width = 200;
-		E.db.unitframe.units.arena.castbar.width = 200;
-		
-		E.db.unitframe.units.party.point = 'LEFT';
-		E.db.unitframe.units.party.xOffset = 5;
-		E.db.unitframe.units.party.healPrediction = true;
-		E.db.unitframe.units.party.health.frequentUpdates = true;
-		E.db.unitframe.units.party.columnAnchorPoint = 'LEFT';
-		E.db.unitframe.units.party.width = 80;
-		E.db.unitframe.units.party.height = 52;
-		E.db.unitframe.units.party.health.text_format = 'deficit';
-		E.db.unitframe.units.party.health.position = 'BOTTOM';
-		E.db.unitframe.units.party.health.orientation = 'VERTICAL';
-		E.db.unitframe.units.party.name.position = 'TOP';
-		E.db.unitframe.units.party.name.length = "SHORT";
-		E.db.unitframe.units.party.debuffs.anchorPoint = 'BOTTOMLEFT';
-		E.db.unitframe.units.party.debuffs.initialAnchor = 'TOPLEFT';
-		E.db.unitframe.units.party.debuffs.useFilter = 'DebuffBlacklist';
-		E.db.unitframe.units.party.debuffs.sizeOverride = 0;
-		E.db.unitframe.units.party.petsGroup.enable = true;
-		E.db.unitframe.units.party.petsGroup.width = 80;
-		E.db.unitframe.units.party.petsGroup.initialAnchor = 'BOTTOM';
-		E.db.unitframe.units.party.petsGroup.anchorPoint = 'TOP';
-		E.db.unitframe.units.party.petsGroup.xOffset = 0;
-		E.db.unitframe.units.party.petsGroup.yOffset = 1;
-		E.db.unitframe.units.party.targetsGroup.enable = false;
-		E.db.unitframe.units.party.targetsGroup.width = 80;
-		E.db.unitframe.units.party.targetsGroup.initialAnchor = 'BOTTOM';
-		E.db.unitframe.units.party.targetsGroup.anchorPoint = 'TOP';
-		E.db.unitframe.units.party.targetsGroup.xOffset = 0;
-		E.db.unitframe.units.party.targetsGroup.yOffset = 1;
+		if not noDataReset then
+			E.db.unitframe.units.target.buffs.numrows = 1;
+			E.db.unitframe.units.target.buffs['growth-x'] = 'LEFT';
+			E.db.unitframe.units.target.buffs['growth-y'] = 'UP';
+			E.db.unitframe.units.target.buffs.initialAnchor = 'BOTTOMRIGHT';
+			E.db.unitframe.units.target.buffs.anchorPoint = 'TOPRIGHT';
+			E.db.unitframe.units.target.debuffs.numrows = 1;
+			E.db.unitframe.units.target.debuffs['growth-x'] = 'LEFT';
+			E.db.unitframe.units.target.debuffs['growth-y'] = 'UP';
+			E.db.unitframe.units.target.debuffs.initialAnchor = 'BOTTOMRIGHT';
+			E.db.unitframe.units.target.debuffs.anchorPoint = 'TOPRIGHT';
+			E.db.unitframe.units.target.castbar.yOffset = 0;
+			
+			E.db.unitframe.units.targettarget.height = 35;
+			
+			E.db.unitframe.units.focus.buffs['growth-y'] = 'UP';
+			E.db.unitframe.units.focus.buffs.initialAnchor = 'BOTTOMLEFT';
+			E.db.unitframe.units.focus.buffs.anchorPoint = 'TOPLEFT';
+			E.db.unitframe.units.focus.debuffs['growth-y'] = 'UP';
+			E.db.unitframe.units.focus.debuffs.initialAnchor = 'BOTTOMLEFT';
+			E.db.unitframe.units.focus.debuffs.anchorPoint = 'TOPLEFT';
+			E.db.unitframe.units.focus.castbar.yOffset = 65;
+			
+			E.db.unitframe.units.focustarget.buffs['growth-y'] = 'UP';
+			E.db.unitframe.units.focustarget.buffs.initialAnchor = 'BOTTOMLEFT';
+			E.db.unitframe.units.focustarget.buffs.anchorPoint = 'TOPLEFT';
+			E.db.unitframe.units.focustarget.debuffs['growth-y'] = 'UP';
+			E.db.unitframe.units.focustarget.debuffs.initialAnchor = 'BOTTOMLEFT';
+			E.db.unitframe.units.focustarget.debuffs.anchorPoint = 'TOPLEFT';
+			
+			E.db.unitframe.units.boss.width = 200;
+			E.db.unitframe.units.boss.castbar.width = 200;
+			E.db.unitframe.units.boss.growthDirection = 'UP';
+			
+			E.db.unitframe.units.arena.width = 200;
+			E.db.unitframe.units.arena.castbar.width = 200;
+			
+			E.db.unitframe.units.party.point = 'LEFT';
+			E.db.unitframe.units.party.xOffset = 5;
+			E.db.unitframe.units.party.healPrediction = true;
+			E.db.unitframe.units.party.health.frequentUpdates = true;
+			E.db.unitframe.units.party.columnAnchorPoint = 'LEFT';
+			E.db.unitframe.units.party.width = 80;
+			E.db.unitframe.units.party.height = 52;
+			E.db.unitframe.units.party.health.text_format = 'deficit';
+			E.db.unitframe.units.party.health.position = 'BOTTOM';
+			E.db.unitframe.units.party.health.orientation = 'VERTICAL';
+			E.db.unitframe.units.party.name.position = 'TOP';
+			E.db.unitframe.units.party.name.length = "SHORT";
+			E.db.unitframe.units.party.debuffs.anchorPoint = 'BOTTOMLEFT';
+			E.db.unitframe.units.party.debuffs.initialAnchor = 'TOPLEFT';
+			E.db.unitframe.units.party.debuffs.useFilter = 'DebuffBlacklist';
+			E.db.unitframe.units.party.debuffs.sizeOverride = 0;
+			E.db.unitframe.units.party.petsGroup.enable = true;
+			E.db.unitframe.units.party.petsGroup.width = 80;
+			E.db.unitframe.units.party.petsGroup.initialAnchor = 'BOTTOM';
+			E.db.unitframe.units.party.petsGroup.anchorPoint = 'TOP';
+			E.db.unitframe.units.party.petsGroup.xOffset = 0;
+			E.db.unitframe.units.party.petsGroup.yOffset = 1;
+			E.db.unitframe.units.party.targetsGroup.enable = false;
+			E.db.unitframe.units.party.targetsGroup.width = 80;
+			E.db.unitframe.units.party.targetsGroup.initialAnchor = 'BOTTOM';
+			E.db.unitframe.units.party.targetsGroup.anchorPoint = 'TOP';
+			E.db.unitframe.units.party.targetsGroup.xOffset = 0;
+			E.db.unitframe.units.party.targetsGroup.yOffset = 1;
 
-		E.db.unitframe.units.raid25.healPrediction = true;
-		E.db.unitframe.units.raid25.health.frequentUpdates = true;
-		E.db.unitframe.units.raid25.debuffs.enable = true;
+			E.db.unitframe.units.raid25.healPrediction = true;
+			E.db.unitframe.units.raid25.health.frequentUpdates = true;
+			E.db.unitframe.units.raid25.debuffs.enable = true;
 
-		E.db.unitframe.units.raid40.healPrediction = true;
-		E.db.unitframe.units.raid40.health.frequentUpdates = true;
-		E.db.unitframe.units.raid40.debuffs.enable = true;
+			E.db.unitframe.units.raid40.healPrediction = true;
+			E.db.unitframe.units.raid40.health.frequentUpdates = true;
+			E.db.unitframe.units.raid40.debuffs.enable = true;
+		end
 
 		if not E.db.movers then E.db.movers = {}; end
 		if E.db.lowresolutionset then
@@ -345,14 +356,21 @@ function E:SetupLayout(layout)
 			E.db.movers.ElvUF_Boss3Mover = "BOTTOMLEFTUIParentBOTTOMLEFT30500"
 			E.db.movers.ElvUF_Boss4Mover = "BOTTOMLEFTUIParentBOTTOMLEFT30625"
 		else
-			E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTUIParentBOTTOMLEFT464242"
-			E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTUIParentBOTTOMRIGHT-464242"
-			E.db.movers.ElvUF_Raid40Mover = "BOTTOMUIParentBOTTOM050"
-			E.db.movers.ElvUF_Raid25Mover = "BOTTOMUIParentBOTTOM050"
-			E.db.movers.ElvUF_TargetTargetMover = "BOTTOMRIGHTUIParentBOTTOMRIGHT-464151"
-			E.db.movers.ElvUF_PartyMover = "BOTTOMUIParentBOTTOM074"
+			E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTUIParentBOTTOMLEFT464230"
+			E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTUIParentBOTTOMRIGHT-464230"
+			E.db.movers.ElvUF_Raid40Mover = "BOTTOMUIParentBOTTOM0170"
+			E.db.movers.ElvUF_Raid25Mover = "BOTTOMUIParentBOTTOM0170"
+			E.db.movers.ElvUF_TargetTargetMover = "BOTTOMRIGHTElvUF_TargetBOTTOMRIGHT0150"
+			E.db.movers.ElvUF_PartyMover = "BOTTOMUIParentBOTTOM0170"
 			E.db.movers.ElvUF_PetMover = "BOTTOMLEFTUIParentBOTTOMLEFT464151"
-			E.db.movers.ElvUF_FocusMover = "BOTTOMUIParentBOTTOM280332"
+			E.db.movers.ElvUF_FocusMover = "BOTTOMLEFTElvUF_PlayerBOTTOMLEFT0150"
+			E.db.movers.ElvUF_FocusTargetMover = "BOTTOMLEFTElvUF_FocusBOTTOMLEFT0150"
+			E.db.movers.ElvUF_TankMover = "LEFTUIParentLEFT30350"
+			E.db.movers.ElvUF_AssistMover = "LEFTUIParentLEFT30250"
+			E.db.movers.ElvUF_Boss1Mover = "BOTTOMLEFTUIParentBOTTOMLEFT30250"
+			E.db.movers.ElvUF_Boss2Mover = "BOTTOMLEFTUIParentBOTTOMLEFT30375"
+			E.db.movers.ElvUF_Boss3Mover = "BOTTOMLEFTUIParentBOTTOMLEFT30500"
+			E.db.movers.ElvUF_Boss4Mover = "BOTTOMLEFTUIParentBOTTOMLEFT30625"
 		end
 	elseif E.db.lowresolutionset then
 		if not E.db.movers then E.db.movers = {}; end
@@ -362,10 +380,12 @@ function E:SetupLayout(layout)
 		E.db.movers.ElvUF_PetMover = "BOTTOMUIParentBOTTOM-10680"
 		E.db.movers.ElvUF_FocusMover = "BOTTOMUIParentBOTTOM310332"			
 	else
-		E:ResetMovers('')
+		if not noDataReset then
+			E:ResetMovers('')
+		end
 	end
 	
-	if E.db.lowresolutionset then
+	if E.db.lowresolutionset and not noDataReset then
 		E.db.unitframe.units.player.width = 200;
 		E.db.unitframe.units.player.castbar.width = 200;
 		E.db.unitframe.units.player.classbar.fill = 'fill';
@@ -389,7 +409,7 @@ function E:SetupLayout(layout)
 	end
 	
 	--Datatexts
-	if not E.db.layoutSet then
+	if not E.db.layoutSet and not noDataReset then
 		E:CopyTable(E.db.datatexts.panels, P.datatexts.panels)
 		if layout == 'tank' then
 			E.db.datatexts.panels.LeftChatDataPanel.left = 'Armor';
