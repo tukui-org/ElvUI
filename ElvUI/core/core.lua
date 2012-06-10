@@ -690,11 +690,11 @@ function E:ResetAllUI()
 	self:ResetMovers()
 
 	if E.db.lowresolutionset then
-		E:SetupResolution()
+		E:SetupResolution(true)
 	end	
 
 	if E.db.layoutSet then
-		E:SetupLayout(E.db.layoutSet)
+		E:SetupLayout(E.db.layoutSet, true)
 	end
 end
 
