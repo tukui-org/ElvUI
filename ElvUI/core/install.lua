@@ -329,6 +329,10 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.party.targetsGroup.xOffset = 0;
 			E.db.unitframe.units.party.targetsGroup.yOffset = 1;
 
+			E.db.unitframe.units.raid10.healPrediction = true;
+			E.db.unitframe.units.raid10.health.frequentUpdates = true;
+			E.db.unitframe.units.raid10.debuffs.enable = true;
+
 			E.db.unitframe.units.raid25.healPrediction = true;
 			E.db.unitframe.units.raid25.health.frequentUpdates = true;
 			E.db.unitframe.units.raid25.debuffs.enable = true;
