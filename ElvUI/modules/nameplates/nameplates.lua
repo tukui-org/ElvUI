@@ -29,6 +29,7 @@ function NP:Initialize()
 		end	
 		
 		NP:ForEachPlate(NP.CheckFilter)
+		NP:ForEachPlate(NP.InvalidCastCheck)
 		
 		if(self.elapsed and self.elapsed > 0.2) then
 			NP:ForEachPlate(NP.ScanHealth)
