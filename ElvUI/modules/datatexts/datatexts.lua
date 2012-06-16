@@ -15,6 +15,8 @@ function DT:Initialize()
 	self:RegisterLDB()
 	self:LoadDataTexts()
 	self:PanelLayoutOptions()	
+	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'LoadDataTexts')
+	--self:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'LoadDataTexts') -- is this needed??
 end
 
 DT.RegisteredPanels = {}
@@ -185,7 +187,8 @@ function DT:LoadDataTexts()
 	for name, obj in LDB:DataObjectIterator() do
 		LDB:UnregisterAllCallbacks(self)
 	end	
-	
+
+	local inInstance, instanceType = IsInInstance()
 	for panelName, panel in pairs(DT.RegisteredPanels) do
 		--Restore Panels
 		for i=1, panel.numPoints do
@@ -196,22 +199,36 @@ function DT:LoadDataTexts()
 			panel.dataPanels[pointIndex]:SetScript('OnLeave', nil)
 			panel.dataPanels[pointIndex]:SetScript('OnClick', nil)
 			panel.dataPanels[pointIndex].text:SetText(nil)
+			panel.dataPanels[pointIndex].pointIndex = pointIndex
 			
-			--Register Panel to Datatext
-			for name, data in pairs(DT.RegisteredDataTexts) do
-				for option, value in pairs(self.db.panels) do
-					if value and type(value) == 'table' then
-						if option == panelName and self.db.panels[option][pointIndex] and self.db.panels[option][pointIndex] == name then
-							DT:AssignPanelToDataText(panel.dataPanels[pointIndex], data)
-						end
-					elseif value and type(value) == 'string' and value == name then
-						if self.db.panels[option] == name and option == panelName then
-							DT:AssignPanelToDataText(panel.dataPanels[pointIndex], data)
+			if (panelName == 'LeftChatDataPanel' or panelName == 'RightChatDataPanel') and (inInstance and (instanceType == "pvp")) and not DT.ForceHideBGStats and E.db.datatexts.battleground then
+				panel.dataPanels[pointIndex]:RegisterEvent('UPDATE_BATTLEFIELD_SCORE')
+				panel.dataPanels[pointIndex]:SetScript('OnEvent', DT.UPDATE_BATTLEFIELD_SCORE)
+				panel.dataPanels[pointIndex]:SetScript('OnEnter', DT.BattlegroundStats)
+				panel.dataPanels[pointIndex]:SetScript('OnLeave', DT.Data_OnLeave)
+				panel.dataPanels[pointIndex]:SetScript('OnClick', DT.HideBattlegroundTexts)
+				DT.UPDATE_BATTLEFIELD_SCORE(panel.dataPanels[pointIndex])
+			else
+				--Register Panel to Datatext
+				for name, data in pairs(DT.RegisteredDataTexts) do
+					for option, value in pairs(self.db.panels) do
+						if value and type(value) == 'table' then
+							if option == panelName and self.db.panels[option][pointIndex] and self.db.panels[option][pointIndex] == name then
+								DT:AssignPanelToDataText(panel.dataPanels[pointIndex], data)
+							end
+						elseif value and type(value) == 'string' and value == name then
+							if self.db.panels[option] == name and option == panelName then
+								DT:AssignPanelToDataText(panel.dataPanels[pointIndex], data)
+							end
 						end
 					end
 				end
-			end					
+			end
 		end
+	end
+	
+	if DT.ForceHideBGStats then
+		DT.ForceHideBGStats = nil;
 	end
 end
 

@@ -68,7 +68,7 @@ P["nameplate"] = {
 	["enhancethreat"] = true,
 	["combat"] = false,
 	["showhealth"] = false,
-	["trackauras"] = false,
+	["trackauras"] = true,
 	["trackfilter"] = 'CCDebuffs',
 	['goodscale'] = 1,
 	['badscale'] = 1,
@@ -144,6 +144,7 @@ P['datatexts'] = {
 	},
 	['localtime'] = true,
 	['time24'] = false,
+	['battleground'] = true,
 }
 
 --Tooltip

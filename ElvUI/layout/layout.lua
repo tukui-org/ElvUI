@@ -266,6 +266,7 @@ function LO:CreateMinimapPanels()
 	local configtoggle = CreateFrame('Button', 'ElvConfigToggle', Minimap)
 	configtoggle:Point('TOPLEFT', rminipanel, 'TOPRIGHT', 1, 0)
 	configtoggle:Point('BOTTOMLEFT', rminipanel, 'BOTTOMRIGHT', 1, 0)
+	configtoggle:RegisterForClicks('AnyUp')
 	configtoggle:Width(E.RBRWidth)
 	configtoggle:SetTemplate('Default', true)
 	configtoggle.text = configtoggle:CreateFontString(nil, 'OVERLAY')
@@ -273,7 +274,26 @@ function LO:CreateMinimapPanels()
 	configtoggle.text:SetText('C')
 	configtoggle.text:SetPoint('CENTER')
 	configtoggle.text:SetJustifyH('CENTER')
-	configtoggle:SetScript('OnClick', function() E:ToggleConfig() end)
+	configtoggle:SetScript('OnClick', function(self, btn) 
+		if btn == 'LeftButton' then
+			E:ToggleConfig()
+		else
+			E:BGStats()
+		end
+	end)
+	configtoggle:SetScript('OnEnter', function(self)
+		GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMRIGHT', 0, -4)
+		GameTooltip:ClearLines()
+		GameTooltip:AddDoubleLine(L['Left Click:'], L['Toggle Configuration'], 1, 1, 1)
+		
+		if E.db.datatexts.battleground then
+			GameTooltip:AddDoubleLine(L['Right Click:'], L['Show BG Texts'], 1, 1, 1)	
+		end
+		GameTooltip:Show()
+	end)
+	configtoggle:SetScript('OnLeave', function(self)
+		GameTooltip:Hide()
+	end)
 end
 
 E:RegisterModule(LO:GetName())
