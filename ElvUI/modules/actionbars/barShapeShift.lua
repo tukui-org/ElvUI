@@ -118,6 +118,8 @@ function AB:PositionAndSizeBarShapeShift()
 		bar.backdrop:Hide();
 	end
 	
+	bar.backdrop:SetParent(ShapeshiftButton1)
+	
 	local horizontalGrowth, verticalGrowth;
 	if point == "TOPLEFT" or point == "TOPRIGHT" then
 		verticalGrowth = "DOWN";
