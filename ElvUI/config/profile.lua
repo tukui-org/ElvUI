@@ -40,6 +40,7 @@ P['general'] = {
 	['raidReminder'] = true,
 	['minimapPanels'] = true,
 	['tinyWorldMap'] = true,
+	['minimapLocationText'] = 'MOUSEOVER',
 };
 
 --Bags
@@ -69,7 +70,7 @@ P["nameplate"] = {
 	["showlevel"] = true,
 	["enhancethreat"] = true,
 	["combat"] = false,
-	["showhealth"] = true,
+	["showhealth"] = false,
 	["trackauras"] = true,
 	["trackfilter"] = 'CCDebuffs',
 	['goodscale'] = 1,
@@ -159,6 +160,7 @@ P['datatexts'] = {
 	},
 	['localtime'] = true,
 	['time24'] = true,
+	['battleground'] = true,
 }
 
 --Tooltip
@@ -859,7 +861,11 @@ P['unitframe'] = {
 			['roleIcon'] = {
 				['enable'] = true,
 				['position'] = 'BOTTOMRIGHT',
-			},			
+			},	
+			['raidRoleIcons'] = {
+				['enable'] = true,
+				['position'] = 'TOPLEFT',
+			},					
 			['petsGroup'] = {
 				['enable'] = true,
 				['width'] = 74,
@@ -961,7 +967,11 @@ P['unitframe'] = {
 			['roleIcon'] = {
 				['enable'] = true,
 				['position'] = 'BOTTOMRIGHT',
-			},					
+			},		
+			['raidRoleIcons'] = {
+				['enable'] = true,
+				['position'] = 'TOPLEFT',
+			},				
 		},			
 		['raid25'] = {
 			['enable'] = true,
@@ -1045,7 +1055,11 @@ P['unitframe'] = {
 			['roleIcon'] = {
 				['enable'] = true,
 				['position'] = 'BOTTOMRIGHT',
-			},					
+			},				
+			['raidRoleIcons'] = {
+				['enable'] = true,
+				['position'] = 'TOPLEFT',
+			},				
 		},					
 		['raid40'] = {
 			['enable'] = true,
@@ -1084,7 +1098,7 @@ P['unitframe'] = {
 			},			
 			['name'] = {
 				['enable'] = true,
-				['position'] = 'TOP',
+				['position'] = 'CENTER',
 				['length'] = 'SHORT',
 			},
 			['buffs'] = {
@@ -1121,8 +1135,12 @@ P['unitframe'] = {
 				['size'] = 22,
 			},
 			['roleIcon'] = {
-				['enable'] = true,
+				['enable'] = false,
 				['position'] = 'BOTTOMRIGHT',
+			},		
+			['raidRoleIcons'] = {
+				['enable'] = true,
+				['position'] = 'TOPLEFT',
 			},				
 			['buffIndicator'] = {
 				['enable'] = true,

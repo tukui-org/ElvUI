@@ -301,7 +301,7 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.focustarget.debuffs.anchorPoint = 'TOPLEFT';
 			
 			E.db.unitframe.units.boss.growthDirection = 'UP';
-			
+
 			E.db.unitframe.units.arena.width = 200;
 			E.db.unitframe.units.arena.castbar.width = 200;
 			
@@ -530,7 +530,7 @@ local function SetPage(PageNum)
 		end
 		
 		InstallOption1Button:Show()
-		InstallOption1Button:SetScript("OnClick", E.SetupResolution)
+		InstallOption1Button:SetScript('OnClick', function() E.SetupResolution('high') end)
 		InstallOption1Button:SetText(L["High Resolution"])	
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript('OnClick', function() E.SetupResolution('low') end)

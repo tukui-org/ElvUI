@@ -36,6 +36,17 @@ local function ApplyMySkin(self)
 		self.elements.backdropFrame:Show()
 	end
 	
+	t.OldSetTexture = t.SetTexture
+	t.SetTexture = function(self, tex, ...)
+		t.OldSetTexture(self, tex, ...)
+		
+		if tex ~= nil then
+			self.elements.backdropFrame:Show();
+		else
+			self.elements.backdropFrame:Hide()
+		end
+	end		
+	
 	-- adjust the text size
 	local count = self.elements.count
 	count:SetSize(40 * xScale, 10 * yScale)
@@ -105,13 +116,14 @@ end
 
 local function LoadActiveTemplate(self)
 	self.OldLoadActiveTemplate(self)
-
-	local options = self.options.args.activeTemplate.args.skins.args
-	options.icons.args.selectType.args.skinType.values = options.icons.args.selectType.args.skinType.values()
-	options.icons.args.selectType.args.skinType.values['ElvUI'] = 'ElvUI'
 	
-	options.micons.args.selectType.args.skinType.values = options.micons.args.selectType.args.skinType.values()
-	options.micons.args.selectType.args.skinType.values['ElvUI'] = 'ElvUI'	
+	local options = self.options.args.activeTemplate.args.skins
+	if not options then return; end
+	options.args.icons.args.selectType.args.skinType.values = options.args.icons.args.selectType.args.skinType.values()
+	options.args.icons.args.selectType.args.skinType.values['ElvUI'] = 'ElvUI'
+	
+	options.args.micons.args.selectType.args.skinType.values = options.args.micons.args.selectType.args.skinType.values()
+	options.args.micons.args.selectType.args.skinType.values['ElvUI'] = 'ElvUI'	
 end
 
 local function UpdateGridList(self)

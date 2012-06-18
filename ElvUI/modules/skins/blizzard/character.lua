@@ -35,6 +35,7 @@ local function LoadSkin()
 		local slot = _G["Character"..slot]
 		slot:StripTextures()
 		slot:StyleButton(false)
+		slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
 		slot:SetTemplate("Default", true)
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:ClearAllPoints()

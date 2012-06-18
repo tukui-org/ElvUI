@@ -74,6 +74,10 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 			self:StopMovingOrSizing()
 		end
 		
+		local x, y = self:GetLeft(), self:GetBottom()
+		self:ClearAllPoints()
+		self:SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', x, y)
+		
 		E:SaveMoverPosition(name)
 		
 		if postdrag ~= nil and type(postdrag) == 'function' then

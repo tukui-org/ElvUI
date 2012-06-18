@@ -599,3 +599,18 @@ function UF:Construct_HealComm(frame)
 		end
 	}
 end
+
+function UF:Construct_RaidRoleFrames(frame)
+	local anchor = CreateFrame('Frame', nil, frame)
+	frame.Leader = anchor:CreateTexture(nil, 'OVERLAY')
+	frame.MasterLooter = anchor:CreateTexture(nil, 'OVERLAY')
+	
+	anchor:Size(24, 12)
+	frame.Leader:Size(12)
+	frame.MasterLooter:Size(11)
+	
+	frame.Leader.PostUpdate = UF.RaidRoleUpdate
+	frame.MasterLooter.PostUpdate = UF.RaidRoleUpdate
+	
+	return anchor
+end

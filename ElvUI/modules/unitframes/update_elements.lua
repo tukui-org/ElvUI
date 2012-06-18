@@ -416,18 +416,23 @@ end
 function UF:CustomCastDelayText(duration)
 	local db = self:GetParent().db
 	
-	
 	if db then
 		local text		
 		if self.channeling then
-			self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(math.abs(duration - self.max), "- ", self.delay))
+			if db.castbar.format == 'CURRENT' then
+				self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(math.abs(duration - self.max), "-", self.delay))
+			elseif db.castbar.format == 'CURRENTMAX' then
+				self.Time:SetText(("%.1f / %.1f |cffaf5050%s %.1f|r"):format(duration, self.max, "-", self.delay))
+			elseif db.castbar.format == 'REMAINING' then
+				self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(duration, "-", self.delay))
+			end			
 		else
 			if db.castbar.format == 'CURRENT' then
-				self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(duration, "+ ", self.delay))
+				self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(duration, "+", self.delay))
 			elseif db.castbar.format == 'CURRENTMAX' then
-				self.Time:SetText(("%.1f / %.1f |cffaf5050%s %.1f|r"):format(duration, self.max, "+ ", self.delay))
+				self.Time:SetText(("%.1f / %.1f |cffaf5050%s %.1f|r"):format(duration, self.max, "+", self.delay))
 			elseif db.castbar.format == 'REMAINING' then
-				self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(math.abs(duration - self.max), "+ ", self.delay))
+				self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(math.abs(duration - self.max), "+", self.delay))
 			end		
 		end
 	end
@@ -438,9 +443,16 @@ function UF:CustomTimeText(duration)
 	if not db then return end
 	
 	local text
-	-- if self.channeling then
-		-- self.Time:SetText(("%.1f"):format(math.abs(duration - self.max)))
-	-- else
+	if self.channeling then
+		if db.castbar.format == 'CURRENT' then
+			self.Time:SetText(("%.1f"):format(math.abs(duration - self.max)))
+		elseif db.castbar.format == 'CURRENTMAX' then
+			self.Time:SetText(("%.1f / %.1f"):format(duration, self.max))
+			self.Time:SetText(("%.1f / %.1f"):format(math.abs(duration - self.max), self.max))
+		elseif db.castbar.format == 'REMAINING' then
+			self.Time:SetText(("%.1f"):format(duration))
+		end				
+	else
 		if db.castbar.format == 'CURRENT' then
 			self.Time:SetText(("%.1f"):format(duration))
 		elseif db.castbar.format == 'CURRENTMAX' then
@@ -448,7 +460,7 @@ function UF:CustomTimeText(duration)
 		elseif db.castbar.format == 'REMAINING' then
 			self.Time:SetText(("%.1f"):format(math.abs(duration - self.max)))
 		end		
-	-- end
+	end
 end
 
 local ticks = {}
@@ -1139,4 +1151,32 @@ function UF:UpdateRoleIcon()
 	else
 		lfdrole:Hide()
 	end	
+end
+
+function UF:RaidRoleUpdate()
+	local anchor = self:GetParent()
+	local leader = anchor:GetParent().Leader
+	local masterLooter = anchor:GetParent().MasterLooter
+
+	if not leader or not masterLooter then return; end
+
+	local unit = anchor:GetParent().unit
+	local db = anchor:GetParent().db
+	local isLeader = leader:IsShown()
+	local isMasterLooter = masterLooter:IsShown()
+	
+	leader:ClearAllPoints()
+	masterLooter:ClearAllPoints()
+	
+	if isLeader and db.raidRoleIcons.position == 'TOPLEFT' then
+		leader:Point('LEFT', anchor, 'LEFT')
+		masterLooter:Point('RIGHT', anchor, 'RIGHT')
+	elseif isLeader and db.raidRoleIcons.position == 'TOPRIGHT' then
+		leader:Point('RIGHT', anchor, 'RIGHT')
+		masterLooter:Point('LEFT', anchor, 'LEFT')	
+	elseif isMasterLooter and db.raidRoleIcons.position == 'TOPLEFT' then
+		masterLooter:Point('LEFT', anchor, 'LEFT')	
+	else
+		masterLooter:Point('RIGHT', anchor, 'RIGHT')
+	end
 end
