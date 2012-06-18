@@ -38,6 +38,7 @@ P['general'] = {
 	['raidReminder'] = true,
 	['minimapPanels'] = true,
 	['tinyWorldMap'] = true,
+	['minimapLocationText'] = 'MOUSEOVER',
 };
 
 --Bags

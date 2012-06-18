@@ -120,6 +120,7 @@ function M:Minimap_OnMouseWheel(d)
 end
 
 function M:Update_ZoneText()
+	if E.db.general.minimapLocationText == 'HIDE' then return; end
 	Minimap.location:SetText(strsub(GetMinimapZoneText(),1,25))
 	Minimap.location:SetTextColor(M:GetLocTextColor())
 end
@@ -173,6 +174,12 @@ function M:UpdateSettings()
 	
 	if Minimap.location then
 		Minimap.location:Width(E.MinimapSize)
+		
+		if E.db.general.minimapLocationText ~= 'SHOW' then
+			Minimap.location:Hide()
+		else
+			Minimap.location:Show()
+		end		
 	end
 	
 	if MinimapMover then
@@ -231,10 +238,12 @@ function M:Initialize()
 	Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
 	Minimap:CreateBackdrop('Default')
 	Minimap:HookScript('OnEnter', function(self)
+		if E.db.general.minimapLocationText ~= 'MOUSEOVER' then return; end
 		self.location:Show()
 	end)
 	
 	Minimap:HookScript('OnLeave', function(self)
+		if E.db.general.minimapLocationText ~= 'MOUSEOVER' then return; end
 		self.location:Hide()
 	end)	
 	
@@ -246,8 +255,10 @@ function M:Initialize()
 	Minimap.location:FontTemplate(nil, nil, 'OUTLINE')
 	Minimap.location:Point('TOP', Minimap, 'TOP', 0, -2)
 	Minimap.location:SetJustifyH("CENTER")
-	Minimap.location:SetJustifyV("MIDDLE")		
-	Minimap.location:Hide()
+	Minimap.location:SetJustifyV("MIDDLE")	
+	if E.db.general.minimapLocationText ~= 'SHOW' then
+		Minimap.location:Hide()
+	end
 	
 	LFGSearchStatus:SetTemplate("Default")
 	LFGSearchStatus:SetClampedToScreen(true)

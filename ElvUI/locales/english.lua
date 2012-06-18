@@ -852,3 +852,7 @@ L['Battleground datatexts will now show again if you are inside a battleground.'
 L['Battleground Texts'] = true;
 L['When inside a battleground display personal scoreboard information on the main datatext bars.'] = true;
 L['RL / ML Icons'] = true;
+L['Location Text'] = true;
+L['Change settings for the display of the location text that is on the minimap.'] = true;
+L['Minimap Mouseover'] = true;
+L['Always Display'] = true;

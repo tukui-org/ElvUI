@@ -172,7 +172,7 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.profileBinds = value; StaticPopup_Show("PRIVATE_RL") end
 				},]]
 				bubbles = {
-					order = 12,
+					order = 13,
 					type = "toggle",
 					name = L['Chat Bubbles'],
 					desc = L['Skin the blizzard chat bubbles.'],
@@ -180,18 +180,31 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.bubbles = value; StaticPopup_Show("PRIVATE_RL") end
 				},	
 				taintLog = {
-					order = 13,
+					order = 14,
 					type = "toggle",
 					name = L["Log Taints"],
 					desc = L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."],
 				},
 				tinyWorldMap = {
-					order = 14,
+					order = 15,
 					type = "toggle",
 					name = L["Tiny Map"],
 					desc = L["Don't scale the large world map to block out sides of the screen."],
 					get = function(info) return E.db.general.tinyWorldMap end,
 					set = function(info, value) E.db.general.tinyWorldMap = value; E:GetModule('WorldMap'):ToggleTinyWorldMapSetting() end					
+				},
+				minimapLocationText = {
+					order = 16,
+					type = 'select',
+					name = L['Location Text'],
+					desc = L['Change settings for the display of the location text that is on the minimap.'],
+					get = function(info) return E.db.general.minimapLocationText end,
+					set = function(info, value) E.db.general.minimapLocationText = value; E:GetModule('Minimap'):UpdateSettings() end,
+					values = {
+						['MOUSEOVER'] = L['Minimap Mouseover'],
+						['SHOW'] = L['Always Display'],
+						['HIDE'] = L['Hide'],
+					},
 				},
 				spacer = {
 					order = 99,
