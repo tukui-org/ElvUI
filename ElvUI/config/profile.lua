@@ -160,7 +160,7 @@ P['datatexts'] = {
 	},
 	['localtime'] = true,
 	['time24'] = true,
-	['battleground'] = true,
+	['battleground'] = false,
 }
 
 --Tooltip
@@ -1098,7 +1098,7 @@ P['unitframe'] = {
 			},			
 			['name'] = {
 				['enable'] = true,
-				['position'] = 'CENTER',
+				['position'] = 'TOP',
 				['length'] = 'SHORT',
 			},
 			['buffs'] = {
