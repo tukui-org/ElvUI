@@ -197,7 +197,6 @@ function AB:PositionAndSizeBar(barName)
 	RegisterStateDriver(bar, "show", self.db[barName].visibility);
 	
 	E:SetMoverSnapOffset('ElvAB_'..bar.id, bar.db.buttonspacing / 2)
-	self:MultiActionBar_Update()
 end
 
 function AB:CreateBar(id)
@@ -300,6 +299,8 @@ function AB:UpdateButtonSettings()
 	for barName, bar in pairs(self["handledBars"]) do
 		self:UpdateButtonConfig(bar, bar.bindButtons)
 	end
+	
+	self:MultiActionBar_Update()
 end
 
 function AB:CVAR_UPDATE(event)
@@ -672,33 +673,62 @@ end
 function AB:MultiActionBar_Update()
 	if self.db.useMaxPaging then
 		if self.db['bar2'].enabled then
-			VIEWABLE_ACTION_BAR_PAGES[BOTTOMRIGHT_ACTIONBAR_PAGE] = nil;
+			if not InterfaceOptionsActionBarsPanelBottomRight:GetChecked() then
+				InterfaceOptionsActionBarsPanelBottomRight:Click()
+			end
 		else
-			VIEWABLE_ACTION_BAR_PAGES[BOTTOMRIGHT_ACTIONBAR_PAGE] = 1;
+			if InterfaceOptionsActionBarsPanelBottomRight:GetChecked() then
+				InterfaceOptionsActionBarsPanelBottomRight:Click()
+			end
 		end
 
 		if self.db['bar3'].enabled then
-			VIEWABLE_ACTION_BAR_PAGES[BOTTOMLEFT_ACTIONBAR_PAGE] = nil;
+			if not InterfaceOptionsActionBarsPanelBottomLeft:GetChecked() then
+				InterfaceOptionsActionBarsPanelBottomLeft:Click()
+			end
 		else
-			VIEWABLE_ACTION_BAR_PAGES[BOTTOMLEFT_ACTIONBAR_PAGE] = 1;
+			if InterfaceOptionsActionBarsPanelBottomLeft:GetChecked() then
+				InterfaceOptionsActionBarsPanelBottomLeft:Click()
+			end
 		end
+		
+		if self.db['bar5'].enabled then
+			if not InterfaceOptionsActionBarsPanelRight:GetChecked() then
+				InterfaceOptionsActionBarsPanelRight:Click()
+			end
+		else
+			if InterfaceOptionsActionBarsPanelRight:GetChecked() then
+				InterfaceOptionsActionBarsPanelRight:Click()
+			end
+		end			
 
 		if self.db['bar4'].enabled then
-			VIEWABLE_ACTION_BAR_PAGES[LEFT_ACTIONBAR_PAGE] = nil;
+			InterfaceOptionsActionBarsPanelRightTwo:Enable()
+			if not InterfaceOptionsActionBarsPanelRightTwo:GetChecked() then
+				InterfaceOptionsActionBarsPanelRightTwo:Click()
+			end
 		else
-			VIEWABLE_ACTION_BAR_PAGES[LEFT_ACTIONBAR_PAGE] = 1;
-		end	
-
-		if self.db['bar5'].enabled then
-			VIEWABLE_ACTION_BAR_PAGES[RIGHT_ACTIONBAR_PAGE] = nil;
-		else
-			VIEWABLE_ACTION_BAR_PAGES[RIGHT_ACTIONBAR_PAGE] = 1;
-		end	
+			if InterfaceOptionsActionBarsPanelRightTwo:GetChecked() then
+				InterfaceOptionsActionBarsPanelRightTwo:Click()
+			end
+		end
 	else
-		VIEWABLE_ACTION_BAR_PAGES[BOTTOMRIGHT_ACTIONBAR_PAGE] = nil;
-		VIEWABLE_ACTION_BAR_PAGES[BOTTOMLEFT_ACTIONBAR_PAGE] = nil;
-		VIEWABLE_ACTION_BAR_PAGES[LEFT_ACTIONBAR_PAGE] = nil;
-		VIEWABLE_ACTION_BAR_PAGES[RIGHT_ACTIONBAR_PAGE] = nil;
+		if not InterfaceOptionsActionBarsPanelBottomRight:GetChecked() then
+			InterfaceOptionsActionBarsPanelBottomRight:Click()
+		end
+		
+		if not InterfaceOptionsActionBarsPanelBottomLeft:GetChecked() then
+			InterfaceOptionsActionBarsPanelBottomLeft:Click()
+		end		
+		
+		if not InterfaceOptionsActionBarsPanelRight:GetChecked() then
+			InterfaceOptionsActionBarsPanelRight:Click()
+		end		
+		
+		InterfaceOptionsActionBarsPanelRightTwo:Enable()
+		if not InterfaceOptionsActionBarsPanelRightTwo:GetChecked() then
+			InterfaceOptionsActionBarsPanelRightTwo:Click()
+		end			
 	end
 end
 
@@ -735,8 +765,6 @@ function AB:Initialize()
 	end	
 	
 	SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
-	
-	self:SecureHook('MultiActionBar_Update')
 end
 
 E:RegisterModule(AB:GetName())
