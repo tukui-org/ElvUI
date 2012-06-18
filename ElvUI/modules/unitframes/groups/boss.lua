@@ -390,6 +390,7 @@ function UF:Update_BossFrames(frame, db)
 				altpower.text:SetText("")
 			end)			
 		else
+			local altpower = frame.AltPowerBar
 			frame:DisableElement('AltPowerBar')
 			altpower.text:SetAlpha(0)
 			altpower:Hide()
