@@ -361,8 +361,9 @@ function UF:Update_BossFrames(frame, db)
 	
 	--AltPowerBar
 	do
+		local altpower = frame.AltPowerBar
+		
 		if USE_POWERBAR then
-			local altpower = frame.AltPowerBar
 			frame:EnableElement('AltPowerBar')
 			altpower.text:SetAlpha(1)
 			altpower:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, SPACING+BORDER)
@@ -390,7 +391,6 @@ function UF:Update_BossFrames(frame, db)
 				altpower.text:SetText("")
 			end)			
 		else
-			local altpower = frame.AltPowerBar
 			frame:DisableElement('AltPowerBar')
 			altpower.text:SetAlpha(0)
 			altpower:Hide()
