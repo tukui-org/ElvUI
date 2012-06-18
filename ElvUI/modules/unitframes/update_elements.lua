@@ -1140,3 +1140,31 @@ function UF:UpdateRoleIcon()
 		lfdrole:Hide()
 	end	
 end
+
+function UF:RaidRoleUpdate()
+	local anchor = self:GetParent()
+	local leader = anchor:GetParent().Leader
+	local masterLooter = anchor:GetParent().MasterLooter
+
+	if not leader or not masterLooter then return; end
+
+	local unit = anchor:GetParent().unit
+	local db = anchor:GetParent().db
+	local isLeader = leader:IsShown()
+	local isMasterLooter = masterLooter:IsShown()
+	
+	leader:ClearAllPoints()
+	masterLooter:ClearAllPoints()
+	
+	if isLeader and db.raidRoleIcons.position == 'TOPLEFT' then
+		leader:Point('LEFT', anchor, 'LEFT')
+		masterLooter:Point('RIGHT', anchor, 'RIGHT')
+	elseif isLeader and db.raidRoleIcons.position == 'TOPRIGHT' then
+		leader:Point('RIGHT', anchor, 'RIGHT')
+		masterLooter:Point('LEFT', anchor, 'LEFT')	
+	elseif isMasterLooter and db.raidRoleIcons.position == 'TOPLEFT' then
+		masterLooter:Point('LEFT', anchor, 'LEFT')	
+	else
+		masterLooter:Point('RIGHT', anchor, 'RIGHT')
+	end
+end

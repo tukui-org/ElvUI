@@ -26,7 +26,7 @@ for i=10, 40, 15 do
 		self.DebuffHighlight = UF:Construct_DebuffHighlight(self)
 		self.ResurrectIcon = UF:Construct_ResurectionIcon(self)
 		self.LFDRole = UF:Construct_RoleIcon(self)
-		
+		self.RaidRoleFramesAnchor = UF:Construct_RaidRoleFrames(self)
 		self.TargetGlow = UF:Construct_TargetGlow(self)
 		table.insert(self.__elements, UF.UpdateThreat)
 		table.insert(self.__elements, UF.UpdateTargetGlow)
@@ -476,6 +476,28 @@ for i=10, 40, 15 do
 				
 			else
 				frame:DisableElement('HealPrediction')	
+			end
+		end		
+		
+		--Raid Roles
+		do
+			local raidRoleFrameAnchor = frame.RaidRoleFramesAnchor
+			
+			if db.raidRoleIcons.enable then
+				raidRoleFrameAnchor:Show()
+				frame:EnableElement('Leader')
+				frame:EnableElement('MasterLooter')
+				
+				raidRoleFrameAnchor:ClearAllPoints()
+				if db.raidRoleIcons.position == 'TOPLEFT' then
+					raidRoleFrameAnchor:Point('LEFT', frame, 'TOPLEFT', 2, 0)
+				else
+					raidRoleFrameAnchor:Point('RIGHT', frame, 'TOPRIGHT', -2, 0)
+				end
+			else
+				raidRoleFrameAnchor:Hide()
+				frame:DisableElement('Leader')
+				frame:DisableElement('MasterLooter')
 			end
 		end		
 		

@@ -5425,6 +5425,29 @@ E.Options.args.unitframe.args.party = {
 				},							
 			},
 		},
+		raidRoleIcons = {
+			order = 750,
+			type = 'group',
+			name = L['Raid-Role Icon'],
+			get = function(info) return E.db.unitframe.units['party']['raidRoleIcons'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['party']['raidRoleIcons'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,	
+			args = {
+				enable = {
+					type = 'toggle',
+					name = L['Enable'],
+					order = 1,
+				},
+				position = {
+					type = 'select',
+					order = 2,
+					name = L['Position'],
+					values = {
+						['TOPLEFT'] = 'TOPLEFT',
+						['TOPRIGHT'] = 'TOPRIGHT',
+					},
+				},							
+			},
+		},		
 		petsGroup = {
 			order = 800,
 			type = 'group',
@@ -6077,7 +6100,30 @@ for i=10, 40, 15 do
 						values = positionValues,
 					},							
 				},
-			},		
+			},	
+			raidRoleIcons = {
+				order = 750,
+				type = 'group',
+				name = L['Raid-Role Icon'],
+				get = function(info) return E.db.unitframe.units['raid'..i]['raidRoleIcons'][ info[#info] ] end,
+				set = function(info, value) E.db.unitframe.units['raid'..i]['raidRoleIcons'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,	
+				args = {
+					enable = {
+						type = 'toggle',
+						name = L['Enable'],
+						order = 1,
+					},
+					position = {
+						type = 'select',
+						order = 2,
+						name = L['Position'],
+						values = {
+							['TOPLEFT'] = 'TOPLEFT',
+							['TOPRIGHT'] = 'TOPRIGHT',
+						},
+					},							
+				},
+			},				
 			rdebuffs = {
 				order = 800,
 				type = 'group',

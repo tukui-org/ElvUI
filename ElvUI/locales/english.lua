@@ -851,3 +851,4 @@ L['Show BG Texts'] = true;
 L['Battleground datatexts will now show again if you are inside a battleground.'] = true;
 L['Battleground Texts'] = true;
 L['When inside a battleground display personal scoreboard information on the main datatext bars.'] = true;
+L['Raid-Role Icon'] = true;

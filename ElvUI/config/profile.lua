@@ -845,7 +845,11 @@ P['unitframe'] = {
 			['roleIcon'] = {
 				['enable'] = true,
 				['position'] = 'CENTER',
-			},			
+			},		
+			['raidRoleIcons'] = {
+				['enable'] = true,
+				['position'] = 'TOPLEFT',
+			},					
 			['petsGroup'] = {
 				['enable'] = false,
 				['width'] = 100,
@@ -947,7 +951,11 @@ P['unitframe'] = {
 			['roleIcon'] = {
 				['enable'] = true,
 				['position'] = 'BOTTOMRIGHT',
-			},					
+			},		
+			['raidRoleIcons'] = {
+				['enable'] = true,
+				['position'] = 'TOPLEFT',
+			},				
 		},			
 		['raid25'] = {
 			['enable'] = true,
@@ -1031,7 +1039,11 @@ P['unitframe'] = {
 			['roleIcon'] = {
 				['enable'] = true,
 				['position'] = 'BOTTOMRIGHT',
-			},					
+			},				
+			['raidRoleIcons'] = {
+				['enable'] = true,
+				['position'] = 'TOPLEFT',
+			},				
 		},					
 		['raid40'] = {
 			['enable'] = true,
@@ -1109,6 +1121,10 @@ P['unitframe'] = {
 			['roleIcon'] = {
 				['enable'] = false,
 				['position'] = 'BOTTOMRIGHT',
+			},		
+			['raidRoleIcons'] = {
+				['enable'] = true,
+				['position'] = 'TOPLEFT',
 			},				
 			['buffIndicator'] = {
 				['enable'] = true,
