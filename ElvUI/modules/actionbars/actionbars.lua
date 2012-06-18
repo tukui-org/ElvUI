@@ -692,12 +692,12 @@ function AB:MultiActionBar_Update()
 			end
 		end
 		
-		if self.db['bar5'].enabled then
-			if not InterfaceOptionsActionBarsPanelRight:GetChecked() then
-				InterfaceOptionsActionBarsPanelRight:Click()
-			end
-		else
+		if not self.db['bar5'].enabled and not self.db['bar4'].enabled then
 			if InterfaceOptionsActionBarsPanelRight:GetChecked() then
+				InterfaceOptionsActionBarsPanelRight:Click()
+			end			
+		else
+			if not InterfaceOptionsActionBarsPanelRight:GetChecked() then
 				InterfaceOptionsActionBarsPanelRight:Click()
 			end
 		end			
