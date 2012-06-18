@@ -21,6 +21,7 @@ local hooked, active = {}, {};
 
 function AB:Cooldown_GetTimeText(s)
 	--format text as seconds when below a minute
+
 	if s < MINUTEISH then
 		local seconds = tonumber(E:Round(s))
 		if seconds > EXPIRING_DURATION then

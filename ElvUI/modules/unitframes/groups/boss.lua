@@ -361,31 +361,39 @@ function UF:Update_BossFrames(frame, db)
 	
 	--AltPowerBar
 	do
-		local altpower = frame.AltPowerBar
-		altpower:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, SPACING+BORDER)
-		if not USE_PORTRAIT_OVERLAY then
-			altpower:Point("TOPRIGHT", frame, "TOPRIGHT", -(PORTRAIT_WIDTH+BORDER), -BORDER)	
-		else
-			altpower:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)		
-		end
-		altpower.Smooth = self.db.smoothbars
-		
-		altpower:HookScript("OnShow", function() 			
+		if USE_POWERBAR then
+			local altpower = frame.AltPowerBar
+			frame:EnableElement('AltPowerBar')
+			altpower.text:SetAlpha(1)
+			altpower:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, SPACING+BORDER)
 			if not USE_PORTRAIT_OVERLAY then
-				frame.Health:Point("TOPRIGHT", -(PORTRAIT_WIDTH+BORDER), -(POWERBAR_HEIGHT + BORDER))		
+				altpower:Point("TOPRIGHT", frame, "TOPRIGHT", -(PORTRAIT_WIDTH+BORDER), -BORDER)	
 			else
-				frame.Health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -(POWERBAR_HEIGHT + BORDER))
-			end			
-		end)
-		
-		altpower:HookScript("OnHide", function() 
-			if not USE_PORTRAIT_OVERLAY then
-				frame.Health:Point("TOPRIGHT", -(PORTRAIT_WIDTH+BORDER), -BORDER)		
-			else
-				frame.Health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)
+				altpower:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)		
 			end
-			altpower.text:SetText("")
-		end)		
+			altpower.Smooth = self.db.smoothbars
+			
+			altpower:HookScript("OnShow", function() 			
+				if not USE_PORTRAIT_OVERLAY then
+					frame.Health:Point("TOPRIGHT", -(PORTRAIT_WIDTH+BORDER), -(POWERBAR_HEIGHT + BORDER))		
+				else
+					frame.Health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -(POWERBAR_HEIGHT + BORDER))
+				end			
+			end)
+			
+			altpower:HookScript("OnHide", function() 
+				if not USE_PORTRAIT_OVERLAY then
+					frame.Health:Point("TOPRIGHT", -(PORTRAIT_WIDTH+BORDER), -BORDER)		
+				else
+					frame.Health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)
+				end
+				altpower.text:SetText("")
+			end)			
+		else
+			frame:DisableElement('AltPowerBar')
+			altpower.text:SetAlpha(0)
+			altpower:Hide()
+		end
 	end
 
 	frame:ClearAllPoints()
