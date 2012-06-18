@@ -116,13 +116,14 @@ end
 
 local function LoadActiveTemplate(self)
 	self.OldLoadActiveTemplate(self)
-
-	local options = self.options.args.activeTemplate.args.skins.args
-	options.icons.args.selectType.args.skinType.values = options.icons.args.selectType.args.skinType.values()
-	options.icons.args.selectType.args.skinType.values['ElvUI'] = 'ElvUI'
 	
-	options.micons.args.selectType.args.skinType.values = options.micons.args.selectType.args.skinType.values()
-	options.micons.args.selectType.args.skinType.values['ElvUI'] = 'ElvUI'	
+	local options = self.options.args.activeTemplate.args.skins
+	if not options then return; end
+	options.args.icons.args.selectType.args.skinType.values = options.args.icons.args.selectType.args.skinType.values()
+	options.args.icons.args.selectType.args.skinType.values['ElvUI'] = 'ElvUI'
+	
+	options.args.micons.args.selectType.args.skinType.values = options.args.micons.args.selectType.args.skinType.values()
+	options.args.micons.args.selectType.args.skinType.values['ElvUI'] = 'ElvUI'	
 end
 
 local function UpdateGridList(self)
