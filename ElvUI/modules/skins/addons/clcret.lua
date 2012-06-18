@@ -20,12 +20,15 @@ local function CreateButton(self, name, size, point, parent, pointParent, offset
 	local button
 	if isChecked then
 		button = CreateFrame("CheckButton", name , parent)
-		button:SetTemplate("Default")
+		button:CreateBackdrop("Default")
 		button:StyleButton(true)
 	else
 		button = CreateFrame("Button", name , parent)
-		button:SetTemplate("Default")
+		button:CreateBackdrop("Default")
 	end
+	
+	button.backdrop:SetAllPoints()
+	
 	button:EnableMouse(false)
 	
 	button:Size(size)
@@ -36,6 +39,17 @@ local function CreateButton(self, name, size, point, parent, pointParent, offset
 	button.texture:SetTexture(BGTEX)
 	button.texture:SetTexCoord(unpack(E.TexCoords))
 	button.texture.SetTexCoord = E.noop
+	
+	button.texture.OldSetTexture = button.texture.SetTexture
+	button.texture.SetTexture = function(self, tex, ...)
+		button.texture.OldSetTexture(self, tex, ...)
+		
+		if tex ~= nil then
+			button.backdrop:Show();
+		else
+			button.backdrop:Hide()
+		end
+	end
 	
 	button.border = button:CreateTexture(nil, "BORDER")
 	button.border:Kill()

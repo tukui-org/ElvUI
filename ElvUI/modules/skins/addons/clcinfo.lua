@@ -36,6 +36,17 @@ local function ApplyMySkin(self)
 		self.elements.backdropFrame:Show()
 	end
 	
+	t.OldSetTexture = t.SetTexture
+	t.SetTexture = function(self, tex, ...)
+		t.OldSetTexture(self, tex, ...)
+		
+		if tex ~= nil then
+			self.elements.backdropFrame:Show();
+		else
+			self.elements.backdropFrame:Hide()
+		end
+	end		
+	
 	-- adjust the text size
 	local count = self.elements.count
 	count:SetSize(40 * xScale, 10 * yScale)
