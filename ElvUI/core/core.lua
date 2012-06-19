@@ -484,12 +484,12 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
 		if sender == E.myname then return end
 
-		if prefix == "ElvUIVC" and sender ~= 'Elv' and not string.find(sender, 'Elv%-') then
+		if prefix == "ElvUIVC" and sender ~= 'Elv' and not string.find(sender, 'Elv%-') and not E.recievedOutOfDateMessage then
 			if tonumber(message) > tonumber(E.version) then
 				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.tukui.org"])
-				E:UnregisterEvent("CHAT_MSG_ADDON")
 				E:UnregisterEvent("PARTY_MEMBERS_CHANGED")
 				E:UnregisterEvent("RAID_ROSTER_UPDATE")
+				E.recievedOutOfDateMessage = true
 			end
 		elseif prefix == 'ElvSays' and (sender == 'Elv' or string.find(sender, 'Elv-')) then ---HAHHAHAHAHHA
 			local user, channel, msg, sendTo = string.split(',', message)
