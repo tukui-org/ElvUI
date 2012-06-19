@@ -10,8 +10,8 @@ end
 local function GetPoint(obj)
 	local point, anchor, secondaryPoint, x, y = obj:GetPoint()
 	if not anchor then anchor = UIParent end
-	
-	return string.format('%s\031%s\031%s\031%d\031%d', point, anchor:GetName(), secondaryPoint, x, y)
+
+	return string.format('%s\031%s\031%s\031%d\031%d', point, anchor:GetName(), secondaryPoint, E:Round(x), E:Round(y))
 end
 
 local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
@@ -74,10 +74,10 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 			self:StopMovingOrSizing()
 		end
 		
-		local x, y = self:GetLeft(), self:GetBottom()
+		local x, y = E:Round(self:GetLeft()), E:Round(self:GetBottom())
 		self:ClearAllPoints()
 		self:SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', x, y)
-		
+
 		E:SaveMoverPosition(name)
 		
 		if postdrag ~= nil and type(postdrag) == 'function' then
