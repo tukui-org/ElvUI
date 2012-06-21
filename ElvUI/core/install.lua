@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 local CURRENT_PAGE = 0
-local MAX_PAGE = 6
+local MAX_PAGE = 7
 
 local function SetupChat()
 	InstallStepComplete.message = L["Chat Set"]
@@ -166,6 +166,95 @@ local function SetupCVars()
 	InstallStepComplete:Show()					
 end	
 
+function E:GetColor(r, b, g, a)	
+	return { r = r, b = b, g = g, a = a }
+end
+
+function E:SetupTheme(theme, noDisplayMsg)
+	local classColor = RAID_CLASS_COLORS[E.myclass]
+	E.db.theme = theme
+	
+	--Set fonts
+	if theme == "classic" then
+		E.db.general.font = "ElvUI Font"
+		E.db.general.fontsize = 12
+		
+		E.db.unitframe.font = "ElvUI Font"
+		E.db.unitframe.fontsize = 12
+		E.db.unitframe.fontoutline = "OUTLINE"
+	else
+		E.db.general.font = "ElvUI Pixel"
+		E.db.general.fontsize = 11
+		
+		E.db.unitframe.font = "ElvUI Pixel"
+		E.db.unitframe.fontsize = 10
+		E.db.unitframe.fontoutline = "MONOCHROMEOUTLINE"	
+	end
+	
+	--Set colors
+	if theme == "classic" or theme == "classic_pixel" then
+		E.db.general.bordercolor = E:GetColor(.31, .31, .31)
+		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
+		E.db.general.backdropfadecolor = E:GetColor(.06, .06, .06, .8)
+		
+		E.db.unitframe.colors.healthclass = false
+		E.db.unitframe.colors.health = E:GetColor(.31, .31, .31)
+		E.db.unitframe.units.player.castbar.color = E:GetColor(.31, .31, .31)
+		E.db.unitframe.units.target.castbar.color = E:GetColor(.31, .31, .31)
+		E.db.unitframe.units.focus.castbar.color = E:GetColor(.31, .31, .31)
+		E.db.unitframe.units.boss.castbar.color = E:GetColor(.31, .31, .31)
+		E.db.unitframe.units.arena.castbar.color = E:GetColor(.31, .31, .31)
+		
+		E.db.classtimer.player.buffcolor = E:GetColor(.31, .31, .31)
+		E.db.classtimer.target.buffcolor = E:GetColor(.31, .31, .31)
+	elseif theme == "class" then
+		E.db.general.bordercolor = E:GetColor(classColor.r, classColor.b, classColor.g)
+		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
+		E.db.general.backdropfadecolor = E:GetColor(.06, .06, .06, .8)
+		
+		E.db.unitframe.colors.healthclass = true
+		E.db.unitframe.units.player.castbar.color = E:GetColor(classColor.r, classColor.b, classColor.g)
+		E.db.unitframe.units.target.castbar.color = E:GetColor(classColor.r, classColor.b, classColor.g)
+		E.db.unitframe.units.focus.castbar.color = E:GetColor(classColor.r, classColor.b, classColor.g)
+		E.db.unitframe.units.boss.castbar.color = E:GetColor(classColor.r, classColor.b, classColor.g)
+		E.db.unitframe.units.arena.castbar.color = E:GetColor(classColor.r, classColor.b, classColor.g)
+		
+		E.db.classtimer.player.buffcolor = E:GetColor(classColor.r, classColor.b, classColor.g)
+		E.db.classtimer.target.buffcolor = E:GetColor(classColor.r, classColor.b, classColor.g)
+	else
+		E.db.general.bordercolor = E:GetColor(.1, .1, .1)
+		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
+		E.db.general.backdropfadecolor = E:GetColor(.054, .054, .054, .8)
+		
+		E.db.unitframe.colors.healthclass = false
+		E.db.unitframe.colors.health = E:GetColor(.1, .1, .1)
+		E.db.unitframe.units.player.castbar.color = E:GetColor(.1, .1, .1)
+		E.db.unitframe.units.target.castbar.color = E:GetColor(.1, .1, .1)
+		E.db.unitframe.units.focus.castbar.color = E:GetColor(.1, .1, .1)
+		E.db.unitframe.units.boss.castbar.color = E:GetColor(.1, .1, .1)
+		E.db.unitframe.units.arena.castbar.color = E:GetColor(.1, .1, .1)	
+	
+		E.db.classtimer.player.buffcolor = E:GetColor(.1, .1, .1)
+		E.db.classtimer.target.buffcolor = E:GetColor(.1, .1, .1)	
+	end
+	
+	--Value Color
+	if theme == "class" then
+		E.db.general.valuecolor = E:GetColor(classColor.r, classColor.b, classColor.g)
+	else
+		E.db.general.valuecolor = E:GetColor(.09, .819, .513)
+	end
+	
+	E:UpdateAll(true)
+	
+	InstallStatus:SetStatusBarColor(unpack(E['media'].rgbvaluecolor))
+	
+	if InstallStepComplete and not noDisplayMsg then
+		InstallStepComplete.message = L["Theme Set"]
+		InstallStepComplete:Show()		
+	end	
+end
+
 function E:SetupResolution(noDataReset)
 	if not noDataReset then
 		E:ResetMovers('')
@@ -230,8 +319,12 @@ function E:SetupResolution(noDataReset)
 
 		E.db.lowresolutionset = nil;
 	end
+	
+	if not noDataReset and E.db.theme then
+		E:SetupTheme(E.db.theme, true)
+	end
 
-	E:UpdateAll()
+	E:UpdateAll(true)
 	
 	if InstallStepComplete and not noDataReset then
 		InstallStepComplete.message = L["Resolution Style Set"]
@@ -240,7 +333,6 @@ function E:SetupResolution(noDataReset)
 end
 
 function E:SetupLayout(layout, noDataReset)
-	
 	--Unitframes
 	if not noDataReset then
 		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
@@ -359,7 +451,7 @@ function E:SetupLayout(layout, noDataReset)
 	end
 	
 	--Datatexts
-	if not E.db.layoutSet and not noDataReset then
+	if not noDataReset then
 		E:CopyTable(E.db.datatexts.panels, P.datatexts.panels)
 		if layout == 'tank' then
 			E.db.datatexts.panels.LeftChatDataPanel.left = 'Armor';
@@ -371,7 +463,7 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.datatexts.panels.LeftChatDataPanel.left = 'Attack Power';
 			E.db.datatexts.panels.LeftChatDataPanel.right = 'Crit Chance';
 		end
-		
+
 		if InstallStepComplete then
 			InstallStepComplete.message = L["Layout Set"]
 			InstallStepComplete:Show()	
@@ -380,7 +472,13 @@ function E:SetupLayout(layout, noDataReset)
 	
 	E.db.layoutSet = layout
 	
-	E:UpdateAll()
+	if not noDataReset and E.db.theme then
+		E:SetupTheme(E.db.theme, true)
+	end	
+	
+	E:UpdateAll(true)
+	local DT = E:GetModule('DataTexts')
+	DT:LoadDataTexts()
 end
 
 local function InstallComplete()
@@ -402,14 +500,12 @@ local function ResetAll()
 	InstallOption2Button:Hide()
 	InstallOption2Button:SetScript('OnClick', nil)
 	InstallOption2Button:SetText('')
-	InstallRoleOptionTank:Hide()
-	InstallRoleOptionTank:SetScript('OnClick', nil)
-	InstallRoleOptionHealer:Hide()
-	InstallRoleOptionHealer:SetScript('OnClick', nil)
-	InstallRoleOptionMeleeDPS:Hide()
-	InstallRoleOptionMeleeDPS:SetScript('OnClick', nil)	
-	InstallRoleOptionCasterDPS:Hide()
-	InstallRoleOptionCasterDPS:SetScript('OnClick', nil)		
+	InstallOption3Button:Hide()
+	InstallOption3Button:SetScript('OnClick', nil)
+	InstallOption3Button:SetText('')	
+	InstallOption4Button:Hide()
+	InstallOption4Button:SetScript('OnClick', nil)
+	InstallOption4Button:SetText('')
 	ElvUIInstallFrame.SubTitle:SetText("")
 	ElvUIInstallFrame.Desc1:SetText("")
 	ElvUIInstallFrame.Desc2:SetText("")
@@ -468,6 +564,24 @@ local function SetPage(PageNum)
 		InstallOption1Button:SetScript("OnClick", SetupChat)
 		InstallOption1Button:SetText(L["Setup Chat"])
 	elseif PageNum == 4 then
+		f.SubTitle:SetText(L['Theme Setup'])
+		f.Desc1:SetText(L['Choose a theme layout you wish to use for your initial setup.'])
+		f.Desc2:SetText(L['You can always change fonts and colors of any element of elvui from the in-game configuration.'])
+		f.Desc3:SetText(L["Importance: |cffFF0000Low|r"])
+
+		InstallOption1Button:Show()
+		InstallOption1Button:SetScript('OnClick', function() E:SetupTheme('classic') end)
+		InstallOption1Button:SetText(L["Classic"])	
+		InstallOption2Button:Show()
+		InstallOption2Button:SetScript('OnClick', function() E:SetupTheme('classic_pixel') end)
+		InstallOption2Button:SetText(L['Classic Pixel'])
+		InstallOption3Button:Show()
+		InstallOption3Button:SetScript('OnClick', function() E:SetupTheme('default') end)
+		InstallOption3Button:SetText(DEFAULT)
+		InstallOption4Button:Show()
+		InstallOption4Button:SetScript('OnClick', function() E:SetupTheme('class') end)
+		InstallOption4Button:SetText(CLASS)		
+	elseif PageNum == 5 then
 		f.SubTitle:SetText(L["Resolution"])
 		f.Desc1:SetText(format(L["Your current resolution is %s, this is considered a %s resolution."], E.resolution, E.lowversion == true and L["low"] or L["high"]))
 		if E.lowversion then
@@ -484,20 +598,24 @@ local function SetPage(PageNum)
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript('OnClick', function() E.SetupResolution('low') end)
 		InstallOption2Button:SetText(L['Low Resolution'])
-	elseif PageNum == 5 then
+	elseif PageNum == 6 then
 		f.SubTitle:SetText(L["Layout"])
 		f.Desc1:SetText(L["You can now choose what layout you wish to use based on your combat role."])
 		f.Desc2:SetText(L["This will change the layout of your unitframes, raidframes, and datatexts."])
 		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
-		InstallRoleOptionTank:Show()
-		InstallRoleOptionTank:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('tank') end)
-		InstallRoleOptionHealer:Show()
-		InstallRoleOptionHealer:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('healer') end)
-		InstallRoleOptionMeleeDPS:Show()
-		InstallRoleOptionMeleeDPS:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('dpsMelee') end)
-		InstallRoleOptionCasterDPS:Show()
-		InstallRoleOptionCasterDPS:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('dpsCaster') end)
-	elseif PageNum == 6 then
+		InstallOption1Button:Show()
+		InstallOption1Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('tank') end)
+		InstallOption1Button:SetText(L['Tank'])
+		InstallOption2Button:Show()
+		InstallOption2Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('healer') end)
+		InstallOption2Button:SetText(L['Healer'])
+		InstallOption3Button:Show()
+		InstallOption3Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('dpsMelee') end)
+		InstallOption3Button:SetText(L['Physical DPS'])
+		InstallOption4Button:Show()
+		InstallOption4Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('dpsCaster') end)
+		InstallOption4Button:SetText(L['Caster DPS'])
+	elseif PageNum == 7 then
 		f.SubTitle:SetText(L["Installation Complete"])
 		f.Desc1:SetText(L["You are now finished with the installation process. Bonus Hint: If you wish to access blizzard micro menu, middle click on the minimap. If you don't have a middle click button then hold down shift and right click the minimap. If you are in need of technical support please visit us at www.tukui.org."])
 		f.Desc2:SetText(L["Please click the button below so you can setup variables and ReloadUI."])			
@@ -632,7 +750,6 @@ function E:Install()
 		
 		f.Option1 = CreateFrame("Button", "InstallOption1Button", f, "UIPanelButtonTemplate2")
 		f.Option1:StripTextures()
-		f.Option1:SetTemplate("Default", true)
 		f.Option1:Size(160, 30)
 		f.Option1:Point("BOTTOM", 0, 45)
 		f.Option1:SetText("")
@@ -641,51 +758,42 @@ function E:Install()
 		
 		f.Option2 = CreateFrame("Button", "InstallOption2Button", f, "UIPanelButtonTemplate2")
 		f.Option2:StripTextures()
-		f.Option2:SetTemplate("Default", true)
 		f.Option2:Size(110, 30)
 		f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45)
 		f.Option2:SetText("")
 		f.Option2:Hide()
 		f.Option2:SetScript('OnShow', function() f.Option1:SetWidth(110); f.Option1:ClearAllPoints(); f.Option1:Point('BOTTOMRIGHT', f, 'BOTTOM', -4, 45) end)
 		f.Option2:SetScript('OnHide', function() f.Option1:SetWidth(160); f.Option1:ClearAllPoints(); f.Option1:Point("BOTTOM", 0, 45) end)
-		E.Skins:HandleButton(f.Option1, true)		
+		E.Skins:HandleButton(f.Option2, true)		
 		
-		f.RoleOptionTank = CreateFrame('Button', 'InstallRoleOptionTank', f, 'UIPanelButtonTemplate2')
-		f.RoleOptionTank:StripTextures()
-		f.RoleOptionTank:SetTemplate("Default", true)
-		f.RoleOptionTank:Size(100, 30)
-		f.RoleOptionTank:Point("BOTTOM", 50, 45)
-		f.RoleOptionTank:SetText(L['Tank'])
-		f.RoleOptionTank:Hide()
-		E.Skins:HandleButton(f.RoleOptionTank, true)
+		f.Option3 = CreateFrame("Button", "InstallOption3Button", f, "UIPanelButtonTemplate2")
+		f.Option3:StripTextures()
+		f.Option3:Size(100, 30)
+		f.Option3:Point('LEFT', f.Option2, 'RIGHT', 4, 0)
+		f.Option3:SetText("")
+		f.Option3:Hide()
+		f.Option3:SetScript('OnShow', function() f.Option1:SetWidth(100); f.Option1:ClearAllPoints(); f.Option1:Point('RIGHT', f.Option2, 'LEFT', -4, 0); f.Option2:SetWidth(100); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOM', f, 'BOTTOM', 0, 45)  end)
+		f.Option3:SetScript('OnHide', function() f.Option1:SetWidth(160); f.Option1:ClearAllPoints(); f.Option1:Point("BOTTOM", 0, 45); f.Option2:SetWidth(110); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45) end)
+		E.Skins:HandleButton(f.Option3, true)			
 		
-		f.RoleOptionHealer = CreateFrame('Button', 'InstallRoleOptionHealer', f, 'UIPanelButtonTemplate2')
-		f.RoleOptionHealer:StripTextures()
-		f.RoleOptionHealer:SetTemplate("Default", true)
-		f.RoleOptionHealer:Size(100, 30)
-		f.RoleOptionHealer:Point("LEFT", f.RoleOptionTank, 'RIGHT', 3, 0)
-		f.RoleOptionHealer:SetText(L['Healer'])
-		f.RoleOptionHealer:Hide()
-		E.Skins:HandleButton(f.RoleOptionHealer, true)		
-		
-		f.RoleOptionMeleeDPS = CreateFrame('Button', 'InstallRoleOptionMeleeDPS', f, 'UIPanelButtonTemplate2')
-		f.RoleOptionMeleeDPS:StripTextures()
-		f.RoleOptionMeleeDPS:SetTemplate("Default", true)
-		f.RoleOptionMeleeDPS:Size(100, 30)
-		f.RoleOptionMeleeDPS:Point("RIGHT", f.RoleOptionTank, 'LEFT', -3, 0)
-		f.RoleOptionMeleeDPS:SetText(L['Physical DPS'])
-		f.RoleOptionMeleeDPS:Hide()
-		E.Skins:HandleButton(f.RoleOptionMeleeDPS, true)			
+		f.Option4 = CreateFrame("Button", "InstallOption4Button", f, "UIPanelButtonTemplate2")
+		f.Option4:StripTextures()
+		f.Option4:Size(100, 30)
+		f.Option4:Point('LEFT', f.Option3, 'RIGHT', 4, 0)
+		f.Option4:SetText("")
+		f.Option4:Hide()
+		f.Option4:SetScript('OnShow', function() 
+			f.Option1:Width(100)
+			f.Option2:Width(100)
+			
+			f.Option1:ClearAllPoints(); 
+			f.Option1:Point('RIGHT', f.Option2, 'LEFT', -4, 0); 
+			f.Option2:ClearAllPoints(); 
+			f.Option2:Point('BOTTOMRIGHT', f, 'BOTTOM', -4, 45)  
+		end)
+		f.Option4:SetScript('OnHide', function() f.Option1:SetWidth(160); f.Option1:ClearAllPoints(); f.Option1:Point("BOTTOM", 0, 45); f.Option2:SetWidth(110); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45) end)
+		E.Skins:HandleButton(f.Option4, true)					
 
-		f.RoleOptionCasterDPS = CreateFrame('Button', 'InstallRoleOptionCasterDPS', f, 'UIPanelButtonTemplate2')
-		f.RoleOptionCasterDPS:StripTextures()
-		f.RoleOptionCasterDPS:SetTemplate("Default", true)
-		f.RoleOptionCasterDPS:Size(100, 30)
-		f.RoleOptionCasterDPS:Point("RIGHT", f.RoleOptionMeleeDPS, 'LEFT', -3, 0)
-		f.RoleOptionCasterDPS:SetText(L['Caster DPS'])
-		f.RoleOptionCasterDPS:Hide()
-		E.Skins:HandleButton(f.RoleOptionCasterDPS, true)		
-		
 		f.SubTitle = f:CreateFontString(nil, 'OVERLAY')
 		f.SubTitle:FontTemplate(nil, 15, nil)		
 		f.SubTitle:Point("TOP", 0, -40)

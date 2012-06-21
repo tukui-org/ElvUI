@@ -1,7 +1,7 @@
 ﻿-- English localization file for enUS and enGB.
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0");
 local L 
-if UnitName('player') ~= 'Elv' then
+if UnitName('player') ~= 'Elv' and UnitName('player') ~= 'Gronckle' then
 	L = AceLocale:NewLocale("ElvUI", "enUS", true, true);
 else
 	L = AceLocale:NewLocale("ElvUI", "enUS", true);
@@ -856,3 +856,10 @@ L['Location Text'] = true;
 L['Change settings for the display of the location text that is on the minimap.'] = true;
 L['Minimap Mouseover'] = true;
 L['Always Display'] = true;
+L['Theme Set'] = true;
+L['Theme Setup'] = true;
+L['Choose a theme layout you wish to use for your initial setup.'] = true;
+L['You can always change fonts and colors of any element of elvui from the in-game configuration.'] = true;
+L['Classic'] = true;
+L['Classic Pixel'] = true;
+L['Stats For:'] = true;
