@@ -183,7 +183,7 @@ function DT:AssignPanelToDataText(panel, data)
 end
 
 function DT:LoadDataTexts()
-	if not self.db then self.db = E.db.datatexts end
+	self.db = E.db.datatexts
 	for name, obj in LDB:DataObjectIterator() do
 		LDB:UnregisterAllCallbacks(self)
 	end	

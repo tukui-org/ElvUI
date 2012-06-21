@@ -796,14 +796,16 @@ function CH:UpdateChatKeywords()
 	table.wipe(CH.Keywords)
 	local keywords = self.db.keywords
 	keywords = keywords:gsub(',%s', ',')
-	
+
 	for i=1, #{string.split(',', keywords)} do
 		local stringValue = select(i, string.split(',', keywords));
 		if stringValue == '%MYNAME%' then
 			stringValue = E.myname;
 		end
 		
-		CH.Keywords[stringValue] = true;
+		if stringValue ~= '' then
+			CH.Keywords[stringValue] = true;
+		end
 	end
 end
 
