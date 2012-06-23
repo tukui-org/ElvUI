@@ -298,7 +298,6 @@ function LO:CreateMinimapPanels()
 	end)
 end
 
-LO:RegisterEvent('PLAYER_ENTERING_WORLD')
 function LO:CreateExtraDataBarPanels()
 	local chattab1 = CreateFrame('Frame', 'ChatTab_Datatext_Panel', E.UIParent)
 	chattab1:SetScript('OnShow', function(self)
@@ -451,4 +450,5 @@ function LO:CreateMoverPopup()
 	end)
 end
 
+LO:RegisterEvent('PLAYER_ENTERING_WORLD')
 E:RegisterModule(LO:GetName())
