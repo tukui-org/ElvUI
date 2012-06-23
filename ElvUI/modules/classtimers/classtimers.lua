@@ -600,6 +600,8 @@ function CT:ToggleTimers()
 end
 
 function CT:UpdateFiltersAndColors()
+	if not E.private.classtimer.enable then return end
+	
 	self.player:RemoveAllFilters()
 	self.target:RemoveAllFilters()
 	self.trinket:RemoveAllFilters()
