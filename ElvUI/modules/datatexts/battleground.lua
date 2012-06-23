@@ -18,12 +18,12 @@ local dataLayout = {
 }
 
 local dataStrings = {
-	[10] = DAMAGE..' '..DONE,
+	[10] = DAMAGE,
 	[5] = HONOR,
 	[2] = KILLING_BLOWS,
 	[4] = DEATHS,
 	[3] = HONORABLE_KILLS,
-	[11] = SHOW_COMBAT_HEALING..' '..DONE,
+	[11] = SHOW_COMBAT_HEALING,
 }
 
 local WSG = 443
