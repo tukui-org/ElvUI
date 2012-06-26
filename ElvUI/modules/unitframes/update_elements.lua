@@ -535,14 +535,20 @@ function UF:PostCastStart(unit, name, rank, castid)
 	
 	if self.interrupt and unit ~= "player" then
 		if UnitCanAttack("player", unit) then
-			color = db['castbar']['interruptcolor']
+			color = db['castbar']['interruptcolor']		
 			self:SetStatusBarColor(color.r, color.g, color.b)
 		else
 			color = db['castbar']['color']
+			if E.db.theme == 'class' then
+				color = RAID_CLASS_COLORS[E.myclass]
+			end					
 			self:SetStatusBarColor(color.r, color.g, color.b)
 		end
 	else
 		color = db['castbar']['color']
+		if E.db.theme == 'class' then
+			color = RAID_CLASS_COLORS[E.myclass]
+		end				
 		self:SetStatusBarColor(color.r, color.g, color.b)
 	end
 end
