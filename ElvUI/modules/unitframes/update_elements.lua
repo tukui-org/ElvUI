@@ -1174,15 +1174,17 @@ function UF:RaidRoleUpdate()
 	leader:ClearAllPoints()
 	masterLooter:ClearAllPoints()
 	
-	if isLeader and db.raidRoleIcons.position == 'TOPLEFT' then
-		leader:Point('LEFT', anchor, 'LEFT')
-		masterLooter:Point('RIGHT', anchor, 'RIGHT')
-	elseif isLeader and db.raidRoleIcons.position == 'TOPRIGHT' then
-		leader:Point('RIGHT', anchor, 'RIGHT')
-		masterLooter:Point('LEFT', anchor, 'LEFT')	
-	elseif isMasterLooter and db.raidRoleIcons.position == 'TOPLEFT' then
-		masterLooter:Point('LEFT', anchor, 'LEFT')	
-	else
-		masterLooter:Point('RIGHT', anchor, 'RIGHT')
+	if db and db.raidRoleIcons then
+		if isLeader and db.raidRoleIcons.position == 'TOPLEFT' then
+			leader:Point('LEFT', anchor, 'LEFT')
+			masterLooter:Point('RIGHT', anchor, 'RIGHT')
+		elseif isLeader and db.raidRoleIcons.position == 'TOPRIGHT' then
+			leader:Point('RIGHT', anchor, 'RIGHT')
+			masterLooter:Point('LEFT', anchor, 'LEFT')	
+		elseif isMasterLooter and db.raidRoleIcons.position == 'TOPLEFT' then
+			masterLooter:Point('LEFT', anchor, 'LEFT')	
+		else
+			masterLooter:Point('RIGHT', anchor, 'RIGHT')
+		end
 	end
 end
