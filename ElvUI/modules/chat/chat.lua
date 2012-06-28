@@ -465,8 +465,8 @@ function CH:AddMessage(text, ...)
 			text = '|cffB3B3B3['..timestamp..'] |r'..text
 		end
 			
-		text = text:gsub('|Hplayer:Elv:', '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t|Hplayer:Elv:')
-		text = text:gsub('|Hplayer:Elv%-', '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t|Hplayer:Elv%-')
+		text = text:gsub('|Hplayer:Elvz:', '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t|Hplayer:Elvz:')
+		text = text:gsub('|Hplayer:Elvz%-', '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t|Hplayer:Elvz%-')
 	end
 
 	self.OldAddMessage(self, text, ...)
