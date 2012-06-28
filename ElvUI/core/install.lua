@@ -92,7 +92,7 @@ local function SetupChat()
 	ChatFrame_AddChannel(ChatFrame3, L['Trade'])
 
 	
-	if E.myname == "Elv" then
+	if E.myname == "Elvz" then
 		SetCVar("scriptErrors", 1)
 	end	
 	

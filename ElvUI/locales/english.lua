@@ -1,7 +1,7 @@
 ﻿-- English localization file for enUS and enGB.
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0");
 local L 
-if UnitName('player') ~= 'Elv' and UnitName('player') ~= 'Gronckle' then
+if UnitName('player') ~= 'Elvz' and UnitName('player') ~= 'Gronckle' then
 	L = AceLocale:NewLocale("ElvUI", "enUS", true, true);
 else
 	L = AceLocale:NewLocale("ElvUI", "enUS", true);
