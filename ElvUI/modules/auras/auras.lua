@@ -30,7 +30,7 @@ function A:StyleBuffs(buttonName, index, debuff)
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:Point("TOPLEFT", buff, 2, -2)
 		icon:Point("BOTTOMRIGHT", buff, -2, 2)
-		icon:SetDrawLayer("OVERLAY")
+		
 		buff:Size(30)
 				
 		duration:ClearAllPoints()
@@ -201,7 +201,12 @@ function A:Initialize()
 		return 
 	end
 	
-	ConsolidatedBuffs:Kill()
+	ConsolidatedBuffs:ClearAllPoints()
+	ConsolidatedBuffs:Point("LEFT", Minimap, "LEFT", 0, 3)
+	ConsolidatedBuffs:Size(16, 16)
+	ConsolidatedBuffs:SetParent(Minimap)
+	ConsolidatedBuffsIcon:SetTexture(nil)
+	ConsolidatedBuffs.SetPoint = E.noop
 	
 	local holder = CreateFrame("Frame", "AurasHolder", E.UIParent)
 	holder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -((E.MinimapSize + 4) + E.RBRWidth + 7), -3)
@@ -236,7 +241,7 @@ function A:Initialize()
 	self:SecureHook("AuraButton_OnUpdate", "UpdateFlash")
 	self:SecureHook("BuffFrame_UpdateAllBuffAnchors", "UpdateBuffAnchors")
 	self:SecureHook("DebuffButton_UpdateAnchors", "UpdateDebuffAnchors")	
-	E:CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, A.AurasPostDrag)
+	E:CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, nil, A.AurasPostDrag)
 	AurasHolder.ClearAllPoints = E.noop
 	AurasHolder.SetPoint = E.noop
 	AurasHolder.SetAllPoints = E.noop

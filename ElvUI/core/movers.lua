@@ -7,16 +7,22 @@ local function SizeChanged(frame)
 	frame.mover:Size(frame:GetSize())
 end
 
-local function CreateMover(parent, name, text, overlay, postdrag)
+local function GetPoint(obj)
+	local point, anchor, secondaryPoint, x, y = obj:GetPoint()
+	if not anchor then anchor = UIParent end
+
+	return string.format('%s\031%s\031%s\031%d\031%d', point, anchor:GetName(), secondaryPoint, E:Round(x), E:Round(y))
+end
+
+local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	if not parent then return end --If for some reason the parent isnt loaded yet
 	if E.CreatedMovers[name].Created then return end
 	
 	if overlay == nil then overlay = true end
-	
-	local p, p2, p3, p4, p5 = parent:GetPoint()
-	
+	local point, anchor, secondaryPoint, x, y = string.split('\031', GetPoint(parent))
 	local f = CreateFrame("Button", name, E.UIParent)
 	f:SetFrameLevel(parent:GetFrameLevel() + 1)
+	f:SetClampedToScreen(true)
 	f:SetWidth(parent:GetWidth())
 	f:SetHeight(parent:GetHeight())
 	f.parent = parent
@@ -24,25 +30,37 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	f.textSting = text
 	f.postdrag = postdrag
 	f.overlay = overlay
-
+	f.snapOffset = snapOffset or -2
+	E.CreatedMovers[name].mover = f
+	
+	tinsert(E['snapBars'], f)
+	
 	if overlay == true then
 		f:SetFrameStrata("DIALOG")
 	else
 		f:SetFrameStrata("BACKGROUND")
 	end
-	if E.db["movers"] and E.db["movers"][name] then
-		f:SetPoint(E.db["movers"][name]["p"], UIParent, E.db["movers"][name]["p2"], E.db["movers"][name]["p3"], E.db["movers"][name]["p4"])
+	
+	if E.db['movers'] and E.db['movers'][name] then
+		if type(E.db['movers'][name]) == 'table' then
+			f:SetPoint(E.db["movers"][name]["p"], UIParent, E.db["movers"][name]["p2"], E.db["movers"][name]["p3"], E.db["movers"][name]["p4"])
+			E.db['movers'][name] = GetPoint(f)
+			f:ClearAllPoints()
+		end
+		
+		local point, anchor, secondaryPoint, x, y = string.split('\031', E.db['movers'][name])
+		f:SetPoint(point, anchor, secondaryPoint, x, y)
 	else
-		f:SetPoint(p, p2, p3, p4, p5)
+
+		f:SetPoint(point, anchor, secondaryPoint, x, y)
 	end
 	f:SetTemplate("Default", true)
 	f:RegisterForDrag("LeftButton", "RightButton")
 	f:SetScript("OnDragStart", function(self) 
 		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end	
-		
+
 		if E.db['general'].stickyFrames then
-			local offset = 2
-			Sticky:StartMoving(self, E['snapBars'], offset, offset, offset, offset)
+			Sticky:StartMoving(self, E['snapBars'], f.snapOffset, f.snapOffset, f.snapOffset, f.snapOffset)
 		else
 			self:StartMoving() 
 		end
@@ -55,7 +73,47 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 		else
 			self:StopMovingOrSizing()
 		end
+
+		--[[
+			okay i'm too drunk to figure this out in my head, i need to adjust this so moving a mover to the topleft topright or bottomright corners of the screen calculates the point from their respective areas
+			instead of the bottomleft always, this way moving a raid group to the topleft corner of the screen will cause the raid group to spawn to the right and down
+			
+			GetLeft(), GetTop(), GetRight(), GetBottom() all return values based on on the bottomleft corner of the screen
+			
+			top:
+				need to calculate the distance from this point to the very top of the screen then make it negative
+				-(screenHeight - 846)
+				OMG YAY IT WORKS!!! NOW LETS TRY FOR THE RIGHT SIDE
+				
+			right:
+				need to calculate the distance from this point to the far right of the screen then make it negative
+				YAY SAME FORMULAR WORKS!@!
+				
+		]]
 		
+		local screenWidth, screenHeight = UIParent:GetRight(), UIParent:GetTop()
+		local x, y = self:GetCenter()
+		local point
+		
+		if y > (screenHeight / 2) then
+			point = "TOP"
+			y = -(screenHeight - self:GetTop())
+		else
+			point = "BOTTOM"
+			y = self:GetBottom()
+		end
+		
+		if x > (screenWidth / 2) then
+			point = point.."RIGHT"
+			x = -(screenWidth - self:GetRight())
+		else
+			point = point.."LEFT"
+			x = self:GetLeft()
+		end
+
+		self:ClearAllPoints()
+		self:Point(point, UIParent, point, x, y)
+
 		E:SaveMoverPosition(name)
 		
 		if postdrag ~= nil and type(postdrag) == 'function' then
@@ -68,7 +126,8 @@ local function CreateMover(parent, name, text, overlay, postdrag)
 	parent:SetScript('OnSizeChanged', SizeChanged)
 	parent.mover = f
 	parent:ClearAllPoints()
-	parent:SetPoint(p or p3, f, p or p3, 0, 0)
+
+	parent:SetPoint(point, f, 0, 0)
 	
 	local fs = f:CreateFontString(nil, "OVERLAY")
 	fs:FontTemplate()
@@ -113,28 +172,24 @@ end
 function E:SaveMoverPosition(name)
 	if not _G[name] then return end
 	if not E.db.movers then E.db.movers = {} end
-	
-	E.db.movers[name] = {}
-	local p, _, p2, p3, p4 = _G[name]:GetPoint()
-	E.db.movers[name]["p"] = p
-	E.db.movers[name]["p2"] = p2
-	E.db.movers[name]["p3"] = p3
-	E.db.movers[name]["p4"] = p4	
+
+	E.db.movers[name] = GetPoint(_G[name])
+end
+
+function E:SetMoverSnapOffset(name, offset)
+	if not _G[name] or not E.CreatedMovers[name] then return end
+	E.CreatedMovers[name].mover.snapOffset = offset or -2
+	E.CreatedMovers[name]["snapoffset"] = offset or -2
 end
 
 function E:SaveMoverDefaultPosition(name)
 	if not _G[name] then return end
-	local p, p2, p3, p4, p5 = _G[name]:GetPoint()
 
-	E.CreatedMovers[name]["p"] = p
-	E.CreatedMovers[name]["p2"] = p2 or "E.UIParent"
-	E.CreatedMovers[name]["p3"] = p3
-	E.CreatedMovers[name]["p4"] = p4
-	E.CreatedMovers[name]["p5"] = p5
+	E.CreatedMovers[name]["point"] = GetPoint(_G[name])
 	E.CreatedMovers[name]["postdrag"](_G[name], E:GetScreenQuadrant(_G[name]))
 end
 
-function E:CreateMover(parent, name, text, overlay, postdrag)
+function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag)
 	local p, p2, p3, p4, p5 = parent:GetPoint()
 
 	if E.CreatedMovers[name] == nil then 
@@ -143,14 +198,11 @@ function E:CreateMover(parent, name, text, overlay, postdrag)
 		E.CreatedMovers[name]["text"] = text
 		E.CreatedMovers[name]["overlay"] = overlay
 		E.CreatedMovers[name]["postdrag"] = postdrag
-		E.CreatedMovers[name]["p"] = p
-		E.CreatedMovers[name]["p2"] = p2 or "E.UIParent"
-		E.CreatedMovers[name]["p3"] = p3
-		E.CreatedMovers[name]["p4"] = p4
-		E.CreatedMovers[name]["p5"] = p5
+		E.CreatedMovers[name]["snapoffset"] = snapOffset
+		E.CreatedMovers[name]["point"] = GetPoint(parent)
 	end	
 	
-	CreateMover(parent, name, text, overlay, postdrag)
+	CreateMover(parent, name, text, overlay, snapoffset, postdrag)
 end
 
 function E:ToggleMovers(show)
@@ -167,8 +219,9 @@ function E:ResetMovers(arg)
 	if arg == "" or arg == nil then
 		for name, _ in pairs(E.CreatedMovers) do
 			local f = _G[name]
+			local point, anchor, secondaryPoint, x, y = string.split('\031', E.CreatedMovers[name]['point'])
 			f:ClearAllPoints()
-			f:SetPoint(E.CreatedMovers[name]["p"], E.CreatedMovers[name]["p2"], E.CreatedMovers[name]["p3"], E.CreatedMovers[name]["p4"], E.CreatedMovers[name]["p5"])
+			f:SetPoint(point, anchor, secondaryPoint, x, y)
 			
 			for key, value in pairs(E.CreatedMovers[name]) do
 				if key == "postdrag" and type(value) == 'function' then
@@ -184,8 +237,9 @@ function E:ResetMovers(arg)
 				if key == "text" then
 					if arg == value then 
 						local f = _G[name]
+						local point, anchor, secondaryPoint, x, y = string.split('\031', E.CreatedMovers[name]['point'])
 						f:ClearAllPoints()
-						f:SetPoint(E.CreatedMovers[name]["p"], E.CreatedMovers[name]["p2"], E.CreatedMovers[name]["p3"], E.CreatedMovers[name]["p4"], E.CreatedMovers[name]["p5"])						
+						f:SetPoint(point, anchor, secondaryPoint, x, y)				
 						
 						if self.db.movers then
 							self.db.movers[name] = nil
@@ -205,20 +259,23 @@ end
 function E:SetMoversPositions()
 	for name, _ in pairs(E.CreatedMovers) do
 		local f = _G[name]
-		if E.db["movers"] and E.db["movers"][name] then
+		local point, anchor, secondaryPoint, x, y
+		if E.db["movers"] and E.db["movers"][name] and type(E.db["movers"][name]) == 'string' then
+			point, anchor, secondaryPoint, x, y = string.split('\031', E.db["movers"][name])
 			f:ClearAllPoints()
-			f:SetPoint(E.db["movers"][name]["p"], UIParent, E.db["movers"][name]["p2"], E.db["movers"][name]["p3"], E.db["movers"][name]["p4"])
+			f:SetPoint(point, anchor, secondaryPoint, x, y)
 		elseif f then
+			point, anchor, secondaryPoint, x, y = string.split('\031', E.CreatedMovers[name]['point'])
 			f:ClearAllPoints()
-			f:SetPoint(E.CreatedMovers[name]["p"], E.CreatedMovers[name]["p2"], E.CreatedMovers[name]["p3"], E.CreatedMovers[name]["p4"], E.CreatedMovers[name]["p5"])		
-		end
+			f:SetPoint(point, anchor, secondaryPoint, x, y)
+		end		
 	end
 end
 
 --Called from core.lua
 function E:LoadMovers()
 	for n, _ in pairs(E.CreatedMovers) do
-		local p, t, o, pd
+		local p, t, o, so, pd
 		for key, value in pairs(E.CreatedMovers[n]) do
 			if key == "parent" then
 				p = value
@@ -226,18 +283,20 @@ function E:LoadMovers()
 				t = value
 			elseif key == "overlay" then
 				o = value
+			elseif key == "snapoffset" then
+				so = value
 			elseif key == "postdrag" then
 				pd = value
 			end
 		end
-		CreateMover(p, n, t, o, pd)
+		CreateMover(p, n, t, o, so, pd)
 	end
 end
 
 function E:PLAYER_REGEN_DISABLED()
 	local err = false
 	for name, _ in pairs(E.CreatedMovers) do
-		if _G[name]:IsShown() then
+		if _G[name] and _G[name]:IsShown() then
 			err = true
 			_G[name]:Hide()
 		end

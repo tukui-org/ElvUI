@@ -54,9 +54,16 @@ function UF:Update_TankHeader(header, db)
 	header:SetAttribute('columnAnchorPoint', 'TOP')
 	header:SetAttribute('point', 'BOTTOM')
 
-	if not header.mover then
+	if not header.positioned then
 		header:ClearAllPoints()
 		header:Point("LEFT", E.UIParent, "LEFT", 6, 250)
+		
+		E:CreateMover(header, header:GetName()..'Mover', 'MT Frames')
+
+		header:SetAttribute('minHeight', header.dirtyHeight)
+		header:SetAttribute('minWidth', header.dirtyWidth)
+
+		header.positioned = true;
 	end
 end
 

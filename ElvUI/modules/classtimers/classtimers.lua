@@ -321,7 +321,7 @@ function CT:CreateAuraBar(parent)
 	result.icon = icon;
 			
 	local stacks = icon:CreateFontString(nil, "OVERLAY", nil);
-	stacks:FontTemplate(nil, 10, 'OUTLINE')
+	stacks:FontTemplate(nil, nil, 'OUTLINE')
 	stacks:SetPoint("BOTTOMRIGHT", icon.texture, "BOTTOMRIGHT", 1, 1);
 	stacks:SetJustifyH('RIGHT')
 	result.stacks = stacks;
@@ -341,14 +341,14 @@ function CT:CreateAuraBar(parent)
 	result.spark = spark;
 				
 	local name = bar:CreateFontString(nil, "OVERLAY", nil);
-	name:FontTemplate(nil, 12, 'OUTLINE')
+	name:FontTemplate(nil, nil, 'OUTLINE')
 	name:SetJustifyH("LEFT");
 	name:SetPoint("TOPLEFT", bar, "TOPLEFT", 5, 0);
 	name:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", -45, 0);
 	result.name = name;
 	
 	local time = bar:CreateFontString(nil, "OVERLAY", nil);
-	time:FontTemplate(nil, 12, 'OUTLINE')
+	time:FontTemplate(nil, nil, 'OUTLINE')
 	time:SetJustifyH("RIGHT");
 	time:SetPoint("TOPLEFT", name, "TOPRIGHT", 0, 0);
 	time:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", -5, 0);
@@ -600,6 +600,8 @@ function CT:ToggleTimers()
 end
 
 function CT:UpdateFiltersAndColors()
+	if not E.private.classtimer.enable or not self.player or not self.target or not self.trinket then return end
+	
 	self.player:RemoveAllFilters()
 	self.target:RemoveAllFilters()
 	self.trinket:RemoveAllFilters()

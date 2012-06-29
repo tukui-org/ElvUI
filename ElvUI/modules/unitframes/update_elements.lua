@@ -123,10 +123,15 @@ function UF:GetInfoText(frame, unit, r, g, b, min, max, reverse, type)
 end
 
 function UF:PostUpdateHealth(unit, min, max)
+	if self:GetParent().isForced then
+		min = math.random(1, max)
+		self:SetValue(min)
+	end
+
 	local r, g, b = self:GetStatusBarColor()
 	self.defaultColor = {r, g, b}
-	
-	if E.db['unitframe']['colors'].healthclass == true and E.db['unitframe']['colors'].colorhealthbyvalue == true and not (UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit)) then
+
+	if (E.db['unitframe']['colors'].healthclass == true and E.db['unitframe']['colors'].colorhealthbyvalue == true) or (E.db['unitframe']['colors'].colorhealthbyvalue and self:GetParent().isForced) and not (UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit)) then
 		local newr, newg, newb = ElvUF.ColorGradient(min, max, 1, 0, 0, 1, 1, 0, r, g, b)
 
 		self:SetStatusBarColor(newr, newg, newb)
@@ -207,11 +212,24 @@ end
 function UF:PostUpdatePower(unit, min, max)
 	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
 	local color
-	if pToken then
-		color = ElvUF['colors'].power[pToken]
-	else
 	
-	end
+	if self:GetParent().isForced then
+		min = math.random(1, max)
+		pType = math.random(0, 4)
+		pToken = pType == 0 and "MANA" or pType == 1 and "RAGE" or pType == 2 and "FOCUS" or pType == 3 and "ENERGY" or pType == 4 and "RUNIC_POWER"
+		self:SetValue(min)
+		color = ElvUF['colors'].power[pToken]
+		
+		if not self.colorClass then
+			self:SetStatusBarColor(color[1], color[2], color[3])
+			local mu = self.bg.multiplier or 1
+			self.bg:SetVertexColor(color[1] * mu, color[2] * mu, color[3] * mu)
+		end
+	elseif pToken then
+		color = ElvUF['colors'].power[pToken]
+	end	
+	
+		
 	local perc
 	if max == 0 then
 		perc = 0
@@ -398,18 +416,23 @@ end
 function UF:CustomCastDelayText(duration)
 	local db = self:GetParent().db
 	
-	
 	if db then
 		local text		
 		if self.channeling then
-			self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(math.abs(duration - self.max), "- ", self.delay))
+			if db.castbar.format == 'CURRENT' then
+				self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(math.abs(duration - self.max), "-", self.delay))
+			elseif db.castbar.format == 'CURRENTMAX' then
+				self.Time:SetText(("%.1f / %.1f |cffaf5050%s %.1f|r"):format(duration, self.max, "-", self.delay))
+			elseif db.castbar.format == 'REMAINING' then
+				self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(duration, "-", self.delay))
+			end			
 		else
 			if db.castbar.format == 'CURRENT' then
-				self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(duration, "+ ", self.delay))
+				self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(duration, "+", self.delay))
 			elseif db.castbar.format == 'CURRENTMAX' then
-				self.Time:SetText(("%.1f / %.1f |cffaf5050%s %.1f|r"):format(duration, self.max, "+ ", self.delay))
+				self.Time:SetText(("%.1f / %.1f |cffaf5050%s %.1f|r"):format(duration, self.max, "+", self.delay))
 			elseif db.castbar.format == 'REMAINING' then
-				self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(math.abs(duration - self.max), "+ ", self.delay))
+				self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(math.abs(duration - self.max), "+", self.delay))
 			end		
 		end
 	end
@@ -421,7 +444,14 @@ function UF:CustomTimeText(duration)
 	
 	local text
 	if self.channeling then
-		self.Time:SetText(("%.1f"):format(math.abs(duration - self.max)))
+		if db.castbar.format == 'CURRENT' then
+			self.Time:SetText(("%.1f"):format(math.abs(duration - self.max)))
+		elseif db.castbar.format == 'CURRENTMAX' then
+			self.Time:SetText(("%.1f / %.1f"):format(duration, self.max))
+			self.Time:SetText(("%.1f / %.1f"):format(math.abs(duration - self.max), self.max))
+		elseif db.castbar.format == 'REMAINING' then
+			self.Time:SetText(("%.1f"):format(duration))
+		end				
 	else
 		if db.castbar.format == 'CURRENT' then
 			self.Time:SetText(("%.1f"):format(duration))
@@ -505,14 +535,20 @@ function UF:PostCastStart(unit, name, rank, castid)
 	
 	if self.interrupt and unit ~= "player" then
 		if UnitCanAttack("player", unit) then
-			color = db['castbar']['interruptcolor']
+			color = db['castbar']['interruptcolor']		
 			self:SetStatusBarColor(color.r, color.g, color.b)
 		else
 			color = db['castbar']['color']
+			if E.db.theme == 'class' then
+				color = RAID_CLASS_COLORS[E.myclass]
+			end					
 			self:SetStatusBarColor(color.r, color.g, color.b)
 		end
 	else
 		color = db['castbar']['color']
+		if E.db.theme == 'class' then
+			color = RAID_CLASS_COLORS[E.myclass]
+		end				
 		self:SetStatusBarColor(color.r, color.g, color.b)
 	end
 end
@@ -545,26 +581,26 @@ function UF:UpdateHoly(event, unit, powerType)
 	if(self.unit ~= unit or (powerType and powerType ~= 'HOLY_POWER')) then return end
 	local num = UnitPower(unit, SPELL_POWER_HOLY_POWER)
 	local db = self.db
-	for i = 1, HOLY_POWER_FULL do
+	for i = 1, MAX_HOLY_POWER do
 		if(i <= num) then
 			self.HolyPower[i]:SetAlpha(1)
 			
 			if i == 3 and db.classbar.fill == 'spaced' then
-				for h = 1, HOLY_POWER_FULL do
+				for h = 1, MAX_HOLY_POWER do
 					self.HolyPower[h].backdrop.shadow:Show()
 					self.HolyPower[h]:SetScript('OnUpdate', function(self)
 						E:Flash(self.backdrop.shadow, 0.6)
 					end)
 				end
 			else
-				for h = 1, HOLY_POWER_FULL do
+				for h = 1, MAX_HOLY_POWER do
 					self.HolyPower[h].backdrop.shadow:Hide()
 					self.HolyPower[h]:SetScript('OnUpdate', nil)
 				end
 			end
 		else
 			self.HolyPower[i]:SetAlpha(.2)
-			for h = 1, HOLY_POWER_FULL do
+			for h = 1, MAX_HOLY_POWER do
 				self.HolyPower[h].backdrop.shadow:Hide()
 				self.HolyPower[h]:SetScript('OnUpdate', nil)
 			end		
@@ -1102,7 +1138,13 @@ function UF:UpdateRoleIcon()
 	
 	if not db then return; end
 	local role = UnitGroupRolesAssigned(self.unit)
-	if(role == 'TANK' or role == 'HEALER' or role == 'DAMAGER') and UnitIsConnected(self.unit) and db.enable then
+
+	if self.isForced then
+		local rnd = math.random(1, 3)
+		role = rnd == 1 and "TANK" or (rnd == 2 and "HEALER" or (rnd == 3 and "DAMAGER"))
+	end
+	
+	if(role == 'TANK' or role == 'HEALER' or role == 'DAMAGER') and (UnitIsConnected(self.unit) or self.isForced) and db.enable then
 		if role == 'TANK' then
 			lfdrole:SetTexture([[Interface\AddOns\ElvUI\media\textures\tank.tga]])
 		elseif role == 'HEALER' then
@@ -1115,4 +1157,34 @@ function UF:UpdateRoleIcon()
 	else
 		lfdrole:Hide()
 	end	
+end
+
+function UF:RaidRoleUpdate()
+	local anchor = self:GetParent()
+	local leader = anchor:GetParent().Leader
+	local masterLooter = anchor:GetParent().MasterLooter
+
+	if not leader or not masterLooter then return; end
+
+	local unit = anchor:GetParent().unit
+	local db = anchor:GetParent().db
+	local isLeader = leader:IsShown()
+	local isMasterLooter = masterLooter:IsShown()
+	
+	leader:ClearAllPoints()
+	masterLooter:ClearAllPoints()
+	
+	if db and db.raidRoleIcons then
+		if isLeader and db.raidRoleIcons.position == 'TOPLEFT' then
+			leader:Point('LEFT', anchor, 'LEFT')
+			masterLooter:Point('RIGHT', anchor, 'RIGHT')
+		elseif isLeader and db.raidRoleIcons.position == 'TOPRIGHT' then
+			leader:Point('RIGHT', anchor, 'RIGHT')
+			masterLooter:Point('LEFT', anchor, 'LEFT')	
+		elseif isMasterLooter and db.raidRoleIcons.position == 'TOPLEFT' then
+			masterLooter:Point('LEFT', anchor, 'LEFT')	
+		else
+			masterLooter:Point('RIGHT', anchor, 'RIGHT')
+		end
+	end
 end

@@ -11,10 +11,6 @@ local menuList = {
 	func = function() ToggleCharacter("PaperDollFrame") end},
 	{text = SPELLBOOK_ABILITIES_BUTTON,
 	func = function() if not SpellBookFrame:IsShown() then ShowUIPanel(SpellBookFrame) else HideUIPanel(SpellBookFrame) end end},
-	{text = MOUNTS_AND_PETS,
-	func = function()
-		TogglePetJournal();
-	end},
 	{text = TALENTS_BUTTON,
 	func = function()
 		if not PlayerTalentFrame then
@@ -50,7 +46,9 @@ local menuList = {
 		end
 	end},
 	{text = LFG_TITLE,
-	func = function() PVEFrame_ToggleFrame(); end},
+	func = function() ToggleFrame(LFDParentFrame) end},
+	{text = RAID_FINDER,
+	func = function() RaidMicroButton:Click() end},
 	{text = ENCOUNTER_JOURNAL, 
 	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then LoadAddOn('Blizzard_EncounterJournal'); end ToggleFrame(EncounterJournal) end},	
 	{text = L_CALENDAR,
@@ -122,6 +120,7 @@ function M:Minimap_OnMouseWheel(d)
 end
 
 function M:Update_ZoneText()
+	if E.db.general.minimapLocationText == 'HIDE' then return; end
 	Minimap.location:SetText(strsub(GetMinimapZoneText(),1,25))
 	Minimap.location:SetTextColor(M:GetLocTextColor())
 end
@@ -175,6 +174,12 @@ function M:UpdateSettings()
 	
 	if Minimap.location then
 		Minimap.location:Width(E.MinimapSize)
+		
+		if E.db.general.minimapLocationText ~= 'SHOW' then
+			Minimap.location:Hide()
+		else
+			Minimap.location:Show()
+		end		
 	end
 	
 	if MinimapMover then
@@ -233,10 +238,12 @@ function M:Initialize()
 	Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
 	Minimap:CreateBackdrop('Default')
 	Minimap:HookScript('OnEnter', function(self)
+		if E.db.general.minimapLocationText ~= 'MOUSEOVER' then return; end
 		self.location:Show()
 	end)
 	
 	Minimap:HookScript('OnLeave', function(self)
+		if E.db.general.minimapLocationText ~= 'MOUSEOVER' then return; end
 		self.location:Hide()
 	end)	
 	
@@ -248,8 +255,10 @@ function M:Initialize()
 	Minimap.location:FontTemplate(nil, nil, 'OUTLINE')
 	Minimap.location:Point('TOP', Minimap, 'TOP', 0, -2)
 	Minimap.location:SetJustifyH("CENTER")
-	Minimap.location:SetJustifyV("MIDDLE")		
-	Minimap.location:Hide()
+	Minimap.location:SetJustifyV("MIDDLE")	
+	if E.db.general.minimapLocationText ~= 'SHOW' then
+		Minimap.location:Hide()
+	end
 	
 	LFGSearchStatus:SetTemplate("Default")
 	LFGSearchStatus:SetClampedToScreen(true)

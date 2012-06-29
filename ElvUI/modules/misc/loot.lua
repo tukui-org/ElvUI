@@ -8,11 +8,11 @@ local iconSize = 30;
 local sq, ss, sn
 local OnEnter = function(self)
 	local slot = self:GetID()
-	--if(LootSlotIsItem(slot)) then
+	if(LootSlotIsItem(slot)) then
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 		GameTooltip:SetLootItem(slot)
 		CursorUpdate(self)
-	--end
+	end
 	
 	LootFrame.selectedSlot = self:GetID()
 	self.drop:Show()
@@ -32,6 +32,10 @@ local OnLeave = function(self)
 end
 
 local OnClick = function(self)
+	LootFrame.selectedQuality = self.quality;
+	LootFrame.selectedItemName = self.name:GetText()
+	LootFrame.selectedSlot = self:GetID()
+	
 	if(IsModifiedClick()) then
 		HandleModifiedItemClick(GetLootSlotLink(self:GetID()))
 	else
@@ -185,9 +189,9 @@ function M:LOOT_OPENED(event, autoloot)
 			local texture, item, quantity, quality, locked = GetLootSlotInfo(i)
 			local color = ITEM_QUALITY_COLORS[quality]
 
-			--if(LootSlotIsCoin(i)) then
+			if(LootSlotIsCoin(i)) then
 				item = item:gsub("\n", ", ")
-			--end
+			end
 
 			if quantity and (quantity > 1) then
 				slot.count:SetText(quantity)
@@ -279,7 +283,6 @@ function M:LoadLoot()
 	E:CreateMover(lootFrameHolder, "LootFrameMover", "Loot Frame")
 	
 	-- Fuzz
-	LootHistoryFrame:Kill()
 	LootFrame:UnregisterAllEvents()
 	table.insert(UISpecialFrames, 'ElvLootFrame')
 

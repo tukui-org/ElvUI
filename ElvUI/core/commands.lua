@@ -104,10 +104,19 @@ function E:DisableAprilFools()
 	ReloadUI();
 end
 
+function E:BGStats()
+	local DT = E:GetModule('DataTexts')
+	DT.ForceHideBGStats = nil;
+	DT:LoadDataTexts()
+	
+	E:Print(L['Battleground datatexts will now show again if you are inside a battleground.'])
+end
+
 function E:LoadCommands()
 	self:RegisterChatCommand("ec", "ToggleConfig")
 	self:RegisterChatCommand("elvui", "ToggleConfig")
 	
+	self:RegisterChatCommand('bgstats', 'BGStats')
 	self:RegisterChatCommand('moreinfo', 'FoolsHowTo')
 	self:RegisterChatCommand('aprilfools', 'DisableAprilFools')
 	self:RegisterChatCommand('luaerror', 'LuaError')

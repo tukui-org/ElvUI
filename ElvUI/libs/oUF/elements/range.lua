@@ -30,6 +30,8 @@ local OnRangeUpdate = function(self, elapsed)
 							object:SetAlpha(range.insideAlpha)
 						end
 					end
+				elseif object.unit and not UnitIsConnected(object.unit) then
+					object:SetAlpha(range.outsideAlpha)
 				else
 					object:SetAlpha(range.insideAlpha)	
 				end

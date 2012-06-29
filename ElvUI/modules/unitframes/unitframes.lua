@@ -11,9 +11,9 @@ UF['headerstoload'] = {}
 UF['unitgroupstoload'] = {}
 UF['unitstoload'] = {}
 
-UF['handledheaders'] = {}
-UF['handledgroupunits'] = {}
-UF['handledunits'] = {}
+UF['headers'] = {}
+UF['groupunits'] = {}
+UF['units'] = {}
 
 UF['statusbars'] = {}
 UF['fontstrings'] = {}
@@ -36,14 +36,14 @@ function UF:Construct_UF(frame, unit)
 	
 	frame:SetFrameLevel(5)
 	
-	if not self['handledgroupunits'][unit] then
+	if not self['groupunits'][unit] then
 		local stringTitle = E:StringTitle(unit)
 		if stringTitle:find('target') then
 			stringTitle = gsub(stringTitle, 'target', 'Target')
 		end
 		self["Construct_"..stringTitle.."Frame"](self, frame, unit)
 	else
-		UF["Construct_"..E:StringTitle(self['handledgroupunits'][unit]).."Frames"](self, frame, unit)
+		UF["Construct_"..E:StringTitle(self['groupunits'][unit]).."Frames"](self, frame, unit)
 	end
 	
 	self:Update_StatusBars()
@@ -238,7 +238,7 @@ function UF:Update_AllFrames()
 	self:Update_FontStrings()
 	self:Update_StatusBars()	
 	
-	for unit in pairs(self['handledunits']) do
+	for unit in pairs(self['units']) do
 		if self.db['units'][unit].enable then
 			self[unit]:Enable()
 			self[unit]:Update()
@@ -247,7 +247,7 @@ function UF:Update_AllFrames()
 		end
 	end
 
-	for unit, group in pairs(self['handledgroupunits']) do
+	for unit, group in pairs(self['groupunits']) do
 		if self.db['units'][group].enable then
 			self[unit]:Enable()
 			self[unit]:Update()
@@ -269,7 +269,7 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 		local frameName = E:StringTitle(unit)
 		frameName = frameName:gsub('t(arget)', 'T%1')		
 		if not self[unit] then
-			self['handledgroupunits'][unit] = group;	
+			self['groupunits'][unit] = group;	
 			self[unit] = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
 			self[unit].index = i
 		end
@@ -279,10 +279,14 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 		self[unit].Update = function()
 			UF["Update_"..E:StringTitle(frameName).."Frames"](self, self[unit], self.db['units'][group])	
 		end
-
+		
 		if self.db['units'][group].enable then
 			self[unit]:Enable()
 			self[unit].Update()
+			
+			if self[unit].isForced then
+				self:ForceShow(self[unit])		
+			end
 		else
 			self[unit]:Disable()
 		end
@@ -299,14 +303,53 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 		ElvUF:RegisterStyle("ElvUF_"..E:StringTitle(group), UF["Construct_"..E:StringTitle(group).."Frames"])
 		ElvUF:SetActiveStyle("ElvUF_"..E:StringTitle(group))
 
-		if template then
-			self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 'point', self.db['units'][group].point, 'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 'template', template, 'groupFilter', groupFilter)
-		else
-			self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 'point', self.db['units'][group].point, 'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 'groupFilter', groupFilter)
+		local maxUnits, startingIndex = MAX_RAID_MEMBERS, -1
+		if db.maxColumns and db.unitsPerColumn then
+			startingIndex = -math.min(db.maxColumns * db.unitsPerColumn, maxUnits) + 1			
 		end
-		self['handledheaders'][group] = self[group]
+
+		if template then
+			self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 
+				'point', self.db['units'][group].point, 
+				'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 
+				'template', template, 
+				'columnAnchorPoint', db.columnAnchorPoint,
+				'maxColumns', db.maxColumns,
+				'unitsPerColumn', db.unitsPerColumn,
+				'point', db.point,
+				'columnSpacing', db.columnSpacing,
+				'xOffset', db.xOffset,
+				'yOffset', db.yOffset,
+				'startingIndex', startingIndex,
+				'groupFilter', groupFilter)
+		else
+			self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 
+				'point', self.db['units'][group].point, 
+				'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 
+				'columnAnchorPoint', db.columnAnchorPoint,
+				'maxColumns', db.maxColumns,
+				'unitsPerColumn', db.unitsPerColumn,
+				'point', db.point,
+				'columnSpacing', db.columnSpacing,
+				'xOffset', db.xOffset,
+				'yOffset', db.yOffset,
+				'startingIndex', startingIndex,
+				'groupFilter', groupFilter)
+		end
+
+		RegisterAttributeDriver(self[group], 'state-visibility', 'show')	
+		self[group].dirtyWidth, self[group].dirtyHeight = self[group]:GetSize()
+		RegisterAttributeDriver(self[group], 'state-visibility', 'hide')	
+
+		if not db.maxColumns then
+			self[group]:SetAttribute('startingIndex', 1)
+		end
+		
+		self['headers'][group] = self[group]
 		self[group].groupName = group
 	end
+	
+	self[group].db = db
 	
 	self[group].Update = function()
 		local db = self.db['units'][group]
@@ -332,7 +375,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 	else
 		self[group]:SetAttribute("showParty", false)
 		self[group]:SetAttribute("showRaid", false)
-		self[group]:SetAttribute("showSolo", false)
+		self[group]:SetAttribute("showSolo", false)	
 	end
 end
 
@@ -351,7 +394,7 @@ function UF:CreateAndUpdateUF(unit)
 	frameName = frameName:gsub('t(arget)', 'T%1')
 	if not self[unit] then
 		self[unit] = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
-		self['handledunits'][unit] = unit
+		self['units'][unit] = unit
 	end
 
 	self[unit].Update = function()
@@ -398,7 +441,7 @@ function UF:UpdateAllHeaders(event)
 	if event == 'PLAYER_REGEN_ENABLED' then
 		self:UnregisterEvent('PLAYER_REGEN_ENABLED')
 	end
-	
+		
 	local _, instanceType = IsInInstance();
 	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs
 	if ORD then
@@ -411,7 +454,7 @@ function UF:UpdateAllHeaders(event)
 		end
 	end	
 	
-	for _, header in pairs(UF['handledheaders']) do
+	for _, header in pairs(UF['headers']) do
 		header:Update()
 	end	
 	
@@ -435,38 +478,6 @@ function UF:DisableBlizzard(event)
 	CompactRaidFrameContainer:UnregisterAllEvents()
 	HideRaid()
 	hooksecurefunc("CompactUnitFrame_RegisterEvents", CompactUnitFrame_UnregisterEvents)
-end
-
-function UF:ForceShow(frame)
-	if not frame.isForced then
-		UnregisterUnitWatch(frame)
-		RegisterUnitWatch(frame, true)
-		
-		frame.oldUnit = frame.unit
-		frame.unit = 'dummy'
-		frame.isForced = true;
-	end
-	
-	frame:Show()
-end
-
-function UF:UnforceShow(frame)
-	if not frame.isForced then
-		return
-	end
-	frame.isForced = nil
-	
-	-- Ask the SecureStateDriver to show/hide the frame for us
-	UnregisterUnitWatch(frame)
-	RegisterUnitWatch(frame)
-	
-	frame.unit = frame.oldUnit or frame.unit
-	
-	-- If we're visible force an udpate so everything is properly in a
-	-- non-config mode state
-	if frame:IsVisible() then
-		frame:Update()
-	end	
 end
 
 local hiddenParent = CreateFrame("Frame")
@@ -568,16 +579,7 @@ function UF:Initialize()
 	self.db = E.db["unitframe"]
 	if E.private["unitframe"].enable ~= true then return; end
 	E.UnitFrames = UF;
-	
-	--Database conversion from ElvUI v3.2.2 and below.
-	local specToCopy = E.db.unitframe.mainSpec
-	if not specToCopy then specToCopy = 'Primary' end
-	if specToCopy and E.db.unitframe.layouts and E.db.unitframe.layouts[specToCopy] then
-		E:CopyTable(E.db.unitframe.units, E.db.unitframe.layouts[specToCopy])
-		E.db.unitframe.layouts = nil;
-	end
 
-	
 	ElvUF:RegisterStyle('ElvUF', function(frame, unit)
 		self:Construct_UF(frame, unit)
 	end)
@@ -604,7 +606,7 @@ function UF:Initialize()
 			UnitPopupMenus["PET"] = { "PET_PAPERDOLL", "PET_RENAME", "PET_ABANDON", "CANCEL" };
 		end
 		
-		self:RegisterEvent('GROUP_ROSTER_UPDATE', 'DisableBlizzard')
+		self:RegisterEvent('RAID_ROSTER_UPDATE', 'DisableBlizzard')
 	end
 		
 	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs
@@ -618,6 +620,16 @@ function UF:ResetUnitSettings(unit)
 	E:CopyTable(self.db['units'][unit], P['unitframe']['units'][unit]); 
 	
 	self:Update_AllFrames()
+end
+
+function UF:ToggleForceShowGroupFrames(unitGroup, numGroup)
+	for i=1, numGroup do
+		if self[unitGroup..i] and not self[unitGroup..i].isForced then
+			UF:ForceShow(self[unitGroup..i])
+		elseif self[unitGroup..i] then
+			UF:UnforceShow(self[unitGroup..i])
+		end
+	end
 end
 
 local ignoreSettings = {

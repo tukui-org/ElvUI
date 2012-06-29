@@ -5,6 +5,7 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
+local BossHeader = CreateFrame('Frame', 'BossHeader', UIParent)
 function UF:Construct_BossFrames(frame)	
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
 	
@@ -23,6 +24,9 @@ function UF:Construct_BossFrames(frame)
 	frame.AltPowerBar = self:Construct_AltPowerBar(frame)
 	
 	frame:SetAttribute("type2", "focus")
+	
+	BossHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165) 
+	E:CreateMover(BossHeader, BossHeader:GetName()..'Mover', 'Boss Frames')
 end
 
 function UF:Update_BossFrames(frame, db)
@@ -260,11 +264,12 @@ function UF:Update_BossFrames(frame, db)
 		else
 			buffs:SetWidth(UNIT_WIDTH)
 		end
-
+		
+		buffs.forceShow = frame.forceShowAuras
 		buffs.num = db.buffs.perrow * rows
 		buffs.size = db.buffs.sizeOverride ~= 0 and db.buffs.sizeOverride or ((((buffs:GetWidth() - (buffs.spacing*(buffs.num/rows - 1))) / buffs.num)) * rows)
 		
-		if db.buffs.sizeOverride then
+		if db.buffs.sizeOverride and db.buffs.sizeOverride > 0 then
 			buffs:SetWidth(db.buffs.perrow * db.buffs.sizeOverride)
 		end
 		
@@ -295,15 +300,16 @@ function UF:Update_BossFrames(frame, db)
 			debuffs:SetWidth(UNIT_WIDTH)
 		end
 
+		debuffs.forceShow = frame.forceShowAuras
 		debuffs.num = db.debuffs.perrow * rows
 		debuffs.size = db.debuffs.sizeOverride ~= 0 and db.debuffs.sizeOverride or ((((debuffs:GetWidth() - (debuffs.spacing*(debuffs.num/rows - 1))) / debuffs.num)) * rows)
 		
-		if db.debuffs.sizeOverride then
+		if db.debuffs.sizeOverride and db.debuffs.sizeOverride > 0 then
 			debuffs:SetWidth(db.debuffs.perrow * db.debuffs.sizeOverride)
 		end
 		
 		local x, y = self:GetAuraOffset(db.debuffs.initialAnchor, db.debuffs.anchorPoint)
-		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo)
+		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.buffs.attachTo == 'DEBUFFS' and db.debuffs.attachTo == 'BUFFS')
 
 		debuffs:Point(db.debuffs.initialAnchor, attachTo, db.debuffs.anchorPoint, x, y)
 		debuffs:Height(debuffs.size * rows)
@@ -321,7 +327,7 @@ function UF:Update_BossFrames(frame, db)
 	--Castbar
 	do
 		local castbar = frame.Castbar
-		castbar:Width(db.castbar.width - 3)
+		castbar:Width(db.castbar.width - 4)
 		castbar:Height(db.castbar.height)
 		
 		--Icon
@@ -356,51 +362,59 @@ function UF:Update_BossFrames(frame, db)
 	--AltPowerBar
 	do
 		local altpower = frame.AltPowerBar
-		altpower:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, SPACING+BORDER)
-		if not USE_PORTRAIT_OVERLAY then
-			altpower:Point("TOPRIGHT", frame, "TOPRIGHT", -(PORTRAIT_WIDTH+BORDER), -BORDER)	
-		else
-			altpower:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)		
-		end
-		altpower.Smooth = self.db.smoothbars
 		
-		altpower:HookScript("OnShow", function() 			
+		if USE_POWERBAR then
+			frame:EnableElement('AltPowerBar')
+			altpower.text:SetAlpha(1)
+			altpower:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, SPACING+BORDER)
 			if not USE_PORTRAIT_OVERLAY then
-				frame.Health:Point("TOPRIGHT", -(PORTRAIT_WIDTH+BORDER), -(POWERBAR_HEIGHT + BORDER))		
+				altpower:Point("TOPRIGHT", frame, "TOPRIGHT", -(PORTRAIT_WIDTH+BORDER), -BORDER)	
 			else
-				frame.Health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -(POWERBAR_HEIGHT + BORDER))
-			end			
-		end)
-		
-		altpower:HookScript("OnHide", function() 
-			if not USE_PORTRAIT_OVERLAY then
-				frame.Health:Point("TOPRIGHT", -(PORTRAIT_WIDTH+BORDER), -BORDER)		
-			else
-				frame.Health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)
+				altpower:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)		
 			end
-			altpower.text:SetText("")
-		end)		
-	end
-	
-	
-	frame.snapOffset = -(12 + db.castbar.height)
-	
-	if not frame.mover then
-		frame:ClearAllPoints()	
-		if INDEX == 1 then
-			frame:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165) --Set to default position
+			altpower.Smooth = self.db.smoothbars
+			
+			altpower:HookScript("OnShow", function() 			
+				if not USE_PORTRAIT_OVERLAY then
+					frame.Health:Point("TOPRIGHT", -(PORTRAIT_WIDTH+BORDER), -(POWERBAR_HEIGHT + BORDER))		
+				else
+					frame.Health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -(POWERBAR_HEIGHT + BORDER))
+				end			
+			end)
+			
+			altpower:HookScript("OnHide", function() 
+				if not USE_PORTRAIT_OVERLAY then
+					frame.Health:Point("TOPRIGHT", -(PORTRAIT_WIDTH+BORDER), -BORDER)		
+				else
+					frame.Health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)
+				end
+				altpower.text:SetText("")
+			end)			
 		else
-			if db.growthDirection == 'UP' then
-				frame:Point('BOTTOMRIGHT', _G['ElvUF_Boss'..INDEX-1], 'TOPRIGHT', 0, 12 + db.castbar.height)
-			else
-				frame:Point('TOPRIGHT', _G['ElvUF_Boss'..INDEX-1], 'BOTTOMRIGHT', 0, -(12 + db.castbar.height))
-			end
+			frame:DisableElement('AltPowerBar')
+			altpower.text:SetAlpha(0)
+			altpower:Hide()
 		end
 	end
+
+	frame:ClearAllPoints()
+	if INDEX == 1 then
+		if db.growthDirection == 'UP' then
+			frame:Point('BOTTOMRIGHT', BossHeaderMover, 'BOTTOMRIGHT') --Set to default position
+		else
+			frame:Point('TOPRIGHT', BossHeaderMover, 'TOPRIGHT') --Set to default position
+		end
+	else
+		if db.growthDirection == 'UP' then
+			frame:Point('BOTTOMRIGHT', _G['ElvUF_Boss'..INDEX-1], 'TOPRIGHT', 0, 12 + db.castbar.height)
+		else
+			frame:Point('TOPRIGHT', _G['ElvUF_Boss'..INDEX-1], 'BOTTOMRIGHT', 0, -(12 + db.castbar.height))
+		end
+	end	
+
+	BossHeader:Width(UNIT_WIDTH)
+	BossHeader:Height(UNIT_HEIGHT + (UNIT_HEIGHT + 12 + db.castbar.height) * 3)
 	
-	--[[frame:Show()
-	frame.Hide = frame.Show
-	frame.unit = 'player']]
 	frame:UpdateAllElements()
 end
 

@@ -11,7 +11,7 @@ local inactiveString = string.join("", "|cffFF0000", FACTION_INACTIVE, "|r")
 local function LoadTalentTrees()
 	for i = 1, GetNumTalentGroups(false, false) do
 		talent[i] = {}
-		for j = 1, GetNumSpecializations(false, false) do
+		for j = 1, GetNumTalentTabs(false, false) do
 			talent[i][j] = select(5, GetTalentTabInfo(j, false, false, i))
 		end
 	end

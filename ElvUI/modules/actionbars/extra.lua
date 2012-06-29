@@ -9,7 +9,7 @@ function AB:SetupExtraButton()
 	ExtraActionBarFrame:SetParent(holder)
 	ExtraActionBarFrame:ClearAllPoints()
 	ExtraActionBarFrame:SetPoint('CENTER', holder, 'CENTER')
-	
+		
 	ExtraActionBarFrame.ignoreFramePositionManager  = true
 
 	--[[ExtraActionBarFrame:Show(); ExtraActionBarFrame:SetAlpha(1); ExtraActionBarFrame.Hide = ExtraActionBarFrame.Show; ExtraActionBarFrame.SetAlpha = E.noop
@@ -22,5 +22,5 @@ function AB:SetupExtraButton()
 		end
 	end
 	
-	self:CreateMover(holder, 'BossButton', 'BossButton');
+	E:CreateMover(holder, 'BossButton', 'Boss Button');
 end

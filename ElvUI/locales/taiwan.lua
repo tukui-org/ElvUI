@@ -559,8 +559,8 @@ do
 	L['Move UnitFrames'] = "移動單位框架";
 	L['Reset Positions'] = "重設位置";
 	L['Sticky Frames'] = "框架依附";
-	L['Raid625 Frames'] = "25 人團隊";
-	L['Raid2640 Frames'] = "40 人團隊";
+	L['Raid25 Frames'] = "25 人團隊";
+	L['Raid40 Frames'] = "40 人團隊";
 	L['Copy From'] = "複製來源";
 	L['Select a unit to copy settings from.'] = "選擇欲複製設定的來源單位。";
 	L['You cannot copy settings from the same unit.'] = "你無法從相同單位複製設定。";

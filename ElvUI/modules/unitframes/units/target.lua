@@ -29,6 +29,9 @@ function UF:Construct_TargetFrame(frame)
 	frame.CPoints = self:Construct_Combobar(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
+	
+	frame:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOM', 417, 75)
+	E:CreateMover(frame, frame:GetName()..'Mover', 'Target Frame')
 end
 
 function UF:Update_TargetFrame(frame, db)
@@ -58,7 +61,8 @@ function UF:Update_TargetFrame(frame, db)
 	
 	frame.colors = ElvUF.colors
 	frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
-		
+	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
+	
 	--Adjust some variables
 	do
 		if not USE_POWERBAR then
@@ -286,10 +290,11 @@ function UF:Update_TargetFrame(frame, db)
 			buffs:SetWidth(UNIT_WIDTH)
 		end
 
+		buffs.forceShow = frame.forceShowAuras
 		buffs.num = db.buffs.perrow * rows
 		buffs.size = db.buffs.sizeOverride ~= 0 and db.buffs.sizeOverride or ((((buffs:GetWidth() - (buffs.spacing*(buffs.num/rows - 1))) / buffs.num)) * rows)
 		
-		if db.buffs.sizeOverride then
+		if db.buffs.sizeOverride and db.buffs.sizeOverride > 0 then
 			buffs:SetWidth(db.buffs.perrow * db.buffs.sizeOverride)
 		end
 		
@@ -320,15 +325,16 @@ function UF:Update_TargetFrame(frame, db)
 			debuffs:SetWidth(UNIT_WIDTH)
 		end
 
+		debuffs.forceShow = frame.forceShowAuras
 		debuffs.num = db.debuffs.perrow * rows
 		debuffs.size = db.debuffs.sizeOverride ~= 0 and db.debuffs.sizeOverride or ((((debuffs:GetWidth() - (debuffs.spacing*(debuffs.num/rows - 1))) / debuffs.num)) * rows)
 		
-		if db.debuffs.sizeOverride then
+		if db.debuffs.sizeOverride and db.debuffs.sizeOverride > 0 then
 			debuffs:SetWidth(db.debuffs.perrow * db.debuffs.sizeOverride)
 		end
 		
 		local x, y = self:GetAuraOffset(db.debuffs.initialAnchor, db.debuffs.anchorPoint)
-		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo)
+		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.buffs.attachTo == 'DEBUFFS' and db.debuffs.attachTo == 'BUFFS')
 
 		debuffs:Point(db.debuffs.initialAnchor, attachTo, db.debuffs.anchorPoint, x, y)
 		debuffs:Height(debuffs.size * rows)
@@ -346,7 +352,7 @@ function UF:Update_TargetFrame(frame, db)
 	--Castbar
 	do
 		local castbar = frame.Castbar
-		castbar:Width(db.castbar.width - 3)
+		castbar:Width(db.castbar.width - 4)
 		castbar:Height(db.castbar.height)
 		
 		--Icon
@@ -481,13 +487,7 @@ function UF:Update_TargetFrame(frame, db)
 		end
 	end	
 	
-	frame.snapOffset = -(12 + db.castbar.height)
-	
-	if not frame.mover then
-		frame:ClearAllPoints()
-		frame:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOM', 417, 75) --Set to default position
-	end
-	
+	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))
 	frame:UpdateAllElements()
 end
 

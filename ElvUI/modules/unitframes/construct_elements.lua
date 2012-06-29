@@ -190,7 +190,7 @@ function UF:Construct_Castbar(self, direction)
 	castbar.PostChannelStart = UF.PostCastStart		
 	castbar.PostCastInterruptible = UF.PostCastInterruptible
 	castbar.PostCastNotInterruptible = UF.PostCastNotInterruptible
-	
+	castbar:SetClampedToScreen(true)
 	castbar:CreateBackdrop('Default')
 	
 	castbar.Time = castbar:CreateFontString(nil, 'OVERLAY')	
@@ -204,7 +204,7 @@ function UF:Construct_Castbar(self, direction)
 	castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 0)
 	castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 	
-	castbar.Spark = castbar:CreateTexture(nil, 'ARTWORK')
+	castbar.Spark = castbar:CreateTexture(nil, 'OVERLAY')
 	castbar.Spark:SetBlendMode('ADD')
 	castbar.Spark:SetVertexColor(1, 1, 1)
 
@@ -576,12 +576,14 @@ function UF:Construct_HealComm(frame)
 	mhpb:SetStatusBarTexture(E["media"].blankTex)
 	mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
 	mhpb:SetFrameLevel(frame.Health:GetFrameLevel() - 2)
+	mhpb:Hide()
 	
 	local ohpb = CreateFrame('StatusBar', nil, frame)
 	ohpb:SetStatusBarTexture(E["media"].blankTex)
 	ohpb:SetStatusBarColor(0, 1, 0, 0.25)
 	mhpb:SetFrameLevel(mhpb:GetFrameLevel())	
-
+	ohpb:Hide()
+	
 	if frame.Health then
 		ohpb:SetParent(frame.Health)
 		mhpb:SetParent(frame.Health)
@@ -596,4 +598,19 @@ function UF:Construct_HealComm(frame)
 			if self.otherBar:GetValue() == 0 then self.otherBar:SetAlpha(0) else self.otherBar:SetAlpha(1) end
 		end
 	}
+end
+
+function UF:Construct_RaidRoleFrames(frame)
+	local anchor = CreateFrame('Frame', nil, frame)
+	frame.Leader = anchor:CreateTexture(nil, 'OVERLAY')
+	frame.MasterLooter = anchor:CreateTexture(nil, 'OVERLAY')
+	
+	anchor:Size(24, 12)
+	frame.Leader:Size(12)
+	frame.MasterLooter:Size(11)
+	
+	frame.Leader.PostUpdate = UF.RaidRoleUpdate
+	frame.MasterLooter.PostUpdate = UF.RaidRoleUpdate
+	
+	return anchor
 end

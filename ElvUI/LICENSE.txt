@@ -4,7 +4,7 @@ ElvUI License
 	The contents of this addon, excluding third-party resources, are
 	copyrighted to their authors with all rights reserved.
 
-	Authors of this addon hereby grants you the following rights:
+	The author of this addon hereby grants you the following rights:
 
 	1. 	You may make modifications to this addon for private use only, you 
 		must have the authors express written consent to publicize any portion 

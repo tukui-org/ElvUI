@@ -16,7 +16,8 @@ local function LoadSkin()
 	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()
 	end
-
+	
+	VoidStoragePurchaseFrame:SetFrameStrata('DIALOG')
 	VoidStorageFrame:SetTemplate("Transparent")
 	VoidStoragePurchaseFrame:SetTemplate("Default")
 	VoidStorageFrameMarbleBg:Kill()

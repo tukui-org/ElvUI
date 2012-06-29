@@ -1,11 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
-
-
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
+
+local ArenaHeader = CreateFrame('Frame', 'ArenaHeader', UIParent)
 
 function UF:Construct_ArenaFrames(frame)	
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
@@ -23,6 +23,9 @@ function UF:Construct_ArenaFrames(frame)
 	frame.Trinket = self:Construct_Trinket(frame)
 	
 	frame:SetAttribute("type2", "focus")
+	
+	ArenaHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165) 
+	E:CreateMover(ArenaHeader, ArenaHeader:GetName()..'Mover', 'Arena Frames')	
 end
 
 function UF:Update_ArenaFrames(frame, db)
@@ -206,10 +209,11 @@ function UF:Update_ArenaFrames(frame, db)
 			buffs:SetWidth(UNIT_WIDTH)
 		end
 
+		buffs.forceShow = frame.forceShowAuras
 		buffs.num = db.buffs.perrow * rows
 		buffs.size = db.buffs.sizeOverride ~= 0 and db.buffs.sizeOverride or ((((buffs:GetWidth() - (buffs.spacing*(buffs.num/rows - 1))) / buffs.num)) * rows)
 		
-		if db.buffs.sizeOverride then
+		if db.buffs.sizeOverride and db.buffs.sizeOverride > 0 then
 			buffs:SetWidth(db.buffs.perrow * db.buffs.sizeOverride)
 		end
 		
@@ -240,15 +244,16 @@ function UF:Update_ArenaFrames(frame, db)
 			debuffs:SetWidth(UNIT_WIDTH)
 		end
 
+		debuffs.forceShow = frame.forceShowAuras
 		debuffs.num = db.debuffs.perrow * rows
 		debuffs.size = db.debuffs.sizeOverride ~= 0 and db.debuffs.sizeOverride or ((((debuffs:GetWidth() - (debuffs.spacing*(debuffs.num/rows - 1))) / debuffs.num)) * rows)
 		
-		if db.debuffs.sizeOverride then
+		if db.debuffs.sizeOverride and db.debuffs.sizeOverride > 0 then
 			debuffs:SetWidth(db.debuffs.perrow * db.debuffs.sizeOverride)
 		end
 		
 		local x, y = self:GetAuraOffset(db.debuffs.initialAnchor, db.debuffs.anchorPoint)
-		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo)
+		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.buffs.attachTo == 'DEBUFFS' and db.debuffs.attachTo == 'BUFFS')
 
 		debuffs:Point(db.debuffs.initialAnchor, attachTo, db.debuffs.anchorPoint, x, y)
 		debuffs:Height(debuffs.size * rows)
@@ -266,7 +271,7 @@ function UF:Update_ArenaFrames(frame, db)
 	--Castbar
 	do
 		local castbar = frame.Castbar
-		castbar:Width(db.castbar.width - 3)
+		castbar:Width(db.castbar.width - 4)
 		castbar:Height(db.castbar.height)
 		
 		--Icon
@@ -308,24 +313,25 @@ function UF:Update_ArenaFrames(frame, db)
 		end
 	end
 	
-	frame.snapOffset = -(12 + db.castbar.height)
-	
-	if not frame.mover then
-		frame:ClearAllPoints()
-		if INDEX == 1 then
-			frame:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165) --Set to default position
+
+	frame:ClearAllPoints()
+	if INDEX == 1 then
+		if db.growthDirection == 'UP' then
+			frame:Point('BOTTOMRIGHT', ArenaHeaderMover, 'BOTTOMRIGHT') --Set to default position
 		else
-			if db.growthDirection == 'UP' then
-				frame:Point('BOTTOMRIGHT', _G['ElvUF_Arena'..INDEX-1], 'TOPRIGHT', 0, 12 + db.castbar.height)
-			else
-				frame:Point('TOPRIGHT', _G['ElvUF_Arena'..INDEX-1], 'BOTTOMRIGHT', 0, -(12 + db.castbar.height))
-			end
+			frame:Point('TOPRIGHT', ArenaHeaderMover, 'TOPRIGHT') --Set to default position
 		end
-	end
+	else
+		if db.growthDirection == 'UP' then
+			frame:Point('BOTTOMRIGHT', _G['ElvUF_Arena'..INDEX-1], 'TOPRIGHT', 0, 12 + db.castbar.height)
+		else
+			frame:Point('TOPRIGHT', _G['ElvUF_Arena'..INDEX-1], 'BOTTOMRIGHT', 0, -(12 + db.castbar.height))
+		end
+	end	
+
+	ArenaHeader:Width(UNIT_WIDTH)
+	ArenaHeader:Height(UNIT_HEIGHT + (UNIT_HEIGHT + 12 + db.castbar.height) * 4)
 	
-	--[[frame:Show()
-	frame.Hide = frame.Show
-	frame.unit = 'player']]
 	frame:UpdateAllElements()
 end
 

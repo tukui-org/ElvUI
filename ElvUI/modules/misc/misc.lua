@@ -16,19 +16,19 @@ function M:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, _, sourceGUID, _, _, _, _, d
 	if not (event == "SPELL_INTERRUPT" and sourceGUID == UnitGUID('player')) then return end
 	
 	if E.db.general.interruptAnnounce == "PARTY" then
-		if IsInGroup() then
+		if GetRealNumPartyMembers() > 0 then
 			SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", "PARTY", nil, nil)
 		end
 	elseif E.db.general.interruptAnnounce == "RAID" then
-		if IsInRaid() then
+		if GetRealNumRaidMembers() > 0 then
 			SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", "RAID", nil, nil)		
-		elseif IsInGroup() then
+		elseif GetRealNumPartyMembers() > 0 then
 			SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", "PARTY", nil, nil)
 		end	
 	elseif E.db.general.interruptAnnounce == "SAY" then
-		if IsInRaid() then
+		if GetRealNumRaidMembers() > 0 then
 			SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", "SAY", nil, nil)		
-		elseif IsInGroup() then
+		elseif GetRealNumPartyMembers() > 0 then
 			SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", "SAY", nil, nil)
 		end		
 	end
@@ -68,7 +68,7 @@ function M:DisbandRaidGroup()
 	if InCombatLockdown() then return end -- Prevent user error in combat
 
 	if UnitInRaid("player") then
-		for i = 1, GetNumGroupMembers() do
+		for i = 1, GetNumRaidMembers() do
 			local name, _, _, _, _, _, _, online = GetRaidRosterInfo(i)
 			if online and name ~= E.myname then
 				UninviteUnit(name)
@@ -108,7 +108,7 @@ function M:AutoInvite(event, leaderName)
 
 	if event == "PARTY_INVITE_REQUEST" then
 		if MiniMapLFGFrame:IsShown() then return end -- Prevent losing que inside LFD if someone invites you to group
-		if GetNumGroupMembers(LE_PARTY_CATEGORY_HOME) > 0 or GetNumGroupMembers() > 0 then return end
+		if GetNumPartyMembers() > 0 or GetNumRaidMembers() > 0 then return end
 		hideStatic = true
 	
 		-- Update Guild and Friendlist
@@ -146,7 +146,7 @@ function M:AutoInvite(event, leaderName)
 				end
 			end
 		end
-	elseif event == "GROUP_ROSTER_UPDATE" and hideStatic == true then
+	elseif event == "PARTY_MEMBERS_CHANGED" and hideStatic == true then
 		StaticPopup_Hide("PARTY_INVITE")
 		hideStatic = false
 	end
@@ -182,7 +182,7 @@ function M:Initialize()
 	self:RegisterEvent('CHAT_MSG_BG_SYSTEM_ALLIANCE', 'PVPMessageEnhancement')
 	self:RegisterEvent('CHAT_MSG_BG_SYSTEM_NEUTRAL', 'PVPMessageEnhancement')
 	self:RegisterEvent('PARTY_INVITE_REQUEST', 'AutoInvite')
-	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'AutoInvite')
+	self:RegisterEvent('PARTY_MEMBERS_CHANGED', 'AutoInvite')
 	self:RegisterEvent('CVAR_UPDATE', 'ForceCVars')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	

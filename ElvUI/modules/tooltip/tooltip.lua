@@ -330,10 +330,10 @@ for class, color in next, RAID_CLASS_COLORS do
 end
 
 function TT:AddTargetedBy()
-	local numParty = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME)
-	if (numParty > 0 or IsInRaid()) then
-		for i = 1, GetNumGroupMembers() do
-			local unit = (IsInRaid() and "raid"..i or "party"..i);
+	local numParty, numRaid = GetNumPartyMembers(), GetNumRaidMembers();
+	if (numParty > 0 or numRaid > 0) then
+		for i = 1, (numRaid > 0 and numRaid or numParty) do
+			local unit = (numRaid > 0 and "raid"..i or "party"..i);
 			if (UnitIsUnit(unit.."target",token)) and (not UnitIsUnit(unit,"player")) then
 				local _, class = UnitClass(unit);
 				targetedList[#targetedList + 1] = ClassColors[class];

@@ -66,7 +66,7 @@ local function BuildGuildTable()
 end
 
 local function UpdateGuildXP()
-	local currentXP, remainingXP = UnitGetGuildXP("player")
+	local currentXP, remainingXP, dailyXP, maxDailyXP = UnitGetGuildXP("player")
 	local nextLevelXP = currentXP + remainingXP
 	local percentTotal
 	if currentXP > 0 then
@@ -75,7 +75,13 @@ local function UpdateGuildXP()
 		percentTotal = 0
 	end
 	
+	local percentDaily = 0
+	if maxDailyXP > 0 then
+		percentDaily = ceil((dailyXP / maxDailyXP) * 100)
+	end
+	
 	guildXP[0] = { currentXP, nextLevelXP, percentTotal }
+	guildXP[1] = { dailyXP, maxDailyXP, percentDaily }
 end
 
 local function UpdateGuildMessage()
@@ -199,11 +205,13 @@ local function OnEnter(self)
 	
 	local col = E:RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b)
 	if GetGuildLevel() ~= 25 then
-		if guildXP[0] then
+		if guildXP[0] and guildXP[1] then
 			local currentXP, nextLevelXP, percentTotal = unpack(guildXP[0])
+			local dailyXP, maxDailyXP, percentDaily = unpack(guildXP[1])
 			
 			GameTooltip:AddLine(' ')
 			GameTooltip:AddLine(format(guildXpCurrentString, E:ShortValue(currentXP), E:ShortValue(nextLevelXP), percentTotal))
+			GameTooltip:AddLine(format(guildXpDailyString, E:ShortValue(dailyXP), E:ShortValue(maxDailyXP), percentDaily))
 		end
 	end
 	

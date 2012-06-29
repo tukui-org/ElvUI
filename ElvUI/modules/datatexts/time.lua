@@ -94,7 +94,7 @@ end
 
 local function formatResetTime(sec)
 	local d,h,m,s = ChatFrame_TimeBreakDown(floor(sec))
-	if not d or not h or not m or not s then
+	if not type(d) == 'number' or not type(h)== 'number' or not type(m) == 'number' or not type(s) == 'number' then
 		return 'N/A'
 	end
 	

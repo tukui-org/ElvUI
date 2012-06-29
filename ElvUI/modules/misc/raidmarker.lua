@@ -7,7 +7,7 @@ local ButtonIsDown;
 function M:RaidMarkCanMark()
 	if not self.RaidMarkFrame then return false; end
 	
-	if GetNumGroupMembers() > 0 then
+	if GetNumRaidMembers() > 0 then
 		if IsRaidLeader() or IsRaidOfficer() then
 			return true;
 		else

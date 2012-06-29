@@ -99,7 +99,7 @@ local Update = function(self, event)
 end
 
 local function UpdateAllRuneTypes(self)
-	if GetSpecialization() == nil then return; end
+	if GetPrimaryTalentTree() == nil then return; end
 	local runes = self:GetParent()
 	if(runes) then
 		for i=1, 6 do

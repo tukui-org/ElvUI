@@ -94,7 +94,7 @@ local function LoadSkin()
 			 tal=1
 			 tab=tab+1
 		  end
-		  if tab<=GetNumSpecializations(inspect,pet) then
+		  if tab<=GetNumTalentTabs(inspect,pet) then
 			 return tab,tal
 		  end
 	   end

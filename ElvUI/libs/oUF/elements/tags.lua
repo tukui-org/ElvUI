@@ -238,7 +238,7 @@ local tagStrings = {
 			name = string.format("%s-%s", name, server)
 		end
 
-		for i=1, GetNumGroupMembers() do
+		for i=1, GetNumRaidMembers() do
 			local raidName, _, group = GetRaidRosterInfo(i)
 			if( raidName == name ) then
 				return group
@@ -352,7 +352,7 @@ local tagEvents = {
 	['rare']                = 'UNIT_CLASSIFICATION_CHANGED',
 	['classification']      = 'UNIT_CLASSIFICATION_CHANGED',
 	['shortclassification'] = 'UNIT_CLASSIFICATION_CHANGED',
-	["group"]               = "GROUP_ROSTER_UPDATE",
+	["group"]               = "RAID_ROSTER_UPDATE",
 	["curpp"]               = 'UNIT_POWER',
 	["maxpp"]               = 'UNIT_MAXPOWER',
 	["missingpp"]           = 'UNIT_MAXPOWER UNIT_POWER',
@@ -373,7 +373,7 @@ local unitlessEvents = {
 
 	PARTY_LEADER_CHANGED = true,
 
-	GROUP_ROSTER_UPDATE = true,
+	RAID_ROSTER_UPDATE = true,
 
 	UNIT_COMBO_POINTS = true
 }

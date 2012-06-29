@@ -431,8 +431,12 @@ function B:BagSlotUpdate(bag)
 end
 
 function B:Bags_OnShow()
-	B:PLAYERBANKSLOTS_CHANGED(29)
+	B:PLAYERBANKSLOTS_CHANGED()
 	B:Layout()
+	
+	for _, x in ipairs(BAGS_BACKPACK) do
+		B:BagSlotUpdate(x)
+	end	
 end
 
 function B:Bags_OnHide()
@@ -862,10 +866,7 @@ function B:BAG_CLOSED(event, id)
 		end
 	end
 
-	if bagFrame:IsShown() then
-		ToggleFrame(bagFrame)
-		ToggleFrame(bagFrame)
-	end
+	bagFrame:Hide()
 end
 
 function B:CloseBags()
@@ -1449,8 +1450,8 @@ hooksecurefunc("updateContainerFrameAnchors", function()
 end)
 
 function B:PLAYERBANKBAGSLOTS_CHANGED()
-	B:PLAYERBANKSLOTS_CHANGED(29)
 	B:Layout(true)
+	B:PLAYERBANKSLOTS_CHANGED()
 end
 
 function B:INVENTORY_SEARCH_UPDATE()
@@ -1496,9 +1497,6 @@ function B:Initialize()
 	self:RawHook('OpenBackpack', 'OpenBags', true)
 	self:RawHook('CloseAllBags', 'CloseBags', true)
 	self:RawHook('CloseBackpack', 'CloseBags', true)
-
-	--UIPARENT_MANAGED_FRAME_POSITIONS["CONTAINER_OFFSET_X"] = nil;
-	--UIPARENT_MANAGED_FRAME_POSITIONS["CONTAINER_OFFSET_Y"] = nil;
 
 	--Stop Blizzard bank bags from functioning.
 	BankFrame:UnregisterAllEvents()

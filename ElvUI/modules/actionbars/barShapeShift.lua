@@ -22,46 +22,47 @@ function AB:StyleShapeShift()
 	local buttonName, button, icon, cooldown;
 	local start, duration, enable;
 	
-	for i = 1, numForms do
-		buttonName = "StanceButton"..i;
+	for i = 1, NUM_SHAPESHIFT_SLOTS do
+		buttonName = "ShapeshiftButton"..i;
 		button = _G[buttonName];
 		icon = _G[buttonName.."Icon"];
 		cooldown = _G[buttonName.."Cooldown"];
-
-		texture, name, isActive, isCastable = GetShapeshiftFormInfo(i);
-		icon:SetTexture(texture);
 		
-		if texture then
-			cooldown:SetAlpha(1);
-		else
-			cooldown:SetAlpha(0);
-		end
-		
-		start, duration, enable = GetShapeshiftFormCooldown(i);
-		CooldownFrame_SetTimer(cooldown, start, duration, enable);
-		
-		if isActive then
-			StanceBarFrame.lastSelected = button:GetID();
-			button:SetChecked(1);
-		else
-			button:SetChecked(0);
-		end
+		if i <= numForms then
+			texture, name, isActive, isCastable = GetShapeshiftFormInfo(i);
+			icon:SetTexture(texture);
+			
+			if texture then
+				cooldown:SetAlpha(1);
+			else
+				cooldown:SetAlpha(0);
+			end
+			
+			start, duration, enable = GetShapeshiftFormCooldown(i);
+			CooldownFrame_SetTimer(cooldown, start, duration, enable);
+			
+			if isActive then
+				ShapeshiftBarFrame.lastSelected = button:GetID();
+				button:SetChecked(1);
+			else
+				button:SetChecked(0);
+			end
 
-		if isCastable then
-			icon:SetVertexColor(1.0, 1.0, 1.0);
-		else
-			icon:SetVertexColor(0.4, 0.4, 0.4);
+			if isCastable then
+				icon:SetVertexColor(1.0, 1.0, 1.0);
+			else
+				icon:SetVertexColor(0.4, 0.4, 0.4);
+			end
 		end
-
 	end
 end
 
-function AB:AdjustMaxStanceButtons()
+function AB:AdjustMaxShapeShiftButtons()
 	if InCombatLockdown() then return; end
 	
 	local button;
-	for i = 1, GetNumShapeshiftForms() do
-		button = _G["StanceButton"..i];
+	for i = 1, NUM_SHAPESHIFT_SLOTS do
+		button = _G["ShapeshiftButton"..i];
 		local _, name = GetShapeshiftFormInfo(i);
 		if name then
 			button:Show();
@@ -82,6 +83,7 @@ function AB:PositionAndSizeBarShapeShift()
 	local widthMult = self.db['barShapeShift'].widthMult;
 	local heightMult = self.db['barShapeShift'].heightMult;
 	bar.db = self.db['barShapeShift']
+	bar.db.position = nil; --Depreciated
 	if bar.LastButton and numButtons > bar.LastButton then	
 		numButtons = bar.LastButton;
 	end
@@ -101,8 +103,6 @@ function AB:PositionAndSizeBarShapeShift()
 
 	bar:SetWidth(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
 	bar:SetHeight(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
-	bar.mover:SetWidth(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
-	bar.mover:SetHeight(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
 	bar.mouseover = self.db['barShapeShift'].mouseover
 	if self.db['barShapeShift'].enabled then
 		bar:SetScale(1);
@@ -117,6 +117,10 @@ function AB:PositionAndSizeBarShapeShift()
 	else
 		bar.backdrop:Hide();
 	end
+	
+	bar.backdrop:SetParent(ShapeshiftButton1)
+	bar.backdrop:SetFrameStrata('BACKGROUND')
+	bar.backdrop:SetFrameLevel(ShapeshiftButton1:GetFrameLevel() - 1)
 	
 	local horizontalGrowth, verticalGrowth;
 	if point == "TOPLEFT" or point == "TOPRIGHT" then
@@ -133,10 +137,10 @@ function AB:PositionAndSizeBarShapeShift()
 	
 	local button, lastButton, lastColumnButton;
 	local possibleButtons = {};
-	for i=1, GetNumShapeshiftForms() do
-		button = _G["StanceButton"..i];
-		lastButton = _G["StanceButton"..i-1];
-		lastColumnButton = _G["StanceButton"..i-buttonsPerRow];
+	for i=1, NUM_SHAPESHIFT_SLOTS do
+		button = _G["ShapeshiftButton"..i];
+		lastButton = _G["ShapeshiftButton"..i-1];
+		lastColumnButton = _G["ShapeshiftButton"..i-buttonsPerRow];
 		button:SetParent(bar);
 		button:ClearAllPoints();
 		button:Size(size);
@@ -210,7 +214,7 @@ function AB:PositionAndSizeBarShapeShift()
 			button:SetScale(1);
 			button:SetAlpha(1);
 		end
-				
+		
 		self:StyleButton(button);
 		self:StyleShapeShift();
 	end
@@ -230,17 +234,14 @@ function AB:CreateBarShapeShift()
 		end	
 	]]);
 
-	self:RegisterEvent('UPDATE_SHAPESHIFT_FORMS', 'AdjustMaxStanceButtons');
+	self:RegisterEvent('UPDATE_SHAPESHIFT_FORMS', 'AdjustMaxShapeShiftButtons');
 	self:RegisterEvent('UPDATE_SHAPESHIFT_USABLE', 'StyleShapeShift');
 	self:RegisterEvent('UPDATE_SHAPESHIFT_COOLDOWN', 'StyleShapeShift');
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', 'StyleShapeShift');
 	self:RegisterEvent('ACTIONBAR_PAGE_CHANGED', 'StyleShapeShift');
 	
-	StanceBarFrame:ClearAllPoints()
-	StanceBarFrame:SetAllPoints(bar)
-	
-	self:CreateMover(bar, 'ShiftAB', 'barShapeShift', -3);
-	self:AdjustMaxStanceButtons();
+	E:CreateMover(bar, 'ShiftAB', 'Stance Bar', nil, -3);
+	self:AdjustMaxShapeShiftButtons();
 	self:PositionAndSizeBarShapeShift();
 	RegisterStateDriver(bar, "show", states[E.myclass] or "hide");
 end

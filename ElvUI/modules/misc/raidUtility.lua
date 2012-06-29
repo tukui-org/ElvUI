@@ -8,7 +8,7 @@ local PANEL_HEIGHT = 125
 --Check if We are Raid Leader or Raid Officer
 local function CheckRaidStatus()
 	local inInstance, instanceType = IsInInstance()
-	if ((GetNumGroupMembers(LE_PARTY_CATEGORY_HOME) > 0) and not IsInRaid() or UnitIsGroupLeader("player") or UnitIsGroupAssistant("player")) and not (inInstance and (instanceType == "pvp" or instanceType == "arena")) then
+	if ((GetNumPartyMembers() > 0 and not UnitInRaid("player")) or IsRaidLeader() or IsRaidOfficer()) and not (inInstance and (instanceType == "pvp" or instanceType == "arena")) then
 		return true
 	else
 		return false
@@ -227,8 +227,9 @@ function RU:Initialize()
 	end
 
 	--Automatically show/hide the frame if we have RaidLeader or RaidOfficer
+	self:RegisterEvent("RAID_ROSTER_UPDATE", 'ToggleRaidUtil')
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", 'ToggleRaidUtil')
-	self:RegisterEvent("GROUP_ROSTER_UPDATE", 'ToggleRaidUtil')
+	self:RegisterEvent("PARTY_MEMBERS_CHANGED", 'ToggleRaidUtil')
 end
 
 E:RegisterInitialModule(RU:GetName())

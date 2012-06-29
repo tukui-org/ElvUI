@@ -18,6 +18,8 @@ NP.RaidTargetReference = {
 	["SKULL"] = 0x00000080,
 }
 
+NP.GUIDIgnoreCast = {};
+
 local AURA_TYPE_BUFF = 1
 local AURA_TYPE_DEBUFF = 6
 local AURA_TARGET_HOSTILE = 1
@@ -367,9 +369,19 @@ function NP:UpdateAuraByLookup(guid)
 	end
 end
 
+function NP:InvalidCastCheck(frame)
+	if frame.guid and self.GUIDIgnoreCast[frame.guid] then
+		self.GUIDIgnoreCast[frame.guid] = nil;
+	end
+end
+
 function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 	local _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellid, spellName, _, auraType, stackCount  = ...
-
+	
+	if event == 'SPELL_AURA_APPLIED' or event == 'SPELL_HEAL' or event == 'SPELL_DAMAGE' or event == 'SPELL_MISS' then
+		self.GUIDIgnoreCast[sourceGUID] = spellName;
+	end
+	
 	if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" then
 		local duration = NP:GetSpellDuration(spellid)
 		local texture = GetSpellTexture(spellid)
@@ -382,10 +394,14 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 	elseif event == "SPELL_AURA_BROKEN" or event == "SPELL_AURA_BROKEN_SPELL" or event == "SPELL_AURA_REMOVED" then
 		NP:RemoveAuraInstance(destGUID, spellid, sourceGUID)
 	elseif event == "SPELL_CAST_START" then
-		local FoundPlate = nil;
-		-- Gather Spell Info
-
 		local spell, _, icon, _, _, _, castTime, _, _ = GetSpellInfo(spellid)
+		if self.GUIDIgnoreCast[sourceGUID] == spell then
+			self.GUIDIgnoreCast[sourceGUID] = nil;
+			return
+		end
+	
+		local FoundPlate = nil;
+
 		if not (castTime > 0) then return end		
 		if bit.band(sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) > 0 then 
 			if bit.band(sourceFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 then 
@@ -560,12 +576,12 @@ end
 
 function NP:UpdateRoster()
 	local groupType, groupSize, unitId, unitName
-	if IsInRaid() then 
+	if UnitInRaid("player") then 
 		groupType = "raid"
-		groupSize = GetNumGroupMembers() - 1
-	elseif IsInGroup() then 
+		groupSize = GetNumRaidMembers() - 1
+	elseif UnitInParty("player") then 
 		groupType = "party"
-		groupSize = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME) 
+		groupSize = GetNumPartyMembers() 
 	else 
 		groupType = "solo"
 		groupSize = 1

@@ -1,8 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
-
-
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
@@ -31,14 +29,14 @@ function UF:Construct_PlayerFrame(frame)
 	if E.myclass == "PALADIN" then
 		frame.HolyPower = self:Construct_PaladinWarlockResourceBar(frame, E.myclass)
 	elseif E.myclass == "WARLOCK" then
-		--frame.SoulShards = self:Construct_PaladinWarlockResourceBar(frame, E.myclass)
+		frame.SoulShards = self:Construct_PaladinWarlockResourceBar(frame, E.myclass)
 	elseif E.myclass == "DEATHKNIGHT" then
 		frame.Runes = self:Construct_DeathKnightResourceBar(frame)
 	elseif E.myclass == "SHAMAN" then
 		frame.TotemBar = self:Construct_ShamanTotemBar(frame)
 	elseif E.myclass == "DRUID" then
-		--frame.EclipseBar = self:Construct_DruidResourceBar(frame)
-		--frame.DruidAltMana = self:Construct_DruidAltManaBar(frame)
+		frame.EclipseBar = self:Construct_DruidResourceBar(frame)
+		frame.DruidAltMana = self:Construct_DruidAltManaBar(frame)
 	end
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.Resting = self:Construct_RestingIndicator(frame)
@@ -49,6 +47,9 @@ function UF:Construct_PlayerFrame(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 
 	frame.CombatFade = true
+
+	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -417, 75) --Set to default position	
+	E:CreateMover(frame, frame:GetName()..'Mover', 'Player Frame')
 end
 
 function UF:Update_PlayerFrame(frame, db)
@@ -78,6 +79,7 @@ function UF:Update_PlayerFrame(frame, db)
 	
 	frame.colors = ElvUF.colors
 	frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
+	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 	
 	--Adjust some variables
 	do
@@ -380,11 +382,12 @@ function UF:Update_PlayerFrame(frame, db)
 		else
 			buffs:SetWidth(UNIT_WIDTH)
 		end
-
+		
+		buffs.forceShow = frame.forceShowAuras
 		buffs.num = db.buffs.perrow * rows
 		buffs.size = db.buffs.sizeOverride ~= 0 and db.buffs.sizeOverride or ((((buffs:GetWidth() - (buffs.spacing*(buffs.num/rows - 1))) / buffs.num)) * rows)
 		
-		if db.buffs.sizeOverride then
+		if db.buffs.sizeOverride and db.buffs.sizeOverride > 0 then
 			buffs:SetWidth(db.buffs.perrow * db.buffs.sizeOverride)
 		end
 		
@@ -415,15 +418,16 @@ function UF:Update_PlayerFrame(frame, db)
 			debuffs:SetWidth(UNIT_WIDTH)
 		end
 
+		debuffs.forceShow = frame.forceShowAuras
 		debuffs.num = db.debuffs.perrow * rows
 		debuffs.size = db.debuffs.sizeOverride ~= 0 and db.debuffs.sizeOverride or ((((debuffs:GetWidth() - (debuffs.spacing*(debuffs.num/rows - 1))) / debuffs.num)) * rows)
 		
-		if db.debuffs.sizeOverride then
+		if db.debuffs.sizeOverride and db.debuffs.sizeOverride > 0 then
 			debuffs:SetWidth(db.debuffs.perrow * db.debuffs.sizeOverride)
 		end
 		
 		local x, y = self:GetAuraOffset(db.debuffs.initialAnchor, db.debuffs.anchorPoint)
-		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo)
+		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.buffs.attachTo == 'DEBUFFS' and db.debuffs.attachTo == 'BUFFS')
 
 		debuffs:Point(db.debuffs.initialAnchor, attachTo, db.debuffs.anchorPoint, x, y)
 		debuffs:Height(debuffs.size * rows)
@@ -497,9 +501,9 @@ function UF:Update_PlayerFrame(frame, db)
 			bars:Width(CLASSBAR_WIDTH)
 			bars:Height(CLASSBAR_HEIGHT - (BORDER*2))
 		
-			for i = 1, HOLY_POWER_FULL do
+			for i = 1, MAX_HOLY_POWER do
 				bars[i]:SetHeight(bars:GetHeight())	
-				bars[i]:SetWidth(E:Scale(bars:GetWidth() - 2)/HOLY_POWER_FULL)	
+				bars[i]:SetWidth(E:Scale(bars:GetWidth() - 2)/MAX_HOLY_POWER)	
 				bars[i]:GetStatusBarTexture():SetHorizTile(false)
 				bars[i]:ClearAllPoints()
 				if i == 1 then
@@ -534,7 +538,7 @@ function UF:Update_PlayerFrame(frame, db)
 			end		
 			
 		elseif E.myclass == "WARLOCK" then
-			--[[local bars = frame.SoulShards
+			local bars = frame.SoulShards
 			bars:ClearAllPoints()
 			if USE_MINI_CLASSBAR then
 				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), -SPACING)
@@ -579,7 +583,7 @@ function UF:Update_PlayerFrame(frame, db)
 			elseif not USE_CLASSBAR and frame:IsElementEnabled('SoulShards') then
 				frame:DisableElement('SoulShards')
 				bars:Hide()
-			end]]		
+			end					
 		elseif E.myclass == "DEATHKNIGHT" then
 			local runes = frame.Runes
 			runes:ClearAllPoints()
@@ -696,7 +700,7 @@ function UF:Update_PlayerFrame(frame, db)
 				totems:Hide()
 			end					
 		elseif E.myclass == "DRUID" then
-			--[[local eclipseBar = frame.EclipseBar
+			local eclipseBar = frame.EclipseBar
 
 			eclipseBar:ClearAllPoints()
 			if not USE_MINI_CLASSBAR then
@@ -724,7 +728,7 @@ function UF:Update_PlayerFrame(frame, db)
 			elseif not USE_CLASSBAR and frame:IsElementEnabled('EclipseBar') then
 				frame:DisableElement('EclipseBar')	
 				eclipseBar:Hide()
-			end]]			
+			end					
 		end
 	end
 	
@@ -794,14 +798,8 @@ function UF:Update_PlayerFrame(frame, db)
 			end		
 		end
 	end
-	
-	frame.snapOffset = -(12 + db.castbar.height)
-	
-	if not frame.mover then
-		frame:ClearAllPoints()
-		frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -417, 75) --Set to default position
-	end
 
+	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))
 	frame:UpdateAllElements()
 end
 

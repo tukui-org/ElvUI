@@ -37,7 +37,8 @@ local Enable = function(self)
 		mt.__owner = self
 		mt.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('GROUP_ROSTER_UPDATE', Path, true)
+		self:RegisterEvent('PARTY_MEMBERS_CHANGED', Path, true)
+		self:RegisterEvent('RAID_ROSTER_UPDATE', Path, true)
 
 		if(mt:IsObjectType'Texture' and not mt:GetTexture()) then
 			mt:SetTexture[[Interface\GROUPFRAME\UI-GROUP-MAINTANKICON]]
@@ -51,7 +52,8 @@ local Disable = function(self)
 	local mt = self.MainTank
 
 	if (mt) then
-		self:UnregisterEvent('GROUP_ROSTER_UPDATE', Path)
+		self:UnregisterEvent('PARTY_MEMBERS_CHANGED', Path)
+		self:UnregisterEvent('RAID_ROSTER_UPDATE', Path)
 	end
 end
 

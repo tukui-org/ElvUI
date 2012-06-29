@@ -318,7 +318,7 @@ end
 lib.eventFrame:RegisterEvent('PLAYER_TALENT_UPDATE')
 lib.eventFrame:SetScript('OnEvent', function()
 	lib.talentsLoaded = true
-	local newTalentGroup = GetActiveSpecGroup()
+	local newTalentGroup = GetActiveTalentGroup()
 	if lib.talentGroup ~= newTalentGroup then
 		lib.talentGroup = newTalentGroup
 		for target in pairs(registry) do

@@ -11,4 +11,7 @@
 	<Script file='skada.lua'/>
 	<Script file='tinydps.lua'/>
 	<Script file='postal.lua'/>
+	<Script file='clcret.lua'/>
+	<Script file='clcprot.lua'/>
+	<Script file='clcinfo.lua'/>
 </Ui>
