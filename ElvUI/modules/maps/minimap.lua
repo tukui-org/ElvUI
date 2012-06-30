@@ -262,11 +262,6 @@ function M:Initialize()
 		Minimap.location:Hide()
 	end
 	
-	--NEED TO CHECK
-	--[[LFGSearchStatus:SetTemplate("Default")
-	LFGSearchStatus:SetClampedToScreen(true)
-	LFGDungeonReadyStatus:SetClampedToScreen(true)]]
-	
 	MinimapBorder:Hide()
 	MinimapBorderTop:Hide()
 
@@ -287,11 +282,11 @@ function M:Initialize()
 	MiniMapMailFrame:Point("TOPRIGHT", Minimap, 3, 4)
 	MiniMapMailBorder:Hide()
 	MiniMapMailIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\mail")
-	
-	--NEED TO CHECK
-	--[[MiniMapBattlefieldFrame:ClearAllPoints()
-	MiniMapBattlefieldFrame:Point("BOTTOMRIGHT", Minimap, 3, 0)
-	MiniMapBattlefieldBorder:Hide()]]
+
+	QueueStatusMinimapButton:ClearAllPoints()
+	QueueStatusMinimapButton:Point("BOTTOMRIGHT", Minimap, 3, 0)
+	QueueStatusMinimapButtonBorder:Hide()
+	QueueStatusFrame:SetClampedToScreen(true)
 
 	MiniMapWorldMapButton:Hide()
 
@@ -319,11 +314,7 @@ function M:Initialize()
 	Minimap:EnableMouseWheel(true)
 	Minimap:SetScript("OnMouseWheel", M.Minimap_OnMouseWheel)	
 	Minimap:SetScript("OnMouseUp", M.Minimap_OnMouseUp)
-	
-	--NEED TO CHECK
-	--[[MiniMapLFGFrame:ClearAllPoints()
-	MiniMapLFGFrame:Point("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", 2, 1)
-	MiniMapLFGFrameBorder:Hide()]]
+
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "Update_ZoneText")
 	self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "Update_ZoneText")
 	self:RegisterEvent("ZONE_CHANGED", "Update_ZoneText")

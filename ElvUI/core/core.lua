@@ -534,7 +534,7 @@ function E:Initialize()
 	self.global = self.data.global;
 	self:CheckIncompatible()
 	
-	self.private.skins.blizzard.enable = false
+	--self.private.skins.blizzard.enable = false
 	
 	--Database conversion for aura filters
 	for spellList, _ in pairs(self.global.unitframe.aurafilters) do
