@@ -442,18 +442,12 @@ function AB:DisableBlizzard()
 			_G['OverrideActionBarButton'..i]:SetAttribute("statehidden", true)
 		end
 		
-		if E.myclass ~= 'SHAMAN' then
-			_G['MultiCastActionButton'..i]:Hide()
-			_G['MultiCastActionButton'..i]:UnregisterAllEvents()
-			_G['MultiCastActionButton'..i]:SetAttribute("statehidden", true)
-		end
+		_G['MultiCastActionButton'..i]:Hide()
+		_G['MultiCastActionButton'..i]:UnregisterAllEvents()
+		_G['MultiCastActionButton'..i]:SetAttribute("statehidden", true)
 		
 		for index, button in pairs(ActionBarButtonEventsFrame.frames) do			
-			if E.myclass ~= 'SHAMAN' and button:GetName():find('MultiCastActionButton') then
-				table.remove(ActionBarButtonEventsFrame.frames, index)
-			elseif button:GetName() ~= "ExtraActionButton1" and not button:GetName():find('MultiCastActionButton') then
-				table.remove(ActionBarButtonEventsFrame.frames, index)
-			end
+			table.remove(ActionBarButtonEventsFrame.frames, index)
 		end
 	end
 
@@ -484,11 +478,9 @@ function AB:DisableBlizzard()
 	PetActionBarFrame:Hide()
 	PetActionBarFrame:SetParent(UIHider)
 	
-	if E.myclass ~= 'SHAMAN' then
-		MultiCastActionBarFrame:UnregisterAllEvents()
-		MultiCastActionBarFrame:Hide()
-		MultiCastActionBarFrame:SetParent(UIHider)
-	end
+	MultiCastActionBarFrame:UnregisterAllEvents()
+	MultiCastActionBarFrame:Hide()
+	MultiCastActionBarFrame:SetParent(UIHider)
 
 	if PlayerTalentFrame then
 		PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
@@ -746,10 +738,6 @@ function AB:Initialize()
 	self:CreateBarShapeShift()
 	self:CreateVehicleLeave()
 
-	if E.myclass == "SHAMAN" then
-		self:CreateTotemBar()
-	end  
-	
 	self:UpdateButtonSettings()
 	
 	self:LoadKeyBinder()
