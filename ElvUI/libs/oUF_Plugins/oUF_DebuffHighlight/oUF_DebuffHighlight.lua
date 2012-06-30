@@ -35,7 +35,7 @@ end
 function CheckForKnownTalent(spellid)
 	local wanted_name = GetSpellInfo(spellid)
 	if not wanted_name then return nil end
-	local num_tabs = GetNumTalentTabs()
+	local num_tabs = GetNumSpecializations()
 	for t=1, num_tabs do
 		local num_talents = GetNumTalents(t)
 		for i=1, num_talents do

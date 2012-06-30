@@ -7,8 +7,8 @@ local ButtonIsDown;
 function M:RaidMarkCanMark()
 	if not self.RaidMarkFrame then return false; end
 	
-	if GetNumRaidMembers() > 0 then
-		if IsRaidLeader() or IsRaidOfficer() then
+	if GetNumGroupMembers() > 0 then
+		if UnitIsGroupLeader('player') or UnitIsGroupAssistant("player") then
 			return true;
 		else
 			UIErrorsFrame:AddMessage(L["You don't have permission to mark targets."], 1.0, 0.1, 0.1, 1.0, UIERRORS_HOLD_TIME);

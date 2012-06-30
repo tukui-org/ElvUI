@@ -38,7 +38,7 @@ local UPDATE_VISIBILITY = function(self, event)
 	local showBar
 	local form = GetShapeshiftFormID()
 	if(not form) then
-		local ptt = GetPrimaryTalentTree()
+		local ptt = GetSpecialization()
 		if(ptt and ptt == 1) then -- player has balance spec
 			showBar = true
 		end

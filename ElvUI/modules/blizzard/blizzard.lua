@@ -6,7 +6,7 @@ E.Blizzard = B;
 function B:Initialize()
 	self:EnhanceColorPicker()
 	self:KillBlizzard()
-	self:AchievementMovers()
+	--self:AchievementMovers()
 	self:PositionCaptureBar()
 	self:PositionDurabilityFrame()
 	self:PositionGMFrames()

@@ -22,9 +22,9 @@ end
 
 function S:HandleButton(f, strip)
 	if f:GetName() then
-		local l = _G[f:GetName().."Left"]
-		local m = _G[f:GetName().."Middle"]
-		local r = _G[f:GetName().."Right"]
+		local l = f.Left
+		local m = f.Middle
+		local r = f.Right
 		
 		
 		if l then l:SetAlpha(0) end

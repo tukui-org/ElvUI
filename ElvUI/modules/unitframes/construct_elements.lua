@@ -234,7 +234,33 @@ function UF:Construct_Castbar(self, direction)
 	return castbar
 end
 
-function UF:Construct_PaladinWarlockResourceBar(frame, class)
+function UF:Construct_PaladinResourceBar(frame, class)
+	local bars = CreateFrame("Frame", nil, frame)
+	bars:CreateBackdrop('Default')
+
+	for i = 1, 5 do					
+		bars[i] = CreateFrame("StatusBar", nil, bars)
+		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
+		bars[i]:GetStatusBarTexture():SetHorizTile(false)
+		UF['statusbars'][bars[i]] = true
+
+		bars[i]:CreateBackdrop('Default')
+		bars[i].backdrop:SetParent(bars)
+
+		bars[i]:SetStatusBarColor(228/255,225/255,16/255)
+		
+		bars[i].backdrop:CreateShadow('Default')
+		bars[i].backdrop.shadow:SetBackdropBorderColor(228/255,225/255,16/255)
+		bars[i].backdrop.shadow:Point("TOPLEFT", -4, 4)
+				
+	end
+	
+	bars.Override = UF.UpdateHoly
+	
+	return bars
+end
+
+function UF:Construct_WarlockResourceBar(frame, class)
 	local bars = CreateFrame("Frame", nil, frame)
 	bars:CreateBackdrop('Default')
 	
@@ -247,23 +273,10 @@ function UF:Construct_PaladinWarlockResourceBar(frame, class)
 		bars[i]:CreateBackdrop('Default')
 		bars[i].backdrop:SetParent(bars)
 		
-		if class == "PALADIN" then
-			bars[i]:SetStatusBarColor(228/255,225/255,16/255)
-			
-			bars[i].backdrop:CreateShadow('Default')
-			bars[i].backdrop.shadow:SetBackdropBorderColor(228/255,225/255,16/255)
-			bars[i].backdrop.shadow:Point("TOPLEFT", -4, 4)
-		else
-			bars[i]:SetStatusBarColor(148/255, 130/255, 201/255)
-		end
-				
+		bars[i]:SetStatusBarColor(148/255, 130/255, 201/255)	
 	end
 	
-	if class == "PALADIN" then
-		bars.Override = UF.UpdateHoly
-	else
-		bars.Override = UF.UpdateShards
-	end	
+	bars.Override = UF.UpdateShards
 	
 	return bars
 end

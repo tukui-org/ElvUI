@@ -11,7 +11,7 @@ local inactiveString = string.join("", "|cffFF0000", FACTION_INACTIVE, "|r")
 local function LoadTalentTrees()
 	for i = 1, GetNumTalentGroups(false, false) do
 		talent[i] = {}
-		for j = 1, GetNumTalentTabs(false, false) do
+		for j = 1, GetNumSpecializations(false, false) do
 			talent[i][j] = select(5, GetTalentTabInfo(j, false, false, i))
 		end
 	end
@@ -27,8 +27,8 @@ local function OnEvent(self, event)
 	LoadTalentTrees()
 	
 	active = GetActiveTalentGroup(false, false)
-	if GetPrimaryTalentTree(false, false, active) then
-		self.text:SetFormattedText(displayString, select(2, GetTalentTabInfo(GetPrimaryTalentTree(false, false, active))), talent[active][1], talent[active][2], talent[active][3])
+	if GetSpecialization(false, false, active) then
+		self.text:SetFormattedText(displayString, select(2, GetTalentTabInfo(GetSpecialization(false, false, active))), talent[active][1], talent[active][2], talent[active][3])
 	end
 end
 
@@ -36,8 +36,8 @@ local function OnEnter(self)
 	DT:SetupTooltip(self)
 
 	for i = 1, GetNumTalentGroups() do
-		if GetPrimaryTalentTree(false, false, i) then
-			GameTooltip:AddLine(string.join(" ", string.format(displayString, select(2, GetTalentTabInfo(GetPrimaryTalentTree(false, false, i))), talent[i][1], talent[i][2], talent[i][3]), (i == active and activeString or inactiveString)),1,1,1)
+		if GetSpecialization(false, false, i) then
+			GameTooltip:AddLine(string.join(" ", string.format(displayString, select(2, GetTalentTabInfo(GetSpecialization(false, false, i))), talent[i][1], talent[i][2], talent[i][3]), (i == active and activeString or inactiveString)),1,1,1)
 		end
 	end
 	

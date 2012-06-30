@@ -9,7 +9,7 @@ local Update = function(self, event)
 	end
 
 	local unit = self.unit
-	local isAssistant = UnitInRaid(unit) and UnitIsRaidOfficer(unit) and not UnitIsPartyLeader(unit)
+	local isAssistant = UnitInRaid(unit) and UnitIsRaidOfficer(unit) and not UnitIsGroupLeader(unit)
 	if(isAssistant) then
 		assistant:Show()
 	else

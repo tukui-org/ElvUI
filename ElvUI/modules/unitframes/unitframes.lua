@@ -24,6 +24,15 @@ UF['badHeaderPoints'] = {
 	['RIGHT'] = 'LEFT',
 }
 
+UF['classMaxResourceBar'] = {
+	['DEATHKNIGHT'] = 6,
+	['PALADIN'] = 5,
+	['WARLOCK'] = 4,
+	['PRIEST'] = 3,
+	['MONK'] = 5,
+	['SHAMAN'] = 4,
+}
+
 local find = string.find
 local gsub = string.gsub
 

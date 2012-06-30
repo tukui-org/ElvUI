@@ -13,6 +13,7 @@ local Update = function(self, event, unit, powerType)
 	if(hp.PreUpdate) then hp:PreUpdate() end
 
 	local num = UnitPower('player', SPELL_POWER_HOLY_POWER)
+	local MAX_HOLY_POWER = UnitPowerMax('player', SPELL_POWER_HOLY_POWER);		
 	for i = 1, MAX_HOLY_POWER do
 		if(i <= num) then
 			hp[i]:Show()

@@ -14,6 +14,7 @@ function R:PlayerHasFilteredBuff(frame, db, checkPersonal)
 	for buff, value in pairs(db) do
 		if value == true then
 			local name = GetSpellInfo(buff);
+			assert(name, buff..': ID is not correct.')
 			local _, _, icon, _, _, _, _, unitCaster, _, _, _ = UnitBuff("player", name)
 			
 			if checkPersonal then
@@ -149,7 +150,7 @@ function R:FilterCheck(frame, isReverse)
 	end
 	
 	if db.tree then
-		if db.tree == GetPrimaryTalentTree() or db.tree == "ANY" then
+		if db.tree == GetSpecialization() or db.tree == "ANY" then
 			treeCheck = true;
 		else
 			treeCheck = nil;
@@ -330,7 +331,7 @@ function R:ReminderIcon_OnEvent(event, unit)
 		return;
 	end
 	
-	local activeTree = GetPrimaryTalentTree()
+	local activeTree = GetSpecialization()
 	if db.spellGroup and not db.weaponCheck then
 		if filterCheck and ((not hasBuff) and (not hasDebuff)) and not db.reverseCheck then
 			self:SetAlpha(1);

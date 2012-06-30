@@ -435,10 +435,12 @@ function AB:DisableBlizzard()
 			_G["VehicleMenuBarActionButton" .. i]:UnregisterAllEvents()
 			_G["VehicleMenuBarActionButton" .. i]:SetAttribute("statehidden", true)
 		end
-
-		_G['BonusActionButton'..i]:Hide()
-		_G['BonusActionButton'..i]:UnregisterAllEvents()
-		_G['BonusActionButton'..i]:SetAttribute("statehidden", true)
+		
+		if _G['OverrideActionBarButton'..i] then
+			_G['OverrideActionBarButton'..i]:Hide()
+			_G['OverrideActionBarButton'..i]:UnregisterAllEvents()
+			_G['OverrideActionBarButton'..i]:SetAttribute("statehidden", true)
+		end
 		
 		if E.myclass ~= 'SHAMAN' then
 			_G['MultiCastActionButton'..i]:Hide()
@@ -466,13 +468,13 @@ function AB:DisableBlizzard()
 	MainMenuBarArtFrame:Hide()
 	MainMenuBarArtFrame:SetParent(UIHider)
 	
-	ShapeshiftBarFrame:UnregisterAllEvents()
-	ShapeshiftBarFrame:Hide()
-	ShapeshiftBarFrame:SetParent(UIHider)
+	StanceBarFrame:UnregisterAllEvents()
+	StanceBarFrame:Hide()
+	StanceBarFrame:SetParent(UIHider)
 
-	BonusActionBarFrame:UnregisterAllEvents()
-	BonusActionBarFrame:Hide()
-	BonusActionBarFrame:SetParent(UIHider)
+	OverrideActionBar:UnregisterAllEvents()
+	OverrideActionBar:Hide()
+	OverrideActionBar:SetParent(UIHider)
 
 	PossessBarFrame:UnregisterAllEvents()
 	PossessBarFrame:Hide()
@@ -481,10 +483,6 @@ function AB:DisableBlizzard()
 	PetActionBarFrame:UnregisterAllEvents()
 	PetActionBarFrame:Hide()
 	PetActionBarFrame:SetParent(UIHider)
-	
-	VehicleMenuBar:UnregisterAllEvents()
-	VehicleMenuBar:Hide()
-	VehicleMenuBar:SetParent(UIHider)
 	
 	if E.myclass ~= 'SHAMAN' then
 		MultiCastActionBarFrame:UnregisterAllEvents()

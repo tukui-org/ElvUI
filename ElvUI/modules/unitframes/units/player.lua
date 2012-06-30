@@ -27,9 +27,9 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Castbar = self:Construct_Castbar(frame, 'LEFT')
 	
 	if E.myclass == "PALADIN" then
-		frame.HolyPower = self:Construct_PaladinWarlockResourceBar(frame, E.myclass)
+		frame.HolyPower = self:Construct_PaladinResourceBar(frame)
 	elseif E.myclass == "WARLOCK" then
-		frame.SoulShards = self:Construct_PaladinWarlockResourceBar(frame, E.myclass)
+		frame.SoulShards = self:Construct_WarlockResourceBar(frame)
 	elseif E.myclass == "DEATHKNIGHT" then
 		frame.Runes = self:Construct_DeathKnightResourceBar(frame)
 	elseif E.myclass == "SHAMAN" then
@@ -498,9 +498,14 @@ function UF:Update_PlayerFrame(frame, db)
 				bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
 				bars:SetFrameStrata("LOW")
 			end
+			CLASSBAR_WIDTH = CLASSBAR_WIDTH * 3/2 --Multiply by reciprocal to reset previous setting
+			CLASSBAR_WIDTH = CLASSBAR_WIDTH * 4/5			
+			
 			bars:Width(CLASSBAR_WIDTH)
 			bars:Height(CLASSBAR_HEIGHT - (BORDER*2))
-		
+			
+			local MAX_HOLY_POWER = UnitPowerMax('player', SPELL_POWER_HOLY_POWER);
+			print(MAX_HOLY_POWER)
 			for i = 1, MAX_HOLY_POWER do
 				bars[i]:SetHeight(bars:GetHeight())	
 				bars[i]:SetWidth(E:Scale(bars:GetWidth() - 2)/MAX_HOLY_POWER)	
@@ -510,7 +515,7 @@ function UF:Update_PlayerFrame(frame, db)
 					bars[i]:SetPoint("LEFT", bars)
 				else
 					if USE_MINI_CLASSBAR then
-						bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING+(BORDER*2)+8, 0)
+						bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING+(BORDER*2)+2, 0)
 					else
 						bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING, 0)
 					end
@@ -549,7 +554,8 @@ function UF:Update_PlayerFrame(frame, db)
 			end
 			bars:Width(CLASSBAR_WIDTH)
 			bars:Height(CLASSBAR_HEIGHT - (BORDER*2))
-		
+			
+			local SHARD_BAR_NUM_SHARDS = UnitPowerMax('player', SPELL_POWER_SOUL_SHARDS);	
 			for i = 1, SHARD_BAR_NUM_SHARDS do
 				bars[i]:SetHeight(bars:GetHeight())	
 				bars[i]:SetWidth(E:Scale(bars:GetWidth() - 2)/SHARD_BAR_NUM_SHARDS)	

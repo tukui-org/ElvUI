@@ -179,7 +179,7 @@ end
 
 --Check the player's role
 function E:CheckRole()
-	local tree = GetPrimaryTalentTree();
+	local tree = GetSpecialization();
 	local resilience;
 	local resilperc = GetCombatRatingBonus(COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN)
 	if resilperc > GetDodgeChance() and resilperc > GetParryChance() and UnitLevel('player') == MAX_PLAYER_LEVEL then
@@ -365,14 +365,13 @@ function E:CopyTable(currentTable, defaultTable)
 end
 
 function E:SendMessage()
-	local numParty, numRaid = GetNumPartyMembers(), GetNumRaidMembers();
 	local inInstance, instanceType = IsInInstance()
 	if inInstance and instanceType == 'pvp' or instanceType == 'arena' then
 		SendAddonMessage("ElvUIVC", E.version, "BATTLEGROUND")	
 	else
-		if numRaid > 0 then
+		if IsInRaid() then
 			SendAddonMessage("ElvUIVC", E.version, "RAID")
-		elseif numParty > 0 then
+		elseif IsInGroup() then
 			SendAddonMessage("ElvUIVC", E.version, "PARTY")
 		end
 	end
@@ -503,6 +502,8 @@ function E:Initialize()
 	self.db = self.data.profile;
 	self.global = self.data.global;
 	self:CheckIncompatible()
+	
+	self.private.skins.blizzard.enable = false
 	
 	--Database conversion for aura filters
 	for spellList, _ in pairs(self.global.unitframe.aurafilters) do

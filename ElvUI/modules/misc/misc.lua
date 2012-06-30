@@ -68,7 +68,7 @@ function M:DisbandRaidGroup()
 	if InCombatLockdown() then return end -- Prevent user error in combat
 
 	if UnitInRaid("player") then
-		for i = 1, GetNumRaidMembers() do
+		for i = 1, GetNumGroupMembers() do
 			local name, _, _, _, _, _, _, online = GetRaidRosterInfo(i)
 			if online and name ~= E.myname then
 				UninviteUnit(name)
@@ -108,7 +108,7 @@ function M:AutoInvite(event, leaderName)
 
 	if event == "PARTY_INVITE_REQUEST" then
 		if MiniMapLFGFrame:IsShown() then return end -- Prevent losing que inside LFD if someone invites you to group
-		if GetNumPartyMembers() > 0 or GetNumRaidMembers() > 0 then return end
+		if IsInGroup() then return end
 		hideStatic = true
 	
 		-- Update Guild and Friendlist

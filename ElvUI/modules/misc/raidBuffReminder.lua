@@ -7,14 +7,14 @@ E.RaidBuffReminder = RBR
 
 RBR.Stats = {
 	117667, --Legacy of The Emperor
-	79061, -- Mark of The Wild
-	79063, -- Blessing Of Kings
+	1126, -- Mark of The Wild
+	20217, -- Blessing Of Kings
 }
 
 RBR.Stamina = {
 	469, -- Commanding Shout
 	6307, -- Imp. Blood Pact
-	79105, -- Prayer of Fortitude
+	21562, -- Power Word: Fortitude
 }
 
 RBR.AttackPower = {
@@ -26,7 +26,7 @@ RBR.AttackPower = {
 RBR.SpellPower = {
 	77747, -- Burning Wrath
 	117694, -- Dark Intent
-	79058, -- Arcane Brilliance
+	1459, -- Arcane Brilliance
 }
 
 RBR.AttackSpeed = {
@@ -42,14 +42,14 @@ RBR.SpellHaste = {
 
 RBR.CriticalStrike = {
 	19506, -- Trueshot Aura
-	79058, -- Arcane Brilliance
+	1459, -- Arcane Brilliance
 	24932, -- Leader of The Pact
 }
 
 RBR.Mastery = {
 	116956, --Grace of Air
-	118757, -- Legacy of the Wight Tiger
-	79102, -- Blessing of Might
+	--118757, -- Legacy of the Wight Tiger <<Monk buff removed?
+	19740, -- Blessing of Might
 }
 
 RBR.IndexTable = {
@@ -65,7 +65,9 @@ function RBR:CheckFilterForActiveBuff(filter)
 	local spellName, texture
 	for _, spell in pairs(filter) do
 		spellName, _, texture = GetSpellInfo(spell)
-
+		
+		assert(spellName, spell..': ID is not correct.')
+		
 		if UnitAura("player", spellName) then
 			return spellName, texture
 		end

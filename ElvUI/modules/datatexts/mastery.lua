@@ -8,7 +8,7 @@ local function OnEvent(self, event)
 	lastPanel = self
 	--STAT_MASTERY
 	local masteryspell, masteryTag
-	if GetCombatRating(CR_MASTERY) ~= 0 and GetPrimaryTalentTree() then
+	if GetCombatRating(CR_MASTERY) ~= 0 and GetSpecialization() then
 		masteryTag = STAT_MASTERY..": "
 		self.text:SetFormattedText(displayString, masteryTag, GetMastery())
 	end
@@ -23,7 +23,7 @@ local function OnEnter(self)
 	mastery = string.format("%.2f", mastery);
 
 	local masteryKnown = IsSpellKnown(CLASS_MASTERY_SPELLS[E.myclass]);
-	local primaryTalentTree = GetPrimaryTalentTree();
+	local primaryTalentTree = GetSpecialization();
 	if (masteryKnown and primaryTalentTree) then
 		local masterySpell, masterySpell2 = GetTalentTreeMasterySpells(primaryTalentTree);
 		if (masterySpell) then
