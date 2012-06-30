@@ -232,7 +232,7 @@ end
 -- ----------------------------------------------------------------------------
 
 local function NoDualSpec()
-	return GetNumTalentGroups() == 1
+	return GetNumSpecGroups() == 1
 end
 
 options.dualSpecDesc = {

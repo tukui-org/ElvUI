@@ -9,7 +9,7 @@ local activeString = string.join("", "|cff00FF00" , ACTIVE_PETS, "|r")
 local inactiveString = string.join("", "|cffFF0000", FACTION_INACTIVE, "|r")
 
 local function LoadTalentTrees()
-	for i = 1, GetNumTalentGroups(false, false) do
+	for i = 1, GetNumSpecGroups(false, false) do
 		talent[i] = {}
 		for j = 1, GetNumSpecializations(false, false) do
 			talent[i][j] = select(5, GetTalentTabInfo(j, false, false, i))
@@ -35,7 +35,7 @@ end
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
-	for i = 1, GetNumTalentGroups() do
+	for i = 1, GetNumSpecGroups() do
 		if GetSpecialization(false, false, i) then
 			GameTooltip:AddLine(string.join(" ", string.format(displayString, select(2, GetTalentTabInfo(GetSpecialization(false, false, i))), talent[i][1], talent[i][2], talent[i][3]), (i == active and activeString or inactiveString)),1,1,1)
 		end
