@@ -649,7 +649,7 @@ function UF:UpdateShardBar(spec)
 	end
 	
 	local point, anchor, anchorPoint, x, y = frame.Health:GetPoint()
-	print(point, anchor, anchorPoint, x, y)
+
 	if self:IsShown() and point then
 		if db.classbar.fill == 'spaced' then
 			frame.Health:SetPoint(point, frame, anchorPoint, x, -7)
