@@ -13,11 +13,16 @@ local function LoadSkin()
 		_G[frames[i]]:StripTextures(true)
 		_G[frames[i]]:CreateBackdrop("Transparent")
 	end
+	
+	MerchantFrameInset:StripTextures()
+	MerchantMoneyBg:StripTextures()
+	MerchantMoneyInset:StripTextures()
 	MerchantBuyBackItem.backdrop:Point("TOPLEFT", -6, 6)
 	MerchantBuyBackItem.backdrop:Point("BOTTOMRIGHT", 6, -6)
 	MerchantFrame.backdrop:Point("TOPLEFT", 6, 0)
-	MerchantFrame.backdrop:Point("BOTTOMRIGHT", 0, 35)
-	MerchantFrame.backdrop:Point("BOTTOMRIGHT", 0, 60)
+	
+	S:HandleDropDownBox(MerchantFrameLootFilter)
+	
 	-- skin tabs
 	for i= 1, 2 do
 		S:HandleTab(_G["MerchantFrameTab"..i])
@@ -59,7 +64,8 @@ local function LoadSkin()
 	MerchantRepairItemButton:SetTemplate("Default", true)
 	for i=1, MerchantRepairItemButton:GetNumRegions() do
 		local region = select(i, MerchantRepairItemButton:GetRegions())
-		if region:GetObjectType() == "Texture" and region:GetTexture() == "Interface\\MerchantFrame\\UI-Merchant-RepairIcons" then
+
+		if region:GetObjectType() == "Texture" then
 			region:SetTexCoord(0.04, 0.24, 0.06, 0.5)
 			region:ClearAllPoints()
 			region:Point("TOPLEFT", 2, -2)
