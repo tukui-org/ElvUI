@@ -238,7 +238,7 @@ function UF:Construct_PaladinResourceBar(frame, class)
 	local bars = CreateFrame("Frame", nil, frame)
 	bars:CreateBackdrop('Default')
 
-	for i = 1, 5 do					
+	for i = 1, UF['classMaxResourceBar'][E.myclass] do					
 		bars[i] = CreateFrame("StatusBar", nil, bars)
 		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
 		bars[i]:GetStatusBarTexture():SetHorizTile(false)
@@ -264,7 +264,7 @@ function UF:Construct_WarlockResourceBar(frame, class)
 	local bars = CreateFrame("Frame", nil, frame)
 	bars:CreateBackdrop('Default')
 	
-	for i = 1, 3 do					
+	for i = 1, UF['classMaxResourceBar'][E.myclass] do					
 		bars[i] = CreateFrame("StatusBar", nil, bars)
 		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
 		bars[i]:GetStatusBarTexture():SetHorizTile(false)
@@ -285,7 +285,7 @@ function UF:Construct_DeathKnightResourceBar(frame)
 	local runes = CreateFrame("Frame", nil, frame)
 	runes:CreateBackdrop('Default')
 
-	for i = 1, 6 do
+	for i = 1, UF['classMaxResourceBar'][E.myclass] do
 		runes[i] = CreateFrame("StatusBar", nil, runes)
 		UF['statusbars'][runes[i]] = true
 		runes[i]:SetStatusBarTexture(E['media'].blankTex)
@@ -308,7 +308,7 @@ function UF:Construct_ShamanTotemBar(frame)
 	totems:CreateBackdrop('Default')
 	totems.Destroy = true
 
-	for i = 1, 4 do
+	for i = 1, UF['classMaxResourceBar'][E.myclass] do
 		totems[i] = CreateFrame("StatusBar", nil, totems)
 		UF['statusbars'][totems[i]] = true
 		

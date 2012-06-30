@@ -505,7 +505,7 @@ function UF:Update_PlayerFrame(frame, db)
 			bars:Height(CLASSBAR_HEIGHT - (BORDER*2))
 			
 			local MAX_HOLY_POWER = UnitPowerMax('player', SPELL_POWER_HOLY_POWER);
-			print(MAX_HOLY_POWER)
+
 			for i = 1, MAX_HOLY_POWER do
 				bars[i]:SetHeight(bars:GetHeight())	
 				bars[i]:SetWidth(E:Scale(bars:GetWidth() - 2)/MAX_HOLY_POWER)	
