@@ -201,7 +201,8 @@ function A:Initialize()
 		return 
 	end
 	
-	ConsolidatedBuffs:Kill()
+	ConsolidatedBuffs:Hide()
+	ConsolidatedBuffs:SetParent(E.HiddenFrame)
 	
 	local holder = CreateFrame("Frame", "AurasHolder", E.UIParent)
 	holder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -((E.MinimapSize + 4) + E.RBRWidth + 7), -3)
