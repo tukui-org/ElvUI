@@ -23,7 +23,7 @@ function AB:StyleShapeShift()
 	local start, duration, enable;
 	
 	for i = 1, NUM_STANCE_SLOTS do
-		buttonName = "StanceButton"..i;
+		buttonName = "ElvUI_BarShapeShiftButton"..i;
 		button = _G[buttonName];
 		icon = _G[buttonName.."Icon"];
 		cooldown = _G[buttonName.."Cooldown"];
@@ -55,23 +55,6 @@ function AB:StyleShapeShift()
 			end
 		end
 	end
-end
-
-function AB:AdjustMaxStanceButtons()
-	if InCombatLockdown() then return; end
-	
-	local button;
-	for i = 1, NUM_STANCE_SLOTS do
-		button = _G["StanceButton"..i];
-		local _, name = GetShapeshiftFormInfo(i);
-		if name then
-			button:Show();
-			bar.LastButton = i;
-		else
-			button:Hide();
-		end
-	end
-	self:PositionAndSizeBarShapeShift();
 end
 
 function AB:PositionAndSizeBarShapeShift()
@@ -138,9 +121,9 @@ function AB:PositionAndSizeBarShapeShift()
 	local button, lastButton, lastColumnButton;
 	local possibleButtons = {};
 	for i=1, NUM_STANCE_SLOTS do
-		button = _G["StanceButton"..i];
-		lastButton = _G["StanceButton"..i-1];
-		lastColumnButton = _G["StanceButton"..i-buttonsPerRow];
+		button = _G["ElvUI_BarShapeShiftButton"..i];
+		lastButton = _G["ElvUI_BarShapeShiftButton"..i-1];
+		lastColumnButton = _G["ElvUI_BarShapeShiftButton"..i-buttonsPerRow];
 		button:SetParent(bar);
 		button:ClearAllPoints();
 		button:Size(size);
@@ -182,7 +165,7 @@ function AB:PositionAndSizeBarShapeShift()
 			else
 				x, y = -spacing, spacing;
 			end
-
+			
 			button:Point(point, bar, point, x, y);
 		elseif possibleButtons[i] then
 			local x = 0;
@@ -221,11 +204,35 @@ function AB:PositionAndSizeBarShapeShift()
 	possibleButtons = nil;
 end
 
+function AB:AdjustMaxStanceButtons()
+	if InCombatLockdown() then return; end
+	
+	for i=1, #bar.buttons do
+		bar.buttons[i]:Hide()
+	end
+	
+	for i = 1, NUM_STANCE_SLOTS do
+		if not bar.buttons[i] then
+			bar.buttons[i] = CreateFrame("CheckButton", format(bar:GetName().."Button%d", i), bar, "StanceButtonTemplate")
+			bar.buttons[i]:SetID(i)
+		end
+		
+		local _, name = GetShapeshiftFormInfo(i);
+		if name then
+			bar.buttons[i]:Show();
+			bar.LastButton = i;
+		else
+			bar.buttons[i]:Hide();
+		end
+	end
+	self:PositionAndSizeBarShapeShift();
+end
+
 function AB:CreateBarShapeShift()
 	bar:CreateBackdrop('Default');
 	bar.backdrop:SetAllPoints();
 	bar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -4);
-
+	bar.buttons = {};
 	bar:SetAttribute("_onstate-show", [[		
 		if newstate == "hide" then
 			self:Hide();
