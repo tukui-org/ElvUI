@@ -25,7 +25,7 @@ RBR.AttackPower = {
 
 RBR.SpellPower = {
 	77747, -- Burning Wrath
-	117694, -- Dark Intent
+	109773, -- Dark Intent
 	1459, -- Arcane Brilliance
 }
 
