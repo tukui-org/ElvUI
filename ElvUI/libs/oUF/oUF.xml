@@ -35,6 +35,7 @@
 	<Script file='elements\qicon.lua' />
 	<Script file='elements\eclipsebar.lua' />
 	<Script file='elements\altpowerbar.lua' />
+	<Script file='elements\harmony.lua' />
 	<Script file='elements\totems.lua' />
 	<Script file='elements\resurrect.lua' />
 	<Script file='elements\maintank.lua' />

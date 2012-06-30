@@ -37,6 +37,8 @@ function UF:Construct_PlayerFrame(frame)
 	elseif E.myclass == "DRUID" then
 		frame.EclipseBar = self:Construct_DruidResourceBar(frame)
 		frame.DruidAltMana = self:Construct_DruidAltManaBar(frame)
+	elseif E.myclass == "MONK" then
+		frame.Harmony = self:Construct_MonkResourceBar(frame)
 	end
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.Resting = self:Construct_RestingIndicator(frame)
@@ -568,6 +570,32 @@ function UF:Update_PlayerFrame(frame, db)
 				frame:DisableElement('ShardBar')
 				bars:Hide()
 			end					
+		elseif E.myclass == 'MONK' then
+			local bars = frame.Harmony
+			bars:ClearAllPoints()
+			if USE_MINI_CLASSBAR then
+				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), -SPACING)
+				bars:SetFrameStrata("MEDIUM")			
+			else
+				bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
+				bars:SetFrameStrata("LOW")
+			end
+			bars:Width(CLASSBAR_WIDTH)
+			bars:Height(CLASSBAR_HEIGHT - (BORDER*2))
+			
+			if not USE_MINI_CLASSBAR then
+				bars.backdrop:Show()
+			else
+				bars.backdrop:Hide()			
+			end
+			
+			if USE_CLASSBAR and not frame:IsElementEnabled('Harmony') then
+				frame:EnableElement('Harmony')
+				bars:Show()
+			elseif not USE_CLASSBAR and frame:IsElementEnabled('Harmony') then
+				frame:DisableElement('Harmony')
+				bars:Hide()
+			end				
 		elseif E.myclass == "DEATHKNIGHT" then
 			local runes = frame.Runes
 			runes:ClearAllPoints()

@@ -611,6 +611,60 @@ function UF:UpdateHoly(event, unit, powerType)
 	end
 end	
 
+function UF:UpdateHarmony()
+	local maxBars = self.numPoints
+	local frame = self:GetParent()
+	local db = frame.db
+	local CLASSBAR_WIDTH = db.width - 4
+	
+	local SPACING = 1
+	if db.classbar.fill == 'spaced' then
+		SPACING = 9
+		
+		CLASSBAR_WIDTH = CLASSBAR_WIDTH * (maxBars - 1) / maxBars
+	end
+	
+	for i=1, UF['classMaxResourceBar'][E.myclass] do
+		if self[i]:IsShown() and db.classbar.fill == 'spaced' then
+			self[i].backdrop:Show()
+		else
+			self[i].backdrop:Hide()
+		end
+	end
+	
+	self:SetWidth(CLASSBAR_WIDTH)
+	
+	for i = 1, maxBars do		
+		self[i]:SetHeight(self:GetHeight())	
+		if db.classbar.fill == 'spaced' then
+			self[i]:SetWidth(E:Scale(self:GetWidth() - 3)/maxBars)	
+		else
+			self[i]:SetWidth(E:Scale(self:GetWidth() - 4)/maxBars)	
+		end
+		self[i]:ClearAllPoints()
+		if i == 1 then
+			if maxBars == 5 and db.classbar.fill == 'spaced' then
+				self[i]:SetPoint("LEFT", self, 'LEFT', -(SPACING/2), 0)
+			else
+				self[i]:SetPoint("LEFT", self)
+			end
+		else
+			self[i]:Point("LEFT", self[i-1], "RIGHT", SPACING , 0)
+		end		
+	end	
+	
+	local point, _, anchorPoint, x, y = frame.Health:GetPoint()
+	if self:IsShown() and point then
+		if db.classbar.fill == 'spaced' then
+			frame.Health:SetPoint(point, frame, anchorPoint, x, -7)
+		else
+			frame.Health:SetPoint(point, frame, anchorPoint, x, -13)
+		end
+	elseif point then
+		frame.Health:SetPoint(point, frame, anchorPoint, x, -2)
+	end
+end
+
 function UF:UpdateShardBar(spec)
 	local maxBars = self.number
 	local db = self:GetParent().db
@@ -648,8 +702,7 @@ function UF:UpdateShardBar(spec)
 		end		
 	end
 	
-	local point, anchor, anchorPoint, x, y = frame.Health:GetPoint()
-
+	local point, _, anchorPoint, x, y = frame.Health:GetPoint()
 	if self:IsShown() and point then
 		if db.classbar.fill == 'spaced' then
 			frame.Health:SetPoint(point, frame, anchorPoint, x, -7)

@@ -10,10 +10,11 @@ local states = {
 	["WARRIOR"] = "show",
 	["PALADIN"] = "show",
 	["DEATHKNIGHT"] = "show",
-	["ROGUE"] = "show,",
-	["PRIEST"] = "show,",
-	["HUNTER"] = "show,",
-	["WARLOCK"] = "show,",
+	["ROGUE"] = "show",
+	["PRIEST"] = "show",
+	["HUNTER"] = "show",
+	["WARLOCK"] = "show",
+	["MONK"] = "show",
 };
 
 function AB:StyleShapeShift()

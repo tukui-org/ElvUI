@@ -35,13 +35,17 @@ local Update = function(self, event, unit, powerType)
 			for i = 1, 4 do
 				wsb[i]:Show()
 				wsb[i]:SetStatusBarColor(unpack(DESTRO_COLORS))
-				wsb[i].bg:SetTexture(unpack(DESTRO_COLORS))
+				if wsb[i].bg then
+					wsb[i].bg:SetTexture(unpack(DESTRO_COLORS))
+				end
 			end
 		else
 			for i = 1, 4 do
 				wsb[i]:Show()
 				wsb[i]:SetStatusBarColor(unpack(SHARD_COLORS))
-				wsb[i].bg:SetTexture(unpack(SHARD_COLORS))
+				if wsb[i].bg then
+					wsb[i].bg:SetTexture(unpack(SHARD_COLORS))
+				end
 			end		
 		end
 		
@@ -131,8 +135,7 @@ local function Enable(self)
 			wsb[i]:SetFrameLevel(wsb:GetFrameLevel() + 1)
 			wsb[i]:GetStatusBarTexture():SetHorizTile(false)
 			
-			if not wsb[i].bg then
-				wsb[i].bg = wsb[i]:CreateTexture(nil, 'ARTWORK')
+			if wsb[i].bg then
 				wsb[i].bg:SetAlpha(0.2)
 				wsb[i].bg:SetAllPoints()
 			end

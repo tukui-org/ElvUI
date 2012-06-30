@@ -260,6 +260,25 @@ function UF:Construct_PaladinResourceBar(frame, class)
 	return bars
 end
 
+function UF:Construct_MonkResourceBar(frame, class)
+	local bars = CreateFrame("Frame", nil, frame)
+	bars:CreateBackdrop('Default')
+
+	for i = 1, UF['classMaxResourceBar'][E.myclass] do					
+		bars[i] = CreateFrame("StatusBar", nil, bars)
+		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
+		bars[i]:GetStatusBarTexture():SetHorizTile(false)
+		UF['statusbars'][bars[i]] = true
+
+		bars[i]:CreateBackdrop('Default')
+		bars[i].backdrop:SetParent(bars)
+	end
+	
+	bars.PostUpdate = UF.UpdateHarmony
+	
+	return bars
+end
+
 function UF:Construct_WarlockResourceBar(frame, class)
 	local bars = CreateFrame("Frame", nil, frame)
 	bars:CreateBackdrop('Default')
@@ -268,6 +287,7 @@ function UF:Construct_WarlockResourceBar(frame, class)
 		bars[i] = CreateFrame("StatusBar", nil, bars)
 		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
 		bars[i]:GetStatusBarTexture():SetHorizTile(false)
+		bars[i].bg = bars[i]:CreateTexture(nil, 'ARTWORK')
 		UF['statusbars'][bars[i]] = true
 
 		bars[i]:CreateBackdrop('Default')		
