@@ -38,6 +38,7 @@
 	<Script file='elements\harmony.lua' />
 	<Script file='elements\totems.lua' />
 	<Script file='elements\resurrect.lua' />
+	<Script file='elements\shadoworbs.lua' />
 	<Script file='elements\maintank.lua' />
 	<Script file='elements\druidmana.lua' />
 
