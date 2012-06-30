@@ -611,17 +611,53 @@ function UF:UpdateHoly(event, unit, powerType)
 	end
 end	
 
-function UF:UpdateShards(event, unit, powerType)
-	if(self.unit ~= unit or (powerType and powerType ~= 'SOUL_SHARDS')) then return end
-	local num = UnitPower(unit, SPELL_POWER_SOUL_SHARDS)
-	local SHARD_BAR_NUM_SHARDS = UnitPowerMax('player', SPELL_POWER_SOUL_SHARDS);	
+function UF:UpdateShardBar(spec)
+	local maxBars = self.number
+	local db = self:GetParent().db
+	local frame = self:GetParent()
 	
-	for i = 1, SHARD_BAR_NUM_SHARDS do
-		if(i <= num) then
-			self.SoulShards[i]:SetAlpha(1)
+	for i=1, UF['classMaxResourceBar'][E.myclass] do
+		if self[i]:IsShown() and db.classbar.fill == 'spaced' then
+			self[i].backdrop:Show()
 		else
-			self.SoulShards[i]:SetAlpha(.2)
+			self[i].backdrop:Hide()
 		end
+	end
+
+	if db.classbar.fill == 'spaced' and maxBars == 1 then
+		self:ClearAllPoints()
+		self:Point("LEFT", frame.Health.backdrop, "TOPLEFT", 8, 0)
+	elseif db.classbar.fill == 'spaced' then
+		self:ClearAllPoints()
+		self:Point("CENTER", frame.Health.backdrop, "TOP", -12, -2)
+	end
+	
+	local SPACING = 1
+	if db.classbar.fill == 'spaced' then
+		SPACING = 13
+	end
+	
+	for i = 1, maxBars do
+		self[i]:SetHeight(self:GetHeight())	
+		self[i]:SetWidth(E:Scale(self:GetWidth() - 2)/maxBars)	
+		self[i]:ClearAllPoints()
+		if i == 1 then
+			self[i]:SetPoint("LEFT", self)
+		else
+			self[i]:Point("LEFT", self[i-1], "RIGHT", SPACING , 0)
+		end		
+	end
+	
+	local point, anchor, anchorPoint, x, y = frame.Health:GetPoint()
+	print(point, anchor, anchorPoint, x, y)
+	if self:IsShown() and point then
+		if db.classbar.fill == 'spaced' then
+			frame.Health:SetPoint(point, frame, anchorPoint, x, -7)
+		else
+			frame.Health:SetPoint(point, frame, anchorPoint, x, -13)
+		end
+	elseif point then
+		frame.Health:SetPoint(point, frame, anchorPoint, x, -2)
 	end
 end
 

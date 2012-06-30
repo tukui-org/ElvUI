@@ -5,7 +5,7 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
-local CAN_HAVE_CLASSBAR = (E.myclass == "PALADIN" or E.myclass == "SHAMAN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK")
+local CAN_HAVE_CLASSBAR = (E.myclass == "PALADIN" or E.myclass == "SHAMAN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK" or E.myclass == "PRIEST" or E.myclass == "MONK")
 
 function UF:Construct_PlayerFrame(frame)
 	frame.Threat = self:Construct_ThreatGlow(frame, true)
@@ -29,7 +29,7 @@ function UF:Construct_PlayerFrame(frame)
 	if E.myclass == "PALADIN" then
 		frame.HolyPower = self:Construct_PaladinResourceBar(frame)
 	elseif E.myclass == "WARLOCK" then
-		frame.SoulShards = self:Construct_WarlockResourceBar(frame)
+		frame.ShardBar = self:Construct_WarlockResourceBar(frame)
 	elseif E.myclass == "DEATHKNIGHT" then
 		frame.Runes = self:Construct_DeathKnightResourceBar(frame)
 	elseif E.myclass == "SHAMAN" then
@@ -543,7 +543,7 @@ function UF:Update_PlayerFrame(frame, db)
 			end		
 			
 		elseif E.myclass == "WARLOCK" then
-			local bars = frame.SoulShards
+			local bars = frame.ShardBar
 			bars:ClearAllPoints()
 			if USE_MINI_CLASSBAR then
 				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), -SPACING)
@@ -555,39 +555,17 @@ function UF:Update_PlayerFrame(frame, db)
 			bars:Width(CLASSBAR_WIDTH)
 			bars:Height(CLASSBAR_HEIGHT - (BORDER*2))
 			
-			local SHARD_BAR_NUM_SHARDS = UnitPowerMax('player', SPELL_POWER_SOUL_SHARDS);	
-			for i = 1, SHARD_BAR_NUM_SHARDS do
-				bars[i]:SetHeight(bars:GetHeight())	
-				bars[i]:SetWidth(E:Scale(bars:GetWidth() - 2)/SHARD_BAR_NUM_SHARDS)	
-				bars[i]:ClearAllPoints()
-				if i == 1 then
-					bars[i]:SetPoint("LEFT", bars)
-				else
-					if USE_MINI_CLASSBAR then
-						bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING+(BORDER*2)+8, 0)
-					else
-						bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING, 0)
-					end
-				end
-				
-				if not USE_MINI_CLASSBAR then
-					bars[i].backdrop:Hide()
-				else
-					bars[i].backdrop:Show()
-				end				
-			end
-			
 			if not USE_MINI_CLASSBAR then
 				bars.backdrop:Show()
 			else
 				bars.backdrop:Hide()			
 			end
 			
-			if USE_CLASSBAR and not frame:IsElementEnabled('SoulShards') then
-				frame:EnableElement('SoulShards')
+			if USE_CLASSBAR and not frame:IsElementEnabled('ShardBar') then
+				frame:EnableElement('ShardBar')
 				bars:Show()
-			elseif not USE_CLASSBAR and frame:IsElementEnabled('SoulShards') then
-				frame:DisableElement('SoulShards')
+			elseif not USE_CLASSBAR and frame:IsElementEnabled('ShardBar') then
+				frame:DisableElement('ShardBar')
 				bars:Hide()
 			end					
 		elseif E.myclass == "DEATHKNIGHT" then
