@@ -457,7 +457,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 	for i = 1, lines do
 		local line = _G["GameTooltipTextLeft"..i]
-		if line and line:GetText() and line:GetText() == PVP_ENABLED then
+		if line and line:GetText() and (line:GetText() == PVP_ENABLED or line:GetText() == FACTION_HORDE or line:GetText() == FACTION_ALLIANCE) then
 			line:SetText()
 			break
 		end
