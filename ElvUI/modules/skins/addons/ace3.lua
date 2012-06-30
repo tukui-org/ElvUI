@@ -88,16 +88,9 @@ local function SkinScrollBar(frame, thumbTrim)
 end
 
 local function SkinButton(f, strip, noTemplate)
-	if f:GetName() then
-		local l = _G[f:GetName().."Left"]
-		local m = _G[f:GetName().."Middle"]
-		local r = _G[f:GetName().."Right"]
-		
-		
-		if l then l:SetAlpha(0) end
-		if m then m:SetAlpha(0) end
-		if r then r:SetAlpha(0) end
-	end
+	if f.Left then f.Left:SetAlpha(0)  end
+	if f.Middle then f.Middle:SetAlpha(0)  end
+	if f.Right then f.Right:SetAlpha(0) end
 
 	if f.SetNormalTexture then f:SetNormalTexture("") end
 	

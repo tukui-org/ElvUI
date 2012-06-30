@@ -117,7 +117,7 @@ local function LoadSkin()
 	
 	--Icon in upper right corner of character frame
 	CharacterFramePortrait:Kill()
-	CharacterModelFrame:CreateBackdrop("Default")
+	--CharacterModelFrame:CreateBackdrop("Default")
 
 	local scrollbars = {
 		"PaperDollTitlesPaneScrollBar",

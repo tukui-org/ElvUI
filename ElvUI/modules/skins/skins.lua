@@ -21,17 +21,10 @@ local function SetOriginalBackdrop(self)
 end
 
 function S:HandleButton(f, strip)
-	if f:GetName() then
-		local l = f.Left
-		local m = f.Middle
-		local r = f.Right
-		
-		
-		if l then l:SetAlpha(0) end
-		if m then m:SetAlpha(0) end
-		if r then r:SetAlpha(0) end
-	end
-
+	if f.Left then f.Left:SetTexture() end
+	if f.Middle then f.Middle:SetTexture() end
+	if f.Right then f.Right:SetTexture() end
+	
 	if f.SetNormalTexture then f:SetNormalTexture("") end
 	
 	if f.SetHighlightTexture then f:SetHighlightTexture("") end
