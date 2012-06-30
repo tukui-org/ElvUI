@@ -8,7 +8,7 @@ local iconSize = 30;
 local sq, ss, sn
 local OnEnter = function(self)
 	local slot = self:GetID()
-	if(LootSlotIsItem(slot)) then
+	if(LootSlotHasItem(slot)) then
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 		GameTooltip:SetLootItem(slot)
 		CursorUpdate(self)
@@ -188,10 +188,6 @@ function M:LOOT_OPENED(event, autoloot)
 			local slot = lootFrame.slots[i] or createSlot(i)
 			local texture, item, quantity, quality, locked = GetLootSlotInfo(i)
 			local color = ITEM_QUALITY_COLORS[quality]
-
-			if(LootSlotHasItem(i)) then
-				item = item:gsub("\n", ", ")
-			end
 
 			if quantity and (quantity > 1) then
 				slot.count:SetText(quantity)
