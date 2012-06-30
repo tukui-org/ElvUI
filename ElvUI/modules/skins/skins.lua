@@ -21,9 +21,9 @@ local function SetOriginalBackdrop(self)
 end
 
 function S:HandleButton(f, strip)
-	if f.Left then f.Left:SetTexture() end
-	if f.Middle then f.Middle:SetTexture() end
-	if f.Right then f.Right:SetTexture() end
+	if f.Left then f.Left:SetAlpha(0) end
+	if f.Middle then f.Middle:SetAlpha(0) end
+	if f.Right then f.Right:SetAlpha(0) end
 	
 	if f.SetNormalTexture then f:SetNormalTexture("") end
 	
@@ -188,6 +188,9 @@ function S:HandleNextPrevButton(btn, horizonal)
 	
 	if norm and pushed and disabled then
 		if horizonal then
+			btn:SetNormalTexture([[Interface\ChatFrame\UI-ChatIcon-ScrollDown-Up]])
+			btn:SetPushedTexture([[Interface\ChatFrame\UI-ChatIcon-ScrollDown-Down]])
+			btn:SetDisabledTexture([[Interface\ChatFrame\UI-ChatIcon-ScrollDown-Disabled]])
 			btn:GetNormalTexture():SetTexCoord(0.3, 0.29, 0.3, 0.72, 0.65, 0.29, 0.65, 0.72)
 			btn:GetPushedTexture():SetTexCoord(0.3, 0.35, 0.3, 0.8, 0.65, 0.35, 0.65, 0.8)
 			btn:GetDisabledTexture():SetTexCoord(0.3, 0.29, 0.3, 0.75, 0.65, 0.29, 0.65, 0.75)	
