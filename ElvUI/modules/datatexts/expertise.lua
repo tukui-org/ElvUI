@@ -10,6 +10,9 @@ local function OnEvent(self, event, unit)
 	lastPanel = self
 
 	local expertise, offhandExpertise = GetExpertise();
+	expertise = format("%.2f%%", expertise);
+	offhandExpertise = format("%.2f%%", offhandExpertise);
+	
 	local speed, offhandSpeed = UnitAttackSpeed("player");
 	local text;
 	if( offhandSpeed ) then
