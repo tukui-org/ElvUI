@@ -23,7 +23,7 @@ end
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 	
-	local expertisePercent, offhandExpertisePercent = GetExpertisePercent();
+	local expertisePercent, offhandExpertisePercent = GetExpertise();
 	expertisePercent = format("%.2f", expertisePercent);
 	offhandExpertisePercent = format("%.2f", offhandExpertisePercent);
 
