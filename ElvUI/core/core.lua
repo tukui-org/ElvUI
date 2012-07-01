@@ -218,25 +218,37 @@ local roles = {
 }
 
 function E:CheckRole()
-	local tree = GetSpecialization()
+	local talentTree = GetSpecialization()
 	local IsInPvPGear = false;
 	local resilperc = GetCombatRatingBonus(COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN)
 	if resilperc > GetDodgeChance() and resilperc > GetParryChance() and UnitLevel('player') == MAX_PLAYER_LEVEL then
 		IsInPvPGear = true;
 	end
 	
-	local role
+	self.role = nil;
+	
 	if type(roles[E.myclass]) == "string" then
-		role = roles[E.myclass]
-	else
-		role = roles[E.myclass][tree] or "Melee"
+		self.role = roles[E.myclass]
+	elseif talentTree then
+		self.role = roles[E.myclass][talentTree]
 	end
 	
-	if role == "Tank" and IsInPvPGear then
-		role = "Melee"
+	if self.role == "Tank" and IsInPvPGear then
+		self.role = "Melee"
 	end
 	
-	self.role = role
+	if not self.role then
+		local playerint = select(2, UnitStat("player", 4));
+		local playeragi	= select(2, UnitStat("player", 2));
+		local base, posBuff, negBuff = UnitAttackPower("player");
+		local playerap = base + posBuff + negBuff;
+
+		if (playerap > playerint) or (playeragi > playerint) then
+			self.role = "Melee";
+		else
+			self.role = "Caster";
+		end		
+	end
 end
 
 function E:RegisterModule(name)
