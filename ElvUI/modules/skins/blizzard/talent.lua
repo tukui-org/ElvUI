@@ -266,7 +266,7 @@ local function LoadSkin()
 
 		if icon then
 			d:ClearAllPoints()
-			pointsSpent = select(5,GetTalentTabInfo( 1, Partycheck, true, 1 ))
+			pointsSpent = select(5,GetSpecializationInfo( 1, Partycheck, true, 1 ))
 			icon:SetTexCoord(unpack(E.TexCoords))
 			button:SetFrameLevel(button:GetFrameLevel() +1)
 			button:ClearAllPoints()

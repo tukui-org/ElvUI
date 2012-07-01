@@ -128,7 +128,7 @@ local function UpdateFilterGroup(reset)
 		end,		
 	}
 	
-	local spec1, spec2, spec3 = select(2, GetTalentTabInfo(1)), select(2, GetTalentTabInfo(2)), select(2, GetTalentTabInfo(3))
+	local spec1, spec2, spec3 = select(2, GetSpecializationInfo(1)), select(2, GetSpecializationInfo(2)), select(2, GetSpecializationInfo(3))
 	E.Options.args.reminder.args.filterGroup.args["tree"] = {
 		type = 'select',
 		name = L["Talent Tree"],
