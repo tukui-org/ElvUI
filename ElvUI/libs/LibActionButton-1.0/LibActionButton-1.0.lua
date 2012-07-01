@@ -647,7 +647,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("ACTIONBAR_SLOT_CHANGED")
 	lib.eventFrame:RegisterEvent("UPDATE_BINDINGS")
 	lib.eventFrame:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
-
+	
 	lib.eventFrame:RegisterEvent("ACTIONBAR_UPDATE_STATE")
 	lib.eventFrame:RegisterEvent("ACTIONBAR_UPDATE_USABLE")
 	lib.eventFrame:RegisterEvent("ACTIONBAR_UPDATE_COOLDOWN")
@@ -670,6 +670,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
 
 	-- With those two, do we still need the ACTIONBAR equivalents of them?
+	lib.eventFrame:RegisterEvent("SPELL_UPDATE_CHARGES")
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_COOLDOWN")
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_USABLE")
 	lib.eventFrame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
@@ -758,6 +759,8 @@ function OnEvent(frame, event, arg1, ...)
 				Update(button)
 			end
 		end
+	elseif event == "SPELL_UPDATE_CHARGES" then
+		ForAllButtons(Update)
 	end
 end
 
@@ -954,7 +957,7 @@ function Update(self)
 	else
 		self.actionName:SetText("")
 	end
-
+	
 	-- Update icon and hotkey
 	local texture = self:GetTexture()
 	if texture then
@@ -1062,6 +1065,12 @@ function UpdateUsable(self)
 end
 
 function UpdateCount(self)
+	local charges, maxCharges = 0, 0
+	if self._state_action then
+		charges, maxCharges = GetActionCharges(self._state_action)
+	end
+	
+	self.cooldown:SetParent(self)
 	if self:IsConsumableOrStackable() then
 		local count = self:GetCount()
 		if count > (self.maxDisplayCount or 9999) then
@@ -1069,6 +1078,8 @@ function UpdateCount(self)
 		else
 			self.count:SetText(count)
 		end
+	elseif maxCharges > 1 then
+		self.count:SetText(charges)
 	else
 		self.count:SetText("")
 	end
