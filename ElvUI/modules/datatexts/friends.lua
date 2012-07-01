@@ -260,6 +260,7 @@ local function OnEnter(self)
 			if info[5] then
 				if GetRealZoneText() == info[4] then zonec = activezone else zonec = inactivezone end
 				classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetQuestDifficultyColor(info[2])
+				
 				if classc == nil then classc = GetQuestDifficultyColor(info[2]) end
 				
 				if UnitInParty(info[1]) or UnitInRaid(info[1]) then grouped = 1 else grouped = 2 end
