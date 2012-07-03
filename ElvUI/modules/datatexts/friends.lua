@@ -52,14 +52,14 @@ local function inviteClick(self, name)
 	end
 end
 
-local function whisperClick(self, name)
+local function whisperClick(self, name, battleNet)
 	menuFrame:Hide() 
-	SetItemRef( "player:"..name, ("|Hplayer:%1$s|h[%1$s]|h"):format(name), "LeftButton" )		 
-end
-
-local function whisperBNClick(self, name)
-	menuFrame:Hide() 
-	ChatFrame_SendSmartTell(name)
+	
+	if battleNet then
+		ChatFrame_SendSmartTell(name)
+	else
+		SetItemRef( "player:"..name, ("|Hplayer:%1$s|h[%1$s]|h"):format(name), "LeftButton" )		 
+	end
 end
 
 local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r"
@@ -214,7 +214,7 @@ local function Click(self, btn)
 				if (info[7]) then
 					realID = (BATTLENET_NAME_FORMAT):format(info[2], info[3])
 					menuCountWhispers = menuCountWhispers + 1
-					menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID,notCheckable=true, func = whisperBNClick}
+					menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = whisperClick}
 					
 					if select(1, UnitFactionGroup("player")) == "Horde" then playerFaction = 0 else playerFaction = 1 end
 					if info[6] == wowString and playerFaction == info[12] then
