@@ -37,6 +37,7 @@ RBR.AttackSpeed = {
 
 RBR.SpellHaste = {
 	24907, -- Moonkin Aura
+	51470, -- Elemental Oath
 	49868, -- Mind Quickening
 }
 
