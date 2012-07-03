@@ -42,19 +42,24 @@ local menuList = {
 	{ text = BN_BROADCAST_TOOLTIP, notCheckable=true, func = function() StaticPopup_Show("SET_BN_BROADCAST") end },
 }
 
-local function inviteClick(self, arg1, arg2, checked)
+local function inviteClick(self, name)
 	menuFrame:Hide()
 	
-	if type(arg1) ~= 'number' then
-		InviteUnit(arg1)
+	if type(name) ~= 'number' then
+		InviteUnit(name)
 	else
-		BNInviteFriend(arg1);
+		BNInviteFriend(name);
 	end
 end
 
-local function whisperClick(self,arg1,arg2,checked)
+local function whisperClick(self, name)
 	menuFrame:Hide() 
-	SetItemRef( "player:"..arg1, ("|Hplayer:%1$s|h[%1$s]|h"):format(arg1), "LeftButton" )		 
+	SetItemRef( "player:"..name, ("|Hplayer:%1$s|h[%1$s]|h"):format(name), "LeftButton" )		 
+end
+
+local function whisperBNClick(self, name)
+	menuFrame:Hide() 
+	ChatFrame_SendSmartTell(name)
 end
 
 local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r"
@@ -209,7 +214,7 @@ local function Click(self, btn)
 				if (info[7]) then
 					realID = (BATTLENET_NAME_FORMAT):format(info[2], info[3])
 					menuCountWhispers = menuCountWhispers + 1
-					menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID,notCheckable=true, func = whisperClick}
+					menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID,notCheckable=true, func = whisperBNClick}
 					
 					if select(1, UnitFactionGroup("player")) == "Horde" then playerFaction = 0 else playerFaction = 1 end
 					if info[6] == wowString and playerFaction == info[12] then
