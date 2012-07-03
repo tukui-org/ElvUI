@@ -1066,7 +1066,8 @@ end
 
 function UpdateCount(self)
 	local charges, maxCharges = 0, 0
-	if self._state_action then
+
+	if self._state_action and type(self._state_action) == "number" then
 		charges, maxCharges = GetActionCharges(self._state_action)
 	end
 	
