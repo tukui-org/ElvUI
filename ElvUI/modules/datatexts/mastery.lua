@@ -10,7 +10,7 @@ local function OnEvent(self, event)
 	local masteryspell, masteryTag
 	if GetCombatRating(CR_MASTERY) ~= 0 and GetSpecialization() then
 		masteryTag = STAT_MASTERY..": "
-		self.text:SetFormattedText(displayString, masteryTag, GetMastery())
+		self.text:SetFormattedText(displayString, masteryTag, GetMasteryEffect())
 	end
 end
 
@@ -18,14 +18,11 @@ local function OnEnter(self)
 	DT:SetupTooltip(self)
 	GameTooltip:ClearLines()
 
-	local mastery = GetMastery();
-	local masteryBonus = GetCombatRatingBonus(CR_MASTERY);
-	mastery = string.format("%.2f", mastery);
-
-	local masteryKnown = IsSpellKnown(CLASS_MASTERY_SPELLS[E.myclass]);
 	local primaryTalentTree = GetSpecialization();
+	local masterySpell = GetSpecializationMasterySpells(primaryTalentTree);
+	local masteryKnown = IsSpellKnown(masterySpell);
+	
 	if (masteryKnown and primaryTalentTree) then
-		local masterySpell, masterySpell2 = GetTalentTreeMasterySpells(primaryTalentTree);
 		if (masterySpell) then
 			GameTooltip:AddSpellByID(masterySpell);
 		end
@@ -34,7 +31,7 @@ local function OnEnter(self)
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayString = string.join("", "%s", hex, "%.2f|r")
+	displayString = string.join("", "%s", hex, "%.2f%%|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)
