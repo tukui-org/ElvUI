@@ -299,8 +299,6 @@ function AB:UpdateButtonSettings()
 	for barName, bar in pairs(self["handledBars"]) do
 		self:UpdateButtonConfig(bar, bar.bindButtons)
 	end
-	
-	self:MultiActionBar_Update()
 end
 
 function AB:CVAR_UPDATE(event)
@@ -660,65 +658,29 @@ function AB:StyleFlyout(button)
 end
 
 --BugFix: Prevent the main actionbar from displaying other actionbar pages..
-function AB:MultiActionBar_Update()
-	if self.db.useMaxPaging then
-		if self.db['bar2'].enabled then
-			if not InterfaceOptionsActionBarsPanelBottomRight:GetChecked() then
-				InterfaceOptionsActionBarsPanelBottomRight:Click()
-			end
-		else
-			if InterfaceOptionsActionBarsPanelBottomRight:GetChecked() then
-				InterfaceOptionsActionBarsPanelBottomRight:Click()
-			end
-		end
-
-		if self.db['bar3'].enabled then
-			if not InterfaceOptionsActionBarsPanelBottomLeft:GetChecked() then
-				InterfaceOptionsActionBarsPanelBottomLeft:Click()
-			end
-		else
-			if InterfaceOptionsActionBarsPanelBottomLeft:GetChecked() then
-				InterfaceOptionsActionBarsPanelBottomLeft:Click()
-			end
-		end
-		
-		if not self.db['bar5'].enabled and not self.db['bar4'].enabled then
-			if InterfaceOptionsActionBarsPanelRight:GetChecked() then
-				InterfaceOptionsActionBarsPanelRight:Click()
-			end			
-		else
-			if not InterfaceOptionsActionBarsPanelRight:GetChecked() then
-				InterfaceOptionsActionBarsPanelRight:Click()
-			end
-		end			
-
-		if self.db['bar4'].enabled then
-			InterfaceOptionsActionBarsPanelRightTwo:Enable()
-			if not InterfaceOptionsActionBarsPanelRightTwo:GetChecked() then
-				InterfaceOptionsActionBarsPanelRightTwo:Click()
-			end
-		else
-			if InterfaceOptionsActionBarsPanelRightTwo:GetChecked() then
-				InterfaceOptionsActionBarsPanelRightTwo:Click()
-			end
-		end
+function AB:MultiActionBar_Update(event)
+	if InCombatLockdown() then
+		self:RegisterEvent('PLAYER_REGEN_ENABLED', 'MultiActionBar_Update');
+		return;
+	end
+	
+	local bottomLeft, bottomRight, right, rightTwo = GetActionBarToggles()
+	if self.db.useMaxPaging then		
+		SHOW_MULTI_ACTIONBAR_1 = self.db['bar3'].enabled == true and "1" or nil
+		SHOW_MULTI_ACTIONBAR_2 = self.db['bar2'].enabled == true and "1" or nil
+		SHOW_MULTI_ACTIONBAR_3 = self.db['bar5'].enabled == true and "1" or nil
+		SHOW_MULTI_ACTIONBAR_4 = self.db['bar4'].enabled == true and "1" or nil
 	else
-		if not InterfaceOptionsActionBarsPanelBottomRight:GetChecked() then
-			InterfaceOptionsActionBarsPanelBottomRight:Click()
-		end
-		
-		if not InterfaceOptionsActionBarsPanelBottomLeft:GetChecked() then
-			InterfaceOptionsActionBarsPanelBottomLeft:Click()
-		end		
-		
-		if not InterfaceOptionsActionBarsPanelRight:GetChecked() then
-			InterfaceOptionsActionBarsPanelRight:Click()
-		end		
-		
-		InterfaceOptionsActionBarsPanelRightTwo:Enable()
-		if not InterfaceOptionsActionBarsPanelRightTwo:GetChecked() then
-			InterfaceOptionsActionBarsPanelRightTwo:Click()
-		end			
+		SHOW_MULTI_ACTIONBAR_1 = "1"
+		SHOW_MULTI_ACTIONBAR_2 = "1"
+		SHOW_MULTI_ACTIONBAR_3 = "1"
+		SHOW_MULTI_ACTIONBAR_4 = "1"
+	end
+
+	MultiActionBar_Update();
+	
+	if event == 'PLAYER_REGEN_ENABLED' then
+		self:UnregisterEvent('PLAYER_REGEN_ENABLED')
 	end
 end
 
@@ -743,6 +705,7 @@ function AB:Initialize()
 	self:LoadKeyBinder()
 	self:UpdateCooldownSettings()
 	self:RegisterEvent("UPDATE_BINDINGS", "ReassignBindings")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD", "MultiActionBar_Update")
 	self:RegisterEvent('CVAR_UPDATE')
 	self:ReassignBindings()
 	
