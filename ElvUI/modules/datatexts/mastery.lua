@@ -19,11 +19,12 @@ local function OnEnter(self)
 	GameTooltip:ClearLines()
 
 	local primaryTalentTree = GetSpecialization();
-	local masterySpell = GetSpecializationMasterySpells(primaryTalentTree);
-	local masteryKnown = IsSpellKnown(masterySpell);
 	
-	if (masteryKnown and primaryTalentTree) then
-		if (masterySpell) then
+	if (primaryTalentTree) then
+		local masterySpell = GetSpecializationMasterySpells(primaryTalentTree);
+		local masteryKnown = IsSpellKnown(masterySpell);
+		
+		if (masteryKnown) then
 			GameTooltip:AddSpellByID(masterySpell);
 		end
 	end

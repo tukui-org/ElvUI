@@ -30,6 +30,8 @@ function UF:Construct_TargetFrame(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
 	
+	frame.AuraBars = self:Construct_AuraBarHeader(frame)
+	
 	frame:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOM', 417, 75)
 	E:CreateMover(frame, frame:GetName()..'Mover', 'Target Frame')
 end
@@ -485,6 +487,15 @@ function UF:Update_TargetFrame(frame, db)
 				frame:DisableElement('HealPrediction')
 			end		
 		end
+	end	
+	
+	--AuraBars
+	do
+		local auraBars = frame.AuraBars
+		local healthColor = UF.db.colors.health
+		auraBars:SetPoint('BOTTOMLEFT', frame, 'TOPLEFT')
+		auraBars:SetPoint('BOTTOMRIGHT', frame, 'TOPRIGHT')
+		auraBars.buffColor = {healthColor.r, healthColor.b, healthColor.g}
 	end	
 	
 	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))

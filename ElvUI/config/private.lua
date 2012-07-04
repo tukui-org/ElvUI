@@ -19,10 +19,6 @@ V['bags'] = {
 	},
 }
 
-V['classtimer'] = {
-	['enable'] = true,
-}
-
 V['reminder'] = {
 	['enable'] = true,
 	['sound'] = "ElvUI Warning",

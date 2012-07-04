@@ -203,8 +203,6 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.unitframe.units.boss.castbar.color = E:GetColor(.31, .31, .31)
 		E.db.unitframe.units.arena.castbar.color = E:GetColor(.31, .31, .31)
 		
-		E.db.classtimer.player.buffcolor = E:GetColor(.31, .31, .31)
-		E.db.classtimer.target.buffcolor = E:GetColor(.31, .31, .31)
 	elseif theme == "class" then
 		E.db.general.bordercolor = E:GetColor(classColor.r, classColor.b, classColor.g)
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
@@ -216,9 +214,6 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.unitframe.units.focus.castbar.color = E:GetColor(classColor.r, classColor.b, classColor.g)
 		E.db.unitframe.units.boss.castbar.color = E:GetColor(classColor.r, classColor.b, classColor.g)
 		E.db.unitframe.units.arena.castbar.color = E:GetColor(classColor.r, classColor.b, classColor.g)
-		
-		E.db.classtimer.player.buffcolor = E:GetColor(classColor.r, classColor.b, classColor.g)
-		E.db.classtimer.target.buffcolor = E:GetColor(classColor.r, classColor.b, classColor.g)
 	else
 		E.db.general.bordercolor = E:GetColor(.1, .1, .1)
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
@@ -231,9 +226,6 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.unitframe.units.focus.castbar.color = E:GetColor(.1, .1, .1)
 		E.db.unitframe.units.boss.castbar.color = E:GetColor(.1, .1, .1)
 		E.db.unitframe.units.arena.castbar.color = E:GetColor(.1, .1, .1)	
-	
-		E.db.classtimer.player.buffcolor = E:GetColor(.1, .1, .1)
-		E.db.classtimer.target.buffcolor = E:GetColor(.1, .1, .1)	
 	end
 	
 	--Value Color

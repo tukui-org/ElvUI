@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0');
 local LSM = LibStub("LibSharedMedia-3.0");
+UF.LSM = LSM
 
 local _, ns = ...
 local ElvUF = ns.oUF
@@ -223,6 +224,14 @@ function UF:Update_StatusBars()
 			statusbar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
 		end
 	end
+end
+
+function UF:Update_StatusBar(bar)
+	bar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+end
+
+function UF:Update_FontString(object)
+	object:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontsize, self.db.fontoutline)
 end
 
 function UF:Update_FontStrings()

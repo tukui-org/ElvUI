@@ -101,27 +101,6 @@ P['chat'] = {
 	['keywords'] = '%MYNAME%, ElvUI'
 }
 
---ClassTimers
-P['classtimer'] = {
-	['player'] = {
-		['enable'] = true,
-		['anchor'] = 'PLAYERDEBUFFS',
-		["buffcolor"] = P.general.bordercolor,
-		["debuffcolor"] = {r = 0.78, g = 0.25, b = 0.25},		
-	},
-	['target'] = {
-		['enable'] = true,
-		['anchor'] = 'TARGETDEBUFFS',
-		["buffcolor"] = P.general.bordercolor,
-		["debuffcolor"] = {r = 0.78, g = 0.25, b = 0.25},			
-	},	
-	['trinket'] = {
-		['enable'] = true,
-		['anchor'] = 'PLAYERANCHOR',
-		["color"] = {r = 0.84, g = 0.75, b = 0.65},			
-	},
-}
-
 --Skins
 P['skins'] = {
 	['embedRight'] = '',
@@ -247,7 +226,7 @@ P['unitframe'] = {
 				['durationLimit'] = 900,
 			},
 			['debuffs'] = {
-				['enable'] = true,
+				['enable'] = false,
 				['perrow'] = 7,
 				['numrows'] = 1,
 				['growth-x'] = 'LEFT',
@@ -312,7 +291,7 @@ P['unitframe'] = {
 				['camDistanceScale'] = 1,
 			},
 			['buffs'] = {
-				['enable'] = true,
+				['enable'] = false,
 				['perrow'] = 7,
 				['numrows'] = 1,
 				['growth-x'] = 'LEFT',
@@ -326,7 +305,7 @@ P['unitframe'] = {
 				['durationLimit'] = 0,
 			},
 			['debuffs'] = {
-				['enable'] = true,
+				['enable'] = false,
 				['perrow'] = 7,
 				['numrows'] = 1,
 				['growth-x'] = 'LEFT',

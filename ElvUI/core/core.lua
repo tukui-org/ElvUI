@@ -86,12 +86,6 @@ function E:UpdateMedia()
 		RightChatPanel.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.55 > 0 and E.db.general.backdropfadecolor.a - 0.55 or 0.5)		
 	end
 
-	if E.db.theme == 'class' then
-		local classColor = RAID_CLASS_COLORS[E.myclass]
-		E.db.classtimer.player.buffcolor = E:GetColor(classColor.r, classColor.b, classColor.g)
-		E.db.classtimer.target.buffcolor = E:GetColor(classColor.r, classColor.b, classColor.g)		
-	end				
-	
 	self:ValueFuncCall()
 	self:UpdateBlizzardFonts()
 end
@@ -475,12 +469,6 @@ function E:UpdateAll(ignoreInstall)
 	
 	self:GetModule('Skins'):SetEmbedRight(E.db.skins.embedRight)
 	self:GetModule('Layout'):ToggleChatPanels()
-	
-	local CT = self:GetModule('ClassTimers')
-	CT.db = self.db.classtimer
-	CT:PositionTimers()
-	CT:ToggleTimers()
-	CT:UpdateFiltersAndColors() 
 	
 	local DT = self:GetModule('DataTexts')
 	DT.db = self.db.datatexts

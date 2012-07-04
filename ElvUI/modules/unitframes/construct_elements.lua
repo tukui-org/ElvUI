@@ -664,3 +664,41 @@ function UF:Construct_RaidRoleFrames(frame)
 	
 	return anchor
 end
+
+function UF:Construct_AuraBars()
+	local bar = self.statusBar
+	
+	self:SetTemplate('Default')
+
+	bar:ClearAllPoints()
+	bar:Point('TOPLEFT', self, 'TOPLEFT', 2, -2)
+	bar:Point('BOTTOMRIGHT', self, 'BOTTOMRIGHT', -2, 2)
+	UF['statusbars'][bar] = true
+	UF:Update_StatusBar(bar)
+		
+	UF['fontstrings'][bar.spelltime] = true
+	UF['fontstrings'][bar.spellname] = true
+	UF:Update_FontString(bar.spelltime)
+	UF:Update_FontString(bar.spellname)
+	
+	bar.spellname:ClearAllPoints()
+	bar.spellname:SetPoint('LEFT', bar, 'LEFT', 2, 0)
+	
+	bar.iconHolder:SetTemplate('Default')
+	bar.icon:SetPoint('TOPLEFT', bar.iconHolder, 'TOPLEFT', 2, -2)
+	bar.icon:SetPoint('BOTTOMRIGHT', bar.iconHolder, 'BOTTOMRIGHT', -2, 2)
+	bar.icon:SetDrawLayer('OVERLAY')
+end
+
+function UF:Construct_AuraBarHeader(frame)
+	local auraBar = CreateFrame('Frame', nil, frame)
+	auraBar.PostCreateBar = UF.Construct_AuraBars
+	auraBar.gap = 1
+	auraBar.spacing = 1
+	auraBar.spark = true
+	auraBar.sort = true
+	auraBar.debuffColor = {0.8, 0.1, 0.1}
+	auraBar.filter = UF.AuraBarFilter
+	
+	return auraBar
+end

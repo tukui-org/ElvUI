@@ -50,6 +50,8 @@ function UF:Construct_PlayerFrame(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 
+	frame.AuraBars = self:Construct_AuraBarHeader(frame)
+		
 	frame.CombatFade = true
 
 	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -417, 75) --Set to default position	
@@ -969,6 +971,15 @@ function UF:Update_PlayerFrame(frame, db)
 				frame:DisableElement('HealPrediction')
 			end		
 		end
+	end
+	
+	--AuraBars
+	do
+		local auraBars = frame.AuraBars
+		local healthColor = UF.db.colors.health
+		auraBars:SetPoint('BOTTOMLEFT', frame, 'TOPLEFT', 0, -1)
+		auraBars:SetPoint('BOTTOMRIGHT', frame, 'TOPRIGHT', 0, -1)
+		auraBars.buffColor = {healthColor.r, healthColor.b, healthColor.g}
 	end
 
 	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))

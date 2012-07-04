@@ -1172,3 +1172,22 @@ function UF:RaidRoleUpdate()
 		end
 	end
 end
+
+function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate)
+	local isFriend
+	if UnitIsFriend('player', unit) then
+		isFriend = true
+	end
+	
+	if unit == 'player' then
+		if (unitCaster == 'player' or E.global['classtimer'][name]) and not shouldConsolidate then
+			return true
+		end
+	elseif unit == 'target' then
+		if (isFriend or E.global['classtimer'][name]) and not shouldConsolidate and unitCaster == 'player' then
+			return true
+		elseif not isFriend and unitCaster == 'player' then
+			return true
+		end
+	end
+end
