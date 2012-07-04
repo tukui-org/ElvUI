@@ -30,7 +30,7 @@ function A:StyleBuffs(buttonName, index, debuff)
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:Point("TOPLEFT", buff, 2, -2)
 		icon:Point("BOTTOMRIGHT", buff, -2, 2)
-		
+		icon:SetDrawLayer('OVERLAY')
 		buff:Size(30)
 				
 		duration:ClearAllPoints()
