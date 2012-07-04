@@ -610,7 +610,7 @@ function UF:Update_PlayerFrame(frame, db)
 			local bars = frame.HolyPower
 			bars:ClearAllPoints()
 			if USE_MINI_CLASSBAR then
-				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), -SPACING)
+				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
 				bars:SetFrameStrata("MEDIUM")
 			else
 				bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
@@ -663,7 +663,7 @@ function UF:Update_PlayerFrame(frame, db)
 			local bars = frame.ShadowOrbs
 			bars:ClearAllPoints()
 			if USE_MINI_CLASSBAR then
-				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), -SPACING)
+				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
 				bars:SetFrameStrata("MEDIUM")
 			else
 				bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
@@ -711,7 +711,7 @@ function UF:Update_PlayerFrame(frame, db)
 			local bars = frame.ShardBar
 			bars:ClearAllPoints()
 			if USE_MINI_CLASSBAR then
-				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), -SPACING)
+				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
 				bars:SetFrameStrata("MEDIUM")
 			else
 				bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
@@ -736,7 +736,7 @@ function UF:Update_PlayerFrame(frame, db)
 			local bars = frame.Harmony
 			bars:ClearAllPoints()
 			if USE_MINI_CLASSBAR then
-				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), -SPACING)
+				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
 				bars:SetFrameStrata("MEDIUM")			
 			else
 				bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
@@ -764,7 +764,7 @@ function UF:Update_PlayerFrame(frame, db)
 			if USE_MINI_CLASSBAR then
 				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 3/2 --Multiply by reciprocal to reset previous setting
 				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 4/5
-				runes:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 8), -SPACING)
+				runes:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 8), 0)
 				runes:SetFrameStrata("MEDIUM")
 			else
 				runes:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
@@ -825,7 +825,7 @@ function UF:Update_PlayerFrame(frame, db)
 			else
 				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 3/2 --Multiply by reciprocal to reset previous setting
 				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 4/5
-				totems:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), -SPACING)
+				totems:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
 				totems:SetFrameStrata("MEDIUM")			
 			end
 			
@@ -977,8 +977,8 @@ function UF:Update_PlayerFrame(frame, db)
 	do
 		local auraBars = frame.AuraBars
 		local healthColor = UF.db.colors.health
-		auraBars:SetPoint('BOTTOMLEFT', frame, 'TOPLEFT', 0, -1)
-		auraBars:SetPoint('BOTTOMRIGHT', frame, 'TOPRIGHT', 0, -1)
+		auraBars:SetPoint('BOTTOMLEFT', frame, 'TOPLEFT')
+		auraBars:SetPoint('BOTTOMRIGHT', frame, 'TOPRIGHT')
 		auraBars.buffColor = {healthColor.r, healthColor.b, healthColor.g}
 	end
 
