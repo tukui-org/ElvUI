@@ -91,6 +91,7 @@ local HAND_OF_LIGHT = GetSpellInfo(90174);
 local PLAYERCLASS = select(2, UnitClass('player'))
 local HOLY_POWER_SPELLS = {
 	[85256] = GetSpellInfo(85256), --Templar's Verdict
+	[53385] = GetSpellInfo(53385), --Divine Storm
 	[53600] = GetSpellInfo(53600), --Shield of the Righteous
 };
 
@@ -1048,7 +1049,7 @@ function UpdateUsable(self)
 	else
 		local isUsable, notEnoughMana = self:IsUsable()
 		local action = self._state_action
-		if PLAYERCLASS == 'PALADIN' and IsHolyPowerAbility(action) and not(UnitPower('player', SPELL_POWER_HOLY_POWER) == 3 or UnitBuff('player', HAND_OF_LIGHT)) then
+		if PLAYERCLASS == 'PALADIN' and IsHolyPowerAbility(action) and not(UnitPower('player', SPELL_POWER_HOLY_POWER) >= 3 or UnitBuff('player', HAND_OF_LIGHT)) then
 			self.icon:SetVertexColor(unpack(self.config.colors.hp))
 		elseif isUsable then
 			self.icon:SetVertexColor(1.0, 1.0, 1.0)
