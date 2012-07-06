@@ -223,10 +223,6 @@ function UF:Update_PlayerFrame(frame, db)
 		if USE_POWERBAR_OFFSET then
 			CLASSBAR_WIDTH = CLASSBAR_WIDTH - POWERBAR_OFFSET
 		end
-
-		if USE_MINI_CLASSBAR then
-			CLASSBAR_WIDTH = CLASSBAR_WIDTH*2/3
-		end	
 		
 		if USE_MINI_POWERBAR then
 			POWERBAR_WIDTH = POWERBAR_WIDTH / 2
@@ -609,20 +605,20 @@ function UF:Update_PlayerFrame(frame, db)
 		if E.myclass == "PALADIN" then
 			local bars = frame.HolyPower
 			bars:ClearAllPoints()
+			
+			local MAX_HOLY_POWER = 5
+			
 			if USE_MINI_CLASSBAR then
+				CLASSBAR_WIDTH = CLASSBAR_WIDTH * (MAX_HOLY_POWER - 1) / MAX_HOLY_POWER		
 				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
 				bars:SetFrameStrata("MEDIUM")
 			else
 				bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
 				bars:SetFrameStrata("LOW")
 			end
-			CLASSBAR_WIDTH = CLASSBAR_WIDTH * 3/2 --Multiply by reciprocal to reset previous setting
-			CLASSBAR_WIDTH = CLASSBAR_WIDTH * 4/5			
-			
+
 			bars:Width(CLASSBAR_WIDTH)
-			bars:Height(CLASSBAR_HEIGHT - (BORDER*2))
-			
-			local MAX_HOLY_POWER = UnitPowerMax('player', SPELL_POWER_HOLY_POWER);
+			bars:Height(CLASSBAR_HEIGHT - (BORDER*2))			
 
 			for i = 1, MAX_HOLY_POWER do
 				bars[i]:SetHeight(bars:GetHeight())	
@@ -663,6 +659,7 @@ function UF:Update_PlayerFrame(frame, db)
 			local bars = frame.ShadowOrbs
 			bars:ClearAllPoints()
 			if USE_MINI_CLASSBAR then
+				CLASSBAR_WIDTH = CLASSBAR_WIDTH * (PRIEST_BAR_NUM_ORBS - 1) / PRIEST_BAR_NUM_ORBS
 				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
 				bars:SetFrameStrata("MEDIUM")
 			else
@@ -762,7 +759,6 @@ function UF:Update_PlayerFrame(frame, db)
 			local runes = frame.Runes
 			runes:ClearAllPoints()
 			if USE_MINI_CLASSBAR then
-				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 3/2 --Multiply by reciprocal to reset previous setting
 				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 4/5
 				runes:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 8), 0)
 				runes:SetFrameStrata("MEDIUM")
@@ -823,7 +819,6 @@ function UF:Update_PlayerFrame(frame, db)
 				totems:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
 				totems:SetFrameStrata("LOW")
 			else
-				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 3/2 --Multiply by reciprocal to reset previous setting
 				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 4/5
 				totems:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
 				totems:SetFrameStrata("MEDIUM")			
@@ -881,7 +876,6 @@ function UF:Update_PlayerFrame(frame, db)
 				eclipseBar:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
 				eclipseBar:SetFrameStrata("LOW")
 			else		
-				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 3/2 --Multiply by reciprocal to reset previous setting
 				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 2/3			
 				eclipseBar:Point("LEFT", frame.Health.backdrop, "TOPLEFT", (BORDER*2 + 4), 0)
 				eclipseBar:SetFrameStrata("MEDIUM")						
