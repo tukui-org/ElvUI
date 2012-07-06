@@ -226,7 +226,7 @@ P['unitframe'] = {
 				['durationLimit'] = 900,
 			},
 			['debuffs'] = {
-				['enable'] = false,
+				['enable'] = true,
 				['perrow'] = 7,
 				['numrows'] = 1,
 				['growth-x'] = 'LEFT',
@@ -259,6 +259,14 @@ P['unitframe'] = {
 				['fill'] = 'spaced',
 				['height'] = 10,
 			},
+			['aurabar'] = {
+				['enable'] = true,
+				['anchorPoint'] = 'ABOVE',
+				['attachTo'] = 'DEBUFFS',
+				['noDuration'] = true,
+				['noConsolidated'] = true,
+				['growthDirection'] = 'UP',
+			},	
 		},	
 		['target'] = {
 			['enable'] = true,
@@ -334,7 +342,15 @@ P['unitframe'] = {
 				['enable'] = true,
 				['fill'] = 'spaced',
 				['height'] = 10,
-			},				
+			},		
+			['aurabar'] = {
+				['enable'] = true,
+				['anchorPoint'] = 'ABOVE',
+				['attachTo'] = 'FRAME',
+				['noDuration'] = true,
+				['noConsolidated'] = true,
+				['growthDirection'] = 'UP',
+			},			
 		},
 		['targettarget'] = {
 			['enable'] = true,
@@ -451,7 +467,15 @@ P['unitframe'] = {
 				['yOffset'] = 0,
 				['format'] = 'REMAINING',
 				['spark'] = true,
-			},					
+			},	
+			['aurabar'] = {
+				['enable'] = false,
+				['anchorPoint'] = 'ABOVE',
+				['attachTo'] = 'FRAME',
+				['noDuration'] = true,
+				['noConsolidated'] = true,
+				['growthDirection'] = 'UP',
+			},				
 		},	
 		['focustarget'] = {
 			['enable'] = false,

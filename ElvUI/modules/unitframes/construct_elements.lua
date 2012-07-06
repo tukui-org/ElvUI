@@ -688,6 +688,28 @@ function UF:Construct_AuraBars()
 	bar.icon:SetPoint('TOPLEFT', bar.iconHolder, 'TOPLEFT', 2, -2)
 	bar.icon:SetPoint('BOTTOMRIGHT', bar.iconHolder, 'BOTTOMRIGHT', -2, 2)
 	bar.icon:SetDrawLayer('OVERLAY')
+	
+	
+	bar.iconHolder:HookScript('OnEnter', function(self)
+		GameTooltip.auraBarLine = true;
+	end)	
+	
+	bar.iconHolder:HookScript('OnLeave', function(self)
+		GameTooltip.auraBarLine = nil;
+		GameTooltip.numLines = nil
+	end)		
+	
+	bar.iconHolder:RegisterForClicks('RightButtonUp')
+	bar.iconHolder:SetScript('OnClick', function(self)
+		if not IsShiftKeyDown() then return; end
+		local auraName = self:GetParent().aura.name
+		
+		if auraName then
+			E:Print(string.format(L['The spell "%s" has been added to the DebuffBlacklist unitframe filter.'], auraName))
+			E.global['unitframe']['aurafilters']['DebuffBlacklist']['spells'][auraName] = true
+			self:GetParent():GetParent():GetParent():GetParent():UpdateAllElements()
+		end
+	end)
 end
 
 function UF:Construct_AuraBarHeader(frame)
@@ -699,6 +721,15 @@ function UF:Construct_AuraBarHeader(frame)
 	auraBar.sort = true
 	auraBar.debuffColor = {0.8, 0.1, 0.1}
 	auraBar.filter = UF.AuraBarFilter
+
+	hooksecurefunc(GameTooltip, "SetUnitAura", function(self,...)
+		if self.auraBarLine and self.numLines ~= self:NumLines() then
+			self:AddLine(L['Hold shift + right click to blacklist this aura.'])
+			if not self.numLines then
+				self.numLines = self:NumLines()
+			end
+		end
+	end)	
 	
 	return auraBar
 end

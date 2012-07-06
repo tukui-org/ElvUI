@@ -21,7 +21,8 @@ function UF:Construct_FocusFrame(frame)
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)	
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
-	
+	frame.AuraBars = self:Construct_AuraBarHeader(frame)
+
 	frame:Point('BOTTOMRIGHT', ElvUF_Target, 'TOPRIGHT', 0, 220)
 	E:CreateMover(frame, frame:GetName()..'Mover', 'Focus Frame')
 end
@@ -322,6 +323,42 @@ function UF:Update_FocusFrame(frame, db)
 			end		
 		end
 	end	
+	
+	--AuraBars
+	do
+		local auraBars = frame.AuraBars
+		
+		if db.aurabar.enable then
+			if not frame:IsElementEnabled('AuraBars') then
+				frame:EnableElement('AuraBars')
+			end
+			
+			local healthColor = UF.db.colors.health
+			local attachTo = frame
+			
+			if db.aurabar.attachTo == 'BUFFS' then
+				attachTo = frame.Buffs
+			elseif db.aurabar.attachTo == 'DEBUFFS' then
+				attachTo = frame.Debuffs
+			end
+			
+			local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
+			if db.aurabar.anchorPoint == 'BELOW' then
+				anchorPoint, anchorTo = 'TOP', 'BOTTOM'
+			end
+			
+			auraBars:ClearAllPoints()
+			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT')
+			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT')
+			auraBars.buffColor = {healthColor.r, healthColor.b, healthColor.g}
+			auraBars.down = db.aurabar.growthDirection == 'DOWN'
+			auraBars:SetAnchors()
+		else
+			if frame:IsElementEnabled('AuraBars') then
+				frame:DisableElement('AuraBars')
+			end		
+		end
+	end
 		
 	frame:UpdateAllElements()
 end

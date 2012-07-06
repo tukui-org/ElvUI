@@ -41,12 +41,36 @@ local function OnLeave(self)
 	GameTooltip:Hide()
 end
 
+local function SetAnchors(self)
+	local bars = self.bars
+
+	for index = 1, #bars do
+		local frame = bars[index]
+		local anchor = frame.anchor
+		frame:ClearAllPoints()
+		if self.down == true then
+			if self == anchor then -- Root frame so indent for icon
+				frame:SetPoint('TOPLEFT', anchor, 'BOTTOMLEFT', (frame:GetHeight() + (self.gap or 0) ), 0)
+			else
+				frame:SetPoint('TOPLEFT', anchor, 'BOTTOMLEFT', 0, (-self.spacing or 0))
+			end
+		else
+			if self == anchor then -- Root frame so indent for icon
+				frame:SetPoint('BOTTOMLEFT', anchor, 'TOPLEFT', (frame:GetHeight() + (self.gap or 0) ), 0)
+			else
+				frame:SetPoint('BOTTOMLEFT', anchor, 'TOPLEFT', 0, (self.spacing or 0))
+			end
+		end
+	end
+end
+
 local function CreateAuraBar(oUF, anchor)
 	local auraBarParent = oUF.AuraBars
 	
 	local frame = CreateFrame("Frame", nil, auraBarParent)
 	frame:SetHeight(auraBarParent.auraBarHeight or 20)
 	frame:SetWidth((auraBarParent.auraBarWidth or auraBarParent:GetWidth()) - (frame:GetHeight() + (auraBarParent.gap or 0)))
+	frame.anchor = anchor
 	
 	-- the main bar
 	local statusBar = CreateFrame("StatusBar", nil, frame)
@@ -258,6 +282,7 @@ local function Enable(self)
 		self:RegisterEvent('UNIT_AURA', Update)
 		self.AuraBars:SetHeight(1)
 		self.AuraBars.bars = self.AuraBars.bars or {}
+		self.AuraBars.SetAnchors = SetAnchors
 		self.AuraBars:SetScript('OnUpdate', UpdateBars)
 		return true
 	end
@@ -267,7 +292,7 @@ local function Disable(self)
 	local auraFrame = self.AuraBars
 	if auraFrame then
 		self:UnregisterEvent('UNIT_AURA', Update)
-		auraFrame:SetScript'OnUpdate'
+		auraFrame:SetScript('OnUpdate', nil)
 	end
 end
 

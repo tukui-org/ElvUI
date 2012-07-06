@@ -1302,6 +1302,62 @@ E.Options.args.unitframe.args.player = {
 				},				
 			},
 		},
+		aurabar = {
+			order = 1100,
+			type = 'group',
+			name = L['Aura Bars'],
+			get = function(info) return E.db.unitframe.units['player']['aurabar'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['player']['aurabar'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+			args = {
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},				
+				anchorPoint = {
+					type = 'select',
+					order = 2,
+					name = L['Anchor Point'],
+					desc = L['What point to anchor to the frame you set to attach to.'],
+					values = {
+						['ABOVE'] = L['Above'],
+						['BELOW'] = L['Below'],
+					},
+				},
+				attachTo = {
+					type = 'select',
+					order = 3,
+					name = L['Attach To'],
+					desc = L['The object you want to attach to.'],
+					values = {
+						['FRAME'] = L['Frame'],
+						['DEBUFFS'] = L['Debuffs'],
+						['BUFFS'] = L['Buffs'],
+					},					
+				},
+				growthDirection = {
+					type = 'select',
+					order = 4,
+					name = L['Growth Direction'],
+					values = {
+						['UP'] = L['Up'],
+						['DOWN'] = L['Down'],
+					},					
+				},
+				noDuration = {
+					type = 'toggle',
+					order = 5,
+					name = L['No Duration'],
+					desc = L['Allow displaying of aura bars that do not have a duration.'],
+				},
+				noConsolidated = {
+					type = 'toggle',
+					order = 6,
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of aura bars that are considered consolidated by Blizzard.'],
+				},
+			},
+		},			
 	},
 }
 
@@ -1868,7 +1924,63 @@ E.Options.args.unitframe.args.target = {
 					values = fillValues,
 				},				
 			},
-		},		
+		},	
+		aurabar = {
+			order = 900,
+			type = 'group',
+			name = L['Aura Bars'],
+			get = function(info) return E.db.unitframe.units['target']['aurabar'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['target']['aurabar'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
+			args = {
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},				
+				anchorPoint = {
+					type = 'select',
+					order = 2,
+					name = L['Anchor Point'],
+					desc = L['What point to anchor to the frame you set to attach to.'],
+					values = {
+						['ABOVE'] = L['Above'],
+						['BELOW'] = L['Below'],
+					},
+				},
+				attachTo = {
+					type = 'select',
+					order = 3,
+					name = L['Attach To'],
+					desc = L['The object you want to attach to.'],
+					values = {
+						['FRAME'] = L['Frame'],
+						['DEBUFFS'] = L['Debuffs'],
+						['BUFFS'] = L['Buffs'],
+					},					
+				},
+				growthDirection = {
+					type = 'select',
+					order = 4,
+					name = L['Growth Direction'],
+					values = {
+						['UP'] = L['Up'],
+						['DOWN'] = L['Down'],
+					},					
+				},
+				noDuration = {
+					type = 'toggle',
+					order = 5,
+					name = L['No Duration'],
+					desc = L['Allow displaying of aura bars that do not have a duration.'],
+				},
+				noConsolidated = {
+					type = 'toggle',
+					order = 6,
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of aura bars that are considered consolidated by Blizzard.'],
+				},
+			},
+		},			
 	},
 }
 
@@ -2750,7 +2862,63 @@ E.Options.args.unitframe.args.focus = {
 					desc = L['Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop.'],
 				},				
 			},
-		},		
+		},	
+		aurabar = {
+			order = 700,
+			type = 'group',
+			name = L['Aura Bars'],
+			get = function(info) return E.db.unitframe.units['focus']['aurabar'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['focus']['aurabar'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
+			args = {
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},				
+				anchorPoint = {
+					type = 'select',
+					order = 2,
+					name = L['Anchor Point'],
+					desc = L['What point to anchor to the frame you set to attach to.'],
+					values = {
+						['ABOVE'] = L['Above'],
+						['BELOW'] = L['Below'],
+					},
+				},
+				attachTo = {
+					type = 'select',
+					order = 3,
+					name = L['Attach To'],
+					desc = L['The object you want to attach to.'],
+					values = {
+						['FRAME'] = L['Frame'],
+						['DEBUFFS'] = L['Debuffs'],
+						['BUFFS'] = L['Buffs'],
+					},					
+				},
+				growthDirection = {
+					type = 'select',
+					order = 4,
+					name = L['Growth Direction'],
+					values = {
+						['UP'] = L['Up'],
+						['DOWN'] = L['Down'],
+					},					
+				},
+				noDuration = {
+					type = 'toggle',
+					order = 5,
+					name = L['No Duration'],
+					desc = L['Allow displaying of aura bars that do not have a duration.'],
+				},
+				noConsolidated = {
+					type = 'toggle',
+					order = 6,
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of aura bars that are considered consolidated by Blizzard.'],
+				},
+			},
+		},			
 	},
 }
 

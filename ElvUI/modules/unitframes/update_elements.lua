@@ -1173,21 +1173,46 @@ function UF:RaidRoleUpdate()
 	end
 end
 
+local function CheckFilterArguement(option, optionArgs)
+	if option ~= true then
+		return true
+	end
+
+	return optionArgs
+end
+
 function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate)
+	local db = self.db.aurabar
+	
+	if not db then return; end
+	
+	if E.global['unitframe']['aurafilters']['DebuffBlacklist']['spells'][name] then
+		return false
+	end
+	
 	local isFriend
 	if UnitIsFriend('player', unit) then
 		isFriend = true
 	end
 	
+	local isWhitelist = E.global['unitframe']['aurafilters']['AuraBars']['spells'][name]
+	local isPlayer = unitCaster == 'player' or unitCaster == 'pet' or unitCaster == 'vehicle'
+	local durationCheck = CheckFilterArguement(not db.noDuration, duration ~= 0 or isWhitelist)
+	local consolidatedCheck = CheckFilterArguement(db.noConsolidated, not shouldConsolidate or isWhitelist);
+
 	if unit == 'player' then
-		if (unitCaster == 'player' or E.global['classtimer'][name]) and not shouldConsolidate then
+		if (isPlayer or isWhitelist) and consolidatedCheck and durationCheck then
 			return true
 		end
-	elseif unit == 'target' then
-		if (isFriend or E.global['classtimer'][name]) and not shouldConsolidate and unitCaster == 'player' then
+	else
+		if (isFriend or isWhitelist) and consolidatedCheck and isPlayer and durationCheck then
 			return true
-		elseif not isFriend and unitCaster == 'player' then
+		elseif not isFriend and isPlayer and durationCheck then
 			return true
 		end
 	end
+end
+
+function UF:AuraBarAnchorsUpdate()
+
 end

@@ -29,6 +29,14 @@ G.unitframe.aurafilters['DebuffBlacklist'] = {
 	},
 }
 
+G.unitframe.aurafilters['AuraBars'] = {
+	['type'] = 'Whitelist',
+	['spells'] = {
+		[SpellName(2825)] = true, -- Bloodlust
+		[SpellName(32182)] = true, -- Heroism	
+	},
+}
+
 --RAID DEBUFFS
 G.unitframe.aurafilters['RaidDebuffs'] = {
 	['type'] = 'Whitelist',
