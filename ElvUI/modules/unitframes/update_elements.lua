@@ -1186,7 +1186,15 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	
 	if not db then return; end
 	
-	if E.global['unitframe']['aurafilters']['DebuffBlacklist']['spells'][name] then
+	--Remove this when beta is done, database correction for my personal error
+	if E.global['unitframe']['aurafilters']['DebuffBlacklist']['spells'][name] and type(E.global['unitframe']['aurafilters']['DebuffBlacklist']['spells'][name]) ~= 'table' then
+		E.global['unitframe']['aurafilters']['DebuffBlacklist']['spells'][name] = {
+			['enable'] = true,
+			['priority'] = 0,			
+		}	
+	end
+	
+	if E.global['unitframe']['aurafilters']['DebuffBlacklist']['spells'][name] and E.global['unitframe']['aurafilters']['DebuffBlacklist']['spells'][name].enable then
 		return false
 	end
 	
@@ -1194,8 +1202,8 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	if UnitIsFriend('player', unit) then
 		isFriend = true
 	end
-	
-	local isWhitelist = E.global['unitframe']['aurafilters']['AuraBars']['spells'][name]
+		
+	local isWhitelist = E.global['unitframe']['aurafilters']['AuraBars']['spells'][name] and E.global['unitframe']['aurafilters']['AuraBars']['spells'][name].enable
 	local isPlayer = unitCaster == 'player' or unitCaster == 'pet' or unitCaster == 'vehicle'
 	local durationCheck = CheckFilterArguement(not db.noDuration, duration ~= 0 or isWhitelist)
 	local consolidatedCheck = CheckFilterArguement(db.noConsolidated, not shouldConsolidate or isWhitelist);
@@ -1211,8 +1219,4 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 			return true
 		end
 	end
-end
-
-function UF:AuraBarAnchorsUpdate()
-
 end

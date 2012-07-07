@@ -706,7 +706,10 @@ function UF:Construct_AuraBars()
 		
 		if auraName then
 			E:Print(string.format(L['The spell "%s" has been added to the DebuffBlacklist unitframe filter.'], auraName))
-			E.global['unitframe']['aurafilters']['DebuffBlacklist']['spells'][auraName] = true
+			E.global['unitframe']['aurafilters']['DebuffBlacklist']['spells'][auraName] = {
+				['enable'] = true,
+				['priority'] = 0,			
+			}
 			self:GetParent():GetParent():GetParent():GetParent():UpdateAllElements()
 		end
 	end)
