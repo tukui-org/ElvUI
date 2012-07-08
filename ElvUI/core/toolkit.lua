@@ -238,8 +238,10 @@ local function StripTextures(object, kill)
 	for i=1, object:GetNumRegions() do
 		local region = select(i, object:GetRegions())
 		if region and region:GetObjectType() == "Texture" then
-			if kill then
+			if kill and type(kill) == 'boolean' then
 				region:Kill()
+			elseif region:GetDrawLayer() == kill then
+				region:SetTexture(nil)
 			else
 				region:SetTexture(nil)
 			end

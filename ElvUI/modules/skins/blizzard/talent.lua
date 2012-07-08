@@ -2,359 +2,285 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
-	if not UpdatedYet then return end
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.talent ~= true then return end
+	
+	TalentMicroButtonAlert:Kill() --Move this somewhere else?
+	
+	local objects = {
+		PlayerTalentFrame,
+		PlayerTalentFrameInset,
+		PlayerTalentFrameTalents
+	}
+	
+	for _, object in pairs(objects) do
+		object:StripTextures()
+	end
+	
+	PlayerTalentFrame:StripTextures()
+	PlayerTalentFrame:CreateBackdrop('Transparent')
+	PlayerTalentFrame.backdrop:SetAllPoints()
+	PlayerTalentFrame.backdrop:SetFrameLevel(0)
+	PlayerTalentFrame.backdrop:SetPoint('BOTTOMRIGHT', PlayerTalentFrame, 'BOTTOMRIGHT', 0, -6)
+	PlayerTalentFrame.backdrop:CreateShadow('Default')
+	
+	PlayerTalentFrameInset:StripTextures()
+	PlayerTalentFrameInset:CreateBackdrop('Default')
+	PlayerTalentFrameInset.backdrop:Hide()
+	
+	PlayerTalentFrameSpecializationTutorialButton:Kill()
+	PlayerTalentFrameTalentsTutorialButton:Kill()
+	PlayerTalentFramePetSpecializationTutorialButton:Kill()
+	
+	S:HandleCloseButton(PlayerTalentFrameCloseButton)
+	
 	local buttons = {
-		"PlayerTalentFrameToggleSummariesButton",
-		"PlayerTalentFrameActivateButton",
+		PlayerTalentFrameSpecializationLearnButton,
+		PlayerTalentFrameTalentsLearnButton,
+		PlayerTalentFramePetSpecializationLearnButton
 	}
-	PlayerTalentFrameToggleSummariesButton:Point("BOTTOM", PlayerTalentFrame, "BOTTOM",0,5)
+	
+	for _, button in pairs(buttons) do
+		S:HandleButton(button, true)
+		local point, anchor, anchorPoint, x = button:GetPoint()
+		button:Point(point, anchor, anchorPoint, x, -28)
+	end
+	
+	
+	PlayerTalentFrameTalentsClearInfoFrame:CreateBackdrop('Default')
+	PlayerTalentFrameTalentsClearInfoFrame.icon:SetTexCoord(unpack(E.TexCoords))
+	PlayerTalentFrameTalentsClearInfoFrame:Width(PlayerTalentFrameTalentsClearInfoFrame:GetWidth() - 2)
+	PlayerTalentFrameTalentsClearInfoFrame:Height(PlayerTalentFrameTalentsClearInfoFrame:GetHeight() - 2)
+	PlayerTalentFrameTalentsClearInfoFrame.icon:Size(PlayerTalentFrameTalentsClearInfoFrame:GetSize())
+	PlayerTalentFrameTalentsClearInfoFrame:Point('TOPLEFT', PlayerTalentFrameTalents, 'BOTTOMLEFT', 8, -8)	
 
-	for i = 1, #buttons do
-		_G[buttons[i]]:StripTextures()
-		S:HandleButton(_G[buttons[i]])
+	for i=1, 4 do
+		S:HandleTab(_G['PlayerTalentFrameTab'..i])
+
+		if i == 1 then
+			local point, anchor, anchorPoint, x = _G['PlayerTalentFrameTab'..i]:GetPoint()
+			_G['PlayerTalentFrameTab'..i]:Point(point, anchor, anchorPoint, x, -4)
+		end
+		
+		_G['PlayerTalentFrameTab'..i].SetPoint = E.noop
+		_G['PlayerTalentFrameTab'..i].ClearAllPoints = E.noop
+	end
+	
+	PlayerTalentFrameSpecializationSpellScrollFrameScrollChild.Seperator:SetTexture(1, 1, 1)
+	PlayerTalentFrameSpecializationSpellScrollFrameScrollChild.Seperator:SetAlpha(0.2)
+	
+	for i=1, 2 do
+		local tab = _G['PlayerSpecTab'..i]
+		_G['PlayerSpecTab'..i..'Background']:Kill()
+		
+		tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
+		tab:GetNormalTexture():ClearAllPoints()
+		tab:GetNormalTexture():Point("TOPLEFT", 2, -2)
+		tab:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+		
+		tab.pushed = true;
+		tab:CreateBackdrop("Default")
+		tab.backdrop:SetAllPoints()
+		tab:StyleButton(true)	
+		tab:GetHighlightTexture().SetTexture = E.noop
+		tab:GetCheckedTexture().SetTexture = E.noop
+		
+		if i == 1 then
+			local point, relatedTo, point2, x, y = tab:GetPoint()
+			tab:Point(point, relatedTo, point2, 1, y)	
+			tab.SetPoint = E.noop
+			tab.ClearAllPoints = E.noop
+		end
 	end
 
-	local StripAllTextures = {
-		"PlayerTalentFrame",
-		"PlayerTalentFrameInset",
-		"PlayerTalentFrameTalents",
-		"PlayerTalentFramePanel1HeaderIcon",
-		"PlayerTalentFramePanel2HeaderIcon",
-		"PlayerTalentFramePanel3HeaderIcon",
-		"PlayerTalentFramePetTalents",
-	}
+	for i = 1, MAX_NUM_TALENT_TIERS do
+		local row = _G["PlayerTalentFrameTalentsTalentRow"..i]
+		_G["PlayerTalentFrameTalentsTalentRow"..i.."Bg"]:Hide()
+		row:DisableDrawLayer("BORDER")
+		row:StripTextures()
 
-	for _, object in pairs(StripAllTextures) do
-		_G[object]:StripTextures()
+		row.TopLine:Point("TOP", 0, 4)
+		row.BottomLine:Point("BOTTOM", 0, -4)
+
+		for j = 1, NUM_TALENT_COLUMNS do
+			local bu = _G["PlayerTalentFrameTalentsTalentRow"..i.."Talent"..j]
+			local ic = _G["PlayerTalentFrameTalentsTalentRow"..i.."Talent"..j.."IconTexture"]
+
+			bu:StripTextures()
+			bu:SetFrameLevel(bu:GetFrameLevel() + 2)
+			bu:CreateBackdrop("Default")
+			bu.backdrop:Point("TOPLEFT", ic, -2, 2)
+			bu.backdrop:Point("BOTTOMRIGHT", ic, 2, -2)
+			ic:SetDrawLayer("ARTWORK")
+			ic:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+
+			bu.bg = CreateFrame("Frame", nil, bu)
+			bu.bg:CreateBackdrop("Overlay")
+			bu.bg:SetFrameLevel(bu:GetFrameLevel() - 1)
+			bu.bg:Point("TOPLEFT", 15, -1)
+			bu.bg:Point("BOTTOMRIGHT", -10, 1)
+			bu.bg:CreateShadow('Default')
+			bu.bg.shadow:SetBackdropBorderColor(0, 1, 0, 1)			
+		end
 	end
 
-	local function StripTalentFramePanelTextures(object)
-		for i=1, object:GetNumRegions() do
-			local region = select(i, object:GetRegions())
-			if region:GetObjectType() == "Texture" then
-				if region:GetName():find("Branch") then
-					region:SetDrawLayer("OVERLAY")
+	hooksecurefunc("TalentFrame_Update", function()
+		for i = 1, MAX_NUM_TALENT_TIERS do
+			for j = 1, NUM_TALENT_COLUMNS do
+				local bu = _G["PlayerTalentFrameTalentsTalentRow"..i.."Talent"..j]
+				if bu.knownSelection:IsShown() then
+					bu.backdrop:SetBackdropBorderColor(0, 1, 0, 1)
+					bu.bg.backdrop:SetBackdropBorderColor(0, 1, 0, 1)
 				else
-					region:SetTexture(nil)
+					bu.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+					bu.bg.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				end
+				if bu.learnSelection:IsShown() then
+					bu.backdrop:SetBackdropBorderColor(1, 0.82, 0, 1)
+					bu.bg.backdrop:SetBackdropBorderColor(1, 0.82, 0, 1)
 				end
 			end
 		end
-	end
-
-	StripTalentFramePanelTextures(PlayerTalentFramePanel1)
-	StripTalentFramePanelTextures(PlayerTalentFramePanel2)
-	StripTalentFramePanelTextures(PlayerTalentFramePanel3)
-	StripTalentFramePanelTextures(PlayerTalentFramePetPanel)
-
-	for i=1, 3 do
-		_G["PlayerTalentFramePanel"..i.."SelectTreeButton"]:SetFrameLevel(_G["PlayerTalentFramePanel"..i.."SelectTreeButton"]:GetFrameLevel() + 5)
-		_G["PlayerTalentFramePanel"..i.."SelectTreeButton"]:StripTextures(true)
-		S:HandleButton(_G["PlayerTalentFramePanel"..i.."SelectTreeButton"])
-	end
-
-	local KillTextures = {
-		"PlayerTalentFramePanel1InactiveShadow",
-		"PlayerTalentFramePanel2InactiveShadow",
-		"PlayerTalentFramePanel3InactiveShadow",
-		"PlayerTalentFramePanel1SummaryRoleIcon",
-		"PlayerTalentFramePanel2SummaryRoleIcon",
-		"PlayerTalentFramePanel3SummaryRoleIcon",
-		"PlayerTalentFramePetShadowOverlay",
-		"PlayerTalentFrameHeaderHelpBox",
-	}
-
-	for _, texture in pairs(KillTextures) do
-		_G[texture]:Kill()
-	end
-
-	for i=1, 3 do
-		_G["PlayerTalentFramePanel"..i.."Arrow"]:SetFrameLevel(_G["PlayerTalentFramePanel"..i.."Arrow"]:GetFrameLevel() + 2)
-	end
-	PlayerTalentFramePetPanelArrow:SetFrameStrata("HIGH")
-
-
-	PlayerTalentFrame:SetTemplate("Transparent")
-	PlayerTalentFramePanel1:CreateBackdrop("Transparent")
-	PlayerTalentFramePanel1.backdrop:Point( "TOPLEFT", PlayerTalentFramePanel1, "TOPLEFT", 3, -3 )
-	PlayerTalentFramePanel1.backdrop:Point( "BOTTOMRIGHT", PlayerTalentFramePanel1, "BOTTOMRIGHT", -3, 3 )
-	PlayerTalentFramePanel2:CreateBackdrop("Transparent")
-	PlayerTalentFramePanel2.backdrop:Point( "TOPLEFT", PlayerTalentFramePanel2, "TOPLEFT", 3, -3 )
-	PlayerTalentFramePanel2.backdrop:Point( "BOTTOMRIGHT", PlayerTalentFramePanel2, "BOTTOMRIGHT", -3, 3 )
-	PlayerTalentFramePanel3:CreateBackdrop("Transparent")
-	PlayerTalentFramePanel3.backdrop:Point( "TOPLEFT", PlayerTalentFramePanel3, "TOPLEFT", 3, -3 )
-	PlayerTalentFramePanel3.backdrop:Point( "BOTTOMRIGHT", PlayerTalentFramePanel3, "BOTTOMRIGHT", -3, 3 )
-	PlayerTalentFrame:CreateShadow("Default")
-	S:HandleCloseButton(PlayerTalentFrameCloseButton)
-
-	function talentpairs(inspect,pet)
-	   local tab,tal=1,0
-	   return function()
-		  tal=tal+1
-		  if tal>GetNumTalents(tab,inspect,pet) then
-			 tal=1
-			 tab=tab+1
-		  end
-		  if tab<=GetNumSpecializations(inspect,pet) then
-			 return tab,tal
-		  end
-	   end
-	end
-
-	--Skin TalentButtons
-	local function TalentButtons(self, first, i, j)
-		local button = _G["PlayerTalentFramePanel"..i.."Talent"..j]
-		local icon = _G["PlayerTalentFramePanel"..i.."Talent"..j.."IconTexture"]
-
-		if first then
-			button:StripTextures()
-		end
-		
-		if button.Rank then
-			button.Rank:FontTemplate(nil, 12, 'OUTLINE')
-			button.Rank:ClearAllPoints()
-			button.Rank:SetPoint("BOTTOMRIGHT")
-		end
-		
-		if icon then
-			icon:SetTexCoord(unpack(E.TexCoords))
-			button:StyleButton()
-			button.SetHighlightTexture = E.noop
-			button.SetPushedTexture = E.noop
-			button:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-			button:GetPushedTexture():SetTexCoord(unpack(E.TexCoords))
-			button:GetHighlightTexture():SetAllPoints(icon)
-			button:GetPushedTexture():SetAllPoints(icon)
-			
-			icon:ClearAllPoints()
-			icon:SetAllPoints()
-			button:SetFrameLevel(button:GetFrameLevel() +1)
-			button:CreateBackdrop("Default", true)
-		end
-	end
-
-	local function TalentSummaryButtons(self, first, active, i, j)
-		if active then
-			button = _G["PlayerTalentFramePanel"..i.."SummaryActiveBonus1"]
-			icon = _G["PlayerTalentFramePanel"..i.."SummaryActiveBonus1Icon"]
-		else
-			button = _G["PlayerTalentFramePanel"..i.."SummaryBonus"..j]
-			icon = _G["PlayerTalentFramePanel"..i.."SummaryBonus"..j.."Icon"]
-		end
-
-		if first then
-			button:StripTextures()
-		end
-
-		if icon then
-			icon:SetTexCoord(unpack(E.TexCoords))
-			button:SetFrameLevel(button:GetFrameLevel() +1)
-			local frame = CreateFrame("Frame",nil, button)
-			frame:CreateBackdrop("Default", true)
-			frame:SetFrameLevel(button:GetFrameLevel() -1)
-			frame:ClearAllPoints()
-			frame:Point( "TOPLEFT", icon, "TOPLEFT", 0, 0 )
-			frame:Point( "BOTTOMRIGHT", icon, "BOTTOMRIGHT", 0, 0 )
-		end
-	end
-
-	for i=1, 2 do
-		local tab = _G["PlayerSpecTab"..i]
-		if tab then
-			local a = tab:GetRegions()
-			a:Hide()
-			tab:StripTextures()
-			tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-			
-			tab:GetNormalTexture():ClearAllPoints()
-			tab:GetNormalTexture():Point("TOPLEFT", 2, -2)
-			tab:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
-
-			tab:CreateBackdrop("Default")
-			tab.backdrop:SetAllPoints()
-			tab:StyleButton(true)
-		end
-	end
-
-	--Reposition tabs
-	PlayerSpecTab1:ClearAllPoints()
-	PlayerSpecTab1:SetPoint("TOPLEFT", PlayerTalentFrame, "TOPRIGHT", 2, -32)
-	PlayerSpecTab1.SetPoint = E.noop
-
-	local function TalentSummaryClean(i)
-		local frame = _G["PlayerTalentFramePanel"..i.."Summary"]
-		frame:SetFrameLevel(frame:GetFrameLevel() + 2)
-		frame:CreateBackdrop("Default")
-		frame:SetFrameLevel(frame:GetFrameLevel() +1)
-		local a,b,_,d,_,_,_,_,_,_,_,_,m,_ = frame:GetRegions()
-		a:Hide()
-		b:Hide()
-		d:Hide()
-		m:Hide()
-		
-		_G["PlayerTalentFramePanel"..i.."SummaryIcon"]:SetTexCoord(unpack(E.TexCoords))
-	end
-
-	local function TalentHeaderIcon(self, first, i)
-		local button = _G["PlayerTalentFramePanel"..i.."HeaderIcon"]
-		local icon = _G["PlayerTalentFramePanel"..i.."HeaderIconIcon"]
-		local panel = _G["PlayerTalentFramePanel"..i]
-		local text = _G["PlayerTalentFramePanel"..i.."HeaderIconPointsSpent"]
-
-		if first then
-			button:StripTextures()
-		end
-		
-		_G["PlayerTalentFramePanel"..i.."HeaderIconPointsSpent"]:FontTemplate(nil, 12, 'OUTLINE')
-
-		if icon then
-			icon:SetTexCoord(unpack(E.TexCoords))
-			button:SetFrameLevel(button:GetFrameLevel() +1)
-			button:ClearAllPoints()
-			button:Point("TOPLEFT",panel,"TOPLEFT", 4, -4)
-			text:FontTemplate(nil, 12, 'OUTLINE')
-			text:Point("BOTTOMRIGHT",button, "BOTTOMRIGHT", -1, 2)
-			local frame = CreateFrame("Frame",nil, button)
-			frame:CreateBackdrop("Default", true)
-			frame:SetFrameLevel(button:GetFrameLevel() +1)
-			frame:ClearAllPoints()
-			frame:Point( "TOPLEFT", icon, "TOPLEFT", 0, 0 )
-			frame:Point( "BOTTOMRIGHT", icon, "BOTTOMRIGHT", 0, 0 )
-		end
-	end		
-
-	for i=1, 3 do
-		TalentSummaryClean(i)
-		TalentHeaderIcon(nil, true, i)
-		for j=1, 2 do
-			TalentSummaryButtons(nil, true, true, i, j)
-			TalentSummaryButtons(nil, true, false, i, j)
-		end
-	end
-
-	for tab,talent in talentpairs() do
-		TalentButtons(nil, true, tab, talent)
-	end
-
-	for i=1, 3 do
-		S:HandleTab(_G["PlayerTalentFrameTab"..i])
-	end
-
-	--PET TALENTS
-	S:HandleRotateButton(PlayerTalentFramePetModelRotateLeftButton)
-	S:HandleRotateButton(PlayerTalentFramePetModelRotateRightButton)
-	PlayerTalentFramePetModelRotateLeftButton:Point("BOTTOM", PlayerTalentFramePetModel, "BOTTOM", -4, 4)
-	PlayerTalentFramePetModelRotateRightButton:Point("TOPLEFT", PlayerTalentFramePetModelRotateLeftButton, "TOPRIGHT", 4, 0)
-	PlayerTalentFramePetPanel:CreateBackdrop("Transparent")
-	PlayerTalentFramePetPanel.backdrop:Point( "TOPLEFT", PlayerTalentFramePetPanel, "TOPLEFT", 3, -3 )
-	PlayerTalentFramePetPanel.backdrop:Point( "BOTTOMRIGHT", PlayerTalentFramePetPanel, "BOTTOMRIGHT", -3, 3 )
-	PlayerTalentFramePetModel:CreateBackdrop("Transparent")
-	PlayerTalentFramePetModel.backdrop:Point( "TOPLEFT", PlayerTalentFramePetModel, "TOPLEFT")
-	PlayerTalentFramePetModel.backdrop:Point( "BOTTOMRIGHT", PlayerTalentFramePetModel, "BOTTOMRIGHT")
-	S:HandleButton(PlayerTalentFrameLearnButton, true)
-	S:HandleButton(PlayerTalentFrameResetButton, true)
-
-	local function PetHeaderIcon(self, first)
-		local button = _G["PlayerTalentFramePetPanelHeaderIcon"]
-		local icon = _G["PlayerTalentFramePetPanelHeaderIconIcon"]
-		local panel = _G["PlayerTalentFramePetPanel"]
-		local d = select(4, button:GetRegions())
-
-		if first then
-			button:StripTextures()
-		end
-
-		if icon then
-			d:ClearAllPoints()
-			pointsSpent = select(5,GetSpecializationInfo( 1, Partycheck, true, 1 ))
-			icon:SetTexCoord(unpack(E.TexCoords))
-			button:SetFrameLevel(button:GetFrameLevel() +1)
-			button:ClearAllPoints()
-			button:Point("TOPLEFT",panel,"TOPLEFT", 5, -5)
-			local text = button:CreateFontString(nil, 'OVERLAY')
-			text:FontTemplate(nil, 12)
-			text:Point("BOTTOMRIGHT",button, "BOTTOMRIGHT", -1, 2)
-			text:SetText(pointsSpent)
-			local frame = CreateFrame("Frame",nil, button)
-			frame:CreateBackdrop("Default", true)
-			frame:SetFrameLevel(button:GetFrameLevel() +1)
-			frame:ClearAllPoints()
-			frame:Point( "TOPLEFT", icon, "TOPLEFT", 0, 0 )
-			frame:Point( "BOTTOMRIGHT", icon, "BOTTOMRIGHT", 0, 0 )
-		end
-	end
-
-	local function PetInfoIcon(self, first)
-		local button = _G["PlayerTalentFramePetInfo"]
-		local icon = _G["PlayerTalentFramePetIcon"]
-		local panel = _G["PlayerTalentFramePetModel"]
-
-		PlayerTalentFramePetDiet:Hide();
-
-		local petFoodList = { GetPetFoodTypes() };
-		if #petFoodList > 0 then
-			diet = petFoodList[1]
-		else
-			diet = "None"
-		end
-
-		if first then
-			button:StripTextures()
-		end
-
-		if icon then
-			icon:SetTexCoord(unpack(E.TexCoords))
-			button:SetFrameLevel(button:GetFrameLevel() +1)
-			button:ClearAllPoints()
-			button:Point("BOTTOMLEFT",panel,"TOPLEFT", 0, 10)
-			local text = button:CreateFontString(nil, 'OVERLAY')
-			text:FontTemplate(nil, 12)
-			text:Point("TOPRIGHT",button, "TOPRIGHT", 0, -10)
-			text:SetText(diet)
-			local frame = CreateFrame("Frame",nil, button)
-			frame:CreateBackdrop("Default", true)
-			frame:SetFrameLevel(button:GetFrameLevel() +1)
-			frame:ClearAllPoints()
-			frame:Point( "TOPLEFT", icon, "TOPLEFT", 0, 0 )
-			frame:Point( "BOTTOMRIGHT", icon, "BOTTOMRIGHT", 0, 0 )
-		end
+	end)
+	
+	for i = 1, 5 do
+		select(i, PlayerTalentFrameSpecializationSpellScrollFrameScrollChild:GetRegions()):Hide()
 	end	
+	
+	local pspecspell = _G["PlayerTalentFrameSpecializationSpellScrollFrameScrollChild"]
+	pspecspell.ring:Hide()
+	pspecspell:CreateBackdrop("Default")
+	pspecspell.backdrop:Point("TOPLEFT", pspecspell.specIcon, -2, 2)
+	pspecspell.backdrop:Point("BOTTOMRIGHT", pspecspell.specIcon, 2, -2)
+	pspecspell.specIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+	pspecspell.specIcon:SetParent(pspecspell.backdrop)
 
-	local function PetTalentButtons(self, first, i)
-		local button = _G["PlayerTalentFramePetPanelTalent"..i]
-		local icon = _G["PlayerTalentFramePetPanelTalent"..i.."IconTexture"]
+	local specspell2 = _G["PlayerTalentFramePetSpecializationSpellScrollFrameScrollChild"]
+	specspell2.ring:Hide()
+	specspell2:CreateBackdrop("Default")
+	specspell2.backdrop:Point("TOPLEFT", specspell2.specIcon, -2, 2)
+	specspell2.backdrop:Point("BOTTOMRIGHT", specspell2.specIcon, 2, -2)
+	specspell2.specIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+	specspell2.specIcon:SetParent(specspell2.backdrop)
 
-		if first then
-			button:StripTextures()
+	hooksecurefunc("PlayerTalentFrame_UpdateSpecFrame", function(self, spec)
+		local playerTalentSpec = GetSpecialization(nil, self.isPet, PlayerSpecTab2:GetChecked() and 2 or 1)
+		local shownSpec = spec or playerTalentSpec or 1
+
+		local id, _, _, icon = GetSpecializationInfo(shownSpec, nil, self.isPet)
+		local scrollChild = self.spellsScroll.child
+
+		scrollChild.specIcon:SetTexture(icon)
+
+		local index = 1
+		local bonuses
+		if self.isPet then
+			bonuses = {GetSpecializationSpells(shownSpec, nil, self.isPet)}
+		else
+			bonuses = SPEC_SPELLS_DISPLAY[id]
 		end
-		
-		if button.Rank then
-			button.Rank:FontTemplate(nil, 12, 'OUTLINE')
-			button.Rank:ClearAllPoints()
-			button.Rank:SetPoint("BOTTOMRIGHT")
+		for i = 1, #bonuses, 2 do
+			local frame = scrollChild["abilityButton"..index]
+			local _, icon = GetSpellTexture(bonuses[i])
+			frame.icon:SetTexture(icon)
+			if not frame.reskinned then
+				frame.reskinned = true
+				frame:Size(30, 30)
+				frame.ring:Hide()
+				frame:SetTemplate("Default")
+				frame.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+				frame.icon:Point("TOPLEFT", 2, -2)
+				frame.icon:Point("BOTTOMRIGHT", -2, 2)
+			end
+
+
+			index = index + 1
 		end
-		
-		if icon then
-			button:StyleButton()
-			button.SetHighlightTexture = E.noop
-			button.SetPushedTexture = E.noop
-			button:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-			button:GetPushedTexture():SetTexCoord(unpack(E.TexCoords))
-			button:GetHighlightTexture():SetAllPoints(icon)
-			button:GetPushedTexture():SetAllPoints(icon)
+
+		for i = 1, GetNumSpecializations(nil, self.isPet) do
+			local bu = self["specButton"..i]
+			if bu.selected then
+				bu.backdrop:SetBackdropBorderColor(1, 0.82, 0, 1)
+				bu.border.backdrop:SetBackdropBorderColor(1, 0.82, 0, 1)
+			else
+				bu.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				bu.border.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end
+		end
+	end)
+
+	for i = 1, GetNumSpecializations(false, nil) do
+		local bu = PlayerTalentFrameSpecialization["specButton"..i]
+		local _, _, _, icon = GetSpecializationInfo(i, false, nil)
+
+		bu.ring:Hide()
+
+		bu.specIcon:SetTexture(icon)
+		bu.specIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+		bu.specIcon:SetSize(50, 50)
+		bu.specIcon:Point("LEFT", bu, "LEFT", 15, 0)
+	end
+
+	local buttons = {"PlayerTalentFrameSpecializationSpecButton", "PlayerTalentFramePetSpecializationSpecButton"}
+
+	for _, name in pairs(buttons) do
+		for i = 1, 4 do
+			local bu = _G[name..i]
+			_G["PlayerTalentFrameSpecializationSpecButton"..i.."Glow"]:Kill()
+
+			bu:SetHighlightTexture("")
+			bu.bg:SetAlpha(0)
+			bu.learnedTex:SetAlpha(0)
+			bu.selectedTex:SetAlpha(0)
+
+			bu:CreateBackdrop("Overlay")
+			bu.backdrop:Point("TOPLEFT", 8, 2)
+			bu.backdrop:Point("BOTTOMRIGHT", 10, -2)
 			
-			icon:SetTexCoord(unpack(E.TexCoords))
-			icon:ClearAllPoints()
-			icon:SetAllPoints()
-			button:SetFrameLevel(button:GetFrameLevel() +1)
-			button:CreateBackdrop("Default", true)
+			bu.border = CreateFrame("Frame", nil, bu)
+			bu.border:CreateBackdrop("Default")
+			bu.border.backdrop:Point("TOPLEFT", bu.specIcon, -2, 2)
+			bu.border.backdrop:Point("BOTTOMRIGHT", bu.specIcon, 2, -2)
 		end
-	end	
+	end
+	
+	if E.myclass == "HUNTER" then
+		for i = 1, 6 do
+			select(i, PlayerTalentFramePetSpecialization:GetRegions()):Hide()
+		end
 
-	PetInfoIcon(nil, true)
-	PetHeaderIcon(nil, true)
-	for i=1,GetNumTalents(1,false,true) do
-		PetTalentButtons(nil,true,i)
+		for i=1, PlayerTalentFramePetSpecialization:GetNumChildren() do
+			local child = select(i, PlayerTalentFramePetSpecialization:GetChildren())
+			if child and not child:GetName() then
+				child:DisableDrawLayer("OVERLAY")
+			end
+		end
+	
+		for i = 1, 5 do
+			select(i, PlayerTalentFramePetSpecializationSpellScrollFrameScrollChild:GetRegions()):Hide()
+		end
+
+		for i = 1, GetNumSpecializations(false, true) do
+			local bu = PlayerTalentFramePetSpecialization["specButton"..i]
+			local _, _, _, icon = GetSpecializationInfo(i, false, true)
+
+			bu.ring:Hide()
+			bu.specIcon:SetTexture(icon)
+			bu.specIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+			bu.specIcon:SetSize(50, 50)
+			bu.specIcon:Point("LEFT", bu, "LEFT", 15, 0)
+		end
+		
+		PlayerTalentFramePetSpecializationSpellScrollFrameScrollChild.Seperator:SetTexture(1, 1, 1)
+		PlayerTalentFramePetSpecializationSpellScrollFrameScrollChild.Seperator:SetAlpha(0.2)			
+	end	
+	
+	PlayerTalentFrameSpecialization:DisableDrawLayer('ARTWORK')
+	PlayerTalentFrameSpecialization:DisableDrawLayer('BORDER')
+	for i=1, PlayerTalentFrameSpecialization:GetNumChildren() do
+		local child = select(i, PlayerTalentFrameSpecialization:GetChildren())
+		if child and not child:GetName() then
+			child:DisableDrawLayer("OVERLAY")
+		end
 	end
 end
 
