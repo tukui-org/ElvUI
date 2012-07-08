@@ -8,13 +8,14 @@ local function LoadSkin()
 	S:HandleScrollBar(QuestLogScrollFrameScrollBar, 5)
 	S:HandleScrollBar(QuestProgressScrollFrameScrollBar)
 	S:HandleScrollBar(QuestRewardScrollFrameScrollBar)
+	QuestLogScrollFrame:StripTextures()
 	QuestLogFrame:StripTextures()
 	QuestLogFrame:SetTemplate("Transparent")
 	QuestLogFrame:CreateShadow("Default")
 	QuestLogCount:StripTextures()
 	QuestLogCount:SetTemplate("Default")
 	QuestLogCount.backdropTexture:SetDrawLayer('BACKGROUND', 2)
-	
+	QuestLogFrame:Height(430)	
 	EmptyQuestLogFrame:StripTextures()
 	
 	S:HandleScrollBar(QuestDetailScrollFrameScrollBar)
@@ -24,6 +25,9 @@ local function LoadSkin()
 	QuestLogFrameShowMapButton.text:ClearAllPoints()
 	QuestLogFrameShowMapButton.text:SetPoint("CENTER")
 	QuestLogFrameShowMapButton:Size(QuestLogFrameShowMapButton:GetWidth() - 30, QuestLogFrameShowMapButton:GetHeight(), - 40)
+	
+	
+	QuestLogFrameInset:Kill()
 	
 	local buttons = {
 		"QuestLogFrameAbandonButton",
@@ -144,6 +148,7 @@ local function LoadSkin()
 	
 	--Quest Frame
 	QuestFrame:StripTextures(true)
+	QuestFrameInset:Kill()
 	QuestFrameDetailPanel:StripTextures(true)
 	QuestDetailScrollFrame:StripTextures(true)
 	QuestDetailScrollChildFrame:StripTextures(true)
@@ -152,8 +157,6 @@ local function LoadSkin()
 	QuestFrameProgressPanel:StripTextures(true)
 	QuestFrameRewardPanel:StripTextures(true)
 	QuestFrame:CreateBackdrop("Transparent")
-	QuestFrame.backdrop:Point("TOPLEFT", 6, -8)
-	QuestFrame.backdrop:Point("BOTTOMRIGHT", -20, 65)
 	QuestFrame.backdrop:CreateShadow("Default")
 	S:HandleButton(QuestFrameAcceptButton, true)
 	S:HandleButton(QuestFrameDeclineButton, true)
