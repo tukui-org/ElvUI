@@ -90,6 +90,10 @@ local function SetupChat()
 	ChatFrame_AddMessageGroup(ChatFrame6, "LOOT")
 	ChatFrame_AddMessageGroup(ChatFrame6, "MONEY")
 
+	if E.myname == "Elvz" then
+		SetCVar("scriptErrors", 1)
+	end
+
 	-- enable classcolor automatically on login and on each character without doing /configure each time.
 	ToggleChatColorNamesByClassGroup(false, "SAY")
 	ToggleChatColorNamesByClassGroup(false, "EMOTE")

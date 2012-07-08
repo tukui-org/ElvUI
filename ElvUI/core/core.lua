@@ -56,6 +56,9 @@ function E:UpdateMedia()
 
 	--Border Color
 	local border = E.db['general'].bordercolor
+	if E.db.theme == 'class' then
+		border = RAID_CLASS_COLORS[E.myclass]
+	end
 	self["media"].bordercolor = {border.r, border.g, border.b}
 
 	--Backdrop Color
@@ -68,6 +71,9 @@ function E:UpdateMedia()
 	
 	--Value Color
 	local value = self.db['general'].valuecolor
+	if E.db.theme == 'class' then
+		value = RAID_CLASS_COLORS[E.myclass]
+	end	
 	self["media"].hexvaluecolor = self:RGBToHex(value.r, value.g, value.b)
 	self["media"].rgbvaluecolor = {value.r, value.g, value.b}
 	
@@ -78,6 +84,12 @@ function E:UpdateMedia()
 		RightChatPanel.tex:SetTexture(E.db.general.panelBackdropNameRight)
 		RightChatPanel.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.55 > 0 and E.db.general.backdropfadecolor.a - 0.55 or 0.5)		
 	end
+
+	if E.db.theme == 'class' then
+		local classColor = RAID_CLASS_COLORS[E.myclass]
+		E.db.classtimer.player.buffcolor = E:GetColor(classColor.r, classColor.b, classColor.g)
+		E.db.classtimer.target.buffcolor = E:GetColor(classColor.r, classColor.b, classColor.g)		
+	end				
 	
 	self:ValueFuncCall()
 	self:UpdateBlizzardFonts()
@@ -175,7 +187,7 @@ function E:CheckRole()
 	local tree = GetPrimaryTalentTree();
 	local resilience;
 	local resilperc = GetCombatRatingBonus(COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN)
-	if resilperc > GetDodgeChance() and resilperc > GetParryChance() then
+	if resilperc > GetDodgeChance() and resilperc > GetParryChance() and UnitLevel('player') == MAX_PLAYER_LEVEL then
 		resilience = true;
 	else
 		resilience = false;
@@ -382,11 +394,9 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
 		if sender == E.myname then return end
 
-		if prefix == "ElvUIVC" and sender ~= 'Elv' and not string.find(sender, 'Elv%-') and not E.recievedOutOfDateMessage then
+		if prefix == "ElvUIVC" and sender ~= 'Elvz' and not string.find(sender, 'Elvz%-') and not E.recievedOutOfDateMessage then
 			if tonumber(message) > tonumber(E.version) then
 				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.tukui.org"])
-				E:UnregisterEvent("PARTY_MEMBERS_CHANGED")
-				E:UnregisterEvent("RAID_ROSTER_UPDATE")
 				E.recievedOutOfDateMessage = true
 			end
 		end
