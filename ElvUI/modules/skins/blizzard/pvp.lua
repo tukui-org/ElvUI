@@ -99,9 +99,8 @@ local function LoadSkin()
 	PVPFrameConquestBarBG:Kill()
 	PVPFrameConquestBarShadow:Kill()
 	PVPFrameConquestBar.progress:SetTexture(E["media"].normTex)
-	PVPFrameConquestBar:CreateBackdrop("Default")
-	PVPFrameConquestBar.backdrop:Point("TOPLEFT", PVPFrameConquestBar.progress, "TOPLEFT", -2, 2)
-	PVPFrameConquestBar.backdrop:Point("BOTTOMRIGHT", PVPFrameConquestBar, "BOTTOMRIGHT", -2, 2)	
+	PVPFrameConquestBar:SetTemplate('Default')
+
 	
 	PVPBannerFrame:CreateBackdrop("Transparent")
 	PVPBannerFrame.backdrop:Point( "TOPLEFT", PVPBannerFrame, "TOPLEFT")
