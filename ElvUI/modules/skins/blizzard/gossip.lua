@@ -2,19 +2,21 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
-	if not UpdatedYet then return end
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.gossip ~= true then return end
 	ItemTextFrame:StripTextures(true)
 	ItemTextScrollFrame:StripTextures()
-	ItemTextFrame:SetTemplate("Transparent")
-	S:HandleCloseButton(ItemTextCloseButton)
+	GossipFrame:SetTemplate("Transparent")
+	S:HandleCloseButton(GossipFrameCloseButton)
 	S:HandleNextPrevButton(ItemTextPrevPageButton)
 	S:HandleNextPrevButton(ItemTextNextPageButton)
 	ItemTextPageText:SetTextColor(1, 1, 1)
 	ItemTextPageText.SetTextColor = E.noop
-	
+
 	local StripAllTextures = {
 		"GossipFrameGreetingPanel",
+		"GossipFrame",
+		"GossipFrameInset",
+		"GossipGreetingScrollFrame",
 	}			
 	
 	S:HandleScrollBar(GossipGreetingScrollFrameScrollBar, 5)
@@ -47,9 +49,6 @@ local function LoadSkin()
 	end
 
 	GossipGreetingText:SetTextColor(1,1,1)
-	GossipFrame:CreateBackdrop("Transparent")
-	GossipFrame.backdrop:Point("TOPLEFT", GossipFrame, "TOPLEFT", 15, -20)
-	GossipFrame.backdrop:Point("BOTTOMRIGHT", GossipFrame, "BOTTOMRIGHT", -30, 65)
 	S:HandleCloseButton(GossipFrameCloseButton,GossipFrame.backdrop)
 	
 	

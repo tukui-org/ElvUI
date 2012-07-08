@@ -161,6 +161,6 @@ local function LoadSkin()
 	S:HandleCloseButton(LFGDungeonReadyDialogCloseButton)
 	LFGDungeonReadyStatus:SetTemplate("Default")
 	S:HandleCloseButton(LFGDungeonReadyStatusCloseButton)
-	end
+end
 
 S:RegisterSkin('ElvUI', LoadSkin)
