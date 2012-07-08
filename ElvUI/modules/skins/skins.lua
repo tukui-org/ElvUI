@@ -153,6 +153,8 @@ end
 
 function S:HandleNextPrevButton(btn, horizonal)
 	local norm, pushed, disabled
+	local isPrevButton = btn:GetName() and (string.find(btn:GetName(), 'Left') or string.find(btn:GetName(), 'Prev'))
+	
 	if btn:GetNormalTexture() then
 		norm = btn:GetNormalTexture():GetTexture()
 	end
@@ -167,15 +169,21 @@ function S:HandleNextPrevButton(btn, horizonal)
 	
 	btn:StripTextures()
 
-	if not norm then
+	if not norm and isPrevButton then
+		norm = "Interface\\Buttons\\UI-SpellbookIcon-PrevPage-Up"
+	elseif not norm then
 		norm = "Interface\\Buttons\\UI-SpellbookIcon-NextPage-Up"
 	end
 
-	if not pushed then
+	if not pushed and isPrevButton then
+		pushed = "Interface\\Buttons\\UI-SpellbookIcon-PrevPage-Down"
+	elseif not pushed then
 		pushed = "Interface\\Buttons\\UI-SpellbookIcon-NextPage-Down"
 	end
 	
-	if not disabled then
+	if not disabled and isPrevButton then
+		disabled = "Interface\\Buttons\\UI-SpellbookIcon-PrevPage-Disabled"
+	elseif not disabled then
 		disabled = "Interface\\Buttons\\UI-SpellbookIcon-NextPage-Disabled"
 	end	
 	
