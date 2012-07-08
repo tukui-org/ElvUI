@@ -2,13 +2,12 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
-	if not UpdatedYet then return end
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.timemanager ~= true then return end
 	TimeManagerFrame:StripTextures()
 	TimeManagerFrame:SetTemplate("Transparent")
 
-	S:HandleCloseButton(TimeManagerCloseButton)
-
+	S:HandleCloseButton(TimeManagerFrameCloseButton)
+	TimeManagerFrameInset:Kill()
 	S:HandleDropDownBox(TimeManagerAlarmHourDropDown, 80)
 	S:HandleDropDownBox(TimeManagerAlarmMinuteDropDown, 80)
 	S:HandleDropDownBox(TimeManagerAlarmAMPMDropDown, 80)
