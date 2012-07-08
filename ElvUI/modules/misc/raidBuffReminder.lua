@@ -45,11 +45,11 @@ RBR.CriticalStrike = {
 	19506, -- Trueshot Aura
 	1459, -- Arcane Brilliance
 	24932, -- Leader of The Pact
+	116781, -- Legacy of the White Tiger
 }
 
 RBR.Mastery = {
 	116956, --Grace of Air
-	--118757, -- Legacy of the Wight Tiger <<Monk buff removed?
 	19740, -- Blessing of Might
 }
 
