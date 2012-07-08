@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
-	if not UpdatedYet then return end
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.taxi ~= true then return end
 	TaxiFrame:StripTextures()
 	TaxiFrame:CreateBackdrop("Transparent")
@@ -10,7 +9,7 @@ local function LoadSkin()
 	TaxiRouteMap.backdrop.backdropTexture:Hide()
 
 	
-	S:HandleCloseButton(TaxiFrameCloseButton)
+	S:HandleCloseButton(TaxiFrame.CloseButton)
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)
