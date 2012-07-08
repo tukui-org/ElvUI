@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
-	if not UpdatedYet then return end
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bgmap ~= true then return end
 	BattlefieldMinimap:SetClampedToScreen(true)
 	BattlefieldMinimapCorner:Kill()
@@ -18,14 +17,12 @@ local function LoadSkin()
 	BattlefieldMinimapCloseButton:ClearAllPoints()
 	BattlefieldMinimapCloseButton:SetPoint("TOPRIGHT", -4, 0)	
 	S:HandleCloseButton(BattlefieldMinimapCloseButton)
-	BattlefieldMinimapCloseButton:SetFrameLevel(8)	
 	BattlefieldMinimapCloseButton.text:ClearAllPoints()
 	BattlefieldMinimapCloseButton.text:SetPoint('CENTER', BattlefieldMinimapCloseButton, 'CENTER', 1, 1)
 	
 	BattlefieldMinimap:EnableMouse(true)
 	BattlefieldMinimap:SetMovable(true)
-	BattlefieldMinimap.backdrop:SetAlpha(1.0 - BattlefieldMinimapOptions.opacity or 0)
-	
+
 	BattlefieldMinimap:SetScript("OnMouseUp", function(self, btn)
 		if btn == "LeftButton" then
 			BattlefieldMinimapTab:StopMovingOrSizing()
@@ -77,6 +74,8 @@ local function LoadSkin()
 			oldAlpha = nil;
 		end
 	end)	
+	
+	BattlefieldMinimap_UpdateOpacity()
 end
 
 S:RegisterSkin("Blizzard_BattlefieldMinimap", LoadSkin)
