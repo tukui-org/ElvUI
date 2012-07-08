@@ -19,7 +19,8 @@ local function LoadSkin()
 	MerchantMoneyInset:StripTextures()
 	MerchantBuyBackItem.backdrop:Point("TOPLEFT", -6, 6)
 	MerchantBuyBackItem.backdrop:Point("BOTTOMRIGHT", 6, -6)
-	MerchantFrame.backdrop:Point("TOPLEFT", 6, 0)
+	MerchantFrame.backdrop:Point("TOPLEFT", 6, 2)
+	MerchantFrame.backdrop:Point("BOTTOMRIGHT", 2, -1)
 	
 	S:HandleDropDownBox(MerchantFrameLootFilter)
 	

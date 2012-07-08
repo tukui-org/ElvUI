@@ -294,7 +294,7 @@ local function StyleButton(button)
 		button:SetCheckedTexture(checked)
 	end
 	
-	local cooldown = _G[button:GetName().."Cooldown"]
+	local cooldown = button:GetName() and _G[button:GetName().."Cooldown"] 
 	if cooldown then
 		cooldown:ClearAllPoints()
 		cooldown:Point('TOPLEFT', 2, -2)
