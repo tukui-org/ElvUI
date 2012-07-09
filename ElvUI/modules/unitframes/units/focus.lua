@@ -333,6 +333,8 @@ function UF:Update_FocusFrame(frame, db)
 				frame:EnableElement('AuraBars')
 			end
 			
+			auraBars:Show()
+			
 			local healthColor = UF.db.colors.health
 			local attachTo = frame
 			
@@ -348,14 +350,15 @@ function UF:Update_FocusFrame(frame, db)
 			end
 			
 			auraBars:ClearAllPoints()
-			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT')
-			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT')
+			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', POWERBAR_OFFSET, 0)
+			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', -POWERBAR_OFFSET, 0)
 			auraBars.buffColor = {healthColor.r, healthColor.b, healthColor.g}
 			auraBars.down = db.aurabar.growthDirection == 'DOWN'
 			auraBars:SetAnchors()
 		else
 			if frame:IsElementEnabled('AuraBars') then
 				frame:DisableElement('AuraBars')
+				auraBars:Hide()
 			end		
 		end
 	end

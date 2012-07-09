@@ -206,18 +206,11 @@ function UF:Update_PlayerFrame(frame, db)
 		end
 		
 		if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
-			PORTRAIT_WIDTH = 0
-			if USE_POWERBAR_OFFSET then
-				CLASSBAR_WIDTH = CLASSBAR_WIDTH - POWERBAR_OFFSET
-			end			
+			PORTRAIT_WIDTH = 0		
 		end
 		
 		if USE_PORTRAIT then
 			CLASSBAR_WIDTH = math.ceil((UNIT_WIDTH - (BORDER*2)) - PORTRAIT_WIDTH)
-			
-			if USE_POWERBAR_OFFSET then
-				CLASSBAR_WIDTH = CLASSBAR_WIDTH - POWERBAR_OFFSET
-			end
 		end
 		
 		if USE_POWERBAR_OFFSET then
@@ -975,7 +968,7 @@ function UF:Update_PlayerFrame(frame, db)
 			if not frame:IsElementEnabled('AuraBars') then
 				frame:EnableElement('AuraBars')
 			end
-			
+			auraBars:Show()
 			local healthColor = UF.db.colors.health
 			local attachTo = frame
 			
@@ -992,13 +985,15 @@ function UF:Update_PlayerFrame(frame, db)
 			
 			auraBars:ClearAllPoints()
 			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT')
-			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT')
+			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', -POWERBAR_OFFSET, 0)
+
 			auraBars.buffColor = {healthColor.r, healthColor.b, healthColor.g}
 			auraBars.down = db.aurabar.growthDirection == 'DOWN'
 			auraBars:SetAnchors()
 		else
 			if frame:IsElementEnabled('AuraBars') then
 				frame:DisableElement('AuraBars')
+				auraBars:Hide()
 			end		
 		end
 	end
