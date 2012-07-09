@@ -176,10 +176,6 @@ local function LoadSkin()
 	S:HandleButton(ScenarioQueueFrameFindGroupButton)
 	S:HandleDropDownBox(ScenarioQueueFrameTypeDropDown)
 
-	-- Raid frame (social frame)
-	RaidFrameRaidBrowserButton:SetTemplate("Default")
-	S:HandleCheckBox(RaidFrameAllAssistCheckButton)
-
 	-- Looking for raid
 	LFRBrowseFrameRoleInset:DisableDrawLayer("BORDER")
 	RaidBrowserFrameBg:Hide()
@@ -193,11 +189,66 @@ local function LoadSkin()
 		end
 	end
 
-	RaidBrowserFrame:CreateBackdrop()
+	RaidBrowserFrame:CreateBackdrop('Transparent')
+	RaidBrowserFrame:CreateShadow('Default')
 	S:HandleCloseButton(RaidBrowserFrameCloseButton)
+	S:HandleButton(LFRQueueFrameFindGroupButton)
+	S:HandleButton(LFRQueueFrameAcceptCommentButton)
 	
 	S:HandleScrollBar(LFRQueueFrameCommentScrollFrameScrollBar)
 	S:HandleScrollBar(LFDQueueFrameSpecificListScrollFrameScrollBar)
+	LFDQueueFrameSpecificListScrollFrame:StripTextures()
+	RaidBrowserFrame:HookScript('OnShow', function()
+		if not LFRQueueFrameSpecificListScrollFrameScrollBar.skinned then
+			S:HandleScrollBar(LFRQueueFrameSpecificListScrollFrameScrollBar)
+			
+			local roleButtons = {
+				LFRQueueFrameRoleButtonHealer,
+				LFRQueueFrameRoleButtonDPS,
+				LFRQueueFrameRoleButtonTank,
+			}
+			
+			LFRBrowseFrame:StripTextures()			
+			for _, roleButton in pairs(roleButtons) do
+				S:HandleCheckBox(roleButton.checkButton)
+				roleButton:GetChildren():SetFrameLevel(roleButton:GetChildren():GetFrameLevel() + 1)
+			end
+	
+			for i=1, 2 do
+				local tab = _G['LFRParentFrameSideTab'..i]		
+				tab:DisableDrawLayer('BACKGROUND')
+				
+				tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
+				tab:GetNormalTexture():ClearAllPoints()
+				tab:GetNormalTexture():Point("TOPLEFT", 2, -2)
+				tab:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+				
+				tab.pushed = true;
+				tab:CreateBackdrop("Default")
+				tab.backdrop:SetAllPoints()
+				tab:StyleButton(true)	
+				tab:GetHighlightTexture().SetTexture = E.noop
+				tab:GetCheckedTexture().SetTexture = E.noop
+				
+				if i == 1 then
+					local point, relatedTo, point2, x, y = tab:GetPoint()
+					tab:Point(point, relatedTo, point2, 3, y)	
+					tab.SetPoint = E.noop
+					tab.ClearAllPoints = E.noop
+				end		
+			end		
+			
+			for i=1, 7 do
+				local tab = _G['LFRBrowseFrameColumnHeader'..i]
+				tab:DisableDrawLayer('BACKGROUND')
+			end
+			
+			S:HandleDropDownBox(LFRBrowseFrameRaidDropDown)
+			S:HandleButton(LFRBrowseFrameRefreshButton)
+			S:HandleButton(LFRBrowseFrameInviteButton)
+			S:HandleButton(LFRBrowseFrameSendMessageButton)
+		end
+	end)
 end
 
 S:RegisterSkin("ElvUI", LoadSkin)

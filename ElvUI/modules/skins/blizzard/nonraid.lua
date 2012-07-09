@@ -41,6 +41,9 @@ local function LoadSkin()
 	RaidInfoFrame.backdrop:Point( "TOPLEFT", RaidInfoFrame, "TOPLEFT")
 	RaidInfoFrame.backdrop:Point( "BOTTOMRIGHT", RaidInfoFrame, "BOTTOMRIGHT")
 	S:HandleCloseButton(RaidInfoCloseButton,RaidInfoFrame)
+	
+	S:HandleButton(RaidFrameRaidBrowserButton)
+	S:HandleCheckBox(RaidFrameAllAssistCheckButton)	
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)
