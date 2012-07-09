@@ -2,16 +2,7 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
-	if not UpdatedYet then return end
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.raid ~= true then return end
-	local buttons = {
-		"RaidFrameRaidInfoButton",
-		"RaidFrameReadyCheckButton",
-	}
-
-	for i = 1, #buttons do
-		S:HandleButton(_G[buttons[i]])
-	end
 
 	local StripAllTextures = {
 		"RaidGroup1",
