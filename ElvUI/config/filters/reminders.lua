@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Engine
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Engine
 --[[
 	Spell Reminder Arguments
 	

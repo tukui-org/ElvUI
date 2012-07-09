@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...));
+local E, L, V, P, G, _ = unpack(select(2, ...));
 local R = E:NewModule('Reminder', 'AceTimer-3.0');
 local LSM = LibStub("LibSharedMedia-3.0");
 R.CreatedReminders = {};

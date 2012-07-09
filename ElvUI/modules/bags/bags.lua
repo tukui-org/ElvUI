@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local B = E:NewModule('Bags', 'AceHook-3.0', 'AceEvent-3.0');
 
 local ST_NORMAL = 1
@@ -12,7 +12,6 @@ local BAGS_BANK = {-1, 5, 6, 7, 8, 9, 10, 11}
 local trashParent = CreateFrame("Frame", nil, E.UIParent)
 local trashButton, trashBag = {}, {}
 local allButtons = {}
-local _
 
 B.buttons = {};
 B.bags = {};
