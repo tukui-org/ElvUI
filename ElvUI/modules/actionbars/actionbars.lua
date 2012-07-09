@@ -490,6 +490,7 @@ function AB:DisableBlizzard()
 	ActionBarButtonEventsFrame:RegisterEvent("ACTIONBAR_UPDATE_COOLDOWN")
 	ActionBarButtonEventsFrame:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
 	ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_SLOT_CHANGED')
+	ActionBarButtonEventsFrame:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
 	ActionBarActionEventsFrame:UnregisterAllEvents()
 end
 
