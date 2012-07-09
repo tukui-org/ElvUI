@@ -47,6 +47,7 @@ local function SetAnchors(self)
 	for index = 1, #bars do
 		local frame = bars[index]
 		local anchor = frame.anchor
+		frame:SetWidth((self.auraBarWidth or self:GetWidth()) - (frame:GetHeight() + (self.gap or 0)))
 		frame:ClearAllPoints()
 		if self.down == true then
 			if self == anchor then -- Root frame so indent for icon
