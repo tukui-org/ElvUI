@@ -633,9 +633,30 @@ function UF:UpdateHarmony()
 	local maxBars = self.numPoints
 	local frame = self:GetParent()
 	local db = frame.db
+	local UNIT_WIDTH = db.width
 	local CLASSBAR_WIDTH = db.width - 4
-	
+	local BORDER = 2
 	local SPACING = 1
+	local USE_PORTRAIT = db.portrait.enable
+	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
+	local PORTRAIT_WIDTH = db.portrait.width
+	local POWERBAR_OFFSET = db.power.offset
+	local USE_POWERBAR = db.power.enable
+	local USE_MINI_POWERBAR = db.power.width ~= 'fill' and USE_POWERBAR
+	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
+	
+	if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
+		PORTRAIT_WIDTH = 0	
+	end
+	
+	if USE_PORTRAIT then
+		CLASSBAR_WIDTH = math.ceil((UNIT_WIDTH - (BORDER*2)) - PORTRAIT_WIDTH)
+	end
+	
+	if USE_POWERBAR_OFFSET then
+		CLASSBAR_WIDTH = CLASSBAR_WIDTH - POWERBAR_OFFSET
+	end	
+	
 	if db.classbar.fill == 'spaced' then
 		SPACING = 9
 		
