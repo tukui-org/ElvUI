@@ -440,7 +440,7 @@ end
 
 function E:StaticPopup_OnEvent()
 	self.maxHeightSoFar = 0;
-	self:StaticPopup_Resize(self.which);
+	E:StaticPopup_Resize(self, self.which);
 end
 
 local tempButtonLocs = {};	--So we don't make a new table each time.
