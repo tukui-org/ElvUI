@@ -37,7 +37,7 @@ local Enable = function(self)
 		if(self.unit == "player") then
 			self:RegisterEvent("PLAYER_ROLES_ASSIGNED", Path, true)
 		else
-			self:RegisterEvent("PARTY_MEMBERS_CHANGED", Path, true)
+			self:RegisterEvent("GROUP_ROSTER_UPDATE", Path, true)
 		end
 
 		if(lfdrole:IsObjectType"Texture" and not lfdrole:GetTexture()) then
@@ -52,7 +52,7 @@ local Disable = function(self)
 	local lfdrole = self.LFDRole
 	if(lfdrole) then
 		self:UnregisterEvent("PLAYER_ROLES_ASSIGNED", Path)
-		self:UnregisterEvent("PARTY_MEMBERS_CHANGED", Path)
+		self:UnregisterEvent("GROUP_ROSTER_UPDATE", Path)
 	end
 end
 

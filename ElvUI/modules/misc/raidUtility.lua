@@ -55,7 +55,7 @@ function RU:ToggleRaidUtil(event)
 		self:RegisterEvent("PLAYER_REGEN_ENABLED", 'ToggleRaidUtil')
 		return
 	end
-	
+
 	if CheckRaidStatus() then
 		if RaidUtilityPanel.toggled == true then
 			ShowButton:Hide()
@@ -227,9 +227,8 @@ function RU:Initialize()
 	end
 
 	--Automatically show/hide the frame if we have RaidLeader or RaidOfficer
-	self:RegisterEvent("RAID_ROSTER_UPDATE", 'ToggleRaidUtil')
+	self:RegisterEvent("GROUP_ROSTER_UPDATE", 'ToggleRaidUtil')
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", 'ToggleRaidUtil')
-	self:RegisterEvent("PARTY_MEMBERS_CHANGED", 'ToggleRaidUtil')
 end
 
 E:RegisterInitialModule(RU:GetName())

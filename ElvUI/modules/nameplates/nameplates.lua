@@ -729,8 +729,7 @@ function NP:UpdateAllPlates()
 		self:SkinPlate(frame)
 	end
 
-	self:RegisterEvent("RAID_ROSTER_UPDATE", "UpdateRoster")
-	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "UpdateRoster")
+	self:RegisterEvent("GROUP_ROSTER_UPDATE", "UpdateRoster")
 	self:RegisterEvent("PARTY_CONVERTED_TO_RAID", "UpdateRoster")
 	self:RegisterEvent('UPDATE_MOUSEOVER_UNIT', 'UpdateCastInfo')
 	self:RegisterEvent('PLAYER_TARGET_CHANGED', 'UpdateCastInfo')

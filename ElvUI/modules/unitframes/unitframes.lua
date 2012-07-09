@@ -624,7 +624,7 @@ function UF:Initialize()
 			UnitPopupMenus["PET"] = { "PET_PAPERDOLL", "PET_RENAME", "PET_ABANDON", "CANCEL" };
 		end
 		
-		self:RegisterEvent('RAID_ROSTER_UPDATE', 'DisableBlizzard')
+		self:RegisterEvent('GROUP_ROSTER_UPDATE', 'DisableBlizzard')
 	end
 		
 	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs

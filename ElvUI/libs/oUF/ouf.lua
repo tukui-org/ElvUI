@@ -243,7 +243,7 @@ local initObject = function(unit, style, styleFunc, header, ...)
 			end
 		else
 			-- Used to update frames when they change position in a group.
-			object:RegisterEvent('PARTY_MEMBERS_CHANGED', object.UpdateAllElements)
+			object:RegisterEvent('GROUP_ROSTER_UPDATE', object.UpdateAllElements)
 
 			if(num > 1) then
 				if(object:GetParent() == header) then

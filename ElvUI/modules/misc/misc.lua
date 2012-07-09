@@ -15,22 +15,17 @@ end
 function M:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, _, sourceGUID, _, _, _, _, destName, _, _, _, _, _, spellID, spellName)
 	if not (event == "SPELL_INTERRUPT" and sourceGUID == UnitGUID('player')) then return end
 	
-	if E.db.general.interruptAnnounce == "PARTY" then
-		if GetRealNumPartyMembers() > 0 then
-			SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", "PARTY", nil, nil)
-		end
-	elseif E.db.general.interruptAnnounce == "RAID" then
-		if GetRealNumRaidMembers() > 0 then
+	local inGroup, inRaid = IsInGroup(), IsInRaid()
+	if E.db.general.interruptAnnounce == "PARTY" and inGroup then
+		SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", "PARTY", nil, nil)
+	elseif E.db.general.interruptAnnounce == "RAID" and inGroup then
+		if inRaid then
 			SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", "RAID", nil, nil)		
-		elseif GetRealNumPartyMembers() > 0 then
+		else
 			SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", "PARTY", nil, nil)
 		end	
-	elseif E.db.general.interruptAnnounce == "SAY" then
-		if GetRealNumRaidMembers() > 0 then
-			SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", "SAY", nil, nil)		
-		elseif GetRealNumPartyMembers() > 0 then
-			SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", "SAY", nil, nil)
-		end		
+	elseif E.db.general.interruptAnnounce == "SAY" and inGroup then
+		SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", "SAY", nil, nil)	
 	end
 end
 
@@ -76,7 +71,7 @@ function M:DisbandRaidGroup()
 		end
 	else
 		for i = MAX_PARTY_MEMBERS, 1, -1 do
-			if GetPartyMember(i) then
+			if UnitExists("party"..i) then
 				UninviteUnit(UnitName("party"..i))
 			end
 		end
@@ -99,7 +94,10 @@ function M:CheckMovement()
 end
 
 function M:PVPMessageEnhancement(_, msg)
-	RaidNotice_AddMessage(RaidBossEmoteFrame, msg, ChatTypeInfo["RAID_BOSS_EMOTE"]);
+	local _, instanceType = IsInInstance()
+	if instanceType == 'pvp' or instanceType == 'arena' then
+		RaidNotice_AddMessage(RaidBossEmoteFrame, msg, ChatTypeInfo["RAID_BOSS_EMOTE"]);
+	end
 end
 
 local hideStatic = false;
@@ -146,7 +144,7 @@ function M:AutoInvite(event, leaderName)
 				end
 			end
 		end
-	elseif event == "PARTY_MEMBERS_CHANGED" and hideStatic == true then
+	elseif event == "GROUP_ROSTER_UPDATE" and hideStatic == true then
 		StaticPopup_Hide("PARTY_INVITE")
 		hideStatic = false
 	end
@@ -165,6 +163,7 @@ end
 function M:Kill()
 	--Kill Frames
 	HelpOpenTicketButtonTutorial:Kill()
+	TalentMicroButtonAlert:Kill()
 end
 
 function M:Initialize()
@@ -182,7 +181,7 @@ function M:Initialize()
 	self:RegisterEvent('CHAT_MSG_BG_SYSTEM_ALLIANCE', 'PVPMessageEnhancement')
 	self:RegisterEvent('CHAT_MSG_BG_SYSTEM_NEUTRAL', 'PVPMessageEnhancement')
 	self:RegisterEvent('PARTY_INVITE_REQUEST', 'AutoInvite')
-	self:RegisterEvent('PARTY_MEMBERS_CHANGED', 'AutoInvite')
+	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'AutoInvite')
 	self:RegisterEvent('CVAR_UPDATE', 'ForceCVars')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	

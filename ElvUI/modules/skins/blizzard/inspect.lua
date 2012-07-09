@@ -98,7 +98,7 @@ local function LoadSkin()
 
 	CheckItemBorderColor:RegisterEvent("PLAYER_TARGET_CHANGED")
 	CheckItemBorderColor:RegisterEvent("UNIT_PORTRAIT_UPDATE")
-	CheckItemBorderColor:RegisterEvent("PARTY_MEMBERS_CHANGED")
+	CheckItemBorderColor:RegisterEvent("GROUP_ROSTER_UPDATE")
 	CheckItemBorderColor:SetScript("OnEvent", ColorItemBorder)	
 	InspectFrame:HookScript("OnShow", ColorItemBorder)
 	ColorItemBorder(CheckItemBorderColor)	
