@@ -379,6 +379,22 @@ function E:StaticPopup_EditBoxOnEnterPressed()
 	end
 end
 
+function E:StaticPopup_EditBoxOnEscapePressed()
+	local EditBoxOnEscapePressed = E.PopupDialogs[self:GetParent().which].EditBoxOnEscapePressed;
+	if ( EditBoxOnEscapePressed ) then
+		EditBoxOnEscapePressed(self, self:GetParent().data);
+	end
+end
+
+function E:StaticPopup_EditBoxOnTextChanged(userInput)
+	if ( not self.autoCompleteParams or not AutoCompleteEditBox_OnTextChanged(self, userInput) ) then
+		local EditBoxOnTextChanged = E.PopupDialogs[self:GetParent().which].EditBoxOnTextChanged;
+		if ( EditBoxOnTextChanged ) then
+			EditBoxOnTextChanged(self, self:GetParent().data);
+		end
+	end
+end
+
 function E:StaticPopup_FindVisible(which, data)
 	local info = E.PopupDialogs[which];
 	if ( not info ) then
@@ -759,6 +775,10 @@ function E:Contruct_StaticPopups()
 				E.StaticPopup_OnClick(self:GetParent(), self:GetID())
 			end)
 		end
+		
+		_G['ElvUI_StaticPopup'..index..'EditBox']:SetScript('OnEnterPressed', E.StaticPopup_EditBoxOnEnterPressed)
+		_G['ElvUI_StaticPopup'..index..'EditBox']:SetScript('OnEscapePressed', E.StaticPopup_EditBoxOnEscapePressed)
+		_G['ElvUI_StaticPopup'..index..'EditBox']:SetScript('OnTextChanged', E.StaticPopup_EditBoxOnTextChanged)
 		
 		--Skin
 		E.StaticPopupFrames[index]:SetTemplate('Transparent')
