@@ -26,6 +26,7 @@ RBR.AttackPower = {
 RBR.SpellPower = {
 	77747, -- Burning Wrath
 	109773, -- Dark Intent
+	61316, -- Dalaran Brilliance
 	1459, -- Arcane Brilliance
 }
 
@@ -44,6 +45,7 @@ RBR.SpellHaste = {
 RBR.CriticalStrike = {
 	19506, -- Trueshot Aura
 	1459, -- Arcane Brilliance
+	61316, -- Dalaran Brilliance
 	24932, -- Leader of The Pact
 	116781, -- Legacy of the White Tiger
 }
