@@ -12,6 +12,7 @@ local BAGS_BANK = {-1, 5, 6, 7, 8, 9, 10, 11}
 local trashParent = CreateFrame("Frame", nil, E.UIParent)
 local trashButton, trashBag = {}, {}
 local allButtons = {}
+local _
 
 B.buttons = {};
 B.bags = {};
@@ -1490,13 +1491,13 @@ function B:Initialize()
 	self:SecureHook('BankFrameItemButton_Update', 'PLAYERBANKSLOTS_CHANGED')
 
 	--Hook onto Blizzard Functions
-	self:SecureHook('ToggleBackpack', 'ToggleBags', true)
-	self:SecureHook('ToggleBag', 'ToggleBags', true)
-	self:SecureHook('ToggleAllBags', 'ToggleBags', true)
-	self:SecureHook('OpenAllBags', 'OpenBags', true)
-	self:SecureHook('OpenBackpack', 'OpenBags', true)
-	self:SecureHook('CloseAllBags', 'CloseBags', true)
-	self:SecureHook('CloseBackpack', 'CloseBags', true)
+	self:RawHook('ToggleBackpack', 'ToggleBags', true)
+	self:RawHook('ToggleBag', 'ToggleBags', true)
+	self:RawHook('ToggleAllBags', 'ToggleBags', true)
+	self:RawHook('OpenAllBags', 'OpenBags', true)
+	self:RawHook('OpenBackpack', 'OpenBags', true)
+	self:RawHook('CloseAllBags', 'CloseBags', true)
+	self:RawHook('CloseBackpack', 'CloseBags', true)
 
 	--Stop Blizzard bank bags from functioning.
 	BankFrame:UnregisterAllEvents()

@@ -534,8 +534,6 @@ function E:Initialize()
 	self.global = self.data.global;
 	self:CheckIncompatible()
 	
-	self.private.bags.enable = false --major taint
-	
 	--Database conversion for aura filters
 	for spellList, _ in pairs(self.global.unitframe.aurafilters) do
 		if self.global.unitframe.aurafilters[spellList] and self.global.unitframe.aurafilters[spellList].spells then
