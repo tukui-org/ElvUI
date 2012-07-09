@@ -31,7 +31,6 @@
 	<Script file='greeting.lua'/>
 	<Script file='worldmap.lua'/>
 	<Script file='taxi.lua'/>
-	<Script file='lfd.lua'/>
 	<Script file='quest.lua'/>
 	<Script file='petition.lua'/>
 	<Script file='dressingroom.lua'/>
@@ -40,7 +39,7 @@
 	<Script file='friends.lua'/>
 	<Script file='spellbook.lua'/>
 	<Script file='character.lua'/>
-	<Script file='lfr.lua'/>
+	<Script file='lfg.lua'/>
 	<Script file='tabard.lua'/>
 	<Script file='guildregistrar.lua'/>
 	<Script file='timemanager.lua'/>	
