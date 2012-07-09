@@ -70,11 +70,12 @@ function AddOn:OnInitialize()
 			self:CopyTable(self.private, ElvPrivateData.profiles[profileKey])
 		end
 	end	
-
+	
 	self:UIScale();
 	self:UpdateMedia();
 	
 	self:RegisterEvent('PLAYER_LOGIN', 'Initialize')
+	self:Contruct_StaticPopups()
 	self:InitializeInitialModules()
 end
 
@@ -93,7 +94,7 @@ function AddOn:OnProfileReset()
 end
 
 function AddOn:OnProfileCopied(arg1, arg2, arg3)
-	StaticPopup_Show("COPY_PROFILE")
+	E:StaticPopup_Show("COPY_PROFILE")
 end
 
 function AddOn:LoadConfig()	

@@ -726,9 +726,9 @@ function B:InitBank()
 	f.purchaseBagButton:SetScript("OnClick", function()
 		local _, full = GetNumBankSlots()
 		if not full then
-			StaticPopup_Show("BUY_BANK_SLOT")
+			E:StaticPopup_Show("BUY_BANK_SLOT")
 		else
-			StaticPopup_Show("CANNOT_BUY_BANK_SLOT")
+			E:StaticPopup_Show("CANNOT_BUY_BANK_SLOT")
 		end
 	end)
 
@@ -775,7 +775,7 @@ function B:InitBank()
 		if numSlots >= 1 then
 			ToggleFrame(f.ContainerHolder)
 		else
-			StaticPopup_Show("NO_BANK_BAGS")
+			E:StaticPopup_Show("NO_BANK_BAGS")
 		end
 	end)
 
@@ -936,7 +936,7 @@ end
 
 function B:VendorGrayCheck()
 	if IsShiftKeyDown() then
-		StaticPopup_Show('DELETE_GRAYS')
+		E:StaticPopup_Show('DELETE_GRAYS')
 	else
 		self:VendorGrays()
 	end
@@ -1490,13 +1490,13 @@ function B:Initialize()
 	self:SecureHook('BankFrameItemButton_Update', 'PLAYERBANKSLOTS_CHANGED')
 
 	--Hook onto Blizzard Functions
-	self:RawHook('ToggleBackpack', 'ToggleBags', true)
-	self:RawHook('ToggleBag', 'ToggleBags', true)
-	self:RawHook('ToggleAllBags', 'ToggleBags', true)
-	self:RawHook('OpenAllBags', 'OpenBags', true)
-	self:RawHook('OpenBackpack', 'OpenBags', true)
-	self:RawHook('CloseAllBags', 'CloseBags', true)
-	self:RawHook('CloseBackpack', 'CloseBags', true)
+	self:SecureHook('ToggleBackpack', 'ToggleBags', true)
+	self:SecureHook('ToggleBag', 'ToggleBags', true)
+	self:SecureHook('ToggleAllBags', 'ToggleBags', true)
+	self:SecureHook('OpenAllBags', 'OpenBags', true)
+	self:SecureHook('OpenBackpack', 'OpenBags', true)
+	self:SecureHook('CloseAllBags', 'CloseBags', true)
+	self:SecureHook('CloseBackpack', 'CloseBags', true)
 
 	--Stop Blizzard bank bags from functioning.
 	BankFrame:UnregisterAllEvents()

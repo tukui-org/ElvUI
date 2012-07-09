@@ -37,6 +37,8 @@ local function LoadSkin()
 		PlayerTalentFramePetSpecializationLearnButton
 	}
 	
+	S:HandleButton(PlayerTalentFrameActivateButton)
+	
 	for _, button in pairs(buttons) do
 		S:HandleButton(button, true)
 		local point, anchor, anchorPoint, x = button:GetPoint()

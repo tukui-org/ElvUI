@@ -295,7 +295,7 @@ E.Options.args.unitframe = {
 			type = "toggle",
 			name = L["Enable"],
 			get = function(info) return E.private.unitframe.enable end,
-			set = function(info, value) E.private.unitframe.enable = value; StaticPopup_Show("PRIVATE_RL") end
+			set = function(info, value) E.private.unitframe.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},
 		general = {
 			order = 200,
@@ -317,7 +317,7 @@ E.Options.args.unitframe = {
 							desc = L['Disables the blizzard party/raid frames.'],
 							type = 'toggle',
 							get = function(info) return E.private.unitframe[ info[#info] ] end,
-							set = function(info, value) E.private["unitframe"][ info[#info] ] = value; StaticPopup_Show("PRIVATE_RL") end
+							set = function(info, value) E.private["unitframe"][ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
 						},
 						OORAlpha = {
 							order = 2,

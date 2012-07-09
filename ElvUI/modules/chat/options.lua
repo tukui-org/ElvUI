@@ -17,7 +17,7 @@ E.Options.args.chat = {
 			type = "toggle",
 			name = L["Enable"],
 			get = function(info) return E.private.chat.enable end,
-			set = function(info, value) E.private.chat.enable = value; StaticPopup_Show("PRIVATE_RL") end
+			set = function(info, value) E.private.chat.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},				
 		general = {
 			order = 3,

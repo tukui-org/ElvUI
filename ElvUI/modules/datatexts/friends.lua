@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 -- create a popup
-StaticPopupDialogs.SET_BN_BROADCAST = {
+E.PopupDialogs.SET_BN_BROADCAST = {
 	text = BN_BROADCAST_TOOLTIP,
 	button1 = ACCEPT,
 	button2 = CANCEL,
@@ -39,7 +39,7 @@ local menuList = {
 			{ text = "|cffFF0000"..AFK.."|r", notCheckable=true, func = function() if not IsChatAFK() then SendChatMessage("", "AFK") end end },
 		},
 	},
-	{ text = BN_BROADCAST_TOOLTIP, notCheckable=true, func = function() StaticPopup_Show("SET_BN_BROADCAST") end },
+	{ text = BN_BROADCAST_TOOLTIP, notCheckable=true, func = function() E:StaticPopup_Show("SET_BN_BROADCAST") end },
 }
 
 local function inviteClick(self, name)

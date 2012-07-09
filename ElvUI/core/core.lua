@@ -534,7 +534,7 @@ function E:Initialize()
 	self.global = self.data.global;
 	self:CheckIncompatible()
 	
-	--self.private.skins.blizzard.enable = false
+	self.private.bags.enable = false --major taint
 	
 	--Database conversion for aura filters
 	for spellList, _ in pairs(self.global.unitframe.aurafilters) do
@@ -577,7 +577,7 @@ function E:Initialize()
 			return 0;
 		end
 		E:Delay(45, function()
-			StaticPopup_Show('APRIL_FOOLS')
+			E:StaticPopup_Show('APRIL_FOOLS')
 		end)
 	end
 	
@@ -640,7 +640,7 @@ function E:ResetUI(...)
 	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
 	
 	if ... == '' or ... == ' ' or ... == nil then
-		StaticPopup_Show('RESETUI_CHECK')
+		E:StaticPopup_Show('RESETUI_CHECK')
 		return
 	end
 	

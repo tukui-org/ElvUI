@@ -146,7 +146,7 @@ function RU:Initialize()
 	self:CreateUtilButton("DisbandRaidButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate", RaidUtilityPanel:GetWidth() * 0.8, 18, "TOP", RaidUtilityPanel, "TOP", 0, -5, L['Disband Group'], nil)
 	DisbandRaidButton:SetScript("OnMouseUp", function(self)
 		if CheckRaidStatus() then
-			StaticPopup_Show("DISBAND_RAID")
+			E:StaticPopup_Show("DISBAND_RAID")
 		end
 	end)
 

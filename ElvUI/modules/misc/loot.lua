@@ -284,7 +284,7 @@ function M:LoadLoot()
 
 	function _G.GroupLootDropDown_GiveLoot(self)
 		if ( sq >= MASTER_LOOT_THREHOLD ) then
-			local dialog = StaticPopup_Show("CONFIRM_LOOT_DISTRIBUTION", ITEM_QUALITY_COLORS[sq].hex..sn..FONT_COLOR_CODE_CLOSE, self:GetText())
+			local dialog = E:StaticPopup_Show("CONFIRM_LOOT_DISTRIBUTION", ITEM_QUALITY_COLORS[sq].hex..sn..FONT_COLOR_CODE_CLOSE, self:GetText())
 			if (dialog) then
 				dialog.data = self.value
 			end
@@ -294,8 +294,7 @@ function M:LoadLoot()
 		CloseDropDownMenus()
 	end
 
-	StaticPopupDialogs["CONFIRM_LOOT_DISTRIBUTION"].OnAccept = function(self, data)
+	E.PopupDialogs["CONFIRM_LOOT_DISTRIBUTION"].OnAccept = function(self, data)
 		GiveMasterLoot(ss, data)
-	end	
-	StaticPopupDialogs["CONFIRM_LOOT_DISTRIBUTION"].preferredIndex = 3;
+	end
 end

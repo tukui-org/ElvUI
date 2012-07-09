@@ -480,7 +480,7 @@ E.Options.args.actionbar = {
 			type = "toggle",
 			name = L["Enable"],
 			get = function(info) return E.private.actionbar[ info[#info] ] end,
-			set = function(info, value) E.private.actionbar[ info[#info] ] = value; StaticPopup_Show("PRIVATE_RL") end
+			set = function(info, value) E.private.actionbar[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},
 		toggleKeybind = {
 			order = 3,

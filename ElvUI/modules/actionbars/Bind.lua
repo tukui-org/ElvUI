@@ -7,7 +7,7 @@ local _G = getfenv(0);
 
 function AB:ActivateBindMode()
 	bind.active = true;
-	StaticPopup_Show("KEYBIND_MODE");
+	E:StaticPopup_Show("KEYBIND_MODE");
 	AB:RegisterEvent('PLAYER_REGEN_DISABLED', 'DeactivateBindMode', false);
 end
 

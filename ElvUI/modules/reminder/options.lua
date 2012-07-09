@@ -442,7 +442,7 @@ E.Options.args.reminder = {
 			type = "toggle",
 			name = L["Enable"],
 			get = function(info) return E.private.reminder[ info[#info] ] end,
-			set = function(info, value) E.private.reminder[ info[#info] ] = value; StaticPopup_Show("PRIVATE_RL") end
+			set = function(info, value) E.private.reminder[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},
 		sound = {
 			type = "select", dialogControl = 'LSM30_Sound',

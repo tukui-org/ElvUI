@@ -22,8 +22,10 @@ local function LoadSkin()
 		"ConsolidatedBuffsTooltip",
 		"ReadyCheckFrame",
 		"StackSplitFrame",
+		"QueueStatusFrame",
 	}
 	
+	QueueStatusFrame:StripTextures()
 
 	for i = 1, getn(skins) do
 		_G[skins[i]]:SetTemplate("Transparent")
