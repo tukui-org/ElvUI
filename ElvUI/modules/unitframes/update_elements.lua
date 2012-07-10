@@ -633,6 +633,8 @@ function UF:UpdateHarmony()
 	local maxBars = self.numPoints
 	local frame = self:GetParent()
 	local db = frame.db
+	if not db then return; end
+	
 	local UNIT_WIDTH = db.width
 	local CLASSBAR_WIDTH = db.width - 4
 	local BORDER = 2

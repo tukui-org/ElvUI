@@ -426,10 +426,10 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 		if sender == E.myname then return end
 
 		if prefix == "ElvUIVC" and sender ~= 'Elvz' and not string.find(sender, 'Elvz%-') and not E.recievedOutOfDateMessage then
-			if tonumber(message) > tonumber(E.version) then
+			--[[if tonumber(message) > tonumber(E.version) then
 				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.tukui.org"])
 				E.recievedOutOfDateMessage = true
-			end
+			end]]
 		elseif prefix == 'ElvSays' and (sender == 'Elvz' or string.find(sender, 'Elvz-')) then ---HAHHAHAHAHHA
 			local user, channel, msg, sendTo = string.split(',', message)
 			
