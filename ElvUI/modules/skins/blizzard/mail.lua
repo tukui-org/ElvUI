@@ -2,14 +2,11 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
-	if not UpdatedYet then return end
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.mail ~= true then return end
 	MailFrame:StripTextures(true)
-	MailFrame:CreateBackdrop("Transparent")
-	MailFrame.backdrop:Point("TOPLEFT", 4, 0)
-	MailFrame.backdrop:Point("BOTTOMRIGHT", 2, 74)
-	MailFrame.backdrop:CreateShadow("Default")
-	MailFrame:SetWidth(360)
+	MailFrame:SetTemplate("Transparent")
+	MailFrame:CreateShadow("Default")
+	--MailFrame:SetWidth(360)
 
 	for i = 1, INBOXITEMS_TO_DISPLAY do
 		local bg = _G["MailItem"..i]
@@ -30,7 +27,7 @@ local function LoadSkin()
 		t:Point("BOTTOMRIGHT", -2, 2)
 	end
 	
-	S:HandleCloseButton(InboxCloseButton)
+	S:HandleCloseButton(MailFrameCloseButton)
 	S:HandleNextPrevButton(InboxPrevPageButton)
 	S:HandleNextPrevButton(InboxNextPageButton)
 
@@ -50,8 +47,9 @@ local function LoadSkin()
 	S:HandleEditBox(SendMailMoneyGold)
 	S:HandleEditBox(SendMailMoneySilver)
 	S:HandleEditBox(SendMailMoneyCopper)
-	
-	SendMailNameEditBox.backdrop:Point("BOTTOMRIGHT", 2, 0)
+	SendMailMoneyBg:Kill()
+	SendMailMoneyInset:StripTextures()
+	SendMailNameEditBox.backdrop:Point("BOTTOMRIGHT", 2, 4)
 	SendMailSubjectEditBox.backdrop:Point("BOTTOMRIGHT", 2, 0)
 	SendMailFrame:StripTextures()
 	
@@ -80,17 +78,18 @@ local function LoadSkin()
 	
 	-- open mail (cod)
 	OpenMailFrame:StripTextures(true)
-	OpenMailFrame:CreateBackdrop("Transparent")
-	OpenMailFrame.backdrop:Point("TOPLEFT", 4, 0)
-	OpenMailFrame.backdrop:Point("BOTTOMRIGHT", 2, 74)
-	OpenMailFrame.backdrop:CreateShadow("Default")
-	OpenMailFrame:SetWidth(360)
+	OpenMailFrame:SetTemplate("Transparent")
+	OpenMailFrame:CreateShadow("Default")
+	OpenMailFrameInset:Kill()
 	
-	S:HandleCloseButton(OpenMailCloseButton)
+	S:HandleCloseButton(OpenMailFrameCloseButton)
 	S:HandleButton(OpenMailReportSpamButton)
 	S:HandleButton(OpenMailReplyButton)
 	S:HandleButton(OpenMailDeleteButton)
 	S:HandleButton(OpenMailCancelButton)
+	
+	InboxFrame:StripTextures()
+	MailFrameInset:Kill()
 	
 	OpenMailScrollFrame:StripTextures(true)
 	OpenMailScrollFrame:SetTemplate("Default")
