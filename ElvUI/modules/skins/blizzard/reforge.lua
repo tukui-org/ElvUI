@@ -2,34 +2,33 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
-	if not UpdatedYet then return end
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.reforge ~= true then return end
 	ReforgingFrame:StripTextures()
 	ReforgingFrame:SetTemplate("Transparent")
 	ReforgingFrame:CreateShadow('Default')
 	
-	ReforgingFrameButtonFrame:StripTextures()
+	ReforgingFrame.ButtonFrame:StripTextures()
 	ReforgingFrameReforgeButton:ClearAllPoints()
 	ReforgingFrameReforgeButton:Point("LEFT", ReforgingFrameRestoreButton, "RIGHT", 2, 0)
 	ReforgingFrameReforgeButton:Point("BOTTOMRIGHT", -3, 3)
-	ReforgingFrameRestoreMessage:SetTextColor(1, 1, 1);
+	ReforgingFrame.RestoreMessage:SetTextColor(1, 1, 1);
 
 	S:HandleButton(ReforgingFrameRestoreButton, true)
 	S:HandleButton(ReforgingFrameReforgeButton, true)
 
-	ReforgingFrameItemButton:StripTextures()
-	ReforgingFrameItemButton:SetTemplate("Default", true)
-	ReforgingFrameItemButton:StyleButton()
-	ReforgingFrameItemButtonIconTexture:ClearAllPoints()
-	ReforgingFrameItemButtonIconTexture:Point("TOPLEFT", 2, -2)
-	ReforgingFrameItemButtonIconTexture:Point("BOTTOMRIGHT", -2, 2)
+	ReforgingFrame.ItemButton:StripTextures()
+	ReforgingFrame.ItemButton:SetTemplate("Default", true)
+	ReforgingFrame.ItemButton:StyleButton()
+	ReforgingFrame.ItemButton.IconTexture:ClearAllPoints()
+	ReforgingFrame.ItemButton.IconTexture:Point("TOPLEFT", 2, -2)
+	ReforgingFrame.ItemButton.IconTexture:Point("BOTTOMRIGHT", -2, 2)
 
 	hooksecurefunc("ReforgingFrame_Update", function(self)
 		local currentReforge, icon, name, quality, bound, cost = GetReforgeItemInfo()
 		if icon then
-			ReforgingFrameItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
+			ReforgingFrame.ItemButton.IconTexture:SetTexCoord(unpack(E.TexCoords))
 		else
-			ReforgingFrameItemButtonIconTexture:SetTexture(nil)
+			ReforgingFrame.ItemButton.IconTexture:SetTexture(nil)
 		end
 	end)
 
