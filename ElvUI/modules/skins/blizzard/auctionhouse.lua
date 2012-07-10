@@ -23,7 +23,7 @@ local function LoadSkin()
 	S:HandleCheckBox(IsUsableCheckButton)
 	S:HandleCheckBox(ShowOnPlayerCheckButton)
 	
-	SideDressUpFrame:StripTextures()
+	SideDressUpFrame:StripTextures(true)
 	SideDressUpFrame:SetTemplate("Transparent")
 	SideDressUpFrame:Point("TOPLEFT", AuctionFrame, "TOPRIGHT", 2, 0)
 	S:HandleButton(SideDressUpModelResetButton)
