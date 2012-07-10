@@ -701,6 +701,7 @@ function UF:Update_PlayerFrame(frame, db)
 			local bars = frame.ShardBar
 			bars:ClearAllPoints()
 			if USE_MINI_CLASSBAR then
+				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 2 / 3
 				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
 				bars:SetFrameStrata("MEDIUM")
 			else
