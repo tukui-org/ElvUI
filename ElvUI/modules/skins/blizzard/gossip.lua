@@ -55,6 +55,9 @@ local function LoadSkin()
 	GossipGreetingText:SetTextColor(1,1,1)
 	S:HandleCloseButton(GossipFrameCloseButton,GossipFrame.backdrop)
 	
+	NPCFriendshipStatusBar:StripTextures()
+	NPCFriendshipStatusBar:SetStatusBarTexture(E.media.normTex)
+	NPCFriendshipStatusBar:CreateBackdrop('Default')
 	
 	--Extreme hackage, blizzard makes button text on quest frame use hex color codes for some reason
 	hooksecurefunc("GossipFrameUpdate", function()

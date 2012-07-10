@@ -60,9 +60,6 @@ local function LoadSkin()
 			local point, anchor, anchorPoint, x = _G['PlayerTalentFrameTab'..i]:GetPoint()
 			_G['PlayerTalentFrameTab'..i]:Point(point, anchor, anchorPoint, x, -4)
 		end
-		
-		--_G['PlayerTalentFrameTab'..i].SetPoint = E.noop
-		--_G['PlayerTalentFrameTab'..i].ClearAllPoints = E.noop
 	end
 	
 	hooksecurefunc('PlayerTalentFrame_UpdateTabs', function()
