@@ -2,7 +2,6 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
-	if not UpdatedYet then return end
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.voidstorage ~= true then return end
 	local StripAllTextures = {
 		"VoidStorageBorderFrame",
@@ -29,7 +28,7 @@ local function LoadSkin()
 	S:HandleButton(VoidStorageHelpBoxButton)
 	S:HandleButton(VoidStorageTransferButton)
 
-	S:HandleCloseButton(VoidStorageBorderFrameCloseButton)
+	S:HandleCloseButton(VoidStorageBorderFrame.CloseButton)
 	VoidItemSearchBox:CreateBackdrop("Overlay")
 	VoidItemSearchBox.backdrop:Point("TOPLEFT", 10, -1)
 	VoidItemSearchBox.backdrop:Point("BOTTOMRIGHT", 4, 1)
