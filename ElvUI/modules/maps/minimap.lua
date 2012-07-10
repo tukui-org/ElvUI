@@ -24,7 +24,12 @@ local menuList = {
 		if not GlyphFrame then
 			LoadAddOn("Blizzard_GlyphUI")
 		end
-		PlayerTalentFrame_Toggle()
+		
+		if not PlayerTalentFrame:IsShown() then
+			ShowUIPanel(PlayerTalentFrame)
+		else
+			HideUIPanel(PlayerTalentFrame)
+		end
 	end},
 	{text = TIMEMANAGER_TITLE,
 	func = function() ToggleFrame(TimeManagerFrame) end},		

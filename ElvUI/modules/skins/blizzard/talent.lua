@@ -61,9 +61,16 @@ local function LoadSkin()
 			_G['PlayerTalentFrameTab'..i]:Point(point, anchor, anchorPoint, x, -4)
 		end
 		
-		_G['PlayerTalentFrameTab'..i].SetPoint = E.noop
-		_G['PlayerTalentFrameTab'..i].ClearAllPoints = E.noop
+		--_G['PlayerTalentFrameTab'..i].SetPoint = E.noop
+		--_G['PlayerTalentFrameTab'..i].ClearAllPoints = E.noop
 	end
+	
+	hooksecurefunc('PlayerTalentFrame_UpdateTabs', function()
+		for i=1, 4 do
+			local point, anchor, anchorPoint, x = _G['PlayerTalentFrameTab'..i]:GetPoint()
+			_G['PlayerTalentFrameTab'..i]:Point(point, anchor, anchorPoint, x, -4)
+		end
+	end)
 	
 	PlayerTalentFrameSpecializationSpellScrollFrameScrollChild.Seperator:SetTexture(1, 1, 1)
 	PlayerTalentFrameSpecializationSpellScrollFrameScrollChild.Seperator:SetAlpha(0.2)
