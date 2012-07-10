@@ -11,7 +11,11 @@ local function LoadSkin()
 	S:HandleNextPrevButton(ItemTextNextPageButton)
 	ItemTextPageText:SetTextColor(1, 1, 1)
 	ItemTextPageText.SetTextColor = E.noop
-
+	ItemTextFrame:SetTemplate("Transparent")
+	ItemTextFrameInset:Kill()	
+	S:HandleScrollBar(ItemTextScrollFrameScrollBar)
+	S:HandleCloseButton(ItemTextFrameCloseButton)
+	
 	local StripAllTextures = {
 		"GossipFrameGreetingPanel",
 		"GossipFrame",
