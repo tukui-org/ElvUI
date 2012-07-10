@@ -355,11 +355,16 @@ E.Options.args.skins = {
 					name = L["Taxi Frame"],
 					desc = L["TOGGLESKIN_DESC"],								
 				},
-				lfd = {
+				lfg = {
 					type = "toggle",
-					name = L["LFD Frame"],
+					name = L["LFG Frame"],
 					desc = L["TOGGLESKIN_DESC"],								
 				},
+				mounts = {
+					type = "toggle",
+					name = L["Mounts & Pets"],
+					desc = L["TOGGLESKIN_DESC"],								
+				},				
 				quest = {
 					type = "toggle",
 					name = L["Quest Frames"],
@@ -399,11 +404,6 @@ E.Options.args.skins = {
 					type = "toggle",
 					name = L["Character Frame"],
 					desc = L["TOGGLESKIN_DESC"],								
-				},
-				lfr = {
-					type = "toggle",
-					name = L["LFR Frame"],
-					desc = L["TOGGLESKIN_DESC"],
 				},
 				misc = {
 					type = "toggle",

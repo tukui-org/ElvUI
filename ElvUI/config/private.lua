@@ -120,6 +120,7 @@ V['skins'] = {
 		["transmogrify"] = true,
 		["stable"] = true,
 		["bgmap"] = true,
+		['mounts'] = true,
 	},
 }
 

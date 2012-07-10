@@ -298,6 +298,38 @@ function S:HandleCheckBox(frame)
 	frame.SetHighlightTexture = E.noop
 end
 
+function S:HandleItemButton(b, shrinkIcon)
+	if b.isSkinned then return; end
+	
+	local normTex = 
+	b:StripTextures()
+	b:CreateBackdrop()
+	b:StyleButton()
+	
+	local icon = b.icon
+	if b:GetName() and _G[b:GetName()..'IconTexture'] then
+		icon = _G[b:GetName()..'IconTexture']
+	end
+	
+	if icon then
+		icon:SetTexCoord(unpack(E.TexCoords))
+
+		-- create a backdrop around the icon
+		
+		if shrinkIcon then
+			b.backdrop:SetAllPoints()
+			icon:ClearAllPoints()
+			icon:SetPoint('TOPLEFT', b, 'TOPLEFT', 2, -2)
+			icon:SetPoint('BOTTOMRIGHT', b, 'BOTTOMRIGHT', -2, 2)
+		else
+			b.backdrop:Point("TOPLEFT", icon, -2, 2)
+			b.backdrop:Point("BOTTOMRIGHT", icon, 2, -2)
+		end
+		icon:SetParent(b.backdrop)
+	end
+	b.isSkinned = true
+end
+
 function S:HandleCloseButton(f, point, text)
 	f:StripTextures()
 	
