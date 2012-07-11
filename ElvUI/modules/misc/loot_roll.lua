@@ -7,72 +7,19 @@ local pos = 'TOP';
 local cancelled_rolls = {}
 local FRAME_WIDTH, FRAME_HEIGHT = 328, 28
 
-local locale = GetLocale()
-local rollpairs = locale == "deDE" and {
-	["(.*) passt automatisch bei (.+), weil [ersi]+ den Gegenstand nicht benutzen kann.$"]  = "pass",
-	["(.*) würfelt nicht für: (.+|r)$"] = "pass",
-	["(.*) hat für (.+) 'Gier' ausgewählt"] = "greed",
-	["(.*) hat für (.+) 'Bedarf' ausgewählt"] = "need",
-	["(.*) hat für '(.+)' Entzauberung gewählt."]  = "disenchant",
-} or locale == "frFR" and {
-	["(.*) a passé pour : (.+) parce qu'((il)|(elle)) ne peut pas ramasser cette objet.$"]  = "pass",
-	["(.*) a passé pour : (.+)"]  = "pass",
-	["(.*) a choisi Cupidité pour : (.+)"] = "greed",
-	["(.*) a choisi Besoin pour : (.+)"]  = "need",
-	["(.*) a choisi Désenchantement pour : (.+)"]  = "disenchant",
-} or locale == "zhTW" and {
-    ["(.*)自動放棄:(.+)，因為他無法拾取該物品$"]  = "pass",
-    ["(.*)自動放棄:(.+)，因為她無法拾取該物品$"]  = "pass",
-    ["(.*)放棄了:(.+)"] = "pass",
-    ["(.*)選擇了貪婪:(.+)"] = "greed",
-    ["(.*)選擇了需求:(.+)"] = "need",
-    ["(.*)選擇了分解:(.+)"] = "disenchant",
-} or locale == "ruRU" and {
-	["(.*) автоматически передает предмет (.+), поскольку не может его забрать"] = "pass",
-	["(.*) пропускает розыгрыш предмета \"(.+)\", поскольку не может его забрать"] = "pass",
-	["(.*) отказывается от предмета (.+)%."]  = "pass",
-	["Разыгрывается: (.+)%. (.*): \"Не откажусь\""] = "greed",
-	["Разыгрывается: (.+)%. (.*): \"Мне это нужно\""] = "need",
-	["Разыгрывается: (.+)%. (.*): \"Распылить\""] = "disenchant",
-} or locale == "koKR" and {
-       ["(.*)님이 획득할 수 없는 아이템이어서 자동으로 주사위 굴리기를 포기했습니다: (.+)"] = "pass",
-       ["(.*)님이 주사위 굴리기를 포기했습니다: (.+)"] = "pass",
-       ["(.*)님이 차비를 선택했습니다: (.+)"] = "greed",
-       ["(.*)님이 입찰을 선택했습니다: (.+)"] = "need",
-       ["(.*)님이 마력 추출을 선택했습니다: (.+)"] = "disenchant",	
-} or locale == "esES" and {
-	["^(.*) pasó automáticamente de: (.+) porque no puede despojar este objeto.$"] = "pass",
-	["^(.*) pasó de: (.+|r)$"]  = "pass",
-	["(.*) eligió Codicia para: (.+)"] = "greed",
-	["(.*) eligió Necesidad para: (.+)"]  = "need",
-	["(.*) eligió Desencantar para: (.+)"]  = "disenchant",	   	   
-} or locale == "esMX" and {
-	["^(.*) pasó automáticamente de: (.+) porque no puede despojar este objeto.$"] = "pass",
-	["^(.*) pasó de: (.+|r)$"]  = "pass",
-	["(.*) eligió Codicia para: (.+)"] = "greed",
-	["(.*) eligió Necesidad para: (.+)"]  = "need",
-	["(.*) eligió Desencantar para: (.+)"]  = "disenchant",	   
-} or {
-	["^(.*) automatically passed on: (.+) because s?he cannot loot that item.$"] = "pass",
-	["^(.*) passed on: (.+|r)$"]  = "pass",
-	["(.*) has selected Greed for: (.+)"] = "greed",
-	["(.*) has selected Need for: (.+)"]  = "need",
-	["(.*) has selected Disenchant for: (.+)"]  = "disenchant",
-}
-
 local function ClickRoll(frame)
-	RollOnLoot(frame.parent.rollid, frame.rolltype)
+	RollOnLoot(frame.parent.rollID, frame.rolltype)
 end
 
 local function HideTip() GameTooltip:Hide() end
 local function HideTip2() GameTooltip:Hide(); ResetCursor() end
 
-local rolltypes = {"need", "greed", "disenchant", [0] = "pass"}
+local rolltypes = {[1] = "need", [2] = "greed", [3] = "disenchant", [0] = "pass"}
 local function SetTip(frame)
 	GameTooltip:SetOwner(frame, "ANCHOR_RIGHT")
 	GameTooltip:SetText(frame.tiptext)
 	if frame:IsEnabled() == 0 then GameTooltip:AddLine("|cffff3333"..L["Can't Roll"]) end
-	for name,roll in pairs(frame.parent.rolls) do if roll == rolltypes[frame.rolltype] then GameTooltip:AddLine(name, 1, 1, 1) end end
+	for name,roll in pairs(frame.parent.rolls) do if rolltypes[roll] == rolltypes[frame.rolltype] then GameTooltip:AddLine(name, 1, 1, 1) end end
 	GameTooltip:Show()
 end
 
@@ -97,18 +44,18 @@ local function LootClick(frame)
 	elseif IsShiftKeyDown() then ChatEdit_InsertLink(frame.link) end
 end
 
-local function OnEvent(frame, event, rollid)
-	cancelled_rolls[rollid] = true
-	if frame.rollid ~= rollid then return end
+local function OnEvent(frame, event, rollID)
+	cancelled_rolls[rollID] = true
+	if frame.rollID ~= rollID then return end
 
-	frame.rollid = nil
+	frame.rollID = nil
 	frame.time = nil
 	frame:Hide()
 end
 
 local function StatusUpdate(frame)
-	if not frame.parent.rollid then return end
-	local t = GetLootRollTimeLeft(frame.parent.rollid)
+	if not frame.parent.rollID then return end
+	local t = GetLootRollTimeLeft(frame.parent.rollID)
 	local perc = t / frame.parent.time
 	frame.spark:Point("CENTER", frame, "LEFT", perc * frame:GetWidth(), 0)
 	frame:SetValue(t)
@@ -211,7 +158,7 @@ end
 
 local function GetFrame()
 	for i,f in ipairs(frames) do
-		if not f.rollid then return f end
+		if not f.rollID then return f end
 	end
 
 	local f = M:CreateRollFrame()
@@ -224,11 +171,10 @@ local function GetFrame()
 	return f
 end
 
-function M:START_LOOT_ROLL(event, rollid, time)
-	if cancelled_rolls[rollid] then return end
-
+function M:START_LOOT_ROLL(event, rollID, time)
+	if cancelled_rolls[rollID] then return end
 	local f = GetFrame()
-	f.rollid = rollid
+	f.rollID = rollID
 	f.time = time
 	for i in pairs(f.rolls) do f.rolls[i] = nil end
 	f.need:SetText(0)
@@ -236,9 +182,9 @@ function M:START_LOOT_ROLL(event, rollid, time)
 	f.pass:SetText(0)
 	f.disenchant:SetText(0)
 
-	local texture, name, count, quality, bop, canNeed, canGreed, canDisenchant = GetLootRollItemInfo(rollid)
+	local texture, name, count, quality, bop, canNeed, canGreed, canDisenchant = GetLootRollItemInfo(rollID)
 	f.button.icon:SetTexture(texture)
-	f.button.link = GetLootRollItemLink(rollid)
+	f.button.link = GetLootRollItemLink(rollID)
 
 	if canNeed then f.needbutt:Enable() else f.needbutt:Disable() end
 	if canGreed then f.greedbutt:Enable() else f.greedbutt:Disable() end
@@ -306,14 +252,15 @@ function M:ParseRollChoice(msg)
 	end
 end
 
+function M:LOOT_HISTORY_ROLL_CHANGED(event, itemIdx, playerIdx)
+	local rollID, itemLink, numPlayers, isDone, winnerIdx, isMasterLoot = C_LootHistory.GetItem(itemIdx);
+	local name, class, rollType, roll, isWinner = C_LootHistory.GetPlayerInfo(itemIdx, playerIdx);
 
-function M:CHAT_MSG_LOOT(event, msg)
-	local playername, itemname, rolltype = self:ParseRollChoice(msg)
-	if playername and itemname and rolltype then
+	if name and rollType then
 		for _,f in ipairs(frames) do
-			if f.rollid and f.button.link == itemname and not f.rolls[playername] then
-				f.rolls[playername] = rolltype
-				f[rolltype]:SetText(tonumber(f[rolltype]:GetText()) + 1)
+			if f.rollID == rollID then
+				f.rolls[name] = rollType
+				f[rolltypes[rollType]]:SetText(tonumber(f[rolltypes[rollType]]:GetText()) + 1)
 				return
 			end
 		end
@@ -326,7 +273,7 @@ function M:LoadLootRoll()
 	anchor:Point('TOP', E.UIParent, 'TOP', 0, -200)
 	anchor:Size(300, 22)
 	
-	self:RegisterEvent('CHAT_MSG_LOOT')
+	self:RegisterEvent('LOOT_HISTORY_ROLL_CHANGED')
 	self:RegisterEvent("START_LOOT_ROLL")
 	UIParent:UnregisterEvent("START_LOOT_ROLL")
 	UIParent:UnregisterEvent("CANCEL_LOOT_ROLL")
