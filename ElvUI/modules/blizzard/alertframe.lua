@@ -4,7 +4,7 @@ local B = E:GetModule('Blizzard');
 local AlertFrameHolder = CreateFrame("Frame", "AlertFrameHolder", E.UIParent)
 AlertFrameHolder:SetWidth(180)
 AlertFrameHolder:SetHeight(20)
-AlertFrameHolder:SetPoint("TOP", E.UIParent, "TOP", 0, -170)
+AlertFrameHolder:SetPoint("TOP", E.UIParent, "TOP", 0, -120)
 
 local POSITION, ANCHOR_POINT, YOFFSET = "TOP", "BOTTOM", -10
 
@@ -28,8 +28,8 @@ SlashCmdList.TEST_ACHIEVEMENT = function()
 end
 SLASH_TEST_ACHIEVEMENT1 = "/testalerts"
 
-local function PostAlertMove(frame, pos)
-	POSITION = pos	
+function E:PostAlertMove(pos)
+	POSITION = pos or POSITION
 	
 	if POSITION == 'TOP' then
 		ANCHOR_POINT = 'BOTTOM'
@@ -38,6 +38,42 @@ local function PostAlertMove(frame, pos)
 		ANCHOR_POINT = 'TOP'
 		YOFFSET = 10
 	end
+	
+	local rollBars = E:GetModule('Misc').RollBars
+	if E.private.general.lootRoll then
+		local lastframe, lastShownFrame
+		for i, frame in pairs(rollBars) do
+			frame:ClearAllPoints()
+			if i ~= 1 then
+				if POSITION == "TOP" then
+					frame:Point("TOP", lastframe, "BOTTOM", 0, -4)
+				else
+					frame:Point("BOTTOM", lastframe, "TOP", 0, 4)
+				end	
+			else
+				if POSITION == "TOP" then
+					frame:Point("TOP", AlertFrameHolder, "BOTTOM", 0, -4)
+				else
+					frame:Point("BOTTOM", AlertFrameHolder, "TOP", 0, 4)
+				end
+			end
+			lastframe = frame
+			
+			if frame:IsShown() then
+				lastShownFrame = frame
+			end
+		end
+		
+		AlertFrame:ClearAllPoints()
+		if lastShownFrame then
+			AlertFrame:SetAllPoints(lastShownFrame)			
+		else
+			AlertFrame:SetAllPoints(AlertFrameHolder)					
+		end
+	else
+		AlertFrame:ClearAllPoints()
+		AlertFrame:SetAllPoints(AlertFrameHolder)
+	end
 
 	GroupLootContainer:ClearAllPoints()
 	GroupLootContainer:SetPoint(POSITION, AlertFrame, ANCHOR_POINT)
@@ -45,7 +81,9 @@ local function PostAlertMove(frame, pos)
 	MissingLootFrame:ClearAllPoints()
 	MissingLootFrame:SetPoint(POSITION, AlertFrame, ANCHOR_POINT)
 	
-	AlertFrame_FixAnchors()
+	if pos == 'TOP' or pos == 'BOTTOM' then
+		AlertFrame_FixAnchors()
+	end
 end
 
 function B:AlertFrame_SetLootWonAnchors(alertAnchor)
@@ -129,9 +167,7 @@ function B:AlertFrame_SetGuildChallengeAnchors(alertAnchor)
 end
 
 function B:AlertMovers()
-	AlertFrame:ClearAllPoints()
-	AlertFrame:SetAllPoints(AlertFrameHolder)
-	
+	self:SecureHook('AlertFrame_FixAnchors', E.PostAlertMove)
 	self:SecureHook('AlertFrame_SetLootWonAnchors')
 	self:SecureHook('AlertFrame_SetMoneyWonAnchors')
 	self:SecureHook('AlertFrame_SetAchievementAnchors')
@@ -141,5 +177,5 @@ function B:AlertMovers()
 	self:SecureHook('AlertFrame_SetScenarioAnchors')
 	self:SecureHook('AlertFrame_SetGuildChallengeAnchors')
 	
-	E:CreateMover(AlertFrameHolder, "AlertFrameMover", "Alert Frames", nil, nil, PostAlertMove)
+	E:CreateMover(AlertFrameHolder, "AlertFrameMover", "Alert Frames", nil, nil, E.PostAlertMove)
 end

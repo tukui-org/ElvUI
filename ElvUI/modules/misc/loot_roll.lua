@@ -1,11 +1,10 @@
 ﻿local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local M = E:GetModule('Misc');
 
-local anchor
-local frames = {}
 local pos = 'TOP';
 local cancelled_rolls = {}
 local FRAME_WIDTH, FRAME_HEIGHT = 328, 28
+M.RollBars = {}
 
 local function ClickRoll(frame)
 	RollOnLoot(frame.parent.rollID, frame.rolltype)
@@ -157,17 +156,17 @@ function M:CreateRollFrame()
 end
 
 local function GetFrame()
-	for i,f in ipairs(frames) do
+	for i,f in ipairs(M.RollBars) do
 		if not f.rollID then return f end
 	end
 
 	local f = M:CreateRollFrame()
 	if pos == "TOP" then
-		f:Point("TOP", next(frames) and frames[#frames] or anchor, "BOTTOM", 0, -4)
+		f:Point("TOP", next(M.RollBars) and M.RollBars[#M.RollBars] or AlertFrameHolder, "BOTTOM", 0, -4)
 	else
-		f:Point("BOTTOM", next(frames) and frames[#frames] or anchor, "TOP", 0, 4)
+		f:Point("BOTTOM", next(M.RollBars) and M.RollBars[#M.RollBars] or AlertFrameHolder, "TOP", 0, 4)
 	end
-	table.insert(frames, f)
+	table.insert(M.RollBars, f)
 	return f
 end
 
@@ -210,46 +209,7 @@ function M:START_LOOT_ROLL(event, rollID, time)
 
 	f:SetPoint("CENTER", WorldFrame, "CENTER")
 	f:Show()
-end
-
-local function PostMoveLootRoll(frame, point)
-	if string.find(point, "TOP") or point == "CENTER" or point == "LEFT" or point == "RIGHT" then
-		pos = "TOP"
-	elseif string.find(point, "BOTTOM") then
-		pos = "BOTTOM"
-	end
-	
-	local lastframe
-	for i, frame in pairs(frames) do
-		if i ~= 1 then
-			frame:ClearAllPoints()
-			if pos == "TOP" then
-				frame:Point("TOP", lastframe, "BOTTOM", 0, -4)
-			else
-				frame:Point("BOTTOM", lastframe, "TOP", 0, 4)
-			end	
-		else
-			frame:ClearAllPoints()
-			if pos == "TOP" then
-				frame:Point("TOP", anchor, "BOTTOM", 0, -4)
-			else
-				frame:Point("BOTTOM", anchor, "TOPLEFT", 0, 4)
-			end
-		end
-		lastframe = frame
-	end
-end
-
-function M:ParseRollChoice(msg)
-	for i,v in pairs(rollpairs) do
-		local _, _, playername, itemname = string.find(msg, i)
-		if locale == "ruRU" and (v == "greed" or v == "need" or v == "disenchant")  then 
-			local temp = playername
-			playername = itemname
-			itemname = temp
-		end 
-		if playername and itemname and playername ~= "Everyone" then return playername, itemname, v end
-	end
+	AlertFrame_FixAnchors()
 end
 
 function M:LOOT_HISTORY_ROLL_CHANGED(event, itemIdx, playerIdx)
@@ -257,7 +217,7 @@ function M:LOOT_HISTORY_ROLL_CHANGED(event, itemIdx, playerIdx)
 	local name, class, rollType, roll, isWinner = C_LootHistory.GetPlayerInfo(itemIdx, playerIdx);
 
 	if name and rollType then
-		for _,f in ipairs(frames) do
+		for _,f in ipairs(M.RollBars) do
 			if f.rollID == rollID then
 				f.rolls[name] = rollType
 				f[rolltypes[rollType]]:SetText(tonumber(f[rolltypes[rollType]]:GetText()) + 1)
@@ -269,14 +229,9 @@ end
 
 function M:LoadLootRoll()	
 	if not E.private.general.lootRoll then return end
-	anchor = CreateFrame("Frame", nil, anchorHolder)
-	anchor:Point('TOP', E.UIParent, 'TOP', 0, -200)
-	anchor:Size(300, 22)
 	
 	self:RegisterEvent('LOOT_HISTORY_ROLL_CHANGED')
 	self:RegisterEvent("START_LOOT_ROLL")
 	UIParent:UnregisterEvent("START_LOOT_ROLL")
 	UIParent:UnregisterEvent("CANCEL_LOOT_ROLL")
-	
-	E:CreateMover(anchor, "LootRollMover", "LootRoll Frame", nil, nil, PostMoveLootRoll)
 end
