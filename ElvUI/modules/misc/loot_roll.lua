@@ -122,7 +122,11 @@ function M:CreateRollFrame()
 	status:SetStatusBarColor(.8, .8, .8, .9)
 	status.parent = frame
 	frame.status = status
-
+	
+	status.bg = status:CreateTexture(nil, 'BACKGROUND')
+	status.bg:SetAlpha(0.1)
+	status.bg:SetAllPoints()
+	status.bg:SetDrawLayer('BACKGROUND', 2)
 	local spark = frame:CreateTexture(nil, "OVERLAY")
 	spark:Size(14, FRAME_HEIGHT)
 	spark:SetTexture("Interface\\CastingBar\\UI-CastingBar-Spark")
@@ -201,6 +205,7 @@ function M:START_LOOT_ROLL(event, rollID, time)
 	local color = ITEM_QUALITY_COLORS[quality]
 	f.fsloot:SetText(name)
 	f.status:SetStatusBarColor(color.r, color.g, color.b, .7)
+	f.status.bg:SetTexture(color.r, color.g, color.b)
 	f:SetBackdropBorderColor(color.r, color.g, color.b, .7)
 	f.button.backdrop:SetBackdropBorderColor(color.r, color.g, color.b, .7)
 	

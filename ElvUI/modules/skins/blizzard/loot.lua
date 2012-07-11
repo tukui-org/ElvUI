@@ -24,6 +24,44 @@ local function LoadSkin()
 		end
 	end
 	hooksecurefunc("MissingLootFrame_Show", SkinButton)
+	
+	-- loot history frame
+	LootHistoryFrame:StripTextures()
+	S:HandleCloseButton(LootHistoryFrame.CloseButton)
+	LootHistoryFrame:StripTextures()
+	LootHistoryFrame:SetTemplate('Transparent')
+	S:HandleCloseButton(LootHistoryFrame.ResizeButton)
+	LootHistoryFrame.ResizeButton.text:SetText("v v v v")
+	LootHistoryFrame.ResizeButton:SetTemplate()
+	LootHistoryFrame.ResizeButton:Width(LootHistoryFrame:GetWidth())
+	LootHistoryFrame.ResizeButton:Height(19)
+	LootHistoryFrame.ResizeButton:ClearAllPoints()
+	LootHistoryFrame.ResizeButton:Point("TOP", LootHistoryFrame, "BOTTOM", 0, -2)
+	LootHistoryFrameScrollFrame:StripTextures()
+	S:HandleScrollBar(LootHistoryFrameScrollFrameScrollBar)
+
+	local function UpdateLoots(self)
+		local numItems = C_LootHistory.GetNumItems()
+		for i=1, numItems do
+			local frame = LootHistoryFrame.itemFrames[i]
+
+			if not frame.isSkinned then
+				local Icon = frame.Icon:GetTexture()
+				frame:StripTextures()
+				frame.Icon:SetTexture(Icon)
+				frame.Icon:SetTexCoord(unpack(E.TexCoords))
+
+				-- create a backdrop around the icon
+				frame:CreateBackdrop("Default")
+				frame.backdrop:Point("TOPLEFT", frame.Icon, -2, 2)
+				frame.backdrop:Point("BOTTOMRIGHT", frame.Icon, 2, -2)
+				frame.Icon:SetParent(frame.backdrop)
+
+				frame.isSkinned = true
+			end
+		end
+	end
+	hooksecurefunc("LootHistoryFrame_FullUpdate", UpdateLoots)	
 end
 
 S:RegisterSkin("ElvUI", LoadSkin)
