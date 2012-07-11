@@ -848,32 +848,6 @@ E.Options.args.unitframe.args.player = {
 				},		
 			},
 		},	
-		altpower = {
-			order = 300,
-			type = 'group',
-			name = L['Alt-Power'],
-			get = function(info) return E.db.unitframe.units['player']['altpower'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['player']['altpower'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
-			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
-				width = {
-					type = 'range',
-					order = 2,
-					name = L['Width'],
-					min = 15, max = 550, step = 1,
-				},
-				height = {
-					type = 'range',
-					name = L['Height'],
-					order = 3,
-					min = 5, max = 100, step = 1,
-				},
-			},
-		},	
 		name = {
 			order = 400,
 			type = 'group',

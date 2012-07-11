@@ -46,7 +46,6 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Resting = self:Construct_RestingIndicator(frame)
 	frame.Combat = self:Construct_CombatIndicator(frame)
 	frame.PvPText = self:Construct_PvPIndicator(frame)
-	frame.AltPowerBar = self:Construct_AltPowerBar(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 
@@ -901,21 +900,6 @@ function UF:Update_PlayerFrame(frame, db)
 		elseif not db.combatfade and frame:IsElementEnabled('CombatFade') then
 			frame:DisableElement('CombatFade')
 		end		
-	end
-	
-	--AltPower
-	do
-		local altpower = frame.AltPowerBar
-		altpower:Point("TOP", E.UIParent, "TOP", 0, -70)
-		altpower:Width(db.altpower.width)
-		altpower:Height(db.altpower.height)	
-		altpower.Smooth = self.db.smoothbars
-		
-		if db.altpower.enable and not frame:IsElementEnabled('AltPowerBar') then
-			frame:EnableElement('AltPowerBar')
-		elseif not db.altpower.enable and frame:IsElementEnabled('AltPowerBar') then
-			frame:DisableElement('AltPowerBar')
-		end			
 	end
 	
 	--Debuff Highlight
