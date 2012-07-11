@@ -310,6 +310,11 @@ E.Options.args.skins = {
 					name = L["Alert Frames"],
 					desc = L["TOGGLESKIN_DESC"],								
 				},
+				loot = {
+					type = "toggle",
+					name = L["Loot Frames"],
+					desc = L["TOGGLESKIN_DESC"],								
+				},				
 				bgscore = {
 					type = "toggle",
 					name = L["BG Score"],

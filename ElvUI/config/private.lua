@@ -92,6 +92,7 @@ V['skins'] = {
 		["debug"] = true,
 		["trainer"] = true,
 		["socket"] = true,
+		['loot'] = true,
 		["alertframes"] = true,
 		["bgscore"] = true,
 		["merchant"] = true,

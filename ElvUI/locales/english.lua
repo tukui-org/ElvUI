@@ -8,6 +8,7 @@ else
 end
 
 if not L then return; end
+L["Loot Frames"] = true;
 L["24-Hour Time"] = "24-Hour Time"
 L["Accept Invites"] = "Accept Invites"
 L["Achievement Frame"] = "Achievement Frame"

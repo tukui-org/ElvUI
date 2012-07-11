@@ -244,6 +244,66 @@ local function LoadSkin()
 			end	
 		end
 	end)
+	
+	hooksecurefunc('AlertFrame_SetLootWonAnchors', function()
+		for i=1, #LOOT_WON_ALERT_FRAMES do
+			local frame = LOOT_WON_ALERT_FRAMES[i];
+			if frame then
+				frame:SetAlpha(1)
+				frame.SetAlpha = E.noop
+				
+				frame.Background:Kill()
+				frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+				frame.IconBorder:Kill()
+				frame.glow:Kill()
+				frame.shine:Kill()
+				
+				-- Icon border
+				if not frame.Icon.b then
+					frame.Icon.b = CreateFrame("Frame", nil, frame)
+					frame.Icon.b:SetTemplate("Default")
+					frame.Icon.b:Point("TOPLEFT", frame.Icon, "TOPLEFT", -2, 2)
+					frame.Icon.b:Point("BOTTOMRIGHT", frame.Icon, "BOTTOMRIGHT", 2, -2)
+					frame.Icon:SetParent(frame.Icon.b)
+				end
+				
+				if not frame.backdrop then
+					frame:CreateBackdrop("Transparent")
+					frame.backdrop:SetPoint('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
+					frame.backdrop:SetPoint('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
+				end				
+			end
+		end	
+	end)
+	
+	hooksecurefunc('AlertFrame_SetMoneyWonAnchors', function()
+		for i=1, #MONEY_WON_ALERT_FRAMES do
+			local frame = MONEY_WON_ALERT_FRAMES[i];
+			if frame then
+				frame:SetAlpha(1)
+				frame.SetAlpha = E.noop
+
+				frame.Background:Kill()
+				frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+				frame.IconBorder:Kill()
+				
+				-- Icon border
+				if not frame.Icon.b then
+					frame.Icon.b = CreateFrame("Frame", nil, frame)
+					frame.Icon.b:SetTemplate("Default")
+					frame.Icon.b:Point("TOPLEFT", frame.Icon, "TOPLEFT", -2, 2)
+					frame.Icon.b:Point("BOTTOMRIGHT", frame.Icon, "BOTTOMRIGHT", 2, -2)
+					frame.Icon:SetParent(frame.Icon.b)
+				end
+				
+				if not frame.backdrop then
+					frame:CreateBackdrop("Transparent")
+					frame.backdrop:SetPoint('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
+					frame.backdrop:SetPoint('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
+				end				
+			end
+		end	
+	end)	
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

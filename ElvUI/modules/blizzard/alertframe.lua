@@ -20,6 +20,10 @@ SlashCmdList.TEST_ACHIEVEMENT = function()
 	AlertFrame_AnimateIn(DungeonCompletionAlertFrame1)
 	AlertFrame_AnimateIn(ScenarioAlertFrame1)
 	
+	local _, itemLink = GetItemInfo(6948)
+	LootWonAlertFrame_ShowAlert(itemLink, -1, 1, 1)
+	MoneyWonAlertFrame_ShowAlert(1)
+	
 	AlertFrame_FixAnchors()
 end
 SLASH_TEST_ACHIEVEMENT1 = "/testalerts"
