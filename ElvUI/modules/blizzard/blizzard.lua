@@ -1,12 +1,12 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
-local B = E:NewModule('Blizzard', 'AceEvent-3.0');
+local B = E:NewModule('Blizzard', 'AceEvent-3.0', 'AceHook-3.0');
 
 E.Blizzard = B;
 
 function B:Initialize()
 	self:EnhanceColorPicker()
 	self:KillBlizzard()
-	self:AchievementMovers()
+	self:AlertMovers()
 	self:PositionCaptureBar()
 	self:PositionDurabilityFrame()
 	self:PositionGMFrames()
