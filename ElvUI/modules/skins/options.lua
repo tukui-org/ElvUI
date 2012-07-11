@@ -305,9 +305,9 @@ E.Options.args.skins = {
 					name = L["Socket Frame"],
 					desc = L["TOGGLESKIN_DESC"],								
 				},
-				achievement_popup = {
+				alertframes = {
 					type = "toggle",
-					name = L["Achievement Popup Frames"],
+					name = L["Alert Frames"],
 					desc = L["TOGGLESKIN_DESC"],								
 				},
 				bgscore = {

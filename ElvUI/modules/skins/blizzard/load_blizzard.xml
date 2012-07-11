@@ -22,7 +22,7 @@
 	<Script file='debug.lua'/>
 	<Script file='trainer.lua'/>
 	<Script file='socket.lua'/>
-	<Script file='achievement_popup.lua'/>
+	<Script file='alerts.lua'/>
 	<Script file='bgscore.lua'/>
 	<Script file='merchant.lua'/>
 	<Script file='mail.lua'/>

@@ -15,6 +15,12 @@ SlashCmdList.TEST_ACHIEVEMENT = function()
 	AchievementAlertFrame_ShowAlert(5000)
 	GuildChallengeAlertFrame_ShowAlert(3, 2, 5)
 	ChallengeModeAlertFrame_ShowAlert()
+	CriteriaAlertFrame_GetAlertFrame()
+	AlertFrame_AnimateIn(CriteriaAlertFrame1)
+	AlertFrame_AnimateIn(DungeonCompletionAlertFrame1)
+	AlertFrame_AnimateIn(ScenarioAlertFrame1)
+	
+	AlertFrame_FixAnchors()
 end
 SLASH_TEST_ACHIEVEMENT1 = "/testalerts"
 
