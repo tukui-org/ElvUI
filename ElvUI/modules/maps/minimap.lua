@@ -18,11 +18,11 @@ local menuList = {
 	{text = TALENTS_BUTTON,
 	func = function()
 		if not PlayerTalentFrame then
-			LoadAddOn("Blizzard_TalentUI")
+			TalentFrame_LoadUI()
 		end
 
 		if not GlyphFrame then
-			LoadAddOn("Blizzard_GlyphUI")
+			GlyphFrame_LoadUI()
 		end
 		
 		if not PlayerTalentFrame:IsShown() then
@@ -46,10 +46,10 @@ local menuList = {
 	{text = ACHIEVEMENTS_GUILD_TAB,
 	func = function()
 		if IsInGuild() then
-			if not GuildFrame then LoadAddOn("Blizzard_GuildUI") end
+			if not GuildFrame then GuildFrame_LoadUI() end
 			GuildFrame_Toggle()
 		else
-			if not LookingForGuildFrame then LoadAddOn("Blizzard_LookingForGuildUI") end
+			if not LookingForGuildFrame then LookingForGuildFrame_LoadUI() end
 			if not LookingForGuildFrame then return end
 			LookingForGuildFrame_Toggle()
 		end
@@ -57,10 +57,10 @@ local menuList = {
 	{text = LFG_TITLE,
 	func = function() PVEFrame_ToggleFrame(); end},
 	{text = ENCOUNTER_JOURNAL, 
-	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then LoadAddOn('Blizzard_EncounterJournal'); end ToggleFrame(EncounterJournal) end},	
+	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then EncounterJournal_LoadUI(); end ToggleFrame(EncounterJournal) end},	
 	{text = L_CALENDAR,
 	func = function()
-	if(not CalendarFrame) then LoadAddOn("Blizzard_Calendar") end
+	if(not CalendarFrame) then Calendar_LoadUI() end
 		Calendar_Toggle()
 	end},			
 	{text = HELP_BUTTON,

@@ -87,14 +87,12 @@ local function LoadSkin()
 		tab:StyleButton(true)	
 		tab:GetHighlightTexture().SetTexture = E.noop
 		tab:GetCheckedTexture().SetTexture = E.noop
-		
-		if i == 1 then
-			local point, relatedTo, point2, x, y = tab:GetPoint()
-			tab:Point(point, relatedTo, point2, 1, y)	
-			tab.SetPoint = E.noop
-			tab.ClearAllPoints = E.noop
-		end
 	end
+	
+	hooksecurefunc('PlayerTalentFrame_UpdateSpecs', function()
+		local point, relatedTo, point2, x, y = PlayerSpecTab1:GetPoint()
+		PlayerSpecTab1:Point(point, relatedTo, point2, 1, y)	
+	end)
 
 	for i = 1, MAX_NUM_TALENT_TIERS do
 		local row = _G["PlayerTalentFrameTalentsTalentRow"..i]
