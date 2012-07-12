@@ -71,7 +71,7 @@ local function LoadSkin()
 				
 				-- Icon
 				frame.dungeonTexture:SetTexCoord(unpack(E.TexCoords))
-				
+				frame.dungeonTexture:SetDrawLayer('OVERLAY')
 				frame.dungeonTexture:ClearAllPoints()
 				frame.dungeonTexture:Point("LEFT", frame, 7, 0)
 				
