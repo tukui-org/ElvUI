@@ -45,8 +45,7 @@ local function LoadSkin()
 		TradeSkillSkillIcon:StyleButton()
 		if TradeSkillSkillIcon:GetNormalTexture() then
 			TradeSkillSkillIcon:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-			TradeSkillSkillIcon:GetNormalTexture():ClearAllPoints()
-			TradeSkillSkillIcon:GetNormalTexture():SetInside()
+			TradeSkillSkillIcon:GetNormalTexture():SetInside(nil, true)
 		end
 		TradeSkillSkillIcon:SetTemplate("Default")
 

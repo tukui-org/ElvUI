@@ -77,8 +77,7 @@ local function LoadSkin()
 		_G['PlayerSpecTab'..i..'Background']:Kill()
 		
 		tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-		tab:GetNormalTexture():ClearAllPoints()
-		tab:GetNormalTexture():SetInside()
+		tab:GetNormalTexture():SetInside(nil, true)
 		
 		tab.pushed = true;
 		tab:CreateBackdrop("Default")
@@ -186,7 +185,7 @@ local function LoadSkin()
 				frame.ring:Hide()
 				frame:SetTemplate("Default")
 				frame.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-				frame.icon:SetInside()
+				frame.icon:SetInside(nil, true)
 			end
 
 

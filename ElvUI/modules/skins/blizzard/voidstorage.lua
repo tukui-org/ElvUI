@@ -49,12 +49,10 @@ local function LoadSkin()
 		button_w:SetTemplate()
 
 		icon_d:SetTexCoord(unpack(E.TexCoords))
-		icon_d:ClearAllPoints()
-		icon_d:SetInside()
+		icon_d:SetInside(nil, true)
 
 		icon_w:SetTexCoord(unpack(E.TexCoords))
-		icon_w:ClearAllPoints()
-		icon_w:SetInside()
+		icon_w:SetInside(nil, true)
 	end
 
 	for i = 1, 80 do
@@ -67,8 +65,7 @@ local function LoadSkin()
 		button:SetTemplate()
 
 		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:ClearAllPoints()
-		icon:SetInside()
+		icon:SetInside(nil, true)
 	end
 end
 

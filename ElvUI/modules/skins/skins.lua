@@ -210,9 +210,8 @@ function S:HandleNextPrevButton(btn, horizonal)
 				btn:GetDisabledTexture():SetTexCoord(0.3, 0.29, 0.3, 0.75, 0.65, 0.29, 0.65, 0.75)
 			end
 		end
-		
-		btn:GetNormalTexture():ClearAllPoints()
-		btn:GetNormalTexture():SetInside()
+
+		btn:GetNormalTexture():SetInside(nil, true)
 		if btn:GetDisabledTexture() then
 			btn:GetDisabledTexture():SetAllPoints(btn:GetNormalTexture())
 		end
@@ -235,8 +234,7 @@ function S:HandleRotateButton(btn)
 	
 	btn:GetHighlightTexture():SetTexture(1, 1, 1, 0.3)
 	
-	btn:GetNormalTexture():ClearAllPoints()
-	btn:GetNormalTexture():SetInside()
+	btn:GetNormalTexture():SetInside(nil, true)
 	btn:GetPushedTexture():SetAllPoints(btn:GetNormalTexture())	
 	btn:GetHighlightTexture():SetAllPoints(btn:GetNormalTexture())
 end
@@ -312,8 +310,7 @@ function S:HandleItemButton(b, shrinkIcon)
 		
 		if shrinkIcon then
 			b.backdrop:SetAllPoints()
-			icon:ClearAllPoints()
-			icon:SetInside(b)
+			icon:SetInside(b, true)
 		else
 			b.backdrop:SetOutside(icon)
 		end

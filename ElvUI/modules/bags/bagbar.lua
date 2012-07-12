@@ -21,9 +21,8 @@ function B:SkinBag(bag)
 	bag:SetTemplate("Default", true)
 	bag:StyleButton(true)
 	icon:SetTexture(bag.oldTex)
-	icon:ClearAllPoints()
-	icon:SetInside()
-	icon:SetTexCoord(.08, .92, .08, .92)
+	icon:SetInside(nil, true)
+	icon:SetTexCoord(unpack(E.TexCoords))
 end
 
 function B:SizeAndPositionBagBar()

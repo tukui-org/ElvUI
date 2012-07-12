@@ -30,7 +30,7 @@ local function LoadSkin()
 				_G["AchievementAlertFrame"..i.."Name"]:FontTemplate(nil, 12)
 
 				-- Icon
-				_G["AchievementAlertFrame"..i.."IconTexture"]:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+				_G["AchievementAlertFrame"..i.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
 				_G["AchievementAlertFrame"..i.."IconOverlay"]:Kill()
 				
 				_G["AchievementAlertFrame"..i.."IconTexture"]:ClearAllPoints()
@@ -70,7 +70,7 @@ local function LoadSkin()
 				frame.heroicIcon:Kill()
 				
 				-- Icon
-				frame.dungeonTexture:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+				frame.dungeonTexture:SetTexCoord(unpack(E.TexCoords))
 				
 				frame.dungeonTexture:ClearAllPoints()
 				frame.dungeonTexture:Point("LEFT", frame, 7, 0)

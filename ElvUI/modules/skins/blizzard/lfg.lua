@@ -46,7 +46,7 @@ local function LoadSkin()
 		bu:SetTemplate()
 		bu:StyleButton()
 		
-		bu.icon:SetTexCoord(.08, .92, .08, .92)
+		bu.icon:SetTexCoord(unpack(E.TexCoords))
 		bu.icon:SetPoint("LEFT", bu, "LEFT")
 		bu.icon:SetDrawLayer("OVERLAY")
 		bu.icon:Size(40)
@@ -86,7 +86,7 @@ local function LoadSkin()
 					local count = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i.."Count"]
 					local na = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i.."NameFrame"]
 
-					icon:SetTexCoord(.08, .92, .08, .92)
+					icon:SetTexCoord(unpack(E.TexCoords))
 					icon:SetDrawLayer("OVERLAY")
 					count:SetDrawLayer("OVERLAY")
 					na:SetTexture()
@@ -144,7 +144,7 @@ local function LoadSkin()
 				local na = _G["RaidFinderQueueFrameScrollFrameChildFrameItem"..i.."NameFrame"]
 				button:StripTextures()
 				
-				icon:SetTexCoord(.08, .92, .08, .92)
+				icon:SetTexCoord(unpack(E.TexCoords))
 				icon:SetDrawLayer("OVERLAY")
 				count:SetDrawLayer("OVERLAY")
 				na:SetTexture()
@@ -216,8 +216,7 @@ local function LoadSkin()
 				tab:DisableDrawLayer('BACKGROUND')
 				
 				tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-				tab:GetNormalTexture():ClearAllPoints()
-				tab:GetNormalTexture():SetInside()
+				tab:GetNormalTexture():SetInside(nil, true)
 				
 				tab.pushed = true;
 				tab:CreateBackdrop("Default")
@@ -276,7 +275,7 @@ local function LoadSecondarySkin()
 		for j = 1, 2 do
 			local bu = rewardsRow["Reward"..j]
 			bu:CreateBackdrop()
-			bu.Icon:SetTexCoord(.08, .92, .08, .92)
+			bu.Icon:SetTexCoord(unpack(E.TexCoords))
 		end
 	end
 end

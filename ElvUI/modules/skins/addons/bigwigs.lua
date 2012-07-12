@@ -132,7 +132,7 @@ local applystyle = function(bar)
 	bar.candyBarIconFrame:ClearAllPoints()
 	bar.candyBarIconFrame:Point("BOTTOMRIGHT", bar, "BOTTOMLEFT", -5, 0)	
 	bar.candyBarIconFrame:SetSize(buttonsize, buttonsize)
-	bar.candyBarIconFrame:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+	bar.candyBarIconFrame:SetTexCoord(unpack(E.TexCoords))
 end
 
 --[[

@@ -22,8 +22,7 @@ local function LoadSkin()
 
 		local t = _G["MailItem"..i.."ButtonIcon"]
 		t:SetTexCoord(unpack(E.TexCoords))
-		t:ClearAllPoints()
-		t:SetInside()
+		t:SetInside(nil, true)
 	end
 	
 	S:HandleCloseButton(MailFrameCloseButton)
@@ -64,8 +63,7 @@ local function LoadSkin()
 			local t = b:GetNormalTexture()
 			if t then
 				t:SetTexCoord(unpack(E.TexCoords))
-				t:ClearAllPoints()
-				t:SetInside()
+				t:SetInside(nil, true)
 			end
 		end
 	end
@@ -103,15 +101,13 @@ local function LoadSkin()
 	OpenMailLetterButton:SetTemplate("Default", true)
 	OpenMailLetterButton:StyleButton()
 	OpenMailLetterButtonIconTexture:SetTexCoord(unpack(E.TexCoords))						
-	OpenMailLetterButtonIconTexture:ClearAllPoints()
-	OpenMailLetterButtonIconTexture:SetInside()
+	OpenMailLetterButtonIconTexture:SetInside(nil, true)
 	
 	OpenMailMoneyButton:StripTextures()
 	OpenMailMoneyButton:SetTemplate("Default", true)
 	OpenMailMoneyButton:StyleButton()
 	OpenMailMoneyButtonIconTexture:SetTexCoord(unpack(E.TexCoords))						
-	OpenMailMoneyButtonIconTexture:ClearAllPoints()
-	OpenMailMoneyButtonIconTexture:SetInside()
+	OpenMailMoneyButtonIconTexture:SetInside(nil, true)
 	
 	for i = 1, ATTACHMENTS_MAX_SEND do				
 		local b = _G["OpenMailAttachmentButton"..i]
@@ -122,8 +118,7 @@ local function LoadSkin()
 		local t = _G["OpenMailAttachmentButton"..i.."IconTexture"]
 		if t then
 			t:SetTexCoord(unpack(E.TexCoords))
-			t:ClearAllPoints()
-			t:SetInside()
+			t:SetInside(nil, true)
 		end				
 	end
 	

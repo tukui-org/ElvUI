@@ -26,7 +26,7 @@ local function SkinBars(self)
 					local backdroptex = icon1.overlay:CreateTexture(nil, "BORDER")
 					backdroptex:SetTexture([=[Interface\Icons\Spell_Nature_WispSplode]=])
 					backdroptex:SetInside()
-					backdroptex:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+					backdroptex:SetTexCoord(unpack(E.TexCoords))
 					
 					icon1.overlay:SetFrameLevel(1)
 				end
@@ -40,7 +40,7 @@ local function SkinBars(self)
 					local backdroptex = icon2.overlay:CreateTexture(nil, "BORDER")
 					backdroptex:SetTexture([=[Interface\Icons\Spell_Nature_WispSplode]=])
 					backdroptex:SetInside()
-					backdroptex:SetTexCoord(0.08, 0.92, 0.08, 0.92)			
+					backdroptex:SetTexCoord(unpack(E.TexCoords))			
 
 					icon2.overlay:SetFrameLevel(1)
 				end
@@ -69,16 +69,14 @@ local function SkinBars(self)
 				end
 	
 				if not icon1.styled then
-					icon1:SetTexCoord(0.08, 0.92, 0.08, 0.92)
-					icon1:ClearAllPoints()
-					icon1:SetInside(icon1.overlay)
+					icon1:SetTexCoord(unpack(E.TexCoords))
+					icon1:SetInside(icon1.overlay, true)
 					icon1.styled=true
 				end
 				
 				if not icon2.styled then
-					icon2:SetTexCoord(0.08, 0.92, 0.08, 0.92)
-					icon2:ClearAllPoints()
-					icon2:SetInside(icon2.overlay)
+					icon2:SetTexCoord(unpack(E.TexCoords))
+					icon2:SetInside(icon2.overlay, true)
 					icon2.styled=true
 				end
 
@@ -182,8 +180,7 @@ local SkinBoss=function()
 			progress:SetStatusBarTexture(E["media"].normTex)
 			progress.styled=true
 		end				
-		progress:ClearAllPoints()
-		progress:SetInside(bar)
+		progress:SetInside(bar, true)
 
 		if not name.styled then
 			name:ClearAllPoints()

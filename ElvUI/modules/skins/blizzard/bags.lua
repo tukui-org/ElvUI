@@ -29,8 +29,7 @@ local function LoadSkin()
 			button:StyleButton()
 			
 			local icon = _G[button:GetName().."IconTexture"]
-			icon:ClearAllPoints()
-			icon:SetInside()
+			icon:SetInside(nil, true)
 			icon:SetTexCoord(unpack(E.TexCoords))
 			
 			button.searchOverlay:ClearAllPoints()
@@ -165,8 +164,7 @@ local function LoadSkin()
 		if highlight and not highlight.skinned then
 			highlight:SetTexture(unpack(E["media"].rgbvaluecolor), 0.3)
 			highlight.SetTexture = E.noop
-			highlight:ClearAllPoints()
-			highlight:SetInside()
+			highlight:SetInside(nil, true)
 			highlight.skinned = true
 		end
 	end)

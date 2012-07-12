@@ -42,9 +42,8 @@ local function LoadSkin()
 			end
 			button:StyleButton()
 			button:SetTemplate("Default", true)
-			
-			icon:ClearAllPoints()
-			icon:SetInside()
+
+			icon:SetInside(nil, true)
 			icon:SetTexCoord(unpack(E.TexCoords))
 		end
 	end
@@ -57,9 +56,8 @@ local function LoadSkin()
 		button:StripTextures()
 		button:StyleButton(true)
 		button:SetTemplate("Default", true)
-		
-		texture:ClearAllPoints()
-		texture:SetInside()
+
+		texture:SetInside(nil, true)
 		texture:SetTexCoord(unpack(E.TexCoords))
 	end
 	
@@ -90,8 +88,7 @@ local function LoadSkin()
 		button:StripTextures()
 		button:SetTemplate("Default")
 		button:StyleButton(true)
-		icon:ClearAllPoints()
-		icon:SetInside()
+		icon:SetInside(nil, true)
 		icon:SetTexCoord(unpack(E.TexCoords))
 	end
 	

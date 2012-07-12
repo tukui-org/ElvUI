@@ -126,9 +126,8 @@ local function SkinNextPrevButton(btn, horizonal)
 			btn:GetDisabledTexture():SetTexCoord(0.3, 0.29, 0.3, 0.75, 0.65, 0.29, 0.65, 0.75)
 		end
 	end
-	
-	btn:GetNormalTexture():ClearAllPoints()
-	btn:GetNormalTexture():SetInside()
+
+	btn:GetNormalTexture():SetInside(nil, true)
 	if btn:GetDisabledTexture() then
 		btn:GetDisabledTexture():SetAllPoints(btn:GetNormalTexture())
 	end
@@ -225,9 +224,8 @@ local function SkinAce3()
 					widget.soundbutton:Point('LEFT', frame.backdrop, 'LEFT', 2, 0)
 				elseif TYPE == "LSM30_Statusbar" then
 					frame.backdrop:Point("TOPLEFT", 20, -17)
-					widget.bar:ClearAllPoints()
 					widget.bar:SetParent(frame.backdrop)
-					widget.bar:SetInside()
+					widget.bar:SetInside(nil, true)
 				elseif TYPE == "LSM30_Border" or TYPE == "LSM30_Background" then
 					frame.backdrop:Point("TOPLEFT", 42, -16)
 				end

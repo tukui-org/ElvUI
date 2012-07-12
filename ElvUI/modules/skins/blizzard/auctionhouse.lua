@@ -36,8 +36,7 @@ local function LoadSkin()
 	AuctionProgressFrameCancelButton:StyleButton()
 	AuctionProgressFrameCancelButton:SetTemplate("Default")
 	AuctionProgressFrameCancelButton:SetHitRectInsets(0, 0, 0, 0)
-	AuctionProgressFrameCancelButton:GetNormalTexture():ClearAllPoints()
-	AuctionProgressFrameCancelButton:GetNormalTexture():SetInside()
+	AuctionProgressFrameCancelButton:GetNormalTexture():SetInside(nil, true)
 	AuctionProgressFrameCancelButton:GetNormalTexture():SetTexCoord(0.67, 0.37, 0.61, 0.26)
 	AuctionProgressFrameCancelButton:Size(28, 28)
 	AuctionProgressFrameCancelButton:Point("LEFT", AuctionProgressBar, "RIGHT", 8, 0)
@@ -96,8 +95,7 @@ local function LoadSkin()
 	AuctionsItemButton:SetScript("OnUpdate", function()
 		if AuctionsItemButton:GetNormalTexture() then
 			AuctionsItemButton:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-			AuctionsItemButton:GetNormalTexture():ClearAllPoints()
-			AuctionsItemButton:GetNormalTexture():SetInside()
+			AuctionsItemButton:GetNormalTexture():SetInside(nil, true)
 		end
 	end)
 	
@@ -169,8 +167,7 @@ local function LoadSkin()
 		
 		if _G["BrowseButton"..i.."ItemIconTexture"] then
 			_G["BrowseButton"..i.."ItemIconTexture"]:SetTexCoord(unpack(E.TexCoords))
-			_G["BrowseButton"..i.."ItemIconTexture"]:ClearAllPoints()
-			_G["BrowseButton"..i.."ItemIconTexture"]:SetInside()
+			_G["BrowseButton"..i.."ItemIconTexture"]:SetInside(nil, true)
 		end
 		
 		if icon then
@@ -199,8 +196,7 @@ local function LoadSkin()
 		
 		_G["AuctionsButton"..i.."ItemIconTexture"]:SetTexCoord(unpack(E.TexCoords))
 		_G["AuctionsButton"..i.."ItemIconTexture"].SetTexCoord = E.noop
-		_G["AuctionsButton"..i.."ItemIconTexture"]:ClearAllPoints()
-		_G["AuctionsButton"..i.."ItemIconTexture"]:SetInside()
+		_G["AuctionsButton"..i.."ItemIconTexture"]:SetInside(nil, true)
 		
 		icon:StyleButton()
 		--TODO: Find a better method to ensure that the icon:GetNormalTexture doesn't return after clicking
@@ -223,8 +219,7 @@ local function LoadSkin()
 		local icon = _G["BidButton"..i.."Item"]
 		
 		_G["BidButton"..i.."ItemIconTexture"]:SetTexCoord(unpack(E.TexCoords))
-		_G["BidButton"..i.."ItemIconTexture"]:ClearAllPoints()
-		_G["BidButton"..i.."ItemIconTexture"]:SetInside()
+		_G["BidButton"..i.."ItemIconTexture"]:SetInside(nil, true)
 		
 		icon:StyleButton()
 		icon:HookScript("OnUpdate", function() icon:GetNormalTexture():Kill() end)

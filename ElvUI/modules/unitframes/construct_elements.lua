@@ -141,12 +141,10 @@ function UF:Construct_AuraIcon(button)
 	button.cd.noOCC = true
 	button.cd.noCooldownCount = true
 	button.cd:SetReverse()
-	button.cd:ClearAllPoints()
-	button.cd:SetInside()
+	button.cd:SetInside(nil, true)
 	
-	button.icon:ClearAllPoints()
-	button.icon:SetInside()
-	button.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+	button.icon:SetInside(nil, true)
+	button.icon:SetTexCoord(unpack(E.TexCoords))
 	button.icon:SetDrawLayer('ARTWORK')
 	
 	button.count:ClearAllPoints()
@@ -222,7 +220,7 @@ function UF:Construct_Castbar(self, direction)
 	
 	local icon = button:CreateTexture(nil, "ARTWORK")
 	icon:SetInside()
-	icon:SetTexCoord(0.08, 0.92, 0.08, .92)
+	icon:SetTexCoord(unpack(E.TexCoords))
 	icon.bg = button
 	
 	--Set to castbar.Icon
@@ -662,8 +660,7 @@ function UF:Construct_AuraBars()
 	
 	self:SetTemplate('Default')
 
-	bar:ClearAllPoints()
-	bar:SetInside(self)
+	bar:SetInside(self, true)
 	UF['statusbars'][bar] = true
 	UF:Update_StatusBar(bar)
 		
@@ -676,7 +673,7 @@ function UF:Construct_AuraBars()
 	bar.spellname:SetPoint('LEFT', bar, 'LEFT', 2, 0)
 	
 	bar.iconHolder:SetTemplate('Default')
-	bar.icon:SetInside(bar.iconHolder)
+	bar.icon:SetInside(bar.iconHolder, true)
 	bar.icon:SetDrawLayer('OVERLAY')
 	
 	
