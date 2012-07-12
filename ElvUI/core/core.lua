@@ -2,7 +2,6 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local LSM = LibStub("LibSharedMedia-3.0")
 local _, ns = ...
 local ElvUF = ns.oUF
-local ACD = LibStub("AceConfigDialog-3.0")
 
 --Variables
 _, E.myclass = UnitClass("player");
@@ -281,72 +280,6 @@ function E:InitializeModules()
 	end
 end
 
-local grid
-function E:Grid_Show()
-	if not grid then
-        E:Grid_Create()
-	elseif grid.boxSize ~= E.db.gridSize then
-        grid:Hide()
-        E:Grid_Create()
-    else
-		grid:Show()
-	end
-end
-
-function E:Grid_Hide()
-	if grid then
-		grid:Hide()
-	end
-end
-
-function E:Grid_Create() 
-	grid = CreateFrame('Frame', 'EGrid', UIParent) 
-	grid.boxSize = E.db.gridSize
-	grid:SetAllPoints(E.UIParent) 
-	grid:Show()
-
-	local size = 1 
-	local width = E.eyefinity or GetScreenWidth()
-	local ratio = width / GetScreenHeight()
-	local height = GetScreenHeight() * ratio
-
-	local wStep = width / E.db.gridSize
-	local hStep = height / E.db.gridSize
-
-	for i = 0, E.db.gridSize do 
-		local tx = grid:CreateTexture(nil, 'BACKGROUND') 
-		if i == E.db.gridSize / 2 then 
-			tx:SetTexture(1, 0, 0) 
-		else 
-			tx:SetTexture(0, 0, 0) 
-		end 
-		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", i*wStep - (size/2), 0) 
-		tx:SetPoint('BOTTOMRIGHT', grid, 'BOTTOMLEFT', i*wStep + (size/2), 0) 
-	end 
-	height = GetScreenHeight()
-	
-	do
-		local tx = grid:CreateTexture(nil, 'BACKGROUND') 
-		tx:SetTexture(1, 0, 0)
-		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2) + (size/2))
-		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2 + size/2))
-	end
-	
-	for i = 1, math.floor((height/2)/hStep) do
-		local tx = grid:CreateTexture(nil, 'BACKGROUND') 
-		tx:SetTexture(0, 0, 0)
-		
-		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2+i*hStep) + (size/2))
-		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2+i*hStep + size/2))
-		
-		tx = grid:CreateTexture(nil, 'BACKGROUND') 
-		tx:SetTexture(0, 0, 0)
-		
-		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2-i*hStep) + (size/2))
-		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2-i*hStep + size/2))
-	end
-end
-
 function E:CheckIncompatible()
 	if IsAddOnLoaded('Prat-3.0') and E.private.chat.enable then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Prat', 'Chat'))
@@ -597,29 +530,6 @@ function E:Initialize()
 	self:GetModule('Minimap'):UpdateSettings()
 	self:RefreshModulesDB()
 	collectgarbage("collect");
-end
-
-local toggle
-function E:MoveUI(override, type)
-	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
-	
-	if toggle ~= nil then
-		toggle = nil
-	else
-		toggle = true
-	end
-	
-	if override then toggle = override end
-	
-	if toggle and ElvUIMoverPopupWindow then
-		ElvUIMoverPopupWindow:Show()
-		ACD['Close'](ACD, 'ElvUI') 
-		GameTooltip:Hide()
-	elseif ElvUIMoverPopupWindow then
-		ElvUIMoverPopupWindow:Hide()
-	end
-
-	self:ToggleMovers(toggle)
 end
 
 function E:ResetAllUI()

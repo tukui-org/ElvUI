@@ -19,7 +19,7 @@ E.Options.args = {
 		type = "execute",
 		name = L["Toggle Anchors"],
 		desc = L["Unlock various elements of the UI to be repositioned."],
-		func = function() E:MoveUI() end,
+		func = function() E:ToggleConfigMode() end,
 	},
 	ResetAllMovers = {
 		order = 4,

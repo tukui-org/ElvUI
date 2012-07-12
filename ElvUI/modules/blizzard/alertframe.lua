@@ -4,7 +4,7 @@ local B = E:GetModule('Blizzard');
 local AlertFrameHolder = CreateFrame("Frame", "AlertFrameHolder", E.UIParent)
 AlertFrameHolder:SetWidth(180)
 AlertFrameHolder:SetHeight(20)
-AlertFrameHolder:SetPoint("TOP", E.UIParent, "TOP", 0, -120)
+AlertFrameHolder:SetPoint("TOP", E.UIParent, "TOP", 0, -70)
 
 local POSITION, ANCHOR_POINT, YOFFSET = "TOP", "BOTTOM", -10
 
