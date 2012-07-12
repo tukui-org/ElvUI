@@ -479,6 +479,11 @@ function AB:DisableBlizzard()
 	MultiCastActionBarFrame:UnregisterAllEvents()
 	MultiCastActionBarFrame:Hide()
 	MultiCastActionBarFrame:SetParent(UIHider)
+	
+	--This frame puts spells on the damn actionbar, fucking obliterate that shit
+	IconIntroTracker:UnregisterAllEvents()
+	IconIntroTracker:Hide()
+	IconIntroTracker:SetParent(UIHider)
 
 	if PlayerTalentFrame then
 		PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
