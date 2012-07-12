@@ -63,7 +63,13 @@ local function LoadSkin()
 				_G["SpellButton"..i.."Highlight"]:ClearAllPoints()
 				_G["SpellButton"..i.."Highlight"]:SetAllPoints(icon)
 			end
-
+				
+			if button.shine then
+				button.shine:ClearAllPoints()
+				button.shine:SetPoint('TOPLEFT', button, 'TOPLEFT', -3, 3)
+				button.shine:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 3, -3)
+			end
+			
 			if icon then
 				icon:SetTexCoord(unpack(E.TexCoords))
 				icon:ClearAllPoints()
@@ -243,7 +249,7 @@ local function LoadSkin()
 	end
 	
 	--Bottom Tabs
-	for i=1, 4 do
+	for i=1, 5 do
 		S:HandleTab(_G["SpellBookFrameTabButton"..i])
 	end
 	

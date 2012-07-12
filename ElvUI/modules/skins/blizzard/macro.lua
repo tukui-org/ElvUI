@@ -52,6 +52,7 @@ local function LoadSkin()
 	MacroPopupNameLeft:SetTexture(nil)
 	MacroPopupNameMiddle:SetTexture(nil)
 	MacroPopupNameRight:SetTexture(nil)
+	MacroFrameInset:Kill()
 	
 	--Reposition edit button
 	MacroEditButton:ClearAllPoints()
