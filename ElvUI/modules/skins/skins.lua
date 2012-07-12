@@ -300,10 +300,9 @@ end
 
 function S:HandleItemButton(b, shrinkIcon)
 	if b.isSkinned then return; end
-	
-	local normTex = 
+
 	b:StripTextures()
-	b:CreateBackdrop()
+	b:CreateBackdrop('Default', true)
 	b:StyleButton()
 	
 	local icon = b.icon

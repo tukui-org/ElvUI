@@ -51,7 +51,7 @@ local function LoadSkin()
 				for i=1, button:GetNumRegions() do
 					local region = select(i, button:GetRegions())
 					if region:GetObjectType() == "Texture" then
-						if region:GetTexture() ~= "Interface\\Buttons\\ActionBarFlyoutButton" then
+						if region ~= button.FlyoutArrow then
 							region:SetTexture(nil)
 						end
 					end
