@@ -18,8 +18,7 @@ local function SkinIt(bar)
 		bar.backdrop = CreateFrame("Frame", nil, bar)
 		bar.backdrop:SetFrameLevel(0)
 		bar.backdrop:SetTemplate("Transparent")
-		bar.backdrop:Point("TOPLEFT", bar, "TOPLEFT", -2, 2)
-		bar.backdrop:Point("BOTTOMRIGHT", bar, "BOTTOMRIGHT", 2, -2)
+		bar.backdrop:SetInside()
 	end
 end
 

@@ -61,8 +61,7 @@ function S:HandleScrollBar(frame, thumbTrim)
 		_G[frame:GetName().."ScrollUpButton"]:SetTemplate("Default", true)
 		if not _G[frame:GetName().."ScrollUpButton"].texture then
 			_G[frame:GetName().."ScrollUpButton"].texture = _G[frame:GetName().."ScrollUpButton"]:CreateTexture(nil, 'OVERLAY')
-			_G[frame:GetName().."ScrollUpButton"].texture:Point("TOPLEFT", 2, -2)
-			_G[frame:GetName().."ScrollUpButton"].texture:Point("BOTTOMRIGHT", -2, 2)
+			_G[frame:GetName().."ScrollUpButton"].texture:SetInside()
 			_G[frame:GetName().."ScrollUpButton"].texture:SetTexture([[Interface\AddOns\ElvUI\media\textures\arrowup.tga]])
 			_G[frame:GetName().."ScrollUpButton"].texture:SetVertexColor(unpack(E['media'].bordercolor))
 		end
@@ -81,8 +80,7 @@ function S:HandleScrollBar(frame, thumbTrim)
 		_G[frame:GetName().."ScrollDownButton"]:HookScript('OnLeave', SetOriginalBackdrop)		
 		if not _G[frame:GetName().."ScrollDownButton"].texture then
 			_G[frame:GetName().."ScrollDownButton"].texture = _G[frame:GetName().."ScrollDownButton"]:CreateTexture(nil, 'OVERLAY')
-			_G[frame:GetName().."ScrollDownButton"].texture:Point("TOPLEFT", 2, -2)
-			_G[frame:GetName().."ScrollDownButton"].texture:Point("BOTTOMRIGHT", -2, 2)
+			_G[frame:GetName().."ScrollDownButton"].texture:SetInside()
 			_G[frame:GetName().."ScrollDownButton"].texture:SetTexture([[Interface\AddOns\ElvUI\media\textures\arrowdown.tga]])
 			_G[frame:GetName().."ScrollDownButton"].texture:SetVertexColor(unpack(E['media'].bordercolor))
 		end
@@ -214,8 +212,7 @@ function S:HandleNextPrevButton(btn, horizonal)
 		end
 		
 		btn:GetNormalTexture():ClearAllPoints()
-		btn:GetNormalTexture():Point("TOPLEFT", 2, -2)
-		btn:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+		btn:GetNormalTexture():SetInside()
 		if btn:GetDisabledTexture() then
 			btn:GetDisabledTexture():SetAllPoints(btn:GetNormalTexture())
 		end
@@ -239,8 +236,7 @@ function S:HandleRotateButton(btn)
 	btn:GetHighlightTexture():SetTexture(1, 1, 1, 0.3)
 	
 	btn:GetNormalTexture():ClearAllPoints()
-	btn:GetNormalTexture():Point("TOPLEFT", 2, -2)
-	btn:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+	btn:GetNormalTexture():SetInside()
 	btn:GetPushedTexture():SetAllPoints(btn:GetNormalTexture())	
 	btn:GetHighlightTexture():SetAllPoints(btn:GetNormalTexture())
 end
@@ -282,8 +278,7 @@ end
 function S:HandleCheckBox(frame)
 	frame:StripTextures()
 	frame:CreateBackdrop("Default")
-	frame.backdrop:Point("TOPLEFT", 4, -4)
-	frame.backdrop:Point("BOTTOMRIGHT", -4, 4)
+	frame.backdrop:SetInside(nil, nil, 4, 4)
 	
 	if frame.SetCheckedTexture then
 		frame:SetCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check")
@@ -318,11 +313,9 @@ function S:HandleItemButton(b, shrinkIcon)
 		if shrinkIcon then
 			b.backdrop:SetAllPoints()
 			icon:ClearAllPoints()
-			icon:SetPoint('TOPLEFT', b, 'TOPLEFT', 2, -2)
-			icon:SetPoint('BOTTOMRIGHT', b, 'BOTTOMRIGHT', -2, 2)
+			icon:SetInside(b)
 		else
-			b.backdrop:Point("TOPLEFT", icon, -2, 2)
-			b.backdrop:Point("BOTTOMRIGHT", icon, 2, -2)
+			b.backdrop:SetOutside(icon)
 		end
 		icon:SetParent(b.backdrop)
 	end

@@ -73,8 +73,7 @@ local function LoadSkin()
 	MacroFrameSelectedMacroButton:SetTemplate("Default")
 	MacroFrameSelectedMacroButtonIcon:SetTexCoord(unpack(E.TexCoords))
 	MacroFrameSelectedMacroButtonIcon:ClearAllPoints()
-	MacroFrameSelectedMacroButtonIcon:Point("TOPLEFT", 2, -2)
-	MacroFrameSelectedMacroButtonIcon:Point("BOTTOMRIGHT", -2, 2)
+	MacroFrameSelectedMacroButtonIcon:SetInside()
 	
 	-- temporarily moving this text
 	MacroFrameCharLimitText:ClearAllPoints()
@@ -97,8 +96,7 @@ local function LoadSkin()
 		if t then
 			t:SetTexCoord(unpack(E.TexCoords))
 			t:ClearAllPoints()
-			t:Point("TOPLEFT", 2, -2)
-			t:Point("BOTTOMRIGHT", -2, 2)
+			t:SetInside()
 		end
 
 		if pb then
@@ -111,8 +109,7 @@ local function LoadSkin()
 		if pt then
 			pt:SetTexCoord(unpack(E.TexCoords))
 			pt:ClearAllPoints()
-			pt:Point("TOPLEFT", 2, -2)
-			pt:Point("BOTTOMRIGHT", -2, 2)
+			pt:SetInside()
 		end
 	end
 end

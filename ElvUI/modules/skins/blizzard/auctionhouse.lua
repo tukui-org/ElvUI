@@ -37,8 +37,7 @@ local function LoadSkin()
 	AuctionProgressFrameCancelButton:SetTemplate("Default")
 	AuctionProgressFrameCancelButton:SetHitRectInsets(0, 0, 0, 0)
 	AuctionProgressFrameCancelButton:GetNormalTexture():ClearAllPoints()
-	AuctionProgressFrameCancelButton:GetNormalTexture():Point("TOPLEFT", 2, -2)
-	AuctionProgressFrameCancelButton:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+	AuctionProgressFrameCancelButton:GetNormalTexture():SetInside()
 	AuctionProgressFrameCancelButton:GetNormalTexture():SetTexCoord(0.67, 0.37, 0.61, 0.26)
 	AuctionProgressFrameCancelButton:Size(28, 28)
 	AuctionProgressFrameCancelButton:Point("LEFT", AuctionProgressBar, "RIGHT", 8, 0)
@@ -46,8 +45,7 @@ local function LoadSkin()
 	AuctionProgressBarIcon:SetTexCoord(0.67, 0.37, 0.61, 0.26)
 	
 	local backdrop = CreateFrame("Frame", nil, AuctionProgressBarIcon:GetParent())
-	backdrop:Point("TOPLEFT", AuctionProgressBarIcon, "TOPLEFT", -2, 2)
-	backdrop:Point("BOTTOMRIGHT", AuctionProgressBarIcon, "BOTTOMRIGHT", 2, -2)
+	backdrop:SetOutside(AuctionProgressBarIcon)
 	backdrop:SetTemplate("Default")
 	AuctionProgressBarIcon:SetParent(backdrop)
 	
@@ -99,8 +97,7 @@ local function LoadSkin()
 		if AuctionsItemButton:GetNormalTexture() then
 			AuctionsItemButton:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 			AuctionsItemButton:GetNormalTexture():ClearAllPoints()
-			AuctionsItemButton:GetNormalTexture():Point("TOPLEFT", 2, -2)
-			AuctionsItemButton:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+			AuctionsItemButton:GetNormalTexture():SetInside()
 		end
 	end)
 	
@@ -173,8 +170,7 @@ local function LoadSkin()
 		if _G["BrowseButton"..i.."ItemIconTexture"] then
 			_G["BrowseButton"..i.."ItemIconTexture"]:SetTexCoord(unpack(E.TexCoords))
 			_G["BrowseButton"..i.."ItemIconTexture"]:ClearAllPoints()
-			_G["BrowseButton"..i.."ItemIconTexture"]:Point("TOPLEFT", 2, -2)
-			_G["BrowseButton"..i.."ItemIconTexture"]:Point("BOTTOMRIGHT", -2, 2)
+			_G["BrowseButton"..i.."ItemIconTexture"]:SetInside()
 		end
 		
 		if icon then
@@ -204,8 +200,7 @@ local function LoadSkin()
 		_G["AuctionsButton"..i.."ItemIconTexture"]:SetTexCoord(unpack(E.TexCoords))
 		_G["AuctionsButton"..i.."ItemIconTexture"].SetTexCoord = E.noop
 		_G["AuctionsButton"..i.."ItemIconTexture"]:ClearAllPoints()
-		_G["AuctionsButton"..i.."ItemIconTexture"]:Point("TOPLEFT", 2, -2)
-		_G["AuctionsButton"..i.."ItemIconTexture"]:Point("BOTTOMRIGHT", -2, 2)
+		_G["AuctionsButton"..i.."ItemIconTexture"]:SetInside()
 		
 		icon:StyleButton()
 		--TODO: Find a better method to ensure that the icon:GetNormalTexture doesn't return after clicking
@@ -229,8 +224,7 @@ local function LoadSkin()
 		
 		_G["BidButton"..i.."ItemIconTexture"]:SetTexCoord(unpack(E.TexCoords))
 		_G["BidButton"..i.."ItemIconTexture"]:ClearAllPoints()
-		_G["BidButton"..i.."ItemIconTexture"]:Point("TOPLEFT", 2, -2)
-		_G["BidButton"..i.."ItemIconTexture"]:Point("BOTTOMRIGHT", -2, 2)
+		_G["BidButton"..i.."ItemIconTexture"]:SetInside()
 		
 		icon:StyleButton()
 		icon:HookScript("OnUpdate", function() icon:GetNormalTexture():Kill() end)

@@ -22,8 +22,7 @@ function B:SkinBag(bag)
 	bag:StyleButton(true)
 	icon:SetTexture(bag.oldTex)
 	icon:ClearAllPoints()
-	icon:Point("TOPLEFT", 2, -2)
-	icon:Point("BOTTOMRIGHT", -2, 2)
+	icon:SetInside()
 	icon:SetTexCoord(.08, .92, .08, .92)
 end
 

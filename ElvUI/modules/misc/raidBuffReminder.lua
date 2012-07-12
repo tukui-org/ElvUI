@@ -164,8 +164,7 @@ function RBR:CreateButton(relativeTo, isFirst, isLast)
 	
 	button.t = button:CreateTexture(nil, "OVERLAY")
 	button.t:SetTexCoord(unpack(E.TexCoords))
-	button.t:Point("TOPLEFT", 2, -2)
-	button.t:Point("BOTTOMRIGHT", -2, 2)
+	button.t:SetInside()
 	button.t:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
 	
 	return button

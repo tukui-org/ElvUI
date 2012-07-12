@@ -54,8 +54,7 @@ local function LoadSkin()
 		bu.icon:SetPoint("LEFT", 10, 0)
 		bu.border = CreateFrame("Frame", nil, bu)
 		bu.border:SetTemplate('Default')
-		bu.border:Point("TOPLEFT", bu.icon, -2, 2)
-		bu.border:Point("BOTTOMRIGHT", bu.icon, 2, -2)
+		bu.border:SetOutside(bu.icon)
 		bu.icon:SetParent(bu.border)
 	end
 
@@ -96,8 +95,7 @@ local function LoadSkin()
 
 					button.border = CreateFrame("Frame", nil, button)
 					button.border:SetTemplate()
-					button.border:Point("TOPLEFT", icon, -2, 2)
-					button.border:Point("BOTTOMRIGHT", icon, 2, -2)
+					button.border:SetOutside(icon)
 					icon:SetParent(button.border)
 
 					button.reskinned = true
@@ -155,8 +153,7 @@ local function LoadSkin()
 
 				button.border = CreateFrame("Frame", nil, button)
 				button.border:SetTemplate()
-				button.border:Point("TOPLEFT", icon, -2, 2)
-				button.border:Point("BOTTOMRIGHT", icon, 2, -2)
+				button.border:SetOutside(icon)
 				icon:SetParent(button.border)
 
 				button.reskinned = true
@@ -220,8 +217,7 @@ local function LoadSkin()
 				
 				tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 				tab:GetNormalTexture():ClearAllPoints()
-				tab:GetNormalTexture():Point("TOPLEFT", 2, -2)
-				tab:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+				tab:GetNormalTexture():SetInside()
 				
 				tab.pushed = true;
 				tab:CreateBackdrop("Default")

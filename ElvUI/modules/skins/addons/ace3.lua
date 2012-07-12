@@ -31,8 +31,7 @@ local function SkinScrollBar(frame, thumbTrim)
 		_G[frame:GetName().."ScrollUpButton"]:SetTemplate("Default", true)
 		if not _G[frame:GetName().."ScrollUpButton"].texture then
 			_G[frame:GetName().."ScrollUpButton"].texture = _G[frame:GetName().."ScrollUpButton"]:CreateTexture(nil, 'OVERLAY')
-			_G[frame:GetName().."ScrollUpButton"].texture:Point("TOPLEFT", 2, -2)
-			_G[frame:GetName().."ScrollUpButton"].texture:Point("BOTTOMRIGHT", -2, 2)
+			_G[frame:GetName().."ScrollUpButton"].texture:SetInside()
 			_G[frame:GetName().."ScrollUpButton"].texture:SetTexture([[Interface\AddOns\ElvUI\media\textures\arrowup.tga]])
 			_G[frame:GetName().."ScrollUpButton"].texture:SetVertexColor(unpack(E["media"].bordercolor))
 		end
@@ -51,8 +50,7 @@ local function SkinScrollBar(frame, thumbTrim)
 		_G[frame:GetName().."ScrollDownButton"]:HookScript('OnLeave', SetOriginalBackdrop)		
 		if not _G[frame:GetName().."ScrollDownButton"].texture then
 			_G[frame:GetName().."ScrollDownButton"].texture = _G[frame:GetName().."ScrollDownButton"]:CreateTexture(nil, 'OVERLAY')
-			_G[frame:GetName().."ScrollDownButton"].texture:Point("TOPLEFT", 2, -2)
-			_G[frame:GetName().."ScrollDownButton"].texture:Point("BOTTOMRIGHT", -2, 2)
+			_G[frame:GetName().."ScrollDownButton"].texture:SetInside()
 			_G[frame:GetName().."ScrollDownButton"].texture:SetTexture([[Interface\AddOns\ElvUI\media\textures\arrowdown.tga]])
 			_G[frame:GetName().."ScrollDownButton"].texture:SetVertexColor(unpack(E["media"].bordercolor))
 		end
@@ -130,8 +128,7 @@ local function SkinNextPrevButton(btn, horizonal)
 	end
 	
 	btn:GetNormalTexture():ClearAllPoints()
-	btn:GetNormalTexture():Point("TOPLEFT", 2, -2)
-	btn:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+	btn:GetNormalTexture():SetInside()
 	if btn:GetDisabledTexture() then
 		btn:GetDisabledTexture():SetAllPoints(btn:GetNormalTexture())
 	end
@@ -229,9 +226,8 @@ local function SkinAce3()
 				elseif TYPE == "LSM30_Statusbar" then
 					frame.backdrop:Point("TOPLEFT", 20, -17)
 					widget.bar:ClearAllPoints()
-					widget.bar:Point('TOPLEFT', frame.backdrop, 'TOPLEFT', 2, -2)
-					widget.bar:Point('BOTTOMRIGHT', frame.backdrop, 'BOTTOMRIGHT', -2, 2)
 					widget.bar:SetParent(frame.backdrop)
+					widget.bar:SetInside()
 				elseif TYPE == "LSM30_Border" or TYPE == "LSM30_Background" then
 					frame.backdrop:Point("TOPLEFT", 42, -16)
 				end
@@ -264,8 +260,7 @@ local function SkinAce3()
 			SkinButton(frame, nil, true)
 			frame:StripTextures()
 			frame:CreateBackdrop('Default', true)
-			frame.backdrop:Point("TOPLEFT", 2, -2)
-			frame.backdrop:Point("BOTTOMRIGHT", -2, 2)
+			frame.backdrop:SetInside()
 			widget.text:SetParent(frame.backdrop)
 		elseif TYPE == "Slider" then
 			local frame = widget.slider

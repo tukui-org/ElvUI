@@ -85,9 +85,8 @@ function B:BagFrameSlotNew(frame, slot, nonAllInOne)
 	ret.frame:SetNormalTexture("")
 	ret.frame:SetCheckedTexture(nil)
 	t:SetTexCoord(unpack(E.TexCoords))
-	t:Point("TOPLEFT", ret.frame, 2, -2)
-	t:Point("BOTTOMRIGHT", ret.frame, -2, 2)
-
+	t:SetInside()
+	
 	return ret
 end
 
@@ -228,8 +227,7 @@ function B:SlotNew(bag, slot)
 		ret.frame:SetCheckedTexture(nil)
 
 		t:SetTexCoord(unpack(E.TexCoords))
-		t:Point("TOPLEFT", ret.frame, 2, -2)
-		t:Point("BOTTOMRIGHT", ret.frame, -2, 2)
+		t:SetInside(ret.frame)
 	end
 
 	ret.bag = bag

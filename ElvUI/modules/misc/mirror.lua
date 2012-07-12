@@ -62,8 +62,7 @@ local function Spawn(type)
 	bg:SetVertexColor(r * .5, g * .5, b * .5)
 	
 	local border = CreateFrame("Frame", nil, frame)
-	border:Point("TOPLEFT", frame, -2, 2)
-	border:Point("BOTTOMRIGHT", frame, 2, -2)
+	border:SetOutside()
 	border:SetTemplate("Default")
 	border:SetFrameLevel(0)
 

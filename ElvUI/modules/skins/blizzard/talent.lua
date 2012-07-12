@@ -78,8 +78,7 @@ local function LoadSkin()
 		
 		tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 		tab:GetNormalTexture():ClearAllPoints()
-		tab:GetNormalTexture():Point("TOPLEFT", 2, -2)
-		tab:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+		tab:GetNormalTexture():SetInside()
 		
 		tab.pushed = true;
 		tab:CreateBackdrop("Default")
@@ -110,8 +109,7 @@ local function LoadSkin()
 			bu:StripTextures()
 			bu:SetFrameLevel(bu:GetFrameLevel() + 2)
 			bu:CreateBackdrop("Default")
-			bu.backdrop:Point("TOPLEFT", ic, -2, 2)
-			bu.backdrop:Point("BOTTOMRIGHT", ic, 2, -2)
+			bu.backdrop:SetOutside(ic)
 			ic:SetDrawLayer("ARTWORK")
 			ic:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 
@@ -151,16 +149,14 @@ local function LoadSkin()
 	local pspecspell = _G["PlayerTalentFrameSpecializationSpellScrollFrameScrollChild"]
 	pspecspell.ring:Hide()
 	pspecspell:CreateBackdrop("Default")
-	pspecspell.backdrop:Point("TOPLEFT", pspecspell.specIcon, -2, 2)
-	pspecspell.backdrop:Point("BOTTOMRIGHT", pspecspell.specIcon, 2, -2)
+	pspecspell.backdrop:SetOutside(pspecspell.specIcon)
 	pspecspell.specIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	pspecspell.specIcon:SetParent(pspecspell.backdrop)
 
 	local specspell2 = _G["PlayerTalentFramePetSpecializationSpellScrollFrameScrollChild"]
 	specspell2.ring:Hide()
 	specspell2:CreateBackdrop("Default")
-	specspell2.backdrop:Point("TOPLEFT", specspell2.specIcon, -2, 2)
-	specspell2.backdrop:Point("BOTTOMRIGHT", specspell2.specIcon, 2, -2)
+	specspell2.backdrop:SetOutside(specspell2.specIcon)
 	specspell2.specIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	specspell2.specIcon:SetParent(specspell2.backdrop)
 
@@ -190,8 +186,7 @@ local function LoadSkin()
 				frame.ring:Hide()
 				frame:SetTemplate("Default")
 				frame.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-				frame.icon:Point("TOPLEFT", 2, -2)
-				frame.icon:Point("BOTTOMRIGHT", -2, 2)
+				frame.icon:SetInside()
 			end
 
 
@@ -240,8 +235,7 @@ local function LoadSkin()
 			
 			bu.border = CreateFrame("Frame", nil, bu)
 			bu.border:CreateBackdrop("Default")
-			bu.border.backdrop:Point("TOPLEFT", bu.specIcon, -2, 2)
-			bu.border.backdrop:Point("BOTTOMRIGHT", bu.specIcon, 2, -2)
+			bu.border.backdrop:SetOutside(bu.specIcon)
 		end
 	end
 	

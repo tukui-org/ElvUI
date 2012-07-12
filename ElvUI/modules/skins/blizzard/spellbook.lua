@@ -129,8 +129,7 @@ local function LoadSkin()
 		tab:StripTextures()
 		tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 		tab:GetNormalTexture():ClearAllPoints()
-		tab:GetNormalTexture():Point("TOPLEFT", 2, -2)
-		tab:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+		tab:GetNormalTexture():SetInside()
 		
 		tab.pushed = true;
 		tab:CreateBackdrop("Default")
@@ -169,8 +168,7 @@ local function LoadSkin()
 			local _, _, _, _, isGuild = GetSpellTabInfo(i)
 			if isGuild then
 				tab:GetNormalTexture():ClearAllPoints()
-				tab:GetNormalTexture():Point("TOPLEFT", 2, -2)
-				tab:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)	
+				tab:GetNormalTexture():SetInside()
 				tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))					
 			end
 		end
@@ -217,8 +215,7 @@ local function LoadSkin()
 		if icon then
 			icon:SetTexCoord(unpack(E.TexCoords))
 			icon:ClearAllPoints()
-			icon:Point("TOPLEFT", 2, -2)
-			icon:Point("BOTTOMRIGHT", -2, 2)
+			icon:SetInside()
 			
 			button:SetFrameLevel(button:GetFrameLevel() + 2)
 			if not button.backdrop then

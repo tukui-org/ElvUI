@@ -410,8 +410,7 @@ function R:CreateReminder(name, index)
 	frame:Point('CENTER', E.UIParent, 'CENTER', 0, 200);
 	frame.icon = frame:CreateTexture(nil, "OVERLAY");
 	frame.icon:SetTexCoord(unpack(E.TexCoords));
-	frame.icon:Point('TOPLEFT', 2, -2);
-	frame.icon:Point('BOTTOMRIGHT', -2, 2);
+	frame.icon:SetInside()
 	frame:SetAlpha(0);
 	
 	local cd = CreateFrame("Cooldown", nil, frame)

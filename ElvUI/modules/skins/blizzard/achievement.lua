@@ -132,8 +132,7 @@ local function LoadSkin()
 			
 			if not frame.backdrop then
 				frame:CreateBackdrop("Default", true)
-				frame.backdrop:Point("TOPLEFT", 2, -2)
-				frame.backdrop:Point("BOTTOMRIGHT", -2, 2)
+				frame.backdrop:SetInside()
 
 				_G["AchievementFrameSummaryAchievement"..i.."IconBling"]:Kill()
 				_G["AchievementFrameSummaryAchievement"..i.."IconOverlay"]:Kill()
@@ -144,8 +143,7 @@ local function LoadSkin()
 				_G["AchievementFrameSummaryAchievement"..i.."Icon"]:Point("LEFT", 6, 0)
 				_G["AchievementFrameSummaryAchievement"..i.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
 				_G["AchievementFrameSummaryAchievement"..i.."IconTexture"]:ClearAllPoints()
-				_G["AchievementFrameSummaryAchievement"..i.."IconTexture"]:Point("TOPLEFT", 2, -2)
-				_G["AchievementFrameSummaryAchievement"..i.."IconTexture"]:Point("BOTTOMRIGHT", -2, 2)
+				_G["AchievementFrameSummaryAchievement"..i.."IconTexture"]:SetInside()
 			end
 		end				
 	end)
@@ -196,9 +194,7 @@ local function LoadSkin()
 		_G["AchievementFrameAchievementsContainerButton"..i.."Icon"]:Point("LEFT", 6, 0)
 		_G["AchievementFrameAchievementsContainerButton"..i.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
 		_G["AchievementFrameAchievementsContainerButton"..i.."IconTexture"]:ClearAllPoints()
-		_G["AchievementFrameAchievementsContainerButton"..i.."IconTexture"]:Point("TOPLEFT", 2, -2)
-		_G["AchievementFrameAchievementsContainerButton"..i.."IconTexture"]:Point("BOTTOMRIGHT", -2, 2)
-		
+		_G["AchievementFrameAchievementsContainerButton"..i.."IconTexture"]:SetInside()
 		
 		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"].oborder = "Don't use sharp border" --Needed for ElvUI only
 		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:StripTextures()
@@ -275,8 +271,7 @@ local function LoadSkin()
 			_G[frame.."Icon"]:Point("LEFT", 6, 0)
 			_G[frame.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
 			_G[frame.."IconTexture"]:ClearAllPoints()
-			_G[frame.."IconTexture"]:Point("TOPLEFT", 2, -2)
-			_G[frame.."IconTexture"]:Point("BOTTOMRIGHT", -2, 2)					
+			_G[frame.."IconTexture"]:SetInside()				
 		end
 	end
 	

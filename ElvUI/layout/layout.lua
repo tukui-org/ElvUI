@@ -149,8 +149,7 @@ function LO:CreateChatPanels()
 	
 	--Background Texture
 	lchat.tex = lchat:CreateTexture(nil, 'OVERLAY')
-	lchat.tex:Point('TOPLEFT', lchat, 'TOPLEFT', 2, -2)
-	lchat.tex:Point('BOTTOMRIGHT', lchat, 'BOTTOMRIGHT', -2, 2)
+	lchat.tex:SetInside()
 	lchat.tex:SetTexture(E.db.general.panelBackdropNameLeft)
 	lchat.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.7 > 0 and E.db.general.backdropfadecolor.a - 0.7 or 0.5)
 	
@@ -194,8 +193,7 @@ function LO:CreateChatPanels()
 	
 	--Background Texture
 	rchat.tex = rchat:CreateTexture(nil, 'OVERLAY')
-	rchat.tex:Point('TOPLEFT', rchat, 'TOPLEFT', 2, -2)
-	rchat.tex:Point('BOTTOMRIGHT', rchat, 'BOTTOMRIGHT', -2, 2)
+	rchat.tex:SetInside()
 	rchat.tex:SetTexture(E.db.general.panelBackdropNameRight)
 	rchat.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.7 > 0 and E.db.general.backdropfadecolor.a - 0.7 or 0.5)	
 	

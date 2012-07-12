@@ -171,8 +171,7 @@ function CH:StyleChat(frame)
 	frame.button:SetPoint('TOPRIGHT')
 	
 	frame.button.tex = frame.button:CreateTexture(nil, 'OVERLAY')
-	frame.button.tex:Point('TOPLEFT', 2, -2)
-	frame.button.tex:Point('BOTTOMRIGHT', -2, 2)
+	frame.button.tex:SetInside()
 	frame.button.tex:SetTexture([[Interface\AddOns\ElvUI\media\textures\copy.tga]])
 	
 	frame.button:SetScript("OnMouseUp", function(self, btn)

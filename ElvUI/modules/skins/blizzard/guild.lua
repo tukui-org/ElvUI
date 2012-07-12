@@ -114,16 +114,14 @@ local function LoadSkin()
 	GuildLatestPerkButtonIconTexture:ClearAllPoints()
 	GuildLatestPerkButtonIconTexture:Point("TOPLEFT", 2, -2)
 	GuildLatestPerkButton:CreateBackdrop("Default")
-	GuildLatestPerkButton.backdrop:Point("TOPLEFT", GuildLatestPerkButtonIconTexture, "TOPLEFT", -2, 2)
-	GuildLatestPerkButton.backdrop:Point("BOTTOMRIGHT", GuildLatestPerkButtonIconTexture, "BOTTOMRIGHT", 2, -2)
+	GuildLatestPerkButton.backdrop:SetOutside(GuildLatestPerkButtonIconTexture)
 	
 	GuildNextPerkButton:StripTextures()
 	GuildNextPerkButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
 	GuildNextPerkButtonIconTexture:ClearAllPoints()
 	GuildNextPerkButtonIconTexture:Point("TOPLEFT", 2, -2)
 	GuildNextPerkButton:CreateBackdrop("Default")
-	GuildNextPerkButton.backdrop:Point("TOPLEFT", GuildNextPerkButtonIconTexture, "TOPLEFT", -2, 2)
-	GuildNextPerkButton.backdrop:Point("BOTTOMRIGHT", GuildNextPerkButtonIconTexture, "BOTTOMRIGHT", 2, -2)
+	GuildNextPerkButton.backdrop:SetOutside(GuildNextPerkButtonIconTexture)
 	
 	--Guild Perk buttons list
 	for i=1, 8 do
@@ -135,8 +133,7 @@ local function LoadSkin()
 			button.icon:ClearAllPoints()
 			button.icon:Point("TOPLEFT", 2, -2)
 			button:CreateBackdrop("Default")
-			button.backdrop:Point("TOPLEFT", button.icon, "TOPLEFT", -2, 2)
-			button.backdrop:Point("BOTTOMRIGHT", button.icon, "BOTTOMRIGHT", 2, -2)
+			button.backdrop:SetOutside(button.icon)
 			button.icon:SetParent(button.backdrop)
 		end
 	end
@@ -254,8 +251,7 @@ local function LoadSkin()
 			button.icon:ClearAllPoints()
 			button.icon:Point("TOPLEFT", 2, -2)
 			button:CreateBackdrop("Default")
-			button.backdrop:Point("TOPLEFT", button.icon, "TOPLEFT", -2, 2)
-			button.backdrop:Point("BOTTOMRIGHT", button.icon, "BOTTOMRIGHT", 2, -2)
+			button.backdrop:SetOutside(button.icon)
 			button.icon:SetParent(button.backdrop)
 		end
 	end

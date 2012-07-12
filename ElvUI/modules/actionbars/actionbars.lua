@@ -354,8 +354,7 @@ function AB:StyleButton(button, noBackdrop)
 	if icon then
 		icon:SetTexCoord(unpack(E.TexCoords));
 		icon:ClearAllPoints()
-		icon:Point('TOPLEFT', 2, -2)
-		icon:Point('BOTTOMRIGHT', -2, 2)
+		icon:SetInside()
 	end
 	
 	if shine then

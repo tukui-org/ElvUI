@@ -30,8 +30,7 @@ local function LoadSkin()
 			
 			local icon = _G[button:GetName().."IconTexture"]
 			icon:ClearAllPoints()
-			icon:Point("TOPLEFT", 2, -2)
-			icon:Point("BOTTOMRIGHT", -2, 2)
+			icon:SetInside()
 			icon:SetTexCoord(unpack(E.TexCoords))
 			
 			button.searchOverlay:ClearAllPoints()
@@ -72,8 +71,7 @@ local function LoadSkin()
 				container:SetFrameStrata("HIGH")
 				container:StripTextures(true)
 				container:CreateBackdrop("Transparent")
-				container.backdrop:Point("TOPLEFT", 2, -2)
-				container.backdrop:Point("BOTTOMRIGHT", -2, 2)
+				container.backdrop:SetInside()
 				S:HandleCloseButton(_G[container:GetName().."CloseButton"])
 				
 				container:HookScript("OnShow", function(self)
@@ -90,8 +88,7 @@ local function LoadSkin()
 					for i=1, MAX_WATCHED_TOKENS do
 						_G["BackpackTokenFrameToken"..i].icon:SetTexCoord(unpack(E.TexCoords))
 						_G["BackpackTokenFrameToken"..i]:CreateBackdrop("Default")
-						_G["BackpackTokenFrameToken"..i].backdrop:Point("TOPLEFT", _G["BackpackTokenFrameToken"..i].icon, "TOPLEFT", -2, 2)
-						_G["BackpackTokenFrameToken"..i].backdrop:Point("BOTTOMRIGHT", _G["BackpackTokenFrameToken"..i].icon, "BOTTOMRIGHT", 2, -2)
+						_G["BackpackTokenFrameToken"..i].backdrop:SetOutside(_G["BackpackTokenFrameToken"..i].icon)
 						_G["BackpackTokenFrameToken"..i].icon:Point("LEFT", _G["BackpackTokenFrameToken"..i].count, "RIGHT", 2, 0)
 					end
 				end
@@ -169,8 +166,7 @@ local function LoadSkin()
 			highlight:SetTexture(unpack(E["media"].rgbvaluecolor), 0.3)
 			highlight.SetTexture = E.noop
 			highlight:ClearAllPoints()
-			highlight:Point("TOPLEFT", 2, -2)
-			highlight:Point("BOTTOMRIGHT", -2, 2)	
+			highlight:SetInside()
 			highlight.skinned = true
 		end
 	end)

@@ -78,8 +78,7 @@ local function LoadSkin()
 			_G["StaticPopup"..i.."ItemFrame"]:StyleButton()
 			_G["StaticPopup"..i.."ItemFrameIconTexture"]:SetTexCoord(unpack(E.TexCoords))
 			_G["StaticPopup"..i.."ItemFrameIconTexture"]:ClearAllPoints()
-			_G["StaticPopup"..i.."ItemFrameIconTexture"]:Point("TOPLEFT", 2, -2)
-			_G["StaticPopup"..i.."ItemFrameIconTexture"]:Point("BOTTOMRIGHT", -2, 2)
+			_G["StaticPopup"..i.."ItemFrameIconTexture"]:SetInside()
 		end
 	end
 	
@@ -124,13 +123,11 @@ local function LoadSkin()
 		local x = CreateFrame("Frame", nil, GhostFrame)
 		x:SetFrameStrata("MEDIUM")
 		x:SetTemplate("Default")
-		x:Point("TOPLEFT", GhostFrameContentsFrameIcon, "TOPLEFT", -2, 2)
-		x:SetPoint("BOTTOMRIGHT", GhostFrameContentsFrameIcon, "BOTTOMRIGHT", 2, -2)
+		x:SetOutside(GhostFrameContentsFrameIcon)
 		local tex = x:CreateTexture(nil, "OVERLAY")
 		tex:SetTexture("Interface\\Icons\\spell_holy_guardianspirit")
 		tex:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-		tex:Point("TOPLEFT", x, "TOPLEFT", 2, -2)
-		tex:Point("BOTTOMRIGHT", x, "BOTTOMRIGHT", -2, 2)
+		tex:SetInside()
 	end
 	
 	-- hide header textures and move text/buttons.
@@ -401,8 +398,7 @@ local function LoadSkin()
 				button:StyleButton()
 				_G["WatchFrameItem"..i.."NormalTexture"]:SetAlpha(0)
 				_G["WatchFrameItem"..i.."IconTexture"]:ClearAllPoints()
-				_G["WatchFrameItem"..i.."IconTexture"]:SetPoint("TOPLEFT", 2, -2)
-				_G["WatchFrameItem"..i.."IconTexture"]:SetPoint("BOTTOMRIGHT", -2, 2)
+				_G["WatchFrameItem"..i.."IconTexture"]:SetInside()
 				_G["WatchFrameItem"..i.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
 				button.skinned = true
 			end

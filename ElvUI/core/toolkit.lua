@@ -117,7 +117,7 @@ local function Point(obj, arg1, arg2, arg3, arg4, arg5)
 	obj:SetPoint(arg1, arg2, arg3, arg4, arg5)
 end
 
-local function SetAround(obj, anchor, clearPoints, xOffset, yOffset)
+local function SetOutside(obj, anchor, clearPoints, xOffset, yOffset)
 	xOffset = xOffset or 2
 	yOffset = yOffset or 2
 	anchor = anchor or obj:GetParent()
@@ -176,7 +176,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 			
 			if f.oborder then return end
 			local border = CreateFrame("Frame", nil, f)
-			border:SetAround(f, nil, E.mult, E.mult)
+			border:SetOutside(f, nil, E.mult, E.mult)
 			border:SetFrameLevel(f:GetFrameLevel() + 1)
 			border:SetBackdrop({
 				edgeFile = E["media"].blankTex, 
@@ -211,7 +211,7 @@ local function CreateBackdrop(f, t, tex)
 	if not t then t = "Default" end
 	
 	local b = CreateFrame("Frame", nil, f)
-	b:SetAround()
+	b:SetOutside()
 	b:SetTemplate(t, tex)
 
 	if f:GetFrameLevel() - 1 >= 0 then
@@ -232,7 +232,7 @@ local function CreateShadow(f)
 	local shadow = CreateFrame("Frame", nil, f)
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(f:GetFrameStrata())
-	shadow:SetAround(f, nil, 3, 3)
+	shadow:SetOutside(f, nil, 3, 3)
 	shadow:SetBackdrop( { 
 		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(3),
 		insets = {left = E:Scale(5), right = E:Scale(5), top = E:Scale(5), bottom = E:Scale(5)},
@@ -324,7 +324,7 @@ local function addapi(object)
 	if not object.FixDimensions then mt.FixDimensions = FixDimensions end
 	if not object.Size then mt.Size = Size end
 	if not object.Point then mt.Point = Point end
-	if not object.SetAround then mt.SetAround = SetAround end
+	if not object.SetOutside then mt.SetOutside = SetOutside end
 	if not object.SetInside then mt.SetInside = SetInside end
 	if not object.SetTemplate then mt.SetTemplate = SetTemplate end
 	if not object.CreateBackdrop then mt.CreateBackdrop = CreateBackdrop end

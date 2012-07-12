@@ -50,13 +50,11 @@ local function LoadSkin()
 
 		icon_d:SetTexCoord(unpack(E.TexCoords))
 		icon_d:ClearAllPoints()
-		icon_d:Point("TOPLEFT", 2, -2)
-		icon_d:Point("BOTTOMRIGHT", -2, 2)
+		icon_d:SetInside()
 
 		icon_w:SetTexCoord(unpack(E.TexCoords))
 		icon_w:ClearAllPoints()
-		icon_w:Point("TOPLEFT", 2, -2)
-		icon_w:Point("BOTTOMRIGHT", -2, 2)
+		icon_w:SetInside()
 	end
 
 	for i = 1, 80 do
@@ -70,8 +68,7 @@ local function LoadSkin()
 
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:ClearAllPoints()
-		icon:Point("TOPLEFT", 2, -2)
-		icon:Point("BOTTOMRIGHT", -2, 2)
+		icon:SetInside()
 	end
 end
 

@@ -49,8 +49,7 @@ local function LoadSkin()
 
 			icon:SetTexCoord(unpack(E.TexCoords))
 			icon:ClearAllPoints()
-			icon:Point("TOPLEFT", 2, -2)
-			icon:Point("BOTTOMRIGHT", -2, 2)
+			icon:SetInside()
 		end
 	end
 end

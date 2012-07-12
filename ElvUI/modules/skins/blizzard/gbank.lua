@@ -44,8 +44,7 @@ local function LoadSkin()
 			button:SetTemplate("Default", true)
 			
 			icon:ClearAllPoints()
-			icon:Point("TOPLEFT", 2, -2)
-			icon:Point("BOTTOMRIGHT", -2, 2)
+			icon:SetInside()
 			icon:SetTexCoord(unpack(E.TexCoords))
 		end
 	end
@@ -60,8 +59,7 @@ local function LoadSkin()
 		button:SetTemplate("Default", true)
 		
 		texture:ClearAllPoints()
-		texture:Point("TOPLEFT", 2, -2)
-		texture:Point("BOTTOMRIGHT", -2, 2)
+		texture:SetInside()
 		texture:SetTexCoord(unpack(E.TexCoords))
 	end
 	
@@ -93,8 +91,7 @@ local function LoadSkin()
 		button:SetTemplate("Default")
 		button:StyleButton(true)
 		icon:ClearAllPoints()
-		icon:Point("TOPLEFT", 2, -2)
-		icon:Point("BOTTOMRIGHT", -2, 2)
+		icon:SetInside()
 		icon:SetTexCoord(unpack(E.TexCoords))
 	end
 	

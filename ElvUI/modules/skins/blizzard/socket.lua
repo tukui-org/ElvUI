@@ -20,8 +20,8 @@ local function LoadSkin()
 		button_bg:Kill()
 		button_icon:SetTexCoord(unpack(E.TexCoords))
 		button_icon:ClearAllPoints()
-		button_icon:Point("TOPLEFT", 2, -2)
-		button_icon:Point("BOTTOMRIGHT", -2, 2)
+		button_icon:SetInside()
+
 		ItemSocketingFrame:HookScript("OnUpdate", function(self)
 			gemColor = GetSocketTypes(i)
 			local color = GEM_TYPE_INFO[gemColor]

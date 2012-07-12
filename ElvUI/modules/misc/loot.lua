@@ -95,8 +95,7 @@ local function createSlot(id)
 	local icon = iconFrame:CreateTexture(nil, "ARTWORK")
 	icon:SetAlpha(.8)
 	icon:SetTexCoord(.07, .93, .07, .93)
-	icon:Point("TOPLEFT", 2, -2)
-	icon:Point("BOTTOMRIGHT", -2, 2)
+	icon:SetInside()
 	frame.icon = icon
 
 	local count = iconFrame:CreateFontString(nil, "OVERLAY")

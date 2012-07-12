@@ -53,8 +53,7 @@ local function LoadSkin()
 
 				-- create a backdrop around the icon
 				frame:CreateBackdrop("Default")
-				frame.backdrop:Point("TOPLEFT", frame.Icon, -2, 2)
-				frame.backdrop:Point("BOTTOMRIGHT", frame.Icon, 2, -2)
+				frame.backdrop:SetOutside(frame.Icon)
 				frame.Icon:SetParent(frame.backdrop)
 
 				frame.isSkinned = true

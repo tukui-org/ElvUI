@@ -7,8 +7,7 @@ local function ApplyMySkin(self)
 
 	local t = self.elements.texMain
 	t:ClearAllPoints()
-	t:SetPoint("TOPLEFT", self, "TOPLEFT", 2, -2)
-	t:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -2, 2)
+	t:SetInside(self)
 	t:SetTexCoord(unpack(E.TexCoords))
 
 	t = self.elements.texNormal

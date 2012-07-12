@@ -39,8 +39,7 @@ local function LoadSkin()
 		slot:SetTemplate("Default", true)
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:ClearAllPoints()
-		icon:Point("TOPLEFT", 2, -2)
-		icon:Point("BOTTOMRIGHT", -2, 2)
+		icon:SetInside()
 	end	
 	-- a request by diftraku to color item by rarity on character frame.
 	local function ColorItemBorder()
@@ -100,8 +99,7 @@ local function LoadSkin()
 				button:GetNormalTexture():SetTexture(nil)
 				
 				icon:ClearAllPoints()
-				icon:Point("TOPLEFT", 2, -2)
-				icon:Point("BOTTOMRIGHT", -2, 2)	
+				icon:SetInside()
 				button:SetFrameLevel(button:GetFrameLevel() + 2)
 				if not button.backdrop then
 					button:CreateBackdrop("Default")
@@ -168,8 +166,7 @@ local function LoadSkin()
 				object:CreateBackdrop("Default")
 			end
 			
-			object.backdrop:Point("TOPLEFT", object.icon, "TOPLEFT", -2, 2)
-			object.backdrop:Point("BOTTOMRIGHT", object.icon, "BOTTOMRIGHT", 2, -2)
+			object.backdrop:SetOutside(object.icon)
 			object.icon:SetParent(object.backdrop)
 
 			--Making all icons the same size and position because otherwise BlizzardUI tries to attach itself to itself when it refreshes
@@ -199,8 +196,7 @@ local function LoadSkin()
 				_G["GearManagerDialogPopupButton"..i.."Icon"]:SetTexture(nil)
 				
 				icon:ClearAllPoints()
-				icon:Point("TOPLEFT", 2, -2)
-				icon:Point("BOTTOMRIGHT", -2, 2)	
+				icon:SetInside()
 				button:SetFrameLevel(button:GetFrameLevel() + 2)
 				if not button.backdrop then
 					button:CreateBackdrop("Default")

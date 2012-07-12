@@ -14,6 +14,8 @@ local function LoadSkin()
 		_G[frames[i]]:CreateBackdrop("Transparent")
 	end
 	
+	MerchantExtraCurrencyInset:StripTextures()
+	MerchantExtraCurrencyBg:StripTextures()	
 	MerchantFrameInset:StripTextures()
 	MerchantMoneyBg:StripTextures()
 	MerchantMoneyInset:StripTextures()
@@ -43,8 +45,7 @@ local function LoadSkin()
 		b:Point("TOPLEFT", item_bar, "TOPLEFT", 4, -4)
 		t:SetTexCoord(unpack(E.TexCoords))
 		t:ClearAllPoints()
-		t:Point("TOPLEFT", 2, -2)
-		t:Point("BOTTOMRIGHT", -2, 2)
+		t:SetInside()
 		
 		_G["MerchantItem"..i.."MoneyFrame"]:ClearAllPoints()
 		_G["MerchantItem"..i.."MoneyFrame"]:Point("BOTTOMLEFT", b, "BOTTOMRIGHT", 3, 0)
@@ -57,8 +58,7 @@ local function LoadSkin()
 	MerchantBuyBackItemItemButton:SetTemplate("Default", true)
 	MerchantBuyBackItemItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
 	MerchantBuyBackItemItemButtonIconTexture:ClearAllPoints()
-	MerchantBuyBackItemItemButtonIconTexture:Point("TOPLEFT", 2, -2)
-	MerchantBuyBackItemItemButtonIconTexture:Point("BOTTOMRIGHT", -2, 2)
+	MerchantBuyBackItemItemButtonIconTexture:SetInside()
 
 	
 	MerchantRepairItemButton:StyleButton(false)
@@ -69,8 +69,7 @@ local function LoadSkin()
 		if region:GetObjectType() == "Texture" then
 			region:SetTexCoord(0.04, 0.24, 0.06, 0.5)
 			region:ClearAllPoints()
-			region:Point("TOPLEFT", 2, -2)
-			region:Point("BOTTOMRIGHT", -2, 2)
+			region:SetInside()
 		end
 	end
 	
@@ -78,15 +77,13 @@ local function LoadSkin()
 	MerchantGuildBankRepairButton:SetTemplate("Default", true)
 	MerchantGuildBankRepairButtonIcon:SetTexCoord(0.61, 0.82, 0.1, 0.52)
 	MerchantGuildBankRepairButtonIcon:ClearAllPoints()
-	MerchantGuildBankRepairButtonIcon:Point("TOPLEFT", 2, -2)
-	MerchantGuildBankRepairButtonIcon:Point("BOTTOMRIGHT", -2, 2)
+	MerchantGuildBankRepairButtonIcon:SetInside()
 	
 	MerchantRepairAllButton:StyleButton(false)
 	MerchantRepairAllButton:SetTemplate("Default", true)
 	MerchantRepairAllIcon:SetTexCoord(0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
 	MerchantRepairAllIcon:ClearAllPoints()
-	MerchantRepairAllIcon:Point("TOPLEFT", 2, -2)
-	MerchantRepairAllIcon:Point("BOTTOMRIGHT", -2, 2)
+	MerchantRepairAllIcon:SetInside()
 	
 	-- Skin misc frames
 	MerchantFrame:Width(360)

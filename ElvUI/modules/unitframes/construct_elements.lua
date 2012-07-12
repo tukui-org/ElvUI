@@ -142,12 +142,10 @@ function UF:Construct_AuraIcon(button)
 	button.cd.noCooldownCount = true
 	button.cd:SetReverse()
 	button.cd:ClearAllPoints()
-	button.cd:Point('TOPLEFT', 2, -2)
-	button.cd:Point('BOTTOMRIGHT', -2, 2)
+	button.cd:SetInside()
 	
 	button.icon:ClearAllPoints()
-	button.icon:Point('TOPLEFT', 2, -2)
-	button.icon:Point('BOTTOMRIGHT', -2, 2)
+	button.icon:SetInside()
 	button.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
 	button.icon:SetDrawLayer('ARTWORK')
 	
@@ -223,8 +221,7 @@ function UF:Construct_Castbar(self, direction)
 	end
 	
 	local icon = button:CreateTexture(nil, "ARTWORK")
-	icon:Point("TOPLEFT", button, 2, -2)
-	icon:Point("BOTTOMRIGHT", button, -2, 2)
+	icon:SetInside()
 	icon:SetTexCoord(0.08, 0.92, 0.08, .92)
 	icon.bg = button
 	
@@ -407,8 +404,7 @@ function UF:Construct_DruidAltManaBar(frame)
 	dpower.ManaBar = CreateFrame('StatusBar', nil, dpower)
 	UF['statusbars'][dpower.ManaBar] = true
 	dpower.ManaBar:SetStatusBarTexture(E["media"].blankTex)
-	dpower.ManaBar:Point("TOPLEFT", dpower, "TOPLEFT", 2, -2)		
-	dpower.ManaBar:Point("BOTTOMRIGHT", dpower, "BOTTOMRIGHT", -2, 2)	
+	dpower.ManaBar:SetInside(dpower)
 	
 	dpower.bg = dpower:CreateTexture(nil, "BORDER")
 	dpower.bg:SetAllPoints(dpower.ManaBar)
@@ -512,8 +508,7 @@ end
 
 function UF:Construct_AuraWatch(frame)
 	local auras = CreateFrame("Frame", nil, frame)
-	auras:Point("TOPLEFT", frame.Health, 2, -2)
-	auras:Point("BOTTOMRIGHT", frame.Health, -2, 2)
+	auras:SetInside(frame.Health)
 	auras.presentAlpha = 1
 	auras.missingAlpha = 0
 	auras.icons = {}
@@ -529,8 +524,7 @@ function UF:Construct_RaidDebuffs(frame)
 	
 	rdebuff.icon = rdebuff:CreateTexture(nil, 'OVERLAY')
 	rdebuff.icon:SetTexCoord(unpack(E.TexCoords))
-	rdebuff.icon:Point("TOPLEFT", 2, -2)
-	rdebuff.icon:Point("BOTTOMRIGHT", -2, 2)
+	rdebuff.icon:SetInside()
 	
 	rdebuff.count = rdebuff:CreateFontString(nil, 'OVERLAY')
 	rdebuff.count:FontTemplate(nil, 10, 'OUTLINE')
@@ -547,8 +541,7 @@ end
 
 function UF:Construct_DebuffHighlight(frame)
 	local dbh = frame:CreateTexture(nil, "OVERLAY")
-	dbh:Point('TOPLEFT', frame.Health.backdrop, 'TOPLEFT', 2, -2)
-	dbh:Point('BOTTOMRIGHT', frame.Health.backdrop, 'BOTTOMRIGHT', -2, 2)
+	dbh:SetInside(frame.Health.backdrop)
 	dbh:SetTexture(E['media'].blankTex)
 	dbh:SetVertexColor(0, 0, 0, 0)
 	dbh:SetBlendMode("ADD")
@@ -615,8 +608,7 @@ function UF:Construct_Trinket(frame)
 	trinket.bg:Point("TOPRIGHT", frame, "TOPRIGHT")
 	trinket.bg:SetTemplate("Default")
 	trinket.bg:SetFrameLevel(trinket:GetFrameLevel() - 1)
-	trinket:Point("TOPLEFT", trinket.bg, 2, -2)
-	trinket:Point("BOTTOMRIGHT", trinket.bg, -2, 2)	
+	trinket:SetInside(trinket.bg)
 	
 	return trinket
 end
@@ -671,8 +663,7 @@ function UF:Construct_AuraBars()
 	self:SetTemplate('Default')
 
 	bar:ClearAllPoints()
-	bar:Point('TOPLEFT', self, 'TOPLEFT', 2, -2)
-	bar:Point('BOTTOMRIGHT', self, 'BOTTOMRIGHT', -2, 2)
+	bar:SetInside(self)
 	UF['statusbars'][bar] = true
 	UF:Update_StatusBar(bar)
 		
@@ -685,8 +676,7 @@ function UF:Construct_AuraBars()
 	bar.spellname:SetPoint('LEFT', bar, 'LEFT', 2, 0)
 	
 	bar.iconHolder:SetTemplate('Default')
-	bar.icon:SetPoint('TOPLEFT', bar.iconHolder, 'TOPLEFT', 2, -2)
-	bar.icon:SetPoint('BOTTOMRIGHT', bar.iconHolder, 'BOTTOMRIGHT', -2, 2)
+	bar.icon:SetInside(bar.iconHolder)
 	bar.icon:SetDrawLayer('OVERLAY')
 	
 	
