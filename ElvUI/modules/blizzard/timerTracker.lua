@@ -18,7 +18,7 @@ local function SkinIt(bar)
 		bar.backdrop = CreateFrame("Frame", nil, bar)
 		bar.backdrop:SetFrameLevel(0)
 		bar.backdrop:SetTemplate("Transparent")
-		bar.backdrop:SetInside()
+		bar.backdrop:SetOutside()
 	end
 end
 
