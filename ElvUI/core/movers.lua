@@ -4,6 +4,7 @@ local Sticky = LibStub("LibSimpleSticky-1.0")
 E.CreatedMovers = {}
 
 local function SizeChanged(frame)
+	if InCombatLockdown() then return; end
 	frame.mover:Size(frame:GetSize())
 end
 
