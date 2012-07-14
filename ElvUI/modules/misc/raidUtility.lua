@@ -80,7 +80,7 @@ function RU:Initialize()
 	RaidUtilityPanel:SetTemplate('Transparent')
 	RaidUtilityPanel:Width(230)
 	RaidUtilityPanel:Height(PANEL_HEIGHT)
-	RaidUtilityPanel:Point('TOP', E.UIParent, 'TOP', -400, 1)
+	RaidUtilityPanel:Point('TOP', E.UIParent, 'TOP', 0, 1)
 	RaidUtilityPanel:SetFrameLevel(3)
 	RaidUtilityPanel.toggled = false
 	RaidUtilityPanel:SetFrameStrata("HIGH")

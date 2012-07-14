@@ -15,7 +15,7 @@ AB["barDefaults"] = {
 		['page'] = 1,
 		['bindButtons'] = "ACTIONBUTTON",
 		['conditions'] = "[vehicleui] 12; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;",
-		['position'] = "BOTTOM,ElvUIParent,BOTTOM,0,4",
+		['position'] = "BOTTOM,ElvUIParent,BOTTOM,0,27",
 	},
 	["bar2"] = {
 		['page'] = 5,
@@ -33,7 +33,7 @@ AB["barDefaults"] = {
 		['page'] = 4,
 		['bindButtons'] = "MULTIACTIONBAR4BUTTON",
 		['conditions'] = "",
-		['position'] = "RIGHT,ElvUIParent,RIGHT,-4,0",
+		['position'] = "BOTTOMLEFT,ElvUI_Bar1,BOTTOMRIGHT,3,0",
 	},
 	["bar5"] = {
 		['page'] = 3,
@@ -730,6 +730,21 @@ function AB:Initialize()
 	end	
 	
 	SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
+	
+	self:PositionBar2And3()
+end
+
+function AB:PositionBar2And3()
+	local spacing = E:Scale(E.db.actionbar.bar1.buttonspacing);
+	local size = E:Scale(E.db.actionbar.bar1.buttonsize);
+	if not E:HasMoverBeenMoved('ElvAB_2') then
+		ElvAB_2:ClearAllPoints()
+		ElvAB_2:SetPoint('TOP', ElvUI_Bar1, 'BOTTOM', 0, ((size * 2) + (spacing * 3)))
+	end
+	if not E:HasMoverBeenMoved('ElvAB_3') then
+		ElvAB_3:ClearAllPoints()
+		ElvAB_3:SetPoint('TOP', ElvUI_Bar1, 'BOTTOM', 0, ((size * 3) + (spacing * 4)))
+	end
 end
 
 E:RegisterModule(AB:GetName())

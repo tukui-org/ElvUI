@@ -108,7 +108,7 @@ function UF:Update_PartyHeader(header, db)
 		
 	if not header.positioned then
 		header:ClearAllPoints()
-		header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
+		header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 210)
 		
 		E:CreateMover(header, header:GetName()..'Mover', 'Party Frames')
 		

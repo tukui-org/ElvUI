@@ -23,7 +23,7 @@ function UF:Construct_FocusFrame(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 
-	frame:Point('BOTTOMRIGHT', ElvUF_Target, 'TOPRIGHT', 0, 220)
+	frame:Point('TOPLEFT', ElvUF_Player, 'BOTTOMLEFT', 0, -180)
 	E:CreateMover(frame, frame:GetName()..'Mover', 'Focus Frame')
 end
 
@@ -276,7 +276,7 @@ function UF:Update_FocusFrame(frame, db)
 			castbar.Icon.bg:Width(db.castbar.height + 4)
 			castbar.Icon.bg:Height(db.castbar.height + 4)
 			
-			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - 4)
+			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - 5)
 			castbar.Icon.bg:Show()
 		else
 			castbar.ButtonIcon.bg:Hide()

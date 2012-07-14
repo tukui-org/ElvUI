@@ -3,7 +3,7 @@ local B = E:GetModule('Blizzard');
 
 function B:PositionGMFrames()
 	TicketStatusFrame:ClearAllPoints()
-	TicketStatusFrame:SetPoint("TOPLEFT", 250, -5)
+	TicketStatusFrame:SetPoint("TOPRIGHT", AurasHolder, "BOTTOMRIGHT", 0, -10)
 
 	E:CreateMover(TicketStatusFrame, "GMMover", "GM Ticket Frame")
 

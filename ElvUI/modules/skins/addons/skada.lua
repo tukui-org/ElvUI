@@ -57,7 +57,7 @@ local function LoadSkin()
 
 		skada:SetBackdrop(nil)
 		if not skada.backdrop then
-			skada:CreateBackdrop('Default')
+			skada:CreateBackdrop('Transparent')
 		end
 		skada.backdrop:ClearAllPoints()
 		if win.db.enabletitle then

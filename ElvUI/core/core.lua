@@ -364,12 +364,6 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.tukui.org"])
 				E.recievedOutOfDateMessage = true
 			end]]
-		elseif prefix == 'ElvSays' and (sender == 'Elvz' or string.find(sender, 'Elvz-')) then ---HAHHAHAHAHHA
-			local user, channel, msg, sendTo = string.split(',', message)
-			
-			if (user ~= 'ALL' and user == E.myname) or user == 'ALL' then
-				SendChatMessage(msg, channel, nil, sendTo)
-			end
 		end
 	else
 		E:ScheduleTimer('SendMessage', 12)

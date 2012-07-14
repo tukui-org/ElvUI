@@ -121,7 +121,7 @@ for i=10, 40, 15 do
 
 		if not header.positioned then
 			header:ClearAllPoints()
-			header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)	
+			header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 210)
 			E:CreateMover(header, header:GetName()..'Mover', 'Raid 1-'..i..' Frames')
 			
 			header:SetAttribute('minHeight', header.dirtyHeight)

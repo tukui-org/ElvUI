@@ -16,7 +16,7 @@ function UF:Construct_PetTargetFrame(frame)
 	
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	
-	frame:Point('BOTTOM', ElvUF_Pet, 'TOP', 0, 7) --Set to default position
+	frame:Point('LEFT', ElvUF_Pet, 'RIGHT', 30, 0) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', 'PetTarget Frame', nil, -7)
 end
 
