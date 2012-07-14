@@ -38,7 +38,7 @@ local find = string.find
 local gsub = string.gsub
 
 function UF:Construct_UF(frame, unit)
-	FRAMELOCK_STATES.PETBATTLES[frame:GetName()] = 'hidden'
+	E.FrameLocks[frame:GetName()] = true
 	frame:RegisterForClicks("AnyUp")
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)	
@@ -361,7 +361,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 				'groupFilter', groupFilter)
 		end
 		
-		FRAMELOCK_STATES.PETBATTLES["ElvUF_"..E:StringTitle(group)] = 'hidden'
+		E.FrameLocks["ElvUF_"..E:StringTitle(group)] = true
 		RegisterAttributeDriver(self[group], 'state-visibility', 'show')	
 		self[group].dirtyWidth, self[group].dirtyHeight = self[group]:GetSize()
 		RegisterAttributeDriver(self[group], 'state-visibility', 'hide')	

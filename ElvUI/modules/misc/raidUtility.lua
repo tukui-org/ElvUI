@@ -84,7 +84,7 @@ function RU:Initialize()
 	RaidUtilityPanel:SetFrameLevel(3)
 	RaidUtilityPanel.toggled = false
 	RaidUtilityPanel:SetFrameStrata("HIGH")
-	FRAMELOCK_STATES.PETBATTLES['RaidUtilityPanel'] = 'hidden'
+	E.FrameLocks['RaidUtilityPanel'] = true
 	
 	--Show Button
 	self:CreateUtilButton("RaidUtility_ShowButton", E.UIParent, "UIMenuButtonStretchTemplate, SecureHandlerClickTemplate", 136, 18, "TOP", E.UIParent, "TOP", -400, 2, RAID_CONTROL, nil)
@@ -122,7 +122,7 @@ function RU:Initialize()
 		self:StartMoving()
 	end)
 	
-	FRAMELOCK_STATES.PETBATTLES['RaidUtility_ShowButton'] = 'hidden'
+	E.FrameLocks['RaidUtility_ShowButton'] = true
 	
 	RaidUtility_ShowButton:SetScript("OnDragStop", function(self) 
 		self:StopMovingOrSizing()

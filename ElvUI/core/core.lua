@@ -15,6 +15,7 @@ E.resolution = GetCVar("gxResolution")
 E.screenheight = tonumber(string.match(E.resolution, "%d+x(%d+)"))
 E.screenwidth = tonumber(string.match(E.resolution, "(%d+)x+%d"))
 E.TexCoords = {.08, .92, .08, .92}
+E.FrameLocks = {}
 
 E['valueColorUpdateFuncs'] = {};
 
@@ -524,12 +525,28 @@ function E:Initialize()
 	self:RegisterEvent("UPDATE_BONUS_ACTIONBAR", "CheckRole");	
 	self:RegisterEvent('UI_SCALE_CHANGED', 'UIScale')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+	self:RegisterEvent("PET_BATTLE_CLOSE", 'AddNonPetBattleFrames')
+	self:RegisterEvent('PET_BATTLE_OPENING_START', "RemoveNonPetBattleFrames")	
 	--self:RegisterEvent('UPDATE_BINDINGS', 'SaveKeybinds')
 	--self:SaveKeybinds()
 	
 	self:GetModule('Minimap'):UpdateSettings()
 	self:RefreshModulesDB()
 	collectgarbage("collect");
+end
+
+function E:RemoveNonPetBattleFrames()
+	if InCombatLockdown() then return end
+	for object, _ in pairs(E.FrameLocks) do
+		_G[object]:SetParent(E.HiddenFrame)
+	end
+end
+
+function E:AddNonPetBattleFrames()
+	if InCombatLockdown() then return end
+	for object, _ in pairs(E.FrameLocks) do
+		_G[object]:SetParent(UIParent)
+	end
 end
 
 function E:ResetAllUI()

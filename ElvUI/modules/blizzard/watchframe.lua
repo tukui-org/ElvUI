@@ -13,7 +13,7 @@ function B:MoveWatchFrame()
 	WatchFrame.SetPoint = E.noop
 	WatchFrame:Height(E.screenheight / 2)
 	
-	FRAMELOCK_STATES.PETBATTLES['WatchFrame'] = 'hidden'
+	E.FrameLocks['WatchFrame'] = true
 	E:CreateMover(WatchFrameHolder, 'WatchFrameMover', 'Watch Frame')
 	WatchFrameHolder:SetAllPoints(WatchFrameMover)
 	WatchFrameHolder.ClearAllPoints = E.noop
