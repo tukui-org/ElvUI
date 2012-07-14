@@ -43,7 +43,7 @@ local function SetupChat()
 		FCF_StopDragging(frame)
 		
 		-- set default Elvui font size
-		FCF_SetChatWindowFontSize(nil, frame, 12)
+		FCF_SetChatWindowFontSize(nil, frame, 13)
 		
 		-- rename windows general because moved to chat #3
 		if i == 1 then
@@ -158,11 +158,9 @@ local function SetupCVars()
 	SetCVar("CombatDamage", 1)
 	SetCVar("CombatHealing", 1)
 	SetCVar("showTutorials", 0)
-	SetCVar("showNewbieTips", 0)
 	SetCVar("autoDismountFlying", 1)
 	SetCVar("autoQuestWatch", 1)
 	SetCVar("autoQuestProgress", 1)
-	SetCVar("showLootSpam", 1)
 	SetCVar("guildMemberNotify", 0)
 	SetCVar("UberTooltips", 1)
 	SetCVar("removeChatDelay", 1)

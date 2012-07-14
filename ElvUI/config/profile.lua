@@ -1209,7 +1209,7 @@ P["actionbar"] = {
 		['visibility'] = "[vehicleui] hide;show",
 	},
 	['bar3'] = {
-		['enabled'] = true,
+		['enabled'] = false,
 		['mouseover'] = false,
 		['buttons'] = 12,
 		['buttonsPerRow'] = 12,
