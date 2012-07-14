@@ -28,12 +28,13 @@ local function LoadSkin()
 	
 	
 	QuestLogFrameInset:Kill()
-	
+	QuestLogFrameCompleteButton:StripTextures()
 	local buttons = {
 		"QuestLogFrameAbandonButton",
 		"QuestLogFramePushQuestButton",
 		"QuestLogFrameTrackButton",
 		"QuestLogFrameCancelButton",
+		"QuestLogFrameCompleteButton",
 	}
 	
 	for _, button in pairs(buttons) do

@@ -13,6 +13,7 @@
 	<Script file='guild.lua'/>
 	<Script file='tradeskill.lua'/>
 	<Script file='raid.lua'/>
+	<Script file='petbattle.lua'/>
 	<Script file='talent.lua'/>
 	<Script file='mounts.lua'/>
 	<Script file='glyph.lua'/>

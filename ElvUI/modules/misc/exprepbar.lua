@@ -247,6 +247,7 @@ function M:LoadExpRepBar()
 	holder:SetScript('OnLeave', OnLeave)	
 	holder:SetScript('OnClick', OnClick)	
 	holder:SetFrameStrata('BACKGROUND')
+	E.FrameLocks['UpperRepExpBarHolder'] = true
 	
 	local bar = CreateFrame('Frame', 'UpperRepExpBar', holder)
 	bar:SetAllPoints(holder)
