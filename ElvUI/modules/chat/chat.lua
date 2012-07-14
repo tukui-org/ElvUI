@@ -1,4 +1,4 @@
-﻿local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+﻿local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local CH = E:NewModule('Chat', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
 local CreatedFrames = 0;
@@ -45,10 +45,10 @@ function CH:GetGroupDistribution()
 	if inInstance and (kind == "pvp") then
 		return "/bg "
 	end
-	if GetNumRaidMembers() > 0 then
+	if IsInRaid() then
 		return "/ra "
 	end
-	if GetNumPartyMembers() > 0 then
+	if IsInGroup() then
 		return "/p "
 	end
 	return "/s "
@@ -87,7 +87,6 @@ function CH:StyleChat(frame)
 	end
 	frame:StripTextures(true)
 	_G[name..'ButtonFrame']:Kill()
-	_G[name]:SetFading(false)
 
 	local a, b, c = select(6, editbox:GetRegions()); a:Kill(); b:Kill(); c:Kill()
 	_G[format(editbox:GetName().."FocusLeft", id)]:Kill()
@@ -172,8 +171,7 @@ function CH:StyleChat(frame)
 	frame.button:SetPoint('TOPRIGHT')
 	
 	frame.button.tex = frame.button:CreateTexture(nil, 'OVERLAY')
-	frame.button.tex:Point('TOPLEFT', 2, -2)
-	frame.button.tex:Point('BOTTOMRIGHT', -2, 2)
+	frame.button.tex:SetInside()
 	frame.button.tex:SetTexture([[Interface\AddOns\ElvUI\media\textures\copy.tga]])
 	
 	frame.button:SetScript("OnMouseUp", function(self, btn)
@@ -275,7 +273,7 @@ function CH:PositionChat(override)
 		id = chat:GetID()
 		tab = _G[format("ChatFrame%sTab", i)]
 		point = GetChatWindowSavedPosition(id)
-		_, _, _, _, _, _, _, _, isDocked, _ = GetChatWindowInfo(id)		
+		isDocked = chat.isDocked
 		
 		if id > NUM_CHAT_WINDOWS then
 			if point == nil then
@@ -690,23 +688,14 @@ function CH:CheckKeyword(message)
 	
 	for word, replaceWord in pairs(replaceWords) do
 		if message == word then
-			if E.db.chat.keywordwarning then
-				PlaySoundFile(E.media.keywordsound, "Master")
-			end
 			message = message:gsub(word, replaceWord)
 		elseif message:find(' '..word) then
-			if E.db.chat.keywordwarning then
-				PlaySoundFile(E.media.keywordsound, "Master")
-			end
 			message = message:gsub(' '..word, ' '..replaceWord)
 		elseif message:find(word..' ') then
-			if E.db.chat.keywordwarning then
-				PlaySoundFile(E.media.keywordsound, "Master")
-			end
 			message = message:gsub(word..' ', replaceWord..' ')
 		end
 	end
-
+	
 	return message
 end
 
@@ -796,7 +785,7 @@ function CH:ChatEdit_AddHistory(editBox, line)
 		end
 		
 		table.insert(ElvCharacterData.ChatEditHistory, #ElvCharacterData.ChatEditHistory + 1, line)
-		if #ElvCharacterData.ChatEditHistory > 15 then
+		if #ElvCharacterData.ChatEditHistory > 5 then
 			table.remove(ElvCharacterData.ChatEditHistory, 1)
 		end
 	end
@@ -919,21 +908,7 @@ function CH:Initialize()
 	close:SetFrameLevel(close:GetFrameLevel() + 1)
 	close:EnableMouse(true)
 	
-	S:HandleCloseButton(close)
-	
-	------------------------------------------------------------------------
-	--	Play sound files system
-	------------------------------------------------------------------------
-	local SoundSys = CreateFrame("Frame")
-	SoundSys:RegisterEvent("CHAT_MSG_WHISPER")
-	SoundSys:RegisterEvent("CHAT_MSG_BN_WHISPER")
-	SoundSys:HookScript("OnEvent", function(self, event, ...)
-		if event == "CHAT_MSG_WHISPER" or "CHAT_MSG_BN_WHISPER" then
-			if E.db.chat.whisperwarning == true then
-				PlaySoundFile(E.media.whispersound,"Master")
-			end
-		end
-	end)
+	S:HandleCloseButton(close)	
 end
 
 E:RegisterModule(CH:GetName())

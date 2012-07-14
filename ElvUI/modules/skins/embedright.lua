@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 skadaWindows = {}
@@ -80,23 +80,24 @@ function S:EmbedSkada()
 	local borderWidth = E:Scale(2)
 	local widthOffset = 4
 	local heightOffset = 33
+	local numBars = 8
 	
 	if E.db.general.panelBackdrop == 'SHOWBOTH' or E.db.general.panelBackdrop == 'SHOWRIGHT' then
 		widthOffset = 14
-		heightOffset = 62
+		heightOffset = 39
 	end
 
 	for _, window in pairs(skadaWindows) do
 		window.bargroup:SetParent(RightChatPanel)
 	end
 	if #skadaWindows == 1 then
-		self:EmbedSkadaWindow(skadaWindows[1], E.db.general.panelWidth - widthOffset, E.db.general.panelHeight - heightOffset, "BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", -2, 4)
+		self:EmbedSkadaWindow(skadaWindows[1], E.db.general.panelWidth - widthOffset, E.db.general.panelHeight - heightOffset, "BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", -2, 6)
 	elseif #skadaWindows == 2 then
-		self:EmbedSkadaWindow(skadaWindows[1], (((E.db.general.panelWidth - widthOffset) / 3) * 2) - (borderWidth + E.mult) + 1, E.db.general.panelHeight - heightOffset,  "BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", -2, 4)
-		self:EmbedSkadaWindow(skadaWindows[2], ((E.db.general.panelWidth - widthOffset) / 3) - (borderWidth + E.mult), E.db.general.panelHeight - heightOffset,  "BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 2, 4)
+		self:EmbedSkadaWindow(skadaWindows[1], ((E.db.general.panelWidth - widthOffset) / 2) - (borderWidth + E.mult) + 1, E.db.general.panelHeight - heightOffset,  "BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", -2, 6)
+		self:EmbedSkadaWindow(skadaWindows[2], ((E.db.general.panelWidth - widthOffset) / 2) - (borderWidth + E.mult), E.db.general.panelHeight - heightOffset,  "BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 2, 6)
 	elseif #skadaWindows > 2 then
-		self:EmbedSkadaWindow(skadaWindows[1], (((E.db.general.panelWidth - widthOffset) / 3) * 2) - (borderWidth + E.mult) + 1, E.db.general.panelHeight - heightOffset,  "BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", -2, 4)
-		self:EmbedSkadaWindow(skadaWindows[2], ((E.db.general.panelWidth - widthOffset) / 3) - (borderWidth + E.mult), (E.db.general.panelHeight - heightOffset) / 2 - 3,  "BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 2, 4)
+		self:EmbedSkadaWindow(skadaWindows[1], ((E.db.general.panelWidth - widthOffset) / 2) - (borderWidth + E.mult) + 1, E.db.general.panelHeight - heightOffset,  "BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", -2, 6)
+		self:EmbedSkadaWindow(skadaWindows[2], ((E.db.general.panelWidth - widthOffset) / 2) - (borderWidth + E.mult), (E.db.general.panelHeight - heightOffset) / 2 - 3,  "BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 2, 6)
 		self:EmbedSkadaWindow(skadaWindows[3], skadaWindows[2].db.barwidth, (E.db.general.panelHeight - heightOffset) / 2 - 2,  "BOTTOMLEFT", skadaWindows[2].bargroup.backdrop, "TOPLEFT", 2, 3)
 	end	
 end

@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -38,9 +38,7 @@ local function LoadSkin()
 		slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
 		slot:SetTemplate("Default", true)
 		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:ClearAllPoints()
-		icon:Point("TOPLEFT", 2, -2)
-		icon:Point("BOTTOMRIGHT", -2, 2)
+		icon:SetInside(nil, true)
 	end	
 	-- a request by diftraku to color item by rarity on character frame.
 	local function ColorItemBorder()
@@ -98,10 +96,8 @@ local function LoadSkin()
 				
 				icon:SetTexCoord(unpack(E.TexCoords))
 				button:GetNormalTexture():SetTexture(nil)
-				
-				icon:ClearAllPoints()
-				icon:Point("TOPLEFT", 2, -2)
-				icon:Point("BOTTOMRIGHT", -2, 2)	
+
+				icon:SetInside(nil, true)
 				button:SetFrameLevel(button:GetFrameLevel() + 2)
 				if not button.backdrop then
 					button:CreateBackdrop("Default")
@@ -117,7 +113,7 @@ local function LoadSkin()
 	
 	--Icon in upper right corner of character frame
 	CharacterFramePortrait:Kill()
-	CharacterModelFrame:CreateBackdrop("Default")
+	--CharacterModelFrame:CreateBackdrop("Default")
 
 	local scrollbars = {
 		"PaperDollTitlesPaneScrollBar",
@@ -168,8 +164,7 @@ local function LoadSkin()
 				object:CreateBackdrop("Default")
 			end
 			
-			object.backdrop:Point("TOPLEFT", object.icon, "TOPLEFT", -2, 2)
-			object.backdrop:Point("BOTTOMRIGHT", object.icon, "BOTTOMRIGHT", 2, -2)
+			object.backdrop:SetOutside(object.icon)
 			object.icon:SetParent(object.backdrop)
 
 			--Making all icons the same size and position because otherwise BlizzardUI tries to attach itself to itself when it refreshes
@@ -197,10 +192,8 @@ local function LoadSkin()
 				
 				icon:SetTexCoord(unpack(E.TexCoords))
 				_G["GearManagerDialogPopupButton"..i.."Icon"]:SetTexture(nil)
-				
-				icon:ClearAllPoints()
-				icon:Point("TOPLEFT", 2, -2)
-				icon:Point("BOTTOMRIGHT", -2, 2)	
+
+				icon:SetInside(nil, true)
 				button:SetFrameLevel(button:GetFrameLevel() + 2)
 				if not button.backdrop then
 					button:CreateBackdrop("Default")

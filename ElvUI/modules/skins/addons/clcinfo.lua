@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function ApplyMySkin(self)
@@ -6,9 +6,7 @@ local function ApplyMySkin(self)
 	local yScale = self.db.height / 36
 
 	local t = self.elements.texMain
-	t:ClearAllPoints()
-	t:SetPoint("TOPLEFT", self, "TOPLEFT", 2, -2)
-	t:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -2, 2)
+	t:SetInside(self, true)
 	t:SetTexCoord(unpack(E.TexCoords))
 
 	t = self.elements.texNormal

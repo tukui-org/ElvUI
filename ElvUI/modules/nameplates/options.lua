@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local NP = E:GetModule('NamePlates')
 
 local selectedFilter
@@ -84,7 +84,7 @@ E.Options.args.nameplate = {
 			type = "toggle",
 			name = L["Enable"],
 			get = function(info) return E.private.nameplate[ info[#info] ] end,
-			set = function(info, value) E.private.nameplate[ info[#info] ] = value; StaticPopup_Show("PRIVATE_RL") end
+			set = function(info, value) E.private.nameplate[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},
 		general = {
 			order = 3,

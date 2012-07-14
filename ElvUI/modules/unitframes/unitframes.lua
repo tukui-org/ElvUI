@@ -1,6 +1,7 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0');
 local LSM = LibStub("LibSharedMedia-3.0");
+UF.LSM = LSM
 
 local _, ns = ...
 local ElvUF = ns.oUF
@@ -24,10 +25,20 @@ UF['badHeaderPoints'] = {
 	['RIGHT'] = 'LEFT',
 }
 
+UF['classMaxResourceBar'] = {
+	['DEATHKNIGHT'] = 6,
+	['PALADIN'] = 5,
+	['WARLOCK'] = 4,
+	['PRIEST'] = 3,
+	['MONK'] = 5,
+	['SHAMAN'] = 4,
+}
+
 local find = string.find
 local gsub = string.gsub
 
 function UF:Construct_UF(frame, unit)
+	E.FrameLocks[frame:GetName()] = true
 	frame:RegisterForClicks("AnyUp")
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)	
@@ -47,7 +58,7 @@ function UF:Construct_UF(frame, unit)
 	end
 	
 	self:Update_StatusBars()
-	self:Update_FontStrings()
+	self:Update_FontStrings()	
 	return frame
 end
 
@@ -216,10 +227,23 @@ function UF:Update_StatusBars()
 	end
 end
 
+function UF:Update_StatusBar(bar)
+	bar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+end
+
+function UF:Update_FontString(object)
+	object:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontsize, self.db.fontoutline)
+end
+
 function UF:Update_FontStrings()
 	for font in pairs(UF['fontstrings']) do
 		font:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontsize, self.db.fontoutline)
 	end
+end
+
+function UF:Configure_FontString(obj)
+	UF['fontstrings'][obj] = true
+	obj:FontTemplate() --This is temporary.
 end
 
 function UF:ChangeVisibility(header, visibility)
@@ -336,7 +360,8 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 				'startingIndex', startingIndex,
 				'groupFilter', groupFilter)
 		end
-
+		
+		E.FrameLocks["ElvUF_"..E:StringTitle(group)] = true
 		RegisterAttributeDriver(self[group], 'state-visibility', 'show')	
 		self[group].dirtyWidth, self[group].dirtyHeight = self[group]:GetSize()
 		RegisterAttributeDriver(self[group], 'state-visibility', 'hide')	
@@ -446,7 +471,12 @@ function UF:UpdateAllHeaders(event)
 	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs
 	if ORD then
 		ORD:ResetDebuffData()
-		ORD:RegisterDebuffs(E.global.unitframe.aurafilters.RaidDebuffs.spells)		
+		
+		if instanceType == "party" or instanceType == "raid" then
+			ORD:RegisterDebuffs(E.global.unitframe.aurafilters.RaidDebuffs.spells)
+		else
+			ORD:RegisterDebuffs(E.global.unitframe.aurafilters.CCDebuffs.spells)
+		end
 	end	
 	
 	for _, header in pairs(UF['headers']) do
@@ -456,10 +486,6 @@ function UF:UpdateAllHeaders(event)
 	if E.private.unitframe.disableBlizzard then
 		ElvUF:DisableBlizzard('party')	
 	end
-	
-	if event == 'PLAYER_ENTERING_WORLD' then
-		self:UnregisterEvent('PLAYER_ENTERING_WORLD')
-	end	
 end
 
 function HideRaid()
@@ -589,11 +615,11 @@ function UF:Initialize()
 	if E.private["unitframe"].disableBlizzard then
 		self:DisableBlizzard()	
 
-		UnitPopupMenus["SELF"] = { "PVP_FLAG", "LOOT_METHOD", "LOOT_THRESHOLD", "OPT_OUT_LOOT_TITLE", "LOOT_PROMOTE", "DUNGEON_DIFFICULTY", "RAID_DIFFICULTY", "RESET_INSTANCES", "RAID_TARGET_ICON", "SELECT_ROLE", "CONVERT_TO_PARTY", "CONVERT_TO_RAID", "LEAVE", "CANCEL" };
+		UnitPopupMenus["SELF"] = { "PVP_FLAG", "LOOT_METHOD", "LOOT_THRESHOLD", "OPT_OUT_LOOT_TITLE", "LOOT_PROMOTE", "DUNGEON_DIFFICULTY", "RAID_DIFFICULTY", "RESET_INSTANCES", "RAID_TARGET_ICON", "SELECT_ROLE", "CONVERT_TO_PARTY", "CONVERT_TO_RAID", "INSTANCE_LEAVE", "LEAVE", "CANCEL" };
 		UnitPopupMenus["PET"] = { "PET_PAPERDOLL", "PET_RENAME", "PET_ABANDON", "PET_DISMISS", "CANCEL" };
-		UnitPopupMenus["PARTY"] = { "MUTE", "UNMUTE", "PARTY_SILENCE", "PARTY_UNSILENCE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "WHISPER", "PROMOTE", "PROMOTE_GUIDE", "LOOT_PROMOTE", "VOTE_TO_KICK", "UNINVITE", "INSPECT", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "RAID_TARGET_ICON", "SELECT_ROLE", "PVP_REPORT_AFK", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL" };
-		UnitPopupMenus["PLAYER"] = { "WHISPER", "INSPECT", "INVITE", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "RAID_TARGET_ICON", "RAF_SUMMON", "RAF_GRANT_LEVEL", "REPORT_PLAYER", "CANCEL" }
-		UnitPopupMenus["RAID_PLAYER"] = { "MUTE", "UNMUTE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "WHISPER", "INSPECT", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "RAID_TARGET_ICON", "SELECT_ROLE", "RAID_LEADER", "RAID_PROMOTE", "RAID_DEMOTE", "LOOT_PROMOTE", "VOTE_TO_KICK", "RAID_REMOVE", "PVP_REPORT_AFK", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL" };
+		UnitPopupMenus["PARTY"] = { "MUTE", "UNMUTE", "PARTY_SILENCE", "PARTY_UNSILENCE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "WHISPER", "PROMOTE", "PROMOTE_GUIDE", "LOOT_PROMOTE", "VOTE_TO_KICK", "UNINVITE", "INSPECT", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "PET_BATTLE_PVP_DUEL", "RAID_TARGET_ICON", "SELECT_ROLE", "PVP_REPORT_AFK", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL" }
+		UnitPopupMenus["PLAYER"] = { "WHISPER", "INSPECT", "INVITE", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "PET_BATTLE_PVP_DUEL", "RAID_TARGET_ICON", "RAF_SUMMON", "RAF_GRANT_LEVEL", "REPORT_PLAYER", "CANCEL" }
+		UnitPopupMenus["RAID_PLAYER"] = { "MUTE", "UNMUTE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "WHISPER", "INSPECT", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "PET_BATTLE_PVP_DUEL", "RAID_TARGET_ICON", "SELECT_ROLE", "RAID_LEADER", "RAID_PROMOTE", "RAID_DEMOTE", "LOOT_PROMOTE", "VOTE_TO_KICK", "RAID_REMOVE", "PVP_REPORT_AFK", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL" };
 		UnitPopupMenus["RAID"] = { "WHISPER", "MUTE", "UNMUTE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "RAID_LEADER", "RAID_PROMOTE", "RAID_MAINTANK", "RAID_MAINASSIST", "RAID_TARGET_ICON", "SELECT_ROLE", "LOOT_PROMOTE", "RAID_DEMOTE", "VOTE_TO_KICK", "RAID_REMOVE", "PVP_REPORT_AFK", "CANCEL" };
 		UnitPopupMenus["VEHICLE"] = { "RAID_TARGET_ICON", "VEHICLE_LEAVE", "CANCEL" }
 		UnitPopupMenus["TARGET"] = { "RAID_TARGET_ICON", "CANCEL" }
@@ -605,7 +631,7 @@ function UF:Initialize()
 			UnitPopupMenus["PET"] = { "PET_PAPERDOLL", "PET_RENAME", "PET_ABANDON", "CANCEL" };
 		end
 		
-		self:RegisterEvent('RAID_ROSTER_UPDATE', 'DisableBlizzard')
+		self:RegisterEvent('GROUP_ROSTER_UPDATE', 'DisableBlizzard')
 	end
 		
 	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs

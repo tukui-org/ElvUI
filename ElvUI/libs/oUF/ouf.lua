@@ -149,7 +149,7 @@ for k, v in pairs{
 
 	UpdateAllElements = function(self, event)
 		local unit = self.unit
-		if(not UnitExists(unit)) then return end
+		if(not unit or not UnitExists(unit)) then return end
 
 		if(self.PreUpdate) then
 			self:PreUpdate(event)
@@ -243,7 +243,7 @@ local initObject = function(unit, style, styleFunc, header, ...)
 			end
 		else
 			-- Used to update frames when they change position in a group.
-			object:RegisterEvent('PARTY_MEMBERS_CHANGED', object.UpdateAllElements)
+			object:RegisterEvent('GROUP_ROSTER_UPDATE', object.UpdateAllElements)
 
 			if(num > 1) then
 				if(object:GetParent() == header) then

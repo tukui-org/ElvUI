@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -19,9 +19,8 @@ local function LoadSkin()
 		button_bracket:Kill()
 		button_bg:Kill()
 		button_icon:SetTexCoord(unpack(E.TexCoords))
-		button_icon:ClearAllPoints()
-		button_icon:Point("TOPLEFT", 2, -2)
-		button_icon:Point("BOTTOMRIGHT", -2, 2)
+		button_icon:SetInside(nil, true)
+
 		ItemSocketingFrame:HookScript("OnUpdate", function(self)
 			gemColor = GetSocketTypes(i)
 			local color = GEM_TYPE_INFO[gemColor]

@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -28,10 +28,8 @@ local function LoadSkin()
 			recipient:StripTextures()
 			player_button:StripTextures()
 			recipient_button:StripTextures()
-			
-			player_button_icon:ClearAllPoints()
-			player_button_icon:Point("TOPLEFT", player_button, "TOPLEFT", 2, -2)
-			player_button_icon:Point("BOTTOMRIGHT", player_button, "BOTTOMRIGHT", -2, 2)
+
+			player_button_icon:SetInside(player_button, true)
 			player_button_icon:SetTexCoord(unpack(E.TexCoords))
 			player_button:SetTemplate("Default", true)
 			player_button:StyleButton()
@@ -42,9 +40,7 @@ local function LoadSkin()
 			player_button.bg:SetFrameLevel(player_button:GetFrameLevel() - 3)
 			player_button:SetFrameLevel(player_button:GetFrameLevel() - 1)
 			
-			recipient_button_icon:ClearAllPoints()
-			recipient_button_icon:Point("TOPLEFT", recipient_button, "TOPLEFT", 2, -2)
-			recipient_button_icon:Point("BOTTOMRIGHT", recipient_button, "BOTTOMRIGHT", -2, 2)
+			recipient_button_icon:SetInside(recipient_button, true)
 			recipient_button_icon:SetTexCoord(unpack(E.TexCoords))
 			recipient_button:SetTemplate("Default", true)
 			recipient_button:StyleButton()

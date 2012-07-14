@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local B = E:GetModule('Bags');
 
 local TOTAL_BAGS = NUM_BAG_FRAMES + 1
@@ -21,10 +21,8 @@ function B:SkinBag(bag)
 	bag:SetTemplate("Default", true)
 	bag:StyleButton(true)
 	icon:SetTexture(bag.oldTex)
-	icon:ClearAllPoints()
-	icon:Point("TOPLEFT", 2, -2)
-	icon:Point("BOTTOMRIGHT", -2, 2)
-	icon:SetTexCoord(.08, .92, .08, .92)
+	icon:SetInside(nil, true)
+	icon:SetTexCoord(unpack(E.TexCoords))
 end
 
 function B:SizeAndPositionBagBar()

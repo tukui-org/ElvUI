@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:GetModule('UnitFrames');
 
 local _, ns = ...
@@ -21,7 +21,7 @@ function UF:Construct_PetFrame(frame)
 	
 	frame.HealPrediction = self:Construct_HealComm(frame)
 	
-	frame:Point('TOPLEFT', ElvUF_Player, 'BOTTOMLEFT', 0, -30)
+	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 118)
 	E:CreateMover(frame, frame:GetName()..'Mover', 'Pet Frame')
 end
 
@@ -293,7 +293,7 @@ function UF:Update_PetFrame(frame, db)
 			frame:SetParent(ElvUF_Player)
 		end
 	end	
-
+	
 	frame:UpdateAllElements()
 end
 

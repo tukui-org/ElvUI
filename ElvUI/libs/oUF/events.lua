@@ -13,7 +13,15 @@ do
 	local eventFrame = CreateFrame("Frame")
 	local registry = {}
 	local framesForUnit = {}
-
+	local alternativeUnits = {
+		['player'] = 'vehicle',
+		['pet'] = 'player',
+		['party1'] = 'partypet1',
+		['party2'] = 'partypet2',
+		['party3'] = 'partypet3',
+		['party4'] = 'partypet4',
+	}
+	
 	local RegisterFrameForUnit = function(frame, unit)
 		if not unit then return end
 		if framesForUnit[unit] then
@@ -45,6 +53,8 @@ do
 				RegisterFrameForUnit(frame, unit)
 				RegisterFrameForUnit(frame, realUnit)
 			end
+
+			frame.alternativeUnit = alternativeUnits[unit]
 			frame.unit = unit
 			frame.realUnit = realUnit
 			frame.id = unit:match'^.-(%d+)'

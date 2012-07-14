@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:GetModule('UnitFrames');
 
 local _, ns = ...
@@ -56,7 +56,8 @@ function UF:Update_TankHeader(header, db)
 
 	if not header.positioned then
 		header:ClearAllPoints()
-		header:Point("LEFT", E.UIParent, "LEFT", 30, 150)
+		header:Point("LEFT", E.UIParent, "LEFT", 6, 250)
+		
 		E:CreateMover(header, header:GetName()..'Mover', 'MT Frames')
 
 		header:SetAttribute('minHeight', header.dirtyHeight)

@@ -8,5 +8,6 @@
 	<Script file='gm.lua'/>
 	<Script file='durability.lua'/>
 	<Script file='capturebar.lua'/>
-	<Script file='achievements.lua'/>
+	<Script file='alertframe.lua'/>
+	<Script file='altpower.lua'/>
 </Ui>

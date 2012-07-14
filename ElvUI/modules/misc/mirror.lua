@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local M = E:GetModule('Misc');
 
 --Credit Haste
@@ -62,8 +62,7 @@ local function Spawn(type)
 	bg:SetVertexColor(r * .5, g * .5, b * .5)
 	
 	local border = CreateFrame("Frame", nil, frame)
-	border:Point("TOPLEFT", frame, -2, 2)
-	border:Point("BOTTOMRIGHT", frame, 2, -2)
+	border:SetOutside()
 	border:SetTemplate("Default")
 	border:SetFrameLevel(0)
 

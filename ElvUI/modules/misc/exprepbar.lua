@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local M = E:GetModule('Misc');
 
 local BAR_WIDTH --Set post load so we can set it to a percent of your screen width.
@@ -247,6 +247,7 @@ function M:LoadExpRepBar()
 	holder:SetScript('OnLeave', OnLeave)	
 	holder:SetScript('OnClick', OnClick)	
 	holder:SetFrameStrata('BACKGROUND')
+	E.FrameLocks['UpperRepExpBarHolder'] = true
 	
 	local bar = CreateFrame('Frame', 'UpperRepExpBar', holder)
 	bar:SetAllPoints(holder)

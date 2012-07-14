@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -28,7 +28,7 @@ local function LoadSkin()
 	S:HandleButton(VoidStorageHelpBoxButton)
 	S:HandleButton(VoidStorageTransferButton)
 
-	S:HandleCloseButton(VoidStorageBorderFrameCloseButton)
+	S:HandleCloseButton(VoidStorageBorderFrame.CloseButton)
 	VoidItemSearchBox:CreateBackdrop("Overlay")
 	VoidItemSearchBox.backdrop:Point("TOPLEFT", 10, -1)
 	VoidItemSearchBox.backdrop:Point("BOTTOMRIGHT", 4, 1)
@@ -49,14 +49,10 @@ local function LoadSkin()
 		button_w:SetTemplate()
 
 		icon_d:SetTexCoord(unpack(E.TexCoords))
-		icon_d:ClearAllPoints()
-		icon_d:Point("TOPLEFT", 2, -2)
-		icon_d:Point("BOTTOMRIGHT", -2, 2)
+		icon_d:SetInside(nil, true)
 
 		icon_w:SetTexCoord(unpack(E.TexCoords))
-		icon_w:ClearAllPoints()
-		icon_w:Point("TOPLEFT", 2, -2)
-		icon_w:Point("BOTTOMRIGHT", -2, 2)
+		icon_w:SetInside(nil, true)
 	end
 
 	for i = 1, 80 do
@@ -69,9 +65,7 @@ local function LoadSkin()
 		button:SetTemplate()
 
 		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:ClearAllPoints()
-		icon:Point("TOPLEFT", 2, -2)
-		icon:Point("BOTTOMRIGHT", -2, 2)
+		icon:SetInside(nil, true)
 	end
 end
 

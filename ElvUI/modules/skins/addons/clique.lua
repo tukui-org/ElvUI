@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 --Credit to Nidra
@@ -64,7 +64,7 @@ local function LoadSkin()
 	CliqueConfigPage1:SetScript("OnShow", function(self)
 		for i = 1, 12 do
 			if _G["CliqueRow"..i] then
-				_G["CliqueRow"..i.."Icon"]:SetTexCoord(.08, .92, .08, .92)
+				_G["CliqueRow"..i.."Icon"]:SetTexCoord(unpack(E.TexCoords))
 				_G["CliqueRow"..i.."Bind"]:ClearAllPoints()
 				if _G["CliqueRow"..i] == CliqueRow1 then
 					_G["CliqueRow"..i.."Bind"]:SetPoint("RIGHT", _G["CliqueRow"..i], 8,0)
@@ -90,10 +90,8 @@ local function LoadSkin()
 	CliqueConfigPage2ButtonCancel:SetPoint("TOPRIGHT", CliqueConfigPage2,"BOTTOMRIGHT",2,-4)
 	
 	CliqueSpellTab:GetRegions():SetSize(.1,.1)
-	CliqueSpellTab:GetNormalTexture():SetTexCoord(.08, .92, .08, .92)
-	CliqueSpellTab:GetNormalTexture():ClearAllPoints()
-	CliqueSpellTab:GetNormalTexture():Point("TOPLEFT", 2, -2)
-	CliqueSpellTab:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+	CliqueSpellTab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
+	CliqueSpellTab:GetNormalTexture():SetInside(nil, true)
 	CliqueSpellTab:CreateBackdrop("Transparent")
 	CliqueSpellTab.backdrop:SetAllPoints()
 	CliqueSpellTab:StyleButton(true)

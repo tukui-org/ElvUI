@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local AB = E:GetModule('ActionBars')
 local group
 
@@ -480,7 +480,7 @@ E.Options.args.actionbar = {
 			type = "toggle",
 			name = L["Enable"],
 			get = function(info) return E.private.actionbar[ info[#info] ] end,
-			set = function(info, value) E.private.actionbar[ info[#info] ] = value; StaticPopup_Show("PRIVATE_RL") end
+			set = function(info, value) E.private.actionbar[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},
 		toggleKeybind = {
 			order = 3,
@@ -508,6 +508,7 @@ E.Options.args.actionbar = {
 			name = L['Max Paging'],
 			desc = L['When enabled the main actionbar will use the maximum amount of pages available. This means if you have another actionbar disabled, the actionbar page will become available on the main actionbar. Having this disabled will limit the main actionbar to two pages.'],
 			order = 6,
+			set = function(info, value) E.db.actionbar[ info[#info] ] = value; AB:MultiActionBar_Update() end,
 			disabled = function() return not E.private.actionbar.enable end,
 		},
 		fontsize = {

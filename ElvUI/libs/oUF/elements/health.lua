@@ -89,7 +89,7 @@ local oUF = ns.oUF
 oUF.colors.health = {49/255, 207/255, 37/255}
 
 local Update = function(self, event, unit)
-	if(self.unit ~= unit) then return end
+	if(self.unit ~= unit) or not unit then return end
 	local health = self.Health
 
 	if(health.PreUpdate) then health:PreUpdate(unit) end

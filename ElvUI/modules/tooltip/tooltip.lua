@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local TT = E:NewModule('Tooltip', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 
 local _G = getfenv(0)
@@ -330,10 +330,10 @@ for class, color in next, RAID_CLASS_COLORS do
 end
 
 function TT:AddTargetedBy()
-	local numParty, numRaid = GetNumPartyMembers(), GetNumRaidMembers();
-	if (numParty > 0 or numRaid > 0) then
-		for i = 1, (numRaid > 0 and numRaid or numParty) do
-			local unit = (numRaid > 0 and "raid"..i or "party"..i);
+	local numGroup = GetNumGroupMembers()
+	if IsInGroup() then
+		for i = 1, numGroup do
+			local unit = (IsInRaid() and "raid"..i or "party"..i);
 			if (UnitIsUnit(unit.."target",token)) and (not UnitIsUnit(unit,"player")) then
 				local _, class = UnitClass(unit);
 				targetedList[#targetedList + 1] = ClassColors[class];
@@ -455,9 +455,9 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		end
 	end
 
-	for i = 1, lines do
+	for i = 1, tt:NumLines() do
 		local line = _G["GameTooltipTextLeft"..i]
-		if line and line:GetText() and line:GetText() == PVP_ENABLED then
+		while line and line:GetText() and (line:GetText() == PVP_ENABLED or line:GetText() == FACTION_HORDE or line:GetText() == FACTION_ALLIANCE) do
 			line:SetText()
 			break
 		end

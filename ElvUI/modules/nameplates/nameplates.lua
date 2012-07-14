@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local NP = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 
 local OVERLAY = [=[Interface\TargetingFrame\UI-TargetingFrame-Flash]=]
@@ -615,7 +615,6 @@ end
 
 --Scan all visible nameplate for a known unit.
 function NP:CheckUnit_Guid(frame, ...)
-	--local numParty, numRaid = GetNumPartyMembers(), GetNumRaidMembers()
 	if UnitExists("target") and frame:GetAlpha() == 1 and UnitName("target") == frame.hp.name:GetText() then
 		frame.guid = UnitGUID("target")
 		frame.unit = "target"
@@ -730,8 +729,7 @@ function NP:UpdateAllPlates()
 		self:SkinPlate(frame)
 	end
 
-	self:RegisterEvent("RAID_ROSTER_UPDATE", "UpdateRoster")
-	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "UpdateRoster")
+	self:RegisterEvent("GROUP_ROSTER_UPDATE", "UpdateRoster")
 	self:RegisterEvent("PARTY_CONVERTED_TO_RAID", "UpdateRoster")
 	self:RegisterEvent('UPDATE_MOUSEOVER_UNIT', 'UpdateCastInfo')
 	self:RegisterEvent('PLAYER_TARGET_CHANGED', 'UpdateCastInfo')
@@ -749,7 +747,7 @@ function NP:HookFrames(...)
 		local frame = select(index, ...)
 		local region = frame:GetRegions()
 		
-		if(not NP.Handled[frame:GetName()] and (frame:GetName() and frame:GetName():find("NamePlate%d")) and region and region:GetObjectType() == 'Texture' and region:GetTexture() == OVERLAY) then
+		if(not NP.Handled[frame:GetName()] and (frame:GetName() and frame:GetName():find("NamePlate%d")) and region and region:GetObjectType() == 'Texture') then
 			NP:SkinPlate(frame)
 			frame.region = region
 		end

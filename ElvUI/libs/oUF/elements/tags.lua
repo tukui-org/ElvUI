@@ -39,13 +39,13 @@ local tagStrings = {
 	end]],
 
 	["leader"] = [[function(u)
-		if(UnitIsPartyLeader(u)) then
+		if(UnitIsGroupLeader(u)) then
 			return 'L'
 		end
 	end]],
 
 	["leaderlong"]  = [[function(u)
-		if(UnitIsPartyLeader(u)) then
+		if(UnitIsGroupLeader(u)) then
 			return 'Leader'
 		end
 	end]],
@@ -238,7 +238,7 @@ local tagStrings = {
 			name = string.format("%s-%s", name, server)
 		end
 
-		for i=1, GetNumRaidMembers() do
+		for i=1, GetNumGroupMembers() do
 			local raidName, _, group = GetRaidRosterInfo(i)
 			if( raidName == name ) then
 				return group
@@ -352,7 +352,7 @@ local tagEvents = {
 	['rare']                = 'UNIT_CLASSIFICATION_CHANGED',
 	['classification']      = 'UNIT_CLASSIFICATION_CHANGED',
 	['shortclassification'] = 'UNIT_CLASSIFICATION_CHANGED',
-	["group"]               = "RAID_ROSTER_UPDATE",
+	["group"]               = "GROUP_ROSTER_UPDATE",
 	["curpp"]               = 'UNIT_POWER',
 	["maxpp"]               = 'UNIT_MAXPOWER',
 	["missingpp"]           = 'UNIT_MAXPOWER UNIT_POWER',
@@ -373,7 +373,7 @@ local unitlessEvents = {
 
 	PARTY_LEADER_CHANGED = true,
 
-	RAID_ROSTER_UPDATE = true,
+	GROUP_ROSTER_UPDATE = true,
 
 	UNIT_COMBO_POINTS = true
 }

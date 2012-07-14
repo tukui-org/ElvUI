@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local AB = E:GetModule('ActionBars');
 
 local MIN_SCALE = 0.5
@@ -117,8 +117,28 @@ function AB:CreateCooldownTimer(parent)
 	return timer
 end
 
+local HiddenFrame = CreateFrame('Frame')
+HiddenFrame:Hide()
 function AB:OnSetCooldown(cd, start, duration)
 	if cd.noOCC then return end
+	
+	local button = cd.originalParent or cd:GetParent()
+	local action = button._state_action or button.action
+	if action then
+		local charges = GetActionCharges(action)
+		if charges > 0 then
+			if not cd.originalParent then
+				cd.originalParent = button
+			end
+			cd:SetParent(HiddenFrame)
+			return
+		end
+	end
+	
+	if cd.originalParent then
+		cd:SetParent(cd.originalParent)
+	end
+	
 	--start timer
 	if start > 0 and duration > MIN_DURATION then
 		local timer = cd.timer or self:CreateCooldownTimer(cd)
@@ -139,7 +159,7 @@ end
 function AB:UpdateCooldown(cd)
 	local button = cd:GetParent()
 	local start, duration, enable = GetActionCooldown(button.action)
-
+	
 	self:OnSetCooldown(cd, start, duration)
 end
 

@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:GetModule('UnitFrames');
 
 local _, ns = ...
@@ -21,8 +21,9 @@ function UF:Construct_FocusFrame(frame)
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)	
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
-	
-	frame:Point('TOPLEFT', ElvUF_Player, 'BOTTOMLEFT', 0, -180)
+	frame.AuraBars = self:Construct_AuraBarHeader(frame)
+
+	frame:Point('BOTTOMRIGHT', ElvUF_Target, 'TOPRIGHT', 0, 220)
 	E:CreateMover(frame, frame:GetName()..'Mover', 'Focus Frame')
 end
 
@@ -272,10 +273,10 @@ function UF:Update_FocusFrame(frame, db)
 		--Icon
 		if db.castbar.icon then
 			castbar.Icon = castbar.ButtonIcon
-			castbar.Icon.bg:Width(db.castbar.height + E:Scale(4))
-			castbar.Icon.bg:Height(db.castbar.height + E:Scale(4))
+			castbar.Icon.bg:Width(db.castbar.height + 4)
+			castbar.Icon.bg:Height(db.castbar.height + 4)
 			
-			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - E:Scale(5))
+			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - 4)
 			castbar.Icon.bg:Show()
 		else
 			castbar.ButtonIcon.bg:Hide()
@@ -322,7 +323,46 @@ function UF:Update_FocusFrame(frame, db)
 			end		
 		end
 	end	
-
+	
+	--AuraBars
+	do
+		local auraBars = frame.AuraBars
+		
+		if db.aurabar.enable then
+			if not frame:IsElementEnabled('AuraBars') then
+				frame:EnableElement('AuraBars')
+			end
+			
+			auraBars:Show()
+			
+			local healthColor = UF.db.colors.health
+			local attachTo = frame
+			
+			if db.aurabar.attachTo == 'BUFFS' then
+				attachTo = frame.Buffs
+			elseif db.aurabar.attachTo == 'DEBUFFS' then
+				attachTo = frame.Debuffs
+			end
+			
+			local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
+			if db.aurabar.anchorPoint == 'BELOW' then
+				anchorPoint, anchorTo = 'TOP', 'BOTTOM'
+			end
+			
+			auraBars:ClearAllPoints()
+			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', POWERBAR_OFFSET, 0)
+			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', -POWERBAR_OFFSET, 0)
+			auraBars.buffColor = {healthColor.r, healthColor.b, healthColor.g}
+			auraBars.down = db.aurabar.growthDirection == 'DOWN'
+			auraBars:SetAnchors()
+		else
+			if frame:IsElementEnabled('AuraBars') then
+				frame:DisableElement('AuraBars')
+				auraBars:Hide()
+			end		
+		end
+	end
+		
 	frame:UpdateAllElements()
 end
 

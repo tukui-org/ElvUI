@@ -1,4 +1,4 @@
-local Type, Version = "MultiLineEditBox", 25
+local Type, Version = "MultiLineEditBox", 27
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -14,9 +14,32 @@ local _G = _G
 -- List them here for Mikk's FindGlobals script
 -- GLOBALS: ACCEPT, ChatFontNormal
 
+local wowMoP
+do
+	local _, _, _, interface = GetBuildInfo()
+	wowMoP = (interface >= 50000)
+end
+
 --[[-----------------------------------------------------------------------------
 Support functions
 -------------------------------------------------------------------------------]]
+
+if not AceGUIMultiLineEditBoxInsertLink then
+	-- upgradeable hook
+	hooksecurefunc("ChatEdit_InsertLink", function(...) return _G.AceGUIMultiLineEditBoxInsertLink(...) end)
+end
+
+function _G.AceGUIMultiLineEditBoxInsertLink(text)
+	for i = 1, AceGUI:GetWidgetCount(Type) do
+		local editbox = _G[("MultiLineEditBox%uEdit"):format(i)]
+		if editbox and editbox:IsVisible() and editbox:HasFocus() then
+			editbox:Insert(text)
+			return true
+		end
+	end
+end
+
+
 local function Layout(self)
 	self:SetHeight(self.numlines * 14 + (self.disablebutton and 19 or 41) + self.labelHeight)
 
@@ -262,7 +285,7 @@ local function Constructor()
 	label:SetText(ACCEPT)
 	label:SetHeight(10)
 
-	local button = CreateFrame("Button", ("%s%dButton"):format(Type, widgetNum), frame, "UIPanelButtonTemplate2")
+	local button = CreateFrame("Button", ("%s%dButton"):format(Type, widgetNum), frame, wowMoP and "UIPanelButtonTemplate" or "UIPanelButtonTemplate2")
 	button:SetPoint("BOTTOMLEFT", 0, 4)
 	button:SetHeight(22)
 	button:SetWidth(label:GetStringWidth() + 24)
@@ -301,7 +324,7 @@ local function Constructor()
 	scrollFrame:SetScript("OnSizeChanged", OnSizeChanged)
 	scrollFrame:HookScript("OnVerticalScroll", OnVerticalScroll)
 
-	local editBox = CreateFrame("EditBox", nil, scrollFrame)
+	local editBox = CreateFrame("EditBox", ("%s%dEdit"):format(Type, widgetNum), scrollFrame)
 	editBox:SetAllPoints()
 	editBox:SetFontObject(ChatFontNormal)
 	editBox:SetMultiLine(true)

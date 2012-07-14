@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local DT = E:NewModule('DataTexts', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 local LDB = LibStub:GetLibrary("LibDataBroker-1.1");
 
@@ -88,12 +88,6 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 function DT:GetDataPanelPoint(panel, i, numPoints)
 	if numPoints == 1 then
 		return 'CENTER', panel, 'CENTER'
-	elseif numPoints == 2 then
-		if i == 1 then
-			return 'RIGHT', panel, 'RIGHT', -4, 0
-		elseif i == 2 then
-			return 'LEFT', panel, 'LEFT', 4, 0
-		end
 	else
 		if i == 1 then
 			return 'CENTER', panel, 'CENTER'

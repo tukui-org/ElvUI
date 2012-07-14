@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local A = E:NewModule('Auras', 'AceHook-3.0', 'AceEvent-3.0');
 
 local warningTime = 5
@@ -28,9 +28,8 @@ function A:StyleBuffs(buttonName, index, debuff)
 	local count = _G[buttonName..index.."Count"]
 	if icon and not buff.backdrop then
 		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:Point("TOPLEFT", buff, 2, -2)
-		icon:Point("BOTTOMRIGHT", buff, -2, 2)
-		
+		icon:SetInside()
+		icon:SetDrawLayer('ARTWORK')
 		buff:Size(30)
 				
 		duration:ClearAllPoints()
@@ -40,6 +39,7 @@ function A:StyleBuffs(buttonName, index, debuff)
 		count:ClearAllPoints()
 		count:Point("TOPLEFT", 1, -2)
 		count:FontTemplate(nil, nil, 'OUTLINE')
+		count:SetDrawLayer('OVERLAY')
 		
 		buff:CreateBackdrop('Default')
 		buff.backdrop:SetAllPoints()
@@ -201,15 +201,11 @@ function A:Initialize()
 		return 
 	end
 	
-	ConsolidatedBuffs:ClearAllPoints()
-	ConsolidatedBuffs:Point("LEFT", Minimap, "LEFT", 0, 3)
-	ConsolidatedBuffs:Size(16, 16)
-	ConsolidatedBuffs:SetParent(Minimap)
-	ConsolidatedBuffsIcon:SetTexture(nil)
-	ConsolidatedBuffs.SetPoint = E.noop
+	ConsolidatedBuffs:Hide()
+	ConsolidatedBuffs:SetParent(E.HiddenFrame)
 	
 	local holder = CreateFrame("Frame", "AurasHolder", E.UIParent)
-	holder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -((E.MinimapSize + 14) + E.RBRWidth + 7), -10)
+	holder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -((E.MinimapSize + 4) + E.RBRWidth + 7), -3)
 	holder:Width(456)
 	holder:Height(E.MinimapHeight)
 	
@@ -229,8 +225,7 @@ function A:Initialize()
 		_G["TempEnchant"..i].backdrop:SetAllPoints()
 		_G["TempEnchant"..i.."Border"]:Hide()
 		_G["TempEnchant"..i.."Icon"]:SetTexCoord(unpack(E.TexCoords))
-		_G["TempEnchant"..i.."Icon"]:Point("TOPLEFT", _G["TempEnchant"..i], 2, -2)
-		_G["TempEnchant"..i.."Icon"]:Point("BOTTOMRIGHT", _G["TempEnchant"..i], -2, 2)
+		_G["TempEnchant"..i.."Icon"]:SetInside()
 		_G["TempEnchant"..i.."Duration"]:ClearAllPoints()
 		_G["TempEnchant"..i.."Duration"]:Point("BOTTOM", 0, -13)
 		_G["TempEnchant"..i.."Duration"]:FontTemplate(nil, nil, 'OUTLINE')

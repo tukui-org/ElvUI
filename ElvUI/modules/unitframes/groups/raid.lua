@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:GetModule('UnitFrames');
 
 local _, ns = ...
@@ -121,8 +121,7 @@ for i=10, 40, 15 do
 
 		if not header.positioned then
 			header:ClearAllPoints()
-
-			header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 210)
+			header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)	
 			E:CreateMover(header, header:GetName()..'Mover', 'Raid 1-'..i..' Frames')
 			
 			header:SetAttribute('minHeight', header.dirtyHeight)

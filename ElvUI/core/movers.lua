@@ -1,9 +1,10 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local Sticky = LibStub("LibSimpleSticky-1.0")
 
 E.CreatedMovers = {}
 
 local function SizeChanged(frame)
+	if InCombatLockdown() then return; end
 	frame.mover:Size(frame:GetSize())
 end
 
@@ -236,7 +237,6 @@ function E:ResetMovers(arg)
 				local mover
 				if key == "text" then
 					if arg == value then 
-
 						local f = _G[name]
 						local point, anchor, secondaryPoint, x, y = string.split('\031', E.CreatedMovers[name]['point'])
 						f:ClearAllPoints()

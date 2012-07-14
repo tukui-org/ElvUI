@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local M = E:GetModule('Misc');
 
 --Credit Haste
@@ -8,7 +8,7 @@ local iconSize = 30;
 local sq, ss, sn
 local OnEnter = function(self)
 	local slot = self:GetID()
-	if(LootSlotIsItem(slot)) then
+	if(LootSlotHasItem(slot)) then
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 		GameTooltip:SetLootItem(slot)
 		CursorUpdate(self)
@@ -89,15 +89,13 @@ local function createSlot(id)
 	iconFrame:Height(iconsize)
 	iconFrame:Width(iconsize)
 	iconFrame:SetPoint("RIGHT", frame)
-	
 	iconFrame:SetTemplate("Default")
 	E["frames"][iconFrame] = nil;
 
 	local icon = iconFrame:CreateTexture(nil, "ARTWORK")
 	icon:SetAlpha(.8)
 	icon:SetTexCoord(.07, .93, .07, .93)
-	icon:Point("TOPLEFT", 2, -2)
-	icon:Point("BOTTOMRIGHT", -2, 2)
+	icon:SetInside()
 	frame.icon = icon
 
 	local count = iconFrame:CreateFontString(nil, "OVERLAY")
@@ -190,10 +188,10 @@ function M:LOOT_OPENED(event, autoloot)
 			local texture, item, quantity, quality, locked = GetLootSlotInfo(i)
 			local color = ITEM_QUALITY_COLORS[quality]
 
-			if(LootSlotIsCoin(i)) then
+			if texture:find('INV_Misc_Coin') then
 				item = item:gsub("\n", ", ")
-			end
-
+			end	
+			
 			if quantity and (quantity > 1) then
 				slot.count:SetText(quantity)
 				slot.count:Show()
@@ -259,6 +257,7 @@ function M:LoadLoot()
 	lootFrameHolder:Height(22)
 	
 	lootFrame = CreateFrame('Button', 'ElvLootFrame', lootFrameHolder)
+	lootFrame:SetClampedToScreen(true)
 	lootFrame:SetPoint('TOPLEFT')
 	lootFrame:Size(256, 64)
 	lootFrame:SetTemplate('Default')
@@ -288,7 +287,7 @@ function M:LoadLoot()
 
 	function _G.GroupLootDropDown_GiveLoot(self)
 		if ( sq >= MASTER_LOOT_THREHOLD ) then
-			local dialog = StaticPopup_Show("CONFIRM_LOOT_DISTRIBUTION", ITEM_QUALITY_COLORS[sq].hex..sn..FONT_COLOR_CODE_CLOSE, self:GetText())
+			local dialog = E:StaticPopup_Show("CONFIRM_LOOT_DISTRIBUTION", ITEM_QUALITY_COLORS[sq].hex..sn..FONT_COLOR_CODE_CLOSE, self:GetText())
 			if (dialog) then
 				dialog.data = self.value
 			end
@@ -298,8 +297,7 @@ function M:LoadLoot()
 		CloseDropDownMenus()
 	end
 
-	StaticPopupDialogs["CONFIRM_LOOT_DISTRIBUTION"].OnAccept = function(self, data)
+	E.PopupDialogs["CONFIRM_LOOT_DISTRIBUTION"].OnAccept = function(self, data)
 		GiveMasterLoot(ss, data)
-	end	
-	StaticPopupDialogs["CONFIRM_LOOT_DISTRIBUTION"].preferredIndex = 3;
+	end
 end

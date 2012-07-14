@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 --Tab Regions
@@ -32,6 +32,7 @@ local function LoadSkin()
 	S:HandleScrollBar(WhoListScrollFrameScrollBar, 5)
 	S:HandleScrollBar(ChannelRosterScrollFrameScrollBar, 5)
 	S:HandleScrollBar(FriendsFriendsScrollFrameScrollBar)
+	
 	local StripAllTextures = {
 		"ScrollOfResurrectionSelectionFrame",
 		"ScrollOfResurrectionSelectionFrameList",
@@ -218,9 +219,7 @@ local function LoadSkin()
 	FriendsTabHeaderSoRButton:StyleButton()
 	FriendsTabHeaderSoRButtonIcon:SetDrawLayer('OVERLAY')
 	FriendsTabHeaderSoRButtonIcon:SetTexCoord(unpack(E.TexCoords))
-	FriendsTabHeaderSoRButtonIcon:ClearAllPoints()
-	FriendsTabHeaderSoRButtonIcon:Point('TOPLEFT', 2, -2)
-	FriendsTabHeaderSoRButtonIcon:Point('BOTTOMRIGHT', -2, 2)
+	FriendsTabHeaderSoRButtonIcon:SetInside(nil, true)
 	FriendsTabHeaderSoRButton:Point('TOPRIGHT', FriendsTabHeader, 'TOPRIGHT', -8, -56)
 	
 	S:HandleScrollBar(FriendsFrameIgnoreScrollFrameScrollBar, 4)

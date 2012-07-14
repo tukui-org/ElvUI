@@ -81,6 +81,7 @@ local customFilter = function(icons, unit, icon, name, rank, texture, count, dty
 end
 
 local updateIcon = function(unit, icons, index, offset, filter, isDebuff, visible)
+	if not unit then return; end
 	local name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff = UnitAura(unit, index, filter)
 	
 	if icons.forceShow then
@@ -217,7 +218,7 @@ local filterIcons = function(unit, icons, filter, limit, isDebuff, offset, dontH
 end
 
 local Update = function(self, event, unit)
-	if(self.unit ~= unit) then return end
+	if(self.unit ~= unit) or not unit then return end
 
 	local auras = self.Auras
 	if(auras) then

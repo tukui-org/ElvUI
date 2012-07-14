@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)) --Import: Engine, Locales, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -21,13 +21,14 @@ local function LoadSkin()
 	S:HandleRotateButton(PetStableModelRotateLeftButton)
 
 	for i = 1, NUM_PET_ACTIVE_SLOTS do
-	   S:HandleButton(_G['PetStableActivePet' .. i])
+	   S:HandleItemButton(_G['PetStableActivePet' .. i], true)
 	end
 
 	for i = 1, NUM_PET_STABLE_SLOTS do
-	   S:HandleButton(_G['PetStableStabledPet' .. i])
-	   _G['PetStableStabledPet' .. i].Background:Hide()
+	   S:HandleItemButton(_G['PetStableStabledPet' .. i], true)
 	end
+	
+	PetStableSelectedPetIcon:SetTexCoord(unpack(E.TexCoords))
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

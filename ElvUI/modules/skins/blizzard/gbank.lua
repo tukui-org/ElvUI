@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -42,10 +42,8 @@ local function LoadSkin()
 			end
 			button:StyleButton()
 			button:SetTemplate("Default", true)
-			
-			icon:ClearAllPoints()
-			icon:Point("TOPLEFT", 2, -2)
-			icon:Point("BOTTOMRIGHT", -2, 2)
+
+			icon:SetInside(nil, true)
 			icon:SetTexCoord(unpack(E.TexCoords))
 		end
 	end
@@ -58,10 +56,8 @@ local function LoadSkin()
 		button:StripTextures()
 		button:StyleButton(true)
 		button:SetTemplate("Default", true)
-		
-		texture:ClearAllPoints()
-		texture:Point("TOPLEFT", 2, -2)
-		texture:Point("BOTTOMRIGHT", -2, 2)
+
+		texture:SetInside(nil, true)
 		texture:SetTexCoord(unpack(E.TexCoords))
 	end
 	
@@ -92,9 +88,7 @@ local function LoadSkin()
 		button:StripTextures()
 		button:SetTemplate("Default")
 		button:StyleButton(true)
-		icon:ClearAllPoints()
-		icon:Point("TOPLEFT", 2, -2)
-		icon:Point("BOTTOMRIGHT", -2, 2)
+		icon:SetInside(nil, true)
 		icon:SetTexCoord(unpack(E.TexCoords))
 	end
 	

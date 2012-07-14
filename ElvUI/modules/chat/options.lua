@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local CH = E:GetModule('Chat')
 
 E.Options.args.chat = {
@@ -17,7 +17,7 @@ E.Options.args.chat = {
 			type = "toggle",
 			name = L["Enable"],
 			get = function(info) return E.private.chat.enable end,
-			set = function(info, value) E.private.chat.enable = value; StaticPopup_Show("PRIVATE_RL") end
+			set = function(info, value) E.private.chat.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},				
 		general = {
 			order = 3,
@@ -113,60 +113,6 @@ E.Options.args.chat = {
 					type = 'input',
 					width = 'full',
 					set = function(info, value) E.db.chat[ info[#info] ] = value; CH:UpdateChatKeywords() end,
-				},
-			},
-		},
-		sounds = {
-			order = 4,
-			type = "group",
-			name = L["Sounds"],
-			guiInline = true,
-			args = {
-				whispers = {
-					order = 1,
-					type = "group",
-					name = L["Whispers"],
-					args = {
-						whisperwarning = {
-							order = 1,
-							type = 'toggle',
-							name = L['Whisper Warning'],
-							desc = L['Plays a sound when you receive a whisper.'],
-							set = function(info, value) E.db.chat.whisperwarning = value; end,
-						},
-						whispersound = {
-							order = 2,
-							type = 'select', dialogControl = 'LSM30_Sound',
-							name = L['Warning Sound'],
-							desc = L['Choose what sound to play.'],
-							disabled = function() return not E.db.chat.whisperwarning end,
-							values = AceGUIWidgetLSMlists.sound,
-							set = function(info, value) E.db.chat[ info[#info] ] = value; E:UpdateSounds(); end,
-						},
-					},
-				},
-				keywords = {
-					order = 2,
-					type = "group",
-					name = L["Keywords"],
-					args = {
-						keywordwarning = {
-							order = 3,
-							type = 'toggle',
-							name = L['Keyword Warning'],
-							desc = L['Plays a sound when a keyword is found in a message.'],
-							set = function(info, value) E.db.chat.keywordwarning = value; end,
-						},
-						keywordsound = {
-							order = 4,
-							type = 'select', dialogControl = 'LSM30_Sound',
-							name = L['Warning Sound'],
-							desc = L['Choose what sound to play.'],
-							disabled = function() return not E.db.chat.keywordwarning end,
-							values = AceGUIWidgetLSMlists.sound,
-							set = function(info, value) E.db.chat[ info[#info] ] = value; E:UpdateSounds(); end,
-						},
-					},
 				},
 			},
 		},

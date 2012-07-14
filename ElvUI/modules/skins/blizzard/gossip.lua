@@ -1,19 +1,26 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.gossip ~= true then return end
 	ItemTextFrame:StripTextures(true)
 	ItemTextScrollFrame:StripTextures()
-	ItemTextFrame:SetTemplate("Transparent")
-	S:HandleCloseButton(ItemTextCloseButton)
+	GossipFrame:SetTemplate("Transparent")
+	S:HandleCloseButton(GossipFrameCloseButton)
 	S:HandleNextPrevButton(ItemTextPrevPageButton)
 	S:HandleNextPrevButton(ItemTextNextPageButton)
 	ItemTextPageText:SetTextColor(1, 1, 1)
 	ItemTextPageText.SetTextColor = E.noop
+	ItemTextFrame:SetTemplate("Transparent")
+	ItemTextFrameInset:Kill()	
+	S:HandleScrollBar(ItemTextScrollFrameScrollBar)
+	S:HandleCloseButton(ItemTextFrameCloseButton)
 	
 	local StripAllTextures = {
 		"GossipFrameGreetingPanel",
+		"GossipFrame",
+		"GossipFrameInset",
+		"GossipGreetingScrollFrame",
 	}			
 	
 	S:HandleScrollBar(GossipGreetingScrollFrameScrollBar, 5)
@@ -46,11 +53,11 @@ local function LoadSkin()
 	end
 
 	GossipGreetingText:SetTextColor(1,1,1)
-	GossipFrame:CreateBackdrop("Transparent")
-	GossipFrame.backdrop:Point("TOPLEFT", GossipFrame, "TOPLEFT", 15, -20)
-	GossipFrame.backdrop:Point("BOTTOMRIGHT", GossipFrame, "BOTTOMRIGHT", -30, 65)
 	S:HandleCloseButton(GossipFrameCloseButton,GossipFrame.backdrop)
 	
+	NPCFriendshipStatusBar:StripTextures()
+	NPCFriendshipStatusBar:SetStatusBarTexture(E.media.normTex)
+	NPCFriendshipStatusBar:CreateBackdrop('Default')
 	
 	--Extreme hackage, blizzard makes button text on quest frame use hex color codes for some reason
 	hooksecurefunc("GossipFrameUpdate", function()

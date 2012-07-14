@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -29,9 +29,7 @@ local function LoadSkin()
 			button:StyleButton()
 			
 			local icon = _G[button:GetName().."IconTexture"]
-			icon:ClearAllPoints()
-			icon:Point("TOPLEFT", 2, -2)
-			icon:Point("BOTTOMRIGHT", -2, 2)
+			icon:SetInside(nil, true)
 			icon:SetTexCoord(unpack(E.TexCoords))
 			
 			button.searchOverlay:ClearAllPoints()
@@ -72,8 +70,7 @@ local function LoadSkin()
 				container:SetFrameStrata("HIGH")
 				container:StripTextures(true)
 				container:CreateBackdrop("Transparent")
-				container.backdrop:Point("TOPLEFT", 2, -2)
-				container.backdrop:Point("BOTTOMRIGHT", -2, 2)
+				container.backdrop:SetInside()
 				S:HandleCloseButton(_G[container:GetName().."CloseButton"])
 				
 				container:HookScript("OnShow", function(self)
@@ -90,8 +87,7 @@ local function LoadSkin()
 					for i=1, MAX_WATCHED_TOKENS do
 						_G["BackpackTokenFrameToken"..i].icon:SetTexCoord(unpack(E.TexCoords))
 						_G["BackpackTokenFrameToken"..i]:CreateBackdrop("Default")
-						_G["BackpackTokenFrameToken"..i].backdrop:Point("TOPLEFT", _G["BackpackTokenFrameToken"..i].icon, "TOPLEFT", -2, 2)
-						_G["BackpackTokenFrameToken"..i].backdrop:Point("BOTTOMRIGHT", _G["BackpackTokenFrameToken"..i].icon, "BOTTOMRIGHT", 2, -2)
+						_G["BackpackTokenFrameToken"..i].backdrop:SetOutside(_G["BackpackTokenFrameToken"..i].icon)
 						_G["BackpackTokenFrameToken"..i].icon:Point("LEFT", _G["BackpackTokenFrameToken"..i].count, "RIGHT", 2, 0)
 					end
 				end
@@ -110,25 +106,32 @@ local function LoadSkin()
 	hooksecurefunc("BankFrameItemButton_Update", function(button)
 		if not BankFrame.backdrop then
 			BankFrame:StripTextures(true)
-			BankFrame:CreateBackdrop("Transparent")
-			BankFrame.backdrop:Point("TOPLEFT", 0, 0)
-			BankFrame.backdrop:Point("BOTTOMRIGHT", -4, 70)
+			BankFrame:SetTemplate('Transparent')
 			S:HandleButton(BankFramePurchaseButton, true)	
-			S:HandleCloseButton(BankCloseButton)
+			S:HandleCloseButton(BankFrameCloseButton)
 			
 			BankFrame.backdrop2 = CreateFrame("Frame", nil, BankFrame)
 			BankFrame.backdrop2:SetTemplate("Default")
-			BankFrame.backdrop2:Point("TOPLEFT", BankFrameItem1, "TOPLEFT", -8, 8)
-			BankFrame.backdrop2:Point("BOTTOMRIGHT", BankFrameItem28, "BOTTOMRIGHT", 8, -8)
+			BankFrame.backdrop2:Point("TOPLEFT", BankFrameItem1, "TOPLEFT", -6, 6)
+			BankFrame.backdrop2:Point("BOTTOMRIGHT", BankFrameItem28, "BOTTOMRIGHT", 6, -6)
 			
 			BankFrame.backdrop3 = CreateFrame("Frame", nil, BankFrame)
 			BankFrame.backdrop3:SetTemplate("Default")
-			BankFrame.backdrop3:Point("TOPLEFT", BankFrameBag1, "TOPLEFT", -8, 8)
-			BankFrame.backdrop3:Point("BOTTOMRIGHT", BankFrameBag7, "BOTTOMRIGHT", 8, -8)			
+			BankFrame.backdrop3:Point("TOPLEFT", BankFrameBag1, "TOPLEFT", -6, 6)
+			BankFrame.backdrop3:Point("BOTTOMRIGHT", BankFrameBag7, "BOTTOMRIGHT", 6, -6)	
+			
+			BankFrameMoneyFrameInset:Kill()
+			BankFrameMoneyFrameBorder:Kill()
+			BankFrame.backdrop = true;
 		end
 		
 		SkinButton(button)
-
+		
+		if not button.levelAdjusted then
+			button:SetFrameLevel(button:GetFrameLevel() + 1)
+			button.levelAdjusted = true;
+		end
+		
 		local inventoryID = button:GetInventorySlot()
 		local textureName = GetInventoryItemTexture("player",inventoryID);
 
@@ -161,9 +164,7 @@ local function LoadSkin()
 		if highlight and not highlight.skinned then
 			highlight:SetTexture(unpack(E["media"].rgbvaluecolor), 0.3)
 			highlight.SetTexture = E.noop
-			highlight:ClearAllPoints()
-			highlight:Point("TOPLEFT", 2, -2)
-			highlight:Point("BOTTOMRIGHT", -2, 2)	
+			highlight:SetInside(nil, true)
 			highlight.skinned = true
 		end
 	end)

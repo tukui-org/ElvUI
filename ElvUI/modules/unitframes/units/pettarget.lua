@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:GetModule('UnitFrames');
 
 local _, ns = ...
@@ -16,7 +16,7 @@ function UF:Construct_PetTargetFrame(frame)
 	
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	
-	frame:Point('LEFT', ElvUF_Pet, 'RIGHT', 30, 0) --Set to default position
+	frame:Point('BOTTOM', ElvUF_Pet, 'TOP', 0, 7) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', 'PetTarget Frame', nil, -7)
 end
 
@@ -255,7 +255,7 @@ function UF:Update_PetTargetFrame(frame, db)
 			debuffs:Hide()
 		end
 	end	
-
+		
 	frame:UpdateAllElements()
 end
 

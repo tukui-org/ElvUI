@@ -1,10 +1,10 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 
 --Locked Settings, These settings are stored for your character only regardless of profile options.
 
 V['general'] = {
-	['loot'] = false,
-	['lootRoll'] = false,
+	['loot'] = true,
+	['lootRoll'] = true,
 	["normTex"] = "Minimalist",
 	["glossTex"] = "Minimalist",	
 	["dmgfont"] = "ElvUI Combat",
@@ -13,14 +13,10 @@ V['general'] = {
 }
 
 V['bags'] = {
-	['enable'] = false,
+	['enable'] = true,
 	['bagBar'] = {
-		['enable'] = false,
+		['enable'] = true,
 	},
-}
-
-V['classtimer'] = {
-	['enable'] = false,
 }
 
 V['reminder'] = {
@@ -29,7 +25,7 @@ V['reminder'] = {
 }
 
 V["nameplate"] = {
-	["enable"] = false,
+	["enable"] = true,
 }
 
 V['auras'] = {
@@ -62,7 +58,7 @@ V['skins'] = {
 	},
 	['skada'] = {
 		['enable'] = true,
-		['barHeight'] = 16,
+		['barHeight'] = 17,
 	},		
 	['tinydps'] = {
 		['enable'] = true,
@@ -96,7 +92,8 @@ V['skins'] = {
 		["debug"] = true,
 		["trainer"] = true,
 		["socket"] = true,
-		["achievement_popup"] = true,
+		['loot'] = true,
+		["alertframes"] = true,
 		["bgscore"] = true,
 		["merchant"] = true,
 		["mail"] = true,
@@ -106,17 +103,16 @@ V['skins'] = {
 		["greeting"] = true,
 		["worldmap"] = true,
 		["taxi"] = true,
-		["lfd"] = true,
 		["quest"] = true,
 		["petition"] = true,
 		["dressingroom"] = true,
 		["pvp"] = true,
+		["lfg"] = true,
 		["nonraid"] = true,
 		["friends"] = true,
 		["spellbook"] = true,
 		["character"] = true,
 		["misc"] = true,
-		["lfr"] = true,
 		["tabard"] = true,
 		["guildregistrar"] = true,
 		["timemanager"] = true,
@@ -125,6 +121,7 @@ V['skins'] = {
 		["transmogrify"] = true,
 		["stable"] = true,
 		["bgmap"] = true,
+		['mounts'] = true,
 	},
 }
 

@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:GetModule('UnitFrames');
 
 local _, ns = ...
@@ -8,7 +8,7 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 function UF:Construct_PartyFrames(unitGroup)
 	self:RegisterForClicks("AnyUp")
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
-	self:SetScript('OnLeave', UnitFrame_OnLeave)
+	self:SetScript('OnLeave', UnitFrame_OnLeave)	
 	
 	if self.isChild then
 		self.Health = UF:Construct_HealthBar(self, true)
@@ -36,7 +36,7 @@ function UF:Construct_PartyFrames(unitGroup)
 		table.insert(self.__elements, UF.UpdateTargetGlow)
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', function(...) UF.UpdateThreat(...); UF.UpdateTargetGlow(...) end)
 		self:RegisterEvent('PLAYER_ENTERING_WORLD', UF.UpdateTargetGlow)
-		self:RegisterEvent('PARTY_MEMBERS_CHANGED', UF.UpdateTargetGlow)
+		self:RegisterEvent('GROUP_ROSTER_UPDATE', UF.UpdateTargetGlow)
 		self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', UF.UpdateThreat)
 		self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', UF.UpdateThreat)	
 		
@@ -108,7 +108,7 @@ function UF:Update_PartyHeader(header, db)
 		
 	if not header.positioned then
 		header:ClearAllPoints()
-		header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 210)
+		header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
 		
 		E:CreateMover(header, header:GetName()..'Mover', 'Party Frames')
 		

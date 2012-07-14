@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local rwiconsize = 18			-- RaidWarning icon size, because 12 is small for me.
@@ -25,9 +25,8 @@ local function SkinBars(self)
 					
 					local backdroptex = icon1.overlay:CreateTexture(nil, "BORDER")
 					backdroptex:SetTexture([=[Interface\Icons\Spell_Nature_WispSplode]=])
-					backdroptex:Point("TOPLEFT", icon1.overlay, "TOPLEFT", 2, -2)
-					backdroptex:Point("BOTTOMRIGHT", icon1.overlay, "BOTTOMRIGHT", -2, 2)
-					backdroptex:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+					backdroptex:SetInside()
+					backdroptex:SetTexCoord(unpack(E.TexCoords))
 					
 					icon1.overlay:SetFrameLevel(1)
 				end
@@ -40,9 +39,8 @@ local function SkinBars(self)
 					
 					local backdroptex = icon2.overlay:CreateTexture(nil, "BORDER")
 					backdroptex:SetTexture([=[Interface\Icons\Spell_Nature_WispSplode]=])
-					backdroptex:Point("TOPLEFT", icon2.overlay, "TOPLEFT", 2, -2)
-					backdroptex:Point("BOTTOMRIGHT", icon2.overlay, "BOTTOMRIGHT", -2, 2)
-					backdroptex:SetTexCoord(0.08, 0.92, 0.08, 0.92)			
+					backdroptex:SetInside()
+					backdroptex:SetTexCoord(unpack(E.TexCoords))			
 
 					icon2.overlay:SetFrameLevel(1)
 				end
@@ -71,18 +69,14 @@ local function SkinBars(self)
 				end
 	
 				if not icon1.styled then
-					icon1:SetTexCoord(0.08, 0.92, 0.08, 0.92)
-					icon1:ClearAllPoints()
-					icon1:Point("TOPLEFT", icon1.overlay, 2, -2)
-					icon1:Point("BOTTOMRIGHT", icon1.overlay, -2, 2)
+					icon1:SetTexCoord(unpack(E.TexCoords))
+					icon1:SetInside(icon1.overlay, true)
 					icon1.styled=true
 				end
 				
 				if not icon2.styled then
-					icon2:SetTexCoord(0.08, 0.92, 0.08, 0.92)
-					icon2:ClearAllPoints()
-					icon2:Point("TOPLEFT", icon2.overlay, 2, -2)
-					icon2:Point("BOTTOMRIGHT", icon2.overlay, -2, 2)
+					icon2:SetTexCoord(unpack(E.TexCoords))
+					icon2:SetInside(icon2.overlay, true)
 					icon2.styled=true
 				end
 
@@ -93,8 +87,7 @@ local function SkinBars(self)
 				
 				tbar:SetStatusBarTexture(E["media"].normTex)
 				if not tbar.styled then
-					tbar:Point("TOPLEFT", frame, "TOPLEFT", 2, -2)
-					tbar:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 2)
+					tbar:SetInside(frame)
 					
 					tbar.styled=true
 				end
@@ -187,9 +180,7 @@ local SkinBoss=function()
 			progress:SetStatusBarTexture(E["media"].normTex)
 			progress.styled=true
 		end				
-		progress:ClearAllPoints()
-		progress:Point("TOPLEFT", bar, "TOPLEFT", 2, -2)
-		progress:Point("BOTTOMRIGHT", bar, "BOTTOMRIGHT", -2, 2)
+		progress:SetInside(bar, true)
 
 		if not name.styled then
 			name:ClearAllPoints()

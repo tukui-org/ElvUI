@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local M = E:NewModule('Minimap', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 E.Minimap = M
 
@@ -11,16 +11,25 @@ local menuList = {
 	func = function() ToggleCharacter("PaperDollFrame") end},
 	{text = SPELLBOOK_ABILITIES_BUTTON,
 	func = function() if not SpellBookFrame:IsShown() then ShowUIPanel(SpellBookFrame) else HideUIPanel(SpellBookFrame) end end},
+	{text = MOUNTS_AND_PETS,
+	func = function()
+		TogglePetJournal();
+	end},
 	{text = TALENTS_BUTTON,
 	func = function()
 		if not PlayerTalentFrame then
-			LoadAddOn("Blizzard_TalentUI")
+			TalentFrame_LoadUI()
 		end
 
 		if not GlyphFrame then
-			LoadAddOn("Blizzard_GlyphUI")
+			GlyphFrame_LoadUI()
 		end
-		PlayerTalentFrame_Toggle()
+		
+		if not PlayerTalentFrame:IsShown() then
+			ShowUIPanel(PlayerTalentFrame)
+		else
+			HideUIPanel(PlayerTalentFrame)
+		end
 	end},
 	{text = TIMEMANAGER_TITLE,
 	func = function() ToggleFrame(TimeManagerFrame) end},		
@@ -37,23 +46,21 @@ local menuList = {
 	{text = ACHIEVEMENTS_GUILD_TAB,
 	func = function()
 		if IsInGuild() then
-			if not GuildFrame then LoadAddOn("Blizzard_GuildUI") end
+			if not GuildFrame then GuildFrame_LoadUI() end
 			GuildFrame_Toggle()
 		else
-			if not LookingForGuildFrame then LoadAddOn("Blizzard_LookingForGuildUI") end
+			if not LookingForGuildFrame then LookingForGuildFrame_LoadUI() end
 			if not LookingForGuildFrame then return end
 			LookingForGuildFrame_Toggle()
 		end
 	end},
 	{text = LFG_TITLE,
-	func = function() ToggleFrame(LFDParentFrame) end},
-	{text = RAID_FINDER,
-	func = function() RaidMicroButton:Click() end},
+	func = function() PVEFrame_ToggleFrame(); end},
 	{text = ENCOUNTER_JOURNAL, 
-	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then LoadAddOn('Blizzard_EncounterJournal'); end ToggleFrame(EncounterJournal) end},	
+	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then EncounterJournal_LoadUI(); end ToggleFrame(EncounterJournal) end},	
 	{text = L_CALENDAR,
 	func = function()
-	if(not CalendarFrame) then LoadAddOn("Blizzard_Calendar") end
+	if(not CalendarFrame) then Calendar_LoadUI() end
 		Calendar_Toggle()
 	end},			
 	{text = HELP_BUTTON,
@@ -190,7 +197,7 @@ function M:UpdateSettings()
 		AurasHolder:Height(E.MinimapHeight)
 		if AurasMover and not E:HasMoverBeenMoved('AurasMover') and not E:HasMoverBeenMoved('MinimapMover') then
 			AurasMover:ClearAllPoints()
-			AurasMover:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -((E.MinimapSize + 14) + E.RBRWidth + 7), -10)
+			AurasMover:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -((E.MinimapSize + 4) + E.RBRWidth + 7), -3)
 			E:SaveMoverDefaultPosition('AurasMover')
 		end
 		
@@ -229,7 +236,7 @@ end
 function M:Initialize()	
 	self:UpdateSettings()
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
-	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -10, -10)
+	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
 	mmholder:Width((Minimap:GetWidth() + 29) + E.RBRWidth)
 	mmholder:Height(Minimap:GetHeight() + 53)
 	
@@ -260,10 +267,6 @@ function M:Initialize()
 		Minimap.location:Hide()
 	end
 	
-	LFGSearchStatus:SetTemplate("Default")
-	LFGSearchStatus:SetClampedToScreen(true)
-	LFGDungeonReadyStatus:SetClampedToScreen(true)	
-	
 	MinimapBorder:Hide()
 	MinimapBorderTop:Hide()
 
@@ -285,9 +288,10 @@ function M:Initialize()
 	MiniMapMailBorder:Hide()
 	MiniMapMailIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\mail")
 
-	MiniMapBattlefieldFrame:ClearAllPoints()
-	MiniMapBattlefieldFrame:Point("BOTTOMRIGHT", Minimap, 3, 0)
-	MiniMapBattlefieldBorder:Hide()
+	QueueStatusMinimapButton:ClearAllPoints()
+	QueueStatusMinimapButton:Point("BOTTOMRIGHT", Minimap, 3, 0)
+	QueueStatusMinimapButtonBorder:Hide()
+	QueueStatusFrame:SetClampedToScreen(true)
 
 	MiniMapWorldMapButton:Hide()
 
@@ -315,10 +319,7 @@ function M:Initialize()
 	Minimap:EnableMouseWheel(true)
 	Minimap:SetScript("OnMouseWheel", M.Minimap_OnMouseWheel)	
 	Minimap:SetScript("OnMouseUp", M.Minimap_OnMouseUp)
-	
-	MiniMapLFGFrame:ClearAllPoints()
-	MiniMapLFGFrame:Point("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", 2, 1)
-	MiniMapLFGFrameBorder:Hide()	
+
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "Update_ZoneText")
 	self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "Update_ZoneText")
 	self:RegisterEvent("ZONE_CHANGED", "Update_ZoneText")

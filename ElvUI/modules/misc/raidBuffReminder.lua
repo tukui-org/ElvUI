@@ -1,114 +1,78 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local RBR = E:NewModule('RaidBuffReminder', 'AceEvent-3.0');
 
 E.RaidBuffReminder = RBR
 
-RBR.Spell1Buffs = {
-	94160, --Flask of Flowing Water
-	79470, --Flask of the Draconic Mind
-	79471, --Flask of the Winds
-	79472, --Flask of Titanic Strength
-	79638, --Flask of Enhancement-STR
-	79639, --Flask of Enhancement-AGI
-	79640, --Flask of Enhancement-INT
-	92679, --Flask of battle
-	79469, --Flask of Steelskin
+--Stats, Stamina, Attack Power, Attack Speed, SpellPower, Spell Haste, Critical Strike, Mastery
+
+RBR.Stats = {
+	117667, --Legacy of The Emperor
+	1126, -- Mark of The Wild
+	20217, -- Blessing Of Kings
 }
 
-RBR.BattleElixir = {
-	--Scrolls
-	89343, --Agility
-	63308, --Armor 
-	89347, --Int
-	89342, --Spirit
-	63306, --Stam
-	89346, --Strength
-	
-	--Elixirs
-	79481, --Hit
-	79632, --Haste
-	79477, --Crit
-	79635, --Mastery
-	79474, --Expertise
-	79468, --Spirit
-}
-	
-RBR.GuardianElixir = {
-	79480, --Armor
-	79631, --Resistance+90
-}
-	
-RBR.Spell2Buffs = {
-	87545, --90 STR
-	87546, --90 AGI
-	87547, --90 INT
-	87548, --90 SPI
-	87549, --90 MAST
-	87550, --90 HIT
-	87551, --90 CRIT
-	87552, --90 HASTE
-	87554, --90 DODGE
-	87555, --90 PARRY
-	87635, --90 EXP
-	87556, --60 STR
-	87557, --60 AGI
-	87558, --60 INT
-	87559, --60 SPI
-	87560, --60 MAST
-	87561, --60 HIT
-	87562, --60 CRIT
-	87563, --60 HASTE
-	87564, --60 DODGE
-	87634, --60 EXP
-	87554, --Seafood Feast
+RBR.Stamina = {
+	469, -- Commanding Shout
+	6307, -- Imp. Blood Pact
+	21562, -- Power Word: Fortitude
 }
 
-RBR.Spell3Buffs = {
-	1126, -- "Mark of the wild"
-	90363, --"Embrace of the Shale Spider"
-	20217, --"Greater Blessing of Kings",
+RBR.AttackPower = {
+	19506, -- Trueshot Aura
+	6673, -- Battle Shout
+	57330, -- Horn of Winter
 }
 
-RBR.Spell4Buffs = {
-	469, -- Commanding
-	6307, -- Blood Pact
-	90364, -- Qiraji Fortitude
-	72590, -- Drums of fortitude
-	21562, -- Fortitude	
+RBR.SpellPower = {
+	77747, -- Burning Wrath
+	109773, -- Dark Intent
+	61316, -- Dalaran Brilliance
+	1459, -- Arcane Brilliance
 }
 
-RBR.CasterSpell5Buffs = {
-	61316, --"Dalaran Brilliance" (6% SP)
-	1459, --"Arcane Brilliance" (6% SP)	
+RBR.AttackSpeed = {
+	30809, -- Unleashed Rage
+	113742, -- Swiftblade's Cunning
+	55610, -- Improved Icy Talons
 }
 
-RBR.MeleeSpell5Buffs = {
-	6673, --Battle Shout
-	57330, --Horn of Winter
-	93435, --Roar of Courage
-	8076, --Strength of Earth
+RBR.SpellHaste = {
+	24907, -- Moonkin Aura
+	51470, -- Elemental Oath
+	49868, -- Mind Quickening
 }
 
-RBR.CasterSpell6Buffs = {
-	5675, --"Mana Spring Totem"
-	54424, --"Fel Intelligence"
-	19740, --"Blessing of Might"
+RBR.CriticalStrike = {
+	19506, -- Trueshot Aura
+	1459, -- Arcane Brilliance
+	61316, -- Dalaran Brilliance
+	24932, -- Leader of The Pact
+	116781, -- Legacy of the White Tiger
 }
 
-RBR.MeleeSpell6Buffs = {
-	19740, --"Blessing of Might" placing it twice because i like the icon better :D code will stop after this one is read, we want this first 
-	30808, --"Unleashed Rage"
-	53138, --Abom Might
-	19506, --Trushot
-	19740, --"Blessing of Might"
+RBR.Mastery = {
+	116956, --Grace of Air
+	19740, -- Blessing of Might
+}
+
+RBR.IndexTable = {
+	[1] = RBR.Stats,
+	[2] = RBR.Stamina,
+	[3] = RBR.AttackPower,
+	[4] = RBR.AttackSpeed,
+	[5] = RBR.CriticalStrike,
+	[6] = RBR.Mastery,
 }
 
 function RBR:CheckFilterForActiveBuff(filter)
 	local spellName, texture
 	for _, spell in pairs(filter) do
 		spellName, _, texture = GetSpellInfo(spell)
+		
+		assert(spellName, spell..': ID is not correct.')
+		
 		if UnitAura("player", spellName) then
-			return true, texture
+			return spellName, texture
 		end
 	end
 
@@ -118,48 +82,71 @@ end
 function RBR:UpdateReminder(event, unit)
 	if (event == "UNIT_AURA" and unit ~= "player") then return end
 	local frame = self.frame
-
+	
 	if E.role == 'Caster' then
-		self.Spell5Buffs = self.CasterSpell5Buffs
-		self.Spell6Buffs = self.CasterSpell6Buffs
+		RBR.IndexTable[3] = RBR.SpellPower
+		RBR.IndexTable[4] = RBR.SpellHaste
 	else
-		self.Spell5Buffs = self.MeleeSpell5Buffs
-		self.Spell6Buffs = self.MeleeSpell6Buffs
+		RBR.IndexTable[3] = RBR.AttackPower
+		RBR.IndexTable[4] = RBR.AttackSpeed
 	end
 	
-	local hasFlask, flaskTex = self:CheckFilterForActiveBuff(self.Spell1Buffs)
-	if hasFlask then
-		frame.spell1.t:SetTexture(flaskTex)
-		frame.spell1:SetAlpha(0.2)
-	else
-		local hasBattle, battleTex = self:CheckFilterForActiveBuff(self.BattleElixir)
-		local hasGuardian, guardianTex = self:CheckFilterForActiveBuff(self.GuardianElixir)
-
-		if (hasBattle and hasGuardian) or not hasGuardian and hasBattle then
-			frame.spell1:SetAlpha(1)
-			frame.spell1.t:SetTexture(battleTex)				
-		elseif hasGuardian then
-			frame.spell1:SetAlpha(1)
-			frame.spell1.t:SetTexture(guardianTex)		
-		else
-			frame.spell1:SetAlpha(1)
-			frame.spell1.t:SetTexture(flaskTex)
-		end
-	end
 	
-	for i = 2, 6 do
-		local hasBuff, texture = self:CheckFilterForActiveBuff(self['Spell'..i..'Buffs'])
+	for i = 1, 6 do
+		local hasBuff, texture = self:CheckFilterForActiveBuff(self.IndexTable[i])
 		frame['spell'..i].t:SetTexture(texture)
 		if hasBuff then
 			frame['spell'..i]:SetAlpha(0.2)
+			frame['spell'..i].hasBuff = hasBuff
 		else
 			frame['spell'..i]:SetAlpha(1)
+			frame['spell'..i].hasBuff = nil
 		end
 	end
 end
 
+function RBR:Button_OnEnter()
+	GameTooltip:Hide()
+	GameTooltip:SetOwner(self, "ANCHOR_LEFT", -4, -(self:GetHeight() + 5))
+	GameTooltip:ClearLines()
+	
+	local id = self:GetID()
+	
+	if (id == 3 or id == 4) and E.role == 'Caster' then
+		RBR.IndexTable[3] = RBR.SpellPower
+		RBR.IndexTable[4] = RBR.SpellHaste
+		
+		GameTooltip:AddLine(_G["RAID_BUFF_"..id+2])
+	elseif id >= 5 then
+		GameTooltip:AddLine(_G["RAID_BUFF_"..id+2])
+	else
+		if E.role ~= "Caster" then
+			RBR.IndexTable[3] = RBR.AttackPower
+			RBR.IndexTable[4] = RBR.AttackSpeed
+		end
+		
+		GameTooltip:AddLine(_G["RAID_BUFF_"..id])
+	end
+
+	GameTooltip:AddLine(" ")
+	for _, spellID in pairs(RBR.IndexTable[id]) do
+		local spellName = GetSpellInfo(spellID)
+		if self.hasBuff == spellName then
+			GameTooltip:AddLine(spellName, 1, 0, 0)
+		else
+			GameTooltip:AddLine(spellName, 1, 1, 1)
+		end
+	end
+
+	GameTooltip:Show()
+end
+
+function RBR:Button_OnLeave()
+	GameTooltip:Hide()
+end
+
 function RBR:CreateButton(relativeTo, isFirst, isLast)
-	local button = CreateFrame("Frame", name, RaidBuffReminder)
+	local button = CreateFrame("Button", name, RaidBuffReminder)
 	button:SetTemplate('Default')
 	button:Size(E.RBRWidth - 4)
 	if isFirst then
@@ -172,10 +159,12 @@ function RBR:CreateButton(relativeTo, isFirst, isLast)
 		button:Point("BOTTOM", RaidBuffReminder, "BOTTOM", 0, 2)
 	end
 	
+	button:SetScript("OnEnter", RBR.Button_OnEnter)
+	button:SetScript("OnLeave", RBR.Button_OnLeave)
+	
 	button.t = button:CreateTexture(nil, "OVERLAY")
 	button.t:SetTexCoord(unpack(E.TexCoords))
-	button.t:Point("TOPLEFT", 2, -2)
-	button.t:Point("BOTTOMRIGHT", -2, 2)
+	button.t:SetInside()
 	button.t:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
 	
 	return button
@@ -222,6 +211,10 @@ function RBR:Initialize()
 	frame.spell5 = self:CreateButton(frame.spell4)
 	frame.spell6 = self:CreateButton(frame.spell5, nil, true)
 	self.frame = frame
+	
+	for i=1, 6 do
+		frame["spell"..i]:SetID(i)
+	end
 	
 	if E.db.general.raidReminder then
 		self:EnableRBR()

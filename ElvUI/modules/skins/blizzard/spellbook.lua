@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -13,24 +13,28 @@ local function LoadSkin()
 		"SpellBookPageNavigationFrame",
 	}
 	
-	local KillTextures = {
-		"SpellBookPage1",
-		"SpellBookPage2",
+	local Kill = {
+		"SpellBookFrameTutorialButton",
 	}
 	
 	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()
 	end
 	
-	for _, texture in pairs(KillTextures) do
-		_G[texture]:Kill()
+	for _, object in pairs(Kill) do
+		_G[object]:Kill()
 	end
 	
-	local pagebackdrop = CreateFrame("Frame", nil, SpellBookPage1:GetParent())
-	pagebackdrop:SetTemplate("Transparent")
-	pagebackdrop:Point("TOPLEFT", SpellBookFrame, "TOPLEFT", 50, -50)
-	pagebackdrop:Point("BOTTOMRIGHT", SpellBookPage1, "BOTTOMRIGHT", 15, 35)
-
+	local pagebackdrop = CreateFrame("Frame", nil, SpellBookFrame)
+	pagebackdrop:SetTemplate("Default")
+	pagebackdrop:Point("TOPLEFT", SpellBookPage1, "TOPLEFT", -2, 2)
+	pagebackdrop:Point("BOTTOMRIGHT", SpellBookFrame, "BOTTOMRIGHT", -8, 4)
+	
+	for i=1, 2 do
+		_G['SpellBookPage'..i]:SetParent(pagebackdrop)
+		_G['SpellBookPage'..i]:SetDrawLayer('BACKGROUND', 3)
+	end
+	
 	S:HandleNextPrevButton(SpellBookPrevPageButton)
 	S:HandleNextPrevButton(SpellBookNextPageButton)
 	
@@ -40,12 +44,14 @@ local function LoadSkin()
 			local button = _G["SpellButton"..i]
 			local icon = _G["SpellButton"..i.."IconTexture"]
 			
+			button:SetFrameLevel(button:GetFrameLevel() + 1)
+			
 			if first then
 				--button:StripTextures()
 				for i=1, button:GetNumRegions() do
 					local region = select(i, button:GetRegions())
 					if region:GetObjectType() == "Texture" then
-						if region:GetTexture() ~= "Interface\\Buttons\\ActionBarFlyoutButton" then
+						if region ~= button.FlyoutArrow then
 							region:SetTexture(nil)
 						end
 					end
@@ -57,7 +63,13 @@ local function LoadSkin()
 				_G["SpellButton"..i.."Highlight"]:ClearAllPoints()
 				_G["SpellButton"..i.."Highlight"]:SetAllPoints(icon)
 			end
-
+				
+			if button.shine then
+				button.shine:ClearAllPoints()
+				button.shine:SetPoint('TOPLEFT', button, 'TOPLEFT', -3, 3)
+				button.shine:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 3, -3)
+			end
+			
 			if icon then
 				icon:SetTexCoord(unpack(E.TexCoords))
 				icon:ClearAllPoints()
@@ -67,49 +79,94 @@ local function LoadSkin()
 					button:CreateBackdrop("Default", true)	
 				end
 			end	
-			
-			local r, g, b = _G["SpellButton"..i.."SpellName"]:GetTextColor()
-
-			if r < 0.8 then
-				_G["SpellButton"..i.."SpellName"]:SetTextColor(0.6, 0.6, 0.6)
-			end
-			_G["SpellButton"..i.."SubSpellName"]:SetTextColor(0.6, 0.6, 0.6)
-			_G["SpellButton"..i.."RequiredLevelString"]:SetTextColor(0.6, 0.6, 0.6)
 		end
 	end
 	SpellButtons(nil, true)
 	hooksecurefunc("SpellButton_UpdateButton", SpellButtons)
 	
-	SpellBookPageText:SetTextColor(0.6, 0.6, 0.6)
+	local function CoreAbilities(i)
+		local button = SpellBookCoreAbilitiesFrame.Abilities[i];
+		if button.skinned then return; end
+		
+		local icon = button.iconTexture
+		
+		button:SetFrameLevel(button:GetFrameLevel() + 1)
+		
+		if not button.skinned then
+			for i=1, button:GetNumRegions() do
+				local region = select(i, button:GetRegions())
+				if region:GetObjectType() == "Texture" then
+					if region:GetTexture() ~= "Interface\\Buttons\\ActionBarFlyoutButton" then
+						region:SetTexture(nil)
+					end
+				end
+			end
+			button.skinned = true
+		end
+		
+		if button.highlightTexture then
+			button.highlightTexture:SetTexture(1, 1, 1, 0.3)
+			button.highlightTexture:ClearAllPoints()
+			button.highlightTexture:SetAllPoints(icon)
+			button.highlightTexture.SetTexture = E.noop
+		end
+
+		if icon then
+			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:ClearAllPoints()
+			icon:SetAllPoints()
+
+			if not button.backdrop then
+				button:CreateBackdrop("Default", true)	
+			end
+		end		
+			
+		button.skinned = true;
+	end
+	hooksecurefunc("SpellBook_GetCoreAbilityButton", CoreAbilities)
+	
+	local function SkinTab(tab)
+		tab:StripTextures()
+		tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
+		tab:GetNormalTexture():SetInside(nil, true)
+		
+		tab.pushed = true;
+		tab:CreateBackdrop("Default")
+		tab.backdrop:SetAllPoints()
+		tab:StyleButton(true)	
+		tab:GetHighlightTexture().SetTexture = E.noop
+		tab:GetCheckedTexture().SetTexture = E.noop
+		
+		local point, relatedTo, point2, x, y = tab:GetPoint()
+		tab:Point(point, relatedTo, point2, 1, y)	
+	end	
 	
 	--Skill Line Tabs
 	for i=1, MAX_SKILLLINE_TABS do
 		local tab = _G["SpellBookSkillLineTab"..i]
 		_G["SpellBookSkillLineTab"..i.."Flash"]:Kill()
-		if tab then
-			tab:StripTextures()
-			tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-			tab:GetNormalTexture():ClearAllPoints()
-			tab:GetNormalTexture():Point("TOPLEFT", 2, -2)
-			tab:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
-			
-			tab:CreateBackdrop("Default")
-			tab.backdrop:SetAllPoints()
-			tab:StyleButton(true)				
-			
-			local point, relatedTo, point2, x, y = tab:GetPoint()
-			tab:Point(point, relatedTo, point2, 1, y)
+		SkinTab(tab)
+	end
+	
+	local function SkinCoreTabs(index)
+		local button = SpellBookCoreAbilitiesFrame.SpecTabs[index]
+		SkinTab(button)
+		
+		if index > 1 then
+			local point, attachTo, anchorPoint, _, y = button:GetPoint()
+			button:ClearAllPoints()
+			button:SetPoint(point, attachTo, anchorPoint, 0, y)
 		end
 	end
+	
+	hooksecurefunc('SpellBook_GetCoreAbilitySpecTab', SkinCoreTabs)
 	
 	local function SkinSkillLine()
 		for i=1, MAX_SKILLLINE_TABS do
 			local tab = _G["SpellBookSkillLineTab"..i]
 			local _, _, _, _, isGuild = GetSpellTabInfo(i)
 			if isGuild then
-				tab:GetNormalTexture():ClearAllPoints()
-				tab:GetNormalTexture():Point("TOPLEFT", 2, -2)
-				tab:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)	
+				tab:GetNormalTexture():SetInside(nil, true)
 				tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))					
 			end
 		end
@@ -145,7 +202,7 @@ local function LoadSkin()
 	
 	for _, header in pairs(professionheaders) do
 		_G[header.."Missing"]:SetTextColor(1, 1, 0)
-		_G[header].missingText:SetTextColor(0.6, 0.6, 0.6)
+		_G[header].missingText:SetTextColor(0, 0, 0)
 	end
 	
 	for _, button in pairs(professionbuttons) do
@@ -155,9 +212,7 @@ local function LoadSkin()
 		
 		if icon then
 			icon:SetTexCoord(unpack(E.TexCoords))
-			icon:ClearAllPoints()
-			icon:Point("TOPLEFT", 2, -2)
-			icon:Point("BOTTOMRIGHT", -2, 2)
+			icon:SetInside(nil, true)
 			
 			button:SetFrameLevel(button:GetFrameLevel() + 2)
 			if not button.backdrop then
@@ -187,42 +242,13 @@ local function LoadSkin()
 		statusbar.rankText:SetPoint("CENTER")
 	end
 	
-	--Mounts/Companions
-	for i = 1, NUM_COMPANIONS_PER_PAGE do
-		local button = _G["SpellBookCompanionButton"..i]
-		local icon = _G["SpellBookCompanionButton"..i.."IconTexture"]
-		button:StripTextures()
-		button:StyleButton(false)
-		
-		if icon then
-			icon:SetTexCoord(unpack(E.TexCoords))
-			icon:ClearAllPoints()
-			icon:Point("TOPLEFT", 2, -2)
-			icon:Point("BOTTOMRIGHT", -2, 2)
-			
-			button:SetFrameLevel(button:GetFrameLevel() + 2)
-			if not button.backdrop then
-				button:CreateBackdrop("Default", true)	
-				button.backdrop:SetAllPoints()
-			end
-		end					
-	end
-	
-	S:HandleButton(SpellBookCompanionSummonButton)
-	SpellBookCompanionModelFrame:StripTextures()
-	SpellBookCompanionModelFrameShadowOverlay:StripTextures()
-	SpellBookCompanionsModelFrame:Kill()
-	SpellBookCompanionModelFrame:SetTemplate("Default")
-	
-	S:HandleRotateButton(SpellBookCompanionModelFrameRotateRightButton)
-	S:HandleRotateButton(SpellBookCompanionModelFrameRotateLeftButton)
-	SpellBookCompanionModelFrameRotateRightButton:Point("TOPLEFT", SpellBookCompanionModelFrameRotateLeftButton, "TOPRIGHT", 3, 0)
-	
-	
 	--Bottom Tabs
 	for i=1, 5 do
 		S:HandleTab(_G["SpellBookFrameTabButton"..i])
 	end
+	
+	SpellBookFrameTabButton1:ClearAllPoints()
+	SpellBookFrameTabButton1:SetPoint('TOPLEFT', SpellBookFrame, 'BOTTOMLEFT', 0, 2)
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

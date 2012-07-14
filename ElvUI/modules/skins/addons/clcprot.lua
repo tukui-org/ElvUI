@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function UpdateButtonLayout(self, button, opt)
@@ -33,8 +33,7 @@ local function CreateButton(self, name, size, point, parent, pointParent, offset
 	button:Size(size)
 	
 	button.texture = button:CreateTexture("$parentIcon", "OVERLAY")
-	button.texture:Point("TOPLEFT", 2, -2)
-	button.texture:Point("BOTTOMRIGHT", -2, 2)
+	button.texture:SetInside()
 	button.texture:SetTexture(BGTEX)
 	button.texture:SetTexCoord(unpack(E.TexCoords))
 	button.texture.SetTexCoord = E.noop
@@ -54,8 +53,7 @@ local function CreateButton(self, name, size, point, parent, pointParent, offset
 	button.border:Kill()
 	
 	button.cooldown = CreateFrame("Cooldown", "$parentCooldown", button)
-	button.cooldown:Point("TOPLEFT", 2, -2)
-	button.cooldown:Point("BOTTOMRIGHT", -2, 2)
+	button.cooldown:SetInside()
 	
 	button.stack = button:CreateFontString("$parentCount", "OVERLAY", "TextStatusBarText")
 	

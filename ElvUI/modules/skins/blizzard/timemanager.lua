@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -6,8 +6,8 @@ local function LoadSkin()
 	TimeManagerFrame:StripTextures()
 	TimeManagerFrame:SetTemplate("Transparent")
 
-	S:HandleCloseButton(TimeManagerCloseButton)
-
+	S:HandleCloseButton(TimeManagerFrameCloseButton)
+	TimeManagerFrameInset:Kill()
 	S:HandleDropDownBox(TimeManagerAlarmHourDropDown, 80)
 	S:HandleDropDownBox(TimeManagerAlarmMinuteDropDown, 80)
 	S:HandleDropDownBox(TimeManagerAlarmAMPMDropDown, 80)
@@ -29,9 +29,7 @@ local function LoadSkin()
 	TimeManagerStopwatchFrame:StripTextures()
 	TimeManagerStopwatchCheck:SetTemplate("Default")
 	TimeManagerStopwatchCheck:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-	TimeManagerStopwatchCheck:GetNormalTexture():ClearAllPoints()
-	TimeManagerStopwatchCheck:GetNormalTexture():Point("TOPLEFT", 2, -2)
-	TimeManagerStopwatchCheck:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+	TimeManagerStopwatchCheck:GetNormalTexture():SetInside(nil, true)
 	local hover = TimeManagerStopwatchCheck:CreateTexture("frame", nil, TimeManagerStopwatchCheck) -- hover
 	hover:SetTexture(1,1,1,0.3)
 	hover:Point("TOPLEFT",TimeManagerStopwatchCheck,2,-2)

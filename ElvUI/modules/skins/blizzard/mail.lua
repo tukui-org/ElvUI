@@ -1,14 +1,12 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.mail ~= true then return end
 	MailFrame:StripTextures(true)
-	MailFrame:CreateBackdrop("Transparent")
-	MailFrame.backdrop:Point("TOPLEFT", 4, 0)
-	MailFrame.backdrop:Point("BOTTOMRIGHT", 2, 74)
-	MailFrame.backdrop:CreateShadow("Default")
-	MailFrame:SetWidth(360)
+	MailFrame:SetTemplate("Transparent")
+	MailFrame:CreateShadow("Default")
+	--MailFrame:SetWidth(360)
 
 	for i = 1, INBOXITEMS_TO_DISPLAY do
 		local bg = _G["MailItem"..i]
@@ -24,12 +22,10 @@ local function LoadSkin()
 
 		local t = _G["MailItem"..i.."ButtonIcon"]
 		t:SetTexCoord(unpack(E.TexCoords))
-		t:ClearAllPoints()
-		t:Point("TOPLEFT", 2, -2)
-		t:Point("BOTTOMRIGHT", -2, 2)
+		t:SetInside(nil, true)
 	end
 	
-	S:HandleCloseButton(InboxCloseButton)
+	S:HandleCloseButton(MailFrameCloseButton)
 	S:HandleNextPrevButton(InboxPrevPageButton)
 	S:HandleNextPrevButton(InboxNextPageButton)
 
@@ -49,8 +45,9 @@ local function LoadSkin()
 	S:HandleEditBox(SendMailMoneyGold)
 	S:HandleEditBox(SendMailMoneySilver)
 	S:HandleEditBox(SendMailMoneyCopper)
-	
-	SendMailNameEditBox.backdrop:Point("BOTTOMRIGHT", 2, 0)
+	SendMailMoneyBg:Kill()
+	SendMailMoneyInset:StripTextures()
+	SendMailNameEditBox.backdrop:Point("BOTTOMRIGHT", 2, 4)
 	SendMailSubjectEditBox.backdrop:Point("BOTTOMRIGHT", 2, 0)
 	SendMailFrame:StripTextures()
 	
@@ -66,9 +63,7 @@ local function LoadSkin()
 			local t = b:GetNormalTexture()
 			if t then
 				t:SetTexCoord(unpack(E.TexCoords))
-				t:ClearAllPoints()
-				t:Point("TOPLEFT", 2, -2)
-				t:Point("BOTTOMRIGHT", -2, 2)
+				t:SetInside(nil, true)
 			end
 		end
 	end
@@ -79,17 +74,18 @@ local function LoadSkin()
 	
 	-- open mail (cod)
 	OpenMailFrame:StripTextures(true)
-	OpenMailFrame:CreateBackdrop("Transparent")
-	OpenMailFrame.backdrop:Point("TOPLEFT", 4, 0)
-	OpenMailFrame.backdrop:Point("BOTTOMRIGHT", 2, 74)
-	OpenMailFrame.backdrop:CreateShadow("Default")
-	OpenMailFrame:SetWidth(360)
+	OpenMailFrame:SetTemplate("Transparent")
+	OpenMailFrame:CreateShadow("Default")
+	OpenMailFrameInset:Kill()
 	
-	S:HandleCloseButton(OpenMailCloseButton)
+	S:HandleCloseButton(OpenMailFrameCloseButton)
 	S:HandleButton(OpenMailReportSpamButton)
 	S:HandleButton(OpenMailReplyButton)
 	S:HandleButton(OpenMailDeleteButton)
 	S:HandleButton(OpenMailCancelButton)
+	
+	InboxFrame:StripTextures()
+	MailFrameInset:Kill()
 	
 	OpenMailScrollFrame:StripTextures(true)
 	OpenMailScrollFrame:SetTemplate("Default")
@@ -105,17 +101,13 @@ local function LoadSkin()
 	OpenMailLetterButton:SetTemplate("Default", true)
 	OpenMailLetterButton:StyleButton()
 	OpenMailLetterButtonIconTexture:SetTexCoord(unpack(E.TexCoords))						
-	OpenMailLetterButtonIconTexture:ClearAllPoints()
-	OpenMailLetterButtonIconTexture:Point("TOPLEFT", 2, -2)
-	OpenMailLetterButtonIconTexture:Point("BOTTOMRIGHT", -2, 2)
+	OpenMailLetterButtonIconTexture:SetInside(nil, true)
 	
 	OpenMailMoneyButton:StripTextures()
 	OpenMailMoneyButton:SetTemplate("Default", true)
 	OpenMailMoneyButton:StyleButton()
 	OpenMailMoneyButtonIconTexture:SetTexCoord(unpack(E.TexCoords))						
-	OpenMailMoneyButtonIconTexture:ClearAllPoints()
-	OpenMailMoneyButtonIconTexture:Point("TOPLEFT", 2, -2)
-	OpenMailMoneyButtonIconTexture:Point("BOTTOMRIGHT", -2, 2)
+	OpenMailMoneyButtonIconTexture:SetInside(nil, true)
 	
 	for i = 1, ATTACHMENTS_MAX_SEND do				
 		local b = _G["OpenMailAttachmentButton"..i]
@@ -126,9 +118,7 @@ local function LoadSkin()
 		local t = _G["OpenMailAttachmentButton"..i.."IconTexture"]
 		if t then
 			t:SetTexCoord(unpack(E.TexCoords))
-			t:ClearAllPoints()
-			t:Point("TOPLEFT", 2, -2)
-			t:Point("BOTTOMRIGHT", -2, 2)
+			t:SetInside(nil, true)
 		end				
 	end
 	

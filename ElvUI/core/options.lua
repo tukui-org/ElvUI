@@ -1,4 +1,4 @@
-﻿local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+﻿local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 
 E.Options.args = {
 	ElvUI_Header = {
@@ -19,7 +19,7 @@ E.Options.args = {
 		type = "execute",
 		name = L["Toggle Anchors"],
 		desc = L["Unlock various elements of the UI to be repositioned."],
-		func = function() E:MoveUI() end,
+		func = function() E:ToggleConfigMode() end,
 	},
 	ResetAllMovers = {
 		order = 4,
@@ -107,7 +107,7 @@ E.Options.args.general = {
 					name = L['Loot'],
 					desc = L['Enable/Disable the loot frame.'],
 					get = function(info) return E.private.general.loot end,
-					set = function(info, value) E.private.general.loot = value; StaticPopup_Show("PRIVATE_RL") end
+					set = function(info, value) E.private.general.loot = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				lootRoll = {
 					order = 7,
@@ -115,14 +115,14 @@ E.Options.args.general = {
 					name = L['Loot Roll'],
 					desc = L['Enable/Disable the loot roll frame.'],
 					get = function(info) return E.private.general.lootRoll end,
-					set = function(info, value) E.private.general.lootRoll = value; StaticPopup_Show("PRIVATE_RL") end
+					set = function(info, value) E.private.general.lootRoll = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				autoscale = {
 					order = 8,
 					name = L["Auto Scale"],
 					desc = L["Automatically scale the User Interface based on your screen resolution"],
 					type = "toggle",	
-					set = function(info, value) E.db.general[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end
+					set = function(info, value) E.db.general[ info[#info] ] = value; E:StaticPopup_Show("CONFIG_RL") end
 				},	
 				raidReminder = {
 					order = 9,
@@ -169,7 +169,7 @@ E.Options.args.general = {
 					desc = L['Save your keybinds with your ElvUI profile. That way if you have the dual spec feature enabled in ElvUI you can swap keybinds with your specs.'],
 					type = 'toggle',
 					get = function(info) return E.private.general.profileBinds end,		
-					set = function(info, value) E.private.general.profileBinds = value; StaticPopup_Show("PRIVATE_RL") end
+					set = function(info, value) E.private.general.profileBinds = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},]]
 				bubbles = {
 					order = 13,
@@ -177,7 +177,7 @@ E.Options.args.general = {
 					name = L['Chat Bubbles'],
 					desc = L['Skin the blizzard chat bubbles.'],
 					get = function(info) return E.private.general.bubbles end,
-					set = function(info, value) E.private.general.bubbles = value; StaticPopup_Show("PRIVATE_RL") end
+					set = function(info, value) E.private.general.bubbles = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},	
 				taintLog = {
 					order = 14,
@@ -299,7 +299,7 @@ E.Options.args.general = {
 							desc = L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"],
 							values = AceGUIWidgetLSMlists.font,
 							get = function(info) return E.private.general[ info[#info] ] end,							
-							set = function(info, value) E.private.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); StaticPopup_Show("PRIVATE_RL"); end,
+							set = function(info, value) E.private.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); E:StaticPopup_Show("PRIVATE_RL"); end,
 						},							
 					},
 				},	
@@ -316,7 +316,7 @@ E.Options.args.general = {
 							desc = L["The texture that will be used mainly for statusbars."],
 							values = AceGUIWidgetLSMlists.statusbar,
 							get = function(info) return E.private.general[ info[#info] ] end,
-							set = function(info, value) E.private.general[ info[#info] ] = value; StaticPopup_Show("PRIVATE_RL") end							
+							set = function(info, value) E.private.general[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end							
 						},
 						glossTex = {
 							type = "select", dialogControl = 'LSM30_Statusbar',
@@ -325,7 +325,7 @@ E.Options.args.general = {
 							desc = L["This texture will get used on objects like chat windows and dropdown menus."],
 							values = AceGUIWidgetLSMlists.statusbar,	
 							get = function(info) return E.private.general[ info[#info] ] end,
-							set = function(info, value) E.private.general[ info[#info] ] = value; StaticPopup_Show("PRIVATE_RL") end
+							set = function(info, value) E.private.general[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
 						},				
 					},
 				},

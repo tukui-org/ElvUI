@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
@@ -295,7 +295,7 @@ E.Options.args.unitframe = {
 			type = "toggle",
 			name = L["Enable"],
 			get = function(info) return E.private.unitframe.enable end,
-			set = function(info, value) E.private.unitframe.enable = value; StaticPopup_Show("PRIVATE_RL") end
+			set = function(info, value) E.private.unitframe.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},
 		general = {
 			order = 200,
@@ -317,7 +317,7 @@ E.Options.args.unitframe = {
 							desc = L['Disables the blizzard party/raid frames.'],
 							type = 'toggle',
 							get = function(info) return E.private.unitframe[ info[#info] ] end,
-							set = function(info, value) E.private["unitframe"][ info[#info] ] = value; StaticPopup_Show("PRIVATE_RL") end
+							set = function(info, value) E.private["unitframe"][ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
 						},
 						OORAlpha = {
 							order = 2,
@@ -848,32 +848,6 @@ E.Options.args.unitframe.args.player = {
 				},		
 			},
 		},	
-		altpower = {
-			order = 300,
-			type = 'group',
-			name = L['Alt-Power'],
-			get = function(info) return E.db.unitframe.units['player']['altpower'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['player']['altpower'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
-			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
-				width = {
-					type = 'range',
-					order = 2,
-					name = L['Width'],
-					min = 15, max = 550, step = 1,
-				},
-				height = {
-					type = 'range',
-					name = L['Height'],
-					order = 3,
-					min = 5, max = 100, step = 1,
-				},
-			},
-		},	
 		name = {
 			order = 400,
 			type = 'group',
@@ -1158,12 +1132,11 @@ E.Options.args.unitframe.args.player = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},	
 				matchsize = {
 					order = 2,
 					type = 'execute',
 					name = L['Match Frame Width'],
-					disabled = function() return E.db.unitframe.units['player']['castbar']['snaptoab'] end,
 					func = function() E.db.unitframe.units['player']['castbar']['width'] = E.db.unitframe.units['player']['width']; UF:CreateAndUpdateUF('player') end,
 				},			
 				forceshow = {
@@ -1188,7 +1161,6 @@ E.Options.args.unitframe.args.player = {
 					name = L['Width'],
 					type = 'range',
 					min = 50, max = 600, step = 1,
-					disabled = function() return E.db.unitframe['units']['player']['castbar']['snaptoab'] end,
 				},
 				height = {
 					order = 5,
@@ -1201,22 +1173,22 @@ E.Options.args.unitframe.args.player = {
 					name = L['Icon'],
 					type = 'toggle',
 				},
-				latency = {
-					order = 7,
-					name = L['Latency'],
-					type = 'toggle',				
-				},
 				xOffset = {
-					order = 8,
+					order = 7,
 					name = L['X Offset'],
 					type = 'range',
 					min = -E.screenwidth, max = E.screenwidth, step = 1,
 				},
 				yOffset = {
-					order = 9,
+					order = 8,
 					name = L['Y Offset'],
 					type = 'range',
 					min = -E.screenheight, max = E.screenheight, step = 1,
+				},				
+				latency = {
+					order = 9,
+					name = L['Latency'],
+					type = 'toggle',				
 				},
 				color = {
 					order = 10,
@@ -1304,6 +1276,62 @@ E.Options.args.unitframe.args.player = {
 				},				
 			},
 		},
+		aurabar = {
+			order = 1100,
+			type = 'group',
+			name = L['Aura Bars'],
+			get = function(info) return E.db.unitframe.units['player']['aurabar'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['player']['aurabar'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+			args = {
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},				
+				anchorPoint = {
+					type = 'select',
+					order = 2,
+					name = L['Anchor Point'],
+					desc = L['What point to anchor to the frame you set to attach to.'],
+					values = {
+						['ABOVE'] = L['Above'],
+						['BELOW'] = L['Below'],
+					},
+				},
+				attachTo = {
+					type = 'select',
+					order = 3,
+					name = L['Attach To'],
+					desc = L['The object you want to attach to.'],
+					values = {
+						['FRAME'] = L['Frame'],
+						['DEBUFFS'] = L['Debuffs'],
+						['BUFFS'] = L['Buffs'],
+					},					
+				},
+				growthDirection = {
+					type = 'select',
+					order = 4,
+					name = L['Growth Direction'],
+					values = {
+						['UP'] = L['Up'],
+						['DOWN'] = L['Down'],
+					},					
+				},
+				noDuration = {
+					type = 'toggle',
+					order = 5,
+					name = L['No Duration'],
+					desc = L['Allow displaying of aura bars that do not have a duration.'],
+				},
+				noConsolidated = {
+					type = 'toggle',
+					order = 6,
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of aura bars that are considered consolidated by Blizzard.'],
+				},
+			},
+		},			
 	},
 }
 
@@ -1870,7 +1898,63 @@ E.Options.args.unitframe.args.target = {
 					values = fillValues,
 				},				
 			},
-		},		
+		},	
+		aurabar = {
+			order = 900,
+			type = 'group',
+			name = L['Aura Bars'],
+			get = function(info) return E.db.unitframe.units['target']['aurabar'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['target']['aurabar'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
+			args = {
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},				
+				anchorPoint = {
+					type = 'select',
+					order = 2,
+					name = L['Anchor Point'],
+					desc = L['What point to anchor to the frame you set to attach to.'],
+					values = {
+						['ABOVE'] = L['Above'],
+						['BELOW'] = L['Below'],
+					},
+				},
+				attachTo = {
+					type = 'select',
+					order = 3,
+					name = L['Attach To'],
+					desc = L['The object you want to attach to.'],
+					values = {
+						['FRAME'] = L['Frame'],
+						['DEBUFFS'] = L['Debuffs'],
+						['BUFFS'] = L['Buffs'],
+					},					
+				},
+				growthDirection = {
+					type = 'select',
+					order = 4,
+					name = L['Growth Direction'],
+					values = {
+						['UP'] = L['Up'],
+						['DOWN'] = L['Down'],
+					},					
+				},
+				noDuration = {
+					type = 'toggle',
+					order = 5,
+					name = L['No Duration'],
+					desc = L['Allow displaying of aura bars that do not have a duration.'],
+				},
+				noConsolidated = {
+					type = 'toggle',
+					order = 6,
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of aura bars that are considered consolidated by Blizzard.'],
+				},
+			},
+		},			
 	},
 }
 
@@ -2752,7 +2836,63 @@ E.Options.args.unitframe.args.focus = {
 					desc = L['Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop.'],
 				},				
 			},
-		},		
+		},	
+		aurabar = {
+			order = 700,
+			type = 'group',
+			name = L['Aura Bars'],
+			get = function(info) return E.db.unitframe.units['focus']['aurabar'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['focus']['aurabar'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
+			args = {
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},				
+				anchorPoint = {
+					type = 'select',
+					order = 2,
+					name = L['Anchor Point'],
+					desc = L['What point to anchor to the frame you set to attach to.'],
+					values = {
+						['ABOVE'] = L['Above'],
+						['BELOW'] = L['Below'],
+					},
+				},
+				attachTo = {
+					type = 'select',
+					order = 3,
+					name = L['Attach To'],
+					desc = L['The object you want to attach to.'],
+					values = {
+						['FRAME'] = L['Frame'],
+						['DEBUFFS'] = L['Debuffs'],
+						['BUFFS'] = L['Buffs'],
+					},					
+				},
+				growthDirection = {
+					type = 'select',
+					order = 4,
+					name = L['Growth Direction'],
+					values = {
+						['UP'] = L['Up'],
+						['DOWN'] = L['Down'],
+					},					
+				},
+				noDuration = {
+					type = 'toggle',
+					order = 5,
+					name = L['No Duration'],
+					desc = L['Allow displaying of aura bars that do not have a duration.'],
+				},
+				noConsolidated = {
+					type = 'toggle',
+					order = 6,
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of aura bars that are considered consolidated by Blizzard.'],
+				},
+			},
+		},			
 	},
 }
 
@@ -5512,14 +5652,14 @@ E.Options.args.unitframe.args.party = {
 					type = 'range',
 					name = L['xOffset'],
 					desc = L['An X offset (in pixels) to be used when anchoring new frames.'],
-					min = -15, max = 30, step = 1,		
+					min = -15, max = 15, step = 1,		
 				},
 				yOffset = {
 					order = 7,
 					type = 'range',
 					name = L['yOffset'],
 					desc = L['An Y offset (in pixels) to be used when anchoring new frames.'],
-					min = -15, max = 30, step = 1,		
+					min = -15, max = 15, step = 1,		
 				},					
 			},
 		},
@@ -5565,14 +5705,14 @@ E.Options.args.unitframe.args.party = {
 					type = 'range',
 					name = L['xOffset'],
 					desc = L['An X offset (in pixels) to be used when anchoring new frames.'],
-					min = -15, max = 30, step = 1,		
+					min = -15, max = 15, step = 1,		
 				},
 				yOffset = {
 					order = 7,
 					type = 'range',
 					name = L['yOffset'],
 					desc = L['An Y offset (in pixels) to be used when anchoring new frames.'],
-					min = -15, max = 30, step = 1,		
+					min = -15, max = 15, step = 1,		
 				},					
 			},
 		},		

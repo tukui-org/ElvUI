@@ -1,11 +1,11 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:GetModule('UnitFrames');
 
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
-local CAN_HAVE_CLASSBAR = (E.myclass == "PALADIN" or E.myclass == "SHAMAN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK")
+local CAN_HAVE_CLASSBAR = (E.myclass == "PALADIN" or E.myclass == "SHAMAN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK" or E.myclass == "PRIEST" or E.myclass == "MONK")
 
 function UF:Construct_PlayerFrame(frame)
 	frame.Threat = self:Construct_ThreatGlow(frame, true)
@@ -27,9 +27,9 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Castbar = self:Construct_Castbar(frame, 'LEFT')
 	
 	if E.myclass == "PALADIN" then
-		frame.HolyPower = self:Construct_PaladinWarlockResourceBar(frame, E.myclass)
+		frame.HolyPower = self:Construct_PaladinResourceBar(frame)
 	elseif E.myclass == "WARLOCK" then
-		frame.SoulShards = self:Construct_PaladinWarlockResourceBar(frame, E.myclass)
+		frame.ShardBar = self:Construct_WarlockResourceBar(frame)
 	elseif E.myclass == "DEATHKNIGHT" then
 		frame.Runes = self:Construct_DeathKnightResourceBar(frame)
 	elseif E.myclass == "SHAMAN" then
@@ -37,19 +37,136 @@ function UF:Construct_PlayerFrame(frame)
 	elseif E.myclass == "DRUID" then
 		frame.EclipseBar = self:Construct_DruidResourceBar(frame)
 		frame.DruidAltMana = self:Construct_DruidAltManaBar(frame)
+	elseif E.myclass == "MONK" then
+		frame.Harmony = self:Construct_MonkResourceBar(frame)
+	elseif E.myclass == "PRIEST" then
+		frame.ShadowOrbs = self:Construct_PriestResourceBar(frame)
 	end
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.Resting = self:Construct_RestingIndicator(frame)
 	frame.Combat = self:Construct_CombatIndicator(frame)
 	frame.PvPText = self:Construct_PvPIndicator(frame)
-	frame.AltPowerBar = self:Construct_AltPowerBar(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 
+	frame.AuraBars = self:Construct_AuraBarHeader(frame)
+		
 	frame.CombatFade = true
 
-	frame:Point('TOPLEFT', UIParent, 'TOPLEFT', 30, -30) --Set to default position	
+	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -417, 75) --Set to default position	
 	E:CreateMover(frame, frame:GetName()..'Mover', 'Player Frame')
+end
+
+function UF:UpdatePlayerFrameAnchors(frame, isShown)
+	local db = E.db['unitframe']['units'].player
+	local health = frame.Health
+	local threat = frame.Threat
+	local PORTRAIT_WIDTH = db.portrait.width
+	local USE_PORTRAIT = db.portrait.enable
+	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
+	local CLASSBAR_HEIGHT = db.classbar.height
+	local USE_CLASSBAR = db.classbar.enable
+	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and USE_CLASSBAR
+	local USE_POWERBAR = db.power.enable
+	local USE_MINI_POWERBAR = db.power.width ~= 'fill' and USE_POWERBAR
+	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
+	local POWERBAR_OFFSET = db.power.offset
+	local POWERBAR_HEIGHT = db.power.height
+	local SPACING = 1;
+	
+	if not USE_POWERBAR then
+		POWERBAR_HEIGHT = 0
+	end
+	
+	if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
+		PORTRAIT_WIDTH = 0
+	end
+	
+	if USE_MINI_CLASSBAR then
+		CLASSBAR_HEIGHT = CLASSBAR_HEIGHT / 2
+	end
+	
+	if isShown then
+		if db.power.offset ~= 0 then
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(2+db.power.offset), -(2 + CLASSBAR_HEIGHT + 1))
+		else
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -2, -(2 + CLASSBAR_HEIGHT + 1))
+		end
+		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + 2, -(2 + CLASSBAR_HEIGHT + 1))	
+
+		local mini_classbarY = 0
+		if USE_MINI_CLASSBAR then
+			mini_classbarY = -(SPACING+(CLASSBAR_HEIGHT))
+		end		
+		
+		threat:Point("TOPLEFT", -4, 4+mini_classbarY)
+		threat:Point("TOPRIGHT", 4, 4+mini_classbarY)
+		
+		if USE_MINI_POWERBAR then
+			threat:Point("BOTTOMLEFT", -4, -4 + (POWERBAR_HEIGHT/2))
+			threat:Point("BOTTOMRIGHT", 4, -4 + (POWERBAR_HEIGHT/2))		
+		else
+			threat:Point("BOTTOMLEFT", -4, -4)
+			threat:Point("BOTTOMRIGHT", 4, -4)
+		end		
+		
+		if USE_POWERBAR_OFFSET then
+			threat:Point("TOPRIGHT", 4-POWERBAR_OFFSET, 4+mini_classbarY)
+			threat:Point("BOTTOMRIGHT", 4-POWERBAR_OFFSET, -4)	
+		end				
+
+		
+		if db.portrait.enable and not db.portrait.overlay then
+			local portrait = frame.Portrait
+			portrait.backdrop:ClearAllPoints()
+			if USE_MINI_CLASSBAR and USE_CLASSBAR then
+				portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", 0, -(CLASSBAR_HEIGHT + 1))
+			else
+				portrait.backdrop:SetPoint("TOPLEFT", frame, "TOPLEFT")
+			end		
+			
+			if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR then
+				portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", -1, 0)
+			else
+				portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", -1, 0)
+			end				
+		end
+	else
+		if db.power.offset ~= 0 then
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(2 + db.power.offset), -2)
+		else
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -2, -2)
+		end
+		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + 2, -2)	
+
+		threat:Point("TOPLEFT", -4, 4)
+		threat:Point("TOPRIGHT", 4, 4)
+		
+		if USE_MINI_POWERBAR then
+			threat:Point("BOTTOMLEFT", -4, -4 + (POWERBAR_HEIGHT/2))
+			threat:Point("BOTTOMRIGHT", 4, -4 + (POWERBAR_HEIGHT/2))		
+		else
+			threat:Point("BOTTOMLEFT", -4, -4)
+			threat:Point("BOTTOMRIGHT", 4, -4)
+		end		
+		
+		if USE_POWERBAR_OFFSET then
+			threat:Point("TOPRIGHT", 4-POWERBAR_OFFSET, 4)
+			threat:Point("BOTTOMRIGHT", 4-POWERBAR_OFFSET, -4)	
+		end				
+
+		if db.portrait.enable and not db.portrait.overlay then
+			local portrait = frame.Portrait
+			portrait.backdrop:ClearAllPoints()
+			portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT")
+			
+			if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR then
+				portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", -1, 0)
+			else
+				portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", -1, 0)
+			end				
+		end		
+	end
 end
 
 function UF:Update_PlayerFrame(frame, db)
@@ -88,27 +205,16 @@ function UF:Update_PlayerFrame(frame, db)
 		end
 		
 		if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
-			PORTRAIT_WIDTH = 0
-			if USE_POWERBAR_OFFSET then
-				CLASSBAR_WIDTH = CLASSBAR_WIDTH - POWERBAR_OFFSET
-			end			
+			PORTRAIT_WIDTH = 0		
 		end
 		
 		if USE_PORTRAIT then
 			CLASSBAR_WIDTH = math.ceil((UNIT_WIDTH - (BORDER*2)) - PORTRAIT_WIDTH)
-			
-			if USE_POWERBAR_OFFSET then
-				CLASSBAR_WIDTH = CLASSBAR_WIDTH - POWERBAR_OFFSET
-			end
 		end
 		
 		if USE_POWERBAR_OFFSET then
 			CLASSBAR_WIDTH = CLASSBAR_WIDTH - POWERBAR_OFFSET
 		end
-
-		if USE_MINI_CLASSBAR then
-			CLASSBAR_WIDTH = CLASSBAR_WIDTH*2/3
-		end	
 		
 		if USE_MINI_POWERBAR then
 			POWERBAR_WIDTH = POWERBAR_WIDTH / 2
@@ -445,7 +551,7 @@ function UF:Update_PlayerFrame(frame, db)
 	--Castbar
 	do
 		local castbar = frame.Castbar
-		castbar:Width(db.castbar.width - E:Scale(4))
+		castbar:Width(db.castbar.width - 4)
 		castbar:Height(db.castbar.height)
 		
 		--Latency
@@ -460,10 +566,10 @@ function UF:Update_PlayerFrame(frame, db)
 		--Icon
 		if db.castbar.icon then
 			castbar.Icon = castbar.ButtonIcon
-			castbar.Icon.bg:Width(db.castbar.height + E:Scale(4))
-			castbar.Icon.bg:Height(db.castbar.height + E:Scale(4))
+			castbar.Icon.bg:Width(db.castbar.height + 4)
+			castbar.Icon.bg:Height(db.castbar.height + 4)
 			
-			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - E:Scale(5))
+			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - 5)
 			castbar.Icon.bg:Show()
 		else
 			castbar.ButtonIcon.bg:Hide()
@@ -491,16 +597,21 @@ function UF:Update_PlayerFrame(frame, db)
 		if E.myclass == "PALADIN" then
 			local bars = frame.HolyPower
 			bars:ClearAllPoints()
+			
+			local MAX_HOLY_POWER = 5
+			
 			if USE_MINI_CLASSBAR then
-				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), -SPACING)
+				CLASSBAR_WIDTH = CLASSBAR_WIDTH * (MAX_HOLY_POWER - 1) / MAX_HOLY_POWER		
+				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
 				bars:SetFrameStrata("MEDIUM")
 			else
 				bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
 				bars:SetFrameStrata("LOW")
 			end
+
 			bars:Width(CLASSBAR_WIDTH)
-			bars:Height(CLASSBAR_HEIGHT - (BORDER*2))
-		
+			bars:Height(CLASSBAR_HEIGHT - (BORDER*2))			
+
 			for i = 1, MAX_HOLY_POWER do
 				bars[i]:SetHeight(bars:GetHeight())	
 				bars[i]:SetWidth(E:Scale(bars:GetWidth() - 2)/MAX_HOLY_POWER)	
@@ -510,7 +621,7 @@ function UF:Update_PlayerFrame(frame, db)
 					bars[i]:SetPoint("LEFT", bars)
 				else
 					if USE_MINI_CLASSBAR then
-						bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING+(BORDER*2)+8, 0)
+						bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING+(BORDER*2)+2, 0)
 					else
 						bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING, 0)
 					end
@@ -536,23 +647,25 @@ function UF:Update_PlayerFrame(frame, db)
 				frame:DisableElement('HolyPower')	
 				bars:Hide()
 			end		
-			
-		elseif E.myclass == "WARLOCK" then
-			local bars = frame.SoulShards
+		elseif E.myclass == 'PRIEST' then
+			local bars = frame.ShadowOrbs
 			bars:ClearAllPoints()
 			if USE_MINI_CLASSBAR then
-				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), -SPACING)
+				CLASSBAR_WIDTH = CLASSBAR_WIDTH * (PRIEST_BAR_NUM_ORBS - 1) / PRIEST_BAR_NUM_ORBS
+				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
 				bars:SetFrameStrata("MEDIUM")
 			else
 				bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
 				bars:SetFrameStrata("LOW")
 			end
+				
 			bars:Width(CLASSBAR_WIDTH)
 			bars:Height(CLASSBAR_HEIGHT - (BORDER*2))
-		
-			for i = 1, SHARD_BAR_NUM_SHARDS do
+
+			for i = 1, PRIEST_BAR_NUM_ORBS do
 				bars[i]:SetHeight(bars:GetHeight())	
-				bars[i]:SetWidth(E:Scale(bars:GetWidth() - 2)/SHARD_BAR_NUM_SHARDS)	
+				bars[i]:SetWidth(E:Scale(bars:GetWidth() - 2)/PRIEST_BAR_NUM_ORBS)	
+				bars[i]:GetStatusBarTexture():SetHorizTile(false)
 				bars[i]:ClearAllPoints()
 				if i == 1 then
 					bars[i]:SetPoint("LEFT", bars)
@@ -568,8 +681,34 @@ function UF:Update_PlayerFrame(frame, db)
 					bars[i].backdrop:Hide()
 				else
 					bars[i].backdrop:Show()
-				end				
+				end
 			end
+			
+			if not USE_MINI_CLASSBAR then
+				bars.backdrop:Show()
+			else
+				bars.backdrop:Hide()			
+			end		
+			
+			if USE_CLASSBAR and not frame:IsElementEnabled('ShadowOrbs') then
+				frame:EnableElement('ShadowOrbs')
+			elseif not USE_CLASSBAR and frame:IsElementEnabled('ShadowOrbs') then
+				frame:DisableElement('ShadowOrbs')	
+				bars:Hide()
+			end				
+		elseif E.myclass == "WARLOCK" then
+			local bars = frame.ShardBar
+			bars:ClearAllPoints()
+			if USE_MINI_CLASSBAR then
+				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 2 / 3
+				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
+				bars:SetFrameStrata("MEDIUM")
+			else
+				bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
+				bars:SetFrameStrata("LOW")
+			end
+			bars:Width(CLASSBAR_WIDTH)
+			bars:Height(CLASSBAR_HEIGHT - (BORDER*2))
 			
 			if not USE_MINI_CLASSBAR then
 				bars.backdrop:Show()
@@ -577,20 +716,44 @@ function UF:Update_PlayerFrame(frame, db)
 				bars.backdrop:Hide()			
 			end
 			
-			if USE_CLASSBAR and not frame:IsElementEnabled('SoulShards') then
-				frame:EnableElement('SoulShards')
-				bars:Show()
-			elseif not USE_CLASSBAR and frame:IsElementEnabled('SoulShards') then
-				frame:DisableElement('SoulShards')
+			if USE_CLASSBAR and not frame:IsElementEnabled('ShardBar') then
+				frame:EnableElement('ShardBar')
+			elseif not USE_CLASSBAR and frame:IsElementEnabled('ShardBar') then
+				frame:DisableElement('ShardBar')
 				bars:Hide()
 			end					
+		elseif E.myclass == 'MONK' then
+			local bars = frame.Harmony
+			bars:ClearAllPoints()
+			if USE_MINI_CLASSBAR then
+				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
+				bars:SetFrameStrata("MEDIUM")			
+			else
+				bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
+				bars:SetFrameStrata("LOW")
+			end
+			bars:Width(CLASSBAR_WIDTH)
+			bars:Height(CLASSBAR_HEIGHT - (BORDER*2))
+			
+			if not USE_MINI_CLASSBAR then
+				bars.backdrop:Show()
+			else
+				bars.backdrop:Hide()			
+			end
+			
+			if USE_CLASSBAR and not frame:IsElementEnabled('Harmony') then
+				frame:EnableElement('Harmony')
+				bars:Show()
+			elseif not USE_CLASSBAR and frame:IsElementEnabled('Harmony') then
+				frame:DisableElement('Harmony')
+				bars:Hide()
+			end				
 		elseif E.myclass == "DEATHKNIGHT" then
 			local runes = frame.Runes
 			runes:ClearAllPoints()
 			if USE_MINI_CLASSBAR then
-				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 3/2 --Multiply by reciprocal to reset previous setting
 				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 4/5
-				runes:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 8), -SPACING)
+				runes:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 8), 0)
 				runes:SetFrameStrata("MEDIUM")
 			else
 				runes:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
@@ -649,9 +812,8 @@ function UF:Update_PlayerFrame(frame, db)
 				totems:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
 				totems:SetFrameStrata("LOW")
 			else
-				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 3/2 --Multiply by reciprocal to reset previous setting
 				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 4/5
-				totems:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), -SPACING)
+				totems:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
 				totems:SetFrameStrata("MEDIUM")			
 			end
 			
@@ -707,7 +869,6 @@ function UF:Update_PlayerFrame(frame, db)
 				eclipseBar:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
 				eclipseBar:SetFrameStrata("LOW")
 			else		
-				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 3/2 --Multiply by reciprocal to reset previous setting
 				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 2/3			
 				eclipseBar:Point("LEFT", frame.Health.backdrop, "TOPLEFT", (BORDER*2 + 4), 0)
 				eclipseBar:SetFrameStrata("MEDIUM")						
@@ -739,21 +900,6 @@ function UF:Update_PlayerFrame(frame, db)
 		elseif not db.combatfade and frame:IsElementEnabled('CombatFade') then
 			frame:DisableElement('CombatFade')
 		end		
-	end
-	
-	--AltPower
-	do
-		local altpower = frame.AltPowerBar
-		altpower:Point("TOP", E.UIParent, "TOP", 0, -70)
-		altpower:Width(db.altpower.width)
-		altpower:Height(db.altpower.height)	
-		altpower.Smooth = self.db.smoothbars
-		
-		if db.altpower.enable and not frame:IsElementEnabled('AltPowerBar') then
-			frame:EnableElement('AltPowerBar')
-		elseif not db.altpower.enable and frame:IsElementEnabled('AltPowerBar') then
-			frame:DisableElement('AltPowerBar')
-		end			
 	end
 	
 	--Debuff Highlight
@@ -795,6 +941,44 @@ function UF:Update_PlayerFrame(frame, db)
 		else
 			if frame:IsElementEnabled('HealPrediction') then
 				frame:DisableElement('HealPrediction')
+			end		
+		end
+	end
+	
+	--AuraBars
+	do
+		local auraBars = frame.AuraBars
+		
+		if db.aurabar.enable then
+			if not frame:IsElementEnabled('AuraBars') then
+				frame:EnableElement('AuraBars')
+			end
+			auraBars:Show()
+			local healthColor = UF.db.colors.health
+			local attachTo = frame
+			
+			if db.aurabar.attachTo == 'BUFFS' then
+				attachTo = frame.Buffs
+			elseif db.aurabar.attachTo == 'DEBUFFS' then
+				attachTo = frame.Debuffs
+			end
+			
+			local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
+			if db.aurabar.anchorPoint == 'BELOW' then
+				anchorPoint, anchorTo = 'TOP', 'BOTTOM'
+			end
+			
+			auraBars:ClearAllPoints()
+			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT')
+			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', -POWERBAR_OFFSET, 0)
+
+			auraBars.buffColor = {healthColor.r, healthColor.b, healthColor.g}
+			auraBars.down = db.aurabar.growthDirection == 'DOWN'
+			auraBars:SetAnchors()
+		else
+			if frame:IsElementEnabled('AuraBars') then
+				frame:DisableElement('AuraBars')
+				auraBars:Hide()
 			end		
 		end
 	end

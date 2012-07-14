@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -68,7 +68,7 @@ local function LoadSkin()
 			S:HandleButton(_G[button], true)
 		end
 	end
-	
+
 	local checkbuttons = {
 		"Quest", 
 		"Dungeon",
@@ -101,34 +101,27 @@ local function LoadSkin()
 	GuildFactionBar.progress:SetTexture(E["media"].normTex)
 	GuildFactionBar:CreateBackdrop("Default")
 	GuildFactionBar.backdrop:Point("TOPLEFT", GuildFactionBar.progress, "TOPLEFT", -2, 2)
-	GuildFactionBar.backdrop:Point("BOTTOMRIGHT", GuildFactionBar, "BOTTOMRIGHT", -2, 0)
+	GuildFactionBar.backdrop:Point("BOTTOMRIGHT", GuildFactionBar, "BOTTOMRIGHT", 1, 0)
 	
-	GuildXPBarLeft:Kill()
-	GuildXPBarRight:Kill()
-	GuildXPBarMiddle:Kill()
-	GuildXPBarBG:Kill()
-	GuildXPBarShadow:Kill()
-	GuildXPBarCap:Kill()
+	GuildXPBar:StripTextures()
 	GuildXPBar.progress:SetTexture(E["media"].normTex)
 	GuildXPBar:CreateBackdrop("Default")
-	GuildXPBar.backdrop:Point("TOPLEFT", GuildXPBar.progress, "TOPLEFT", -2, 2)
-	GuildXPBar.backdrop:Point("BOTTOMRIGHT", GuildXPBar, "BOTTOMRIGHT", -2, 4)
+	GuildXPBar.backdrop:Point("TOPLEFT", GuildXPBar, "TOPLEFT", -1, -2)
+	GuildXPBar.backdrop:Point("BOTTOMRIGHT", GuildXPBar, "BOTTOMRIGHT")
 	
 	GuildLatestPerkButton:StripTextures()
 	GuildLatestPerkButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
 	GuildLatestPerkButtonIconTexture:ClearAllPoints()
 	GuildLatestPerkButtonIconTexture:Point("TOPLEFT", 2, -2)
 	GuildLatestPerkButton:CreateBackdrop("Default")
-	GuildLatestPerkButton.backdrop:Point("TOPLEFT", GuildLatestPerkButtonIconTexture, "TOPLEFT", -2, 2)
-	GuildLatestPerkButton.backdrop:Point("BOTTOMRIGHT", GuildLatestPerkButtonIconTexture, "BOTTOMRIGHT", 2, -2)
+	GuildLatestPerkButton.backdrop:SetOutside(GuildLatestPerkButtonIconTexture)
 	
 	GuildNextPerkButton:StripTextures()
 	GuildNextPerkButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
 	GuildNextPerkButtonIconTexture:ClearAllPoints()
 	GuildNextPerkButtonIconTexture:Point("TOPLEFT", 2, -2)
 	GuildNextPerkButton:CreateBackdrop("Default")
-	GuildNextPerkButton.backdrop:Point("TOPLEFT", GuildNextPerkButtonIconTexture, "TOPLEFT", -2, 2)
-	GuildNextPerkButton.backdrop:Point("BOTTOMRIGHT", GuildNextPerkButtonIconTexture, "BOTTOMRIGHT", 2, -2)
+	GuildNextPerkButton.backdrop:SetOutside(GuildNextPerkButtonIconTexture)
 	
 	--Guild Perk buttons list
 	for i=1, 8 do
@@ -140,8 +133,7 @@ local function LoadSkin()
 			button.icon:ClearAllPoints()
 			button.icon:Point("TOPLEFT", 2, -2)
 			button:CreateBackdrop("Default")
-			button.backdrop:Point("TOPLEFT", button.icon, "TOPLEFT", -2, 2)
-			button.backdrop:Point("BOTTOMRIGHT", button.icon, "BOTTOMRIGHT", 2, -2)
+			button.backdrop:SetOutside(button.icon)
 			button.icon:SetParent(button.backdrop)
 		end
 	end
@@ -259,8 +251,7 @@ local function LoadSkin()
 			button.icon:ClearAllPoints()
 			button.icon:Point("TOPLEFT", 2, -2)
 			button:CreateBackdrop("Default")
-			button.backdrop:Point("TOPLEFT", button.icon, "TOPLEFT", -2, 2)
-			button.backdrop:Point("BOTTOMRIGHT", button.icon, "BOTTOMRIGHT", 2, -2)
+			button.backdrop:SetOutside(button.icon)
 			button.icon:SetParent(button.backdrop)
 		end
 	end

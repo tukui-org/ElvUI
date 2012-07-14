@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Import: Engine, Locales, ProfileDB, GlobalDB
 local B = E:GetModule('Bags')
 
 E.Options.args.bags = {
@@ -18,7 +18,7 @@ E.Options.args.bags = {
 			name = L["Enable"],
 			desc = L['Enable/Disable the all-in-one bag.'],
 			get = function(info) return E.private.bags.enable end,
-			set = function(info, value) E.private.bags.enable = value; StaticPopup_Show("PRIVATE_RL") end
+			set = function(info, value) E.private.bags.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},	
 		BagBarEnable = {
 			order = 3,
@@ -26,7 +26,7 @@ E.Options.args.bags = {
 			name = L["Enable Bag-Bar"],
 			desc = L['Enable/Disable the Bag-Bar.'],
 			get = function(info) return E.private.bags.bagBar.enable end,
-			set = function(info, value) E.private.bags.bagBar.enable = value; StaticPopup_Show("PRIVATE_RL") end,
+			set = function(info, value) E.private.bags.bagBar.enable = value; E:StaticPopup_Show("PRIVATE_RL") end,
 			disabled = function() return E.bags end,
 		},				
 		general = {

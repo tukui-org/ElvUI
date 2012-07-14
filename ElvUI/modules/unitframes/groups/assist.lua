@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:GetModule('UnitFrames');
 
 local _, ns = ...
@@ -56,14 +56,14 @@ function UF:Update_AssistHeader(header, db)
 
 	if not header.positioned then
 		header:ClearAllPoints()
-		header:Point("LEFT", E.UIParent, "LEFT", 30, 50)
+		header:Point("LEFT", E.UIParent, "LEFT", 6, 100)
 		E:CreateMover(header, header:GetName()..'Mover', 'MA Frames')
 		
 		header:SetAttribute('minHeight', header.dirtyHeight)
 		header:SetAttribute('minWidth', header.dirtyWidth)
 
 		header.positioned = true;
-	end
+	end	
 end
 
 function UF:Update_AssistFrames(frame, db)

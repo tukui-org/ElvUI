@@ -1,8 +1,8 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local DT = E:GetModule('DataTexts')
 
 -- create a popup
-StaticPopupDialogs.SET_BN_BROADCAST = {
+E.PopupDialogs.SET_BN_BROADCAST = {
 	text = BN_BROADCAST_TOOLTIP,
 	button1 = ACCEPT,
 	button2 = CANCEL,
@@ -39,22 +39,27 @@ local menuList = {
 			{ text = "|cffFF0000"..AFK.."|r", notCheckable=true, func = function() if not IsChatAFK() then SendChatMessage("", "AFK") end end },
 		},
 	},
-	{ text = BN_BROADCAST_TOOLTIP, notCheckable=true, func = function() StaticPopup_Show("SET_BN_BROADCAST") end },
+	{ text = BN_BROADCAST_TOOLTIP, notCheckable=true, func = function() E:StaticPopup_Show("SET_BN_BROADCAST") end },
 }
 
-local function inviteClick(self, arg1, arg2, checked)
+local function inviteClick(self, name)
 	menuFrame:Hide()
 	
-	if type(arg1) ~= 'number' then
-		InviteUnit(arg1)
+	if type(name) ~= 'number' then
+		InviteUnit(name)
 	else
-		BNInviteFriend(arg1);
+		BNInviteFriend(name);
 	end
 end
 
-local function whisperClick(self,arg1,arg2,checked)
+local function whisperClick(self, name, battleNet)
 	menuFrame:Hide() 
-	SetItemRef( "player:"..arg1, ("|Hplayer:%1$s|h[%1$s]|h"):format(arg1), "LeftButton" )		 
+	
+	if battleNet then
+		ChatFrame_SendSmartTell(name)
+	else
+		SetItemRef( "player:"..name, ("|Hplayer:%1$s|h[%1$s]|h"):format(name), "LeftButton" )		 
+	end
 end
 
 local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r"
@@ -209,7 +214,7 @@ local function Click(self, btn)
 				if (info[7]) then
 					realID = (BATTLENET_NAME_FORMAT):format(info[2], info[3])
 					menuCountWhispers = menuCountWhispers + 1
-					menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID,notCheckable=true, func = whisperClick}
+					menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = whisperClick}
 					
 					if select(1, UnitFactionGroup("player")) == "Horde" then playerFaction = 0 else playerFaction = 1 end
 					if info[6] == wowString and playerFaction == info[12] then
@@ -260,6 +265,7 @@ local function OnEnter(self)
 			if info[5] then
 				if GetRealZoneText() == info[4] then zonec = activezone else zonec = inactivezone end
 				classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetQuestDifficultyColor(info[2])
+				
 				if classc == nil then classc = GetQuestDifficultyColor(info[2]) end
 				
 				if UnitInParty(info[1]) or UnitInRaid(info[1]) then grouped = 1 else grouped = 2 end

@@ -91,6 +91,7 @@ local HAND_OF_LIGHT = GetSpellInfo(90174);
 local PLAYERCLASS = select(2, UnitClass('player'))
 local HOLY_POWER_SPELLS = {
 	[85256] = GetSpellInfo(85256), --Templar's Verdict
+	[53385] = GetSpellInfo(53385), --Divine Storm
 	[53600] = GetSpellInfo(53600), --Shield of the Righteous
 };
 
@@ -647,7 +648,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("ACTIONBAR_SLOT_CHANGED")
 	lib.eventFrame:RegisterEvent("UPDATE_BINDINGS")
 	lib.eventFrame:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
-
+	
 	lib.eventFrame:RegisterEvent("ACTIONBAR_UPDATE_STATE")
 	lib.eventFrame:RegisterEvent("ACTIONBAR_UPDATE_USABLE")
 	lib.eventFrame:RegisterEvent("ACTIONBAR_UPDATE_COOLDOWN")
@@ -670,6 +671,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
 
 	-- With those two, do we still need the ACTIONBAR equivalents of them?
+	lib.eventFrame:RegisterEvent("SPELL_UPDATE_CHARGES")
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_COOLDOWN")
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_USABLE")
 	lib.eventFrame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
@@ -758,6 +760,8 @@ function OnEvent(frame, event, arg1, ...)
 				Update(button)
 			end
 		end
+	elseif event == "SPELL_UPDATE_CHARGES" then
+		ForAllButtons(Update)
 	end
 end
 
@@ -954,7 +958,7 @@ function Update(self)
 	else
 		self.actionName:SetText("")
 	end
-
+	
 	-- Update icon and hotkey
 	local texture = self:GetTexture()
 	if texture then
@@ -1045,7 +1049,7 @@ function UpdateUsable(self)
 	else
 		local isUsable, notEnoughMana = self:IsUsable()
 		local action = self._state_action
-		if PLAYERCLASS == 'PALADIN' and IsHolyPowerAbility(action) and not(UnitPower('player', SPELL_POWER_HOLY_POWER) == 3 or UnitBuff('player', HAND_OF_LIGHT)) then
+		if PLAYERCLASS == 'PALADIN' and IsHolyPowerAbility(action) and not(UnitPower('player', SPELL_POWER_HOLY_POWER) >= 3 or UnitBuff('player', HAND_OF_LIGHT)) then
 			self.icon:SetVertexColor(unpack(self.config.colors.hp))
 		elseif isUsable then
 			self.icon:SetVertexColor(1.0, 1.0, 1.0)
@@ -1062,6 +1066,13 @@ function UpdateUsable(self)
 end
 
 function UpdateCount(self)
+	local charges, maxCharges = 0, 0
+
+	if self._state_action and type(self._state_action) == "number" then
+		charges, maxCharges = GetActionCharges(self._state_action)
+	end
+	
+	self.cooldown:SetParent(self)
 	if self:IsConsumableOrStackable() then
 		local count = self:GetCount()
 		if count > (self.maxDisplayCount or 9999) then
@@ -1069,6 +1080,8 @@ function UpdateCount(self)
 		else
 			self.count:SetText(count)
 		end
+	elseif maxCharges > 1 then
+		self.count:SetText(charges)
 	else
 		self.count:SetText("")
 	end

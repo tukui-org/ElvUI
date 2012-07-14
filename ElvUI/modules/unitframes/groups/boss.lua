@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:GetModule('UnitFrames');
 
 local _, ns = ...
@@ -25,7 +25,7 @@ function UF:Construct_BossFrames(frame)
 	
 	frame:SetAttribute("type2", "focus")
 	
-	BossHeader:Point('TOPLEFT', ElvUF_FocusTarget, 'BOTTOMRIGHT', 30, 0) 
+	BossHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165) 
 	E:CreateMover(BossHeader, BossHeader:GetName()..'Mover', 'Boss Frames')
 end
 
@@ -406,14 +406,14 @@ function UF:Update_BossFrames(frame, db)
 		end
 	else
 		if db.growthDirection == 'UP' then
-			frame:Point('BOTTOMRIGHT', _G['ElvUF_Boss'..INDEX-1], 'TOPRIGHT', 0, 65 + db.castbar.height)
+			frame:Point('BOTTOMRIGHT', _G['ElvUF_Boss'..INDEX-1], 'TOPRIGHT', 0, 12 + db.castbar.height)
 		else
-			frame:Point('TOPRIGHT', _G['ElvUF_Boss'..INDEX-1], 'BOTTOMRIGHT', 0, -(65 + db.castbar.height))
+			frame:Point('TOPRIGHT', _G['ElvUF_Boss'..INDEX-1], 'BOTTOMRIGHT', 0, -(12 + db.castbar.height))
 		end
 	end	
 
 	BossHeader:Width(UNIT_WIDTH)
-	BossHeader:Height(UNIT_HEIGHT + (UNIT_HEIGHT + 65 + db.castbar.height) * 3)
+	BossHeader:Height(UNIT_HEIGHT + (UNIT_HEIGHT + 12 + db.castbar.height) * 3)
 	
 	frame:UpdateAllElements()
 end

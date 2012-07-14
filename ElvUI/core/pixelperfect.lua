@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 
 --Determine if Eyefinity is being used, setup the pixel perfect script.
 local scale
@@ -86,9 +86,9 @@ function E:UIScale(event)
 		end
 
 		if event == 'UI_SCALE_CHANGED' and change and change > 1 and self.db.general.autoscale then
-			StaticPopup_Show('FAILED_UISCALE')
+			E:StaticPopup_Show('FAILED_UISCALE')
 		elseif event == 'UI_SCALE_CHANGED' and change and change > 1 then
-			StaticPopup_Show('CONFIG_RL')	
+			E:StaticPopup_Show('CONFIG_RL')	
 		end
 		
 		self:UnregisterEvent('PLAYER_LOGIN')		

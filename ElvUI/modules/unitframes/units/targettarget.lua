@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:GetModule('UnitFrames');
 
 local _, ns = ...
@@ -16,7 +16,7 @@ function UF:Construct_TargetTargetFrame(frame)
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	
-	frame:Point('TOPLEFT', ElvUF_Target, 'TOPRIGHT', 30, 0) --Set to default position
+	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 75) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', 'TargetTarget Frame')
 end
 

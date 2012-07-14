@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local DT = E:GetModule('DataTexts')
 
 local lastPanel
@@ -8,9 +8,9 @@ local function OnEvent(self, event)
 	lastPanel = self
 	--STAT_MASTERY
 	local masteryspell, masteryTag
-	if GetCombatRating(CR_MASTERY) ~= 0 and GetPrimaryTalentTree() then
+	if GetCombatRating(CR_MASTERY) ~= 0 and GetSpecialization() then
 		masteryTag = STAT_MASTERY..": "
-		self.text:SetFormattedText(displayString, masteryTag, GetMastery())
+		self.text:SetFormattedText(displayString, masteryTag, GetMasteryEffect())
 	end
 end
 
@@ -18,15 +18,13 @@ local function OnEnter(self)
 	DT:SetupTooltip(self)
 	GameTooltip:ClearLines()
 
-	local mastery = GetMastery();
-	local masteryBonus = GetCombatRatingBonus(CR_MASTERY);
-	mastery = string.format("%.2f", mastery);
-
-	local masteryKnown = IsSpellKnown(CLASS_MASTERY_SPELLS[E.myclass]);
-	local primaryTalentTree = GetPrimaryTalentTree();
-	if (masteryKnown and primaryTalentTree) then
-		local masterySpell, masterySpell2 = GetTalentTreeMasterySpells(primaryTalentTree);
-		if (masterySpell) then
+	local primaryTalentTree = GetSpecialization();
+	
+	if (primaryTalentTree) then
+		local masterySpell = GetSpecializationMasterySpells(primaryTalentTree);
+		local masteryKnown = IsSpellKnown(masterySpell);
+		
+		if (masteryKnown) then
 			GameTooltip:AddSpellByID(masterySpell);
 		end
 	end
@@ -34,7 +32,7 @@ local function OnEnter(self)
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayString = string.join("", "%s", hex, "%.2f|r")
+	displayString = string.join("", "%s", hex, "%.2f%%|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

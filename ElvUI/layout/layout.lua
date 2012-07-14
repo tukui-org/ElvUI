@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local LO = E:NewModule('Layout', 'AceEvent-3.0');
 
 local PANEL_HEIGHT = 22;
@@ -9,8 +9,6 @@ E.Layout = LO;
 function LO:Initialize()
 	self:CreateChatPanels()
 	self:CreateMinimapPanels()
-	self:CreateExtraDataBarPanels()
-	self:CreateMoverPopup()
 end
 
 
@@ -150,8 +148,7 @@ function LO:CreateChatPanels()
 	
 	--Background Texture
 	lchat.tex = lchat:CreateTexture(nil, 'OVERLAY')
-	lchat.tex:Point('TOPLEFT', lchat, 'TOPLEFT', 2, -2)
-	lchat.tex:Point('BOTTOMRIGHT', lchat, 'BOTTOMRIGHT', -2, 2)
+	lchat.tex:SetInside()
 	lchat.tex:SetTexture(E.db.general.panelBackdropNameLeft)
 	lchat.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.7 > 0 and E.db.general.backdropfadecolor.a - 0.7 or 0.5)
 	
@@ -195,8 +192,7 @@ function LO:CreateChatPanels()
 	
 	--Background Texture
 	rchat.tex = rchat:CreateTexture(nil, 'OVERLAY')
-	rchat.tex:Point('TOPLEFT', rchat, 'TOPLEFT', 2, -2)
-	rchat.tex:Point('BOTTOMRIGHT', rchat, 'BOTTOMRIGHT', -2, 2)
+	rchat.tex:SetInside()
 	rchat.tex:SetTexture(E.db.general.panelBackdropNameRight)
 	rchat.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.7 > 0 and E.db.general.backdropfadecolor.a - 0.7 or 0.5)	
 	
@@ -247,13 +243,13 @@ end
 function LO:CreateMinimapPanels()
 	local lminipanel = CreateFrame('Frame', 'LeftMiniPanel', Minimap)
 	lminipanel:Point('TOPLEFT', Minimap, 'BOTTOMLEFT', -2, -3)
-	lminipanel:Point('BOTTOMRIGHT', Minimap, 'BOTTOM', -21, -(3 + PANEL_HEIGHT))
+	lminipanel:Point('BOTTOMRIGHT', Minimap, 'BOTTOM', -1, -(3 + PANEL_HEIGHT))
 	lminipanel:SetTemplate('Default', true)
 	E:GetModule('DataTexts'):RegisterPanel(lminipanel, 1, 'ANCHOR_BOTTOMLEFT', lminipanel:GetWidth() * 2, -4)
 	
 	local rminipanel = CreateFrame('Frame', 'RightMiniPanel', Minimap)
 	rminipanel:Point('TOPRIGHT', Minimap, 'BOTTOMRIGHT', 2, -3)
-	rminipanel:Point('BOTTOMLEFT', Minimap, 'BOTTOM', -20, -(3 + PANEL_HEIGHT))
+	rminipanel:Point('BOTTOMLEFT', Minimap, 'BOTTOM', 0, -(3 + PANEL_HEIGHT))
 	rminipanel:SetTemplate('Default', true)
 	E:GetModule('DataTexts'):RegisterPanel(rminipanel, 1, 'ANCHOR_BOTTOM', 0, -4)
 	
@@ -298,157 +294,4 @@ function LO:CreateMinimapPanels()
 	end)
 end
 
-function LO:CreateExtraDataBarPanels()
-	local chattab1 = CreateFrame('Frame', 'ChatTab_Datatext_Panel', E.UIParent)
-	chattab1:SetScript('OnShow', function(self)
-		chattab1:Point("TOPRIGHT", RightChatTab, "TOPRIGHT", 0, 0)
-		chattab1:Point("BOTTOMLEFT", RightChatTab, "BOTTOMLEFT", (E.db.general.panelWidth / 3), 0)
-	end)
-	chattab1:Hide()
-	E:GetModule('DataTexts'):RegisterPanel(chattab1, 2, 'ANCHOR_BOTTOM', 0, -4)
-	
-	local bottom_bar = CreateFrame('Frame', 'Bottom_Datatext_Panel', E.UIParent)
-	bottom_bar:SetTemplate('Default', true)
-	bottom_bar:SetFrameStrata('BACKGROUND')
-	bottom_bar:SetScript('OnShow', function(self)
-		self:Point("TOPLEFT", ElvUI_Bar1, "BOTTOMLEFT", 0, -E.mult); 
-		self:Size(ElvUI_Bar1:GetWidth(), PANEL_HEIGHT); 
-		E:CreateMover(self, "BottomBarMover", "Bottom Datatext Frame") 
-	end)
-	E:GetModule('DataTexts'):RegisterPanel(Bottom_Datatext_Panel, 3, 'ANCHOR_BOTTOM', 0, -4)
-	bottom_bar:Hide()
-	
-	RightChatTab:HookScript("OnHide", function() 
-		chattab1:Hide() 
-	end)
-	RightChatTab:HookScript("OnShow", function() 
-		chattab1:Show() 
-		chattab1:SetAlpha(RightChatTab:GetAlpha()) 
-	end)
-end
-
-function ExtraDataBarSetup()
-	ChatTab_Datatext_Panel:Show()
-	Bottom_Datatext_Panel:Show()
-end
-
-function LO:PLAYER_ENTERING_WORLD(...)
-	ExtraDataBarSetup()
-	self:UnregisterEvent("PLAYER_ENTERING_WORLD");
-end
-
-function LO:CreateMoverPopup()
-	local f = CreateFrame("Frame", "ElvUIMoverPopupWindow", UIParent)
-	f:SetFrameStrata("DIALOG")
-	f:SetToplevel(true)
-	f:EnableMouse(true)
-	f:SetMovable(true)
-	f:SetClampedToScreen(true)
-	f:SetWidth(360)
-	f:SetHeight(110)
-	f:SetTemplate('Transparent')
-	f:SetPoint("TOP", 0, -50)
-	f:Hide()
-	f:SetScript("OnShow", function() PlaySound("igMainMenuOption"); E:Grid_Show() end)
-	f:SetScript("OnHide", function() PlaySound("gsTitleOptionExit"); E:Grid_Hide() end)
-
-	local S = E:GetModule('Skins')
-
-	local header = CreateFrame('Button', nil, f)
-	header:SetTemplate('Default', true)
-	header:SetWidth(100); header:SetHeight(25)
-	header:SetPoint("CENTER", f, 'TOP')
-	header:SetFrameLevel(header:GetFrameLevel() + 2)
-	header:EnableMouse(true)
-	header:RegisterForClicks('AnyUp', 'AnyDown')
-	header:SetScript('OnMouseDown', function() f:StartMoving() end)
-	header:SetScript('OnMouseUp', function() f:StopMovingOrSizing() end)
-	
-	local title = header:CreateFontString("OVERLAY")
-	title:FontTemplate()
-	title:SetPoint("CENTER", header, "CENTER")
-	title:SetText('ElvUI')
-		
-	local desc = f:CreateFontString("ARTWORK")
-	desc:SetFontObject("GameFontHighlight")
-	desc:SetJustifyV("TOP")
-	desc:SetJustifyH("LEFT")
-	desc:SetPoint("TOPLEFT", 18, -32)
-	desc:SetPoint("BOTTOMRIGHT", -18, 48)
-	desc:SetText(L["Movers unlocked. Move them now and click Lock when you are done."])
-
-	local snapping = CreateFrame("CheckButton", "ElvUISnapping", f, "OptionsCheckButtonTemplate")
-	_G[snapping:GetName() .. "Text"]:SetText(L["Sticky Frames"])
-
-	snapping:SetScript("OnShow", function(self)
-		self:SetChecked(E.db.general.stickyFrames)
-	end)
-
-	snapping:SetScript("OnClick", function(self)
-		E.db.general.stickyFrames = self:GetChecked()
-	end)
-
-	local lock = CreateFrame("Button", "ElvUILock", f, "OptionsButtonTemplate")
-	_G[lock:GetName() .. "Text"]:SetText(L["Lock"])
-
-	lock:SetScript("OnClick", function(self)
-		local ACD = LibStub("AceConfigDialog-3.0")
-		E:MoveUI(false)
-		self:GetParent():Hide()
-		ACD['Open'](ACD, 'ElvUI') 
-	end)
-	
-	local align = CreateFrame('EditBox', 'AlignBox', f, 'InputBoxTemplate')
-	align:Width(24)
-	align:Height(17)
-	align:SetAutoFocus(false)
-	align:SetScript("OnEscapePressed", function(self)
-		self:SetText(E.db.gridSize)
-		EditBox_ClearFocus(self)
-	end)
-	align:SetScript("OnEnterPressed", function(self)
-		local text = self:GetText()
-		if tonumber(text) then
-			if tonumber(text) <= 256 and tonumber(text) >= 4 then
-				E.db.gridSize = tonumber(text)
-			else
-				self:SetText(E.db.gridSize)
-			end
-		else
-			self:SetText(E.db.gridSize)
-		end
-		E:Grid_Show()
-		EditBox_ClearFocus(self)
-	end)
-	align:SetScript("OnEditFocusLost", function(self)
-		self:SetText(E.db.gridSize)
-	end)
-	align:SetScript("OnEditFocusGained", align.HighlightText)
-	align:SetScript('OnShow', function(self)
-		EditBox_ClearFocus(self)
-		self:SetText(E.db.gridSize)
-	end)
-	
-	align.text = align:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
-	align.text:SetPoint('RIGHT', align, 'LEFT', -4, 0)
-	align.text:SetText(L['Grid Size:'])
-
-	--position buttons
-	snapping:SetPoint("BOTTOMLEFT", 14, 10)
-	lock:SetPoint("BOTTOMRIGHT", -14, 14)
-	align:SetPoint('TOPRIGHT', lock, 'TOPLEFT', -4, -2)
-	
-	S:HandleCheckBox(snapping)
-	S:HandleButton(lock)
-	S:HandleEditBox(align)
-	
-	f:RegisterEvent('PLAYER_REGEN_DISABLED')
-	f:SetScript('OnEvent', function(self)
-		if self:IsShown() then
-			self:Hide()
-		end
-	end)
-end
-
-LO:RegisterEvent('PLAYER_ENTERING_WORLD')
 E:RegisterModule(LO:GetName())

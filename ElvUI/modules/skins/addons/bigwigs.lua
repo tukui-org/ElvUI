@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local buttonsize = 19
@@ -82,8 +82,7 @@ local applystyle = function(bar)
 
 	bg:SetParent(bar)
 	bg:ClearAllPoints()
-	bg:Point("TOPLEFT", bar, "TOPLEFT", -2, 2)
-	bg:Point("BOTTOMRIGHT", bar, "BOTTOMRIGHT", 2, -2)
+	bg:SetOutside(bar)
 	bg:SetFrameStrata("BACKGROUND")
 	bg:Show()
 	bar:Set("bigwigs:elvui:barbg", bg)
@@ -98,8 +97,7 @@ local applystyle = function(bar)
 		end
 		ibg:SetParent(bar)
 		ibg:ClearAllPoints()
-		ibg:Point("TOPLEFT", bar.candyBarIconFrame, "TOPLEFT", -2, 2)
-		ibg:Point("BOTTOMRIGHT", bar.candyBarIconFrame, "BOTTOMRIGHT", 2, -2)
+		ibg:SetOutside(bar.candyBarIconFrame)
 		ibg:SetFrameStrata("BACKGROUND")
 		ibg:Show()
 		bar:Set("bigwigs:elvui:iconbg", ibg)
@@ -134,7 +132,7 @@ local applystyle = function(bar)
 	bar.candyBarIconFrame:ClearAllPoints()
 	bar.candyBarIconFrame:Point("BOTTOMRIGHT", bar, "BOTTOMLEFT", -5, 0)	
 	bar.candyBarIconFrame:SetSize(buttonsize, buttonsize)
-	bar.candyBarIconFrame:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+	bar.candyBarIconFrame:SetTexCoord(unpack(E.TexCoords))
 end
 
 --[[

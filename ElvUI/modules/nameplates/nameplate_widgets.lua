@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local NP = E:GetModule('NamePlates')
 
 --[[
@@ -576,12 +576,12 @@ end
 
 function NP:UpdateRoster()
 	local groupType, groupSize, unitId, unitName
-	if UnitInRaid("player") then 
+	if IsInRaid() then 
 		groupType = "raid"
-		groupSize = GetNumRaidMembers() - 1
-	elseif UnitInParty("player") then 
+		groupSize = GetNumGroupMembers() - 1
+	elseif IsInGroup() then 
 		groupType = "party"
-		groupSize = GetNumPartyMembers() 
+		groupSize = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME) 
 	else 
 		groupType = "solo"
 		groupSize = 1

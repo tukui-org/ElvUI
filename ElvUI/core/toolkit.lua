@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local LSM = LibStub("LibSharedMedia-3.0")
 
 local floor = math.floor
@@ -117,6 +117,32 @@ local function Point(obj, arg1, arg2, arg3, arg4, arg5)
 	obj:SetPoint(arg1, arg2, arg3, arg4, arg5)
 end
 
+local function SetOutside(obj, anchor, clearPoints, xOffset, yOffset)
+	xOffset = xOffset or 2
+	yOffset = yOffset or 2
+	anchor = anchor or obj:GetParent()
+	
+	if clearPoints then
+		obj:ClearAllPoints()
+	end
+	
+	obj:Point('TOPLEFT', anchor, 'TOPLEFT', -xOffset, yOffset)
+	obj:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT', xOffset, -yOffset)
+end
+
+local function SetInside(obj, anchor, clearPoints, xOffset, yOffset)
+	xOffset = xOffset or 2
+	yOffset = yOffset or 2
+	anchor = anchor or obj:GetParent()
+	
+	if clearPoints then
+		obj:ClearAllPoints()
+	end
+	
+	obj:Point('TOPLEFT', anchor, 'TOPLEFT', xOffset, -yOffset)
+	obj:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT', -xOffset, yOffset)
+end
+
 local function SetTemplate(f, t, glossTex, ignoreUpdates)
 	GetTemplate(t)
 	
@@ -139,8 +165,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 		
 		if not f.oborder and not f.iborder then
 			local border = CreateFrame("Frame", nil, f)
-			border:Point("TOPLEFT", E.mult, -E.mult)
-			border:Point("BOTTOMRIGHT", -E.mult, E.mult)
+			border:SetInside(f, nil, E.mult, E.mult)
 			border:SetBackdrop({
 				edgeFile = E["media"].blankTex, 
 				edgeSize = E.mult, 
@@ -151,8 +176,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 			
 			if f.oborder then return end
 			local border = CreateFrame("Frame", nil, f)
-			border:Point("TOPLEFT", -E.mult, E.mult)
-			border:Point("BOTTOMRIGHT", E.mult, -E.mult)
+			border:SetOutside(f, nil, E.mult, E.mult)
 			border:SetFrameLevel(f:GetFrameLevel() + 1)
 			border:SetBackdrop({
 				edgeFile = E["media"].blankTex, 
@@ -173,8 +197,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 		else
 			f.backdropTexture:SetTexture(E["media"].blankTex)
 		end
-		f.backdropTexture:Point("TOPLEFT", f, "TOPLEFT", 2, -2)
-		f.backdropTexture:Point("BOTTOMRIGHT", f, "BOTTOMRIGHT", -2, 2)		
+		f.backdropTexture:SetInside(f)
 	end
 	
 	f:SetBackdropBorderColor(borderr, borderg, borderb)
@@ -188,8 +211,7 @@ local function CreateBackdrop(f, t, tex)
 	if not t then t = "Default" end
 	
 	local b = CreateFrame("Frame", nil, f)
-	b:Point("TOPLEFT", -2, 2)
-	b:Point("BOTTOMRIGHT", 2, -2)
+	b:SetOutside()
 	b:SetTemplate(t, tex)
 
 	if f:GetFrameLevel() - 1 >= 0 then
@@ -210,10 +232,7 @@ local function CreateShadow(f)
 	local shadow = CreateFrame("Frame", nil, f)
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(f:GetFrameStrata())
-	shadow:Point("TOPLEFT", -3, 3)
-	shadow:Point("BOTTOMLEFT", -3, -3)
-	shadow:Point("TOPRIGHT", 3, 3)
-	shadow:Point("BOTTOMRIGHT", 3, -3)
+	shadow:SetOutside(f, nil, 3, 3)
 	shadow:SetBackdrop( { 
 		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(3),
 		insets = {left = E:Scale(5), right = E:Scale(5), top = E:Scale(5), bottom = E:Scale(5)},
@@ -238,8 +257,12 @@ local function StripTextures(object, kill)
 	for i=1, object:GetNumRegions() do
 		local region = select(i, object:GetRegions())
 		if region and region:GetObjectType() == "Texture" then
-			if kill then
+			if kill and type(kill) == 'boolean' then
 				region:Kill()
+			elseif region:GetDrawLayer() == kill then
+				region:SetTexture(nil)
+			elseif kill and type(kill) == 'string' and region:GetTexture() ~= kill then
+				region:SetTexture(nil)
 			else
 				region:SetTexture(nil)
 			end
@@ -269,8 +292,7 @@ local function StyleButton(button)
 	if button.SetHighlightTexture and not button.hover then
 		local hover = button:CreateTexture("frame", nil, self)
 		hover:SetTexture(1, 1, 1, 0.3)
-		hover:Point('TOPLEFT', 2, -2)
-		hover:Point('BOTTOMRIGHT', -2, 2)
+		hover:SetInside()
 		button.hover = hover
 		button:SetHighlightTexture(hover)
 	end
@@ -278,8 +300,7 @@ local function StyleButton(button)
 	if button.SetPushedTexture and not button.pushed then
 		local pushed = button:CreateTexture("frame", nil, self)
 		pushed:SetTexture(0.9, 0.8, 0.1, 0.3)
-		pushed:Point('TOPLEFT', 2, -2)
-		pushed:Point('BOTTOMRIGHT', -2, 2)
+		pushed:SetInside()
 		button.pushed = pushed
 		button:SetPushedTexture(pushed)
 	end
@@ -287,18 +308,16 @@ local function StyleButton(button)
 	if button.SetCheckedTexture and not button.checked then
 		local checked = button:CreateTexture("frame", nil, self)
 		checked:SetTexture(unpack(E["media"].rgbvaluecolor))
-		checked:Point('TOPLEFT', 2, -2)
-		checked:Point('BOTTOMRIGHT', -2, 2)
+		checked:SetInside()
 		checked:SetAlpha(0.3)
 		button.checked = checked
 		button:SetCheckedTexture(checked)
 	end
 	
-	local cooldown = _G[button:GetName().."Cooldown"]
+	local cooldown = button:GetName() and _G[button:GetName().."Cooldown"] 
 	if cooldown then
 		cooldown:ClearAllPoints()
-		cooldown:Point('TOPLEFT', 2, -2)
-		cooldown:Point('BOTTOMRIGHT', -2, 2)
+		cooldown:SetInside()
 	end
 end
 
@@ -307,6 +326,8 @@ local function addapi(object)
 	if not object.FixDimensions then mt.FixDimensions = FixDimensions end
 	if not object.Size then mt.Size = Size end
 	if not object.Point then mt.Point = Point end
+	if not object.SetOutside then mt.SetOutside = SetOutside end
+	if not object.SetInside then mt.SetInside = SetInside end
 	if not object.SetTemplate then mt.SetTemplate = SetTemplate end
 	if not object.CreateBackdrop then mt.CreateBackdrop = CreateBackdrop end
 	if not object.CreateShadow then mt.CreateShadow = CreateShadow end

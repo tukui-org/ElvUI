@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local B = E:NewModule('Bags', 'AceHook-3.0', 'AceEvent-3.0');
 
 local ST_NORMAL = 1
@@ -85,9 +85,8 @@ function B:BagFrameSlotNew(frame, slot, nonAllInOne)
 	ret.frame:SetNormalTexture("")
 	ret.frame:SetCheckedTexture(nil)
 	t:SetTexCoord(unpack(E.TexCoords))
-	t:Point("TOPLEFT", ret.frame, 2, -2)
-	t:Point("BOTTOMRIGHT", ret.frame, -2, 2)
-
+	t:SetInside()
+	
 	return ret
 end
 
@@ -228,8 +227,7 @@ function B:SlotNew(bag, slot)
 		ret.frame:SetCheckedTexture(nil)
 
 		t:SetTexCoord(unpack(E.TexCoords))
-		t:Point("TOPLEFT", ret.frame, 2, -2)
-		t:Point("BOTTOMRIGHT", ret.frame, -2, 2)
+		t:SetInside(ret.frame)
 	end
 
 	ret.bag = bag
@@ -726,9 +724,9 @@ function B:InitBank()
 	f.purchaseBagButton:SetScript("OnClick", function()
 		local _, full = GetNumBankSlots()
 		if not full then
-			StaticPopup_Show("BUY_BANK_SLOT")
+			E:StaticPopup_Show("BUY_BANK_SLOT")
 		else
-			StaticPopup_Show("CANNOT_BUY_BANK_SLOT")
+			E:StaticPopup_Show("CANNOT_BUY_BANK_SLOT")
 		end
 	end)
 
@@ -775,7 +773,7 @@ function B:InitBank()
 		if numSlots >= 1 then
 			ToggleFrame(f.ContainerHolder)
 		else
-			StaticPopup_Show("NO_BANK_BAGS")
+			E:StaticPopup_Show("NO_BANK_BAGS")
 		end
 	end)
 
@@ -936,7 +934,7 @@ end
 
 function B:VendorGrayCheck()
 	if IsShiftKeyDown() then
-		StaticPopup_Show('DELETE_GRAYS')
+		E:StaticPopup_Show('DELETE_GRAYS')
 	else
 		self:VendorGrays()
 	end

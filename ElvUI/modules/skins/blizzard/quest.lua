@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -8,28 +8,33 @@ local function LoadSkin()
 	S:HandleScrollBar(QuestLogScrollFrameScrollBar, 5)
 	S:HandleScrollBar(QuestProgressScrollFrameScrollBar)
 	S:HandleScrollBar(QuestRewardScrollFrameScrollBar)
+	QuestLogScrollFrame:StripTextures()
 	QuestLogFrame:StripTextures()
 	QuestLogFrame:SetTemplate("Transparent")
 	QuestLogFrame:CreateShadow("Default")
 	QuestLogCount:StripTextures()
 	QuestLogCount:SetTemplate("Default")
 	QuestLogCount.backdropTexture:SetDrawLayer('BACKGROUND', 2)
-	
+	QuestLogFrame:Height(430)	
 	EmptyQuestLogFrame:StripTextures()
 	
 	S:HandleScrollBar(QuestDetailScrollFrameScrollBar)
-	
+	QuestProgressScrollFrame:StripTextures()
 	QuestLogFrameShowMapButton:StripTextures()
 	S:HandleButton(QuestLogFrameShowMapButton)
 	QuestLogFrameShowMapButton.text:ClearAllPoints()
 	QuestLogFrameShowMapButton.text:SetPoint("CENTER")
 	QuestLogFrameShowMapButton:Size(QuestLogFrameShowMapButton:GetWidth() - 30, QuestLogFrameShowMapButton:GetHeight(), - 40)
 	
+	
+	QuestLogFrameInset:Kill()
+	QuestLogFrameCompleteButton:StripTextures()
 	local buttons = {
 		"QuestLogFrameAbandonButton",
 		"QuestLogFramePushQuestButton",
 		"QuestLogFrameTrackButton",
 		"QuestLogFrameCancelButton",
+		"QuestLogFrameCompleteButton",
 	}
 	
 	for _, button in pairs(buttons) do
@@ -144,6 +149,7 @@ local function LoadSkin()
 	
 	--Quest Frame
 	QuestFrame:StripTextures(true)
+	QuestFrameInset:Kill()
 	QuestFrameDetailPanel:StripTextures(true)
 	QuestDetailScrollFrame:StripTextures(true)
 	QuestDetailScrollChildFrame:StripTextures(true)
@@ -152,8 +158,6 @@ local function LoadSkin()
 	QuestFrameProgressPanel:StripTextures(true)
 	QuestFrameRewardPanel:StripTextures(true)
 	QuestFrame:CreateBackdrop("Transparent")
-	QuestFrame.backdrop:Point("TOPLEFT", 6, -8)
-	QuestFrame.backdrop:Point("BOTTOMRIGHT", -20, 65)
 	QuestFrame.backdrop:CreateShadow("Default")
 	S:HandleButton(QuestFrameAcceptButton, true)
 	S:HandleButton(QuestFrameDeclineButton, true)

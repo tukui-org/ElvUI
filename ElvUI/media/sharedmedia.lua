@@ -12,7 +12,5 @@ LSM:Register("font", "ElvUI Alt-Font", [[Interface\AddOns\ElvUI\media\fonts\Cont
 LSM:Register("font", "ElvUI Pixel", [[Interface\AddOns\ElvUI\media\fonts\Homespun.ttf]])
 LSM:Register("font","ElvUI Combat", [[Interface\AddOns\ElvUI\media\fonts\Action_Man.ttf]])
 LSM:Register("font","ElvUI Alt-Combat", [[Interface\AddOns\ElvUI\media\fonts\DieDieDie.ttf]])
-LSM:Register("font","Old Sans Black", [[Interface\AddOns\ElvUI\media\fonts\OldSansBlack.ttf]])
-LSM:Register("font","Old Sans Black Underline", [[Interface\AddOns\ElvUI\media\fonts\OldSansBlackUnderline.ttf]])
 LSM:Register("sound","ElvUI Warning", [[Interface\AddOns\ElvUI\media\sounds\warning.mp3]])
 LSM:Register("sound","ElvUI Whisper", [[Interface\AddOns\ElvUI\media\sounds\whisper.mp3]])
