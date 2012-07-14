@@ -58,7 +58,7 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	
 	if text then
 		health.value = health:CreateFontString(nil, 'OVERLAY')
-		UF['fontstrings'][health.value] = true
+		UF:Configure_FontString(health.value)
 		health.value:SetParent(frame)
 		
 		local x = -2
@@ -93,7 +93,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos, lowtext)
 	
 	if text then
 		power.value = power:CreateFontString(nil, 'OVERLAY')	
-		UF['fontstrings'][power.value] = true
+		UF:Configure_FontString(power.value)
 		power.value:SetParent(frame)
 		
 		local x = -2
@@ -106,7 +106,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos, lowtext)
 	
 	if lowtext then
 		power.LowManaText = power:CreateFontString(nil, 'OVERLAY')
-		UF['fontstrings'][power.LowManaText] = true
+		UF:Configure_FontString(power.LowManaText)
 		power.LowManaText:SetParent(frame)
 		power.LowManaText:Point("BOTTOM", frame.Health, "BOTTOM", 0, 7)
 		power.LowManaText:SetTextColor(0.69, 0.31, 0.31)
@@ -190,13 +190,13 @@ function UF:Construct_Castbar(self, direction)
 	castbar:CreateBackdrop('Default')
 	
 	castbar.Time = castbar:CreateFontString(nil, 'OVERLAY')	
-	UF['fontstrings'][castbar.Time] = true
+	UF:Configure_FontString(castbar.Time)
 	castbar.Time:Point("RIGHT", castbar, "RIGHT", -4, 0)
 	castbar.Time:SetTextColor(0.84, 0.75, 0.65)
 	castbar.Time:SetJustifyH("RIGHT")
 	
 	castbar.Text = castbar:CreateFontString(nil, 'OVERLAY')	
-	UF['fontstrings'][castbar.Text] = true
+	UF:Configure_FontString(castbar.Text)
 	castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 0)
 	castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 	
@@ -383,7 +383,7 @@ function UF:Construct_DruidResourceBar(frame)
 	eclipseBar.SolarBar = solarBar
 	
 	eclipseBar.Text = lunarBar:CreateFontString(nil, 'OVERLAY')
-	UF['fontstrings'][eclipseBar.Text] = true
+	UF:Configure_FontString(eclipseBar.Text)
 	eclipseBar.Text:SetPoint("CENTER", lunarBar:GetStatusBarTexture(), "RIGHT")
 	
 	return eclipseBar
@@ -410,7 +410,7 @@ function UF:Construct_DruidAltManaBar(frame)
 	dpower.bg.multiplier = 0.3
 
 	dpower.Text = dpower:CreateFontString(nil, 'OVERLAY')
-	UF['fontstrings'][dpower.Text] = true
+	UF:Configure_FontString(dpower.Text)
 	
 	return dpower
 end
@@ -436,7 +436,7 @@ function UF:Construct_PvPIndicator(frame)
 	local pvp = frame:CreateFontString(nil, 'OVERLAY')
 	pvp:Point("BOTTOM", frame.Health, "BOTTOM", 0, 7)
 	pvp:SetTextColor(0.69, 0.31, 0.31)
-	UF['fontstrings'][pvp] = true
+	UF:Configure_FontString(pvp)
 	
 	self:ScheduleRepeatingTimer("UpdatePvPText", 0.1, frame)
 	
@@ -456,14 +456,14 @@ function UF:Construct_AltPowerBar(frame)
 	altpower.text = altpower:CreateFontString(nil, 'OVERLAY')
 	altpower.text:SetPoint("CENTER")
 	altpower.text:SetJustifyH("CENTER")		
-	UF['fontstrings'][altpower.text] = true
+	UF:Configure_FontString(altpower.text)
 	
 	return altpower
 end
 
 function UF:Construct_NameText(frame)
 	local name = frame:CreateFontString(nil, 'OVERLAY')
-	UF['fontstrings'][name] = true
+	UF:Configure_FontString(name)
 	if frame.unit == 'player' or frame.unit == 'target' then
 		frame:Tag(name, '[Elv:getnamecolor][Elv:namelong] [Elv:diffcolor][level] [shortclassification]')
 	else
@@ -664,8 +664,8 @@ function UF:Construct_AuraBars()
 	UF['statusbars'][bar] = true
 	UF:Update_StatusBar(bar)
 		
-	UF['fontstrings'][bar.spelltime] = true
-	UF['fontstrings'][bar.spellname] = true
+	UF:Configure_FontString(bar.spelltime)
+	UF:Configure_FontString(bar.spellname)
 	UF:Update_FontString(bar.spelltime)
 	UF:Update_FontString(bar.spellname)
 	

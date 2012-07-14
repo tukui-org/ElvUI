@@ -240,6 +240,11 @@ function UF:Update_FontStrings()
 	end
 end
 
+function UF:Configure_FontString(obj)
+	UF['fontstrings'][obj] = true
+	obj:FontTemplate() --This is temporary.
+end
+
 function UF:ChangeVisibility(header, visibility)
 	if(visibility) then
 		local type, list = string.split(' ', visibility, 2)

@@ -58,7 +58,7 @@ local UPDATE_VISIBILITY = function(self, event)
 end
 
 local UNIT_AURA = function(self, event, unit)
-	if(self.unit ~= unit) then return end
+	if(self.unit ~= unit) or not unit then return end
 
 	local i = 1
 	local hasSolarEclipse, hasLunarEclipse

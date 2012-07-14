@@ -18,7 +18,7 @@ local origBorderColors = {}
 local origPostUpdateAura = {}
  
 local function GetDebuffType(unit, filter)
-	if not UnitCanAssist("player", unit) then return nil end
+	if not unit or not UnitCanAssist("player", unit) then return nil end
 	local i = 1
 	while true do
 		local _, _, texture, _, debufftype = UnitAura(unit, i, "HARMFUL")
@@ -82,7 +82,6 @@ local function CheckSpec(self, event, levels)
 end
  
 local function Update(object, event, unit)
-	if object.unit ~= unit  then return end
 	local debuffType, texture  = GetDebuffType(unit, object.DebuffHighlightFilter)
 	if debuffType then
 		local color = DebuffTypeColor[debuffType]
@@ -122,7 +121,7 @@ local function Enable(object)
 	object:RegisterEvent("UNIT_AURA", Update)
 	object:RegisterEvent("PLAYER_TALENT_UPDATE", CheckSpec)
 	object:RegisterEvent("CHARACTER_POINTS_CHANGED", CheckSpec)
-	
+	object:RegisterUnitEvent("UNIT_AURA", object.unit)
 	if object.DebuffHighlightBackdrop then
 		local r, g, b, a = object:GetBackdropColor()
 		origColors[object] = { r = r, g = g, b = b, a = a}

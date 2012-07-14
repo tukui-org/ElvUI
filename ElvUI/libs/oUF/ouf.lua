@@ -149,7 +149,7 @@ for k, v in pairs{
 
 	UpdateAllElements = function(self, event)
 		local unit = self.unit
-		if(not UnitExists(unit)) then return end
+		if(not unit or not UnitExists(unit)) then return end
 
 		if(self.PreUpdate) then
 			self:PreUpdate(event)

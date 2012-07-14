@@ -5,6 +5,7 @@ local GetRaidTargetIndex = GetRaidTargetIndex
 local SetRaidTargetIconTexture = SetRaidTargetIconTexture
 
 local Update = function(self, event)
+	if not self.unit then return end
 	local icon = self.RaidIcon
 	if(icon.PreUpdate) then
 		icon:PreUpdate()

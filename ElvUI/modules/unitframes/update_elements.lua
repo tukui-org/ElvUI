@@ -815,7 +815,7 @@ function UF:UpdatePvPText(frame)
 end
 
 function UF:UpdateThreat(event, unit)
-	if (self.unit ~= unit) or not unit then return end
+	if (self.unit ~= unit) or not unit or not E.initialized then return end
 	local status = UnitThreatSituation(unit)
 	
 	if status and status > 1 then

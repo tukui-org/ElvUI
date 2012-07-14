@@ -187,7 +187,7 @@ end
 
 local found = {}
 local function Update(frame, event, unit)
-	if frame.unit ~= unit then return end
+	if frame.unit ~= unit or not unit then return end
 	local watch = frame.AuraWatch
 	local index, icons = 1, watch.watched
 	local _, name, texture, count, duration, remaining, caster, key, icon, spellid 
