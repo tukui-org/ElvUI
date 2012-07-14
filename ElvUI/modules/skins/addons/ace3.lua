@@ -127,7 +127,7 @@ local function SkinNextPrevButton(btn, horizonal)
 		end
 	end
 
-	btn:GetNormalTexture():SetInside(nil, true)
+	btn:GetNormalTexture():SetInside()
 	if btn:GetDisabledTexture() then
 		btn:GetDisabledTexture():SetAllPoints(btn:GetNormalTexture())
 	end
@@ -225,7 +225,7 @@ local function SkinAce3()
 				elseif TYPE == "LSM30_Statusbar" then
 					frame.backdrop:Point("TOPLEFT", 20, -17)
 					widget.bar:SetParent(frame.backdrop)
-					widget.bar:SetInside(nil, true)
+					widget.bar:SetInside()
 				elseif TYPE == "LSM30_Border" or TYPE == "LSM30_Background" then
 					frame.backdrop:Point("TOPLEFT", 42, -16)
 				end

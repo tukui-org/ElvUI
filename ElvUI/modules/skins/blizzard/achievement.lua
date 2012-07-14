@@ -142,7 +142,7 @@ local function LoadSkin()
 				_G["AchievementFrameSummaryAchievement"..i.."Icon"]:ClearAllPoints()
 				_G["AchievementFrameSummaryAchievement"..i.."Icon"]:Point("LEFT", 6, 0)
 				_G["AchievementFrameSummaryAchievement"..i.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
-				_G["AchievementFrameSummaryAchievement"..i.."IconTexture"]:SetInside(nil, true)
+				_G["AchievementFrameSummaryAchievement"..i.."IconTexture"]:SetInside()
 			end
 		end				
 	end)
@@ -192,7 +192,7 @@ local function LoadSkin()
 		_G["AchievementFrameAchievementsContainerButton"..i.."Icon"]:ClearAllPoints()
 		_G["AchievementFrameAchievementsContainerButton"..i.."Icon"]:Point("LEFT", 6, 0)
 		_G["AchievementFrameAchievementsContainerButton"..i.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
-		_G["AchievementFrameAchievementsContainerButton"..i.."IconTexture"]:SetInside(nil, true)
+		_G["AchievementFrameAchievementsContainerButton"..i.."IconTexture"]:SetInside()
 		
 		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"].oborder = "Don't use sharp border" --Needed for ElvUI only
 		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:StripTextures()
@@ -268,7 +268,7 @@ local function LoadSkin()
 			_G[frame.."Icon"]:ClearAllPoints()
 			_G[frame.."Icon"]:Point("LEFT", 6, 0)
 			_G[frame.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
-			_G[frame.."IconTexture"]:SetInside(nil, true)				
+			_G[frame.."IconTexture"]:SetInside()				
 		end
 	end
 	

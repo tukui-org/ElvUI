@@ -72,7 +72,7 @@ local function LoadSkin()
 	MacroFrameSelectedMacroButton:GetNormalTexture():SetTexture(nil)
 	MacroFrameSelectedMacroButton:SetTemplate("Default")
 	MacroFrameSelectedMacroButtonIcon:SetTexCoord(unpack(E.TexCoords))
-	MacroFrameSelectedMacroButtonIcon:SetInside(nil, true)
+	MacroFrameSelectedMacroButtonIcon:SetInside()
 	
 	-- temporarily moving this text
 	MacroFrameCharLimitText:ClearAllPoints()
@@ -94,7 +94,7 @@ local function LoadSkin()
 		
 		if t then
 			t:SetTexCoord(unpack(E.TexCoords))
-			t:SetInside(nil, true)
+			t:SetInside()
 		end
 
 		if pb then
@@ -106,7 +106,7 @@ local function LoadSkin()
 		
 		if pt then
 			pt:SetTexCoord(unpack(E.TexCoords))
-			pt:SetInside(nil, true)
+			pt:SetInside()
 		end
 	end
 end

@@ -19,7 +19,7 @@ local function LoadSkin()
 	ReforgingFrame.ItemButton:StripTextures()
 	ReforgingFrame.ItemButton:SetTemplate("Default", true)
 	ReforgingFrame.ItemButton:StyleButton()
-	ReforgingFrame.ItemButton.IconTexture:SetInside(nil, true)
+	ReforgingFrame.ItemButton.IconTexture:SetInside()
 
 	hooksecurefunc("ReforgingFrame_Update", function(self)
 		local currentReforge, icon, name, quality, bound, cost = GetReforgeItemInfo()

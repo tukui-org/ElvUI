@@ -38,7 +38,7 @@ local function LoadSkin()
 		slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
 		slot:SetTemplate("Default", true)
 		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:SetInside(nil, true)
+		icon:SetInside()
 	end	
 	-- a request by diftraku to color item by rarity on character frame.
 	local function ColorItemBorder()
@@ -97,7 +97,7 @@ local function LoadSkin()
 				icon:SetTexCoord(unpack(E.TexCoords))
 				button:GetNormalTexture():SetTexture(nil)
 
-				icon:SetInside(nil, true)
+				icon:SetInside()
 				button:SetFrameLevel(button:GetFrameLevel() + 2)
 				if not button.backdrop then
 					button:CreateBackdrop("Default")
@@ -193,7 +193,7 @@ local function LoadSkin()
 				icon:SetTexCoord(unpack(E.TexCoords))
 				_G["GearManagerDialogPopupButton"..i.."Icon"]:SetTexture(nil)
 
-				icon:SetInside(nil, true)
+				icon:SetInside()
 				button:SetFrameLevel(button:GetFrameLevel() + 2)
 				if not button.backdrop then
 					button:CreateBackdrop("Default")

@@ -363,7 +363,7 @@ function AB:StyleButton(button, noBackdrop)
 	
 	if icon then
 		icon:SetTexCoord(unpack(E.TexCoords));
-		icon:SetInside(nil, true)
+		icon:SetInside()
 	end
 	
 	if shine then

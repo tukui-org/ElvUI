@@ -44,7 +44,7 @@ local function LoadSkin()
 		b:SetTemplate("Default", true)
 		b:Point("TOPLEFT", item_bar, "TOPLEFT", 4, -4)
 		t:SetTexCoord(unpack(E.TexCoords))
-		t:SetInside(nil, true)
+		t:SetInside()
 		
 		_G["MerchantItem"..i.."MoneyFrame"]:ClearAllPoints()
 		_G["MerchantItem"..i.."MoneyFrame"]:Point("BOTTOMLEFT", b, "BOTTOMRIGHT", 3, 0)
@@ -56,7 +56,7 @@ local function LoadSkin()
 	MerchantBuyBackItemItemButton:StyleButton(false)
 	MerchantBuyBackItemItemButton:SetTemplate("Default", true)
 	MerchantBuyBackItemItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
-	MerchantBuyBackItemItemButtonIconTexture:SetInside(nil, true)
+	MerchantBuyBackItemItemButtonIconTexture:SetInside()
 
 	
 	MerchantRepairItemButton:StyleButton(false)
@@ -66,19 +66,19 @@ local function LoadSkin()
 
 		if region:GetObjectType() == "Texture" then
 			region:SetTexCoord(0.04, 0.24, 0.06, 0.5)
-			region:SetInside(nil, true)
+			region:SetInside()
 		end
 	end
 	
 	MerchantGuildBankRepairButton:StyleButton()
 	MerchantGuildBankRepairButton:SetTemplate("Default", true)
 	MerchantGuildBankRepairButtonIcon:SetTexCoord(0.61, 0.82, 0.1, 0.52)
-	MerchantGuildBankRepairButtonIcon:SetInside(nil, true)
+	MerchantGuildBankRepairButtonIcon:SetInside()
 	
 	MerchantRepairAllButton:StyleButton(false)
 	MerchantRepairAllButton:SetTemplate("Default", true)
 	MerchantRepairAllIcon:SetTexCoord(0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
-	MerchantRepairAllIcon:SetInside(nil, true)
+	MerchantRepairAllIcon:SetInside()
 	
 	-- Skin misc frames
 	MerchantFrame:Width(360)

@@ -117,12 +117,12 @@ local function Point(obj, arg1, arg2, arg3, arg4, arg5)
 	obj:SetPoint(arg1, arg2, arg3, arg4, arg5)
 end
 
-local function SetOutside(obj, anchor, clearPoints, xOffset, yOffset)
+local function SetOutside(obj, anchor, xOffset, yOffset)
 	xOffset = xOffset or 2
 	yOffset = yOffset or 2
 	anchor = anchor or obj:GetParent()
 	
-	if clearPoints then
+	if obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
 	
@@ -130,12 +130,12 @@ local function SetOutside(obj, anchor, clearPoints, xOffset, yOffset)
 	obj:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT', xOffset, -yOffset)
 end
 
-local function SetInside(obj, anchor, clearPoints, xOffset, yOffset)
+local function SetInside(obj, anchor, xOffset, yOffset)
 	xOffset = xOffset or 2
 	yOffset = yOffset or 2
 	anchor = anchor or obj:GetParent()
 	
-	if clearPoints then
+	if obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
 	
@@ -165,7 +165,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 		
 		if not f.oborder and not f.iborder then
 			local border = CreateFrame("Frame", nil, f)
-			border:SetInside(f, nil, E.mult, E.mult)
+			border:SetInside(f, E.mult, E.mult)
 			border:SetBackdrop({
 				edgeFile = E["media"].blankTex, 
 				edgeSize = E.mult, 
@@ -176,7 +176,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 			
 			if f.oborder then return end
 			local border = CreateFrame("Frame", nil, f)
-			border:SetOutside(f, nil, E.mult, E.mult)
+			border:SetOutside(f, E.mult, E.mult)
 			border:SetFrameLevel(f:GetFrameLevel() + 1)
 			border:SetBackdrop({
 				edgeFile = E["media"].blankTex, 
@@ -232,7 +232,7 @@ local function CreateShadow(f)
 	local shadow = CreateFrame("Frame", nil, f)
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(f:GetFrameStrata())
-	shadow:SetOutside(f, nil, 3, 3)
+	shadow:SetOutside(f, 3, 3)
 	shadow:SetBackdrop( { 
 		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(3),
 		insets = {left = E:Scale(5), right = E:Scale(5), top = E:Scale(5), bottom = E:Scale(5)},

@@ -799,7 +799,7 @@ function E:Contruct_StaticPopups()
 		_G["ElvUI_StaticPopup"..index.."ItemFrame"]:SetTemplate("Default")
 		_G["ElvUI_StaticPopup"..index.."ItemFrame"]:StyleButton()
 		_G["ElvUI_StaticPopup"..index.."ItemFrameIconTexture"]:SetTexCoord(unpack(E.TexCoords))
-		_G["ElvUI_StaticPopup"..index.."ItemFrameIconTexture"]:SetInside(nil, true)
+		_G["ElvUI_StaticPopup"..index.."ItemFrameIconTexture"]:SetInside()
 	end
 	
 	E:SecureHook('StaticPopup_SetUpPosition')

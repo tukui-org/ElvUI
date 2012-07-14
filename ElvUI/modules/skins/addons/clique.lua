@@ -91,7 +91,7 @@ local function LoadSkin()
 	
 	CliqueSpellTab:GetRegions():SetSize(.1,.1)
 	CliqueSpellTab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-	CliqueSpellTab:GetNormalTexture():SetInside(nil, true)
+	CliqueSpellTab:GetNormalTexture():SetInside()
 	CliqueSpellTab:CreateBackdrop("Transparent")
 	CliqueSpellTab.backdrop:SetAllPoints()
 	CliqueSpellTab:StyleButton(true)

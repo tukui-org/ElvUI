@@ -43,7 +43,7 @@ local function LoadSkin()
 			button:StyleButton()
 			button:SetTemplate("Default", true)
 
-			icon:SetInside(nil, true)
+			icon:SetInside()
 			icon:SetTexCoord(unpack(E.TexCoords))
 		end
 	end
@@ -57,7 +57,7 @@ local function LoadSkin()
 		button:StyleButton(true)
 		button:SetTemplate("Default", true)
 
-		texture:SetInside(nil, true)
+		texture:SetInside()
 		texture:SetTexCoord(unpack(E.TexCoords))
 	end
 	
@@ -88,7 +88,7 @@ local function LoadSkin()
 		button:StripTextures()
 		button:SetTemplate("Default")
 		button:StyleButton(true)
-		icon:SetInside(nil, true)
+		icon:SetInside()
 		icon:SetTexCoord(unpack(E.TexCoords))
 	end
 	

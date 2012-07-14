@@ -211,7 +211,7 @@ function S:HandleNextPrevButton(btn, horizonal)
 			end
 		end
 
-		btn:GetNormalTexture():SetInside(nil, true)
+		btn:GetNormalTexture():SetInside()
 		if btn:GetDisabledTexture() then
 			btn:GetDisabledTexture():SetAllPoints(btn:GetNormalTexture())
 		end
@@ -234,7 +234,7 @@ function S:HandleRotateButton(btn)
 	
 	btn:GetHighlightTexture():SetTexture(1, 1, 1, 0.3)
 	
-	btn:GetNormalTexture():SetInside(nil, true)
+	btn:GetNormalTexture():SetInside()
 	btn:GetPushedTexture():SetAllPoints(btn:GetNormalTexture())	
 	btn:GetHighlightTexture():SetAllPoints(btn:GetNormalTexture())
 end
@@ -276,7 +276,7 @@ end
 function S:HandleCheckBox(frame)
 	frame:StripTextures()
 	frame:CreateBackdrop("Default")
-	frame.backdrop:SetInside(nil, nil, 4, 4)
+	frame.backdrop:SetInside(nil, 4, 4)
 	
 	if frame.SetCheckedTexture then
 		frame:SetCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check")
@@ -312,7 +312,7 @@ function S:HandleItemButton(b, shrinkIcon)
 		
 		if shrinkIcon then
 			b.backdrop:SetAllPoints()
-			icon:SetInside(b, true)
+			icon:SetInside(b)
 		else
 			b.backdrop:SetOutside(icon, true)
 		end

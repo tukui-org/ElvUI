@@ -123,7 +123,7 @@ local function LoadSkin()
 	--Hearth Stone Button
 	HelpFrameCharacterStuckHearthstone:StyleButton()
 	HelpFrameCharacterStuckHearthstone:SetTemplate("Default", true)
-	HelpFrameCharacterStuckHearthstone.IconTexture:SetInside(nil, true)
+	HelpFrameCharacterStuckHearthstone.IconTexture:SetInside()
 	HelpFrameCharacterStuckHearthstone.IconTexture:SetTexCoord(unpack(E.TexCoords))
 	
 	local function navButtonFrameLevel(self)

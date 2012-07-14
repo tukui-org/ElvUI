@@ -219,7 +219,7 @@ local function LoadSkin()
 	FriendsTabHeaderSoRButton:StyleButton()
 	FriendsTabHeaderSoRButtonIcon:SetDrawLayer('OVERLAY')
 	FriendsTabHeaderSoRButtonIcon:SetTexCoord(unpack(E.TexCoords))
-	FriendsTabHeaderSoRButtonIcon:SetInside(nil, true)
+	FriendsTabHeaderSoRButtonIcon:SetInside()
 	FriendsTabHeaderSoRButton:Point('TOPRIGHT', FriendsTabHeader, 'TOPRIGHT', -8, -56)
 	
 	S:HandleScrollBar(FriendsFrameIgnoreScrollFrameScrollBar, 4)
