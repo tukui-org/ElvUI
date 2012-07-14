@@ -279,6 +279,15 @@ function AB:ReassignBindings()
 	end
 end
 
+function AB:RemoveBindings()
+	if InCombatLockdown() then return end	
+	for _, bar in pairs(self["handledBars"]) do
+		if not bar then return end
+		
+		ClearOverrideBindings(bar)
+	end
+end
+
 function AB:UpdateButtonSettings()
 	if E.private.actionbar.enable ~= true then return end
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return; end
@@ -710,6 +719,8 @@ function AB:Initialize()
 	self:LoadKeyBinder()
 	self:UpdateCooldownSettings()
 	self:RegisterEvent("UPDATE_BINDINGS", "ReassignBindings")
+	self:RegisterEvent("PET_BATTLE_CLOSE", "ReassignBindings")
+	self:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "MultiActionBar_Update")
 	self:RegisterEvent('CVAR_UPDATE')
 	self:ReassignBindings()
