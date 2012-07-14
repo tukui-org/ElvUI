@@ -142,8 +142,13 @@ local function LoadSkin()
 	PetJournalPetCard:SetTemplate('Default')
 	PetJournalPetCardInset:StripTextures()
 	
-
+	PetJournalPetCardPetInfo.levelBG:Kill()
 	PetJournalPetCardPetInfoIcon:SetTexCoord(unpack(E.TexCoords))
+	PetJournalPetCardPetInfo:CreateBackdrop()
+	PetJournalPetCardPetInfo.backdrop:SetOutside(PetJournalPetCardPetInfoIcon, true)
+	PetJournalPetCardPetInfoIcon:SetParent(PetJournalPetCardPetInfo.backdrop)
+	PetJournalPetCardPetInfo.backdrop:SetFrameLevel(PetJournalPetCardPetInfo.backdrop:GetFrameLevel() + 2)
+	PetJournalPetCardPetInfo.level:SetParent(PetJournalPetCardPetInfo.backdrop)
 	
 	PetJournalPrimaryAbilityTooltip:StripTextures()
 	PetJournalPrimaryAbilityTooltip:SetTemplate('Transparent')
