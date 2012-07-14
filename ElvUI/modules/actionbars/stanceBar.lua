@@ -4,6 +4,7 @@ local AB = E:GetModule('ActionBars');
 local ceil = math.ceil;
 
 local bar = CreateFrame('Frame', 'ElvUI_BarShapeShift', E.UIParent, 'SecureHandlerStateTemplate');
+FRAMELOCK_STATES.PETBATTLES['ElvUI_BarShapeShift'] = 'hidden'
 
 local states = {
 	["DRUID"] = "show",

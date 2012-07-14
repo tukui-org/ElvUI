@@ -58,14 +58,14 @@ function RU:ToggleRaidUtil(event)
 
 	if CheckRaidStatus() then
 		if RaidUtilityPanel.toggled == true then
-			ShowButton:Hide()
+			RaidUtility_ShowButton:Hide()
 			RaidUtilityPanel:Show()		
 		else
-			ShowButton:Show()
+			RaidUtility_ShowButton:Show()
 			RaidUtilityPanel:Hide()
 		end
 	else
-		ShowButton:Hide()
+		RaidUtility_ShowButton:Hide()
 		RaidUtilityPanel:Hide()
 	end
 	
@@ -84,13 +84,14 @@ function RU:Initialize()
 	RaidUtilityPanel:SetFrameLevel(3)
 	RaidUtilityPanel.toggled = false
 	RaidUtilityPanel:SetFrameStrata("HIGH")
-
+	FRAMELOCK_STATES.PETBATTLES['RaidUtilityPanel'] = 'hidden'
+	
 	--Show Button
-	self:CreateUtilButton("ShowButton", E.UIParent, "UIMenuButtonStretchTemplate, SecureHandlerClickTemplate", 136, 18, "TOP", E.UIParent, "TOP", -400, 2, RAID_CONTROL, nil)
-	ShowButton:SetFrameRef("RaidUtilityPanel", RaidUtilityPanel)
-	ShowButton:SetAttribute("_onclick", [=[
+	self:CreateUtilButton("RaidUtility_ShowButton", E.UIParent, "UIMenuButtonStretchTemplate, SecureHandlerClickTemplate", 136, 18, "TOP", E.UIParent, "TOP", -400, 2, RAID_CONTROL, nil)
+	RaidUtility_ShowButton:SetFrameRef("RaidUtilityPanel", RaidUtilityPanel)
+	RaidUtility_ShowButton:SetAttribute("_onclick", [=[
 		local raidUtil = self:GetFrameRef("RaidUtilityPanel")
-		local closeButton = raidUtil:GetFrameRef("CloseButton")
+		local closeButton = raidUtil:GetFrameRef("RaidUtility_CloseButton")
 		self:Hide(); 
 		raidUtil:Show(); 
 
@@ -111,17 +112,19 @@ function RU:Initialize()
 		raidUtil:SetPoint(raidUtilPoint, self, raidUtilPoint)
 		closeButton:SetPoint(raidUtilPoint, raidUtil, closeButtonPoint, 0, yOffset)
 	]=])
-	ShowButton:SetScript("OnMouseUp", function(self) RaidUtilityPanel.toggled = true end)
-	ShowButton:SetMovable(true)
-	ShowButton:SetClampedToScreen(true)
-	ShowButton:SetClampRectInsets(0, 0, -1, 1)
-	ShowButton:RegisterForDrag("RightButton")
-	ShowButton:SetFrameStrata("HIGH")
-	ShowButton:SetScript("OnDragStart", function(self) 
+	RaidUtility_ShowButton:SetScript("OnMouseUp", function(self) RaidUtilityPanel.toggled = true end)
+	RaidUtility_ShowButton:SetMovable(true)
+	RaidUtility_ShowButton:SetClampedToScreen(true)
+	RaidUtility_ShowButton:SetClampRectInsets(0, 0, -1, 1)
+	RaidUtility_ShowButton:RegisterForDrag("RightButton")
+	RaidUtility_ShowButton:SetFrameStrata("HIGH")
+	RaidUtility_ShowButton:SetScript("OnDragStart", function(self) 
 		self:StartMoving()
 	end)
 	
-	ShowButton:SetScript("OnDragStop", function(self) 
+	FRAMELOCK_STATES.PETBATTLES['RaidUtility_ShowButton'] = 'hidden'
+	
+	RaidUtility_ShowButton:SetScript("OnDragStop", function(self) 
 		self:StopMovingOrSizing()
 		local point = self:GetPoint()
 		local xOffset = self:GetCenter()
@@ -136,11 +139,11 @@ function RU:Initialize()
 	end)
 
 	--Close Button
-	self:CreateUtilButton("CloseButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate, SecureHandlerClickTemplate", 136, 18, "TOP", RaidUtilityPanel, "BOTTOM", 0, -1, CLOSE, nil)
-	CloseButton:SetFrameRef("ShowButton", ShowButton)
-	CloseButton:SetAttribute("_onclick", [=[self:GetParent():Hide(); self:GetFrameRef("ShowButton"):Show();]=])
-	CloseButton:SetScript("OnMouseUp", function(self) RaidUtilityPanel.toggled = false end)
-	RaidUtilityPanel:SetFrameRef("CloseButton", CloseButton)
+	self:CreateUtilButton("RaidUtility_CloseButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate, SecureHandlerClickTemplate", 136, 18, "TOP", RaidUtilityPanel, "BOTTOM", 0, -1, CLOSE, nil)
+	RaidUtility_CloseButton:SetFrameRef("RaidUtility_ShowButton", RaidUtility_ShowButton)
+	RaidUtility_CloseButton:SetAttribute("_onclick", [=[self:GetParent():Hide(); self:GetFrameRef("RaidUtility_ShowButton"):Show();]=])
+	RaidUtility_CloseButton:SetScript("OnMouseUp", function(self) RaidUtilityPanel.toggled = false end)
+	RaidUtilityPanel:SetFrameRef("RaidUtility_CloseButton", RaidUtility_CloseButton)
 	
 	--Disband Raid button
 	self:CreateUtilButton("DisbandRaidButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate", RaidUtilityPanel:GetWidth() * 0.8, 18, "TOP", RaidUtilityPanel, "TOP", 0, -5, L['Disband Group'], nil)
@@ -209,8 +212,8 @@ function RU:Initialize()
 			"RoleCheckButton",
 			"ReadyCheckButton",
 			"RaidControlButton",
-			"ShowButton",
-			"CloseButton"
+			"RaidUtility_ShowButton",
+			"RaidUtility_CloseButton"
 		}
 
 		for i, button in pairs(buttons) do
