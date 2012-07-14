@@ -100,49 +100,70 @@ local function LoadSkin()
 	
 	S:HandleItemButton(PetJournalHealPetButton, true)
 	PetJournalHealPetButton.texture:SetTexture([[Interface\Icons\spell_magic_polymorphrabbit]])
-	
+	PetJournalLoadoutBorder:StripTextures()
 	for i=1, 3 do
 		_G['PetJournalLoadoutPet'..i]:StripTextures()
-		_G['PetJournalLoadoutPet'..i]:SetTemplate()
+		_G['PetJournalLoadoutPet'..i]:CreateBackdrop()
+		_G['PetJournalLoadoutPet'..i].backdrop:SetAllPoints()
+		_G['PetJournalLoadoutPet'..i].petTypeIcon:SetPoint('BOTTOMLEFT', 2, 2)
 		
-		_G['PetJournalLoadoutPet'..i].dragButton:SetTemplate('Default', true)
 		_G['PetJournalLoadoutPet'..i].dragButton:StyleButton()
+		_G['PetJournalLoadoutPet'..i].dragButton:SetOutside(_G['PetJournalLoadoutPet'..i..'Icon'])
+		_G['PetJournalLoadoutPet'..i].dragButton:SetFrameLevel(_G['PetJournalLoadoutPet'..i].dragButton:GetFrameLevel() + 4)
+		S:HandleItemButton(_G['PetJournalLoadoutPet'..i])
+		_G['PetJournalLoadoutPet'..i].backdrop:SetFrameLevel(_G['PetJournalLoadoutPet'..i].backdrop:GetFrameLevel() + 2)
+		
+		_G['PetJournalLoadoutPet'..i].setButton:StripTextures()
+		_G['PetJournalLoadoutPet'..i..'HealthFrame'].healthBar:StripTextures()
+		_G['PetJournalLoadoutPet'..i..'HealthFrame'].healthBar:CreateBackdrop('Default')
+		_G['PetJournalLoadoutPet'..i..'HealthFrame'].healthBar:SetStatusBarTexture(E.media.normTex)
+		_G['PetJournalLoadoutPet'..i..'XPBar']:StripTextures()
+		_G['PetJournalLoadoutPet'..i..'XPBar']:CreateBackdrop('Default')	
+		_G['PetJournalLoadoutPet'..i..'XPBar']:SetStatusBarTexture(E.media.normTex)		
+		_G['PetJournalLoadoutPet'..i..'XPBar']:SetFrameLevel(_G['PetJournalLoadoutPet'..i..'XPBar']:GetFrameLevel() + 2)
+		
+		for index = 1, 3 do
+			local f = _G['PetJournalLoadoutPet'..i..'Spell'..index]
+			S:HandleItemButton(f)
+			f.FlyoutArrow:SetTexture([[Interface\Buttons\ActionBarFlyoutButton]])
+			_G['PetJournalLoadoutPet'..i..'Spell'..index..'Icon']:SetInside(f)
+		end
 	end
-	PetJournalPetCardList:SetPoint('TOPLEFT', PetJournal, 'TOPRIGHT', 1, -23)
-	PetJournalPetCardList.MainCard:StripTextures()
-	PetJournalPetCardList.MainCard:SetTemplate('Transparent')
+
+	PetJournalSpellSelect:StripTextures()
+	for i=1, 2 do
+		local btn = _G['PetJournalSpellSelectSpell'..i]
+		S:HandleItemButton(btn)
+		_G['PetJournalSpellSelectSpell'..i..'Icon']:SetInside(btn)
+		_G['PetJournalSpellSelectSpell'..i..'Icon']:SetDrawLayer('BORDER')
+	end
 	
-	PetJournalPetCardListIconBG:Kill()
-	PetJournalPetCardListIcon:SetTexCoord(unpack(E.TexCoords))
+	PetJournalPetCard:StripTextures()
+	PetJournalPetCard:SetTemplate('Default')
+	PetJournalPetCardInset:StripTextures()
 	
-	S:HandleCloseButton(PetJournalPetCardListCloseButton)
-	PetJournalPetCardListCloseButton:ClearAllPoints()
-	PetJournalPetCardListCloseButton:Point('TOPRIGHT', PetJournalPetCardList, 'TOPRIGHT')
-	PetJournalPetCardListCloseButton:SetFrameLevel(PetJournalPetCardListCloseButton:GetFrameLevel() + 2)
+
+	PetJournalPetCardPetInfoIcon:SetTexCoord(unpack(E.TexCoords))
 	
 	PetJournalPrimaryAbilityTooltip:StripTextures()
 	PetJournalPrimaryAbilityTooltip:SetTemplate('Transparent')
 	
 	for i=1, 6 do
-		local frame = _G['PetJournalPetCardListSpell'..i]
+		local frame = _G['PetJournalPetCardSpell'..i]
+		frame:SetFrameLevel(frame:GetFrameLevel() + 2)
 		frame:DisableDrawLayer('BACKGROUND')
 		frame:CreateBackdrop('Default')
 		frame.backdrop:SetAllPoints()
 		frame.icon:SetTexCoord(unpack(E.TexCoords))
-		frame.icon:ClearAllPoints()
-		frame.icon:SetPoint('BOTTOMLEFT', frame, 'BOTTOMLEFT', 2, 2)
-		frame.icon:Size(34)
+		frame.icon:SetInside(frame.backdrop, true)
 	end
-	
-	PetJournalPetCardListHealthStatusBar:StripTextures()
-	PetJournalPetCardListHealthStatusBar:CreateBackdrop('Default')
-	PetJournalPetCardListHealthStatusBar:SetStatusBarTexture(E.media.normTex)
-	PetJournalPetCardListHealthStatusBar.healthRankText:SetPoint('CENTER', 0, 1)
-	PetJournalPetCardListStatusBar:StripTextures()
-	PetJournalPetCardListStatusBar:CreateBackdrop('Default')	
-	PetJournalPetCardListStatusBar:SetStatusBarTexture(E.media.normTex)
-	PetJournalPetCardListStatusBar:SetPoint('TOP', PetJournalPetCardListHealthStatusBar, 'BOTTOM', 0, -6)
-	PetJournalPetCardListStatusBar.rankText:SetPoint('CENTER', 0, 1)
+
+	PetJournalPetCardHealthFrame.healthBar:StripTextures()
+	PetJournalPetCardHealthFrame.healthBar:CreateBackdrop('Default')
+	PetJournalPetCardHealthFrame.healthBar:SetStatusBarTexture(E.media.normTex)
+	PetJournalPetCardXPBar:StripTextures()
+	PetJournalPetCardXPBar:CreateBackdrop('Default')	
+	PetJournalPetCardXPBar:SetStatusBarTexture(E.media.normTex)
 end
 
 S:RegisterSkin("Blizzard_PetJournal", LoadSkin)

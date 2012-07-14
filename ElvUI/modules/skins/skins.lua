@@ -301,6 +301,8 @@ function S:HandleItemButton(b, shrinkIcon)
 	local icon = b.icon
 	if b:GetName() and _G[b:GetName()..'IconTexture'] then
 		icon = _G[b:GetName()..'IconTexture']
+	elseif b:GetName() and _G[b:GetName()..'Icon'] then
+		icon = _G[b:GetName()..'Icon']
 	end
 	
 	if icon then
@@ -312,7 +314,7 @@ function S:HandleItemButton(b, shrinkIcon)
 			b.backdrop:SetAllPoints()
 			icon:SetInside(b, true)
 		else
-			b.backdrop:SetOutside(icon)
+			b.backdrop:SetOutside(icon, true)
 		end
 		icon:SetParent(b.backdrop)
 	end

@@ -6,4 +6,5 @@ function B:KillBlizzard()
 	TalentMicroButtonAlert:Kill()
 	HelpPlate:Kill()
 	HelpPlateTooltip:Kill()
+	CompanionsMicroButtonAlert:Kill()
 end

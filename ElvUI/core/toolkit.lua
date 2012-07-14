@@ -261,6 +261,8 @@ local function StripTextures(object, kill)
 				region:Kill()
 			elseif region:GetDrawLayer() == kill then
 				region:SetTexture(nil)
+			elseif kill and type(kill) == 'string' and region:GetTexture() ~= kill then
+				region:SetTexture(nil)
 			else
 				region:SetTexture(nil)
 			end

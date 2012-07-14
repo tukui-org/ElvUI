@@ -201,6 +201,7 @@ end
 
 function AB:CreateBar(id)
 	local bar = CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate');
+	FRAMELOCK_STATES.PETBATTLES['ElvUI_Bar'..id] = 'hidden'
 	local point, anchor, attachTo, x, y = string.split(',', self['barDefaults']['bar'..id].position)
 	bar:Point(point, anchor, attachTo, x, y)
 	bar.id = id
