@@ -109,9 +109,9 @@ local function LoadSkin()
 		
 		_G['PetJournalLoadoutPet'..i].dragButton:StyleButton()
 		_G['PetJournalLoadoutPet'..i].dragButton:SetOutside(_G['PetJournalLoadoutPet'..i..'Icon'])
-		_G['PetJournalLoadoutPet'..i].dragButton:SetFrameLevel(_G['PetJournalLoadoutPet'..i].dragButton:GetFrameLevel() + 4)
+		_G['PetJournalLoadoutPet'..i].dragButton:SetFrameLevel(_G['PetJournalLoadoutPet'..i].dragButton:GetFrameLevel() + 1)
 		S:HandleItemButton(_G['PetJournalLoadoutPet'..i])
-		_G['PetJournalLoadoutPet'..i].backdrop:SetFrameLevel(_G['PetJournalLoadoutPet'..i].backdrop:GetFrameLevel() + 2)
+		_G['PetJournalLoadoutPet'..i].backdrop:SetFrameLevel(_G['PetJournalLoadoutPet'..i].backdrop:GetFrameLevel() + 1)
 		
 		_G['PetJournalLoadoutPet'..i].setButton:StripTextures()
 		_G['PetJournalLoadoutPet'..i..'HealthFrame'].healthBar:StripTextures()
