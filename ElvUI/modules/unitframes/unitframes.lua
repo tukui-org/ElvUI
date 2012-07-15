@@ -8,6 +8,14 @@ local ElvUF = ns.oUF
 local AceTimer = LibStub:GetLibrary("AceTimer-3.0")
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
+local removeMenuOptions = {
+	["SET_FOCUS"] = true,
+	["CLEAR_FOCUS"] = true,
+	["MOVE_PLAYER_FRAME"] = true,
+	["MOVE_TARGET_FRAME"] = true,
+	["PET_ABANDON"] = E.myclass ~= 'HUNTER',
+}
+
 UF['headerstoload'] = {}
 UF['unitgroupstoload'] = {}
 UF['unitstoload'] = {}
@@ -615,20 +623,12 @@ function UF:Initialize()
 	if E.private["unitframe"].disableBlizzard then
 		self:DisableBlizzard()	
 
-		UnitPopupMenus["SELF"] = { "PVP_FLAG", "LOOT_METHOD", "LOOT_THRESHOLD", "OPT_OUT_LOOT_TITLE", "LOOT_PROMOTE", "DUNGEON_DIFFICULTY", "RAID_DIFFICULTY", "RESET_INSTANCES", "RAID_TARGET_ICON", "SELECT_ROLE", "CONVERT_TO_PARTY", "CONVERT_TO_RAID", "INSTANCE_LEAVE", "LEAVE", "CANCEL" };
-		UnitPopupMenus["PET"] = { "PET_PAPERDOLL", "PET_RENAME", "PET_ABANDON", "PET_DISMISS", "CANCEL" };
-		UnitPopupMenus["PARTY"] = { "MUTE", "UNMUTE", "PARTY_SILENCE", "PARTY_UNSILENCE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "WHISPER", "PROMOTE", "PROMOTE_GUIDE", "LOOT_PROMOTE", "VOTE_TO_KICK", "UNINVITE", "INSPECT", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "PET_BATTLE_PVP_DUEL", "RAID_TARGET_ICON", "SELECT_ROLE", "PVP_REPORT_AFK", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL" }
-		UnitPopupMenus["PLAYER"] = { "WHISPER", "INSPECT", "INVITE", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "PET_BATTLE_PVP_DUEL", "RAID_TARGET_ICON", "RAF_SUMMON", "RAF_GRANT_LEVEL", "REPORT_PLAYER", "CANCEL" }
-		UnitPopupMenus["RAID_PLAYER"] = { "MUTE", "UNMUTE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "WHISPER", "INSPECT", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "PET_BATTLE_PVP_DUEL", "RAID_TARGET_ICON", "SELECT_ROLE", "RAID_LEADER", "RAID_PROMOTE", "RAID_DEMOTE", "LOOT_PROMOTE", "VOTE_TO_KICK", "RAID_REMOVE", "PVP_REPORT_AFK", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL" };
-		UnitPopupMenus["RAID"] = { "WHISPER", "MUTE", "UNMUTE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "RAID_LEADER", "RAID_PROMOTE", "RAID_MAINTANK", "RAID_MAINASSIST", "RAID_TARGET_ICON", "SELECT_ROLE", "LOOT_PROMOTE", "RAID_DEMOTE", "VOTE_TO_KICK", "RAID_REMOVE", "PVP_REPORT_AFK", "CANCEL" };
-		UnitPopupMenus["VEHICLE"] = { "RAID_TARGET_ICON", "VEHICLE_LEAVE", "CANCEL" }
-		UnitPopupMenus["TARGET"] = { "RAID_TARGET_ICON", "CANCEL" }
-		UnitPopupMenus["ARENAENEMY"] = { "CANCEL" }
-		UnitPopupMenus["FOCUS"] = { "RAID_TARGET_ICON", "CANCEL" }
-		UnitPopupMenus["BOSS"] = { "RAID_TARGET_ICON", "CANCEL" }	
-		
-		if E.myclass == 'HUNTER' then
-			UnitPopupMenus["PET"] = { "PET_PAPERDOLL", "PET_RENAME", "PET_ABANDON", "CANCEL" };
+		for _, menu in pairs(UnitPopupMenus) do
+			for index = #menu, 1, -1 do
+				if removeMenuOptions[menu[index]] then
+					table.remove(menu, index)
+				end
+			end
 		end
 		
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', 'DisableBlizzard')
