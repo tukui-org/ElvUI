@@ -21,7 +21,7 @@ AB["barDefaults"] = {
 		['page'] = 5,
 		['bindButtons'] = "MULTIACTIONBAR2BUTTON",
 		['conditions'] = "",
-		['position'] = "BOTTOM,ElvUI_Bar1,TOP,0,2",
+		['position'] = "BOTTOM,ElvUI_Bar1,TOP,0,-38",
 	},
 	["bar3"] = {
 		['page'] = 6,
@@ -730,21 +730,6 @@ function AB:Initialize()
 	end	
 	
 	SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
-	
-	self:PositionBar2And3()
-end
-
-function AB:PositionBar2And3()
-	local spacing = E:Scale(E.db.actionbar.bar1.buttonspacing);
-	local size = E:Scale(E.db.actionbar.bar1.buttonsize);
-	if not E:HasMoverBeenMoved('ElvAB_2') then
-		ElvAB_2:ClearAllPoints()
-		ElvAB_2:SetPoint('TOP', ElvUI_Bar1, 'BOTTOM', 0, ((size * 2) + (spacing * 3)))
-	end
-	if not E:HasMoverBeenMoved('ElvAB_3') then
-		ElvAB_3:ClearAllPoints()
-		ElvAB_3:SetPoint('TOP', ElvUI_Bar1, 'BOTTOM', 0, ((size * 3) + (spacing * 4)))
-	end
 end
 
 E:RegisterModule(AB:GetName())

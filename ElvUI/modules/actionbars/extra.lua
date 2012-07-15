@@ -3,7 +3,7 @@ local AB = E:GetModule('ActionBars');
 
 function AB:SetupExtraButton()
 	local holder = CreateFrame('Frame', nil, E.UIParent)
-	holder:Point('BOTTOM', ElvUI_Bar1, 'TOP', 0, 100)
+	holder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 250)
 	holder:Size(ExtraActionBarFrame:GetSize())
 	
 	ExtraActionBarFrame:SetParent(holder)
