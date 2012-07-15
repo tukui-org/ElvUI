@@ -87,7 +87,7 @@ function RU:Initialize()
 	E.FrameLocks['RaidUtilityPanel'] = true
 	
 	--Show Button
-	self:CreateUtilButton("RaidUtility_ShowButton", E.UIParent, "UIMenuButtonStretchTemplate, SecureHandlerClickTemplate", 136, 18, "TOP", E.UIParent, "TOP", -400, 2, RAID_CONTROL, nil)
+	self:CreateUtilButton("RaidUtility_ShowButton", E.UIParent, "UIMenuButtonStretchTemplate, SecureHandlerClickTemplate", 136, 18, "TOP", E.UIParent, "TOP", 0, 2, RAID_CONTROL, nil)
 	RaidUtility_ShowButton:SetFrameRef("RaidUtilityPanel", RaidUtilityPanel)
 	RaidUtility_ShowButton:SetAttribute("_onclick", [=[
 		local raidUtil = self:GetFrameRef("RaidUtilityPanel")

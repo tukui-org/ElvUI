@@ -223,7 +223,7 @@ P['unitframe'] = {
 				['camDistanceScale'] = 1,
 			},
 			['buffs'] = {
-				['enable'] = true,
+				['enable'] = false,
 				['perrow'] = 8,
 				['numrows'] = 1,
 				['growth-x'] = 'LEFT',
