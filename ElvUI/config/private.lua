@@ -122,6 +122,7 @@ V['skins'] = {
 		["stable"] = true,
 		["bgmap"] = true,
 		['mounts'] = true,
+		['petbattleui'] = true,
 	},
 }
 

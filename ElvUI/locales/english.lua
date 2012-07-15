@@ -8,6 +8,7 @@ else
 end
 
 if not L then return; end
+L["Pet Battle"] = true;
 L['Alert Frames'] = true;
 L["Loot Frames"] = true;
 L["24-Hour Time"] = "24-Hour Time"

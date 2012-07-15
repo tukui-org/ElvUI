@@ -439,7 +439,12 @@ E.Options.args.skins = {
 					type = "toggle",
 					name = L["BG Map"],
 					desc = L["TOGGLESKIN_DESC"],									
-				},				
+				},		
+				petbattleui = {
+					type = "toggle",
+					name = L["Pet Battle"],
+					desc = L["TOGGLESKIN_DESC"],									
+				},		
 			},
 		},
 	},
