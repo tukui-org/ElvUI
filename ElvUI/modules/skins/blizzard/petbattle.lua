@@ -209,6 +209,7 @@ local function LoadSkin()
 	bar:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 14)
 	bar:SetFrameLevel(0)
 	bar:SetFrameStrata('BACKGROUND')
+	bar.backdropTexture:SetDrawLayer('BACKGROUND', 0)
 	
 	bf:StripTextures()
 	bf.TurnTimer:StripTextures()
