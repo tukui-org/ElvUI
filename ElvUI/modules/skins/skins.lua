@@ -314,7 +314,7 @@ function S:HandleItemButton(b, shrinkIcon)
 			b.backdrop:SetAllPoints()
 			icon:SetInside(b)
 		else
-			b.backdrop:SetOutside(icon, true)
+			b.backdrop:SetOutside(icon)
 		end
 		icon:SetParent(b.backdrop)
 	end
