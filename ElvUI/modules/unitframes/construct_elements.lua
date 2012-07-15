@@ -141,9 +141,9 @@ function UF:Construct_AuraIcon(button)
 	button.cd.noOCC = true
 	button.cd.noCooldownCount = true
 	button.cd:SetReverse()
-	button.cd:SetInside(nil, true)
+	button.cd:SetInside()
 	
-	button.icon:SetInside(nil, true)
+	button.icon:SetInside()
 	button.icon:SetTexCoord(unpack(E.TexCoords))
 	button.icon:SetDrawLayer('ARTWORK')
 	
@@ -660,7 +660,7 @@ function UF:Construct_AuraBars()
 	
 	self:SetTemplate('Default')
 
-	bar:SetInside(self, true)
+	bar:SetInside(self)
 	UF['statusbars'][bar] = true
 	UF:Update_StatusBar(bar)
 		
@@ -673,7 +673,7 @@ function UF:Construct_AuraBars()
 	bar.spellname:SetPoint('LEFT', bar, 'LEFT', 2, 0)
 	
 	bar.iconHolder:SetTemplate('Default')
-	bar.icon:SetInside(bar.iconHolder, true)
+	bar.icon:SetInside(bar.iconHolder)
 	bar.icon:SetDrawLayer('OVERLAY')
 	
 	

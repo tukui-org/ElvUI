@@ -128,7 +128,7 @@ local function LoadSkin()
 	local function SkinTab(tab)
 		tab:StripTextures()
 		tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-		tab:GetNormalTexture():SetInside(nil, true)
+		tab:GetNormalTexture():SetInside()
 		
 		tab.pushed = true;
 		tab:CreateBackdrop("Default")
@@ -166,7 +166,7 @@ local function LoadSkin()
 			local tab = _G["SpellBookSkillLineTab"..i]
 			local _, _, _, _, isGuild = GetSpellTabInfo(i)
 			if isGuild then
-				tab:GetNormalTexture():SetInside(nil, true)
+				tab:GetNormalTexture():SetInside()
 				tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))					
 			end
 		end
@@ -212,7 +212,7 @@ local function LoadSkin()
 		
 		if icon then
 			icon:SetTexCoord(unpack(E.TexCoords))
-			icon:SetInside(nil, true)
+			icon:SetInside()
 			
 			button:SetFrameLevel(button:GetFrameLevel() + 2)
 			if not button.backdrop then

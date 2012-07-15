@@ -19,7 +19,7 @@ local function LoadSkin()
 		button_bracket:Kill()
 		button_bg:Kill()
 		button_icon:SetTexCoord(unpack(E.TexCoords))
-		button_icon:SetInside(nil, true)
+		button_icon:SetInside()
 
 		ItemSocketingFrame:HookScript("OnUpdate", function(self)
 			gemColor = GetSocketTypes(i)

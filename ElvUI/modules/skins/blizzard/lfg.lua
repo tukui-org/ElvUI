@@ -216,7 +216,7 @@ local function LoadSkin()
 				tab:DisableDrawLayer('BACKGROUND')
 				
 				tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-				tab:GetNormalTexture():SetInside(nil, true)
+				tab:GetNormalTexture():SetInside()
 				
 				tab.pushed = true;
 				tab:CreateBackdrop("Default")

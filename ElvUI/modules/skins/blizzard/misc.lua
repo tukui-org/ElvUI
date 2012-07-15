@@ -77,7 +77,7 @@ local function LoadSkin()
 			_G["StaticPopup"..i.."ItemFrame"]:SetTemplate("Default")
 			_G["StaticPopup"..i.."ItemFrame"]:StyleButton()
 			_G["StaticPopup"..i.."ItemFrameIconTexture"]:SetTexCoord(unpack(E.TexCoords))
-			_G["StaticPopup"..i.."ItemFrameIconTexture"]:SetInside(nil, true)
+			_G["StaticPopup"..i.."ItemFrameIconTexture"]:SetInside()
 		end
 	end
 	
@@ -396,7 +396,7 @@ local function LoadSkin()
 				button.backdrop:SetAllPoints()
 				button:StyleButton()
 				_G["WatchFrameItem"..i.."NormalTexture"]:SetAlpha(0)
-				_G["WatchFrameItem"..i.."IconTexture"]:SetInside(nil, true)
+				_G["WatchFrameItem"..i.."IconTexture"]:SetInside()
 				_G["WatchFrameItem"..i.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
 				button.skinned = true
 			end

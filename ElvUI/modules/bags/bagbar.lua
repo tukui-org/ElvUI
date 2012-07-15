@@ -21,7 +21,7 @@ function B:SkinBag(bag)
 	bag:SetTemplate("Default", true)
 	bag:StyleButton(true)
 	icon:SetTexture(bag.oldTex)
-	icon:SetInside(nil, true)
+	icon:SetInside()
 	icon:SetTexCoord(unpack(E.TexCoords))
 end
 
