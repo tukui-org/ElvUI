@@ -5,7 +5,8 @@ E.TutorialList = {
 	L['You can toggle the microbar by using your middle mouse button on the minimap.'],
 	L['A raid marker feature is available by pressing Escape -> Keybinds scroll to the bottom under ElvUI and setting a keybind for the raid marker.'],
 	L['You can set your keybinds quickly by typing /kb.'],
-	L['If you need to reset the gold datatext type /resetgold.']
+	L['If you need to reset the gold datatext type /resetgold.'],
+	L['Focus frame can be set by typing /focus when you are targetting the unit you want to focus. It is recommended you make a macro to do this.']
 }
 
 function E:SetNextTutorial()
