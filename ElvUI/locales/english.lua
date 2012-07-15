@@ -8,8 +8,13 @@ else
 end
 
 if not L then return; end
-L["ChatTab_Datatext_Panel"] = "Right Chat Tab"
-L["Bottom_Datatext_Panel"] = "Bottom Datatext Panel"
+L['For technical support visit us at www.tukui.org.'] = true;
+L['You can toggle the microbar by using your middle mouse button on the minimap.'] = true;
+L['A raid marker feature is available by pressing Escape -> Keybinds scroll to the bottom under ElvUI and setting a keybind for the raid marker.'] = true;
+L['You can set your keybinds quickly by typing /kb.'] = true;
+L['If you need to reset the gold datatext type /resetgold.'] = true;
+L['Focus frame can be set by typing /focus when you are targetting the unit you want to focus. It is recommended you make a macro to do this.'] = true;
+L['Toggle Tutorials'] = true;
 L["Pet Battle"] = true;
 L['Alert Frames'] = true;
 L["Loot Frames"] = true;
@@ -93,6 +98,7 @@ L["Blank"] = "Blank"
 L["BN:"] = "BN:"
 L["Border Color"] = "Border Color"
 L["Boss Frames"] = "Boss Frames"
+L["Bottom_Datatext_Panel"] = "Bottom Datatext Panel"
 L["Bottom to Top"] = "Bottom to Top"
 L["Buff Color"] = "Buff Color"
 L["Buff Indicator"] = "Buff Indicator"
@@ -118,6 +124,7 @@ L["Chat"] = "Chat"
 L["Chat Bubbles"] = "Chat Bubbles"
 L["CHAT_DESC"] = "Adjust chat settings for ElvUI."
 L["Chat Set"] = "Chat Set"
+L["ChatTab_Datatext_Panel"] = "Right Chat Tab"
 L["Chest"] = "Chest"
 L["Class Backdrop"] = "Class Backdrop"
 L["Classbar"] = "Classbar"

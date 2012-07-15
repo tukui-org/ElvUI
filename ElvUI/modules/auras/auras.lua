@@ -163,7 +163,7 @@ function A:CreateAuraHeader(filter, ...)
 	header:SetAttribute("wrapAfter", 12)
 	header:SetAttribute("minWidth", AurasHolder:GetWidth() - 2)
 	header:SetAttribute("separateOwn", 1)
-	
+	E.FrameLocks[name] = true
 	-- look for weapons buffs
 	if filter == "HELPFUL" then
 		header:SetAttribute("includeWeapons", 1)
