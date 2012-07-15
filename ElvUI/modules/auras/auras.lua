@@ -1,247 +1,225 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local A = E:NewModule('Auras', 'AceHook-3.0', 'AceEvent-3.0');
 
-local warningTime = 5
-local btnspace = -4
-local aurapos = "RIGHT"
-local mainhand, offhand
-
-function A:UpdateFlash(frame, elapsed)
-	local index = frame:GetID();
-	if ( frame.timeLeft < warningTime ) then
-		frame:SetAlpha(BuffFrame.BuffAlphaValue);
-	else
-		frame:SetAlpha(1.0);
+function A:FormatTime(s)
+	local day, hour, minute = 86400, 3600, 60
+	if s >= day then
+		return format("|cffeeeeee%dd|r", ceil(s / day))
+	elseif s >= hour then
+		return format("|cffeeeeee%dh|r", ceil(s / hour))
+	elseif s >= minute then
+		return format("|cffeeeeee%dm|r", ceil(s / minute))
+	elseif s >= minute / 12 then
+		return floor(s)
 	end
+	return format("%.1f", s)
 end
 
-function A:UpdateSettings()
-	A:UpdateBuffAnchors()
-	BuffFrame_UpdateAllBuffAnchors()
-end
-
-function A:StyleBuffs(buttonName, index, debuff)
-	local buff = _G[buttonName..index]
-	local icon = _G[buttonName..index.."Icon"]
-	local border = _G[buttonName..index.."Border"]
-	local duration = _G[buttonName..index.."Duration"]
-	local count = _G[buttonName..index.."Count"]
-	if icon and not buff.backdrop then
-		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:SetInside()
-		icon:SetDrawLayer('ARTWORK')
-		buff:Size(30)
-				
-		duration:ClearAllPoints()
-		duration:Point("BOTTOM", 0, -13)
-		duration:FontTemplate(nil, nil, 'OUTLINE')
-		
-		count:ClearAllPoints()
-		count:Point("TOPLEFT", 1, -2)
-		count:FontTemplate(nil, nil, 'OUTLINE')
-		count:SetDrawLayer('OVERLAY')
-		
-		buff:CreateBackdrop('Default')
-		buff.backdrop:SetAllPoints()
-		
-		local highlight = buff:CreateTexture(nil, "HIGHLIGHT")
-		highlight:SetTexture(1,1,1,0.45)
-		highlight:SetAllPoints(icon)
-	end
-	if border then border:Hide() end
-end
-
-function A:UpdateDebuffAnchors(buttonName, index)
-	local debuff = _G[buttonName..index];
-	if debuff:IsProtected() then return end -- uhh ohhh
-	self:StyleBuffs(buttonName, index, true)
-	local dtype = select(5, UnitDebuff("player",index))      
-	local color
-	if (dtype ~= nil) then
-		color = DebuffTypeColor[dtype]
-	else
-		color = DebuffTypeColor["none"]
-	end
-	debuff.backdrop:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
-	debuff:ClearAllPoints()
-	if aurapos == "RIGHT" then
-		if index == 1 then
-			debuff:SetPoint("BOTTOMRIGHT", AurasHolder, "BOTTOMRIGHT", 0, 0)
+function A:UpdateTime(elapsed)
+	if(self.expiration) then	
+		self.expiration = math.max(self.expiration - elapsed, 0)
+		if(self.expiration <= 0) then
+			self.time:SetText("")
 		else
-			debuff:SetPoint("RIGHT", _G[buttonName..(index-1)], "LEFT", btnspace, 0)
+			local time = A:FormatTime(self.expiration)
+			if self.expiration <= 86400.5 and self.expiration > 3600.5 then
+				self.time:SetText("|cffcccccc"..time.."|r")
+				E:StopFlash(self)
+			elseif self.expiration <= 3600.5 and self.expiration > 60.5 then
+				self.time:SetText("|cffcccccc"..time.."|r")
+				E:StopFlash(self)
+			elseif self.expiration <= 60.5 and self.expiration > 10.5 then
+				self.time:SetText("|cffE8D911"..time.."|r")
+				E:StopFlash(self)
+			elseif self.expiration <= 10.5 then
+				self.time:SetText("|cffff0000"..time.."|r")
+				E:Flash(self, 1)
+			end
 		end
+	end
+end
+
+function A:UpdateWeapons(button, slot, active, expiration)
+	if not button.texture then
+		button.texture = button:CreateTexture(nil, "BORDER")
+		button.texture:SetAllPoints()
+		
+		button.time = button:CreateFontString(nil, "ARTWORK")
+		button.time:SetPoint("TOP", button, 'BOTTOM', 0, -2)
+		button.time:FontTemplate(nil, nil, 'OUTLINE')
+		button.time:SetShadowColor(0, 0, 0, 0.4)
+		button.time:SetShadowOffset(E.mult, -E.mult)
+				
+		button:CreateBackdrop('Default')
+		
+		button.highlight = button:CreateTexture(nil, "HIGHLIGHT")
+		button.highlight:SetTexture(1,1,1,0.45)
+		button.highlight:SetAllPoints(button.texture)		
+	end
+	
+	if active then
+		button.id = GetInventorySlotInfo(slot)
+		button.icon = GetInventoryItemTexture("player", button.id)
+		button.texture:SetTexture(button.icon)
+		button.texture:SetTexCoord(unpack(E.TexCoords))		
+		button.expiration = (expiration/1000)
+		button:SetScript("OnUpdate", A.UpdateTime)		
+	elseif not active then
+		button.texture:SetTexture(nil)
+		button.time:SetText("")
+		button:SetScript("OnUpdate", nil)
+	end
+end
+
+function A:UpdateAuras(header, button)
+	if(not button.texture) then
+		button.texture = button:CreateTexture(nil, "BORDER")
+		button.texture:SetAllPoints()
+
+		button.count = button:CreateFontString(nil, "ARTWORK")
+		button.count:SetPoint("BOTTOMRIGHT", -1, 1)
+		button.count:FontTemplate(nil, nil, 'OUTLINE')
+
+		button.time = button:CreateFontString(nil, "ARTWORK")
+		button.time:SetPoint("TOP", button, 'BOTTOM', 0, -2)
+		button.time:FontTemplate(nil, nil, 'OUTLINE')
+
+		button:SetScript("OnUpdate", A.UpdateTime)
+		
+		button:CreateBackdrop('Default')
+
+		button.highlight = button:CreateTexture(nil, "HIGHLIGHT")
+		button.highlight:SetTexture(1,1,1,0.45)
+		button.highlight:SetAllPoints(button.texture)			
+		
+		E:SetUpAnimGroup(button)
+	end
+	
+	local name, _, texture, count, dtype, duration, expiration = UnitAura(header:GetAttribute("unit"), button:GetID(), header:GetAttribute("filter"))
+	
+	if(name) then
+		button.texture:SetTexture(texture)
+		button.texture:SetTexCoord(unpack(E.TexCoords))
+		button.count:SetText(count > 1 and count or "")
+		button.expiration = expiration - GetTime()
+		
+		if(header:GetAttribute("filter") == "HARMFUL") then
+			local color = DebuffTypeColor[dtype] or DebuffTypeColor.none
+			button.backdrop:SetBackdropBorderColor(color.r * 3/5, color.g * 3/5, color.b * 3/5)
+		end
+	end
+end
+
+function A:ScanAuras(event, unit)
+	if(unit) then
+		if(unit ~= PlayerFrame.unit) then return end
+		if(unit ~= self:GetAttribute("unit")) then
+			self:SetAttribute("unit", unit)
+		end
+	end
+	
+	for index = 1, 32 do		
+		local child = self:GetAttribute("child" .. index)
+		if(child) then
+			A:UpdateAuras(self, child)
+		end
+	end
+end
+
+local TimeSinceLastUpdate = 1
+function A:CheckWeapons(elapsed)
+	TimeSinceLastUpdate = TimeSinceLastUpdate + elapsed
+	
+	if (TimeSinceLastUpdate >= 1) then
+		local e1, e1time, _, e2, e2time, _, e3, e3time, _  = GetWeaponEnchantInfo()
+		
+		local w1 = self:GetAttribute("tempEnchant1")
+		local w2 = self:GetAttribute("tempEnchant2")
+		local w3 = self:GetAttribute("tempEnchant3")
+
+		if w1 then A:UpdateWeapons(w1, "MainHandSlot", e1, e1time) end
+		if w2 then A:UpdateWeapons(w2, "SecondaryHandSlot", e2, e2time) end
+		if w3 then A:UpdateWeapons(w3, "RangedSlot", e3, e3time) end
+
+		TimeSinceLastUpdate = 0
+	end
+end
+
+function A:CreateAuraHeader(filter, ...)
+	local name	
+	if filter == "HELPFUL" then name = "ElvUIPlayerBuffs" else name = "ElvUIPlayerDebuffs" end
+
+	local header = CreateFrame("Frame", name, E.UIParent, "SecureAuraHeaderTemplate")
+	header:SetPoint(...)
+	header:SetClampedToScreen(true)
+	header:HookScript("OnEvent", A.ScanAuras)
+	header:SetAttribute("unit", "player")
+	header:SetAttribute("sortMethod", "TIME")
+	header:SetAttribute("sortDir", "-")
+	header:SetAttribute("template", "ElvUIAuraTemplate")
+	header:SetAttribute("filter", filter)
+	header:SetAttribute("point", "TOPRIGHT")
+	header:SetAttribute("xOffset", -36)
+	header:SetAttribute("wrapAfter", 12)
+	header:SetAttribute("minWidth", AurasHolder:GetWidth() - 2)
+	header:SetAttribute("separateOwn", 1)
+	
+	-- look for weapons buffs
+	if filter == "HELPFUL" then
+		header:SetAttribute("includeWeapons", 1)
+		header:SetAttribute("weaponTemplate", "ElvUIAuraTemplate")
+		header:HookScript("OnUpdate", A.CheckWeapons)
+		header:SetAttribute("minHeight", 94)	
+		header:SetAttribute("wrapYOffset", -68)
+		header:SetAttribute("maxWraps", 2)
+		header:SetAttribute("consolidateTo", 1)
 	else
-		if index == 1 then
-			debuff:SetPoint("BOTTOMLEFT", AurasHolder, "BOTTOMLEFT", 0, 0)
-		else
-			debuff:SetPoint("LEFT", _G[buttonName..(index-1)], "RIGHT", -(btnspace), 0)
-		end	
+		header:SetAttribute("minHeight", 47)	
+		header:SetAttribute("maxWraps", 1)	
 	end
 	
-	if index > self.db.perRow then
-		debuff:Hide()
-	else
-		debuff:Show()
-	end	
-end
-
-function A:UpdateBuffAnchors()
-	local buttonName = "BuffButton"
-	local buff, previousBuff, aboveBuff;
-	local numBuffs = 0;
-	local index;
-	for i=1, BUFF_ACTUAL_DISPLAY do
-		local buff = _G[buttonName..i]
-		if buff:IsProtected() then return end -- uhh ohhh
-		self:StyleBuffs(buttonName, i, false)
-
-		if ( buff.consolidated ) then
-			if ( buff.parent == BuffFrame ) then
-				buff:SetParent(ConsolidatedBuffsContainer)
-				buff.parent = ConsolidatedBuffsContainer
-			end
-		else
-			numBuffs = numBuffs + 1
-			i = numBuffs
-			buff:ClearAllPoints()
-			if aurapos == "RIGHT" then
-				if ( (i > 1) and (mod(i, self.db.perRow) == 1) ) then
-					if ( i == self.db.perRow+1 ) then
-						buff:SetPoint("RIGHT", AurasHolder, "RIGHT", 0, 0)
-					else
-						buff:SetPoint("TOPRIGHT", AurasHolder, "TOPRIGHT", 0, 0)
-					end
-					aboveBuff = buff;
-				elseif ( i == 1 ) then
-					local mainhand, _, _, offhand, _, _, hand3 = GetWeaponEnchantInfo()
-					if (mainhand and offhand and hand3) and not UnitHasVehicleUI("player") then
-						buff:SetPoint("RIGHT", TempEnchant3, "LEFT", btnspace, 0)
-					elseif ((mainhand and offhand) or (mainhand and hand3) or (offhand and hand3)) and not UnitHasVehicleUI("player") then
-						buff:SetPoint("RIGHT", TempEnchant2, "LEFT", btnspace, 0)
-					elseif ((mainhand and not offhand and not hand3) or (offhand and not mainhand and not hand3) or (hand3 and not mainhand and not offhand)) and not UnitHasVehicleUI("player") then
-						buff:SetPoint("RIGHT", TempEnchant1, "LEFT", btnspace, 0)
-					else
-						buff:SetPoint("TOPRIGHT", AurasHolder, "TOPRIGHT", 0, 0)
-					end
-				else
-					buff:SetPoint("RIGHT", previousBuff, "LEFT", btnspace, 0)
-				end
-			else
-				if ( (i > 1) and (mod(i, self.db.perRow) == 1) ) then
-					if ( i == self.db.perRow+1 ) then
-						buff:SetPoint("LEFT", AurasHolder, "LEFT", 0, 0)
-					else
-						buff:SetPoint("TOPLEFT", AurasHolder, "TOPLEFT", 0, 0)
-					end
-					aboveBuff = buff;
-				elseif ( i == 1 ) then
-					local mainhand, _, _, offhand, _, _, hand3 = GetWeaponEnchantInfo()
-					if (mainhand and offhand and hand3) and not UnitHasVehicleUI("player") then
-						buff:SetPoint("LEFT", TempEnchant3, "RIGHT", -(btnspace), 0)
-					elseif ((mainhand and offhand) or (mainhand and hand3) or (offhand and hand3)) and not UnitHasVehicleUI("player") then
-						buff:SetPoint("LEFT", TempEnchant2, "RIGHT", -(btnspace), 0)
-					elseif ((mainhand and not offhand and not hand3) or (offhand and not mainhand and not hand3) or (hand3 and not mainhand and not offhand)) and not UnitHasVehicleUI("player") then
-						buff:SetPoint("LEFT", TempEnchant1, "RIGHT", -(btnspace), 0)
-					else
-						buff:SetPoint("TOPLEFT", AurasHolder, "TOPLEFT", 0, 0)
-					end
-				else
-					buff:SetPoint("LEFT", previousBuff, "RIGHT", -(btnspace), 0)
-				end			
-			end
-			previousBuff = buff
-			if i > (self.db.perRow*2) then
-				buff:Hide()
-			else
-				buff:Show()
-			end
-		end		
-	end
+	header:Show()
 	
-	for i = 1, 3 do
-		_G["TempEnchant"..i].backdrop:SetBackdropBorderColor(137/255, 0, 191/255)
-	end	
+	return header
 end
 
-function A:Update_WeaponEnchantInfo()
-	mainhand, _, _, offhand = GetWeaponEnchantInfo()
-end
-
-function A:AurasPostDrag(point)
-	if string.find(point, "LEFT") then
-		TempEnchant1:ClearAllPoints()
-		TempEnchant2:ClearAllPoints()
-		TempEnchant3:ClearAllPoints()
-		TemporaryEnchantFrame:ClearAllPoints()
-		aurapos = "LEFT"
-		TempEnchant1:SetPoint("TOPLEFT", AurasHolder, "TOPLEFT", 0, 0)
-		TempEnchant2:SetPoint("LEFT", TempEnchant1, "RIGHT", -(btnspace), 0)	
-		TempEnchant3:SetPoint("LEFT", TempEnchant2, "RIGHT", -(btnspace), 0)		
-		TemporaryEnchantFrame:SetPoint("TOPLEFT", AurasHolder, "TOPLEFT", 0, 0)	
-	elseif string.find(point, "RIGHT") then
-		TempEnchant1:ClearAllPoints()
-		TempEnchant2:ClearAllPoints()
-		TempEnchant3:ClearAllPoints()
-		TemporaryEnchantFrame:ClearAllPoints()
-		aurapos = "RIGHT"
-		TempEnchant1:SetPoint("TOPRIGHT", AurasHolder, "TOPRIGHT", 0, 0)
-		TempEnchant2:SetPoint("RIGHT", TempEnchant1, "LEFT", btnspace, 0)	
-		TempEnchant3:SetPoint("RIGHT", TempEnchant2, "LEFT", btnspace, 0)	
-		TemporaryEnchantFrame:SetPoint("TOPRIGHT", AurasHolder, "TOPRIGHT", 0, 0)			
+function A:PostDrag(position)
+	local headers = {ElvUIPlayerBuffs,ElvUIPlayerDebuffs}
+	for _, header in pairs(headers) do
+		if string.find(position, "LEFT") then
+			header:SetAttribute("point", "TOPLEFT")
+			header:SetAttribute("xOffset", 36)
+		elseif string.find(position, "RIGHT") then
+			header:SetAttribute("point", "TOPRIGHT")
+			header:SetAttribute("xOffset", -36)		
+		end
+		
+		if E.lowversion then
+			header:SetAttribute("wrapAfter", 9)
+		end
 	end
-	
-	A:UpdateBuffAnchors()
-	BuffFrame_UpdateAllBuffAnchors()
 end
+
 
 function A:Initialize()
+	BuffFrame:Kill()
+	ConsolidatedBuffs:Kill()
+
 	self.db = E.db.auras
-	if E.private.auras.enable ~= true then 
-		BuffFrame:Kill();
-		return 
-	end
-	
-	ConsolidatedBuffs:Hide()
-	ConsolidatedBuffs:SetParent(E.HiddenFrame)
+	if E.private.auras.enable ~= true then return end
 	
 	local holder = CreateFrame("Frame", "AurasHolder", E.UIParent)
-	holder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -((E.MinimapSize + 4) + E.RBRWidth + 7), -3)
+	holder:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", -8, 2)
 	holder:Width(456)
 	holder:Height(E.MinimapHeight)
 	
-	TemporaryEnchantFrame:ClearAllPoints()
-	TemporaryEnchantFrame:SetPoint("TOPRIGHT", AurasHolder, "TOPRIGHT", 0, 0)
+	self.BuffFrame = self:CreateAuraHeader("HELPFUL", "TOPRIGHT", holder, "TOPRIGHT", -2, -2)
+	self.DebuffFrame = self:CreateAuraHeader("HARMFUL", "BOTTOMRIGHT", holder, "BOTTOMRIGHT", -2, -2)
 
-	TempEnchant1:ClearAllPoints()
-	TempEnchant2:ClearAllPoints()
-	TempEnchant3:ClearAllPoints()
-	TempEnchant1:Point("TOPRIGHT", AurasHolder, "TOPRIGHT")
-	TempEnchant2:Point("RIGHT", TempEnchant1, "LEFT", btnspace, 0)
-	TempEnchant3:Point("RIGHT", TempEnchant2, "LEFT", btnspace, 0)
+	E:CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, nil, A.PostDrag)
 	
-	for i = 1, 3 do
-		_G["TempEnchant"..i]:Size(30)
-		_G["TempEnchant"..i]:CreateBackdrop('Default')
-		_G["TempEnchant"..i].backdrop:SetAllPoints()
-		_G["TempEnchant"..i.."Border"]:Hide()
-		_G["TempEnchant"..i.."Icon"]:SetTexCoord(unpack(E.TexCoords))
-		_G["TempEnchant"..i.."Icon"]:SetInside()
-		_G["TempEnchant"..i.."Duration"]:ClearAllPoints()
-		_G["TempEnchant"..i.."Duration"]:Point("BOTTOM", 0, -13)
-		_G["TempEnchant"..i.."Duration"]:FontTemplate(nil, nil, 'OUTLINE')
-	end	
-	
-	self:RegisterEvent('UNIT_INVENTORY_CHANGED', 'Update_WeaponEnchantInfo')
-	self:RegisterEvent('PLAYER_EVENTERING_WORLD', 'Update_WeaponEnchantInfo')
-	self:SecureHook("AuraButton_OnUpdate", "UpdateFlash")
-	self:SecureHook("BuffFrame_UpdateAllBuffAnchors", "UpdateBuffAnchors")
-	self:SecureHook("DebuffButton_UpdateAnchors", "UpdateDebuffAnchors")	
-	E:CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, nil, A.AurasPostDrag)
-	AurasHolder.ClearAllPoints = E.noop
-	AurasHolder.SetPoint = E.noop
-	AurasHolder.SetAllPoints = E.noop
-	
-	SHOW_BUFF_DURATIONS="1"
+	self.ScanAuras(self.BuffFrame)
+	self.ScanAuras(self.DebuffFrame)
 end
 
 E:RegisterModule(A:GetName())
