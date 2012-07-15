@@ -13,28 +13,34 @@ E.Options.args = {
 		name = L['Login Message'],
 		get = function(info) return E.db.general.loginmessage end,
 		set = function(info, value) E.db.general.loginmessage = value end,
-	},
-	ToggleAnchors = {
+	},	
+	ToggleTutorial = {
 		order = 3,
+		type = 'execute',
+		name = L['Toggle Tutorials'],
+		func = function() E:Tutorials(true); E:ToggleConfig()  end,
+	},
+	Install = {
+		order = 4,
+		type = 'execute',
+		name = L['Install'],
+		desc = L['Run the installation process.'],
+		func = function() E:Install(); E:ToggleConfig() end,
+	},	
+	ToggleAnchors = {
+		order = 5,
 		type = "execute",
 		name = L["Toggle Anchors"],
 		desc = L["Unlock various elements of the UI to be repositioned."],
 		func = function() E:ToggleConfigMode() end,
 	},
 	ResetAllMovers = {
-		order = 4,
+		order = 6,
 		type = "execute",
 		name = L["Reset Anchors"],
 		desc = L["Reset all frames to their original positions."],
 		func = function() E:ResetUI() end,
 	},	
-	Install = {
-		order = 5,
-		type = 'execute',
-		name = L['Install'],
-		desc = L['Run the installation process.'],
-		func = function() E:Install(); E:ToggleConfig() end,
-	},
 }
 
 E.Options.args.general = {

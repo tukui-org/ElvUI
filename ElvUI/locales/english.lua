@@ -8,6 +8,12 @@ else
 end
 
 if not L then return; end
+L['For technical support visit us at www.tukui.org.'] = true;
+L['You can toggle the microbar by using your middle mouse button on the minimap.'] = true;
+L['A raid marker feature is available by pressing Escape -> Keybinds scroll to the bottom under ElvUI and setting a keybind for the raid marker.'] = true;
+L['You can set your keybinds quickly by typing /kb.'] = true;
+L['If you need to reset the gold datatext type /resetgold.'] = true;
+L['Toggle Tutorials'] = true;
 L["Pet Battle"] = true;
 L['Alert Frames'] = true;
 L["Loot Frames"] = true;

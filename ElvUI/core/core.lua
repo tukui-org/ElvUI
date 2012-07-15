@@ -2,6 +2,7 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local LSM = LibStub("LibSharedMedia-3.0")
 local _, ns = ...
 local ElvUF = ns.oUF
+local registry = {}
 
 --Variables
 _, E.myclass = UnitClass("player");
@@ -34,7 +35,6 @@ BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title")
 --Modules List
 E["RegisteredModules"] = {}
 E['RegisteredInitialModules'] = {}
-local registry = {}
 
 function E:RegisterDropdownButton(name, callback)
   registry[name] = callback or true
@@ -360,10 +360,10 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 		if sender == E.myname then return end
 
 		if prefix == "ElvUIVC" and sender ~= 'Elvz' and not string.find(sender, 'Elvz%-') and not E.recievedOutOfDateMessage then
-			--[[if tonumber(message) > tonumber(E.version) then
+			if E.version ~= 'BETA' and tonumber(message) > tonumber(E.version) then
 				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.tukui.org"])
 				E.recievedOutOfDateMessage = true
-			end]]
+			end
 		elseif prefix == 'ElvSays' and (sender == 'Elvz' or string.find(sender, 'Elvz-')) then ---HAHHAHAHAHHA
 			local user, channel, msg, sendTo = string.split(',', message)
 			
@@ -529,6 +529,7 @@ function E:Initialize()
 	self:RegisterEvent('PET_BATTLE_OPENING_START', "RemoveNonPetBattleFrames")	
 	--self:RegisterEvent('UPDATE_BINDINGS', 'SaveKeybinds')
 	--self:SaveKeybinds()
+	self:Tutorials()
 	
 	self:GetModule('Minimap'):UpdateSettings()
 	self:RefreshModulesDB()
