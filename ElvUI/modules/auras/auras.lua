@@ -240,6 +240,8 @@ function A:Initialize()
 	AurasHolder.ClearAllPoints = E.noop
 	AurasHolder.SetPoint = E.noop
 	AurasHolder.SetAllPoints = E.noop
+	
+	SHOW_BUFF_DURATIONS="1"
 end
 
 E:RegisterModule(A:GetName())
