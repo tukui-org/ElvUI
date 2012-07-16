@@ -20,6 +20,7 @@ function E:Grid_Hide()
 end
 
 function E:ToggleConfigMode(override)
+	if InCombatLockdown() then return; end
 	if override ~= nil and override ~= '' then E.ConfigurationMode = override end
 
 	if E.ConfigurationMode ~= true then
@@ -209,6 +210,8 @@ function E:CreateMoverPopup()
 	f:SetScript('OnEvent', function(self)
 		if self:IsShown() then
 			self:Hide()
+			E:Grid_Hide()
+			E:ToggleConfigMode(true)
 		end
 	end)
 end
