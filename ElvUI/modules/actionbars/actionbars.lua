@@ -452,9 +452,9 @@ function AB:DisableBlizzard()
 		_G['MultiCastActionButton'..i]:UnregisterAllEvents()
 		_G['MultiCastActionButton'..i]:SetAttribute("statehidden", true)
 		
-		for index, button in pairs(ActionBarButtonEventsFrame.frames) do			
+		--[[for index, button in pairs(ActionBarButtonEventsFrame.frames) do			
 			table.remove(ActionBarButtonEventsFrame.frames, index)
-		end
+		end]]
 	end
 
 	MultiCastActionBarFrame.ignoreFramePositionManager = true
@@ -498,13 +498,6 @@ function AB:DisableBlizzard()
 	else
 		hooksecurefunc("TalentFrame_LoadUI", function() PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED") end)
 	end
-	
-	ActionBarButtonEventsFrame:UnregisterAllEvents()
-	ActionBarButtonEventsFrame:RegisterEvent("ACTIONBAR_UPDATE_COOLDOWN")
-	ActionBarButtonEventsFrame:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
-	ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_SLOT_CHANGED')
-	ActionBarButtonEventsFrame:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
-	ActionBarActionEventsFrame:UnregisterAllEvents()
 end
 
 function AB:UpdateButtonConfig(bar, buttonName)
