@@ -11,7 +11,7 @@
 			<OnEnter>
 				GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMLEFT', -5, -5)
 				if(self:GetAttribute'index') then
-					GameTooltip:SetUnitAura(SecureButton_GetUnit(self:GetParent()), self:GetID(), self.filter)
+					GameTooltip:SetUnitAura(SecureButton_GetUnit(self:GetParent()), self:GetID(), self:GetParent():GetAttribute("filter"))
 				elseif(self:GetAttribute'target-slot') then
 					GameTooltip:SetInventoryItem('player', self:GetID())
 				end
