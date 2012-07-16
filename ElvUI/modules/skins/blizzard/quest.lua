@@ -17,7 +17,7 @@ local function LoadSkin()
 	QuestLogCount.backdropTexture:SetDrawLayer('BACKGROUND', 2)
 	QuestLogFrame:Height(430)	
 	EmptyQuestLogFrame:StripTextures()
-	
+	QuestLogDetailFrameInset:Kill()
 	S:HandleScrollBar(QuestDetailScrollFrameScrollBar)
 	QuestProgressScrollFrame:StripTextures()
 	QuestLogFrameShowMapButton:StripTextures()

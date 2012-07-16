@@ -22,7 +22,7 @@ local function LoadSkin()
 		infoBar.IconBackdrop:SetFrameLevel(infoBar:GetFrameLevel() - 1)
 		infoBar.IconBackdrop:SetOutside(infoBar.Icon)
 		infoBar.IconBackdrop:SetTemplate()
-		
+		infoBar.BorderFlash:Kill()
 		infoBar.HealthBarBG:Kill()
 		infoBar.HealthBarFrame:Kill()
 		infoBar.HealthBarBackdrop = CreateFrame("Frame", nil, infoBar)
@@ -128,28 +128,19 @@ local function LoadSkin()
 	hooksecurefunc("PetBattleAuraHolder_Update", function(self)
 		if not self.petOwner or not self.petIndex then return end
 
-		-- skin buffs and debuffs
+		local nextFrame = 1
 		for i=1, C_PetBattles.GetNumAuras(self.petOwner, self.petIndex) do
-			local frame = self.frames[i]
-			if frame then
-				local isBuff = select(4, C_PetBattles.GetAuraInfo(self.petOwner, self.petIndex, i))
-
-				-- auras are stretched, fix it
-				frame:Width(frame:GetHeight())
+			local auraID, instanceID, turnsRemaining, isBuff = C_PetBattles.GetAuraInfo(self.petOwner, self.petIndex, i)
+			if (isBuff and self.displayBuffs) or (not isBuff and self.displayDebuffs) then
+				local frame = self.frames[nextFrame]
 
 				-- always hide the border
 				frame.DebuffBorder:Hide()
 
-				-- move duration inside
-				frame.Duration:FontTemplate(E.media.font, 10, "OUTLINE")
-				frame.Duration:ClearAllPoints()
-				frame.Duration:SetPoint("TOP", frame, "TOP", 1, -8)
-
 				if not frame.isSkinned then
 					frame:CreateBackdrop()
-					frame.backdrop:SetInside(frame, 4, 4)
+					frame.backdrop:SetOutside(frame.Icon)
 					frame.Icon:SetTexCoord(unpack(E.TexCoords))
-					frame.Icon:SetInside(frame.backdrop)
 					frame.Icon:SetParent(frame.backdrop)
 				end
 
@@ -158,9 +149,18 @@ local function LoadSkin()
 				else
 					frame.backdrop:SetBackdropBorderColor(1, 0, 0)
 				end
+
+				-- move duration and change font
+				frame.Duration:FontTemplate(E.media.font, 12, "OUTLINE")
+				frame.Duration:ClearAllPoints()
+				frame.Duration:SetPoint("TOP", frame.Icon, "BOTTOM", 1, -4)
+				if turnsRemaining > 0 then
+					frame.Duration:SetText(turnsRemaining)
+				end
+				nextFrame = nextFrame + 1
 			end
 		end
-	end)	
+end)
 		
 	-- WEATHER
 	hooksecurefunc("PetBattleWeatherFrame_Update", function(self)
@@ -195,7 +195,7 @@ local function LoadSkin()
 	PetBattlePrimaryAbilityTooltip.BorderBottom:SetTexture(nil)
 	PetBattlePrimaryAbilityTooltip.BorderBottomRight:SetTexture(nil)
 	PetBattlePrimaryAbilityTooltip.BorderBottomLeft:SetTexture(nil)
-	PetBattlePrimaryAbilityTooltip:SetTemplate()
+	PetBattlePrimaryAbilityTooltip:SetTemplate("Transparent")
 
 	PetBattlePrimaryUnitTooltip.Delimiter:SetTexture(nil)
 	PetBattlePrimaryUnitTooltip.Background:SetTexture(nil)
