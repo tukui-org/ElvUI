@@ -18,7 +18,7 @@ L['ElvUI has a dual spec feature which allows you to load differant profiles bas
 L['You can access copy chat and chat menu functions by mouse over the top right corner of chat panel and left/right click on the button that will appear.'] = true;
 L['If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing.'] = true;
 L['The buff panel to the right of minimap is a list of your consolidated buffs. You can disable it in general options of ElvUI.'] = true;
-L['If you accidently remove a chat frame you can always go the in-game configuration menu, press install go to the chat portion and reset them.'] = true
+L['If you accidently remove a chat frame you can always go the in-game configuration menu, press install, go to the chat portion and reset them.'] = true
 L['If your experience and reputation bars disappear, mouse over the place where they were and click them again.'] = true;
 L['To setup which channels appear in which chat frame, right click the chat tab and go to settings.'] = true;
 L['Toggle Tutorials'] = true;

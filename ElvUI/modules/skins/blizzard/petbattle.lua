@@ -39,6 +39,10 @@ local function LoadSkin()
 	
 		infoBar.ActualHealthBar:ClearAllPoints()
 		infoBar.Name:ClearAllPoints()
+		
+		infoBar.FirstAttack = infoBar:CreateTexture(nil, "ARTWORK")
+		infoBar.FirstAttack:Size(30)
+		infoBar.FirstAttack:SetTexture("Interface\\PetBattles\\PetBattle-StatIcons")		
 		if index == 1 then
 			infoBar.HealthBarBackdrop:Point('TOPLEFT', infoBar.ActualHealthBar, 'TOPLEFT', -2, 2)
 			infoBar.HealthBarBackdrop:Point('BOTTOMLEFT', infoBar.ActualHealthBar, 'BOTTOMLEFT', -2, -2)
@@ -50,6 +54,11 @@ local function LoadSkin()
 			infoBar.Name:Point('BOTTOMLEFT', infoBar.ActualHealthBar, 'TOPLEFT', 0, 10)
 			infoBar.PetTypeFrame:SetPoint("BOTTOMRIGHT",infoBar.HealthBarBackdrop, "TOPRIGHT", 0, 4)
 			infoBar.PetTypeFrame.text:SetPoint("RIGHT")			
+			
+			infoBar.FirstAttack:SetPoint("LEFT", infoBar.HealthBarBackdrop, "RIGHT", 5, 0)
+			infoBar.FirstAttack:SetTexCoord(infoBar.SpeedIcon:GetTexCoord())
+			infoBar.FirstAttack:SetVertexColor(.1,.1,.1,1)
+		
 		else
 			infoBar.HealthBarBackdrop:Point('TOPRIGHT', infoBar.ActualHealthBar, 'TOPRIGHT', 2, 2)
 			infoBar.HealthBarBackdrop:Point('BOTTOMRIGHT', infoBar.ActualHealthBar, 'BOTTOMRIGHT', 2, -2)
@@ -62,6 +71,10 @@ local function LoadSkin()
 
 			infoBar.PetTypeFrame:SetPoint("BOTTOMLEFT",infoBar.HealthBarBackdrop, "TOPLEFT", 2, 4)
 			infoBar.PetTypeFrame.text:SetPoint("LEFT")			
+			
+			infoBar.FirstAttack:SetPoint("RIGHT", infoBar.HealthBarBackdrop, "LEFT", -5, 0)
+			infoBar.FirstAttack:SetTexCoord(.5, 0, .5, 1)
+			infoBar.FirstAttack:SetVertexColor(.1,.1,.1,1)			
 		end
 		
 		infoBar.HealthText:ClearAllPoints()
@@ -83,6 +96,23 @@ local function LoadSkin()
 			infoBar.SpeedUnderlay:SetAlpha(0)		
 		end
 	end
+	
+	-- PETS SPEED INDICATOR UPDATE
+	hooksecurefunc("PetBattleFrame_UpdateSpeedIndicators", function(self)
+		if not f.ActiveAlly.SpeedIcon:IsShown() and not f.ActiveEnemy.SpeedIcon:IsShown() then
+			f.ActiveAlly.FirstAttack:SetVertexColor(.1,.1,.1,1)
+			f.ActiveEnemy.FirstAttack:SetVertexColor(.1,.1,.1,1)
+			return
+		end
+
+		for i, infoBar in pairs(infoBars) do
+			if infoBar.SpeedIcon:IsShown() then
+				infoBar.FirstAttack:SetVertexColor(0,1,0,1)
+			else
+				infoBar.FirstAttack:SetVertexColor(.8,0,.3,1)
+			end
+		end
+	end)
 	
 	-- PETS UNITFRAMES PET TYPE UPDATE
 	hooksecurefunc("PetBattleUnitFrame_UpdatePetType", function(self)
@@ -153,10 +183,31 @@ local function LoadSkin()
 	f.TopVersusText:ClearAllPoints()
 	f.TopVersusText:SetPoint("TOP", f, "TOP", 0, -42)
 
-	PetBattlePrimaryAbilityTooltip:StripTextures()
-	PetBattlePrimaryAbilityTooltip:SetTemplate('Transparent')
-	PetBattlePrimaryUnitTooltip:StripTextures()
-	PetBattlePrimaryUnitTooltip:SetTemplate('Transparent')
+	-- TOOLTIPS SKINNING
+	PetBattlePrimaryAbilityTooltip.Background:SetTexture(nil)
+	PetBattlePrimaryAbilityTooltip.Delimiter1:SetTexture(nil)
+	PetBattlePrimaryAbilityTooltip.Delimiter2:SetTexture(nil)
+	PetBattlePrimaryAbilityTooltip.BorderTop:SetTexture(nil)
+	PetBattlePrimaryAbilityTooltip.BorderTopLeft:SetTexture(nil)
+	PetBattlePrimaryAbilityTooltip.BorderTopRight:SetTexture(nil)
+	PetBattlePrimaryAbilityTooltip.BorderLeft:SetTexture(nil)
+	PetBattlePrimaryAbilityTooltip.BorderRight:SetTexture(nil)
+	PetBattlePrimaryAbilityTooltip.BorderBottom:SetTexture(nil)
+	PetBattlePrimaryAbilityTooltip.BorderBottomRight:SetTexture(nil)
+	PetBattlePrimaryAbilityTooltip.BorderBottomLeft:SetTexture(nil)
+	PetBattlePrimaryAbilityTooltip:SetTemplate()
+
+	PetBattlePrimaryUnitTooltip.Delimiter:SetTexture(nil)
+	PetBattlePrimaryUnitTooltip.Background:SetTexture(nil)
+	PetBattlePrimaryUnitTooltip.BorderTop:SetTexture(nil)
+	PetBattlePrimaryUnitTooltip.BorderTopLeft:SetTexture(nil)
+	PetBattlePrimaryUnitTooltip.BorderTopRight:SetTexture(nil)
+	PetBattlePrimaryUnitTooltip.BorderLeft:SetTexture(nil)
+	PetBattlePrimaryUnitTooltip.BorderRight:SetTexture(nil)
+	PetBattlePrimaryUnitTooltip.BorderBottom:SetTexture(nil)
+	PetBattlePrimaryUnitTooltip.BorderBottomRight:SetTexture(nil)
+	PetBattlePrimaryUnitTooltip.BorderBottomLeft:SetTexture(nil)
+	PetBattlePrimaryUnitTooltip:SetTemplate("Transparent")
 		
 	-- TOOLTIP DEFAULT POSITION
 	hooksecurefunc("PetBattleAbilityTooltip_Show", function()
@@ -196,7 +247,7 @@ local function LoadSkin()
 	f.Ally2:SetPoint("TOPRIGHT", f.Ally2.iconPoint, "TOPLEFT", -6, -2)
 	f.Ally3:SetPoint('TOPRIGHT', f.Ally2, 'TOPLEFT', -8, 0)
 	f.Enemy2:SetPoint("TOPLEFT", f.Enemy2.iconPoint, "TOPRIGHT", 6, -2)
-	f.Enemy3:SetPoint('TOPLEFT', f.Ally2, 'TOPRIGHT', 8, 0)
+	f.Enemy3:SetPoint('TOPLEFT', f.Enemy2, 'TOPRIGHT', 8, 0)
 	
 	---------------------------------
 	-- PET BATTLE ACTION BAR SETUP --

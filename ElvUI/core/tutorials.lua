@@ -12,7 +12,7 @@ E.TutorialList = {
 	L['If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing.'],
 	L['If your experience and reputation bars disappear, mouse over the place where they were and click them again.'],
 	L['The buff panel to the right of minimap is a list of your consolidated buffs. You can disable it in general options of ElvUI.'],
-	L['If you accidently remove a chat frame you can always go the in-game configuration menu, press install go to the chat portion and reset them.'],
+	L['If you accidently remove a chat frame you can always go the in-game configuration menu, press install, go to the chat portion and reset them.'],
 	L['To setup which channels appear in which chat frame, right click the chat tab and go to settings.']
 }
 
