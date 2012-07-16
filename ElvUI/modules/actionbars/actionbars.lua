@@ -452,9 +452,9 @@ function AB:DisableBlizzard()
 		_G['MultiCastActionButton'..i]:UnregisterAllEvents()
 		_G['MultiCastActionButton'..i]:SetAttribute("statehidden", true)
 		
-		for index, button in pairs(ActionBarButtonEventsFrame.frames) do			
+		--[[for index, button in pairs(ActionBarButtonEventsFrame.frames) do			
 			table.remove(ActionBarButtonEventsFrame.frames, index)
-		end
+		end]]
 	end
 
 	MultiCastActionBarFrame.ignoreFramePositionManager = true

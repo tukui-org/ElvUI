@@ -7,7 +7,7 @@ E.TutorialList = {
 	L['You can set your keybinds quickly by typing /kb.'],
 	L['If you need to reset the gold datatext type /resetgold.'],
 	L['The focus unit can be set by typing /focus when you are targetting the unit you want to focus. It is recommended you make a macro to do this.'],
-	L['ElvUI has a dual spec feature which allows you to load differant profiles based on your current spec on the fly. You can enable this from the profiles tab.'],
+	L['ElvUI has a dual spec feature which allows you to load different profiles based on your current spec on the fly. You can enable this from the profiles tab.'],
 	L['You can access copy chat and chat menu functions by mouse over the top right corner of chat panel and left/right click on the button that will appear.'],
 	L['If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing.'],
 	L['If your experience and reputation bars disappear, mouse over the place where they were and click them again.'],
