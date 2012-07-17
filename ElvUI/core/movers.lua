@@ -191,9 +191,9 @@ function E:SaveMoverDefaultPosition(name)
 end
 
 function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverTypes)
-	assert(moverTypes, 'Failed to create mover. You must provide a mover type list.')
+	if not moverTypes then moverTypes = 'ALL,GENERAL' end
 	local p, p2, p3, p4, p5 = parent:GetPoint()
-
+	
 	if E.CreatedMovers[name] == nil then 
 		E.CreatedMovers[name] = {}
 		E.CreatedMovers[name]["parent"] = parent

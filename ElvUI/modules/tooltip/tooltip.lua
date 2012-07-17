@@ -585,7 +585,7 @@ function TT:Initialize()
 	local GameTooltipAnchor = CreateFrame('Frame', 'GameTooltipAnchor', E.UIParent)
 	GameTooltipAnchor:Point('BOTTOMRIGHT', RightChatToggleButton, 'BOTTOMRIGHT')
 	GameTooltipAnchor:Size(130, 20)
-	E:CreateMover(GameTooltipAnchor, 'TooltipMover', 'Tooltip', nil, nil, nil, 'ALL,GENERAL')
+	E:CreateMover(GameTooltipAnchor, 'TooltipMover', 'Tooltip')
 	
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent('ADDON_LOADED')
@@ -644,7 +644,7 @@ function TT:Initialize()
 	end)
 	
 	BNToastFrame:Point('TOPRIGHT', MMHolder, 'BOTTOMRIGHT', 0, -10);
-	E:CreateMover(BNToastFrame, 'BNETMover', 'BNet Frame', nil, nil, nil, 'ALL,GENERAL')
+	E:CreateMover(BNToastFrame, 'BNETMover', 'BNet Frame')
 	BNToastFrame.SetPoint = E.noop
 	BNToastFrame.ClearAllPoints = E.noop	
 end
