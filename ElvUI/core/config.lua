@@ -2,6 +2,8 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local ACD = LibStub("AceConfigDialog-3.0")
 local grid
 
+local selectedValue = 'GENERAL'
+
 function E:Grid_Show()
 	if not grid then
         E:Grid_Create()
@@ -109,6 +111,7 @@ function E:Grid_Create()
 end
 
 local function ConfigMode_OnClick(self)
+	selectedValue = self.value
 	E:ToggleConfigMode(false, self.value)
 	UIDropDownMenu_SetSelectedValue(ElvUIMoverConfigMode, self.value);
 end
@@ -153,7 +156,7 @@ local function ConfigMode_Initialize()
 	info.value = "ACTIONBARS";
 	UIDropDownMenu_AddButton(info);		
 
-	UIDropDownMenu_SetSelectedValue(ElvUIMoverConfigMode, 'GENERAL');
+	UIDropDownMenu_SetSelectedValue(ElvUIMoverConfigMode, selectedValue);
 end
 
 function E:CreateMoverPopup()
