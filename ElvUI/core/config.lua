@@ -3,6 +3,18 @@ local ACD = LibStub("AceConfigDialog-3.0")
 local grid
 
 local selectedValue = 'GENERAL'
+E.ConfigModeLayouts = {
+	GENERAL,
+	ALL,
+	SOLO,
+	PARTY,
+	ARENA,
+	RAID..'-10',
+	RAID..'-25',
+	RAID..'-40',
+	ACTIONBARS_LABEL
+}
+
 
 function E:Grid_Show()
 	if not grid then
@@ -120,41 +132,11 @@ local function ConfigMode_Initialize()
 	local info = UIDropDownMenu_CreateInfo();
 	info.func = ConfigMode_OnClick;
 	
-	info.text = GENERAL;
-	info.value = "GENERAL";
-	UIDropDownMenu_AddButton(info);	
-
-	info.text = ALL;
-	info.value = "ALL";
-	UIDropDownMenu_AddButton(info);			
-	
-	info.text = SOLO;
-	info.value = "SOLO";
-	UIDropDownMenu_AddButton(info);
-	
-	info.text = PARTY;
-	info.value = "PARTY";
-	UIDropDownMenu_AddButton(info);
-	
-	info.text = ARENA;
-	info.value = "ARENA";
-	UIDropDownMenu_AddButton(info);	
-	
-	info.text = RAID..'-10';
-	info.value = "RAID10";
-	UIDropDownMenu_AddButton(info);	
-	
-	info.text = RAID..'-25';
-	info.value = "RAID25";
-	UIDropDownMenu_AddButton(info);		
-	
-	info.text = RAID..'-40';
-	info.value = "RAID40";
-	UIDropDownMenu_AddButton(info);			
-		
-	info.text = ACTIONBARS_LABEL;
-	info.value = "ACTIONBARS";
-	UIDropDownMenu_AddButton(info);		
+	for _, configMode in ipairs(E.ConfigModeLayouts) do
+		info.text = configMode;
+		info.value = configMode:gsub('-', ''):upper();
+		UIDropDownMenu_AddButton(info);		
+	end
 
 	UIDropDownMenu_SetSelectedValue(ElvUIMoverConfigMode, selectedValue);
 end
