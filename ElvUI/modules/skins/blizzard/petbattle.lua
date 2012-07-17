@@ -105,12 +105,12 @@ local function LoadSkin()
 			return
 		end
 
-		for i, pet in pairs(pets) do
-			pet.FirstAttack:Show()
-			if pet.SpeedIcon:IsShown() then
-				pet.FirstAttack:SetVertexColor(0,1,0,1)
+		for i, infoBar in pairs(infoBars) do
+			infoBar.FirstAttack:Show()
+			if infoBar.SpeedIcon:IsShown() then
+				infoBar.FirstAttack:SetVertexColor(0,1,0,1)
 			else
-				pet.FirstAttack:SetVertexColor(.8,0,.3,1)
+				infoBar.FirstAttack:SetVertexColor(.8,0,.3,1)
 			end
 		end
 	end)
