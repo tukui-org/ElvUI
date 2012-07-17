@@ -8,6 +8,7 @@ else
 end
 
 if not L then return; end
+L['Config Mode:'] = true;
 L['For technical support visit us at www.tukui.org.'] = true;
 L['You can toggle the microbar by using your middle mouse button on the minimap you can also accomplish this by holding shift and right clicking on the minimap.'] = true;
 L['A raid marker feature is available by pressing Escape -> Keybinds scroll to the bottom under ElvUI and setting a keybind for the raid marker.'] = true;

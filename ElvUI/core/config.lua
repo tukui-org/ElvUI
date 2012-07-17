@@ -19,7 +19,7 @@ function E:Grid_Hide()
 	end
 end
 
-function E:ToggleConfigMode(override)
+function E:ToggleConfigMode(override, configType)
 	if InCombatLockdown() then return; end
 	if override ~= nil and override ~= '' then E.ConfigurationMode = override end
 
@@ -53,7 +53,11 @@ function E:ToggleConfigMode(override)
 		E.ConfigurationMode = false
 	end
 	
-	self:ToggleMovers(E.ConfigurationMode)
+	if type(configType) ~= 'string' then
+		configType = nil
+	end
+	
+	self:ToggleMovers(E.ConfigurationMode, configType or 'GENERAL')
 end
 
 function E:Grid_Create() 
@@ -104,6 +108,54 @@ function E:Grid_Create()
 	end
 end
 
+local function ConfigMode_OnClick(self)
+	E:ToggleConfigMode(false, self.value)
+	UIDropDownMenu_SetSelectedValue(ElvUIMoverConfigMode, self.value);
+end
+
+local function ConfigMode_Initialize()
+	local info = UIDropDownMenu_CreateInfo();
+	info.func = ConfigMode_OnClick;
+	
+	info.text = GENERAL;
+	info.value = "GENERAL";
+	UIDropDownMenu_AddButton(info);	
+
+	info.text = ALL;
+	info.value = "ALL";
+	UIDropDownMenu_AddButton(info);			
+	
+	info.text = SOLO;
+	info.value = "SOLO";
+	UIDropDownMenu_AddButton(info);
+	
+	info.text = PARTY;
+	info.value = "PARTY";
+	UIDropDownMenu_AddButton(info);
+	
+	info.text = ARENA;
+	info.value = "ARENA";
+	UIDropDownMenu_AddButton(info);	
+	
+	info.text = RAID..'-10';
+	info.value = "RAID10";
+	UIDropDownMenu_AddButton(info);	
+	
+	info.text = RAID..'-25';
+	info.value = "RAID25";
+	UIDropDownMenu_AddButton(info);		
+	
+	info.text = RAID..'-40';
+	info.value = "RAID40";
+	UIDropDownMenu_AddButton(info);			
+		
+	info.text = ACTIONBARS_LABEL;
+	info.value = "ACTIONBARS";
+	UIDropDownMenu_AddButton(info);		
+
+	UIDropDownMenu_SetSelectedValue(ElvUIMoverConfigMode, 'GENERAL');
+end
+
 function E:CreateMoverPopup()
 	local f = CreateFrame("Frame", "ElvUIMoverPopupWindow", UIParent)
 	f:SetFrameStrata("DIALOG")
@@ -112,9 +164,9 @@ function E:CreateMoverPopup()
 	f:SetMovable(true)
 	f:SetClampedToScreen(true)
 	f:SetWidth(360)
-	f:SetHeight(110)
+	f:SetHeight(130)
 	f:SetTemplate('Transparent')
-	f:SetPoint("TOP", 0, -50)
+	f:SetPoint("BOTTOM", UIParent, 'CENTER')
 	f:Hide()
 
 	local S = E:GetModule('Skins')
@@ -214,4 +266,14 @@ function E:CreateMoverPopup()
 			E:ToggleConfigMode(true)
 		end
 	end)
+	
+	local configMode = CreateFrame('Frame', 'ElvUIMoverConfigMode', f, 'UIDropDownMenuTemplate')
+	configMode:Point('BOTTOMRIGHT', lock, 'TOPRIGHT', 8, -5)
+	S:HandleDropDownBox(configMode, 148)
+	configMode.text = configMode:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
+	configMode.text:SetPoint('RIGHT', configMode.backdrop, 'LEFT', -2, 0)
+	configMode.text:SetText(L['Config Mode:'])	
+	
+	
+	UIDropDownMenu_Initialize(configMode, ConfigMode_Initialize);
 end

@@ -5,7 +5,7 @@ function B:PositionGMFrames()
 	TicketStatusFrame:ClearAllPoints()
 	TicketStatusFrame:SetPoint("TOPLEFT", 250, -5)
 
-	E:CreateMover(TicketStatusFrame, "GMMover", "GM Ticket Frame")
+	E:CreateMover(TicketStatusFrame, "GMMover", "GM Ticket Frame", nil, nil, nil, 'ALL,GENERAL')
 
 	HelpOpenTicketButton:SetParent(Minimap)
 	HelpOpenTicketButton:ClearAllPoints()

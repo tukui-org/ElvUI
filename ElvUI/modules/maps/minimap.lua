@@ -311,7 +311,7 @@ function M:Initialize()
 		FeedbackUIButton:Kill()
 	end
 	
-	E:CreateMover(MMHolder, 'MinimapMover', 'Minimap', nil, nil)
+	E:CreateMover(MMHolder, 'MinimapMover', 'Minimap', nil, nil, nil, 'ALL,GENERAL')
 	Minimap.SetPoint = E.noop;
 	MMHolder.SetPoint = E.noop;
 	Minimap.ClearAllPoints = E.noop;

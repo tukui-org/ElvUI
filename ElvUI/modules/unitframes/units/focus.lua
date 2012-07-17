@@ -24,7 +24,7 @@ function UF:Construct_FocusFrame(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 
 	frame:Point('BOTTOMRIGHT', ElvUF_Target, 'TOPRIGHT', 0, 220)
-	E:CreateMover(frame, frame:GetName()..'Mover', 'Focus Frame')
+	E:CreateMover(frame, frame:GetName()..'Mover', 'Focus Frame', nil, nil, nil, 'ALL,SOLO')
 end
 
 function UF:Update_FocusFrame(frame, db)

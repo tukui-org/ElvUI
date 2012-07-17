@@ -110,7 +110,7 @@ function UF:Update_PartyHeader(header, db)
 		header:ClearAllPoints()
 		header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
 		
-		E:CreateMover(header, header:GetName()..'Mover', 'Party Frames')
+		E:CreateMover(header, header:GetName()..'Mover', 'Party Frames', nil, nil, nil, 'ALL,PARTY,ARENA')
 		
 		header:SetAttribute('minHeight', header.dirtyHeight)
 		header:SetAttribute('minWidth', header.dirtyWidth)

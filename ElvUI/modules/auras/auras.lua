@@ -216,7 +216,7 @@ function A:Initialize()
 	self.BuffFrame = self:CreateAuraHeader("HELPFUL", "TOPRIGHT", holder, "TOPRIGHT", -2, -2)
 	self.DebuffFrame = self:CreateAuraHeader("HARMFUL", "BOTTOMRIGHT", holder, "BOTTOMRIGHT", -2, -2)
 
-	E:CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, nil, A.PostDrag)
+	E:CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, nil, A.PostDrag, 'ALL,GENERAL')
 	
 	self.ScanAuras(self.BuffFrame)
 	self.ScanAuras(self.DebuffFrame)

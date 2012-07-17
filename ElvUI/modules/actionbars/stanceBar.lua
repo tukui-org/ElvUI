@@ -249,7 +249,7 @@ function AB:CreateBarShapeShift()
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', 'StyleShapeShift');
 	self:RegisterEvent('ACTIONBAR_PAGE_CHANGED', 'StyleShapeShift');
 	
-	E:CreateMover(bar, 'ShiftAB', 'Stance Bar', nil, -3);
+	E:CreateMover(bar, 'ShiftAB', 'Stance Bar', nil, -3, nil, 'ALL,ACTIONBARS');
 	self:AdjustMaxStanceButtons();
 	self:PositionAndSizeBarShapeShift();
 	RegisterStateDriver(bar, "show", states[E.myclass] or "hide");
