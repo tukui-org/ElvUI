@@ -22,7 +22,7 @@ function UF:Construct_TargetFrame(frame)
 	
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	
-	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT')
+	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT', 'Target Castbar')
 	frame.Castbar.SafeZone = nil
 	frame.Castbar.LatencyTexture:Hide()
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)		
@@ -356,6 +356,9 @@ function UF:Update_TargetFrame(frame, db)
 		local castbar = frame.Castbar
 		castbar:Width(db.castbar.width - 4)
 		castbar:Height(db.castbar.height)
+		castbar.Holder:Width(db.castbar.width)
+		castbar.Holder:Height(db.castbar.height + 4)
+		castbar.Holder:GetScript('OnSizeChanged')(castbar.Holder)
 		
 		--Icon
 		if db.castbar.icon then
@@ -375,10 +378,7 @@ function UF:Update_TargetFrame(frame, db)
 		else
 			castbar.Spark:Hide()
 		end		
-		
-		castbar:ClearAllPoints()
-		castbar:Point("TOPLEFT", frame, "BOTTOMLEFT", (BORDER + db.castbar.xOffset), (-(BORDER*2+BORDER) + db.castbar.yOffset))
-		
+
 		if db.castbar.enable and not frame:IsElementEnabled('Castbar') then
 			frame:EnableElement('Castbar')
 		elseif not db.castbar.enable and frame:IsElementEnabled('Castbar') then

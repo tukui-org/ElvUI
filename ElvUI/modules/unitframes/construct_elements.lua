@@ -177,7 +177,7 @@ function UF:Construct_Debuffs(frame)
 	return debuffs
 end
 
-function UF:Construct_Castbar(self, direction)
+function UF:Construct_Castbar(self, direction, moverName)
 	local castbar = CreateFrame("StatusBar", nil, self)
 	UF['statusbars'][castbar] = true
 	castbar.CustomDelayText = UF.CustomCastDelayText
@@ -210,14 +210,25 @@ function UF:Construct_Castbar(self, direction)
 	castbar.LatencyTexture:SetVertexColor(0.69, 0.31, 0.31, 0.75)	
 
 	local button = CreateFrame("Frame", nil, castbar)
+	local holder = CreateFrame('Frame', nil, castbar)
 	button:SetTemplate("Default")
 	
 	if direction == "LEFT" then
+		holder:Point("TOPRIGHT", self, "BOTTOMRIGHT", 0, -6)
+		castbar:Point('BOTTOMRIGHT', holder, 'BOTTOMRIGHT', -2, 2)
 		button:Point("RIGHT", castbar, "LEFT", -3, 0)
 	else
+		holder:Point("TOPLEFT", self, "BOTTOMLEFT", 0, -6)
+		castbar:Point('BOTTOMLEFT', holder, 'BOTTOMLEFT', 2, 2)
 		button:Point("LEFT", castbar, "RIGHT", 3, 0)
 	end
 	
+	castbar.Holder = holder
+	
+	if moverName then
+		E:CreateMover(castbar.Holder, self:GetName()..'CastbarMover', moverName, nil, -6, nil, 'ALL,SOLO')
+	end
+
 	local icon = button:CreateTexture(nil, "ARTWORK")
 	icon:SetInside()
 	icon:SetTexCoord(unpack(E.TexCoords))

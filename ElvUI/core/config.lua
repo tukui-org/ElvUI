@@ -125,7 +125,7 @@ end
 local function ConfigMode_OnClick(self)
 	selectedValue = self.value
 	E:ToggleConfigMode(false, self.value)
-	UIDropDownMenu_SetSelectedValue(ElvUIMoverConfigMode, self.value);
+	UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, self.value);
 end
 
 local function ConfigMode_Initialize()
@@ -138,7 +138,7 @@ local function ConfigMode_Initialize()
 		UIDropDownMenu_AddButton(info);		
 	end
 
-	UIDropDownMenu_SetSelectedValue(ElvUIMoverConfigMode, selectedValue);
+	UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, selectedValue);
 end
 
 function E:CreateMoverPopup()
@@ -179,7 +179,7 @@ function E:CreateMoverPopup()
 	desc:SetPoint("BOTTOMRIGHT", -18, 48)
 	desc:SetText(L["Movers unlocked. Move them now and click Lock when you are done."])
 
-	local snapping = CreateFrame("CheckButton", "ElvUISnapping", f, "OptionsCheckButtonTemplate")
+	local snapping = CreateFrame("CheckButton", f:GetName()..'CheckButton', f, "OptionsCheckButtonTemplate")
 	_G[snapping:GetName() .. "Text"]:SetText(L["Sticky Frames"])
 
 	snapping:SetScript("OnShow", function(self)
@@ -190,7 +190,7 @@ function E:CreateMoverPopup()
 		E.db.general.stickyFrames = self:GetChecked()
 	end)
 
-	local lock = CreateFrame("Button", "ElvUILock", f, "OptionsButtonTemplate")
+	local lock = CreateFrame("Button", f:GetName()..'CloseButton', f, "OptionsButtonTemplate")
 	_G[lock:GetName() .. "Text"]:SetText(L["Lock"])
 
 	lock:SetScript("OnClick", function(self)
@@ -199,7 +199,7 @@ function E:CreateMoverPopup()
 		ACD['Open'](ACD, 'ElvUI') 
 	end)
 	
-	local align = CreateFrame('EditBox', 'AlignBox', f, 'InputBoxTemplate')
+	local align = CreateFrame('EditBox', f:GetName()..'EditBox', f, 'InputBoxTemplate')
 	align:Width(24)
 	align:Height(17)
 	align:SetAutoFocus(false)
@@ -252,7 +252,7 @@ function E:CreateMoverPopup()
 		end
 	end)
 	
-	local configMode = CreateFrame('Frame', 'ElvUIMoverConfigMode', f, 'UIDropDownMenuTemplate')
+	local configMode = CreateFrame('Frame', f:GetName()..'DropDown', f, 'UIDropDownMenuTemplate')
 	configMode:Point('BOTTOMRIGHT', lock, 'TOPRIGHT', 8, -5)
 	S:HandleDropDownBox(configMode, 148)
 	configMode.text = configMode:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
