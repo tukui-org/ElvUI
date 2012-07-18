@@ -8,6 +8,7 @@ else
 end
 
 if not L then return; end
+L['Using the /farmmode <size> command will spawn a larger minimap on your screen that can be moved around, very useful when farming.'] = true;
 L['You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame'] = true;
 L['Config Mode:'] = true;
 L['For technical support visit us at www.tukui.org.'] = true;

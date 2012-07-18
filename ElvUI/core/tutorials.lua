@@ -14,7 +14,8 @@ E.TutorialList = {
 	L['The buff panel to the right of minimap is a list of your consolidated buffs. You can disable it in general options of ElvUI.'],
 	L['If you accidently remove a chat frame you can always go the in-game configuration menu, press install, go to the chat portion and reset them.'],
 	L['To setup which channels appear in which chat frame, right click the chat tab and go to settings.'],
-	L['You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame']
+	L['You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame'],
+	L['Using the /farmmode <size> command will spawn a larger minimap on your screen that can be moved around, very useful when farming.'],
 }
 
 function E:SetNextTutorial()
