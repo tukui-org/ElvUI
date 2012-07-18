@@ -8,6 +8,7 @@ else
 end
 
 if not L then return; end
+L['You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame'] = true;
 L['Config Mode:'] = true;
 L['For technical support visit us at www.tukui.org.'] = true;
 L['You can toggle the microbar by using your middle mouse button on the minimap you can also accomplish this by holding shift and right clicking on the minimap.'] = true;
