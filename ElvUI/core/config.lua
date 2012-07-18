@@ -197,6 +197,8 @@ function E:CreateMoverPopup()
 		local ACD = LibStub("AceConfigDialog-3.0")
 		E:ToggleConfigMode(true)
 		ACD['Open'](ACD, 'ElvUI') 
+		selectedValue = 'GENERAL'
+		UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, selectedValue);
 	end)
 	
 	local align = CreateFrame('EditBox', f:GetName()..'EditBox', f, 'InputBoxTemplate')

@@ -440,6 +440,14 @@ function E:SetupLayout(layout, noDataReset)
 		E.db.unitframe.units.arena.castbar.width = 200;		
 	end
 	
+	if not E.db.lowresolutionset and layout == 'dpsCaster' then
+		if not E.db.movers then E.db.movers = {}; end
+		E.db.movers.ElvUF_PlayerCastbarMover = "BOTTOMUIParentBOTTOM0180"
+	--[[elseif not E.db.lowresolutionset and layout == 'tank' then --Not sure if i want to keep this.
+		if not E.db.movers then E.db.movers = {}; end
+		E.db.movers.ElvUF_TargetCastbarMover = "BOTTOMUIParentBOTTOM0180"]]
+	end
+	
 	--Datatexts
 	if not noDataReset then
 		E:CopyTable(E.db.datatexts.panels, P.datatexts.panels)
