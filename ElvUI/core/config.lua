@@ -4,15 +4,27 @@ local grid
 
 local selectedValue = 'GENERAL'
 E.ConfigModeLayouts = {
-	GENERAL,
-	ALL,
-	SOLO,
-	PARTY,
-	ARENA,
-	RAID..'-10',
-	RAID..'-25',
-	RAID..'-40',
-	ACTIONBARS_LABEL
+	'GENERAL',
+	'ALL',
+	'SOLO',
+	'PARTY',
+	'ARENA',
+	'RAID10',
+	'RAID25',
+	'RAID40',
+	'ACTIONBARS'
+}
+
+E.ConfigModeLocalizedStrings = {
+	GENERAL = GENERAL,
+	ALL = ALL,
+	SOLO = SOLO,
+	PARTY = PARTY,
+	ARENA = ARENA,
+	RAID10 = RAID..'-10',
+	RAID25 = RAID..'-25',
+	RAID40 = RAID..'-40',
+	ACTIONBARS = ACTIONBARS_LABEL
 }
 
 
@@ -133,8 +145,8 @@ local function ConfigMode_Initialize()
 	info.func = ConfigMode_OnClick;
 	
 	for _, configMode in ipairs(E.ConfigModeLayouts) do
-		info.text = configMode;
-		info.value = configMode:gsub('-', ''):upper();
+		info.text = E.ConfigModeLocalizedStrings[configMode];
+		info.value = configMode;
 		UIDropDownMenu_AddButton(info);		
 	end
 
