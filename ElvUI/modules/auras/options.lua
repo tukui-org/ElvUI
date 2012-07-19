@@ -25,6 +25,7 @@ E.Options.args.auras = {
 			set = function(info, value) 
 				E.db.auras[ info[#info] ] = value
 				E:GetModule('Minimap'):UpdateSettings()
+				A:UpdateAllHeaders()
 			end,					
 		},
 		general = {
