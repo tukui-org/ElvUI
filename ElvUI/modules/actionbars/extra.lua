@@ -19,5 +19,5 @@ function AB:SetupExtraButton()
 		end
 	end
 	
-	E:CreateMover(holder, 'BossButton', 'Boss Button');
+	E:CreateMover(holder, 'BossButton', 'Boss Button', nil, nil, nil, 'ALL,ACTIONBARS');
 end

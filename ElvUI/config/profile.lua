@@ -87,7 +87,24 @@ P["nameplate"] = {
 
 --Auras
 P['auras'] = {
-	['perRow'] = 16,
+	['enable'] = true;
+	['consolidedBuffs'] = true;
+	['wrapAfter'] = 16,
+	['size'] = 26,
+	['xSpacing'] = 10,
+	['ySpacing'] = 42,
+	
+	['buffs'] = {
+		['sortMethod'] = "TIME",
+		['sortDir'] = '-',
+		['maxWraps'] = 2,
+		['seperateOwn'] = 1,
+	},
+	['debuffs'] = {
+		['sortMethod'] = "TIME",
+		['sortDir'] = '-',
+		['maxWraps'] = 1,
+	},
 }
 
 --Chat
@@ -259,8 +276,6 @@ P['unitframe'] = {
 				['displayTarget'] = false,
 				['color'] = { r = .66,g = .66,b = .66 },
 				['interruptcolor'] = { r = 0.78, g = 0.25, b = 0.25 },
-				['xOffset'] = 0,
-				['yOffset'] = 0,
 				['format'] = 'CURRENTMAX',
 				["ticks"] = true,
 				['spark'] = true,
@@ -344,8 +359,6 @@ P['unitframe'] = {
 				['icon'] = false,
 				['color'] = { r = .66,g = .66,b = .66 },
 				['interruptcolor'] = { r = 0.78, g = 0.25, b = 0.25 },
-				['xOffset'] = 0,
-				['yOffset'] = 84,
 				['format'] = 'REMAINING',
 				['spark'] = true,
 			},	
@@ -474,8 +487,6 @@ P['unitframe'] = {
 				['icon'] = false,
 				['color'] = { r = .66,g = .66,b = .66 },
 				['interruptcolor'] = { r = 0.78, g = 0.25, b = 0.25 },
-				['xOffset'] = 0,
-				['yOffset'] = 66,
 				['format'] = 'REMAINING',
 				['spark'] = true,
 			},	

@@ -48,7 +48,16 @@ G['reminder']['filters'] = {
 
 	},
 	PALADIN = {
-
+		["Righteous Fury"] = { -- righteous fury group
+			["spellGroup"] = {
+				[25780] = true, 
+			},
+			["role"] = "Tank",
+			["instance"] = true,
+			["talentTreeException"] = 2, --Don't run reverse check for prot paladins, holy paladins you have to disable this if it annoys you sorry.
+			['enable'] = true,
+			['strictFilter'] = true,
+		},
 	},
 	SHAMAN = {
 	

@@ -177,5 +177,5 @@ function B:AlertMovers()
 	self:SecureHook('AlertFrame_SetScenarioAnchors')
 	self:SecureHook('AlertFrame_SetGuildChallengeAnchors')
 	
-	E:CreateMover(AlertFrameHolder, "AlertFrameMover", "Alert Frames", nil, nil, E.PostAlertMove)
+	E:CreateMover(AlertFrameHolder, "AlertFrameMover", "Loot / Alert Frames", nil, nil, E.PostAlertMove)
 end

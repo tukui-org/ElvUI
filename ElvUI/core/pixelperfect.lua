@@ -4,9 +4,9 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local scale
 function E:UIScale(event)
 	if self.db.general.autoscale then
-		scale = max(0.64, min(1, 768/self.screenheight));
+		scale = max(0.64, min(1.15, 768/self.screenheight));
 	else
-		scale = max(0.64, min(1, GetCVar('uiScale') or UIParent:GetScale() or 768/self.screenheight));
+		scale = max(0.64, min(1.15, GetCVar('uiScale') or UIParent:GetScale() or 768/self.screenheight));
 	end
 
 	if self.screenwidth < 1600 then

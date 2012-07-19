@@ -24,7 +24,7 @@ function UF:Construct_PlayerFrame(frame)
 	
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	
-	frame.Castbar = self:Construct_Castbar(frame, 'LEFT')
+	frame.Castbar = self:Construct_Castbar(frame, 'LEFT', 'Player Castbar')
 	
 	if E.myclass == "PALADIN" then
 		frame.HolyPower = self:Construct_PaladinResourceBar(frame)
@@ -53,8 +53,13 @@ function UF:Construct_PlayerFrame(frame)
 		
 	frame.CombatFade = true
 
+<<<<<<< HEAD
 	frame:Point('TOPLEFT', UIParent, 'TOPLEFT', 30, -30) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', 'Player Frame')
+=======
+	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -417, 75) --Set to default position	
+	E:CreateMover(frame, frame:GetName()..'Mover', 'Player Frame', nil, nil, nil, 'ALL,SOLO')
+>>>>>>> beta/master
 end
 
 function UF:UpdatePlayerFrameAnchors(frame, isShown)
@@ -553,6 +558,9 @@ function UF:Update_PlayerFrame(frame, db)
 		local castbar = frame.Castbar
 		castbar:Width(db.castbar.width - 4)
 		castbar:Height(db.castbar.height)
+		castbar.Holder:Width(db.castbar.width)
+		castbar.Holder:Height(db.castbar.height + 4)
+		castbar.Holder:GetScript('OnSizeChanged')(castbar.Holder)
 		
 		--Latency
 		if db.castbar.latency then
@@ -581,10 +589,7 @@ function UF:Update_PlayerFrame(frame, db)
 		else
 			castbar.Spark:Hide()
 		end
-		
-		castbar:ClearAllPoints()
-		castbar:Point("TOPRIGHT", frame, "BOTTOMRIGHT", (-BORDER + db.castbar.xOffset), (-(BORDER*2+BORDER) + db.castbar.yOffset))
-		
+
 		if db.castbar.enable and not frame:IsElementEnabled('Castbar') then
 			frame:EnableElement('Castbar')
 		elseif not db.castbar.enable and frame:IsElementEnabled('Castbar') then

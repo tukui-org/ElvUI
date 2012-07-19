@@ -190,9 +190,10 @@ function E:SaveMoverDefaultPosition(name)
 	E.CreatedMovers[name]["postdrag"](_G[name], E:GetScreenQuadrant(_G[name]))
 end
 
-function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag)
+function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverTypes)
+	if not moverTypes then moverTypes = 'ALL,GENERAL' end
 	local p, p2, p3, p4, p5 = parent:GetPoint()
-
+	
 	if E.CreatedMovers[name] == nil then 
 		E.CreatedMovers[name] = {}
 		E.CreatedMovers[name]["parent"] = parent
@@ -201,17 +202,28 @@ function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag)
 		E.CreatedMovers[name]["postdrag"] = postdrag
 		E.CreatedMovers[name]["snapoffset"] = snapOffset
 		E.CreatedMovers[name]["point"] = GetPoint(parent)
+
+		E.CreatedMovers[name]["type"] = {}
+		local types = {string.split(',', moverTypes)}
+		for i = 1, #types do
+			local moverType = types[i]
+			E.CreatedMovers[name]["type"][moverType] = true
+		end
 	end	
 	
 	CreateMover(parent, name, text, overlay, snapoffset, postdrag)
 end
 
-function E:ToggleMovers(show)
+function E:ToggleMovers(show, moverType)
 	for name, _ in pairs(E.CreatedMovers) do
 		if not show then
 			_G[name]:Hide()
 		else
-			_G[name]:Show()
+			if E.CreatedMovers[name]['type'][moverType] then
+				_G[name]:Show()
+			else
+				_G[name]:Hide()
+			end
 		end
 	end
 end

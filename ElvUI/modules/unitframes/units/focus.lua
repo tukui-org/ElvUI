@@ -15,7 +15,7 @@ function UF:Construct_FocusFrame(frame)
 	
 	frame.Buffs = self:Construct_Buffs(frame)
 	
-	frame.Castbar = self:Construct_Castbar(frame, 'LEFT')
+	frame.Castbar = self:Construct_Castbar(frame, 'LEFT', 'Focus Castbar')
 	frame.Castbar.SafeZone = nil
 	frame.Castbar.LatencyTexture:Hide()
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)	
@@ -23,8 +23,13 @@ function UF:Construct_FocusFrame(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 
+<<<<<<< HEAD
 	frame:Point('TOPLEFT', ElvUF_Player, 'BOTTOMLEFT', 0, -180)
 	E:CreateMover(frame, frame:GetName()..'Mover', 'Focus Frame')
+=======
+	frame:Point('BOTTOMRIGHT', ElvUF_Target, 'TOPRIGHT', 0, 220)
+	E:CreateMover(frame, frame:GetName()..'Mover', 'Focus Frame', nil, nil, nil, 'ALL,SOLO')
+>>>>>>> beta/master
 end
 
 function UF:Update_FocusFrame(frame, db)
@@ -269,7 +274,10 @@ function UF:Update_FocusFrame(frame, db)
 		local castbar = frame.Castbar
 		castbar:Width(db.castbar.width - 4)
 		castbar:Height(db.castbar.height)
-
+		castbar.Holder:Width(db.castbar.width)
+		castbar.Holder:Height(db.castbar.height + 4)
+		castbar.Holder:GetScript('OnSizeChanged')(castbar.Holder)
+		
 		--Icon
 		if db.castbar.icon then
 			castbar.Icon = castbar.ButtonIcon
@@ -288,10 +296,7 @@ function UF:Update_FocusFrame(frame, db)
 		else
 			castbar.Spark:Hide()
 		end
-		
-		castbar:ClearAllPoints()
-		castbar:Point("TOPRIGHT", frame, "BOTTOMRIGHT", -(BORDER + db.castbar.xOffset), (-(BORDER*2+BORDER) + db.castbar.yOffset))
-		
+
 		if db.castbar.enable and not frame:IsElementEnabled('Castbar') then
 			frame:EnableElement('Castbar')
 		elseif not db.castbar.enable and frame:IsElementEnabled('Castbar') then

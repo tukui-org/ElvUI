@@ -2,6 +2,20 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local ACD = LibStub("AceConfigDialog-3.0")
 local grid
 
+local selectedValue = 'GENERAL'
+E.ConfigModeLayouts = {
+	GENERAL,
+	ALL,
+	SOLO,
+	PARTY,
+	ARENA,
+	RAID..'-10',
+	RAID..'-25',
+	RAID..'-40',
+	ACTIONBARS_LABEL
+}
+
+
 function E:Grid_Show()
 	if not grid then
         E:Grid_Create()
@@ -19,7 +33,8 @@ function E:Grid_Hide()
 	end
 end
 
-function E:ToggleConfigMode(override)
+function E:ToggleConfigMode(override, configType)
+	if InCombatLockdown() then return; end
 	if override ~= nil and override ~= '' then E.ConfigurationMode = override end
 
 	if E.ConfigurationMode ~= true then
@@ -52,7 +67,11 @@ function E:ToggleConfigMode(override)
 		E.ConfigurationMode = false
 	end
 	
-	self:ToggleMovers(E.ConfigurationMode)
+	if type(configType) ~= 'string' then
+		configType = nil
+	end
+	
+	self:ToggleMovers(E.ConfigurationMode, configType or 'GENERAL')
 end
 
 function E:Grid_Create() 
@@ -103,6 +122,25 @@ function E:Grid_Create()
 	end
 end
 
+local function ConfigMode_OnClick(self)
+	selectedValue = self.value
+	E:ToggleConfigMode(false, self.value)
+	UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, self.value);
+end
+
+local function ConfigMode_Initialize()
+	local info = UIDropDownMenu_CreateInfo();
+	info.func = ConfigMode_OnClick;
+	
+	for _, configMode in ipairs(E.ConfigModeLayouts) do
+		info.text = configMode;
+		info.value = configMode:gsub('-', ''):upper();
+		UIDropDownMenu_AddButton(info);		
+	end
+
+	UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, selectedValue);
+end
+
 function E:CreateMoverPopup()
 	local f = CreateFrame("Frame", "ElvUIMoverPopupWindow", UIParent)
 	f:SetFrameStrata("DIALOG")
@@ -111,9 +149,9 @@ function E:CreateMoverPopup()
 	f:SetMovable(true)
 	f:SetClampedToScreen(true)
 	f:SetWidth(360)
-	f:SetHeight(110)
+	f:SetHeight(130)
 	f:SetTemplate('Transparent')
-	f:SetPoint("TOP", 0, -50)
+	f:SetPoint("BOTTOM", UIParent, 'CENTER')
 	f:Hide()
 
 	local S = E:GetModule('Skins')
@@ -141,7 +179,7 @@ function E:CreateMoverPopup()
 	desc:SetPoint("BOTTOMRIGHT", -18, 48)
 	desc:SetText(L["Movers unlocked. Move them now and click Lock when you are done."])
 
-	local snapping = CreateFrame("CheckButton", "ElvUISnapping", f, "OptionsCheckButtonTemplate")
+	local snapping = CreateFrame("CheckButton", f:GetName()..'CheckButton', f, "OptionsCheckButtonTemplate")
 	_G[snapping:GetName() .. "Text"]:SetText(L["Sticky Frames"])
 
 	snapping:SetScript("OnShow", function(self)
@@ -152,16 +190,18 @@ function E:CreateMoverPopup()
 		E.db.general.stickyFrames = self:GetChecked()
 	end)
 
-	local lock = CreateFrame("Button", "ElvUILock", f, "OptionsButtonTemplate")
+	local lock = CreateFrame("Button", f:GetName()..'CloseButton', f, "OptionsButtonTemplate")
 	_G[lock:GetName() .. "Text"]:SetText(L["Lock"])
 
 	lock:SetScript("OnClick", function(self)
 		local ACD = LibStub("AceConfigDialog-3.0")
 		E:ToggleConfigMode(true)
 		ACD['Open'](ACD, 'ElvUI') 
+		selectedValue = 'GENERAL'
+		UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, selectedValue);
 	end)
 	
-	local align = CreateFrame('EditBox', 'AlignBox', f, 'InputBoxTemplate')
+	local align = CreateFrame('EditBox', f:GetName()..'EditBox', f, 'InputBoxTemplate')
 	align:Width(24)
 	align:Height(17)
 	align:SetAutoFocus(false)
@@ -209,6 +249,18 @@ function E:CreateMoverPopup()
 	f:SetScript('OnEvent', function(self)
 		if self:IsShown() then
 			self:Hide()
+			E:Grid_Hide()
+			E:ToggleConfigMode(true)
 		end
 	end)
+	
+	local configMode = CreateFrame('Frame', f:GetName()..'DropDown', f, 'UIDropDownMenuTemplate')
+	configMode:Point('BOTTOMRIGHT', lock, 'TOPRIGHT', 8, -5)
+	S:HandleDropDownBox(configMode, 148)
+	configMode.text = configMode:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
+	configMode.text:SetPoint('RIGHT', configMode.backdrop, 'LEFT', -2, 0)
+	configMode.text:SetText(L['Config Mode:'])	
+	
+	
+	UIDropDownMenu_Initialize(configMode, ConfigMode_Initialize);
 end

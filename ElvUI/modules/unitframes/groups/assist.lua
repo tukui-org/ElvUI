@@ -56,8 +56,13 @@ function UF:Update_AssistHeader(header, db)
 
 	if not header.positioned then
 		header:ClearAllPoints()
+<<<<<<< HEAD
 		header:Point("LEFT", E.UIParent, "LEFT", 30, 50)
 		E:CreateMover(header, header:GetName()..'Mover', 'MA Frames')
+=======
+		header:Point("LEFT", E.UIParent, "LEFT", 6, 100)
+		E:CreateMover(header, header:GetName()..'Mover', 'MA Frames', nil, nil, nil, 'ALL,RAID10,RAID25,RAID40')
+>>>>>>> beta/master
 		
 		header:SetAttribute('minHeight', header.dirtyHeight)
 		header:SetAttribute('minWidth', header.dirtyWidth)

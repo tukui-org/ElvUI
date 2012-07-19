@@ -1172,19 +1172,7 @@ E.Options.args.unitframe.args.player = {
 					order = 6,
 					name = L['Icon'],
 					type = 'toggle',
-				},
-				xOffset = {
-					order = 7,
-					name = L['X Offset'],
-					type = 'range',
-					min = -E.screenwidth, max = E.screenwidth, step = 1,
-				},
-				yOffset = {
-					order = 8,
-					name = L['Y Offset'],
-					type = 'range',
-					min = -E.screenheight, max = E.screenheight, step = 1,
-				},				
+				},			
 				latency = {
 					order = 9,
 					name = L['Latency'],
@@ -1812,19 +1800,7 @@ E.Options.args.unitframe.args.target = {
 					order = 6,
 					name = L['Icon'],
 					type = 'toggle',
-				},
-				xOffset = {
-					order = 7,
-					name = L['X Offset'],
-					type = 'range',
-					min = -E.screenwidth, max = E.screenwidth, step = 1,
-				},
-				yOffset = {
-					order = 8,
-					name = L['Y Offset'],
-					type = 'range',
-					min = -E.screenheight, max = E.screenheight, step = 1,
-				},				
+				},			
 				color = {
 					order = 9,
 					type = 'color',
@@ -2776,19 +2752,7 @@ E.Options.args.unitframe.args.focus = {
 					order = 6,
 					name = L['Icon'],
 					type = 'toggle',
-				},
-				xOffset = {
-					order = 7,
-					name = L['X Offset'],
-					type = 'range',
-					min = -E.screenwidth, max = E.screenwidth, step = 1,
-				},
-				yOffset = {
-					order = 8,
-					name = L['Y Offset'],
-					type = 'range',
-					min = -E.screenheight, max = E.screenheight, step = 1,
-				},				
+				},			
 				color = {
 					order = 9,
 					type = 'color',

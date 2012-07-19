@@ -8,6 +8,32 @@ else
 end
 
 if not L then return; end
+L['AURAS_DESC'] = 'Configure the aura icons that appear near the minimap.';
+L['Consolidated Buffs'] = true;
+L['Display the consolidated buffs bar.'] = true;
+L['Set the size of the individual auras.'] = true;
+L['Wrap After'] = true;
+L['Begin a new row or column after this many auras.'] = true;
+L['X Spacing'] = true;
+L['Y Spacing'] = true;
+L['Sort Method'] = true;
+L['Defines how the group is sorted.'] = true;
+L['Index'] = true;
+L['Time'] = true;
+L['Name'] = true;
+L['Sort Direction'] = true;
+L['Defines the sort order of the selected sort method.'] = true;
+L['Max Wraps'] = true;
+L['Limit the number of rows or columns.'] = true;
+L['Seperate'] = true;
+L['Indicate whether buffs you cast yourself should be separated before or after.'] = true;
+L["Other's First"] = true;
+L['No Sorting'] = true;
+L['Your Auras First'] = true;
+
+L['Using the /farmmode <size> command will spawn a larger minimap on your screen that can be moved around, very useful when farming.'] = true;
+L['You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame'] = true;
+L['Config Mode:'] = true;
 L['For technical support visit us at www.tukui.org.'] = true;
 L['You can toggle the microbar by using your middle mouse button on the minimap you can also accomplish this by holding shift and right clicking on the minimap.'] = true;
 L['A raid marker feature is available by pressing Escape -> Keybinds scroll to the bottom under ElvUI and setting a keybind for the raid marker.'] = true;
@@ -17,10 +43,11 @@ L['The focus unit can be set by typing /focus when you are targetting the unit y
 L['ElvUI has a dual spec feature which allows you to load different profiles based on your current spec on the fly. You can enable this from the profiles tab.'] = true;
 L['You can access copy chat and chat menu functions by mouse over the top right corner of chat panel and left/right click on the button that will appear.'] = true;
 L['If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing.'] = true;
-L['The buff panel to the right of minimap is a list of your consolidated buffs. You can disable it in general options of ElvUI.'] = true;
+L['The buff panel to the right of minimap is a list of your consolidated buffs. You can disable it in Buffs and Debuffs options of ElvUI.'] = true;
 L['If you accidently remove a chat frame you can always go the in-game configuration menu, press install, go to the chat portion and reset them.'] = true
 L['If your experience and reputation bars disappear, mouse over the place where they were and click them again.'] = true;
 L['To setup which channels appear in which chat frame, right click the chat tab and go to settings.'] = true;
+
 L['Toggle Tutorials'] = true;
 L["Pet Battle"] = true;
 L['Alert Frames'] = true;

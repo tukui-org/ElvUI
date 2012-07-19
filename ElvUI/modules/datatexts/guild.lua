@@ -69,7 +69,7 @@ local function UpdateGuildXP()
 	local currentXP, remainingXP = UnitGetGuildXP("player")
 	local nextLevelXP = currentXP + remainingXP
 	local percentTotal
-	if currentXP > 0 then
+	if currentXP > 0 and nextLevelXP > 0  then
 		percentTotal = ceil((currentXP / nextLevelXP) * 100)
 	else 
 		percentTotal = 0

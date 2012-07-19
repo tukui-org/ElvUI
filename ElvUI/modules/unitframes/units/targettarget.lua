@@ -16,8 +16,13 @@ function UF:Construct_TargetTargetFrame(frame)
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	
+<<<<<<< HEAD
 	frame:Point('TOPLEFT', ElvUF_Target, 'TOPRIGHT', 30, 0) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', 'TargetTarget Frame')
+=======
+	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 75) --Set to default position
+	E:CreateMover(frame, frame:GetName()..'Mover', 'TargetTarget Frame', nil, nil, nil, 'ALL,SOLO')
+>>>>>>> beta/master
 end
 
 function UF:Update_TargetTargetFrame(frame, db)

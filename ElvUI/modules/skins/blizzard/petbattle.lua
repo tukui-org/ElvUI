@@ -100,12 +100,13 @@ local function LoadSkin()
 	-- PETS SPEED INDICATOR UPDATE
 	hooksecurefunc("PetBattleFrame_UpdateSpeedIndicators", function(self)
 		if not f.ActiveAlly.SpeedIcon:IsShown() and not f.ActiveEnemy.SpeedIcon:IsShown() then
-			f.ActiveAlly.FirstAttack:SetVertexColor(.1,.1,.1,1)
-			f.ActiveEnemy.FirstAttack:SetVertexColor(.1,.1,.1,1)
+			f.ActiveAlly.FirstAttack:Hide()
+			f.ActiveEnemy.FirstAttack:Hide()
 			return
 		end
 
 		for i, infoBar in pairs(infoBars) do
+			infoBar.FirstAttack:Show()
 			if infoBar.SpeedIcon:IsShown() then
 				infoBar.FirstAttack:SetVertexColor(0,1,0,1)
 			else
@@ -113,6 +114,7 @@ local function LoadSkin()
 			end
 		end
 	end)
+
 	
 	-- PETS UNITFRAMES PET TYPE UPDATE
 	hooksecurefunc("PetBattleUnitFrame_UpdatePetType", function(self)
