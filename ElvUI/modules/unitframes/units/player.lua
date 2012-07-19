@@ -53,13 +53,8 @@ function UF:Construct_PlayerFrame(frame)
 		
 	frame.CombatFade = true
 
-<<<<<<< HEAD
 	frame:Point('TOPLEFT', UIParent, 'TOPLEFT', 30, -30) --Set to default position
-	E:CreateMover(frame, frame:GetName()..'Mover', 'Player Frame')
-=======
-	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -417, 75) --Set to default position	
 	E:CreateMover(frame, frame:GetName()..'Mover', 'Player Frame', nil, nil, nil, 'ALL,SOLO')
->>>>>>> beta/master
 end
 
 function UF:UpdatePlayerFrameAnchors(frame, isShown)

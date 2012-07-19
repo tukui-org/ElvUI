@@ -121,13 +121,8 @@ for i=10, 40, 15 do
 
 		if not header.positioned then
 			header:ClearAllPoints()
-<<<<<<< HEAD
 			header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 210)
-			E:CreateMover(header, header:GetName()..'Mover', 'Raid 1-'..i..' Frames')
-=======
-			header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)	
 			E:CreateMover(header, header:GetName()..'Mover', 'Raid 1-'..i..' Frames', nil, nil, nil, 'ALL,RAID'..i)
->>>>>>> beta/master
 			
 			header:SetAttribute('minHeight', header.dirtyHeight)
 			header:SetAttribute('minWidth', header.dirtyWidth)

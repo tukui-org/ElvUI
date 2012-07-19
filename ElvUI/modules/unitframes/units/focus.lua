@@ -23,13 +23,8 @@ function UF:Construct_FocusFrame(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 
-<<<<<<< HEAD
 	frame:Point('TOPLEFT', ElvUF_Player, 'BOTTOMLEFT', 0, -180)
-	E:CreateMover(frame, frame:GetName()..'Mover', 'Focus Frame')
-=======
-	frame:Point('BOTTOMRIGHT', ElvUF_Target, 'TOPRIGHT', 0, 220)
 	E:CreateMover(frame, frame:GetName()..'Mover', 'Focus Frame', nil, nil, nil, 'ALL,SOLO')
->>>>>>> beta/master
 end
 
 function UF:Update_FocusFrame(frame, db)

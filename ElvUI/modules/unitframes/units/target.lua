@@ -31,14 +31,9 @@ function UF:Construct_TargetFrame(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
 	
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
-	
-<<<<<<< HEAD
+
 	frame:Point('TOPLEFT', ElvUF_Player, 'TOPRIGHT', 30, 0)
-	E:CreateMover(frame, frame:GetName()..'Mover', 'Target Frame')
-=======
-	frame:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOM', 417, 75)
 	E:CreateMover(frame, frame:GetName()..'Mover', 'Target Frame', nil, nil, nil, 'ALL,SOLO')
->>>>>>> beta/master
 end
 
 function UF:Update_TargetFrame(frame, db)

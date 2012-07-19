@@ -15,14 +15,9 @@ function UF:Construct_FocusTargetFrame(frame)
 	frame.Buffs = self:Construct_Buffs(frame)
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
-	
-<<<<<<< HEAD
+
 	frame:Point('TOPLEFT', ElvUF_Focus, 'TOPRIGHT', 30, 0) --Set to default position
-	E:CreateMover(frame, frame:GetName()..'Mover', 'FocusTarget Frame', nil, -7)
-=======
-	frame:Point('BOTTOM', ElvUF_Focus, 'TOP', 0, 7) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', 'FocusTarget Frame', nil, -7, nil, 'ALL,SOLO')
->>>>>>> beta/master
 end
 
 function UF:Update_FocusTargetFrame(frame, db)
