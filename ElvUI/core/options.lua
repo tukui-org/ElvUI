@@ -130,16 +130,6 @@ E.Options.args.general = {
 					type = "toggle",	
 					set = function(info, value) E.db.general[ info[#info] ] = value; E:StaticPopup_Show("CONFIG_RL") end
 				},	
-				raidReminder = {
-					order = 9,
-					name = L['Raid Reminder'],
-					desc = L['Display raid reminder bar on the minimap.'],
-					type = 'toggle',
-					set = function(info, value) 
-						E.db.general[ info[#info] ] = value
-						E:GetModule('Minimap'):UpdateSettings()
-					end,					
-				},
 				mapTransparency = {
 					order = 10,
 					name = L['Map Transparency'],

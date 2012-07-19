@@ -85,7 +85,24 @@ P["nameplate"] = {
 
 --Auras
 P['auras'] = {
-	['perRow'] = 12,
+	['enable'] = true;
+	['consolidedBuffs'] = true;
+	['wrapAfter'] = 12,
+	['size'] = 26,
+	['xSpacing'] = 10,
+	['ySpacing'] = 42,
+	
+	['buffs'] = {
+		['sortMethod'] = "TIME",
+		['sortDir'] = '-',
+		['maxWraps'] = 2,
+		['seperateOwn'] = 1,
+	},
+	['debuffs'] = {
+		['sortMethod'] = "TIME",
+		['sortDir'] = '-',
+		['maxWraps'] = 1,
+	},	
 }
 
 --Chat

@@ -145,6 +145,34 @@ function A:CheckWeapons(elapsed)
 	end
 end
 
+function A:UpdateHeader(header)
+	local db = self.db.debuffs
+	if header:GetAttribute('filter') == 'HELPFUL' then
+		db = self.db.buffs
+		header:SetAttribute("consolidateTo", self.db.consolidedBuffs == true and 1 or 0)
+		header:SetAttribute("separateOwn", self.db.seperateOwn)
+	end
+
+	header:SetAttribute("sortMethod", db.sortMethod)
+	header:SetAttribute("sortDir", db.sortDir)
+	header:SetAttribute("maxWraps", db.maxWraps)
+	header:SetAttribute("wrapAfter", self.db.wrapAfter)
+	header:SetAttribute("minWidth", (self.db.size + self.db.xSpacing) * self.db.wrapAfter)
+	header:SetAttribute("minHeight", (self.db.ySpacing - self.db.size) * db.maxWraps)
+	header:SetAttribute("wrapYOffset", -(self.db.ySpacing + self.db.size))
+	
+	A:PostDrag()
+end
+
+function A:UpdateAllHeaders()
+	local headers = {ElvUIPlayerBuffs,ElvUIPlayerDebuffs}
+	for _, header in pairs(headers) do
+		if header then
+			A:UpdateHeader(header)
+		end
+	end
+end
+
 function A:CreateAuraHeader(filter, ...)
 	local name	
 	if filter == "HELPFUL" then name = "ElvUIPlayerBuffs" else name = "ElvUIPlayerDebuffs" end
@@ -152,32 +180,20 @@ function A:CreateAuraHeader(filter, ...)
 	local header = CreateFrame("Frame", name, E.UIParent, "SecureAuraHeaderTemplate")
 	header:SetPoint(...)
 	header:SetClampedToScreen(true)
+	header:SetAttribute("template", "ElvUIAuraTemplate"..self.db.size)
 	header:HookScript("OnEvent", A.ScanAuras)
 	header:SetAttribute("unit", "player")
-	header:SetAttribute("sortMethod", "TIME")
-	header:SetAttribute("sortDir", "-")
-	header:SetAttribute("template", "ElvUIAuraTemplate")
 	header:SetAttribute("filter", filter)
-	header:SetAttribute("point", "TOPRIGHT")
-	header:SetAttribute("xOffset", -36)
-	header:SetAttribute("wrapAfter", 12)
-	header:SetAttribute("minWidth", AurasHolder:GetWidth() - 2)
-	header:SetAttribute("separateOwn", 1)
 	E.FrameLocks[name] = true
+	
 	-- look for weapons buffs
 	if filter == "HELPFUL" then
 		header:SetAttribute("includeWeapons", 1)
 		header:SetAttribute("weaponTemplate", "ElvUIAuraTemplate")
 		header:HookScript("OnUpdate", A.CheckWeapons)
-		header:SetAttribute("minHeight", 94)	
-		header:SetAttribute("wrapYOffset", -68)
-		header:SetAttribute("maxWraps", 2)
-		header:SetAttribute("consolidateTo", 1)
-	else
-		header:SetAttribute("minHeight", 47)	
-		header:SetAttribute("maxWraps", 1)	
 	end
 	
+	A:UpdateHeader(header)
 	header:Show()
 	
 	return header
@@ -186,25 +202,25 @@ end
 function A:PostDrag(position)
 	local headers = {ElvUIPlayerBuffs,ElvUIPlayerDebuffs}
 	for _, header in pairs(headers) do
-		if string.find(position, "LEFT") then
-			header:SetAttribute("point", "TOPLEFT")
-			header:SetAttribute("xOffset", 36)
-		elseif string.find(position, "RIGHT") then
-			header:SetAttribute("point", "TOPRIGHT")
-			header:SetAttribute("xOffset", -36)		
-		end
-		
-		if E.lowversion then
-			header:SetAttribute("wrapAfter", 9)
+		if header then
+			if not position then position = E:GetScreenQuadrant(header) end
+			if string.find(position, "LEFT") then
+				header:SetAttribute("point", "TOPLEFT")
+				header:SetAttribute("xOffset", (A.db.size + A.db.xSpacing))
+			elseif string.find(position, "RIGHT") then
+				header:SetAttribute("point", "TOPRIGHT")
+				header:SetAttribute("xOffset", -(A.db.size + A.db.xSpacing))		
+			end
 		end
 	end
 end
 
 
 function A:Initialize()
+	if self.db then return; end --IDK WHY BUT THIS IS GETTING CALLED TWICE FROM SOMEWHERE...
 	BuffFrame:Kill()
 	ConsolidatedBuffs:Kill()
-
+	
 	self.db = E.db.auras
 	if E.private.auras.enable ~= true then return end
 	
@@ -215,11 +231,14 @@ function A:Initialize()
 	
 	self.BuffFrame = self:CreateAuraHeader("HELPFUL", "TOPRIGHT", holder, "TOPRIGHT", -2, -2)
 	self.DebuffFrame = self:CreateAuraHeader("HARMFUL", "BOTTOMRIGHT", holder, "BOTTOMRIGHT", -2, -2)
-
+	
 	E:CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, nil, A.PostDrag)
 	
 	self.ScanAuras(self.BuffFrame)
 	self.ScanAuras(self.DebuffFrame)
+	
+	self:Construct_ConsolidatedBuffs()
+	
 end
 
 E:RegisterModule(A:GetName())

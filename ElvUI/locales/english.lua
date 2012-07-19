@@ -8,6 +8,29 @@ else
 end
 
 if not L then return; end
+L['AURAS_DESC'] = 'Configure the aura icons that appear near the minimap.';
+L['Consolidated Buffs'] = true;
+L['Display the consolidated buffs bar.'] = true;
+L['Set the size of the individual auras.'] = true;
+L['Wrap After'] = true;
+L['Begin a new row or column after this many auras.'] = true;
+L['X Spacing'] = true;
+L['Y Spacing'] = true;
+L['Sort Method'] = true;
+L['Defines how the group is sorted.'] = true;
+L['Index'] = true;
+L['Time'] = true;
+L['Name'] = true;
+L['Sort Direction'] = true;
+L['Defines the sort order of the selected sort method.'] = true;
+L['Max Wraps'] = true;
+L['Limit the number of rows or columns.'] = true;
+L['Seperate'] = true;
+L['Indicate whether buffs you cast yourself should be separated before or after.'] = true;
+L["Other's First"] = true;
+L['No Sorting'] = true;
+L['Your Auras First'] = true;
+
 L['Using the /farmmode <size> command will spawn a larger minimap on your screen that can be moved around, very useful when farming.'] = true;
 L['You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame'] = true;
 L['Config Mode:'] = true;

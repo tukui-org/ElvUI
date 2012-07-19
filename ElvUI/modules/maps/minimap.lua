@@ -149,10 +149,10 @@ function M:UpdateSettings()
 	end
 	E.MinimapSize = E.db.general.minimapSize
 	
-	if E.db.general.raidReminder then
-		E.RBRWidth = ((E.MinimapSize - 6) / 6) + 4
+	if E.db.auras.consolidedBuffs then
+		E.ConsolidatedBuffsWidth = ((E.MinimapSize - 6) / 6) + 4
 	else
-		E.RBRWidth = 0;
+		E.ConsolidatedBuffsWidth = 0;
 	end
 	
 	E.MinimapWidth = E.MinimapSize	
@@ -170,7 +170,7 @@ function M:UpdateSettings()
 	end	
 	
 	if MMHolder then
-		MMHolder:Width((Minimap:GetWidth() + 4) + E.RBRWidth)
+		MMHolder:Width((Minimap:GetWidth() + 4) + E.ConsolidatedBuffsWidth)
 		
 		if E.db.general.minimapPanels then
 			MMHolder:Height(Minimap:GetHeight() + 27)
@@ -197,7 +197,7 @@ function M:UpdateSettings()
 		AurasHolder:Height(E.MinimapHeight)
 		if AurasMover and not E:HasMoverBeenMoved('AurasMover') and not E:HasMoverBeenMoved('MinimapMover') then
 			AurasMover:ClearAllPoints()
-			AurasMover:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -((E.MinimapSize + 4) + E.RBRWidth + 7), -3)
+			AurasMover:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -((E.MinimapSize + 4) + E.ConsolidatedBuffsWidth + 7), -3)
 			E:SaveMoverDefaultPosition('AurasMover')
 		end
 		
@@ -211,24 +211,24 @@ function M:UpdateSettings()
 	end
 		
 	if ElvConfigToggle then
-		if E.db.general.raidReminder and E.db.general.minimapPanels then
+		if E.db.auras.consolidedBuffs and E.db.general.minimapPanels then
 			ElvConfigToggle:Show()
-			ElvConfigToggle:Width(E.RBRWidth)
+			ElvConfigToggle:Width(E.ConsolidatedBuffsWidth)
 		else
 			ElvConfigToggle:Hide()
 		end
 	end
 	
-	if RaidBuffReminder then
-		RaidBuffReminder:Width(E.RBRWidth)
+	if ElvUI_ConsolidatedBuffs then
+		ElvUI_ConsolidatedBuffs:Width(E.ConsolidatedBuffsWidth)
 		for i=1, 6 do
-			RaidBuffReminder['spell'..i]:Size(E.RBRWidth - 4)
+			ElvUI_ConsolidatedBuffs['spell'..i]:Size(E.ConsolidatedBuffsWidth - 4)
 		end
 		
-		if E.db.general.raidReminder then
-			E:GetModule('RaidBuffReminder'):EnableRBR()
+		if E.db.auras.consolidedBuffs then
+			E:GetModule('Auras'):EnableCB()
 		else
-			E:GetModule('RaidBuffReminder'):DisableRBR()
+			E:GetModule('Auras'):DisableCB()
 		end
 	end
 end
@@ -237,7 +237,7 @@ function M:Initialize()
 	self:UpdateSettings()
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
 	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
-	mmholder:Width((Minimap:GetWidth() + 29) + E.RBRWidth)
+	mmholder:Width((Minimap:GetWidth() + 29) + E.ConsolidatedBuffsWidth)
 	mmholder:Height(Minimap:GetHeight() + 53)
 	
 	Minimap:ClearAllPoints()

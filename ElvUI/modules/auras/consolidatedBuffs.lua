@@ -1,48 +1,44 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
-local RBR = E:NewModule('RaidBuffReminder', 'AceEvent-3.0');
+local A = E:GetModule('Auras');
 
-E.RaidBuffReminder = RBR
-
---Stats, Stamina, Attack Power, Attack Speed, SpellPower, Spell Haste, Critical Strike, Mastery
-
-RBR.Stats = {
+A.Stats = {
 	117667, --Legacy of The Emperor
 	1126, -- Mark of The Wild
 	20217, -- Blessing Of Kings
 }
 
-RBR.Stamina = {
+A.Stamina = {
 	469, -- Commanding Shout
 	6307, -- Imp. Blood Pact
 	21562, -- Power Word: Fortitude
 }
 
-RBR.AttackPower = {
+A.AttackPower = {
 	19506, -- Trueshot Aura
 	6673, -- Battle Shout
 	57330, -- Horn of Winter
 }
 
-RBR.SpellPower = {
+A.SpellPower = {
 	77747, -- Burning Wrath
 	109773, -- Dark Intent
 	61316, -- Dalaran Brilliance
 	1459, -- Arcane Brilliance
 }
 
-RBR.AttackSpeed = {
+A.AttackSpeed = {
 	30809, -- Unleashed Rage
 	113742, -- Swiftblade's Cunning
 	55610, -- Improved Icy Talons
 }
 
-RBR.SpellHaste = {
+A.SpellHaste = {
 	24907, -- Moonkin Aura
 	51470, -- Elemental Oath
 	49868, -- Mind Quickening
 }
 
-RBR.CriticalStrike = {
+A.CriticalStrike = {
 	19506, -- Trueshot Aura
 	1459, -- Arcane Brilliance
 	61316, -- Dalaran Brilliance
@@ -50,21 +46,21 @@ RBR.CriticalStrike = {
 	116781, -- Legacy of the White Tiger
 }
 
-RBR.Mastery = {
+A.Mastery = {
 	116956, --Grace of Air
 	19740, -- Blessing of Might
 }
 
-RBR.IndexTable = {
-	[1] = RBR.Stats,
-	[2] = RBR.Stamina,
-	[3] = RBR.AttackPower,
-	[4] = RBR.AttackSpeed,
-	[5] = RBR.CriticalStrike,
-	[6] = RBR.Mastery,
+A.IndexTable = {
+	[1] = A.Stats,
+	[2] = A.Stamina,
+	[3] = A.AttackPower,
+	[4] = A.AttackSpeed,
+	[5] = A.CriticalStrike,
+	[6] = A.Mastery,
 }
 
-function RBR:CheckFilterForActiveBuff(filter)
+function A:CheckFilterForActiveBuff(filter)
 	local spellName, texture
 	for _, spell in pairs(filter) do
 		spellName, _, texture = GetSpellInfo(spell)
@@ -79,16 +75,16 @@ function RBR:CheckFilterForActiveBuff(filter)
 	return false, texture
 end
 
-function RBR:UpdateReminder(event, unit)
+function A:UpdateReminder(event, unit)
 	if (event == "UNIT_AURA" and unit ~= "player") then return end
 	local frame = self.frame
 	
 	if E.role == 'Caster' then
-		RBR.IndexTable[3] = RBR.SpellPower
-		RBR.IndexTable[4] = RBR.SpellHaste
+		A.IndexTable[3] = A.SpellPower
+		A.IndexTable[4] = A.SpellHaste
 	else
-		RBR.IndexTable[3] = RBR.AttackPower
-		RBR.IndexTable[4] = RBR.AttackSpeed
+		A.IndexTable[3] = A.AttackPower
+		A.IndexTable[4] = A.AttackSpeed
 	end
 	
 	
@@ -105,7 +101,7 @@ function RBR:UpdateReminder(event, unit)
 	end
 end
 
-function RBR:Button_OnEnter()
+function A:Button_OnEnter()
 	GameTooltip:Hide()
 	GameTooltip:SetOwner(self, "ANCHOR_LEFT", -4, -(self:GetHeight() + 5))
 	GameTooltip:ClearLines()
@@ -113,23 +109,23 @@ function RBR:Button_OnEnter()
 	local id = self:GetID()
 	
 	if (id == 3 or id == 4) and E.role == 'Caster' then
-		RBR.IndexTable[3] = RBR.SpellPower
-		RBR.IndexTable[4] = RBR.SpellHaste
+		A.IndexTable[3] = A.SpellPower
+		A.IndexTable[4] = A.SpellHaste
 		
 		GameTooltip:AddLine(_G["RAID_BUFF_"..id+2])
 	elseif id >= 5 then
 		GameTooltip:AddLine(_G["RAID_BUFF_"..id+2])
 	else
 		if E.role ~= "Caster" then
-			RBR.IndexTable[3] = RBR.AttackPower
-			RBR.IndexTable[4] = RBR.AttackSpeed
+			A.IndexTable[3] = A.AttackPower
+			A.IndexTable[4] = A.AttackSpeed
 		end
 		
 		GameTooltip:AddLine(_G["RAID_BUFF_"..id])
 	end
 
 	GameTooltip:AddLine(" ")
-	for _, spellID in pairs(RBR.IndexTable[id]) do
+	for _, spellID in pairs(A.IndexTable[id]) do
 		local spellName = GetSpellInfo(spellID)
 		if self.hasBuff == spellName then
 			GameTooltip:AddLine(spellName, 1, 0, 0)
@@ -141,14 +137,14 @@ function RBR:Button_OnEnter()
 	GameTooltip:Show()
 end
 
-function RBR:Button_OnLeave()
+function A:Button_OnLeave()
 	GameTooltip:Hide()
 end
 
-function RBR:CreateButton(relativeTo, isFirst, isLast)
-	local button = CreateFrame("Button", name, RaidBuffReminder)
+function A:CreateButton(relativeTo, isFirst, isLast)
+	local button = CreateFrame("Button", name, ElvUI_ConsolidatedBuffs)
 	button:SetTemplate('Default')
-	button:Size(E.RBRWidth - 4)
+	button:Size(E.ConsolidatedBuffsWidth - 4)
 	if isFirst then
 		button:Point("TOP", relativeTo, "TOP", 0, -2)
 	else
@@ -156,11 +152,11 @@ function RBR:CreateButton(relativeTo, isFirst, isLast)
 	end
 	
 	if isLast then
-		button:Point("BOTTOM", RaidBuffReminder, "BOTTOM", 0, 2)
+		button:Point("BOTTOM", ElvUI_ConsolidatedBuffs, "BOTTOM", 0, 2)
 	end
 	
-	button:SetScript("OnEnter", RBR.Button_OnEnter)
-	button:SetScript("OnLeave", RBR.Button_OnLeave)
+	button:SetScript("OnEnter", A.Button_OnEnter)
+	button:SetScript("OnLeave", A.Button_OnLeave)
 	
 	button.t = button:CreateTexture(nil, "OVERLAY")
 	button.t:SetTexCoord(unpack(E.TexCoords))
@@ -170,8 +166,8 @@ function RBR:CreateButton(relativeTo, isFirst, isLast)
 	return button
 end
 
-function RBR:EnableRBR()
-	RaidBuffReminder:Show()
+function A:EnableCB()
+	ElvUI_ConsolidatedBuffs:Show()
 	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", 'UpdateReminder')
 	self:RegisterEvent("UNIT_INVENTORY_CHANGED", 'UpdateReminder')
 	self:RegisterEvent("UNIT_AURA", 'UpdateReminder')
@@ -184,8 +180,8 @@ function RBR:EnableRBR()
 	self:UpdateReminder()
 end
 
-function RBR:DisableRBR()
-	RaidBuffReminder:Hide()
+function A:DisableCB()
+	ElvUI_ConsolidatedBuffs:Hide()
 	self:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 	self:UnregisterEvent("UNIT_INVENTORY_CHANGED")
 	self:UnregisterEvent("UNIT_AURA")
@@ -197,10 +193,10 @@ function RBR:DisableRBR()
 	self:UnregisterEvent("ZONE_CHANGED_NEW_AREA")
 end
 
-function RBR:Initialize()
-	local frame = CreateFrame('Frame', 'RaidBuffReminder', Minimap)
+function A:Construct_ConsolidatedBuffs()
+	local frame = CreateFrame('Frame', 'ElvUI_ConsolidatedBuffs', Minimap)
 	frame:SetTemplate('Default')
-	frame:Width(E.RBRWidth)
+	frame:Width(E.ConsolidatedBuffsWidth)
 	frame:Point('TOPLEFT', Minimap.backdrop, 'TOPRIGHT', 1, 0)
 	frame:Point('BOTTOMLEFT', Minimap.backdrop, 'BOTTOMRIGHT', 1, 0)
 
@@ -216,11 +212,11 @@ function RBR:Initialize()
 		frame["spell"..i]:SetID(i)
 	end
 	
-	if E.db.general.raidReminder then
-		self:EnableRBR()
+	if E.db.auras.consolidedBuffs then
+		self:EnableCB()
 	else
-		self:DisableRBR()
+		self:DisableCB()
 	end
 end
 
-E:RegisterModule(RBR:GetName())
+E:RegisterModule(A:GetName())

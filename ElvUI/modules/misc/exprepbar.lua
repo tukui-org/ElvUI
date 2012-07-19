@@ -120,7 +120,7 @@ function M:UpdateExpBar(event)
 	local bar = UpperExperienceBar
 	if not bar then
 		bar = CreateFrame('StatusBar', 'UpperExperienceBar', UpperRepExpBar)
-		bar:Size(BAR_WIDTH + E.RBRWidth, BAR_HEIGHT)
+		bar:Size(BAR_WIDTH + E.ConsolidatedBuffsWidth, BAR_HEIGHT)
 		bar:CreateBackdrop('Default')
 		bar:SetStatusBarTexture(E.media.normTex)
 		bar:SetFrameLevel(UpperRepExpBar:GetFrameLevel() + 3)
@@ -186,7 +186,7 @@ function M:UpdateRepBar(event)
 	local bar = UpperReputationBar
 	if not bar then
 		bar = CreateFrame('StatusBar', 'UpperReputationBar', UpperRepExpBar)
-		bar:Size(BAR_WIDTH + E.RBRWidth, BAR_HEIGHT)
+		bar:Size(BAR_WIDTH + E.ConsolidatedBuffsWidth, BAR_HEIGHT)
 		bar:CreateBackdrop('Default')
 		bar:SetStatusBarTexture(E.media.normTex)
 		bar:SetFrameLevel(UpperRepExpBar:GetFrameLevel() + 3)
@@ -227,14 +227,14 @@ function M:UpdateExpRepBarAnchor()
 	end
 	
 	UpperRepExpBarHolder:SetFrameLevel(0)
-	UpperRepExpBarHolder:Size(BAR_WIDTH - 30 + E.RBRWidth, TOPBAR_HEIGHT)
+	UpperRepExpBarHolder:Size(BAR_WIDTH - 30 + E.ConsolidatedBuffsWidth, TOPBAR_HEIGHT)
 
 	if UpperReputationBar then
-		UpperReputationBar:Size(BAR_WIDTH + E.RBRWidth, BAR_HEIGHT)
+		UpperReputationBar:Size(BAR_WIDTH + E.ConsolidatedBuffsWidth, BAR_HEIGHT)
 	end
 	
 	if UpperExperienceBar then
-		UpperExperienceBar:Size(BAR_WIDTH + E.RBRWidth, BAR_HEIGHT)
+		UpperExperienceBar:Size(BAR_WIDTH + E.ConsolidatedBuffsWidth, BAR_HEIGHT)
 	end	
 	
 	self:PositionBars(self:GetNumShownBars())
