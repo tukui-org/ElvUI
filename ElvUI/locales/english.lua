@@ -47,6 +47,7 @@ L['The buff panel to the right of minimap is a list of your consolidated buffs. 
 L['If you accidently remove a chat frame you can always go the in-game configuration menu, press install, go to the chat portion and reset them.'] = true
 L['If your experience and reputation bars disappear, mouse over the place where they were and click them again.'] = true;
 L['To setup which channels appear in which chat frame, right click the chat tab and go to settings.'] = true;
+L['To move abilities on the actionbars by default hold shift + drag. You can change the modifier key from the blizzard actionbar options menu.'] = true;
 
 L['Toggle Tutorials'] = true;
 L["Pet Battle"] = true;
