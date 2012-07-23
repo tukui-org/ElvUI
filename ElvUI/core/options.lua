@@ -130,9 +130,9 @@ E.Options.args.general = {
 					type = "toggle",	
 					set = function(info, value) E.db.general[ info[#info] ] = value; E:StaticPopup_Show("CONFIG_RL") end
 				},	
-				mapTransparency = {
+				mapAlpha = {
 					order = 10,
-					name = L['Map Transparency'],
+					name = L['Map Alpha While Moving'],
 					desc = L['Controls what the transparency of the worldmap will be set to when you are moving.'],
 					type = 'range',
 					isPercent = true,

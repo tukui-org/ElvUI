@@ -33,7 +33,7 @@ P['general'] = {
 	['expRepPos'] = 'TOP_SCREEN',
 	
 	--misc
-	['mapTransparency'] = 1,
+	['mapAlpha'] = 1,
 	['minimapSize'] = 176,
 	['raidReminder'] = true,
 	['minimapPanels'] = true,
