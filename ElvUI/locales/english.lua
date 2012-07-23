@@ -49,6 +49,12 @@ L['If your experience and reputation bars disappear, mouse over the place where 
 L['To setup which channels appear in which chat frame, right click the chat tab and go to settings.'] = true;
 L['To move abilities on the actionbars by default hold shift + drag. You can change the modifier key from the blizzard actionbar options menu.'] = true;
 
+
+L['Low Health Warning'] = true;
+L['Color the border of the nameplate yellow when it reaches the threshold point on these types of frames.'] = true;
+L['Players'] = true;
+L['Low Health Threshold'] = true;
+L['Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value.'] = true;
 L['Toggle Tutorials'] = true;
 L["Pet Battle"] = true;
 L['Alert Frames'] = true;

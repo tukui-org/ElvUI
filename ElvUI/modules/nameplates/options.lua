@@ -142,8 +142,27 @@ E.Options.args.nameplate = {
 					desc = L['Display a healer icon over known healers inside battlegrounds.'],
 					set = function(info, value) E.db.nameplate[ info[#info] ] = value; NP:PLAYER_ENTERING_WORLD(); NP:UpdateAllPlates() end,
 				},
-				auras = {
+				lowHealthWarning = {
+					type = 'select',
 					order = 8,
+					name = L['Low Health Warning'],
+					desc = L['Color the border of the nameplate yellow when it reaches the threshold point on these types of frames.'],
+					values = {
+						['PLAYERS'] = L['Players'],
+						['ALL'] = ALL,
+						['NONE'] = NONE,
+					},
+				},
+				lowHealthWarningThreshold = {
+					type = 'range',
+					order = 9,
+					name = L['Low Health Threshold'],
+					desc = L['Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value.'],
+					isPercent = true,
+					min = 0.2, max = 1, step = 0.01, 			
+				},
+				auras = {
+					order = 100,
 					type = "group",
 					name = L["Auras"],
 					guiInline = true,	
@@ -171,7 +190,7 @@ E.Options.args.nameplate = {
 					},
 				},
 				reactions = {
-					order = 9,
+					order = 200,
 					type = "group",
 					name = L["Reactions"],
 					guiInline = true,
@@ -213,7 +232,7 @@ E.Options.args.nameplate = {
 					},		
 				},				
 				threat = {
-					order = 10,
+					order = 300,
 					type = "group",
 					name = L["Threat"],
 					guiInline = true,

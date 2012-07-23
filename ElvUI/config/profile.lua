@@ -81,6 +81,8 @@ P["nameplate"] = {
 	["friendlyplayer"] = {r = 75/255,  g = 175/255, b = 76/255},
 	["neutral"] = { r = 218/255, g = 197/255, b = 92/255 },
 	["enemy"] = { r = 0.78, g = 0.25, b = 0.25 },	
+	['lowHealthWarning'] = 'PLAYERS',
+	['lowHealthWarningThreshold'] = .40,
 };
 
 --Auras
