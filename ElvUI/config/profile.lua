@@ -88,7 +88,6 @@ P['auras'] = {
 	['enable'] = true;
 	['consolidedBuffs'] = true;
 	['wrapAfter'] = 12,
-	['size'] = 26,
 	['xSpacing'] = 10,
 	['ySpacing'] = 42,
 	
