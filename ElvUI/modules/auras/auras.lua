@@ -28,10 +28,10 @@ function A:UpdateTime(elapsed)
 			elseif self.expiration <= 3600.5 and self.expiration > 60.5 then
 				self.time:SetText("|cffcccccc"..time.."|r")
 				E:StopFlash(self)
-			elseif self.expiration <= 60.5 and self.expiration > 10.5 then
+			elseif self.expiration <= 60.5 and self.expiration > 5.5 then
 				self.time:SetText("|cffE8D911"..time.."|r")
 				E:StopFlash(self)
-			elseif self.expiration <= 10.5 then
+			elseif self.expiration <= 5.5 then
 				self.time:SetText("|cffff0000"..time.."|r")
 				E:Flash(self, 1)
 			end
