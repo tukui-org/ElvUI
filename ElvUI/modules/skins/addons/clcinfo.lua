@@ -6,7 +6,7 @@ local function ApplyMySkin(self)
 	local yScale = self.db.height / 36
 
 	local t = self.elements.texMain
-	t:SetInside(self, true)
+	t:SetInside(self)
 	t:SetTexCoord(unpack(E.TexCoords))
 
 	t = self.elements.texNormal
