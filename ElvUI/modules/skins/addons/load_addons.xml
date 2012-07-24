@@ -14,4 +14,5 @@
 	<Script file='clcret.lua'/>
 	<Script file='clcprot.lua'/>
 	<Script file='clcinfo.lua'/>
+	<Script file='powerauras.lua'/>
 </Ui>
