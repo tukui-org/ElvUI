@@ -267,7 +267,7 @@ local function StripTextures(object, kill)
 				region:SetTexture(nil)
 			end
 		end
-	end		
+	end
 end
 
 local function FontTemplate(fs, font, fontSize, fontStyle)

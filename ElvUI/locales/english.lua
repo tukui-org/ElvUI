@@ -47,7 +47,14 @@ L['The buff panel to the right of minimap is a list of your consolidated buffs. 
 L['If you accidently remove a chat frame you can always go the in-game configuration menu, press install, go to the chat portion and reset them.'] = true
 L['If your experience and reputation bars disappear, mouse over the place where they were and click them again.'] = true;
 L['To setup which channels appear in which chat frame, right click the chat tab and go to settings.'] = true;
+L['To move abilities on the actionbars by default hold shift + drag. You can change the modifier key from the blizzard actionbar options menu.'] = true;
 
+
+L['Low Health Warning'] = true;
+L['Color the border of the nameplate yellow when it reaches the threshold point on these types of frames.'] = true;
+L['Players'] = true;
+L['Low Health Threshold'] = true;
+L['Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value.'] = true;
 L['Toggle Tutorials'] = true;
 L["Pet Battle"] = true;
 L['Alert Frames'] = true;
@@ -431,7 +438,7 @@ L["Main backdrop color of the UI."] = "Main backdrop color of the UI."
 L["Main border color of the UI."] = "Main border color of the UI."
 L["Main Hand"] = "Main Hand"
 L["Main statusbar texture."] = "Main statusbar texture."
-L["Map Transparency"] = "Map Transparency"
+L['Map Alpha While Moving'] = 'Map Alpha While Moving'
 L["Match Frame Width"] = "Match Frame Width"
 L["Max Columns"] = "Max Columns"
 L["Media"] = "Media"

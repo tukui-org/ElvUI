@@ -35,7 +35,7 @@ P['general'] = {
 	['expRepPos'] = 'MINIMAP_BOTTOM',
 	
 	--misc
-	['mapTransparency'] = 1,
+	['mapAlpha'] = 1,
 	['minimapSize'] = 176,
 	['raidReminder'] = true,
 	['minimapPanels'] = true,
@@ -83,6 +83,8 @@ P["nameplate"] = {
 	["friendlyplayer"] = {r = 75/255,  g = 175/255, b = 76/255},
 	["neutral"] = { r = 218/255, g = 197/255, b = 92/255 },
 	["enemy"] = { r = 0.78, g = 0.25, b = 0.25 },	
+	['lowHealthWarning'] = 'PLAYERS',
+	['lowHealthWarningThreshold'] = .40,
 };
 
 --Auras
@@ -90,7 +92,6 @@ P['auras'] = {
 	['enable'] = true;
 	['consolidedBuffs'] = true;
 	['wrapAfter'] = 16,
-	['size'] = 26,
 	['xSpacing'] = 10,
 	['ySpacing'] = 42,
 	

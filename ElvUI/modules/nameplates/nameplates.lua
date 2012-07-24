@@ -600,15 +600,16 @@ function NP:ScanHealth(frame)
 	end
 			
 	--Setup frame shadow to change depending on enemy players health, also setup targetted unit to have white shadow
-	if frame.hasClass == true or frame.isFriendly == true then
-		if(d <= 50 and d >= 20) then
+	if (self.db.lowHealthWarning == 'PLAYERS' and frame.hasClass == true or frame.isFriendly == true) or self.db.lowHealthWarning == 'ALL' then
+		local threshold = self.db.lowHealthWarningThreshold * 100
+		if(d <= threshold and d >= (threshold / 2)) then
 			self:SetVirtualBorder(frame.hp, 1, 1, 0)
-		elseif(d < 20) then
+		elseif(d < (threshold / 2)) then
 			self:SetVirtualBorder(frame.hp, 1, 0, 0)
 		else
 			self:SetVirtualBorder(frame.hp, unpack(E["media"].bordercolor))
 		end
-	elseif (frame.hasClass ~= true and frame.isFriendly ~= true) and self.db.enhancethreat == true then
+	elseif (frame.hasClass ~= true and frame.isFriendly ~= true) or self.db.lowHealthWarning == 'ALL' then
 		self:SetVirtualBorder(frame.hp, unpack(E["media"].bordercolor))
 	end
 end

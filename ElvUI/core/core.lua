@@ -461,26 +461,18 @@ function E:Initialize()
 	self.db = self.data.profile;
 	self.global = self.data.global;
 	self:CheckIncompatible()
-	
-	--Database conversion for aura filters
-	for spellList, _ in pairs(self.global.unitframe.aurafilters) do
-		if self.global.unitframe.aurafilters[spellList] and self.global.unitframe.aurafilters[spellList].spells then
-			for spell, value in pairs(self.global.unitframe.aurafilters[spellList].spells) do
-				if type(self.global.unitframe.aurafilters[spellList].spells[spell]) == "boolean" then
-					self.global.unitframe.aurafilters[spellList].spells[spell] = {
-						['enable'] = true,
-						['priority'] = 0,
-					}
-				end		
-			end
-		end
-	end		
-	
+
 	self:CheckRole()
 	self:UIScale('PLAYER_LOGIN');
 
 	if self.db.general.loginmessage then
 		print(format(L['LOGIN_MSG'], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version))
+	end
+	
+	for option, value in pairs(self.private.skins) do
+		if self.private.skins[option].enable then
+			self.private.skins[option].enable = false
+		end
 	end
 	
 	self:LoadConfig(); --Load In-Game Config

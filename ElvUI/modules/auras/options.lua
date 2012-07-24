@@ -39,9 +39,10 @@ E.Options.args.auras = {
 					name = L['Size'],
 					desc = L['Set the size of the individual auras.'],
 					min = 16, max = 40, step = 2,
+					get = function(info) return E.private.auras[ info[#info] ] end,
 					set = function(info, value) 
-						E.db.auras[ info[#info] ] = value; 
-						E:StaticPopup_Show("CONFIG_RL")
+						E.private.auras[ info[#info] ] = value; 
+						E:StaticPopup_Show("PRIVATE_RL")
 					end,						
 				},
 				wrapAfter = {

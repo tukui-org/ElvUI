@@ -28,10 +28,10 @@ function A:UpdateTime(elapsed)
 			elseif self.expiration <= 3600.5 and self.expiration > 60.5 then
 				self.time:SetText("|cffcccccc"..time.."|r")
 				E:StopFlash(self)
-			elseif self.expiration <= 60.5 and self.expiration > 10.5 then
+			elseif self.expiration <= 60.5 and self.expiration > 5.5 then
 				self.time:SetText("|cffE8D911"..time.."|r")
 				E:StopFlash(self)
-			elseif self.expiration <= 10.5 then
+			elseif self.expiration <= 5.5 then
 				self.time:SetText("|cffff0000"..time.."|r")
 				E:Flash(self, 1)
 			end
@@ -157,9 +157,9 @@ function A:UpdateHeader(header)
 	header:SetAttribute("sortDir", db.sortDir)
 	header:SetAttribute("maxWraps", db.maxWraps)
 	header:SetAttribute("wrapAfter", self.db.wrapAfter)
-	header:SetAttribute("minWidth", (self.db.size + self.db.xSpacing) * self.db.wrapAfter)
-	header:SetAttribute("minHeight", (self.db.ySpacing - self.db.size) * db.maxWraps)
-	header:SetAttribute("wrapYOffset", -(self.db.ySpacing + self.db.size))
+	header:SetAttribute("minWidth", (E.private.auras.size + self.db.xSpacing) * self.db.wrapAfter)
+	header:SetAttribute("minHeight", (self.db.ySpacing - E.private.auras.size) * db.maxWraps)
+	header:SetAttribute("wrapYOffset", -(self.db.ySpacing + E.private.auras.size))
 	
 	A:PostDrag()
 end
@@ -180,7 +180,7 @@ function A:CreateAuraHeader(filter, ...)
 	local header = CreateFrame("Frame", name, E.UIParent, "SecureAuraHeaderTemplate")
 	header:SetPoint(...)
 	header:SetClampedToScreen(true)
-	header:SetAttribute("template", "ElvUIAuraTemplate"..self.db.size)
+	header:SetAttribute("template", "ElvUIAuraTemplate"..E.private.auras.size)
 	header:HookScript("OnEvent", A.ScanAuras)
 	header:SetAttribute("unit", "player")
 	header:SetAttribute("filter", filter)
@@ -206,10 +206,10 @@ function A:PostDrag(position)
 			if not position then position = E:GetScreenQuadrant(header) end
 			if string.find(position, "LEFT") then
 				header:SetAttribute("point", "TOPLEFT")
-				header:SetAttribute("xOffset", (A.db.size + A.db.xSpacing))
+				header:SetAttribute("xOffset", (E.private.auras.size + A.db.xSpacing))
 			elseif string.find(position, "RIGHT") then
 				header:SetAttribute("point", "TOPRIGHT")
-				header:SetAttribute("xOffset", -(A.db.size + A.db.xSpacing))		
+				header:SetAttribute("xOffset", -(E.private.auras.size + A.db.xSpacing))		
 			end
 		end
 	end
