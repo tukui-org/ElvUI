@@ -118,7 +118,10 @@ P['chat'] = {
 	['font'] = 'Arial Narrow',
 	['fontoutline'] = 'NONE',
 	['sticky'] = true,
-	['keywords'] = '%MYNAME%, Blaze, Blazii, Blæs',
+	['keywords'] = '%MYNAME%, ElvUI, Blaze, Blazii, Blæs',
+	['emotionIcons'] = true,
+	['keywordSound'] = 'Whisper Alert',
+	['whisperSound'] = 'Whisper Alert',
 }
 
 --Skins

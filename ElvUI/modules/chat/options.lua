@@ -106,6 +106,15 @@ E.Options.args.chat = {
 					},
 					set = function(info, value) E.db.chat[ info[#info] ] = value; CH:SetupChat() end,
 				},		
+				emotionIcons = {
+					order = 9,
+					type = 'toggle',
+					name = L['Emotion Icons'],
+					desc = L['Display emotion icons in chat.'],
+					set = function(info, value)
+						E.db.chat[ info[#info] ] = value 
+					end,
+				},
 				keywords = {
 					order = 100,
 					name = L['Keywords'],
