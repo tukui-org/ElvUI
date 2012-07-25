@@ -479,6 +479,12 @@ function CH:PrintURL(url)
 end
 
 function CH:FindURL(event, msg, ...)
+	if (event == "CHAT_MSG_WHISPER" or event == "CHAT_MSG_BN_WHISPER") and self.db.whisperSound ~= 'None' and not self.SoundPlayed then
+		PlaySoundFile(LSM:Fetch("sound", self.db.whisperSound), "Master")
+		self.SoundPlayed = true
+		self.SoundTimer = CH:ScheduleTimer('ThrottleSound', 1)
+	end
+
 	if not CH.db.url then 
 		msg = CH:CheckKeyword(msg);
 		msg = CH:GetSmileyReplacementText(msg);
@@ -771,6 +777,10 @@ function CH:CHAT_MSG_SAY(event, message, author, ...)
 	end
 end
 
+function CH:ThrottleSound()
+	self.SoundPlayed = nil;
+end
+
 function CH:CheckKeyword(message)
 	local replaceWords = {};
 
@@ -780,6 +790,11 @@ function CH:CheckKeyword(message)
 			for keyword, _ in pairs(CH.Keywords) do
 				if word:lower() == keyword:lower() then
 					replaceWords[word] = E.media.hexvaluecolor..word..'|r'
+					if self.db.keywordSound ~= 'None' and not self.SoundPlayed  then
+						PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
+						self.SoundPlayed = true
+						self.SoundTimer = CH:ScheduleTimer('ThrottleSound', 1)			
+					end
 				end	
 			end
 		end
