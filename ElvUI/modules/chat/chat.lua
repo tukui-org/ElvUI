@@ -51,6 +51,7 @@ local smileyPack = {
 	["Cry"] = [[Interface\AddOns\ElvUI\media\textures\smileys\weepy.blp]],
 	["Wink"] = [[Interface\AddOns\ElvUI\media\textures\smileys\winky.blp]],
 	["Happy"] = [[Interface\AddOns\ElvUI\media\textures\smileys\happy.blp]],
+	["Heart"] = [[Interface\AddOns\ElvUI\media\textures\smileys\heart.blp]],
 }
 
 local smileyKeys = {
@@ -93,6 +94,7 @@ local smileyKeys = {
 	["%:%'%("]="Cry",
 	["%:%'%-%("]="Cry",
 	["%:%F"]="MiddleFinger",
+	["<3"]="Heart",
 };
 
 CH.Keywords = {};
