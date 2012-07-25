@@ -119,6 +119,7 @@ function CH:InsertEmotions(msg)
 end
 
 function CH:GetSmileyReplacementText(msg)
+	if not self.db.emotionIcons then return msg end
 	local outstr = "";
 	local origlen = string.len(msg);
 	local startpos = 1;

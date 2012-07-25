@@ -98,6 +98,7 @@ P['chat'] = {
 	['font'] = 'ElvUI Font',
 	['fontoutline'] = 'NONE',
 	['sticky'] = true,
+	['emotionIcons'] = true,
 	['keywords'] = '%MYNAME%, ElvUI'
 }
 
