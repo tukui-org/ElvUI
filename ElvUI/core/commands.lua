@@ -112,7 +112,23 @@ function E:BGStats()
 	E:Print(L['Battleground datatexts will now show again if you are inside a battleground.'])
 end
 
+local function OnCallback(command)
+	MacroEditBox:GetScript("OnEvent")(MacroEditBox, "EXECUTE_CHAT_LINE", command)
+end
+
+function E:DelayScriptCall(msg)
+	local secs, command = msg:match("^([^%s]+)%s+(.*)$")
+	secs = tonumber(secs)
+	if (not secs) or (#command == 0) then
+		self:Print("usage: /in <seconds> <command>")
+		self:Print("example: /in 1.5 /say hi")
+	else
+		E:ScheduleTimer(OnCallback, secs, command)
+	end
+end
+
 function E:LoadCommands()
+	self:RegisterChatCommand("in", "DelayScriptCall")
 	self:RegisterChatCommand("ec", "ToggleConfig")
 	self:RegisterChatCommand("elvui", "ToggleConfig")
 	

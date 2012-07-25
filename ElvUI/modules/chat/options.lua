@@ -106,6 +106,31 @@ E.Options.args.chat = {
 					},
 					set = function(info, value) E.db.chat[ info[#info] ] = value; CH:SetupChat() end,
 				},		
+				emotionIcons = {
+					order = 9,
+					type = 'toggle',
+					name = L['Emotion Icons'],
+					desc = L['Display emotion icons in chat.'],
+					set = function(info, value)
+						E.db.chat[ info[#info] ] = value 
+					end,
+				},		
+				whisperSound = {
+					order = 10,
+					type = 'select', dialogControl = 'LSM30_Sound',
+					name = L["Whisper Alert"],
+					disabled = function() return not E.db.chat.whisperSound end,
+					values = AceGUIWidgetLSMlists.sound,
+					set = function(info, value) E.db.chat.whisperSound = value; end,
+				},	
+				keywordSound = {
+					order = 11,
+					type = 'select', dialogControl = 'LSM30_Sound',
+					name = L["Keyword Alert"],
+					disabled = function() return not E.db.chat.keywordSound end,
+					values = AceGUIWidgetLSMlists.sound,
+					set = function(info, value) E.db.chat.keywordSound = value; end,
+				},						
 				keywords = {
 					order = 100,
 					name = L['Keywords'],

@@ -10,6 +10,10 @@ end
 if not L then return; end
 L["ChatTab_Datatext_Panel"] = "Right Chat Tab"
 L["Bottom_Datatext_Panel"] = "Bottom Datatext Panel"
+L["Whisper Alert"] = true;
+L["Keyword Alert"] = true;
+L['Emotion Icons'] = true;
+L['Display emotion icons in chat.'] = true;
 L["24-Hour Time"] = "24-Hour Time"
 L["Accept Invites"] = "Accept Invites"
 L["Achievement Frame"] = "Achievement Frame"
