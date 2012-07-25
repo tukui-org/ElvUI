@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local function SkinPowerAuras(self, aura, elapsed)
-	PowaAuras.OldUpdateAura(self, aura, elapsed)
+	local returnValue = PowaAuras.OldUpdateAura(self, aura, elapsed)
 	
 	if (aura == nil) or (aura.off) then
 		return false;
@@ -29,6 +29,8 @@ local function SkinPowerAuras(self, aura, elapsed)
 			frame.backdrop:Hide()
 		end
 	end
+	
+	return returnValue
 end
 
 local function PowerAuras_LoadSkin()
@@ -39,8 +41,13 @@ end
 local function Skin_WeakAuras(frame)
 	if not frame.backdrop then
 		frame:CreateBackdrop('Default')
+		frame.icon.OldAlpha = frame.icon.SetAlpha
+		frame.icon.SetAlpha = function(self, ...)
+			frame.icon.OldAlpha(self, ...)
+			frame.backdrop:SetAlpha(...)
+		end
 	end
-	
+
 	frame.icon:SetTexCoord(unpack(E.TexCoords))
 	frame.icon.SetTexCoord = E.noop
 end
