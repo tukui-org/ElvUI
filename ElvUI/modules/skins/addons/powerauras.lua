@@ -39,8 +39,13 @@ end
 local function Skin_WeakAuras(frame)
 	if not frame.backdrop then
 		frame:CreateBackdrop('Default')
+		frame.icon.OldAlpha = frame.icon.SetAlpha
+		frame.icon.SetAlpha = function(self, ...)
+			frame.icon.OldAlpha(self, ...)
+			frame.backdrop:SetAlpha(...)
+		end
 	end
-	
+
 	frame.icon:SetTexCoord(unpack(E.TexCoords))
 	frame.icon.SetTexCoord = E.noop
 end
