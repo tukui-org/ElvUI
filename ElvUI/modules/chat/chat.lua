@@ -38,6 +38,63 @@ local tabTexs = {
 	'Highlight'
 }
 
+local smileyPack = {
+	["Angry"] = [[Interface\AddOns\ElvUI\media\textures\smileys\angry.blp]],
+	["Grin"] = [[Interface\AddOns\ElvUI\media\textures\smileys\grin.blp]],
+	["Hmm"] = [[Interface\AddOns\ElvUI\media\textures\smileys\hmm.blp]],
+	["MiddleFinger"] = [[Interface\AddOns\ElvUI\media\textures\smileys\middle_finger.blp]],
+	["Sad"] = [[Interface\AddOns\ElvUI\media\textures\smileys\sad.blp]],
+	["Shame"] = [[Interface\AddOns\ElvUI\media\textures\smileys\shame.blp]],
+	["Surprise"] = [[Interface\AddOns\ElvUI\media\textures\smileys\surprise.blp]],
+	["Tongue"] = [[Interface\AddOns\ElvUI\media\textures\smileys\tongue.blp]],
+	["Vault"] = [[Interface\AddOns\ElvUI\media\textures\smileys\vault.blp]],
+	["Cry"] = [[Interface\AddOns\ElvUI\media\textures\smileys\weepy.blp]],
+	["Wink"] = [[Interface\AddOns\ElvUI\media\textures\smileys\winky.blp]],
+	["Happy"] = [[Interface\AddOns\ElvUI\media\textures\smileys\happy.blp]],
+}
+
+local smileyKeys = {
+	["%:%$"] = "Shame",
+	["%:%-%$"] = "Shame",
+	["%:%-%@"] = "Angry",
+	["%:%@"] = "Angry",
+	["%:%-%)"]="Happy",
+	["%:%)"]="Happy",
+	["%:D"]="Grin",
+	["%:%-D"]="Grin",
+	["%;%-D"]="Grin",
+	["%;D"]="Grin",
+	["%=D"]="Grin",
+	["xD"]="Grin",
+	["XD"]="Grin",
+	["%:%-%("]="Sad",
+	["%:%("]="Sad",
+	["%:o"]="Surprise",
+	["%:%-o"]="Surprise",
+	["%:%-O"]="Surprise",
+	["%:O"]="Surprise",
+	["%:%-0"]="Surprise",
+	["%:P"]="Tongue",
+	["%:%-P"]="Tongue",
+	["%:p"]="Tongue",
+	["%:%-p"]="Tongue",
+	["%=P"]="Tongue",
+	["%=p"]="Tongue",
+	["%;%-p"]="Tongue",
+	["%;p"]="Tongue",
+	["%;P"]="Tongue",
+	["%;%-P"]="Tongue",
+	["%;%-%)"]="Wink",
+	["%;%)"]="Wink",
+	["%:S"]="Hmm",
+	["%:%-S"]="Hmm",
+	["%:%,%("]="Cry",
+	["%:%,%-%("]="Cry",
+	["%:%'%("]="Cry",
+	["%:%'%-%("]="Cry",
+	["%:%F"]="MiddleFinger",
+};
+
 CH.Keywords = {};
 
 function CH:GetGroupDistribution()
@@ -52,6 +109,42 @@ function CH:GetGroupDistribution()
 		return "/p "
 	end
 	return "/s "
+end
+
+function CH:InsertEmotions(msg)
+	for k,v in pairs(smileyKeys) do
+		msg = string.gsub(msg,k,"|T"..smileyPack[v].."%:15%:15%:0%:0|t");
+	end
+	return msg;
+end
+
+function CH:GetSmileyReplacementText(msg)
+	local outstr = "";
+	local origlen = string.len(msg);
+	local startpos = 1;
+	local endpos;
+	
+	while(startpos <= origlen) do
+		endpos = origlen;
+		local pos = string.find(msg,"|H",startpos,true);
+		if(pos ~= nil) then
+			endpos = pos;
+		end
+		outstr = outstr .. CH:InsertEmotions(string.sub(msg,startpos,endpos)); --run replacement on this bit
+		startpos = endpos + 1;
+		if(pos ~= nil) then
+			endpos = string.find(msg,"|h",startpos,true);
+			if(endpos == nil) then
+				endpos = origlen;
+			end
+			if(startpos < endpos) then
+				outstr = outstr .. string.sub(msg,startpos,endpos); --don't run replacement on this bit
+				startpos = endpos + 1;
+			end
+		end
+	end
+	
+	return outstr;
 end
 
 function CH:StyleChat(frame)
@@ -384,20 +477,22 @@ end
 
 function CH:FindURL(event, msg, ...)
 	if not CH.db.url then 
-		msg = CH:CheckKeyword(msg)
+		msg = CH:CheckKeyword(msg);
+		msg = CH:GetSmileyReplacementText(msg);
 		return false, msg, ... 
 	end
 	
 	local newMsg, found = gsub(msg, "(%a+)://(%S+)%s?", CH:PrintURL("%1://%2"))
-	if found > 0 then return false, CH:CheckKeyword(newMsg), ... end
+	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg)), ... end
 	
 	newMsg, found = gsub(msg, "www%.([_A-Za-z0-9-]+)%.(%S+)%s?", CH:PrintURL("www.%1.%2"))
-	if found > 0 then return false, CH:CheckKeyword(newMsg), ... end
+	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg)), ... end
 
 	newMsg, found = gsub(msg, "([_A-Za-z0-9-%.]+)@([_A-Za-z0-9-]+)(%.+)([_A-Za-z0-9-%.]+)%s?", CH:PrintURL("%1@%2%3%4"))
-	if found > 0 then return false, CH:CheckKeyword(newMsg), ... end
+	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg)), ... end
 	
 	msg = CH:CheckKeyword(msg)
+	msg = CH:GetSmileyReplacementText(msg)
 	
 	return false, msg, ...
 end
