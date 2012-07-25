@@ -479,10 +479,10 @@ function CH:PrintURL(url)
 end
 
 function CH:FindURL(event, msg, ...)
-	if (event == "CHAT_MSG_WHISPER" or event == "CHAT_MSG_BN_WHISPER") and self.db.whisperSound ~= 'None' and not self.SoundPlayed then
-		PlaySoundFile(LSM:Fetch("sound", self.db.whisperSound), "Master")
-		self.SoundPlayed = true
-		self.SoundTimer = CH:ScheduleTimer('ThrottleSound', 1)
+	if (event == "CHAT_MSG_WHISPER" or event == "CHAT_MSG_BN_WHISPER") and CH.db.whisperSound ~= 'None' and not CH.SoundPlayed then
+		PlaySoundFile(LSM:Fetch("sound", CH.db.whisperSound), "Master")
+		CH.SoundPlayed = true
+		CH.SoundTimer = CH:ScheduleTimer('ThrottleSound', 1)
 	end
 
 	if not CH.db.url then 
