@@ -181,6 +181,34 @@ E.Options.args.skins = {
 					order = 1,				
 				},			
 			},
+		},		
+		powerauras = {
+			order = 13,
+			type = 'group',
+			name = 'Power Auras',
+			get = function(info) return E.private.skins.powerauras[ info[#info] ] end,
+			set = function(info, value) E.private.skins.powerauras[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
+			args = {
+				enable = {
+					name = L['Enable'],
+					type = 'toggle',
+					order = 1,				
+				},			
+			},
+		},	
+		weakauras = {
+			order = 14,
+			type = 'group',
+			name = 'Weak Auras',
+			get = function(info) return E.private.skins.weakauras[ info[#info] ] end,
+			set = function(info, value) E.private.skins.weakauras[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
+			args = {
+				enable = {
+					name = L['Enable'],
+					type = 'toggle',
+					order = 1,				
+				},			
+			},
 		},			
 		blizzard = {
 			order = 300,

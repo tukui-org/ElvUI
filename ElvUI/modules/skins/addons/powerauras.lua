@@ -34,6 +34,7 @@ local function SkinPowerAuras(self, aura, elapsed)
 end
 
 local function PowerAuras_LoadSkin()
+	if not E.private.skins.powerauras.enable then return; end
 	PowaAuras.OldUpdateAura = PowaAuras.UpdateAura
 	PowaAuras.UpdateAura = SkinPowerAuras
 end
@@ -66,6 +67,7 @@ local function Modify_WeakAuras(parent, region, data)
 end
 
 local function WeakAuras_LoadSkin()
+	if not E.private.skins.weakauras.enable then return; end
 	WeakAuras.regionTypes.icon.OldCreate = WeakAuras.regionTypes.icon.create
 	WeakAuras.regionTypes.icon.create = Create_WeakAuras
 	
