@@ -69,6 +69,12 @@ V['skins'] = {
 	},			
 	['clcprot'] = {
 		['enable'] = true,
+	},	
+	['powerauras'] = {
+		['enable'] = true,
+	},		
+	['weakauras'] = {
+		['enable'] = true,
 	},			
 	['blizzard'] = {
 		['enable'] = true,

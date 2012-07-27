@@ -407,7 +407,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		unit = "mouseover"
 	end
 
-	local race = UnitRace(unit)
+	local race, englishRace = UnitRace(unit)
 	local class = UnitClass(unit)
 	local level = UnitLevel(unit)
 	local guildName, guildRankName, guildRankIndex = GetGuildInfo(unit)
@@ -415,7 +415,8 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	local crtype = UnitCreatureType(unit)
 	local classif = UnitClassification(unit)
 	local title = UnitPVPName(unit)
-
+	local _, faction = UnitFactionGroup(unit)
+	
 	local r, g, b = GetQuestDifficultyColor(level).r, GetQuestDifficultyColor(level).g, GetQuestDifficultyColor(level).b
 
 	local color = TT:GetColor(unit)	
@@ -427,6 +428,14 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			tt:AppendText((" %s"):format("[|cffFF0000"..L['AFK'].."|r]"))
 		elseif UnitIsDND(unit) then 
 			tt:AppendText((" %s"):format("[|cffE7E716"..L["DND"].."|r]"))
+		end
+		
+		if UnitIsPlayer(unit) and englishRace == "Pandaren" and faction ~= "" and not UnitIsUnit(unit, "player") then
+			local hex = "cffFF0000"
+			if faction == 'Alliance' then
+				hex = "cff0547FC"	
+			end
+			tt:AppendText((" |cffFFFFFF[|r|%s%s|r|cffFFFFFF]|r"):format(hex, faction:sub(1, 1)))
 		end
 
 		local offset = 2
