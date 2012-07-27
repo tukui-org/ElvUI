@@ -430,7 +430,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			tt:AppendText((" %s"):format("[|cffE7E716"..L["DND"].."|r]"))
 		end
 		
-		if UnitIsPlayer(unit) and englishRace == "Pandaren" and faction ~= "" then
+		if UnitIsPlayer(unit) and englishRace == "Pandaren" and faction ~= "" and not UnitIsUnit(unit, "player") then
 			local hex = "cffFF0000"
 			if faction == 'Alliance' then
 				hex = "cff0547FC"	
