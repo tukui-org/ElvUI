@@ -434,10 +434,11 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.movers.ElvUF_FocusTargetMover = "BOTTOMLEFTElvUF_FocusBOTTOMLEFT0150"
 			E.db.movers.ElvUF_TankMover = "LEFTUIParentLEFT30350"
 			E.db.movers.ElvUF_AssistMover = "LEFTUIParentLEFT30250"
-			E.db.movers.ElvUF_Boss1Mover = "BOTTOMLEFTUIParentBOTTOMLEFT30250"
-			E.db.movers.ElvUF_Boss2Mover = "BOTTOMLEFTUIParentBOTTOMLEFT30375"
-			E.db.movers.ElvUF_Boss3Mover = "BOTTOMLEFTUIParentBOTTOMLEFT30500"
-			E.db.movers.ElvUF_Boss4Mover = "BOTTOMLEFTUIParentBOTTOMLEFT30625"
+			if BossHeaderMover then
+				BossHeaderMover:ClearAllPoints()
+				BossHeaderMover:SetPoint("BOTTOMLEFT",UIParent,"BOTTOMLEFT",30,250)
+				E:SaveMoverPosition("BossHeaderMover")
+			end
 		else
 			E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTUIParentBOTTOMLEFT464230"
 			E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTUIParentBOTTOMRIGHT-464230"
@@ -451,10 +452,11 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.movers.ElvUF_FocusTargetMover = "BOTTOMLEFTElvUF_FocusBOTTOMLEFT0150"
 			E.db.movers.ElvUF_TankMover = "LEFTUIParentLEFT30350"
 			E.db.movers.ElvUF_AssistMover = "LEFTUIParentLEFT30250"
-			E.db.movers.ElvUF_Boss1Mover = "BOTTOMLEFTUIParentBOTTOMLEFT30250"
-			E.db.movers.ElvUF_Boss2Mover = "BOTTOMLEFTUIParentBOTTOMLEFT30375"
-			E.db.movers.ElvUF_Boss3Mover = "BOTTOMLEFTUIParentBOTTOMLEFT30500"
-			E.db.movers.ElvUF_Boss4Mover = "BOTTOMLEFTUIParentBOTTOMLEFT30625"			
+			if BossHeaderMover then
+				BossHeaderMover:ClearAllPoints()
+				BossHeaderMover:SetPoint("BOTTOMLEFT",UIParent,"BOTTOMLEFT",30,250)
+				E:SaveMoverPosition("BossHeaderMover")
+			end		
 		end
 	elseif E.db.lowresolutionset then
 		if not E.db.movers then E.db.movers = {}; end
