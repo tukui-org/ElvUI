@@ -522,7 +522,6 @@ function E:Initialize()
 	--self:RegisterEvent('UPDATE_BINDINGS', 'SaveKeybinds')
 	--self:SaveKeybinds()
 	self:Tutorials()
-	
 	self:GetModule('Minimap'):UpdateSettings()
 	self:RefreshModulesDB()
 	collectgarbage("collect");
