@@ -493,8 +493,8 @@ function E:Initialize()
 	end
 	
 	for option, value in pairs(self.private.skins) do
-		if self.private.skins[option].enable then
-			self.private.skins[option].enable = false
+		if self.private.skins[option].enable ~= nil then
+			self.private.skins[option].enable = true
 		end
 	end
 	
