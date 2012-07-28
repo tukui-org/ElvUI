@@ -2,43 +2,81 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local LSM = LibStub("LibSharedMedia-3.0")
 local _, ns = ...
 local ElvUF = ns.oUF
-local registry = {}
 
---Variables
+--Constants
 _, E.myclass = UnitClass("player");
 E.myname, _ = UnitName("player");
 E.myguid = UnitGUID('player');
 E.version = GetAddOnMetadata("ElvUI", "Version"); 
 E.myrealm = GetRealmName();
 _, E.wowbuild = GetBuildInfo(); E.wowbuild = tonumber(E.wowbuild);
-E.noop = function() end;
 E.resolution = GetCVar("gxResolution")
 E.screenheight = tonumber(string.match(E.resolution, "%d+x(%d+)"))
 E.screenwidth = tonumber(string.match(E.resolution, "(%d+)x+%d"))
+
+
+--Tables
+E["media"] = {};
+E["frames"] = {};
+E["texts"] = {};
+E['snapBars'] = {}
+E["RegisteredModules"] = {}
+E['RegisteredInitialModules'] = {}
+E['valueColorUpdateFuncs'] = {};
 E.TexCoords = {.08, .92, .08, .92}
 E.FrameLocks = {}
 
-E['valueColorUpdateFuncs'] = {};
+E.InversePoints = {
+	TOP = 'BOTTOM',
+	BOTTOM = 'TOP',
+	TOPLEFT = 'BOTTOMLEFT',
+	TOPRIGHT = 'BOTTOMRIGHT',
+	LEFT = 'RIGHT',
+	RIGHT = 'LEFT',
+	BOTTOMLEFT = 'TOPLEFT',
+	BOTTOMRIGHT = 'TOPRIGHT'
+}
 
---Table contains the SharedMedia values of all the fonts/textures
-E["media"] = {};
+E.ClassRole = {
+	PALADIN = {
+		[1] = "Caster",
+		[2] = "Tank",
+		[3] = "Melee",
+	},
+	PRIEST = "Caster",
+	WARLOCK = "Caster",
+	WARRIOR = {
+		[1] = "Melee",
+		[2] = "Melee",
+		[3] = "Tank",	
+	},
+	HUNTER = "Melee",
+	SHAMAN = {
+		[1] = "Caster",
+		[2] = "Melee",
+		[3] = "Caster",	
+	},
+	ROGUE = "Melee",
+	MAGE = "Caster",
+	DEATHKNIGHT = {
+		[1] = "Tank",
+		[2] = "Melee",
+		[3] = "Melee",	
+	},
+	DRUID = {
+		[1] = "Caster",
+		[2] = "Melee",
+		[3] = "Tank",	
+		[4] = "Caster"
+	},
+	MONK = {
+		[1] = "Tank",
+		[2] = "Caster",
+		[3] = "Melee",	
+	},
+}
 
---Table contains every frame we use :SetTemplate or every text we use :Font on
-E["frames"] = {};
-E["texts"] = {};
-
-E['snapBars'] = {}
-
---Keybind Header
-BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title")
-
---Modules List
-E["RegisteredModules"] = {}
-E['RegisteredInitialModules'] = {}
-
-function E:RegisterDropdownButton(name, callback)
-  registry[name] = callback or true
-end
+E.noop = function() end;
 
 function E:Print(msg)
 	print(self["media"].hexvaluecolor..'ElvUI:|r', msg)
@@ -171,46 +209,6 @@ function E:IsPTRVersion()
 	return false;
 end
 
---Check the player's role
-local roles = {
-	PALADIN = {
-		[1] = "Caster",
-		[2] = "Tank",
-		[3] = "Melee",
-	},
-	PRIEST = "Caster",
-	WARLOCK = "Caster",
-	WARRIOR = {
-		[1] = "Melee",
-		[2] = "Melee",
-		[3] = "Tank",	
-	},
-	HUNTER = "Melee",
-	SHAMAN = {
-		[1] = "Caster",
-		[2] = "Melee",
-		[3] = "Caster",	
-	},
-	ROGUE = "Melee",
-	MAGE = "Caster",
-	DEATHKNIGHT = {
-		[1] = "Tank",
-		[2] = "Melee",
-		[3] = "Melee",	
-	},
-	DRUID = {
-		[1] = "Caster",
-		[2] = "Melee",
-		[3] = "Tank",	
-		[4] = "Caster"
-	},
-	MONK = {
-		[1] = "Tank",
-		[2] = "Caster",
-		[3] = "Melee",	
-	},
-}
-
 function E:CheckRole()
 	local talentTree = GetSpecialization()
 	local IsInPvPGear = false;
@@ -221,10 +219,10 @@ function E:CheckRole()
 	
 	self.role = nil;
 	
-	if type(roles[E.myclass]) == "string" then
-		self.role = roles[E.myclass]
+	if type(self.ClassRole[self.myclass]) == "string" then
+		self.role = self.ClassRole[self.myclass]
 	elseif talentTree then
-		self.role = roles[E.myclass][talentTree]
+		self.role = self.ClassRole[self.myclass][talentTree]
 	end
 	
 	if self.role == "Tank" and IsInPvPGear then
@@ -242,42 +240,6 @@ function E:CheckRole()
 		else
 			self.role = "Caster";
 		end		
-	end
-end
-
-function E:RegisterModule(name)
-	if self.initialized then
-		self:GetModule(name):Initialize()
-		tinsert(self['RegisteredModules'], name)
-	else
-		tinsert(self['RegisteredModules'], name)
-	end
-end
-
-function E:RegisterInitialModule(name)
-	tinsert(self['RegisteredInitialModules'], name)
-end
-
-function E:InitializeInitialModules()
-	for _, module in pairs(E['RegisteredInitialModules']) do
-		local module = self:GetModule(module, true)
-		if module and module.Initialize then
-			module:Initialize()
-		end
-	end
-end
-
-function E:RefreshModulesDB()
-	local UF = self:GetModule('UnitFrames')
-	table.wipe(UF.db)
-	UF.db = self.db.unitframe
-end
-
-function E:InitializeModules()	
-	for _, module in pairs(E['RegisteredModules']) do
-		if self:GetModule(module).Initialize then
-			self:GetModule(module):Initialize()
-		end
 	end
 end
 
@@ -350,11 +312,6 @@ function E:SendMessage()
 	self:CancelAllTimers()
 end
 
---SENDTO = Specified Name or "ALL"
---CHANNEL = Channel to announce it in
---MESSAGE = Actual Message
---SENDTO = For whispers, force users to whisper other users
---/run SendAddonMessage('ElvSays', '<SENDTO>,<CHANNEL>,<MESSAGE>,<SENDTO>', 'PARTY')
 local function SendRecieve(self, event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
 		if sender == E.myname then return end
@@ -376,6 +333,10 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 	end
 end
 
+local f = CreateFrame('Frame')
+f:RegisterEvent("GROUP_ROSTER_UPDATE")
+f:RegisterEvent("CHAT_MSG_ADDON")
+f:SetScript('OnEvent', SendRecieve)
 
 function E:UpdateAll(ignoreInstall)
 	self.data = LibStub("AceDB-3.0"):New("ElvData", self.DF);
@@ -435,22 +396,78 @@ function E:UpdateAll(ignoreInstall)
 	collectgarbage('collect');
 end
 
-local function showMenu(dropdownMenu, which, unit, name, userData, ...)
-  for i=1,UIDROPDOWNMENU_MAXBUTTONS do
-    local button = _G["DropDownList" .. UIDROPDOWNMENU_MENU_LEVEL .. "Button" .. i];
-
-    local f = registry[button.value]
-    -- Patch our handler function back in
-    if f then
-      button.func = UnitPopupButtons[button.value].func
-      if type(f) == "function" then
-        f(dropdownMenu, button)
-      end
-    end
-  end
+function E:RemoveNonPetBattleFrames()
+	if InCombatLockdown() then return end
+	for object, _ in pairs(E.FrameLocks) do
+		_G[object]:SetParent(E.HiddenFrame)
+	end
 end
 
-hooksecurefunc("UnitPopup_ShowMenu", showMenu)
+function E:AddNonPetBattleFrames()
+	if InCombatLockdown() then return end
+	for object, _ in pairs(E.FrameLocks) do
+		_G[object]:SetParent(UIParent)
+	end
+end
+
+function E:ResetAllUI()
+	self:ResetMovers()
+
+	if E.db.lowresolutionset then
+		E:SetupResolution(true)
+	end	
+
+	if E.db.layoutSet then
+		E:SetupLayout(E.db.layoutSet, true)
+	end
+end
+
+function E:ResetUI(...)
+	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
+	
+	if ... == '' or ... == ' ' or ... == nil then
+		E:StaticPopup_Show('RESETUI_CHECK')
+		return
+	end
+	
+	self:ResetMovers(...)
+end
+
+function E:RegisterModule(name)
+	if self.initialized then
+		self:GetModule(name):Initialize()
+		tinsert(self['RegisteredModules'], name)
+	else
+		tinsert(self['RegisteredModules'], name)
+	end
+end
+
+function E:RegisterInitialModule(name)
+	tinsert(self['RegisteredInitialModules'], name)
+end
+
+function E:InitializeInitialModules()
+	for _, module in pairs(E['RegisteredInitialModules']) do
+		local module = self:GetModule(module, true)
+		if module and module.Initialize then
+			module:Initialize()
+		end
+	end
+end
+
+function E:RefreshModulesDB()
+	local UF = self:GetModule('UnitFrames')
+	table.wipe(UF.db)
+	UF.db = self.db.unitframe
+end
+
+function E:InitializeModules()	
+	for _, module in pairs(E['RegisteredModules']) do
+		if self:GetModule(module).Initialize then
+			self:GetModule(module):Initialize()
+		end
+	end
+end
 
 function E:Initialize()
 	table.wipe(self.db)
@@ -519,52 +536,9 @@ function E:Initialize()
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent("PET_BATTLE_CLOSE", 'AddNonPetBattleFrames')
 	self:RegisterEvent('PET_BATTLE_OPENING_START', "RemoveNonPetBattleFrames")	
-	--self:RegisterEvent('UPDATE_BINDINGS', 'SaveKeybinds')
-	--self:SaveKeybinds()
+
 	self:Tutorials()
 	self:GetModule('Minimap'):UpdateSettings()
 	self:RefreshModulesDB()
 	collectgarbage("collect");
 end
-
-function E:RemoveNonPetBattleFrames()
-	if InCombatLockdown() then return end
-	for object, _ in pairs(E.FrameLocks) do
-		_G[object]:SetParent(E.HiddenFrame)
-	end
-end
-
-function E:AddNonPetBattleFrames()
-	if InCombatLockdown() then return end
-	for object, _ in pairs(E.FrameLocks) do
-		_G[object]:SetParent(UIParent)
-	end
-end
-
-function E:ResetAllUI()
-	self:ResetMovers()
-
-	if E.db.lowresolutionset then
-		E:SetupResolution(true)
-	end	
-
-	if E.db.layoutSet then
-		E:SetupLayout(E.db.layoutSet, true)
-	end
-end
-
-function E:ResetUI(...)
-	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
-	
-	if ... == '' or ... == ' ' or ... == nil then
-		E:StaticPopup_Show('RESETUI_CHECK')
-		return
-	end
-	
-	self:ResetMovers(...)
-end
-
-local f = CreateFrame('Frame')
-f:RegisterEvent("GROUP_ROSTER_UPDATE")
-f:RegisterEvent("CHAT_MSG_ADDON")
-f:SetScript('OnEvent', SendRecieve)

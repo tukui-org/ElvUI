@@ -8,6 +8,11 @@ local ElvUF = ns.oUF
 local AceTimer = LibStub:GetLibrary("AceTimer-3.0")
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
+local opposites = {
+	['DEBUFFS'] = 'BUFFS',
+	['BUFFS'] = 'DEBUFFS'
+}
+
 local removeMenuOptions = {
 	["SET_FOCUS"] = true,
 	["CLEAR_FOCUS"] = true,
@@ -105,11 +110,6 @@ function UF:GetAuraOffset(p1, p2)
 	return E:Scale(x), E:Scale(y)
 end
 
-local opposites = {
-	['DEBUFFS'] = 'BUFFS',
-	['BUFFS'] = 'DEBUFFS'
-}
-
 function UF:GetAuraAnchorFrame(frame, attachTo, isConflict)
 	if isConflict then
 		E:Print(string.format(L['%s frame(s) has a conflicting anchor point, please change either the buff or debuff anchor point so they are not attached to each other. Forcing the debuffs to be attached to the main unitframe until fixed.'], E:StringTitle(frame:GetName())))
@@ -123,33 +123,6 @@ function UF:GetAuraAnchorFrame(frame, attachTo, isConflict)
 		return frame.Debuffs
 	else
 		return frame
-	end
-end
-
-function UF:GarbageCollect()
-	collectgarbage('collect')
-	
-	--This is a hackish way to disable all created timers except the UpdatePvPText one..
-	local timersList = AceTimer.selfs[self]
-	if timersList then
-		for handle, v in pairs(timersList) do
-			if type(v) == "table" and v.callback ~= 'UpdatePvPText' then
-				AceTimer.CancelTimer(self, handle, true)
-			end
-		end
-	end
-end
-
-function UF:UpdateGroupChildren(header, db)
-	if header:IsShown() then --No need to update groups that aren't even shown
-		for i=1, header:GetNumChildren() do
-			local frame = select(i, header:GetChildren())
-			if frame and frame.unit then
-				UF["Update_"..E:StringTitle(header.groupName).."Frames"](self, frame, self.db['units'][header.groupName])
-			end
-		end	
-	
-		UF:ScheduleTimer('GarbageCollect', 10)
 	end
 end
 
@@ -206,18 +179,6 @@ function UF:UpdateColors()
 			[7] = {good.r, good.g, good.b}, -- Revered
 			[8] = {good.r, good.g, good.b}, -- Exalted	
 		}, {__index = ElvUF['colors'].reaction}),
-		class = setmetatable({
-			["DEATHKNIGHT"] = { 196/255,  30/255,  60/255 },
-			["DRUID"]       = { 255/255, 125/255,  10/255 },
-			["HUNTER"]      = { 171/255, 214/255, 116/255 },
-			["MAGE"]        = { 104/255, 205/255, 255/255 },
-			["PALADIN"]     = { 245/255, 140/255, 186/255 },
-			["PRIEST"]      = { 212/255, 212/255, 212/255 },
-			["ROGUE"]       = { 255/255, 243/255,  82/255 },
-			["SHAMAN"]      = {  41/255,  79/255, 155/255 },
-			["WARLOCK"]     = { 148/255, 130/255, 201/255 },
-			["WARRIOR"]     = { 199/255, 156/255, 110/255 },
-		}, {__index = ElvUF['colors'].class}),
 		smooth = setmetatable({
 			1, 0, 0,
 			1, 1, 0,
