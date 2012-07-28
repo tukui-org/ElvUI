@@ -141,7 +141,7 @@ function CH:GetSmileyReplacementText(msg)
 		outstr = outstr .. CH:InsertEmotions(string.sub(msg,startpos,endpos)); --run replacement on this bit
 		startpos = endpos + 1;
 		if(pos ~= nil) then
-			endpos = string.find(msg,"|h",startpos,true);
+			endpos = string.find(msg,"|h]|r",startpos,-1) or string.find(msg,"|h",startpos,-1);
 			if(endpos == nil) then
 				endpos = origlen;
 			end
