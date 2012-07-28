@@ -107,10 +107,15 @@ local function LoadSkin()
 		_G['PetJournalLoadoutPet'..i].backdrop:SetAllPoints()
 		_G['PetJournalLoadoutPet'..i].petTypeIcon:SetPoint('BOTTOMLEFT', 2, 2)
 		
-		_G['PetJournalLoadoutPet'..i].dragButton:StyleButton()
+
 		_G['PetJournalLoadoutPet'..i].dragButton:SetOutside(_G['PetJournalLoadoutPet'..i..'Icon'])
 		_G['PetJournalLoadoutPet'..i].dragButton:SetFrameLevel(_G['PetJournalLoadoutPet'..i].dragButton:GetFrameLevel() + 1)
+		
+		_G['PetJournalLoadoutPet'..i].hover = true;
+		_G['PetJournalLoadoutPet'..i].pushed = true;
+		_G['PetJournalLoadoutPet'..i].checked = true;
 		S:HandleItemButton(_G['PetJournalLoadoutPet'..i])
+		
 		_G['PetJournalLoadoutPet'..i].backdrop:SetFrameLevel(_G['PetJournalLoadoutPet'..i].backdrop:GetFrameLevel() + 1)
 		
 		_G['PetJournalLoadoutPet'..i].setButton:StripTextures()

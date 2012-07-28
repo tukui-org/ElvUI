@@ -7,6 +7,7 @@ local msgList, msgCount, msgTime = {}, {}, {}
 local response		= L["You need to be at least level %d to whisper me."]
 local friendError	= L["You have reached the maximum amount of friends, remove 2 for this module to function properly."]
 local good, maybe, filter, login = {}, {}, {}, false
+local registry = {}
 
 local TIMESTAMP_FORMAT
 local DEFAULT_STRINGS = {
@@ -99,6 +100,10 @@ local smileyKeys = {
 
 CH.Keywords = {};
 
+function CH:RegisterDropdownButton(name, callback)
+  registry[name] = callback or true
+end
+
 function CH:GetGroupDistribution()
 	local inInstance, kind = IsInInstance()
 	if inInstance and (kind == "pvp") then
@@ -136,7 +141,7 @@ function CH:GetSmileyReplacementText(msg)
 		outstr = outstr .. CH:InsertEmotions(string.sub(msg,startpos,endpos)); --run replacement on this bit
 		startpos = endpos + 1;
 		if(pos ~= nil) then
-			endpos = string.find(msg,"|h",startpos,true);
+			endpos = string.find(msg,"|h]|r",startpos,-1) or string.find(msg,"|h",startpos,-1);
 			if(endpos == nil) then
 				endpos = origlen;
 			end
@@ -924,6 +929,23 @@ function CH:UpdateChatKeywords()
 	end
 end
 
+local function showMenu(dropdownMenu, which, unit, name, userData, ...)
+  for i=1,UIDROPDOWNMENU_MAXBUTTONS do
+    local button = _G["DropDownList" .. UIDROPDOWNMENU_MENU_LEVEL .. "Button" .. i];
+
+    local f = registry[button.value]
+    -- Patch our handler function back in
+    if f then
+      button.func = UnitPopupButtons[button.value].func
+      if type(f) == "function" then
+        f(dropdownMenu, button)
+      end
+    end
+  end
+end
+
+hooksecurefunc("UnitPopup_ShowMenu", showMenu)
+
 function CH:Initialize()
 	self.db = E.db.chat
 	if E.private.chat.enable ~= true then return end
@@ -944,7 +966,7 @@ function CH:Initialize()
 	};
 	
 	tinsert(UnitPopupMenus["FRIEND"],#UnitPopupMenus["FRIEND"]-1,"COPYCHAT");    
-	E:RegisterDropdownButton("COPYCHAT", function(menu, button) button.arg1 = CH.clickedFrame end )
+	self:RegisterDropdownButton("COPYCHAT", function(menu, button) button.arg1 = self.clickedFrame end )
 	
 	E.Chat = self
 	self:SecureHook('ChatEdit_OnEnterPressed')
