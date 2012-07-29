@@ -491,13 +491,7 @@ function E:Initialize()
 	if self.db.general.loginmessage then
 		print(format(L['LOGIN_MSG'], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version))
 	end
-	
-	for option, value in pairs(self.private.skins) do
-		if self.private.skins[option].enable ~= nil then
-			self.private.skins[option].enable = true
-		end
-	end
-	
+
 	self:LoadConfig(); --Load In-Game Config
 	self:LoadCommands(); --Load Commands
 	self:InitializeModules(); --Load Modules	
