@@ -51,7 +51,6 @@ local find = string.find
 local gsub = string.gsub
 
 function UF:Construct_UF(frame, unit)
-	E.FrameLocks[frame:GetName()] = true
 	frame:RegisterForClicks("AnyUp")
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)	
@@ -265,6 +264,7 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			self['groupunits'][unit] = group;	
 			self[unit] = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
 			self[unit].index = i
+			self[unit]:SetParent(ElvUF_Parent)
 		end
 		
 		local frameName = E:StringTitle(group)
@@ -330,7 +330,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 				'groupFilter', groupFilter)
 		end
 		
-		E.FrameLocks["ElvUF_"..E:StringTitle(group)] = true
+		self[group]:SetParent(ElvUF_Parent)
 		RegisterAttributeDriver(self[group], 'state-visibility', 'show')	
 		self[group].dirtyWidth, self[group].dirtyHeight = self[group]:GetSize()
 		RegisterAttributeDriver(self[group], 'state-visibility', 'hide')	
@@ -400,6 +400,10 @@ function UF:CreateAndUpdateUF(unit)
 		self[unit].Update()
 	else
 		self[unit]:Disable()
+	end
+	
+	if self[unit]:GetParent() ~= ElvUF_Parent then
+		self[unit]:SetParent(ElvUF_Parent)
 	end
 end
 
@@ -573,6 +577,18 @@ function UF:Initialize()
 	self.db = E.db["unitframe"]
 	if E.private["unitframe"].enable ~= true then return; end
 	E.UnitFrames = UF;
+	
+	local ElvUF_Parent = CreateFrame('Frame', 'ElvUF_Parent', E.UIParent, 'SecureHandlerStateTemplate');
+	ElvUF_Parent:SetAllPoints(E.UIParent)
+	ElvUF_Parent:SetAttribute("_onstate-show", [[		
+		if newstate == "hide" then
+			self:Hide();
+		else
+			self:Show();
+		end	
+	]]);
+
+	RegisterStateDriver(ElvUF_Parent, "show", '[petbattle] hide;show');	
 
 	ElvUF:RegisterStyle('ElvUF', function(frame, unit)
 		self:Construct_UF(frame, unit)

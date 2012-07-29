@@ -7,7 +7,7 @@ local total, totalDurability, totalPerc = 0, 0, 0
 local current, max, lastPanel
 local invDurability = {}
 local slots = {
-	["RangedSlot"] = L['Ranged'],
+	["RangedSlot"] = RANGED,
 	["SecondaryHandSlot"] = L['Offhand'],
 	["MainHandSlot"] = L['Main Hand'],
 	["FeetSlot"] = L['Feet'],

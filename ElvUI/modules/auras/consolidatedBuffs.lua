@@ -79,6 +79,20 @@ function A:UpdateReminder(event, unit)
 	if (event == "UNIT_AURA" and unit ~= "player") then return end
 	local frame = self.frame
 	
+	if event ~= 'UNIT_AURA' and not InCombatLockdown() then
+		if E.role == 'Caster' then
+			ConsolidatedBuffsTooltipBuff3:Hide()
+			ConsolidatedBuffsTooltipBuff4:Hide()
+			ConsolidatedBuffsTooltipBuff5:Show()
+			ConsolidatedBuffsTooltipBuff6:Show()			
+		else
+			ConsolidatedBuffsTooltipBuff3:Show()
+			ConsolidatedBuffsTooltipBuff4:Show()
+			ConsolidatedBuffsTooltipBuff5:Hide()
+			ConsolidatedBuffsTooltipBuff6:Hide()		
+		end
+	end
+	
 	if E.role == 'Caster' then
 		A.IndexTable[3] = A.SpellPower
 		A.IndexTable[4] = A.SpellHaste
@@ -103,10 +117,10 @@ end
 
 function A:Button_OnEnter()
 	GameTooltip:Hide()
-	GameTooltip:SetOwner(self, "ANCHOR_LEFT", -4, -(self:GetHeight() + 5))
+	GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT", -3, self:GetHeight() + 2)
 	GameTooltip:ClearLines()
 	
-	local id = self:GetID()
+	local id = self:GetParent():GetID()
 	
 	if (id == 3 or id == 4) and E.role == 'Caster' then
 		A.IndexTable[3] = A.SpellPower
@@ -127,7 +141,7 @@ function A:Button_OnEnter()
 	GameTooltip:AddLine(" ")
 	for _, spellID in pairs(A.IndexTable[id]) do
 		local spellName = GetSpellInfo(spellID)
-		if self.hasBuff == spellName then
+		if self:GetParent().hasBuff == spellName then
 			GameTooltip:AddLine(spellName, 1, 0, 0)
 		else
 			GameTooltip:AddLine(spellName, 1, 1, 1)
@@ -154,10 +168,7 @@ function A:CreateButton(relativeTo, isFirst, isLast)
 	if isLast then
 		button:Point("BOTTOM", ElvUI_ConsolidatedBuffs, "BOTTOM", 0, 2)
 	end
-	
-	button:SetScript("OnEnter", A.Button_OnEnter)
-	button:SetScript("OnLeave", A.Button_OnLeave)
-	
+
 	button.t = button:CreateTexture(nil, "OVERLAY")
 	button.t:SetTexCoord(unpack(E.TexCoords))
 	button.t:SetInside()
@@ -168,6 +179,7 @@ end
 
 function A:EnableCB()
 	ElvUI_ConsolidatedBuffs:Show()
+	BuffFrame:RegisterEvent('UNIT_AURA')
 	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", 'UpdateReminder')
 	self:RegisterEvent("UNIT_INVENTORY_CHANGED", 'UpdateReminder')
 	self:RegisterEvent("UNIT_AURA", 'UpdateReminder')
@@ -182,6 +194,7 @@ end
 
 function A:DisableCB()
 	ElvUI_ConsolidatedBuffs:Hide()
+	BuffFrame:UnregisterEvent('UNIT_AURA')
 	self:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 	self:UnregisterEvent("UNIT_INVENTORY_CHANGED")
 	self:UnregisterEvent("UNIT_AURA")
@@ -207,9 +220,23 @@ function A:Construct_ConsolidatedBuffs()
 	frame.spell5 = self:CreateButton(frame.spell4)
 	frame.spell6 = self:CreateButton(frame.spell5, nil, true)
 	self.frame = frame
-	
-	for i=1, 6 do
-		frame["spell"..i]:SetID(i)
+
+	for i=1, NUM_LE_RAID_BUFF_TYPES do
+		local id = i
+		if i > 4 then
+			id = i - 2
+		end
+		
+		frame["spell"..id]:SetID(id)
+		
+		--This is so hackish its funny.. 
+		--Have to do this to be able to right click a consolidated buff icon in combat and remove the aura.
+		_G['ConsolidatedBuffsTooltipBuff'..i]:ClearAllPoints()
+		_G['ConsolidatedBuffsTooltipBuff'..i]:SetAllPoints(frame['spell'..id])
+		_G['ConsolidatedBuffsTooltipBuff'..i]:SetParent(frame['spell'..id])
+		_G['ConsolidatedBuffsTooltipBuff'..i]:SetAlpha(0)
+		_G['ConsolidatedBuffsTooltipBuff'..i]:SetScript("OnEnter", A.Button_OnEnter)
+		_G['ConsolidatedBuffsTooltipBuff'..i]:SetScript("OnLeave", A.Button_OnLeave)		
 	end
 	
 	if E.db.auras.consolidedBuffs then

@@ -1205,9 +1205,10 @@ P["actionbar"] = {
 			["DRUID"] = "[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10;",
 			["WARRIOR"] = "[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;",
 			["PRIEST"] = "[bonusbar:1] 7;",
-			["ROGUE"] = "[bonusbar:1] 7; [form:3] 7;",	
+			["ROGUE"] = "[bonusbar:1] 7; [form:3] 7;",
+			["MONK"] = "[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;"
 		},
-		['visibility'] = "",
+		['visibility'] = "[petbattle] hide; show",
 	},
 	['bar2'] = {
 		['enabled'] = true,
@@ -1221,7 +1222,7 @@ P["actionbar"] = {
 		["buttonsize"] = 30,
 		["buttonspacing"] = 4,		
 		['paging'] = {},
-		['visibility'] = "[vehicleui] hide;show",
+		['visibility'] = "[vehicleui] hide; [overridebar] hide; [petbattle] hide; show",
 	},
 	['bar3'] = {
 		['enabled'] = false,
@@ -1235,7 +1236,7 @@ P["actionbar"] = {
 		["buttonsize"] = 30,
 		["buttonspacing"] = 4,
 		['paging'] = {},
-		['visibility'] = "[vehicleui] hide;show",
+		['visibility'] = "[vehicleui] hide; [overridebar] hide; [petbattle] hide; show",
 	},
 	['bar4'] = {
 		['enabled'] = true,
@@ -1249,7 +1250,7 @@ P["actionbar"] = {
 		["buttonsize"] = 30,
 		["buttonspacing"] = 4,
 		['paging'] = {},
-		['visibility'] = "[vehicleui] hide;show",
+		['visibility'] = "[vehicleui] hide; [overridebar] hide; [petbattle] hide; show",
 	},
 	['bar5'] = {
 		['enabled'] = true,
@@ -1263,7 +1264,7 @@ P["actionbar"] = {
 		["buttonsize"] = 30,
 		["buttonspacing"] = 4,
 		['paging'] = {},
-		['visibility'] = "[vehicleui] hide;show",
+		['visibility'] = "[vehicleui] hide; [overridebar] hide; [petbattle] hide; show",
 	},
 	['barPet'] = {
 		['enabled'] = true,
@@ -1276,7 +1277,7 @@ P["actionbar"] = {
 		['widthMult'] = 1,
 		["buttonsize"] = 30,
 		["buttonspacing"] = 4,
-		['visibility'] = "[pet,novehicleui,nobonusbar:5] show;hide",
+		['visibility'] = "[petbattle] hide;[pet,novehicleui,nooverridebar,nopossessbar] show;hide",
 	},
 	['barShapeShift'] = {
 		['enabled'] = true,
@@ -1289,9 +1290,5 @@ P["actionbar"] = {
 		['widthMult'] = 1,
 		["buttonsize"] = 28,
 		["buttonspacing"] = 4,
-	},
-	['barTotem'] = {
-		['enabled'] = true,
-		['mouseover'] = false,
 	},
 };

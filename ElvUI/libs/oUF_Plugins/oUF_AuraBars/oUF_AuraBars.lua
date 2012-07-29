@@ -2,10 +2,6 @@ local _, ns = ...
 local oUF = ns.oUF or oUF
 assert(oUF, 'oUF_AuraBars was unable to locate oUF install.')
 
-local function ShortenedSpellName(spellName, length)
-	return string.len(spellName) > length and string.gsub(spellName, '%s?(.)%S+%s', '%1. ') or spellName
-end
-
 local function Round(number, decimalPlaces)
 	if decimalPlaces and decimalPlaces > 0 then
 		local mult = 10^decimalPlaces
@@ -252,7 +248,7 @@ local function Update(self, event, unit)
 
 		bar.icon:SetTexture(bar.aura.icon)
 
-		bar.spellname:SetText(bar.aura.count > 1 and string.format("%s [%d]", ShortenedSpellName(bar.aura.name, 20), bar.aura.count) or ShortenedSpellName(bar.aura.name, 20))
+		bar.spellname:SetText(bar.aura.count > 1 and string.format("%s [%d]", bar.aura.name, bar.aura.count) or bar.aura.name)
 		bar.spelltime:SetText(not bar.noTime and FormatTime(bar.aura.expirationTime-GetTime()))
 
 		-- Colour bars
