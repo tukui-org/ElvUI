@@ -78,12 +78,8 @@ local function SetSize(self, width, height)
 	end
 end
 
-local blackList = {
-	['TemporaryEnchantFrame'] = true;
-}
-
 local function FixDimensions(frame)
-	if frame:IsProtected() or (frame:GetName() and blackList[frame:GetName()]) or not frame.IgnoreFixDimensions then 
+	if frame:IsProtected() or frame.IgnoreFixDimensions then 
 		return; 
 	end
 	frame.SetWidth = SetWidth
@@ -145,7 +141,7 @@ end
 
 local function SetTemplate(f, t, glossTex, ignoreUpdates)
 	GetTemplate(t)
-	
+	f:FixDimensions()
 	f.template = t
 	f.glossTex = glossTex
 
