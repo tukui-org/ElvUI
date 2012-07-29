@@ -404,6 +404,16 @@ local function LoadSkin()
 	end
 	
 	WatchFrame:HookScript("OnEvent", SkinWatchFrameItems)
+	
+	BattleTagInviteFrame:StripTextures()
+	BattleTagInviteFrame:SetTemplate('Transparent')
+	S:HandleEditBox(BattleTagInviteFrameScrollFrame)
+	for i=1, BattleTagInviteFrame:GetNumChildren() do
+		local child = select(i, BattleTagInviteFrame:GetChildren())
+		if child:GetObjectType() == 'Button' then
+			S:HandleButton(child)
+		end
+	end
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)
