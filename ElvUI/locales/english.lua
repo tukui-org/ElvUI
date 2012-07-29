@@ -8,6 +8,9 @@ else
 end
 
 if not L then return; end
+L['Bars'] = true;
+L['Spacing'] = true;
+L['The spacing in between bars.'] = true;
 L["Whisper Alert"] = true;
 L["Keyword Alert"] = true;
 L['AURAS_DESC'] = 'Configure the aura icons that appear near the minimap.';
@@ -63,7 +66,6 @@ L['Display emotion icons in chat.'] = true;
 L["24-Hour Time"] = "24-Hour Time"
 L["Accept Invites"] = "Accept Invites"
 L["Achievement Frame"] = "Achievement Frame"
-L["Achievement Popup Frames"] = "Achievement Popup Frames"
 L["ActionBars"] = "ActionBars"
 L["Action Paging"] = "Action Paging"
 L["Add a spell to the filter."] = "Add a spell to the filter."
