@@ -51,8 +51,6 @@ local find = string.find
 local gsub = string.gsub
 
 function UF:Construct_UF(frame, unit)
-	RegisterAttributeDriver(frame, 'state-visibility', "[petbattle] hide; show")
-	RegisterStateDriver(frame, "visibility", "[petbattle] hide; show")
 	frame:RegisterForClicks("AnyUp")
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)	
