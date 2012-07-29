@@ -134,7 +134,7 @@ function NP:CreateAuraIcon(parent)
 	end)
 	
 	button.bg = button:CreateTexture(nil, "BACKGROUND")
-	button.bg:SetTexture(unpack(E["media"].backdropcolor))
+	button.bg:SetTexture(0, 0, 0, 1)
 	button.bg:SetAllPoints(button)
 	
 	button.bord = button:CreateTexture(nil, "BACKGROUND")
@@ -145,7 +145,7 @@ function NP:CreateAuraIcon(parent)
 	
 	button.bg2 = button:CreateTexture(nil, "BACKGROUND")
 	button.bg2:SetDrawLayer('BACKGROUND', 3)
-	button.bg2:SetTexture(unpack(E["media"].backdropcolor))
+	button.bg2:SetTexture(0, 0, 0, 1)
 	button.bg2:SetPoint("TOPLEFT",button,"TOPLEFT", noscalemult*2,-noscalemult*2)
 	button.bg2:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-noscalemult*2,noscalemult*2)	
 	
