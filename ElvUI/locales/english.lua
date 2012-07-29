@@ -8,6 +8,9 @@ else
 end
 
 if not L then return; end
+L['whispers'] = true;
+L['says'] = true;
+L['yells'] = true;
 L['Bars'] = true;
 L['Spacing'] = true;
 L['The spacing in between bars.'] = true;
