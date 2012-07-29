@@ -8,6 +8,7 @@ else
 end
 
 if not L then return; end
+L["Character: "] = true;
 L['whispers'] = true;
 L['says'] = true;
 L['yells'] = true;
