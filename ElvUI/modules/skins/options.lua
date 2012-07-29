@@ -37,7 +37,7 @@ E.Options.args.skins = {
 					type = 'toggle',
 					order = 1,
 					get = function(info) return E.private.skins.bigwigs[ info[#info] ] end,
-					set = function(info, value) E.private.skins.bigwigs[ info[#info] ] = value; E:StaticPopup_Show("CONFIG_RL") end,					
+					set = function(info, value) E.private.skins.bigwigs[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,					
 				},
 				spacing = {
 					name = L['Spacing'],
@@ -53,7 +53,7 @@ E.Options.args.skins = {
 			type = 'group',
 			name = 'Ace3',
 			get = function(info) return E.private.skins.ace3[ info[#info] ] end,
-			set = function(info, value) E.private.skins.ace3[ info[#info] ] = value; E:StaticPopup_Show("CONFIG_RL") end,
+			set = function(info, value) E.private.skins.ace3[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
 			args = {
 				enable = {
 					name = L['Enable'],
@@ -67,7 +67,7 @@ E.Options.args.skins = {
 			type = 'group',
 			name = 'Recount',
 			get = function(info) return E.private.skins.recount[ info[#info] ] end,
-			set = function(info, value) E.private.skins.recount[ info[#info] ] = value; E:StaticPopup_Show("CONFIG_RL") end,
+			set = function(info, value) E.private.skins.recount[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
 			args = {
 				enable = {
 					name = L['Enable'],
@@ -81,7 +81,7 @@ E.Options.args.skins = {
 			type = 'group',
 			name = 'Omen',
 			get = function(info) return E.private.skins.omen[ info[#info] ] end,
-			set = function(info, value) E.private.skins.omen[ info[#info] ] = value; E:StaticPopup_Show("CONFIG_RL") end,
+			set = function(info, value) E.private.skins.omen[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
 			args = {
 				enable = {
 					name = L['Enable'],
@@ -95,7 +95,7 @@ E.Options.args.skins = {
 			type = 'group',
 			name = 'Skada',
 			get = function(info) return E.private.skins.skada[ info[#info] ] end,
-			set = function(info, value) E.private.skins.skada[ info[#info] ] = value; E:StaticPopup_Show("CONFIG_RL") end,
+			set = function(info, value) E.private.skins.skada[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
 			args = {
 				enable = {
 					name = L['Enable'],
@@ -117,7 +117,7 @@ E.Options.args.skins = {
 			type = 'group',
 			name = 'DXE',
 			get = function(info) return E.private.skins.dxe[ info[#info] ] end,
-			set = function(info, value) E.private.skins.dxe[ info[#info] ] = value; E:StaticPopup_Show("CONFIG_RL") end,
+			set = function(info, value) E.private.skins.dxe[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
 			args = {
 				enable = {
 					name = L['Enable'],
@@ -131,7 +131,7 @@ E.Options.args.skins = {
 			type = 'group',
 			name = 'DBM',
 			get = function(info) return E.private.skins.dbm[ info[#info] ] end,
-			set = function(info, value) E.private.skins.dbm[ info[#info] ] = value; E:StaticPopup_Show("CONFIG_RL") end,
+			set = function(info, value) E.private.skins.dbm[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
 			args = {
 				enable = {
 					name = L['Enable'],
@@ -145,7 +145,7 @@ E.Options.args.skins = {
 			type = 'group',
 			name = 'TinyDPS',
 			get = function(info) return E.private.skins.tinydps[ info[#info] ] end,
-			set = function(info, value) E.private.skins.tinydps[ info[#info] ] = value; E:StaticPopup_Show("CONFIG_RL") end,
+			set = function(info, value) E.private.skins.tinydps[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
 			args = {
 				enable = {
 					name = L['Enable'],
@@ -159,7 +159,7 @@ E.Options.args.skins = {
 			type = 'group',
 			name = 'CLCRet',
 			get = function(info) return E.private.skins.clcret[ info[#info] ] end,
-			set = function(info, value) E.private.skins.clcret[ info[#info] ] = value; E:StaticPopup_Show("CONFIG_RL") end,
+			set = function(info, value) E.private.skins.clcret[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
 			args = {
 				enable = {
 					name = L['Enable'],
@@ -173,7 +173,7 @@ E.Options.args.skins = {
 			type = 'group',
 			name = 'CLCProt',
 			get = function(info) return E.private.skins.clcprot[ info[#info] ] end,
-			set = function(info, value) E.private.skins.clcprot[ info[#info] ] = value; E:StaticPopup_Show("CONFIG_RL") end,
+			set = function(info, value) E.private.skins.clcprot[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
 			args = {
 				enable = {
 					name = L['Enable'],
@@ -187,7 +187,7 @@ E.Options.args.skins = {
 			type = 'group',
 			name = 'Power Auras',
 			get = function(info) return E.private.skins.powerauras[ info[#info] ] end,
-			set = function(info, value) E.private.skins.powerauras[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
+			set = function(info, value) E.private.skins.powerauras[ info[#info] ] = value; StaticPopup_Show("PRIVATE_RL") end,
 			args = {
 				enable = {
 					name = L['Enable'],
@@ -201,7 +201,7 @@ E.Options.args.skins = {
 			type = 'group',
 			name = 'Weak Auras',
 			get = function(info) return E.private.skins.weakauras[ info[#info] ] end,
-			set = function(info, value) E.private.skins.weakauras[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
+			set = function(info, value) E.private.skins.weakauras[ info[#info] ] = value; StaticPopup_Show("PRIVATE_RL") end,
 			args = {
 				enable = {
 					name = L['Enable'],
@@ -215,7 +215,7 @@ E.Options.args.skins = {
 			type = 'group',
 			name = 'Blizzard',
 			get = function(info) return E.private.skins.blizzard[ info[#info] ] end,
-			set = function(info, value) E.private.skins.blizzard[ info[#info] ] = value; E:StaticPopup_Show("CONFIG_RL") end,	
+			set = function(info, value) E.private.skins.blizzard[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,	
 			guiInline = true,
 			args = {
 				enable = {
