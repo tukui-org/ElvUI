@@ -19,11 +19,6 @@ V['bags'] = {
 	},
 }
 
-V['reminder'] = {
-	['enable'] = true,
-	['sound'] = "ElvUI Warning",
-}
-
 V["nameplate"] = {
 	["enable"] = true,
 }

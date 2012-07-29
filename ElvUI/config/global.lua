@@ -5,8 +5,6 @@ G['classtimer'] = {}
 
 G["nameplate"] = {}
 
-G['reminder'] = {};
-
 G['unitframe'] = {
 	['aurafilters'] = {},
 	['buffwatch'] = {},
