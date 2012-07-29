@@ -4,8 +4,6 @@ local LSM = LibStub("LibSharedMedia-3.0")
 local CreatedFrames = 0;
 local lines = {};
 local msgList, msgCount, msgTime = {}, {}, {}
-local response		= L["You need to be at least level %d to whisper me."]
-local friendError	= L["You have reached the maximum amount of friends, remove 2 for this module to function properly."]
 local good, maybe, filter, login = {}, {}, {}, false
 local registry = {}
 
