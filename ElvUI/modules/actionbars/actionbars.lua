@@ -205,7 +205,6 @@ end
 
 function AB:CreateBar(id)
 	local bar = CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate');
-	E.FrameLocks['ElvUI_Bar'..id] = true
 	local point, anchor, attachTo, x, y = string.split(',', self['barDefaults']['bar'..id].position)
 	bar:Point(point, anchor, attachTo, x, y)
 	bar.id = id

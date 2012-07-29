@@ -184,7 +184,7 @@ function A:CreateAuraHeader(filter, ...)
 	header:HookScript("OnEvent", A.ScanAuras)
 	header:SetAttribute("unit", "player")
 	header:SetAttribute("filter", filter)
-	E.FrameLocks[name] = true
+	RegisterStateDriver(header, "visibility", "[petbattle] hide; show")
 	
 	-- look for weapons buffs
 	if filter == "HELPFUL" then

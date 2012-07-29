@@ -4,7 +4,6 @@ local AB = E:GetModule('ActionBars');
 local ceil = math.ceil;
 
 local bar = CreateFrame('Frame', 'ElvUI_BarShapeShift', E.UIParent, 'SecureHandlerStateTemplate');
-E.FrameLocks['ElvUI_BarShapeShift'] = true
 
 local states = {
 	["DRUID"] = "show",
@@ -252,5 +251,5 @@ function AB:CreateBarShapeShift()
 	E:CreateMover(bar, 'ShiftAB', 'Stance Bar', nil, -3, nil, 'ALL,ACTIONBARS');
 	self:AdjustMaxStanceButtons();
 	self:PositionAndSizeBarShapeShift();
-	RegisterStateDriver(bar, "show", states[E.myclass] or "hide");
+	RegisterStateDriver(bar, "show", '[petbattle] hide;'..states[E.myclass] or "hide");
 end
