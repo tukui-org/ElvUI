@@ -28,6 +28,7 @@ end
 -- Function to create buttons in this module
 function RU:CreateUtilButton(name, parent, template, width, height, point, relativeto, point2, xOfs, yOfs, text, texture)
 	local b = CreateFrame("Button", name, parent, template)
+	b.IgnoreFixDimensions = true
 	b:Width(width)
 	b:Height(height)
 	b:Point(point, relativeto, point2, xOfs, yOfs)
@@ -191,6 +192,7 @@ function RU:Initialize()
 	CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:ClearAllPoints()
 	CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:SetPoint("TOPRIGHT", MainAssistButton, "BOTTOMRIGHT", 0, -5)
 	CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:SetParent("RaidUtilityPanel")
+	CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton.IgnoreFixDimensions = true
 	CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:Height(18)
 	CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:SetWidth(RoleCheckButton:GetWidth() * 0.22)
 

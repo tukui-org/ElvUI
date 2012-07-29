@@ -129,6 +129,7 @@ function M:UpdateExpBar(event)
 		bar:SetScript('OnMouseDown', OnClick)	
 		bar:SetScript('OnEnter', ExpOnEnter)
 		bar:SetScript('OnLeave', OnLeave)
+		bar:FixDimensions()
 		
 		bar.rested = CreateFrame('StatusBar', 'UpperExperienceRestedBar', UpperExperienceBar)
 		bar.rested:Size(bar:GetSize())
@@ -194,6 +195,7 @@ function M:UpdateRepBar(event)
 		bar:SetScript('OnMouseDown', OnClick)	
 		bar:SetScript('OnEnter', RepOnEnter)
 		bar:SetScript('OnLeave', OnLeave)
+		bar:FixDimensions()
 	end
 	
 	local name, reaction, min, max, value = GetWatchedFactionInfo()

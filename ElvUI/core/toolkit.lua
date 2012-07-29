@@ -141,7 +141,7 @@ end
 
 local function SetTemplate(f, t, glossTex, ignoreUpdates)
 	GetTemplate(t)
-	f:FixDimensions()
+	
 	f.template = t
 	f.glossTex = glossTex
 
