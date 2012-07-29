@@ -101,6 +101,19 @@ function A:UpdateReminder(event, unit)
 	end
 end
 
+function A:Button_OnClick(btn)
+	if InCombatLockdown() then return; end
+	
+	local id = self:GetID()
+	
+	for _, spellID in pairs(A.IndexTable[id]) do
+		local spellName = GetSpellInfo(spellID)
+		if self.hasBuff == spellName then
+			CancelUnitBuff(PlayerFrame.unit, spellName)
+		end
+	end
+end
+
 function A:Button_OnEnter()
 	GameTooltip:Hide()
 	GameTooltip:SetOwner(self, "ANCHOR_LEFT", -4, -(self:GetHeight() + 5))
@@ -144,6 +157,7 @@ end
 function A:CreateButton(relativeTo, isFirst, isLast)
 	local button = CreateFrame("Button", name, ElvUI_ConsolidatedBuffs)
 	button:SetTemplate('Default')
+	button:RegisterForClicks('RightButtonUp')
 	button:Size(E.ConsolidatedBuffsWidth - 4)
 	if isFirst then
 		button:Point("TOP", relativeTo, "TOP", 0, -2)
@@ -157,6 +171,7 @@ function A:CreateButton(relativeTo, isFirst, isLast)
 	
 	button:SetScript("OnEnter", A.Button_OnEnter)
 	button:SetScript("OnLeave", A.Button_OnLeave)
+	button:SetScript('OnClick', A.Button_OnClick)
 	
 	button.t = button:CreateTexture(nil, "OVERLAY")
 	button.t:SetTexCoord(unpack(E.TexCoords))
