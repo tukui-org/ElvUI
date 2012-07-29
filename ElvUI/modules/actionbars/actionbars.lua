@@ -14,7 +14,7 @@ AB["barDefaults"] = {
 	["bar1"] = {
 		['page'] = 1,
 		['bindButtons'] = "ACTIONBUTTON",
-		['conditions'] = "[vehicleui] 12; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;",
+		['conditions'] = string.format("[vehicleui] %d; [possessbar] %d; [overridebar] %d; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetVehicleBarIndex(), GetOverrideBarIndex()),
 		['position'] = "BOTTOM,ElvUIParent,BOTTOM,0,4",
 	},
 	["bar2"] = {
@@ -45,7 +45,11 @@ AB["barDefaults"] = {
 
 AB.customExitButton = {
 	func = function(button)
-		VehicleExit()
+		if UnitExists('vehicle') then
+			VehicleExit()
+		else
+			PetDismiss()
+		end
 	end,
 	texture = "Interface\\Icons\\Spell_Shadow_SacrificialShield",
 	tooltip = LEAVE_VEHICLE,
@@ -213,7 +217,7 @@ function AB:CreateBar(id)
 	for i=1, 12 do
 		bar.buttons[i] = LAB:CreateButton(i, format(bar:GetName().."Button%d", i), bar, nil)
 		bar.buttons[i]:SetState(0, "action", i)
-		for k = 1, 12 do
+		for k = 1, 14 do
 			bar.buttons[i]:SetState(k, "action", (k - 1) * 12 + i)
 		end
 		

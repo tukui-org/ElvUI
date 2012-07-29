@@ -1210,7 +1210,7 @@ P["actionbar"] = {
 		["buttonsize"] = 30,
 		["buttonspacing"] = 4,		
 		['paging'] = {},
-		['visibility'] = "[vehicleui] hide;show",
+		['visibility'] = "[vehicleui] hide; [overridebar] hide; show",
 	},
 	['bar3'] = {
 		['enabled'] = true,
@@ -1224,7 +1224,7 @@ P["actionbar"] = {
 		["buttonsize"] = 30,
 		["buttonspacing"] = 4,
 		['paging'] = {},
-		['visibility'] = "[vehicleui] hide;show",
+		['visibility'] = "[vehicleui] hide; [overridebar] hide; show",
 	},
 	['bar4'] = {
 		['enabled'] = true,
@@ -1238,7 +1238,7 @@ P["actionbar"] = {
 		["buttonsize"] = 30,
 		["buttonspacing"] = 4,
 		['paging'] = {},
-		['visibility'] = "[vehicleui] hide;show",
+		['visibility'] = "[vehicleui] hide; [overridebar] hide; show",
 	},
 	['bar5'] = {
 		['enabled'] = true,
@@ -1252,7 +1252,7 @@ P["actionbar"] = {
 		["buttonsize"] = 30,
 		["buttonspacing"] = 4,
 		['paging'] = {},
-		['visibility'] = "[vehicleui] hide;show",
+		['visibility'] = "[vehicleui] hide; [overridebar] hide; show",
 	},
 	['barPet'] = {
 		['enabled'] = true,
@@ -1265,7 +1265,7 @@ P["actionbar"] = {
 		['widthMult'] = 1,
 		["buttonsize"] = 30,
 		["buttonspacing"] = 4,
-		['visibility'] = "[pet,novehicleui,nobonusbar:5] show;hide",
+		['visibility'] = "[pet,novehicleui,nooverridebar,nopossessbar] show;hide",
 	},
 	['barShapeShift'] = {
 		['enabled'] = true,
