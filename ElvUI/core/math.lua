@@ -107,6 +107,20 @@ function E:GetScreenQuadrant(frame)
 	return point
 end
 
+function E:GetXYOffset(position, override)
+	local x, y = override or 1, override or 1
+	
+	if position == 'TOP' or position == 'TOPLEFT' or position == 'TOPRIGHT' then
+		return 0, y
+	elseif position == 'BOTTOM' or position == 'BOTTOMLEFT' or position == 'BOTTOMRIGHT' then
+		return 0, -y
+	elseif position == 'LEFT' then
+		return -x, 0
+	else
+		return x, 0
+	end
+end
+
 --Add time before calling a function
 local waitTable = {}
 local waitFrame
