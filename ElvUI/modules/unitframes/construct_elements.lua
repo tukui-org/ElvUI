@@ -285,6 +285,30 @@ function UF:Construct_MonkResourceBar(frame)
 	return bars
 end
 
+function UF:Construct_MageResourceBar(frame)
+	local bars = CreateFrame("Frame", nil, frame)
+	bars:CreateBackdrop('Default')
+
+	for i = 1, UF['classMaxResourceBar'][E.myclass] do					
+		bars[i] = CreateFrame("StatusBar", nil, bars)
+		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
+		bars[i]:GetStatusBarTexture():SetHorizTile(false)
+		bars[i]:SetStatusBarColor(0, 157/255, 255/255)
+		
+		bars[i].bg = bars[i]:CreateTexture(nil, 'ARTWORK')
+		bars[i].bg:SetTexture(0, 157/255, 255/255)
+		
+		UF['statusbars'][bars[i]] = true
+
+		bars[i]:CreateBackdrop('Default')
+		bars[i].backdrop:SetParent(bars)
+	end
+	
+	bars.PostUpdate = UF.UpdateArcaneCharges
+	
+	return bars
+end
+
 function UF:Construct_WarlockResourceBar(frame)
 	local bars = CreateFrame("Frame", nil, frame)
 	bars:CreateBackdrop('Default')

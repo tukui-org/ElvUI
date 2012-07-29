@@ -629,6 +629,24 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 	UF:UpdatePlayerFrameAnchors(frame, self:IsShown())
 end	
 
+function UF:UpdateArcaneCharges(event, unit, arcaneCharges, maxCharges)
+	local frame = self:GetParent()
+	local db = frame.db
+		
+	local point, _, anchorPoint, x, y = frame.Health:GetPoint()
+	if self:IsShown() and point then
+		if db.classbar.fill == 'spaced' then
+			frame.Health:SetPoint(point, frame, anchorPoint, x, -7)
+		else
+			frame.Health:SetPoint(point, frame, anchorPoint, x, -13)
+		end
+	elseif point then
+		frame.Health:SetPoint(point, frame, anchorPoint, x, -2)
+	end
+	
+	UF:UpdatePlayerFrameAnchors(frame, self:IsShown())
+end	
+
 function UF:UpdateHarmony()
 	local maxBars = self.numPoints
 	local frame = self:GetParent()

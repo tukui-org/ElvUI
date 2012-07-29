@@ -9,6 +9,10 @@ local function SpellName(id)
 		return name
 	end
 end
+
+local function Defaults(priorityOverride)
+	return {['enable'] = true, ['priority'] = priorityOverride or 0}
+end
 G.unitframe.aurafilters = {};
 
 G.unitframe.aurafilters['CCDebuffs'] = {
@@ -26,20 +30,15 @@ G.unitframe.aurafilters['TurtleBuffs'] = {
 G.unitframe.aurafilters['DebuffBlacklist'] = {
 	['type'] = 'Blacklist',
 	['spells'] = {
+		[SpellName(36032)] = Defaults(), -- Arcane Charge
 	},
 }
 
 G.unitframe.aurafilters['AuraBars'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
-		[SpellName(2825)] = {
-			['enable'] = true,
-			['priority'] = 0,			
-		}, -- Bloodlust
-		[SpellName(32182)] = {
-			['enable'] = true,
-			['priority'] = 0,					
-		}, -- Heroism	
+		[SpellName(2825)] = Defaults(), -- Bloodlust
+		[SpellName(32182)] = Defaults(), -- Heroism	
 	},
 }
 

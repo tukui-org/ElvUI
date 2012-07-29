@@ -45,6 +45,7 @@ UF['classMaxResourceBar'] = {
 	['PRIEST'] = 3,
 	['MONK'] = 5,
 	['SHAMAN'] = 4,
+	['MAGE'] = 4,
 }
 
 local find = string.find
