@@ -159,7 +159,7 @@ L["Chat"] = true;
 L["CHAT_DESC"] = "Adjust chat settings for ElvUI."
 L["Copy Text"] = true;
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = true;
-L["DND"] = true;
+L['DND'] = true;
 L["Font Outline"] = true; --Also used in UnitFrames section
 L["Font"] = true;
 L["G"] = true;
@@ -330,6 +330,7 @@ L["Wrist"] = true;
 
 --DebugTools
 L["%s: %s tried to call the protected function '%s'."] = true;
+L["INCOMPATIBLE_ADDON"] = "The addon %s is not compatible with ElvUI's %s module. Please disable the incompatible addon or module."
 L["No locals to dump"] = true;
 L['|cFFE30000Lua error recieved. You can view the error message when you exit combat.'] = true;
 
@@ -364,7 +365,7 @@ L['Emotion Icons'] = true;
 L["Enable/Disable the loot frame."] = true;
 L["Enable/Disable the loot roll frame."] = true;
 L["Exp/Rep Position"] = true;
-L["Font Size"] = true;
+L["Font Size"] = true; --Also used in UnitFrames
 L["Fonts"] = true;
 L["General"] = true;
 L["Hide Both"] = true;
@@ -419,13 +420,11 @@ Example: Interface\AddOns\ElvUI\media\textures\copy
 Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = true;
 
 --Misc
-L['Bars'] = true;
 L["Can't Roll"] = true;
 L["Empty Slot"] = true;
 L["Enable"] = true; --Doesn't fit a section since it's used a lot of places
 L["Experience"] = true;
 L["Fishy Loot"] = true;
-L["INCOMPATIBLE_ADDON"] = "The addon %s is not compatible with ElvUI's %s module. Please disable the incompatible addon or module."
 L["Left Click:"] = true; --layout\layout.lua
 L["Raid Menu"] = true;
 L["Remaining:"] = true;
@@ -570,7 +569,7 @@ L["You have changed your UIScale, however you still have the AutoScale option en
 L["You must purchase a bank slot first!"] = true;
 
 --Tooltip
-L["AFK"] = true;
+L["AFK"] = true; --Also in chat as L['DND']
 L["Anchor Mode"] = true;
 L["Anchor"] = true;
 L["Combat Hide"] = true;
@@ -624,6 +623,7 @@ L["Attach To"] = true;
 L['Aura Bars'] = true;
 L["Bad"] = true;
 L["Bars will transition smoothly."] = true;
+L['Bars'] = true; --Also used in ExpRepBar tooltip
 L['Below'] = true;
 L["Blacklist"] = true;
 L["Blank"] = true;
