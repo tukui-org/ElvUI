@@ -304,6 +304,7 @@ L["Local Time"] = true;
 L["lvl"] = true;
 L["Main Hand"] = true;
 L["middle"] = "Middle"
+L['Mitigation By Level: '] = true;
 L["Offhand"] = true;
 L["Panels"] = true;
 L["Profit:"] = true;
