@@ -285,7 +285,7 @@ P['unitframe'] = {
 				['noConsolidated'] = 'ALL',
 				['useBlacklist'] = 'ALL',
 				['useWhitelist'] = 'ALL',
-				['noDuration'] = 'NONE',
+				['noDuration'] = 'ALL',
 				['useFilter'] = '',
 			},	
 		},	

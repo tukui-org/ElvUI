@@ -1030,8 +1030,8 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 		return false
 	end	
 
-	if db and db[self.type] and isPlayer and CheckFilter(db[self.type].playerOnly, isFriend) then
-		return true
+	if db and db[self.type] and not isPlayer and CheckFilter(db[self.type].playerOnly, isFriend) then
+		return false
 	end
 	
 	if db and db[self.type] and db[self.type].useFilter and E.global['unitframe']['aurafilters'][db[self.type].useFilter] then
@@ -1238,30 +1238,30 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 		
 	local isPlayer, isFriend
 
-	if unitCaster == 'player' or caster == 'vehicle' then isPlayer = true end
+	if unitCaster == 'player' or unitCaster == 'vehicle' then isPlayer = true end
 	if UnitIsFriend('player', unit) then isFriend = true end
 
-	if db and E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and CheckFilter(db.useBlacklist, isFriend) then
+	if E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and CheckFilter(db.useBlacklist, isFriend) then
 		return false
 	end	
 	
-	if db and E.global['unitframe']['aurafilters']['Whitelist'].spells[name] and CheckFilter(db.useWhitelist, isFriend) then
-			return true
-	end
-
-	if db and (duration == 0 or not duration) and CheckFilter(db.noDuration, isFriend) then
-		return false
-	end	
-
-	if db and shouldConsolidate == 1 and CheckFilter(db.noConsolidated, isFriend) then
-		return false
-	end	
-
-	if db and isPlayer and CheckFilter(db.playerOnly, isFriend) then
+	if E.global['unitframe']['aurafilters']['Whitelist'].spells[name] and CheckFilter(db.useWhitelist, isFriend) then
 		return true
 	end
+
+	if (duration == 0 or not duration) and CheckFilter(db.noDuration, isFriend) then
+		return false
+	end	
+
+	if shouldConsolidate == 1 and CheckFilter(db.noConsolidated, isFriend) then
+		return false
+	end	
+
+	if not isPlayer and CheckFilter(db.playerOnly, isFriend) then
+		return false
+	end
 	
-	if db and db.useFilter and E.global['unitframe']['aurafilters'][db.useFilter] then
+	if db.useFilter and E.global['unitframe']['aurafilters'][db.useFilter] then
 		local type = E.global['unitframe']['aurafilters'][db.useFilter].type
 		local spellList = E.global['unitframe']['aurafilters'][db.useFilter].spells
 
