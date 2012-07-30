@@ -477,7 +477,7 @@ E.Options.args.credits = {
 		text = {
 			order = 1,
 			type = "description",
-			name = L['ELVUI_CREDITS']..'\n\n'..L['Coding:']..'\nTukz\nHaste\nNightcracker\nOmega1970\nHydrazine\n\n'..L['Testing:']..'\nTukui Community\nAffinity\nModarch\nBladesdruid\nTirain\nPhima\nVeiled (www.howtopriest.com)\n\n'..L['Donations:']..DONATOR_STRING,
+			name = L['ELVUI_CREDITS']..'\n\n'..L['Coding:']..'\nTukz\nHaste\nNightcracker\nOmega1970\nHydrazine\n\n'..L['Testing:']..'\nTukui Community\nAffinity\nModarch\nBladesdruid\nTirain\nPhima\nVeiled (www.howtopriest.com)\nBlazeflack\nRepooc\nDarth Predator\n\n'..L['Donations:']..DONATOR_STRING,
 		},
 	},
 }
