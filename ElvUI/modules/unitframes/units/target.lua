@@ -19,9 +19,9 @@ function UF:Construct_TargetFrame(frame)
 	frame.Portrait = self:Construct_Portrait(frame)
 	
 	frame.Buffs = self:Construct_Buffs(frame)
-	
+
 	frame.Debuffs = self:Construct_Debuffs(frame)
-	
+
 	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT', 'Target Castbar')
 	frame.Castbar.SafeZone = nil
 	frame.Castbar.LatencyTexture:Hide()
@@ -29,6 +29,9 @@ function UF:Construct_TargetFrame(frame)
 	frame.CPoints = self:Construct_Combobar(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
+	
+	table.insert(frame.__elements, UF.SmartAuraDisplay)
+	frame:RegisterEvent('PLAYER_TARGET_CHANGED', UF.SmartAuraDisplay)
 	
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 	

@@ -1282,3 +1282,46 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	
 	return true
 end
+
+function UF:SmartAuraDisplay()
+	local db = self.db
+	local unit = self.unit
+	if not db or not db.smartAuraDisplay or db.smartAuraDisplay == 'DISABLED' or not UnitExists(unit) then return; end
+	local buffs = self.Buffs
+	local debuffs = self.Debuffs
+	local isFriend
+	
+	if UnitIsFriend('player', unit) then isFriend = true end
+	
+	if isFriend then
+		if db.smartAuraDisplay == 'SHOW_DEBUFFS_ON_FRIENDLIES' then
+			buffs:Hide()
+			debuffs:Show()
+		else
+			buffs:Show()
+			debuffs:Hide()		
+		end
+	else
+		if db.smartAuraDisplay == 'SHOW_DEBUFFS_ON_FRIENDLIES' then
+			buffs:Show()
+			debuffs:Hide()
+		else
+			buffs:Hide()
+			debuffs:Show()		
+		end
+	end
+	
+	if buffs:IsShown() then
+		local x, y = E:GetXYOffset(db.buffs.anchorPoint)
+		
+		buffs:ClearAllPoints()
+		buffs:Point(E.InversePoints[db.buffs.anchorPoint], self, db.buffs.anchorPoint, x, y)
+	end
+	
+	if debuffs:IsShown() then
+		local x, y = E:GetXYOffset(db.debuffs.anchorPoint)
+		
+		debuffs:ClearAllPoints()
+		debuffs:Point(E.InversePoints[db.debuffs.anchorPoint], self, db.debuffs.anchorPoint, x, y)	
+	end
+end

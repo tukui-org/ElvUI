@@ -175,7 +175,7 @@ function UF:Construct_AuraIcon(button)
 				['priority'] = 0,			
 			}
 			
-			self.parent.__owner:UpdateAllElements()
+			UF:Update_AllFrames()
 		end
 	end)	
 end
@@ -757,7 +757,7 @@ function UF:Construct_AuraBars()
 				['enable'] = true,
 				['priority'] = 0,			
 			}
-			self:GetParent():GetParent():GetParent():GetParent():UpdateAllElements()
+			UF:Update_AllFrames()
 		end
 	end)
 end
