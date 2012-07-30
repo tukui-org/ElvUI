@@ -353,7 +353,7 @@ function UF:Update_FocusFrame(frame, db)
 			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', POWERBAR_OFFSET, 0)
 			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', -POWERBAR_OFFSET, 0)
 			auraBars.buffColor = {healthColor.r, healthColor.b, healthColor.g}
-			auraBars.down = db.aurabar.growthDirection == 'DOWN'
+			auraBars.down = db.aurabar.anchorPoint == 'BELOW'
 			auraBars:SetAnchors()
 		else
 			if frame:IsElementEnabled('AuraBars') then

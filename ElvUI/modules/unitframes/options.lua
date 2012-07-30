@@ -1287,15 +1287,6 @@ E.Options.args.unitframe.args.player = {
 						['BUFFS'] = L['Buffs'],
 					},					
 				},
-				growthDirection = {
-					type = 'select',
-					order = 4,
-					name = L['Growth Direction'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L['Down'],
-					},					
-				},
 				noDuration = {
 					type = 'toggle',
 					order = 5,
@@ -1879,15 +1870,6 @@ E.Options.args.unitframe.args.target = {
 						['FRAME'] = L['Frame'],
 						['DEBUFFS'] = L['Debuffs'],
 						['BUFFS'] = L['Buffs'],
-					},					
-				},
-				growthDirection = {
-					type = 'select',
-					order = 4,
-					name = L['Growth Direction'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L['Down'],
 					},					
 				},
 				noDuration = {
@@ -2771,15 +2753,6 @@ E.Options.args.unitframe.args.focus = {
 						['FRAME'] = L['Frame'],
 						['DEBUFFS'] = L['Debuffs'],
 						['BUFFS'] = L['Buffs'],
-					},					
-				},
-				growthDirection = {
-					type = 'select',
-					order = 4,
-					name = L['Growth Direction'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L['Down'],
 					},					
 				},
 				noDuration = {
@@ -3958,15 +3931,6 @@ E.Options.args.unitframe.args.boss = {
 			type = 'range',
 			min = 10, max = 250, step = 1,
 		},	
-		growthDirection = {
-			order = 6,
-			name = L['Growth Direction'],
-			type = 'select',
-			values = {
-				['UP'] = L['Up'],
-				['DOWN'] = L['Down'],
-			},
-		},
 		hideonnpc = {
 			type = 'toggle',
 			order = 7,
@@ -4451,15 +4415,6 @@ E.Options.args.unitframe.args.arena = {
 			type = 'range',
 			min = 10, max = 250, step = 1,
 		},	
-		growthDirection = {
-			order = 6,
-			name = L['Growth Direction'],
-			type = 'select',
-			values = {
-				['UP'] = L['Up'],
-				['DOWN'] = L['Down'],
-			},
-		},
 		hideonnpc = {
 			type = 'toggle',
 			order = 7,

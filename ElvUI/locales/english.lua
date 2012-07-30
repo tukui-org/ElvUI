@@ -691,7 +691,6 @@ L["Ghost"] = true;
 L["Good"] = true;
 L["Group By"] = true;
 L["Group Point"] = true;
-L["Growth Direction"] = true;
 L["Heal Prediction"] = true;
 L["Health Backdrop"] = true;
 L["Health By Value"] = true;
