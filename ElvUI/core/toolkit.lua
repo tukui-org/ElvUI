@@ -82,10 +82,11 @@ local function FixDimensions(frame)
 	if frame:IsProtected() or frame.IgnoreFixDimensions then 
 		return; 
 	end
+
 	frame.SetWidth = SetWidth
 	frame.SetHeight = SetHeight
 	frame.SetSize = SetSize
-	
+
 	frame:SetWidth(frame:GetWidth())
 	frame:SetHeight(frame:GetHeight())
 end
@@ -354,10 +355,6 @@ while object do
 		addapi(object)
 		handled[object:GetObjectType()] = true
 	end
-
-	if object.FixDimensions then
-		object:FixDimensions()
-	end	
 	
 	object = EnumerateFrames(object)
 end

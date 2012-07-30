@@ -19,9 +19,9 @@ function UF:Construct_TargetFrame(frame)
 	frame.Portrait = self:Construct_Portrait(frame)
 	
 	frame.Buffs = self:Construct_Buffs(frame)
-	
+
 	frame.Debuffs = self:Construct_Debuffs(frame)
-	
+
 	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT', 'Target Castbar')
 	frame.Castbar.SafeZone = nil
 	frame.Castbar.LatencyTexture:Hide()
@@ -29,6 +29,9 @@ function UF:Construct_TargetFrame(frame)
 	frame.CPoints = self:Construct_Combobar(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
+	
+	table.insert(frame.__elements, UF.SmartAuraDisplay)
+	frame:RegisterEvent('PLAYER_TARGET_CHANGED', UF.SmartAuraDisplay)
 	
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 
@@ -291,7 +294,7 @@ function UF:Update_TargetFrame(frame, db)
 		else
 			buffs:SetWidth(UNIT_WIDTH)
 		end
-
+		
 		buffs.forceShow = frame.forceShowAuras
 		buffs.num = db.buffs.perrow * rows
 		buffs.size = db.buffs.sizeOverride ~= 0 and db.buffs.sizeOverride or ((((buffs:GetWidth() - (buffs.spacing*(buffs.num/rows - 1))) / buffs.num)) * rows)
@@ -300,14 +303,14 @@ function UF:Update_TargetFrame(frame, db)
 			buffs:SetWidth(db.buffs.perrow * db.buffs.sizeOverride)
 		end
 		
-		local x, y = self:GetAuraOffset(db.buffs.initialAnchor, db.buffs.anchorPoint)
+		local x, y = E:GetXYOffset(db.buffs.anchorPoint)
 		local attachTo = self:GetAuraAnchorFrame(frame, db.buffs.attachTo)
-
-		buffs:Point(db.buffs.initialAnchor, attachTo, db.buffs.anchorPoint, x, y)
+		
+		buffs:Point(E.InversePoints[db.buffs.anchorPoint], attachTo, db.buffs.anchorPoint, x, y)
 		buffs:Height(buffs.size * rows)
-		buffs.initialAnchor = db.buffs.initialAnchor
-		buffs["growth-y"] = db.buffs['growth-y']
-		buffs["growth-x"] = db.buffs['growth-x']
+		buffs["growth-y"] = db.buffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
+		buffs["growth-x"] = db.buffs.anchorPoint == 'LEFT' and 'LEFT' or  db.buffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.buffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
+		buffs.initialAnchor = E.InversePoints[db.buffs.anchorPoint]
 
 		if db.buffs.enable then			
 			buffs:Show()
@@ -326,7 +329,7 @@ function UF:Update_TargetFrame(frame, db)
 		else
 			debuffs:SetWidth(UNIT_WIDTH)
 		end
-
+		
 		debuffs.forceShow = frame.forceShowAuras
 		debuffs.num = db.debuffs.perrow * rows
 		debuffs.size = db.debuffs.sizeOverride ~= 0 and db.debuffs.sizeOverride or ((((debuffs:GetWidth() - (debuffs.spacing*(debuffs.num/rows - 1))) / debuffs.num)) * rows)
@@ -335,14 +338,14 @@ function UF:Update_TargetFrame(frame, db)
 			debuffs:SetWidth(db.debuffs.perrow * db.debuffs.sizeOverride)
 		end
 		
-		local x, y = self:GetAuraOffset(db.debuffs.initialAnchor, db.debuffs.anchorPoint)
-		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.buffs.attachTo == 'DEBUFFS' and db.debuffs.attachTo == 'BUFFS')
-
-		debuffs:Point(db.debuffs.initialAnchor, attachTo, db.debuffs.anchorPoint, x, y)
+		local x, y = E:GetXYOffset(db.debuffs.anchorPoint)
+		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo)
+		
+		debuffs:Point(E.InversePoints[db.debuffs.anchorPoint], attachTo, db.debuffs.anchorPoint, x, y)
 		debuffs:Height(debuffs.size * rows)
-		debuffs.initialAnchor = db.debuffs.initialAnchor
-		debuffs["growth-y"] = db.debuffs['growth-y']
-		debuffs["growth-x"] = db.debuffs['growth-x']
+		debuffs["growth-y"] = db.debuffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
+		debuffs["growth-x"] = db.debuffs.anchorPoint == 'LEFT' and 'LEFT' or  db.debuffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.debuffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
+		debuffs.initialAnchor = E.InversePoints[db.debuffs.anchorPoint]
 
 		if db.debuffs.enable then			
 			debuffs:Show()
@@ -516,7 +519,7 @@ function UF:Update_TargetFrame(frame, db)
 			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', POWERBAR_OFFSET, 0)
 			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT')
 			auraBars.buffColor = {healthColor.r, healthColor.b, healthColor.g}
-			auraBars.down = db.aurabar.growthDirection == 'DOWN'
+			auraBars.down = db.aurabar.anchorPoint == 'BELOW'
 			auraBars:SetAnchors()
 		else
 			if frame:IsElementEnabled('AuraBars') then

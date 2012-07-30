@@ -13,6 +13,9 @@ local function LoadSkin()
 	S:HandleRotateButton(TabardCharacterModelRotateRightButton)
 	TabardFrameCostFrame:StripTextures()
 	TabardFrameCustomizationFrame:StripTextures()
+	TabardFrameInset:Kill()
+	TabardFrameMoneyInset:Kill()
+	TabardFrameMoneyBg:StripTextures()
 	
 	for i=1, 5 do
 		local custom = "TabardFrameCustomization"..i

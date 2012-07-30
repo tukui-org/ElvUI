@@ -5,7 +5,7 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
-local CAN_HAVE_CLASSBAR = (E.myclass == "PALADIN" or E.myclass == "SHAMAN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK" or E.myclass == "PRIEST" or E.myclass == "MONK")
+local CAN_HAVE_CLASSBAR = (E.myclass == "PALADIN" or E.myclass == "SHAMAN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK" or E.myclass == "PRIEST" or E.myclass == "MONK" or E.myclass == 'MAGE')
 
 function UF:Construct_PlayerFrame(frame)
 	frame.Threat = self:Construct_ThreatGlow(frame, true)
@@ -41,7 +41,10 @@ function UF:Construct_PlayerFrame(frame)
 		frame.Harmony = self:Construct_MonkResourceBar(frame)
 	elseif E.myclass == "PRIEST" then
 		frame.ShadowOrbs = self:Construct_PriestResourceBar(frame)
+	elseif E.myclass == 'MAGE' then
+		frame.ArcaneChargeBar = self:Construct_MageResourceBar(frame)
 	end
+	
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.Resting = self:Construct_RestingIndicator(frame)
 	frame.Combat = self:Construct_CombatIndicator(frame)
@@ -497,14 +500,14 @@ function UF:Update_PlayerFrame(frame, db)
 			buffs:SetWidth(db.buffs.perrow * db.buffs.sizeOverride)
 		end
 		
-		local x, y = self:GetAuraOffset(db.buffs.initialAnchor, db.buffs.anchorPoint)
+		local x, y = E:GetXYOffset(db.buffs.anchorPoint)
 		local attachTo = self:GetAuraAnchorFrame(frame, db.buffs.attachTo)
-
-		buffs:Point(db.buffs.initialAnchor, attachTo, db.buffs.anchorPoint, x, y)
+		
+		buffs:Point(E.InversePoints[db.buffs.anchorPoint], attachTo, db.buffs.anchorPoint, x, y)
 		buffs:Height(buffs.size * rows)
-		buffs.initialAnchor = db.buffs.initialAnchor
-		buffs["growth-y"] = db.buffs['growth-y']
-		buffs["growth-x"] = db.buffs['growth-x']
+		buffs["growth-y"] = db.buffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
+		buffs["growth-x"] = db.buffs.anchorPoint == 'LEFT' and 'LEFT' or  db.buffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.buffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
+		buffs.initialAnchor = E.InversePoints[db.buffs.anchorPoint]
 
 		if db.buffs.enable then			
 			buffs:Show()
@@ -523,7 +526,7 @@ function UF:Update_PlayerFrame(frame, db)
 		else
 			debuffs:SetWidth(UNIT_WIDTH)
 		end
-
+		
 		debuffs.forceShow = frame.forceShowAuras
 		debuffs.num = db.debuffs.perrow * rows
 		debuffs.size = db.debuffs.sizeOverride ~= 0 and db.debuffs.sizeOverride or ((((debuffs:GetWidth() - (debuffs.spacing*(debuffs.num/rows - 1))) / debuffs.num)) * rows)
@@ -532,14 +535,14 @@ function UF:Update_PlayerFrame(frame, db)
 			debuffs:SetWidth(db.debuffs.perrow * db.debuffs.sizeOverride)
 		end
 		
-		local x, y = self:GetAuraOffset(db.debuffs.initialAnchor, db.debuffs.anchorPoint)
-		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.buffs.attachTo == 'DEBUFFS' and db.debuffs.attachTo == 'BUFFS')
-
-		debuffs:Point(db.debuffs.initialAnchor, attachTo, db.debuffs.anchorPoint, x, y)
+		local x, y = E:GetXYOffset(db.debuffs.anchorPoint)
+		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo)
+		
+		debuffs:Point(E.InversePoints[db.debuffs.anchorPoint], attachTo, db.debuffs.anchorPoint, x, y)
 		debuffs:Height(debuffs.size * rows)
-		debuffs.initialAnchor = db.debuffs.initialAnchor
-		debuffs["growth-y"] = db.debuffs['growth-y']
-		debuffs["growth-x"] = db.debuffs['growth-x']
+		debuffs["growth-y"] = db.debuffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
+		debuffs["growth-x"] = db.debuffs.anchorPoint == 'LEFT' and 'LEFT' or  db.debuffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.debuffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
+		debuffs.initialAnchor = E.InversePoints[db.debuffs.anchorPoint]
 
 		if db.debuffs.enable then			
 			debuffs:Show()
@@ -695,7 +698,56 @@ function UF:Update_PlayerFrame(frame, db)
 			elseif not USE_CLASSBAR and frame:IsElementEnabled('ShadowOrbs') then
 				frame:DisableElement('ShadowOrbs')	
 				bars:Hide()
-			end				
+			end
+		elseif E.myclass == 'MAGE' then
+			local bars = frame.ArcaneChargeBar
+			bars:ClearAllPoints()
+			if USE_MINI_CLASSBAR then
+				CLASSBAR_WIDTH = CLASSBAR_WIDTH * (UF['classMaxResourceBar'][E.myclass] - 1) / UF['classMaxResourceBar'][E.myclass]
+				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 12), 0)
+				bars:SetFrameStrata("MEDIUM")
+			else
+				bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
+				bars:SetFrameStrata("LOW")
+			end
+				
+			bars:Width(CLASSBAR_WIDTH)
+			bars:Height(CLASSBAR_HEIGHT - (BORDER*2))
+
+			for i = 1, UF['classMaxResourceBar'][E.myclass] do
+				bars[i]:SetHeight(bars:GetHeight())	
+				bars[i]:SetWidth(E:Scale(bars:GetWidth() - 2)/UF['classMaxResourceBar'][E.myclass])	
+				bars[i]:GetStatusBarTexture():SetHorizTile(false)
+				bars[i]:ClearAllPoints()
+				if i == 1 then
+					bars[i]:SetPoint("LEFT", bars)
+				else
+					if USE_MINI_CLASSBAR then
+						bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING+(BORDER*2)+8, 0)
+					else
+						bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING, 0)
+					end
+				end
+				
+				if not USE_MINI_CLASSBAR then
+					bars[i].backdrop:Hide()
+				else
+					bars[i].backdrop:Show()
+				end
+			end
+			
+			if not USE_MINI_CLASSBAR then
+				bars.backdrop:Show()
+			else
+				bars.backdrop:Hide()			
+			end		
+			
+			if USE_CLASSBAR and not frame:IsElementEnabled('ArcaneCharge') then
+				frame:EnableElement('ArcaneCharge')
+			elseif not USE_CLASSBAR and frame:IsElementEnabled('ArcaneCharge') then
+				frame:DisableElement('ArcaneCharge')	
+				bars:Hide()
+			end		
 		elseif E.myclass == "WARLOCK" then
 			local bars = frame.ShardBar
 			bars:ClearAllPoints()
@@ -973,7 +1025,7 @@ function UF:Update_PlayerFrame(frame, db)
 			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', -POWERBAR_OFFSET, 0)
 
 			auraBars.buffColor = {healthColor.r, healthColor.b, healthColor.g}
-			auraBars.down = db.aurabar.growthDirection == 'DOWN'
+			auraBars.down = db.aurabar.anchorPoint == 'BELOW'
 			auraBars:SetAnchors()
 		else
 			if frame:IsElementEnabled('AuraBars') then

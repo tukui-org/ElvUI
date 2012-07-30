@@ -180,7 +180,7 @@ E.Options.args.nameplate = {
 							desc = L['Select a filter to use. These are imported from the unitframe aura filter.'],
 							values = function()
 								filters = {}
-								filters[''] = ''
+								filters[''] = NONE
 								for filter in pairs(E.global['unitframe']['aurafilters']) do
 									filters[filter] = filter
 								end

@@ -7,6 +7,14 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
+local function CheckFilter(type, isFriend)
+	if type == 'ALL' or (type == 'FRIENDLY' and isFriend) or (type == 'ENEMY' and not isFriend) then
+		return true
+	end
+	
+	return false
+end
+
 function UF:GetInfoText(frame, unit, r, g, b, min, max, reverse, type)
 	local value
 	local db = frame.db
@@ -629,6 +637,24 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 	UF:UpdatePlayerFrameAnchors(frame, self:IsShown())
 end	
 
+function UF:UpdateArcaneCharges(event, unit, arcaneCharges, maxCharges)
+	local frame = self:GetParent()
+	local db = frame.db
+		
+	local point, _, anchorPoint, x, y = frame.Health:GetPoint()
+	if self:IsShown() and point then
+		if db.classbar.fill == 'spaced' then
+			frame.Health:SetPoint(point, frame, anchorPoint, x, -7)
+		else
+			frame.Health:SetPoint(point, frame, anchorPoint, x, -13)
+		end
+	elseif point then
+		frame.Health:SetPoint(point, frame, anchorPoint, x, -2)
+	end
+	
+	UF:UpdatePlayerFrameAnchors(frame, self:IsShown())
+end	
+
 function UF:UpdateHarmony()
 	local maxBars = self.numPoints
 	local frame = self:GetParent()
@@ -976,31 +1002,39 @@ function UF:UpdateComboDisplay(event, unit)
 	end
 end
 
-function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster)	
+function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff)	
 	local isPlayer, isFriend
 
 	local db = self:GetParent().db
 
-	if(caster == 'player' or caster == 'vehicle') then
-		isPlayer = true
-	end
-	
-	if UnitIsFriend('player', unit) then
-		isFriend = true
-	end
+	if caster == 'player' or caster == 'vehicle' then isPlayer = true end
+	if UnitIsFriend('player', unit) then isFriend = true end
 	
 	icon.isPlayer = isPlayer
 	icon.owner = caster
+	icon.name = name
 
-	if db and db[self.type] and db[self.type].durationLimit ~= 0 and db[self.type].durationLimit ~= nil and duration ~= nil then
-		if duration > db[self.type].durationLimit or duration == 0 then
-			return false
-		end
+	if db and db[self.type] and E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and CheckFilter(db[self.type].useBlacklist, isFriend) then
+		return false
+	end	
+	
+	if db and db[self.type] and E.global['unitframe']['aurafilters']['Whitelist'].spells[name] and CheckFilter(db[self.type].useWhitelist, isFriend) then
+			return true
 	end
 	
-	if db and db[self.type] and db[self.type].showPlayerOnly and isPlayer then
-		return true
-	elseif db and db[self.type] and db[self.type].useFilter and E.global['unitframe']['aurafilters'][db[self.type].useFilter] then
+	if db and db[self.type] and (duration == 0 or not duration) and CheckFilter(db[self.type].noDuration, isFriend) then
+		return false
+	end	
+
+	if db and db[self.type] and shouldConsolidate == 1 and CheckFilter(db[self.type].noConsolidated, isFriend) then
+		return false
+	end	
+
+	if db and db[self.type] and not isPlayer and CheckFilter(db[self.type].playerOnly, isFriend) then
+		return false
+	end
+	
+	if db and db[self.type] and db[self.type].useFilter and E.global['unitframe']['aurafilters'][db[self.type].useFilter] then
 		local type = E.global['unitframe']['aurafilters'][db[self.type].useFilter].type
 		local spellList = E.global['unitframe']['aurafilters'][db[self.type].useFilter].spells
 		
@@ -1021,12 +1055,6 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 			else
 				return true
 			end				
-		end
-	elseif db and db[self.type] then
-		if db and not db[self.type].showPlayerOnly then
-			return true
-		else
-			return false
 		end
 	end	
 	
@@ -1206,40 +1234,94 @@ end
 
 function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate)
 	local db = self.db.aurabar
-	
 	if not db then return; end
+		
+	local isPlayer, isFriend
+
+	if unitCaster == 'player' or unitCaster == 'vehicle' then isPlayer = true end
+	if UnitIsFriend('player', unit) then isFriend = true end
+
+	if E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and CheckFilter(db.useBlacklist, isFriend) then
+		return false
+	end	
 	
-	--Remove this when beta is done, database correction for my personal error
-	if E.global['unitframe']['aurafilters']['DebuffBlacklist']['spells'][name] and type(E.global['unitframe']['aurafilters']['DebuffBlacklist']['spells'][name]) ~= 'table' then
-		E.global['unitframe']['aurafilters']['DebuffBlacklist']['spells'][name] = {
-			['enable'] = true,
-			['priority'] = 0,			
-		}	
+	if E.global['unitframe']['aurafilters']['Whitelist'].spells[name] and CheckFilter(db.useWhitelist, isFriend) then
+		return true
 	end
-	
-	if E.global['unitframe']['aurafilters']['DebuffBlacklist']['spells'][name] and E.global['unitframe']['aurafilters']['DebuffBlacklist']['spells'][name].enable then
+
+	if (duration == 0 or not duration) and CheckFilter(db.noDuration, isFriend) then
+		return false
+	end	
+
+	if shouldConsolidate == 1 and CheckFilter(db.noConsolidated, isFriend) then
+		return false
+	end	
+
+	if not isPlayer and CheckFilter(db.playerOnly, isFriend) then
 		return false
 	end
 	
-	local isFriend
-	if UnitIsFriend('player', unit) then
-		isFriend = true
-	end
-		
-	local isWhitelist = E.global['unitframe']['aurafilters']['AuraBars']['spells'][name] and E.global['unitframe']['aurafilters']['AuraBars']['spells'][name].enable
-	local isPlayer = unitCaster == 'player' or unitCaster == 'pet' or unitCaster == 'vehicle'
-	local durationCheck = CheckFilterArguement(not db.noDuration, duration ~= 0 or isWhitelist)
-	local consolidatedCheck = CheckFilterArguement(db.noConsolidated, not shouldConsolidate or isWhitelist);
+	if db.useFilter and E.global['unitframe']['aurafilters'][db.useFilter] then
+		local type = E.global['unitframe']['aurafilters'][db.useFilter].type
+		local spellList = E.global['unitframe']['aurafilters'][db.useFilter].spells
 
-	if unit == 'player' then
-		if (isPlayer or isWhitelist) and consolidatedCheck and durationCheck then
-			return true
+		if type == 'Whitelist' then
+			if spellList[name] and spellList[name].enable then
+				return true
+			else
+				return false
+			end		
+		elseif type == 'Blacklist' then
+			if spellList[name] and spellList[name].enable then
+				return false
+			else
+				return true
+			end				
+		end
+	end	
+	
+	return true
+end
+
+function UF:SmartAuraDisplay()
+	local db = self.db
+	local unit = self.unit
+	if not db or not db.smartAuraDisplay or db.smartAuraDisplay == 'DISABLED' or not UnitExists(unit) then return; end
+	local buffs = self.Buffs
+	local debuffs = self.Debuffs
+	local isFriend
+	
+	if UnitIsFriend('player', unit) then isFriend = true end
+	
+	if isFriend then
+		if db.smartAuraDisplay == 'SHOW_DEBUFFS_ON_FRIENDLIES' then
+			buffs:Hide()
+			debuffs:Show()
+		else
+			buffs:Show()
+			debuffs:Hide()		
 		end
 	else
-		if (isFriend or isWhitelist) and consolidatedCheck and isPlayer and durationCheck then
-			return true
-		elseif not isFriend and isPlayer and durationCheck then
-			return true
+		if db.smartAuraDisplay == 'SHOW_DEBUFFS_ON_FRIENDLIES' then
+			buffs:Show()
+			debuffs:Hide()
+		else
+			buffs:Hide()
+			debuffs:Show()		
 		end
+	end
+	
+	if buffs:IsShown() then
+		local x, y = E:GetXYOffset(db.buffs.anchorPoint)
+		
+		buffs:ClearAllPoints()
+		buffs:Point(E.InversePoints[db.buffs.anchorPoint], self, db.buffs.anchorPoint, x, y)
+	end
+	
+	if debuffs:IsShown() then
+		local x, y = E:GetXYOffset(db.debuffs.anchorPoint)
+		
+		debuffs:ClearAllPoints()
+		debuffs:Point(E.InversePoints[db.debuffs.anchorPoint], self, db.debuffs.anchorPoint, x, y)	
 	end
 end

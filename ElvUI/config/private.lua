@@ -33,44 +33,9 @@ V['chat'] = {
 }
 
 V['skins'] = {
-	['bigwigs'] = {
-		['enable'] = true,
-		['spacing'] = 7,
-	},
 	['ace3'] = {
 		['enable'] = true,
-	},
-	['recount'] = {
-		['enable'] = true,
 	},	
-	['dbm'] = {
-		['enable'] = true,
-	},		
-	['dxe'] = {
-		['enable'] = true,
-	},	
-	['omen'] = {
-		['enable'] = true,
-	},
-	['skada'] = {
-		['enable'] = true,
-		['barHeight'] = 16,
-	},		
-	['tinydps'] = {
-		['enable'] = true,
-	},			
-	['clcret'] = {
-		['enable'] = true,
-	},			
-	['clcprot'] = {
-		['enable'] = true,
-	},	
-	['powerauras'] = {
-		['enable'] = true,
-	},		
-	['weakauras'] = {
-		['enable'] = true,
-	},			
 	['blizzard'] = {
 		['enable'] = true,
 		["bags"] = true,

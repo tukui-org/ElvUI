@@ -45,6 +45,7 @@ UF['classMaxResourceBar'] = {
 	['PRIEST'] = 3,
 	['MONK'] = 5,
 	['SHAMAN'] = 4,
+	['MAGE'] = 4,
 }
 
 local find = string.find
@@ -124,6 +125,7 @@ function UF:GetAuraAnchorFrame(frame, attachTo, isConflict)
 		return frame
 	end
 end
+
 
 function UF:ClearChildPoints(...)
 	for i=1, select("#", ...) do

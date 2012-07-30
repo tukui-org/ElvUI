@@ -251,5 +251,7 @@ function AB:CreateBarShapeShift()
 	E:CreateMover(bar, 'ShiftAB', 'Stance Bar', nil, -3, nil, 'ALL,ACTIONBARS');
 	self:AdjustMaxStanceButtons();
 	self:PositionAndSizeBarShapeShift();
-	RegisterStateDriver(bar, "show", '[petbattle] hide;'..states[E.myclass] or "hide");
+	
+	local classState = states[E.myclass] or "hide"
+	RegisterStateDriver(bar, "show", '[petbattle] hide;'..classState);
 end

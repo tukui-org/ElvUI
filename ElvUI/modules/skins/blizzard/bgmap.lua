@@ -18,7 +18,8 @@ local function LoadSkin()
 	BattlefieldMinimapCloseButton:SetPoint("TOPRIGHT", -4, 0)	
 	S:HandleCloseButton(BattlefieldMinimapCloseButton)
 	BattlefieldMinimapCloseButton.text:ClearAllPoints()
-	BattlefieldMinimapCloseButton.text:SetPoint('CENTER', BattlefieldMinimapCloseButton, 'CENTER', 1, 1)
+	BattlefieldMinimapCloseButton.text:SetPoint('CENTER', BattlefieldMinimapCloseButton, 'CENTER', 0, 1)
+	BattlefieldMinimapCloseButton:SetFrameStrata('MEDIUM')
 	
 	BattlefieldMinimap:EnableMouse(true)
 	BattlefieldMinimap:SetMovable(true)
@@ -75,7 +76,6 @@ local function LoadSkin()
 		end
 	end)	
 	
-	BattlefieldMinimap_UpdateOpacity()
 end
 
 S:RegisterSkin("Blizzard_BattlefieldMinimap", LoadSkin)

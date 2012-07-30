@@ -240,14 +240,27 @@ function S:HandleRotateButton(btn)
 end
 
 function S:HandleEditBox(frame)
-	if _G[frame:GetName().."Left"] then _G[frame:GetName().."Left"]:Kill() end
-	if _G[frame:GetName().."Middle"] then _G[frame:GetName().."Middle"]:Kill() end
-	if _G[frame:GetName().."Right"] then _G[frame:GetName().."Right"]:Kill() end
-	if _G[frame:GetName().."Mid"] then _G[frame:GetName().."Mid"]:Kill() end
 	frame:CreateBackdrop("Default")
+
+	if frame.TopLeftTex then frame.TopLeftTex:Kill() end
+	if frame.TopRightTex then frame.TopRightTex:Kill() end
+	if frame.TopTex then frame.TopTex:Kill() end
+	if frame.BottomLeftTex then frame.BottomLeftTex:Kill() end
+	if frame.BottomRightTex then frame.BottomRightTex:Kill() end
+	if frame.BottomTex then frame.BottomTex:Kill() end
+	if frame.LeftTex then frame.LeftTex:Kill() end
+	if frame.RightTex then frame.RightTex:Kill() end
+	if frame.MiddleTex then frame.MiddleTex:Kill() end
 	
-	if frame:GetName() and frame:GetName():find("Silver") or frame:GetName():find("Copper") then
-		frame.backdrop:Point("BOTTOMRIGHT", -12, -2)
+	if frame:GetName() then
+		if _G[frame:GetName().."Left"] then _G[frame:GetName().."Left"]:Kill() end
+		if _G[frame:GetName().."Middle"] then _G[frame:GetName().."Middle"]:Kill() end
+		if _G[frame:GetName().."Right"] then _G[frame:GetName().."Right"]:Kill() end
+		if _G[frame:GetName().."Mid"] then _G[frame:GetName().."Mid"]:Kill() end
+		
+		if frame:GetName():find("Silver") or frame:GetName():find("Copper") then
+			frame.backdrop:Point("BOTTOMRIGHT", -12, -2)
+		end		
 	end
 end
 
@@ -394,11 +407,6 @@ function S:Initialize()
 		loadFunc();
 	end
 	wipe(self.nonAddonsToLoad)
-	
-	for addon, _ in pairs(self.EmbeddableAddons) do
-		self:SaveEmbeddedAddonPoints(addon)
-	end
-	self:SetEmbedRight(E.db.skins.embedRight)
 end
 
 S:RegisterEvent('ADDON_LOADED')
