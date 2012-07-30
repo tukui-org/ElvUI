@@ -932,33 +932,6 @@ E.Options.args.unitframe.args.player = {
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
 				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
-				},
-				['growth-y'] = {
-					type = 'select',
-					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -1042,33 +1015,6 @@ E.Options.args.unitframe.args.player = {
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
 				},
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
-				},
-				['growth-y'] = {
-					type = 'select',
-					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -1560,33 +1506,6 @@ E.Options.args.unitframe.args.target = {
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
 				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
-				},
-				['growth-y'] = {
-					type = 'select',
-					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -1670,33 +1589,6 @@ E.Options.args.unitframe.args.target = {
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
 				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
-				},
-				['growth-y'] = {
-					type = 'select',
-					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -2124,33 +2016,6 @@ E.Options.args.unitframe.args.targettarget = {
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
 				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
-				},
-				['growth-y'] = {
-					type = 'select',
-					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -2234,33 +2099,6 @@ E.Options.args.unitframe.args.targettarget = {
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
 				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
-				},
-				['growth-y'] = {
-					type = 'select',
-					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -2512,33 +2350,6 @@ E.Options.args.unitframe.args.focus = {
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
 				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
-				},
-				['growth-y'] = {
-					type = 'select',
-					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -2622,33 +2433,6 @@ E.Options.args.unitframe.args.focus = {
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
 				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
-				},
-				['growth-y'] = {
-					type = 'select',
-					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -3050,33 +2834,6 @@ E.Options.args.unitframe.args.focustarget = {
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
 				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
-				},
-				['growth-y'] = {
-					type = 'select',
-					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -3160,33 +2917,6 @@ E.Options.args.unitframe.args.focustarget = {
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
 				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
-				},
-				['growth-y'] = {
-					type = 'select',
-					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -3438,33 +3168,6 @@ E.Options.args.unitframe.args.pet = {
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
 				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
-				},
-				['growth-y'] = {
-					type = 'select',
-					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -3548,33 +3251,6 @@ E.Options.args.unitframe.args.pet = {
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
 				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
-				},
-				['growth-y'] = {
-					type = 'select',
-					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -3820,33 +3496,6 @@ E.Options.args.unitframe.args.pettarget = {
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
 				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
-				},
-				['growth-y'] = {
-					type = 'select',
-					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -3930,33 +3579,6 @@ E.Options.args.unitframe.args.pettarget = {
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
 				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
-				},
-				['growth-y'] = {
-					type = 'select',
-					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -4247,33 +3869,6 @@ E.Options.args.unitframe.args.boss = {
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
 				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
-				},
-				['growth-y'] = {
-					type = 'select',
-					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -4357,33 +3952,6 @@ E.Options.args.unitframe.args.boss = {
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
 				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
-				},
-				['growth-y'] = {
-					type = 'select',
-					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -4724,33 +4292,6 @@ E.Options.args.unitframe.args.arena = {
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
 				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
-				},
-				['growth-y'] = {
-					type = 'select',
-					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -4834,33 +4375,6 @@ E.Options.args.unitframe.args.arena = {
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
 				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
-				},
-				['growth-y'] = {
-					type = 'select',
-					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -5309,33 +4823,6 @@ E.Options.args.unitframe.args.party = {
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
 				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
-				},
-				['growth-y'] = {
-					type = 'select',
-					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -5419,33 +4906,6 @@ E.Options.args.unitframe.args.party = {
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
 				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
-				},
-				['growth-y'] = {
-					type = 'select',
-					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -5598,12 +5058,6 @@ E.Options.args.unitframe.args.party = {
 					type = 'range',
 					min = 10, max = 250, step = 1,
 				},	
-				initialAnchor = {
-					type = 'select',
-					order = 4,
-					name = L['Initial Anchor'],
-					values = petAnchors,
-				},	
 				anchorPoint = {
 					type = 'select',
 					order = 5,
@@ -5616,14 +5070,14 @@ E.Options.args.unitframe.args.party = {
 					type = 'range',
 					name = L['xOffset'],
 					desc = L['An X offset (in pixels) to be used when anchoring new frames.'],
-					min = -15, max = 15, step = 1,		
+					min = -500, max = 500, step = 1,		
 				},
 				yOffset = {
 					order = 7,
 					type = 'range',
 					name = L['yOffset'],
 					desc = L['An Y offset (in pixels) to be used when anchoring new frames.'],
-					min = -15, max = 15, step = 1,		
+					min = -500, max = 500, step = 1,		
 				},					
 			},
 		},
@@ -5651,12 +5105,6 @@ E.Options.args.unitframe.args.party = {
 					type = 'range',
 					min = 10, max = 250, step = 1,
 				},	
-				initialAnchor = {
-					type = 'select',
-					order = 4,
-					name = L['Initial Anchor'],
-					values = petAnchors,
-				},	
 				anchorPoint = {
 					type = 'select',
 					order = 5,
@@ -5669,14 +5117,14 @@ E.Options.args.unitframe.args.party = {
 					type = 'range',
 					name = L['xOffset'],
 					desc = L['An X offset (in pixels) to be used when anchoring new frames.'],
-					min = -15, max = 15, step = 1,		
+					min = -500, max = 500, step = 1,		
 				},
 				yOffset = {
 					order = 7,
 					type = 'range',
 					name = L['yOffset'],
 					desc = L['An Y offset (in pixels) to be used when anchoring new frames.'],
-					min = -15, max = 15, step = 1,		
+					min = -500, max = 500, step = 1,	
 				},					
 			},
 		},		
@@ -5987,33 +5435,6 @@ for i=10, 40, 15 do
 						desc = L['If not set to 0 then override the size of the aura icon to this.'],
 						min = 0, max = 60, step = 1,
 					},				
-					['growth-x'] = {
-						type = 'select',
-						order = 4,
-						name = L['X-Growth'],
-						desc = L['Growth direction of the buffs'],
-						values = {
-							['LEFT'] = L['Left'],
-							['RIGHT'] = L["Right"],
-						},
-					},
-					['growth-y'] = {
-						type = 'select',
-						order = 5,
-						name = L['Y-Growth'],
-						desc = L['Growth direction of the buffs'],
-						values = {
-							['UP'] = L['Up'],
-							['DOWN'] = L["Down"],
-						},
-					},	
-					initialAnchor = {
-						type = 'select',
-						order = 6,
-						name = L['Initial Anchor'],
-						desc = L['The initial anchor point of the buffs on the frame'],
-						values = auraAnchors,
-					},	
 					attachTo = {
 						type = 'select',
 						order = 7,
@@ -6097,33 +5518,7 @@ for i=10, 40, 15 do
 						desc = L['If not set to 0 then override the size of the aura icon to this.'],
 						min = 0, max = 60, step = 1,
 					},				
-					['growth-x'] = {
-						type = 'select',
-						order = 4,
-						name = L['X-Growth'],
-						desc = L['Growth direction of the buffs'],
-						values = {
-							['LEFT'] = L['Left'],
-							['RIGHT'] = L["Right"],
-						},
-					},
-					['growth-y'] = {
-						type = 'select',
-						order = 5,
-						name = L['Y-Growth'],
-						desc = L['Growth direction of the buffs'],
-						values = {
-							['UP'] = L['Up'],
-							['DOWN'] = L["Down"],
-						},
-					},	
-					initialAnchor = {
-						type = 'select',
-						order = 6,
-						name = L['Initial Anchor'],
-						desc = L['The initial anchor point of the buffs on the frame'],
-						values = auraAnchors,
-					},	
+
 					attachTo = {
 						type = 'select',
 						order = 7,
