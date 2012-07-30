@@ -7,6 +7,14 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
+local function CheckFilter(type, isFriend)
+	if type == 'ALL' or (type == 'FRIENDLY' and isFriend) or (type == 'ENEMY' and not isFriend) then
+		return true
+	end
+	
+	return false
+end
+
 function UF:GetInfoText(frame, unit, r, g, b, min, max, reverse, type)
 	local value
 	local db = frame.db
@@ -994,14 +1002,6 @@ function UF:UpdateComboDisplay(event, unit)
 	end
 end
 
-local function CheckFilter(type, isFriend)
-	if type == 'ALL' or (type == 'FRIENDLY' and isFriend) or (type == 'ENEMY' and not isFriend) then
-		return true
-	end
-	
-	return false
-end
-
 function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff)	
 	local isPlayer, isFriend
 
@@ -1234,32 +1234,51 @@ end
 
 function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate)
 	local db = self.db.aurabar
-	
 	if not db then return; end
 		
-	if E.global['unitframe']['aurafilters']['Blacklist']['spells'][name] and E.global['unitframe']['aurafilters']['Blacklist']['spells'][name].enable then
+	local isPlayer, isFriend
+
+	if unitCaster == 'player' or caster == 'vehicle' then isPlayer = true end
+	if UnitIsFriend('player', unit) then isFriend = true end
+
+	if db and E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and CheckFilter(db.useBlacklist, isFriend) then
 		return false
+	end	
+	
+	if db and E.global['unitframe']['aurafilters']['Whitelist'].spells[name] and CheckFilter(db.useWhitelist, isFriend) then
+			return true
+	end
+
+	if db and (duration == 0 or not duration) and CheckFilter(db.noDuration, isFriend) then
+		return false
+	end	
+
+	if db and shouldConsolidate == 1 and CheckFilter(db.noConsolidated, isFriend) then
+		return false
+	end	
+
+	if db and isPlayer and CheckFilter(db.playerOnly, isFriend) then
+		return true
 	end
 	
-	local isFriend
-	if UnitIsFriend('player', unit) then
-		isFriend = true
-	end
-		
-	local isWhitelist = E.global['unitframe']['aurafilters']['Whitelist']['spells'][name] and E.global['unitframe']['aurafilters']['Whitelist']['spells'][name].enable
-	local isPlayer = unitCaster == 'player' or unitCaster == 'pet' or unitCaster == 'vehicle'
-	local durationCheck = CheckFilterArguement(not db.noDuration, duration ~= 0 or isWhitelist)
-	local consolidatedCheck = CheckFilterArguement(db.noConsolidated, not shouldConsolidate or isWhitelist);
+	if db and db.useFilter and E.global['unitframe']['aurafilters'][db.useFilter] then
+		local type = E.global['unitframe']['aurafilters'][db.useFilter].type
+		local spellList = E.global['unitframe']['aurafilters'][db.useFilter].spells
 
-	if unit == 'player' then
-		if (isPlayer or isWhitelist) and consolidatedCheck and durationCheck then
-			return true
+		if type == 'Whitelist' then
+			if spellList[name] and spellList[name].enable then
+				return true
+			else
+				return false
+			end		
+		elseif type == 'Blacklist' then
+			if spellList[name] and spellList[name].enable then
+				return false
+			else
+				return true
+			end				
 		end
-	else
-		if (isFriend or isWhitelist) and consolidatedCheck and isPlayer and durationCheck then
-			return true
-		elseif not isFriend and isPlayer and durationCheck then
-			return true
-		end
-	end
+	end	
+	
+	return true
 end

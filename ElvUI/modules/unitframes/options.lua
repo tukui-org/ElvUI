@@ -241,7 +241,7 @@ local function UpdateFilterGroup()
 					set = function(info, value) selectedSpell = value; UpdateFilterGroup() end,							
 					values = function()
 						local filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters'][selectedFilter]['spells']) do
 							filters[filter] = filter
 						end
@@ -605,7 +605,7 @@ E.Options.args.unitframe = {
 					set = function(info, value) if value == '' then selectedFilter = nil; selectedSpell = nil; else selectedFilter = value end; UpdateFilterGroup() end,							
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
@@ -1004,7 +1004,7 @@ E.Options.args.unitframe.args.player = {
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
@@ -1102,7 +1102,7 @@ E.Options.args.unitframe.args.player = {
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
@@ -1287,17 +1287,54 @@ E.Options.args.unitframe.args.player = {
 						['BUFFS'] = L['Buffs'],
 					},					
 				},
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
 				noDuration = {
-					type = 'toggle',
-					order = 5,
+					order = 13,
+					type = 'select',
 					name = L['No Duration'],
 					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
 				},
 				noConsolidated = {
-					type = 'toggle',
-					order = 6,
+					order = 14,
+					type = 'select',
 					name = L['No Consolidated'],
 					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
+				useFilter = {
+					order = 15,
+					name = L['Use Filter'],
+					desc = L['Select a filter to use.'],
+					type = 'select',
+					values = function()
+						filters = {}
+						filters[''] = NONE
+						for filter in pairs(E.global.unitframe['aurafilters']) do
+							filters[filter] = filter
+						end
+						return filters
+					end,
 				},
 			},
 		},			
@@ -1606,7 +1643,7 @@ E.Options.args.unitframe.args.target = {
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
@@ -1704,7 +1741,7 @@ E.Options.args.unitframe.args.target = {
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
@@ -1872,17 +1909,54 @@ E.Options.args.unitframe.args.target = {
 						['BUFFS'] = L['Buffs'],
 					},					
 				},
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
 				noDuration = {
-					type = 'toggle',
-					order = 5,
+					order = 13,
+					type = 'select',
 					name = L['No Duration'],
 					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
 				},
 				noConsolidated = {
-					type = 'toggle',
-					order = 6,
+					order = 14,
+					type = 'select',
 					name = L['No Consolidated'],
 					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
+				useFilter = {
+					order = 15,
+					name = L['Use Filter'],
+					desc = L['Select a filter to use.'],
+					type = 'select',
+					values = function()
+						filters = {}
+						filters[''] = NONE
+						for filter in pairs(E.global.unitframe['aurafilters']) do
+							filters[filter] = filter
+						end
+						return filters
+					end,
 				},
 			},
 		},			
@@ -2144,7 +2218,7 @@ E.Options.args.unitframe.args.targettarget = {
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
@@ -2242,7 +2316,7 @@ E.Options.args.unitframe.args.targettarget = {
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
@@ -2515,7 +2589,7 @@ E.Options.args.unitframe.args.focus = {
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
@@ -2613,7 +2687,7 @@ E.Options.args.unitframe.args.focus = {
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
@@ -2755,17 +2829,54 @@ E.Options.args.unitframe.args.focus = {
 						['BUFFS'] = L['Buffs'],
 					},					
 				},
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
 				noDuration = {
-					type = 'toggle',
-					order = 5,
+					order = 13,
+					type = 'select',
 					name = L['No Duration'],
 					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
 				},
 				noConsolidated = {
-					type = 'toggle',
-					order = 6,
+					order = 14,
+					type = 'select',
 					name = L['No Consolidated'],
 					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
+				useFilter = {
+					order = 15,
+					name = L['Use Filter'],
+					desc = L['Select a filter to use.'],
+					type = 'select',
+					values = function()
+						filters = {}
+						filters[''] = NONE
+						for filter in pairs(E.global.unitframe['aurafilters']) do
+							filters[filter] = filter
+						end
+						return filters
+					end,
 				},
 			},
 		},			
@@ -3027,7 +3138,7 @@ E.Options.args.unitframe.args.focustarget = {
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
@@ -3125,7 +3236,7 @@ E.Options.args.unitframe.args.focustarget = {
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
@@ -3398,7 +3509,7 @@ E.Options.args.unitframe.args.pet = {
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
@@ -3496,7 +3607,7 @@ E.Options.args.unitframe.args.pet = {
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
@@ -3763,7 +3874,7 @@ E.Options.args.unitframe.args.pettarget = {
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
@@ -3861,7 +3972,7 @@ E.Options.args.unitframe.args.pettarget = {
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
@@ -4164,7 +4275,7 @@ E.Options.args.unitframe.args.boss = {
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
@@ -4262,7 +4373,7 @@ E.Options.args.unitframe.args.boss = {
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
@@ -4615,7 +4726,7 @@ E.Options.args.unitframe.args.arena = {
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
@@ -4713,7 +4824,7 @@ E.Options.args.unitframe.args.arena = {
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
@@ -5183,7 +5294,7 @@ E.Options.args.unitframe.args.party = {
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
@@ -5281,7 +5392,7 @@ E.Options.args.unitframe.args.party = {
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
@@ -5832,7 +5943,7 @@ for i=10, 40, 15 do
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
@@ -5930,7 +6041,7 @@ for i=10, 40, 15 do
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
