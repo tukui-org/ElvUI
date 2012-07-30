@@ -361,8 +361,7 @@ function E:UpdateAll(ignoreInstall)
 	bags:Layout(true); 
 	bags:PositionBagFrames()
 	bags:SizeAndPositionBagBar()
-	
-	self:GetModule('Skins'):SetEmbedRight(E.db.skins.embedRight)
+
 	self:GetModule('Layout'):ToggleChatPanels()
 	
 	local DT = self:GetModule('DataTexts')

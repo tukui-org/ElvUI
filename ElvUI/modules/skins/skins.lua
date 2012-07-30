@@ -414,11 +414,6 @@ function S:Initialize()
 		loadFunc();
 	end
 	wipe(self.nonAddonsToLoad)
-	
-	for addon, _ in pairs(self.EmbeddableAddons) do
-		self:SaveEmbeddedAddonPoints(addon)
-	end
-	self:SetEmbedRight(E.db.skins.embedRight)
 end
 
 S:RegisterEvent('ADDON_LOADED')

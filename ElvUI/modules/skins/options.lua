@@ -11,218 +11,29 @@ E.Options.args.skins = {
 			type = "description",
 			name = L["SKINS_DESC"],
 		},	
-		embedRight = {
+		blizzardEnable = {
 			order = 2,
-			type = 'select',
-			name = L['Embedded Addon'],
-			desc = L['Select an addon to embed to the right chat window. This will resize the addon to fit perfectly into the chat window, it will also parent it to the chat window so hiding the chat window will also hide the addon.'],
-			values = {
-				[''] = ' ',
-				['Recount'] = "Recount",
-				['Omen'] = "Omen",
-				['Skada'] = "Skada",
-			},
-			get = function(info) return E.db.skins[ info[#info] ] end,
-			set = function(info, value) E.db.skins[ info[#info] ] = value; S:SetEmbedRight(value) end,
-		},
-		bigwigs = {
-			order = 3,
-			type = 'group',
-			name = 'BigWigs',
-			get = function(info) return E.private.skins.bigwigs[ info[#info] ] end,
-			set = function(info, value) E.private.skins.bigwigs[ info[#info] ] = value; end,
-			args = {
-				enable = {
-					name = L['Enable'],
-					type = 'toggle',
-					order = 1,
-					get = function(info) return E.private.skins.bigwigs[ info[#info] ] end,
-					set = function(info, value) E.private.skins.bigwigs[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,					
-				},
-				spacing = {
-					name = L['Spacing'],
-					desc = L['The spacing in between bars.'],
-					type = 'range',
-					order = 2,
-					min = 0, max = 25, step = 1,
-				},
-			},
-		},
-		ace3 = {
-			order = 4,
-			type = 'group',
-			name = 'Ace3',
-			get = function(info) return E.private.skins.ace3[ info[#info] ] end,
-			set = function(info, value) E.private.skins.ace3[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
-			args = {
-				enable = {
-					name = L['Enable'],
-					type = 'toggle',
-					order = 1,				
-				},			
-			},
-		},
-		recount = {
-			order = 5,
-			type = 'group',
-			name = 'Recount',
-			get = function(info) return E.private.skins.recount[ info[#info] ] end,
-			set = function(info, value) E.private.skins.recount[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
-			args = {
-				enable = {
-					name = L['Enable'],
-					type = 'toggle',
-					order = 1,				
-				},			
-			},
-		},
-		omen = {
-			order = 6,
-			type = 'group',
-			name = 'Omen',
-			get = function(info) return E.private.skins.omen[ info[#info] ] end,
-			set = function(info, value) E.private.skins.omen[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
-			args = {
-				enable = {
-					name = L['Enable'],
-					type = 'toggle',
-					order = 1,				
-				},			
-			},
-		},	
-		skada = {
-			order = 7,
-			type = 'group',
-			name = 'Skada',
-			get = function(info) return E.private.skins.skada[ info[#info] ] end,
-			set = function(info, value) E.private.skins.skada[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
-			args = {
-				enable = {
-					name = L['Enable'],
-					type = 'toggle',
-					order = 1,				
-				},	
-				barHeight = {
-					name = L['Embedded Bar Height'],
-					desc = L['The height of the bars while skada is embedded.'],
-					order = 2,
-					type = 'range',
-					min = 10, max = 30, step = 1,
-					set = function(info, value) E.private.skins.skada.barHeight = value; S:SetEmbedRight(E.db.skins.embedRight) end,
-				},
-			},
-		},	
-		dxe = {
-			order = 8,
-			type = 'group',
-			name = 'DXE',
-			get = function(info) return E.private.skins.dxe[ info[#info] ] end,
-			set = function(info, value) E.private.skins.dxe[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
-			args = {
-				enable = {
-					name = L['Enable'],
-					type = 'toggle',
-					order = 1,				
-				},			
-			},
-		},	
-		dbm = {
-			order = 9,
-			type = 'group',
-			name = 'DBM',
-			get = function(info) return E.private.skins.dbm[ info[#info] ] end,
-			set = function(info, value) E.private.skins.dbm[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
-			args = {
-				enable = {
-					name = L['Enable'],
-					type = 'toggle',
-					order = 1,				
-				},			
-			},
-		},	
-		tinydps = {
-			order = 10,
-			type = 'group',
-			name = 'TinyDPS',
-			get = function(info) return E.private.skins.tinydps[ info[#info] ] end,
-			set = function(info, value) E.private.skins.tinydps[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
-			args = {
-				enable = {
-					name = L['Enable'],
-					type = 'toggle',
-					order = 1,				
-				},			
-			},
+			type = 'toggle',
+			name = 'Blizzard',
+			get = function(info) return E.private.skins.blizzard.enable end,
+			set = function(info, value) E.private.skins.blizzard.enable = value; E:StaticPopup_Show("PRIVATE_RL") end,		
 		},		
-		clcret = {
-			order = 11,
-			type = 'group',
-			name = 'CLCRet',
-			get = function(info) return E.private.skins.clcret[ info[#info] ] end,
-			set = function(info, value) E.private.skins.clcret[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
-			args = {
-				enable = {
-					name = L['Enable'],
-					type = 'toggle',
-					order = 1,				
-				},			
-			},
+		ace3 = {
+			order = 3,
+			type = 'toggle',
+			name = 'Ace3',
+			get = function(info) return E.private.skins.ace3.enable end,
+			set = function(info, value) E.private.skins.ace3.enable = value; E:StaticPopup_Show("PRIVATE_RL") end,
 		},	
-		clcprot = {
-			order = 12,
-			type = 'group',
-			name = 'CLCProt',
-			get = function(info) return E.private.skins.clcprot[ info[#info] ] end,
-			set = function(info, value) E.private.skins.clcprot[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
-			args = {
-				enable = {
-					name = L['Enable'],
-					type = 'toggle',
-					order = 1,				
-				},			
-			},
-		},	
-		powerauras = {
-			order = 13,
-			type = 'group',
-			name = 'Power Auras',
-			get = function(info) return E.private.skins.powerauras[ info[#info] ] end,
-			set = function(info, value) E.private.skins.powerauras[ info[#info] ] = value; StaticPopup_Show("PRIVATE_RL") end,
-			args = {
-				enable = {
-					name = L['Enable'],
-					type = 'toggle',
-					order = 1,				
-				},			
-			},
-		},	
-		weakauras = {
-			order = 14,
-			type = 'group',
-			name = 'Weak Auras',
-			get = function(info) return E.private.skins.weakauras[ info[#info] ] end,
-			set = function(info, value) E.private.skins.weakauras[ info[#info] ] = value; StaticPopup_Show("PRIVATE_RL") end,
-			args = {
-				enable = {
-					name = L['Enable'],
-					type = 'toggle',
-					order = 1,				
-				},			
-			},
-		},				
 		blizzard = {
 			order = 300,
 			type = 'group',
 			name = 'Blizzard',
 			get = function(info) return E.private.skins.blizzard[ info[#info] ] end,
 			set = function(info, value) E.private.skins.blizzard[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,	
+			disabled = function() return not E.private.skins.blizzard.enable end,
 			guiInline = true,
-			args = {
-				enable = {
-					name = L['Enable'],
-					type = 'toggle',
-					order = 1,				
-				},		
+			args = {	
 				encounterjournal = {
 					type = "toggle",
 					name = L["Encounter Journal"],

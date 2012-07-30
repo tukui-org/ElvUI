@@ -122,11 +122,6 @@ P['chat'] = {
 	['keywords'] = '%MYNAME%, ElvUI'
 }
 
---Skins
-P['skins'] = {
-	['embedRight'] = '',
-}
-
 --Datatexts
 P['datatexts'] = {
 	['panels'] = {

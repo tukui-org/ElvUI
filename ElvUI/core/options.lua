@@ -212,7 +212,7 @@ E.Options.args.general = {
 					type = 'range',
 					name = L['Panel Width'],
 					desc = L['PANEL_DESC'],
-					set = function(info, value) E.db.general.panelWidth = value; E:GetModule('Chat'):PositionChat(true); local bags = E:GetModule('Bags'); bags:Layout(); bags:Layout(true); E:GetModule('Skins'):SetEmbedRight(E.db.skins.embedRight) end,
+					set = function(info, value) E.db.general.panelWidth = value; E:GetModule('Chat'):PositionChat(true); local bags = E:GetModule('Bags'); bags:Layout(); bags:Layout(true); end,
 					min = 150, max = 700, step = 1,
 				},
 				panelHeight = {
@@ -220,7 +220,7 @@ E.Options.args.general = {
 					type = 'range',
 					name = L['Panel Height'],
 					desc = L['PANEL_DESC'],
-					set = function(info, value) E.db.general.panelHeight = value; E:GetModule('Chat'):PositionChat(true); E:GetModule('Skins'):SetEmbedRight(E.db.skins.embedRight) end,
+					set = function(info, value) E.db.general.panelHeight = value; E:GetModule('Chat'):PositionChat(true); end,
 					min = 150, max = 600, step = 1,
 				},
 				panelBackdrop = {
@@ -228,7 +228,7 @@ E.Options.args.general = {
 					type = 'select',
 					name = L['Panel Backdrop'],
 					desc = L['Toggle showing of the left and right chat panels.'],
-					set = function(info, value) E.db.general.panelBackdrop = value; E:GetModule('Layout'):ToggleChatPanels(); E:GetModule('Skins'):SetEmbedRight(E.db.skins.embedRight); E:GetModule('Chat'):PositionChat(true) end,
+					set = function(info, value) E.db.general.panelBackdrop = value; E:GetModule('Layout'):ToggleChatPanels(); E:GetModule('Chat'):PositionChat(true) end,
 					values = {
 						['HIDEBOTH'] = L['Hide Both'],
 						['SHOWBOTH'] = L['Show Both'],
