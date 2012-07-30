@@ -283,7 +283,6 @@ P['unitframe'] = {
 				['attachTo'] = 'DEBUFFS',
 				['noDuration'] = true,
 				['noConsolidated'] = true,
-				['growthDirection'] = 'UP',
 			},	
 		},	
 		['target'] = {
@@ -364,7 +363,6 @@ P['unitframe'] = {
 				['attachTo'] = 'FRAME',
 				['noDuration'] = true,
 				['noConsolidated'] = true,
-				['growthDirection'] = 'UP',
 			},			
 		},
 		['targettarget'] = {
@@ -485,7 +483,6 @@ P['unitframe'] = {
 				['attachTo'] = 'FRAME',
 				['noDuration'] = true,
 				['noConsolidated'] = true,
-				['growthDirection'] = 'UP',
 			},				
 		},	
 		['focustarget'] = {
