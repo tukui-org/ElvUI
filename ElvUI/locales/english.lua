@@ -183,6 +183,7 @@ L["Short Channels"] = true;
 L["Shorten the channel names in chat."] = true;
 L["Spam Interval"] = true;
 L["Sticky Chat"] = true;
+L['Trade'] = true;
 L["URL Links"] = true;
 L["When opening the Chat Editbox to type a message having this option set means it will retain the last channel you spoke in. If this option is turned off opening the Chat Editbox should always default to the SAY channel."] = true;
 L["Whisper Alert"] = true;
