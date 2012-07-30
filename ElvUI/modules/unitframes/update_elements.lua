@@ -1289,6 +1289,7 @@ function UF:SmartAuraDisplay()
 	if not db or not db.smartAuraDisplay or db.smartAuraDisplay == 'DISABLED' or not UnitExists(unit) then return; end
 	local buffs = self.Buffs
 	local debuffs = self.Debuffs
+	local auraBars = self.AuraBars
 	local isFriend
 	
 	if UnitIsFriend('player', unit) then isFriend = true end
@@ -1316,6 +1317,14 @@ function UF:SmartAuraDisplay()
 		
 		buffs:ClearAllPoints()
 		buffs:Point(E.InversePoints[db.buffs.anchorPoint], self, db.buffs.anchorPoint, x, y)
+		
+		local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
+		if db.aurabar.anchorPoint == 'BELOW' then
+			anchorPoint, anchorTo = 'TOP', 'BOTTOM'
+		end		
+		auraBars:ClearAllPoints()
+		auraBars:SetPoint(anchorPoint..'LEFT', buffs, anchorTo..'LEFT', unit == 'player' and -(db.power.offset) or db.power.offset, 0)
+		auraBars:SetPoint(anchorPoint..'RIGHT', buffs, anchorTo..'RIGHT')
 	end
 	
 	if debuffs:IsShown() then
@@ -1323,5 +1332,13 @@ function UF:SmartAuraDisplay()
 		
 		debuffs:ClearAllPoints()
 		debuffs:Point(E.InversePoints[db.debuffs.anchorPoint], self, db.debuffs.anchorPoint, x, y)	
+
+		local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
+		if db.aurabar.anchorPoint == 'BELOW' then
+			anchorPoint, anchorTo = 'TOP', 'BOTTOM'
+		end		
+		auraBars:ClearAllPoints()
+		auraBars:SetPoint(anchorPoint..'LEFT', debuffs, anchorTo..'LEFT', unit == 'player' and -(db.power.offset) or db.power.offset, 0)
+		auraBars:SetPoint(anchorPoint..'RIGHT', debuffs, anchorTo..'RIGHT')		
 	end
 end
