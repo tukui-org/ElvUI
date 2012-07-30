@@ -994,31 +994,47 @@ function UF:UpdateComboDisplay(event, unit)
 	end
 end
 
-function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster)	
+local function CheckFilter(type, isFriend)
+	if type == 'ALL' or (type == 'FRIENDLY' and isFriend) or (type == 'ENEMY' and not isFriend) then
+		return true
+	end
+	
+	return false
+end
+
+function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff)	
 	local isPlayer, isFriend
 
 	local db = self:GetParent().db
 
-	if(caster == 'player' or caster == 'vehicle') then
-		isPlayer = true
-	end
-	
-	if UnitIsFriend('player', unit) then
-		isFriend = true
-	end
+	if caster == 'player' or caster == 'vehicle' then isPlayer = true end
+	if UnitIsFriend('player', unit) then isFriend = true end
 	
 	icon.isPlayer = isPlayer
 	icon.owner = caster
+	icon.name = name
 
-	if db and db[self.type] and db[self.type].durationLimit ~= 0 and db[self.type].durationLimit ~= nil and duration ~= nil then
-		if duration > db[self.type].durationLimit or duration == 0 then
-			return false
-		end
+	if db and db[self.type] and E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and CheckFilter(db[self.type].useBlacklist, isFriend) then
+		return false
+	end	
+	
+	if db and db[self.type] and E.global['unitframe']['aurafilters']['Whitelist'].spells[name] and CheckFilter(db[self.type].useWhitelist, isFriend) then
+			return true
 	end
 	
-	if db and db[self.type] and db[self.type].showPlayerOnly and isPlayer then
+	if db and db[self.type] and (duration == 0 or not duration) and CheckFilter(db[self.type].noDuration, isFriend) then
+		return false
+	end	
+
+	if db and db[self.type] and shouldConsolidate == 1 and CheckFilter(db[self.type].noConsolidated, isFriend) then
+		return false
+	end	
+
+	if db and db[self.type] and isPlayer and CheckFilter(db[self.type].playerOnly, isFriend) then
 		return true
-	elseif db and db[self.type] and db[self.type].useFilter and E.global['unitframe']['aurafilters'][db[self.type].useFilter] then
+	end
+	
+	if db and db[self.type] and db[self.type].useFilter and E.global['unitframe']['aurafilters'][db[self.type].useFilter] then
 		local type = E.global['unitframe']['aurafilters'][db[self.type].useFilter].type
 		local spellList = E.global['unitframe']['aurafilters'][db[self.type].useFilter].spells
 		
@@ -1039,12 +1055,6 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 			else
 				return true
 			end				
-		end
-	elseif db and db[self.type] then
-		if db and not db[self.type].showPlayerOnly then
-			return true
-		else
-			return false
 		end
 	end	
 	
@@ -1226,16 +1236,8 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	local db = self.db.aurabar
 	
 	if not db then return; end
-	
-	--Remove this when beta is done, database correction for my personal error
-	if E.global['unitframe']['aurafilters']['DebuffBlacklist']['spells'][name] and type(E.global['unitframe']['aurafilters']['DebuffBlacklist']['spells'][name]) ~= 'table' then
-		E.global['unitframe']['aurafilters']['DebuffBlacklist']['spells'][name] = {
-			['enable'] = true,
-			['priority'] = 0,			
-		}	
-	end
-	
-	if E.global['unitframe']['aurafilters']['DebuffBlacklist']['spells'][name] and E.global['unitframe']['aurafilters']['DebuffBlacklist']['spells'][name].enable then
+		
+	if E.global['unitframe']['aurafilters']['Blacklist']['spells'][name] and E.global['unitframe']['aurafilters']['Blacklist']['spells'][name].enable then
 		return false
 	end
 	
@@ -1244,7 +1246,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 		isFriend = true
 	end
 		
-	local isWhitelist = E.global['unitframe']['aurafilters']['AuraBars']['spells'][name] and E.global['unitframe']['aurafilters']['AuraBars']['spells'][name].enable
+	local isWhitelist = E.global['unitframe']['aurafilters']['Whitelist']['spells'][name] and E.global['unitframe']['aurafilters']['Whitelist']['spells'][name].enable
 	local isPlayer = unitCaster == 'player' or unitCaster == 'pet' or unitCaster == 'vehicle'
 	local durationCheck = CheckFilterArguement(not db.noDuration, duration ~= 0 or isWhitelist)
 	local consolidatedCheck = CheckFilterArguement(db.noConsolidated, not shouldConsolidate or isWhitelist);

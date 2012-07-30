@@ -646,6 +646,13 @@ local positionValues = {
 	BOTTOM = 'BOTTOM',
 };
 
+local auraFilterTypes = {
+	['ALL'] = ALL,
+	['ENEMY'] = ENEMY,
+	['FRIENDLY'] = FRIENDLY,
+	['NONE'] = NONE,
+}
+
 local lengthValues = {
 	["SHORT"] = L["Short"],
 	["MEDIUM"] = L["Medium"],
@@ -955,8 +962,43 @@ E.Options.args.unitframe.args.player = {
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
-				useFilter = {
+				playerOnly = {
 					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
+				useFilter = {
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
@@ -968,20 +1010,7 @@ E.Options.args.unitframe.args.player = {
 						end
 						return filters
 					end,
-				},
-				showPlayerOnly = {
-					order = 11,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},	
-				durationLimit = {
-					order = 12,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},				
 			},
 		},	
 		debuffs = {
@@ -995,7 +1024,7 @@ E.Options.args.unitframe.args.player = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -1014,7 +1043,7 @@ E.Options.args.unitframe.args.player = {
 					name = L['Size Override'],
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
-				},
+				},				
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -1022,7 +1051,7 @@ E.Options.args.unitframe.args.player = {
 					desc = L['What to attach the buff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
-						['BUFFS'] = L['Buffs'],
+						['DEBUFFS'] = L['Debuffs'],
 					},
 				},
 				anchorPoint = {
@@ -1033,13 +1062,41 @@ E.Options.args.unitframe.args.player = {
 					values = auraAnchors,				
 				},
 				fontsize = {
-					order = 6,
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},		
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
@@ -1051,20 +1108,7 @@ E.Options.args.unitframe.args.player = {
 						end
 						return filters
 					end,
-				},
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},	
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},				
+				},			
 			},
 		},	
 		castbar = {
@@ -1256,13 +1300,13 @@ E.Options.args.unitframe.args.player = {
 					type = 'toggle',
 					order = 5,
 					name = L['No Duration'],
-					desc = L['Allow displaying of aura bars that do not have a duration.'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
 				},
 				noConsolidated = {
 					type = 'toggle',
 					order = 6,
 					name = L['No Consolidated'],
-					desc = L['Allow displaying of aura bars that are considered consolidated by Blizzard.'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
 				},
 			},
 		},			
@@ -1486,7 +1530,7 @@ E.Options.args.unitframe.args.target = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -1524,13 +1568,48 @@ E.Options.args.unitframe.args.target = {
 					values = auraAnchors,				
 				},
 				fontsize = {
-					order = 6,
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},				
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
@@ -1542,19 +1621,6 @@ E.Options.args.unitframe.args.target = {
 						end
 						return filters
 					end,
-				},		
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},	
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
 				},					
 			},
 		},	
@@ -1569,7 +1635,7 @@ E.Options.args.unitframe.args.target = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -1596,7 +1662,7 @@ E.Options.args.unitframe.args.target = {
 					desc = L['What to attach the buff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
-						['BUFFS'] = L['Buffs'],
+						['DEBUFFS'] = L['Debuffs'],
 					},
 				},
 				anchorPoint = {
@@ -1607,13 +1673,41 @@ E.Options.args.unitframe.args.target = {
 					values = auraAnchors,				
 				},
 				fontsize = {
-					order = 6,
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
@@ -1625,20 +1719,7 @@ E.Options.args.unitframe.args.target = {
 						end
 						return filters
 					end,
-				},
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},		
 			},
 		},	
 		castbar = {
@@ -1813,13 +1894,13 @@ E.Options.args.unitframe.args.target = {
 					type = 'toggle',
 					order = 5,
 					name = L['No Duration'],
-					desc = L['Allow displaying of aura bars that do not have a duration.'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
 				},
 				noConsolidated = {
 					type = 'toggle',
 					order = 6,
 					name = L['No Consolidated'],
-					desc = L['Allow displaying of aura bars that are considered consolidated by Blizzard.'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
 				},
 			},
 		},			
@@ -1996,7 +2077,7 @@ E.Options.args.unitframe.args.targettarget = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -2034,13 +2115,48 @@ E.Options.args.unitframe.args.targettarget = {
 					values = auraAnchors,				
 				},
 				fontsize = {
-					order = 6,
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},				
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
@@ -2052,20 +2168,7 @@ E.Options.args.unitframe.args.targettarget = {
 						end
 						return filters
 					end,
-				},		
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},	
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},			
 			},
 		},	
 		debuffs = {
@@ -2079,7 +2182,7 @@ E.Options.args.unitframe.args.targettarget = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -2106,7 +2209,7 @@ E.Options.args.unitframe.args.targettarget = {
 					desc = L['What to attach the buff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
-						['BUFFS'] = L['Buffs'],
+						['DEBUFFS'] = L['Debuffs'],
 					},
 				},
 				anchorPoint = {
@@ -2117,13 +2220,41 @@ E.Options.args.unitframe.args.targettarget = {
 					values = auraAnchors,				
 				},
 				fontsize = {
-					order = 6,
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
@@ -2135,20 +2266,7 @@ E.Options.args.unitframe.args.targettarget = {
 						end
 						return filters
 					end,
-				},
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},		
 			},
 		},	
 	},
@@ -2330,7 +2448,7 @@ E.Options.args.unitframe.args.focus = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -2368,13 +2486,48 @@ E.Options.args.unitframe.args.focus = {
 					values = auraAnchors,				
 				},
 				fontsize = {
-					order = 6,
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},				
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
@@ -2386,20 +2539,7 @@ E.Options.args.unitframe.args.focus = {
 						end
 						return filters
 					end,
-				},		
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},	
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},			
 			},
 		},	
 		debuffs = {
@@ -2413,7 +2553,7 @@ E.Options.args.unitframe.args.focus = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -2440,7 +2580,7 @@ E.Options.args.unitframe.args.focus = {
 					desc = L['What to attach the buff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
-						['BUFFS'] = L['Buffs'],
+						['DEBUFFS'] = L['Debuffs'],
 					},
 				},
 				anchorPoint = {
@@ -2451,13 +2591,41 @@ E.Options.args.unitframe.args.focus = {
 					values = auraAnchors,				
 				},
 				fontsize = {
-					order = 6,
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
@@ -2469,20 +2637,7 @@ E.Options.args.unitframe.args.focus = {
 						end
 						return filters
 					end,
-				},
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},		
 			},
 		},	
 		castbar = {
@@ -2631,13 +2786,13 @@ E.Options.args.unitframe.args.focus = {
 					type = 'toggle',
 					order = 5,
 					name = L['No Duration'],
-					desc = L['Allow displaying of aura bars that do not have a duration.'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
 				},
 				noConsolidated = {
 					type = 'toggle',
 					order = 6,
 					name = L['No Consolidated'],
-					desc = L['Allow displaying of aura bars that are considered consolidated by Blizzard.'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
 				},
 			},
 		},			
@@ -2814,7 +2969,7 @@ E.Options.args.unitframe.args.focustarget = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -2852,13 +3007,48 @@ E.Options.args.unitframe.args.focustarget = {
 					values = auraAnchors,				
 				},
 				fontsize = {
-					order = 6,
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},				
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
@@ -2870,19 +3060,6 @@ E.Options.args.unitframe.args.focustarget = {
 						end
 						return filters
 					end,
-				},		
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},	
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
 				},					
 			},
 		},	
@@ -2897,7 +3074,7 @@ E.Options.args.unitframe.args.focustarget = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -2909,7 +3086,7 @@ E.Options.args.unitframe.args.focustarget = {
 					order = 3,
 					name = L['Num Rows'],
 					min = 1, max = 4, step = 1,					
-				},	
+				},
 				sizeOverride = {
 					type = 'range',
 					order = 3,
@@ -2924,7 +3101,7 @@ E.Options.args.unitframe.args.focustarget = {
 					desc = L['What to attach the buff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
-						['BUFFS'] = L['Buffs'],
+						['DEBUFFS'] = L['Debuffs'],
 					},
 				},
 				anchorPoint = {
@@ -2935,13 +3112,41 @@ E.Options.args.unitframe.args.focustarget = {
 					values = auraAnchors,				
 				},
 				fontsize = {
-					order = 6,
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
@@ -2953,20 +3158,7 @@ E.Options.args.unitframe.args.focustarget = {
 						end
 						return filters
 					end,
-				},
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},		
 			},
 		},	
 	},
@@ -3148,7 +3340,7 @@ E.Options.args.unitframe.args.pet = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -3186,13 +3378,48 @@ E.Options.args.unitframe.args.pet = {
 					values = auraAnchors,				
 				},
 				fontsize = {
-					order = 6,
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},				
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
@@ -3204,20 +3431,7 @@ E.Options.args.unitframe.args.pet = {
 						end
 						return filters
 					end,
-				},		
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},	
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},			
 			},
 		},	
 		debuffs = {
@@ -3231,7 +3445,7 @@ E.Options.args.unitframe.args.pet = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -3258,7 +3472,7 @@ E.Options.args.unitframe.args.pet = {
 					desc = L['What to attach the buff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
-						['BUFFS'] = L['Buffs'],
+						['DEBUFFS'] = L['Debuffs'],
 					},
 				},
 				anchorPoint = {
@@ -3269,13 +3483,41 @@ E.Options.args.unitframe.args.pet = {
 					values = auraAnchors,				
 				},
 				fontsize = {
-					order = 6,
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
@@ -3287,20 +3529,7 @@ E.Options.args.unitframe.args.pet = {
 						end
 						return filters
 					end,
-				},
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},		
 			},
 		},	
 	},
@@ -3476,7 +3705,7 @@ E.Options.args.unitframe.args.pettarget = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -3514,13 +3743,48 @@ E.Options.args.unitframe.args.pettarget = {
 					values = auraAnchors,				
 				},
 				fontsize = {
-					order = 6,
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},				
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
@@ -3532,20 +3796,7 @@ E.Options.args.unitframe.args.pettarget = {
 						end
 						return filters
 					end,
-				},		
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},	
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},			
 			},
 		},	
 		debuffs = {
@@ -3559,7 +3810,7 @@ E.Options.args.unitframe.args.pettarget = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -3586,7 +3837,7 @@ E.Options.args.unitframe.args.pettarget = {
 					desc = L['What to attach the buff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
-						['BUFFS'] = L['Buffs'],
+						['DEBUFFS'] = L['Debuffs'],
 					},
 				},
 				anchorPoint = {
@@ -3597,13 +3848,41 @@ E.Options.args.unitframe.args.pettarget = {
 					values = auraAnchors,				
 				},
 				fontsize = {
-					order = 6,
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
@@ -3615,20 +3894,7 @@ E.Options.args.unitframe.args.pettarget = {
 						end
 						return filters
 					end,
-				},
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},			
 			},
 		},	
 	},
@@ -3849,7 +4115,7 @@ E.Options.args.unitframe.args.boss = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -3887,13 +4153,48 @@ E.Options.args.unitframe.args.boss = {
 					values = auraAnchors,				
 				},
 				fontsize = {
-					order = 6,
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},				
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
@@ -3905,20 +4206,7 @@ E.Options.args.unitframe.args.boss = {
 						end
 						return filters
 					end,
-				},		
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},	
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},			
 			},
 		},	
 		debuffs = {
@@ -3932,7 +4220,7 @@ E.Options.args.unitframe.args.boss = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -3959,7 +4247,7 @@ E.Options.args.unitframe.args.boss = {
 					desc = L['What to attach the buff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
-						['BUFFS'] = L['Buffs'],
+						['DEBUFFS'] = L['Debuffs'],
 					},
 				},
 				anchorPoint = {
@@ -3970,13 +4258,41 @@ E.Options.args.unitframe.args.boss = {
 					values = auraAnchors,				
 				},
 				fontsize = {
-					order = 6,
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
@@ -3988,20 +4304,7 @@ E.Options.args.unitframe.args.boss = {
 						end
 						return filters
 					end,
-				},
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},		
 			},
 		},	
 		castbar = {
@@ -4272,7 +4575,7 @@ E.Options.args.unitframe.args.arena = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -4310,13 +4613,48 @@ E.Options.args.unitframe.args.arena = {
 					values = auraAnchors,				
 				},
 				fontsize = {
-					order = 6,
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},				
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
@@ -4328,20 +4666,7 @@ E.Options.args.unitframe.args.arena = {
 						end
 						return filters
 					end,
-				},		
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},	
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},			
 			},
 		},	
 		debuffs = {
@@ -4355,7 +4680,7 @@ E.Options.args.unitframe.args.arena = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -4382,7 +4707,7 @@ E.Options.args.unitframe.args.arena = {
 					desc = L['What to attach the buff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
-						['BUFFS'] = L['Buffs'],
+						['DEBUFFS'] = L['Debuffs'],
 					},
 				},
 				anchorPoint = {
@@ -4393,13 +4718,41 @@ E.Options.args.unitframe.args.arena = {
 					values = auraAnchors,				
 				},
 				fontsize = {
-					order = 6,
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
@@ -4411,20 +4764,7 @@ E.Options.args.unitframe.args.arena = {
 						end
 						return filters
 					end,
-				},
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},		
 			},
 		},	
 		castbar = {
@@ -4803,7 +5143,7 @@ E.Options.args.unitframe.args.party = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -4841,13 +5181,48 @@ E.Options.args.unitframe.args.party = {
 					values = auraAnchors,				
 				},
 				fontsize = {
-					order = 6,
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},				
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
@@ -4859,20 +5234,7 @@ E.Options.args.unitframe.args.party = {
 						end
 						return filters
 					end,
-				},		
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},	
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},			
 			},
 		},	
 		debuffs = {
@@ -4886,7 +5248,7 @@ E.Options.args.unitframe.args.party = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -4913,7 +5275,7 @@ E.Options.args.unitframe.args.party = {
 					desc = L['What to attach the buff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
-						['BUFFS'] = L['Buffs'],
+						['DEBUFFS'] = L['Debuffs'],
 					},
 				},
 				anchorPoint = {
@@ -4924,13 +5286,41 @@ E.Options.args.unitframe.args.party = {
 					values = auraAnchors,				
 				},
 				fontsize = {
-					order = 6,
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
@@ -4942,20 +5332,7 @@ E.Options.args.unitframe.args.party = {
 						end
 						return filters
 					end,
-				},
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},		
 			},
 		},	
 		buffIndicator = {
@@ -5411,80 +5788,102 @@ for i=10, 40, 15 do
 				get = function(info) return E.db.unitframe.units['raid'..i]['buffs'][ info[#info] ] end,
 				set = function(info, value) E.db.unitframe.units['raid'..i]['buffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
 				args = {
-					enable = {
-						type = 'toggle',
-						order = 1,
-						name = L['Enable'],
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},			
+				perrow = {
+					type = 'range',
+					order = 2,
+					name = L['Per Row'],
+					min = 1, max = 20, step = 1,
+				},
+				numrows = {
+					type = 'range',
+					order = 3,
+					name = L['Num Rows'],
+					min = 1, max = 4, step = 1,					
+				},
+				sizeOverride = {
+					type = 'range',
+					order = 3,
+					name = L['Size Override'],
+					desc = L['If not set to 0 then override the size of the aura icon to this.'],
+					min = 0, max = 60, step = 1,
+				},				
+				attachTo = {
+					type = 'select',
+					order = 7,
+					name = L['Attach To'],
+					desc = L['What to attach the buff anchor frame to.'],
+					values = {
+						['FRAME'] = L['Frame'],
+						['DEBUFFS'] = L['Debuffs'],
 					},
-					perrow = {
-						type = 'range',
-						order = 2,
-						name = L['Per Row'],
-						min = 1, max = 20, step = 1,
-					},
-					numrows = {
-						type = 'range',
-						order = 3,
-						name = L['Num Rows'],
-						min = 1, max = 4, step = 1,					
-					},
-					sizeOverride = {
-						type = 'range',
-						order = 3,
-						name = L['Size Override'],
-						desc = L['If not set to 0 then override the size of the aura icon to this.'],
-						min = 0, max = 60, step = 1,
-					},				
-					attachTo = {
-						type = 'select',
-						order = 7,
-						name = L['Attach To'],
-						desc = L['What to attach the buff anchor frame to.'],
-						values = {
-							['FRAME'] = L['Frame'],
-							['DEBUFFS'] = L['Debuffs'],
-						},
-					},
-					anchorPoint = {
-						type = 'select',
-						order = 8,
-						name = L['Anchor Point'],
-						desc = L['What point to anchor to the frame you set to attach to.'],
-						values = auraAnchors,				
-					},
-					fontsize = {
-						order = 6,
-						name = L["Font Size"],
-						type = "range",
-						min = 6, max = 22, step = 1,
-					},				
-					useFilter = {
-						order = 7,
-						name = L['Use Filter'],
-						desc = L['Select a filter to use.'],
-						type = 'select',
-						values = function()
-							filters = {}
-							filters[''] = ''
-							for filter in pairs(E.global.unitframe['aurafilters']) do
-								filters[filter] = filter
-							end
-							return filters
-						end,
-					},		
-					showPlayerOnly = {
-						order = 8,
-						type = 'toggle',
-						name = L['Personal Auras'],
-						desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-					},	
-					durationLimit = {
-						order = 9,
-						name = L['Duration Limit'],
-						desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-						type = 'range',
-						min = 0, max = 3600, step = 60,
-					},					
+				},
+				anchorPoint = {
+					type = 'select',
+					order = 8,
+					name = L['Anchor Point'],
+					desc = L['What point to anchor to the frame you set to attach to.'],
+					values = auraAnchors,				
+				},
+				fontsize = {
+					order = 9,
+					name = L["Font Size"],
+					type = "range",
+					min = 6, max = 22, step = 1,
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
+				useFilter = {
+					order = 15,
+					name = L['Use Filter'],
+					desc = L['Select a filter to use.'],
+					type = 'select',
+					values = function()
+						filters = {}
+						filters[''] = ''
+						for filter in pairs(E.global.unitframe['aurafilters']) do
+							filters[filter] = filter
+						end
+						return filters
+					end,
+				},			
 				},
 			},	
 			debuffs = {
@@ -5494,81 +5893,95 @@ for i=10, 40, 15 do
 				get = function(info) return E.db.unitframe.units['raid'..i]['debuffs'][ info[#info] ] end,
 				set = function(info, value) E.db.unitframe.units['raid'..i]['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
 				args = {
-					enable = {
-						type = 'toggle',
-						order = 1,
-						name = L['Enable'],
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},			
+				perrow = {
+					type = 'range',
+					order = 2,
+					name = L['Per Row'],
+					min = 1, max = 20, step = 1,
+				},
+				numrows = {
+					type = 'range',
+					order = 3,
+					name = L['Num Rows'],
+					min = 1, max = 4, step = 1,					
+				},
+				sizeOverride = {
+					type = 'range',
+					order = 3,
+					name = L['Size Override'],
+					desc = L['If not set to 0 then override the size of the aura icon to this.'],
+					min = 0, max = 60, step = 1,
+				},				
+				attachTo = {
+					type = 'select',
+					order = 7,
+					name = L['Attach To'],
+					desc = L['What to attach the buff anchor frame to.'],
+					values = {
+						['FRAME'] = L['Frame'],
+						['DEBUFFS'] = L['Debuffs'],
 					},
-					perrow = {
-						type = 'range',
-						order = 2,
-						name = L['Per Row'],
-						min = 1, max = 20, step = 1,
-					},
-					numrows = {
-						type = 'range',
-						order = 3,
-						name = L['Num Rows'],
-						min = 1, max = 4, step = 1,					
-					},
-					sizeOverride = {
-						type = 'range',
-						order = 3,
-						name = L['Size Override'],
-						desc = L['If not set to 0 then override the size of the aura icon to this.'],
-						min = 0, max = 60, step = 1,
-					},				
-
-					attachTo = {
-						type = 'select',
-						order = 7,
-						name = L['Attach To'],
-						desc = L['What to attach the buff anchor frame to.'],
-						values = {
-							['FRAME'] = L['Frame'],
-							['BUFFS'] = L['Buffs'],
-						},
-					},
-					anchorPoint = {
-						type = 'select',
-						order = 8,
-						name = L['Anchor Point'],
-						desc = L['What point to anchor to the frame you set to attach to.'],
-						values = auraAnchors,				
-					},
-					fontsize = {
-						order = 6,
-						name = L["Font Size"],
-						type = "range",
-						min = 6, max = 22, step = 1,
-					},	
-					useFilter = {
-						order = 7,
-						name = L['Use Filter'],
-						desc = L['Select a filter to use.'],
-						type = 'select',
-						values = function()
-							filters = {}
-							filters[''] = ''
-							for filter in pairs(E.global.unitframe['aurafilters']) do
-								filters[filter] = filter
-							end
-							return filters
-						end,
-					},
-					showPlayerOnly = {
-						order = 8,
-						type = 'toggle',
-						name = L['Personal Auras'],
-						desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-					},
-					durationLimit = {
-						order = 9,
-						name = L['Duration Limit'],
-						desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-						type = 'range',
-						min = 0, max = 3600, step = 60,
-					},					
+				},
+				anchorPoint = {
+					type = 'select',
+					order = 8,
+					name = L['Anchor Point'],
+					desc = L['What point to anchor to the frame you set to attach to.'],
+					values = auraAnchors,				
+				},
+				fontsize = {
+					order = 9,
+					name = L["Font Size"],
+					type = "range",
+					min = 6, max = 22, step = 1,
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				useFilter = {
+					order = 15,
+					name = L['Use Filter'],
+					desc = L['Select a filter to use.'],
+					type = 'select',
+					values = function()
+						filters = {}
+						filters[''] = ''
+						for filter in pairs(E.global.unitframe['aurafilters']) do
+							filters[filter] = filter
+						end
+						return filters
+					end,
+				},		
 				},
 			},	
 			buffIndicator = {

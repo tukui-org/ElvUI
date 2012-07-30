@@ -27,14 +27,15 @@ G.unitframe.aurafilters['TurtleBuffs'] = {
 	},
 }
 
-G.unitframe.aurafilters['DebuffBlacklist'] = {
+G.unitframe.aurafilters['Blacklist'] = {
 	['type'] = 'Blacklist',
 	['spells'] = {
 		[SpellName(36032)] = Defaults(), -- Arcane Charge
+		[SpellName(76691)] = Defaults(), -- Vengeance
 	},
 }
 
-G.unitframe.aurafilters['AuraBars'] = {
+G.unitframe.aurafilters['Whitelist'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 		[SpellName(2825)] = Defaults(), -- Bloodlust

@@ -150,9 +150,34 @@ function UF:Construct_AuraIcon(button)
 	button.count:ClearAllPoints()
 	button.count:Point('BOTTOMRIGHT', 1, 1)
 	button.count:SetJustifyH('RIGHT')
-	
+
 	button.overlay:SetTexture(nil)
 	button.stealable:SetTexture(nil)
+
+	button:HookScript('OnEnter', function(self)
+		GameTooltip.auraBarLine = true;
+	end)	
+	
+	button:HookScript('OnLeave', function(self)
+		GameTooltip.auraBarLine = nil;
+		GameTooltip.numLines = nil
+	end)		
+	
+	button:RegisterForClicks('RightButtonUp')
+	button:SetScript('OnClick', function(self)
+		if not IsShiftKeyDown() then return; end
+		local auraName = self.name
+		
+		if auraName then
+			E:Print(string.format(L['The spell "%s" has been added to the Blacklist unitframe aura filter.'], auraName))
+			E.global['unitframe']['aurafilters']['Blacklist']['spells'][auraName] = {
+				['enable'] = true,
+				['priority'] = 0,			
+			}
+			
+			self.parent.__owner:UpdateAllElements()
+		end
+	end)	
 end
 
 function UF:Construct_Buffs(frame)
@@ -727,8 +752,8 @@ function UF:Construct_AuraBars()
 		local auraName = self:GetParent().aura.name
 		
 		if auraName then
-			E:Print(string.format(L['The spell "%s" has been added to the DebuffBlacklist unitframe filter.'], auraName))
-			E.global['unitframe']['aurafilters']['DebuffBlacklist']['spells'][auraName] = {
+			E:Print(string.format(L['The spell "%s" has been added to the Blacklist unitframe aura filter.'], auraName))
+			E.global['unitframe']['aurafilters']['Blacklist']['spells'][auraName] = {
 				['enable'] = true,
 				['priority'] = 0,			
 			}

@@ -359,7 +359,7 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.party.name.length = "SHORT";
 			E.db.unitframe.units.party.debuffs.anchorPoint = 'BOTTOMLEFT';
 			E.db.unitframe.units.party.debuffs.initialAnchor = 'TOPLEFT';
-			E.db.unitframe.units.party.debuffs.useFilter = 'DebuffBlacklist';
+			E.db.unitframe.units.party.debuffs.useFilter = 'Blacklist';
 			E.db.unitframe.units.party.debuffs.sizeOverride = 0;
 			E.db.unitframe.units.party.petsGroup.enable = true;
 			E.db.unitframe.units.party.petsGroup.width = 80;
