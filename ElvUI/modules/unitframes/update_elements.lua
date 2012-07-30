@@ -1323,7 +1323,7 @@ function UF:SmartAuraDisplay()
 			anchorPoint, anchorTo = 'TOP', 'BOTTOM'
 		end		
 		auraBars:ClearAllPoints()
-		auraBars:SetPoint(anchorPoint..'LEFT', buffs, anchorTo..'LEFT', unit == 'player' and -(db.power.offset) or db.power.offset, 0)
+		auraBars:SetPoint(anchorPoint..'LEFT', buffs, anchorTo..'LEFT', 0, 0)
 		auraBars:SetPoint(anchorPoint..'RIGHT', buffs, anchorTo..'RIGHT')
 	end
 	
@@ -1338,7 +1338,7 @@ function UF:SmartAuraDisplay()
 			anchorPoint, anchorTo = 'TOP', 'BOTTOM'
 		end		
 		auraBars:ClearAllPoints()
-		auraBars:SetPoint(anchorPoint..'LEFT', debuffs, anchorTo..'LEFT', unit == 'player' and -(db.power.offset) or db.power.offset, 0)
+		auraBars:SetPoint(anchorPoint..'LEFT', debuffs, anchorTo..'LEFT', 0, 0)
 		auraBars:SetPoint(anchorPoint..'RIGHT', debuffs, anchorTo..'RIGHT')		
 	end
 end
