@@ -966,7 +966,7 @@ E.Options.args.unitframe.args.player = {
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -1071,7 +1071,7 @@ E.Options.args.unitframe.args.player = {
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -1291,7 +1291,7 @@ E.Options.args.unitframe.args.player = {
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -1616,7 +1616,7 @@ E.Options.args.unitframe.args.target = {
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -1721,7 +1721,7 @@ E.Options.args.unitframe.args.target = {
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -1924,7 +1924,7 @@ E.Options.args.unitframe.args.target = {
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -2191,7 +2191,7 @@ E.Options.args.unitframe.args.targettarget = {
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -2296,7 +2296,7 @@ E.Options.args.unitframe.args.targettarget = {
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -2573,7 +2573,7 @@ E.Options.args.unitframe.args.focus = {
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -2678,7 +2678,7 @@ E.Options.args.unitframe.args.focus = {
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -2855,7 +2855,7 @@ E.Options.args.unitframe.args.focus = {
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -3122,7 +3122,7 @@ E.Options.args.unitframe.args.focustarget = {
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -3227,7 +3227,7 @@ E.Options.args.unitframe.args.focustarget = {
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -3493,7 +3493,7 @@ E.Options.args.unitframe.args.pet = {
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -3598,7 +3598,7 @@ E.Options.args.unitframe.args.pet = {
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -3858,7 +3858,7 @@ E.Options.args.unitframe.args.pettarget = {
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -3963,7 +3963,7 @@ E.Options.args.unitframe.args.pettarget = {
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -4259,7 +4259,7 @@ E.Options.args.unitframe.args.boss = {
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -4364,7 +4364,7 @@ E.Options.args.unitframe.args.boss = {
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -4710,7 +4710,7 @@ E.Options.args.unitframe.args.arena = {
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -4815,7 +4815,7 @@ E.Options.args.unitframe.args.arena = {
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -5278,7 +5278,7 @@ E.Options.args.unitframe.args.party = {
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -5383,7 +5383,7 @@ E.Options.args.unitframe.args.party = {
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -5927,7 +5927,7 @@ for i=10, 40, 15 do
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
@@ -6032,7 +6032,7 @@ for i=10, 40, 15 do
 					order = 10,
 					type = 'select',
 					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
 					values = auraFilterTypes,
 				},
 				useBlacklist = {
