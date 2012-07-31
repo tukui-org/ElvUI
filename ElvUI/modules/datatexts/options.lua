@@ -7,7 +7,7 @@ function DT:PanelLayoutOptions()
 	for name, _ in pairs(DT.RegisteredDataTexts) do
 		datatexts[name] = name
 	end
-	datatexts[''] = ''
+	datatexts[''] = NONE
 	
 	local table = E.Options.args.datatexts.args.panels.args
 	local i = 0
