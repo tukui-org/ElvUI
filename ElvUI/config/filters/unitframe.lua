@@ -24,6 +24,15 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 G.unitframe.aurafilters['TurtleBuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
+		[SpellName(33206)] = Defaults(), -- Pain Suppression
+		[SpellName(47788)] = Defaults(), -- Guardian Spirit
+		[SpellName(62618)] = Defaults(), --Power Word: Barrier
+		[SpellName(1044)] = Defaults(), -- Hand of Freedom
+		[SpellName(1022)] = Defaults(), -- Hand of Protection
+		[SpellName(1038)] = Defaults(), -- Hand of Salvation
+		[SpellName(6940)] = Defaults(), -- Hand of Sacrifice
+		[SpellName(114039)] = Defaults(), -- Hand of Purity
+		[SpellName(53480)] = Defaults(), -- Roar of Sacrifice	
 	},
 }
 
