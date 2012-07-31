@@ -92,11 +92,12 @@ for k, v in pairs{
 	EnableElement = function(self, name, unit)
 		argcheck(name, 2, 'string')
 		argcheck(unit, 3, 'string', 'nil')
-
-		local element = elements[name]
-
-		if(not element or self:IsElementEnabled(name) or not activeElements[self]) then return end
 		
+		local element = elements[name]
+		
+		
+		if(not element or self:IsElementEnabled(name) or not activeElements[self]) then return end
+
 		if(element.enable(self, unit or self.unit)) then
 			activeElements[self][name] = true
 
