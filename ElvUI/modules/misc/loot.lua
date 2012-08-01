@@ -93,8 +93,7 @@ local function createSlot(id)
 	E["frames"][iconFrame] = nil;
 
 	local icon = iconFrame:CreateTexture(nil, "ARTWORK")
-	icon:SetAlpha(.8)
-	icon:SetTexCoord(.07, .93, .07, .93)
+	icon:SetTexCoord(unpack(E.TexCoords))
 	icon:SetInside()
 	frame.icon = icon
 
@@ -260,7 +259,7 @@ function M:LoadLoot()
 	lootFrame:SetClampedToScreen(true)
 	lootFrame:SetPoint('TOPLEFT')
 	lootFrame:Size(256, 64)
-	lootFrame:SetTemplate('Default')
+	lootFrame:SetTemplate('Transparent')
 	lootFrame:SetFrameStrata"FULLSCREEN"
 	lootFrame:SetToplevel(true)	
 	lootFrame.title = lootFrame:CreateFontString(nil, 'OVERLAY')
