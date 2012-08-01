@@ -90,13 +90,11 @@ P['auras'] = {
 	['enable'] = true;
 	['consolidedBuffs'] = true;
 	['wrapAfter'] = 12,
-	['xSpacing'] = 10,
-	['ySpacing'] = 42,
 	
 	['buffs'] = {
 		['sortMethod'] = "TIME",
 		['sortDir'] = '-',
-		['maxWraps'] = 2,
+		['maxWraps'] = 3,
 		['seperateOwn'] = 1,
 	},
 	['debuffs'] = {

@@ -361,7 +361,9 @@ function E:UpdateAll(ignoreInstall)
 	bags:Layout(true); 
 	bags:PositionBagFrames()
 	bags:SizeAndPositionBagBar()
-
+	
+	E:GetModule('Auras'):UpdateAllHeaders()
+	
 	self:GetModule('Layout'):ToggleChatPanels()
 	
 	local DT = self:GetModule('DataTexts')

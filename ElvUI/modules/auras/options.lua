@@ -38,7 +38,7 @@ E.Options.args.auras = {
 					type = 'range',
 					name = L['Size'],
 					desc = L['Set the size of the individual auras.'],
-					min = 16, max = 40, step = 2,
+					min = 16, max = 30, step = 2,
 					get = function(info) return E.private.auras[ info[#info] ] end,
 					set = function(info, value) 
 						E.private.auras[ info[#info] ] = value; 
@@ -50,16 +50,6 @@ E.Options.args.auras = {
 					name = L['Wrap After'],
 					desc = L['Begin a new row or column after this many auras.'],
 					min = 1, max = 40, step = 1,
-				},		
-				xSpacing = {
-					type = 'range',
-					name = L['X Spacing'],
-					min = 1, max = 60, step = 1,				
-				},
-				ySpacing = {
-					type = 'range',
-					name = L['Y Spacing'],
-					min = 1, max = 60, step = 1,				
 				},				
 			},
 		},
@@ -94,7 +84,7 @@ E.Options.args.auras = {
 					name = L['Max Wraps'],
 					desc = L['Limit the number of rows or columns.'],
 					type = 'range',
-					min = 0, max = 40, step = 1,
+					min = 0, max = 3, step = 1,
 				},
 				seperateOwn = {
 					name = L['Seperate'],
@@ -140,7 +130,7 @@ E.Options.args.auras = {
 					name = L['Max Wraps'],
 					desc = L['Limit the number of rows or columns.'],
 					type = 'range',
-					min = 0, max = 40, step = 1,
+					min = 0, max = 3, step = 1,
 				},
 			},
 		},				
