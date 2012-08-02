@@ -2,6 +2,7 @@ TODO:
 
 -Check tooltip bug where it's resizing itself rapidly.
 -Add a threat system, not sure how i will go about doing this atm.
+-Add a fucking microbar to stop the bitching.
 -Fix ticket #274 guild level skin bug
 -Look into using the oUF tagging system for more unitframe texts such as health power, currently its being ignored.
 -Add Enable/Disable minimap option, move minimap into its own sub section of general settings. Along with size and farmmode size.
