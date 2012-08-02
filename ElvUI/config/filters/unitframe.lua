@@ -24,6 +24,15 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 G.unitframe.aurafilters['TurtleBuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
+		[SpellName(33206)] = Defaults(), -- Pain Suppression
+		[SpellName(47788)] = Defaults(), -- Guardian Spirit
+		[SpellName(62618)] = Defaults(), --Power Word: Barrier
+		[SpellName(1044)] = Defaults(), -- Hand of Freedom
+		[SpellName(1022)] = Defaults(), -- Hand of Protection
+		[SpellName(1038)] = Defaults(), -- Hand of Salvation
+		[SpellName(6940)] = Defaults(), -- Hand of Sacrifice
+		[SpellName(114039)] = Defaults(), -- Hand of Purity
+		[SpellName(53480)] = Defaults(), -- Roar of Sacrifice	
 	},
 }
 
@@ -66,38 +75,80 @@ end
 
 G.unitframe.buffwatch = {
 	PRIEST = {
-
+		{6788, "TOPRIGHT", {1, 0, 0}, true},	 -- Weakened Soul
+		{33076, "BOTTOMRIGHT", {0.2, 0.7, 0.2}},	 -- Prayer of Mending
+		{139, "BOTTOMLEFT", {0.4, 0.7, 0.2}}, -- Renew
+		{17, "TOPLEFT", {0.81, 0.85, 0.1}, true},	 -- Power Word: Shield
+		{10060 , "RIGHT", {227/255, 23/255, 13/255}}, -- Power Infusion
+		{47788, "LEFT", {221/255, 117/255, 0}, true}, -- Guardian Spirit
+		{33206, "LEFT", {227/255, 23/255, 13/255}, true}, -- Pain Suppression		
 	},
 	DRUID = {
-
+		{774, "TOPRIGHT", {0.8, 0.4, 0.8}},	 -- Rejuvenation
+		{8936, "BOTTOMLEFT", {0.2, 0.8, 0.2}},	 -- Regrowth
+		{94447, "TOPLEFT", {0.4, 0.8, 0.2}},	 -- Lifebloom
+		{48438, "BOTTOMRIGHT", {0.8, 0.4, 0}},	 -- Wild Growth
 	},
 	PALADIN = {
-
-	},
-	ROGUE = {
-	
-	},
-	DEATHKNIGHT = {
-	
-	},
-	MAGE = {
-
-	},
-	WARRIOR = {
-
+		{53563, "TOPRIGHT", {0.7, 0.3, 0.7}},	 -- Beacon of Light
+		{1022, "BOTTOMRIGHT", {0.2, 0.2, 1}, true},	-- Hand of Protection
+		{1044, "BOTTOMRIGHT", {0.89, 0.45, 0}, true},	-- Hand of Freedom
+		{1038, "BOTTOMRIGHT", {0.93, 0.75, 0}, true},	-- Hand of Salvation
+		{6940, "BOTTOMRIGHT", {0.89, 0.1, 0.1}, true},	-- Hand of Sacrifice
 	},
 	SHAMAN = {
-
-	},	
+		{61295, "TOPRIGHT", {0.7, 0.3, 0.7}},	 -- Riptide
+		{974, "BOTTOMLEFT", {0.2, 0.7, 0.2}, true},	 -- Earth Shield
+		{51945, "BOTTOMRIGHT", {0.7, 0.4, 0}},	 -- Earthliving
+	},
+	MONK = {
+		{119611, "TOPLEFT", {0.8, 0.4, 0.8}},	 --Renewing Mist
+		{116849, "TOPRIGHT", {0.2, 0.8, 0.2}},	 -- Life Cocoon
+		{124682, "BOTTOMLEFT", {0.4, 0.8, 0.2}}, -- Enveloping Mist
+		{124081, "BOTTOMRIGHT", {0.7, 0.4, 0}}, -- Zen Sphere
+	},
+	ROGUE = {
+		{57934, "TOPRIGHT", {227/255, 23/255, 13/255}}, -- Tricks of the Trade
+	},
+	MAGE = {
+		{111264, "TOPLEFT", {0.2, 0.2, 1}}, -- Ice Ward
+	},
+	WARRIOR = {
+		{114030, "TOPLEFT", {0.2, 0.2, 1}}, -- Vigilance
+		{3411, "TOPRIGHT", {227/255, 23/255, 13/255}}, -- Intervene	
+	},
+	DEATHKNIGHT = {
+		{49016, "TOPRIGHT", {227/255, 23/255, 13/255}}, -- Unholy Frenzy	
+	},
 }
 
 --List of spells to display ticks
 G.unitframe.ChannelTicks = {
-
+	--Warlock
+	[SpellName(1120)] = 6, --"Drain Soul"
+	[SpellName(689)] = 6, -- "Drain Life"
+	[SpellName(108371)] = 6, -- "Harvest Life"
+	[SpellName(5740)] = 4, -- "Rain of Fire"
+	[SpellName(755)] = 6, -- Health Funnel
+	[SpellName(103103)] = 3, --Malefic Grasp
+	--Druid
+	[SpellName(44203)] = 4, -- "Tranquility"
+	[SpellName(16914)] = 10, -- "Hurricane"
+	--Priest
+	[SpellName(15407)] = 3, -- "Mind Flay"
+	[SpellName(48045)] = 5, -- "Mind Sear"
+	[SpellName(47540)] = 2, -- "Penance"
+	[SpellName(64901)] = 4, -- Hymn of Hope
+	[SpellName(64843)] = 4, -- Divine Hymn
+	--Mage
+	[SpellName(5143)] = 5, -- "Arcane Missiles"
+	[SpellName(10)] = 8, -- "Blizzard"
+	[SpellName(12051)] = 4, -- "Evocation"
 }
 
 --Spells Effected By Haste
 G.unitframe.HastedChannelTicks = {
-
+	[SpellName(64901)] = true, -- Hymn of Hope
+	[SpellName(64843)] = true, -- Divine Hymn
+	[SpellName(1120)] = true, -- Drain Soul
 }
-

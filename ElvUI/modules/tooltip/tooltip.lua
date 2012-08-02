@@ -30,10 +30,10 @@ local linkTypes = {
 }
 
 local classification = {
-	worldboss = "|cffAF5050Boss|r",
-	rareelite = "|cffAF5050+ Rare|r",
+	worldboss = string.format("|cffAF5050 %s|r", BOSS),
+	rareelite = string.format("|cffAF5050+ %s|r", ITEM_QUALITY3_DESC),
 	elite = "|cffAF5050+|r",
-	rare = "|cffAF5050Rare|r",
+	rare = string.format("|cffAF5050 %s|r", ITEM_QUALITY3_DESC)
 }
 
 function TT:SetStatusBarAnchor(pos)
@@ -458,7 +458,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	else
 		for i = 2, lines do			
 			if _G["GameTooltipTextLeft"..i] and _G["GameTooltipTextLeft"..i]:GetText() and ((_G["GameTooltipTextLeft"..i]:GetText():find("^"..LEVEL)) or (crtype and _G["GameTooltipTextLeft"..i]:GetText():find("^"..crtype))) then
-				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r%s %s", r*255, g*255, b*255, classif ~= "worldboss" and level > 0 and level or "?? ", classification[classif] or "", crtype or "")
+				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r%s %s", r*255, g*255, b*255, classif ~= "worldboss" and level > 0 and level or "??", classification[classif] or "", crtype or "")
 				break
 			end
 		end

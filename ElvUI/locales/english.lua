@@ -145,8 +145,6 @@ L['Sort Direction'] = true;
 L['Sort Method'] = true;
 L['Time'] = true;
 L['Wrap After'] = true;
-L['X Spacing'] = true;
-L['Y Spacing'] = true;
 L['Your Auras First'] = true;
 
 --Chat
@@ -192,12 +190,12 @@ L['yells'] = true;
 
 --Config / Install
 L["All keybindings cleared for |cff00ff00%s|r."] = true;
+L['Bar'] = true;
 L["Binds Discarded"] = true;
 L["Binds Saved"] = true;
 L["Caster DPS"] = true;
 L["Chat Set"] = true;
 L['Choose a theme layout you wish to use for your initial setup.'] = true;
-L['Classic Pixel'] = true;
 L['Classic'] = true;
 L["Click the button below to resize your chat frames, unitframes, and reposition your actionbars."] = true;
 L['Config Mode:'] = true;
@@ -433,7 +431,6 @@ L["Remaining:"] = true;
 L["Rested:"] = true;
 L["Right Click:"] = true; --layout\layout.lua
 L["Toggle Chat Frame"] = true; --layout\layout.lua
-L["Toggle Embedded Addon"] = true; --layout\layout.lua
 L["XP:"] = true;
 L["You don't have enough money to repair."] = true;
 L["You don't have permission to mark targets."] = true;

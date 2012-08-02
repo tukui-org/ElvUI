@@ -182,9 +182,6 @@ function CH:StyleChat(frame)
 	
 	frame:SetClampRectInsets(0,0,0,0)
 	frame:SetClampedToScreen(false)
-	if frame:IsMovable() then
-		frame:SetUserPlaced(true)
-	end
 	frame:StripTextures(true)
 	_G[name..'ButtonFrame']:Kill()
 	_G[name]:SetFading(false)
@@ -344,8 +341,8 @@ end
 function CH:PositionChat(override)
 	if (InCombatLockdown() and not override and self.initialMove) or (IsMouseButtonDown("LeftButton") and not override) then return end
 	
-	RightChatPanel:Size(E.db.general.panelWidth, E.db.general.panelHeight)
-	LeftChatPanel:Size(E.db.general.panelWidth, E.db.general.panelHeight)	
+	RightChatPanel:Size(E.db.chat.panelWidth, E.db.chat.panelHeight)
+	LeftChatPanel:Size(E.db.chat.panelWidth, E.db.chat.panelHeight)	
 	
 	if E.private.chat.enable ~= true then return end
 	
@@ -393,11 +390,11 @@ function CH:PositionChat(override)
 			if id ~= 2 then
 				chat:ClearAllPoints()
 				chat:Point("BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 1, 3)
-				chat:SetSize(E.db.general.panelWidth - 11, (E.db.general.panelHeight - 60))
+				chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - 60))
 			else
 				chat:ClearAllPoints()
 				chat:Point("BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 1, 3)
-				chat:Size(E.db.general.panelWidth - 11, (E.db.general.panelHeight - 60) - CombatLogQuickButtonFrame_Custom:GetHeight())				
+				chat:Size(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - 60) - CombatLogQuickButtonFrame_Custom:GetHeight())				
 			end
 			
 			
@@ -406,7 +403,10 @@ function CH:PositionChat(override)
 			tab:SetParent(RightChatPanel)
 			chat:SetParent(tab)
 			
-			if E.db.general.panelBackdrop == 'HIDEBOTH' or E.db.general.panelBackdrop == 'LEFT' then
+			if chat:IsMovable() then
+				chat:SetUserPlaced(true)
+			end
+			if E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'LEFT' then
 				CH:SetupChatTabs(tab, true)
 			else
 				CH:SetupChatTabs(tab, false)
@@ -420,13 +420,15 @@ function CH:PositionChat(override)
 			if id ~= 2 and not (id > NUM_CHAT_WINDOWS) then
 				chat:ClearAllPoints()
 				chat:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPLEFT", 1, 3)
-				chat:Size(E.db.general.panelWidth - 11, (E.db.general.panelHeight - 60))
+				chat:Size(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - 60))
 				FCF_SavePositionAndDimensions(chat)		
 			end
 			chat:SetParent(LeftChatPanel)
 			tab:SetParent(GeneralDockManager)
-			
-			if E.db.general.panelBackdrop == 'HIDEBOTH' or E.db.general.panelBackdrop == 'RIGHT' then
+			if chat:IsMovable() then
+				chat:SetUserPlaced(true)
+			end
+			if E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'RIGHT' then
 				CH:SetupChatTabs(tab, true)
 			else
 				CH:SetupChatTabs(tab, false)

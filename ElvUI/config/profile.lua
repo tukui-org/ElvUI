@@ -15,32 +15,30 @@ P['general'] = {
 	["autoRepair"] = "GUILD",
 	['vendorGrays'] = true,
 	['autoAcceptInvite'] = false,
-	
-	-- fonts
+
 	["fontsize"] = 11,
 	["font"] = "Friz Quadrata TT",
-	
-	--colors
+
 	["bordercolor"] = { r = .20,g = .20,b = .20 },
 	["backdropcolor"] = { r = .16,g = .16,b = .16 },
 	["backdropfadecolor"] = { r = .10,g = .10,b = .10, a = 0.9 },
 	["valuecolor"] = {r = valuer,g = valueg,b = valueb},
-	
-	--panels
-	['panelWidth'] = 382,
-	['panelHeight'] = 200,
-	['panelBackdropNameLeft'] = '',
-	['panelBackdropNameRight'] = '',
-	['panelBackdrop'] = 'SHOWBOTH',
+
 	['expRepPos'] = 'MINIMAP_BOTTOM',
-	
-	--misc
+
 	['mapAlpha'] = 1,
 	['minimapSize'] = 176,
-	['raidReminder'] = true,
-	['minimapPanels'] = true,
 	['tinyWorldMap'] = true,
-	['minimapLocationText'] = 'MOUSEOVER',
+	
+	['experience'] = true,
+	['experienceWidth'] = 475,
+	['experienceHeight'] = 18,
+	['experienceTextFormat'] = 'NONE',
+	
+	['reputation'] = true,
+	['reputationWidth'] = 475,
+	['reputationHeight'] = 18,
+	['reputationTextFormat'] = 'NONE',
 };
 
 --Bags
@@ -92,13 +90,11 @@ P['auras'] = {
 	['enable'] = true;
 	['consolidedBuffs'] = true;
 	['wrapAfter'] = 16,
-	['xSpacing'] = 10,
-	['ySpacing'] = 42,
 	
 	['buffs'] = {
 		['sortMethod'] = "TIME",
 		['sortDir'] = '-',
-		['maxWraps'] = 2,
+		['maxWraps'] = 3,
 		['seperateOwn'] = 1,
 	},
 	['debuffs'] = {
@@ -118,10 +114,15 @@ P['chat'] = {
 	['font'] = 'Arial Narrow',
 	['fontoutline'] = 'NONE',
 	['sticky'] = true,
-	['keywords'] = '%MYNAME%, ElvUI, Blaze, Blazii, Blæs',
 	['emotionIcons'] = true,
 	['keywordSound'] = 'Whisper Alert',
 	['whisperSound'] = 'Whisper Alert',
+	['keywords'] = '%MYNAME%, ElvUI, Blaze, Blazii, Blæs',
+	['panelWidth'] = 382,
+	['panelHeight'] = 200,
+	['panelBackdropNameLeft'] = '',
+	['panelBackdropNameRight'] = '',
+	['panelBackdrop'] = 'SHOWBOTH',
 }
 
 --Datatexts
@@ -152,6 +153,8 @@ P['datatexts'] = {
 	['localtime'] = true,
 	['time24'] = true,
 	['battleground'] = false,
+	['minimapLocationText'] = 'MOUSEOVER',
+	['minimapPanels'] = true,
 }
 
 --Tooltip
@@ -1195,7 +1198,7 @@ P["actionbar"] = {
 			["DRUID"] = "[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10;",
 			["WARRIOR"] = "[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;",
 			["PRIEST"] = "[bonusbar:1] 7;",
-			["ROGUE"] = "[bonusbar:1] 7; [form:3] 7;",
+			["ROGUE"] = "[stance:1] 7; [stance:3] 7;", -- set to "[stance:1] 7; [stance:3] 10;" if you want a shadow dance bar
 			["MONK"] = "[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;"
 		},
 		['visibility'] = "[petbattle] hide; show",
@@ -1282,3 +1285,9 @@ P["actionbar"] = {
 		["buttonspacing"] = 4,
 	},
 };
+
+if GetLocale() ~= 'enUS' then
+	P['general'].font = 'Arial Narrow'
+	P['unitframe'].font = 'Arial Narrow'
+	P['chat'].font = 'Arial Narrow'
+end

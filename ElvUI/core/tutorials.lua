@@ -45,13 +45,10 @@ function E:SpawnTutorialFrame()
 	local f = CreateFrame("Frame", "ElvUITutorialWindow", UIParent)
 	f:SetFrameStrata("DIALOG")
 	f:SetToplevel(true)
-	f:EnableMouse(true)
-	f:SetMovable(true)
 	f:SetClampedToScreen(true)
 	f:SetWidth(360)
 	f:SetHeight(110)
 	f:SetTemplate('Transparent')
-	f:SetPoint("TOP", 0, -50)
 	f:Hide()
 
 	local S = E:GetModule('Skins')
@@ -61,11 +58,7 @@ function E:SpawnTutorialFrame()
 	header:SetWidth(120); header:SetHeight(25)
 	header:SetPoint("CENTER", f, 'TOP')
 	header:SetFrameLevel(header:GetFrameLevel() + 2)
-	header:EnableMouse(true)
-	header:RegisterForClicks('AnyUp', 'AnyDown')
-	header:SetScript('OnMouseDown', function() f:StartMoving() end)
-	header:SetScript('OnMouseUp', function() f:StopMovingOrSizing() end)
-	
+
 	local title = header:CreateFontString("OVERLAY")
 	title:FontTemplate()
 	title:SetPoint("CENTER", header, "CENTER")
@@ -91,7 +84,7 @@ function E:SpawnTutorialFrame()
 	f.hideButton:SetPoint("BOTTOMRIGHT", -5, 5)	
 	S:HandleButton(f.hideButton)	
 	_G[f.hideButton:GetName() .. "Text"]:SetText(HIDE)
-	f.hideButton:SetScript("OnClick", function(self) self:GetParent():Hide() end)
+	f.hideButton:SetScript("OnClick", function(self) E:StaticPopupSpecial_Hide(self:GetParent()) end)
 	
 	f.nextButton = CreateFrame("Button", f:GetName()..'NextButton', f, "OptionsButtonTemplate")
 	f.nextButton:SetPoint("RIGHT", f.hideButton, 'LEFT', -4, 0)	
@@ -116,8 +109,8 @@ function E:Tutorials(forceShow)
 	if not f then
 		f = E:SpawnTutorialFrame()
 	end
-	
-	f:Show()
+
+	E:StaticPopupSpecial_Show(f)
 	
 	self:SetNextTutorial()
 end

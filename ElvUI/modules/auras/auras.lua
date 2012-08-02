@@ -10,9 +10,9 @@ function A:FormatTime(s)
 	elseif s >= minute then
 		return format("|cffeeeeee%dm|r", ceil(s / minute))
 	elseif s >= minute / 12 then
-		return floor(s)
+		return tostring(floor(s))..'s'
 	end
-	return format("%.1f", s)
+	return format("%.1fs", s)
 end
 
 function A:UpdateTime(elapsed)
@@ -157,14 +157,17 @@ function A:UpdateHeader(header)
 	header:SetAttribute("sortDir", db.sortDir)
 	header:SetAttribute("maxWraps", db.maxWraps)
 	header:SetAttribute("wrapAfter", self.db.wrapAfter)
-	header:SetAttribute("minWidth", (E.private.auras.size + self.db.xSpacing) * self.db.wrapAfter)
-	header:SetAttribute("minHeight", (self.db.ySpacing - E.private.auras.size) * db.maxWraps)
-	header:SetAttribute("wrapYOffset", -(self.db.ySpacing + E.private.auras.size))
+	
+	header:SetAttribute("minWidth", ((10 + E.private.auras.size) * self.db.wrapAfter) - 6)
+	header:SetAttribute("minHeight", (10 - E.private.auras.size) * db.maxWraps)
+	header:SetAttribute("wrapYOffset", -(18 + E.private.auras.size))
+	AurasHolder:Width(header:GetAttribute('minWidth'))
 	
 	A:PostDrag()
 end
 
 function A:UpdateAllHeaders()
+	if E.private.auras.enable ~= true then return end
 	local headers = {ElvUIPlayerBuffs,ElvUIPlayerDebuffs}
 	for _, header in pairs(headers) do
 		if header then
@@ -173,12 +176,11 @@ function A:UpdateAllHeaders()
 	end
 end
 
-function A:CreateAuraHeader(filter, ...)
+function A:CreateAuraHeader(filter)
 	local name	
 	if filter == "HELPFUL" then name = "ElvUIPlayerBuffs" else name = "ElvUIPlayerDebuffs" end
 
 	local header = CreateFrame("Frame", name, E.UIParent, "SecureAuraHeaderTemplate")
-	header:SetPoint(...)
 	header:SetClampedToScreen(true)
 	header:SetAttribute("template", "ElvUIAuraTemplate"..E.private.auras.size)
 	header:HookScript("OnEvent", A.ScanAuras)
@@ -206,11 +208,27 @@ function A:PostDrag(position)
 			if not position then position = E:GetScreenQuadrant(header) end
 			if string.find(position, "LEFT") then
 				header:SetAttribute("point", "TOPLEFT")
-				header:SetAttribute("xOffset", (E.private.auras.size + A.db.xSpacing))
-			elseif string.find(position, "RIGHT") then
+				header:SetAttribute("xOffset", (E.private.auras.size + 10))
+			else
 				header:SetAttribute("point", "TOPRIGHT")
-				header:SetAttribute("xOffset", -(E.private.auras.size + A.db.xSpacing))		
+				header:SetAttribute("xOffset", -(E.private.auras.size + 10))		
 			end
+			
+			header:ClearAllPoints()
+		end
+	end
+	
+	if string.find(position, "LEFT") then
+		ElvUIPlayerBuffs:Point("TOPLEFT", AurasHolder, "TOPLEFT", 2, -2)
+		
+		if ElvUIPlayerDebuffs then
+			ElvUIPlayerDebuffs:Point("BOTTOMLEFT", AurasHolder, "BOTTOMLEFT", 2, 2)
+		end
+	else
+		ElvUIPlayerBuffs:Point("TOPRIGHT", AurasHolder, "TOPRIGHT", -2, -2)
+		
+		if ElvUIPlayerDebuffs then
+			ElvUIPlayerDebuffs:Point("BOTTOMRIGHT", AurasHolder, "BOTTOMRIGHT", -2, 2)	
 		end
 	end
 end
@@ -229,9 +247,9 @@ function A:Initialize()
 	holder:Width(456)
 	holder:Height(E.MinimapHeight)
 	
-	self.BuffFrame = self:CreateAuraHeader("HELPFUL", "TOPRIGHT", holder, "TOPRIGHT", -2, -2)
-	self.DebuffFrame = self:CreateAuraHeader("HARMFUL", "BOTTOMRIGHT", holder, "BOTTOMRIGHT", -2, -2)
-	
+	self.BuffFrame = self:CreateAuraHeader("HELPFUL")
+	self.DebuffFrame = self:CreateAuraHeader("HARMFUL")
+
 	E:CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, nil, A.PostDrag)
 	
 	self.ScanAuras(self.BuffFrame)

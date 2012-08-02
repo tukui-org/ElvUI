@@ -117,10 +117,10 @@ function E:UpdateMedia()
 	self["media"].rgbvaluecolor = {value.r, value.g, value.b}
 	
 	if LeftChatPanel and LeftChatPanel.tex and RightChatPanel and RightChatPanel.tex then
-		LeftChatPanel.tex:SetTexture(E.db.general.panelBackdropNameLeft)
+		LeftChatPanel.tex:SetTexture(E.db.chat.panelBackdropNameLeft)
 		LeftChatPanel.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.55 > 0 and E.db.general.backdropfadecolor.a - 0.55 or 0.5)		
 		
-		RightChatPanel.tex:SetTexture(E.db.general.panelBackdropNameRight)
+		RightChatPanel.tex:SetTexture(E.db.chat.panelBackdropNameRight)
 		RightChatPanel.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.55 > 0 and E.db.general.backdropfadecolor.a - 0.55 or 0.5)		
 	end
 
@@ -355,7 +355,9 @@ function E:UpdateAll(ignoreInstall)
 	bags:Layout(true); 
 	bags:PositionBagFrames()
 	bags:SizeAndPositionBagBar()
-
+	
+	E:GetModule('Auras'):UpdateAllHeaders()
+	
 	self:GetModule('Layout'):ToggleChatPanels()
 	
 	local DT = self:GetModule('DataTexts')
@@ -369,6 +371,11 @@ function E:UpdateAll(ignoreInstall)
 	local UF = self:GetModule('UnitFrames')
 	UF.db = self.db.unitframe
 	UF:Update_AllFrames()
+	
+	local M = self:GetModule("Misc")
+	M:UpdateExpRepDimensions()
+	M:EnableDisable_ExperienceBar()
+	M:EnableDisable_ReputationBar()	
 	
 	self:GetModule('Auras').db = self.db.auras
 	self:GetModule('Tooltip').db = self.db.tooltip

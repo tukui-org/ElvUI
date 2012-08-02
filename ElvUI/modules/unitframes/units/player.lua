@@ -741,12 +741,11 @@ function UF:Update_PlayerFrame(frame, db)
 			else
 				bars.backdrop:Hide()			
 			end		
-			
-			if USE_CLASSBAR and not frame:IsElementEnabled('ArcaneCharge') then
-				frame:EnableElement('ArcaneCharge')
-			elseif not USE_CLASSBAR and frame:IsElementEnabled('ArcaneCharge') then
-				frame:DisableElement('ArcaneCharge')	
-				bars:Hide()
+
+			if USE_CLASSBAR and not frame:IsElementEnabled('ArcaneChargeBar') then
+				frame:EnableElement('ArcaneChargeBar')
+			elseif not USE_CLASSBAR and frame:IsElementEnabled('ArcaneChargeBar') then
+				frame:DisableElement('ArcaneChargeBar')	
 			end		
 		elseif E.myclass == "WARLOCK" then
 			local bars = frame.ShardBar

@@ -160,7 +160,7 @@ function M:UpdateSettings()
 	Minimap:Size(E.MinimapSize, E.MinimapSize)
 	
 	if LeftMiniPanel and RightMiniPanel then
-		if E.db.general.minimapPanels then
+		if E.db.datatexts.minimapPanels then
 			LeftMiniPanel:Show()
 			RightMiniPanel:Show()
 		else
@@ -172,7 +172,7 @@ function M:UpdateSettings()
 	if MMHolder then
 		MMHolder:Width((Minimap:GetWidth() + 4) + E.ConsolidatedBuffsWidth)
 		
-		if E.db.general.minimapPanels then
+		if E.db.datatexts.minimapPanels then
 			MMHolder:Height(Minimap:GetHeight() + 27)
 		else
 			MMHolder:Height(Minimap:GetHeight() + 5)	
@@ -211,7 +211,7 @@ function M:UpdateSettings()
 	end
 		
 	if ElvConfigToggle then
-		if E.db.auras.consolidedBuffs and E.db.general.minimapPanels then
+		if E.db.auras.consolidedBuffs and E.db.datatexts.minimapPanels then
 			ElvConfigToggle:Show()
 			ElvConfigToggle:Width(E.ConsolidatedBuffsWidth)
 		else

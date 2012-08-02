@@ -237,6 +237,7 @@ local function LoadSkin()
 					_G['CriteriaAlertFrame'..i..'IconTexture'].b:Point("BOTTOMRIGHT", _G['CriteriaAlertFrame'..i..'IconTexture'], "BOTTOMRIGHT", 3, -2)
 					_G['CriteriaAlertFrame'..i..'IconTexture']:SetParent(_G['CriteriaAlertFrame'..i..'IconTexture'].b)
 				end
+				_G['CriteriaAlertFrame'..i..'IconTexture']:SetTexCoord(unpack(E.TexCoords))
 			end	
 		end
 	end)

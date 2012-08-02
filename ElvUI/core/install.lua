@@ -196,25 +196,9 @@ function E:SetupTheme(theme, noDisplayMsg)
 	local classColor = RAID_CLASS_COLORS[E.myclass]
 	E.db.theme = theme
 	
-	--Set fonts
-	if theme == "classic" then
-		E.db.general.font = "ElvUI Font"
-		E.db.general.fontsize = 12
-		
-		E.db.unitframe.font = "ElvUI Font"
-		E.db.unitframe.fontsize = 12
-		E.db.unitframe.fontoutline = "OUTLINE"
-	else
-		E.db.general.font = "ElvUI Pixel"
-		E.db.general.fontsize = 11
-		
-		E.db.unitframe.font = "ElvUI Pixel"
-		E.db.unitframe.fontsize = 10
-		E.db.unitframe.fontoutline = "MONOCHROMEOUTLINE"	
-	end
-	
+
 	--Set colors
-	if theme == "classic" or theme == "classic_pixel" then
+	if theme == "classic" then
 		E.db.general.bordercolor = E:GetColor(.31, .31, .31)
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
 		E.db.general.backdropfadecolor = E:GetColor(.06, .06, .06, .8)
@@ -277,8 +261,8 @@ function E:SetupResolution(noDataReset)
 	if self == 'low' then
 		if not E.db.movers then E.db.movers = {}; end
 		if not noDataReset then
-			E.db.general.panelWidth = 400
-			E.db.general.panelHeight = 180
+			E.db.chat.panelWidth = 400
+			E.db.chat.panelHeight = 180
 			
 			E:CopyTable(E.db.actionbar, P.actionbar)
 					
@@ -288,6 +272,11 @@ function E:SetupResolution(noDataReset)
 			E.db.actionbar.bar5.enabled = false;
 		end
 		
+		if not noDataReset then
+			E.db.auras.wrapAfter = 10;
+		end
+		E.db.general.reputationWidth = 400
+		E.db.general.experienceWidth = 400
 		E.db.movers.ElvAB_2 = "CENTERUIParentBOTTOM056.18"
 		
 		if not noDataReset then
@@ -325,12 +314,16 @@ function E:SetupResolution(noDataReset)
 		
 		E.db.lowresolutionset = true;
 	elseif not noDataReset then
-		E.db.general.panelWidth = P.general.panelWidth
-		E.db.general.panelHeight = P.general.panelHeight
+		E.db.chat.panelWidth = P.chat.panelWidth
+		E.db.chat.panelHeight = P.chat.panelHeight
 		
 		E:CopyTable(E.db.actionbar, P.actionbar)
 		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
 
+		E.db.auras.wrapAfter = P.auras.wrapAfter;	
+		E.db.general.reputationWidth = P.general.reputationWidth
+		E.db.general.experienceWidth = P.general.experienceWidth
+		
 		E.db.lowresolutionset = nil;
 	end
 	
@@ -639,14 +632,11 @@ local function SetPage(PageNum)
 		InstallOption1Button:SetScript('OnClick', function() E:SetupTheme('classic') end)
 		InstallOption1Button:SetText(L["Classic"])	
 		InstallOption2Button:Show()
-		InstallOption2Button:SetScript('OnClick', function() E:SetupTheme('classic_pixel') end)
-		InstallOption2Button:SetText(L['Classic Pixel'])
+		InstallOption2Button:SetScript('OnClick', function() E:SetupTheme('default') end)
+		InstallOption2Button:SetText(DEFAULT)
 		InstallOption3Button:Show()
-		InstallOption3Button:SetScript('OnClick', function() E:SetupTheme('default') end)
-		InstallOption3Button:SetText(DEFAULT)
-		InstallOption4Button:Show()
-		InstallOption4Button:SetScript('OnClick', function() E:SetupTheme('class') end)
-		InstallOption4Button:SetText(CLASS)		
+		InstallOption3Button:SetScript('OnClick', function() E:SetupTheme('class') end)
+		InstallOption3Button:SetText(CLASS)
 	elseif PageNum == 5 then
 		f.SubTitle:SetText(L["Resolution"])
 		f.Desc1:SetText(format(L["Your current resolution is %s, this is considered a %s resolution."], E.resolution, E.lowversion == true and L["low"] or L["high"]))
