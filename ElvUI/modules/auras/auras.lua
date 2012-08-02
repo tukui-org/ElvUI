@@ -12,7 +12,7 @@ function A:FormatTime(s)
 	elseif s >= minute / 12 then
 		return tostring(floor(s))..'s'
 	end
-	return format("%.1f", s)
+	return format("%.1fs", s)
 end
 
 function A:UpdateTime(elapsed)
