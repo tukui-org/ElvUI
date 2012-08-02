@@ -182,9 +182,6 @@ function CH:StyleChat(frame)
 	
 	frame:SetClampRectInsets(0,0,0,0)
 	frame:SetClampedToScreen(false)
-	if frame:IsMovable() then
-		frame:SetUserPlaced(true)
-	end
 	frame:StripTextures(true)
 	_G[name..'ButtonFrame']:Kill()
 
@@ -405,6 +402,9 @@ function CH:PositionChat(override)
 			tab:SetParent(RightChatPanel)
 			chat:SetParent(tab)
 			
+			if chat:IsMovable() then
+				chat:SetUserPlaced(true)
+			end
 			if E.db.general.panelBackdrop == 'HIDEBOTH' or E.db.general.panelBackdrop == 'LEFT' then
 				CH:SetupChatTabs(tab, true)
 			else
@@ -424,7 +424,9 @@ function CH:PositionChat(override)
 			end
 			chat:SetParent(LeftChatPanel)
 			tab:SetParent(GeneralDockManager)
-			
+			if chat:IsMovable() then
+				chat:SetUserPlaced(true)
+			end
 			if E.db.general.panelBackdrop == 'HIDEBOTH' or E.db.general.panelBackdrop == 'RIGHT' then
 				CH:SetupChatTabs(tab, true)
 			else
