@@ -173,20 +173,12 @@ function E:SetupTheme(theme, noDisplayMsg)
 	E.db.theme = theme
 	
 	--Set fonts
-	if theme == "classic" then
+	if theme == "classic" and GetLocale() == 'enUS' then
 		E.db.general.font = "ElvUI Font"
-		E.db.general.fontsize = 12
-		
-		E.db.unitframe.font = "ElvUI Font"
-		E.db.unitframe.fontsize = 12
-		E.db.unitframe.fontoutline = "OUTLINE"
-	else
+		E.db.general.fontsize = 11
+	elseif GetLocale() == 'enUS' then
 		E.db.general.font = "ElvUI Pixel"
 		E.db.general.fontsize = 11
-		
-		E.db.unitframe.font = "ElvUI Pixel"
-		E.db.unitframe.fontsize = 10
-		E.db.unitframe.fontoutline = "MONOCHROMEOUTLINE"	
 	end
 	
 	--Set colors

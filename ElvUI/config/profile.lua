@@ -16,7 +16,7 @@ P['general'] = {
 	
 	-- fonts
 	["fontsize"] = 11,
-	["font"] = "ElvUI Pixel",
+	["font"] = "ElvUI Font",
 	
 	--colors
 	["bordercolor"] = { r = 0.1,g = 0.1,b = 0.1 },
@@ -1269,3 +1269,9 @@ P["actionbar"] = {
 		["buttonspacing"] = 4,
 	},
 };
+
+if GetLocale() ~= 'enUS' then
+	P['general'].font = 'Arial Narrow'
+	P['unitframe'].font = 'Arial Narrow'
+	P['chat'].font = 'Arial Narrow'
+end
