@@ -15,7 +15,7 @@ P['general'] = {
 	['autoAcceptInvite'] = false,
 	
 	-- fonts
-	["fontsize"] = 11,
+	["fontsize"] = 12,
 	["font"] = "ElvUI Font",
 	
 	--colors

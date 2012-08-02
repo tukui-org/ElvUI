@@ -175,7 +175,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 	--Set fonts
 	if theme == "classic" and GetLocale() == 'enUS' then
 		E.db.general.font = "ElvUI Font"
-		E.db.general.fontsize = 11
+		E.db.general.fontsize = 12
 	elseif GetLocale() == 'enUS' then
 		E.db.general.font = "ElvUI Pixel"
 		E.db.general.fontsize = 11
