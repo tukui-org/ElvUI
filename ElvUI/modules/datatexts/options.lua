@@ -73,6 +73,29 @@ E.Options.args.datatexts = {
 			name = L['Battleground Texts'],
 			desc = L['When inside a battleground display personal scoreboard information on the main datatext bars.'],
 		},
+		minimapPanels = {
+			order = 5,
+			name = L['Minimap Panels'],
+			desc = L['Display minimap panels below the minimap, used for datatexts.'],
+			type = 'toggle',
+			set = function(info, value) 
+				E.db.datatexts[ info[#info] ] = value
+				E:GetModule('Minimap'):UpdateSettings()
+			end,					
+		},				
+		minimapLocationText = {
+			order = 6,
+			type = 'select',
+			name = L['Location Text'],
+			desc = L['Change settings for the display of the location text that is on the minimap.'],
+			get = function(info) return E.db.datatexts.minimapLocationText end,
+			set = function(info, value) E.db.datatexts.minimapLocationText = value; E:GetModule('Minimap'):UpdateSettings() end,
+			values = {
+				['MOUSEOVER'] = L['Minimap Mouseover'],
+				['SHOW'] = L['Always Display'],
+				['HIDE'] = L['Hide'],
+			},
+		},	
 		panels = {
 			type = 'group',
 			name = L['Panels'],

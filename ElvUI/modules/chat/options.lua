@@ -130,15 +130,66 @@ E.Options.args.chat = {
 					disabled = function() return not E.db.chat.keywordSound end,
 					values = AceGUIWidgetLSMlists.sound,
 					set = function(info, value) E.db.chat.keywordSound = value; end,
-				},	
-				keywords = {
+				},
+				panelBackdrop = {
 					order = 100,
+					type = 'select',
+					name = L['Panel Backdrop'],
+					desc = L['Toggle showing of the left and right chat panels.'],
+					set = function(info, value) E.db.chat.panelBackdrop = value; E:GetModule('Layout'):ToggleChatPanels(); E:GetModule('Chat'):PositionChat(true) end,
+					values = {
+						['HIDEBOTH'] = L['Hide Both'],
+						['SHOWBOTH'] = L['Show Both'],
+						['LEFT'] = L['Left Only'],
+						['RIGHT'] = L['Right Only'],
+					},
+				},	
+				panelHeight = {
+					order = 101,
+					type = 'range',
+					name = L['Panel Height'],
+					desc = L['PANEL_DESC'],
+					set = function(info, value) E.db.chat.panelHeight = value; E:GetModule('Chat'):PositionChat(true); end,
+					min = 150, max = 600, step = 1,
+				},				
+				panelWidth = {
+					order = 102,
+					type = 'range',
+					name = L['Panel Width'],
+					desc = L['PANEL_DESC'],
+					set = function(info, value) E.db.chat.panelWidth = value; E:GetModule('Chat'):PositionChat(true); local bags = E:GetModule('Bags'); bags:Layout(); bags:Layout(true); end,
+					min = 150, max = 700, step = 1,
+				},
+				keywords = {
+					order = 103,
 					name = L['Keywords'],
 					desc = L['List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank'],
 					type = 'input',
 					width = 'full',
 					set = function(info, value) E.db.chat[ info[#info] ] = value; CH:UpdateChatKeywords() end,
+				},				
+				panelBackdropNameLeft = {
+					order = 104,
+					type = 'input',
+					width = 'full',
+					name = L['Panel Texture (Left)'],
+					desc = L['Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.\n\nExample: Interface\\AddOns\\ElvUI\\media\\textures\\copy\n\nOr for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.'],
+					set = function(info, value) 
+						E.db.chat[ info[#info] ] = value
+						E:UpdateMedia()
+					end,
 				},
+				panelBackdropNameRight = {
+					order = 105,
+					type = 'input',
+					width = 'full',
+					name = L['Panel Texture (Right)'],
+					desc = L['Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.\n\nExample: Interface\\AddOns\\ElvUI\\media\\textures\\copy\n\nOr for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.'],
+					set = function(info, value) 
+						E.db.chat[ info[#info] ] = value
+						E:UpdateMedia()
+					end,
+				},					
 			},
 		},
 	},

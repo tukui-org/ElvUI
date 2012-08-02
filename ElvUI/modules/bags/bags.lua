@@ -254,8 +254,8 @@ function B:Layout(isBank)
 	if not isBank then
 		bs = BAGS_BACKPACK
 		if E.db.bags.bagCols == 0 then
-			cols = floor((E.db.general.panelWidth - 10)/370 * 10)
-			bagWidth = E.db.general.panelWidth - 10
+			cols = floor((E.db.chat.panelWidth - 10)/370 * 10)
+			bagWidth = E.db.chat.panelWidth - 10
 		else
 			cols = E.db.bags.bagCols
 			bagWidth = 35 * cols
@@ -266,8 +266,8 @@ function B:Layout(isBank)
 	else
 		bs = BAGS_BANK
 		if E.db.bags.bankCols == 0 then
-			cols = floor((E.db.general.panelWidth - 10)/370 * 10)
-			bagWidth = E.db.general.panelWidth - 10
+			cols = floor((E.db.chat.panelWidth - 10)/370 * 10)
+			bagWidth = E.db.chat.panelWidth - 10
 		else
 			cols = E.db.bags.bankCols
 			bagWidth = 35 * cols

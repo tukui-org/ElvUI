@@ -23,22 +23,13 @@ P['general'] = {
 	["backdropcolor"] = { r = 0.1,g = 0.1,b = 0.1 },
 	["backdropfadecolor"] = { r = .054,g = .054,b = .054, a = 0.8 },
 	["valuecolor"] = {r = 23/255,g = 132/255,b = 209/255},
-	
-	--panels
-	['panelWidth'] = 412,
-	['panelHeight'] = 180,
-	['panelBackdropNameLeft'] = '',
-	['panelBackdropNameRight'] = '',
-	['panelBackdrop'] = 'SHOWBOTH',
+
 	['expRepPos'] = 'TOP_SCREEN',
 	
 	--misc
 	['mapAlpha'] = 1,
 	['minimapSize'] = 176,
-	['raidReminder'] = true,
-	['minimapPanels'] = true,
 	['tinyWorldMap'] = true,
-	['minimapLocationText'] = 'MOUSEOVER',
 };
 
 --Bags
@@ -117,7 +108,12 @@ P['chat'] = {
 	['emotionIcons'] = true,
 	['keywordSound'] = 'None',
 	['whisperSound'] = 'Whisper Alert',
-	['keywords'] = '%MYNAME%, ElvUI'
+	['keywords'] = '%MYNAME%, ElvUI',
+	['panelWidth'] = 412,
+	['panelHeight'] = 180,
+	['panelBackdropNameLeft'] = '',
+	['panelBackdropNameRight'] = '',
+	['panelBackdrop'] = 'SHOWBOTH',	
 }
 
 --Datatexts
@@ -139,6 +135,8 @@ P['datatexts'] = {
 	['localtime'] = true,
 	['time24'] = false,
 	['battleground'] = true,
+	['minimapLocationText'] = 'MOUSEOVER',
+	['minimapPanels'] = true,	
 }
 
 --Tooltip

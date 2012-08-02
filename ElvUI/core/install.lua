@@ -237,8 +237,8 @@ function E:SetupResolution(noDataReset)
 	if self == 'low' then
 		if not E.db.movers then E.db.movers = {}; end
 		if not noDataReset then
-			E.db.general.panelWidth = 400
-			E.db.general.panelHeight = 180
+			E.db.chat.panelWidth = 400
+			E.db.chat.panelHeight = 180
 			
 			E:CopyTable(E.db.actionbar, P.actionbar)
 					
@@ -289,8 +289,8 @@ function E:SetupResolution(noDataReset)
 		
 		E.db.lowresolutionset = true;
 	elseif not noDataReset then
-		E.db.general.panelWidth = P.general.panelWidth
-		E.db.general.panelHeight = P.general.panelHeight
+		E.db.chat.panelWidth = P.chat.panelWidth
+		E.db.chat.panelHeight = P.chat.panelHeight
 		
 		E:CopyTable(E.db.actionbar, P.actionbar)
 		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
