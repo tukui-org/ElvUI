@@ -89,7 +89,7 @@ P["nameplate"] = {
 P['auras'] = {
 	['enable'] = true;
 	['consolidedBuffs'] = true;
-	['wrapAfter'] = 16,
+	['wrapAfter'] = 12,
 	
 	['buffs'] = {
 		['sortMethod'] = "TIME",
