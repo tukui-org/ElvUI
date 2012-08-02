@@ -20,6 +20,21 @@ local function LoadSkin()
 	GroupFinderFrameGroupButton2.icon:SetTexture("Interface\\Icons\\inv_helmet_06")
 	GroupFinderFrameGroupButton3.icon:SetTexture("Interface\\Icons\\Icon_Scenarios")
 	
+	LFGDungeonReadyDialogBackground:Kill()
+	S:HandleButton(LFGDungeonReadyDialogEnterDungeonButton)
+	S:HandleButton(LFGDungeonReadyDialogLeaveQueueButton)
+	S:HandleCloseButton(LFGDungeonReadyDialogCloseButton)
+	LFGDungeonReadyDialog:StripTextures()
+	LFGDungeonReadyDialog:SetTemplate("Transparent")
+	LFGDungeonReadyDialog:CreateShadow("Default")	
+	LFGDungeonReadyStatus:StripTextures()
+	LFGDungeonReadyStatus:SetTemplate("Transparent")
+	LFGDungeonReadyStatus:CreateShadow("Default")
+	LFGDungeonReadyDialog.SetBackdrop = E.noop
+	LFGDungeonReadyDialog.filigree:SetAlpha(0)
+	LFGDungeonReadyDialog.bottomArt:SetAlpha(0)	
+	S:HandleCloseButton(LFGDungeonReadyStatusCloseButton)
+	
 	local roleButtons = {
 		LFDQueueFrameRoleButtonHealer,
 		LFDQueueFrameRoleButtonDPS,
@@ -35,6 +50,19 @@ local function LoadSkin()
 		S:HandleCheckBox(roleButton.checkButton)
 		roleButton:GetChildren():SetFrameLevel(roleButton:GetChildren():GetFrameLevel() + 1)
 	end
+	
+	hooksecurefunc('LFG_DisableRoleButton', function(button)
+		if button.checkButton:GetChecked() then
+			button.checkButton:SetAlpha(1)
+		else
+			button.checkButton:SetAlpha(0)
+		end
+	end)
+	
+	hooksecurefunc('LFG_EnableRoleButton', function(button)
+		button.checkButton:SetAlpha(1)
+	end)
+		
 	
 	for i = 1, 3 do
 		local bu = GroupFinderFrame["groupButton"..i]
@@ -253,7 +281,8 @@ local function LoadSecondarySkin()
 	ChallengesFrameInset:StripTextures()
 	ChallengesFrameInsetBg:Hide()
 	ChallengesFrameDetails.bg:Hide()
-	S:HandleButton(ChallengesFrameLeaderboard)
+
+	S:HandleButton(ChallengesFrameLeaderboard, true)
 	select(2, ChallengesFrameDetails:GetRegions()):Hide()
 	select(9, ChallengesFrameDetails:GetRegions()):Hide()
 	select(10, ChallengesFrameDetails:GetRegions()):Hide()
