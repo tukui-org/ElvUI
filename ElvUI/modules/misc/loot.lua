@@ -187,7 +187,7 @@ function M:LOOT_OPENED(event, autoloot)
 			local texture, item, quantity, quality, locked = GetLootSlotInfo(i)
 			local color = ITEM_QUALITY_COLORS[quality]
 
-			if texture:find('INV_Misc_Coin') then
+			if texture and texture:find('INV_Misc_Coin') then
 				item = item:gsub("\n", ", ")
 			end	
 			
