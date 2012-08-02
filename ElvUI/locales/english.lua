@@ -195,7 +195,6 @@ L["Binds Saved"] = true;
 L["Caster DPS"] = true;
 L["Chat Set"] = true;
 L['Choose a theme layout you wish to use for your initial setup.'] = true;
-L['Classic Pixel'] = true;
 L['Classic'] = true;
 L["Click the button below to resize your chat frames, unitframes, and reposition your actionbars."] = true;
 L['Config Mode:'] = true;

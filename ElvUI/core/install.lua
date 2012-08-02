@@ -172,17 +172,9 @@ function E:SetupTheme(theme, noDisplayMsg)
 	local classColor = RAID_CLASS_COLORS[E.myclass]
 	E.db.theme = theme
 	
-	--Set fonts
-	if theme == "classic" and GetLocale() == 'enUS' then
-		E.db.general.font = "ElvUI Font"
-		E.db.general.fontsize = 12
-	elseif GetLocale() == 'enUS' then
-		E.db.general.font = "ElvUI Pixel"
-		E.db.general.fontsize = 11
-	end
-	
+
 	--Set colors
-	if theme == "classic" or theme == "classic_pixel" then
+	if theme == "classic" then
 		E.db.general.bordercolor = E:GetColor(.31, .31, .31)
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
 		E.db.general.backdropfadecolor = E:GetColor(.06, .06, .06, .8)
@@ -569,14 +561,11 @@ local function SetPage(PageNum)
 		InstallOption1Button:SetScript('OnClick', function() E:SetupTheme('classic') end)
 		InstallOption1Button:SetText(L["Classic"])	
 		InstallOption2Button:Show()
-		InstallOption2Button:SetScript('OnClick', function() E:SetupTheme('classic_pixel') end)
-		InstallOption2Button:SetText(L['Classic Pixel'])
+		InstallOption2Button:SetScript('OnClick', function() E:SetupTheme('default') end)
+		InstallOption2Button:SetText(DEFAULT)
 		InstallOption3Button:Show()
-		InstallOption3Button:SetScript('OnClick', function() E:SetupTheme('default') end)
-		InstallOption3Button:SetText(DEFAULT)
-		InstallOption4Button:Show()
-		InstallOption4Button:SetScript('OnClick', function() E:SetupTheme('class') end)
-		InstallOption4Button:SetText(CLASS)		
+		InstallOption3Button:SetScript('OnClick', function() E:SetupTheme('class') end)
+		InstallOption3Button:SetText(CLASS)
 	elseif PageNum == 5 then
 		f.SubTitle:SetText(L["Resolution"])
 		f.Desc1:SetText(format(L["Your current resolution is %s, this is considered a %s resolution."], E.resolution, E.lowversion == true and L["low"] or L["high"]))
