@@ -84,19 +84,8 @@ E.Options.args.general = {
 						['PLAYER'] = PLAYER,
 					},				
 				},
-				expRepPos = {
-					order = 3,
-					type = 'select',
-					name = L['Exp/Rep Position'],
-					desc = L['Change the position of the experience/reputation bar.'],
-					set = function(info, value) E.db.general.expRepPos = value; E:GetModule('Misc'):UpdateExpRepBarAnchor() end,
-					values = {
-						['TOP_SCREEN'] = L['Top Screen'],
-						['MINIMAP_BOTTOM'] = L["Below Minimap"],
-					},
-				},		
 				mapAlpha = {
-					order = 4,
+					order = 3,
 					name = L['Map Alpha While Moving'],
 					desc = L['Controls what the transparency of the worldmap will be set to when you are moving.'],
 					type = 'range',
@@ -104,7 +93,7 @@ E.Options.args.general = {
 					min = 0, max = 1, step = 0.01,
 				},
 				minimapSize = {
-					order = 5,
+					order = 4,
 					name = L['Minimap Size'],
 					desc = L['Adjust the size of the minimap.'],
 					type = 'range',
@@ -115,19 +104,19 @@ E.Options.args.general = {
 					end,
 				},				
 				autoAcceptInvite = {
-					order = 6,
+					order = 5,
 					name = L['Accept Invites'],
 					desc = L['Automatically accept invites from guild/friends.'],
 					type = 'toggle',
 				},
 				vendorGrays = {
-					order = 7,
+					order = 6,
 					name = L['Vendor Grays'],
 					desc = L['Automatically vendor gray items when visiting a vendor.'],
 					type = 'toggle',				
 				},				
 				loot = {
-					order = 8,
+					order = 7,
 					type = "toggle",
 					name = L['Loot'],
 					desc = L['Enable/Disable the loot frame.'],
@@ -135,7 +124,7 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.loot = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				lootRoll = {
-					order = 9,
+					order = 8,
 					type = "toggle",
 					name = L['Loot Roll'],
 					desc = L['Enable/Disable the loot roll frame.'],
@@ -143,7 +132,7 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.lootRoll = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				autoscale = {
-					order = 10,
+					order = 9,
 					name = L["Auto Scale"],
 					desc = L["Automatically scale the User Interface based on your screen resolution"],
 					type = "toggle",	
@@ -151,7 +140,7 @@ E.Options.args.general = {
 				},	
 
 				bubbles = {
-					order = 11,
+					order = 10,
 					type = "toggle",
 					name = L['Chat Bubbles'],
 					desc = L['Skin the blizzard chat bubbles.'],
@@ -159,13 +148,13 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.bubbles = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},	
 				taintLog = {
-					order = 12,
+					order = 11,
 					type = "toggle",
 					name = L["Log Taints"],
 					desc = L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."],
 				},
 				tinyWorldMap = {
-					order = 13,
+					order = 12,
 					type = "toggle",
 					name = L["Tiny Map"],
 					desc = L["Don't scale the large world map to block out sides of the screen."],
