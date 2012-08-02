@@ -190,6 +190,7 @@ L['yells'] = true;
 
 --Config / Install
 L["All keybindings cleared for |cff00ff00%s|r."] = true;
+L['Bar'] = true;
 L["Binds Discarded"] = true;
 L["Binds Saved"] = true;
 L["Caster DPS"] = true;

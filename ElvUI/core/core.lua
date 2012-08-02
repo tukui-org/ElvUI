@@ -378,6 +378,11 @@ function E:UpdateAll(ignoreInstall)
 	UF.db = self.db.unitframe
 	UF:Update_AllFrames()
 	
+	local M = self:GetModule("Misc")
+	M:UpdateExpRepDimensions()
+	M:EnableDisable_ExperienceBar()
+	M:EnableDisable_ReputationBar()	
+	
 	self:GetModule('Auras').db = self.db.auras
 	self:GetModule('Tooltip').db = self.db.tooltip
 

@@ -174,6 +174,86 @@ E.Options.args.general = {
 				},				
 			},
 		},	
+		experience = {
+			order = 2,
+			get = function(info) return E.db.general[ info[#info] ] end,
+			set = function(info, value) E.db.general[ info[#info] ] = value; E:GetModule('Misc'):UpdateExpRepDimensions() end,		
+			type = "group",
+			name = XPBAR_LABEL,
+			guiInline = true,
+			args = {
+				experience = {
+					order = 1,
+					type = "toggle",
+					name = L["Enable"],
+					set = function(info, value) E.db.general[ info[#info] ] = value; E:GetModule('Misc'):EnableDisable_ExperienceBar() end,
+				},
+				experienceWidth = {
+					order = 2,
+					type = "range",
+					name = L["Width"],
+					min = 100, max = 800, step = 1,
+				},
+				experienceHeight = {
+					order = 3,
+					type = "range",
+					name = L["Height"],
+					min = 5, max = 30, step = 1,
+				},
+				experienceTextFormat = {
+					order = 4,
+					type = 'select',
+					name = L["Text Format"],
+					values = {
+						NONE = NONE,
+						PERCENT = L["Percent"],
+						CURMAX = L["Current - Max"],
+						CURPERC = L["Current - Percent"],
+					},
+					set = function(info, value) E.db.general[ info[#info] ] = value; E:GetModule('Misc'):UpdateExperience() end,
+				},				
+			},
+		},
+		reputation = {
+			order = 2,
+			get = function(info) return E.db.general[ info[#info] ] end,
+			set = function(info, value) E.db.general[ info[#info] ] = value; E:GetModule('Misc'):UpdateExpRepDimensions() end,			
+			type = "group",
+			name = COMBAT_FACTION_CHANGE..' '..L['Bar'],
+			guiInline = true,
+			args = {
+				reputation = {
+					order = 1,
+					type = "toggle",
+					name = L["Enable"],
+					set = function(info, value) E.db.general[ info[#info] ] = value; E:GetModule('Misc'):EnableDisable_ReputationBar() end,
+				},
+				reputationWidth = {
+					order = 2,
+					type = "range",
+					name = L["Width"],
+					min = 100, max = 800, step = 1,
+				},
+				reputationHeight = {
+					order = 3,
+					type = "range",
+					name = L["Height"],
+					min = 5, max = 30, step = 1,
+				},
+				reputationTextFormat = {
+					order = 4,
+					type = 'select',
+					name = L["Text Format"],
+					values = {
+						NONE = NONE,
+						PERCENT = L["Percent"],
+						CURMAX = L["Current - Max"],
+						CURPERC = L["Current - Percent"],
+					},
+					set = function(info, value) E.db.general[ info[#info] ] = value; E:GetModule('Misc'):UpdateReputation() end,
+				},
+			},
+		},		
 	},
 }
 
