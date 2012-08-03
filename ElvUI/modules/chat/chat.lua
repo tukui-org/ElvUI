@@ -124,7 +124,7 @@ function CH:InsertEmotions(msg)
 end
 
 function CH:GetSmileyReplacementText(msg)
-	if not self.db.emotionIcons then return msg end
+	if not self.db.emotionIcons or msg:find('/run') or msg:find('/dump') or msg:find('/script') then return msg end
 	local outstr = "";
 	local origlen = string.len(msg);
 	local startpos = 1;
@@ -156,9 +156,7 @@ end
 
 function CH:StyleChat(frame)
 	if frame.styled then return end
-	
-	frame.IgnoreFixDimensions = true; --no need to run this constantly
-	
+
 	local id = frame:GetID()
 	local name = frame:GetName()
 	local tab = _G[name..'Tab']

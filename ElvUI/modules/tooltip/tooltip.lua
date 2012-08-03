@@ -277,7 +277,6 @@ function TT:SetStyle(tt)
 	tt:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	tt:SetBackdropColor(unpack(E.media.backdropfadecolor))
 	self:Colorize(tt)
-	tt:FixDimensions()
 end
 
 function TT:ADDON_LOADED(event, addon)
@@ -355,7 +354,7 @@ end
 local SlotName = {
 	"Head","Neck","Shoulder","Back","Chest","Wrist",
 	"Hands","Waist","Legs","Feet","Finger0","Finger1",
-	"Trinket0","Trinket1","MainHand","SecondaryHand","Ranged","Ammo"
+	"Trinket0","Trinket1","MainHand","SecondaryHand"
 }
 
 function TT:GetItemLvL(unit)
@@ -538,10 +537,8 @@ function TT:GameTooltip_OnUpdate(tt)
 	if (tt.needRefresh and tt:GetAnchorType() == 'ANCHOR_CURSOR' and E.db.tooltip.anchor ~= 'CURSOR') then
 		tt:SetBackdropColor(unpack(E["media"].backdropfadecolor))
 		tt:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-		tt:FixDimensions()
 		tt.needRefresh = nil
 	elseif tt.forceRefresh then
-		tt:FixDimensions()
 		tt.forceRefresh = nil
 	end
 end
@@ -568,10 +565,6 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		
 		tt.itemcleared = true
 	end
-end
-
-function TT:ContainerFrameItemButton_OnEnter()
-	GameTooltip:FixDimensions()
 end
 
 function TT:Initialize()
@@ -605,8 +598,7 @@ function TT:Initialize()
 	self:HookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
 	self:HookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
 	self:HookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
-	self:SecureHook('ContainerFrameItemButton_OnEnter') -- multisample fix
-
+	
 	--SpellIDs
 	hooksecurefunc(GameTooltip, "SetUnitBuff", function(self,...)
 		local id = select(11,UnitBuff(...))

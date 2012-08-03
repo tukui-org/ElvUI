@@ -84,50 +84,28 @@ E.Options.args.general = {
 						['PLAYER'] = PLAYER,
 					},				
 				},
-				expRepPos = {
-					order = 3,
-					type = 'select',
-					name = L['Exp/Rep Position'],
-					desc = L['Change the position of the experience/reputation bar.'],
-					set = function(info, value) E.db.general.expRepPos = value; E:GetModule('Misc'):UpdateExpRepBarAnchor() end,
-					values = {
-						['TOP_SCREEN'] = L['Top Screen'],
-						['MINIMAP_BOTTOM'] = L["Below Minimap"],
-					},
-				},		
 				mapAlpha = {
-					order = 4,
+					order = 3,
 					name = L['Map Alpha While Moving'],
 					desc = L['Controls what the transparency of the worldmap will be set to when you are moving.'],
 					type = 'range',
 					isPercent = true,
 					min = 0, max = 1, step = 0.01,
-				},
-				minimapSize = {
-					order = 5,
-					name = L['Minimap Size'],
-					desc = L['Adjust the size of the minimap.'],
-					type = 'range',
-					min = 120, max = 250, step = 1,
-					set = function(info, value) 
-						E.db.general[ info[#info] ] = value
-						E:GetModule('Minimap'):UpdateSettings()
-					end,
-				},				
+				},		
 				autoAcceptInvite = {
-					order = 6,
+					order = 5,
 					name = L['Accept Invites'],
 					desc = L['Automatically accept invites from guild/friends.'],
 					type = 'toggle',
 				},
 				vendorGrays = {
-					order = 7,
+					order = 6,
 					name = L['Vendor Grays'],
 					desc = L['Automatically vendor gray items when visiting a vendor.'],
 					type = 'toggle',				
 				},				
 				loot = {
-					order = 8,
+					order = 7,
 					type = "toggle",
 					name = L['Loot'],
 					desc = L['Enable/Disable the loot frame.'],
@@ -135,7 +113,7 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.loot = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				lootRoll = {
-					order = 9,
+					order = 8,
 					type = "toggle",
 					name = L['Loot Roll'],
 					desc = L['Enable/Disable the loot roll frame.'],
@@ -143,7 +121,7 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.lootRoll = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				autoscale = {
-					order = 10,
+					order = 9,
 					name = L["Auto Scale"],
 					desc = L["Automatically scale the User Interface based on your screen resolution"],
 					type = "toggle",	
@@ -151,7 +129,7 @@ E.Options.args.general = {
 				},	
 
 				bubbles = {
-					order = 11,
+					order = 10,
 					type = "toggle",
 					name = L['Chat Bubbles'],
 					desc = L['Skin the blizzard chat bubbles.'],
@@ -159,13 +137,13 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.bubbles = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},	
 				taintLog = {
-					order = 12,
+					order = 11,
 					type = "toggle",
 					name = L["Log Taints"],
 					desc = L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."],
 				},
 				tinyWorldMap = {
-					order = 13,
+					order = 12,
 					type = "toggle",
 					name = L["Tiny Map"],
 					desc = L["Don't scale the large world map to block out sides of the screen."],
@@ -174,33 +152,73 @@ E.Options.args.general = {
 				},				
 			},
 		},	
-		experience = {
+		minimap = {
 			order = 2,
-			get = function(info) return E.db.general[ info[#info] ] end,
-			set = function(info, value) E.db.general[ info[#info] ] = value; E:GetModule('Misc'):UpdateExpRepDimensions() end,		
+			get = function(info) return E.db.general.minimap[ info[#info] ] end,	
+			type = "group",
+			name = MINIMAP_LABEL,
+			guiInline = true,
+			args = {
+				enable = {
+					order = 1,
+					type = "toggle",
+					name = L["Enable"],
+					desc = L['Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the consolidated buffs bar, and prevent you from seeing the minimap datatexts.|r'],
+					get = function(info) return E.private.general.minimap[ info[#info] ] end,
+					set = function(info, value) E.private.general.minimap[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,	
+				},
+				size = {
+					order = 2,
+					type = "range",
+					name = L["Size"],
+					desc = L['Adjust the size of the minimap.'],
+					min = 120, max = 250, step = 1,
+					set = function(info, value) E.db.general.minimap[ info[#info] ] = value; E:GetModule('Minimap'):UpdateSettings() end,	
+					disabled = function() return not E.private.general.minimap.enable end,
+				},	
+				locationText = {
+					order = 3,
+					type = 'select',
+					name = L['Location Text'],
+					desc = L['Change settings for the display of the location text that is on the minimap.'],
+					get = function(info) return E.db.general.minimap.locationText end,
+					set = function(info, value) E.db.general.minimap.locationText = value; E:GetModule('Minimap'):UpdateSettings() end,
+					values = {
+						['MOUSEOVER'] = L['Minimap Mouseover'],
+						['SHOW'] = L['Always Display'],
+						['HIDE'] = L['Hide'],
+					},
+					disabled = function() return not E.private.general.minimap.enable end,
+				},				
+			},		
+		},
+		experience = {
+			order = 3,
+			get = function(info) return E.db.general.experience[ info[#info] ] end,
+			set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):UpdateExpRepDimensions() end,		
 			type = "group",
 			name = XPBAR_LABEL,
 			guiInline = true,
 			args = {
-				experience = {
+				enable = {
 					order = 1,
 					type = "toggle",
 					name = L["Enable"],
-					set = function(info, value) E.db.general[ info[#info] ] = value; E:GetModule('Misc'):EnableDisable_ExperienceBar() end,
+					set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):EnableDisable_ExperienceBar() end,
 				},
-				experienceWidth = {
+				width = {
 					order = 2,
 					type = "range",
 					name = L["Width"],
 					min = 100, max = 800, step = 1,
 				},
-				experienceHeight = {
+				height = {
 					order = 3,
 					type = "range",
 					name = L["Height"],
 					min = 5, max = 30, step = 1,
 				},
-				experienceTextFormat = {
+				textFormat = {
 					order = 4,
 					type = 'select',
 					name = L["Text Format"],
@@ -210,37 +228,43 @@ E.Options.args.general = {
 						CURMAX = L["Current - Max"],
 						CURPERC = L["Current - Percent"],
 					},
-					set = function(info, value) E.db.general[ info[#info] ] = value; E:GetModule('Misc'):UpdateExperience() end,
+					set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):UpdateExperience() end,
+				},		
+				textSize = {
+					order = 5,
+					name = L["Font Size"],
+					type = "range",
+					min = 6, max = 22, step = 1,		
 				},				
 			},
 		},
 		reputation = {
-			order = 2,
-			get = function(info) return E.db.general[ info[#info] ] end,
-			set = function(info, value) E.db.general[ info[#info] ] = value; E:GetModule('Misc'):UpdateExpRepDimensions() end,			
+			order = 4,
+			get = function(info) return E.db.general.reputation[ info[#info] ] end,
+			set = function(info, value) E.db.general.reputation[ info[#info] ] = value; E:GetModule('Misc'):UpdateExpRepDimensions() end,		
 			type = "group",
-			name = COMBAT_FACTION_CHANGE..' '..L['Bar'],
+			name = XPBAR_LABEL,
 			guiInline = true,
 			args = {
-				reputation = {
+				enable = {
 					order = 1,
 					type = "toggle",
 					name = L["Enable"],
-					set = function(info, value) E.db.general[ info[#info] ] = value; E:GetModule('Misc'):EnableDisable_ReputationBar() end,
+					set = function(info, value) E.db.general.reputation[ info[#info] ] = value; E:GetModule('Misc'):EnableDisable_ReputationBar() end,
 				},
-				reputationWidth = {
+				width = {
 					order = 2,
 					type = "range",
 					name = L["Width"],
 					min = 100, max = 800, step = 1,
 				},
-				reputationHeight = {
+				height = {
 					order = 3,
 					type = "range",
 					name = L["Height"],
 					min = 5, max = 30, step = 1,
 				},
-				reputationTextFormat = {
+				textFormat = {
 					order = 4,
 					type = 'select',
 					name = L["Text Format"],
@@ -250,8 +274,14 @@ E.Options.args.general = {
 						CURMAX = L["Current - Max"],
 						CURPERC = L["Current - Percent"],
 					},
-					set = function(info, value) E.db.general[ info[#info] ] = value; E:GetModule('Misc'):UpdateReputation() end,
-				},
+					set = function(info, value) E.db.general.reputation[ info[#info] ] = value; E:GetModule('Misc'):UpdateReputation() end,
+				},		
+				textSize = {
+					order = 5,
+					name = L["Font Size"],
+					type = "range",
+					min = 6, max = 22, step = 1,		
+				},				
 			},
 		},		
 	},

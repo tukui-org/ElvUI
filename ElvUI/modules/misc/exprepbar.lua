@@ -7,7 +7,7 @@ function M:UpdateExpRepAnchors()
 	local repBar = ReputationBarMover
 	local expBar = ExperienceBarMover
 	
-	if E.db.movers and (E.db.movers['ExperienceBarMover'] or E.db.movers['ReputationBarMover']) or not repBar or not expBar then return; end
+	if E.db.movers and (E:HasMoverBeenMoved('ExperienceBarMover') or E:HasMoverBeenMoved('ReputationBarMover')) or not repBar or not expBar then return; end
 	repBar:ClearAllPoints()
 	expBar:ClearAllPoints()
 	
@@ -44,7 +44,7 @@ function M:UpdateExperience(event)
 		
 		local rested = GetXPExhaustion()
 		local text = ''
-		local textFormat = E.db.general.experienceTextFormat
+		local textFormat = E.db.general.experience.textFormat
 		
 		if rested and rested > 0 then
 			bar.rested:SetMinMaxValues(0, max)
@@ -89,7 +89,7 @@ function M:UpdateReputation(event)
 		bar:Show()
 
 		local text = ''
-		local textFormat = E.db.general.reputationTextFormat		
+		local textFormat = E.db.general.reputation.textFormat		
 		local color = FACTION_BAR_COLORS[reaction]
 		bar.statusBar:SetStatusBarColor(color.r, color.g, color.b)	
 
@@ -121,7 +121,7 @@ end
 
 local function ExperienceBar_OnEnter(self)
 	GameTooltip:ClearLines()
-	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM', 0 -10)
+	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM', 0, -4)
 	
 	local cur, max = M:GetXP('player')
 	local rested = GetXPExhaustion()
@@ -140,7 +140,7 @@ end
 
 local function ReputationBar_OnEnter(self)
 	GameTooltip:ClearLines()
-	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM', 0 -10)
+	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM', 0, -4)
 	
 	local name, reaction, min, max, value = GetWatchedFactionInfo()
 	if name then
@@ -170,7 +170,7 @@ function M:CreateBar(name, onEnter, ...)
 	bar.statusBar:SetInside()
 	bar.statusBar:SetStatusBarTexture(E.media.normTex)
 	
-	bar.text = bar:CreateFontString(nil, 'OVERLAY')
+	bar.text = bar.statusBar:CreateFontString(nil, 'OVERLAY')
 	bar.text:FontTemplate()
 	bar.text:SetPoint('CENTER')
 	
@@ -180,15 +180,18 @@ function M:CreateBar(name, onEnter, ...)
 end
 
 function M:UpdateExpRepDimensions()
-	self.expBar:Width(E.db.general.experienceWidth)
-	self.expBar:Height(E.db.general.experienceHeight)
+	self.expBar:Width(E.db.general.experience.width)
+	self.expBar:Height(E.db.general.experience.height)
 	
-	self.repBar:Width(E.db.general.reputationWidth)
-	self.repBar:Height(E.db.general.reputationHeight)
+	self.repBar:Width(E.db.general.reputation.width)
+	self.repBar:Height(E.db.general.reputation.height)
+	
+	self.repBar.text:FontTemplate(nil, E.db.general.reputation.textSize)
+	self.expBar.text:FontTemplate(nil, E.db.general.experience.textSize)
 end
 
 function M:EnableDisable_ExperienceBar()
-	if UnitLevel('player') ~= MAX_PLAYER_LEVEL and E.db.general.experience then
+	if UnitLevel('player') ~= MAX_PLAYER_LEVEL and E.db.general.experience.enable then
 		self:RegisterEvent('PLAYER_XP_UPDATE', 'UpdateExperience')
 		self:RegisterEvent('PLAYER_LEVEL_UP', 'UpdateExperience')
 		self:RegisterEvent("DISABLE_XP_GAIN", 'UpdateExperience')
@@ -208,7 +211,7 @@ function M:EnableDisable_ExperienceBar()
 end
 
 function M:EnableDisable_ReputationBar()
-	if E.db.general.reputation then
+	if E.db.general.reputation.enable then
 		self:RegisterEvent('UPDATE_FACTION', 'UpdateReputation')
 		self:UpdateReputation()
 	else

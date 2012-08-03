@@ -213,20 +213,21 @@ local function Click(self, btn)
 			local realID, playerFaction, grouped
 			for i = 1, #BNTable do
 				info = BNTable[i]
-				if (info[6]) then
+				if (info[5]) then
 					realID = info[2]
 					menuCountWhispers = menuCountWhispers + 1
 					menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = whisperClick}
 					
 					if select(1, UnitFactionGroup("player")) == "Horde" then playerFaction = 0 else playerFaction = 1 end
-					if info[5] == wowString and playerFaction == info[11] then
-						classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[13]], GetQuestDifficultyColor(info[16])
-						if classc == nil then classc = GetQuestDifficultyColor(info[15]) end
 
-						if UnitInParty(info[3]) or UnitInRaid(info[3]) then grouped = 1 else grouped = 2 end
+					if info[6] == wowString and playerFaction == info[12] then
+						classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[14]], GetQuestDifficultyColor(info[16])
+						if classc == nil then classc = GetQuestDifficultyColor(info[16]) end
+
+						if UnitInParty(info[4]) or UnitInRaid(info[4]) then grouped = 1 else grouped = 2 end
 						menuCountInvites = menuCountInvites + 1
 						
-						menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[15],classc.r*255,classc.g*255,classc.b*255,info[3]), arg1 = info[4], notCheckable=true, func = inviteClick}
+						menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[16],classc.r*255,classc.g*255,classc.b*255,info[4]), arg1 = info[5], notCheckable=true, func = inviteClick}
 					end
 				end
 			end

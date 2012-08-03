@@ -26,7 +26,8 @@ E.Options.args.auras = {
 				E.db.auras[ info[#info] ] = value
 				E:GetModule('Minimap'):UpdateSettings()
 				A:UpdateAllHeaders()
-			end,					
+			end,	
+			disabled = function() return not E.private.general.minimap.enable end,
 		},
 		general = {
 			order = 4,

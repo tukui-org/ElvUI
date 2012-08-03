@@ -25,72 +25,6 @@ local function GetTemplate(t)
 	end
 end
 
---[[
-	Multisample stuff
-	Basically if a frames width/height is an odd number, it will appear blurry
-]]
-
-local index = getmetatable(CreateFrame('Frame')).__index
-local floor = math.floor
-local function SetWidth(self, width)
-	if width and width ~= 0 then
-		width = floor(width)
-		if not E:IsEvenNumber(width) then
-			width = width - 1
-		end
-	end
-	
-	if not self.IgnoreFixDimensions then
-		index.SetWidth(self, width)
-	end
-end
-
-local function SetHeight(self, height)
-	if height and height ~= 0 then
-		height = floor(height)
-		if not E:IsEvenNumber(height) then
-			height = height - 1
-		end
-	end
-	
-	if not self.IgnoreFixDimensions then
-		index.SetHeight(self, height)
-	end
-end
-
-local function SetSize(self, width, height)
-	if width and width ~= 0 then
-		width = floor(width)
-		if not E:IsEvenNumber(width) then
-			width = width - 1
-		end
-	end
-	
-	if height and height ~= 0 then
-		height = floor(height)
-		if not E:IsEvenNumber(height) then
-			height = height - 1
-		end
-	end
-	
-	if not self.IgnoreFixDimensions then
-		index.SetSize(self, width, height)
-	end
-end
-
-local function FixDimensions(frame)
-	if frame:IsProtected() or frame.IgnoreFixDimensions then 
-		return; 
-	end
-
-	frame.SetWidth = SetWidth
-	frame.SetHeight = SetHeight
-	frame.SetSize = SetSize
-
-	frame:SetWidth(frame:GetWidth())
-	frame:SetHeight(frame:GetHeight())
-end
-
 local function Size(frame, width, height)
 	frame:SetSize(E:Scale(width), E:Scale(height or width))
 end
@@ -327,7 +261,6 @@ end
 
 local function addapi(object)
 	local mt = getmetatable(object).__index
-	if not object.FixDimensions then mt.FixDimensions = FixDimensions end
 	if not object.Size then mt.Size = Size end
 	if not object.Point then mt.Point = Point end
 	if not object.SetOutside then mt.SetOutside = SetOutside end

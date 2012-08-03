@@ -27,18 +27,27 @@ P['general'] = {
 	['expRepPos'] = 'MINIMAP_BOTTOM',
 
 	['mapAlpha'] = 1,
-	['minimapSize'] = 176,
 	['tinyWorldMap'] = true,
 	
-	['experience'] = true,
-	['experienceWidth'] = 475,
-	['experienceHeight'] = 18,
-	['experienceTextFormat'] = 'NONE',
+	['minimap'] = {
+		['size'] = 176,
+		['locationText'] = 'MOUSEOVER',
+	},	
 	
-	['reputation'] = true,
-	['reputationWidth'] = 475,
-	['reputationHeight'] = 18,
-	['reputationTextFormat'] = 'NONE',
+	['experience'] = {
+		['enable'] = true,
+		['width'] = 475,
+		['height'] = 18,
+		['textFormat'] = 'NONE',
+		['textSize'] = 11,
+	},
+	['reputation'] = {
+		['enable'] = true,
+		['width'] = 475,
+		['height'] = 18,
+		['textFormat'] = 'NONE',
+		['textSize'] = 11,
+	},
 };
 
 --Bags

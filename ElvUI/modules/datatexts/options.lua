@@ -82,20 +82,7 @@ E.Options.args.datatexts = {
 				E.db.datatexts[ info[#info] ] = value
 				E:GetModule('Minimap'):UpdateSettings()
 			end,					
-		},				
-		minimapLocationText = {
-			order = 6,
-			type = 'select',
-			name = L['Location Text'],
-			desc = L['Change settings for the display of the location text that is on the minimap.'],
-			get = function(info) return E.db.datatexts.minimapLocationText end,
-			set = function(info, value) E.db.datatexts.minimapLocationText = value; E:GetModule('Minimap'):UpdateSettings() end,
-			values = {
-				['MOUSEOVER'] = L['Minimap Mouseover'],
-				['SHOW'] = L['Always Display'],
-				['HIDE'] = L['Hide'],
-			},
-		},	
+		},					
 		panels = {
 			type = 'group',
 			name = L['Panels'],
