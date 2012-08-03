@@ -34,7 +34,7 @@ local function LoadSkin()
 	TransmogrifyArtFrame:StripTextures()
 	
 	local slots = {"Head", "Shoulder", "Chest", "Waist", "Legs", "Feet",
-	"Wrist", "Hands", "Back", "MainHand", "SecondaryHand", "Ranged"}
+	"Wrist", "Hands", "Back", "MainHand", "SecondaryHand"}
 
 	for _, slot in pairs(slots) do
 		local icon = _G["TransmogrifyFrame"..slot.."SlotIconTexture"]
