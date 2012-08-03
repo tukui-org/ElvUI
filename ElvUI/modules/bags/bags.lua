@@ -1465,8 +1465,9 @@ function B:INVENTORY_SEARCH_UPDATE()
 end
 
 function B:Initialize()
+	self:LoadBagBar()
+	
 	if not E.private.bags.enable then 
-		self:LoadBagBar()
 		return 
 	end
 	self:InitBags()

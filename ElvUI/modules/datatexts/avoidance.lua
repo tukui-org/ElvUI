@@ -5,7 +5,7 @@ local DT = E:GetModule('DataTexts')
 local displayString, lastPanel
 local format = string.format
 local targetlv, playerlv
-local basemisschance, leveldifference, dodge, parry, block, avoidance, unhittable
+local basemisschance, leveldifference, dodge, parry, block, avoidance, unhittable, avoided, blocked
 local chanceString = "%.2f%%"
 local modifierString = string.join("", "%d (+", chanceString, ")")
 
@@ -50,7 +50,9 @@ local function OnEvent(self, event, unit)
 	elseif E.myclass == "DEATHKNIGHT" then
 		block = 0
 	end
-	avoidance = (dodge+parry+block+basemisschance)
+	avoided = (dodge+parry+basemisschance) --First roll on hit table determining if the hit missed
+	blocked = (100 - avoided)*block/100 --If the hit landed then the second roll determines if the his was blocked
+	avoidance = (avoided+blocked)
 	unhittable = avoidance - 102.4
 	
 	self.text:SetFormattedText(displayString, L['AVD: '], avoidance)

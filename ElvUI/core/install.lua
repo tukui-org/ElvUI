@@ -569,9 +569,6 @@ local function ResetAll()
 	ElvUIInstallFrame.Desc1:SetText("")
 	ElvUIInstallFrame.Desc2:SetText("")
 	ElvUIInstallFrame.Desc3:SetText("")
-	InstallTutorialImage:Size(250)
-	InstallTutorialImage:SetTexture(nil)
-	InstallTutorialImage:Hide()
 	ElvUIInstallFrame:Size(550, 400)
 end
 
@@ -592,11 +589,7 @@ local function SetPage(PageNum)
 	else
 		InstallPrevButton:Enable()
 	end
-	
-	InstallTutorialImage:Size(256, 128)
-	InstallTutorialImage:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\logo_elvui.tga')
-	InstallTutorialImage:Show()	
-	
+
 	if PageNum == 1 then
 		f.SubTitle:SetText(format(L["Welcome to ElvUI version %s!"], E.version))
 		f.Desc1:SetText(L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."])
@@ -673,15 +666,12 @@ local function SetPage(PageNum)
 		InstallOption4Button:SetText(L['Caster DPS'])
 	elseif PageNum == 7 then
 		f.SubTitle:SetText(L["Installation Complete"])
-		f.Desc1:SetText(L["You are now finished with the installation process. Bonus Hint: If you wish to access blizzard micro menu, middle click on the minimap. If you don't have a middle click button then hold down shift and right click the minimap. If you are in need of technical support please visit us at www.tukui.org."])
+		f.Desc1:SetText(L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."])
 		f.Desc2:SetText(L["Please click the button below so you can setup variables and ReloadUI."])			
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript("OnClick", InstallComplete)
 		InstallOption1Button:SetText(L["Finished"])				
-		InstallTutorialImage:Show()
-		InstallTutorialImage:SetTexture([[Interface\AddOns\ElvUI\media\textures\micromenu_tutorial.tga]])
-		ElvUIInstallFrame:Size(550, 500)
-		InstallTutorialImage:Size(250)
+		ElvUIInstallFrame:Size(550, 350)
 	end
 end
 
@@ -877,7 +867,8 @@ function E:Install()
 		E.Skins:HandleCloseButton(close)
 		
 		f.tutorialImage = f:CreateTexture('InstallTutorialImage', 'OVERLAY')
-		f.tutorialImage:Size(250)
+		f.tutorialImage:Size(256, 128)
+		f.tutorialImage:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\logo_elvui.tga')
 		f.tutorialImage:Point('BOTTOM', 0, 70)
 
 	end

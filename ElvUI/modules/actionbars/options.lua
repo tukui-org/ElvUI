@@ -433,39 +433,6 @@ local function BuildABConfig()
 			},				
 		},
 	}	
-	
-	if E.myclass == "SHAMAN" then
-		group['barTotem'] = {
-			order = i,
-			name = L['Totem Bar'],
-			type = 'group',
-			order = 200,
-			guiInline = false,
-			disabled = function() return not E.private.actionbar.enable or not E.myclass == "SHAMAN" end,
-			get = function(info) return E.db.actionbar['barTotem'][ info[#info] ] end,
-			set = function(info, value) E.db.actionbar['barTotem'][ info[#info] ] = value; AB:AdjustTotemSettings() end,
-			args = {
-				enabled = {
-					order = 1,
-					type = 'toggle',
-					name = L['Enable'],
-				},
-				restorePosition = {
-					order = 2,
-					type = 'execute',
-					name = L['Restore Bar'],
-					desc = L['Restore the actionbars default settings'],
-					func = function() E:CopyTable(E.db.actionbar['barTotem'], P.actionbar['barTotem']); E:ResetMovers('Totem Bar'); AB:AdjustTotemSettings() end,
-				},			
-				mouseover = {
-					order = 3,
-					name = L['Mouse Over'],
-					desc = L['The frame is not shown unless you mouse over the frame.'],
-					type = "toggle",
-				},				
-			},
-		}
-	end
 end
 
 E.Options.args.actionbar = {
@@ -518,7 +485,43 @@ E.Options.args.actionbar = {
 			min = 5, max = 18, step = 1,
 			order = 7,
 			disabled = function() return not E.private.actionbar.enable end,
-		},		
+		},	
+		microbar = {
+			type = "group",
+			order = 10,
+			name = L['Micro Bar'],
+			disabled = function() return not E.private.actionbar.enable end,
+			guiInline = true,
+			get = function(info) return E.db.actionbar.microbar[ info[#info] ] end,
+			set = function(info, value) E.db.actionbar.microbar[ info[#info] ] = value; AB:UpdateMicroPositionDimensions() end,
+			args = {
+				enabled = {
+					order = 1,
+					type = "toggle",
+					name = L["Enable"],
+				},		
+				alpha = {
+					order = 2,
+					type = 'range',
+					name = L['Alpha'],
+					desc = L['Change the alpha level of the frame.'],
+					min = 0, max = 1, step = 0.1,					
+				},						
+				mouseover = {
+					order = 3,
+					name = L['Mouse Over'],
+					desc = L['The frame is not shown unless you mouse over the frame.'],
+					type = "toggle",
+				},	
+				buttonsPerRow = {
+					order = 4,
+					type = 'range',
+					name = L['Buttons Per Row'],
+					desc = L['The ammount of buttons to display per row.'],
+					min = 1, max = #MICRO_BUTTONS, step = 1,					
+				},				
+			},
+		},
 	},
 }
 group = E.Options.args.actionbar.args
