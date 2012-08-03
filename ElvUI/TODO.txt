@@ -1,5 +1,6 @@
 TODO:
 
+-Find better emotion icons
 -Prevent emotion icons appearing in messages that contain /run or /dump
 -Check tooltip bug where it's resizing itself rapidly.
 -Add a threat system, not sure how i will go about doing this atm.
