@@ -99,7 +99,6 @@ L["Delete Grays"] = true;
 L["Deleted %d gray items. Total Worth: %s"] = true;
 L["Descending"] = true;
 L["Direction the bag sorting will use to allocate the items."] = true;
-L["Enable Bag-Bar"] = true;
 L["Enable/Disable the all-in-one bag."] = true;
 L["Enable/Disable the Bag-Bar."] = true;
 L["goldabbrev"] = "|cffffd700g|r" --Also used in gold datatext

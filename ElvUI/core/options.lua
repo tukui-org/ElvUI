@@ -243,7 +243,7 @@ E.Options.args.general = {
 			get = function(info) return E.db.general.reputation[ info[#info] ] end,
 			set = function(info, value) E.db.general.reputation[ info[#info] ] = value; E:GetModule('Misc'):UpdateExpRepDimensions() end,		
 			type = "group",
-			name = XPBAR_LABEL,
+			name = REPUTATION,
 			guiInline = true,
 			args = {
 				enable = {
