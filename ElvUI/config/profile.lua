@@ -162,7 +162,6 @@ P['datatexts'] = {
 	['localtime'] = true,
 	['time24'] = true,
 	['battleground'] = false,
-	['minimapLocationText'] = 'MOUSEOVER',
 	['minimapPanels'] = true,
 }
 
