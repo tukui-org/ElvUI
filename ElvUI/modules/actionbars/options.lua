@@ -500,14 +500,21 @@ E.Options.args.actionbar = {
 					type = "toggle",
 					name = L["Enable"],
 				},		
-				mouseover = {
+				alpha = {
 					order = 2,
+					type = 'range',
+					name = L['Alpha'],
+					desc = L['Change the alpha level of the frame.'],
+					min = 0, max = 1, step = 0.1,					
+				},						
+				mouseover = {
+					order = 3,
 					name = L['Mouse Over'],
 					desc = L['The frame is not shown unless you mouse over the frame.'],
 					type = "toggle",
 				},	
 				buttonsPerRow = {
-					order = 3,
+					order = 4,
 					type = 'range',
 					name = L['Buttons Per Row'],
 					desc = L['The ammount of buttons to display per row.'],

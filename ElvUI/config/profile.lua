@@ -1185,6 +1185,7 @@ P["actionbar"] = {
 		['enabled'] = false,
 		['mouseover'] = false,
 		['buttonsPerRow'] = 12,
+		['alpha'] = 1,
 	},
 	['bar1'] = {
 		['enabled'] = true,

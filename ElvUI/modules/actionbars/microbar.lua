@@ -3,7 +3,7 @@ local AB = E:GetModule('ActionBars');
 
 local function Button_OnEnter(self)
 	if AB.db.microbar.mouseover then
-		E:UIFrameFadeIn(ElvUI_MicroBar, 0.2, ElvUI_MicroBar:GetAlpha(), 1)
+		E:UIFrameFadeIn(ElvUI_MicroBar, 0.2, ElvUI_MicroBar:GetAlpha(), AB.db.microbar.alpha)
 	end
 end
 
@@ -89,17 +89,17 @@ function AB:UpdateMicroPositionDimensions()
 	if AB.db.microbar.mouseover then
 		ElvUI_MicroBar:SetAlpha(0)
 	else
-		ElvUI_MicroBar:SetAlpha(1)
+		ElvUI_MicroBar:SetAlpha(self.db.microbar.alpha)
 	end	
-	
-	if self.db.microbar.enable then
+		
+	ElvUI_MicroBar:SetWidth((((CharacterMicroButton:GetWidth() - 0.5) * (#MICRO_BUTTONS - 1)) - 3) / numRows)
+	ElvUI_MicroBar:Height((CharacterMicroButton:GetHeight() - 27) * numRows)
+
+	if self.db.microbar.enabled then
 		ElvUI_MicroBar:Show()
 	else
 		ElvUI_MicroBar:Hide()
-	end	
-	
-	ElvUI_MicroBar:SetWidth((((CharacterMicroButton:GetWidth() - 0.5) * (#MICRO_BUTTONS - 1)) - 3) / numRows)
-	ElvUI_MicroBar:Height((CharacterMicroButton:GetHeight() - 27) * numRows)
+	end		
 end
 
 function AB:SetupMicroBar()
