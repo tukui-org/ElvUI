@@ -121,7 +121,7 @@ end
 
 local function ExperienceBar_OnEnter(self)
 	GameTooltip:ClearLines()
-	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM', 0 -10)
+	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM', 0, -4)
 	
 	local cur, max = M:GetXP('player')
 	local rested = GetXPExhaustion()
@@ -140,7 +140,7 @@ end
 
 local function ReputationBar_OnEnter(self)
 	GameTooltip:ClearLines()
-	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM', 0 -10)
+	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM', 0, -4)
 	
 	local name, reaction, min, max, value = GetWatchedFactionInfo()
 	if name then
@@ -185,6 +185,9 @@ function M:UpdateExpRepDimensions()
 	
 	self.repBar:Width(E.db.general.reputationWidth)
 	self.repBar:Height(E.db.general.reputationHeight)
+	
+	self.repBar.text:FontTemplate(nil, E.db.general.reputationTextSize)
+	self.expBar.text:FontTemplate(nil, E.db.general.experienceTextSize)
 end
 
 function M:EnableDisable_ExperienceBar()

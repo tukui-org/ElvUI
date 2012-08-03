@@ -32,11 +32,13 @@ P['general'] = {
 	['experienceWidth'] = 475,
 	['experienceHeight'] = 18,
 	['experienceTextFormat'] = 'NONE',
+	['experienceTextSize'] = 11,
 	
 	['reputation'] = true,
 	['reputationWidth'] = 475,
 	['reputationHeight'] = 18,
 	['reputationTextFormat'] = 'NONE',
+	['reputationTextSize'] = 11,
 };
 
 --Bags
