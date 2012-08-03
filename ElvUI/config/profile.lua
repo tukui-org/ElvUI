@@ -25,8 +25,12 @@ P['general'] = {
 	['expRepPos'] = 'TOP_SCREEN',
 
 	['mapAlpha'] = 1,
-	['minimapSize'] = 176,
 	['tinyWorldMap'] = true,
+	
+	['minimap'] = {
+		['size'] = 176,
+		['locationText'] = 'MOUSEOVER',
+	},	
 	
 	['experience'] = {
 		['enable'] = true,
@@ -147,7 +151,6 @@ P['datatexts'] = {
 	['localtime'] = true,
 	['time24'] = false,
 	['battleground'] = true,
-	['minimapLocationText'] = 'MOUSEOVER',
 	['minimapPanels'] = true,	
 }
 

@@ -4,7 +4,6 @@ TODO:
 -Add a threat system, not sure how i will go about doing this atm.
 -Add a fucking microbar to stop the bitching.
 -Look into using the oUF tagging system for more unitframe texts such as health power, currently its being ignored.
--Add Enable/Disable minimap option, move minimap into its own sub section of general settings. Along with size and farmmode size.
 -Update Locales
 -Skin blackmarket ah
 -Skin valor point system frame whenever it comes out.

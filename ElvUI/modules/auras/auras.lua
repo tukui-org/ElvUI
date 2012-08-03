@@ -145,7 +145,7 @@ function A:UpdateHeader(header)
 	local db = self.db.debuffs
 	if header:GetAttribute('filter') == 'HELPFUL' then
 		db = self.db.buffs
-		header:SetAttribute("consolidateTo", self.db.consolidedBuffs == true and 1 or 0)
+		header:SetAttribute("consolidateTo", self.db.consolidedBuffs == true and E.private.general.minimap.enable == true and 1 or 0)
 		header:SetAttribute("separateOwn", self.db.seperateOwn)
 	end
 

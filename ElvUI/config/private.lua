@@ -10,6 +10,10 @@ V['general'] = {
 	["dmgfont"] = "ElvUI Combat",
 	['bubbles'] = true,
 	['bags'] = true,
+	
+	['minimap'] = {
+		['enable'] = true,
+	},
 }
 
 V['bags'] = {

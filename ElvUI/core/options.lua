@@ -91,18 +91,7 @@ E.Options.args.general = {
 					type = 'range',
 					isPercent = true,
 					min = 0, max = 1, step = 0.01,
-				},
-				minimapSize = {
-					order = 4,
-					name = L['Minimap Size'],
-					desc = L['Adjust the size of the minimap.'],
-					type = 'range',
-					min = 120, max = 250, step = 1,
-					set = function(info, value) 
-						E.db.general[ info[#info] ] = value
-						E:GetModule('Minimap'):UpdateSettings()
-					end,
-				},				
+				},		
 				autoAcceptInvite = {
 					order = 5,
 					name = L['Accept Invites'],
@@ -163,8 +152,48 @@ E.Options.args.general = {
 				},				
 			},
 		},	
-		experience = {
+		minimap = {
 			order = 2,
+			get = function(info) return E.db.general.minimap[ info[#info] ] end,	
+			type = "group",
+			name = MINIMAP_LABEL,
+			guiInline = true,
+			args = {
+				enable = {
+					order = 1,
+					type = "toggle",
+					name = L["Enable"],
+					desc = L['Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the consolidated buffs bar, and prevent you from seeing the minimap datatexts.|r'],
+					get = function(info) return E.private.general.minimap[ info[#info] ] end,
+					set = function(info, value) E.private.general.minimap[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,	
+				},
+				size = {
+					order = 2,
+					type = "range",
+					name = L["Size"],
+					desc = L['Adjust the size of the minimap.'],
+					min = 120, max = 250, step = 1,
+					set = function(info, value) E.db.general.minimap[ info[#info] ] = value; E:GetModule('Minimap'):UpdateSettings() end,	
+					disabled = function() return not E.private.general.minimap.enable end,
+				},	
+				locationText = {
+					order = 3,
+					type = 'select',
+					name = L['Location Text'],
+					desc = L['Change settings for the display of the location text that is on the minimap.'],
+					get = function(info) return E.db.general.minimap.locationText end,
+					set = function(info, value) E.db.general.minimap.locationText = value; E:GetModule('Minimap'):UpdateSettings() end,
+					values = {
+						['MOUSEOVER'] = L['Minimap Mouseover'],
+						['SHOW'] = L['Always Display'],
+						['HIDE'] = L['Hide'],
+					},
+					disabled = function() return not E.private.general.minimap.enable end,
+				},				
+			},		
+		},
+		experience = {
+			order = 3,
 			get = function(info) return E.db.general.experience[ info[#info] ] end,
 			set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):UpdateExpRepDimensions() end,		
 			type = "group",
@@ -210,7 +239,7 @@ E.Options.args.general = {
 			},
 		},
 		reputation = {
-			order = 3,
+			order = 4,
 			get = function(info) return E.db.general.reputation[ info[#info] ] end,
 			set = function(info, value) E.db.general.reputation[ info[#info] ] = value; E:GetModule('Misc'):UpdateExpRepDimensions() end,		
 			type = "group",

@@ -360,7 +360,7 @@ L['|cFFE30000Lua error recieved. You can view the error message when you exit co
 
 --General
 L["Accept Invites"] = true;
-L["Adjust the size of the minimap."] = true;
+L['Adjust the size of the minimap.'] = true;
 L["Announce Interrupts"] = true;
 L["Announce when you interrupt a spell to the specified chat channel."] = true;
 L["Auto Repair"] = true;
@@ -378,6 +378,7 @@ L["ELVUI_DESC"] = "ElvUI is a complete User Interface replacement addon for Worl
 L['Emotion Icons'] = true;
 L["Enable/Disable the loot frame."] = true;
 L["Enable/Disable the loot roll frame."] = true;
+L['Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the consolidated buffs bar, and prevent you from seeing the minimap datatexts.|r'] = true;
 L["General"] = true;
 L["Log Taints"] = true;
 L["Login Message"] = true;
@@ -386,7 +387,6 @@ L["Loot Roll"] = true;
 L["Loot"] = true;
 L["Map Alpha While Moving"] = true;
 L["Media"] = true;
-L["Minimap Size"] = true;
 L["Reset all frames to their original positions."] = true;
 L["Reset Anchors"] = true;
 L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = true;

@@ -127,7 +127,7 @@ function M:Minimap_OnMouseWheel(d)
 end
 
 function M:Update_ZoneText()
-	if E.db.general.minimapLocationText == 'HIDE' then return; end
+	if E.db.general.minimap.locationText == 'HIDE' or not E.private.general.minimap.enable then return; end
 	Minimap.location:SetText(strsub(GetMinimapZoneText(),1,25))
 	Minimap.location:SetTextColor(M:GetLocTextColor())
 end
@@ -147,7 +147,7 @@ function M:UpdateSettings()
 	if InCombatLockdown() then
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
 	end
-	E.MinimapSize = E.db.general.minimapSize
+	E.MinimapSize = E.private.general.minimap.enable and E.db.general.minimap.size or Minimap:GetWidth() + 10
 	
 	if E.db.auras.consolidedBuffs then
 		E.ConsolidatedBuffsWidth = ((E.MinimapSize - 6) / 6) + 4
@@ -157,10 +157,13 @@ function M:UpdateSettings()
 	
 	E.MinimapWidth = E.MinimapSize	
 	E.MinimapHeight = E.MinimapSize + 5
-	Minimap:Size(E.MinimapSize, E.MinimapSize)
+	
+	if E.private.general.minimap.enable then
+		Minimap:Size(E.MinimapSize, E.MinimapSize)
+	end
 	
 	if LeftMiniPanel and RightMiniPanel then
-		if E.db.datatexts.minimapPanels then
+		if E.db.datatexts.minimapPanels and E.private.general.minimap.enable then
 			LeftMiniPanel:Show()
 			RightMiniPanel:Show()
 		else
@@ -182,7 +185,7 @@ function M:UpdateSettings()
 	if Minimap.location then
 		Minimap.location:Width(E.MinimapSize)
 		
-		if E.db.general.minimapLocationText ~= 'SHOW' then
+		if E.db.general.minimap.locationText ~= 'SHOW' or not E.private.general.minimap.enable then
 			Minimap.location:Hide()
 		else
 			Minimap.location:Show()
@@ -205,13 +208,9 @@ function M:UpdateSettings()
 			AurasMover:Height(E.MinimapHeight)
 		end
 	end
-	
-	if UpperRepExpBarHolder then
-		E:GetModule('Misc'):UpdateExpRepBarAnchor()
-	end
-		
+			
 	if ElvConfigToggle then
-		if E.db.auras.consolidedBuffs and E.db.datatexts.minimapPanels then
+		if E.db.auras.consolidedBuffs and E.db.datatexts.minimapPanels and E.private.general.minimap.enable then
 			ElvConfigToggle:Show()
 			ElvConfigToggle:Width(E.ConsolidatedBuffsWidth)
 		else
@@ -225,7 +224,7 @@ function M:UpdateSettings()
 			ElvUI_ConsolidatedBuffs['spell'..i]:Size(E.ConsolidatedBuffsWidth - 4)
 		end
 		
-		if E.db.auras.consolidedBuffs then
+		if E.db.auras.consolidedBuffs and E.private.general.minimap.enable then
 			E:GetModule('Auras'):EnableCB()
 		else
 			E:GetModule('Auras'):DisableCB()
@@ -235,6 +234,11 @@ end
 
 function M:Initialize()	
 	self:UpdateSettings()
+	if not E.private.general.minimap.enable then 
+		Minimap:SetMaskTexture('Textures\\MinimapMask')
+		return; 
+	end
+	
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
 	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
 	mmholder:Width((Minimap:GetWidth() + 29) + E.ConsolidatedBuffsWidth)
@@ -245,12 +249,12 @@ function M:Initialize()
 	Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
 	Minimap:CreateBackdrop('Default')
 	Minimap:HookScript('OnEnter', function(self)
-		if E.db.general.minimapLocationText ~= 'MOUSEOVER' then return; end
+		if E.db.general.minimap.locationText ~= 'MOUSEOVER' or not E.private.general.minimap.enable then return; end
 		self.location:Show()
 	end)
 	
 	Minimap:HookScript('OnLeave', function(self)
-		if E.db.general.minimapLocationText ~= 'MOUSEOVER' then return; end
+		if E.db.general.minimap.locationText ~= 'MOUSEOVER' or not E.private.general.minimap.enable then return; end
 		self.location:Hide()
 	end)	
 	
@@ -263,7 +267,7 @@ function M:Initialize()
 	Minimap.location:Point('TOP', Minimap, 'TOP', 0, -2)
 	Minimap.location:SetJustifyH("CENTER")
 	Minimap.location:SetJustifyV("MIDDLE")	
-	if E.db.general.minimapLocationText ~= 'SHOW' then
+	if E.db.general.minimap.locationText ~= 'SHOW' or not E.private.general.minimap.enable then
 		Minimap.location:Hide()
 	end
 	
