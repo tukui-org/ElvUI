@@ -170,7 +170,7 @@ function M:CreateBar(name, onEnter, ...)
 	bar.statusBar:SetInside()
 	bar.statusBar:SetStatusBarTexture(E.media.normTex)
 	
-	bar.text = bar:CreateFontString(nil, 'OVERLAY')
+	bar.text = bar.statusBar:CreateFontString(nil, 'OVERLAY')
 	bar.text:FontTemplate()
 	bar.text:SetPoint('CENTER')
 	
