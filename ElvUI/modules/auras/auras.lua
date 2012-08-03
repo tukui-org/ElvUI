@@ -131,15 +131,13 @@ function A:CheckWeapons(elapsed)
 	TimeSinceLastUpdate = TimeSinceLastUpdate + elapsed
 	
 	if (TimeSinceLastUpdate >= 1) then
-		local e1, e1time, _, e2, e2time, _, e3, e3time, _  = GetWeaponEnchantInfo()
+		local e1, e1time, _, e2, e2time  = GetWeaponEnchantInfo()
 		
 		local w1 = self:GetAttribute("tempEnchant1")
 		local w2 = self:GetAttribute("tempEnchant2")
-		local w3 = self:GetAttribute("tempEnchant3")
 
 		if w1 then A:UpdateWeapons(w1, "MainHandSlot", e1, e1time) end
 		if w2 then A:UpdateWeapons(w2, "SecondaryHandSlot", e2, e2time) end
-		if w3 then A:UpdateWeapons(w3, "RangedSlot", e3, e3time) end
 
 		TimeSinceLastUpdate = 0
 	end

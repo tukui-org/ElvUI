@@ -44,7 +44,6 @@ local function LoadSkin()
 			"Trinket1Slot",
 			"MainHandSlot",
 			"SecondaryHandSlot",
-			"RangedSlot",
 		}
 		for _, slot in pairs(slots) do
 			local icon = _G["Inspect"..slot.."IconTexture"]
