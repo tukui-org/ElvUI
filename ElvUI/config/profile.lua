@@ -1179,7 +1179,12 @@ P["actionbar"] = {
 	["secondscolor"] = { r = 1, g = 1, b = 0 },
 	["minutescolor"] = { r = 1, g = 1, b = 1 },
 	["hourscolor"] = { r = 0.4, g = 1, b = 1 },
-	["dayscolor"] = { r = 0.4, g = 0.4, b = 1 },	
+	["dayscolor"] = { r = 0.4, g = 0.4, b = 1 },
+	['microbar'] = {
+		['enabled'] = false,
+		['mouseover'] = false,
+		['buttonsPerRow'] = 12,
+	},
 	['bar1'] = {
 		['enabled'] = true,
 		['buttons'] = 12,

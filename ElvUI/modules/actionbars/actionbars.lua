@@ -702,6 +702,7 @@ function AB:Initialize()
 	self:DisableBlizzard()
 	
 	self:SetupExtraButton()
+	self:SetupMicroBar()
 	
 	for i=1, 5 do
 		self:CreateBar(i)
