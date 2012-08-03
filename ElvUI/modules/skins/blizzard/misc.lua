@@ -389,6 +389,7 @@ local function LoadSkin()
 	S:HandleButton(GuildInviteFrameDeclineButton)
 	GuildInviteFrame:Height(225)
 	GuildInviteFrame.SetHeight = E.noop
+	GuildInviteFrameWarningText:Kill()
 	
 	local function SkinWatchFrameItems()
 		for i=1, WATCHFRAME_NUM_ITEMS do
