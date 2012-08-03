@@ -124,7 +124,7 @@ function CH:InsertEmotions(msg)
 end
 
 function CH:GetSmileyReplacementText(msg)
-	if not self.db.emotionIcons or msg:find('/run') or msg:find('/dump') then return msg end
+	if not self.db.emotionIcons or msg:find('/run') or msg:find('/dump') or msg:find('/script') then return msg end
 	local outstr = "";
 	local origlen = string.len(msg);
 	local startpos = 1;
