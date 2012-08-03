@@ -36,17 +36,17 @@ P['general'] = {
 	
 	['experience'] = {
 		['enable'] = true,
-		['width'] = 475,
-		['height'] = 18,
-		['textFormat'] = 'NONE',
-		['textSize'] = 11,
+		['width'] = 213,
+		['height'] = 15,
+		['textFormat'] = 'CURMAX',
+		['textSize'] = 10,
 	},
 	['reputation'] = {
 		['enable'] = true,
-		['width'] = 475,
-		['height'] = 18,
-		['textFormat'] = 'NONE',
-		['textSize'] = 11,
+		['width'] = 213,
+		['height'] = 15,
+		['textFormat'] = 'CURMAX',
+		['textSize'] = 10,
 	},
 };
 

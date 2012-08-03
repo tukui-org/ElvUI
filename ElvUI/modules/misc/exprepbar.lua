@@ -12,12 +12,12 @@ function M:UpdateExpRepAnchors()
 	expBar:ClearAllPoints()
 	
 	if self.expBar:IsShown() and self.repBar:IsShown() then
-		expBar:Point('TOP', E.UIParent, 'TOP', 0, -1)
+		expBar:Point('TOP', MMHolder, 'BOTTOM', 1, -1)
 		repBar:Point('TOP', self.expBar, 'BOTTOM', 0, -1)
 	elseif self.expBar:IsShown() then
-		expBar:Point('TOP', E.UIParent, 'TOP', 0, -1)
+		expBar:Point('TOP', MMHolder, 'BOTTOM', 1, -1)
 	else
-		repBar:Point('TOP', E.UIParent, 'TOP', 0, -1)
+		repBar:Point('TOP', MMHolder, 'BOTTOM', 1, -1)
 	end
 end
 
@@ -221,7 +221,7 @@ function M:EnableDisable_ReputationBar()
 end
 
 function M:LoadExpRepBar()
-	self.expBar = self:CreateBar('ElvUI_ExperienceBar', ExperienceBar_OnEnter, 'TOP', E.UIParent, 'TOP', 0, -1)
+	self.expBar = self:CreateBar('ElvUI_ExperienceBar', ExperienceBar_OnEnter, 'TOP', MMHolder, 'BOTTOM', 1, -1)
 	self.expBar.statusBar:SetStatusBarColor(0, 0.4, 1, .8)
 	self.expBar.rested = CreateFrame('StatusBar', nil, self.expBar)
 	self.expBar.rested:SetInside()
