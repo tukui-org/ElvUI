@@ -101,11 +101,7 @@ function AB:PositionAndSizeBarShapeShift()
 	else
 		bar.backdrop:Hide();
 	end
-	
-	bar.backdrop:SetParent(StanceButton1)
-	bar.backdrop:SetFrameStrata('BACKGROUND')
-	bar.backdrop:SetFrameLevel(StanceButton1:GetFrameLevel() - 1)
-	
+
 	local horizontalGrowth, verticalGrowth;
 	if point == "TOPLEFT" or point == "TOPRIGHT" then
 		verticalGrowth = "DOWN";
