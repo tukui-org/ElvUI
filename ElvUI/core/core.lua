@@ -361,9 +361,7 @@ function E:UpdateAll(ignoreInstall)
 	bags:Layout(true); 
 	bags:PositionBagFrames()
 	bags:SizeAndPositionBagBar()
-	
-	E:GetModule('Auras'):UpdateAllHeaders()
-	
+
 	self:GetModule('Layout'):ToggleChatPanels()
 	
 	local DT = self:GetModule('DataTexts')
@@ -385,7 +383,9 @@ function E:UpdateAll(ignoreInstall)
 	
 	self:GetModule('Auras').db = self.db.auras
 	self:GetModule('Tooltip').db = self.db.tooltip
-
+	
+	E:GetModule('Auras'):UpdateAllHeaders()
+	
 	if self.db.install_complete == nil or (self.db.install_complete and type(self.db.install_complete) == 'boolean') or (self.db.install_complete and type(tonumber(self.db.install_complete)) == 'number' and tonumber(self.db.install_complete) <= 3.83) then
 		if not ignoreInstall then
 			self:Install()

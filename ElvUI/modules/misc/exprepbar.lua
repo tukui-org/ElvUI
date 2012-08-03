@@ -162,7 +162,7 @@ function M:CreateBar(name, onEnter, ...)
 	bar:Point(...)
 	bar:SetScript('OnEnter', onEnter)
 	bar:SetScript('OnLeave', OnLeave)
-	bar:SetFrameStrata('BACKGROUND')
+	bar:SetFrameStrata('LOW')
 	bar:SetTemplate('Default')
 	bar:Hide()
 	
