@@ -165,31 +165,31 @@ E.Options.args.general = {
 		},	
 		experience = {
 			order = 2,
-			get = function(info) return E.db.general[ info[#info] ] end,
-			set = function(info, value) E.db.general[ info[#info] ] = value; E:GetModule('Misc'):UpdateExpRepDimensions() end,		
+			get = function(info) return E.db.general.experience[ info[#info] ] end,
+			set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):UpdateExpRepDimensions() end,		
 			type = "group",
 			name = XPBAR_LABEL,
 			guiInline = true,
 			args = {
-				experience = {
+				enable = {
 					order = 1,
 					type = "toggle",
 					name = L["Enable"],
-					set = function(info, value) E.db.general[ info[#info] ] = value; E:GetModule('Misc'):EnableDisable_ExperienceBar() end,
+					set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):EnableDisable_ExperienceBar() end,
 				},
-				experienceWidth = {
+				width = {
 					order = 2,
 					type = "range",
 					name = L["Width"],
 					min = 100, max = 800, step = 1,
 				},
-				experienceHeight = {
+				height = {
 					order = 3,
 					type = "range",
 					name = L["Height"],
 					min = 5, max = 30, step = 1,
 				},
-				experienceTextFormat = {
+				textFormat = {
 					order = 4,
 					type = 'select',
 					name = L["Text Format"],
@@ -199,9 +199,9 @@ E.Options.args.general = {
 						CURMAX = L["Current - Max"],
 						CURPERC = L["Current - Percent"],
 					},
-					set = function(info, value) E.db.general[ info[#info] ] = value; E:GetModule('Misc'):UpdateExperience() end,
+					set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):UpdateExperience() end,
 				},		
-				experienceTextSize = {
+				textSize = {
 					order = 5,
 					name = L["Font Size"],
 					type = "range",
@@ -211,31 +211,31 @@ E.Options.args.general = {
 		},
 		reputation = {
 			order = 3,
-			get = function(info) return E.db.general[ info[#info] ] end,
-			set = function(info, value) E.db.general[ info[#info] ] = value; E:GetModule('Misc'):UpdateExpRepDimensions() end,			
+			get = function(info) return E.db.general.reputation[ info[#info] ] end,
+			set = function(info, value) E.db.general.reputation[ info[#info] ] = value; E:GetModule('Misc'):UpdateExpRepDimensions() end,		
 			type = "group",
-			name = COMBAT_FACTION_CHANGE..' '..L['Bar'],
+			name = XPBAR_LABEL,
 			guiInline = true,
 			args = {
-				reputation = {
+				enable = {
 					order = 1,
 					type = "toggle",
 					name = L["Enable"],
-					set = function(info, value) E.db.general[ info[#info] ] = value; E:GetModule('Misc'):EnableDisable_ReputationBar() end,
+					set = function(info, value) E.db.general.reputation[ info[#info] ] = value; E:GetModule('Misc'):EnableDisable_ReputationBar() end,
 				},
-				reputationWidth = {
+				width = {
 					order = 2,
 					type = "range",
 					name = L["Width"],
 					min = 100, max = 800, step = 1,
 				},
-				reputationHeight = {
+				height = {
 					order = 3,
 					type = "range",
 					name = L["Height"],
 					min = 5, max = 30, step = 1,
 				},
-				reputationTextFormat = {
+				textFormat = {
 					order = 4,
 					type = 'select',
 					name = L["Text Format"],
@@ -245,14 +245,14 @@ E.Options.args.general = {
 						CURMAX = L["Current - Max"],
 						CURPERC = L["Current - Percent"],
 					},
-					set = function(info, value) E.db.general[ info[#info] ] = value; E:GetModule('Misc'):UpdateReputation() end,
-				},
-				reputationTextSize = {
+					set = function(info, value) E.db.general.reputation[ info[#info] ] = value; E:GetModule('Misc'):UpdateReputation() end,
+				},		
+				textSize = {
 					order = 5,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,		
-				},
+				},				
 			},
 		},		
 	},

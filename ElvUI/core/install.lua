@@ -251,8 +251,8 @@ function E:SetupResolution(noDataReset)
 		if not noDataReset then
 			E.db.auras.wrapAfter = 10;
 		end
-		E.db.general.reputationWidth = 400
-		E.db.general.experienceWidth = 400
+		E.db.general.reputation.width = 400
+		E.db.general.experience.width = 400
 		E.db.movers.ElvAB_2 = "CENTERUIParentBOTTOM056.18"
 		
 		if not noDataReset then
@@ -297,8 +297,8 @@ function E:SetupResolution(noDataReset)
 		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
 
 		E.db.auras.wrapAfter = P.auras.wrapAfter;	
-		E.db.general.reputationWidth = P.general.reputationWidth
-		E.db.general.experienceWidth = P.general.experienceWidth
+		E.db.general.reputation.width = P.general.reputation.width
+		E.db.general.experience.width = P.general.experience.width
 		
 		E.db.lowresolutionset = nil;
 	end
