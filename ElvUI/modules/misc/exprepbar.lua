@@ -7,7 +7,7 @@ function M:UpdateExpRepAnchors()
 	local repBar = ReputationBarMover
 	local expBar = ExperienceBarMover
 	
-	if E.db.movers and (E.db.movers['ExperienceBarMover'] or E.db.movers['ReputationBarMover']) or not repBar or not expBar then return; end
+	if E.db.movers and (E:HasMoverBeenMoved('ExperienceBarMover') or E:HasMoverBeenMoved('ReputationBarMover')) or not repBar or not expBar then return; end
 	repBar:ClearAllPoints()
 	expBar:ClearAllPoints()
 	
