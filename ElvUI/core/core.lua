@@ -318,7 +318,7 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 
 		if prefix == "ElvUIVC" and sender ~= 'Elvz' and not string.find(sender, 'Elvz%-') and not E.recievedOutOfDateMessage then
 			if E.version ~= 'BETA' and tonumber(message) > tonumber(E.version) then
-				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from www.tukui.org"])
+				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"])
 				E.recievedOutOfDateMessage = true
 			end
 		end
