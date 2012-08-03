@@ -148,7 +148,7 @@ function A:UpdateHeader(header)
 		header:SetAttribute("consolidateTo", self.db.consolidedBuffs == true and E.private.general.minimap.enable == true and 1 or 0)
 		header:SetAttribute("separateOwn", self.db.seperateOwn)
 	end
-	if not db then return; end
+	if not db or not self.db.wrapAfter then return; end
 	header:SetAttribute("sortMethod", db.sortMethod)
 	header:SetAttribute("sortDir", db.sortDir)
 	header:SetAttribute("maxWraps", db.maxWraps)
