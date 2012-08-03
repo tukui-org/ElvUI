@@ -2,7 +2,6 @@ TODO:
 
 -Find better emotion icons
 -Add a threat system, not sure how i will go about doing this atm.
--Add a fucking microbar to stop the bitching.
 -Look into using the oUF tagging system for more unitframe texts such as health power, currently its being ignored.
 -Update Locales
 -Skin blackmarket ah
