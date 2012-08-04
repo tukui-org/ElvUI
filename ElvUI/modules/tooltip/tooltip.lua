@@ -295,7 +295,12 @@ function TT:ADDON_LOADED(event, addon)
 		
 		EventTraceTooltip:HookScript("OnShow", function(self)
 			self:SetTemplate("Transparent")
-		end)		
+		end)
+		
+		if EventTraceFrameCloseButton and not EventTraceFrameCloseButton.isSkinned then
+			E.Skins:HandleCloseButton(EventTraceFrameCloseButton)
+			EventTraceFrameCloseButton.isSkinned = true
+		end
 		
 		self.debugloaded = true
 		self:UnregisterEvent('ADDON_LOADED')
@@ -310,6 +315,11 @@ function TT:PLAYER_ENTERING_WORLD()
 		
 		self:HookScript(ItemRefTooltip, "OnTooltipSetItem", 'SetStyle')
 		FriendsTooltip:SetTemplate("Transparent")
+		
+		if ItemRefCloseButton and not ItemRefCloseButton.isSkinned then
+			E.Skins:HandleCloseButton(ItemRefCloseButton)
+			ItemRefCloseButton.isSkinned = true
+		end
 		
 		if IsAddOnLoaded('Blizzard_DebugTools') and not self.debugloaded then
 			self:ADDON_LOADED('ADDON_LOADED', 'Blizzard_DebugTools')
