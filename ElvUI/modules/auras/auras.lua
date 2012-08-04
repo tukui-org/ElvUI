@@ -59,10 +59,14 @@ function A:UpdateWeapons(button, slot, active, expiration)
 	
 	if active then
 		button.id = GetInventorySlotInfo(slot)
+		button.quality = GetInventoryItemQuality('player', button.id)
 		button.icon = GetInventoryItemTexture("player", button.id)
 		button.texture:SetTexture(button.icon)
 		button.texture:SetTexCoord(unpack(E.TexCoords))		
 		button.expiration = (expiration/1000)
+		
+		local r, g, b = GetItemQualityColor(button.quality)
+		button.backdrop:SetBackdropBorderColor(r, g, b)
 		button:SetScript("OnUpdate", A.UpdateTime)		
 	elseif not active then
 		button.texture:SetTexture(nil)
