@@ -238,7 +238,7 @@ function A:Initialize()
 	if self.db then return; end --IDK WHY BUT THIS IS GETTING CALLED TWICE FROM SOMEWHERE...
 	BuffFrame:Kill()
 	ConsolidatedBuffs:Kill()
-	
+	TemporaryEnchantFrame:Kill()
 	self.db = E.db.auras
 	if E.private.auras.enable ~= true then return end
 	

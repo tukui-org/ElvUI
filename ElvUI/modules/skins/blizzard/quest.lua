@@ -25,7 +25,8 @@ local function LoadSkin()
 	QuestLogFrameShowMapButton.text:ClearAllPoints()
 	QuestLogFrameShowMapButton.text:SetPoint("CENTER")
 	QuestLogFrameShowMapButton:Size(QuestLogFrameShowMapButton:GetWidth() - 30, QuestLogFrameShowMapButton:GetHeight(), - 40)
-	
+	QuestGreetingScrollFrame:StripTextures()
+	S:HandleScrollBar(QuestGreetingScrollFrameScrollBar)
 	
 	QuestLogFrameInset:Kill()
 	QuestLogFrameCompleteButton:StripTextures()
