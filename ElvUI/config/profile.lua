@@ -305,6 +305,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'ALL',
 				['noDuration'] = 'ALL',
 				['useFilter'] = '',
+				['friendlyAuraType'] = 'HELPFUL',
+				['enemyAuraType'] = 'HARMFUL'
 			},	
 		},	
 		['target'] = {
@@ -390,6 +392,8 @@ P['unitframe'] = {
 				['noDuration'] = 'ENEMY',
 				['noConsolidated'] = 'ALL',
 				['useFilter'] = '',
+				['friendlyAuraType'] = 'HELPFUL',
+				['enemyAuraType'] = 'HARMFUL'				
 			},			
 		},
 		['targettarget'] = {
@@ -514,6 +518,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'NONE',
 				['useFilter'] = '',
+				['friendlyAuraType'] = 'HELPFUL',
+				['enemyAuraType'] = 'HARMFUL'				
 			},				
 		},	
 		['focustarget'] = {

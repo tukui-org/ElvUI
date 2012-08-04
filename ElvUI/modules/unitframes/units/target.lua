@@ -501,6 +501,9 @@ function UF:Update_TargetFrame(frame, db)
 				frame:EnableElement('AuraBars')
 			end
 			auraBars:Show()
+			auraBars.friendlyAuraType = db.aurabar.friendlyAuraType
+			auraBars.enemyAuraType = db.aurabar.enemyAuraType			
+			
 			local healthColor = UF.db.colors.health
 			local attachTo = frame
 			

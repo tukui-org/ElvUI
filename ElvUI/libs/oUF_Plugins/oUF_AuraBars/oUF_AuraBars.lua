@@ -179,8 +179,20 @@ end
 
 local function Update(self, event, unit)
 	if self.unit ~= unit then return end
-	local helpOrHarm = UnitIsFriend('player', unit) and 'HELPFUL' or 'HARMFUL'
+	local auraBars = self.AuraBars
+	local helpOrHarm
+	local isFriend = UnitIsFriend('player', unit)
 	
+	if auraBars.friendlyAuraType and auraBars.enemyAuraType then
+		if isFriend then
+			helpOrHarm = auraBars.friendlyAuraType
+		else
+			helpOrHarm = auraBars.enemyAuraType
+		end
+	else
+		helpOrHarm = isFriend and 'HELPFUL' or 'HARMFUL'
+	end
+
 	-- Create a table of auras to display
 	local auras = {}
 	local lastAuraIndex = 0
@@ -188,7 +200,7 @@ local function Update(self, event, unit)
 		local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate = UnitAura(unit, index, helpOrHarm)
 		if not name then break end
 		
-		if (self.AuraBars.filter or DefaultFilter)(self, unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate) then
+		if (auraBars.filter or DefaultFilter)(self, unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate) then
 			lastAuraIndex = lastAuraIndex + 1
 			auras[lastAuraIndex] = {}
 			auras[lastAuraIndex].name = name
@@ -206,19 +218,19 @@ local function Update(self, event, unit)
 		end
 	end
 
-	if self.AuraBars.sort then
-		table.sort(auras, type(self.AuraBars.sort) == 'function' and self.AuraBars.sort or sort)
+	if auraBars.sort then
+		table.sort(auras, type(auraBars.sort) == 'function' and auraBars.sort or sort)
 	end
 
 	-- Show and configure bars for buffs/debuffs.
-	local bars = self.AuraBars.bars
+	local bars = auraBars.bars
 	for index = 1 , lastAuraIndex do
-		if self.AuraBars:GetWidth() == 0 then break; end
+		if auraBars:GetWidth() == 0 then break; end
 		local aura = auras[index]
 		local frame = bars[index]
 		
 		if not frame then
-			frame = CreateAuraBar(self, index == 1 and self.AuraBars or bars[index - 1])
+			frame = CreateAuraBar(self, index == 1 and auraBars or bars[index - 1])
 			bars[index] = frame
 		end
 
@@ -233,13 +245,13 @@ local function Update(self, event, unit)
 			bar:SetMinMaxValues(0, 1)
 			bar:SetValue(1)
 		else
-			if self.AuraBars.scaleTime then
-				local maxvalue = math.min(self.AuraBars.scaleTime, bar.aura.duration)
+			if auraBars.scaleTime then
+				local maxvalue = math.min(auraBars.scaleTime, bar.aura.duration)
 				bar:SetMinMaxValues(0, maxvalue)
 				bar:SetWidth(
-					( maxvalue / self.AuraBars.scaleTime ) *
-					(	( self.AuraBars.auraBarWidth or self.AuraBars:GetWidth() ) -
-						( bar:GetHeight() + (self.AuraBars.gap or 0) ) ) ) 				-- icon size + gap
+					( maxvalue / auraBars.scaleTime ) *
+					(	( auraBars.auraBarWidth or auraBars:GetWidth() ) -
+						( bar:GetHeight() + (auraBars.gap or 0) ) ) ) 				-- icon size + gap
 			else
 				bar:SetMinMaxValues(0, bar.aura.duration)
 			end
@@ -253,15 +265,15 @@ local function Update(self, event, unit)
 
 		-- Colour bars
 		local r, g, b = .2, .6, 1 -- Colour for buffs
-		if self.AuraBars.buffColor then
-			r, g, b = unpack(self.AuraBars.buffColor)
+		if auraBars.buffColor then
+			r, g, b = unpack(auraBars.buffColor)
 		end		
 		
 		if helpOrHarm == 'HARMFUL' then
 			local debuffType = bar.aura.debuffType and bar.aura.debuffType or 'none'
 			r, g, b = DebuffTypeColor[debuffType].r, DebuffTypeColor[debuffType].g, DebuffTypeColor[debuffType].b
-			if self.AuraBars.debuffColor then
-				r, g, b = unpack(self.AuraBars.debuffColor)
+			if auraBars.debuffColor then
+				r, g, b = unpack(auraBars.debuffColor)
 			end			
 		end
 		bar:SetStatusBarColor(r, g, b)

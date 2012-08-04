@@ -428,7 +428,7 @@ end
 function B:Bags_OnShow()
 	B:PLAYERBANKSLOTS_CHANGED()
 	B:Layout()
-	
+	E:GetModule('Tooltip'):GameTooltip_SetDefaultAnchor(GameTooltip)
 	for _, x in ipairs(BAGS_BACKPACK) do
 		B:BagSlotUpdate(x)
 	end	
@@ -438,7 +438,7 @@ function B:Bags_OnHide()
 	if bankFrame then
 		bankFrame:Hide()
 	end
-	
+	E:GetModule('Tooltip'):GameTooltip_SetDefaultAnchor(GameTooltip)
 	if B.buttons then
 		for _, v in ipairs(allButtons) do
 			v.frame.lock = false
