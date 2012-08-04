@@ -1336,6 +1336,26 @@ E.Options.args.unitframe.args.player = {
 						return filters
 					end,
 				},
+				friendlyAuraType = {
+					type = 'select',
+					order = 16,
+					name = L['Friendly Aura Type'],
+					desc = L['Set the type of auras to show when a unit is friendly.'],
+					values = {
+						['HARMFUL'] = L['Debuffs'],
+						['HELPFUL'] = L['Buffs'],
+					},						
+				},
+				enemyAuraType = {
+					type = 'select',
+					order = 17,
+					name = L['Enemy Aura Type'],
+					desc = L['Set the type of auras to show when a unit is a foe.'],
+					values = {
+						['HARMFUL'] = L['Debuffs'],
+						['HELPFUL'] = L['Buffs'],
+					},						
+				},
 			},
 		},			
 	},
@@ -1969,6 +1989,26 @@ E.Options.args.unitframe.args.target = {
 						return filters
 					end,
 				},
+				friendlyAuraType = {
+					type = 'select',
+					order = 16,
+					name = L['Friendly Aura Type'],
+					desc = L['Set the type of auras to show when a unit is friendly.'],
+					values = {
+						['HARMFUL'] = L['Debuffs'],
+						['HELPFUL'] = L['Buffs'],
+					},						
+				},
+				enemyAuraType = {
+					type = 'select',
+					order = 17,
+					name = L['Enemy Aura Type'],
+					desc = L['Set the type of auras to show when a unit is a foe.'],
+					values = {
+						['HARMFUL'] = L['Debuffs'],
+						['HELPFUL'] = L['Buffs'],
+					},						
+				},				
 			},
 		},			
 	},
@@ -2900,6 +2940,26 @@ E.Options.args.unitframe.args.focus = {
 						return filters
 					end,
 				},
+				friendlyAuraType = {
+					type = 'select',
+					order = 16,
+					name = L['Friendly Aura Type'],
+					desc = L['Set the type of auras to show when a unit is friendly.'],
+					values = {
+						['HARMFUL'] = L['Debuffs'],
+						['HELPFUL'] = L['Buffs'],
+					},						
+				},
+				enemyAuraType = {
+					type = 'select',
+					order = 17,
+					name = L['Enemy Aura Type'],
+					desc = L['Set the type of auras to show when a unit is a foe.'],
+					values = {
+						['HARMFUL'] = L['Debuffs'],
+						['HELPFUL'] = L['Buffs'],
+					},						
+				},				
 			},
 		},			
 	},

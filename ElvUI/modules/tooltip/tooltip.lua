@@ -59,7 +59,9 @@ end
 
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	if self.db.anchor == 'CURSOR' then
-		tt:SetOwner(parent, "ANCHOR_CURSOR")	
+		if parent then
+			tt:SetOwner(parent, "ANCHOR_CURSOR")	
+		end
 		
 		if InCombatLockdown() and E.db.tooltip.combathide then
 			tt:Hide()
@@ -67,7 +69,9 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 			TT:SetStatusBarAnchor('TOP')
 		end
 	elseif self.db.anchor == 'SMART' then
-		tt:SetOwner(parent, "ANCHOR_NONE")
+		if parent then
+			tt:SetOwner(parent, "ANCHOR_NONE")
+		end
 		
 		if InCombatLockdown() and E.db.tooltip.combathide then
 			tt:Hide()
@@ -85,7 +89,9 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 			TT:SetStatusBarAnchor('BOTTOM')
 		end
 	else
-		tt:SetOwner(parent, "ANCHOR_NONE")
+		if parent then
+			tt:SetOwner(parent, "ANCHOR_NONE")
+		end
 		
 		if InCombatLockdown() and E.db.tooltip.combathide then
 			tt:Hide()
