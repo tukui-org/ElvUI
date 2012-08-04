@@ -9,7 +9,7 @@ function A:FormatTime(s)
 		return format("|cffeeeeee%dh|r", ceil(s / hour))
 	elseif s >= minute then
 		return format("|cffeeeeee%dm|r", ceil(s / minute))
-	elseif s >= minute / 12 then
+	elseif s >= minute / 12 and s > E.db.auras.fadeThreshold then
 		return tostring(floor(s))..'s'
 	end
 	return format("%.1fs", s)
@@ -28,10 +28,10 @@ function A:UpdateTime(elapsed)
 			elseif self.expiration <= 3600.5 and self.expiration > 60.5 then
 				self.time:SetText("|cffcccccc"..time.."|r")
 				E:StopFlash(self)
-			elseif self.expiration <= 60.5 and self.expiration > 5.5 then
-				self.time:SetText("|cffE8D911"..time.."|r")
+			elseif self.expiration <= 60.5 and self.expiration > E.db.auras.fadeThreshold then
+				self.time:SetText("|cffcccccc"..time.."|r")
 				E:StopFlash(self)
-			elseif self.expiration <= 5.5 then
+			elseif self.expiration <= E.db.auras.fadeThreshold then
 				self.time:SetText("|cffff0000"..time.."|r")
 				E:Flash(self, 1)
 			end
@@ -89,10 +89,14 @@ function A:UpdateWeapons(button, slot, active, expiration)
 	
 	if active then
 		button.id = GetInventorySlotInfo(slot)
+		button.quality = GetInventoryItemQuality('player', button.id)
 		button.icon = GetInventoryItemTexture("player", button.id)
 		button.texture:SetTexture(button.icon)
 		button.texture:SetTexCoord(unpack(E.TexCoords))		
 		button.expiration = (expiration/1000)
+		
+		local r, g, b = GetItemQualityColor(button.quality)
+		button.backdrop:SetBackdropBorderColor(r, g, b)
 		button:SetScript("OnUpdate", A.UpdateTime)		
 	elseif not active then
 		button.texture:SetTexture(nil)

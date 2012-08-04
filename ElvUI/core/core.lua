@@ -82,6 +82,21 @@ function E:Print(msg)
 	print(self["media"].hexvaluecolor..'ElvUI:|r', msg)
 end
 
+--Basically check if another class border is being used on a class that doesn't match. And then return true if a match is found.
+local function CheckClassColor(r, g, b)
+	if E.db.theme ~= 'class' then return end
+	local matchFound = false;
+	for class, _ in pairs(RAID_CLASS_COLORS) do
+		if class ~= E.myclass then
+			if RAID_CLASS_COLORS[class].r == r and RAID_CLASS_COLORS[class].g == g and RAID_CLASS_COLORS[class].b == b then
+				matchFound = true;
+			end
+		end
+	end
+	
+	return matchFound
+end
+
 function E:UpdateMedia()	
 	--Fonts
 	self["media"].normFont = LSM:Fetch("font", self.db['general'].font)
@@ -95,8 +110,11 @@ function E:UpdateMedia()
 
 	--Border Color
 	local border = E.db['general'].bordercolor
-	if E.db.theme == 'class' then
+	if CheckClassColor(border.r, border.g, border.b) then
 		border = RAID_CLASS_COLORS[E.myclass]
+		E.db['general'].bordercolor.r = RAID_CLASS_COLORS[E.myclass].r
+		E.db['general'].bordercolor.g = RAID_CLASS_COLORS[E.myclass].g
+		E.db['general'].bordercolor.b = RAID_CLASS_COLORS[E.myclass].b		
 	end
 	self["media"].bordercolor = {border.r, border.g, border.b}
 
@@ -110,9 +128,12 @@ function E:UpdateMedia()
 	
 	--Value Color
 	local value = self.db['general'].valuecolor
-	if E.db.theme == 'class' then
+	if CheckClassColor(value.r, value.g, value.b) then
 		value = RAID_CLASS_COLORS[E.myclass]
-	end	
+		self.db['general'].valuecolor.r = RAID_CLASS_COLORS[E.myclass].r
+		self.db['general'].valuecolor.g = RAID_CLASS_COLORS[E.myclass].g
+		self.db['general'].valuecolor.b = RAID_CLASS_COLORS[E.myclass].b		
+	end
 	self["media"].hexvaluecolor = self:RGBToHex(value.r, value.g, value.b)
 	self["media"].rgbvaluecolor = {value.r, value.g, value.b}
 	

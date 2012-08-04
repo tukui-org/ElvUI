@@ -102,6 +102,11 @@ function AB:UpdateMicroPositionDimensions()
 	end		
 end
 
+function AB:UpdateMicroButtons()
+	GuildMicroButtonTabard:ClearAllPoints()
+	GuildMicroButtonTabard:SetPoint("TOP", GuildMicroButton.backdrop, "TOP", 0, 25)
+end
+
 function AB:SetupMicroBar()
 	local microBar = CreateFrame('Frame', 'ElvUI_MicroBar', E.UIParent)
 	microBar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -48)
@@ -111,16 +116,12 @@ function AB:SetupMicroBar()
 	end
 
 	MicroButtonPortrait:SetInside(CharacterMicroButton.backdrop)
-	GuildMicroButtonTabard:ClearAllPoints()
-	GuildMicroButtonTabard:SetPoint("TOP", GuildMicroButton.backdrop, "TOP", 0, 25)
-	GuildMicroButtonTabard.SetPoint = E.noop
-	GuildMicroButtonTabard.ClearAllPoints = E.noop
-	
+
 	self:SecureHook('MainMenuMicroButton_SetPushed')
 	self:SecureHook('MainMenuMicroButton_SetNormal')
 	self:SecureHook('UpdateMicroButtonsParent')
 	self:SecureHook('MoveMicroButtons', 'UpdateMicroPositionDimensions')
-
+	self:SecureHook('UpdateMicroButtons')
 	UpdateMicroButtonsParent(microBar)
 	self:MainMenuMicroButton_SetNormal()
 	self:UpdateMicroPositionDimensions()
