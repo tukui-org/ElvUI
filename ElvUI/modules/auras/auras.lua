@@ -59,7 +59,7 @@ function A:UpdateWeapons(button, slot, active, expiration)
 
 		-- Credit Hydra: this is the border to my statusbar
 		local BarHolder = CreateFrame("Frame", nil, button)
-		BarHolder:Size(button:GetWidth()+4, 5)
+		BarHolder:Size(button:GetWidth()+4, 7)
 		BarHolder:Point("TOP", button, "BOTTOM", 0, -5)
 		BarHolder:SetTemplate("Default")
 		button.Holder = BarHolder
@@ -73,8 +73,8 @@ function A:UpdateWeapons(button, slot, active, expiration)
 		
 		-- and the bar..
 		local Bar = CreateFrame("StatusBar", nil, BarHolder)
-		Bar:Point("TOPLEFT", 1, -1)
-		Bar:Point("BOTTOMRIGHT", -1, 1)
+		Bar:Point("TOPLEFT", 1, -2)
+		Bar:Point("BOTTOMRIGHT", -1, 2)
 		Bar:SetStatusBarTexture(E["media"].blankTex)
 		Bar:SetStatusBarColor(0, 0.8, 0)
 		button.Bar = Bar
@@ -117,7 +117,7 @@ function A:UpdateAuras(header, button)
 
 		-- Credit Hydra: this is the border to my statusbar
 		local BarHolder = CreateFrame("Frame", nil, button)
-		BarHolder:Size(button:GetWidth()+4, 5)
+		BarHolder:Size(button:GetWidth()+4, 7)
 		BarHolder:Point("TOP", button, "BOTTOM", 0, -5)
 		BarHolder:SetTemplate("Default")
 		button.Holder = BarHolder
@@ -131,8 +131,8 @@ function A:UpdateAuras(header, button)
 		
 		-- and the bar..
 		local Bar = CreateFrame("StatusBar", nil, BarHolder)
-		Bar:Point("TOPLEFT", 1, -1)
-		Bar:Point("BOTTOMRIGHT", -1, 1)
+		Bar:Point("TOPLEFT", 1, -2)
+		Bar:Point("BOTTOMRIGHT", -1, 2)
 		Bar:SetStatusBarTexture(E["media"].blankTex)
 		Bar:SetStatusBarColor(0, 0.8, 0)
 		button.Bar = Bar
