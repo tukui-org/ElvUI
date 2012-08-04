@@ -94,6 +94,7 @@ function A:UpdateWeapons(button, slot, active, expiration)
 		button.texture:SetTexture(button.icon)
 		button.texture:SetTexCoord(unpack(E.TexCoords))		
 		button.expiration = (expiration/1000)
+		button.Dur = button.expiration
 		
 		local r, g, b = GetItemQualityColor(button.quality)
 		button.backdrop:SetBackdropBorderColor(r, g, b)
