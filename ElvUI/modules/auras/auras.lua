@@ -19,22 +19,29 @@ function A:UpdateTime(elapsed)
 	if(self.expiration) then	
 		self.expiration = math.max(self.expiration - elapsed, 0)
 		if(self.expiration <= 0) then
-			self.time:SetText("")
+			-- self.time:SetText("")
 		else
 			local time = A:FormatTime(self.expiration)
 			if self.expiration <= 86400.5 and self.expiration > 3600.5 then
-				self.time:SetText("|cffcccccc"..time.."|r")
+				-- self.time:SetText("|cffcccccc"..time.."|r")
 				E:StopFlash(self)
 			elseif self.expiration <= 3600.5 and self.expiration > 60.5 then
-				self.time:SetText("|cffcccccc"..time.."|r")
+				-- self.time:SetText("|cffcccccc"..time.."|r")
 				E:StopFlash(self)
 			elseif self.expiration <= 60.5 and self.expiration > 5.5 then
-				self.time:SetText("|cffE8D911"..time.."|r")
+				-- self.time:SetText("|cffE8D911"..time.."|r")
 				E:StopFlash(self)
 			elseif self.expiration <= 5.5 then
-				self.time:SetText("|cffff0000"..time.."|r")
+				-- self.time:SetText("|cffff0000"..time.."|r")
 				E:Flash(self, 1)
 			end
+			
+			-- Credit Hydra: here's the coloring/SetValue
+			local r, g, b = ElvUF.ColorGradient(self.expiration, self.Dur, 0.8,0,0,0.8,0.8,0,0,0.8,0)
+
+			self.Bar:SetValue(self.expiration)
+			self.Bar:SetStatusBarColor(r, g, b)
+			-- Credit Hydra End
 		end
 	end
 end
@@ -44,12 +51,27 @@ function A:UpdateWeapons(button, slot, active, expiration)
 		button.texture = button:CreateTexture(nil, "BORDER")
 		button.texture:SetAllPoints()
 		
-		button.time = button:CreateFontString(nil, "ARTWORK")
-		button.time:SetPoint("TOP", button, 'BOTTOM', 0, -2)
-		button.time:FontTemplate(nil, nil, 'OUTLINE')
-		button.time:SetShadowColor(0, 0, 0, 0.4)
-		button.time:SetShadowOffset(E.mult, -E.mult)
-				
+		-- button.time = button:CreateFontString(nil, "ARTWORK")
+		-- button.time:SetPoint("TOP", button, 'BOTTOM', 0, -2)
+		-- button.time:FontTemplate(nil, nil, 'OUTLINE')
+		-- button.time:SetShadowColor(0, 0, 0, 0.4)
+		-- button.time:SetShadowOffset(E.mult, -E.mult)
+
+		-- Credit Hydra: this is the border to my statusbar
+		local BarHolder = CreateFrame("Frame", nil, button)
+		BarHolder:Size(button:GetWidth(), 5)
+		BarHolder:Point("TOP", button, "BOTTOM", 0, 1)
+		button.Holder = BarHolder
+		
+		-- and the bar..
+		local Bar = CreateFrame("StatusBar", nil, BarHolder)
+		Bar:Point("TOPLEFT", 1, -1)
+		Bar:Point("BOTTOMRIGHT", -1, 1)
+		Bar:SetStatusBarTexture(E["media"].blankTex)
+		Bar:SetStatusBarColor(0, 0.8, 0)
+		button.Bar = Bar
+		-- Credit Hydra End
+	
 		button:CreateBackdrop('Default')
 		
 		button.highlight = button:CreateTexture(nil, "HIGHLIGHT")
@@ -80,9 +102,24 @@ function A:UpdateAuras(header, button)
 		button.count:SetPoint("BOTTOMRIGHT", -1, 1)
 		button.count:FontTemplate(nil, nil, 'OUTLINE')
 
-		button.time = button:CreateFontString(nil, "ARTWORK")
-		button.time:SetPoint("TOP", button, 'BOTTOM', 0, -2)
-		button.time:FontTemplate(nil, nil, 'OUTLINE')
+		-- button.time = button:CreateFontString(nil, "ARTWORK")
+		-- button.time:SetPoint("TOP", button, 'BOTTOM', 0, -2)
+		-- button.time:FontTemplate(nil, nil, 'OUTLINE')
+
+		-- Credit Hydra: this is the border to my statusbar
+		local BarHolder = CreateFrame("Frame", nil, button)
+		BarHolder:Size(button:GetWidth(), 5)
+		BarHolder:Point("TOP", button, "BOTTOM", 0, 1)
+		button.Holder = BarHolder
+		
+		-- and the bar..
+		local Bar = CreateFrame("StatusBar", nil, BarHolder)
+		Bar:Point("TOPLEFT", 1, -1)
+		Bar:Point("BOTTOMRIGHT", -1, 1)
+		Bar:SetStatusBarTexture(E["media"].blankTex)
+		Bar:SetStatusBarColor(0, 0.8, 0)
+		button.Bar = Bar
+		-- Credit Hydra End
 
 		button:SetScript("OnUpdate", A.UpdateTime)
 		
@@ -102,11 +139,21 @@ function A:UpdateAuras(header, button)
 		button.texture:SetTexCoord(unpack(E.TexCoords))
 		button.count:SetText(count > 1 and count or "")
 		button.expiration = expiration - GetTime()
+		button.Dur = duration
 		
 		if(header:GetAttribute("filter") == "HARMFUL") then
 			local color = DebuffTypeColor[dtype] or DebuffTypeColor.none
 			button.backdrop:SetBackdropBorderColor(color.r * 3/5, color.g * 3/5, color.b * 3/5)
+			-- Credit Hydra: remember to color the statusbar border
+			button.Holder:SetBackdropBorderColor(color.r * 3/5, color.g * 3/5, color.b * 3/5)
+			-- Credit Hydra End
 		end
+		
+		-- Credit Hydra: give the bar a max value
+		if (button.Bar and duration) then
+			button.Bar:SetMinMaxValues(0, duration)
+		end
+		-- Credit Hydra End
 	end
 end
 
@@ -183,7 +230,7 @@ function A:CreateAuraHeader(filter)
 	header:SetAttribute("unit", "player")
 	header:SetAttribute("filter", filter)
 	RegisterStateDriver(header, "visibility", "[petbattle] hide; show")
-	
+
 	-- look for weapons buffs
 	if filter == "HELPFUL" then
 		header:SetAttribute("includeWeapons", 1)
@@ -239,7 +286,7 @@ function A:Initialize()
 	if E.private.auras.enable ~= true then return end
 	
 	local holder = CreateFrame("Frame", "AurasHolder", E.UIParent)
-	holder:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", -8, 0)
+	holder:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", -8, 2)
 	holder:Width(456)
 	holder:Height(E.MinimapHeight)
 	
