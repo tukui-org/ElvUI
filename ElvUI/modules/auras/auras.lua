@@ -19,20 +19,20 @@ function A:UpdateTime(elapsed)
 	if(self.expiration) then	
 		self.expiration = math.max(self.expiration - elapsed, 0)
 		if(self.expiration <= 0) then
-			-- self.time:SetText("")
+			self.time:SetText("")
 		else
 			local time = A:FormatTime(self.expiration)
 			if self.expiration <= 86400.5 and self.expiration > 3600.5 then
-				-- self.time:SetText("|cffcccccc"..time.."|r")
+				self.time:SetText("|cffcccccc"..time.."|r")
 				E:StopFlash(self)
 			elseif self.expiration <= 3600.5 and self.expiration > 60.5 then
-				-- self.time:SetText("|cffcccccc"..time.."|r")
+				self.time:SetText("|cffcccccc"..time.."|r")
 				E:StopFlash(self)
 			elseif self.expiration <= 60.5 and self.expiration > 5.5 then
-				-- self.time:SetText("|cffE8D911"..time.."|r")
+				self.time:SetText("|cffE8D911"..time.."|r")
 				E:StopFlash(self)
 			elseif self.expiration <= 5.5 then
-				-- self.time:SetText("|cffff0000"..time.."|r")
+				self.time:SetText("|cffff0000"..time.."|r")
 				E:Flash(self, 1)
 			end
 			
@@ -51,17 +51,25 @@ function A:UpdateWeapons(button, slot, active, expiration)
 		button.texture = button:CreateTexture(nil, "BORDER")
 		button.texture:SetAllPoints()
 		
-		-- button.time = button:CreateFontString(nil, "ARTWORK")
-		-- button.time:SetPoint("TOP", button, 'BOTTOM', 0, -2)
-		-- button.time:FontTemplate(nil, nil, 'OUTLINE')
-		-- button.time:SetShadowColor(0, 0, 0, 0.4)
-		-- button.time:SetShadowOffset(E.mult, -E.mult)
+		button.time = button:CreateFontString(nil, "ARTWORK")
+		button.time:SetPoint("TOP", button, 'BOTTOM', 0, -2)
+		button.time:FontTemplate(nil, nil, 'OUTLINE')
+		button.time:SetShadowColor(0, 0, 0, 0.4)
+		button.time:SetShadowOffset(E.mult, -E.mult)
 
 		-- Credit Hydra: this is the border to my statusbar
 		local BarHolder = CreateFrame("Frame", nil, button)
-		BarHolder:Size(button:GetWidth(), 5)
-		BarHolder:Point("TOP", button, "BOTTOM", 0, 1)
+		BarHolder:Size(button:GetWidth()+4, 5)
+		BarHolder:Point("TOP", button, "BOTTOM", 0, -5)
+		BarHolder:SetTemplate("Default")
 		button.Holder = BarHolder
+		if not E.private.auras.visualtimer then
+			button.Holder:Hide()
+			button.time:Show()
+		else
+			button.Holder:Show()
+			button.time:Hide()
+		end
 		
 		-- and the bar..
 		local Bar = CreateFrame("StatusBar", nil, BarHolder)
@@ -102,15 +110,24 @@ function A:UpdateAuras(header, button)
 		button.count:SetPoint("BOTTOMRIGHT", -1, 1)
 		button.count:FontTemplate(nil, nil, 'OUTLINE')
 
-		-- button.time = button:CreateFontString(nil, "ARTWORK")
-		-- button.time:SetPoint("TOP", button, 'BOTTOM', 0, -2)
-		-- button.time:FontTemplate(nil, nil, 'OUTLINE')
+		button.time = button:CreateFontString(nil, "ARTWORK")
+		button.time:SetPoint("TOP", button, 'BOTTOM', 0, -2)
+		button.time:FontTemplate(nil, nil, 'OUTLINE')
+		button.time:Hide()
 
 		-- Credit Hydra: this is the border to my statusbar
 		local BarHolder = CreateFrame("Frame", nil, button)
-		BarHolder:Size(button:GetWidth(), 5)
-		BarHolder:Point("TOP", button, "BOTTOM", 0, 1)
+		BarHolder:Size(button:GetWidth()+4, 5)
+		BarHolder:Point("TOP", button, "BOTTOM", 0, -5)
+		BarHolder:SetTemplate("Default")
 		button.Holder = BarHolder
+		if not E.private.auras.visualtimer then
+			button.Holder:Hide()
+			button.time:Show()
+		else
+			button.Holder:Show()
+			button.time:Hide()
+		end
 		
 		-- and the bar..
 		local Bar = CreateFrame("StatusBar", nil, BarHolder)
@@ -275,7 +292,6 @@ function A:PostDrag(position)
 		end
 	end
 end
-
 
 function A:Initialize()
 	if self.db then return; end --IDK WHY BUT THIS IS GETTING CALLED TWICE FROM SOMEWHERE...

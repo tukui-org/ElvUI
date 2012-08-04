@@ -29,8 +29,19 @@ E.Options.args.auras = {
 			end,	
 			disabled = function() return not E.private.general.minimap.enable end,
 		},
-		general = {
+		visualtimer = {
 			order = 4,
+			name = L['Visual Timers'],
+			desc = L['Show timers as bars instead of text.'],
+			type = 'toggle',
+			get = function(info) return E.private.auras[ info[#info] ] end,
+			set = function(info, value) 
+				E.private.auras[ info[#info] ] = value
+				E:StaticPopup_Show("PRIVATE_RL")
+			end,	
+		},
+		general = {
+			order = 5,
 			type = 'group',
 			guiInline = true,
 			name = L['General'],
@@ -55,7 +66,7 @@ E.Options.args.auras = {
 			},
 		},
 		buffs = {
-			order = 5,
+			order = 6,
 			type = 'group',
 			guiInline = true,
 			name = L['Buffs'],
@@ -101,7 +112,7 @@ E.Options.args.auras = {
 			},
 		},	
 		debuffs = {
-			order = 6,
+			order = 7,
 			type = 'group',
 			guiInline = true,
 			name = L['Debuffs'],

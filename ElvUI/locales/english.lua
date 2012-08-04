@@ -831,3 +831,5 @@ L["You may not remove a spell from a default filter that is not customly added. 
 --Personal Locale Strings
 L["Bottom_Datatext_Panel"] = "Bottom Datatext Panel"
 L["ChatTab_Datatext_Panel"] = "Right Chat Tab"
+L['Show timers as bars instead of text.'] = 'Show timers as bars instead of text.'
+L['Visual Timers'] =  'Visual Timers'
