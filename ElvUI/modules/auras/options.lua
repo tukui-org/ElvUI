@@ -51,6 +51,12 @@ E.Options.args.auras = {
 					name = L['Wrap After'],
 					desc = L['Begin a new row or column after this many auras.'],
 					min = 1, max = 40, step = 1,
+				},		
+				fadeThreshold = {
+					type = 'range',
+					name = L["Fade Threshold"],
+					desc = L['Threshold before text changes red, goes into decimal form, and the icon will fade. Set to -1 to disable.'],
+					min = -1, max = 30, step = 1,
 				},				
 			},
 		},
