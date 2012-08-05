@@ -96,7 +96,11 @@ ElvUF.Tags.Methods['power:current'] = function(unit)
 		r, g, b = color[1], color[2], color[3]
 	end
 	
-	return E:GetFormattedText('CURRENT', min, max, r, g, b)
+	if min == 0 then
+		return ''
+	else
+		return E:GetFormattedText('CURRENT', min, max, r, g, b)
+	end
 end
 
 ElvUF.Tags.Events['power:current-max'] = 'UNIT_POWER UNIT_MAXPOWER'
@@ -123,8 +127,12 @@ ElvUF.Tags.Methods['power:current-percent'] = function(unit)
 	if color then
 		r, g, b = color[1], color[2], color[3]
 	end
-	
-	return E:GetFormattedText('CURRENT_PERCENT', min, max, r, g, b)
+
+	if min == 0 then
+		return ''
+	else	
+		return E:GetFormattedText('CURRENT_PERCENT', min, max, r, g, b)
+	end
 end
 
 ElvUF.Tags.Events['power:current-max-percent'] = 'UNIT_POWER UNIT_MAXPOWER'
@@ -151,8 +159,12 @@ ElvUF.Tags.Methods['power:percent'] = function(unit)
 	if color then
 		r, g, b = color[1], color[2], color[3]
 	end
-	
-	return E:GetFormattedText('PERCENT', min, max, r, g, b)
+
+	if min == 0 then
+		return ''
+	else	
+		return E:GetFormattedText('PERCENT', min, max, r, g, b)
+	end
 end
 
 ElvUF.Tags.Events['power:deficit'] = 'UNIT_POWER UNIT_MAXPOWER'
@@ -222,17 +234,29 @@ end
 ElvUF.Tags.Events['name:short'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['name:short'] = function(unit)
 	local name = UnitName(unit)
-	return E:ShortenString(name, 10)
+	if name then
+		return E:ShortenString(name, 10)
+	else
+		return ''
+	end
 end
 
 ElvUF.Tags.Events['name:medium'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['name:medium'] = function(unit)
 	local name = UnitName(unit)
-	return E:ShortenString(name, 15)
+	if name then	
+		return E:ShortenString(name, 15)
+	else
+		return ''
+	end	
 end
 
 ElvUF.Tags.Events['name:long'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['name:long'] = function(unit)
 	local name = UnitName(unit)
-	return E:ShortenString(name, 20)
+	if name then	
+		return E:ShortenString(name, 20)
+	else
+		return ''
+	end	
 end
