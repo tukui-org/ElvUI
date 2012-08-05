@@ -408,14 +408,11 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			tt:AppendText((" %s"):format("[|cffE7E716"..L["DND"].."|r]"))
 		end
 		
-		if UnitIsPlayer(unit) and englishRace == "Pandaren" and faction ~= "" and not UnitIsUnit(unit, "player") then
-			local hex = "cffFF0000"
-			if faction == 'Alliance' then
-				hex = "cff0547FC"	
-			end
-			tt:AppendText((" |cffFFFFFF[|r|%s%s|r|cffFFFFFF]|r"):format(hex, faction:sub(1, 1)))
-		end
-
+		local factionColorR, factionColorG, factionColorB = 255, 255, 255
+		if UnitIsPlayer(unit) and englishRace == "Pandaren" and faction ~= select(2, UnitFactionGroup('player')) then
+			factionColorR, factionColorG, factionColorB = 255, 0, 0
+		end		
+		
 		local offset = 2
 		if guildName then
 			if UnitIsInMyGuild(unit) then
@@ -429,7 +426,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		for i= offset, lines do
 			
 			if _G["GameTooltipTextLeft"..i] and _G["GameTooltipTextLeft"..i]:GetText() and (_G["GameTooltipTextLeft"..i]:GetText():find("^"..LEVEL)) then
-				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r %s %s%s", r*255, g*255, b*255, level > 0 and level or "??", race, color, class.."|r")
+				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r |cff%02x%02x%02x%s|r %s%s", r*255, g*255, b*255, level > 0 and level or "??", factionColorR, factionColorG, factionColorB, race, color, class.."|r")
 				break
 			end
 		end
