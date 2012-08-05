@@ -439,13 +439,7 @@ E.Options.args.unitframe = {
 							type = 'toggle',
 							name = L['Class Backdrop'],
 							desc = L['Color the health backdrop by class or reaction.'],
-						},
-						classNames = {
-							order = 6,
-							type = 'toggle',
-							name = L['Class Names'],
-							desc = L['Color the name text by class or reaction.'],
-						},						
+						},					
 						colorsGroup = {
 							order = 7,
 							type = 'group',
