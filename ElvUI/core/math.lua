@@ -121,6 +121,67 @@ function E:GetXYOffset(position, override)
 	end
 end
 
+--This is differant than the round function because if a number is 20.0 for example it will return an integer value instead of floating point (20.0 will be 20)
+function E:TrimFloatingPoint(number, decimals)
+	assert(number, 'You must provide a floating point number to trim decimals from. Usage: E:TrimFloatingPoint(floatingPoint, <decimals>)')
+	if not decimals then decimals = 1 end
+	if number ~= math.floor(number) then
+		return string.format("%%.%df", decimals):format(number)
+	end
+	
+	return number
+end
+
+local styles = {
+	['CURRENT'] = '|cff%02x%02x%02x%s|r',
+	['CURRENT_MAX'] = '|cff%02x%02x%02x%s|r |cff%02x%02x%02x-|r |cff%02x%02x%02x%s|r',
+	['CURRENT_PERCENT'] =  '|cff%02x%02x%02x%s|r |cff%02x%02x%02x-|r |cff%02x%02x%02x%s%%|r',
+	['CURRENT_MAX_PERCENT'] = '|cff%02x%02x%02x%s|r |cff%02x%02x%02x-|r |cff%02x%02x%02x%s|r |cff%02x%02x%02x| |r|cff%02x%02x%02x%s%%|r',
+	['PERCENT'] = '|cff%02x%02x%02x%s%%|r',
+}
+
+function E:GetFormattedText(style, min, max, badR, badG, badB, goodR, goodG, goodB, seperatorR, seperatorG, seperatorB)
+	assert(styles[style], 'Invalid format style: '..style)
+	assert(min, 'You need to provide a current value. Usage: E:GetFormattedText(style, min, max)')
+	assert(max, 'You need to provide a maximum value. Usage: E:GetFormattedText(style, min, max)')
+	
+	local useStyle = styles[style]
+	
+	if not seperatorR or not seperatorG or not seperatorB then
+		seperatorR, seperatorG, seperatorB = 1, 1, 1
+	end	
+	
+	if not badR or not badG or not badB then
+		badR, badG, badB = 1, 1, 1
+	end
+	
+	if not goodR or not goodG or not goodB then
+		goodR, goodG, goodB = badR, badG, badB
+	end	
+	
+	if min == max then
+		badR, badG, badB = goodR, goodG, goodB
+	end
+	
+	badR, badG, badB = badR * 255, badG  * 255, badB  * 255
+	goodR, goodG, goodB = goodR * 255, goodG  * 255, goodB  * 255
+	seperatorR, seperatorG, seperatorB = seperatorR * 255, seperatorG  * 255, seperatorB  * 255
+	
+	local percentValue = E:TrimFloatingPoint(min / max * 100)
+	
+	if style == 'PERCENT' then
+		return string.format(useStyle, badR, badG, badB, min / max * 100)
+	elseif style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
+		return string.format(styles['CURRENT'], badR, badG, badB,  E:ShortValue(min))
+	elseif style == 'CURRENT_MAX' then
+		return string.format(useStyle,  badR, badG, badB,  E:ShortValue(min), seperatorR, seperatorG, seperatorB,  goodR, goodG, goodB, E:ShortValue(max))
+	elseif style == 'CURRENT_PERCENT' then
+		return string.format(useStyle, badR, badG, badB, E:ShortValue(min), seperatorR, seperatorG, seperatorB, goodR, goodG, goodB, percentValue)
+	elseif style == 'CURRENT_MAX_PERCENT' then
+		return string.format(useStyle, badR, badG, badB, E:ShortValue(min), seperatorR, seperatorG, seperatorB, badR, badG, badB, E:ShortValue(max), seperatorR, seperatorG, seperatorB, goodR, goodG, goodB, percentValue)
+	end
+end
+
 --Add time before calling a function
 local waitTable = {}
 local waitFrame
