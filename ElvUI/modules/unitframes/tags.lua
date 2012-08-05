@@ -7,7 +7,7 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 --	Tags
 ------------------------------------------------------------------------
 
-ElvUF.Tags.Events['health:current'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION'
+ElvUF.Tags.Events['health:current'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
 ElvUF.Tags.Methods['health:current'] = function(unit)
 	local min, max = UnitHealth(unit), UnitHealthMax(unit)
 	local status = not UnitIsConnected(unit) and L['Offline'] or UnitIsGhost(unit) and L['Ghost'] or UnitIsDead(unit) and DEAD
@@ -20,7 +20,7 @@ ElvUF.Tags.Methods['health:current'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:deficit'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION'
+ElvUF.Tags.Events['health:deficit'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
 ElvUF.Tags.Methods['health:deficit'] = function(unit)
 	local min, max = UnitHealth(unit), UnitHealthMax(unit)
 	local status = not UnitIsConnected(unit) and L['Offline'] or UnitIsGhost(unit) and L['Ghost'] or UnitIsDead(unit) and DEAD
@@ -33,7 +33,7 @@ ElvUF.Tags.Methods['health:deficit'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:current-percent'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION'
+ElvUF.Tags.Events['health:current-percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
 ElvUF.Tags.Methods['health:current-percent'] = function(unit)
 	local min, max = UnitHealth(unit), UnitHealthMax(unit)
 	local status = not UnitIsConnected(unit) and L['Offline'] or UnitIsGhost(unit) and L['Ghost'] or UnitIsDead(unit) and DEAD
@@ -46,7 +46,7 @@ ElvUF.Tags.Methods['health:current-percent'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:current-max'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION'
+ElvUF.Tags.Events['health:current-max'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
 ElvUF.Tags.Methods['health:current-max'] = function(unit)
 	local min, max = UnitHealth(unit), UnitHealthMax(unit)
 	local status = not UnitIsConnected(unit) and L['Offline'] or UnitIsGhost(unit) and L['Ghost'] or UnitIsDead(unit) and DEAD
@@ -59,7 +59,7 @@ ElvUF.Tags.Methods['health:current-max'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:current-max-percent'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION'
+ElvUF.Tags.Events['health:current-max-percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
 ElvUF.Tags.Methods['health:current-max-percent'] = function(unit)
 	local min, max = UnitHealth(unit), UnitHealthMax(unit)
 	local status = not UnitIsConnected(unit) and L['Offline'] or UnitIsGhost(unit) and L['Ghost'] or UnitIsDead(unit) and DEAD
@@ -72,7 +72,7 @@ ElvUF.Tags.Methods['health:current-max-percent'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:percent'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION'
+ElvUF.Tags.Events['health:percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
 ElvUF.Tags.Methods['health:percent'] = function(unit)
 	local min, max = UnitHealth(unit), UnitHealthMax(unit)
 	local status = not UnitIsConnected(unit) and L['Offline'] or UnitIsGhost(unit) and L['Ghost'] or UnitIsDead(unit) and DEAD
@@ -85,7 +85,7 @@ ElvUF.Tags.Methods['health:percent'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['power:current'] = 'UNIT_POWER UNIT_MAXPOWER'
+ElvUF.Tags.Events['power:current'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 ElvUF.Tags.Methods['power:current'] = function(unit)
 	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
 	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
@@ -97,13 +97,13 @@ ElvUF.Tags.Methods['power:current'] = function(unit)
 	end
 	
 	if min == 0 then
-		return ''
+		return ' '
 	else
 		return E:GetFormattedText('CURRENT', min, max, r, g, b)
 	end
 end
 
-ElvUF.Tags.Events['power:current-max'] = 'UNIT_POWER UNIT_MAXPOWER'
+ElvUF.Tags.Events['power:current-max'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 ElvUF.Tags.Methods['power:current-max'] = function(unit)
 	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
 	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
@@ -117,7 +117,7 @@ ElvUF.Tags.Methods['power:current-max'] = function(unit)
 	return E:GetFormattedText('CURRENT_MAX', min, max, r, g, b)
 end
 
-ElvUF.Tags.Events['power:current-percent'] = 'UNIT_POWER UNIT_MAXPOWER'
+ElvUF.Tags.Events['power:current-percent'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 ElvUF.Tags.Methods['power:current-percent'] = function(unit)
 	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
 	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
@@ -135,7 +135,7 @@ ElvUF.Tags.Methods['power:current-percent'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['power:current-max-percent'] = 'UNIT_POWER UNIT_MAXPOWER'
+ElvUF.Tags.Events['power:current-max-percent'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 ElvUF.Tags.Methods['power:current-max-percent'] = function(unit)
 	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
 	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
@@ -149,7 +149,7 @@ ElvUF.Tags.Methods['power:current-max-percent'] = function(unit)
 	return E:GetFormattedText('CURRENT_MAX_PERCENT', min, max, r, g, b)
 end
 
-ElvUF.Tags.Events['power:percent'] = 'UNIT_POWER UNIT_MAXPOWER'
+ElvUF.Tags.Events['power:percent'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 ElvUF.Tags.Methods['power:percent'] = function(unit)
 	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
 	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
@@ -167,7 +167,7 @@ ElvUF.Tags.Methods['power:percent'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['power:deficit'] = 'UNIT_POWER UNIT_MAXPOWER'
+ElvUF.Tags.Events['power:deficit'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 ElvUF.Tags.Methods['power:deficit'] = function(unit)
 	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
 	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
