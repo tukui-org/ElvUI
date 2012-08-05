@@ -263,9 +263,11 @@ function E:SetupResolution(noDataReset)
 			E.db.unitframe.units.player.width = 200;
 			E.db.unitframe.units.player.castbar.width = 200;
 			E.db.unitframe.units.player.classbar.fill = 'fill';
+			E.db.unitframe.units.player.health.text_format = "[health:current]"
 			
 			E.db.unitframe.units.target.width = 200;
 			E.db.unitframe.units.target.castbar.width = 200;
+			E.db.unitframe.units.target.health.text_format = '[health:current]'
 			
 			E.db.unitframe.units.pet.power.enable = false;
 			E.db.unitframe.units.pet.width = 200;
