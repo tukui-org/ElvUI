@@ -575,7 +575,7 @@ function TT:Initialize()
 	self:HookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
 	self:HookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
 	self:HookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
-	
+	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	E.Skins:HandleCloseButton(ItemRefCloseButton)
 	
 	--SpellIDs
