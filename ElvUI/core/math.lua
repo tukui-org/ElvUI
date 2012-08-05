@@ -125,11 +125,18 @@ end
 function E:TrimFloatingPoint(number, decimals)
 	assert(number, 'You must provide a floating point number to trim decimals from. Usage: E:TrimFloatingPoint(floatingPoint, <decimals>)')
 	if not decimals then decimals = 1 end
-	if number ~= math.floor(number) then
-		return string.format("%%.%df", decimals):format(number)
+	
+	local newNumber = string.format("%%.%df", decimals):format(number)
+	local checkstring = "."
+	for i=1, decimals do
+		checkstring = checkstring..'0'
+	end
+
+	if newNumber ~= tostring(math.ceil(number))..checkstring then
+		return newNumber
 	end
 	
-	return number
+	return math.floor(number)
 end
 
 local styles = {
@@ -138,12 +145,15 @@ local styles = {
 	['CURRENT_PERCENT'] =  '|cff%02x%02x%02x%s|r |cff%02x%02x%02x-|r |cff%02x%02x%02x%s%%|r',
 	['CURRENT_MAX_PERCENT'] = '|cff%02x%02x%02x%s|r |cff%02x%02x%02x-|r |cff%02x%02x%02x%s|r |cff%02x%02x%02x| |r|cff%02x%02x%02x%s%%|r',
 	['PERCENT'] = '|cff%02x%02x%02x%s%%|r',
+	['DEFICIT'] = '|cff%02x%02x%02x-|r|cff%02x%02x%02x%s|r'
 }
 
 function E:GetFormattedText(style, min, max, badR, badG, badB, goodR, goodG, goodB, seperatorR, seperatorG, seperatorB)
 	assert(styles[style], 'Invalid format style: '..style)
 	assert(min, 'You need to provide a current value. Usage: E:GetFormattedText(style, min, max)')
 	assert(max, 'You need to provide a maximum value. Usage: E:GetFormattedText(style, min, max)')
+	
+	if max == 0 then max = 1 end
 	
 	local useStyle = styles[style]
 	
@@ -169,8 +179,15 @@ function E:GetFormattedText(style, min, max, badR, badG, badB, goodR, goodG, goo
 	
 	local percentValue = E:TrimFloatingPoint(min / max * 100)
 	
-	if style == 'PERCENT' then
-		return string.format(useStyle, badR, badG, badB, min / max * 100)
+	if style == 'DEFICIT' then
+		local deficit = max - min
+		if deficit <= 0 then
+			return ''
+		else
+			return string.format(useStyle, seperatorR, seperatorG, seperatorB, badR, badG, badB, E:ShortValue(deficit))
+		end
+	elseif style == 'PERCENT' then
+		return string.format(useStyle, badR, badG, badB, percentValue)
 	elseif style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
 		return string.format(styles['CURRENT'], badR, badG, badB,  E:ShortValue(min))
 	elseif style == 'CURRENT_MAX' then

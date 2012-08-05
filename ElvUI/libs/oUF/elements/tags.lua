@@ -543,7 +543,10 @@ local Tag = function(self, fs, tagstr)
 			if(tagFunc) then
 				table.insert(args, tagFunc)
 			else
-				return error(('Attempted to use invalid tag %s.'):format(bracket), 3)
+				numTags = -1
+				func = function(self)
+					return self:SetFormattedText('[error]')
+				end
 			end
 		end
 
@@ -594,7 +597,7 @@ local Tag = function(self, fs, tagstr)
 					args[3](unit, realUnit) or ''
 				)
 			end
-		else
+		elseif numTags ~= -1 then
 			func = function(self)
 				local parent = self.parent
 				local unit = parent.unit

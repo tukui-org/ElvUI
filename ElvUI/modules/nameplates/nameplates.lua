@@ -22,6 +22,10 @@ function NP:Initialize()
 	if E.private["nameplate"].enable ~= true then return end
 	E.NamePlates = NP
 	
+	if type(self.db.healthtext) == 'Boolean' then
+		self.db.healthtext = P.nameplate.healthtext
+	end
+	
 	CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
 		if(WorldFrame:GetNumChildren() ~= numChildren) then
 			numChildren = WorldFrame:GetNumChildren()
@@ -209,12 +213,6 @@ function NP:HealthBar_OnShow(self, frame)
 	--Level Text
 	if self.db.showlevel == true then
 		local level, elite, mylevel = tonumber(frame.hp.oldlevel:GetText()), frame.hp.elite:IsShown(), UnitLevel("player")
-		frame.hp.level:ClearAllPoints()
-		if self.db.showhealth == true then
-			frame.hp.level:SetPoint("RIGHT", frame.hp, "RIGHT", 2, 0)
-		else
-			frame.hp.level:SetPoint("RIGHT", frame.hp, "LEFT", -1, 0)
-		end
 		
 		frame.hp.level:SetTextColor(frame.hp.oldlevel:GetTextColor())
 		if frame.hp.boss:IsShown() then
@@ -301,6 +299,7 @@ function NP:SkinPlate(frame)
 	if not frame.hp.level then
 		frame.hp.level = frame.hp:CreateFontString(nil, "OVERLAY")
 		frame.hp.level:FontTemplate(nil, 10, 'OUTLINE')
+		frame.hp.level:SetPoint("RIGHT", frame.hp, "LEFT", -1, 0)
 		frame.hp.oldlevel = oldlevel
 		frame.hp.boss = bossicon
 		frame.hp.elite = elite
@@ -594,9 +593,9 @@ function NP:ScanHealth(frame)
 	local valueHealth = frame.oldhp:GetValue()
 	local d =(valueHealth/maxHealth)*100
 	
-	if self.db.showhealth == true then
+	if self.db.healthtext ~= '' and valueHealth and maxHealth and maxHealth > 1 then
 		frame.hp.value:Show()
-		frame.hp.value:SetText(E:ShortValue(valueHealth).." - "..(string.format("%d%%", math.floor((valueHealth/maxHealth)*100))))
+		frame.hp.value:SetText(E:GetFormattedText(self.db.healthtext, valueHealth, maxHealth))
 	else
 		frame.hp.value:Hide()
 	end

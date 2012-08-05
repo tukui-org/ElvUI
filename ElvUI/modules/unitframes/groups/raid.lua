@@ -174,17 +174,11 @@ for i=10, 40, 15 do
 			health.Smooth = self.db.smoothbars
 			health.frequentUpdates = db.health.frequentUpdates
 			
-			--Text
-			if db.health.text then
-				health.value:Show()
-			else
-				health.value:Hide()
-			end
-			
 			--Position this even if disabled because resurrection icon depends on the position
 			local x, y = self:GetPositionOffset(db.health.position)
 			health.value:ClearAllPoints()
 			health.value:Point(db.health.position, health, db.health.position, x, y)
+			frame:Tag(health.value, db.health.text_format)
 			
 			--Colors
 			health.colorSmooth = nil
@@ -219,27 +213,13 @@ for i=10, 40, 15 do
 		--Name
 		do
 			local name = frame.Name
-			if db.name.enable then
-				name:Show()
-				
-				if not db.power.hideonnpc then
-					local x, y = self:GetPositionOffset(db.name.position)
-					name:ClearAllPoints()
-					name:Point(db.name.position, frame.Health, db.name.position, x, y)				
-				end
-				
-				if db.name.length == "SHORT" then
-					frame:Tag(name, '[Elv:getnamecolor][Elv:nameshort]')
-				elseif db.name.length == "MEDIUM" then
-					frame:Tag(name, '[Elv:getnamecolor][Elv:namemedium]')
-				elseif db.name.length == "LONG" then
-					frame:Tag(name, '[Elv:getnamecolor][Elv:namelong]')
-				else
-					frame:Tag(name, '[Elv:diffcolor][level] [Elv:getnamecolor][Elv:namelong]')
-				end			
-			else
-				name:Hide()
+			if not db.power.hideonnpc then
+				local x, y = self:GetPositionOffset(db.name.position)
+				name:ClearAllPoints()
+				name:Point(db.name.position, frame.Health, db.name.position, x, y)				
 			end
+			
+			frame:Tag(name, db.name.text_format)
 		end	
 		
 		--Power
@@ -251,15 +231,10 @@ for i=10, 40, 15 do
 				power.Smooth = self.db.smoothbars
 				
 				--Text
-				if db.power.text then
-					power.value:Show()
-					
-					local x, y = self:GetPositionOffset(db.power.position)
-					power.value:ClearAllPoints()
-					power.value:Point(db.power.position, frame.Health, db.power.position, x, y)					
-				else
-					power.value:Hide()
-				end
+				local x, y = self:GetPositionOffset(db.power.position)
+				power.value:ClearAllPoints()
+				power.value:Point(db.power.position, frame.Health, db.power.position, x, y)		
+				frame:Tag(power.value, db.power.text_format)
 				
 				--Colors
 				power.colorClass = nil

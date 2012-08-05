@@ -68,15 +68,10 @@ function UF:Update_FocusFrame(frame, db)
 		health.Smooth = self.db.smoothbars
 
 		--Text
-		if db.health.text then
-			health.value:Show()
-			
-			local x, y = self:GetPositionOffset(db.health.position)
-			health.value:ClearAllPoints()
-			health.value:Point(db.health.position, health, db.health.position, x, y)
-		else
-			health.value:Hide()
-		end
+		local x, y = self:GetPositionOffset(db.health.position)
+		health.value:ClearAllPoints()
+		health.value:Point(db.health.position, health, db.health.position, x, y)
+		frame:Tag(health.value, db.health.text_format)
 		
 		--Colors
 		health.colorSmooth = nil
@@ -110,17 +105,13 @@ function UF:Update_FocusFrame(frame, db)
 	--Name
 	do
 		local name = frame.Name
-		if db.name.enable then
-			name:Show()
-			
-			if not db.power.hideonnpc then
-				local x, y = self:GetPositionOffset(db.name.position)
-				name:ClearAllPoints()
-				name:Point(db.name.position, frame.Health, db.name.position, x, y)				
-			end
-		else
-			name:Hide()
+		if not db.power.hideonnpc then
+			local x, y = self:GetPositionOffset(db.name.position)
+			name:ClearAllPoints()
+			name:Point(db.name.position, frame.Health, db.name.position, x, y)				
 		end
+		
+		frame:Tag(name, db.name.text_format)
 	end	
 	
 	--Power
@@ -135,15 +126,10 @@ function UF:Update_FocusFrame(frame, db)
 			power.Smooth = self.db.smoothbars
 			
 			--Text
-			if db.power.text then
-				power.value:Show()
-				
-				local x, y = self:GetPositionOffset(db.power.position)
-				power.value:ClearAllPoints()
-				power.value:Point(db.power.position, frame.Health, db.power.position, x, y)			
-			else
-				power.value:Hide()
-			end
+			local x, y = self:GetPositionOffset(db.power.position)
+			power.value:ClearAllPoints()
+			power.value:Point(db.power.position, frame.Health, db.power.position, x, y)		
+			frame:Tag(power.value, db.power.text_format)
 			
 			--Colors
 			power.colorClass = nil
