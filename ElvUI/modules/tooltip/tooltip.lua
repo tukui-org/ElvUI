@@ -285,29 +285,6 @@ function TT:SetStyle(tt)
 	self:Colorize(tt)
 end
 
-function TT:ADDON_LOADED(event, addon)
-	if addon == 'Blizzard_DebugTools' then
-		FrameStackTooltip:HookScript("OnShow", function(self)
-			local noscalemult = E.mult * GetCVar('uiScale')
-			self:SetBackdrop({
-			  bgFile = E["media"].blankTex, 
-			  edgeFile = E["media"].blankTex, 
-			  tile = false, tileSize = 0, edgeSize = noscalemult, 
-			  insets = { left = -noscalemult, right = -noscalemult, top = -noscalemult, bottom = -noscalemult}
-			})
-			self:SetBackdropColor(unpack(E["media"].backdropfadecolor))
-			self:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-		end)
-		
-		EventTraceTooltip:HookScript("OnShow", function(self)
-			self:SetTemplate("Transparent")
-		end)		
-		
-		self.debugloaded = true
-		self:UnregisterEvent('ADDON_LOADED')
-	end
-end
-
 function TT:PLAYER_ENTERING_WORLD()
 	if not self.initialhook then
 		for _, tt in pairs(GameTooltips) do
@@ -316,10 +293,6 @@ function TT:PLAYER_ENTERING_WORLD()
 		
 		self:HookScript(ItemRefTooltip, "OnTooltipSetItem", 'SetStyle')
 		FriendsTooltip:SetTemplate("Transparent")
-		
-		if IsAddOnLoaded('Blizzard_DebugTools') and not self.debugloaded then
-			self:ADDON_LOADED('ADDON_LOADED', 'Blizzard_DebugTools')
-		end
 		
 		self.initialhook = true
 	end
@@ -595,8 +568,6 @@ function TT:Initialize()
 	GameTooltipAnchor:Size(130, 20)
 	E:CreateMover(GameTooltipAnchor, 'TooltipMover', 'Tooltip')
 	
-	self:RegisterEvent('PLAYER_ENTERING_WORLD')
-	self:RegisterEvent('ADDON_LOADED')
 	self:SecureHook('GameTooltip_SetDefaultAnchor')
 	self:SecureHook('GameTooltip_ShowCompareItem')
 	self:HookScript(GameTooltip, 'OnUpdate', 'GameTooltip_OnUpdate')
@@ -604,6 +575,8 @@ function TT:Initialize()
 	self:HookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
 	self:HookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
 	self:HookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
+	
+	E.Skins:HandleCloseButton(ItemRefCloseButton)
 	
 	--SpellIDs
 	hooksecurefunc(GameTooltip, "SetUnitBuff", function(self,...)
