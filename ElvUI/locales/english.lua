@@ -386,7 +386,7 @@ L['Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from see
 L["General"] = true;
 L["Log Taints"] = true;
 L["Login Message"] = true;
-L["LOGIN_MSG"] = "Welcome to %sElvUI|r version %s%s|r, type /ec to access the in-game configuration menu. If you are in need of technical support you can visit us at http://www.tukui.org. You can report bugs, add suggestions here: http://www.tukui.org/tickets/elvui/."
+L["LOGIN_MSG"] = "Welcome to %sElvUI|r version %s%s|r, type /ec to access the in-game configuration menu. If you are in need of technical support you can visit us at http://www.tukui.org"
 L["Loot Roll"] = true;
 L["Loot"] = true;
 L["Map Alpha While Moving"] = true;

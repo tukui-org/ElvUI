@@ -515,10 +515,6 @@ function E:Initialize()
 	self:CheckRole()
 	self:UIScale('PLAYER_LOGIN');
 
-	if self.db.general.loginmessage then
-		print(format(L['LOGIN_MSG'], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version))
-	end
-
 	self:LoadConfig(); --Load In-Game Config
 	self:LoadCommands(); --Load Commands
 	self:InitializeModules(); --Load Modules	
@@ -562,4 +558,8 @@ function E:Initialize()
 	self:GetModule('Minimap'):UpdateSettings()
 	self:RefreshModulesDB()
 	collectgarbage("collect");
+	
+	if self.db.general.loginmessage then
+		print(select(2, E:GetModule('Chat'):FindURL(nil, format(L['LOGIN_MSG'], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version)))..'.')
+	end	
 end
