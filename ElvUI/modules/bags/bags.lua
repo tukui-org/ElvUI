@@ -165,13 +165,13 @@ function B:SlotUpdate(b)
 		b.frame.questIcon:Hide()
 
 		-- color slot according to item quality
-		if not b.frame.lock and b.rarity and b.rarity > 1 then
-			b.frame:SetBackdropBorderColor(GetItemQualityColor(b.rarity))
-		elseif questId and not isActive then
+		if questId and not isActive then
 			b.frame:SetBackdropBorderColor(1.0, 0.3, 0.3)
 			b.frame.questIcon:Show()
 		elseif questId or isQuestItem then
 			b.frame:SetBackdropBorderColor(1.0, 0.3, 0.3)
+		elseif not b.frame.lock and b.rarity and b.rarity > 1 then
+			b.frame:SetBackdropBorderColor(GetItemQualityColor(b.rarity))			
 		end
 	else
 		b.name, b.rarity = nil, nil
