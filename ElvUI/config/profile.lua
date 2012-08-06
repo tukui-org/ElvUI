@@ -213,7 +213,7 @@ P['unitframe'] = {
 	['units'] = {
 		['player'] = {
 			['enable'] = true,
-			['width'] = 280,
+			['width'] = 260,
 			['height'] = 54,
 			['lowmana'] = 30,
 			['combatfade'] = false,
@@ -303,7 +303,7 @@ P['unitframe'] = {
 		},	
 		['target'] = {
 			['enable'] = true,
-			['width'] = 280,
+			['width'] = 260,
 			['height'] = 54,
 			['healPrediction'] = true,
 			['smartAuraDisplay'] = 'SHOW_DEBUFFS_ON_FRIENDLIES',
@@ -359,7 +359,7 @@ P['unitframe'] = {
 			},
 			['castbar'] = {
 				['enable'] = true,
-				['width'] = 280,
+				['width'] = 260,
 				['height'] = 18,
 				['icon'] = false,
 				['color'] = { r = .66,g = .66,b = .66 },
