@@ -31,7 +31,7 @@ local function GetDebuffType(unit, filter)
 	end
 end
 
-function CheckTalentTree(tree)
+local function CheckTalentTree(tree)
 	local activeGroup = GetActiveSpecGroup()
 	if activeGroup and GetSpecialization(false, false, activeGroup) then
 		return tree == GetSpecialization(false, false, activeGroup)
