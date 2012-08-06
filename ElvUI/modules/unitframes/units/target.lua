@@ -517,6 +517,21 @@ function UF:Update_TargetFrame(frame, db)
 			end		
 		end
 	end
+
+	if db.customTexts then
+		for objectName, _ in pairs(db.customTexts) do
+			if not frame[objectName] then
+				frame[objectName] = frame:CreateFontString(nil, 'OVERLAY')
+			end
+			
+			local objectDB = db.customTexts[objectName]
+			UF:CreateCustomTextGroup('target', objectName)
+			
+			frame[objectName]:FontTemplate(UF.LSM:Fetch("font", objectDB.font or UF.db.font), objectDB.size or UF.db.fontsize, objectDB.fontoutline or UF.db.fontoutline)
+			frame:Tag(frame[objectName], objectDB.text_format or '')
+			frame[objectName]:SetPoint('CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
+		end
+	end
 	
 	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))
 	frame:UpdateAllElements()

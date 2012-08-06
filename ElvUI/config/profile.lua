@@ -286,7 +286,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['friendlyAuraType'] = 'HELPFUL',
 				['enemyAuraType'] = 'HARMFUL'
-			},	
+			},
 		},	
 		['target'] = {
 			['enable'] = true,
