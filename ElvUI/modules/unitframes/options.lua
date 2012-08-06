@@ -439,13 +439,7 @@ E.Options.args.unitframe = {
 							type = 'toggle',
 							name = L['Class Backdrop'],
 							desc = L['Color the health backdrop by class or reaction.'],
-						},
-						classNames = {
-							order = 6,
-							type = 'toggle',
-							name = L['Class Names'],
-							desc = L['Color the name text by class or reaction.'],
-						},						
+						},					
 						colorsGroup = {
 							order = 7,
 							type = 'group',
@@ -620,15 +614,6 @@ E.Options.args.unitframe = {
 }
 
 
-local textFormats = {
-	['current-percent'] = L['Current - Percent'],
-	['current-max'] = L['Current - Max'],
-	['current'] = L['Current'],
-	['percent'] = L['Percent'],
-	['deficit'] = L['Deficit'],
-	['blank'] = L['Blank'],
-};
-
 local fillValues = {
 	['fill'] = L['Filled'],
 	['spaced'] = L['Spaced'],
@@ -652,13 +637,6 @@ local auraFilterTypes = {
 	['FRIENDLY'] = FRIENDLY,
 	['NONE'] = NONE,
 }
-
-local lengthValues = {
-	["SHORT"] = L["Short"],
-	["MEDIUM"] = L["Medium"],
-	["LONG"] = L["Long"],
-	["LONGLEVEL"] = L["Long (Include Level)"],
-};
 
 local auraAnchors = {
 	TOPLEFT = 'TOPLEFT',
@@ -786,23 +764,19 @@ E.Options.args.unitframe.args.player = {
 			get = function(info) return E.db.unitframe.units['player']['health'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['player']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
 			args = {
-				text = {
-					type = 'toggle',
-					order = 1,
-					name = L['Text'],
-				},
-				text_format = {
-					type = 'select',
-					order = 2,
-					name = L['Text Format'],
-					values = textFormats,
-				},
 				position = {
 					type = 'select',
-					order = 3,
+					order = 2,
 					name = L['Position'],
 					values = positionValues,
 				},
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},			
 			},
 		},
 		power = {
@@ -817,17 +791,13 @@ E.Options.args.unitframe.args.player = {
 					order = 1,
 					name = L['Enable'],
 				},			
-				text = {
-					type = 'toggle',
-					order = 2,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 3,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				width = {
 					type = 'select',
 					order = 4,
@@ -862,16 +832,18 @@ E.Options.args.unitframe.args.player = {
 			get = function(info) return E.db.unitframe.units['player']['name'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['player']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
 			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
 				position = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
+				},	
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
 				},					
 			},
 		},
@@ -1456,17 +1428,13 @@ E.Options.args.unitframe.args.target = {
 			get = function(info) return E.db.unitframe.units['target']['health'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['target']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
 			args = {
-				text = {
-					type = 'toggle',
-					order = 1,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 2,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				position = {
 					type = 'select',
 					order = 3,
@@ -1487,17 +1455,13 @@ E.Options.args.unitframe.args.target = {
 					order = 1,
 					name = L['Enable'],
 				},			
-				text = {
-					type = 'toggle',
-					order = 2,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 3,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				width = {
 					type = 'select',
 					order = 4,
@@ -1532,17 +1496,19 @@ E.Options.args.unitframe.args.target = {
 			get = function(info) return E.db.unitframe.units['target']['name'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['target']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
 			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
 				position = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
-				},					
+				},
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},				
 			},
 		},
 		portrait = {
@@ -2084,17 +2050,13 @@ E.Options.args.unitframe.args.targettarget = {
 			get = function(info) return E.db.unitframe.units['targettarget']['health'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['targettarget']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('targettarget') end,
 			args = {
-				text = {
-					type = 'toggle',
-					order = 1,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 2,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				position = {
 					type = 'select',
 					order = 3,
@@ -2115,17 +2077,13 @@ E.Options.args.unitframe.args.targettarget = {
 					order = 1,
 					name = L['Enable'],
 				},			
-				text = {
-					type = 'toggle',
-					order = 2,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 3,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				width = {
 					type = 'select',
 					order = 4,
@@ -2160,17 +2118,19 @@ E.Options.args.unitframe.args.targettarget = {
 			get = function(info) return E.db.unitframe.units['targettarget']['name'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['targettarget']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('targettarget') end,
 			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
 				position = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
-				},					
+				},		
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},				
 			},
 		},
 		buffs = {
@@ -2466,17 +2426,13 @@ E.Options.args.unitframe.args.focus = {
 			get = function(info) return E.db.unitframe.units['focus']['health'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['focus']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
 			args = {
-				text = {
-					type = 'toggle',
-					order = 1,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 2,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				position = {
 					type = 'select',
 					order = 3,
@@ -2497,17 +2453,13 @@ E.Options.args.unitframe.args.focus = {
 					order = 1,
 					name = L['Enable'],
 				},			
-				text = {
-					type = 'toggle',
-					order = 2,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 3,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				width = {
 					type = 'select',
 					order = 4,
@@ -2542,17 +2494,19 @@ E.Options.args.unitframe.args.focus = {
 			get = function(info) return E.db.unitframe.units['focus']['name'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['focus']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
 			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
 				position = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
-				},					
+				},				
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},				
 			},
 		},
 		buffs = {
@@ -3035,17 +2989,13 @@ E.Options.args.unitframe.args.focustarget = {
 			get = function(info) return E.db.unitframe.units['focustarget']['health'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['focustarget']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('focustarget') end,
 			args = {
-				text = {
-					type = 'toggle',
-					order = 1,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 2,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				position = {
 					type = 'select',
 					order = 3,
@@ -3066,17 +3016,13 @@ E.Options.args.unitframe.args.focustarget = {
 					order = 1,
 					name = L['Enable'],
 				},			
-				text = {
-					type = 'toggle',
-					order = 2,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 3,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				width = {
 					type = 'select',
 					order = 4,
@@ -3111,17 +3057,19 @@ E.Options.args.unitframe.args.focustarget = {
 			get = function(info) return E.db.unitframe.units['focustarget']['name'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['focustarget']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('focustarget') end,
 			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
 				position = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
-				},					
+				},
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},				
 			},
 		},
 		buffs = {
@@ -3406,17 +3354,13 @@ E.Options.args.unitframe.args.pet = {
 			get = function(info) return E.db.unitframe.units['pet']['health'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['pet']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
 			args = {
-				text = {
-					type = 'toggle',
-					order = 1,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 2,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				position = {
 					type = 'select',
 					order = 3,
@@ -3437,17 +3381,13 @@ E.Options.args.unitframe.args.pet = {
 					order = 1,
 					name = L['Enable'],
 				},			
-				text = {
-					type = 'toggle',
-					order = 2,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 3,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				width = {
 					type = 'select',
 					order = 4,
@@ -3482,17 +3422,19 @@ E.Options.args.unitframe.args.pet = {
 			get = function(info) return E.db.unitframe.units['pet']['name'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['pet']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
 			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
 				position = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
-				},					
+				},	
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},				
 			},
 		},
 		buffs = {
@@ -3771,17 +3713,13 @@ E.Options.args.unitframe.args.pettarget = {
 			get = function(info) return E.db.unitframe.units['pettarget']['health'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['pettarget']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('pettarget') end,
 			args = {
-				text = {
-					type = 'toggle',
-					order = 1,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 2,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				position = {
 					type = 'select',
 					order = 3,
@@ -3802,17 +3740,13 @@ E.Options.args.unitframe.args.pettarget = {
 					order = 1,
 					name = L['Enable'],
 				},			
-				text = {
-					type = 'toggle',
-					order = 2,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 3,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				width = {
 					type = 'select',
 					order = 4,
@@ -3847,17 +3781,19 @@ E.Options.args.unitframe.args.pettarget = {
 			get = function(info) return E.db.unitframe.units['pettarget']['name'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['pettarget']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('pettarget') end,
 			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
 				position = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
-				},					
+				},	
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},				
 			},
 		},
 		buffs = {
@@ -4139,17 +4075,13 @@ E.Options.args.unitframe.args.boss = {
 			get = function(info) return E.db.unitframe.units['boss']['health'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['boss']['health'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
 			args = {
-				text = {
-					type = 'toggle',
-					order = 1,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 2,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				position = {
 					type = 'select',
 					order = 3,
@@ -4170,17 +4102,13 @@ E.Options.args.unitframe.args.boss = {
 					order = 1,
 					name = L['Enable'],
 				},			
-				text = {
-					type = 'toggle',
-					order = 2,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 3,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				width = {
 					type = 'select',
 					order = 4,
@@ -4215,17 +4143,19 @@ E.Options.args.unitframe.args.boss = {
 			get = function(info) return E.db.unitframe.units['boss']['name'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['boss']['name'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
 			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
 				position = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
-				},					
+				},		
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},				
 			},
 		},
 		portrait = {
@@ -4623,17 +4553,13 @@ E.Options.args.unitframe.args.arena = {
 			get = function(info) return E.db.unitframe.units['arena']['health'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['arena']['health'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
 			args = {
-				text = {
-					type = 'toggle',
-					order = 1,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 2,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				position = {
 					type = 'select',
 					order = 3,
@@ -4654,17 +4580,13 @@ E.Options.args.unitframe.args.arena = {
 					order = 1,
 					name = L['Enable'],
 				},			
-				text = {
-					type = 'toggle',
-					order = 2,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 3,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				width = {
 					type = 'select',
 					order = 4,
@@ -4699,17 +4621,19 @@ E.Options.args.unitframe.args.arena = {
 			get = function(info) return E.db.unitframe.units['arena']['name'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['arena']['name'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
 			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
 				position = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
-				},					
+				},	
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},				
 			},
 		},
 		buffs = {
@@ -5159,6 +5083,7 @@ E.Options.args.unitframe.args.party = {
 					name = L['Visibility'],
 					desc = L['The following macro must be true in order for the group to be shown, in addition to any filter that may already be set.'],
 					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
 				},				
 			},
 		},		
@@ -5169,17 +5094,13 @@ E.Options.args.unitframe.args.party = {
 			get = function(info) return E.db.unitframe.units['party']['health'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['party']['health'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party'); end,
 			args = {
-				text = {
-					type = 'toggle',
-					order = 1,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 2,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				position = {
 					type = 'select',
 					order = 3,
@@ -5216,17 +5137,13 @@ E.Options.args.unitframe.args.party = {
 					order = 1,
 					name = L['Enable'],
 				},			
-				text = {
-					type = 'toggle',
-					order = 2,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 3,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				width = {
 					type = 'select',
 					order = 4,
@@ -5261,22 +5178,18 @@ E.Options.args.unitframe.args.party = {
 			get = function(info) return E.db.unitframe.units['party']['name'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['party']['name'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
 				position = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
 				},			
-				length = {
-					type = 'select',
-					order = 3,
-					name = L['Length'],
-					values = lengthValues,				
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
 				},
 			},
 		},
@@ -5808,6 +5721,7 @@ for i=10, 40, 15 do
 						name = L['Visibility'],
 						desc = L['The following macro must be true in order for the group to be shown, in addition to any filter that may already be set.'],
 						width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
 					},					
 				},
 			},
@@ -5818,17 +5732,13 @@ for i=10, 40, 15 do
 				get = function(info) return E.db.unitframe.units['raid'..i]['health'][ info[#info] ] end,
 				set = function(info, value) E.db.unitframe.units['raid'..i]['health'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i); end,
 				args = {
-					text = {
-						type = 'toggle',
-						order = 1,
-						name = L['Text'],
-					},
 					text_format = {
-						type = 'select',
-						order = 2,
+						order = 100,
 						name = L['Text Format'],
-						values = textFormats,
-					},
+						type = 'input',
+						width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+					},	
 					position = {
 						type = 'select',
 						order = 3,
@@ -5865,17 +5775,13 @@ for i=10, 40, 15 do
 						order = 1,
 						name = L['Enable'],
 					},			
-					text = {
-						type = 'toggle',
-						order = 2,
-						name = L['Text'],
-					},
 					text_format = {
-						type = 'select',
-						order = 3,
+						order = 100,
 						name = L['Text Format'],
-						values = textFormats,
-					},
+						type = 'input',
+						width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+					},	
 					width = {
 						type = 'select',
 						order = 4,
@@ -5910,23 +5816,19 @@ for i=10, 40, 15 do
 				get = function(info) return E.db.unitframe.units['raid'..i]['name'][ info[#info] ] end,
 				set = function(info, value) E.db.unitframe.units['raid'..i]['name'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
 				args = {
-					enable = {
-						type = 'toggle',
-						order = 1,
-						name = L['Enable'],
-					},
 					position = {
 						type = 'select',
 						order = 2,
 						name = L['Position'],
 						values = positionValues,
 					},	
-					length = {
-						type = 'select',
-						order = 3,
-						name = L['Length'],
-						values = lengthValues,				
-					},				
+					text_format = {
+						order = 100,
+						name = L['Text Format'],
+						type = 'input',
+						width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+					},			
 				},
 			},
 			buffs = {

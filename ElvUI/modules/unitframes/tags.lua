@@ -6,58 +6,186 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 ------------------------------------------------------------------------
 --	Tags
 ------------------------------------------------------------------------
-ElvUF.Tags.Events['Elv:threat'] = 'UNIT_THREAT_LIST_UPDATE'
-ElvUF.Tags.Methods['Elv:threat'] = function(unit)
-	local tanking, status, percent = UnitDetailedThreatSituation('player', 'target')
-	if(percent and percent > 0) then
-		return ('%s%d%%|r'):format(Hex(GetThreatStatusColor(status)), percent)
-	end
-end
 
-ElvUF.Tags.Methods['Elv:health'] = function(unit)
-	if not unit then return end
+ElvUF.Tags.Events['health:current'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
+ElvUF.Tags.Methods['health:current'] = function(unit)
 	local min, max = UnitHealth(unit), UnitHealthMax(unit)
-	local status = not UnitIsConnected(unit) and 'Offline' or UnitIsGhost(unit) and 'Ghost' or UnitIsDead(unit) and 'Dead'
+	local status = not UnitIsConnected(unit) and L['Offline'] or UnitIsGhost(unit) and L['Ghost'] or UnitIsDead(unit) and DEAD
 
-	if(status) then
+	if (status) then
 		return status
-	elseif(unit == 'target' and UnitCanAttack('player', unit)) then
-		return ('%s (%d|cff0090ff%%|r)'):format(E.ShortenValue(min), min / max * 100)
-	elseif(unit == 'player' and min ~= max) then
-		return ('|cffff8080%d|r %d|cff0090ff%%|r'):format(min - max, min / max * 100)
-	elseif(min ~= max) then
-		return ('%s |cff0090ff/|r %s'):format(E.ShortenValue(min), E.ShortenValue(max))
 	else
-		return max
+		local r, g, b = ElvUF.ColorGradient(min, max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
+		return E:GetFormattedText('CURRENT', min, max, r, g, b, 0.33, 0.59, 0.33, 0.84, 0.75, 0.65)
 	end
 end
 
-ElvUF.Tags.Methods['Elv:power'] = function(unit)
-	if not unit then return end
-	local power = UnitPower(unit)
-	if(power > 0 and not UnitIsDeadOrGhost(unit)) then
-		local _, type = UnitPowerType(unit)
-		local colors = _COLORS.power
-		return ('%s%d|r'):format(Hex(colors[type] or colors['RUNES']), power)
+ElvUF.Tags.Events['health:deficit'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
+ElvUF.Tags.Methods['health:deficit'] = function(unit)
+	local min, max = UnitHealth(unit), UnitHealthMax(unit)
+	local status = not UnitIsConnected(unit) and L['Offline'] or UnitIsGhost(unit) and L['Ghost'] or UnitIsDead(unit) and DEAD
+
+	if (status) then
+		return status
+	else
+		local r, g, b = ElvUF.ColorGradient(min, max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
+		return E:GetFormattedText('DEFICIT', min, max, r, g, b, 0.33, 0.59, 0.33, 0.84, 0.75, 0.65)
 	end
 end
 
-ElvUF.Tags.Methods['Elv:druid'] = function(unit)
-	if not unit then return end
-	local min, max = UnitPower(unit, 0), UnitPowerMax(unit, 0)
-	if(UnitPowerType(unit) ~= 0 and min ~= max) then
-		return ('|cff0090ff%d%%|r'):format(min / max * 100)
+ElvUF.Tags.Events['health:current-percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
+ElvUF.Tags.Methods['health:current-percent'] = function(unit)
+	local min, max = UnitHealth(unit), UnitHealthMax(unit)
+	local status = not UnitIsConnected(unit) and L['Offline'] or UnitIsGhost(unit) and L['Ghost'] or UnitIsDead(unit) and DEAD
+
+	if (status) then
+		return status
+	else
+		local r, g, b = ElvUF.ColorGradient(min, max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
+		return E:GetFormattedText('CURRENT_PERCENT', min, max, r, g, b, 0.33, 0.59, 0.33, 0.84, 0.75, 0.65)
 	end
 end
 
-ElvUF.Tags.Events['Elv:diffcolor'] = 'UNIT_LEVEL'
-ElvUF.Tags.Methods['Elv:diffcolor'] = function(unit)
-	if not unit then return end
-	local r, g, b
+ElvUF.Tags.Events['health:current-max'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
+ElvUF.Tags.Methods['health:current-max'] = function(unit)
+	local min, max = UnitHealth(unit), UnitHealthMax(unit)
+	local status = not UnitIsConnected(unit) and L['Offline'] or UnitIsGhost(unit) and L['Ghost'] or UnitIsDead(unit) and DEAD
+
+	if (status) then
+		return status
+	else
+		local r, g, b = ElvUF.ColorGradient(min, max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
+		return E:GetFormattedText('CURRENT_MAX', min, max, r, g, b, 0.33, 0.59, 0.33, 0.84, 0.75, 0.65)
+	end
+end
+
+ElvUF.Tags.Events['health:current-max-percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
+ElvUF.Tags.Methods['health:current-max-percent'] = function(unit)
+	local min, max = UnitHealth(unit), UnitHealthMax(unit)
+	local status = not UnitIsConnected(unit) and L['Offline'] or UnitIsGhost(unit) and L['Ghost'] or UnitIsDead(unit) and DEAD
+
+	if (status) then
+		return status
+	else
+		local r, g, b = ElvUF.ColorGradient(min, max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
+		return E:GetFormattedText('CURRENT_MAX_PERCENT', min, max, r, g, b, 0.33, 0.59, 0.33, 0.84, 0.75, 0.65)
+	end
+end
+
+ElvUF.Tags.Events['health:percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
+ElvUF.Tags.Methods['health:percent'] = function(unit)
+	local min, max = UnitHealth(unit), UnitHealthMax(unit)
+	local status = not UnitIsConnected(unit) and L['Offline'] or UnitIsGhost(unit) and L['Ghost'] or UnitIsDead(unit) and DEAD
+
+	if (status) then
+		return status
+	else
+		local r, g, b = ElvUF.ColorGradient(min, max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
+		return E:GetFormattedText('PERCENT', min, max, r, g, b, 0.33, 0.59, 0.33, 0.84, 0.75, 0.65)
+	end
+end
+
+ElvUF.Tags.Events['power:current'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+ElvUF.Tags.Methods['power:current'] = function(unit)
+	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
+	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
+	
+	local r, g, b = altR, altG, altB
+	local color = ElvUF['colors'].power[pToken]
+	if color then
+		r, g, b = color[1], color[2], color[3]
+	end
+	
+	if min == 0 then
+		return ' '
+	else
+		return E:GetFormattedText('CURRENT', min, max, r, g, b)
+	end
+end
+
+ElvUF.Tags.Events['power:current-max'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+ElvUF.Tags.Methods['power:current-max'] = function(unit)
+	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
+	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
+	
+	local r, g, b = altR, altG, altB
+	local color = ElvUF['colors'].power[pToken]
+	if color then
+		r, g, b = color[1], color[2], color[3]
+	end
+	
+	return E:GetFormattedText('CURRENT_MAX', min, max, r, g, b)
+end
+
+ElvUF.Tags.Events['power:current-percent'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+ElvUF.Tags.Methods['power:current-percent'] = function(unit)
+	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
+	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
+	
+	local r, g, b = altR, altG, altB
+	local color = ElvUF['colors'].power[pToken]
+	if color then
+		r, g, b = color[1], color[2], color[3]
+	end
+
+	if min == 0 then
+		return ''
+	else	
+		return E:GetFormattedText('CURRENT_PERCENT', min, max, r, g, b)
+	end
+end
+
+ElvUF.Tags.Events['power:current-max-percent'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+ElvUF.Tags.Methods['power:current-max-percent'] = function(unit)
+	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
+	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
+	
+	local r, g, b = altR, altG, altB
+	local color = ElvUF['colors'].power[pToken]
+	if color then
+		r, g, b = color[1], color[2], color[3]
+	end
+	
+	return E:GetFormattedText('CURRENT_MAX_PERCENT', min, max, r, g, b)
+end
+
+ElvUF.Tags.Events['power:percent'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+ElvUF.Tags.Methods['power:percent'] = function(unit)
+	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
+	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
+	
+	local r, g, b = altR, altG, altB
+	local color = ElvUF['colors'].power[pToken]
+	if color then
+		r, g, b = color[1], color[2], color[3]
+	end
+
+	if min == 0 then
+		return ''
+	else	
+		return E:GetFormattedText('PERCENT', min, max, r, g, b)
+	end
+end
+
+ElvUF.Tags.Events['power:deficit'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+ElvUF.Tags.Methods['power:deficit'] = function(unit)
+	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
+	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
+	
+	local r, g, b = altR, altG, altB
+	local color = ElvUF['colors'].power[pToken]
+	if color then
+		r, g, b = color[1], color[2], color[3]
+	end
+	
+	return E:GetFormattedText('DEFICIT', min, max, r, g, b)
+end
+
+ElvUF.Tags.Events['difficultycolor'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
+ElvUF.Tags.Methods['difficultycolor'] = function(unit)
+	local r, g, b = 0.69, 0.31, 0.31
 	local level = UnitLevel(unit)
-	if (level < 1) then
-		r, g, b = 0.69, 0.31, 0.31
-	else
+	if not (level < 1) then
 		local DiffColor = UnitLevel('target') - UnitLevel('player')
 		if (DiffColor >= 5) then
 			r, g, b = 0.69, 0.31, 0.31
@@ -71,80 +199,64 @@ ElvUF.Tags.Methods['Elv:diffcolor'] = function(unit)
 			r, g, b = 0.55, 0.57, 0.61
 		end
 	end
+	
 	return string.format('|cff%02x%02x%02x', r * 255, g * 255, b * 255)
 end
 
-local utf8sub = function(string, i, dots)
-	if not string then return end
-	local bytes = string:len()
-	if (bytes <= i) then
-		return string
+ElvUF.Tags.Events['colorname'] = 'UNIT_NAME_UPDATE'
+ElvUF.Tags.Methods['colorname'] = function(unit)
+	local unitReaction = UnitReaction(unit, 'player')
+	local _, unitClass = UnitClass(unit)
+	if (UnitIsPlayer(unit)) then
+		local class = RAID_CLASS_COLORS[unitClass]
+		if not class then return "" end
+		return string.format('|cff%02x%02x%02x', class.r * 255, class.g * 255, class.b * 255)
+	elseif (unitReaction) then
+		local reaction = ElvUF['colors'].reaction[unitReaction]
+		return string.format('|cff%02x%02x%02x', reaction[1] * 255, reaction[2] * 255, reaction[3] * 255)
 	else
-		local len, pos = 0, 1
-		while(pos <= bytes) do
-			len = len + 1
-			local c = string:byte(pos)
-			if (c > 0 and c <= 127) then
-				pos = pos + 1
-			elseif (c >= 192 and c <= 223) then
-				pos = pos + 2
-			elseif (c >= 224 and c <= 239) then
-				pos = pos + 3
-			elseif (c >= 240 and c <= 247) then
-				pos = pos + 4
-			end
-			if (len == i) then break end
-		end
-
-		if (len == i and pos <= bytes) then
-			return string:sub(1, pos - 1)..(dots and '...' or '')
-		else
-			return string
-		end
-	end
-end
-
-ElvUF.Tags.Events['Elv:getnamecolor'] = 'UNIT_POWER'
-ElvUF.Tags.Methods['Elv:getnamecolor'] = function(unit)
-	if not unit then return end
-	
-	if not E.db['unitframe']['colors'].classNames then
 		return string.format('|cff%02x%02x%02x', 214, 191, 166)	
-	else
-		local reaction = UnitReaction(unit, 'player')
-		local _, unitClass = UnitClass(unit)
-		if (UnitIsPlayer(unit)) then
-			local c = RAID_CLASS_COLORS[unitClass]
-			if not c then return "" end
-			return string.format('|cff%02x%02x%02x', c.r * 255, c.g * 255, c.b * 255)
-		elseif (reaction) then
-			local c = ElvUF['colors'].reaction[reaction]
-			return string.format('|cff%02x%02x%02x', c[1] * 255, c[2] * 255, c[3] * 255)
-		else
-			return string.format('|cff%02x%02x%02x', 214, 191, 166)	
-		end
 	end
 end
 
-ElvUF.Tags.Events['Elv:nameshort'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['Elv:nameshort'] = function(unit)
-	if not unit then return end
-	local name = UnitName(unit)
-	return utf8sub(name, 10, false)
+ElvUF.Tags.Events['level'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
+ElvUF.Tags.Methods['level'] = function(unit)
+	local level = UnitLevel(unit)
+	if level == UnitLevel('player') and unit ~= 'player' then
+		return ''
+	elseif(level > 0) then
+		return level
+	else
+		return '??'
+	end
 end
 
-ElvUF.Tags.Events['Elv:namemedium'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['Elv:namemedium'] = function(unit)
-	if not unit then return end
+ElvUF.Tags.Events['name:short'] = 'UNIT_NAME_UPDATE'
+ElvUF.Tags.Methods['name:short'] = function(unit)
 	local name = UnitName(unit)
-	local colorblind = GetCVarBool("colorblindMode")
-	return utf8sub(name, 15, false)
+	if name then
+		return E:ShortenString(name, 10)
+	else
+		return ''
+	end
 end
 
-ElvUF.Tags.Events['Elv:namelong'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['Elv:namelong'] = function(unit)
-	if not unit then return end
+ElvUF.Tags.Events['name:medium'] = 'UNIT_NAME_UPDATE'
+ElvUF.Tags.Methods['name:medium'] = function(unit)
 	local name = UnitName(unit)
-	local colorblind = GetCVarBool("colorblindMode")
-	return utf8sub(name, 20, false)
+	if name then	
+		return E:ShortenString(name, 15)
+	else
+		return ''
+	end	
+end
+
+ElvUF.Tags.Events['name:long'] = 'UNIT_NAME_UPDATE'
+ElvUF.Tags.Methods['name:long'] = function(unit)
+	local name = UnitName(unit)
+	if name then	
+		return E:ShortenString(name, 20)
+	else
+		return ''
+	end	
 end

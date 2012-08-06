@@ -16,10 +16,11 @@ local function LoadSkin()
 	TradeSkillRankFrame:StripTextures()
 	TradeSkillRankFrame:CreateBackdrop("Default")
 	TradeSkillRankFrame:SetStatusBarTexture(E["media"].normTex)
-	
+	TradeSkillFilterButton:StripTextures(true)
 	S:HandleButton(TradeSkillCreateButton, true)
 	S:HandleButton(TradeSkillCancelButton, true)
-	S:HandleButton(TradeSkillFilterButton, true)
+	TradeSkillFilterButton:CreateBackdrop('Default', true)
+	TradeSkillFilterButton.backdrop:SetAllPoints()
 	S:HandleButton(TradeSkillCreateAllButton, true)
 	S:HandleButton(TradeSkillViewGuildCraftersButton, true)
 	

@@ -78,7 +78,7 @@ P["nameplate"] = {
 	["showlevel"] = true,
 	["enhancethreat"] = true,
 	["combat"] = false,
-	["showhealth"] = false,
+	["healthtext"] = '',
 	["trackauras"] = true,
 	["trackfilter"] = 'CCDebuffs',
 	['goodscale'] = 1,
@@ -191,7 +191,6 @@ P['unitframe'] = {
 		['colorhealthbyvalue'] = false,
 		['customhealthbackdrop'] = true,
 		['classbackdrop'] = false,
-		['classNames'] = true,
 		
 		['health'] = { r = 68/255,g = 68/255,b = 68/255 },
 		['health_backdrop'] = { r = 97/255,g = 97/255,b = 97/255 },
@@ -214,35 +213,28 @@ P['unitframe'] = {
 	['units'] = {
 		['player'] = {
 			['enable'] = true,
-			['width'] = 260,
+			['width'] = 280,
 			['height'] = 54,
 			['lowmana'] = 30,
 			['combatfade'] = false,
 			['healPrediction'] = true,
 			['restIcon'] = true,
 			['health'] = {
-				['text'] = true,
-				['text_format'] = 'current-percent',
-				['position'] = 'TOPRIGHT',
+				['text_format'] = '[health:current-percent]',
+				['position'] = 'LEFT',
 			},
 			['power'] = {
 				['enable'] = true,
-				['text'] = true,
-				['text_format'] = 'current',	
+				['text_format'] = '[power:current]',	
 				['width'] = 'fill',
 				['height'] = 15,
 				['offset'] = 0,
 				['position'] = 'BOTTOMRIGHT',
 				['hideonnpc'] = false,
 			},
-			['altpower'] = {
-				['enable'] = true,
-				['width'] = 260,
-				['height'] = 18,
-			},
 			['name'] = {
-				['enable'] = true,
 				['position'] = 'LEFT',
+				['text_format'] = '',
 			},
 			['portrait'] = {
 				['enable'] = false,
@@ -311,19 +303,17 @@ P['unitframe'] = {
 		},	
 		['target'] = {
 			['enable'] = true,
-			['width'] = 260,
+			['width'] = 280,
 			['height'] = 54,
 			['healPrediction'] = true,
 			['smartAuraDisplay'] = 'SHOW_DEBUFFS_ON_FRIENDLIES',
 			['health'] = {
-				['text'] = true,
-				['text_format'] = 'current-percent',
+				['text_format'] = '[health:current-percent]',
 				['position'] = 'TOPRIGHT',
 			},
 			['power'] = {
 				['enable'] = true,
-				['text'] = true,
-				['text_format'] = 'current',	
+				['text_format'] = '[power:current]',	
 				['width'] = 'fill',
 				['height'] = 15,
 				['offset'] = 0,
@@ -331,8 +321,8 @@ P['unitframe'] = {
 				['hideonnpc'] = false,					
 			},
 			['name'] = {
-				['enable'] = true,
 				['position'] = 'LEFT',
+				['text_format'] = '[colorname][name:medium] [difficultycolor][level] [shortclassification]',
 			},
 			['portrait'] = {
 				['enable'] = false,
@@ -369,7 +359,7 @@ P['unitframe'] = {
 			},
 			['castbar'] = {
 				['enable'] = true,
-				['width'] = 260,
+				['width'] = 280,
 				['height'] = 18,
 				['icon'] = false,
 				['color'] = { r = .66,g = .66,b = .66 },
@@ -401,14 +391,12 @@ P['unitframe'] = {
 			['width'] = 130,
 			['height'] = 50,
 			['health'] = {
-				['text'] = false,
-				['text_format'] = 'current-percent',
+				['text_format'] = '',
 				['position'] = 'RIGHT',
 			},
 			['power'] = {
 				['enable'] = true,
-				['text'] = false,
-				['text_format'] = 'current',	
+				['text_format'] = '',	
 				['width'] = 'fill',
 				['height'] = 10,
 				['offset'] = 0,
@@ -416,8 +404,8 @@ P['unitframe'] = {
 				['hideonnpc'] = false,					
 			},
 			['name'] = {
-				['enable'] = true,
 				['position'] = 'CENTER',
+				['text_format'] = '[colorname][name:medium]',
 			},
 			['buffs'] = {
 				['enable'] = false,
@@ -454,14 +442,12 @@ P['unitframe'] = {
 			['healPrediction'] = true,
 			['smartAuraDisplay'] = 'DISABLED',
 			['health'] = {
-				['text'] = true,
-				['text_format'] = 'current-percent',
+				['text_format'] = '',
 				['position'] = 'TOPRIGHT',
 			},
 			['power'] = {
 				['enable'] = true,
-				['text'] = false,
-				['text_format'] = 'current',	
+				['text_format'] = '',	
 				['width'] = 'fill',
 				['height'] = 10,
 				['offset'] = 0,
@@ -469,8 +455,8 @@ P['unitframe'] = {
 				['hideonnpc'] = false,					
 			},
 			['name'] = {
-				['enable'] = true,
 				['position'] = 'LEFT',
+				['text_format'] = '[colorname][name:medium]',
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -527,14 +513,12 @@ P['unitframe'] = {
 			['width'] = 150,
 			['height'] = 40,
 			['health'] = {
-				['text'] = true,
-				['text_format'] = 'current-percent',
+				['text_format'] = '',
 				['position'] = 'TOPRIGHT',
 			},
 			['power'] = {
 				['enable'] = true,
-				['text'] = false,
-				['text_format'] = 'current',	
+				['text_format'] = '',	
 				['width'] = 'fill',
 				['height'] = 10,
 				['offset'] = 0,
@@ -542,8 +526,8 @@ P['unitframe'] = {
 				['hideonnpc'] = false,					
 			},
 			['name'] = {
-				['enable'] = true,
 				['position'] = 'LEFT',
+				['text_format'] = '[colorname][name:medium]',
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -579,14 +563,12 @@ P['unitframe'] = {
 			['height'] = 36,
 			['healPrediction'] = true,
 			['health'] = {
-				['text'] = false,
-				['text_format'] = 'current-percent',
+				['text_format'] = '',
 				['position'] = 'TOPRIGHT',
 			},
 			['power'] = {
 				['enable'] = true,
-				['text'] = false,
-				['text_format'] = 'current',	
+				['text_format'] = '',	
 				['width'] = 'fill',
 				['height'] = 7,
 				['offset'] = 0,
@@ -594,8 +576,8 @@ P['unitframe'] = {
 				['hideonnpc'] = false,					
 			},
 			['name'] = {
-				['enable'] = true,
 				['position'] = 'LEFT',
+				['text_format'] = '[colorname][name:medium]',
 			},
 			['buffs'] = {
 				['enable'] = false,
@@ -630,23 +612,21 @@ P['unitframe'] = {
 			['width'] = 130,
 			['height'] = 26,
 			['health'] = {
-				['text'] = false,
-				['text_format'] = 'current-percent',
+				['text_format'] = '',
 				['position'] = 'RIGHT',
 			},
 			['power'] = {
 				['enable'] = false,
-				['text'] = false,
-				['text_format'] = 'current',	
+				['text_format'] = '',	
 				['width'] = 'fill',
 				['height'] = 7,
 				['offset'] = 0,
 				['position'] = 'LEFT',
-				['hideonnpc'] = true,					
+				['hideonnpc'] = false,					
 			},
 			['name'] = {
-				['enable'] = true,
 				['position'] = 'CENTER',
+				['text_format'] = '[colorname][name:medium]',
 			},
 			['buffs'] = {
 				['enable'] = false,
@@ -682,14 +662,12 @@ P['unitframe'] = {
 			['width'] = 200,
 			['height'] = 46,
 			['health'] = {
-				['text'] = true,
-				['text_format'] = 'current-percent',
+				['text_format'] = '[health:current-percent]',
 				['position'] = 'TOPRIGHT',
 			},
 			['power'] = {
 				['enable'] = true,
-				['text'] = true,
-				['text_format'] = 'current',	
+				['text_format'] = '[power:current]',	
 				['width'] = 'fill',
 				['height'] = 7,
 				['offset'] = 0,
@@ -703,8 +681,8 @@ P['unitframe'] = {
 				['camDistanceScale'] = 1,
 			},				
 			['name'] = {
-				['enable'] = true,
 				['position'] = 'LEFT',
+				['text_format'] = '[colorname][name:medium]',
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -753,14 +731,12 @@ P['unitframe'] = {
 			['width'] = 240,
 			['height'] = 46,
 			['health'] = {
-				['text'] = true,
-				['text_format'] = 'current-percent',
+				['text_format'] = '[health:current-percent]',
 				['position'] = 'TOPRIGHT',
 			},
 			['power'] = {
 				['enable'] = true,
-				['text'] = true,
-				['text_format'] = 'current',	
+				['text_format'] = '[power:current]',	
 				['width'] = 'fill',
 				['height'] = 8,
 				['offset'] = 0,
@@ -768,8 +744,8 @@ P['unitframe'] = {
 				['hideonnpc'] = false,					
 			},			
 			['name'] = {
-				['enable'] = true,
 				['position'] = 'LEFT',
+				['text_format'] = '[colorname][name:medium]',
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -830,16 +806,14 @@ P['unitframe'] = {
 			['width'] = 74,
 			['height'] = 44,
 			['health'] = {
-				['text'] = false,
-				['text_format'] = 'current-percent',
+				['text_format'] = '[health:current-percent]',
 				['position'] = 'RIGHT',
 				['orientation'] = 'HORIZONTAL',
 				['frequentUpdates'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
-				['text'] = false,
-				['text_format'] = 'current',	
+				['text_format'] = '',	
 				['width'] = 'fill',
 				['height'] = 8,
 				['offset'] = 0,
@@ -847,9 +821,8 @@ P['unitframe'] = {
 				['hideonnpc'] = false,					
 			},			
 			['name'] = {
-				['enable'] = true,
 				['position'] = 'TOP',
-				['length'] = 'SHORT',
+				['text_format'] = '[colorname][name:short] [difficultycolor][level]',
 			},
 			['buffs'] = {
 				['enable'] = false,
@@ -929,16 +902,14 @@ P['unitframe'] = {
 			['width'] = 74,
 			['height'] = 44,
 			['health'] = {
-				['text'] = false,
-				['text_format'] = 'deficit',
+				['text_format'] = '[health:deficit]',
 				['position'] = 'BOTTOM',
 				['orientation'] = 'HORIZONTAL',
 				['frequentUpdates'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
-				['text'] = false,
-				['text_format'] = 'current',	
+				['text_format'] = '',	
 				['width'] = 'fill',
 				['height'] = 8,
 				['offset'] = 0,
@@ -946,9 +917,8 @@ P['unitframe'] = {
 				['hideonnpc'] = false,					
 			},			
 			['name'] = {
-				['enable'] = true,
 				['position'] = 'TOP',
-				['length'] = 'SHORT',
+				['text_format'] = '[colorname][name:short]',
 			},
 			['buffs'] = {
 				['enable'] = false,
@@ -1016,16 +986,14 @@ P['unitframe'] = {
 			['width'] = 74,
 			['height'] = 44,
 			['health'] = {
-				['text'] = false,
-				['text_format'] = 'deficit',
+				['text_format'] = '[health:deficit]',
 				['position'] = 'BOTTOM',
 				['orientation'] = 'HORIZONTAL',
 				['frequentUpdates'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
-				['text'] = false,
-				['text_format'] = 'current',	
+				['text_format'] = '',	
 				['width'] = 'fill',
 				['height'] = 8,
 				['offset'] = 0,
@@ -1033,9 +1001,8 @@ P['unitframe'] = {
 				['hideonnpc'] = false,					
 			},			
 			['name'] = {
-				['enable'] = true,
 				['position'] = 'TOP',
-				['length'] = 'SHORT',
+				['text_format'] = '[colorname][name:short]',
 			},
 			['buffs'] = {
 				['enable'] = false,
@@ -1103,16 +1070,14 @@ P['unitframe'] = {
 			['width'] = 74,
 			['height'] = 36,
 			['health'] = {
-				['text'] = false,
-				['text_format'] = 'deficit',
+				['text_format'] = '[health:deficit]',
 				['position'] = 'BOTTOM',
 				['orientation'] = 'HORIZONTAL',
 				['frequentUpdates'] = false,
 			},
 			['power'] = {
 				['enable'] = false,
-				['text'] = false,
-				['text_format'] = 'current',	
+				['text_format'] = '',	
 				['width'] = 'fill',
 				['height'] = 7,
 				['offset'] = 0,
@@ -1120,9 +1085,8 @@ P['unitframe'] = {
 				['hideonnpc'] = false,					
 			},			
 			['name'] = {
-				['enable'] = true,
 				['position'] = 'TOP',
-				['length'] = 'SHORT',
+				['text_format'] = '[colorname][name:short]',
 			},
 			['buffs'] = {
 				['enable'] = false,

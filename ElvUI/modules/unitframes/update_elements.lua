@@ -15,121 +15,6 @@ local function CheckFilter(type, isFriend)
 	return false
 end
 
-function UF:GetInfoText(frame, unit, r, g, b, min, max, reverse, type)
-	local value
-	local db = frame.db
-	
-	if not db or not db[type] then return '' end
-
-	if db[type].text_format == 'blank' then
-		return '';
-	end
-	
-	if reverse then
-		if type == 'health' then
-			if db[type].text_format == 'current-percent' then
-				if min ~= max then
-					value = format("|cff%02x%02x%02x%.1f%%|r |cffD7BEA5-|r |cffAF5050%s|r", r * 255, g * 255, b * 255, format("%.1f", min / max * 100), E:ShortValue(min))
-				else
-					value = format("|cff%02x%02x%02x%s|r", r * 255, g * 255, b * 255, E:ShortValue(max))	
-				end
-			elseif db[type].text_format == 'current-max' then
-				if min == max then
-					value = format("|cff%02x%02x%02x%s|r", r * 255, g * 255, b * 255, E:ShortValue(max))	
-				else
-					value = format("|cff%02x%02x%02x%s|r |cffD7BEA5-|r |cffAF5050%s|r", r * 255, g * 255, b * 255, E:ShortValue(max), E:ShortValue(min))
-				end
-			elseif db[type].text_format == 'current' then
-				value = format("|cff%02x%02x%02x%s|r", r * 255, g * 255, b * 255, E:ShortValue(min))	
-			elseif db[type].text_format == 'percent' then
-				value = format("|cff%02x%02x%02x%.1f%%|r", r * 255, g * 255, b * 255, format("%.1f", min / max * 100))
-			elseif db[type].text_format == 'deficit' then
-				if min == max then
-					value = ""
-				else			
-					value = format("|cffAF5050-|r|cff%02x%02x%02x%s|r", r * 255, g * 255, b * 255, E:ShortValue(max - min))
-				end
-			end	
-		else
-			if db[type].text_format == 'current-percent' then
-				if min ~= max then
-					value = format("%d%% |cffD7BEA5-|r %s", floor(min / max * 100), E:ShortValue(min))
-				else
-					value = format("%s", E:ShortValue(max))	
-				end
-			elseif db[type].text_format == 'current-max' then
-				if min == max then
-					value = format("%s", E:ShortValue(max))	
-				else
-					value = format("%s |cffD7BEA5-|r %s", E:ShortValue(max), E:ShortValue(min))
-				end
-			elseif db[type].text_format == 'current' then
-				value = format("%s", E:ShortValue(min))	
-			elseif db[type].text_format == 'percent' then
-				value = format("%d%%", floor(min / max * 100))
-			elseif db[type].text_format == 'deficit' then
-				if min == max then
-					value = ""
-				else			
-					value = format("|cffAF5050-|r%s", E:ShortValue(max - min))
-				end
-			end			
-		end
-	else
-		if type == 'health' then
-			if db[type].text_format == 'current-percent' then
-				if min ~= max then
-					value = format("|cffAF5050%s|r |cffD7BEA5-|r |cff%02x%02x%02x%.1f%%|r", E:ShortValue(min), r * 255, g * 255, b * 255, format("%.1f", min / max * 100))
-				else
-					value = format("|cff%02x%02x%02x%s|r", r * 255, g * 255, b * 255, E:ShortValue(max))
-				end
-			elseif db[type].text_format == 'current-max' then
-				if min == max then
-					value = format("|cff%02x%02x%02x%s|r", r * 255, g * 255, b * 255, E:ShortValue(max))	
-				else
-					value = format("|cffAF5050%s|r |cffD7BEA5-|r |cff%02x%02x%02x%s|r", E:ShortValue(min), r * 255, g * 255, b * 255, E:ShortValue(max))
-				end
-			elseif db[type].text_format == 'current' then
-				value = format("|cff%02x%02x%02x%s|r", r * 255, g * 255, b * 255, E:ShortValue(min))	
-			elseif db[type].text_format == 'percent' then
-				value = format("|cff%02x%02x%02x%.1f%%|r", r * 255, g * 255, b * 255, format("%.1f", min / max * 100))
-			elseif db[type].text_format == 'deficit' then
-				if min == max then
-					value = ""
-				else			
-					value = format("|cffAF5050-|r|cff%02x%02x%02x%s|r", r * 255, g * 255, b * 255, E:ShortValue(max - min))
-				end
-			end
-		else
-			if db[type].text_format == 'current-percent' then
-				if min ~= max then
-					value = format("%s |cffD7BEA5-|r %d%%", E:ShortValue(min), floor(min / max * 100))
-				else
-					value = format("%s", E:ShortValue(max))
-				end
-			elseif db[type].text_format == 'current-max' then
-				if min == max then
-					value = format("%s", E:ShortValue(max))	
-				else
-					value = format("%s |cffD7BEA5-|r %s", E:ShortValue(min), E:ShortValue(max))
-				end
-			elseif db[type].text_format == 'current' then
-				value = format("%s", E:ShortValue(min))	
-			elseif db[type].text_format == 'percent' then
-				value = format("%d%%", floor(min / max * 100))
-			elseif db[type].text_format == 'deficit' then
-				if min == max then
-					value = ""
-				else			
-					value = format("|cffAF5050-|r%s", E:ShortValue(max - min))
-				end
-			end		
-		end
-	end
-	
-	return value
-end
-
 function UF:PostUpdateHealth(unit, min, max)
 	if self:GetParent().isForced then
 		min = math.random(1, max)
@@ -168,35 +53,6 @@ function UF:PostUpdateHealth(unit, min, max)
 		local backdrop = E.db['unitframe']['colors'].health_backdrop
 		self.bg:SetVertexColor(backdrop.r, backdrop.g, backdrop.b)		
 	end	
-	
-	if not self.value or self.value and not self.value:IsShown() then return end
-	
-	local connected, dead, ghost = UnitIsConnected(unit), UnitIsDead(unit), UnitIsGhost(unit)
-	if not connected or dead or ghost then
-		if not connected then
-			self.value:SetText("|cffD7BEA5"..L['Offline'].."|r")
-		elseif dead then
-			self.value:SetText("|cffD7BEA5"..DEAD.."|r")
-		elseif ghost then
-			self.value:SetText("|cffD7BEA5"..L['Ghost'].."|r")
-		end
-		
-		if self:GetParent().ResurrectIcon then
-			self:GetParent().ResurrectIcon:SetAlpha(1)
-		end
-	else
-		local r, g, b = ElvUF.ColorGradient(min, max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
-		local reverse
-		if unit == "target" then
-			reverse = true
-		end
-		
-		if self:GetParent().ResurrectIcon then
-			self:GetParent().ResurrectIcon:SetAlpha(0)
-		end
-		
-		self.value:SetText(UF:GetInfoText(self:GetParent(), unit, r, g, b, min, max, reverse, 'health'))
-	end
 end
 
 function UF:PostNamePosition(frame, unit)
@@ -237,46 +93,14 @@ function UF:PostUpdatePower(unit, min, max)
 		color = ElvUF['colors'].power[pToken]
 	end	
 	
-		
 	local perc
 	if max == 0 then
 		perc = 0
 	else
 		perc = floor(min / max * 100)
 	end
-	
-	if not self.value or self.value and not self.value:IsShown() then return end		
-
-	if color then
-		self.value:SetTextColor(color[1], color[2], color[3])
-	else
-		self.value:SetTextColor(altR, altG, altB, 1)
-	end	
-	
-	local dead, ghost = UnitIsDead(unit), UnitIsGhost(unit)
-	if min == 0 then 
-		self.value:SetText() 
-	else
-		if (not UnitIsPlayer(unit) and not UnitPlayerControlled(unit) or not UnitIsConnected(unit)) and not (unit and unit:find("boss%d")) then
-			self.value:SetText()
-		elseif dead or ghost then
-			self.value:SetText()
-		else
-			if pType == 0 then
-				local reverse
-				if unit == "player" then
-					reverse = true
-				end
-				
-				self.value:SetText(UF:GetInfoText(self:GetParent(), unit, nil, nil, nil, min, max, reverse, 'power'))
-			else
-				self.value:SetText(max - (max - min))
-			end
-		end
-	end
 
 	local db = self:GetParent().db
-	
 	if self.LowManaText and db then
 		if pToken == 'MANA' then
 			if perc <= db.lowmana and not dead and not ghost then

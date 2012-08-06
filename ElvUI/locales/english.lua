@@ -386,7 +386,7 @@ L['Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from see
 L["General"] = true;
 L["Log Taints"] = true;
 L["Login Message"] = true;
-L["LOGIN_MSG"] = "Welcome to %sElvUI|r version %s%s|r, type /ec to access the in-game configuration menu. If you are in need of technical support you can visit us at http://www.tukui.org. You can report bugs, add suggestions here: http://www.tukui.org/tickets/elvui/."
+L["LOGIN_MSG"] = "Welcome to %sElvUI|r version %s%s|r, type /ec to access the in-game configuration menu. If you are in need of technical support you can visit us at http://www.tukui.org"
 L["Loot Roll"] = true;
 L["Loot"] = true;
 L["Map Alpha While Moving"] = true;
@@ -624,7 +624,6 @@ L["Bars will transition smoothly."] = true;
 L['Bars'] = true; --Also used in ExpRepBar tooltip
 L['Below'] = true;
 L["Blacklist"] = true;
-L["Blank"] = true;
 L["Boss Frames"] = true;
 L["Buff Indicator"] = true;
 L["Buffs"] = true;
@@ -632,7 +631,6 @@ L["Camera Distance Scale"] = true;
 L["Castbar"] = true;
 L["Class Backdrop"] = true;
 L["Class Health"] = true;
-L['Class Names'] = true;
 L["Class Power"] = true;
 L["Classbar"] = true;
 L["Color health by ammount remaining."] = true;
@@ -641,7 +639,6 @@ L["Color Icons"] = true;
 L["Color power by classcolor or reaction."] = true;
 L["Color the health backdrop by class or reaction."] = true;
 L["Color the icon to their set color in the filters section, otherwise use the icon texture."] = true;
-L['Color the name text by class or reaction.'] = true;
 L["Color the unit healthbar if there is a debuff that can be dispelled by you."] = true;
 L["Color"] = true;
 L["Column Point"] = true;
@@ -654,6 +651,7 @@ L["Create Filter"] = true;
 L["Current - Max"] = true;
 L["Current - Percent"] = true;
 L["Current / Max"] = true;
+L['Current - Max | Percent'] = true;
 L["Current"] = true;
 L["Custom Health Backdrop"] = true;
 L["Debuff Highlighting"] = true;
@@ -708,14 +706,10 @@ L['If set then if the aura is found on the whitelist filter it will display. Not
 L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'] = true;
 L["Interrupt Color"] = true;
 L["Latency"] = true;
-L["Length"] = true;
-L["Long (Include Level)"] = true;
-L["Long"] = true;
 L["Low Mana Threshold"] = true;
 L["Main statusbar texture."] = true;
 L["Match Frame Width"] = true;
 L["Max Columns"] = true;
-L["Medium"] = true;
 L["MT, MA First"] = true;
 L["Name"] = true; --Also used in Buffs and Debuffs
 L["Neutral"] = true;
@@ -770,7 +764,6 @@ L["Set the order that the group will sort."] = true;
 L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."] = true;
 L['Set the type of auras to show when a unit is a foe.'] = true;
 L['Set the type of auras to show when a unit is friendly.'] = true;
-L["Short"] = true;
 L["Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = true;
 L['Show Auras'] = true;
 L["Show Missing"] = true;
@@ -793,7 +786,6 @@ L["Target Frame"] = true;
 L["TargetTarget Frame"] = true;
 L["Text Format"] = true;
 L["Text Toggle On NPC"] = true;
-L["Text"] = true;
 L["The alpha to set units that are out of range to."] = true;
 L["The amount of space (in pixels) between the columns."] = true;
 L["The anchor point for each new column. A value of LEFT will cause the columns to grow to the right."] = true;
@@ -833,6 +825,27 @@ L["You can't remove a pre-existing filter."] = true;
 L["You cannot copy settings from the same unit."] = true;
 L["You cannot set the Group Point and Column Point so they are opposite of each other."] = true;
 L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."] = true;
+L['TEXT_FORMAT_DESC'] = [=[Provide a string to change the text format.
+
+Examples: 
+[colorname][name] [difficultycolor][level] [shortclassification]
+[health:current-max]
+[power:current]
+
+Health / Power Formats:
+'current' - current amount
+'percent' - percentage amount
+'current-max' - current amount followed by maximum amount, will display only max is current is equal to max
+'current-percent' - current amount followed by percentage amount, will display only max is current is equal to max
+'current-max-percent' - current amount, max amount, followed by percentage amount, will display only max if current is equal to max
+'deficit' - display the deficit value, will display nothing if there is no deficit
+
+Name Formats:
+'name-short' - Name restricted to 10 characters
+'name-medium' - Name restricted to 15 characters
+'name-long' - Name restricted to 20 characters
+
+To disable leave the field blank, if you need more information visit http://www.tukui.org]=];
 
 --Personal Locale Strings
 L["Bottom_Datatext_Panel"] = "Bottom Datatext Panel"

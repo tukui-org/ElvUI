@@ -22,19 +22,22 @@ function NP:Initialize()
 	if E.private["nameplate"].enable ~= true then return end
 	E.NamePlates = NP
 	
+	if type(self.db.healthtext) == 'Boolean' then
+		self.db.healthtext = P.nameplate.healthtext
+	end
+	
 	CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
 		if(WorldFrame:GetNumChildren() ~= numChildren) then
 			numChildren = WorldFrame:GetNumChildren()
 			NP:HookFrames(WorldFrame:GetChildren())
 		end	
 		
-		NP:ForEachPlate(NP.CheckFilter)
 		NP:ForEachPlate(NP.InvalidCastCheck)
+		NP:ForEachPlate(NP.CheckFilter)
 		
 		if(self.elapsed and self.elapsed > 0.2) then
-			NP:ForEachPlate(NP.ScanHealth)
-			NP:ForEachPlate(NP.CheckUnit_Guid)
 			NP:ForEachPlate(NP.UpdateThreat)
+			NP:ForEachPlate(NP.CheckUnit_Guid)
 			NP:ForEachPlate(NP.CheckRaidIcon)
 			self.elapsed = 0
 		else
@@ -209,12 +212,6 @@ function NP:HealthBar_OnShow(self, frame)
 	--Level Text
 	if self.db.showlevel == true then
 		local level, elite, mylevel = tonumber(frame.hp.oldlevel:GetText()), frame.hp.elite:IsShown(), UnitLevel("player")
-		frame.hp.level:ClearAllPoints()
-		if self.db.showhealth == true then
-			frame.hp.level:SetPoint("RIGHT", frame.hp, "RIGHT", 2, 0)
-		else
-			frame.hp.level:SetPoint("RIGHT", frame.hp, "LEFT", -1, 0)
-		end
 		
 		frame.hp.level:SetTextColor(frame.hp.oldlevel:GetTextColor())
 		if frame.hp.boss:IsShown() then
@@ -231,6 +228,8 @@ function NP:HealthBar_OnShow(self, frame)
 		frame.hp.level:Hide()
 	end	
 	
+	NP.ScanHealth(frame.oldhp)
+	NP:CheckFilter(frame)
 	self:HideObjects(frame)
 end
 
@@ -276,6 +275,8 @@ function NP:SkinPlate(frame)
 	--Health Bar
 	if not frame.hp then
 		frame.oldhp = oldhp
+		frame.oldhp:HookScript('OnValueChanged', NP.ScanHealth)
+		
 		frame.hp = CreateFrame("Statusbar", nil, frame)
 		frame.hp:SetFrameLevel(oldhp:GetFrameLevel())
 		frame.hp:SetFrameStrata(oldhp:GetFrameStrata())
@@ -297,10 +298,16 @@ function NP:SkinPlate(frame)
 	frame.hp:SetStatusBarTexture(E["media"].normTex)
 	self:SetVirtualBackdrop(frame.hp, unpack(E["media"].backdropcolor))
 	
+	-- threat updates
+	if not frame.threat then	
+		frame.threat = threat
+	end
+	
 	--Level Text
 	if not frame.hp.level then
 		frame.hp.level = frame.hp:CreateFontString(nil, "OVERLAY")
 		frame.hp.level:FontTemplate(nil, 10, 'OUTLINE')
+		frame.hp.level:SetPoint("RIGHT", frame.hp, "LEFT", -1, 0)
 		frame.hp.oldlevel = oldlevel
 		frame.hp.boss = bossicon
 		frame.hp.elite = elite
@@ -436,6 +443,7 @@ function NP:SkinPlate(frame)
 	NP.Handled[frame:GetName()] = true
 end
 
+
 local good, bad, transition, transition2, combat, goodscale, badscale
 function NP:UpdateThreat(frame)
 	if frame.hasClass then return end
@@ -448,8 +456,8 @@ function NP:UpdateThreat(frame)
 	transition2 = self.db.badtransitioncolor
 
 	if self.db.enhancethreat ~= true then
-		if(frame.region:IsShown()) then
-			local _, val = frame.region:GetVertexColor()
+		if(frame.threat:IsShown()) then
+			local _, val = frame.threat:GetVertexColor()
 			if(val > 0.7) then
 				self:SetVirtualBorder(frame.hp, transition.r, transition.g, transition.b)
 				if not frame.customScale and (goodscale ~= 1 or badscale ~= 1) then
@@ -472,7 +480,7 @@ function NP:UpdateThreat(frame)
 		end
 		frame.hp.name:SetTextColor(1, 1, 1)
 	else
-		if not frame.region:IsShown() then
+		if not frame.threat:IsShown() then
 			if combat and frame.isFriendly ~= true then
 				--No Threat
 				if E.role == "Tank" then
@@ -513,7 +521,7 @@ function NP:UpdateThreat(frame)
 			end
 		else
 			--Ok we either have threat or we're losing/gaining it
-			local r, g, b = frame.region:GetVertexColor()
+			local r, g, b = frame.threat:GetVertexColor()
 			if g + b == 0 then
 				--Have Threat
 				if E.role == "Tank" then
@@ -588,31 +596,32 @@ function NP:UpdateThreat(frame)
 	end
 end
 
-function NP:ScanHealth(frame)
+function NP:ScanHealth()
 	-- show current health value
+	local frame = self:GetParent()
 	local minHealth, maxHealth = frame.oldhp:GetMinMaxValues()
 	local valueHealth = frame.oldhp:GetValue()
 	local d =(valueHealth/maxHealth)*100
 	
-	if self.db.showhealth == true then
+	if NP.db.healthtext ~= '' and valueHealth and maxHealth and maxHealth > 1 then
 		frame.hp.value:Show()
-		frame.hp.value:SetText(E:ShortValue(valueHealth).." - "..(string.format("%d%%", math.floor((valueHealth/maxHealth)*100))))
+		frame.hp.value:SetText(E:GetFormattedText(NP.db.healthtext, valueHealth, maxHealth))
 	else
 		frame.hp.value:Hide()
 	end
 			
 	--Setup frame shadow to change depending on enemy players health, also setup targetted unit to have white shadow
-	if (self.db.lowHealthWarning == 'PLAYERS' and frame.hasClass == true or frame.isFriendly == true) or self.db.lowHealthWarning == 'ALL' then
-		local threshold = self.db.lowHealthWarningThreshold * 100
+	if (NP.db.lowHealthWarning == 'PLAYERS' and frame.hasClass == true or frame.isFriendly == true) or NP.db.lowHealthWarning == 'ALL' then
+		local threshold = NP.db.lowHealthWarningThreshold * 100
 		if(d <= threshold and d >= (threshold / 2)) then
-			self:SetVirtualBorder(frame.hp, 1, 1, 0)
+			NP:SetVirtualBorder(frame.hp, 1, 1, 0)
 		elseif(d < (threshold / 2)) then
-			self:SetVirtualBorder(frame.hp, 1, 0, 0)
+			NP:SetVirtualBorder(frame.hp, 1, 0, 0)
 		else
-			self:SetVirtualBorder(frame.hp, unpack(E["media"].bordercolor))
+			NP:SetVirtualBorder(frame.hp, unpack(E["media"].bordercolor))
 		end
-	elseif (frame.hasClass ~= true and frame.isFriendly ~= true) or self.db.lowHealthWarning == 'ALL' then
-		self:SetVirtualBorder(frame.hp, unpack(E["media"].bordercolor))
+	elseif (frame.hasClass ~= true and frame.isFriendly ~= true) or NP.db.lowHealthWarning == 'ALL' then
+		NP:SetVirtualBorder(frame.hp, unpack(E["media"].bordercolor))
 	end
 end
 
@@ -752,7 +761,6 @@ function NP:HookFrames(...)
 		
 		if(not NP.Handled[frame:GetName()] and (frame:GetName() and frame:GetName():find("NamePlate%d")) and region and region:GetObjectType() == 'Texture') then
 			NP:SkinPlate(frame)
-			frame.region = region
 		end
 	end
 end

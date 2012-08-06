@@ -117,11 +117,20 @@ E.Options.args.nameplate = {
 					type = "range",
 					min = 4, max = 30, step = 1,						
 				},
-				showhealth = {
-					type = "toggle",
+				healthtext = {
+					type = "select",
 					order = 4,
 					name = L["Health Text"],
 					desc = L["Toggles health text display"],
+					values = {
+						['CURRENT_MAX_PERCENT'] = L['Current - Max | Percent'],
+						['CURRENT_PERCENT'] = L['Current - Percent'],
+						['CURRENT_MAX'] = L['Current - Max'],
+						['CURRENT'] = L['Current'],
+						['PERCENT'] = L['Percent'],
+						['DEFICIT'] = L['Deficit'],
+						[''] = NONE,					
+					},
 				},	
 				showlevel = {
 					type = "toggle",

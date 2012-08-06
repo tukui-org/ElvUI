@@ -285,34 +285,6 @@ function TT:SetStyle(tt)
 	self:Colorize(tt)
 end
 
-function TT:ADDON_LOADED(event, addon)
-	if addon == 'Blizzard_DebugTools' then
-		FrameStackTooltip:HookScript("OnShow", function(self)
-			local noscalemult = E.mult * GetCVar('uiScale')
-			self:SetBackdrop({
-			  bgFile = E["media"].blankTex, 
-			  edgeFile = E["media"].blankTex, 
-			  tile = false, tileSize = 0, edgeSize = noscalemult, 
-			  insets = { left = -noscalemult, right = -noscalemult, top = -noscalemult, bottom = -noscalemult}
-			})
-			self:SetBackdropColor(unpack(E["media"].backdropfadecolor))
-			self:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-		end)
-		
-		EventTraceTooltip:HookScript("OnShow", function(self)
-			self:SetTemplate("Transparent")
-		end)
-		
-		if EventTraceFrameCloseButton and not EventTraceFrameCloseButton.isSkinned then
-			E.Skins:HandleCloseButton(EventTraceFrameCloseButton)
-			EventTraceFrameCloseButton.isSkinned = true
-		end
-		
-		self.debugloaded = true
-		self:UnregisterEvent('ADDON_LOADED')
-	end
-end
-
 function TT:PLAYER_ENTERING_WORLD()
 	if not self.initialhook then
 		for _, tt in pairs(GameTooltips) do
@@ -321,15 +293,6 @@ function TT:PLAYER_ENTERING_WORLD()
 		
 		self:HookScript(ItemRefTooltip, "OnTooltipSetItem", 'SetStyle')
 		FriendsTooltip:SetTemplate("Transparent")
-		
-		if ItemRefCloseButton and not ItemRefCloseButton.isSkinned then
-			E.Skins:HandleCloseButton(ItemRefCloseButton)
-			ItemRefCloseButton.isSkinned = true
-		end
-		
-		if IsAddOnLoaded('Blizzard_DebugTools') and not self.debugloaded then
-			self:ADDON_LOADED('ADDON_LOADED', 'Blizzard_DebugTools')
-		end
 		
 		self.initialhook = true
 	end
@@ -445,14 +408,11 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			tt:AppendText((" %s"):format("[|cffE7E716"..L["DND"].."|r]"))
 		end
 		
-		if UnitIsPlayer(unit) and englishRace == "Pandaren" and faction ~= "" and not UnitIsUnit(unit, "player") then
-			local hex = "cffFF0000"
-			if faction == 'Alliance' then
-				hex = "cff0547FC"	
-			end
-			tt:AppendText((" |cffFFFFFF[|r|%s%s|r|cffFFFFFF]|r"):format(hex, faction:sub(1, 1)))
-		end
-
+		local factionColorR, factionColorG, factionColorB = 255, 255, 255
+		if UnitIsPlayer(unit) and englishRace == "Pandaren" and faction ~= select(2, UnitFactionGroup('player')) then
+			factionColorR, factionColorG, factionColorB = 255, 0, 0
+		end		
+		
 		local offset = 2
 		if guildName then
 			if UnitIsInMyGuild(unit) then
@@ -466,7 +426,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		for i= offset, lines do
 			
 			if _G["GameTooltipTextLeft"..i] and _G["GameTooltipTextLeft"..i]:GetText() and (_G["GameTooltipTextLeft"..i]:GetText():find("^"..LEVEL)) then
-				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r %s %s%s", r*255, g*255, b*255, level > 0 and level or "??", race, color, class.."|r")
+				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r |cff%02x%02x%02x%s|r %s%s", r*255, g*255, b*255, level > 0 and level or "??", factionColorR, factionColorG, factionColorB, race, color, class.."|r")
 				break
 			end
 		end
@@ -605,8 +565,6 @@ function TT:Initialize()
 	GameTooltipAnchor:Size(130, 20)
 	E:CreateMover(GameTooltipAnchor, 'TooltipMover', 'Tooltip')
 	
-	self:RegisterEvent('PLAYER_ENTERING_WORLD')
-	self:RegisterEvent('ADDON_LOADED')
 	self:SecureHook('GameTooltip_SetDefaultAnchor')
 	self:SecureHook('GameTooltip_ShowCompareItem')
 	self:HookScript(GameTooltip, 'OnUpdate', 'GameTooltip_OnUpdate')
@@ -614,6 +572,8 @@ function TT:Initialize()
 	self:HookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
 	self:HookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
 	self:HookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
+	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+	E.Skins:HandleCloseButton(ItemRefCloseButton)
 	
 	--SpellIDs
 	hooksecurefunc(GameTooltip, "SetUnitBuff", function(self,...)

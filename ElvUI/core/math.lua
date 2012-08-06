@@ -121,6 +121,116 @@ function E:GetXYOffset(position, override)
 	end
 end
 
+--This is differant than the round function because if a number is 20.0 for example it will return an integer value instead of floating point (20.0 will be 20)
+function E:TrimFloatingPoint(number, decimals)
+	assert(number, 'You must provide a floating point number to trim decimals from. Usage: E:TrimFloatingPoint(floatingPoint, <decimals>)')
+	if not decimals then decimals = 1 end
+	
+	local newNumber = string.format("%%.%df", decimals):format(number)
+	local checkstring = "."
+	for i=1, decimals do
+		checkstring = checkstring..'0'
+	end
+
+	if newNumber ~= tostring(math.ceil(number))..checkstring then
+		return newNumber
+	end
+	
+	return math.floor(number)
+end
+
+local styles = {
+	['CURRENT'] = '|cff%02x%02x%02x%s|r',
+	['CURRENT_MAX'] = '|cff%02x%02x%02x%s|r |cff%02x%02x%02x-|r |cff%02x%02x%02x%s|r',
+	['CURRENT_PERCENT'] =  '|cff%02x%02x%02x%s|r |cff%02x%02x%02x-|r |cff%02x%02x%02x%s%%|r',
+	['CURRENT_MAX_PERCENT'] = '|cff%02x%02x%02x%s|r |cff%02x%02x%02x-|r |cff%02x%02x%02x%s|r |cff%02x%02x%02x| |r|cff%02x%02x%02x%s%%|r',
+	['PERCENT'] = '|cff%02x%02x%02x%s%%|r',
+	['DEFICIT'] = '|cff%02x%02x%02x-|r|cff%02x%02x%02x%s|r'
+}
+
+function E:GetFormattedText(style, min, max, badR, badG, badB, goodR, goodG, goodB, seperatorR, seperatorG, seperatorB)
+	assert(styles[style], 'Invalid format style: '..style)
+	assert(min, 'You need to provide a current value. Usage: E:GetFormattedText(style, min, max)')
+	assert(max, 'You need to provide a maximum value. Usage: E:GetFormattedText(style, min, max)')
+	
+	if max == 0 then max = 1 end
+	
+	local useStyle = styles[style]
+	
+	if not seperatorR or not seperatorG or not seperatorB then
+		seperatorR, seperatorG, seperatorB = 1, 1, 1
+	end	
+	
+	if not badR or not badG or not badB then
+		badR, badG, badB = 1, 1, 1
+	end
+	
+	if not goodR or not goodG or not goodB then
+		goodR, goodG, goodB = badR, badG, badB
+	end	
+	
+	if min == max then
+		badR, badG, badB = goodR, goodG, goodB
+	end
+	
+	badR, badG, badB = badR * 255, badG  * 255, badB  * 255
+	goodR, goodG, goodB = goodR * 255, goodG  * 255, goodB  * 255
+	seperatorR, seperatorG, seperatorB = seperatorR * 255, seperatorG  * 255, seperatorB  * 255
+	
+	local percentValue = E:TrimFloatingPoint(min / max * 100)
+	
+	if style == 'DEFICIT' then
+		local deficit = max - min
+		if deficit <= 0 then
+			return ''
+		else
+			return string.format(useStyle, seperatorR, seperatorG, seperatorB, badR, badG, badB, E:ShortValue(deficit))
+		end
+	elseif style == 'PERCENT' then
+		return string.format(useStyle, badR, badG, badB, percentValue)
+	elseif style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
+		return string.format(styles['CURRENT'], badR, badG, badB,  E:ShortValue(min))
+	elseif style == 'CURRENT_MAX' then
+		return string.format(useStyle,  badR, badG, badB,  E:ShortValue(min), seperatorR, seperatorG, seperatorB,  goodR, goodG, goodB, E:ShortValue(max))
+	elseif style == 'CURRENT_PERCENT' then
+		return string.format(useStyle, badR, badG, badB, E:ShortValue(min), seperatorR, seperatorG, seperatorB, goodR, goodG, goodB, percentValue)
+	elseif style == 'CURRENT_MAX_PERCENT' then
+		return string.format(useStyle, badR, badG, badB, E:ShortValue(min), seperatorR, seperatorG, seperatorB, badR, badG, badB, E:ShortValue(max), seperatorR, seperatorG, seperatorB, goodR, goodG, goodB, percentValue)
+	end
+end
+
+function E:ShortenString(string, numChars, dots)
+	assert(string, 'You need to provide a string to shorten. Usage: E:ShortenString(string, numChars, includeDots)')
+	assert(string, 'You need to provide a length to shorten the string to. Usage: E:ShortenString(string, numChars, includeDots)')
+	
+	local bytes = string:len()
+	if (bytes <= numChars) then
+		return string
+	else
+		local len, pos = 0, 1
+		while(pos <= bytes) do
+			len = len + 1
+			local c = string:byte(pos)
+			if (c > 0 and c <= 127) then
+				pos = pos + 1
+			elseif (c >= 192 and c <= 223) then
+				pos = pos + 2
+			elseif (c >= 224 and c <= 239) then
+				pos = pos + 3
+			elseif (c >= 240 and c <= 247) then
+				pos = pos + 4
+			end
+			if (len == numChars) then break end
+		end
+
+		if (len == numChars and pos <= bytes) then
+			return string:sub(1, pos - 1)..(dots and '...' or '')
+		else
+			return string
+		end
+	end
+end
+
 --Add time before calling a function
 local waitTable = {}
 local waitFrame
