@@ -288,7 +288,7 @@ P['unitframe'] = {
 				['height'] = 8,
 			},
 			['aurabar'] = {
-				['enable'] = true,
+				['enable'] = false,
 				['anchorPoint'] = 'ABOVE',
 				['attachTo'] = 'DEBUFFS',
 				['playerOnly'] = 'ALL',
@@ -373,7 +373,7 @@ P['unitframe'] = {
 				['height'] = 10,
 			},		
 			['aurabar'] = {
-				['enable'] = true,
+				['enable'] = false,
 				['anchorPoint'] = 'ABOVE',
 				['attachTo'] = 'BUFFS',
 				['playerOnly'] = 'ALL',
