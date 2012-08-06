@@ -222,7 +222,7 @@ end
 ElvUF.Tags.Events['level'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
 ElvUF.Tags.Methods['level'] = function(unit)
 	local level = UnitLevel(unit)
-	if level == UnitLevel('player') and unit ~= 'player' then
+	if level == UnitLevel('player') then
 		return ''
 	elseif(level > 0) then
 		return level
