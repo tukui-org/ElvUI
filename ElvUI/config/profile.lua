@@ -22,8 +22,6 @@ P['general'] = {
 	["backdropfadecolor"] = { r = .054,g = .054,b = .054, a = 0.8 },
 	["valuecolor"] = {r = 23/255,g = 132/255,b = 209/255},
 
-	['expRepPos'] = 'TOP_SCREEN',
-
 	['mapAlpha'] = 1,
 	['tinyWorldMap'] = true,
 	
