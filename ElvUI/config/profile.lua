@@ -221,7 +221,7 @@ P['unitframe'] = {
 			['restIcon'] = true,
 			['health'] = {
 				['text_format'] = '[health:current-percent]',
-				['position'] = 'LEFT',
+				['position'] = 'TOPRIGHT',
 			},
 			['power'] = {
 				['enable'] = true,
@@ -234,7 +234,7 @@ P['unitframe'] = {
 			},
 			['name'] = {
 				['position'] = 'LEFT',
-				['text_format'] = '',
+				['text_format'] = '[colorname][name:medium] [difficultycolor][level]',
 			},
 			['portrait'] = {
 				['enable'] = false,
