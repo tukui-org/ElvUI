@@ -160,12 +160,18 @@ function B:SlotUpdate(b)
 	if(clink) then
 		local iType
 		b.name, _, b.rarity, _, _, iType = GetItemInfo(clink)
+		
+		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(b.bag, b.slot);
+		b.frame.questIcon:Hide()
 
 		-- color slot according to item quality
-		if not b.frame.lock and b.rarity and b.rarity > 1 then
-			b.frame:SetBackdropBorderColor(GetItemQualityColor(b.rarity))
-		elseif GetContainerItemQuestInfo(b.bag, b.slot) then
+		if questId and not isActive then
 			b.frame:SetBackdropBorderColor(1.0, 0.3, 0.3)
+			b.frame.questIcon:Show()
+		elseif questId or isQuestItem then
+			b.frame:SetBackdropBorderColor(1.0, 0.3, 0.3)
+		elseif not b.frame.lock and b.rarity and b.rarity > 1 then
+			b.frame:SetBackdropBorderColor(GetItemQualityColor(b.rarity))			
 		end
 	else
 		b.name, b.rarity = nil, nil
@@ -221,7 +227,13 @@ function B:SlotNew(bag, slot)
 		ret.frame = CreateFrame("CheckButton", "ElvUINormBag" .. bag .. "_" .. slot, self.bags[bag], tpl)
 		ret.frame:StyleButton()
 		ret.frame:SetTemplate('Default', true)
-
+		
+		_G[ret.frame:GetName().."IconQuestTexture"]:SetTexture(TEXTURE_ITEM_QUEST_BANG)
+		_G[ret.frame:GetName().."IconQuestTexture"]:SetInside(ret.frame)
+		_G[ret.frame:GetName().."IconQuestTexture"]:SetTexCoord(unpack(E.TexCoords))
+		_G[ret.frame:GetName().."IconQuestTexture"]:Hide()
+		ret.frame.questIcon = _G[ret.frame:GetName().."IconQuestTexture"]
+		
 		local t = _G[ret.frame:GetName().."IconTexture"]
 		ret.frame:SetNormalTexture(nil)
 		ret.frame:SetCheckedTexture(nil)

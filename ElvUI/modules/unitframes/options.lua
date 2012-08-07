@@ -7,6 +7,105 @@ local selectedSpell;
 local selectedFilter;
 local filters;
 
+function UF:CreateCustomTextGroup(unit, objectName)
+	if E.Options.args.unitframe.args[unit].args[objectName] then return end
+	
+	E.Options.args.unitframe.args[unit].args[objectName] = {
+		order = -1,
+		type = 'group',
+		name = objectName,
+		get = function(info) return E.db.unitframe.units[unit].customTexts[objectName][ info[#info] ] end,
+		set = function(info, value) 
+			E.db.unitframe.units[unit].customTexts[objectName][ info[#info] ] = value; 
+			
+			if unit == 'party' or unit:find('raid') then
+				UF:CreateAndUpdateHeaderGroup(unit)
+			elseif unit == 'boss' then
+				UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES)
+			elseif unit == 'arena' then
+				UF:CreateAndUpdateUFGroup('arena', 5)
+			else
+				UF:CreateAndUpdateUF(unit) 
+			end
+		end,
+		args = {
+			delete = {
+				type = 'execute',
+				order = 1,
+				name = DELETE,
+				func = function() 
+					E.Options.args.unitframe.args[unit].args[objectName] = nil; 
+					E.db.unitframe.units[unit].customTexts[objectName] = nil; 
+					
+					if unit == 'boss' or unit == 'arena' then
+						for i=1, 5 do
+							if UF[unit..i] then
+								UF[unit..i]:Tag(UF[unit..i][objectName], ''); 
+								UF[unit..i][objectName]:Hide(); 
+							end
+						end
+					elseif unit == 'party' or unit:find('raid') then
+						for i=1, UF[unit]:GetNumChildren() do
+							local child = select(i, UF[unit]:GetChildren())
+							if child.Tag then
+								child:Tag(child[objectName], ''); 
+								child[objectName]:Hide(); 
+							end
+						end
+					elseif UF[unit] then
+						UF[unit]:Tag(UF[unit][objectName], ''); 
+						UF[unit][objectName]:Hide(); 
+					end
+				end,	
+			},
+			font = {
+				type = "select", dialogControl = 'LSM30_Font',
+				order = 2,
+				name = L["Font"],
+				values = AceGUIWidgetLSMlists.font,
+			},
+			size = {
+				order = 3,
+				name = L["Font Size"],
+				type = "range",
+				min = 6, max = 72, step = 1,
+			},		
+			fontoutline = {
+				order = 4,
+				name = L["Font Outline"],
+				desc = L["Set the font outline."],
+				type = "select",
+				values = {
+					['NONE'] = L['None'],
+					['OUTLINE'] = 'OUTLINE',
+					['MONOCHROME'] = 'MONOCHROME',
+					['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+					['THICKOUTLINE'] = 'THICKOUTLINE',
+				},	
+			},
+			xOffset = {
+				order = 5,
+				type = 'range',
+				name = L['xOffset'],
+				min = -400, max = 400, step = 1,		
+			},
+			yOffset = {
+				order = 6,
+				type = 'range',
+				name = L['yOffset'],
+				min = -400, max = 400, step = 1,		
+			},						
+			text_format = {
+				order = 100,
+				name = L['Text Format'],
+				type = 'input',
+				width = 'full',
+				desc = L['TEXT_FORMAT_DESC'],
+			},		
+		},
+	}		
+end
+
 local function UpdateFilterGroup()
 	if selectedFilter == 'Buff Indicator' then
 		local buffs = {};
@@ -756,7 +855,40 @@ E.Options.args.unitframe.args.player = {
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['player']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['player']['power'].hideonnpc = value; UF:CreateAndUpdateUF('player') end,
-		},		
+		},	
+		customText = {
+			order = 50,
+			name = L['Custom Texts'],
+			type = 'input',
+			width = 'full',
+			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+			get = function() return '' end,
+			set = function(info, textName)
+				for object, _ in pairs(E.Options.args.unitframe.args.player) do
+					if object == textName then
+						E:Print(L['The name you have selected is already in use by another element.'])
+						return
+					end
+				end
+				
+				if not E.db.unitframe.units['player'].customTexts then
+					E.db.unitframe.units['player'].customTexts = {};
+				end
+				
+				E.db.unitframe.units['player'].customTexts[textName] = {
+					['text_format'] = '',
+					['size'] = 12,
+					['font'] = E.db.unitframe.font,
+					['xOffset'] = 0,
+					['yOffset'] = 0,	
+					['fontoutline'] = 'NONE'
+				};
+
+				UF:CreateCustomTextGroup('player', textName)
+				
+				UF:CreateAndUpdateUF('player')
+			end,
+		},				
 		health = {
 			order = 100,
 			type = 'group',
@@ -1421,6 +1553,39 @@ E.Options.args.unitframe.args.target = {
 				['SHOW_BUFFS_ON_FRIENDLIES'] = L['Friendlies: Show Buffs'],
 			},
 		},
+		customText = {
+			order = 50,
+			name = L['Custom Texts'],
+			type = 'input',
+			width = 'full',
+			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+			get = function() return '' end,
+			set = function(info, textName)
+				for object, _ in pairs(E.Options.args.unitframe.args.target) do
+					if object == textName then
+						E:Print(L['The name you have selected is already in use by another element.'])
+						return
+					end
+				end
+				
+				if not E.db.unitframe.units['target'].customTexts then
+					E.db.unitframe.units['target'].customTexts = {};
+				end
+				
+				E.db.unitframe.units['target'].customTexts[textName] = {
+					['text_format'] = '',
+					['size'] = 12,
+					['font'] = E.db.unitframe.font,
+					['xOffset'] = 0,
+					['yOffset'] = 0,	
+					['fontoutline'] = 'NONE'
+				};
+
+				UF:CreateCustomTextGroup('target', textName)
+				
+				UF:CreateAndUpdateUF('target')
+			end,
+		},				
 		health = {
 			order = 100,
 			type = 'group',
@@ -2042,6 +2207,39 @@ E.Options.args.unitframe.args.targettarget = {
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['targettarget']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['targettarget']['power'].hideonnpc = value; UF:CreateAndUpdateUF('targettarget') end,
+		},
+		customText = {
+			order = 50,
+			name = L['Custom Texts'],
+			type = 'input',
+			width = 'full',
+			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+			get = function() return '' end,
+			set = function(info, textName)
+				for object, _ in pairs(E.Options.args.unitframe.args.targettarget) do
+					if object == textName then
+						E:Print(L['The name you have selected is already in use by another element.'])
+						return
+					end
+				end
+				
+				if not E.db.unitframe.units['targettarget'].customTexts then
+					E.db.unitframe.units['targettarget'].customTexts = {};
+				end
+				
+				E.db.unitframe.units['targettarget'].customTexts[textName] = {
+					['text_format'] = '',
+					['size'] = 12,
+					['font'] = E.db.unitframe.font,
+					['xOffset'] = 0,
+					['yOffset'] = 0,	
+					['fontoutline'] = 'NONE'
+				};
+
+				UF:CreateCustomTextGroup('targettarget', textName)
+				
+				UF:CreateAndUpdateUF('targettarget')
+			end,
 		},			
 		health = {
 			order = 7,
@@ -2419,6 +2617,39 @@ E.Options.args.unitframe.args.focus = {
 				['SHOW_BUFFS_ON_FRIENDLIES'] = L['Friendlies: Show Buffs'],
 			},
 		},
+		customText = {
+			order = 50,
+			name = L['Custom Texts'],
+			type = 'input',
+			width = 'full',
+			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+			get = function() return '' end,
+			set = function(info, textName)
+				for object, _ in pairs(E.Options.args.unitframe.args.focus) do
+					if object == textName then
+						E:Print(L['The name you have selected is already in use by another element.'])
+						return
+					end
+				end
+				
+				if not E.db.unitframe.units['focus'].customTexts then
+					E.db.unitframe.units['focus'].customTexts = {};
+				end
+				
+				E.db.unitframe.units['focus'].customTexts[textName] = {
+					['text_format'] = '',
+					['size'] = 12,
+					['font'] = E.db.unitframe.font,
+					['xOffset'] = 0,
+					['yOffset'] = 0,	
+					['fontoutline'] = 'NONE'
+				};
+
+				UF:CreateCustomTextGroup('focus', textName)
+				
+				UF:CreateAndUpdateUF('focus')
+			end,
+		},				
 		health = {
 			order = 100,
 			type = 'group',
@@ -2981,7 +3212,41 @@ E.Options.args.unitframe.args.focustarget = {
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['focustarget']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['focustarget']['power'].hideonnpc = value; UF:CreateAndUpdateUF('focustarget') end,
-		},			
+		},	
+		customText = {
+			order = 50,
+			name = L['Custom Texts'],
+			type = 'input',
+			width = 'full',
+			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+			get = function() return '' end,
+			set = function(info, textName)
+				for object, _ in pairs(E.Options.args.unitframe.args.focustarget) do
+					if object == textName then
+						E:Print(L['The name you have selected is already in use by another element.'])
+						return
+					end
+				end
+				
+				local unit = 'focustarget'
+				if not E.db.unitframe.units[unit].customTexts then
+					E.db.unitframe.units[unit].customTexts = {};
+				end
+				
+				E.db.unitframe.units[unit].customTexts[textName] = {
+					['text_format'] = '',
+					['size'] = 12,
+					['font'] = E.db.unitframe.font,
+					['xOffset'] = 0,
+					['yOffset'] = 0,	
+					['fontoutline'] = 'NONE'
+				};
+
+				UF:CreateCustomTextGroup(unit, textName)
+				
+				UF:CreateAndUpdateUF(unit)
+			end,
+		},				
 		health = {
 			order = 7,
 			type = 'group',
@@ -3346,7 +3611,41 @@ E.Options.args.unitframe.args.pet = {
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['pet']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['pet']['power'].hideonnpc = value; UF:CreateAndUpdateUF('pet') end,
-		},			
+		},	
+		customText = {
+			order = 50,
+			name = L['Custom Texts'],
+			type = 'input',
+			width = 'full',
+			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+			get = function() return '' end,
+			set = function(info, textName)
+				for object, _ in pairs(E.Options.args.unitframe.args.pet) do
+					if object == textName then
+						E:Print(L['The name you have selected is already in use by another element.'])
+						return
+					end
+				end
+				
+				local unit = 'pet'
+				if not E.db.unitframe.units[unit].customTexts then
+					E.db.unitframe.units[unit].customTexts = {};
+				end
+				
+				E.db.unitframe.units[unit].customTexts[textName] = {
+					['text_format'] = '',
+					['size'] = 12,
+					['font'] = E.db.unitframe.font,
+					['xOffset'] = 0,
+					['yOffset'] = 0,	
+					['fontoutline'] = 'NONE'
+				};
+
+				UF:CreateCustomTextGroup(unit, textName)
+				
+				UF:CreateAndUpdateUF(unit)
+			end,
+		},				
 		health = {
 			order = 100,
 			type = 'group',
@@ -3705,6 +4004,40 @@ E.Options.args.unitframe.args.pettarget = {
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['pettarget']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['pettarget']['power'].hideonnpc = value; UF:CreateAndUpdateUF('pettarget') end,
+		},	
+		customText = {
+			order = 50,
+			name = L['Custom Texts'],
+			type = 'input',
+			width = 'full',
+			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+			get = function() return '' end,
+			set = function(info, textName)
+				for object, _ in pairs(E.Options.args.unitframe.args.pettarget) do
+					if object == textName then
+						E:Print(L['The name you have selected is already in use by another element.'])
+						return
+					end
+				end
+				
+				local unit = 'pettarget'
+				if not E.db.unitframe.units[unit].customTexts then
+					E.db.unitframe.units[unit].customTexts = {};
+				end
+				
+				E.db.unitframe.units[unit].customTexts[textName] = {
+					['text_format'] = '',
+					['size'] = 12,
+					['font'] = E.db.unitframe.font,
+					['xOffset'] = 0,
+					['yOffset'] = 0,	
+					['fontoutline'] = 'NONE'
+				};
+
+				UF:CreateCustomTextGroup(unit, textName)
+				
+				UF:CreateAndUpdateUF(unit)
+			end,
 		},				
 		health = {
 			order = 7,
@@ -4067,6 +4400,40 @@ E.Options.args.unitframe.args.boss = {
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['boss']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['boss']['power'].hideonnpc = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
+		},		
+		customText = {
+			order = 50,
+			name = L['Custom Texts'],
+			type = 'input',
+			width = 'full',
+			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+			get = function() return '' end,
+			set = function(info, textName)
+				for object, _ in pairs(E.Options.args.unitframe.args.boss) do
+					if object == textName then
+						E:Print(L['The name you have selected is already in use by another element.'])
+						return
+					end
+				end
+				
+				local unit = 'boss'
+				if not E.db.unitframe.units[unit].customTexts then
+					E.db.unitframe.units[unit].customTexts = {};
+				end
+				
+				E.db.unitframe.units[unit].customTexts[textName] = {
+					['text_format'] = '',
+					['size'] = 12,
+					['font'] = E.db.unitframe.font,
+					['xOffset'] = 0,
+					['yOffset'] = 0,	
+					['fontoutline'] = 'NONE'
+				};
+
+				UF:CreateCustomTextGroup(unit, textName)
+				
+				UF:CreateAndUpdateUFGroup(unit, MAX_BOSS_FRAMES)
+			end,
 		},				
 		health = {
 			order = 8,
@@ -4545,6 +4912,40 @@ E.Options.args.unitframe.args.arena = {
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['arena']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['arena']['power'].hideonnpc = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
+		},		
+		customText = {
+			order = 50,
+			name = L['Custom Texts'],
+			type = 'input',
+			width = 'full',
+			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+			get = function() return '' end,
+			set = function(info, textName)
+				for object, _ in pairs(E.Options.args.unitframe.args.arena) do
+					if object == textName then
+						E:Print(L['The name you have selected is already in use by another element.'])
+						return
+					end
+				end
+				
+				local unit = 'arena'
+				if not E.db.unitframe.units[unit].customTexts then
+					E.db.unitframe.units[unit].customTexts = {};
+				end
+				
+				E.db.unitframe.units[unit].customTexts[textName] = {
+					['text_format'] = '',
+					['size'] = 12,
+					['font'] = E.db.unitframe.font,
+					['xOffset'] = 0,
+					['yOffset'] = 0,	
+					['fontoutline'] = 'NONE'
+				};
+
+				UF:CreateCustomTextGroup(unit, textName)
+				
+				UF:CreateAndUpdateUFGroup(unit, 5)
+			end,
 		},				
 		health = {
 			order = 8,
@@ -5076,7 +5477,41 @@ E.Options.args.unitframe.args.party = {
 					desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 					get = function(info) return E.db.unitframe.units['party']['power'].hideonnpc end,
 					set = function(info, value) E.db.unitframe.units['party']['power'].hideonnpc = value; UF:CreateAndUpdateHeaderGroup('party'); end,
-				},					
+				},
+				customText = {
+					order = 50,
+					name = L['Custom Texts'],
+					type = 'input',
+					width = 'full',
+					desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+					get = function() return '' end,
+					set = function(info, textName)
+						for object, _ in pairs(E.Options.args.unitframe.args.party) do
+							if object == textName then
+								E:Print(L['The name you have selected is already in use by another element.'])
+								return
+							end
+						end
+						
+						local unit = 'party'
+						if not E.db.unitframe.units[unit].customTexts then
+							E.db.unitframe.units[unit].customTexts = {};
+						end
+						
+						E.db.unitframe.units[unit].customTexts[textName] = {
+							['text_format'] = '',
+							['size'] = 12,
+							['font'] = E.db.unitframe.font,
+							['xOffset'] = 0,
+							['yOffset'] = 0,	
+							['fontoutline'] = 'NONE'
+						};
+
+						UF:CreateCustomTextGroup(unit, textName)
+						
+						UF:CreateAndUpdateHeaderGroup(unit)
+					end,
+				},						
 				visibility = {
 					order = 200,
 					type = 'input',
@@ -5086,7 +5521,7 @@ E.Options.args.unitframe.args.party = {
 					desc = L['TEXT_FORMAT_DESC'],
 				},				
 			},
-		},		
+		},			
 		health = {
 			order = 100,
 			type = 'group',
@@ -5714,6 +6149,40 @@ for i=10, 40, 15 do
 						desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 						get = function(info) return E.db.unitframe.units['raid'..i]['power'].hideonnpc end,
 						set = function(info, value) E.db.unitframe.units['raid'..i]['power'].hideonnpc = value; UF:CreateAndUpdateHeaderGroup('raid'..i); end,
+					},		
+					customText = {
+						order = 50,
+						name = L['Custom Texts'],
+						type = 'input',
+						width = 'full',
+						desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+						get = function() return '' end,
+						set = function(info, textName)
+							for object, _ in pairs(E.Options.args.unitframe.args['raid'..i]) do
+								if object == textName then
+									E:Print(L['The name you have selected is already in use by another element.'])
+									return
+								end
+							end
+							
+							local unit = 'raid'..i
+							if not E.db.unitframe.units[unit].customTexts then
+								E.db.unitframe.units[unit].customTexts = {};
+							end
+							
+							E.db.unitframe.units[unit].customTexts[textName] = {
+								['text_format'] = '',
+								['size'] = 12,
+								['font'] = E.db.unitframe.font,
+								['xOffset'] = 0,
+								['yOffset'] = 0,	
+								['fontoutline'] = 'NONE'
+							};
+
+							UF:CreateCustomTextGroup(unit, textName)
+							
+							UF:CreateAndUpdateHeaderGroup(unit)
+						end,
 					},							
 					visibility = {
 						order = 200,
@@ -5721,10 +6190,10 @@ for i=10, 40, 15 do
 						name = L['Visibility'],
 						desc = L['The following macro must be true in order for the group to be shown, in addition to any filter that may already be set.'],
 						width = 'full',
-					desc = L['TEXT_FORMAT_DESC'],
+						desc = L['TEXT_FORMAT_DESC'],
 					},					
 				},
-			},
+			},			
 			health = {
 				order = 100,
 				type = 'group',

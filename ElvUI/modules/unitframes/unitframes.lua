@@ -126,7 +126,6 @@ function UF:GetAuraAnchorFrame(frame, attachTo, isConflict)
 	end
 end
 
-
 function UF:ClearChildPoints(...)
 	for i=1, select("#", ...) do
 		local child = select(i, ...)

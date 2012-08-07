@@ -480,6 +480,21 @@ for i=10, 40, 15 do
 		
 		frame:EnableElement('ReadyCheck')		
 		frame:UpdateAllElements()
+		
+		if db.customTexts then
+			for objectName, _ in pairs(db.customTexts) do
+				if not frame[objectName] then
+					frame[objectName] = frame:CreateFontString(nil, 'OVERLAY')
+				end
+				
+				local objectDB = db.customTexts[objectName]
+				UF:CreateCustomTextGroup('raid'..i, objectName)
+				
+				frame[objectName]:FontTemplate(UF.LSM:Fetch("font", objectDB.font or UF.db.font), objectDB.size or UF.db.fontsize, objectDB.fontoutline or UF.db.fontoutline)
+				frame:Tag(frame[objectName], objectDB.text_format or '')
+				frame[objectName]:SetPoint('CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
+			end
+		end		
 	end
 
 	UF['headerstoload']['raid'..i] = true

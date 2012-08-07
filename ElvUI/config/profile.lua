@@ -24,8 +24,6 @@ P['general'] = {
 	["backdropfadecolor"] = { r = .10,g = .10,b = .10, a = 0.9 },
 	["valuecolor"] = {r = valuer,g = valueg,b = valueb},
 
-	['expRepPos'] = 'MINIMAP_BOTTOM',
-
 	['mapAlpha'] = 1,
 	['tinyWorldMap'] = true,
 	
@@ -299,7 +297,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['friendlyAuraType'] = 'HELPFUL',
 				['enemyAuraType'] = 'HARMFUL'
-			},	
+			},
 		},	
 		['target'] = {
 			['enable'] = true,

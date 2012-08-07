@@ -36,18 +36,28 @@ local function LoadSkin()
 			button.searchOverlay:SetAllPoints(icon)
 			
 			if _G[button:GetName().."IconQuestTexture"] then
-				_G[button:GetName().."IconQuestTexture"]:Kill()
+				_G[button:GetName().."IconQuestTexture"]:SetTexCoord(unpack(E.TexCoords))
+				_G[button:GetName().."IconQuestTexture"]:SetInside(button)
 			end
 			
 			button.skinned = true
 		end	
 	end
+	
+	hooksecurefunc('ContainerFrame_Update', function(frame)
+		for i=1, frame.size, 1 do
+			local questTexture = _G[frame:GetName().."Item"..i.."IconQuestTexture"];
+			if questTexture:IsShown() and questTexture:GetTexture() == TEXTURE_ITEM_QUEST_BORDER then
+				questTexture:Hide()
+			end
+		end
+	end)
 
 	local function SkinBagButtons(container, button)
 		SkinButton(button)
 		
 		local texture, _, _, _, _, _, itemLink = GetContainerItemInfo(container:GetID(), button:GetID())
-		local isQuestItem = GetContainerItemQuestInfo(container:GetID(), button:GetID())
+		local isQuestItem, questId = GetContainerItemQuestInfo(container:GetID(), button:GetID())
 		_G[button:GetName().."IconTexture"]:SetTexture(texture)
 		button.type = nil
 		button.quality = nil
@@ -56,7 +66,7 @@ local function LoadSkin()
 			button.name, _, button.quality, _, _, button.type = GetItemInfo(button.ilink)
 		end
 		
-		if isQuestItem then
+		if questId or isQuestItem then
 			button.type = QUEST_ITEM_STRING
 		end
 
@@ -144,7 +154,7 @@ local function LoadSkin()
 		
 		if not button.isBag then		
 			local texture, _, _, _, _, _, itemLink = GetContainerItemInfo(BANK_CONTAINER, button:GetID())
-			local isQuestItem = GetContainerItemQuestInfo(BANK_CONTAINER, button:GetID())
+			local isQuestItem, questId = GetContainerItemQuestInfo(BANK_CONTAINER, button:GetID())
 			button.type = nil
 			button.ilink = itemLink
 			button.quality = nil
@@ -153,7 +163,7 @@ local function LoadSkin()
 				button.name, _, button.quality, _, _, button.type = GetItemInfo(button.ilink)
 			end
 			
-			if isQuestItem then
+			if isQuestItem or questId then
 				button.type = QUEST_ITEM_STRING
 			end
 			
