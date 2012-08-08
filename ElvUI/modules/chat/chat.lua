@@ -43,10 +43,8 @@ local smileyPack = {
 	["Hmm"] = [[Interface\AddOns\ElvUI\media\textures\smileys\hmm.blp]],
 	["MiddleFinger"] = [[Interface\AddOns\ElvUI\media\textures\smileys\middle_finger.blp]],
 	["Sad"] = [[Interface\AddOns\ElvUI\media\textures\smileys\sad.blp]],
-	["Shame"] = [[Interface\AddOns\ElvUI\media\textures\smileys\shame.blp]],
 	["Surprise"] = [[Interface\AddOns\ElvUI\media\textures\smileys\surprise.blp]],
 	["Tongue"] = [[Interface\AddOns\ElvUI\media\textures\smileys\tongue.blp]],
-	["Vault"] = [[Interface\AddOns\ElvUI\media\textures\smileys\vault.blp]],
 	["Cry"] = [[Interface\AddOns\ElvUI\media\textures\smileys\weepy.blp]],
 	["Wink"] = [[Interface\AddOns\ElvUI\media\textures\smileys\winky.blp]],
 	["Happy"] = [[Interface\AddOns\ElvUI\media\textures\smileys\happy.blp]],
@@ -54,8 +52,6 @@ local smileyPack = {
 }
 
 local smileyKeys = {
-	["%:%$"] = "Shame",
-	["%:%-%$"] = "Shame",
 	["%:%-%@"] = "Angry",
 	["%:%@"] = "Angry",
 	["%:%-%)"]="Happy",
@@ -99,7 +95,7 @@ local smileyKeys = {
 CH.Keywords = {};
 
 function CH:RegisterDropdownButton(name, callback)
-  registry[name] = callback or true
+	registry[name] = callback or true
 end
 
 function CH:GetGroupDistribution()
