@@ -44,6 +44,10 @@ P['general'] = {
 		['textFormat'] = 'NONE',
 		['textSize'] = 11,
 	},
+	['threat'] = {
+		['enable'] = true,
+		['position'] = 'RIGHTCHAT',
+	},
 };
 
 --Bags
