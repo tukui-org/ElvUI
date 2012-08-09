@@ -312,7 +312,7 @@ P['unitframe'] = {
 			},
 			['name'] = {
 				['position'] = 'CENTER',
-				['text_format'] = '[colorname][name:medium] [difficultycolor][level] [shortclassification]',
+				['text_format'] = '[colorname][name:medium] [difficultycolor][smartlevel] [shortclassification]',
 			},
 			['portrait'] = {
 				['enable'] = false,
@@ -812,7 +812,7 @@ P['unitframe'] = {
 			},			
 			['name'] = {
 				['position'] = 'LEFT',
-				['text_format'] = '[colorname][name:medium] [difficultycolor][level]',
+				['text_format'] = '[colorname][name:medium] [difficultycolor][smartlevel]',
 			},
 			['buffs'] = {
 				['enable'] = false,

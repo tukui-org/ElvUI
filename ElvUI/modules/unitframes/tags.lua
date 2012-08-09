@@ -219,8 +219,8 @@ ElvUF.Tags.Methods['colorname'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['level'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
-ElvUF.Tags.Methods['level'] = function(unit)
+ElvUF.Tags.Events['smartlevel'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
+ElvUF.Tags.Methods['smartlevel'] = function(unit)
 	local level = UnitLevel(unit)
 	if level == UnitLevel('player') then
 		return ''
