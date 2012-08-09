@@ -115,7 +115,12 @@ function UF:Update_TankFrames(frame, db)
 	--Name
 	do
 		local name = frame.Name
-		name:Point('CENTER', frame.Health, 'CENTER')		
+		name:Point('CENTER', frame.Health, 'CENTER')
+		if UF.db.colors.healthclass then
+			frame:Tag(name, '[name:medium]')
+		else
+			frame:Tag(name, '[colorname][name:medium]')
+		end
 	end	
 	
 	frame:UpdateAllElements()
