@@ -303,6 +303,7 @@ L["DATATEXT_DESC"] = "Setup the on-screen display of info-texts."
 L["Deficit:"] = true;
 L['Demolishers Destroyed'] = true;
 L['Display minimap panels below the minimap, used for datatexts.'] = true;
+L['Download'] = true;
 L["DPS"] = true;
 L["Earned:"] = true;
 L["Feet"] = true;

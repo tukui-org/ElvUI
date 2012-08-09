@@ -478,7 +478,7 @@ E.Options.args.actionbar = {
 			set = function(info, value) E.db.actionbar[ info[#info] ] = value; AB:MultiActionBar_Update() end,
 			disabled = function() return not E.private.actionbar.enable end,
 		},
-		fontsize = {
+		fontSize = {
 			type = 'range',
 			name = L['Font Size'],
 			desc = L['Set the font size of the action buttons.'],

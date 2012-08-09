@@ -477,7 +477,7 @@ E.Options.args.unitframe = {
 							values = AceGUIWidgetLSMlists.font,
 							set = function(info, value) E.db.unitframe[ info[#info] ] = value; UF:Update_FontStrings() end,
 						},
-						fontsize = {
+						fontSize = {
 							order = 5,
 							name = L["Font Size"],
 							desc = L["Set the font size for unitframes."],
@@ -1060,7 +1060,7 @@ E.Options.args.unitframe.args.player = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -1165,7 +1165,7 @@ E.Options.args.unitframe.args.player = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -1757,7 +1757,7 @@ E.Options.args.unitframe.args.target = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -1862,7 +1862,7 @@ E.Options.args.unitframe.args.target = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -2379,7 +2379,7 @@ E.Options.args.unitframe.args.targettarget = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -2484,7 +2484,7 @@ E.Options.args.unitframe.args.targettarget = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -2788,7 +2788,7 @@ E.Options.args.unitframe.args.focus = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -2893,7 +2893,7 @@ E.Options.args.unitframe.args.focus = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -3385,7 +3385,7 @@ E.Options.args.unitframe.args.focustarget = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -3490,7 +3490,7 @@ E.Options.args.unitframe.args.focustarget = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -3784,7 +3784,7 @@ E.Options.args.unitframe.args.pet = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -3889,7 +3889,7 @@ E.Options.args.unitframe.args.pet = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -4177,7 +4177,7 @@ E.Options.args.unitframe.args.pettarget = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -4282,7 +4282,7 @@ E.Options.args.unitframe.args.pettarget = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -4606,7 +4606,7 @@ E.Options.args.unitframe.args.boss = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -4711,7 +4711,7 @@ E.Options.args.unitframe.args.boss = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -5085,7 +5085,7 @@ E.Options.args.unitframe.args.arena = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -5190,7 +5190,7 @@ E.Options.args.unitframe.args.arena = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -5676,7 +5676,7 @@ E.Options.args.unitframe.args.party = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -5781,7 +5781,7 @@ E.Options.args.unitframe.args.party = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -5856,7 +5856,7 @@ E.Options.args.unitframe.args.party = {
 					order = 3,
 					min = 4, max = 15, step = 1,
 				},
-				fontsize = {
+				fontSize = {
 					type = 'range',
 					name = L['Font Size'],
 					order = 4,
@@ -6348,7 +6348,7 @@ for i=10, 40, 15 do
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -6453,7 +6453,7 @@ for i=10, 40, 15 do
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -6528,7 +6528,7 @@ for i=10, 40, 15 do
 						order = 3,
 						min = 4, max = 15, step = 1,
 					},
-					fontsize = {
+					fontSize = {
 						type = 'range',
 						name = L['Font Size'],
 						order = 4,
@@ -6597,7 +6597,7 @@ for i=10, 40, 15 do
 						order = 2,
 						min = 8, max = 35, step = 1,
 					},				
-					fontsize = {
+					fontSize = {
 						type = 'range',
 						name = L['Font Size'],
 						order = 3,

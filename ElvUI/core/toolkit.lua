@@ -207,7 +207,7 @@ local function FontTemplate(fs, font, fontSize, fontStyle)
 	fs.fontStyle = fontStyle
 	
 	if not font then font = LSM:Fetch("font", E.db['general'].font) end
-	if not fontSize then fontSize = E.db.general.fontsize end
+	if not fontSize then fontSize = E.db.general.fontSize end
 	if fontStyle == 'OUTLINE' and E.db.general.font:lower():find('pixel') then
 		if (fontSize > 10 and not fs.fontSize) then
 			fontStyle = 'MONOCHROMEOUTLINE'

@@ -374,7 +374,7 @@ function AB:StyleButton(button, noBackdrop)
 	end
 	
 	if self.db.hotkeytext then
-		hotkey:FontTemplate(nil, E.db.actionbar.fontsize, "OUTLINE");
+		hotkey:FontTemplate(nil, E.db.actionbar.fontSize, "OUTLINE");
 	end
 	
 	--Extra Action Button

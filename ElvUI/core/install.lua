@@ -258,7 +258,7 @@ function E:SetupResolution(noDataReset)
 		if not noDataReset then
 			E:CopyTable(E.db.unitframe.units, P.unitframe.units)
 			
-			E.db.unitframe.fontsize = 10
+			E.db.unitframe.fontSize = 10
 			
 			E.db.unitframe.units.player.width = 200;
 			E.db.unitframe.units.player.castbar.width = 200;

@@ -201,12 +201,12 @@ function UF:Update_StatusBar(bar)
 end
 
 function UF:Update_FontString(object)
-	object:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontsize, self.db.fontoutline)
+	object:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontoutline)
 end
 
 function UF:Update_FontStrings()
 	for font in pairs(UF['fontstrings']) do
-		font:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontsize, self.db.fontoutline)
+		font:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontoutline)
 	end
 end
 
