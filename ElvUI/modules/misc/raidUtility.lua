@@ -38,7 +38,7 @@ function RU:CreateUtilButton(name, parent, template, width, height, point, relat
 	if text then
 		local t = b:CreateFontString(nil,"OVERLAY",b)
 		t:FontTemplate()
-		t:SetPoint("CENTER")
+		t:SetPoint("CENTER", b, 'CENTER', 0, -1)
 		t:SetJustifyH("CENTER")
 		t:SetText(text)
 		b:SetFontString(t)
