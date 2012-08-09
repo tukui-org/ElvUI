@@ -97,7 +97,6 @@ P["nameplate"] = {
 
 --Auras
 P['auras'] = {
-	['enable'] = true;
 	['consolidedBuffs'] = true;
 	['wrapAfter'] = 12,
 	['fadeThreshold'] = 5,
