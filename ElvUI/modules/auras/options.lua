@@ -16,6 +16,11 @@ E.Options.args.auras = {
 			order = 2,
 			type = 'toggle',
 			name = L['Enable'],
+			get = function(info) return E.private.auras[ info[#info] ] end,
+			set = function(info, value) 
+				E.private.auras[ info[#info] ] = value; 
+				E:StaticPopup_Show("PRIVATE_RL")
+			end,		
 		},
 		consolidedBuffs = {
 			order = 3,

@@ -46,6 +46,10 @@ P['general'] = {
 		['textFormat'] = 'CURMAX',
 		['textSize'] = 10,
 	},
+	['threat'] = {
+		['enable'] = true,
+		['position'] = 'RIGHTCHAT',
+	},
 };
 
 --Bags
@@ -95,7 +99,6 @@ P["nameplate"] = {
 
 --Auras
 P['auras'] = {
-	['enable'] = true;
 	['consolidedBuffs'] = true;
 	['wrapAfter'] = 12,
 	['fadeThreshold'] = -1,

@@ -320,7 +320,6 @@ function A:Initialize()
 	self.ScanAuras(self.DebuffFrame)
 	
 	self:Construct_ConsolidatedBuffs()
-	
 end
 
 E:RegisterModule(A:GetName())
