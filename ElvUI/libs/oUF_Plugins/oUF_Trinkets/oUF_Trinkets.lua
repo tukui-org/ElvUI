@@ -1,5 +1,5 @@
 local _, ns = ...
-local oUF = ns.oUF or ElvUF
+local oUF = ns.oUF or oUF
 assert(oUF, 'oUF not loaded')
 
 local arenaFrame = {}

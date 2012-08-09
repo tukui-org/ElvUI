@@ -2,7 +2,7 @@ local E, L, DF = unpack(select(2, ...)) -- Import Functions/Constants, Config, L
 
 
 local _, ns = ...
-local oUF = ns.oUF or oUF or ElvUF
+local oUF = ns.oUF or oUF
 
 local addon = {}
 ns.oUF_RaidDebuffs = addon

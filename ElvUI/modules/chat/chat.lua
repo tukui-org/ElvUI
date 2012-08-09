@@ -5,7 +5,6 @@ local CreatedFrames = 0;
 local lines = {};
 local msgList, msgCount, msgTime = {}, {}, {}
 local good, maybe, filter, login = {}, {}, {}, false
-local registry = {}
 
 local TIMESTAMP_FORMAT
 local DEFAULT_STRINGS = {
@@ -93,10 +92,6 @@ local smileyKeys = {
 };
 
 CH.Keywords = {};
-
-function CH:RegisterDropdownButton(name, callback)
-	registry[name] = callback or true
-end
 
 function CH:GetGroupDistribution()
 	local inInstance, kind = IsInInstance()
@@ -923,23 +918,6 @@ function CH:UpdateChatKeywords()
 	end
 end
 
-local function showMenu(dropdownMenu, which, unit, name, userData, ...)
-  for i=1,UIDROPDOWNMENU_MAXBUTTONS do
-    local button = _G["DropDownList" .. UIDROPDOWNMENU_MENU_LEVEL .. "Button" .. i];
-
-    local f = registry[button.value]
-    -- Patch our handler function back in
-    if f then
-      button.func = UnitPopupButtons[button.value].func
-      if type(f) == "function" then
-        f(dropdownMenu, button)
-      end
-    end
-  end
-end
-
-hooksecurefunc("UnitPopup_ShowMenu", showMenu)
-
 function CH:Initialize()
 	self.db = E.db.chat
 	if E.private.chat.enable ~= true then return end
@@ -948,20 +926,7 @@ function CH:Initialize()
 	end
 	
 	self:UpdateChatKeywords()
-	
-    UnitPopupButtons["COPYCHAT"] = { 
-		text =L["Copy Text"], 
-		dist = 0 , 
-		func = function(a1, a2) 
-			CH:CopyLineFromPlayerlinkToEdit(a1, a2) 
-		end, 
-		arg1 = "", 
-		arg2 = ""
-	};
-	
-	tinsert(UnitPopupMenus["FRIEND"],#UnitPopupMenus["FRIEND"]-1,"COPYCHAT");    
-	self:RegisterDropdownButton("COPYCHAT", function(menu, button) button.arg1 = self.clickedFrame end )
-	
+
 	E.Chat = self
 	self:SecureHook('ChatEdit_OnEnterPressed')
 	FriendsMicroButton:Kill()

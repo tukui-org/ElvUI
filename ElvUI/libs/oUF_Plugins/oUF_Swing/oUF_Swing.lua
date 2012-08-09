@@ -40,7 +40,7 @@
 local E, L, DF = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 local addon, ns = ...
-local oUF = oUF or ns.oUF or ElvUF
+local oUF = oUF or ns.oUF
 
 local meleeing
 local rangeing

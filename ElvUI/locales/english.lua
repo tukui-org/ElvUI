@@ -831,7 +831,7 @@ L["You may not remove a spell from a default filter that is not customly added. 
 L['TEXT_FORMAT_DESC'] = [=[Provide a string to change the text format.
 
 Examples: 
-[colorname][name] [difficultycolor][level] [shortclassification]
+[colorname][name] [difficultycolor][smartlevel] [shortclassification]
 [health:current-max]
 [power:current]
 
