@@ -1,5 +1,5 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
-local THREAT = E:NewModule('DebugTools', 'AceEvent-3.0');
+local THREAT = E:NewModule('Threat', 'AceEvent-3.0');
 
 E.Threat = THREAT
 
@@ -53,9 +53,10 @@ function THREAT:Initialize()
 	
 	self.bar.text = self.bar:CreateFontString(nil, 'OVERLAY')
 	self.bar.text:FontTemplate()
+	self.bar.text:SetPoint('CENTER', self.bar, 'CENTER')
 	
 	self:UpdatePosition()
 	self:ToggleEnable()
 end
 
-E:RegisterModule(D:GetName())
+E:RegisterModule(THREAT:GetName())

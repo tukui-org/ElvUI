@@ -81,6 +81,11 @@ do
 			['Curse'] = true,
 			['Poison'] = true,
 		},
+		['MONK'] = {
+			['Magic'] = false,
+			['Disease'] = true,
+			['Poison'] = true,
+		},		
 	}
 	
 	DispellFilter = dispellClasses[select(2, UnitClass('player'))] or {}
