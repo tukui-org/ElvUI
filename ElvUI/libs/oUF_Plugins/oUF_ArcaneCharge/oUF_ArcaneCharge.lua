@@ -30,7 +30,7 @@ local Update = function(self, event)
 		bar:Hide()
 	end
 	
-	local arcaneCharges, maxCharges, duration, expirationTime = 0, 4
+	local arcaneCharges, maxCharges, duration, expirationTime = 0, 6
 	if bar:IsShown() then
 		for i = 1, 40 do
 			local count, _, start, timeLeft, _, _, _, spellID = select(4, UnitDebuff(unit, i))
@@ -83,7 +83,7 @@ local function Enable(self, unit)
 		bar.__owner = self
 		bar.ForceUpdate = ForceUpdate
 
-		for i = 1, 4 do
+		for i = 1, 6 do
 			if not bar[i]:GetStatusBarTexture() then
 				bar[i]:SetStatusBarTexture([=[Interface\TargetingFrame\UI-StatusBar]=])
 			end

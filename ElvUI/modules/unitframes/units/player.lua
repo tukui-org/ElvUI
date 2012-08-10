@@ -709,7 +709,7 @@ function UF:Update_PlayerFrame(frame, db)
 					bars[i]:SetPoint("LEFT", bars)
 				else
 					if USE_MINI_CLASSBAR then
-						bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING+(BORDER*2)+8, 0)
+						bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING+(BORDER*2)+2, 0)
 					else
 						bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING, 0)
 					end
