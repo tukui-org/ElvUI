@@ -7,6 +7,19 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 --	Tags
 ------------------------------------------------------------------------
 
+ElvUF.Tags.Events['healthcolor'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
+ElvUF.Tags.Methods['healthcolor'] = function(unit)
+	local min, max = UnitHealth(unit), UnitHealthMax(unit)
+	local status = not UnitIsConnected(unit) and L['Offline'] or UnitIsGhost(unit) and L['Ghost'] or UnitIsDead(unit) and DEAD
+
+	if (status) then
+		return Hex(0.84, 0.75, 0.65)
+	else
+		local r, g, b = ElvUF.ColorGradient(min, max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
+		return Hex(r, g, b)
+	end
+end
+
 ElvUF.Tags.Events['health:current'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
 ElvUF.Tags.Methods['health:current'] = function(unit)
 	local min, max = UnitHealth(unit), UnitHealthMax(unit)
@@ -15,8 +28,7 @@ ElvUF.Tags.Methods['health:current'] = function(unit)
 	if (status) then
 		return status
 	else
-		local r, g, b = ElvUF.ColorGradient(min, max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
-		return E:GetFormattedText('CURRENT', min, max, r, g, b, 0.33, 0.59, 0.33, 0.84, 0.75, 0.65)
+		return E:GetFormattedText('CURRENT', min, max)
 	end
 end
 
@@ -28,8 +40,7 @@ ElvUF.Tags.Methods['health:deficit'] = function(unit)
 	if (status) then
 		return status
 	else
-		local r, g, b = ElvUF.ColorGradient(min, max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
-		return E:GetFormattedText('DEFICIT', min, max, r, g, b, 0.33, 0.59, 0.33, 0.84, 0.75, 0.65)
+		return E:GetFormattedText('DEFICIT', min, max)
 	end
 end
 
@@ -41,8 +52,7 @@ ElvUF.Tags.Methods['health:current-percent'] = function(unit)
 	if (status) then
 		return status
 	else
-		local r, g, b = ElvUF.ColorGradient(min, max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
-		return E:GetFormattedText('CURRENT_PERCENT', min, max, r, g, b, 0.33, 0.59, 0.33, 0.84, 0.75, 0.65)
+		return E:GetFormattedText('CURRENT_PERCENT', min, max)
 	end
 end
 
@@ -54,8 +64,7 @@ ElvUF.Tags.Methods['health:current-max'] = function(unit)
 	if (status) then
 		return status
 	else
-		local r, g, b = ElvUF.ColorGradient(min, max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
-		return E:GetFormattedText('CURRENT_MAX', min, max, r, g, b, 0.33, 0.59, 0.33, 0.84, 0.75, 0.65)
+		return E:GetFormattedText('CURRENT_MAX', min, max)
 	end
 end
 
@@ -67,8 +76,7 @@ ElvUF.Tags.Methods['health:current-max-percent'] = function(unit)
 	if (status) then
 		return status
 	else
-		local r, g, b = ElvUF.ColorGradient(min, max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
-		return E:GetFormattedText('CURRENT_MAX_PERCENT', min, max, r, g, b, 0.33, 0.59, 0.33, 0.84, 0.75, 0.65)
+		return E:GetFormattedText('CURRENT_MAX_PERCENT', min, max)
 	end
 end
 
@@ -80,13 +88,12 @@ ElvUF.Tags.Methods['health:percent'] = function(unit)
 	if (status) then
 		return status
 	else
-		local r, g, b = ElvUF.ColorGradient(min, max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
-		return E:GetFormattedText('PERCENT', min, max, r, g, b, 0.33, 0.59, 0.33, 0.84, 0.75, 0.65)
+		return E:GetFormattedText('PERCENT', min, max)
 	end
 end
 
-ElvUF.Tags.Events['power:current'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
-ElvUF.Tags.Methods['power:current'] = function(unit)
+ElvUF.Tags.Events['powercolor'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+ElvUF.Tags.Methods['powercolor'] = function(unit)
 	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
 	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
 	
@@ -96,88 +103,74 @@ ElvUF.Tags.Methods['power:current'] = function(unit)
 		r, g, b = color[1], color[2], color[3]
 	end
 	
+	return Hex(r, g, b)
+end
+
+ElvUF.Tags.Events['power:current'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+ElvUF.Tags.Methods['power:current'] = function(unit)
+	local pType = UnitPowerType(unit)
+	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
+		
 	if min == 0 then
 		return ' '
 	else
-		return E:GetFormattedText('CURRENT', min, max, r, g, b)
+		return E:GetFormattedText('CURRENT', min, max)
 	end
 end
 
 ElvUF.Tags.Events['power:current-max'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 ElvUF.Tags.Methods['power:current-max'] = function(unit)
-	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
+	local pType = UnitPowerType(unit)
 	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
-	
-	local r, g, b = altR, altG, altB
-	local color = ElvUF['colors'].power[pToken]
-	if color then
-		r, g, b = color[1], color[2], color[3]
+		
+	if min == 0 then
+		return ' '
+	else
+		return E:GetFormattedText('CURRENT_MAX', min, max)
 	end
-	
-	return E:GetFormattedText('CURRENT_MAX', min, max, r, g, b)
 end
 
 ElvUF.Tags.Events['power:current-percent'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 ElvUF.Tags.Methods['power:current-percent'] = function(unit)
-	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
+	local pType = UnitPowerType(unit)
 	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
-	
-	local r, g, b = altR, altG, altB
-	local color = ElvUF['colors'].power[pToken]
-	if color then
-		r, g, b = color[1], color[2], color[3]
-	end
-
+		
 	if min == 0 then
-		return ''
-	else	
-		return E:GetFormattedText('CURRENT_PERCENT', min, max, r, g, b)
+		return ' '
+	else
+		return E:GetFormattedText('CURRENT_PERCENT', min, max)
 	end
 end
 
 ElvUF.Tags.Events['power:current-max-percent'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 ElvUF.Tags.Methods['power:current-max-percent'] = function(unit)
-	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
+	local pType = UnitPowerType(unit)
 	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
-	
-	local r, g, b = altR, altG, altB
-	local color = ElvUF['colors'].power[pToken]
-	if color then
-		r, g, b = color[1], color[2], color[3]
+		
+	if min == 0 then
+		return ' '
+	else
+		return E:GetFormattedText('CURRENT_MAX_PERCENT', min, max)
 	end
-	
-	return E:GetFormattedText('CURRENT_MAX_PERCENT', min, max, r, g, b)
 end
 
 ElvUF.Tags.Events['power:percent'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 ElvUF.Tags.Methods['power:percent'] = function(unit)
-	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
+	local pType = UnitPowerType(unit)
 	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
-	
-	local r, g, b = altR, altG, altB
-	local color = ElvUF['colors'].power[pToken]
-	if color then
-		r, g, b = color[1], color[2], color[3]
-	end
-
+		
 	if min == 0 then
-		return ''
-	else	
-		return E:GetFormattedText('PERCENT', min, max, r, g, b)
+		return ' '
+	else
+		return E:GetFormattedText('PERCENT', min, max)
 	end
 end
 
 ElvUF.Tags.Events['power:deficit'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 ElvUF.Tags.Methods['power:deficit'] = function(unit)
-	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
+	local pType = UnitPowerType(unit)
 	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
-	
-	local r, g, b = altR, altG, altB
-	local color = ElvUF['colors'].power[pToken]
-	if color then
-		r, g, b = color[1], color[2], color[3]
-	end
-	
+		
 	return E:GetFormattedText('DEFICIT', min, max, r, g, b)
 end
 
@@ -203,8 +196,8 @@ ElvUF.Tags.Methods['difficultycolor'] = function(unit)
 	return string.format('|cff%02x%02x%02x', r * 255, g * 255, b * 255)
 end
 
-ElvUF.Tags.Events['colorname'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['colorname'] = function(unit)
+ElvUF.Tags.Events['namecolor'] = 'UNIT_NAME_UPDATE'
+ElvUF.Tags.Methods['namecolor'] = function(unit)
 	local unitReaction = UnitReaction(unit, 'player')
 	local _, unitClass = UnitClass(unit)
 	if (UnitIsPlayer(unit)) then

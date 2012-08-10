@@ -119,7 +119,7 @@ function UF:Update_TankFrames(frame, db)
 		if UF.db.colors.healthclass then
 			frame:Tag(name, '[name:medium]')
 		else
-			frame:Tag(name, '[colorname][name:medium]')
+			frame:Tag(name, '[namecolor][name:medium]')
 		end
 	end	
 	

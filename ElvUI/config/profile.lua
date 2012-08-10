@@ -212,12 +212,12 @@ P['unitframe'] = {
 			['healPrediction'] = true,
 			['restIcon'] = true,
 			['health'] = {
-				['text_format'] = '[health:current-percent]',
+				['text_format'] = '[healthcolor][health:current-percent]',
 				['position'] = 'LEFT',
 			},
 			['power'] = {
 				['enable'] = true,
-				['text_format'] = '[power:current]',	
+				['text_format'] = '[powercolor][power:current]',	
 				['width'] = 'fill',
 				['height'] = 10,
 				['offset'] = 0,
@@ -300,12 +300,12 @@ P['unitframe'] = {
 			['healPrediction'] = true,
 			['smartAuraDisplay'] = 'SHOW_DEBUFFS_ON_FRIENDLIES',
 			['health'] = {
-				['text_format'] = '[health:current-percent]',
+				['text_format'] = '[healthcolor][health:current-percent]',
 				['position'] = 'RIGHT',
 			},
 			['power'] = {
 				['enable'] = true,
-				['text_format'] = '[power:current]',	
+				['text_format'] = '[powercolor][power:current]',	
 				['width'] = 'fill',
 				['height'] = 10,
 				['offset'] = 0,
@@ -314,7 +314,7 @@ P['unitframe'] = {
 			},
 			['name'] = {
 				['position'] = 'CENTER',
-				['text_format'] = '[colorname][name:medium] [difficultycolor][smartlevel] [shortclassification]',
+				['text_format'] = '[namecolor][name:medium] [difficultycolor][smartlevel] [shortclassification]',
 			},
 			['portrait'] = {
 				['enable'] = false,
@@ -397,7 +397,7 @@ P['unitframe'] = {
 			},
 			['name'] = {
 				['position'] = 'CENTER',
-				['text_format'] = '[colorname][name:medium]',
+				['text_format'] = '[namecolor][name:medium]',
 			},
 			['buffs'] = {
 				['enable'] = false,
@@ -448,7 +448,7 @@ P['unitframe'] = {
 			},
 			['name'] = {
 				['position'] = 'CENTER',
-				['text_format'] = '[colorname][name:medium]',
+				['text_format'] = '[namecolor][name:medium]',
 			},
 			['buffs'] = {
 				['enable'] = false,
@@ -519,7 +519,7 @@ P['unitframe'] = {
 			},
 			['name'] = {
 				['position'] = 'CENTER',
-				['text_format'] = '[colorname][name:medium]',
+				['text_format'] = '[namecolor][name:medium]',
 			},
 			['buffs'] = {
 				['enable'] = false,
@@ -569,7 +569,7 @@ P['unitframe'] = {
 			},
 			['name'] = {
 				['position'] = 'CENTER',
-				['text_format'] = '[colorname][name:medium]',
+				['text_format'] = '[namecolor][name:medium]',
 			},
 			['buffs'] = {
 				['enable'] = false,
@@ -618,7 +618,7 @@ P['unitframe'] = {
 			},
 			['name'] = {
 				['position'] = 'CENTER',
-				['text_format'] = '[colorname][name:medium]',
+				['text_format'] = '[namecolor][name:medium]',
 			},
 			['buffs'] = {
 				['enable'] = false,
@@ -654,12 +654,12 @@ P['unitframe'] = {
 			['width'] = 216,
 			['height'] = 46,
 			['health'] = {
-				['text_format'] = '[health:current-percent]',
+				['text_format'] = '[healthcolor][health:current-percent]',
 				['position'] = 'RIGHT',
 			},
 			['power'] = {
 				['enable'] = true,
-				['text_format'] = '[power:current]',	
+				['text_format'] = '[powercolor][power:current]',	
 				['width'] = 'fill',
 				['height'] = 7,
 				['offset'] = 0,
@@ -674,7 +674,7 @@ P['unitframe'] = {
 			},				
 			['name'] = {
 				['position'] = 'CENTER',
-				['text_format'] = '[colorname][name:medium]',
+				['text_format'] = '[namecolor][name:medium]',
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -723,12 +723,12 @@ P['unitframe'] = {
 			['width'] = 240,
 			['height'] = 46,
 			['health'] = {
-				['text_format'] = '[health:current-percent]',
+				['text_format'] = '[healthcolor][health:current-percent]',
 				['position'] = 'RIGHT',
 			},
 			['power'] = {
 				['enable'] = true,
-				['text_format'] = '[power:current]',	
+				['text_format'] = '[powercolor][power:current]',	
 				['width'] = 'fill',
 				['height'] = 7,
 				['offset'] = 0,
@@ -737,7 +737,7 @@ P['unitframe'] = {
 			},			
 			['name'] = {
 				['position'] = 'CENTER',
-				['text_format'] = '[colorname][name:medium]',
+				['text_format'] = '[namecolor][name:medium]',
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -798,7 +798,7 @@ P['unitframe'] = {
 			['width'] = 180,
 			['height'] = 44,
 			['health'] = {
-				['text_format'] = '[health:current-percent]',
+				['text_format'] = '[healthcolor][health:current-percent]',
 				['position'] = 'RIGHT',
 				['orientation'] = 'HORIZONTAL',
 				['frequentUpdates'] = false,
@@ -814,7 +814,7 @@ P['unitframe'] = {
 			},			
 			['name'] = {
 				['position'] = 'LEFT',
-				['text_format'] = '[colorname][name:medium] [difficultycolor][smartlevel]',
+				['text_format'] = '[namecolor][name:medium] [difficultycolor][smartlevel]',
 			},
 			['buffs'] = {
 				['enable'] = false,
@@ -894,7 +894,7 @@ P['unitframe'] = {
 			['width'] = 80,
 			['height'] = 44,
 			['health'] = {
-				['text_format'] = '[health:deficit]',
+				['text_format'] = '[healthcolor][health:deficit]',
 				['position'] = 'BOTTOM',
 				['orientation'] = 'HORIZONTAL',
 				['frequentUpdates'] = false,
@@ -910,7 +910,7 @@ P['unitframe'] = {
 			},			
 			['name'] = {
 				['position'] = 'TOP',
-				['text_format'] = '[colorname][name:short]',
+				['text_format'] = '[namecolor][name:short]',
 			},
 			['buffs'] = {
 				['enable'] = false,
@@ -978,7 +978,7 @@ P['unitframe'] = {
 			['width'] = 80,
 			['height'] = 44,
 			['health'] = {
-				['text_format'] = '[health:deficit]',
+				['text_format'] = '[healthcolor][health:deficit]',
 				['position'] = 'BOTTOM',
 				['orientation'] = 'HORIZONTAL',
 				['frequentUpdates'] = false,
@@ -994,7 +994,7 @@ P['unitframe'] = {
 			},			
 			['name'] = {
 				['position'] = 'TOP',
-				['text_format'] = '[colorname][name:short]',
+				['text_format'] = '[namecolor][name:short]',
 			},
 			['buffs'] = {
 				['enable'] = false,
@@ -1062,7 +1062,7 @@ P['unitframe'] = {
 			['width'] = 80,
 			['height'] = 26,
 			['health'] = {
-				['text_format'] = '[health:deficit]',
+				['text_format'] = '[healthcolor][health:deficit]',
 				['position'] = 'BOTTOM',
 				['orientation'] = 'HORIZONTAL',
 				['frequentUpdates'] = false,
@@ -1078,7 +1078,7 @@ P['unitframe'] = {
 			},			
 			['name'] = {
 				['position'] = 'CENTER',
-				['text_format'] = '[colorname][name:short]',
+				['text_format'] = '[namecolor][name:short]',
 			},
 			['buffs'] = {
 				['enable'] = false,
