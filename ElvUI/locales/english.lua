@@ -71,7 +71,7 @@ L["Restore Bar"] = true;
 L["Restore the actionbars default settings"] = true;
 L["Seconds"] = true;
 L["Set the font size of the action buttons."] = true;
-L["ShapeShift Bar"] = true;
+L["Stance Bar"] = true;
 L["The ammount of buttons to display per row."] = true;
 L["The ammount of buttons to display."] = true;
 L["The first button anchors itself to this point on the bar."] = true;
@@ -196,6 +196,9 @@ L["Shorten the channel names in chat."] = true;
 L['Show Both'] = true;
 L["Spam Interval"] = true;
 L["Sticky Chat"] = true;
+L["Tab Font"] = true;
+L["Tab Font Size"] = true;
+L["Tab Font Outline"] = true;
 L['Toggle showing of the left and right chat panels.'] = true;
 L['Trade'] = true;
 L["URL Links"] = true;
@@ -303,6 +306,7 @@ L["DATATEXT_DESC"] = "Setup the on-screen display of info-texts."
 L["Deficit:"] = true;
 L['Demolishers Destroyed'] = true;
 L['Display minimap panels below the minimap, used for datatexts.'] = true;
+L['Download'] = true;
 L["DPS"] = true;
 L["Earned:"] = true;
 L["Feet"] = true;
@@ -364,6 +368,7 @@ L['|cFFE30000Lua error recieved. You can view the error message when you exit co
 
 --General
 L["Accept Invites"] = true;
+L['Adjust the position of the threat bar to either the left or right datatext panels.'] = true;
 L['Adjust the size of the minimap.'] = true;
 L["Announce Interrupts"] = true;
 L["Announce when you interrupt a spell to the specified chat channel."] = true;
@@ -384,6 +389,7 @@ L["Enable/Disable the loot frame."] = true;
 L["Enable/Disable the loot roll frame."] = true;
 L['Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the consolidated buffs bar, and prevent you from seeing the minimap datatexts.|r'] = true;
 L["General"] = true;
+L['Left'] = true;
 L["Log Taints"] = true;
 L["Login Message"] = true;
 L["LOGIN_MSG"] = "Welcome to %sElvUI|r version %s%s|r, type /ec to access the in-game configuration menu. If you are in need of technical support you can visit us at http://www.tukui.org"
@@ -391,9 +397,12 @@ L["Loot Roll"] = true;
 L["Loot"] = true;
 L["Map Alpha While Moving"] = true;
 L["Media"] = true;
+L['Position'] = true;
 L["Reset all frames to their original positions."] = true;
 L["Reset Anchors"] = true;
+L['Right'] = true;
 L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = true;
+L['Threat'] = true;
 L["Tiny Map"] = true;
 L['Toggle Tutorials'] = true;
 L["Welcome to ElvUI version %s!"] = true;
@@ -831,9 +840,9 @@ L["You may not remove a spell from a default filter that is not customly added. 
 L['TEXT_FORMAT_DESC'] = [=[Provide a string to change the text format.
 
 Examples: 
-[colorname][name] [difficultycolor][smartlevel] [shortclassification]
-[health:current-max]
-[power:current]
+[namecolor][name] [difficultycolor][smartlevel] [shortclassification]
+[healthcolor][health:current-max]
+[powercolor][power:current]
 
 Health / Power Formats:
 'current' - current amount

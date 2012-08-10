@@ -283,7 +283,40 @@ E.Options.args.general = {
 					min = 6, max = 22, step = 1,		
 				},				
 			},
-		},		
+		},	
+		threat = {
+			order = 4,
+			get = function(info) return E.db.general.threat[ info[#info] ] end,
+			set = function(info, value) E.db.general.threat[ info[#info] ] = value; E:GetModule('Threat'):ToggleEnable()end,		
+			type = "group",
+			name = L['Threat'],
+			guiInline = true,
+			args = {
+				enable = {
+					order = 1,
+					type = "toggle",
+					name = L["Enable"],
+				},
+				position = {
+					order = 2,
+					type = 'select',
+					name = L['Position'],
+					desc = L['Adjust the position of the threat bar to either the left or right datatext panels.'],
+					values = {
+						['LEFTCHAT'] = L['Left']..' '..L['Chat'],
+						['RIGHTCHAT'] = L['Right']..' '..L['Chat'],
+					},
+					set = function(info, value) E.db.general.threat[ info[#info] ] = value; E:GetModule('Threat'):UpdatePosition() end,	
+				},
+				textSize = {
+					order = 3,
+					name = L["Font Size"],
+					type = "range",
+					min = 6, max = 22, step = 1,	
+					set = function(info, value) E.db.general.threat[ info[#info] ] = value; E:GetModule('Threat'):UpdatePosition() end,	
+				},		
+			},
+		},				
 	},
 }
 
@@ -300,7 +333,7 @@ E.Options.args.media = {
 			name = L["Fonts"],
 			guiInline = true,
 			args = {
-				fontsize = {
+				fontSize = {
 					order = 1,
 					name = L["Font Size"],
 					desc = L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"],

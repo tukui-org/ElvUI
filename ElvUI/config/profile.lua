@@ -16,7 +16,7 @@ P['general'] = {
 	['vendorGrays'] = true,
 	['autoAcceptInvite'] = false,
 
-	["fontsize"] = 11,
+	["fontSize"] = 11,
 	["font"] = "Friz Quadrata TT",
 
 	["bordercolor"] = { r = .20,g = .20,b = .20 },
@@ -49,6 +49,7 @@ P['general'] = {
 	['threat'] = {
 		['enable'] = true,
 		['position'] = 'RIGHTCHAT',
+		['textSize'] = 12,
 	},
 };
 
@@ -73,6 +74,10 @@ P['bags'] = {
 
 --NamePlate
 P["nameplate"] = {
+	['font'] = 'ElvUI Font',
+	['fontSize'] = 10,
+	['fontOutline'] = 'OUTLINE',
+	
 	["markBGHealers"] = true,
 	["width"] = 114,
 	["height"] = 8,
@@ -99,6 +104,10 @@ P["nameplate"] = {
 
 --Auras
 P['auras'] = {
+	['font'] = 'ElvUI Pixel',
+	['fontSize'] = 10,
+	['fontOutline'] = 'MONOCHROMEOUTLINE',
+	
 	['consolidedBuffs'] = true;
 	['wrapAfter'] = 12,
 	['fadeThreshold'] = -1,
@@ -123,7 +132,7 @@ P['chat'] = {
 	['throttleInterval'] = 60,
 	['scrollDownInterval'] = 0,
 	['font'] = 'Arial Narrow',
-	['fontoutline'] = 'NONE',
+	['fontOutline'] = 'NONE',
 	['sticky'] = true,
 	['emotionIcons'] = true,
 	['keywordSound'] = 'Whisper Alert',
@@ -133,11 +142,19 @@ P['chat'] = {
 	['panelHeight'] = 200,
 	['panelBackdropNameLeft'] = '',
 	['panelBackdropNameRight'] = '',
-	['panelBackdrop'] = 'SHOWBOTH',
+	['panelBackdrop'] = 'SHOWBOTH',	
+	
+	['tabFont'] = 'Friz Quadrata TT',
+	['tabFontSize'] = 12,
+	['tabFontOutline'] = 'OUTLINE',
 }
 
 --Datatexts
 P['datatexts'] = {
+	['font'] = 'ElvUI Font',
+	['fontSize'] = 12,
+	['fontOutline'] = 'NONE',
+	
 	['panels'] = {
 		['LeftChatDataPanel'] = {
 			['left'] = 'Spell/Heal Power',
@@ -180,8 +197,8 @@ P['unitframe'] = {
 	['smoothbars'] = true,
 	['statusbar'] = "Minimalist",
 	['font'] = 'Old Sans Black',
-	['fontsize'] = 12,
-	['fontoutline'] = 'OUTLINE',
+	['fontSize'] = 12,
+	['fontOutline'] = 'OUTLINE',
 	['OORAlpha'] = 0.55,
 	['debuffHighlighting'] = false,
 	["smartRaidFilter"] = true,
@@ -221,12 +238,12 @@ P['unitframe'] = {
 			['healPrediction'] = true,
 			['restIcon'] = true,
 			['health'] = {
-				['text_format'] = '[health:current-percent]',
+				['text_format'] = '[healthcolor][health:current-percent]',
 				['position'] = 'TOPRIGHT',
 			},
 			['power'] = {
 				['enable'] = true,
-				['text_format'] = '[power:current]',	
+				['text_format'] = '[powercolor][power:current]',	
 				['width'] = 'fill',
 				['height'] = 15,
 				['offset'] = 0,
@@ -235,7 +252,7 @@ P['unitframe'] = {
 			},
 			['name'] = {
 				['position'] = 'LEFT',
-				['text_format'] = '[colorname][name:medium] [difficultycolor][level]',
+				['text_format'] = '[namecolor][name:medium] [difficultycolor][level]',
 			},
 			['portrait'] = {
 				['enable'] = false,
@@ -249,7 +266,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'DEBUFFS',
 				['anchorPoint'] = 'TOPRIGHT',
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'ALL',
 				['noConsolidated'] = 'ALL',
 				['useBlacklist'] = 'ALL',
@@ -263,7 +280,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'TOPRIGHT',					
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'NONE',
 				['useBlacklist'] = 'ALL',
 				['useWhitelist'] = 'NONE',
@@ -309,12 +326,12 @@ P['unitframe'] = {
 			['healPrediction'] = true,
 			['smartAuraDisplay'] = 'SHOW_DEBUFFS_ON_FRIENDLIES',
 			['health'] = {
-				['text_format'] = '[health:current-percent]',
+				['text_format'] = '[healthcolor][health:current-percent]',
 				['position'] = 'TOPRIGHT',
 			},
 			['power'] = {
 				['enable'] = true,
-				['text_format'] = '[power:current]',	
+				['text_format'] = '[powercolor][power:current]',	
 				['width'] = 'fill',
 				['height'] = 15,
 				['offset'] = 0,
@@ -323,7 +340,7 @@ P['unitframe'] = {
 			},
 			['name'] = {
 				['position'] = 'LEFT',
-				['text_format'] = '[colorname][name:medium] [difficultycolor][level] [shortclassification]',
+				['text_format'] = '[namecolor][name:medium] [difficultycolor][level] [shortclassification]',
 			},
 			['portrait'] = {
 				['enable'] = false,
@@ -337,7 +354,7 @@ P['unitframe'] = {
 				['numrows'] = 2,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'BOTTOMLEFT',
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'FRIENDLY',
 				['noConsolidated'] = 'FRIENDLY',
 				['useBlacklist'] = 'ALL',
@@ -351,7 +368,7 @@ P['unitframe'] = {
 				['numrows'] = 2,
 				['attachTo'] = 'BUFFS',
 				['anchorPoint'] = 'BOTTOMLEFT',					
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'ENEMY',
 				['useBlacklist'] = 'ALL',
 				['useWhitelist'] = 'NONE',
@@ -406,7 +423,7 @@ P['unitframe'] = {
 			},
 			['name'] = {
 				['position'] = 'CENTER',
-				['text_format'] = '[colorname][name:medium]',
+				['text_format'] = '[namecolor][name:medium]',
 			},
 			['buffs'] = {
 				['enable'] = false,
@@ -414,7 +431,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'BOTTOMLEFT',					
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'FRIENDLY',
 				['noConsolidated'] = 'FRIENDLY',
 				['useBlacklist'] = 'ALL',
@@ -428,7 +445,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'BOTTOMRIGHT',					
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'ENEMY',
 				['useBlacklist'] = 'ALL',
 				['useWhitelist'] = 'NONE',
@@ -457,7 +474,7 @@ P['unitframe'] = {
 			},
 			['name'] = {
 				['position'] = 'LEFT',
-				['text_format'] = '[colorname][name:medium]',
+				['text_format'] = '[namecolor][name:medium]',
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -465,7 +482,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'BOTTOMLEFT',					
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'FRIENDLY',
 				['noConsolidated'] = 'FRIENDLY',
 				['useBlacklist'] = 'ALL',
@@ -478,8 +495,8 @@ P['unitframe'] = {
 				['perrow'] = 7,
 				['numrows'] = 1,
 				['attachTo'] = 'BUFFS',
-				['anchorPoint'] = 'BOTTOMLEFT',
-				['fontsize'] = 10,
+				['anchorPoint'] = 'BOTTOMLEFT',					
+				['fontSize'] = 10,
 				['playerOnly'] = 'ENEMY',
 				['useBlacklist'] = 'ALL',
 				['useWhitelist'] = 'NONE',
@@ -528,7 +545,7 @@ P['unitframe'] = {
 			},
 			['name'] = {
 				['position'] = 'LEFT',
-				['text_format'] = '[colorname][name:medium]',
+				['text_format'] = '[namecolor][name:medium]',
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -536,7 +553,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'BOTTOMLEFT',					
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'FRIENDLY',
 				['noConsolidated'] = 'FRIENDLY',
 				['useBlacklist'] = 'ALL',
@@ -550,7 +567,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'BUFFS',
 				['anchorPoint'] = 'BOTTOMLEFT',					
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'ENEMY',
 				['useBlacklist'] = 'ALL',
 				['useWhitelist'] = 'NONE',
@@ -578,7 +595,7 @@ P['unitframe'] = {
 			},
 			['name'] = {
 				['position'] = 'LEFT',
-				['text_format'] = '[colorname][name:medium]',
+				['text_format'] = '[namecolor][name:medium]',
 			},
 			['buffs'] = {
 				['enable'] = false,
@@ -586,7 +603,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'BOTTOMLEFT',					
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'FRIENDLY',
 				['noConsolidated'] = 'FRIENDLY',
 				['useBlacklist'] = 'ALL',
@@ -600,7 +617,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'BOTTOMRIGHT',					
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'NONE',
 				['useBlacklist'] = 'ALL',
 				['useWhitelist'] = 'NONE',
@@ -627,7 +644,7 @@ P['unitframe'] = {
 			},
 			['name'] = {
 				['position'] = 'CENTER',
-				['text_format'] = '[colorname][name:medium]',
+				['text_format'] = '[namecolor][name:medium]',
 			},
 			['buffs'] = {
 				['enable'] = false,
@@ -635,7 +652,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'BOTTOMLEFT',					
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'FRIENDLY',
 				['noConsolidated'] = 'FRIENDLY',
 				['useBlacklist'] = 'ALL',
@@ -649,7 +666,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'BOTTOMRIGHT',					
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'ENEMY',
 				['useBlacklist'] = 'ALL',
 				['useWhitelist'] = 'NONE',
@@ -663,12 +680,12 @@ P['unitframe'] = {
 			['width'] = 200,
 			['height'] = 46,
 			['health'] = {
-				['text_format'] = '[health:current-percent]',
+				['text_format'] = '[healthcolor][health:current-percent]',
 				['position'] = 'TOPRIGHT',
 			},
 			['power'] = {
 				['enable'] = true,
-				['text_format'] = '[power:current]',	
+				['text_format'] = '[powercolor][power:current]',	
 				['width'] = 'fill',
 				['height'] = 7,
 				['offset'] = 0,
@@ -683,7 +700,7 @@ P['unitframe'] = {
 			},				
 			['name'] = {
 				['position'] = 'LEFT',
-				['text_format'] = '[colorname][name:medium]',
+				['text_format'] = '[namecolor][name:medium]',
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -691,7 +708,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'DEBUFFS',
 				['anchorPoint'] = 'TOPRIGHT',					
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'ALL',
 				['noConsolidated'] = 'NONE',
 				['useBlacklist'] = 'ALL',
@@ -706,7 +723,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'TOPLEFT',					
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'ALL',
 				['useBlacklist'] = 'ALL',
 				['useWhitelist'] = 'NONE',
@@ -732,12 +749,12 @@ P['unitframe'] = {
 			['width'] = 240,
 			['height'] = 46,
 			['health'] = {
-				['text_format'] = '[health:current-percent]',
+				['text_format'] = '[healthcolor][health:current-percent]',
 				['position'] = 'TOPRIGHT',
 			},
 			['power'] = {
 				['enable'] = true,
-				['text_format'] = '[power:current]',	
+				['text_format'] = '[powercolor][power:current]',	
 				['width'] = 'fill',
 				['height'] = 8,
 				['offset'] = 0,
@@ -746,7 +763,7 @@ P['unitframe'] = {
 			},			
 			['name'] = {
 				['position'] = 'LEFT',
-				['text_format'] = '[colorname][name:medium]',
+				['text_format'] = '[namecolor][name:medium]',
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -754,7 +771,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'LEFT',					
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'NONE',
 				['noConsolidated'] = 'NONE',
 				['useBlacklist'] = 'NONE',
@@ -769,7 +786,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'RIGHT',					
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'NONE',
 				['useBlacklist'] = 'NONE',
 				['useWhitelist'] = 'NONE',
@@ -807,7 +824,7 @@ P['unitframe'] = {
 			['width'] = 74,
 			['height'] = 44,
 			['health'] = {
-				['text_format'] = '[health:current-percent]',
+				['text_format'] = '[healthcolor][health:current-percent]',
 				['position'] = 'RIGHT',
 				['orientation'] = 'HORIZONTAL',
 				['frequentUpdates'] = false,
@@ -823,7 +840,7 @@ P['unitframe'] = {
 			},			
 			['name'] = {
 				['position'] = 'TOP',
-				['text_format'] = '[colorname][name:short] [difficultycolor][level]',
+				['text_format'] = '[namecolor][name:medium] [difficultycolor][smartlevel]',
 			},
 			['buffs'] = {
 				['enable'] = false,
@@ -831,7 +848,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'LEFT',					
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'ALL',
 				['noConsolidated'] = 'ALL',
 				['useBlacklist'] = 'ALL',
@@ -845,7 +862,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'LEFT',					
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'N',
 				['useBlacklist'] = 'ALL',
 				['useWhitelist'] = 'NONE',
@@ -856,7 +873,7 @@ P['unitframe'] = {
 			['buffIndicator'] = {
 				['enable'] = true,
 				['size'] = 6,
-				['fontsize'] = 8,
+				['fontSize'] = 8,
 				['colorIcons'] = true,
 			},
 			['roleIcon'] = {
@@ -903,7 +920,7 @@ P['unitframe'] = {
 			['width'] = 74,
 			['height'] = 44,
 			['health'] = {
-				['text_format'] = '[health:deficit]',
+				['text_format'] = '[healthcolor][health:deficit]',
 				['position'] = 'BOTTOM',
 				['orientation'] = 'HORIZONTAL',
 				['frequentUpdates'] = false,
@@ -919,7 +936,7 @@ P['unitframe'] = {
 			},			
 			['name'] = {
 				['position'] = 'TOP',
-				['text_format'] = '[colorname][name:short]',
+				['text_format'] = '[namecolor][name:short]',
 			},
 			['buffs'] = {
 				['enable'] = false,
@@ -927,7 +944,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'LEFT',					
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'ALL',
 				['noConsolidated'] = 'ALL',
 				['useBlacklist'] = 'ALL',
@@ -941,7 +958,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'LEFT',					
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'NONE',
 				['useBlacklist'] = 'ALL',
 				['useWhitelist'] = 'NONE',
@@ -951,12 +968,12 @@ P['unitframe'] = {
 			['buffIndicator'] = {
 				['enable'] = true,
 				['size'] = 6,
-				['fontsize'] = 8,
+				['fontSize'] = 8,
 				['colorIcons'] = true,
 			},
 			['rdebuffs'] = {
 				['enable'] = false,
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['size'] = 26,
 			},
 			['roleIcon'] = {
@@ -987,7 +1004,7 @@ P['unitframe'] = {
 			['width'] = 74,
 			['height'] = 44,
 			['health'] = {
-				['text_format'] = '[health:deficit]',
+				['text_format'] = '[healthcolor][health:deficit]',
 				['position'] = 'BOTTOM',
 				['orientation'] = 'HORIZONTAL',
 				['frequentUpdates'] = false,
@@ -1003,7 +1020,7 @@ P['unitframe'] = {
 			},			
 			['name'] = {
 				['position'] = 'TOP',
-				['text_format'] = '[colorname][name:short]',
+				['text_format'] = '[namecolor][name:short]',
 			},
 			['buffs'] = {
 				['enable'] = false,
@@ -1011,7 +1028,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'LEFT',					
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'ALL',
 				['noConsolidated'] = 'ALL',
 				['useBlacklist'] = 'ALL',
@@ -1025,7 +1042,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'LEFT',					
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'NONE',
 				['useBlacklist'] = 'ALL',
 				['useWhitelist'] = 'NONE',
@@ -1035,12 +1052,12 @@ P['unitframe'] = {
 			['buffIndicator'] = {
 				['enable'] = true,
 				['size'] = 6,
-				['fontsize'] = 8,
+				['fontSize'] = 8,
 				['colorIcons'] = true,
 			},
 			['rdebuffs'] = {
 				['enable'] = false,
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['size'] = 26,
 			},
 			['roleIcon'] = {
@@ -1071,7 +1088,7 @@ P['unitframe'] = {
 			['width'] = 74,
 			['height'] = 36,
 			['health'] = {
-				['text_format'] = '[health:deficit]',
+				['text_format'] = '[healthcolor][health:deficit]',
 				['position'] = 'BOTTOM',
 				['orientation'] = 'HORIZONTAL',
 				['frequentUpdates'] = false,
@@ -1087,7 +1104,7 @@ P['unitframe'] = {
 			},			
 			['name'] = {
 				['position'] = 'TOP',
-				['text_format'] = '[colorname][name:short]',
+				['text_format'] = '[namecolor][name:short]',
 			},
 			['buffs'] = {
 				['enable'] = false,
@@ -1095,7 +1112,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'LEFT',					
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'ALL',
 				['noConsolidated'] = 'ALL',
 				['useBlacklist'] = 'ALL',
@@ -1109,7 +1126,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'LEFT',					
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['playerOnly'] = 'NONE',
 				['useBlacklist'] = 'ALL',
 				['useWhitelist'] = 'NONE',
@@ -1118,7 +1135,7 @@ P['unitframe'] = {
 			},	
 			['rdebuffs'] = {
 				['enable'] = false,
-				['fontsize'] = 10,
+				['fontSize'] = 10,
 				['size'] = 22,
 			},
 			['roleIcon'] = {
@@ -1132,7 +1149,7 @@ P['unitframe'] = {
 			['buffIndicator'] = {
 				['enable'] = true,
 				['size'] = 6,
-				['fontsize'] = 8,
+				['fontSize'] = 8,
 				['colorIcons'] = true,
 			},			
 		},	
@@ -1152,9 +1169,12 @@ P['unitframe'] = {
 
 --Actionbar
 P["actionbar"] = {
+	['font'] = 'ElvUI Pixel',
+	['fontSize'] = 10,
+	['fontOutline'] = 'MONOCHROMEOUTLINE',
+	
 	["macrotext"] = true,
 	["hotkeytext"] = true,
-	['fontsize'] = 11,
 	["enablecd"] = true,
 	["treshold"] = 3,
 	['useMaxPaging'] = false,
@@ -1163,6 +1183,7 @@ P["actionbar"] = {
 	["minutescolor"] = { r = 1, g = 1, b = 1 },
 	["hourscolor"] = { r = 0.4, g = 1, b = 1 },
 	["dayscolor"] = { r = 0.4, g = 0.4, b = 1 },
+
 	['microbar'] = {
 		['enabled'] = false,
 		['mouseover'] = false,
@@ -1258,7 +1279,7 @@ P["actionbar"] = {
 		["buttonspacing"] = 4,
 		['visibility'] = "[petbattle] hide;[pet,novehicleui,nooverridebar,nopossessbar] show;hide",
 	},
-	['barShapeShift'] = {
+	['stanceBar'] = {
 		['enabled'] = true,
 		['mouseover'] = false,
 		['buttonsPerRow'] = 1,

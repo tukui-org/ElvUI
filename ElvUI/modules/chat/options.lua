@@ -84,28 +84,7 @@ E.Options.args.chat = {
 					set = function(info, value)
 						E.db.chat[ info[#info] ] = value 
 					end,
-				},
-				font = {
-					type = "select", dialogControl = 'LSM30_Font',
-					order = 7,
-					name = L["Font"],
-					values = AceGUIWidgetLSMlists.font,
-					set = function(info, value) E.db.chat[ info[#info] ] = value ; CH:SetupChat() end,
-				},
-				fontoutline = {
-					order = 8,
-					name = L["Font Outline"],
-					desc = L["Set the font outline."],
-					type = "select",
-					values = {
-						['NONE'] = L['None'],
-						['OUTLINE'] = 'OUTLINE',
-						['MONOCHROME'] = 'MONOCHROME',
-						['MONOCHROMEOUTLINE'] = 'MONOCHROMEOUTLINE',
-						['THICKOUTLINE'] = 'THICKOUTLINE',
-					},
-					set = function(info, value) E.db.chat[ info[#info] ] = value; CH:SetupChat() end,
-				},		
+				},	
 				emotionIcons = {
 					order = 9,
 					type = 'toggle',
@@ -192,5 +171,58 @@ E.Options.args.chat = {
 				},					
 			},
 		},
+		fontGroup = {
+			order = 120,
+			type = 'group',
+			guiInline = true,
+			name = L['Fonts'],
+			set = function(info, value) E.db.chat[ info[#info] ] = value; CH:SetupChat() end,
+			args = {
+				font = {
+					type = "select", dialogControl = 'LSM30_Font',
+					order = 1,
+					name = L["Font"],
+					values = AceGUIWidgetLSMlists.font,
+				},
+				fontOutline = {
+					order = 2,
+					name = L["Font Outline"],
+					desc = L["Set the font outline."],
+					type = "select",
+					values = {
+						['NONE'] = L['None'],
+						['OUTLINE'] = 'OUTLINE',
+						['MONOCHROME'] = 'MONOCHROME',
+						['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+						['THICKOUTLINE'] = 'THICKOUTLINE',
+					},
+				},
+				tabFont = {
+					type = "select", dialogControl = 'LSM30_Font',
+					order = 4,
+					name = L["Tab Font"],
+					values = AceGUIWidgetLSMlists.font,
+				},
+				tabFontSize = {
+					order = 5,
+					name = L["Tab Font Size"],
+					type = "range",
+					min = 6, max = 22, step = 1,
+				},	
+				tabFontOutline = {
+					order = 6,
+					name = L["Tab Font Outline"],
+					desc = L["Set the font outline."],
+					type = "select",
+					values = {
+						['NONE'] = L['None'],
+						['OUTLINE'] = 'OUTLINE',
+						['MONOCHROME'] = 'MONOCHROME',
+						['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+						['THICKOUTLINE'] = 'THICKOUTLINE',
+					},
+				},	
+			},
+		},			
 	},
 }

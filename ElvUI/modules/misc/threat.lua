@@ -12,13 +12,14 @@ function THREAT:UpdatePosition()
 		self.bar:SetParent(LeftChatDataPanel)	
 	end
 	
+	self.bar.text:FontTemplate(nil, self.db.textSize)
 	self.bar:SetFrameStrata('MEDIUM')
 end
 
 function THREAT:Update()
 	local _, status, percent = UnitDetailedThreatSituation('player', 'target')
 	
-	if percent and percent > 0 and IsInGroup() then
+	if percent and percent > 0 and (IsInGroup() or UnitExists('pet')) then
 		local name = UnitName('target')
 		self.bar:Show()
 		self.bar:SetStatusBarColor(GetThreatStatusColor(status))
@@ -34,12 +35,14 @@ function THREAT:ToggleEnable()
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', 'Update')
 		self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', 'Update')
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', 'Update')
+		self:RegisterEvent('UNIT_PET', 'Update')
 		self:Update()
 	else
 		self.bar:Hide()
 		self:UnregisterEvent('PLAYER_TARGET_CHANGED')
 		self:UnregisterEvent('UNIT_THREAT_LIST_UPDATE')
 		self:UnregisterEvent('GROUP_ROSTER_UPDATE')
+		self:UnregisterEvent('UNIT_PET')
 	end
 end
 
@@ -52,7 +55,7 @@ function THREAT:Initialize()
 	self.bar:CreateBackdrop('Default')
 	
 	self.bar.text = self.bar:CreateFontString(nil, 'OVERLAY')
-	self.bar.text:FontTemplate()
+	self.bar.text:FontTemplate(nil, self.db.textSize)
 	self.bar.text:SetPoint('CENTER', self.bar, 'CENTER')
 	
 	self:UpdatePosition()

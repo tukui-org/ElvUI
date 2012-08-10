@@ -709,7 +709,7 @@ function UF:Update_PlayerFrame(frame, db)
 					bars[i]:SetPoint("LEFT", bars)
 				else
 					if USE_MINI_CLASSBAR then
-						bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING+(BORDER*2)+8, 0)
+						bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING+(BORDER*2)+2, 0)
 					else
 						bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING, 0)
 					end
@@ -1032,7 +1032,7 @@ function UF:Update_PlayerFrame(frame, db)
 			local objectDB = db.customTexts[objectName]
 			UF:CreateCustomTextGroup('player', objectName)
 			
-			frame[objectName]:FontTemplate(UF.LSM:Fetch("font", objectDB.font or UF.db.font), objectDB.size or UF.db.fontsize, objectDB.fontoutline or UF.db.fontoutline)
+			frame[objectName]:FontTemplate(UF.LSM:Fetch("font", objectDB.font or UF.db.font), objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
 			frame:Tag(frame[objectName], objectDB.text_format or '')
 			frame[objectName]:SetPoint('CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
 		end

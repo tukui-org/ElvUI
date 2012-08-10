@@ -386,8 +386,8 @@ for i=10, 40, 15 do
 
 				rdebuffs:Size(db.rdebuffs.size)
 				
-				rdebuffs.count:FontTemplate(nil, db.rdebuffs.fontsize, 'OUTLINE')
-				rdebuffs.time:FontTemplate(nil, db.rdebuffs.fontsize, 'OUTLINE')
+				rdebuffs.count:FontTemplate(nil, db.rdebuffs.fontSize, 'OUTLINE')
+				rdebuffs.time:FontTemplate(nil, db.rdebuffs.fontSize, 'OUTLINE')
 			else
 				frame:DisableElement('RaidDebuffs')
 				rdebuffs:Hide()				
@@ -490,7 +490,7 @@ for i=10, 40, 15 do
 				local objectDB = db.customTexts[objectName]
 				UF:CreateCustomTextGroup('raid'..i, objectName)
 				
-				frame[objectName]:FontTemplate(UF.LSM:Fetch("font", objectDB.font or UF.db.font), objectDB.size or UF.db.fontsize, objectDB.fontoutline or UF.db.fontoutline)
+				frame[objectName]:FontTemplate(UF.LSM:Fetch("font", objectDB.font or UF.db.font), objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
 				frame:Tag(frame[objectName], objectDB.text_format or '')
 				frame[objectName]:SetPoint('CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
 			end

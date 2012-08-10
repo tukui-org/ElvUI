@@ -229,15 +229,15 @@ local function BuildABConfig()
 			},
 		},
 	}	
-	group['barShapeShift'] = {
+	group['stanceBar'] = {
 		order = i,
-		name = L['ShapeShift Bar'],
+		name = L['Stance Bar'],
 		type = 'group',
 		order = 200,
 		guiInline = false,
 		disabled = function() return not E.private.actionbar.enable end,
-		get = function(info) return E.db.actionbar['barShapeShift'][ info[#info] ] end,
-		set = function(info, value) E.db.actionbar['barShapeShift'][ info[#info] ] = value; AB:UpdateButtonSettings() end,
+		get = function(info) return E.db.actionbar['stanceBar'][ info[#info] ] end,
+		set = function(info, value) E.db.actionbar['stanceBar'][ info[#info] ] = value; AB:UpdateButtonSettings() end,
 		args = {
 			enabled = {
 				order = 1,
@@ -249,7 +249,7 @@ local function BuildABConfig()
 				type = 'execute',
 				name = L['Restore Bar'],
 				desc = L['Restore the actionbars default settings'],
-				func = function() E:CopyTable(E.db.actionbar['barShapeShift'], P.actionbar['barShapeShift']); E:ResetMovers('Stance Bar'); AB:UpdateButtonSettings() end,
+				func = function() E:CopyTable(E.db.actionbar['stanceBar'], P.actionbar['stanceBar']); E:ResetMovers('Stance Bar'); AB:UpdateButtonSettings() end,
 			},	
 			point = {
 				order = 3,
@@ -478,14 +478,40 @@ E.Options.args.actionbar = {
 			set = function(info, value) E.db.actionbar[ info[#info] ] = value; AB:MultiActionBar_Update() end,
 			disabled = function() return not E.private.actionbar.enable end,
 		},
-		fontsize = {
-			type = 'range',
-			name = L['Font Size'],
-			desc = L['Set the font size of the action buttons.'],
-			min = 5, max = 18, step = 1,
+		fontGroup = {
 			order = 7,
+			type = 'group',
+			guiInline = true,
 			disabled = function() return not E.private.actionbar.enable end,
-		},	
+			name = L['Fonts'],
+			args = {
+				font = {
+					type = "select", dialogControl = 'LSM30_Font',
+					order = 4,
+					name = L["Font"],
+					values = AceGUIWidgetLSMlists.font,
+				},
+				fontSize = {
+					order = 5,
+					name = L["Font Size"],
+					type = "range",
+					min = 6, max = 22, step = 1,
+				},	
+				fontOutline = {
+					order = 6,
+					name = L["Font Outline"],
+					desc = L["Set the font outline."],
+					type = "select",
+					values = {
+						['NONE'] = L['None'],
+						['OUTLINE'] = 'OUTLINE',
+						['MONOCHROME'] = 'MONOCHROME',
+						['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+						['THICKOUTLINE'] = 'THICKOUTLINE',
+					},
+				},	
+			},
+		},		
 		microbar = {
 			type = "group",
 			order = 10,

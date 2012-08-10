@@ -70,7 +70,7 @@ function UF:CreateCustomTextGroup(unit, objectName)
 				type = "range",
 				min = 6, max = 72, step = 1,
 			},		
-			fontoutline = {
+			fontOutline = {
 				order = 4,
 				name = L["Font Outline"],
 				desc = L["Set the font outline."],
@@ -477,7 +477,7 @@ E.Options.args.unitframe = {
 							values = AceGUIWidgetLSMlists.font,
 							set = function(info, value) E.db.unitframe[ info[#info] ] = value; UF:Update_FontStrings() end,
 						},
-						fontsize = {
+						fontSize = {
 							order = 5,
 							name = L["Font Size"],
 							desc = L["Set the font size for unitframes."],
@@ -485,7 +485,7 @@ E.Options.args.unitframe = {
 							min = 6, max = 22, step = 1,
 							set = function(info, value) E.db.unitframe[ info[#info] ] = value; UF:Update_FontStrings() end,
 						},	
-						fontoutline = {
+						fontOutline = {
 							order = 6,
 							name = L["Font Outline"],
 							desc = L["Set the font outline."],
@@ -881,7 +881,7 @@ E.Options.args.unitframe.args.player = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
-					['fontoutline'] = 'NONE'
+					['fontOutline'] = 'NONE'
 				};
 
 				UF:CreateCustomTextGroup('player', textName)
@@ -1060,7 +1060,7 @@ E.Options.args.unitframe.args.player = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -1165,7 +1165,7 @@ E.Options.args.unitframe.args.player = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -1578,7 +1578,7 @@ E.Options.args.unitframe.args.target = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
-					['fontoutline'] = 'NONE'
+					['fontOutline'] = 'NONE'
 				};
 
 				UF:CreateCustomTextGroup('target', textName)
@@ -1757,7 +1757,7 @@ E.Options.args.unitframe.args.target = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -1862,7 +1862,7 @@ E.Options.args.unitframe.args.target = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -2233,7 +2233,7 @@ E.Options.args.unitframe.args.targettarget = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
-					['fontoutline'] = 'NONE'
+					['fontOutline'] = 'NONE'
 				};
 
 				UF:CreateCustomTextGroup('targettarget', textName)
@@ -2379,7 +2379,7 @@ E.Options.args.unitframe.args.targettarget = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -2484,7 +2484,7 @@ E.Options.args.unitframe.args.targettarget = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -2642,7 +2642,7 @@ E.Options.args.unitframe.args.focus = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
-					['fontoutline'] = 'NONE'
+					['fontOutline'] = 'NONE'
 				};
 
 				UF:CreateCustomTextGroup('focus', textName)
@@ -2788,7 +2788,7 @@ E.Options.args.unitframe.args.focus = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -2893,7 +2893,7 @@ E.Options.args.unitframe.args.focus = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -3239,7 +3239,7 @@ E.Options.args.unitframe.args.focustarget = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
-					['fontoutline'] = 'NONE'
+					['fontOutline'] = 'NONE'
 				};
 
 				UF:CreateCustomTextGroup(unit, textName)
@@ -3385,7 +3385,7 @@ E.Options.args.unitframe.args.focustarget = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -3490,7 +3490,7 @@ E.Options.args.unitframe.args.focustarget = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -3638,7 +3638,7 @@ E.Options.args.unitframe.args.pet = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
-					['fontoutline'] = 'NONE'
+					['fontOutline'] = 'NONE'
 				};
 
 				UF:CreateCustomTextGroup(unit, textName)
@@ -3784,7 +3784,7 @@ E.Options.args.unitframe.args.pet = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -3889,7 +3889,7 @@ E.Options.args.unitframe.args.pet = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -4031,7 +4031,7 @@ E.Options.args.unitframe.args.pettarget = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
-					['fontoutline'] = 'NONE'
+					['fontOutline'] = 'NONE'
 				};
 
 				UF:CreateCustomTextGroup(unit, textName)
@@ -4177,7 +4177,7 @@ E.Options.args.unitframe.args.pettarget = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -4282,7 +4282,7 @@ E.Options.args.unitframe.args.pettarget = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -4427,7 +4427,7 @@ E.Options.args.unitframe.args.boss = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
-					['fontoutline'] = 'NONE'
+					['fontOutline'] = 'NONE'
 				};
 
 				UF:CreateCustomTextGroup(unit, textName)
@@ -4606,7 +4606,7 @@ E.Options.args.unitframe.args.boss = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -4711,7 +4711,7 @@ E.Options.args.unitframe.args.boss = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -4939,7 +4939,7 @@ E.Options.args.unitframe.args.arena = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
-					['fontoutline'] = 'NONE'
+					['fontOutline'] = 'NONE'
 				};
 
 				UF:CreateCustomTextGroup(unit, textName)
@@ -5085,7 +5085,7 @@ E.Options.args.unitframe.args.arena = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -5190,7 +5190,7 @@ E.Options.args.unitframe.args.arena = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -5504,7 +5504,7 @@ E.Options.args.unitframe.args.party = {
 							['font'] = E.db.unitframe.font,
 							['xOffset'] = 0,
 							['yOffset'] = 0,	
-							['fontoutline'] = 'NONE'
+							['fontOutline'] = 'NONE'
 						};
 
 						UF:CreateCustomTextGroup(unit, textName)
@@ -5676,7 +5676,7 @@ E.Options.args.unitframe.args.party = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -5781,7 +5781,7 @@ E.Options.args.unitframe.args.party = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -5856,7 +5856,7 @@ E.Options.args.unitframe.args.party = {
 					order = 3,
 					min = 4, max = 15, step = 1,
 				},
-				fontsize = {
+				fontSize = {
 					type = 'range',
 					name = L['Font Size'],
 					order = 4,
@@ -6176,7 +6176,7 @@ for i=10, 40, 15 do
 								['font'] = E.db.unitframe.font,
 								['xOffset'] = 0,
 								['yOffset'] = 0,	
-								['fontoutline'] = 'NONE'
+								['fontOutline'] = 'NONE'
 							};
 
 							UF:CreateCustomTextGroup(unit, textName)
@@ -6348,7 +6348,7 @@ for i=10, 40, 15 do
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -6453,7 +6453,7 @@ for i=10, 40, 15 do
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
@@ -6528,7 +6528,7 @@ for i=10, 40, 15 do
 						order = 3,
 						min = 4, max = 15, step = 1,
 					},
-					fontsize = {
+					fontSize = {
 						type = 'range',
 						name = L['Font Size'],
 						order = 4,
@@ -6597,7 +6597,7 @@ for i=10, 40, 15 do
 						order = 2,
 						min = 8, max = 35, step = 1,
 					},				
-					fontsize = {
+					fontSize = {
 						type = 'range',
 						name = L['Font Size'],
 						order = 3,

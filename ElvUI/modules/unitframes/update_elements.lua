@@ -198,8 +198,8 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 	
 	button.text:Show()
 	if db and db[self.type] then
-		button.text:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db[self.type].fontsize, 'OUTLINE')
-		button.count:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db[self.type].fontsize, 'OUTLINE')
+		button.text:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db[self.type].fontSize, 'OUTLINE')
+		button.count:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db[self.type].fontSize, 'OUTLINE')
 	end
 	
 	if button.isDebuff then
@@ -326,9 +326,9 @@ function UF:PostCastStart(unit, name, rank, castid)
 	local db = self:GetParent().db
 
 	if db.castbar.displayTarget and self.curTarget then
-		self.Text:SetText(string.sub(name..' --> '..self.curTarget, 0, math.floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontsize) * 12)))
+		self.Text:SetText(string.sub(name..' --> '..self.curTarget, 0, math.floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontSize) * 12)))
 	else
-		self.Text:SetText(string.sub(name, 0, math.floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontsize) * 12)))
+		self.Text:SetText(string.sub(name, 0, math.floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontSize) * 12)))
 	end
 
 	self.Spark:Height(self:GetHeight() * 2)
@@ -970,7 +970,7 @@ function UF:UpdateAuraWatch(frame)
 				icon.count = icon:CreateFontString(nil, "OVERLAY", 7);
 				icon.count:SetPoint("CENTER", unpack(counterOffsets[spell["point"]]));
 			end
-			icon.count:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db.fontsize, 'OUTLINE');
+			icon.count:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db.fontSize, 'OUTLINE');
 			
 			if spell["enabled"] then
 				auras.icons[spell.id] = icon;

@@ -392,7 +392,7 @@ function UF:Update_BossFrames(frame, db)
 			local objectDB = db.customTexts[objectName]
 			UF:CreateCustomTextGroup('boss', objectName)
 			
-			frame[objectName]:FontTemplate(UF.LSM:Fetch("font", objectDB.font or UF.db.font), objectDB.size or UF.db.fontsize, objectDB.fontoutline or UF.db.fontoutline)
+			frame[objectName]:FontTemplate(UF.LSM:Fetch("font", objectDB.font or UF.db.font), objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
 			frame:Tag(frame[objectName], objectDB.text_format or '')
 			frame[objectName]:SetPoint('CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
 		end

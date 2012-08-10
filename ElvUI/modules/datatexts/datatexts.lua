@@ -1,6 +1,7 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local DT = E:NewModule('DataTexts', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 local LDB = LibStub:GetLibrary("LibDataBroker-1.1");
+local LSM = LibStub("LibSharedMedia-3.0")
 
 function DT:Initialize()
 	--if E.db["datatexts"].enable ~= true then return end
@@ -204,6 +205,7 @@ function DT:LoadDataTexts()
 			panel.dataPanels[pointIndex]:SetScript('OnEnter', nil)
 			panel.dataPanels[pointIndex]:SetScript('OnLeave', nil)
 			panel.dataPanels[pointIndex]:SetScript('OnClick', nil)
+			panel.dataPanels[pointIndex].text:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 			panel.dataPanels[pointIndex].text:SetText(nil)
 			panel.dataPanels[pointIndex].pointIndex = pointIndex
 			

@@ -5,6 +5,7 @@ local AB = E:NewModule('ActionBars', 'AceHook-3.0', 'AceEvent-3.0');
 local Sticky = LibStub("LibSimpleSticky-1.0");
 local _LOCK
 local LAB = LibStub("LibActionButton-1.0")
+local LSM = LibStub("LibSharedMedia-3.0")
 
 local gsub = string.gsub
 E.ActionBars = AB
@@ -356,7 +357,7 @@ function AB:StyleButton(button, noBackdrop)
 	if count then
 		count:ClearAllPoints();
 		count:SetPoint("BOTTOMRIGHT", 0, 2);
-		count:FontTemplate(nil, 11, "OUTLINE");
+		count:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 	end
 
 	if not button.noBackdrop and not button.backdrop then
@@ -374,7 +375,7 @@ function AB:StyleButton(button, noBackdrop)
 	end
 	
 	if self.db.hotkeytext then
-		hotkey:FontTemplate(nil, E.db.actionbar.fontsize, "OUTLINE");
+		hotkey:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 	end
 	
 	--Extra Action Button

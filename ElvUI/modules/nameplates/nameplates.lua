@@ -1,5 +1,6 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local NP = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
+local LSM = LibStub("LibSharedMedia-3.0")
 
 local OVERLAY = [=[Interface\TargetingFrame\UI-TargetingFrame-Flash]=]
 local numChildren = -1
@@ -271,6 +272,7 @@ function NP:SkinPlate(frame)
 	local oldhp, oldcb = frame:GetChildren()
 	local threat, hpborder, overlay, oldname, oldlevel, bossicon, raidicon, elite = frame:GetRegions()
 	local _, cbborder, cbshield, cbicon = oldcb:GetRegions()
+	local font = LSM:Fetch("font", self.db.font)
 	
 	--Health Bar
 	if not frame.hp then
@@ -306,28 +308,29 @@ function NP:SkinPlate(frame)
 	--Level Text
 	if not frame.hp.level then
 		frame.hp.level = frame.hp:CreateFontString(nil, "OVERLAY")
-		frame.hp.level:FontTemplate(nil, 10, 'OUTLINE')
 		frame.hp.level:SetPoint("RIGHT", frame.hp, "LEFT", -1, 0)
 		frame.hp.oldlevel = oldlevel
 		frame.hp.boss = bossicon
 		frame.hp.elite = elite
 	end
+	frame.hp.level:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
+	frame.hp.level:SetText(oldlevel:GetText())
 	
 	--Name Text
 	if not frame.hp.name then
 		frame.hp.name = frame.hp:CreateFontString(nil, 'OVERLAY')
 		frame.hp.name:SetPoint('BOTTOMLEFT', frame.hp, 'TOPLEFT', -10, 3)
 		frame.hp.name:SetPoint('BOTTOMRIGHT', frame.hp, 'TOPRIGHT', 10, 3)
-		frame.hp.name:FontTemplate(nil, 10, 'OUTLINE')
 		frame.hp.oldname = oldname
 	end
-
+	frame.hp.name:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
+	
 	--Health Text
 	if not frame.hp.value then
 		frame.hp.value = frame.hp:CreateFontString(nil, "OVERLAY")	
 		frame.hp.value:SetPoint("CENTER", frame.hp)
-		frame.hp.value:FontTemplate(nil, 10, 'OUTLINE')
 	end
+	frame.hp.value:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
 	
 	--Overlay
 	overlay.oldTexture = overlay:GetTexture()
@@ -348,15 +351,15 @@ function NP:SkinPlate(frame)
 	if not frame.cb.time then
 		frame.cb.time = frame.cb:CreateFontString(nil, "ARTWORK")
 		frame.cb.time:SetPoint("RIGHT", frame.cb, "LEFT", -1, 0)
-		frame.cb.time:FontTemplate(nil, 10, 'OUTLINE')
 	end
+	frame.cb.time:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
 	
 	--Cast Name
 	if not frame.cb.name then
 		frame.cb.name = frame.cb:CreateFontString(nil, "ARTWORK")
 		frame.cb.name:SetPoint("TOP", frame.cb, "BOTTOM", 0, -3)
-		frame.cb.name:FontTemplate(nil, 10, 'OUTLINE')
 	end
+	frame.cb.name:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
 	
 	--Cast Icon
 	if not frame.cb.icon then
@@ -417,6 +420,12 @@ function NP:SkinPlate(frame)
 		f.UpdateTarget = NP.UpdateAuraTarget
 		
 		frame.AuraWidget = f
+	end
+	
+	for index = 1, NP.MAX_DISPLAYABLE_DEBUFFS do 
+		if AuraIconFrames and AuraIconFrames[index] then
+			AuraIconFrames[index].TimeLeft:FontTemplate(font, self.db.fontSize - 3, self.db.fontOutline)
+		end
 	end
 		
 	--Hide Old Stuff

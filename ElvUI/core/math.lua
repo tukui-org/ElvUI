@@ -140,15 +140,15 @@ function E:TrimFloatingPoint(number, decimals)
 end
 
 local styles = {
-	['CURRENT'] = '|cff%02x%02x%02x%s|r',
-	['CURRENT_MAX'] = '|cff%02x%02x%02x%s|r |cff%02x%02x%02x-|r |cff%02x%02x%02x%s|r',
-	['CURRENT_PERCENT'] =  '|cff%02x%02x%02x%s|r |cff%02x%02x%02x-|r |cff%02x%02x%02x%s%%|r',
-	['CURRENT_MAX_PERCENT'] = '|cff%02x%02x%02x%s|r |cff%02x%02x%02x-|r |cff%02x%02x%02x%s|r |cff%02x%02x%02x| |r|cff%02x%02x%02x%s%%|r',
-	['PERCENT'] = '|cff%02x%02x%02x%s%%|r',
-	['DEFICIT'] = '|cff%02x%02x%02x-|r|cff%02x%02x%02x%s|r'
+	['CURRENT'] = '%s',
+	['CURRENT_MAX'] = '%s - %s',
+	['CURRENT_PERCENT'] =  '%s - %s%%',
+	['CURRENT_MAX_PERCENT'] = '%s - %s | %s%%',
+	['PERCENT'] = '%s%%',
+	['DEFICIT'] = '-%s'
 }
 
-function E:GetFormattedText(style, min, max, badR, badG, badB, goodR, goodG, goodB, seperatorR, seperatorG, seperatorB)
+function E:GetFormattedText(style, min, max)
 	assert(styles[style], 'Invalid format style: '..style)
 	assert(min, 'You need to provide a current value. Usage: E:GetFormattedText(style, min, max)')
 	assert(max, 'You need to provide a maximum value. Usage: E:GetFormattedText(style, min, max)')
@@ -156,27 +156,7 @@ function E:GetFormattedText(style, min, max, badR, badG, badB, goodR, goodG, goo
 	if max == 0 then max = 1 end
 	
 	local useStyle = styles[style]
-	
-	if not seperatorR or not seperatorG or not seperatorB then
-		seperatorR, seperatorG, seperatorB = 1, 1, 1
-	end	
-	
-	if not badR or not badG or not badB then
-		badR, badG, badB = 1, 1, 1
-	end
-	
-	if not goodR or not goodG or not goodB then
-		goodR, goodG, goodB = badR, badG, badB
-	end	
-	
-	if min == max then
-		badR, badG, badB = goodR, goodG, goodB
-	end
-	
-	badR, badG, badB = badR * 255, badG  * 255, badB  * 255
-	goodR, goodG, goodB = goodR * 255, goodG  * 255, goodB  * 255
-	seperatorR, seperatorG, seperatorB = seperatorR * 255, seperatorG  * 255, seperatorB  * 255
-	
+
 	local percentValue = E:TrimFloatingPoint(min / max * 100)
 	
 	if style == 'DEFICIT' then
@@ -184,18 +164,18 @@ function E:GetFormattedText(style, min, max, badR, badG, badB, goodR, goodG, goo
 		if deficit <= 0 then
 			return ''
 		else
-			return string.format(useStyle, seperatorR, seperatorG, seperatorB, badR, badG, badB, E:ShortValue(deficit))
+			return string.format(useStyle, E:ShortValue(deficit))
 		end
 	elseif style == 'PERCENT' then
-		return string.format(useStyle, badR, badG, badB, percentValue)
+		return string.format(useStyle, percentValue)
 	elseif style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
-		return string.format(styles['CURRENT'], badR, badG, badB,  E:ShortValue(min))
+		return string.format(styles['CURRENT'],  E:ShortValue(min))
 	elseif style == 'CURRENT_MAX' then
-		return string.format(useStyle,  badR, badG, badB,  E:ShortValue(min), seperatorR, seperatorG, seperatorB,  goodR, goodG, goodB, E:ShortValue(max))
+		return string.format(useStyle,  E:ShortValue(min), E:ShortValue(max))
 	elseif style == 'CURRENT_PERCENT' then
-		return string.format(useStyle, badR, badG, badB, E:ShortValue(min), seperatorR, seperatorG, seperatorB, goodR, goodG, goodB, percentValue)
+		return string.format(useStyle, E:ShortValue(min), percentValue)
 	elseif style == 'CURRENT_MAX_PERCENT' then
-		return string.format(useStyle, badR, badG, badB, E:ShortValue(min), seperatorR, seperatorG, seperatorB, badR, badG, badB, E:ShortValue(max), seperatorR, seperatorG, seperatorB, goodR, goodG, goodB, percentValue)
+		return string.format(useStyle, E:ShortValue(min), E:ShortValue(max), percentValue)
 	end
 end
 

@@ -146,10 +146,13 @@ end
 
 
 function CH:StyleChat(frame)
+	local name = frame:GetName()
+	_G[name.."TabText"]:FontTemplate(LSM:Fetch("font", self.db.tabFont), self.db.tabFontSize, self.db.tabFontOutline)
+	
 	if frame.styled then return end
 
 	local id = frame:GetID()
-	local name = frame:GetName()
+	
 	local tab = _G[name..'Tab']
 	local editbox = _G[name..'EditBox']
 	
@@ -161,10 +164,7 @@ function CH:StyleChat(frame)
 
 	tab:SetAlpha(1)
 	tab.SetAlpha = UIFrameFadeRemoveFrame	
-
-	
 	tab.text = _G[name.."TabText"]
-	tab.text:FontTemplate()
 	tab.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
 	tab.text.OldSetTextColor = tab.text.SetTextColor 
 	tab.text.SetTextColor = E.noop
@@ -632,14 +632,14 @@ function CH:DisableChatThrottle()
 	table.wipe(msgList); table.wipe(msgCount); table.wipe(msgTime)
 end
 
-function CH:SetupChat(event, ...)	
+function CH:SetupChat(event, ...)
 	for _, frameName in pairs(CHAT_FRAMES) do
 		local frame = _G[frameName]
 		local _, fontSize = FCF_GetChatWindowInfo(frame:GetID());
 		self:StyleChat(frame)
 		FCFTab_UpdateAlpha(frame)
-		frame:SetFont(LSM:Fetch("font", self.db.font), fontSize, self.db.fontoutline)
-		if self.db.fontoutline ~= 'NONE' then
+		frame:SetFont(LSM:Fetch("font", self.db.font), fontSize, self.db.fontOutline)
+		if self.db.fontOutline ~= 'NONE' then
 			frame:SetShadowColor(0, 0, 0, 0.2)
 		else
 			frame:SetShadowColor(0, 0, 0, 1)
@@ -875,8 +875,8 @@ function CH:SetChatFont(dropDown, chatFrame, fontSize)
 	if ( not fontSize ) then
 		fontSize = dropDown.value;
 	end
-	chatFrame:SetFont(LSM:Fetch("font", self.db.font), fontSize, self.db.fontoutline)
-	if self.db.fontoutline ~= 'NONE' then
+	chatFrame:SetFont(LSM:Fetch("font", self.db.font), fontSize, self.db.fontOutline)
+	if self.db.fontOutline ~= 'NONE' then
 		chatFrame:SetShadowColor(0, 0, 0, 0.2)
 	else
 		chatFrame:SetShadowColor(0, 0, 0, 1)

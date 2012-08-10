@@ -76,8 +76,41 @@ E.Options.args.auras = {
 				},				
 			},
 		},
-		buffs = {
+		fontGroup = {
 			order = 6,
+			type = 'group',
+			guiInline = true,
+			name = L['Fonts'],
+			args = {
+				font = {
+					type = "select", dialogControl = 'LSM30_Font',
+					order = 4,
+					name = L["Font"],
+					values = AceGUIWidgetLSMlists.font,
+				},
+				fontSize = {
+					order = 5,
+					name = L["Font Size"],
+					type = "range",
+					min = 6, max = 22, step = 1,
+				},	
+				fontOutline = {
+					order = 6,
+					name = L["Font Outline"],
+					desc = L["Set the font outline."],
+					type = "select",
+					values = {
+						['NONE'] = L['None'],
+						['OUTLINE'] = 'OUTLINE',
+						['MONOCHROME'] = 'MONOCHROME',
+						['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+						['THICKOUTLINE'] = 'THICKOUTLINE',
+					},
+				},	
+			},
+		},			
+		buffs = {
+			order = 10,
 			type = 'group',
 			guiInline = true,
 			name = L['Buffs'],
@@ -123,7 +156,7 @@ E.Options.args.auras = {
 			},
 		},	
 		debuffs = {
-			order = 7,
+			order = 20,
 			type = 'group',
 			guiInline = true,
 			name = L['Debuffs'],
