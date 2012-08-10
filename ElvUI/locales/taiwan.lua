@@ -345,7 +345,7 @@ do
 	L['Mouse Over'] = "游標顯示";
 		L['The frame is not shown unless you mouse over the frame.'] = "僅於游標移經快捷列時顯示其框架。";
 	L['Pet Bar'] = "寵物快捷列";
-	L['ShapeShift Bar'] = "姿態列";
+	L['Stance Bar'] = "姿態列";
 	L['Cooldown Text'] = "冷卻文字";
 		L['Display cooldown text on anything with the cooldown spiril.'] = "倒數計時，顯示所有冷卻時間。";
 	L['Low Threshold'] = "冷卻時間低閥值";

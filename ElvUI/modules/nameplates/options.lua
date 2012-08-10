@@ -170,6 +170,39 @@ E.Options.args.nameplate = {
 					isPercent = true,
 					min = 0.2, max = 1, step = 0.01, 			
 				},
+				fontGroup = {
+					order = 50,
+					type = 'group',
+					guiInline = true,
+					name = L['Fonts'],
+					args = {
+						font = {
+							type = "select", dialogControl = 'LSM30_Font',
+							order = 4,
+							name = L["Font"],
+							values = AceGUIWidgetLSMlists.font,
+						},
+						fontSize = {
+							order = 5,
+							name = L["Font Size"],
+							type = "range",
+							min = 6, max = 22, step = 1,
+						},	
+						fontOutline = {
+							order = 6,
+							name = L["Font Outline"],
+							desc = L["Set the font outline."],
+							type = "select",
+							values = {
+								['NONE'] = L['None'],
+								['OUTLINE'] = 'OUTLINE',
+								['MONOCHROME'] = 'MONOCHROME',
+								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+								['THICKOUTLINE'] = 'THICKOUTLINE',
+							},
+						},	
+					},
+				},				
 				auras = {
 					order = 100,
 					type = "group",

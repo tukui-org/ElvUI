@@ -402,6 +402,11 @@ function E:UpdateAll(ignoreInstall)
 	M:EnableDisable_ExperienceBar()
 	M:EnableDisable_ReputationBar()	
 	
+	local T = self:GetModule('Threat')
+	T.db = self.db.general.threat
+	T:UpdatePosition()
+	T:ToggleEnable()
+	
 	self:GetModule('Auras').db = self.db.auras
 	self:GetModule('Tooltip').db = self.db.tooltip
 	

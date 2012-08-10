@@ -70,7 +70,7 @@ function UF:CreateCustomTextGroup(unit, objectName)
 				type = "range",
 				min = 6, max = 72, step = 1,
 			},		
-			fontoutline = {
+			fontOutline = {
 				order = 4,
 				name = L["Font Outline"],
 				desc = L["Set the font outline."],
@@ -485,7 +485,7 @@ E.Options.args.unitframe = {
 							min = 6, max = 22, step = 1,
 							set = function(info, value) E.db.unitframe[ info[#info] ] = value; UF:Update_FontStrings() end,
 						},	
-						fontoutline = {
+						fontOutline = {
 							order = 6,
 							name = L["Font Outline"],
 							desc = L["Set the font outline."],
@@ -881,7 +881,7 @@ E.Options.args.unitframe.args.player = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
-					['fontoutline'] = 'NONE'
+					['fontOutline'] = 'NONE'
 				};
 
 				UF:CreateCustomTextGroup('player', textName)
@@ -1578,7 +1578,7 @@ E.Options.args.unitframe.args.target = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
-					['fontoutline'] = 'NONE'
+					['fontOutline'] = 'NONE'
 				};
 
 				UF:CreateCustomTextGroup('target', textName)
@@ -2233,7 +2233,7 @@ E.Options.args.unitframe.args.targettarget = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
-					['fontoutline'] = 'NONE'
+					['fontOutline'] = 'NONE'
 				};
 
 				UF:CreateCustomTextGroup('targettarget', textName)
@@ -2642,7 +2642,7 @@ E.Options.args.unitframe.args.focus = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
-					['fontoutline'] = 'NONE'
+					['fontOutline'] = 'NONE'
 				};
 
 				UF:CreateCustomTextGroup('focus', textName)
@@ -3239,7 +3239,7 @@ E.Options.args.unitframe.args.focustarget = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
-					['fontoutline'] = 'NONE'
+					['fontOutline'] = 'NONE'
 				};
 
 				UF:CreateCustomTextGroup(unit, textName)
@@ -3638,7 +3638,7 @@ E.Options.args.unitframe.args.pet = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
-					['fontoutline'] = 'NONE'
+					['fontOutline'] = 'NONE'
 				};
 
 				UF:CreateCustomTextGroup(unit, textName)
@@ -4031,7 +4031,7 @@ E.Options.args.unitframe.args.pettarget = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
-					['fontoutline'] = 'NONE'
+					['fontOutline'] = 'NONE'
 				};
 
 				UF:CreateCustomTextGroup(unit, textName)
@@ -4427,7 +4427,7 @@ E.Options.args.unitframe.args.boss = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
-					['fontoutline'] = 'NONE'
+					['fontOutline'] = 'NONE'
 				};
 
 				UF:CreateCustomTextGroup(unit, textName)
@@ -4939,7 +4939,7 @@ E.Options.args.unitframe.args.arena = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
-					['fontoutline'] = 'NONE'
+					['fontOutline'] = 'NONE'
 				};
 
 				UF:CreateCustomTextGroup(unit, textName)
@@ -5504,7 +5504,7 @@ E.Options.args.unitframe.args.party = {
 							['font'] = E.db.unitframe.font,
 							['xOffset'] = 0,
 							['yOffset'] = 0,	
-							['fontoutline'] = 'NONE'
+							['fontOutline'] = 'NONE'
 						};
 
 						UF:CreateCustomTextGroup(unit, textName)
@@ -6176,7 +6176,7 @@ for i=10, 40, 15 do
 								['font'] = E.db.unitframe.font,
 								['xOffset'] = 0,
 								['yOffset'] = 0,	
-								['fontoutline'] = 'NONE'
+								['fontOutline'] = 'NONE'
 							};
 
 							UF:CreateCustomTextGroup(unit, textName)

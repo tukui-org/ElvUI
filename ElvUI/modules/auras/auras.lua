@@ -1,5 +1,6 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local A = E:NewModule('Auras', 'AceHook-3.0', 'AceEvent-3.0');
+local LSM = LibStub("LibSharedMedia-3.0")
 
 function A:FormatTime(s)
 	local day, hour, minute = 86400, 3600, 60
@@ -56,6 +57,8 @@ function A:UpdateWeapons(button, slot, active, expiration)
 		button.highlight:SetTexture(1,1,1,0.45)
 		button.highlight:SetAllPoints(button.texture)		
 	end
+	local font = LSM:Fetch("font", self.db.font)
+	button.time:FontTemplate(font, self.db.fontSize, self.db.fontOutline)	
 	
 	if active then
 		button.id = GetInventorySlotInfo(slot)
@@ -82,11 +85,11 @@ function A:UpdateAuras(header, button)
 
 		button.count = button:CreateFontString(nil, "ARTWORK")
 		button.count:SetPoint("BOTTOMRIGHT", -1, 1)
-		button.count:FontTemplate(nil, nil, 'OUTLINE')
+		button.count:FontTemplate()--safty
 
 		button.time = button:CreateFontString(nil, "ARTWORK")
 		button.time:SetPoint("TOP", button, 'BOTTOM', 0, -2)
-		button.time:FontTemplate(nil, nil, 'OUTLINE')
+		button.time:FontTemplate()--safty
 
 		button:SetScript("OnUpdate", A.UpdateTime)
 		
@@ -98,6 +101,9 @@ function A:UpdateAuras(header, button)
 		
 		E:SetUpAnimGroup(button)
 	end
+	local font = LSM:Fetch("font", self.db.font)
+	button.count:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
+	button.time:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
 	
 	local name, _, texture, count, dtype, duration, expiration = UnitAura(header:GetAttribute("unit"), button:GetID(), header:GetAttribute("filter"))
 	
@@ -162,6 +168,8 @@ function A:UpdateHeader(header)
 	header:SetAttribute("minHeight", (10 - E.private.auras.size) * db.maxWraps)
 	header:SetAttribute("wrapYOffset", -(18 + E.private.auras.size))
 	AurasHolder:Width(header:GetAttribute('minWidth'))
+	
+	self.ScanAuras(header)
 	
 	A:PostDrag()
 end
@@ -251,10 +259,7 @@ function A:Initialize()
 	self.DebuffFrame = self:CreateAuraHeader("HARMFUL")
 
 	E:CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, nil, A.PostDrag)
-	
-	self.ScanAuras(self.BuffFrame)
-	self.ScanAuras(self.DebuffFrame)
-	
+
 	self:Construct_ConsolidatedBuffs()
 end
 

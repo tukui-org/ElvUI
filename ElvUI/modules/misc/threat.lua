@@ -12,6 +12,7 @@ function THREAT:UpdatePosition()
 		self.bar:SetParent(LeftChatDataPanel)	
 	end
 	
+	self.bar.text:FontTemplate(nil, self.db.textSize)
 	self.bar:SetFrameStrata('MEDIUM')
 end
 
@@ -52,7 +53,7 @@ function THREAT:Initialize()
 	self.bar:CreateBackdrop('Default')
 	
 	self.bar.text = self.bar:CreateFontString(nil, 'OVERLAY')
-	self.bar.text:FontTemplate()
+	self.bar.text:FontTemplate(nil, self.db.textSize)
 	self.bar.text:SetPoint('CENTER', self.bar, 'CENTER')
 	
 	self:UpdatePosition()

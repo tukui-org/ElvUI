@@ -16,8 +16,6 @@ P['general'] = {
 
 	["fontSize"] = 12,
 	["font"] = "ElvUI Font",
-	["secondaryFont"] = "ElvUI Pixel",
-	["secondaryFontSize"] = 10,
 
 	["bordercolor"] = { r = 0.1,g = 0.1,b = 0.1 },
 	["backdropcolor"] = { r = 0.1,g = 0.1,b = 0.1 },
@@ -49,6 +47,7 @@ P['general'] = {
 	['threat'] = {
 		['enable'] = true,
 		['position'] = 'RIGHTCHAT',
+		['textSize'] = 12,
 	},
 };
 
@@ -73,6 +72,10 @@ P['bags'] = {
 
 --NamePlate
 P["nameplate"] = {
+	['font'] = 'ElvUI Font',
+	['fontSize'] = 10,
+	['fontOutline'] = 'OUTLINE',
+	
 	["markBGHealers"] = true,
 	["width"] = 114,
 	["height"] = 8,
@@ -99,6 +102,10 @@ P["nameplate"] = {
 
 --Auras
 P['auras'] = {
+	['font'] = 'ElvUI Pixel',
+	['fontSize'] = 10,
+	['fontOutline'] = 'MONOCHROMEOUTLINE',
+	
 	['consolidedBuffs'] = true;
 	['wrapAfter'] = 12,
 	['fadeThreshold'] = 5,
@@ -123,7 +130,7 @@ P['chat'] = {
 	['throttleInterval'] = 45,
 	['scrollDownInterval'] = 15,
 	['font'] = 'ElvUI Font',
-	['fontoutline'] = 'NONE',
+	['fontOutline'] = 'NONE',
 	['sticky'] = true,
 	['emotionIcons'] = true,
 	['keywordSound'] = 'None',
@@ -134,10 +141,18 @@ P['chat'] = {
 	['panelBackdropNameLeft'] = '',
 	['panelBackdropNameRight'] = '',
 	['panelBackdrop'] = 'SHOWBOTH',	
+	
+	['tabFont'] = 'ElvUI Font',
+	['tabFontSize'] = 12,
+	['tabFontOutline'] = 'NONE',
 }
 
 --Datatexts
 P['datatexts'] = {
+	['font'] = 'ElvUI Font',
+	['fontSize'] = 12,
+	['fontOutline'] = 'NONE',
+	
 	['panels'] = {
 		['LeftChatDataPanel'] = {
 			['left'] = 'Armor',
@@ -172,7 +187,7 @@ P['unitframe'] = {
 	['statusbar'] = "Minimalist",
 	['font'] = 'ElvUI Pixel',
 	['fontSize'] = 10,
-	['fontoutline'] = 'MONOCHROMEOUTLINE',
+	['fontOutline'] = 'MONOCHROMEOUTLINE',
 	['OORAlpha'] = 0.35,
 	['debuffHighlighting'] = true,
 	["smartRaidFilter"] = true,
@@ -1143,9 +1158,12 @@ P['unitframe'] = {
 
 --Actionbar
 P["actionbar"] = {
+	['font'] = 'ElvUI Pixel',
+	['fontSize'] = 10,
+	['fontOutline'] = 'MONOCHROMEOUTLINE',
+	
 	["macrotext"] = false,
 	["hotkeytext"] = true,
-	['fontSize'] = 11,
 	["enablecd"] = true,
 	["treshold"] = 3,
 	['useMaxPaging'] = false,
@@ -1154,6 +1172,7 @@ P["actionbar"] = {
 	["minutescolor"] = { r = 1, g = 1, b = 1 },
 	["hourscolor"] = { r = 0.4, g = 1, b = 1 },
 	["dayscolor"] = { r = 0.4, g = 0.4, b = 1 },
+
 	['microbar'] = {
 		['enabled'] = false,
 		['mouseover'] = false,
@@ -1249,7 +1268,7 @@ P["actionbar"] = {
 		["buttonspacing"] = 4,
 		['visibility'] = "[petbattle] hide;[pet,novehicleui,nooverridebar,nopossessbar] show;hide",
 	},
-	['barShapeShift'] = {
+	['stanceBar'] = {
 		['enabled'] = true,
 		['mouseover'] = false,
 		['buttonsPerRow'] = NUM_STANCE_SLOTS,

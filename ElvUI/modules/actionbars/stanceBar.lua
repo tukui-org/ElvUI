@@ -3,7 +3,7 @@ local AB = E:GetModule('ActionBars');
 
 local ceil = math.ceil;
 
-local bar = CreateFrame('Frame', 'ElvUI_BarShapeShift', E.UIParent, 'SecureHandlerStateTemplate');
+local bar = CreateFrame('Frame', 'ElvUI_StanceBar', E.UIParent, 'SecureHandlerStateTemplate');
 
 local states = {
 	["DRUID"] = "show",
@@ -24,7 +24,7 @@ function AB:StyleShapeShift()
 	local start, duration, enable;
 	
 	for i = 1, NUM_STANCE_SLOTS do
-		buttonName = "ElvUI_BarShapeShiftButton"..i;
+		buttonName = "ElvUI_StanceBarButton"..i;
 		button = _G[buttonName];
 		icon = _G[buttonName.."Icon"];
 		cooldown = _G[buttonName.."Cooldown"];
@@ -59,14 +59,14 @@ function AB:StyleShapeShift()
 end
 
 function AB:PositionAndSizeBarShapeShift()
-	local spacing = E:Scale(self.db['barShapeShift'].buttonspacing);
-	local buttonsPerRow = self.db['barShapeShift'].buttonsPerRow;
-	local numButtons = self.db['barShapeShift'].buttons;
-	local size = E:Scale(self.db['barShapeShift'].buttonsize);
-	local point = self.db['barShapeShift'].point;
-	local widthMult = self.db['barShapeShift'].widthMult;
-	local heightMult = self.db['barShapeShift'].heightMult;
-	bar.db = self.db['barShapeShift']
+	local spacing = E:Scale(self.db['stanceBar'].buttonspacing);
+	local buttonsPerRow = self.db['stanceBar'].buttonsPerRow;
+	local numButtons = self.db['stanceBar'].buttons;
+	local size = E:Scale(self.db['stanceBar'].buttonsize);
+	local point = self.db['stanceBar'].point;
+	local widthMult = self.db['stanceBar'].widthMult;
+	local heightMult = self.db['stanceBar'].heightMult;
+	bar.db = self.db['stanceBar']
 	bar.db.position = nil; --Depreciated
 	if bar.LastButton and numButtons > bar.LastButton then	
 		numButtons = bar.LastButton;
@@ -87,8 +87,8 @@ function AB:PositionAndSizeBarShapeShift()
 
 	bar:SetWidth(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
 	bar:SetHeight(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
-	bar.mouseover = self.db['barShapeShift'].mouseover
-	if self.db['barShapeShift'].enabled then
+	bar.mouseover = self.db['stanceBar'].mouseover
+	if self.db['stanceBar'].enabled then
 		bar:SetScale(1);
 		bar:SetAlpha(1);
 	else
@@ -96,7 +96,7 @@ function AB:PositionAndSizeBarShapeShift()
 		bar:SetAlpha(0);
 	end
 	
-	if self.db['barShapeShift'].backdrop == true then
+	if self.db['stanceBar'].backdrop == true then
 		bar.backdrop:Show();
 	else
 		bar.backdrop:Hide();
@@ -118,16 +118,16 @@ function AB:PositionAndSizeBarShapeShift()
 	local button, lastButton, lastColumnButton;
 	local possibleButtons = {};
 	for i=1, NUM_STANCE_SLOTS do
-		button = _G["ElvUI_BarShapeShiftButton"..i];
-		lastButton = _G["ElvUI_BarShapeShiftButton"..i-1];
-		lastColumnButton = _G["ElvUI_BarShapeShiftButton"..i-buttonsPerRow];
+		button = _G["ElvUI_StanceBarButton"..i];
+		lastButton = _G["ElvUI_StanceBarButton"..i-1];
+		lastColumnButton = _G["ElvUI_StanceBarButton"..i-buttonsPerRow];
 		button:SetParent(bar);
 		button:ClearAllPoints();
 		button:Size(size);
 		
 		possibleButtons[((i * buttonsPerRow) + 1)] = true;
 
-		if self.db['barShapeShift'].mouseover == true then
+		if self.db['stanceBar'].mouseover == true then
 			bar:SetAlpha(0);
 			if not self.hooks[bar] then
 				self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
