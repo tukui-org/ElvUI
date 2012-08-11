@@ -156,7 +156,8 @@ function B:SlotUpdate(b)
 			SetItemButtonTextureVertexColor(b.frame, 1, 1, 1);
 		end
 	end
-
+	
+	b.frame.questIcon:Hide()
 	
 	
 	if(clink) then
