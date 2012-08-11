@@ -261,13 +261,6 @@ local function LoadSkin()
 		MacOptionsFrameDefaults:SetWidth(96)
 		MacOptionsFrameDefaults:SetHeight(22)
 
-		-- why these buttons is using game menu template? oO
-		MacOptionsButtonCompressLeft:SetAlpha(0)
-		MacOptionsButtonCompressMiddle:SetAlpha(0)
-		MacOptionsButtonCompressRight:SetAlpha(0)
-		MacOptionsButtonKeybindingsLeft:SetAlpha(0)
-		MacOptionsButtonKeybindingsMiddle:SetAlpha(0)
-		MacOptionsButtonKeybindingsRight:SetAlpha(0)
 	end
 	
 	OpacityFrame:StripTextures()
