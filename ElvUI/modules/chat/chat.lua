@@ -169,6 +169,11 @@ function CH:StyleChat(frame)
 	tab.text.OldSetTextColor = tab.text.SetTextColor 
 	tab.text.SetTextColor = E.noop
 	
+	if tab.conversationIcon then
+		tab.conversationIcon:ClearAllPoints()
+		tab.conversationIcon:Point('RIGHT', tab.text, 'LEFT', -1, 0)
+	end
+	
 	frame:SetClampRectInsets(0,0,0,0)
 	frame:SetClampedToScreen(false)
 	frame:StripTextures(true)
