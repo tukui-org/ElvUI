@@ -23,7 +23,7 @@ local function LoadSkin()
 	BlackMarketFrame.Inset.backdrop:SetAllPoints()
 	
 	S:HandleCloseButton(BlackMarketFrame.CloseButton)
-	S:HandleScrollBar(BlackMarketScrollFrameScrollBar)
+	S:HandleScrollBar(BlackMarketScrollFrameScrollBar, 4)
 	SkinTab(BlackMarketFrame.ColumnName)
 	SkinTab(BlackMarketFrame.ColumnLevel)
 	SkinTab(BlackMarketFrame.ColumnType)
@@ -41,20 +41,35 @@ local function LoadSkin()
 	hooksecurefunc('BlackMarketScrollFrame_Update', function()
 		local buttons = BlackMarketScrollFrame.buttons;
 		local numButtons = #buttons;
-
+		local offset = HybridScrollFrame_GetOffset(BlackMarketScrollFrame);
+		local numItems = C_BlackMarket.GetNumItems();
+		
 		for i = 1, numButtons do
 			local button = buttons[i];
-
-			if button then
+			local index = offset + i; -- adjust index
+			
+			
+			if not button.skinned then
 				S:HandleItemButton(button.Item)
 				button:StripTextures('BACKGROUND')
 				button:StyleButton()
+				button.skinned = true
+			end
+			
+			if ( index <= numItems ) then
+				local name, texture = C_BlackMarket.GetItemInfoByIndex(index);
+				if ( name ) then
+					button.Item.IconTexture:SetTexture(texture);
+				end
 			end
 		end
 	end)
 	
 	BlackMarketFrame.HotDeal:StripTextures()
 	S:HandleItemButton(BlackMarketFrame.HotDeal.Item)
+	BlackMarketFrame.HotDeal.Item.hover:SetAllPoints()
+	BlackMarketFrame.HotDeal.Item.pushed:SetAllPoints()
+	
 	S:HandleButton(BlackMarketFrame.HotDeal.BidButton)
 	S:HandleEditBox(BlackMarketHotItemBidPriceGold)
 	

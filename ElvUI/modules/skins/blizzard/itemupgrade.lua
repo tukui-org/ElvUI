@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true --[[or E.private.skins.blizzard.reforge ~= true]] then return end
-
+	
 	ItemUpgradeFrame:StripTextures()
 	ItemUpgradeFrame:SetTemplate('Transparent')
 	ItemUpgradeFrame:CreateShadow('Default')
@@ -13,8 +13,6 @@ local function LoadSkin()
 	S:HandleCloseButton(ItemUpgradeFrameCloseButton)
 	
 	S:HandleItemButton(ItemUpgradeFrame.ItemButton, true)
-	ItemUpgradeFrame.ItemButton.hover:SetAllPoints()
-	ItemUpgradeFrame.ItemButton.pushed:SetAllPoints()
 
 	hooksecurefunc('ItemUpgradeFrame_Update', function()
 		if GetItemUpgradeItemInfo() then
