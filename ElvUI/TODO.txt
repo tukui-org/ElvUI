@@ -1,7 +1,6 @@
 TODO:
 
 -Find better emotion icons
--Add a threat system, not sure how i will go about doing this atm.
 -Update Locales
 -Skin blackmarket ah
 -Skin valor point system frame whenever it comes out.

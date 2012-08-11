@@ -311,7 +311,7 @@ function S:HandleItemButton(b, shrinkIcon)
 	b:CreateBackdrop('Default', true)
 	b:StyleButton()
 	
-	local icon = b.icon
+	local icon = b.icon or b.IconTexture
 	if b:GetName() and _G[b:GetName()..'IconTexture'] then
 		icon = _G[b:GetName()..'IconTexture']
 	elseif b:GetName() and _G[b:GetName()..'Icon'] then

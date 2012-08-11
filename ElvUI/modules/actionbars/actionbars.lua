@@ -695,6 +695,30 @@ function AB:MultiActionBar_Update(event)
 	end
 end
 
+function AB:VehicleFix()
+	local barName = 'bar1'
+	local bar = self["handledBars"][barName]
+	if HasOverrideActionBar() or HasVehicleActionBar() then
+		local widthMult = 1;
+		local heightMult = 1;
+		local spacing = E:Scale(self.db[barName].buttonspacing);
+		local buttonsPerRow = self.db[barName].buttonsPerRow;
+		local numButtons = self.db[barName].buttons;
+		local size = E:Scale(self.db[barName].buttonsize);
+		local point = self.db[barName].point;
+		local numColumns = ceil(numButtons / buttonsPerRow);
+	
+		widthMult = 1
+		heightMult = 1
+		bar.backdrop:ClearAllPoints()
+		bar.backdrop:SetPoint(self.db[barName].point, bar, self.db[barName].point)
+		bar.backdrop:SetWidth(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
+		bar.backdrop:SetHeight(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));			
+	else
+		bar.backdrop:SetAllPoints()
+	end
+end
+
 function AB:Initialize()
 	self.db = E.db.actionbar
 	if E.private.actionbar.enable ~= true then return; end
@@ -720,6 +744,8 @@ function AB:Initialize()
 	self:RegisterEvent("PET_BATTLE_CLOSE", "ReassignBindings")
 	self:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "MultiActionBar_Update")
+	self:RegisterEvent('UPDATE_VEHICLE_ACTIONBAR', 'VehicleFix')
+	self:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR', 'VehicleFix')
 	self:RegisterEvent('CVAR_UPDATE')
 	self:ReassignBindings()
 	
