@@ -157,13 +157,14 @@ function B:SlotUpdate(b)
 		end
 	end
 
+	
+	
 	if(clink) then
 		local iType
 		b.name, _, b.rarity, _, _, iType = GetItemInfo(clink)
 		
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(b.bag, b.slot);
-		b.frame.questIcon:Hide()
-
+	
 		-- color slot according to item quality
 		if questId and not isActive then
 			b.frame:SetBackdropBorderColor(1.0, 0.3, 0.3)
