@@ -224,6 +224,7 @@ function UF:Update_PartyFrames(frame, db)
 			local name = frame.Name
 			name:ClearAllPoints()
 			name:SetPoint('CENTER', frame.Health, 'CENTER')
+			frame:Tag(name, '[colorname][name:short]')
 		end			
 	else
 		if not InCombatLockdown() then
