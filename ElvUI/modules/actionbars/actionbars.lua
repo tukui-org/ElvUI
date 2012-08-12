@@ -380,7 +380,7 @@ function AB:StyleButton(button, noBackdrop)
 	
 	--Extra Action Button
 	if button.style then
-		button.style:SetParent(button.backdrop)
+		--button.style:SetParent(button.backdrop)
 		button.style:SetDrawLayer('BACKGROUND', -7)	
 	end
 	
