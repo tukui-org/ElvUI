@@ -392,13 +392,8 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.party.healPrediction = true;
 			E.db.unitframe.units.party.health.frequentUpdates = true;
 			E.db.unitframe.units.party.debuffs.enable = true;
-			E.db.unitframe.units.party.health.text_format = 'deficit';
 			E.db.unitframe.units.party.health.position = 'BOTTOM';
-			E.db.unitframe.units.party.health.orientation = 'VERTICAL';
-			E.db.unitframe.units.party.name.position = 'TOP';
-			E.db.unitframe.units.party.name.length = "SHORT";
 			E.db.unitframe.units.party.debuffs.anchorPoint = 'BOTTOMLEFT';
-			E.db.unitframe.units.party.debuffs.initialAnchor = 'TOPLEFT';
 			E.db.unitframe.units.party.debuffs.useFilter = 'Blacklist';
 			E.db.unitframe.units.party.debuffs.sizeOverride = 0;
 			E.db.unitframe.units.party.petsGroup.enable = true;
