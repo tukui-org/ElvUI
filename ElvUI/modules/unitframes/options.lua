@@ -1152,10 +1152,10 @@ E.Options.args.unitframe.args.player = {
 					type = 'select',
 					order = 7,
 					name = L['Attach To'],
-					desc = L['What to attach the buff anchor frame to.'],
+					desc = L['What to attach the debuff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
-						['DEBUFFS'] = L['Debuffs'],
+						['BUFFS'] = L['Buffs'],
 					},
 				},
 				anchorPoint = {
@@ -1849,10 +1849,10 @@ E.Options.args.unitframe.args.target = {
 					type = 'select',
 					order = 7,
 					name = L['Attach To'],
-					desc = L['What to attach the buff anchor frame to.'],
+					desc = L['What to attach the debuff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
-						['DEBUFFS'] = L['Debuffs'],
+						['BUFFS'] = L['Buffs'],
 					},
 				},
 				anchorPoint = {
@@ -2471,10 +2471,10 @@ E.Options.args.unitframe.args.targettarget = {
 					type = 'select',
 					order = 7,
 					name = L['Attach To'],
-					desc = L['What to attach the buff anchor frame to.'],
+					desc = L['What to attach the debuff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
-						['DEBUFFS'] = L['Debuffs'],
+						['BUFFS'] = L['Buffs'],
 					},
 				},
 				anchorPoint = {
@@ -2880,10 +2880,10 @@ E.Options.args.unitframe.args.focus = {
 					type = 'select',
 					order = 7,
 					name = L['Attach To'],
-					desc = L['What to attach the buff anchor frame to.'],
+					desc = L['What to attach the debuff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
-						['DEBUFFS'] = L['Debuffs'],
+						['BUFFS'] = L['Buffs'],
 					},
 				},
 				anchorPoint = {
@@ -3477,10 +3477,10 @@ E.Options.args.unitframe.args.focustarget = {
 					type = 'select',
 					order = 7,
 					name = L['Attach To'],
-					desc = L['What to attach the buff anchor frame to.'],
+					desc = L['What to attach the debuff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
-						['DEBUFFS'] = L['Debuffs'],
+						['BUFFS'] = L['Buffs'],
 					},
 				},
 				anchorPoint = {
@@ -3876,10 +3876,10 @@ E.Options.args.unitframe.args.pet = {
 					type = 'select',
 					order = 7,
 					name = L['Attach To'],
-					desc = L['What to attach the buff anchor frame to.'],
+					desc = L['What to attach the debuff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
-						['DEBUFFS'] = L['Debuffs'],
+						['BUFFS'] = L['Buffs'],
 					},
 				},
 				anchorPoint = {
@@ -4269,10 +4269,10 @@ E.Options.args.unitframe.args.pettarget = {
 					type = 'select',
 					order = 7,
 					name = L['Attach To'],
-					desc = L['What to attach the buff anchor frame to.'],
+					desc = L['What to attach the debuff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
-						['DEBUFFS'] = L['Debuffs'],
+						['BUFFS'] = L['Buffs'],
 					},
 				},
 				anchorPoint = {
@@ -4698,10 +4698,10 @@ E.Options.args.unitframe.args.boss = {
 					type = 'select',
 					order = 7,
 					name = L['Attach To'],
-					desc = L['What to attach the buff anchor frame to.'],
+					desc = L['What to attach the debuff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
-						['DEBUFFS'] = L['Debuffs'],
+						['BUFFS'] = L['Buffs'],
 					},
 				},
 				anchorPoint = {
@@ -5177,10 +5177,10 @@ E.Options.args.unitframe.args.arena = {
 					type = 'select',
 					order = 7,
 					name = L['Attach To'],
-					desc = L['What to attach the buff anchor frame to.'],
+					desc = L['What to attach the debuff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
-						['DEBUFFS'] = L['Debuffs'],
+						['BUFFS'] = L['Buffs'],
 					},
 				},
 				anchorPoint = {
@@ -5768,10 +5768,10 @@ E.Options.args.unitframe.args.party = {
 					type = 'select',
 					order = 7,
 					name = L['Attach To'],
-					desc = L['What to attach the buff anchor frame to.'],
+					desc = L['What to attach the debuff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
-						['DEBUFFS'] = L['Debuffs'],
+						['BUFFS'] = L['Buffs'],
 					},
 				},
 				anchorPoint = {
@@ -6440,10 +6440,10 @@ for i=10, 40, 15 do
 					type = 'select',
 					order = 7,
 					name = L['Attach To'],
-					desc = L['What to attach the buff anchor frame to.'],
+					desc = L['What to attach the debuff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
-						['DEBUFFS'] = L['Debuffs'],
+						['BUFFS'] = L['Buffs'],
 					},
 				},
 				anchorPoint = {
