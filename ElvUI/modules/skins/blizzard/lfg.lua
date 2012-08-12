@@ -125,7 +125,7 @@ local function LoadSkin()
 					button.border:SetTemplate()
 					button.border:SetOutside(icon)
 					icon:SetParent(button.border)
-
+					count:SetParent(button.border)
 					button.reskinned = true
 				end
 			end
@@ -183,7 +183,7 @@ local function LoadSkin()
 				button.border:SetTemplate()
 				button.border:SetOutside(icon)
 				icon:SetParent(button.border)
-
+				count:SetParent(button.border)
 				button.reskinned = true
 			end
 		end
@@ -221,7 +221,7 @@ local function LoadSkin()
 					button.border:SetTemplate()
 					button.border:SetOutside(icon)
 					icon:SetParent(button.border)
-
+					count:SetParent(button.border)
 					button.reskinned = true
 				end
 			end
