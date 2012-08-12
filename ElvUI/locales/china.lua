@@ -158,7 +158,7 @@ L["Chat"] = "聊天设定"
 L["CHAT_DESC"] = "聊天框架设定"
 L["Copy Text"] = true;
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "鼠标悬停在超链接上时显示链接提示框" -- Needs review
-L['DND']
+L['DND'] = true;
 L["Font Outline"] = "字体描边" --Also used in UnitFrames section
 L["Font"] = "字体" -- Needs review
 L["G"] = "公会"
@@ -478,7 +478,7 @@ L["Display level text on nameplate for nameplates that belong to units that aren
 L["Display your personal debuffs over the nameplate."] = "在血条上显示你个人的Debuffs"
 L["Enemy"] = "敌对"
 L["Enhance Threat"] = "仇恨进阶设定"
-L["Filter already exists!"]
+L["Filter already exists!"] = true;
 L["Filters"] = "筛选器" --Also used in UnitFrames
 L["Friendly NPC"] = "友好的NPC"
 L["Friendly Player"] = "友好的玩家"
@@ -612,7 +612,7 @@ L['You can use the /resetui command to reset all of your movers. You can also us
 
 --UnitFrames
 L["%s frame(s) has a conflicting anchor point, please change either the buff or debuff anchor point so they are not attached to each other. Forcing the debuffs to be attached to the main unitframe until fixed."] = "%s 个框架锚点冲突，请移动buff或者debuff锚点让他们彼此不依附。暂时强制debuff依附到主框架。" -- Needs review
-L['Above']
+L['Above'] = true;
 L["Add a spell to the filter."] = "添加一个技能到筛选器"
 L["Add Spell"] = "添加技能"
 L["Add SpellID"] = "添加技能ID"
