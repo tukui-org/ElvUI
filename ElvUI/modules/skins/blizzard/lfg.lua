@@ -125,7 +125,7 @@ local function LoadSkin()
 					button.border:SetTemplate()
 					button.border:SetOutside(icon)
 					icon:SetParent(button.border)
-
+					count:SetParent(button.border)
 					button.reskinned = true
 				end
 			end
@@ -183,7 +183,7 @@ local function LoadSkin()
 				button.border:SetTemplate()
 				button.border:SetOutside(icon)
 				icon:SetParent(button.border)
-
+				count:SetParent(button.border)
 				button.reskinned = true
 			end
 		end
@@ -197,6 +197,39 @@ local function LoadSkin()
 	ScenarioQueueFrame.Bg:Hide()
 	ScenarioFinderFrameInset:GetRegions():Hide()
 
+	local function ReskinRewards()
+		LFDQueueFrame:StripTextures()
+
+		for i = 1, LFD_MAX_REWARDS do
+			local button = _G["ScenarioQueueFrameRandomScrollFrameChildFrameItem"..i]
+			local icon = _G["ScenarioQueueFrameRandomScrollFrameChildFrameItem"..i.."IconTexture"]
+
+			if button then
+				if not button.reskinned then
+					local cta = _G["ScenarioQueueFrameRandomScrollFrameChildFrameItem"..i.."ShortageBorder"]
+					local count = _G["ScenarioQueueFrameRandomScrollFrameChildFrameItem"..i.."Count"]
+					local na = _G["ScenarioQueueFrameRandomScrollFrameChildFrameItem"..i.."NameFrame"]
+
+					icon:SetTexCoord(unpack(E.TexCoords))
+					icon:SetDrawLayer("OVERLAY")
+					count:SetDrawLayer("OVERLAY")
+					na:SetTexture()
+					na:SetSize(118, 39)
+					cta:SetAlpha(0)
+
+					button.border = CreateFrame("Frame", nil, button)
+					button.border:SetTemplate()
+					button.border:SetOutside(icon)
+					icon:SetParent(button.border)
+					count:SetParent(button.border)
+					button.reskinned = true
+				end
+			end
+		end
+	end
+
+	hooksecurefunc("ScenarioQueueFrameRandom_UpdateFrame", ReskinRewards)	
+	
 	ScenarioQueueFrameFindGroupButton:StripTextures()
 	S:HandleButton(ScenarioQueueFrameFindGroupButton)
 	S:HandleDropDownBox(ScenarioQueueFrameTypeDropDown)

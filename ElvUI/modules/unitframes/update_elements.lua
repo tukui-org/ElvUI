@@ -21,9 +21,13 @@ function UF:PostUpdateHealth(unit, min, max)
 		self:SetValue(min)
 	end
 
+	if min == 0 and self:GetParent().ResurrectIcon then
+		self:GetParent().ResurrectIcon:SetAlpha(1)
+	elseif self:GetParent().ResurrectIcon then
+		self:GetParent().ResurrectIcon:SetAlpha(0)
+	end
+	
 	local r, g, b = self:GetStatusBarColor()
-	self.defaultColor = {r, g, b}
-
 	if (E.db['unitframe']['colors'].healthclass == true and E.db['unitframe']['colors'].colorhealthbyvalue == true) or (E.db['unitframe']['colors'].colorhealthbyvalue and self:GetParent().isForced) and not (UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit)) then
 		local newr, newg, newb = ElvUF.ColorGradient(min, max, 1, 0, 0, 1, 1, 0, r, g, b)
 

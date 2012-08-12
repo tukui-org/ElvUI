@@ -1,6 +1,3 @@
 TODO:
 
--Find better emotion icons
 -Update Locales
--Skin blackmarket ah
--Skin valor point system frame whenever it comes out.

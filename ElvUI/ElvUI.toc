@@ -5,7 +5,7 @@
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvData, ElvPrivateData
 ## SavedVariablesPerCharacter: ElvCharacterData
-## OptionalDeps: BigWigs, DBM-Core, DXE, SharedMedia
+## OptionalDeps: SharedMedia
 ## X-oUF: ElvUF
 
 developer\load_developer.xml

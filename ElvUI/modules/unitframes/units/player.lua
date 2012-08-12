@@ -1022,7 +1022,7 @@ function UF:Update_PlayerFrame(frame, db)
 			end		
 		end
 	end
-	
+
 	if db.customTexts then
 		for objectName, _ in pairs(db.customTexts) do
 			if not frame[objectName] then

@@ -15,7 +15,16 @@ function AB:SetupExtraButton()
 	for i=1, ExtraActionBarFrame:GetNumChildren() do
 		if _G["ExtraActionButton"..i] then
 			_G["ExtraActionButton"..i].noResize = true;
-			self:StyleButton(_G["ExtraActionButton"..i])
+			_G["ExtraActionButton"..i].pushed = true
+			_G["ExtraActionButton"..i].checked = true
+			
+			self:StyleButton(_G["ExtraActionButton"..i], true)
+			_G["ExtraActionButton"..i]:SetTemplate(true)
+			_G["ExtraActionButton"..i..'Icon']:SetDrawLayer('ARTWORK')
+			local tex = _G["ExtraActionButton"..i]:CreateTexture(nil, 'OVERLAY')
+			tex:SetTexture(0.9, 0.8, 0.1, 0.3)
+			tex:SetInside()
+			_G["ExtraActionButton"..i]:SetCheckedTexture(tex)
 		end
 	end
 	

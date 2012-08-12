@@ -470,6 +470,12 @@ end
 local tagPool = {}
 local funcPool = {}
 local tmp = {}
+local escapeSequences = {
+	["||c"] = "|c",
+	["||r"] = "|r",
+	["||T"] = "|T",
+	["||t"] = "|t",
+}
 
 local Tag = function(self, fs, tagstr)
 	if(not fs or not tagstr) then return end
@@ -490,6 +496,12 @@ local Tag = function(self, fs, tagstr)
 	end
 
 	fs.parent = self
+	
+	for escapeSequence, replacement in pairs(escapeSequences) do
+		while tagstr:find(escapeSequence) do
+			tagstr = tagstr:gsub(escapeSequence, replacement)
+		end
+	end
 
 	local func = tagPool[tagstr]
 	if(not func) then

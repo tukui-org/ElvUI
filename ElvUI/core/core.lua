@@ -25,6 +25,7 @@ E['RegisteredInitialModules'] = {}
 E['valueColorUpdateFuncs'] = {};
 E.TexCoords = {.08, .92, .08, .92}
 E.FrameLocks = {}
+E.CreditsList = {};
 
 E.InversePoints = {
 	TOP = 'BOTTOM',
@@ -338,7 +339,7 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 		if sender == E.myname then return end
 
 		if prefix == "ElvUIVC" and sender ~= 'Elvz' and not string.find(sender, 'Elvz%-') and not E.recievedOutOfDateMessage then
-			if E.version ~= 'BETA' and tonumber(message) > tonumber(E.version) then
+			if E.version ~= 'BETA' and tonumber(message) ~= nil and tonumber(message) > tonumber(E.version) then
 				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"])
 				E.recievedOutOfDateMessage = true
 			end

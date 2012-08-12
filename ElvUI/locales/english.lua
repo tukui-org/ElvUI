@@ -1,4 +1,4 @@
-﻿-- English localization file for enUS and enGB.
+-- English localization file for enUS and enGB.
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0");
 local L
 if UnitName('player') ~= 'Elvz' and UnitName('player') ~= 'Gronckle' then
@@ -78,6 +78,7 @@ L["The first button anchors itself to this point on the bar."] = true;
 L["The size of the action buttons."] = true;
 L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"] = true;
 L["Toggles the display of the actionbars backdrop."] = true;
+L['Trigger'] = true;
 L["Visibility State"] = true;
 L['When enabled the main actionbar will use the maximum amount of pages available. This means if you have another actionbar disabled, the actionbar page will become available on the main actionbar. Having this disabled will limit the main actionbar to two pages.'] = true;
 L["Width Multiplier"] = true;
@@ -196,9 +197,9 @@ L["Shorten the channel names in chat."] = true;
 L['Show Both'] = true;
 L["Spam Interval"] = true;
 L["Sticky Chat"] = true;
-L["Tab Font"] = true;
-L["Tab Font Size"] = true;
 L["Tab Font Outline"] = true;
+L["Tab Font Size"] = true;
+L["Tab Font"] = true;
 L['Toggle showing of the left and right chat panels.'] = true;
 L['Trade'] = true;
 L["URL Links"] = true;
@@ -218,7 +219,6 @@ Example: Interface\AddOns\ElvUI\media\textures\copy
 Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = true;
 
 --Config / Install
-L['Bar'] = true;
 L["Caster DPS"] = true;
 L["Chat Set"] = true;
 L['Choose a theme layout you wish to use for your initial setup.'] = true;
@@ -402,6 +402,7 @@ L["Reset all frames to their original positions."] = true;
 L["Reset Anchors"] = true;
 L['Right'] = true;
 L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = true;
+L["Skin the blizzard chat bubbles."] = true;
 L['Threat'] = true;
 L["Tiny Map"] = true;
 L['Toggle Tutorials'] = true;
@@ -515,8 +516,6 @@ L["Calendar Frame"] = true;
 L["Character Frame"] = true;
 L["Debug Tools"] = true;
 L["Dressing Room"] = true;
-L["Embedded Addon"] = true;
-L["Embedded Bar Height"] = true;
 L["Encounter Journal"] = true;
 L["Friends"] = true;
 L["Glyph Frame"] = true;
@@ -539,25 +538,19 @@ L["Misc Frames"] = true;
 L["Mounts & Pets"] = true;
 L["Non-Raid Frame"] = true;
 L["Pet Battle"] = true;
-L["Pet Frame"] = true;
 L["Petition Frame"] = true;
 L["PvP Frames"] = true;
 L["Quest Frames"] = true;
 L["Raid Frame"] = true;
 L["Reforge Frame"] = true;
-L["Select an addon to embed to the right chat window. This will resize the addon to fit perfectly into the chat window, it will also parent it to the chat window so hiding the chat window will also hide the addon."] = true;
-L["Skin the blizzard chat bubbles."] = true;
 L["Skins"] = true;
 L["SKINS_DESC"] = "Adjust Skin settings."
 L["Socket Frame"] = true;
-L['Spacing'] = true;
 L["Spellbook"] = true;
 L["Stable"] = true;
 L["Tabard Frame"] = true;
 L["Talent Frame"] = true;
 L["Taxi Frame"] = true;
-L["The height of the bars while skada is embedded."] = true;
-L['The spacing in between bars.'] = true;
 L["Time Manager"] = true;
 L["TOGGLESKIN_DESC"] = "Enable/Disable this skin."
 L["Trade Frame"] = true;
@@ -658,10 +651,10 @@ L["Copy From"] = true;
 L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'] = true;
 L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."] = true;
 L["Create Filter"] = true;
+L['Current - Max | Percent'] = true;
 L["Current - Max"] = true;
 L["Current - Percent"] = true;
 L["Current / Max"] = true;
-L['Current - Max | Percent'] = true;
 L["Current"] = true;
 L["Custom Health Backdrop"] = true;
 L['Custom Texts'] = true;
@@ -743,6 +736,7 @@ L["Party Targets"] = true;
 L["Per Row"] = true;
 L["Percent"] = true;
 L["Personal Auras"] = true;
+L["Pet Frame"] = true;
 L["PetTarget Frame"] = true;
 L["Player Frame"] = true;
 L["Portrait"] = true;
@@ -839,7 +833,7 @@ L["You cannot set the Group Point and Column Point so they are opposite of each 
 L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."] = true;
 L['TEXT_FORMAT_DESC'] = [=[Provide a string to change the text format.
 
-Examples: 
+Examples:
 [namecolor][name] [difficultycolor][smartlevel] [shortclassification]
 [healthcolor][health:current-max]
 [powercolor][power:current]
