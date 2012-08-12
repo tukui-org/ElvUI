@@ -4,6 +4,8 @@ local TT = E:NewModule('Tooltip', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 local _G = getfenv(0)
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
 local gsub, find, format = string.gsub, string.find, string.format
+TT.InspectCache = {};
+
 local GameTooltips = {
 	GameTooltip,
 	ItemRefTooltip,
@@ -353,6 +355,16 @@ function TT:GetItemLvL(unit)
 	return floor(total / item);
 end
 
+function TT:GetTalentSpec(unit)
+	local spec = GetInspectSpecialization('mouseover')
+	if(spec ~= nil and spec > 0) then
+		local role = GetSpecializationRoleByID(spec);
+		if(role ~= nil) then
+			local _, name = GetSpecializationInfoByID(spec);
+			return name
+		end
+	end
+end
 
 function TT:GetColor(unit)
 	if(UnitIsPlayer(unit) and not UnitHasVehicleUI(unit)) then
@@ -394,12 +406,25 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	local classif = UnitClassification(unit)
 	local title = UnitPVPName(unit)
 	local _, faction = UnitFactionGroup(unit)
-	
+	local GUID = UnitGUID(unit)
+	local iLevel, talentSpec = 0, ""
 	local r, g, b = GetQuestDifficultyColor(level).r, GetQuestDifficultyColor(level).g, GetQuestDifficultyColor(level).b
 
 	local color = TT:GetColor(unit)	
 	if not color then color = "|CFFFFFFFF" end
 	GameTooltipTextLeft1:SetFormattedText("%s%s%s", color, title or name, realm and realm ~= "" and " - "..realm.."|r" or "|r")
+		
+	for index, _ in pairs(self.InspectCache) do
+		local inspectCache = self.InspectCache[index]
+		if inspectCache.GUID == GUID then
+			iLevel = inspectCache.ItemLevel or 0
+			talentSpec = inspectCache.TalentSpec or ""
+		end
+	end	
+	
+	if (unit and CanInspect(unit)) and (iLevel == 0 or talentSpec == "") then
+		NotifyInspect(unit)
+	end	
 	
 	if(UnitIsPlayer(unit)) then
 		if UnitIsAFK(unit) then
@@ -422,9 +447,12 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			end
 			offset = offset + 1
 		end
-
+		
+		if talentSpec ~= "" then
+			class = talentSpec..' '..class
+		end
+		
 		for i= offset, lines do
-			
 			if _G["GameTooltipTextLeft"..i] and _G["GameTooltipTextLeft"..i]:GetText() and (_G["GameTooltipTextLeft"..i]:GetText():find("^"..LEVEL)) then
 				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r |cff%02x%02x%02x%s|r %s%s", r*255, g*255, b*255, level > 0 and level or "??", factionColorR, factionColorG, factionColorB, race, color, class.."|r")
 				break
@@ -447,20 +475,8 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		end
 	end
 	
-	if IsShiftKeyDown() and (unit and CanInspect(unit)) then
-		local isInspectOpen = (InspectFrame and InspectFrame:IsShown()) or (Examiner and Examiner:IsShown())
-		if ((unit) and (CanInspect(unit)) and (not isInspectOpen)) then
-			NotifyInspect(unit)
-			
-			local ilvl = TT:GetItemLvL(unit)
-			
-			ClearInspectPlayer(unit)
-			
-			if ilvl > 1 then
-				GameTooltip:AddDoubleLine(STAT_AVERAGE_ITEM_LEVEL..":", "|cffFFFFFF"..ilvl.."|r")
-				GameTooltip:Show()
-			end
-		end
+	if iLevel > 1 and IsShiftKeyDown() then
+		GameTooltip:AddDoubleLine(STAT_AVERAGE_ITEM_LEVEL..":", "|cffFFFFFF"..iLevel.."|r")
 	end	
 
 	-- ToT line
@@ -471,6 +487,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	end
 	
 	if E.db.tooltip.whostarget then token = unit TT:AddTargetedBy() end
+	GameTooltip:Show()
 	GameTooltip.forceRefresh = true
 end
 
@@ -543,6 +560,49 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 	end
 end
 
+function TT:INSPECT_READY(event, GUID)
+	if UnitGUID('mouseover') ~= GUID then return; end
+	
+	local ilvl = TT:GetItemLvL('mouseover')
+	local talentSpec = TT:GetTalentSpec('mouseover')
+	
+	local matchFound
+	for index, _ in pairs(self.InspectCache) do
+		local inspectCache = self.InspectCache[index]
+		if inspectCache.GUID == GUID then
+			inspectCache.ItemLevel = ilvl
+			inspectCache.TalentSpec = talentSpec
+			matchFound = true;
+		end
+	end
+	
+	if not matchFound then
+		local GUIDInfo = {
+			['GUID'] = GUID,
+			['ItemLevel'] = ilvl,
+			['TalentSpec'] = talentSpec
+		}	
+		table.insert(self.InspectCache, GUIDInfo)
+	end
+	
+	if #self.InspectCache > 30 then
+		table.remove(self.InspectCache, 1)
+	end
+	
+	GameTooltip:SetUnit('mouseover')
+	
+	local isInspectOpen = (InspectFrame and InspectFrame:IsShown()) or (Examiner and Examiner:IsShown())
+	if not isInspectOpen then
+		ClearInspectPlayer();
+	end
+end
+
+function TT:MODIFIER_STATE_CHANGED(event, key)
+	if not key or not key:find('SHIFT') or not UnitExists('mouseover') then return; end
+
+	GameTooltip:SetUnit('mouseover')
+end
+
 function TT:Initialize()
 	self.db = E.db["tooltip"]
 	if E.private["tooltip"].enable ~= true then return end
@@ -573,6 +633,8 @@ function TT:Initialize()
 	self:HookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
 	self:HookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+	self:RegisterEvent('INSPECT_READY')
+	self:RegisterEvent('MODIFIER_STATE_CHANGED')
 	E.Skins:HandleCloseButton(ItemRefCloseButton)
 	
 	--SpellIDs
