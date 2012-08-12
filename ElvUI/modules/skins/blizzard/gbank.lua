@@ -6,6 +6,7 @@ local function LoadSkin()
 	GuildBankFrame:StripTextures()
 	GuildBankFrame:SetTemplate("Transparent")
 	GuildBankEmblemFrame:StripTextures(true)
+	GuildBankMoneyFrameBackground:Kill()
 	
 	--Close button doesn't have a fucking name, extreme hackage
 	for i=1, GuildBankFrame:GetNumChildren() do
@@ -27,8 +28,8 @@ local function LoadSkin()
 	
 	GuildBankFrame.inset = CreateFrame("Frame", nil, GuildBankFrame)
 	GuildBankFrame.inset:SetTemplate("Default")
-	GuildBankFrame.inset:Point("TOPLEFT", 30, -65)
-	GuildBankFrame.inset:Point("BOTTOMRIGHT", -20, 63)
+	GuildBankFrame.inset:Point("TOPLEFT", 20, -58)
+	GuildBankFrame.inset:Point("BOTTOMRIGHT", -16, 60)
 	
 	for i=1, NUM_GUILDBANK_COLUMNS do
 		_G["GuildBankColumn"..i]:StripTextures()
