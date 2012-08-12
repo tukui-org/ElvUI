@@ -178,8 +178,8 @@ ElvUF.Tags.Events['difficultycolor'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
 ElvUF.Tags.Methods['difficultycolor'] = function(unit)
 	local r, g, b = 0.69, 0.31, 0.31
 	local level = UnitLevel(unit)
-	if not (level < 1) then
-		local DiffColor = UnitLevel('target') - UnitLevel('player')
+	if (level > 1) then
+		local DiffColor = UnitLevel(unit) - UnitLevel('player')
 		if (DiffColor >= 5) then
 			r, g, b = 0.69, 0.31, 0.31
 		elseif (DiffColor >= 3) then
@@ -193,7 +193,7 @@ ElvUF.Tags.Methods['difficultycolor'] = function(unit)
 		end
 	end
 	
-	return string.format('|cff%02x%02x%02x', r * 255, g * 255, b * 255)
+	return Hex(r, g, b)
 end
 
 ElvUF.Tags.Events['namecolor'] = 'UNIT_NAME_UPDATE'
