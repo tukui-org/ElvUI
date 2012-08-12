@@ -482,6 +482,8 @@ E.Options.args.media = {
 }
 
 local DONATOR_STRING = ""
+local DEVELOPER_STRING = ""
+local TESTER_STRING = ""
 local LINE_BREAK = "\n"
 local DONATORS = {
 	"Dandruff",
@@ -518,14 +520,47 @@ local DONATORS = {
 	"Varok",
 	"Cosmo",
 	"Adorno",
-	"domoaligato",
+	"Domoaligato",
 	"Smorg"
 }
-E.DONATORS = DONATORS
+
+local DEVELOPERS = {
+	"Tukz",
+	"Haste",
+	"Nightcracker",
+	"Omega1970",
+	"Hydrazine"
+}
+
+local TESTERS = {
+	"Tukui Community",
+	"Affinity",
+	"Modarch",
+	"Bladesdruid",
+	"Tirain",
+	"Phima",
+	"Veiled",
+	"Blazeflack",
+	"Repooc",
+	"Darth Predator"
+}
 
 table.sort(DONATORS, function(a,b) return a < b end) --Alphabetize
 for _, donatorName in pairs(DONATORS) do
+	table.insert(E.CreditsList, donatorName)
 	DONATOR_STRING = DONATOR_STRING..LINE_BREAK..donatorName
+end
+
+table.sort(DEVELOPERS, function(a,b) return a < b end) --Alphabetize
+for _, devName in pairs(DEVELOPERS) do
+	table.insert(E.CreditsList, devName)
+	DEVELOPER_STRING = DEVELOPER_STRING..LINE_BREAK..devName
+end
+
+table.sort(TESTERS, function(a,b) return a < b end) --Alphabetize
+for _, testerName in pairs(TESTERS) do
+	table.insert(E.CreditsList, testerName)
+	TESTER_STRING = TESTER_STRING..LINE_BREAK..testerName
 end
 
 E.Options.args.credits = {
@@ -536,7 +571,7 @@ E.Options.args.credits = {
 		text = {
 			order = 1,
 			type = "description",
-			name = L['ELVUI_CREDITS']..'\n\n'..L['Coding:']..'\nTukz\nHaste\nNightcracker\nOmega1970\nHydrazine\n\n'..L['Testing:']..'\nTukui Community\nAffinity\nModarch\nBladesdruid\nTirain\nPhima\nVeiled (www.howtopriest.com)\nBlazeflack\nRepooc\nDarth Predator\n\n'..L['Donations:']..DONATOR_STRING,
+			name = L['ELVUI_CREDITS']..'\n\n'..L['Coding:']..DEVELOPER_STRING..'\n\n'..L['Testing:']..TESTER_STRING..'\n\n'..L['Donations:']..DONATOR_STRING,
 		},
 	},
 }

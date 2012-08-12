@@ -15,9 +15,9 @@ local function createConfigEnv()
 			if unit:find('target') or unit:find('focus') then
 				return UnitName(unit)
 			end
-			if E.DONATORS then
-				local max = #E.DONATORS
-				return E.DONATORS[math.random(1, max)]
+			if E.CreditsList then
+				local max = #E.CreditsList
+				return E.CreditsList[math.random(1, max)]
 			end
 			return 'Test Name'
 		end,
@@ -29,15 +29,22 @@ local function createConfigEnv()
 			local classToken = CLASS_SORT_ORDER[math.random(1, #(CLASS_SORT_ORDER))]
 			return LOCALIZED_CLASS_NAMES_MALE[classToken], classToken
 		end,
+		Hex = function(r, g, b)
+			if type(r) == "table" then
+				if r.r then r, g, b = r.r, r.g, r.b else r, g, b = unpack(r) end
+			end
+			return string.format("|cff%02x%02x%02x", r*255, g*255, b*255)
+		end,
+		ColorGradient = ElvUF.ColorGradient,		
 	}, {
 		__index = _G,
 		__newindex = function(tbl, key, value) _G[key] = value end,
 	})
 	
-	overrideFuncs['Elv:getnamecolor'] = ElvUF.Tags.Methods['Elv:getnamecolor']
-	overrideFuncs['Elv:nameshort'] = ElvUF.Tags.Methods['Elv:nameshort']
-	overrideFuncs['Elv:namemedium'] = ElvUF.Tags.Methods['Elv:namemedium']
-	overrideFuncs['Elv:namelong'] = ElvUF.Tags.Methods['Elv:namelong']
+	overrideFuncs['namecolor'] = ElvUF.Tags.Methods['namecolor']
+	overrideFuncs['name:short'] = ElvUF.Tags.Methods['name:short']
+	overrideFuncs['name:medium'] = ElvUF.Tags.Methods['name:medium']
+	overrideFuncs['name:long'] = ElvUF.Tags.Methods['name:long']
 end
 
 function UF:ForceShow(frame)
