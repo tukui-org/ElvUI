@@ -7,6 +7,7 @@ L[" |cff00ff00bound to |r"] = " |cff00ff00назначено для |r"
 L["Action Paging"] = "Переключение панелей"
 L["ActionBars"] = "Панели команд"
 L["All keybindings cleared for |cff00ff00%s|r."] = "Сброшены все назначения для |cff00ff00%s|r."
+L['Alpha'] = "Прозрачность"
 L["Anchor Point"] = "Точка фиксации"
 L["Backdrop"] = "Фон"
 L["Bar "] = "Панель "
@@ -17,6 +18,7 @@ L["Button Size"] = "Размер кнопок"
 L["Button Spacing"] = "Отступ кнопок"
 L["Buttons Per Row"] = "Кнопок в ряду"
 L["Buttons"] = "Кнопок"
+L['Change the alpha level of the frame.'] = "Изменяет прозрачность этого элемента"
 L["Color when the text is about to expire"] = "Цвет текста почти завершившегося восстановления."
 L["Color when the text is in the days format."] = "Цвет текста времени восстановления в днях."
 L["Color when the text is in the hours format."] = "Цвет текста времени восстановления в часах."
@@ -52,6 +54,7 @@ L["LOCK_AB_ERROR"] = "Мы заметили, что у вас не заблок�
 L["Low Threshold"] = "Минимальное значение"
 L["Macro Text"] = "Названия макросов"
 L['Max Paging'] = "Макс-ное переключение"
+L['Micro Bar'] = "Микроменю"
 L["Minutes"] = "Минуты"
 L["Mouse Over"] = "При наведении" --Also used in Bags
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = "Умножает высоту или ширину фона панели на это значение. Это полезно, когда Вы хотите иметь более одной панели на данном фоне."
@@ -61,13 +64,14 @@ L["Restore Bar"] = "Восстановить панель"
 L["Restore the actionbars default settings"] = "Восстанавливает настройки панели по умолчанию."
 L["Seconds"] = "Секунды"
 L["Set the font size of the action buttons."] = "Устанавливает размер шрифта на кнопках."
-L["Stance Bar"] = "Панель стоек"
+L["Stance Bar"] = true;
 L["The ammount of buttons to display per row."] = "Количество кнопок в каждом ряду"
 L["The ammount of buttons to display."] = "Количество отображаемых кнопок."
 L["The first button anchors itself to this point on the bar."] = "Первая кнопка прикрепляется к этой точке панели"
 L["The size of the action buttons."] = "Размер кнопок панели команд."
 L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"] = "Время, после которого текст станет красным и начнет отображать доли секунды. Установите -1, чтобы не отображать текст в такой форме."
 L["Toggles the display of the actionbars backdrop."] = "Включить отображение фона панели команд."
+L['Trigger'] = true;
 L["Visibility State"] = "Статус отображения"
 L['When enabled the main actionbar will use the maximum amount of pages available. This means if you have another actionbar disabled, the actionbar page will become available on the main actionbar. Having this disabled will limit the main actionbar to two pages.'] = "При активации основная панель будет использовать максимальное кол-во панелей для переключения. Это означает, что если какая-то из панелей отключена, то она будет доступна для переключения. Отключение опции ограничит переключение двумя панелями."
 L["Width Multiplier"] = "Множитель ширины"
@@ -93,7 +97,6 @@ L["Delete Grays"] = "Удалить предметы серого качеств
 L["Deleted %d gray items. Total Worth: %s"] = "Удалено %d предметов серого качества. Общая стоимость: %s"
 L["Descending"] = "Нисходящее"
 L["Direction the bag sorting will use to allocate the items."] = "Направление расположения предметов при сортировке."
-L["Enable Bag-Bar"] = "Включить панель сумок"
 L["Enable/Disable the all-in-one bag."] = 'Включить/выключить режим сумки "все в одной". '
 L["Enable/Disable the Bag-Bar."] = "Включить/выключить панель сумок"
 L["goldabbrev"] = "|cffffd700з|r"
@@ -130,6 +133,7 @@ L['Consolidated Buffs'] = "Объединенные эффекты"
 L['Defines how the group is sorted.'] = "Определяет условия сортировки"
 L['Defines the sort order of the selected sort method.'] = "Определяет порядок в выбранном методе сортировки."
 L['Display the consolidated buffs bar.'] = "Отображать полосу объединенных эффектов."
+L["Fade Threshold"] = "Значение мерцания"
 L['Index'] = "Порядок наложения"
 L['Indicate whether buffs you cast yourself should be separated before or after.'] = "Определяет должны ли Ваши баффы находиться отдельно перед или после остальных."
 L['Limit the number of rows or columns.'] = "Определяет максимальное количество рядов/столбцов."
@@ -139,10 +143,9 @@ L["Other's First"] = "Сначала чужие"
 L['Seperate'] = "Разделение"
 L['Set the size of the individual auras.'] = "Устанавливает размер аур"
 L['Sort Method'] = "Метод сортировки"
+L['Threshold before text changes red, goes into decimal form, and the icon will fade. Set to -1 to disable.'] = "Пороговео значение, после которого цвет текста изменится на красный и начнет показывать десятые доли секунд, а иконка начнет мигать. Установите на -1 для отключения"
 L['Time'] = "Время"
 L['Wrap After'] = "Размер ряда"
-L['X Spacing'] = "Отступ по X"
-L['Y Spacing'] = "Отступ по Y"
 L['Your Auras First'] = "Сначала свои"
 
 --Chat
@@ -159,17 +162,26 @@ L["DND"] = "ДНД"
 L["Font Outline"] = "Обводка шрифта" --Also used in UnitFrames section
 L["Font"] = "Шрифт"
 L["G"] = "Г"
+L["Hide Both"] = "Скрыть оба"
 L["Hyperlink Hover"] = "Подсказка над ссылками"
 L["Keyword Alert"] = "Звук ключевых слов"
 L['Keywords'] = "Ключевые слова"
+L["Left Only"] = "Только левый"
 L['List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank'] = "Список слов для окрашивания, если они обнаружены в чате. Если Вы хотите добавить несколько слов, то разделяйте их запятыми. Для поиска имени Вашего текущего персонажа используйте %MYNAME%.\n\nПример:\n%MYNAME%, ElvUI, РБГ, Танк"
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = "Время в секундах, через которое чат автоматически покрутится вниз до конца, если Вы не сделаете это вручную."
 L["O"] = "Оф"
 L["P"] = "Гр"
+L["Panel Backdrop"] = "Фон панелей"
+L["Panel Height"] = "Высота панели"
+L["Panel Texture (Left)"] = "Текстура левой панели"
+L["Panel Texture (Right)"] = "Текстура правой панели"
+L["Panel Width"] = "Ширина панели"
+L["PANEL_DESC"] = "Регулирование размеров левой и правой панелей. Это окажет эффект на чат и сумки."
 L["PG"] = "Гр"
 L["PL"] = "Лидер гр."
 L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."] = "Предотвращает появление одинаковых сообщения в чате чаще указанного количества секунд. Установите на нуль для отключения."
 L["R"] = "Р"
+L["Right Only"] = "Только правый"
 L["RL"] = "РЛ"
 L["RW"] = "Объявление"
 L['says'] = "говорит"
@@ -177,20 +189,43 @@ L["Scroll Interval"] = "Интервал прокрутки"
 L["Set the font outline."] = "Устанавливает обводку шрифта."
 L["Short Channels"] = "Короткие каналы"
 L["Shorten the channel names in chat."] = "Сокращать названия каналов чата."
+L["Show Both"] = "Показать оба"
 L["Spam Interval"] = "Интервал спама"
 L["Sticky Chat"] = "Клейкий чат"
+L["Tab Font Outline"] = true;
+L["Tab Font Size"] = true;
+L["Tab Font"] = true;
+L["Toggle showing of the left and right chat panels."] = "Переключить отображение панелей чата."
 L['Trade'] = "Торговля"
 L["URL Links"] = "Интернет-ссылки"
 L["When opening the Chat Editbox to type a message having this option set means it will retain the last channel you spoke in. If this option is turned off opening the Chat Editbox should always default to the SAY channel."] = "При открытии строки ввода сообщения, если эта опция включена, будет выбран последний канал, в который Вы писали. В противном случае всегда будет установлен канал 'сказать'."
 L["Whisper Alert"] = "Звук шепота"
 L['whispers'] = "шепчет"
 L['yells'] = "кричит"
+L[ [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.
+
+Please Note:
+-The image size recommended is 256x128
+-You must do a complete game restart after adding a file to the folder.
+-The file type must be tga format.
+
+Example: Interface\AddOns\ElvUI\media\textures\copy
+
+Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = [=[Укажите имя файла в папке World of Warcraft, который Вы хотите использовать в качестве фона панелей.
+
+Пожалуйста, учтите:
+-Рекомендованный размер изображения 256x128
+-Вы должны полностью перезапустить игру после добавления нового файла в папку.
+-Тип файла должен быть tga.
+
+Пример: Interface\AddOns\ElvUI\media\textures\copy
+
+Для большинства пользователей будет легче просто положить tga файл в папку игры, а затем написать имя файла здесь.]=]
 
 --Config / Install
 L["Caster DPS"] = "Заклинатель"
 L["Chat Set"] = "Чат настроен"
 L['Choose a theme layout you wish to use for your initial setup.'] = "Выберите тему, которую Вы хотите использовать."
-L['Classic Pixel'] = "Пиксельная"
 L['Classic'] = "Классическая"
 L["Click the button below to resize your chat frames, unitframes, and reposition your actionbars."] = "Нажмите кнопку ниже для изменения размеров вашего чата, рамок юнитов и перемещения ваших панелей действий."
 L['Config Mode:'] = "Режим настройки:"
@@ -241,7 +276,7 @@ L['Toggle Configuration'] = "Конфигурация"
 L["Unlock various elements of the UI to be repositioned."] = "Разблокировать элементы интерфейса для их перемещения."
 L["Using the healer layout it is highly recommended you download the addon Clique to work side by side with ElvUI."] = "Для использования настроек лекаря крайне рекомендуется установка аддона Clique который всесторонне поддерживается ElvUI."
 L["Version"] = "Версия"
-L["You are now finished with the installation process. Bonus Hint: If you wish to access blizzard micro menu, middle click on the minimap. If you don't have a middle click button then hold down shift and right click the minimap. If you are in need of technical support please visit us at www.tukui.org."] = "Вы завершили процесс установки. Если Вам требуется техническая поддержка, посетите сайт www.tukui.org. Дополнительный совет: если Вы хотите получить доступ к микроменю blizzard, нажмите средней кнопкой мыши на миникарте. Если у вас нет средней кнопки, то нажмите правой с зажатой клавишей shift."
+L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."] = "Вы завершили процесс установки. Если Вам требуется техническая поддержка, посетите сайт http://www.tukui.org."
 L['You can always change fonts and colors of any element of elvui from the in-game configuration.'] = "Вы всегда можете изменить шрифты и цвета любого элемента ElvUI из меню конфигурации. Классическая и пиксельная темы не отличаются для русского клиента."
 L["You can now choose what layout you wish to use based on your combat role."] = "Вы можете выбрать используемое расположение, основываясь на Вашей роли."
 L["You may need to further alter these settings depending how low you resolution is."] = "Вам может понадобиться дальнейшее изменение этих настроек в зависимости от того, насколько низким является ваше разрешение."
@@ -257,6 +292,7 @@ L["Testing:"] = "Тестирование:"
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(Зажать Shift) Использование памяти"
 L["24-Hour Time"] = "24х часовой формат"
+L['Always Display'] = "Всегда отображать"
 L["AP"] = "Сила Ат."
 L["AVD: "] = "Защита: "
 L["Avoidance Breakdown"] = "Распределение защиты"
@@ -266,12 +302,15 @@ L['Bases Defended'] = "Оборона баз"
 L['Battleground datatexts temporarily hidden, to show type /bgstats or right click the "C" icon near the minimap.'] = 'Информация поля боя временно скрыта. Для отображения введите /bgstat или ПКМ на иконке "С" у миникарты.'
 L['Battleground datatexts will now show again if you are inside a battleground.'] = "Информация поля боя снова будет отображаться, если Вы находитесь на них."
 L['Battleground Texts'] = "Текст ПБ"
+L['Change settings for the display of the location text that is on the minimap.'] = "Изменяет опции отображения названия локации на миникарте"
 L['Character:'] = "Персонаж: "
 L["Chest"] = "Грудь"
 L["DataTexts"] = "Инфо-тексты"
 L["DATATEXT_DESC"] = "Установка отображения информационных текстов."
 L["Deficit:"] = "Убыток:"
 L['Demolishers Destroyed'] = "Разрушителей уничтожено"
+L['Display minimap panels below the minimap, used for datatexts.'] = "Отображать панели информационных текстов под миникартой."
+L['Download'] = true;
 L["DPS"] = "УВС"
 L["Earned:"] = "Заработано"
 L["Feet"] = "Ступни"
@@ -293,9 +332,12 @@ L["LeftChatDataPanel"] = "Левая панель чата"
 L["LeftMiniPanel"] = "Миникарта, слева"
 L["Legs"] = "Ноги"
 L["Local Time"] = "Местное время"
+L['Location Text'] = "Текст локации"
 L["lvl"] = "ур."
 L["Main Hand"] = "Правая рука"
 L["middle"] = "В центре"
+L['Minimap Mouseover'] = "При наведении мыши"
+L['Minimap Panels'] = "Информация у миникарты"
 L['Mitigation By Level: '] = "Снижение на уровне: "
 L["Offhand"] = "Левая рука"
 L["Panels"] = "Панели"
@@ -330,8 +372,8 @@ L['|cFFE30000Lua error recieved. You can view the error message when you exit co
 
 --General
 L["Accept Invites"] = "Принимать приглашения"
-L["Adjust the size of the minimap."] = "Изменяет размер миникарты"
-L['Always Display'] = "Всегда отображать"
+L['Adjust the position of the threat bar to either the left or right datatext panels.'] = true;
+L['Adjust the size of the minimap.'] = "Изменяет размер миникарты"
 L["Announce Interrupts"] = "Объявлять о прерываниях"
 L["Announce when you interrupt a spell to the specified chat channel."] = "Объявлять о прерванных Вами заклинаниях в указанный канал чата."
 L["Auto Repair"] = "Автоматический ремонт"
@@ -340,90 +382,58 @@ L["Automatically accept invites from guild/friends."] = "Автоматичес�
 L["Automatically repair using the following method when visiting a merchant."] = "Автоматически чинить экипировку за счет выбранного источника при посещении торговца."
 L["Automatically scale the User Interface based on your screen resolution"] = "Автоматически масштабировать UI в зависимости от вашего разрешения"
 L["Automatically vendor gray items when visiting a vendor."] = "Автоматически продавать предметы серого качества при посещении торговца."
-L["Backdrop color of transparent frames"] = "Цвет фона прозрачных фреймов"
-L["Backdrop Color"] = "Цвет фона"
-L["Backdrop Faded Color"] = "Цвет прозрачного фона"
-L["Below Minimap"] = "Под миникартой"
-L["Border Color"] = "Цвет окантовки"
-L['Change settings for the display of the location text that is on the minimap.'] = "Изменяет опции отображения названия локации на миникарте"
-L["Change the position of the experience/reputation bar."] = "Изменяет положение полосы опыта/репутации."
 L["Chat Bubbles"] = "Облачка сообщений"
-L["Color some texts use."] = "Цвет некоторых текстов."
-L["Colors"] = "Цвета" --Also in unitframes
-L["CombatText Font"] = "Шрифт текста боя"
 L["Controls what the transparency of the worldmap will be set to when you are moving."] = "Устанавливает прозрачность карты мира при движении персонажа."
-L["Default Font"] = "Шрифт по умолчанию"
 L["Disband Group"] = "Распустить группу" --RU button
 L['Display emotion icons in chat.'] = "Показывать смайлы в чате"
-L['Display minimap panels below the minimap, used for datatexts.'] = "Отображать панели информационных текстов под миникартой."
 L["Don't scale the large world map to block out sides of the screen."] = "Не масштабировать карту мира до размеров экрана.";
 L["ELVUI_DESC"] = "ElvUI это аддон для полной замены пользовательского интерфейса World of Warcraft."
 L['Emotion Icons'] = "Иконки эмоций";
 L["Enable/Disable the loot frame."] = "Включить/выключить окно добычи ElvUI."
 L["Enable/Disable the loot roll frame."] = "Включить/выключить фрейм распределения добычи ElvUI."
-L["Exp/Rep Position"] = "Позиция опыта/репутации"
-L["Font Size"] = "Размер шрифта"
-L["Fonts"] = "Шрифты"
+L['Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the consolidated buffs bar, and prevent you from seeing the minimap datatexts.|r'] = 'Включить/выключить миникарту. |cffFF0000ВНИМАНИЕ: Отключив карту, вы более не сможете видеть полосу объедененных эффектов и информационные тексты, привязанные к миникарте.|r';
 L["General"] = "Общие"
-L["Hide Both"] = "Скрыть оба"
-L["Left Only"] = "Только левый"
-L['Location Text'] = "Текст локации"
+L['Left'] = true;
 L["Log Taints"] = "Отслеживать недочеты"
 L["Login Message"] = "Сообщение загрузки"
-L["LOGIN_MSG"] = "Добро пожаловать в %sElvUI|r версии %s%s|r, наберите /ec для доступа в меню настроек. Если Вам нужна техническая поддержка, посетите наш форум на www.tukui.org. Вы можете сообщать о багах и выдвигать предложения здесь - http://www.tukui.org/tickets/elvui/."
+L["LOGIN_MSG"] = "Добро пожаловать в %sElvUI|r версии %s%s|r, наберите /ec для доступа в меню настроек. Если Вам нужна техническая поддержка, посетите наш форум на http://www.tukui.org"
 L["Loot Roll"] = "Раздел добычи"
 L["Loot"] = "Добыча"
-L["Main backdrop color of the UI."] = "Основной цвет фона интерфейса."
-L["Main border color of the UI."] = "Основной цвет окантовок."
 L['Map Alpha While Moving'] = "Прозрачность карты в движении"
 L["Media"] = "Медиа"
-L['Minimap Mouseover'] = "При наведении мыши"
-L['Minimap Panels'] = "Информация у миникарты"
-L["Minimap Size"] = "Размер миникарты"
-L["Panel Backdrop"] = "Фон панелей"
-L["Panel Height"] = "Высота панели"
-L["Panel Texture (Left)"] = "Текстура левой панели"
-L["Panel Texture (Right)"] = "Текстура правой панели"
-L["Panel Width"] = "Ширина панели"
-L["PANEL_DESC"] = "Регулирование размеров левой и правой панелей. Это окажет эффект на чат и сумки."
-L["Primary Texture"] = "Основная текстура"
+L['Position'] = true;
 L["Reset all frames to their original positions."] = "Установить все фреймы на позиции по умолчанию"
 L["Reset Anchors"] = "Сбросить позиции"
-L["Right Only"] = "Только правый"
-L["Secondary Texture"] = "Вторичная текстура"
+L['Right'] = true;
 L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = "Отображать ошибки типа ADDON_ACTION_BLOCKED в фрейме ошибок lua. Эти ошибки в большинстве случаев не сильно важны и не влияют на производительность. Также многие из этих ошибок не могут быть исправлены. Пожалуйста, сообщайте об этих ошибках только если Вы заметите дефект в игре."
+L["Skin the blizzard chat bubbles."] = "Стилизовать облачка сообщения Blizzard"
+L['Threat'] = true;
+L["Tiny Map"] = "Маленькая карта"
+L['Toggle Tutorials'] = "Показать помощь"
+L["Welcome to ElvUI version %s!"] = "Добро пожаловать в ElvUI версии %s!"
+
+--Media
+L["Backdrop color of transparent frames"] = "Цвет фона прозрачных фреймов"
+L["Backdrop Color"] = "Цвет фона"
+L["Backdrop Faded Color"] = "Цвет прозрачного фона"
+L["Border Color"] = "Цвет окантовки"
+L["Color some texts use."] = "Цвет некоторых текстов."
+L["Colors"] = "Цвета" --Also in UnitFrames
+L["CombatText Font"] = "Шрифт текста боя"
+L["Default Font"] = "Шрифт по умолчанию"
+L["Font Size"] = "Размер шрифта" --Also in UnitFrames
+L["Fonts"] = "Шрифты"
+L["Main backdrop color of the UI."] = "Основной цвет фона интерфейса."
+L["Main border color of the UI."] = "Основной цвет окантовок."
+L["Primary Texture"] = "Основная текстура"
+L["Secondary Texture"] = "Вторичная текстура"
 L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"] = "Установите размер шрифта для всего интерфейса. Это не действует на элементы с собственными настройками шрифтов (например, рамки юнитов)."
-L["Show Both"] = "Показать оба"
 L["Textures"] = "Текстуры"
 L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Шрифт текста боя. |cffFF0000ВНИМАНИЕ: это действие потребует перезапуска игры или повторного входа в мир.|r"
 L["The font that the core of the UI will use."] = "Шрифт для основного интерфейса."
 L["The texture that will be used mainly for statusbars."] = "Эта текстура будет использоваться в основном для полос состояния."
 L["This texture will get used on objects like chat windows and dropdown menus."] = "Эта текстура будет использоваться для таких объектов как окно чата и выпадающие меню."
-L["Tiny Map"] = "Маленькая карта"
-L["Toggle showing of the left and right chat panels."] = "Переключить отображение панелей чата."
-L['Toggle Tutorials'] = "Показать помощь"
-L["Top Screen"] = "Вверху экрана"
 L["Value Color"] = "Цвет значений"
-L["Welcome to ElvUI version %s!"] = "Добро пожаловать в ElvUI версии %s!"
-L[ [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.
-
-Please Note:
--The image size recommended is 256x128
--You must do a complete game restart after adding a file to the folder.
--The file type must be tga format.
-
-Example: Interface\AddOns\ElvUI\media\textures\copy
-
-Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = [=[Укажите имя файла в папке World of Warcraft, который Вы хотите использовать в качестве фона панелей.
-
-Пожалуйста, учтите:
--Рекомендованный размер изображения 256x128
--Вы должны полностью перезапустить игру после добавления нового файла в папку.
--Тип файла должен быть tga.
-
-Пример: Interface\AddOns\ElvUI\media\textures\copy
-
-Для большинства пользователей будет легче просто положить tga файл в папку игры, а затем написать имя файла здесь.]=]
 
 --Misc
 L["Can't Roll"] = "Не могу бросить кости"
@@ -437,13 +447,12 @@ L["Remaining:"] = "Осталось:"
 L["Rested:"] = "Бодрость:"
 L["Right Click:"] = "ПКМ:" --layout\layout.lua
 L["Toggle Chat Frame"] = "Показать/скрыть чат" 
-L["Toggle Embedded Addon"] = "Показать скрыть встроенный аддон"
 L["XP:"] = "Опыт:"
 L["You don't have enough money to repair."] = "У вас недостаточно денег для ремонта."
 L["You don't have permission to mark targets."] = "У вас нет разрешения на установку меток"
 L["Your items have been repaired for: "] = "Ваши предметы отремонтированы на: "
 L["Your items have been repaired using guild bank funds for: "] = "Ваши предметы отремонтированы за счет гильдии на: "
-L["Your version of ElvUI is out of date. You can download the latest version from www.tukui.org"] = "Ваша версия ElvUI устарела. Вы можете скачать последнюю версию на www.tukui.org"
+L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"] = "Ваша версия ElvUI устарела. Вы можете скачать последнюю версию на http://www.tukui.org"
 
 --NamePlates
 L["Add Name"] = "Добавить имя"
@@ -477,7 +486,7 @@ L["Good Color"] = '"Хороший цвет"'
 L["Good Scale"] = '"Хороший" масштаб'
 L["Good Transition Color"] = 'Цвет "хорошего" перехода'
 L["Healer Icon"] = "Иконки лекарей"
-L["Hide"] = "Скрыть"
+L["Hide"] = "Скрыть" --Also used in DataTexts
 L["Holy"] = "Свет"
 L['Low Health Threshold'] = "Пороговое значение здоровья"
 L['Low Health Warning'] = "Предупреждение о низком здоровье"
@@ -511,8 +520,6 @@ L["Calendar Frame"] = "Календарь"
 L["Character Frame"] = "Окно персонажа"
 L["Debug Tools"] = "Инструменты отладки"
 L["Dressing Room"] = "Примерочная"
-L["Embedded Addon"] = "Встроенный аддон"
-L["Embedded Bar Height"] = "Высота полос"
 L["Encounter Journal"] = "Атлас подземелий"
 L["Friends"] = "Друзья"
 L["Glyph Frame"] = "Символы"
@@ -535,25 +542,19 @@ L["Misc Frames"] = "Прочие фреймы"
 L['Mounts & Pets'] = "Транспорт и питомцы"
 L["Non-Raid Frame"] = "Не рейдовые фреймы"
 L["Pet Battle"] = "Битвы питомцев"
-L["Pet Frame"] = "Питомец"
 L["Petition Frame"] = "Хартия гильдии"
 L["PvP Frames"] = "ПвП фреймы"
 L["Quest Frames"] = "Задания"
 L["Raid Frame"] = "Рейд"
 L["Reforge Frame"] = "Перековка"
-L["Select an addon to embed to the right chat window. This will resize the addon to fit perfectly into the chat window, it will also parent it to the chat window so hiding the chat window will also hide the addon."] = "Выберите аддон для закрепления в правом окне чата. Это действие изменит размеры окон аддона в соответствии с размером чата. Также аддон станет зависим от окна чата, его скрытие также вызовет исчезновение окна аддона."
-L["Skin the blizzard chat bubbles."] = "Стилизовать облачка сообщения Blizzard"
 L["Skins"] = "Скины"
 L["SKINS_DESC"] = "Установки скинов"
 L["Socket Frame"] = "Инкрустирование"
-L['Spacing'] = "Расстояние"
 L["Spellbook"] = "Книга заклинаний"
 L["Stable"] = "Стойла"
 L["Tabard Frame"] = "Создание накидки"
 L["Talent Frame"] = "Таланты"
 L["Taxi Frame"] = "Такси"
-L["The height of the bars while skada is embedded."] = "Высота полос Skada во встроенном состоянии"
-L['The spacing in between bars.'] = "Расстояние между полосами"
 L["Time Manager"] = "Секундомер"
 L["TOGGLESKIN_DESC"] = "Включить/выключить этот скин."
 L["Trade Frame"] = "Обмен"
@@ -594,17 +595,17 @@ L["Who's targetting who?"] = "Кто кого выбрал?"
 --Tutorials
 L['A raid marker feature is available by pressing Escape -> Keybinds scroll to the bottom under ElvUI and setting a keybind for the raid marker.'] = 'Функция рейдовых меток доступна в Escape -> Назначение клавиш. Прокрутите вниз до раздела ElvUI и назначьте клавишу для рейдовых меток.';
 L['ElvUI has a dual spec feature which allows you to load different profiles based on your current spec on the fly. You can enable this from the profiles tab.'] = 'В ElvUI присутствует функция двойной специализации, которая позволит Вам использовать разные профили для разных наборов талантов. Вы можете включить эту функцию в разделе профилей.';
-L['For technical support visit us at www.tukui.org.'] = 'За технической поддержкой обращайтесь на www.tukui.org.';
+L['For technical support visit us at http://www.tukui.org.'] = 'За технической поддержкой обращайтесь на http://www.tukui.org.';
 L['If you accidently remove a chat frame you can always go the in-game configuration menu, press install, go to the chat portion and reset them.'] = 'Если Вы случайно удалили вкладку чата, всегда можно сделать следующее: зайти в конфигурацию, запустить установку, дойти до шага настроек чата и сбросить их.'
 L['If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing.'] = 'Если Вы испытываете проблемы с ElvUI, попробуйте отключить все аддоны, кроме самого ElvUI. Помните, ElvUI это аддон, полностью заменяющий интерфейс, Вы не можете одновременно использовать два аддона, выполняющих одинаковые функции.';
 L['If you need to reset the gold datatext type /resetgold.'] = 'Если Вы хотите сбросить данные в инфо-тексте золота, введите команду /resetgold.';
-L['If your experience and reputation bars disappear, mouse over the place where they were and click them again.'] = 'Если Ваши полосы репутации и опыта пропали, наведите курсор на место, где они были, и кликните по ним снова.';
 L['The buff panel to the right of minimap is a list of your consolidated buffs. You can disable it in Buffs and Debuffs options of ElvUI.'] = 'Панель с баффами справа от миникарты это список Ваших объединенных баффов. Вы можете отключить ее в разделе эффектов и аур в настройках ElvUI.';
 L['The focus unit can be set by typing /focus when you are targetting the unit you want to focus. It is recommended you make a macro to do this.'] = 'Запомненную цель (фокус) можно установить командой /focus при взятии нужного врага в цель. Для этого рекомендуется сделать макрос.';
 L['To move abilities on the actionbars by default hold shift + drag. You can change the modifier key from the blizzard actionbar options menu.'] = 'Для перемещения способностей по панелям команд нужно перемещать их с зажатой клавишей shift. Вы можете поменять модификатор в опциях панелей команд Blizzard.';
 L['To setup which channels appear in which chat frame, right click the chat tab and go to settings.'] = 'Для настройки отображения каналов в чате кликните правой кнопкой мыши на закладке нужного чата и выберите пункт "параметры".';
 L['Using the /farmmode <size> command will spawn a larger minimap on your screen that can be moved around, very useful when farming.'] = 'Использование команды /farmmode <размер> откроет миникарту большего размера, которую можно свободно перемещать по экрану. Очень полезно при фарме.';
 L['You can access copy chat and chat menu functions by mouse over the top right corner of chat panel and left/right click on the button that will appear.'] = 'Вы можете получить доступ к функциям копирования чата и меню чата, наведя курсор на верхний правый угол панели чата и кликнув левой/правой кнопкой мыши на появившейся кнопке.';
+L['You can see someones average item level of their gear by holding shift and mousing over them. It should appear inside the tooltip.'] = "Вы можете узнать средний уровень предметов игрока, зажав shift и наведя на них курсор. Информация будет отражена в подсказке.";
 L['You can set your keybinds quickly by typing /kb.'] = "Вы можете быстро назначать клавиши, введя команду /kb.";
 L['You can toggle the microbar by using your middle mouse button on the minimap you can also accomplish this by holding shift and right clicking on the minimap.'] = 'Вы можете получить доступ к микроменю, кликнув средней кнопкой мыши на миникарте. Также можно кликнуть правой кнопкой при зажатой клавише shift.';
 L['You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame'] = 'Вы можете использовать команду /resetui чтобы сбросить положения всех фиксаторов. Вы также можете использовать команду /resetui <имя фиксатора> для сброса определенного фиксатора.\nПример: /resetui Player Frame';
@@ -626,10 +627,9 @@ L["Attach To"] = "Прикрепить к"
 L['Aura Bars'] = "Полосы аур"
 L["Bad"] = "Плохое"
 L["Bars will transition smoothly."] = "Полосы будут изменяться плавно"
-L["Bars"] = "Полосы"
+L["Bars"] = "Полосы" --Also used in ExpRepBar tooltip
 L['Below'] = "Снизу"
 L["Blacklist"] = "Черный список"
-L["Blank"] = "Пусто"
 L["Boss Frames"] = "Боссы"
 L["Buff Indicator"] = "Индикатор баффов"
 L["Buffs"] = "Баффы"
@@ -637,7 +637,6 @@ L["Camera Distance Scale"] = "Дистанция камеры"
 L["Castbar"] = "Полоса заклинаний"
 L["Class Backdrop"] = "Фон по классу"
 L["Class Health"] = "Здоровье по классу"
-L['Class Names'] = "Имена по классу"
 L["Class Power"] = "Ресурс по классу"
 L["Classbar"] = "Полоса класса"
 L["Color health by ammount remaining."] = "Окрашивает полосу здоровья в зависимости от оставшегося его количества."
@@ -646,7 +645,6 @@ L["Color Icons"] = "Окрашивать иконки"
 L["Color power by classcolor or reaction."] = "Окрашивает полосу ресурсов по цвету класса или реакции."
 L["Color the health backdrop by class or reaction."] = "Окрасить фон полосы здоровья по цвету класса или реакции."
 L["Color the icon to their set color in the filters section, otherwise use the icon texture."] = "Окрашивает иконки в установленный в фильтре цвет. В противном случае использует текстуру иконки."
-L['Color the name text by class or reaction.'] = "Окрашивает имена по цвету класса или отношению."
 L["Color the unit healthbar if there is a debuff that can be dispelled by you."] = "Изменять цвет полосы здоровья, если на юните есть дебафф, который Вы можете снять."
 L["Color"] = "Цвет"
 L["Column Point"] = "Точка столбца"
@@ -654,13 +652,16 @@ L["Column Spacing"] = "Отступ столбцов"
 L["Combat Fade"] = "Скрытие"
 L["Combobar"] = "Полоса серии"
 L["Copy From"] = "Скопировать из"
+L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'] = "Создать свою текстовую строку. После воода имени вы сможете выбрать его в выпадающем списке";
 L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."] = "Создает фильтр. После создания он может быть установлен в секции баффов/дебаффов любого юнита."
 L["Create Filter"] = "Создать фильтр"
+L['Current - Max | Percent'] = "Текущее - Макс. | Процент"
 L["Current - Max"] = "Текущее - Максимальное"
 L["Current - Percent"] = "Текущее - Процент"
 L["Current / Max"] = "Текущее / Максимальное"
 L["Current"] = "Текущее"
 L["Custom Health Backdrop"] = "Свой фон полосы здоровья"
+L['Custom Texts'] = "Свой текст";
 L["Debuff Highlighting"] = "Подсветка дебаффов"
 L["Debuffs"] = "Дебаффы"
 L["Deficit"] = "Дефицит"
@@ -679,6 +680,7 @@ L["Display the rested icon on the unitframe."] = "Отображать икон�
 L["Display the target of the cast on the castbar."] = "Отображать имя цели заклинания на полосе."
 L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."] = "Отображать метки тиков на полосе заклинаний для поддерживаемых заклинаний. Они будут автоматически масштабироваться для заклинаний вроде Похищения души и добавлять новые тики, основываясь на показателе скорости."
 L["Down"] = "Вниз"
+L['Enemy Aura Type'] = "Тип аур врага"
 L["Fade the unitframe when out of combat, not casting, no target exists."] = "Скрывать фрейм, когда Вы вне боя, не произносите заклинаний или отсутствует цель."
 L["Fill"] = "Заполнение"
 L["Filled"] = "По ширине рамки"
@@ -691,6 +693,7 @@ L["Frame"] = "Рамка"
 L["Frequent Updates"] = "Частое обновление"
 L['Friendlies: Show Buffs'] = "Дружественные: баффы"
 L['Friendlies: Show Debuffs'] = "Дружественные: дебаффы"
+L['Friendly Aura Type'] = "Тип аур друга"
 L["Ghost"] = "Призрак"
 L["Good"] = "Хорошее"
 L["Group By"] = "Группировать по"
@@ -702,7 +705,7 @@ L["Health Text"] = "Текст здоровья"
 L["Health"] = "Здоровье"
 L["Height"] = "Высота"
 L['Hold shift + right click to blacklist this aura.'] = "Зажмите shift и кликните правой кнопкой, чтобы занести эту ауру в черный список."
-L["Horizontal"] = "Горизонтально"
+L["Horizontal"] = "Горизонтально" --Also used in bags module
 L["How far away the portrait is from the camera."] = "Как далеко от персонажа находится камера."
 L["Icon"] = "Иконка"
 L['If not set to 0 then override the size of the aura icon to this.'] = "Если установлено не на 0, то устанавливать размер иконок аур на заданное число."
@@ -711,20 +714,16 @@ L['If set then if the aura is found on the whitelist filter it will display. Not
 L["If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units."] = "При включении из пропущенных фильтром аур будут показываться только наложенные Вами. Примечание: Вы также можете назначить применение фильтрации только к дружественным или враждебным целям."
 L["Interrupt Color"] = "Цвет не прерываемого"
 L["Latency"] = "Задержка"
-L["Length"] = "Длина"
-L["Long (Include Level)"] = "Полное + уровень"
-L["Long"] = "Полное"
 L["Low Mana Threshold"] = "Низкое значение маны"
 L["Main statusbar texture."] = "Основная текстура полос состояния (здоровье, ресурс и тд)."
 L["Match Frame Width"] = "По ширине рамки"
 L["Max Columns"] = "Максимум столбцов"
-L["Medium"] = "Среднее"
 L["MT, MA First"] = "Сначала танки и помощники"
-L["Name"] = "Имя";
+L["Name"] = "Имя"; --Also used in Buffs and Debuffs
 L["Neutral"] = "Нейтральный"
 L['No Consolidated'] = "Без объединенных"
 L['No Duration'] = "Без длительности"
-L["None"] = "Нет"
+L["None"] = "Нет" --Also used in chat
 L["Not valid spell id"] = "Неверный ID заклинания"
 L["Num Rows"] = "Рядов"
 L["Offline"] = "Не в сети"
@@ -741,6 +740,7 @@ L["Party Targets"] = "Цели группы"
 L["Per Row"] = "Кол-во в ряду"
 L["Percent"] = "Процент"
 L["Personal Auras"] = "Личные ауры"
+L["Pet Frame"] = "Питомец"
 L["PetTarget Frame"] = "Цель питомца"
 L["Player Frame"] = "Игрок"
 L["Portrait"] = "Портрет"
@@ -760,10 +760,10 @@ L["Remove a spell from the filter."] = "Удаляет заклинание из
 L["Remove Spell"] = "Удалить заклинание"
 L["Remove SpellID"] = "Удалить ID заклинания"
 L["Rest Icon"] = "Иконка отдыха"
-L["Restore Defaults"] = "Восстановить умолчания"
+L["Restore Defaults"] = "Восстановить умолчания" --Also used in Media and ActionBars sections
 L['RL / ML Icons'] = "Иконки лидера/ответственного"
 L["Role Icon"] = "Иконка роли"
-L["Select a filter to use."] = "Выберите фильтр для использования."
+L["Select a filter to use."] = "Выберите фильтр для использования." --Also used in NamePlates
 L["Select a unit to copy settings from."] = "Выберите юнит, установки которого Вы хотите скопировать."
 L["Select Filter"] = "Выбрать фильтр"
 L["Select Spell"] = "Выбрать заклинание"
@@ -771,7 +771,8 @@ L["Set the filter type, blacklisted filters hide any aura on the like and show a
 L["Set the font size for unitframes."] = "Устанавливает шрифт для рамок юнитов."
 L["Set the order that the group will sort."] = "Устанавливает метод сортировки в группе."
 L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."] = "Устанавливает порядок заклинания. Заметьте, что приоритеты используются только для модуля рейдовых дебаффов, а не для стандартных баффов/дебаффов. Для отключения приоритетности установите на 0."
-L["Short"] = "Короткое"
+L['Set the type of auras to show when a unit is a foe.'] = "Устанавливает тип аур для отображения, когда юнит враг."
+L['Set the type of auras to show when a unit is friendly.'] = "Устанавливает тип аур для отображения, когда юнит друг."
 L["Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "Отображать объем входящего исцеления на рамках. Также отображает немного иначе окрашенную полосу для избыточного исцеления."
 L['Show Auras'] = "Показать ауры"
 L["Show Missing"] = "Показывать отсутствие" --buff indicator filter option
@@ -794,7 +795,6 @@ L["Target Frame"] = "Цель"
 L["TargetTarget Frame"] = "Цель цели"
 L["Text Format"] = "Формат текста"
 L["Text Toggle On NPC"] = "Переключение текста для НИП"
-L["Text"] = "Текст"
 L["The alpha to set units that are out of range to."] = "Прозрачность рамок юнитов, находящихся вне дальности действия заклинаний."
 L["The amount of space (in pixels) between the columns."] = "Расстояние между столбцами (в пикселях)."
 L["The anchor point for each new column. A value of LEFT will cause the columns to grow to the right."] = "Точка фиксации для каждого нового столбца. Значение 'LEFT' заставит новые столбцы расти вправо (появляться справа от предыдущего)."
@@ -802,6 +802,7 @@ L["The following macro must be true in order for the group to be shown, in addit
 L["The font that the unitframes will use."] = "Шрифт рамок юнитов"
 L["The maximum number of columns that the header will create."] = "Максимальное количество создаваемых столбцов. Юниты, не поместившиеся в столбцы показываться не будут."
 L["The maximum number of units that will be displayed in a single column."] = "Максимальное количество юнитов на один столбец."
+L['The name you have selected is already in use by another element.'] = "Выбранное вами имя уже используется другим элементом";
 L['The object you want to attach to.'] = "Объект, к которому Вы хотите прикрепить полосы"
 L['The point of which you are anchoring to in relation to the attach to object.'] = "Точка фиксации относительно выбранного объекта."
 L['The spell "%s" has been added to the Blacklist unitframe aura filter.'] = 'Заклинание "%s" было добавлено в фильтр "Blacklist" аур рамок юнитов.'
@@ -815,7 +816,7 @@ L["Use Filter"] = "Использовать фильтр"
 L["Use the custom health backdrop color instead of a multiple of the main health color."] = "Использовать свой фоновый цвет вместо основного цвета полосы здоровья."
 L['Use Whitelist'] = "Использовать белый список"
 L["Value must be a number"] = "Значение должно быть числом"
-L["Vertical"] = "Вертикально"
+L["Vertical"] = "Вертикально" --Also used in bags section
 L["Visibility"] = "Видимость"
 L["What each frame should attach itself to, example setting it to TOP every unit will attach its top to the last point bottom."] = "К чему должна пристыковываться каждая рамка. Например, значение 'TOP' заставит рамки прикрепляться к нижней границе предыдущей."
 L["What point to anchor to the frame you set to attach to."] = "К какой точке выбранного фиксатора прикрепить ауры."
@@ -827,10 +828,31 @@ L["When true, the header includes the player when not in a raid."] = "Отобр
 L["When true, the header is shown when the player is not in any group."] = "Включить отображение этой категории рамок, когда игрок не находится в какой-либо группе (не оказывает эффекта на рейдовые фреймы без особых настроек видимости)."
 L["When you mana falls below this point, text will flash on the player frame."] = "Когда мана опускается ниже этого процента, на фрейме игрока начнет мигать предупреждающий текст."
 L["Whitelist"] = "Белый список"
-L["Width"] = "Ширина"
+L["Width"] = "Ширина" --Also used in NamePlates module
 L["xOffset"] = "Отступ по Х"
 L["yOffset"] = "Отступ по Y"
 L["You can't remove a pre-existing filter."] = "Вы не можете удалить фильтр по умолчанию."
 L["You cannot copy settings from the same unit."] = "Вы не можете копировать установки из того же юнита."
 L["You cannot set the Group Point and Column Point so they are opposite of each other."] = "Вы не можете установить точки группы и столбцов так, чтобы они были противоположны друг другу."
 L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."] = "Вы не можете удалить заклинание из фильтра по умолчанию, которое не было добавлено в него вручную. Отключаю использование в фильтре этого заклинания."
+L['TEXT_FORMAT_DESC'] = [=[Строка для изменения вида текста.
+
+Примеры:
+[namecolor][name] [difficultycolor][smartlevel] [shortclassification]
+[healthcolor][health:current-max]
+[powercolor][power:current]
+
+Форматы здоровья/резурсов:
+'current' - текущее значение
+'percent' - значение в процентах
+'current-max' - текущее значение, за которым идет максимальное значение. Будет отображать только максимальное значение, если текущее равно ему.
+'current-percent' - текущее значение, за которым идет значение в процентах.Будет отображать только максимальное значение, если текущее равно ему.
+'current-max-percent' - текущее значение, максимальное значение, за которым идет значение в процентах, Будет отображать только максимальное значение, если текущее равно ему.
+'deficit' - отображает значение недостающего до максимума здоровья/ресурса. Не будет отображать ничего, если текущее значение равно максимальному.
+
+Форматы имени:
+'name-short' - Имя с ограничением длины в 10 символов
+'name-medium' - Имя с ограничением длины в 15 символов
+'name-long' - Имя с ограничением длины в 20 символов
+
+Для отключения оставьте поле пустым, для дополнительной информации посетите http://www.tukui.org]=];
