@@ -283,3 +283,25 @@ ElvUF.Tags.Methods['threatcolor'] = function(unit)
 		return ''
 	end
 end
+
+ElvUF.Tags.Methods['pvp'] = function(unit)
+	local time = GetPVPTimer()
+	local min = format("%01.f", floor((time / 1000) / 60))
+	local sec = format("%02.f", floor((time / 1000) - min * 60)) 
+	
+	if(UnitIsPVPFreeForAll(unit)) then
+		if time ~= 301000 and time ~= -1 then
+			return PVP.." ".."("..min..":"..sec..")"
+		else
+			return PVP
+		end
+	elseif UnitIsPVP(unit) then
+		if time ~= 301000 and time ~= -1 then
+			return PVP.." ".."("..min..":"..sec..")"
+		else
+			return PVP
+		end
+	else
+		return ""
+	end
+end
