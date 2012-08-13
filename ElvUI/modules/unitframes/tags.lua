@@ -284,7 +284,7 @@ ElvUF.Tags.Methods['threatcolor'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Methods['pvp'] = function(unit)
+ElvUF.Tags.Methods['pvptimer'] = function(unit)
 	local time = GetPVPTimer()
 	local min = format("%01.f", floor((time / 1000) / 60))
 	local sec = format("%02.f", floor((time / 1000) - min * 60)) 
