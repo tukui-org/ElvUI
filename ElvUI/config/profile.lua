@@ -669,7 +669,7 @@ P['unitframe'] = {
 			['width'] = 216,
 			['height'] = 46,
 			['health'] = {
-				['text_format'] = '[healthcolor][health:current-percent]',
+				['text_format'] = '[healthcolor][health:current]',
 				['position'] = 'RIGHT',
 			},
 			['power'] = {
@@ -738,7 +738,7 @@ P['unitframe'] = {
 			['width'] = 240,
 			['height'] = 46,
 			['health'] = {
-				['text_format'] = '[healthcolor][health:current-percent]',
+				['text_format'] = '[healthcolor][health:current]',
 				['position'] = 'RIGHT',
 			},
 			['power'] = {
@@ -813,7 +813,7 @@ P['unitframe'] = {
 			['width'] = 180,
 			['height'] = 44,
 			['health'] = {
-				['text_format'] = '[healthcolor][health:percent]',
+				['text_format'] = '[healthcolor][health:current]',
 				['position'] = 'RIGHT',
 				['orientation'] = 'HORIZONTAL',
 				['frequentUpdates'] = false,
