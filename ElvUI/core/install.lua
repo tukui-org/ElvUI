@@ -386,16 +386,12 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.arena.width = 200;
 			E.db.unitframe.units.arena.castbar.width = 200;
 			
-			--Need to get back to this block of settings
 			E.db.unitframe.units.party.width = 80;
 			E.db.unitframe.units.party.height = 52;
 			E.db.unitframe.units.party.healPrediction = true;
 			E.db.unitframe.units.party.health.frequentUpdates = true;
 			E.db.unitframe.units.party.debuffs.enable = true;
-			E.db.unitframe.units.party.health.position = 'BOTTOM';
-			E.db.unitframe.units.party.debuffs.anchorPoint = 'BOTTOMLEFT';
 			E.db.unitframe.units.party.debuffs.useFilter = 'Blacklist';
-			E.db.unitframe.units.party.debuffs.sizeOverride = 0;
 			E.db.unitframe.units.party.petsGroup.enable = true;
 			E.db.unitframe.units.party.petsGroup.width = 80;
 			E.db.unitframe.units.party.petsGroup.yOffset = 3;
@@ -406,12 +402,14 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.raid10.healPrediction = true;
 			E.db.unitframe.units.raid10.health.frequentUpdates = true;
 			E.db.unitframe.units.raid10.debuffs.enable = true;
+			E.db.unitframe.units.raid10.debuffs.useFilter = 'Blacklist';
 
 			E.db.unitframe.units.raid25.width = 80;
 			E.db.unitframe.units.raid25.height = 52;
 			E.db.unitframe.units.raid25.healPrediction = true;
 			E.db.unitframe.units.raid25.health.frequentUpdates = true;
 			E.db.unitframe.units.raid25.debuffs.enable = true;
+			E.db.unitframe.units.raid25.debuffs.useFilter = 'Blacklist';
 
 			E.db.unitframe.units.raid40.width = 80;
 			E.db.unitframe.units.raid40.height = 30;

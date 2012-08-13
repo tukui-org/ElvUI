@@ -17,7 +17,7 @@ V['general'] = {
 }
 
 V['bags'] = {
-	['enable'] = false,
+	['enable'] = true,
 }
 
 V["nameplate"] = {
