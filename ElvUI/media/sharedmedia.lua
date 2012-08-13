@@ -8,7 +8,7 @@ LSM:Register("font", "ElvUI Alt-Font", [[Interface\AddOns\ElvUI\media\fonts\Cont
 LSM:Register("font", "ElvUI Pixel", [[Interface\AddOns\ElvUI\media\fonts\Homespun.ttf]])
 LSM:Register("font","ElvUI Alt-Combat", [[Interface\AddOns\ElvUI\media\fonts\DieDieDie.ttf]])
 LSM:Register("font","ElvUI Combat", [[Interface\AddOns\ElvUI\media\fonts\Action_Man.ttf]])
-LSM:Register("font","ElvUI Font", [[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]])
+LSM:Register("font","ElvUI Font", [[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], LSM.LOCALE_BIT_ruRU + LSM.LOCALE_BIT_western)
 LSM:Register("sound", "Awww Crap", [[Interface\AddOns\ElvUI\media\sounds\awwcrap.mp3]])
 LSM:Register("sound", "BBQ Ass", [[Interface\AddOns\ElvUI\media\sounds\bbqass.mp3]])
 LSM:Register("sound", "Big Yankie Devil", [[Interface\AddOns\ElvUI\media\sounds\yankiebangbang.mp3]])

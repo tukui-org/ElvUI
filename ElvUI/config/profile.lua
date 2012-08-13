@@ -1281,9 +1281,3 @@ P["actionbar"] = {
 		["buttonspacing"] = 4,
 	},
 };
-
-if GetLocale() ~= 'enUS' then
-	P['general'].font = 'Arial Narrow'
-	P['unitframe'].font = 'Arial Narrow'
-	P['chat'].font = 'Arial Narrow'
-end
