@@ -467,6 +467,18 @@ local UnregisterEvents = function(fontstr)
 	end
 end
 
+local OnEnter = function(self)
+	for _, fs in pairs(self.__mousetags) do
+		fs:SetAlpha(1)
+	end
+end
+
+local OnLeave = function(self)
+	for _, fs in pairs(self.__mousetags) do
+		fs:SetAlpha(0)
+	end
+end
+
 local tagPool = {}
 local funcPool = {}
 local tmp = {}
@@ -482,6 +494,7 @@ local Tag = function(self, fs, tagstr)
 
 	if(not self.__tags) then
 		self.__tags = {}
+		self.__mousetags = {}
 		table.insert(self.__elements, OnShow)
 	else
 		-- Since people ignore everything that's good practice - unregister the tag
@@ -502,7 +515,32 @@ local Tag = function(self, fs, tagstr)
 			tagstr = tagstr:gsub(escapeSequence, replacement)
 		end
 	end
-
+	
+	if tagstr:find('%[mouseover%]') then
+		table.insert(self.__mousetags, fs)
+		fs:SetAlpha(0)
+		if not self.__HookFunc then
+			self:HookScript('OnEnter', OnEnter)
+			self:HookScript('OnLeave', OnLeave)
+			self.__HookFunc = true;
+		end
+		tagstr = tagstr:gsub('%[mouseover%]', '')
+	else
+		for index, fontString in pairs(self.__mousetags) do
+			if fontString == fs then
+				table.remove(self.__mousetags, index)
+				fs:SetAlpha(1)
+			end
+		end
+	end	
+	
+	local containsOnUpdate
+	for tag in tagstr:gmatch(_PATTERN) do
+		if not tagEvents[tag:sub(2, -2)] then
+			containsOnUpdate = true;
+		end	
+	end
+	
 	local func = tagPool[tagstr]
 	if(not func) then
 		local format, numTags = tagstr:gsub('%%', '%%%%'):gsub(_PATTERN, '%%s')
@@ -510,9 +548,9 @@ local Tag = function(self, fs, tagstr)
 
 		for bracket in tagstr:gmatch(_PATTERN) do
 			local tagFunc = funcPool[bracket] or tags[bracket:sub(2, -2)]
+			
 			if(not tagFunc) then
 				local tagName, s, e = getTagName(bracket)
-
 				local tag = tags[tagName]
 				if(tag) then
 					s = s - 2
@@ -631,14 +669,16 @@ local Tag = function(self, fs, tagstr)
 		tagPool[tagstr] = func
 	end
 	fs.UpdateTag = func
-
+	
 	local unit = self.unit
-	if((unit and unit:match'%w+target') or fs.frequentUpdates) or not tagEvents[tagstr] then
+	if((unit and unit:match'%w+target') or fs.frequentUpdates) or containsOnUpdate then
 		local timer
 		if(type(fs.frequentUpdates) == 'number') then
 			timer = fs.frequentUpdates
-		else
+		elseif containsOnUpdate then
 			timer = .1
+		else
+			timer = .5
 		end
 
 		if(not eventlessUnits[timer]) then eventlessUnits[timer] = {} end
