@@ -284,6 +284,10 @@ local function Update(self, event, unit)
 	for index = lastAuraIndex + 1, #bars do
 		bars[index]:Hide()
 	end
+	
+	if auraBars.PostUpdate then
+		auraBars:PostUpdate(event, unit)
+	end
 end
 
 local function Enable(self)

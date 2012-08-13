@@ -152,3 +152,8 @@ G.unitframe.HastedChannelTicks = {
 	[SpellName(64843)] = true, -- Divine Hymn
 	[SpellName(1120)] = true, -- Drain Soul
 }
+
+G.unitframe.AuraBarColors = {
+	[SpellName(2825)] = {169/255, 98/255, 181/255},
+	[SpellName(32182)] = {169/255, 98/255, 181/255},
+}

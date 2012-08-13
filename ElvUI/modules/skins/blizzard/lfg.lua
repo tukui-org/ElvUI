@@ -15,6 +15,8 @@ local function LoadSkin()
 	PVEFrameTopBorder:Hide()
 	PVEFrameLeftInsetBg:Hide()
 	PVEFrame.shadows:Hide()
+	S:HandleButton(LFDQueueFramePartyBackfillBackfillButton)
+	S:HandleButton(LFDQueueFramePartyBackfillNoBackfillButton)
 	
 	GroupFinderFrameGroupButton1.icon:SetTexture("Interface\\Icons\\INV_Helmet_08")
 	GroupFinderFrameGroupButton2.icon:SetTexture("Interface\\Icons\\inv_helmet_06")

@@ -1077,6 +1077,22 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	return true
 end
 
+function UF:ColorizeAuraBars(event, unit)
+	local bars = self.bars
+	for index = 1, #bars do
+		local frame = bars[index]
+		local bar = frame.statusBar
+		if not frame:IsVisible() then
+			break
+		end
+		local name = bar.aura.name
+		local colors = E.global.unitframe.AuraBarColors[name]
+		if E.global.unitframe.AuraBarColors[name] then
+			bar:SetStatusBarColor(colors.r, colors.g, colors.b)
+		end
+	end
+end
+
 function UF:SmartAuraDisplay()
 	local db = self.db
 	local unit = self.unit

@@ -762,7 +762,7 @@ function UF:Construct_AuraBarHeader(frame)
 	auraBar.sort = true
 	auraBar.debuffColor = {0.8, 0.1, 0.1}
 	auraBar.filter = UF.AuraBarFilter
-
+	auraBar.PostUpdate = UF.ColorizeAuraBars
 	hooksecurefunc(GameTooltip, "SetUnitAura", function(self,...)
 		if self.auraBarLine and self.numLines ~= self:NumLines() then
 			self:AddLine(L['Hold shift + right click to blacklist this aura.'])
