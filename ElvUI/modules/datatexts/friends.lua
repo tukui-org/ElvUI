@@ -123,7 +123,7 @@ local function BuildBNTable(total)
 		if isOnline then 
 			for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
 			BNTable[i] = { presenceID, presenceName, battleTag, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
-			
+
 			if client == scString then
 				BNTableSC[#BNTableSC + 1] = { presenceID, presenceName, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 			elseif client == d3String then
@@ -210,17 +210,15 @@ local function Click(self, btn)
 			end
 		end
 		if #BNTable > 0 then
-			local realID, playerFaction, grouped
+			local realID, grouped
 			for i = 1, #BNTable do
 				info = BNTable[i]
 				if (info[5]) then
 					realID = info[2]
 					menuCountWhispers = menuCountWhispers + 1
 					menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = whisperClick}
-					
-					if select(1, UnitFactionGroup("player")) == "Horde" then playerFaction = 0 else playerFaction = 1 end
 
-					if info[6] == wowString and playerFaction == info[12] then
+					if info[6] == wowString and UnitFactionGroup("player") == info[12] then
 						classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[14]], GetQuestDifficultyColor(info[16])
 						if classc == nil then classc = GetQuestDifficultyColor(info[16]) end
 
