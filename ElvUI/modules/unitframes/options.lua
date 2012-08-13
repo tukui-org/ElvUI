@@ -864,7 +864,7 @@ E.Options.args.unitframe.args.player = {
 			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
 			get = function() return '' end,
 			set = function(info, textName)
-				for object, _ in pairs(E.Options.args.unitframe.args.player) do
+				for object, _ in pairs(E.db.unitframe.units.player) do
 					if object == textName then
 						E:Print(L['The name you have selected is already in use by another element.'])
 						return
@@ -1561,7 +1561,7 @@ E.Options.args.unitframe.args.target = {
 			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
 			get = function() return '' end,
 			set = function(info, textName)
-				for object, _ in pairs(E.Options.args.unitframe.args.target) do
+				for object, _ in pairs(E.db.unitframe.units.target) do
 					if object == textName then
 						E:Print(L['The name you have selected is already in use by another element.'])
 						return
@@ -2216,7 +2216,7 @@ E.Options.args.unitframe.args.targettarget = {
 			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
 			get = function() return '' end,
 			set = function(info, textName)
-				for object, _ in pairs(E.Options.args.unitframe.args.targettarget) do
+				for object, _ in pairs(E.db.unitframe.units.targettarget) do
 					if object == textName then
 						E:Print(L['The name you have selected is already in use by another element.'])
 						return
@@ -2625,7 +2625,7 @@ E.Options.args.unitframe.args.focus = {
 			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
 			get = function() return '' end,
 			set = function(info, textName)
-				for object, _ in pairs(E.Options.args.unitframe.args.focus) do
+				for object, _ in pairs(E.db.unitframe.units.focus) do
 					if object == textName then
 						E:Print(L['The name you have selected is already in use by another element.'])
 						return
@@ -3221,7 +3221,7 @@ E.Options.args.unitframe.args.focustarget = {
 			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
 			get = function() return '' end,
 			set = function(info, textName)
-				for object, _ in pairs(E.Options.args.unitframe.args.focustarget) do
+				for object, _ in pairs(E.db.unitframe.units.focustarget) do
 					if object == textName then
 						E:Print(L['The name you have selected is already in use by another element.'])
 						return
@@ -3620,7 +3620,7 @@ E.Options.args.unitframe.args.pet = {
 			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
 			get = function() return '' end,
 			set = function(info, textName)
-				for object, _ in pairs(E.Options.args.unitframe.args.pet) do
+				for object, _ in pairs(E.db.unitframe.units.pet) do
 					if object == textName then
 						E:Print(L['The name you have selected is already in use by another element.'])
 						return
@@ -4013,7 +4013,7 @@ E.Options.args.unitframe.args.pettarget = {
 			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
 			get = function() return '' end,
 			set = function(info, textName)
-				for object, _ in pairs(E.Options.args.unitframe.args.pettarget) do
+				for object, _ in pairs(E.db.unitframe.units.pettarget) do
 					if object == textName then
 						E:Print(L['The name you have selected is already in use by another element.'])
 						return
@@ -4409,7 +4409,7 @@ E.Options.args.unitframe.args.boss = {
 			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
 			get = function() return '' end,
 			set = function(info, textName)
-				for object, _ in pairs(E.Options.args.unitframe.args.boss) do
+				for object, _ in pairs(E.db.unitframe.units.boss) do
 					if object == textName then
 						E:Print(L['The name you have selected is already in use by another element.'])
 						return
@@ -4921,7 +4921,7 @@ E.Options.args.unitframe.args.arena = {
 			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
 			get = function() return '' end,
 			set = function(info, textName)
-				for object, _ in pairs(E.Options.args.unitframe.args.arena) do
+				for object, _ in pairs(E.db.unitframe.units.arena) do
 					if object == textName then
 						E:Print(L['The name you have selected is already in use by another element.'])
 						return
@@ -5486,7 +5486,7 @@ E.Options.args.unitframe.args.party = {
 					desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
 					get = function() return '' end,
 					set = function(info, textName)
-						for object, _ in pairs(E.Options.args.unitframe.args.party) do
+						for object, _ in pairs(E.db.unitframe.units.party) do
 							if object == textName then
 								E:Print(L['The name you have selected is already in use by another element.'])
 								return
