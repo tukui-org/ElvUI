@@ -817,6 +817,7 @@ L["Visibility"] = true;
 L["What each frame should attach itself to, example setting it to TOP every unit will attach its top to the last point bottom."] = true;
 L["What point to anchor to the frame you set to attach to."] = true;
 L["What to attach the buff anchor frame to."] = true;
+L["What to attach the debuff anchor frame to."] = true;
 L['When set the Buffs and Debuffs will toggle being displayed depending on if the unit is friendly or an enemy. This will not effect the aurabars module.'] = true;
 L["When true, the group header is shown when the player is in a party."] = true;
 L["When true, the group header is shown when the player is in a raid."] = true;
