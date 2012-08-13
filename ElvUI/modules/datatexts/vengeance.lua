@@ -22,11 +22,11 @@ local function calculate(self, event, ...)
 		value = 0
 	end
 	
-	self.text:SetFormattedText(displayString, value);
+	self.text:SetFormattedText(displayString, vengeance, value);
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayString = string.join("", hex, "%s")
+	displayString = string.join("", "%s: ", hex, "%s|r")
 	
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)
