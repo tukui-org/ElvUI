@@ -525,7 +525,7 @@ E.Options.args.unitframe = {
 							order = 3,
 							type = 'toggle',
 							name = L['Health By Value'],
-							desc = L['Color health by ammount remaining.'],				
+							desc = L['Color health by amount remaining.'],				
 						},
 						customhealthbackdrop = {
 							order = 4,
