@@ -229,7 +229,7 @@ local function Update(self, event, unit)
 	local _name, _icon, _count, _dtype, _duration, _endTime, _spellId
 	local _priority, priority = 0, 0
 	for i = 1, 40 do
-		local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellId = UnitAura(unit, i, 'HARMFUL')
+		local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellId, canApplyAura, isBossDebuff = UnitAura(unit, i, 'HARMFUL')
 		if (not name) then break end
 
 		if addon.ShowDispelableDebuff and debuffType then
