@@ -528,7 +528,7 @@ local Tag = function(self, fs, tagstr)
 	else
 		for index, fontString in pairs(self.__mousetags) do
 			if fontString == fs then
-				table.remove(self.__mousetags, index)
+				self.__mousetags[index] = nil;
 				fs:SetAlpha(1)
 			end
 		end
