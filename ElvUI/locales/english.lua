@@ -1,12 +1,6 @@
 -- English localization file for enUS and enGB.
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0");
-local L
-if UnitName('player') ~= 'Elvz' and UnitName('player') ~= 'Gronckle' then
-	L = AceLocale:NewLocale("ElvUI", "enUS", true, true);
-else
-	L = AceLocale:NewLocale("ElvUI", "enUS", true);
-end
-
+local L = AceLocale:NewLocale("ElvUI", "enUS", true);
 if not L then return; end
 
 --ActionBars
@@ -603,7 +597,7 @@ L['Using the /farmmode <size> command will spawn a larger minimap on your screen
 L['You can access copy chat and chat menu functions by mouse over the top right corner of chat panel and left/right click on the button that will appear.'] = true;
 L['You can see someones average item level of their gear by holding shift and mousing over them. It should appear inside the tooltip.'] = true;
 L['You can set your keybinds quickly by typing /kb.'] = true;
-L['You can toggle the microbar by using your middle mouse button on the minimap you can also accomplish this by holding shift and right clicking on the minimap.'] = true;
+L['You can toggle the microbar by using your middle mouse button on the minimap you can also accomplish this by enabling the actual microbar located in the actionbar settings.'] = true;
 L['You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame'] = true;
 
 --UnitFrames
