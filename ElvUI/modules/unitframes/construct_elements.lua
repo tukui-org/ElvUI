@@ -494,12 +494,8 @@ end
 
 function UF:Construct_PvPIndicator(frame)
 	local pvp = frame:CreateFontString(nil, 'OVERLAY')
-	pvp:Point("BOTTOM", frame.Health, "BOTTOM", 0, 7)
-	pvp:SetTextColor(0.69, 0.31, 0.31)
 	UF:Configure_FontString(pvp)
-	
-	self:ScheduleRepeatingTimer("UpdatePvPText", 0.1, frame)
-	
+
 	return pvp
 end
 

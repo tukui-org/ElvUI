@@ -865,7 +865,7 @@ E.Options.args.unitframe.args.player = {
 			get = function() return '' end,
 			set = function(info, textName)
 				for object, _ in pairs(E.db.unitframe.units.player) do
-					if object == textName then
+					if object:lower() == textName:lower() then
 						E:Print(L['The name you have selected is already in use by another element.'])
 						return
 					end
@@ -873,6 +873,11 @@ E.Options.args.unitframe.args.player = {
 				
 				if not E.db.unitframe.units['player'].customTexts then
 					E.db.unitframe.units['player'].customTexts = {};
+				end
+				
+				if E.db.unitframe.units['player'].customTexts[textName] then
+					E:Print(L['The name you have selected is already in use by another element.'])
+					return;
 				end
 				
 				E.db.unitframe.units['player'].customTexts[textName] = {
@@ -979,6 +984,28 @@ E.Options.args.unitframe.args.player = {
 				},					
 			},
 		},
+		pvp = {
+			order = 450,
+			type = 'group',
+			name = PVP,
+			get = function(info) return E.db.unitframe.units['player']['pvp'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['player']['pvp'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+			args = {
+				position = {
+					type = 'select',
+					order = 2,
+					name = L['Position'],
+					values = positionValues,
+				},	
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},					
+			},
+		},		
 		portrait = {
 			order = 500,
 			type = 'group',
@@ -1562,7 +1589,7 @@ E.Options.args.unitframe.args.target = {
 			get = function() return '' end,
 			set = function(info, textName)
 				for object, _ in pairs(E.db.unitframe.units.target) do
-					if object == textName then
+					if object:lower() == textName:lower() then
 						E:Print(L['The name you have selected is already in use by another element.'])
 						return
 					end
@@ -1571,6 +1598,11 @@ E.Options.args.unitframe.args.target = {
 				if not E.db.unitframe.units['target'].customTexts then
 					E.db.unitframe.units['target'].customTexts = {};
 				end
+			
+				if E.db.unitframe.units['target'].customTexts[textName] then
+					E:Print(L['The name you have selected is already in use by another element.'])
+					return;
+				end			
 				
 				E.db.unitframe.units['target'].customTexts[textName] = {
 					['text_format'] = '',
@@ -2217,7 +2249,7 @@ E.Options.args.unitframe.args.targettarget = {
 			get = function() return '' end,
 			set = function(info, textName)
 				for object, _ in pairs(E.db.unitframe.units.targettarget) do
-					if object == textName then
+					if object:lower() == textName:lower() then
 						E:Print(L['The name you have selected is already in use by another element.'])
 						return
 					end
@@ -2226,6 +2258,11 @@ E.Options.args.unitframe.args.targettarget = {
 				if not E.db.unitframe.units['targettarget'].customTexts then
 					E.db.unitframe.units['targettarget'].customTexts = {};
 				end
+				
+				if E.db.unitframe.units['targettarget'].customTexts[textName] then
+					E:Print(L['The name you have selected is already in use by another element.'])
+					return;
+				end				
 				
 				E.db.unitframe.units['targettarget'].customTexts[textName] = {
 					['text_format'] = '',
@@ -2626,7 +2663,7 @@ E.Options.args.unitframe.args.focus = {
 			get = function() return '' end,
 			set = function(info, textName)
 				for object, _ in pairs(E.db.unitframe.units.focus) do
-					if object == textName then
+					if object:lower() == textName:lower() then
 						E:Print(L['The name you have selected is already in use by another element.'])
 						return
 					end
@@ -2635,6 +2672,11 @@ E.Options.args.unitframe.args.focus = {
 				if not E.db.unitframe.units['focus'].customTexts then
 					E.db.unitframe.units['focus'].customTexts = {};
 				end
+				
+				if E.db.unitframe.units['focus'].customTexts[textName] then
+					E:Print(L['The name you have selected is already in use by another element.'])
+					return;
+				end				
 				
 				E.db.unitframe.units['focus'].customTexts[textName] = {
 					['text_format'] = '',
@@ -3222,7 +3264,7 @@ E.Options.args.unitframe.args.focustarget = {
 			get = function() return '' end,
 			set = function(info, textName)
 				for object, _ in pairs(E.db.unitframe.units.focustarget) do
-					if object == textName then
+					if object:lower() == textName:lower() then
 						E:Print(L['The name you have selected is already in use by another element.'])
 						return
 					end
@@ -3232,6 +3274,11 @@ E.Options.args.unitframe.args.focustarget = {
 				if not E.db.unitframe.units[unit].customTexts then
 					E.db.unitframe.units[unit].customTexts = {};
 				end
+				
+				if E.db.unitframe.units[unit].customTexts[textName] then
+					E:Print(L['The name you have selected is already in use by another element.'])
+					return;
+				end				
 				
 				E.db.unitframe.units[unit].customTexts[textName] = {
 					['text_format'] = '',
@@ -3621,7 +3668,7 @@ E.Options.args.unitframe.args.pet = {
 			get = function() return '' end,
 			set = function(info, textName)
 				for object, _ in pairs(E.db.unitframe.units.pet) do
-					if object == textName then
+					if object:lower() == textName:lower() then
 						E:Print(L['The name you have selected is already in use by another element.'])
 						return
 					end
@@ -3631,6 +3678,11 @@ E.Options.args.unitframe.args.pet = {
 				if not E.db.unitframe.units[unit].customTexts then
 					E.db.unitframe.units[unit].customTexts = {};
 				end
+				
+				if E.db.unitframe.units[unit].customTexts[textName] then
+					E:Print(L['The name you have selected is already in use by another element.'])
+					return;
+				end						
 				
 				E.db.unitframe.units[unit].customTexts[textName] = {
 					['text_format'] = '',
@@ -4014,7 +4066,7 @@ E.Options.args.unitframe.args.pettarget = {
 			get = function() return '' end,
 			set = function(info, textName)
 				for object, _ in pairs(E.db.unitframe.units.pettarget) do
-					if object == textName then
+					if object:lower() == textName:lower() then
 						E:Print(L['The name you have selected is already in use by another element.'])
 						return
 					end
@@ -4024,6 +4076,11 @@ E.Options.args.unitframe.args.pettarget = {
 				if not E.db.unitframe.units[unit].customTexts then
 					E.db.unitframe.units[unit].customTexts = {};
 				end
+				
+				if E.db.unitframe.units[unit].customTexts[textName] then
+					E:Print(L['The name you have selected is already in use by another element.'])
+					return;
+				end						
 				
 				E.db.unitframe.units[unit].customTexts[textName] = {
 					['text_format'] = '',
@@ -4410,7 +4467,7 @@ E.Options.args.unitframe.args.boss = {
 			get = function() return '' end,
 			set = function(info, textName)
 				for object, _ in pairs(E.db.unitframe.units.boss) do
-					if object == textName then
+					if object:lower() == textName:lower() then
 						E:Print(L['The name you have selected is already in use by another element.'])
 						return
 					end
@@ -4420,6 +4477,11 @@ E.Options.args.unitframe.args.boss = {
 				if not E.db.unitframe.units[unit].customTexts then
 					E.db.unitframe.units[unit].customTexts = {};
 				end
+				
+				if E.db.unitframe.units[unit].customTexts[textName] then
+					E:Print(L['The name you have selected is already in use by another element.'])
+					return;
+				end						
 				
 				E.db.unitframe.units[unit].customTexts[textName] = {
 					['text_format'] = '',
@@ -4922,7 +4984,7 @@ E.Options.args.unitframe.args.arena = {
 			get = function() return '' end,
 			set = function(info, textName)
 				for object, _ in pairs(E.db.unitframe.units.arena) do
-					if object == textName then
+					if object:lower() == textName:lower() then
 						E:Print(L['The name you have selected is already in use by another element.'])
 						return
 					end
@@ -4932,6 +4994,11 @@ E.Options.args.unitframe.args.arena = {
 				if not E.db.unitframe.units[unit].customTexts then
 					E.db.unitframe.units[unit].customTexts = {};
 				end
+				
+				if E.db.unitframe.units[unit].customTexts[textName] then
+					E:Print(L['The name you have selected is already in use by another element.'])
+					return;
+				end						
 				
 				E.db.unitframe.units[unit].customTexts[textName] = {
 					['text_format'] = '',
@@ -5487,7 +5554,7 @@ E.Options.args.unitframe.args.party = {
 					get = function() return '' end,
 					set = function(info, textName)
 						for object, _ in pairs(E.db.unitframe.units.party) do
-							if object == textName then
+							if object:lower() == textName:lower() then
 								E:Print(L['The name you have selected is already in use by another element.'])
 								return
 							end
@@ -5497,6 +5564,11 @@ E.Options.args.unitframe.args.party = {
 						if not E.db.unitframe.units[unit].customTexts then
 							E.db.unitframe.units[unit].customTexts = {};
 						end
+								
+						if E.db.unitframe.units[unit].customTexts[textName] then
+							E:Print(L['The name you have selected is already in use by another element.'])
+							return;
+						end								
 						
 						E.db.unitframe.units[unit].customTexts[textName] = {
 							['text_format'] = '',
@@ -6159,7 +6231,7 @@ for i=10, 40, 15 do
 						get = function() return '' end,
 						set = function(info, textName)
 							for object, _ in pairs(E.Options.args.unitframe.args['raid'..i]) do
-								if object == textName then
+								if object:lower() == textName:lower() then
 									E:Print(L['The name you have selected is already in use by another element.'])
 									return
 								end
@@ -6170,6 +6242,11 @@ for i=10, 40, 15 do
 								E.db.unitframe.units[unit].customTexts = {};
 							end
 							
+							if E.db.unitframe.units[unit].customTexts[textName] then
+								E:Print(L['The name you have selected is already in use by another element.'])
+								return;
+							end									
+										
 							E.db.unitframe.units[unit].customTexts[textName] = {
 								['text_format'] = '',
 								['size'] = 12,

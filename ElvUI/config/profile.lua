@@ -243,6 +243,10 @@ P['unitframe'] = {
 				['position'] = 'CENTER',
 				['text_format'] = '',
 			},
+			['pvp'] = {
+				['position'] = 'BOTTOM',
+				['text_format'] = '||cFFB04F4F[pvptimer][mouseover]||r',
+			},
 			['portrait'] = {
 				['enable'] = false,
 				['width'] = 45,
