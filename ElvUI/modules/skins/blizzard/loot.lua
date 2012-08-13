@@ -12,17 +12,21 @@ local function LoadSkin()
 	S:HandleCloseButton(MissingLootFramePassButton)
 
 	local function SkinButton()
-		local number = GetNumMissingLootItems()
-		for i = 1, number do
+		local numItems = GetNumMissingLootItems()
+
+		for i = 1, numItems do
 			local slot = _G["MissingLootFrameItem"..i]
 			local icon = slot.icon
 
-			S:HandleItemButton(slot)
+			S:HandleItemButton(slot, true)
 
 			local quality = select(4, GetMissingLootItemInfo(i))
 			local color = (GetItemQualityColor(quality)) or (unpack(E.media.bordercolor))
 			frame:SetBackdropBorderColor(color)
 		end
+		
+		local numRows = ceil(numItems / 2);
+		MissingLootFrame:SetHeight(numRows * 43 + 38 + MissingLootFrameLabel:GetHeight());
 	end
 	hooksecurefunc("MissingLootFrame_Show", SkinButton)
 	
