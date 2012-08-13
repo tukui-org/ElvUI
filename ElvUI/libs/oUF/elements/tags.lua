@@ -633,12 +633,12 @@ local Tag = function(self, fs, tagstr)
 	fs.UpdateTag = func
 
 	local unit = self.unit
-	if((unit and unit:match'%w+target') or fs.frequentUpdates) then
+	if((unit and unit:match'%w+target') or fs.frequentUpdates) or not tagEvents[tagstr] then
 		local timer
 		if(type(fs.frequentUpdates) == 'number') then
 			timer = fs.frequentUpdates
 		else
-			timer = .5
+			timer = .1
 		end
 
 		if(not eventlessUnits[timer]) then eventlessUnits[timer] = {} end
