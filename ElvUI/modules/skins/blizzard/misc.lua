@@ -410,6 +410,389 @@ local function LoadSkin()
 			S:HandleButton(child)
 		end
 	end
+	
+    local frames = {
+        "VideoOptionsFrameCategoryFrame",
+        "VideoOptionsFramePanelContainer",
+        "InterfaceOptionsFrameCategories",
+        "InterfaceOptionsFramePanelContainer",
+        "InterfaceOptionsFrameAddOns",
+        "AudioOptionsSoundPanelPlayback",
+        "AudioOptionsSoundPanelVolume",
+        "AudioOptionsSoundPanelHardware",
+        "AudioOptionsVoicePanelTalking",
+        "AudioOptionsVoicePanelBinding",
+        "AudioOptionsVoicePanelListening",
+    }
+    for i = 1, getn(frames) do
+        local SkinFrames = _G[frames[i]]
+        if SkinFrames then
+            SkinFrames:StripTextures()
+            SkinFrames:CreateBackdrop("Transparent")
+            if SkinFrames ~= _G["VideoOptionsFramePanelContainer"] and SkinFrames ~= _G["InterfaceOptionsFramePanelContainer"] then
+                SkinFrames.backdrop:Point("TOPLEFT",-1,0)
+                SkinFrames.backdrop:Point("BOTTOMRIGHT",0,1)
+            else
+                SkinFrames.backdrop:Point("TOPLEFT", 0, 0)
+                SkinFrames.backdrop:Point("BOTTOMRIGHT", 0, 0)
+            end
+        end
+    end
+    local interfacetab = {
+        "InterfaceOptionsFrameTab1",
+        "InterfaceOptionsFrameTab2",
+    }
+    for i = 1, getn(interfacetab) do
+        local itab = _G[interfacetab[i]]
+        if itab then
+            itab:StripTextures()
+            S:HandleTab(itab)
+        end
+    end
+    InterfaceOptionsFrameTab1:ClearAllPoints()
+    InterfaceOptionsFrameTab1:SetPoint("BOTTOMLEFT",InterfaceOptionsFrameCategories,"TOPLEFT",-11,-2)
+    VideoOptionsFrameDefaults:ClearAllPoints()
+    InterfaceOptionsFrameDefaults:ClearAllPoints()
+    InterfaceOptionsFrameCancel:ClearAllPoints()
+    VideoOptionsFrameDefaults:SetPoint("TOPLEFT",VideoOptionsFrameCategoryFrame,"BOTTOMLEFT",-1,-5)
+    InterfaceOptionsFrameDefaults:SetPoint("TOPLEFT",InterfaceOptionsFrameCategories,"BOTTOMLEFT",-1,-5)
+    InterfaceOptionsFrameCancel:SetPoint("TOPRIGHT",InterfaceOptionsFramePanelContainer,"BOTTOMRIGHT",0,-6)
+    local interfacecheckbox = {
+        -- Controls
+        "ControlsPanelStickyTargeting",
+        "ControlsPanelAutoDismount",
+        "ControlsPanelAutoClearAFK",
+        "ControlsPanelBlockTrades",
+        "ControlsPanelBlockGuildInvites",
+        "ControlsPanelLootAtMouse",
+        "ControlsPanelAutoLootCorpse",
+        "ControlsPanelInteractOnLeftClick",
+        "ControlsPanelAutoOpenLootHistory",
+        -- Combat
+        "CombatPanelAttackOnAssist",
+        "CombatPanelStopAutoAttack",
+        "CombatPanelNameplateClassColors",
+        "CombatPanelTargetOfTarget",
+        "CombatPanelShowSpellAlerts",
+        "CombatPanelReducedLagTolerance",
+        "CombatPanelActionButtonUseKeyDown",
+        "CombatPanelEnemyCastBarsOnPortrait",
+        "CombatPanelEnemyCastBarsOnNameplates",
+        "CombatPanelAutoSelfCast",
+        -- Display
+        "DisplayPanelShowCloak",
+        "DisplayPanelShowHelm",
+        "DisplayPanelShowAggroPercentage",
+        "DisplayPanelPlayAggroSounds",
+        "DisplayPanelDetailedLootInfo",
+        "DisplayPanelShowSpellPointsAvg",
+        "DisplayPanelemphasizeMySpellEffects",
+        "DisplayPanelShowFreeBagSpace",
+        "DisplayPanelCinematicSubtitles",
+        "DisplayPanelRotateMinimap",
+        "DisplayPanelScreenEdgeFlash",
+        "DisplayPanelShowAccountAchievments",
+        --Objectives
+        "ObjectivesPanelAutoQuestTracking",
+        "ObjectivesPanelAutoQuestProgress",
+        "ObjectivesPanelMapQuestDifficulty",
+        "ObjectivesPanelAdvancedWorldMap",
+        "ObjectivesPanelWatchFrameWidth",
+        -- Social
+        "SocialPanelProfanityFilter",
+        "SocialPanelSpamFilter",
+        "SocialPanelChatBubbles",
+        "SocialPanelPartyChat",
+        "SocialPanelChatHoverDelay",
+        "SocialPanelGuildMemberAlert",
+        "SocialPanelChatMouseScroll",
+        -- Action bars
+        "ActionBarsPanelLockActionBars",
+        "ActionBarsPanelSecureAbilityToggle",
+        "ActionBarsPanelAlwaysShowActionBars",
+        "ActionBarsPanelBottomLeft",
+        "ActionBarsPanelBottomRight",
+        "ActionBarsPanelRight",
+        "ActionBarsPanelRightTwo",
+        -- Names
+        "NamesPanelMyName",
+        "NamesPanelFriendlyPlayerNames",
+        "NamesPanelFriendlyPets",
+        "NamesPanelFriendlyGuardians",
+        "NamesPanelFriendlyTotems",
+        "NamesPanelUnitNameplatesFriends",
+        "NamesPanelUnitNameplatesFriendlyGuardians",
+        "NamesPanelUnitNameplatesFriendlyPets",
+        "NamesPanelUnitNameplatesFriendlyTotems",
+        "NamesPanelGuilds",
+        "NamesPanelGuildTitles",
+        "NamesPanelTitles",
+        "NamesPanelNonCombatCreature",
+        "NamesPanelEnemyPlayerNames",
+        "NamesPanelEnemyPets",
+        "NamesPanelEnemyGuardians",
+        "NamesPanelEnemyTotems",
+        "NamesPanelUnitNameplatesEnemyPets",
+        "NamesPanelUnitNameplatesEnemies",
+        "NamesPanelUnitNameplatesEnemyGuardians",
+        "NamesPanelUnitNameplatesEnemyTotems",
+        -- Combat Text
+        "CombatTextPanelTargetDamage",
+        "CombatTextPanelPeriodicDamage",
+        "CombatTextPanelPetDamage",
+        "CombatTextPanelHealing",
+        "CombatTextPanelTargetEffects",
+        "CombatTextPanelOtherTargetEffects",
+        "CombatTextPanelEnableFCT",
+        "CombatTextPanelDodgeParryMiss",
+        "CombatTextPanelDamageReduction",
+        "CombatTextPanelRepChanges",
+        "CombatTextPanelReactiveAbilities",
+        "CombatTextPanelFriendlyHealerNames",
+        "CombatTextPanelCombatState",
+        "CombatTextPanelComboPoints",
+        "CombatTextPanelLowManaHealth",
+        "CombatTextPanelEnergyGains",
+        "CombatTextPanelPeriodicEnergyGains",
+        "CombatTextPanelHonorGains",
+        "CombatTextPanelAuras",
+        -- Buffs & Debuffs
+        "BuffsPanelBuffDurations",
+        "BuffsPanelDispellableDebuffs",
+        "BuffsPanelCastableBuffs",
+        "BuffsPanelConsolidateBuffs",
+        "BuffsPanelShowAllEnemyDebuffs",
+        -- Camera
+        "CameraPanelFollowTerrain",
+        "CameraPanelHeadBob",
+        "CameraPanelWaterCollision",
+        "CameraPanelSmartPivot",
+        -- Mouse
+        "MousePanelInvertMouse",
+        "MousePanelClickToMove",
+        "MousePanelWoWMouse",
+        -- Help
+        "HelpPanelShowTutorials",
+        "HelpPanelLoadingScreenTips",
+        "HelpPanelEnhancedTooltips",
+        "HelpPanelBeginnerTooltips",
+        "HelpPanelShowLuaErrors",
+        "HelpPanelColorblindMode",
+        "HelpPanelMovePad",
+        "BattlenetPanelOnlineFriends",
+        "BattlenetPanelOfflineFriends",
+        "BattlenetPanelBroadcasts",
+        "BattlenetPanelFriendRequests",
+        "BattlenetPanelConversations",
+        "BattlenetPanelShowToastWindow",
+        -- Status Text
+        "StatusTextPanelPlayer",
+        "StatusTextPanelPet",
+        "StatusTextPanelParty",
+        "StatusTextPanelTarget",
+        "StatusTextPanelAlternateResource",
+        "StatusTextPanelPercentages",
+        "StatusTextPanelXP",
+        -- Unit Frames
+        "UnitFramePanelPartyBackground",
+        "UnitFramePanelPartyPets",
+        "UnitFramePanelArenaEnemyFrames",
+        "UnitFramePanelArenaEnemyCastBar",
+        "UnitFramePanelArenaEnemyPets",
+        "UnitFramePanelFullSizeFocusFrame",
+    }
+    for i = 1, getn(interfacecheckbox) do
+        local icheckbox = _G["InterfaceOptions"..interfacecheckbox[i]]
+        if icheckbox then
+            S:HandleCheckBox(icheckbox)
+        end
+    end
+    local interfacedropdown ={
+        -- Controls
+        "ControlsPanelAutoLootKeyDropDown",
+        -- Combat
+        "CombatPanelTOTDropDown",
+        "CombatPanelFocusCastKeyDropDown",
+        "CombatPanelSelfCastKeyDropDown",
+        -- Display
+        "DisplayPanelAggroWarningDisplay",
+        "DisplayPanelWorldPVPObjectiveDisplay",
+        -- Social
+        "SocialPanelChatStyle",
+        "SocialPanelWhisperMode",
+        "SocialPanelTimestamps",
+        "SocialPanelBnWhisperMode",
+        "SocialPanelConversationMode",
+        -- Action bars
+        "ActionBarsPanelPickupActionKeyDropDown",
+        -- Names
+        "NamesPanelNPCNamesDropDown",
+        "NamesPanelUnitNameplatesMotionDropDown",
+        -- Combat Text
+        "CombatTextPanelFCTDropDown",
+        -- Camera
+        "CameraPanelStyleDropDown",
+        -- Mouse
+        "MousePanelClickMoveStyleDropDown",
+        "LanguagesPanelLocaleDropDown",
+    }
+    for i = 1, getn(interfacedropdown) do
+        local idropdown = _G["InterfaceOptions"..interfacedropdown[i]]
+        if idropdown then
+            S:HandleDropDownBox(idropdown)
+            DropDownList1:SetTemplate("Transparent")
+        end
+    end
+    S:HandleButton(InterfaceOptionsHelpPanelResetTutorials)
+    S:HandleCloseButton(WatchFrameCollapseExpandButton)
+    local optioncheckbox = {
+        -- Advanced
+        "Advanced_MaxFPSCheckBox",
+        "Advanced_MaxFPSBKCheckBox",
+        "Advanced_UseUIScale",
+        -- Audio
+        "AudioOptionsSoundPanelEnableSound",
+        "AudioOptionsSoundPanelSoundEffects",
+        "AudioOptionsSoundPanelErrorSpeech",
+        "AudioOptionsSoundPanelEmoteSounds",
+        "AudioOptionsSoundPanelPetSounds",
+        "AudioOptionsSoundPanelMusic",
+        "AudioOptionsSoundPanelLoopMusic",
+        "AudioOptionsSoundPanelAmbientSounds",
+        "AudioOptionsSoundPanelSoundInBG",
+        "AudioOptionsSoundPanelReverb",
+        "AudioOptionsSoundPanelHRTF",
+        "AudioOptionsSoundPanelEnableDSPs",
+        "AudioOptionsSoundPanelUseHardware",
+        "AudioOptionsVoicePanelEnableVoice",
+        "AudioOptionsVoicePanelEnableMicrophone",
+        "AudioOptionsVoicePanelPushToTalkSound",
+		"AudioOptionsSoundPanelPetBattleMusic",
+        -- Network
+        "NetworkOptionsPanelOptimizeSpeed",
+        "NetworkOptionsPanelUseIPv6",
+    }
+    for i = 1, getn(optioncheckbox) do
+        local ocheckbox = _G[optioncheckbox[i]]
+        if ocheckbox then
+            S:HandleCheckBox(ocheckbox)
+        end
+    end
+    local optiondropdown = {
+        -- Graphics
+        "Graphics_DisplayModeDropDown",
+        "Graphics_ResolutionDropDown",
+        "Graphics_RefreshDropDown",
+        "Graphics_PrimaryMonitorDropDown",
+        "Graphics_MultiSampleDropDown",
+        "Graphics_VerticalSyncDropDown",
+        "Graphics_TextureResolutionDropDown",
+        "Graphics_FilteringDropDown",
+        "Graphics_ProjectedTexturesDropDown",
+        "Graphics_ViewDistanceDropDown",
+        "Graphics_EnvironmentalDetailDropDown",
+        "Graphics_GroundClutterDropDown",
+        "Graphics_ShadowsDropDown",
+        "Graphics_LiquidDetailDropDown",
+        "Graphics_SunshaftsDropDown",
+        "Graphics_ParticleDensityDropDown",
+        "Graphics_SSAODropDown",
+        -- Advanced
+        "Advanced_BufferingDropDown",
+        "Advanced_LagDropDown",
+        "Advanced_HardwareCursorDropDown",
+        "Advanced_GraphicsAPIDropDown",
+        -- Audio
+        "AudioOptionsSoundPanelHardwareDropDown",
+        "AudioOptionsSoundPanelSoundChannelsDropDown",
+        "AudioOptionsVoicePanelInputDeviceDropDown",
+        "AudioOptionsVoicePanelChatModeDropDown",
+        "AudioOptionsVoicePanelOutputDeviceDropDown",
+        -- Raid Profiles
+        "CompactUnitFrameProfilesProfileSelector",
+        "CompactUnitFrameProfilesGeneralOptionsFrameHealthTextDropdown",
+        "CompactUnitFrameProfilesGeneralOptionsFrameSortByDropdown",
+    }
+    for i = 1, getn(optiondropdown) do
+        local odropdown = _G[optiondropdown[i]]
+        if odropdown then
+            S:HandleDropDownBox(odropdown,165)
+            DropDownList1:SetTemplate("Transparent")
+        end
+    end
+    local buttons = {
+        "RecordLoopbackSoundButton",
+        "PlayLoopbackSoundButton",
+        "AudioOptionsVoicePanelChatMode1KeyBindingButton",
+        "CompactUnitFrameProfilesSaveButton",
+        "CompactUnitFrameProfilesDeleteButton",
+    }
+    for _, button in pairs(buttons) do
+        S:HandleButton(_G[button])
+    end
+    AudioOptionsVoicePanelChatMode1KeyBindingButton:ClearAllPoints()
+    AudioOptionsVoicePanelChatMode1KeyBindingButton:Point("CENTER", AudioOptionsVoicePanelBinding, "CENTER", 0, -10)
+    S:HandleCheckBox(CompactUnitFrameProfilesRaidStylePartyFrames)
+    S:HandleButton(CompactUnitFrameProfilesGeneralOptionsFrameResetPositionButton)
+    local raidcheckbox = {
+        "KeepGroupsTogether",
+        "DisplayIncomingHeals",
+        "DisplayPowerBar",
+        "DisplayAggroHighlight",
+        "UseClassColors",
+        "DisplayPets",
+        "DisplayMainTankAndAssist",
+        "DisplayBorder",
+        "ShowDebuffs",
+        "DisplayOnlyDispellableDebuffs",
+        "AutoActivate2Players",
+        "AutoActivate3Players",
+        "AutoActivate5Players",
+        "AutoActivate10Players",
+        "AutoActivate15Players",
+        "AutoActivate25Players",
+        "AutoActivate40Players",
+        "AutoActivateSpec1",
+        "AutoActivateSpec2",
+        "AutoActivatePvP",
+        "AutoActivatePvE",
+    }
+    for i = 1, getn(raidcheckbox) do
+        local icheckbox = _G["CompactUnitFrameProfilesGeneralOptionsFrame"..raidcheckbox[i]]
+        if icheckbox then
+            S:HandleCheckBox(icheckbox)
+            icheckbox:SetFrameLevel(40)
+        end
+    end	
+	
+	local sliders = {
+		"Graphics_Quality",
+		"Advanced_UIScaleSlider",
+		"Advanced_MaxFPSSlider",
+		"Advanced_MaxFPSBKSlider",
+		"AudioOptionsSoundPanelSoundQuality",
+		"AudioOptionsSoundPanelMasterVolume",
+		"AudioOptionsSoundPanelSoundVolume",
+		"AudioOptionsSoundPanelMusicVolume",
+		"AudioOptionsSoundPanelAmbienceVolume",
+		"AudioOptionsVoicePanelMicrophoneVolume",
+		"AudioOptionsVoicePanelSpeakerVolume",
+		"AudioOptionsVoicePanelSoundFade",
+		"AudioOptionsVoicePanelMusicFade",
+		"AudioOptionsVoicePanelAmbienceFade",
+		"InterfaceOptionsCombatPanelSpellAlertOpacitySlider",
+		"InterfaceOptionsCombatPanelMaxSpellStartRecoveryOffset",
+		"InterfaceOptionsBattlenetPanelToastDurationSlider",
+		"InterfaceOptionsCameraPanelMaxDistanceSlider",
+		"InterfaceOptionsCameraPanelFollowSpeedSlider",
+		"InterfaceOptionsMousePanelMouseSensitivitySlider",
+		"InterfaceOptionsMousePanelMouseLookSpeedSlider",
+		"OpacityFrameSlider",
+	}
+	Graphics_RightQuality:Kill()
+	for _, slider in pairs(sliders) do
+		S:HandleSliderFrame(_G[slider])
+	end
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

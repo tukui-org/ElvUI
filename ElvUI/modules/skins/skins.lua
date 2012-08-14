@@ -360,17 +360,28 @@ end
 
 function S:HandleSliderFrame(frame)
 	local orientation = frame:GetOrientation()
-	local width, height = frame:GetSize()
-	
+	local SIZE = 12
 	frame:StripTextures()
-	frame:SetTemplate('Default')
+	frame:CreateBackdrop('Default')
+	frame.backdrop:SetAllPoints()
+	frame.SetBackdrop = E.noop
 	frame:SetThumbTexture(E["media"].blankTex)
 	frame:GetThumbTexture():SetVertexColor(unpack(E["media"].bordercolor))
-	
-	if not orientation == 'VERTICAL' then
-		frame:GetThumbTexture():Size(height-4,height-4)
+	frame:GetThumbTexture():Size(SIZE-2,SIZE-2)
+	if orientation == 'VERTICAL' then
+		frame:Width(SIZE)
 	else
-		frame:GetThumbTexture():Size(width-4,width-4)
+		frame:Height(SIZE)
+		
+		for i=1, frame:GetNumRegions() do
+			local region = select(i, frame:GetRegions())
+			if region and region:GetObjectType() == 'FontString' then
+				local point, anchor, anchorPoint, x, y = region:GetPoint()
+				if anchorPoint:find('BOTTOM') then
+					region:Point(point, anchor, anchorPoint, x, y - 4)
+				end
+			end
+		end		
 	end
 end
 
