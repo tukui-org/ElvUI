@@ -126,6 +126,5 @@ function AddOn:ToggleConfig()
 	end
 	
 	ACD[mode](ACD, AddOnName) 
-	
 	GameTooltip:Hide() --Just in case you're mouseovered something and it closes.
 end

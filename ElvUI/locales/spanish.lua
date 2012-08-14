@@ -106,7 +106,7 @@ L["Click the button below to resize your chat frames, unitframes, and reposition
 L["Click to search.."] = "Haz clic para buscar..."
 L["Coding:"] = "Codificación:"
 L["Color"] = "Color"
-L["Color health by ammount remaining."] = "Colorea la barra de salud por cantidad restante."
+L["Color health by amount remaining."] = "Colorea la barra de salud por cantidad restante."
 L["Color health by classcolor or reaction."] = "Colorea la barra de salud por clase o por reacción."
 L["Color Icons"] = "Iconos de Color"
 L["Color power by classcolor or reaction."] = "Colorea la barra de poder por clase o por reacción."

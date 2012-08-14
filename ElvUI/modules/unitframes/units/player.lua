@@ -354,6 +354,16 @@ function UF:Update_PlayerFrame(frame, db)
 		frame:Tag(name, db.name.text_format)
 	end	
 	
+	--PvP
+	do
+		local pvp = frame.PvPText
+		local x, y = self:GetPositionOffset(db.pvp.position)
+		pvp:ClearAllPoints()
+		pvp:Point(db.pvp.position, frame.Health, db.pvp.position, x, y)	
+
+		frame:Tag(pvp, db.pvp.text_format)		
+	end
+	
 	--Power
 	do
 		local power = frame.Power

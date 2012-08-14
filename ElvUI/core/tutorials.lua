@@ -2,7 +2,7 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 
 E.TutorialList = {
 	L['For technical support visit us at http://www.tukui.org.'],
-	L['You can toggle the microbar by using your middle mouse button on the minimap you can also accomplish this by holding shift and right clicking on the minimap.'],
+	L['You can toggle the microbar by using your middle mouse button on the minimap you can also accomplish this by enabling the actual microbar located in the actionbar settings.'],
 	L['A raid marker feature is available by pressing Escape -> Keybinds scroll to the bottom under ElvUI and setting a keybind for the raid marker.'],
 	L['You can set your keybinds quickly by typing /kb.'],
 	L['If you need to reset the gold datatext type /resetgold.'],
