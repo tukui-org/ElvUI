@@ -562,7 +562,7 @@ end
 local buttons = 0
 local function SetupFlyoutButton()
 	for i=1, buttons do
-		--prevent error if you don't have max ammount of buttons
+		--prevent error if you don't have max amount of buttons
 		if _G["SpellFlyoutButton"..i] then
 			AB:StyleButton(_G["SpellFlyoutButton"..i])
 			_G["SpellFlyoutButton"..i]:StyleButton()
