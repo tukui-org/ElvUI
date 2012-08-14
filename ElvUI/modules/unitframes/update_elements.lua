@@ -256,11 +256,11 @@ function UF:CustomCastDelayText(duration)
 		local text		
 		if self.channeling then
 			if db.castbar.format == 'CURRENT' then
-				self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(math.abs(duration - self.max), "-", self.delay))
+				self.Time:SetText(("%.1f |cffaf5050%.1f|r"):format(math.abs(duration - self.max), self.delay))
 			elseif db.castbar.format == 'CURRENTMAX' then
-				self.Time:SetText(("%.1f / %.1f |cffaf5050%s %.1f|r"):format(duration, self.max, "-", self.delay))
+				self.Time:SetText(("%.1f / %.1f |cffaf5050%.1f|r"):format(duration, self.max, self.delay))
 			elseif db.castbar.format == 'REMAINING' then
-				self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(duration, "-", self.delay))
+				self.Time:SetText(("%.1f |cffaf5050%.1f|r"):format(duration, self.delay))
 			end			
 		else
 			if db.castbar.format == 'CURRENT' then
