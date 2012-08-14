@@ -47,7 +47,7 @@ P['general'] = {
 		['textSize'] = 10,
 	},
 	['threat'] = {
-		['enable'] = true,
+		['enable'] = false,
 		['position'] = 'RIGHTCHAT',
 		['textSize'] = 12,
 	},
