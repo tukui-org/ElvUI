@@ -194,7 +194,7 @@ local function LoadSkin()
 		_G["AchievementFrameAchievementsContainerButton"..i.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
 		_G["AchievementFrameAchievementsContainerButton"..i.."IconTexture"]:SetInside()
 		
-		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"].oborder = "Don't use sharp border" --Needed for ElvUI only
+		--_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"].oborder = "Don't use sharp border" --Needed for ElvUI only
 		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:StripTextures()
 		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:SetTemplate("Default")
 		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:SetCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check")

@@ -173,11 +173,7 @@ local function SkinAce3()
 				widget.skinnedCheckBG:Point('BOTTOMRIGHT', widget.checkbg, 'BOTTOMRIGHT', -4, 4)
 			end
 			
-			if widget.skinnedCheckBG.oborder then
-				widget.check:SetParent(widget.skinnedCheckBG.oborder)
-			else
-				widget.check:SetParent(widget.skinnedCheckBG)
-			end
+			widget.check:SetParent(widget.skinnedCheckBG)
 		elseif TYPE == "Dropdown" then
 			local frame = widget.dropdown
 			local button = widget.button
