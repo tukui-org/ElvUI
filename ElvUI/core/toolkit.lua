@@ -74,90 +74,52 @@ local function SetInside(obj, anchor, xOffset, yOffset)
 	obj:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT', -xOffset, yOffset)
 end
 
-local function SetVirtualBorderColor(f, r, g, b, a)
-	assert(f.virtualBorder, 'Invalid frame type, must be a transparent template.')
-	f.borderLeft:SetTexture(r, g, b, a)	
-	f.borderRight:SetTexture(r, g, b, a)
-	f.borderTop:SetTexture(r, g, b, a)
-	f.borderBottom:SetTexture(r, g, b, a)	
-end
-
 local function SetTemplate(f, t, glossTex, ignoreUpdates)
 	GetTemplate(t)
 	
 	f.template = t
 	f.glossTex = glossTex
 
+	f:SetBackdrop({
+	  bgFile = E["media"].blankTex, 
+	  edgeFile = E["media"].blankTex, 
+	  tile = false, tileSize = 0, edgeSize = E.mult, 
+	  insets = { left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
+	})
+
 	if not f.backdropTexture and t ~= 'Transparent' then
 		local backdropTexture = f:CreateTexture(nil, "BORDER")
 		backdropTexture:SetDrawLayer("BACKGROUND", 1)
 		f.backdropTexture = backdropTexture
-		
-		f:SetBackdrop({
-		  bgFile = E["media"].blankTex,
-		  edgeFile = E["media"].blankTex,
-		  tile = false, tileSize = 0, edgeSize = E.mult,
-		  insets = { left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
-		})		
 	elseif t == 'Transparent' then
-		f:SetBackdrop({
-		  bgFile = E["media"].blankTex,
-		  tile = false, tileSize = 0,
-		})
-	
 		f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
 		
-		if not f.virtualBorder then
-			f.insetLeft = f:CreateTexture(nil, 'BORDER')
-			f.insetLeft:Point('TOPLEFT', f, 'TOPLEFT')
-			f.insetLeft:Point('BOTTOMLEFT', f, 'BOTTOMLEFT')
-			f.insetLeft:Width(E.mult * 3)
-			f.insetLeft:SetTexture(0, 0, 0)
+		if not f.oborder and not f.iborder then
+			local border = CreateFrame("Frame", nil, f)
+			border:SetInside(f, E.mult, E.mult)
+			border:SetBackdrop({
+				edgeFile = E["media"].blankTex, 
+				edgeSize = E.mult, 
+				insets = { left = E.mult, right = E.mult, top = E.mult, bottom = E.mult }
+			})
+			border:SetBackdropBorderColor(0, 0, 0, 1)
+			f.iborder = border
 			
-			f.insetRight = f:CreateTexture(nil, 'BORDER')
-			f.insetRight:Point('TOPRIGHT', f, 'TOPRIGHT')
-			f.insetRight:Point('BOTTOMRIGHT', f, 'BOTTOMRIGHT')
-			f.insetRight:Width(E.mult * 3)
-			f.insetRight:SetTexture(0, 0, 0)
-			
-			f.insetTop = f:CreateTexture(nil, 'BORDER')
-			f.insetTop:Point('TOPLEFT', f, 'TOPLEFT')
-			f.insetTop:Point('TOPRIGHT', f, 'TOPRIGHT')
-			f.insetTop:Height(E.mult * 3)
-			f.insetTop:SetTexture(0, 0, 0)
-			
-			f.insetBottom = f:CreateTexture(nil, 'BORDER')
-			f.insetBottom:Point('BOTTOMLEFT', f, 'BOTTOMLEFT')
-			f.insetBottom:Point('BOTTOMRIGHT', f, 'BOTTOMRIGHT')
-			f.insetBottom:Height(E.mult * 3)
-			f.insetBottom:SetTexture(0, 0, 0)
-			
-			f.borderLeft = f:CreateTexture(nil, 'BORDER', nil, 1)
-			f.borderLeft:Point('TOPLEFT', f, 'TOPLEFT', E.mult, -E.mult)
-			f.borderLeft:Point('BOTTOMLEFT', f, 'BOTTOMLEFT', E.mult, E.mult)
-			f.borderLeft:Width(E.mult)	
-			
-			f.borderRight = f:CreateTexture(nil, 'BORDER', nil, 1)
-			f.borderRight:Point('TOPRIGHT', f, 'TOPRIGHT', -E.mult, -E.mult)
-			f.borderRight:Point('BOTTOMRIGHT', f, 'BOTTOMRIGHT', -E.mult, E.mult)
-			f.borderRight:Width(E.mult)
-			
-			f.borderTop = f:CreateTexture(nil, 'BORDER', nil, 1)
-			f.borderTop:Point('TOPLEFT', f, 'TOPLEFT', E.mult, -E.mult)
-			f.borderTop:Point('TOPRIGHT', f, 'TOPRIGHT', -E.mult, -E.mult)
-			f.borderTop:Height(E.mult)	
-			
-			f.borderBottom = f:CreateTexture(nil, 'BORDER', nil, 1)
-			f.borderBottom:Point('BOTTOMLEFT', f, 'BOTTOMLEFT', E.mult, E.mult)
-			f.borderBottom:Point('BOTTOMRIGHT', f, 'BOTTOMRIGHT', -E.mult, E.mult)
-			f.borderBottom:Height(E.mult)	
-			f.virtualBorder = true;
-		end			
-		
-		f:SetVirtualBorderColor(borderr, borderg, borderb)	
+			if f.oborder then return end
+			local border = CreateFrame("Frame", nil, f)
+			border:SetOutside(f, E.mult, E.mult)
+			border:SetFrameLevel(f:GetFrameLevel() + 1)
+			border:SetBackdrop({
+				edgeFile = E["media"].blankTex, 
+				edgeSize = E.mult, 
+				insets = { left = E.mult, right = E.mult, top = E.mult, bottom = E.mult }
+			})
+			border:SetBackdropBorderColor(0, 0, 0, 1)
+			f.oborder = border				
+		end
 	end
 	
-	if f.backdropTexture then
+	if f.backdropTexture then 
 		f:SetBackdropColor(0, 0, 0, backdropa)
 		f.backdropTexture:SetVertexColor(backdropr, backdropg, backdropb)
 		f.backdropTexture:SetAlpha(backdropa)
@@ -169,9 +131,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 		f.backdropTexture:SetInside(f)
 	end
 	
-	if not f.virtualBorder then
-		f:SetBackdropBorderColor(borderr, borderg, borderb)
-	end
+	f:SetBackdropBorderColor(borderr, borderg, borderb)
 	
 	if not ignoreUpdates then
 		E["frames"][f] = true
@@ -204,7 +164,7 @@ local function CreateShadow(f)
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(f:GetFrameStrata())
 	shadow:SetOutside(f, 3, 3)
-	shadow:SetBackdrop( {
+	shadow:SetBackdrop( { 
 		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(3),
 		insets = {left = E:Scale(5), right = E:Scale(5), top = E:Scale(5), bottom = E:Scale(5)},
 	})
@@ -292,7 +252,7 @@ local function StyleButton(button)
 		button:SetCheckedTexture(checked)
 	end
 	
-	local cooldown = button:GetName() and _G[button:GetName().."Cooldown"]
+	local cooldown = button:GetName() and _G[button:GetName().."Cooldown"] 
 	if cooldown then
 		cooldown:ClearAllPoints()
 		cooldown:SetInside()
@@ -306,7 +266,6 @@ local function addapi(object)
 	if not object.SetOutside then mt.SetOutside = SetOutside end
 	if not object.SetInside then mt.SetInside = SetInside end
 	if not object.SetTemplate then mt.SetTemplate = SetTemplate end
-	if not object.SetVirtualBorderColor then mt.SetVirtualBorderColor = SetVirtualBorderColor end
 	if not object.CreateBackdrop then mt.CreateBackdrop = CreateBackdrop end
 	if not object.CreateShadow then mt.CreateShadow = CreateShadow end
 	if not object.Kill then mt.Kill = Kill end

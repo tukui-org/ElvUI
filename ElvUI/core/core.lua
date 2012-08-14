@@ -174,9 +174,7 @@ end
 function E:UpdateBorderColors()
 	for frame, _ in pairs(self["frames"]) do
 		if frame then
-			if frame.template == 'Transparent' then
-				frame:SetVirtualBorderColor(unpack(self['media'].bordercolor))
-			elseif frame.template == 'Default' or frame.template == nil then
+			if frame.template == 'Default' or frame.template == 'Transparent' or frame.template == nil then
 				frame:SetBackdropBorderColor(unpack(self['media'].bordercolor))
 			end
 		else
