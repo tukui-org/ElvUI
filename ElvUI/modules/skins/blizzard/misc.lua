@@ -265,12 +265,18 @@ local function LoadSkin()
 	
 	OpacityFrame:StripTextures()
 	OpacityFrame:SetTemplate("Transparent")	
-	for i=1, WatchFrameCollapseExpandButton:GetNumRegions() do
-		local region = select(i, WatchFrameCollapseExpandButton:GetRegions())
-		if region:GetObjectType() == 'Texture' then
-			region:SetDesaturated(true)
-		end
-	end
+	WatchFrameCollapseExpandButton:StripTextures()
+	S:HandleCloseButton(WatchFrameCollapseExpandButton)
+	WatchFrameCollapseExpandButton:Size(30)
+	WatchFrameCollapseExpandButton.text:SetText('-')
+	
+	hooksecurefunc('WatchFrame_Expand', function()
+		WatchFrameCollapseExpandButton.text:SetText('-')
+	end)
+	
+	hooksecurefunc('WatchFrame_Collapse', function()
+		WatchFrameCollapseExpandButton.text:SetText('+')
+	end)	
 	
 	--Chat Config
 	local StripAllTextures = {
