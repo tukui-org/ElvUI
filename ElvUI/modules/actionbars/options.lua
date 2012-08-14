@@ -478,8 +478,27 @@ E.Options.args.actionbar = {
 			set = function(info, value) E.db.actionbar[ info[#info] ] = value; AB:MultiActionBar_Update() end,
 			disabled = function() return not E.private.actionbar.enable end,
 		},
-		fontGroup = {
+		keyDown = {
+			type = 'toggle',
+			name = L['Key Down'],
+			desc = OPTION_TOOLTIP_ACTION_BUTTON_USE_KEY_DOWN,
 			order = 7,
+			disabled = function() return not E.private.actionbar.enable end,
+		},
+		movementModifier = {
+			type = 'select',
+			name = PICKUP_ACTION_KEY_TEXT,
+			desc = L['The button you must hold down in order to drag an ability to another action button.'],	
+			disabled = function() return not E.private.actionbar.enable end,
+			order = 8,
+			values = {
+				['SHIFT'] = SHIFT_KEY,
+				['ALT'] = ALT_KEY,
+				['CTRL'] = CTRL_KEY,
+			},
+		},
+		fontGroup = {
+			order = 9,
 			type = 'group',
 			guiInline = true,
 			disabled = function() return not E.private.actionbar.enable end,

@@ -1176,7 +1176,10 @@ P["actionbar"] = {
 	["minutescolor"] = { r = 1, g = 1, b = 1 },
 	["hourscolor"] = { r = 0.4, g = 1, b = 1 },
 	["dayscolor"] = { r = 0.4, g = 0.4, b = 1 },
-
+	
+	['keyDown'] = true,
+	['movementModifier'] = 'SHIFT',
+	
 	['microbar'] = {
 		['enabled'] = false,
 		['mouseover'] = false,
