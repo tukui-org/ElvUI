@@ -422,9 +422,11 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		end
 	end	
 	
-	if (unit and CanInspect(unit)) and (iLevel == 0 or talentSpec == "") then
+	if (unit and CanInspect(unit)) and not self.InspectRefresh then
 		NotifyInspect(unit)
 	end	
+	
+	self.InspectRefresh = nil
 	
 	if(UnitIsPlayer(unit)) then
 		if UnitIsAFK(unit) then
@@ -575,7 +577,7 @@ function TT:INSPECT_READY(event, GUID)
 			matchFound = true;
 		end
 	end
-	
+
 	if not matchFound then
 		local GUIDInfo = {
 			['GUID'] = GUID,
@@ -589,6 +591,7 @@ function TT:INSPECT_READY(event, GUID)
 		table.remove(self.InspectCache, 1)
 	end
 	
+	TT.InspectRefresh = true;
 	GameTooltip:SetUnit('mouseover')
 	
 	local isInspectOpen = (InspectFrame and InspectFrame:IsShown()) or (Examiner and Examiner:IsShown())
