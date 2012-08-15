@@ -559,6 +559,7 @@ function ElvUF:DisableBlizzard(unit)
 		end
 	elseif(unit:match'(arena)%d?$' == 'arena') then
 		local id = unit:match'arena(%d)'
+
 		if(id) then
 			HandleFrame('ArenaEnemyFrame' .. id)
 		else
@@ -567,6 +568,12 @@ function ElvUF:DisableBlizzard(unit)
 			end
 		end
 	end
+end
+
+function UF:ADDON_LOADED(event, addon)
+	if addon ~= 'Blizzard_ArenaUI' then return; end
+	ElvUF:DisableBlizzard('arena')
+	self:UnregisterEvent("ADDON_LOADED");
 end
 
 CompactUnitFrameProfiles:UnregisterEvent('VARIABLES_LOADED') 	--Re-Register this event only if disableblizzard is turned off.
@@ -599,6 +606,12 @@ function UF:Initialize()
 		InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
 		InterfaceOptionsFrameCategoriesButton10:SetScale(0.0001)
 		InterfaceOptionsFrameCategoriesButton11:SetScale(0.0001)
+		
+		if not IsAddOnLoaded('Blizzard_ArenaUI') then
+			self:RegisterEvent('ADDON_LOADED')
+		else
+			ElvUF:DisableBlizzard('arena')
+		end
 		
 		for _, menu in pairs(UnitPopupMenus) do
 			for index = #menu, 1, -1 do
