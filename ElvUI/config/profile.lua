@@ -1150,11 +1150,27 @@ P['unitframe'] = {
 			['enable'] = true,
 			['width'] = 120,
 			['height'] = 28,
+			['targetsGroup'] = {
+				['enable'] = true,
+				['anchorPoint'] = 'RIGHT',
+				['xOffset'] = 1,
+				['yOffset'] = 0,	
+				['width'] = 120,
+				['height'] = 28,				
+			},		
 		},	
 		['assist'] = {
 			['enable'] = true,
 			['width'] = 120,
 			['height'] = 28,
+			['targetsGroup'] = {
+				['enable'] = true,
+				['anchorPoint'] = 'RIGHT',
+				['xOffset'] = 1,
+				['yOffset'] = 0,	
+				['width'] = 120,
+				['height'] = 28,					
+			},				
 		},					
 	},
 }
