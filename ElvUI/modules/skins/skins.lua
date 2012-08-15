@@ -299,6 +299,15 @@ function S:HandleCheckBox(frame)
 		frame:SetDisabledTexture("Interface\\Buttons\\UI-CheckBox-Check-Disabled")
 	end
 	
+	frame:HookScript('OnDisable', function(self)
+		if not self.SetDisabledTexture then return; end
+		if self:GetChecked() then
+			self:SetDisabledTexture("Interface\\Buttons\\UI-CheckBox-Check-Disabled")
+		else
+			self:SetDisabledTexture("")
+		end
+	end)
+	
 	frame.SetNormalTexture = E.noop
 	frame.SetPushedTexture = E.noop
 	frame.SetHighlightTexture = E.noop
