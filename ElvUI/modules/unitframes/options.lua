@@ -6855,7 +6855,7 @@ E.Options.args.unitframe.args.tank = {
 		targetsGroup = {
 			order = 4,
 			type = 'group',
-			name = L['Tank']..' '..TARGET,
+			name = L['Tank Target'],
 			guiInline = true,
 			get = function(info) return E.db.unitframe.units['tank']['targetsGroup'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['tank']['targetsGroup'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('tank') end,	
@@ -6945,7 +6945,7 @@ E.Options.args.unitframe.args.assist = {
 		targetsGroup = {
 			order = 4,
 			type = 'group',
-			name = PET_ASSIST..' '..TARGET,
+			name = L['Assist Target'],
 			guiInline = true,
 			get = function(info) return E.db.unitframe.units['assist']['targetsGroup'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['assist']['targetsGroup'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('assist') end,	
