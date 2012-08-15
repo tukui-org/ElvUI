@@ -203,25 +203,16 @@ function DT:LoadDataTexts()
 			panel.dataPanels[pointIndex].text:SetText(nil)
 			panel.dataPanels[pointIndex].pointIndex = pointIndex
 			
-			if (panelName == 'LeftChatDataPanel' or panelName == 'RightChatDataPanel') and (inInstance and (instanceType == "pvp")) and not DT.ForceHideBGStats and E.db.datatexts.battleground then
-				panel.dataPanels[pointIndex]:RegisterEvent('UPDATE_BATTLEFIELD_SCORE')
-				panel.dataPanels[pointIndex]:SetScript('OnEvent', DT.UPDATE_BATTLEFIELD_SCORE)
-				panel.dataPanels[pointIndex]:SetScript('OnEnter', DT.BattlegroundStats)
-				panel.dataPanels[pointIndex]:SetScript('OnLeave', DT.Data_OnLeave)
-				panel.dataPanels[pointIndex]:SetScript('OnClick', DT.HideBattlegroundTexts)
-				DT.UPDATE_BATTLEFIELD_SCORE(panel.dataPanels[pointIndex])
-			else
-				--Register Panel to Datatext
-				for name, data in pairs(DT.RegisteredDataTexts) do
-					for option, value in pairs(self.db.panels) do
-						if value and type(value) == 'table' then
-							if option == panelName and self.db.panels[option][pointIndex] and self.db.panels[option][pointIndex] == name then
-								DT:AssignPanelToDataText(panel.dataPanels[pointIndex], data)
-							end
-						elseif value and type(value) == 'string' and value == name then
-							if self.db.panels[option] == name and option == panelName then
-								DT:AssignPanelToDataText(panel.dataPanels[pointIndex], data)
-							end
+			--Register Panel to Datatext
+			for name, data in pairs(DT.RegisteredDataTexts) do
+				for option, value in pairs(self.db.panels) do
+					if value and type(value) == 'table' then
+						if option == panelName and self.db.panels[option][pointIndex] and self.db.panels[option][pointIndex] == name then
+							DT:AssignPanelToDataText(panel.dataPanels[pointIndex], data)
+						end
+					elseif value and type(value) == 'string' and value == name then
+						if self.db.panels[option] == name and option == panelName then
+							DT:AssignPanelToDataText(panel.dataPanels[pointIndex], data)
 						end
 					end
 				end
