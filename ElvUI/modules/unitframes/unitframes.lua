@@ -469,6 +469,7 @@ function UF:DisableBlizzard(event)
 	hooksecurefunc("CompactRaidFrameManager_UpdateShown", HideRaid)
 	CompactRaidFrameManager:HookScript('OnShow', HideRaid)
 	CompactRaidFrameContainer:UnregisterAllEvents()
+	
 	HideRaid()
 	hooksecurefunc("CompactUnitFrame_RegisterEvents", CompactUnitFrame_UnregisterEvents)
 end
@@ -568,6 +569,7 @@ function ElvUF:DisableBlizzard(unit)
 	end
 end
 
+CompactUnitFrameProfiles:UnregisterEvent('VARIABLES_LOADED') 	--Re-Register this event only if disableblizzard is turned off.
 function UF:Initialize()	
 	self.db = E.db["unitframe"]
 	if E.private["unitframe"].enable ~= true then return; end
@@ -607,6 +609,8 @@ function UF:Initialize()
 		end
 		
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', 'DisableBlizzard')
+	else
+		CompactUnitFrameProfiles:RegisterEvent('VARIABLES_LOADED')
 	end
 		
 	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs
