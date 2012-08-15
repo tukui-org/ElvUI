@@ -147,6 +147,9 @@ function NP:Colorize(frame)
 	local r,g,b = frame.oldhp:GetStatusBarColor()
 	for class, _ in pairs(RAID_CLASS_COLORS) do
 		local r, g, b = floor(r*100+.5)/100, floor(g*100+.5)/100, floor(b*100+.5)/100
+		if class == 'MONK' then
+			b = b - 0.01
+		end
 		if RAID_CLASS_COLORS[class].r == r and RAID_CLASS_COLORS[class].g == g and RAID_CLASS_COLORS[class].b == b then
 			frame.hasClass = true
 			frame.isFriendly = false
