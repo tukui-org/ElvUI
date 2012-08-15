@@ -215,7 +215,10 @@ end
 ElvUF.Tags.Events['smartlevel'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
 ElvUF.Tags.Methods['smartlevel'] = function(unit)
 	local level = UnitLevel(unit)
-	if level == UnitLevel('player') then
+	local petLevel = UnitBattlePetLevel(unit);
+	if ( UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit) ) then
+		return petLevel
+	elseif level == UnitLevel('player') then
 		return ''
 	elseif(level > 0) then
 		return level
