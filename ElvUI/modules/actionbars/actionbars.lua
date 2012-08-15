@@ -496,7 +496,10 @@ function AB:DisableBlizzard()
 	IconIntroTracker:UnregisterAllEvents()
 	IconIntroTracker:Hide()
 	IconIntroTracker:SetParent(UIHider)
-
+	
+	InterfaceOptionsCombatPanelActionButtonUseKeyDown:SetScale(0.0001)
+	InterfaceOptionsCombatPanelActionButtonUseKeyDown:SetAlpha(0)
+	InterfaceOptionsFrameCategoriesButton6:SetScale(0.00001)
 	if PlayerTalentFrame then
 		PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 	else
@@ -509,14 +512,15 @@ function AB:UpdateButtonConfig(bar, buttonName)
 	if not bar.buttonConfig then bar.buttonConfig = { hideElements = {} } end
 	bar.buttonConfig.hideElements.macro = self.db.macrotext
 	bar.buttonConfig.hideElements.hotkey = self.db.hotkeytext
-	bar.buttonConfig.showGrid = GetCVar('alwaysShowActionBars') == '1' and true or false
-	bar.buttonConfig.clickOnDown = GetCVar('ActionButtonUseKeyDown') == '1' and true or false
+	bar.buttonConfig.showGrid = true
+	bar.buttonConfig.clickOnDown = self.db.keyDown
+	SetModifiedClick("PICKUPACTION", self.db.movementModifier)
 
 	for i, button in pairs(bar.buttons) do
 		bar.buttonConfig.keyBoundTarget = format(buttonName.."%d", i)
 		button.keyBoundTarget = bar.buttonConfig.keyBoundTarget
 		button.postKeybind = AB.FixKeybindText
-		button:SetAttribute("buttonlock", GetCVar('lockActionBars') == '1' and true or false)
+		button:SetAttribute("buttonlock", true)
 		button:SetAttribute("checkselfcast", true)
 		button:SetAttribute("checkfocuscast", true)
 		
@@ -558,7 +562,7 @@ end
 local buttons = 0
 local function SetupFlyoutButton()
 	for i=1, buttons do
-		--prevent error if you don't have max ammount of buttons
+		--prevent error if you don't have max amount of buttons
 		if _G["SpellFlyoutButton"..i] then
 			AB:StyleButton(_G["SpellFlyoutButton"..i])
 			_G["SpellFlyoutButton"..i]:StyleButton()
@@ -750,7 +754,7 @@ function AB:Initialize()
 	self:ReassignBindings()
 	
 	if not GetCVarBool('lockActionBars') then
-		E:Print(L['LOCK_AB_ERROR'])
+		SetCVar('lockActionBars', 1)
 	end	
 	
 	SpellFlyout:HookScript("OnShow", SetupFlyoutButton)

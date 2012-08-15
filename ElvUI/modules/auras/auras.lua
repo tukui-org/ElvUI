@@ -312,6 +312,7 @@ function A:Initialize()
 	ConsolidatedBuffs:Kill()
 	TemporaryEnchantFrame:Kill()
 	self.db = E.db.auras
+	InterfaceOptionsFrameCategoriesButton12:SetScale(0.0001)
 	if E.private.auras.enable ~= true then return end
 	
 	local holder = CreateFrame("Frame", "AurasHolder", E.UIParent)

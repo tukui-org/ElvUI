@@ -594,7 +594,10 @@ function UF:Initialize()
 	
 	if E.private["unitframe"].disableBlizzard then
 		self:DisableBlizzard()	
-
+		InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
+		InterfaceOptionsFrameCategoriesButton10:SetScale(0.0001)
+		InterfaceOptionsFrameCategoriesButton11:SetScale(0.0001)
+		
 		for _, menu in pairs(UnitPopupMenus) do
 			for index = #menu, 1, -1 do
 				if removeMenuOptions[menu[index]] then

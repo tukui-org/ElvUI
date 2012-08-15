@@ -624,6 +624,7 @@ function UF:Construct_RaidIcon(frame)
 	tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\raidicons.blp") 
 	tex:Size(18)
 	tex:Point("CENTER", frame.Health, "TOP", 0, 2)
+	tex.SetTexture = E.noop
 	
 	return tex
 end
