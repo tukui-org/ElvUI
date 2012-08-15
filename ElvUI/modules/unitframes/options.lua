@@ -4164,7 +4164,7 @@ E.Options.args.unitframe.args.pettarget = {
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['pettarget']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['pettarget']['power'].hideonnpc = value; UF:CreateAndUpdateUF('pettarget') end,
-		},	
+		},		
 		customText = {
 			order = 50,
 			name = L['Custom Texts'],
@@ -4565,7 +4565,16 @@ E.Options.args.unitframe.args.boss = {
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['boss']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['boss']['power'].hideonnpc = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
-		},		
+		},
+		growthDirection = {
+			order = 8,
+			name = L['Growth Direction'],
+			type = 'select',
+			values = {
+				['UP'] = L['Up'],
+				['DOWN'] = L['Down'],
+			},
+		},			
 		customText = {
 			order = 50,
 			name = L['Custom Texts'],
@@ -5082,6 +5091,15 @@ E.Options.args.unitframe.args.arena = {
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['arena']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['arena']['power'].hideonnpc = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
+		},	
+		growthDirection = {
+			order = 8,
+			name = L['Growth Direction'],
+			type = 'select',
+			values = {
+				['UP'] = L['Up'],
+				['DOWN'] = L['Down'],
+			},
 		},		
 		customText = {
 			order = 50,
