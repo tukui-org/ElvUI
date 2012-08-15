@@ -5,18 +5,6 @@ local ceil = math.ceil;
 
 local bar = CreateFrame('Frame', 'ElvUI_StanceBar', E.UIParent, 'SecureHandlerStateTemplate');
 
-local states = {
-	["DRUID"] = "show",
-	["WARRIOR"] = "show",
-	["PALADIN"] = "show",
-	["DEATHKNIGHT"] = "show",
-	["ROGUE"] = "show",
-	["PRIEST"] = "show",
-	["HUNTER"] = "show",
-	["WARLOCK"] = "show",
-	["MONK"] = "show",
-};
-
 function AB:StyleShapeShift()
 	local numForms = GetNumShapeshiftForms();
 	local texture, name, isActive, isCastable;
@@ -208,6 +196,7 @@ function AB:AdjustMaxStanceButtons()
 		bar.buttons[i]:Hide()
 	end
 	
+	local numButtons = 0
 	for i = 1, NUM_STANCE_SLOTS do
 		if not bar.buttons[i] then
 			bar.buttons[i] = CreateFrame("CheckButton", format(bar:GetName().."Button%d", i), bar, "StanceButtonTemplate")
@@ -218,11 +207,20 @@ function AB:AdjustMaxStanceButtons()
 		if name then
 			bar.buttons[i]:Show();
 			bar.LastButton = i;
+			numButtons = numButtons + 1
 		else
 			bar.buttons[i]:Hide();
 		end
 	end
+		
 	self:PositionAndSizeBarShapeShift();
+	
+	if numButtons == 0 then
+		UnregisterStateDriver(bar, "show");	
+		bar:Hide()
+	else
+		RegisterStateDriver(bar, "show", '[petbattle] hide;show');	
+	end	
 end
 
 function AB:CreateBarShapeShift()
@@ -247,7 +245,4 @@ function AB:CreateBarShapeShift()
 	E:CreateMover(bar, 'ShiftAB', 'Stance Bar', nil, -3, nil, 'ALL,ACTIONBARS');
 	self:AdjustMaxStanceButtons();
 	self:PositionAndSizeBarShapeShift();
-	
-	local classState = states[E.myclass] or "hide"
-	RegisterStateDriver(bar, "show", '[petbattle] hide;'..classState);
 end
