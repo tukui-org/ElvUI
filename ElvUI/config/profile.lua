@@ -169,6 +169,7 @@ P['datatexts'] = {
 	},
 	['localtime'] = true,
 	['time24'] = false,
+	['battleground'] = true,
 	['minimapPanels'] = true,	
 }
 

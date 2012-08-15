@@ -67,6 +67,12 @@ E.Options.args.datatexts = {
 			name = L['Local Time'],
 			desc = L['If not set to true then the server time will be displayed instead.'],
 		},
+		battleground = {
+			order = 4,
+			type = 'toggle',
+			name = L['Battleground Texts'],
+			desc = L['When inside a battleground display personal scoreboard information on the main datatext bars.'],
+		},
 		minimapPanels = {
 			order = 5,
 			name = L['Minimap Panels'],

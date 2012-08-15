@@ -150,9 +150,23 @@ function E:UpdateMedia()
 	self:UpdateBlizzardFonts()
 end
 
+function E:RequestBGInfo()
+	RequestBattlefieldScoreData()
+end
+
 function E:PLAYER_ENTERING_WORLD()
-	self:UpdateMedia()
-	self:UnregisterEvent('PLAYER_ENTERING_WORLD')
+	if not self.MediaUpdated then
+		self:UpdateMedia()
+		self.MediaUpdated = true;
+	end
+	
+	local _, instanceType = IsInInstance();
+	if instanceType == "pvp" then
+		self.BGTimer = self:ScheduleRepeatingTimer("RequestBGInfo", 5)
+	elseif self.BGTimer then
+		self:CancelTimer(self.BGTimer)
+		self.BGTimer = nil;
+	end
 end
 
 function E:ValueFuncCall()
@@ -331,7 +345,10 @@ function E:SendMessage()
 		end
 	end
 	
-	self:CancelAllTimers()
+	if E.SendMSGTimer then
+		self:CancelTimer(E.SendMSGTimer)
+		E.SendMSGTimer = nil
+	end
 end
 
 local function SendRecieve(self, event, prefix, message, channel, sender)
@@ -351,7 +368,7 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 			end
 		end
 	else
-		E:ScheduleTimer('SendMessage', 12)
+		E.SendMSGTimer = E:ScheduleTimer('SendMessage', 12)
 	end
 end
 
@@ -559,7 +576,7 @@ function E:Initialize()
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent("PET_BATTLE_CLOSE", 'AddNonPetBattleFrames')
 	self:RegisterEvent('PET_BATTLE_OPENING_START', "RemoveNonPetBattleFrames")	
-
+	
 	self:Tutorials()
 	self:GetModule('Minimap'):UpdateSettings()
 	self:RefreshModulesDB()
