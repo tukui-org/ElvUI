@@ -347,7 +347,7 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.party.columnAnchorPoint = 'LEFT';
 			E.db.unitframe.units.party.width = 80;
 			E.db.unitframe.units.party.height = 52;
-			E.db.unitframe.units.party.health.text_format = 'deficit';
+			E.db.unitframe.units.party.health.text_format = "[health:deficit]"
 			E.db.unitframe.units.party.health.position = 'BOTTOM';
 			E.db.unitframe.units.party.health.orientation = 'VERTICAL';
 			E.db.unitframe.units.party.name.position = 'TOP';
