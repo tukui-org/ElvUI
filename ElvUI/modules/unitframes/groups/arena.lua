@@ -23,6 +23,22 @@ function UF:Construct_ArenaFrames(frame)
 	frame.Trinket = self:Construct_Trinket(frame)
 	
 	frame:SetAttribute("type2", "focus")
+
+	
+	if not frame.PrepFrame then
+		frame.prepFrame = CreateFrame('Frame', frame:GetName()..'PrepFrame', UIParent)
+		frame.prepFrame:SetAllPoints(frame)
+		frame.prepFrame:CreateBackdrop()
+		frame.prepFrame.Health = CreateFrame('StatusBar', nil, frame.prepFrame)
+		frame.prepFrame.Health:SetAllPoints()
+		frame.prepFrame.Health:SetFrameStrata('HIGH')
+		UF['statusbars'][frame.prepFrame.Health] = true;
+		
+		frame.prepFrame.SpecClass = frame.prepFrame.Health:CreateFontString(nil, "OVERLAY")
+		frame.prepFrame.SpecClass:SetPoint("CENTER")
+		UF:Configure_FontString(frame.prepFrame.SpecClass)
+		frame.prepFrame:Hide()
+	end
 	
 	ArenaHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165) 
 	E:CreateMover(ArenaHeader, ArenaHeader:GetName()..'Mover', 'Arena Frames', nil, nil, nil, 'ALL,ARENA')	
@@ -339,6 +355,42 @@ function UF:Update_ArenaFrames(frame, db)
 	ArenaHeader:Height(UNIT_HEIGHT + (UNIT_HEIGHT + 12 + db.castbar.height) * 4)
 	
 	frame:UpdateAllElements()
+end
+
+function UF:UpdatePrep(event)
+	if event == "ARENA_OPPONENT_UPDATE" then
+		for i=1, 5 do
+			local f = _G["ElvUF_PrepArena"..i]
+			if f then
+				f:Hide()
+			end
+		end
+	else
+		local numOpps = GetNumArenaOpponentSpecs()
+
+		if numOpps > 0 then
+			for i=1, 5 do
+				if not _G["ElvUF_Arena"..i] then return; end
+				local s = GetArenaOpponentSpec(i)
+				local _, spec, class = nil, "UNKNOWN", "UNKNOWN"
+
+				if s and s > 0 then
+					_, spec, _, _, _, _, class = GetSpecializationInfoByID(s)
+				end
+
+				if (i <= numOpps) then
+					if class and spec then
+						local color = arena[i].colors.class[class]
+						_G["ElvUF_Arena"..i].prepFrame.SpecClass:SetText(spec.."  -  "..class)
+						_G["ElvUF_Arena"..i].prepFrame.Health:SetStatusBarColor(unpack(color))
+						_G["ElvUF_Arena"..i].prepFrame:Show()
+					end
+				else
+					_G["ElvUF_Arena"..i].prepFrame:Hide()
+				end
+			end
+		end
+	end
 end
 
 UF['unitgroupstoload']['arena'] = 5

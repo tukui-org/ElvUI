@@ -130,7 +130,6 @@ local Update = function(self, event, unit)
 
 	if(b) then
 		health:SetStatusBarColor(r, g, b)
-
 		local bg = health.bg
 		if(bg) then local mu = bg.multiplier or 1
 			bg:SetVertexColor(r * mu, g * mu, b * mu)

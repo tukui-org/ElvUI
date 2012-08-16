@@ -1,5 +1,5 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
-local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0');
+local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0', 'AceHook-3.0');
 local LSM = LibStub("LibSharedMedia-3.0");
 UF.LSM = LSM
 
@@ -563,10 +563,12 @@ function ElvUF:DisableBlizzard(unit)
 		if(id) then
 			HandleFrame('ArenaEnemyFrame' .. id)
 			HandleFrame('ArenaPrepFrame'..id)
+			HandleFrame('ArenaEnemyFrame'..id..'PetFrame')
 		else
 			for i=1, 5 do
 				HandleFrame(('ArenaEnemyFrame%d'):format(i))
 				HandleFrame(('ArenaPrepFrame%d'):format(i))
+				HandleFrame(('ArenaEnemyFrame%dPetFrame'):format(i))
 			end
 		end
 	end
@@ -576,6 +578,15 @@ function UF:ADDON_LOADED(event, addon)
 	if addon ~= 'Blizzard_ArenaUI' then return; end
 	ElvUF:DisableBlizzard('arena')
 	self:UnregisterEvent("ADDON_LOADED");
+end
+
+function UF:PLAYER_ENTERING_WORLD()
+	self:Update_AllFrames()
+	self:UpdatePrep()
+end
+
+function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
+	unitFrame:UnregisterAllEvents() --Arena Taint Fix
 end
 
 CompactUnitFrameProfiles:UnregisterEvent('VARIABLES_LOADED') 	--Re-Register this event only if disableblizzard is turned off.
@@ -601,10 +612,12 @@ function UF:Initialize()
 	end)
 		
 	self:LoadUnits()
-	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update_AllFrames')
-	
+	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+	self:RegisterEvent('ARENA_PREP_OPPONENT_SPECIALIZATIONS', 'UpdatePrep')
+	self:RegisterEvent('ARENA_OPPONENT_UPDATE', 'UpdatePrep')
 	if E.private["unitframe"].disableBlizzard then
 		self:DisableBlizzard()	
+		self:SecureHook('UnitFrameThreatIndicator_Initialize')
 		InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
 		InterfaceOptionsFrameCategoriesButton10:SetScale(0.0001)
 		InterfaceOptionsFrameCategoriesButton11:SetScale(0.0001)
