@@ -386,6 +386,10 @@ function E:UpdateAll(ignoreInstall)
 	self.global = self.data.global;
 	
 	self:SetMoversPositions()
+
+	local UF = self:GetModule('UnitFrames')
+	UF.db = self.db.unitframe
+	UF:Update_AllFrames()
 	
 	local CH = self:GetModule('Chat')
 	CH.db = self.db.chat
@@ -394,6 +398,7 @@ function E:UpdateAll(ignoreInstall)
 	local AB = self:GetModule('ActionBars')
 	AB.db = self.db.actionbar
 	AB:UpdateButtonSettings()
+	AB:UpdateMicroPositionDimensions()
 	 
 	local bags = E:GetModule('Bags'); 
 	bags:Layout(); 
@@ -410,11 +415,7 @@ function E:UpdateAll(ignoreInstall)
 	local NP = self:GetModule('NamePlates')
 	NP.db = self.db.nameplate
 	NP:UpdateAllPlates()
-	
-	local UF = self:GetModule('UnitFrames')
-	UF.db = self.db.unitframe
-	UF:Update_AllFrames()
-	
+		
 	local M = self:GetModule("Misc")
 	M:UpdateExpRepDimensions()
 	M:EnableDisable_ExperienceBar()
