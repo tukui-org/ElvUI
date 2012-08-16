@@ -120,7 +120,7 @@ function UF:PostUpdatePower(unit, min, max)
 		end
 	end
 	
-	if db and db['power'].hideonnpc then
+	if db and db['power'] and db['power'].hideonnpc then
 		UF:PostNamePosition(self:GetParent(), unit)
 	end	
 end
