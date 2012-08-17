@@ -662,6 +662,16 @@ function UF:Construct_Trinket(frame)
 	return trinket
 end
 
+function UF:Construct_PVPSpecIcon(frame)
+	local specIcon = CreateFrame("Frame", nil, frame)
+	specIcon.bg = CreateFrame("Frame", nil, specIcon)
+	specIcon.bg:SetTemplate("Default")
+	specIcon.bg:SetFrameLevel(specIcon:GetFrameLevel() - 1)
+	specIcon:SetInside(specIcon.bg)
+	
+	return specIcon
+end
+
 function UF:Construct_HealComm(frame)
 	local mhpb = CreateFrame('StatusBar', nil, frame)
 	mhpb:SetStatusBarTexture(E["media"].blankTex)

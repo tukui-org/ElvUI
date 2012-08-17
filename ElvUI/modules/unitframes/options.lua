@@ -5091,16 +5091,22 @@ E.Options.args.unitframe.args.arena = {
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['arena']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['arena']['power'].hideonnpc = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
-		},	
-		growthDirection = {
+		},
+		pvpSpecIcon = {
 			order = 8,
+			name = L['Spec Icon'],
+			desc = L['Display icon on arena frame indicating the units talent specialization or the units faction if inside a battleground.'],
+			type = 'toggle',
+		},
+		growthDirection = {
+			order = 9,
 			name = L['Growth Direction'],
 			type = 'select',
 			values = {
 				['UP'] = L['Up'],
 				['DOWN'] = L['Down'],
 			},
-		},		
+		},
 		customText = {
 			order = 50,
 			name = L['Custom Texts'],

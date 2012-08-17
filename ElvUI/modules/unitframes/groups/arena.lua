@@ -21,6 +21,7 @@ function UF:Construct_ArenaFrames(frame)
 	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT')
 	
 	frame.Trinket = self:Construct_Trinket(frame)
+	frame.PVPSpecIcon = self:Construct_PVPSpecIcon(frame)
 	
 	frame:SetAttribute("type2", "focus")
 
@@ -51,7 +52,7 @@ function UF:Update_ArenaFrames(frame, db)
 	local INDEX = frame.index
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
-	local PVPINFO_WIDTH = UNIT_HEIGHT * 0.9
+	local PVPINFO_WIDTH = db.pvpSpecIcon and UNIT_HEIGHT * 0.9 or 0
 	
 	local USE_POWERBAR = db.power.enable
 	local USE_MINI_POWERBAR = db.power.width ~= 'fill' and USE_POWERBAR
@@ -329,15 +330,22 @@ function UF:Update_ArenaFrames(frame, db)
 		end				
 	end
 	
-	--PVPInfo
-	--[[do	
-		local PVPInfo = frame.PVPInfo
+	--PVPSpecIcon
+	do	
+		local specIcon = frame.PVPSpecIcon
+		specIcon.bg:Point("TOPRIGHT", frame, "TOPRIGHT")
 		if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET then
-			PVPInfo.bg:SetPoint("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", SPACING, 0)
+			specIcon.bg:SetPoint("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", SPACING, 0)
 		else
-			PVPInfo.bg:SetPoint("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", SPACING, 0)		
+			specIcon.bg:SetPoint("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", SPACING, 0)	
 		end
-	end]]
+		
+		if db.pvpSpecIcon and not frame:IsElementEnabled('PVPSpecIcon') then
+			frame:EnableElement('PVPSpecIcon')
+		elseif not db.pvpSpecIcon and frame:IsElementEnabled('PVPSpecIcon') then
+			frame:DisableElement('PVPSpecIcon')	
+		end					
+	end
 	
 	if db.customTexts then
 		for objectName, _ in pairs(db.customTexts) do

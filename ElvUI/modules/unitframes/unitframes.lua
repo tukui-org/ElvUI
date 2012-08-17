@@ -264,6 +264,7 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			self[unit] = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
 			self[unit].index = i
 			self[unit]:SetParent(ElvUF_Parent)
+			self[unit]:SetID(i)
 		end
 		
 		local frameName = E:StringTitle(group)

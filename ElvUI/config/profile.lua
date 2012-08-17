@@ -740,6 +740,7 @@ P['unitframe'] = {
 			['growthDirection'] = 'UP',
 			['width'] = 240,
 			['height'] = 46,
+			['pvpSpecIcon'] = true,
 			['health'] = {
 				['text_format'] = '[healthcolor][health:current]',
 				['position'] = 'RIGHT',

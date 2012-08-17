@@ -1,0 +1,9 @@
+## Interface: 50001
+## Title: oUF Arena Spec Icons
+## Notes: Adds spec icons to arena frames.
+## Author: Elv
+## Version: 1.00
+## X-Category: oUF
+## Dependencies: oUF
+
+oUF_PVPSpecIcons.lua
