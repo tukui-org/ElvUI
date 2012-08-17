@@ -30,15 +30,25 @@ function UF:Construct_ArenaFrames(frame)
 		frame.prepFrame = CreateFrame('Frame', frame:GetName()..'PrepFrame', UIParent)
 		frame.prepFrame:SetFrameStrata('BACKGROUND')
 		frame.prepFrame:SetAllPoints(frame)
-		frame.prepFrame:SetTemplate()
 		frame.prepFrame.Health = CreateFrame('StatusBar', nil, frame.prepFrame)
-		frame.prepFrame.Health:SetInside()
+		frame.prepFrame.Health:Point('BOTTOMLEFT', frame.prepFrame, 'BOTTOMLEFT', 2, 2)
+		frame.prepFrame.Health:Point('TOPRIGHT', frame.prepFrame, 'TOPRIGHT', -(2 + E.db.unitframe.units.arena.height), -2)
+		frame.prepFrame.Health:CreateBackdrop()
+		
+		frame.prepFrame.Icon = frame.prepFrame:CreateTexture(nil, 'OVERLAY')
+		frame.prepFrame.Icon.bg = CreateFrame('Frame', nil, frame.prepFrame)
+		frame.prepFrame.Icon.bg:Point('TOPLEFT', frame.prepFrame.Health.backdrop, 'TOPRIGHT', 1, 0)
+		frame.prepFrame.Icon.bg:Point('BOTTOMRIGHT', frame.prepFrame, 'BOTTOMRIGHT', 0, 0)
+		frame.prepFrame.Icon.bg:SetTemplate('Default')
+		frame.prepFrame.Icon:SetParent(frame.prepFrame.Icon.bg)
+		frame.prepFrame.Icon:SetTexCoord(unpack(E.TexCoords))
+		frame.prepFrame.Icon:SetInside(frame.prepFrame.Icon.bg)
 		UF['statusbars'][frame.prepFrame.Health] = true;
 		
 		frame.prepFrame.SpecClass = frame.prepFrame.Health:CreateFontString(nil, "OVERLAY")
 		frame.prepFrame.SpecClass:SetPoint("CENTER")
 		UF:Configure_FontString(frame.prepFrame.SpecClass)
-		frame.prepFrame:Hide()
+		--frame.prepFrame:Hide()
 	end
 	
 	ArenaHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165) 
@@ -107,6 +117,7 @@ function UF:Update_ArenaFrames(frame, db)
 		--Position
 		health:ClearAllPoints()
 		health:Point("TOPRIGHT", frame, "TOPRIGHT", -(PVPINFO_WIDTH + BORDER), -BORDER)
+		frame.prepFrame.Health:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -(PVPINFO_WIDTH + BORDER), -BORDER)
 		if USE_POWERBAR_OFFSET then			
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER+POWERBAR_OFFSET, BORDER+POWERBAR_OFFSET)
 		elseif USE_MINI_POWERBAR then
@@ -392,17 +403,18 @@ function UF:UpdatePrep(event)
 			for i=1, 5 do
 				if not _G["ElvUF_Arena"..i] then return; end
 				local s = GetArenaOpponentSpec(i)
-				local _, spec, class = nil, "UNKNOWN", "UNKNOWN"
+				local _, spec, class, texture = nil, "UNKNOWN", "UNKNOWN", [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]]
 
 				if s and s > 0 then
-					_, spec, _, _, _, _, class = GetSpecializationInfoByID(s)
+					_, spec, _, texture, _, _, class = GetSpecializationInfoByID(s)
 				end
 
 				if (i <= numOpps) then
 					if class and spec then
 						local color = RAID_CLASS_COLORS[class]
-						_G["ElvUF_Arena"..i].prepFrame.SpecClass:SetText(spec.."  -  "..class)
+						_G["ElvUF_Arena"..i].prepFrame.SpecClass:SetText(spec.."  -  "..LOCALIZED_CLASS_NAMES_MALE[class])
 						_G["ElvUF_Arena"..i].prepFrame.Health:SetStatusBarColor(color.r, color.g, color.b)
+						_G["ElvUF_Arena"..i].prepFrame.Icon:SetTexture(texture)
 						_G["ElvUF_Arena"..i].prepFrame:Show()
 					end
 				else
