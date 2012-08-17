@@ -1,8 +1,8 @@
-## Interface: 30300
+## Interface: 50001
 ## Title: oUF Trinkets
 ## Notes: Adds PvP trinket status to oUF frames.
-## Author: Allez
-## Version: 30300.4-Beta
+## Author: Elv
+## Version: 1.00
 ## X-Category: oUF
 ## Dependencies: oUF
 

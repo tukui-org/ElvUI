@@ -63,14 +63,7 @@ local Enable = function(self)
 			self.Trinket.Icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
 			self.Trinket.Icon:SetTexture(GetTrinketIcon('player'))
 		end
-		
-		local _, instanceType = IsInInstance();
-		if instanceType ~= 'arena' then
-			self.Trinket:Hide(); 
-		else
-			self.Trinket:Show(); 
-		end		
-		
+
 		return true
 	end
 end
