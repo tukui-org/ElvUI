@@ -310,6 +310,7 @@ ElvUF.Tags.Methods['pvptimer'] = function(unit)
 end
 
 local Harmony = { 
+	[0] = {1, 1, 1},
 	[1] = {.57, .63, .35, 1},
 	[2] = {.47, .63, .35, 1},
 	[3] = {.37, .63, .35, 1},
@@ -331,7 +332,7 @@ local function GetClassPower(class)
 	elseif class == 'DRUID' and GetShapeshiftFormID() == MOONKIN_FORM then
 		min = UnitPower('player', SPELL_POWER_ECLIPSE)
 		max = UnitPowerMax('player', SPELL_POWER_ECLIPSE)
-		if min > (max / 2) then
+		if GetEclipseDirection() == 'moon' then
 			r, g, b = .80, .82,  .60
 		else
 			r, g, b = .30, .52, .90
@@ -344,6 +345,8 @@ local function GetClassPower(class)
 		if (spec == SPEC_WARLOCK_DESTRUCTION) then	
 			min = UnitPower("player", SPELL_POWER_BURNING_EMBERS, true)
 			max = UnitPowerMax("player", SPELL_POWER_BURNING_EMBERS, true)
+			min = math.floor(min / 10)
+			max = math.floor(max / 10)
 			r, g, b = 230/255, 95/255,  95/255
 		elseif ( spec == SPEC_WARLOCK_AFFLICTION ) then
 			min = UnitPower("player", SPELL_POWER_SOUL_SHARDS)
@@ -359,14 +362,14 @@ local function GetClassPower(class)
 	return min, max, r, g, b
 end
 
-ElvUF.Tags.Events['classpowercolor'] = 'UNIT_POWER PLAYER_TALENT_UPDATE'
-ElvUF.Tags.Methods['classpowercolor'] = function(unit)
+ElvUF.Tags.Events['classpowercolor'] = 'UNIT_POWER PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
+ElvUF.Tags.Methods['classpowercolor'] = function()
 	local _, _, r, g, b = GetClassPower(E.myclass)
 	return Hex(r, g, b)
 end
 
-ElvUF.Tags.Events['classpower:current'] = 'UNIT_POWER PLAYER_TALENT_UPDATE'
-ElvUF.Tags.Methods['classpower:current'] = function(unit)
+ElvUF.Tags.Events['classpower:current'] = 'UNIT_POWER PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
+ElvUF.Tags.Methods['classpower:current'] = function()
 	local min, max = GetClassPower(E.myclass)
 	if min == 0 then
 		return ' '
@@ -375,8 +378,8 @@ ElvUF.Tags.Methods['classpower:current'] = function(unit)
 	end	
 end
 
-ElvUF.Tags.Events['classpower:deficit'] = 'UNIT_POWER PLAYER_TALENT_UPDATE'
-ElvUF.Tags.Methods['classpower:deficit'] = function(unit)
+ElvUF.Tags.Events['classpower:deficit'] = 'UNIT_POWER PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
+ElvUF.Tags.Methods['classpower:deficit'] = function()
 	local min, max = GetClassPower(E.myclass)
 	if min == 0 then
 		return ' '
@@ -385,8 +388,8 @@ ElvUF.Tags.Methods['classpower:deficit'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['classpower:current-percent'] = 'UNIT_POWER PLAYER_TALENT_UPDATE'
-ElvUF.Tags.Methods['classpower:current-percent'] = function(unit)
+ElvUF.Tags.Events['classpower:current-percent'] = 'UNIT_POWER PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
+ElvUF.Tags.Methods['classpower:current-percent'] = function()
 	local min, max = GetClassPower(E.myclass)
 	if min == 0 then
 		return ' '
@@ -395,8 +398,8 @@ ElvUF.Tags.Methods['classpower:current-percent'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['classpower:current-max'] = 'UNIT_POWER PLAYER_TALENT_UPDATE'
-ElvUF.Tags.Methods['classpower:current-max'] = function(unit)
+ElvUF.Tags.Events['classpower:current-max'] = 'UNIT_POWER PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
+ElvUF.Tags.Methods['classpower:current-max'] = function()
 	local min, max = GetClassPower(E.myclass)
 	if min == 0 then
 		return ' '
@@ -405,8 +408,8 @@ ElvUF.Tags.Methods['classpower:current-max'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['classpower:current-max-percent'] = 'UNIT_POWER PLAYER_TALENT_UPDATE'
-ElvUF.Tags.Methods['classpower:current-max-percent'] = function(unit)
+ElvUF.Tags.Events['classpower:current-max-percent'] = 'UNIT_POWER PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
+ElvUF.Tags.Methods['classpower:current-max-percent'] = function()
 	local min, max = GetClassPower(E.myclass)
 	if min == 0 then
 		return ' '
@@ -415,8 +418,8 @@ ElvUF.Tags.Methods['classpower:current-max-percent'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['classpower:percent'] = 'UNIT_POWER PLAYER_TALENT_UPDATE'
-ElvUF.Tags.Methods['classpower:percent'] = function(unit)
+ElvUF.Tags.Events['classpower:percent'] = 'UNIT_POWER PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
+ElvUF.Tags.Methods['classpower:percent'] = function()
 	local min, max = GetClassPower(E.myclass)
 	if min == 0 then
 		return ' '
