@@ -80,8 +80,10 @@ function A:UpdateReminder(event, unit)
 		local _, instanceType = IsInInstance();
 		if instanceType ~= 'arena' then
 			BuffFrame:RegisterEvent('UNIT_AURA')
+			E:GetModule('Auras').BuffFrame:SetAttribute("consolidateTo", E:GetModule('Auras').db.consolidedBuffs == true and E.private.general.minimap.enable == true and 1 or 0)
 		else
 			BuffFrame:UnregisterEvent('UNIT_AURA')
+			E:GetModule('Auras').BuffFrame:SetAttribute("consolidateTo", 0)
 		end
 	end
 	if (event == "UNIT_AURA" and unit ~= "player") then return end
