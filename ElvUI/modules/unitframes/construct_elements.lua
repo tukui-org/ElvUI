@@ -655,12 +655,21 @@ end
 function UF:Construct_Trinket(frame)
 	local trinket = CreateFrame("Frame", nil, frame)
 	trinket.bg = CreateFrame("Frame", nil, trinket)
-	trinket.bg:Point("TOPRIGHT", frame, "TOPRIGHT")
 	trinket.bg:SetTemplate("Default")
 	trinket.bg:SetFrameLevel(trinket:GetFrameLevel() - 1)
 	trinket:SetInside(trinket.bg)
 	
 	return trinket
+end
+
+function UF:Construct_PVPSpecIcon(frame)
+	local specIcon = CreateFrame("Frame", nil, frame)
+	specIcon.bg = CreateFrame("Frame", nil, specIcon)
+	specIcon.bg:SetTemplate("Default")
+	specIcon.bg:SetFrameLevel(specIcon:GetFrameLevel() - 1)
+	specIcon:SetInside(specIcon.bg)
+	
+	return specIcon
 end
 
 function UF:Construct_HealComm(frame)

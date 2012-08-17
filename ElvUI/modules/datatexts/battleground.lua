@@ -39,7 +39,8 @@ function DT:UPDATE_BATTLEFIELD_SCORE()
 	lastPanel = self
 	local index = dataLayout[self:GetParent():GetName()][self.pointIndex]
 	for i=1, GetNumBattlefieldScores() do
-		if select(1, GetBattlefieldScore(i)) == E.myname then
+		local name = GetBattlefieldScore(i)
+		if name == E.myname then
 			self.text:SetFormattedText(displayString, dataStrings[index], E:ShortValue(select(index, GetBattlefieldScore(i))))
 		end
 	end

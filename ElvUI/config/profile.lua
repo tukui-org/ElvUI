@@ -749,9 +749,9 @@ P['unitframe'] = {
 		['arena'] = {
 			['enable'] = true,
 			['growthDirection'] = 'UP',
-			['pvpTrinket'] = true,
 			['width'] = 240,
 			['height'] = 46,
+			['pvpSpecIcon'] = true,
 			['health'] = {
 				['text_format'] = '[healthcolor][health:current-percent]',
 				['position'] = 'TOPRIGHT',
@@ -807,7 +807,14 @@ P['unitframe'] = {
 				['interruptcolor'] = { r = 0.78, g = 0.25, b = 0.25 },
 				['format'] = 'REMAINING',
 				['spark'] = true,
-			},					
+			},	
+			['pvpTrinket'] = {
+				['enable'] = true,
+				['position'] = 'RIGHT',
+				['size'] = 46,
+				['xOffset'] = 1,
+				['yOffset'] = 0,
+			},			
 		},
 		['party'] = {
 			['enable'] = true,
@@ -835,7 +842,7 @@ P['unitframe'] = {
 			},
 			['power'] = {
 				['enable'] = true,
-				['text_format'] = '',	
+				['text_format'] = '[powercolor][power:current]',	
 				['width'] = 'fill',
 				['height'] = 8,
 				['offset'] = 0,
@@ -1162,11 +1169,27 @@ P['unitframe'] = {
 			['enable'] = true,
 			['width'] = 120,
 			['height'] = 28,
+			['targetsGroup'] = {
+				['enable'] = true,
+				['anchorPoint'] = 'RIGHT',
+				['xOffset'] = 1,
+				['yOffset'] = 0,	
+				['width'] = 120,
+				['height'] = 28,				
+			},		
 		},	
 		['assist'] = {
 			['enable'] = true,
 			['width'] = 120,
 			['height'] = 28,
+			['targetsGroup'] = {
+				['enable'] = true,
+				['anchorPoint'] = 'RIGHT',
+				['xOffset'] = 1,
+				['yOffset'] = 0,	
+				['width'] = 120,
+				['height'] = 28,					
+			},				
 		},					
 	},
 }

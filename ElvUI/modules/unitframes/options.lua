@@ -4164,7 +4164,7 @@ E.Options.args.unitframe.args.pettarget = {
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['pettarget']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['pettarget']['power'].hideonnpc = value; UF:CreateAndUpdateUF('pettarget') end,
-		},	
+		},		
 		customText = {
 			order = 50,
 			name = L['Custom Texts'],
@@ -4565,7 +4565,16 @@ E.Options.args.unitframe.args.boss = {
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['boss']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['boss']['power'].hideonnpc = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
-		},		
+		},
+		growthDirection = {
+			order = 8,
+			name = L['Growth Direction'],
+			type = 'select',
+			values = {
+				['UP'] = L['Up'],
+				['DOWN'] = L['Down'],
+			},
+		},			
 		customText = {
 			order = 50,
 			name = L['Custom Texts'],
@@ -5082,7 +5091,22 @@ E.Options.args.unitframe.args.arena = {
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['arena']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['arena']['power'].hideonnpc = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
-		},		
+		},
+		pvpSpecIcon = {
+			order = 8,
+			name = L['Spec Icon'],
+			desc = L['Display icon on arena frame indicating the units talent specialization or the units faction if inside a battleground.'],
+			type = 'toggle',
+		},
+		growthDirection = {
+			order = 9,
+			name = L['Growth Direction'],
+			type = 'select',
+			values = {
+				['UP'] = L['Up'],
+				['DOWN'] = L['Down'],
+			},
+		},
 		customText = {
 			order = 50,
 			name = L['Custom Texts'],
@@ -5498,6 +5522,47 @@ E.Options.args.unitframe.args.arena = {
 				},				
 			},
 		},	
+		pvpTrinket = {
+			order = 14,
+			type = 'group',
+			name = L['PVP Trinket'],
+			get = function(info) return E.db.unitframe.units['arena']['pvpTrinket'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['arena']['pvpTrinket'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
+			args = {
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},
+				position = {
+					type = 'select',
+					order = 2,
+					name = L['Position'],
+					values = {
+						['LEFT'] = L['Left'],
+						['RIGHT'] = L['Right'],
+					},
+				},
+				size = {
+					order = 3,
+					type = 'range',
+					name = L['Size'],
+					min = 10, max = 60, step = 1,
+				},
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
+					order = 4,
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},				
+			},
+		},
 	},
 }
 
@@ -6834,6 +6899,54 @@ E.Options.args.unitframe.args.tank = {
 				},					
 			},
 		},	
+		targetsGroup = {
+			order = 4,
+			type = 'group',
+			name = L['Tank Target'],
+			guiInline = true,
+			get = function(info) return E.db.unitframe.units['tank']['targetsGroup'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['tank']['targetsGroup'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('tank') end,	
+			args = {		
+				enable = {
+					type = 'toggle',
+					name = L['Enable'],
+					order = 1,
+				},
+				width = {
+					order = 2,
+					name = L['Width'],
+					type = 'range',
+					min = 10, max = 500, step = 1,
+				},			
+				height = {
+					order = 3,
+					name = L['Height'],
+					type = 'range',
+					min = 10, max = 250, step = 1,
+				},	
+				anchorPoint = {
+					type = 'select',
+					order = 5,
+					name = L['Anchor Point'],
+					desc = L['What point to anchor to the frame you set to attach to.'],
+					values = petAnchors,				
+				},	
+				xOffset = {
+					order = 6,
+					type = 'range',
+					name = L['xOffset'],
+					desc = L['An X offset (in pixels) to be used when anchoring new frames.'],
+					min = -500, max = 500, step = 1,		
+				},
+				yOffset = {
+					order = 7,
+					type = 'range',
+					name = L['yOffset'],
+					desc = L['An Y offset (in pixels) to be used when anchoring new frames.'],
+					min = -500, max = 500, step = 1,	
+				},					
+			},
+		},			
 	},
 }
 
@@ -6875,6 +6988,54 @@ E.Options.args.unitframe.args.assist = {
 					min = 10, max = 250, step = 1,
 				},					
 			},
-		},	
+		},
+		targetsGroup = {
+			order = 4,
+			type = 'group',
+			name = L['Assist Target'],
+			guiInline = true,
+			get = function(info) return E.db.unitframe.units['assist']['targetsGroup'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['assist']['targetsGroup'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('assist') end,	
+			args = {		
+				enable = {
+					type = 'toggle',
+					name = L['Enable'],
+					order = 1,
+				},
+				width = {
+					order = 2,
+					name = L['Width'],
+					type = 'range',
+					min = 10, max = 500, step = 1,
+				},			
+				height = {
+					order = 3,
+					name = L['Height'],
+					type = 'range',
+					min = 10, max = 250, step = 1,
+				},	
+				anchorPoint = {
+					type = 'select',
+					order = 5,
+					name = L['Anchor Point'],
+					desc = L['What point to anchor to the frame you set to attach to.'],
+					values = petAnchors,				
+				},	
+				xOffset = {
+					order = 6,
+					type = 'range',
+					name = L['xOffset'],
+					desc = L['An X offset (in pixels) to be used when anchoring new frames.'],
+					min = -500, max = 500, step = 1,		
+				},
+				yOffset = {
+					order = 7,
+					type = 'range',
+					name = L['yOffset'],
+					desc = L['An Y offset (in pixels) to be used when anchoring new frames.'],
+					min = -500, max = 500, step = 1,	
+				},					
+			},
+		},			
 	},
 }

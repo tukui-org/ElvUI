@@ -316,10 +316,10 @@ function M:Initialize()
 	end
 	
 	E:CreateMover(MMHolder, 'MinimapMover', 'Minimap')
-	Minimap.SetPoint = E.noop;
+--[[	Minimap.SetPoint = E.noop;
 	MMHolder.SetPoint = E.noop;
 	Minimap.ClearAllPoints = E.noop;
-	MMHolder.ClearAllPoints = E.noop;	
+	MMHolder.ClearAllPoints = E.noop;]]
 	Minimap:EnableMouseWheel(true)
 	Minimap:SetScript("OnMouseWheel", M.Minimap_OnMouseWheel)	
 	Minimap:SetScript("OnMouseUp", M.Minimap_OnMouseUp)

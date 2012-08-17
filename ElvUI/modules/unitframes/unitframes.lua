@@ -1,5 +1,5 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
-local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0');
+local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0', 'AceHook-3.0');
 local LSM = LibStub("LibSharedMedia-3.0");
 UF.LSM = LSM
 
@@ -264,6 +264,7 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			self[unit] = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
 			self[unit].index = i
 			self[unit]:SetParent(ElvUF_Parent)
+			self[unit]:SetID(i)
 		end
 		
 		local frameName = E:StringTitle(group)
@@ -469,6 +470,7 @@ function UF:DisableBlizzard(event)
 	hooksecurefunc("CompactRaidFrameManager_UpdateShown", HideRaid)
 	CompactRaidFrameManager:HookScript('OnShow', HideRaid)
 	CompactRaidFrameContainer:UnregisterAllEvents()
+	
 	HideRaid()
 	hooksecurefunc("CompactUnitFrame_RegisterEvents", CompactUnitFrame_UnregisterEvents)
 end
@@ -558,16 +560,37 @@ function ElvUF:DisableBlizzard(unit)
 		end
 	elseif(unit:match'(arena)%d?$' == 'arena') then
 		local id = unit:match'arena(%d)'
+
 		if(id) then
 			HandleFrame('ArenaEnemyFrame' .. id)
+			HandleFrame('ArenaPrepFrame'..id)
+			HandleFrame('ArenaEnemyFrame'..id..'PetFrame')
 		else
-			for i=1, 4 do
+			for i=1, 5 do
 				HandleFrame(('ArenaEnemyFrame%d'):format(i))
+				HandleFrame(('ArenaPrepFrame%d'):format(i))
+				HandleFrame(('ArenaEnemyFrame%dPetFrame'):format(i))
 			end
 		end
 	end
 end
 
+function UF:ADDON_LOADED(event, addon)
+	if addon ~= 'Blizzard_ArenaUI' then return; end
+	ElvUF:DisableBlizzard('arena')
+	self:UnregisterEvent("ADDON_LOADED");
+end
+
+function UF:PLAYER_ENTERING_WORLD(event)
+	self:Update_AllFrames()
+	self:UpdatePrep(event)
+end
+
+function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
+	unitFrame:UnregisterAllEvents() --Arena Taint Fix
+end
+
+CompactUnitFrameProfiles:UnregisterEvent('VARIABLES_LOADED') 	--Re-Register this event only if disableblizzard is turned off.
 function UF:Initialize()	
 	self.db = E.db["unitframe"]
 	if E.private["unitframe"].enable ~= true then return; end
@@ -590,13 +613,21 @@ function UF:Initialize()
 	end)
 		
 	self:LoadUnits()
-	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update_AllFrames')
-	
+	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+	self:RegisterEvent('ARENA_PREP_OPPONENT_SPECIALIZATIONS', 'UpdatePrep')
+	self:RegisterEvent('ARENA_OPPONENT_UPDATE', 'UpdatePrep')
 	if E.private["unitframe"].disableBlizzard then
 		self:DisableBlizzard()	
+		self:SecureHook('UnitFrameThreatIndicator_Initialize')
 		InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
 		InterfaceOptionsFrameCategoriesButton10:SetScale(0.0001)
 		InterfaceOptionsFrameCategoriesButton11:SetScale(0.0001)
+		
+		if not IsAddOnLoaded('Blizzard_ArenaUI') then
+			self:RegisterEvent('ADDON_LOADED')
+		else
+			ElvUF:DisableBlizzard('arena')
+		end
 		
 		for _, menu in pairs(UnitPopupMenus) do
 			for index = #menu, 1, -1 do
@@ -607,6 +638,8 @@ function UF:Initialize()
 		end
 		
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', 'DisableBlizzard')
+	else
+		CompactUnitFrameProfiles:RegisterEvent('VARIABLES_LOADED')
 	end
 		
 	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs

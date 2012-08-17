@@ -15,12 +15,18 @@ local function Defaults(priorityOverride)
 end
 G.unitframe.aurafilters = {};
 
+--[[
+	These are debuffs that are some form of CC
+]]
 G.unitframe.aurafilters['CCDebuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 	},
 }
 
+--[[
+	These are buffs that can be considered "protection" buffs
+]]
 G.unitframe.aurafilters['TurtleBuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
@@ -36,6 +42,10 @@ G.unitframe.aurafilters['TurtleBuffs'] = {
 	},
 }
 
+--[[
+	Buffs that really we dont need to see
+]]
+
 G.unitframe.aurafilters['Blacklist'] = {
 	['type'] = 'Blacklist',
 	['spells'] = {
@@ -43,6 +53,11 @@ G.unitframe.aurafilters['Blacklist'] = {
 		[SpellName(76691)] = Defaults(), -- Vengeance
 	},
 }
+
+--[[
+	This should be a list of important buffs that we always want to see when they are active
+	bloodlust, paladin hand spells, raid cooldowns, etc.. 
+]]
 
 G.unitframe.aurafilters['Whitelist'] = {
 	['type'] = 'Whitelist',
@@ -53,18 +68,22 @@ G.unitframe.aurafilters['Whitelist'] = {
 }
 
 --RAID DEBUFFS
+--[[
+	This should be pretty self explainitory
+]]
 G.unitframe.aurafilters['RaidDebuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 	},
 }
 
+--Spells that we want to show the duration backwards
 E.ReverseTimer = {
 
 }
 
 --BuffWatch
-
+--List of personal spells to show on unitframes as icon
 local function ClassBuff(id, point, color, anyUnit, onlyShowMissing)
 	local r, g, b = unpack(color)
 	return {["enabled"] = { 
@@ -75,50 +94,50 @@ end
 
 G.unitframe.buffwatch = {
 	PRIEST = {
-		{6788, "TOPRIGHT", {1, 0, 0}, true},	 -- Weakened Soul
-		{33076, "BOTTOMRIGHT", {0.2, 0.7, 0.2}},	 -- Prayer of Mending
-		{139, "BOTTOMLEFT", {0.4, 0.7, 0.2}}, -- Renew
-		{17, "TOPLEFT", {0.81, 0.85, 0.1}, true},	 -- Power Word: Shield
-		{10060 , "RIGHT", {227/255, 23/255, 13/255}}, -- Power Infusion
-		{47788, "LEFT", {221/255, 117/255, 0}, true}, -- Guardian Spirit
-		{33206, "LEFT", {227/255, 23/255, 13/255}, true}, -- Pain Suppression		
+		ClassBuff(6788, "TOPRIGHT", {1, 0, 0}, true),	 -- Weakened Soul
+		ClassBuff(33076, "BOTTOMRIGHT", {0.2, 0.7, 0.2}),	 -- Prayer of Mending
+		ClassBuff(139, "BOTTOMLEFT", {0.4, 0.7, 0.2}), -- Renew
+		ClassBuff(17, "TOPLEFT", {0.81, 0.85, 0.1}, true),	 -- Power Word: Shield
+		ClassBuff(10060 , "RIGHT", {227/255, 23/255, 13/255}), -- Power Infusion
+		ClassBuff(47788, "LEFT", {221/255, 117/255, 0}, true), -- Guardian Spirit
+		ClassBuff(33206, "LEFT", {227/255, 23/255, 13/255}, true), -- Pain Suppression		
 	},
 	DRUID = {
-		{774, "TOPRIGHT", {0.8, 0.4, 0.8}},	 -- Rejuvenation
-		{8936, "BOTTOMLEFT", {0.2, 0.8, 0.2}},	 -- Regrowth
-		{94447, "TOPLEFT", {0.4, 0.8, 0.2}},	 -- Lifebloom
-		{48438, "BOTTOMRIGHT", {0.8, 0.4, 0}},	 -- Wild Growth
+		ClassBuff(774, "TOPRIGHT", {0.8, 0.4, 0.8}),	 -- Rejuvenation
+		ClassBuff(8936, "BOTTOMLEFT", {0.2, 0.8, 0.2}),	 -- Regrowth
+		ClassBuff(94447, "TOPLEFT", {0.4, 0.8, 0.2}),	 -- Lifebloom
+		ClassBuff(48438, "BOTTOMRIGHT", {0.8, 0.4, 0}),	 -- Wild Growth
 	},
 	PALADIN = {
-		{53563, "TOPRIGHT", {0.7, 0.3, 0.7}},	 -- Beacon of Light
-		{1022, "BOTTOMRIGHT", {0.2, 0.2, 1}, true},	-- Hand of Protection
-		{1044, "BOTTOMRIGHT", {0.89, 0.45, 0}, true},	-- Hand of Freedom
-		{1038, "BOTTOMRIGHT", {0.93, 0.75, 0}, true},	-- Hand of Salvation
-		{6940, "BOTTOMRIGHT", {0.89, 0.1, 0.1}, true},	-- Hand of Sacrifice
+		ClassBuff(53563, "TOPRIGHT", {0.7, 0.3, 0.7}),	 -- Beacon of Light
+		ClassBuff(1022, "BOTTOMRIGHT", {0.2, 0.2, 1}, true),	-- Hand of Protection
+		ClassBuff(1044, "BOTTOMRIGHT", {0.89, 0.45, 0}, true),	-- Hand of Freedom
+		ClassBuff(1038, "BOTTOMRIGHT", {0.93, 0.75, 0}, true),	-- Hand of Salvation
+		ClassBuff(6940, "BOTTOMRIGHT", {0.89, 0.1, 0.1}, true),	-- Hand of Sacrifice
 	},
 	SHAMAN = {
-		{61295, "TOPRIGHT", {0.7, 0.3, 0.7}},	 -- Riptide
-		{974, "BOTTOMLEFT", {0.2, 0.7, 0.2}, true},	 -- Earth Shield
-		{51945, "BOTTOMRIGHT", {0.7, 0.4, 0}},	 -- Earthliving
+		ClassBuff(61295, "TOPRIGHT", {0.7, 0.3, 0.7}),	 -- Riptide
+		ClassBuff(974, "BOTTOMLEFT", {0.2, 0.7, 0.2}, true),	 -- Earth Shield
+		ClassBuff(51945, "BOTTOMRIGHT", {0.7, 0.4, 0}),	 -- Earthliving
 	},
 	MONK = {
-		{119611, "TOPLEFT", {0.8, 0.4, 0.8}},	 --Renewing Mist
-		{116849, "TOPRIGHT", {0.2, 0.8, 0.2}},	 -- Life Cocoon
-		{124682, "BOTTOMLEFT", {0.4, 0.8, 0.2}}, -- Enveloping Mist
-		{124081, "BOTTOMRIGHT", {0.7, 0.4, 0}}, -- Zen Sphere
+		ClassBuff(119611, "TOPLEFT", {0.8, 0.4, 0.8}),	 --Renewing Mist
+		ClassBuff(116849, "TOPRIGHT", {0.2, 0.8, 0.2}),	 -- Life Cocoon
+		ClassBuff(124682, "BOTTOMLEFT", {0.4, 0.8, 0.2}), -- Enveloping Mist
+		ClassBuff(124081, "BOTTOMRIGHT", {0.7, 0.4, 0}), -- Zen Sphere
 	},
 	ROGUE = {
-		{57934, "TOPRIGHT", {227/255, 23/255, 13/255}}, -- Tricks of the Trade
+		ClassBuff(57934, "TOPRIGHT", {227/255, 23/255, 13/255}), -- Tricks of the Trade
 	},
 	MAGE = {
-		{111264, "TOPLEFT", {0.2, 0.2, 1}}, -- Ice Ward
+		ClassBuff(111264, "TOPLEFT", {0.2, 0.2, 1}), -- Ice Ward
 	},
 	WARRIOR = {
-		{114030, "TOPLEFT", {0.2, 0.2, 1}}, -- Vigilance
-		{3411, "TOPRIGHT", {227/255, 23/255, 13/255}}, -- Intervene	
+		ClassBuff(114030, "TOPLEFT", {0.2, 0.2, 1}), -- Vigilance
+		ClassBuff(3411, "TOPRIGHT", {227/255, 23/255, 13/255}), -- Intervene	
 	},
 	DEATHKNIGHT = {
-		{49016, "TOPRIGHT", {227/255, 23/255, 13/255}}, -- Unholy Frenzy	
+		ClassBuff(49016, "TOPRIGHT", {227/255, 23/255, 13/255}), -- Unholy Frenzy	
 	},
 }
 
@@ -153,6 +172,7 @@ G.unitframe.HastedChannelTicks = {
 	[SpellName(1120)] = true, -- Drain Soul
 }
 
+--This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
 G.unitframe.AuraBarColors = {
 	[SpellName(2825)] = {169/255, 98/255, 181/255},
 	[SpellName(32182)] = {169/255, 98/255, 181/255},

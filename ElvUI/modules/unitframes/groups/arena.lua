@@ -21,8 +21,25 @@ function UF:Construct_ArenaFrames(frame)
 	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT')
 	
 	frame.Trinket = self:Construct_Trinket(frame)
+	frame.PVPSpecIcon = self:Construct_PVPSpecIcon(frame)
 	
 	frame:SetAttribute("type2", "focus")
+
+	
+	if not frame.PrepFrame then
+		frame.prepFrame = CreateFrame('Frame', frame:GetName()..'PrepFrame', UIParent)
+		frame.prepFrame:SetFrameStrata('BACKGROUND')
+		frame.prepFrame:SetAllPoints(frame)
+		frame.prepFrame:SetTemplate()
+		frame.prepFrame.Health = CreateFrame('StatusBar', nil, frame.prepFrame)
+		frame.prepFrame.Health:SetInside()
+		UF['statusbars'][frame.prepFrame.Health] = true;
+		
+		frame.prepFrame.SpecClass = frame.prepFrame.Health:CreateFontString(nil, "OVERLAY")
+		frame.prepFrame.SpecClass:SetPoint("CENTER")
+		UF:Configure_FontString(frame.prepFrame.SpecClass)
+		frame.prepFrame:Hide()
+	end
 	
 	ArenaHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165) 
 	E:CreateMover(ArenaHeader, ArenaHeader:GetName()..'Mover', 'Arena Frames', nil, nil, nil, 'ALL,ARENA')	
@@ -35,7 +52,7 @@ function UF:Update_ArenaFrames(frame, db)
 	local INDEX = frame.index
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
-	local TRINKET_WIDTH = UNIT_HEIGHT * 0.9
+	local PVPINFO_WIDTH = db.pvpSpecIcon and UNIT_HEIGHT or 0
 	
 	local USE_POWERBAR = db.power.enable
 	local USE_MINI_POWERBAR = db.power.width ~= 'fill' and USE_POWERBAR
@@ -66,17 +83,11 @@ function UF:Update_ArenaFrames(frame, db)
 		health.Smooth = self.db.smoothbars
 
 		--Text
-		if db.health.text then
-			health.value:Show()
-			
-			local x, y = self:GetPositionOffset(db.health.position)
-			health.value:ClearAllPoints()
-			health.value:Point(db.health.position, health, db.health.position, x, y)
-			frame:Tag(health.value, db.health.text_format)
-		else
-			health.value:Hide()
-		end
-		
+		local x, y = self:GetPositionOffset(db.health.position)
+		health.value:ClearAllPoints()
+		health.value:Point(db.health.position, health, db.health.position, x, y)
+		frame:Tag(health.value, db.health.text_format)
+	
 		--Colors
 		health.colorSmooth = nil
 		health.colorHealth = nil
@@ -95,7 +106,7 @@ function UF:Update_ArenaFrames(frame, db)
 		
 		--Position
 		health:ClearAllPoints()
-		health:Point("TOPRIGHT", frame, "TOPRIGHT", -(TRINKET_WIDTH + BORDER), -BORDER)
+		health:Point("TOPRIGHT", frame, "TOPRIGHT", -(PVPINFO_WIDTH + BORDER), -BORDER)
 		if USE_POWERBAR_OFFSET then			
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER+POWERBAR_OFFSET, BORDER+POWERBAR_OFFSET)
 		elseif USE_MINI_POWERBAR then
@@ -164,7 +175,7 @@ function UF:Update_ArenaFrames(frame, db)
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
 			else
 				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + SPACING))
-				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER + TRINKET_WIDTH), BORDER)
+				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER + PVPINFO_WIDTH), BORDER)
 			end
 		elseif frame:IsElementEnabled('Power') then
 			frame:DisableElement('Power')
@@ -298,11 +309,36 @@ function UF:Update_ArenaFrames(frame, db)
 	--Trinket
 	do	
 		local trinket = frame.Trinket
-		if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET then
-			trinket.bg:SetPoint("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", SPACING, 0)
+		trinket.bg:Size(db.pvpTrinket.size)
+		trinket.bg:ClearAllPoints()
+		if db.pvpTrinket.position == 'RIGHT' then
+			trinket.bg:Point('LEFT', frame, 'RIGHT', db.pvpTrinket.xOffset, db.pvpTrinket.yOffset)
 		else
-			trinket.bg:SetPoint("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", SPACING, 0)		
+			trinket.bg:Point('RIGHT', frame, 'LEFT', db.pvpTrinket.xOffset, db.pvpTrinket.yOffset)
 		end
+		
+		if db.pvpTrinket.enable and not frame:IsElementEnabled('Trinket') then
+			frame:EnableElement('Trinket')
+		elseif not db.pvpTrinket.enable and frame:IsElementEnabled('Trinket') then
+			frame:DisableElement('Trinket')	
+		end				
+	end
+	
+	--PVPSpecIcon
+	do	
+		local specIcon = frame.PVPSpecIcon
+		specIcon.bg:Point("TOPRIGHT", frame, "TOPRIGHT")
+		if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET then
+			specIcon.bg:SetPoint("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", SPACING, 0)
+		else
+			specIcon.bg:SetPoint("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", SPACING, 0)	
+		end
+		
+		if db.pvpSpecIcon and not frame:IsElementEnabled('PVPSpecIcon') then
+			frame:EnableElement('PVPSpecIcon')
+		elseif not db.pvpSpecIcon and frame:IsElementEnabled('PVPSpecIcon') then
+			frame:DisableElement('PVPSpecIcon')	
+		end					
 	end
 	
 	if db.customTexts then
@@ -339,6 +375,47 @@ function UF:Update_ArenaFrames(frame, db)
 	ArenaHeader:Height(UNIT_HEIGHT + (UNIT_HEIGHT + 12 + db.castbar.height) * 4)
 	
 	frame:UpdateAllElements()
+end
+
+function UF:UpdatePrep(event)
+	if event == "ARENA_OPPONENT_UPDATE" then
+		for i=1, 5 do
+			local f = _G["ElvUF_PrepArena"..i]
+			if f then
+				f:Hide()
+			end
+		end
+	else
+		local numOpps = GetNumArenaOpponentSpecs()
+
+		if numOpps > 0 then
+			for i=1, 5 do
+				if not _G["ElvUF_Arena"..i] then return; end
+				local s = GetArenaOpponentSpec(i)
+				local _, spec, class = nil, "UNKNOWN", "UNKNOWN"
+
+				if s and s > 0 then
+					_, spec, _, _, _, _, class = GetSpecializationInfoByID(s)
+				end
+
+				if (i <= numOpps) then
+					if class and spec then
+						local color = RAID_CLASS_COLORS[class]
+						_G["ElvUF_Arena"..i].prepFrame.SpecClass:SetText(spec.."  -  "..class)
+						_G["ElvUF_Arena"..i].prepFrame.Health:SetStatusBarColor(color.r, color.g, color.b)
+						_G["ElvUF_Arena"..i].prepFrame:Show()
+					end
+				else
+					_G["ElvUF_Arena"..i].prepFrame:Hide()
+				end
+			end
+		else
+			for i=1, 5 do
+				if not _G["ElvUF_Arena"..i] then return; end
+				_G["ElvUF_Arena"..i].prepFrame:Hide()
+			end
+		end
+	end
 end
 
 UF['unitgroupstoload']['arena'] = 5

@@ -150,9 +150,23 @@ function E:UpdateMedia()
 	self:UpdateBlizzardFonts()
 end
 
+function E:RequestBGInfo()
+	RequestBattlefieldScoreData()
+end
+
 function E:PLAYER_ENTERING_WORLD()
-	self:UpdateMedia()
-	self:UnregisterEvent('PLAYER_ENTERING_WORLD')
+	if not self.MediaUpdated then
+		self:UpdateMedia()
+		self.MediaUpdated = true;
+	end
+	
+	local _, instanceType = IsInInstance();
+	if instanceType == "pvp" then
+		self.BGTimer = self:ScheduleRepeatingTimer("RequestBGInfo", 5)
+	elseif self.BGTimer then
+		self:CancelTimer(self.BGTimer)
+		self.BGTimer = nil;
+	end
 end
 
 function E:ValueFuncCall()
@@ -331,7 +345,10 @@ function E:SendMessage()
 		end
 	end
 	
-	self:CancelAllTimers()
+	if E.SendMSGTimer then
+		self:CancelTimer(E.SendMSGTimer)
+		E.SendMSGTimer = nil
+	end
 end
 
 local function SendRecieve(self, event, prefix, message, channel, sender)
@@ -345,7 +362,7 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 			end
 		end
 	else
-		E:ScheduleTimer('SendMessage', 12)
+		E.SendMSGTimer = E:ScheduleTimer('SendMessage', 12)
 	end
 end
 
@@ -363,6 +380,10 @@ function E:UpdateAll(ignoreInstall)
 	self.global = self.data.global;
 	
 	self:SetMoversPositions()
+
+	local UF = self:GetModule('UnitFrames')
+	UF.db = self.db.unitframe
+	UF:Update_AllFrames()
 	
 	local CH = self:GetModule('Chat')
 	CH.db = self.db.chat
@@ -371,6 +392,7 @@ function E:UpdateAll(ignoreInstall)
 	local AB = self:GetModule('ActionBars')
 	AB.db = self.db.actionbar
 	AB:UpdateButtonSettings()
+	AB:UpdateMicroPositionDimensions()
 	 
 	local bags = E:GetModule('Bags'); 
 	bags:Layout(); 
@@ -387,11 +409,7 @@ function E:UpdateAll(ignoreInstall)
 	local NP = self:GetModule('NamePlates')
 	NP.db = self.db.nameplate
 	NP:UpdateAllPlates()
-	
-	local UF = self:GetModule('UnitFrames')
-	UF.db = self.db.unitframe
-	UF:Update_AllFrames()
-	
+		
 	local M = self:GetModule("Misc")
 	M:UpdateExpRepDimensions()
 	M:EnableDisable_ExperienceBar()
@@ -553,7 +571,7 @@ function E:Initialize()
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent("PET_BATTLE_CLOSE", 'AddNonPetBattleFrames')
 	self:RegisterEvent('PET_BATTLE_OPENING_START', "RemoveNonPetBattleFrames")	
-
+	
 	self:Tutorials()
 	self:GetModule('Minimap'):UpdateSettings()
 	self:RefreshModulesDB()

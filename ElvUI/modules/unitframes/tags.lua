@@ -215,7 +215,10 @@ end
 ElvUF.Tags.Events['smartlevel'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
 ElvUF.Tags.Methods['smartlevel'] = function(unit)
 	local level = UnitLevel(unit)
-	if level == UnitLevel('player') then
+	local petLevel = UnitBattlePetLevel(unit);
+	if ( UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit) ) then
+		return petLevel
+	elseif level == UnitLevel('player') then
 		return ''
 	elseif(level > 0) then
 		return level
@@ -303,5 +306,124 @@ ElvUF.Tags.Methods['pvptimer'] = function(unit)
 		end
 	else
 		return ""
+	end
+end
+
+local Harmony = { 
+	[0] = {1, 1, 1},
+	[1] = {.57, .63, .35, 1},
+	[2] = {.47, .63, .35, 1},
+	[3] = {.37, .63, .35, 1},
+	[4] = {.27, .63, .33, 1},
+	[5] = {.17, .63, .33, 1},
+}
+
+local function GetClassPower(class)
+	local min, max, r, g, b = 0, 0, 0, 0, 0
+	local spec = GetSpecialization()
+	if class == 'PALADIN' then
+		min = UnitPower('player', SPELL_POWER_HOLY_POWER);
+		max = UnitPowerMax('player', SPELL_POWER_HOLY_POWER);	
+		r, g, b = 228/255, 225/255, 16/255
+	elseif class == 'MONK' then
+		min = UnitPower("player", SPELL_POWER_LIGHT_FORCE)
+		max = UnitPowerMax("player", SPELL_POWER_LIGHT_FORCE)
+		r, g, b = unpack(Harmony[min])
+	elseif class == 'DRUID' and GetShapeshiftFormID() == MOONKIN_FORM then
+		min = UnitPower('player', SPELL_POWER_ECLIPSE)
+		max = UnitPowerMax('player', SPELL_POWER_ECLIPSE)
+		if GetEclipseDirection() == 'moon' then
+			r, g, b = .80, .82,  .60
+		else
+			r, g, b = .30, .52, .90
+		end
+	elseif class == 'PRIEST' and spec == SPEC_PRIEST_SHADOW and UnitLevel("player") > SHADOW_ORBS_SHOW_LEVEL then
+		min = UnitPower("player", SPELL_POWER_SHADOW_ORBS)
+		max = UnitPowerMax("player", SPELL_POWER_SHADOW_ORBS)
+		r, g, b = 1, 1, 1
+	elseif class == 'WARLOCK' then
+		if (spec == SPEC_WARLOCK_DESTRUCTION) then	
+			min = UnitPower("player", SPELL_POWER_BURNING_EMBERS, true)
+			max = UnitPowerMax("player", SPELL_POWER_BURNING_EMBERS, true)
+			min = math.floor(min / 10)
+			max = math.floor(max / 10)
+			r, g, b = 230/255, 95/255,  95/255
+		elseif ( spec == SPEC_WARLOCK_AFFLICTION ) then
+			min = UnitPower("player", SPELL_POWER_SOUL_SHARDS)
+			max = UnitPowerMax("player", SPELL_POWER_SOUL_SHARDS)
+			r, g, b = 148/255, 130/255, 201/255
+		elseif spec == SPEC_WARLOCK_DEMONOLOGY then
+			min = UnitPower("player", SPELL_POWER_DEMONIC_FURY)
+			max = UnitPowerMax("player", SPELL_POWER_DEMONIC_FURY)
+			r, g, b = 148/255, 130/255, 201/255
+		end
+	end
+	
+	return min, max, r, g, b
+end
+
+ElvUF.Tags.Events['classpowercolor'] = 'UNIT_POWER PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
+ElvUF.Tags.Methods['classpowercolor'] = function()
+	local _, _, r, g, b = GetClassPower(E.myclass)
+	return Hex(r, g, b)
+end
+
+ElvUF.Tags.Events['classpower:current'] = 'UNIT_POWER PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
+ElvUF.Tags.Methods['classpower:current'] = function()
+	local min, max = GetClassPower(E.myclass)
+	if min == 0 then
+		return ' '
+	else
+		return E:GetFormattedText('CURRENT', min, max)
+	end	
+end
+
+ElvUF.Tags.Events['classpower:deficit'] = 'UNIT_POWER PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
+ElvUF.Tags.Methods['classpower:deficit'] = function()
+	local min, max = GetClassPower(E.myclass)
+	if min == 0 then
+		return ' '
+	else
+		return E:GetFormattedText('DEFICIT', min, max)
+	end
+end
+
+ElvUF.Tags.Events['classpower:current-percent'] = 'UNIT_POWER PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
+ElvUF.Tags.Methods['classpower:current-percent'] = function()
+	local min, max = GetClassPower(E.myclass)
+	if min == 0 then
+		return ' '
+	else
+		return E:GetFormattedText('CURRENT_PERCENT', min, max)
+	end
+end
+
+ElvUF.Tags.Events['classpower:current-max'] = 'UNIT_POWER PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
+ElvUF.Tags.Methods['classpower:current-max'] = function()
+	local min, max = GetClassPower(E.myclass)
+	if min == 0 then
+		return ' '
+	else
+		return E:GetFormattedText('CURRENT_MAX', min, max)
+	end
+end
+
+ElvUF.Tags.Events['classpower:current-max-percent'] = 'UNIT_POWER PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
+ElvUF.Tags.Methods['classpower:current-max-percent'] = function()
+	local min, max = GetClassPower(E.myclass)
+	if min == 0 then
+		return ' '
+	else
+		return E:GetFormattedText('CURRENT_MAX_PERCENT', min, max)
+	end
+end
+
+ElvUF.Tags.Events['classpower:percent'] = 'UNIT_POWER PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
+ElvUF.Tags.Methods['classpower:percent'] = function()
+	local min, max = GetClassPower(E.myclass)
+	if min == 0 then
+		return ' '
+	else
+		return E:GetFormattedText('PERCENT', min, max)
 	end
 end
