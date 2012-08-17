@@ -27,11 +27,11 @@ function UF:Construct_ArenaFrames(frame)
 	
 	if not frame.PrepFrame then
 		frame.prepFrame = CreateFrame('Frame', frame:GetName()..'PrepFrame', UIParent)
+		frame.prepFrame:SetFrameStrata('BACKGROUND')
 		frame.prepFrame:SetAllPoints(frame)
-		frame.prepFrame:CreateBackdrop()
+		frame.prepFrame:SetTemplate()
 		frame.prepFrame.Health = CreateFrame('StatusBar', nil, frame.prepFrame)
-		frame.prepFrame.Health:SetAllPoints()
-		frame.prepFrame.Health:SetFrameStrata('HIGH')
+		frame.prepFrame.Health:SetInside()
 		UF['statusbars'][frame.prepFrame.Health] = true;
 		
 		frame.prepFrame.SpecClass = frame.prepFrame.Health:CreateFontString(nil, "OVERLAY")
@@ -380,14 +380,19 @@ function UF:UpdatePrep(event)
 
 				if (i <= numOpps) then
 					if class and spec then
-						local color = arena[i].colors.class[class]
+						local color = RAID_CLASS_COLORS[class]
 						_G["ElvUF_Arena"..i].prepFrame.SpecClass:SetText(spec.."  -  "..class)
-						_G["ElvUF_Arena"..i].prepFrame.Health:SetStatusBarColor(unpack(color))
+						_G["ElvUF_Arena"..i].prepFrame.Health:SetStatusBarColor(color.r, color.g, color.b)
 						_G["ElvUF_Arena"..i].prepFrame:Show()
 					end
 				else
 					_G["ElvUF_Arena"..i].prepFrame:Hide()
 				end
+			end
+		else
+			for i=1, 5 do
+				if not _G["ElvUF_Arena"..i] then return; end
+				_G["ElvUF_Arena"..i].prepFrame:Hide()
 			end
 		end
 	end

@@ -580,9 +580,9 @@ function UF:ADDON_LOADED(event, addon)
 	self:UnregisterEvent("ADDON_LOADED");
 end
 
-function UF:PLAYER_ENTERING_WORLD()
+function UF:PLAYER_ENTERING_WORLD(event)
 	self:Update_AllFrames()
-	self:UpdatePrep()
+	self:UpdatePrep(event)
 end
 
 function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
