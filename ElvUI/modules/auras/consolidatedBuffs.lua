@@ -76,6 +76,14 @@ function A:CheckFilterForActiveBuff(filter)
 end
 
 function A:UpdateReminder(event, unit)
+	if event == 'PLAYER_ENTERING_WORLD' or event == nil then	--This is a taint fix inside arena, I really do not know why the fuck we get a :ClearAllPoints() taint on an arena frame that hasnt been touched.
+		local _, instanceType = IsInInstance();
+		if instanceType ~= 'arena' then
+			BuffFrame:RegisterEvent('UNIT_AURA')
+		else
+			BuffFrame:UnregisterEvent('UNIT_AURA')
+		end
+	end
 	if (event == "UNIT_AURA" and unit ~= "player") then return end
 	local frame = self.frame
 	
@@ -179,7 +187,6 @@ end
 
 function A:EnableCB()
 	ElvUI_ConsolidatedBuffs:Show()
-	BuffFrame:RegisterEvent('UNIT_AURA')
 	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", 'UpdateReminder')
 	self:RegisterEvent("UNIT_INVENTORY_CHANGED", 'UpdateReminder')
 	self:RegisterEvent("UNIT_AURA", 'UpdateReminder')
