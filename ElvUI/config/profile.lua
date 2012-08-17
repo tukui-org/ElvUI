@@ -824,14 +824,14 @@ P['unitframe'] = {
 			['width'] = 180,
 			['height'] = 44,
 			['health'] = {
-				['text_format'] = '[healthcolor][health:current]',
-				['position'] = 'RIGHT',
+				['text_format'] = '[healthcolor][health:current-percent]',
+				['position'] = 'TOPRIGHT',
 				['orientation'] = 'HORIZONTAL',
 				['frequentUpdates'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
-				['text_format'] = '',	
+				['text_format'] = '[powercolor][power:current]',	
 				['width'] = 'fill',
 				['height'] = 7,
 				['offset'] = 0,
