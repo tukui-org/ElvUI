@@ -738,7 +738,6 @@ P['unitframe'] = {
 		['arena'] = {
 			['enable'] = true,
 			['growthDirection'] = 'UP',
-			['pvpTrinket'] = true,
 			['width'] = 240,
 			['height'] = 46,
 			['health'] = {
@@ -774,7 +773,7 @@ P['unitframe'] = {
 				['sizeOverride'] = 46,
 			},
 			['debuffs'] = {
-				['enable'] = true,
+				['enable'] = false,
 				['perrow'] = 1,
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
@@ -796,7 +795,14 @@ P['unitframe'] = {
 				['interruptcolor'] = { r = 0.78, g = 0.25, b = 0.25 },
 				['format'] = 'REMAINING',
 				['spark'] = true,
-			},					
+			},	
+			['pvpTrinket'] = {
+				['enable'] = true,
+				['position'] = 'RIGHT',
+				['size'] = 46,
+				['xOffset'] = 1,
+				['yOffset'] = 0,
+			},			
 		},
 		['party'] = {
 			['enable'] = true,

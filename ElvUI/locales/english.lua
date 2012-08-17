@@ -742,6 +742,7 @@ L["Power text will be hidden on NPC targets, in addition the name text will be r
 L["Power"] = true;
 L["Powers"] = true;
 L["Priority"] = true;
+L['PVP Trinket'] = true;
 L['Raid-10 Frames'] = true;
 L['Raid-25 Frames'] = true;
 L['Raid-40 Frames'] = true;

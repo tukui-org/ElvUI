@@ -5516,6 +5516,47 @@ E.Options.args.unitframe.args.arena = {
 				},				
 			},
 		},	
+		pvpTrinket = {
+			order = 14,
+			type = 'group',
+			name = L['PVP Trinket'],
+			get = function(info) return E.db.unitframe.units['arena']['pvpTrinket'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['arena']['pvpTrinket'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
+			args = {
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},
+				position = {
+					type = 'select',
+					order = 2,
+					name = L['Position'],
+					values = {
+						['LEFT'] = L['Left'],
+						['RIGHT'] = L['Right'],
+					},
+				},
+				size = {
+					order = 3,
+					type = 'range',
+					name = L['Size'],
+					min = 10, max = 60, step = 1,
+				},
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
+					order = 4,
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},				
+			},
+		},
 	},
 }
 

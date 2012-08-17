@@ -655,7 +655,6 @@ end
 function UF:Construct_Trinket(frame)
 	local trinket = CreateFrame("Frame", nil, frame)
 	trinket.bg = CreateFrame("Frame", nil, trinket)
-	trinket.bg:Point("TOPRIGHT", frame, "TOPRIGHT")
 	trinket.bg:SetTemplate("Default")
 	trinket.bg:SetFrameLevel(trinket:GetFrameLevel() - 1)
 	trinket:SetInside(trinket.bg)

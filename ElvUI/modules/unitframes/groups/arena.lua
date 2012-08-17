@@ -51,7 +51,7 @@ function UF:Update_ArenaFrames(frame, db)
 	local INDEX = frame.index
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
-	local TRINKET_WIDTH = UNIT_HEIGHT * 0.9
+	local PVPINFO_WIDTH = UNIT_HEIGHT * 0.9
 	
 	local USE_POWERBAR = db.power.enable
 	local USE_MINI_POWERBAR = db.power.width ~= 'fill' and USE_POWERBAR
@@ -111,7 +111,7 @@ function UF:Update_ArenaFrames(frame, db)
 		
 		--Position
 		health:ClearAllPoints()
-		health:Point("TOPRIGHT", frame, "TOPRIGHT", -(TRINKET_WIDTH + BORDER), -BORDER)
+		health:Point("TOPRIGHT", frame, "TOPRIGHT", -(PVPINFO_WIDTH + BORDER), -BORDER)
 		if USE_POWERBAR_OFFSET then			
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER+POWERBAR_OFFSET, BORDER+POWERBAR_OFFSET)
 		elseif USE_MINI_POWERBAR then
@@ -180,7 +180,7 @@ function UF:Update_ArenaFrames(frame, db)
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
 			else
 				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + SPACING))
-				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER + TRINKET_WIDTH), BORDER)
+				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER + PVPINFO_WIDTH), BORDER)
 			end
 		elseif frame:IsElementEnabled('Power') then
 			frame:DisableElement('Power')
@@ -314,12 +314,30 @@ function UF:Update_ArenaFrames(frame, db)
 	--Trinket
 	do	
 		local trinket = frame.Trinket
-		if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET then
-			trinket.bg:SetPoint("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", SPACING, 0)
+		trinket.bg:Size(db.pvpTrinket.size)
+		trinket.bg:ClearAllPoints()
+		if db.pvpTrinket.position == 'RIGHT' then
+			trinket.bg:Point('LEFT', frame, 'RIGHT', db.pvpTrinket.xOffset, db.pvpTrinket.yOffset)
 		else
-			trinket.bg:SetPoint("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", SPACING, 0)		
+			trinket.bg:Point('RIGHT', frame, 'LEFT', db.pvpTrinket.xOffset, db.pvpTrinket.yOffset)
 		end
+		
+		if db.pvpTrinket.enable and not frame:IsElementEnabled('Trinket') then
+			frame:EnableElement('Trinket')
+		elseif not db.pvpTrinket.enable and frame:IsElementEnabled('Trinket') then
+			frame:DisableElement('Trinket')	
+		end				
 	end
+	
+	--PVPInfo
+	--[[do	
+		local PVPInfo = frame.PVPInfo
+		if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET then
+			PVPInfo.bg:SetPoint("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", SPACING, 0)
+		else
+			PVPInfo.bg:SetPoint("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", SPACING, 0)		
+		end
+	end]]
 	
 	if db.customTexts then
 		for objectName, _ in pairs(db.customTexts) do
