@@ -462,10 +462,17 @@ function AB:DisableBlizzard()
 	end
 
 	MultiCastActionBarFrame.ignoreFramePositionManager = true
+
 	
 	MainMenuBar:UnregisterAllEvents()
 	MainMenuBar:Hide()
 	MainMenuBar:SetParent(UIHider)
+	for i=1, MainMenuBar:GetNumChildren() do
+		local child = select(i, MainMenuBar:GetChildren())
+		if child and child.UnregisterAllEvents then
+			child:UnregisterAllEvents()
+		end
+	end
 
 	MainMenuBarArtFrame:UnregisterEvent("ACTIONBAR_PAGE_CHANGED")
 	MainMenuBarArtFrame:UnregisterEvent("ADDON_LOADED")
