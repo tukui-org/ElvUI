@@ -15,12 +15,18 @@ local function Defaults(priorityOverride)
 end
 G.unitframe.aurafilters = {};
 
+--[[
+	These are debuffs that are some form of CC
+]]
 G.unitframe.aurafilters['CCDebuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 	},
 }
 
+--[[
+	These are buffs that can be considered "protection" buffs
+]]
 G.unitframe.aurafilters['TurtleBuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
@@ -36,6 +42,10 @@ G.unitframe.aurafilters['TurtleBuffs'] = {
 	},
 }
 
+--[[
+	Buffs that really we dont need to see
+]]
+
 G.unitframe.aurafilters['Blacklist'] = {
 	['type'] = 'Blacklist',
 	['spells'] = {
@@ -43,6 +53,11 @@ G.unitframe.aurafilters['Blacklist'] = {
 		[SpellName(76691)] = Defaults(), -- Vengeance
 	},
 }
+
+--[[
+	This should be a list of important buffs that we always want to see when they are active
+	bloodlust, paladin hand spells, raid cooldowns, etc.. 
+]]
 
 G.unitframe.aurafilters['Whitelist'] = {
 	['type'] = 'Whitelist',
@@ -53,18 +68,22 @@ G.unitframe.aurafilters['Whitelist'] = {
 }
 
 --RAID DEBUFFS
+--[[
+	This should be pretty self explainitory
+]]
 G.unitframe.aurafilters['RaidDebuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 	},
 }
 
+--Spells that we want to show the duration backwards
 E.ReverseTimer = {
 
 }
 
 --BuffWatch
-
+--List of personal spells to show on unitframes as icon
 local function ClassBuff(id, point, color, anyUnit, onlyShowMissing)
 	local r, g, b = unpack(color)
 	return {["enabled"] = { 
@@ -153,6 +172,7 @@ G.unitframe.HastedChannelTicks = {
 	[SpellName(1120)] = true, -- Drain Soul
 }
 
+--This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
 G.unitframe.AuraBarColors = {
 	[SpellName(2825)] = {169/255, 98/255, 181/255},
 	[SpellName(32182)] = {169/255, 98/255, 181/255},
