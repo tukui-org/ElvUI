@@ -52,7 +52,7 @@ function UF:Update_ArenaFrames(frame, db)
 	local INDEX = frame.index
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
-	local PVPINFO_WIDTH = db.pvpSpecIcon and UNIT_HEIGHT * 0.9 or 0
+	local PVPINFO_WIDTH = db.pvpSpecIcon and UNIT_HEIGHT or 0
 	
 	local USE_POWERBAR = db.power.enable
 	local USE_MINI_POWERBAR = db.power.width ~= 'fill' and USE_POWERBAR
@@ -83,17 +83,11 @@ function UF:Update_ArenaFrames(frame, db)
 		health.Smooth = self.db.smoothbars
 
 		--Text
-		if db.health.text then
-			health.value:Show()
-			
-			local x, y = self:GetPositionOffset(db.health.position)
-			health.value:ClearAllPoints()
-			health.value:Point(db.health.position, health, db.health.position, x, y)
-			frame:Tag(health.value, db.health.text_format)
-		else
-			health.value:Hide()
-		end
-		
+		local x, y = self:GetPositionOffset(db.health.position)
+		health.value:ClearAllPoints()
+		health.value:Point(db.health.position, health, db.health.position, x, y)
+		frame:Tag(health.value, db.health.text_format)
+	
 		--Colors
 		health.colorSmooth = nil
 		health.colorHealth = nil

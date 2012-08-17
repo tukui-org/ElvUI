@@ -674,7 +674,7 @@ P['unitframe'] = {
 			['height'] = 46,
 			['health'] = {
 				['text_format'] = '[healthcolor][health:current]',
-				['position'] = 'RIGHT',
+				['position'] = 'TOPRIGHT',
 			},
 			['power'] = {
 				['enable'] = true,
@@ -682,7 +682,7 @@ P['unitframe'] = {
 				['width'] = 'fill',
 				['height'] = 7,
 				['offset'] = 0,
-				['position'] = 'LEFT',
+				['position'] = 'BOTTOMRIGHT',
 				['hideonnpc'] = false,					
 			},
 			['portrait'] = {
@@ -692,7 +692,7 @@ P['unitframe'] = {
 				['camDistanceScale'] = 1,
 			},				
 			['name'] = {
-				['position'] = 'CENTER',
+				['position'] = 'LEFT',
 				['text_format'] = '[namecolor][name:medium]',
 			},
 			['buffs'] = {
@@ -743,7 +743,7 @@ P['unitframe'] = {
 			['pvpSpecIcon'] = true,
 			['health'] = {
 				['text_format'] = '[healthcolor][health:current]',
-				['position'] = 'RIGHT',
+				['position'] = 'TOPRIGHT',
 			},
 			['power'] = {
 				['enable'] = true,
@@ -751,11 +751,11 @@ P['unitframe'] = {
 				['width'] = 'fill',
 				['height'] = 7,
 				['offset'] = 0,
-				['position'] = 'LEFT',
+				['position'] = 'BOTTOMRIGHT',
 				['hideonnpc'] = false,					
 			},			
 			['name'] = {
-				['position'] = 'CENTER',
+				['position'] = 'LEFT',
 				['text_format'] = '[namecolor][name:medium]',
 			},
 			['buffs'] = {
