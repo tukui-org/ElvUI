@@ -842,7 +842,7 @@ P['unitframe'] = {
 			},
 			['power'] = {
 				['enable'] = true,
-				['text_format'] = '[powercolor][power:current]',	
+				['text_format'] = '',	
 				['width'] = 'fill',
 				['height'] = 8,
 				['offset'] = 0,
