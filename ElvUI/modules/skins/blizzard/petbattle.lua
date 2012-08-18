@@ -207,6 +207,7 @@ end)
 	SkinPetTooltip(PetBattlePrimaryUnitTooltip)
 	SkinPetTooltip(BattlePetTooltip)
 	SkinPetTooltip(FloatingBattlePetTooltip)
+	SkinPetTooltip(FloatingPetBattleAbilityTooltip)
 
 		
 	-- TOOLTIP DEFAULT POSITION
