@@ -10,7 +10,7 @@ end
 
 local function GetPoint(obj)
 	local point, anchor, secondaryPoint, x, y = obj:GetPoint()
-	if not anchor then anchor = UIParent end
+	if not anchor then anchor = ElvUIParent end
 
 	return string.format('%s\031%s\031%s\031%d\031%d', point, anchor:GetName(), secondaryPoint, E:Round(x), E:Round(y))
 end
@@ -44,7 +44,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	
 	if E.db['movers'] and E.db['movers'][name] then
 		if type(E.db['movers'][name]) == 'table' then
-			f:SetPoint(E.db["movers"][name]["p"], UIParent, E.db["movers"][name]["p2"], E.db["movers"][name]["p3"], E.db["movers"][name]["p4"])
+			f:SetPoint(E.db["movers"][name]["p"], E.UIParent, E.db["movers"][name]["p2"], E.db["movers"][name]["p3"], E.db["movers"][name]["p4"])
 			E.db['movers'][name] = GetPoint(f)
 			f:ClearAllPoints()
 		end
@@ -92,7 +92,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 				
 		]]
 		
-		local screenWidth, screenHeight = UIParent:GetRight(), UIParent:GetTop()
+		local screenWidth, screenHeight = E.UIParent:GetRight(), E.UIParent:GetTop()
 		local x, y = self:GetCenter()
 		local point
 		
@@ -113,7 +113,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		end
 
 		self:ClearAllPoints()
-		self:Point(point, UIParent, point, x, y)
+		self:Point(point, E.UIParent, point, x, y)
 
 		E:SaveMoverPosition(name)
 		

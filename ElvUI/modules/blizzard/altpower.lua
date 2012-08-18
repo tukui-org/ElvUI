@@ -3,7 +3,7 @@ local B = E:GetModule('Blizzard');
 
 function B:PositionAltPowerBar()
 	local holder = CreateFrame('Frame', 'AltPowerBarHolder', UIParent)
-	holder:SetPoint('TOP', UIParent, 'TOP', 0, -108)
+	holder:SetPoint('TOP', E.UIParent, 'TOP', 0, -108)
 	holder:Size(128, 50)
 
 	PlayerPowerBarAlt:ClearAllPoints()

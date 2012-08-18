@@ -212,7 +212,7 @@ function E:StaticPopup_SetUpPosition(dialog)
 		if ( lastFrame ) then	
 			dialog:SetPoint("TOP", lastFrame, "BOTTOM", 0, -4);
 		else
-			dialog:SetPoint("TOP", UIParent, "TOP", 0, -100);
+			dialog:SetPoint("TOP", E.UIParent, "TOP", 0, -100);
 		end
 		tinsert(E.StaticPopup_DisplayedFrames, dialog);
 	end
@@ -750,7 +750,7 @@ function E:StaticPopup_CombineTables()
 		if ( lastFrame ) then	
 			dialog:SetPoint("TOP", lastFrame, "BOTTOM", 0, -4);
 		else
-			dialog:SetPoint("TOP", UIParent, "TOP", 0, -135);
+			dialog:SetPoint("TOP", E.UIParent, "TOP", 0, -135);
 		end
 		tinsert(E.StaticPopup_DisplayedFrames, dialog);
 	end
