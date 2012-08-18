@@ -74,6 +74,60 @@ G.unitframe.aurafilters['Whitelist'] = {
 G.unitframe.aurafilters['RaidDebuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
+	   -- Mogu'shan Vaults
+			-- The Stone Guard
+			[SpellName(116281)] = Defaults(), -- Cobalt Mine Blast
+			-- Feng the Accursed
+			[SpellName(116784)] = Defaults(), -- Wildfire Spark
+			[SpellName(116417)] = Defaults(), -- Arcane Resonance
+			[SpellName(116942)] = Defaults(), -- Flaming Spear
+			-- Gara'jal the Spiritbinder
+			[SpellName(116161)] = Defaults(), -- Crossed Over
+			-- The Spirit Kings
+			[SpellName(117708)] = Defaults(), -- Maddening Shout
+			[SpellName(118303)] = Defaults(), -- Fixate
+			[SpellName(118048)] = Defaults(), -- Pillaged
+			[SpellName(118135)] = Defaults(), -- Pinned Down
+			-- Elegon
+			[SpellName(117878)] = Defaults(), -- Overcharged
+			[SpellName(117949)] = Defaults(), -- Closed Circuit
+			-- Will of the Emperor
+			[SpellName(116835)] = Defaults(), -- Devastating Arc
+			[SpellName(116778)] = Defaults(), -- Focused Defense
+			[SpellName(116525)] = Defaults(), -- Focused Assault    
+		-- Heart of Fear
+			-- Imperial Vizier Zor'lok
+			[SpellName(122761)] = Defaults(), -- Exhale
+			[SpellName(122760)] = Defaults(), -- Exhale
+			[SpellName(122740)] = Defaults(), -- Convert
+			[SpellName(123812)] = Defaults(), -- Pheromones of Zeal
+			-- Blade Lord Ta'yak
+			[SpellName(123180)] = Defaults(), -- Wind Step
+			[SpellName(123474)] = Defaults(), -- Overwhelming Assault
+			-- Garalon
+			[SpellName(122835)] = Defaults(), -- Pheromones
+			[SpellName(123081)] = Defaults(), -- Pungency
+			-- Wind Lord Mel'jarak
+			[SpellName(122125)] = Defaults(), -- Corrosive Resin Pool
+			[SpellName(121885)] = Defaults(), -- Amber Prison
+			-- Wind Lord Mel'jarak
+			[SpellName(121949)] = Defaults(), -- Parasitic Growth
+			-- Grand Empress Shek'zeer
+		-- Terrace of Endless Spring
+			-- Protectors of the Endless
+			[SpellName(117436)] = Defaults(), -- Lightning Prison
+			[SpellName(118091)] = Defaults(), -- Defiled Ground
+			[SpellName(117519)] = Defaults(), -- Touch of Sha
+			-- Tsulong
+			[SpellName(122752)] = Defaults(), -- Shadow Breath
+			[SpellName(123011)] = Defaults(), -- Terrorize
+			[SpellName(116161)] = Defaults(), -- Crossed Over
+			-- Lei Shi
+			[SpellName(123121)] = Defaults(), -- Spray
+			-- Sha of Fear
+			[SpellName(119985)] = Defaults(), -- Dread Spray
+			[SpellName(119086)] = Defaults(), -- Penetrating Bolt
+			[SpellName(119775)] = Defaults(), -- Reaching Attack	
 	},
 }
 
