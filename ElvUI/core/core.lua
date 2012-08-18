@@ -163,6 +163,7 @@ function E:PLAYER_ENTERING_WORLD()
 	local _, instanceType = IsInInstance();
 	if instanceType == "pvp" then
 		self.BGTimer = self:ScheduleRepeatingTimer("RequestBGInfo", 5)
+		self:RequestBGInfo()
 	elseif self.BGTimer then
 		self:CancelTimer(self.BGTimer)
 		self.BGTimer = nil;
