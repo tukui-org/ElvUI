@@ -208,7 +208,6 @@ function UF:Update_TargetFrame(frame, db)
 		elseif frame:IsElementEnabled('Power') then
 			frame:DisableElement('Power')
 			power:Hide()
-			power.value:Hide()
 		end
 	end
 	

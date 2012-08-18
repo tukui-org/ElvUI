@@ -191,7 +191,6 @@ function UF:Update_ArenaFrames(frame, db)
 		elseif frame:IsElementEnabled('Power') then
 			frame:DisableElement('Power')
 			power:Hide()
-			power.value:Hide()
 		end
 	end
 

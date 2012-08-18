@@ -151,7 +151,6 @@ function UF:Update_PetTargetFrame(frame, db)
 		elseif frame:IsElementEnabled('Power') then
 			frame:DisableElement('Power')
 			power:Hide()	
-			power.value:Hide()
 		end
 	end
 	
