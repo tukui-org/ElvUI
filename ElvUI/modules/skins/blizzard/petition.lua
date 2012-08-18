@@ -7,7 +7,7 @@ local function LoadSkin()
 	PetitionFrame:SetTemplate("Transparent")
 	PetitionFrame:CreateShadow("Default")
 	PetitionFrameInset:Kill()
-	
+	S:HandleButton(PetitionFrameSignButton)
 	S:HandleButton(PetitionFrameRequestButton)
 	S:HandleButton(PetitionFrameRenameButton)
 	S:HandleButton(PetitionFrameCancelButton)
