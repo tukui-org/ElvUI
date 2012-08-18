@@ -23,10 +23,13 @@ local Update = function(self, event, unit)
 			specIcon.Icon:SetTexture([[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
 		end
 	else
-		if UnitFactionGroup(self.unit) == "Horde" then
+		local unitFactionGroup = UnitFactionGroup(self.unit)
+		if unitFactionGroup == "Horde" then
 			specIcon.Icon:SetTexture([[Interface\Icons\INV_BannerPVP_01]])
-		else
+		elseif unitFactionGroup == 'Alliance' then
 			specIcon.Icon:SetTexture([[Interface\Icons\INV_BannerPVP_02]])
+		else
+			specIcon.Icon:SetTexture([[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
 		end
 	end
 
