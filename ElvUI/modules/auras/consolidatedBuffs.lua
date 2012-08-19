@@ -179,6 +179,7 @@ end
 
 function A:EnableCB()
 	ElvUI_ConsolidatedBuffs:Show()
+	BuffFrame:RegisterEvent('UNIT_AURA')
 	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", 'UpdateReminder')
 	self:RegisterEvent("UNIT_INVENTORY_CHANGED", 'UpdateReminder')
 	self:RegisterEvent("UNIT_AURA", 'UpdateReminder')
