@@ -293,6 +293,7 @@ L['Bases Defended'] = true;
 L['Battleground datatexts temporarily hidden, to show type /bgstats or right click the "C" icon near the minimap.'] = true;
 L['Battleground datatexts will now show again if you are inside a battleground.'] = true;
 L['Battleground Texts'] = true;
+L['Carts Controlled'] = true;
 L['Change settings for the display of the location text that is on the minimap.'] = true;
 L["Character: "] = true
 L["Chest"] = true;

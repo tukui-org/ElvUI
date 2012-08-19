@@ -35,6 +35,7 @@ local EOTS = 482
 local TBFG = 736
 local AB = 461
 local TOK = 856
+local SSM = 860
 
 function DT:UPDATE_BATTLEFIELD_SCORE()
 	lastPanel = self
@@ -76,7 +77,9 @@ function DT:BattlegroundStats()
 				GameTooltip:AddDoubleLine(L['Bases Defended'], GetBattlefieldStatData(index, 2),1,1,1)
 			elseif CurrentMapID == TOK then
 				GameTooltip:AddDoubleLine(L['Orb Possessions'], GetBattlefieldStatData(index, 1),1,1,1)
-				GameTooltip:AddDoubleLine(L['Victory Points'], GetBattlefieldStatData(index, 2),1,1,1)				
+				GameTooltip:AddDoubleLine(L['Victory Points'], GetBattlefieldStatData(index, 2),1,1,1)	
+			elseif CurrentMapID == SSM then
+				GameTooltip:AddDoubleLine(L['Carts Controlled'], GetBattlefieldStatData(index, 1),1,1,1)	
 			end		
 		end
 	end	
