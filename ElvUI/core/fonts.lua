@@ -12,7 +12,7 @@ end
 function E:UpdateBlizzardFonts()	
 	local NORMAL     = self["media"].normFont
 	local COMBAT     = LSM:Fetch('font', self.private.general.dmgfont)
-	local NUMBER     = self["media"].normFont
+	local NUMBER     = LSM:Fetch('font', 'ElvUI Pixel')
 	local CHAT		 = LSM:Fetch('font', self.db.chat.font)
 	local MONOCHROME = ''
 	local _, editBoxFontSize, _, _, _, _, _, _, _, _ = GetChatWindowInfo(1)
@@ -24,6 +24,7 @@ function E:UpdateBlizzardFonts()
 	NAMEPLATE_FONT     = CHAT
 	DAMAGE_TEXT_FONT   = COMBAT
 	STANDARD_TEXT_FONT = NORMAL
+	
 	
 	if self.db.general.font:lower():find('pixel') then
 		MONOCHROME = 'MONOCHROME'
@@ -46,11 +47,12 @@ function E:UpdateBlizzardFonts()
 	end	
 	
 	-- Base fonts
+	SetFont(NumberFontNormal,					NUMBER, 10, 'MONOCHROMEOUTLINE', 1, 1, 1, 0, 0, 0, 1, -1)
 	SetFont(GameTooltipHeader,                  NORMAL, self.db.general.fontSize)
-	SetFont(NumberFont_OutlineThick_Mono_Small, NUMBER, self.db.general.fontSize, "OUTLINE")
-	SetFont(NumberFont_Outline_Huge,            NUMBER, 28, MONOCHROME.."THICKOUTLINE", 28)
-	SetFont(NumberFont_Outline_Large,           NUMBER, 15, MONOCHROME.."OUTLINE")
-	SetFont(NumberFont_Outline_Med,             NUMBER, self.db.general.fontSize*1.1, "OUTLINE")
+	SetFont(NumberFont_OutlineThick_Mono_Small, NUMBER, 10, 'MONOCHROMEOUTLINE', 1, 1, 1, 0, 0, 0, 1, -1)
+	SetFont(NumberFont_Outline_Huge,            NUMBER, 28, 'MONOCHROMEOUTLINE', 1, 1, 1, 0, 0, 0, 1, -1)
+	SetFont(NumberFont_Outline_Large,           NUMBER, 14, 'MONOCHROMEOUTLINE', 1, 1, 1, 0, 0, 0, 1, -1)
+	SetFont(NumberFont_Outline_Med,             NUMBER, 10, 'MONOCHROMEOUTLINE', 1, 1, 1, 0, 0, 0, 1, -1)
 	SetFont(NumberFont_Shadow_Med,              NORMAL, self.db.general.fontSize) --chat editbox uses this
 	SetFont(NumberFont_Shadow_Small,            NORMAL, self.db.general.fontSize)
 	SetFont(QuestFont,                          NORMAL, self.db.general.fontSize)
@@ -61,7 +63,7 @@ function E:UpdateBlizzardFonts()
 	SetFont(SystemFont_Med1,                    NORMAL, self.db.general.fontSize)
 	SetFont(SystemFont_Med3,                    NORMAL, self.db.general.fontSize*1.1)
 	SetFont(SystemFont_OutlineThick_Huge2,      NORMAL, 20, MONOCHROME.."THICKOUTLINE")
-	SetFont(SystemFont_Outline_Small,           NUMBER, self.db.general.fontSize, "OUTLINE")
+	SetFont(SystemFont_Outline_Small,           NUMBER, 10, 'MONOCHROMEOUTLINE', 1, 1, 1, 0, 0, 0, 1, -1)
 	SetFont(SystemFont_Shadow_Large,            NORMAL, 15)
 	SetFont(SystemFont_Shadow_Med1,             NORMAL, self.db.general.fontSize)
 	SetFont(SystemFont_Shadow_Med3,             NORMAL, self.db.general.fontSize*1.1)
