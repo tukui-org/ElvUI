@@ -999,6 +999,37 @@ local function LoadSkin()
 	for _, slider in pairs(sliders) do
 		S:HandleSliderFrame(_G[slider])
 	end
+	
+	-- mac option
+	MacOptionsFrame:StripTextures()
+	MacOptionsFrame:SetTemplate()
+	S:HandleButton(MacOptionsButtonCompress)
+	S:HandleButton(MacOptionsButtonKeybindings)
+	S:HandleButton(MacOptionsFrameDefaults)
+	S:HandleButton(MacOptionsFrameOkay)
+	S:HandleButton(MacOptionsFrameCancel)
+	MacOptionsFrameMovieRecording:StripTextures()
+	MacOptionsITunesRemote:StripTextures()
+	MacOptionsFrameMisc:StripTextures()
+
+
+	S:HandleDropDownBox(MacOptionsFrameResolutionDropDown)
+	S:HandleDropDownBox(MacOptionsFrameFramerateDropDown)
+	S:HandleDropDownBox(MacOptionsFrameCodecDropDown)
+	S:HandleSliderFrame(MacOptionsFrameQualitySlider)
+
+	for i = 1, 11 do
+		local b = _G["MacOptionsFrameCheckButton"..i]
+		S:HandleCheckBox(b)
+	end
+
+	MacOptionsButtonKeybindings:ClearAllPoints()
+	MacOptionsButtonKeybindings:SetPoint("LEFT", MacOptionsFrameDefaults, "RIGHT", 2, 0)
+	MacOptionsFrameOkay:ClearAllPoints()
+	MacOptionsFrameOkay:SetPoint("LEFT", MacOptionsButtonKeybindings, "RIGHT", 2, 0)
+	MacOptionsFrameCancel:ClearAllPoints()
+	MacOptionsFrameCancel:SetPoint("LEFT", MacOptionsFrameOkay, "RIGHT", 2, 0)
+	MacOptionsFrameCancel:SetWidth(MacOptionsFrameCancel:GetWidth() - 6)	
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)
