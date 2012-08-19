@@ -38,6 +38,43 @@ E.InversePoints = {
 	BOTTOMRIGHT = 'TOPRIGHT'
 }
 
+E.DispelClasses = {
+	['PRIEST'] = {
+		['Magic'] = true,
+		['Disease'] = true
+	},
+	['SHAMAN'] = {
+		['Magic'] = false,
+		['Curse'] = true
+	},
+	['PALADIN'] = {
+		['Poison'] = true,
+		['Magic'] = false,
+		['Disease'] = true
+	},
+	['MAGE'] = {
+		['Curse'] = true
+	},
+	['DRUID'] = {
+		['Magic'] = false,
+		['Curse'] = true,
+		['Poison'] = true
+	},
+	['MONK'] = {
+		['Magic'] = false,
+		['Disease'] = true,
+		['Poison'] = true
+	}
+}
+
+E.HealingClasses = {
+	PALADIN = 1,
+	SHAMAN = 3,
+	DRUID = 4,
+	MONK = 2,
+	PRIEST = {1, 2}
+}
+
 E.ClassRole = {
 	PALADIN = {
 		[1] = "Caster",
@@ -246,6 +283,30 @@ function E:IsPTRVersion()
 	return false;
 end
 
+function E:CheckTalentTree(tree)
+	local activeGroup = GetActiveSpecGroup()
+	if type(tree) == 'number' then
+		if activeGroup and GetSpecialization(false, false, activeGroup) then
+			return tree == GetSpecialization(false, false, activeGroup)
+		end
+	elseif type(tree) == 'table' then
+		local activeGroup = GetActiveSpecGroup()
+		for _, index in pairs(tree) do
+			if activeGroup and GetSpecialization(false, false, activeGroup) then
+				return index == GetSpecialization(false, false, activeGroup)
+			end		
+		end
+	end
+end
+
+function E:IsDispellableByMe(debuffType)
+	if not self.DispelClasses[self.myclass] then return; end
+	
+	if self.DispelClasses[self.myclass][debuffType] then
+		return true;
+	end
+end
+
 function E:CheckRole()
 	local talentTree = GetSpecialization()
 	local IsInPvPGear = false;
@@ -277,6 +338,14 @@ function E:CheckRole()
 		else
 			self.role = "Caster";
 		end		
+	end
+	
+	if self.HealingClasses[self.myclass] and not self.myclass == 'PRIEST' then
+		if self:CheckTalentTree(self.HealingClasses[self.myclass]) then
+			self.DispelClasses[self.myclass].Magic = true;
+		else
+			self.DispelClasses[self.myclass].Magic = false;
+		end
 	end
 end
 
