@@ -76,18 +76,7 @@ function A:CheckFilterForActiveBuff(filter)
 end
 
 function A:UpdateReminder(event, unit)
-	if (event == "UNIT_AURA" and unit ~= "player") then return end
-	if event == 'PLAYER_ENTERING_WORLD' or event == nil and not InCombatLockdown() then	--This is a taint fix inside arena, I really do not know why the fuck we get a :ClearAllPoints() taint on an arena frame that hasnt been touched.
-		local _, instanceType = IsInInstance();
-		if instanceType == 'arena' or instanceType == 'pvp' then
-			BuffFrame:UnregisterEvent('UNIT_AURA')
-			E:GetModule('Auras').BuffFrame:SetAttribute("consolidateTo", 0)		
-		else
-			BuffFrame:RegisterEvent('UNIT_AURA')
-			E:GetModule('Auras').BuffFrame:SetAttribute("consolidateTo", E:GetModule('Auras').db.consolidedBuffs == true and E.private.general.minimap.enable == true and 1 or 0)
-		end
-	end
-	
+	if (event == "UNIT_AURA" and unit ~= "player") then return end	
 	local frame = self.frame
 	
 	if event ~= 'UNIT_AURA' and not InCombatLockdown() then
