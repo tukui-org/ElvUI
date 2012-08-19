@@ -33,6 +33,7 @@ L["Display macro names on action buttons."] = "Affiche les noms des macros sur l
 L["Expiring"] = "Expiration"
 L["Height Multiplier"] = "Multiplicateur hauteur"
 L["Hours"] = "Heures"
+L['Key Down'] = "Touche Suivante" --Need review
 L["Key"] = "Touche"
 L["Keybind Mode"] = "Mode raccourcis"
 L["Keybind Text"] = "Texte des raccourcis"
@@ -50,7 +51,6 @@ L["KEY_PAGEDOWN"] = "PD"
 L["KEY_PAGEUP"] = "PU"
 L["KEY_SHIFT"] = "S"
 L["KEY_SPACE"] = "SpB"
-L["LOCK_AB_ERROR"] = "Vos barres d'actions ne sont pas vérouillées. Cela peut Cela peut entrainer des problèmes. Merci de lancer la partie de l'installation concernant la configuration des CVar (Etape 2). Ceci peut être fait en tapant /ec et en cliquant sur le bouton d'installation."
 L["Low Threshold"] = "Seuil"
 L["Macro Text"] = "Texte sur Macro"
 L['Max Paging'] = "Pagination Max"
@@ -64,14 +64,15 @@ L["Restore Bar"] = "Restaurer la barre"
 L["Restore the actionbars default settings"] = "Restaure la barre d'actions avec ses paramètres par défaut."
 L["Seconds"] = "Secondes"
 L["Set the font size of the action buttons."] = "Configure la taille de la police d'écriture des boutons de la barre d'actions."
-L["Stance Bar"] = true;
+L["Stance Bar"] = "Barre de posture"
 L["The amount of buttons to display per row."] = "Nombre de boutons à afficher par ligne."
 L["The amount of buttons to display."] = "Nombre de boutons à afficher."
+L['The button you must hold down in order to drag an ability to another action button.'] = "Sur la touche que vous devez maintenir enfoncée pour faire glisser une capacité à un autre bouton d'action." --Need review
 L["The first button anchors itself to this point on the bar."] = "Le premier bouton à ancrer lui-même à ce point sur ​​la barre."
 L["The size of the action buttons."] = "Taille des boutons de la barre d'actions."
 L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"] = "Seuil avant que le texte devienne rouge sous forme de décimal. Mettre -1 pour qu'il ne devienne jamais rouge."
 L["Toggles the display of the actionbars backdrop."] = "Affiche ou non la couleur de fond de la barre d'action."
-L['Trigger'] = true;
+L['Trigger'] = "Déclencheur"  --Need review
 L["Visibility State"] = "État de visibilité"
 L['When enabled the main actionbar will use the maximum amount of pages available. This means if you have another actionbar disabled, the actionbar page will become available on the main actionbar. Having this disabled will limit the main actionbar to two pages.'] = "Lorsqu'elle est activée, la barre d'action principale utilisera le montant de pages disponibles. Cela signifie que su vous avez une autre barre d'actions désactivér, la barre d'action sera disponible dans la barre d'action principale. Avoir ce paramètre désactivé limitera la barre d'action principale à deux pages. "
 L["Width Multiplier"] = "Multiplicateur largeur"
@@ -143,7 +144,7 @@ L["Other's First"] = "Autre Première" --Need review
 L['Seperate'] = "Séparer"
 L['Set the size of the individual auras.'] = "Définit la taille des auras individuelles."
 L['Sort Method'] = "Méthode de tri"
-L['Threshold before text changes red, goes into decimal form, and the icon will fade. Set to -1 to disable.'] = true;
+L['Threshold before text changes red, goes into decimal form, and the icon will fade. Set to -1 to disable.'] = "Seuil avant que le texte devienne rouge, se met en forme décimale, et l'icône s'estompera. Régler sur -1 pour désactiver."
 L['Time'] = "Temps"
 L['Wrap After'] = "Enrouler Après"
 L['Your Auras First'] = "Vos Auras en premier"
@@ -192,9 +193,9 @@ L["Shorten the channel names in chat."] = "Minimise le nom des canaux de discuss
 L["Show Both"] = "Afficher les deux"
 L["Spam Interval"] = "Intervalle considérant le Spam"
 L["Sticky Chat"] = "Chat adhésif"
-L["Tab Font Outline"] = true;
-L["Tab Font Size"] = true;
-L["Tab Font"] = true;
+L["Tab Font Outline"] = "Etiquette de la police d'écriture en contour"; --Need review
+L["Tab Font Size"] = "Etiquette taille de la police d'écriture" --Need review
+L["Tab Font"] = "Etiquette police d'écriture" --Need review
 L["Toggle showing of the left and right chat panels."] = "Afficher ou masquer le côté gauche / droite des panneaux de discussion."
 L['Trade'] = "Métiers"
 L["URL Links"] = "Liens des URL"
@@ -302,6 +303,7 @@ L['Bases Defended'] = "Bases défendues"
 L['Battleground datatexts temporarily hidden, to show type /bgstats or right click the "C" icon near the minimap.'] = "Textes d'informations des champs de bataille temporairement masqués, pour les afficher tapez /bgstats ou clic droit sur le "C" près de la minicarte."
 L['Battleground datatexts will now show again if you are inside a battleground.'] = "Les textes d'informations des champs de bataille seront à nouveau affichés si vous êtes dans un champs de bataille."
 L['Battleground Texts'] = "Textes des Champs de bataille"
+L['Carts Controlled'] = "Chariots contrôlés"
 L['Change settings for the display of the location text that is on the minimap.'] = "Modifier les paramètres pour l'affichage du texte d'emplacement sur la minimap."
 L["Character: "] = "Personnage: "
 L["Chest"] = "Torse"
@@ -340,6 +342,7 @@ L['Minimap Mouseover'] = "Minicarte au survol"
 L['Minimap Panels'] = "Panneaux de la minicarte"
 L['Mitigation By Level: '] = "Mitigation par niveau: "
 L["Offhand"] = "Main gauche"
+L['Orb Possessions'] = "Orbes détenues" --need review IG
 L["Panels"] = "Fenêtre"
 L["Profit:"] = "Profit: "
 L["right"] = "Droite"
@@ -359,7 +362,8 @@ L["Total Memory:"] = "Mémoire totale: "
 L["Total: "] = "Total: "
 L['Towers Assaulted'] = "Tours attaquées"
 L['Towers Defended'] = "Tours défendues"
-L["Unhittable:"] = "Intouchable: "
+L["Unhittable:"] = "Intouchable:"
+L['Victory Points'] = "Points de Victoire"
 L["Waist"] = "Taille"
 L['When inside a battleground display personal scoreboard information on the main datatext bars.'] = "Lorsqu'à l'intérieur d'un Champs de bataill, afficher la tableau des scores personnel dans la barre de textes d'informations principale."
 L["Wrist"] = "Poignets"
@@ -372,7 +376,7 @@ L['|cFFE30000Lua error recieved. You can view the error message when you exit co
 
 --General
 L["Accept Invites"] = "Invitations automatiques"
-L['Adjust the position of the threat bar to either the left or right datatext panels.'] = true;
+L['Adjust the position of the threat bar to either the left or right datatext panels.'] = "Ajustez la position de la barre de menace soit sur les textes d'informations à gauche ou à droite."
 L['Adjust the size of the minimap.'] = "Ajuster la taille de la mini-carte."
 L["Announce Interrupts"] = "Annoncer les Interruptions"
 L["Announce when you interrupt a spell to the specified chat channel."] = "Annonce quand vous interrompez un sort dans le canal de chat spécifié."
@@ -393,21 +397,18 @@ L["Enable/Disable the loot frame."] = "Activer / désactiver le cadre de butin."
 L["Enable/Disable the loot roll frame."] = "Activer / désactiver le cadre du tirage au sort du butin."
 L['Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the consolidated buffs bar, and prevent you from seeing the minimap datatexts.|r'] = "Activer / désactiver la minicarte. |cffFF0000Attention: Cela vous empêchera de voir la barre d'améliorations groupées et les textes d'invormation sous la minicarte."
 L["General"] = "Général"
-L['Left'] = true;
+L['Left'] = "Gauche"
 L["Log Taints"] = "Journal  des corruptions";
 L["Login Message"] = "Message de connexion"
 L["LOGIN_MSG"] = "Bienvenue sur %sElvUI|r version %s%s|r, tapez /ec afin d'accéder au menu de configuration en jeu. Si vous avez besoin d'un support technique, vous pouvez nous rejoindre sur http://www.tukui.org"
 L["Loot Roll"] = "Cadre de butin"
 L["Loot"] = "Butin"
 L["Map Alpha While Moving"] = "Transparence de la carte en mouvement"
-L["Media"] = "Média"
-L['Position'] = true;
 L["Reset all frames to their original positions."] = "Réinitialiser les cadres à leurs positions initiales."
 L["Reset Anchors"] = "Réinitialiser les ancres"
-L['Right'] = true;
+L['Right'] = "Droite"
 L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = "Envoyer les ADDON_ACTION_BLOCKED dans la fenêtre d'erreur LUA. Ces erreurs sont minimes dans la plupart des cas et n'affecteront pas votre expérience de jeu. Tenez compte que nombreuses de celles-ci ne peuvent être fixé. Signalez-les uniquement si cela affecte grandement le jeu.";
 L["Skin the blizzard chat bubbles."] = "Habillage des bulles de Chat."
-L['Threat'] = true;
 L["Tiny Map"] = "Petite Carte";
 L['Toggle Tutorials'] = "Afficher les tutoriels"
 L["Welcome to ElvUI version %s!"] = "Bienvenue sur ElvUI version %s !"
@@ -425,6 +426,7 @@ L["Font Size"] = "Taille de la police" --Also used in UnitFrames
 L["Fonts"] = "Polices"
 L["Main backdrop color of the UI."] = "Couleur principale de fond de l'Interface."
 L["Main border color of the UI."] = "Couleur principale de la bordure de l'Interface."
+L["Media"] = "Média"
 L["Primary Texture"] = "Texture primaire"
 L["Secondary Texture"] = "Texture secondaire"
 L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"] = "Définie la taille de la police d'écriture pour toute l'interface utilisateur. Note: Ceci n'affecte pas les modules qui ont leurs propres paramètres (Portait d'unité, Textes d'Informations, etc)"
@@ -462,8 +464,8 @@ L["Bad Color"] = "Mauvaise couleur"
 L["Bad Scale"] = "Mauvaise échelle"
 L["Bad Transition Color"] = "Mauvaise couleur de transition"
 L["Castbar Height"] = "Hauteur de la barre de sort"
-L['Color the border of the nameplate yellow when it reaches the threshold point on these types of frames.'] = true;
-L['Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value.'] = true;
+L['Color the border of the nameplate yellow when it reaches the threshold point on these types of frames.'] = "Colore la bordure des cadres d'unités en jaune quand il atteint le point de seuil sur ces types de cadres."
+L['Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value.'] = "Colore la bordure des cadres d'unités en jaune quand il atteint le point, il sera de couleur rouge quand il atteindra la moitié de cette valeur."
 L["Color the nameplate's healthbar by your current threat, Example: good threat color is used if your a tank when you have threat, opposite for DPS."] = "Colore la barre de l'unité avec votre menace actuelle. Exemple: La couleur Bonne menace est utilisé si vous êtes un tank qui avez de la menace, inversement pour les DPS."
 L["Combat Toggle"] = "Cacher hors combat"
 L["Controls the height of the nameplate"] = "Contrôle la hauteur de la barre des noms d'unités"
@@ -563,7 +565,7 @@ L["Trainer Frame"] = "Entraîneur"
 L["World Map"] = "Carte du monde"
 
 --Static Popups
-L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."] = true;
+L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."] = "Un réglage que vous avez modifié ne s'appliquera que pour ce personnage. La modification de ce réglage ne sera pas affecté par un changement de profil. Changer ce réglage requiert de relancer l'interface."
 L["Are you sure you want to delete all your gray items?"] = "Êtes-vous sûr de vouloir détruire tout vos Objets Gris ?"
 L["Are you sure you want to disband the group?"] = "Êtes-vous sûr de vouloir dissoudre le groupe ? "
 L["Are you sure you want to reset every mover back to it's default position?"] = "Êtes-vous sûre de vouloir réinitialiser tous les cadres à leur position par défaut ?"
@@ -607,7 +609,7 @@ L['Using the /farmmode <size> command will spawn a larger minimap on your screen
 L['You can access copy chat and chat menu functions by mouse over the top right corner of chat panel and left/right click on the button that will appear.'] = "Vous pouvez accéder à une copie du Chat et des fonctions du Chat en survolant avec votre souris le coin haut droit de la fenêtre de discussion. Cliquez ensuite sur le bouton."
 L['You can see someones average item level of their gear by holding shift and mousing over them. It should appear inside the tooltip.'] = "Vous pouvez voir le niveau d'objet moyen de n'importe qui en maintenant la touche MAJ enfoncée puis en passant votre souris sur un joueur. Le score apparaitra dans le bulle d'informations."
 L['You can set your keybinds quickly by typing /kb.'] = "Vous pouvez assignez rapidement vos raccourcis en tapant /kb."
-L['You can toggle the microbar by using your middle mouse button on the minimap you can also accomplish this by holding shift and right clicking on the minimap.'] = "Vous pouvez afficher la microbarre en utilisant le bouton central de la souris sur la minicarte. Vous pouvez également y parvenir en maintenant le touche MAJ tout en effectuant un clic droit sur la minicarte."
+L['You can toggle the microbar by using your middle mouse button on the minimap you can also accomplish this by enabling the actual microbar located in the actionbar settings.'] = "Vous pouvez afficher la microbar en utilisant le bouton central de votre souris sur la minicarte. Vous pouvez aussi l'afficher via les réglages des Barres d'actions"
 L['You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame'] = "Vous pouvez utiliser la commande /resetui pour réinitialiser l'ensemble de vos cadres. Vous pouvez aussi utiliser la commande /resetui <nom du cadre> pour réinitialiser un cadre spécifique.\nExemple: /resetui Player Frame"
 
 --UnitFrames
@@ -623,6 +625,7 @@ L["An Y offset (in pixels) to be used when anchoring new frames."] = "Un décala
 L["Any Unit"] = "N'importe quelle unité"
 L["Arena Frames"] = "Cadre d'arène"
 L["Assist Frames"] = "Cadre des Soutiens"
+L['Assist Target'] = 'Cible de soutien'
 L["Attach To"] = "Attacher à"
 L['Aura Bars'] = "Barre d'auras"
 L["Bad"] = "Mauvaise"
@@ -652,7 +655,7 @@ L["Column Spacing"] = "Espace par colonne"
 L["Combat Fade"] = "Estomper hors combat"
 L["Combobar"] = "Barre des points de combo"
 L["Copy From"] = "Copier depuis"
-L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'] = true;
+L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'] = "Créer une chaîne de caractères personnalisée. Une fois que vous entrez un nom, vous serez en mesure de le sélectionner dans la liste déroulante éléments."
 L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."] = "Créer un filtre, chaque filtre créé peut être configurer dans la section Amélioration / Affaiblissements de chaque unité."
 L["Create Filter"] = "Créer un filtre"
 L['Current - Max | Percent'] = "Actuel Max | Pourcent" ;
@@ -676,6 +679,7 @@ L["Display a spark texture at the end of the castbar statusbar to help show the 
 L['Display Frames'] = "Afficher les cadres"
 L["Display Player"] = "Afficher le joueur"
 L["Display Target"] = "Affcher la cible"
+L['Display icon on arena frame indicating the units talent specialization or the units faction if inside a battleground.'] = "Afficher une icône sur les cadres d'arènes indiquant la spécialisation des unités ou leurs factions si vous êtes dans un champs de bataille."
 L["Display the rested icon on the unitframe."] = "Afficher l'icône reposé sur le portrait d'unité"
 L["Display the target of the cast on the castbar."] = "Afficher le sort en court d'incantation de la cible sur votre barre d'incantation." --Need review
 L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."] = "Affichage des marques de graduation (ticks) sur la barre de lancement de sort. Cela s'ajustera automatiquement pour les sorts comme Drain d'âme qui est basé sur la Hâte."
@@ -698,6 +702,7 @@ L["Ghost"] = "Fantôme"
 L["Good"] = "Bonne"
 L["Group By"] = "Groupe par" --Need review
 L["Group Point"] = "Point du groupe"
+L['Growth Direction'] = "Direction de la croissance"
 L["Heal Prediction"] = "Soin prévisionnel"
 L["Health Backdrop"] = "Fond de vie personnalisé"
 L["Health By Value"] = "Vie par valeur"
@@ -708,10 +713,10 @@ L['Hold shift + right click to blacklist this aura.'] = "Maintenant MAJ + clic d
 L["Horizontal"] = "Horizontale" --Also used in bags module
 L["How far away the portrait is from the camera."] = "Configure la distance de la caméra par rapport au portrait."
 L["Icon"] = "Icône"
-L['If not set to 0 then override the size of the aura icon to this.'] = true;
-L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'] = true;
-L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'] = true;
-L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'] = true;
+L['If not set to 0 then override the size of the aura icon to this.'] = "Si ce n'est pas réglé sur 0 alors cela replacera la taille de l'icône d'aura." --Need fucking review
+L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'] = "Si défini alors que l'aura est trouvée dans la liste noire, elle ne sera pas affichée. Remarque: Vous pouvez changer entre les unités amies ou ennemies." --Need fucking review
+L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'] = "Si défini alors que l'aura est trouvée dans la liste blanche, elle sera affichée. Remarque: Vous pouvez changer entre les unités amies ou ennemies." --Need fucking review
+L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'] = "S'il est défini, seuls les auras appartenant à vous-même en plus de toute aura qui passe le filtre peuvent être montrées. Remarque: Vous pouvez changer entre les unités amies ou ennemies." --Need fucking review
 L["Interrupt Color"] = "Couleur de l'interruption"
 L["Latency"] = "Latence"
 L["Low Mana Threshold"] = "Seuil de mana faible"
@@ -749,6 +754,7 @@ L["Power text will be hidden on NPC targets, in addition the name text will be r
 L["Power"] = "Énergie"
 L["Powers"] = "Énergies"
 L["Priority"] = "Priorité"
+L['PVP Trinket'] = 'Bijou PVP'
 L['Raid-10 Frames'] = "Cadres de raid 10 joueurs"
 L['Raid-25 Frames'] = "Cadres de raid 25 joueurs"
 L['Raid-40 Frames'] = "Cadres de raid 40 joueurs"
@@ -761,7 +767,7 @@ L["Remove Spell"] = "Supprimer un sort"
 L["Remove SpellID"] = "Supprimer l'identifiant d'un sort"
 L["Rest Icon"] = "Icône reposé"
 L["Restore Defaults"] = "Restaurer les paramètres par défaut" --Also used in Media and ActionBars sections
-L['RL / ML Icons'] = "Icônes RL / ML" --Valeur laissée en anglais
+L['RL / ML Icons'] = "Icônes RL / ML"
 L["Role Icon"] = "Icône de rôle"
 L["Select a filter to use."] = "Sélectionner un filtre à utiliser."
 L["Select a unit to copy settings from."] = "Sélectionnez les réglages d'un cadre à copier."
@@ -770,7 +776,7 @@ L["Select Spell"] = "Sélectionner un sort"
 L["Set the filter type, blacklisted filters hide any aura on the like and show all else, whitelisted filters show any aura on the filter and hide all else."] = "Définissez le type de filtre, les filtres en liste noires seront caché au contraire des filtres en liste blanche."
 L["Set the font size for unitframes."] = "Configure la taille de la police d'écriture pour les cadres d'unités."
 L["Set the order that the group will sort."] = "Définir l'ordre du groupe qui sera trié"
-L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."] = true;
+L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."] = "Définir l'ordre de priorité du sort,merci de noter que ces priorités ne sont utilisées que pour le modeil d'affaiblissement de raid, ce n'est pas un module amléiorations / affaiblissement standart. Si vous souhaitez le désactiver, mettez la valeur sur 0." --Need review
 L['Set the type of auras to show when a unit is a foe.'] = "Définir le type d'auras à afficher quand l'unité est inamical."
 L['Set the type of auras to show when a unit is friendly.'] = "Définir le type d'auras à afficher quand l'unité est amical."
 L["Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "Affiche une barre sur la prédiction des soins à venir sur le cadre d'unité. Ainsi qu'une barre de couleur légèrement différente pour les soins entrants excédants."
@@ -787,9 +793,11 @@ L["Smart Raid Filter"] = "Filtre intelligent de Raid"
 L["Smooth Bars"] = "Barres fluides"
 L["Spaced"] = "Espacée"
 L["Spark"] = "Lueur"
+L['Spec Icon'] = 'Icône de spécialisation'
 L["Spell not found in list."] = "Sort non trouvé dans la liste."
 L["StatusBar Texture"] = "Texture de la barre d'état."
 L["Tank Frames"] = "Cadre des Tanks"
+L['Tank Target'] = 'Cible de Tank'
 L["Tapped"] = "Collé"
 L["Target Frame"] = "Cadre de la cible"
 L["TargetTarget Frame"] = "Cadre de la cible de votre cible"
@@ -804,7 +812,7 @@ L["The maximum number of columns that the header will create."] = "Nombre maximu
 L["The maximum number of units that will be displayed in a single column."] = "Maximum d'unités affichées dans une seule colonne"
 L['The name you have selected is already in use by another element.'] = "Le nom que vous avez selectionné est déjà utilisé par un autre élément."
 L['The object you want to attach to.'] = "L'objet que vous souhaitez attacher à."
-L['The point of which you are anchoring to in relation to the attach to object.'] = true;
+L['The point of which you are anchoring to in relation to the attach to object.'] = "Le point dont vous êtes ancrée en relation avec l'attache de cet objet."  --Holy shit, WTF ????
 L['The spell "%s" has been added to the Blacklist unitframe aura filter.'] = "Le sort %s a bien été ajouté à la liste noire des filtres des cadres d'unités."
 L["Ticks"] = "Ticks"
 L["Toggles health text display"] = "Affiche la vie de l'unité"
@@ -821,7 +829,8 @@ L["Visibility"] = "Visibilité"
 L["What each frame should attach itself to, example setting it to TOP every unit will attach its top to the last point bottom."] = "Le point d'ancrage pour attacher les cadres entre eux, exemple: si le paramètre est sur TOP, tous les cadres d'unité se développeront vers le bas."
 L["What point to anchor to the frame you set to attach to."] = "Quel point d'ancrage sur le cadre vous choisissez à attacher."
 L["What to attach the buff anchor frame to."] = "Choisissez à quoi vous voulez attacher les améliorations sur le cadre."
-L['When set the Buffs and Debuffs will toggle being displayed depending on if the unit is friendly or an enemy. This will not effect the aurabars module.'] = true;
+L["What to attach the debuff anchor frame to."] = "Choisissez à quoi vous voulez attacher les affaiblissements sur le cadre."
+L['When set the Buffs and Debuffs will toggle being displayed depending on if the unit is friendly or an enemy. This will not effect the aurabars module.'] = "Une fois activé, les améliorations et affaiblissements seront soit affichés ou cachés en fonction du statut de l'unité (Amicale ou Enemie). Ceci n'affectera pas le module aurabars."
 L["When true, the group header is shown when the player is in a party."] = "Quand coché, l'en-tête de groupe est affiché lorsque le joueur est dans un groupe."
 L["When true, the group header is shown when the player is in a raid."] = "Quand coché, l'en-tête de groupe est affiché lorsque le joueur est dans un raid."
 L["When true, the header includes the player when not in a raid."] = "Quand coché, l'en-tête est affiché lorsque le joueur n'est pas dans un raid."
@@ -835,24 +844,24 @@ L["You can't remove a pre-existing filter."] = "Vous ne pouvez pas supprimer un 
 L["You cannot copy settings from the same unit."] = "Vous ne pouvez pas copier les réglages du même cadre."
 L["You cannot set the Group Point and Column Point so they are opposite of each other."] = "Vous ne pouvez pas configurer le Point de Groupe et le Point de la Colonne quand ils sont opposés l'un à l'autre."
 L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."] = "Vous ne pouvez pas supprimer un sort du filtre qui est par défaut. Le sort est maintenant désactivé."
-L['TEXT_FORMAT_DESC'] = [=[Provide a string to change the text format.
+L['TEXT_FORMAT_DESC'] = [=[Entrer une séquence pour changer le format du texte.
 
-Examples:
+Exemples:
 [namecolor][name] [difficultycolor][smartlevel] [shortclassification]
 [healthcolor][health:current-max]
 [powercolor][power:current]
 
-Health / Power Formats:
-'current' - current amount
-'percent' - percentage amount
-'current-max' - current amount followed by maximum amount, will display only max is current is equal to max
-'current-percent' - current amount followed by percentage amount, will display only max is current is equal to max
-'current-max-percent' - current amount, max amount, followed by percentage amount, will display only max if current is equal to max
-'deficit' - display the deficit value, will display nothing if there is no deficit
+Formats de la Vie / des Ressources:
+'current' - Quantité actuelle
+'percent' - Quantité en pourcentage
+'current-max' - Quantité actuelle suivie par quantité maximale, n'affichera seulement la quantité maximale si la quantité actuelle est égale au maximum.
+'current-percent' - Quantité actuelle suivie par quantité en pourcentage, n'affichera seulement la quantité maximale si la quantité actuelle est égale au maximum
+'current-max-percent' -  Quantité actuelle, quantité maximale, suivie par quantité en pourcentage, n'affichera seulement la quantité maximale si la quantité actuelle est égale au maximum
+'deficit' - Affiche la valeur du déficit, n'affichera rien si il n'y a pas de déficit
 
-Name Formats:
-'name-short' - Name restricted to 10 characters
-'name-medium' - Name restricted to 15 characters
-'name-long' - Name restricted to 20 characters
+Format des Noms:
+'name-short' - Nom limité à 10 charactères
+'name-medium' - Nom limité à 15 charactères
+'name-long' - Nom limité à 20 charactères
 
-To disable leave the field blank, if you need more information visit http://www.tukui.org]=];
+Pour désactiver, laisser le champs vide. Pour plus d'information, merci de visiter http://www.tukui.org]=];

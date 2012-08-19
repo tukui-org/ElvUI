@@ -1,6 +1,7 @@
 -- English localization file for enUS and enGB.
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0");
 local L = AceLocale:NewLocale("ElvUI", "enUS", true);
+
 if not L then return; end
 
 --ActionBars
@@ -34,10 +35,10 @@ L["Display macro names on action buttons."] = true;
 L["Expiring"] = true;
 L["Height Multiplier"] = true;
 L["Hours"] = true;
+L['Key Down'] = true;
 L["Key"] = true;
 L["Keybind Mode"] = true;
 L["Keybind Text"] = true;
-L['Key Down'] = true;
 L["KEY_ALT"] = "A"
 L["KEY_BUTTON3"] = "M3"
 L["KEY_CTRL"] = "C"
@@ -394,14 +395,11 @@ L["LOGIN_MSG"] = "Welcome to %sElvUI|r version %s%s|r, type /ec to access the in
 L["Loot Roll"] = true;
 L["Loot"] = true;
 L["Map Alpha While Moving"] = true;
-L["Media"] = true;
-L['Position'] = true;
 L["Reset all frames to their original positions."] = true;
 L["Reset Anchors"] = true;
 L['Right'] = true;
 L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = true;
 L["Skin the blizzard chat bubbles."] = true;
-L['Threat'] = true;
 L["Tiny Map"] = true;
 L['Toggle Tutorials'] = true;
 L["Welcome to ElvUI version %s!"] = true;
@@ -419,6 +417,7 @@ L["Font Size"] = true; --Also used in UnitFrames
 L["Fonts"] = true;
 L["Main backdrop color of the UI."] = true;
 L["Main border color of the UI."] = true;
+L["Media"] = true;
 L["Primary Texture"] = true;
 L["Secondary Texture"] = true;
 L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"] = true;
