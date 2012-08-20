@@ -924,6 +924,15 @@ function CH:UpdateChatKeywords()
 	end
 end
 
+function CH:PET_BATTLE_CLOSE()
+	for _, frameName in pairs(CHAT_FRAMES) do
+		local frame = _G[frameName]
+		if frame and _G[frameName.."Tab"]:GetText():match(PET_BATTLE_COMBAT_LOG) then
+			FCF_Close(frame)
+		end
+	end
+end
+
 function CH:Initialize()
 	self.db = E.db.chat
 	if E.private.chat.enable ~= true then return end
@@ -948,7 +957,7 @@ function CH:Initialize()
 	self:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
 	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
-	
+	self:RegisterEvent('PET_BATTLE_CLOSE')
 	self:SetupChat()
 
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", CH.CHAT_MSG_CHANNEL)
