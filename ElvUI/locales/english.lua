@@ -165,6 +165,7 @@ L["Font"] = true;
 L["G"] = true;
 L['Hide Both'] = true;
 L["Hyperlink Hover"] = true;
+L['Invalid Target'] = true;
 L["Keyword Alert"] = true;
 L['Keywords'] = true;
 L['Left Only'] = true;
