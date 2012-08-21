@@ -19,7 +19,7 @@ function AB:SetupExtraButton()
 			_G["ExtraActionButton"..i].checked = true
 			
 			self:StyleButton(_G["ExtraActionButton"..i], true)
-			_G["ExtraActionButton"..i]:SetTemplate(true)
+			_G["ExtraActionButton"..i]:SetTemplate()
 			_G["ExtraActionButton"..i..'Icon']:SetDrawLayer('ARTWORK')
 			local tex = _G["ExtraActionButton"..i]:CreateTexture(nil, 'OVERLAY')
 			tex:SetTexture(0.9, 0.8, 0.1, 0.3)
