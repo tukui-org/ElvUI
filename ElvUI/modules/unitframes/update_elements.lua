@@ -307,6 +307,7 @@ function UF:HideTicks()
 end
 
 function UF:SetCastTicks(frame, numTicks, extraTickRatio)
+	extraTickRatio = extraTickRatio or 0
 	UF:HideTicks()
 	if numTicks and numTicks > 0 then
 		local d = frame:GetWidth() / (numTicks + extraTickRatio)
@@ -351,7 +352,7 @@ function UF:PostCastStart(unit, name, rank, castid)
             self.prevSpellCast = name
         end
 		
-		if baseTicks and E.global.unitframe.HastedChannelTicks[name] then
+		if baseTicks and E.global.unitframe.ChannelTicksSize[name] and E.global.unitframe.HastedChannelTicks[name] then
 			local tickIncRate = 1 / baseTicks
 			local curHaste = UnitSpellHaste("player") * 0.01
 			local firstTickInc = tickIncRate / 2
@@ -374,7 +375,7 @@ function UF:PostCastStart(unit, name, rank, castid)
             local extraTickRatio = extraTick / hastedTickSize
 
 			UF:SetCastTicks(self, baseTicks + bonusTicks, extraTickRatio)
-		elseif baseTicks then
+		elseif baseTicks and E.global.unitframe.ChannelTicksSize[name] then
 			local curHaste = UnitSpellHaste("player") * 0.01
             local baseTickSize = E.global.unitframe.ChannelTicksSize[name]
             local hastedTickSize = baseTickSize / (1 +  curHaste)
@@ -382,7 +383,8 @@ function UF:PostCastStart(unit, name, rank, castid)
             local extraTickRatio = extraTick / hastedTickSize
 
 			UF:SetCastTicks(self, baseTicks, extraTickRatio)
-
+		elseif baseTicks then
+			UF:SetCastTicks(self, baseTicks)
 		else
 			UF:HideTicks()
 		end
@@ -423,7 +425,7 @@ function UF:PostChannelUpdate(unit, name)
 	if db.castbar.ticks and unit == "player" then
 		local baseTicks = E.global.unitframe.ChannelTicks[name]
 
-		if baseTicks and E.global.unitframe.HastedChannelTicks[name] then
+		if baseTicks and E.global.unitframe.ChannelTicksSize[name] and E.global.unitframe.HastedChannelTicks[name] then
 			local tickIncRate = 1 / baseTicks
 			local curHaste = UnitSpellHaste("player") * 0.01
 			local firstTickInc = tickIncRate / 2
@@ -449,7 +451,7 @@ function UF:PostChannelUpdate(unit, name)
 			end
 
 			UF:SetCastTicks(self, baseTicks + bonusTicks, self.extraTickRatio)
-		elseif baseTicks then
+		elseif baseTicks and E.global.unitframe.ChannelTicksSize[name] then
 			local curHaste = UnitSpellHaste("player") * 0.01
 			local baseTickSize = E.global.unitframe.ChannelTicksSize[name]
 			local hastedTickSize = baseTickSize / (1 + curHaste)
@@ -460,6 +462,8 @@ function UF:PostChannelUpdate(unit, name)
 			end
 
 			UF:SetCastTicks(self, baseTicks, self.extraTickRatio)
+		elseif baseTicks then
+			UF:SetCastTicks(self, baseTicks)
 		else
 			UF:HideTicks()
 		end
