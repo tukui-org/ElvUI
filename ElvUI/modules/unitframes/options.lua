@@ -68,7 +68,7 @@ function UF:CreateCustomTextGroup(unit, objectName)
 				order = 3,
 				name = L["Font Size"],
 				type = "range",
-				min = 6, max = 35, step = 1,
+				min = 6, max = 32, step = 1,
 			},		
 			fontOutline = {
 				order = 4,
