@@ -206,6 +206,9 @@ local UNIT_SPELLCAST_CHANNEL_START = function(self, event, unit, spellname)
 	castbar.duration = duration
 	castbar.max = max
 	castbar.delay = 0
+	castbar.startTime = startTime
+	castbar.endTime = endTime
+	castbar.extraTickRatio = 0
 	castbar.channeling = true
 	castbar.interrupt = interrupt
 
@@ -252,8 +255,11 @@ local UNIT_SPELLCAST_CHANNEL_UPDATE = function(self, event, unit, spellname)
 	end
 
 	local duration = (endTime / 1000) - GetTime()
-
-	castbar.delay = castbar.delay + castbar.duration - duration
+	local startDelay = castbar.startTime - startTime / 1000
+	castbar.startTime = startTime / 1000
+	castbar.endTime = endTime / 1000
+	castbar.delay = castbar.delay + startDelay
+	
 	castbar.duration = duration
 	castbar.max = (endTime - startTime) / 1000
 

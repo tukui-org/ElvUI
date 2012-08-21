@@ -622,7 +622,7 @@ function UF:Initialize()
 		InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
 		InterfaceOptionsFrameCategoriesButton10:SetScale(0.0001)
 		InterfaceOptionsFrameCategoriesButton11:SetScale(0.0001)
-		
+
 		if not IsAddOnLoaded('Blizzard_ArenaUI') then
 			self:RegisterEvent('ADDON_LOADED')
 		else

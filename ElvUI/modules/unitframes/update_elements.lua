@@ -306,10 +306,10 @@ function UF:HideTicks()
 	end		
 end
 
-function UF:SetCastTicks(frame, numTicks)
+function UF:SetCastTicks(frame, numTicks, extraTickRatio)
 	UF:HideTicks()
 	if numTicks and numTicks > 0 then
-		local d = frame:GetWidth() / numTicks
+		local d = frame:GetWidth() / (numTicks + extraTickRatio)
 		for i = 1, numTicks do
 			if not ticks[i] then
 				ticks[i] = frame:CreateTexture(nil, 'OVERLAY')
@@ -342,6 +342,15 @@ function UF:PostCastStart(unit, name, rank, castid)
 
 	if db.castbar.ticks and unit == "player" then
 		local baseTicks = E.global.unitframe.ChannelTicks[name]
+		
+        -- Detect channeling spell and if it's the same as the previously channeled one
+        if baseTicks and name == prevSpellCast then
+            self.chainChannel = true
+        elseif baseTicks then
+            self.chainChannel = nil
+            self.prevSpellCast = name
+        end
+		
 		if baseTicks and E.global.unitframe.HastedChannelTicks[name] then
 			local tickIncRate = 1 / baseTicks
 			local curHaste = UnitSpellHaste("player") * 0.01
@@ -359,9 +368,21 @@ function UF:PostCastStart(unit, name, rank, castid)
 				end
 			end
 
-			UF:SetCastTicks(self, baseTicks + bonusTicks)
+            local baseTickSize = E.global.unitframe.ChannelTicksSize[name]
+            local hastedTickSize = baseTickSize / (1 + curHaste)
+            local extraTick = self.max - hastedTickSize * (baseTicks + bonusTicks)
+            local extraTickRatio = extraTick / hastedTickSize
+
+			UF:SetCastTicks(self, baseTicks + bonusTicks, extraTickRatio)
 		elseif baseTicks then
-			UF:SetCastTicks(self, baseTicks)
+			local curHaste = UnitSpellHaste("player") * 0.01
+            local baseTickSize = E.global.unitframe.ChannelTicksSize[name]
+            local hastedTickSize = baseTickSize / (1 +  curHaste)
+            local extraTick = self.max - hastedTickSize * (baseTicks)
+            local extraTickRatio = extraTick / hastedTickSize
+
+			UF:SetCastTicks(self, baseTicks, extraTickRatio)
+
 		else
 			UF:HideTicks()
 		end
@@ -387,6 +408,64 @@ function UF:PostCastStart(unit, name, rank, castid)
 		end				
 		self:SetStatusBarColor(color.r, color.g, color.b)
 	end
+end
+
+function UF:PostCastStop(unit, name, castid)
+	self.chainChannel = nil
+	self.prevSpellCast = nil
+end
+
+function UF:PostChannelUpdate(unit, name)
+	if unit == "vehicle" then unit = "player" end
+	local db = self:GetParent().db
+	if not db then return; end
+    
+	if db.castbar.ticks and unit == "player" then
+		local baseTicks = E.global.unitframe.ChannelTicks[name]
+
+		if baseTicks and E.global.unitframe.HastedChannelTicks[name] then
+			local tickIncRate = 1 / baseTicks
+			local curHaste = UnitSpellHaste("player") * 0.01
+			local firstTickInc = tickIncRate / 2
+			local bonusTicks = 0
+			if curHaste >= firstTickInc then
+				bonusTicks = bonusTicks + 1
+			end
+
+			local x = tonumber(E:Round(firstTickInc + tickIncRate, 2))
+			while curHaste >= x do
+				x = tonumber(E:Round(firstTickInc + (tickIncRate * bonusTicks), 2))
+				if curHaste >= x then
+					bonusTicks = bonusTicks + 1
+				end
+			end
+
+			local baseTickSize = E.global.unitframe.ChannelTicksSize[name]
+			local hastedTickSize = baseTickSize / (1 + curHaste)
+			local extraTick = self.max - hastedTickSize * (baseTicks + bonusTicks)
+			if self.chainChannel then
+				self.extraTickRatio = extraTick / hastedTickSize
+				self.chainChannel = nil
+			end
+
+			UF:SetCastTicks(self, baseTicks + bonusTicks, self.extraTickRatio)
+		elseif baseTicks then
+			local curHaste = UnitSpellHaste("player") * 0.01
+			local baseTickSize = E.global.unitframe.ChannelTicksSize[name]
+			local hastedTickSize = baseTickSize / (1 + curHaste)
+			local extraTick = self.max - hastedTickSize * (baseTicks)
+			if self.chainChannel then
+				self.extraTickRatio = extraTick / hastedTickSize
+				self.chainChannel = nil
+			end
+
+			UF:SetCastTicks(self, baseTicks, self.extraTickRatio)
+		else
+			UF:HideTicks()
+		end
+	elseif unit == 'player' then
+		UF:HideTicks()			
+	end	
 end
 
 function UF:PostCastInterruptible(unit)

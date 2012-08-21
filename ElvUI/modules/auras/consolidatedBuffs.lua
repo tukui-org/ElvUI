@@ -76,7 +76,7 @@ function A:CheckFilterForActiveBuff(filter)
 end
 
 function A:UpdateReminder(event, unit)
-	if (event == "UNIT_AURA" and unit ~= "player") then return end
+	if (event == "UNIT_AURA" and unit ~= "player") then return end	
 	local frame = self.frame
 	
 	if event ~= 'UNIT_AURA' and not InCombatLockdown() then
@@ -179,6 +179,7 @@ end
 
 function A:EnableCB()
 	ElvUI_ConsolidatedBuffs:Show()
+	BuffFrame:RegisterEvent('UNIT_AURA')
 	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", 'UpdateReminder')
 	self:RegisterEvent("UNIT_INVENTORY_CHANGED", 'UpdateReminder')
 	self:RegisterEvent("UNIT_AURA", 'UpdateReminder')

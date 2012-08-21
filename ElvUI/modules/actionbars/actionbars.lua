@@ -467,12 +467,12 @@ function AB:DisableBlizzard()
 	MainMenuBar:UnregisterAllEvents()
 	MainMenuBar:Hide()
 	MainMenuBar:SetParent(UIHider)
-	for i=1, MainMenuBar:GetNumChildren() do
+	--[[for i=1, MainMenuBar:GetNumChildren() do
 		local child = select(i, MainMenuBar:GetChildren())
 		if child and child.UnregisterAllEvents then
 			child:UnregisterAllEvents()
 		end
-	end
+	end]]
 
 	MainMenuBarArtFrame:UnregisterEvent("ACTIONBAR_PAGE_CHANGED")
 	MainMenuBarArtFrame:UnregisterEvent("ADDON_LOADED")
@@ -685,21 +685,19 @@ function AB:MultiActionBar_Update(event)
 		self:RegisterEvent('PLAYER_REGEN_ENABLED', 'MultiActionBar_Update');
 		return;
 	end
-	
-	local bottomLeft, bottomRight, right, rightTwo = GetActionBarToggles()
-	if self.db.useMaxPaging then		
-		SHOW_MULTI_ACTIONBAR_1 = self.db['bar3'].enabled == true and "1" or nil
-		SHOW_MULTI_ACTIONBAR_2 = self.db['bar2'].enabled == true and "1" or nil
-		SHOW_MULTI_ACTIONBAR_3 = self.db['bar5'].enabled == true and "1" or nil
-		SHOW_MULTI_ACTIONBAR_4 = self.db['bar4'].enabled == true and "1" or nil
-	else
-		SHOW_MULTI_ACTIONBAR_1 = "1"
-		SHOW_MULTI_ACTIONBAR_2 = "1"
-		SHOW_MULTI_ACTIONBAR_3 = "1"
-		SHOW_MULTI_ACTIONBAR_4 = "1"
-	end
 
-	MultiActionBar_Update();
+	if self.db.useMaxPaging then		
+		local SHOW_MULTI_ACTIONBAR_2 = self.db['bar2'].enabled ~= true and " [bar:5] 5;" or ''
+		local SHOW_MULTI_ACTIONBAR_3 = self.db['bar3'].enabled ~= true and " [bar:6] 6;" or ''
+		local SHOW_MULTI_ACTIONBAR_4 = self.db['bar4'].enabled ~= true and " [bar:4] 4;" or ''
+		local SHOW_MULTI_ACTIONBAR_5 = self.db['bar5'].enabled ~= true and " [bar:3] 3;" or ''
+		
+		self.barDefaults.bar1.conditions = string.format("[vehicleui] %d; [possessbar] %d; [overridebar] %d; [bar:2] 2; %s %s %s", GetVehicleBarIndex(), GetVehicleBarIndex(), GetOverrideBarIndex(), SHOW_MULTI_ACTIONBAR_2, SHOW_MULTI_ACTIONBAR_3, SHOW_MULTI_ACTIONBAR_4, SHOW_MULTI_ACTIONBAR_5)
+	else
+		self.barDefaults.bar1.conditions = string.format("[vehicleui] %d; [possessbar] %d; [overridebar] %d; [bar:2] 2;", GetVehicleBarIndex(), GetVehicleBarIndex(), GetOverrideBarIndex())
+	end
+	
+	self:PositionAndSizeBar('bar1')
 	
 	if event == 'PLAYER_REGEN_ENABLED' then
 		self:UnregisterEvent('PLAYER_REGEN_ENABLED')
@@ -728,6 +726,12 @@ function AB:VehicleFix()
 	else
 		bar.backdrop:SetAllPoints()
 	end
+end
+
+function AB:ActionButton_ShowOverlayGlow(frame)
+	if not frame.overlay then return; end
+	local size =  frame:GetWidth() / 3
+	frame.overlay:SetOutside(frame, size, size)
 end
 
 function AB:Initialize()
@@ -759,6 +763,8 @@ function AB:Initialize()
 	self:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR', 'VehicleFix')
 	self:RegisterEvent('CVAR_UPDATE')
 	self:ReassignBindings()
+	
+	self:SecureHook('ActionButton_ShowOverlayGlow')
 	
 	if not GetCVarBool('lockActionBars') then
 		SetCVar('lockActionBars', 1)

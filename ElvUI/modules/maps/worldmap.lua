@@ -106,8 +106,8 @@ end
 function M:UpdateCoords()
 	local inInstance, _ = IsInInstance()
 	local x, y = GetPlayerMapPosition("player")
-	x = math.floor(100 * x)
-	y = math.floor(100 * y)
+	x = E:Round(100 * x, 2)
+	y = E:Round(100 * y, 2)
 	
 	if x ~= 0 and y ~= 0 then
 		CoordsHolder.playerCoords:SetText(PLAYER..":   "..x..", "..y)
@@ -124,8 +124,8 @@ function M:UpdateCoords()
 	local adjustedY = (centerY + (height/2) - y / scale) / height	
 
 	if (adjustedX >= 0  and adjustedY >= 0 and adjustedX <= 1 and adjustedY <= 1) then
-		adjustedX = math.floor(100 * adjustedX)
-		adjustedY = math.floor(100 * adjustedY)
+		adjustedX = E:Round(100 * adjustedX, 2)
+		adjustedY = E:Round(100 * adjustedY, 2)
 		CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..":   "..adjustedX..", "..adjustedY)
 	else
 		CoordsHolder.mouseCoords:SetText("")
@@ -197,8 +197,8 @@ function M:Initialize()
 	CoordsHolder.mouseCoords = CoordsHolder:CreateFontString(nil, 'OVERLAY')
 	CoordsHolder.playerCoords:SetTextColor(WorldMapQuestShowObjectivesText:GetTextColor())
 	CoordsHolder.mouseCoords:SetTextColor(WorldMapQuestShowObjectivesText:GetTextColor())
-	CoordsHolder.playerCoords:FontTemplate(nil, math.ceil(select(2, WorldMapQuestShowObjectivesText:GetFont())), 'OUTLINE')
-	CoordsHolder.mouseCoords:FontTemplate(nil, math.ceil(select(2, WorldMapQuestShowObjectivesText:GetFont())), 'OUTLINE')
+	CoordsHolder.playerCoords:SetFontObject(NumberFontNormal)
+	CoordsHolder.mouseCoords:SetFontObject(NumberFontNormal)
 	CoordsHolder.playerCoords:SetPoint("BOTTOMLEFT", WorldMapDetailFrame, "BOTTOMLEFT", 5, 5)
 	CoordsHolder.playerCoords:SetText(PLAYER..":   0, 0")
 	CoordsHolder.mouseCoords:SetPoint("BOTTOMLEFT", CoordsHolder.playerCoords, "TOPLEFT", 0, 5)

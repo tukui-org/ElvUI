@@ -162,7 +162,6 @@ function UF:Update_FocusFrame(frame, db)
 		elseif frame:IsElementEnabled('Power') then
 			frame:DisableElement('Power')
 			power:Hide()	
-			power.value:Hide()
 		end
 	end
 	

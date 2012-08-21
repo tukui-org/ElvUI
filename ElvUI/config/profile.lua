@@ -98,7 +98,7 @@ P["nameplate"] = {
 	["friendlyplayer"] = {r = 75/255,  g = 175/255, b = 76/255},
 	["neutral"] = { r = 218/255, g = 197/255, b = 92/255 },
 	["enemy"] = { r = 0.78, g = 0.25, b = 0.25 },	
-	['lowHealthWarning'] = 'PLAYERS',
+	['lowHealthWarning'] = 'ALL',
 	['lowHealthWarningThreshold'] = .40,
 };
 
@@ -269,7 +269,7 @@ P['unitframe'] = {
 				['perrow'] = 8,
 				['numrows'] = 1,
 				['attachTo'] = 'DEBUFFS',
-				['anchorPoint'] = 'TOPRIGHT',
+				['anchorPoint'] = 'TOPLEFT',
 				['fontSize'] = 10,
 				['playerOnly'] = 'ALL',
 				['noConsolidated'] = 'ALL',
@@ -277,13 +277,31 @@ P['unitframe'] = {
 				['useWhitelist'] = 'ALL',
 				['noDuration'] = 'ALL',
 				['useFilter'] = '',
+				--[[['filters'] = {
+					['friendly'] = {
+						['playerOnly'] = true,
+						['noConsolidated'] = true,
+						['useBlacklist'] = true,
+						['useWhiteList'] = true,
+						['noDuration'] = true,
+						['useFilter'] = '',
+					},
+					['enemy'] = {
+						['playerOnly'] = true,
+						['noConsolidated'] = true,
+						['useBlacklist'] = true,
+						['useWhiteList'] = true,
+						['noDuration'] = true,
+						['useFilter'] = '',					
+					},
+				},]]
 			},
 			['debuffs'] = {
 				['enable'] = false,
 				['perrow'] = 7,
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
-				['anchorPoint'] = 'TOPRIGHT',					
+				['anchorPoint'] = 'TOPLEFT',					
 				['fontSize'] = 10,
 				['playerOnly'] = 'NONE',
 				['useBlacklist'] = 'ALL',
@@ -1234,7 +1252,6 @@ P["actionbar"] = {
 		["buttonspacing"] = 4,		
 		['paging'] = {
 			["DRUID"] = "[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10;",
-			["WARRIOR"] = "[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;",
 			["PRIEST"] = "[bonusbar:1] 7;",
 			["ROGUE"] = "[stance:1] 7; [stance:3] 7;", -- set to "[stance:1] 7; [stance:3] 10;" if you want a shadow dance bar
 			["MONK"] = "[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;"

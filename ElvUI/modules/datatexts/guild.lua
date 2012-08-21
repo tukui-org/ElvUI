@@ -245,7 +245,7 @@ end
 
 local function ValueColorUpdate(hex, r, g, b)
 	displayString = join("", GUILD, ": ", hex, "%d|r")
-	noGuildString = join("", hex, NO..' '..GUILD)
+	noGuildString = join("", hex, L['No Guild'])
 	
 	if lastPanel ~= nil then
 		OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE')

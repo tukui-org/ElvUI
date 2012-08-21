@@ -174,7 +174,7 @@ end)
 			self.Label:Hide()
 			self.Duration:SetPoint("CENTER", self, 0, 8)
 			self:ClearAllPoints()
-			self:SetPoint("TOP", UIParent, 0, -15)
+			self:SetPoint("TOP", E.UIParent, 0, -15)
 		end
 	end)	
 
@@ -207,6 +207,7 @@ end)
 	SkinPetTooltip(PetBattlePrimaryUnitTooltip)
 	SkinPetTooltip(BattlePetTooltip)
 	SkinPetTooltip(FloatingBattlePetTooltip)
+	SkinPetTooltip(FloatingPetBattleAbilityTooltip)
 
 		
 	-- TOOLTIP DEFAULT POSITION
@@ -257,7 +258,7 @@ end)
 	bar:SetSize (52*6 + 7*10, 52 * 1 + 10*2)
 	bar:EnableMouse(true)
 	bar:SetTemplate()
-	bar:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 4)
+	bar:SetPoint("BOTTOM", E.UIParent, "BOTTOM", 0, 4)
 	bar:SetFrameLevel(0)
 	bar:SetFrameStrata('BACKGROUND')
 	bar.backdropTexture:SetDrawLayer('BACKGROUND', 0)
@@ -275,7 +276,7 @@ end)
 
 	bf.TurnTimer:Size(bf.TurnTimer.SkipButton:GetWidth(), bf.TurnTimer.SkipButton:GetHeight())
 	bf.TurnTimer:ClearAllPoints()
-	bf.TurnTimer:SetPoint("TOP", UIParent, "TOP", 0, -140)
+	bf.TurnTimer:SetPoint("TOP", E.UIParent, "TOP", 0, -140)
 	bf.TurnTimer.TimerText:SetPoint("CENTER")	
 	
 	bf.FlowFrame:StripTextures()
