@@ -421,64 +421,41 @@ function E:SetupLayout(layout, noDataReset)
 			
 		if not E.db.movers then E.db.movers = {}; end
 		if E.db.lowresolutionset then
-<<<<<<< HEAD
-			E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTUIParentBOTTOMLEFT464230"
-			E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTUIParentBOTTOMRIGHT-464230"
-			E.db.movers.ElvUF_Raid40Mover = "BOTTOMUIParentBOTTOM0170"
-			E.db.movers.ElvUF_Raid25Mover = "BOTTOMUIParentBOTTOM0170"
-			E.db.movers.ElvUF_Raid10Mover = "BOTTOMUIParentBOTTOM0170"
+			E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464230"
+			E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTElvUIParentBOTTOMRIGHT-464230"
+			E.db.movers.ElvUF_Raid40Mover = "BOTTOMElvUIParentBOTTOM0170"
+			E.db.movers.ElvUF_Raid25Mover = "BOTTOMElvUIParentBOTTOM0170"
+			E.db.movers.ElvUF_Raid10Mover = "BOTTOMElvUIParentBOTTOM0170"
 			E.db.movers.ElvUF_TargetTargetMover = "BOTTOMRIGHTElvUF_TargetBOTTOMRIGHT0150"
-			E.db.movers.ElvUF_PartyMover = "BOTTOMUIParentBOTTOM0170"
-			E.db.movers.ElvUF_PetMover = "BOTTOMLEFTUIParentBOTTOMLEFT464151"
+			E.db.movers.ElvUF_PartyMover = "BOTTOMElvUIParentBOTTOM0170"
+			E.db.movers.ElvUF_PetMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464151"
 			E.db.movers.ElvUF_FocusMover = "BOTTOMLEFTElvUF_PlayerBOTTOMLEFT0150"
 			E.db.movers.ElvUF_FocusTargetMover = "BOTTOMLEFTElvUF_FocusBOTTOMLEFT0150"
-			E.db.movers.ElvUF_TankMover = "LEFTUIParentLEFT30350"
-			E.db.movers.ElvUF_AssistMover = "LEFTUIParentLEFT30250"
+			E.db.movers.ElvUF_TankMover = "LEFTElvUIParentLEFT30350"
+			E.db.movers.ElvUF_AssistMover = "LEFTElvUIParentLEFT30250"
 			if BossHeaderMover then
 				BossHeaderMover:ClearAllPoints()
-				BossHeaderMover:SetPoint("BOTTOMLEFT",UIParent,"BOTTOMLEFT",30,250)
+				BossHeaderMover:SetPoint("BOTTOMLEFT",E.UIParent,"BOTTOMLEFT",30,250)
 				E:SaveMoverPosition("BossHeaderMover")
 			end
 		else
-			E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTUIParentBOTTOMLEFT464230"
-			E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTUIParentBOTTOMRIGHT-464230"
-			E.db.movers.ElvUF_Raid40Mover = "BOTTOMUIParentBOTTOM0170"
-			E.db.movers.ElvUF_Raid25Mover = "BOTTOMUIParentBOTTOM0170"
-			E.db.movers.ElvUF_Raid10Mover = "BOTTOMUIParentBOTTOM0170"
+			E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464230"
+			E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTElvUIParentBOTTOMRIGHT-464230"
+			E.db.movers.ElvUF_Raid40Mover = "BOTTOMElvUIParentBOTTOM0170"
+			E.db.movers.ElvUF_Raid25Mover = "BOTTOMElvUIParentBOTTOM0170"
+			E.db.movers.ElvUF_Raid10Mover = "BOTTOMElvUIParentBOTTOM0170"
 			E.db.movers.ElvUF_TargetTargetMover = "BOTTOMRIGHTElvUF_TargetBOTTOMRIGHT0150"
-			E.db.movers.ElvUF_PartyMover = "BOTTOMUIParentBOTTOM0170"
-			E.db.movers.ElvUF_PetMover = "BOTTOMLEFTUIParentBOTTOMLEFT464151"
+			E.db.movers.ElvUF_PartyMover = "BOTTOMElvUIParentBOTTOM0170"
+			E.db.movers.ElvUF_PetMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464151"
 			E.db.movers.ElvUF_FocusMover = "BOTTOMLEFTElvUF_PlayerBOTTOMLEFT0150"
 			E.db.movers.ElvUF_FocusTargetMover = "BOTTOMLEFTElvUF_FocusBOTTOMLEFT0150"
-			E.db.movers.ElvUF_TankMover = "LEFTUIParentLEFT30350"
-			E.db.movers.ElvUF_AssistMover = "LEFTUIParentLEFT30250"
+			E.db.movers.ElvUF_TankMover = "LEFTElvUIParentLEFT30350"
+			E.db.movers.ElvUF_AssistMover = "LEFTElvUIParentLEFT30250"
 			if BossHeaderMover then
 				BossHeaderMover:ClearAllPoints()
-				BossHeaderMover:SetPoint("BOTTOMLEFT",UIParent,"BOTTOMLEFT",30,250)
+				BossHeaderMover:SetPoint("BOTTOMLEFT",E.UIParent,"BOTTOMLEFT",30,250)
 				E:SaveMoverPosition("BossHeaderMover")
-			end		
-=======
-			E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-305242"
-			E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM305242"
-			E.db.movers.ElvUF_Raid40Mover = "BOTTOMElvUIParentBOTTOM080"
-			E.db.movers.ElvUF_Raid25Mover = "BOTTOMElvUIParentBOTTOM080"
-			E.db.movers.ElvUF_Raid10Mover = "BOTTOMElvUIParentBOTTOM080"
-			E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM305187"
-			E.db.movers.ElvUF_PartyMover = "BOTTOMElvUIParentBOTTOM0104"
-			E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM-305187"
-			E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310432"
-			
-		else
-			E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464242"
-			E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTElvUIParentBOTTOMRIGHT-464242"
-			E.db.movers.ElvUF_Raid40Mover = "BOTTOMElvUIParentBOTTOM050"
-			E.db.movers.ElvUF_Raid25Mover = "BOTTOMElvUIParentBOTTOM050"
-			E.db.movers.ElvUF_Raid10Mover = "BOTTOMElvUIParentBOTTOM050"
-			E.db.movers.ElvUF_TargetTargetMover = "BOTTOMRIGHTElvUIParentBOTTOMRIGHT-464151"
-			E.db.movers.ElvUF_PartyMover = "BOTTOMElvUIParentBOTTOM074"
-			E.db.movers.ElvUF_PetMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464151"
-			E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM280332"			
->>>>>>> b3ed9ae1b079063730fe73c5e134737fa63ad7e0
+			end
 		end
 	elseif E.db.lowresolutionset then
 		if not E.db.movers then E.db.movers = {}; end
