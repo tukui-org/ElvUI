@@ -412,7 +412,7 @@ G.unitframe.ChannelTicks = {
 	[SpellName(108371)] = 6, -- "Harvest Life"
 	[SpellName(5740)] = 4, -- "Rain of Fire"
 	[SpellName(755)] = 6, -- Health Funnel
-	[SpellName(103103)] = 3, --Malefic Grasp
+	[SpellName(103103)] = 4, --Malefic Grasp
 	--Druid
 	[SpellName(44203)] = 4, -- "Tranquility"
 	[SpellName(16914)] = 10, -- "Hurricane"
@@ -428,11 +428,18 @@ G.unitframe.ChannelTicks = {
 	[SpellName(12051)] = 4, -- "Evocation"
 }
 
+G.unitframe.ChannelTicksSize = {
+    --Warlock
+    [SpellName(1120)] = 2, --"Drain Soul"
+    [SpellName(689)] = 1, -- "Drain Life"
+	[SpellName(108371)] = 1, -- "Harvest Life"
+	[SpellName(103103)] = 1, -- "Malefic Grasp"
+}
+
 --Spells Effected By Haste
 G.unitframe.HastedChannelTicks = {
 	[SpellName(64901)] = true, -- Hymn of Hope
 	[SpellName(64843)] = true, -- Divine Hymn
-	[SpellName(1120)] = true, -- Drain Soul
 }
 
 --This should probably be the same as the whitelist filter + any personal class ones that may be important to watch

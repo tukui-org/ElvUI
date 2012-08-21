@@ -208,7 +208,10 @@ function UF:Construct_Castbar(self, direction, moverName)
 	castbar.CustomDelayText = UF.CustomCastDelayText
 	castbar.CustomTimeText = UF.CustomTimeText
 	castbar.PostCastStart = UF.PostCastStart
-	castbar.PostChannelStart = UF.PostCastStart		
+	castbar.PostChannelStart = UF.PostCastStart
+	castbar.PostCastStop = UF.PostCastStop
+	castbar.PostChannelStop = UF.PostCastStop
+	castbar.PostChannelUpdate = UF.PostChannelUpdate
 	castbar.PostCastInterruptible = UF.PostCastInterruptible
 	castbar.PostCastNotInterruptible = UF.PostCastNotInterruptible
 	castbar:SetClampedToScreen(true)
