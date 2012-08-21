@@ -268,7 +268,6 @@ local function LoadSkin()
 	WatchFrameCollapseExpandButton:StripTextures()
 	S:HandleCloseButton(WatchFrameCollapseExpandButton)
 	WatchFrameCollapseExpandButton:Size(30)
-	WatchFrameCollapseExpandButton.text:SetText('-')
 	WatchFrameCollapseExpandButton:SetFrameStrata('MEDIUM')
 	
 	hooksecurefunc('WatchFrame_Expand', function()
