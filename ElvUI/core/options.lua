@@ -303,8 +303,8 @@ E.Options.args.general = {
 					name = L['Position'],
 					desc = L['Adjust the position of the threat bar to either the left or right datatext panels.'],
 					values = {
-						['LEFTCHAT'] = L['Left']..' '..L['Chat'],
-						['RIGHTCHAT'] = L['Right']..' '..L['Chat'],
+						['LEFTCHAT'] = L['Left Chat'],
+						['RIGHTCHAT'] = L['Right Chat'],
 					},
 					set = function(info, value) E.db.general.threat[ info[#info] ] = value; E:GetModule('Threat'):UpdatePosition() end,	
 				},
