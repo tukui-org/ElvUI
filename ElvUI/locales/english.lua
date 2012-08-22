@@ -373,11 +373,13 @@ L['Adjust the position of the threat bar to either the left or right datatext pa
 L['Adjust the size of the minimap.'] = true;
 L["Announce Interrupts"] = true;
 L["Announce when you interrupt a spell to the specified chat channel."] = true;
+L['Auto Greed/DE'] = true;
 L["Auto Repair"] = true;
 L["Auto Scale"] = true;
 L["Automatically accept invites from guild/friends."] = true;
 L["Automatically repair using the following method when visiting a merchant."] = true;
 L["Automatically scale the User Interface based on your screen resolution"] = true;
+L['Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level.'] = true;
 L["Automatically vendor gray items when visiting a vendor."] = true;
 L["Chat Bubbles"] = true;
 L["Controls what the transparency of the worldmap will be set to when you are moving."] = true;

@@ -11,6 +11,7 @@ P['general'] = {
 	['loginmessage'] = true,
 	["interruptAnnounce"] = "NONE",
 	["autoRepair"] = "NONE",
+	['autoRoll'] = false,
 	['vendorGrays'] = false,
 	['autoAcceptInvite'] = false,
 
