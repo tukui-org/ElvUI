@@ -108,7 +108,8 @@ E.Options.args.general = {
 					order = 8,
 					name = L['Auto Greed/DE'],
 					desc = L['Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level.'],
-					type = 'toggle',					
+					type = 'toggle',		
+					disabled = function() return not E.private.general.lootRoll end
 				},
 				loot = {
 					order = 9,
