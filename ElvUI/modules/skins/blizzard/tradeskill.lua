@@ -12,7 +12,7 @@ local function LoadSkin()
 	
 	TradeSkillFrame:SetTemplate("Transparent")
 	TradeSkillFrame:CreateShadow("Default")
-	TradeSkillFrame:Height(TradeSkillFrame:GetHeight() + 12)
+	--TradeSkillFrame:Height(TradeSkillFrame:GetHeight() + 12)
 	TradeSkillRankFrame:StripTextures()
 	TradeSkillRankFrame:CreateBackdrop("Default")
 	TradeSkillRankFrame:SetStatusBarTexture(E["media"].normTex)
