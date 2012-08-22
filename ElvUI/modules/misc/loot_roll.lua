@@ -217,7 +217,7 @@ function M:START_LOOT_ROLL(event, rollID, time)
 	AlertFrame_FixAnchors()
 	
 	if E.db.general.autoRoll and UnitLevel('player') == MAX_PLAYER_LEVEL and quality == 2 and not bop then
-		if RollOnLoot(rollID, 3) then
+		if canDisenchant then
 			RollOnLoot(rollID, 3)
 		else
 			RollOnLoot(rollID, 2)
