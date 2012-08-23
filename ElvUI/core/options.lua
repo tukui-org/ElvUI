@@ -103,9 +103,16 @@ E.Options.args.general = {
 					name = L['Vendor Grays'],
 					desc = L['Automatically vendor gray items when visiting a vendor.'],
 					type = 'toggle',				
-				},				
+				},			
+				autoRoll = {
+					order = 8,
+					name = L['Auto Greed/DE'],
+					desc = L['Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level.'],
+					type = 'toggle',		
+					disabled = function() return not E.private.general.lootRoll end
+				},
 				loot = {
-					order = 7,
+					order = 9,
 					type = "toggle",
 					name = L['Loot'],
 					desc = L['Enable/Disable the loot frame.'],
@@ -113,7 +120,7 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.loot = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				lootRoll = {
-					order = 8,
+					order = 10,
 					type = "toggle",
 					name = L['Loot Roll'],
 					desc = L['Enable/Disable the loot roll frame.'],
@@ -121,7 +128,7 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.lootRoll = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				autoscale = {
-					order = 9,
+					order = 11,
 					name = L["Auto Scale"],
 					desc = L["Automatically scale the User Interface based on your screen resolution"],
 					type = "toggle",	
@@ -129,7 +136,7 @@ E.Options.args.general = {
 				},	
 
 				bubbles = {
-					order = 10,
+					order = 12,
 					type = "toggle",
 					name = L['Chat Bubbles'],
 					desc = L['Skin the blizzard chat bubbles.'],
@@ -137,13 +144,13 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.bubbles = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},	
 				taintLog = {
-					order = 11,
+					order = 13,
 					type = "toggle",
 					name = L["Log Taints"],
 					desc = L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."],
 				},
 				tinyWorldMap = {
-					order = 12,
+					order = 14,
 					type = "toggle",
 					name = L["Tiny Map"],
 					desc = L["Don't scale the large world map to block out sides of the screen."],

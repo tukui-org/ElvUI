@@ -215,6 +215,14 @@ function M:START_LOOT_ROLL(event, rollID, time)
 	f:SetPoint("CENTER", WorldFrame, "CENTER")
 	f:Show()
 	AlertFrame_FixAnchors()
+	
+	if E.db.general.autoRoll and UnitLevel('player') == MAX_PLAYER_LEVEL and quality == 2 and not bop then
+		if canDisenchant then
+			RollOnLoot(rollID, 3)
+		else
+			RollOnLoot(rollID, 2)
+		end		
+	end	
 end
 
 function M:LOOT_HISTORY_ROLL_CHANGED(event, itemIdx, playerIdx)

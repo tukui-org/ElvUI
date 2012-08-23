@@ -13,6 +13,7 @@ P['general'] = {
 	['loginmessage'] = false,
 	["interruptAnnounce"] = "RAID",
 	["autoRepair"] = "GUILD",
+	['autoRoll'] = false,
 	['vendorGrays'] = true,
 	['autoAcceptInvite'] = false,
 

@@ -180,6 +180,7 @@ local function SetupCVars()
 	SetCVar("UnitNameGuildTitle", 0)
 	SetCVar("ActionButtonUseKeyDown", 0)
 	SetCVar("interactOnLeftClick", 0)
+	SetCVar('SpamFilter', 0) --Blocks mmo-champion.com, dumb... ElvUI one is more effeciant anyways.
 
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
