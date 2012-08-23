@@ -340,6 +340,9 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 			[SpellName(119985)] = Defaults(), -- Dread Spray
 			[SpellName(119086)] = Defaults(), -- Penetrating Bolt
 			[SpellName(119775)] = Defaults(), -- Reaching Attack	
+			
+			
+			[SpellName(122151)] = Defaults(), -- Voodoo Doll
 	},
 }
 
