@@ -45,7 +45,10 @@ local function LoadSkin()
 			local icon = _G["SpellButton"..i.."IconTexture"]
 			
 			if not InCombatLockdown() then
-				button:SetFrameLevel(button:GetFrameLevel() + 1)
+				if not button.properFrameLevel then
+					button.properFrameLevel = button:GetFrameLevel() + 1
+				end
+				button:SetFrameLevel(button.properFrameLevel)
 			end
 			
 			if first then
@@ -92,7 +95,12 @@ local function LoadSkin()
 		
 		local icon = button.iconTexture
 		
-		button:SetFrameLevel(button:GetFrameLevel() + 1)
+		if not InCombatLockdown() then
+			if not button.properFrameLevel then
+				button.properFrameLevel = button:GetFrameLevel() + 1
+			end
+			button:SetFrameLevel(button.properFrameLevel)
+		end
 		
 		if not button.skinned then
 			for i=1, button:GetNumRegions() do
@@ -103,16 +111,16 @@ local function LoadSkin()
 					end
 				end
 			end
+			if button.highlightTexture then
+				hooksecurefunc(button.highlightTexture,"SetTexture",function(self, texOrR, G, B)
+					if texOrR == [[Interface\Buttons\ButtonHilight-Square]] then
+						button.highlightTexture:SetTexture(1, 1, 1, 0.3)
+					end
+				end)		
+			end
 			button.skinned = true
 		end
 		
-		if button.highlightTexture then
-			button.highlightTexture:SetTexture(1, 1, 1, 0.3)
-			button.highlightTexture:ClearAllPoints()
-			button.highlightTexture:SetAllPoints(icon)
-			button.highlightTexture.SetTexture = E.noop
-		end
-
 		if icon then
 			icon:SetTexCoord(unpack(E.TexCoords))
 			icon:ClearAllPoints()
