@@ -549,7 +549,11 @@ local TESTERS = {
 	"Veiled",
 	"Blazeflack",
 	"Repooc",
-	"Darth Predator"
+	"Darth Predator",
+	'Alex',
+	'Nidra',
+	'Kurhyus',
+	'BuG'
 }
 
 table.sort(DONATORS, function(a,b) return a < b end) --Alphabetize
