@@ -27,6 +27,8 @@ local noteString = join("", "|cff999999   ", LABEL_NOTE, ":|r %s")
 local officerNoteString = join("", "|cff999999   ", GUILD_RANK1_DESC, ":|r %s")
 local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
 local guildTable, guildXP, guildMotD = {}, {}, ""
+local MOBILE_BUSY_ICON = "|TInterface\\ChatFrame\\UI-ChatIcon-ArmoryChat-BusyMobile:14:14:0:0:16:16:0:16:0:16|t";
+local MOBILE_AWAY_ICON = "|TInterface\\ChatFrame\\UI-ChatIcon-ArmoryChat-AwayMobile:14:14:0:0:16:16:0:16:0:16|t";
 local lastPanel
 
 local function SortGuildTable(shift)
@@ -43,18 +45,29 @@ end
 
 local function BuildGuildTable()
 	wipe(guildTable)
-	local name, rank, level, zone, note, officernote, connected, status, class
+	local name, rank, level, zone, note, officernote, connected, status, class, isMobile
 	local count = 0
 	for i = 1, GetNumGuildMembers() do
-		name, rank, rankIndex, level, _, zone, note, officernote, connected, status, class = GetGuildRosterInfo(i)
-		-- we are only interested in online members
-		
-		if status == 1 then
-			status = "|cffFFFFFF[|r|cffFF0000"..L['AFK'].."|r|cffFFFFFF]|r"
-		elseif status == 2 then
-			status = "|cffFFFFFF[|r|cffFF0000"..L['DND'].."|r|cffFFFFFF]|r"
-		else 
+		name, rank, rankIndex, level, _, zone, note, officernote, connected, status, class, _, _, isMobile = GetGuildRosterInfo(i)
+
+		if ( isMobile ) then
+			if status == 1 then
+				name = name..' '..MOBILE_AWAY_ICON
+			elseif status == 2 then
+				name = name..' '..MOBILE_BUSY_ICON
+			else
+				name = name..' '..ChatFrame_GetMobileEmbeddedTexture(73/255, 177/255, 73/255)
+			end
+			
 			status = '';
+		else
+			if status == 1 then
+				status = "|cffFFFFFF[|r|cffFF0000"..L['AFK'].."|r|cffFFFFFF]|r"
+			elseif status == 2 then
+				status = "|cffFFFFFF[|r|cffFF0000"..L['DND'].."|r|cffFFFFFF]|r"
+			else 
+				status = '';
+			end		
 		end
 		
 		if connected then 
