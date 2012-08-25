@@ -553,7 +553,8 @@ local TESTERS = {
 	'Alex',
 	'Nidra',
 	'Kurhyus',
-	'BuG'
+	'BuG',
+	'Yachanay'
 }
 
 table.sort(DONATORS, function(a,b) return a < b end) --Alphabetize
