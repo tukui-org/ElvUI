@@ -15,7 +15,7 @@ AB["barDefaults"] = {
 	["bar1"] = {
 		['page'] = 1,
 		['bindButtons'] = "ACTIONBUTTON",
-		['conditions'] = string.format("[vehicleui] %d; [possessbar] %d; [overridebar] %d; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetVehicleBarIndex(), GetOverrideBarIndex()),
+		['conditions'] = string.format("[vehicleui] %d; [possessbar] %d; [overridebar] %d; [bar:2] 2; [bar:3] 1; [bar:4] 2; [bar:5] 1; [bar:6] 2;", GetVehicleBarIndex(), GetVehicleBarIndex(), GetOverrideBarIndex()),
 		['position'] = "BOTTOM,ElvUIParent,BOTTOM,0,4",
 	},
 	["bar2"] = {
@@ -679,31 +679,6 @@ function AB:StyleFlyout(button)
 	end
 end
 
---BugFix: Prevent the main actionbar from displaying other actionbar pages..
-function AB:MultiActionBar_Update(event)
-	if InCombatLockdown() then
-		self:RegisterEvent('PLAYER_REGEN_ENABLED', 'MultiActionBar_Update');
-		return;
-	end
-
-	if self.db.useMaxPaging then		
-		local SHOW_MULTI_ACTIONBAR_2 = self.db['bar2'].enabled ~= true and " [bar:5] 5;" or ''
-		local SHOW_MULTI_ACTIONBAR_3 = self.db['bar3'].enabled ~= true and " [bar:6] 6;" or ''
-		local SHOW_MULTI_ACTIONBAR_4 = self.db['bar4'].enabled ~= true and " [bar:4] 4;" or ''
-		local SHOW_MULTI_ACTIONBAR_5 = self.db['bar5'].enabled ~= true and " [bar:3] 3;" or ''
-		
-		self.barDefaults.bar1.conditions = string.format("[vehicleui] %d; [possessbar] %d; [overridebar] %d; [bar:2] 2; %s %s %s", GetVehicleBarIndex(), GetVehicleBarIndex(), GetOverrideBarIndex(), SHOW_MULTI_ACTIONBAR_2, SHOW_MULTI_ACTIONBAR_3, SHOW_MULTI_ACTIONBAR_4, SHOW_MULTI_ACTIONBAR_5)
-	else
-		self.barDefaults.bar1.conditions = string.format("[vehicleui] %d; [possessbar] %d; [overridebar] %d; [bar:2] 2;", GetVehicleBarIndex(), GetVehicleBarIndex(), GetOverrideBarIndex())
-	end
-	
-	self:PositionAndSizeBar('bar1')
-	
-	if event == 'PLAYER_REGEN_ENABLED' then
-		self:UnregisterEvent('PLAYER_REGEN_ENABLED')
-	end
-end
-
 function AB:VehicleFix()
 	local barName = 'bar1'
 	local bar = self["handledBars"][barName]
@@ -758,7 +733,6 @@ function AB:Initialize()
 	self:RegisterEvent("UPDATE_BINDINGS", "ReassignBindings")
 	self:RegisterEvent("PET_BATTLE_CLOSE", "ReassignBindings")
 	self:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
-	self:RegisterEvent("PLAYER_ENTERING_WORLD", "MultiActionBar_Update")
 	self:RegisterEvent('UPDATE_VEHICLE_ACTIONBAR', 'VehicleFix')
 	self:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR', 'VehicleFix')
 	self:RegisterEvent('CVAR_UPDATE')
