@@ -72,7 +72,7 @@ local function BuildGuildTable()
 		
 		if connected then 
 			count = count + 1
-			guildTable[count] = { name, rank, level, zone, note, officernote, connected, status, class, rankIndex }
+			guildTable[count] = { name, rank, level, zone, note, officernote, connected, status, class, rankIndex, isMobile }
 		end
 	end
 	SortGuildTable(IsShiftKeyDown())
@@ -169,11 +169,10 @@ local function Click(self, btn)
 			info = guildTable[i]
 			if info[7] and info[1] ~= E.myname then
 				local classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
-
 				if UnitInParty(info[1]) or UnitInRaid(info[1]) then
 					grouped = "|cffaaaaaa*|r"
-				else
-					menuCountInvites = menuCountInvites +1
+				elseif not info[11] then
+					menuCountInvites = menuCountInvites + 1
 					grouped = ""
 					menuList[2].menuList[menuCountInvites] = {text = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info[3], classc.r*255,classc.g*255,classc.b*255, info[1], ""), arg1 = info[1],notCheckable=true, func = inviteClick}
 				end
