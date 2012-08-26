@@ -58,7 +58,7 @@ local function BuildGuildTable()
 			else
 				name = name..' '..ChatFrame_GetMobileEmbeddedTexture(73/255, 177/255, 73/255)
 			end
-			
+			zone = '';
 			status = '';
 		else
 			if status == 1 then
