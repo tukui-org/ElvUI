@@ -22,56 +22,119 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 		-- Death Knight
-			[SpellName(47476)] = Defaults(), --strangulate
-			[SpellName(79092)] = Defaults(), --hungering cold
+			[SpellName(47476)] = Defaults(), --Strangulate
+			[SpellName(91800)] = Defaults(), --Gnaw (Pet)
+			[SpellName(91807)] = Defaults(), --Shambling Rush (Pet)
+			[SpellName(91797)] = Defaults(), --Monstrous Blow (Pet)
+			[SpellName(108194)] = Defaults(), --Asphyxiate
 		-- Druid
 			[SpellName(33786)] = Defaults(), --Cyclone
 			[SpellName(2637)] = Defaults(), --Hibernate
 			[SpellName(339)] = Defaults(), --Entangling Roots
-			[SpellName(80964)] = Defaults(), --Skull Bash
 			[SpellName(78675)] = Defaults(), --Solar Beam
+			[SpellName(22570)] = Defaults(), --Maim
+			[SpellName(5211)] = Defaults(), --Mighty Bash
+			[SpellName(9005)] = Defaults(), --Pounce
+			[SpellName(102359)] = Defaults(), --Mass Entanglement
+			[SpellName(99)] = Defaults(), --Disorienting Roar
+			[SpellName(127797)] = Defaults(), --Ursol's Vortex
 		-- Hunter
-			[SpellName(3355)] = Defaults(), --Freezing Trap Effect
-			[SpellName(1513)] = Defaults(), --scare beast
-			[SpellName(19503)] = Defaults(), --scatter shot
-			[SpellName(34490)] = Defaults(), --silence shot
+			[SpellName(3355)] = Defaults(), --Freezing Trap
+			[SpellName(1513)] = Defaults(), --Scare Beast
+			[SpellName(19503)] = Defaults(), --Scatter Shot
+			[SpellName(34490)] = Defaults(), --Silencing Shot
+			[SpellName(24394)] = Defaults(), --Intimidation
+			[SpellName(64803)] = Defaults(), --Entrapment
+			[SpellName(19386)] = Defaults(), --Wyvern Sting
+			[SpellName(117405)] = Defaults(), --Binding Shot
+			[SpellName(50519)] = Defaults(), --Sonic Blast (Bat)
+			[SpellName(91644)] = Defaults(), --Snatch (Bird of Prey)
+			[SpellName(90337)] = Defaults(), --Bad Manner (Monkey)
+			[SpellName(54706)] = Defaults(), --Venom Web Spray (Silithid)
+			[SpellName(4167)] = Defaults(), --Web (Spider)
+			[SpellName(90327)] = Defaults(), --Lock Jaw (Dog)
+			[SpellName(56626)] = Defaults(), --Sting (Wasp)
+			[SpellName(50245)] = Defaults(), --Pin (Crab)
+			[SpellName(50541)] = Defaults(), --Clench (Scorpid)
+			[SpellName(96201)] = Defaults(), --Web Wrap (Shale Spider)
 		-- Mage
 			[SpellName(31661)] = Defaults(), --Dragon's Breath
-			[SpellName(61305)] = Defaults(), --Polymorph
+			[SpellName(118)] = Defaults(), --Polymorph
 			[SpellName(55021)] = Defaults(), --Silenced - Improved Counterspell
 			[SpellName(122)] = Defaults(), --Frost Nova
 			[SpellName(82691)] = Defaults(), --Ring of Frost
+			[SpellName(118271)] = Defaults(), --Combustion Impact
+			[SpellName(44572)] = Defaults(), --Deep Freeze
+			[SpellName(33395)] = Defaults(), --Freeze (Water Ele)
+			[SpellName(102051)] = Defaults(), --Frostjaw
 		-- Paladin
 			[SpellName(20066)] = Defaults(), --Repentance
 			[SpellName(10326)] = Defaults(), --Turn Evil
 			[SpellName(853)] = Defaults(), --Hammer of Justice
+			[SpellName(105593)] = Defaults(), --Fist of Justice
+			[SpellName(31935)] = Defaults(), --Avenger's Shield
 		-- Priest
-			[SpellName(605)] = Defaults(), --Mind Control
+			[SpellName(605)] = Defaults(), --Dominate Mind
 			[SpellName(64044)] = Defaults(), --Psychic Horror
+			--[SpellName(64058)] = Defaults(), --Psychic Horror (Disarm)
 			[SpellName(8122)] = Defaults(), --Psychic Scream
 			[SpellName(9484)] = Defaults(), --Shackle Undead
 			[SpellName(15487)] = Defaults(), --Silence
+			[SpellName(114404)] = Defaults(), --Void Tendrils
+			[SpellName(88625)] = Defaults(), --Holy Word: Chastise
+			[SpellName(113792)] = Defaults(), --Psychic Terror (Psyfiend)
 		-- Rogue
 			[SpellName(2094)] = Defaults(), --Blind
 			[SpellName(1776)] = Defaults(), --Gouge
 			[SpellName(6770)] = Defaults(), --Sap
+			[SpellName(1833)] = Defaults(), --Cheap Shot
+			[SpellName(51722)] = Defaults(), --Dismantle
+			[SpellName(1330)] = Defaults(), --Garrote - Silence
+			[SpellName(408)] = Defaults(), --Kidney Shot
+			[SpellName(88611)] = Defaults(), --Smoke Bomb
+			[SpellName(115197)] = Defaults(), --Partial Paralytic
+			[SpellName(113953)] = Defaults(), --Paralysis
 		-- Shaman
 			[SpellName(51514)] = Defaults(), --Hex
-			[SpellName(3600)] = Defaults(), --Earthbind
-			[SpellName(8056)] = Defaults(), --Frost Shock
-			[SpellName(63685)] = Defaults(), --Freeze
+			[SpellName(64695)] = Defaults(), --Earthgrab
+			[SpellName(63685)] = Defaults(), --Freeze (Frozen Power)
+			[SpellName(76780)] = Defaults(), --Bind Elemental
+			[SpellName(118905)] = Defaults(), --Static Charge
 		-- Warlock
 			[SpellName(710)] = Defaults(), --Banish
-			[SpellName(6789)] = Defaults(), --Death Coil
-			[SpellName(5782)] = Defaults(), --Fear
+			[SpellName(6789)] = Defaults(), --Mortal Coil
+			[SpellName(118699)] = Defaults(), --Fear
 			[SpellName(5484)] = Defaults(), --Howl of Terror
 			[SpellName(6358)] = Defaults(), --Seduction
 			[SpellName(30283)] = Defaults(), --Shadowfury
+			[SpellName(24259)] = Defaults(), --Spell Lock (Felhunter)
+			[SpellName(115782)] = Defaults(), --Optical Blast (Observer)
+			[SpellName(115268)] = Defaults(), --Mesmerize (Shivarra)
+			[SpellName(118093)] = Defaults(), --Disarm (Voidwalker)
+			[SpellName(89766)] = Defaults(), --Axe Toss (Felguard)
 		-- Warrior
 			[SpellName(20511)] = Defaults(), --Intimidating Shout
+			[SpellName(7922)] = Defaults(), --Charge Stun
+			[SpellName(676)] = Defaults(), --Disarm
+			[SpellName(105771)] = Defaults(), --Warbringer
+			[SpellName(107566)] = Defaults(), --Staggering Shout
+			[SpellName(132168)] = Defaults(), --Shockwave
+			[SpellName(107570)] = Defaults(), --Storm Bolt
+			[SpellName(118895)] = Defaults(), --Dragon Roar
+		-- Monk
+			[SpellName(116706)] = Defaults(), --Disable
+			[SpellName(117368)] = Defaults(), --Grapple Weapon
+			[SpellName(115078)] = Defaults(), --Paralysis
+			[SpellName(122242)] = Defaults(), --Clash
+			[SpellName(119392)] = Defaults(), --Charging Ox Wave
+			[SpellName(119381)] = Defaults(), --Leg Sweep
+			[SpellName(120086)] = Defaults(), --Fists of Fury
+			[SpellName(116709)] = Defaults(), --Spear Hand Strike
+			[SpellName(123407)] = Defaults(), --Spinning Fire Blossom
 		-- Racial
 			[SpellName(25046)] = Defaults(), --Arcane Torrent
-			[SpellName(20549)] = Defaults(), --War Stomp		
+			[SpellName(20549)] = Defaults(), --War Stomp
+			[SpellName(107079)] = Defaults(), --Quaking Palm
 	},
 }
 
