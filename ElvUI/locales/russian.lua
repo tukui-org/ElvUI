@@ -75,10 +75,10 @@ L['Trigger'] = "Триггер"
 L["Visibility State"] = "Статус отображения"
 L["Width Multiplier"] = "Множитель ширины"
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
- Example: '[combat] 2;']=] ] = [=[Работает как макрос. Вы можете установить различные условия для отображения разных панелей.
+ Example: '[combat] 2;']=] ] = [=[Работает как макрос. Вы можете задать различные условия для отображения разных панелей.
  Пример: '[combat] 2;']=]
 L[ [=[This works like a macro, you can run different situations to get the actionbar to show/hide differently.
- Example: '[combat] show;hide']=] ] = [=[Работает как макрос. Вы можете установить различные условия для показа/скрытия панели.
+ Example: '[combat] show;hide']=] ] = [=[Работает как макрос. Вы можете задать различные условия для показа/скрытия панели.
  Пример: '[combat] show;hide']=]
 
 --Bags
@@ -142,7 +142,7 @@ L["Other's First"] = "Сначала чужие"
 L['Seperate'] = "Разделение"
 L['Set the size of the individual auras.'] = "Устанавливает размер аур"
 L['Sort Method'] = "Метод сортировки"
-L['Threshold before text changes red, goes into decimal form, and the icon will fade. Set to -1 to disable.'] = "Пороговео значение, после которого цвет текста изменится на красный и начнет показывать десятые доли секунд, а иконка начнет мигать. Установите на -1 для отключения"
+L['Threshold before text changes red, goes into decimal form, and the icon will fade. Set to -1 to disable.'] = "Пороговое значение, после которого цвет текста изменится на красный и начнет показывать десятые доли секунд, а иконка начнет мигать. Установите на -1 для отключения"
 L['Time'] = "Время"
 L['Wrap After'] = "Размер ряда"
 L['Your Auras First'] = "Сначала свои"
@@ -274,7 +274,7 @@ L["This will change the layout of your unitframes, raidframes, and datatexts."] 
 L["Toggle Anchors"] = "Показать фиксаторы"
 L['Toggle Configuration'] = "Конфигурация"
 L["Unlock various elements of the UI to be repositioned."] = "Разблокировать элементы интерфейса для их перемещения."
-L["Using the healer layout it is highly recommended you download the addon Clique to work side by side with ElvUI."] = "Для использования настроек лекаря крайне рекомендуется установка аддона Clique который всесторонне поддерживается ElvUI."
+L["Using the healer layout it is highly recommended you download the addon Clique to work side by side with ElvUI."] = "Для использования настроек лекаря крайне рекомендуется установка аддона Clique, который всесторонне поддерживается ElvUI."
 L["Version"] = "Версия"
 L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."] = "Вы завершили процесс установки. Если Вам требуется техническая поддержка, посетите сайт http://www.tukui.org."
 L['You can always change fonts and colors of any element of elvui from the in-game configuration.'] = "Вы всегда можете изменить шрифты и цвета любого элемента ElvUI из меню конфигурации. Классическая и пиксельная темы не отличаются для русского клиента."
@@ -302,7 +302,7 @@ L['Bases Defended'] = "Оборона баз"
 L['Battleground datatexts temporarily hidden, to show type /bgstats or right click the "C" icon near the minimap.'] = 'Информация поля боя временно скрыта. Для отображения введите /bgstat или ПКМ на иконке "С" у миникарты.'
 L['Battleground datatexts will now show again if you are inside a battleground.'] = "Информация поля боя снова будет отображаться, если Вы находитесь на них."
 L['Battleground Texts'] = "Текст ПБ"
-L['Carts Controlled'] = true;
+L['Carts Controlled'] = "Захваты вагонеток"
 L['Change settings for the display of the location text that is on the minimap.'] = "Изменяет опции отображения названия локации на миникарте"
 L['Character:'] = "Персонаж: "
 L["Chest"] = "Грудь"
@@ -342,7 +342,7 @@ L['Minimap Panels'] = "Информация у миникарты"
 L['Mitigation By Level: '] = "Снижение на уровне: "
 L['No Guild'] = "Нет гильдии";
 L["Offhand"] = "Левая рука"
-L['Orb Possessions'] = true;
+L['Orb Possessions'] = "Захваты сферы"
 L["Panels"] = "Панели"
 L["Profit:"] = "Прибыль:"
 L["right"] = "Справа"
@@ -363,7 +363,7 @@ L["Total: "] = "Всего:"
 L['Towers Assaulted'] = "Штурмы башен"
 L['Towers Defended'] = "Оборона башен"
 L["Unhittable:"] = "Полная защита от ударов"
-L['Victory Points'] = true;
+L['Victory Points'] = "Очки победы"
 L["Waist"] = "Пояс"
 L['When inside a battleground display personal scoreboard information on the main datatext bars.'] = "На полях боя отображать личную информацию на основных полосах инфо-текстов";
 L["Wrist"] = "Запястья"
@@ -386,7 +386,7 @@ L["Auto Scale"] = "Автоматический масштаб"
 L["Automatically accept invites from guild/friends."] = "Автоматически принимать приглашения в группу от друзей и гильдии."
 L["Automatically repair using the following method when visiting a merchant."] = "Автоматически чинить экипировку за счет выбранного источника при посещении торговца."
 L["Automatically scale the User Interface based on your screen resolution"] = "Автоматически масштабировать UI в зависимости от вашего разрешения"
-L['Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level.'] = "Автоматически выбирать \"не откажусь\" или \"распылить\" (когда доступно) при розыгрыше предметов зеленого качества. Эта опция работает только если вы максимального уровня."
+L['Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level.'] = "Автоматически выбирать \"не откажусь\" или \"распылить\" (когда доступно) при розыгрыше предметов зеленого качества. Эта опция работает, только если вы максимального уровня."
 L["Automatically vendor gray items when visiting a vendor."] = "Автоматически продавать предметы серого качества при посещении торговца."
 L["Chat Bubbles"] = "Облачка сообщений"
 L["Controls what the transparency of the worldmap will be set to when you are moving."] = "Устанавливает прозрачность карты мира при движении персонажа."
@@ -834,7 +834,7 @@ L["What each frame should attach itself to, example setting it to TOP every unit
 L["What point to anchor to the frame you set to attach to."] = "К какой точке выбранного фиксатора прикрепить ауры."
 L["What to attach the buff anchor frame to."] = "К чему прикреплять баффы."
 L["What to attach the debuff anchor frame to."] = "К чему прикреплять дебаффы."
-L['When set the Buffs and Debuffs will toggle being displayed depending on if the unit is friendly or an enemy. This will not effect the aurabars module.'] = "При включении, баффы и дебаффы будут отображаться в зависимости от того, является ли цель другом или врагом. Это не затрагивает модуль полос аур."
+L['When set the Buffs and Debuffs will toggle being displayed depending on if the unit is friendly or an enemy. This will not effect the aurabars module.'] = "При включении баффы и дебаффы будут отображаться в зависимости от того, является ли цель другом или врагом. Это не затрагивает модуль полос аур."
 L["When true, the group header is shown when the player is in a party."] = "Включить отображение этой категории рамок, когда игрок находится в группе."
 L["When true, the group header is shown when the player is in a raid."] = "Включить отображение этой категории рамок, когда игрок находится в рейде."
 L["When true, the header includes the player when not in a raid."] = "Отображать игрока в группе."
