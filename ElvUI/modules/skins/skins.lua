@@ -151,7 +151,7 @@ end
 
 function S:HandleNextPrevButton(btn, horizonal)
 	local norm, pushed, disabled
-	local isPrevButton = btn:GetName() and (string.find(btn:GetName(), 'Left') or string.find(btn:GetName(), 'Prev'))
+	local isPrevButton = btn:GetName() and (string.find(btn:GetName(), 'Left') or string.find(btn:GetName(), 'Prev') or string.find(btn:GetName(), 'Decrement'))
 	
 	if btn:GetNormalTexture() then
 		norm = btn:GetNormalTexture():GetTexture()
