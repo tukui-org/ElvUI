@@ -78,6 +78,7 @@ function AB:PositionAndSizeBarPet()
 	local buttonsPerRow = self.db['barPet'].buttonsPerRow;
 	local numButtons = self.db['barPet'].buttons;
 	local size = E:Scale(self.db['barPet'].buttonsize);
+	local autoCastSize = (size / 2) - (size / 7.5)
 	local point = self.db['barPet'].point;
 	local numColumns = ceil(numButtons / buttonsPerRow);
 	local widthMult = self.db['barPet'].widthMult;
@@ -122,15 +123,18 @@ function AB:PositionAndSizeBarPet()
 		horizontalGrowth = "LEFT";
 	end
 	
-	local button, lastButton, lastColumnButton; 
+	local button, lastButton, lastColumnButton, autoCast; 
 	local possibleButtons = {};
 	for i=1, NUM_PET_ACTION_SLOTS do
 		button = _G["PetActionButton"..i];
 		lastButton = _G["PetActionButton"..i-1];
+		autoCast = _G["PetActionButton"..i..'AutoCastable'];
 		lastColumnButton = _G["PetActionButton"..i-buttonsPerRow];
 		button:SetParent(bar);
 		button:ClearAllPoints();
 		button:Size(size);
+		
+		autoCast:SetOutside(button, autoCastSize, autoCastSize)
 		
 		possibleButtons[((i * buttonsPerRow) + 1)] = true;
 		button:SetAttribute("showgrid", 1);
