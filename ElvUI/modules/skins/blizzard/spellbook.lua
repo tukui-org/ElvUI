@@ -46,7 +46,7 @@ local function LoadSkin()
 			
 			if not InCombatLockdown() then
 				if not button.properFrameLevel then
-					button.properFrameLevel = button:GetFrameLevel() + 1
+					button.properFrameLevel = button:GetFrameLevel() + 3
 				end
 				button:SetFrameLevel(button.properFrameLevel)
 			end
