@@ -275,6 +275,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'ALL',
 				['noDuration'] = 'ALL',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 				--[[['filters'] = {
 					['friendly'] = {
 						['playerOnly'] = true,
@@ -283,6 +285,8 @@ P['unitframe'] = {
 						['useWhiteList'] = true,
 						['noDuration'] = true,
 						['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 					},
 					['enemy'] = {
 						['playerOnly'] = true,
@@ -290,7 +294,9 @@ P['unitframe'] = {
 						['useBlacklist'] = true,
 						['useWhiteList'] = true,
 						['noDuration'] = true,
-						['useFilter'] = '',					
+						['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,					
 					},
 				},]]
 			},
@@ -306,6 +312,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'NONE',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},
 			['castbar'] = {
 				['enable'] = true,
@@ -381,6 +389,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'FRIENDLY',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = false,
@@ -394,6 +404,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'NONE',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},
 			['castbar'] = {
 				['enable'] = true,
@@ -458,6 +470,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'FRIENDLY',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = true,
@@ -471,6 +485,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'NONE',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},			
 		},
 		['focus'] = {
@@ -509,6 +525,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'FRIENDLY',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = true,
@@ -522,6 +540,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'NONE',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},	
 			['castbar'] = {
 				['enable'] = true,
@@ -580,6 +600,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'FRIENDLY',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = false,
@@ -593,6 +615,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'NONE',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},			
 		},				
 		['pet'] = {
@@ -630,6 +654,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'FRIENDLY',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = false,
@@ -643,6 +669,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'NONE',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},			
 		},
 		['pettarget'] = {
@@ -679,6 +707,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'FRIENDLY',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = false,
@@ -692,6 +722,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'NONE',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},			
 		},	
 		['boss'] = {
@@ -735,6 +767,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'NONE',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 				['sizeOverride'] = 46,
 			},
 			['debuffs'] = {
@@ -749,6 +783,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'NONE',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 				['sizeOverride'] = 46,
 			},	
 			['castbar'] = {
@@ -766,7 +802,7 @@ P['unitframe'] = {
 			['enable'] = true,
 			['growthDirection'] = 'UP',
 			['width'] = 240,
-			['height'] = 46,
+			['height'] = 47,
 			['pvpSpecIcon'] = true,
 			['health'] = {
 				['text_format'] = '[healthcolor][health:current]',
@@ -798,21 +834,25 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'NONE',
 				['useFilter'] = 'TurtleBuffs',
-				['sizeOverride'] = 46,
+				['sizeOverride'] = 22,
+				['xOffset'] = 0,
+				['yOffset'] = 12
 			},
 			['debuffs'] = {
-				['enable'] = false,
-				['perrow'] = 1,
+				['enable'] = true,
+				['perrow'] = 3,
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
-				['anchorPoint'] = 'RIGHT',					
+				['anchorPoint'] = 'LEFT',					
 				['fontSize'] = 10,
 				['playerOnly'] = 'NONE',
 				['useBlacklist'] = 'NONE',
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'NONE',
 				['useFilter'] = 'CCDebuffs',
-				['sizeOverride'] = 46,
+				['sizeOverride'] = 22,
+				['xOffset'] = 0,
+				['yOffset'] = -13,				
 			},	
 			['castbar'] = {
 				['enable'] = true,
@@ -882,6 +922,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'ALL',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = true,
@@ -895,6 +937,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'NONE',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 				['sizeOverride'] = 44,
 			},	
 			['buffIndicator'] = {
@@ -978,6 +1022,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'ALL',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = false,
@@ -991,6 +1037,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'NONE',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},	
 			['buffIndicator'] = {
 				['enable'] = true,
@@ -1062,6 +1110,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'ALL',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = false,
@@ -1075,6 +1125,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'NONE',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},	
 			['buffIndicator'] = {
 				['enable'] = true,
@@ -1146,6 +1198,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'ALL',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = false,
@@ -1159,6 +1213,8 @@ P['unitframe'] = {
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'NONE',
 				['useFilter'] = '',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},	
 			['rdebuffs'] = {
 				['enable'] = false,
