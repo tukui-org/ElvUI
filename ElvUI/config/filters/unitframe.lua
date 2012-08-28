@@ -144,17 +144,233 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 G.unitframe.aurafilters['TurtleBuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
-		[SpellName(33206)] = Defaults(), -- Pain Suppression
-		[SpellName(47788)] = Defaults(), -- Guardian Spirit
-		[SpellName(62618)] = Defaults(), --Power Word: Barrier
-		[SpellName(1044)] = Defaults(), -- Hand of Freedom
-		[SpellName(1022)] = Defaults(), -- Hand of Protection
-		[SpellName(1038)] = Defaults(), -- Hand of Salvation
-		[SpellName(6940)] = Defaults(), -- Hand of Sacrifice
-		[SpellName(114039)] = Defaults(), -- Hand of Purity
-		[SpellName(53480)] = Defaults(), -- Roar of Sacrifice	
+		--Mage
+			[SpellName(45438)] = Defaults(), -- Ice Block
+			[SpellName(115610)] = Defaults(), -- Temporal Shield
+		--Death Knight
+			[SpellName(48797)] = Defaults(), -- Anti-Magic Shell
+			[SpellName(48792)] = Defaults(), -- Icebound Fortitude
+			[SpellName(49039)] = Defaults(), -- Lichborne
+			[SpellName(87256)] = Defaults(), -- Dancing Rune Weapon
+			[SpellName(49222)] = Defaults(), -- Bone Shield
+			[SpellName(55233)] = Defaults(), -- Vampiric Blood
+			[SpellName(50461)] = Defaults(), -- Anti-Magic Zone
+		--Priest
+			[SpellName(33206)] = Defaults(), -- Pain Suppression
+			[SpellName(47788)] = Defaults(), -- Guardian Spirit
+			[SpellName(62618)] = Defaults(), -- Power Word: Barrier
+			[SpellName(47585)] = Defaults(), -- Dispersion
+		--Warlock
+			[SpellName(104773)] = Defaults(), -- Unending Resolve
+			[SpellName(110913)] = Defaults(), -- Dark Bargain
+			[SpellName(108359)] = Defaults(), -- Dark Regeneration
+		--Druid
+			[SpellName(22812)] = Defaults(), -- Barkskin
+			[SpellName(102342)] = Defaults(), -- Ironbark
+			[SpellName(106922)] = Defaults(), -- Might of Ursoc
+			[SpellName(61336)] = Defaults(), -- Survival Instincts
+		--Hunter
+			[SpellName(19263)] = Defaults(), -- Deterrence
+			[SpellName(53480)] = Defaults(), -- Roar of Sacrifice (Cunning)
+		--Rogue
+			[SpellName(31224)] = Defaults(), -- Cloak of Shadows
+			[SpellName(74001)] = Defaults(), -- Combat Readiness
+			--[SpellName(74002)] = Defaults(), -- Combat Insight (stacking buff from CR)
+			[SpellName(5277)] = Defaults(), -- Evasion
+			[SpellName(45182)] = Defaults(), -- Cheating Death
+		--Shaman
+			[SpellName(98007)] = Defaults(), -- Spirit Link Totem
+			[SpellName(30823)] = Defaults(), -- Shamanistic Rage
+			[SpellName(108271)] = Defaults(), -- Astral Shift
+		--Paladin
+			[SpellName(1044)] = Defaults(), -- Hand of Freedom
+			[SpellName(1022)] = Defaults(), -- Hand of Protection
+			[SpellName(1038)] = Defaults(), -- Hand of Salvation
+			[SpellName(6940)] = Defaults(), -- Hand of Sacrifice
+			[SpellName(114039)] = Defaults(), -- Hand of Purity
+			[SpellName(31821)] = Defaults(), -- Devotion Aura
+			[SpellName(498)] = Defaults(), -- Divine Protection
+			[SpellName(642)] = Defaults(), -- Divine Shield
+			[SpellName(86659)] = Defaults(), -- Guardian of the Ancient Kings (Prot)
+			[SpellName(20925)] = Defaults(), -- Sacred Shield
+			[SpellName(31850)] = Defaults(), -- Ardent Defender
+		--Warrior
+			[SpellName(118038)] = Defaults(), -- Die by the Sword
+			[SpellName(55694)] = Defaults(), -- Enraged Regeneration
+			[SpellName(97463)] = Defaults(), -- Rallying Cry
+			[SpellName(12975)] = Defaults(), -- Last Stand
+			[SpellName(114029)] = Defaults(), -- Safeguard
+			[SpellName(871)] = Defaults(), -- Shield Wall
+			[SpellName(114030)] = Defaults(), -- Vigilance
+		--Monk
+			[SpellName(120954)] = Defaults(), -- Fortifying Brew
+			[SpellName(131523)] = Defaults(), -- Zen Meditation
+			[SpellName(122783)] = Defaults(), -- Diffuse Magic
+			[SpellName(122278)] = Defaults(), -- Dampen Harm
+			[SpellName(115213)] = Defaults(), -- Avert Harm
+			[SpellName(116849)] = Defaults(), -- Life Cocoon
+		--Racial
+			[SpellName(20594)] = Defaults(), -- Stoneform
 	},
 }
+
+G.unitframe.aurafilters['PlayerBuffs'] = {
+	['type'] = 'Whitelist',
+	['spells'] = {
+		--Mage
+			[SpellName(45438)] = Defaults(), -- Ice Block
+			[SpellName(115610)] = Defaults(), -- Temporal Shield
+			[SpellName(110909)] = Defaults(), -- Alter Time
+			[SpellName(12051)] = Defaults(), -- Evocation
+			[SpellName(12472)] = Defaults(), -- Icy Veins
+			[SpellName(80353)] = Defaults(), -- Time Warp
+			[SpellName(12042)] = Defaults(), -- Arcane Power
+			[SpellName(32612)] = Defaults(), -- Invisibility
+			[SpellName(110960)] = Defaults(), -- Greater Invisibility
+			[SpellName(108839)] = Defaults(), -- Ice Flows
+			[SpellName(111264)] = Defaults(), -- Ice Ward
+			[SpellName(108843)] = Defaults(), -- Blazing Speed
+		--Death Knight
+			[SpellName(48797)] = Defaults(), -- Anti-Magic Shell
+			[SpellName(48792)] = Defaults(), -- Icebound Fortitude
+			[SpellName(49039)] = Defaults(), -- Lichborne
+			[SpellName(87256)] = Defaults(), -- Dancing Rune Weapon
+			[SpellName(49222)] = Defaults(), -- Bone Shield
+			[SpellName(55233)] = Defaults(), -- Vampiric Blood
+			[SpellName(50461)] = Defaults(), -- Anti-Magic Zone
+			[SpellName(49016)] = Defaults(), -- Unholy Frenzy
+			[SpellName(51271)] = Defaults(), -- Pillar of Frost
+			[SpellName(96268)] = Defaults(), -- Death's Advance
+		--Priest
+			[SpellName(33206)] = Defaults(), -- Pain Suppression
+			[SpellName(47788)] = Defaults(), -- Guardian Spirit
+			[SpellName(62618)] = Defaults(), -- Power Word: Barrier
+			[SpellName(47585)] = Defaults(), -- Dispersion
+			[SpellName(6346)] = Defaults(), -- Fear Ward
+			[SpellName(10060)] = Defaults(), -- Power Infusion
+			[SpellName(114239)] = Defaults(), -- Phantasm
+			[SpellName(119032)] = Defaults(), -- Spectral Guise
+			[SpellName(27827)] = Defaults(), -- Spirit of Redemption
+		--Warlock
+			[SpellName(104773)] = Defaults(), -- Unending Resolve
+			[SpellName(110913)] = Defaults(), -- Dark Bargain
+			[SpellName(108359)] = Defaults(), -- Dark Regeneration
+			[SpellName(113860)] = Defaults(), -- Dark Sould: Misery
+			[SpellName(113861)] = Defaults(), -- Dark Soul: Knowledge
+			[SpellName(113858)] = Defaults(), -- Dark Soul: Instability
+			[SpellName(88448)] = Defaults(), -- Demonic Rebirth
+		--Druid
+			[SpellName(22812)] = Defaults(), -- Barkskin
+			[SpellName(102342)] = Defaults(), -- Ironbark
+			[SpellName(106922)] = Defaults(), -- Might of Ursoc
+			[SpellName(61336)] = Defaults(), -- Survival Instincts
+			[SpellName(117679)] = Defaults(), -- Incarnation (Tree of Life)
+			[SpellName(102543)] = Defaults(), -- Incarnation: King of the Jungle
+			[SpellName(102558)] = Defaults(), -- Incarnation: Son of Ursoc
+			[SpellName(102560)] = Defaults(), -- Incarnation: Chosen of Elune
+			[SpellName(16689)] = Defaults(), -- Nature's Grasp
+			[SpellName(132158)] = Defaults(), -- Nature's Swiftness
+			[SpellName(106898)] = Defaults(), -- Stampeding Roar
+			[SpellName(1850)] = Defaults(), -- Dash
+			[SpellName(106951)] = Defaults(), -- Berserk
+			[SpellName(29166)] = Defaults(), -- Innervate
+			[SpellName(52610)] = Defaults(), -- Savage Roar
+			[SpellName(69369)] = Defaults(), -- Predatory Swiftness
+			[SpellName(112071)] = Defaults(), -- Celestial Alignment
+			[SpellName(124974)] = Defaults(), -- Nature's Vigil
+		--Hunter
+			[SpellName(19263)] = Defaults(), -- Deterrence
+			[SpellName(53480)] = Defaults(), -- Roar of Sacrifice (Cunning)
+			[SpellName(51755)] = Defaults(), -- Camouflage
+			[SpellName(54216)] = Defaults(), -- Master's Call
+			[SpellName(34471)] = Defaults(), -- The Beast Within
+			[SpellName(3045)] = Defaults(), -- Rapid Fire
+			[SpellName(3584)] = Defaults(), -- Feign Death
+			[SpellName(131894)] = Defaults(), -- A Murder of Crows
+			[SpellName(90355)] = Defaults(), -- Ancient Hysteria
+			[SpellName(90361)] = Defaults(), -- Spirit Mend
+		--Rogue
+			[SpellName(31224)] = Defaults(), -- Cloak of Shadows
+			[SpellName(74001)] = Defaults(), -- Combat Readiness
+			--[SpellName(74002)] = Defaults(), -- Combat Insight (stacking buff from CR)
+			[SpellName(5277)] = Defaults(), -- Evasion
+			[SpellName(45182)] = Defaults(), -- Cheating Death
+			[SpellName(51713)] = Defaults(), -- Shadow Dance
+			[SpellName(114018)] = Defaults(), -- Shroud of Concealment
+			[SpellName(2983)] = Defaults(), -- Sprint
+			[SpellName(121471)] = Defaults(), -- Shadow Blades
+			[SpellName(11327)] = Defaults(), -- Vanish
+			[SpellName(108212)] = Defaults(), -- Burst of Speed
+			[SpellName(57933)] = Defaults(), -- Tricks of the Trade
+			[SpellName(79140)] = Defaults(), -- Vendetta
+			[SpellName(13750)] = Defaults(), -- Adrenaline Rush
+		--Shaman
+			[SpellName(98007)] = Defaults(), -- Spirit Link Totem
+			[SpellName(30823)] = Defaults(), -- Shamanistic Rage
+			[SpellName(108271)] = Defaults(), -- Astral Shift
+			[SpellName(16188)] = Defaults(), -- Ancestral Swiftness
+			[SpellName(2825)] = Defaults(), -- Bloodlust
+			[SpellName(79206)] = Defaults(), -- Spiritwalker's Grace
+			[SpellName(16191)] = Defaults(), -- Mana Tide
+			[SpellName(8178)] = Defaults(), -- Grounding Totem Effect
+			[SpellName(58875)] = Defaults(), -- Spirit Walk
+			[SpellName(108281)] = Defaults(), -- Ancestral Guidance
+			[SpellName(108271)] = Defaults(), -- Astral Shift
+			[SpellName(16166)] = Defaults(), -- Elemental Mastery
+			[SpellName(114896)] = Defaults(), -- Windwalk Totem
+		--Paladin
+			[SpellName(1044)] = Defaults(), -- Hand of Freedom
+			[SpellName(1022)] = Defaults(), -- Hand of Protection
+			[SpellName(1038)] = Defaults(), -- Hand of Salvation
+			[SpellName(6940)] = Defaults(), -- Hand of Sacrifice
+			[SpellName(114039)] = Defaults(), -- Hand of Purity
+			[SpellName(31821)] = Defaults(), -- Devotion Aura
+			[SpellName(498)] = Defaults(), -- Divine Protection
+			[SpellName(642)] = Defaults(), -- Divine Shield
+			[SpellName(86659)] = Defaults(), -- Guardian of the Ancient Kings (Prot)
+			[SpellName(20925)] = Defaults(), -- Sacred Shield
+			[SpellName(31850)] = Defaults(), -- Ardent Defender
+			[SpellName(31884)] = Defaults(), -- Avenging Wrath
+			[SpellName(53563)] = Defaults(), -- Beacon of Light
+			[SpellName(31842)] = Defaults(), -- Divine Favor
+			[SpellName(54428)] = Defaults(), -- Divine Plea
+			[SpellName(105809)] = Defaults(), -- Holy Avenger
+			[SpellName(85499)] = Defaults(), -- Speed of Light
+		--Warrior
+			[SpellName(118038)] = Defaults(), -- Die by the Sword
+			[SpellName(55694)] = Defaults(), -- Enraged Regeneration
+			[SpellName(97463)] = Defaults(), -- Rallying Cry
+			[SpellName(12975)] = Defaults(), -- Last Stand
+			[SpellName(114029)] = Defaults(), -- Safeguard
+			[SpellName(871)] = Defaults(), -- Shield Wall
+			[SpellName(114030)] = Defaults(), -- Vigilance
+			[SpellName(18499)] = Defaults(), -- Berserker Rage
+			[SpellName(85730)] = Defaults(), -- Deadly Calm
+			[SpellName(1719)] = Defaults(), -- Recklessness
+			[SpellName(23920)] = Defaults(), -- Spell Reflection
+			[SpellName(114028)] = Defaults(), -- Mass Spell Reflection
+			[SpellName(46924)] = Defaults(), -- Bladestorm
+			[SpellName(3411)] = Defaults(), -- Intervene
+			[SpellName(107574)] = Defaults(), -- Avatar
+		--Monk
+			[SpellName(120954)] = Defaults(), -- Fortifying Brew
+			[SpellName(131523)] = Defaults(), -- Zen Meditation
+			[SpellName(122783)] = Defaults(), -- Diffuse Magic
+			[SpellName(122278)] = Defaults(), -- Dampen Harm
+			[SpellName(115213)] = Defaults(), -- Avert Harm
+			[SpellName(116849)] = Defaults(), -- Life Cocoon
+			[SpellName(125174)] = Defaults(), -- Touch of Karma
+			[SpellName(116841)] = Defaults(), -- Tiger's Lust
+		--Racial
+			[SpellName(20594)] = Defaults(), -- Stoneform
+			[SpellName(59545)] = Defaults(), -- Gift of the Naaru
+			[SpellName(20572)] = Defaults(), -- Blood Fury
+			[SpellName(26297)] = Defaults(), -- Berserking
+			[SpellName(68992)] = Defaults(), -- Darkflight
+	},
+}
+
+
 
 --[[
 	Buffs that really we dont need to see
