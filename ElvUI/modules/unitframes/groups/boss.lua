@@ -24,13 +24,8 @@ function UF:Construct_BossFrames(frame)
 	frame.AltPowerBar = self:Construct_AltPowerBar(frame)
 	
 	frame:SetAttribute("type2", "focus")
-<<<<<<< HEAD
 
 	BossHeader:Point('TOPLEFT', ElvUF_FocusTarget, 'BOTTOMRIGHT', 30, 0)
-=======
-	
-	BossHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165) 
->>>>>>> ElvUI/master
 	E:CreateMover(BossHeader, BossHeader:GetName()..'Mover', 'Boss Frames', nil, nil, nil, 'ALL,PARTY,RAID10,RAID25,RAID40')
 end
 

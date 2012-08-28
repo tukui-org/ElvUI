@@ -34,18 +34,12 @@ end
 
 function TOTEMS:ToggleEnable()
 	if self.db.enable then
-<<<<<<< HEAD
-=======
 		self.bar:Show()
->>>>>>> ElvUI/master
 		self:RegisterEvent('PLAYER_TOTEM_UPDATE', 'Update')
 		self:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update')
 		self:Update()
 	else
-<<<<<<< HEAD
-=======
 		self.bar:Hide()
->>>>>>> ElvUI/master
 		self:UnregisterEvent('PLAYER_TOTEM_UPDATE')
 		self:UnregisterEvent('PLAYER_ENTERING_WORLD')
 	end

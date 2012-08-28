@@ -9,10 +9,7 @@ E.Layout = LO;
 function LO:Initialize()
 	self:CreateChatPanels()
 	self:CreateMinimapPanels()
-<<<<<<< HEAD
 	self:CreateExtraDataBarPanels()
-=======
->>>>>>> ElvUI/master
 end
 
 
@@ -280,7 +277,6 @@ function LO:CreateMinimapPanels()
 	end)
 end
 
-<<<<<<< HEAD
 function LO:CreateExtraDataBarPanels()
 	local chattab1 = CreateFrame('Frame', 'ChatTab_Datatext_Panel', E.UIParent)
 	chattab1:SetScript('OnShow', function(self)
@@ -322,6 +318,4 @@ function LO:PLAYER_ENTERING_WORLD(...)
 end
 
 LO:RegisterEvent('PLAYER_ENTERING_WORLD')
-=======
->>>>>>> ElvUI/master
 E:RegisterModule(LO:GetName())

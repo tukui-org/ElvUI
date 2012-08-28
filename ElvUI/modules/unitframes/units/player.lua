@@ -54,11 +54,7 @@ function UF:Construct_PlayerFrame(frame)
 		
 	frame.CombatFade = true
 
-<<<<<<< HEAD
 	frame:Point('TOPLEFT', UIParent, 'TOPLEFT', 30, -30) --Set to default position
-=======
-	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -417, 75) --Set to default position	
->>>>>>> ElvUI/master
 	E:CreateMover(frame, frame:GetName()..'Mover', 'Player Frame', nil, nil, nil, 'ALL,SOLO')
 end
 

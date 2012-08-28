@@ -226,13 +226,8 @@ end
 function AB:CreateBarShapeShift()
 	bar:CreateBackdrop('Default');
 	bar.backdrop:SetAllPoints();
-<<<<<<< HEAD:ElvUI/modules/actionbars/barShapeShift.lua
 	bar:Point('TOPLEFT', LeftChatPanel, 'TOPRIGHT', 2, 4);
-
-=======
-	bar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -4);
 	bar.buttons = {};
->>>>>>> ElvUI/master:ElvUI/modules/actionbars/stanceBar.lua
 	bar:SetAttribute("_onstate-show", [[		
 		if newstate == "hide" then
 			self:Hide();

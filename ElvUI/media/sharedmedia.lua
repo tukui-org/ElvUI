@@ -1,12 +1,9 @@
 local LSM = LibStub("LibSharedMedia-3.0")
 
-<<<<<<< HEAD
 if LSM == nil then return end
 
 LSM:Register("font","Old Sans Black", [[Interface\AddOns\ElvUI\media\fonts\OldSansBlack.ttf]])
 LSM:Register("font","Old Sans Black Underline", [[Interface\AddOns\ElvUI\media\fonts\OldSansBlackUnderline.ttf]])
-=======
->>>>>>> ElvUI/master
 LSM:Register("background","ElvUI Blank", [[Interface\BUTTONS\WHITE8X8]])
 LSM:Register("border", "ElvUI GlowBorder", [[Interface\AddOns\ElvUI\media\textures\glowTex.tga]])
 LSM:Register("font", "ElvUI Alt-Font", [[Interface\AddOns\ElvUI\media\fonts\Continuum_Medium.ttf]])
@@ -25,9 +22,4 @@ LSM:Register("sound","Warning", [[Interface\AddOns\ElvUI\media\sounds\warning.mp
 LSM:Register("sound","Whisper Alert", [[Interface\AddOns\ElvUI\media\sounds\whisper.mp3]])
 LSM:Register("statusbar","ElvUI Gloss", [[Interface\AddOns\ElvUI\media\textures\normTex.tga]])
 LSM:Register("statusbar","ElvUI Norm", [[Interface\AddOns\ElvUI\media\textures\normTex2.tga]])
-<<<<<<< HEAD
 LSM:Register("statusbar","Minimalist", [[Interface\AddOns\ElvUI\media\textures\Minimalist.tga]])
-=======
-LSM:Register("statusbar","Minimalist", [[Interface\AddOns\ElvUI\media\textures\Minimalist.tga]])
-
->>>>>>> ElvUI/master

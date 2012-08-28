@@ -200,11 +200,7 @@ function M:UpdateSettings()
 		AurasHolder:Height(E.MinimapHeight)
 		if AurasMover and not E:HasMoverBeenMoved('AurasMover') and not E:HasMoverBeenMoved('MinimapMover') then
 			AurasMover:ClearAllPoints()
-<<<<<<< HEAD
 			AurasMover:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -((E.MinimapSize + 14) + E.ConsolidatedBuffsWidth + 7), -10)
-=======
-			AurasMover:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -((E.MinimapSize + 4) + E.ConsolidatedBuffsWidth + 7), -3)
->>>>>>> ElvUI/master
 			E:SaveMoverDefaultPosition('AurasMover')
 		end
 		
@@ -244,11 +240,7 @@ function M:Initialize()
 	end
 	
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
-<<<<<<< HEAD
 	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -10, -10)
-=======
-	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
->>>>>>> ElvUI/master
 	mmholder:Width((Minimap:GetWidth() + 29) + E.ConsolidatedBuffsWidth)
 	mmholder:Height(Minimap:GetHeight() + 53)
 	

@@ -20,13 +20,8 @@ function UF:Construct_PetFrame(frame)
 	frame.Castbar = CreateFrame("StatusBar", nil, frame) -- Dummy Bar
 	
 	frame.HealPrediction = self:Construct_HealComm(frame)
-<<<<<<< HEAD
 
 	frame:Point('TOPLEFT', ElvUF_Player, 'BOTTOMLEFT', 0, -30)
-=======
-	
-	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 118)
->>>>>>> ElvUI/master
 	E:CreateMover(frame, frame:GetName()..'Mover', 'Pet Frame', nil, nil, nil, 'ALL,SOLO')
 end
 

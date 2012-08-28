@@ -15,13 +15,8 @@ function UF:Construct_PetTargetFrame(frame)
 	frame.Buffs = self:Construct_Buffs(frame)
 	
 	frame.Debuffs = self:Construct_Debuffs(frame)
-<<<<<<< HEAD
 
 	frame:Point('LEFT', ElvUF_Pet, 'RIGHT', 30, 0) --Set to default position
-=======
-	
-	frame:Point('BOTTOM', ElvUF_Pet, 'TOP', 0, 7) --Set to default position
->>>>>>> ElvUI/master
 	E:CreateMover(frame, frame:GetName()..'Mover', 'PetTarget Frame', nil, -7, nil, 'ALL,SOLO')
 end
 

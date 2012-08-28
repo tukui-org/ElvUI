@@ -26,11 +26,7 @@ function UF:Construct_FocusFrame(frame)
 	table.insert(frame.__elements, UF.SmartAuraDisplay)
 	frame:RegisterEvent('PLAYER_FOCUS_CHANGED', UF.SmartAuraDisplay)	
 
-<<<<<<< HEAD
 	frame:Point('TOPLEFT', ElvUF_Player, 'BOTTOMLEFT', 0, -180)
-=======
-	frame:Point('BOTTOMRIGHT', ElvUF_Target, 'TOPRIGHT', 0, 220)
->>>>>>> ElvUI/master
 	E:CreateMover(frame, frame:GetName()..'Mover', 'Focus Frame', nil, nil, nil, 'ALL,SOLO')
 end
 

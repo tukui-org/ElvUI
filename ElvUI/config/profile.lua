@@ -1,9 +1,6 @@
 ﻿local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
-<<<<<<< HEAD
 local _, myclasscolor = UnitClass("player");
 local valuer, valueg, valueb = RAID_CLASS_COLORS[myclasscolor].r, RAID_CLASS_COLORS[myclasscolor].g, RAID_CLASS_COLORS[myclasscolor].b
-=======
->>>>>>> ElvUI/master
 
 P.gridSize = 64
 P.farmSize = 340
@@ -13,7 +10,6 @@ P['general'] = {
 	["taintLog"] = false,
 	["autoscale"] = true,
 	["stickyFrames"] = true,
-<<<<<<< HEAD
 	['loginmessage'] = false,
 	["interruptAnnounce"] = "RAID",
 	["autoRepair"] = "GUILD",
@@ -28,22 +24,6 @@ P['general'] = {
 	["backdropcolor"] = { r = .16,g = .16,b = .16 },
 	["backdropfadecolor"] = { r = .10,g = .10,b = .10, a = 0.9 },
 	["valuecolor"] = {r = valuer,g = valueg,b = valueb},
-=======
-	['loginmessage'] = true,
-	["interruptAnnounce"] = "NONE",
-	["autoRepair"] = "NONE",
-	['autoRoll'] = false,
-	['vendorGrays'] = false,
-	['autoAcceptInvite'] = false,
-
-	["fontSize"] = 12,
-	["font"] = "ElvUI Font",
-
-	["bordercolor"] = { r = 0.1,g = 0.1,b = 0.1 },
-	["backdropcolor"] = { r = 0.1,g = 0.1,b = 0.1 },
-	["backdropfadecolor"] = { r = .054,g = .054,b = .054, a = 0.8 },
-	["valuecolor"] = {r = 23/255,g = 132/255,b = 209/255},
->>>>>>> ElvUI/master
 
 	['mapAlpha'] = 1,
 	['tinyWorldMap'] = true,
@@ -55,7 +35,6 @@ P['general'] = {
 	
 	['experience'] = {
 		['enable'] = true,
-<<<<<<< HEAD
 		['width'] = 213,
 		['height'] = 15,
 		['textFormat'] = 'CURMAX',
@@ -70,22 +49,6 @@ P['general'] = {
 	},
 	['threat'] = {
 		['enable'] = false,
-=======
-		['width'] = 475,
-		['height'] = 10,
-		['textFormat'] = 'NONE',
-		['textSize'] = 11,
-	},
-	['reputation'] = {
-		['enable'] = true,
-		['width'] = 475,
-		['height'] = 10,
-		['textFormat'] = 'NONE',
-		['textSize'] = 11,
-	},
-	['threat'] = {
-		['enable'] = true,
->>>>>>> ElvUI/master
 		['position'] = 'RIGHTCHAT',
 		['textSize'] = 12,
 	},
@@ -131,11 +94,7 @@ P["nameplate"] = {
 	["showlevel"] = true,
 	["enhancethreat"] = true,
 	["combat"] = false,
-<<<<<<< HEAD
 	["healthtext"] = 'CURRENT_PERCENT',
-=======
-	["healthtext"] = '',
->>>>>>> ElvUI/master
 	["trackauras"] = true,
 	["trackfilter"] = 'CCDebuffs',
 	['goodscale'] = 1,
@@ -155,20 +114,12 @@ P["nameplate"] = {
 --Auras
 P['auras'] = {
 	['font'] = 'ElvUI Pixel',
-<<<<<<< HEAD
 	['fontSize'] = 12,
-=======
-	['fontSize'] = 10,
->>>>>>> ElvUI/master
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
 	
 	['consolidedBuffs'] = true;
 	['wrapAfter'] = 12,
-<<<<<<< HEAD
 	['fadeThreshold'] = -1,
-=======
-	['fadeThreshold'] = 5,
->>>>>>> ElvUI/master
 	['buffs'] = {
 		['sortMethod'] = "TIME",
 		['sortDir'] = '-',
@@ -179,17 +130,12 @@ P['auras'] = {
 		['sortMethod'] = "TIME",
 		['sortDir'] = '-',
 		['maxWraps'] = 1,
-<<<<<<< HEAD
 	},
-=======
-	},	
->>>>>>> ElvUI/master
 }
 
 --Chat
 P['chat'] = {
 	['url'] = true,
-<<<<<<< HEAD
 	['shortChannels'] = false,
 	['hyperlinkHover'] = false,
 	['throttleInterval'] = 60,
@@ -203,47 +149,20 @@ P['chat'] = {
 	['keywords'] = '%MYNAME%, ElvUI, Blaze, Blazii, Blæs',
 	['panelWidth'] = 385,
 	['panelHeight'] = 200,
-=======
-	['shortChannels'] = true,
-	['hyperlinkHover'] = true,
-	['throttleInterval'] = 45,
-	['scrollDownInterval'] = 15,
-	['font'] = 'ElvUI Font',
-	['fontOutline'] = 'NONE',
-	['sticky'] = true,
-	['emotionIcons'] = true,
-	['keywordSound'] = 'None',
-	['whisperSound'] = 'Whisper Alert',
-	['keywords'] = '%MYNAME%, ElvUI',
-	['panelWidth'] = 412,
-	['panelHeight'] = 180,
->>>>>>> ElvUI/master
 	['panelBackdropNameLeft'] = '',
 	['panelBackdropNameRight'] = '',
 	['panelBackdrop'] = 'SHOWBOTH',	
 	
-<<<<<<< HEAD
 	['tabFont'] = 'Arial Narrow',
 	['tabFontSize'] = 13,
 	['tabFontOutline'] = 'OUTLINE',
-=======
-	['tabFont'] = 'ElvUI Font',
-	['tabFontSize'] = 12,
-	['tabFontOutline'] = 'NONE',
->>>>>>> ElvUI/master
 }
 
 --Datatexts
 P['datatexts'] = {
-<<<<<<< HEAD
 	['font'] = 'Arial Narrow',
 	['fontSize'] = 13,
 	['fontOutline'] = 'OUTLINE',
-=======
-	['font'] = 'ElvUI Font',
-	['fontSize'] = 12,
-	['fontOutline'] = 'NONE',
->>>>>>> ElvUI/master
 	
 	['panels'] = {
 		['LeftChatDataPanel'] = {
@@ -269,15 +188,9 @@ P['datatexts'] = {
 		},
 	},
 	['localtime'] = true,
-<<<<<<< HEAD
 	['time24'] = true,
 	['battleground'] = false,
 	['minimapPanels'] = true,
-=======
-	['time24'] = false,
-	['battleground'] = true,
-	['minimapPanels'] = true,	
->>>>>>> ElvUI/master
 }
 
 --Tooltip
@@ -292,19 +205,11 @@ P['tooltip'] = {
 P['unitframe'] = {
 	['smoothbars'] = true,
 	['statusbar'] = "Minimalist",
-<<<<<<< HEAD
 	['font'] = 'Old Sans Black',
 	['fontSize'] = 12,
 	['fontOutline'] = 'OUTLINE',
 	['OORAlpha'] = 0.55,
 	['debuffHighlighting'] = false,
-=======
-	['font'] = 'ElvUI Pixel',
-	['fontSize'] = 10,
-	['fontOutline'] = 'MONOCHROMEOUTLINE',
-	['OORAlpha'] = 0.35,
-	['debuffHighlighting'] = true,
->>>>>>> ElvUI/master
 	["smartRaidFilter"] = true,
 
 	['colors'] = {
@@ -335,7 +240,7 @@ P['unitframe'] = {
 	['units'] = {
 		['player'] = {
 			['enable'] = true,
-			['width'] = 270,
+			['width'] = 260,
 			['height'] = 54,
 			['lowmana'] = 30,
 			['combatfade'] = false,
@@ -343,11 +248,7 @@ P['unitframe'] = {
 			['restIcon'] = true,
 			['health'] = {
 				['text_format'] = '[healthcolor][health:current-percent]',
-<<<<<<< HEAD
 				['position'] = 'TOPRIGHT',
-=======
-				['position'] = 'LEFT',
->>>>>>> ElvUI/master
 			},
 			['power'] = {
 				['enable'] = true,
@@ -359,13 +260,8 @@ P['unitframe'] = {
 				['hideonnpc'] = false,
 			},
 			['name'] = {
-<<<<<<< HEAD
 				['position'] = 'LEFT',
 				['text_format'] = '[namecolor][name:medium] [difficultycolor][level]',
-=======
-				['position'] = 'CENTER',
-				['text_format'] = '',
->>>>>>> ElvUI/master
 			},
 			['pvp'] = {
 				['position'] = 'BOTTOM',
@@ -416,13 +312,8 @@ P['unitframe'] = {
 				},]]
 			},
 			['debuffs'] = {
-<<<<<<< HEAD
 				['enable'] = false,
 				['perrow'] = 7,
-=======
-				['enable'] = true,
-				['perrow'] = 8,
->>>>>>> ElvUI/master
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'TOPLEFT',					
@@ -437,24 +328,14 @@ P['unitframe'] = {
 			},
 			['castbar'] = {
 				['enable'] = true,
-<<<<<<< HEAD
 				['width'] = 260,
 				['height'] = 20,
 				['icon'] = false,
-=======
-				['width'] = 270,
-				['height'] = 18,
-				['icon'] = true,
->>>>>>> ElvUI/master
 				['latency'] = true,
 				['displayTarget'] = false,
 				['color'] = { r = .66,g = .66,b = .66 },
 				['interruptcolor'] = { r = 0.78, g = 0.25, b = 0.25 },
-<<<<<<< HEAD
 				['format'] = 'CURRENTMAX',
-=======
-				['format'] = 'REMAINING',
->>>>>>> ElvUI/master
 				["ticks"] = true,
 				['spark'] = true,
 			},
@@ -476,36 +357,16 @@ P['unitframe'] = {
 				['friendlyAuraType'] = 'HELPFUL',
 				['enemyAuraType'] = 'HARMFUL'
 			},
-			['aurabar'] = {
-				['enable'] = true,
-				['anchorPoint'] = 'ABOVE',
-				['attachTo'] = 'DEBUFFS',
-				['playerOnly'] = 'ALL',
-				['noConsolidated'] = 'ALL',
-				['useBlacklist'] = 'ALL',
-				['useWhitelist'] = 'ALL',
-				['noDuration'] = 'ALL',
-				['useFilter'] = '',
-				['friendlyAuraType'] = 'HELPFUL',
-				['enemyAuraType'] = 'HARMFUL'
-			},
 		},	
 		['target'] = {
 			['enable'] = true,
-			['width'] = 270,
+			['width'] = 260,
 			['height'] = 54,
 			['healPrediction'] = true,
-<<<<<<< HEAD
 			['smartAuraDisplay'] = 'DISABLED',
 			['health'] = {
 				['text_format'] = '[healthcolor][health:current-percent]',
 				['position'] = 'TOPRIGHT',
-=======
-			['smartAuraDisplay'] = 'SHOW_DEBUFFS_ON_FRIENDLIES',
-			['health'] = {
-				['text_format'] = '[healthcolor][health:current-percent]',
-				['position'] = 'RIGHT',
->>>>>>> ElvUI/master
 			},
 			['power'] = {
 				['enable'] = true,
@@ -517,13 +378,8 @@ P['unitframe'] = {
 				['hideonnpc'] = false,					
 			},
 			['name'] = {
-<<<<<<< HEAD
 				['position'] = 'LEFT',
 				['text_format'] = '[namecolor][name:medium] [difficultycolor][level] [shortclassification]',
-=======
-				['position'] = 'CENTER',
-				['text_format'] = '[namecolor][name:medium] [difficultycolor][smartlevel] [shortclassification]',
->>>>>>> ElvUI/master
 			},
 			['portrait'] = {
 				['enable'] = false,
@@ -534,15 +390,9 @@ P['unitframe'] = {
 			['buffs'] = {
 				['enable'] = true,
 				['perrow'] = 8,
-<<<<<<< HEAD
 				['numrows'] = 2,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'BOTTOMLEFT',
-=======
-				['numrows'] = 1,
-				['attachTo'] = 'FRAME',
-				['anchorPoint'] = 'TOPRIGHT',
->>>>>>> ElvUI/master
 				['fontSize'] = 10,
 				['playerOnly'] = 'FRIENDLY',
 				['noConsolidated'] = 'FRIENDLY',
@@ -554,7 +404,6 @@ P['unitframe'] = {
 				['yOffset'] = 0,
 			},
 			['debuffs'] = {
-<<<<<<< HEAD
 				['enable'] = true,
 				['perrow'] = 8,
 				['numrows'] = 2,
@@ -562,15 +411,6 @@ P['unitframe'] = {
 				['anchorPoint'] = 'BOTTOMLEFT',					
 				['fontSize'] = 10,
 				['playerOnly'] = 'NONE',
-=======
-				['enable'] = false,
-				['perrow'] = 8,
-				['numrows'] = 1,
-				['attachTo'] = 'BUFFS',
-				['anchorPoint'] = 'TOPRIGHT',					
-				['fontSize'] = 10,
-				['playerOnly'] = 'ENEMY',
->>>>>>> ElvUI/master
 				['useBlacklist'] = 'ALL',
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'NONE',
@@ -580,7 +420,7 @@ P['unitframe'] = {
 			},
 			['castbar'] = {
 				['enable'] = true,
-				['width'] = 270,
+				['width'] = 260,
 				['height'] = 18,
 				['icon'] = false,
 				['color'] = { r = .66,g = .66,b = .66 },
@@ -594,11 +434,7 @@ P['unitframe'] = {
 				['height'] = 10,
 			},		
 			['aurabar'] = {
-<<<<<<< HEAD
 				['enable'] = false,
-=======
-				['enable'] = true,
->>>>>>> ElvUI/master
 				['anchorPoint'] = 'ABOVE',
 				['attachTo'] = 'BUFFS',
 				['playerOnly'] = 'ALL',
@@ -672,11 +508,7 @@ P['unitframe'] = {
 			['smartAuraDisplay'] = 'DISABLED',
 			['health'] = {
 				['text_format'] = '',
-<<<<<<< HEAD
 				['position'] = 'TOPRIGHT',
-=======
-				['position'] = 'RIGHT',
->>>>>>> ElvUI/master
 			},
 			['power'] = {
 				['enable'] = true,
@@ -684,19 +516,11 @@ P['unitframe'] = {
 				['width'] = 'fill',
 				['height'] = 10,
 				['offset'] = 0,
-<<<<<<< HEAD
 				['position'] = 'BOTTOMRIGHT',
 				['hideonnpc'] = false,					
 			},
 			['name'] = {
 				['position'] = 'LEFT',
-=======
-				['position'] = 'LEFT',
-				['hideonnpc'] = false,					
-			},
-			['name'] = {
-				['position'] = 'CENTER',
->>>>>>> ElvUI/master
 				['text_format'] = '[namecolor][name:medium]',
 			},
 			['buffs'] = {
@@ -719,13 +543,8 @@ P['unitframe'] = {
 				['enable'] = true,
 				['perrow'] = 7,
 				['numrows'] = 1,
-<<<<<<< HEAD
 				['attachTo'] = 'BUFFS',
 				['anchorPoint'] = 'BOTTOMLEFT',					
-=======
-				['attachTo'] = 'FRAME',
-				['anchorPoint'] = 'BOTTOMRIGHT',					
->>>>>>> ElvUI/master
 				['fontSize'] = 10,
 				['playerOnly'] = 'ENEMY',
 				['useBlacklist'] = 'ALL',
@@ -764,34 +583,19 @@ P['unitframe'] = {
 			['height'] = 40,
 			['health'] = {
 				['text_format'] = '',
-<<<<<<< HEAD
 				['position'] = 'TOPRIGHT',
 			},
 			['power'] = {
 				['enable'] = true,
-=======
-				['position'] = 'RIGHT',
-			},
-			['power'] = {
-				['enable'] = false,
->>>>>>> ElvUI/master
 				['text_format'] = '',	
 				['width'] = 'fill',
 				['height'] = 10,
 				['offset'] = 0,
-<<<<<<< HEAD
 				['position'] = 'BOTTOMRIGHT',
 				['hideonnpc'] = false,					
 			},
 			['name'] = {
 				['position'] = 'LEFT',
-=======
-				['position'] = 'LEFT',
-				['hideonnpc'] = false,					
-			},
-			['name'] = {
-				['position'] = 'CENTER',
->>>>>>> ElvUI/master
 				['text_format'] = '[namecolor][name:medium]',
 			},
 			['buffs'] = {
@@ -814,13 +618,8 @@ P['unitframe'] = {
 				['enable'] = true,
 				['perrow'] = 6,
 				['numrows'] = 1,
-<<<<<<< HEAD
 				['attachTo'] = 'BUFFS',
 				['anchorPoint'] = 'BOTTOMLEFT',					
-=======
-				['attachTo'] = 'FRAME',
-				['anchorPoint'] = 'BOTTOMRIGHT',					
->>>>>>> ElvUI/master
 				['fontSize'] = 10,
 				['playerOnly'] = 'ENEMY',
 				['useBlacklist'] = 'ALL',
@@ -838,11 +637,7 @@ P['unitframe'] = {
 			['healPrediction'] = true,
 			['health'] = {
 				['text_format'] = '',
-<<<<<<< HEAD
 				['position'] = 'TOPRIGHT',
-=======
-				['position'] = 'RIGHT',
->>>>>>> ElvUI/master
 			},
 			['power'] = {
 				['enable'] = true,
@@ -850,19 +645,11 @@ P['unitframe'] = {
 				['width'] = 'fill',
 				['height'] = 7,
 				['offset'] = 0,
-<<<<<<< HEAD
 				['position'] = 'BOTTOMRIGHT',
 				['hideonnpc'] = false,					
 			},
 			['name'] = {
 				['position'] = 'LEFT',
-=======
-				['position'] = 'LEFT',
-				['hideonnpc'] = false,					
-			},
-			['name'] = {
-				['position'] = 'CENTER',
->>>>>>> ElvUI/master
 				['text_format'] = '[namecolor][name:medium]',
 			},
 			['buffs'] = {
@@ -956,11 +743,7 @@ P['unitframe'] = {
 			['width'] = 200,
 			['height'] = 46,
 			['health'] = {
-<<<<<<< HEAD
 				['text_format'] = '[healthcolor][health:current-percent]',
-=======
-				['text_format'] = '[healthcolor][health:current]',
->>>>>>> ElvUI/master
 				['position'] = 'TOPRIGHT',
 			},
 			['power'] = {
@@ -986,17 +769,10 @@ P['unitframe'] = {
 				['enable'] = true,
 				['perrow'] = 8,
 				['numrows'] = 1,
-<<<<<<< HEAD
 				['attachTo'] = 'DEBUFFS',
 				['anchorPoint'] = 'TOPRIGHT',					
 				['fontSize'] = 10,
 				['playerOnly'] = 'NONE',
-=======
-				['attachTo'] = 'FRAME',
-				['anchorPoint'] = 'LEFT',					
-				['fontSize'] = 10,
-				['playerOnly'] = 'ALL',
->>>>>>> ElvUI/master
 				['noConsolidated'] = 'NONE',
 				['useBlacklist'] = 'ALL',
 				['useWhitelist'] = 'NONE',
@@ -1004,22 +780,14 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-<<<<<<< HEAD
 				['sizeOverride'] = 0,
-=======
-				['sizeOverride'] = 46,
->>>>>>> ElvUI/master
 			},
 			['debuffs'] = {
 				['enable'] = true,
 				['perrow'] = 8,
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
-<<<<<<< HEAD
 				['anchorPoint'] = 'TOPLEFT',					
-=======
-				['anchorPoint'] = 'RIGHT',					
->>>>>>> ElvUI/master
 				['fontSize'] = 10,
 				['playerOnly'] = 'ALL',
 				['useBlacklist'] = 'ALL',
@@ -1028,11 +796,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-<<<<<<< HEAD
 				['sizeOverride'] = 0,
-=======
-				['sizeOverride'] = 46,
->>>>>>> ElvUI/master
 			},	
 			['castbar'] = {
 				['enable'] = true,
@@ -1052,11 +816,7 @@ P['unitframe'] = {
 			['height'] = 47,
 			['pvpSpecIcon'] = true,
 			['health'] = {
-<<<<<<< HEAD
 				['text_format'] = '[healthcolor][health:current-percent]',
-=======
-				['text_format'] = '[healthcolor][health:current]',
->>>>>>> ElvUI/master
 				['position'] = 'TOPRIGHT',
 			},
 			['power'] = {
@@ -1091,11 +851,7 @@ P['unitframe'] = {
 			},
 			['debuffs'] = {
 				['enable'] = true,
-<<<<<<< HEAD
 				['perrow'] = 2,
-=======
-				['perrow'] = 3,
->>>>>>> ElvUI/master
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'LEFT',					
@@ -1146,23 +902,14 @@ P['unitframe'] = {
 			['width'] = 73,
 			['height'] = 44,
 			['health'] = {
-<<<<<<< HEAD
 				['text_format'] = '',
 				['position'] = 'BOTTOM',
-=======
-				['text_format'] = '[healthcolor][health:current-percent]',
-				['position'] = 'TOPRIGHT',
->>>>>>> ElvUI/master
 				['orientation'] = 'HORIZONTAL',
 				['frequentUpdates'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
-<<<<<<< HEAD
 				['text_format'] = '',	
-=======
-				['text_format'] = '[powercolor][power:current]',	
->>>>>>> ElvUI/master
 				['width'] = 'fill',
 				['height'] = 8,
 				['offset'] = 0,
@@ -1170,25 +917,15 @@ P['unitframe'] = {
 				['hideonnpc'] = false,					
 			},			
 			['name'] = {
-<<<<<<< HEAD
 				['position'] = 'TOP',
 				['text_format'] = '[namecolor][name:short]',
-=======
-				['position'] = 'LEFT',
-				['text_format'] = '[namecolor][name:medium] [difficultycolor][smartlevel]',
->>>>>>> ElvUI/master
 			},
 			['buffs'] = {
 				['enable'] = false,
 				['perrow'] = 4,
 				['numrows'] = 1,
-<<<<<<< HEAD
 				['attachTo'] = 'DEBUFFS',
 				['anchorPoint'] = 'TOPRIGHT',					
-=======
-				['attachTo'] = 'FRAME',
-				['anchorPoint'] = 'LEFT',					
->>>>>>> ElvUI/master
 				['fontSize'] = 10,
 				['playerOnly'] = 'ALL',
 				['noConsolidated'] = 'ALL',
@@ -1198,36 +935,23 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-<<<<<<< HEAD
 				['sizeOverride'] = 0,
-=======
->>>>>>> ElvUI/master
 			},
 			['debuffs'] = {
 				['enable'] = false,
 				['perrow'] = 4,
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
-<<<<<<< HEAD
 				['anchorPoint'] = 'TOPLEFT',					
 				['fontSize'] = 10,
 				['playerOnly'] = 'NONE',
-=======
-				['anchorPoint'] = 'RIGHT',					
-				['fontSize'] = 10,
-				['playerOnly'] = 'N',
->>>>>>> ElvUI/master
 				['useBlacklist'] = 'ALL',
 				['useWhitelist'] = 'NONE',
 				['noDuration'] = 'NONE',
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-<<<<<<< HEAD
 				['sizeOverride'] = 0,
-=======
-				['sizeOverride'] = 44,
->>>>>>> ElvUI/master
 			},	
 			['buffIndicator'] = {
 				['enable'] = true,
@@ -1247,29 +971,17 @@ P['unitframe'] = {
 				['enable'] = true,
 				['width'] = 73,
 				['height'] = 22,
-<<<<<<< HEAD
 				['anchorPoint'] = 'TOP',
 				['xOffset'] = 0,
 				['yOffset'] = 28,
-=======
-				['anchorPoint'] = 'TOPLEFT',
-				['xOffset'] = -1,
-				['yOffset'] = 0,
->>>>>>> ElvUI/master
 			},
 			['targetsGroup'] = {
 				['enable'] = true,
 				['width'] = 73,
 				['height'] = 22,
-<<<<<<< HEAD
 				['anchorPoint'] = 'TOP',
 				['xOffset'] = 0,
 				['yOffset'] = 3,
-=======
-				['anchorPoint'] = 'TOPLEFT',
-				['xOffset'] = -1,
-				['yOffset'] = 0,
->>>>>>> ElvUI/master
 			},				
 		},
 		['raid10'] = {
@@ -1291,11 +1003,7 @@ P['unitframe'] = {
 			['width'] = 73,
 			['height'] = 44,
 			['health'] = {
-<<<<<<< HEAD
 				['text_format'] = '',
-=======
-				['text_format'] = '[healthcolor][health:deficit]',
->>>>>>> ElvUI/master
 				['position'] = 'BOTTOM',
 				['orientation'] = 'HORIZONTAL',
 				['frequentUpdates'] = false,
@@ -1334,11 +1042,7 @@ P['unitframe'] = {
 				['perrow'] = 4,
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
-<<<<<<< HEAD
 				['anchorPoint'] = 'LEFT',					
-=======
-				['anchorPoint'] = 'RIGHT',					
->>>>>>> ElvUI/master
 				['fontSize'] = 10,
 				['playerOnly'] = 'NONE',
 				['useBlacklist'] = 'ALL',
@@ -1355,11 +1059,7 @@ P['unitframe'] = {
 				['colorIcons'] = true,
 			},
 			['rdebuffs'] = {
-<<<<<<< HEAD
 				['enable'] = false,
-=======
-				['enable'] = true,
->>>>>>> ElvUI/master
 				['fontSize'] = 10,
 				['size'] = 26,
 			},
@@ -1391,11 +1091,7 @@ P['unitframe'] = {
 			['width'] = 73,
 			['height'] = 44,
 			['health'] = {
-<<<<<<< HEAD
 				['text_format'] = '',
-=======
-				['text_format'] = '[healthcolor][health:deficit]',
->>>>>>> ElvUI/master
 				['position'] = 'BOTTOM',
 				['orientation'] = 'HORIZONTAL',
 				['frequentUpdates'] = false,
@@ -1434,11 +1130,7 @@ P['unitframe'] = {
 				['perrow'] = 4,
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
-<<<<<<< HEAD
 				['anchorPoint'] = 'LEFT',					
-=======
-				['anchorPoint'] = 'RIGHT',					
->>>>>>> ElvUI/master
 				['fontSize'] = 10,
 				['playerOnly'] = 'NONE',
 				['useBlacklist'] = 'ALL',
@@ -1455,11 +1147,7 @@ P['unitframe'] = {
 				['colorIcons'] = true,
 			},
 			['rdebuffs'] = {
-<<<<<<< HEAD
 				['enable'] = false,
-=======
-				['enable'] = true,
->>>>>>> ElvUI/master
 				['fontSize'] = 10,
 				['size'] = 26,
 			},
@@ -1491,11 +1179,7 @@ P['unitframe'] = {
 			['width'] = 73,
 			['height'] = 36,
 			['health'] = {
-<<<<<<< HEAD
 				['text_format'] = '',
-=======
-				['text_format'] = '[healthcolor][health:deficit]',
->>>>>>> ElvUI/master
 				['position'] = 'BOTTOM',
 				['orientation'] = 'HORIZONTAL',
 				['frequentUpdates'] = false,
@@ -1510,11 +1194,7 @@ P['unitframe'] = {
 				['hideonnpc'] = false,					
 			},			
 			['name'] = {
-<<<<<<< HEAD
 				['position'] = 'TOP',
-=======
-				['position'] = 'CENTER',
->>>>>>> ElvUI/master
 				['text_format'] = '[namecolor][name:short]',
 			},
 			['buffs'] = {
@@ -1538,11 +1218,7 @@ P['unitframe'] = {
 				['perrow'] = 4,
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
-<<<<<<< HEAD
 				['anchorPoint'] = 'LEFT',					
-=======
-				['anchorPoint'] = 'RIGHT',					
->>>>>>> ElvUI/master
 				['fontSize'] = 10,
 				['playerOnly'] = 'NONE',
 				['useBlacklist'] = 'ALL',
@@ -1605,17 +1281,10 @@ P['unitframe'] = {
 --Actionbar
 P["actionbar"] = {
 	['font'] = 'ElvUI Pixel',
-<<<<<<< HEAD
 	['fontSize'] = 12,
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
 	
 	["macrotext"] = true,
-=======
-	['fontSize'] = 10,
-	['fontOutline'] = 'MONOCHROMEOUTLINE',
-	
-	["macrotext"] = false,
->>>>>>> ElvUI/master
 	["hotkeytext"] = true,
 	["enablecd"] = true,
 	["treshold"] = 3,
@@ -1726,13 +1395,8 @@ P["actionbar"] = {
 	['stanceBar'] = {
 		['enabled'] = true,
 		['mouseover'] = false,
-<<<<<<< HEAD
 		['buttonsPerRow'] = 1,
 		['buttons'] = 6,
-=======
-		['buttonsPerRow'] = NUM_STANCE_SLOTS,
-		['buttons'] = NUM_STANCE_SLOTS,
->>>>>>> ElvUI/master
 		['point'] = 'TOPLEFT',
 		['backdrop'] = false,
 		['heightMult'] = 1,
