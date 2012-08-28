@@ -50,6 +50,14 @@ P['general'] = {
 		['position'] = 'RIGHTCHAT',
 		['textSize'] = 12,
 	},
+	['totems'] = {
+		['enable'] = true,
+		['growthDirection'] = 'VERTICAL',
+		['sortDirection'] = 'ASCENDING',
+		['size'] = 40,
+		['spacing'] = 4,
+		['showBackdrop'] = false,
+	}
 };
 
 --Bags

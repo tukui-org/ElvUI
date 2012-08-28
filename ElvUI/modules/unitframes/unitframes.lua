@@ -44,7 +44,6 @@ UF['classMaxResourceBar'] = {
 	['WARLOCK'] = 4,
 	['PRIEST'] = 3,
 	['MONK'] = 5,
-	['SHAMAN'] = 4,
 	['MAGE'] = 6,
 }
 
