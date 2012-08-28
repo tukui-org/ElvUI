@@ -555,6 +555,7 @@ function E:RegisterModule(name)
 	else
 		tinsert(self['RegisteredModules'], name)
 	end
+<<<<<<< HEAD
 end
 
 function E:RegisterInitialModule(name)
@@ -576,6 +577,29 @@ function E:RefreshModulesDB()
 	UF.db = self.db.unitframe
 end
 
+=======
+end
+
+function E:RegisterInitialModule(name)
+	tinsert(self['RegisteredInitialModules'], name)
+end
+
+function E:InitializeInitialModules()
+	for _, module in pairs(E['RegisteredInitialModules']) do
+		local module = self:GetModule(module, true)
+		if module and module.Initialize then
+			module:Initialize()
+		end
+	end
+end
+
+function E:RefreshModulesDB()
+	local UF = self:GetModule('UnitFrames')
+	table.wipe(UF.db)
+	UF.db = self.db.unitframe
+end
+
+>>>>>>> ElvUI/master
 function E:InitializeModules()	
 	for _, module in pairs(E['RegisteredModules']) do
 		if self:GetModule(module).Initialize then

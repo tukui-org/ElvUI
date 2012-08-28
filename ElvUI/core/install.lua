@@ -158,10 +158,13 @@ local function SetupCVars()
 	SetCVar("CombatDamage", 1)
 	SetCVar("CombatHealing", 1)
 	SetCVar("showTutorials", 0)
+<<<<<<< HEAD
 	SetCVar("autoDismountFlying", 1)
 	SetCVar("autoQuestWatch", 1)
 	SetCVar("autoQuestProgress", 1)
 	SetCVar("guildMemberNotify", 0)
+=======
+>>>>>>> ElvUI/master
 	SetCVar("UberTooltips", 1)
 	SetCVar("removeChatDelay", 1)
 	SetCVar("showVKeyCastbar", 1)
@@ -173,6 +176,7 @@ local function SetupCVars()
 	SetCVar("threatWarning", 3)
 	SetCVar('alwaysShowActionBars', 1)
 	SetCVar('lockActionBars', 1)
+<<<<<<< HEAD
 	SetCVar("showTimestamps", "%H:%M:%S ")
 	SetCVar("deselectOnClick", 1)
 	SetCVar("UnitNameFriendlyGuardianName", 1)
@@ -182,6 +186,9 @@ local function SetupCVars()
 	SetCVar("interactOnLeftClick", 0)
 	SetCVar('SpamFilter', 0) --Blocks mmo-champion.com, dumb... ElvUI one is more effeciant anyways.
 
+=======
+	SetCVar('SpamFilter', 0) --Blocks mmo-champion.com, dumb... ElvUI one is more effeciant anyways.
+>>>>>>> ElvUI/master
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
 	
@@ -223,7 +230,11 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.unitframe.units.focus.castbar.color = E:GetColor(classColor.r, classColor.b, classColor.g)
 		E.db.unitframe.units.boss.castbar.color = E:GetColor(classColor.r, classColor.b, classColor.g)
 		E.db.unitframe.units.arena.castbar.color = E:GetColor(classColor.r, classColor.b, classColor.g)
+<<<<<<< HEAD
 	elseif theme == "default" then
+=======
+	else
+>>>>>>> ElvUI/master
 		E.db.general.bordercolor = E:GetColor(.1, .1, .1)
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
 		E.db.general.backdropfadecolor = E:GetColor(.054, .054, .054, .8)
@@ -389,10 +400,22 @@ function E:SetupLayout(layout, noDataReset)
 			
 			E.db.unitframe.units.party.width = 80;
 			E.db.unitframe.units.party.height = 52;
+<<<<<<< HEAD
 			E.db.unitframe.units.party.healPrediction = true;
 			E.db.unitframe.units.party.health.frequentUpdates = true;
 			E.db.unitframe.units.party.debuffs.enable = true;
 			E.db.unitframe.units.party.debuffs.useFilter = 'Blacklist';
+=======
+			E.db.unitframe.units.party.health.text_format = "[healthcolor][health:deficit]"
+			E.db.unitframe.units.party.health.position = 'BOTTOM';
+			E.db.unitframe.units.party.health.orientation = 'VERTICAL';
+			E.db.unitframe.units.party.name.position = 'TOP';
+			E.db.unitframe.units.party.name.length = "SHORT";
+			E.db.unitframe.units.party.debuffs.anchorPoint = 'BOTTOMLEFT';
+			E.db.unitframe.units.party.debuffs.initialAnchor = 'TOPLEFT';
+			E.db.unitframe.units.party.debuffs.useFilter = 'Blacklist';
+			E.db.unitframe.units.party.debuffs.sizeOverride = 0;
+>>>>>>> ElvUI/master
 			E.db.unitframe.units.party.petsGroup.enable = true;
 			E.db.unitframe.units.party.petsGroup.width = 80;
 			E.db.unitframe.units.party.petsGroup.yOffset = 3;
@@ -422,6 +445,7 @@ function E:SetupLayout(layout, noDataReset)
 			
 		if not E.db.movers then E.db.movers = {}; end
 		if E.db.lowresolutionset then
+<<<<<<< HEAD
 			E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464230"
 			E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTElvUIParentBOTTOMRIGHT-464230"
 			E.db.movers.ElvUF_Raid40Mover = "BOTTOMElvUIParentBOTTOM0170"
@@ -457,6 +481,28 @@ function E:SetupLayout(layout, noDataReset)
 				BossHeaderMover:SetPoint("BOTTOMLEFT",E.UIParent,"BOTTOMLEFT",30,250)
 				E:SaveMoverPosition("BossHeaderMover")
 			end
+=======
+			E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-305242"
+			E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM305242"
+			E.db.movers.ElvUF_Raid40Mover = "BOTTOMElvUIParentBOTTOM080"
+			E.db.movers.ElvUF_Raid25Mover = "BOTTOMElvUIParentBOTTOM080"
+			E.db.movers.ElvUF_Raid10Mover = "BOTTOMElvUIParentBOTTOM080"
+			E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM305187"
+			E.db.movers.ElvUF_PartyMover = "BOTTOMElvUIParentBOTTOM0104"
+			E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM-305187"
+			E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310432"
+			
+		else
+			E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464242"
+			E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTElvUIParentBOTTOMRIGHT-464242"
+			E.db.movers.ElvUF_Raid40Mover = "BOTTOMElvUIParentBOTTOM050"
+			E.db.movers.ElvUF_Raid25Mover = "BOTTOMElvUIParentBOTTOM050"
+			E.db.movers.ElvUF_Raid10Mover = "BOTTOMElvUIParentBOTTOM050"
+			E.db.movers.ElvUF_TargetTargetMover = "BOTTOMRIGHTElvUIParentBOTTOMRIGHT-464151"
+			E.db.movers.ElvUF_PartyMover = "BOTTOMElvUIParentBOTTOM074"
+			E.db.movers.ElvUF_PetMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464151"
+			E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM280332"			
+>>>>>>> ElvUI/master
 		end
 	elseif E.db.lowresolutionset then
 		if not E.db.movers then E.db.movers = {}; end

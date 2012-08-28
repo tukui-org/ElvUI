@@ -12,6 +12,7 @@ function A:FormatTime(s)
 		return format("|cffeeeeee%dm|r", ceil(s / minute))
 	elseif s >= minute / 12 and s > E.db.auras.fadeThreshold then
 		return tostring(floor(s))..'s'
+<<<<<<< HEAD
 	end
 	return format("%.1fs", s)
 end
@@ -44,9 +45,13 @@ function A:UpdateTime(elapsed)
 			self.Bar:SetStatusBarColor(r, g, b)
 			-- Credit Hydra End
 		end
+=======
+>>>>>>> ElvUI/master
 	end
+	return format("%.1fs", s)
 end
 
+<<<<<<< HEAD
 function A:UpdateWeapons(button, slot, active, expiration)
 	if not button.texture then
 		button.texture = button:CreateTexture(nil, "BORDER")
@@ -182,6 +187,109 @@ function A:UpdateAuras(header, button)
 			button.Bar:SetMinMaxValues(0, duration)
 		end
 		-- Credit Hydra End
+=======
+function A:UpdateTime(elapsed)
+	if(self.expiration) then	
+		self.expiration = math.max(self.expiration - elapsed, 0)
+		if(self.expiration <= 0) then
+			self.time:SetText("")
+		else
+			local time = A:FormatTime(self.expiration)
+			if self.expiration <= 86400.5 and self.expiration > 3600.5 then
+				self.time:SetText("|cffcccccc"..time.."|r")
+				E:StopFlash(self)
+			elseif self.expiration <= 3600.5 and self.expiration > 60.5 then
+				self.time:SetText("|cffcccccc"..time.."|r")
+				E:StopFlash(self)
+			elseif self.expiration <= 60.5 and self.expiration > E.db.auras.fadeThreshold then
+				self.time:SetText("|cffcccccc"..time.."|r")
+				E:StopFlash(self)
+			elseif self.expiration <= E.db.auras.fadeThreshold then
+				self.time:SetText("|cffff0000"..time.."|r")
+				E:Flash(self, 1)
+			end
+		end
+	end
+end
+
+function A:UpdateWeapons(button, slot, active, expiration)
+	if not button.texture then
+		button.texture = button:CreateTexture(nil, "BORDER")
+		button.texture:SetAllPoints()
+		
+		button.time = button:CreateFontString(nil, "ARTWORK")
+		button.time:SetPoint("TOP", button, 'BOTTOM', 0, -2)
+		button.time:FontTemplate(nil, nil, 'OUTLINE')
+		button.time:SetShadowColor(0, 0, 0, 0.4)
+		button.time:SetShadowOffset(E.mult, -E.mult)
+				
+		button:CreateBackdrop('Default')
+		
+		button.highlight = button:CreateTexture(nil, "HIGHLIGHT")
+		button.highlight:SetTexture(1,1,1,0.45)
+		button.highlight:SetAllPoints(button.texture)		
+	end
+	local font = LSM:Fetch("font", self.db.font)
+	button.time:FontTemplate(font, self.db.fontSize, self.db.fontOutline)	
+	
+	if active then
+		button.id = GetInventorySlotInfo(slot)
+		button.quality = GetInventoryItemQuality('player', button.id)
+		button.icon = GetInventoryItemTexture("player", button.id)
+		button.texture:SetTexture(button.icon)
+		button.texture:SetTexCoord(unpack(E.TexCoords))		
+		button.expiration = (expiration/1000)
+		
+		local r, g, b = GetItemQualityColor(button.quality)
+		button.backdrop:SetBackdropBorderColor(r, g, b)
+		button:SetScript("OnUpdate", A.UpdateTime)		
+	elseif not active then
+		button.texture:SetTexture(nil)
+		button.time:SetText("")
+		button:SetScript("OnUpdate", nil)
+	end
+end
+
+function A:UpdateAuras(header, button)
+	if(not button.texture) then
+		button.texture = button:CreateTexture(nil, "BORDER")
+		button.texture:SetAllPoints()
+
+		button.count = button:CreateFontString(nil, "ARTWORK")
+		button.count:SetPoint("BOTTOMRIGHT", -1, 1)
+		button.count:FontTemplate()--safty
+
+		button.time = button:CreateFontString(nil, "ARTWORK")
+		button.time:SetPoint("TOP", button, 'BOTTOM', 0, -2)
+		button.time:FontTemplate()--safty
+
+		button:SetScript("OnUpdate", A.UpdateTime)
+		
+		button:CreateBackdrop('Default')
+
+		button.highlight = button:CreateTexture(nil, "HIGHLIGHT")
+		button.highlight:SetTexture(1,1,1,0.45)
+		button.highlight:SetAllPoints(button.texture)			
+		
+		E:SetUpAnimGroup(button)
+	end
+	local font = LSM:Fetch("font", self.db.font)
+	button.count:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
+	button.time:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
+	
+	local name, _, texture, count, dtype, duration, expiration = UnitAura(header:GetAttribute("unit"), button:GetID(), header:GetAttribute("filter"))
+	
+	if(name) then
+		button.texture:SetTexture(texture)
+		button.texture:SetTexCoord(unpack(E.TexCoords))
+		button.count:SetText(count > 1 and count or "")
+		button.expiration = expiration - GetTime()
+		
+		if(header:GetAttribute("filter") == "HARMFUL") then
+			local color = DebuffTypeColor[dtype] or DebuffTypeColor.none
+			button.backdrop:SetBackdropBorderColor(color.r * 3/5, color.g * 3/5, color.b * 3/5)
+		end
+>>>>>>> ElvUI/master
 	end
 end
 
@@ -233,9 +341,15 @@ function A:UpdateHeader(header)
 	header:SetAttribute("minHeight", (10 - E.private.auras.size) * db.maxWraps)
 	header:SetAttribute("wrapYOffset", -(18 + E.private.auras.size))
 	AurasHolder:Width(header:GetAttribute('minWidth'))
+<<<<<<< HEAD
 	
 	self.ScanAuras(header)
 	
+=======
+	
+	self.ScanAuras(header)
+	
+>>>>>>> ElvUI/master
 	A:PostDrag()
 end
 
@@ -260,7 +374,11 @@ function A:CreateAuraHeader(filter)
 	header:SetAttribute("unit", "player")
 	header:SetAttribute("filter", filter)
 	RegisterStateDriver(header, "visibility", "[petbattle] hide; show")
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> ElvUI/master
 	-- look for weapons buffs
 	if filter == "HELPFUL" then
 		header:SetAttribute("includeWeapons", 1)
@@ -272,6 +390,41 @@ function A:CreateAuraHeader(filter)
 	header:Show()
 	
 	return header
+<<<<<<< HEAD
+end
+
+function A:PostDrag(position)
+	local headers = {ElvUIPlayerBuffs,ElvUIPlayerDebuffs}
+	for _, header in pairs(headers) do
+		if header then
+			if not position then position = E:GetScreenQuadrant(header) end
+			if string.find(position, "LEFT") then
+				header:SetAttribute("point", "TOPLEFT")
+				header:SetAttribute("xOffset", (E.private.auras.size + 10))
+			else
+				header:SetAttribute("point", "TOPRIGHT")
+				header:SetAttribute("xOffset", -(E.private.auras.size + 10))		
+			end
+			
+			header:ClearAllPoints()
+		end
+	end
+	
+	if string.find(position, "LEFT") then
+		ElvUIPlayerBuffs:Point("TOPLEFT", AurasHolder, "TOPLEFT", 2, -2)
+		
+		if ElvUIPlayerDebuffs then
+			ElvUIPlayerDebuffs:Point("BOTTOMLEFT", AurasHolder, "BOTTOMLEFT", 2, 2)
+		end
+	else
+		ElvUIPlayerBuffs:Point("TOPRIGHT", AurasHolder, "TOPRIGHT", -2, -2)
+		
+		if ElvUIPlayerDebuffs then
+			ElvUIPlayerDebuffs:Point("BOTTOMRIGHT", AurasHolder, "BOTTOMRIGHT", -2, 2)	
+		end
+	end
+=======
+>>>>>>> ElvUI/master
 end
 
 function A:PostDrag(position)
@@ -305,6 +458,7 @@ function A:PostDrag(position)
 		end
 	end
 end
+
 
 function A:Initialize()
 	if self.db then return; end --IDK WHY BUT THIS IS GETTING CALLED TWICE FROM SOMEWHERE...

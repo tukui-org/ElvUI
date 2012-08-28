@@ -16,7 +16,11 @@ AB["barDefaults"] = {
 		['page'] = 1,
 		['bindButtons'] = "ACTIONBUTTON",
 		['conditions'] = string.format("[vehicleui] %d; [possessbar] %d; [overridebar] %d; [bar:2] 2; [bar:3] 1; [bar:4] 2; [bar:5] 1; [bar:6] 2;", GetVehicleBarIndex(), GetVehicleBarIndex(), GetOverrideBarIndex()),
+<<<<<<< HEAD
 		['position'] = "BOTTOM,ElvUIParent,BOTTOM,0,27",
+=======
+		['position'] = "BOTTOM,ElvUIParent,BOTTOM,0,4",
+>>>>>>> ElvUI/master
 	},
 	["bar2"] = {
 		['page'] = 5,

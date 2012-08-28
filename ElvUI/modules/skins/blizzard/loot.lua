@@ -36,6 +36,10 @@ local function LoadSkin()
 	LootHistoryFrame:StripTextures()
 	LootHistoryFrame:SetTemplate('Transparent')
 	S:HandleCloseButton(LootHistoryFrame.ResizeButton)
+<<<<<<< HEAD
+=======
+	LootHistoryFrame.ResizeButton.text:SetText("v v v v")
+>>>>>>> ElvUI/master
 	LootHistoryFrame.ResizeButton:SetTemplate()
 	LootHistoryFrame.ResizeButton:Width(LootHistoryFrame:GetWidth())
 	LootHistoryFrame.ResizeButton:Height(19)

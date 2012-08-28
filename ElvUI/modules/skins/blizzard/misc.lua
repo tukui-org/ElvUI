@@ -268,6 +268,10 @@ local function LoadSkin()
 	WatchFrameCollapseExpandButton:StripTextures()
 	S:HandleCloseButton(WatchFrameCollapseExpandButton)
 	WatchFrameCollapseExpandButton:Size(30)
+<<<<<<< HEAD
+=======
+	WatchFrameCollapseExpandButton.text:SetText('-')
+>>>>>>> ElvUI/master
 	WatchFrameCollapseExpandButton:SetFrameStrata('MEDIUM')
 	
 	hooksecurefunc('WatchFrame_Expand', function()

@@ -34,6 +34,7 @@ E.Options.args.auras = {
 			end,	
 			disabled = function() return not E.private.general.minimap.enable end,
 		},
+<<<<<<< HEAD
 		visualtimer = {
 			order = 4,
 			name = L['Visual Timers'],
@@ -47,6 +48,10 @@ E.Options.args.auras = {
 		},
 		general = {
 			order = 5,
+=======
+		general = {
+			order = 4,
+>>>>>>> ElvUI/master
 			type = 'group',
 			guiInline = true,
 			name = L['General'],
@@ -77,7 +82,11 @@ E.Options.args.auras = {
 			},
 		},
 		fontGroup = {
+<<<<<<< HEAD
 			order = 6,
+=======
+			order = 5,
+>>>>>>> ElvUI/master
 			type = 'group',
 			guiInline = true,
 			name = L['Fonts'],

@@ -325,6 +325,36 @@ function S:HandleItemButton(b, shrinkIcon)
 		icon = _G[b:GetName()..'IconTexture']
 	elseif b:GetName() and _G[b:GetName()..'Icon'] then
 		icon = _G[b:GetName()..'Icon']
+<<<<<<< HEAD
+=======
+	end
+	
+	if icon then
+		icon:SetTexCoord(unpack(E.TexCoords))
+
+		-- create a backdrop around the icon
+		
+		if shrinkIcon then
+			b.backdrop:SetAllPoints()
+			icon:SetInside(b)
+		else
+			b.backdrop:SetOutside(icon)
+		end
+		icon:SetParent(b.backdrop)
+	end
+	b.isSkinned = true
+end
+
+function S:HandleCloseButton(f, point, text)
+	f:StripTextures()
+	
+	if not f.backdrop then
+		f:CreateBackdrop('Default', true)
+		f.backdrop:Point('TOPLEFT', 7, -8)
+		f.backdrop:Point('BOTTOMRIGHT', -8, 8)
+		f:HookScript('OnEnter', SetModifiedBackdrop)
+		f:HookScript('OnLeave', SetOriginalBackdrop)	
+>>>>>>> ElvUI/master
 	end
 	
 	if icon then

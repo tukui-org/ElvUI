@@ -121,7 +121,11 @@ for i=10, 40, 15 do
 
 		if not header.positioned then
 			header:ClearAllPoints()
+<<<<<<< HEAD
 			header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 210)
+=======
+			header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)	
+>>>>>>> ElvUI/master
 			E:CreateMover(header, header:GetName()..'Mover', 'Raid 1-'..i..' Frames', nil, nil, nil, 'ALL,RAID'..i)
 			
 			header:SetAttribute('minHeight', header.dirtyHeight)

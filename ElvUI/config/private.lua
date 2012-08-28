@@ -27,7 +27,10 @@ V["nameplate"] = {
 V['auras'] = {
 	['enable'] = true,
 	['size'] = 26,
+<<<<<<< HEAD
 	['visualtimer'] = true,
+=======
+>>>>>>> ElvUI/master
 }
 
 V['chat'] = {

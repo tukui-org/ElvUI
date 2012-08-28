@@ -859,6 +859,7 @@ Name Formats:
 'name-medium' - Name restricted to 15 characters
 'name-long' - Name restricted to 20 characters
 
+<<<<<<< HEAD
 To disable leave the field blank, if you need more information visit http://www.tukui.org]=];
 
 --Personal Locale Strings
@@ -866,3 +867,6 @@ L["Bottom_Datatext_Panel"] = "Bottom Datatext Panel"
 L["ChatTab_Datatext_Panel"] = "Right Chat Tab"
 L['Show timers as bars instead of text.'] = 'Show timers as bars instead of text.'
 L['Visual Timers'] =  'Visual Timers'
+=======
+To disable leave the field blank, if you need more information visit http://www.tukui.org]=];
+>>>>>>> ElvUI/master
