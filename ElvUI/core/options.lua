@@ -323,7 +323,63 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.threat[ info[#info] ] = value; E:GetModule('Threat'):UpdatePosition() end,	
 				},		
 			},
-		},				
+		},	
+		totems = {
+			order = 5,
+			type = "group",
+			name = TUTORIAL_TITLE47,
+			guiInline = true,
+			get = function(info) return E.db.general.totems[ info[#info] ] end,
+			set = function(info, value) E.db.general.totems[ info[#info] ] = value; E:GetModule('Totems'):PositionAndSize() end,
+			args = {
+				enable = {
+					order = 1,
+					type = "toggle",
+					name = L["Enable"],
+					set = function(info, value) E.db.general.totems[ info[#info] ] = value; E:GetModule('Totems'):ToggleEnable() end,
+				},					
+				size = {
+					order = 2,
+					type = 'range',
+					name = L["Button Size"],
+					desc = L['Set the size of your bag buttons.'],
+					min = 24, max = 60, step = 1,
+				},
+				spacing = {
+					order = 3,
+					type = 'range',
+					name = L['Button Spacing'],
+					desc = L['The spacing between buttons.'],
+					min = 1, max = 10, step = 1,			
+				},
+				showBackdrop = {
+					order = 4,
+					type = 'toggle',
+					name = L['Backdrop'],
+					set = function(info, value) E.db.general.totems[ info[#info] ] = value; E:GetModule('Totems'):Update() end,
+				},
+				sortDirection = {
+					order = 6,
+					type = 'select',
+					name = L["Sort Direction"],
+					desc = L['The direction that the bag frames will grow from the anchor.'],
+					values = {
+						['ASCENDING'] = L['Ascending'],
+						['DESCENDING'] = L['Descending'],
+					},
+				},
+				growthDirection = {
+					order = 7,
+					type = 'select',
+					name = L['Bar Direction'],
+					desc = L['The direction that the bag frames be (Horizontal or Vertical).'],
+					values = {
+						['VERTICAL'] = L['Vertical'],
+						['HORIZONTAL'] = L['Horizontal'],
+					},
+				},
+			},
+		},					
 	},
 }
 
@@ -549,7 +605,13 @@ local TESTERS = {
 	"Veiled",
 	"Blazeflack",
 	"Repooc",
-	"Darth Predator"
+	"Darth Predator",
+	'Alex',
+	'Nidra',
+	'Kurhyus',
+	'BuG',
+	'Yachanay',
+	'Catok'
 }
 
 table.sort(DONATORS, function(a,b) return a < b end) --Alphabetize

@@ -398,33 +398,6 @@ function UF:Construct_DeathKnightResourceBar(frame)
 	return runes
 end
 
-function UF:Construct_ShamanTotemBar(frame)
-	local totems = CreateFrame("Frame", nil, frame)
-	totems:CreateBackdrop('Default')
-	totems.Destroy = true
-
-	for i = 1, UF['classMaxResourceBar'][E.myclass] do
-		totems[i] = CreateFrame("StatusBar", nil, totems)
-		UF['statusbars'][totems[i]] = true
-		
-		totems[i]:SetFrameStrata(frame:GetFrameStrata())
-		totems[i]:SetFrameLevel(frame:GetFrameLevel())
-		
-		totems[i]:CreateBackdrop('Default')
-		totems[i]:SetStatusBarTexture(E['media'].blankTex)
-		totems[i]:GetStatusBarTexture():SetHorizTile(false)
-		totems[i]:SetMinMaxValues(0, 1)
-
-		
-		totems[i].bg = totems[i]:CreateTexture(nil, "BORDER")
-		totems[i].bg:SetAllPoints()
-		totems[i].bg:SetTexture(E['media'].blankTex)
-		totems[i].bg.multiplier = 0.3
-	end
-	
-	return totems
-end
-
 function UF:Construct_DruidResourceBar(frame)
 	local eclipseBar = CreateFrame('Frame', nil, frame)
 	eclipseBar:CreateBackdrop('Default')

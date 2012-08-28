@@ -470,14 +470,6 @@ E.Options.args.actionbar = {
 			order = 5,
 			disabled = function() return not E.private.actionbar.enable end,
 		},
-		useMaxPaging = {
-			type = 'toggle',
-			name = L['Max Paging'],
-			desc = L['When enabled the main actionbar will use the maximum amount of pages available. This means if you have another actionbar disabled, the actionbar page will become available on the main actionbar. Having this disabled will limit the main actionbar to two pages.'],
-			order = 6,
-			set = function(info, value) E.db.actionbar[ info[#info] ] = value; AB:MultiActionBar_Update() end,
-			disabled = function() return not E.private.actionbar.enable end,
-		},
 		keyDown = {
 			type = 'toggle',
 			name = L['Key Down'],

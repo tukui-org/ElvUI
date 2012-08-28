@@ -218,7 +218,7 @@ local function Update(frame, event, unit)
 				key = name..texture
 			end
 			icon = icons[key]
-			if icon and (icon.anyUnit or (caster and icon.fromUnits[caster])) then
+			if icon and (icon.anyUnit or (caster and icon.fromUnits and icon.fromUnits[caster])) then
 				resetIcon(icon, watch, count, duration, remaining)
 				GUIDs[guid][key] = true
 				found[key] = true

@@ -5,7 +5,7 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
-local CAN_HAVE_CLASSBAR = (E.myclass == "PALADIN" or E.myclass == "SHAMAN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK" or E.myclass == "PRIEST" or E.myclass == "MONK" or E.myclass == 'MAGE')
+local CAN_HAVE_CLASSBAR = (E.myclass == "PALADIN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK" or E.myclass == "PRIEST" or E.myclass == "MONK" or E.myclass == 'MAGE')
 
 function UF:Construct_PlayerFrame(frame)
 	frame.Threat = self:Construct_ThreatGlow(frame, true)
@@ -32,8 +32,6 @@ function UF:Construct_PlayerFrame(frame)
 		frame.ShardBar = self:Construct_WarlockResourceBar(frame)
 	elseif E.myclass == "DEATHKNIGHT" then
 		frame.Runes = self:Construct_DeathKnightResourceBar(frame)
-	elseif E.myclass == "SHAMAN" then
-		frame.TotemBar = self:Construct_ShamanTotemBar(frame)
 	elseif E.myclass == "DRUID" then
 		frame.EclipseBar = self:Construct_DruidResourceBar(frame)
 		frame.DruidAltMana = self:Construct_DruidAltManaBar(frame)
@@ -498,7 +496,7 @@ function UF:Update_PlayerFrame(frame, db)
 		local x, y = E:GetXYOffset(db.buffs.anchorPoint)
 		local attachTo = self:GetAuraAnchorFrame(frame, db.buffs.attachTo)
 		
-		buffs:Point(E.InversePoints[db.buffs.anchorPoint], attachTo, db.buffs.anchorPoint, x, y)
+		buffs:Point(E.InversePoints[db.buffs.anchorPoint], attachTo, db.buffs.anchorPoint, x + db.buffs.xOffset, y + db.buffs.yOffset)
 		buffs:Height(buffs.size * rows)
 		buffs["growth-y"] = db.buffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
 		buffs["growth-x"] = db.buffs.anchorPoint == 'LEFT' and 'LEFT' or  db.buffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.buffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
@@ -533,7 +531,7 @@ function UF:Update_PlayerFrame(frame, db)
 		local x, y = E:GetXYOffset(db.debuffs.anchorPoint)
 		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS' and db.buffs.enable)
 		
-		debuffs:Point(E.InversePoints[db.debuffs.anchorPoint], attachTo, db.debuffs.anchorPoint, x, y)
+		debuffs:Point(E.InversePoints[db.debuffs.anchorPoint], attachTo, db.debuffs.anchorPoint, x + db.debuffs.xOffset, y + db.debuffs.yOffset)
 		debuffs:Height(debuffs.size * rows)
 		debuffs["growth-y"] = db.debuffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
 		debuffs["growth-x"] = db.debuffs.anchorPoint == 'LEFT' and 'LEFT' or  db.debuffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.debuffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
@@ -849,64 +847,7 @@ function UF:Update_PlayerFrame(frame, db)
 				runes:Hide()
 				RuneFrame.Show = RuneFrame.Hide
 				RuneFrame:Hide()				
-			end					
-		elseif E.myclass == "SHAMAN" then
-			local totems = frame.TotemBar
-			
-			totems:ClearAllPoints()
-			if not USE_MINI_CLASSBAR then
-				totems:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
-				totems:SetFrameStrata("LOW")
-			else
-				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 4/5
-				totems:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
-				totems:SetFrameStrata("MEDIUM")			
-			end
-			
-			totems:Width(CLASSBAR_WIDTH)
-			totems:Height(CLASSBAR_HEIGHT - (BORDER*2))
-
-			for i=1, 4 do
-				totems[i]:SetHeight(totems:GetHeight())
-				totems[i]:SetWidth(E:Scale(totems:GetWidth() - 3) / 4)	
-
-				if USE_MINI_CLASSBAR then
-					totems[i].backdrop:Show()
-				else
-					totems[i].backdrop:Hide()
-				end	
-				
-				totems[i]:ClearAllPoints()
-				if i == 1 then
-					totems[i]:SetPoint("LEFT", totems)
-				else
-					if USE_MINI_CLASSBAR then
-						totems[i]:Point("LEFT", totems[i-1], "RIGHT", SPACING+(BORDER*2)+4, 0)
-					else
-						totems[i]:Point("LEFT", totems[i-1], "RIGHT", SPACING, 0)
-					end
-				end		
-
-				if not USE_MINI_CLASSBAR then
-					totems[i].backdrop:Hide()
-				else
-					totems[i].backdrop:Show()
-				end						
-			end
-			
-			if not USE_MINI_CLASSBAR then
-				totems.backdrop:Show()
-			else
-				totems.backdrop:Hide()
-			end		
-
-			if USE_CLASSBAR and not frame:IsElementEnabled('TotemBar') then
-				frame:EnableElement('TotemBar')
-				totems:Show()
-			elseif not USE_CLASSBAR and frame:IsElementEnabled('TotemBar') then
-				frame:DisableElement('TotemBar')	
-				totems:Hide()
-			end					
+			end								
 		elseif E.myclass == "DRUID" then
 			local eclipseBar = frame.EclipseBar
 

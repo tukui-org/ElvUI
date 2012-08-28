@@ -806,6 +806,9 @@ local function LoadSkin()
         "UnitFramePanelArenaEnemyCastBar",
         "UnitFramePanelArenaEnemyPets",
         "UnitFramePanelFullSizeFocusFrame",
+		
+		--Watev
+		"NamesPanelUnitNameplatesNameplateClassColors",
     }
     for i = 1, getn(interfacecheckbox) do
         local icheckbox = _G["InterfaceOptions"..interfacecheckbox[i]]

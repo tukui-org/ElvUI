@@ -27,6 +27,8 @@ local noteString = join("", "|cff999999   ", LABEL_NOTE, ":|r %s")
 local officerNoteString = join("", "|cff999999   ", GUILD_RANK1_DESC, ":|r %s")
 local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
 local guildTable, guildXP, guildMotD = {}, {}, ""
+local MOBILE_BUSY_ICON = "|TInterface\\ChatFrame\\UI-ChatIcon-ArmoryChat-BusyMobile:14:14:0:0:16:16:0:16:0:16|t";
+local MOBILE_AWAY_ICON = "|TInterface\\ChatFrame\\UI-ChatIcon-ArmoryChat-AwayMobile:14:14:0:0:16:16:0:16:0:16|t";
 local lastPanel
 
 local function SortGuildTable(shift)
@@ -43,23 +45,34 @@ end
 
 local function BuildGuildTable()
 	wipe(guildTable)
-	local name, rank, level, zone, note, officernote, connected, status, class
+	local name, rank, level, zone, note, officernote, connected, status, class, isMobile
 	local count = 0
 	for i = 1, GetNumGuildMembers() do
-		name, rank, rankIndex, level, _, zone, note, officernote, connected, status, class = GetGuildRosterInfo(i)
-		-- we are only interested in online members
-		
-		if status == 1 then
-			status = "|cffFFFFFF[|r|cffFF0000"..L['AFK'].."|r|cffFFFFFF]|r"
-		elseif status == 2 then
-			status = "|cffFFFFFF[|r|cffFF0000"..L['DND'].."|r|cffFFFFFF]|r"
-		else 
+		name, rank, rankIndex, level, _, zone, note, officernote, connected, status, class, _, _, isMobile = GetGuildRosterInfo(i)
+
+		if ( isMobile ) then
+			if status == 1 then
+				name = name..' '..MOBILE_AWAY_ICON
+			elseif status == 2 then
+				name = name..' '..MOBILE_BUSY_ICON
+			else
+				name = name..' '..ChatFrame_GetMobileEmbeddedTexture(73/255, 177/255, 73/255)
+			end
+			zone = '';
 			status = '';
+		else
+			if status == 1 then
+				status = "|cffFFFFFF[|r|cffFF0000"..L['AFK'].."|r|cffFFFFFF]|r"
+			elseif status == 2 then
+				status = "|cffFFFFFF[|r|cffFF0000"..L['DND'].."|r|cffFFFFFF]|r"
+			else 
+				status = '';
+			end		
 		end
 		
 		if connected then 
 			count = count + 1
-			guildTable[count] = { name, rank, level, zone, note, officernote, connected, status, class, rankIndex }
+			guildTable[count] = { name, rank, level, zone, note, officernote, connected, status, class, rankIndex, isMobile }
 		end
 	end
 	SortGuildTable(IsShiftKeyDown())
@@ -156,11 +169,10 @@ local function Click(self, btn)
 			info = guildTable[i]
 			if info[7] and info[1] ~= E.myname then
 				local classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
-
 				if UnitInParty(info[1]) or UnitInRaid(info[1]) then
 					grouped = "|cffaaaaaa*|r"
-				else
-					menuCountInvites = menuCountInvites +1
+				elseif not info[11] then
+					menuCountInvites = menuCountInvites + 1
 					grouped = ""
 					menuList[2].menuList[menuCountInvites] = {text = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info[3], classc.r*255,classc.g*255,classc.b*255, info[1], ""), arg1 = info[1],notCheckable=true, func = inviteClick}
 				end

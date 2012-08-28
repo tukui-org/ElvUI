@@ -39,7 +39,6 @@ A.SpellHaste = {
 }
 
 A.CriticalStrike = {
-	19506, -- Trueshot Aura
 	1459, -- Arcane Brilliance
 	61316, -- Dalaran Brilliance
 	24932, -- Leader of The Pact

@@ -44,7 +44,6 @@ UF['classMaxResourceBar'] = {
 	['WARLOCK'] = 4,
 	['PRIEST'] = 3,
 	['MONK'] = 5,
-	['SHAMAN'] = 4,
 	['MAGE'] = 6,
 }
 
@@ -526,7 +525,8 @@ function ElvUF:DisableBlizzard(unit)
 		PlayerFrame:RegisterEvent('UNIT_ENTERED_VEHICLE')
 		PlayerFrame:RegisterEvent('UNIT_EXITING_VEHICLE')
 		PlayerFrame:RegisterEvent('UNIT_EXITED_VEHICLE')
-
+		PlayerFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
+		
 		-- User placed frames don't animate
 		PlayerFrame:SetUserPlaced(true)
 		PlayerFrame:SetDontSavePosition(true)

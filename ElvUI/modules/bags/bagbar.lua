@@ -87,7 +87,7 @@ end
 
 function B:LoadBagBar()
 	local ElvUIBags = CreateFrame("Frame", "ElvUIBags", E.UIParent)
-	ElvUIBags:SetPoint('TOPLEFT', LeftChatPanel, 'TOPRIGHT', 4)
+	ElvUIBags:SetPoint('TOPRIGHT', RightChatPanel, 'TOPLEFT', -4, 0)
 	ElvUIBags.buttons = {};
 	ElvUIBags:CreateBackdrop()
 	ElvUIBags.backdrop:SetAllPoints()
