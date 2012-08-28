@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local DT = E:GetModule('DataTexts')
 
 local displayString = ""
@@ -7,7 +7,6 @@ local total, totalDurability, totalPerc = 0, 0, 0
 local current, max, lastPanel
 local invDurability = {}
 local slots = {
-	["RangedSlot"] = L['Ranged'],
 	["SecondaryHandSlot"] = L['Offhand'],
 	["MainHandSlot"] = L['Main Hand'],
 	["FeetSlot"] = L['Feet'],

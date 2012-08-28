@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local AB = E:GetModule('ActionBars')
 local group
 
@@ -57,14 +57,14 @@ local function BuildABConfig()
 					order = 6,
 					type = 'range',
 					name = L['Buttons'],
-					desc = L['The ammount of buttons to display.'],
+					desc = L['The amount of buttons to display.'],
 					min = 1, max = NUM_ACTIONBAR_BUTTONS, step = 1,				
 				},
 				buttonsPerRow = {
 					order = 7,
 					type = 'range',
 					name = L['Buttons Per Row'],
-					desc = L['The ammount of buttons to display per row.'],
+					desc = L['The amount of buttons to display per row.'],
 					min = 1, max = NUM_ACTIONBAR_BUTTONS, step = 1,					
 				},
 				buttonsize = {
@@ -175,14 +175,14 @@ local function BuildABConfig()
 				order = 6,
 				type = 'range',
 				name = L['Buttons'],
-				desc = L['The ammount of buttons to display.'],
+				desc = L['The amount of buttons to display.'],
 				min = 1, max = NUM_PET_ACTION_SLOTS, step = 1,				
 			},
 			buttonsPerRow = {
 				order = 7,
 				type = 'range',
 				name = L['Buttons Per Row'],
-				desc = L['The ammount of buttons to display per row.'],
+				desc = L['The amount of buttons to display per row.'],
 				min = 1, max = NUM_PET_ACTION_SLOTS, step = 1,					
 			},
 			buttonsize = {
@@ -229,15 +229,15 @@ local function BuildABConfig()
 			},
 		},
 	}	
-	group['barShapeShift'] = {
+	group['stanceBar'] = {
 		order = i,
-		name = L['ShapeShift Bar'],
+		name = L['Stance Bar'],
 		type = 'group',
 		order = 200,
 		guiInline = false,
 		disabled = function() return not E.private.actionbar.enable end,
-		get = function(info) return E.db.actionbar['barShapeShift'][ info[#info] ] end,
-		set = function(info, value) E.db.actionbar['barShapeShift'][ info[#info] ] = value; AB:UpdateButtonSettings() end,
+		get = function(info) return E.db.actionbar['stanceBar'][ info[#info] ] end,
+		set = function(info, value) E.db.actionbar['stanceBar'][ info[#info] ] = value; AB:UpdateButtonSettings() end,
 		args = {
 			enabled = {
 				order = 1,
@@ -249,7 +249,7 @@ local function BuildABConfig()
 				type = 'execute',
 				name = L['Restore Bar'],
 				desc = L['Restore the actionbars default settings'],
-				func = function() E:CopyTable(E.db.actionbar['barShapeShift'], P.actionbar['barShapeShift']); E:ResetMovers('Stance Bar'); AB:UpdateButtonSettings() end,
+				func = function() E:CopyTable(E.db.actionbar['stanceBar'], P.actionbar['stanceBar']); E:ResetMovers('Stance Bar'); AB:UpdateButtonSettings() end,
 			},	
 			point = {
 				order = 3,
@@ -274,14 +274,14 @@ local function BuildABConfig()
 				order = 6,
 				type = 'range',
 				name = L['Buttons'],
-				desc = L['The ammount of buttons to display.'],
+				desc = L['The amount of buttons to display.'],
 				min = 1, max = NUM_PET_ACTION_SLOTS, step = 1,				
 			},
 			buttonsPerRow = {
 				order = 7,
 				type = 'range',
 				name = L['Buttons Per Row'],
-				desc = L['The ammount of buttons to display per row.'],
+				desc = L['The amount of buttons to display per row.'],
 				min = 1, max = NUM_PET_ACTION_SLOTS, step = 1,					
 			},
 			buttonsize = {
@@ -433,39 +433,6 @@ local function BuildABConfig()
 			},				
 		},
 	}	
-	
-	if E.myclass == "SHAMAN" then
-		group['barTotem'] = {
-			order = i,
-			name = L['Totem Bar'],
-			type = 'group',
-			order = 200,
-			guiInline = false,
-			disabled = function() return not E.private.actionbar.enable or not E.myclass == "SHAMAN" end,
-			get = function(info) return E.db.actionbar['barTotem'][ info[#info] ] end,
-			set = function(info, value) E.db.actionbar['barTotem'][ info[#info] ] = value; AB:AdjustTotemSettings() end,
-			args = {
-				enabled = {
-					order = 1,
-					type = 'toggle',
-					name = L['Enable'],
-				},
-				restorePosition = {
-					order = 2,
-					type = 'execute',
-					name = L['Restore Bar'],
-					desc = L['Restore the actionbars default settings'],
-					func = function() E:CopyTable(E.db.actionbar['barTotem'], P.actionbar['barTotem']); E:ResetMovers('Totem Bar'); AB:AdjustTotemSettings() end,
-				},			
-				mouseover = {
-					order = 3,
-					name = L['Mouse Over'],
-					desc = L['The frame is not shown unless you mouse over the frame.'],
-					type = "toggle",
-				},				
-			},
-		}
-	end
 end
 
 E.Options.args.actionbar = {
@@ -480,7 +447,7 @@ E.Options.args.actionbar = {
 			type = "toggle",
 			name = L["Enable"],
 			get = function(info) return E.private.actionbar[ info[#info] ] end,
-			set = function(info, value) E.private.actionbar[ info[#info] ] = value; StaticPopup_Show("PRIVATE_RL") end
+			set = function(info, value) E.private.actionbar[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},
 		toggleKeybind = {
 			order = 3,
@@ -503,21 +470,95 @@ E.Options.args.actionbar = {
 			order = 5,
 			disabled = function() return not E.private.actionbar.enable end,
 		},
-		useMaxPaging = {
+		keyDown = {
 			type = 'toggle',
-			name = L['Max Paging'],
-			desc = L['When enabled the main actionbar will use the maximum amount of pages available. This means if you have another actionbar disabled, the actionbar page will become available on the main actionbar. Having this disabled will limit the main actionbar to two pages.'],
-			order = 6,
-			disabled = function() return not E.private.actionbar.enable end,
-		},
-		fontsize = {
-			type = 'range',
-			name = L['Font Size'],
-			desc = L['Set the font size of the action buttons.'],
-			min = 5, max = 18, step = 1,
+			name = L['Key Down'],
+			desc = OPTION_TOOLTIP_ACTION_BUTTON_USE_KEY_DOWN,
 			order = 7,
 			disabled = function() return not E.private.actionbar.enable end,
+		},
+		movementModifier = {
+			type = 'select',
+			name = PICKUP_ACTION_KEY_TEXT,
+			desc = L['The button you must hold down in order to drag an ability to another action button.'],	
+			disabled = function() return not E.private.actionbar.enable end,
+			order = 8,
+			values = {
+				['SHIFT'] = SHIFT_KEY,
+				['ALT'] = ALT_KEY,
+				['CTRL'] = CTRL_KEY,
+			},
+		},
+		fontGroup = {
+			order = 9,
+			type = 'group',
+			guiInline = true,
+			disabled = function() return not E.private.actionbar.enable end,
+			name = L['Fonts'],
+			args = {
+				font = {
+					type = "select", dialogControl = 'LSM30_Font',
+					order = 4,
+					name = L["Font"],
+					values = AceGUIWidgetLSMlists.font,
+				},
+				fontSize = {
+					order = 5,
+					name = L["Font Size"],
+					type = "range",
+					min = 6, max = 22, step = 1,
+				},	
+				fontOutline = {
+					order = 6,
+					name = L["Font Outline"],
+					desc = L["Set the font outline."],
+					type = "select",
+					values = {
+						['NONE'] = L['None'],
+						['OUTLINE'] = 'OUTLINE',
+						['MONOCHROME'] = 'MONOCHROME',
+						['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+						['THICKOUTLINE'] = 'THICKOUTLINE',
+					},
+				},	
+			},
 		},		
+		microbar = {
+			type = "group",
+			order = 10,
+			name = L['Micro Bar'],
+			disabled = function() return not E.private.actionbar.enable end,
+			guiInline = true,
+			get = function(info) return E.db.actionbar.microbar[ info[#info] ] end,
+			set = function(info, value) E.db.actionbar.microbar[ info[#info] ] = value; AB:UpdateMicroPositionDimensions() end,
+			args = {
+				enabled = {
+					order = 1,
+					type = "toggle",
+					name = L["Enable"],
+				},		
+				alpha = {
+					order = 2,
+					type = 'range',
+					name = L['Alpha'],
+					desc = L['Change the alpha level of the frame.'],
+					min = 0, max = 1, step = 0.1,					
+				},						
+				mouseover = {
+					order = 3,
+					name = L['Mouse Over'],
+					desc = L['The frame is not shown unless you mouse over the frame.'],
+					type = "toggle",
+				},	
+				buttonsPerRow = {
+					order = 4,
+					type = 'range',
+					name = L['Buttons Per Row'],
+					desc = L['The amount of buttons to display per row.'],
+					min = 1, max = #MICRO_BUTTONS, step = 1,					
+				},				
+			},
+		},
 	},
 }
 group = E.Options.args.actionbar.args

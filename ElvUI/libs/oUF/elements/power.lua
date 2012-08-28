@@ -9,6 +9,7 @@ for power, color in next, PowerBarColor do
 end
 
 local GetDisplayPower = function(power, unit)
+	if not unit then return; end
 	local _, _, _, _, _, _, showOnRaid = UnitAlternatePowerInfo(unit)
 	if(power.displayAltPower and showOnRaid) then
 		return ALTERNATE_POWER_INDEX
@@ -18,7 +19,7 @@ local GetDisplayPower = function(power, unit)
 end
 
 local Update = function(self, event, unit)
-	if(self.unit ~= unit) then return end
+	if(self.unit ~= unit) or not unit then return end
 	local power = self.Power
 
 	if(power.PreUpdate) then power:PreUpdate(unit) end

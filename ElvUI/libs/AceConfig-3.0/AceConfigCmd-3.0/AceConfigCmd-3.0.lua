@@ -1,7 +1,7 @@
 --- AceConfigCmd-3.0 handles access to an options table through the "command line" interface via the ChatFrames.
 -- @class file
 -- @name AceConfigCmd-3.0
--- @release $Id: AceConfigCmd-3.0.lua 904 2009-12-13 11:56:37Z nevcairiel $
+-- @release $Id: AceConfigCmd-3.0.lua 1045 2011-12-09 17:58:40Z nevcairiel $
 
 --[[
 AceConfigCmd-3.0
@@ -15,7 +15,7 @@ REQUIRES: AceConsole-3.0 for command registration (loaded on demand)
 -- TODO: plugin args
 
 
-local MAJOR, MINOR = "AceConfigCmd-3.0", 12
+local MAJOR, MINOR = "AceConfigCmd-3.0", 13
 local AceConfigCmd = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigCmd then return end
@@ -642,7 +642,14 @@ local function handle(info, inputpos, tab, depth, retfalse)
 		
 		local r, g, b, a
 		
-		if tab.hasAlpha then
+		local hasAlpha = tab.hasAlpha
+		if type(hasAlpha) == "function" or type(hasAlpha) == "string" then
+			info.hasAlpha = hasAlpha
+			hasAlpha = callmethod(info, inputpos, tab, 'hasAlpha')
+			info.hasAlpha = nil
+		end
+		
+		if hasAlpha then
 			if str:len() == 8 and str:find("^%x*$")  then
 				--parse a hex string
 				r,g,b,a = tonumber(str:sub(1, 2), 16) / 255, tonumber(str:sub(3, 4), 16) / 255, tonumber(str:sub(5, 6), 16) / 255, tonumber(str:sub(7, 8), 16) / 255

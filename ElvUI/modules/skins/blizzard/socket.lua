@@ -1,10 +1,11 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.socket ~= true then return end
 	ItemSocketingFrame:StripTextures()
 	ItemSocketingFrame:SetTemplate("Transparent")
+	ItemSocketingFrameInset:Kill()
 	ItemSocketingScrollFrame:StripTextures()
 	ItemSocketingScrollFrame:CreateBackdrop("Transparent")
 	S:HandleScrollBar(ItemSocketingScrollFrameScrollBar, 2)
@@ -19,9 +20,8 @@ local function LoadSkin()
 		button_bracket:Kill()
 		button_bg:Kill()
 		button_icon:SetTexCoord(unpack(E.TexCoords))
-		button_icon:ClearAllPoints()
-		button_icon:Point("TOPLEFT", 2, -2)
-		button_icon:Point("BOTTOMRIGHT", -2, 2)
+		button_icon:SetInside()
+
 		ItemSocketingFrame:HookScript("OnUpdate", function(self)
 			gemColor = GetSocketTypes(i)
 			local color = GEM_TYPE_INFO[gemColor]
@@ -34,7 +34,7 @@ local function LoadSkin()
 	ItemSocketingSocketButton:ClearAllPoints()
 	ItemSocketingSocketButton:Point("BOTTOMRIGHT", ItemSocketingFrame, "BOTTOMRIGHT", -5, 5)
 	S:HandleButton(ItemSocketingSocketButton)
-	S:HandleCloseButton(ItemSocketingCloseButton)
+	S:HandleCloseButton(ItemSocketingFrameCloseButton)
 end
 
 S:RegisterSkin("Blizzard_ItemSocketingUI", LoadSkin)

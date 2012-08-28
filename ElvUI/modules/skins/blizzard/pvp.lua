@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -99,9 +99,9 @@ local function LoadSkin()
 	PVPFrameConquestBarBG:Kill()
 	PVPFrameConquestBarShadow:Kill()
 	PVPFrameConquestBar.progress:SetTexture(E["media"].normTex)
-	PVPFrameConquestBar:CreateBackdrop("Default")
-	PVPFrameConquestBar.backdrop:Point("TOPLEFT", PVPFrameConquestBar.progress, "TOPLEFT", -2, 2)
-	PVPFrameConquestBar.backdrop:Point("BOTTOMRIGHT", PVPFrameConquestBar, "BOTTOMRIGHT", -2, 2)	
+	PVPFrameConquestBar:CreateBackdrop('Default')
+	PVPFrameConquestBar.backdrop:SetPoint('TOPLEFT', PVPFrameConquestBar, 'TOPLEFT', -2, -1)
+	PVPFrameConquestBar.backdrop:SetPoint('BOTTOMRIGHT', PVPFrameConquestBar, 'BOTTOMRIGHT', 2, 1)
 	
 	PVPBannerFrame:CreateBackdrop("Transparent")
 	PVPBannerFrame.backdrop:Point( "TOPLEFT", PVPBannerFrame, "TOPLEFT")

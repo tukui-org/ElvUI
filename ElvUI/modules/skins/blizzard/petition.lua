@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -6,7 +6,8 @@ local function LoadSkin()
 	PetitionFrame:StripTextures(true)
 	PetitionFrame:SetTemplate("Transparent")
 	PetitionFrame:CreateShadow("Default")
-	
+	PetitionFrameInset:Kill()
+	S:HandleButton(PetitionFrameSignButton)
 	S:HandleButton(PetitionFrameRequestButton)
 	S:HandleButton(PetitionFrameRenameButton)
 	S:HandleButton(PetitionFrameCancelButton)
@@ -26,10 +27,6 @@ local function LoadSkin()
 	
 	PetitionFrameRenameButton:Point("LEFT", PetitionFrameRequestButton, "RIGHT", 3, 0)
 	PetitionFrameRenameButton:Point("RIGHT", PetitionFrameCancelButton, "LEFT", -3, 0)
-	PetitionFrame:Height(PetitionFrame:GetHeight() - 80)
-	
-	PetitionFrameCancelButton:Point("BOTTOMRIGHT", PetitionFrame, "BOTTOMRIGHT", -40, 20)
-	PetitionFrameRequestButton:Point("BOTTOMLEFT", PetitionFrame, "BOTTOMLEFT", 22, 20)
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

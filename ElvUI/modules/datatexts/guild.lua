@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local DT = E:GetModule('DataTexts')
 
 -- localized references for global functions (about 50% faster)
@@ -27,6 +27,8 @@ local noteString = join("", "|cff999999   ", LABEL_NOTE, ":|r %s")
 local officerNoteString = join("", "|cff999999   ", GUILD_RANK1_DESC, ":|r %s")
 local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
 local guildTable, guildXP, guildMotD = {}, {}, ""
+local MOBILE_BUSY_ICON = "|TInterface\\ChatFrame\\UI-ChatIcon-ArmoryChat-BusyMobile:14:14:0:0:16:16:0:16:0:16|t";
+local MOBILE_AWAY_ICON = "|TInterface\\ChatFrame\\UI-ChatIcon-ArmoryChat-AwayMobile:14:14:0:0:16:16:0:16:0:16|t";
 local lastPanel
 
 local function SortGuildTable(shift)
@@ -43,45 +45,50 @@ end
 
 local function BuildGuildTable()
 	wipe(guildTable)
-	local name, rank, level, zone, note, officernote, connected, status, class
+	local name, rank, level, zone, note, officernote, connected, status, class, isMobile
 	local count = 0
 	for i = 1, GetNumGuildMembers() do
-		name, rank, rankIndex, level, _, zone, note, officernote, connected, status, class = GetGuildRosterInfo(i)
-		-- we are only interested in online members
-		
-		if status == 1 then
-			status = "|cffFFFFFF[|r|cffFF0000"..L['AFK'].."|r|cffFFFFFF]|r"
-		elseif status == 2 then
-			status = "|cffFFFFFF[|r|cffFF0000"..L['DND'].."|r|cffFFFFFF]|r"
-		else 
+		name, rank, rankIndex, level, _, zone, note, officernote, connected, status, class, _, _, isMobile = GetGuildRosterInfo(i)
+
+		if ( isMobile ) then
+			if status == 1 then
+				name = name..' '..MOBILE_AWAY_ICON
+			elseif status == 2 then
+				name = name..' '..MOBILE_BUSY_ICON
+			else
+				name = name..' '..ChatFrame_GetMobileEmbeddedTexture(73/255, 177/255, 73/255)
+			end
+			zone = '';
 			status = '';
+		else
+			if status == 1 then
+				status = "|cffFFFFFF[|r|cffFF0000"..L['AFK'].."|r|cffFFFFFF]|r"
+			elseif status == 2 then
+				status = "|cffFFFFFF[|r|cffFF0000"..L['DND'].."|r|cffFFFFFF]|r"
+			else 
+				status = '';
+			end		
 		end
 		
 		if connected then 
 			count = count + 1
-			guildTable[count] = { name, rank, level, zone, note, officernote, connected, status, class, rankIndex }
+			guildTable[count] = { name, rank, level, zone, note, officernote, connected, status, class, rankIndex, isMobile }
 		end
 	end
 	SortGuildTable(IsShiftKeyDown())
 end
 
 local function UpdateGuildXP()
-	local currentXP, remainingXP, dailyXP, maxDailyXP = UnitGetGuildXP("player")
+	local currentXP, remainingXP = UnitGetGuildXP("player")
 	local nextLevelXP = currentXP + remainingXP
 	local percentTotal
-	if currentXP > 0 then
+	if currentXP > 0 and nextLevelXP > 0  then
 		percentTotal = ceil((currentXP / nextLevelXP) * 100)
 	else 
 		percentTotal = 0
 	end
 	
-	local percentDaily = 0
-	if maxDailyXP > 0 then
-		percentDaily = ceil((dailyXP / maxDailyXP) * 100)
-	end
-	
 	guildXP[0] = { currentXP, nextLevelXP, percentTotal }
-	guildXP[1] = { dailyXP, maxDailyXP, percentDaily }
 end
 
 local function UpdateGuildMessage()
@@ -162,11 +169,10 @@ local function Click(self, btn)
 			info = guildTable[i]
 			if info[7] and info[1] ~= E.myname then
 				local classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
-
 				if UnitInParty(info[1]) or UnitInRaid(info[1]) then
 					grouped = "|cffaaaaaa*|r"
-				else
-					menuCountInvites = menuCountInvites +1
+				elseif not info[11] then
+					menuCountInvites = menuCountInvites + 1
 					grouped = ""
 					menuList[2].menuList[menuCountInvites] = {text = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info[3], classc.r*255,classc.g*255,classc.b*255, info[1], ""), arg1 = info[1],notCheckable=true, func = inviteClick}
 				end
@@ -205,13 +211,11 @@ local function OnEnter(self)
 	
 	local col = E:RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b)
 	if GetGuildLevel() ~= 25 then
-		if guildXP[0] and guildXP[1] then
+		if guildXP[0] then
 			local currentXP, nextLevelXP, percentTotal = unpack(guildXP[0])
-			local dailyXP, maxDailyXP, percentDaily = unpack(guildXP[1])
 			
 			GameTooltip:AddLine(' ')
 			GameTooltip:AddLine(format(guildXpCurrentString, E:ShortValue(currentXP), E:ShortValue(nextLevelXP), percentTotal))
-			GameTooltip:AddLine(format(guildXpDailyString, E:ShortValue(dailyXP), E:ShortValue(maxDailyXP), percentDaily))
 		end
 	end
 	
@@ -253,7 +257,7 @@ end
 
 local function ValueColorUpdate(hex, r, g, b)
 	displayString = join("", GUILD, ": ", hex, "%d|r")
-	noGuildString = join("", hex, NO..' '..GUILD)
+	noGuildString = join("", hex, L['No Guild'])
 	
 	if lastPanel ~= nil then
 		OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE')
@@ -274,4 +278,3 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 ]]
 
 DT:RegisterDatatext('Guild', {'PLAYER_ENTERING_WORLD', "GUILD_ROSTER_SHOW", "GUILD_ROSTER_UPDATE", "GUILD_XP_UPDATE", "PLAYER_GUILD_UPDATE", "GUILD_MOTD", "CHAT_MSG_SYSTEM"}, OnEvent, nil, Click, OnEnter)
-

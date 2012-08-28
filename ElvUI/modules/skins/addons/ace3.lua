@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 --if not ANonBuggyFuckingSkin then return end
@@ -31,8 +31,7 @@ local function SkinScrollBar(frame, thumbTrim)
 		_G[frame:GetName().."ScrollUpButton"]:SetTemplate("Default", true)
 		if not _G[frame:GetName().."ScrollUpButton"].texture then
 			_G[frame:GetName().."ScrollUpButton"].texture = _G[frame:GetName().."ScrollUpButton"]:CreateTexture(nil, 'OVERLAY')
-			_G[frame:GetName().."ScrollUpButton"].texture:Point("TOPLEFT", 2, -2)
-			_G[frame:GetName().."ScrollUpButton"].texture:Point("BOTTOMRIGHT", -2, 2)
+			_G[frame:GetName().."ScrollUpButton"].texture:SetInside()
 			_G[frame:GetName().."ScrollUpButton"].texture:SetTexture([[Interface\AddOns\ElvUI\media\textures\arrowup.tga]])
 			_G[frame:GetName().."ScrollUpButton"].texture:SetVertexColor(unpack(E["media"].bordercolor))
 		end
@@ -51,8 +50,7 @@ local function SkinScrollBar(frame, thumbTrim)
 		_G[frame:GetName().."ScrollDownButton"]:HookScript('OnLeave', SetOriginalBackdrop)		
 		if not _G[frame:GetName().."ScrollDownButton"].texture then
 			_G[frame:GetName().."ScrollDownButton"].texture = _G[frame:GetName().."ScrollDownButton"]:CreateTexture(nil, 'OVERLAY')
-			_G[frame:GetName().."ScrollDownButton"].texture:Point("TOPLEFT", 2, -2)
-			_G[frame:GetName().."ScrollDownButton"].texture:Point("BOTTOMRIGHT", -2, 2)
+			_G[frame:GetName().."ScrollDownButton"].texture:SetInside()
 			_G[frame:GetName().."ScrollDownButton"].texture:SetTexture([[Interface\AddOns\ElvUI\media\textures\arrowdown.tga]])
 			_G[frame:GetName().."ScrollDownButton"].texture:SetVertexColor(unpack(E["media"].bordercolor))
 		end
@@ -88,16 +86,9 @@ local function SkinScrollBar(frame, thumbTrim)
 end
 
 local function SkinButton(f, strip, noTemplate)
-	if f:GetName() then
-		local l = _G[f:GetName().."Left"]
-		local m = _G[f:GetName().."Middle"]
-		local r = _G[f:GetName().."Right"]
-		
-		
-		if l then l:SetAlpha(0) end
-		if m then m:SetAlpha(0) end
-		if r then r:SetAlpha(0) end
-	end
+	if f.Left then f.Left:SetAlpha(0)  end
+	if f.Middle then f.Middle:SetAlpha(0)  end
+	if f.Right then f.Right:SetAlpha(0) end
 
 	if f.SetNormalTexture then f:SetNormalTexture("") end
 	
@@ -135,10 +126,8 @@ local function SkinNextPrevButton(btn, horizonal)
 			btn:GetDisabledTexture():SetTexCoord(0.3, 0.29, 0.3, 0.75, 0.65, 0.29, 0.65, 0.75)
 		end
 	end
-	
-	btn:GetNormalTexture():ClearAllPoints()
-	btn:GetNormalTexture():Point("TOPLEFT", 2, -2)
-	btn:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+
+	btn:GetNormalTexture():SetInside()
 	if btn:GetDisabledTexture() then
 		btn:GetDisabledTexture():SetAllPoints(btn:GetNormalTexture())
 	end
@@ -184,11 +173,7 @@ local function SkinAce3()
 				widget.skinnedCheckBG:Point('BOTTOMRIGHT', widget.checkbg, 'BOTTOMRIGHT', -4, 4)
 			end
 			
-			if widget.skinnedCheckBG.oborder then
-				widget.check:SetParent(widget.skinnedCheckBG.oborder)
-			else
-				widget.check:SetParent(widget.skinnedCheckBG)
-			end
+			widget.check:SetParent(widget.skinnedCheckBG)
 		elseif TYPE == "Dropdown" then
 			local frame = widget.dropdown
 			local button = widget.button
@@ -235,10 +220,8 @@ local function SkinAce3()
 					widget.soundbutton:Point('LEFT', frame.backdrop, 'LEFT', 2, 0)
 				elseif TYPE == "LSM30_Statusbar" then
 					frame.backdrop:Point("TOPLEFT", 20, -17)
-					widget.bar:ClearAllPoints()
-					widget.bar:Point('TOPLEFT', frame.backdrop, 'TOPLEFT', 2, -2)
-					widget.bar:Point('BOTTOMRIGHT', frame.backdrop, 'BOTTOMRIGHT', -2, 2)
 					widget.bar:SetParent(frame.backdrop)
+					widget.bar:SetInside()
 				elseif TYPE == "LSM30_Border" or TYPE == "LSM30_Background" then
 					frame.backdrop:Point("TOPLEFT", 42, -16)
 				end
@@ -271,8 +254,7 @@ local function SkinAce3()
 			SkinButton(frame, nil, true)
 			frame:StripTextures()
 			frame:CreateBackdrop('Default', true)
-			frame.backdrop:Point("TOPLEFT", 2, -2)
-			frame.backdrop:Point("BOTTOMRIGHT", -2, 2)
+			frame.backdrop:SetInside()
 			widget.text:SetParent(frame.backdrop)
 		elseif TYPE == "Slider" then
 			local frame = widget.slider

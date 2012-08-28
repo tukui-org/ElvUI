@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local LO = E:NewModule('Layout', 'AceEvent-3.0');
 
 local PANEL_HEIGHT = 22;
@@ -9,7 +9,6 @@ E.Layout = LO;
 function LO:Initialize()
 	self:CreateChatPanels()
 	self:CreateMinimapPanels()
-	self:CreateMoverPopup()
 end
 
 
@@ -28,17 +27,9 @@ local function ChatButton_OnEnter(self, ...)
 		UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
 	end
 
-	if self == LeftChatToggleButton then
-		GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT', 0, 4)
-		GameTooltip:ClearLines()
-		GameTooltip:AddDoubleLine(L['Left Click:'], L['Toggle Chat Frame'], 1, 1, 1)
-	else
-		GameTooltip:SetOwner(self, 'ANCHOR_TOPRIGHT', 0, 4)
-		GameTooltip:ClearLines()
-		GameTooltip:AddDoubleLine(L['Left Click:'], L['Toggle Chat Frame'], 1, 1, 1)
-		GameTooltip:AddDoubleLine(L['Right Click:'], L['Toggle Embedded Addon'], 1, 1, 1)
-	end
-
+	GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT', 0, 4)
+	GameTooltip:ClearLines()
+	GameTooltip:AddDoubleLine(L['Left Click:'], L['Toggle Chat Frame'], 1, 1, 1)
 	GameTooltip:Show()
 end
 
@@ -53,25 +44,15 @@ end
 
 local function ChatButton_OnClick(self, btn)
 	GameTooltip:Hide()
-	if btn == 'RightButton' then
-		if IsAddOnLoaded('Recount') and E.db.skins.embedRight == 'Recount' then
-			ToggleFrame(Recount_MainWindow)
-		elseif IsAddOnLoaded('Omen') and E.db.skins.embedRight == 'Omen' then
-			ToggleFrame(OmenAnchor)
-		elseif IsAddOnLoaded('Skada') and E.db.skins.embedRight == 'Skada' then
-			Skada:ToggleWindow()
-		end
+	if E.db[self.parent:GetName()..'Faded'] then
+		E.db[self.parent:GetName()..'Faded'] = nil
+		UIFrameFadeIn(self.parent, 0.2, self.parent:GetAlpha(), 1)
+		UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
 	else
-		if E.db[self.parent:GetName()..'Faded'] then
-			E.db[self.parent:GetName()..'Faded'] = nil
-			UIFrameFadeIn(self.parent, 0.2, self.parent:GetAlpha(), 1)
-			UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
-		else
-			E.db[self.parent:GetName()..'Faded'] = true
-			UIFrameFadeOut(self.parent, 0.2, self.parent:GetAlpha(), 0)
-			UIFrameFadeOut(self, 0.2, self:GetAlpha(), 0)
-			self.parent.fadeInfo.finishedFunc = self.parent.fadeFunc
-		end
+		E.db[self.parent:GetName()..'Faded'] = true
+		UIFrameFadeOut(self.parent, 0.2, self.parent:GetAlpha(), 0)
+		UIFrameFadeOut(self, 0.2, self:GetAlpha(), 0)
+		self.parent.fadeInfo.finishedFunc = self.parent.fadeFunc
 	end
 end
 
@@ -91,7 +72,7 @@ end
 function LO:ToggleChatPanels()
 	LeftChatDataPanel:ClearAllPoints()
 	RightChatDataPanel:ClearAllPoints()
-	if E.db.general.panelBackdrop == 'SHOWBOTH' then
+	if E.db.chat.panelBackdrop == 'SHOWBOTH' then
 		LeftChatPanel.backdrop:Show()
 		LeftChatTab:Show()
 		RightChatPanel.backdrop:Show()
@@ -102,7 +83,7 @@ function LO:ToggleChatPanels()
 		RightChatDataPanel:Point('TOPRIGHT', RightChatPanel, 'BOTTOMRIGHT', -(5 + SIDE_BUTTON_WIDTH), 5 + PANEL_HEIGHT)		
 		LeftChatToggleButton:Point('BOTTOMLEFT', LeftChatPanel, 'BOTTOMLEFT', 5, 5)
 		RightChatToggleButton:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', -5, 5)
-	elseif E.db.general.panelBackdrop == 'HIDEBOTH' then
+	elseif E.db.chat.panelBackdrop == 'HIDEBOTH' then
 		LeftChatPanel.backdrop:Hide()
 		LeftChatTab:Hide()
 		RightChatPanel.backdrop:Hide()
@@ -113,7 +94,7 @@ function LO:ToggleChatPanels()
 		RightChatDataPanel:Point('TOPRIGHT', RightChatPanel, 'BOTTOMRIGHT', -SIDE_BUTTON_WIDTH, PANEL_HEIGHT)		
 		LeftChatToggleButton:Point('BOTTOMLEFT', LeftChatPanel, 'BOTTOMLEFT')
 		RightChatToggleButton:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT')
-	elseif E.db.general.panelBackdrop == 'LEFT' then
+	elseif E.db.chat.panelBackdrop == 'LEFT' then
 		LeftChatPanel.backdrop:Show()
 		LeftChatTab:Show()
 		RightChatPanel.backdrop:Hide()
@@ -142,16 +123,15 @@ function LO:CreateChatPanels()
 	--Left Chat
 	local lchat = CreateFrame('Frame', 'LeftChatPanel', E.UIParent)
 	lchat:SetFrameStrata('BACKGROUND')
-	lchat:Size(E.db.general.panelWidth, E.db.general.panelHeight)		
+	lchat:Size(E.db.chat.panelWidth, E.db.chat.panelHeight)		
 	lchat:Point('BOTTOMLEFT', E.UIParent, 4, 4)
 	lchat:CreateBackdrop('Transparent')
 	lchat.backdrop:SetAllPoints()
 	
 	--Background Texture
 	lchat.tex = lchat:CreateTexture(nil, 'OVERLAY')
-	lchat.tex:Point('TOPLEFT', lchat, 'TOPLEFT', 2, -2)
-	lchat.tex:Point('BOTTOMRIGHT', lchat, 'BOTTOMRIGHT', -2, 2)
-	lchat.tex:SetTexture(E.db.general.panelBackdropNameLeft)
+	lchat.tex:SetInside()
+	lchat.tex:SetTexture(E.db.chat.panelBackdropNameLeft)
 	lchat.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.7 > 0 and E.db.general.backdropfadecolor.a - 0.7 or 0.5)
 	
 	--Left Chat Tab
@@ -187,16 +167,15 @@ function LO:CreateChatPanels()
 	--Right Chat
 	local rchat = CreateFrame('Frame', 'RightChatPanel', E.UIParent)
 	rchat:SetFrameStrata('BACKGROUND')
-	rchat:Size(E.db.general.panelWidth, E.db.general.panelHeight)
+	rchat:Size(E.db.chat.panelWidth, E.db.chat.panelHeight)
 	rchat:Point('BOTTOMRIGHT', E.UIParent, -4, 4)
 	rchat:CreateBackdrop('Transparent')
 	rchat.backdrop:SetAllPoints()
 	
 	--Background Texture
 	rchat.tex = rchat:CreateTexture(nil, 'OVERLAY')
-	rchat.tex:Point('TOPLEFT', rchat, 'TOPLEFT', 2, -2)
-	rchat.tex:Point('BOTTOMRIGHT', rchat, 'BOTTOMRIGHT', -2, 2)
-	rchat.tex:SetTexture(E.db.general.panelBackdropNameRight)
+	rchat.tex:SetInside()
+	rchat.tex:SetTexture(E.db.chat.panelBackdropNameRight)
 	rchat.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.7 > 0 and E.db.general.backdropfadecolor.a - 0.7 or 0.5)	
 	
 	--Right Chat Tab
@@ -256,7 +235,7 @@ function LO:CreateMinimapPanels()
 	rminipanel:SetTemplate('Default', true)
 	E:GetModule('DataTexts'):RegisterPanel(rminipanel, 1, 'ANCHOR_BOTTOM', 0, -4)
 	
-	if E.db.general.minimapPanels then
+	if E.db.datatexts.minimapPanels then
 		LeftMiniPanel:Show()
 		RightMiniPanel:Show()
 	else
@@ -268,7 +247,7 @@ function LO:CreateMinimapPanels()
 	configtoggle:Point('TOPLEFT', rminipanel, 'TOPRIGHT', 1, 0)
 	configtoggle:Point('BOTTOMLEFT', rminipanel, 'BOTTOMRIGHT', 1, 0)
 	configtoggle:RegisterForClicks('AnyUp')
-	configtoggle:Width(E.RBRWidth)
+	configtoggle:Width(E.ConsolidatedBuffsWidth)
 	configtoggle:SetTemplate('Default', true)
 	configtoggle.text = configtoggle:CreateFontString(nil, 'OVERLAY')
 	configtoggle.text:FontTemplate()
@@ -294,119 +273,6 @@ function LO:CreateMinimapPanels()
 	end)
 	configtoggle:SetScript('OnLeave', function(self)
 		GameTooltip:Hide()
-	end)
-end
-
-function LO:CreateMoverPopup()
-	local f = CreateFrame("Frame", "ElvUIMoverPopupWindow", UIParent)
-	f:SetFrameStrata("DIALOG")
-	f:SetToplevel(true)
-	f:EnableMouse(true)
-	f:SetMovable(true)
-	f:SetClampedToScreen(true)
-	f:SetWidth(360)
-	f:SetHeight(110)
-	f:SetTemplate('Transparent')
-	f:SetPoint("TOP", 0, -50)
-	f:Hide()
-	f:SetScript("OnShow", function() PlaySound("igMainMenuOption"); E:Grid_Show() end)
-	f:SetScript("OnHide", function() PlaySound("gsTitleOptionExit"); E:Grid_Hide() end)
-
-	local S = E:GetModule('Skins')
-
-	local header = CreateFrame('Button', nil, f)
-	header:SetTemplate('Default', true)
-	header:SetWidth(100); header:SetHeight(25)
-	header:SetPoint("CENTER", f, 'TOP')
-	header:SetFrameLevel(header:GetFrameLevel() + 2)
-	header:EnableMouse(true)
-	header:RegisterForClicks('AnyUp', 'AnyDown')
-	header:SetScript('OnMouseDown', function() f:StartMoving() end)
-	header:SetScript('OnMouseUp', function() f:StopMovingOrSizing() end)
-	
-	local title = header:CreateFontString("OVERLAY")
-	title:FontTemplate()
-	title:SetPoint("CENTER", header, "CENTER")
-	title:SetText('ElvUI')
-		
-	local desc = f:CreateFontString("ARTWORK")
-	desc:SetFontObject("GameFontHighlight")
-	desc:SetJustifyV("TOP")
-	desc:SetJustifyH("LEFT")
-	desc:SetPoint("TOPLEFT", 18, -32)
-	desc:SetPoint("BOTTOMRIGHT", -18, 48)
-	desc:SetText(L["Movers unlocked. Move them now and click Lock when you are done."])
-
-	local snapping = CreateFrame("CheckButton", "ElvUISnapping", f, "OptionsCheckButtonTemplate")
-	_G[snapping:GetName() .. "Text"]:SetText(L["Sticky Frames"])
-
-	snapping:SetScript("OnShow", function(self)
-		self:SetChecked(E.db.general.stickyFrames)
-	end)
-
-	snapping:SetScript("OnClick", function(self)
-		E.db.general.stickyFrames = self:GetChecked()
-	end)
-
-	local lock = CreateFrame("Button", "ElvUILock", f, "OptionsButtonTemplate")
-	_G[lock:GetName() .. "Text"]:SetText(L["Lock"])
-
-	lock:SetScript("OnClick", function(self)
-		local ACD = LibStub("AceConfigDialog-3.0")
-		E:MoveUI(false)
-		self:GetParent():Hide()
-		ACD['Open'](ACD, 'ElvUI') 
-	end)
-	
-	local align = CreateFrame('EditBox', 'AlignBox', f, 'InputBoxTemplate')
-	align:Width(24)
-	align:Height(17)
-	align:SetAutoFocus(false)
-	align:SetScript("OnEscapePressed", function(self)
-		self:SetText(E.db.gridSize)
-		EditBox_ClearFocus(self)
-	end)
-	align:SetScript("OnEnterPressed", function(self)
-		local text = self:GetText()
-		if tonumber(text) then
-			if tonumber(text) <= 256 and tonumber(text) >= 4 then
-				E.db.gridSize = tonumber(text)
-			else
-				self:SetText(E.db.gridSize)
-			end
-		else
-			self:SetText(E.db.gridSize)
-		end
-		E:Grid_Show()
-		EditBox_ClearFocus(self)
-	end)
-	align:SetScript("OnEditFocusLost", function(self)
-		self:SetText(E.db.gridSize)
-	end)
-	align:SetScript("OnEditFocusGained", align.HighlightText)
-	align:SetScript('OnShow', function(self)
-		EditBox_ClearFocus(self)
-		self:SetText(E.db.gridSize)
-	end)
-	
-	align.text = align:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
-	align.text:SetPoint('RIGHT', align, 'LEFT', -4, 0)
-	align.text:SetText(L['Grid Size:'])
-
-	--position buttons
-	snapping:SetPoint("BOTTOMLEFT", 14, 10)
-	lock:SetPoint("BOTTOMRIGHT", -14, 14)
-	align:SetPoint('TOPRIGHT', lock, 'TOPLEFT', -4, -2)
-	
-	S:HandleCheckBox(snapping)
-	S:HandleButton(lock)
-	S:HandleEditBox(align)
-	
-	f:RegisterEvent('PLAYER_REGEN_DISABLED')
-	f:SetScript('OnEvent', function(self)
-		if self:IsShown() then
-			self:Hide()
-		end
 	end)
 end
 

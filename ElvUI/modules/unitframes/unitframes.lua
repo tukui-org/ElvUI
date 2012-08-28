@@ -1,11 +1,25 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0');
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0', 'AceHook-3.0');
 local LSM = LibStub("LibSharedMedia-3.0");
+UF.LSM = LSM
 
 local _, ns = ...
 local ElvUF = ns.oUF
 local AceTimer = LibStub:GetLibrary("AceTimer-3.0")
 assert(ElvUF, "ElvUI was unable to locate oUF.")
+
+local opposites = {
+	['DEBUFFS'] = 'BUFFS',
+	['BUFFS'] = 'DEBUFFS'
+}
+
+local removeMenuOptions = {
+	["SET_FOCUS"] = true,
+	["CLEAR_FOCUS"] = true,
+	["MOVE_PLAYER_FRAME"] = true,
+	["MOVE_TARGET_FRAME"] = true,
+	["PET_ABANDON"] = E.myclass ~= 'HUNTER',
+}
 
 UF['headerstoload'] = {}
 UF['unitgroupstoload'] = {}
@@ -22,6 +36,15 @@ UF['badHeaderPoints'] = {
 	['LEFT'] = 'RIGHT',
 	['BOTTOM'] = 'TOP',
 	['RIGHT'] = 'LEFT',
+}
+
+UF['classMaxResourceBar'] = {
+	['DEATHKNIGHT'] = 6,
+	['PALADIN'] = 5,
+	['WARLOCK'] = 4,
+	['PRIEST'] = 3,
+	['MONK'] = 5,
+	['MAGE'] = 6,
 }
 
 local find = string.find
@@ -86,11 +109,6 @@ function UF:GetAuraOffset(p1, p2)
 	return E:Scale(x), E:Scale(y)
 end
 
-local opposites = {
-	['DEBUFFS'] = 'BUFFS',
-	['BUFFS'] = 'DEBUFFS'
-}
-
 function UF:GetAuraAnchorFrame(frame, attachTo, isConflict)
 	if isConflict then
 		E:Print(string.format(L['%s frame(s) has a conflicting anchor point, please change either the buff or debuff anchor point so they are not attached to each other. Forcing the debuffs to be attached to the main unitframe until fixed.'], E:StringTitle(frame:GetName())))
@@ -104,33 +122,6 @@ function UF:GetAuraAnchorFrame(frame, attachTo, isConflict)
 		return frame.Debuffs
 	else
 		return frame
-	end
-end
-
-function UF:GarbageCollect()
-	collectgarbage('collect')
-	
-	--This is a hackish way to disable all created timers except the UpdatePvPText one..
-	local timersList = AceTimer.selfs[self]
-	if timersList then
-		for handle, v in pairs(timersList) do
-			if type(v) == "table" and v.callback ~= 'UpdatePvPText' then
-				AceTimer.CancelTimer(self, handle, true)
-			end
-		end
-	end
-end
-
-function UF:UpdateGroupChildren(header, db)
-	if header:IsShown() then --No need to update groups that aren't even shown
-		for i=1, header:GetNumChildren() do
-			local frame = select(i, header:GetChildren())
-			if frame and frame.unit then
-				UF["Update_"..E:StringTitle(header.groupName).."Frames"](self, frame, self.db['units'][header.groupName])
-			end
-		end	
-	
-		UF:ScheduleTimer('GarbageCollect', 10)
 	end
 end
 
@@ -187,18 +178,6 @@ function UF:UpdateColors()
 			[7] = {good.r, good.g, good.b}, -- Revered
 			[8] = {good.r, good.g, good.b}, -- Exalted	
 		}, {__index = ElvUF['colors'].reaction}),
-		class = setmetatable({
-			["DEATHKNIGHT"] = { 196/255,  30/255,  60/255 },
-			["DRUID"]       = { 255/255, 125/255,  10/255 },
-			["HUNTER"]      = { 171/255, 214/255, 116/255 },
-			["MAGE"]        = { 104/255, 205/255, 255/255 },
-			["PALADIN"]     = { 245/255, 140/255, 186/255 },
-			["PRIEST"]      = { 212/255, 212/255, 212/255 },
-			["ROGUE"]       = { 255/255, 243/255,  82/255 },
-			["SHAMAN"]      = {  41/255,  79/255, 155/255 },
-			["WARLOCK"]     = { 148/255, 130/255, 201/255 },
-			["WARRIOR"]     = { 199/255, 156/255, 110/255 },
-		}, {__index = ElvUF['colors'].class}),
 		smooth = setmetatable({
 			1, 0, 0,
 			1, 1, 0,
@@ -216,10 +195,23 @@ function UF:Update_StatusBars()
 	end
 end
 
+function UF:Update_StatusBar(bar)
+	bar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+end
+
+function UF:Update_FontString(object)
+	object:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+end
+
 function UF:Update_FontStrings()
 	for font in pairs(UF['fontstrings']) do
-		font:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontsize, self.db.fontoutline)
+		font:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 	end
+end
+
+function UF:Configure_FontString(obj)
+	UF['fontstrings'][obj] = true
+	obj:FontTemplate() --This is temporary.
 end
 
 function UF:ChangeVisibility(header, visibility)
@@ -261,9 +253,7 @@ end
 
 function UF:CreateAndUpdateUFGroup(group, numGroup)
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
-	
-	self:UpdateColors()
-	
+
 	for i=1, numGroup do
 		local unit = group..i
 		local frameName = E:StringTitle(unit)
@@ -272,6 +262,8 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			self['groupunits'][unit] = group;	
 			self[unit] = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
 			self[unit].index = i
+			self[unit]:SetParent(ElvUF_Parent)
+			self[unit]:SetID(i)
 		end
 		
 		local frameName = E:StringTitle(group)
@@ -295,9 +287,7 @@ end
 
 function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
-	
-	self:UpdateColors()
-	
+
 	local db = self.db['units'][group]
 	if not self[group] then
 		ElvUF:RegisterStyle("ElvUF_"..E:StringTitle(group), UF["Construct_"..E:StringTitle(group).."Frames"])
@@ -336,7 +326,8 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 				'startingIndex', startingIndex,
 				'groupFilter', groupFilter)
 		end
-
+		
+		self[group]:SetParent(ElvUF_Parent)
 		RegisterAttributeDriver(self[group], 'state-visibility', 'show')	
 		self[group].dirtyWidth, self[group].dirtyHeight = self[group]:GetSize()
 		RegisterAttributeDriver(self[group], 'state-visibility', 'hide')	
@@ -387,8 +378,6 @@ end
 function UF:CreateAndUpdateUF(unit)
 	assert(unit, 'No unit provided to create or update.')
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
-	
-	self:UpdateColors()
 
 	local frameName = E:StringTitle(unit)
 	frameName = frameName:gsub('t(arget)', 'T%1')
@@ -406,6 +395,10 @@ function UF:CreateAndUpdateUF(unit)
 		self[unit].Update()
 	else
 		self[unit]:Disable()
+	end
+	
+	if self[unit]:GetParent() ~= ElvUF_Parent then
+		self[unit]:SetParent(ElvUF_Parent)
 	end
 end
 
@@ -476,6 +469,7 @@ function UF:DisableBlizzard(event)
 	hooksecurefunc("CompactRaidFrameManager_UpdateShown", HideRaid)
 	CompactRaidFrameManager:HookScript('OnShow', HideRaid)
 	CompactRaidFrameContainer:UnregisterAllEvents()
+	
 	HideRaid()
 	hooksecurefunc("CompactUnitFrame_RegisterEvents", CompactUnitFrame_UnregisterEvents)
 end
@@ -531,7 +525,8 @@ function ElvUF:DisableBlizzard(unit)
 		PlayerFrame:RegisterEvent('UNIT_ENTERED_VEHICLE')
 		PlayerFrame:RegisterEvent('UNIT_EXITING_VEHICLE')
 		PlayerFrame:RegisterEvent('UNIT_EXITED_VEHICLE')
-
+		PlayerFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
+		
 		-- User placed frames don't animate
 		PlayerFrame:SetUserPlaced(true)
 		PlayerFrame:SetDontSavePosition(true)
@@ -565,48 +560,86 @@ function ElvUF:DisableBlizzard(unit)
 		end
 	elseif(unit:match'(arena)%d?$' == 'arena') then
 		local id = unit:match'arena(%d)'
+
 		if(id) then
 			HandleFrame('ArenaEnemyFrame' .. id)
+			HandleFrame('ArenaPrepFrame'..id)
+			HandleFrame('ArenaEnemyFrame'..id..'PetFrame')
 		else
-			for i=1, 4 do
+			for i=1, 5 do
 				HandleFrame(('ArenaEnemyFrame%d'):format(i))
+				HandleFrame(('ArenaPrepFrame%d'):format(i))
+				HandleFrame(('ArenaEnemyFrame%dPetFrame'):format(i))
 			end
 		end
 	end
 end
 
+function UF:ADDON_LOADED(event, addon)
+	if addon ~= 'Blizzard_ArenaUI' then return; end
+	ElvUF:DisableBlizzard('arena')
+	self:UnregisterEvent("ADDON_LOADED");
+end
+
+function UF:PLAYER_ENTERING_WORLD(event)
+	self:Update_AllFrames()
+	self:UpdatePrep(event)
+end
+
+function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
+	unitFrame:UnregisterAllEvents() --Arena Taint Fix
+end
+
+CompactUnitFrameProfiles:UnregisterEvent('VARIABLES_LOADED') 	--Re-Register this event only if disableblizzard is turned off.
 function UF:Initialize()	
 	self.db = E.db["unitframe"]
 	if E.private["unitframe"].enable ~= true then return; end
 	E.UnitFrames = UF;
+	
+	local ElvUF_Parent = CreateFrame('Frame', 'ElvUF_Parent', E.UIParent, 'SecureHandlerStateTemplate');
+	ElvUF_Parent:SetAllPoints(E.UIParent)
+	ElvUF_Parent:SetAttribute("_onstate-show", [[		
+		if newstate == "hide" then
+			self:Hide();
+		else
+			self:Show();
+		end	
+	]]);
+
+	RegisterStateDriver(ElvUF_Parent, "show", '[petbattle] hide;show');	
 
 	ElvUF:RegisterStyle('ElvUF', function(frame, unit)
 		self:Construct_UF(frame, unit)
 	end)
 		
 	self:LoadUnits()
-	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update_AllFrames')
-	
+	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+	self:RegisterEvent('ARENA_PREP_OPPONENT_SPECIALIZATIONS', 'UpdatePrep')
+	self:RegisterEvent('ARENA_OPPONENT_UPDATE', 'UpdatePrep')
 	if E.private["unitframe"].disableBlizzard then
 		self:DisableBlizzard()	
+		self:SecureHook('UnitFrameThreatIndicator_Initialize')
+		InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
+		InterfaceOptionsFrameCategoriesButton10:SetScale(0.0001)
+		InterfaceOptionsFrameCategoriesButton11:SetScale(0.0001)
 
-		UnitPopupMenus["SELF"] = { "PVP_FLAG", "LOOT_METHOD", "LOOT_THRESHOLD", "OPT_OUT_LOOT_TITLE", "LOOT_PROMOTE", "DUNGEON_DIFFICULTY", "RAID_DIFFICULTY", "RESET_INSTANCES", "RAID_TARGET_ICON", "SELECT_ROLE", "CONVERT_TO_PARTY", "CONVERT_TO_RAID", "LEAVE", "CANCEL" };
-		UnitPopupMenus["PET"] = { "PET_PAPERDOLL", "PET_RENAME", "PET_ABANDON", "PET_DISMISS", "CANCEL" };
-		UnitPopupMenus["PARTY"] = { "MUTE", "UNMUTE", "PARTY_SILENCE", "PARTY_UNSILENCE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "WHISPER", "PROMOTE", "PROMOTE_GUIDE", "LOOT_PROMOTE", "VOTE_TO_KICK", "UNINVITE", "INSPECT", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "RAID_TARGET_ICON", "SELECT_ROLE", "PVP_REPORT_AFK", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL" }
-		UnitPopupMenus["PLAYER"] = { "WHISPER", "INSPECT", "INVITE", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "RAID_TARGET_ICON", "RAF_SUMMON", "RAF_GRANT_LEVEL", "REPORT_PLAYER", "CANCEL" }
-		UnitPopupMenus["RAID_PLAYER"] = { "MUTE", "UNMUTE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "WHISPER", "INSPECT", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "RAID_TARGET_ICON", "SELECT_ROLE", "RAID_LEADER", "RAID_PROMOTE", "RAID_DEMOTE", "LOOT_PROMOTE", "VOTE_TO_KICK", "RAID_REMOVE", "PVP_REPORT_AFK", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL" };
-		UnitPopupMenus["RAID"] = { "WHISPER", "MUTE", "UNMUTE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "RAID_LEADER", "RAID_PROMOTE", "RAID_MAINTANK", "RAID_MAINASSIST", "RAID_TARGET_ICON", "SELECT_ROLE", "LOOT_PROMOTE", "RAID_DEMOTE", "VOTE_TO_KICK", "RAID_REMOVE", "PVP_REPORT_AFK", "CANCEL" };
-		UnitPopupMenus["VEHICLE"] = { "RAID_TARGET_ICON", "VEHICLE_LEAVE", "CANCEL" }
-		UnitPopupMenus["TARGET"] = { "RAID_TARGET_ICON", "CANCEL" }
-		UnitPopupMenus["ARENAENEMY"] = { "CANCEL" }
-		UnitPopupMenus["FOCUS"] = { "RAID_TARGET_ICON", "CANCEL" }
-		UnitPopupMenus["BOSS"] = { "RAID_TARGET_ICON", "CANCEL" }	
-		
-		if E.myclass == 'HUNTER' then
-			UnitPopupMenus["PET"] = { "PET_PAPERDOLL", "PET_RENAME", "PET_ABANDON", "CANCEL" };
+		if not IsAddOnLoaded('Blizzard_ArenaUI') then
+			self:RegisterEvent('ADDON_LOADED')
+		else
+			ElvUF:DisableBlizzard('arena')
 		end
 		
-		self:RegisterEvent('RAID_ROSTER_UPDATE', 'DisableBlizzard')
+		for _, menu in pairs(UnitPopupMenus) do
+			for index = #menu, 1, -1 do
+				if removeMenuOptions[menu[index]] then
+					table.remove(menu, index)
+				end
+			end
+		end
+		
+		self:RegisterEvent('GROUP_ROSTER_UPDATE', 'DisableBlizzard')
+	else
+		CompactUnitFrameProfiles:RegisterEvent('VARIABLES_LOADED')
 	end
 		
 	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs

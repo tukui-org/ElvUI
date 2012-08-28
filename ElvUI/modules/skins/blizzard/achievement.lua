@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -97,7 +97,7 @@ local function LoadSkin()
 	AchievementFrameComparisonSummaryFriendStatusBar.text:SetPoint("CENTER")
 	AchievementFrameComparisonHeader:Point("BOTTOMRIGHT", AchievementFrameComparison, "TOPRIGHT", 45, -20)
 	
-	for i=1, 8 do
+	for i=1, 10 do
 		local frame = _G["AchievementFrameSummaryCategoriesCategory"..i]
 		local button = _G["AchievementFrameSummaryCategoriesCategory"..i.."Button"]
 		local highlight = _G["AchievementFrameSummaryCategoriesCategory"..i.."ButtonHighlight"]
@@ -121,6 +121,14 @@ local function LoadSkin()
 		self.containerSkined = true
 	end)
 	
+	hooksecurefunc('AchievementButton_DisplayAchievement', function(frame)
+		if frame.accountWide and frame.bg3 then
+			frame.bg3:SetTexture(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
+		elseif frame.bg3 then
+			frame.bg3:SetTexture(unpack(E.media.bordercolor))
+		end			
+	end)
+	
 	hooksecurefunc("AchievementFrameSummary_UpdateAchievements", function()
 		for i=1, ACHIEVEMENTUI_MAX_SUMMARY_ACHIEVEMENTS do
 			local frame = _G["AchievementFrameSummaryAchievement"..i]
@@ -129,11 +137,10 @@ local function LoadSkin()
 			
 			
 			_G["AchievementFrameSummaryAchievement"..i.."Description"]:SetTextColor(0.6, 0.6, 0.6)
-			
+
 			if not frame.backdrop then
 				frame:CreateBackdrop("Default", true)
-				frame.backdrop:Point("TOPLEFT", 2, -2)
-				frame.backdrop:Point("BOTTOMRIGHT", -2, 2)
+				frame.backdrop:SetInside()
 
 				_G["AchievementFrameSummaryAchievement"..i.."IconBling"]:Kill()
 				_G["AchievementFrameSummaryAchievement"..i.."IconOverlay"]:Kill()
@@ -143,10 +150,14 @@ local function LoadSkin()
 				_G["AchievementFrameSummaryAchievement"..i.."Icon"]:ClearAllPoints()
 				_G["AchievementFrameSummaryAchievement"..i.."Icon"]:Point("LEFT", 6, 0)
 				_G["AchievementFrameSummaryAchievement"..i.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
-				_G["AchievementFrameSummaryAchievement"..i.."IconTexture"]:ClearAllPoints()
-				_G["AchievementFrameSummaryAchievement"..i.."IconTexture"]:Point("TOPLEFT", 2, -2)
-				_G["AchievementFrameSummaryAchievement"..i.."IconTexture"]:Point("BOTTOMRIGHT", -2, 2)
+				_G["AchievementFrameSummaryAchievement"..i.."IconTexture"]:SetInside()
 			end
+			
+			if frame.accountWide then
+				frame.backdrop:SetBackdropBorderColor(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
+			else
+				frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end					
 		end				
 	end)
 
@@ -154,7 +165,6 @@ local function LoadSkin()
 		local frame = _G["AchievementFrameAchievementsContainerButton"..i]
 		_G["AchievementFrameAchievementsContainerButton"..i.."Highlight"]:Kill()
 		frame:StripTextures(true)
-		frame.SetBackdropBorderColor = E.noop
 
 		--Initiate fucked up method of creating a backdrop
 		frame.bg1 = frame:CreateTexture(nil, "BACKGROUND")
@@ -195,12 +205,9 @@ local function LoadSkin()
 		_G["AchievementFrameAchievementsContainerButton"..i.."Icon"]:ClearAllPoints()
 		_G["AchievementFrameAchievementsContainerButton"..i.."Icon"]:Point("LEFT", 6, 0)
 		_G["AchievementFrameAchievementsContainerButton"..i.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
-		_G["AchievementFrameAchievementsContainerButton"..i.."IconTexture"]:ClearAllPoints()
-		_G["AchievementFrameAchievementsContainerButton"..i.."IconTexture"]:Point("TOPLEFT", 2, -2)
-		_G["AchievementFrameAchievementsContainerButton"..i.."IconTexture"]:Point("BOTTOMRIGHT", -2, 2)
+		_G["AchievementFrameAchievementsContainerButton"..i.."IconTexture"]:SetInside()
 		
-		
-		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"].oborder = "Don't use sharp border" --Needed for ElvUI only
+		--_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"].oborder = "Don't use sharp border" --Needed for ElvUI only
 		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:StripTextures()
 		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:SetTemplate("Default")
 		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:SetCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check")
@@ -227,9 +234,7 @@ local function LoadSkin()
 			
 			_G[frame]:StripTextures()
 			_G[frame.."Background"]:Kill()
-			
-			_G[frame].SetBackdropBorderColor = E.noop		
-			
+
 			if _G[frame.."Description"] then
 				_G[frame.."Description"]:SetTextColor(0.6, 0.6, 0.6)
 				_G[frame.."Description"].SetTextColor = E.noop
@@ -274,11 +279,30 @@ local function LoadSkin()
 			_G[frame.."Icon"]:ClearAllPoints()
 			_G[frame.."Icon"]:Point("LEFT", 6, 0)
 			_G[frame.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
-			_G[frame.."IconTexture"]:ClearAllPoints()
-			_G[frame.."IconTexture"]:Point("TOPLEFT", 2, -2)
-			_G[frame.."IconTexture"]:Point("BOTTOMRIGHT", -2, 2)					
+			_G[frame.."IconTexture"]:SetInside()				
 		end
 	end
+	
+	hooksecurefunc('AchievementFrameComparison_DisplayAchievement', function(button)
+		local player = button.player;
+		local friend = button.friend;
+		player.titleBar:Kill()
+		friend.titleBar:Kill()
+		
+		if not player.bg3 or not friend.bg3 then return; end
+		
+		if player.accountWide then
+			player.bg3:SetTexture(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
+		else
+			player.bg3:SetTexture(unpack(E.media.bordercolor))
+		end		
+		
+		if friend.accountWide then
+			friend.bg3:SetTexture(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
+		else
+			friend.bg3:SetTexture(unpack(E.media.bordercolor))
+		end				
+	end)
 	
 	for i=1, 20 do
 		local frame = _G["AchievementFrameStatsContainerButton"..i]

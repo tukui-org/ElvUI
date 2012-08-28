@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
@@ -7,8 +7,214 @@ local selectedSpell;
 local selectedFilter;
 local filters;
 
+function UF:CreateCustomTextGroup(unit, objectName)
+	if E.Options.args.unitframe.args[unit].args[objectName] then return end
+	
+	E.Options.args.unitframe.args[unit].args[objectName] = {
+		order = -1,
+		type = 'group',
+		name = objectName,
+		get = function(info) return E.db.unitframe.units[unit].customTexts[objectName][ info[#info] ] end,
+		set = function(info, value) 
+			E.db.unitframe.units[unit].customTexts[objectName][ info[#info] ] = value; 
+			
+			if unit == 'party' or unit:find('raid') then
+				UF:CreateAndUpdateHeaderGroup(unit)
+			elseif unit == 'boss' then
+				UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES)
+			elseif unit == 'arena' then
+				UF:CreateAndUpdateUFGroup('arena', 5)
+			else
+				UF:CreateAndUpdateUF(unit) 
+			end
+		end,
+		args = {
+			delete = {
+				type = 'execute',
+				order = 1,
+				name = DELETE,
+				func = function() 
+					E.Options.args.unitframe.args[unit].args[objectName] = nil; 
+					E.db.unitframe.units[unit].customTexts[objectName] = nil; 
+					
+					if unit == 'boss' or unit == 'arena' then
+						for i=1, 5 do
+							if UF[unit..i] then
+								UF[unit..i]:Tag(UF[unit..i][objectName], ''); 
+								UF[unit..i][objectName]:Hide(); 
+							end
+						end
+					elseif unit == 'party' or unit:find('raid') then
+						for i=1, UF[unit]:GetNumChildren() do
+							local child = select(i, UF[unit]:GetChildren())
+							if child.Tag then
+								child:Tag(child[objectName], ''); 
+								child[objectName]:Hide(); 
+							end
+						end
+					elseif UF[unit] then
+						UF[unit]:Tag(UF[unit][objectName], ''); 
+						UF[unit][objectName]:Hide(); 
+					end
+				end,	
+			},
+			font = {
+				type = "select", dialogControl = 'LSM30_Font',
+				order = 2,
+				name = L["Font"],
+				values = AceGUIWidgetLSMlists.font,
+			},
+			size = {
+				order = 3,
+				name = L["Font Size"],
+				type = "range",
+				min = 6, max = 32, step = 1,
+			},		
+			fontOutline = {
+				order = 4,
+				name = L["Font Outline"],
+				desc = L["Set the font outline."],
+				type = "select",
+				values = {
+					['NONE'] = L['None'],
+					['OUTLINE'] = 'OUTLINE',
+					['MONOCHROME'] = 'MONOCHROME',
+					['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+					['THICKOUTLINE'] = 'THICKOUTLINE',
+				},	
+			},
+			xOffset = {
+				order = 5,
+				type = 'range',
+				name = L['xOffset'],
+				min = -400, max = 400, step = 1,		
+			},
+			yOffset = {
+				order = 6,
+				type = 'range',
+				name = L['yOffset'],
+				min = -400, max = 400, step = 1,		
+			},						
+			text_format = {
+				order = 100,
+				name = L['Text Format'],
+				type = 'input',
+				width = 'full',
+				desc = L['TEXT_FORMAT_DESC'],
+			},		
+		},
+	}		
+end
+
 local function UpdateFilterGroup()
-	if selectedFilter == 'Buff Indicator' then
+	if selectedFilter == 'AuraBar Colors' then
+		if not selectedFilter then
+			E.Options.args.unitframe.args.filters.args.filterGroup = nil
+			E.Options.args.unitframe.args.filters.args.spellGroup = nil
+			return
+		end
+	
+		E.Options.args.unitframe.args.filters.args.filterGroup = {
+			type = 'group',
+			name = selectedFilter,
+			guiInline = true,
+			order = 10,
+			args = {
+				addSpell = {
+					order = 1,
+					name = L['Add Spell'],
+					desc = L['Add a spell to the filter.'],
+					type = 'input',
+					get = function(info) return "" end,
+					set = function(info, value) 
+						if not E.global.unitframe.AuraBarColors[value] then
+							E.global.unitframe.AuraBarColors[value] = false
+						end
+						UpdateFilterGroup();
+						UF:Update_AllFrames();
+					end,					
+				},
+				removeSpell = {
+					order = 1,
+					name = L['Remove Spell'],
+					desc = L['Remove a spell from the filter.'],
+					type = 'input',
+					get = function(info) return "" end,
+					set = function(info, value) 
+						if G['unitframe'].AuraBarColors[value] then
+							G['unitframe'].AuraBarColors[value] = false;
+							E:Print(L['You may not remove a spell from a default filter that is not customly added. Setting spell to false instead.'])
+						else
+							E.global.unitframe.AuraBarColors[value] = nil;
+						end
+						selectedSpell = nil;
+						UpdateFilterGroup();
+						UF:Update_AllFrames();
+					end,				
+				},		
+				selectSpell = {
+					name = L["Select Spell"],
+					type = 'select',
+					order = -9,
+					guiInline = true,
+					get = function(info) return selectedSpell end,
+					set = function(info, value) selectedSpell = value; UpdateFilterGroup() end,							
+					values = function()
+						local filters = {}
+						filters[''] = NONE
+						for filter in pairs(E.global.unitframe.AuraBarColors) do
+							filters[filter] = filter
+						end
+
+						return filters
+					end,
+				},			
+			},	
+		}
+	
+		if not selectedSpell or E.global.unitframe.AuraBarColors[selectedSpell] == nil then
+			E.Options.args.unitframe.args.filters.args.spellGroup = nil
+			return
+		end
+		
+		E.Options.args.unitframe.args.filters.args.spellGroup = {
+			type = "group",
+			name = selectedSpell,
+			order = 15,
+			guiInline = true,
+			args = {
+				color = {
+					name = L['Color'],
+					type = 'color',
+					order = 1,
+					get = function(info)
+						local t = E.global.unitframe.AuraBarColors[selectedSpell]
+						if type(t) == 'boolean' then
+							return 0, 0, 0, 1
+						else
+							return t.r, t.g, t.b, t.a
+						end
+					end,
+					set = function(info, r, g, b)
+						if type(E.global.unitframe.AuraBarColors[selectedSpell]) ~= 'table' then
+							E.global.unitframe.AuraBarColors[selectedSpell] = {}
+						end
+						local t = E.global.unitframe.AuraBarColors[selectedSpell]
+						t.r, t.g, t.b = r, g, b
+						UF:Update_AllFrames()
+					end,						
+				},	
+				removeColor = {
+					type = 'execute',
+					order = 2,
+					name = L['Restore Defaults'],
+					func = function(info, value) E.global.unitframe.AuraBarColors[selectedSpell] = false; UF:Update_AllFrames() end,
+				},				
+			},
+		}
+		
+		
+	elseif selectedFilter == 'Buff Indicator' then
 		local buffs = {};
 		for _, value in pairs(E.global.unitframe.buffwatch[E.myclass]) do
 			tinsert(buffs, value);
@@ -241,7 +447,7 @@ local function UpdateFilterGroup()
 					set = function(info, value) selectedSpell = value; UpdateFilterGroup() end,							
 					values = function()
 						local filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters'][selectedFilter]['spells']) do
 							filters[filter] = filter
 						end
@@ -295,7 +501,7 @@ E.Options.args.unitframe = {
 			type = "toggle",
 			name = L["Enable"],
 			get = function(info) return E.private.unitframe.enable end,
-			set = function(info, value) E.private.unitframe.enable = value; StaticPopup_Show("PRIVATE_RL") end
+			set = function(info, value) E.private.unitframe.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},
 		general = {
 			order = 200,
@@ -317,7 +523,7 @@ E.Options.args.unitframe = {
 							desc = L['Disables the blizzard party/raid frames.'],
 							type = 'toggle',
 							get = function(info) return E.private.unitframe[ info[#info] ] end,
-							set = function(info, value) E.private["unitframe"][ info[#info] ] = value; StaticPopup_Show("PRIVATE_RL") end
+							set = function(info, value) E.private["unitframe"][ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
 						},
 						OORAlpha = {
 							order = 2,
@@ -378,7 +584,7 @@ E.Options.args.unitframe = {
 							values = AceGUIWidgetLSMlists.font,
 							set = function(info, value) E.db.unitframe[ info[#info] ] = value; UF:Update_FontStrings() end,
 						},
-						fontsize = {
+						fontSize = {
 							order = 5,
 							name = L["Font Size"],
 							desc = L["Set the font size for unitframes."],
@@ -386,7 +592,7 @@ E.Options.args.unitframe = {
 							min = 6, max = 22, step = 1,
 							set = function(info, value) E.db.unitframe[ info[#info] ] = value; UF:Update_FontStrings() end,
 						},	
-						fontoutline = {
+						fontOutline = {
 							order = 6,
 							name = L["Font Outline"],
 							desc = L["Set the font outline."],
@@ -426,7 +632,7 @@ E.Options.args.unitframe = {
 							order = 3,
 							type = 'toggle',
 							name = L['Health By Value'],
-							desc = L['Color health by ammount remaining.'],				
+							desc = L['Color health by amount remaining.'],				
 						},
 						customhealthbackdrop = {
 							order = 4,
@@ -439,13 +645,7 @@ E.Options.args.unitframe = {
 							type = 'toggle',
 							name = L['Class Backdrop'],
 							desc = L['Color the health backdrop by class or reaction.'],
-						},
-						classNames = {
-							order = 6,
-							type = 'toggle',
-							name = L['Class Names'],
-							desc = L['Color the name text by class or reaction.'],
-						},						
+						},					
 						colorsGroup = {
 							order = 7,
 							type = 'group',
@@ -605,12 +805,13 @@ E.Options.args.unitframe = {
 					set = function(info, value) if value == '' then selectedFilter = nil; selectedSpell = nil; else selectedFilter = value end; UpdateFilterGroup() end,							
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						
 						filters['Buff Indicator'] = L['Buff Indicator']
+						filters['AuraBar Colors'] = 'AuraBar Colors'
 						return filters
 					end,
 				},
@@ -619,15 +820,6 @@ E.Options.args.unitframe = {
 	},
 }
 
-
-local textFormats = {
-	['current-percent'] = L['Current - Percent'],
-	['current-max'] = L['Current - Max'],
-	['current'] = L['Current'],
-	['percent'] = L['Percent'],
-	['deficit'] = L['Deficit'],
-	['blank'] = L['Blank'],
-};
 
 local fillValues = {
 	['fill'] = L['Filled'],
@@ -646,12 +838,12 @@ local positionValues = {
 	BOTTOM = 'BOTTOM',
 };
 
-local lengthValues = {
-	["SHORT"] = L["Short"],
-	["MEDIUM"] = L["Medium"],
-	["LONG"] = L["Long"],
-	["LONGLEVEL"] = L["Long (Include Level)"],
-};
+local auraFilterTypes = {
+	['ALL'] = ALL,
+	['ENEMY'] = ENEMY,
+	['FRIENDLY'] = FRIENDLY,
+	['NONE'] = NONE,
+}
 
 local auraAnchors = {
 	TOPLEFT = 'TOPLEFT',
@@ -771,7 +963,45 @@ E.Options.args.unitframe.args.player = {
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['player']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['player']['power'].hideonnpc = value; UF:CreateAndUpdateUF('player') end,
-		},		
+		},	
+		customText = {
+			order = 50,
+			name = L['Custom Texts'],
+			type = 'input',
+			width = 'full',
+			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+			get = function() return '' end,
+			set = function(info, textName)
+				for object, _ in pairs(E.db.unitframe.units.player) do
+					if object:lower() == textName:lower() then
+						E:Print(L['The name you have selected is already in use by another element.'])
+						return
+					end
+				end
+				
+				if not E.db.unitframe.units['player'].customTexts then
+					E.db.unitframe.units['player'].customTexts = {};
+				end
+				
+				if E.db.unitframe.units['player'].customTexts[textName] then
+					E:Print(L['The name you have selected is already in use by another element.'])
+					return;
+				end
+				
+				E.db.unitframe.units['player'].customTexts[textName] = {
+					['text_format'] = '',
+					['size'] = 12,
+					['font'] = E.db.unitframe.font,
+					['xOffset'] = 0,
+					['yOffset'] = 0,	
+					['fontOutline'] = 'NONE'
+				};
+
+				UF:CreateCustomTextGroup('player', textName)
+				
+				UF:CreateAndUpdateUF('player')
+			end,
+		},				
 		health = {
 			order = 100,
 			type = 'group',
@@ -779,23 +1009,19 @@ E.Options.args.unitframe.args.player = {
 			get = function(info) return E.db.unitframe.units['player']['health'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['player']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
 			args = {
-				text = {
-					type = 'toggle',
-					order = 1,
-					name = L['Text'],
-				},
-				text_format = {
-					type = 'select',
-					order = 2,
-					name = L['Text Format'],
-					values = textFormats,
-				},
 				position = {
 					type = 'select',
-					order = 3,
+					order = 2,
 					name = L['Position'],
 					values = positionValues,
 				},
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},			
 			},
 		},
 		power = {
@@ -810,17 +1036,13 @@ E.Options.args.unitframe.args.player = {
 					order = 1,
 					name = L['Enable'],
 				},			
-				text = {
-					type = 'toggle',
-					order = 2,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 3,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				width = {
 					type = 'select',
 					order = 4,
@@ -848,32 +1070,6 @@ E.Options.args.unitframe.args.player = {
 				},		
 			},
 		},	
-		altpower = {
-			order = 300,
-			type = 'group',
-			name = L['Alt-Power'],
-			get = function(info) return E.db.unitframe.units['player']['altpower'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['player']['altpower'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
-			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
-				width = {
-					type = 'range',
-					order = 2,
-					name = L['Width'],
-					min = 15, max = 550, step = 1,
-				},
-				height = {
-					type = 'range',
-					name = L['Height'],
-					order = 3,
-					min = 5, max = 100, step = 1,
-				},
-			},
-		},	
 		name = {
 			order = 400,
 			type = 'group',
@@ -881,19 +1077,43 @@ E.Options.args.unitframe.args.player = {
 			get = function(info) return E.db.unitframe.units['player']['name'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['player']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
 			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
 				position = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
+				},	
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
 				},					
 			},
 		},
+		pvp = {
+			order = 450,
+			type = 'group',
+			name = PVP,
+			get = function(info) return E.db.unitframe.units['player']['pvp'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['player']['pvp'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+			args = {
+				position = {
+					type = 'select',
+					order = 2,
+					name = L['Position'],
+					values = positionValues,
+				},	
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},					
+			},
+		},		
 		portrait = {
 			order = 500,
 			type = 'group',
@@ -957,34 +1177,19 @@ E.Options.args.unitframe.args.player = {
 					name = L['Size Override'],
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
-				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
 				},
-				['growth-y'] = {
-					type = 'select',
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
 					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},					
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -1002,39 +1207,61 @@ E.Options.args.unitframe.args.player = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
+				fontSize = {
 					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
-				useFilter = {
+				playerOnly = {
 					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
+				useFilter = {
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
 					end,
-				},
-				showPlayerOnly = {
-					order = 11,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},	
-				durationLimit = {
-					order = 12,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},			
 			},
 		},	
 		debuffs = {
@@ -1048,7 +1275,7 @@ E.Options.args.unitframe.args.player = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -1068,38 +1295,23 @@ E.Options.args.unitframe.args.player = {
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
 				},
-				['growth-x'] = {
-					type = 'select',
+				xOffset = {
 					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
 				},
-				['growth-y'] = {
-					type = 'select',
+				yOffset = {
 					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},					
 				attachTo = {
 					type = 'select',
 					order = 7,
 					name = L['Attach To'],
-					desc = L['What to attach the buff anchor frame to.'],
+					desc = L['What to attach the debuff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
 						['BUFFS'] = L['Buffs'],
@@ -1112,39 +1324,54 @@ E.Options.args.unitframe.args.player = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
-					order = 6,
+				fontSize = {
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},		
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
 					end,
-				},
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},	
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},				
+				},			
 			},
 		},	
 		castbar = {
@@ -1198,19 +1425,7 @@ E.Options.args.unitframe.args.player = {
 					order = 6,
 					name = L['Icon'],
 					type = 'toggle',
-				},
-				xOffset = {
-					order = 7,
-					name = L['X Offset'],
-					type = 'range',
-					min = -E.screenwidth, max = E.screenwidth, step = 1,
-				},
-				yOffset = {
-					order = 8,
-					name = L['Y Offset'],
-					type = 'range',
-					min = -E.screenheight, max = E.screenheight, step = 1,
-				},				
+				},			
 				latency = {
 					order = 9,
 					name = L['Latency'],
@@ -1302,6 +1517,110 @@ E.Options.args.unitframe.args.player = {
 				},				
 			},
 		},
+		aurabar = {
+			order = 1100,
+			type = 'group',
+			name = L['Aura Bars'],
+			get = function(info) return E.db.unitframe.units['player']['aurabar'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['player']['aurabar'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+			args = {
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},				
+				anchorPoint = {
+					type = 'select',
+					order = 2,
+					name = L['Anchor Point'],
+					desc = L['What point to anchor to the frame you set to attach to.'],
+					values = {
+						['ABOVE'] = L['Above'],
+						['BELOW'] = L['Below'],
+					},
+				},
+				attachTo = {
+					type = 'select',
+					order = 3,
+					name = L['Attach To'],
+					desc = L['The object you want to attach to.'],
+					values = {
+						['FRAME'] = L['Frame'],
+						['DEBUFFS'] = L['Debuffs'],
+						['BUFFS'] = L['Buffs'],
+					},					
+				},
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
+				useFilter = {
+					order = 15,
+					name = L['Use Filter'],
+					desc = L['Select a filter to use.'],
+					type = 'select',
+					values = function()
+						filters = {}
+						filters[''] = NONE
+						for filter in pairs(E.global.unitframe['aurafilters']) do
+							filters[filter] = filter
+						end
+						return filters
+					end,
+				},
+				friendlyAuraType = {
+					type = 'select',
+					order = 16,
+					name = L['Friendly Aura Type'],
+					desc = L['Set the type of auras to show when a unit is friendly.'],
+					values = {
+						['HARMFUL'] = L['Debuffs'],
+						['HELPFUL'] = L['Buffs'],
+					},						
+				},
+				enemyAuraType = {
+					type = 'select',
+					order = 17,
+					name = L['Enemy Aura Type'],
+					desc = L['Set the type of auras to show when a unit is a foe.'],
+					values = {
+						['HARMFUL'] = L['Debuffs'],
+						['HELPFUL'] = L['Buffs'],
+					},						
+				},
+			},
+		},			
 	},
 }
 
@@ -1381,7 +1700,56 @@ E.Options.args.unitframe.args.target = {
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['target']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['target']['power'].hideonnpc = value; UF:CreateAndUpdateUF('target') end,
-		},			
+		},
+		smartAuraDisplay = {
+			type = 'select',
+			name = L['Smart Auras'],
+			desc = L['When set the Buffs and Debuffs will toggle being displayed depending on if the unit is friendly or an enemy. This will not effect the aurabars module.'],
+			order = 11,
+			values = {
+				['DISABLED'] = L['Disabled'],
+				['SHOW_DEBUFFS_ON_FRIENDLIES'] = L['Friendlies: Show Debuffs'],
+				['SHOW_BUFFS_ON_FRIENDLIES'] = L['Friendlies: Show Buffs'],
+			},
+		},
+		customText = {
+			order = 50,
+			name = L['Custom Texts'],
+			type = 'input',
+			width = 'full',
+			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+			get = function() return '' end,
+			set = function(info, textName)
+				for object, _ in pairs(E.db.unitframe.units.target) do
+					if object:lower() == textName:lower() then
+						E:Print(L['The name you have selected is already in use by another element.'])
+						return
+					end
+				end
+				
+				if not E.db.unitframe.units['target'].customTexts then
+					E.db.unitframe.units['target'].customTexts = {};
+				end
+			
+				if E.db.unitframe.units['target'].customTexts[textName] then
+					E:Print(L['The name you have selected is already in use by another element.'])
+					return;
+				end			
+				
+				E.db.unitframe.units['target'].customTexts[textName] = {
+					['text_format'] = '',
+					['size'] = 12,
+					['font'] = E.db.unitframe.font,
+					['xOffset'] = 0,
+					['yOffset'] = 0,	
+					['fontOutline'] = 'NONE'
+				};
+
+				UF:CreateCustomTextGroup('target', textName)
+				
+				UF:CreateAndUpdateUF('target')
+			end,
+		},				
 		health = {
 			order = 100,
 			type = 'group',
@@ -1389,17 +1757,13 @@ E.Options.args.unitframe.args.target = {
 			get = function(info) return E.db.unitframe.units['target']['health'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['target']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
 			args = {
-				text = {
-					type = 'toggle',
-					order = 1,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 2,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				position = {
 					type = 'select',
 					order = 3,
@@ -1420,17 +1784,13 @@ E.Options.args.unitframe.args.target = {
 					order = 1,
 					name = L['Enable'],
 				},			
-				text = {
-					type = 'toggle',
-					order = 2,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 3,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				width = {
 					type = 'select',
 					order = 4,
@@ -1465,17 +1825,19 @@ E.Options.args.unitframe.args.target = {
 			get = function(info) return E.db.unitframe.units['target']['name'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['target']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
 			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
 				position = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
-				},					
+				},
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},				
 			},
 		},
 		portrait = {
@@ -1522,7 +1884,7 @@ E.Options.args.unitframe.args.target = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -1541,34 +1903,19 @@ E.Options.args.unitframe.args.target = {
 					name = L['Size Override'],
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
-				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
 				},
-				['growth-y'] = {
-					type = 'select',
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
 					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},					
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -1586,38 +1933,60 @@ E.Options.args.unitframe.args.target = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
-					order = 6,
+				fontSize = {
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},				
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
 					end,
-				},		
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},	
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
 				},					
 			},
 		},	
@@ -1632,7 +2001,7 @@ E.Options.args.unitframe.args.target = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -1651,39 +2020,24 @@ E.Options.args.unitframe.args.target = {
 					name = L['Size Override'],
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
-				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
 				},
-				['growth-y'] = {
-					type = 'select',
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
 					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},					
 				attachTo = {
 					type = 'select',
 					order = 7,
 					name = L['Attach To'],
-					desc = L['What to attach the buff anchor frame to.'],
+					desc = L['What to attach the debuff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
 						['BUFFS'] = L['Buffs'],
@@ -1696,39 +2050,54 @@ E.Options.args.unitframe.args.target = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
-					order = 6,
+				fontSize = {
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
 					end,
-				},
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},		
 			},
 		},	
 		castbar = {
@@ -1782,19 +2151,7 @@ E.Options.args.unitframe.args.target = {
 					order = 6,
 					name = L['Icon'],
 					type = 'toggle',
-				},
-				xOffset = {
-					order = 7,
-					name = L['X Offset'],
-					type = 'range',
-					min = -E.screenwidth, max = E.screenwidth, step = 1,
-				},
-				yOffset = {
-					order = 8,
-					name = L['Y Offset'],
-					type = 'range',
-					min = -E.screenheight, max = E.screenheight, step = 1,
-				},				
+				},			
 				color = {
 					order = 9,
 					type = 'color',
@@ -1868,7 +2225,111 @@ E.Options.args.unitframe.args.target = {
 					values = fillValues,
 				},				
 			},
-		},		
+		},	
+		aurabar = {
+			order = 900,
+			type = 'group',
+			name = L['Aura Bars'],
+			get = function(info) return E.db.unitframe.units['target']['aurabar'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['target']['aurabar'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
+			args = {
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},				
+				anchorPoint = {
+					type = 'select',
+					order = 2,
+					name = L['Anchor Point'],
+					desc = L['What point to anchor to the frame you set to attach to.'],
+					values = {
+						['ABOVE'] = L['Above'],
+						['BELOW'] = L['Below'],
+					},
+				},
+				attachTo = {
+					type = 'select',
+					order = 3,
+					name = L['Attach To'],
+					desc = L['The object you want to attach to.'],
+					values = {
+						['FRAME'] = L['Frame'],
+						['DEBUFFS'] = L['Debuffs'],
+						['BUFFS'] = L['Buffs'],
+					},					
+				},
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
+				useFilter = {
+					order = 15,
+					name = L['Use Filter'],
+					desc = L['Select a filter to use.'],
+					type = 'select',
+					values = function()
+						filters = {}
+						filters[''] = NONE
+						for filter in pairs(E.global.unitframe['aurafilters']) do
+							filters[filter] = filter
+						end
+						return filters
+					end,
+				},
+				friendlyAuraType = {
+					type = 'select',
+					order = 16,
+					name = L['Friendly Aura Type'],
+					desc = L['Set the type of auras to show when a unit is friendly.'],
+					values = {
+						['HARMFUL'] = L['Debuffs'],
+						['HELPFUL'] = L['Buffs'],
+					},						
+				},
+				enemyAuraType = {
+					type = 'select',
+					order = 17,
+					name = L['Enemy Aura Type'],
+					desc = L['Set the type of auras to show when a unit is a foe.'],
+					values = {
+						['HARMFUL'] = L['Debuffs'],
+						['HELPFUL'] = L['Buffs'],
+					},						
+				},				
+			},
+		},			
 	},
 }
 
@@ -1934,6 +2395,44 @@ E.Options.args.unitframe.args.targettarget = {
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['targettarget']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['targettarget']['power'].hideonnpc = value; UF:CreateAndUpdateUF('targettarget') end,
+		},
+		customText = {
+			order = 50,
+			name = L['Custom Texts'],
+			type = 'input',
+			width = 'full',
+			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+			get = function() return '' end,
+			set = function(info, textName)
+				for object, _ in pairs(E.db.unitframe.units.targettarget) do
+					if object:lower() == textName:lower() then
+						E:Print(L['The name you have selected is already in use by another element.'])
+						return
+					end
+				end
+				
+				if not E.db.unitframe.units['targettarget'].customTexts then
+					E.db.unitframe.units['targettarget'].customTexts = {};
+				end
+				
+				if E.db.unitframe.units['targettarget'].customTexts[textName] then
+					E:Print(L['The name you have selected is already in use by another element.'])
+					return;
+				end				
+				
+				E.db.unitframe.units['targettarget'].customTexts[textName] = {
+					['text_format'] = '',
+					['size'] = 12,
+					['font'] = E.db.unitframe.font,
+					['xOffset'] = 0,
+					['yOffset'] = 0,	
+					['fontOutline'] = 'NONE'
+				};
+
+				UF:CreateCustomTextGroup('targettarget', textName)
+				
+				UF:CreateAndUpdateUF('targettarget')
+			end,
 		},			
 		health = {
 			order = 7,
@@ -1942,17 +2441,13 @@ E.Options.args.unitframe.args.targettarget = {
 			get = function(info) return E.db.unitframe.units['targettarget']['health'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['targettarget']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('targettarget') end,
 			args = {
-				text = {
-					type = 'toggle',
-					order = 1,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 2,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				position = {
 					type = 'select',
 					order = 3,
@@ -1973,17 +2468,13 @@ E.Options.args.unitframe.args.targettarget = {
 					order = 1,
 					name = L['Enable'],
 				},			
-				text = {
-					type = 'toggle',
-					order = 2,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 3,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				width = {
 					type = 'select',
 					order = 4,
@@ -2018,17 +2509,19 @@ E.Options.args.unitframe.args.targettarget = {
 			get = function(info) return E.db.unitframe.units['targettarget']['name'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['targettarget']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('targettarget') end,
 			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
 				position = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
-				},					
+				},		
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},				
 			},
 		},
 		buffs = {
@@ -2042,7 +2535,7 @@ E.Options.args.unitframe.args.targettarget = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -2061,34 +2554,19 @@ E.Options.args.unitframe.args.targettarget = {
 					name = L['Size Override'],
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
-				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
 				},
-				['growth-y'] = {
-					type = 'select',
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
 					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},					
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -2106,39 +2584,61 @@ E.Options.args.unitframe.args.targettarget = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
-					order = 6,
+				fontSize = {
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},				
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
 					end,
-				},		
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},	
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},			
 			},
 		},	
 		debuffs = {
@@ -2152,7 +2652,7 @@ E.Options.args.unitframe.args.targettarget = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -2171,39 +2671,24 @@ E.Options.args.unitframe.args.targettarget = {
 					name = L['Size Override'],
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
-				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
 				},
-				['growth-y'] = {
-					type = 'select',
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
 					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},					
 				attachTo = {
 					type = 'select',
 					order = 7,
 					name = L['Attach To'],
-					desc = L['What to attach the buff anchor frame to.'],
+					desc = L['What to attach the debuff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
 						['BUFFS'] = L['Buffs'],
@@ -2216,39 +2701,54 @@ E.Options.args.unitframe.args.targettarget = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
-					order = 6,
+				fontSize = {
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
 					end,
-				},
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},		
 			},
 		},	
 	},
@@ -2322,7 +2822,56 @@ E.Options.args.unitframe.args.focus = {
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['focus']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['focus']['power'].hideonnpc = value; UF:CreateAndUpdateUF('focus') end,
-		},			
+		},	
+		smartAuraDisplay = {
+			type = 'select',
+			name = L['Smart Auras'],
+			desc = L['When set the Buffs and Debuffs will toggle being displayed depending on if the unit is friendly or an enemy. This will not effect the aurabars module.'],
+			order = 11,
+			values = {
+				['DISABLED'] = L['Disabled'],
+				['SHOW_DEBUFFS_ON_FRIENDLIES'] = L['Friendlies: Show Debuffs'],
+				['SHOW_BUFFS_ON_FRIENDLIES'] = L['Friendlies: Show Buffs'],
+			},
+		},
+		customText = {
+			order = 50,
+			name = L['Custom Texts'],
+			type = 'input',
+			width = 'full',
+			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+			get = function() return '' end,
+			set = function(info, textName)
+				for object, _ in pairs(E.db.unitframe.units.focus) do
+					if object:lower() == textName:lower() then
+						E:Print(L['The name you have selected is already in use by another element.'])
+						return
+					end
+				end
+				
+				if not E.db.unitframe.units['focus'].customTexts then
+					E.db.unitframe.units['focus'].customTexts = {};
+				end
+				
+				if E.db.unitframe.units['focus'].customTexts[textName] then
+					E:Print(L['The name you have selected is already in use by another element.'])
+					return;
+				end				
+				
+				E.db.unitframe.units['focus'].customTexts[textName] = {
+					['text_format'] = '',
+					['size'] = 12,
+					['font'] = E.db.unitframe.font,
+					['xOffset'] = 0,
+					['yOffset'] = 0,	
+					['fontOutline'] = 'NONE'
+				};
+
+				UF:CreateCustomTextGroup('focus', textName)
+				
+				UF:CreateAndUpdateUF('focus')
+			end,
+		},				
 		health = {
 			order = 100,
 			type = 'group',
@@ -2330,17 +2879,13 @@ E.Options.args.unitframe.args.focus = {
 			get = function(info) return E.db.unitframe.units['focus']['health'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['focus']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
 			args = {
-				text = {
-					type = 'toggle',
-					order = 1,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 2,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				position = {
 					type = 'select',
 					order = 3,
@@ -2361,17 +2906,13 @@ E.Options.args.unitframe.args.focus = {
 					order = 1,
 					name = L['Enable'],
 				},			
-				text = {
-					type = 'toggle',
-					order = 2,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 3,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				width = {
 					type = 'select',
 					order = 4,
@@ -2406,17 +2947,19 @@ E.Options.args.unitframe.args.focus = {
 			get = function(info) return E.db.unitframe.units['focus']['name'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['focus']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
 			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
 				position = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
-				},					
+				},				
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},				
 			},
 		},
 		buffs = {
@@ -2430,7 +2973,7 @@ E.Options.args.unitframe.args.focus = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -2449,34 +2992,19 @@ E.Options.args.unitframe.args.focus = {
 					name = L['Size Override'],
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
-				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
 				},
-				['growth-y'] = {
-					type = 'select',
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
 					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},					
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -2494,39 +3022,61 @@ E.Options.args.unitframe.args.focus = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
-					order = 6,
+				fontSize = {
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},				
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
 					end,
-				},		
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},	
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},			
 			},
 		},	
 		debuffs = {
@@ -2540,7 +3090,7 @@ E.Options.args.unitframe.args.focus = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -2559,39 +3109,24 @@ E.Options.args.unitframe.args.focus = {
 					name = L['Size Override'],
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
-				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
 				},
-				['growth-y'] = {
-					type = 'select',
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
 					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},					
 				attachTo = {
 					type = 'select',
 					order = 7,
 					name = L['Attach To'],
-					desc = L['What to attach the buff anchor frame to.'],
+					desc = L['What to attach the debuff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
 						['BUFFS'] = L['Buffs'],
@@ -2604,39 +3139,54 @@ E.Options.args.unitframe.args.focus = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
-					order = 6,
+				fontSize = {
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
 					end,
-				},
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},		
 			},
 		},	
 		castbar = {
@@ -2690,19 +3240,7 @@ E.Options.args.unitframe.args.focus = {
 					order = 6,
 					name = L['Icon'],
 					type = 'toggle',
-				},
-				xOffset = {
-					order = 7,
-					name = L['X Offset'],
-					type = 'range',
-					min = -E.screenwidth, max = E.screenwidth, step = 1,
-				},
-				yOffset = {
-					order = 8,
-					name = L['Y Offset'],
-					type = 'range',
-					min = -E.screenheight, max = E.screenheight, step = 1,
-				},				
+				},			
 				color = {
 					order = 9,
 					type = 'color',
@@ -2750,7 +3288,111 @@ E.Options.args.unitframe.args.focus = {
 					desc = L['Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop.'],
 				},				
 			},
-		},		
+		},	
+		aurabar = {
+			order = 700,
+			type = 'group',
+			name = L['Aura Bars'],
+			get = function(info) return E.db.unitframe.units['focus']['aurabar'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['focus']['aurabar'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
+			args = {
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},				
+				anchorPoint = {
+					type = 'select',
+					order = 2,
+					name = L['Anchor Point'],
+					desc = L['What point to anchor to the frame you set to attach to.'],
+					values = {
+						['ABOVE'] = L['Above'],
+						['BELOW'] = L['Below'],
+					},
+				},
+				attachTo = {
+					type = 'select',
+					order = 3,
+					name = L['Attach To'],
+					desc = L['The object you want to attach to.'],
+					values = {
+						['FRAME'] = L['Frame'],
+						['DEBUFFS'] = L['Debuffs'],
+						['BUFFS'] = L['Buffs'],
+					},					
+				},
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
+				useFilter = {
+					order = 15,
+					name = L['Use Filter'],
+					desc = L['Select a filter to use.'],
+					type = 'select',
+					values = function()
+						filters = {}
+						filters[''] = NONE
+						for filter in pairs(E.global.unitframe['aurafilters']) do
+							filters[filter] = filter
+						end
+						return filters
+					end,
+				},
+				friendlyAuraType = {
+					type = 'select',
+					order = 16,
+					name = L['Friendly Aura Type'],
+					desc = L['Set the type of auras to show when a unit is friendly.'],
+					values = {
+						['HARMFUL'] = L['Debuffs'],
+						['HELPFUL'] = L['Buffs'],
+					},						
+				},
+				enemyAuraType = {
+					type = 'select',
+					order = 17,
+					name = L['Enemy Aura Type'],
+					desc = L['Set the type of auras to show when a unit is a foe.'],
+					values = {
+						['HARMFUL'] = L['Debuffs'],
+						['HELPFUL'] = L['Buffs'],
+					},						
+				},				
+			},
+		},			
 	},
 }
 
@@ -2816,7 +3458,46 @@ E.Options.args.unitframe.args.focustarget = {
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['focustarget']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['focustarget']['power'].hideonnpc = value; UF:CreateAndUpdateUF('focustarget') end,
-		},			
+		},	
+		customText = {
+			order = 50,
+			name = L['Custom Texts'],
+			type = 'input',
+			width = 'full',
+			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+			get = function() return '' end,
+			set = function(info, textName)
+				for object, _ in pairs(E.db.unitframe.units.focustarget) do
+					if object:lower() == textName:lower() then
+						E:Print(L['The name you have selected is already in use by another element.'])
+						return
+					end
+				end
+				
+				local unit = 'focustarget'
+				if not E.db.unitframe.units[unit].customTexts then
+					E.db.unitframe.units[unit].customTexts = {};
+				end
+				
+				if E.db.unitframe.units[unit].customTexts[textName] then
+					E:Print(L['The name you have selected is already in use by another element.'])
+					return;
+				end				
+				
+				E.db.unitframe.units[unit].customTexts[textName] = {
+					['text_format'] = '',
+					['size'] = 12,
+					['font'] = E.db.unitframe.font,
+					['xOffset'] = 0,
+					['yOffset'] = 0,	
+					['fontOutline'] = 'NONE'
+				};
+
+				UF:CreateCustomTextGroup(unit, textName)
+				
+				UF:CreateAndUpdateUF(unit)
+			end,
+		},				
 		health = {
 			order = 7,
 			type = 'group',
@@ -2824,17 +3505,13 @@ E.Options.args.unitframe.args.focustarget = {
 			get = function(info) return E.db.unitframe.units['focustarget']['health'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['focustarget']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('focustarget') end,
 			args = {
-				text = {
-					type = 'toggle',
-					order = 1,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 2,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				position = {
 					type = 'select',
 					order = 3,
@@ -2855,17 +3532,13 @@ E.Options.args.unitframe.args.focustarget = {
 					order = 1,
 					name = L['Enable'],
 				},			
-				text = {
-					type = 'toggle',
-					order = 2,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 3,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				width = {
 					type = 'select',
 					order = 4,
@@ -2900,17 +3573,19 @@ E.Options.args.unitframe.args.focustarget = {
 			get = function(info) return E.db.unitframe.units['focustarget']['name'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['focustarget']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('focustarget') end,
 			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
 				position = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
-				},					
+				},
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},				
 			},
 		},
 		buffs = {
@@ -2924,7 +3599,7 @@ E.Options.args.unitframe.args.focustarget = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -2943,34 +3618,19 @@ E.Options.args.unitframe.args.focustarget = {
 					name = L['Size Override'],
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
-				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
 				},
-				['growth-y'] = {
-					type = 'select',
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
 					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},					
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -2988,38 +3648,60 @@ E.Options.args.unitframe.args.focustarget = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
-					order = 6,
+				fontSize = {
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},				
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
 					end,
-				},		
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},	
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
 				},					
 			},
 		},	
@@ -3034,7 +3716,7 @@ E.Options.args.unitframe.args.focustarget = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -3046,46 +3728,31 @@ E.Options.args.unitframe.args.focustarget = {
 					order = 3,
 					name = L['Num Rows'],
 					min = 1, max = 4, step = 1,					
-				},	
+				},
 				sizeOverride = {
 					type = 'range',
 					order = 3,
 					name = L['Size Override'],
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
-				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
 				},
-				['growth-y'] = {
-					type = 'select',
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
 					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},					
 				attachTo = {
 					type = 'select',
 					order = 7,
 					name = L['Attach To'],
-					desc = L['What to attach the buff anchor frame to.'],
+					desc = L['What to attach the debuff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
 						['BUFFS'] = L['Buffs'],
@@ -3098,39 +3765,54 @@ E.Options.args.unitframe.args.focustarget = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
-					order = 6,
+				fontSize = {
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
 					end,
-				},
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},		
 			},
 		},	
 	},
@@ -3204,7 +3886,46 @@ E.Options.args.unitframe.args.pet = {
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['pet']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['pet']['power'].hideonnpc = value; UF:CreateAndUpdateUF('pet') end,
-		},			
+		},	
+		customText = {
+			order = 50,
+			name = L['Custom Texts'],
+			type = 'input',
+			width = 'full',
+			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+			get = function() return '' end,
+			set = function(info, textName)
+				for object, _ in pairs(E.db.unitframe.units.pet) do
+					if object:lower() == textName:lower() then
+						E:Print(L['The name you have selected is already in use by another element.'])
+						return
+					end
+				end
+				
+				local unit = 'pet'
+				if not E.db.unitframe.units[unit].customTexts then
+					E.db.unitframe.units[unit].customTexts = {};
+				end
+				
+				if E.db.unitframe.units[unit].customTexts[textName] then
+					E:Print(L['The name you have selected is already in use by another element.'])
+					return;
+				end						
+				
+				E.db.unitframe.units[unit].customTexts[textName] = {
+					['text_format'] = '',
+					['size'] = 12,
+					['font'] = E.db.unitframe.font,
+					['xOffset'] = 0,
+					['yOffset'] = 0,	
+					['fontOutline'] = 'NONE'
+				};
+
+				UF:CreateCustomTextGroup(unit, textName)
+				
+				UF:CreateAndUpdateUF(unit)
+			end,
+		},				
 		health = {
 			order = 100,
 			type = 'group',
@@ -3212,17 +3933,13 @@ E.Options.args.unitframe.args.pet = {
 			get = function(info) return E.db.unitframe.units['pet']['health'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['pet']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
 			args = {
-				text = {
-					type = 'toggle',
-					order = 1,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 2,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				position = {
 					type = 'select',
 					order = 3,
@@ -3243,17 +3960,13 @@ E.Options.args.unitframe.args.pet = {
 					order = 1,
 					name = L['Enable'],
 				},			
-				text = {
-					type = 'toggle',
-					order = 2,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 3,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				width = {
 					type = 'select',
 					order = 4,
@@ -3288,17 +4001,19 @@ E.Options.args.unitframe.args.pet = {
 			get = function(info) return E.db.unitframe.units['pet']['name'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['pet']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
 			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
 				position = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
-				},					
+				},	
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},				
 			},
 		},
 		buffs = {
@@ -3312,7 +4027,7 @@ E.Options.args.unitframe.args.pet = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -3331,34 +4046,19 @@ E.Options.args.unitframe.args.pet = {
 					name = L['Size Override'],
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
-				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
 				},
-				['growth-y'] = {
-					type = 'select',
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
 					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},					
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -3376,39 +4076,61 @@ E.Options.args.unitframe.args.pet = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
-					order = 6,
+				fontSize = {
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},				
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
 					end,
-				},		
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},	
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},			
 			},
 		},	
 		debuffs = {
@@ -3422,7 +4144,7 @@ E.Options.args.unitframe.args.pet = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -3441,39 +4163,24 @@ E.Options.args.unitframe.args.pet = {
 					name = L['Size Override'],
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
-				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
 				},
-				['growth-y'] = {
-					type = 'select',
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
 					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},					
 				attachTo = {
 					type = 'select',
 					order = 7,
 					name = L['Attach To'],
-					desc = L['What to attach the buff anchor frame to.'],
+					desc = L['What to attach the debuff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
 						['BUFFS'] = L['Buffs'],
@@ -3486,39 +4193,54 @@ E.Options.args.unitframe.args.pet = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
-					order = 6,
+				fontSize = {
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
 					end,
-				},
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},		
 			},
 		},	
 	},
@@ -3586,6 +4308,45 @@ E.Options.args.unitframe.args.pettarget = {
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['pettarget']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['pettarget']['power'].hideonnpc = value; UF:CreateAndUpdateUF('pettarget') end,
+		},		
+		customText = {
+			order = 50,
+			name = L['Custom Texts'],
+			type = 'input',
+			width = 'full',
+			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+			get = function() return '' end,
+			set = function(info, textName)
+				for object, _ in pairs(E.db.unitframe.units.pettarget) do
+					if object:lower() == textName:lower() then
+						E:Print(L['The name you have selected is already in use by another element.'])
+						return
+					end
+				end
+				
+				local unit = 'pettarget'
+				if not E.db.unitframe.units[unit].customTexts then
+					E.db.unitframe.units[unit].customTexts = {};
+				end
+				
+				if E.db.unitframe.units[unit].customTexts[textName] then
+					E:Print(L['The name you have selected is already in use by another element.'])
+					return;
+				end						
+				
+				E.db.unitframe.units[unit].customTexts[textName] = {
+					['text_format'] = '',
+					['size'] = 12,
+					['font'] = E.db.unitframe.font,
+					['xOffset'] = 0,
+					['yOffset'] = 0,	
+					['fontOutline'] = 'NONE'
+				};
+
+				UF:CreateCustomTextGroup(unit, textName)
+				
+				UF:CreateAndUpdateUF(unit)
+			end,
 		},				
 		health = {
 			order = 7,
@@ -3594,17 +4355,13 @@ E.Options.args.unitframe.args.pettarget = {
 			get = function(info) return E.db.unitframe.units['pettarget']['health'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['pettarget']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('pettarget') end,
 			args = {
-				text = {
-					type = 'toggle',
-					order = 1,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 2,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				position = {
 					type = 'select',
 					order = 3,
@@ -3625,17 +4382,13 @@ E.Options.args.unitframe.args.pettarget = {
 					order = 1,
 					name = L['Enable'],
 				},			
-				text = {
-					type = 'toggle',
-					order = 2,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 3,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				width = {
 					type = 'select',
 					order = 4,
@@ -3670,17 +4423,19 @@ E.Options.args.unitframe.args.pettarget = {
 			get = function(info) return E.db.unitframe.units['pettarget']['name'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['pettarget']['name'][ info[#info] ] = value; UF:CreateAndUpdateUF('pettarget') end,
 			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
 				position = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
-				},					
+				},	
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},				
 			},
 		},
 		buffs = {
@@ -3694,7 +4449,7 @@ E.Options.args.unitframe.args.pettarget = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -3713,34 +4468,19 @@ E.Options.args.unitframe.args.pettarget = {
 					name = L['Size Override'],
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
-				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
 				},
-				['growth-y'] = {
-					type = 'select',
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
 					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},					
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -3758,39 +4498,61 @@ E.Options.args.unitframe.args.pettarget = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
-					order = 6,
+				fontSize = {
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},				
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
 					end,
-				},		
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},	
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},			
 			},
 		},	
 		debuffs = {
@@ -3804,7 +4566,7 @@ E.Options.args.unitframe.args.pettarget = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -3823,39 +4585,24 @@ E.Options.args.unitframe.args.pettarget = {
 					name = L['Size Override'],
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
-				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
 				},
-				['growth-y'] = {
-					type = 'select',
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
 					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},					
 				attachTo = {
 					type = 'select',
 					order = 7,
 					name = L['Attach To'],
-					desc = L['What to attach the buff anchor frame to.'],
+					desc = L['What to attach the debuff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
 						['BUFFS'] = L['Buffs'],
@@ -3868,39 +4615,54 @@ E.Options.args.unitframe.args.pettarget = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
-					order = 6,
+				fontSize = {
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
 					end,
-				},
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},			
 			},
 		},	
 	},
@@ -3964,15 +4726,6 @@ E.Options.args.unitframe.args.boss = {
 			type = 'range',
 			min = 10, max = 250, step = 1,
 		},	
-		growthDirection = {
-			order = 6,
-			name = L['Growth Direction'],
-			type = 'select',
-			values = {
-				['UP'] = L['Up'],
-				['DOWN'] = L['Down'],
-			},
-		},
 		hideonnpc = {
 			type = 'toggle',
 			order = 7,
@@ -3980,6 +4733,54 @@ E.Options.args.unitframe.args.boss = {
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['boss']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['boss']['power'].hideonnpc = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
+		},
+		growthDirection = {
+			order = 8,
+			name = L['Growth Direction'],
+			type = 'select',
+			values = {
+				['UP'] = L['Up'],
+				['DOWN'] = L['Down'],
+			},
+		},			
+		customText = {
+			order = 50,
+			name = L['Custom Texts'],
+			type = 'input',
+			width = 'full',
+			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+			get = function() return '' end,
+			set = function(info, textName)
+				for object, _ in pairs(E.db.unitframe.units.boss) do
+					if object:lower() == textName:lower() then
+						E:Print(L['The name you have selected is already in use by another element.'])
+						return
+					end
+				end
+				
+				local unit = 'boss'
+				if not E.db.unitframe.units[unit].customTexts then
+					E.db.unitframe.units[unit].customTexts = {};
+				end
+				
+				if E.db.unitframe.units[unit].customTexts[textName] then
+					E:Print(L['The name you have selected is already in use by another element.'])
+					return;
+				end						
+				
+				E.db.unitframe.units[unit].customTexts[textName] = {
+					['text_format'] = '',
+					['size'] = 12,
+					['font'] = E.db.unitframe.font,
+					['xOffset'] = 0,
+					['yOffset'] = 0,	
+					['fontOutline'] = 'NONE'
+				};
+
+				UF:CreateCustomTextGroup(unit, textName)
+				
+				UF:CreateAndUpdateUFGroup(unit, MAX_BOSS_FRAMES)
+			end,
 		},				
 		health = {
 			order = 8,
@@ -3988,17 +4789,13 @@ E.Options.args.unitframe.args.boss = {
 			get = function(info) return E.db.unitframe.units['boss']['health'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['boss']['health'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
 			args = {
-				text = {
-					type = 'toggle',
-					order = 1,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 2,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				position = {
 					type = 'select',
 					order = 3,
@@ -4019,17 +4816,13 @@ E.Options.args.unitframe.args.boss = {
 					order = 1,
 					name = L['Enable'],
 				},			
-				text = {
-					type = 'toggle',
-					order = 2,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 3,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				width = {
 					type = 'select',
 					order = 4,
@@ -4064,17 +4857,19 @@ E.Options.args.unitframe.args.boss = {
 			get = function(info) return E.db.unitframe.units['boss']['name'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['boss']['name'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
 			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
 				position = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
-				},					
+				},		
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},				
 			},
 		},
 		portrait = {
@@ -4121,7 +4916,7 @@ E.Options.args.unitframe.args.boss = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -4140,34 +4935,19 @@ E.Options.args.unitframe.args.boss = {
 					name = L['Size Override'],
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
-				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
 				},
-				['growth-y'] = {
-					type = 'select',
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
 					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},					
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -4185,39 +4965,61 @@ E.Options.args.unitframe.args.boss = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
-					order = 6,
+				fontSize = {
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},				
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
 					end,
-				},		
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},	
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},			
 			},
 		},	
 		debuffs = {
@@ -4231,7 +5033,7 @@ E.Options.args.unitframe.args.boss = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -4250,39 +5052,24 @@ E.Options.args.unitframe.args.boss = {
 					name = L['Size Override'],
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
-				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
 				},
-				['growth-y'] = {
-					type = 'select',
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
 					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},					
 				attachTo = {
 					type = 'select',
 					order = 7,
 					name = L['Attach To'],
-					desc = L['What to attach the buff anchor frame to.'],
+					desc = L['What to attach the debuff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
 						['BUFFS'] = L['Buffs'],
@@ -4295,39 +5082,54 @@ E.Options.args.unitframe.args.boss = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
-					order = 6,
+				fontSize = {
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
 					end,
-				},
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},		
 			},
 		},	
 		castbar = {
@@ -4474,15 +5276,6 @@ E.Options.args.unitframe.args.arena = {
 			type = 'range',
 			min = 10, max = 250, step = 1,
 		},	
-		growthDirection = {
-			order = 6,
-			name = L['Growth Direction'],
-			type = 'select',
-			values = {
-				['UP'] = L['Up'],
-				['DOWN'] = L['Down'],
-			},
-		},
 		hideonnpc = {
 			type = 'toggle',
 			order = 7,
@@ -4490,6 +5283,60 @@ E.Options.args.unitframe.args.arena = {
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['arena']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['arena']['power'].hideonnpc = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
+		},
+		pvpSpecIcon = {
+			order = 8,
+			name = L['Spec Icon'],
+			desc = L['Display icon on arena frame indicating the units talent specialization or the units faction if inside a battleground.'],
+			type = 'toggle',
+		},
+		growthDirection = {
+			order = 9,
+			name = L['Growth Direction'],
+			type = 'select',
+			values = {
+				['UP'] = L['Up'],
+				['DOWN'] = L['Down'],
+			},
+		},
+		customText = {
+			order = 50,
+			name = L['Custom Texts'],
+			type = 'input',
+			width = 'full',
+			desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+			get = function() return '' end,
+			set = function(info, textName)
+				for object, _ in pairs(E.db.unitframe.units.arena) do
+					if object:lower() == textName:lower() then
+						E:Print(L['The name you have selected is already in use by another element.'])
+						return
+					end
+				end
+				
+				local unit = 'arena'
+				if not E.db.unitframe.units[unit].customTexts then
+					E.db.unitframe.units[unit].customTexts = {};
+				end
+				
+				if E.db.unitframe.units[unit].customTexts[textName] then
+					E:Print(L['The name you have selected is already in use by another element.'])
+					return;
+				end						
+				
+				E.db.unitframe.units[unit].customTexts[textName] = {
+					['text_format'] = '',
+					['size'] = 12,
+					['font'] = E.db.unitframe.font,
+					['xOffset'] = 0,
+					['yOffset'] = 0,	
+					['fontOutline'] = 'NONE'
+				};
+
+				UF:CreateCustomTextGroup(unit, textName)
+				
+				UF:CreateAndUpdateUFGroup(unit, 5)
+			end,
 		},				
 		health = {
 			order = 8,
@@ -4498,17 +5345,13 @@ E.Options.args.unitframe.args.arena = {
 			get = function(info) return E.db.unitframe.units['arena']['health'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['arena']['health'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
 			args = {
-				text = {
-					type = 'toggle',
-					order = 1,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 2,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				position = {
 					type = 'select',
 					order = 3,
@@ -4529,17 +5372,13 @@ E.Options.args.unitframe.args.arena = {
 					order = 1,
 					name = L['Enable'],
 				},			
-				text = {
-					type = 'toggle',
-					order = 2,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 3,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				width = {
 					type = 'select',
 					order = 4,
@@ -4574,17 +5413,19 @@ E.Options.args.unitframe.args.arena = {
 			get = function(info) return E.db.unitframe.units['arena']['name'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['arena']['name'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
 			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
 				position = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
-				},					
+				},	
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},				
 			},
 		},
 		buffs = {
@@ -4598,7 +5439,7 @@ E.Options.args.unitframe.args.arena = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -4617,34 +5458,19 @@ E.Options.args.unitframe.args.arena = {
 					name = L['Size Override'],
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
-				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
 				},
-				['growth-y'] = {
-					type = 'select',
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
 					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},					
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -4662,39 +5488,61 @@ E.Options.args.unitframe.args.arena = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
-					order = 6,
+				fontSize = {
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},				
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
 					end,
-				},		
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},	
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},			
 			},
 		},	
 		debuffs = {
@@ -4708,7 +5556,7 @@ E.Options.args.unitframe.args.arena = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -4727,39 +5575,24 @@ E.Options.args.unitframe.args.arena = {
 					name = L['Size Override'],
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
-				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
 				},
-				['growth-y'] = {
-					type = 'select',
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
 					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},					
 				attachTo = {
 					type = 'select',
 					order = 7,
 					name = L['Attach To'],
-					desc = L['What to attach the buff anchor frame to.'],
+					desc = L['What to attach the debuff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
 						['BUFFS'] = L['Buffs'],
@@ -4772,39 +5605,54 @@ E.Options.args.unitframe.args.arena = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
-					order = 6,
+				fontSize = {
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
 					end,
-				},
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},		
 			},
 		},	
 		castbar = {
@@ -4890,6 +5738,47 @@ E.Options.args.unitframe.args.arena = {
 				},				
 			},
 		},	
+		pvpTrinket = {
+			order = 14,
+			type = 'group',
+			name = L['PVP Trinket'],
+			get = function(info) return E.db.unitframe.units['arena']['pvpTrinket'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['arena']['pvpTrinket'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
+			args = {
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},
+				position = {
+					type = 'select',
+					order = 2,
+					name = L['Position'],
+					values = {
+						['LEFT'] = L['Left'],
+						['RIGHT'] = L['Right'],
+					},
+				},
+				size = {
+					order = 3,
+					type = 'range',
+					name = L['Size'],
+					min = 10, max = 60, step = 1,
+				},
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
+					order = 4,
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},				
+			},
+		},
 	},
 }
 
@@ -5044,16 +5933,56 @@ E.Options.args.unitframe.args.party = {
 					desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 					get = function(info) return E.db.unitframe.units['party']['power'].hideonnpc end,
 					set = function(info, value) E.db.unitframe.units['party']['power'].hideonnpc = value; UF:CreateAndUpdateHeaderGroup('party'); end,
-				},					
+				},
+				customText = {
+					order = 50,
+					name = L['Custom Texts'],
+					type = 'input',
+					width = 'full',
+					desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+					get = function() return '' end,
+					set = function(info, textName)
+						for object, _ in pairs(E.db.unitframe.units.party) do
+							if object:lower() == textName:lower() then
+								E:Print(L['The name you have selected is already in use by another element.'])
+								return
+							end
+						end
+						
+						local unit = 'party'
+						if not E.db.unitframe.units[unit].customTexts then
+							E.db.unitframe.units[unit].customTexts = {};
+						end
+								
+						if E.db.unitframe.units[unit].customTexts[textName] then
+							E:Print(L['The name you have selected is already in use by another element.'])
+							return;
+						end								
+						
+						E.db.unitframe.units[unit].customTexts[textName] = {
+							['text_format'] = '',
+							['size'] = 12,
+							['font'] = E.db.unitframe.font,
+							['xOffset'] = 0,
+							['yOffset'] = 0,	
+							['fontOutline'] = 'NONE'
+						};
+
+						UF:CreateCustomTextGroup(unit, textName)
+						
+						UF:CreateAndUpdateHeaderGroup(unit)
+					end,
+				},						
 				visibility = {
 					order = 200,
 					type = 'input',
 					name = L['Visibility'],
 					desc = L['The following macro must be true in order for the group to be shown, in addition to any filter that may already be set.'],
 					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
 				},				
 			},
-		},		
+		},			
 		health = {
 			order = 100,
 			type = 'group',
@@ -5061,17 +5990,13 @@ E.Options.args.unitframe.args.party = {
 			get = function(info) return E.db.unitframe.units['party']['health'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['party']['health'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party'); end,
 			args = {
-				text = {
-					type = 'toggle',
-					order = 1,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 2,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				position = {
 					type = 'select',
 					order = 3,
@@ -5108,17 +6033,13 @@ E.Options.args.unitframe.args.party = {
 					order = 1,
 					name = L['Enable'],
 				},			
-				text = {
-					type = 'toggle',
-					order = 2,
-					name = L['Text'],
-				},
 				text_format = {
-					type = 'select',
-					order = 3,
+					order = 100,
 					name = L['Text Format'],
-					values = textFormats,
-				},
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+				},	
 				width = {
 					type = 'select',
 					order = 4,
@@ -5153,22 +6074,18 @@ E.Options.args.unitframe.args.party = {
 			get = function(info) return E.db.unitframe.units['party']['name'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['party']['name'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
 				position = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
 				},			
-				length = {
-					type = 'select',
-					order = 3,
-					name = L['Length'],
-					values = lengthValues,				
+				text_format = {
+					order = 100,
+					name = L['Text Format'],
+					type = 'input',
+					width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
 				},
 			},
 		},
@@ -5183,7 +6100,7 @@ E.Options.args.unitframe.args.party = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -5202,34 +6119,19 @@ E.Options.args.unitframe.args.party = {
 					name = L['Size Override'],
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
-				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
 				},
-				['growth-y'] = {
-					type = 'select',
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
 					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},					
 				attachTo = {
 					type = 'select',
 					order = 7,
@@ -5247,39 +6149,61 @@ E.Options.args.unitframe.args.party = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
-					order = 6,
+				fontSize = {
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},				
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
 					end,
-				},		
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},	
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},			
 			},
 		},	
 		debuffs = {
@@ -5293,7 +6217,7 @@ E.Options.args.unitframe.args.party = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
-				},
+				},			
 				perrow = {
 					type = 'range',
 					order = 2,
@@ -5312,39 +6236,24 @@ E.Options.args.unitframe.args.party = {
 					name = L['Size Override'],
 					desc = L['If not set to 0 then override the size of the aura icon to this.'],
 					min = 0, max = 60, step = 1,
-				},				
-				['growth-x'] = {
-					type = 'select',
-					order = 4,
-					name = L['X-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['LEFT'] = L['Left'],
-						['RIGHT'] = L["Right"],
-					},
 				},
-				['growth-y'] = {
-					type = 'select',
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
 					order = 5,
-					name = L['Y-Growth'],
-					desc = L['Growth direction of the buffs'],
-					values = {
-						['UP'] = L['Up'],
-						['DOWN'] = L["Down"],
-					},
-				},	
-				initialAnchor = {
-					type = 'select',
-					order = 6,
-					name = L['Initial Anchor'],
-					desc = L['The initial anchor point of the buffs on the frame'],
-					values = auraAnchors,
-				},	
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},					
 				attachTo = {
 					type = 'select',
 					order = 7,
 					name = L['Attach To'],
-					desc = L['What to attach the buff anchor frame to.'],
+					desc = L['What to attach the debuff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
 						['BUFFS'] = L['Buffs'],
@@ -5357,39 +6266,54 @@ E.Options.args.unitframe.args.party = {
 					desc = L['What point to anchor to the frame you set to attach to.'],
 					values = auraAnchors,				
 				},
-				fontsize = {
-					order = 6,
+				fontSize = {
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
 				useFilter = {
-					order = 7,
+					order = 15,
 					name = L['Use Filter'],
 					desc = L['Select a filter to use.'],
 					type = 'select',
 					values = function()
 						filters = {}
-						filters[''] = ''
+						filters[''] = NONE
 						for filter in pairs(E.global.unitframe['aurafilters']) do
 							filters[filter] = filter
 						end
 						return filters
 					end,
-				},
-				showPlayerOnly = {
-					order = 8,
-					type = 'toggle',
-					name = L['Personal Auras'],
-					desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-				},
-				durationLimit = {
-					order = 9,
-					name = L['Duration Limit'],
-					desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-					type = 'range',
-					min = 0, max = 3600, step = 60,
-				},					
+				},		
 			},
 		},	
 		buffIndicator = {
@@ -5417,7 +6341,7 @@ E.Options.args.unitframe.args.party = {
 					order = 3,
 					min = 4, max = 15, step = 1,
 				},
-				fontsize = {
+				fontSize = {
 					type = 'range',
 					name = L['Font Size'],
 					order = 4,
@@ -5492,12 +6416,6 @@ E.Options.args.unitframe.args.party = {
 					type = 'range',
 					min = 10, max = 250, step = 1,
 				},	
-				initialAnchor = {
-					type = 'select',
-					order = 4,
-					name = L['Initial Anchor'],
-					values = petAnchors,
-				},	
 				anchorPoint = {
 					type = 'select',
 					order = 5,
@@ -5510,14 +6428,14 @@ E.Options.args.unitframe.args.party = {
 					type = 'range',
 					name = L['xOffset'],
 					desc = L['An X offset (in pixels) to be used when anchoring new frames.'],
-					min = -15, max = 15, step = 1,		
+					min = -500, max = 500, step = 1,		
 				},
 				yOffset = {
 					order = 7,
 					type = 'range',
 					name = L['yOffset'],
 					desc = L['An Y offset (in pixels) to be used when anchoring new frames.'],
-					min = -15, max = 15, step = 1,		
+					min = -500, max = 500, step = 1,		
 				},					
 			},
 		},
@@ -5545,12 +6463,6 @@ E.Options.args.unitframe.args.party = {
 					type = 'range',
 					min = 10, max = 250, step = 1,
 				},	
-				initialAnchor = {
-					type = 'select',
-					order = 4,
-					name = L['Initial Anchor'],
-					values = petAnchors,
-				},	
 				anchorPoint = {
 					type = 'select',
 					order = 5,
@@ -5563,14 +6475,14 @@ E.Options.args.unitframe.args.party = {
 					type = 'range',
 					name = L['xOffset'],
 					desc = L['An X offset (in pixels) to be used when anchoring new frames.'],
-					min = -15, max = 15, step = 1,		
+					min = -500, max = 500, step = 1,		
 				},
 				yOffset = {
 					order = 7,
 					type = 'range',
 					name = L['yOffset'],
 					desc = L['An Y offset (in pixels) to be used when anchoring new frames.'],
-					min = -15, max = 15, step = 1,		
+					min = -500, max = 500, step = 1,	
 				},					
 			},
 		},		
@@ -5722,6 +6634,45 @@ for i=10, 40, 15 do
 						desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 						get = function(info) return E.db.unitframe.units['raid'..i]['power'].hideonnpc end,
 						set = function(info, value) E.db.unitframe.units['raid'..i]['power'].hideonnpc = value; UF:CreateAndUpdateHeaderGroup('raid'..i); end,
+					},		
+					customText = {
+						order = 50,
+						name = L['Custom Texts'],
+						type = 'input',
+						width = 'full',
+						desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+						get = function() return '' end,
+						set = function(info, textName)
+							for object, _ in pairs(E.Options.args.unitframe.args['raid'..i]) do
+								if object:lower() == textName:lower() then
+									E:Print(L['The name you have selected is already in use by another element.'])
+									return
+								end
+							end
+							
+							local unit = 'raid'..i
+							if not E.db.unitframe.units[unit].customTexts then
+								E.db.unitframe.units[unit].customTexts = {};
+							end
+							
+							if E.db.unitframe.units[unit].customTexts[textName] then
+								E:Print(L['The name you have selected is already in use by another element.'])
+								return;
+							end									
+										
+							E.db.unitframe.units[unit].customTexts[textName] = {
+								['text_format'] = '',
+								['size'] = 12,
+								['font'] = E.db.unitframe.font,
+								['xOffset'] = 0,
+								['yOffset'] = 0,	
+								['fontOutline'] = 'NONE'
+							};
+
+							UF:CreateCustomTextGroup(unit, textName)
+							
+							UF:CreateAndUpdateHeaderGroup(unit)
+						end,
 					},							
 					visibility = {
 						order = 200,
@@ -5729,9 +6680,10 @@ for i=10, 40, 15 do
 						name = L['Visibility'],
 						desc = L['The following macro must be true in order for the group to be shown, in addition to any filter that may already be set.'],
 						width = 'full',
+						desc = L['TEXT_FORMAT_DESC'],
 					},					
 				},
-			},
+			},			
 			health = {
 				order = 100,
 				type = 'group',
@@ -5739,17 +6691,13 @@ for i=10, 40, 15 do
 				get = function(info) return E.db.unitframe.units['raid'..i]['health'][ info[#info] ] end,
 				set = function(info, value) E.db.unitframe.units['raid'..i]['health'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i); end,
 				args = {
-					text = {
-						type = 'toggle',
-						order = 1,
-						name = L['Text'],
-					},
 					text_format = {
-						type = 'select',
-						order = 2,
+						order = 100,
 						name = L['Text Format'],
-						values = textFormats,
-					},
+						type = 'input',
+						width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+					},	
 					position = {
 						type = 'select',
 						order = 3,
@@ -5786,17 +6734,13 @@ for i=10, 40, 15 do
 						order = 1,
 						name = L['Enable'],
 					},			
-					text = {
-						type = 'toggle',
-						order = 2,
-						name = L['Text'],
-					},
 					text_format = {
-						type = 'select',
-						order = 3,
+						order = 100,
 						name = L['Text Format'],
-						values = textFormats,
-					},
+						type = 'input',
+						width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+					},	
 					width = {
 						type = 'select',
 						order = 4,
@@ -5831,23 +6775,19 @@ for i=10, 40, 15 do
 				get = function(info) return E.db.unitframe.units['raid'..i]['name'][ info[#info] ] end,
 				set = function(info, value) E.db.unitframe.units['raid'..i]['name'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
 				args = {
-					enable = {
-						type = 'toggle',
-						order = 1,
-						name = L['Enable'],
-					},
 					position = {
 						type = 'select',
 						order = 2,
 						name = L['Position'],
 						values = positionValues,
 					},	
-					length = {
-						type = 'select',
-						order = 3,
-						name = L['Length'],
-						values = lengthValues,				
-					},				
+					text_format = {
+						order = 100,
+						name = L['Text Format'],
+						type = 'input',
+						width = 'full',
+					desc = L['TEXT_FORMAT_DESC'],
+					},			
 				},
 			},
 			buffs = {
@@ -5857,107 +6797,114 @@ for i=10, 40, 15 do
 				get = function(info) return E.db.unitframe.units['raid'..i]['buffs'][ info[#info] ] end,
 				set = function(info, value) E.db.unitframe.units['raid'..i]['buffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
 				args = {
-					enable = {
-						type = 'toggle',
-						order = 1,
-						name = L['Enable'],
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},			
+				perrow = {
+					type = 'range',
+					order = 2,
+					name = L['Per Row'],
+					min = 1, max = 20, step = 1,
+				},
+				numrows = {
+					type = 'range',
+					order = 3,
+					name = L['Num Rows'],
+					min = 1, max = 4, step = 1,					
+				},
+				sizeOverride = {
+					type = 'range',
+					order = 3,
+					name = L['Size Override'],
+					desc = L['If not set to 0 then override the size of the aura icon to this.'],
+					min = 0, max = 60, step = 1,
+				},
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
+					order = 5,
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},					
+				attachTo = {
+					type = 'select',
+					order = 7,
+					name = L['Attach To'],
+					desc = L['What to attach the buff anchor frame to.'],
+					values = {
+						['FRAME'] = L['Frame'],
+						['DEBUFFS'] = L['Debuffs'],
 					},
-					perrow = {
-						type = 'range',
-						order = 2,
-						name = L['Per Row'],
-						min = 1, max = 20, step = 1,
-					},
-					numrows = {
-						type = 'range',
-						order = 3,
-						name = L['Num Rows'],
-						min = 1, max = 4, step = 1,					
-					},
-					sizeOverride = {
-						type = 'range',
-						order = 3,
-						name = L['Size Override'],
-						desc = L['If not set to 0 then override the size of the aura icon to this.'],
-						min = 0, max = 60, step = 1,
-					},				
-					['growth-x'] = {
-						type = 'select',
-						order = 4,
-						name = L['X-Growth'],
-						desc = L['Growth direction of the buffs'],
-						values = {
-							['LEFT'] = L['Left'],
-							['RIGHT'] = L["Right"],
-						},
-					},
-					['growth-y'] = {
-						type = 'select',
-						order = 5,
-						name = L['Y-Growth'],
-						desc = L['Growth direction of the buffs'],
-						values = {
-							['UP'] = L['Up'],
-							['DOWN'] = L["Down"],
-						},
-					},	
-					initialAnchor = {
-						type = 'select',
-						order = 6,
-						name = L['Initial Anchor'],
-						desc = L['The initial anchor point of the buffs on the frame'],
-						values = auraAnchors,
-					},	
-					attachTo = {
-						type = 'select',
-						order = 7,
-						name = L['Attach To'],
-						desc = L['What to attach the buff anchor frame to.'],
-						values = {
-							['FRAME'] = L['Frame'],
-							['DEBUFFS'] = L['Debuffs'],
-						},
-					},
-					anchorPoint = {
-						type = 'select',
-						order = 8,
-						name = L['Anchor Point'],
-						desc = L['What point to anchor to the frame you set to attach to.'],
-						values = auraAnchors,				
-					},
-					fontsize = {
-						order = 6,
-						name = L["Font Size"],
-						type = "range",
-						min = 6, max = 22, step = 1,
-					},				
-					useFilter = {
-						order = 7,
-						name = L['Use Filter'],
-						desc = L['Select a filter to use.'],
-						type = 'select',
-						values = function()
-							filters = {}
-							filters[''] = ''
-							for filter in pairs(E.global.unitframe['aurafilters']) do
-								filters[filter] = filter
-							end
-							return filters
-						end,
-					},		
-					showPlayerOnly = {
-						order = 8,
-						type = 'toggle',
-						name = L['Personal Auras'],
-						desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-					},	
-					durationLimit = {
-						order = 9,
-						name = L['Duration Limit'],
-						desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-						type = 'range',
-						min = 0, max = 3600, step = 60,
-					},					
+				},
+				anchorPoint = {
+					type = 'select',
+					order = 8,
+					name = L['Anchor Point'],
+					desc = L['What point to anchor to the frame you set to attach to.'],
+					values = auraAnchors,				
+				},
+				fontSize = {
+					order = 9,
+					name = L["Font Size"],
+					type = "range",
+					min = 6, max = 22, step = 1,
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				noConsolidated = {
+					order = 14,
+					type = 'select',
+					name = L['No Consolidated'],
+					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+					values = auraFilterTypes		
+				},
+				useFilter = {
+					order = 15,
+					name = L['Use Filter'],
+					desc = L['Select a filter to use.'],
+					type = 'select',
+					values = function()
+						filters = {}
+						filters[''] = NONE
+						for filter in pairs(E.global.unitframe['aurafilters']) do
+							filters[filter] = filter
+						end
+						return filters
+					end,
+				},			
 				},
 			},	
 			debuffs = {
@@ -5967,107 +6914,107 @@ for i=10, 40, 15 do
 				get = function(info) return E.db.unitframe.units['raid'..i]['debuffs'][ info[#info] ] end,
 				set = function(info, value) E.db.unitframe.units['raid'..i]['debuffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
 				args = {
-					enable = {
-						type = 'toggle',
-						order = 1,
-						name = L['Enable'],
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},			
+				perrow = {
+					type = 'range',
+					order = 2,
+					name = L['Per Row'],
+					min = 1, max = 20, step = 1,
+				},
+				numrows = {
+					type = 'range',
+					order = 3,
+					name = L['Num Rows'],
+					min = 1, max = 4, step = 1,					
+				},
+				sizeOverride = {
+					type = 'range',
+					order = 3,
+					name = L['Size Override'],
+					desc = L['If not set to 0 then override the size of the aura icon to this.'],
+					min = 0, max = 60, step = 1,
+				},
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -60, max = 60, step = 1,
+				},
+				yOffset = {
+					order = 5,
+					type = 'range',
+					name = L['yOffset'],
+					min = -60, max = 60, step = 1,
+				},					
+				attachTo = {
+					type = 'select',
+					order = 7,
+					name = L['Attach To'],
+					desc = L['What to attach the debuff anchor frame to.'],
+					values = {
+						['FRAME'] = L['Frame'],
+						['BUFFS'] = L['Buffs'],
 					},
-					perrow = {
-						type = 'range',
-						order = 2,
-						name = L['Per Row'],
-						min = 1, max = 20, step = 1,
-					},
-					numrows = {
-						type = 'range',
-						order = 3,
-						name = L['Num Rows'],
-						min = 1, max = 4, step = 1,					
-					},
-					sizeOverride = {
-						type = 'range',
-						order = 3,
-						name = L['Size Override'],
-						desc = L['If not set to 0 then override the size of the aura icon to this.'],
-						min = 0, max = 60, step = 1,
-					},				
-					['growth-x'] = {
-						type = 'select',
-						order = 4,
-						name = L['X-Growth'],
-						desc = L['Growth direction of the buffs'],
-						values = {
-							['LEFT'] = L['Left'],
-							['RIGHT'] = L["Right"],
-						},
-					},
-					['growth-y'] = {
-						type = 'select',
-						order = 5,
-						name = L['Y-Growth'],
-						desc = L['Growth direction of the buffs'],
-						values = {
-							['UP'] = L['Up'],
-							['DOWN'] = L["Down"],
-						},
-					},	
-					initialAnchor = {
-						type = 'select',
-						order = 6,
-						name = L['Initial Anchor'],
-						desc = L['The initial anchor point of the buffs on the frame'],
-						values = auraAnchors,
-					},	
-					attachTo = {
-						type = 'select',
-						order = 7,
-						name = L['Attach To'],
-						desc = L['What to attach the buff anchor frame to.'],
-						values = {
-							['FRAME'] = L['Frame'],
-							['BUFFS'] = L['Buffs'],
-						},
-					},
-					anchorPoint = {
-						type = 'select',
-						order = 8,
-						name = L['Anchor Point'],
-						desc = L['What point to anchor to the frame you set to attach to.'],
-						values = auraAnchors,				
-					},
-					fontsize = {
-						order = 6,
-						name = L["Font Size"],
-						type = "range",
-						min = 6, max = 22, step = 1,
-					},	
-					useFilter = {
-						order = 7,
-						name = L['Use Filter'],
-						desc = L['Select a filter to use.'],
-						type = 'select',
-						values = function()
-							filters = {}
-							filters[''] = ''
-							for filter in pairs(E.global.unitframe['aurafilters']) do
-								filters[filter] = filter
-							end
-							return filters
-						end,
-					},
-					showPlayerOnly = {
-						order = 8,
-						type = 'toggle',
-						name = L['Personal Auras'],
-						desc = L['If set only auras belonging to yourself in addition to any aura that passes the set filter may be shown.'],
-					},
-					durationLimit = {
-						order = 9,
-						name = L['Duration Limit'],
-						desc = L['The aura must be below this duration for the buff to show, set to 0 to disable. Note: This is in seconds.'],
-						type = 'range',
-						min = 0, max = 3600, step = 60,
-					},					
+				},
+				anchorPoint = {
+					type = 'select',
+					order = 8,
+					name = L['Anchor Point'],
+					desc = L['What point to anchor to the frame you set to attach to.'],
+					values = auraAnchors,				
+				},
+				fontSize = {
+					order = 9,
+					name = L["Font Size"],
+					type = "range",
+					min = 6, max = 22, step = 1,
+				},	
+				playerOnly = {
+					order = 10,
+					type = 'select',
+					name = L['Personal Auras'],
+					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes,
+				},
+				useBlacklist = {
+					order = 11,
+					type = 'select',
+					name = L['Use Blacklist'],
+					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				useWhitelist = {
+					order = 12,
+					type = 'select',
+					name = L['Use Whitelist'],
+					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+					values = auraFilterTypes
+				},
+				noDuration = {
+					order = 13,
+					type = 'select',
+					name = L['No Duration'],
+					desc = L['Allow displaying of auras that do not have a duration.'],
+					values = auraFilterTypes					
+				},
+				useFilter = {
+					order = 15,
+					name = L['Use Filter'],
+					desc = L['Select a filter to use.'],
+					type = 'select',
+					values = function()
+						filters = {}
+						filters[''] = NONE
+						for filter in pairs(E.global.unitframe['aurafilters']) do
+							filters[filter] = filter
+						end
+						return filters
+					end,
+				},		
 				},
 			},	
 			buffIndicator = {
@@ -6095,7 +7042,7 @@ for i=10, 40, 15 do
 						order = 3,
 						min = 4, max = 15, step = 1,
 					},
-					fontsize = {
+					fontSize = {
 						type = 'range',
 						name = L['Font Size'],
 						order = 4,
@@ -6164,7 +7111,7 @@ for i=10, 40, 15 do
 						order = 2,
 						min = 8, max = 35, step = 1,
 					},				
-					fontsize = {
+					fontSize = {
 						type = 'range',
 						name = L['Font Size'],
 						order = 3,
@@ -6216,6 +7163,54 @@ E.Options.args.unitframe.args.tank = {
 				},					
 			},
 		},	
+		targetsGroup = {
+			order = 4,
+			type = 'group',
+			name = L['Tank Target'],
+			guiInline = true,
+			get = function(info) return E.db.unitframe.units['tank']['targetsGroup'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['tank']['targetsGroup'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('tank') end,	
+			args = {		
+				enable = {
+					type = 'toggle',
+					name = L['Enable'],
+					order = 1,
+				},
+				width = {
+					order = 2,
+					name = L['Width'],
+					type = 'range',
+					min = 10, max = 500, step = 1,
+				},			
+				height = {
+					order = 3,
+					name = L['Height'],
+					type = 'range',
+					min = 10, max = 250, step = 1,
+				},	
+				anchorPoint = {
+					type = 'select',
+					order = 5,
+					name = L['Anchor Point'],
+					desc = L['What point to anchor to the frame you set to attach to.'],
+					values = petAnchors,				
+				},	
+				xOffset = {
+					order = 6,
+					type = 'range',
+					name = L['xOffset'],
+					desc = L['An X offset (in pixels) to be used when anchoring new frames.'],
+					min = -500, max = 500, step = 1,		
+				},
+				yOffset = {
+					order = 7,
+					type = 'range',
+					name = L['yOffset'],
+					desc = L['An Y offset (in pixels) to be used when anchoring new frames.'],
+					min = -500, max = 500, step = 1,	
+				},					
+			},
+		},			
 	},
 }
 
@@ -6257,6 +7252,54 @@ E.Options.args.unitframe.args.assist = {
 					min = 10, max = 250, step = 1,
 				},					
 			},
-		},	
+		},
+		targetsGroup = {
+			order = 4,
+			type = 'group',
+			name = L['Assist Target'],
+			guiInline = true,
+			get = function(info) return E.db.unitframe.units['assist']['targetsGroup'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['assist']['targetsGroup'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('assist') end,	
+			args = {		
+				enable = {
+					type = 'toggle',
+					name = L['Enable'],
+					order = 1,
+				},
+				width = {
+					order = 2,
+					name = L['Width'],
+					type = 'range',
+					min = 10, max = 500, step = 1,
+				},			
+				height = {
+					order = 3,
+					name = L['Height'],
+					type = 'range',
+					min = 10, max = 250, step = 1,
+				},	
+				anchorPoint = {
+					type = 'select',
+					order = 5,
+					name = L['Anchor Point'],
+					desc = L['What point to anchor to the frame you set to attach to.'],
+					values = petAnchors,				
+				},	
+				xOffset = {
+					order = 6,
+					type = 'range',
+					name = L['xOffset'],
+					desc = L['An X offset (in pixels) to be used when anchoring new frames.'],
+					min = -500, max = 500, step = 1,		
+				},
+				yOffset = {
+					order = 7,
+					type = 'range',
+					name = L['yOffset'],
+					desc = L['An Y offset (in pixels) to be used when anchoring new frames.'],
+					min = -500, max = 500, step = 1,	
+				},					
+			},
+		},			
 	},
 }

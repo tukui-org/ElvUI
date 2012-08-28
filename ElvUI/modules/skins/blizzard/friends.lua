@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 --Tab Regions
@@ -120,7 +120,20 @@ local function LoadSkin()
 			region:SetAlpha(0)
 		end
 	end	
+	
+	S:HandleDropDownBox(FriendsFrameStatusDropDown,70)
+	
+	FriendsFrameBattlenetFrame:StripTextures()
 
+	FriendsFrameBattlenetFrame.BroadcastButton:CreateBackdrop()
+	FriendsFrameBattlenetFrame.BroadcastButton:Size(17)
+	FriendsFrameBattlenetFrame.BroadcastButton:ClearAllPoints()
+	FriendsFrameBattlenetFrame.BroadcastButton:SetPoint('RIGHT', FriendsFrameStatusDropDown.backdrop, 'LEFT', -23, 0)
+	FriendsFrameBattlenetFrame.BroadcastButton:GetNormalTexture():SetTexCoord(.28, .72, .28, .72)
+	FriendsFrameBattlenetFrame.BroadcastButton:GetPushedTexture():SetTexCoord(.28, .72, .28, .72)
+	FriendsFrameBattlenetFrame.BroadcastButton:GetHighlightTexture():SetTexCoord(.28, .72, .28, .72)
+	FriendsFrameBattlenetFrame.BroadcastButton:SetScript('OnClick', function() E:StaticPopup_Show("SET_BN_BROADCAST") end)
+	
 	S:HandleEditBox(AddFriendNameEditBox)
 	AddFriendFrame:SetTemplate("Transparent")			
 	ScrollOfResurrectionSelectionFrame:SetTemplate('Transparent')
@@ -154,7 +167,7 @@ local function LoadSkin()
 	S:HandleCloseButton(ChannelFrameDaughterFrameDetailCloseButton,ChannelFrameDaughterFrame)
 	S:HandleCloseButton(FriendsFrameCloseButton,FriendsFrame.backdrop)
 	S:HandleDropDownBox(WhoFrameDropDown,150)
-	S:HandleDropDownBox(FriendsFrameStatusDropDown,70)
+	
 
 	--Bottom Tabs
 	for i=1, 4 do
@@ -219,9 +232,7 @@ local function LoadSkin()
 	FriendsTabHeaderSoRButton:StyleButton()
 	FriendsTabHeaderSoRButtonIcon:SetDrawLayer('OVERLAY')
 	FriendsTabHeaderSoRButtonIcon:SetTexCoord(unpack(E.TexCoords))
-	FriendsTabHeaderSoRButtonIcon:ClearAllPoints()
-	FriendsTabHeaderSoRButtonIcon:Point('TOPLEFT', 2, -2)
-	FriendsTabHeaderSoRButtonIcon:Point('BOTTOMRIGHT', -2, 2)
+	FriendsTabHeaderSoRButtonIcon:SetInside()
 	FriendsTabHeaderSoRButton:Point('TOPRIGHT', FriendsTabHeader, 'TOPRIGHT', -8, -56)
 	
 	S:HandleScrollBar(FriendsFrameIgnoreScrollFrameScrollBar, 4)

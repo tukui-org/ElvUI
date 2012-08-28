@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -12,14 +12,15 @@ local function LoadSkin()
 	
 	TradeSkillFrame:SetTemplate("Transparent")
 	TradeSkillFrame:CreateShadow("Default")
-	TradeSkillFrame:Height(TradeSkillFrame:GetHeight() + 12)
+	--TradeSkillFrame:Height(TradeSkillFrame:GetHeight() + 12)
 	TradeSkillRankFrame:StripTextures()
 	TradeSkillRankFrame:CreateBackdrop("Default")
 	TradeSkillRankFrame:SetStatusBarTexture(E["media"].normTex)
-	
+	TradeSkillFilterButton:StripTextures(true)
 	S:HandleButton(TradeSkillCreateButton, true)
 	S:HandleButton(TradeSkillCancelButton, true)
-	S:HandleButton(TradeSkillFilterButton, true)
+	TradeSkillFilterButton:CreateBackdrop('Default', true)
+	TradeSkillFilterButton.backdrop:SetAllPoints()
 	S:HandleButton(TradeSkillCreateAllButton, true)
 	S:HandleButton(TradeSkillViewGuildCraftersButton, true)
 	
@@ -45,9 +46,7 @@ local function LoadSkin()
 		TradeSkillSkillIcon:StyleButton()
 		if TradeSkillSkillIcon:GetNormalTexture() then
 			TradeSkillSkillIcon:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-			TradeSkillSkillIcon:GetNormalTexture():ClearAllPoints()
-			TradeSkillSkillIcon:GetNormalTexture():Point("TOPLEFT", 2, -2)
-			TradeSkillSkillIcon:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+			TradeSkillSkillIcon:GetNormalTexture():SetInside()
 		end
 		TradeSkillSkillIcon:SetTemplate("Default")
 
@@ -62,8 +61,7 @@ local function LoadSkin()
 				icon.backdrop = CreateFrame("Frame", nil, button)
 				icon.backdrop:SetFrameLevel(button:GetFrameLevel() - 1)
 				icon.backdrop:SetTemplate("Default")
-				icon.backdrop:Point("TOPLEFT", icon, "TOPLEFT", -2, 2)
-				icon.backdrop:Point("BOTTOMRIGHT", icon, "BOTTOMRIGHT", 2, -2)
+				icon.backdrop:SetOutside(icon)
 			end
 			
 			icon:SetParent(icon.backdrop)

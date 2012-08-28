@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local AB = E:GetModule('ActionBars');
 
 function AB:SetupExtraButton()
@@ -11,16 +11,22 @@ function AB:SetupExtraButton()
 	ExtraActionBarFrame:SetPoint('CENTER', holder, 'CENTER')
 		
 	ExtraActionBarFrame.ignoreFramePositionManager  = true
-
-	--[[ExtraActionBarFrame:Show(); ExtraActionBarFrame:SetAlpha(1); ExtraActionBarFrame.Hide = ExtraActionBarFrame.Show; ExtraActionBarFrame.SetAlpha = E.noop
-	ExtraActionButton1.action = 2; ExtraActionButton1:Show(); ExtraActionButton1:SetAlpha(1); ExtraActionButton1.Hide = ExtraActionButton1.Show; ExtraActionButton1.SetAlpha = E.noop]]
 	
 	for i=1, ExtraActionBarFrame:GetNumChildren() do
 		if _G["ExtraActionButton"..i] then
 			_G["ExtraActionButton"..i].noResize = true;
-			self:StyleButton(_G["ExtraActionButton"..i])
+			_G["ExtraActionButton"..i].pushed = true
+			_G["ExtraActionButton"..i].checked = true
+			
+			self:StyleButton(_G["ExtraActionButton"..i], true)
+			_G["ExtraActionButton"..i]:SetTemplate()
+			_G["ExtraActionButton"..i..'Icon']:SetDrawLayer('ARTWORK')
+			local tex = _G["ExtraActionButton"..i]:CreateTexture(nil, 'OVERLAY')
+			tex:SetTexture(0.9, 0.8, 0.1, 0.3)
+			tex:SetInside()
+			_G["ExtraActionButton"..i]:SetCheckedTexture(tex)
 		end
 	end
 	
-	E:CreateMover(holder, 'BossButton', 'Boss Button');
+	E:CreateMover(holder, 'BossButton', 'Boss Button', nil, nil, nil, 'ALL,ACTIONBARS');
 end

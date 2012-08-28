@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local NP = E:GetModule('NamePlates')
 
 local selectedFilter
@@ -84,7 +84,7 @@ E.Options.args.nameplate = {
 			type = "toggle",
 			name = L["Enable"],
 			get = function(info) return E.private.nameplate[ info[#info] ] end,
-			set = function(info, value) E.private.nameplate[ info[#info] ] = value; StaticPopup_Show("PRIVATE_RL") end
+			set = function(info, value) E.private.nameplate[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},
 		general = {
 			order = 3,
@@ -117,11 +117,20 @@ E.Options.args.nameplate = {
 					type = "range",
 					min = 4, max = 30, step = 1,						
 				},
-				showhealth = {
-					type = "toggle",
+				healthtext = {
+					type = "select",
 					order = 4,
 					name = L["Health Text"],
 					desc = L["Toggles health text display"],
+					values = {
+						['CURRENT_MAX_PERCENT'] = L['Current - Max | Percent'],
+						['CURRENT_PERCENT'] = L['Current - Percent'],
+						['CURRENT_MAX'] = L['Current - Max'],
+						['CURRENT'] = L['Current'],
+						['PERCENT'] = L['Percent'],
+						['DEFICIT'] = L['Deficit'],
+						[''] = NONE,					
+					},
 				},	
 				showlevel = {
 					type = "toggle",
@@ -142,8 +151,60 @@ E.Options.args.nameplate = {
 					desc = L['Display a healer icon over known healers inside battlegrounds.'],
 					set = function(info, value) E.db.nameplate[ info[#info] ] = value; NP:PLAYER_ENTERING_WORLD(); NP:UpdateAllPlates() end,
 				},
-				auras = {
+				lowHealthWarning = {
+					type = 'select',
 					order = 8,
+					name = L['Low Health Warning'],
+					desc = L['Color the border of the nameplate yellow when it reaches the threshold point on these types of frames.'],
+					values = {
+						['PLAYERS'] = L['Players'],
+						['ALL'] = ALL,
+						['NONE'] = NONE,
+					},
+				},
+				lowHealthWarningThreshold = {
+					type = 'range',
+					order = 9,
+					name = L['Low Health Threshold'],
+					desc = L['Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value.'],
+					isPercent = true,
+					min = 0.2, max = 1, step = 0.01, 			
+				},
+				fontGroup = {
+					order = 50,
+					type = 'group',
+					guiInline = true,
+					name = L['Fonts'],
+					args = {
+						font = {
+							type = "select", dialogControl = 'LSM30_Font',
+							order = 4,
+							name = L["Font"],
+							values = AceGUIWidgetLSMlists.font,
+						},
+						fontSize = {
+							order = 5,
+							name = L["Font Size"],
+							type = "range",
+							min = 6, max = 22, step = 1,
+						},	
+						fontOutline = {
+							order = 6,
+							name = L["Font Outline"],
+							desc = L["Set the font outline."],
+							type = "select",
+							values = {
+								['NONE'] = L['None'],
+								['OUTLINE'] = 'OUTLINE',
+								['MONOCHROME'] = 'MONOCHROME',
+								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+								['THICKOUTLINE'] = 'THICKOUTLINE',
+							},
+						},	
+					},
+				},				
+				auras = {
+					order = 100,
 					type = "group",
 					name = L["Auras"],
 					guiInline = true,	
@@ -161,7 +222,7 @@ E.Options.args.nameplate = {
 							desc = L['Select a filter to use. These are imported from the unitframe aura filter.'],
 							values = function()
 								filters = {}
-								filters[''] = ''
+								filters[''] = NONE
 								for filter in pairs(E.global['unitframe']['aurafilters']) do
 									filters[filter] = filter
 								end
@@ -171,7 +232,7 @@ E.Options.args.nameplate = {
 					},
 				},
 				reactions = {
-					order = 9,
+					order = 200,
 					type = "group",
 					name = L["Reactions"],
 					guiInline = true,
@@ -213,7 +274,7 @@ E.Options.args.nameplate = {
 					},		
 				},				
 				threat = {
-					order = 10,
+					order = 300,
 					type = "group",
 					name = L["Threat"],
 					guiInline = true,

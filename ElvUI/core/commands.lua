@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 
 function E:EnableAddon(addon)
 	local _, _, _, _, _, reason, _ = GetAddOnInfo(addon)
@@ -27,6 +27,7 @@ end
 
 function FarmMode()
 	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT); return; end
+	if E.private.general.minimap.enable ~= true then return; end
 	if Minimap:IsShown() then
 		UIFrameFadeOut(Minimap, 0.3)
 		UIFrameFadeIn(FarmModeMap, 0.3) 
@@ -41,6 +42,7 @@ function FarmMode()
 end
 
 function E:FarmMode(msg)
+	if E.private.general.minimap.enable ~= true then return; end
 	if msg and type(tonumber(msg))=="number" and tonumber(msg) <= 500 and tonumber(msg) >= 20 and not InCombatLockdown() then
 		E.db.farmSize = tonumber(msg)
 		FarmModeMap:Size(tonumber(msg))
@@ -137,7 +139,7 @@ function E:LoadCommands()
 	self:RegisterChatCommand('aprilfools', 'DisableAprilFools')
 	self:RegisterChatCommand('luaerror', 'LuaError')
 	self:RegisterChatCommand('egrid', 'Grid')
-	self:RegisterChatCommand("moveui", "MoveUI")
+	self:RegisterChatCommand("moveui", "ToggleConfigMode")
 	self:RegisterChatCommand("resetui", "ResetUI")
 	self:RegisterChatCommand("enable", "EnableAddon")
 	self:RegisterChatCommand("disable", "DisableAddon")

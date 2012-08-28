@@ -2,7 +2,7 @@
 Button Widget
 Graphical Button.
 -------------------------------------------------------------------------------]]
-local Type, Version = "Button", 21
+local Type, Version = "Button", 22
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -12,6 +12,12 @@ local pairs = pairs
 -- WoW APIs
 local _G = _G
 local PlaySound, CreateFrame, UIParent = PlaySound, CreateFrame, UIParent
+
+local wowMoP
+do
+	local _, _, _, interface = GetBuildInfo()
+	wowMoP = (interface >= 50000)
+end
 
 --[[-----------------------------------------------------------------------------
 Scripts
@@ -63,7 +69,7 @@ Constructor
 -------------------------------------------------------------------------------]]
 local function Constructor()
 	local name = "AceGUI30Button" .. AceGUI:GetNextWidgetNum(Type)
-	local frame = CreateFrame("Button", name, UIParent, "UIPanelButtonTemplate2")
+	local frame = CreateFrame("Button", name, UIParent, wowMoP and "UIPanelButtonTemplate" or "UIPanelButtonTemplate2")
 	frame:Hide()
 
 	frame:EnableMouse(true)

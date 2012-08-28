@@ -107,7 +107,7 @@ Here is an example of how to set oUF_AW up:
 -----------------------------------------------------------------------------------------------------------]]
 
 local _, ns = ...
-local oUF = ns.oUF or oUF or ElvUF
+local oUF = ns.oUF or oUF
 assert(oUF, "oUF_AuraWatch cannot find an instance of oUF. If your oUF is embedded into a layout, it may not be embedded properly.")
 
 local UnitBuff, UnitDebuff, UnitGUID = UnitBuff, UnitDebuff, UnitGUID
@@ -187,7 +187,7 @@ end
 
 local found = {}
 local function Update(frame, event, unit)
-	if frame.unit ~= unit then return end
+	if frame.unit ~= unit or not unit then return end
 	local watch = frame.AuraWatch
 	local index, icons = 1, watch.watched
 	local _, name, texture, count, duration, remaining, caster, key, icon, spellid 
@@ -218,7 +218,7 @@ local function Update(frame, event, unit)
 				key = name..texture
 			end
 			icon = icons[key]
-			if icon and (icon.anyUnit or (caster and icon.fromUnits[caster])) then
+			if icon and (icon.anyUnit or (caster and icon.fromUnits and icon.fromUnits[caster])) then
 				resetIcon(icon, watch, count, duration, remaining)
 				GUIDs[guid][key] = true
 				found[key] = true

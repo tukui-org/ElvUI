@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -41,6 +41,9 @@ local function LoadSkin()
 	RaidInfoFrame.backdrop:Point( "TOPLEFT", RaidInfoFrame, "TOPLEFT")
 	RaidInfoFrame.backdrop:Point( "BOTTOMRIGHT", RaidInfoFrame, "BOTTOMRIGHT")
 	S:HandleCloseButton(RaidInfoCloseButton,RaidInfoFrame)
+	
+	S:HandleButton(RaidFrameRaidBrowserButton)
+	S:HandleCheckBox(RaidFrameAllAssistCheckButton)	
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

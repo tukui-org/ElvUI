@@ -232,7 +232,7 @@ end
 -- ----------------------------------------------------------------------------
 
 local function NoDualSpec()
-	return GetNumTalentGroups() == 1
+	return GetNumSpecGroups() == 1
 end
 
 options.dualSpecDesc = {
@@ -318,7 +318,7 @@ end
 lib.eventFrame:RegisterEvent('PLAYER_TALENT_UPDATE')
 lib.eventFrame:SetScript('OnEvent', function()
 	lib.talentsLoaded = true
-	local newTalentGroup = GetActiveTalentGroup()
+	local newTalentGroup = GetActiveSpecGroup()
 	if lib.talentGroup ~= newTalentGroup then
 		lib.talentGroup = newTalentGroup
 		for target in pairs(registry) do

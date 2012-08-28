@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -52,6 +52,7 @@ local function LoadSkin()
 	MacroPopupNameLeft:SetTexture(nil)
 	MacroPopupNameMiddle:SetTexture(nil)
 	MacroPopupNameRight:SetTexture(nil)
+	MacroFrameInset:Kill()
 	
 	--Reposition edit button
 	MacroEditButton:ClearAllPoints()
@@ -71,9 +72,7 @@ local function LoadSkin()
 	MacroFrameSelectedMacroButton:GetNormalTexture():SetTexture(nil)
 	MacroFrameSelectedMacroButton:SetTemplate("Default")
 	MacroFrameSelectedMacroButtonIcon:SetTexCoord(unpack(E.TexCoords))
-	MacroFrameSelectedMacroButtonIcon:ClearAllPoints()
-	MacroFrameSelectedMacroButtonIcon:Point("TOPLEFT", 2, -2)
-	MacroFrameSelectedMacroButtonIcon:Point("BOTTOMRIGHT", -2, 2)
+	MacroFrameSelectedMacroButtonIcon:SetInside()
 	
 	-- temporarily moving this text
 	MacroFrameCharLimitText:ClearAllPoints()
@@ -95,9 +94,7 @@ local function LoadSkin()
 		
 		if t then
 			t:SetTexCoord(unpack(E.TexCoords))
-			t:ClearAllPoints()
-			t:Point("TOPLEFT", 2, -2)
-			t:Point("BOTTOMRIGHT", -2, 2)
+			t:SetInside()
 		end
 
 		if pb then
@@ -109,9 +106,7 @@ local function LoadSkin()
 		
 		if pt then
 			pt:SetTexCoord(unpack(E.TexCoords))
-			pt:ClearAllPoints()
-			pt:Point("TOPLEFT", 2, -2)
-			pt:Point("BOTTOMRIGHT", -2, 2)
+			pt:SetInside()
 		end
 	end
 end

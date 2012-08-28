@@ -6,11 +6,12 @@ if not oUF then return end
  
 local playerClass = select(2,UnitClass("player"))
 local CanDispel = {
-	PRIEST = { Magic = true, Disease = true, },
-	SHAMAN = { Magic = false, Curse = true, },
-	PALADIN = { Magic = false, Poison = true, Disease = true, },
-	MAGE = { Curse = true, },
-	DRUID = { Magic = false, Curse = true, Poison = true, }
+	PRIEST = { Magic = true, Disease = true },
+	SHAMAN = { Magic = false, Curse = true },
+	PALADIN = { Magic = false, Poison = true, Disease = true },
+	MAGE = { Curse = true },
+	DRUID = { Magic = false, Curse = true, Poison = true },
+	MONK = { Magic = false, Poison = true, Disease = true }
 }
 local dispellist = CanDispel[playerClass] or {}
 local origColors = {}
@@ -18,7 +19,7 @@ local origBorderColors = {}
 local origPostUpdateAura = {}
  
 local function GetDebuffType(unit, filter)
-	if not UnitCanAssist("player", unit) then return nil end
+	if not unit or not UnitCanAssist("player", unit) then return nil end
 	local i = 1
 	while true do
 		local _, _, texture, _, debufftype = UnitAura(unit, i, "HARMFUL")
@@ -30,26 +31,11 @@ local function GetDebuffType(unit, filter)
 	end
 end
 
--- Return true if the talent matching the name of the spell given by (Credit Pitbull4)
--- spellid has at least one point spent in it or false otherwise
-function CheckForKnownTalent(spellid)
-	local wanted_name = GetSpellInfo(spellid)
-	if not wanted_name then return nil end
-	local num_tabs = GetNumTalentTabs()
-	for t=1, num_tabs do
-		local num_talents = GetNumTalents(t)
-		for i=1, num_talents do
-			local name_talent, _, _, _, current_rank = GetTalentInfo(t,i)
-			if name_talent and (name_talent == wanted_name) then
-				if current_rank and (current_rank > 0) then
-					return true
-				else
-					return false
-				end
-			end
-		end
+local function CheckTalentTree(tree)
+	local activeGroup = GetActiveSpecGroup()
+	if activeGroup and GetSpecialization(false, false, activeGroup) then
+		return tree == GetSpecialization(false, false, activeGroup)
 	end
-	return false
 end
  
 local function CheckSpec(self, event, levels)
@@ -58,31 +44,33 @@ local function CheckSpec(self, event, levels)
 	
 	--Check for certain talents to see if we can dispel magic or not
 	if playerClass == "PALADIN" then
-		--Check to see if we have the 'Sacred Cleansing' talent.
-		if CheckForKnownTalent(53551) then
+		if CheckTalentTree(1) then
 			dispellist.Magic = true
 		else
 			dispellist.Magic = false	
 		end
 	elseif playerClass == "SHAMAN" then
-		--Check to see if we have the 'Improved Cleanse Spirit' talent.
-		if CheckForKnownTalent(77130) then
+		if CheckTalentTree(3) then
 			dispellist.Magic = true
 		else
 			dispellist.Magic = false	
 		end
 	elseif playerClass == "DRUID" then
-		--Check to see if we have the 'Nature's Cure' talent.
-		if CheckForKnownTalent(88423) then
+		if CheckTalentTree(4) then
 			dispellist.Magic = true
 		else
 			dispellist.Magic = false	
 		end
+	elseif playerClass == "MONK" then
+		if CheckTalentTree(2) then
+			dispellist.Magic = true
+		else
+			dispellist.Magic = false	
+		end		
 	end
 end
  
 local function Update(object, event, unit)
-	if object.unit ~= unit  then return end
 	local debuffType, texture  = GetDebuffType(unit, object.DebuffHighlightFilter)
 	if debuffType then
 		local color = DebuffTypeColor[debuffType]
@@ -122,7 +110,7 @@ local function Enable(object)
 	object:RegisterEvent("UNIT_AURA", Update)
 	object:RegisterEvent("PLAYER_TALENT_UPDATE", CheckSpec)
 	object:RegisterEvent("CHARACTER_POINTS_CHANGED", CheckSpec)
-	
+	object:RegisterUnitEvent("UNIT_AURA", object.unit)
 	if object.DebuffHighlightBackdrop then
 		local r, g, b, a = object:GetBackdropColor()
 		origColors[object] = { r = r, g = g, b = b, a = a}

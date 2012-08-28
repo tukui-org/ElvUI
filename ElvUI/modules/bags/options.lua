@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Import: Engine, Locales, ProfileDB, GlobalDB
 local B = E:GetModule('Bags')
 
 E.Options.args.bags = {
@@ -18,17 +18,8 @@ E.Options.args.bags = {
 			name = L["Enable"],
 			desc = L['Enable/Disable the all-in-one bag.'],
 			get = function(info) return E.private.bags.enable end,
-			set = function(info, value) E.private.bags.enable = value; StaticPopup_Show("PRIVATE_RL") end
-		},	
-		BagBarEnable = {
-			order = 3,
-			type = "toggle",
-			name = L["Enable Bag-Bar"],
-			desc = L['Enable/Disable the Bag-Bar.'],
-			get = function(info) return E.private.bags.bagBar.enable end,
-			set = function(info, value) E.private.bags.bagBar.enable = value; StaticPopup_Show("PRIVATE_RL") end,
-			disabled = function() return E.bags end,
-		},				
+			set = function(info, value) E.private.bags.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
+		},			
 		general = {
 			order = 4,
 			type = "group",
@@ -83,56 +74,61 @@ E.Options.args.bags = {
 			type = "group",
 			name = L["Bag-Bar"],
 			guiInline = true,
-			disabled = function() return E.bags end,
 			get = function(info) return E.db.bags.bagBar[ info[#info] ] end,
 			set = function(info, value) E.db.bags.bagBar[ info[#info] ] = value; B:SizeAndPositionBagBar() end,
 			args = {
-				size = {
+				enable = {
 					order = 1,
+					type = "toggle",
+					name = L["Enable"],
+					desc = L['Enable/Disable the Bag-Bar.'],
+				},					
+				size = {
+					order = 2,
 					type = 'range',
 					name = L["Button Size"],
 					desc = L['Set the size of your bag buttons.'],
 					min = 24, max = 60, step = 1,
 				},
 				spacing = {
-					order = 2,
+					order = 3,
 					type = 'range',
 					name = L['Button Spacing'],
 					desc = L['The spacing between buttons.'],
 					min = 1, max = 10, step = 1,			
 				},
 				showBackdrop = {
-					order = 3,
+					order = 4,
 					type = 'toggle',
 					name = L['Backdrop'],
 				},
 				mouseover = {
-					order = 4,
+					order = 5,
 					name = L['Mouse Over'],
 					desc = L['The frame is not shown unless you mouse over the frame.'],
 					type = "toggle",
 				},
 				sortDirection = {
-					order = 5,
+					order = 6,
 					type = 'select',
 					name = L["Sort Direction"],
-					desc = L['The direction that the bag frames be (Horizontal or Vertical).'],
+					desc = L['The direction that the bag frames will grow from the anchor.'],
 					values = {
 						['ASCENDING'] = L['Ascending'],
 						['DESCENDING'] = L['Descending'],
 					},
 				},
 				growthDirection = {
-					order = 6,
+					order = 7,
 					type = 'select',
 					name = L['Bar Direction'],
-					desc = L['The direction that the bag frames will grow from the anchor.'],
+					desc = L['The direction that the bag frames be (Horizontal or Vertical).'],
 					values = {
 						['VERTICAL'] = L['Vertical'],
 						['HORIZONTAL'] = L['Horizontal'],
 					},
 				},
 			},
-		},
+		},			
 	},
 }

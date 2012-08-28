@@ -1,11 +1,9 @@
-﻿local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+﻿local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local CH = E:NewModule('Chat', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
 local CreatedFrames = 0;
 local lines = {};
 local msgList, msgCount, msgTime = {}, {}, {}
-local response		= L["You need to be at least level %d to whisper me."]
-local friendError	= L["You have reached the maximum amount of friends, remove 2 for this module to function properly."]
 local good, maybe, filter, login = {}, {}, {}, false
 
 local TIMESTAMP_FORMAT
@@ -44,19 +42,16 @@ local smileyPack = {
 	["Hmm"] = [[Interface\AddOns\ElvUI\media\textures\smileys\hmm.blp]],
 	["MiddleFinger"] = [[Interface\AddOns\ElvUI\media\textures\smileys\middle_finger.blp]],
 	["Sad"] = [[Interface\AddOns\ElvUI\media\textures\smileys\sad.blp]],
-	["Shame"] = [[Interface\AddOns\ElvUI\media\textures\smileys\shame.blp]],
 	["Surprise"] = [[Interface\AddOns\ElvUI\media\textures\smileys\surprise.blp]],
 	["Tongue"] = [[Interface\AddOns\ElvUI\media\textures\smileys\tongue.blp]],
-	["Vault"] = [[Interface\AddOns\ElvUI\media\textures\smileys\vault.blp]],
 	["Cry"] = [[Interface\AddOns\ElvUI\media\textures\smileys\weepy.blp]],
 	["Wink"] = [[Interface\AddOns\ElvUI\media\textures\smileys\winky.blp]],
 	["Happy"] = [[Interface\AddOns\ElvUI\media\textures\smileys\happy.blp]],
 	["Heart"] = [[Interface\AddOns\ElvUI\media\textures\smileys\heart.blp]],
+	['BrokenHeart'] = [[Interface\AddOns\ElvUI\media\textures\smileys\broken_heart.blp]],
 }
 
 local smileyKeys = {
-	["%:%$"] = "Shame",
-	["%:%-%$"] = "Shame",
 	["%:%-%@"] = "Angry",
 	["%:%@"] = "Angry",
 	["%:%-%)"]="Happy",
@@ -95,6 +90,7 @@ local smileyKeys = {
 	["%:%'%-%("]="Cry",
 	["%:%F"]="MiddleFinger",
 	["<3"]="Heart",
+	["</3"]="BrokenHeart",
 };
 
 CH.Keywords = {};
@@ -104,10 +100,10 @@ function CH:GetGroupDistribution()
 	if inInstance and (kind == "pvp") then
 		return "/bg "
 	end
-	if GetNumRaidMembers() > 0 then
+	if IsInRaid() then
 		return "/ra "
 	end
-	if GetNumPartyMembers() > 0 then
+	if IsInGroup() then
 		return "/p "
 	end
 	return "/s "
@@ -115,13 +111,13 @@ end
 
 function CH:InsertEmotions(msg)
 	for k,v in pairs(smileyKeys) do
-		msg = string.gsub(msg,k,"|T"..smileyPack[v].."%:15%:15%:0%:0|t");
+		msg = string.gsub(msg,k,"|T"..smileyPack[v]..":16|t");
 	end
 	return msg;
 end
 
 function CH:GetSmileyReplacementText(msg)
-	if not self.db.emotionIcons then return msg end
+	if not self.db.emotionIcons or msg:find('/run') or msg:find('/dump') or msg:find('/script') then return msg end
 	local outstr = "";
 	local origlen = string.len(msg);
 	local startpos = 1;
@@ -140,7 +136,6 @@ function CH:GetSmileyReplacementText(msg)
 			if(endpos == nil) then
 				endpos = origlen;
 			end
-
 			if(startpos < endpos) then
 				outstr = outstr .. string.sub(msg,startpos,endpos); --don't run replacement on this bit
 				startpos = endpos + 1;
@@ -151,13 +146,15 @@ function CH:GetSmileyReplacementText(msg)
 	return outstr;
 end
 
+
 function CH:StyleChat(frame)
-	if frame.styled then return end
-	
-	frame.IgnoreFixDimensions = true; --no need to run this constantly
-	
-	local id = frame:GetID()
 	local name = frame:GetName()
+	_G[name.."TabText"]:FontTemplate(LSM:Fetch("font", self.db.tabFont), self.db.tabFontSize, self.db.tabFontOutline)
+	
+	if frame.styled then return end
+
+	local id = frame:GetID()
+	
 	local tab = _G[name..'Tab']
 	local editbox = _G[name..'EditBox']
 	
@@ -169,19 +166,18 @@ function CH:StyleChat(frame)
 
 	tab:SetAlpha(1)
 	tab.SetAlpha = UIFrameFadeRemoveFrame	
-
-	
 	tab.text = _G[name.."TabText"]
-	tab.text:FontTemplate()
 	tab.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
 	tab.text.OldSetTextColor = tab.text.SetTextColor 
 	tab.text.SetTextColor = E.noop
 	
+	if tab.conversationIcon then
+		tab.conversationIcon:ClearAllPoints()
+		tab.conversationIcon:Point('RIGHT', tab.text, 'LEFT', -1, 0)
+	end
+	
 	frame:SetClampRectInsets(0,0,0,0)
 	frame:SetClampedToScreen(false)
-	if frame:IsMovable() then
-		frame:SetUserPlaced(true)
-	end
 	frame:StripTextures(true)
 	_G[name..'ButtonFrame']:Kill()
 
@@ -268,8 +264,7 @@ function CH:StyleChat(frame)
 	frame.button:SetPoint('TOPRIGHT')
 	
 	frame.button.tex = frame.button:CreateTexture(nil, 'OVERLAY')
-	frame.button.tex:Point('TOPLEFT', 2, -2)
-	frame.button.tex:Point('BOTTOMRIGHT', -2, 2)
+	frame.button.tex:SetInside()
 	frame.button.tex:SetTexture([[Interface\AddOns\ElvUI\media\textures\copy.tga]])
 	
 	frame.button:SetScript("OnMouseUp", function(self, btn)
@@ -341,8 +336,8 @@ end
 function CH:PositionChat(override)
 	if (InCombatLockdown() and not override and self.initialMove) or (IsMouseButtonDown("LeftButton") and not override) then return end
 	
-	RightChatPanel:Size(E.db.general.panelWidth, E.db.general.panelHeight)
-	LeftChatPanel:Size(E.db.general.panelWidth, E.db.general.panelHeight)	
+	RightChatPanel:Size(E.db.chat.panelWidth, E.db.chat.panelHeight)
+	LeftChatPanel:Size(E.db.chat.panelWidth, E.db.chat.panelHeight)	
 	
 	if E.private.chat.enable ~= true then return end
 	
@@ -371,7 +366,7 @@ function CH:PositionChat(override)
 		id = chat:GetID()
 		tab = _G[format("ChatFrame%sTab", i)]
 		point = GetChatWindowSavedPosition(id)
-		_, _, _, _, _, _, _, _, isDocked, _ = GetChatWindowInfo(id)		
+		isDocked = chat.isDocked
 		
 		if id > NUM_CHAT_WINDOWS then
 			if point == nil then
@@ -390,11 +385,11 @@ function CH:PositionChat(override)
 			if id ~= 2 then
 				chat:ClearAllPoints()
 				chat:Point("BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 1, 3)
-				chat:SetSize(E.db.general.panelWidth - 11, (E.db.general.panelHeight - 60))
+				chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - 60))
 			else
 				chat:ClearAllPoints()
 				chat:Point("BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 1, 3)
-				chat:Size(E.db.general.panelWidth - 11, (E.db.general.panelHeight - 60) - CombatLogQuickButtonFrame_Custom:GetHeight())				
+				chat:Size(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - 60) - CombatLogQuickButtonFrame_Custom:GetHeight())				
 			end
 			
 			
@@ -403,7 +398,10 @@ function CH:PositionChat(override)
 			tab:SetParent(RightChatPanel)
 			chat:SetParent(tab)
 			
-			if E.db.general.panelBackdrop == 'HIDEBOTH' or E.db.general.panelBackdrop == 'LEFT' then
+			if chat:IsMovable() then
+				chat:SetUserPlaced(true)
+			end
+			if E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'LEFT' then
 				CH:SetupChatTabs(tab, true)
 			else
 				CH:SetupChatTabs(tab, false)
@@ -417,13 +415,15 @@ function CH:PositionChat(override)
 			if id ~= 2 and not (id > NUM_CHAT_WINDOWS) then
 				chat:ClearAllPoints()
 				chat:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPLEFT", 1, 3)
-				chat:Size(E.db.general.panelWidth - 11, (E.db.general.panelHeight - 60))
+				chat:Size(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - 60))
 				FCF_SavePositionAndDimensions(chat)		
 			end
 			chat:SetParent(LeftChatPanel)
 			tab:SetParent(GeneralDockManager)
-			
-			if E.db.general.panelBackdrop == 'HIDEBOTH' or E.db.general.panelBackdrop == 'RIGHT' then
+			if chat:IsMovable() then
+				chat:SetUserPlaced(true)
+			end
+			if E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'RIGHT' then
 				CH:SetupChatTabs(tab, true)
 			else
 				CH:SetupChatTabs(tab, false)
@@ -638,14 +638,14 @@ function CH:DisableChatThrottle()
 	table.wipe(msgList); table.wipe(msgCount); table.wipe(msgTime)
 end
 
-function CH:SetupChat(event, ...)	
+function CH:SetupChat(event, ...)
 	for _, frameName in pairs(CHAT_FRAMES) do
 		local frame = _G[frameName]
 		local _, fontSize = FCF_GetChatWindowInfo(frame:GetID());
 		self:StyleChat(frame)
 		FCFTab_UpdateAlpha(frame)
-		frame:SetFont(LSM:Fetch("font", self.db.font), fontSize, self.db.fontoutline)
-		if self.db.fontoutline ~= 'NONE' then
+		frame:SetFont(LSM:Fetch("font", self.db.font), fontSize, self.db.fontOutline)
+		if self.db.fontOutline ~= 'NONE' then
 			frame:SetShadowColor(0, 0, 0, 0.2)
 		else
 			frame:SetShadowColor(0, 0, 0, 1)
@@ -881,8 +881,8 @@ function CH:SetChatFont(dropDown, chatFrame, fontSize)
 	if ( not fontSize ) then
 		fontSize = dropDown.value;
 	end
-	chatFrame:SetFont(LSM:Fetch("font", self.db.font), fontSize, self.db.fontoutline)
-	if self.db.fontoutline ~= 'NONE' then
+	chatFrame:SetFont(LSM:Fetch("font", self.db.font), fontSize, self.db.fontOutline)
+	if self.db.fontOutline ~= 'NONE' then
 		chatFrame:SetShadowColor(0, 0, 0, 0.2)
 	else
 		chatFrame:SetShadowColor(0, 0, 0, 1)
@@ -924,6 +924,15 @@ function CH:UpdateChatKeywords()
 	end
 end
 
+function CH:PET_BATTLE_CLOSE()
+	for _, frameName in pairs(CHAT_FRAMES) do
+		local frame = _G[frameName]
+		if frame and _G[frameName.."Tab"]:GetText():match(PET_BATTLE_COMBAT_LOG) then
+			FCF_Close(frame)
+		end
+	end
+end
+
 function CH:Initialize()
 	self.db = E.db.chat
 	if E.private.chat.enable ~= true then return end
@@ -932,20 +941,7 @@ function CH:Initialize()
 	end
 	
 	self:UpdateChatKeywords()
-	
-    UnitPopupButtons["COPYCHAT"] = { 
-		text =L["Copy Text"], 
-		dist = 0 , 
-		func = function(a1, a2) 
-			CH:CopyLineFromPlayerlinkToEdit(a1, a2) 
-		end, 
-		arg1 = "", 
-		arg2 = ""
-	};
-	
-	tinsert(UnitPopupMenus["FRIEND"],#UnitPopupMenus["FRIEND"]-1,"COPYCHAT");    
-	E:RegisterDropdownButton("COPYCHAT", function(menu, button) button.arg1 = CH.clickedFrame end )
-	
+
 	E.Chat = self
 	self:SecureHook('ChatEdit_OnEnterPressed')
 	FriendsMicroButton:Kill()
@@ -961,7 +957,7 @@ function CH:Initialize()
 	self:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
 	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
-	
+	self:RegisterEvent('PET_BATTLE_CLOSE')
 	self:SetupChat()
 
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", CH.CHAT_MSG_CHANNEL)

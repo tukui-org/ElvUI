@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -123,9 +123,7 @@ local function LoadSkin()
 	--Hearth Stone Button
 	HelpFrameCharacterStuckHearthstone:StyleButton()
 	HelpFrameCharacterStuckHearthstone:SetTemplate("Default", true)
-	HelpFrameCharacterStuckHearthstone.IconTexture:ClearAllPoints()
-	HelpFrameCharacterStuckHearthstone.IconTexture:Point("TOPLEFT", 2, -2)
-	HelpFrameCharacterStuckHearthstone.IconTexture:Point("BOTTOMRIGHT", -2, 2)
+	HelpFrameCharacterStuckHearthstone.IconTexture:SetInside()
 	HelpFrameCharacterStuckHearthstone.IconTexture:SetTexCoord(unpack(E.TexCoords))
 	
 	local function navButtonFrameLevel(self)

@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 
 --Locked Settings, These settings are stored for your character only regardless of profile options.
 
@@ -10,22 +10,14 @@ V['general'] = {
 	["dmgfont"] = "ElvUI Combat",
 	['bubbles'] = true,
 	['bags'] = true,
-}
-
-V['bags'] = {
-	['enable'] = true,
-	['bagBar'] = {
+	
+	['minimap'] = {
 		['enable'] = true,
 	},
 }
 
-V['classtimer'] = {
+V['bags'] = {
 	['enable'] = true,
-}
-
-V['reminder'] = {
-	['enable'] = true,
-	['sound'] = "ElvUI Warning",
 }
 
 V["nameplate"] = {
@@ -34,6 +26,7 @@ V["nameplate"] = {
 
 V['auras'] = {
 	['enable'] = true,
+	['size'] = 26,
 }
 
 V['chat'] = {
@@ -41,44 +34,9 @@ V['chat'] = {
 }
 
 V['skins'] = {
-	['bigwigs'] = {
-		['enable'] = true,
-		['spacing'] = 7,
-	},
 	['ace3'] = {
 		['enable'] = true,
-	},
-	['recount'] = {
-		['enable'] = true,
 	},	
-	['dbm'] = {
-		['enable'] = true,
-	},		
-	['dxe'] = {
-		['enable'] = true,
-	},	
-	['omen'] = {
-		['enable'] = true,
-	},
-	['skada'] = {
-		['enable'] = true,
-		['barHeight'] = 17,
-	},		
-	['tinydps'] = {
-		['enable'] = true,
-	},			
-	['clcret'] = {
-		['enable'] = true,
-	},			
-	['clcprot'] = {
-		['enable'] = true,
-	},		
-	['powerauras'] = {
-		['enable'] = true,
-	},		
-	['weakauras'] = {
-		['enable'] = true,
-	},			
 	['blizzard'] = {
 		['enable'] = true,
 		["bags"] = true,
@@ -102,7 +60,8 @@ V['skins'] = {
 		["debug"] = true,
 		["trainer"] = true,
 		["socket"] = true,
-		["achievement_popup"] = true,
+		['loot'] = true,
+		["alertframes"] = true,
 		["bgscore"] = true,
 		["merchant"] = true,
 		["mail"] = true,
@@ -112,17 +71,16 @@ V['skins'] = {
 		["greeting"] = true,
 		["worldmap"] = true,
 		["taxi"] = true,
-		["lfd"] = true,
 		["quest"] = true,
 		["petition"] = true,
 		["dressingroom"] = true,
 		["pvp"] = true,
+		["lfg"] = true,
 		["nonraid"] = true,
 		["friends"] = true,
 		["spellbook"] = true,
 		["character"] = true,
 		["misc"] = true,
-		["lfr"] = true,
 		["tabard"] = true,
 		["guildregistrar"] = true,
 		["timemanager"] = true,
@@ -131,6 +89,8 @@ V['skins'] = {
 		["transmogrify"] = true,
 		["stable"] = true,
 		["bgmap"] = true,
+		['mounts'] = true,
+		['petbattleui'] = true,
 	},
 }
 
