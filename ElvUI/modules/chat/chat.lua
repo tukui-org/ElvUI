@@ -42,31 +42,16 @@ local smileyPack = {
 	["Hmm"] = [[Interface\AddOns\ElvUI\media\textures\smileys\hmm.blp]],
 	["MiddleFinger"] = [[Interface\AddOns\ElvUI\media\textures\smileys\middle_finger.blp]],
 	["Sad"] = [[Interface\AddOns\ElvUI\media\textures\smileys\sad.blp]],
-<<<<<<< HEAD
-	["Shame"] = [[Interface\AddOns\ElvUI\media\textures\smileys\shame.blp]],
 	["Surprise"] = [[Interface\AddOns\ElvUI\media\textures\smileys\surprise.blp]],
 	["Tongue"] = [[Interface\AddOns\ElvUI\media\textures\smileys\tongue.blp]],
-	["Vault"] = [[Interface\AddOns\ElvUI\media\textures\smileys\vault.blp]],
-=======
-	["Surprise"] = [[Interface\AddOns\ElvUI\media\textures\smileys\surprise.blp]],
-	["Tongue"] = [[Interface\AddOns\ElvUI\media\textures\smileys\tongue.blp]],
->>>>>>> beta
 	["Cry"] = [[Interface\AddOns\ElvUI\media\textures\smileys\weepy.blp]],
 	["Wink"] = [[Interface\AddOns\ElvUI\media\textures\smileys\winky.blp]],
 	["Happy"] = [[Interface\AddOns\ElvUI\media\textures\smileys\happy.blp]],
 	["Heart"] = [[Interface\AddOns\ElvUI\media\textures\smileys\heart.blp]],
-<<<<<<< HEAD
-}
-
-local smileyKeys = {
-	["%:%$"] = "Shame",
-	["%:%-%$"] = "Shame",
-=======
 	['BrokenHeart'] = [[Interface\AddOns\ElvUI\media\textures\smileys\broken_heart.blp]],
 }
 
 local smileyKeys = {
->>>>>>> beta
 	["%:%-%@"] = "Angry",
 	["%:%@"] = "Angry",
 	["%:%-%)"]="Happy",
@@ -105,10 +90,7 @@ local smileyKeys = {
 	["%:%'%-%("]="Cry",
 	["%:%F"]="MiddleFinger",
 	["<3"]="Heart",
-<<<<<<< HEAD
-=======
 	["</3"]="BrokenHeart",
->>>>>>> beta
 };
 
 CH.Keywords = {};
@@ -129,55 +111,17 @@ end
 
 function CH:InsertEmotions(msg)
 	for k,v in pairs(smileyKeys) do
-<<<<<<< HEAD
-		msg = string.gsub(msg,k,"|T"..smileyPack[v].."%:15%:15%:0%:0|t");
-=======
 		msg = string.gsub(msg,k,"|T"..smileyPack[v]..":16|t");
->>>>>>> beta
 	end
 	return msg;
 end
 
 function CH:GetSmileyReplacementText(msg)
-<<<<<<< HEAD
-	if not self.db.emotionIcons then return msg end
-=======
 	if not self.db.emotionIcons or msg:find('/run') or msg:find('/dump') or msg:find('/script') then return msg end
->>>>>>> beta
 	local outstr = "";
 	local origlen = string.len(msg);
 	local startpos = 1;
 	local endpos;
-<<<<<<< HEAD
-	
-	while(startpos <= origlen) do
-		endpos = origlen;
-		local pos = string.find(msg,"|H",startpos,true);
-		if(pos ~= nil) then
-			endpos = pos;
-		end
-		outstr = outstr .. CH:InsertEmotions(string.sub(msg,startpos,endpos)); --run replacement on this bit
-		startpos = endpos + 1;
-		if(pos ~= nil) then
-			endpos = string.find(msg,"|h]|r",startpos,-1) or string.find(msg,"|h",startpos,-1);
-			if(endpos == nil) then
-				endpos = origlen;
-			end
-
-			if(startpos < endpos) then
-				outstr = outstr .. string.sub(msg,startpos,endpos); --don't run replacement on this bit
-				startpos = endpos + 1;
-			end
-		end
-	end
-	
-	return outstr;
-end
-
-function CH:StyleChat(frame)
-	if frame.styled then return end
-=======
->>>>>>> beta
 	
 	while(startpos <= origlen) do
 		endpos = origlen;

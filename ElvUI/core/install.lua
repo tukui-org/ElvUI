@@ -432,19 +432,11 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.movers.ElvUF_PetMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464151"
 			E.db.movers.ElvUF_FocusMover = "BOTTOMLEFTElvUF_PlayerBOTTOMLEFT0150"
 			E.db.movers.ElvUF_FocusTargetMover = "BOTTOMLEFTElvUF_FocusBOTTOMLEFT0150"
-<<<<<<< HEAD
-			E.db.movers.ElvUF_TankMover = "LEFTUIParentLEFT30350"
-			E.db.movers.ElvUF_AssistMover = "LEFTUIParentLEFT30250"
-			if BossHeaderMover then
-				BossHeaderMover:ClearAllPoints()
-				BossHeaderMover:SetPoint("BOTTOMLEFT",UIParent,"BOTTOMLEFT",30,250)
-=======
 			E.db.movers.ElvUF_TankMover = "LEFTElvUIParentLEFT30350"
 			E.db.movers.ElvUF_AssistMover = "LEFTElvUIParentLEFT30250"
 			if BossHeaderMover then
 				BossHeaderMover:ClearAllPoints()
 				BossHeaderMover:SetPoint("BOTTOMLEFT",E.UIParent,"BOTTOMLEFT",30,250)
->>>>>>> beta
 				E:SaveMoverPosition("BossHeaderMover")
 			end
 		else
@@ -458,19 +450,11 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.movers.ElvUF_PetMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464151"
 			E.db.movers.ElvUF_FocusMover = "BOTTOMLEFTElvUF_PlayerBOTTOMLEFT0150"
 			E.db.movers.ElvUF_FocusTargetMover = "BOTTOMLEFTElvUF_FocusBOTTOMLEFT0150"
-<<<<<<< HEAD
-			E.db.movers.ElvUF_TankMover = "LEFTUIParentLEFT30350"
-			E.db.movers.ElvUF_AssistMover = "LEFTUIParentLEFT30250"
-			if BossHeaderMover then
-				BossHeaderMover:ClearAllPoints()
-				BossHeaderMover:SetPoint("BOTTOMLEFT",UIParent,"BOTTOMLEFT",30,250)
-=======
 			E.db.movers.ElvUF_TankMover = "LEFTElvUIParentLEFT30350"
 			E.db.movers.ElvUF_AssistMover = "LEFTElvUIParentLEFT30250"
 			if BossHeaderMover then
 				BossHeaderMover:ClearAllPoints()
 				BossHeaderMover:SetPoint("BOTTOMLEFT",E.UIParent,"BOTTOMLEFT",30,250)
->>>>>>> beta
 				E:SaveMoverPosition("BossHeaderMover")
 			end
 		end

@@ -38,37 +38,6 @@ V['skins'] = {
 	['ace3'] = {
 		['enable'] = true,
 	},	
-<<<<<<< HEAD
-	['dbm'] = {
-		['enable'] = true,
-	},		
-	['dxe'] = {
-		['enable'] = true,
-	},	
-	['omen'] = {
-		['enable'] = true,
-	},
-	['skada'] = {
-		['enable'] = true,
-		['barHeight'] = 16,
-	},		
-	['tinydps'] = {
-		['enable'] = true,
-	},			
-	['clcret'] = {
-		['enable'] = true,
-	},			
-	['clcprot'] = {
-		['enable'] = true,
-	},		
-	['powerauras'] = {
-		['enable'] = true,
-	},		
-	['weakauras'] = {
-		['enable'] = true,
-	},			
-=======
->>>>>>> beta
 	['blizzard'] = {
 		['enable'] = true,
 		["bags"] = true,

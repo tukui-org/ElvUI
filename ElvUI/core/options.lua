@@ -583,10 +583,6 @@ local DONATORS = {
 	"Varok",
 	"Cosmo",
 	"Adorno",
-<<<<<<< HEAD
-	"domoaligato",
-	"Smorg"
-=======
 	"Domoaligato",
 	"Smorg"
 }
@@ -616,7 +612,6 @@ local TESTERS = {
 	'BuG',
 	'Yachanay',
 	'Catok'
->>>>>>> beta
 }
 
 table.sort(DONATORS, function(a,b) return a < b end) --Alphabetize

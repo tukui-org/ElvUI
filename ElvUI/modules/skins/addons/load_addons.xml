@@ -1,15 +1,3 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">	
 	<Script file='ace3.lua'/>
-<<<<<<< HEAD
-	<Script file='omen.lua'/>
-	<Script file='recount.lua'/>
-	<Script file='skada.lua'/>
-	<Script file='tinydps.lua'/>
-	<Script file='postal.lua'/>
-	<Script file='clcret.lua'/>
-	<Script file='clcprot.lua'/>
-	<Script file='clcinfo.lua'/>
-	<Script file='powerauras.lua'/>
-=======
->>>>>>> beta
 </Ui>

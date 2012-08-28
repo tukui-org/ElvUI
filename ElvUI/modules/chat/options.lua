@@ -122,35 +122,6 @@ E.Options.args.chat = {
 						['LEFT'] = L['Left Only'],
 						['RIGHT'] = L['Right Only'],
 					},
-<<<<<<< HEAD
-					set = function(info, value) E.db.chat[ info[#info] ] = value; CH:SetupChat() end,
-				},		
-				emotionIcons = {
-					order = 9,
-					type = 'toggle',
-					name = L['Emotion Icons'],
-					desc = L['Display emotion icons in chat.'],
-					set = function(info, value)
-						E.db.chat[ info[#info] ] = value 
-					end,
-				},		
-				whisperSound = {
-					order = 10,
-					type = 'select', dialogControl = 'LSM30_Sound',
-					name = L["Whisper Alert"],
-					disabled = function() return not E.db.chat.whisperSound end,
-					values = AceGUIWidgetLSMlists.sound,
-					set = function(info, value) E.db.chat.whisperSound = value; end,
-				},	
-				keywordSound = {
-					order = 11,
-					type = 'select', dialogControl = 'LSM30_Sound',
-					name = L["Keyword Alert"],
-					disabled = function() return not E.db.chat.keywordSound end,
-					values = AceGUIWidgetLSMlists.sound,
-					set = function(info, value) E.db.chat.keywordSound = value; end,
-				},						
-=======
 				},	
 				panelHeight = {
 					order = 101,
@@ -168,7 +139,6 @@ E.Options.args.chat = {
 					set = function(info, value) E.db.chat.panelWidth = value; E:GetModule('Chat'):PositionChat(true); local bags = E:GetModule('Bags'); bags:Layout(); bags:Layout(true); end,
 					min = 150, max = 700, step = 1,
 				},
->>>>>>> beta
 				keywords = {
 					order = 103,
 					name = L['Keywords'],
@@ -201,8 +171,6 @@ E.Options.args.chat = {
 				},					
 			},
 		},
-<<<<<<< HEAD
-=======
 		fontGroup = {
 			order = 120,
 			type = 'group',
@@ -256,6 +224,5 @@ E.Options.args.chat = {
 				},	
 			},
 		},			
->>>>>>> beta
 	},
 }

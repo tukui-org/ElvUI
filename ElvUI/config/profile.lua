@@ -143,38 +143,6 @@ P['chat'] = {
 	['font'] = 'Arial Narrow',
 	['fontOutline'] = 'NONE',
 	['sticky'] = true,
-<<<<<<< HEAD
-	['keywords'] = '%MYNAME%, ElvUI, Blaze, Blazii, Blæs',
-	['emotionIcons'] = true,
-	['keywordSound'] = 'Whisper Alert',
-	['whisperSound'] = 'Whisper Alert',	
-}
-
---ClassTimers
-P['classtimer'] = {
-	['player'] = {
-		['enable'] = true,
-		['anchor'] = 'PLAYERDEBUFFS',
-		["buffcolor"] = P.general.bordercolor,
-		["debuffcolor"] = {r = 0.78, g = 0.25, b = 0.25},		
-	},
-	['target'] = {
-		['enable'] = true,
-		['anchor'] = 'TARGETDEBUFFS',
-		["buffcolor"] = P.general.bordercolor,
-		["debuffcolor"] = {r = 0.78, g = 0.25, b = 0.25},			
-	},	
-	['trinket'] = {
-		['enable'] = true,
-		['anchor'] = 'PLAYERANCHOR',
-		["color"] = {r = 0.84, g = 0.75, b = 0.65},			
-	},
-}
-
---Skins
-P['skins'] = {
-	['embedRight'] = 'Skada',
-=======
 	['emotionIcons'] = false,
 	['keywordSound'] = 'Whisper Alert',
 	['whisperSound'] = 'Whisper Alert',
@@ -188,7 +156,6 @@ P['skins'] = {
 	['tabFont'] = 'Arial Narrow',
 	['tabFontSize'] = 13,
 	['tabFontOutline'] = 'OUTLINE',
->>>>>>> beta
 }
 
 --Datatexts
