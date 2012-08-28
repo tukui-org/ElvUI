@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:GetModule('UnitFrames');
 
 local _, ns = ...
@@ -25,6 +25,8 @@ function UF:Construct_TankFrames(unitGroup)
 	UF:Update_TankFrames(self, E.db['unitframe']['units']['tank'])
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()	
+	
+	self.originalParent = self:GetParent()
 	
 	return self
 end
@@ -57,7 +59,8 @@ function UF:Update_TankHeader(header, db)
 	if not header.positioned then
 		header:ClearAllPoints()
 		header:Point("LEFT", E.UIParent, "LEFT", 30, 150)
-		E:CreateMover(header, header:GetName()..'Mover', 'MT Frames')
+		
+		E:CreateMover(header, header:GetName()..'Mover', 'MT Frames', nil, nil, nil, 'ALL,RAID10,RAID25,RAID40')
 
 		header:SetAttribute('minHeight', header.dirtyHeight)
 		header:SetAttribute('minWidth', header.dirtyWidth)
@@ -67,23 +70,35 @@ function UF:Update_TankHeader(header, db)
 end
 
 function UF:Update_TankFrames(frame, db)
-	frame.db = db
 	local BORDER = E:Scale(2)
 	local SPACING = E:Scale(1)
-	local UNIT_WIDTH = db.width
-	local UNIT_HEIGHT = db.height
-
+	
 	frame.colors = ElvUF.colors
-	if not InCombatLockdown() then
-		frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
-		
-		if _G[frame:GetName()..'Target'] then
-			_G[frame:GetName()..'Target']:Size(UNIT_WIDTH, UNIT_HEIGHT)
-			_G[frame:GetName()..'Target'].db = db
-		end
-	end
 	frame.Range = {insideAlpha = 1, outsideAlpha = E.db.unitframe.OORAlpha}
 
+	if frame.isChild and frame.originalParent then
+		local childDB = db.targetsGroup
+		frame.db = db.targetsGroup
+		if not frame.originalParent.childList then
+			frame.originalParent.childList = {}
+		end	
+		frame.originalParent.childList[frame] = true;
+		
+		if not InCombatLockdown() then
+			if childDB.enable then
+				frame:SetParent(frame.originalParent)
+				frame:Size(childDB.width, childDB.height)
+				frame:ClearAllPoints()
+				frame:Point(E.InversePoints[childDB.anchorPoint], frame.originalParent, childDB.anchorPoint, childDB.xOffset, childDB.yOffset)
+			else
+				frame:SetParent(E.HiddenFrame)
+			end
+		end	
+	elseif not InCombatLockdown() then
+		frame.db = db
+		frame:Size(db.width, db.height)
+	end
+	
 	--Health
 	do
 		local health = frame.Health
@@ -114,7 +129,12 @@ function UF:Update_TankFrames(frame, db)
 	--Name
 	do
 		local name = frame.Name
-		name:Point('CENTER', frame.Health, 'CENTER')		
+		name:Point('CENTER', frame.Health, 'CENTER')
+		if UF.db.colors.healthclass then
+			frame:Tag(name, '[name:medium]')
+		else
+			frame:Tag(name, '[namecolor][name:medium]')
+		end
 	end	
 	
 	frame:UpdateAllElements()

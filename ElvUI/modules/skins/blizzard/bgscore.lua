@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -7,7 +7,7 @@ local function LoadSkin()
 		_G['WorldStateScoreButton'..i]:StripTextures()
 	end
 	MAX_WORLDSTATE_SCORE_BUTTONS = 18; WorldStateScoreFrame_Resize()
-
+	
 	WorldStateScoreScrollFrame:StripTextures()
 	WorldStateScoreFrame:StripTextures()
 	WorldStateScoreFrame:SetTemplate("Transparent")

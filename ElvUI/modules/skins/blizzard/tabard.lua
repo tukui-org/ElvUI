@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -13,6 +13,9 @@ local function LoadSkin()
 	S:HandleRotateButton(TabardCharacterModelRotateRightButton)
 	TabardFrameCostFrame:StripTextures()
 	TabardFrameCustomizationFrame:StripTextures()
+	TabardFrameInset:Kill()
+	TabardFrameMoneyInset:Kill()
+	TabardFrameMoneyBg:StripTextures()
 	
 	for i=1, 5 do
 		local custom = "TabardFrameCustomization"..i

@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 
 --Locked Settings, These settings are stored for your character only regardless of profile options.
 
@@ -10,30 +10,24 @@ V['general'] = {
 	["dmgfont"] = "ElvUI Combat",
 	['bubbles'] = true,
 	['bags'] = true,
-}
-
-V['bags'] = {
-	['enable'] = false,
-	['bagBar'] = {
-		['enable'] = false,
+	
+	['minimap'] = {
+		['enable'] = true,
 	},
 }
 
-V['classtimer'] = {
-	['enable'] = false,
-}
-
-V['reminder'] = {
+V['bags'] = {
 	['enable'] = true,
-	['sound'] = "ElvUI Warning",
 }
 
 V["nameplate"] = {
-	["enable"] = false,
+	["enable"] = true,
 }
 
 V['auras'] = {
 	['enable'] = true,
+	['size'] = 26,
+	['visualtimer'] = true,
 }
 
 V['chat'] = {
@@ -41,16 +35,10 @@ V['chat'] = {
 }
 
 V['skins'] = {
-	['bigwigs'] = {
-		['enable'] = true,
-		['spacing'] = 7,
-	},
 	['ace3'] = {
 		['enable'] = true,
-	},
-	['recount'] = {
-		['enable'] = true,
 	},	
+<<<<<<< HEAD
 	['dbm'] = {
 		['enable'] = true,
 	},		
@@ -79,6 +67,8 @@ V['skins'] = {
 	['weakauras'] = {
 		['enable'] = true,
 	},			
+=======
+>>>>>>> beta
 	['blizzard'] = {
 		['enable'] = true,
 		["bags"] = true,
@@ -102,7 +92,8 @@ V['skins'] = {
 		["debug"] = true,
 		["trainer"] = true,
 		["socket"] = true,
-		["achievement_popup"] = true,
+		['loot'] = true,
+		["alertframes"] = true,
 		["bgscore"] = true,
 		["merchant"] = true,
 		["mail"] = true,
@@ -112,17 +103,16 @@ V['skins'] = {
 		["greeting"] = true,
 		["worldmap"] = true,
 		["taxi"] = true,
-		["lfd"] = true,
 		["quest"] = true,
 		["petition"] = true,
 		["dressingroom"] = true,
 		["pvp"] = true,
+		["lfg"] = true,
 		["nonraid"] = true,
 		["friends"] = true,
 		["spellbook"] = true,
 		["character"] = true,
 		["misc"] = true,
-		["lfr"] = true,
 		["tabard"] = true,
 		["guildregistrar"] = true,
 		["timemanager"] = true,
@@ -131,6 +121,8 @@ V['skins'] = {
 		["transmogrify"] = true,
 		["stable"] = true,
 		["bgmap"] = true,
+		['mounts'] = true,
+		['petbattleui'] = true,
 	},
 }
 

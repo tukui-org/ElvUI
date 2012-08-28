@@ -203,11 +203,7 @@ function StickyFrames:SnapFrame(frameA, frameB, left, top, right, bottom)
 		if lA <= (lB + StickyFrames.rangeX) and lA >= (lB - StickyFrames.rangeX) then
 			newX = lB + wA
 			if frameB == UIParent or frameB == WorldFrame or frameB == ElvUIParent then 
-				if left < 0 then
-					newX = newX - (left)
-				else
-					newX = newX - left/2 + left*2
-				end
+				newX = newX + 4
 			end
 			snap = true
 		end
@@ -216,11 +212,7 @@ function StickyFrames:SnapFrame(frameA, frameB, left, top, right, bottom)
 		if rA <= (rB + StickyFrames.rangeX) and rA >= (rB - StickyFrames.rangeX) then
 			newX = rB - wA
 			if frameB == UIParent or frameB == WorldFrame or frameB == ElvUIParent then 
-				if right < 0 then
-					newX = newX + (right)	
-				else
-					newX = newX + right/2 - right*2 
-				end
+				newX = newX - 4
 			end
 			snap = true
 		end
@@ -228,14 +220,13 @@ function StickyFrames:SnapFrame(frameA, frameB, left, top, right, bottom)
 		-- Exterior Left to Right
 		if lA <= (rB + StickyFrames.rangeX) and lA >= (rB - StickyFrames.rangeX) then
 			newX = rB + (wA - left)
-			if frameB == UIParent or frameB == WorldFrame or frameB == ElvUIParent then newX = newX + left/2 end
+
 			snap = true
 		end
 
 		-- Exterior Right to Left
 		if rA <= (lB + StickyFrames.rangeX) and rA >= (lB - StickyFrames.rangeX) then
 			newX = lB - (wA - right)
-			if frameB == UIParent or frameB == WorldFrame or frameB == ElvUIParent then newX = newX - right/2 end
 			snap = true
 		end
 
@@ -253,11 +244,7 @@ function StickyFrames:SnapFrame(frameA, frameB, left, top, right, bottom)
 		if tA <= (tB + StickyFrames.rangeY) and tA >= (tB - StickyFrames.rangeY) then
 			newY = tB - hA
 			if frameB == UIParent or frameB == WorldFrame or frameB == ElvUIParent then 
-				if top < 0 then
-					newY = newY + top
-				else
-					newY = newY + top/2 - top*2
-				end
+				newY = newY - 4
 			end
 			snap = true
 		end
@@ -266,11 +253,7 @@ function StickyFrames:SnapFrame(frameA, frameB, left, top, right, bottom)
 		if bA <= (bB + StickyFrames.rangeY) and bA >= (bB - StickyFrames.rangeY) then
 			newY = bB + hA
 			if frameB == UIParent or frameB == WorldFrame or frameB == ElvUIParent then 
-				if bottom < 0 then
-					newY = newY - bottom
-				else
-					newY = newY - bottom/2 + bottom*2 
-				end
+				newY = newY + 4
 			end
 			snap = true
 		end
@@ -278,14 +261,12 @@ function StickyFrames:SnapFrame(frameA, frameB, left, top, right, bottom)
 		-- Exterior Top to Bottom
 		if tA <= (bB + StickyFrames.rangeY + bottom) and tA >= (bB - StickyFrames.rangeY + bottom) then
 			newY = bB - (hA - top)
-			if frameB == UIParent or frameB == WorldFrame or frameB == ElvUIParent then newY = newY - top/2 end
 			snap = true
 		end
 
 		-- Exterior Bottom to Top
 		if bA <= (tB + StickyFrames.rangeY - top) and bA >= (tB - StickyFrames.rangeY - top) then
 			newY = tB + (hA - bottom)
-			if frameB == UIParent or frameB == WorldFrame or frameB == ElvUIParent then newY = newY + bottom/2 end
 			snap = true
 		end
 

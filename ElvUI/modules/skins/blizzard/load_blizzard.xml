@@ -13,7 +13,9 @@
 	<Script file='guild.lua'/>
 	<Script file='tradeskill.lua'/>
 	<Script file='raid.lua'/>
+	<Script file='petbattle.lua'/>
 	<Script file='talent.lua'/>
+	<Script file='mounts.lua'/>
 	<Script file='glyph.lua'/>
 	<Script file='auctionhouse.lua'/>
 	<Script file='barber.lua'/>
@@ -21,7 +23,8 @@
 	<Script file='debug.lua'/>
 	<Script file='trainer.lua'/>
 	<Script file='socket.lua'/>
-	<Script file='achievement_popup.lua'/>
+	<Script file='alerts.lua'/>
+	<Script file='loot.lua'/>
 	<Script file='bgscore.lua'/>
 	<Script file='merchant.lua'/>
 	<Script file='mail.lua'/>
@@ -31,7 +34,6 @@
 	<Script file='greeting.lua'/>
 	<Script file='worldmap.lua'/>
 	<Script file='taxi.lua'/>
-	<Script file='lfd.lua'/>
 	<Script file='quest.lua'/>
 	<Script file='petition.lua'/>
 	<Script file='dressingroom.lua'/>
@@ -40,7 +42,7 @@
 	<Script file='friends.lua'/>
 	<Script file='spellbook.lua'/>
 	<Script file='character.lua'/>
-	<Script file='lfr.lua'/>
+	<Script file='lfg.lua'/>
 	<Script file='tabard.lua'/>
 	<Script file='guildregistrar.lua'/>
 	<Script file='timemanager.lua'/>	
@@ -49,4 +51,6 @@
 	<Script file='transmogrification.lua'/>
 	<Script file='voidstorage.lua'/>
 	<Script file='stable.lua'/>
+	<Script file='blackmarket.lua'/>
+	<Script file='itemupgrade.lua'/>
 </Ui>

@@ -89,7 +89,7 @@ local oUF = ns.oUF
 oUF.colors.health = {49/255, 207/255, 37/255}
 
 local Update = function(self, event, unit)
-	if(self.unit ~= unit) then return end
+	if(self.unit ~= unit) or not unit then return end
 	local health = self.Health
 
 	if(health.PreUpdate) then health:PreUpdate(unit) end
@@ -130,7 +130,6 @@ local Update = function(self, event, unit)
 
 	if(b) then
 		health:SetStatusBarColor(r, g, b)
-
 		local bg = health.bg
 		if(bg) then local mu = bg.multiplier or 1
 			bg:SetVertexColor(r * mu, g * mu, b * mu)

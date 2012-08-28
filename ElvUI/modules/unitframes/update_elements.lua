@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:GetModule('UnitFrames');
 local LSM = LibStub("LibSharedMedia-3.0");
 
@@ -7,119 +7,12 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
-function UF:GetInfoText(frame, unit, r, g, b, min, max, reverse, type)
-	local value
-	local db = frame.db
-	
-	if not db or not db[type] then return '' end
-
-	if db[type].text_format == 'blank' then
-		return '';
+local function CheckFilter(type, isFriend)
+	if type == 'ALL' or (type == 'FRIENDLY' and isFriend) or (type == 'ENEMY' and not isFriend) then
+		return true
 	end
 	
-	if reverse then
-		if type == 'health' then
-			if db[type].text_format == 'current-percent' then
-				if min ~= max then
-					value = format("|cff%02x%02x%02x%.1f%%|r |cffD7BEA5-|r |cffAF5050%s|r", r * 255, g * 255, b * 255, format("%.1f", min / max * 100), E:ShortValue(min))
-				else
-					value = format("|cff%02x%02x%02x%s|r", r * 255, g * 255, b * 255, E:ShortValue(max))	
-				end
-			elseif db[type].text_format == 'current-max' then
-				if min == max then
-					value = format("|cff%02x%02x%02x%s|r", r * 255, g * 255, b * 255, E:ShortValue(max))	
-				else
-					value = format("|cff%02x%02x%02x%s|r |cffD7BEA5-|r |cffAF5050%s|r", r * 255, g * 255, b * 255, E:ShortValue(max), E:ShortValue(min))
-				end
-			elseif db[type].text_format == 'current' then
-				value = format("|cff%02x%02x%02x%s|r", r * 255, g * 255, b * 255, E:ShortValue(min))	
-			elseif db[type].text_format == 'percent' then
-				value = format("|cff%02x%02x%02x%.1f%%|r", r * 255, g * 255, b * 255, format("%.1f", min / max * 100))
-			elseif db[type].text_format == 'deficit' then
-				if min == max then
-					value = ""
-				else			
-					value = format("|cffAF5050-|r|cff%02x%02x%02x%s|r", r * 255, g * 255, b * 255, E:ShortValue(max - min))
-				end
-			end	
-		else
-			if db[type].text_format == 'current-percent' then
-				if min ~= max then
-					value = format("%d%% |cffD7BEA5-|r %s", floor(min / max * 100), E:ShortValue(min))
-				else
-					value = format("%s", E:ShortValue(max))	
-				end
-			elseif db[type].text_format == 'current-max' then
-				if min == max then
-					value = format("%s", E:ShortValue(max))	
-				else
-					value = format("%s |cffD7BEA5-|r %s", E:ShortValue(max), E:ShortValue(min))
-				end
-			elseif db[type].text_format == 'current' then
-				value = format("%s", E:ShortValue(min))	
-			elseif db[type].text_format == 'percent' then
-				value = format("%d%%", floor(min / max * 100))
-			elseif db[type].text_format == 'deficit' then
-				if min == max then
-					value = ""
-				else			
-					value = format("|cffAF5050-|r%s", E:ShortValue(max - min))
-				end
-			end			
-		end
-	else
-		if type == 'health' then
-			if db[type].text_format == 'current-percent' then
-				if min ~= max then
-					value = format("|cffAF5050%s|r |cffD7BEA5-|r |cff%02x%02x%02x%.1f%%|r", E:ShortValue(min), r * 255, g * 255, b * 255, format("%.1f", min / max * 100))
-				else
-					value = format("|cff%02x%02x%02x%s|r", r * 255, g * 255, b * 255, E:ShortValue(max))
-				end
-			elseif db[type].text_format == 'current-max' then
-				if min == max then
-					value = format("|cff%02x%02x%02x%s|r", r * 255, g * 255, b * 255, E:ShortValue(max))	
-				else
-					value = format("|cffAF5050%s|r |cffD7BEA5-|r |cff%02x%02x%02x%s|r", E:ShortValue(min), r * 255, g * 255, b * 255, E:ShortValue(max))
-				end
-			elseif db[type].text_format == 'current' then
-				value = format("|cff%02x%02x%02x%s|r", r * 255, g * 255, b * 255, E:ShortValue(min))	
-			elseif db[type].text_format == 'percent' then
-				value = format("|cff%02x%02x%02x%.1f%%|r", r * 255, g * 255, b * 255, format("%.1f", min / max * 100))
-			elseif db[type].text_format == 'deficit' then
-				if min == max then
-					value = ""
-				else			
-					value = format("|cffAF5050-|r|cff%02x%02x%02x%s|r", r * 255, g * 255, b * 255, E:ShortValue(max - min))
-				end
-			end
-		else
-			if db[type].text_format == 'current-percent' then
-				if min ~= max then
-					value = format("%s |cffD7BEA5-|r %d%%", E:ShortValue(min), floor(min / max * 100))
-				else
-					value = format("%s", E:ShortValue(max))
-				end
-			elseif db[type].text_format == 'current-max' then
-				if min == max then
-					value = format("%s", E:ShortValue(max))	
-				else
-					value = format("%s |cffD7BEA5-|r %s", E:ShortValue(min), E:ShortValue(max))
-				end
-			elseif db[type].text_format == 'current' then
-				value = format("%s", E:ShortValue(min))	
-			elseif db[type].text_format == 'percent' then
-				value = format("%d%%", floor(min / max * 100))
-			elseif db[type].text_format == 'deficit' then
-				if min == max then
-					value = ""
-				else			
-					value = format("|cffAF5050-|r%s", E:ShortValue(max - min))
-				end
-			end		
-		end
-	end
-	
-	return value
+	return false
 end
 
 function UF:PostUpdateHealth(unit, min, max)
@@ -128,9 +21,13 @@ function UF:PostUpdateHealth(unit, min, max)
 		self:SetValue(min)
 	end
 
+	if min == 0 and self:GetParent().ResurrectIcon then
+		self:GetParent().ResurrectIcon:SetAlpha(1)
+	elseif self:GetParent().ResurrectIcon then
+		self:GetParent().ResurrectIcon:SetAlpha(0)
+	end
+	
 	local r, g, b = self:GetStatusBarColor()
-	self.defaultColor = {r, g, b}
-
 	if (E.db['unitframe']['colors'].healthclass == true and E.db['unitframe']['colors'].colorhealthbyvalue == true) or (E.db['unitframe']['colors'].colorhealthbyvalue and self:GetParent().isForced) and not (UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit)) then
 		local newr, newg, newb = ElvUF.ColorGradient(min, max, 1, 0, 0, 1, 1, 0, r, g, b)
 
@@ -160,35 +57,6 @@ function UF:PostUpdateHealth(unit, min, max)
 		local backdrop = E.db['unitframe']['colors'].health_backdrop
 		self.bg:SetVertexColor(backdrop.r, backdrop.g, backdrop.b)		
 	end	
-	
-	if not self.value or self.value and not self.value:IsShown() then return end
-	
-	local connected, dead, ghost = UnitIsConnected(unit), UnitIsDead(unit), UnitIsGhost(unit)
-	if not connected or dead or ghost then
-		if not connected then
-			self.value:SetText("|cffD7BEA5"..L['Offline'].."|r")
-		elseif dead then
-			self.value:SetText("|cffD7BEA5"..DEAD.."|r")
-		elseif ghost then
-			self.value:SetText("|cffD7BEA5"..L['Ghost'].."|r")
-		end
-		
-		if self:GetParent().ResurrectIcon then
-			self:GetParent().ResurrectIcon:SetAlpha(1)
-		end
-	else
-		local r, g, b = ElvUF.ColorGradient(min, max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
-		local reverse
-		if unit == "target" then
-			reverse = true
-		end
-		
-		if self:GetParent().ResurrectIcon then
-			self:GetParent().ResurrectIcon:SetAlpha(0)
-		end
-		
-		self.value:SetText(UF:GetInfoText(self:GetParent(), unit, r, g, b, min, max, reverse, 'health'))
-	end
 end
 
 function UF:PostNamePosition(frame, unit)
@@ -229,46 +97,14 @@ function UF:PostUpdatePower(unit, min, max)
 		color = ElvUF['colors'].power[pToken]
 	end	
 	
-		
 	local perc
 	if max == 0 then
 		perc = 0
 	else
 		perc = floor(min / max * 100)
 	end
-	
-	if not self.value or self.value and not self.value:IsShown() then return end		
-
-	if color then
-		self.value:SetTextColor(color[1], color[2], color[3])
-	else
-		self.value:SetTextColor(altR, altG, altB, 1)
-	end	
-	
-	local dead, ghost = UnitIsDead(unit), UnitIsGhost(unit)
-	if min == 0 then 
-		self.value:SetText() 
-	else
-		if (not UnitIsPlayer(unit) and not UnitPlayerControlled(unit) or not UnitIsConnected(unit)) and not (unit and unit:find("boss%d")) then
-			self.value:SetText()
-		elseif dead or ghost then
-			self.value:SetText()
-		else
-			if pType == 0 then
-				local reverse
-				if unit == "player" then
-					reverse = true
-				end
-				
-				self.value:SetText(UF:GetInfoText(self:GetParent(), unit, nil, nil, nil, min, max, reverse, 'power'))
-			else
-				self.value:SetText(max - (max - min))
-			end
-		end
-	end
 
 	local db = self:GetParent().db
-	
 	if self.LowManaText and db then
 		if pToken == 'MANA' then
 			if perc <= db.lowmana and not dead and not ghost then
@@ -284,7 +120,7 @@ function UF:PostUpdatePower(unit, min, max)
 		end
 	end
 	
-	if db and db['power'].hideonnpc then
+	if db and db['power'] and db['power'].hideonnpc then
 		UF:PostNamePosition(self:GetParent(), unit)
 	end	
 end
@@ -366,8 +202,8 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 	
 	button.text:Show()
 	if db and db[self.type] then
-		button.text:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db[self.type].fontsize, 'OUTLINE')
-		button.count:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db[self.type].fontsize, 'OUTLINE')
+		button.text:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db[self.type].fontSize, 'OUTLINE')
+		button.count:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db[self.type].fontSize, 'OUTLINE')
 	end
 	
 	if button.isDebuff then
@@ -420,11 +256,11 @@ function UF:CustomCastDelayText(duration)
 		local text		
 		if self.channeling then
 			if db.castbar.format == 'CURRENT' then
-				self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(math.abs(duration - self.max), "-", self.delay))
+				self.Time:SetText(("%.1f |cffaf5050%.1f|r"):format(math.abs(duration - self.max), self.delay))
 			elseif db.castbar.format == 'CURRENTMAX' then
-				self.Time:SetText(("%.1f / %.1f |cffaf5050%s %.1f|r"):format(duration, self.max, "-", self.delay))
+				self.Time:SetText(("%.1f / %.1f |cffaf5050%.1f|r"):format(duration, self.max, self.delay))
 			elseif db.castbar.format == 'REMAINING' then
-				self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(duration, "-", self.delay))
+				self.Time:SetText(("%.1f |cffaf5050%.1f|r"):format(duration, self.delay))
 			end			
 		else
 			if db.castbar.format == 'CURRENT' then
@@ -470,10 +306,11 @@ function UF:HideTicks()
 	end		
 end
 
-function UF:SetCastTicks(frame, numTicks)
+function UF:SetCastTicks(frame, numTicks, extraTickRatio)
+	extraTickRatio = extraTickRatio or 0
 	UF:HideTicks()
 	if numTicks and numTicks > 0 then
-		local d = frame:GetWidth() / numTicks
+		local d = frame:GetWidth() / (numTicks + extraTickRatio)
 		for i = 1, numTicks do
 			if not ticks[i] then
 				ticks[i] = frame:CreateTexture(nil, 'OVERLAY')
@@ -492,21 +329,30 @@ end
 function UF:PostCastStart(unit, name, rank, castid)
 	if unit == "vehicle" then unit = "player" end
 	local db = self:GetParent().db
-
+	if not db then return; end
 	if db.castbar.displayTarget and self.curTarget then
-		self.Text:SetText(string.sub(name..' --> '..self.curTarget, 0, math.floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontsize) * 12)))
+		self.Text:SetText(string.sub(name..' --> '..self.curTarget, 0, math.floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontSize) * 12)))
 	else
-		self.Text:SetText(string.sub(name, 0, math.floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontsize) * 12)))
+		self.Text:SetText(string.sub(name, 0, math.floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontSize) * 12)))
 	end
 
 	self.Spark:Height(self:GetHeight() * 2)
 	
-	local color
+	local color		
 	self.unit = unit
 
 	if db.castbar.ticks and unit == "player" then
 		local baseTicks = E.global.unitframe.ChannelTicks[name]
-		if baseTicks and E.global.unitframe.HastedChannelTicks[name] then
+		
+        -- Detect channeling spell and if it's the same as the previously channeled one
+        if baseTicks and name == prevSpellCast then
+            self.chainChannel = true
+        elseif baseTicks then
+            self.chainChannel = nil
+            self.prevSpellCast = name
+        end
+		
+		if baseTicks and E.global.unitframe.ChannelTicksSize[name] and E.global.unitframe.HastedChannelTicks[name] then
 			local tickIncRate = 1 / baseTicks
 			local curHaste = UnitSpellHaste("player") * 0.01
 			local firstTickInc = tickIncRate / 2
@@ -523,7 +369,20 @@ function UF:PostCastStart(unit, name, rank, castid)
 				end
 			end
 
-			UF:SetCastTicks(self, baseTicks + bonusTicks)
+            local baseTickSize = E.global.unitframe.ChannelTicksSize[name]
+            local hastedTickSize = baseTickSize / (1 + curHaste)
+            local extraTick = self.max - hastedTickSize * (baseTicks + bonusTicks)
+            local extraTickRatio = extraTick / hastedTickSize
+
+			UF:SetCastTicks(self, baseTicks + bonusTicks, extraTickRatio)
+		elseif baseTicks and E.global.unitframe.ChannelTicksSize[name] then
+			local curHaste = UnitSpellHaste("player") * 0.01
+            local baseTickSize = E.global.unitframe.ChannelTicksSize[name]
+            local hastedTickSize = baseTickSize / (1 +  curHaste)
+            local extraTick = self.max - hastedTickSize * (baseTicks)
+            local extraTickRatio = extraTick / hastedTickSize
+
+			UF:SetCastTicks(self, baseTicks, extraTickRatio)
 		elseif baseTicks then
 			UF:SetCastTicks(self, baseTicks)
 		else
@@ -553,6 +412,66 @@ function UF:PostCastStart(unit, name, rank, castid)
 	end
 end
 
+function UF:PostCastStop(unit, name, castid)
+	self.chainChannel = nil
+	self.prevSpellCast = nil
+end
+
+function UF:PostChannelUpdate(unit, name)
+	if unit == "vehicle" then unit = "player" end
+	local db = self:GetParent().db
+	if not db then return; end
+    
+	if db.castbar.ticks and unit == "player" then
+		local baseTicks = E.global.unitframe.ChannelTicks[name]
+
+		if baseTicks and E.global.unitframe.ChannelTicksSize[name] and E.global.unitframe.HastedChannelTicks[name] then
+			local tickIncRate = 1 / baseTicks
+			local curHaste = UnitSpellHaste("player") * 0.01
+			local firstTickInc = tickIncRate / 2
+			local bonusTicks = 0
+			if curHaste >= firstTickInc then
+				bonusTicks = bonusTicks + 1
+			end
+
+			local x = tonumber(E:Round(firstTickInc + tickIncRate, 2))
+			while curHaste >= x do
+				x = tonumber(E:Round(firstTickInc + (tickIncRate * bonusTicks), 2))
+				if curHaste >= x then
+					bonusTicks = bonusTicks + 1
+				end
+			end
+
+			local baseTickSize = E.global.unitframe.ChannelTicksSize[name]
+			local hastedTickSize = baseTickSize / (1 + curHaste)
+			local extraTick = self.max - hastedTickSize * (baseTicks + bonusTicks)
+			if self.chainChannel then
+				self.extraTickRatio = extraTick / hastedTickSize
+				self.chainChannel = nil
+			end
+
+			UF:SetCastTicks(self, baseTicks + bonusTicks, self.extraTickRatio)
+		elseif baseTicks and E.global.unitframe.ChannelTicksSize[name] then
+			local curHaste = UnitSpellHaste("player") * 0.01
+			local baseTickSize = E.global.unitframe.ChannelTicksSize[name]
+			local hastedTickSize = baseTickSize / (1 + curHaste)
+			local extraTick = self.max - hastedTickSize * (baseTicks)
+			if self.chainChannel then
+				self.extraTickRatio = extraTick / hastedTickSize
+				self.chainChannel = nil
+			end
+
+			UF:SetCastTicks(self, baseTicks, self.extraTickRatio)
+		elseif baseTicks then
+			UF:SetCastTicks(self, baseTicks)
+		else
+			UF:HideTicks()
+		end
+	elseif unit == 'player' then
+		UF:HideTicks()			
+	end	
+end
+
 function UF:PostCastInterruptible(unit)
 	local db = self:GetParent().db
 	
@@ -579,28 +498,31 @@ end
 
 function UF:UpdateHoly(event, unit, powerType)
 	if(self.unit ~= unit or (powerType and powerType ~= 'HOLY_POWER')) then return end
-	local num = UnitPower(unit, SPELL_POWER_HOLY_POWER)
 	local db = self.db
-	for i = 1, MAX_HOLY_POWER do
-		if(i <= num) then
+
+	local numHolyPower = UnitPower('player', SPELL_POWER_HOLY_POWER);
+	local maxHolyPower = UnitPowerMax('player', SPELL_POWER_HOLY_POWER);	
+	
+	for i = 1, maxHolyPower do
+		if(i <= numHolyPower) then
 			self.HolyPower[i]:SetAlpha(1)
 			
 			if i == 3 and db.classbar.fill == 'spaced' then
-				for h = 1, MAX_HOLY_POWER do
+				for h = 1, maxHolyPower do
 					self.HolyPower[h].backdrop.shadow:Show()
 					self.HolyPower[h]:SetScript('OnUpdate', function(self)
 						E:Flash(self.backdrop.shadow, 0.6)
 					end)
 				end
 			else
-				for h = 1, MAX_HOLY_POWER do
+				for h = 1, maxHolyPower do
 					self.HolyPower[h].backdrop.shadow:Hide()
 					self.HolyPower[h]:SetScript('OnUpdate', nil)
 				end
 			end
 		else
 			self.HolyPower[i]:SetAlpha(.2)
-			for h = 1, MAX_HOLY_POWER do
+			for h = 1, maxHolyPower do
 				self.HolyPower[h].backdrop.shadow:Hide()
 				self.HolyPower[h]:SetScript('OnUpdate', nil)
 			end		
@@ -608,16 +530,146 @@ function UF:UpdateHoly(event, unit, powerType)
 	end
 end	
 
-function UF:UpdateShards(event, unit, powerType)
-	if(self.unit ~= unit or (powerType and powerType ~= 'SOUL_SHARDS')) then return end
-	local num = UnitPower(unit, SPELL_POWER_SOUL_SHARDS)
-	for i = 1, SHARD_BAR_NUM_SHARDS do
-		if(i <= num) then
-			self.SoulShards[i]:SetAlpha(1)
+function UF:UpdateShadowOrbs(event, unit, powerType)
+	local frame = self:GetParent()
+	local db = frame.db
+		
+	local point, _, anchorPoint, x, y = frame.Health:GetPoint()
+	if self:IsShown() and point then
+		if db.classbar.fill == 'spaced' then
+			frame.Health:SetPoint(point, frame, anchorPoint, x, -7)
 		else
-			self.SoulShards[i]:SetAlpha(.2)
+			frame.Health:SetPoint(point, frame, anchorPoint, x, -13)
+		end
+	elseif point then
+		frame.Health:SetPoint(point, frame, anchorPoint, x, -2)
+	end
+	
+	UF:UpdatePlayerFrameAnchors(frame, self:IsShown())
+end	
+
+function UF:UpdateArcaneCharges(event, unit, arcaneCharges, maxCharges)
+	local frame = self:GetParent()
+	local db = frame.db
+		
+	local point, _, anchorPoint, x, y = frame.Health:GetPoint()
+	if self:IsShown() and point then
+		if db.classbar.fill == 'spaced' then
+			frame.Health:SetPoint(point, frame, anchorPoint, x, -7)
+		else
+			frame.Health:SetPoint(point, frame, anchorPoint, x, -13)
+		end
+	elseif point then
+		frame.Health:SetPoint(point, frame, anchorPoint, x, -2)
+	end
+	
+	UF:UpdatePlayerFrameAnchors(frame, self:IsShown())
+end	
+
+function UF:UpdateHarmony()
+	local maxBars = self.numPoints
+	local frame = self:GetParent()
+	local db = frame.db
+	if not db then return; end
+	
+	local UNIT_WIDTH = db.width
+	local CLASSBAR_WIDTH = db.width - 4
+	local BORDER = 2
+	local SPACING = 1
+	local USE_PORTRAIT = db.portrait.enable
+	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
+	local PORTRAIT_WIDTH = db.portrait.width
+	local POWERBAR_OFFSET = db.power.offset
+	local USE_POWERBAR = db.power.enable
+	local USE_MINI_POWERBAR = db.power.width ~= 'fill' and USE_POWERBAR
+	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
+	
+	if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
+		PORTRAIT_WIDTH = 0	
+	end
+	
+	if USE_PORTRAIT then
+		CLASSBAR_WIDTH = math.ceil((UNIT_WIDTH - (BORDER*2)) - PORTRAIT_WIDTH)
+	end
+	
+	if USE_POWERBAR_OFFSET then
+		CLASSBAR_WIDTH = CLASSBAR_WIDTH - POWERBAR_OFFSET
+	end	
+	
+	if db.classbar.fill == 'spaced' then
+		SPACING = 9
+		
+		CLASSBAR_WIDTH = CLASSBAR_WIDTH * (maxBars - 1) / maxBars
+	end
+	
+	for i=1, UF['classMaxResourceBar'][E.myclass] do
+		if self[i]:IsShown() and db.classbar.fill == 'spaced' then
+			self[i].backdrop:Show()
+		else
+			self[i].backdrop:Hide()
 		end
 	end
+	
+	self:SetWidth(CLASSBAR_WIDTH)
+	
+	for i = 1, maxBars do		
+		self[i]:SetHeight(self:GetHeight())	
+		if db.classbar.fill == 'spaced' then
+			self[i]:SetWidth(E:Scale(self:GetWidth() - 3)/maxBars)	
+		else
+			self[i]:SetWidth(E:Scale(self:GetWidth() - 4)/maxBars)	
+		end
+		self[i]:ClearAllPoints()
+		if i == 1 then
+			if maxBars == 5 and db.classbar.fill == 'spaced' then
+				self[i]:SetPoint("LEFT", self, 'LEFT', -(SPACING/2), 0)
+			else
+				self[i]:SetPoint("LEFT", self)
+			end
+		else
+			self[i]:Point("LEFT", self[i-1], "RIGHT", SPACING , 0)
+		end		
+	end	
+end
+
+function UF:UpdateShardBar(spec)
+	local maxBars = self.number
+	local db = self:GetParent().db
+	local frame = self:GetParent()
+	
+	for i=1, UF['classMaxResourceBar'][E.myclass] do
+		if self[i]:IsShown() and db.classbar.fill == 'spaced' then
+			self[i].backdrop:Show()
+		else
+			self[i].backdrop:Hide()
+		end
+	end
+
+	if db.classbar.fill == 'spaced' and maxBars == 1 then
+		self:ClearAllPoints()
+		self:Point("LEFT", frame.Health.backdrop, "TOPLEFT", 8, 0)
+	elseif db.classbar.fill == 'spaced' then
+		self:ClearAllPoints()
+		self:Point("CENTER", frame.Health.backdrop, "TOP", -12, -2)
+	end
+	
+	local SPACING = 1
+	if db.classbar.fill == 'spaced' then
+		SPACING = 13
+	end
+	
+	for i = 1, maxBars do
+		self[i]:SetHeight(self:GetHeight())	
+		self[i]:SetWidth(E:Scale(self:GetWidth() - 2)/maxBars)	
+		self[i]:ClearAllPoints()
+		if i == 1 then
+			self[i]:SetPoint("LEFT", self)
+		else
+			self[i]:Point("LEFT", self[i-1], "RIGHT", SPACING , 0)
+		end		
+	end
+	
+	UF:UpdatePlayerFrameAnchors(frame, self:IsShown())
 end
 
 function UF:EclipseDirection()
@@ -634,118 +686,10 @@ function UF:EclipseDirection()
 end
 
 function UF:DruidResourceBarVisibilityUpdate(unit)
-	local db = E.db['unitframe']['units'].player
-	local health = self:GetParent().Health
-	local frame = self:GetParent()
-	local threat = frame.Threat
-	local PORTRAIT_WIDTH = db.portrait.width
-	local USE_PORTRAIT = db.portrait.enable
-	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
 	local eclipseBar = self:GetParent().EclipseBar
 	local druidAltMana = self:GetParent().DruidAltMana
-	local CLASSBAR_HEIGHT = db.classbar.height
-	local USE_CLASSBAR = db.classbar.enable
-	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and USE_CLASSBAR
-	local USE_POWERBAR = db.power.enable
-	local USE_MINI_POWERBAR = db.power.width ~= 'fill' and USE_POWERBAR
-	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
-	local POWERBAR_OFFSET = db.power.offset
-	local POWERBAR_HEIGHT = db.power.height
-	local SPACING = 1;
 	
-	if not USE_POWERBAR then
-		POWERBAR_HEIGHT = 0
-	end
-	
-	if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
-		PORTRAIT_WIDTH = 0
-	end
-	
-	if USE_MINI_CLASSBAR then
-		CLASSBAR_HEIGHT = CLASSBAR_HEIGHT / 2
-	end
-	
-	if eclipseBar:IsShown() or druidAltMana:IsShown() then
-		if db.power.offset ~= 0 then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(2+db.power.offset), -(2 + CLASSBAR_HEIGHT + 1))
-		else
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -2, -(2 + CLASSBAR_HEIGHT + 1))
-		end
-		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + 2, -(2 + CLASSBAR_HEIGHT + 1))	
-
-		local mini_classbarY = 0
-		if USE_MINI_CLASSBAR then
-			mini_classbarY = -(SPACING+(CLASSBAR_HEIGHT))
-		end		
-		
-		threat:Point("TOPLEFT", -4, 4+mini_classbarY)
-		threat:Point("TOPRIGHT", 4, 4+mini_classbarY)
-		
-		if USE_MINI_POWERBAR then
-			threat:Point("BOTTOMLEFT", -4, -4 + (POWERBAR_HEIGHT/2))
-			threat:Point("BOTTOMRIGHT", 4, -4 + (POWERBAR_HEIGHT/2))		
-		else
-			threat:Point("BOTTOMLEFT", -4, -4)
-			threat:Point("BOTTOMRIGHT", 4, -4)
-		end		
-		
-		if USE_POWERBAR_OFFSET then
-			threat:Point("TOPRIGHT", 4-POWERBAR_OFFSET, 4+mini_classbarY)
-			threat:Point("BOTTOMRIGHT", 4-POWERBAR_OFFSET, -4)	
-		end				
-
-		
-		if db.portrait.enable and not db.portrait.overlay then
-			local portrait = self:GetParent().Portrait
-			portrait.backdrop:ClearAllPoints()
-			if USE_MINI_CLASSBAR and USE_CLASSBAR then
-				portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", 0, -(CLASSBAR_HEIGHT + 1))
-			else
-				portrait.backdrop:SetPoint("TOPLEFT", frame, "TOPLEFT")
-			end		
-			
-			if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR then
-				portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", -1, 0)
-			else
-				portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", -1, 0)
-			end				
-		end
-	else
-		if db.power.offset ~= 0 then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(2 + db.power.offset), -2)
-		else
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -2, -2)
-		end
-		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + 2, -2)	
-
-		threat:Point("TOPLEFT", -4, 4)
-		threat:Point("TOPRIGHT", 4, 4)
-		
-		if USE_MINI_POWERBAR then
-			threat:Point("BOTTOMLEFT", -4, -4 + (POWERBAR_HEIGHT/2))
-			threat:Point("BOTTOMRIGHT", 4, -4 + (POWERBAR_HEIGHT/2))		
-		else
-			threat:Point("BOTTOMLEFT", -4, -4)
-			threat:Point("BOTTOMRIGHT", 4, -4)
-		end		
-		
-		if USE_POWERBAR_OFFSET then
-			threat:Point("TOPRIGHT", 4-POWERBAR_OFFSET, 4)
-			threat:Point("BOTTOMRIGHT", 4-POWERBAR_OFFSET, -4)	
-		end				
-
-		if db.portrait.enable and not db.portrait.overlay then
-			local portrait = self:GetParent().Portrait
-			portrait.backdrop:ClearAllPoints()
-			portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT")
-			
-			if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR then
-				portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", -1, 0)
-			else
-				portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", -1, 0)
-			end				
-		end		
-	end
+	UF:UpdatePlayerFrameAnchors(self:GetParent(), eclipseBar:IsShown() or druidAltMana:IsShown())
 end
 
 function UF:DruidPostUpdateAltPower(unit, min, max)
@@ -773,42 +717,8 @@ function UF:DruidPostUpdateAltPower(unit, min, max)
 	end
 end
 
-function UF:UpdatePvPText(frame)
-	local unit = frame.unit
-	local PvPText = frame.PvPText
-	local LowManaText = frame.Power.LowManaText
-	
-	if PvPText and frame:IsMouseOver() then
-		PvPText:Show()
-		if LowManaText and LowManaText:IsShown() then LowManaText:Hide() end
-		
-		local time = GetPVPTimer()
-		local min = format("%01.f", floor((time / 1000) / 60))
-		local sec = format("%02.f", floor((time / 1000) - min * 60)) 
-		
-		if(UnitIsPVPFreeForAll(unit)) then
-			if time ~= 301000 and time ~= -1 then
-				PvPText:SetText(PVP.." ".."("..min..":"..sec..")")
-			else
-				PvPText:SetText(PVP)
-			end
-		elseif UnitIsPVP(unit) then
-			if time ~= 301000 and time ~= -1 then
-				PvPText:SetText(PVP.." ".."("..min..":"..sec..")")
-			else
-				PvPText:SetText(PVP)
-			end
-		else
-			PvPText:SetText("")
-		end
-	elseif PvPText then
-		PvPText:Hide()
-		if LowManaText and not LowManaText:IsShown() then LowManaText:Show() end
-	end
-end
-
 function UF:UpdateThreat(event, unit)
-	if (self.unit ~= unit) or not unit then return end
+	if (self.unit ~= unit) or not unit or not E.initialized then return end
 	local status = UnitThreatSituation(unit)
 	
 	if status and status > 1 then
@@ -969,31 +879,39 @@ function UF:UpdateComboDisplay(event, unit)
 	end
 end
 
-function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster)	
+function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff)	
 	local isPlayer, isFriend
 
 	local db = self:GetParent().db
 
-	if(caster == 'player' or caster == 'vehicle') then
-		isPlayer = true
-	end
-	
-	if UnitIsFriend('player', unit) then
-		isFriend = true
-	end
+	if caster == 'player' or caster == 'vehicle' then isPlayer = true end
+	if UnitIsFriend('player', unit) then isFriend = true end
 	
 	icon.isPlayer = isPlayer
 	icon.owner = caster
+	icon.name = name
 
-	if db and db[self.type] and db[self.type].durationLimit ~= 0 and db[self.type].durationLimit ~= nil and duration ~= nil then
-		if duration > db[self.type].durationLimit or duration == 0 then
-			return false
-		end
+	if db and db[self.type] and E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and CheckFilter(db[self.type].useBlacklist, isFriend) then
+		return false
+	end	
+	
+	if db and db[self.type] and E.global['unitframe']['aurafilters']['Whitelist'].spells[name] and CheckFilter(db[self.type].useWhitelist, isFriend) then
+			return true
 	end
 	
-	if db and db[self.type] and db[self.type].showPlayerOnly and isPlayer then
-		return true
-	elseif db and db[self.type] and db[self.type].useFilter and E.global['unitframe']['aurafilters'][db[self.type].useFilter] then
+	if db and db[self.type] and (duration == 0 or not duration) and CheckFilter(db[self.type].noDuration, isFriend) then
+		return false
+	end	
+
+	if db and db[self.type] and shouldConsolidate == 1 and CheckFilter(db[self.type].noConsolidated, isFriend) then
+		return false
+	end	
+
+	if db and db[self.type] and not isPlayer and CheckFilter(db[self.type].playerOnly, isFriend) then
+		return false
+	end
+	
+	if db and db[self.type] and db[self.type].useFilter and E.global['unitframe']['aurafilters'][db[self.type].useFilter] then
 		local type = E.global['unitframe']['aurafilters'][db[self.type].useFilter].type
 		local spellList = E.global['unitframe']['aurafilters'][db[self.type].useFilter].spells
 		
@@ -1014,12 +932,6 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 			else
 				return true
 			end				
-		end
-	elseif db and db[self.type] then
-		if db and not db[self.type].showPlayerOnly then
-			return true
-		else
-			return false
 		end
 	end	
 	
@@ -1111,7 +1023,7 @@ function UF:UpdateAuraWatch(frame)
 				icon.count = icon:CreateFontString(nil, "OVERLAY", 7);
 				icon.count:SetPoint("CENTER", unpack(counterOffsets[spell["point"]]));
 			end
-			icon.count:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db.fontsize, 'OUTLINE');
+			icon.count:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db.fontSize, 'OUTLINE');
 			
 			if spell["enabled"] then
 				auras.icons[spell.id] = icon;
@@ -1186,5 +1098,140 @@ function UF:RaidRoleUpdate()
 		else
 			masterLooter:Point('RIGHT', anchor, 'RIGHT')
 		end
+	end
+end
+
+local function CheckFilterArguement(option, optionArgs)
+	if option ~= true then
+		return true
+	end
+
+	return optionArgs
+end
+
+function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate)
+	local db = self.db.aurabar
+	if not db then return; end
+		
+	local isPlayer, isFriend
+
+	if unitCaster == 'player' or unitCaster == 'vehicle' then isPlayer = true end
+	if UnitIsFriend('player', unit) then isFriend = true end
+
+	if E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and CheckFilter(db.useBlacklist, isFriend) then
+		return false
+	end	
+	
+	if E.global['unitframe']['aurafilters']['Whitelist'].spells[name] and CheckFilter(db.useWhitelist, isFriend) then
+		return true
+	end
+
+	if (duration == 0 or not duration) and CheckFilter(db.noDuration, isFriend) then
+		return false
+	end	
+
+	if shouldConsolidate == 1 and CheckFilter(db.noConsolidated, isFriend) then
+		return false
+	end	
+
+	if not isPlayer and CheckFilter(db.playerOnly, isFriend) then
+		return false
+	end
+	
+	if db.useFilter and E.global['unitframe']['aurafilters'][db.useFilter] then
+		local type = E.global['unitframe']['aurafilters'][db.useFilter].type
+		local spellList = E.global['unitframe']['aurafilters'][db.useFilter].spells
+
+		if type == 'Whitelist' then
+			if spellList[name] and spellList[name].enable then
+				return true
+			else
+				return false
+			end		
+		elseif type == 'Blacklist' then
+			if spellList[name] and spellList[name].enable then
+				return false
+			else
+				return true
+			end				
+		end
+	end	
+	
+	return true
+end
+
+function UF:ColorizeAuraBars(event, unit)
+	local bars = self.bars
+	for index = 1, #bars do
+		local frame = bars[index]
+		local bar = frame.statusBar
+		if not frame:IsVisible() then
+			break
+		end
+		local name = bar.aura.name
+		local colors = E.global.unitframe.AuraBarColors[name]
+		if E.global.unitframe.AuraBarColors[name] then
+			bar:SetStatusBarColor(colors.r, colors.g, colors.b)
+		end
+	end
+end
+
+function UF:SmartAuraDisplay()
+	local db = self.db
+	local unit = self.unit
+	if not db or not db.smartAuraDisplay or db.smartAuraDisplay == 'DISABLED' or not UnitExists(unit) then return; end
+	local buffs = self.Buffs
+	local debuffs = self.Debuffs
+	local auraBars = self.AuraBars
+	local isFriend
+	
+	if UnitIsFriend('player', unit) then isFriend = true end
+	
+	if isFriend then
+		if db.smartAuraDisplay == 'SHOW_DEBUFFS_ON_FRIENDLIES' then
+			buffs:Hide()
+			debuffs:Show()
+		else
+			buffs:Show()
+			debuffs:Hide()		
+		end
+	else
+		if db.smartAuraDisplay == 'SHOW_DEBUFFS_ON_FRIENDLIES' then
+			buffs:Show()
+			debuffs:Hide()
+		else
+			buffs:Hide()
+			debuffs:Show()		
+		end
+	end
+	
+	if buffs:IsShown() then
+		local x, y = E:GetXYOffset(db.buffs.anchorPoint)
+		
+		buffs:ClearAllPoints()
+		buffs:Point(E.InversePoints[db.buffs.anchorPoint], self, db.buffs.anchorPoint, x, y)
+		
+		local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
+		if db.aurabar.anchorPoint == 'BELOW' then
+			anchorPoint, anchorTo = 'TOP', 'BOTTOM'
+		end		
+		auraBars:ClearAllPoints()
+		auraBars:SetPoint(anchorPoint..'LEFT', buffs, anchorTo..'LEFT', 0, 0)
+		auraBars:SetPoint(anchorPoint..'RIGHT', buffs, anchorTo..'RIGHT')
+	end
+	
+	if debuffs:IsShown() then
+		local x, y = E:GetXYOffset(db.debuffs.anchorPoint)
+		
+		debuffs:ClearAllPoints()
+		debuffs:Point(E.InversePoints[db.debuffs.anchorPoint], self, db.debuffs.anchorPoint, x, y)	
+
+		local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
+		if db.aurabar.anchorPoint == 'BELOW' then
+			anchorPoint, anchorTo = 'TOP', 'BOTTOM'
+		end		
+		auraBars:ClearAllPoints()
+		auraBars:SetPoint(anchorPoint..'LEFT', debuffs, anchorTo..'LEFT', 0, 0)
+		auraBars:SetPoint(anchorPoint..'RIGHT', debuffs, anchorTo..'RIGHT')		
 	end
 end

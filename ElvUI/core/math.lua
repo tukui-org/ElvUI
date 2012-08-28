@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 
 --Return short value of a number
 function E:ShortValue(v)
@@ -105,6 +105,110 @@ function E:GetScreenQuadrant(frame)
 	end
 
 	return point
+end
+
+function E:GetXYOffset(position, override)
+	local x, y = override or 1, override or 1
+	
+	if position == 'TOP' or position == 'TOPLEFT' or position == 'TOPRIGHT' then
+		return 0, y
+	elseif position == 'BOTTOM' or position == 'BOTTOMLEFT' or position == 'BOTTOMRIGHT' then
+		return 0, -y
+	elseif position == 'LEFT' then
+		return -x, 0
+	else
+		return x, 0
+	end
+end
+
+--This is differant than the round function because if a number is 20.0 for example it will return an integer value instead of floating point (20.0 will be 20)
+function E:TrimFloatingPoint(number, decimals)
+	assert(number, 'You must provide a floating point number to trim decimals from. Usage: E:TrimFloatingPoint(floatingPoint, <decimals>)')
+	if not decimals then decimals = 1 end
+	
+	local newNumber = string.format("%%.%df", decimals):format(number)
+	local checkstring = "."
+	for i=1, decimals do
+		checkstring = checkstring..'0'
+	end
+
+	if newNumber ~= tostring(math.ceil(number))..checkstring then
+		return newNumber
+	end
+	
+	return math.floor(number)
+end
+
+local styles = {
+	['CURRENT'] = '%s',
+	['CURRENT_MAX'] = '%s - %s',
+	['CURRENT_PERCENT'] =  '%s - %s%%',
+	['CURRENT_MAX_PERCENT'] = '%s - %s | %s%%',
+	['PERCENT'] = '%s%%',
+	['DEFICIT'] = '-%s'
+}
+
+function E:GetFormattedText(style, min, max)
+	assert(styles[style], 'Invalid format style: '..style)
+	assert(min, 'You need to provide a current value. Usage: E:GetFormattedText(style, min, max)')
+	assert(max, 'You need to provide a maximum value. Usage: E:GetFormattedText(style, min, max)')
+	
+	if max == 0 then max = 1 end
+	
+	local useStyle = styles[style]
+
+	local percentValue = E:TrimFloatingPoint(min / max * 100)
+	
+	if style == 'DEFICIT' then
+		local deficit = max - min
+		if deficit <= 0 then
+			return ''
+		else
+			return string.format(useStyle, E:ShortValue(deficit))
+		end
+	elseif style == 'PERCENT' then
+		return string.format(useStyle, percentValue)
+	elseif style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
+		return string.format(styles['CURRENT'],  E:ShortValue(min))
+	elseif style == 'CURRENT_MAX' then
+		return string.format(useStyle,  E:ShortValue(min), E:ShortValue(max))
+	elseif style == 'CURRENT_PERCENT' then
+		return string.format(useStyle, E:ShortValue(min), percentValue)
+	elseif style == 'CURRENT_MAX_PERCENT' then
+		return string.format(useStyle, E:ShortValue(min), E:ShortValue(max), percentValue)
+	end
+end
+
+function E:ShortenString(string, numChars, dots)
+	assert(string, 'You need to provide a string to shorten. Usage: E:ShortenString(string, numChars, includeDots)')
+	assert(string, 'You need to provide a length to shorten the string to. Usage: E:ShortenString(string, numChars, includeDots)')
+	
+	local bytes = string:len()
+	if (bytes <= numChars) then
+		return string
+	else
+		local len, pos = 0, 1
+		while(pos <= bytes) do
+			len = len + 1
+			local c = string:byte(pos)
+			if (c > 0 and c <= 127) then
+				pos = pos + 1
+			elseif (c >= 192 and c <= 223) then
+				pos = pos + 2
+			elseif (c >= 224 and c <= 239) then
+				pos = pos + 3
+			elseif (c >= 240 and c <= 247) then
+				pos = pos + 4
+			end
+			if (len == numChars) then break end
+		end
+
+		if (len == numChars and pos <= bytes) then
+			return string:sub(1, pos - 1)..(dots and '...' or '')
+		else
+			return string
+		end
+	end
 end
 
 --Add time before calling a function

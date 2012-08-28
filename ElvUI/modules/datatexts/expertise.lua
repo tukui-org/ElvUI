@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local DT = E:GetModule('DataTexts')
 
 local format = string.format
@@ -10,6 +10,9 @@ local function OnEvent(self, event, unit)
 	lastPanel = self
 
 	local expertise, offhandExpertise = GetExpertise();
+	expertise = format("%.2f%%", expertise);
+	offhandExpertise = format("%.2f%%", offhandExpertise);
+	
 	local speed, offhandSpeed = UnitAttackSpeed("player");
 	local text;
 	if( offhandSpeed ) then
@@ -23,7 +26,7 @@ end
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 	
-	local expertisePercent, offhandExpertisePercent = GetExpertisePercent();
+	local expertisePercent, offhandExpertisePercent = GetExpertise();
 	expertisePercent = format("%.2f", expertisePercent);
 	offhandExpertisePercent = format("%.2f", offhandExpertisePercent);
 

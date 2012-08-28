@@ -1,10 +1,12 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.guildregistrar ~= true then return end
 	GuildRegistrarFrame:StripTextures(true)
 	GuildRegistrarFrame:SetTemplate("Transparent")
+	GuildRegistrarFrameInset:Kill()
+	GuildRegistrarFrameEditBox:StripTextures()
 	GuildRegistrarGreetingFrame:StripTextures()
 	S:HandleButton(GuildRegistrarFrameGoodbyeButton)
 	S:HandleButton(GuildRegistrarFrameCancelButton)

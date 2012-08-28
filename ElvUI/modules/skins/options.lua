@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 E.Options.args.skins = {
@@ -11,121 +11,21 @@ E.Options.args.skins = {
 			type = "description",
 			name = L["SKINS_DESC"],
 		},	
-		embedRight = {
+		blizzardEnable = {
 			order = 2,
-			type = 'select',
-			name = L['Embedded Addon'],
-			desc = L['Select an addon to embed to the right chat window. This will resize the addon to fit perfectly into the chat window, it will also parent it to the chat window so hiding the chat window will also hide the addon.'],
-			values = {
-				[''] = ' ',
-				['Recount'] = "Recount",
-				['Omen'] = "Omen",
-				['Skada'] = "Skada",
-			},
-			get = function(info) return E.db.skins[ info[#info] ] end,
-			set = function(info, value) E.db.skins[ info[#info] ] = value; S:SetEmbedRight(value) end,
-		},
-		bigwigs = {
-			order = 3,
-			type = 'group',
-			name = 'BigWigs',
-			get = function(info) return E.private.skins.bigwigs[ info[#info] ] end,
-			set = function(info, value) E.private.skins.bigwigs[ info[#info] ] = value; end,
-			args = {
-				enable = {
-					name = L['Enable'],
-					type = 'toggle',
-					order = 1,
-					get = function(info) return E.private.skins.bigwigs[ info[#info] ] end,
-					set = function(info, value) E.private.skins.bigwigs[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,					
-				},
-				spacing = {
-					name = L['Spacing'],
-					desc = L['The spacing in between bars.'],
-					type = 'range',
-					order = 2,
-					min = 0, max = 25, step = 1,
-				},
-			},
-		},
+			type = 'toggle',
+			name = 'Blizzard',
+			get = function(info) return E.private.skins.blizzard.enable end,
+			set = function(info, value) E.private.skins.blizzard.enable = value; E:StaticPopup_Show("PRIVATE_RL") end,		
+		},		
 		ace3 = {
-			order = 4,
-			type = 'group',
+			order = 3,
+			type = 'toggle',
 			name = 'Ace3',
-			get = function(info) return E.private.skins.ace3[ info[#info] ] end,
-			set = function(info, value) E.private.skins.ace3[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
-			args = {
-				enable = {
-					name = L['Enable'],
-					type = 'toggle',
-					order = 1,				
-				},			
-			},
-		},
-		recount = {
-			order = 5,
-			type = 'group',
-			name = 'Recount',
-			get = function(info) return E.private.skins.recount[ info[#info] ] end,
-			set = function(info, value) E.private.skins.recount[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
-			args = {
-				enable = {
-					name = L['Enable'],
-					type = 'toggle',
-					order = 1,				
-				},			
-			},
-		},
-		omen = {
-			order = 6,
-			type = 'group',
-			name = 'Omen',
-			get = function(info) return E.private.skins.omen[ info[#info] ] end,
-			set = function(info, value) E.private.skins.omen[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
-			args = {
-				enable = {
-					name = L['Enable'],
-					type = 'toggle',
-					order = 1,				
-				},			
-			},
+			get = function(info) return E.private.skins.ace3.enable end,
+			set = function(info, value) E.private.skins.ace3.enable = value; E:StaticPopup_Show("PRIVATE_RL") end,
 		},	
-		skada = {
-			order = 7,
-			type = 'group',
-			name = 'Skada',
-			get = function(info) return E.private.skins.skada[ info[#info] ] end,
-			set = function(info, value) E.private.skins.skada[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
-			args = {
-				enable = {
-					name = L['Enable'],
-					type = 'toggle',
-					order = 1,				
-				},	
-				barHeight = {
-					name = L['Embedded Bar Height'],
-					desc = L['The height of the bars while skada is embedded.'],
-					order = 2,
-					type = 'range',
-					min = 10, max = 30, step = 1,
-					set = function(info, value) E.private.skins.skada.barHeight = value; S:SetEmbedRight(E.db.skins.embedRight) end,
-				},
-			},
-		},	
-		dxe = {
-			order = 8,
-			type = 'group',
-			name = 'DXE',
-			get = function(info) return E.private.skins.dxe[ info[#info] ] end,
-			set = function(info, value) E.private.skins.dxe[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,
-			args = {
-				enable = {
-					name = L['Enable'],
-					type = 'toggle',
-					order = 1,				
-				},			
-			},
-		},	
+<<<<<<< HEAD
 		dbm = {
 			order = 9,
 			type = 'group',
@@ -210,19 +110,17 @@ E.Options.args.skins = {
 				},			
 			},
 		},			
+=======
+>>>>>>> beta
 		blizzard = {
 			order = 300,
 			type = 'group',
 			name = 'Blizzard',
 			get = function(info) return E.private.skins.blizzard[ info[#info] ] end,
-			set = function(info, value) E.private.skins.blizzard[ info[#info] ] = value; StaticPopup_Show("CONFIG_RL") end,	
+			set = function(info, value) E.private.skins.blizzard[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,	
+			disabled = function() return not E.private.skins.blizzard.enable end,
 			guiInline = true,
-			args = {
-				enable = {
-					name = L['Enable'],
-					type = 'toggle',
-					order = 1,				
-				},		
+			args = {	
 				encounterjournal = {
 					type = "toggle",
 					name = L["Encounter Journal"],
@@ -333,11 +231,16 @@ E.Options.args.skins = {
 					name = L["Socket Frame"],
 					desc = L["TOGGLESKIN_DESC"],								
 				},
-				achievement_popup = {
+				alertframes = {
 					type = "toggle",
-					name = L["Achievement Popup Frames"],
+					name = L["Alert Frames"],
 					desc = L["TOGGLESKIN_DESC"],								
 				},
+				loot = {
+					type = "toggle",
+					name = L["Loot Frames"],
+					desc = L["TOGGLESKIN_DESC"],								
+				},				
 				bgscore = {
 					type = "toggle",
 					name = L["BG Score"],
@@ -383,11 +286,16 @@ E.Options.args.skins = {
 					name = L["Taxi Frame"],
 					desc = L["TOGGLESKIN_DESC"],								
 				},
-				lfd = {
+				lfg = {
 					type = "toggle",
-					name = L["LFD Frame"],
+					name = L["LFG Frame"],
 					desc = L["TOGGLESKIN_DESC"],								
 				},
+				mounts = {
+					type = "toggle",
+					name = L["Mounts & Pets"],
+					desc = L["TOGGLESKIN_DESC"],								
+				},				
 				quest = {
 					type = "toggle",
 					name = L["Quest Frames"],
@@ -428,11 +336,6 @@ E.Options.args.skins = {
 					name = L["Character Frame"],
 					desc = L["TOGGLESKIN_DESC"],								
 				},
-				lfr = {
-					type = "toggle",
-					name = L["LFR Frame"],
-					desc = L["TOGGLESKIN_DESC"],
-				},
 				misc = {
 					type = "toggle",
 					name = L["Misc Frames"],
@@ -462,7 +365,12 @@ E.Options.args.skins = {
 					type = "toggle",
 					name = L["BG Map"],
 					desc = L["TOGGLESKIN_DESC"],									
-				},				
+				},		
+				petbattleui = {
+					type = "toggle",
+					name = L["Pet Battle"],
+					desc = L["TOGGLESKIN_DESC"],									
+				},		
 			},
 		},
 	},

@@ -9,5 +9,7 @@
 	<Script file='staticpopups.lua'/>
 	<Script file='animation.lua'/>
 	<Script file='movers.lua'/>	
+	<Script file='config.lua'/>
+	<Script file='tutorials.lua'/>
 	<Script file='options.lua'/>
 </Ui>

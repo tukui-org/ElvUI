@@ -1,12 +1,27 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local M = E:GetModule('Misc');
 
-local BAR_WIDTH --Set post load so we can set it to a percent of your screen width.
-local BAR_HEIGHT = 9
-local TOPBAR_HEIGHT = ((BAR_HEIGHT + 2) * 4) + BAR_HEIGHT
-local showRepBar, showExpBar = false, false
+FACTION_STANDING_LABEL100 = UNKNOWN
 
-local function GetXP(unit)
+function M:UpdateExpRepAnchors()
+	local repBar = ReputationBarMover
+	local expBar = ExperienceBarMover
+	
+	if E.db.movers and (E:HasMoverBeenMoved('ExperienceBarMover') or E:HasMoverBeenMoved('ReputationBarMover')) or not repBar or not expBar then return; end
+	repBar:ClearAllPoints()
+	expBar:ClearAllPoints()
+	
+	if self.expBar:IsShown() and self.repBar:IsShown() then
+		expBar:Point('TOP', MMHolder, 'BOTTOM', 1, -1)
+		repBar:Point('TOP', self.expBar, 'BOTTOM', 0, -1)
+	elseif self.expBar:IsShown() then
+		expBar:Point('TOP', MMHolder, 'BOTTOM', 1, -1)
+	else
+		repBar:Point('TOP', MMHolder, 'BOTTOM', 1, -1)
+	end
+end
+
+function M:GetXP(unit)
 	if(unit == 'pet') then
 		return GetPetExperience()
 	else
@@ -14,94 +29,101 @@ local function GetXP(unit)
 	end
 end
 
-local function OnClick()
-	if E.db['UpperRepExpBarFaded'] then
-		E.db['UpperRepExpBarFaded'] = nil
-		UpperRepExpBar:Show()
-		UIFrameFadeIn(UpperRepExpBar, 0.2, UpperRepExpBar:GetAlpha(), 1)
-		M:UpdateExpBar()
-		M:UpdateRepBar()			
+function M:UpdateExperience(event)
+	local bar = self.expBar
+
+	if(UnitLevel('player') == MAX_PLAYER_LEVEL) or IsXPUserDisabled() then
+		bar:Hide()
 	else
-		E.db['UpperRepExpBarFaded'] = true
-		UIFrameFadeOut(UpperRepExpBar, 0.2, UpperRepExpBar:GetAlpha(), 0)
-		UpperRepExpBar.fadeInfo.finishedFunc = OnFade
-	end	
-end
-
-local function OnLeave()
-	if E.db['UpperRepExpBarFaded'] then
-		UIFrameFadeOut(UpperRepExpBar, 0.2, UpperRepExpBar:GetAlpha(), 0)
-		UpperRepExpBar.fadeInfo.finishedFunc = OnFade
-	end	
-	
-	GameTooltip:Hide()
-end
-
-local function OnEnter()
-	if E.db['UpperRepExpBarFaded'] then
-		UpperRepExpBar:Show()
-		UIFrameFadeIn(UpperRepExpBar, 0.2, UpperRepExpBar:GetAlpha(), 1)
-		M:UpdateExpBar()
-		M:UpdateRepBar()		
-	end
-end
-
-local function OnFade()
-	UpperRepExpBar:Hide()
-end
-
-function M:GetNumShownBars()
-	local shownBars = 0
-	if showRepBar and showExpBar then
-		shownBars = 2
-	elseif (showRepBar and not showExpBar) or (not showRepBar and showExpBar) then
-		shownBars = 1
-	end
-
-	return shownBars
-end
-
-function M:PositionBars(num)
-	if num == 1 then
-		UpperRepExpBarHolder:Height(TOPBAR_HEIGHT / 2)
-		UpperRepExpBar:Height(TOPBAR_HEIGHT / 2)
-		UpperRepExpBar.left:Height(TOPBAR_HEIGHT / 2)
-		UpperRepExpBar.right:Height(TOPBAR_HEIGHT / 2)
-	else
-		UpperRepExpBarHolder:Height(TOPBAR_HEIGHT)
-		UpperRepExpBar:Height(TOPBAR_HEIGHT)
-		UpperRepExpBar.left:Height(TOPBAR_HEIGHT)
-		UpperRepExpBar.right:Height(TOPBAR_HEIGHT)
-	end
-	
-	UpperRepExpBarHolder:Show()
-	
-	if num == 2 then
-		UpperRepExpBar:Show()
-		UpperReputationBar:ClearAllPoints()
-		UpperExperienceBar:ClearAllPoints()	
-		UpperExperienceBar:SetPoint('CENTER', UpperRepExpBar.bottom, 'CENTER')
-		UpperReputationBar:SetPoint('CENTER', UpperRepExpBar.middle, 'CENTER')
-	elseif num == 1 then
-		UpperRepExpBar:Show()
-		if showRepBar then
-			UpperReputationBar:ClearAllPoints()
-			UpperReputationBar:SetPoint('CENTER', UpperRepExpBar.bottom, 'CENTER')
+		bar:Show()
+		
+		local cur, max = self:GetXP('player')
+		bar.statusBar:SetMinMaxValues(0, max)
+		bar.statusBar:SetValue(cur - 1 >= 0 and cur - 1 or 0)
+		bar.statusBar:SetValue(cur)
+		
+		local rested = GetXPExhaustion()
+		local text = ''
+		local textFormat = E.db.general.experience.textFormat
+		
+		if rested and rested > 0 then
+			bar.rested:SetMinMaxValues(0, max)
+			bar.rested:SetValue(math.min(cur + rested, max))
+			
+			if textFormat == 'PERCENT' then
+				text = string.format('%d%% R:%d%%', cur / max * 100, rested / max * 100)
+			elseif textFormat == 'CURMAX' then
+				text = string.format('%s - %s R:%s', E:ShortValue(cur), E:ShortValue(max), E:ShortValue(rested))
+			elseif textFormat == 'CURPERC' then
+				text = string.format('%s - %d%% R:%s [%d%%]', E:ShortValue(cur), cur / max * 100, E:ShortValue(rested), rested / max * 100)
+			end
 		else
-			UpperExperienceBar:ClearAllPoints()			
-			UpperExperienceBar:SetPoint('CENTER', UpperRepExpBar.bottom, 'CENTER')
+			bar.rested:SetMinMaxValues(0, 1)
+			bar.rested:SetValue(0)	
+
+			if textFormat == 'PERCENT' then
+				text = string.format('%d%%', cur / max * 100)
+			elseif textFormat == 'CURMAX' then
+				text = string.format('%s - %s', E:ShortValue(cur), E:ShortValue(max))
+			elseif textFormat == 'CURPERC' then
+				text = string.format('%s - %d%%', E:ShortValue(cur), cur / max * 100)
+			end			
 		end
-	elseif UpperRepExpBarHolder:IsShown() then
-		UpperRepExpBarHolder:Hide()
+		
+		bar.text:SetText(text)
 	end
+	
+	self:UpdateExpRepAnchors()
 end
 
-local function ExpOnEnter(self)
-	OnEnter()
-	GameTooltip:ClearLines()
-	GameTooltip:SetOwner(self:GetParent(), 'ANCHOR_BOTTOM', 0 -4)
+function M:UpdateReputation(event)
+	local bar = self.repBar
 	
-	local cur, max = GetXP('player')
+	local ID = 100
+	local name, reaction, min, max, value = GetWatchedFactionInfo()
+	local numFactions = GetNumFactions();
+
+	if not name then
+		bar:Hide()
+	else
+		bar:Show()
+
+		local text = ''
+		local textFormat = E.db.general.reputation.textFormat		
+		local color = FACTION_BAR_COLORS[reaction]
+		bar.statusBar:SetStatusBarColor(color.r, color.g, color.b)	
+
+		bar.statusBar:SetMinMaxValues(min, max)
+		bar.statusBar:SetValue(value)
+		
+		for i=1, numFactions do
+			local factionName, _, standingID = GetFactionInfo(i);
+			if factionName == name then
+				ID = standingID
+			end
+		end
+		
+		
+		
+		if textFormat == 'PERCENT' then
+			text = string.format('%d%% [%s]', value / max * 100, _G['FACTION_STANDING_LABEL'..ID])
+		elseif textFormat == 'CURMAX' then
+			text = string.format('%s - %s [%s]', E:ShortValue(value), E:ShortValue(max), _G['FACTION_STANDING_LABEL'..ID])
+		elseif textFormat == 'CURPERC' then
+			text = string.format('%s - %d%% [%s]', E:ShortValue(value), value / max * 100, _G['FACTION_STANDING_LABEL'..ID])
+		end					
+		
+		bar.text:SetText(text)		
+	end
+	
+	self:UpdateExpRepAnchors()
+end
+
+local function ExperienceBar_OnEnter(self)
+	GameTooltip:ClearLines()
+	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM', 0, -4)
+	
+	local cur, max = M:GetXP('player')
 	local rested = GetXPExhaustion()
 	GameTooltip:AddLine(L['Experience'])
 	GameTooltip:AddLine(' ')
@@ -116,60 +138,9 @@ local function ExpOnEnter(self)
 	GameTooltip:Show()
 end
 
-function M:UpdateExpBar(event)
-	local bar = UpperExperienceBar
-	if not bar then
-		bar = CreateFrame('StatusBar', 'UpperExperienceBar', UpperRepExpBar)
-		bar:Size(BAR_WIDTH + E.RBRWidth, BAR_HEIGHT)
-		bar:CreateBackdrop('Default')
-		bar:SetStatusBarTexture(E.media.normTex)
-		bar:SetFrameLevel(UpperRepExpBar:GetFrameLevel() + 3)
-		bar:SetStatusBarColor(0, 0.4, 1, .8)
-		bar:EnableMouse(true)
-		bar:SetScript('OnMouseDown', OnClick)	
-		bar:SetScript('OnEnter', ExpOnEnter)
-		bar:SetScript('OnLeave', OnLeave)
-		
-		bar.rested = CreateFrame('StatusBar', 'UpperExperienceRestedBar', UpperExperienceBar)
-		bar.rested:Size(bar:GetSize())
-		bar.rested:SetAllPoints()
-		bar.rested:SetStatusBarTexture(E.media.normTex)
-		bar.rested:SetStatusBarColor(1, 0, 1, 0.2)
-	end
-
-	if(UnitLevel('player') == MAX_PLAYER_LEVEL) then
-		bar:Hide()
-		showExpBar = false
-	elseif IsXPUserDisabled() then
-		bar:Hide()
-		showExpBar = false
-	else
-		bar:Show()
-		showExpBar = true
-		
-		local cur, max = GetXP('player')
-		bar:SetMinMaxValues(0, max)
-		bar:SetValue(cur - 1 >= 0 and cur - 1 or 0)
-		bar:SetValue(cur)
-		
-		local rested = GetXPExhaustion()
-		
-		if rested and rested > 0 then
-			bar.rested:SetMinMaxValues(0, max)
-			bar.rested:SetValue(math.min(cur + rested, max))
-		else
-			bar.rested:SetMinMaxValues(0, 1)
-			bar.rested:SetValue(0)		
-		end
-	end
-	
-	M:PositionBars(self:GetNumShownBars())
-end
-
-local function RepOnEnter(self)
-	OnEnter()
+local function ReputationBar_OnEnter(self)
 	GameTooltip:ClearLines()
-	GameTooltip:SetOwner(self:GetParent(), 'ANCHOR_BOTTOM', 0 -4)
+	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM', 0, -4)
 	
 	local name, reaction, min, max, value = GetWatchedFactionInfo()
 	if name then
@@ -182,115 +153,88 @@ local function RepOnEnter(self)
 	GameTooltip:Show()
 end
 
-function M:UpdateRepBar(event)
-	local bar = UpperReputationBar
-	if not bar then
-		bar = CreateFrame('StatusBar', 'UpperReputationBar', UpperRepExpBar)
-		bar:Size(BAR_WIDTH + E.RBRWidth, BAR_HEIGHT)
-		bar:CreateBackdrop('Default')
-		bar:SetStatusBarTexture(E.media.normTex)
-		bar:SetFrameLevel(UpperRepExpBar:GetFrameLevel() + 3)
-		bar:EnableMouse(true)
-		bar:SetScript('OnMouseDown', OnClick)	
-		bar:SetScript('OnEnter', RepOnEnter)
-		bar:SetScript('OnLeave', OnLeave)
-	end
-	
-	local name, reaction, min, max, value = GetWatchedFactionInfo()
-	if not name then
-		bar:Hide()
-		showRepBar = false
-	else
-		bar:Show()
-		showRepBar = true
-		
-		local color = FACTION_BAR_COLORS[reaction]
-		bar:SetStatusBarColor(color.r, color.g, color.b)	
-
-		bar:SetMinMaxValues(min, max)
-		bar:SetValue(value)		
-	end
-		
-	M:PositionBars(self:GetNumShownBars())
+local function OnLeave(self)
+	GameTooltip:Hide()
 end
 
-function M:UpdateExpRepBarAnchor()
-	UpperRepExpBarHolder:ClearAllPoints()
-	if E.db.general.expRepPos == 'TOP_SCREEN' then
-		BAR_WIDTH = E.eyefinity or E.UIParent:GetWidth(); BAR_WIDTH = BAR_WIDTH / 5
-		UpperRepExpBarHolder:Point('TOP', E.UIParent, 'TOP', 0, 2)  
-		UpperRepExpBarHolder:SetParent(E.UIParent)
-	else
-		BAR_WIDTH = E.MinimapSize
-		UpperRepExpBarHolder:Point('TOP', MMHolder, 'BOTTOM', 0, 2)  
-		UpperRepExpBarHolder:SetParent(Minimap)
-	end
+function M:CreateBar(name, onEnter, ...)
+	local bar = CreateFrame('Button', name, E.UIParent)
+	bar:Point(...)
+	bar:SetScript('OnEnter', onEnter)
+	bar:SetScript('OnLeave', OnLeave)
+	bar:SetFrameStrata('LOW')
+	bar:SetTemplate('Default')
+	bar:Hide()
 	
-	UpperRepExpBarHolder:SetFrameLevel(0)
-	UpperRepExpBarHolder:Size(BAR_WIDTH - 30 + E.RBRWidth, TOPBAR_HEIGHT)
+	bar.statusBar = CreateFrame('StatusBar', nil, bar)
+	bar.statusBar:SetInside()
+	bar.statusBar:SetStatusBarTexture(E.media.normTex)
+	
+	bar.text = bar.statusBar:CreateFontString(nil, 'OVERLAY')
+	bar.text:FontTemplate()
+	bar.text:SetPoint('CENTER')
+	
+	E.FrameLocks[name] = true
+	
+	return bar
+end
 
-	if UpperReputationBar then
-		UpperReputationBar:Size(BAR_WIDTH + E.RBRWidth, BAR_HEIGHT)
+function M:UpdateExpRepDimensions()
+	self.expBar:Width(E.db.general.experience.width)
+	self.expBar:Height(E.db.general.experience.height)
+	
+	self.repBar:Width(E.db.general.reputation.width)
+	self.repBar:Height(E.db.general.reputation.height)
+	
+	self.repBar.text:FontTemplate(nil, E.db.general.reputation.textSize)
+	self.expBar.text:FontTemplate(nil, E.db.general.experience.textSize)
+end
+
+function M:EnableDisable_ExperienceBar()
+	if UnitLevel('player') ~= MAX_PLAYER_LEVEL and E.db.general.experience.enable then
+		self:RegisterEvent('PLAYER_XP_UPDATE', 'UpdateExperience')
+		self:RegisterEvent('PLAYER_LEVEL_UP', 'UpdateExperience')
+		self:RegisterEvent("DISABLE_XP_GAIN", 'UpdateExperience')
+		self:RegisterEvent("ENABLE_XP_GAIN", 'UpdateExperience')
+		self:RegisterEvent('UPDATE_EXHAUSTION', 'UpdateExperience')
+		self:UpdateExperience()	
+	else
+		self:UnregisterEvent('PLAYER_XP_UPDATE')
+		self:UnregisterEvent('PLAYER_LEVEL_UP')
+		self:UnregisterEvent("DISABLE_XP_GAIN")
+		self:UnregisterEvent("ENABLE_XP_GAIN")
+		self:UnregisterEvent('UPDATE_EXHAUSTION')
+		self.expBar:Hide()
 	end
 	
-	if UpperExperienceBar then
-		UpperExperienceBar:Size(BAR_WIDTH + E.RBRWidth, BAR_HEIGHT)
-	end	
-	
-	self:PositionBars(self:GetNumShownBars())
+	self:UpdateExpRepAnchors()
+end
+
+function M:EnableDisable_ReputationBar()
+	if E.db.general.reputation.enable then
+		self:RegisterEvent('UPDATE_FACTION', 'UpdateReputation')
+		self:UpdateReputation()
+	else
+		self:UnregisterEvent('UPDATE_FACTION')
+		self.repBar:Hide()
+	end
 end
 
 function M:LoadExpRepBar()
-	local holder = CreateFrame('Button', 'UpperRepExpBarHolder', E.UIParent)
-	holder:Point('TOP', E.UIParent, 'TOP', 0, 2)  
-	holder:SetScript('OnEnter', OnEnter)
-	holder:SetScript('OnLeave', OnLeave)	
-	holder:SetScript('OnClick', OnClick)	
-	holder:SetFrameStrata('BACKGROUND')
-	
-	local bar = CreateFrame('Frame', 'UpperRepExpBar', holder)
-	bar:SetAllPoints(holder)
-	bar:Hide()
-		
-	bar.left = CreateFrame('Frame', nil, bar)
-	bar.left:Point('RIGHT', bar, 'LEFT')
-	bar.left:Width(2)
-	bar.left:Height(bar:GetHeight())
-	bar.left:SetTemplate('Default')
-	bar.left:SetFrameLevel(bar:GetFrameLevel())
-	
-	bar.right = CreateFrame('Frame', nil, bar)
-	bar.right:Point('LEFT', bar, 'RIGHT')
-	bar.right:Width(2)
-	bar.right:Height(bar:GetHeight())
-	bar.right:SetTemplate('Default')	
-	bar.right:SetFrameLevel(bar:GetFrameLevel())
-	
-	bar.bottom = CreateFrame('Frame', nil, bar)
-	bar.bottom:Point('BOTTOM', bar, 'BOTTOM', 0, BAR_HEIGHT + 2)
-	bar.bottom:Width(bar:GetWidth() + 2)
-	bar.bottom:Height(2)
-	bar.bottom:SetFrameLevel(bar:GetFrameLevel())
-	
-	bar.middle = CreateFrame('Frame', nil, bar)
-	bar.middle:Point('CENTER', bar, 'CENTER', 0, BAR_HEIGHT + 2)
-	bar.middle:Width(bar:GetWidth() + 2)
-	bar.middle:Height(2)
-	bar.middle:SetFrameLevel(bar:GetFrameLevel())
+	self.expBar = self:CreateBar('ElvUI_ExperienceBar', ExperienceBar_OnEnter, 'TOP', MMHolder, 'BOTTOM', 1, -1)
+	self.expBar.statusBar:SetStatusBarColor(0, 0.4, 1, .8)
+	self.expBar.rested = CreateFrame('StatusBar', nil, self.expBar)
+	self.expBar.rested:SetInside()
+	self.expBar.rested:SetStatusBarTexture(E.media.normTex)
+	self.expBar.rested:SetStatusBarColor(1, 0, 1, 0.2)
 
-	self:UpdateExpRepBarAnchor()
-	
-	--Register experience bar related events..
-	if UnitLevel('player') ~= MAX_PLAYER_LEVEL then
-		self:RegisterEvent('PLAYER_XP_UPDATE', 'UpdateExpBar')
-		self:RegisterEvent('PLAYER_LEVEL_UP', 'UpdateExpBar')
-		self:RegisterEvent("DISABLE_XP_GAIN", 'UpdateExpBar')
-		self:RegisterEvent("ENABLE_XP_GAIN", 'UpdateExpBar')
-		self:RegisterEvent('UPDATE_EXHAUSTION', 'UpdateExpBar')
-		self:UpdateExpBar()
-	end
+	self.repBar = self:CreateBar('ElvUI_ReputationBar', ReputationBar_OnEnter, 'TOP', self.expBar, 'BOTTOM', 0, -1)
 
-	--Reputation Events
-	self:RegisterEvent('UPDATE_FACTION', 'UpdateRepBar')
-	OnLeave()
+	self:UpdateExpRepDimensions()
+	
+	self:EnableDisable_ExperienceBar()
+	self:EnableDisable_ReputationBar()
+
+	E:CreateMover(self.expBar, "ExperienceBarMover", "Experience Bar")
+	E:CreateMover(self.repBar, "ReputationBarMover", "Reputation Bar")
 end

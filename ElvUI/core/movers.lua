@@ -1,15 +1,16 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local Sticky = LibStub("LibSimpleSticky-1.0")
 
 E.CreatedMovers = {}
 
 local function SizeChanged(frame)
+	if InCombatLockdown() then return; end
 	frame.mover:Size(frame:GetSize())
 end
 
 local function GetPoint(obj)
 	local point, anchor, secondaryPoint, x, y = obj:GetPoint()
-	if not anchor then anchor = UIParent end
+	if not anchor then anchor = ElvUIParent end
 
 	return string.format('%s\031%s\031%s\031%d\031%d', point, anchor:GetName(), secondaryPoint, E:Round(x), E:Round(y))
 end
@@ -43,7 +44,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	
 	if E.db['movers'] and E.db['movers'][name] then
 		if type(E.db['movers'][name]) == 'table' then
-			f:SetPoint(E.db["movers"][name]["p"], UIParent, E.db["movers"][name]["p2"], E.db["movers"][name]["p3"], E.db["movers"][name]["p4"])
+			f:SetPoint(E.db["movers"][name]["p"], E.UIParent, E.db["movers"][name]["p2"], E.db["movers"][name]["p3"], E.db["movers"][name]["p4"])
 			E.db['movers'][name] = GetPoint(f)
 			f:ClearAllPoints()
 		end
@@ -91,7 +92,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 				
 		]]
 		
-		local screenWidth, screenHeight = UIParent:GetRight(), UIParent:GetTop()
+		local screenWidth, screenHeight = E.UIParent:GetRight(), E.UIParent:GetTop()
 		local x, y = self:GetCenter()
 		local point
 		
@@ -112,7 +113,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		end
 
 		self:ClearAllPoints()
-		self:Point(point, UIParent, point, x, y)
+		self:Point(point, E.UIParent, point, x, y)
 
 		E:SaveMoverPosition(name)
 		
@@ -189,9 +190,10 @@ function E:SaveMoverDefaultPosition(name)
 	E.CreatedMovers[name]["postdrag"](_G[name], E:GetScreenQuadrant(_G[name]))
 end
 
-function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag)
+function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverTypes)
+	if not moverTypes then moverTypes = 'ALL,GENERAL' end
 	local p, p2, p3, p4, p5 = parent:GetPoint()
-
+	
 	if E.CreatedMovers[name] == nil then 
 		E.CreatedMovers[name] = {}
 		E.CreatedMovers[name]["parent"] = parent
@@ -200,17 +202,28 @@ function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag)
 		E.CreatedMovers[name]["postdrag"] = postdrag
 		E.CreatedMovers[name]["snapoffset"] = snapOffset
 		E.CreatedMovers[name]["point"] = GetPoint(parent)
+
+		E.CreatedMovers[name]["type"] = {}
+		local types = {string.split(',', moverTypes)}
+		for i = 1, #types do
+			local moverType = types[i]
+			E.CreatedMovers[name]["type"][moverType] = true
+		end
 	end	
 	
 	CreateMover(parent, name, text, overlay, snapoffset, postdrag)
 end
 
-function E:ToggleMovers(show)
+function E:ToggleMovers(show, moverType)
 	for name, _ in pairs(E.CreatedMovers) do
 		if not show then
 			_G[name]:Hide()
 		else
-			_G[name]:Show()
+			if E.CreatedMovers[name]['type'][moverType] then
+				_G[name]:Show()
+			else
+				_G[name]:Hide()
+			end
 		end
 	end
 end
@@ -236,7 +249,6 @@ function E:ResetMovers(arg)
 				local mover
 				if key == "text" then
 					if arg == value then 
-
 						local f = _G[name]
 						local point, anchor, secondaryPoint, x, y = string.split('\031', E.CreatedMovers[name]['point'])
 						f:ClearAllPoints()

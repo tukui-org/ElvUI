@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local DT = E:GetModule('DataTexts')
 
 local format = string.format
@@ -8,36 +8,24 @@ local talent = {}
 local activeString = string.join("", "|cff00FF00" , ACTIVE_PETS, "|r")
 local inactiveString = string.join("", "|cffFF0000", FACTION_INACTIVE, "|r")
 
-local function LoadTalentTrees()
-	for i = 1, GetNumTalentGroups(false, false) do
-		talent[i] = {}
-		for j = 1, GetNumTalentTabs(false, false) do
-			talent[i][j] = select(5, GetTalentTabInfo(j, false, false, i))
-		end
-	end
-end
-
 local function OnEvent(self, event)
 	lastPanel = self
-	if not GetTalentTabInfo(1) then
+	if not GetSpecializationInfo(1) then
 		return
 	end	
 	
-	
-	LoadTalentTrees()
-	
-	active = GetActiveTalentGroup(false, false)
-	if GetPrimaryTalentTree(false, false, active) then
-		self.text:SetFormattedText(displayString, select(2, GetTalentTabInfo(GetPrimaryTalentTree(false, false, active))), talent[active][1], talent[active][2], talent[active][3])
+	active = GetActiveSpecGroup()
+	if GetSpecialization(false, false, active) then
+		self.text:SetText(select(2, GetSpecializationInfo(GetSpecialization(false, false, active))))
 	end
 end
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
-	for i = 1, GetNumTalentGroups() do
-		if GetPrimaryTalentTree(false, false, i) then
-			GameTooltip:AddLine(string.join(" ", string.format(displayString, select(2, GetTalentTabInfo(GetPrimaryTalentTree(false, false, i))), talent[i][1], talent[i][2], talent[i][3]), (i == active and activeString or inactiveString)),1,1,1)
+	for i = 1, GetNumSpecGroups() do
+		if GetSpecialization(false, false, i) then
+			GameTooltip:AddLine(string.join(" ", string.format(displayString, select(2, GetSpecializationInfo(GetSpecialization(false, false, i)))), (i == active and activeString or inactiveString)),1,1,1)
 		end
 	end
 	
@@ -45,11 +33,11 @@ local function OnEnter(self)
 end
 
 local function OnClick(self)
-	SetActiveTalentGroup(active == 1 and 2 or 1)
+	SetActiveSpecGroup(active == 1 and 2 or 1)
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayString = string.join("", "|cffFFFFFF%s:|r ", hex, "%d|r/", hex, "%d|r/", hex, "%d|r")
+	displayString = string.join("", "|cffFFFFFF%s:|r ")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

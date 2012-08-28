@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:GetModule('UnitFrames');
 
 local _, ns = ...
@@ -21,11 +21,38 @@ function UF:Construct_ArenaFrames(frame)
 	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT')
 	
 	frame.Trinket = self:Construct_Trinket(frame)
+	frame.PVPSpecIcon = self:Construct_PVPSpecIcon(frame)
 	
 	frame:SetAttribute("type2", "focus")
+
+	
+	if not frame.PrepFrame then
+		frame.prepFrame = CreateFrame('Frame', frame:GetName()..'PrepFrame', UIParent)
+		frame.prepFrame:SetFrameStrata('BACKGROUND')
+		frame.prepFrame:SetAllPoints(frame)
+		frame.prepFrame.Health = CreateFrame('StatusBar', nil, frame.prepFrame)
+		frame.prepFrame.Health:Point('BOTTOMLEFT', frame.prepFrame, 'BOTTOMLEFT', 2, 2)
+		frame.prepFrame.Health:Point('TOPRIGHT', frame.prepFrame, 'TOPRIGHT', -(2 + E.db.unitframe.units.arena.height), -2)
+		frame.prepFrame.Health:CreateBackdrop()
+		
+		frame.prepFrame.Icon = frame.prepFrame:CreateTexture(nil, 'OVERLAY')
+		frame.prepFrame.Icon.bg = CreateFrame('Frame', nil, frame.prepFrame)
+		frame.prepFrame.Icon.bg:Point('TOPLEFT', frame.prepFrame.Health.backdrop, 'TOPRIGHT', 1, 0)
+		frame.prepFrame.Icon.bg:Point('BOTTOMRIGHT', frame.prepFrame, 'BOTTOMRIGHT', 0, 0)
+		frame.prepFrame.Icon.bg:SetTemplate('Default')
+		frame.prepFrame.Icon:SetParent(frame.prepFrame.Icon.bg)
+		frame.prepFrame.Icon:SetTexCoord(unpack(E.TexCoords))
+		frame.prepFrame.Icon:SetInside(frame.prepFrame.Icon.bg)
+		UF['statusbars'][frame.prepFrame.Health] = true;
+		
+		frame.prepFrame.SpecClass = frame.prepFrame.Health:CreateFontString(nil, "OVERLAY")
+		frame.prepFrame.SpecClass:SetPoint("CENTER")
+		UF:Configure_FontString(frame.prepFrame.SpecClass)
+		--frame.prepFrame:Hide()
+	end
 	
 	ArenaHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165) 
-	E:CreateMover(ArenaHeader, ArenaHeader:GetName()..'Mover', 'Arena Frames')	
+	E:CreateMover(ArenaHeader, ArenaHeader:GetName()..'Mover', 'Arena Frames', nil, nil, nil, 'ALL,ARENA')	
 end
 
 function UF:Update_ArenaFrames(frame, db)
@@ -35,7 +62,7 @@ function UF:Update_ArenaFrames(frame, db)
 	local INDEX = frame.index
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
-	local TRINKET_WIDTH = UNIT_HEIGHT * 0.9
+	local PVPINFO_WIDTH = db.pvpSpecIcon and UNIT_HEIGHT or 0
 	
 	local USE_POWERBAR = db.power.enable
 	local USE_MINI_POWERBAR = db.power.width ~= 'fill' and USE_POWERBAR
@@ -66,16 +93,11 @@ function UF:Update_ArenaFrames(frame, db)
 		health.Smooth = self.db.smoothbars
 
 		--Text
-		if db.health.text then
-			health.value:Show()
-			
-			local x, y = self:GetPositionOffset(db.health.position)
-			health.value:ClearAllPoints()
-			health.value:Point(db.health.position, health, db.health.position, x, y)
-		else
-			health.value:Hide()
-		end
-		
+		local x, y = self:GetPositionOffset(db.health.position)
+		health.value:ClearAllPoints()
+		health.value:Point(db.health.position, health, db.health.position, x, y)
+		frame:Tag(health.value, db.health.text_format)
+	
 		--Colors
 		health.colorSmooth = nil
 		health.colorHealth = nil
@@ -94,7 +116,8 @@ function UF:Update_ArenaFrames(frame, db)
 		
 		--Position
 		health:ClearAllPoints()
-		health:Point("TOPRIGHT", frame, "TOPRIGHT", -(TRINKET_WIDTH + BORDER), -BORDER)
+		health:Point("TOPRIGHT", frame, "TOPRIGHT", -(PVPINFO_WIDTH + BORDER), -BORDER)
+		frame.prepFrame.Health:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -(PVPINFO_WIDTH + BORDER), -BORDER)
 		if USE_POWERBAR_OFFSET then			
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER+POWERBAR_OFFSET, BORDER+POWERBAR_OFFSET)
 		elseif USE_MINI_POWERBAR then
@@ -111,17 +134,13 @@ function UF:Update_ArenaFrames(frame, db)
 	--Name
 	do
 		local name = frame.Name
-		if db.name.enable then
-			name:Show()
-			
-			if not db.power.hideonnpc then
-				local x, y = self:GetPositionOffset(db.name.position)
-				name:ClearAllPoints()
-				name:Point(db.name.position, frame.Health, db.name.position, x, y)				
-			end
-		else
-			name:Hide()
+		if not db.power.hideonnpc then
+			local x, y = self:GetPositionOffset(db.name.position)
+			name:ClearAllPoints()
+			name:Point(db.name.position, frame.Health, db.name.position, x, y)				
 		end
+		
+		frame:Tag(name, db.name.text_format)
 	end	
 	
 	--Power
@@ -136,15 +155,10 @@ function UF:Update_ArenaFrames(frame, db)
 			power.Smooth = self.db.smoothbars
 			
 			--Text
-			if db.power.text then
-				power.value:Show()
-				
-				local x, y = self:GetPositionOffset(db.power.position)
-				power.value:ClearAllPoints()
-				power.value:Point(db.power.position, frame.Health, db.power.position, x, y)			
-			else
-				power.value:Hide()
-			end
+			local x, y = self:GetPositionOffset(db.power.position)
+			power.value:ClearAllPoints()
+			power.value:Point(db.power.position, frame.Health, db.power.position, x, y)		
+			frame:Tag(power.value, db.power.text_format)
 			
 			--Colors
 			power.colorClass = nil
@@ -172,12 +186,11 @@ function UF:Update_ArenaFrames(frame, db)
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
 			else
 				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + SPACING))
-				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER + TRINKET_WIDTH), BORDER)
+				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER + PVPINFO_WIDTH), BORDER)
 			end
 		elseif frame:IsElementEnabled('Power') then
 			frame:DisableElement('Power')
 			power:Hide()
-			power.value:Hide()
 		end
 	end
 
@@ -208,7 +221,7 @@ function UF:Update_ArenaFrames(frame, db)
 		else
 			buffs:SetWidth(UNIT_WIDTH)
 		end
-
+		
 		buffs.forceShow = frame.forceShowAuras
 		buffs.num = db.buffs.perrow * rows
 		buffs.size = db.buffs.sizeOverride ~= 0 and db.buffs.sizeOverride or ((((buffs:GetWidth() - (buffs.spacing*(buffs.num/rows - 1))) / buffs.num)) * rows)
@@ -217,14 +230,14 @@ function UF:Update_ArenaFrames(frame, db)
 			buffs:SetWidth(db.buffs.perrow * db.buffs.sizeOverride)
 		end
 		
-		local x, y = self:GetAuraOffset(db.buffs.initialAnchor, db.buffs.anchorPoint)
+		local x, y = E:GetXYOffset(db.buffs.anchorPoint)
 		local attachTo = self:GetAuraAnchorFrame(frame, db.buffs.attachTo)
-
-		buffs:Point(db.buffs.initialAnchor, attachTo, db.buffs.anchorPoint, x, y)
+		
+		buffs:Point(E.InversePoints[db.buffs.anchorPoint], attachTo, db.buffs.anchorPoint, x + db.buffs.xOffset, y + db.buffs.yOffset)
 		buffs:Height(buffs.size * rows)
-		buffs.initialAnchor = db.buffs.initialAnchor
-		buffs["growth-y"] = db.buffs['growth-y']
-		buffs["growth-x"] = db.buffs['growth-x']
+		buffs["growth-y"] = db.buffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
+		buffs["growth-x"] = db.buffs.anchorPoint == 'LEFT' and 'LEFT' or  db.buffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.buffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
+		buffs.initialAnchor = E.InversePoints[db.buffs.anchorPoint]
 
 		if db.buffs.enable then			
 			buffs:Show()
@@ -243,7 +256,7 @@ function UF:Update_ArenaFrames(frame, db)
 		else
 			debuffs:SetWidth(UNIT_WIDTH)
 		end
-
+		
 		debuffs.forceShow = frame.forceShowAuras
 		debuffs.num = db.debuffs.perrow * rows
 		debuffs.size = db.debuffs.sizeOverride ~= 0 and db.debuffs.sizeOverride or ((((debuffs:GetWidth() - (debuffs.spacing*(debuffs.num/rows - 1))) / debuffs.num)) * rows)
@@ -252,14 +265,14 @@ function UF:Update_ArenaFrames(frame, db)
 			debuffs:SetWidth(db.debuffs.perrow * db.debuffs.sizeOverride)
 		end
 		
-		local x, y = self:GetAuraOffset(db.debuffs.initialAnchor, db.debuffs.anchorPoint)
-		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.buffs.attachTo == 'DEBUFFS' and db.debuffs.attachTo == 'BUFFS')
-
-		debuffs:Point(db.debuffs.initialAnchor, attachTo, db.debuffs.anchorPoint, x, y)
+		local x, y = E:GetXYOffset(db.debuffs.anchorPoint)
+		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS' and db.buffs.enable)
+		
+		debuffs:Point(E.InversePoints[db.debuffs.anchorPoint], attachTo, db.debuffs.anchorPoint, x + db.debuffs.xOffset, y + db.debuffs.yOffset)
 		debuffs:Height(debuffs.size * rows)
-		debuffs.initialAnchor = db.debuffs.initialAnchor
-		debuffs["growth-y"] = db.debuffs['growth-y']
-		debuffs["growth-x"] = db.debuffs['growth-x']
+		debuffs["growth-y"] = db.debuffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
+		debuffs["growth-x"] = db.debuffs.anchorPoint == 'LEFT' and 'LEFT' or  db.debuffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.debuffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
+		debuffs.initialAnchor = E.InversePoints[db.debuffs.anchorPoint]
 
 		if db.debuffs.enable then			
 			debuffs:Show()
@@ -306,14 +319,53 @@ function UF:Update_ArenaFrames(frame, db)
 	--Trinket
 	do	
 		local trinket = frame.Trinket
-		if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET then
-			trinket.bg:SetPoint("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", SPACING, 0)
+		trinket.bg:Size(db.pvpTrinket.size)
+		trinket.bg:ClearAllPoints()
+		if db.pvpTrinket.position == 'RIGHT' then
+			trinket.bg:Point('LEFT', frame, 'RIGHT', db.pvpTrinket.xOffset, db.pvpTrinket.yOffset)
 		else
-			trinket.bg:SetPoint("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", SPACING, 0)		
+			trinket.bg:Point('RIGHT', frame, 'LEFT', db.pvpTrinket.xOffset, db.pvpTrinket.yOffset)
+		end
+		
+		if db.pvpTrinket.enable and not frame:IsElementEnabled('Trinket') then
+			frame:EnableElement('Trinket')
+		elseif not db.pvpTrinket.enable and frame:IsElementEnabled('Trinket') then
+			frame:DisableElement('Trinket')	
+		end				
+	end
+	
+	--PVPSpecIcon
+	do	
+		local specIcon = frame.PVPSpecIcon
+		specIcon.bg:Point("TOPRIGHT", frame, "TOPRIGHT")
+		if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET then
+			specIcon.bg:SetPoint("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", SPACING, 0)
+		else
+			specIcon.bg:SetPoint("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", SPACING, 0)	
+		end
+		
+		if db.pvpSpecIcon and not frame:IsElementEnabled('PVPSpecIcon') then
+			frame:EnableElement('PVPSpecIcon')
+		elseif not db.pvpSpecIcon and frame:IsElementEnabled('PVPSpecIcon') then
+			frame:DisableElement('PVPSpecIcon')	
+		end					
+	end
+	
+	if db.customTexts then
+		for objectName, _ in pairs(db.customTexts) do
+			if not frame[objectName] then
+				frame[objectName] = frame:CreateFontString(nil, 'OVERLAY')
+			end
+			
+			local objectDB = db.customTexts[objectName]
+			UF:CreateCustomTextGroup('arena', objectName)
+			
+			frame[objectName]:FontTemplate(UF.LSM:Fetch("font", objectDB.font or UF.db.font), objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
+			frame:Tag(frame[objectName], objectDB.text_format or '')
+			frame[objectName]:SetPoint('CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
 		end
 	end
 	
-
 	frame:ClearAllPoints()
 	if INDEX == 1 then
 		if db.growthDirection == 'UP' then
@@ -333,6 +385,48 @@ function UF:Update_ArenaFrames(frame, db)
 	ArenaHeader:Height(UNIT_HEIGHT + (UNIT_HEIGHT + 12 + db.castbar.height) * 4)
 	
 	frame:UpdateAllElements()
+end
+
+function UF:UpdatePrep(event)
+	if event == "ARENA_OPPONENT_UPDATE" then
+		for i=1, 5 do
+			local f = _G["ElvUF_PrepArena"..i]
+			if f then
+				f:Hide()
+			end
+		end
+	else
+		local numOpps = GetNumArenaOpponentSpecs()
+
+		if numOpps > 0 then
+			for i=1, 5 do
+				if not _G["ElvUF_Arena"..i] then return; end
+				local s = GetArenaOpponentSpec(i)
+				local _, spec, class, texture = nil, "UNKNOWN", "UNKNOWN", [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]]
+
+				if s and s > 0 then
+					_, spec, _, texture, _, _, class = GetSpecializationInfoByID(s)
+				end
+
+				if (i <= numOpps) then
+					if class and spec then
+						local color = RAID_CLASS_COLORS[class]
+						_G["ElvUF_Arena"..i].prepFrame.SpecClass:SetText(spec.."  -  "..LOCALIZED_CLASS_NAMES_MALE[class])
+						_G["ElvUF_Arena"..i].prepFrame.Health:SetStatusBarColor(color.r, color.g, color.b)
+						_G["ElvUF_Arena"..i].prepFrame.Icon:SetTexture(texture)
+						_G["ElvUF_Arena"..i].prepFrame:Show()
+					end
+				else
+					_G["ElvUF_Arena"..i].prepFrame:Hide()
+				end
+			end
+		else
+			for i=1, 5 do
+				if not _G["ElvUF_Arena"..i] then return; end
+				_G["ElvUF_Arena"..i].prepFrame:Hide()
+			end
+		end
+	end
 end
 
 UF['unitgroupstoload']['arena'] = 5

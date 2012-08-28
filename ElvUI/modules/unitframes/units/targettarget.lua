@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:GetModule('UnitFrames');
 
 local _, ns = ...
@@ -15,9 +15,9 @@ function UF:Construct_TargetTargetFrame(frame)
 	frame.Buffs = self:Construct_Buffs(frame)
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
-	
+
 	frame:Point('TOPLEFT', ElvUF_Target, 'TOPRIGHT', 30, 0) --Set to default position
-	E:CreateMover(frame, frame:GetName()..'Mover', 'TargetTarget Frame')
+	E:CreateMover(frame, frame:GetName()..'Mover', 'TargetTarget Frame', nil, nil, nil, 'ALL,SOLO')
 end
 
 function UF:Update_TargetTargetFrame(frame, db)
@@ -58,15 +58,10 @@ function UF:Update_TargetTargetFrame(frame, db)
 		health.Smooth = self.db.smoothbars
 
 		--Text
-		if db.health.text then
-			health.value:Show()
-			
-			local x, y = self:GetPositionOffset(db.health.position)
-			health.value:ClearAllPoints()
-			health.value:Point(db.health.position, health, db.health.position, x, y)
-		else
-			health.value:Hide()
-		end
+		local x, y = self:GetPositionOffset(db.health.position)
+		health.value:ClearAllPoints()
+		health.value:Point(db.health.position, health, db.health.position, x, y)
+		frame:Tag(health.value, db.health.text_format)
 		
 		--Colors
 		health.colorSmooth = nil
@@ -100,17 +95,13 @@ function UF:Update_TargetTargetFrame(frame, db)
 	--Name
 	do
 		local name = frame.Name
-		if db.name.enable then
-			name:Show()
-			
-			if not db.power.hideonnpc then
-				local x, y = self:GetPositionOffset(db.name.position)
-				name:ClearAllPoints()
-				name:Point(db.name.position, frame.Health, db.name.position, x, y)				
-			end
-		else
-			name:Hide()
+		if not db.power.hideonnpc then
+			local x, y = self:GetPositionOffset(db.name.position)
+			name:ClearAllPoints()
+			name:Point(db.name.position, frame.Health, db.name.position, x, y)				
 		end
+		
+		frame:Tag(name, db.name.text_format)
 	end	
 	
 	--Power
@@ -125,15 +116,10 @@ function UF:Update_TargetTargetFrame(frame, db)
 			power.Smooth = self.db.smoothbars
 			
 			--Text
-			if db.power.text then
-				power.value:Show()
-				
-				local x, y = self:GetPositionOffset(db.power.position)
-				power.value:ClearAllPoints()
-				power.value:Point(db.power.position, frame.Health, db.power.position, x, y)			
-			else
-				power.value:Hide()
-			end
+			local x, y = self:GetPositionOffset(db.power.position)
+			power.value:ClearAllPoints()
+			power.value:Point(db.power.position, frame.Health, db.power.position, x, y)		
+			frame:Tag(power.value, db.power.text_format)
 			
 			--Colors
 			power.colorClass = nil
@@ -166,7 +152,6 @@ function UF:Update_TargetTargetFrame(frame, db)
 		elseif frame:IsElementEnabled('Power') then
 			frame:DisableElement('Power')
 			power:Hide()	
-			power.value:Hide()
 		end
 	end
 	
@@ -197,7 +182,7 @@ function UF:Update_TargetTargetFrame(frame, db)
 		else
 			buffs:SetWidth(UNIT_WIDTH)
 		end
-
+		
 		buffs.forceShow = frame.forceShowAuras
 		buffs.num = db.buffs.perrow * rows
 		buffs.size = db.buffs.sizeOverride ~= 0 and db.buffs.sizeOverride or ((((buffs:GetWidth() - (buffs.spacing*(buffs.num/rows - 1))) / buffs.num)) * rows)
@@ -206,14 +191,14 @@ function UF:Update_TargetTargetFrame(frame, db)
 			buffs:SetWidth(db.buffs.perrow * db.buffs.sizeOverride)
 		end
 		
-		local x, y = self:GetAuraOffset(db.buffs.initialAnchor, db.buffs.anchorPoint)
+		local x, y = E:GetXYOffset(db.buffs.anchorPoint)
 		local attachTo = self:GetAuraAnchorFrame(frame, db.buffs.attachTo)
-
-		buffs:Point(db.buffs.initialAnchor, attachTo, db.buffs.anchorPoint, x, y)
+		
+		buffs:Point(E.InversePoints[db.buffs.anchorPoint], attachTo, db.buffs.anchorPoint, x + db.buffs.xOffset, y + db.buffs.yOffset)
 		buffs:Height(buffs.size * rows)
-		buffs.initialAnchor = db.buffs.initialAnchor
-		buffs["growth-y"] = db.buffs['growth-y']
-		buffs["growth-x"] = db.buffs['growth-x']
+		buffs["growth-y"] = db.buffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
+		buffs["growth-x"] = db.buffs.anchorPoint == 'LEFT' and 'LEFT' or  db.buffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.buffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
+		buffs.initialAnchor = E.InversePoints[db.buffs.anchorPoint]
 
 		if db.buffs.enable then			
 			buffs:Show()
@@ -232,7 +217,7 @@ function UF:Update_TargetTargetFrame(frame, db)
 		else
 			debuffs:SetWidth(UNIT_WIDTH)
 		end
-
+		
 		debuffs.forceShow = frame.forceShowAuras
 		debuffs.num = db.debuffs.perrow * rows
 		debuffs.size = db.debuffs.sizeOverride ~= 0 and db.debuffs.sizeOverride or ((((debuffs:GetWidth() - (debuffs.spacing*(debuffs.num/rows - 1))) / debuffs.num)) * rows)
@@ -241,19 +226,34 @@ function UF:Update_TargetTargetFrame(frame, db)
 			debuffs:SetWidth(db.debuffs.perrow * db.debuffs.sizeOverride)
 		end
 		
-		local x, y = self:GetAuraOffset(db.debuffs.initialAnchor, db.debuffs.anchorPoint)
-		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.buffs.attachTo == 'DEBUFFS' and db.debuffs.attachTo == 'BUFFS')
-
-		debuffs:Point(db.debuffs.initialAnchor, attachTo, db.debuffs.anchorPoint, x, y)
+		local x, y = E:GetXYOffset(db.debuffs.anchorPoint)
+		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS' and db.buffs.enable)
+		
+		debuffs:Point(E.InversePoints[db.debuffs.anchorPoint], attachTo, db.debuffs.anchorPoint, x + db.debuffs.xOffset, y + db.debuffs.yOffset)
 		debuffs:Height(debuffs.size * rows)
-		debuffs.initialAnchor = db.debuffs.initialAnchor
-		debuffs["growth-y"] = db.debuffs['growth-y']
-		debuffs["growth-x"] = db.debuffs['growth-x']
+		debuffs["growth-y"] = db.debuffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
+		debuffs["growth-x"] = db.debuffs.anchorPoint == 'LEFT' and 'LEFT' or  db.debuffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.debuffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
+		debuffs.initialAnchor = E.InversePoints[db.debuffs.anchorPoint]
 
 		if db.debuffs.enable then			
 			debuffs:Show()
 		else
 			debuffs:Hide()
+		end
+	end	
+	
+	if db.customTexts then
+		for objectName, _ in pairs(db.customTexts) do
+			if not frame[objectName] then
+				frame[objectName] = frame:CreateFontString(nil, 'OVERLAY')
+			end
+			
+			local objectDB = db.customTexts[objectName]
+			UF:CreateCustomTextGroup('targettarget', objectName)
+			
+			frame[objectName]:FontTemplate(UF.LSM:Fetch("font", objectDB.font or UF.db.font), objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
+			frame:Tag(frame[objectName], objectDB.text_format or '')
+			frame[objectName]:SetPoint('CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
 		end
 	end	
 

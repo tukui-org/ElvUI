@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local DT = E:GetModule('DataTexts')
 
 local lastPanel
@@ -34,12 +34,15 @@ local IOC = 540
 local EOTS = 482
 local TBFG = 736
 local AB = 461
+local TOK = 856
+local SSM = 860
 
 function DT:UPDATE_BATTLEFIELD_SCORE()
 	lastPanel = self
 	local index = dataLayout[self:GetParent():GetName()][self.pointIndex]
 	for i=1, GetNumBattlefieldScores() do
-		if select(1, GetBattlefieldScore(i)) == E.myname then
+		local name = GetBattlefieldScore(i)
+		if name == E.myname then
 			self.text:SetFormattedText(displayString, dataStrings[index], E:ShortValue(select(index, GetBattlefieldScore(i))))
 		end
 	end
@@ -72,6 +75,11 @@ function DT:BattlegroundStats()
 			elseif CurrentMapID == IOC or CurrentMapID == TBFG or CurrentMapID == AB then
 				GameTooltip:AddDoubleLine(L['Bases Assaulted'], GetBattlefieldStatData(index, 1),1,1,1)
 				GameTooltip:AddDoubleLine(L['Bases Defended'], GetBattlefieldStatData(index, 2),1,1,1)
+			elseif CurrentMapID == TOK then
+				GameTooltip:AddDoubleLine(L['Orb Possessions'], GetBattlefieldStatData(index, 1),1,1,1)
+				GameTooltip:AddDoubleLine(L['Victory Points'], GetBattlefieldStatData(index, 2),1,1,1)	
+			elseif CurrentMapID == SSM then
+				GameTooltip:AddDoubleLine(L['Carts Controlled'], GetBattlefieldStatData(index, 1),1,1,1)	
 			end		
 		end
 	end	

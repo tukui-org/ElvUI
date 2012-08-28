@@ -1,11 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">	
-	<Script file='auctionator.lua'/>
-	<Script file='clique.lua'/>
-	<Script file='acp.lua'/>
-	<Script file='bigwigs.lua'/>
-	<Script file='dbm.lua'/>
-	<Script file='dxe.lua'/>
 	<Script file='ace3.lua'/>
+<<<<<<< HEAD
 	<Script file='omen.lua'/>
 	<Script file='recount.lua'/>
 	<Script file='skada.lua'/>
@@ -15,4 +10,6 @@
 	<Script file='clcprot.lua'/>
 	<Script file='clcinfo.lua'/>
 	<Script file='powerauras.lua'/>
+=======
+>>>>>>> beta
 </Ui>

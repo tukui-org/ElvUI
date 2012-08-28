@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local B = E:GetModule('Bags');
 
 local TOTAL_BAGS = NUM_BAG_FRAMES + 1
@@ -21,14 +21,11 @@ function B:SkinBag(bag)
 	bag:SetTemplate("Default", true)
 	bag:StyleButton(true)
 	icon:SetTexture(bag.oldTex)
-	icon:ClearAllPoints()
-	icon:Point("TOPLEFT", 2, -2)
-	icon:Point("BOTTOMRIGHT", -2, 2)
-	icon:SetTexCoord(.08, .92, .08, .92)
+	icon:SetInside()
+	icon:SetTexCoord(unpack(E.TexCoords))
 end
 
 function B:SizeAndPositionBagBar()
-	if E.private.bags.bagBar.enable ~= true or not ElvUIBags then return; end
 	if E.db.bags.bagBar.mouseover then
 		ElvUIBags:SetAlpha(0)
 	else
@@ -80,13 +77,17 @@ function B:SizeAndPositionBagBar()
 		ElvUIBags:Height(E.db.bags.bagBar.size*(TOTAL_BAGS) + E.db.bags.bagBar.spacing*(TOTAL_BAGS) + E.db.bags.bagBar.spacing)
 		ElvUIBags:Width(E.db.bags.bagBar.size + E.db.bags.bagBar.spacing*2)		
 	end
+	
+	if not E.db.bags.bagBar.enable then
+		ElvUIBags:Hide()
+	else
+		ElvUIBags:Show()
+	end
 end
 
 function B:LoadBagBar()
-	if E.private.bags.bagBar.enable ~= true then return; end
-
 	local ElvUIBags = CreateFrame("Frame", "ElvUIBags", E.UIParent)
-	ElvUIBags:SetPoint('TOPLEFT', LeftChatPanel, 'TOPRIGHT', 4)
+	ElvUIBags:SetPoint('TOPRIGHT', RightChatPanel, 'TOPLEFT', -4, 0)
 	ElvUIBags.buttons = {};
 	ElvUIBags:CreateBackdrop()
 	ElvUIBags.backdrop:SetAllPoints()

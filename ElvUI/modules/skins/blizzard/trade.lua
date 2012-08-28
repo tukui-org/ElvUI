@@ -1,12 +1,12 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.trade ~= true then return end
 	TradeFrame:StripTextures(true)
 	TradeFrame:CreateBackdrop("Transparent")
-	TradeFrame.backdrop:Point("TOPLEFT", 10, -4)
-	TradeFrame.backdrop:Point("BOTTOMRIGHT", -16, 35)
+	TradeFrame.backdrop:SetAllPoints()
+	TradeFrameInset:Kill()
 	S:HandleButton(TradeFrameTradeButton, true)
 	S:HandleButton(TradeFrameCancelButton, true)
 	S:HandleCloseButton(TradeFrameCloseButton, TradeFrame.backdrop)
@@ -14,6 +14,13 @@ local function LoadSkin()
 	S:HandleEditBox(TradePlayerInputMoneyFrameGold)
 	S:HandleEditBox(TradePlayerInputMoneyFrameSilver)
 	S:HandleEditBox(TradePlayerInputMoneyFrameCopper)
+	TradeRecipientItemsInset:Kill()
+	TradePlayerItemsInset:Kill()
+	TradePlayerInputMoneyInset:Kill()
+	TradePlayerEnchantInset:Kill()
+	TradeRecipientEnchantInset:Kill()
+	TradeRecipientMoneyInset:Kill()
+	TradeRecipientMoneyBg:Kill()
 	
 	for i=1, 7 do
 		local player = _G["TradePlayerItem"..i]
@@ -28,10 +35,8 @@ local function LoadSkin()
 			recipient:StripTextures()
 			player_button:StripTextures()
 			recipient_button:StripTextures()
-			
-			player_button_icon:ClearAllPoints()
-			player_button_icon:Point("TOPLEFT", player_button, "TOPLEFT", 2, -2)
-			player_button_icon:Point("BOTTOMRIGHT", player_button, "BOTTOMRIGHT", -2, 2)
+
+			player_button_icon:SetInside(player_button)
 			player_button_icon:SetTexCoord(unpack(E.TexCoords))
 			player_button:SetTemplate("Default", true)
 			player_button:StyleButton()
@@ -42,9 +47,7 @@ local function LoadSkin()
 			player_button.bg:SetFrameLevel(player_button:GetFrameLevel() - 3)
 			player_button:SetFrameLevel(player_button:GetFrameLevel() - 1)
 			
-			recipient_button_icon:ClearAllPoints()
-			recipient_button_icon:Point("TOPLEFT", recipient_button, "TOPLEFT", 2, -2)
-			recipient_button_icon:Point("BOTTOMRIGHT", recipient_button, "BOTTOMRIGHT", -2, 2)
+			recipient_button_icon:SetInside(recipient_button)
 			recipient_button_icon:SetTexCoord(unpack(E.TexCoords))
 			recipient_button:SetTemplate("Default", true)
 			recipient_button:StyleButton()

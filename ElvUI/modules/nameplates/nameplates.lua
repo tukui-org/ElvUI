@@ -1,5 +1,6 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local NP = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
+local LSM = LibStub("LibSharedMedia-3.0")
 
 local OVERLAY = [=[Interface\TargetingFrame\UI-TargetingFrame-Flash]=]
 local numChildren = -1
@@ -22,19 +23,22 @@ function NP:Initialize()
 	if E.private["nameplate"].enable ~= true then return end
 	E.NamePlates = NP
 	
+	if type(self.db.healthtext) == 'Boolean' then
+		self.db.healthtext = P.nameplate.healthtext
+	end
+	
 	CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
 		if(WorldFrame:GetNumChildren() ~= numChildren) then
 			numChildren = WorldFrame:GetNumChildren()
 			NP:HookFrames(WorldFrame:GetChildren())
 		end	
 		
-		NP:ForEachPlate(NP.CheckFilter)
 		NP:ForEachPlate(NP.InvalidCastCheck)
+		NP:ForEachPlate(NP.CheckFilter)
 		
 		if(self.elapsed and self.elapsed > 0.2) then
-			NP:ForEachPlate(NP.ScanHealth)
-			NP:ForEachPlate(NP.CheckUnit_Guid)
 			NP:ForEachPlate(NP.UpdateThreat)
+			NP:ForEachPlate(NP.CheckUnit_Guid)
 			NP:ForEachPlate(NP.CheckRaidIcon)
 			self.elapsed = 0
 		else
@@ -143,6 +147,9 @@ function NP:Colorize(frame)
 	local r,g,b = frame.oldhp:GetStatusBarColor()
 	for class, _ in pairs(RAID_CLASS_COLORS) do
 		local r, g, b = floor(r*100+.5)/100, floor(g*100+.5)/100, floor(b*100+.5)/100
+		if class == 'MONK' then
+			b = b - 0.01
+		end
 		if RAID_CLASS_COLORS[class].r == r and RAID_CLASS_COLORS[class].g == g and RAID_CLASS_COLORS[class].b == b then
 			frame.hasClass = true
 			frame.isFriendly = false
@@ -209,12 +216,6 @@ function NP:HealthBar_OnShow(self, frame)
 	--Level Text
 	if self.db.showlevel == true then
 		local level, elite, mylevel = tonumber(frame.hp.oldlevel:GetText()), frame.hp.elite:IsShown(), UnitLevel("player")
-		frame.hp.level:ClearAllPoints()
-		if self.db.showhealth == true then
-			frame.hp.level:SetPoint("RIGHT", frame.hp, "RIGHT", 2, 0)
-		else
-			frame.hp.level:SetPoint("RIGHT", frame.hp, "LEFT", -1, 0)
-		end
 		
 		frame.hp.level:SetTextColor(frame.hp.oldlevel:GetTextColor())
 		if frame.hp.boss:IsShown() then
@@ -231,6 +232,8 @@ function NP:HealthBar_OnShow(self, frame)
 		frame.hp.level:Hide()
 	end	
 	
+	NP.ScanHealth(frame.oldhp)
+	NP:CheckFilter(frame)
 	self:HideObjects(frame)
 end
 
@@ -260,6 +263,7 @@ function NP:OnHide(frame)
 	frame.hp.bcolor = nil
 	frame.hp.shadow:SetAlpha(0)
 	self:SetVirtualBackdrop(frame.hp, unpack(E["media"].backdropcolor))
+	self:SetVirtualBorder(frame.hp, unpack(E["media"].bordercolor))
 	if frame.icons then
 		for _,icon in ipairs(frame.icons) do
 			icon:Hide()
@@ -271,10 +275,13 @@ function NP:SkinPlate(frame)
 	local oldhp, oldcb = frame:GetChildren()
 	local threat, hpborder, overlay, oldname, oldlevel, bossicon, raidicon, elite = frame:GetRegions()
 	local _, cbborder, cbshield, cbicon = oldcb:GetRegions()
+	local font = LSM:Fetch("font", self.db.font)
 	
 	--Health Bar
 	if not frame.hp then
 		frame.oldhp = oldhp
+		frame.oldhp:HookScript('OnValueChanged', NP.ScanHealth)
+		
 		frame.hp = CreateFrame("Statusbar", nil, frame)
 		frame.hp:SetFrameLevel(oldhp:GetFrameLevel())
 		frame.hp:SetFrameStrata(oldhp:GetFrameStrata())
@@ -285,6 +292,7 @@ function NP:SkinPlate(frame)
 		frame.hp.shadow:Point("TOPRIGHT", frame.hp, 5, 5)
 		frame.hp.shadow:Point("BOTTOMRIGHT", frame.hp, 5, -5)	
 		frame.hp.shadow:SetBackdropBorderColor(1, 1, 1, 0.75)
+		frame.hp.shadow:SetFrameLevel(0)
 		frame.hp.shadow:SetAlpha(0)
 		self:CreateVirtualFrame(frame.hp)
 		
@@ -295,30 +303,37 @@ function NP:SkinPlate(frame)
 	frame.hp:SetStatusBarTexture(E["media"].normTex)
 	self:SetVirtualBackdrop(frame.hp, unpack(E["media"].backdropcolor))
 	
+	-- threat updates
+	if not frame.threat then	
+		frame.threat = threat
+	end
+	
 	--Level Text
 	if not frame.hp.level then
 		frame.hp.level = frame.hp:CreateFontString(nil, "OVERLAY")
-		frame.hp.level:FontTemplate(nil, 10, 'OUTLINE')
+		frame.hp.level:SetPoint("RIGHT", frame.hp, "LEFT", -1, 0)
 		frame.hp.oldlevel = oldlevel
 		frame.hp.boss = bossicon
 		frame.hp.elite = elite
 	end
+	frame.hp.level:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
+	frame.hp.level:SetText(oldlevel:GetText())
 	
 	--Name Text
 	if not frame.hp.name then
 		frame.hp.name = frame.hp:CreateFontString(nil, 'OVERLAY')
 		frame.hp.name:SetPoint('BOTTOMLEFT', frame.hp, 'TOPLEFT', -10, 3)
 		frame.hp.name:SetPoint('BOTTOMRIGHT', frame.hp, 'TOPRIGHT', 10, 3)
-		frame.hp.name:FontTemplate(nil, 10, 'OUTLINE')
 		frame.hp.oldname = oldname
 	end
-
+	frame.hp.name:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
+	
 	--Health Text
 	if not frame.hp.value then
 		frame.hp.value = frame.hp:CreateFontString(nil, "OVERLAY")	
 		frame.hp.value:SetPoint("CENTER", frame.hp)
-		frame.hp.value:FontTemplate(nil, 10, 'OUTLINE')
 	end
+	frame.hp.value:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
 	
 	--Overlay
 	overlay.oldTexture = overlay:GetTexture()
@@ -339,15 +354,15 @@ function NP:SkinPlate(frame)
 	if not frame.cb.time then
 		frame.cb.time = frame.cb:CreateFontString(nil, "ARTWORK")
 		frame.cb.time:SetPoint("RIGHT", frame.cb, "LEFT", -1, 0)
-		frame.cb.time:FontTemplate(nil, 10, 'OUTLINE')
 	end
+	frame.cb.time:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
 	
 	--Cast Name
 	if not frame.cb.name then
 		frame.cb.name = frame.cb:CreateFontString(nil, "ARTWORK")
 		frame.cb.name:SetPoint("TOP", frame.cb, "BOTTOM", 0, -3)
-		frame.cb.name:FontTemplate(nil, 10, 'OUTLINE')
 	end
+	frame.cb.name:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
 	
 	--Cast Icon
 	if not frame.cb.icon then
@@ -409,6 +424,12 @@ function NP:SkinPlate(frame)
 		
 		frame.AuraWidget = f
 	end
+	
+	for index = 1, NP.MAX_DISPLAYABLE_DEBUFFS do 
+		if AuraIconFrames and AuraIconFrames[index] then
+			AuraIconFrames[index].TimeLeft:FontTemplate(font, self.db.fontSize - 3, self.db.fontOutline)
+		end
+	end
 		
 	--Hide Old Stuff
 	self:QueueObject(frame, oldhp)
@@ -434,6 +455,7 @@ function NP:SkinPlate(frame)
 	NP.Handled[frame:GetName()] = true
 end
 
+
 local good, bad, transition, transition2, combat, goodscale, badscale
 function NP:UpdateThreat(frame)
 	if frame.hasClass then return end
@@ -446,8 +468,8 @@ function NP:UpdateThreat(frame)
 	transition2 = self.db.badtransitioncolor
 
 	if self.db.enhancethreat ~= true then
-		if(frame.region:IsShown()) then
-			local _, val = frame.region:GetVertexColor()
+		if(frame.threat:IsShown()) then
+			local _, val = frame.threat:GetVertexColor()
 			if(val > 0.7) then
 				self:SetVirtualBorder(frame.hp, transition.r, transition.g, transition.b)
 				if not frame.customScale and (goodscale ~= 1 or badscale ~= 1) then
@@ -470,7 +492,7 @@ function NP:UpdateThreat(frame)
 		end
 		frame.hp.name:SetTextColor(1, 1, 1)
 	else
-		if not frame.region:IsShown() then
+		if not frame.threat:IsShown() then
 			if combat and frame.isFriendly ~= true then
 				--No Threat
 				if E.role == "Tank" then
@@ -511,7 +533,7 @@ function NP:UpdateThreat(frame)
 			end
 		else
 			--Ok we either have threat or we're losing/gaining it
-			local r, g, b = frame.region:GetVertexColor()
+			local r, g, b = frame.threat:GetVertexColor()
 			if g + b == 0 then
 				--Have Threat
 				if E.role == "Tank" then
@@ -586,36 +608,37 @@ function NP:UpdateThreat(frame)
 	end
 end
 
-function NP:ScanHealth(frame)
+function NP:ScanHealth()
 	-- show current health value
+	local frame = self:GetParent()
 	local minHealth, maxHealth = frame.oldhp:GetMinMaxValues()
 	local valueHealth = frame.oldhp:GetValue()
 	local d =(valueHealth/maxHealth)*100
 	
-	if self.db.showhealth == true then
+	if NP.db.healthtext ~= '' and valueHealth and maxHealth and maxHealth > 1 then
 		frame.hp.value:Show()
-		frame.hp.value:SetText(E:ShortValue(valueHealth).." - "..(string.format("%d%%", math.floor((valueHealth/maxHealth)*100))))
+		frame.hp.value:SetText(E:GetFormattedText(NP.db.healthtext, valueHealth, maxHealth))
 	else
 		frame.hp.value:Hide()
 	end
 			
 	--Setup frame shadow to change depending on enemy players health, also setup targetted unit to have white shadow
-	if frame.hasClass == true or frame.isFriendly == true then
-		if(d <= 50 and d >= 20) then
-			self:SetVirtualBorder(frame.hp, 1, 1, 0)
-		elseif(d < 20) then
-			self:SetVirtualBorder(frame.hp, 1, 0, 0)
+	if (NP.db.lowHealthWarning == 'PLAYERS' and frame.hasClass == true or frame.isFriendly == true) or NP.db.lowHealthWarning == 'ALL' then
+		local threshold = NP.db.lowHealthWarningThreshold * 100
+		if(d <= threshold and d >= (threshold / 2)) then
+			NP:SetVirtualBorder(frame.hp, 1, 1, 0)
+		elseif(d < (threshold / 2)) then
+			NP:SetVirtualBorder(frame.hp, 1, 0, 0)
 		else
-			self:SetVirtualBorder(frame.hp, unpack(E["media"].bordercolor))
+			NP:SetVirtualBorder(frame.hp, unpack(E["media"].bordercolor))
 		end
-	elseif (frame.hasClass ~= true and frame.isFriendly ~= true) and self.db.enhancethreat == true then
-		self:SetVirtualBorder(frame.hp, unpack(E["media"].bordercolor))
+	elseif (frame.hasClass ~= true and frame.isFriendly ~= true) or NP.db.lowHealthWarning == 'ALL' then
+		NP:SetVirtualBorder(frame.hp, unpack(E["media"].bordercolor))
 	end
 end
 
 --Scan all visible nameplate for a known unit.
 function NP:CheckUnit_Guid(frame, ...)
-	--local numParty, numRaid = GetNumPartyMembers(), GetNumRaidMembers()
 	if UnitExists("target") and frame:GetAlpha() == 1 and UnitName("target") == frame.hp.name:GetText() then
 		frame.guid = UnitGUID("target")
 		frame.unit = "target"
@@ -730,8 +753,7 @@ function NP:UpdateAllPlates()
 		self:SkinPlate(frame)
 	end
 
-	self:RegisterEvent("RAID_ROSTER_UPDATE", "UpdateRoster")
-	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "UpdateRoster")
+	self:RegisterEvent("GROUP_ROSTER_UPDATE", "UpdateRoster")
 	self:RegisterEvent("PARTY_CONVERTED_TO_RAID", "UpdateRoster")
 	self:RegisterEvent('UPDATE_MOUSEOVER_UNIT', 'UpdateCastInfo')
 	self:RegisterEvent('PLAYER_TARGET_CHANGED', 'UpdateCastInfo')
@@ -749,9 +771,8 @@ function NP:HookFrames(...)
 		local frame = select(index, ...)
 		local region = frame:GetRegions()
 		
-		if(not NP.Handled[frame:GetName()] and (frame:GetName() and frame:GetName():find("NamePlate%d")) and region and region:GetObjectType() == 'Texture' and region:GetTexture() == OVERLAY) then
+		if(not NP.Handled[frame:GetName()] and (frame:GetName() and frame:GetName():find("NamePlate%d")) and region and region:GetObjectType() == 'Texture') then
 			NP:SkinPlate(frame)
-			frame.region = region
 		end
 	end
 end

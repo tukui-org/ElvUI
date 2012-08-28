@@ -1,9 +1,11 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local TT = E:NewModule('Tooltip', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 
 local _G = getfenv(0)
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
 local gsub, find, format = string.gsub, string.find, string.format
+TT.InspectCache = {};
+
 local GameTooltips = {
 	GameTooltip,
 	ItemRefTooltip,
@@ -30,10 +32,10 @@ local linkTypes = {
 }
 
 local classification = {
-	worldboss = "|cffAF5050Boss|r",
-	rareelite = "|cffAF5050+ Rare|r",
+	worldboss = string.format("|cffAF5050 %s|r", BOSS),
+	rareelite = string.format("|cffAF5050+ %s|r", ITEM_QUALITY3_DESC),
 	elite = "|cffAF5050+|r",
-	rare = "|cffAF5050Rare|r",
+	rare = string.format("|cffAF5050 %s|r", ITEM_QUALITY3_DESC)
 }
 
 function TT:SetStatusBarAnchor(pos)
@@ -59,7 +61,9 @@ end
 
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	if self.db.anchor == 'CURSOR' then
-		tt:SetOwner(parent, "ANCHOR_CURSOR")	
+		if parent then
+			tt:SetOwner(parent, "ANCHOR_CURSOR")	
+		end
 		
 		if InCombatLockdown() and E.db.tooltip.combathide then
 			tt:Hide()
@@ -67,7 +71,9 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 			TT:SetStatusBarAnchor('TOP')
 		end
 	elseif self.db.anchor == 'SMART' then
-		tt:SetOwner(parent, "ANCHOR_NONE")
+		if parent then
+			tt:SetOwner(parent, "ANCHOR_NONE")
+		end
 		
 		if InCombatLockdown() and E.db.tooltip.combathide then
 			tt:Hide()
@@ -85,7 +91,9 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 			TT:SetStatusBarAnchor('BOTTOM')
 		end
 	else
-		tt:SetOwner(parent, "ANCHOR_NONE")
+		if parent then
+			tt:SetOwner(parent, "ANCHOR_NONE")
+		end
 		
 		if InCombatLockdown() and E.db.tooltip.combathide then
 			tt:Hide()
@@ -277,30 +285,6 @@ function TT:SetStyle(tt)
 	tt:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	tt:SetBackdropColor(unpack(E.media.backdropfadecolor))
 	self:Colorize(tt)
-	tt:FixDimensions()
-end
-
-function TT:ADDON_LOADED(event, addon)
-	if addon == 'Blizzard_DebugTools' then
-		FrameStackTooltip:HookScript("OnShow", function(self)
-			local noscalemult = E.mult * GetCVar('uiScale')
-			self:SetBackdrop({
-			  bgFile = E["media"].blankTex, 
-			  edgeFile = E["media"].blankTex, 
-			  tile = false, tileSize = 0, edgeSize = noscalemult, 
-			  insets = { left = -noscalemult, right = -noscalemult, top = -noscalemult, bottom = -noscalemult}
-			})
-			self:SetBackdropColor(unpack(E["media"].backdropfadecolor))
-			self:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-		end)
-		
-		EventTraceTooltip:HookScript("OnShow", function(self)
-			self:SetTemplate("Transparent")
-		end)		
-		
-		self.debugloaded = true
-		self:UnregisterEvent('ADDON_LOADED')
-	end
 end
 
 function TT:PLAYER_ENTERING_WORLD()
@@ -311,10 +295,6 @@ function TT:PLAYER_ENTERING_WORLD()
 		
 		self:HookScript(ItemRefTooltip, "OnTooltipSetItem", 'SetStyle')
 		FriendsTooltip:SetTemplate("Transparent")
-		
-		if IsAddOnLoaded('Blizzard_DebugTools') and not self.debugloaded then
-			self:ADDON_LOADED('ADDON_LOADED', 'Blizzard_DebugTools')
-		end
 		
 		self.initialhook = true
 	end
@@ -330,10 +310,10 @@ for class, color in next, RAID_CLASS_COLORS do
 end
 
 function TT:AddTargetedBy()
-	local numParty, numRaid = GetNumPartyMembers(), GetNumRaidMembers();
-	if (numParty > 0 or numRaid > 0) then
-		for i = 1, (numRaid > 0 and numRaid or numParty) do
-			local unit = (numRaid > 0 and "raid"..i or "party"..i);
+	local numGroup = GetNumGroupMembers()
+	if IsInGroup() then
+		for i = 1, numGroup do
+			local unit = (IsInRaid() and "raid"..i or "party"..i);
 			if (UnitIsUnit(unit.."target",token)) and (not UnitIsUnit(unit,"player")) then
 				local _, class = UnitClass(unit);
 				targetedList[#targetedList + 1] = ClassColors[class];
@@ -355,7 +335,7 @@ end
 local SlotName = {
 	"Head","Neck","Shoulder","Back","Chest","Wrist",
 	"Hands","Waist","Legs","Feet","Finger0","Finger1",
-	"Trinket0","Trinket1","MainHand","SecondaryHand","Ranged","Ammo"
+	"Trinket0","Trinket1","MainHand","SecondaryHand"
 }
 
 function TT:GetItemLvL(unit)
@@ -375,6 +355,16 @@ function TT:GetItemLvL(unit)
 	return floor(total / item);
 end
 
+function TT:GetTalentSpec(unit)
+	local spec = GetInspectSpecialization('mouseover')
+	if(spec ~= nil and spec > 0) then
+		local role = GetSpecializationRoleByID(spec);
+		if(role ~= nil) then
+			local _, name = GetSpecializationInfoByID(spec);
+			return name
+		end
+	end
+end
 
 function TT:GetColor(unit)
 	if(UnitIsPlayer(unit) and not UnitHasVehicleUI(unit)) then
@@ -407,7 +397,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		unit = "mouseover"
 	end
 
-	local race = UnitRace(unit)
+	local race, englishRace = UnitRace(unit)
 	local class = UnitClass(unit)
 	local level = UnitLevel(unit)
 	local guildName, guildRankName, guildRankIndex = GetGuildInfo(unit)
@@ -415,12 +405,28 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	local crtype = UnitCreatureType(unit)
 	local classif = UnitClassification(unit)
 	local title = UnitPVPName(unit)
-
+	local _, faction = UnitFactionGroup(unit)
+	local GUID = UnitGUID(unit)
+	local iLevel, talentSpec = 0, ""
 	local r, g, b = GetQuestDifficultyColor(level).r, GetQuestDifficultyColor(level).g, GetQuestDifficultyColor(level).b
 
 	local color = TT:GetColor(unit)	
 	if not color then color = "|CFFFFFFFF" end
 	GameTooltipTextLeft1:SetFormattedText("%s%s%s", color, title or name, realm and realm ~= "" and " - "..realm.."|r" or "|r")
+		
+	for index, _ in pairs(self.InspectCache) do
+		local inspectCache = self.InspectCache[index]
+		if inspectCache.GUID == GUID then
+			iLevel = inspectCache.ItemLevel or 0
+			talentSpec = inspectCache.TalentSpec or ""
+		end
+	end	
+	
+	if (unit and CanInspect(unit)) and not self.InspectRefresh then
+		NotifyInspect(unit)
+	end	
+	
+	self.InspectRefresh = nil
 	
 	if(UnitIsPlayer(unit)) then
 		if UnitIsAFK(unit) then
@@ -428,7 +434,12 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		elseif UnitIsDND(unit) then 
 			tt:AppendText((" %s"):format("[|cffE7E716"..L["DND"].."|r]"))
 		end
-
+		
+		local factionColorR, factionColorG, factionColorB = 255, 255, 255
+		if UnitIsPlayer(unit) and englishRace == "Pandaren" and faction ~= select(2, UnitFactionGroup('player')) then
+			factionColorR, factionColorG, factionColorB = 255, 0, 0
+		end		
+		
 		local offset = 2
 		if guildName then
 			if UnitIsInMyGuild(unit) then
@@ -438,45 +449,36 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			end
 			offset = offset + 1
 		end
-
+		
+		if talentSpec ~= "" then
+			class = talentSpec..' '..class
+		end
+		
 		for i= offset, lines do
-			
 			if _G["GameTooltipTextLeft"..i] and _G["GameTooltipTextLeft"..i]:GetText() and (_G["GameTooltipTextLeft"..i]:GetText():find("^"..LEVEL)) then
-				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r %s %s%s", r*255, g*255, b*255, level > 0 and level or "??", race, color, class.."|r")
+				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r |cff%02x%02x%02x%s|r %s%s", r*255, g*255, b*255, level > 0 and level or "??", factionColorR, factionColorG, factionColorB, race, color, class.."|r")
 				break
 			end
 		end
 	else
 		for i = 2, lines do			
 			if _G["GameTooltipTextLeft"..i] and _G["GameTooltipTextLeft"..i]:GetText() and ((_G["GameTooltipTextLeft"..i]:GetText():find("^"..LEVEL)) or (crtype and _G["GameTooltipTextLeft"..i]:GetText():find("^"..crtype))) then
-				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r%s %s", r*255, g*255, b*255, classif ~= "worldboss" and level > 0 and level or "?? ", classification[classif] or "", crtype or "")
+				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r%s %s", r*255, g*255, b*255, classif ~= "worldboss" and level > 0 and level or "??", classification[classif] or "", crtype or "")
 				break
 			end
 		end
 	end
 
-	for i = 1, lines do
+	for i = 1, tt:NumLines() do
 		local line = _G["GameTooltipTextLeft"..i]
-		if line and line:GetText() and line:GetText() == PVP_ENABLED then
+		while line and line:GetText() and (line:GetText() == PVP_ENABLED or line:GetText() == FACTION_HORDE or line:GetText() == FACTION_ALLIANCE) do
 			line:SetText()
 			break
 		end
 	end
 	
-	if IsShiftKeyDown() and (unit and CanInspect(unit)) then
-		local isInspectOpen = (InspectFrame and InspectFrame:IsShown()) or (Examiner and Examiner:IsShown())
-		if ((unit) and (CanInspect(unit)) and (not isInspectOpen)) then
-			NotifyInspect(unit)
-			
-			local ilvl = TT:GetItemLvL(unit)
-			
-			ClearInspectPlayer(unit)
-			
-			if ilvl > 1 then
-				GameTooltip:AddDoubleLine(STAT_AVERAGE_ITEM_LEVEL..":", "|cffFFFFFF"..ilvl.."|r")
-				GameTooltip:Show()
-			end
-		end
+	if iLevel > 1 and IsShiftKeyDown() then
+		GameTooltip:AddDoubleLine(STAT_AVERAGE_ITEM_LEVEL..":", "|cffFFFFFF"..iLevel.."|r")
 	end	
 
 	-- ToT line
@@ -487,6 +489,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	end
 	
 	if E.db.tooltip.whostarget then token = unit TT:AddTargetedBy() end
+	GameTooltip:Show()
 	GameTooltip.forceRefresh = true
 end
 
@@ -529,10 +532,8 @@ function TT:GameTooltip_OnUpdate(tt)
 	if (tt.needRefresh and tt:GetAnchorType() == 'ANCHOR_CURSOR' and E.db.tooltip.anchor ~= 'CURSOR') then
 		tt:SetBackdropColor(unpack(E["media"].backdropfadecolor))
 		tt:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-		tt:FixDimensions()
 		tt.needRefresh = nil
 	elseif tt.forceRefresh then
-		tt:FixDimensions()
 		tt.forceRefresh = nil
 	end
 end
@@ -561,8 +562,48 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 	end
 end
 
-function TT:ContainerFrameItemButton_OnEnter()
-	GameTooltip:FixDimensions()
+function TT:INSPECT_READY(event, GUID)
+	if UnitGUID('mouseover') ~= GUID then return; end
+	
+	local ilvl = TT:GetItemLvL('mouseover')
+	local talentSpec = TT:GetTalentSpec('mouseover')
+	
+	local matchFound
+	for index, _ in pairs(self.InspectCache) do
+		local inspectCache = self.InspectCache[index]
+		if inspectCache.GUID == GUID then
+			inspectCache.ItemLevel = ilvl
+			inspectCache.TalentSpec = talentSpec
+			matchFound = true;
+		end
+	end
+
+	if not matchFound then
+		local GUIDInfo = {
+			['GUID'] = GUID,
+			['ItemLevel'] = ilvl,
+			['TalentSpec'] = talentSpec
+		}	
+		table.insert(self.InspectCache, GUIDInfo)
+	end
+	
+	if #self.InspectCache > 30 then
+		table.remove(self.InspectCache, 1)
+	end
+	
+	TT.InspectRefresh = true;
+	GameTooltip:SetUnit('mouseover')
+	
+	local isInspectOpen = (InspectFrame and InspectFrame:IsShown()) or (Examiner and Examiner:IsShown())
+	if not isInspectOpen then
+		ClearInspectPlayer();
+	end
+end
+
+function TT:MODIFIER_STATE_CHANGED(event, key)
+	if not key or not key:find('SHIFT') or not UnitExists('mouseover') then return; end
+
+	GameTooltip:SetUnit('mouseover')
 end
 
 function TT:Initialize()
@@ -587,8 +628,6 @@ function TT:Initialize()
 	GameTooltipAnchor:Size(130, 20)
 	E:CreateMover(GameTooltipAnchor, 'TooltipMover', 'Tooltip')
 	
-	self:RegisterEvent('PLAYER_ENTERING_WORLD')
-	self:RegisterEvent('ADDON_LOADED')
 	self:SecureHook('GameTooltip_SetDefaultAnchor')
 	self:SecureHook('GameTooltip_ShowCompareItem')
 	self:HookScript(GameTooltip, 'OnUpdate', 'GameTooltip_OnUpdate')
@@ -596,8 +635,11 @@ function TT:Initialize()
 	self:HookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
 	self:HookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
 	self:HookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
-	self:SecureHook('ContainerFrameItemButton_OnEnter') -- multisample fix
-
+	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+	self:RegisterEvent('INSPECT_READY')
+	self:RegisterEvent('MODIFIER_STATE_CHANGED')
+	E.Skins:HandleCloseButton(ItemRefCloseButton)
+	
 	--SpellIDs
 	hooksecurefunc(GameTooltip, "SetUnitBuff", function(self,...)
 		local id = select(11,UnitBuff(...))
@@ -643,7 +685,7 @@ function TT:Initialize()
 		end
 	end)
 	
-	BNToastFrame:Point('TOPRIGHT', MMHolder, 'BOTTOMRIGHT', 0, -10);
+	BNToastFrame:Point('TOPRIGHT', MMHolder, 'BOTTOMRIGHT', 0, -35);
 	E:CreateMover(BNToastFrame, 'BNETMover', 'BNet Frame')
 	BNToastFrame.SetPoint = E.noop
 	BNToastFrame.ClearAllPoints = E.noop	

@@ -4,7 +4,7 @@ local oUF = ns.oUF
 local ALTERNATE_POWER_INDEX = ALTERNATE_POWER_INDEX
 
 local UpdatePower = function(self, event, unit, powerType)
-	if(self.unit ~= unit or powerType ~= 'ALTERNATE') then return end
+	if(self.unit ~= unit or powerType ~= 'ALTERNATE') or not unit then return end
 
 	local altpowerbar = self.AltPowerBar
 
@@ -30,7 +30,7 @@ local ForceUpdate = function(element)
 end
 
 local Toggler = function(self, event, unit)
-	if(unit ~= self.unit) then return end
+	if(unit ~= self.unit) or not unit then return end
 	local altpowerbar = self.AltPowerBar
 
 	local barType, minPower, _, _, _, hideFromOthers = UnitAlternatePowerInfo(unit)

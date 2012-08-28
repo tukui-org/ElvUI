@@ -92,11 +92,12 @@ for k, v in pairs{
 	EnableElement = function(self, name, unit)
 		argcheck(name, 2, 'string')
 		argcheck(unit, 3, 'string', 'nil')
-
-		local element = elements[name]
-
-		if(not element or self:IsElementEnabled(name) or not activeElements[self]) then return end
 		
+		local element = elements[name]
+		
+		
+		if(not element or self:IsElementEnabled(name) or not activeElements[self]) then return end
+
 		if(element.enable(self, unit or self.unit)) then
 			activeElements[self][name] = true
 
@@ -149,7 +150,7 @@ for k, v in pairs{
 
 	UpdateAllElements = function(self, event)
 		local unit = self.unit
-		if(not UnitExists(unit)) then return end
+		if(not unit or not UnitExists(unit)) then return end
 
 		if(self.PreUpdate) then
 			self:PreUpdate(event)
@@ -243,7 +244,7 @@ local initObject = function(unit, style, styleFunc, header, ...)
 			end
 		else
 			-- Used to update frames when they change position in a group.
-			object:RegisterEvent('PARTY_MEMBERS_CHANGED', object.UpdateAllElements)
+			object:RegisterEvent('GROUP_ROSTER_UPDATE', object.UpdateAllElements)
 
 			if(num > 1) then
 				if(object:GetParent() == header) then

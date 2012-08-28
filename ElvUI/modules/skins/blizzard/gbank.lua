@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -6,6 +6,7 @@ local function LoadSkin()
 	GuildBankFrame:StripTextures()
 	GuildBankFrame:SetTemplate("Transparent")
 	GuildBankEmblemFrame:StripTextures(true)
+	GuildBankMoneyFrameBackground:Kill()
 	
 	--Close button doesn't have a fucking name, extreme hackage
 	for i=1, GuildBankFrame:GetNumChildren() do
@@ -27,8 +28,8 @@ local function LoadSkin()
 	
 	GuildBankFrame.inset = CreateFrame("Frame", nil, GuildBankFrame)
 	GuildBankFrame.inset:SetTemplate("Default")
-	GuildBankFrame.inset:Point("TOPLEFT", 30, -65)
-	GuildBankFrame.inset:Point("BOTTOMRIGHT", -20, 63)
+	GuildBankFrame.inset:Point("TOPLEFT", 20, -58)
+	GuildBankFrame.inset:Point("BOTTOMRIGHT", -16, 60)
 	
 	for i=1, NUM_GUILDBANK_COLUMNS do
 		_G["GuildBankColumn"..i]:StripTextures()
@@ -42,10 +43,8 @@ local function LoadSkin()
 			end
 			button:StyleButton()
 			button:SetTemplate("Default", true)
-			
-			icon:ClearAllPoints()
-			icon:Point("TOPLEFT", 2, -2)
-			icon:Point("BOTTOMRIGHT", -2, 2)
+
+			icon:SetInside()
 			icon:SetTexCoord(unpack(E.TexCoords))
 		end
 	end
@@ -58,10 +57,8 @@ local function LoadSkin()
 		button:StripTextures()
 		button:StyleButton(true)
 		button:SetTemplate("Default", true)
-		
-		texture:ClearAllPoints()
-		texture:Point("TOPLEFT", 2, -2)
-		texture:Point("BOTTOMRIGHT", -2, 2)
+
+		texture:SetInside()
 		texture:SetTexCoord(unpack(E.TexCoords))
 	end
 	
@@ -92,9 +89,7 @@ local function LoadSkin()
 		button:StripTextures()
 		button:SetTemplate("Default")
 		button:StyleButton(true)
-		icon:ClearAllPoints()
-		icon:Point("TOPLEFT", 2, -2)
-		icon:Point("BOTTOMRIGHT", -2, 2)
+		icon:SetInside()
 		icon:SetTexCoord(unpack(E.TexCoords))
 	end
 	

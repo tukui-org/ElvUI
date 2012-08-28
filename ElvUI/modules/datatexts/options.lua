@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local DT = E:GetModule('DataTexts')
 
 local datatexts = {}
@@ -7,7 +7,7 @@ function DT:PanelLayoutOptions()
 	for name, _ in pairs(DT.RegisteredDataTexts) do
 		datatexts[name] = name
 	end
-	datatexts[''] = ''
+	datatexts[''] = NONE
 	
 	local table = E.Options.args.datatexts.args.panels.args
 	local i = 0
@@ -73,12 +73,55 @@ E.Options.args.datatexts = {
 			name = L['Battleground Texts'],
 			desc = L['When inside a battleground display personal scoreboard information on the main datatext bars.'],
 		},
+		minimapPanels = {
+			order = 5,
+			name = L['Minimap Panels'],
+			desc = L['Display minimap panels below the minimap, used for datatexts.'],
+			type = 'toggle',
+			set = function(info, value) 
+				E.db.datatexts[ info[#info] ] = value
+				E:GetModule('Minimap'):UpdateSettings()
+			end,					
+		},					
 		panels = {
 			type = 'group',
 			name = L['Panels'],
 			order = 100,	
 			args = {},
 			guiInline = true,
+		},
+		fontGroup = {
+			order = 120,
+			type = 'group',
+			guiInline = true,
+			name = L['Fonts'],
+			args = {
+				font = {
+					type = "select", dialogControl = 'LSM30_Font',
+					order = 4,
+					name = L["Font"],
+					values = AceGUIWidgetLSMlists.font,
+				},
+				fontSize = {
+					order = 5,
+					name = L["Font Size"],
+					type = "range",
+					min = 6, max = 22, step = 1,
+				},	
+				fontOutline = {
+					order = 6,
+					name = L["Font Outline"],
+					desc = L["Set the font outline."],
+					type = "select",
+					values = {
+						['NONE'] = L['None'],
+						['OUTLINE'] = 'OUTLINE',
+						['MONOCHROME'] = 'MONOCHROME',
+						['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+						['THICKOUTLINE'] = 'THICKOUTLINE',
+					},
+				},	
+			},
 		},		
 	},
 }

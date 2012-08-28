@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local M = E:NewModule('Minimap', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 E.Minimap = M
 
@@ -11,16 +11,25 @@ local menuList = {
 	func = function() ToggleCharacter("PaperDollFrame") end},
 	{text = SPELLBOOK_ABILITIES_BUTTON,
 	func = function() if not SpellBookFrame:IsShown() then ShowUIPanel(SpellBookFrame) else HideUIPanel(SpellBookFrame) end end},
+	{text = MOUNTS_AND_PETS,
+	func = function()
+		TogglePetJournal();
+	end},
 	{text = TALENTS_BUTTON,
 	func = function()
 		if not PlayerTalentFrame then
-			LoadAddOn("Blizzard_TalentUI")
+			TalentFrame_LoadUI()
 		end
 
 		if not GlyphFrame then
-			LoadAddOn("Blizzard_GlyphUI")
+			GlyphFrame_LoadUI()
 		end
-		PlayerTalentFrame_Toggle()
+		
+		if not PlayerTalentFrame:IsShown() then
+			ShowUIPanel(PlayerTalentFrame)
+		else
+			HideUIPanel(PlayerTalentFrame)
+		end
 	end},
 	{text = TIMEMANAGER_TITLE,
 	func = function() ToggleFrame(TimeManagerFrame) end},		
@@ -37,23 +46,21 @@ local menuList = {
 	{text = ACHIEVEMENTS_GUILD_TAB,
 	func = function()
 		if IsInGuild() then
-			if not GuildFrame then LoadAddOn("Blizzard_GuildUI") end
+			if not GuildFrame then GuildFrame_LoadUI() end
 			GuildFrame_Toggle()
 		else
-			if not LookingForGuildFrame then LoadAddOn("Blizzard_LookingForGuildUI") end
+			if not LookingForGuildFrame then LookingForGuildFrame_LoadUI() end
 			if not LookingForGuildFrame then return end
 			LookingForGuildFrame_Toggle()
 		end
 	end},
 	{text = LFG_TITLE,
-	func = function() ToggleFrame(LFDParentFrame) end},
-	{text = RAID_FINDER,
-	func = function() RaidMicroButton:Click() end},
+	func = function() PVEFrame_ToggleFrame(); end},
 	{text = ENCOUNTER_JOURNAL, 
-	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then LoadAddOn('Blizzard_EncounterJournal'); end ToggleFrame(EncounterJournal) end},	
+	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then EncounterJournal_LoadUI(); end ToggleFrame(EncounterJournal) end},	
 	{text = L_CALENDAR,
 	func = function()
-	if(not CalendarFrame) then LoadAddOn("Blizzard_Calendar") end
+	if(not CalendarFrame) then Calendar_LoadUI() end
 		Calendar_Toggle()
 	end},			
 	{text = HELP_BUTTON,
@@ -120,7 +127,7 @@ function M:Minimap_OnMouseWheel(d)
 end
 
 function M:Update_ZoneText()
-	if E.db.general.minimapLocationText == 'HIDE' then return; end
+	if E.db.general.minimap.locationText == 'HIDE' or not E.private.general.minimap.enable then return; end
 	Minimap.location:SetText(strsub(GetMinimapZoneText(),1,25))
 	Minimap.location:SetTextColor(M:GetLocTextColor())
 end
@@ -140,20 +147,23 @@ function M:UpdateSettings()
 	if InCombatLockdown() then
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
 	end
-	E.MinimapSize = E.db.general.minimapSize
+	E.MinimapSize = E.private.general.minimap.enable and E.db.general.minimap.size or Minimap:GetWidth() + 10
 	
-	if E.db.general.raidReminder then
-		E.RBRWidth = ((E.MinimapSize - 6) / 6) + 4
+	if E.db.auras.consolidedBuffs and E.private.auras.enable then
+		E.ConsolidatedBuffsWidth = ((E.MinimapSize - 6) / 6) + 4
 	else
-		E.RBRWidth = 0;
+		E.ConsolidatedBuffsWidth = 0;
 	end
 	
 	E.MinimapWidth = E.MinimapSize	
 	E.MinimapHeight = E.MinimapSize + 5
-	Minimap:Size(E.MinimapSize, E.MinimapSize)
+	
+	if E.private.general.minimap.enable then
+		Minimap:Size(E.MinimapSize, E.MinimapSize)
+	end
 	
 	if LeftMiniPanel and RightMiniPanel then
-		if E.db.general.minimapPanels then
+		if E.db.datatexts.minimapPanels and E.private.general.minimap.enable then
 			LeftMiniPanel:Show()
 			RightMiniPanel:Show()
 		else
@@ -163,9 +173,9 @@ function M:UpdateSettings()
 	end	
 	
 	if MMHolder then
-		MMHolder:Width((Minimap:GetWidth() + 4) + E.RBRWidth)
+		MMHolder:Width((Minimap:GetWidth() + 4) + E.ConsolidatedBuffsWidth)
 		
-		if E.db.general.minimapPanels then
+		if E.db.datatexts.minimapPanels then
 			MMHolder:Height(Minimap:GetHeight() + 27)
 		else
 			MMHolder:Height(Minimap:GetHeight() + 5)	
@@ -175,7 +185,7 @@ function M:UpdateSettings()
 	if Minimap.location then
 		Minimap.location:Width(E.MinimapSize)
 		
-		if E.db.general.minimapLocationText ~= 'SHOW' then
+		if E.db.general.minimap.locationText ~= 'SHOW' or not E.private.general.minimap.enable then
 			Minimap.location:Hide()
 		else
 			Minimap.location:Show()
@@ -190,7 +200,7 @@ function M:UpdateSettings()
 		AurasHolder:Height(E.MinimapHeight)
 		if AurasMover and not E:HasMoverBeenMoved('AurasMover') and not E:HasMoverBeenMoved('MinimapMover') then
 			AurasMover:ClearAllPoints()
-			AurasMover:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -((E.MinimapSize + 14) + E.RBRWidth + 7), -10)
+			AurasMover:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -((E.MinimapSize + 14) + E.ConsolidatedBuffsWidth + 7), -10)
 			E:SaveMoverDefaultPosition('AurasMover')
 		end
 		
@@ -198,39 +208,40 @@ function M:UpdateSettings()
 			AurasMover:Height(E.MinimapHeight)
 		end
 	end
-	
-	if UpperRepExpBarHolder then
-		E:GetModule('Misc'):UpdateExpRepBarAnchor()
-	end
-		
+			
 	if ElvConfigToggle then
-		if E.db.general.raidReminder and E.db.general.minimapPanels then
+		if E.private.auras.enable and E.db.auras.consolidedBuffs and E.db.datatexts.minimapPanels and E.private.general.minimap.enable then
 			ElvConfigToggle:Show()
-			ElvConfigToggle:Width(E.RBRWidth)
+			ElvConfigToggle:Width(E.ConsolidatedBuffsWidth)
 		else
 			ElvConfigToggle:Hide()
 		end
 	end
 	
-	if RaidBuffReminder then
-		RaidBuffReminder:Width(E.RBRWidth)
+	if ElvUI_ConsolidatedBuffs then
+		ElvUI_ConsolidatedBuffs:Width(E.ConsolidatedBuffsWidth)
 		for i=1, 6 do
-			RaidBuffReminder['spell'..i]:Size(E.RBRWidth - 4)
+			ElvUI_ConsolidatedBuffs['spell'..i]:Size(E.ConsolidatedBuffsWidth - 4)
 		end
 		
-		if E.db.general.raidReminder then
-			E:GetModule('RaidBuffReminder'):EnableRBR()
+		if E.db.auras.consolidedBuffs and E.private.general.minimap.enable then
+			E:GetModule('Auras'):EnableCB()
 		else
-			E:GetModule('RaidBuffReminder'):DisableRBR()
+			E:GetModule('Auras'):DisableCB()
 		end
 	end
 end
 
 function M:Initialize()	
 	self:UpdateSettings()
+	if not E.private.general.minimap.enable then 
+		Minimap:SetMaskTexture('Textures\\MinimapMask')
+		return; 
+	end
+	
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
 	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -10, -10)
-	mmholder:Width((Minimap:GetWidth() + 29) + E.RBRWidth)
+	mmholder:Width((Minimap:GetWidth() + 29) + E.ConsolidatedBuffsWidth)
 	mmholder:Height(Minimap:GetHeight() + 53)
 	
 	Minimap:ClearAllPoints()
@@ -238,12 +249,12 @@ function M:Initialize()
 	Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
 	Minimap:CreateBackdrop('Default')
 	Minimap:HookScript('OnEnter', function(self)
-		if E.db.general.minimapLocationText ~= 'MOUSEOVER' then return; end
+		if E.db.general.minimap.locationText ~= 'MOUSEOVER' or not E.private.general.minimap.enable then return; end
 		self.location:Show()
 	end)
 	
 	Minimap:HookScript('OnLeave', function(self)
-		if E.db.general.minimapLocationText ~= 'MOUSEOVER' then return; end
+		if E.db.general.minimap.locationText ~= 'MOUSEOVER' or not E.private.general.minimap.enable then return; end
 		self.location:Hide()
 	end)	
 	
@@ -256,13 +267,9 @@ function M:Initialize()
 	Minimap.location:Point('TOP', Minimap, 'TOP', 0, -2)
 	Minimap.location:SetJustifyH("CENTER")
 	Minimap.location:SetJustifyV("MIDDLE")	
-	if E.db.general.minimapLocationText ~= 'SHOW' then
+	if E.db.general.minimap.locationText ~= 'SHOW' or not E.private.general.minimap.enable then
 		Minimap.location:Hide()
 	end
-	
-	LFGSearchStatus:SetTemplate("Default")
-	LFGSearchStatus:SetClampedToScreen(true)
-	LFGDungeonReadyStatus:SetClampedToScreen(true)	
 	
 	MinimapBorder:Hide()
 	MinimapBorderTop:Hide()
@@ -285,9 +292,10 @@ function M:Initialize()
 	MiniMapMailBorder:Hide()
 	MiniMapMailIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\mail")
 
-	MiniMapBattlefieldFrame:ClearAllPoints()
-	MiniMapBattlefieldFrame:Point("BOTTOMRIGHT", Minimap, 3, 0)
-	MiniMapBattlefieldBorder:Hide()
+	QueueStatusMinimapButton:ClearAllPoints()
+	QueueStatusMinimapButton:Point("BOTTOMRIGHT", Minimap, 3, 0)
+	QueueStatusMinimapButtonBorder:Hide()
+	QueueStatusFrame:SetClampedToScreen(true)
 
 	MiniMapWorldMapButton:Hide()
 
@@ -307,18 +315,15 @@ function M:Initialize()
 		FeedbackUIButton:Kill()
 	end
 	
-	E:CreateMover(MMHolder, 'MinimapMover', 'Minimap', nil, nil)
-	Minimap.SetPoint = E.noop;
+	E:CreateMover(MMHolder, 'MinimapMover', 'Minimap')
+--[[	Minimap.SetPoint = E.noop;
 	MMHolder.SetPoint = E.noop;
 	Minimap.ClearAllPoints = E.noop;
-	MMHolder.ClearAllPoints = E.noop;	
+	MMHolder.ClearAllPoints = E.noop;]]
 	Minimap:EnableMouseWheel(true)
 	Minimap:SetScript("OnMouseWheel", M.Minimap_OnMouseWheel)	
 	Minimap:SetScript("OnMouseUp", M.Minimap_OnMouseUp)
-	
-	MiniMapLFGFrame:ClearAllPoints()
-	MiniMapLFGFrame:Point("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", 2, 1)
-	MiniMapLFGFrameBorder:Hide()	
+
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "Update_ZoneText")
 	self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "Update_ZoneText")
 	self:RegisterEvent("ZONE_CHANGED", "Update_ZoneText")

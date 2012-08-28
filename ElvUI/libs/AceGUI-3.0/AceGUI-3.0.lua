@@ -298,8 +298,9 @@ do
 	
 	WidgetBase.SetParent = function(self, parent)
 		local frame = self.frame
-		frame:SetParent(nil)
-		frame:SetParent(parent.content)
+		if frame:GetParent() ~= parent.content then
+			frame:SetParent(parent.content)
+		end
 		self.parent = parent
 	end
 	
