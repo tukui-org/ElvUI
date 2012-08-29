@@ -16,20 +16,6 @@ function TOTEMS:Update(event)
 			self.bar[i]:Hide()
 		end
 	end
-
-	if displayedTotems < 1 or not self.db.showBackdrop then
-		self.bar.backdrop:Hide()
-	elseif self.db.showBackdrop then
-		self.bar.backdrop:Show()
-		self.bar.backdrop:ClearAllPoints()
-		if self.db.sortDirection == 'ASCENDING' then
-			self.bar.backdrop:Point('TOPLEFT', self.bar, 'TOPLEFT')
-			self.bar.backdrop:Point('BOTTOMRIGHT', self.bar[displayedTotems], 'BOTTOMRIGHT', self.db.spacing, -self.db.spacing)
-		else
-			self.bar.backdrop:Point('BOTTOMRIGHT', self.bar, 'BOTTOMRIGHT')
-			self.bar.backdrop:Point('TOPLEFT', self.bar[displayedTotems], 'TOPLEFT', -self.db.spacing, self.db.spacing)		
-		end
-	end
 end
 
 function TOTEMS:ToggleEnable()
@@ -106,7 +92,6 @@ function TOTEMS:Initialize()
 	
 	self.bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent)
 	self.bar:SetPoint('TOPLEFT', LeftChatPanel, 'TOPRIGHT', 4, 0)
-	self.bar:CreateBackdrop('Default')
 	
 	for i=1, MAX_TOTEMS do
 		self.bar[i] = CreateFrame('Button', self.bar:GetName()..'Totem'..i, self.bar)
