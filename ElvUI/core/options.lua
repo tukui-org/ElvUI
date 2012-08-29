@@ -352,14 +352,8 @@ E.Options.args.general = {
 					desc = L['The spacing between buttons.'],
 					min = 1, max = 10, step = 1,			
 				},
-				showBackdrop = {
-					order = 4,
-					type = 'toggle',
-					name = L['Backdrop'],
-					set = function(info, value) E.db.general.totems[ info[#info] ] = value; E:GetModule('Totems'):Update() end,
-				},
 				sortDirection = {
-					order = 6,
+					order = 4,
 					type = 'select',
 					name = L["Sort Direction"],
 					desc = L['The direction that the bag frames will grow from the anchor.'],
@@ -369,7 +363,7 @@ E.Options.args.general = {
 					},
 				},
 				growthDirection = {
-					order = 7,
+					order = 5,
 					type = 'select',
 					name = L['Bar Direction'],
 					desc = L['The direction that the bag frames be (Horizontal or Vertical).'],

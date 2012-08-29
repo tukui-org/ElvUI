@@ -300,7 +300,7 @@ function NP:SetAuraInstance(guid, spellid, expiration, stacks, caster, duration,
 		filter = true;
 	end
 
-	if self.db.trackfilter and #self.db.trackfilter > 1 then
+	if self.db.trackfilter and #self.db.trackfilter > 1 and E.global['unitframe']['aurafilters'][self.db.trackfilter] then
 		local name = GetSpellInfo(spellid)
 		local spellList = E.global['unitframe']['aurafilters'][self.db.trackfilter].spells
 		local type = E.global['unitframe']['aurafilters'][self.db.trackfilter].type
