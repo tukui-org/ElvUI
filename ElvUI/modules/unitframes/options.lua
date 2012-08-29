@@ -759,7 +759,45 @@ E.Options.args.unitframe = {
 									type = 'color',
 								},									
 							},
-						},						
+						},	
+						auraBars = {
+							order = 9,
+							type = 'group',
+							guiInline = true,
+							name = L['Aura Bars'],
+							args = {
+								BUFFS = {
+									order = 1,
+									name = L['Buffs'],
+									type = 'color',
+									get = function(info)
+										local t = E.db.unitframe.colors.auraBarBuff
+										return t.r, t.g, t.b, t.a
+									end,
+									set = function(info, r, g, b)
+										E.db.general[ info[#info] ] = {}
+										local t = E.db.unitframe.colors.auraBarBuff
+										t.r, t.g, t.b = r, g, b
+										UF:Update_AllFrames()
+									end,										
+								},	
+								DEBUFFS = {
+									order = 2,
+									name = L['Debuffs'],
+									type = 'color',
+									get = function(info)
+										local t = E.db.unitframe.colors.auraBarDebuff
+										return t.r, t.g, t.b, t.a
+									end,
+									set = function(info, r, g, b)
+										E.db.general[ info[#info] ] = {}
+										local t = E.db.unitframe.colors.auraBarDebuff
+										t.r, t.g, t.b = r, g, b
+										UF:Update_AllFrames()
+									end,										
+								},									
+							},
+						},							
 					},
 				},
 			},

@@ -212,6 +212,8 @@ P['unitframe'] = {
 		['health_backdrop'] = { r = .8,g = .01,b = .01 },
 		['tapped'] = { r = 0.55, g = 0.57, b = 0.61},
 		['disconnected'] = { r = 0.84, g = 0.75, b = 0.65},
+		['auraBarBuff'] = P.general.bordercolor,
+		['auraBarDebuff'] = {r = 0.8, g = 0.1, b = 0.1},
 		['power'] = {
 			["MANA"] = {r = 0.31, g = 0.45, b = 0.63},
 			["RAGE"] = {r = 0.78, g = 0.25, b = 0.25},

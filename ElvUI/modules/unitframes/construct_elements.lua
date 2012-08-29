@@ -746,7 +746,6 @@ function UF:Construct_AuraBarHeader(frame)
 	auraBar.spacing = 1
 	auraBar.spark = true
 	auraBar.sort = true
-	auraBar.debuffColor = {0.8, 0.1, 0.1}
 	auraBar.filter = UF.AuraBarFilter
 	auraBar.PostUpdate = UF.ColorizeAuraBars
 	hooksecurefunc(GameTooltip, "SetUnitAura", function(self,...)

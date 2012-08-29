@@ -475,7 +475,11 @@ function E:UpdateAll(ignoreInstall)
 	bags:Layout(true); 
 	bags:PositionBagFrames()
 	bags:SizeAndPositionBagBar()
-
+	
+	local totems = E:GetModule('Totems'); 
+	totems:PositionAndSize()
+	totems:ToggleEnable()
+	
 	self:GetModule('Layout'):ToggleChatPanels()
 	
 	local DT = self:GetModule('DataTexts')
