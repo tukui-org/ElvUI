@@ -2,10 +2,10 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local A = E:GetModule('Auras');
 
 A.Stats = {
+	90363, -- Embrace of the Shale Spider
 	117667, --Legacy of The Emperor
 	1126, -- Mark of The Wild
 	20217, -- Blessing Of Kings
-	90363, -- Embrace of the Shale Spider
 }
 
 A.Stamina = {
