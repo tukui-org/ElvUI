@@ -200,7 +200,7 @@ function A:CreateAuraHeader(filter)
 	-- look for weapons buffs
 	if filter == "HELPFUL" then
 		header:SetAttribute("includeWeapons", 1)
-		header:SetAttribute("weaponTemplate", "ElvUIAuraTemplate")
+		header:SetAttribute("weaponTemplate", "ElvUIAuraTemplate"..E.private.auras.size)
 		header:HookScript("OnUpdate", A.CheckWeapons)
 	end
 	
