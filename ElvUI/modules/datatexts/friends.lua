@@ -135,28 +135,28 @@ local function BuildBNTable(total)
 	end
 	
 	sort(BNTable, function(a, b)
-		if a[2] and b[2] then
+		if a[2] and b[2] and a[3] and b[3] then
 			if a[2] == b[2] then return a[3] < b[3] end
 			return a[2] < b[2]
 		end
 	end)	
 	
 	sort(BNTableWoW, function(a, b)
-		if a[2] and b[2] then
+		if a[2] and b[2] and a[3] and b[3] then
 			if a[2] == b[2] then return a[3] < b[3] end
 			return a[2] < b[2]
 		end
 	end)
 	
 	sort(BNTableSC, function(a, b)
-		if a[2] and b[2] then
+		if a[2] and b[2] and a[3] and b[3] then
 			if a[2] == b[2] then return a[3] < b[3] end
 			return a[2] < b[2]
 		end
 	end)
 	
 	sort(BNTableD3, function(a, b)
-		if a[2] and b[2] then
+		if a[2] and b[2] and a[3] and b[3] then
 			if a[2] == b[2] then return a[3] < b[3] end
 			return a[2] < b[2]
 		end
