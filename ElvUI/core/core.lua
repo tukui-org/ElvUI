@@ -609,7 +609,7 @@ function E:Initialize()
 	self.db = self.data.profile;
 	self.global = self.data.global;
 	self:CheckIncompatible()
-
+	
 	self:CheckRole()
 	self:UIScale('PLAYER_LOGIN');
 
