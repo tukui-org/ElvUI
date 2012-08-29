@@ -104,11 +104,6 @@ E.Options.args.skins = {
 					name = L["Talent Frame"],
 					desc = L["TOGGLESKIN_DESC"],							
 				},
-				glyph = {
-					type = "toggle",
-					name = L["Glyph Frame"],
-					desc = L["TOGGLESKIN_DESC"],							
-				},
 				auctionhouse = {
 					type = "toggle",
 					name = L["Auction Frame"],
