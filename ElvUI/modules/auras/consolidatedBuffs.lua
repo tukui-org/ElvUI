@@ -8,9 +8,10 @@ A.Stats = {
 }
 
 A.Stamina = {
+	90364, -- Qiraji Fortitude
 	469, -- Commanding Shout
 	6307, -- Imp. Blood Pact
-	21562, -- Power Word: Fortitude
+	21562 -- Power Word: Fortitude
 }
 
 A.AttackPower = {
@@ -27,9 +28,11 @@ A.SpellPower = {
 }
 
 A.AttackSpeed = {
+	128432, -- Cackling Howl
+	128433, -- Serpent's Swiftness
 	30809, -- Unleashed Rage
 	113742, -- Swiftblade's Cunning
-	55610, -- Improved Icy Talons
+	55610 -- Improved Icy Talons
 }
 
 A.SpellHaste = {
@@ -39,6 +42,8 @@ A.SpellHaste = {
 }
 
 A.CriticalStrike = {
+	24604, -- Furious Howl
+	90309, -- Terrifying Roar
 	1459, -- Arcane Brilliance
 	61316, -- Dalaran Brilliance
 	24932, -- Leader of The Pact
@@ -46,8 +51,10 @@ A.CriticalStrike = {
 }
 
 A.Mastery = {
+	93435, --Roar of Courage
+	128997, --Spirit Beast Blessing
 	116956, --Grace of Air
-	19740, -- Blessing of Might
+	19740, -- Blessing of Might	
 }
 
 A.IndexTable = {

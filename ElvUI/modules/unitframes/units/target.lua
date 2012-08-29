@@ -487,9 +487,10 @@ function UF:Update_TargetFrame(frame, db)
 			end
 			auraBars:Show()
 			auraBars.friendlyAuraType = db.aurabar.friendlyAuraType
-			auraBars.enemyAuraType = db.aurabar.enemyAuraType			
+			auraBars.enemyAuraType = db.aurabar.enemyAuraType
 			
-			local healthColor = UF.db.colors.health
+			local buffColor = UF.db.colors.auraBarBuff
+			local debuffColor = UF.db.colors.auraBarDebuff
 			local attachTo = frame
 			
 			if db.aurabar.attachTo == 'BUFFS' then
@@ -506,7 +507,9 @@ function UF:Update_TargetFrame(frame, db)
 			auraBars:ClearAllPoints()
 			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', POWERBAR_OFFSET, 0)
 			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT')
-			auraBars.buffColor = {healthColor.r, healthColor.b, healthColor.g}
+
+			auraBars.buffColor = {buffColor.r, buffColor.g, buffColor.b}
+			auraBars.debuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
 			auraBars.down = db.aurabar.anchorPoint == 'BELOW'
 			auraBars:SetAnchors()
 		else

@@ -206,6 +206,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 		
 		E.db.unitframe.colors.healthclass = false
 		E.db.unitframe.colors.health = E:GetColor(.31, .31, .31)
+		E.db.unitframe.colors.auraBarBuff = E:GetColor(.31, .31, .31)
 		E.db.unitframe.units.player.castbar.color = E:GetColor(.31, .31, .31)
 		E.db.unitframe.units.target.castbar.color = E:GetColor(.31, .31, .31)
 		E.db.unitframe.units.focus.castbar.color = E:GetColor(.31, .31, .31)
@@ -216,7 +217,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.general.bordercolor = E:GetColor(classColor.r, classColor.b, classColor.g)
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
 		E.db.general.backdropfadecolor = E:GetColor(.06, .06, .06, .8)
-		
+		E.db.unitframe.colors.auraBarBuff = E:GetColor(classColor.r, classColor.b, classColor.g)
 		E.db.unitframe.colors.healthclass = true
 		E.db.unitframe.units.player.castbar.color = E:GetColor(classColor.r, classColor.b, classColor.g)
 		E.db.unitframe.units.target.castbar.color = E:GetColor(classColor.r, classColor.b, classColor.g)
@@ -227,7 +228,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.general.bordercolor = E:GetColor(.1, .1, .1)
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
 		E.db.general.backdropfadecolor = E:GetColor(.054, .054, .054, .8)
-		
+		E.db.unitframe.colors.auraBarBuff = E:GetColor(.1, .1, .1)
 		E.db.unitframe.colors.healthclass = false
 		E.db.unitframe.colors.health = E:GetColor(.1, .1, .1)
 		E.db.unitframe.units.player.castbar.color = E:GetColor(.1, .1, .1)

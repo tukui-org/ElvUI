@@ -54,7 +54,6 @@ V['skins'] = {
 		["tradeskill"] = true,
 		["raid"] = true,
 		["talent"] = true,
-		["glyph"] = true,
 		["auctionhouse"] = true,
 		["barber"] = true,
 		["macro"] = true,

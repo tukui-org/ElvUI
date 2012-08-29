@@ -209,9 +209,10 @@ function A:CheckWeapons(elapsed)
 		local e1, e1time, _, e2, e2time  = GetWeaponEnchantInfo()
 		
 		local w1 = self:GetAttribute("tempEnchant1")
-
+		local w2 = self:GetAttribute("tempEnchant2")
 		if w1 then A:UpdateWeapons(w1, "MainHandSlot", e1, e1time) end
-
+		if w2 then A:UpdateWeapons(w2, "SecondaryHandSlot", e2, e2time) end
+		
 		TimeSinceLastUpdate = 0
 	end
 end

@@ -407,28 +407,30 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	local title = UnitPVPName(unit)
 	local _, faction = UnitFactionGroup(unit)
 	local GUID = UnitGUID(unit)
-	local iLevel, talentSpec = 0, ""
+	local iLevel, talentSpec, lastUpdate = 0, "", 30
 	local r, g, b = GetQuestDifficultyColor(level).r, GetQuestDifficultyColor(level).g, GetQuestDifficultyColor(level).b
 
 	local color = TT:GetColor(unit)	
 	if not color then color = "|CFFFFFFFF" end
 	GameTooltipTextLeft1:SetFormattedText("%s%s%s", color, title or name, realm and realm ~= "" and " - "..realm.."|r" or "|r")
 		
-	for index, _ in pairs(self.InspectCache) do
-		local inspectCache = self.InspectCache[index]
-		if inspectCache.GUID == GUID then
-			iLevel = inspectCache.ItemLevel or 0
-			talentSpec = inspectCache.TalentSpec or ""
-		end
-	end	
-	
-	if (unit and CanInspect(unit)) and not self.InspectRefresh then
-		NotifyInspect(unit)
-	end	
-	
-	self.InspectRefresh = nil
-	
 	if(UnitIsPlayer(unit)) then
+		for index, _ in pairs(self.InspectCache) do
+			local inspectCache = self.InspectCache[index]
+			if inspectCache.GUID == GUID then
+				iLevel = inspectCache.ItemLevel or 0
+				talentSpec = inspectCache.TalentSpec or ""
+				lastUpdate = inspectCache.LastUpdate and math.abs(inspectCache.LastUpdate - math.floor(GetTime())) or 30
+			end
+		end	
+		
+		local isInspectOpen = (InspectFrame and InspectFrame:IsShown()) or (Examiner and Examiner:IsShown())
+		if (unit and CanInspect(unit)) and not self.InspectRefresh and lastUpdate >= 30 and not isInspectOpen then
+			NotifyInspect(unit)
+		end	
+		
+		self.InspectRefresh = nil
+	
 		if UnitIsAFK(unit) then
 			tt:AppendText((" %s"):format("[|cffFF0000"..L['AFK'].."|r]"))
 		elseif UnitIsDND(unit) then 
@@ -567,13 +569,14 @@ function TT:INSPECT_READY(event, GUID)
 	
 	local ilvl = TT:GetItemLvL('mouseover')
 	local talentSpec = TT:GetTalentSpec('mouseover')
-	
+	local curTime = GetTime()
 	local matchFound
 	for index, _ in pairs(self.InspectCache) do
 		local inspectCache = self.InspectCache[index]
 		if inspectCache.GUID == GUID then
 			inspectCache.ItemLevel = ilvl
 			inspectCache.TalentSpec = talentSpec
+			inspectCache.LastUpdate = math.floor(curTime)
 			matchFound = true;
 		end
 	end
@@ -582,7 +585,8 @@ function TT:INSPECT_READY(event, GUID)
 		local GUIDInfo = {
 			['GUID'] = GUID,
 			['ItemLevel'] = ilvl,
-			['TalentSpec'] = talentSpec
+			['TalentSpec'] = talentSpec,
+			['LastUpdate'] = math.floor(curTime)
 		}	
 		table.insert(self.InspectCache, GUIDInfo)
 	end

@@ -45,10 +45,7 @@ local function LoadSkin()
 			local icon = _G["SpellButton"..i.."IconTexture"]
 			
 			if not InCombatLockdown() then
-				if not button.properFrameLevel then
-					button.properFrameLevel = button:GetFrameLevel() + 1
-				end
-				button:SetFrameLevel(button.properFrameLevel)
+				button:SetFrameLevel(SpellBookFrame:GetFrameLevel() + 5)
 			end
 			
 			if first then
