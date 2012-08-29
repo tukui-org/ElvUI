@@ -238,3 +238,10 @@ function M:LoadExpRepBar()
 	E:CreateMover(self.expBar, "ExperienceBarMover", "Experience Bar")
 	E:CreateMover(self.repBar, "ReputationBarMover", "Reputation Bar")
 end
+
+-- Anchors are not set correctly when initally logging in.
+-- If expBar is enabled but you're at maxlevel the repBar should be positioned in expBars place.
+-- This does not happen unless we update it a little later.
+function M:PLAYER_ENTERING_WORLD()
+	self:UpdateExpRepAnchors()
+end

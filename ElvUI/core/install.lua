@@ -396,7 +396,8 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.party.debuffs.useFilter = 'Blacklist';
 			E.db.unitframe.units.party.petsGroup.enable = true;
 			E.db.unitframe.units.party.petsGroup.width = 80;
-			E.db.unitframe.units.party.petsGroup.yOffset = 3;
+			E.db.unitframe.units.party.petsGroup.anchorPoint = "BOTTOM";
+			E.db.unitframe.units.party.petsGroup.yOffset = -3;
 			E.db.unitframe.units.party.targetsGroup.enable = false;
 
 			E.db.unitframe.units.raid10.width = 80;
@@ -425,11 +426,11 @@ function E:SetupLayout(layout, noDataReset)
 		if E.db.lowresolutionset then
 			E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464230"
 			E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTElvUIParentBOTTOMRIGHT-464230"
-			E.db.movers.ElvUF_Raid40Mover = "BOTTOMElvUIParentBOTTOM0170"
-			E.db.movers.ElvUF_Raid25Mover = "BOTTOMElvUIParentBOTTOM0170"
-			E.db.movers.ElvUF_Raid10Mover = "BOTTOMElvUIParentBOTTOM0170"
+			E.db.movers.ElvUF_Raid40Mover = "BOTTOMElvUIParentBOTTOM0200"
+			E.db.movers.ElvUF_Raid25Mover = "BOTTOMElvUIParentBOTTOM0200"
+			E.db.movers.ElvUF_Raid10Mover = "BOTTOMElvUIParentBOTTOM0200"
 			E.db.movers.ElvUF_TargetTargetMover = "BOTTOMRIGHTElvUF_TargetBOTTOMRIGHT0150"
-			E.db.movers.ElvUF_PartyMover = "BOTTOMElvUIParentBOTTOM0170"
+			E.db.movers.ElvUF_PartyMover = "BOTTOMElvUIParentBOTTOM0200"
 			E.db.movers.ElvUF_PetMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464151"
 			E.db.movers.ElvUF_FocusMover = "BOTTOMLEFTElvUF_PlayerBOTTOMLEFT0150"
 			E.db.movers.ElvUF_FocusTargetMover = "BOTTOMLEFTElvUF_FocusBOTTOMLEFT0150"
@@ -443,11 +444,11 @@ function E:SetupLayout(layout, noDataReset)
 		else
 			E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464230"
 			E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTElvUIParentBOTTOMRIGHT-464230"
-			E.db.movers.ElvUF_Raid40Mover = "BOTTOMElvUIParentBOTTOM0170"
-			E.db.movers.ElvUF_Raid25Mover = "BOTTOMElvUIParentBOTTOM0170"
-			E.db.movers.ElvUF_Raid10Mover = "BOTTOMElvUIParentBOTTOM0170"
+			E.db.movers.ElvUF_Raid40Mover = "BOTTOMElvUIParentBOTTOM0200"
+			E.db.movers.ElvUF_Raid25Mover = "BOTTOMElvUIParentBOTTOM0200"
+			E.db.movers.ElvUF_Raid10Mover = "BOTTOMElvUIParentBOTTOM0200"
 			E.db.movers.ElvUF_TargetTargetMover = "BOTTOMRIGHTElvUF_TargetBOTTOMRIGHT0150"
-			E.db.movers.ElvUF_PartyMover = "BOTTOMElvUIParentBOTTOM0170"
+			E.db.movers.ElvUF_PartyMover = "BOTTOMElvUIParentBOTTOM0200"
 			E.db.movers.ElvUF_PetMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464151"
 			E.db.movers.ElvUF_FocusMover = "BOTTOMLEFTElvUF_PlayerBOTTOMLEFT0150"
 			E.db.movers.ElvUF_FocusTargetMover = "BOTTOMLEFTElvUF_FocusBOTTOMLEFT0150"
