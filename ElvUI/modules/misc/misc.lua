@@ -105,7 +105,7 @@ function M:AutoInvite(event, leaderName)
 	if not E.db.general.autoAcceptInvite then return; end
 
 	if event == "PARTY_INVITE_REQUEST" then
-		if MiniMapLFGFrame:IsShown() then return end -- Prevent losing que inside LFD if someone invites you to group
+		if QueueStatusMinimapButton:IsShown() then return end -- Prevent losing que inside LFD if someone invites you to group
 		if IsInGroup() then return end
 		hideStatic = true
 	
