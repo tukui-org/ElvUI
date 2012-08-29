@@ -5,6 +5,7 @@ A.Stats = {
 	117667, --Legacy of The Emperor
 	1126, -- Mark of The Wild
 	20217, -- Blessing Of Kings
+	90363, -- Embrace of the Shale Spider
 }
 
 A.Stamina = {
