@@ -477,6 +477,7 @@ function E:UpdateAll(ignoreInstall)
 	bags:SizeAndPositionBagBar()
 	
 	local totems = E:GetModule('Totems'); 
+	totems.db = self.db.general.totems
 	totems:PositionAndSize()
 	totems:ToggleEnable()
 	
