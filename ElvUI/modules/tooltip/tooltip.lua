@@ -423,9 +423,9 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				lastUpdate = inspectCache.LastUpdate and math.abs(inspectCache.LastUpdate - math.floor(GetTime())) or 30
 			end
 		end	
-		
-		local isInspectOpen = (InspectFrame and InspectFrame:IsShown()) or (Examiner and Examiner:IsShown())
-		if (unit and CanInspect(unit)) and not self.InspectRefresh and lastUpdate >= 30 and not isInspectOpen then
+
+		if (unit and CanInspect(unit)) and not self.InspectRefresh and lastUpdate >= 30 and not self.blockInspectRequests then
+			TT.RequestSent = true
 			NotifyInspect(unit)
 		end	
 		
@@ -565,7 +565,16 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 end
 
 function TT:INSPECT_READY(event, GUID)
-	if UnitGUID('mouseover') ~= GUID then return; end
+	if self.blockInspectRequests then
+		TT.RequestSent = nil
+	end
+
+	if UnitGUID('mouseover') ~= GUID or not TT.RequestSent then 
+		if not self.blockInspectRequests then
+			ClearInspectPlayer();
+		end
+		return; 
+	end
 	
 	local ilvl = TT:GetItemLvL('mouseover')
 	local talentSpec = TT:GetTalentSpec('mouseover')
@@ -598,16 +607,34 @@ function TT:INSPECT_READY(event, GUID)
 	TT.InspectRefresh = true;
 	GameTooltip:SetUnit('mouseover')
 	
-	local isInspectOpen = (InspectFrame and InspectFrame:IsShown()) or (Examiner and Examiner:IsShown())
-	if not isInspectOpen then
+	if not self.blockInspectRequests then
 		ClearInspectPlayer();
 	end
+	self.RequestSent = nil
 end
 
 function TT:MODIFIER_STATE_CHANGED(event, key)
 	if not key or not key:find('SHIFT') or not UnitExists('mouseover') then return; end
 
 	GameTooltip:SetUnit('mouseover')
+end
+
+function TT:InspectFrame_Show(unit)
+	if ( CanInspect(unit)) then
+		self.blockInspectRequests = true
+	end
+end
+
+function TT:InspectFrame_OnHide(unit)
+	self.blockInspectRequests = nil
+end
+
+function TT:ADDON_LOADED()
+	if IsAddOnLoaded('Blizzard_InspectUI') then
+		self:SecureHook('InspectFrame_Show')
+		self:SecureHook('InspectFrame_OnHide')
+		self:UnregisterEvent('ADDON_LOADED')
+	end
 end
 
 function TT:Initialize()
@@ -642,6 +669,7 @@ function TT:Initialize()
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent('INSPECT_READY')
 	self:RegisterEvent('MODIFIER_STATE_CHANGED')
+	self:RegisterEvent('ADDON_LOADED')
 	E.Skins:HandleCloseButton(ItemRefCloseButton)
 	
 	--SpellIDs
