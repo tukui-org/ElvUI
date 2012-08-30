@@ -161,6 +161,9 @@ local function SetupCVars()
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
 	
+	local AB = E:GetModule('ActionBars')
+	AB:UpdateBar1Paging()
+	
 	InstallStepComplete.message = L["CVars Set"]
 	InstallStepComplete:Show()					
 end	
