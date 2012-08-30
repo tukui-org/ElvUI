@@ -502,32 +502,43 @@ function UF:UpdateHoly(event, unit, powerType)
 
 	local numHolyPower = UnitPower('player', SPELL_POWER_HOLY_POWER);
 	local maxHolyPower = UnitPowerMax('player', SPELL_POWER_HOLY_POWER);	
+	local MAX_HOLY_POWER = UF['classMaxResourceBar'][E.myclass]
+	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and db.classbar.enable
 	
-	for i = 1, maxHolyPower do
+	local CLASSBAR_WIDTH = db.width - 4
+	if USE_MINI_CLASSBAR then
+		CLASSBAR_WIDTH = CLASSBAR_WIDTH * (maxHolyPower - 1) / maxHolyPower
+	end
+	
+	self.HolyPower:Width(CLASSBAR_WIDTH)
+	
+	for i = 1, MAX_HOLY_POWER do
 		if(i <= numHolyPower) then
 			self.HolyPower[i]:SetAlpha(1)
-			
-			if i == 3 and db.classbar.fill == 'spaced' then
-				for h = 1, maxHolyPower do
-					self.HolyPower[h].backdrop.shadow:Show()
-					self.HolyPower[h]:SetScript('OnUpdate', function(self)
-						E:Flash(self.backdrop.shadow, 0.6)
-					end)
-				end
-			else
-				for h = 1, maxHolyPower do
-					self.HolyPower[h].backdrop.shadow:Hide()
-					self.HolyPower[h]:SetScript('OnUpdate', nil)
-				end
-			end
 		else
 			self.HolyPower[i]:SetAlpha(.2)
-			for h = 1, maxHolyPower do
-				self.HolyPower[h].backdrop.shadow:Hide()
-				self.HolyPower[h]:SetScript('OnUpdate', nil)
-			end		
 		end
-	end
+		
+		self.HolyPower[i]:SetWidth(E:Scale(self.HolyPower:GetWidth() - 2)/maxHolyPower)	
+		self.HolyPower[i]:ClearAllPoints()
+		if i == 1 then
+			self.HolyPower[i]:SetPoint("LEFT", self.HolyPower)
+		else
+			if USE_MINI_CLASSBAR then
+				self.HolyPower[i]:Point("LEFT", self.HolyPower[i-1], "RIGHT", maxHolyPower == 5 and 7 or 13, 0)
+			else
+				self.HolyPower[i]:Point("LEFT", self.HolyPower[i-1], "RIGHT", 1, 0)
+			end
+		end
+
+		if i > maxHolyPower then
+			self.HolyPower[i]:Hide()
+			self.HolyPower[i].backdrop:SetAlpha(0)
+		else
+			self.HolyPower[i]:Show()
+			self.HolyPower[i].backdrop:SetAlpha(1)
+		end		
+	end	
 end	
 
 function UF:UpdateShadowOrbs(event, unit, powerType)
@@ -891,12 +902,12 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	icon.owner = caster
 	icon.name = name
 
-	if db and db[self.type] and E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and CheckFilter(db[self.type].useBlacklist, isFriend) then
+	if db and db[self.type] and E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and E.global['unitframe']['aurafilters']['Blacklist'].spells[name].enable and CheckFilter(db[self.type].useBlacklist, isFriend) then
 		return false
 	end	
 	
-	if db and db[self.type] and E.global['unitframe']['aurafilters']['Whitelist'].spells[name] and CheckFilter(db[self.type].useWhitelist, isFriend) then
-			return true
+	if db and db[self.type] and E.global['unitframe']['aurafilters']['Whitelist'].spells[name] and E.global['unitframe']['aurafilters']['Whitelist'].spells[name].enable and CheckFilter(db[self.type].useWhitelist, isFriend) then
+		return true
 	end
 	
 	if db and db[self.type] and (duration == 0 or not duration) and CheckFilter(db[self.type].noDuration, isFriend) then
@@ -1120,11 +1131,11 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	if unitCaster == 'player' or unitCaster == 'vehicle' then isPlayer = true end
 	if UnitIsFriend('player', unit) then isFriend = true end
 
-	if E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and CheckFilter(db.useBlacklist, isFriend) then
+	if E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and E.global['unitframe']['aurafilters']['Blacklist'].spells[name].enable and CheckFilter(db.useBlacklist, isFriend) then
 		return false
 	end	
 	
-	if E.global['unitframe']['aurafilters']['Whitelist'].spells[name] and CheckFilter(db.useWhitelist, isFriend) then
+	if E.global['unitframe']['aurafilters']['Whitelist'].spells[name] and E.global['unitframe']['aurafilters']['Whitelist'].spells[name].enable and CheckFilter(db.useWhitelist, isFriend) then
 		return true
 	end
 

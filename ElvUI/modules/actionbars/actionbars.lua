@@ -15,7 +15,7 @@ AB["barDefaults"] = {
 	["bar1"] = {
 		['page'] = 1,
 		['bindButtons'] = "ACTIONBUTTON",
-		['conditions'] = string.format("[vehicleui] %d; [possessbar] %d; [overridebar] %d; [bar:2] 2; [bar:3] 1; [bar:4] 2; [bar:5] 1; [bar:6] 2;", GetVehicleBarIndex(), GetVehicleBarIndex(), GetOverrideBarIndex()),
+		['conditions'] = string.format("[vehicleui] %d; [possessbar] %d; [overridebar] %d; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetVehicleBarIndex(), GetOverrideBarIndex()),
 		['position'] = "BOTTOM,ElvUIParent,BOTTOM,0,27",
 	},
 	["bar2"] = {
@@ -292,6 +292,44 @@ function AB:RemoveBindings()
 	end
 end
 
+function AB:UpdateBar1Paging()
+	if E.private.actionbar.enable ~= true then return; end
+	local bar2Option = InterfaceOptionsActionBarsPanelBottomRight
+	local bar3Option = InterfaceOptionsActionBarsPanelBottomLeft
+	local bar4Option = InterfaceOptionsActionBarsPanelRightTwo
+	local bar5Option = InterfaceOptionsActionBarsPanelRight
+
+	if (self.db.bar2.enabled and not bar2Option:GetChecked()) or (not self.db.bar2.enabled and bar2Option:GetChecked())  then
+		bar2Option:Click()
+	end
+	
+	if (self.db.bar3.enabled and not bar3Option:GetChecked()) or (not self.db.bar3.enabled and bar3Option:GetChecked())  then
+		bar3Option:Click()
+	end
+	
+	if not self.db.bar5.enabled and not self.db.bar4.enabled then
+		if bar4Option:GetChecked() then
+			bar4Option:Click()
+		end				
+		
+		if bar5Option:GetChecked() then
+			bar5Option:Click()
+		end
+	elseif not self.db.bar5.enabled then
+		if not bar5Option:GetChecked() then
+			bar5Option:Click()
+		end
+		
+		if not bar4Option:GetChecked() then
+			bar4Option:Click()
+		end
+	elseif (self.db.bar4.enabled and not bar4Option:GetChecked()) or (not self.db.bar4.enabled and bar4Option:GetChecked()) then
+		bar4Option:Click()
+	elseif (self.db.bar5.enabled and not bar5Option:GetChecked()) or (not self.db.bar5.enabled and bar5Option:GetChecked()) then
+		bar5Option:Click()
+	end
+end
+
 function AB:UpdateButtonSettings()
 	if E.private.actionbar.enable ~= true then return end
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return; end
@@ -303,7 +341,9 @@ function AB:UpdateButtonSettings()
 			self["handledbuttons"][button] = nil
 		end
 	end
-
+	
+	self:UpdateBar1Paging()
+	
 	for i=1, 5 do
 		self:PositionAndSizeBar('bar'..i)
 	end	
@@ -463,16 +503,16 @@ function AB:DisableBlizzard()
 
 	MultiCastActionBarFrame.ignoreFramePositionManager = true
 
-	
-	MainMenuBar:UnregisterAllEvents()
-	MainMenuBar:Hide()
-	MainMenuBar:SetParent(UIHider)
-	--[[for i=1, MainMenuBar:GetNumChildren() do
-		local child = select(i, MainMenuBar:GetChildren())
-		if child and child.UnregisterAllEvents then
-			child:UnregisterAllEvents()
-		end
-	end]]
+
+	MainMenuBar:EnableMouse(false)
+	MainMenuBar:SetAlpha(0)
+	MainMenuExpBar:UnregisterAllEvents()
+	MainMenuExpBar:Hide()
+	MainMenuExpBar:SetParent(UIHider)
+
+	ReputationWatchBar:UnregisterAllEvents()
+	ReputationWatchBar:Hide()
+	ReputationWatchBar:SetParent(UIHider)	
 
 	MainMenuBarArtFrame:UnregisterEvent("ACTIONBAR_PAGE_CHANGED")
 	MainMenuBarArtFrame:UnregisterEvent("ADDON_LOADED")

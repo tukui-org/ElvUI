@@ -17,6 +17,7 @@ function A:FormatTime(s)
 end
 
 function A:UpdateTime(elapsed)
+	self.expiration = self.expiration
 	if(self.expiration) then	
 		self.expiration = math.max(self.expiration - elapsed, 0)
 		if(self.expiration <= 0) then
@@ -47,66 +48,28 @@ function A:UpdateTime(elapsed)
 	end
 end
 
-function A:UpdateWeapons(button, slot, active, expiration)
-	if not button.texture then
-		button.texture = button:CreateTexture(nil, "BORDER")
-		button.texture:SetAllPoints()
+function A:UpdateWeapon(button)
+	if not button.backdrop then
+		button:Size(E.private.auras.size + 4)
+		button.backdrop = CreateFrame('Frame', nil, button)
+		button.backdrop:SetAllPoints()
+		button.backdrop:SetTemplate('Default', nil, true)
+		button.backdrop:SetBackdropBorderColor(137/255, 0, 191/255)
+		button.backdrop:SetFrameLevel(button:GetFrameLevel() - 2)
 		
-		button.time = button:CreateFontString(nil, "ARTWORK")
-		button.time:SetPoint("TOP", button, 'BOTTOM', 0, -2)
-		button.time:FontTemplate(nil, nil, 'OUTLINE')
-		button.time:SetShadowColor(0, 0, 0, 0.4)
-		button.time:SetShadowOffset(E.mult, -E.mult)
+		button.time = _G[button:GetName()..'Duration']
+		button.icon = _G[button:GetName()..'Icon']
 
-		-- Credit Hydra: this is the border to my statusbar
-		local BarHolder = CreateFrame("Frame", nil, button)
-		BarHolder:Size(button:GetWidth()+4, 7)
-		BarHolder:Point("TOP", button, "BOTTOM", 0, -5)
-		BarHolder:SetTemplate("Default")
-		button.Holder = BarHolder
-		if not E.private.auras.visualtimer then
-			button.Holder:Hide()
-			button.time:Show()
-		else
-			button.Holder:Show()
-			button.time:Hide()
-		end
-		
-		-- and the bar..
-		local Bar = CreateFrame("StatusBar", nil, BarHolder)
-		Bar:Point("TOPLEFT", 1, -2)
-		Bar:Point("BOTTOMRIGHT", -1, 2)
-		Bar:SetStatusBarTexture(E["media"].blankTex)
-		Bar:SetStatusBarColor(0, 0.8, 0)
-		button.Bar = Bar
-		-- Credit Hydra End
-	
-		button:CreateBackdrop('Default')
-		
-		button.highlight = button:CreateTexture(nil, "HIGHLIGHT")
-		button.highlight:SetTexture(1,1,1,0.45)
-		button.highlight:SetAllPoints(button.texture)		
+		_G[button:GetName()..'Border']:Hide()
+		button.icon:SetTexCoord(unpack(E.TexCoords))
+		button.icon:SetInside()
+		button.time:ClearAllPoints()
+		button.time:Point("BOTTOM",button,'BOTTOM', 0, -10)
+		button.time:FontTemplate(nil, nil, 'OUTLINE')	
 	end
+
 	local font = LSM:Fetch("font", self.db.font)
-	button.time:FontTemplate(font, self.db.fontSize, self.db.fontOutline)	
-	
-	if active then
-		button.id = GetInventorySlotInfo(slot)
-		button.quality = GetInventoryItemQuality('player', button.id)
-		button.icon = GetInventoryItemTexture("player", button.id)
-		button.texture:SetTexture(button.icon)
-		button.texture:SetTexCoord(unpack(E.TexCoords))		
-		button.expiration = (expiration/1000)
-		button.Dur = button.expiration
-		
-		local r, g, b = GetItemQualityColor(button.quality)
-		button.backdrop:SetBackdropBorderColor(r, g, b)
-		button:SetScript("OnUpdate", A.UpdateTime)		
-	elseif not active then
-		button.texture:SetTexture(nil)
-		button.time:SetText("")
-		button:SetScript("OnUpdate", nil)
-	end
+	button.time:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
 end
 
 function A:UpdateAuras(header, button)
@@ -201,22 +164,6 @@ function A:ScanAuras(event, unit)
 	end
 end
 
-local TimeSinceLastUpdate = 1
-function A:CheckWeapons(elapsed)
-	TimeSinceLastUpdate = TimeSinceLastUpdate + elapsed
-	
-	if (TimeSinceLastUpdate >= 1) then
-		local e1, e1time, _, e2, e2time  = GetWeaponEnchantInfo()
-		
-		local w1 = self:GetAttribute("tempEnchant1")
-		local w2 = self:GetAttribute("tempEnchant2")
-		if w1 then A:UpdateWeapons(w1, "MainHandSlot", e1, e1time) end
-		if w2 then A:UpdateWeapons(w2, "SecondaryHandSlot", e2, e2time) end
-		
-		TimeSinceLastUpdate = 0
-	end
-end
-
 function A:UpdateHeader(header)
 	local db = self.db.debuffs
 	if header:GetAttribute('filter') == 'HELPFUL' then
@@ -248,6 +195,10 @@ function A:UpdateAllHeaders()
 			A:UpdateHeader(header)
 		end
 	end
+	
+	for i = 1, 2 do
+		A:UpdateWeapon(_G["TempEnchant"..i])
+	end
 end
 
 function A:CreateAuraHeader(filter)
@@ -262,13 +213,6 @@ function A:CreateAuraHeader(filter)
 	header:SetAttribute("filter", filter)
 	RegisterStateDriver(header, "visibility", "[petbattle] hide; show")
 
-	-- look for weapons buffs
-	if filter == "HELPFUL" then
-		header:SetAttribute("includeWeapons", 1)
-		header:SetAttribute("weaponTemplate", "ElvUIAuraTemplate")
-		header:HookScript("OnUpdate", A.CheckWeapons)
-	end
-	
 	A:UpdateHeader(header)
 	header:Show()
 	
@@ -307,6 +251,47 @@ function A:PostDrag(position)
 	end
 end
 
+function A:WeaponPostDrag(point)
+	if not point then point = E:GetScreenQuadrant(self) end
+	if string.find(point, "LEFT") then
+		TempEnchant1:ClearAllPoints()
+		TempEnchant2:ClearAllPoints()
+		
+		TempEnchant1:SetPoint("TOPLEFT", self, "TOPLEFT", 0, 0)
+		TempEnchant2:SetPoint("LEFT", TempEnchant1, "RIGHT", 4, 0)	
+	elseif string.find(point, "RIGHT") then
+		TempEnchant1:ClearAllPoints()
+		TempEnchant2:ClearAllPoints()
+
+		TempEnchant1:SetPoint("TOPRIGHT", self, "TOPRIGHT", 0, 0)
+		TempEnchant2:SetPoint("RIGHT", TempEnchant1, "LEFT", -4, 0)		
+	end
+end
+
+function A:UpdateWeaponText(auraButton, timeLeft)
+	local duration = auraButton.duration;
+	if(timeLeft) then	
+		if(timeLeft <= 0) then
+			duration:SetText("")
+		else
+			local time = A:FormatTime(timeLeft)
+			if timeLeft <= 86400.5 and timeLeft > 3600.5 then
+				duration:SetText("|cffcccccc"..time.."|r")
+				E:StopFlash(auraButton)
+			elseif timeLeft <= 3600.5 and timeLeft > 60.5 then
+				duration:SetText("|cffcccccc"..time.."|r")
+				E:StopFlash(auraButton)
+			elseif timeLeft <= 60.5 and timeLeft > E.db.auras.fadeThreshold then
+				duration:SetText("|cffcccccc"..time.."|r")
+				E:StopFlash(auraButton)
+			elseif timeLeft <= E.db.auras.fadeThreshold then
+				duration:SetText("|cffff0000"..time.."|r")
+				E:Flash(auraButton, 1)
+			end
+		end
+	end
+end
+
 function A:Initialize()
 	if self.db then return; end --IDK WHY BUT THIS IS GETTING CALLED TWICE FROM SOMEWHERE...
 	self.db = E.db.auras
@@ -315,7 +300,7 @@ function A:Initialize()
 	
 	BuffFrame:Kill()
 	ConsolidatedBuffs:Kill()
-	TemporaryEnchantFrame:Kill()	
+	--TemporaryEnchantFrame:Kill()	
 	InterfaceOptionsFrameCategoriesButton12:SetScale(0.0001)
 	
 	local holder = CreateFrame("Frame", "AurasHolder", E.UIParent)
@@ -325,9 +310,30 @@ function A:Initialize()
 	
 	self.BuffFrame = self:CreateAuraHeader("HELPFUL")
 	self.DebuffFrame = self:CreateAuraHeader("HARMFUL")
-
+	
+	self.EnchantHeader = CreateFrame('Frame', 'ElvUITemporaryEnchantFrame', E.UIParent, 'SecureHandlerStateTemplate');
+	self.EnchantHeader:Size((E.private.auras.size + 6) * 2, E.private.auras.size + 4)
+	self.EnchantHeader:Point('TOPRIGHT', MMHolder, 'BOTTOMRIGHT', 0, -4)
+	self.EnchantHeader:SetAttribute("_onstate-show", [[		
+			if newstate == "hide" then
+				self:Hide();
+			else
+				self:Show();
+			end	
+		]]);
+	
+	RegisterStateDriver(self.EnchantHeader, "show", '[petbattle] hide;show');	
+	self:SecureHook('AuraButton_UpdateDuration', 'UpdateWeaponText')
+	TemporaryEnchantFrame:SetParent(self.EnchantHeader)
+	
+	for i = 1, 2 do
+		A:UpdateWeapon(_G["TempEnchant"..i])
+	end
+	
 	E:CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, nil, A.PostDrag)
-
+	E:CreateMover(self.EnchantHeader, 'TempEnchantMover', 'Weapons', nil, nil, A.WeaponPostDrag)
+	
+	
 	self:Construct_ConsolidatedBuffs()
 end
 

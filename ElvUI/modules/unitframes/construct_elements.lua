@@ -282,10 +282,6 @@ function UF:Construct_PaladinResourceBar(frame)
 		bars[i].backdrop:SetParent(bars)
 
 		bars[i]:SetStatusBarColor(228/255,225/255,16/255)
-		
-		bars[i].backdrop:CreateShadow('Default')
-		bars[i].backdrop.shadow:SetBackdropBorderColor(228/255,225/255,16/255)
-		bars[i].backdrop.shadow:Point("TOPLEFT", -4, 4)
 				
 	end
 	

@@ -423,7 +423,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				lastUpdate = inspectCache.LastUpdate and math.abs(inspectCache.LastUpdate - math.floor(GetTime())) or 30
 			end
 		end	
-
+		
 		if (unit and CanInspect(unit)) and not self.InspectRefresh and lastUpdate >= 30 and not self.blockInspectRequests then
 			TT.RequestSent = true
 			NotifyInspect(unit)
@@ -625,14 +625,13 @@ function TT:InspectFrame_Show(unit)
 	end
 end
 
-function TT:InspectFrame_OnHide(unit)
-	self.blockInspectRequests = nil
-end
-
 function TT:ADDON_LOADED()
 	if IsAddOnLoaded('Blizzard_InspectUI') then
 		self:SecureHook('InspectFrame_Show')
-		self:SecureHook('InspectFrame_OnHide')
+		if not InspectFrame.isHooked then
+			InspectFrame:HookScript('OnHide', function() self.blockInspectRequests = nil; end)
+			InspectFrame.isHooked = true;
+		end
 		self:UnregisterEvent('ADDON_LOADED')
 	end
 end
