@@ -595,6 +595,15 @@ function E:InitializeModules()
 	end
 end
 
+local invalidValues = {
+	['current-percent'] = true,
+	['current-max'] = true,
+	['current'] = true,
+	['percent'] = true,
+	['deficit'] = true,
+	['blank'] = true,
+}
+
 function E:Initialize()
 	table.wipe(self.db)
 	table.wipe(self.global)
@@ -610,6 +619,23 @@ function E:Initialize()
 	self.db = self.data.profile;
 	self.global = self.data.global;
 	self:CheckIncompatible()
+	
+	--DATABASE CONVERSIONS
+	if type(self.db.unitframe.units.arena.pvpTrinket) == 'boolean' then
+		self.db.unitframe.units.arena.pvpTrinket = table.copy(self.DF["profile"].unitframe.units.arena.pvpTrinket, true)
+	end	
+	
+	for unit, _ in pairs(self.db.unitframe.units) do
+		if type(self.db.unitframe.units[unit]) == 'table' then
+			for optionGroup, _ in pairs(self.db.unitframe.units[unit]) do
+				if type(self.db.unitframe.units[unit][optionGroup]) == 'table' then
+					if invalidValues[self.db.unitframe.units[unit][optionGroup].text_format] then
+						self.db.unitframe.units[unit][optionGroup].text_format = self.DF['profile'].unitframe.units[unit][optionGroup].text_format
+					end
+				end
+			end
+		end
+	end	
 	
 	self:CheckRole()
 	self:UIScale('PLAYER_LOGIN');
