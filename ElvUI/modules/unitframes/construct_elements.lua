@@ -1,7 +1,7 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:GetModule('UnitFrames');
 local LSM = LibStub("LibSharedMedia-3.0");
-local USING_DX11 = GetCVar("gxapi") == "D3D11"
+local USING_DX11 = (GetCVar("gxapi") == "D3D11" or IsMacClient())
 
 function UF:SpawnMenu()
 	local unit = E:StringTitle(self.unit)
