@@ -6,7 +6,7 @@ local ElvUF = ns.oUF
 local selectedSpell;
 local selectedFilter;
 local filters;
-
+local USING_DX11 = GetCVar("gxapi") == "D3D11"
 function UF:CreateCustomTextGroup(unit, objectName)
 	if E.Options.args.unitframe.args[unit].args[objectName] then return end
 	
@@ -1159,6 +1159,11 @@ E.Options.args.unitframe.args.player = {
 			get = function(info) return E.db.unitframe.units['player']['portrait'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['player']['portrait'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
 			args = {
+				intro = {
+					order = 0,
+					type = "description",
+					name = L['Portraits are temporarily forced to 2d for non directx 11 users.'],
+				},
 				enable = {
 					type = 'toggle',
 					order = 1,
@@ -1175,6 +1180,7 @@ E.Options.args.unitframe.args.player = {
 					name = L['Overlay'],
 					desc = L['Overlay the healthbar'],
 					order = 3,
+					disabled = function() return not USING_DX11 end,
 				},
 				camDistanceScale = {
 					type = 'range',
@@ -1885,6 +1891,11 @@ E.Options.args.unitframe.args.target = {
 			get = function(info) return E.db.unitframe.units['target']['portrait'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['target']['portrait'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
 			args = {
+				intro = {
+					order = 0,
+					type = "description",
+					name = L['Portraits are temporarily forced to 2d for non directx 11 users.'],
+				},			
 				enable = {
 					type = 'toggle',
 					order = 1,
@@ -1901,6 +1912,7 @@ E.Options.args.unitframe.args.target = {
 					name = L['Overlay'],
 					desc = L['Overlay the healthbar'],
 					order = 3,
+					disabled = function() return not USING_DX11 end,
 				},
 				camDistanceScale = {
 					type = 'range',
@@ -4917,6 +4929,11 @@ E.Options.args.unitframe.args.boss = {
 			get = function(info) return E.db.unitframe.units['boss']['portrait'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['boss']['portrait'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
 			args = {
+				intro = {
+					order = 0,
+					type = "description",
+					name = L['Portraits are temporarily forced to 2d for non directx 11 users.'],
+				},			
 				enable = {
 					type = 'toggle',
 					order = 1,
@@ -4933,6 +4950,7 @@ E.Options.args.unitframe.args.boss = {
 					name = L['Overlay'],
 					desc = L['Overlay the healthbar'],
 					order = 3,
+					disabled = function() return not USING_DX11 end,
 				},
 				camDistanceScale = {
 					type = 'range',
