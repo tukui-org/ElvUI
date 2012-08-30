@@ -127,7 +127,7 @@ P['auras'] = {
 		['sortMethod'] = "TIME",
 		['sortDir'] = '-',
 		['maxWraps'] = 1,
-	},	
+	},
 }
 
 --Chat

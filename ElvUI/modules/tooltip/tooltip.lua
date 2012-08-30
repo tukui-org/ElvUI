@@ -716,7 +716,7 @@ function TT:Initialize()
 		end
 	end)
 	
-	BNToastFrame:Point('TOPRIGHT', MMHolder, 'BOTTOMRIGHT', 0, -10);
+	BNToastFrame:Point('BOTTOMRIGHT', RightChatPanel, 'TOPRIGHT', 0, 18)
 	E:CreateMover(BNToastFrame, 'BNETMover', 'BNet Frame')
 	BNToastFrame.SetPoint = E.noop
 	BNToastFrame.ClearAllPoints = E.noop	
