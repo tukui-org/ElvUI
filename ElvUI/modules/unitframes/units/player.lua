@@ -4,6 +4,7 @@ local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
+local USING_DX11 = GetCVar("gxapi") == "D3D11"
 
 local CAN_HAVE_CLASSBAR = (E.myclass == "PALADIN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK" or E.myclass == "PRIEST" or E.myclass == "MONK" or E.myclass == 'MAGE')
 
@@ -64,7 +65,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	local threat = frame.Threat
 	local PORTRAIT_WIDTH = db.portrait.width
 	local USE_PORTRAIT = db.portrait.enable
-	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
+	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT and USING_DX11
 	local CLASSBAR_HEIGHT = db.classbar.height
 	local USE_CLASSBAR = db.classbar.enable
 	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and USE_CLASSBAR
@@ -117,7 +118,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 		end				
 
 		
-		if db.portrait.enable and not db.portrait.overlay then
+		if db.portrait.enable and not USE_PORTRAIT_OVERLAY then
 			local portrait = frame.Portrait
 			portrait.backdrop:ClearAllPoints()
 			if USE_MINI_CLASSBAR and USE_CLASSBAR then
@@ -156,7 +157,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 			threat:Point("BOTTOMRIGHT", 4-POWERBAR_OFFSET, -4)	
 		end				
 
-		if db.portrait.enable and not db.portrait.overlay then
+		if db.portrait.enable and not USE_PORTRAIT_OVERLAY then
 			local portrait = frame.Portrait
 			portrait.backdrop:ClearAllPoints()
 			portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT")
@@ -176,7 +177,7 @@ function UF:Update_PlayerFrame(frame, db)
 	local SPACING = E:Scale(1)
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
-	
+
 	local USE_POWERBAR = db.power.enable
 	local USE_MINI_POWERBAR = db.power.width ~= 'fill' and USE_POWERBAR
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
@@ -190,7 +191,7 @@ function UF:Update_PlayerFrame(frame, db)
 	local CLASSBAR_WIDTH = db.width - (BORDER*2)
 	
 	local USE_PORTRAIT = db.portrait.enable
-	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
+	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT and USING_DX11
 	local PORTRAIT_WIDTH = db.portrait.width
 	
 	local unit = self.unit
@@ -430,10 +431,11 @@ function UF:Update_PlayerFrame(frame, db)
 				portrait:SetAllPoints(frame.Health)
 				portrait:SetAlpha(0.3)
 				portrait:Show()		
+				portrait.backdrop:Hide()
 			else
 				portrait:SetAlpha(1)
 				portrait:Show()
-				
+				portrait.backdrop:Show()
 				if USE_MINI_CLASSBAR and USE_CLASSBAR then
 					portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", 0, -((CLASSBAR_HEIGHT/2)))
 				else
@@ -453,6 +455,7 @@ function UF:Update_PlayerFrame(frame, db)
 			if frame:IsElementEnabled('Portrait') then
 				frame:DisableElement('Portrait')
 				portrait:Hide()
+				portrait.backdrop:Hide()
 			end		
 		end
 	end

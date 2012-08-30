@@ -1,6 +1,7 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:GetModule('UnitFrames');
 local LSM = LibStub("LibSharedMedia-3.0");
+local USING_DX11 = GetCVar("gxapi") == "D3D11"
 
 function UF:SpawnMenu()
 	local unit = E:StringTitle(self.unit)
@@ -120,9 +121,21 @@ function UF:Construct_PowerBar(frame, bg, text, textPos, lowtext)
 end	
 
 function UF:Construct_Portrait(frame)
-	local portrait = CreateFrame("PlayerModel", nil, frame)
-	portrait:SetFrameStrata('LOW')
-	portrait:CreateBackdrop('Default')
+	local portrait
+	if USING_DX11 then
+		portrait = CreateFrame("PlayerModel", nil, frame)
+		portrait:SetFrameStrata('LOW')
+		portrait:CreateBackdrop('Default')
+	else
+		local backdrop = CreateFrame('Frame',nil,frame)
+		portrait = frame:CreateTexture(nil, 'OVERLAY')
+		portrait:SetTexCoord(0.15,0.85,0.15,0.85)
+		backdrop:SetOutside(portrait)
+		backdrop:SetFrameLevel(frame:GetFrameLevel())
+		backdrop:SetTemplate('Default')
+		portrait.backdrop = backdrop
+	end
+
 	portrait.PostUpdate = self.PortraitUpdate
 
 	portrait.overlay = CreateFrame("Frame", nil, frame)

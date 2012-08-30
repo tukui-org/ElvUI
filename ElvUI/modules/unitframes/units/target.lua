@@ -6,6 +6,7 @@ local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
+local USING_DX11 = GetCVar("gxapi") == "D3D11"
 
 function UF:Construct_TargetFrame(frame)	
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
@@ -59,7 +60,7 @@ function UF:Update_TargetFrame(frame, db)
 	local COMBOBAR_WIDTH = db.width - (BORDER*2)
 	
 	local USE_PORTRAIT = db.portrait.enable
-	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
+	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT and USING_DX11
 	local PORTRAIT_WIDTH = db.portrait.width
 	
 	local unit = self.unit
@@ -228,10 +229,11 @@ function UF:Update_TargetFrame(frame, db)
 				portrait:SetAllPoints(frame.Health)
 				portrait:SetAlpha(0.3)
 				portrait:Show()		
+				portrait.backdrop:Hide()
 			else
 				portrait:SetAlpha(1)
 				portrait:Show()
-				
+				portrait.backdrop:Show()
 				portrait.backdrop:ClearAllPoints()
 				portrait.backdrop:SetPoint("TOPRIGHT", frame, "TOPRIGHT")
 						
@@ -248,6 +250,7 @@ function UF:Update_TargetFrame(frame, db)
 			if frame:IsElementEnabled('Portrait') then
 				frame:DisableElement('Portrait')
 				portrait:Hide()
+				portrait.backdrop:Hide()
 			end		
 		end
 	end

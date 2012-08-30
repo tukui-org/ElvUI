@@ -6,6 +6,7 @@ local abs = math.abs
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
+local USING_DX11 = GetCVar("gxapi") == "D3D11"
 
 local function CheckFilter(type, isFriend)
 	if type == 'ALL' or (type == 'FRIENDLY' and isFriend) or (type == 'ENEMY' and not isFriend) then
@@ -130,18 +131,20 @@ function UF:PortraitUpdate(unit)
 	
 	if not db then return end
 	
-	if db['portrait'].enable and db['portrait'].overlay then
+	if db['portrait'].enable and db['portrait'].overlay and USING_DX11 then
 		self:SetAlpha(0) self:SetAlpha(0.35) 
 	else
 		self:SetAlpha(1)
 	end
 	
-	if self:GetModel() and self:GetModel().find and self:GetModel():find("worgenmale") then
-		self:SetCamera(1)
-	end	
+	if self:GetObjectType() ~= 'Texture' then
+		if self:GetModel() and self:GetModel().find and self:GetModel():find("worgenmale") then
+			self:SetCamera(1)
+		end	
 
-	self:SetCamDistanceScale(db['portrait'].camDistanceScale - 0.01 >= 0.01 and db['portrait'].camDistanceScale - 0.01 or 0.01) --Blizzard bug fix
-	self:SetCamDistanceScale(db['portrait'].camDistanceScale)
+		self:SetCamDistanceScale(db['portrait'].camDistanceScale - 0.01 >= 0.01 and db['portrait'].camDistanceScale - 0.01 or 0.01) --Blizzard bug fix
+		self:SetCamDistanceScale(db['portrait'].camDistanceScale)
+	end
 end
 
 local day, hour, minute, second = 86400, 3600, 60, 1
@@ -499,13 +502,30 @@ end
 function UF:UpdateHoly(event, unit, powerType)
 	if(self.unit ~= unit or (powerType and powerType ~= 'HOLY_POWER')) then return end
 	local db = self.db
-
+	
+	local BORDER = 2
 	local numHolyPower = UnitPower('player', SPELL_POWER_HOLY_POWER);
 	local maxHolyPower = UnitPowerMax('player', SPELL_POWER_HOLY_POWER);	
 	local MAX_HOLY_POWER = UF['classMaxResourceBar'][E.myclass]
 	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and db.classbar.enable
+	local USE_PORTRAIT = db.portrait.enable
+	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT and USING_DX11
+	local PORTRAIT_WIDTH = db.portrait.width
+	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and db.power.enable
+	
+	if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
+		PORTRAIT_WIDTH = 0		
+	end	
 	
 	local CLASSBAR_WIDTH = db.width - 4
+	if USE_PORTRAIT then
+		CLASSBAR_WIDTH = math.ceil((db.width - (BORDER*2)) - PORTRAIT_WIDTH)
+	end
+	
+	if USE_POWERBAR_OFFSET then
+		CLASSBAR_WIDTH = CLASSBAR_WIDTH - POWERBAR_OFFSET
+	end
+		
 	if USE_MINI_CLASSBAR then
 		CLASSBAR_WIDTH = CLASSBAR_WIDTH * (maxHolyPower - 1) / maxHolyPower
 	end
@@ -588,7 +608,7 @@ function UF:UpdateHarmony()
 	local BORDER = 2
 	local SPACING = 1
 	local USE_PORTRAIT = db.portrait.enable
-	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
+	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT and USING_DX11
 	local PORTRAIT_WIDTH = db.portrait.width
 	local POWERBAR_OFFSET = db.power.offset
 	local USE_POWERBAR = db.power.enable
@@ -865,7 +885,7 @@ function UF:UpdateComboDisplay(event, unit)
 	local USE_MINI_COMBOBAR = db.combobar.fill == "spaced" and USE_COMBOBAR
 	local COMBOBAR_HEIGHT = db.combobar.height
 	local USE_PORTRAIT = db.portrait.enable
-	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT	
+	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT and USING_DX11
 	local PORTRAIT_WIDTH = db.portrait.width
 	
 
