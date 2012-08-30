@@ -523,7 +523,7 @@ function UF:UpdateHoly(event, unit, powerType)
 	end
 	
 	if USE_POWERBAR_OFFSET then
-		CLASSBAR_WIDTH = CLASSBAR_WIDTH - POWERBAR_OFFSET
+		CLASSBAR_WIDTH = CLASSBAR_WIDTH - db.power.offset
 	end
 		
 	if USE_MINI_CLASSBAR then
