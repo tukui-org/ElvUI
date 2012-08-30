@@ -444,6 +444,11 @@ function E:SetupLayout(layout, noDataReset)
 				BossHeaderMover:SetPoint("BOTTOMLEFT",E.UIParent,"BOTTOMLEFT",30,250)
 				E:SaveMoverPosition("BossHeaderMover")
 			end
+			if BossButton then
+				BossButton:ClearAllPoints()
+				BossButton:SetPoint("BOTTOM",E.UIParent,"BOTTOM",425,75)
+				E:SaveMoverPosition("BossButton")
+			end
 		else
 			E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464230"
 			E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTElvUIParentBOTTOMRIGHT-464230"
@@ -461,6 +466,11 @@ function E:SetupLayout(layout, noDataReset)
 				BossHeaderMover:ClearAllPoints()
 				BossHeaderMover:SetPoint("BOTTOMLEFT",E.UIParent,"BOTTOMLEFT",30,250)
 				E:SaveMoverPosition("BossHeaderMover")
+			end
+			if BossButton then
+				BossButton:ClearAllPoints()
+				BossButton:SetPoint("BOTTOM",E.UIParent,"BOTTOM",425,75)
+				E:SaveMoverPosition("BossButton")
 			end
 		end
 	elseif E.db.lowresolutionset then
