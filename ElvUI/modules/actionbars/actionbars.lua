@@ -505,7 +505,7 @@ function AB:DisableBlizzard()
 
 
 	MainMenuBar:EnableMouse(false)
-
+	MainMenuBar:SetAlpha(0)
 	MainMenuExpBar:UnregisterAllEvents()
 	MainMenuExpBar:Hide()
 	MainMenuExpBar:SetParent(UIHider)
