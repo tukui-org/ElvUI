@@ -1,7 +1,7 @@
 local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 
-local removeMenuOptions = {
+--[[local removeMenuOptions = {
 	["SET_FOCUS"] = true,
 	["CLEAR_FOCUS"] = true,
 	["MOVE_PLAYER_FRAME"] = true,
@@ -29,7 +29,7 @@ local function DisableStupidFuckingButtons(self)
 	end
 
 	self:Height(self:GetHeight() - (UIDROPDOWNMENU_BUTTON_HEIGHT * numButtons))
-end
+end]]
 
 function B:KillBlizzard()
 	HelpOpenTicketButtonTutorial:Kill()
@@ -37,5 +37,5 @@ function B:KillBlizzard()
 	HelpPlate:Kill()
 	HelpPlateTooltip:Kill()
 	CompanionsMicroButtonAlert:Kill()
-	DropDownList1:HookScript('OnShow', DisableStupidFuckingButtons)
+	--DropDownList1:HookScript('OnShow', DisableStupidFuckingButtons)
 end
