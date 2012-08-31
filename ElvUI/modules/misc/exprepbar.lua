@@ -6,8 +6,8 @@ FACTION_STANDING_LABEL100 = UNKNOWN
 function M:UpdateExpRepAnchors()
 	local repBar = ReputationBarMover
 	local expBar = ExperienceBarMover
-	
-	if E.db.movers and (E:HasMoverBeenMoved('ExperienceBarMover') or E:HasMoverBeenMoved('ReputationBarMover')) or not repBar or not expBar then return; end
+
+	if (E:HasMoverBeenMoved('ExperienceBarMover') or E:HasMoverBeenMoved('ReputationBarMover')) or not repBar or not expBar then return; end
 	repBar:ClearAllPoints()
 	expBar:ClearAllPoints()
 	
@@ -237,4 +237,6 @@ function M:LoadExpRepBar()
 
 	E:CreateMover(self.expBar, "ExperienceBarMover", "Experience Bar")
 	E:CreateMover(self.repBar, "ReputationBarMover", "Reputation Bar")
+	
+	self:UpdateExpRepAnchors()
 end
