@@ -90,7 +90,7 @@ L["Ascending"] = "Ascendente";
 L["Bag Columns"] = "Colunas dos Sacos";
 L["Bag-Bar"] = "Barra dos Sacos";
 L["Bags"] = "Sacos"
-L["BAGS_DESC"] = "Adjust bag settings for ElvUI." " Ajustar definições dos sacos para a ElvUI."
+L["BAGS_DESC"] = "Ajustar definições dos sacos para a ElvUI."
 L["Bank Columns"] = "Colunas do Banco";
 L["Bar Direction"] = "Direcção da Barra";
 L["Bottom to Top"] = "De baixo para cima";
@@ -130,7 +130,7 @@ L["Y Offset"] = "Cordenada Y"; --Another variation in unitframes yOffset
 L["You must be at a vendor."] = "Tem de estar num vendedor.";
 
 --Buffs and Debuffs
-L['AURAS_DESC'] = 'Configure the aura icons that appear near the minimap.'; "Cinfigurar os icons das auras que aparecem perto do minimapa."
+L['AURAS_DESC'] = "Cinfigurar os icons das auras que aparecem perto do minimapa."
 L['Begin a new row or column after this many auras.'] = "Começar uma nova coluna ou linha depois de tantas auras";
 L['Consolidated Buffs'] = "Consolidar Buffs";
 L['Defines how the group is sorted.'] = "Define como o grupo é organizado";
@@ -290,7 +290,7 @@ L["Your current resolution is %s, this is considered a %s resolution."] = "A sua
 L["Coding:"] = "Codificação:"
 L["Credits"] = "Créditos"
 L["Donations:"] = "Doações:"
-L["ELVUI_CREDITS"] = "I would like to give out a special shout out to the following people for helping me maintain this addon with testing and coding and people who also have helped me through donations. Please note for donations I'm only posting the names of people who PM'd me on the forums, if your name is missing and you wish to have your name added please PM me." "Gostaria de dar um agradecimento especial às seguintes pessoas por me ajudarem a manter este addon, quer testando, codificando, ou através de doações. Em relação às doações, esta lista contém apenas o nome das pessoas que me contactaram através de mensagem privada nos forums, se o seu nome está em falta e gostaria de o ver adicionado, por favor contacte-me por mensagem privada."
+L["ELVUI_CREDITS"] = "Gostaria de dar um agradecimento especial às seguintes pessoas por me ajudarem a manter este addon, quer testando, codificando, ou através de doações. Em relação às doações, esta lista contém apenas o nome das pessoas que me contactaram através de mensagem privada nos forums, se o seu nome está em falta e gostaria de o ver adicionado, por favor contacte-me por mensagem privada."
 L["Testing:"] = "Testar:"
 
 --DataTexts
@@ -405,7 +405,7 @@ L["General"] = "Geral"
 L['Left'] = "Esquerda"
 L["Log Taints"] = true;
 L["Login Message"] = "Mensagem de Entrada"
-L["LOGIN_MSG"] = "Welcome to %sElvUI|r version %s%s|r, type /ec to access the in-game configuration menu. If you are in need of technical support you can visit us at http://www.tukui.org" "Bem vindo à versão %s%s|r da %sElvUI|r, escreva /ec para aceder ao menu de configuração em jogo. Se precisar de suporte técnico visite-nos no site http://www.tukui.org";
+L["LOGIN_MSG"] = "Bem vindo à versão %s%s|r da %sElvUI|r, escreva /ec para aceder ao menu de configuração em jogo. Se precisar de suporte técnico visite-nos no site http://www.tukui.org";
 L["Loot Roll"] = "Rolagem de Saques"
 L["Loot"] = "Saque"
 L["Map Alpha While Moving"] = "Transparência do mapa em movimento";
