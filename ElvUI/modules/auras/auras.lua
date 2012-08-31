@@ -286,8 +286,14 @@ function A:Initialize()
 	TemporaryEnchantFrame:SetParent(self.EnchantHeader)
 	
 	for i = 1, 2 do
-		A:UpdateWeapon(_G["TempEnchant"..i])
+		A:UpdateWeapon(_G["TempEnchant"..i])	
 	end
+	
+	hooksecurefunc(TempEnchant1, 'SetPoint', function(self, _, parent)
+		if parent == TemporaryEnchantFrame then
+			A.WeaponPostDrag(TempEnchantMover)
+		end
+	end)		
 	
 	E:CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, nil, A.PostDrag)
 	E:CreateMover(self.EnchantHeader, 'TempEnchantMover', 'Weapons', nil, nil, A.WeaponPostDrag)
