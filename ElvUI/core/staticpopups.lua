@@ -2,15 +2,14 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 
 E.PopupDialogs = {};
 E.StaticPopup_DisplayedFrames = {};
-E.PopupDialogs['FAILED_UISCALE'] = {
-	text = L['You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option.'],
+E.PopupDialogs['TALENT_TAINT'] = {
+	text = L["A taint has occured that is preventing you from using your talents/glyphs, this can happen if you've inspected someone. Unfortionatly theres nothing we can do to fix it, please reload your ui and try again."],
 	button1 = ACCEPT,
 	button2 = CANCEL,
-	OnAccept = function() E.db.general.autoscale = false; ReloadUI(); end,
+	OnAccept = function() ReloadUI(); end,
 	timeout = 0,
 	whileDead = 1,	
 	hideOnEscape = false,
-	preferredIndex = 3,
 }
 
 E.PopupDialogs['FAILED_UISCALE'] = {
@@ -21,7 +20,16 @@ E.PopupDialogs['FAILED_UISCALE'] = {
 	timeout = 0,
 	whileDead = 1,	
 	hideOnEscape = false,
-	preferredIndex = 3,
+}
+
+E.PopupDialogs['FAILED_UISCALE'] = {
+	text = L['You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option.'],
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	OnAccept = function() E.db.general.autoscale = false; ReloadUI(); end,
+	timeout = 0,
+	whileDead = 1,	
+	hideOnEscape = false,
 }
 
 E.PopupDialogs["CONFIG_RL"] = {
@@ -32,7 +40,6 @@ E.PopupDialogs["CONFIG_RL"] = {
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
-	preferredIndex = 3,
 }
 
 E.PopupDialogs["GLOBAL_RL"] = {
@@ -43,7 +50,6 @@ E.PopupDialogs["GLOBAL_RL"] = {
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
-	preferredIndex = 3,
 }
 
 E.PopupDialogs["PRIVATE_RL"] = {
@@ -54,7 +60,6 @@ E.PopupDialogs["PRIVATE_RL"] = {
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
-	preferredIndex = 3,
 }
 
 E.PopupDialogs["KEYBIND_MODE"] = {
@@ -66,7 +71,6 @@ E.PopupDialogs["KEYBIND_MODE"] = {
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
-	preferredIndex = 3,
 }
 
 E.PopupDialogs["DELETE_GRAYS"] = {
@@ -77,7 +81,6 @@ E.PopupDialogs["DELETE_GRAYS"] = {
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
-	preferredIndex = 3,
 }
 
 E.PopupDialogs["BUY_BANK_SLOT"] = {
@@ -93,7 +96,6 @@ E.PopupDialogs["BUY_BANK_SLOT"] = {
 	hasMoneyFrame = 1,
 	timeout = 0,
 	hideOnEscape = 1,
-	preferredIndex = 3,
 }
 
 E.PopupDialogs["CANNOT_BUY_BANK_SLOT"] = {
@@ -101,7 +103,6 @@ E.PopupDialogs["CANNOT_BUY_BANK_SLOT"] = {
 	button1 = ACCEPT,
 	timeout = 0,
 	whileDead = 1,	
-	preferredIndex = 3,
 }
 
 E.PopupDialogs["NO_BANK_BAGS"] = {
@@ -109,7 +110,6 @@ E.PopupDialogs["NO_BANK_BAGS"] = {
 	button1 = ACCEPT,
 	timeout = 0,
 	whileDead = 1,	
-	preferredIndex = 3
 }
 
 E.PopupDialogs["RESETUI_CHECK"] = {
@@ -121,7 +121,6 @@ E.PopupDialogs["RESETUI_CHECK"] = {
 	end,
 	timeout = 0,
 	whileDead = 1,
-	preferredIndex = 3,
 }
 
 E.PopupDialogs["APRIL_FOOLS"] = {
@@ -129,7 +128,6 @@ E.PopupDialogs["APRIL_FOOLS"] = {
 	button1 = ACCEPT,
 	timeout = 0,
 	whileDead = 1,	
-	preferredIndex = 3
 }
 
 
@@ -140,7 +138,6 @@ E.PopupDialogs["DISBAND_RAID"] = {
 	OnAccept = function() E:GetModule('Misc'):DisbandRaidGroup() end,
 	timeout = 0,
 	whileDead = 1,
-	preferredIndex = 3,
 }
 
 E.PopupDialogs["CONFIRM_LOOT_DISTRIBUTION"] = {
