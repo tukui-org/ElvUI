@@ -630,7 +630,11 @@ function E:Initialize()
 			for optionGroup, _ in pairs(self.db.unitframe.units[unit]) do
 				if self.db.unitframe.units[unit][optionGroup] and type(self.db.unitframe.units[unit][optionGroup]) == 'table' then
 					if self.db.unitframe.units[unit][optionGroup].text_format and invalidValues[self.db.unitframe.units[unit][optionGroup].text_format] then
-						self.db.unitframe.units[unit][optionGroup].text_format = self.DF['profile'].unitframe.units[unit][optionGroup].text_format
+						if P.unitframe.units[unit] then
+							self.db.unitframe.units[unit][optionGroup].text_format = P.unitframe.units[unit][optionGroup].text_format
+						else
+							P.unitframe.units[unit] = nil; --this is old old code that shoulda been removed.. pre 3.5 code
+						end
 					end
 				end
 			end

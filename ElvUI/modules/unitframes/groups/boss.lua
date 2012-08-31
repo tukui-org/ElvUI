@@ -46,7 +46,7 @@ function UF:Update_BossFrames(frame, db)
 	local POWERBAR_WIDTH = db.width - (BORDER*2)
 		
 	local USE_PORTRAIT = db.portrait.enable
-	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
+	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT and USING_DX11
 	local PORTRAIT_WIDTH = db.portrait.width
 	
 	local unit = self.unit
