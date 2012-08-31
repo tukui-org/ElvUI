@@ -218,6 +218,7 @@ Example: Interface\AddOns\ElvUI\media\textures\copy
 Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = true;
 
 --Config / Install
+L["Auras Set"] = true;
 L["Caster DPS"] = true;
 L["Chat Set"] = true;
 L['Choose a theme layout you wish to use for your initial setup.'] = true;
@@ -276,6 +277,11 @@ L['You can always change fonts and colors of any element of elvui from the in-ga
 L["You can now choose what layout you wish to use based on your combat role."] = true;
 L["You may need to further alter these settings depending how low you resolution is."] = true;
 L["Your current resolution is %s, this is considered a %s resolution."] = true;
+L["Auras System"] = true;
+L["Select the type of aura system you want to use with ElvUI's unitframes. The integrated system utilizes both aura-bars and aura-icons. The icons only system will display only icons and aurabars won't be used."] = true;
+L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = true;
+L['Integrated'] = true;
+L['Icons Only'] = true;
 
 --Credits
 L["Coding:"] = true;
@@ -568,6 +574,7 @@ L["A setting you have changed will change an option for this character only. Thi
 L["Are you sure you want to delete all your gray items?"] = true;
 L["Are you sure you want to disband the group?"] = true;
 L["Are you sure you want to reset every mover back to it's default position?"] = true;
+L["Because of the mass confusion caused by the new aura system I've implemented a new step to the installation process. This is optional. If you like how your auras are setup go to the last setup and click finished to not be prompted again."] = true;
 L["Can't buy anymore slots!"] = true;
 L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = true;
 L["One or more of the changes you have made require a ReloadUI."] = true;

@@ -2,6 +2,16 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 
 E.PopupDialogs = {};
 E.StaticPopup_DisplayedFrames = {};
+
+E.PopupDialogs['CONFIGAURA_SET'] = {
+	text = L["Because of the mass confusion caused by the new aura system I've implemented a new step to the installation process. This is optional. If you like how your auras are setup go to the last setup and click finished to not be prompted again."],
+	button1 = ACCEPT,
+	OnAccept = E.noop,
+	timeout = 0,
+	whileDead = 1,	
+	hideOnEscape = false,	
+}
+
 E.PopupDialogs['TALENT_TAINT'] = {
 	text = L["A taint has occured that is preventing you from using your talents/glyphs, this can happen if you've inspected someone. Unfortionatly theres nothing we can do to fix it, please reload your ui and try again."],
 	button1 = ACCEPT,
