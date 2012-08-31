@@ -3,6 +3,10 @@ local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI", "zhTW")
 if not L then return end
 
+--TEMP
+L['Portraits are temporarily forced to 2d for non directx 11 users.'] = true;
+L["A taint has occured that is preventing you from using your talents/glyphs, this can happen if you've inspected someone. Unfortionatly theres nothing we can do to fix it, please reload your ui and try again."] = true;
+
 --ActionBars 快捷列
 L[" |cff00ff00bound to |r"] = " |cff00ff00綁定至 |r";
 L["Action Paging"] = "快捷列切換";
