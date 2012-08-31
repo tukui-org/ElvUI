@@ -7,7 +7,7 @@ function TOTEMS:Update(event)
 	local displayedTotems = 0
 	for i=1, MAX_TOTEMS do
 		local haveTotem, name, startTime, duration, icon = GetTotemInfo(i);
-		if haveTotem then
+		if haveTotem and icon and icon ~= '' then
 			self.bar[i]:Show()
 			self.bar[i].iconTexture:SetTexture(icon)
 			displayedTotems = displayedTotems + 1

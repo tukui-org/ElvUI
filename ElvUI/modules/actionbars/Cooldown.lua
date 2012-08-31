@@ -123,6 +123,7 @@ function AB:OnSetCooldown(cd, start, duration)
 	if cd.noOCC then return end
 	
 	local button = cd.originalParent or cd:GetParent()
+	if not button then return; end
 	local action = button._state_action or button.action
 	if action then
 		local charges = GetActionCharges(action)

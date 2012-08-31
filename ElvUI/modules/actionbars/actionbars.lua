@@ -298,7 +298,7 @@ function AB:UpdateBar1Paging()
 	local bar3Option = InterfaceOptionsActionBarsPanelBottomLeft
 	local bar4Option = InterfaceOptionsActionBarsPanelRightTwo
 	local bar5Option = InterfaceOptionsActionBarsPanelRight
-
+	
 	if (self.db.bar2.enabled and not bar2Option:GetChecked()) or (not self.db.bar2.enabled and bar2Option:GetChecked())  then
 		bar2Option:Click()
 	end
@@ -509,6 +509,15 @@ function AB:DisableBlizzard()
 	MainMenuExpBar:UnregisterAllEvents()
 	MainMenuExpBar:Hide()
 	MainMenuExpBar:SetParent(UIHider)
+	
+	for i=1, MainMenuBar:GetNumChildren() do
+		local child = select(i, MainMenuBar:GetChildren())
+		if child then
+			child:UnregisterAllEvents()
+			child:Hide()
+			child:SetParent(UIHider)
+		end
+	end
 
 	ReputationWatchBar:UnregisterAllEvents()
 	ReputationWatchBar:Hide()
