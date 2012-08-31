@@ -1242,7 +1242,7 @@ function UF:SmartAuraDisplay()
 		local x, y = E:GetXYOffset(db.buffs.anchorPoint)
 		
 		buffs:ClearAllPoints()
-		buffs:Point(E.InversePoints[db.buffs.anchorPoint], self, db.buffs.anchorPoint, x, y)
+		buffs:Point(E.InversePoints[db.buffs.anchorPoint], self, db.buffs.anchorPoint, x + db.buffs.xOffset, y + db.buffs.yOffset)
 		
 		local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
 		if db.aurabar.anchorPoint == 'BELOW' then
@@ -1257,7 +1257,7 @@ function UF:SmartAuraDisplay()
 		local x, y = E:GetXYOffset(db.debuffs.anchorPoint)
 		
 		debuffs:ClearAllPoints()
-		debuffs:Point(E.InversePoints[db.debuffs.anchorPoint], self, db.debuffs.anchorPoint, x, y)	
+		debuffs:Point(E.InversePoints[db.debuffs.anchorPoint], self, db.debuffs.anchorPoint, x + db.debuffs.xOffset, y + db.debuffs.yOffset)	
 
 		local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
 		if db.aurabar.anchorPoint == 'BELOW' then
