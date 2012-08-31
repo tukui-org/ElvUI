@@ -626,10 +626,10 @@ function E:Initialize()
 	end	
 	
 	for unit, _ in pairs(self.db.unitframe.units) do
-		if type(self.db.unitframe.units[unit]) == 'table' then
+		if self.db.unitframe.units[unit] and type(self.db.unitframe.units[unit]) == 'table' then
 			for optionGroup, _ in pairs(self.db.unitframe.units[unit]) do
-				if type(self.db.unitframe.units[unit][optionGroup]) == 'table' then
-					if invalidValues[self.db.unitframe.units[unit][optionGroup].text_format] then
+				if self.db.unitframe.units[unit][optionGroup] and type(self.db.unitframe.units[unit][optionGroup]) == 'table' then
+					if self.db.unitframe.units[unit][optionGroup].text_format and invalidValues[self.db.unitframe.units[unit][optionGroup].text_format] then
 						self.db.unitframe.units[unit][optionGroup].text_format = self.DF['profile'].unitframe.units[unit][optionGroup].text_format
 					end
 				end
