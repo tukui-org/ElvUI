@@ -6,7 +6,7 @@ local ElvUF = ns.oUF
 local selectedSpell;
 local selectedFilter;
 local filters;
-local USING_DX11 = GetCVar("gxapi") == "D3D11"
+local USING_DX11 = (GetCVar("gxapi") == "D3D11" or IsMacClient())
 function UF:CreateCustomTextGroup(unit, objectName)
 	if E.Options.args.unitframe.args[unit].args[objectName] then return end
 	

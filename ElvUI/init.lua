@@ -76,10 +76,6 @@ function AddOn:OnInitialize()
 	
 	self:UIScale();
 	self:UpdateMedia();
-
-	if type(self.db.unitframe.units.arena.pvpTrinket) == 'boolean' then
-		self.db.unitframe.units.arena.pvpTrinket = table.copy(self.DF["profile"].unitframe.units.arena.pvpTrinket, true)
-	end	
 	
 	self:RegisterEvent('PLAYER_LOGIN', 'Initialize')
 	self:Contruct_StaticPopups()

@@ -6,7 +6,7 @@ local abs = math.abs
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
-local USING_DX11 = GetCVar("gxapi") == "D3D11"
+local USING_DX11 = (GetCVar("gxapi") == "D3D11" or IsMacClient())
 
 local function CheckFilter(type, isFriend)
 	if type == 'ALL' or (type == 'FRIENDLY' and isFriend) or (type == 'ENEMY' and not isFriend) then
@@ -523,7 +523,7 @@ function UF:UpdateHoly(event, unit, powerType)
 	end
 	
 	if USE_POWERBAR_OFFSET then
-		CLASSBAR_WIDTH = CLASSBAR_WIDTH - POWERBAR_OFFSET
+		CLASSBAR_WIDTH = CLASSBAR_WIDTH - db.power.offset
 	end
 		
 	if USE_MINI_CLASSBAR then
