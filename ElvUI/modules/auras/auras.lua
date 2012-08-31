@@ -179,6 +179,7 @@ function A:CreateAuraHeader(filter)
 end
 
 function A:PostDrag(position)
+	if InCombatLockdown() then return; end
 	local headers = {ElvUIPlayerBuffs,ElvUIPlayerDebuffs}
 	for _, header in pairs(headers) do
 		if header then
