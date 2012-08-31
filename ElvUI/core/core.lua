@@ -651,8 +651,12 @@ function E:Initialize()
 
 	self.initialized = true
 	
-	if self.db.install_complete == nil or (self.db.install_complete and type(self.db.install_complete) == 'boolean') or (self.db.install_complete and type(tonumber(self.db.install_complete)) == 'number' and tonumber(self.db.install_complete) <= 3.83) then
+	if self.db.install_complete == nil then
 		self:Install()
+	elseif (self.db.install_complete and type(self.db.install_complete) == 'boolean') or (self.db.install_complete and type(tonumber(self.db.install_complete)) == 'number' and tonumber(self.db.install_complete) <= 4.15) then
+		self:Install()
+		ElvUIInstallFrame.SetPage(7)
+		self:StaticPopup_Show('CONFIGAURA_SET')
 	end
 	
 	if not string.find(date(), '04/01/') then	
