@@ -13,6 +13,14 @@ local opposites = {
 	['BUFFS'] = 'DEBUFFS'
 }
 
+local removeMenuOptions = {
+	["SET_FOCUS"] = true,
+	["CLEAR_FOCUS"] = true,
+	["MOVE_PLAYER_FRAME"] = true,
+	["MOVE_TARGET_FRAME"] = true,
+	["PET_ABANDON"] = E.myclass ~= 'HUNTER',
+}
+
 UF['headerstoload'] = {}
 UF['unitgroupstoload'] = {}
 UF['unitstoload'] = {}
@@ -603,11 +611,12 @@ function UF:Initialize()
 	ElvUF:RegisterStyle('ElvUF', function(frame, unit)
 		self:Construct_UF(frame, unit)
 	end)
-		
+	
 	self:LoadUnits()
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent('ARENA_PREP_OPPONENT_SPECIALIZATIONS', 'UpdatePrep')
 	self:RegisterEvent('ARENA_OPPONENT_UPDATE', 'UpdatePrep')
+
 	if E.private["unitframe"].disableBlizzard then
 		self:DisableBlizzard()	
 		self:SecureHook('UnitFrameThreatIndicator_Initialize')
@@ -620,6 +629,14 @@ function UF:Initialize()
 		else
 			ElvUF:DisableBlizzard('arena')
 		end
+			
+		for _, menu in pairs(UnitPopupMenus) do
+			for index = #menu, 1, -1 do
+				if removeMenuOptions[menu[index]] then
+					table.remove(menu, index)
+				end
+			end
+		end				
 
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', 'DisableBlizzard')
 	else

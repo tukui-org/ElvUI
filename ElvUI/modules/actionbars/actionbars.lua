@@ -293,7 +293,7 @@ function AB:RemoveBindings()
 end
 
 function AB:UpdateBar1Paging()
-	if E.private.actionbar.enable ~= true then return; end
+	if (E.private.actionbar.enable ~= true or InCombatLockdown()) or not self.isInitialized then return; end
 	local bar2Option = InterfaceOptionsActionBarsPanelBottomRight
 	local bar3Option = InterfaceOptionsActionBarsPanelBottomLeft
 	local bar4Option = InterfaceOptionsActionBarsPanelRightTwo
@@ -749,6 +749,10 @@ function AB:ActionButton_ShowOverlayGlow(frame)
 	frame.overlay:SetOutside(frame, size, size)
 end
 
+function AB:PLAYER_ENTERING_WORLD()
+	self.isInitialized = true
+end
+
 function AB:Initialize()
 	self.db = E.db.actionbar
 	if E.private.actionbar.enable ~= true then return; end
@@ -775,6 +779,7 @@ function AB:Initialize()
 	self:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
 	self:RegisterEvent('UPDATE_VEHICLE_ACTIONBAR', 'VehicleFix')
 	self:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR', 'VehicleFix')
+	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent('CVAR_UPDATE')
 	self:ReassignBindings()
 	

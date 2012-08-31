@@ -248,7 +248,9 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.general.valuecolor = E:GetColor(.09, .819, .513)
 	end
 	
-	E:UpdateAll(true)
+	if not noDisplayMsg then
+		E:UpdateAll(true)
+	end
 	
 	InstallStatus:SetStatusBarColor(unpack(E['media'].rgbvaluecolor))
 	

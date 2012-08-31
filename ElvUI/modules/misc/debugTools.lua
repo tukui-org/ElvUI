@@ -121,6 +121,16 @@ function D:PLAYER_REGEN_DISABLED()
 end
 
 function D:TaintError(event, addonName, addonFunc)
+	if PlayerTalentFrame and PlayerTalentFrame:IsShown() then
+		for i = 1, 4, 1 do
+			if _G['StaticPopup'..i] then
+				_G['StaticPopup'..i]:Hide()
+			end
+		end
+		
+		E:StaticPopup_Show('TALENT_TAINT')
+	end
+
 	if GetCVarBool('scriptErrors') ~= 1 or E.db.general.taintLog ~= true then return end
 	ScriptErrorsFrame_OnError(L["%s: %s tried to call the protected function '%s'."]:format(event, addonName or "<name>", addonFunc or "<func>"), false)
 end
