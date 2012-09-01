@@ -65,6 +65,7 @@ L["Mouse Over"] = true; --Also used in Bags
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = true;
 L["No bindings set."] = true;
 L["Pet Bar"] = true;
+L['Remove Bar %d Action Page'] = true;
 L["Restore Bar"] = true;
 L["Restore the actionbars default settings"] = true;
 L["Seconds"] = true;
@@ -574,7 +575,7 @@ L["A setting you have changed will change an option for this character only. Thi
 L["Are you sure you want to delete all your gray items?"] = true;
 L["Are you sure you want to disband the group?"] = true;
 L["Are you sure you want to reset every mover back to it's default position?"] = true;
-L["Because of the mass confusion caused by the new aura system I've implemented a new step to the installation process. This is optional. If you like how your auras are setup go to the last setup and click finished to not be prompted again."] = true;
+L["Because of the mass confusion caused by the new aura system I've implemented a new step to the installation process. This is optional. If you like how your auras are setup go to the last step and click finished to not be prompted again."] = true;
 L["Can't buy anymore slots!"] = true;
 L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = true;
 L["One or more of the changes you have made require a ReloadUI."] = true;

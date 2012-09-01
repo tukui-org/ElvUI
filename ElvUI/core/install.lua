@@ -184,10 +184,7 @@ local function SetupCVars()
 
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
-	
-	local AB = E:GetModule('ActionBars')
-	AB:UpdateBar1Paging()
-	
+		
 	InstallStepComplete.message = L["CVars Set"]
 	InstallStepComplete:Show()					
 end	
@@ -555,21 +552,21 @@ end
 
 
 local function SetupAuras(useAuraBars)
-	if useAuraBars then
-		E:CopyTable(E.db.unitframe.units.player.buffs, P.unitframe.units.player.buffs)
-		E:CopyTable(E.db.unitframe.units.player.debuffs, P.unitframe.units.player.debuffs)
-		E:CopyTable(E.db.unitframe.units.player.aurabar, P.unitframe.units.player.aurabar)
-		
-		E:CopyTable(E.db.unitframe.units.target.buffs, P.unitframe.units.target.buffs)
-		E:CopyTable(E.db.unitframe.units.target.debuffs, P.unitframe.units.target.debuffs)	
-		E:CopyTable(E.db.unitframe.units.target.aurabar, P.unitframe.units.target.aurabar)
-		E.db.unitframe.units.target.smartAuraDisplay = P.unitframe.units.target.smartAuraDisplay
-		
-		E:CopyTable(E.db.unitframe.units.focus.buffs, P.unitframe.units.focus.buffs)
-		E:CopyTable(E.db.unitframe.units.focus.debuffs, P.unitframe.units.focus.debuffs)	
-		E:CopyTable(E.db.unitframe.units.focus.aurabar, P.unitframe.units.focus.aurabar)
-		E.db.unitframe.units.focus.smartAuraDisplay = P.unitframe.units.focus.smartAuraDisplay		
-	else
+	E:CopyTable(E.db.unitframe.units.player.buffs, P.unitframe.units.player.buffs)
+	E:CopyTable(E.db.unitframe.units.player.debuffs, P.unitframe.units.player.debuffs)
+	E:CopyTable(E.db.unitframe.units.player.aurabar, P.unitframe.units.player.aurabar)
+	
+	E:CopyTable(E.db.unitframe.units.target.buffs, P.unitframe.units.target.buffs)
+	E:CopyTable(E.db.unitframe.units.target.debuffs, P.unitframe.units.target.debuffs)	
+	E:CopyTable(E.db.unitframe.units.target.aurabar, P.unitframe.units.target.aurabar)
+	E.db.unitframe.units.target.smartAuraDisplay = P.unitframe.units.target.smartAuraDisplay
+	
+	E:CopyTable(E.db.unitframe.units.focus.buffs, P.unitframe.units.focus.buffs)
+	E:CopyTable(E.db.unitframe.units.focus.debuffs, P.unitframe.units.focus.debuffs)	
+	E:CopyTable(E.db.unitframe.units.focus.aurabar, P.unitframe.units.focus.aurabar)
+	E.db.unitframe.units.focus.smartAuraDisplay = P.unitframe.units.focus.smartAuraDisplay		
+	
+	if not useAuraBars then
 		--PLAYER
 		E.db.unitframe.units.player.buffs.enable = true;
 		E.db.unitframe.units.player.buffs.attachTo = 'FRAME';

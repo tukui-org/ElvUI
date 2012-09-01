@@ -298,7 +298,7 @@ function AB:UpdateBar1Paging()
 	local bar3Option = InterfaceOptionsActionBarsPanelBottomLeft
 	local bar4Option = InterfaceOptionsActionBarsPanelRightTwo
 	local bar5Option = InterfaceOptionsActionBarsPanelRight
-	
+
 	if (self.db.bar2.enabled and not bar2Option:GetChecked()) or (not self.db.bar2.enabled and bar2Option:GetChecked())  then
 		bar2Option:Click()
 	end
@@ -341,9 +341,7 @@ function AB:UpdateButtonSettings()
 			self["handledbuttons"][button] = nil
 		end
 	end
-	
-	self:UpdateBar1Paging()
-	
+
 	for i=1, 5 do
 		self:PositionAndSizeBar('bar'..i)
 	end	
@@ -446,6 +444,18 @@ end
 function AB:Button_OnLeave(button)
 	local bar = button:GetParent()
 	E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
+end
+
+function AB:BlizzardOptionsPanel_OnEvent()
+	InterfaceOptionsActionBarsPanelBottomRight.Text:SetText(format(L['Remove Bar %d Action Page'], 2))
+	InterfaceOptionsActionBarsPanelBottomLeft.Text:SetText(format(L['Remove Bar %d Action Page'], 3))
+	InterfaceOptionsActionBarsPanelRightTwo.Text:SetText(format(L['Remove Bar %d Action Page'], 4))
+	InterfaceOptionsActionBarsPanelRight.Text:SetText(format(L['Remove Bar %d Action Page'], 5))
+	
+	InterfaceOptionsActionBarsPanelBottomRight:SetScript('OnEnter', nil)
+	InterfaceOptionsActionBarsPanelBottomLeft:SetScript('OnEnter', nil)
+	InterfaceOptionsActionBarsPanelRightTwo:SetScript('OnEnter', nil)
+	InterfaceOptionsActionBarsPanelRight:SetScript('OnEnter', nil)
 end
 
 function AB:DisableBlizzard()
@@ -555,7 +565,19 @@ function AB:DisableBlizzard()
 	
 	InterfaceOptionsCombatPanelActionButtonUseKeyDown:SetScale(0.0001)
 	InterfaceOptionsCombatPanelActionButtonUseKeyDown:SetAlpha(0)
-	InterfaceOptionsFrameCategoriesButton6:SetScale(0.00001)
+	InterfaceOptionsActionBarsPanelSecureAbilityToggle:SetScale(0.0001)
+	InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetScale(0.0001)
+	InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetScale(0.0001)
+	InterfaceOptionsActionBarsPanelLockActionBars:SetScale(0.0001)
+	InterfaceOptionsActionBarsPanelSecureAbilityToggle:SetAlpha(0)
+	InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetAlpha(0)
+	InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetAlpha(0)
+	InterfaceOptionsActionBarsPanelLockActionBars:SetAlpha(0)
+	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetAlpha(0)
+	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetScale(0.00001)
+
+	self:SecureHook('BlizzardOptionsPanel_OnEvent')
+	--InterfaceOptionsFrameCategoriesButton6:SetScale(0.00001)
 	if PlayerTalentFrame then
 		PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 	else
