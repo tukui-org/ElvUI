@@ -160,10 +160,7 @@ local function SetupCVars()
 	SetCVar('SpamFilter', 0) --Blocks mmo-champion.com, dumb... ElvUI one is more effeciant anyways.
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
-	
-	local AB = E:GetModule('ActionBars')
-	AB:UpdateBar1Paging()
-	
+		
 	InstallStepComplete.message = L["CVars Set"]
 	InstallStepComplete:Show()					
 end	
