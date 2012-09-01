@@ -446,6 +446,18 @@ function AB:Button_OnLeave(button)
 	E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
 end
 
+function AB:BlizzardOptionsPanel_OnEvent()
+	InterfaceOptionsActionBarsPanelBottomRight.Text:SetText(format(L['Remove Bar %d Action Page'], 2))
+	InterfaceOptionsActionBarsPanelBottomLeft.Text:SetText(format(L['Remove Bar %d Action Page'], 3))
+	InterfaceOptionsActionBarsPanelRightTwo.Text:SetText(format(L['Remove Bar %d Action Page'], 4))
+	InterfaceOptionsActionBarsPanelRight.Text:SetText(format(L['Remove Bar %d Action Page'], 5))
+	
+	InterfaceOptionsActionBarsPanelBottomRight:SetScript('OnEnter', nil)
+	InterfaceOptionsActionBarsPanelBottomLeft:SetScript('OnEnter', nil)
+	InterfaceOptionsActionBarsPanelRightTwo:SetScript('OnEnter', nil)
+	InterfaceOptionsActionBarsPanelRight:SetScript('OnEnter', nil)
+end
+
 function AB:DisableBlizzard()
 	-- Hidden parent frame
 	local UIHider = CreateFrame("Frame")
@@ -563,7 +575,8 @@ function AB:DisableBlizzard()
 	InterfaceOptionsActionBarsPanelLockActionBars:SetAlpha(0)
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetAlpha(0)
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetScale(0.00001)
-	
+
+	self:SecureHook('BlizzardOptionsPanel_OnEvent')
 	--InterfaceOptionsFrameCategoriesButton6:SetScale(0.00001)
 	if PlayerTalentFrame then
 		PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")

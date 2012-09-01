@@ -65,6 +65,7 @@ L["Mouse Over"] = true; --Also used in Bags
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = true;
 L["No bindings set."] = true;
 L["Pet Bar"] = true;
+L['Remove Bar %d Action Page'] = true;
 L["Restore Bar"] = true;
 L["Restore the actionbars default settings"] = true;
 L["Seconds"] = true;
