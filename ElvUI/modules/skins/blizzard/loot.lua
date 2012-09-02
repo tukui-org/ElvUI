@@ -65,7 +65,43 @@ local function LoadSkin()
 			end
 		end
 	end
-	hooksecurefunc("LootHistoryFrame_FullUpdate", UpdateLoots)	
+	hooksecurefunc("LootHistoryFrame_FullUpdate", UpdateLoots)
+
+	--masterloot
+	MasterLooterFrame:StripTextures()
+	MasterLooterFrame:SetTemplate()
+	MasterLooterFrame:SetFrameStrata('FULLSCREEN_DIALOG')
+	
+	hooksecurefunc("MasterLooterFrame_Show", function()
+		local b = MasterLooterFrame.Item
+		if b then
+			local i = b.Icon
+			local icon = i:GetTexture()
+			local c = ITEM_QUALITY_COLORS[LootFrame.selectedQuality]
+
+			b:StripTextures()
+			i:SetTexture(icon)
+			i:SetTexCoord(unpack(E.TexCoords))
+			b:CreateBackdrop()
+			b.backdrop:SetOutside(i)
+			b.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
+		end
+
+		for i=1, MasterLooterFrame:GetNumChildren() do
+			local child = select(i, MasterLooterFrame:GetChildren())
+			if child and not child.isSkinned and not child:GetName() then
+				if child:GetObjectType() == "Button" then
+					if child:GetPushedTexture() then
+						S:HandleCloseButton(child)
+					else
+						child:SetTemplate()
+						child:StyleButton()
+					end
+					child.isSkinned = true
+				end
+			end
+		end
+	end) 
 end
 
 S:RegisterSkin("ElvUI", LoadSkin)
