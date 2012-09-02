@@ -502,8 +502,7 @@ function AB:DisableBlizzard()
 	end
 
 	ActionBarController:UnregisterAllEvents()
-	ActionBarController:Hide()
-	ActionBarController:SetParent(UIHider)
+	ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
 	
 	MainMenuBar:EnableMouse(false)
 	MainMenuBar:SetAlpha(0)
