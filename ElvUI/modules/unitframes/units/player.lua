@@ -961,10 +961,10 @@ function UF:Update_PlayerFrame(frame, db)
 			if db.aurabar.anchorPoint == 'BELOW' then
 				anchorPoint, anchorTo = 'TOP', 'BOTTOM'
 			end
-			
+
 			auraBars:ClearAllPoints()
-			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT')
-			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', -POWERBAR_OFFSET, 0)
+			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', (attachTo == frame and anchorTo == 'BOTTOM') and POWERBAR_OFFSET or 0, 0)
+			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', attachTo == frame and POWERBAR_OFFSET * (anchorTo == 'BOTTOM' and 0 or -1) or 0, 0)
 
 			auraBars.buffColor = {buffColor.r, buffColor.g, buffColor.b}
 			auraBars.debuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}

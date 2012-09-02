@@ -238,7 +238,7 @@ function AB:CreateBar(id)
 		else
 			self:Show();
 		end	
-	]])	
+	]])
 	
 	self["handledBars"]['bar'..id] = bar;
 	self:PositionAndSizeBar('bar'..id);
@@ -348,12 +348,6 @@ function AB:UpdateButtonSettings()
 	self:PositionAndSizeBarPet()
 	self:PositionAndSizeBarShapeShift()
 		
-	for barName, bar in pairs(self["handledBars"]) do
-		self:UpdateButtonConfig(bar, bar.bindButtons)
-	end
-end
-
-function AB:CVAR_UPDATE(event)
 	for barName, bar in pairs(self["handledBars"]) do
 		self:UpdateButtonConfig(bar, bar.bindButtons)
 	end
@@ -505,15 +499,11 @@ function AB:DisableBlizzard()
 		_G['MultiCastActionButton'..i]:Hide()
 		_G['MultiCastActionButton'..i]:UnregisterAllEvents()
 		_G['MultiCastActionButton'..i]:SetAttribute("statehidden", true)
-		
-		--[[for index, button in pairs(ActionBarButtonEventsFrame.frames) do			
-			table.remove(ActionBarButtonEventsFrame.frames, index)
-		end]]
 	end
 
-	MultiCastActionBarFrame.ignoreFramePositionManager = true
-
-
+	ActionBarController:UnregisterAllEvents()
+	ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
+	
 	MainMenuBar:EnableMouse(false)
 	MainMenuBar:SetAlpha(0)
 	MainMenuExpBar:UnregisterAllEvents()
@@ -780,10 +770,6 @@ function AB:ActionButton_ShowOverlayGlow(frame)
 	frame.overlay:SetOutside(frame, size, size)
 end
 
-function AB:PLAYER_ENTERING_WORLD()
-	self.isInitialized = true
-end
-
 function AB:Initialize()
 	self.db = E.db.actionbar
 	if E.private.actionbar.enable ~= true then return; end
@@ -810,8 +796,6 @@ function AB:Initialize()
 	self:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
 	self:RegisterEvent('UPDATE_VEHICLE_ACTIONBAR', 'VehicleFix')
 	self:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR', 'VehicleFix')
-	self:RegisterEvent('PLAYER_ENTERING_WORLD')
-	self:RegisterEvent('CVAR_UPDATE')
 	self:ReassignBindings()
 	
 	self:SecureHook('ActionButton_ShowOverlayGlow')

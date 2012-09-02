@@ -1934,6 +1934,7 @@ E.Options.args.unitframe.args.target = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
+					set = function(info, value) E.db.unitframe.units['target']['buffs'][ info[#info] ] = value; E.db.unitframe.units['target'].smartAuraDisplay = 'DISABLED'; UF:CreateAndUpdateUF('target') end,
 				},			
 				perrow = {
 					type = 'range',
@@ -2051,6 +2052,7 @@ E.Options.args.unitframe.args.target = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
+					set = function(info, value) E.db.unitframe.units['target']['debuffs'][ info[#info] ] = value; E.db.unitframe.units['target'].smartAuraDisplay = 'DISABLED'; UF:CreateAndUpdateUF('target') end,
 				},			
 				perrow = {
 					type = 'range',
@@ -2287,6 +2289,7 @@ E.Options.args.unitframe.args.target = {
 					type = 'toggle',
 					order = 1,
 					name = L['Enable'],
+					set = function(info, value) E.db.unitframe.units['target']['aurabar'][ info[#info] ] = value; E.db.unitframe.units['target'].smartAuraDisplay = 'DISABLED'; UF:CreateAndUpdateUF('target') end,
 				},				
 				anchorPoint = {
 					type = 'select',
@@ -2297,6 +2300,7 @@ E.Options.args.unitframe.args.target = {
 						['ABOVE'] = L['Above'],
 						['BELOW'] = L['Below'],
 					},
+					set = function(info, value) E.db.unitframe.units['target']['aurabar'][ info[#info] ] = value; E.db.unitframe.units['target'].smartAuraDisplay = 'DISABLED'; UF:CreateAndUpdateUF('target') end,
 				},
 				attachTo = {
 					type = 'select',

@@ -35,6 +35,8 @@ local OnClick = function(self)
 	LootFrame.selectedQuality = self.quality;
 	LootFrame.selectedItemName = self.name:GetText()
 	LootFrame.selectedSlot = self:GetID()
+	LootFrame.selectedLootButton = self:GetName()
+	LootFrame.selectedTexture = self.icon:GetTexture()
 	
 	if(IsModifiedClick()) then
 		HandleModifiedItemClick(GetLootSlotLink(self:GetID()))
@@ -145,7 +147,7 @@ function M:OPEN_MASTER_LOOT_LIST()
 end
 
 function M:UPDATE_MASTER_LOOT_LIST()
-	UIDropDownMenu_Refresh(GroupLootDropDown)
+	MasterLooterFrame_UpdatePlayers()
 end
 
 function M:LOOT_OPENED(event, autoloot)

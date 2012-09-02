@@ -368,13 +368,13 @@ function E:CheckIncompatible()
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Aloft', 'NamePlate'))
 	end	
 	
-	if IsAddOnLoaded('ArkInventory') and E.private.general.bags then
+	if IsAddOnLoaded('ArkInventory') and E.private.bags.enable then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'ArkInventory', 'Bags'))
-	elseif IsAddOnLoaded('Bagnon') and E.private.general.bags then
+	elseif IsAddOnLoaded('Bagnon') and E.private.bags.enable then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Bagnon', 'Bags'))
-	elseif IsAddOnLoaded('OneBag3') and E.private.general.bags then
+	elseif IsAddOnLoaded('OneBag3') and E.private.bags.enable then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'OneBag3', 'Bags'))
-	elseif IsAddOnLoaded('OneBank3') and E.private.general.bags then
+	elseif IsAddOnLoaded('OneBank3') and E.private.bags.enable then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'OneBank3', 'Bags'))
 	end
 end
@@ -633,7 +633,26 @@ function E:Initialize()
 				end
 			end
 		end
+	end
+	
+	--To prevent confusion
+	--If any of the following settings are differant from default settings, we'll disable smart aura display
+	--Because this option seems to cause a lot of confusion
+	if self.db.unitframe.units.target.buffs.enable ~= P.unitframe.units.target.buffs.enable then
+		E.db.unitframe.units.target.smartAuraDisplay = 'DISABLED'
+	end
+	
+	if self.db.unitframe.units.target.debuffs.enable ~= P.unitframe.units.target.debuffs.enable then
+		E.db.unitframe.units.target.smartAuraDisplay = 'DISABLED'
 	end	
+	
+	if self.db.unitframe.units.target.aurabar.enable ~= P.unitframe.units.target.aurabar.enable then
+		E.db.unitframe.units.target.smartAuraDisplay = 'DISABLED'
+	end	
+	
+	if self.db.unitframe.units.target.aurabar.anchorPoint ~= P.unitframe.units.target.aurabar.anchorPoint then
+		E.db.unitframe.units.target.smartAuraDisplay = 'DISABLED'
+	end		
 	
 	self:CheckRole()
 	self:UIScale('PLAYER_LOGIN');

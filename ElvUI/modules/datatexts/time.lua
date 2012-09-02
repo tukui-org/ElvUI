@@ -8,10 +8,10 @@ local europeDisplayFormat_nocolor = string.join("", "%02d", ":|r%02d")
 local ukDisplayFormat_nocolor = string.join("", "", "%d", ":|r%02d", " %s|r")
 local timerLongFormat = "%d:%02d:%02d"
 local timerShortFormat = "%d:%02d"
-local lockoutInfoFormat = "|cffcccccc[%d%s]|r %s |cfff04000(%s/%s)|r"
+local lockoutInfoFormat = "%s%s |cffaaaaaa(%s, %s/%s)"
+local lockoutInfoFormatNoEnc = "%s%s |cffaaaaaa(%s)"
 local formatBattleGroundInfo = "%s: "
 local lockoutColorExtended, lockoutColorNormal = { r=0.3,g=1,b=0.3 }, { r=.8,g=.8,b=.8 }
-local difficultyInfo = { "N", "N", "H", "H" }
 local lockoutFormatString = { "%dd %02dh %02dm", "%dd %dh %02dm", "%02dh %02dm", "%dh %02dm", "%dh %02dm", "%dm" }
 local curHr, curMin, curAmPm
 local enteredFrame = false;
@@ -155,7 +155,8 @@ local function OnEnter(self)
 
 	local oneraid, lockoutColor
 	for i = 1, GetNumSavedInstances() do
-		local name, _, reset, difficulty, locked, extended, _, isRaid, maxPlayers, _, numEncounters, encounterProgress  = GetSavedInstanceInfo(i)
+		local name, _, reset, _, locked, extended, _, isRaid, maxPlayers, difficulty, numEncounters, encounterProgress  = GetSavedInstanceInfo(i)
+		local idiff = ""
 		if isRaid and (locked or extended) and name then
 			local tr,tg,tb,diff
 			if not oneraid then
@@ -164,9 +165,17 @@ local function OnEnter(self)
 				oneraid = true
 			end
 			if extended then lockoutColor = lockoutColorExtended else lockoutColor = lockoutColorNormal end
+			if difficulty:match("Normal") then
+				idiff = "N"
+			elseif difficulty:match("Heroic") then
+				idiff = "H"
+			end
+			
 			local formatTime = formatResetTime(reset)
-			if difficultyInfo[difficulty] and encounterProgress and numEncounters and formatTime and lockoutColor then
-				GameTooltip:AddDoubleLine(format(lockoutInfoFormat, maxPlayers, difficultyInfo[difficulty], name, encounterProgress, numEncounters), formatTime, 1,1,1, lockoutColor.r,lockoutColor.g,lockoutColor.b)
+			if (numEncounters and numEncounters > 0) and (encounterProgress and encounterProgress > 0) then
+				GameTooltip:AddDoubleLine(format(lockoutInfoFormat, maxPlayers, idiff, name, encounterProgress, numEncounters), formatTime, 1,1,1, lockoutColor.r,lockoutColor.g,lockoutColor.b)
+			else
+				GameTooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, maxPlayers, idiff, name), formatTime, 1,1,1, lockoutColor.r,lockoutColor.g,lockoutColor.b)
 			end
 		end
 	end	
