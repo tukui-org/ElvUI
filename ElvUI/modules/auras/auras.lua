@@ -141,8 +141,12 @@ function A:UpdateAuras(header, button)
 		end
 		
 		-- Credit Hydra: give the bar a max value
-		if (button.Bar and duration) then
+		if (button.Bar and duration > 0 and expiration) then
 			button.Bar:SetMinMaxValues(0, duration)
+		else
+			local min, max  = button.Bar:GetMinMaxValues()
+			button.Bar:SetValue(max)
+			button.Bar:SetStatusBarColor(0, 0.8, 0)
 		end
 		-- Credit Hydra End
 	end
