@@ -680,6 +680,7 @@ G.unitframe.buffwatch = {
 	WARRIOR = {
 		ClassBuff(114030, "TOPLEFT", {0.2, 0.2, 1}), -- Vigilance
 		ClassBuff(3411, "TOPRIGHT", {227/255, 23/255, 13/255}), -- Intervene	
+		ClassBuff(114029, "TOPRIGHT", {227/255, 23/255, 13/255}), -- Safe Guard
 	},
 	DEATHKNIGHT = {
 		ClassBuff(49016, "TOPRIGHT", {227/255, 23/255, 13/255}), -- Unholy Frenzy	
