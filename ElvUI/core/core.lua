@@ -368,13 +368,13 @@ function E:CheckIncompatible()
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Aloft', 'NamePlate'))
 	end	
 	
-	if IsAddOnLoaded('ArkInventory') and E.private.general.bags then
+	if IsAddOnLoaded('ArkInventory') and E.private.bags.enable then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'ArkInventory', 'Bags'))
-	elseif IsAddOnLoaded('Bagnon') and E.private.general.bags then
+	elseif IsAddOnLoaded('Bagnon') and E.private.bags.enable then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Bagnon', 'Bags'))
-	elseif IsAddOnLoaded('OneBag3') and E.private.general.bags then
+	elseif IsAddOnLoaded('OneBag3') and E.private.bags.enable then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'OneBag3', 'Bags'))
-	elseif IsAddOnLoaded('OneBank3') and E.private.general.bags then
+	elseif IsAddOnLoaded('OneBank3') and E.private.bags.enable then
 		E:Print(format(L['INCOMPATIBLE_ADDON'], 'OneBank3', 'Bags'))
 	end
 end
