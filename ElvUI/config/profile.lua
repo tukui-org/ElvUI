@@ -950,8 +950,8 @@ P['unitframe'] = {
 			},	
 			['buffIndicator'] = {
 				['enable'] = true,
-				['size'] = 6,
-				['fontSize'] = 8,
+				['size'] = 8,
+				['fontSize'] = 10,
 				['colorIcons'] = true,
 			},
 			['roleIcon'] = {
@@ -1049,8 +1049,8 @@ P['unitframe'] = {
 			},	
 			['buffIndicator'] = {
 				['enable'] = true,
-				['size'] = 6,
-				['fontSize'] = 8,
+				['size'] = 8,
+				['fontSize'] = 10,
 				['colorIcons'] = true,
 			},
 			['rdebuffs'] = {
@@ -1137,8 +1137,8 @@ P['unitframe'] = {
 			},	
 			['buffIndicator'] = {
 				['enable'] = true,
-				['size'] = 6,
-				['fontSize'] = 8,
+				['size'] = 8,
+				['fontSize'] = 10,
 				['colorIcons'] = true,
 			},
 			['rdebuffs'] = {
@@ -1238,10 +1238,10 @@ P['unitframe'] = {
 			},				
 			['buffIndicator'] = {
 				['enable'] = true,
-				['size'] = 6,
-				['fontSize'] = 8,
+				['size'] = 8,
+				['fontSize'] = 10,
 				['colorIcons'] = true,
-			},			
+			},		
 		},	
 		['tank'] = {
 			['enable'] = true,
