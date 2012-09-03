@@ -987,8 +987,15 @@ function UF:UpdateAuraWatch(frame)
 	local db = frame.db.buffIndicator;
 	
 	if not E.global['unitframe'].buffwatch[E.myclass] then E.global['unitframe'].buffwatch[E.myclass] = {} end
-	for _, value in pairs(E.global['unitframe'].buffwatch[E.myclass]) do
-		tinsert(buffs, value);
+
+	if frame.unit == 'pet' and E.global['unitframe'].buffwatch.PET then
+		for _, value in pairs(E.global['unitframe'].buffwatch.PET) do
+			tinsert(buffs, value);
+		end	
+	else
+		for _, value in pairs(E.global['unitframe'].buffwatch[E.myclass]) do
+			tinsert(buffs, value);
+		end	
 	end
 	
 	for _, spell in pairs(buffs) do
@@ -1019,12 +1026,11 @@ function UF:UpdateAuraWatch(frame)
 				icon:SetPoint(spell["point"], 0, 0);
 
 				if not icon.icon then
-					icon.icon = icon:CreateTexture(nil, "OVERLAY");
+					icon.icon = icon:CreateTexture(nil, "BORDER");
 					icon.icon:SetAllPoints(icon);
 				end
 				
 				if db.colorIcons then
-					icon.icon:SetDrawLayer('OVERLAY');
 					icon.icon:SetTexture(E["media"].blankTex);
 					
 					if (spell["color"]) then
@@ -1033,7 +1039,6 @@ function UF:UpdateAuraWatch(frame)
 						icon.icon:SetVertexColor(0.8, 0.8, 0.8);
 					end			
 				else
-					icon.icon:SetDrawLayer('ARTWORK');
 					icon.icon:SetTexCoord(.18, .82, .18, .82);
 					icon.icon:SetTexture(icon.image);
 				end
@@ -1042,6 +1047,7 @@ function UF:UpdateAuraWatch(frame)
 					icon.cd = CreateFrame("Cooldown", nil, icon)
 					icon.cd:SetAllPoints(icon)
 					icon.cd:SetReverse(true)
+					icon.cd:SetFrameLevel(icon:GetFrameLevel())
 				end
 				
 				if not icon.border then
@@ -1053,7 +1059,7 @@ function UF:UpdateAuraWatch(frame)
 				end
 				
 				if not icon.count then
-					icon.count = icon:CreateFontString(nil, "OVERLAY", 7);
+					icon.count = icon:CreateFontString(nil, "OVERLAY");
 					icon.count:SetPoint("CENTER", unpack(counterOffsets[spell["point"]]));
 				end
 				icon.count:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db.fontSize, 'OUTLINE');

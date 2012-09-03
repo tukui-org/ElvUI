@@ -213,7 +213,165 @@ local function UpdateFilterGroup()
 			},
 		}
 		
+	elseif selectedFilter == 'Buff Indicator (Pet)' then
+		local buffs = {};
+		for _, value in pairs(E.global.unitframe.buffwatch.PET) do
+			tinsert(buffs, value);
+		end		
 		
+		if not E.global.unitframe.buffwatch.PET then
+			E.global.unitframe.buffwatch.PET = {};
+		end		
+
+		E.Options.args.unitframe.args.filters.args.filterGroup = {
+			type = 'group',
+			name = selectedFilter,
+			guiInline = true,
+			order = -10,
+			childGroups = "select",
+			args = {
+				addSpellID = {
+					order = 1,
+					name = L['Add SpellID'],
+					desc = L['Add a spell to the filter.'],
+					type = 'input',
+					get = function(info) return "" end,
+					set = function(info, value) 
+						if not tonumber(value) then
+							E:Print(L["Value must be a number"])					
+						elseif not GetSpellInfo(value) then
+							E:Print(L["Not valid spell id"])
+						else	
+							table.insert(E.global.unitframe.buffwatch.PET, {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = true})
+							UpdateFilterGroup();
+							UF:Update_AllFrames();
+							selectedSpell = nil;
+						end
+					end,					
+				},
+				removeSpellID = {
+					order = 2,
+					name = L['Remove SpellID'],
+					desc = L['Remove a spell from the filter.'],
+					type = 'input',
+					get = function(info) return "" end,
+					set = function(info, value) 
+						if not tonumber(value) then
+							E:Print(L["Value must be a number"])
+						elseif not GetSpellInfo(value) then
+							E:Print(L["Not valid spell id"])
+						else	
+							local match
+							for x, y in pairs(E.global.unitframe.buffwatch.PET) do
+								if y["id"] == tonumber(value) then
+									match = y
+									E.global.unitframe.buffwatch.PET[x] = nil
+								end
+							end
+							if match == nil then
+								E:Print(L["Spell not found in list."])
+							else
+								UpdateFilterGroup()							
+							end									
+						end		
+						
+						selectedSpell = nil;
+						UpdateFilterGroup();
+						UF:Update_AllFrames();
+					end,				
+				},
+				selectSpell = {
+					name = L["Select Spell"],
+					type = "select",
+					order = 3,
+					values = function()
+						local values = {};
+						buffs = {};
+						for _, value in pairs(E.global.unitframe.buffwatch.PET) do
+							tinsert(buffs, value);
+						end			
+						
+						for _, spell in pairs(buffs) do
+							if spell.id then
+								local name = GetSpellInfo(spell.id)
+								values[spell.id] = name;
+							end
+						end
+						return values
+					end,
+					get = function(info) return selectedSpell end,
+					set = function(info, value) 
+						selectedSpell = value;
+						UpdateFilterGroup()
+					end,
+				},				
+			},
+		}
+		
+		local tableIndex
+		for i, spell in pairs(E.global.unitframe.buffwatch.PET) do
+			if spell.id == selectedSpell then
+				tableIndex = i;
+			end
+		end
+		if selectedSpell and tableIndex then
+			local name = GetSpellInfo(selectedSpell)
+			E.Options.args.unitframe.args.filters.args.filterGroup.args[name] = {
+				name = name..' ('..selectedSpell..')',
+				type = 'group',
+				get = function(info) return E.global.unitframe.buffwatch.PET[tableIndex][ info[#info] ] end,
+				set = function(info, value) E.global.unitframe.buffwatch.PET[tableIndex][ info[#info] ] = value; UF:Update_AllFrames() end,
+				order = -10,
+				args = {
+					enabled = {
+						name = L['Enable'],
+						order = 1,
+						type = 'toggle',
+					},
+					point = {
+						name = L['Anchor Point'],
+						order = 2,
+						type = 'select',
+						values = {
+							['TOPLEFT'] = 'TOPLEFT',
+							['TOPRIGHT'] = 'TOPRIGHT',
+							['BOTTOMLEFT'] = 'BOTTOMLEFT',
+							['BOTTOMRIGHT'] = 'BOTTOMRIGHT',
+							['LEFT'] = 'LEFT',
+							['RIGHT'] = 'RIGHT',
+							['TOP'] = 'TOP',
+							['BOTTOM'] = 'BOTTOM',
+						}
+					},
+					color = {
+						name = L['Color'],
+						type = 'color',
+						order = 3,
+						get = function(info)
+							local t = E.global.unitframe.buffwatch.PET[tableIndex][ info[#info] ]
+							return t.r, t.g, t.b, t.a
+						end,
+						set = function(info, r, g, b)
+							local t = E.global.unitframe.buffwatch.PET[tableIndex][ info[#info] ]
+							t.r, t.g, t.b = r, g, b
+							UF:Update_AllFrames()
+						end,						
+					},
+					anyUnit = {
+						name = L['Any Unit'],
+						order = 4,
+						type = 'toggle',					
+					},
+					onlyShowMissing = {
+						name = L['Show Missing'],
+						order = 5,
+						type = 'toggle',						
+					},
+				},			
+			}
+		end
+	
+		buffs = nil;	
 	elseif selectedFilter == 'Buff Indicator' then
 		local buffs = {};
 		for _, value in pairs(E.global.unitframe.buffwatch[E.myclass]) do
@@ -487,6 +645,8 @@ local function UpdateFilterGroup()
 		}
 		
 	end
+	
+	 UF:Update_AllFrames();
 end
 
 E.Options.args.unitframe = {
@@ -848,7 +1008,8 @@ E.Options.args.unitframe = {
 							filters[filter] = filter
 						end
 						
-						filters['Buff Indicator'] = L['Buff Indicator']
+						filters['Buff Indicator'] = 'Buff Indicator'
+						filters['Buff Indicator (Pet)'] = 'Buff Indicator (Pet)'
 						filters['AuraBar Colors'] = 'AuraBar Colors'
 						return filters
 					end,
@@ -4297,6 +4458,39 @@ E.Options.args.unitframe.args.pet = {
 				},		
 			},
 		},	
+		buffIndicator = {
+			order = 600,
+			type = 'group',
+			name = L['Buff Indicator'],
+			get = function(info) return E.db.unitframe.units['pet']['buffIndicator'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['pet']['buffIndicator'][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
+			args = {
+				enable = {
+					type = 'toggle',
+					name = L['Enable'],
+					order = 1,
+				},
+				colorIcons = {
+					type = 'toggle',
+					name = L['Color Icons'],
+					desc = L['Color the icon to their set color in the filters section, otherwise use the icon texture.'],
+					order = 2,					
+				},
+				size = {
+					type = 'range',
+					name = L['Size'],
+					desc = L['Size of the indicator icon.'],
+					order = 3,
+					min = 4, max = 15, step = 1,
+				},
+				fontSize = {
+					type = 'range',
+					name = L['Font Size'],
+					order = 4,
+					min = 7, max = 22, step = 1,
+				},
+			},
+		},			
 	},
 }
 
