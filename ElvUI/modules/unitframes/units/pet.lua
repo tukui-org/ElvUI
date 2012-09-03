@@ -20,6 +20,7 @@ function UF:Construct_PetFrame(frame)
 	frame.Castbar = CreateFrame("StatusBar", nil, frame) -- Dummy Bar
 	
 	frame.HealPrediction = self:Construct_HealComm(frame)
+	frame.AuraWatch = UF:Construct_AuraWatch(frame)
 	
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 118)
 	E:CreateMover(frame, frame:GetName()..'Mover', 'Pet Frame', nil, nil, nil, 'ALL,SOLO')
@@ -293,7 +294,7 @@ function UF:Update_PetFrame(frame, db)
 			frame[objectName]:SetPoint('CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
 		end
 	end	
-	
+	UF:UpdateAuraWatch(frame)
 	frame:UpdateAllElements()
 end
 

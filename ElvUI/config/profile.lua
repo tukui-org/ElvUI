@@ -672,6 +672,12 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+			},	
+			['buffIndicator'] = {
+				['enable'] = true,
+				['size'] = 8,
+				['fontSize'] = 10,
+				['colorIcons'] = true,
 			},			
 		},
 		['pettarget'] = {

@@ -987,8 +987,15 @@ function UF:UpdateAuraWatch(frame)
 	local db = frame.db.buffIndicator;
 	
 	if not E.global['unitframe'].buffwatch[E.myclass] then E.global['unitframe'].buffwatch[E.myclass] = {} end
-	for _, value in pairs(E.global['unitframe'].buffwatch[E.myclass]) do
-		tinsert(buffs, value);
+
+	if frame.unit == 'pet' and E.global['unitframe'].buffwatch.PET then
+		for _, value in pairs(E.global['unitframe'].buffwatch.PET) do
+			tinsert(buffs, value);
+		end	
+	else
+		for _, value in pairs(E.global['unitframe'].buffwatch[E.myclass]) do
+			tinsert(buffs, value);
+		end	
 	end
 	
 	for _, spell in pairs(buffs) do
