@@ -1308,7 +1308,7 @@ P["actionbar"] = {
 	["hourscolor"] = { r = 0.4, g = 1, b = 1 },
 	["dayscolor"] = { r = 0.4, g = 0.4, b = 1 },
 	
-	['keyDown'] = true,
+	['keyDown'] = false,
 	['movementModifier'] = 'SHIFT',
 	
 	['microbar'] = {
