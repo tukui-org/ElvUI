@@ -4,7 +4,7 @@ E.PopupDialogs = {};
 E.StaticPopup_DisplayedFrames = {};
 
 E.PopupDialogs['CONFIGAURA_SET'] = {
-	text = L["Because of the mass confusion caused by the new aura system I've implemented a new step to the installation process. This is optional. If you like how your auras are setup go to the last step and click finished to not be prompted again."],
+	text = L["Because of the mass confusion caused by the new aura system I've implemented a new step to the installation process. This is optional. If you like how your auras are setup go to the last step and click finished to not be prompted again. If for some reason you are prompted repeatedly please restart your game."],
 	button1 = ACCEPT,
 	OnAccept = E.noop,
 	timeout = 0,
