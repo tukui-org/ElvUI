@@ -27,7 +27,6 @@ V["nameplate"] = {
 V['auras'] = {
 	['enable'] = true,
 	['size'] = 26,
-	['visualtimer'] = true,
 }
 
 V['chat'] = {
