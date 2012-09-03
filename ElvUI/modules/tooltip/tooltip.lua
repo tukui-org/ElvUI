@@ -60,6 +60,7 @@ function TT:SetStatusBarAnchor(pos)
 end
 
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
+	if E.private["tooltip"].enable ~= true then return end
 	if self.db.anchor == 'CURSOR' then
 		if parent then
 			tt:SetOwner(parent, "ANCHOR_CURSOR")	
