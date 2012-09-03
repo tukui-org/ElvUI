@@ -1,6 +1,19 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
+local function StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inset)
+	scrollFrame:SetTemplate()	
+	scrollFrame.spellTex = scrollFrame:CreateTexture(nil, 'ARTWORK')
+	scrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
+	if inset then
+		scrollFrame.spellTex:SetPoint("TOPLEFT", 2, -2)
+	else
+		scrollFrame.spellTex:SetPoint("TOPLEFT")
+	end
+	scrollFrame.spellTex:Size(widthOverride or 506, heightOverride or 615)
+	scrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)	
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.quest ~= true then return end
 	S:HandleCloseButton(QuestLogFrameCloseButton)
@@ -82,69 +95,24 @@ local function LoadSkin()
 		QuestInfoItemHighlight:ClearAllPoints()
 		QuestInfoItemHighlight:SetAllPoints(self)
 	end)
-	
-	--Everything here to make the text a readable color
-	local function QuestObjectiveText()
-		local numObjectives = GetNumQuestLeaderBoards()
-		local objective
-		local type, finished
-		local numVisibleObjectives = 0
-		for i = 1, numObjectives do
-			_, type, finished = GetQuestLogLeaderBoard(i)
-			if (type ~= "spell") then
-				numVisibleObjectives = numVisibleObjectives+1
-				objective = _G["QuestInfoObjective"..numVisibleObjectives]
-				if ( finished ) then
-					objective:SetTextColor(1, 1, 0)
-				else
-					objective:SetTextColor(0.6, 0.6, 0.6)
-				end
-			end
-		end			
-	end
-	
-	hooksecurefunc("QuestInfo_Display", function(template, parentFrame, acceptButton, material)								
-		local textColor = {1, 1, 1}
-		local titleTextColor = {1, 1, 0}
-		
-		-- headers
-		QuestInfoTitleHeader:SetTextColor(unpack(titleTextColor))
-		QuestInfoDescriptionHeader:SetTextColor(unpack(titleTextColor))
-		QuestInfoObjectivesHeader:SetTextColor(unpack(titleTextColor))
-		QuestInfoRewardsHeader:SetTextColor(unpack(titleTextColor))
-		-- other text
-		QuestInfoDescriptionText:SetTextColor(unpack(textColor))
-		QuestInfoObjectivesText:SetTextColor(unpack(textColor))
-		QuestInfoGroupSize:SetTextColor(unpack(textColor))
-		QuestInfoRewardText:SetTextColor(unpack(textColor))
-		-- reward frame text
-		QuestInfoItemChooseText:SetTextColor(unpack(textColor))
-		QuestInfoItemReceiveText:SetTextColor(unpack(textColor))
-		QuestInfoSpellLearnText:SetTextColor(unpack(textColor))
-		QuestInfoXPFrameReceiveText:SetTextColor(unpack(textColor))	
-		
-		QuestObjectiveText()
-	end)
-	
-	hooksecurefunc("QuestInfo_ShowRequiredMoney", function()
-		local requiredMoney = GetQuestLogRequiredMoney()
-		if ( requiredMoney > 0 ) then
-			if ( requiredMoney > GetMoney() ) then
-				-- Not enough money
-				QuestInfoRequiredMoneyText:SetTextColor(0.6, 0.6, 0.6)
-			else
-				QuestInfoRequiredMoneyText:SetTextColor(1, 1, 0)
-			end
-		end			
-	end)		
-	
 	QuestLogFrame:HookScript("OnShow", function()
 		QuestLogScrollFrame:Height(331)
 		QuestLogDetailScrollFrame:Height(328)
-		
+
 		if not QuestLogDetailScrollFrame.backdrop then
 			QuestLogScrollFrame:SetTemplate("Default")
-			QuestLogDetailScrollFrame:CreateBackdrop("Default")
+			QuestLogScrollFrame.spellTex = QuestLogScrollFrame:CreateTexture(nil, 'ARTWORK')
+			QuestLogScrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBookBG]])
+			QuestLogScrollFrame.spellTex:SetPoint("TOPLEFT", 2, -2)
+			QuestLogScrollFrame.spellTex:Size(514, 504)
+			QuestLogScrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)
+
+			QuestLogScrollFrame.spellTex2 = QuestLogScrollFrame:CreateTexture(nil, 'BORDER')
+			QuestLogScrollFrame.spellTex2:SetTexture([[Interface\FrameGeneral\UI-Background-Rock]])
+			QuestLogScrollFrame.spellTex2:SetInside()
+					
+			QuestLogDetailScrollFrame:CreateBackdrop("Default")	
+			StyleScrollFrame(QuestLogDetailScrollFrame, 509, 505, false)
 		end
 	end)
 	
@@ -153,6 +121,15 @@ local function LoadSkin()
 	QuestFrameInset:Kill()
 	QuestFrameDetailPanel:StripTextures(true)
 	QuestDetailScrollFrame:StripTextures(true)
+	QuestDetailScrollFrame:SetTemplate()	
+	StyleScrollFrame(QuestDetailScrollFrame, 506, 615, true)	
+
+	QuestProgressScrollFrame:SetTemplate()	
+	StyleScrollFrame(QuestProgressScrollFrame, 506, 615, true)	
+	
+	QuestGreetingScrollFrame:SetTemplate()
+	StyleScrollFrame(QuestGreetingScrollFrame, 506, 615, true)
+	
 	QuestDetailScrollChildFrame:StripTextures(true)
 	QuestRewardScrollFrame:StripTextures(true)
 	QuestRewardScrollChildFrame:StripTextures(true)
@@ -181,14 +158,7 @@ local function LoadSkin()
 		_G["QuestProgressItem"..i.."Count"]:SetDrawLayer("OVERLAY")
 		button:SetTemplate("Default")				
 	end
-	
-	hooksecurefunc("QuestFrameProgressItems_Update", function()
-		QuestProgressTitleText:SetTextColor(1, 1, 0)
-		QuestProgressText:SetTextColor(1, 1, 1)
-		QuestProgressRequiredItemsText:SetTextColor(1, 1, 0)
-		QuestProgressRequiredMoneyText:SetTextColor(1, 1, 0)
-	end)
-	
+
 	QuestNPCModel:StripTextures()
 	QuestNPCModel:CreateBackdrop("Transparent")
 	QuestNPCModel:Point("TOPLEFT", QuestLogDetailFrame, "TOPRIGHT", 4, -34)

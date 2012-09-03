@@ -25,9 +25,17 @@ local function LoadSkin()
 	
 	S:HandleScrollBar(GossipGreetingScrollFrameScrollBar, 5)
 
+		
 	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()
 	end
+	
+	GossipGreetingScrollFrame:SetTemplate()	
+	GossipGreetingScrollFrame.spellTex = GossipGreetingScrollFrame:CreateTexture(nil, 'ARTWORK')
+	GossipGreetingScrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
+	GossipGreetingScrollFrame.spellTex:SetPoint("TOPLEFT", 2, -2)
+	GossipGreetingScrollFrame.spellTex:Size(506, 615)
+	GossipGreetingScrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)		
 
 	local KillTextures = {
 		"GossipFramePortrait",
@@ -47,30 +55,11 @@ local function LoadSkin()
 	end
 
 
-	for i = 1, NUMGOSSIPBUTTONS do
-		obj = select(3,_G["GossipTitleButton"..i]:GetRegions())
-		obj:SetTextColor(1,1,1)
-	end
-
-	GossipGreetingText:SetTextColor(1,1,1)
 	S:HandleCloseButton(GossipFrameCloseButton,GossipFrame.backdrop)
 	
 	NPCFriendshipStatusBar:StripTextures()
 	NPCFriendshipStatusBar:SetStatusBarTexture(E.media.normTex)
 	NPCFriendshipStatusBar:CreateBackdrop('Default')
-	
-	--Extreme hackage, blizzard makes button text on quest frame use hex color codes for some reason
-	hooksecurefunc("GossipFrameUpdate", function()
-		for i=1, NUMGOSSIPBUTTONS do
-			local button = _G["GossipTitleButton"..i]
-			
-			if button:GetFontString() then
-				if button:GetFontString():GetText() and button:GetFontString():GetText():find("|cff000000") then
-					button:GetFontString():SetText(string.gsub(button:GetFontString():GetText(), "|cff000000", "|cffFFFF00"))
-				end
-			end
-		end
-	end)	
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)
