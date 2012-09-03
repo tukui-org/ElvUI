@@ -129,6 +129,7 @@ function A:UpdateHeader(header)
 		db = self.db.buffs
 		header:SetAttribute("consolidateTo", self.db.consolidedBuffs == true and E.private.general.minimap.enable == true and 1 or 0)
 		header:SetAttribute("separateOwn", self.db.seperateOwn)
+		header:SetAttribute('consolidateDuration', -1)
 	end
 
 	header:SetAttribute("sortMethod", db.sortMethod)
