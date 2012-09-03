@@ -164,6 +164,11 @@ function E:CreateMoverPopup()
 	f:SetHeight(130)
 	f:SetTemplate('Transparent')
 	f:SetPoint("BOTTOM", UIParent, 'CENTER')
+	f:SetScript('OnHide', function()
+		if ElvUIMoverPopupWindowDropDown then
+			UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, 'GENERAL');
+		end
+	end)
 	f:Hide()
 
 	local S = E:GetModule('Skins')
