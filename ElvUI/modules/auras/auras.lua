@@ -217,13 +217,11 @@ function A:WeaponPostDrag(point)
 	if string.find(point, "LEFT") then
 		TempEnchant1:ClearAllPoints()
 		TempEnchant2:ClearAllPoints()
-		
 		TempEnchant1:SetPoint("TOPLEFT", self, "TOPLEFT", 0, 0)
 		TempEnchant2:SetPoint("LEFT", TempEnchant1, "RIGHT", 4, 0)	
-	elseif string.find(point, "RIGHT") then
+	else
 		TempEnchant1:ClearAllPoints()
 		TempEnchant2:ClearAllPoints()
-
 		TempEnchant1:SetPoint("TOPRIGHT", self, "TOPRIGHT", 0, 0)
 		TempEnchant2:SetPoint("RIGHT", TempEnchant1, "LEFT", -4, 0)		
 	end
@@ -290,13 +288,7 @@ function A:Initialize()
 	for i = 1, 2 do
 		A:UpdateWeapon(_G["TempEnchant"..i])	
 	end
-	
-	hooksecurefunc(TempEnchant1, 'SetPoint', function(self, _, parent)
-		if parent == TemporaryEnchantFrame then
-			A.WeaponPostDrag(TempEnchantMover)
-		end
-	end)		
-	
+
 	E:CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, nil, A.PostDrag)
 	E:CreateMover(self.EnchantHeader, 'TempEnchantMover', 'Weapons', nil, nil, A.WeaponPostDrag)
 	
