@@ -23,9 +23,8 @@ function AB:Cooldown_GetTimeText(s)
 	--format text as seconds when below a minute
 
 	if s < MINUTEISH then
-		local seconds = tonumber(E:Round(s))
-		if seconds > EXPIRING_DURATION then
-			return SECONDS_FORMAT, seconds, s - (seconds - 0.51)
+		if s >= EXPIRING_DURATION then
+			return SECONDS_FORMAT, tonumber(E:Round(s)), 0.051
 		else
 			return EXPIRING_FORMAT, s, 0.051
 		end
