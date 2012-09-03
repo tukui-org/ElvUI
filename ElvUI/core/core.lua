@@ -519,6 +519,8 @@ function E:UpdateAll(ignoreInstall)
 	self:UpdateBackdropColors()
 	self:UpdateFrameTemplates()
 	
+	self:GetModule('Layout'):ToggleChatPanels()	
+	
 	collectgarbage('collect');
 end
 
