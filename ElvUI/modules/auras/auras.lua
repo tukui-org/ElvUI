@@ -65,8 +65,51 @@ function A:UpdateWeapon(button)
 		button.icon:SetInside()
 		button.time:ClearAllPoints()
 		button.time:Point("BOTTOM",button,'BOTTOM', 0, -10)
-		button.time:FontTemplate(nil, nil, 'OUTLINE')	
+		button.time:FontTemplate(nil, nil, 'OUTLINE')
+		
+		-- Credit Hydra: this is the border to my statusbar
+		local BarHolder = CreateFrame("Frame", nil, button)
+		BarHolder:Size(button:GetWidth(), 7)
+		BarHolder:Point("TOP", button, "BOTTOM", 0, -3)
+		BarHolder:SetTemplate("Default")
+		button.Holder = BarHolder
+		
+		-- and the bar..
+		local Bar = CreateFrame("StatusBar", nil, BarHolder)
+		Bar:Point("TOPLEFT", 1, -2)
+		Bar:Point("BOTTOMRIGHT", -1, 2)
+		Bar:SetStatusBarTexture(E["media"].blankTex)
+		Bar:SetStatusBarColor(0, 0.8, 0)
+		button.Bar = Bar
+		-- Credit Hydra End
+		
+		if not E.private.auras.visualtimer then
+			button.Holder:Hide()
+		else
+			button.Holder:Show()
+		end
 	end
+
+	local Dur
+	local expire = select(2, GetWeaponEnchantInfo())
+	if(expire) then
+		expiration = expire / 1e3
+		if expiration >= 1801 then
+			Dur = 3600
+		elseif expiration >= 601 and expiration <= 1800 then
+			Dur = 1800
+		elseif expiration >= 0 and expiration <= 600 then
+			Dur = 600
+		end
+	end
+	button.Dur = Dur
+	
+	-- Credit Hydra: give the bar a max value
+	if (button.Bar and button.Dur) then
+		button.Bar:SetMinMaxValues(0, button.Dur)
+	end
+	-- Credit Hydra End
+	
 
 	local font = LSM:Fetch("font", self.db.font)
 	button.time:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
@@ -275,7 +318,7 @@ end
 
 function A:UpdateWeaponText(auraButton, timeLeft)
 	local duration = auraButton.duration;
-	if(timeLeft) then	
+	if(timeLeft) then
 		if(timeLeft <= 0) then
 			duration:SetText("")
 		else
@@ -293,9 +336,30 @@ function A:UpdateWeaponText(auraButton, timeLeft)
 				duration:SetText("|cffff0000"..time.."|r")
 				E:Flash(auraButton, 1)
 			end
+
+			if E.private.auras.visualtimer then
+				local r, g, b = ElvUF.ColorGradient(timeLeft, auraButton.Dur, 0.8,0,0,0.8,0.8,0,0,0.8,0)
+				auraButton.Bar:SetValue(timeLeft)
+				auraButton.Bar:SetStatusBarColor(r, g, b)
+				auraButton.Holder:SetBackdropBorderColor(137/255, 0, 191/255)
+
+				duration:SetText("")
+			end
 		end
 	end
 end
+
+local f = CreateFrame("Frame")
+f:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
+f:SetScript("OnEvent", function(self, event, slot, hasItem)
+	if event == "PLAYER_EQUIPMENT_CHANGED" then
+		if slot == 16 or slot == 17 then
+			for i = 1, 2 do
+				A:UpdateWeapon(_G["TempEnchant"..i])	
+			end
+		end
+	end
+end)
 
 function A:Initialize()
 	if self.db then return; end --IDK WHY BUT THIS IS GETTING CALLED TWICE FROM SOMEWHERE...
