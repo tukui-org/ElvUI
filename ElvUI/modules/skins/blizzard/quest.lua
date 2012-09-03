@@ -28,7 +28,6 @@ local function LoadSkin()
 	QuestLogCount:StripTextures()
 	QuestLogCount:SetTemplate("Default")
 	QuestLogCount.backdropTexture:SetDrawLayer('BACKGROUND', 2)
-	QuestLogFrame:Height(430)	
 	EmptyQuestLogFrame:StripTextures()
 	QuestLogDetailFrameInset:Kill()
 	S:HandleScrollBar(QuestDetailScrollFrameScrollBar)
@@ -96,24 +95,26 @@ local function LoadSkin()
 		QuestInfoItemHighlight:SetAllPoints(self)
 	end)
 	QuestLogFrame:HookScript("OnShow", function()
-		QuestLogScrollFrame:Height(331)
-		QuestLogDetailScrollFrame:Height(328)
-
-		if not QuestLogDetailScrollFrame.backdrop then
+		if not QuestLogScrollFrame.spellTex  then
 			QuestLogScrollFrame:SetTemplate("Default")
 			QuestLogScrollFrame.spellTex = QuestLogScrollFrame:CreateTexture(nil, 'ARTWORK')
 			QuestLogScrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBookBG]])
 			QuestLogScrollFrame.spellTex:SetPoint("TOPLEFT", 2, -2)
-			QuestLogScrollFrame.spellTex:Size(514, 504)
+			QuestLogScrollFrame.spellTex:Size(514, 616)
 			QuestLogScrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)
 
 			QuestLogScrollFrame.spellTex2 = QuestLogScrollFrame:CreateTexture(nil, 'BORDER')
 			QuestLogScrollFrame.spellTex2:SetTexture([[Interface\FrameGeneral\UI-Background-Rock]])
 			QuestLogScrollFrame.spellTex2:SetInside()
-					
-			QuestLogDetailScrollFrame:CreateBackdrop("Default")	
-			StyleScrollFrame(QuestLogDetailScrollFrame, 509, 505, false)
 		end
+	end)
+	QuestLogDetailScrollFrame:HookScript('OnShow', function(self)
+		if not QuestLogDetailScrollFrame.backdrop then
+			QuestLogDetailScrollFrame:CreateBackdrop("Default")	
+			StyleScrollFrame(QuestLogDetailScrollFrame, 509, 630, false)		
+			QuestLogDetailScrollFrame:Height(self:GetHeight() - 2)
+		end
+		QuestLogDetailScrollFrame.spellTex:Height(self:GetHeight() + 217)
 	end)
 	
 	--Quest Frame
