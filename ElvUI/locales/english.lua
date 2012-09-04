@@ -568,6 +568,7 @@ L["TOGGLESKIN_DESC"] = "Enable/Disable this skin."
 L["Trade Frame"] = true;
 L["TradeSkill Frame"] = true;
 L["Trainer Frame"] = true;
+L['Transmogrify Frame'] = true;
 L["World Map"] = true;
 
 --Static Popups
