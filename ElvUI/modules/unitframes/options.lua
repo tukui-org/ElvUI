@@ -1418,55 +1418,63 @@ E.Options.args.unitframe.args.player = {
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
-				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				noConsolidated = {
-					order = 14,
-					type = 'select',
-					name = L['No Consolidated'],
-					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
-					values = auraFilterTypes		
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},			
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						noConsolidated = {
+							order = 14,
+							type = 'select',
+							name = L['No Consolidated'],
+							desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+							values = auraFilterTypes		
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},						
+					},
+				},		
 			},
 		},	
 		debuffs = {
@@ -1534,48 +1542,56 @@ E.Options.args.unitframe.args.player = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},	
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
 				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {				
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},			
+					},
 				},			
 			},
 		},	
@@ -1755,55 +1771,63 @@ E.Options.args.unitframe.args.player = {
 						['BUFFS'] = L['Buffs'],
 					},					
 				},
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
-				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				noConsolidated = {
-					order = 14,
-					type = 'select',
-					name = L['No Consolidated'],
-					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
-					values = auraFilterTypes		
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {				
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						noConsolidated = {
+							order = 14,
+							type = 'select',
+							name = L['No Consolidated'],
+							desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+							values = auraFilterTypes		
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},		
+					},
+				},				
 				friendlyAuraType = {
 					type = 'select',
 					order = 16,
@@ -2151,55 +2175,63 @@ E.Options.args.unitframe.args.target = {
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
-				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				noConsolidated = {
-					order = 14,
-					type = 'select',
-					name = L['No Consolidated'],
-					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
-					values = auraFilterTypes		
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},					
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						noConsolidated = {
+							order = 14,
+							type = 'select',
+							name = L['No Consolidated'],
+							desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+							values = auraFilterTypes		
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},										
+					},
+				},				
 			},
 		},	
 		debuffs = {
@@ -2269,48 +2301,56 @@ E.Options.args.unitframe.args.target = {
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},							
+					},
 				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},		
 			},
 		},	
 		castbar = {
@@ -2474,55 +2514,64 @@ E.Options.args.unitframe.args.target = {
 						['BUFFS'] = L['Buffs'],
 					},					
 				},
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
-				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				noConsolidated = {
-					order = 14,
-					type = 'select',
-					name = L['No Consolidated'],
-					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
-					values = auraFilterTypes		
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						noConsolidated = {
+							order = 14,
+							type = 'select',
+							name = L['No Consolidated'],
+							desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+							values = auraFilterTypes		
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},
+					
+					},
+				},				
 				friendlyAuraType = {
 					type = 'select',
 					order = 16,
@@ -2804,56 +2853,65 @@ E.Options.args.unitframe.args.targettarget = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},	
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
 				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				noConsolidated = {
-					order = 14,
-					type = 'select',
-					name = L['No Consolidated'],
-					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
-					values = auraFilterTypes		
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},			
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						noConsolidated = {
+							order = 14,
+							type = 'select',
+							name = L['No Consolidated'],
+							desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+							values = auraFilterTypes		
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},			
+					
+					},
+				},				
 			},
 		},	
 		debuffs = {
@@ -2922,48 +2980,57 @@ E.Options.args.unitframe.args.targettarget = {
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
-				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},		
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},		
+					
+					},
+				},				
 			},
 		},	
 	},
@@ -3243,55 +3310,63 @@ E.Options.args.unitframe.args.focus = {
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
-				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				noConsolidated = {
-					order = 14,
-					type = 'select',
-					name = L['No Consolidated'],
-					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
-					values = auraFilterTypes		
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},			
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						noConsolidated = {
+							order = 14,
+							type = 'select',
+							name = L['No Consolidated'],
+							desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+							values = auraFilterTypes		
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},								
+					},
+				},				
 			},
 		},	
 		debuffs = {
@@ -3359,49 +3434,58 @@ E.Options.args.unitframe.args.focus = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},	
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
 				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},		
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},		
+					
+					},
+				},				
 			},
 		},	
 		castbar = {
@@ -3537,55 +3621,72 @@ E.Options.args.unitframe.args.focus = {
 						['BUFFS'] = L['Buffs'],
 					},					
 				},
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+					},
 				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				noConsolidated = {
-					order = 14,
-					type = 'select',
-					name = L['No Consolidated'],
-					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
-					values = auraFilterTypes		
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						noConsolidated = {
+							order = 14,
+							type = 'select',
+							name = L['No Consolidated'],
+							desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+							values = auraFilterTypes		
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},
+					
+					},
+				},				
 				friendlyAuraType = {
 					type = 'select',
 					order = 16,
@@ -3868,56 +3969,65 @@ E.Options.args.unitframe.args.focustarget = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},	
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
 				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				noConsolidated = {
-					order = 14,
-					type = 'select',
-					name = L['No Consolidated'],
-					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
-					values = auraFilterTypes		
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},					
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						noConsolidated = {
+							order = 14,
+							type = 'select',
+							name = L['No Consolidated'],
+							desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+							values = auraFilterTypes		
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},					
+					
+					},
+				},				
 			},
 		},	
 		debuffs = {
@@ -3985,49 +4095,58 @@ E.Options.args.unitframe.args.focustarget = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},	
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
 				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},		
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},		
+					
+					},
+				},				
 			},
 		},	
 	},
@@ -4296,56 +4415,65 @@ E.Options.args.unitframe.args.pet = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},	
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
 				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				noConsolidated = {
-					order = 14,
-					type = 'select',
-					name = L['No Consolidated'],
-					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
-					values = auraFilterTypes		
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},			
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						noConsolidated = {
+							order = 14,
+							type = 'select',
+							name = L['No Consolidated'],
+							desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+							values = auraFilterTypes		
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},			
+					
+					},
+				},				
 			},
 		},	
 		debuffs = {
@@ -4413,49 +4541,58 @@ E.Options.args.unitframe.args.pet = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},	
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
 				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},		
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},		
+					
+					},
+				},				
 			},
 		},	
 		buffIndicator = {
@@ -4751,56 +4888,65 @@ E.Options.args.unitframe.args.pettarget = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},	
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
 				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				noConsolidated = {
-					order = 14,
-					type = 'select',
-					name = L['No Consolidated'],
-					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
-					values = auraFilterTypes		
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},			
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						noConsolidated = {
+							order = 14,
+							type = 'select',
+							name = L['No Consolidated'],
+							desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+							values = auraFilterTypes		
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},			
+					
+					},
+				},				
 			},
 		},	
 		debuffs = {
@@ -4868,49 +5014,58 @@ E.Options.args.unitframe.args.pettarget = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},	
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
 				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},			
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},			
+					
+					},
+				},				
 			},
 		},	
 	},
@@ -5224,56 +5379,65 @@ E.Options.args.unitframe.args.boss = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},	
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
 				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				noConsolidated = {
-					order = 14,
-					type = 'select',
-					name = L['No Consolidated'],
-					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
-					values = auraFilterTypes		
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},			
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						noConsolidated = {
+							order = 14,
+							type = 'select',
+							name = L['No Consolidated'],
+							desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+							values = auraFilterTypes		
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},			
+					
+					},
+				},				
 			},
 		},	
 		debuffs = {
@@ -5341,49 +5505,58 @@ E.Options.args.unitframe.args.boss = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},	
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
 				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},		
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},		
+					
+					},
+				},				
 			},
 		},	
 		castbar = {
@@ -5747,56 +5920,65 @@ E.Options.args.unitframe.args.arena = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},	
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
 				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				noConsolidated = {
-					order = 14,
-					type = 'select',
-					name = L['No Consolidated'],
-					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
-					values = auraFilterTypes		
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},			
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						noConsolidated = {
+							order = 14,
+							type = 'select',
+							name = L['No Consolidated'],
+							desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+							values = auraFilterTypes		
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},			
+					
+					},
+				},				
 			},
 		},	
 		debuffs = {
@@ -5864,49 +6046,58 @@ E.Options.args.unitframe.args.arena = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},	
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
 				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},		
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},		
+					
+					},
+				},				
 			},
 		},	
 		castbar = {
@@ -6408,56 +6599,65 @@ E.Options.args.unitframe.args.party = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},	
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
 				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				noConsolidated = {
-					order = 14,
-					type = 'select',
-					name = L['No Consolidated'],
-					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
-					values = auraFilterTypes		
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},			
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						noConsolidated = {
+							order = 14,
+							type = 'select',
+							name = L['No Consolidated'],
+							desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+							values = auraFilterTypes		
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},			
+					
+					},
+				},				
 			},
 		},	
 		debuffs = {
@@ -6525,49 +6725,58 @@ E.Options.args.unitframe.args.party = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},	
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
 				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},		
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},		
+					
+					},
+				},				
 			},
 		},	
 		buffIndicator = {
@@ -7109,56 +7318,65 @@ for i=10, 40, 15 do
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},	
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
 				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				noConsolidated = {
-					order = 14,
-					type = 'select',
-					name = L['No Consolidated'],
-					desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
-					values = auraFilterTypes		
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},			
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						noConsolidated = {
+							order = 14,
+							type = 'select',
+							name = L['No Consolidated'],
+							desc = L['Allow displaying of auras that are considered consolidated by Blizzard.'],
+							values = auraFilterTypes		
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},			
+					
+					},
+				},				
 				},
 			},	
 			debuffs = {
@@ -7226,49 +7444,58 @@ for i=10, 40, 15 do
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},	
-				playerOnly = {
-					order = 10,
-					type = 'select',
-					name = L['Personal Auras'],
-					desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes,
 				},
-				useBlacklist = {
-					order = 11,
-					type = 'select',
-					name = L['Use Blacklist'],
-					desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				useWhitelist = {
-					order = 12,
-					type = 'select',
-					name = L['Use Whitelist'],
-					desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
-					values = auraFilterTypes
-				},
-				noDuration = {
-					order = 13,
-					type = 'select',
-					name = L['No Duration'],
-					desc = L['Allow displaying of auras that do not have a duration.'],
-					values = auraFilterTypes					
-				},
-				useFilter = {
-					order = 15,
-					name = L['Use Filter'],
-					desc = L['Select a filter to use.'],
-					type = 'select',
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},		
+				filters = {
+					name = L["Filters"],
+					guiInline = true,
+					type = 'group',
+					order = 500,
+					args = {
+						playerOnly = {
+							order = 10,
+							type = 'select',
+							name = L['Personal Auras'],
+							desc = L['If set, only auras belonging to yourself in addition to any aura that passes the set filter may be shown. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes,
+						},
+						useBlacklist = {
+							order = 11,
+							type = 'select',
+							name = L['Use Blacklist'],
+							desc = L['If set then if the aura is found on the blacklist filter it will not display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						useWhitelist = {
+							order = 12,
+							type = 'select',
+							name = L['Use Whitelist'],
+							desc = L['If set then if the aura is found on the whitelist filter it will display. Note: You can change between only doing this on friendly or enemy units.'],
+							values = auraFilterTypes
+						},
+						noDuration = {
+							order = 13,
+							type = 'select',
+							name = L['No Duration'],
+							desc = L['Allow displaying of auras that do not have a duration.'],
+							values = auraFilterTypes					
+						},
+						useFilter = {
+							order = 15,
+							name = L['Use Filter'],
+							desc = L['Select a filter to use.'],
+							type = 'select',
+							values = function()
+								filters = {}
+								filters[''] = NONE
+								for filter in pairs(E.global.unitframe['aurafilters']) do
+									filters[filter] = filter
+								end
+								return filters
+							end,
+						},		
+					
+					},
+				},				
 				},
 			},	
 			buffIndicator = {

@@ -668,7 +668,7 @@ function E:Initialize()
 	
 	if self.db.install_complete == nil then
 		self:Install()
-	elseif (self.db.install_complete and type(self.db.install_complete) == 'boolean') or (self.db.install_complete and type(tonumber(self.db.install_complete)) == 'number' and tonumber(self.db.install_complete) <= 4.15) then
+	elseif (self.db.install_complete and type(self.db.install_complete) == 'boolean') or (self.db.install_complete and type(tonumber(self.db.install_complete)) == 'number' and tonumber(self.db.install_complete) <= 4.22) then
 		self:Install()
 		ElvUIInstallFrame.SetPage(7)
 		self:StaticPopup_Show('CONFIGAURA_SET')

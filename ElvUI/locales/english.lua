@@ -279,7 +279,7 @@ L["You can now choose what layout you wish to use based on your combat role."] =
 L["You may need to further alter these settings depending how low you resolution is."] = true;
 L["Your current resolution is %s, this is considered a %s resolution."] = true;
 L["Auras System"] = true;
-L["Select the type of aura system you want to use with ElvUI's unitframes. The integrated system utilizes both aura-bars and aura-icons. The icons only system will display only icons and aurabars won't be used."] = true;
+L["Select the type of aura system you want to use with ElvUI's unitframes. The integrated system utilizes both aura-bars and aura-icons. The icons only system will display only icons and aurabars won't be used. The classic system will configure your auras to how they were pre-v4."] = true;
 L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = true;
 L['Integrated'] = true;
 L['Icons Only'] = true;
@@ -575,7 +575,7 @@ L["A setting you have changed will change an option for this character only. Thi
 L["Are you sure you want to delete all your gray items?"] = true;
 L["Are you sure you want to disband the group?"] = true;
 L["Are you sure you want to reset every mover back to it's default position?"] = true;
-L["Because of the mass confusion caused by the new aura system I've implemented a new step to the installation process. This is optional. If you like how your auras are setup go to the last step and click finished to not be prompted again."] = true;
+L["Because of the mass confusion caused by the new aura system I've implemented a new step to the installation process. This is optional. If you like how your auras are setup go to the last step and click finished to not be prompted again. If for some reason you are prompted repeatedly please restart your game."] = true;
 L["Can't buy anymore slots!"] = true;
 L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = true;
 L["One or more of the changes you have made require a ReloadUI."] = true;
@@ -876,5 +876,3 @@ To disable leave the field blank, if you need more information visit http://www.
 --Personal Locale Strings
 L["Bottom_Datatext_Panel"] = "Bottom Datatext Panel"
 L["ChatTab_Datatext_Panel"] = "Right Chat Tab"
-L['Show timers as bars instead of text.'] = 'Show timers as bars instead of text.'
-L['Visual Timers'] =  'Visual Timers'
