@@ -6,10 +6,7 @@ local function LoadSkin()
 	QuestFrameGreetingPanel:HookScript("OnShow", function()
 		QuestFrameGreetingPanel:StripTextures()
 		S:HandleButton(QuestFrameGreetingGoodbyeButton, true)
-		GreetingText:SetTextColor(1, 1, 1)
-		CurrentQuestsText:SetTextColor(1, 1, 0)
 		QuestGreetingFrameHorizontalBreak:Kill()
-		AvailableQuestsText:SetTextColor(1, 1, 0)
 		
 		for i=1, MAX_NUM_QUESTS do
 			local button = _G["QuestTitleButton"..i]
