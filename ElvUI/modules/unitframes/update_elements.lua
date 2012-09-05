@@ -931,31 +931,55 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	--This should be sorted as least priority checked first
 	--most priority last
 	
-	if not isPlayer and CheckFilter(db.playerOnly, isFriend) then
-		returnValue = false
-		returnValueChanged = true;
+	if CheckFilter(db.playerOnly, isFriend) then
+		if isPlayer then
+			returnValue = true;
+		else
+			returnValue = false;
+		end
+		returnValueChanged = returnValue;
+	end
+	
+	if CheckFilter(db.noConsolidated, isFriend) then
+		if shouldConsolidate == 1 then
+			returnValue = false;
+		else
+			returnValue = true;
+		end
+		
+		returnValueChanged = returnValue;
+	end
+	
+	if CheckFilter(db.noDuration, isFriend) then
+		if (duration == 0 or not duration) then
+			returnValue = false;
+		else
+			returnValue = true;
+		end
+		
+		returnValueChanged = returnValue;
+	end
+	
+	if CheckFilter(db.useBlacklist, isFriend) then
+		if E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and E.global['unitframe']['aurafilters']['Blacklist'].spells[name].enable then
+			returnValue = false;
+		else
+			returnValue = true;
+		end
+		
+		returnValueChanged = returnValue;
+	end
+	
+	if CheckFilter(db.useWhitelist, isFriend) then
+		if E.global['unitframe']['aurafilters']['Whitelist'].spells[name] and E.global['unitframe']['aurafilters']['Whitelist'].spells[name].enable then
+			returnValue = true;
+		elseif not returnValueChanged then
+			returnValue = false;
+		end
+		
+		returnValueChanged = returnValue;
 	end	
-	
-	if shouldConsolidate == 1 and CheckFilter(db.noConsolidated, isFriend) then
-		returnValue = false
-		returnValueChanged = true;
-	end		
-	
-	if (duration == 0 or not duration) and CheckFilter(db.noDuration, isFriend) then
-		returnValue = false
-		returnValueChanged = true;
-	end	
-	
-	if E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and E.global['unitframe']['aurafilters']['Blacklist'].spells[name].enable and CheckFilter(db.useBlacklist, isFriend) then
-		returnValue = false
-		returnValueChanged = true;
-	end	
-	
-	if E.global['unitframe']['aurafilters']['Whitelist'].spells[name] and E.global['unitframe']['aurafilters']['Whitelist'].spells[name].enable and CheckFilter(db.useWhitelist, isFriend) then
-		returnValue = true
-		returnValueChanged = true;
-	end	
-	
+
 	if db.useFilter and E.global['unitframe']['aurafilters'][db.useFilter] then
 		local type = E.global['unitframe']['aurafilters'][db.useFilter].type
 		local spellList = E.global['unitframe']['aurafilters'][db.useFilter].spells
@@ -966,6 +990,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 			elseif not returnValueChanged then
 				returnValue = false
 			end
+
 		elseif type == 'Blacklist' and spellList[name] and spellList[name].enable then
 			returnValue = false				
 		end
@@ -1166,31 +1191,55 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	--This should be sorted as least priority checked first
 	--most priority last
 
-	if not isPlayer and CheckFilter(db.playerOnly, isFriend) then
-		returnValue = false
-		returnValueChanged = true;
+	if CheckFilter(db.playerOnly, isFriend) then
+		if isPlayer then
+			returnValue = true;
+		else
+			returnValue = false;
+		end
+		returnValueChanged = returnValue;
+	end
+	
+	if CheckFilter(db.noConsolidated, isFriend) then
+		if shouldConsolidate == 1 then
+			returnValue = false;
+		else
+			returnValue = true;
+		end
+		
+		returnValueChanged = returnValue;
+	end
+	
+	if CheckFilter(db.noDuration, isFriend) then
+		if (duration == 0 or not duration) then
+			returnValue = false;
+		else
+			returnValue = true;
+		end
+		
+		returnValueChanged = returnValue;
+	end
+	
+	if CheckFilter(db.useBlacklist, isFriend) then
+		if E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and E.global['unitframe']['aurafilters']['Blacklist'].spells[name].enable then
+			returnValue = false;
+		else
+			returnValue = true;
+		end
+		
+		returnValueChanged = returnValue;
+	end
+	
+	if CheckFilter(db.useWhitelist, isFriend) then
+		if E.global['unitframe']['aurafilters']['Whitelist'].spells[name] and E.global['unitframe']['aurafilters']['Whitelist'].spells[name].enable then
+			returnValue = true;
+		elseif not returnValueChanged then
+			returnValue = false;
+		end
+		
+		returnValueChanged = returnValue;
 	end	
-	
-	if shouldConsolidate == 1 and CheckFilter(db.noConsolidated, isFriend) then
-		returnValue = false
-		returnValueChanged = true;
-	end		
-	
-	if (duration == 0 or not duration) and CheckFilter(db.noDuration, isFriend) then
-		returnValue = false
-		returnValueChanged = true;
-	end	
-	
-	if E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and E.global['unitframe']['aurafilters']['Blacklist'].spells[name].enable and CheckFilter(db.useBlacklist, isFriend) then
-		returnValue = false
-		returnValueChanged = true;
-	end	
-	
-	if E.global['unitframe']['aurafilters']['Whitelist'].spells[name] and E.global['unitframe']['aurafilters']['Whitelist'].spells[name].enable and CheckFilter(db.useWhitelist, isFriend) then
-		returnValue = true
-		returnValueChanged = true;
-	end	
-	
+
 	if db.useFilter and E.global['unitframe']['aurafilters'][db.useFilter] then
 		local type = E.global['unitframe']['aurafilters'][db.useFilter].type
 		local spellList = E.global['unitframe']['aurafilters'][db.useFilter].spells
@@ -1201,12 +1250,13 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 			elseif not returnValueChanged then
 				returnValue = false
 			end
+
 		elseif type == 'Blacklist' and spellList[name] and spellList[name].enable then
 			returnValue = false				
 		end
 	end		
 
-	return returnValue
+	return returnValue	
 end
 
 function UF:ColorizeAuraBars(event, unit)
