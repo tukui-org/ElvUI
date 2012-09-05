@@ -934,40 +934,40 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	if CheckFilter(db.playerOnly, isFriend) then
 		if isPlayer then
 			returnValue = true;
-		else
+		elseif not returnValueChanged then
 			returnValue = false;
 		end
-		returnValueChanged = returnValue;
+		returnValueChanged = true;
 	end
 	
 	if CheckFilter(db.noConsolidated, isFriend) then
 		if shouldConsolidate == 1 then
 			returnValue = false;
-		else
+		elseif not returnValueChanged then
 			returnValue = true;
 		end
 		
-		returnValueChanged = returnValue;
+		returnValueChanged = true;
 	end
 	
 	if CheckFilter(db.noDuration, isFriend) then
 		if (duration == 0 or not duration) then
 			returnValue = false;
-		else
+		elseif not returnValueChanged then
 			returnValue = true;
 		end
 		
-		returnValueChanged = returnValue;
+		returnValueChanged = true;
 	end
 	
 	if CheckFilter(db.useBlacklist, isFriend) then
 		if E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and E.global['unitframe']['aurafilters']['Blacklist'].spells[name].enable then
 			returnValue = false;
-		else
+		elseif not returnValueChanged then
 			returnValue = true;
 		end
 		
-		returnValueChanged = returnValue;
+		returnValueChanged = true;
 	end
 	
 	if CheckFilter(db.useWhitelist, isFriend) then
@@ -977,7 +977,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 			returnValue = false;
 		end
 		
-		returnValueChanged = returnValue;
+		returnValueChanged = true;
 	end	
 
 	if db.useFilter and E.global['unitframe']['aurafilters'][db.useFilter] then
@@ -1194,40 +1194,40 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	if CheckFilter(db.playerOnly, isFriend) then
 		if isPlayer then
 			returnValue = true;
-		else
+		elseif not returnValueChanged then
 			returnValue = false;
 		end
-		returnValueChanged = returnValue;
+		returnValueChanged = true;
 	end
 	
 	if CheckFilter(db.noConsolidated, isFriend) then
 		if shouldConsolidate == 1 then
 			returnValue = false;
-		else
+		elseif not returnValueChanged then
 			returnValue = true;
 		end
 		
-		returnValueChanged = returnValue;
+		returnValueChanged = true;
 	end
 	
 	if CheckFilter(db.noDuration, isFriend) then
 		if (duration == 0 or not duration) then
 			returnValue = false;
-		else
+		elseif not returnValueChanged then
 			returnValue = true;
 		end
 		
-		returnValueChanged = returnValue;
+		returnValueChanged = true;
 	end
 	
 	if CheckFilter(db.useBlacklist, isFriend) then
 		if E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and E.global['unitframe']['aurafilters']['Blacklist'].spells[name].enable then
 			returnValue = false;
-		else
+		elseif not returnValueChanged then
 			returnValue = true;
 		end
 		
-		returnValueChanged = returnValue;
+		returnValueChanged = true;
 	end
 	
 	if CheckFilter(db.useWhitelist, isFriend) then
@@ -1237,7 +1237,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 			returnValue = false;
 		end
 		
-		returnValueChanged = returnValue;
+		returnValueChanged = true;
 	end	
 
 	if db.useFilter and E.global['unitframe']['aurafilters'][db.useFilter] then
