@@ -278,28 +278,6 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				--[[['filters'] = {
-					['friendly'] = {
-						['playerOnly'] = true,
-						['noConsolidated'] = true,
-						['useBlacklist'] = true,
-						['useWhiteList'] = true,
-						['noDuration'] = true,
-						['useFilter'] = '',
-				['xOffset'] = 0,
-				['yOffset'] = 0,
-					},
-					['enemy'] = {
-						['playerOnly'] = true,
-						['noConsolidated'] = true,
-						['useBlacklist'] = true,
-						['useWhiteList'] = true,
-						['noDuration'] = true,
-						['useFilter'] = '',
-				['xOffset'] = 0,
-				['yOffset'] = 0,					
-					},
-				},]]
 			},
 			['debuffs'] = {
 				['enable'] = true,
