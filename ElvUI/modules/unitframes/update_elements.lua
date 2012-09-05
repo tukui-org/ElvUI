@@ -917,7 +917,10 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	local db = self:GetParent().db
 	if not db or not db[self.type] then return true; end
 	
+	db = db[self.type]
+	
 	local returnValue = true;
+	local returnValueChanged = false;
 	if caster == 'player' or caster == 'vehicle' then isPlayer = true end
 	if UnitIsFriend('player', unit) then isFriend = true end
 	
@@ -928,32 +931,41 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	--This should be sorted as least priority checked first
 	--most priority last
 	
-	if not isPlayer and CheckFilter(db[self.type].playerOnly, isFriend) then
+	if not isPlayer and CheckFilter(db.playerOnly, isFriend) then
 		returnValue = false
+		returnValueChanged = true;
 	end	
 	
-	if shouldConsolidate == 1 and CheckFilter(db[self.type].noConsolidated, isFriend) then
+	if shouldConsolidate == 1 and CheckFilter(db.noConsolidated, isFriend) then
 		returnValue = false
+		returnValueChanged = true;
 	end		
 	
-	if (duration == 0 or not duration) and CheckFilter(db[self.type].noDuration, isFriend) then
+	if (duration == 0 or not duration) and CheckFilter(db.noDuration, isFriend) then
 		returnValue = false
+		returnValueChanged = true;
 	end	
 	
-	if E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and E.global['unitframe']['aurafilters']['Blacklist'].spells[name].enable and CheckFilter(db[self.type].useBlacklist, isFriend) then
+	if E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and E.global['unitframe']['aurafilters']['Blacklist'].spells[name].enable and CheckFilter(db.useBlacklist, isFriend) then
 		returnValue = false
+		returnValueChanged = true;
 	end	
 	
-	if E.global['unitframe']['aurafilters']['Whitelist'].spells[name] and E.global['unitframe']['aurafilters']['Whitelist'].spells[name].enable and CheckFilter(db[self.type].useWhitelist, isFriend) then
+	if E.global['unitframe']['aurafilters']['Whitelist'].spells[name] and E.global['unitframe']['aurafilters']['Whitelist'].spells[name].enable and CheckFilter(db.useWhitelist, isFriend) then
 		returnValue = true
+		returnValueChanged = true;
 	end	
 	
-	if db[self.type].useFilter and E.global['unitframe']['aurafilters'][db[self.type].useFilter] then
-		local type = E.global['unitframe']['aurafilters'][db[self.type].useFilter].type
-		local spellList = E.global['unitframe']['aurafilters'][db[self.type].useFilter].spells
+	if db.useFilter and E.global['unitframe']['aurafilters'][db.useFilter] then
+		local type = E.global['unitframe']['aurafilters'][db.useFilter].type
+		local spellList = E.global['unitframe']['aurafilters'][db.useFilter].spells
 
-		if type == 'Whitelist' and spellList[name] and spellList[name].enable then
-			returnValue = true	
+		if type == 'Whitelist' then
+			if spellList[name] and spellList[name].enable then
+				returnValue = true	
+			elseif not returnValueChanged then
+				returnValue = false
+			end
 		elseif type == 'Blacklist' and spellList[name] and spellList[name].enable then
 			returnValue = false				
 		end
@@ -1145,6 +1157,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	local db = self.db.aurabar
 	if not db then return; end
 	local returnValue = true;
+	local returnValueChanged = false
 	local isPlayer, isFriend
 
 	if unitCaster == 'player' or unitCaster == 'vehicle' then isPlayer = true end
@@ -1155,30 +1168,39 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 
 	if not isPlayer and CheckFilter(db.playerOnly, isFriend) then
 		returnValue = false
+		returnValueChanged = true;
 	end	
 	
 	if shouldConsolidate == 1 and CheckFilter(db.noConsolidated, isFriend) then
 		returnValue = false
+		returnValueChanged = true;
 	end		
 	
 	if (duration == 0 or not duration) and CheckFilter(db.noDuration, isFriend) then
 		returnValue = false
+		returnValueChanged = true;
 	end	
 	
 	if E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and E.global['unitframe']['aurafilters']['Blacklist'].spells[name].enable and CheckFilter(db.useBlacklist, isFriend) then
 		returnValue = false
+		returnValueChanged = true;
 	end	
 	
 	if E.global['unitframe']['aurafilters']['Whitelist'].spells[name] and E.global['unitframe']['aurafilters']['Whitelist'].spells[name].enable and CheckFilter(db.useWhitelist, isFriend) then
 		returnValue = true
+		returnValueChanged = true;
 	end	
 	
 	if db.useFilter and E.global['unitframe']['aurafilters'][db.useFilter] then
 		local type = E.global['unitframe']['aurafilters'][db.useFilter].type
 		local spellList = E.global['unitframe']['aurafilters'][db.useFilter].spells
 
-		if type == 'Whitelist' and spellList[name] and spellList[name].enable then
-			returnValue = true	
+		if type == 'Whitelist' then
+			if spellList[name] and spellList[name].enable then
+				returnValue = true	
+			elseif not returnValueChanged then
+				returnValue = false
+			end
 		elseif type == 'Blacklist' and spellList[name] and spellList[name].enable then
 			returnValue = false				
 		end
