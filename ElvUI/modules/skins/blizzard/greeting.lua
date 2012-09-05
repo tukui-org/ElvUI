@@ -7,15 +7,6 @@ local function LoadSkin()
 		QuestFrameGreetingPanel:StripTextures()
 		S:HandleButton(QuestFrameGreetingGoodbyeButton, true)
 		QuestGreetingFrameHorizontalBreak:Kill()
-		
-		for i=1, MAX_NUM_QUESTS do
-			local button = _G["QuestTitleButton"..i]
-			if button:GetFontString() then
-				if button:GetFontString():GetText() and button:GetFontString():GetText():find("|cff000000") then
-					button:GetFontString():SetText(string.gsub(button:GetFontString():GetText(), "|cff000000", "|cffFFFF00"))
-				end
-			end
-		end
 	end)
 end
 
