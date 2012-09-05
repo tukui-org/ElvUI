@@ -117,6 +117,15 @@ local function LoadSkin()
 		QuestLogDetailScrollFrame.spellTex:Height(self:GetHeight() + 217)
 	end)
 	
+	QuestRewardScrollFrame:HookScript('OnShow', function(self)
+		if not self.backdrop then
+			self:CreateBackdrop("Default")	
+			StyleScrollFrame(self, 509, 630, false)		
+			self:Height(self:GetHeight() - 2)
+		end
+		self.spellTex:Height(self:GetHeight() + 217)	
+	end)
+	
 	--Quest Frame
 	QuestFrame:StripTextures(true)
 	QuestFrameInset:Kill()

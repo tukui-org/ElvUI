@@ -34,16 +34,16 @@ E.Options.args.auras = {
 			end,	
 			disabled = function() return not E.private.general.minimap.enable end,
 		},
-		visualtimer = {
+		filterConsolidated = {
 			order = 4,
-			name = L['Visual Timers'],
-			desc = L['Show timers as bars instead of text.'],
+			name = L['Filter Consolidated'],
+			desc = L['Only show consolidated icons on the consolidated bar that your class/spec is interested in. This is useful for raid leading.'],
 			type = 'toggle',
-			get = function(info) return E.private.auras[ info[#info] ] end,
 			set = function(info, value) 
-				E.private.auras[ info[#info] ] = value
-				E:StaticPopup_Show("PRIVATE_RL")
+				E.db.auras[ info[#info] ] = value
+				E:GetModule('Minimap'):UpdateSettings()
 			end,	
+			disabled = function() return not E.private.general.minimap.enable end,
 		},
 		general = {
 			order = 5,

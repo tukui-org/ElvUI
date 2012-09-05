@@ -77,9 +77,37 @@ function AddOn:OnInitialize()
 	self:UIScale();
 	self:UpdateMedia();
 	
+	self:RegisterEvent('PLAYER_REGEN_DISABLED')
 	self:RegisterEvent('PLAYER_LOGIN', 'Initialize')
 	self:Contruct_StaticPopups()
 	self:InitializeInitialModules()
+end
+
+function AddOn:PLAYER_REGEN_ENABLED()
+	ACD:Open(AddOnName);
+	self:UnregisterEvent('PLAYER_REGEN_ENABLED');
+end
+
+function AddOn:PLAYER_REGEN_DISABLED()
+	local err = false;
+	if ACD.OpenFrames[AddOnName] then
+		self:RegisterEvent('PLAYER_REGEN_ENABLED');
+		ACD:Close(AddOnName);
+		err = true;
+	end
+	
+	if self.CreatedMovers then
+		for name, _ in pairs(self.CreatedMovers) do
+			if _G[name] and _G[name]:IsShown() then
+				err = true;
+				_G[name]:Hide();
+			end
+		end
+	end
+	
+	if err == true then
+		self:Print(ERR_NOT_IN_COMBAT);		
+	end		
 end
 
 function AddOn:OnProfileReset()
@@ -114,6 +142,12 @@ function AddOn:LoadConfig()
 end
 
 function AddOn:ToggleConfig() 
+	if InCombatLockdown() then
+		self:Print(ERR_NOT_IN_COMBAT)
+		self:RegisterEvent('PLAYER_REGEN_ENABLED')
+		return;
+	end
+
 	local mode = 'Close'
 	if not ACD.OpenFrames[AddOnName] then
 		mode = 'Open'

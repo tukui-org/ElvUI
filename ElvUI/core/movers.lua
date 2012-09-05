@@ -305,17 +305,3 @@ function E:LoadMovers()
 		CreateMover(p, n, t, o, so, pd)
 	end
 end
-
-function E:PLAYER_REGEN_DISABLED()
-	local err = false
-	for name, _ in pairs(E.CreatedMovers) do
-		if _G[name] and _G[name]:IsShown() then
-			err = true
-			_G[name]:Hide()
-		end
-	end
-	if err == true then
-		E:Print(ERR_NOT_IN_COMBAT)			
-	end	
-end
-E:RegisterEvent('PLAYER_REGEN_DISABLED')

@@ -87,29 +87,48 @@ function A:UpdateReminder(event, unit)
 	local frame = self.frame
 	
 	if event ~= 'UNIT_AURA' and not InCombatLockdown() then
-		if E.role == 'Caster' then
-			ConsolidatedBuffsTooltipBuff3:Hide()
-			ConsolidatedBuffsTooltipBuff4:Hide()
-			ConsolidatedBuffsTooltipBuff5:Show()
-			ConsolidatedBuffsTooltipBuff6:Show()			
+		if E.db.auras.filterConsolidated then
+			if E.role == 'Caster' then
+				ConsolidatedBuffsTooltipBuff3:Hide()
+				ConsolidatedBuffsTooltipBuff4:Hide()
+				ConsolidatedBuffsTooltipBuff5:Show()
+				ConsolidatedBuffsTooltipBuff6:Show()			
+			else
+				ConsolidatedBuffsTooltipBuff3:Show()
+				ConsolidatedBuffsTooltipBuff4:Show()
+				ConsolidatedBuffsTooltipBuff5:Hide()
+				ConsolidatedBuffsTooltipBuff6:Hide()		
+			end
 		else
-			ConsolidatedBuffsTooltipBuff3:Show()
-			ConsolidatedBuffsTooltipBuff4:Show()
-			ConsolidatedBuffsTooltipBuff5:Hide()
-			ConsolidatedBuffsTooltipBuff6:Hide()		
+			for i=3, 6 do
+				_G['ConsolidatedBuffsTooltipBuff'..i]:Show()
+			end			
 		end
 	end
 	
-	if E.role == 'Caster' then
-		A.IndexTable[3] = A.SpellPower
-		A.IndexTable[4] = A.SpellHaste
+	if E.db.auras.filterConsolidated then
+		A.IndexTable[7] = nil;
+		A.IndexTable[8] = nil;		
+		A.IndexTable[5] = A.CriticalStrike;
+		A.IndexTable[6] = A.Mastery;
+		
+		if E.role == 'Caster' then
+			A.IndexTable[3] = A.SpellPower
+			A.IndexTable[4] = A.SpellHaste
+		else
+			A.IndexTable[3] = A.AttackPower
+			A.IndexTable[4] = A.AttackSpeed
+		end
 	else
-		A.IndexTable[3] = A.AttackPower
-		A.IndexTable[4] = A.AttackSpeed
+		A.IndexTable[3] = A.AttackPower;
+		A.IndexTable[4] = A.AttackSpeed;
+		A.IndexTable[5] = A.SpellPower;
+		A.IndexTable[6] = A.SpellHaste;			
+		A.IndexTable[7] = A.CriticalStrike;
+		A.IndexTable[8] = A.Mastery;	
 	end
 	
-	
-	for i = 1, 6 do
+	for i = 1, E.db.auras.filterConsolidated and 6 or 8 do
 		local hasBuff, texture = self:CheckFilterForActiveBuff(self.IndexTable[i])
 		frame['spell'..i].t:SetTexture(texture)
 		if hasBuff then
@@ -129,22 +148,38 @@ function A:Button_OnEnter()
 	
 	local id = self:GetParent():GetID()
 	
-	if (id == 3 or id == 4) and E.role == 'Caster' then
-		A.IndexTable[3] = A.SpellPower
-		A.IndexTable[4] = A.SpellHaste
+	if E.db.auras.filterConsolidated then
+		A.IndexTable[7] = nil;
+		A.IndexTable[8] = nil;	
+		A.IndexTable[5] = A.CriticalStrike;
+		A.IndexTable[6] = A.Mastery;
 		
-		GameTooltip:AddLine(_G["RAID_BUFF_"..id+2])
-	elseif id >= 5 then
-		GameTooltip:AddLine(_G["RAID_BUFF_"..id+2])
-	else
-		if E.role ~= "Caster" then
-			A.IndexTable[3] = A.AttackPower
-			A.IndexTable[4] = A.AttackSpeed
+		if (id == 3 or id == 4) and E.role == 'Caster' then
+			A.IndexTable[3] = A.SpellPower
+			A.IndexTable[4] = A.SpellHaste
+			
+			GameTooltip:AddLine(_G["RAID_BUFF_"..id+2])
+		elseif id >= 5 then
+			GameTooltip:AddLine(_G["RAID_BUFF_"..id+2])
+		else
+			if E.role ~= "Caster" then
+				A.IndexTable[3] = A.AttackPower
+				A.IndexTable[4] = A.AttackSpeed
+			end
+			
+			GameTooltip:AddLine(_G["RAID_BUFF_"..id])
 		end
+	else
+		A.IndexTable[3] = A.AttackPower;
+		A.IndexTable[4] = A.AttackSpeed;
+		A.IndexTable[5] = A.SpellPower;
+		A.IndexTable[6] = A.SpellHaste;			
+		A.IndexTable[7] = A.CriticalStrike;
+		A.IndexTable[8] = A.Mastery;
 		
 		GameTooltip:AddLine(_G["RAID_BUFF_"..id])
 	end
-
+	
 	GameTooltip:AddLine(" ")
 	for _, spellID in pairs(A.IndexTable[id]) do
 		local spellName = GetSpellInfo(spellID)
@@ -162,20 +197,10 @@ function A:Button_OnLeave()
 	GameTooltip:Hide()
 end
 
-function A:CreateButton(relativeTo, isFirst, isLast)
+function A:CreateButton()
 	local button = CreateFrame("Button", name, ElvUI_ConsolidatedBuffs)
 	button:SetTemplate('Default')
-	button:Size(E.ConsolidatedBuffsWidth - 4)
-	if isFirst then
-		button:Point("TOP", relativeTo, "TOP", 0, -2)
-	else
-		button:Point("TOP", relativeTo, "BOTTOM", 0, -1)
-	end
 	
-	if isLast then
-		button:Point("BOTTOM", ElvUI_ConsolidatedBuffs, "BOTTOM", 0, 2)
-	end
-
 	button.t = button:CreateTexture(nil, "OVERLAY")
 	button.t:SetTexCoord(unpack(E.TexCoords))
 	button.t:SetInside()
@@ -213,29 +238,34 @@ function A:DisableCB()
 	self:UnregisterEvent("ZONE_CHANGED_NEW_AREA")
 end
 
-function A:Construct_ConsolidatedBuffs()
-	local frame = CreateFrame('Frame', 'ElvUI_ConsolidatedBuffs', Minimap)
-	frame:SetTemplate('Default')
+function A:Update_ConsolidatedBuffsSettings()
+	local frame = self.frame
 	frame:Width(E.ConsolidatedBuffsWidth)
-	frame:Point('TOPLEFT', Minimap.backdrop, 'TOPRIGHT', 1, 0)
-	frame:Point('BOTTOMLEFT', Minimap.backdrop, 'BOTTOMRIGHT', 1, 0)
-
-	frame.spell1 = self:CreateButton(frame, true)
-	frame.spell2 = self:CreateButton(frame.spell1)
-	frame.spell3 = self:CreateButton(frame.spell2)
-	frame.spell4 = self:CreateButton(frame.spell3)
-	frame.spell5 = self:CreateButton(frame.spell4)
-	frame.spell6 = self:CreateButton(frame.spell5, nil, true)
-	self.frame = frame
-
 	for i=1, NUM_LE_RAID_BUFF_TYPES do
 		local id = i
-		if i > 4 then
+		if i > 4 and E.db.auras.filterConsolidated then
 			id = i - 2
 		end
+
+		frame['spell'..i]:ClearAllPoints()
+		frame['spell'..i]:Size(E.ConsolidatedBuffsWidth - 4)
 		
-		frame["spell"..id]:SetID(id)
+		if i == 1 then
+			frame['spell'..i]:Point("TOP", ElvUI_ConsolidatedBuffs, "TOP", 0, -2)
+		else
+			frame['spell'..i]:Point("TOP", frame['spell'..i - 1], "BOTTOM", 0, -1)
+		end
+
+		if i == 6 and E.db.auras.filterConsolidated or i == 8 then
+			frame['spell'..i]:Point("BOTTOM", ElvUI_ConsolidatedBuffs, "BOTTOM", 0, 2)
+		end
 		
+		if E.db.auras.filterConsolidated and i > 6 then
+			frame['spell'..i]:Hide()
+		else
+			frame['spell'..i]:Show()
+		end
+				
 		--This is so hackish its funny.. 
 		--Have to do this to be able to right click a consolidated buff icon in combat and remove the aura.
 		_G['ConsolidatedBuffsTooltipBuff'..i]:ClearAllPoints()
@@ -246,11 +276,28 @@ function A:Construct_ConsolidatedBuffs()
 		_G['ConsolidatedBuffsTooltipBuff'..i]:SetScript("OnLeave", A.Button_OnLeave)		
 	end
 	
-	if E.db.auras.consolidedBuffs then
-		self:EnableCB()
+	if E.db.auras.consolidedBuffs and E.private.general.minimap.enable then
+		E:GetModule('Auras'):EnableCB()
 	else
-		self:DisableCB()
+		E:GetModule('Auras'):DisableCB()
+	end	
+end
+
+function A:Construct_ConsolidatedBuffs()
+	local frame = CreateFrame('Frame', 'ElvUI_ConsolidatedBuffs', Minimap)
+	frame:SetTemplate('Default')
+	frame:Width(E.ConsolidatedBuffsWidth)
+	frame:Point('TOPLEFT', Minimap.backdrop, 'TOPRIGHT', 1, 0)
+	frame:Point('BOTTOMLEFT', Minimap.backdrop, 'BOTTOMRIGHT', 1, 0)
+	self.frame = frame
+	
+	for i=1, NUM_LE_RAID_BUFF_TYPES do
+		frame['spell'..i] = self:CreateButton()
+		frame["spell"..i]:SetID(i)
 	end
+
+	
+	self:Update_ConsolidatedBuffsSettings()
 end
 
 E:RegisterModule(A:GetName())

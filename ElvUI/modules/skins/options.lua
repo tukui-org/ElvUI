@@ -34,6 +34,11 @@ E.Options.args.skins = {
 			disabled = function() return not E.private.skins.blizzard.enable end,
 			guiInline = true,
 			args = {	
+				transmogrify = {
+					type = 'toggle',
+					name = L['Transmogrify Frame'],
+					desc = L['TOGGLESKIN_DESC'],
+				},
 				encounterjournal = {
 					type = "toggle",
 					name = L["Encounter Journal"],

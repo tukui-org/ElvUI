@@ -150,7 +150,7 @@ function M:UpdateSettings()
 	E.MinimapSize = E.private.general.minimap.enable and E.db.general.minimap.size or Minimap:GetWidth() + 10
 	
 	if E.db.auras.consolidedBuffs and E.private.auras.enable then
-		E.ConsolidatedBuffsWidth = ((E.MinimapSize - 6) / 6) + 4
+		E.ConsolidatedBuffsWidth = ((E.MinimapSize - (E.db.auras.filterConsolidated and 6 or 8)) / (E.db.auras.filterConsolidated and 6 or 8)) + 4
 	else
 		E.ConsolidatedBuffsWidth = 0;
 	end
@@ -219,16 +219,7 @@ function M:UpdateSettings()
 	end
 	
 	if ElvUI_ConsolidatedBuffs then
-		ElvUI_ConsolidatedBuffs:Width(E.ConsolidatedBuffsWidth)
-		for i=1, 6 do
-			ElvUI_ConsolidatedBuffs['spell'..i]:Size(E.ConsolidatedBuffsWidth - 4)
-		end
-		
-		if E.db.auras.consolidedBuffs and E.private.general.minimap.enable then
-			E:GetModule('Auras'):EnableCB()
-		else
-			E:GetModule('Auras'):DisableCB()
-		end
+		E:GetModule('Auras'):Update_ConsolidatedBuffsSettings()
 	end
 end
 
