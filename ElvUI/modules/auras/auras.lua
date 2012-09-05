@@ -254,13 +254,12 @@ end
 function A:Initialize()
 	if self.db then return; end --IDK WHY BUT THIS IS GETTING CALLED TWICE FROM SOMEWHERE...
 	self.db = E.db.auras
-	
-	if E.private.auras.enable ~= true then return end
-	
+
 	BuffFrame:Kill()
 	ConsolidatedBuffs:Kill()
-	--TemporaryEnchantFrame:Kill()	
 	InterfaceOptionsFrameCategoriesButton12:SetScale(0.0001)
+	
+	if E.private.auras.enable ~= true then TemporaryEnchantFrame:Kill(); return end
 	
 	local holder = CreateFrame("Frame", "AurasHolder", E.UIParent)
 	holder:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", -8, 2)
