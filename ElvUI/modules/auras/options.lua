@@ -34,8 +34,19 @@ E.Options.args.auras = {
 			end,	
 			disabled = function() return not E.private.general.minimap.enable end,
 		},
-		general = {
+		filterConsolidated = {
 			order = 4,
+			name = L['Filter Consolidated'],
+			desc = L['Only show consolidated icons on the consolidated bar that your class/spec is interested in. This is useful for raid leading.'],
+			type = 'toggle',
+			set = function(info, value) 
+				E.db.auras[ info[#info] ] = value
+				E:GetModule('Minimap'):UpdateSettings()
+			end,	
+			disabled = function() return not E.private.general.minimap.enable end,
+		},		
+		general = {
+			order = 5,
 			type = 'group',
 			guiInline = true,
 			name = L['General'],
@@ -66,7 +77,7 @@ E.Options.args.auras = {
 			},
 		},
 		fontGroup = {
-			order = 5,
+			order = 6,
 			type = 'group',
 			guiInline = true,
 			name = L['Fonts'],

@@ -115,6 +115,8 @@ P['auras'] = {
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
 	
 	['consolidedBuffs'] = true;
+	['filterConsolidated'] = true;
+	
 	['wrapAfter'] = 12,
 	['fadeThreshold'] = 5,
 	['buffs'] = {
