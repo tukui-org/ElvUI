@@ -3,22 +3,33 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.archaeology ~= true then return end
-	ArchaeologyFrame:StripTextures(true)
-	ArchaeologyFrameInset:StripTextures(true)
-	ArchaeologyFrame:SetTemplate("Transparent")
+	ArchaeologyFrame:StripTextures()
+	ArchaeologyFrameInset:StripTextures()
+	ArchaeologyFrame:CreateBackdrop("Transparent")
+	ArchaeologyFrame.backdrop:SetAllPoints()
 	ArchaeologyFrame:CreateShadow("Default")
+	ArchaeologyFrame.portrait:SetAlpha(0)
+	ArchaeologyFrameInset:CreateBackdrop('Default')
+	ArchaeologyFrameInset.backdrop:SetPoint('TOPLEFT')
+	ArchaeologyFrameInset.backdrop:SetPoint('BOTTOMRIGHT', -3, -1)
 	
 	S:HandleButton(ArchaeologyFrameArtifactPageSolveFrameSolveButton, true)
 	S:HandleButton(ArchaeologyFrameArtifactPageBackButton, true)
+	ArchaeologyFrameRaceFilter:SetFrameLevel(ArchaeologyFrameRaceFilter:GetFrameLevel() + 2)
 	S:HandleDropDownBox(ArchaeologyFrameRaceFilter, 125)
+	
+	S:HandleNextPrevButton(ArchaeologyFrameCompletedPageNextPageButton)
+	S:HandleNextPrevButton(ArchaeologyFrameCompletedPagePrevPageButton)
 	
 	ArchaeologyFrameRankBar:StripTextures()
 	ArchaeologyFrameRankBar:SetStatusBarTexture(E["media"].normTex)
+	ArchaeologyFrameRankBar:SetFrameLevel(ArchaeologyFrameRankBar:GetFrameLevel() + 2)
 	ArchaeologyFrameRankBar:CreateBackdrop("Default")
 	
 	ArchaeologyFrameArtifactPageSolveFrameStatusBar:StripTextures()
 	ArchaeologyFrameArtifactPageSolveFrameStatusBar:SetStatusBarTexture(E["media"].normTex)
 	ArchaeologyFrameArtifactPageSolveFrameStatusBar:SetStatusBarColor(0.7, 0.2, 0)
+	ArchaeologyFrameArtifactPageSolveFrameStatusBar:SetFrameLevel(ArchaeologyFrameArtifactPageSolveFrameStatusBar:GetFrameLevel() + 2)
 	ArchaeologyFrameArtifactPageSolveFrameStatusBar:CreateBackdrop("Default")
 	
 	for i=1, ARCHAEOLOGY_MAX_COMPLETED_SHOWN do
@@ -33,39 +44,9 @@ local function LoadSkin()
 			_G["ArchaeologyFrameCompletedPageArtifact"..i.."Icon"].backdrop:SetOutside(_G["ArchaeologyFrameCompletedPageArtifact"..i.."Icon"])
 			_G["ArchaeologyFrameCompletedPageArtifact"..i.."Icon"].backdrop:SetFrameLevel(artifact:GetFrameLevel() - 2)
 			_G["ArchaeologyFrameCompletedPageArtifact"..i.."Icon"]:SetDrawLayer("OVERLAY")
-			_G["ArchaeologyFrameCompletedPageArtifact"..i.."ArtifactName"]:SetTextColor(1, 1, 0)
-			_G["ArchaeologyFrameCompletedPageArtifact"..i.."ArtifactSubText"]:SetTextColor(0.6, 0.6, 0.6)
 		end
 	end
-	
-	for i=1, ARCHAEOLOGY_MAX_RACES do
-		local frame = _G["ArchaeologyFrameSummaryPageRace"..i]
-		
-		if frame then
-			frame.raceName:SetTextColor(1, 1, 1)
-		end
-	end
-	
-	for i=1, ArchaeologyFrameCompletedPage:GetNumRegions() do
-		local region = select(i, ArchaeologyFrameCompletedPage:GetRegions())
-		if region:GetObjectType() == "FontString" then
-			region:SetTextColor(1, 1, 0)
-		end
-	end
-	
-	for i=1, ArchaeologyFrameSummaryPage:GetNumRegions() do
-		local region = select(i, ArchaeologyFrameSummaryPage:GetRegions())
-		if region:GetObjectType() == "FontString" then
-			region:SetTextColor(1, 1, 0)
-		end
-	end
-	
-	ArchaeologyFrameCompletedPage.infoText:SetTextColor(1, 1, 1)
-	ArchaeologyFrameHelpPageTitle:SetTextColor(1, 1, 0)
-	ArchaeologyFrameHelpPageDigTitle:SetTextColor(1, 1, 0)
-	ArchaeologyFrameHelpPageHelpScrollHelpText:SetTextColor(1, 1, 1)
-	
-	ArchaeologyFrameArtifactPageHistoryTitle:SetTextColor(1, 1, 0)
+
 	ArchaeologyFrameArtifactPageIcon:SetTexCoord(unpack(E.TexCoords))
 	ArchaeologyFrameArtifactPageIcon.backdrop = CreateFrame("Frame", nil, ArchaeologyFrameArtifactPage)
 	ArchaeologyFrameArtifactPageIcon.backdrop:SetTemplate("Default")
@@ -73,8 +54,7 @@ local function LoadSkin()
 	ArchaeologyFrameArtifactPageIcon.backdrop:SetFrameLevel(ArchaeologyFrameArtifactPage:GetFrameLevel())
 	ArchaeologyFrameArtifactPageIcon:SetParent(ArchaeologyFrameArtifactPageIcon.backdrop)
 	ArchaeologyFrameArtifactPageIcon:SetDrawLayer("OVERLAY")	
-	
-	ArchaeologyFrameArtifactPageHistoryScrollChildText:SetTextColor(1, 1, 1)
+
 	S:HandleCloseButton(ArchaeologyFrameCloseButton)
 end
 
