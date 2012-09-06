@@ -117,7 +117,7 @@ P['auras'] = {
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
 	
 	['consolidedBuffs'] = true;
-	['filterConsolidated'] = true;
+	['filterConsolidated'] = false;
 	
 	['wrapAfter'] = 12,
 	['fadeThreshold'] = -1,
@@ -264,7 +264,7 @@ P['unitframe'] = {
 			},
 			['name'] = {
 				['position'] = 'LEFT',
-				['text_format'] = '[namecolor][name:medium] [difficultycolor][level]',
+				['text_format'] = '[namecolor][name:medium] [level]',
 			},
 			['pvp'] = {
 				['position'] = 'BOTTOM',
