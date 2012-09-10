@@ -89,9 +89,7 @@ E.Options.args.chat = {
 					min = 0, max = 120, step = 1,
 					set = function(info, value) 
 						E.db.chat[ info[#info] ] = value 
-						if value ~= 0 then
-							CH:EnableChatThrottle()
-						else
+						if value == 0 then
 							CH:DisableChatThrottle()
 						end
 					end,					

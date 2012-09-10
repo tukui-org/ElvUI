@@ -643,7 +643,8 @@ function CH:SetupChat(event, ...)
 		else
 			frame:SetShadowColor(0, 0, 0, 1)
 		end
-		frame:SetShadowOffset((E.mult or 1), -(E.mult or 1))		
+		frame:SetShadowOffset((E.mult or 1), -(E.mult or 1))	
+		frame:SetMaxLines(700)
 	end	
 	
 	if self.db.hyperlinkHover then
@@ -952,7 +953,8 @@ function CH:DisplayChatHistory()
 end
 
 local function GetTimeForSavedMessage()
-  return time().."."..select(2, ("."):split(GetTime() or "0."..math.random(1, 999), 2))
+	local randomTime = select(2, ("."):split(GetTime() or "0."..math.random(1, 999), 2)) or 0
+	return time().."."..randomTime
 end
 
 function CH:SaveChatHistory(event, ...)
