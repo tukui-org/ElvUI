@@ -400,9 +400,15 @@ end
 
 function B:SortBags(bagList, invertDirection)
 	if self.sortTimer then return; end
+
+	if invertDirection then
+		table.sort(bagList, function(a,b) return a < b end)
+	else
+		table.sort(bagList, function(a,b) return a > b end)
+	end
 	
 	self:ClearSortingData();
-	for _, slotNum in pairs(bagList) do
+	for _, slotNum in ipairs(bagList) do
 		if GetContainerNumSlots(slotNum) > 0 then
 			self.itemSwapGrid[slotNum] = {}
 			local family = select(2, GetContainerNumFreeSlots(slotNum))
@@ -422,7 +428,7 @@ function B:SortBags(bagList, invertDirection)
 	for groupKey, group in pairs(self.bagGroups) do
 		group.itemList = {}
 
-		for bagKey, bagSlot in pairs(group.bagSlotNumbers) do
+		for bagKey, bagSlot in ipairs(group.bagSlotNumbers) do
 			for itemSlot = 1, GetContainerNumSlots(bagSlot) do
 				local itemLink = GetContainerItemLink(bagSlot, itemSlot)
 				if itemLink ~= nil then
@@ -543,8 +549,8 @@ function B:ContructContainerFrame(name, isBank)
 		f.sortButton.backdropTexture:SetVertexColor(unpack(E.media.bordercolor))
 		f.sortButton.backdropTexture.SetVertexColor = E.noop
 		f.sortButton.ttText = L['Sort Bags'];
-		f.sortButton.ttText2 = L['Hold Shift:'];
-		f.sortButton.ttText2desc = L['Sort Inverted'];		
+		--f.sortButton.ttText2 = L['Hold Shift:'];
+		--f.sortButton.ttText2desc = L['Sort Inverted'];		
 		f.sortButton:SetScript("OnEnter", self.Tooltip_Show)
 		f.sortButton:SetScript("OnLeave", self.Tooltip_Hide)
 		f.sortButton:SetScript('OnClick', function() self:SortBags(f.BagIDs, IsShiftKeyDown()); end)
