@@ -155,6 +155,8 @@ L['Wrap After'] = true;
 L['Your Auras First'] = true;
 
 --Chat
+L['Fade Chat'] = true;
+L['Fade the chat text when there is no activity.'] = true;
 L["AFK"] = true; --Also used in datatexts and tooltip
 L["Attempt to create URL links inside the chat."] = true;
 L["BG"] = true;

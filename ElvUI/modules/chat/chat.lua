@@ -933,6 +933,15 @@ function CH:PET_BATTLE_CLOSE()
 	end
 end
 
+function CH:UpdateFading()
+	for _, frameName in pairs(CHAT_FRAMES) do
+		local frame = _G[frameName]
+		if frame then
+			frame:SetFading(self.db.fade)
+		end
+	end
+end
+
 function CH:Initialize()
 	self.db = E.db.chat
 	if E.private.chat.enable ~= true then return end
@@ -941,7 +950,7 @@ function CH:Initialize()
 	end
 	
 	self:UpdateChatKeywords()
-
+	self:UpdateFading()
 	E.Chat = self
 	self:SecureHook('ChatEdit_OnEnterPressed')
 	FriendsMicroButton:Kill()
