@@ -75,6 +75,12 @@ E.Options.args.chat = {
 						E.db.chat[ info[#info] ] = value 
 					end,
 				},	
+				chatHistory = {
+					order = 6,
+					type = 'toggle',
+					name = L['Chat History'],
+					desc = L['Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session.'],
+				},
 				throttleInterval = {
 					order = 6,
 					type = 'range',
@@ -100,10 +106,20 @@ E.Options.args.chat = {
 						E.db.chat[ info[#info] ] = value 
 					end,					
 				},					
-				spacer = {
-					type = 'description',
-					name = '',
-					order = 10,
+				timeStampFormat = {
+					order = 8,
+					type = 'select',
+					name = TIMESTAMPS_LABEL,
+					desc = OPTION_TOOLTIP_TIMESTAMPS,
+					values = {
+						['NONE'] = NONE,
+						["%I:%M "] = "03:27",
+						["%I:%M:%S "] = "03:27:32",
+						["%I:%M %p "] = "03:27 PM",
+						["%I:%M:%S %p "] = "03:27:32 PM",
+						["%H:%M "] = "15:27",
+						["%H:%M:%S "] =	"15:27:32"					
+					},
 				},
 				whisperSound = {
 					order = 14,

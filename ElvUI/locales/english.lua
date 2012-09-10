@@ -155,6 +155,8 @@ L['Wrap After'] = true;
 L['Your Auras First'] = true;
 
 --Chat
+L['Chat History'] = true;
+L['Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session.'] = true;
 L['Fade Chat'] = true;
 L['Fade the chat text when there is no activity.'] = true;
 L["AFK"] = true; --Also used in datatexts and tooltip
