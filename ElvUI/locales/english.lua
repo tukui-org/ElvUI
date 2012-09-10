@@ -383,6 +383,8 @@ L["No locals to dump"] = true;
 L['|cFFE30000Lua error recieved. You can view the error message when you exit combat.'] = true;
 
 --General
+L["Name Font"] = true;
+L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = true;
 L["Accept Invites"] = true;
 L['Adjust the position of the threat bar to either the left or right datatext panels.'] = true;
 L['Adjust the size of the minimap.'] = true;

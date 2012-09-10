@@ -8,6 +8,7 @@ V['general'] = {
 	["normTex"] = "Minimalist",
 	["glossTex"] = "Minimalist",	
 	["dmgfont"] = "ElvUI Combat",
+	["namefont"] = "ElvUI Font",
 	['bubbles'] = true,
 	['bags'] = true,
 	
