@@ -190,6 +190,9 @@ P['tooltip'] = {
 	['ufhide'] = false,
 	['whostarget'] = true,
 	['combathide'] = false,
+	['titles'] = true,
+	['guildranks'] = true,
+	['talentSpec'] = true,
 }
 
 --UnitFrame

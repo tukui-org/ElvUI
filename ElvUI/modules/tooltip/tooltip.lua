@@ -397,7 +397,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	if (UnitIsUnit(unit,"mouseover")) then
 		unit = "mouseover"
 	end
-
+	
 	local race, englishRace = UnitRace(unit)
 	local class = UnitClass(unit)
 	local level = UnitLevel(unit)
@@ -413,8 +413,12 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 	local color = TT:GetColor(unit)	
 	if not color then color = "|CFFFFFFFF" end
-	GameTooltipTextLeft1:SetFormattedText("%s%s%s", color, title or name, realm and realm ~= "" and " - "..realm.."|r" or "|r")
-		
+	if E.db.tooltip.titles then
+		GameTooltipTextLeft1:SetFormattedText("%s%s%s", color, title or name, realm and realm ~= "" and " - "..realm.."|r" or "|r")
+	else
+		GameTooltipTextLeft1:SetFormattedText("%s%s%s", color, name, realm and realm ~= "" and " - "..realm.."|r" or "|r")
+	end
+	
 	if(UnitIsPlayer(unit)) then
 		for index, _ in pairs(self.InspectCache) do
 			local inspectCache = self.InspectCache[index]
@@ -445,15 +449,23 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		
 		local offset = 2
 		if guildName then
-			if UnitIsInMyGuild(unit) then
-				GameTooltipTextLeft2:SetText("<"..E["media"].hexvaluecolor..guildName.."|r> ["..E["media"].hexvaluecolor..guildRankName.."|r]")
+			if E.db.tooltip.guildranks then
+				if UnitIsInMyGuild(unit) then
+					GameTooltipTextLeft2:SetText("<"..E["media"].hexvaluecolor..guildName.."|r> ["..E["media"].hexvaluecolor..guildRankName.."|r]")
+				else
+					GameTooltipTextLeft2:SetText("<|cff00ff10"..guildName.."|r> [|cff00ff10"..guildRankName.."|r]")
+				end
 			else
-				GameTooltipTextLeft2:SetText("<|cff00ff10"..guildName.."|r> [|cff00ff10"..guildRankName.."|r]")
+				if UnitIsInMyGuild(unit) then
+					GameTooltipTextLeft2:SetText("<"..E["media"].hexvaluecolor..guildName.."|r>")
+				else
+					GameTooltipTextLeft2:SetText("<|cff00ff10"..guildName.."|r>")
+				end			
 			end
 			offset = offset + 1
 		end
 		
-		if talentSpec ~= "" then
+		if talentSpec ~= "" and E.db.tooltip.talentSpec then
 			class = talentSpec..' '..class
 		end
 		

@@ -590,6 +590,12 @@ L["You have changed your UIScale, however you still have the AutoScale option en
 L["You must purchase a bank slot first!"] = true;
 
 --Tooltip
+L['Talent Spec'] = true;
+L['Display the players talent spec in the tooltip, this may not immediately update when mousing over a unit.'] = true;
+L['Guild Ranks'] = true;
+L['Display guild ranks if a unit is guilded.'] = true;
+L['Player Titles'] = true;
+L['Display player titles.'] = true;
 L["Anchor Mode"] = true;
 L["Anchor"] = true;
 L["Combat Hide"] = true;
