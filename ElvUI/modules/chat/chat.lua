@@ -644,7 +644,7 @@ function CH:SetupChat(event, ...)
 			frame:SetShadowColor(0, 0, 0, 1)
 		end
 		frame:SetShadowOffset((E.mult or 1), -(E.mult or 1))	
-		frame:SetMaxLines(700)
+		frame:SetMaxLines(500)
 	end	
 	
 	if self.db.hyperlinkHover then
@@ -984,7 +984,7 @@ function CH:SaveChatHistory(event, ...)
 			end
 		end
 		
-		if c > 300 then
+		if c > 128 then
 			ElvCharacterData.ChatHistory[k] = nil
 		end	  
 	end
