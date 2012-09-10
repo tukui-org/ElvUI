@@ -61,7 +61,7 @@ function UF:PostUpdateHealth(unit, min, max)
 end
 
 function UF:PostNamePosition(frame, unit)
-	if frame.Power.value:GetText() and UnitIsPlayer(unit) and frame.Power.value:IsShown() then
+	if --[[frame.Power.value:GetText() and]] UnitIsPlayer(unit) and frame.Power.value:IsShown() then
 		local db = frame.db
 		
 		local position = db.name.position
