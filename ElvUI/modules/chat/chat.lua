@@ -984,7 +984,7 @@ function CH:SaveChatHistory(event, ...)
 			end
 		end
 		
-		if c > 500 then
+		if c > 300 then
 			ElvCharacterData.ChatHistory[k] = nil
 		end	  
 	end
