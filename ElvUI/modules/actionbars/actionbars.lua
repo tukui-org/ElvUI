@@ -580,7 +580,7 @@ function AB:UpdateButtonConfig(bar, buttonName)
 	if not bar.buttonConfig then bar.buttonConfig = { hideElements = {} } end
 	bar.buttonConfig.hideElements.macro = self.db.macrotext
 	bar.buttonConfig.hideElements.hotkey = self.db.hotkeytext
-	bar.buttonConfig.showGrid = true
+	bar.buttonConfig.showGrid = self.db.showGrid
 	bar.buttonConfig.clickOnDown = self.db.keyDown
 	SetModifiedClick("PICKUPACTION", self.db.movementModifier)
 

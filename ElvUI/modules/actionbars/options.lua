@@ -477,6 +477,13 @@ E.Options.args.actionbar = {
 			order = 7,
 			disabled = function() return not E.private.actionbar.enable end,
 		},
+		showGrid = {
+			type = 'toggle',
+			name = ALWAYS_SHOW_MULTIBARS_TEXT,
+			desc = OPTION_TOOLTIP_ALWAYS_SHOW_MULTIBARS,
+			order = 8,
+			disabled = function() return not E.private.actionbar.enable end,
+		},
 		movementModifier = {
 			type = 'select',
 			name = PICKUP_ACTION_KEY_TEXT,
