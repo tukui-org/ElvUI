@@ -207,7 +207,13 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 	if db and db[self.type] then
 		button.text:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db[self.type].fontSize, 'OUTLINE')
 		button.count:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db[self.type].fontSize, 'OUTLINE')
-	end
+		
+		if db[self.type].clickThrough and button:IsMouseEnabled() then
+			button:EnableMouse(false)
+		elseif not db[self.type].clickThrough and not button:IsMouseEnabled() then
+			button:EnableMouse(true)
+		end
+	end	
 	
 	if button.isDebuff then
 		if(not UnitIsFriend("player", unit) and button.owner ~= "player" and button.owner ~= "vehicle") --[[and (not E.isDebuffWhiteList[name])]] then

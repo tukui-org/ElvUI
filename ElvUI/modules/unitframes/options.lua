@@ -1418,6 +1418,12 @@ E.Options.args.unitframe.args.player = {
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
+				},
 				filters = {
 					name = L["Filters"],
 					guiInline = true,
@@ -1542,6 +1548,12 @@ E.Options.args.unitframe.args.player = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
+				},
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
 				},
 				filters = {
 					name = L["Filters"],
@@ -1770,6 +1782,12 @@ E.Options.args.unitframe.args.player = {
 						['DEBUFFS'] = L['Debuffs'],
 						['BUFFS'] = L['Buffs'],
 					},					
+				},
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
 				},
 				filters = {
 					name = L["Filters"],
@@ -2175,6 +2193,12 @@ E.Options.args.unitframe.args.target = {
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
+				},
 				filters = {
 					name = L["Filters"],
 					guiInline = true,
@@ -2301,6 +2325,12 @@ E.Options.args.unitframe.args.target = {
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
+				},
 				filters = {
 					name = L["Filters"],
 					guiInline = true,
@@ -2513,6 +2543,12 @@ E.Options.args.unitframe.args.target = {
 						['DEBUFFS'] = L['Debuffs'],
 						['BUFFS'] = L['Buffs'],
 					},					
+				},
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
 				},
 				filters = {
 					name = L["Filters"],
@@ -2854,6 +2890,12 @@ E.Options.args.unitframe.args.targettarget = {
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
+				},
 				filters = {
 					name = L["Filters"],
 					guiInline = true,
@@ -2980,6 +3022,12 @@ E.Options.args.unitframe.args.targettarget = {
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
+				},
 				filters = {
 					name = L["Filters"],
 					guiInline = true,
@@ -3310,6 +3358,12 @@ E.Options.args.unitframe.args.focus = {
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
+				},
 				filters = {
 					name = L["Filters"],
 					guiInline = true,
@@ -3434,6 +3488,12 @@ E.Options.args.unitframe.args.focus = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
+				},
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
 				},
 				filters = {
 					name = L["Filters"],
@@ -3621,13 +3681,11 @@ E.Options.args.unitframe.args.focus = {
 						['BUFFS'] = L['Buffs'],
 					},					
 				},
-				filters = {
-					name = L["Filters"],
-					guiInline = true,
-					type = 'group',
-					order = 500,
-					args = {
-					},
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
 				},
 				filters = {
 					name = L["Filters"],
@@ -3970,6 +4028,12 @@ E.Options.args.unitframe.args.focustarget = {
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
+				},
 				filters = {
 					name = L["Filters"],
 					guiInline = true,
@@ -4095,6 +4159,12 @@ E.Options.args.unitframe.args.focustarget = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
+				},
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
 				},
 				filters = {
 					name = L["Filters"],
@@ -4416,6 +4486,12 @@ E.Options.args.unitframe.args.pet = {
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
+				},
 				filters = {
 					name = L["Filters"],
 					guiInline = true,
@@ -4541,6 +4617,12 @@ E.Options.args.unitframe.args.pet = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
+				},
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
 				},
 				filters = {
 					name = L["Filters"],
@@ -4889,6 +4971,12 @@ E.Options.args.unitframe.args.pettarget = {
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
+				},
 				filters = {
 					name = L["Filters"],
 					guiInline = true,
@@ -5014,6 +5102,12 @@ E.Options.args.unitframe.args.pettarget = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
+				},
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
 				},
 				filters = {
 					name = L["Filters"],
@@ -5380,6 +5474,12 @@ E.Options.args.unitframe.args.boss = {
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
+				},
 				filters = {
 					name = L["Filters"],
 					guiInline = true,
@@ -5505,6 +5605,12 @@ E.Options.args.unitframe.args.boss = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
+				},
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
 				},
 				filters = {
 					name = L["Filters"],
@@ -5921,6 +6027,12 @@ E.Options.args.unitframe.args.arena = {
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
+				},
 				filters = {
 					name = L["Filters"],
 					guiInline = true,
@@ -6046,6 +6158,12 @@ E.Options.args.unitframe.args.arena = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
+				},
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
 				},
 				filters = {
 					name = L["Filters"],
@@ -6600,6 +6718,12 @@ E.Options.args.unitframe.args.party = {
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
+				},
 				filters = {
 					name = L["Filters"],
 					guiInline = true,
@@ -6725,6 +6849,12 @@ E.Options.args.unitframe.args.party = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
+				},
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
 				},
 				filters = {
 					name = L["Filters"],
@@ -7319,6 +7449,12 @@ for i=10, 40, 15 do
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
+				},
 				filters = {
 					name = L["Filters"],
 					guiInline = true,
@@ -7444,6 +7580,12 @@ for i=10, 40, 15 do
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
+				},
+				clickThrough = {
+					order = 15,
+					name = L['Click Through'],
+					desc = L['Ignore mouse events.'],
+					type = 'toggle',
 				},
 				filters = {
 					name = L["Filters"],

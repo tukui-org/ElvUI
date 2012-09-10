@@ -50,24 +50,52 @@ E.Options.args.chat = {
 							CH:DisableHyperlink()
 						end
 					end,
+				},	
+				sticky = {
+					order = 3,
+					type = 'toggle',
+					name = L['Sticky Chat'],
+					desc = L['When opening the Chat Editbox to type a message having this option set means it will retain the last channel you spoke in. If this option is turned off opening the Chat Editbox should always default to the SAY channel.'],
+					set = function(info, value)
+						E.db.chat[ info[#info] ] = value 
+					end,
+				},
+				fade = {
+					order = 4,
+					type = 'toggle',
+					name = L['Fade Chat'],
+					desc = L['Fade the chat text when there is no activity.'],
+				},
+				emotionIcons = {
+					order = 5,
+					type = 'toggle',
+					name = L['Emotion Icons'],
+					desc = L['Display emotion icons in chat.'],
+					set = function(info, value)
+						E.db.chat[ info[#info] ] = value 
+					end,
+				},	
+				chatHistory = {
+					order = 6,
+					type = 'toggle',
+					name = L['Chat History'],
+					desc = L['Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session.'],
 				},
 				throttleInterval = {
-					order = 4,
+					order = 6,
 					type = 'range',
 					name = L['Spam Interval'],
 					desc = L['Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable.'],
 					min = 0, max = 120, step = 1,
 					set = function(info, value) 
 						E.db.chat[ info[#info] ] = value 
-						if value ~= 0 then
-							CH:EnableChatThrottle()
-						else
+						if value == 0 then
 							CH:DisableChatThrottle()
 						end
 					end,					
 				},
 				scrollDownInterval = {
-					order = 5,
+					order = 7,
 					type = 'range',
 					name = L['Scroll Interval'],
 					desc = L['Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely.'],
@@ -75,27 +103,24 @@ E.Options.args.chat = {
 					set = function(info, value) 
 						E.db.chat[ info[#info] ] = value 
 					end,					
-				},		
-				sticky = {
-					order = 6,
-					type = 'toggle',
-					name = L['Sticky Chat'],
-					desc = L['When opening the Chat Editbox to type a message having this option set means it will retain the last channel you spoke in. If this option is turned off opening the Chat Editbox should always default to the SAY channel.'],
-					set = function(info, value)
-						E.db.chat[ info[#info] ] = value 
-					end,
-				},	
-				emotionIcons = {
-					order = 9,
-					type = 'toggle',
-					name = L['Emotion Icons'],
-					desc = L['Display emotion icons in chat.'],
-					set = function(info, value)
-						E.db.chat[ info[#info] ] = value 
-					end,
-				},		
+				},					
+				timeStampFormat = {
+					order = 8,
+					type = 'select',
+					name = TIMESTAMPS_LABEL,
+					desc = OPTION_TOOLTIP_TIMESTAMPS,
+					values = {
+						['NONE'] = NONE,
+						["%I:%M "] = "03:27",
+						["%I:%M:%S "] = "03:27:32",
+						["%I:%M %p "] = "03:27 PM",
+						["%I:%M:%S %p "] = "03:27:32 PM",
+						["%H:%M "] = "15:27",
+						["%H:%M:%S "] =	"15:27:32"					
+					},
+				},
 				whisperSound = {
-					order = 10,
+					order = 14,
 					type = 'select', dialogControl = 'LSM30_Sound',
 					name = L["Whisper Alert"],
 					disabled = function() return not E.db.chat.whisperSound end,
@@ -103,7 +128,7 @@ E.Options.args.chat = {
 					set = function(info, value) E.db.chat.whisperSound = value; end,
 				},	
 				keywordSound = {
-					order = 11,
+					order = 15,
 					type = 'select', dialogControl = 'LSM30_Sound',
 					name = L["Keyword Alert"],
 					disabled = function() return not E.db.chat.keywordSound end,

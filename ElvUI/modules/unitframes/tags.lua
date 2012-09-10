@@ -7,6 +7,16 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 --	Tags
 ------------------------------------------------------------------------
 
+ElvUF.Tags.Events['afk'] = 'PLAYER_FLAGS_CHANGED'
+ElvUF.Tags.Methods['afk'] = function(unit)
+	local isAFK = UnitIsAFK(unit)
+	if isAFK then
+		return '|cffFFFFFF[|r|cffFF0000'..DEFAULT_AFK_MESSAGE..'|r|cFFFFFFFF]|r'
+	else
+		return ''
+	end
+end
+
 ElvUF.Tags.Events['healthcolor'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
 ElvUF.Tags.Methods['healthcolor'] = function(unit)
 	local min, max = UnitHealth(unit), UnitHealthMax(unit)

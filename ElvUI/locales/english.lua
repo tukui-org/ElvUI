@@ -155,6 +155,10 @@ L['Wrap After'] = true;
 L['Your Auras First'] = true;
 
 --Chat
+L['Chat History'] = true;
+L['Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session.'] = true;
+L['Fade Chat'] = true;
+L['Fade the chat text when there is no activity.'] = true;
 L["AFK"] = true; --Also used in datatexts and tooltip
 L["Attempt to create URL links inside the chat."] = true;
 L["BG"] = true;
@@ -379,6 +383,8 @@ L["No locals to dump"] = true;
 L['|cFFE30000Lua error recieved. You can view the error message when you exit combat.'] = true;
 
 --General
+L["Name Font"] = true;
+L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = true;
 L["Accept Invites"] = true;
 L['Adjust the position of the threat bar to either the left or right datatext panels.'] = true;
 L['Adjust the size of the minimap.'] = true;
@@ -588,6 +594,14 @@ L["You have changed your UIScale, however you still have the AutoScale option en
 L["You must purchase a bank slot first!"] = true;
 
 --Tooltip
+L['Always Hide'] = true;
+L['Never Hide'] = true;
+L['Talent Spec'] = true;
+L['Display the players talent spec in the tooltip, this may not immediately update when mousing over a unit.'] = true;
+L['Guild Ranks'] = true;
+L['Display guild ranks if a unit is guilded.'] = true;
+L['Player Titles'] = true;
+L['Display player titles.'] = true;
 L["Anchor Mode"] = true;
 L["Anchor"] = true;
 L["Combat Hide"] = true;
@@ -623,6 +637,8 @@ L['You can toggle the microbar by using your middle mouse button on the minimap 
 L['You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame'] = true;
 
 --UnitFrames
+L['Click Through'] = true;
+L['Ignore mouse events.'] = true;
 L["%s frame(s) has a conflicting anchor point, please change either the buff or debuff anchor point so they are not attached to each other. Forcing the debuffs to be attached to the main unitframe until fixed."] = true;
 L['Above'] = true;
 L["Add a spell to the filter."] = true;

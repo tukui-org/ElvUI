@@ -175,7 +175,7 @@ function UF:Construct_AuraIcon(button)
 		GameTooltip.auraBarLine = nil;
 		GameTooltip.numLines = nil
 	end)		
-	
+
 	button:RegisterForClicks('RightButtonUp')
 	button:SetScript('OnClick', function(self)
 		if not IsShiftKeyDown() then return; end

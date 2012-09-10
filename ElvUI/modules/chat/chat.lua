@@ -554,25 +554,25 @@ function CH:AddMessage(text, ...)
 			text = text:gsub("^%["..RAID_WARNING.."%]", '['..L['RW']..']')	
 			text = text:gsub("%[BN_CONVERSATION:", '%['..L["BN:"])
 		end
-	
+
+		local timeStamp
 		if CHAT_TIMESTAMP_FORMAT ~= nil then
-			TIMESTAMP_FORMAT = CHAT_TIMESTAMP_FORMAT
-			CHAT_TIMESTAMP_FORMAT = nil;
-		elseif GetCVar('showTimestamps') == 'none' then
-			TIMESTAMP_FORMAT = nil;
+			timeStamp = BetterDate(CHAT_TIMESTAMP_FORMAT, time());
+			text = text:gsub(timeStamp, '')
 		end
 		
 		--Add Timestamps
-		if ( TIMESTAMP_FORMAT ) then
-			local timestamp = BetterDate(TIMESTAMP_FORMAT, time())
-			timestamp = timestamp:gsub(' ', '')
-			timestamp = timestamp:gsub('AM', ' AM')
-			timestamp = timestamp:gsub('PM', ' PM')
-			text = '|cffB3B3B3['..timestamp..'] |r'..text
+		if ( CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' ) then
+			timeStamp = BetterDate(CH.db.timeStampFormat, CH.timeOverride or time());
+			timeStamp = timeStamp:gsub(' ', '')
+			timeStamp = timeStamp:gsub('AM', ' AM')
+			timeStamp = timeStamp:gsub('PM', ' PM')
+			text = '|cffB3B3B3['..timeStamp..'] |r'..text
 		end
 			
 		text = text:gsub('|Hplayer:Elvz:', '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t|Hplayer:Elvz:')
 		text = text:gsub('|Hplayer:Elvz%-', '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t|Hplayer:Elvz%-')
+		CH.timeOverride = nil;
 	end
 
 	self.OldAddMessage(self, text, ...)
@@ -628,14 +628,7 @@ function CH:DisableHyperlink()
 	end
 end
 
-function CH:EnableChatThrottle()
-	self:RegisterEvent("CHAT_MSG_CHANNEL", "ChatThrottleHandler")
-	self:RegisterEvent("CHAT_MSG_YELL", "ChatThrottleHandler")	
-end
-
 function CH:DisableChatThrottle()
-	self:UnregisterEvent("CHAT_MSG_CHANNEL")
-	self:UnregisterEvent("CHAT_MSG_YELL")	
 	table.wipe(msgList); table.wipe(msgCount); table.wipe(msgTime)
 end
 
@@ -651,17 +644,14 @@ function CH:SetupChat(event, ...)
 		else
 			frame:SetShadowColor(0, 0, 0, 1)
 		end
-		frame:SetShadowOffset((E.mult or 1), -(E.mult or 1))		
+		frame:SetShadowOffset((E.mult or 1), -(E.mult or 1))	
+		frame:SetMaxLines(500)
 	end	
 	
 	if self.db.hyperlinkHover then
 		self:EnableHyperlink()
 	end
-	
-	if self.db.throttleInterval ~= 0 then
-		self:EnableChatThrottle()
-	end
-	
+
 	GeneralDockManager:SetParent(LeftChatPanel)
 	self:ScheduleRepeatingTimer('PositionChat', 1)
 	self:PositionChat(true)
@@ -934,6 +924,73 @@ function CH:PET_BATTLE_CLOSE()
 	end
 end
 
+function CH:UpdateFading()
+	for _, frameName in pairs(CHAT_FRAMES) do
+		local frame = _G[frameName]
+		if frame then
+			frame:SetFading(self.db.fade)
+		end
+	end
+end
+
+function CH:DisplayChatHistory()	
+	local temp, data = {}
+	for id, _ in pairs(ElvCharacterData.ChatHistory) do
+		table.insert(temp, tonumber(id))
+	end
+	
+	table.sort(temp, function(a, b)
+		return a < b
+	end)
+	
+	for i = 1, #temp do
+		data = ElvCharacterData.ChatHistory[tostring(temp[i])]
+
+		if type(data) == "table" then
+			CH.timeOverride = temp[i]
+			ChatFrame_MessageEventHandler(DEFAULT_CHAT_FRAME, data[20], unpack(data))
+		end
+	end
+end
+
+local function GetTimeForSavedMessage()
+	local randomTime = select(2, ("."):split(GetTime() or "0."..math.random(1, 999), 2)) or 0
+	return time().."."..randomTime
+end
+
+function CH:SaveChatHistory(event, ...)
+	if self.db.throttleInterval ~= 0 and (event == 'CHAT_MESSAGE_SAY' or event == 'CHAT_MESSAGE_YELL') then	
+		self:ChatThrottleHandler(...)		
+		
+		local msg, author = ...
+		if author ~= UnitName("player") and msgList[msg] then
+			if difftime(time(), msgTime[msg]) <= CH.db.throttleInterval then
+				print('blocked: '..msg)
+				return;
+			end
+		end		
+	end
+	
+	local temp = {...}
+	if #temp > 0 then
+	  temp[20] = event
+	  local timeForMessage = GetTimeForSavedMessage()
+	  ElvCharacterData.ChatHistory[timeForMessage] = temp
+	  
+		local c, k = 0
+		for id, data in pairs(ElvCharacterData.ChatHistory) do
+			c = c + 1
+			if (not k) or k > id then
+				k = id
+			end
+		end
+		
+		if c > 128 then
+			ElvCharacterData.ChatHistory[k] = nil
+		end	  
+	end
+end
+
 function CH:Initialize()
 	self.db = E.db.chat
 	if E.private.chat.enable ~= true then return end
@@ -941,8 +998,12 @@ function CH:Initialize()
 		ElvCharacterData.ChatEditHistory = {};
 	end
 	
-	self:UpdateChatKeywords()
+	if not ElvCharacterData.ChatHistory or not self.db.chatHistory then
+		ElvCharacterData.ChatHistory = {};
+	end
 
+	self:UpdateChatKeywords()
+	self:UpdateFading()
 	E.Chat = self
 	self:SecureHook('ChatEdit_OnEnterPressed')
 	FriendsMicroButton:Kill()
@@ -960,6 +1021,25 @@ function CH:Initialize()
 	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('PET_BATTLE_CLOSE')
 	self:SetupChat()
+	
+	self:RegisterEvent('CHAT_MSG_BATTLEGROUND', 'SaveChatHistory')
+	self:RegisterEvent('CHAT_MSG_BATTLEGROUND_LEADER', 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_BN_WHISPER", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_BN_WHISPER_INFORM", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_CHANNEL", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_EMOTE", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_GUILD", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_GUILD_ACHIEVEMENT", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_OFFICER", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_PARTY", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_PARTY_LEADER", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_RAID", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_RAID_LEADER", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_RAID_WARNING", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_SAY", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_WHISPER", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_WHISPER_INFORM", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_YELL", 'SaveChatHistory')
 
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", CH.CHAT_MSG_CHANNEL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_YELL", CH.CHAT_MSG_YELL)
@@ -978,6 +1058,12 @@ function CH:Initialize()
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_INLINE_TOAST_BROADCAST", CH.FindURL)
+	
+	
+	if self.db.chatHistory then
+		self:DisplayChatHistory()
+	end
+		
 	
 	local S = E:GetModule('Skins')
 	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)
@@ -1022,6 +1108,12 @@ function CH:Initialize()
 	close:EnableMouse(true)
 	
 	S:HandleCloseButton(close)	
+
+	--Disable Blizzard
+	InterfaceOptionsSocialPanelTimestampsButton:SetAlpha(0)
+	InterfaceOptionsSocialPanelTimestampsButton:SetScale(0.000001)
+	InterfaceOptionsSocialPanelTimestamps:SetAlpha(0)
+	InterfaceOptionsSocialPanelTimestamps:SetScale(0.000001)
 end
 
 E:RegisterModule(CH:GetName())
