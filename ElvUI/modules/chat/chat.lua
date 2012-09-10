@@ -990,9 +990,15 @@ function CH:SaveChatHistory(event, ...)
 	end
 end
 
+DEFAULT_CHAT_FRAME:UnregisterEvent("GUILD_MOTD")
 function CH:Initialize()
 	self.db = E.db.chat
-	if E.private.chat.enable ~= true then return end
+	local msg = GetGuildRosterMOTD() or ""
+	if E.private.chat.enable ~= true then 
+		DEFAULT_CHAT_FRAME:RegisterEvent("GUILD_MOTD")
+		ChatFrame_SystemEventHandler(DEFAULT_CHAT_FRAME, "GUILD_MOTD", msg)
+		return 
+	end
 	if not ElvCharacterData.ChatEditHistory then
 		ElvCharacterData.ChatEditHistory = {};
 	end
@@ -1000,8 +1006,9 @@ function CH:Initialize()
 	if not ElvCharacterData.ChatHistory or not self.db.chatHistory then
 		ElvCharacterData.ChatHistory = {};
 	end
-
+	
 	self:UpdateChatKeywords()
+	
 	self:UpdateFading()
 	E.Chat = self
 	self:SecureHook('ChatEdit_OnEnterPressed')
@@ -1060,7 +1067,19 @@ function CH:Initialize()
 	
 	
 	if self.db.chatHistory then
+		self.SoundPlayed = true;
 		self:DisplayChatHistory()
+		self.SoundPlayed = nil;
+		local f = CreateFrame('Frame')
+		local OnUpdate = function(self)
+			local msg = GetGuildRosterMOTD()
+			if (msg and msg:len() > 0) then
+				ChatFrame_SystemEventHandler(DEFAULT_CHAT_FRAME, "GUILD_MOTD", msg)		
+				DEFAULT_CHAT_FRAME:RegisterEvent("GUILD_MOTD")
+				self:SetScript('OnUpdate', nil)
+			end		
+		end
+		f:SetScript('OnUpdate', OnUpdate)
 	end
 		
 	
