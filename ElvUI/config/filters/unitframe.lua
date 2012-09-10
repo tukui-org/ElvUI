@@ -121,6 +121,7 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 			[SpellName(132168)] = Defaults(), --Shockwave
 			[SpellName(107570)] = Defaults(), --Storm Bolt
 			[SpellName(118895)] = Defaults(), --Dragon Roar
+			[SpellName(18498)] = Defaults(), --Gag Order
 		-- Monk
 			[SpellName(116706)] = Defaults(), --Disable
 			[SpellName(117368)] = Defaults(), --Grapple Weapon
