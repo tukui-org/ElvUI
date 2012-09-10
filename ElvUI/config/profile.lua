@@ -189,7 +189,7 @@ P['datatexts'] = {
 --Tooltip
 P['tooltip'] = {
 	['anchor'] = 'SMART',
-	['ufhide'] = false,
+	['ufhide'] = 'NONE',
 	['whostarget'] = true,
 	['combathide'] = false,
 	['titles'] = true,

@@ -41,9 +41,16 @@ E.Options.args.tooltip = {
 				},
 				ufhide = {
 					order = 2,
-					type = 'toggle',
+					type = 'select',
 					name = L['UF Hide'],
 					desc = L["Don't display the tooltip when mousing over a unitframe."],
+					values = {
+						['ALL'] = L['Always Hide'],
+						['NONE'] = L['Never Hide'],
+						['SHIFT'] = SHIFT_KEY,
+						['ALT'] = ALT_KEY,
+						['CTRL'] = CTRL_KEY					
+					},
 				},
 				whostarget = {
 					order = 3,

@@ -392,7 +392,14 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 	if not unit then tt:Hide() return end
 
-	if (owner ~= UIParent) and E.db.tooltip.ufhide then tt:Hide() return end
+	if (owner ~= UIParent) and E.db.tooltip.ufhide ~= 'NONE' then 
+		local modifier = E.db.tooltip.ufhide
+		
+		if modifier == 'ALL' or not ((modifier == 'SHIFT' and IsShiftKeyDown()) or (modifier == 'CTRL' and IsControlKeyDown()) or (modifier == 'ALT' and IsAltKeyDown())) then
+			tt:Hide() 
+			return 
+		end
+	end
 	
 	if (UnitIsUnit(unit,"mouseover")) then
 		unit = "mouseover"
