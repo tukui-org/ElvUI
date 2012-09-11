@@ -1458,6 +1458,13 @@ E.Options.args.unitframe.args.player = {
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
 						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
+						},
 						noConsolidated = {
 							order = 14,
 							type = 'select',
@@ -1588,6 +1595,13 @@ E.Options.args.unitframe.args.player = {
 							name = L['Filter Auras with No Duration'],
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
+						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
 						},
 						useFilter = {
 							order = 15,
@@ -1783,12 +1797,6 @@ E.Options.args.unitframe.args.player = {
 						['BUFFS'] = L['Buffs'],
 					},					
 				},
-				clickThrough = {
-					order = 15,
-					name = L['Click Through'],
-					desc = L['Ignore mouse events.'],
-					type = 'toggle',
-				},
 				filters = {
 					name = L["Filters"],
 					guiInline = true,
@@ -1822,6 +1830,13 @@ E.Options.args.unitframe.args.player = {
 							name = L['Filter Auras with No Duration'],
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
+						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
 						},
 						noConsolidated = {
 							order = 14,
@@ -2233,6 +2248,13 @@ E.Options.args.unitframe.args.target = {
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
 						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
+						},
 						noConsolidated = {
 							order = 14,
 							type = 'select',
@@ -2364,6 +2386,13 @@ E.Options.args.unitframe.args.target = {
 							name = L['Filter Auras with No Duration'],
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
+						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
 						},
 						useFilter = {
 							order = 15,
@@ -2544,12 +2573,6 @@ E.Options.args.unitframe.args.target = {
 						['BUFFS'] = L['Buffs'],
 					},					
 				},
-				clickThrough = {
-					order = 15,
-					name = L['Click Through'],
-					desc = L['Ignore mouse events.'],
-					type = 'toggle',
-				},
 				filters = {
 					name = L["Filters"],
 					guiInline = true,
@@ -2583,6 +2606,13 @@ E.Options.args.unitframe.args.target = {
 							name = L['Filter Auras with No Duration'],
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
+						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
 						},
 						noConsolidated = {
 							order = 14,
@@ -2930,6 +2960,13 @@ E.Options.args.unitframe.args.targettarget = {
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
 						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
+						},
 						noConsolidated = {
 							order = 14,
 							type = 'select',
@@ -3061,6 +3098,13 @@ E.Options.args.unitframe.args.targettarget = {
 							name = L['Filter Auras with No Duration'],
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
+						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
 						},
 						useFilter = {
 							order = 15,
@@ -3398,6 +3442,13 @@ E.Options.args.unitframe.args.focus = {
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
 						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
+						},
 						noConsolidated = {
 							order = 14,
 							type = 'select',
@@ -3528,6 +3579,13 @@ E.Options.args.unitframe.args.focus = {
 							name = L['Filter Auras with No Duration'],
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
+						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
 						},
 						useFilter = {
 							order = 15,
@@ -3681,12 +3739,6 @@ E.Options.args.unitframe.args.focus = {
 						['BUFFS'] = L['Buffs'],
 					},					
 				},
-				clickThrough = {
-					order = 15,
-					name = L['Click Through'],
-					desc = L['Ignore mouse events.'],
-					type = 'toggle',
-				},
 				filters = {
 					name = L["Filters"],
 					guiInline = true,
@@ -3720,6 +3772,13 @@ E.Options.args.unitframe.args.focus = {
 							name = L['Filter Auras with No Duration'],
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
+						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
 						},
 						noConsolidated = {
 							order = 14,
@@ -4068,6 +4127,13 @@ E.Options.args.unitframe.args.focustarget = {
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
 						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
+						},
 						noConsolidated = {
 							order = 14,
 							type = 'select',
@@ -4199,6 +4265,13 @@ E.Options.args.unitframe.args.focustarget = {
 							name = L['Filter Auras with No Duration'],
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
+						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
 						},
 						useFilter = {
 							order = 15,
@@ -4526,6 +4599,13 @@ E.Options.args.unitframe.args.pet = {
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
 						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
+						},
 						noConsolidated = {
 							order = 14,
 							type = 'select',
@@ -4657,6 +4737,13 @@ E.Options.args.unitframe.args.pet = {
 							name = L['Filter Auras with No Duration'],
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
+						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
 						},
 						useFilter = {
 							order = 15,
@@ -5011,6 +5098,13 @@ E.Options.args.unitframe.args.pettarget = {
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
 						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
+						},
 						noConsolidated = {
 							order = 14,
 							type = 'select',
@@ -5142,6 +5236,13 @@ E.Options.args.unitframe.args.pettarget = {
 							name = L['Filter Auras with No Duration'],
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
+						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
 						},
 						useFilter = {
 							order = 15,
@@ -5514,6 +5615,13 @@ E.Options.args.unitframe.args.boss = {
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
 						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
+						},
 						noConsolidated = {
 							order = 14,
 							type = 'select',
@@ -5645,6 +5753,13 @@ E.Options.args.unitframe.args.boss = {
 							name = L['Filter Auras with No Duration'],
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
+						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
 						},
 						useFilter = {
 							order = 15,
@@ -6067,6 +6182,13 @@ E.Options.args.unitframe.args.arena = {
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
 						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
+						},
 						noConsolidated = {
 							order = 14,
 							type = 'select',
@@ -6198,6 +6320,13 @@ E.Options.args.unitframe.args.arena = {
 							name = L['Filter Auras with No Duration'],
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
+						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
 						},
 						useFilter = {
 							order = 15,
@@ -6758,6 +6887,13 @@ E.Options.args.unitframe.args.party = {
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
 						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
+						},
 						noConsolidated = {
 							order = 14,
 							type = 'select',
@@ -6889,6 +7025,13 @@ E.Options.args.unitframe.args.party = {
 							name = L['Filter Auras with No Duration'],
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
+						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
 						},
 						useFilter = {
 							order = 15,
@@ -7489,6 +7632,13 @@ for i=10, 40, 15 do
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
 						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
+						},
 						noConsolidated = {
 							order = 14,
 							type = 'select',
@@ -7620,6 +7770,13 @@ for i=10, 40, 15 do
 							name = L['Filter Auras with No Duration'],
 							desc = L['Allow displaying of auras that do not have a duration.'],
 							values = auraFilterTypes					
+						},
+						onlyDispellable = {
+							order = 13,
+							type = 'select',
+							name = L['Filter Auras Not Dispellable By Me'],
+							desc = L['Allow displaying of auras that can be dispelled by me.'],
+							values = auraFilterTypes
 						},
 						useFilter = {
 							order = 15,

@@ -192,6 +192,7 @@ function E:RequestBGInfo()
 end
 
 function E:PLAYER_ENTERING_WORLD()
+	self:CheckRole()
 	if not self.MediaUpdated then
 		self:UpdateMedia()
 		self.MediaUpdated = true;
@@ -339,8 +340,8 @@ function E:CheckRole()
 			self.role = "Caster";
 		end		
 	end
-	
-	if self.HealingClasses[self.myclass] and not self.myclass == 'PRIEST' then
+
+	if self.HealingClasses[self.myclass] ~= nil and self.myclass ~= 'PRIEST' then
 		if self:CheckTalentTree(self.HealingClasses[self.myclass]) then
 			self.DispelClasses[self.myclass].Magic = true;
 		else

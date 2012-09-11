@@ -195,7 +195,7 @@ function AB:AdjustMaxStanceButtons()
 	for i=1, #bar.buttons do
 		bar.buttons[i]:Hide()
 	end
-	
+
 	local numButtons = 0
 	for i = 1, NUM_STANCE_SLOTS do
 		if not bar.buttons[i] then
@@ -203,8 +203,8 @@ function AB:AdjustMaxStanceButtons()
 			bar.buttons[i]:SetID(i)
 		end
 		
-		local _, name = GetShapeshiftFormInfo(i);
-		if name then
+		local hasButton = GetShapeshiftFormInfo(i)
+		if hasButton then
 			bar.buttons[i]:Show();
 			bar.LastButton = i;
 			numButtons = numButtons + 1
@@ -219,6 +219,7 @@ function AB:AdjustMaxStanceButtons()
 		UnregisterStateDriver(bar, "show");	
 		bar:Hide()
 	else
+		bar:Show()
 		RegisterStateDriver(bar, "show", '[petbattle] hide;show');	
 	end	
 end
