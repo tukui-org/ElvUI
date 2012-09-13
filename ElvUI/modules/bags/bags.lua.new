@@ -595,7 +595,6 @@ function B:ContructContainerFrame(name, isBank)
 		
 		--Currency
 		f.currencyButton = CreateFrame('Frame', nil, f);
-		f.currencyButton:SetTemplate('Default', true);
 		f.currencyButton:Point('BOTTOM', 0, 4);
 		f.currencyButton:Point('TOPLEFT', f.holderFrame, 'BOTTOMLEFT', 0, 18);
 		f.currencyButton:Point('TOPRIGHT', f.holderFrame, 'BOTTOMRIGHT', 0, 18);
