@@ -644,7 +644,6 @@ function CH:SetupChat(event, ...)
 			frame:SetShadowColor(0, 0, 0, 1)
 		end
 		frame:SetShadowOffset((E.mult or 1), -(E.mult or 1))	
-		frame:SetMaxLines(500)
 	end	
 	
 	if self.db.hyperlinkHover then
