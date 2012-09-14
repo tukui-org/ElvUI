@@ -153,7 +153,7 @@ function A:UpdateReminder(event, unit)
 					break;
 				end
 			end
-			if duration == 0 then
+			if duration == 0 or expirationTime == 0 then
 				frame['spell'..i]:SetAlpha(0.3)
 			else
 				CooldownFrame_SetTimer(frame['spell'..i].cd, expirationTime - duration, duration, 1)
