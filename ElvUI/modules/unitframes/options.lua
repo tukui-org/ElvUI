@@ -2571,6 +2571,7 @@ E.Options.args.unitframe.args.target = {
 						['FRAME'] = L['Frame'],
 						['DEBUFFS'] = L['Debuffs'],
 						['BUFFS'] = L['Buffs'],
+						['PLAYER_AURABARS'] = L['Player Frame Aura Bars'],
 					},					
 				},
 				filters = {

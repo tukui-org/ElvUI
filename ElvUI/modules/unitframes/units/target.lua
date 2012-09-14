@@ -500,6 +500,8 @@ function UF:Update_TargetFrame(frame, db)
 				attachTo = frame.Buffs
 			elseif db.aurabar.attachTo == 'DEBUFFS' then
 				attachTo = frame.Debuffs
+			elseif db.aurabar.attachTo == 'PLAYER_AURABARS' and ElvUF_Player then
+				attachTo = ElvUF_Player.AuraBars
 			end
 			
 			local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
@@ -508,8 +510,8 @@ function UF:Update_TargetFrame(frame, db)
 			end
 			
 			auraBars:ClearAllPoints()
-			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', attachTo == frame and -POWERBAR_OFFSET * (anchorTo == 'BOTTOM' and 0 or -1) or 0, 0)
-			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', (attachTo == frame and anchorTo == 'BOTTOM') and -POWERBAR_OFFSET or 0, 0)			
+			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', attachTo == frame and -POWERBAR_OFFSET * (anchorTo == 'BOTTOM' and 0 or -1) or 0, db.aurabar.attachTo == 'PLAYER_AURABARS' and 5 or 0)
+			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', (attachTo == frame and anchorTo == 'BOTTOM') and -POWERBAR_OFFSET or 0, db.aurabar.attachTo == 'PLAYER_AURABARS' and 5 or 0)			
 
 			auraBars.buffColor = {buffColor.r, buffColor.g, buffColor.b}
 			auraBars.debuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}

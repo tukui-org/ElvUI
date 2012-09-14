@@ -637,6 +637,7 @@ L['You can toggle the microbar by using your middle mouse button on the minimap 
 L['You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame'] = true;
 
 --UnitFrames
+L['Player Frame Aura Bars'] = true;
 L['Filter Auras Not Dispellable By Me'] = true;
 L['Allow displaying of auras that can be dispelled by me.'] = true;
 L['Click Through'] = true;
