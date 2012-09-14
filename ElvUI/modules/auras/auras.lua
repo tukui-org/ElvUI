@@ -108,9 +108,12 @@ function A:UpdateAuras(header, button)
 end
 
 function A:ScanAuras(event, unit)
+	if InCombatLockdown() then 
+		self:RegisterEvent('PLAYER_REGEN_ENABLED')
+	end
 	if(unit) then
 		if(unit ~= PlayerFrame.unit) then return end
-		if(unit ~= self:GetAttribute("unit")) then
+		if(unit ~= self:GetAttribute("unit")) and not InCombatLockdown() then
 			self:SetAttribute("unit", unit)
 		end
 	end
@@ -120,6 +123,10 @@ function A:ScanAuras(event, unit)
 		if(child) then
 			A:UpdateAuras(self, child)
 		end
+	end
+	
+	if event == 'PLAYER_REGEN_ENABLED' then
+		self:UnregisterEvent('PLAYER_REGEN_ENABLED')
 	end
 end
 
