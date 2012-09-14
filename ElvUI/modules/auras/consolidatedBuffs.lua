@@ -154,14 +154,14 @@ function A:UpdateReminder(event, unit)
 				end
 			end
 			if duration == 0 and expirationTime == 0 then
-				frame['spell'..i]:SetAlpha(0.3)
+				frame['spell'..i].t:SetAlpha(0.3)
 			else
 				CooldownFrame_SetTimer(frame['spell'..i].cd, expirationTime - duration, duration, 1)
 			end
 			frame['spell'..i].hasBuff = hasBuff
 		else
 			CooldownFrame_SetTimer(frame['spell'..i].cd, 0, 0, 0)
-			frame['spell'..i]:SetAlpha(1)
+			frame['spell'..i].t:SetAlpha(1)
 			frame['spell'..i].hasBuff = nil
 		end
 	end
