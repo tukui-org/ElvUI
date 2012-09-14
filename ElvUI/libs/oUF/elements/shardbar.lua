@@ -151,6 +151,8 @@ local function Disable(self)
 	local wsb = self.ShardBar
 	if(wsb) then
 		self:UnregisterEvent('UNIT_POWER', Path)
+		self:UnregisterEvent("PLAYER_TALENT_UPDATE", Path)
+		wsb:Hide()
 	end
 end
 
