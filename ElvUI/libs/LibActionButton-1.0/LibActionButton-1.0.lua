@@ -1090,8 +1090,8 @@ function UpdateCount(self)
 end
 
 function UpdateCooldown(self)
-	local start, duration, enable = self:GetCooldown()
-	CooldownFrame_SetTimer(self.cooldown, start, duration, enable)
+	local start, duration, enable, charges, maxCharges = self:GetCooldown()
+	CooldownFrame_SetTimer(self.cooldown, start, duration, enable, charges, maxCharges)
 end
 
 function StartFlash(self)
