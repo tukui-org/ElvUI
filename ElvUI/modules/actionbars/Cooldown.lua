@@ -121,24 +121,10 @@ HiddenFrame:Hide()
 function AB:OnSetCooldown(cd, start, duration)
 	if cd.noOCC then return end
 	
-	local button = cd.originalParent or cd:GetParent()
+	local button = cd:GetParent()
 	if not button then return; end
-	local action = button._state_action or button.action
-	if action then
-		local charges = GetActionCharges(action)
-		if charges > 0 then
-			if not cd.originalParent then
-				cd.originalParent = button
-			end
-			cd:SetParent(HiddenFrame)
-			return
-		end
-	end
-	
-	if cd.originalParent then
-		cd:SetParent(cd.originalParent)
-	end
-	
+
+
 	--start timer
 	if start > 0 and duration > MIN_DURATION then
 		local timer = cd.timer or self:CreateCooldownTimer(cd)
@@ -153,6 +139,19 @@ function AB:OnSetCooldown(cd, start, duration)
 		if timer then
 			self:Cooldown_StopTimer(timer)
 		end
+	end
+	
+	local action = button._state_action or button.action
+	if cd.timer then
+		if action then
+			local charges = GetActionCharges(action)
+			if charges > 0 then
+				cd.timer:SetAlpha(0)
+				return
+			end
+		end
+		
+		cd.timer:SetAlpha(1)	
 	end
 end
 

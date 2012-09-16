@@ -1066,19 +1066,21 @@ function UpdateUsable(self)
 end
 
 function UpdateCount(self)
-	local charges, maxCharges = 0, 0
-
+	local actionCount, charges, maxCharges = 0, 0, 0
+	local isItemAction = false
+	
 	if self._state_action and type(self._state_action) == "number" then
 		charges, maxCharges = GetActionCharges(self._state_action)
+		actionCount = self:GetCount()
+		isItemAction = IsItemAction(self._state_action)
 	end
 	
 	self.cooldown:SetParent(self)
-	if self:IsConsumableOrStackable() then
-		local count = self:GetCount()
-		if count > (self.maxDisplayCount or 9999) then
+	if self:IsConsumableOrStackable() or (not isItemAction and actionCount > 0) then
+		if actionCount > (self.maxDisplayCount or 9999) then
 			self.count:SetText("*")
 		else
-			self.count:SetText(count)
+			self.count:SetText(actionCount)
 		end
 	elseif maxCharges > 1 then
 		self.count:SetText(charges)
@@ -1088,8 +1090,8 @@ function UpdateCount(self)
 end
 
 function UpdateCooldown(self)
-	local start, duration, enable = self:GetCooldown()
-	CooldownFrame_SetTimer(self.cooldown, start, duration, enable)
+	local start, duration, enable, charges, maxCharges = self:GetCooldown()
+	CooldownFrame_SetTimer(self.cooldown, start, duration, enable, charges, maxCharges)
 end
 
 function StartFlash(self)

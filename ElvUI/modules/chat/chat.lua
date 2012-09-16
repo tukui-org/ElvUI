@@ -645,7 +645,6 @@ function CH:SetupChat(event, ...)
 			frame:SetShadowColor(0, 0, 0, 1)
 		end
 		frame:SetShadowOffset((E.mult or 1), -(E.mult or 1))	
-		frame:SetMaxLines(500)
 	end	
 	
 	if self.db.hyperlinkHover then
@@ -691,6 +690,7 @@ end
 
 local locale = GetLocale()
 function CH:CHAT_MSG_CHANNEL(event, message, author, ...)
+	
 	local isSpam = nil
 	if locale == 'enUS' or locale == 'enGB' then
 		isSpam = CH.SpamFilter(self, event, message, author, ...)
@@ -701,7 +701,6 @@ function CH:CHAT_MSG_CHANNEL(event, message, author, ...)
 	else
 		local blockFlag = false
 		local msg = PrepareMessage(author, message)
-		
 
 		-- ignore player messages
 		if author == UnitName("player") then return CH.FindURL(self, event, message, author, ...) end
@@ -959,13 +958,13 @@ local function GetTimeForSavedMessage()
 end
 
 function CH:SaveChatHistory(event, ...)
-	if self.db.throttleInterval ~= 0 and (event == 'CHAT_MESSAGE_SAY' or event == 'CHAT_MESSAGE_YELL') then	
-		self:ChatThrottleHandler(...)		
+	if self.db.throttleInterval ~= 0 and (event == 'CHAT_MESSAGE_SAY' or event == 'CHAT_MESSAGE_YELL' or event == 'CHAT_MSG_CHANNEL') then	
+		self:ChatThrottleHandler(event, ...)		
 		
-		local msg, author = ...
+		local message, author = ...
+		local msg = PrepareMessage(author, message)
 		if author ~= UnitName("player") and msgList[msg] then
 			if difftime(time(), msgTime[msg]) <= CH.db.throttleInterval then
-				print('blocked: '..msg)
 				return;
 			end
 		end		
