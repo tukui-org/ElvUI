@@ -583,7 +583,7 @@ local DONATORS = {
 	"Paavi",
 	"Giorgio",
 	"Bearscantank",
-	"Varok",
+	"Erdrick",
 	"Cosmo",
 	"Adorno",
 	"Domoaligato",
