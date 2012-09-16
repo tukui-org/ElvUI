@@ -44,6 +44,8 @@ function AB:StyleShapeShift()
 			end
 		end
 	end
+	
+	self:AdjustMaxStanceButtons()
 end
 
 function AB:PositionAndSizeBarShapeShift()
@@ -184,36 +186,36 @@ function AB:PositionAndSizeBarShapeShift()
 		end
 		
 		self:StyleButton(button);
-		self:StyleShapeShift();
 	end
 	possibleButtons = nil;
 end
 
-function AB:AdjustMaxStanceButtons()
+function AB:AdjustMaxStanceButtons(event)
 	if InCombatLockdown() then return; end
 	
 	for i=1, #bar.buttons do
 		bar.buttons[i]:Hide()
 	end
 
-	local numButtons = 0
+	local numButtons = GetNumShapeshiftForms()
 	for i = 1, NUM_STANCE_SLOTS do
 		if not bar.buttons[i] then
 			bar.buttons[i] = CreateFrame("CheckButton", format(bar:GetName().."Button%d", i), bar, "StanceButtonTemplate")
 			bar.buttons[i]:SetID(i)
 		end
-		
-		local hasButton = GetShapeshiftFormInfo(i)
-		if hasButton then
+
+		if ( i <= numButtons ) then
 			bar.buttons[i]:Show();
 			bar.LastButton = i;
-			numButtons = numButtons + 1
 		else
 			bar.buttons[i]:Hide();
 		end
 	end
 		
 	self:PositionAndSizeBarShapeShift();
+	if event == 'UPDATE_SHAPESHIFT_FORMS' then
+		self:StyleShapeShift()
+	end
 	
 	if numButtons == 0 then
 		UnregisterStateDriver(bar, "show");	
@@ -236,7 +238,7 @@ function AB:CreateBarShapeShift()
 			self:Show();
 		end	
 	]]);
-
+	
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORMS', 'AdjustMaxStanceButtons');
 	self:RegisterEvent('UPDATE_SHAPESHIFT_USABLE', 'StyleShapeShift');
 	self:RegisterEvent('UPDATE_SHAPESHIFT_COOLDOWN', 'StyleShapeShift');
