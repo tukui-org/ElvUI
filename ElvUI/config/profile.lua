@@ -68,7 +68,6 @@ P['bags'] = {
 	['yOffset'] = 0,
 	['size'] = 30,
 	['bagBar'] = {
-		['enable'] = false,
 		['growthDirection'] = 'VERTICAL',
 		['sortDirection'] = 'ASCENDING',
 		['size'] = 30,

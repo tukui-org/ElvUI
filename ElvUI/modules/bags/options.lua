@@ -82,6 +82,8 @@ E.Options.args.bags = {
 					type = "toggle",
 					name = L["Enable"],
 					desc = L['Enable/Disable the Bag-Bar.'],
+					get = function(info) return E.private.bags.bagBar end,
+					set = function(info, value) E.private.bags.bagBar = value; E:StaticPopup_Show("PRIVATE_RL") end			
 				},					
 				size = {
 					order = 2,

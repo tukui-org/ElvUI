@@ -86,6 +86,10 @@ function B:SizeAndPositionBagBar()
 end
 
 function B:LoadBagBar()
+	if not E.private.bags.bagBar then 
+		return 
+	end
+	
 	local ElvUIBags = CreateFrame("Frame", "ElvUIBags", E.UIParent)
 	ElvUIBags:SetPoint('TOPRIGHT', RightChatPanel, 'TOPLEFT', -4, 0)
 	ElvUIBags.buttons = {};
