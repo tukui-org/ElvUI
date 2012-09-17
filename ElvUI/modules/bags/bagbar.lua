@@ -77,12 +77,6 @@ function B:SizeAndPositionBagBar()
 		ElvUIBags:Height(E.db.bags.bagBar.size*(TOTAL_BAGS) + E.db.bags.bagBar.spacing*(TOTAL_BAGS) + E.db.bags.bagBar.spacing)
 		ElvUIBags:Width(E.db.bags.bagBar.size + E.db.bags.bagBar.spacing*2)		
 	end
-	
-	if not E.db.bags.bagBar.enable then
-		ElvUIBags:Hide()
-	else
-		ElvUIBags:Show()
-	end
 end
 
 function B:LoadBagBar()
