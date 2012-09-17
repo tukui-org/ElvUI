@@ -154,6 +154,8 @@ function A:UpdateReminder(event, unit)
 					break;
 				end
 			end
+			
+			frame['spell'..i].t:SetAlpha(1)
 			if (duration == 0 and expirationTime == 0) or E.db.auras.consolidatedDurations ~= true then
 				frame['spell'..i].t:SetAlpha(0.3)
 			else
@@ -162,7 +164,6 @@ function A:UpdateReminder(event, unit)
 			frame['spell'..i].hasBuff = hasBuff
 		else
 			CooldownFrame_SetTimer(frame['spell'..i].cd, 0, 0, 0)
-			frame['spell'..i].t:SetAlpha(1)
 			frame['spell'..i].hasBuff = nil
 		end
 	end
