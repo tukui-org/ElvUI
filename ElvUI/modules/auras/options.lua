@@ -21,30 +21,7 @@ E.Options.args.auras = {
 				E.private.auras[ info[#info] ] = value; 
 				E:StaticPopup_Show("PRIVATE_RL")
 			end,		
-		},
-		consolidedBuffs = {
-			order = 3,
-			name = L['Consolidated Buffs'],
-			desc = L['Display the consolidated buffs bar.'],
-			type = 'toggle',
-			set = function(info, value) 
-				E.db.auras[ info[#info] ] = value
-				E:GetModule('Minimap'):UpdateSettings()
-				A:UpdateAllHeaders()
-			end,	
-			disabled = function() return not E.private.general.minimap.enable end,
-		},
-		filterConsolidated = {
-			order = 4,
-			name = L['Filter Consolidated'],
-			desc = L['Only show consolidated icons on the consolidated bar that your class/spec is interested in. This is useful for raid leading.'],
-			type = 'toggle',
-			set = function(info, value) 
-				E.db.auras[ info[#info] ] = value
-				E:GetModule('Minimap'):UpdateSettings()
-			end,	
-			disabled = function() return not E.private.general.minimap.enable end,
-		},		
+		},	
 		general = {
 			order = 5,
 			type = 'group',
@@ -107,6 +84,48 @@ E.Options.args.auras = {
 						['THICKOUTLINE'] = 'THICKOUTLINE',
 					},
 				},	
+			},
+		},		
+		consolidedBuffs = {
+			order = 9,
+			type = 'group',
+			guiInline = true,
+			name = L['Consolidated Buffs'],	
+			disabled = function() return not E.private.general.minimap.enable end,				
+			args = {
+				enable = {
+					order = 1,
+					type = 'toggle',
+					name = L['Enable'],
+					set = function(info, value) 
+						E.db.auras[ info[#info] ] = value
+						E:GetModule('Minimap'):UpdateSettings()
+						A:UpdateAllHeaders()
+					end,	
+					get = function(info) return E.db.auras.consolidedBuffs end,
+					desc = L['Display the consolidated buffs bar.'],
+				},
+				filterConsolidated = {
+					order = 2,
+					name = L['Filter Consolidated'],
+					desc = L['Only show consolidated icons on the consolidated bar that your class/spec is interested in. This is useful for raid leading.'],
+					type = 'toggle',
+					set = function(info, value) 
+						E.db.auras.filterConsolidated = value
+						E:GetModule('Minimap'):UpdateSettings()
+					end,						
+					get = function(info) return E.db.auras.filterConsolidated end,
+				},
+				consolidatedDurations = {
+					order = 3,
+					type = 'toggle',
+					set = function(info, value) 
+						E.db.auras.consolidatedDurations = value
+						E:GetModule('Minimap'):UpdateSettings()
+					end,						
+					get = function(info) return E.db.auras.consolidatedDurations end,	
+					name = L['Remaining Time']
+				},
 			},
 		},			
 		buffs = {

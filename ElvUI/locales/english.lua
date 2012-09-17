@@ -132,6 +132,7 @@ L["You must be at a vendor."] = true;
 
 --Buffs and Debuffs
 L['AURAS_DESC'] = 'Configure the aura icons that appear near the minimap.';
+L['Remaining Time'] = true;
 L['Begin a new row or column after this many auras.'] = true;
 L['Consolidated Buffs'] = true;
 L['Defines how the group is sorted.'] = true;

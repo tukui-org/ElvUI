@@ -145,6 +145,7 @@ function A:UpdateReminder(event, unit)
 	for i = 1, E.db.auras.filterConsolidated and 6 or 8 do
 		local hasBuff, texture = self:CheckFilterForActiveBuff(self.IndexTable[i])
 		frame['spell'..i].t:SetTexture(texture)
+		
 		if hasBuff then
 			local spellName, duration, expirationTime, _
 			for i=1, 32 do
@@ -153,7 +154,7 @@ function A:UpdateReminder(event, unit)
 					break;
 				end
 			end
-			if duration == 0 and expirationTime == 0 then
+			if (duration == 0 and expirationTime == 0) or E.db.auras.consolidatedDurations ~= true then
 				frame['spell'..i].t:SetAlpha(0.3)
 			else
 				CooldownFrame_SetTimer(frame['spell'..i].cd, expirationTime - duration, duration, 1)
@@ -279,7 +280,8 @@ function A:Update_ConsolidatedBuffsSettings()
 		if i > 4 and E.db.auras.filterConsolidated then
 			id = i - 2
 		end
-
+		
+		frame['spell'..i].t:SetAlpha(1)
 		frame['spell'..i]:ClearAllPoints()
 		frame['spell'..i]:Size(E.ConsolidatedBuffsWidth - 4)
 		
@@ -297,6 +299,12 @@ function A:Update_ConsolidatedBuffsSettings()
 			frame['spell'..i]:Hide()
 		else
 			frame['spell'..i]:Show()
+		end
+		
+		if E.db.auras.consolidatedDurations then
+			frame['spell'..i].cd:SetAlpha(1)
+		else
+			frame['spell'..i].cd:SetAlpha(0)
 		end
 				
 		--This is so hackish its funny.. 
