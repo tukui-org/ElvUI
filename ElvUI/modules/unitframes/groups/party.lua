@@ -9,6 +9,9 @@ function UF:Construct_PartyFrames(unitGroup)
 	self:RegisterForClicks("AnyUp")
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)	
+
+	self.RaisedElementParent = CreateFrame('Frame', nil, self)
+	self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 10)
 	
 	if self.isChild then
 		self.Health = UF:Construct_HealthBar(self, true)
@@ -44,6 +47,7 @@ function UF:Construct_PartyFrames(unitGroup)
 		self.ReadyCheck = UF:Construct_ReadyCheckIcon(self)
 		self.HealPrediction = UF:Construct_HealComm(self)
 	end
+	
 	
 	UF:Update_PartyFrames(self, E.db['unitframe']['units']['party'])
 	UF:Update_StatusBars()
@@ -531,7 +535,7 @@ function UF:Update_PartyFrames(frame, db)
 	if db.customTexts then
 		for objectName, _ in pairs(db.customTexts) do
 			if not frame[objectName] then
-				frame[objectName] = frame:CreateFontString(nil, 'OVERLAY')
+				frame[objectName] = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
 			end
 			
 			local objectDB = db.customTexts[objectName]

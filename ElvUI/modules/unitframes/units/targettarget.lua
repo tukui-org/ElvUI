@@ -15,7 +15,7 @@ function UF:Construct_TargetTargetFrame(frame)
 	frame.Buffs = self:Construct_Buffs(frame)
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
-	
+		
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 75) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', 'TargetTarget Frame', nil, nil, nil, 'ALL,SOLO')
 end
@@ -245,7 +245,7 @@ function UF:Update_TargetTargetFrame(frame, db)
 	if db.customTexts then
 		for objectName, _ in pairs(db.customTexts) do
 			if not frame[objectName] then
-				frame[objectName] = frame:CreateFontString(nil, 'OVERLAY')
+				frame[objectName] = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
 			end
 			
 			local objectDB = db.customTexts[objectName]

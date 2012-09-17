@@ -58,7 +58,7 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	end
 	
 	if text then
-		health.value = health:CreateFontString(nil, 'OVERLAY')
+		health.value = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
 		UF:Configure_FontString(health.value)
 		health.value:SetParent(frame)
 		
@@ -93,7 +93,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos, lowtext)
 	end
 	
 	if text then
-		power.value = power:CreateFontString(nil, 'OVERLAY')	
+		power.value = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')	
 		UF:Configure_FontString(power.value)
 		power.value:SetParent(frame)
 		
@@ -454,7 +454,7 @@ function UF:Construct_DruidAltManaBar(frame)
 	dpower.bg:SetTexture(E["media"].blankTex)
 	dpower.bg.multiplier = 0.3
 
-	dpower.Text = dpower:CreateFontString(nil, 'OVERLAY')
+	dpower.Text = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(dpower.Text)
 	
 	return dpower
@@ -503,7 +503,8 @@ function UF:Construct_AltPowerBar(frame)
 end
 
 function UF:Construct_NameText(frame)
-	local name = frame:CreateFontString(nil, 'OVERLAY')
+	local parent = frame.RaisedElementParent or frame
+	local name = parent:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(name)
 	name:SetPoint('CENTER', frame.Health)
 	
@@ -551,8 +552,7 @@ function UF:Construct_AuraWatch(frame)
 end
 
 function UF:Construct_RaidDebuffs(frame)
-	local rdebuff = CreateFrame('Frame', nil, frame)
-	rdebuff:SetFrameLevel(rdebuff:GetFrameLevel() + 5)
+	local rdebuff = CreateFrame('Frame', nil, frame.RaisedElementParent)
 	rdebuff:Point('BOTTOM', frame, 'BOTTOM', 0, 2)
 	rdebuff:SetTemplate("Default")
 	
@@ -590,10 +590,7 @@ function UF:Construct_DebuffHighlight(frame)
 end
 
 function UF:Construct_ResurectionIcon(frame)
-	local f = CreateFrame('Frame', nil, frame)
-	f:SetFrameLevel(20)
-
-	local tex = f:CreateTexture(nil, "OVERLAY")
+	local tex = frame.RaisedElementParent:CreateTexture(nil, "OVERLAY")
 	tex:Point('CENTER', frame.Health.value, 'CENTER')
 	tex:Size(30, 25)
 	tex:SetDrawLayer('OVERLAY', 7)
@@ -602,10 +599,7 @@ function UF:Construct_ResurectionIcon(frame)
 end
 
 function UF:Construct_RaidIcon(frame)
-	local f = CreateFrame('Frame', nil, frame)
-	f:SetFrameLevel(20)
-	
-	local tex = f:CreateTexture(nil, "OVERLAY")
+	local tex = (frame.RaisedElementParent or frame):CreateTexture(nil, "OVERLAY")
 	tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\raidicons.blp") 
 	tex:Size(18)
 	tex:Point("CENTER", frame.Health, "TOP", 0, 2)
@@ -615,10 +609,7 @@ function UF:Construct_RaidIcon(frame)
 end
 
 function UF:Construct_ReadyCheckIcon(frame)
-	local f = CreateFrame('Frame', nil, frame)
-	f:SetFrameLevel(20)
-	
-	local tex = f:CreateTexture(nil, "OVERLAY", nil, 7)
+	local tex = frame.RaisedElementParent:CreateTexture(nil, "OVERLAY", nil, 7)
 	tex:Size(12)
 	tex:Point("BOTTOM", frame.Health, "BOTTOM", 0, 2)
 	
