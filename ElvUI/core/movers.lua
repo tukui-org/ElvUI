@@ -92,11 +92,15 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 				
 		]]
 		
-		local screenWidth, screenHeight = E.UIParent:GetRight(), E.UIParent:GetTop()
+		local screenWidth, screenHeight, screenCenter = E.UIParent:GetRight(), E.UIParent:GetTop(), E.UIParent:GetCenter()
 		local x, y = self:GetCenter()
 		local point
 		
-		if y > (screenHeight / 2) then
+		local LEFT = screenWidth / 3
+		local RIGHT = screenWidth * 2 / 3
+		local TOP = screenHeight / 2
+		
+		if y >= TOP then
 			point = "TOP"
 			y = -(screenHeight - self:GetTop())
 		else
@@ -104,12 +108,14 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 			y = self:GetBottom()
 		end
 		
-		if x > (screenWidth / 2) then
-			point = point.."RIGHT"
-			x = -(screenWidth - self:GetRight())
-		else
-			point = point.."LEFT"
+		if x >= RIGHT then
+			point = point..'RIGHT'
+			x = self:GetRight() - screenWidth
+		elseif x <= LEFT then
+			point = point..'LEFT'
 			x = self:GetLeft()
+		else
+			x = x - screenCenter
 		end
 
 		self:ClearAllPoints()

@@ -10,7 +10,6 @@ V['general'] = {
 	["dmgfont"] = "ElvUI Combat",
 	["namefont"] = "Friz Quadrata TT",
 	['bubbles'] = true,
-	['bags'] = true,
 	
 	['minimap'] = {
 		['enable'] = true,
@@ -19,6 +18,7 @@ V['general'] = {
 
 V['bags'] = {
 	['enable'] = true,
+	['bagBar'] = false,
 }
 
 V["nameplate"] = {

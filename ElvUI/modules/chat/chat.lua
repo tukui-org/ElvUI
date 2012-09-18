@@ -667,6 +667,7 @@ local sizes = {
 	":16:16",
 	":12:20",
 	":14",
+	":16",
 }
 
 local function PrepareMessage(author, message)

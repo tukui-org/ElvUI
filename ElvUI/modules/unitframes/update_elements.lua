@@ -6,10 +6,20 @@ local abs = math.abs
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
-local USING_DX11 = (GetCVar("gxapi") == "D3D11" or IsMacClient())
 
-local function CheckFilter(type, isFriend)
-	if type == 'ALL' or (type == 'FRIENDLY' and isFriend) or (type == 'ENEMY' and not isFriend) then
+local function CheckFilter(filterType, isFriend)
+	local FRIENDLY_CHECK, ENEMY_CHECK = false, false
+	if type(filterType) == 'string' then
+		error('Database conversion failed! Report to Elv.')
+	elseif type(filterType) == 'boolean' then
+		FRIENDLY_CHECK = filterType
+		ENEMY_CHECK = filterType
+	elseif filterType then
+		FRIENDLY_CHECK = filterType.friendly
+		ENEMY_CHECK = filterType.enemy
+	end
+	
+	if (FRIENDLY_CHECK and isFriend) or (ENEMY_CHECK and not isFriend) then
 		return true
 	end
 	
@@ -131,8 +141,9 @@ function UF:PortraitUpdate(unit)
 	
 	if not db then return end
 	
-	if db['portrait'].enable and db['portrait'].overlay and USING_DX11 then
-		self:SetAlpha(0) self:SetAlpha(0.35) 
+	if db['portrait'].enable and db['portrait'].overlay then
+		self:SetAlpha(0); 
+		self:SetAlpha(0.35);
 	else
 		self:SetAlpha(1)
 	end
@@ -516,7 +527,7 @@ function UF:UpdateHoly(event, unit, powerType)
 	local MAX_HOLY_POWER = UF['classMaxResourceBar'][E.myclass]
 	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and db.classbar.enable
 	local USE_PORTRAIT = db.portrait.enable
-	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT and USING_DX11
+	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
 	local PORTRAIT_WIDTH = db.portrait.width
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and db.power.enable
 	
@@ -615,7 +626,7 @@ function UF:UpdateHarmony()
 	local BORDER = 2
 	local SPACING = 1
 	local USE_PORTRAIT = db.portrait.enable
-	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT and USING_DX11
+	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
 	local PORTRAIT_WIDTH = db.portrait.width
 	local POWERBAR_OFFSET = db.power.offset
 	local USE_POWERBAR = db.power.enable
@@ -892,7 +903,7 @@ function UF:UpdateComboDisplay(event, unit)
 	local USE_MINI_COMBOBAR = db.combobar.fill == "spaced" and USE_COMBOBAR
 	local COMBOBAR_HEIGHT = db.combobar.height
 	local USE_PORTRAIT = db.portrait.enable
-	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT and USING_DX11
+	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
 	local PORTRAIT_WIDTH = db.portrait.width
 	
 

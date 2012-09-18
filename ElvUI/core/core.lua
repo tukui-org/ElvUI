@@ -592,20 +592,20 @@ function E:InitializeModules()
 	end
 end
 
-local invalidValues = {
-	['current-percent'] = true,
-	['current-max'] = true,
-	['current'] = true,
-	['percent'] = true,
-	['deficit'] = true,
-	['blank'] = true,
-}
-
+--DATABASE CONVERSIONS
 function E:DBConversions()
-	--DATABASE CONVERSIONS
 	if type(self.db.unitframe.units.arena.pvpTrinket) == 'boolean' then
 		self.db.unitframe.units.arena.pvpTrinket = table.copy(self.DF["profile"].unitframe.units.arena.pvpTrinket, true)
 	end	
+
+	local invalidValues = {
+		['current-percent'] = true,
+		['current-max'] = true,
+		['current'] = true,
+		['percent'] = true,
+		['deficit'] = true,
+		['blank'] = true,
+	}
 	
 	for unit, _ in pairs(self.db.unitframe.units) do
 		if self.db.unitframe.units[unit] and type(self.db.unitframe.units[unit]) == 'table' then
@@ -645,6 +645,72 @@ function E:DBConversions()
 	if type(self.db.tooltip.ufhide) == 'boolean' then
 		self.db.tooltip.ufhide = 'ALL';
 	end
+	
+	if self.db.auras.consolidedBuffs then
+		self.db.auras.consolidatedBuffs.enable = self.db.auras.consolidedBuffs
+		self.db.auras.consolidedBuffs = nil;
+	end
+	
+	if self.db.auras.filterConsolidated then
+		self.db.auras.consolidatedBuffs.filter = self.db.auras.filterConsolidated
+		self.db.auras.filterConsolidated = nil;
+	end	
+	
+	if self.db.auras.consolidatedDurations then
+		self.db.auras.consolidatedBuffs.durations = self.db.auras.consolidatedDurations
+		self.db.auras.consolidatedDurations = nil;
+	end	
+	
+	--Why?? Because these units can only have one type of reaction
+	local booleanUnits = {
+		['player'] = true,
+		['pet'] = true,
+		['boss'] = true,
+		['party'] = true,
+		['raid10'] = true,
+		['raid25'] = true,
+		['raid40'] = true,
+	}
+	
+	local changedOptions = {
+		['playerOnly'] = true,
+		['noConsolidated'] = true,
+		['useBlacklist'] = true,
+		['useWhitelist'] = true,
+		['noDuration'] = true,
+		['onlyDispellable'] = true
+	}
+	
+	for unit, _ in pairs(self.db.unitframe.units) do
+		if self.db.unitframe.units[unit] and type(self.db.unitframe.units[unit]) == 'table' then
+			for optionGroup, _ in pairs(self.db.unitframe.units[unit]) do
+				if (optionGroup == 'buffs' or optionGroup == 'debuffs' or optionGroup == 'aurabar') and self.db.unitframe.units[unit][optionGroup] and type(self.db.unitframe.units[unit][optionGroup]) == 'table' then
+					for option, value in pairs(self.db.unitframe.units[unit][optionGroup]) do
+						if changedOptions[option] then
+							if booleanUnits[unit] then
+								if self.db.unitframe.units[unit][optionGroup][option] == 'ALL' or self.db.unitframe.units[unit][optionGroup][option] == 'FRIENDLY' or self.db.unitframe.units[unit][optionGroup][option] == 'ENEMY' then
+									self.db.unitframe.units[unit][optionGroup][option] = true;
+								elseif self.db.unitframe.units[unit][optionGroup][option] == 'NONE' then
+									self.db.unitframe.units[unit][optionGroup][option] = false;
+								end
+							else
+								--Do this in an array? eh whatever
+								if self.db.unitframe.units[unit][optionGroup][option] == 'ALL' then
+									self.db.unitframe.units[unit][optionGroup][option] = {friendly = true, enemy = true};
+								elseif self.db.unitframe.units[unit][optionGroup][option] == 'FRIENDLY' then
+									self.db.unitframe.units[unit][optionGroup][option] = {friendly = true, enemy = false};
+								elseif self.db.unitframe.units[unit][optionGroup][option] == 'ENEMY' then
+									self.db.unitframe.units[unit][optionGroup][option] = {friendly = false, enemy = true};
+								elseif self.db.unitframe.units[unit][optionGroup][option] == 'NONE' then
+									self.db.unitframe.units[unit][optionGroup][option] = {friendly = false, enemy = false};
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end	
 end
 
 function E:Initialize()

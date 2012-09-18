@@ -213,9 +213,10 @@ function AB:AdjustMaxStanceButtons(event)
 	end
 		
 	self:PositionAndSizeBarShapeShift();
+	
 	if event == 'UPDATE_SHAPESHIFT_FORMS' then
 		self:StyleShapeShift()
-	end
+	end			
 	
 	if numButtons == 0 then
 		UnregisterStateDriver(bar, "show");	
@@ -248,4 +249,5 @@ function AB:CreateBarShapeShift()
 	E:CreateMover(bar, 'ShiftAB', 'Stance Bar', nil, -3, nil, 'ALL,ACTIONBARS');
 	self:AdjustMaxStanceButtons();
 	self:PositionAndSizeBarShapeShift();
+	self:StyleShapeShift();
 end

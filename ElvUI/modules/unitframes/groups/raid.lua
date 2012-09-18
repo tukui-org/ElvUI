@@ -13,11 +13,14 @@ for i=10, 40, 15 do
 		
 		self.menu = UF.SpawnMenu
 
+		self.RaisedElementParent = CreateFrame('Frame', nil, self)
+		self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 10)		
+		
 		self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 		
 		self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT', false)
 		self.Power.frequentUpdates = false;
-		
+			
 		self.Name = UF:Construct_NameText(self)
 		self.Buffs = UF:Construct_Buffs(self)
 		self.Debuffs = UF:Construct_Debuffs(self)
@@ -484,7 +487,7 @@ for i=10, 40, 15 do
 		if db.customTexts then
 			for objectName, _ in pairs(db.customTexts) do
 				if not frame[objectName] then
-					frame[objectName] = frame:CreateFontString(nil, 'OVERLAY')
+					frame[objectName] = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
 				end
 				
 				local objectDB = db.customTexts[objectName]
