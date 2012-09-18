@@ -4,7 +4,6 @@ local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
-local USING_DX11 = (GetCVar("gxapi") == "D3D11" or IsMacClient())
 
 local CAN_HAVE_CLASSBAR = (E.myclass == "PALADIN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK" or E.myclass == "PRIEST" or E.myclass == "MONK" or E.myclass == 'MAGE')
 
@@ -19,7 +18,8 @@ function UF:Construct_PlayerFrame(frame)
 	
 	frame.Name = self:Construct_NameText(frame)
 	
-	frame.Portrait = self:Construct_Portrait(frame)
+	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
+	frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
 	
 	frame.Buffs = self:Construct_Buffs(frame)
 	
@@ -65,7 +65,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	local threat = frame.Threat
 	local PORTRAIT_WIDTH = db.portrait.width
 	local USE_PORTRAIT = db.portrait.enable
-	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT and USING_DX11
+	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
 	local CLASSBAR_HEIGHT = db.classbar.height
 	local USE_CLASSBAR = db.classbar.enable
 	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and USE_CLASSBAR
@@ -173,6 +173,14 @@ end
 
 function UF:Update_PlayerFrame(frame, db)
 	frame.db = db
+	
+	if frame.Portrait then
+		frame.Portrait:Hide()
+		frame.Portrait:ClearAllPoints()
+		frame.Portrait.backdrop:Hide()
+	end
+	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
+	
 	local BORDER = E:Scale(2)
 	local SPACING = E:Scale(1)
 	local UNIT_WIDTH = db.width
@@ -191,7 +199,7 @@ function UF:Update_PlayerFrame(frame, db)
 	local CLASSBAR_WIDTH = db.width - (BORDER*2)
 	
 	local USE_PORTRAIT = db.portrait.enable
-	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT and USING_DX11
+	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
 	local PORTRAIT_WIDTH = db.portrait.width
 	
 	local unit = self.unit
@@ -427,7 +435,9 @@ function UF:Update_PlayerFrame(frame, db)
 			portrait:ClearAllPoints()
 			
 			if USE_PORTRAIT_OVERLAY then
-				portrait:SetFrameLevel(frame.Health:GetFrameLevel() + 1)
+				if db.portrait.style == '3D' then
+					portrait:SetFrameLevel(frame.Health:GetFrameLevel() + 1)
+				end
 				portrait:SetAllPoints(frame.Health)
 				portrait:SetAlpha(0.3)
 				portrait:Show()		
@@ -436,6 +446,9 @@ function UF:Update_PlayerFrame(frame, db)
 				portrait:SetAlpha(1)
 				portrait:Show()
 				portrait.backdrop:Show()
+				if db.portrait.style == '3D' then
+					portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
+				end				
 				if USE_MINI_CLASSBAR and USE_CLASSBAR then
 					portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", 0, -((CLASSBAR_HEIGHT/2)))
 				else

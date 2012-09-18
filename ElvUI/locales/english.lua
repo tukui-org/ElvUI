@@ -5,7 +5,6 @@ local L = AceLocale:NewLocale("ElvUI", "enUS", true);
 if not L then return; end
 
 --TEMP
-L['Portraits are temporarily forced to 2d for non directx 11 users.'] = true;
 L["A taint has occured that is preventing you from using your talents/glyphs, this can happen if you've inspected someone. Unfortionatly theres nothing we can do to fix it, please reload your ui and try again."] = true;
 
 --ActionBars
@@ -638,6 +637,10 @@ L['You can toggle the microbar by using your middle mouse button on the minimap 
 L['You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame'] = true;
 
 --UnitFrames
+L['Style'] = true;
+L['Select the display method of the portrait.'] = true;
+L['2D'] = true;
+L['3D'] = true;
 L['Player Frame Aura Bars'] = true;
 L['Filter Auras Not Dispellable By Me'] = true;
 L['Allow displaying of auras that can be dispelled by me.'] = true;

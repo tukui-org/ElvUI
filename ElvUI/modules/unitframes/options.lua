@@ -6,7 +6,7 @@ local ElvUF = ns.oUF
 local selectedSpell;
 local selectedFilter;
 local filters;
-local USING_DX11 = (GetCVar("gxapi") == "D3D11" or IsMacClient())
+
 function UF:CreateCustomTextGroup(unit, objectName)
 	if E.Options.args.unitframe.args[unit].args[objectName] then return end
 	
@@ -1320,11 +1320,6 @@ E.Options.args.unitframe.args.player = {
 			get = function(info) return E.db.unitframe.units['player']['portrait'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['player']['portrait'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
 			args = {
-				intro = {
-					order = 0,
-					type = "description",
-					name = L['Portraits are temporarily forced to 2d for non directx 11 users.'],
-				},
 				enable = {
 					type = 'toggle',
 					order = 1,
@@ -1341,7 +1336,6 @@ E.Options.args.unitframe.args.player = {
 					name = L['Overlay'],
 					desc = L['Overlay the healthbar'],
 					order = 3,
-					disabled = function() return not USING_DX11 end,
 				},
 				camDistanceScale = {
 					type = 'range',
@@ -1349,6 +1343,16 @@ E.Options.args.unitframe.args.player = {
 					desc = L['How far away the portrait is from the camera.'],
 					order = 4,
 					min = 0.01, max = 4, step = 0.01,
+				},
+				style = {
+					type = 'select',
+					name = L['Style'],
+					desc = L['Select the display method of the portrait.'],
+					order = 5,
+					values = {
+						['2D'] = L['2D'],
+						['3D'] = L['3D'],
+					},
 				},
 			},
 		},	
@@ -2109,11 +2113,6 @@ E.Options.args.unitframe.args.target = {
 			get = function(info) return E.db.unitframe.units['target']['portrait'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['target']['portrait'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
 			args = {
-				intro = {
-					order = 0,
-					type = "description",
-					name = L['Portraits are temporarily forced to 2d for non directx 11 users.'],
-				},			
 				enable = {
 					type = 'toggle',
 					order = 1,
@@ -2130,7 +2129,6 @@ E.Options.args.unitframe.args.target = {
 					name = L['Overlay'],
 					desc = L['Overlay the healthbar'],
 					order = 3,
-					disabled = function() return not USING_DX11 end,
 				},
 				camDistanceScale = {
 					type = 'range',
@@ -2138,7 +2136,17 @@ E.Options.args.unitframe.args.target = {
 					desc = L['How far away the portrait is from the camera.'],
 					order = 4,
 					min = 0.01, max = 4, step = 0.01,
-				},				
+				},
+				style = {
+					type = 'select',
+					name = L['Style'],
+					desc = L['Select the display method of the portrait.'],
+					order = 5,
+					values = {
+						['2D'] = L['2D'],
+						['3D'] = L['3D'],
+					},
+				},
 			},
 		},	
 		buffs = {
@@ -5478,11 +5486,6 @@ E.Options.args.unitframe.args.boss = {
 			get = function(info) return E.db.unitframe.units['boss']['portrait'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['boss']['portrait'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
 			args = {
-				intro = {
-					order = 0,
-					type = "description",
-					name = L['Portraits are temporarily forced to 2d for non directx 11 users.'],
-				},			
 				enable = {
 					type = 'toggle',
 					order = 1,
@@ -5499,7 +5502,6 @@ E.Options.args.unitframe.args.boss = {
 					name = L['Overlay'],
 					desc = L['Overlay the healthbar'],
 					order = 3,
-					disabled = function() return not USING_DX11 end,
 				},
 				camDistanceScale = {
 					type = 'range',
@@ -5507,7 +5509,17 @@ E.Options.args.unitframe.args.boss = {
 					desc = L['How far away the portrait is from the camera.'],
 					order = 4,
 					min = 0.01, max = 4, step = 0.01,
-				},				
+				},
+				style = {
+					type = 'select',
+					name = L['Style'],
+					desc = L['Select the display method of the portrait.'],
+					order = 5,
+					values = {
+						['2D'] = L['2D'],
+						['3D'] = L['3D'],
+					},
+				},
 			},
 		},	
 		buffs = {
