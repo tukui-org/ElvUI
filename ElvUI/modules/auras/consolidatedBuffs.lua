@@ -1,5 +1,6 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local A = E:GetModule('Auras');
+local LSM = LibStub("LibSharedMedia-3.0")
 
 A.Stats = {
 	[90363] = 'HUNTER', -- Embrace of the Shale Spider
@@ -96,12 +97,32 @@ function A:CheckFilterForActiveBuff(filter)
 	return false, texture
 end
 
+function A:UpdateConsolidatedTime(elapsed)
+	if(self.expiration) then	
+		self.expiration = math.max(self.expiration - elapsed, 0)
+		if(self.expiration <= 0) then
+			self.timer:SetText("")
+		else
+			local time = A:FormatTime(self.expiration)
+			if self.expiration <= 86400.5 and self.expiration > 3600.5 then
+				self.timer:SetText("|cffcccccc"..time.."|r")
+			elseif self.expiration <= 3600.5 and self.expiration > 60.5 then
+				self.timer:SetText("|cffcccccc"..time.."|r")
+			elseif self.expiration <= 60.5 and self.expiration > E.db.auras.fadeThreshold then
+				self.timer:SetText("|cffcccccc"..time.."|r")
+			elseif self.expiration <= 5 then
+				self.timer:SetText("|cffff0000"..time.."|r")
+			end
+		end
+	end
+end
+
 function A:UpdateReminder(event, unit)
 	if (event == "UNIT_AURA" and unit ~= "player") then return end	
 	local frame = self.frame
 	
 	if event ~= 'UNIT_AURA' and not InCombatLockdown() then
-		if E.db.auras.filterConsolidated then
+		if E.db.auras.consolidatedBuffs.filter then
 			if E.role == 'Caster' then
 				ConsolidatedBuffsTooltipBuff3:Hide()
 				ConsolidatedBuffsTooltipBuff4:Hide()
@@ -120,7 +141,7 @@ function A:UpdateReminder(event, unit)
 		end
 	end
 	
-	if E.db.auras.filterConsolidated then
+	if E.db.auras.consolidatedBuffs.filter then
 		A.IndexTable[7] = nil;
 		A.IndexTable[8] = nil;		
 		A.IndexTable[5] = A.CriticalStrike;
@@ -142,7 +163,7 @@ function A:UpdateReminder(event, unit)
 		A.IndexTable[8] = A.Mastery;	
 	end
 	
-	for i = 1, E.db.auras.filterConsolidated and 6 or 8 do
+	for i = 1, E.db.auras.consolidatedBuffs.filter and 6 or 8 do
 		local hasBuff, texture = self:CheckFilterForActiveBuff(self.IndexTable[i])
 		frame['spell'..i].t:SetTexture(texture)
 		
@@ -155,16 +176,23 @@ function A:UpdateReminder(event, unit)
 				end
 			end
 			
-			frame['spell'..i].t:SetAlpha(1)
-			if (duration == 0 and expirationTime == 0) or E.db.auras.consolidatedDurations ~= true then
+			frame['spell'..i].expiration = expirationTime - GetTime()
+			frame['spell'..i].duration = duration
+			
+			if (duration == 0 and expirationTime == 0) or E.db.auras.consolidatedBuffs.durations ~= true then
 				frame['spell'..i].t:SetAlpha(0.3)
+				frame['spell'..i]:SetScript('OnUpdate', nil)
 			else
 				CooldownFrame_SetTimer(frame['spell'..i].cd, expirationTime - duration, duration, 1)
+				frame['spell'..i].t:SetAlpha(1)
+				frame['spell'..i]:SetScript('OnUpdate', A.UpdateConsolidatedTime)
 			end
 			frame['spell'..i].hasBuff = hasBuff
 		else
 			CooldownFrame_SetTimer(frame['spell'..i].cd, 0, 0, 0)
 			frame['spell'..i].hasBuff = nil
+			frame['spell'..i].t:SetAlpha(1)
+			frame['spell'..i]:SetScript('OnUpdate', nil)
 		end
 	end
 end
@@ -176,7 +204,7 @@ function A:Button_OnEnter()
 	
 	local id = self:GetParent():GetID()
 	
-	if E.db.auras.filterConsolidated then
+	if E.db.auras.consolidatedBuffs.filter then
 		A.IndexTable[7] = nil;
 		A.IndexTable[8] = nil;	
 		A.IndexTable[5] = A.CriticalStrike;
@@ -240,6 +268,10 @@ function A:CreateButton()
 	
 	button.cd = CreateFrame('Cooldown', nil, button, 'CooldownFrameTemplate')
 	button.cd:SetInside()
+	button.cd.noOCC = true;
+	
+	button.timer = button.cd:CreateFontString(nil, 'OVERLAY')
+	button.timer:SetPoint('CENTER')
 	
 	return button
 end
@@ -278,7 +310,7 @@ function A:Update_ConsolidatedBuffsSettings()
 	frame:Width(E.ConsolidatedBuffsWidth)
 	for i=1, NUM_LE_RAID_BUFF_TYPES do
 		local id = i
-		if i > 4 and E.db.auras.filterConsolidated then
+		if i > 4 and E.db.auras.consolidatedBuffs.filter then
 			id = i - 2
 		end
 		
@@ -292,22 +324,25 @@ function A:Update_ConsolidatedBuffsSettings()
 			frame['spell'..i]:Point("TOP", frame['spell'..i - 1], "BOTTOM", 0, -1)
 		end
 
-		if i == 6 and E.db.auras.filterConsolidated or i == 8 then
+		if i == 6 and E.db.auras.consolidatedBuffs.filter or i == 8 then
 			frame['spell'..i]:Point("BOTTOM", ElvUI_ConsolidatedBuffs, "BOTTOM", 0, 2)
 		end
 		
-		if E.db.auras.filterConsolidated and i > 6 then
+		if E.db.auras.consolidatedBuffs.filter and i > 6 then
 			frame['spell'..i]:Hide()
 		else
 			frame['spell'..i]:Show()
 		end
 		
-		if E.db.auras.consolidatedDurations then
+		if E.db.auras.consolidatedBuffs.durations then
 			frame['spell'..i].cd:SetAlpha(1)
 		else
 			frame['spell'..i].cd:SetAlpha(0)
 		end
-				
+		
+		local font = LSM:Fetch("font", E.db.auras.consolidatedBuffs.font)
+		frame['spell'..i].timer:FontTemplate(font, E.db.auras.consolidatedBuffs.fontSize, E.db.auras.consolidatedBuffs.fontOutline)	
+		
 		--This is so hackish its funny.. 
 		--Have to do this to be able to right click a consolidated buff icon in combat and remove the aura.
 		_G['ConsolidatedBuffsTooltipBuff'..i]:ClearAllPoints()
@@ -318,7 +353,7 @@ function A:Update_ConsolidatedBuffsSettings()
 		_G['ConsolidatedBuffsTooltipBuff'..i]:SetScript("OnLeave", A.Button_OnLeave)		
 	end
 	
-	if E.db.auras.consolidedBuffs and E.private.general.minimap.enable then
+	if E.db.auras.consolidatedBuffs.enable and E.private.general.minimap.enable then
 		E:GetModule('Auras'):EnableCB()
 	else
 		E:GetModule('Auras'):DisableCB()

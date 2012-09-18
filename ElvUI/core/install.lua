@@ -498,7 +498,7 @@ local function SetupAuras(style)
 		--PLAYER
 		E.db.unitframe.units.player.buffs.enable = true;
 		E.db.unitframe.units.player.buffs.attachTo = 'FRAME';
-		E.db.unitframe.units.player.buffs.noDuration = 'NONE';
+		E.db.unitframe.units.player.buffs.noDuration = false;
 		
 		E.db.unitframe.units.player.debuffs.attachTo = 'BUFFS';
 
@@ -511,7 +511,7 @@ local function SetupAuras(style)
 	elseif style == 'classic' then
 		--seriosly is this fucking hard??
 		E.db.unitframe.units.target.smartAuraDisplay = 'DISABLED';
-		E.db.unitframe.units.target.buffs.playerOnly = 'NONE';
+		E.db.unitframe.units.target.buffs.playerOnly = {friendly = false, enemy = false};
 		E.db.unitframe.units.target.debuffs.enable = true;
 		E.db.unitframe.units.target.aurabar.attachTo = 'DEBUFFS';
 	end

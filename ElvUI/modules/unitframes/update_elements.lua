@@ -7,8 +7,19 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
-local function CheckFilter(type, isFriend)
-	if type == 'ALL' or (type == 'FRIENDLY' and isFriend) or (type == 'ENEMY' and not isFriend) then
+local function CheckFilter(filterType, isFriend)
+	local FRIENDLY_CHECK, ENEMY_CHECK = false, false
+	if type(filterType) == 'string' then
+		error('Database conversion failed! Report to Elv.')
+	elseif type(filterType) == 'boolean' then
+		FRIENDLY_CHECK = filterType
+		ENEMY_CHECK = filterType
+	elseif filterType then
+		FRIENDLY_CHECK = filterType.friendly
+		ENEMY_CHECK = filterType.enemy
+	end
+	
+	if (FRIENDLY_CHECK and isFriend) or (ENEMY_CHECK and not isFriend) then
 		return true
 	end
 	

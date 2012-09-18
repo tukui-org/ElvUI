@@ -149,8 +149,8 @@ function M:UpdateSettings()
 	end
 	E.MinimapSize = E.private.general.minimap.enable and E.db.general.minimap.size or Minimap:GetWidth() + 10
 	
-	if E.db.auras.consolidedBuffs and E.private.auras.enable then
-		E.ConsolidatedBuffsWidth = ((E.MinimapSize - (E.db.auras.filterConsolidated and 6 or 8)) / (E.db.auras.filterConsolidated and 6 or 8)) + 4
+	if E.db.auras.consolidatedBuffs.enable and E.private.auras.enable then
+		E.ConsolidatedBuffsWidth = ((E.MinimapSize - (E.db.auras.consolidatedBuffs.filter and 6 or 8)) / (E.db.auras.consolidatedBuffs.filter and 6 or 8)) + 4
 	else
 		E.ConsolidatedBuffsWidth = 0;
 	end
@@ -210,7 +210,7 @@ function M:UpdateSettings()
 	end
 			
 	if ElvConfigToggle then
-		if E.private.auras.enable and E.db.auras.consolidedBuffs and E.db.datatexts.minimapPanels and E.private.general.minimap.enable then
+		if E.private.auras.enable and E.db.auras.consolidatedBuffs.enable and E.db.datatexts.minimapPanels and E.private.general.minimap.enable then
 			ElvConfigToggle:Show()
 			ElvConfigToggle:Width(E.ConsolidatedBuffsWidth)
 		else
