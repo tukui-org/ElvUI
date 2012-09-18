@@ -678,6 +678,7 @@ local ignoreSettings = {
 	['useWhitelist'] = true,
 	['noDuration'] = true,
 	['onlyDispellable'] = true,
+	['useFilter'] = true,
 }
 function UF:MergeUnitSettings(fromUnit, toUnit)
 	local db = self.db['units']
