@@ -671,7 +671,13 @@ function UF:ToggleForceShowGroupFrames(unitGroup, numGroup)
 end
 
 local ignoreSettings = {
-	['position'] = true
+	['position'] = true,
+	['playerOnly'] = true,
+	['noConsolidated'] = true,
+	['useBlacklist'] = true,
+	['useWhitelist'] = true,
+	['noDuration'] = true,
+	['onlyDispellable'] = true,
 }
 function UF:MergeUnitSettings(fromUnit, toUnit)
 	local db = self.db['units']
@@ -689,7 +695,7 @@ function UF:MergeUnitSettings(fromUnit, toUnit)
 							if db[toUnit][option] ~= nil and db[toUnit][option][opt] ~= nil then
 								db[toUnit][option][opt] = val
 							end				
-						elseif not ignoreSettings[o] then
+						elseif not ignoreSettings[opt] then
 							if type(val) == 'table' then
 								for o, v in pairs(db[fromUnit][option][opt]) do
 									if not ignoreSettings[o] then
