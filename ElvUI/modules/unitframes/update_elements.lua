@@ -1215,7 +1215,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	local returnValueChanged = false
 	local isPlayer, isFriend
 	local auraType
-
+	--print(name..': '..spellID, E.global.unitframe.InvalidSpells[spellID])
 	if E.global.unitframe.InvalidSpells[spellID] then
 		return false;
 	end

@@ -233,7 +233,7 @@ local function UpdateFilterGroup()
 						elseif not GetSpellInfo(value) then
 							E:Print(L["Not valid spell id"])
 						else	
-							E.global.unitframe.InvalidSpells[value] = true;
+							E.global.unitframe.InvalidSpells[tonumber(value)] = true;
 							UpdateFilterGroup();
 							UF:Update_AllFrames();
 						end
@@ -252,6 +252,10 @@ local function UpdateFilterGroup()
 							E:Print(L["Not valid spell id"])
 						else	
 							local match
+							if not G.unitframe.InvalidSpells[tonumber(value)] then
+								E.global.unitframe.InvalidSpells[tonumber(value)] = nil;
+							end		
+
 							if not G.unitframe.InvalidSpells[value] then
 								E.global.unitframe.InvalidSpells[value] = nil;
 							end									
