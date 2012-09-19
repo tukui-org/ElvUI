@@ -5,7 +5,7 @@ P.farmSize = 340
 
 --Core
 P['general'] = {
-	["taingLog"] = false,
+	["taintLog"] = false,
 	["autoscale"] = true,
 	["stickyFrames"] = true,
 	['loginmessage'] = true,
