@@ -259,12 +259,14 @@ end
 
 function A:Initialize()
 	if self.db then return; end --IDK WHY BUT THIS IS GETTING CALLED TWICE FROM SOMEWHERE...
+	
 	self.db = E.db.auras
 
 	BuffFrame:Kill()
 	ConsolidatedBuffs:Kill()
 	InterfaceOptionsFrameCategoriesButton12:SetScale(0.0001)
 	
+	self:Construct_ConsolidatedBuffs()
 	if E.private.auras.enable ~= true then TemporaryEnchantFrame:Kill(); return end
 	
 	local holder = CreateFrame("Frame", "AurasHolder", E.UIParent)
@@ -296,9 +298,6 @@ function A:Initialize()
 
 	E:CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, nil, A.PostDrag)
 	E:CreateMover(self.EnchantHeader, 'TempEnchantMover', 'Weapons', nil, nil, A.WeaponPostDrag)
-	
-	
-	self:Construct_ConsolidatedBuffs()
 end
 
 E:RegisterModule(A:GetName())
