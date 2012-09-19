@@ -929,6 +929,10 @@ function UF:UpdateComboDisplay(event, unit)
 end
 
 function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff)	
+	if E.global.unitframe.InvalidSpells[spellID] then
+		return false;
+	end
+
 	local isPlayer, isFriend
 
 	local db = self:GetParent().db
@@ -1122,12 +1126,12 @@ function UF:UpdateAuraWatch(frame)
 				if spell["enabled"] then
 					auras.icons[spell.id] = icon;
 					if auras.watched then
-						auras.watched[name..image] = icon;
+						auras.watched[spell.id] = icon;
 					end
 				else	
 					auras.icons[spell.id] = nil;
 					if auras.watched then
-						auras.watched[name..image] = nil;
+						auras.watched[spell.id] = nil;
 					end
 					icon:Hide();
 					icon = nil;
@@ -1204,7 +1208,7 @@ local function CheckFilterArguement(option, optionArgs)
 	return optionArgs
 end
 
-function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate)
+function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID)
 	local db = self.db.aurabar
 	if not db then return; end
 	local returnValue = true;
@@ -1212,6 +1216,10 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	local isPlayer, isFriend
 	local auraType
 
+	if E.global.unitframe.InvalidSpells[spellID] then
+		return false;
+	end
+	
 	if unitCaster == 'player' or unitCaster == 'vehicle' then isPlayer = true end
 	if UnitIsFriend('player', unit) then isFriend = true end
 	if isFriend then

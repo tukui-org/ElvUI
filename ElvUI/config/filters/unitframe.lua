@@ -736,3 +736,7 @@ G.unitframe.AuraBarColors = {
 	[SpellName(2825)] = {169/255, 98/255, 181/255},
 	[SpellName(32182)] = {169/255, 98/255, 181/255},
 }
+
+G.unitframe.InvalidSpells = {
+	[65148] = true,
+}
