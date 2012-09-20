@@ -454,7 +454,7 @@ function UF:Construct_DruidAltManaBar(frame)
 	dpower.bg:SetTexture(E["media"].blankTex)
 	dpower.bg.multiplier = 0.3
 
-	dpower.Text = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
+	dpower.Text = dpower:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(dpower.Text)
 	
 	return dpower
