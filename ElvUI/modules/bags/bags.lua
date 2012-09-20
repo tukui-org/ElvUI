@@ -211,7 +211,7 @@ function B:Layout(isBank)
 	if not f then return; end
 	local buttonSize = self.db.size;
 	local buttonSpacing = 4;
-	local containerWidth = E.db.chat.panelWidth - 10;
+	local containerWidth = E.db.chat.panelWidth;
 	local numContainerColumns = math.floor(containerWidth / (buttonSize + buttonSpacing));
 	local holderWidth = ((buttonSize + buttonSpacing) * numContainerColumns) - buttonSpacing;
 	local numContainerRows = 0;
