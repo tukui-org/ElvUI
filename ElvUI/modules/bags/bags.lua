@@ -438,7 +438,7 @@ function B:VendorGrayCheck()
 end
 
 function B:ContructContainerFrame(name, isBank)
-	local f = CreateFrame('Frame', name, E.UIParent);
+	local f = CreateFrame('Button', name, E.UIParent);
 	f:SetTemplate('Transparent');
 	f:SetFrameStrata('DIALOG');
 	f.UpdateSlot = B.UpdateSlot;
@@ -461,10 +461,7 @@ function B:ContructContainerFrame(name, isBank)
 	
 	f.closeButton = CreateFrame('Button', name..'CloseButton', f, 'UIPanelCloseButton');
 	f.closeButton:Point('TOPRIGHT', -4, -4);
-	if isBank then
-		f.closeButton:SetScript('OnClick', CloseBankFrame)
-	end
-	
+
 	E:GetModule('Skins'):HandleCloseButton(f.closeButton);
 	
 	f.holderFrame = CreateFrame('Frame', nil, f);
@@ -509,6 +506,8 @@ function B:ContructContainerFrame(name, isBank)
 		f.transferButton:SetScript("OnEnter", self.Tooltip_Show)
 		f.transferButton:SetScript("OnLeave", self.Tooltip_Hide)
 		f.transferButton:SetScript('OnClick', function() B:CommandDecorator(B.Stack, 'bank bags')(); end)	
+
+		f:SetScript('OnHide', CloseBankFrame)
 	else
 		--Gold Text
 		f.goldText = f:CreateFontString(nil, 'OVERLAY')
@@ -633,8 +632,11 @@ function B:ContructContainerFrame(name, isBank)
 			f.currencyButton[i]:SetScript('OnClick', B.Token_OnClick);
 			f.currencyButton[i]:Hide();
 		end	
+		
+		f:SetScript('OnHide', CloseAllBags)
 	end
 	
+	tinsert(UISpecialFrames, f:GetName()) --Keep an eye on this for taints..
 	table.insert(self.BagFrames, f)
 	return f
 end
