@@ -137,6 +137,14 @@ function B:UpdateSlot(bagID, slotID)
 	slot.questIcon:Hide();
 	slot.name, slot.rarity = nil, nil;
 	
+	local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
+	CooldownFrame_SetTimer(slot.cooldown, start, duration, enable)
+	if ( duration > 0 and enable == 0 ) then
+		SetItemButtonTextureVertexColor(slot, 0.4, 0.4, 0.4);
+	else
+		SetItemButtonTextureVertexColor(slot, 1, 1, 1);
+	end				
+	
 	if B.ProfessionColors[bagType] then
 		slot:SetBackdropBorderColor(unpack(B.ProfessionColors[bagType]))
 	elseif (clink) then
