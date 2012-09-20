@@ -314,6 +314,10 @@ function NP:SetAuraInstance(guid, spellid, expiration, stacks, caster, duration,
 			end
 		end
 	end
+	
+	if E.global.unitframe.InvalidSpells[spellid] then
+		filter = false;
+	end
 
 	if filter ~= true then
 		return;

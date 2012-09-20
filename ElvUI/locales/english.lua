@@ -86,6 +86,12 @@ L[ [=[This works like a macro, you can run different situations to get the actio
  Example: '[combat] show;hide']=] ] = true;
 
 --Bags
+L['Already Running..'] = true;
+L['You must be at a bank.'] = true;
+L['Confused.. Try Again!'] = true;
+L['Sort Inverted'] = true;
+L['Stack Bags to Bank'] = true;
+L['Stack Bank to Bags'] = true;
 L["Ascending"] = true;
 L["Bag Columns"] = true;
 L["Bag-Bar"] = true;
@@ -121,7 +127,6 @@ L["The direction that the bag frames be (Horizontal or Vertical)."] = true;
 L["The direction that the bag frames will grow from the anchor."] = true;
 L["The frame is not shown unless you mouse over the frame."] = true;
 L["The spacing between buttons."] = true;
-L["Toggle Bags"] = true;
 L["Top to Bottom"] = true;
 L["Vendor Grays"] = true;
 L["Vendored gray items for:"] = true;
@@ -637,6 +642,8 @@ L['You can toggle the microbar by using your middle mouse button on the minimap 
 L['You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame'] = true;
 
 --UnitFrames
+L['Spells'] = true;
+L['This filter is used for both aura bars and aura icons no matter what. Its purpose is to block out specific spellids from being shown. For example a paladin can have two sacred shield buffs at once, we block out the short one.'] = true;
 L['Friendly'] = true;
 L['Enemy'] = true;
 L['If the unit is friendly then this filter will be checked, otherwise it will be ignored.'] = true;

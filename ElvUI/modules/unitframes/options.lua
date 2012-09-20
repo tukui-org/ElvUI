@@ -212,7 +212,85 @@ local function UpdateFilterGroup()
 				},				
 			},
 		}
+	
+	elseif selectedFilter == 'Blacklist (Strict)' then
+		E.Options.args.unitframe.args.filters.args.filterGroup = {
+			type = 'group',
+			name = selectedFilter,
+			guiInline = true,
+			order = -10,
+			childGroups = "select",
+			args = {
+				addSpellID = {
+					order = 1,
+					name = L['Add SpellID'],
+					desc = L['Add a spell to the filter.'],
+					type = 'input',
+					get = function(info) return "" end,
+					set = function(info, value) 
+						if not tonumber(value) then
+							E:Print(L["Value must be a number"])					
+						elseif not GetSpellInfo(value) then
+							E:Print(L["Not valid spell id"])
+						else	
+							E.global.unitframe.InvalidSpells[tonumber(value)] = true;
+							UpdateFilterGroup();
+							UF:Update_AllFrames();
+						end
+					end,					
+				},
+				removeSpellID = {
+					order = 2,
+					name = L['Remove SpellID'],
+					desc = L['Remove a spell from the filter.'],
+					type = 'input',
+					get = function(info) return "" end,
+					set = function(info, value) 
+						if not tonumber(value) then
+							E:Print(L["Value must be a number"])
+						elseif not GetSpellInfo(value) then
+							E:Print(L["Not valid spell id"])
+						else	
+							local match
+							if not G.unitframe.InvalidSpells[tonumber(value)] then
+								E.global.unitframe.InvalidSpells[tonumber(value)] = nil;
+							end		
+
+							if not G.unitframe.InvalidSpells[value] then
+								E.global.unitframe.InvalidSpells[value] = nil;
+							end									
+						end		
+
+						UpdateFilterGroup();
+						UF:Update_AllFrames();
+					end,				
+				},
+				desc = {
+					order = 3,
+					type = 'description',
+					name = L['This filter is used for both aura bars and aura icons no matter what. Its purpose is to block out specific spellids from being shown. For example a paladin can have two sacred shield buffs at once, we block out the short one.'],
+				},
+				spellGroup = {
+					order = 4,
+					name = L['Spells'],
+					type = 'group',
+					args = {},
+					guiInline = true,
+				},
+			},
+		}
 		
+		for spell, value in pairs(E.global.unitframe.InvalidSpells) do
+			local spellName = GetSpellInfo(spell)
+			if spellName then
+				E.Options.args.unitframe.args.filters.args.filterGroup.args.spellGroup.args[spell] = {
+					type = 'toggle',
+					name = spellName..' ('..spell..')',
+					get = function(info) return E.global.unitframe.InvalidSpells[spell] end,
+					set = function(info, value) E.global.unitframe.InvalidSpells[spell] = value; UF:Update_AllFrames() end,
+				}
+			end
+		end
 	elseif selectedFilter == 'Buff Indicator (Pet)' then
 		local buffs = {};
 		for _, value in pairs(E.global.unitframe.buffwatch.PET) do
@@ -1011,6 +1089,7 @@ E.Options.args.unitframe = {
 						filters['Buff Indicator'] = 'Buff Indicator'
 						filters['Buff Indicator (Pet)'] = 'Buff Indicator (Pet)'
 						filters['AuraBar Colors'] = 'AuraBar Colors'
+						filters['Blacklist (Strict)'] = 'Blacklist (Strict)'
 						return filters
 					end,
 				},

@@ -286,7 +286,7 @@ P['unitframe'] = {
 				['width'] = 45,
 				['overlay'] = false,
 				['camDistanceScale'] = 1,
-				['style'] = '2D'
+				['style'] = '3D'
 			},
 			['buffs'] = {
 				['enable'] = false,
@@ -384,7 +384,7 @@ P['unitframe'] = {
 				['width'] = 45,
 				['overlay'] = false,
 				['camDistanceScale'] = 1,
-				['style'] = '2D'
+				['style'] = '3D'
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -791,7 +791,7 @@ P['unitframe'] = {
 				['width'] = 35,
 				['overlay'] = false,
 				['camDistanceScale'] = 1,
-				['style'] = '2D'
+				['style'] = '3D'
 			},				
 			['name'] = {
 				['position'] = 'LEFT',
