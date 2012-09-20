@@ -86,6 +86,12 @@ L[ [=[This works like a macro, you can run different situations to get the actio
  Example: '[combat] show;hide']=] ] = true;
 
 --Bags
+L['Already Running..'] = true;
+L['You must be at a bank.'] = true;
+L['Confused.. Try Again!'] = true;
+L['Sort Inverted'] = true;
+L['Stack Bags to Bank'] = true;
+L['Stack Bank to Bags'] = true;
 L["Ascending"] = true;
 L["Bag Columns"] = true;
 L["Bag-Bar"] = true;
@@ -121,7 +127,6 @@ L["The direction that the bag frames be (Horizontal or Vertical)."] = true;
 L["The direction that the bag frames will grow from the anchor."] = true;
 L["The frame is not shown unless you mouse over the frame."] = true;
 L["The spacing between buttons."] = true;
-L["Toggle Bags"] = true;
 L["Top to Bottom"] = true;
 L["Vendor Grays"] = true;
 L["Vendored gray items for:"] = true;
