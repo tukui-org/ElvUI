@@ -648,6 +648,9 @@ L['You can toggle the microbar by using your middle mouse button on the minimap 
 L['You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame'] = true;
 
 --UnitFrames
+L['Center'] = true;
+L['JustifyH'] = true;
+L["Sets the font instance's horizontal text alignment style."] = true;
 L['Spells'] = true;
 L['This filter is used for both aura bars and aura icons no matter what. Its purpose is to block out specific spellids from being shown. For example a paladin can have two sacred shield buffs at once, we block out the short one.'] = true;
 L['Friendly'] = true;

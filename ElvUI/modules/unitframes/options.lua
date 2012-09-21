@@ -83,14 +83,25 @@ function UF:CreateCustomTextGroup(unit, objectName)
 					['THICKOUTLINE'] = 'THICKOUTLINE',
 				},	
 			},
-			xOffset = {
+			justifyH = {
 				order = 5,
+				type = 'select',
+				name = L['JustifyH'],
+				desc = L["Sets the font instance's horizontal text alignment style."],
+				values = {
+					['CENTER'] = L['Center'],
+					['LEFT'] = L['Left'],
+					['RIGHT'] = L['Right'],
+				},
+			},
+			xOffset = {
+				order = 6,
 				type = 'range',
 				name = L['xOffset'],
 				min = -400, max = 400, step = 1,		
 			},
 			yOffset = {
-				order = 6,
+				order = 7,
 				type = 'range',
 				name = L['yOffset'],
 				min = -400, max = 400, step = 1,		
@@ -1261,11 +1272,12 @@ E.Options.args.unitframe.args.player = {
 				
 				E.db.unitframe.units['player'].customTexts[textName] = {
 					['text_format'] = '',
-					['size'] = 12,
+					['size'] = E.db.unitframe.fontSize,
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
-					['yOffset'] = 0,	
-					['fontOutline'] = 'NONE'
+					['yOffset'] = 0,
+					['justifyH'] = 'CENTER',
+					['fontOutline'] = E.db.unitframe.fontOutline
 				};
 
 				UF:CreateCustomTextGroup('player', textName)
@@ -2057,6 +2069,7 @@ E.Options.args.unitframe.args.target = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
+					['justifyH'] = 'CENTER',
 					['fontOutline'] = 'NONE'
 				};
 
@@ -3102,6 +3115,7 @@ E.Options.args.unitframe.args.targettarget = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
+					['justifyH'] = 'CENTER',
 					['fontOutline'] = 'NONE'
 				};
 
@@ -3769,6 +3783,7 @@ E.Options.args.unitframe.args.focus = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
+					['justifyH'] = 'CENTER',
 					['fontOutline'] = 'NONE'
 				};
 
@@ -4741,6 +4756,7 @@ E.Options.args.unitframe.args.focustarget = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
+					['justifyH'] = 'CENTER',
 					['fontOutline'] = 'NONE'
 				};
 
@@ -5398,6 +5414,7 @@ E.Options.args.unitframe.args.pet = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
+					['justifyH'] = 'CENTER',
 					['fontOutline'] = 'NONE'
 				};
 
@@ -5992,6 +6009,7 @@ E.Options.args.unitframe.args.pettarget = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
+					['justifyH'] = 'CENTER',
 					['fontOutline'] = 'NONE'
 				};
 
@@ -6655,6 +6673,7 @@ E.Options.args.unitframe.args.boss = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
+					['justifyH'] = 'CENTER',
 					['fontOutline'] = 'NONE'
 				};
 
@@ -7252,6 +7271,7 @@ E.Options.args.unitframe.args.arena = {
 					['font'] = E.db.unitframe.font,
 					['xOffset'] = 0,
 					['yOffset'] = 0,	
+					['justifyH'] = 'CENTER',
 					['fontOutline'] = 'NONE'
 				};
 
@@ -8116,7 +8136,8 @@ E.Options.args.unitframe.args.party = {
 							['font'] = E.db.unitframe.font,
 							['xOffset'] = 0,
 							['yOffset'] = 0,	
-							['fontOutline'] = 'NONE'
+							['justifyH'] = 'CENTER',
+					['fontOutline'] = 'NONE'
 						};
 
 						UF:CreateCustomTextGroup(unit, textName)
@@ -8848,7 +8869,8 @@ for i=10, 40, 15 do
 								['font'] = E.db.unitframe.font,
 								['xOffset'] = 0,
 								['yOffset'] = 0,	
-								['fontOutline'] = 'NONE'
+								['justifyH'] = 'CENTER',
+					['fontOutline'] = 'NONE'
 							};
 
 							UF:CreateCustomTextGroup(unit, textName)
