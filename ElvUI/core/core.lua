@@ -472,6 +472,7 @@ function E:UpdateAll(ignoreInstall)
 	AB:UpdateMicroPositionDimensions()
 	 
 	local bags = E:GetModule('Bags'); 
+	bags.db = self.db.bags
 	bags:Layout(); 
 	bags:Layout(true); 
 	bags:PositionBagFrames()
