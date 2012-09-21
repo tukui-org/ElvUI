@@ -250,13 +250,43 @@ function B:Layout(isBank)
 				f.ContainerHolder[i]:SetCheckedTexture(nil)
 				f.ContainerHolder[i]:SetPushedTexture("")
 				f.ContainerHolder[i]:SetScript('OnClick', nil)
+				f.ContainerHolder[i].id = isBank and bagID or bagID + 1
+				f.ContainerHolder[i]:HookScript("OnEnter", function(self)
+					for _, bagID in ipairs(f.BagIDs) do
+						if f.Bags[bagID] then
+							local numSlots = GetContainerNumSlots(bagID);
+							for slotID = 1, numSlots do
+								if f.Bags[bagID][slotID] then
+									if bagID == self.id then
+										f.Bags[bagID][slotID]:SetAlpha(1)
+									else
+										f.Bags[bagID][slotID]:SetAlpha(0.1)
+									end
+								end
+							end
+						end
+					end
+				end)
+
+				f.ContainerHolder[i]:HookScript("OnLeave", function()
+					for _, bagID in ipairs(f.BagIDs) do
+						if f.Bags[bagID] then
+							local numSlots = GetContainerNumSlots(bagID);
+							for slotID = 1, numSlots do
+								if f.Bags[bagID][slotID] then
+									f.Bags[bagID][slotID]:SetAlpha(1)
+								end
+							end
+						end
+					end
+				end)
+
 				
 				if isBank then
+					f.ContainerHolder[i]:SetID(bagID)
 					if not f.ContainerHolder[i].tooltipText then
 						f.ContainerHolder[i].tooltipText = ""
-					end
-
-					f.ContainerHolder[i]:SetID(bagID)				
+					end			
 				end
 				
 				f.ContainerHolder[i].iconTexture = _G[f.ContainerHolder[i]:GetName()..'IconTexture'];
