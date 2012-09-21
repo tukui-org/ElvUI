@@ -314,6 +314,7 @@ end
 
 local function Enable(self)
 	if self.AuraWatch then
+		self.AuraWatch.Update = setupIcons
 		self:RegisterEvent("UNIT_AURA", Update)
 		setupIcons(self)
 		return true

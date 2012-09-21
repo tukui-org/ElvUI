@@ -1140,6 +1140,10 @@ function UF:UpdateAuraWatch(frame)
 		end
 	end
 	
+	if frame.AuraWatch.Update then
+		frame.AuraWatch.Update(frame)
+	end
+	
 	buffs = nil;
 end
 
