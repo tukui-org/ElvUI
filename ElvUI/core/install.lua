@@ -355,7 +355,7 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.party.health.position = 'BOTTOM';
 			E.db.unitframe.units.party.health.orientation = 'VERTICAL';
 			E.db.unitframe.units.party.name.position = 'TOP';
-			E.db.unitframe.units.party.name.length = "SHORT";
+			E.db.unitframe.units.party.name.text_format = "[namecolor][name:medium]";
 			E.db.unitframe.units.party.debuffs.anchorPoint = 'BOTTOMLEFT';
 			E.db.unitframe.units.party.debuffs.initialAnchor = 'TOPLEFT';
 			E.db.unitframe.units.party.debuffs.useFilter = 'Blacklist';
