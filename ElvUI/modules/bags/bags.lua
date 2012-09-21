@@ -252,6 +252,10 @@ function B:Layout(isBank)
 				f.ContainerHolder[i]:SetScript('OnClick', nil)
 				
 				if isBank then
+					if not f.ContainerHolder[i].tooltipText then
+						f.ContainerHolder[i].tooltipText = ""
+					end
+
 					f.ContainerHolder[i]:SetID(bagID)				
 				end
 				
@@ -809,6 +813,10 @@ function B:OpenBank()
 	self:UpdateTokens()
 end
 
+function B:PLAYERBANKBAGSLOTS_CHANGED()
+	self:Layout(true)
+end
+
 function B:CloseBank()
 	if not self.BankFrame then return; end -- WHY???, WHO KNOWS!
 	self.BankFrame:Hide()
@@ -849,6 +857,7 @@ function B:Initialize()
 	self:RegisterEvent("TRADE_MONEY_CHANGED", "UpdateGoldText")	
 	self:RegisterEvent("BANKFRAME_OPENED", "OpenBank")
 	self:RegisterEvent("BANKFRAME_CLOSED", "CloseBank")
+	self:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED")
 	
 	StackSplitFrame:SetFrameStrata('DIALOG')
 end
