@@ -771,7 +771,7 @@ function B:Initialize()
 	StackSplitFrame:SetFrameStrata('DIALOG')
 end
 
-hooksecurefunc('UpdateContainerFrameAnchors', function()
+function B:UpdateContainerFrameAnchors()
 	local frame, xOffset, yOffset, screenHeight, freeScreenHeight, leftMostPoint, column;
 	local screenWidth = GetScreenWidth();
 	local containerScale = 1;
@@ -844,6 +844,6 @@ hooksecurefunc('UpdateContainerFrameAnchors', function()
 		end
 		freeScreenHeight = freeScreenHeight - frame:GetHeight() - VISIBLE_CONTAINER_SPACING;
 	end
-end)
+end
 
 E:RegisterModule(B:GetName())
