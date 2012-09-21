@@ -5,13 +5,20 @@ local displayString = '';
 local lastPanel;
 local self = lastPanel
 local vengeance = GetSpellInfo(93098) or GetSpellInfo(76691)
-local value
-local tooltip = CreateFrame("GameTooltip", "VengeanceTooltip", UIParent, "GameTooltipTemplate")
-local tooltiptext = _G[tooltip:GetName().."TextLeft2"]
-tooltip:SetOwner(UIParent, "ANCHOR_NONE")
+local value, tooltip, tooltiptext
+tooltip = CreateFrame("GameTooltip", "VengeanceTooltip", E.UIParent, "GameTooltipTemplate")
+tooltiptext = _G[tooltip:GetName().."TextLeft2"]
+tooltip:SetOwner(E.UIParent, "ANCHOR_NONE")
 tooltiptext:SetText("")
 
 local function calculate(self, event, ...)
+
+	if VengeanceTooltip and not VengeanceTooltip:IsShown() then
+	tooltiptext = _G[tooltip:GetName().."TextLeft2"]
+	tooltip:SetOwner(E.UIParent, "ANCHOR_NONE")
+	tooltiptext:SetText("")
+	end
+	
 	local name = UnitAura("player", vengeance, nil, "PLAYER|HELPFUL")
 	
 	if name then
@@ -45,4 +52,4 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	onEnterFunc - function to fire OnEnter
 	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 ]]
-DT:RegisterDatatext("Vengeance", {"UNIT_AURA", "PLAYER_ENTERING_WORLD"}, calculate)
+DT:RegisterDatatext("Vengeance", {"UNIT_AURA", "PLAYER_ENTERING_WORLD", "CLOSE_WORLD_MAP"}, calculate)

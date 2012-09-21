@@ -218,7 +218,7 @@ ElvUF.Tags.Methods['namecolor'] = function(unit)
 		local reaction = ElvUF['colors'].reaction[unitReaction]
 		return Hex(reaction[1], reaction[2], reaction[3])
 	else
-		return Hex(214, 191, 166)	
+		return '|cFFC2C2C2'
 	end
 end
 

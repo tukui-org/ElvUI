@@ -126,7 +126,16 @@ function B:INVENTORY_SEARCH_UPDATE()
 end
 
 function B:UpdateSlot(bagID, slotID)
-	if not self.Bags[bagID] then return; end
+	if self.Bags[bagID] and self.Bags[bagID].numSlots ~= GetContainerNumSlots(bagID) then 
+		--This is for when changing bags and the amount of slots changes.
+		if not self.isBank then
+			B:Layout()
+		else
+			B:Layout(true)
+		end
+		return; 
+	end
+	if not self.Bags[bagID] or not self.Bags[bagID][slotID] then return; end
 	local slot = self.Bags[bagID][slotID];
 	local bagType = self.Bags[bagID].type;
 	local texture, count, locked = GetContainerItemInfo(bagID, slotID);
@@ -200,7 +209,9 @@ end
 
 function B:UpdateAllSlots()
 	for _, bagID in ipairs(self.BagIDs) do
-		self.Bags[bagID]:UpdateBagSlots(bagID);
+		if self.Bags[bagID] then
+			self.Bags[bagID]:UpdateBagSlots(bagID);
+		end
 	end
 end
 
@@ -209,19 +220,99 @@ function B:Layout(isBank)
 	local f = self:GetContainerFrame(isBank);
 	
 	if not f then return; end
-	local buttonSize = self.db.size;
+	local buttonSize = isBank and self.db.bankSize or self.db.bagSize;
 	local buttonSpacing = 4;
-	local containerWidth = E.db.chat.panelWidth;
+	local containerWidth = self.db.alignToChat == true and (E.db.chat.panelWidth - 10) or isBank and self.db.bankWidth or self.db.bagWidth
 	local numContainerColumns = math.floor(containerWidth / (buttonSize + buttonSpacing));
 	local holderWidth = ((buttonSize + buttonSpacing) * numContainerColumns) - buttonSpacing;
 	local numContainerRows = 0;
 	local bottomPadding = (containerWidth - holderWidth) / 2;
 	f.holderFrame:Width(holderWidth);
-
+	
 	f.totalSlots = 0;
 	local lastButton;
 	local lastRowButton;
-	for _, bagID in ipairs(f.BagIDs) do
+	local lastContainerButton;
+	local numContainerSlots, fullContainerSlots = GetNumBankSlots();
+	for i, bagID in ipairs(f.BagIDs) do
+		--Bag Containers
+		if (not isBank and bagID <= 3 ) or (isBank and bagID ~= -1 and numContainerSlots >= 1 and not (i - 1 > numContainerSlots)) then
+			if not f.ContainerHolder[i] then
+				if isBank then
+					f.ContainerHolder[i] = CreateFrame("CheckButton", "ElvUIBankBag" .. bagID - 4, f.ContainerHolder, "BankItemButtonBagTemplate")
+				else
+					f.ContainerHolder[i] = CreateFrame("CheckButton", "ElvUIMainBag" .. bagID .. "Slot", f.ContainerHolder, "BagSlotButtonTemplate")
+				end
+				
+				f.ContainerHolder[i]:SetTemplate('Default', true)
+				f.ContainerHolder[i]:StyleButton()
+				f.ContainerHolder[i]:SetNormalTexture("")
+				f.ContainerHolder[i]:SetCheckedTexture(nil)
+				f.ContainerHolder[i]:SetPushedTexture("")
+				f.ContainerHolder[i]:SetScript('OnClick', nil)
+				f.ContainerHolder[i].id = isBank and bagID or bagID + 1
+				f.ContainerHolder[i]:HookScript("OnEnter", function(self)
+					for _, bagID in ipairs(f.BagIDs) do
+						if f.Bags[bagID] then
+							local numSlots = GetContainerNumSlots(bagID);
+							for slotID = 1, numSlots do
+								if f.Bags[bagID][slotID] then
+									if bagID == self.id then
+										f.Bags[bagID][slotID]:SetAlpha(1)
+									else
+										f.Bags[bagID][slotID]:SetAlpha(0.1)
+									end
+								end
+							end
+						end
+					end
+				end)
+
+				f.ContainerHolder[i]:HookScript("OnLeave", function()
+					for _, bagID in ipairs(f.BagIDs) do
+						if f.Bags[bagID] then
+							local numSlots = GetContainerNumSlots(bagID);
+							for slotID = 1, numSlots do
+								if f.Bags[bagID][slotID] then
+									f.Bags[bagID][slotID]:SetAlpha(1)
+								end
+							end
+						end
+					end
+				end)
+
+				
+				if isBank then
+					f.ContainerHolder[i]:SetID(bagID)
+					if not f.ContainerHolder[i].tooltipText then
+						f.ContainerHolder[i].tooltipText = ""
+					end			
+				end
+				
+				f.ContainerHolder[i].iconTexture = _G[f.ContainerHolder[i]:GetName()..'IconTexture'];
+				f.ContainerHolder[i].iconTexture:SetInside()
+				f.ContainerHolder[i].iconTexture:SetTexCoord(unpack(E.TexCoords))
+			end
+			
+			f.ContainerHolder:Size(((buttonSize + buttonSpacing) * (isBank and i - 1 or i)) + buttonSpacing,buttonSize + (buttonSpacing * 2))
+			
+			if isBank then
+				BankFrameItemButton_Update(f.ContainerHolder[i])
+				BankFrameItemButton_UpdateLocked(f.ContainerHolder[i])					
+			end
+			
+			f.ContainerHolder[i]:Size(buttonSize)
+			f.ContainerHolder[i]:ClearAllPoints()
+			if (isBank and i == 2) or (not isBank and i == 1) then
+				f.ContainerHolder[i]:SetPoint('BOTTOMLEFT', f.ContainerHolder, 'BOTTOMLEFT', buttonSpacing, buttonSpacing)
+			else
+				f.ContainerHolder[i]:SetPoint('LEFT', lastContainerButton, 'RIGHT', buttonSpacing, 0)
+			end
+			
+			lastContainerButton = f.ContainerHolder[i];	
+		end
+		
+		--Bag Slots
 		local numSlots = GetContainerNumSlots(bagID);
 		if numSlots > 0 then
 			if not f.Bags[bagID] then
@@ -240,7 +331,7 @@ function B:Layout(isBank)
 					f.Bags[bagID][i]:Hide();
 				end
 			end			
-
+			
 			for slotID = 1, numSlots do
 				f.totalSlots = f.totalSlots + 1;
 				if not f.Bags[bagID][slotID] then
@@ -438,7 +529,7 @@ function B:VendorGrayCheck()
 end
 
 function B:ContructContainerFrame(name, isBank)
-	local f = CreateFrame('Frame', name, E.UIParent);
+	local f = CreateFrame('Button', name, E.UIParent);
 	f:SetTemplate('Transparent');
 	f:SetFrameStrata('DIALOG');
 	f.UpdateSlot = B.UpdateSlot;
@@ -450,46 +541,69 @@ function B:ContructContainerFrame(name, isBank)
 	f:RegisterEvent('BAG_UPDATE_COOLDOWN')
 	f:RegisterEvent('BAG_UPDATE');
 	f:RegisterEvent('PLAYERBANKSLOTS_CHANGED');
+	f.isBank = isBank
 	
 	f:SetScript('OnEvent', B.OnEvent);	
 	f:Hide();
 	
 	f.bottomOffset = isBank and 8 or 28;
-	f.topOffset = isBank and 30 or 50;
+	f.topOffset = isBank and 45 or 50;
 	f.BagIDs = isBank and {-1, 5, 6, 7, 8, 9, 10, 11} or {0, 1, 2, 3, 4};
 	f.Bags = {};
 	
 	f.closeButton = CreateFrame('Button', name..'CloseButton', f, 'UIPanelCloseButton');
 	f.closeButton:Point('TOPRIGHT', -4, -4);
-	if isBank then
-		f.closeButton:SetScript('OnClick', CloseBankFrame)
-	end
-	
+
 	E:GetModule('Skins'):HandleCloseButton(f.closeButton);
 	
 	f.holderFrame = CreateFrame('Frame', nil, f);
 	f.holderFrame:Point('TOP', f, 'TOP', 0, -f.topOffset);
 	f.holderFrame:Point('BOTTOM', f, 'BOTTOM', 0, 8);
 	
+	f.ContainerHolder = CreateFrame('Button', name..'ContainerHolder', f)
+	f.ContainerHolder:Point('BOTTOMLEFT', f, 'TOPLEFT', 0, 1)
+	f.ContainerHolder:SetTemplate('Transparent')
+	f.ContainerHolder:Hide()
+	
 	if isBank then
+		f.purchaseBagButton = CreateFrame('Button', nil, f)
+		f.purchaseBagButton:Height(20)
+		f.purchaseBagButton:Width(150)
+		f.purchaseBagButton:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', 2, 4)
+		f.purchaseBagButton:SetFrameLevel(f.purchaseBagButton:GetFrameLevel() + 2)
+		f.purchaseBagButton:SetTemplate('Default', true)
+		f.purchaseBagButton.text = f.purchaseBagButton:CreateFontString(nil, 'OVERLAY')
+		f.purchaseBagButton.text:FontTemplate()
+		f.purchaseBagButton.text:SetPoint('CENTER')
+		f.purchaseBagButton.text:SetJustifyH('CENTER')
+		f.purchaseBagButton.text:SetText(L['Purchase'])
+		f.purchaseBagButton:SetScript("OnEnter", self.Tooltip_Show)
+		f.purchaseBagButton:SetScript("OnLeave", self.Tooltip_Hide)
+		f.purchaseBagButton:SetScript("OnClick", function()
+			local _, full = GetNumBankSlots()
+			if not full then
+				E:StaticPopup_Show("BUY_BANK_SLOT")
+			else
+				E:StaticPopup_Show("CANNOT_BUY_BANK_SLOT")
+			end
+		end)	
+	
 		--Sort Button
 		f.sortButton = CreateFrame('Button', nil, f)
-		f.sortButton:Point('TOP', f, 'TOP', 0, -4)
-		f.sortButton:Size(85, 10)
+		f.sortButton:Point('TOPRIGHT', f, 'TOP', 0, -4)
+		f.sortButton:Size(55, 10)
 		f.sortButton:SetTemplate('Default', true)
 		f.sortButton.backdropTexture:SetVertexColor(unpack(E.media.bordercolor))
 		f.sortButton.backdropTexture.SetVertexColor = E.noop
 		f.sortButton.ttText = L['Sort Bags'];
-		f.sortButton.ttText2 = L['Hold Shift:'];
-		f.sortButton.ttText2desc = L['Sort Inverted'];		
 		f.sortButton:SetScript("OnEnter", self.Tooltip_Show)
 		f.sortButton:SetScript("OnLeave", self.Tooltip_Hide)
-		f.sortButton:SetScript('OnClick', function() B:CommandDecorator(B.SortBags, 'bank', IsShiftKeyDown())(); end)
+		f.sortButton:SetScript('OnClick', function() B:CommandDecorator(B.SortBags, 'bank')(); end)
 
 		--Stack Button
 		f.stackButton = CreateFrame('Button', nil, f)
-		f.stackButton:Point('RIGHT', f.sortButton, 'LEFT', -3, 0)
-		f.stackButton:Size(85, 10)
+		f.stackButton:Point('LEFT', f.sortButton, 'RIGHT', 3, 0)
+		f.stackButton:Size(55, 10)
 		f.stackButton:SetTemplate('Default', true)
 		f.stackButton.backdropTexture:SetVertexColor(unpack(E.media.bordercolor))
 		f.stackButton.backdropTexture.SetVertexColor = E.noop
@@ -500,15 +614,36 @@ function B:ContructContainerFrame(name, isBank)
 
 		--Transfer Button
 		f.transferButton = CreateFrame('Button', nil, f)
-		f.transferButton:Point('LEFT', f.sortButton, 'RIGHT', 3, 0)
-		f.transferButton:Size(85, 10)
+		f.transferButton:Point('LEFT', f.stackButton, 'RIGHT', 3, 0)
+		f.transferButton:Size(55, 10)
 		f.transferButton:SetTemplate('Default', true)
 		f.transferButton.backdropTexture:SetVertexColor(unpack(E.media.bordercolor))
 		f.transferButton.backdropTexture.SetVertexColor = E.noop
 		f.transferButton.ttText = L['Stack Bags to Bank'];
 		f.transferButton:SetScript("OnEnter", self.Tooltip_Show)
 		f.transferButton:SetScript("OnLeave", self.Tooltip_Hide)
-		f.transferButton:SetScript('OnClick', function() B:CommandDecorator(B.Stack, 'bank bags')(); end)	
+		f.transferButton:SetScript('OnClick', function() B:CommandDecorator(B.Stack, 'bank bags')(); end)
+		
+		--Toggle Bags Button
+		f.bagsButton = CreateFrame('Button', nil, f)
+		f.bagsButton:Point('RIGHT', f.sortButton, 'LEFT', -3, 0)
+		f.bagsButton:Size(55, 10)
+		f.bagsButton:SetTemplate('Default', true)
+		f.bagsButton.backdropTexture:SetVertexColor(unpack(E.media.bordercolor))
+		f.bagsButton.backdropTexture.SetVertexColor = E.noop
+		f.bagsButton.ttText = L['Toggle Bags'];
+		f.bagsButton:SetScript("OnEnter", self.Tooltip_Show)
+		f.bagsButton:SetScript("OnLeave", self.Tooltip_Hide)
+		f.bagsButton:SetScript('OnClick', function()
+		local numSlots, full = GetNumBankSlots()
+			if numSlots >= 1 then
+				ToggleFrame(f.ContainerHolder)
+			else
+				E:StaticPopup_Show("NO_BANK_BAGS")
+			end		
+		end)
+
+		f:SetScript('OnHide', CloseBankFrame)
 	else
 		--Gold Text
 		f.goldText = f:CreateFontString(nil, 'OVERLAY')
@@ -560,17 +695,15 @@ function B:ContructContainerFrame(name, isBank)
 		
 		--Sort Button
 		f.sortButton = CreateFrame('Button', nil, f)
-		f.sortButton:Point('TOPRIGHT', f, 'TOP', 0, -4)
+		f.sortButton:Point('TOP', f, 'TOP', 0, -4)
 		f.sortButton:Size(55, 10)
 		f.sortButton:SetTemplate('Default', true)
 		f.sortButton.backdropTexture:SetVertexColor(unpack(E.media.bordercolor))
 		f.sortButton.backdropTexture.SetVertexColor = E.noop
-		f.sortButton.ttText = L['Sort Bags'];
-		f.sortButton.ttText2 = L['Hold Shift:'];
-		f.sortButton.ttText2desc = L['Sort Inverted'];		
+		f.sortButton.ttText = L['Sort Bags'];	
 		f.sortButton:SetScript("OnEnter", self.Tooltip_Show)
 		f.sortButton:SetScript("OnLeave", self.Tooltip_Hide)
-		f.sortButton:SetScript('OnClick', function() B:CommandDecorator(B.SortBags, 'bags', IsShiftKeyDown())(); end)
+		f.sortButton:SetScript('OnClick', function() B:CommandDecorator(B.SortBags, 'bags')(); end)
 
 		--Stack Button
 		f.stackButton = CreateFrame('Button', nil, f)
@@ -597,6 +730,18 @@ function B:ContructContainerFrame(name, isBank)
 		f.vendorButton:SetScript("OnEnter", self.Tooltip_Show)
 		f.vendorButton:SetScript("OnLeave", self.Tooltip_Hide)
 		f.vendorButton:SetScript('OnClick', function() self:VendorGrayCheck(); end)
+		
+		--Bags Button
+		f.bagsButton = CreateFrame('Button', nil, f)
+		f.bagsButton:Point('RIGHT', f.vendorButton, 'LEFT', -3, 0)
+		f.bagsButton:Size(55, 10)
+		f.bagsButton:SetTemplate('Default', true)
+		f.bagsButton.backdropTexture:SetVertexColor(unpack(E.media.bordercolor))
+		f.bagsButton.backdropTexture.SetVertexColor = E.noop
+		f.bagsButton.ttText = L['Toggle Bags']
+		f.bagsButton:SetScript("OnEnter", self.Tooltip_Show)
+		f.bagsButton:SetScript("OnLeave", self.Tooltip_Hide)
+		f.bagsButton:SetScript('OnClick', function() ToggleFrame(f.ContainerHolder) end)
 
 		--Transfer Button
 		f.transferButton = CreateFrame('Button', nil, f)
@@ -633,8 +778,11 @@ function B:ContructContainerFrame(name, isBank)
 			f.currencyButton[i]:SetScript('OnClick', B.Token_OnClick);
 			f.currencyButton[i]:Hide();
 		end	
+		
+		f:SetScript('OnHide', CloseAllBags)
 	end
 	
+	tinsert(UISpecialFrames, f:GetName()) --Keep an eye on this for taints..
 	table.insert(self.BagFrames, f)
 	return f
 end
@@ -654,6 +802,18 @@ function B:ToggleBags()
 		self:CloseBags();
 	else
 		self:OpenBags();
+	end
+end
+
+function B:ToggleBackpack()
+	if ( IsOptionFrameOpen() ) then
+		return;
+	end
+	
+	if IsBagOpen(0) then
+		self:OpenBags()
+	else
+		self:CloseBags()
 	end
 end
 
@@ -680,6 +840,11 @@ function B:OpenBank()
 	self.BankFrame:Show();
 	self.BankFrame:UpdateAllSlots();
 	self.BagFrame:Show();
+	self:UpdateTokens()
+end
+
+function B:PLAYERBANKBAGSLOTS_CHANGED()
+	self:Layout(true)
 end
 
 function B:CloseBank()
@@ -700,12 +865,15 @@ function B:Initialize()
 	self.BagFrames = {};
 	
 	self.BagFrame = self:ContructContainerFrame('ElvUI_ContainerFrame');
-
+	
 	--Hook onto Blizzard Functions
-	self:SecureHook('ToggleAllBags', 'ToggleBags');
 	self:SecureHook('OpenAllBags', 'OpenBags');
 	self:SecureHook('CloseAllBags', 'CloseBags');
+	self:SecureHook('ToggleBag', 'ToggleBags')
+	self:SecureHook('ToggleAllBags', 'ToggleBackpack');
+	self:SecureHook('ToggleBackpack')
 	self:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens');
+
 	self:PositionBagFrames();
 	self:Layout();
 
@@ -719,11 +887,12 @@ function B:Initialize()
 	self:RegisterEvent("TRADE_MONEY_CHANGED", "UpdateGoldText")	
 	self:RegisterEvent("BANKFRAME_OPENED", "OpenBank")
 	self:RegisterEvent("BANKFRAME_CLOSED", "CloseBank")
+	self:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED")
 	
 	StackSplitFrame:SetFrameStrata('DIALOG')
 end
 
-hooksecurefunc('UpdateContainerFrameAnchors', function()
+function B:UpdateContainerFrameAnchors()
 	local frame, xOffset, yOffset, screenHeight, freeScreenHeight, leftMostPoint, column;
 	local screenWidth = GetScreenWidth();
 	local containerScale = 1;
@@ -796,6 +965,6 @@ hooksecurefunc('UpdateContainerFrameAnchors', function()
 		end
 		freeScreenHeight = freeScreenHeight - frame:GetHeight() - VISIBLE_CONTAINER_SPACING;
 	end
-end)
+end
 
 E:RegisterModule(B:GetName())

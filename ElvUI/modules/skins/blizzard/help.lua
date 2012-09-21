@@ -12,6 +12,7 @@ local function LoadSkin()
 	}
 	
 	local buttons = {
+		"HelpFrameOpenTicketHelpItemRestoration",
 		"HelpFrameAccountSecurityOpenTicket",
 		"HelpFrameOpenTicketHelpTopIssues",
 		"HelpFrameOpenTicketHelpOpenTicket",
