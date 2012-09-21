@@ -61,15 +61,7 @@ function B:DisableBlizzard()
 end
 
 function B:SearchReset()
-	for _, bagFrame in pairs(self.BagFrames) do
-		for _, bagID in ipairs(bagFrame.BagIDs) do
-			for slotID = 1, GetContainerNumSlots(bagID) do
-				local button = bagFrame.Bags[bagID][slotID];
-				SetItemButtonDesaturated(button, 0, 1, 1, 1);
-				button:SetAlpha(1);
-			end		
-		end
-	end
+	SetItemSearch('')
 end
 
 function B:UpdateSearch()
@@ -84,7 +76,8 @@ function B:UpdateSearch()
 			end
 		end
 		if ( repeatChar ) then
-			ResetAndClear(self);
+			B.ResetAndClear(self);
+			return;
 		end
 	end
 	
@@ -100,7 +93,7 @@ end
 
 function B:ResetAndClear()
 	self:GetParent().detail:Show();
-
+	
 	self:ClearFocus();
 	B:SearchReset();
 end
