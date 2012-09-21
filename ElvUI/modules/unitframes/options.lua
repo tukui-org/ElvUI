@@ -5593,147 +5593,39 @@ E.Options.args.unitframe.args.pet = {
 					args = {
 						playerOnly = {
 							order = 10,
-							guiInline = true,
-							type = 'group',
+							type = 'toggle',
 							name = L["Allow Personal Auras"],
-							args = {
-								friendly = {
-									order = 2,
-									type = 'toggle',
-									name = L['Friendly'],
-									desc = L['If the unit is friendly then this filter will be checked, otherwise it will be ignored.'],
-									get = function(info) return E.db.unitframe.units['pet']['buffs'].playerOnly.friendly end,
-									set = function(info, value) E.db.unitframe.units['pet']['buffs'].playerOnly.friendly = value; UF:CreateAndUpdateUF('pet') end,									
-								},
-								enemy = {
-									order = 3,
-									type = 'toggle',
-									name = L['Enemy'],
-									desc = L['If the unit is an enemy then this filter will be checked, otherwise it will be ignored.'],
-									get = function(info) return E.db.unitframe.units['pet']['buffs'].playerOnly.enemy end,
-									set = function(info, value) E.db.unitframe.units['pet']['buffs'].playerOnly.enemy = value; UF:CreateAndUpdateUF('pet') end,										
-								}
-							},
+							desc = L["Allow Personal Auras"],
 						},
 						useBlacklist = {
 							order = 11,
-							guiInline = true,
-							type = 'group',
+							type = 'toggle',
 							name = L["Block Blacklisted Auras"],
-							args = {
-								friendly = {
-									order = 2,
-									type = 'toggle',
-									name = L['Friendly'],
-									desc = L['If the unit is friendly then this filter will be checked, otherwise it will be ignored.'],
-									get = function(info) return E.db.unitframe.units['pet']['buffs'].useBlacklist.friendly end,
-									set = function(info, value) E.db.unitframe.units['pet']['buffs'].useBlacklist.friendly = value; UF:CreateAndUpdateUF('pet') end,									
-								},
-								enemy = {
-									order = 3,
-									type = 'toggle',
-									name = L['Enemy'],
-									desc = L['If the unit is an enemy then this filter will be checked, otherwise it will be ignored.'],
-									get = function(info) return E.db.unitframe.units['pet']['buffs'].useBlacklist.enemy end,
-									set = function(info, value) E.db.unitframe.units['pet']['buffs'].useBlacklist.enemy = value; UF:CreateAndUpdateUF('pet') end,										
-								}
-							},
+							desc = L["Block Blacklisted Auras"],
 						},
 						useWhitelist = {
 							order = 12,
-							guiInline = true,
-							type = 'group',
+							type = 'toggle',
 							name = L["Allow Whitelisted Auras"],
-							args = {
-								friendly = {
-									order = 2,
-									type = 'toggle',
-									name = L['Friendly'],
-									desc = L['If the unit is friendly then this filter will be checked, otherwise it will be ignored.'],
-									get = function(info) return E.db.unitframe.units['pet']['buffs'].useWhitelist.friendly end,
-									set = function(info, value) E.db.unitframe.units['pet']['buffs'].useWhitelist.friendly = value; UF:CreateAndUpdateUF('pet') end,									
-								},
-								enemy = {
-									order = 3,
-									type = 'toggle',
-									name = L['Enemy'],
-									desc = L['If the unit is an enemy then this filter will be checked, otherwise it will be ignored.'],
-									get = function(info) return E.db.unitframe.units['pet']['buffs'].useWhitelist.enemy end,
-									set = function(info, value) E.db.unitframe.units['pet']['buffs'].useWhitelist.enemy = value; UF:CreateAndUpdateUF('pet') end,										
-								}
-							},
+							desc = L["Allow Whitelisted Auras"],
 						},
 						noDuration = {
 							order = 13,
-							guiInline = true,
-							type = 'group',
+							type = 'toggle',
 							name = L["Block Auras Without Duration"],
-							args = {
-								friendly = {
-									order = 2,
-									type = 'toggle',
-									name = L['Friendly'],
-									desc = L['If the unit is friendly then this filter will be checked, otherwise it will be ignored.'],
-									get = function(info) return E.db.unitframe.units['pet']['buffs'].noDuration.friendly end,
-									set = function(info, value) E.db.unitframe.units['pet']['buffs'].noDuration.friendly = value; UF:CreateAndUpdateUF('pet') end,									
-								},
-								enemy = {
-									order = 3,
-									type = 'toggle',
-									name = L['Enemy'],
-									desc = L['If the unit is an enemy then this filter will be checked, otherwise it will be ignored.'],
-									get = function(info) return E.db.unitframe.units['pet']['buffs'].noDuration.enemy end,
-									set = function(info, value) E.db.unitframe.units['pet']['buffs'].noDuration.enemy = value; UF:CreateAndUpdateUF('pet') end,										
-								}
-							},				
+							desc = L["Block Auras Without Duration"],					
 						},
 						onlyDispellable = {
 							order = 13,
-							guiInline = true,
-							type = 'group',
+							type = 'toggle',
 							name = L['Allow Dispellable Auras'],
-							args = {
-								friendly = {
-									order = 2,
-									type = 'toggle',
-									name = L['Friendly'],
-									desc = L['If the unit is friendly then this filter will be checked, otherwise it will be ignored.'],
-									get = function(info) return E.db.unitframe.units['pet']['buffs'].onlyDispellable.friendly end,
-									set = function(info, value) E.db.unitframe.units['pet']['buffs'].onlyDispellable.friendly = value; UF:CreateAndUpdateUF('pet') end,									
-								},
-								enemy = {
-									order = 3,
-									type = 'toggle',
-									name = L['Enemy'],
-									desc = L['If the unit is an enemy then this filter will be checked, otherwise it will be ignored.'],
-									get = function(info) return E.db.unitframe.units['pet']['buffs'].onlyDispellable.enemy end,
-									set = function(info, value) E.db.unitframe.units['pet']['buffs'].onlyDispellable.enemy = value; UF:CreateAndUpdateUF('pet') end,										
-								}
-							},	
+							desc = L['Allow Dispellable Auras'],
 						},
 						noConsolidated = {
 							order = 14,
-							guiInline = true,
-							type = 'group',
+							type = 'toggle',
 							name = L["Block Raid Buffs"],
-							args = {
-								friendly = {
-									order = 2,
-									type = 'toggle',
-									name = L['Friendly'],
-									desc = L['If the unit is friendly then this filter will be checked, otherwise it will be ignored.'],
-									get = function(info) return E.db.unitframe.units['pet']['buffs'].noConsolidated.friendly end,
-									set = function(info, value) E.db.unitframe.units['pet']['buffs'].noConsolidated.friendly = value; UF:CreateAndUpdateUF('pet') end,									
-								},
-								enemy = {
-									order = 3,
-									type = 'toggle',
-									name = L['Enemy'],
-									desc = L['If the unit is an enemy then this filter will be checked, otherwise it will be ignored.'],
-									get = function(info) return E.db.unitframe.units['pet']['buffs'].noConsolidated.enemy end,
-									set = function(info, value) E.db.unitframe.units['pet']['buffs'].noConsolidated.enemy = value; UF:CreateAndUpdateUF('pet') end,										
-								}
-							},		
+							desc = L["Block Raid Buffs"],		
 						},
 						useFilter = {
 							order = 15,
@@ -5748,7 +5640,7 @@ E.Options.args.unitframe.args.pet = {
 								end
 								return filters
 							end,
-						},										
+						},						
 					},
 				},				
 			},
