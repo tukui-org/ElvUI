@@ -209,7 +209,9 @@ end
 
 function B:UpdateAllSlots()
 	for _, bagID in ipairs(self.BagIDs) do
-		self.Bags[bagID]:UpdateBagSlots(bagID);
+		if self.Bags[bagID] then
+			self.Bags[bagID]:UpdateBagSlots(bagID);
+		end
 	end
 end
 
@@ -226,11 +228,57 @@ function B:Layout(isBank)
 	local numContainerRows = 0;
 	local bottomPadding = (containerWidth - holderWidth) / 2;
 	f.holderFrame:Width(holderWidth);
-
+	
 	f.totalSlots = 0;
 	local lastButton;
 	local lastRowButton;
-	for _, bagID in ipairs(f.BagIDs) do
+	local lastContainerButton;
+	local numContainerSlots, fullContainerSlots = GetNumBankSlots();
+	for i, bagID in ipairs(f.BagIDs) do
+		--Bag Containers
+		if ((not isBank and bagID <= 3 ) or (isBank and bagID ~= -1 and numContainerSlots >= 1)) then
+			if not f.ContainerHolder[i] then
+				if isBank then
+					f.ContainerHolder[i] = CreateFrame("CheckButton", "ElvUIBankBag" .. bagID - 4, f.ContainerHolder, "BankItemButtonBagTemplate")
+				else
+					f.ContainerHolder[i] = CreateFrame("CheckButton", "ElvUIMainBag" .. bagID .. "Slot", f.ContainerHolder, "BagSlotButtonTemplate")
+				end
+				
+				f.ContainerHolder[i]:SetTemplate('Default', true)
+				f.ContainerHolder[i]:StyleButton()
+				f.ContainerHolder[i]:SetNormalTexture("")
+				f.ContainerHolder[i]:SetCheckedTexture(nil)
+				f.ContainerHolder[i]:SetPushedTexture("")
+				f.ContainerHolder[i]:SetScript('OnClick', nil)
+				
+				if isBank then
+					f.ContainerHolder[i]:SetID(bagID)				
+				end
+				
+				f.ContainerHolder[i].iconTexture = _G[f.ContainerHolder[i]:GetName()..'IconTexture'];
+				f.ContainerHolder[i].iconTexture:SetInside()
+				f.ContainerHolder[i].iconTexture:SetTexCoord(unpack(E.TexCoords))
+			end
+			
+			f.ContainerHolder:Size(((buttonSize + buttonSpacing) * (isBank and i - 1 or i)) + buttonSpacing,buttonSize + (buttonSpacing * 2))
+			
+			if isBank then
+				BankFrameItemButton_Update(f.ContainerHolder[i])
+				BankFrameItemButton_UpdateLocked(f.ContainerHolder[i])					
+			end
+			
+			f.ContainerHolder[i]:Size(buttonSize)
+			f.ContainerHolder[i]:ClearAllPoints()
+			if (isBank and i == 2) or (not isBank and i == 1) then
+				f.ContainerHolder[i]:SetPoint('BOTTOMLEFT', f.ContainerHolder, 'BOTTOMLEFT', buttonSpacing, buttonSpacing)
+			else
+				f.ContainerHolder[i]:SetPoint('LEFT', lastContainerButton, 'RIGHT', buttonSpacing, 0)
+			end
+			
+			lastContainerButton = f.ContainerHolder[i];	
+		end
+		
+		--Bag Slots
 		local numSlots = GetContainerNumSlots(bagID);
 		if numSlots > 0 then
 			if not f.Bags[bagID] then
@@ -465,7 +513,7 @@ function B:ContructContainerFrame(name, isBank)
 	f:Hide();
 	
 	f.bottomOffset = isBank and 8 or 28;
-	f.topOffset = isBank and 30 or 50;
+	f.topOffset = isBank and 45 or 50;
 	f.BagIDs = isBank and {-1, 5, 6, 7, 8, 9, 10, 11} or {0, 1, 2, 3, 4};
 	f.Bags = {};
 	
@@ -478,7 +526,34 @@ function B:ContructContainerFrame(name, isBank)
 	f.holderFrame:Point('TOP', f, 'TOP', 0, -f.topOffset);
 	f.holderFrame:Point('BOTTOM', f, 'BOTTOM', 0, 8);
 	
+	f.ContainerHolder = CreateFrame('Button', name..'ContainerHolder', f)
+	f.ContainerHolder:Point('BOTTOMLEFT', f, 'TOPLEFT', 0, 1)
+	f.ContainerHolder:SetTemplate('Transparent')
+	f.ContainerHolder:Hide()
+	
 	if isBank then
+		f.purchaseBagButton = CreateFrame('Button', nil, f)
+		f.purchaseBagButton:Height(20)
+		f.purchaseBagButton:Width(150)
+		f.purchaseBagButton:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', 2, 4)
+		f.purchaseBagButton:SetFrameLevel(f.purchaseBagButton:GetFrameLevel() + 2)
+		f.purchaseBagButton:SetTemplate('Default', true)
+		f.purchaseBagButton.text = f.purchaseBagButton:CreateFontString(nil, 'OVERLAY')
+		f.purchaseBagButton.text:FontTemplate()
+		f.purchaseBagButton.text:SetPoint('CENTER')
+		f.purchaseBagButton.text:SetJustifyH('CENTER')
+		f.purchaseBagButton.text:SetText(L['Purchase'])
+		f.purchaseBagButton:SetScript("OnEnter", self.Tooltip_Show)
+		f.purchaseBagButton:SetScript("OnLeave", self.Tooltip_Hide)
+		f.purchaseBagButton:SetScript("OnClick", function()
+			local _, full = GetNumBankSlots()
+			if not full then
+				E:StaticPopup_Show("BUY_BANK_SLOT")
+			else
+				E:StaticPopup_Show("CANNOT_BUY_BANK_SLOT")
+			end
+		end)	
+	
 		--Sort Button
 		f.sortButton = CreateFrame('Button', nil, f)
 		f.sortButton:Point('TOPRIGHT', f, 'TOP', 0, -4)
@@ -525,7 +600,14 @@ function B:ContructContainerFrame(name, isBank)
 		f.bagsButton.ttText = L['Toggle Bags'];
 		f.bagsButton:SetScript("OnEnter", self.Tooltip_Show)
 		f.bagsButton:SetScript("OnLeave", self.Tooltip_Hide)
-		f.bagsButton:SetScript('OnClick', function() print('not coded yet') end)
+		f.bagsButton:SetScript('OnClick', function()
+		local numSlots, full = GetNumBankSlots()
+			if numSlots >= 1 then
+				ToggleFrame(f.ContainerHolder)
+			else
+				E:StaticPopup_Show("NO_BANK_BAGS")
+			end		
+		end)
 
 		f:SetScript('OnHide', CloseBankFrame)
 	else
@@ -625,7 +707,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.bagsButton.ttText = L['Toggle Bags']
 		f.bagsButton:SetScript("OnEnter", self.Tooltip_Show)
 		f.bagsButton:SetScript("OnLeave", self.Tooltip_Hide)
-		f.bagsButton:SetScript('OnClick', function() print('not coded yet') end)
+		f.bagsButton:SetScript('OnClick', function() ToggleFrame(f.ContainerHolder) end)
 
 		--Transfer Button
 		f.transferButton = CreateFrame('Button', nil, f)
