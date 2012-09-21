@@ -236,7 +236,7 @@ function B:Layout(isBank)
 	local numContainerSlots, fullContainerSlots = GetNumBankSlots();
 	for i, bagID in ipairs(f.BagIDs) do
 		--Bag Containers
-		if ((not isBank and bagID <= 3 ) or (isBank and bagID ~= -1 and numContainerSlots >= 1)) then
+		if (not isBank and bagID <= 3 ) or (isBank and bagID ~= -1 and numContainerSlots >= 1 and not (i - 1 > numContainerSlots)) then
 			if not f.ContainerHolder[i] then
 				if isBank then
 					f.ContainerHolder[i] = CreateFrame("CheckButton", "ElvUIBankBag" .. bagID - 4, f.ContainerHolder, "BankItemButtonBagTemplate")
