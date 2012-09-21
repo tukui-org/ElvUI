@@ -25,7 +25,6 @@ local coreGroups = {
 	all = allBags,
 }
 
-local DO_REVERSE = false;
 local bagCache = {};
 local bagIDs = {};
 local bagStacks = {};
@@ -458,15 +457,15 @@ function B.SortBags(...)
 			if bagType ~= 'Normal' then
 				B.Stack(sortedBags, sortedBags, B.IsPartial)
 				B.Stack(bagCache['Normal'], sortedBags)
-				B.Fill(bagCache['Normal'], sortedBags, DO_REVERSE)
-				B.Sort(sortedBags, nil, DO_REVERSE)
+				B.Fill(bagCache['Normal'], sortedBags, B.db.sortInverted)
+				B.Sort(sortedBags, nil, B.db.sortInverted)
 				wipe(sortedBags)
 			end
 		end
 		
 		if bagCache['Normal'] then
 			B.Stack(bagCache['Normal'], bagCache['Normal'], B.IsPartial)
-			B.Sort(bagCache['Normal'], nil, DO_REVERSE)
+			B.Sort(bagCache['Normal'], nil, B.db.sortInverted)
 			wipe(bagCache['Normal'])
 		end
 		wipe(bagCache)
@@ -598,14 +597,15 @@ function B:GetGroup(id)
 	return coreGroups[id]
 end
 
-function B:CommandDecorator(func, groupsDefaults, isReverse)
+function B:CommandDecorator(func, groupsDefaults)
 	local bagGroups = {}
 	return function(groups)
 		if self.SortUpdateTimer:IsShown() then
-			E:Print(L['Already Running..']);
+			E:Print(L['Already Running.. Bailing Out!']);
+			B:StopStacking()
 			return;
 		end
-		DO_REVERSE = not isReverse
+
 		wipe(bagGroups)
 		if not groups or #groups == 0 then
 			groups = groupsDefaults

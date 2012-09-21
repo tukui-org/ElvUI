@@ -81,8 +81,8 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 		else
 			tt:ClearAllPoints()
 			
-			if BagsFrame and BagsFrame:IsShown() then
-				tt:Point('BOTTOMRIGHT', BagsFrame, 'TOPRIGHT', 0, 18)	
+			if ElvUI_ContainerFrame and ElvUI_ContainerFrame:IsShown() then
+				tt:Point('BOTTOMRIGHT', ElvUI_ContainerFrame, 'TOPRIGHT', 0, 18)	
 			elseif RightChatPanel:GetAlpha() == 1 then
 				tt:Point('BOTTOMRIGHT', RightChatPanel, 'TOPRIGHT', 0, 18)		
 			else

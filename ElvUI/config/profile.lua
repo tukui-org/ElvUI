@@ -61,12 +61,14 @@ P['general'] = {
 
 --Bags
 P['bags'] = {
-    ['bagCols'] = 0,
-    ['bankCols'] = 0,
-    ['sortOrientation'] = 'BOTTOM-TOP',
+    ['sortInverted'] = true,
 	['xOffset'] = 0,
 	['yOffset'] = 0,
-	['size'] = 30,
+	['bagSize'] = 30,
+	['bankSize'] = 30,
+	['alignToChat'] = true,
+	['bagWidth'] = 350,
+	['bankWidth'] = 350,
 	['bagBar'] = {
 		['growthDirection'] = 'VERTICAL',
 		['sortDirection'] = 'ASCENDING',

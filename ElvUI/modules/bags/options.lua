@@ -27,41 +27,62 @@ E.Options.args.bags = {
 			guiInline = true,
 			disabled = function() return not E.bags end,
 			args = {			
-				bagCols = {
+				bagSize = {
 					order = 1,
 					type = 'range',
-					name = L['Bag Columns'],
-					desc = L['Number of columns (width) of bags. Set it to 0 to match the width of the chat panels.'],
-					min = 0, max = 20, step = 1,
-					set = function(info, value) E.db.bags[ info[#info] ] = value; B:Layout(); B:Layout(true) end,
+					name = L['Button Size (Bag)'],
+					desc = L['The size of the individual buttons on the bag frame.'],
+					min = 15, max = 45, step = 1,
+					set = function(info, value) E.db.bags[ info[#info] ] = value; B:Layout(); end,
 				},
-				bankCols = {
+				bankSize = {
 					order = 2,
 					type = 'range',
-					name = L['Bank Columns'],
-					desc = L['Number of columns (width) of the bank. Set it to 0 to match the width of the chat panels.'],
-					min = 0, max = 20, step = 1,
-					set = function(info, value) E.db.bags[ info[#info] ] = value; B:Layout(); B:Layout(true) end,
-				},
-				sortOrientation = {
+					name = L['Button Size (Bank)'],
+					desc = L['The size of the individual buttons on the bank frame.'],
+					min = 15, max = 45, step = 1,
+					set = function(info, value) E.db.bags[ info[#info] ] = value; B:Layout(true) end,
+				},				
+				sortInverted = {
 					order = 3,
-					type = 'select',
-					name = L['Sort Orientation'],
+					type = 'toggle',
+					name = L['Sort Inverted'],
 					desc = L['Direction the bag sorting will use to allocate the items.'],
-					values = {
-						['BOTTOM-TOP'] = L['Bottom to Top'],
-						['TOP-BOTTOM'] = L['Top to Bottom'],
-					},
 				},
-				xOffset = {
+				alignToChat = {
 					order = 4,
+					type = 'toggle',
+					name = L['Align To Chat'],
+					desc = L['Align the width of the bag frame to fit inside the chat box.'],
+					set = function(info, value) E.db.bags[ info[#info] ] = value; B:Layout(); B:Layout(true) end,
+				},						
+				bagWidth = {
+					order = 5,
+					type = 'range',
+					name = L['Panel Width (Bags)'],
+					desc = L['Adjust the width of the bag frame.'],
+					min = 150, max = 700, step = 1,
+					set = function(info, value) E.db.bags[ info[#info] ] = value; B:Layout();end,
+					disabled = function() return E.db.bags.alignToChat end
+				},
+				bankWidth = {
+					order = 6,
+					type = 'range',
+					name = L['Panel Width (Bank)'],
+					desc = L['Adjust the width of the bank frame.'],
+					min = 150, max = 700, step = 1,
+					set = function(info, value) E.db.bags[ info[#info] ] = value; B:Layout(true) end,
+					disabled = function() return E.db.bags.alignToChat end
+				},				
+				xOffset = {
+					order = 7,
 					type = 'range',
 					name = L["X Offset"],
 					min = -5, max = 600, step = 1,
 					set = function(info, value) E.db.bags[ info[#info] ] = value; B:PositionBagFrames(); end,				
 				},				
 				yOffset = {
-					order = 5,
+					order = 8,
 					type = 'range',
 					name = L["Y Offset"],
 					min = 0, max = 600, step = 1,
