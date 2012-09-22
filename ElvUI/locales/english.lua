@@ -86,6 +86,10 @@ L[ [=[This works like a macro, you can run different situations to get the actio
  Example: '[combat] show;hide']=] ] = true;
 
 --Bags
+L['Currency Format'] = true;
+L['The display format of the currency icons that get displayed below the main bag. (You have to be watching a currency for this to display)'] = true;
+L["Icons Only"] = true;
+L["Icons and Text"] = true;
 L['Panel Width (Bags)'] = true;
 L['Toggle Bags'] = true;
 L['Align To Chat'] = true;
