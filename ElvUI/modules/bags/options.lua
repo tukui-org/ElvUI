@@ -88,6 +88,17 @@ E.Options.args.bags = {
 					min = 0, max = 600, step = 1,
 					set = function(info, value) E.db.bags[ info[#info] ] = value; B:PositionBagFrames(); end,				
 				},
+				currencyFormat = {
+					order = 9,
+					type = 'select',
+					name = L['Currency Format'],
+					desc = L['The display format of the currency icons that get displayed below the main bag. (You have to be watching a currency for this to display)'],
+					values = {
+						['ICON'] = L["Icons Only"],
+						['ICON_TEXT'] = L["Icons and Text"],
+					},
+					set = function(info, value) E.db.bags[ info[#info] ] = value; B:UpdateTokens(); end,
+				},
 			},
 		},
 		bagBar = {

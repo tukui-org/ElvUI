@@ -71,6 +71,7 @@ P['bags'] = {
 	['alignToChat'] = false,
 	['bagWidth'] = 385,
 	['bankWidth'] = 385,
+	['currencyFormat'] = 'ICON_TEXT',
 	['bagBar'] = {
 		['growthDirection'] = 'VERTICAL',
 		['sortDirection'] = 'ASCENDING',

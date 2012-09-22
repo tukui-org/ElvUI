@@ -61,15 +61,7 @@ function B:DisableBlizzard()
 end
 
 function B:SearchReset()
-	for _, bagFrame in pairs(self.BagFrames) do
-		for _, bagID in ipairs(bagFrame.BagIDs) do
-			for slotID = 1, GetContainerNumSlots(bagID) do
-				local button = bagFrame.Bags[bagID][slotID];
-				SetItemButtonDesaturated(button, 0, 1, 1, 1);
-				button:SetAlpha(1);
-			end		
-		end
-	end
+	SetItemSearch('')
 end
 
 function B:UpdateSearch()
@@ -84,7 +76,8 @@ function B:UpdateSearch()
 			end
 		end
 		if ( repeatChar ) then
-			ResetAndClear(self);
+			B.ResetAndClear(self);
+			return;
 		end
 	end
 	
@@ -100,7 +93,7 @@ end
 
 function B:ResetAndClear()
 	self:GetParent().detail:Show();
-
+	
 	self:ClearFocus();
 	B:SearchReset();
 end
@@ -126,16 +119,10 @@ function B:INVENTORY_SEARCH_UPDATE()
 end
 
 function B:UpdateSlot(bagID, slotID)
-	if self.Bags[bagID] and self.Bags[bagID].numSlots ~= GetContainerNumSlots(bagID) then 
-		--This is for when changing bags and the amount of slots changes.
-		if not self.isBank then
-			B:Layout()
-		else
-			B:Layout(true)
-		end
+	if (self.Bags[bagID] and self.Bags[bagID].numSlots ~= GetContainerNumSlots(bagID)) or not self.Bags[bagID] or not self.Bags[bagID][slotID] then		
 		return; 
 	end
-	if not self.Bags[bagID] or not self.Bags[bagID][slotID] then return; end
+
 	local slot = self.Bags[bagID][slotID];
 	local bagType = self.Bags[bagID].type;
 	local texture, count, locked = GetContainerItemInfo(bagID, slotID);
@@ -215,6 +202,36 @@ function B:UpdateAllSlots()
 	end
 end
 
+function B:SetSlotAlphaForBag(f)
+	for _, bagID in ipairs(f.BagIDs) do
+		if f.Bags[bagID] then
+			local numSlots = GetContainerNumSlots(bagID);
+			for slotID = 1, numSlots do
+				if f.Bags[bagID][slotID] then
+					if bagID == self.id then
+						f.Bags[bagID][slotID]:SetAlpha(1)
+					else
+						f.Bags[bagID][slotID]:SetAlpha(0.1)
+					end
+				end
+			end
+		end
+	end
+end
+
+function B:ResetSlotAlphaForBags(f)
+	for _, bagID in ipairs(f.BagIDs) do
+		if f.Bags[bagID] then
+			local numSlots = GetContainerNumSlots(bagID);
+			for slotID = 1, numSlots do
+				if f.Bags[bagID][slotID] then
+					f.Bags[bagID][slotID]:SetAlpha(1)
+				end
+			end
+		end
+	end
+end
+
 function B:Layout(isBank)
 	if E.private.bags.enable ~= true then return; end
 	local f = self:GetContainerFrame(isBank);
@@ -229,7 +246,7 @@ function B:Layout(isBank)
 	local bottomPadding = (containerWidth - holderWidth) / 2;
 	f.holderFrame:Width(holderWidth);
 	
-	f.totalSlots = 0;
+	f.totalSlots = 0
 	local lastButton;
 	local lastRowButton;
 	local lastContainerButton;
@@ -251,35 +268,8 @@ function B:Layout(isBank)
 				f.ContainerHolder[i]:SetPushedTexture("")
 				f.ContainerHolder[i]:SetScript('OnClick', nil)
 				f.ContainerHolder[i].id = isBank and bagID or bagID + 1
-				f.ContainerHolder[i]:HookScript("OnEnter", function(self)
-					for _, bagID in ipairs(f.BagIDs) do
-						if f.Bags[bagID] then
-							local numSlots = GetContainerNumSlots(bagID);
-							for slotID = 1, numSlots do
-								if f.Bags[bagID][slotID] then
-									if bagID == self.id then
-										f.Bags[bagID][slotID]:SetAlpha(1)
-									else
-										f.Bags[bagID][slotID]:SetAlpha(0.1)
-									end
-								end
-							end
-						end
-					end
-				end)
-
-				f.ContainerHolder[i]:HookScript("OnLeave", function()
-					for _, bagID in ipairs(f.BagIDs) do
-						if f.Bags[bagID] then
-							local numSlots = GetContainerNumSlots(bagID);
-							for slotID = 1, numSlots do
-								if f.Bags[bagID][slotID] then
-									f.Bags[bagID][slotID]:SetAlpha(1)
-								end
-							end
-						end
-					end
-				end)
+				f.ContainerHolder[i]:HookScript("OnEnter", function(self) B.SetSlotAlphaForBag(self, f) end)
+				f.ContainerHolder[i]:HookScript("OnLeave", function(self) B.ResetSlotAlphaForBags(self, f) end)
 
 				
 				if isBank then
@@ -383,8 +373,26 @@ function B:Layout(isBank)
 				end
 				
 				lastButton = f.Bags[bagID][slotID];
+			end		
+		else
+			--Hide unused slots
+			for i = 1, MAX_CONTAINER_ITEMS do
+				if f.Bags[bagID] and f.Bags[bagID][i] then
+					f.Bags[bagID][i]:Hide();
+				end
+			end		
+			
+			if f.Bags[bagID] then
+				f.Bags[bagID].numSlots = numSlots;
 			end
-		end		
+			
+			if self.isBank then
+				if self.ContainerHolder[i] then
+					BankFrameItemButton_Update(self.ContainerHolder[i])
+					BankFrameItemButton_UpdateLocked(self.ContainerHolder[i])
+				end
+			end					
+		end
 	end
 
 	f:Size(containerWidth, (((buttonSize + buttonSpacing) * numContainerRows) - buttonSpacing) + f.topOffset + f.bottomOffset); -- 8 is the cussion of the f.holderFrame
@@ -404,6 +412,14 @@ function B:OnEvent(event, ...)
 	if event == 'ITEM_LOCK_CHANGED' or event == 'ITEM_UNLOCKED' then
 		self:UpdateSlot(...);
 	elseif event == 'BAG_UPDATE' then
+		for _, bagID in ipairs(self.BagIDs) do
+			local numSlots = GetContainerNumSlots(bagID)
+			if (not self.Bags[bagID] and numSlots ~= 0) or (self.Bags[bagID] and numSlots ~= self.Bags[bagID].numSlots) then
+				B:Layout(self.isBank);
+				return;
+			end
+		end
+		
 		self:UpdateBagSlots(...);
 	elseif event == 'BAG_UPDATE_COOLDOWN' then
 		self:UpdateCooldowns();
@@ -423,7 +439,13 @@ function B:UpdateTokens()
 		button:ClearAllPoints();
 		if name then
 			button.icon:SetTexture(icon);
-			button.text:SetText(name..': '..count);
+			
+			if self.db.currencyFormat == 'ICON_TEXT' then
+				button.text:SetText(name..': '..count);
+			elseif self.db.currencyFormat == 'ICON' then
+				button.text:SetText(count);
+			end
+			
 			button.currencyID = currencyID;
 			button:Show();
 			numTokens = numTokens + 1;
@@ -455,7 +477,7 @@ function B:UpdateTokens()
 		f.currencyButton[2]:Point('BOTTOMLEFT', f.currencyButton, 'BOTTOM', f.currencyButton[2]:GetWidth() / 2, 3);
 	else
 		f.currencyButton[1]:Point('BOTTOMLEFT', f.currencyButton, 'BOTTOMLEFT', 3, 3);
-		f.currencyButton[2]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[2].text:GetWidth() / 2), 3);	
+		f.currencyButton[2]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[2].text:GetWidth() / 3), 3);	
 		f.currencyButton[3]:Point('BOTTOMRIGHT', f.currencyButton, 'BOTTOMRIGHT', -(f.currencyButton[3].text:GetWidth()) - (f.currencyButton[3]:GetWidth() / 2), 3);
 	end
 end
@@ -797,7 +819,9 @@ function B:PositionBagFrames()
 	end
 end
 
-function B:ToggleBags()
+function B:ToggleBags(id)
+	if id and GetContainerNumSlots(id) == 0 then return; end --Closes a bag when inserting a new container..
+	
 	if self.BagFrame:IsShown() then
 		self:CloseBags();
 	else
