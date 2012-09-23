@@ -707,7 +707,7 @@ function NP:CheckFilter(frame, ...)
 	end
 end
 
-function NP:CheckHealers()
+function NP:CheckBGHealers()
 	for i = 1, GetNumBattlefieldScores() do
 		local name, _, _, _, _, faction, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i);
 		if name then
@@ -717,6 +717,24 @@ function NP:CheckHealers()
 			elseif name and self.BattleGroundHealers[name] then
 				self.BattleGroundHealers[name] = nil;
 			end
+		end
+	end
+end
+
+function NP:CheckArenaHealers()
+	if not self.db.markBGHealers then return; end
+	local inInstance, instanceType = IsInInstance()
+	if inInstance and instanceType == 'arena' then
+		local numOpps = GetNumArenaOpponentSpecs()
+		table.wipe(self.BattleGroundHealers)
+		for i=1, numOpps do
+			local specID = GetArenaOpponentSpec(i)
+			local unit = 'arena'..i
+			if specID and specID > 0 then
+				local _, talentSpec = GetSpecializationInfoByID(specID);
+				local unitName = UnitName(unit)
+				self.BattleGroundHealers[unitName] = talentSpec
+			end	
 		end
 	end
 end
@@ -734,8 +752,8 @@ function NP:PLAYER_ENTERING_WORLD()
 	table.wipe(self.BattleGroundHealers)
 	local inInstance, instanceType = IsInInstance()
 	if inInstance and instanceType == 'pvp' and self.db.markBGHealers then
-		self.CheckHealerTimer = self:ScheduleRepeatingTimer("CheckHealers", 1)
-		self:CheckHealers()
+		self.CheckHealerTimer = self:ScheduleRepeatingTimer("CheckBGHealers", 1)
+		self:CheckBGHealers()
 	else
 		if self.CheckHealerTimer then
 			self:CancelTimer(self.CheckHealerTimer)
@@ -759,6 +777,7 @@ function NP:UpdateAllPlates()
 	self:RegisterEvent('PLAYER_TARGET_CHANGED', 'UpdateCastInfo')
 	self:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+	self:RegisterEvent('ARENA_OPPONENT_UPDATE', 'CheckArenaHealers')
 	self:RegisterEvent('PLAYER_REGEN_ENABLED')
 	self:RegisterEvent('PLAYER_REGEN_DISABLED')
 	self:RegisterEvent('UNIT_TARGET')
