@@ -270,14 +270,6 @@ local function LoadSkin()
 	WatchFrameCollapseExpandButton:Size(30)
 	WatchFrameCollapseExpandButton:SetFrameStrata('MEDIUM')
 	
-	hooksecurefunc('WatchFrame_Expand', function()
-		WatchFrameCollapseExpandButton.text:SetText('-')
-	end)
-	
-	hooksecurefunc('WatchFrame_Collapse', function()
-		WatchFrameCollapseExpandButton.text:SetText('+')
-	end)	
-	
 	--Chat Config
 	local StripAllTextures = {
 		"ChatConfigFrame",
