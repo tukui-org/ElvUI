@@ -52,14 +52,13 @@ local function BuildGuildTable()
 
 		if ( isMobile ) then
 			if status == 1 then
-				name = name..' '..MOBILE_AWAY_ICON
+				status = MOBILE_AWAY_ICON
 			elseif status == 2 then
-				name = name..' '..MOBILE_BUSY_ICON
+				status = MOBILE_BUSY_ICON
 			else
-				name = name..' '..ChatFrame_GetMobileEmbeddedTexture(73/255, 177/255, 73/255)
+				status = ChatFrame_GetMobileEmbeddedTexture(73/255, 177/255, 73/255)
 			end
 			zone = '';
-			status = '';
 		else
 			if status == 1 then
 				status = "|cffFFFFFF[|r|cffFF0000"..L['AFK'].."|r|cffFFFFFF]|r"
@@ -133,14 +132,14 @@ local menuList = {
 	{ text = CHAT_MSG_WHISPER_INFORM, hasArrow = true, notCheckable=true,}
 }
 
-local function inviteClick(self, arg1, arg2, checked)
+local function inviteClick(self, playerName)
 	menuFrame:Hide()
-	InviteUnit(arg1)
+	InviteUnit(playerName)
 end
 
-local function whisperClick(self,arg1,arg2,checked)
+local function whisperClick(self, playerName)
 	menuFrame:Hide()
-	SetItemRef( "player:"..arg1, ("|Hplayer:%1$s|h[%1$s]|h"):format(arg1), "LeftButton" )
+	SetItemRef( "player:"..playerName, ("|Hplayer:%1$s|h[%1$s]|h"):format(playerName), "LeftButton" )
 end
 
 local function ToggleGuildFrame()

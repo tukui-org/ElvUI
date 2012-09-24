@@ -10,6 +10,7 @@ V['general'] = {
 	["dmgfont"] = "ElvUI Combat",
 	["namefont"] = "Friz Quadrata TT",
 	['bubbles'] = true,
+	['pixelExtreme'] = false, --USE AT YOUR OWN RISK!! NOT EVEN CLOSE TO DONE!
 	
 	['minimap'] = {
 		['enable'] = true,
