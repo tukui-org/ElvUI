@@ -81,6 +81,14 @@ local function LoadSkin()
 	CharacterFrameExpandButton:Size(CharacterFrameExpandButton:GetWidth() - 7, CharacterFrameExpandButton:GetHeight() - 7)
 	S:HandleNextPrevButton(CharacterFrameExpandButton)
 
+	S:HandleCloseButton(ReputationDetailCloseButton)
+	S:HandleCloseButton(TokenFramePopupCloseButton)
+
+	S:HandleCheckBox(ReputationDetailAtWarCheckBox)
+	S:HandleCheckBox(ReputationDetailMainScreenCheckBox)
+	S:HandleCheckBox(ReputationDetailInactiveCheckBox)
+	S:HandleCheckBox(TokenFramePopupInactiveCheckBox)
+	S:HandleCheckBox(TokenFramePopupBackpackCheckBox)
 
 	EquipmentFlyoutFrameHighlight:Kill()
 	local function SkinItemFlyouts()
