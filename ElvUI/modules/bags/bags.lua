@@ -563,6 +563,21 @@ function B:ContructContainerFrame(name, isBank)
 	f:RegisterEvent('BAG_UPDATE_COOLDOWN')
 	f:RegisterEvent('BAG_UPDATE');
 	f:RegisterEvent('PLAYERBANKSLOTS_CHANGED');
+	f:SetMovable(true)
+	f:RegisterForDrag("LeftButton", "RightButton")
+	f:RegisterForClicks("AnyUp");
+	f:SetScript("OnDragStart", function(self) if IsShiftKeyDown() then self:StartMoving() end end)
+	f:SetScript("OnDragStop", function(self) self:StopMovingOrSizing() end)
+	f:SetScript("OnClick", function(self) if IsControlKeyDown() then B:PositionBagFrames() end end)
+	f:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT", 0, 4)
+		GameTooltip:ClearLines()
+		GameTooltip:AddDoubleLine(L['Hold Shift + Drag:'], L['Temporary Move'], 1, 1, 1)
+		GameTooltip:AddDoubleLine(L['Hold Control + Right Click:'], L['Reset Position'], 1, 1, 1)
+		
+		GameTooltip:Show()	
+	end)
+	f:SetScript('OnLeave', function(self) GameTooltip:Hide() end)
 	f.isBank = isBank
 	
 	f:SetScript('OnEvent', B.OnEvent);	

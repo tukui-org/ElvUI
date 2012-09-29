@@ -90,6 +90,10 @@ L[ [=[This works like a macro, you can run different situations to get the actio
  Example: '[combat] show;hide']=] ] = true;
 
 --Bags
+L['Hold Shift + Drag:'] = true;
+L['Temporary Move'] = true;
+L['Hold Control + Right Click:'] = true;
+L['Reset Position'] = true;
 L['Currency Format'] = true;
 L['The display format of the currency icons that get displayed below the main bag. (You have to be watching a currency for this to display)'] = true;
 L["Icons Only"] = true;
