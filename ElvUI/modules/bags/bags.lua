@@ -844,6 +844,7 @@ end
 function B:OpenBags()
 	self.BagFrame:Show();
 	self.BagFrame:UpdateAllSlots();
+	E:GetModule('Tooltip'):GameTooltip_SetDefaultAnchor(GameTooltip)
 end
 
 function B:CloseBags()
@@ -852,6 +853,8 @@ function B:CloseBags()
 	if self.BankFrame then
 		self.BankFrame:Hide();
 	end
+	
+	E:GetModule('Tooltip'):GameTooltip_SetDefaultAnchor(GameTooltip)
 end
 
 function B:OpenBank()
