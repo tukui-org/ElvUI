@@ -577,6 +577,7 @@ P['unitframe'] = {
 				['useWhitelist'] = {friendly = false, enemy = false},
 				['noDuration'] = {friendly = false, enemy = false},
 				['onlyDispellable'] = {friendly = false, enemy = false},
+				['noConsolidated'] = {friendly = true, enemy = true},
 				['useFilter'] = '',
 				['friendlyAuraType'] = 'HELPFUL',
 				['enemyAuraType'] = 'HARMFUL'				
