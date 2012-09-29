@@ -269,7 +269,7 @@ end
 ElvUF.Tags.Events['threat:percent'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
 ElvUF.Tags.Methods['threat:percent'] = function(unit)
 	local _, status, percent = UnitDetailedThreatSituation('player', unit)
-	if(percent and percent > 0) and IsInGroup() then
+	if(percent and percent > 0) and (IsInGroup() or UnitExists('pet')) then
 		return string.format('%d%%', E:TrimFloatingPoint(percent / 100 * 100))
 	else 
 		return ''
@@ -279,7 +279,7 @@ end
 ElvUF.Tags.Events['threat:current'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
 ElvUF.Tags.Methods['threat:current'] = function(unit)
 	local _, status, percent, _, threatvalue = UnitDetailedThreatSituation('player', unit)
-	if(percent and percent > 0) and IsInGroup() then
+	if(percent and percent > 0) and (IsInGroup() or UnitExists('pet')) then
 		return E:ShortValue(threatvalue)
 	else 
 		return ''
@@ -289,7 +289,7 @@ end
 ElvUF.Tags.Events['threatcolor'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
 ElvUF.Tags.Methods['threatcolor'] = function(unit)
 	local _, status = UnitDetailedThreatSituation('player', unit)
-	if(status) and IsInGroup() then
+	if(status) and (IsInGroup() or UnitExists('pet')) then
 		return Hex(GetThreatStatusColor(status))
 	else 
 		return ''
