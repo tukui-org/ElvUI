@@ -7986,6 +7986,7 @@ E.Options.args.unitframe.args.party = {
 					values = {
 						['CLASS'] = CLASS,
 						['ROLE'] = L["MT, MA First"],
+						['NAME'] = NAME,
 						['GROUP'] = GROUP,
 					},
 				},
@@ -8719,6 +8720,7 @@ for i=10, 40, 15 do
 						values = {
 							['CLASS'] = CLASS,
 							['ROLE'] = L["MT, MA First"],
+							['NAME'] = NAME,
 							['GROUP'] = GROUP,
 						},
 					},		
