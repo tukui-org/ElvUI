@@ -202,7 +202,7 @@ end)
 		tt.BorderBottomLeft:SetTexture(nil)
 		tt:SetTemplate("Transparent")	
 	end
-	
+
 	SkinPetTooltip(PetBattlePrimaryAbilityTooltip)
 	SkinPetTooltip(PetBattlePrimaryUnitTooltip)
 	SkinPetTooltip(BattlePetTooltip)
