@@ -10,7 +10,7 @@ local function SkinTab(tab)
 end
 
 local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true --[[or E.private.skins.blizzard.reforge ~= true]] then return end
+	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bmah ~= true then return end
 
 	BlackMarketFrame:StripTextures()
 	BlackMarketFrame:CreateBackdrop('Transparent')

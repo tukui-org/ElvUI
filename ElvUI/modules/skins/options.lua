@@ -34,6 +34,11 @@ E.Options.args.skins = {
 			disabled = function() return not E.private.skins.blizzard.enable end,
 			guiInline = true,
 			args = {	
+				bmah = {
+					type = 'toggle',
+					name = L['Black Market AH'],
+					desc = L['TOGGLESKIN_DESC'],
+				},
 				transmogrify = {
 					type = 'toggle',
 					name = L['Transmogrify Frame'],

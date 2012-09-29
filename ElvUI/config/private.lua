@@ -42,6 +42,7 @@ V['skins'] = {
 	['blizzard'] = {
 		['enable'] = true,
 		["bags"] = true,
+		["bmah"] = true, --black market ah
 		["reforge"] = true,
 		["calendar"] = true,
 		["achievement"] = true,
