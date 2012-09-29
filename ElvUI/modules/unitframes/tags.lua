@@ -90,6 +90,13 @@ ElvUF.Tags.Methods['health:current-max-percent'] = function(unit)
 	end
 end
 
+ElvUF.Tags.Events['health:max'] = 'UNIT_MAXHEALTH'
+ElvUF.Tags.Methods['health:max'] = function(unit)
+	local max = UnitHealth(unit), UnitHealthMax(unit)
+
+	return E:GetFormattedText('CURRENT', max, max)
+end
+
 ElvUF.Tags.Events['health:percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
 ElvUF.Tags.Methods['health:percent'] = function(unit)
 	local min, max = UnitHealth(unit), UnitHealthMax(unit)
@@ -182,6 +189,14 @@ ElvUF.Tags.Methods['power:deficit'] = function(unit)
 	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
 		
 	return E:GetFormattedText('DEFICIT', min, max, r, g, b)
+end
+
+ElvUF.Tags.Events['power:max'] = 'UNIT_MAXPOWER'
+ElvUF.Tags.Methods['power:max'] = function(unit)
+	local pType = UnitPowerType(unit)
+	local max = UnitPowerMax(unit, pType)
+		
+	return E:GetFormattedText('CURRENT', max, max)
 end
 
 ElvUF.Tags.Events['difficultycolor'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
