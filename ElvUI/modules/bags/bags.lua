@@ -508,7 +508,7 @@ function B:VendorGrays(delete, nomsg)
 	for b=0,4 do
 		for s=1,GetContainerNumSlots(b) do
 			local l = GetContainerItemLink(b, s)
-			if l then
+			if l and select(11, GetItemInfo(l)) then
 				local p = select(11, GetItemInfo(l))*select(2, GetContainerItemInfo(b, s))
 				
 				if delete then
