@@ -140,7 +140,11 @@ function E:GetColorTable(data)
 		error("Could not unpack color values.")
 	end
 	
-	return {data.r, data.g, data.b}
+	if data.a then
+		return {data.r, data.g, data.b, data.a}
+	else
+		return {data.r, data.g, data.b}
+	end
 end
 
 function E:UpdateMedia()	
