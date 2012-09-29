@@ -1342,6 +1342,8 @@ P["actionbar"] = {
 	["minutescolor"] = { r = 1, g = 1, b = 1 },
 	["hourscolor"] = { r = 0.4, g = 1, b = 1 },
 	["dayscolor"] = { r = 0.4, g = 0.4, b = 1 },
+	['noRangeColor'] = { r = 0.8, g = 0.1, b = 0.1 },
+	['noPowerColor'] = { r = 0.5, g = 0.5, b = 1 },
 	
 	['keyDown'] = true,
 	['movementModifier'] = 'SHIFT',

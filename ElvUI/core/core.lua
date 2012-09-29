@@ -135,6 +135,14 @@ local function CheckClassColor(r, g, b)
 	return matchFound
 end
 
+function E:GetColorTable(data)
+	if not data.r or not data.g or not data.b then
+		error("Could not unpack color values.")
+	end
+	
+	return {data.r, data.g, data.b}
+end
+
 function E:UpdateMedia()	
 	--Fonts
 	self["media"].normFont = LSM:Fetch("font", self.db['general'].font)
@@ -157,12 +165,10 @@ function E:UpdateMedia()
 	self["media"].bordercolor = {border.r, border.g, border.b}
 
 	--Backdrop Color
-	local backdrop = self.db['general'].backdropcolor
-	self["media"].backdropcolor = {backdrop.r, backdrop.g, backdrop.b}
+	self["media"].backdropcolor = E:GetColorTable(self.db['general'].backdropcolor)
 
 	--Backdrop Fade Color
-	backdrop = self.db['general'].backdropfadecolor
-	self["media"].backdropfadecolor = {backdrop.r, backdrop.g, backdrop.b, backdrop.a}
+	self["media"].backdropfadecolor = E:GetColorTable(self.db['general'].backdropfadecolor)
 	
 	--Value Color
 	local value = self.db['general'].valuecolor

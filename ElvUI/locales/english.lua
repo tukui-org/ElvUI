@@ -8,6 +8,10 @@ if not L then return; end
 L["A taint has occured that is preventing you from using your talents/glyphs, this can happen if you've inspected someone. Unfortionatly theres nothing we can do to fix it, please reload your ui and try again."] = true;
 
 --ActionBars
+L['Out of Range'] = true;
+L['Color of the actionbutton when out of range.'] = true;
+L['Out of Power'] = true;
+L['Color of the actionbutton when out of power (Mana, Rage, Focus, Holy Power).'] = true;
 L[" |cff00ff00bound to |r"] = true;
 L["Action Paging"] = true;
 L["ActionBars"] = true;
