@@ -644,6 +644,7 @@ function UF:Update_PlayerFrame(frame, db)
 				else
 					bars[i].backdrop:Show()
 				end
+				bars[i]:SetStatusBarColor(unpack(ElvUF.colors.holyPower))
 			end
 			
 			if not USE_MINI_CLASSBAR then
@@ -694,6 +695,7 @@ function UF:Update_PlayerFrame(frame, db)
 				else
 					bars[i].backdrop:Show()
 				end
+				bars[i]:SetStatusBarColor(unpack(ElvUF.colors.shadowOrbs))
 			end
 			
 			if not USE_MINI_CLASSBAR then
@@ -737,6 +739,9 @@ function UF:Update_PlayerFrame(frame, db)
 						bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING, 0)
 					end
 				end
+				
+				bars[i]:SetStatusBarColor(unpack(ElvUF.colors.arcaneCharges))
+				bars[i].bg:SetTexture(unpack(ElvUF.colors.arcaneCharges))			
 				
 				if not USE_MINI_CLASSBAR then
 					bars[i].backdrop:Hide()
@@ -863,7 +868,10 @@ function UF:Update_PlayerFrame(frame, db)
 				runes:Hide()
 				RuneFrame.Show = RuneFrame.Hide
 				RuneFrame:Hide()				
-			end								
+			end			
+			if runes.UpdateAllRuneTypes then
+				runes:UpdateAllRuneTypes() --colors update
+			end
 		elseif E.myclass == "DRUID" then
 			local eclipseBar = frame.EclipseBar
 
@@ -883,6 +891,8 @@ function UF:Update_PlayerFrame(frame, db)
 			--?? Apparent bug fix for the width after in-game settings change
 			eclipseBar.LunarBar:SetMinMaxValues(0, 0)
 			eclipseBar.SolarBar:SetMinMaxValues(0, 0)
+			eclipseBar.LunarBar:SetStatusBarColor(unpack(ElvUF.colors.eclipseBar[1]))
+			eclipseBar.SolarBar:SetStatusBarColor(unpack(ElvUF.colors.eclipseBar[2]))
 			eclipseBar.LunarBar:Size(CLASSBAR_WIDTH, CLASSBAR_HEIGHT - (BORDER*2))			
 			eclipseBar.SolarBar:Size(CLASSBAR_WIDTH, CLASSBAR_HEIGHT - (BORDER*2))	
 			

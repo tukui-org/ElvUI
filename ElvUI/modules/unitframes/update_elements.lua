@@ -677,7 +677,8 @@ function UF:UpdateHarmony()
 			end
 		else
 			self[i]:Point("LEFT", self[i-1], "RIGHT", SPACING , 0)
-		end		
+		end
+		self[i]:SetStatusBarColor(unpack(ElvUF.colors.harmony[i]))
 	end	
 end
 

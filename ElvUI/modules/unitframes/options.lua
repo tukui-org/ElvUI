@@ -9432,3 +9432,125 @@ E.Options.args.unitframe.args.assist = {
 		},			
 	},
 }
+
+
+--MORE COLORING STUFF YAY
+if P.unitframe.colors.classResources[E.myclass] then
+	E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup = {
+		order = -1,
+		type = 'group',
+		guiInline = true,
+		name = L['Class Resources'],
+		get = function(info)
+			local t = E.db.unitframe.colors.classResources[ info[#info] ]
+			return t.r, t.g, t.b, t.a
+		end,
+		set = function(info, r, g, b)
+			E.db.unitframe.colors.classResources[ info[#info] ] = {}
+			local t = E.db.unitframe.colors.classResources[ info[#info] ]
+			t.r, t.g, t.b = r, g, b
+			UF:Update_AllFrames()
+		end,
+		args = {}
+	}
+	
+	if E.myclass == 'PALADIN' then
+		E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
+			type = 'color',
+			name = L['Holy Power'],
+		}
+	elseif E.myclass == 'MAGE' then
+		E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
+			type = 'color',
+			name = L['Arcane Charges'],
+		}
+	elseif E.myclass == 'PRIEST' then
+		E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
+			type = 'color',
+			name = L['Shadow Orbs'],
+		}	
+	elseif E.myclass == 'MONK' then
+		for i = 1, 5 do
+			E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
+				type = 'color',
+				name = L['Harmony']..' #'..i,
+				get = function(info)
+					local t = E.db.unitframe.colors.classResources.MONK[i]
+					return t.r, t.g, t.b, t.a
+				end,
+				set = function(info, r, g, b)
+					E.db.unitframe.colors.classResources.MONK[i] = {}
+					local t = E.db.unitframe.colors.classResources.MONK[i]
+					t.r, t.g, t.b = r, g, b
+					UF:Update_AllFrames()
+				end,			
+			}
+		end
+	elseif E.myclass == 'WARLOCK' then
+		local names = {
+			[1] = L['Affliction'],
+			[2] = L['Demonology'],
+			[3] = L['Destruction']
+		}
+		for i = 1, 3 do
+			E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
+				type = 'color',
+				name = names[i],
+				get = function(info)
+					local t = E.db.unitframe.colors.classResources.WARLOCK[i]
+					return t.r, t.g, t.b, t.a
+				end,
+				set = function(info, r, g, b)
+					E.db.unitframe.colors.classResources.WARLOCK[i] = {}
+					local t = E.db.unitframe.colors.classResources.WARLOCK[i]
+					t.r, t.g, t.b = r, g, b
+					UF:Update_AllFrames()
+				end,			
+			}
+		end	
+	elseif E.myclass == 'DRUID' then
+		local names = {
+			[1] = L['Lunar'],
+			[2] = L['Solar'],
+		}
+		for i = 1, 2 do
+			E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
+				type = 'color',
+				name = names[i],
+				get = function(info)
+					local t = E.db.unitframe.colors.classResources.DRUID[i]
+					return t.r, t.g, t.b, t.a
+				end,
+				set = function(info, r, g, b)
+					E.db.unitframe.colors.classResources.DRUID[i] = {}
+					local t = E.db.unitframe.colors.classResources.DRUID[i]
+					t.r, t.g, t.b = r, g, b
+					UF:Update_AllFrames()
+				end,			
+			}
+		end		
+	elseif E.myclass == 'DEATHKNIGHT' then
+		local names = {
+			[1] = L['Blood'],
+			[2] = L['Unholy'],
+			[3] = L['Frost'],
+			[4] = L['Death'],
+		}
+		for i = 1, 4 do
+			E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
+				type = 'color',
+				name = names[i],
+				get = function(info)
+					local t = E.db.unitframe.colors.classResources.DEATHKNIGHT[i]
+					return t.r, t.g, t.b, t.a
+				end,
+				set = function(info, r, g, b)
+					E.db.unitframe.colors.classResources.DEATHKNIGHT[i] = {}
+					local t = E.db.unitframe.colors.classResources.DEATHKNIGHT[i]
+					t.r, t.g, t.b = r, g, b
+					UF:Update_AllFrames()
+				end,			
+			}
+		end		
+	end
+end

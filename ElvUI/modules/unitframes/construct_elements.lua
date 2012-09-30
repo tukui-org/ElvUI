@@ -293,9 +293,6 @@ function UF:Construct_PaladinResourceBar(frame)
 
 		bars[i]:CreateBackdrop('Default')
 		bars[i].backdrop:SetParent(bars)
-
-		bars[i]:SetStatusBarColor(228/255,225/255,16/255)
-				
 	end
 	
 	bars.Override = UF.UpdateHoly
@@ -330,10 +327,8 @@ function UF:Construct_MageResourceBar(frame)
 		bars[i] = CreateFrame("StatusBar", nil, bars)
 		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
 		bars[i]:GetStatusBarTexture():SetHorizTile(false)
-		bars[i]:SetStatusBarColor(0, 157/255, 255/255)
 		
 		bars[i].bg = bars[i]:CreateTexture(nil, 'ARTWORK')
-		bars[i].bg:SetTexture(0, 157/255, 255/255)
 		
 		UF['statusbars'][bars[i]] = true
 
@@ -417,14 +412,12 @@ function UF:Construct_DruidResourceBar(frame)
 	lunarBar:SetPoint('LEFT', eclipseBar)
 	lunarBar:SetStatusBarTexture(E['media'].blankTex)
 	UF['statusbars'][lunarBar] = true
-	lunarBar:SetStatusBarColor(.30, .52, .90)
 	eclipseBar.LunarBar = lunarBar
 
 	local solarBar = CreateFrame('StatusBar', nil, eclipseBar)
 	solarBar:SetPoint('LEFT', lunarBar:GetStatusBarTexture(), 'RIGHT')
 	solarBar:SetStatusBarTexture(E['media'].blankTex)
 	UF['statusbars'][solarBar] = true
-	solarBar:SetStatusBarColor(.80, .82,  .60)
 	eclipseBar.SolarBar = solarBar
 	
 	eclipseBar.Text = lunarBar:CreateFontString(nil, 'OVERLAY')

@@ -6,7 +6,7 @@ local oUF = ns.oUF or oUF
 local SHADOW_ORBS_SHOW_LEVEL = SHADOW_ORBS_SHOW_LEVEL
 local PRIEST_BAR_NUM_ORBS = PRIEST_BAR_NUM_ORBS
 
-local Color = {1, 1, 1}
+oUF.colors.shadowOrbs = {1, 1, 1}
 
 local function Update(self, event, unit)
 	local pb = self.ShadowOrbs
@@ -62,7 +62,7 @@ local function Enable(self, unit)
 				pb[i]:SetStatusBarTexture([=[Interface\TargetingFrame\UI-StatusBar]=])
 			end
 			
-			pb[i]:SetStatusBarColor(unpack(Color))
+			pb[i]:SetStatusBarColor(unpack(oUF.colors.shadowOrbs))
 			pb[i]:SetFrameLevel(pb:GetFrameLevel() + 1)
 			pb[i]:GetStatusBarTexture():SetHorizTile(false)
 		end

@@ -661,6 +661,17 @@ L['You can toggle the microbar by using your middle mouse button on the minimap 
 L['You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame'] = true;
 
 --UnitFrames
+L['Harmony'] = true;
+L['Blood'] = true;
+L['Unholy'] = true;
+L['Frost'] = true;
+L['Death'] = true;
+L['Holy Power'] = true;
+L['Arcane Charges'] = true;
+L['Shadow Orbs'] = true;
+L['Lunar'] = true;
+L['Solar'] = true;
+L['Class Resources'] = true;
 L['Center'] = true;
 L['JustifyH'] = true;
 L["Sets the font instance's horizontal text alignment style."] = true;
