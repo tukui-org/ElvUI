@@ -64,7 +64,7 @@ end
 
 local UpdateType = function(self, event, rid, alt)
 	local rune = self.Runes[runemap[rid]]
-	local colors = self.colors.runes[GetRuneType(rid) or alt]
+	local colors = oUF.colors.runes[GetRuneType(rid) or alt]
 	local r, g, b = colors[1], colors[2], colors[3]
 
 	rune:SetStatusBarColor(r, g, b)
