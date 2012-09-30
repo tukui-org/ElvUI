@@ -733,8 +733,11 @@ G.unitframe.HastedChannelTicks = {
 
 --This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
 G.unitframe.AuraBarColors = {
-	[SpellName(2825)] = {169/255, 98/255, 181/255},
-	[SpellName(32182)] = {169/255, 98/255, 181/255},
+	[SpellName(2825)] = {r = 250/255, g = 146/255, b = 27/255},	--Bloodlust
+	[SpellName(32182)] = {r = 250/255, g = 146/255, b = 27/255}, --Heroism
+	[SpellName(80353)] = {r = 250/255, g = 146/255, b = 27/255}, --Time Warp
+	[SpellName(84963)] = {r = 250/255, g = 146/255, b = 27/255}, --Inquisition
+	[SpellName(86698)] = {r = 250/255, g = 146/255, b = 27/255}, --Guardian of the Ancients
 }
 
 G.unitframe.InvalidSpells = {

@@ -170,6 +170,14 @@ E.Options.args.nameplate = {
 					isPercent = true,
 					min = 0.2, max = 1, step = 0.01, 			
 				},
+				bgMult = {
+					type = 'range',
+					order = 10,
+					name = L['Background Multiplier'],
+					desc = L['The backdrop of the nameplates color is scaled to match the color of the nameplate by this percentage. Set to zero to have no color in the nameplate backdrop.'],
+					isPercent = true,
+					min = 0, max = 1, step = 0.01, 						
+				},
 				fontGroup = {
 					order = 50,
 					type = 'group',

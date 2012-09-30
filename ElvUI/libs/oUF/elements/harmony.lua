@@ -6,7 +6,7 @@ local oUF = ns.oUF or oUF
 
 local SPELL_POWER_LIGHT_FORCE = SPELL_POWER_LIGHT_FORCE
 
-local Colors = { 
+oUF.colors.Harmony = { 
 	[1] = {.57, .63, .35, 1},
 	[2] = {.47, .63, .35, 1},
 	[3] = {.37, .63, .35, 1},
@@ -62,7 +62,7 @@ local function Enable(self, unit)
 				hb[i]:SetStatusBarTexture([=[Interface\TargetingFrame\UI-StatusBar]=])
 			end
 			
-			hb[i]:SetStatusBarColor(unpack(Colors[i]))
+			hb[i]:SetStatusBarColor(unpack(oUF.colors.harmony[i]))
 			hb[i]:SetFrameLevel(hb:GetFrameLevel() + 1)
 			hb[i]:GetStatusBarTexture():SetHorizTile(false)
 		end

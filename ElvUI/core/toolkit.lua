@@ -63,6 +63,7 @@ local function SetOutside(obj, anchor, xOffset, yOffset)
 end
 
 local function SetInside(obj, anchor, xOffset, yOffset)
+	
 	local default = E.private.general.pixelExtreme and E.mult or 2
 	xOffset = xOffset or default
 	yOffset = yOffset or default

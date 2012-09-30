@@ -577,13 +577,16 @@ end
 
 function AB:UpdateButtonConfig(bar, buttonName)
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return; end
-	if not bar.buttonConfig then bar.buttonConfig = { hideElements = {} } end
+	if not bar.buttonConfig then bar.buttonConfig = { hideElements = {}, colors = {} } end
 	bar.buttonConfig.hideElements.macro = self.db.macrotext
 	bar.buttonConfig.hideElements.hotkey = self.db.hotkeytext
 	bar.buttonConfig.showGrid = self.db.showGrid
 	bar.buttonConfig.clickOnDown = self.db.keyDown
 	SetModifiedClick("PICKUPACTION", self.db.movementModifier)
-
+	bar.buttonConfig.colors.range = E:GetColorTable(self.db.noRangeColor)
+	bar.buttonConfig.colors.mana = E:GetColorTable(self.db.noPowerColor)
+	bar.buttonConfig.colors.hp = E:GetColorTable(self.db.noPowerColor)
+	
 	for i, button in pairs(bar.buttons) do
 		bar.buttonConfig.keyBoundTarget = format(buttonName.."%d", i)
 		button.keyBoundTarget = bar.buttonConfig.keyBoundTarget

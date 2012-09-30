@@ -82,6 +82,9 @@ function UF:Update_PartyHeader(header, db)
 	elseif db.groupBy == 'ROLE' then
 		header:SetAttribute("groupingOrder", "MAINTANK,MAINASSIST,1,2,3,4,5,6,7,8")
 		header:SetAttribute('sortMethod', 'NAME')
+	elseif db.groupBy == 'NAME' then
+		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
+		header:SetAttribute('sortMethod', 'NAME')	
 	else
 		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
 		header:SetAttribute('sortMethod', 'INDEX')

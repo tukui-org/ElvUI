@@ -8,6 +8,10 @@ if not L then return; end
 L["A taint has occured that is preventing you from using your talents/glyphs, this can happen if you've inspected someone. Unfortionatly theres nothing we can do to fix it, please reload your ui and try again."] = true;
 
 --ActionBars
+L['Out of Range'] = true;
+L['Color of the actionbutton when out of range.'] = true;
+L['Out of Power'] = true;
+L['Color of the actionbutton when out of power (Mana, Rage, Focus, Holy Power).'] = true;
 L[" |cff00ff00bound to |r"] = true;
 L["Action Paging"] = true;
 L["ActionBars"] = true;
@@ -86,6 +90,10 @@ L[ [=[This works like a macro, you can run different situations to get the actio
  Example: '[combat] show;hide']=] ] = true;
 
 --Bags
+L['Hold Shift + Drag:'] = true;
+L['Temporary Move'] = true;
+L['Hold Control + Right Click:'] = true;
+L['Reset Position'] = true;
 L['Currency Format'] = true;
 L['The display format of the currency icons that get displayed below the main bag. (You have to be watching a currency for this to display)'] = true;
 L["Icons Only"] = true;
@@ -486,6 +494,8 @@ L["Your items have been repaired using guild bank funds for: "] = true;
 L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"] = true; --core\core.lua
 
 --NamePlates
+L['Background Multiplier'] = true;
+L['The backdrop of the nameplates color is scaled to match the color of the nameplate by this percentage. Set to zero to have no color in the nameplate backdrop.'] = true;
 L["Add Name"] = true;
 L["All"] = true;
 L["Auras"] = true;
@@ -547,6 +557,7 @@ L["Auction Frame"] = true;
 L["Barbershop Frame"] = true;
 L["BG Map"] = true;
 L["BG Score"] = true;
+L['Black Market AH'] = true;
 L["Calendar Frame"] = true;
 L["Character Frame"] = true;
 L["Debug Tools"] = true;
@@ -652,6 +663,20 @@ L['You can toggle the microbar by using your middle mouse button on the minimap 
 L['You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame'] = true;
 
 --UnitFrames
+L["Affliction"] = true;
+L["Demonology"] = true;
+L["Destruction"] = true;
+L['Harmony'] = true;
+L['Blood'] = true;
+L['Unholy'] = true;
+L['Frost'] = true;
+L['Death'] = true;
+L['Holy Power'] = true;
+L['Arcane Charges'] = true;
+L['Shadow Orbs'] = true;
+L['Lunar'] = true;
+L['Solar'] = true;
+L['Class Resources'] = true;
 L['Center'] = true;
 L['JustifyH'] = true;
 L["Sets the font instance's horizontal text alignment style."] = true;
@@ -773,7 +798,8 @@ L['If not set to 0 then override the size of the aura icon to this.'] = true;
 L["Block Blacklisted Auras"] = true;
 L["Allow Whitelisted Auras"] = true;
 L["Allow Personal Auras"] = true;
-L["Interrupt Color"] = true;
+L['Interruptable'] = true;
+L['Non-Interruptable'] = true;
 L["Latency"] = true;
 L["Low Mana Threshold"] = true;
 L["Main statusbar texture."] = true;

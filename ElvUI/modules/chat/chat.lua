@@ -643,7 +643,9 @@ function CH:SetupChat(event, ...)
 		else
 			frame:SetShadowColor(0, 0, 0, 1)
 		end
+		frame:SetTimeVisible(100)
 		frame:SetShadowOffset((E.mult or 1), -(E.mult or 1))	
+		frame:SetFading(self.db.fade)
 	end	
 	
 	if self.db.hyperlinkHover then

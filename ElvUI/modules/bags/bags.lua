@@ -508,7 +508,7 @@ function B:VendorGrays(delete, nomsg)
 	for b=0,4 do
 		for s=1,GetContainerNumSlots(b) do
 			local l = GetContainerItemLink(b, s)
-			if l then
+			if l and select(11, GetItemInfo(l)) then
 				local p = select(11, GetItemInfo(l))*select(2, GetContainerItemInfo(b, s))
 				
 				if delete then
@@ -563,6 +563,21 @@ function B:ContructContainerFrame(name, isBank)
 	f:RegisterEvent('BAG_UPDATE_COOLDOWN')
 	f:RegisterEvent('BAG_UPDATE');
 	f:RegisterEvent('PLAYERBANKSLOTS_CHANGED');
+	f:SetMovable(true)
+	f:RegisterForDrag("LeftButton", "RightButton")
+	f:RegisterForClicks("AnyUp");
+	f:SetScript("OnDragStart", function(self) if IsShiftKeyDown() then self:StartMoving() end end)
+	f:SetScript("OnDragStop", function(self) self:StopMovingOrSizing() end)
+	f:SetScript("OnClick", function(self) if IsControlKeyDown() then B:PositionBagFrames() end end)
+	f:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT", 0, 4)
+		GameTooltip:ClearLines()
+		GameTooltip:AddDoubleLine(L['Hold Shift + Drag:'], L['Temporary Move'], 1, 1, 1)
+		GameTooltip:AddDoubleLine(L['Hold Control + Right Click:'], L['Reset Position'], 1, 1, 1)
+		
+		GameTooltip:Show()	
+	end)
+	f:SetScript('OnLeave', function(self) GameTooltip:Hide() end)
 	f.isBank = isBank
 	
 	f:SetScript('OnEvent', B.OnEvent);	
@@ -811,10 +826,12 @@ end
 
 function B:PositionBagFrames()
 	if self.BagFrame then
+		self.BagFrame:ClearAllPoints()
 		self.BagFrame:Point('BOTTOMRIGHT', RightChatToggleButton, 'TOPRIGHT', 0 - E.db.bags.xOffset, 4 + E.db.bags.yOffset);
 	end
 	
 	if self.BankFrame then
+		self.BankFrame:ClearAllPoints()
 		self.BankFrame:Point('BOTTOMLEFT', LeftChatToggleButton, 'TOPLEFT', 0 + E.db.bags.xOffset, 4 + E.db.bags.yOffset);
 	end
 end
@@ -844,6 +861,7 @@ end
 function B:OpenBags()
 	self.BagFrame:Show();
 	self.BagFrame:UpdateAllSlots();
+	E:GetModule('Tooltip'):GameTooltip_SetDefaultAnchor(GameTooltip)
 end
 
 function B:CloseBags()
@@ -852,6 +870,8 @@ function B:CloseBags()
 	if self.BankFrame then
 		self.BankFrame:Hide();
 	end
+	
+	E:GetModule('Tooltip'):GameTooltip_SetDefaultAnchor(GameTooltip)
 end
 
 function B:OpenBank()

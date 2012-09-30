@@ -90,6 +90,13 @@ ElvUF.Tags.Methods['health:current-max-percent'] = function(unit)
 	end
 end
 
+ElvUF.Tags.Events['health:max'] = 'UNIT_MAXHEALTH'
+ElvUF.Tags.Methods['health:max'] = function(unit)
+	local max = UnitHealth(unit), UnitHealthMax(unit)
+
+	return E:GetFormattedText('CURRENT', max, max)
+end
+
 ElvUF.Tags.Events['health:percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
 ElvUF.Tags.Methods['health:percent'] = function(unit)
 	local min, max = UnitHealth(unit), UnitHealthMax(unit)
@@ -184,6 +191,14 @@ ElvUF.Tags.Methods['power:deficit'] = function(unit)
 	return E:GetFormattedText('DEFICIT', min, max, r, g, b)
 end
 
+ElvUF.Tags.Events['power:max'] = 'UNIT_MAXPOWER'
+ElvUF.Tags.Methods['power:max'] = function(unit)
+	local pType = UnitPowerType(unit)
+	local max = UnitPowerMax(unit, pType)
+		
+	return E:GetFormattedText('CURRENT', max, max)
+end
+
 ElvUF.Tags.Events['difficultycolor'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
 ElvUF.Tags.Methods['difficultycolor'] = function(unit)
 	local r, g, b = 0.69, 0.31, 0.31
@@ -269,7 +284,7 @@ end
 ElvUF.Tags.Events['threat:percent'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
 ElvUF.Tags.Methods['threat:percent'] = function(unit)
 	local _, status, percent = UnitDetailedThreatSituation('player', unit)
-	if(percent and percent > 0) and IsInGroup() then
+	if(percent and percent > 0) and (IsInGroup() or UnitExists('pet')) then
 		return string.format('%d%%', E:TrimFloatingPoint(percent / 100 * 100))
 	else 
 		return ''
@@ -279,7 +294,7 @@ end
 ElvUF.Tags.Events['threat:current'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
 ElvUF.Tags.Methods['threat:current'] = function(unit)
 	local _, status, percent, _, threatvalue = UnitDetailedThreatSituation('player', unit)
-	if(percent and percent > 0) and IsInGroup() then
+	if(percent and percent > 0) and (IsInGroup() or UnitExists('pet')) then
 		return E:ShortValue(threatvalue)
 	else 
 		return ''
@@ -289,7 +304,7 @@ end
 ElvUF.Tags.Events['threatcolor'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
 ElvUF.Tags.Methods['threatcolor'] = function(unit)
 	local _, status = UnitDetailedThreatSituation('player', unit)
-	if(status) and IsInGroup() then
+	if(status) and (IsInGroup() or UnitExists('pet')) then
 		return Hex(GetThreatStatusColor(status))
 	else 
 		return ''

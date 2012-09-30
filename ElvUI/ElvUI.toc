@@ -1,11 +1,11 @@
 ﻿## Interface: 50001
 ## Author: Elv
-## Version: 4.41
+## Version: 4.45
 ## Title: |cff1784d1ElvUI|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvData, ElvPrivateData
 ## SavedVariablesPerCharacter: ElvCharacterData
-## OptionalDeps: SharedMedia
+## OptionalDeps: Blizzard_DebugTools, SharedMedia
 ## X-oUF: ElvUF
 
 developer\load_developer.xml

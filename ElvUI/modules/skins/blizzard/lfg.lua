@@ -139,8 +139,18 @@ local function LoadSkin()
 	for i = 1, NUM_LFD_CHOICE_BUTTONS do
 		S:HandleCheckBox(_G["LFDQueueFrameSpecificListButton"..i].enableButton)
 	end
-
-	S:HandleCheckBox(ScenarioQueueFrameSpecificButton1.enableButton)
+	
+	hooksecurefunc("ScenarioQueueFrameSpecific_Update", function()
+		
+		for i = 1, NUM_SCENARIO_CHOICE_BUTTONS do
+			local button = _G["ScenarioQueueFrameSpecificButton"..i]
+			
+			if button and not button.skinned then
+				S:HandleCheckBox(button.enableButton)
+				button.skinned = true;
+			end
+		end
+	end)
 
 	for i = 1, NUM_LFR_CHOICE_BUTTONS do
 		local bu = _G["LFRQueueFrameSpecificListButton"..i].enableButton

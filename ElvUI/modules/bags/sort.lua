@@ -245,7 +245,13 @@ function B.IterateBags(bagList, reverse, role)
 end
 
 local function ConvertLinkToID(link) 
-	return link and tonumber(string.match(link, "item:(%d+)")) 
+	if not link then return; end
+	
+	if tonumber(string.match(link, "item:(%d+)")) then
+		return tonumber(string.match(link, "item:(%d+)"));
+	else
+		return tonumber(string.match(link, "battlepet:(%d+)")), true;
+	end
 end 
 
 local function DefaultCanMove()

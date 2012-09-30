@@ -135,6 +135,18 @@ local function CheckClassColor(r, g, b)
 	return matchFound
 end
 
+function E:GetColorTable(data)
+	if not data.r or not data.g or not data.b then
+		error("Could not unpack color values.")
+	end
+	
+	if data.a then
+		return {data.r, data.g, data.b, data.a}
+	else
+		return {data.r, data.g, data.b}
+	end
+end
+
 function E:UpdateMedia()	
 	--Fonts
 	self["media"].normFont = LSM:Fetch("font", self.db['general'].font)
@@ -157,12 +169,10 @@ function E:UpdateMedia()
 	self["media"].bordercolor = {border.r, border.g, border.b}
 
 	--Backdrop Color
-	local backdrop = self.db['general'].backdropcolor
-	self["media"].backdropcolor = {backdrop.r, backdrop.g, backdrop.b}
+	self["media"].backdropcolor = E:GetColorTable(self.db['general'].backdropcolor)
 
 	--Backdrop Fade Color
-	backdrop = self.db['general'].backdropfadecolor
-	self["media"].backdropfadecolor = {backdrop.r, backdrop.g, backdrop.b, backdrop.a}
+	self["media"].backdropfadecolor = E:GetColorTable(self.db['general'].backdropfadecolor)
 	
 	--Value Color
 	local value = self.db['general'].valuecolor
@@ -574,7 +584,10 @@ function E:InitializeInitialModules()
 	for _, module in pairs(E['RegisteredInitialModules']) do
 		local module = self:GetModule(module, true)
 		if module and module.Initialize then
-			module:Initialize()
+			local _, catch = pcall(module.Initialize, module)
+			if catch and GetCVarBool('scriptErrors') == 1 then
+				ScriptErrorsFrame_OnError(catch, false)
+			end
 		end
 	end
 end
@@ -587,8 +600,12 @@ end
 
 function E:InitializeModules()	
 	for _, module in pairs(E['RegisteredModules']) do
-		if self:GetModule(module).Initialize then
-			self:GetModule(module):Initialize()
+		local module = self:GetModule(module)
+		if module.Initialize then
+			local _, catch = pcall(module.Initialize, module)
+			if catch and GetCVarBool('scriptErrors') == 1 then
+				ScriptErrorsFrame_OnError(catch, false)
+			end
 		end
 	end
 end
@@ -709,6 +726,23 @@ function E:DBConversions()
 						end
 					end
 				end
+			end
+		end
+		
+		if self.db.unitframe.units[unit] and self.db.unitframe.units[unit].castbar then
+			if unit == 'player' then
+				if self.db.unitframe.units[unit].castbar.color then
+					self.db.unitframe.colors.castColor = self.db.unitframe.units[unit].castbar.color
+				end
+				
+				if self.db.unitframe.units[unit].castbar.interruptcolor then
+					self.db.unitframe.colors.castNoInterrupt = self.db.unitframe.units[unit].castbar.interruptcolor
+				end				
+			end
+			
+			if self.db.unitframe.units[unit].castbar.color or self.db.unitframe.units[unit].castbar.interruptcolor then
+				self.db.unitframe.units[unit].castbar.color = nil;
+				self.db.unitframe.units[unit].castbar.interruptcolor = nil;
 			end
 		end
 	end	

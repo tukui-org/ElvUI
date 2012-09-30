@@ -9,15 +9,6 @@ local basemisschance, leveldifference, dodge, parry, block, avoidance, unhittabl
 local chanceString = "%.2f%%"
 local modifierString = string.join("", "%d (+", chanceString, ")")
 
-function IsWearingShield()
-	local slotID = GetInventorySlotInfo("SecondaryHandSlot")
-	local itemID = GetInventoryItemID('player', slotID)
-	
-	if itemID then
-		return select(7, GetItemInfo(itemID)) == 'Shields'
-	end
-end
-
 local function OnEvent(self, event, unit)
 	if event == "UNIT_AURA" and unit ~= 'player' then return end
 	targetlv, playerlv = UnitLevel("target"), UnitLevel("player")
@@ -60,7 +51,7 @@ local function OnEvent(self, event, unit)
 		numAvoidances = numAvoidances - 1
 	end
 	
-	if not IsWearingShield() then
+	if not IsEquippedItemType("Shields") then
 		block = 0
 		numAvoidances = numAvoidances - 1
 	end

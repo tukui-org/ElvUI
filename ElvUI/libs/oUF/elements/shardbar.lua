@@ -12,8 +12,11 @@ local SPEC_WARLOCK_DESTRUCTION = SPEC_WARLOCK_DESTRUCTION
 local SPEC_WARLOCK_AFFLICTION = SPEC_WARLOCK_AFFLICTION
 local SPEC_WARLOCK_DEMONOLOGY = SPEC_WARLOCK_DEMONOLOGY
 
-local DESTRO_COLORS = {230/255, 95/255,  95/255}
-local SHARD_COLORS = {148/255, 130/255, 201/255}
+oUF.colors.WarlockResource = {
+	[1] = {148/255, 130/255, 201/255},
+	[2] = {148/255, 130/255, 201/255},
+	[3] = {230/255, 95/255,  95/255}
+}
 
 local Update = function(self, event, unit, powerType)
 	local wsb = self.ShardBar
@@ -30,25 +33,15 @@ local Update = function(self, event, unit, powerType)
 		if not wsb:IsShown() then 
 			wsb:Show()
 		end
-		
-		if (spec == SPEC_WARLOCK_DESTRUCTION) then
-			for i = 1, 4 do
-				wsb[i]:Show()
-				wsb[i]:SetStatusBarColor(unpack(DESTRO_COLORS))
-				if wsb[i].bg then
-					wsb[i].bg:SetTexture(unpack(DESTRO_COLORS))
-				end
+
+		for i = 1, 4 do
+			wsb[i]:Show()
+			wsb[i]:SetStatusBarColor(unpack(oUF.colors.WarlockResource[spec]))
+			if wsb[i].bg then
+				wsb[i].bg:SetTexture(unpack(oUF.colors.WarlockResource[spec]))
 			end
-		else
-			for i = 1, 4 do
-				wsb[i]:Show()
-				wsb[i]:SetStatusBarColor(unpack(SHARD_COLORS))
-				if wsb[i].bg then
-					wsb[i].bg:SetTexture(unpack(SHARD_COLORS))
-				end
-			end		
 		end
-		
+
 		if (spec == SPEC_WARLOCK_DESTRUCTION) then	
 			local maxPower = UnitPowerMax("player", SPELL_POWER_BURNING_EMBERS, true)
 			local power = UnitPower("player", SPELL_POWER_BURNING_EMBERS, true)
