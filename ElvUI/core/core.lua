@@ -727,6 +727,23 @@ function E:DBConversions()
 				end
 			end
 		end
+		
+		if self.db.unitframe.units[unit] and self.db.unitframe.units[unit].castbar then
+			if unit == 'player' then
+				if self.db.unitframe.units[unit].castbar.color then
+					self.db.unitframe.colors.castColor = self.db.unitframe.units[unit].castbar.color
+				end
+				
+				if self.db.unitframe.units[unit].castbar.interruptcolor then
+					self.db.unitframe.colors.castNoInterrupt = self.db.unitframe.units[unit].castbar.interruptcolor
+				end				
+			end
+			
+			if self.db.unitframe.units[unit].castbar.color or self.db.unitframe.units[unit].castbar.interruptcolor then
+				self.db.unitframe.units[unit].castbar.color = nil;
+				self.db.unitframe.units[unit].castbar.interruptcolor = nil;
+			end
+		end
 	end	
 end
 

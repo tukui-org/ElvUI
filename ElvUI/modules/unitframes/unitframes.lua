@@ -141,7 +141,7 @@ function UF:UpdateColors()
 	local good = E:GetColorTable(db.reaction.GOOD)
 	local bad = E:GetColorTable(db.reaction.BAD)
 	local neutral = E:GetColorTable(db.reaction.NEUTRAL)
-
+	
 	ElvUF.colors.tapped = E:GetColorTable(db.tapped);
 	ElvUF.colors.disconnected = E:GetColorTable(db.disconnected);
 	ElvUF.colors.health = E:GetColorTable(db.health);
@@ -190,6 +190,9 @@ function UF:UpdateColors()
 	ElvUF.colors.smooth = {1, 0, 0,
 	1, 1, 0,
 	unpack(E:GetColorTable(db.health))}
+	
+	ElvUF.colors.castColor = E:GetColorTable(db.castColor);
+	ElvUF.colors.castNoInterrupt = E:GetColorTable(db.castNoInterrupt);
 end
 
 function UF:Update_StatusBars()
@@ -719,6 +722,7 @@ function UF:MergeUnitSettings(fromUnit, toUnit)
 		E:Print(L['You cannot copy settings from the same unit.'])
 	end
 	
+	E:SetupTheme(E.db.theme, true)
 	self:Update_AllFrames()
 end
 

@@ -1009,6 +1009,34 @@ E.Options.args.unitframe = {
 								},									
 							},
 						},	
+						castBars = {
+							order = 9,
+							type = 'group',
+							guiInline = true,
+							name = L['Castbar'],
+							get = function(info)
+								local t = E.db.unitframe.colors[ info[#info] ]
+								return t.r, t.g, t.b, t.a
+							end,
+							set = function(info, r, g, b)
+								E.db.general[ info[#info] ] = {}
+								local t = E.db.unitframe.colors[ info[#info] ]
+								t.r, t.g, t.b = r, g, b
+								UF:Update_AllFrames()
+							end,			
+							args = {
+								castColor = {
+									order = 1,
+									name = L['Interruptable'],
+									type = 'color',
+								},	
+								castNoInterrupt = {
+									order = 2,
+									name = L['Non-Interruptable'],
+									type = 'color',
+								},								
+							},
+						},
 						auraBars = {
 							order = 9,
 							type = 'group',
@@ -1754,36 +1782,6 @@ E.Options.args.unitframe.args.player = {
 					order = 9,
 					name = L['Latency'],
 					type = 'toggle',				
-				},
-				color = {
-					order = 10,
-					type = 'color',
-					name = L['Color'],
-					get = function(info)
-						local t = E.db.unitframe.units['player']['castbar'][ info[#info] ]
-						return t.r, t.g, t.b, t.a
-					end,
-					set = function(info, r, g, b)
-						E.db.general[ info[#info] ] = {}
-						local t = E.db.unitframe.units['player']['castbar'][ info[#info] ]
-						t.r, t.g, t.b = r, g, b
-						UF:CreateAndUpdateUF('player')
-					end,													
-				},
-				interruptcolor = {
-					order = 11,
-					type = 'color',
-					name = L['Interrupt Color'],
-					get = function(info)
-						local t = E.db.unitframe.units['player']['castbar'][ info[#info] ]
-						return t.r, t.g, t.b, t.a
-					end,
-					set = function(info, r, g, b)
-						E.db.general[ info[#info] ] = {}
-						local t = E.db.unitframe.units['player']['castbar'][ info[#info] ]
-						t.r, t.g, t.b = r, g, b
-						UF:CreateAndUpdateUF('player')
-					end,					
 				},
 				format = {
 					order = 12,
@@ -2721,36 +2719,6 @@ E.Options.args.unitframe.args.target = {
 					name = L['Icon'],
 					type = 'toggle',
 				},			
-				color = {
-					order = 9,
-					type = 'color',
-					name = L['Color'],
-					get = function(info)
-						local t = E.db.unitframe.units['target']['castbar'][ info[#info] ]
-						return t.r, t.g, t.b, t.a
-					end,
-					set = function(info, r, g, b)
-						E.db.general[ info[#info] ] = {}
-						local t = E.db.unitframe.units['target']['castbar'][ info[#info] ]
-						t.r, t.g, t.b = r, g, b
-						UF:CreateAndUpdateUF('target')
-					end,													
-				},
-				interruptcolor = {
-					order = 10,
-					type = 'color',
-					name = L['Interrupt Color'],
-					get = function(info)
-						local t = E.db.unitframe.units['target']['castbar'][ info[#info] ]
-						return t.r, t.g, t.b, t.a
-					end,
-					set = function(info, r, g, b)
-						E.db.general[ info[#info] ] = {}
-						local t = E.db.unitframe.units['target']['castbar'][ info[#info] ]
-						t.r, t.g, t.b = r, g, b
-						UF:CreateAndUpdateUF('target')
-					end,					
-				},
 				format = {
 					order = 11,
 					type = 'select',
@@ -4390,36 +4358,6 @@ E.Options.args.unitframe.args.focus = {
 					name = L['Icon'],
 					type = 'toggle',
 				},			
-				color = {
-					order = 9,
-					type = 'color',
-					name = L['Color'],
-					get = function(info)
-						local t = E.db.unitframe.units['focus']['castbar'][ info[#info] ]
-						return t.r, t.g, t.b, t.a
-					end,
-					set = function(info, r, g, b)
-						E.db.general[ info[#info] ] = {}
-						local t = E.db.unitframe.units['focus']['castbar'][ info[#info] ]
-						t.r, t.g, t.b = r, g, b
-						UF:CreateAndUpdateUF('focus')
-					end,													
-				},
-				interruptcolor = {
-					order = 10,
-					type = 'color',
-					name = L['Interrupt Color'],
-					get = function(info)
-						local t = E.db.unitframe.units['focus']['castbar'][ info[#info] ]
-						return t.r, t.g, t.b, t.a
-					end,
-					set = function(info, r, g, b)
-						E.db.general[ info[#info] ] = {}
-						local t = E.db.unitframe.units['focus']['castbar'][ info[#info] ]
-						t.r, t.g, t.b = r, g, b
-						UF:CreateAndUpdateUF('focus')
-					end,					
-				},
 				format = {
 					order = 11,
 					type = 'select',
@@ -7000,36 +6938,6 @@ E.Options.args.unitframe.args.boss = {
 					name = L['Icon'],
 					type = 'toggle',
 				},
-				color = {
-					order = 7,
-					type = 'color',
-					name = L['Color'],
-					get = function(info)
-						local t = E.db.unitframe.units['boss']['castbar'][ info[#info] ]
-						return t.r, t.g, t.b, t.a
-					end,
-					set = function(info, r, g, b)
-						E.db.general[ info[#info] ] = {}
-						local t = E.db.unitframe.units['boss']['castbar'][ info[#info] ]
-						t.r, t.g, t.b = r, g, b
-						UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES)
-					end,													
-				},
-				interruptcolor = {
-					order = 8,
-					type = 'color',
-					name = L['Interrupt Color'],
-					get = function(info)
-						local t = E.db.unitframe.units['boss']['castbar'][ info[#info] ]
-						return t.r, t.g, t.b, t.a
-					end,
-					set = function(info, r, g, b)
-						E.db.general[ info[#info] ] = {}
-						local t = E.db.unitframe.units['boss']['castbar'][ info[#info] ]
-						t.r, t.g, t.b = r, g, b
-						UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES)
-					end,					
-				},
 				format = {
 					order = 9,
 					type = 'select',
@@ -7752,36 +7660,6 @@ E.Options.args.unitframe.args.arena = {
 					order = 5,
 					name = L['Icon'],
 					type = 'toggle',
-				},
-				color = {
-					order = 7,
-					type = 'color',
-					name = L['Color'],
-					get = function(info)
-						local t = E.db.unitframe.units['arena']['castbar'][ info[#info] ]
-						return t.r, t.g, t.b, t.a
-					end,
-					set = function(info, r, g, b)
-						E.db.general[ info[#info] ] = {}
-						local t = E.db.unitframe.units['arena']['castbar'][ info[#info] ]
-						t.r, t.g, t.b = r, g, b
-						UF:CreateAndUpdateUFGroup('arena', 5)
-					end,													
-				},
-				interruptcolor = {
-					order = 8,
-					type = 'color',
-					name = L['Interrupt Color'],
-					get = function(info)
-						local t = E.db.unitframe.units['arena']['castbar'][ info[#info] ]
-						return t.r, t.g, t.b, t.a
-					end,
-					set = function(info, r, g, b)
-						E.db.general[ info[#info] ] = {}
-						local t = E.db.unitframe.units['arena']['castbar'][ info[#info] ]
-						t.r, t.g, t.b = r, g, b
-						UF:CreateAndUpdateUFGroup('arena', 5)
-					end,					
 				},
 				format = {
 					order = 9,

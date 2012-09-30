@@ -358,8 +358,7 @@ function UF:PostCastStart(unit, name, rank, castid)
 	end
 
 	self.Spark:Height(self:GetHeight() * 2)
-	
-	local color		
+		
 	self.unit = unit
 
 	if db.castbar.ticks and unit == "player" then
@@ -415,21 +414,22 @@ function UF:PostCastStart(unit, name, rank, castid)
 	
 	if self.interrupt and unit ~= "player" then
 		if UnitCanAttack("player", unit) then
-			color = db['castbar']['interruptcolor']		
-			self:SetStatusBarColor(color.r, color.g, color.b)
+			self:SetStatusBarColor(unpack(ElvUF.colors.castColor))
 		else
-			color = db['castbar']['color']
 			if E.db.theme == 'class' then
-				color = RAID_CLASS_COLORS[E.myclass]
+				local color = RAID_CLASS_COLORS[E.myclass]
+				self:SetStatusBarColor(color.r, color.g, color.b)
+			else
+				self:SetStatusBarColor(unpack(ElvUF.colors.castNoInterrupt))
 			end					
-			self:SetStatusBarColor(color.r, color.g, color.b)
 		end
 	else
-		color = db['castbar']['color']
 		if E.db.theme == 'class' then
-			color = RAID_CLASS_COLORS[E.myclass]
-		end				
-		self:SetStatusBarColor(color.r, color.g, color.b)
+			local color = RAID_CLASS_COLORS[E.myclass]
+			self:SetStatusBarColor(color.r, color.g, color.b)
+		else
+			self:SetStatusBarColor(unpack(ElvUF.colors.castColor))
+		end	
 	end
 end
 
