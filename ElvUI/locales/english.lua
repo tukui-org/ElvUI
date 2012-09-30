@@ -494,6 +494,8 @@ L["Your items have been repaired using guild bank funds for: "] = true;
 L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"] = true; --core\core.lua
 
 --NamePlates
+L['Background Multiplier'] = true;
+L['The backdrop of the nameplates color is scaled to match the color of the nameplate by this percentage. Set to zero to have no color in the nameplate backdrop.'] = true;
 L["Add Name"] = true;
 L["All"] = true;
 L["Auras"] = true;

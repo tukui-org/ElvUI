@@ -98,6 +98,7 @@ P["nameplate"] = {
 	["trackfilter"] = 'CCDebuffs',
 	['goodscale'] = 1,
 	['badscale'] = 1,
+	['bgMult'] = 0.15,
 	["goodcolor"] = {r = 75/255,  g = 175/255, b = 76/255},
 	["badcolor"] = {r = 0.78, g = 0.25, b = 0.25},
 	["goodtransitioncolor"] = {r = 218/255, g = 197/255, b = 92/255},
