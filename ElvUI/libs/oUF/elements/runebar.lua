@@ -64,6 +64,7 @@ end
 
 local UpdateType = function(self, event, rid, alt)
 	local rune = self.Runes[runemap[rid]]
+	if not GetRuneType(rid) and not alt then return; end
 	local colors = oUF.colors.runes[GetRuneType(rid) or alt]
 	local r, g, b = colors[1], colors[2], colors[3]
 
