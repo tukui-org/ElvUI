@@ -494,27 +494,18 @@ function UF:PostChannelUpdate(unit, name)
 end
 
 function UF:PostCastInterruptible(unit)
-	local db = self:GetParent().db
-	
-	if not db then return end
-	
 	if unit == "vehicle" then unit = "player" end
 	if unit ~= "player" then
-		local color
 		if UnitCanAttack("player", unit) then
-			color = db['castbar'].interruptcolor
+			self:SetStatusBarColor(unpack(ElvUF.colors.castColor))
 		else
-			color = db['castbar'].color
-		end		
-		self:SetStatusBarColor(color.r, color.g, color.b)
+			self:SetStatusBarColor(unpack(ElvUF.colors.castNoInterrupt))				
+		end
 	end
 end
 
 function UF:PostCastNotInterruptible(unit)
-	local db = self:GetParent().db
-	
-	local color = db['castbar'].interruptcolor
-	self:SetStatusBarColor(color.r, color.g, color.b)
+	self:SetStatusBarColor(unpack(ElvUF.colors.castNoInterrupt))
 end
 
 function UF:UpdateHoly(event, unit, powerType)
