@@ -414,13 +414,13 @@ function UF:PostCastStart(unit, name, rank, castid)
 	
 	if self.interrupt and unit ~= "player" then
 		if UnitCanAttack("player", unit) then
-			self:SetStatusBarColor(unpack(ElvUF.colors.castColor))
+			self:SetStatusBarColor(unpack(ElvUF.colors.castNoInterrupt))
 		else
 			if E.db.theme == 'class' then
 				local color = RAID_CLASS_COLORS[E.myclass]
 				self:SetStatusBarColor(color.r, color.g, color.b)
 			else
-				self:SetStatusBarColor(unpack(ElvUF.colors.castNoInterrupt))
+				self:SetStatusBarColor(unpack(ElvUF.colors.castColor))
 			end					
 		end
 	else
@@ -497,9 +497,9 @@ function UF:PostCastInterruptible(unit)
 	if unit == "vehicle" then unit = "player" end
 	if unit ~= "player" then
 		if UnitCanAttack("player", unit) then
-			self:SetStatusBarColor(unpack(ElvUF.colors.castColor))
+			self:SetStatusBarColor(unpack(ElvUF.colors.castNoInterrupt))	
 		else
-			self:SetStatusBarColor(unpack(ElvUF.colors.castNoInterrupt))				
+			self:SetStatusBarColor(unpack(ElvUF.colors.castColor))
 		end
 	end
 end
