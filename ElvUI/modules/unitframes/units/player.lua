@@ -207,7 +207,7 @@ function UF:Update_PlayerFrame(frame, db)
 	frame.colors = ElvUF.colors
 	frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
-	
+
 	--Adjust some variables
 	do
 		if not USE_POWERBAR then

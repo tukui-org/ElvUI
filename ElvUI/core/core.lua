@@ -590,7 +590,10 @@ function E:InitializeInitialModules()
 	for _, module in pairs(E['RegisteredInitialModules']) do
 		local module = self:GetModule(module, true)
 		if module and module.Initialize then
-			module:Initialize()
+			local _, catch = pcall(module.Initialize, module)
+			if catch and GetCVarBool('scriptErrors') == 1 then
+				ScriptErrorsFrame_OnError(catch, false)
+			end
 		end
 	end
 end
@@ -603,8 +606,12 @@ end
 
 function E:InitializeModules()	
 	for _, module in pairs(E['RegisteredModules']) do
-		if self:GetModule(module).Initialize then
-			self:GetModule(module):Initialize()
+		local module = self:GetModule(module)
+		if module.Initialize then
+			local _, catch = pcall(module.Initialize, module)
+			if catch and GetCVarBool('scriptErrors') == 1 then
+				ScriptErrorsFrame_OnError(catch, false)
+			end
 		end
 	end
 end
