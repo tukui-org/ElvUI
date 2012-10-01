@@ -27,6 +27,7 @@ local coreGroups = {
 
 local bagCache = {};
 local bagIDs = {};
+local bagPetIDs = {};
 local bagStacks = {};
 local bagMaxStacks = {};
 local bagGroups = {};
@@ -140,6 +141,20 @@ local function DefaultSort(a, b)
 
 	if (not aID) or (not bID) then return aID end
 	
+	if bagPetIDs[a] and bagPetIDs[b] then
+		local aName, _, aType = C_PetJournal.GetPetInfoBySpeciesID(aID);
+		local bName, _, bType = C_PetJournal.GetPetInfoBySpeciesID(bID);
+
+		if aType ~= bType then
+			return aType > bType
+		end
+		
+		if aName ~= bName then
+			return aName < bName
+		end
+	end		
+
+		
 	local aOrder, bOrder = initialOrder[a], initialOrder[b]
 
 	if aID == bID then
@@ -155,7 +170,15 @@ local function DefaultSort(a, b)
 	local _, _, aRarity, _, _, aType, aSubType, _, aEquipLoc = GetItemInfo(aID)
 	local _, _, bRarity, _, _, bType, bSubType, _, bEquipLoc = GetItemInfo(bID)
 	
-	if aRarity ~= bRarity then
+	if bagPetIDs[a] then
+		aRarity = 1
+	end
+	
+	if bagPetIDs[b] then
+		bRarity = 1
+	end	
+	
+	if aRarity ~= bRarity and aRarity and bRarity then
 		return aRarity > bRarity
 	end
 
@@ -291,11 +314,17 @@ end
 function B:ScanBags()
 	for _, bag, slot in B.IterateBags(allBags) do
 		local bagSlot = B:Encode_BagSlot(bag, slot)
-		local itemID = ConvertLinkToID(GetContainerItemLink(bag, slot))
+		local itemID, isBattlePet = ConvertLinkToID(GetContainerItemLink(bag, slot))
 		if itemID then
+			if isBattlePet then
+				bagPetIDs[bagSlot] = itemID
+				bagMaxStacks[bagSlot] = 1
+			else
+				bagMaxStacks[bagSlot] = select(8, GetItemInfo(itemID))
+			end
+			
 			bagIDs[bagSlot] = itemID
 			bagStacks[bagSlot] = select(2, GetContainerItemInfo(bag, slot))
-			bagMaxStacks[bagSlot] = select(8, GetItemInfo(itemID))
 		end
 	end
 end
