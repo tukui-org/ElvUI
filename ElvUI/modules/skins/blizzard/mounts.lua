@@ -104,19 +104,22 @@ local function LoadSkin()
 			local b = _G["PetJournalListScrollFrameButton"..i]
 			local t = _G["PetJournalListScrollFrameButton"..i.."Name"]
 			local petID, speciesID, isOwned, customName, level, favorite, isRevoked, name, icon, petType, creatureID, sourceText, description, isWildPet, canBattle = C_PetJournal.GetPetInfoByIndex(index, isWild);
-			local health, maxHealth, attack, speed, rarity = C_PetJournal.GetPetStats(petID);
-			if b.selectedTexture:IsShown() then
-				t:SetTextColor(1,1,0)
-			elseif favorite then
-				t:SetTextColor(.87,.51,0.1)
-			else
-				t:SetTextColor(1, 1, 1)
-			end
-			if rarity then
-				local color = ITEM_QUALITY_COLORS[rarity-1]
-				b.backdrop:SetBackdropBorderColor(color.r, color.g, color.b);
-			else
-				b.backdrop:SetBackdropBorderColor(1, 1, 0)
+			
+			if petID ~= nil then
+				local health, maxHealth, attack, speed, rarity = C_PetJournal.GetPetStats(petID);
+				if b.selectedTexture:IsShown() then
+					t:SetTextColor(1,1,0)
+				elseif favorite then
+					t:SetTextColor(.87,.51,0.1)
+				else
+					t:SetTextColor(1, 1, 1)
+				end
+				if rarity then
+					local color = ITEM_QUALITY_COLORS[rarity-1]
+					b.backdrop:SetBackdropBorderColor(color.r, color.g, color.b);
+				else
+					b.backdrop:SetBackdropBorderColor(1, 1, 0)
+				end
 			end
 		end
 	end	
