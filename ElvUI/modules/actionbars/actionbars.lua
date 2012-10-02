@@ -808,6 +808,30 @@ function AB:Initialize()
 	end	
 	
 	SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
+	
+	AB:FixABPositions()
+end
+
+function AB:FixABPositions()
+	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT); return; end
+	local ABdb = E.db.actionbar
+	if ABdb.bar3.enabled == true then
+		if ABdb.bar2.enabled == true and ABdb.bar1.heightMult == 2 then
+			ElvUI_Bar2:ClearAllPoints()
+			ElvUI_Bar2:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-38)
+			ElvUI_Bar3:ClearAllPoints()
+			ElvUI_Bar3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,2)
+		elseif ABdb.bar2.enabled == true and ABdb.bar1.heightMult == 3 then
+			ElvUI_Bar2:ClearAllPoints()
+			ElvUI_Bar2:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-72)
+			ElvUI_Bar3:ClearAllPoints()
+			ElvUI_Bar3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-38)
+		elseif ABdb.bar2.enabled ~= true and ABdb.bar1.heightMult == 2 then
+			ElvUI_Bar3:ClearAllPoints()
+			ElvUI_Bar3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-38)
+		end
+		E:Print("ActionBar 2 and 3 has been repositioned")
+	end
 end
 
 E:RegisterModule(AB:GetName())

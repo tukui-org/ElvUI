@@ -150,5 +150,6 @@ function E:LoadCommands()
 	self:RegisterChatCommand('elvsaystarget', 'ElvSaysTarget')
 	if E.ActionBars then
 		self:RegisterChatCommand('kb', E.ActionBars.ActivateBindMode)
+		self:RegisterChatCommand('fixpos', E.ActionBars.FixABPositions)
 	end
 end
