@@ -1945,7 +1945,45 @@ E.Options.args.unitframe.args.player = {
 					},						
 				},
 			},
-		},			
+		},	
+		raidicon = {
+			order = 2000,
+			type = 'group',
+			name = L['Raid Icon'],
+			get = function(info) return E.db.unitframe.units['player']['raidicon'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['player']['raidicon'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+			args = {
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},	
+				attachTo = {
+					type = 'select',
+					order = 2,
+					name = L['Position'],
+					values = positionValues,
+				},
+				size = {
+					type = 'range',
+					name = L['Size'],
+					order = 3,
+					min = 8, max = 60, step = 1,
+				},				
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -300, max = 300, step = 1,
+				},
+				yOffset = {
+					order = 5,
+					type = 'range',
+					name = L['yOffset'],
+					min = -300, max = 300, step = 1,
+				},			
+			},
+		},		
 	},
 }
 
@@ -2986,7 +3024,45 @@ E.Options.args.unitframe.args.target = {
 					},						
 				},				
 			},
-		},			
+		},
+		raidicon = {
+			order = 2000,
+			type = 'group',
+			name = L['Raid Icon'],
+			get = function(info) return E.db.unitframe.units['target']['raidicon'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['target']['raidicon'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
+			args = {
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},	
+				attachTo = {
+					type = 'select',
+					order = 2,
+					name = L['Position'],
+					values = positionValues,
+				},
+				size = {
+					type = 'range',
+					name = L['Size'],
+					order = 3,
+					min = 8, max = 60, step = 1,
+				},				
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -300, max = 300, step = 1,
+				},
+				yOffset = {
+					order = 5,
+					type = 'range',
+					name = L['yOffset'],
+					min = -300, max = 300, step = 1,
+				},			
+			},
+		},		
 	},
 }
 
@@ -3638,6 +3714,44 @@ E.Options.args.unitframe.args.targettarget = {
 				},				
 			},
 		},	
+		raidicon = {
+			order = 2000,
+			type = 'group',
+			name = L['Raid Icon'],
+			get = function(info) return E.db.unitframe.units['targettarget']['raidicon'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['targettarget']['raidicon'][ info[#info] ] = value; UF:CreateAndUpdateUF('targettarget') end,
+			args = {
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},	
+				attachTo = {
+					type = 'select',
+					order = 2,
+					name = L['Position'],
+					values = positionValues,
+				},
+				size = {
+					type = 'range',
+					name = L['Size'],
+					order = 3,
+					min = 8, max = 60, step = 1,
+				},				
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -300, max = 300, step = 1,
+				},
+				yOffset = {
+					order = 5,
+					type = 'range',
+					name = L['yOffset'],
+					min = -300, max = 300, step = 1,
+				},			
+			},
+		},			
 	},
 }
 
@@ -4596,6 +4710,44 @@ E.Options.args.unitframe.args.focus = {
 					},						
 				},				
 			},
+		},	
+		raidicon = {
+			order = 2000,
+			type = 'group',
+			name = L['Raid Icon'],
+			get = function(info) return E.db.unitframe.units['focus']['raidicon'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['focus']['raidicon'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
+			args = {
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},	
+				attachTo = {
+					type = 'select',
+					order = 2,
+					name = L['Position'],
+					values = positionValues,
+				},
+				size = {
+					type = 'range',
+					name = L['Size'],
+					order = 3,
+					min = 8, max = 60, step = 1,
+				},				
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -300, max = 300, step = 1,
+				},
+				yOffset = {
+					order = 5,
+					type = 'range',
+					name = L['yOffset'],
+					min = -300, max = 300, step = 1,
+				},			
+			},
 		},			
 	},
 }
@@ -5249,6 +5401,44 @@ E.Options.args.unitframe.args.focustarget = {
 				},				
 			},
 		},	
+		raidicon = {
+			order = 2000,
+			type = 'group',
+			name = L['Raid Icon'],
+			get = function(info) return E.db.unitframe.units['focustarget']['raidicon'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['focustarget']['raidicon'][ info[#info] ] = value; UF:CreateAndUpdateUF('focustarget') end,
+			args = {
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},	
+				attachTo = {
+					type = 'select',
+					order = 2,
+					name = L['Position'],
+					values = positionValues,
+				},
+				size = {
+					type = 'range',
+					name = L['Size'],
+					order = 3,
+					min = 8, max = 60, step = 1,
+				},				
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -300, max = 300, step = 1,
+				},
+				yOffset = {
+					order = 5,
+					type = 'range',
+					name = L['yOffset'],
+					min = -300, max = 300, step = 1,
+				},			
+			},
+		},			
 	},
 }
 
@@ -6956,6 +7146,44 @@ E.Options.args.unitframe.args.boss = {
 				},				
 			},
 		},	
+		raidicon = {
+			order = 2000,
+			type = 'group',
+			name = L['Raid Icon'],
+			get = function(info) return E.db.unitframe.units['boss']['raidicon'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['boss']['raidicon'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
+			args = {
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},	
+				attachTo = {
+					type = 'select',
+					order = 2,
+					name = L['Position'],
+					values = positionValues,
+				},
+				size = {
+					type = 'range',
+					name = L['Size'],
+					order = 3,
+					min = 8, max = 60, step = 1,
+				},				
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -300, max = 300, step = 1,
+				},
+				yOffset = {
+					order = 5,
+					type = 'range',
+					name = L['yOffset'],
+					min = -300, max = 300, step = 1,
+				},			
+			},
+		},	
 	},
 }
 
@@ -8459,7 +8687,45 @@ E.Options.args.unitframe.args.party = {
 					min = -500, max = 500, step = 1,	
 				},					
 			},
-		},		
+		},	
+		raidicon = {
+			order = 2000,
+			type = 'group',
+			name = L['Raid Icon'],
+			get = function(info) return E.db.unitframe.units['party']['raidicon'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['party']['raidicon'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
+			args = {
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},	
+				attachTo = {
+					type = 'select',
+					order = 2,
+					name = L['Position'],
+					values = positionValues,
+				},
+				size = {
+					type = 'range',
+					name = L['Size'],
+					order = 3,
+					min = 8, max = 60, step = 1,
+				},				
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -300, max = 300, step = 1,
+				},
+				yOffset = {
+					order = 5,
+					type = 'range',
+					name = L['yOffset'],
+					min = -300, max = 300, step = 1,
+				},			
+			},
+		},			
 	},
 }
 
@@ -9125,7 +9391,45 @@ for i=10, 40, 15 do
 						min = 7, max = 22, step = 1,
 					},				
 				},
-			},		
+			},
+			raidicon = {
+				order = 2000,
+				type = 'group',
+				name = L['Raid Icon'],
+				get = function(info) return E.db.unitframe.units['raid'..i]['raidicon'][ info[#info] ] end,
+				set = function(info, value) E.db.unitframe.units['raid'..i]['raidicon'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
+				args = {
+					enable = {
+						type = 'toggle',
+						order = 1,
+						name = L['Enable'],
+					},	
+					position = {
+						type = 'select',
+						order = 2,
+						name = L['Position'],
+						values = positionValues,
+					},
+					size = {
+						type = 'range',
+						name = L['Size'],
+						order = 3,
+						min = 8, max = 30, step = 1,
+					},				
+					xOffset = {
+						order = 4,
+						type = 'range',
+						name = L['xOffset'],
+						min = -300, max = 300, step = 1,
+					},
+					yOffset = {
+						order = 5,
+						type = 'range',
+						name = L['yOffset'],
+						min = -300, max = 300, step = 1,
+					},			
+				},
+			},			
 		},
 	}
 end
