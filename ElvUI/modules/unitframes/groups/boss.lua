@@ -21,7 +21,7 @@ function UF:Construct_BossFrames(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	
 	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT')
-	
+	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.AltPowerBar = self:Construct_AltPowerBar(frame)
 	
 	frame:SetAttribute("type2", "focus")
