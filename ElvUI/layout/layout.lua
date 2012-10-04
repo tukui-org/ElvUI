@@ -309,7 +309,9 @@ end
 
 function ExtraDataBarSetup()
 	ChatTab_Datatext_Panel:Show()
-	Bottom_Datatext_Panel:Show()
+	if E.private.actionbar.enable then
+		Bottom_Datatext_Panel:Show()
+	end
 end
 
 function LO:PLAYER_ENTERING_WORLD(...)
