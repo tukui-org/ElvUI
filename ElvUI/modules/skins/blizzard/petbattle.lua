@@ -262,6 +262,14 @@ end)
 	bar:SetFrameLevel(0)
 	bar:SetFrameStrata('BACKGROUND')
 	bar.backdropTexture:SetDrawLayer('BACKGROUND', 0)
+	bar:SetScript('OnShow', function(self)
+		if not self.initialShow then
+			self.initialShow = true;
+			return;
+		end
+		
+		self.backdropTexture:SetDrawLayer('BACKGROUND', 1)
+	end)
 	
 	bf:StripTextures()
 	bf.TurnTimer:StripTextures()

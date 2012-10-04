@@ -1908,6 +1908,12 @@ E.Options.args.unitframe.args.player = {
 							name = L['Allow Dispellable Auras'],
 							desc = L['Allow Dispellable Auras'],
 						},
+						noConsolidated = {
+							order = 14,
+							type = 'toggle',
+							name = L["Block Raid Buffs"],
+							desc = L["Block Raid Buffs"],		
+						},						
 						useFilter = {
 							order = 15,
 							name = L['Additional Filter'],

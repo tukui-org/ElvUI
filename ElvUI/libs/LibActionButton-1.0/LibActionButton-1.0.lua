@@ -936,11 +936,13 @@ function Update(self)
 		UpdateUsable(self)
 		UpdateCooldown(self)
 		UpdateFlash(self)
+		self.count:SetAlpha(1)
 	else
 		ActiveButtons[self] = nil
 		if gridCounter == 0 and not self.config.showGrid then
 			self:SetAlpha(0.0)
 		end
+		self.count:SetAlpha(0)
 		self.cooldown:Hide()
 	end
 
