@@ -213,12 +213,15 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E:UpdateAll(true)
 	end
 	
-	InstallStatus:SetStatusBarColor(unpack(E['media'].rgbvaluecolor))
 	
-	if InstallStepComplete and not noDisplayMsg then
-		InstallStepComplete.message = L["Theme Set"]
-		InstallStepComplete:Show()		
-	end	
+	if InstallStatus then
+		InstallStatus:SetStatusBarColor(unpack(E['media'].rgbvaluecolor))
+		
+		if InstallStepComplete and not noDisplayMsg then
+			InstallStepComplete.message = L["Theme Set"]
+			InstallStepComplete:Show()		
+		end	
+	end
 end
 
 function E:SetupResolution(noDataReset)
