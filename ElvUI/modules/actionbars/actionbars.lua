@@ -799,7 +799,12 @@ function AB:Initialize()
 	self:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
 	self:RegisterEvent('UPDATE_VEHICLE_ACTIONBAR', 'VehicleFix')
 	self:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR', 'VehicleFix')
-	self:ReassignBindings()
+	
+	if C_PetBattles.IsInBattle() then
+		self:RemoveBindings()
+	else
+		self:ReassignBindings()
+	end
 	
 	self:SecureHook('ActionButton_ShowOverlayGlow')
 	
