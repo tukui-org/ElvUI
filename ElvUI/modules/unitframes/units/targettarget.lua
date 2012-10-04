@@ -240,7 +240,24 @@ function UF:Update_TargetTargetFrame(frame, db)
 		else
 			debuffs:Hide()
 		end
-	end	
+	end
+
+	--Raid Icon
+	do
+		local RI = frame.RaidIcon
+		if db.raidicon.enable then
+			frame:EnableElement('RaidIcon')
+			RI:Show()
+			RI:Size(db.raidicon.size)
+			
+			local x, y = self:GetPositionOffset(db.raidicon.attachTo)
+			RI:ClearAllPoints()
+			RI:Point(db.raidicon.attachTo, frame, db.raidicon.attachTo, x + db.raidicon.xOffset, y + db.raidicon.yOffset)	
+		else
+			frame:DisableElement('RaidIcon')	
+			RI:Hide()
+		end
+	end		
 	
 	if db.customTexts then
 		for objectName, _ in pairs(db.customTexts) do

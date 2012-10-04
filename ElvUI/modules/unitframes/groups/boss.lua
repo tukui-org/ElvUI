@@ -21,7 +21,7 @@ function UF:Construct_BossFrames(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	
 	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT')
-	
+	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.AltPowerBar = self:Construct_AltPowerBar(frame)
 	
 	frame:SetAttribute("type2", "focus")
@@ -255,6 +255,7 @@ function UF:Update_BossFrames(frame, db)
 		frame.Debuffs:ClearAllPoints()
 	end
 	
+	
 	--Buffs
 	do
 		local buffs = frame.Buffs
@@ -359,6 +360,23 @@ function UF:Update_BossFrames(frame, db)
 			frame:DisableElement('Castbar')	
 		end			
 	end
+	
+	--Raid Icon
+	do
+		local RI = frame.RaidIcon
+		if db.raidicon.enable then
+			frame:EnableElement('RaidIcon')
+			RI:Show()
+			RI:Size(db.raidicon.size)
+			
+			local x, y = self:GetPositionOffset(db.raidicon.attachTo)
+			RI:ClearAllPoints()
+			RI:Point(db.raidicon.attachTo, frame, db.raidicon.attachTo, x + db.raidicon.xOffset, y + db.raidicon.yOffset)	
+		else
+			frame:DisableElement('RaidIcon')	
+			RI:Hide()
+		end
+	end		
 	
 	--AltPowerBar
 	do

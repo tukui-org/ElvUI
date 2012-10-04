@@ -387,6 +387,13 @@ P['unitframe'] = {
 				['friendlyAuraType'] = 'HELPFUL',
 				['enemyAuraType'] = 'HARMFUL'
 			},
+			['raidicon'] = {
+				['enable'] = true,
+				['size'] = 18,
+				['attachTo'] = 'TOP',
+				['xOffset'] = 0,
+				['yOffset'] = 10,
+			},
 		},	
 		['target'] = {
 			['enable'] = true,
@@ -479,6 +486,13 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['friendlyAuraType'] = 'HELPFUL',
 				['enemyAuraType'] = 'HARMFUL'				
+			},	
+			['raidicon'] = {
+				['enable'] = true,
+				['size'] = 18,
+				['attachTo'] = 'TOP',
+				['xOffset'] = 0,
+				['yOffset'] = 10,
 			},			
 		},
 		['targettarget'] = {
@@ -536,6 +550,13 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+			},	
+			['raidicon'] = {
+				['enable'] = true,
+				['size'] = 18,
+				['attachTo'] = 'TOP',
+				['xOffset'] = 0,
+				['yOffset'] = 10,
 			},			
 		},
 		['focus'] = {
@@ -617,7 +638,14 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['friendlyAuraType'] = 'HELPFUL',
 				['enemyAuraType'] = 'HARMFUL'				
-			},				
+			},	
+			['raidicon'] = {
+				['enable'] = true,
+				['size'] = 18,
+				['attachTo'] = 'TOP',
+				['xOffset'] = 0,
+				['yOffset'] = 10,
+			},			
 		},	
 		['focustarget'] = {
 			['enable'] = true,
@@ -674,6 +702,13 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+			},
+			['raidicon'] = {
+				['enable'] = true,
+				['size'] = 18,
+				['attachTo'] = 'TOP',
+				['xOffset'] = 0,
+				['yOffset'] = 10,
 			},			
 		},				
 		['pet'] = {
@@ -870,7 +905,14 @@ P['unitframe'] = {
 				['icon'] = true,
 				['format'] = 'REMAINING',
 				['spark'] = true,
-			},					
+			},		
+			['raidicon'] = {
+				['enable'] = true,
+				['size'] = 18,
+				['attachTo'] = 'TOP',
+				['xOffset'] = 0,
+				['yOffset'] = 10,
+			},			
 		},	
 		['arena'] = {
 			['enable'] = true,
@@ -1052,6 +1094,13 @@ P['unitframe'] = {
 				['xOffset'] = 0,
 				['yOffset'] = 3,
 			},				
+			['raidicon'] = {
+				['enable'] = true,
+				['size'] = 18,
+				['attachTo'] = 'TOP',
+				['xOffset'] = 0,
+				['yOffset'] = 10,
+			},
 		},
 		['raid10'] = {
 			['enable'] = true,
@@ -1145,7 +1194,14 @@ P['unitframe'] = {
 			['raidRoleIcons'] = {
 				['enable'] = true,
 				['position'] = 'TOPLEFT',
-			},				
+			},	
+			['raidicon'] = {
+				['enable'] = true,
+				['size'] = 18,
+				['attachTo'] = 'TOP',
+				['xOffset'] = 0,
+				['yOffset'] = 10,
+			},			
 		},			
 		['raid25'] = {
 			['enable'] = true,
@@ -1239,7 +1295,14 @@ P['unitframe'] = {
 			['raidRoleIcons'] = {
 				['enable'] = true,
 				['position'] = 'TOPLEFT',
-			},				
+			},	
+			['raidicon'] = {
+				['enable'] = true,
+				['size'] = 18,
+				['attachTo'] = 'TOP',
+				['xOffset'] = 0,
+				['yOffset'] = 10,
+			},			
 		},					
 		['raid40'] = {
 			['enable'] = true,
@@ -1333,7 +1396,14 @@ P['unitframe'] = {
 				['size'] = 8,
 				['fontSize'] = 10,
 				['colorIcons'] = true,
-			},		
+			},	
+			['raidicon'] = {
+				['enable'] = true,
+				['size'] = 18,
+				['attachTo'] = 'TOP',
+				['xOffset'] = 0,
+				['yOffset'] = 10,
+			},			
 		},	
 		['tank'] = {
 			['enable'] = true,

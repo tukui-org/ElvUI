@@ -568,9 +568,9 @@ function CH:AddMessage(text, ...)
 			timeStamp = timeStamp:gsub('PM', ' PM')
 			text = '|cffB3B3B3['..timeStamp..'] |r'..text
 		end
-			
-		text = text:gsub('|Hplayer:Elvz:', '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t|Hplayer:Elvz:')
-		text = text:gsub('|Hplayer:Elvz%-', '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t|Hplayer:Elvz%-')
+
+		text = text:gsub('|Hplayer:Elvz:', '|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t|Hplayer:Elvz:')
+		text = text:gsub('|Hplayer:Elvz%-', '|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t|Hplayer:Elvz%-')
 		CH.timeOverride = nil;
 	end
 
@@ -666,7 +666,7 @@ local sizes = {
 	":14:14",
 	":15:15",
 	":16:16",
-	":12:20",
+	":13:22",
 	":14",
 	":16",
 }
@@ -1117,7 +1117,11 @@ function CH:Initialize()
 		
 		for _, size in pairs(sizes) do
 			if string.find(text, size) and not string.find(text, size.."]") then
-				self:SetText(string.gsub(text, size, ":12:12"))
+				if size == ':13:22' then
+					self:SetText(string.gsub(text, size, ":12:20"))
+				else
+					self:SetText(string.gsub(text, size, ":12:12"))
+				end
 			end		
 		end
 	end)

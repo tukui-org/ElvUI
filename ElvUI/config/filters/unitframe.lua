@@ -736,8 +736,8 @@ G.unitframe.AuraBarColors = {
 	[SpellName(2825)] = {r = 250/255, g = 146/255, b = 27/255},	--Bloodlust
 	[SpellName(32182)] = {r = 250/255, g = 146/255, b = 27/255}, --Heroism
 	[SpellName(80353)] = {r = 250/255, g = 146/255, b = 27/255}, --Time Warp
+	[SpellName(90355)] = {r = 250/255, g = 146/255, b = 27/255}, --Ancient Hysteria
 	[SpellName(84963)] = {r = 250/255, g = 146/255, b = 27/255}, --Inquisition
-	[SpellName(86698)] = {r = 250/255, g = 146/255, b = 27/255}, --Guardian of the Ancients
 }
 
 G.unitframe.InvalidSpells = {
