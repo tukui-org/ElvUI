@@ -191,7 +191,7 @@ function AB:PositionAndSizeBarShapeShift()
 end
 
 function AB:AdjustMaxStanceButtons(event)
-	if InCombatLockdown() then return; end
+	if InCombatLockdown() or C_PetBattles.IsInBattle() then return; end
 	
 	for i=1, #bar.buttons do
 		bar.buttons[i]:Hide()
