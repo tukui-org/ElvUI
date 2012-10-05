@@ -10,7 +10,7 @@ local function formatMoney(money)
 	local silver = mod(floor(math.abs(money) / 100), 100)
 	local copper = mod(floor(math.abs(money)), 100)
 	if gold ~= 0 then
-		return format("%s"..L.goldabbrev.." %s"..L.silverabbrev.." %s"..L.copperabbrev, gold, silver, copper)
+		return format("%s"..L.goldabbrev.." %s"..L.silverabbrev.." %s"..L.copperabbrev, BreakUpLargeNumbers(gold), silver, copper)
 	elseif silver ~= 0 then
 		return format("%s"..L.silverabbrev.." %s"..L.copperabbrev, silver, copper)
 	else
@@ -20,9 +20,10 @@ end
 
 local function FormatTooltipMoney(money)
 	if not money then return end
-	local gold, silver, copper = abs(money / 10000), abs(mod(money / 100, 100)), abs(mod(money, 100))
+	local gold, silver, copper = floor(abs(money / 10000)), abs(mod(money / 100, 100)), abs(mod(money, 100))
 	local cash = ""
-	cash = format("%d"..L.goldabbrev.." %d"..L.silverabbrev.." %d"..L.copperabbrev, gold, silver, copper)
+
+	cash = format("%s"..L.goldabbrev.." %d"..L.silverabbrev.." %d"..L.copperabbrev, BreakUpLargeNumbers(gold), silver, copper)
 	return cash
 end
 
