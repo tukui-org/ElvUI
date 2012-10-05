@@ -228,7 +228,7 @@ function M:Initialize()
 	if not E.private.general.minimap.enable then 
 		Minimap:SetMaskTexture('Textures\\MinimapMask')
 		return; 
-	end
+	end	
 	
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
 	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
@@ -238,6 +238,8 @@ function M:Initialize()
 	Minimap:ClearAllPoints()
 	Minimap:Point("TOPLEFT", mmholder, "TOPLEFT", 2, -2)
 	Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
+	Minimap:SetQuestBlobRingAlpha(0) 
+	Minimap:SetArchBlobRingAlpha(0)	
 	Minimap:CreateBackdrop('Default')
 	Minimap:HookScript('OnEnter', function(self)
 		if E.db.general.minimap.locationText ~= 'MOUSEOVER' or not E.private.general.minimap.enable then return; end
