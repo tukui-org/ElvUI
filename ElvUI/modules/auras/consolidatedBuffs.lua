@@ -181,8 +181,8 @@ function A:UpdateReminder(event, unit)
 			
 			if (duration == 0 and expirationTime == 0) or E.db.auras.consolidatedBuffs.durations ~= true then
 				frame['spell'..i].t:SetAlpha(0.3)
-				frame['spell'..i].timer:SetText(nil)
 				frame['spell'..i]:SetScript('OnUpdate', nil)
+				frame['spell'..i].timer:SetText(nil)
 			else
 				CooldownFrame_SetTimer(frame['spell'..i].cd, expirationTime - duration, duration, 1)
 				frame['spell'..i].t:SetAlpha(1)
@@ -192,9 +192,9 @@ function A:UpdateReminder(event, unit)
 		else
 			CooldownFrame_SetTimer(frame['spell'..i].cd, 0, 0, 0)
 			frame['spell'..i].hasBuff = nil
-			frame['spell'..i].timer:SetText(nil)
 			frame['spell'..i].t:SetAlpha(1)
 			frame['spell'..i]:SetScript('OnUpdate', nil)
+			frame['spell'..i].timer:SetText(nil)
 		end
 	end
 end
