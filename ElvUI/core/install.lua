@@ -462,6 +462,11 @@ function E:SetupLayout(layout, noDataReset)
 				BossButton:SetPoint("BOTTOM",E.UIParent,"BOTTOM",425,75)
 				E:SaveMoverPosition("BossButton")
 			end
+			if AltPowerBarMover then
+				AltPowerBarMover:ClearAllPoints()
+				AltPowerBarMover:SetPoint("BOTTOM",E.UIParent,"BOTTOM",425,75)
+				E:SaveMoverPosition("AltPowerBarMover")
+			end
 		end
 	elseif E.db.lowresolutionset then
 		if not E.db.movers then E.db.movers = {}; end
