@@ -90,33 +90,36 @@ end
 function TOTEMS:Initialize()
 	self.db = E.db.general.totems
 	
-	self.bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent)
-	self.bar:SetPoint('TOPLEFT', LeftChatPanel, 'TOPRIGHT', 4, 0)
+	local bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent)
+	bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent)
+	bar:SetPoint('TOPLEFT', LeftChatPanel, 'TOPRIGHT', 4, 0)
+	self.bar = bar;
 	
 	for i=1, MAX_TOTEMS do
-		self.bar[i] = CreateFrame('Button', self.bar:GetName()..'Totem'..i, self.bar)
-		self.bar[i]:SetID(i)
-		self.bar[i]:SetTemplate('Default')
-		self.bar[i]:StyleButton()
-		self.bar[i]:Hide()
-		self.bar[i]:RegisterForClicks('RightButtonUp')
-		self.bar[i]:SetScript('OnClick', self.OnClick)
-		self.bar[i]:SetScript('OnEnter', self.OnEnter)
-		self.bar[i]:SetScript('OnLeave', self.OnLeave)
+		local frame = CreateFrame('Button', bar:GetName()..'Totem'..i, bar)
+		frame:SetID(i)
+		frame:SetTemplate('Default')
+		frame:StyleButton()
+		frame:Hide()
+		frame:RegisterForClicks('RightButtonUp')
+		frame:SetScript('OnClick', self.OnClick)
+		frame:SetScript('OnEnter', self.OnEnter)
+		frame:SetScript('OnLeave', self.OnLeave)
 		
-		self.bar[i].iconTexture = self.bar[i]:CreateTexture(nil, 'ARTWORK')
-		self.bar[i].iconTexture:SetInside()
-		self.bar[i].iconTexture:SetTexCoord(unpack(E.TexCoords))
+		frame.iconTexture = frame:CreateTexture(nil, 'ARTWORK')
+		frame.iconTexture:SetInside()
+		frame.iconTexture:SetTexCoord(unpack(E.TexCoords))
 		
-		self.bar[i].cooldown = CreateFrame('Cooldown', self.bar[i]:GetName()..'Cooldown', self.bar[i], 'CooldownFrameTemplate')
-		self.bar[i].cooldown:SetReverse(true)
-		self.bar[i].cooldown:SetInside()
+		frame.cooldown = CreateFrame('Cooldown', frame:GetName()..'Cooldown', frame, 'CooldownFrameTemplate')
+		frame.cooldown:SetReverse(true)
+		frame.cooldown:SetInside()
+		self.bar[i] = frame;
 	end
 	
 	self:ToggleEnable()
 	self:PositionAndSize()
-	
-	E:CreateMover(self.bar, 'TotemBarMover', 'Totems');
+
+	E:CreateMover(bar, 'TotemBarMover', 'Totems');
 end
 
 E:RegisterModule(TOTEMS:GetName())
