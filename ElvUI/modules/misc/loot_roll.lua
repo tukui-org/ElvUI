@@ -245,6 +245,7 @@ function M:LoadLootRoll()
 	
 	self:RegisterEvent('LOOT_HISTORY_ROLL_CHANGED')
 	self:RegisterEvent("START_LOOT_ROLL")
+
 	UIParent:UnregisterEvent("START_LOOT_ROLL")
 	UIParent:UnregisterEvent("CANCEL_LOOT_ROLL")
 end
