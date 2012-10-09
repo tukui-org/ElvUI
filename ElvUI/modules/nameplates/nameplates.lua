@@ -16,6 +16,7 @@ NP.Healers = {
 	[L['Restoration']] = true,
 	[L['Holy']] = true,
 	[L['Discipline']] = true,
+	[L['Mistweaver']] = true,
 }
 
 function NP:Initialize()

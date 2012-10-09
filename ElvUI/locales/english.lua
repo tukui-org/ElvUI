@@ -498,6 +498,7 @@ L["Your items have been repaired using guild bank funds for: "] = true;
 L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"] = true; --core\core.lua
 
 --NamePlates
+L['Mistweaver'] = true;
 L["Add Name"] = true;
 L["All"] = true;
 L["Auras"] = true;
