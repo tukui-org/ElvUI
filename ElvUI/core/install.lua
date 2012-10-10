@@ -439,6 +439,11 @@ function E:SetupLayout(layout, noDataReset)
 				BossButton:SetPoint("BOTTOM",E.UIParent,"BOTTOM",425,75)
 				E:SaveMoverPosition("BossButton")
 			end
+			if AltPowerBarMover then
+				AltPowerBarMover:ClearAllPoints()
+				AltPowerBarMover:SetPoint("BOTTOM",E.UIParent,"BOTTOM",425,20)
+				E:SaveMoverPosition("AltPowerBarMover")
+			end
 		else
 			E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464230"
 			E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTElvUIParentBOTTOMRIGHT-464230"
@@ -464,7 +469,7 @@ function E:SetupLayout(layout, noDataReset)
 			end
 			if AltPowerBarMover then
 				AltPowerBarMover:ClearAllPoints()
-				AltPowerBarMover:SetPoint("BOTTOM",E.UIParent,"BOTTOM",425,75)
+				AltPowerBarMover:SetPoint("BOTTOM",E.UIParent,"BOTTOM",425,20)
 				E:SaveMoverPosition("AltPowerBarMover")
 			end
 		end
