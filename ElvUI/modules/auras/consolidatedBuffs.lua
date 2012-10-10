@@ -183,6 +183,7 @@ function A:UpdateReminder(event, unit)
 				frame['spell'..i].t:SetAlpha(0.3)
 				frame['spell'..i]:SetScript('OnUpdate', nil)
 				frame['spell'..i].timer:SetText(nil)
+				CooldownFrame_SetTimer(frame['spell'..i].cd, 0, 0, 0)
 			else
 				CooldownFrame_SetTimer(frame['spell'..i].cd, expirationTime - duration, duration, 1)
 				frame['spell'..i].t:SetAlpha(1)
