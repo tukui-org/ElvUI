@@ -646,6 +646,7 @@ G.unitframe.buffwatch = {
 		ClassBuff(41635, "BOTTOMRIGHT", {0.2, 0.7, 0.2}),	 -- Prayer of Mending
 		ClassBuff(139, "BOTTOMLEFT", {0.4, 0.7, 0.2}), -- Renew
 		ClassBuff(17, "TOPLEFT", {0.81, 0.85, 0.1}, true),	 -- Power Word: Shield
+		ClassBuff(123258, "TOPLEFT", {0.81, 0.85, 0.1}, true),	 -- Power Word: Shield Power Insight
 		ClassBuff(10060 , "RIGHT", {227/255, 23/255, 13/255}), -- Power Infusion
 		ClassBuff(47788, "LEFT", {221/255, 117/255, 0}, true), -- Guardian Spirit
 		ClassBuff(33206, "LEFT", {227/255, 23/255, 13/255}, true), -- Pain Suppression		

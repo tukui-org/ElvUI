@@ -54,6 +54,7 @@ A.CriticalStrike = {
 	[126309] = 'HUNTER', -- Still Water
 	[24604] = 'HUNTER', -- Furious Howl
 	[90309] = 'HUNTER', -- Terrifying Roar
+	[126373] = 'HUNTER', -- Fearless Roar
 	[1459] = 'MAGE', -- Arcane Brilliance
 	[61316] = 'MAGE', -- Dalaran Brilliance
 	[24932] = 'DRUID', -- Leader of The Pact
