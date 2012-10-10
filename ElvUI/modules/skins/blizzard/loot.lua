@@ -104,6 +104,16 @@ local function LoadSkin()
 			end
 		end
 	end) 
+	
+	BonusRollFrame:StripTextures()
+	BonusRollFrame:SetTemplate('Transparent')
+	BonusRollFrame.PromptFrame.Icon:SetTexCoord(unpack(E.TexCoords))
+	BonusRollFrame.PromptFrame.IconBackdrop = CreateFrame("Frame", nil, BonusRollFrame.PromptFrame)
+	BonusRollFrame.PromptFrame.IconBackdrop:SetFrameLevel(BonusRollFrame.PromptFrame.IconBackdrop:GetFrameLevel() - 1)
+	BonusRollFrame.PromptFrame.IconBackdrop:SetOutside(BonusRollFrame.PromptFrame.Icon)
+	BonusRollFrame.PromptFrame.IconBackdrop:SetTemplate()	
+	BonusRollFrame.PromptFrame.Timer.Bar:SetTexture(1, 1, 1)
+	BonusRollFrame.PromptFrame.Timer.Bar:SetVertexColor(1, 1, 1)
 end
 
 S:RegisterSkin("ElvUI", LoadSkin)
