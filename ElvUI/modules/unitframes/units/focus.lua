@@ -25,7 +25,7 @@ function UF:Construct_FocusFrame(frame)
 	
 	table.insert(frame.__elements, UF.SmartAuraDisplay)
 	frame:RegisterEvent('PLAYER_FOCUS_CHANGED', UF.SmartAuraDisplay)	
-
+	
 	frame:Point('BOTTOMRIGHT', ElvUF_Target, 'TOPRIGHT', 0, 220)
 	E:CreateMover(frame, frame:GetName()..'Mover', 'Focus Frame', nil, nil, nil, 'ALL,SOLO')
 end

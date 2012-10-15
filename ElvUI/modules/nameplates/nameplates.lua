@@ -41,12 +41,13 @@ function NP:Initialize()
 			NP:ForEachPlate(NP.UpdateThreat)
 			NP:ForEachPlate(NP.CheckUnit_Guid)
 			NP:ForEachPlate(NP.CheckRaidIcon)
+			NP:ForEachPlate(NP.Update_LevelText)
 			self.elapsed = 0
 		else
 			self.elapsed = (self.elapsed or 0) + elapsed
 		end
 	end)	
-	
+
 	self:UpdateAllPlates()
 end
 
@@ -138,6 +139,9 @@ function NP:HideObjects(frame)
 		if object:GetObjectType() == "Texture" then
 			object.OldTexture = object:GetTexture()
 			object:SetTexture(nil)
+			object:SetTexCoord(0, 0, 0, 0)
+		elseif object:GetObjectType() == 'FontString' then
+			object:SetWidth(0.001)
 		end
 		
 		object:Hide()
@@ -186,6 +190,32 @@ function NP:Colorize(frame)
 	frame.hp:SetStatusBarColor(r,g,b)
 end
 
+function NP:Update_LevelText(frame)
+	frame.hp.oldlevel = select(5, frame:GetRegions())
+	
+	if frame.hp.oldlevel:IsShown() then
+		if self.db.showlevel == true then
+			local level, elite, mylevel = tonumber(frame.hp.oldlevel:GetText()), frame.hp.elite:IsShown(), UnitLevel("player")
+
+			if frame.hp.boss:IsShown() then
+				frame.hp.level:SetText("??")
+				frame.hp.level:SetTextColor(0.8, 0.05, 0)
+				frame.hp.level:Show()
+			elseif not elite and level == mylevel then
+				frame.hp.level:Hide()
+			elseif level then
+				frame.hp.level:SetText(level..(elite and "+" or ""))
+				frame.hp.level:SetTextColor(frame.hp.oldlevel:GetTextColor())
+				frame.hp.level:Show()
+			end
+			
+			frame.hp.oldlevel:SetWidth(000.1)
+		elseif frame.hp.level then
+			frame.hp.level:Hide()
+		end	
+	end
+end
+
 function NP:HealthBar_OnShow(self, frame)
 	if self.GetParent then frame = self; self = NP end
 	frame = frame:GetParent()
@@ -215,23 +245,7 @@ function NP:HealthBar_OnShow(self, frame)
 	frame.hp.name:SetText(frame.hp.oldname:GetText())	
 
 	--Level Text
-	if self.db.showlevel == true then
-		local level, elite, mylevel = tonumber(frame.hp.oldlevel:GetText()), frame.hp.elite:IsShown(), UnitLevel("player")
-		
-		frame.hp.level:SetTextColor(frame.hp.oldlevel:GetTextColor())
-		if frame.hp.boss:IsShown() then
-			frame.hp.level:SetText("??")
-			frame.hp.level:SetTextColor(0.8, 0.05, 0)
-			frame.hp.level:Show()
-		elseif not elite and level == mylevel then
-			frame.hp.level:Hide()
-		elseif level then
-			frame.hp.level:SetText(level..(elite and "+" or ""))
-			frame.hp.level:Show()
-		end
-	elseif frame.hp.level then
-		frame.hp.level:Hide()
-	end	
+	NP:Update_LevelText(frame)
 	
 	NP.ScanHealth(frame.oldhp)
 	NP:CheckFilter(frame)
@@ -727,7 +741,6 @@ function NP:CheckArenaHealers()
 	local inInstance, instanceType = IsInInstance()
 	if inInstance and instanceType == 'arena' then
 		local numOpps = GetNumArenaOpponentSpecs()
-		table.wipe(self.BattleGroundHealers)
 		for i=1, numOpps do
 			local specID = GetArenaOpponentSpec(i)
 			local unit = 'arena'..i

@@ -274,6 +274,8 @@ function E:UpdateFontTemplates()
 	end
 end
 
+
+
 --This frame everything in ElvUI should be anchored to for Eyefinity support.
 E.UIParent = CreateFrame('Frame', 'ElvUIParent', UIParent);
 E.UIParent:SetFrameLevel(UIParent:GetFrameLevel());
