@@ -80,7 +80,7 @@ function AB:PositionAndSizeBar(barName)
 
 	bar:SetWidth(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
 	bar:SetHeight(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
-	
+
 	bar.mouseover = self.db[barName].mouseover
 	
 	if self.db[barName].backdrop == true then
@@ -128,7 +128,7 @@ function AB:PositionAndSizeBar(barName)
 				self:HookScript(button, 'OnLeave', 'Button_OnLeave');					
 			end
 		else
-			bar:SetAlpha(1);
+			bar:SetAlpha(self.db[barName].alpha);
 			if self.hooks[bar] then
 				self:Unhook(bar, 'OnEnter');
 				self:Unhook(bar, 'OnLeave');
@@ -191,7 +191,7 @@ function AB:PositionAndSizeBar(barName)
 		bar:SetScale(1);
 		
 		if not self.db[barName].mouseover then
-			bar:SetAlpha(1);
+			bar:SetAlpha(self.db[barName].alpha);
 		end
 	else
 		bar:SetScale(0.000001);
@@ -423,7 +423,7 @@ function AB:StyleButton(button, noBackdrop)
 end
 
 function AB:Bar_OnEnter(bar)
-	E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), 1)
+	E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
 end
 
 function AB:Bar_OnLeave(bar)
@@ -432,7 +432,7 @@ end
 
 function AB:Button_OnEnter(button)
 	local bar = button:GetParent()
-	E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), 1)
+	E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
 end
 
 function AB:Button_OnLeave(button)

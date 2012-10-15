@@ -98,7 +98,7 @@ function AB:PositionAndSizeBarPet()
 	bar.mouseover = self.db['barPet'].mouseover
 	if self.db['barPet'].enabled then
 		bar:SetScale(1);
-		bar:SetAlpha(1);
+		bar:SetAlpha(bar.db.alpha);
 	else
 		bar:SetScale(0.000001);
 		bar:SetAlpha(0);
@@ -151,7 +151,7 @@ function AB:PositionAndSizeBarPet()
 				self:HookScript(button, 'OnLeave', 'Button_OnLeave');					
 			end
 		else
-			bar:SetAlpha(1);
+			bar:SetAlpha(bar.db.alpha);
 			if self.hooks[bar] then
 				self:Unhook(bar, 'OnEnter');
 				self:Unhook(bar, 'OnLeave');	
@@ -204,7 +204,7 @@ function AB:PositionAndSizeBarPet()
 			button:SetAlpha(0);
 		else
 			button:SetScale(1);
-			button:SetAlpha(1);
+			button:SetAlpha(bar.db.alpha);
 		end
 		
 		self:StyleButton(button);
