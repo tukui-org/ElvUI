@@ -746,18 +746,17 @@ end
 function AB:VehicleFix()
 	local barName = 'bar1'
 	local bar = self["handledBars"][barName]
-	if HasOverrideActionBar() or HasVehicleActionBar() then
+	local spacing = E:Scale(self.db[barName].buttonspacing);
+	local numButtons = self.db[barName].buttons;
+	local buttonsPerRow = self.db[barName].buttonsPerRow;		
+	local size = E:Scale(self.db[barName].buttonsize);
+	local point = self.db[barName].point;
+	local numColumns = ceil(numButtons / buttonsPerRow);
+		
+	if (HasOverrideActionBar() or HasVehicleActionBar()) and numButtons == 12 then
 		local widthMult = 1;
 		local heightMult = 1;
-		local spacing = E:Scale(self.db[barName].buttonspacing);
-		local buttonsPerRow = self.db[barName].buttonsPerRow;
-		local numButtons = self.db[barName].buttons;
-		local size = E:Scale(self.db[barName].buttonsize);
-		local point = self.db[barName].point;
-		local numColumns = ceil(numButtons / buttonsPerRow);
 	
-		widthMult = 1
-		heightMult = 1
 		bar.backdrop:ClearAllPoints()
 		bar.backdrop:SetPoint(self.db[barName].point, bar, self.db[barName].point)
 		bar.backdrop:SetWidth(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
