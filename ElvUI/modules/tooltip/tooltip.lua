@@ -567,11 +567,11 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		local left = ""
 		local right = ""
 		
-		if link ~= nil then
+		if link ~= nil and TT.db.spellid then
 			left = "|cFFCA3C3C"..ID.."|r "..link:match(":(%w+)")
 		end
 		
-		if num > 1  then
+		if num > 1 and self.db.count then
 			right = "|cFFCA3C3C"..L['Count'].."|r "..num
 		end
 		
@@ -694,7 +694,7 @@ function TT:Initialize()
 	--SpellIDs
 	hooksecurefunc(GameTooltip, "SetUnitBuff", function(self,...)
 		local id = select(11,UnitBuff(...))
-		if id then
+		if id and TT.db.spellid then
 			self:AddLine("|cFFCA3C3C"..ID.."|r".." "..id)
 			self:Show()
 			self.forceRefresh = true;
@@ -703,7 +703,7 @@ function TT:Initialize()
 
 	hooksecurefunc(GameTooltip, "SetUnitDebuff", function(self,...)
 		local id = select(11,UnitDebuff(...))
-		if id then
+		if id and TT.db.spellid then
 			self:AddLine("|cFFCA3C3C"..ID.."|r".." "..id)
 			self:Show()
 			self.forceRefresh = true;
@@ -712,7 +712,7 @@ function TT:Initialize()
 
 	hooksecurefunc(GameTooltip, "SetUnitAura", function(self,...)
 		local id = select(11,UnitAura(...))
-		if id then
+		if id and TT.db.spellid then
 			self:AddLine("|cFFCA3C3C"..ID.."|r".." "..id)
 			self:Show()
 			self.forceRefresh = true;
@@ -720,7 +720,7 @@ function TT:Initialize()
 	end)
 
 	hooksecurefunc("SetItemRef", function(link, text, button, chatFrame)
-		if string.find(link,"^spell:") then
+		if string.find(link,"^spell:") and TT.db.spellid then
 			local id = string.sub(link,7)
 			ItemRefTooltip:AddLine("|cFFCA3C3C"..ID.."|r".." "..id)
 			ItemRefTooltip:Show()
@@ -729,7 +729,7 @@ function TT:Initialize()
 
 	GameTooltip:HookScript("OnTooltipSetSpell", function(self)
 		local id = select(3,self:GetSpell())
-		if id then
+		if id and TT.db.spellid then
 			self:AddLine("|cFFCA3C3C"..ID.."|r".." "..id)
 			self:Show()
 			self.forceRefresh = true;

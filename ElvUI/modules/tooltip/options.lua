@@ -82,6 +82,18 @@ E.Options.args.tooltip = {
 					name = L['Talent Spec'],
 					desc = L['Display the players talent spec in the tooltip, this may not immediately update when mousing over a unit.'],
 				},
+				spellid = {
+					order = 8,
+					type = 'toggle',
+					name = L['Spell/Item IDs'],
+					desc = L['Display the spell or item ID when mousing over a spell or item tooltip.'],				
+				},
+				count = {
+					order = 9,
+					type = 'toggle',
+					name = L['Item Count'],
+					desc = L['Display how many of a certain item you have in your possession.'],				
+				},				
 			},
 		},
 	},

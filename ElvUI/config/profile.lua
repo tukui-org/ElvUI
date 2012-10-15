@@ -204,6 +204,8 @@ P['tooltip'] = {
 	['titles'] = true,
 	['guildranks'] = true,
 	['talentSpec'] = true,
+	['count'] = true,
+	['spellid'] = true,
 }
 
 --UnitFrame
