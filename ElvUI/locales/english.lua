@@ -13,6 +13,7 @@ if not L then return; end
 L["A taint has occured that is preventing you from using your talents/glyphs, this can happen if you've inspected someone. Unfortionatly theres nothing we can do to fix it, please reload your ui and try again."] = true;
 
 --ActionBars
+L['Alpha'] = true;
 L[" |cff00ff00bound to |r"] = true;
 L["Action Paging"] = true;
 L["ActionBars"] = true;
@@ -252,6 +253,8 @@ Example: Interface\AddOns\ElvUI\media\textures\copy
 Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = true;
 
 --Config / Install
+L["You have changed the pixel perfect option. You will have to complete the installation process to remove any graphical bugs."] = true;
+L['Pixel Perfect'] = true;
 L["Auras Set"] = true;
 L["Auras System"] = true;
 L["Caster DPS"] = true;
@@ -410,6 +413,8 @@ L["No locals to dump"] = true;
 L['|cFFE30000Lua error recieved. You can view the error message when you exit combat.'] = true;
 
 --General
+L['Bottom Panel'] = true;
+L['Display a panel across the bottom of the screen. This is for cosmetic only.'] = true;
 L["Accept Invites"] = true;
 L['Adjust the position of the threat bar to either the left or right datatext panels.'] = true;
 L['Adjust the size of the minimap.'] = true;
@@ -625,6 +630,10 @@ L["You have changed your UIScale, however you still have the AutoScale option en
 L["You must purchase a bank slot first!"] = true;
 
 --Tooltip
+L['Spell/Item IDs'] = true;
+L['Display the spell or item ID when mousing over a spell or item tooltip.'] = true;
+L['Item Count'] = true;
+L['Display how many of a certain item you have in your possession.'] = true;
 L['Always Hide'] = true;
 L["Anchor Mode"] = true;
 L["Anchor"] = true;

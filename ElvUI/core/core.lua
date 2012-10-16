@@ -26,6 +26,9 @@ E['valueColorUpdateFuncs'] = {};
 E.TexCoords = {.08, .92, .08, .92}
 E.FrameLocks = {}
 E.CreditsList = {};
+E.Spacing = 1;
+E.Border = 2;
+E.PixelMode = tr;
 
 E.InversePoints = {
 	TOP = 'BOTTOM',
@@ -273,6 +276,8 @@ function E:UpdateFontTemplates()
 		end
 	end
 end
+
+
 
 --This frame everything in ElvUI should be anchored to for Eyefinity support.
 E.UIParent = CreateFrame('Frame', 'ElvUIParent', UIParent);
@@ -526,6 +531,7 @@ function E:UpdateAll(ignoreInstall)
 	self:UpdateFrameTemplates()
 	
 	self:GetModule('Layout'):ToggleChatPanels()	
+	self:GetModule('Layout'):BottomPanelVisibility()
 	
 	collectgarbage('collect');
 end

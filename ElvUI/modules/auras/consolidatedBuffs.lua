@@ -320,16 +320,16 @@ function A:Update_ConsolidatedBuffsSettings()
 		
 		frame['spell'..i].t:SetAlpha(1)
 		frame['spell'..i]:ClearAllPoints()
-		frame['spell'..i]:Size(E.ConsolidatedBuffsWidth - 4)
+		frame['spell'..i]:Size(E.ConsolidatedBuffsWidth - (E.PixelMode and 1 or 4)) -- 4 needs to be 1
 		
 		if i == 1 then
-			frame['spell'..i]:Point("TOP", ElvUI_ConsolidatedBuffs, "TOP", 0, -2)
+			frame['spell'..i]:Point("TOP", ElvUI_ConsolidatedBuffs, "TOP", 0, -(E.PixelMode and 0 or 2)) -- -2 needs to be 0
 		else
-			frame['spell'..i]:Point("TOP", frame['spell'..i - 1], "BOTTOM", 0, -1)
+			frame['spell'..i]:Point("TOP", frame['spell'..i - 1], "BOTTOM", 0, (E.PixelMode and 1 or -1)) -- -1 needs to be 1
 		end
 
 		if i == 6 and E.db.auras.consolidatedBuffs.filter or i == 8 then
-			frame['spell'..i]:Point("BOTTOM", ElvUI_ConsolidatedBuffs, "BOTTOM", 0, 2)
+			frame['spell'..i]:Point("BOTTOM", ElvUI_ConsolidatedBuffs, "BOTTOM", 0, (E.PixelMode and 0 or 2)) --2 needs to be 0
 		end
 		
 		if E.db.auras.consolidatedBuffs.filter and i > 6 then
@@ -368,8 +368,8 @@ function A:Construct_ConsolidatedBuffs()
 	local frame = CreateFrame('Frame', 'ElvUI_ConsolidatedBuffs', Minimap)
 	frame:SetTemplate('Default')
 	frame:Width(E.ConsolidatedBuffsWidth)
-	frame:Point('TOPLEFT', Minimap.backdrop, 'TOPRIGHT', 1, 0)
-	frame:Point('BOTTOMLEFT', Minimap.backdrop, 'BOTTOMRIGHT', 1, 0)
+	frame:Point('TOPLEFT', Minimap.backdrop, 'TOPRIGHT', (E.PixelMode and -1 or 1), 0)
+	frame:Point('BOTTOMLEFT', Minimap.backdrop, 'BOTTOMRIGHT', (E.PixelMode and -1 or 1), 0)
 	self.frame = frame
 	
 	for i=1, NUM_LE_RAID_BUFF_TYPES do

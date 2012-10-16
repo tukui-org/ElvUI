@@ -156,7 +156,15 @@ E.Options.args.general = {
 					desc = L["Don't scale the large world map to block out sides of the screen."],
 					get = function(info) return E.db.general.tinyWorldMap end,
 					set = function(info, value) E.db.general.tinyWorldMap = value; E:GetModule('WorldMap'):ToggleTinyWorldMapSetting() end					
-				},				
+				},	
+				bottomPanel = {
+					order = 15,
+					type = 'toggle',
+					name = L['Bottom Panel'],
+					desc = L['Display a panel across the bottom of the screen. This is for cosmetic only.'],
+					get = function(info) return E.db.general.bottomPanel end,
+					set = function(info, value) E.db.general.bottomPanel = value; E:GetModule('Layout'):BottomPanelVisibility() end						
+				},
 			},
 		},	
 		minimap = {

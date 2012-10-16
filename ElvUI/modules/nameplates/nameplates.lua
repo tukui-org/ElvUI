@@ -41,12 +41,13 @@ function NP:Initialize()
 			NP:ForEachPlate(NP.UpdateThreat)
 			NP:ForEachPlate(NP.CheckUnit_Guid)
 			NP:ForEachPlate(NP.CheckRaidIcon)
+			NP:ForEachPlate(NP.Update_LevelText)
 			self.elapsed = 0
 		else
 			self.elapsed = (self.elapsed or 0) + elapsed
 		end
 	end)	
-	
+
 	self:UpdateAllPlates()
 end
 
@@ -69,51 +70,63 @@ function NP:CreateVirtualFrame(parent, point)
 	local noscalemult = E.mult * UIParent:GetScale()
 	
 	if point.backdrop then return end
-	point.backdrop = parent:CreateTexture(nil, "BORDER")
-	point.backdrop:SetDrawLayer("BORDER", -8)
-	point.backdrop:SetPoint("TOPLEFT", point, "TOPLEFT", -noscalemult*3, noscalemult*3)
-	point.backdrop:SetPoint("BOTTOMRIGHT", point, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
-	point.backdrop:SetTexture(0, 0, 0, 1)
 
-	point.backdrop2 = parent:CreateTexture(nil, "BORDER")
-	point.backdrop2:SetDrawLayer("BORDER", -7)
+	
+	point.backdrop2 = parent:CreateTexture(nil, "BORDER", -7)
 	point.backdrop2:SetAllPoints(point)
-	point.backdrop2:SetTexture(unpack(E["media"].backdropcolor))	
+	point.backdrop2:SetTexture(unpack(E["media"].backdropcolor))		
 	
-	point.bordertop = parent:CreateTexture(nil, "BORDER")
-	point.bordertop:SetPoint("TOPLEFT", point, "TOPLEFT", -noscalemult*2, noscalemult*2)
-	point.bordertop:SetPoint("TOPRIGHT", point, "TOPRIGHT", noscalemult*2, noscalemult*2)
-	point.bordertop:SetHeight(noscalemult)
-	point.bordertop:SetTexture(unpack(E["media"].bordercolor))	
-	point.bordertop:SetDrawLayer("BORDER", -7)
-	
-	point.borderbottom = parent:CreateTexture(nil, "BORDER")
-	point.borderbottom:SetPoint("BOTTOMLEFT", point, "BOTTOMLEFT", -noscalemult*2, -noscalemult*2)
-	point.borderbottom:SetPoint("BOTTOMRIGHT", point, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
-	point.borderbottom:SetHeight(noscalemult)
-	point.borderbottom:SetTexture(unpack(E["media"].bordercolor))	
-	point.borderbottom:SetDrawLayer("BORDER", -7)
-	
-	point.borderleft = parent:CreateTexture(nil, "BORDER")
-	point.borderleft:SetPoint("TOPLEFT", point, "TOPLEFT", -noscalemult*2, noscalemult*2)
-	point.borderleft:SetPoint("BOTTOMLEFT", point, "BOTTOMLEFT", noscalemult*2, -noscalemult*2)
-	point.borderleft:SetWidth(noscalemult)
-	point.borderleft:SetTexture(unpack(E["media"].bordercolor))	
-	point.borderleft:SetDrawLayer("BORDER", -7)
-	
-	point.borderright = parent:CreateTexture(nil, "BORDER")
-	point.borderright:SetPoint("TOPRIGHT", point, "TOPRIGHT", noscalemult*2, noscalemult*2)
-	point.borderright:SetPoint("BOTTOMRIGHT", point, "BOTTOMRIGHT", -noscalemult*2, -noscalemult*2)
-	point.borderright:SetWidth(noscalemult)
-	point.borderright:SetTexture(unpack(E["media"].bordercolor))	
-	point.borderright:SetDrawLayer("BORDER", -7)	
+	if E.PixelMode then 
+		point.backdrop = parent:CreateTexture(nil, "BORDER", -8)
+		point.backdrop:SetPoint("TOPLEFT", point, "TOPLEFT", -noscalemult, noscalemult)
+		point.backdrop:SetPoint("BOTTOMRIGHT", point, "BOTTOMRIGHT", noscalemult, -noscalemult)
+		point.backdrop:SetTexture(0, 0, 0, 1)
+	else
+		point.backdrop = parent:CreateTexture(nil, "BORDER")
+		point.backdrop:SetDrawLayer("BORDER", -8)
+		point.backdrop:SetPoint("TOPLEFT", point, "TOPLEFT", -noscalemult*3, noscalemult*3)
+		point.backdrop:SetPoint("BOTTOMRIGHT", point, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
+		point.backdrop:SetTexture(0, 0, 0, 1)
+
+		point.bordertop = parent:CreateTexture(nil, "BORDER")
+		point.bordertop:SetPoint("TOPLEFT", point, "TOPLEFT", -noscalemult*2, noscalemult*2)
+		point.bordertop:SetPoint("TOPRIGHT", point, "TOPRIGHT", noscalemult*2, noscalemult*2)
+		point.bordertop:SetHeight(noscalemult)
+		point.bordertop:SetTexture(unpack(E["media"].bordercolor))	
+		point.bordertop:SetDrawLayer("BORDER", -7)
+		
+		point.borderbottom = parent:CreateTexture(nil, "BORDER")
+		point.borderbottom:SetPoint("BOTTOMLEFT", point, "BOTTOMLEFT", -noscalemult*2, -noscalemult*2)
+		point.borderbottom:SetPoint("BOTTOMRIGHT", point, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
+		point.borderbottom:SetHeight(noscalemult)
+		point.borderbottom:SetTexture(unpack(E["media"].bordercolor))	
+		point.borderbottom:SetDrawLayer("BORDER", -7)
+		
+		point.borderleft = parent:CreateTexture(nil, "BORDER")
+		point.borderleft:SetPoint("TOPLEFT", point, "TOPLEFT", -noscalemult*2, noscalemult*2)
+		point.borderleft:SetPoint("BOTTOMLEFT", point, "BOTTOMLEFT", noscalemult*2, -noscalemult*2)
+		point.borderleft:SetWidth(noscalemult)
+		point.borderleft:SetTexture(unpack(E["media"].bordercolor))	
+		point.borderleft:SetDrawLayer("BORDER", -7)
+		
+		point.borderright = parent:CreateTexture(nil, "BORDER")
+		point.borderright:SetPoint("TOPRIGHT", point, "TOPRIGHT", noscalemult*2, noscalemult*2)
+		point.borderright:SetPoint("BOTTOMRIGHT", point, "BOTTOMRIGHT", -noscalemult*2, -noscalemult*2)
+		point.borderright:SetWidth(noscalemult)
+		point.borderright:SetTexture(unpack(E["media"].bordercolor))	
+		point.borderright:SetDrawLayer("BORDER", -7)
+	end
 end
 
 function NP:SetVirtualBorder(parent, r, g, b)
-	parent.bordertop:SetTexture(r, g, b)
-	parent.borderbottom:SetTexture(r, g, b)
-	parent.borderleft:SetTexture(r, g, b)
-	parent.borderright:SetTexture(r, g, b)
+	if not parent.bordertop then
+		--parent.backdrop:SetTexture(r, g, b)
+	else
+		parent.bordertop:SetTexture(r, g, b)
+		parent.borderbottom:SetTexture(r, g, b)
+		parent.borderleft:SetTexture(r, g, b)
+		parent.borderright:SetTexture(r, g, b)
+	end
 end
 
 function NP:SetVirtualBackdrop(parent, r, g, b)
@@ -138,6 +151,9 @@ function NP:HideObjects(frame)
 		if object:GetObjectType() == "Texture" then
 			object.OldTexture = object:GetTexture()
 			object:SetTexture(nil)
+			object:SetTexCoord(0, 0, 0, 0)
+		elseif object:GetObjectType() == 'FontString' then
+			object:SetWidth(0.001)
 		end
 		
 		object:Hide()
@@ -186,6 +202,36 @@ function NP:Colorize(frame)
 	frame.hp:SetStatusBarColor(r,g,b)
 end
 
+function NP:Update_LevelText(frame)
+	frame.hp.oldlevel = select(5, frame:GetRegions())
+
+	if frame.hp.oldlevel:IsShown() then
+		if self.db.showlevel == true then
+			local level, elite, mylevel = tonumber(frame.hp.oldlevel:GetText()), frame.hp.elite:IsShown(), UnitLevel("player")
+
+			if frame.isBoss then
+				frame.hp.level:SetText("??")
+				frame.hp.level:SetTextColor(0.8, 0.05, 0)
+				frame.hp.level:Show()
+			elseif not elite and level == mylevel then
+				frame.hp.level:Hide()
+			elseif level then
+				frame.hp.level:SetText(level..(elite and "+" or ""))
+				frame.hp.level:SetTextColor(frame.hp.oldlevel:GetTextColor())
+				frame.hp.level:Show()
+			end
+			
+			frame.hp.oldlevel:SetWidth(000.1)
+		elseif frame.hp.level then
+			frame.hp.level:Hide()
+		end
+	elseif frame.isBoss and self.db.showlevel and frame.hp.level:GetText() ~= '??' then
+		frame.hp.level:SetText("??")
+		frame.hp.level:SetTextColor(0.8, 0.05, 0)
+		frame.hp.level:Show()	
+	end
+end
+
 function NP:HealthBar_OnShow(self, frame)
 	if self.GetParent then frame = self; self = NP end
 	frame = frame:GetParent()
@@ -200,8 +246,14 @@ function NP:HealthBar_OnShow(self, frame)
 
 	self:HealthBar_ValueChanged(frame.oldhp)
 	
-	frame.hp.backdrop:SetPoint('TOPLEFT', -noscalemult*3, noscalemult*3)
-	frame.hp.backdrop:SetPoint('BOTTOMRIGHT', noscalemult*3, -noscalemult*3)
+	if E.PixelMode then
+		frame.hp.backdrop:SetPoint('TOPLEFT', -noscalemult, noscalemult)
+		frame.hp.backdrop:SetPoint('BOTTOMRIGHT', noscalemult, -noscalemult)	
+	else
+		frame.hp.backdrop:SetPoint('TOPLEFT', -noscalemult*3, noscalemult*3)
+		frame.hp.backdrop:SetPoint('BOTTOMRIGHT', noscalemult*3, -noscalemult*3)	
+	end
+
 	self:Colorize(frame)
 	
 	frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = frame.hp:GetStatusBarColor()
@@ -215,23 +267,8 @@ function NP:HealthBar_OnShow(self, frame)
 	frame.hp.name:SetText(frame.hp.oldname:GetText())	
 
 	--Level Text
-	if self.db.showlevel == true then
-		local level, elite, mylevel = tonumber(frame.hp.oldlevel:GetText()), frame.hp.elite:IsShown(), UnitLevel("player")
-		
-		frame.hp.level:SetTextColor(frame.hp.oldlevel:GetTextColor())
-		if frame.hp.boss:IsShown() then
-			frame.hp.level:SetText("??")
-			frame.hp.level:SetTextColor(0.8, 0.05, 0)
-			frame.hp.level:Show()
-		elseif not elite and level == mylevel then
-			frame.hp.level:Hide()
-		elseif level then
-			frame.hp.level:SetText(level..(elite and "+" or ""))
-			frame.hp.level:Show()
-		end
-	elseif frame.hp.level then
-		frame.hp.level:Hide()
-	end	
+	frame.isBoss = frame.hp.boss:IsShown()
+	NP:Update_LevelText(frame)
 	
 	NP.ScanHealth(frame.oldhp)
 	NP:CheckFilter(frame)
@@ -256,6 +293,7 @@ function NP:OnHide(frame)
 	frame.threatStatus = nil
 	frame.guid = nil
 	frame.hasClass = nil
+	frame.isBoss = nil;
 	frame.customColor = nil
 	frame.customScale = nil
 	frame.isFriendly = nil
@@ -277,21 +315,22 @@ function NP:SkinPlate(frame)
 	local threat, hpborder, overlay, oldname, oldlevel, bossicon, raidicon, elite = frame:GetRegions()
 	local _, cbborder, cbshield, cbicon = oldcb:GetRegions()
 	local font = LSM:Fetch("font", self.db.font)
+	local noscalemult = E.mult * UIParent:GetScale()
 	
 	--Health Bar
 	if not frame.hp then
 		frame.oldhp = oldhp
 		frame.oldhp:HookScript('OnValueChanged', NP.ScanHealth)
-		
+		local SHADOW_SPACING = ((noscalemult * 5) - UIParent:GetScale() / 3)
 		frame.hp = CreateFrame("Statusbar", nil, frame)
-		frame.hp:SetFrameLevel(oldhp:GetFrameLevel())
+		frame.hp:SetFrameLevel(oldhp:GetFrameLevel() + 1)
 		frame.hp:SetFrameStrata(oldhp:GetFrameStrata())
 		frame.hp:CreateShadow('Default')
 		frame.hp.shadow:ClearAllPoints()
-		frame.hp.shadow:Point("TOPLEFT", frame.hp, -5, 5)
-		frame.hp.shadow:Point("BOTTOMLEFT", frame.hp, -5, -5)
-		frame.hp.shadow:Point("TOPRIGHT", frame.hp, 5, 5)
-		frame.hp.shadow:Point("BOTTOMRIGHT", frame.hp, 5, -5)	
+		frame.hp.shadow:Point("TOPLEFT", frame.hp, -SHADOW_SPACING, SHADOW_SPACING)
+		frame.hp.shadow:Point("BOTTOMLEFT", frame.hp, -SHADOW_SPACING, -SHADOW_SPACING)
+		frame.hp.shadow:Point("TOPRIGHT", frame.hp, SHADOW_SPACING, SHADOW_SPACING)
+		frame.hp.shadow:Point("BOTTOMRIGHT", frame.hp, SHADOW_SPACING, -SHADOW_SPACING)	
 		frame.hp.shadow:SetBackdropBorderColor(1, 1, 1, 0.75)
 		frame.hp.shadow:SetFrameLevel(0)
 		frame.hp.shadow:SetAlpha(0)
@@ -727,7 +766,6 @@ function NP:CheckArenaHealers()
 	local inInstance, instanceType = IsInInstance()
 	if inInstance and instanceType == 'arena' then
 		local numOpps = GetNumArenaOpponentSpecs()
-		table.wipe(self.BattleGroundHealers)
 		for i=1, numOpps do
 			local specID = GetArenaOpponentSpec(i)
 			local unit = 'arena'..i

@@ -238,8 +238,8 @@ function B:Layout(isBank)
 	
 	if not f then return; end
 	local buttonSize = isBank and self.db.bankSize or self.db.bagSize;
-	local buttonSpacing = 4;
-	local containerWidth = self.db.alignToChat == true and (E.db.chat.panelWidth - 10) or isBank and self.db.bankWidth or self.db.bagWidth
+	local buttonSpacing = E.PixelMode and 2 or 4;
+	local containerWidth = self.db.alignToChat == true and (E.db.chat.panelWidth - (E.PixelMode and 6 or 10)) or isBank and self.db.bankWidth or self.db.bagWidth
 	local numContainerColumns = math.floor(containerWidth / (buttonSize + buttonSpacing));
 	local holderWidth = ((buttonSize + buttonSpacing) * numContainerColumns) - buttonSpacing;
 	local numContainerRows = 0;

@@ -16,6 +16,7 @@ P['general'] = {
 	['autoRoll'] = false,
 	['vendorGrays'] = true,
 	['autoAcceptInvite'] = false,
+	['bottomPanel'] = false,
 
 	["fontSize"] = 11,
 	["font"] = "Friz Quadrata TT",
@@ -215,6 +216,8 @@ P['tooltip'] = {
 	['titles'] = true,
 	['guildranks'] = true,
 	['talentSpec'] = true,
+	['count'] = true,
+	['spellid'] = true,
 }
 
 --UnitFrame
@@ -1474,6 +1477,7 @@ P["actionbar"] = {
 		['widthMult'] = 1,
 		["buttonsize"] = 30,
 		["buttonspacing"] = 4,		
+		['alpha'] = 1,
 		['paging'] = {
 			["DRUID"] = "[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10;",
 			["PRIEST"] = "[bonusbar:1] 7;",
@@ -1492,7 +1496,8 @@ P["actionbar"] = {
 		['heightMult'] = 1,
 		['widthMult'] = 1,
 		["buttonsize"] = 30,
-		["buttonspacing"] = 4,		
+		["buttonspacing"] = 4,	
+		['alpha'] = 1,
 		['paging'] = {},
 		['visibility'] = "[vehicleui] hide; [overridebar] hide; [petbattle] hide; show",
 	},
@@ -1507,6 +1512,7 @@ P["actionbar"] = {
 		['widthMult'] = 1,
 		["buttonsize"] = 30,
 		["buttonspacing"] = 4,
+		['alpha'] = 1,
 		['paging'] = {},
 		['visibility'] = "[vehicleui] hide; [overridebar] hide; [petbattle] hide; show",
 	},
@@ -1521,6 +1527,7 @@ P["actionbar"] = {
 		['widthMult'] = 1,
 		["buttonsize"] = 30,
 		["buttonspacing"] = 4,
+		['alpha'] = 1,
 		['paging'] = {},
 		['visibility'] = "[vehicleui] hide; [overridebar] hide; [petbattle] hide; show",
 	},
@@ -1535,6 +1542,7 @@ P["actionbar"] = {
 		['widthMult'] = 1,
 		["buttonsize"] = 30,
 		["buttonspacing"] = 4,
+		['alpha'] = 1,
 		['paging'] = {},
 		['visibility'] = "[vehicleui] hide; [overridebar] hide; [petbattle] hide; show",
 	},
@@ -1549,6 +1557,7 @@ P["actionbar"] = {
 		['widthMult'] = 1,
 		["buttonsize"] = 30,
 		["buttonspacing"] = 4,
+		['alpha'] = 1,
 		['visibility'] = "[petbattle] hide;[pet,novehicleui,nooverridebar,nopossessbar] show;hide",
 	},
 	['stanceBar'] = {
@@ -1562,5 +1571,6 @@ P["actionbar"] = {
 		['widthMult'] = 1,
 		["buttonsize"] = 28,
 		["buttonspacing"] = 4,
+		['alpha'] = 1,
 	},
 };

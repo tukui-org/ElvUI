@@ -149,8 +149,8 @@ end
 
 function UF:Update_PartyFrames(frame, db)
 	frame.db = db
-	local BORDER = E:Scale(2)
-	local SPACING = E:Scale(1)
+	local SPACING = E.Spacing;
+	local BORDER = E.Border;
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
 	
@@ -332,7 +332,7 @@ function UF:Update_PartyFrames(frame, db)
 					power:SetFrameStrata("MEDIUM")
 					power:SetFrameLevel(frame:GetFrameLevel() + 3)
 				else
-					power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + SPACING))
+					power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
 					power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER), BORDER)
 				end
 			else
@@ -345,23 +345,25 @@ function UF:Update_PartyFrames(frame, db)
 		--Target Glow
 		do
 			local tGlow = frame.TargetGlow
+			local SHADOW_SPACING = E.PixelMode and 3 or 4
 			tGlow:ClearAllPoints()
-			tGlow:Point("TOPLEFT", -4, 4)
-			tGlow:Point("TOPRIGHT", 4, 4)
+			
+			tGlow:Point("TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
+			tGlow:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
 			
 			if USE_MINI_POWERBAR then
-				tGlow:Point("BOTTOMLEFT", -4, -4 + (POWERBAR_HEIGHT/2))
-				tGlow:Point("BOTTOMRIGHT", 4, -4 + (POWERBAR_HEIGHT/2))		
+				tGlow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))
+				tGlow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))		
 			else
-				tGlow:Point("BOTTOMLEFT", -4, -4)
-				tGlow:Point("BOTTOMRIGHT", 4, -4)
+				tGlow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
+				tGlow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
 			end
 			
 			if USE_POWERBAR_OFFSET then
-				tGlow:Point("TOPLEFT", -4+POWERBAR_OFFSET, 4)
-				tGlow:Point("TOPRIGHT", 4, 4)
-				tGlow:Point("BOTTOMLEFT", -4+POWERBAR_OFFSET, -4+POWERBAR_OFFSET)
-				tGlow:Point("BOTTOMRIGHT", 4, -4+POWERBAR_OFFSET)				
+				tGlow:Point("TOPLEFT", -SHADOW_SPACING+POWERBAR_OFFSET, SHADOW_SPACING)
+				tGlow:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
+				tGlow:Point("BOTTOMLEFT", -SHADOW_SPACING+POWERBAR_OFFSET, -SHADOW_SPACING+POWERBAR_OFFSET)
+				tGlow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING+POWERBAR_OFFSET)				
 			end				
 		end		
 

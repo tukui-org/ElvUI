@@ -511,7 +511,7 @@ end
 function UF:UpdateHoly(event, unit, powerType)
 	if(self.unit ~= unit or (powerType and powerType ~= 'HOLY_POWER')) then return end
 	local db = self.db
-	
+	if not db then return; end
 	local BORDER = 2
 	local numHolyPower = UnitPower('player', SPELL_POWER_HOLY_POWER);
 	local maxHolyPower = UnitPowerMax('player', SPELL_POWER_HOLY_POWER);	
@@ -526,7 +526,7 @@ function UF:UpdateHoly(event, unit, powerType)
 		PORTRAIT_WIDTH = 0		
 	end	
 	
-	local CLASSBAR_WIDTH = db.width - 4
+	local CLASSBAR_WIDTH = db.width - (E.Border * 2)
 	if USE_PORTRAIT then
 		CLASSBAR_WIDTH = math.ceil((db.width - (BORDER*2)) - PORTRAIT_WIDTH)
 	end
@@ -548,7 +548,7 @@ function UF:UpdateHoly(event, unit, powerType)
 			self.HolyPower[i]:SetAlpha(.2)
 		end
 		
-		self.HolyPower[i]:SetWidth(E:Scale(self.HolyPower:GetWidth() - 2)/maxHolyPower)	
+		self.HolyPower[i]:SetWidth(E:Scale(self.HolyPower:GetWidth() - (E.PixelMode and 4 or 2))/maxHolyPower)	
 		self.HolyPower[i]:ClearAllPoints()
 		if i == 1 then
 			self.HolyPower[i]:SetPoint("LEFT", self.HolyPower)
@@ -888,8 +888,8 @@ function UF:UpdateComboDisplay(event, unit)
 		end	
 	end
 	
-	local BORDER = E:Scale(2)
-	local SPACING = E:Scale(1)
+	local BORDER = E.Border;
+	local SPACING = E.Spacing;
 	local db = E.db['unitframe']['units'].target
 	local USE_COMBOBAR = db.combobar.enable
 	local USE_MINI_COMBOBAR = db.combobar.fill == "spaced" and USE_COMBOBAR

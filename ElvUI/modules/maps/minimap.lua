@@ -150,7 +150,7 @@ function M:UpdateSettings()
 	E.MinimapSize = E.private.general.minimap.enable and E.db.general.minimap.size or Minimap:GetWidth() + 10
 	
 	if E.db.auras.consolidatedBuffs.enable then
-		E.ConsolidatedBuffsWidth = ((E.MinimapSize - (E.db.auras.consolidatedBuffs.filter and 6 or 8)) / (E.db.auras.consolidatedBuffs.filter and 6 or 8)) + 4
+		E.ConsolidatedBuffsWidth = ((E.MinimapSize - (E.db.auras.consolidatedBuffs.filter and 6 or 8)) / (E.db.auras.consolidatedBuffs.filter and 6 or 8)) + (E.PixelMode and 3 or 4)-- 4 needs to be 3
 	else
 		E.ConsolidatedBuffsWidth = 0;
 	end
@@ -173,12 +173,12 @@ function M:UpdateSettings()
 	end	
 	
 	if MMHolder then
-		MMHolder:Width((Minimap:GetWidth() + 4) + E.ConsolidatedBuffsWidth)
+		MMHolder:Width((Minimap:GetWidth() + (E.PixelMode and 3 or 4)) + E.ConsolidatedBuffsWidth)
 		
 		if E.db.datatexts.minimapPanels then
-			MMHolder:Height(Minimap:GetHeight() + 27)
+			MMHolder:Height(Minimap:GetHeight() + (E.PixelMode and 22 or 27))
 		else
-			MMHolder:Height(Minimap:GetHeight() + 5)	
+			MMHolder:Height(Minimap:GetHeight() + (E.PixelMode and 2 or 5))	
 		end
 	end
 	

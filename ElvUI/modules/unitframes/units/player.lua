@@ -74,7 +74,9 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
 	local POWERBAR_OFFSET = db.power.offset
 	local POWERBAR_HEIGHT = db.power.height
-	local SPACING = 1;
+	local SPACING = E.Spacing;
+	local BORDER = E.Border;
+	local SHADOW_SPACING = E.PixelMode and 3 or 4
 	
 	if not USE_POWERBAR then
 		POWERBAR_HEIGHT = 0
@@ -90,31 +92,31 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	
 	if isShown then
 		if db.power.offset ~= 0 then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(2+db.power.offset), -(2 + CLASSBAR_HEIGHT + 1))
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+db.power.offset), -(BORDER + CLASSBAR_HEIGHT + SPACING))
 		else
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -2, -(2 + CLASSBAR_HEIGHT + 1))
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -(BORDER + CLASSBAR_HEIGHT + SPACING))
 		end
-		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + 2, -(2 + CLASSBAR_HEIGHT + 1))	
+		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + BORDER, -(BORDER + CLASSBAR_HEIGHT + SPACING))	
 
 		local mini_classbarY = 0
 		if USE_MINI_CLASSBAR then
 			mini_classbarY = -(SPACING+(CLASSBAR_HEIGHT))
 		end		
 		
-		threat:Point("TOPLEFT", -4, 4+mini_classbarY)
-		threat:Point("TOPRIGHT", 4, 4+mini_classbarY)
+		threat:Point("TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING+mini_classbarY)
+		threat:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING+mini_classbarY)
 		
 		if USE_MINI_POWERBAR then
-			threat:Point("BOTTOMLEFT", -4, -4 + (POWERBAR_HEIGHT/2))
-			threat:Point("BOTTOMRIGHT", 4, -4 + (POWERBAR_HEIGHT/2))		
+			threat:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))
+			threat:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))		
 		else
-			threat:Point("BOTTOMLEFT", -4, -4)
-			threat:Point("BOTTOMRIGHT", 4, -4)
+			threat:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
+			threat:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
 		end		
 		
 		if USE_POWERBAR_OFFSET then
-			threat:Point("TOPRIGHT", 4-POWERBAR_OFFSET, 4+mini_classbarY)
-			threat:Point("BOTTOMRIGHT", 4-POWERBAR_OFFSET, -4)	
+			threat:Point("TOPRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, SHADOW_SPACING+mini_classbarY)
+			threat:Point("BOTTOMRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, -SHADOW_SPACING)	
 		end				
 
 		
@@ -122,39 +124,39 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 			local portrait = frame.Portrait
 			portrait.backdrop:ClearAllPoints()
 			if USE_MINI_CLASSBAR and USE_CLASSBAR then
-				portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", 0, -(CLASSBAR_HEIGHT + 1))
+				portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", 0, -(CLASSBAR_HEIGHT + SPACING))
 			else
 				portrait.backdrop:SetPoint("TOPLEFT", frame, "TOPLEFT")
 			end		
 			
 			if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR then
-				portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", -1, 0)
+				portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", -SPACING, 0)
 			else
-				portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", -1, 0)
+				portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", -SPACING, 0)
 			end				
 		end
 	else
 		if db.power.offset ~= 0 then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(2 + db.power.offset), -2)
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER + db.power.offset), -BORDER)
 		else
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -2, -2)
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)
 		end
-		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + 2, -2)	
+		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + BORDER, -BORDER)	
 
-		threat:Point("TOPLEFT", -4, 4)
-		threat:Point("TOPRIGHT", 4, 4)
+		threat:Point("TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
+		threat:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
 		
 		if USE_MINI_POWERBAR then
-			threat:Point("BOTTOMLEFT", -4, -4 + (POWERBAR_HEIGHT/2))
-			threat:Point("BOTTOMRIGHT", 4, -4 + (POWERBAR_HEIGHT/2))		
+			threat:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))
+			threat:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))		
 		else
-			threat:Point("BOTTOMLEFT", -4, -4)
-			threat:Point("BOTTOMRIGHT", 4, -4)
+			threat:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
+			threat:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
 		end		
 		
 		if USE_POWERBAR_OFFSET then
-			threat:Point("TOPRIGHT", 4-POWERBAR_OFFSET, 4)
-			threat:Point("BOTTOMRIGHT", 4-POWERBAR_OFFSET, -4)	
+			threat:Point("TOPRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, SHADOW_SPACING)
+			threat:Point("BOTTOMRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, -SHADOW_SPACING)	
 		end				
 
 		if db.portrait.enable and not USE_PORTRAIT_OVERLAY then
@@ -163,9 +165,9 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 			portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT")
 			
 			if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR then
-				portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", -1, 0)
+				portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", -SPACING, 0)
 			else
-				portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", -1, 0)
+				portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", -SPACING, 0)
 			end				
 		end		
 	end
@@ -181,8 +183,9 @@ function UF:Update_PlayerFrame(frame, db)
 	end
 	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
 	
-	local BORDER = E:Scale(2)
-	local SPACING = E:Scale(1)
+	local BORDER = E.Border
+	local SPACING = E.Spacing
+	local SHADOW_SPACING = E.PixelMode and 3 or 4
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
 
@@ -242,20 +245,20 @@ function UF:Update_PlayerFrame(frame, db)
 		
 		threat:ClearAllPoints()
 		threat:SetBackdropBorderColor(0, 0, 0, 0)
-		threat:Point("TOPLEFT", -4, 4+mini_classbarY)
-		threat:Point("TOPRIGHT", 4, 4+mini_classbarY)
+		threat:Point("TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING+mini_classbarY)
+		threat:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING+mini_classbarY)
 		
 		if USE_MINI_POWERBAR then
-			threat:Point("BOTTOMLEFT", -4, -4 + (POWERBAR_HEIGHT/2))
-			threat:Point("BOTTOMRIGHT", 4, -4 + (POWERBAR_HEIGHT/2))		
+			threat:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))
+			threat:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))		
 		else
-			threat:Point("BOTTOMLEFT", -4, -4)
-			threat:Point("BOTTOMRIGHT", 4, -4)
+			threat:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
+			threat:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
 		end
 
 		if USE_POWERBAR_OFFSET then
-			threat:Point("TOPRIGHT", 4-POWERBAR_OFFSET, 4+mini_classbarY)
-			threat:Point("BOTTOMRIGHT", 4-POWERBAR_OFFSET, -4)	
+			threat:Point("TOPRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, SHADOW_SPACING+mini_classbarY)
+			threat:Point("BOTTOMRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, -SHADOW_SPACING)	
 		end		
 
 		if USE_POWERBAR_OFFSET == true then
@@ -413,7 +416,7 @@ function UF:Update_PlayerFrame(frame, db)
 				power:SetFrameStrata("MEDIUM")
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
 			else
-				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + SPACING))
+				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER, BORDER)
 			end
 		elseif frame:IsElementEnabled('Power') then
@@ -563,10 +566,10 @@ function UF:Update_PlayerFrame(frame, db)
 	--Castbar
 	do
 		local castbar = frame.Castbar
-		castbar:Width(db.castbar.width - 4)
+		castbar:Width(db.castbar.width - (E.PixelMode and 0 or (BORDER * 2)))
 		castbar:Height(db.castbar.height)
-		castbar.Holder:Width(db.castbar.width)
-		castbar.Holder:Height(db.castbar.height + 4)
+		castbar.Holder:Width(db.castbar.width + (E.PixelMode and 0 or (BORDER * 2)))
+		castbar.Holder:Height(db.castbar.height + (E.PixelMode and 0 or (BORDER * 2)))
 		castbar.Holder:GetScript('OnSizeChanged')(castbar.Holder)
 		
 		--Latency
@@ -581,10 +584,10 @@ function UF:Update_PlayerFrame(frame, db)
 		--Icon
 		if db.castbar.icon then
 			castbar.Icon = castbar.ButtonIcon
-			castbar.Icon.bg:Width(db.castbar.height + 4)
-			castbar.Icon.bg:Height(db.castbar.height + 4)
+			castbar.Icon.bg:Width(db.castbar.height + (E.Border * 2))
+			castbar.Icon.bg:Height(db.castbar.height + (E.Border * 2))
 			
-			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - 5)
+			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - (E.PixelMode and 1 or 5))
 			castbar.Icon.bg:Show()
 		else
 			castbar.ButtonIcon.bg:Hide()
@@ -617,7 +620,7 @@ function UF:Update_PlayerFrame(frame, db)
 				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
 				bars:SetFrameStrata("MEDIUM")
 			else
-				bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
+				bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, (E.PixelMode and 0 or (BORDER + SPACING)))
 				bars:SetFrameStrata("LOW")
 			end
 
@@ -626,7 +629,7 @@ function UF:Update_PlayerFrame(frame, db)
 
 			for i = 1, MAX_HOLY_POWER do
 				bars[i]:SetHeight(bars:GetHeight())	
-				bars[i]:SetWidth(E:Scale(bars:GetWidth() - 2)/MAX_HOLY_POWER)	
+				bars[i]:SetWidth(E:Scale(bars:GetWidth() - (E.PixelMode and 4 or 2))/MAX_HOLY_POWER)	
 				bars[i]:GetStatusBarTexture():SetHorizTile(false)
 				bars[i]:ClearAllPoints()
 				if i == 1 then
@@ -677,7 +680,7 @@ function UF:Update_PlayerFrame(frame, db)
 
 			for i = 1, PRIEST_BAR_NUM_ORBS do
 				bars[i]:SetHeight(bars:GetHeight())	
-				bars[i]:SetWidth(E:Scale(bars:GetWidth() - 2)/PRIEST_BAR_NUM_ORBS)	
+				bars[i]:SetWidth(E:Scale(bars:GetWidth() - (E.PixelMode and 4 or 2))/PRIEST_BAR_NUM_ORBS)	
 				bars[i]:GetStatusBarTexture():SetHorizTile(false)
 				bars[i]:ClearAllPoints()
 				if i == 1 then
@@ -727,7 +730,7 @@ function UF:Update_PlayerFrame(frame, db)
 
 			for i = 1, UF['classMaxResourceBar'][E.myclass] do
 				bars[i]:SetHeight(bars:GetHeight())	
-				bars[i]:SetWidth(E:Scale(bars:GetWidth() - 2)/UF['classMaxResourceBar'][E.myclass])	
+				bars[i]:SetWidth(E:Scale(bars:GetWidth() - (E.PixelMode and 4 or 2))/UF['classMaxResourceBar'][E.myclass])	
 				bars[i]:GetStatusBarTexture():SetHorizTile(false)
 				bars[i]:ClearAllPoints()
 				if i == 1 then
