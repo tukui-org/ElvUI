@@ -253,6 +253,8 @@ Example: Interface\AddOns\ElvUI\media\textures\copy
 Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = true;
 
 --Config / Install
+L["You have changed the pixel perfect option. You will have to complete the installation process to remove any graphical bugs."] = true;
+L['Pixel Perfect'] = true;
 L["Auras Set"] = true;
 L["Auras System"] = true;
 L["Caster DPS"] = true;
@@ -411,6 +413,8 @@ L["No locals to dump"] = true;
 L['|cFFE30000Lua error recieved. You can view the error message when you exit combat.'] = true;
 
 --General
+L['Bottom Panel'] = true;
+L['Display a panel across the bottom of the screen. This is for cosmetic only.'] = true;
 L["Accept Invites"] = true;
 L['Adjust the position of the threat bar to either the left or right datatext panels.'] = true;
 L['Adjust the size of the minimap.'] = true;

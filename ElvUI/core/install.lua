@@ -173,9 +173,81 @@ function E:SetupTheme(theme, noDisplayMsg)
 	local classColor = RAID_CLASS_COLORS[E.myclass]
 	E.db.theme = theme
 	
-
+	if (not E.PixelMode and theme == 'pixelPerfect') or (E.PixelMode and theme ~= 'pixelPerfect') then
+		E:StaticPopup_Show('PIXELPERFECT_CHANGED')
+	end
+	
+	E.private.general.pixelPerfect = false;
+	
+	if not noDisplayMsg then
+		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
+		E:CopyTable(E.db.actionbar, P.actionbar)
+		E:CopyTable(E.db.nameplate, P.nameplate)
+		E:CopyTable(E.db.bags, P.bags)
+		E:CopyTable(E.private.auras, V.auras)
+		
+		if E.db.movers then
+			E.db.movers.AurasMover = nil;
+		end
+	end
+	
 	--Set colors
-	if theme == "classic" then
+	if theme == 'pixelPerfect' then
+		E.private.general.pixelPerfect = true;
+		E.db.general.bordercolor = E:GetColor(0, 0, 0)
+		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
+		E.db.general.backdropfadecolor = E:GetColor(.06, .06, .06, .8)
+		
+		E.db.unitframe.colors.healthclass = false
+		E.db.unitframe.colors.health = E:GetColor(.31, .31, .31)
+		E.db.unitframe.colors.auraBarBuff = E:GetColor(.31, .31, .31)
+		E.db.unitframe.colors.castColor = E:GetColor(.31, .31, .31)	
+
+		E.db.general.bottomPanel = true;
+		E.db.actionbar.bar1.buttonspacing = 2;
+		E.db.actionbar.bar2.buttonspacing = 2;
+		E.db.actionbar.bar3.buttonspacing = 2;
+		E.db.actionbar.bar4.buttonspacing = 2;
+		E.db.actionbar.bar5.buttonspacing = 2;
+		E.db.actionbar.stanceBar.buttonspacing = 2;
+		E.db.actionbar.barPet.buttonspacing = 2;
+		
+		E.db.actionbar.bar1.backdrop = false;
+		E.db.actionbar.bar2.backdrop = false;
+		E.db.actionbar.bar5.backdrop = false;
+		E.db.actionbar.bar3.backdrop = false;
+		
+		E.db.actionbar.bar1.buttonsize = 32;
+		E.db.actionbar.bar2.buttonsize = 32;
+		E.db.actionbar.bar3.buttonsize = 32;
+		E.db.actionbar.bar4.buttonsize = 32;
+		E.db.actionbar.bar5.buttonsize = 32;
+		E.db.actionbar.stanceBar.buttonsize = 32;
+		E.db.actionbar.barPet.buttonsize = 32;
+		
+		E.db.unitframe.units.player.classbar.fill = 'fill';
+		E.db.unitframe.units.target.combobar.fill = 'fill';
+		
+		E.db.nameplate.fontSize = 7;
+		E.db.nameplate.fontOutline = 'MONOCHROMEOUTLINE';
+		E.db.nameplate.font = 'ElvUI Pixel';
+		E.db.nameplate.height = 7;
+		E.db.nameplate.width = 112;
+		
+		E.db.bags.bagSize = 34;
+		E.db.bags.bankSize = 34;
+		E.private.auras.size = 30;
+		
+		if not noDisplayMsg then
+			if not E.db.movers then E.db.movers = {}; end
+			E.db.movers["ElvUF_PetMover"] = "BOTTOMElvUIParentBOTTOM0104"
+			E.db.movers["AurasMover"] = "TOPRIGHTElvUIParentTOPRIGHT-221-5"
+			E.db.movers["ElvUF_TargetTargetMover"] = "BOTTOMElvUIParentBOTTOM064"
+			E.db.movers["ElvUF_PlayerMover"] = "BOTTOMElvUIParentBOTTOM-27865"
+			E.db.movers["ElvUF_TargetMover"] = "BOTTOMElvUIParentBOTTOM27864"		
+		end
+	elseif theme == "classic" then
+		E.db.general.bottomPanel = false;
 		E.db.general.bordercolor = E:GetColor(.31, .31, .31)
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
 		E.db.general.backdropfadecolor = E:GetColor(.06, .06, .06, .8)
@@ -186,6 +258,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.unitframe.colors.castColor = E:GetColor(.31, .31, .31)
 		
 	elseif theme == "class" then
+		E.db.general.bottomPanel = false;
 		E.db.general.bordercolor = E:GetColor(classColor.r, classColor.b, classColor.g)
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
 		E.db.general.backdropfadecolor = E:GetColor(.06, .06, .06, .8)
@@ -193,6 +266,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.unitframe.colors.healthclass = true
 		E.db.unitframe.colors.castColor = E:GetColor(classColor.r, classColor.b, classColor.g)
 	else
+		E.db.general.bottomPanel = false;
 		E.db.general.bordercolor = E:GetColor(.1, .1, .1)
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
 		E.db.general.backdropfadecolor = E:GetColor(.054, .054, .054, .8)
@@ -279,10 +353,15 @@ function E:SetupResolution(noDataReset)
 			E.db.unitframe.units.arena.castbar.width = 200;			
 		end
 		
-		E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-106135"
-		E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM10680"
-		E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM106135"
-		E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM-10680"
+		local isPixel = E.private.general.pixelPerfect
+		local xOffset = isPixel and 103 or 106;
+		local yOffset = isPixel and 125 or 135;
+		local yOffsetSmall = isPixel and 76 or 80;
+		
+		E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM"..-xOffset..""..yOffset
+		E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM"..xOffset..""..yOffsetSmall
+		E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM"..xOffset..""..yOffset
+		E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM"..-xOffset..""..yOffsetSmall
 		E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"
 		
 		E.db.lowresolutionset = true;
@@ -292,6 +371,16 @@ function E:SetupResolution(noDataReset)
 		
 		E:CopyTable(E.db.actionbar, P.actionbar)
 		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
+		
+		if E.private.general.pixelPerfect then
+			if not E.db.movers then E.db.movers = {}; end
+			
+			E.db.movers["ElvUF_PetMover"] = "BOTTOMElvUIParentBOTTOM0104"
+			E.db.movers["AurasMover"] = "TOPRIGHTElvUIParentTOPRIGHT-221-5"
+			E.db.movers["ElvUF_TargetTargetMover"] = "BOTTOMElvUIParentBOTTOM064"
+			E.db.movers["ElvUF_PlayerMover"] = "BOTTOMElvUIParentBOTTOM-27865"
+			E.db.movers["ElvUF_TargetMover"] = "BOTTOMElvUIParentBOTTOM27864"
+		end
 
 		E.db.auras.wrapAfter = P.auras.wrapAfter;	
 		E.db.general.reputation.width = P.general.reputation.width
@@ -605,6 +694,9 @@ local function SetPage(PageNum)
 		InstallOption3Button:Show()
 		InstallOption3Button:SetScript('OnClick', function() E:SetupTheme('class') end)
 		InstallOption3Button:SetText(CLASS)
+		InstallOption4Button:Show()
+		InstallOption4Button:SetScript('OnClick', function() E:SetupTheme('pixelPerfect') end)
+		InstallOption4Button:SetText(L['Pixel Perfect']..' (Beta)')		
 	elseif PageNum == 5 then
 		f.SubTitle:SetText(L["Resolution"])
 		f.Desc1:SetText(format(L["Your current resolution is %s, this is considered a %s resolution."], E.resolution, E.lowversion == true and L["low"] or L["high"]))

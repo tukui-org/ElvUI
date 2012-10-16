@@ -74,6 +74,13 @@ function AddOn:OnInitialize()
 		end
 	end	
 	
+	if self.private.general.pixelPerfect then
+		self.Border = 1;
+		self.Spacing = 0;
+		self.PixelMode = true;
+	end
+		
+	
 	self:UIScale();
 	self:UpdateMedia();
 	

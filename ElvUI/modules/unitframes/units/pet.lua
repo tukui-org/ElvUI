@@ -28,8 +28,8 @@ end
 
 function UF:Update_PetFrame(frame, db)
 	frame.db = db
-	local BORDER = E:Scale(2)
-	local SPACING = E:Scale(1)
+	local BORDER = E.Border;
+	local SPACING = E.Spacing;
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
 	
@@ -152,7 +152,7 @@ function UF:Update_PetFrame(frame, db)
 				power:SetFrameStrata("MEDIUM")
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
 			else
-				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + SPACING))
+				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER, BORDER)
 			end
 		elseif frame:IsElementEnabled('Power') then

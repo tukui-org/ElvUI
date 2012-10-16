@@ -40,8 +40,8 @@ function UF:Update_BossFrames(frame, db)
 	end
 	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
 	
-	local BORDER = E:Scale(2)
-	local SPACING = E:Scale(1)
+	local BORDER = E.Border;
+	local SPACING = E.Spacing;
 	local INDEX = frame.index
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
@@ -181,7 +181,7 @@ function UF:Update_BossFrames(frame, db)
 				power:SetFrameStrata("MEDIUM")
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
 			else
-				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + SPACING))
+				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER + PORTRAIT_WIDTH), BORDER)
 			end
 		elseif frame:IsElementEnabled('Power') then
@@ -329,14 +329,14 @@ function UF:Update_BossFrames(frame, db)
 	--Castbar
 	do
 		local castbar = frame.Castbar
-		castbar:Width(db.castbar.width - 4)
+		castbar:Width(db.castbar.width - (E.Border * 2))
 		castbar:Height(db.castbar.height)
 		
 		--Icon
 		if db.castbar.icon then
 			castbar.Icon = castbar.ButtonIcon
-			castbar.Icon.bg:Width(db.castbar.height + 4)
-			castbar.Icon.bg:Height(db.castbar.height + 4)
+			castbar.Icon.bg:Width(db.castbar.height + (E.Border * 2))
+			castbar.Icon.bg:Height(db.castbar.height + (E.Border * 2))
 			
 			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - 5)
 			castbar.Icon.bg:Show()

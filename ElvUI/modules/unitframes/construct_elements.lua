@@ -195,7 +195,7 @@ end
 
 function UF:Construct_Buffs(frame)
 	local buffs = CreateFrame('Frame', nil, frame)
-	buffs.spacing = E:Scale(1)
+	buffs.spacing = E.Spacing
 	buffs.PostCreateIcon = self.Construct_AuraIcon
 	buffs.PostUpdateIcon = self.PostUpdateAura
 	buffs.CustomFilter = self.AuraFilter
@@ -206,7 +206,7 @@ end
 
 function UF:Construct_Debuffs(frame)
 	local debuffs = CreateFrame('Frame', nil, frame)
-	debuffs.spacing = E:Scale(1)
+	debuffs.spacing = E.Spacing
 	debuffs.PostCreateIcon = self.Construct_AuraIcon
 	debuffs.PostUpdateIcon = self.PostUpdateAura
 	debuffs.CustomFilter = self.AuraFilter
@@ -255,13 +255,13 @@ function UF:Construct_Castbar(self, direction, moverName)
 	button:SetTemplate("Default")
 	
 	if direction == "LEFT" then
-		holder:Point("TOPRIGHT", self, "BOTTOMRIGHT", 0, -6)
-		castbar:Point('BOTTOMRIGHT', holder, 'BOTTOMRIGHT', -2, 2)
-		button:Point("RIGHT", castbar, "LEFT", -3, 0)
+		holder:Point("TOPRIGHT", self, "BOTTOMRIGHT", 0, -(E.Border * 3))
+		castbar:Point('BOTTOMRIGHT', holder, 'BOTTOMRIGHT', -E.Border, E.Border)
+		button:Point("RIGHT", castbar, "LEFT", E.PixelMode and 0 or -3, 0)
 	else
-		holder:Point("TOPLEFT", self, "BOTTOMLEFT", 0, -6)
-		castbar:Point('BOTTOMLEFT', holder, 'BOTTOMLEFT', 2, 2)
-		button:Point("LEFT", castbar, "RIGHT", 3, 0)
+		holder:Point("TOPLEFT", self, "BOTTOMLEFT", 0, -(E.Border * 3))
+		castbar:Point('BOTTOMLEFT', holder, 'BOTTOMLEFT', E.Border, E.Border)
+		button:Point("LEFT", castbar, "RIGHT", E.PixelMode and 0 or 3, 0)
 	end
 	
 	castbar.Holder = holder
@@ -737,8 +737,8 @@ end
 function UF:Construct_AuraBarHeader(frame)
 	local auraBar = CreateFrame('Frame', nil, frame)
 	auraBar.PostCreateBar = UF.Construct_AuraBars
-	auraBar.gap = 1
-	auraBar.spacing = 1
+	auraBar.gap = (E.PixelMode and -1 or 1)
+	auraBar.spacing = (E.PixelMode and -1 or 1)
 	auraBar.spark = true
 	auraBar.sort = true
 	auraBar.filter = UF.AuraBarFilter

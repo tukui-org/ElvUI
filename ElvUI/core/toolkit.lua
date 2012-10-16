@@ -49,9 +49,8 @@ local function Point(obj, arg1, arg2, arg3, arg4, arg5)
 end
 
 local function SetOutside(obj, anchor, xOffset, yOffset)
-	local default = E.private.general.pixelExtreme and E.mult or 2
-	xOffset = xOffset or default
-	yOffset = yOffset or default
+	xOffset = xOffset or E.Border
+	yOffset = yOffset or E.Border
 	anchor = anchor or obj:GetParent()
 	
 	if obj:GetPoint() then
@@ -63,10 +62,8 @@ local function SetOutside(obj, anchor, xOffset, yOffset)
 end
 
 local function SetInside(obj, anchor, xOffset, yOffset)
-	
-	local default = E.private.general.pixelExtreme and E.mult or 2
-	xOffset = xOffset or default
-	yOffset = yOffset or default
+	xOffset = xOffset or E.Border
+	yOffset = yOffset or E.Border
 	anchor = anchor or obj:GetParent()
 	
 	if obj:GetPoint() then
@@ -84,7 +81,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 	f.glossTex = glossTex
 	
 	
-	if E.private.general.pixelExtreme then
+	if E.private.general.pixelPerfect then
 		f:SetBackdrop({
 		  bgFile = E["media"].blankTex, 
 		  edgeFile = E["media"].blankTex, 
@@ -107,7 +104,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 	elseif t == 'Transparent' then
 		f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
 		
-		if not f.oborder and not f.iborder and not E.private.general.pixelExtreme then
+		if not f.oborder and not f.iborder and not E.private.general.pixelPerfect then
 			local border = CreateFrame("Frame", nil, f)
 			border:SetInside(f, E.mult, E.mult)
 			border:SetBackdrop({
@@ -145,11 +142,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 		f.backdropTexture:SetInside(f)
 	end
 	
-	if E.private.general.pixelExtreme then
-		f:SetBackdropBorderColor(0, 0, 0)
-	else
-		f:SetBackdropBorderColor(borderr, borderg, borderb)
-	end
+	f:SetBackdropBorderColor(borderr, borderg, borderb)
 	
 	if not ignoreUpdates then
 		E["frames"][f] = true
