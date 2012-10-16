@@ -122,7 +122,7 @@ end
 
 function NP:SetVirtualBorder(parent, r, g, b)
 	if not parent.bordertop then
-		--parent.backdrop:SetTexture(r, g, b)
+		parent.backdrop:SetTexture(r, g, b)
 	else
 		parent.bordertop:SetTexture(r, g, b)
 		parent.borderbottom:SetTexture(r, g, b)
