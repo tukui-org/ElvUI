@@ -536,8 +536,10 @@ function E:UpdateAll(ignoreInstall)
 	self:UpdateBackdropColors()
 	self:UpdateFrameTemplates()
 	
-	self:GetModule('Layout'):ToggleChatPanels()	
-	self:GetModule('Layout'):BottomPanelVisibility()
+	local LO = E:GetModule('Layout')
+	LO:ToggleChatPanels()	
+	LO:BottomPanelVisibility()
+	LO:TopPanelVisibility()
 	
 	collectgarbage('collect');
 end

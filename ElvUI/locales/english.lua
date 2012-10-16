@@ -413,6 +413,8 @@ L["No locals to dump"] = true;
 L['|cFFE30000Lua error recieved. You can view the error message when you exit combat.'] = true;
 
 --General
+L['Top Panel'] = true;
+L['Display a panel across the top of the screen. This is for cosmetic only.'] = true;
 L['Bottom Panel'] = true;
 L['Display a panel across the bottom of the screen. This is for cosmetic only.'] = true;
 L["Accept Invites"] = true;
