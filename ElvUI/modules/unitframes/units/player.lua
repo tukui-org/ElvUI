@@ -130,9 +130,9 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 			end		
 			
 			if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR then
-				portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", -SPACING, 0)
+				portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
 			else
-				portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", -SPACING, 0)
+				portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
 			end				
 		end
 	else
@@ -165,9 +165,9 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 			portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT")
 			
 			if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR then
-				portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", -SPACING, 0)
+				portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
 			else
-				portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", -SPACING, 0)
+				portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
 			end				
 		end		
 	end
@@ -222,7 +222,7 @@ function UF:Update_PlayerFrame(frame, db)
 		end
 		
 		if USE_PORTRAIT then
-			CLASSBAR_WIDTH = math.ceil((UNIT_WIDTH - (BORDER*2)) - PORTRAIT_WIDTH)
+			CLASSBAR_WIDTH = (UNIT_WIDTH - (BORDER*2)) - PORTRAIT_WIDTH
 		end
 		
 		if USE_POWERBAR_OFFSET then
@@ -459,9 +459,9 @@ function UF:Update_PlayerFrame(frame, db)
 				end		
 				
 				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR then
-					portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", -SPACING, 0)
+					portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
 				else
-					portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", -SPACING, 0)
+					portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
 				end	
 
 				portrait:Point('BOTTOMLEFT', portrait.backdrop, 'BOTTOMLEFT', BORDER, BORDER)		
@@ -625,7 +625,7 @@ function UF:Update_PlayerFrame(frame, db)
 			end
 
 			bars:Width(CLASSBAR_WIDTH)
-			bars:Height(CLASSBAR_HEIGHT - (BORDER*2))			
+			bars:Height(CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4))			
 
 			for i = 1, MAX_HOLY_POWER do
 				bars[i]:SetHeight(bars:GetHeight())	
@@ -676,7 +676,7 @@ function UF:Update_PlayerFrame(frame, db)
 			end
 				
 			bars:Width(CLASSBAR_WIDTH)
-			bars:Height(CLASSBAR_HEIGHT - (BORDER*2))
+			bars:Height(CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4))
 
 			for i = 1, PRIEST_BAR_NUM_ORBS do
 				bars[i]:SetHeight(bars:GetHeight())	
@@ -726,7 +726,7 @@ function UF:Update_PlayerFrame(frame, db)
 			end
 				
 			bars:Width(CLASSBAR_WIDTH)
-			bars:Height(CLASSBAR_HEIGHT - (BORDER*2))
+			bars:Height(CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4))
 
 			for i = 1, UF['classMaxResourceBar'][E.myclass] do
 				bars[i]:SetHeight(bars:GetHeight())	
@@ -776,7 +776,7 @@ function UF:Update_PlayerFrame(frame, db)
 				bars:SetFrameStrata("LOW")
 			end
 			bars:Width(CLASSBAR_WIDTH)
-			bars:Height(CLASSBAR_HEIGHT - (BORDER*2))
+			bars:Height(CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4))
 			
 			if not USE_MINI_CLASSBAR then
 				bars.backdrop:Show()
@@ -801,7 +801,7 @@ function UF:Update_PlayerFrame(frame, db)
 				bars:SetFrameStrata("LOW")
 			end
 			bars:Width(CLASSBAR_WIDTH)
-			bars:Height(CLASSBAR_HEIGHT - (BORDER*2))
+			bars:Height(CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4))
 			
 			if not USE_MINI_CLASSBAR then
 				bars.backdrop:Show()

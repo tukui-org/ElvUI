@@ -72,12 +72,14 @@ function NP:CreateVirtualFrame(parent, point)
 	if point.backdrop then return end
 
 	
-	point.backdrop2 = parent:CreateTexture(nil, "BORDER", -7)
+	point.backdrop2 = parent:CreateTexture(nil, "BORDER")
+	point.backdrop2:SetDrawLayer("BORDER", -7)
 	point.backdrop2:SetAllPoints(point)
 	point.backdrop2:SetTexture(unpack(E["media"].backdropcolor))		
 	
 	if E.PixelMode then 
-		point.backdrop = parent:CreateTexture(nil, "BORDER", -8)
+		point.backdrop = parent:CreateTexture(nil, "BORDER")
+		point.backdrop:SetDrawLayer("BORDER", -8)
 		point.backdrop:SetPoint("TOPLEFT", point, "TOPLEFT", -noscalemult, noscalemult)
 		point.backdrop:SetPoint("BOTTOMRIGHT", point, "BOTTOMRIGHT", noscalemult, -noscalemult)
 		point.backdrop:SetTexture(0, 0, 0, 1)
