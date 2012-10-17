@@ -116,9 +116,7 @@ local function LoadSkin()
 			bu.bg:CreateBackdrop("Overlay")
 			bu.bg:SetFrameLevel(bu:GetFrameLevel() - 1)
 			bu.bg:Point("TOPLEFT", 15, -1)
-			bu.bg:Point("BOTTOMRIGHT", -10, 1)
-			bu.bg:CreateShadow('Default')
-			bu.bg.shadow:SetBackdropBorderColor(0, 1, 0, 1)			
+			bu.bg:Point("BOTTOMRIGHT", -10, 1)	
 		end
 	end
 
