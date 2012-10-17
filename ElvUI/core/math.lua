@@ -108,7 +108,7 @@ function E:GetScreenQuadrant(frame)
 end
 
 function E:GetXYOffset(position, override)
-	local default = E.PixelMode and -1 or 1
+	local default = E.PixelMode and 0 or 1
 	local x, y = override or default, override or default
 	
 	if position == 'TOP' or position == 'TOPLEFT' or position == 'TOPRIGHT' then

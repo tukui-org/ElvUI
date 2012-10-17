@@ -1376,6 +1376,15 @@ function UF:SmartAuraDisplay()
 		end
 	end
 	
+	local yOffset = 0;
+	if E.PixelMode then
+		if db.aurabar.anchorPoint == 'BELOW' then
+			yOffset = 1;
+		else
+			yOffset = -1;
+		end
+	end		
+	
 	if buffs:IsShown() then
 		local x, y = E:GetXYOffset(db.buffs.anchorPoint)
 		
@@ -1387,8 +1396,8 @@ function UF:SmartAuraDisplay()
 			anchorPoint, anchorTo = 'TOP', 'BOTTOM'
 		end		
 		auraBars:ClearAllPoints()
-		auraBars:SetPoint(anchorPoint..'LEFT', buffs, anchorTo..'LEFT', 0, 0)
-		auraBars:SetPoint(anchorPoint..'RIGHT', buffs, anchorTo..'RIGHT')
+		auraBars:SetPoint(anchorPoint..'LEFT', buffs, anchorTo..'LEFT', 0, yOffset)
+		auraBars:SetPoint(anchorPoint..'RIGHT', buffs, anchorTo..'RIGHT', 0, yOffset)
 	end
 	
 	if debuffs:IsShown() then
@@ -1402,7 +1411,7 @@ function UF:SmartAuraDisplay()
 			anchorPoint, anchorTo = 'TOP', 'BOTTOM'
 		end		
 		auraBars:ClearAllPoints()
-		auraBars:SetPoint(anchorPoint..'LEFT', debuffs, anchorTo..'LEFT', 0, 0)
-		auraBars:SetPoint(anchorPoint..'RIGHT', debuffs, anchorTo..'RIGHT')		
+		auraBars:SetPoint(anchorPoint..'LEFT', debuffs, anchorTo..'LEFT', 0, yOffset)
+		auraBars:SetPoint(anchorPoint..'RIGHT', debuffs, anchorTo..'RIGHT', 0, yOffset)		
 	end
 end
