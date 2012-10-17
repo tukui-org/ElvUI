@@ -585,10 +585,10 @@ function CH:AddMessage(text, ...)
 			text = '|cffB3B3B3['..timeStamp..'] |r'..text
 		end
 		
-		if E.myrealm == "Kil'Jaeden" then
+		if E.myrealm == "Kil'jaeden" then
 			text = text:gsub('|Hplayer:Elvz:', '|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t|Hplayer:Elvz:')
 		else
-			text = text:gsub("|Hplayer:Elvz%-Kil'Jaeden", "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t|Hplayer:Elvz%-Kil'Jaeden")
+			text = text:gsub("|Hplayer:Elvz%-Kil'jaeden", "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t|Hplayer:Elvz%-Kil'jaeden")
 		end
 		CH.timeOverride = nil;
 	end
