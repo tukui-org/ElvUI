@@ -63,7 +63,7 @@ function S:HandleScrollBar(frame, thumbTrim)
 			_G[frame:GetName().."ScrollUpButton"].texture = _G[frame:GetName().."ScrollUpButton"]:CreateTexture(nil, 'OVERLAY')
 			_G[frame:GetName().."ScrollUpButton"].texture:SetInside()
 			_G[frame:GetName().."ScrollUpButton"].texture:SetTexture([[Interface\AddOns\ElvUI\media\textures\arrowup.tga]])
-			_G[frame:GetName().."ScrollUpButton"].texture:SetVertexColor(0.5, 0.5, 0.5)
+			_G[frame:GetName().."ScrollUpButton"].texture:SetVertexColor(0.3, 0.3, 0.3)
 		end
 		_G[frame:GetName().."ScrollUpButton"]:HookScript('OnEnter', function(self)
 			SetModifiedBackdrop(self)
@@ -71,7 +71,7 @@ function S:HandleScrollBar(frame, thumbTrim)
 		end)	
 		_G[frame:GetName().."ScrollUpButton"]:HookScript('OnLeave', function(self)
 			SetOriginalBackdrop(self)
-			self.texture:SetVertexColor(0.5, 0.5, 0.5)	
+			self.texture:SetVertexColor(0.3, 0.3, 0.3)	
 		end)		
 		
 		_G[frame:GetName().."ScrollDownButton"]:StripTextures()
@@ -82,7 +82,7 @@ function S:HandleScrollBar(frame, thumbTrim)
 			_G[frame:GetName().."ScrollDownButton"].texture = _G[frame:GetName().."ScrollDownButton"]:CreateTexture(nil, 'OVERLAY')
 			_G[frame:GetName().."ScrollDownButton"].texture:SetInside()
 			_G[frame:GetName().."ScrollDownButton"].texture:SetTexture([[Interface\AddOns\ElvUI\media\textures\arrowdown.tga]])
-			_G[frame:GetName().."ScrollDownButton"].texture:SetVertexColor(0.5, 0.5, 0.5)
+			_G[frame:GetName().."ScrollDownButton"].texture:SetVertexColor(0.3, 0.3, 0.3)
 		end
 		
 		_G[frame:GetName().."ScrollDownButton"]:HookScript('OnEnter', function(self)
@@ -91,7 +91,7 @@ function S:HandleScrollBar(frame, thumbTrim)
 		end)	
 		_G[frame:GetName().."ScrollDownButton"]:HookScript('OnLeave', function(self)
 			SetOriginalBackdrop(self)
-			self.texture:SetVertexColor(0.5, 0.5, 0.5)	
+			self.texture:SetVertexColor(0.3, 0.3, 0.3)	
 		end)				
 		
 		if not frame.trackbg then
@@ -145,7 +145,7 @@ function S:HandleTab(tab)
 	tab.backdrop = CreateFrame("Frame", nil, tab)
 	tab.backdrop:SetTemplate("Default")
 	tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)
-	tab.backdrop:Point("TOPLEFT", 10, -3)
+	tab.backdrop:Point("TOPLEFT", 10, E.PixelMode and -1 or -3)
 	tab.backdrop:Point("BOTTOMRIGHT", -10, 3)				
 end
 
@@ -375,7 +375,7 @@ function S:HandleSliderFrame(frame)
 	frame.backdrop:SetAllPoints()
 	frame.SetBackdrop = E.noop
 	frame:SetThumbTexture(E["media"].blankTex)
-	frame:GetThumbTexture():SetVertexColor(0.5, 0.5, 0.5)
+	frame:GetThumbTexture():SetVertexColor(0.3, 0.3, 0.3)
 	frame:GetThumbTexture():Size(SIZE-2,SIZE-2)
 	if orientation == 'VERTICAL' then
 		frame:Width(SIZE)
