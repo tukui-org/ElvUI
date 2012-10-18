@@ -612,10 +612,9 @@ function CH:AddMessage(text, ...)
 		else
 			for realm, _ in pairs(specialChatIcons) do
 				for character, texture in pairs(specialChatIcons[realm]) do
-					print("|Hplayer:"..character.."%-"..realm)
 					text = text:gsub("|Hplayer:"..character.."%-"..realm, texture.."|Hplayer:"..character.."%-"..realm)
 				end
-			end
+			end		
 		end
 		
 		CH.timeOverride = nil;
