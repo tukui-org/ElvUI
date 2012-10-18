@@ -363,9 +363,18 @@ function UF:Update_FocusFrame(frame, db)
 				anchorPoint, anchorTo = 'TOP', 'BOTTOM'
 			end
 			
+			local yOffset = 0;
+			if E.PixelMode then
+				if db.aurabar.anchorPoint == 'BELOW' then
+					yOffset = 1;
+				else
+					yOffset = -1;
+				end
+			end
+
 			auraBars:ClearAllPoints()
-			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', POWERBAR_OFFSET, 0)
-			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', -POWERBAR_OFFSET, 0)
+			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', POWERBAR_OFFSET, yOffset)
+			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', -POWERBAR_OFFSET, yOffset)
 
 			auraBars.buffColor = {buffColor.r, buffColor.g, buffColor.b}
 			auraBars.debuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}

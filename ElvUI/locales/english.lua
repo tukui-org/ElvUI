@@ -795,7 +795,6 @@ L["Health By Value"] = true;
 L["Health Text"] = true;
 L["Health"] = true;
 L["Height"] = true;
-L['Hold shift + right click to blacklist this aura.'] = true;
 L['Holy Power'] = true;
 L["Horizontal"] = true; --Also used in bags module
 L["How far away the portrait is from the camera."] = true;

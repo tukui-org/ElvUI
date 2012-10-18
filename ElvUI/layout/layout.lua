@@ -6,6 +6,11 @@ local SIDE_BUTTON_WIDTH = 16;
 
 E.Layout = LO;
 
+local function Panel_OnShow(self)
+	self:SetFrameLevel(0)
+	self:SetFrameStrata('BACKGROUND')
+end
+
 function LO:Initialize()
 	self:CreateChatPanels()
 	self:CreateMinimapPanels()
@@ -16,8 +21,9 @@ function LO:Initialize()
 	self.BottomPanel:Point('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', -1, -1)
 	self.BottomPanel:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOMRIGHT', 1, -1)
 	self.BottomPanel:Height(PANEL_HEIGHT)
-	self.BottomPanel:SetFrameLevel(0)
-	self.BottomPanel:SetFrameStrata('BACKGROUND')
+	self.BottomPanel:SetScript('OnShow', Panel_OnShow)
+	E.FrameLocks['ElvUI_BottomPanel'] = true;
+	Panel_OnShow(self.BottomPanel)
 	self:BottomPanelVisibility()
 	
 	self.TopPanel = CreateFrame('Frame', 'ElvUI_TopPanel', E.UIParent)
@@ -25,8 +31,9 @@ function LO:Initialize()
 	self.TopPanel:Point('TOPLEFT', E.UIParent, 'TOPLEFT', -1, 1)
 	self.TopPanel:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', 1, 1)
 	self.TopPanel:Height(PANEL_HEIGHT)
-	self.TopPanel:SetFrameLevel(0)
-	self.TopPanel:SetFrameStrata('BACKGROUND')
+	self.TopPanel:SetScript('OnShow', Panel_OnShow)
+	Panel_OnShow(self.TopPanel)
+	E.FrameLocks['ElvUI_TopPanel'] = true;
 	self:TopPanelVisibility()	
 end
 
