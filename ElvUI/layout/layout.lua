@@ -18,6 +18,7 @@ function LO:Initialize()
 	self.BottomPanel:Height(PANEL_HEIGHT)
 	self.BottomPanel:SetFrameLevel(0)
 	self.BottomPanel:SetFrameStrata('BACKGROUND')
+	E.FrameLocks['ElvUI_BottomPanel'] = true;
 	self:BottomPanelVisibility()
 	
 	self.TopPanel = CreateFrame('Frame', 'ElvUI_TopPanel', E.UIParent)
@@ -27,6 +28,7 @@ function LO:Initialize()
 	self.TopPanel:Height(PANEL_HEIGHT)
 	self.TopPanel:SetFrameLevel(0)
 	self.TopPanel:SetFrameStrata('BACKGROUND')
+	E.FrameLocks['ElvUI_TopPanel'] = true;
 	self:TopPanelVisibility()	
 end
 
