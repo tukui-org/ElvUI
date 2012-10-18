@@ -73,16 +73,38 @@ function NP:CreateVirtualFrame(parent, point)
 
 	
 	point.backdrop2 = parent:CreateTexture(nil, "BORDER")
-	point.backdrop2:SetDrawLayer("BORDER", -7)
+	point.backdrop2:SetDrawLayer("BORDER", -4)
 	point.backdrop2:SetAllPoints(point)
 	point.backdrop2:SetTexture(unpack(E["media"].backdropcolor))		
 	
 	if E.PixelMode then 
-		point.backdrop = parent:CreateTexture(nil, "BORDER")
-		point.backdrop:SetDrawLayer("BORDER", -8)
-		point.backdrop:SetPoint("TOPLEFT", point, "TOPLEFT", -noscalemult, noscalemult)
-		point.backdrop:SetPoint("BOTTOMRIGHT", point, "BOTTOMRIGHT", noscalemult, -noscalemult)
-		point.backdrop:SetTexture(0, 0, 0, 1)
+		point.bordertop = parent:CreateTexture(nil, "BORDER")
+		point.bordertop:SetPoint("TOPLEFT", point, "TOPLEFT", -noscalemult, noscalemult)
+		point.bordertop:SetPoint("TOPRIGHT", point, "TOPRIGHT", noscalemult, noscalemult)
+		point.bordertop:SetHeight(noscalemult)
+		point.bordertop:SetTexture(unpack(E["media"].bordercolor))	
+		point.bordertop:SetDrawLayer("BORDER", -7)
+		
+		point.borderbottom = parent:CreateTexture(nil, "BORDER")
+		point.borderbottom:SetPoint("BOTTOMLEFT", point, "BOTTOMLEFT", -noscalemult, -noscalemult)
+		point.borderbottom:SetPoint("BOTTOMRIGHT", point, "BOTTOMRIGHT", noscalemult, -noscalemult)
+		point.borderbottom:SetHeight(noscalemult)
+		point.borderbottom:SetTexture(unpack(E["media"].bordercolor))	
+		point.borderbottom:SetDrawLayer("BORDER", -7)
+		
+		point.borderleft = parent:CreateTexture(nil, "BORDER")
+		point.borderleft:SetPoint("TOPLEFT", point, "TOPLEFT", -noscalemult, noscalemult)
+		point.borderleft:SetPoint("BOTTOMLEFT", point, "BOTTOMLEFT", noscalemult, -noscalemult)
+		point.borderleft:SetWidth(noscalemult)
+		point.borderleft:SetTexture(unpack(E["media"].bordercolor))	
+		point.borderleft:SetDrawLayer("BORDER", -7)
+		
+		point.borderright = parent:CreateTexture(nil, "BORDER")
+		point.borderright:SetPoint("TOPRIGHT", point, "TOPRIGHT", noscalemult, noscalemult)
+		point.borderright:SetPoint("BOTTOMRIGHT", point, "BOTTOMRIGHT", -noscalemult, -noscalemult)
+		point.borderright:SetWidth(noscalemult)
+		point.borderright:SetTexture(unpack(E["media"].bordercolor))	
+		point.borderright:SetDrawLayer("BORDER", -7)			
 	else
 		point.backdrop = parent:CreateTexture(nil, "BORDER")
 		point.backdrop:SetDrawLayer("BORDER", -8)
@@ -121,14 +143,10 @@ function NP:CreateVirtualFrame(parent, point)
 end
 
 function NP:SetVirtualBorder(parent, r, g, b)
-	if not parent.bordertop then
-		parent.backdrop:SetTexture(r, g, b)
-	else
-		parent.bordertop:SetTexture(r, g, b)
-		parent.borderbottom:SetTexture(r, g, b)
-		parent.borderleft:SetTexture(r, g, b)
-		parent.borderright:SetTexture(r, g, b)
-	end
+	parent.bordertop:SetTexture(r, g, b)
+	parent.borderbottom:SetTexture(r, g, b)
+	parent.borderleft:SetTexture(r, g, b)
+	parent.borderright:SetTexture(r, g, b)
 end
 
 function NP:SetVirtualBackdrop(parent, r, g, b)
@@ -248,10 +266,7 @@ function NP:HealthBar_OnShow(self, frame)
 
 	self:HealthBar_ValueChanged(frame.oldhp)
 	
-	if E.PixelMode then
-		frame.hp.backdrop:SetPoint('TOPLEFT', -noscalemult, noscalemult)
-		frame.hp.backdrop:SetPoint('BOTTOMRIGHT', noscalemult, -noscalemult)	
-	else
+	if not E.PixelMode then
 		frame.hp.backdrop:SetPoint('TOPLEFT', -noscalemult*3, noscalemult*3)
 		frame.hp.backdrop:SetPoint('BOTTOMRIGHT', noscalemult*3, -noscalemult*3)	
 	end
