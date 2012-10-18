@@ -93,6 +93,18 @@ local smileyKeys = {
 	["</3"]="BrokenHeart",
 };
 
+local specialChatIcons = {
+	["Kil'jaeden"] = {
+		["Elvz"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t"
+	},
+	["Illidan"] = {
+		["Affinichi"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\Bathrobe_Chat_Logo.blp:15:15|t",
+		["Uplift"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\Bathrobe_Chat_Logo.blp:15:15|t",
+		["Affinitii"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\Bathrobe_Chat_Logo.blp:15:15|t",
+		["Affinity"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\Bathrobe_Chat_Logo.blp:15:15|t"
+	},
+}
+
 CH.Keywords = {};
 
 function CH:GetGroupDistribution()
@@ -585,11 +597,27 @@ function CH:AddMessage(text, ...)
 			text = '|cffB3B3B3['..timeStamp..'] |r'..text
 		end
 		
-		if E.myrealm == "Kil'jaeden" then
-			text = text:gsub('|Hplayer:Elvz:', '|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t|Hplayer:Elvz:')
+		if specialChatIcons[E.myrealm] then
+			for character, texture in pairs(specialChatIcons[E.myrealm]) do
+				text = text:gsub('|Hplayer:'..character..':', texture..'|Hplayer:'..character..':')
+			end
+			
+			for realm, _ in pairs(specialChatIcons) do
+				if realm ~= E.myrealm then
+					for character, texture in pairs(specialChatIcons[realm]) do
+						text = text:gsub("|Hplayer:"..character.."%-"..realm, texture.."|Hplayer:"..character.."%-"..realm)
+					end
+				end
+			end			
 		else
-			text = text:gsub("|Hplayer:Elvz%-Kil'jaeden", "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t|Hplayer:Elvz%-Kil'jaeden")
+			for realm, _ in pairs(specialChatIcons) do
+				for character, texture in pairs(specialChatIcons[realm]) do
+					print("|Hplayer:"..character.."%-"..realm)
+					text = text:gsub("|Hplayer:"..character.."%-"..realm, texture.."|Hplayer:"..character.."%-"..realm)
+				end
+			end
 		end
+		
 		CH.timeOverride = nil;
 	end
 
