@@ -15,6 +15,52 @@ local function GetPoint(obj)
 	return string.format('%s\031%s\031%s\031%d\031%d', point, anchor:GetName(), secondaryPoint, E:Round(x), E:Round(y))
 end
 
+local function UpdateCoords(self)
+	local mover = self.child
+	local screenWidth, screenHeight, screenCenter = E.UIParent:GetRight(), E.UIParent:GetTop(), E.UIParent:GetCenter()
+	local x, y = mover:GetCenter()
+
+	local LEFT = screenWidth / 3
+	local RIGHT = screenWidth * 2 / 3
+	local TOP = screenHeight / 2
+	local point, inversePoint
+	if y >= TOP then
+		point = "TOP"
+		inversePoint = 'BOTTOM'
+		y = -(screenHeight - mover:GetTop())
+	else
+		point = "BOTTOM"
+		inversePoint = 'TOP'
+		y = mover:GetBottom()
+	end
+	
+	if x >= RIGHT then
+		point = 'RIGHT'
+		inversePoint = 'LEFT'
+		x = mover:GetRight() - screenWidth
+	elseif x <= LEFT then
+		point = 'LEFT'
+		inversePoint = 'RIGHT'
+		x = mover:GetLeft()
+	else
+		x = x - screenCenter
+	end
+	
+	local coordX, coordY = E:GetXYOffset(inversePoint, 4)
+	mover.coordText:ClearAllPoints()
+	mover.coordText:SetPoint(point, mover, inversePoint, coordX, coordY)
+	
+	x = E:Round(x, 2)
+	y = E:Round(y, 2)
+	
+	mover.coordText:SetText('('..x..', '..y..')')
+end
+
+local isDragging = false;
+local coordFrame = CreateFrame('Frame')
+coordFrame:SetScript('OnUpdate', UpdateCoords)
+coordFrame:Hide()
+
 local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	if not parent then return end --If for some reason the parent isnt loaded yet
 	if E.CreatedMovers[name].Created then return end
@@ -65,10 +111,14 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		else
 			self:StartMoving() 
 		end
+		coordFrame.child = self
+		coordFrame:Show()
+		isDragging = true;
 	end)
 	
 	f:SetScript("OnDragStop", function(self) 
 		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
+		isDragging = false;
 		if E.db['general'].stickyFrames then
 			Sticky:StopMoving(self)
 		else
@@ -120,8 +170,10 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 
 		self:ClearAllPoints()
 		self:Point(point, E.UIParent, point, x, y)
-
 		E:SaveMoverPosition(name)
+		
+		coordFrame.child = nil
+		coordFrame:Hide()		
 		
 		if postdrag ~= nil and type(postdrag) == 'function' then
 			postdrag(self, E:GetScreenQuadrant(self))
@@ -145,14 +197,28 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	f:SetFontString(fs)
 	f.text = fs
 	
+	fs = f:CreateFontString(nil, "OVERLAY")
+	fs:FontTemplate()
+	fs:SetJustifyH("CENTER")
+	fs:SetPoint("CENTER")
+	fs:SetText('')
+	f.coordText = fs	
+	
 	f:SetScript("OnEnter", function(self) 
+		if isDragging then return end
 		self.text:SetTextColor(1, 1, 1)
+		self.coordText:SetAlpha(1)
+		coordFrame.child = self
+		coordFrame:GetScript('OnUpdate')(coordFrame)
 	end)
 	f:SetScript("OnLeave", function(self)
+		if isDragging then return end
 		self.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
+		self.coordText:SetAlpha(0)
 	end)
 	f:SetScript('OnShow', function(self)
 		self:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
+		self.coordText:SetAlpha(0)
 	end)
 	
 	f:SetMovable(true)
