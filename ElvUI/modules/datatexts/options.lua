@@ -82,7 +82,37 @@ E.Options.args.datatexts = {
 				E.db.datatexts[ info[#info] ] = value
 				E:GetModule('Minimap'):UpdateSettings()
 			end,					
-		},					
+		},		
+		leftChatPanel = {
+			order = 6,
+			name = L['Datatext Panel (Left)'],
+			desc = L['Display data panels below the chat, used for datatexts.'],
+			type = 'toggle',
+			set = function(info, value) 
+				E.db.datatexts[ info[#info] ] = value
+				if E.db.LeftChatPanelFaded then
+					E.db.LeftChatPanelFaded = true;
+					HideLeftChat()
+				end
+				E:GetModule('Chat'):UpdateAnchors()
+				E:GetModule('Layout'):ToggleChatPanels()
+			end,					
+		},		
+		rightChatPanel = {
+			order = 7,
+			name = L['Datatext Panel (Right)'],
+			desc = L['Display data panels below the chat, used for datatexts.'],
+			type = 'toggle',
+			set = function(info, value) 
+				E.db.datatexts[ info[#info] ] = value
+				if E.db.RightChatPanelFaded then
+					E.db.RightChatPanelFaded = true;
+					HideRightChat()
+				end		
+				E:GetModule('Chat'):UpdateAnchors()
+				E:GetModule('Layout'):ToggleChatPanels()
+			end,					
+		},				
 		panels = {
 			type = 'group',
 			name = L['Panels'],

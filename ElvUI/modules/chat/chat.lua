@@ -361,14 +361,28 @@ function CH:SetupChatTabs(frame, hook)
 	end
 end
 
+function CH:UpdateAnchors()
+	for _, frameName in pairs(CHAT_FRAMES) do
+		local frame = _G[frameName..'EditBox']
+		if not frame then break; end
+		if E.db.datatexts.leftChatPanel then
+			frame:SetAllPoints(LeftChatDataPanel)
+		else
+			frame:SetAllPoints(LeftChatTab)
+		end
+	end
+	
+	CH:PositionChat(true)
+end
+
 function CH:PositionChat(override)
-	if (InCombatLockdown() and not override and self.initialMove) or (IsMouseButtonDown("LeftButton") and not override) then return end
+	if not self.db.lockPositions or ((InCombatLockdown() and not override and self.initialMove) or (IsMouseButtonDown("LeftButton") and not override)) then return end
 	
 	RightChatPanel:Size(E.db.chat.panelWidth, E.db.chat.panelHeight)
 	LeftChatPanel:Size(E.db.chat.panelWidth, E.db.chat.panelHeight)	
 	
 	if E.private.chat.enable ~= true then return end
-	
+		
 	local chat, chatbg, tab, id, point, button, isDocked, chatFound
 	for _, frameName in pairs(CHAT_FRAMES) do
 		chat = _G[frameName]
@@ -388,6 +402,10 @@ function CH:PositionChat(override)
 	end
 
 	for i=1, CreatedFrames do
+		local BASE_OFFSET = 60
+		if E.PixelMode then
+			BASE_OFFSET = BASE_OFFSET - 3
+		end	
 		chat = _G[format("ChatFrame%d", i)]
 		chatbg = format("ChatFrame%dBackground", i)
 		button = _G[format("ButtonCF%d", i)]
@@ -409,14 +427,17 @@ function CH:PositionChat(override)
 
 		
 		if point == "BOTTOMRIGHT" and chat:IsShown() and not (id > NUM_CHAT_WINDOWS) and id == self.RightChatWindowID then
-			if id ~= 2 then
-				chat:ClearAllPoints()
+			chat:ClearAllPoints()
+			if E.db.datatexts.rightChatPanel then
 				chat:Point("BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 1, 3)
-				chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - (E.PixelMode and 57 or 60)))
 			else
-				chat:ClearAllPoints()
-				chat:Point("BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 1, 3)
-				chat:Size(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - (E.PixelMode and 57 or 60)) - CombatLogQuickButtonFrame_Custom:GetHeight())				
+				BASE_OFFSET = BASE_OFFSET - 24
+				chat:Point("BOTTOMLEFT", RightChatDataPanel, "BOTTOMLEFT", 1, 1)
+			end
+			if id ~= 2 then
+				chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET))
+			else
+				chat:Size(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET) - CombatLogQuickButtonFrame_Custom:GetHeight())				
 			end
 			
 			
@@ -441,8 +462,13 @@ function CH:PositionChat(override)
 		else
 			if id ~= 2 and not (id > NUM_CHAT_WINDOWS) then
 				chat:ClearAllPoints()
-				chat:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPLEFT", 1, 3)
-				chat:Size(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - (E.PixelMode and 57 or 60)))
+				if E.db.datatexts.leftChatPanel then
+					chat:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPLEFT", 1, 3)
+				else
+					BASE_OFFSET = BASE_OFFSET - 24
+					chat:Point("BOTTOMLEFT", LeftChatToggleButton, "BOTTOMLEFT", 1, 1)
+				end
+				chat:Size(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET))
 				FCF_SavePositionAndDimensions(chat)		
 			end
 			chat:SetParent(LeftChatPanel)
@@ -1075,6 +1101,7 @@ function CH:Initialize()
 	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('PET_BATTLE_CLOSE')
 	self:SetupChat()
+	self:UpdateAnchors()
 	
 	self:RegisterEvent('CHAT_MSG_BATTLEGROUND', 'SaveChatHistory')
 	self:RegisterEvent('CHAT_MSG_BATTLEGROUND_LEADER', 'SaveChatHistory')
@@ -1094,7 +1121,7 @@ function CH:Initialize()
 	self:RegisterEvent("CHAT_MSG_WHISPER", 'SaveChatHistory')
 	self:RegisterEvent("CHAT_MSG_WHISPER_INFORM", 'SaveChatHistory')
 	self:RegisterEvent("CHAT_MSG_YELL", 'SaveChatHistory')
-
+	
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", CH.CHAT_MSG_CHANNEL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_YELL", CH.CHAT_MSG_YELL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_SAY", CH.CHAT_MSG_SAY)

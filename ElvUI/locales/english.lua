@@ -177,6 +177,8 @@ L['Wrap After'] = true;
 L['Your Auras First'] = true;
 
 --Chat
+L['Lock Positions'] = true;
+L['Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish.'] = true;
 L["AFK"] = true; --Also used in datatexts and tooltip
 L["Attempt to create URL links inside the chat."] = true;
 L["BG"] = true;
@@ -322,6 +324,9 @@ L["ELVUI_CREDITS"] = "I would like to give out a special shout out to the follow
 L["Testing:"] = true;
 
 --DataTexts
+L['Datatext Panel (Left)'] = true;
+L['Datatext Panel (Right)'] = true;
+L['Display data panels below the chat, used for datatexts.'] = true;
 L["(Hold Shift) Memory Usage"] = true;
 L["24-Hour Time"] = true;
 L['Always Display'] = true;

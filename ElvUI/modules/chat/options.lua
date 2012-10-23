@@ -139,6 +139,17 @@ E.Options.args.chat = {
 					values = AceGUIWidgetLSMlists.sound,
 					set = function(info, value) E.db.chat.keywordSound = value; end,
 				},
+				lockPositions = {
+					order = 6,
+					type = 'toggle',
+					name = L['Lock Positions'],
+					desc = L['Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish.'],	
+				},
+				spacer = {
+					order = 99,
+					type = 'description',
+					name = ' '
+				},
 				panelBackdrop = {
 					order = 100,
 					type = 'select',
