@@ -153,6 +153,73 @@ local function ConfigMode_Initialize()
 	UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, selectedValue);
 end
 
+function E:NudgeFrame()
+	local mover = ElvUIMoverNudgeWindow.child
+
+	local screenWidth, screenHeight, screenCenter = E.UIParent:GetRight(), E.UIParent:GetTop(), E.UIParent:GetCenter()
+	local x, y = mover:GetCenter()
+	local point
+	local LEFT = screenWidth / 3
+	local RIGHT = screenWidth * 2 / 3
+	local TOP = screenHeight / 2
+	
+	if y >= TOP then
+		point = "TOP"
+	else
+		point = "BOTTOM"
+	end
+	
+	if x >= RIGHT then
+		point = point..'RIGHT'
+	elseif x <= LEFT then
+		point = point..'LEFT'
+	end
+	
+	x = tonumber(ElvUIMoverNudgeWindow.xOffset.currentValue)
+	y = tonumber(ElvUIMoverNudgeWindow.yOffset.currentValue)
+
+	mover:ClearAllPoints()
+	mover:Point(point, E.UIParent, point, x, y)
+	E:SaveMoverPosition(mover.name)	
+end
+
+function E:UpdateNudgeFrame(mover)
+	local screenWidth, screenHeight, screenCenter = E.UIParent:GetRight(), E.UIParent:GetTop(), E.UIParent:GetCenter()
+	local x, y = mover:GetCenter()
+
+	local LEFT = screenWidth / 3
+	local RIGHT = screenWidth * 2 / 3
+	local TOP = screenHeight / 2
+
+	if y >= TOP then
+		y = -(screenHeight - mover:GetTop())
+	else
+		y = mover:GetBottom()
+	end
+	
+	if x >= RIGHT then
+		x = mover:GetRight() - screenWidth
+	elseif x <= LEFT then
+		x = mover:GetLeft()
+	else
+		x = x - screenCenter
+	end
+	
+	x = E:Round(x, 0)
+	y = E:Round(y, 0)
+
+	ElvUIMoverNudgeWindow.xOffset:SetText(x)
+	ElvUIMoverNudgeWindow.yOffset:SetText(y)
+	ElvUIMoverNudgeWindow.xOffset.currentValue = x
+	ElvUIMoverNudgeWindow.yOffset.currentValue = y
+	ElvUIMoverNudgeWindow.title:SetText(mover.textSting)
+end
+
+function E:AssignFrameToNudge()
+	ElvUIMoverNudgeWindow.child = self;
+	E:UpdateNudgeFrame(self)
+end
+
 function E:CreateMoverPopup()
 	local f = CreateFrame("Frame", "ElvUIMoverPopupWindow", UIParent)
 	f:SetFrameStrata("DIALOG")
@@ -170,7 +237,7 @@ function E:CreateMoverPopup()
 		end
 	end)
 	f:Hide()
-
+		
 	local S = E:GetModule('Skins')
 
 	local header = CreateFrame('Button', nil, f)
@@ -278,6 +345,141 @@ function E:CreateMoverPopup()
 	configMode.text:SetPoint('RIGHT', configMode.backdrop, 'LEFT', -2, 0)
 	configMode.text:SetText(L['Config Mode:'])	
 	
-	
 	UIDropDownMenu_Initialize(configMode, ConfigMode_Initialize);
+	
+	local nudgeFrame = CreateFrame('Frame', 'ElvUIMoverNudgeWindow', E.UIParent)
+	nudgeFrame:SetFrameStrata("DIALOG")
+	nudgeFrame:SetWidth(200)
+	nudgeFrame:SetHeight(100)
+	nudgeFrame:SetTemplate('Transparent')
+	nudgeFrame:Point('TOP', ElvUIMoverPopupWindow, 'BOTTOM', 0, -15)
+	nudgeFrame:SetFrameLevel(100)
+	nudgeFrame:Hide()
+	nudgeFrame:EnableMouse(true)
+	nudgeFrame:SetClampedToScreen(true)
+	ElvUIMoverPopupWindow:HookScript('OnHide', function() ElvUIMoverNudgeWindow:Hide() end)
+
+	local desc = nudgeFrame:CreateFontString("ARTWORK")
+	desc:SetFontObject("GameFontHighlight")
+	desc:SetJustifyV("TOP")
+	desc:SetJustifyH("LEFT")
+	desc:SetPoint("TOPLEFT", 18, -15)
+	desc:SetPoint("BOTTOMRIGHT", -18, 28)
+	desc:SetJustifyH('CENTER')
+	nudgeFrame.title = desc
+	
+	local header = CreateFrame('Button', nil, nudgeFrame)
+	header:SetTemplate('Default', true)
+	header:SetWidth(100); header:SetHeight(25)
+	header:SetPoint("CENTER", nudgeFrame, 'TOP')
+	header:SetFrameLevel(header:GetFrameLevel() + 2)
+
+	local title = header:CreateFontString("OVERLAY")
+	title:FontTemplate()
+	title:SetPoint("CENTER", header, "CENTER")
+	title:SetText(L['Nudge'])
+	
+	local xOffset = CreateFrame('EditBox', nudgeFrame:GetName()..'XEditBox', nudgeFrame, 'InputBoxTemplate')
+	xOffset:Width(50)
+	xOffset:Height(17)
+	xOffset:SetAutoFocus(false)
+	xOffset.currentValue = 0
+	xOffset:SetScript("OnEscapePressed", function(self)
+		self:SetText(E:Round(xOffset.currentValue))
+		EditBox_ClearFocus(self)
+	end)
+	xOffset:SetScript("OnEnterPressed", function(self)
+		local num = self:GetText()
+		if tonumber(num) then
+			xOffset.currentValue = num
+			E:NudgeFrame()
+		end
+		self:SetText(E:Round(xOffset.currentValue))
+		EditBox_ClearFocus(self)
+	end)
+	xOffset:SetScript("OnEditFocusLost", function(self)
+		self:SetText(E:Round(xOffset.currentValue))
+	end)
+	xOffset:SetScript("OnEditFocusGained", xOffset.HighlightText)
+	xOffset:SetScript('OnShow', function(self)
+		EditBox_ClearFocus(self)
+		self:SetText(E:Round(xOffset.currentValue))
+	end)
+	
+	xOffset.text = xOffset:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
+	xOffset.text:SetPoint('RIGHT', xOffset, 'LEFT', -4, 0)
+	xOffset.text:SetText('X:')	
+	xOffset:SetPoint('BOTTOMRIGHT', nudgeFrame, 'CENTER', -6, 0)
+	nudgeFrame.xOffset = xOffset
+	S:HandleEditBox(xOffset)
+	
+	local yOffset = CreateFrame('EditBox', nudgeFrame:GetName()..'YEditBox', nudgeFrame, 'InputBoxTemplate')
+	yOffset:Width(50)
+	yOffset:Height(17)
+	yOffset:SetAutoFocus(false)
+	yOffset.currentValue = 0
+	yOffset:SetScript("OnEscapePressed", function(self)
+		self:SetText(E:Round(yOffset.currentValue))
+		EditBox_ClearFocus(self)
+	end)
+	yOffset:SetScript("OnEnterPressed", function(self)
+		local num = self:GetText()
+		if tonumber(num) then
+			yOffset.currentValue = num
+			E:NudgeFrame()
+		end
+		self:SetText(E:Round(yOffset.currentValue))
+		EditBox_ClearFocus(self)
+	end)
+	yOffset:SetScript("OnEditFocusLost", function(self)
+		self:SetText(E:Round(yOffset.currentValue))
+	end)
+	yOffset:SetScript("OnEditFocusGained", yOffset.HighlightText)
+	yOffset:SetScript('OnShow', function(self)
+		EditBox_ClearFocus(self)
+		self:SetText(E:Round(yOffset.currentValue))
+	end)
+	
+	yOffset.text = yOffset:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
+	yOffset.text:SetPoint('RIGHT', yOffset, 'LEFT', -4, 0)
+	yOffset.text:SetText('Y:')	
+	yOffset:SetPoint('BOTTOMLEFT', nudgeFrame, 'CENTER', 16, 0)
+	nudgeFrame.yOffset = yOffset
+	S:HandleEditBox(yOffset)	
+	
+	local upButton = CreateFrame('Button', nudgeFrame:GetName()..'UpButton', nudgeFrame, 'UIPanelSquareButton')
+	upButton:SetPoint('BOTTOMRIGHT', nudgeFrame, 'BOTTOM', -6, 4)
+	upButton:SetScript('OnClick', function()
+		yOffset:SetText(yOffset.currentValue + 1)
+		yOffset:GetScript('OnEnterPressed')(yOffset)
+	end)
+	SquareButton_SetIcon(upButton, "UP");
+	S:HandleButton(upButton)
+	
+	local downButton = CreateFrame('Button', nudgeFrame:GetName()..'DownButton', nudgeFrame, 'UIPanelSquareButton')
+	downButton:SetPoint('BOTTOMLEFT', nudgeFrame, 'BOTTOM', 6, 4)
+	downButton:SetScript('OnClick', function()
+		yOffset:SetText(yOffset.currentValue - 1)
+		yOffset:GetScript('OnEnterPressed')(yOffset)
+	end)
+	SquareButton_SetIcon(downButton, "DOWN");
+	S:HandleButton(downButton)
+
+	local leftButton = CreateFrame('Button', nudgeFrame:GetName()..'LeftButton', nudgeFrame, 'UIPanelSquareButton')
+	leftButton:SetPoint('RIGHT', upButton, 'LEFT', -6, 0)
+	leftButton:SetScript('OnClick', function()
+		xOffset:SetText(xOffset.currentValue - 1)
+		xOffset:GetScript('OnEnterPressed')(xOffset)
+	end)
+	SquareButton_SetIcon(leftButton, "LEFT");
+	S:HandleButton(leftButton)		
+	
+	local rightButton = CreateFrame('Button', nudgeFrame:GetName()..'RightButton', nudgeFrame, 'UIPanelSquareButton')
+	rightButton:SetPoint('LEFT', downButton, 'RIGHT', 6, 0)
+	rightButton:SetScript('OnClick', function()
+		xOffset:SetText(xOffset.currentValue + 1)
+		xOffset:GetScript('OnEnterPressed')(xOffset)
+	end)
+	SquareButton_SetIcon(rightButton, "RIGHT");
+	S:HandleButton(rightButton)		
 end

@@ -46,14 +46,10 @@ local function UpdateCoords(self)
 		x = x - screenCenter
 	end
 	
-	local coordX, coordY = E:GetXYOffset(inversePoint, 4)
-	mover.coordText:ClearAllPoints()
-	mover.coordText:SetPoint(point, mover, inversePoint, coordX, coordY)
-	
-	x = E:Round(x, 2)
-	y = E:Round(y, 2)
-	
-	mover.coordText:SetText('('..x..', '..y..')')
+	local coordX, coordY = E:GetXYOffset(inversePoint, 1)
+	ElvUIMoverNudgeWindow:ClearAllPoints()
+	ElvUIMoverNudgeWindow:SetPoint(point, mover, inversePoint, coordX, coordY)
+	E:UpdateNudgeFrame(mover)
 end
 
 local isDragging = false;
@@ -116,6 +112,8 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		isDragging = true;
 	end)
 	
+	f:SetScript('OnMouseUp', E.AssignFrameToNudge)
+	
 	f:SetScript("OnDragStop", function(self) 
 		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
 		isDragging = false;
@@ -171,14 +169,14 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		self:ClearAllPoints()
 		self:Point(point, E.UIParent, point, x, y)
 		E:SaveMoverPosition(name)
-		
+		E:UpdateNudgeFrame(self)
 		coordFrame.child = nil
 		coordFrame:Hide()		
-		
+			
 		if postdrag ~= nil and type(postdrag) == 'function' then
 			postdrag(self, E:GetScreenQuadrant(self))
 		end
-
+	
 		self:SetUserPlaced(false)
 	end)	
 	
@@ -196,29 +194,21 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	fs:SetTextColor(unpack(E["media"].rgbvaluecolor))
 	f:SetFontString(fs)
 	f.text = fs
-	
-	fs = f:CreateFontString(nil, "OVERLAY")
-	fs:FontTemplate()
-	fs:SetJustifyH("CENTER")
-	fs:SetPoint("CENTER")
-	fs:SetText('')
-	f.coordText = fs	
-	
+		
 	f:SetScript("OnEnter", function(self) 
 		if isDragging then return end
 		self.text:SetTextColor(1, 1, 1)
-		self.coordText:SetAlpha(1)
+		ElvUIMoverNudgeWindow:Show()
+		E.AssignFrameToNudge(self)
 		coordFrame.child = self
 		coordFrame:GetScript('OnUpdate')(coordFrame)
 	end)
 	f:SetScript("OnLeave", function(self)
 		if isDragging then return end
 		self.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
-		self.coordText:SetAlpha(0)
 	end)
 	f:SetScript('OnShow', function(self)
 		self:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
-		self.coordText:SetAlpha(0)
 	end)
 	
 	f:SetMovable(true)
