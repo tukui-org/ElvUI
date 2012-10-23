@@ -63,6 +63,8 @@ local function LoadSkin()
 		if quality and button.backdrop then
 			local r, g, b = GetItemQualityColor(quality)
 			button.backdrop:SetBackdropBorderColor(r, g ,b)
+		elseif button.backdrop then
+			button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end)
 	
