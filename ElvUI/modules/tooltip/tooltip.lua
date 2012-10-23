@@ -5,6 +5,10 @@ local _G = getfenv(0)
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
 local gsub, find, format = string.gsub, string.find, string.format
 TT.InspectCache = {};
+TT.lastInspectRequest = 0;
+
+local INSPECT_DELAY = 0.2;
+local INSPECT_FREQ = 2;
 
 local GameTooltips = {
 	GameTooltip,
@@ -38,15 +42,19 @@ local classification = {
 	rare = string.format("|cffAF5050 %s|r", ITEM_QUALITY3_DESC)
 }
 
+function TT:IsInspectFrameOpen() 
+	return (InspectFrame and InspectFrame:IsShown()) or (Examiner and Examiner:IsShown()); 
+end
+
 function TT:SetStatusBarAnchor(pos)
 	GameTooltipStatusBar:ClearAllPoints()
 	
 	if pos == 'BOTTOM' then
-		GameTooltipStatusBar:Point("TOPLEFT", GameTooltipStatusBar:GetParent(), "BOTTOMLEFT", 2, -5)
-		GameTooltipStatusBar:Point("TOPRIGHT", GameTooltipStatusBar:GetParent(), "BOTTOMRIGHT", -2, -5)			
+		GameTooltipStatusBar:Point("TOPLEFT", GameTooltipStatusBar:GetParent(), "BOTTOMLEFT", E.Border, -(E.Border + 3))
+		GameTooltipStatusBar:Point("TOPRIGHT", GameTooltipStatusBar:GetParent(), "BOTTOMRIGHT", -E.Border, -(E.Border + 3))			
 	else	
-		GameTooltipStatusBar:Point("BOTTOMLEFT", GameTooltipStatusBar:GetParent(), "TOPLEFT", 2, 5)
-		GameTooltipStatusBar:Point("BOTTOMRIGHT", GameTooltipStatusBar:GetParent(), "TOPRIGHT", -2, 5)			
+		GameTooltipStatusBar:Point("BOTTOMLEFT", GameTooltipStatusBar:GetParent(), "TOPLEFT", E.Border, (E.Border + 3))
+		GameTooltipStatusBar:Point("BOTTOMRIGHT", GameTooltipStatusBar:GetParent(), "TOPRIGHT", -E.Border, (E.Border + 3))			
 	end
 	
 	if not GameTooltipStatusBar.text then return end
@@ -268,9 +276,13 @@ function TT:Colorize(tt)
 			local r, g, b = GetItemQualityColor(quality)
 			tt:SetBackdropBorderColor(r, g, b)
 		else
-			tt:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-			GameTooltipStatusBar.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-			GameTooltipStatusBar:ColorBar(unpack(E["media"].bordercolor))	
+			local r, g, b = unpack(E["media"].bordercolor)
+			tt:SetBackdropBorderColor(r, g, b)
+			if E.PixelMode then
+				r, g, b = 0.3, 0.3, 0.3
+			end
+			GameTooltipStatusBar.backdrop:SetBackdropBorderColor(r, g, b)
+			GameTooltipStatusBar:ColorBar(r, g, b)	
 		end
 	end	
 	
@@ -357,7 +369,7 @@ function TT:GetItemLvL(unit)
 end
 
 function TT:GetTalentSpec(unit)
-	local spec = GetInspectSpecialization('mouseover')
+	local spec = GetInspectSpecialization(unit)
 	if(spec ~= nil and spec > 0) then
 		local role = GetSpecializationRoleByID(spec);
 		if(role ~= nil) then
@@ -427,6 +439,9 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	end
 	
 	if(UnitIsPlayer(unit)) then
+		self.currentGUID = GUID
+		self.currentName = name
+		self.currentUnit = unit
 		for index, _ in pairs(self.InspectCache) do
 			local inspectCache = self.InspectCache[index]
 			if inspectCache.GUID == GUID then
@@ -434,15 +449,15 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				talentSpec = inspectCache.TalentSpec or ""
 				lastUpdate = inspectCache.LastUpdate and math.abs(inspectCache.LastUpdate - math.floor(GetTime())) or 30
 			end
-		end	
+		end
 		
-		if (unit and CanInspect(unit)) and not self.InspectRefresh and lastUpdate >= 30 and not self.blockInspectRequests then
-			TT.RequestSent = true
-			NotifyInspect(unit)
-		end	
-		
-		self.InspectRefresh = nil
-	
+		-- Queue an inspect request
+		if unit and (CanInspect(unit)) and (not self:IsInspectFrameOpen()) then
+			local lastInspectTime = (GetTime() - self.lastInspectRequest);
+			self.UpdateInspect.nextUpdate = (lastInspectTime > INSPECT_FREQ) and INSPECT_DELAY or (INSPECT_FREQ - lastInspectTime + INSPECT_DELAY);
+			self.UpdateInspect:Show();
+		end
+
 		if UnitIsAFK(unit) then
 			tt:AppendText((" %s"):format("[|cffFF0000"..L['AFK'].."|r]"))
 		elseif UnitIsDND(unit) then 
@@ -585,17 +600,6 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 end
 
 function TT:INSPECT_READY(event, GUID)
-	if self.blockInspectRequests then
-		TT.RequestSent = nil
-	end
-
-	if UnitGUID('mouseover') ~= GUID or not TT.RequestSent then 
-		if not self.blockInspectRequests then
-			ClearInspectPlayer();
-		end
-		return; 
-	end
-	
 	local ilvl = TT:GetItemLvL('mouseover')
 	local talentSpec = TT:GetTalentSpec('mouseover')
 	local curTime = GetTime()
@@ -623,37 +627,29 @@ function TT:INSPECT_READY(event, GUID)
 	if #self.InspectCache > 30 then
 		table.remove(self.InspectCache, 1)
 	end
-	
-	TT.InspectRefresh = true;
+
 	GameTooltip:SetUnit('mouseover')
 	
-	if not self.blockInspectRequests then
-		ClearInspectPlayer();
+	ClearInspectPlayer();
+	self:UnregisterEvent('INSPECT_READY');
+end
+
+function TT:Inspect_OnUpdate(elapsed)
+	self.nextUpdate = (self.nextUpdate - elapsed);
+	if (self.nextUpdate <= 0) then
+		self:Hide();
+		if (UnitGUID("mouseover") == TT.currentGUID) and (not TT:IsInspectFrameOpen()) then
+			TT.lastInspectRequest = GetTime();
+			TT:RegisterEvent("INSPECT_READY");
+			NotifyInspect(TT.currentUnit);
+		end
 	end
-	self.RequestSent = nil
 end
 
 function TT:MODIFIER_STATE_CHANGED(event, key)
 	if not key or not key:find('SHIFT') or not UnitExists('mouseover') then return; end
 
 	GameTooltip:SetUnit('mouseover')
-end
-
-function TT:InspectFrame_Show(unit)
-	if ( CanInspect(unit)) then
-		self.blockInspectRequests = true
-	end
-end
-
-function TT:ADDON_LOADED()
-	if IsAddOnLoaded('Blizzard_InspectUI') then
-		self:SecureHook('InspectFrame_Show')
-		if not InspectFrame.isHooked then
-			InspectFrame:HookScript('OnHide', function() self.blockInspectRequests = nil; end)
-			InspectFrame.isHooked = true;
-		end
-		self:UnregisterEvent('ADDON_LOADED')
-	end
 end
 
 function TT:Initialize()
@@ -686,10 +682,12 @@ function TT:Initialize()
 	self:HookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
 	self:HookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
-	self:RegisterEvent('INSPECT_READY')
 	self:RegisterEvent('MODIFIER_STATE_CHANGED')
-	self:RegisterEvent('ADDON_LOADED')
 	E.Skins:HandleCloseButton(ItemRefCloseButton)
+	
+	self.UpdateInspect = CreateFrame('Frame')
+	self.UpdateInspect:SetScript('OnUpdate', TT.Inspect_OnUpdate)
+	self.UpdateInspect:Hide()
 	
 	--SpellIDs
 	hooksecurefunc(GameTooltip, "SetUnitBuff", function(self,...)
