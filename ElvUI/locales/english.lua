@@ -1,11 +1,6 @@
 -- English localization file for enUS and enGB.
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0");
-local L
-if UnitName('player') ~= 'Elvz' then
-	L = AceLocale:NewLocale("ElvUI", "enUS", true, true);
-else
-	L = AceLocale:NewLocale("ElvUI", "enUS", true);
-end
+local L = AceLocale:NewLocale("ElvUI", "enUS", true, true);
 
 if not L then return; end
 
@@ -13,7 +8,6 @@ if not L then return; end
 L["A taint has occured that is preventing you from using your talents/glyphs, this can happen if you've inspected someone. Unfortionatly theres nothing we can do to fix it, please reload your ui and try again."] = true;
 
 --ActionBars
-L['Alpha'] = true;
 L[" |cff00ff00bound to |r"] = true;
 L["Action Paging"] = true;
 L["ActionBars"] = true;
@@ -183,6 +177,8 @@ L['Wrap After'] = true;
 L['Your Auras First'] = true;
 
 --Chat
+L['Lock Positions'] = true;
+L['Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish.'] = true;
 L["AFK"] = true; --Also used in datatexts and tooltip
 L["Attempt to create URL links inside the chat."] = true;
 L["BG"] = true;
@@ -253,8 +249,6 @@ Example: Interface\AddOns\ElvUI\media\textures\copy
 Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = true;
 
 --Config / Install
-L["You have changed the pixel perfect option. You will have to complete the installation process to remove any graphical bugs."] = true;
-L['Pixel Perfect'] = true;
 L["Auras Set"] = true;
 L["Auras System"] = true;
 L["Caster DPS"] = true;
@@ -286,6 +280,7 @@ L['Low Resolution'] = true;
 L["low"] = true;
 L["Movers unlocked. Move them now and click Lock when you are done."] = true;
 L["Physical DPS"] = true;
+L['Pixel Perfect'] = true;
 L["Please click the button below so you can setup variables and ReloadUI."] = true;
 L["Please click the button below to setup your CVars."] = true;
 L["Please press the continue button to go onto the next step."] = true;
@@ -317,6 +312,7 @@ L["Version"] = true;
 L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."] = true;
 L['You can always change fonts and colors of any element of elvui from the in-game configuration.'] = true;
 L["You can now choose what layout you wish to use based on your combat role."] = true;
+L["You have changed the pixel perfect option. You will have to complete the installation process to remove any graphical bugs."] = true;
 L["You may need to further alter these settings depending how low you resolution is."] = true;
 L["Your current resolution is %s, this is considered a %s resolution."] = true;
 
@@ -328,6 +324,9 @@ L["ELVUI_CREDITS"] = "I would like to give out a special shout out to the follow
 L["Testing:"] = true;
 
 --DataTexts
+L['Datatext Panel (Left)'] = true;
+L['Datatext Panel (Right)'] = true;
+L['Display data panels below the chat, used for datatexts.'] = true;
 L["(Hold Shift) Memory Usage"] = true;
 L["24-Hour Time"] = true;
 L['Always Display'] = true;
@@ -413,10 +412,6 @@ L["No locals to dump"] = true;
 L['|cFFE30000Lua error recieved. You can view the error message when you exit combat.'] = true;
 
 --General
-L['Top Panel'] = true;
-L['Display a panel across the top of the screen. This is for cosmetic only.'] = true;
-L['Bottom Panel'] = true;
-L['Display a panel across the bottom of the screen. This is for cosmetic only.'] = true;
 L["Accept Invites"] = true;
 L['Adjust the position of the threat bar to either the left or right datatext panels.'] = true;
 L['Adjust the size of the minimap.'] = true;
@@ -430,9 +425,12 @@ L["Automatically repair using the following method when visiting a merchant."] =
 L["Automatically scale the User Interface based on your screen resolution"] = true;
 L['Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level.'] = true;
 L["Automatically vendor gray items when visiting a vendor."] = true;
+L['Bottom Panel'] = true;
 L["Chat Bubbles"] = true;
 L["Controls what the transparency of the worldmap will be set to when you are moving."] = true;
 L["Disband Group"] = true;
+L['Display a panel across the bottom of the screen. This is for cosmetic only.'] = true;
+L['Display a panel across the top of the screen. This is for cosmetic only.'] = true;
 L['Display emotion icons in chat.'] = true;
 L["Don't scale the large world map to block out sides of the screen."] = true;
 L["ELVUI_DESC"] = "ElvUI is a complete User Interface replacement addon for World of Warcraft."
@@ -457,6 +455,7 @@ L["Skin the blizzard chat bubbles."] = true;
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = true;
 L["Tiny Map"] = true;
 L['Toggle Tutorials'] = true;
+L['Top Panel'] = true;
 L["Welcome to ElvUI version %s!"] = true;
 
 --Media
@@ -505,7 +504,6 @@ L["Your items have been repaired using guild bank funds for: "] = true;
 L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"] = true; --core\core.lua
 
 --NamePlates
-L['Mistweaver'] = true;
 L["Add Name"] = true;
 L["All"] = true;
 L["Auras"] = true;
@@ -542,6 +540,7 @@ L["Hide"] = true; --Also used in DataTexts
 L["Holy"] = true;
 L['Low Health Threshold'] = true;
 L['Low Health Warning'] = true;
+L['Mistweaver'] = true;
 L["NamePlates"] = true;
 L["NAMEPLATE_DESC"] = "Modify the nameplate settings."
 L["Personal Debuffs"] = true;
@@ -632,10 +631,6 @@ L["You have changed your UIScale, however you still have the AutoScale option en
 L["You must purchase a bank slot first!"] = true;
 
 --Tooltip
-L['Spell/Item IDs'] = true;
-L['Display the spell or item ID when mousing over a spell or item tooltip.'] = true;
-L['Item Count'] = true;
-L['Display how many of a certain item you have in your possession.'] = true;
 L['Always Hide'] = true;
 L["Anchor Mode"] = true;
 L["Anchor"] = true;
@@ -643,15 +638,19 @@ L["Combat Hide"] = true;
 L["Count"] = true;
 L["Cursor"] = true;
 L['Display guild ranks if a unit is guilded.'] = true;
+L['Display how many of a certain item you have in your possession.'] = true;
 L['Display player titles.'] = true;
 L['Display the players talent spec in the tooltip, this may not immediately update when mousing over a unit.'] = true;
+L['Display the spell or item ID when mousing over a spell or item tooltip.'] = true;
 L["Don't display the tooltip when mousing over a unitframe."] = true;
 L['Guild Ranks'] = true;
 L["Hide tooltip while in combat."] = true;
+L['Item Count'] = true;
 L['Never Hide'] = true;
 L['Player Titles'] = true;
 L["Set the type of anchor mode the tooltip should use."] = true;
 L["Smart"] = true;
+L['Spell/Item IDs'] = true;
 L['Talent Spec'] = true;
 L["Targeted By:"] = true;
 L["Tooltip"] = true;
@@ -679,7 +678,6 @@ L['You can toggle the microbar by using your middle mouse button on the minimap 
 L['You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame'] = true;
 
 --UnitFrames
-L['Raid Icon'] = true;
 L["%s frame(s) has a conflicting anchor point, please change either the buff or debuff anchor point so they are not attached to each other. Forcing the debuffs to be attached to the main unitframe until fixed."] = true;
 L['2D'] = true;
 L['3D'] = true;
@@ -842,6 +840,7 @@ L["Power"] = true;
 L["Powers"] = true;
 L["Priority"] = true;
 L['PVP Trinket'] = true;
+L['Raid Icon'] = true;
 L['Raid-10 Frames'] = true;
 L['Raid-25 Frames'] = true;
 L['Raid-40 Frames'] = true;

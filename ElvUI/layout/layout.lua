@@ -86,6 +86,7 @@ end
 
 local function ChatButton_OnClick(self, btn)
 	GameTooltip:Hide()
+	
 	if E.db[self.parent:GetName()..'Faded'] then
 		E.db[self.parent:GetName()..'Faded'] = nil
 		UIFrameFadeIn(self.parent, 0.2, self.parent:GetAlpha(), 1)
@@ -115,6 +116,23 @@ function LO:ToggleChatPanels()
 	LeftChatDataPanel:ClearAllPoints()
 	RightChatDataPanel:ClearAllPoints()
 	local SPACING = (E.PixelMode and 3 or 5)
+	
+	if E.db.datatexts.leftChatPanel then
+		LeftChatDataPanel:Show()
+		LeftChatToggleButton:Show()
+	else
+		LeftChatDataPanel:Hide()
+		LeftChatToggleButton:Hide()
+	end
+	
+	if E.db.datatexts.rightChatPanel then
+		RightChatDataPanel:Show()
+		RightChatToggleButton:Show()
+	else
+		RightChatDataPanel:Hide()
+		RightChatToggleButton:Hide()
+	end	
+	
 	if E.db.chat.panelBackdrop == 'SHOWBOTH' then
 		LeftChatPanel.backdrop:Show()
 		LeftChatTab:Show()
@@ -172,6 +190,8 @@ function LO:CreateChatPanels()
 	lchat:Point('BOTTOMLEFT', E.UIParent, 4, 4)
 	lchat:CreateBackdrop('Transparent')
 	lchat.backdrop:SetAllPoints()
+	E:CreateMover(lchat, "LeftChatMover", "Left Chat")
+	
 	
 	--Background Texture
 	lchat.tex = lchat:CreateTexture(nil, 'OVERLAY')
@@ -216,6 +236,7 @@ function LO:CreateChatPanels()
 	rchat:Point('BOTTOMRIGHT', E.UIParent, -4, 4)
 	rchat:CreateBackdrop('Transparent')
 	rchat.backdrop:SetAllPoints()
+	E:CreateMover(rchat, "RightChatMover", "Right Chat")
 	
 	--Background Texture
 	rchat.tex = rchat:CreateTexture(nil, 'OVERLAY')

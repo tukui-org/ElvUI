@@ -146,6 +146,7 @@ P['auras'] = {
 
 --Chat
 P['chat'] = {
+	['lockPositions'] = true,
 	['url'] = true,
 	['shortChannels'] = false,
 	['hyperlinkHover'] = false,
@@ -205,6 +206,8 @@ P['datatexts'] = {
 	['time24'] = true,
 	['battleground'] = false,
 	['minimapPanels'] = true,
+	['leftChatPanel'] = true,
+	['rightChatPanel'] = true,
 }
 
 --Tooltip
@@ -880,6 +883,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				['useFilter'] = '',
 				['xOffset'] = 0,
+<<<<<<< HEAD
 				['yOffset'] = 0,
 				['sizeOverride'] = 0,
 			},
@@ -889,6 +893,17 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'TOPLEFT',					
+=======
+				['yOffset'] = 11,
+				['sizeOverride'] = 22,
+			},
+			['debuffs'] = {
+				['enable'] = true,
+				['perrow'] = 3,
+				['numrows'] = 2,
+				['attachTo'] = 'FRAME',
+				['anchorPoint'] = 'LEFT',					
+>>>>>>> 6537de6533719687946b6d9724d8eb5b7c56a122
 				['fontSize'] = 10,
 				['clickThrough'] = false,
 				['playerOnly'] = true,
@@ -898,8 +913,13 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				['useFilter'] = '',
 				['xOffset'] = 0,
+<<<<<<< HEAD
 				['yOffset'] = 0,
 				['sizeOverride'] = 0,
+=======
+				['yOffset'] = -11,
+				['sizeOverride'] = 22,
+>>>>>>> 6537de6533719687946b6d9724d8eb5b7c56a122
 			},	
 			['castbar'] = {
 				['enable'] = true,

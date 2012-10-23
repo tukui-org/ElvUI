@@ -25,38 +25,49 @@ local function LoadSkin()
 	InspectModelFrameBackgroundOverlay:Kill()
 	InspectModelFrame:CreateBackdrop("Default")
 
-		local slots = {
-			"HeadSlot",
-			"NeckSlot",
-			"ShoulderSlot",
-			"BackSlot",
-			"ChestSlot",
-			"ShirtSlot",
-			"TabardSlot",
-			"WristSlot",
-			"HandsSlot",
-			"WaistSlot",
-			"LegsSlot",
-			"FeetSlot",
-			"Finger0Slot",
-			"Finger1Slot",
-			"Trinket0Slot",
-			"Trinket1Slot",
-			"MainHandSlot",
-			"SecondaryHandSlot",
-		}
-		for _, slot in pairs(slots) do
-			local icon = _G["Inspect"..slot.."IconTexture"]
-			local slot = _G["Inspect"..slot]
-			slot:StripTextures()
-			slot:StyleButton(false)
-			icon:SetTexCoord(unpack(E.TexCoords))
-			icon:SetInside()
-			slot:SetFrameLevel(slot:GetFrameLevel() + 2)
-			slot:CreateBackdrop("Default")
-			slot.backdrop:SetAllPoints()
+	local slots = {
+		"HeadSlot",
+		"NeckSlot",
+		"ShoulderSlot",
+		"BackSlot",
+		"ChestSlot",
+		"ShirtSlot",
+		"TabardSlot",
+		"WristSlot",
+		"HandsSlot",
+		"WaistSlot",
+		"LegsSlot",
+		"FeetSlot",
+		"Finger0Slot",
+		"Finger1Slot",
+		"Trinket0Slot",
+		"Trinket1Slot",
+		"MainHandSlot",
+		"SecondaryHandSlot",
+	}
+	for _, slot in pairs(slots) do
+		local icon = _G["Inspect"..slot.."IconTexture"]
+		local slot = _G["Inspect"..slot]
+		slot:StripTextures()
+		slot:StyleButton(false)
+		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetInside()
+		slot:SetFrameLevel(slot:GetFrameLevel() + 2)
+		slot:CreateBackdrop("Default")
+		slot.backdrop:SetAllPoints()
+	end
+	
+	hooksecurefunc('InspectPaperDollItemSlotButton_Update', function(button)
+		local unit = InspectFrame.unit;
+		local quality = GetInventoryItemQuality(unit, button:GetID())
+		if quality and button.backdrop then
+			local r, g, b = GetItemQualityColor(quality)
+			button.backdrop:SetBackdropBorderColor(r, g ,b)
+		elseif button.backdrop then
+			button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
-
+	end)
+	
 	InspectPVPFrameBottom:Kill()
 	InspectGuildFrameBG:Kill()
 	InspectPVPFrame:HookScript("OnShow", function() InspectPVPFrameBG:Kill() end)

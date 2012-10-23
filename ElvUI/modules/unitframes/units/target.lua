@@ -405,7 +405,7 @@ function UF:Update_TargetFrame(frame, db)
 			CPoints:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), -SPACING)
 			CPoints:SetFrameStrata("MEDIUM")
 		else
-			CPoints:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
+			CPoints:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, (E.PixelMode and 0 or (BORDER + SPACING)))
 			CPoints:SetFrameStrata("LOW")
 		end
 
@@ -428,7 +428,7 @@ function UF:Update_TargetFrame(frame, db)
 				if USE_MINI_COMBOBAR then
 					CPoints[i]:Point("LEFT", CPoints[i-1], "RIGHT", SPACING+(BORDER*2)+2, 0)
 				else
-					CPoints[i]:Point("LEFT", CPoints[i-1], "RIGHT", SPACING, 0)
+					CPoints[i]:Point("LEFT", CPoints[i-1], "RIGHT", 1, 0)
 				end
 			end	
 			
