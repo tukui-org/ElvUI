@@ -821,18 +821,23 @@ function AB:FixABPositions()
 	local ABdb = E.db.actionbar
 	if ABdb.bar3.enabled == true then
 		if ABdb.bar2.enabled == true and ABdb.bar1.heightMult == 2 then
-			ElvUI_Bar2:ClearAllPoints()
-			ElvUI_Bar2:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-38)
-			ElvUI_Bar3:ClearAllPoints()
-			ElvUI_Bar3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,2)
+			ElvAB_2:ClearAllPoints()
+			ElvAB_2:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-38)
+			E:SaveMoverPosition("ElvAB_2")
+			ElvAB_3:ClearAllPoints()
+			ElvAB_3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,2)
+			E:SaveMoverPosition("ElvAB_3")
 		elseif ABdb.bar2.enabled == true and ABdb.bar1.heightMult == 3 then
-			ElvUI_Bar2:ClearAllPoints()
-			ElvUI_Bar2:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-72)
-			ElvUI_Bar3:ClearAllPoints()
-			ElvUI_Bar3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-38)
+			ElvAB_2:ClearAllPoints()
+			ElvAB_2:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-72)
+			E:SaveMoverPosition("ElvAB_2")
+			ElvAB_3:ClearAllPoints()
+			ElvAB_3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-38)
+			E:SaveMoverPosition("ElvAB_3")
 		elseif ABdb.bar2.enabled ~= true and ABdb.bar1.heightMult == 2 then
-			ElvUI_Bar3:ClearAllPoints()
-			ElvUI_Bar3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-38)
+			ElvAB_3:ClearAllPoints()
+			ElvAB_3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-38)
+			E:SaveMoverPosition("ElvAB_3")
 		end
 		E:Print("ActionBar 2 and 3 has been repositioned")
 	end
