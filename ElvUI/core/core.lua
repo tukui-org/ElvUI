@@ -195,7 +195,7 @@ function E:UpdateMedia()
 		RightChatPanel.tex:SetTexture(E.db.chat.panelBackdropNameRight)
 		RightChatPanel.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.55 > 0 and E.db.general.backdropfadecolor.a - 0.55 or 0.5)		
 	end
-
+	
 	self:ValueFuncCall()
 	self:UpdateBlizzardFonts()
 end
@@ -472,7 +472,8 @@ function E:UpdateAll(ignoreInstall)
 	self.global = self.data.global;
 	
 	self:SetMoversPositions()
-
+	self:UpdateMedia()
+	
 	local UF = self:GetModule('UnitFrames')
 	UF.db = self.db.unitframe
 	UF:Update_AllFrames()
@@ -531,7 +532,6 @@ function E:UpdateAll(ignoreInstall)
 	
 	self:GetModule('Minimap'):UpdateSettings()
 	
-	self:UpdateMedia()
 	self:UpdateBorderColors()
 	self:UpdateBackdropColors()
 	self:UpdateFrameTemplates()
