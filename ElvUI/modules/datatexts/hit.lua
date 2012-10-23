@@ -10,8 +10,9 @@ local function OnEvent(self, event, unit)
 	lastPanel = self
 
 	if E.role == "Caster" then
+		local expertise = GetExpertise();
 		hitRating = GetCombatRating(CR_HIT_SPELL)
-		hitRatingBonus = GetCombatRatingBonus(CR_HIT_SPELL)
+		hitRatingBonus = GetCombatRatingBonus(CR_HIT_SPELL) + expertise
 	else
 		if E.myclass == "HUNTER" then
 			hitRating = GetCombatRating(CR_HIT_RANGED)
@@ -24,6 +25,7 @@ local function OnEvent(self, event, unit)
 
 	self.text:SetFormattedText(displayString, L['Hit']..': ', hitRatingBonus)
 end
+
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)
