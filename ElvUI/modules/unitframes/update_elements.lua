@@ -512,7 +512,7 @@ function UF:UpdateHoly(event, unit, powerType)
 	if(self.unit ~= unit or (powerType and powerType ~= 'HOLY_POWER')) then return end
 	local db = self.db
 	if not db then return; end
-	local BORDER = 2
+	local BORDER = E.Border
 	local numHolyPower = UnitPower('player', SPELL_POWER_HOLY_POWER);
 	local maxHolyPower = UnitPowerMax('player', SPELL_POWER_HOLY_POWER);	
 	local MAX_HOLY_POWER = UF['classMaxResourceBar'][E.myclass]
@@ -613,9 +613,9 @@ function UF:UpdateHarmony()
 	if not db then return; end
 	
 	local UNIT_WIDTH = db.width
-	local CLASSBAR_WIDTH = db.width - 4
-	local BORDER = 2
-	local SPACING = 1
+	local BORDER = E.Border
+	local SPACING = E.Spacing
+	local CLASSBAR_WIDTH = db.width - (BORDER*2)
 	local USE_PORTRAIT = db.portrait.enable
 	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
 	local PORTRAIT_WIDTH = db.portrait.width
@@ -655,9 +655,9 @@ function UF:UpdateHarmony()
 	for i = 1, maxBars do		
 		self[i]:SetHeight(self:GetHeight())	
 		if db.classbar.fill == 'spaced' then
-			self[i]:SetWidth(E:Scale(self:GetWidth() - 3)/maxBars)	
+			self[i]:SetWidth(E:Scale(self:GetWidth() - (E.PixelMode and 0 or 3))/maxBars)	
 		else
-			self[i]:SetWidth(E:Scale(self:GetWidth() - 4)/maxBars)	
+			self[i]:SetWidth(E:Scale(self:GetWidth() - (E.PixelMode and 1 or 4))/maxBars)	
 		end
 		self[i]:ClearAllPoints()
 		if i == 1 then
@@ -667,7 +667,7 @@ function UF:UpdateHarmony()
 				self[i]:SetPoint("LEFT", self)
 			end
 		else
-			self[i]:Point("LEFT", self[i-1], "RIGHT", SPACING , 0)
+			self[i]:Point("LEFT", self[i-1], "RIGHT", 1 , 0)
 		end
 		self[i]:SetStatusBarColor(unpack(ElvUF.colors.harmony[i]))
 	end	
@@ -694,7 +694,7 @@ function UF:UpdateShardBar(spec)
 		self:Point("CENTER", frame.Health.backdrop, "TOP", -12, -2)
 	end
 	
-	local SPACING = 1
+	local SPACING = E.Spacing
 	if db.classbar.fill == 'spaced' then
 		SPACING = 13
 	end
