@@ -101,6 +101,7 @@ local function LoadSkin()
 
 		for i = 1, #petButtons do
 			local index = petButtons[i].index;
+			if not index then break; end
 			local b = _G["PetJournalListScrollFrameButton"..i]
 			local t = _G["PetJournalListScrollFrameButton"..i.."Name"]
 			local petID, speciesID, isOwned, customName, level, favorite, isRevoked, name, icon, petType, creatureID, sourceText, description, isWildPet, canBattle = C_PetJournal.GetPetInfoByIndex(index, isWild);
