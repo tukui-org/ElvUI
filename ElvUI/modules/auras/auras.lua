@@ -296,7 +296,7 @@ function A:Initialize()
 		A:UpdateWeapon(_G["TempEnchant"..i])	
 	end
 
-	E:CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, nil, A.PostDrag)
+	E:CreateMover(AurasHolder, "AurasMover", "Auras Frame", nil, nil, A.PostDrag)
 	E:CreateMover(self.EnchantHeader, 'TempEnchantMover', 'Weapons', nil, nil, A.WeaponPostDrag)
 end
 

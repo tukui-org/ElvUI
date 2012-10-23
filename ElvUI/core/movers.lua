@@ -55,7 +55,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 
 		f:SetPoint(point, anchor, secondaryPoint, x, y)
 	end
-	f:SetTemplate("Default", true)
+	f:SetTemplate("Transparent", nil, nil, true)
 	f:RegisterForDrag("LeftButton", "RightButton")
 	f:SetScript("OnDragStart", function(self) 
 		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end	
@@ -147,11 +147,12 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	
 	f:SetScript("OnEnter", function(self) 
 		self.text:SetTextColor(1, 1, 1)
-		self:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
 	end)
 	f:SetScript("OnLeave", function(self)
 		self.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
-		self:SetTemplate("Default", true)
+	end)
+	f:SetScript('OnShow', function(self)
+		self:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
 	end)
 	
 	f:SetMovable(true)
