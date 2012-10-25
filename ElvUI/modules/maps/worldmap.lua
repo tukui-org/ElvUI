@@ -12,7 +12,6 @@ function M:AdjustMapSize()
 			self:SetSmallWorldMap()
 		elseif WORLDMAP_SETTINGS.size == WORLDMAP_QUESTLIST_SIZE then
 			self:SetQuestWorldMap()
-			WorldMapFrame.hasTaint = true;
 		end
 	end
 	
@@ -64,43 +63,11 @@ end
 function M:PLAYER_REGEN_ENABLED()
 	WorldMapFrameSizeDownButton:Enable()
 	WorldMapFrameSizeUpButton:Enable()	
-	WorldMapShowDigSites:Enable()
-	WorldMapQuestShowObjectives:Enable()
-	WorldMapTrackQuest:Enable()
-	
-	if WorldMapFrame.hasTaint then
-		WatchFrame.showObjectives = WatchFrame.oldShowObjectives or true
-		WorldMapBlobFrame.Show = WorldMapBlobFrame:Show()
-		WorldMapPOIFrame.Show = WorldMapPOIFrame:Show()		
-		WorldMapBlobFrame:Show()
-		WorldMapPOIFrame:Show()
-		
-		WatchFrame_Update()
-	end
 end
 
 function M:PLAYER_REGEN_DISABLED()
 	WorldMapFrameSizeDownButton:Disable()
 	WorldMapFrameSizeUpButton:Disable()
-	WorldMapShowDigSites:Disable()
-	WorldMapQuestShowObjectives:Disable()
-	WorldMapTrackQuest:Disable()
-
-	if WorldMapFrame.hasTaint then
-		if WORLDMAP_SETTINGS.size == WORLDMAP_QUESTLIST_SIZE then
-			WorldMapFrame_SetFullMapView()
-		end
-		
-		WatchFrame.oldShowObjectives = WatchFrame.showObjectives
-		WatchFrame.showObjectives = nil			
-		WorldMapBlobFrame:Hide()
-		WorldMapPOIFrame:Hide()
-
-		WorldMapBlobFrame.Show = E.noop
-		WorldMapPOIFrame.Show = E.noop
-
-		WatchFrame_Update()
-	end		
 end
 
 function M:UpdateCoords()
@@ -175,7 +142,7 @@ function M:ToggleTinyWorldMapSetting()
 	end
 end
 
-function M:Initialize()	
+function M:Initialize()
 	WorldMapShowDropDown:Point('BOTTOMRIGHT', WorldMapPositioningGuide, 'BOTTOMRIGHT', -2, -4)
 	WorldMapZoomOutButton:Point("LEFT", WorldMapZoneDropDown, "RIGHT", 0, 4)
 	WorldMapLevelUpButton:Point("TOPLEFT", WorldMapLevelDropDown, "TOPRIGHT", -2, 8)
@@ -207,14 +174,12 @@ function M:Initialize()
 	self:ScheduleRepeatingTimer('UpdateCoords', 0.01)
 	self:ToggleTinyWorldMapSetting()
 	
-	WorldMapFrame:Show()
-	WorldMapFrame:Hide()
-
+	
 	DropDownList1:HookScript('OnShow', function(self)
 		if DropDownList1:GetScale() ~= UIParent:GetScale() and E.db.general.tinyWorldMap then
 			DropDownList1:SetScale(UIParent:GetScale())
 		end		
-	end)
+	end)	
 end
 
-E:RegisterModule(M:GetName())
+E:RegisterInitialModule(M:GetName())

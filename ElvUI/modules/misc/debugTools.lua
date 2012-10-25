@@ -38,8 +38,8 @@ function D:ModifyErrorFrame()
 	end)	
 	
 	
-	ScriptErrorsFrame:Size(500, 300)
-	ScriptErrorsFrameScrollFrame:Size(ScriptErrorsFrame:GetWidth() - 45, ScriptErrorsFrame:GetHeight() - 71)
+	ScriptErrorsFrame:SetSize(500, 300)
+	ScriptErrorsFrameScrollFrame:SetSize(ScriptErrorsFrame:GetWidth() - 45, ScriptErrorsFrame:GetHeight() - 71)
 	
 	local BUTTON_WIDTH = 75
 	local BUTTON_HEIGHT = 24
@@ -81,7 +81,7 @@ function D:ModifyErrorFrame()
 	
 	ScriptErrorsFrame.close:ClearAllPoints()
 	ScriptErrorsFrame.close:SetPoint("BOTTOMRIGHT", ScriptErrorsFrame, "BOTTOMRIGHT", -8, 8)	
-	ScriptErrorsFrame.close:Size(75, BUTTON_HEIGHT)
+	ScriptErrorsFrame.close:SetSize(75, BUTTON_HEIGHT)
 	
 	ScriptErrorsFrame.indexLabel:ClearAllPoints()
 	ScriptErrorsFrame.indexLabel:SetPoint("BOTTOMLEFT", ScriptErrorsFrame, "BOTTOMLEFT", -6, 8)	
@@ -128,7 +128,7 @@ function D:TaintError(event, addonName, addonFunc)
 			end
 		end
 		
-		E:StaticPopup_Show('TALENT_TAINT')
+		--E:StaticPopup_Show('TALENT_TAINT')
 	end
 
 	if GetCVarBool('scriptErrors') ~= 1 or E.db.general.taintLog ~= true then return end
