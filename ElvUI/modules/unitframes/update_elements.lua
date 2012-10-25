@@ -1236,8 +1236,9 @@ local function CheckFilterArguement(option, optionArgs)
 end
 
 function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID)
+	if not self.db then return; end
 	local db = self.db.aurabar
-	if not db then return; end
+
 	local returnValue = true;
 	local returnValueChanged = false
 	local isPlayer, isFriend
