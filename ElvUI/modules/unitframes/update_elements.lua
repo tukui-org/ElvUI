@@ -701,7 +701,7 @@ function UF:UpdateShardBar(spec)
 	
 	for i = 1, maxBars do
 		self[i]:SetHeight(self:GetHeight())	
-		self[i]:SetWidth(E:Scale(self:GetWidth() - 2)/maxBars)	
+		self[i]:SetWidth(E:Scale(self:GetWidth() - E.Border)/maxBars)	
 		self[i]:ClearAllPoints()
 		if i == 1 then
 			self[i]:SetPoint("LEFT", self)
