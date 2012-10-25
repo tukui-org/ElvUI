@@ -403,6 +403,10 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	end
 
 	if not unit then tt:Hide() return end
+	
+	if (UnitIsUnit(unit,"mouseover")) then
+		unit = "mouseover"
+	end	
 
 	if (owner ~= UIParent) and E.db.tooltip.ufhide ~= 'NONE' then 
 		local modifier = E.db.tooltip.ufhide
@@ -412,12 +416,9 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			return 
 		end
 	end
-	
-	if (UnitIsUnit(unit,"mouseover")) then
-		unit = "mouseover"
-	end
-	
+		
 	local race, englishRace = UnitRace(unit)
+	local isPlayer = UnitIsPlayer(unit)
 	local class = UnitClass(unit)
 	local level = UnitLevel(unit)
 	local guildName, guildRankName, guildRankIndex = GetGuildInfo(unit)
@@ -438,7 +439,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		GameTooltipTextLeft1:SetFormattedText("%s%s%s", color, name, realm and realm ~= "" and " - "..realm.."|r" or "|r")
 	end
 	
-	if(UnitIsPlayer(unit)) then
+	if isPlayer then
 		self.currentGUID = GUID
 		self.currentName = name
 		self.currentUnit = unit
@@ -465,7 +466,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		end
 		
 		local factionColorR, factionColorG, factionColorB = 255, 255, 255
-		if UnitIsPlayer(unit) and englishRace == "Pandaren" and faction ~= select(2, UnitFactionGroup('player')) then
+		if englishRace == "Pandaren" and faction ~= select(2, UnitFactionGroup('player')) then
 			factionColorR, factionColorG, factionColorB = 255, 0, 0
 		end		
 		
@@ -509,7 +510,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	for i = 1, tt:NumLines() do
 		local line = _G["GameTooltipTextLeft"..i]
 		while line and line:GetText() and (line:GetText() == PVP_ENABLED or line:GetText() == FACTION_HORDE or line:GetText() == FACTION_ALLIANCE) do
-			if line:GetText() == PVP_ENABLED and _G["GameTooltipTextLeft"..i-1] then
+			if line:GetText() == PVP_ENABLED then
 				local text = _G["GameTooltipTextLeft"..i-1]:GetText()
 				if text then
 					_G["GameTooltipTextLeft"..i-1]:SetText(text..' ('..PVP_ENABLED..')')
