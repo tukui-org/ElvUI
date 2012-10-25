@@ -293,7 +293,7 @@ function UF:Update_ArenaFrames(frame, db)
 			castbar.Icon.bg:Width(db.castbar.height + (E.Border * 2))
 			castbar.Icon.bg:Height(db.castbar.height + (E.Border * 2))
 			
-			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - 5)
+			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - (E.PixelMode and 1 or 5))
 			castbar.Icon.bg:Show()
 		else
 			castbar.ButtonIcon.bg:Hide()
