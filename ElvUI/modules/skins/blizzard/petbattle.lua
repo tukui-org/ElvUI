@@ -9,7 +9,8 @@ local function LoadSkin()
 		f.ActiveAlly,
 		f.ActiveEnemy
 	}
-
+	S:HandleCloseButton(FloatingBattlePetTooltip.CloseButton)
+	
 	-- TOP FRAMES
 	f:StripTextures()
 
