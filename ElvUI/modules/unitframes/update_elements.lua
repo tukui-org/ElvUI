@@ -623,13 +623,14 @@ function UF:UpdateHarmony()
 	local USE_POWERBAR = db.power.enable
 	local USE_MINI_POWERBAR = db.power.width ~= 'fill' and USE_POWERBAR
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
+	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and db.classbar.enable
 	
 	if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
 		PORTRAIT_WIDTH = 0	
 	end
 	
 	if USE_PORTRAIT then
-		CLASSBAR_WIDTH = math.ceil((UNIT_WIDTH - (BORDER*2)) - PORTRAIT_WIDTH)
+		CLASSBAR_WIDTH = math.ceil((CLASSBAR_WIDTH - (BORDER*2)) - PORTRAIT_WIDTH)
 	end
 	
 	if USE_POWERBAR_OFFSET then
@@ -660,15 +661,17 @@ function UF:UpdateHarmony()
 			self[i]:SetWidth(E:Scale(self:GetWidth() - (E.PixelMode and 1 or 4))/maxBars)	
 		end
 		self[i]:ClearAllPoints()
+		
 		if i == 1 then
-			if maxBars == 5 and db.classbar.fill == 'spaced' then
-				self[i]:SetPoint("LEFT", self, 'LEFT', -(SPACING/2), 0)
-			else
-				self[i]:SetPoint("LEFT", self)
-			end
+			self[i]:SetPoint("LEFT", self)
 		else
-			self[i]:Point("LEFT", self[i-1], "RIGHT", 1 , 0)
-		end
+			if USE_MINI_CLASSBAR then
+				self[i]:Point("LEFT", self[i-1], "RIGHT", 7, 0)
+			else
+				self[i]:Point("LEFT", self[i-1], "RIGHT", 1, 0)
+			end
+		end	
+				
 		self[i]:SetStatusBarColor(unpack(ElvUF.colors.harmony[i]))
 	end	
 end
@@ -677,6 +680,7 @@ function UF:UpdateShardBar(spec)
 	local maxBars = self.number
 	local db = self:GetParent().db
 	local frame = self:GetParent()
+	if not db then return; end
 	
 	for i=1, UF['classMaxResourceBar'][E.myclass] do
 		if self[i]:IsShown() and db.classbar.fill == 'spaced' then
