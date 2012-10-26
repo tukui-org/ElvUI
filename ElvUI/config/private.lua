@@ -3,7 +3,7 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 --Locked Settings, These settings are stored for your character only regardless of profile options.
 
 V['general'] = {
-	['loot'] = false,
+	['loot'] = true,
 	['lootRoll'] = false,
 	["normTex"] = "Minimalist",
 	["glossTex"] = "Minimalist",	
