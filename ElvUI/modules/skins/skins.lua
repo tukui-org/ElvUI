@@ -162,6 +162,10 @@ function S:HandleNextPrevButton(btn, buttonOverride)
 			SetDesaturation(self.icon, false);
 			self.icon:SetAlpha(1.0);		
 		end)
+		
+		if not btn:IsEnabled() then
+			btn:GetScript('OnDisable')(btn)
+		end
 	end
 
 	if buttonOverride then
