@@ -300,6 +300,10 @@ function M:Initialize()
 	GuildInstanceDifficulty:SetParent(Minimap)
 	GuildInstanceDifficulty:Point("TOPLEFT", Minimap, "TOPLEFT", 0, 0)
 	
+	MiniMapChallengeMode:ClearAllPoints()
+	MiniMapChallengeMode:SetParent(Minimap)
+	MiniMapChallengeMode:Point("TOPLEFT", Minimap, "TOPLEFT", 8, -8)
+	
 	if TimeManagerClockButton then
 		TimeManagerClockButton:Kill()
 	end
