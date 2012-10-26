@@ -329,7 +329,7 @@ function UF:Update_BossFrames(frame, db)
 	--Castbar
 	do
 		local castbar = frame.Castbar
-		castbar:Width(db.castbar.width - (E.Border * 2))
+		castbar:Width(db.castbar.width - (E.PixelMode and BORDER or (BORDER * 2)))
 		castbar:Height(db.castbar.height)
 		
 		--Icon
@@ -338,7 +338,7 @@ function UF:Update_BossFrames(frame, db)
 			castbar.Icon.bg:Width(db.castbar.height + (E.Border * 2))
 			castbar.Icon.bg:Height(db.castbar.height + (E.Border * 2))
 			
-			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - 5)
+			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - (E.PixelMode and 1 or 5))
 			castbar.Icon.bg:Show()
 		else
 			castbar.ButtonIcon.bg:Hide()

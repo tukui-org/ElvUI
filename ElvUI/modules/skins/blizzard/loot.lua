@@ -8,7 +8,6 @@ local function LoadSkin()
 
 	frame:StripTextures()
 	frame:CreateBackdrop("Default")
-	frame:CreateShadow()
 
 	S:HandleCloseButton(MissingLootFramePassButton)
 

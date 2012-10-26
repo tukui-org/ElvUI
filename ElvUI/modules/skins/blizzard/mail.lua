@@ -5,7 +5,6 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.mail ~= true then return end
 	MailFrame:StripTextures(true)
 	MailFrame:SetTemplate("Transparent")
-	MailFrame:CreateShadow("Default")
 	--MailFrame:SetWidth(360)
 
 	for i = 1, INBOXITEMS_TO_DISPLAY do
@@ -75,7 +74,6 @@ local function LoadSkin()
 	-- open mail (cod)
 	OpenMailFrame:StripTextures(true)
 	OpenMailFrame:SetTemplate("Transparent")
-	OpenMailFrame:CreateShadow("Default")
 	OpenMailFrameInset:Kill()
 	
 	S:HandleCloseButton(OpenMailFrameCloseButton)

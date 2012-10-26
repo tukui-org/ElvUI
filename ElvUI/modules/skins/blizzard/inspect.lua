@@ -6,7 +6,6 @@ local function LoadSkin()
 	InspectFrame:StripTextures(true)
 	InspectFrameInset:StripTextures(true)
 	InspectFrame:SetTemplate('Transparent')
-	InspectFrame:CreateShadow('Default')
 	S:HandleCloseButton(InspectFrameCloseButton)
 
 	for i=1, 4 do

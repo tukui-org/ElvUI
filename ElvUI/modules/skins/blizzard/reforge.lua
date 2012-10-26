@@ -5,7 +5,6 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.reforge ~= true then return end
 	ReforgingFrame:StripTextures()
 	ReforgingFrame:SetTemplate("Transparent")
-	ReforgingFrame:CreateShadow('Default')
 	
 	ReforgingFrame.ButtonFrame:StripTextures()
 	ReforgingFrameReforgeButton:ClearAllPoints()

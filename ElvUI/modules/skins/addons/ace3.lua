@@ -28,39 +28,18 @@ local function SkinScrollBar(frame, thumbTrim)
 
 	if _G[frame:GetName().."ScrollUpButton"] and _G[frame:GetName().."ScrollDownButton"] then
 		_G[frame:GetName().."ScrollUpButton"]:StripTextures()
-		_G[frame:GetName().."ScrollUpButton"]:SetTemplate("Default", true)
-		if not _G[frame:GetName().."ScrollUpButton"].texture then
-			_G[frame:GetName().."ScrollUpButton"].texture = _G[frame:GetName().."ScrollUpButton"]:CreateTexture(nil, 'OVERLAY')
-			_G[frame:GetName().."ScrollUpButton"].texture:SetInside()
-			_G[frame:GetName().."ScrollUpButton"].texture:SetTexture([[Interface\AddOns\ElvUI\media\textures\arrowup.tga]])
-			_G[frame:GetName().."ScrollUpButton"].texture:SetVertexColor(0.3, 0.3, 0.3)
+		if not _G[frame:GetName().."ScrollUpButton"].icon then
+			S:HandleNextPrevButton(_G[frame:GetName().."ScrollUpButton"])
+			SquareButton_SetIcon(_G[frame:GetName().."ScrollUpButton"], 'UP')
+			_G[frame:GetName().."ScrollUpButton"]:Size(_G[frame:GetName().."ScrollUpButton"]:GetWidth() + 7, _G[frame:GetName().."ScrollUpButton"]:GetHeight() + 7)	
 		end
-		_G[frame:GetName().."ScrollUpButton"]:HookScript('OnEnter', function(self)
-			SetModifiedBackdrop(self)
-			--self.texture:SetVertexColor(unpack(E["media"].valuecolor))			
-		end)	
-		_G[frame:GetName().."ScrollUpButton"]:HookScript('OnLeave', function(self)
-			SetOriginalBackdrop(self)
-			--self.texture:SetVertexColor(unpack(E["media"].bordercolor))	
-		end)		
 		
 		_G[frame:GetName().."ScrollDownButton"]:StripTextures()
-		_G[frame:GetName().."ScrollDownButton"]:SetTemplate("Default", true)
-		_G[frame:GetName().."ScrollDownButton"]:HookScript('OnEnter', SetModifiedBackdrop)
-		_G[frame:GetName().."ScrollDownButton"]:HookScript('OnLeave', SetOriginalBackdrop)		
-		if not _G[frame:GetName().."ScrollDownButton"].texture then
-			_G[frame:GetName().."ScrollDownButton"].texture = _G[frame:GetName().."ScrollDownButton"]:CreateTexture(nil, 'OVERLAY')
-			_G[frame:GetName().."ScrollDownButton"].texture:SetInside()
-			_G[frame:GetName().."ScrollDownButton"].texture:SetTexture([[Interface\AddOns\ElvUI\media\textures\arrowdown.tga]])
-			_G[frame:GetName().."ScrollDownButton"].texture:SetVertexColor(0.3, 0.3, 0.3)
-		end
-		
-		_G[frame:GetName().."ScrollDownButton"]:HookScript('OnEnter', function(self)
-			SetModifiedBackdrop(self)	
-		end)	
-		_G[frame:GetName().."ScrollDownButton"]:HookScript('OnLeave', function(self)
-			SetOriginalBackdrop(self)
-		end)				
+		if not _G[frame:GetName().."ScrollDownButton"].icon then
+			S:HandleNextPrevButton(_G[frame:GetName().."ScrollDownButton"])
+			SquareButton_SetIcon(_G[frame:GetName().."ScrollDownButton"], 'DOWN')
+			_G[frame:GetName().."ScrollDownButton"]:Size(_G[frame:GetName().."ScrollDownButton"]:GetWidth() + 7, _G[frame:GetName().."ScrollDownButton"]:GetHeight() + 7)	
+		end			
 		
 		if not frame.trackbg then
 			frame.trackbg = CreateFrame("Frame", nil, frame)
@@ -108,36 +87,8 @@ local function SkinButton(f, strip, noTemplate)
 	f:HookScript("OnLeave", SetOriginalBackdrop)
 end
 
-local function SkinNextPrevButton(btn, horizonal)
-	btn:SetTemplate("Default")
-	btn:Size(btn:GetWidth() - 7, btn:GetHeight() - 7)	
-
-	if horizonal then
-		btn:GetNormalTexture():SetTexCoord(0.3, 0.29, 0.3, 0.72, 0.65, 0.29, 0.65, 0.72)
-		btn:GetPushedTexture():SetTexCoord(0.3, 0.35, 0.3, 0.8, 0.65, 0.35, 0.65, 0.8)
-		btn:GetDisabledTexture():SetTexCoord(0.3, 0.29, 0.3, 0.75, 0.65, 0.29, 0.65, 0.75)	
-	else
-		btn:GetNormalTexture():SetTexCoord(0.3, 0.29, 0.3, 0.81, 0.65, 0.29, 0.65, 0.81)
-		
-		if btn:GetPushedTexture() then
-			btn:GetPushedTexture():SetTexCoord(0.3, 0.35, 0.3, 0.81, 0.65, 0.35, 0.65, 0.81)
-		end
-		if btn:GetDisabledTexture() then
-			btn:GetDisabledTexture():SetTexCoord(0.3, 0.29, 0.3, 0.75, 0.65, 0.29, 0.65, 0.75)
-		end
-	end
-
-	btn:GetNormalTexture():SetInside()
-	if btn:GetDisabledTexture() then
-		btn:GetDisabledTexture():SetAllPoints(btn:GetNormalTexture())
-	end
-	
-	if btn:GetPushedTexture() then
-		btn:GetPushedTexture():SetAllPoints(btn:GetNormalTexture())
-	end
-	
-	btn:GetHighlightTexture():SetTexture(1, 1, 1, 0.3)
-	btn:GetHighlightTexture():SetAllPoints(btn:GetNormalTexture())
+local function SkinNextPrevButton(...)
+	S:HandleNextPrevButton(...)
 end
 
 

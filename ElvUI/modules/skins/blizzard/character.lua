@@ -80,6 +80,26 @@ local function LoadSkin()
 	
 	CharacterFrameExpandButton:Size(CharacterFrameExpandButton:GetWidth() - 7, CharacterFrameExpandButton:GetHeight() - 7)
 	S:HandleNextPrevButton(CharacterFrameExpandButton)
+	
+	hooksecurefunc('CharacterFrame_Collapse', function()
+		CharacterFrameExpandButton:SetNormalTexture(nil);
+		CharacterFrameExpandButton:SetPushedTexture(nil);
+		CharacterFrameExpandButton:SetDisabledTexture(nil);
+		SquareButton_SetIcon(CharacterFrameExpandButton, 'RIGHT')
+	end)
+	
+	hooksecurefunc('CharacterFrame_Expand', function()
+		CharacterFrameExpandButton:SetNormalTexture(nil);
+		CharacterFrameExpandButton:SetPushedTexture(nil);
+		CharacterFrameExpandButton:SetDisabledTexture(nil);
+		SquareButton_SetIcon(CharacterFrameExpandButton, 'LEFT');
+	end)
+
+	if (GetCVar("characterFrameCollapsed") ~= "0") then
+		SquareButton_SetIcon(CharacterFrameExpandButton, 'RIGHT')
+	else
+		SquareButton_SetIcon(CharacterFrameExpandButton, 'LEFT');
+	end	
 
 	S:HandleCloseButton(ReputationDetailCloseButton)
 	S:HandleCloseButton(TokenFramePopupCloseButton)
