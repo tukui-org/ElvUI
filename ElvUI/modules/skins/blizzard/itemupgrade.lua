@@ -6,7 +6,6 @@ local function LoadSkin()
 	
 	ItemUpgradeFrame:StripTextures()
 	ItemUpgradeFrame:SetTemplate('Transparent')
-	ItemUpgradeFrame:CreateShadow('Default')
 	ItemUpgradeFrameShadows:Kill()
 	ItemUpgradeFrameInset:Kill()
 	

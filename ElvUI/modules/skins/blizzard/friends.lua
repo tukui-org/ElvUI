@@ -252,7 +252,6 @@ local function LoadSkin()
 	ScrollOfResurrectionFrameNoteFrame:SetTemplate()
 	ScrollOfResurrectionFrameTargetEditBox:SetTemplate()
 	ScrollOfResurrectionFrame:SetTemplate('Transparent')
-	ScrollOfResurrectionFrame:CreateShadow()
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

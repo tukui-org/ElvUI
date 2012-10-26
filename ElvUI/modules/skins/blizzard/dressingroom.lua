@@ -5,7 +5,6 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.dressingroom ~= true then return end
 	DressUpFrame:StripTextures(true)
 	DressUpFrame:CreateBackdrop("Transparent")
-	DressUpFrame.backdrop:CreateShadow("Default")
 	DressUpFrame.backdrop:Point("TOPLEFT", 6, 0)
 	DressUpFrame.backdrop:Point("BOTTOMRIGHT", -32, 70)
 	

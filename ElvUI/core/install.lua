@@ -839,7 +839,6 @@ function E:Install()
 		f.SetPage = SetPage
 		f:Size(550, 400)
 		f:SetTemplate("Transparent")
-		f:CreateShadow("Default")
 		f:SetPoint("CENTER")
 		f:SetFrameStrata('TOOLTIP')
 		

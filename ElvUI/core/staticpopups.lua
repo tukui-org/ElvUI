@@ -798,8 +798,7 @@ function E:Contruct_StaticPopups()
 		
 		--Skin
 		E.StaticPopupFrames[index]:SetTemplate('Transparent')
-		E.StaticPopupFrames[index]:CreateShadow('Default')
-		
+
 		for i = 1, 3 do
 			S:HandleButton(_G["ElvUI_StaticPopup"..index.."Button"..i])
 		end

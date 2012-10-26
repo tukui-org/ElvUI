@@ -29,9 +29,6 @@ local function LoadSkin()
 
 	for i = 1, getn(skins) do
 		_G[skins[i]]:SetTemplate("Transparent")
-		if _G[skins[i]] ~= _G["GhostFrameContentsFrame"] or _G[skins[i]] ~= _G["AutoCompleteBox"] then -- frame to blacklist from create shadow function
-			_G[skins[i]]:CreateShadow("Default")
-		end
 	end
 
 	
@@ -200,8 +197,7 @@ local function LoadSkin()
 
 	
 	RolePollPopup:SetTemplate("Transparent")
-	RolePollPopup:CreateShadow("Default")
-	
+
 	InterfaceOptionsFrame:SetClampedToScreen(true)
 	InterfaceOptionsFrame:SetMovable(true)
 	InterfaceOptionsFrame:EnableMouse(true)
@@ -581,7 +577,6 @@ local function LoadSkin()
 	
 	GuildInviteFrame:StripTextures()
 	GuildInviteFrame:SetTemplate('Transparent')
-	GuildInviteFrame:CreateShadow()
 	GuildInviteFrameLevel:StripTextures()
 	GuildInviteFrameLevel:ClearAllPoints()
 	GuildInviteFrameLevel:Point('TOP', GuildInviteFrame, 'CENTER', -15, -25)

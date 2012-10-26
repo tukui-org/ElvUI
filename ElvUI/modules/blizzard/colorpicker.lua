@@ -85,7 +85,6 @@ function B:EnhanceColorPicker()
 	
 	--Skin the default frame, move default buttons into place
 	ColorPickerFrame:SetTemplate("Transparent")
-	ColorPickerFrame:CreateShadow("Default")
 	ColorPickerFrameHeader:SetTexture("")
 	ColorPickerFrameHeader:ClearAllPoints()
 	ColorPickerFrameHeader:SetPoint("TOP", ColorPickerFrame, 0, 0)

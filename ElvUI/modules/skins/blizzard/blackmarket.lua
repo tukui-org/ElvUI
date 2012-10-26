@@ -16,8 +16,6 @@ local function LoadSkin()
 	BlackMarketFrame:CreateBackdrop('Transparent')
 	BlackMarketFrame.backdrop:SetAllPoints()
 
-	
-	BlackMarketFrame:CreateShadow('Default')
 	BlackMarketFrame.Inset:StripTextures()
 	BlackMarketFrame.Inset:CreateBackdrop()
 	BlackMarketFrame.Inset.backdrop:SetAllPoints()
