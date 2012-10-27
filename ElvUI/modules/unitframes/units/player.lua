@@ -680,7 +680,7 @@ function UF:Update_PlayerFrame(frame, db)
 
 			for i = 1, PRIEST_BAR_NUM_ORBS do
 				bars[i]:SetHeight(bars:GetHeight())	
-				bars[i]:SetWidth(bars:GetWidth() - 2/PRIEST_BAR_NUM_ORBS)	
+				bars[i]:SetWidth((bars:GetWidth() - 2)/PRIEST_BAR_NUM_ORBS)	
 				bars[i]:GetStatusBarTexture():SetHorizTile(false)
 				bars[i]:ClearAllPoints()
 				if i == 1 then
