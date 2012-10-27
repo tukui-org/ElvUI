@@ -698,19 +698,19 @@ function UF:UpdateShardBar(spec)
 		self:Point("CENTER", frame.Health.backdrop, "TOP", -12, -2)
 	end
 	
-	local SPACING = E.Spacing
+	local SPACING = 1
 	if db.classbar.fill == 'spaced' then
-		SPACING = 13
+		SPACING = 11
 	end
-	
+
 	for i = 1, maxBars do
 		self[i]:SetHeight(self:GetHeight())	
-		self[i]:SetWidth(E:Scale(self:GetWidth() - E.Border)/maxBars)	
+		self[i]:SetWidth(E:Scale((self:GetWidth() - ((maxBars > 1) and 2 or 0))/maxBars))
 		self[i]:ClearAllPoints()
 		if i == 1 then
 			self[i]:SetPoint("LEFT", self)
 		else
-			self[i]:Point("LEFT", self[i-1], "RIGHT", SPACING , 0)
+			self[i]:Point("LEFT", self[i-1], "RIGHT", SPACING, 0)
 		end		
 	end
 	

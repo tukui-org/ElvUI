@@ -680,7 +680,7 @@ function UF:Update_PlayerFrame(frame, db)
 
 			for i = 1, PRIEST_BAR_NUM_ORBS do
 				bars[i]:SetHeight(bars:GetHeight())	
-				bars[i]:SetWidth(E:Scale(bars:GetWidth() - (E.PixelMode and 4 or 2))/PRIEST_BAR_NUM_ORBS)	
+				bars[i]:SetWidth(bars:GetWidth() - 2/PRIEST_BAR_NUM_ORBS)	
 				bars[i]:GetStatusBarTexture():SetHorizTile(false)
 				bars[i]:ClearAllPoints()
 				if i == 1 then
@@ -845,7 +845,7 @@ function UF:Update_PlayerFrame(frame, db)
 					runes[i]:SetPoint("LEFT", runes)
 				else
 					if USE_MINI_CLASSBAR then
-						runes[i]:Point("LEFT", runes[i-1], "RIGHT", SPACING+(BORDER*2)+2, 0)
+						runes[i]:Point("LEFT", runes[i-1], "RIGHT", 1+(BORDER*2)+2, 0)
 					else
 						runes[i]:Point("LEFT", runes[i-1], "RIGHT", 1, 0)
 					end
