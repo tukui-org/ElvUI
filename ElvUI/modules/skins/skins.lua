@@ -137,7 +137,7 @@ function S:HandleNextPrevButton(btn, buttonOverride)
 	btn:SetDisabledTexture(nil)
 
 	if not btn.icon then
-		btn.icon = btn:CreateTexture(btn:GetName()..'Icon', 'ARTWORK')
+		btn.icon = btn:CreateTexture(nil, 'ARTWORK')
 		btn.icon:Size(13)
 		btn.icon:SetPoint('CENTER')
 		btn.icon:SetTexture([[Interface\Buttons\SquareButtonTextures]])
