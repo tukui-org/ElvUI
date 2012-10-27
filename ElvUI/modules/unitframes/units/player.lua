@@ -845,7 +845,7 @@ function UF:Update_PlayerFrame(frame, db)
 					runes[i]:SetPoint("LEFT", runes)
 				else
 					if USE_MINI_CLASSBAR then
-						runes[i]:Point("LEFT", runes[i-1], "RIGHT", SPACING+(BORDER*2)+2, 0)
+						runes[i]:Point("LEFT", runes[i-1], "RIGHT", 1+(BORDER*2)+2, 0)
 					else
 						runes[i]:Point("LEFT", runes[i-1], "RIGHT", 1, 0)
 					end
