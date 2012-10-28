@@ -630,7 +630,7 @@ function UF:UpdateHarmony()
 	end
 	
 	if USE_PORTRAIT then
-		CLASSBAR_WIDTH = math.ceil((CLASSBAR_WIDTH - (BORDER*2)) - PORTRAIT_WIDTH)
+		CLASSBAR_WIDTH = math.ceil((CLASSBAR_WIDTH) - PORTRAIT_WIDTH)
 	end
 	
 	if USE_POWERBAR_OFFSET then
@@ -658,7 +658,7 @@ function UF:UpdateHarmony()
 		if db.classbar.fill == 'spaced' then
 			self[i]:SetWidth(E:Scale(self:GetWidth() - (E.PixelMode and 0 or 3))/maxBars)	
 		else
-			self[i]:SetWidth(E:Scale(self:GetWidth() - (E.PixelMode and 1 or 4))/maxBars)	
+			self[i]:SetWidth(E:Scale(self:GetWidth() - (E.PixelMode and 3 or 2))/maxBars)	
 		end
 		self[i]:ClearAllPoints()
 		
@@ -666,7 +666,7 @@ function UF:UpdateHarmony()
 			self[i]:SetPoint("LEFT", self)
 		else
 			if USE_MINI_CLASSBAR then
-				self[i]:Point("LEFT", self[i-1], "RIGHT", 7, 0)
+				self[i]:Point("LEFT", self[i-1], "RIGHT", E.PixelMode and 7 or 9, 0)
 			else
 				self[i]:Point("LEFT", self[i-1], "RIGHT", 1, 0)
 			end
