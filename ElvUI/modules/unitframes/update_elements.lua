@@ -614,7 +614,6 @@ function UF:UpdateHarmony()
 	
 	local UNIT_WIDTH = db.width
 	local BORDER = E.Border
-	local SPACING = E.Spacing
 	local CLASSBAR_WIDTH = db.width - (BORDER*2)
 	local USE_PORTRAIT = db.portrait.enable
 	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
@@ -637,9 +636,7 @@ function UF:UpdateHarmony()
 		CLASSBAR_WIDTH = CLASSBAR_WIDTH - POWERBAR_OFFSET
 	end	
 	
-	if db.classbar.fill == 'spaced' then
-		SPACING = 9
-		
+	if db.classbar.fill == 'spaced' then	
 		CLASSBAR_WIDTH = CLASSBAR_WIDTH * (maxBars - 1) / maxBars
 	end
 	
@@ -658,7 +655,7 @@ function UF:UpdateHarmony()
 		if db.classbar.fill == 'spaced' then
 			self[i]:SetWidth(E:Scale(self:GetWidth() - (E.PixelMode and 0 or 3))/maxBars)	
 		else
-			self[i]:SetWidth(E:Scale(self:GetWidth() - (E.PixelMode and 3 or 2))/maxBars)	
+			self[i]:SetWidth(E:Scale(self:GetWidth() - (E.PixelMode and (maxBars - 1) or 2))/maxBars)	
 		end
 		self[i]:ClearAllPoints()
 		
@@ -666,7 +663,7 @@ function UF:UpdateHarmony()
 			self[i]:SetPoint("LEFT", self)
 		else
 			if USE_MINI_CLASSBAR then
-				self[i]:Point("LEFT", self[i-1], "RIGHT", E.PixelMode and 7 or 9, 0)
+				self[i]:Point("LEFT", self[i-1], "RIGHT", E.PixelMode and (maxBars == 5 and 4 or 7) or (maxBars == 5 and 6 or 9), 0)
 			else
 				self[i]:Point("LEFT", self[i-1], "RIGHT", 1, 0)
 			end
