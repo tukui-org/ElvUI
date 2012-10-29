@@ -22,8 +22,9 @@ local function LoadSkin()
 	S:HandleButton(GuildBankFramePurchaseButton, true)
 	
 	GuildBankFrameWithdrawButton:Point("RIGHT", GuildBankFrameDepositButton, "LEFT", -2, 0)
-
+	GuildBankInfoScrollFrame:Point('TOPLEFT', GuildBankInfo, 'TOPLEFT', -10, 12)
 	GuildBankInfoScrollFrame:StripTextures()
+	GuildBankInfoScrollFrame:Width(GuildBankInfoScrollFrame:GetWidth() - 8)
 	GuildBankTransactionsScrollFrame:StripTextures()
 	
 	GuildBankFrame.inset = CreateFrame("Frame", nil, GuildBankFrame)
