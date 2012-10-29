@@ -652,11 +652,7 @@ function UF:UpdateHarmony()
 	
 	for i = 1, maxBars do		
 		self[i]:SetHeight(self:GetHeight())	
-		if db.classbar.fill == 'spaced' then
-			self[i]:SetWidth(E:Scale(self:GetWidth() - (E.PixelMode and 0 or 3))/maxBars)	
-		else
-			self[i]:SetWidth(E:Scale(self:GetWidth() - (E.PixelMode and (maxBars - 1) or 2))/maxBars)	
-		end
+		self[i]:SetWidth((self:GetWidth() - (maxBars - 1)) / maxBars)	
 		self[i]:ClearAllPoints()
 		
 		if i == 1 then
@@ -699,10 +695,10 @@ function UF:UpdateShardBar(spec)
 	if db.classbar.fill == 'spaced' then
 		SPACING = 11
 	end
-
+	
 	for i = 1, maxBars do
 		self[i]:SetHeight(self:GetHeight())	
-		self[i]:SetWidth(E:Scale((self:GetWidth() - ((maxBars > 1) and 2 or 0))/maxBars))
+		self[i]:SetWidth((self:GetWidth() - (maxBars - 1)) / maxBars)
 		self[i]:ClearAllPoints()
 		if i == 1 then
 			self[i]:SetPoint("LEFT", self)
