@@ -650,6 +650,7 @@ function UF:Initialize()
 		end				
 
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', 'DisableBlizzard')
+		UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE') --This may fuck shit up.. we'll see...
 	else
 		CompactUnitFrameProfiles:RegisterEvent('VARIABLES_LOADED')
 	end
