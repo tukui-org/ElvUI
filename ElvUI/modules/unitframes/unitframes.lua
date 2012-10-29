@@ -352,7 +352,12 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 	
 	self[group].Update = function()
 		local db = self.db['units'][group]
-		if db.enable ~= true then return end
+		if db.enable ~= true then 
+			self[group]:SetAttribute("showParty", false)
+			self[group]:SetAttribute("showRaid", false)
+			self[group]:SetAttribute("showSolo", false)			
+			return
+		end
 		UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
 		
 		for i=1, self[group]:GetNumChildren() do
@@ -368,14 +373,8 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 			end			
 		end			
 	end	
-
-	if self.db['units'][group].enable then
-		self[group].Update()
-	else
-		self[group]:SetAttribute("showParty", false)
-		self[group]:SetAttribute("showRaid", false)
-		self[group]:SetAttribute("showSolo", false)	
-	end
+	
+	self[group].Update()
 end
 
 function UF:PLAYER_REGEN_ENABLED()
