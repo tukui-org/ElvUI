@@ -3,6 +3,19 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 E.PopupDialogs = {};
 E.StaticPopup_DisplayedFrames = {};
 
+E.PopupDialogs['INCOMPATIBLE_ADDON'] = {
+	text = L['INCOMPATIBLE_ADDON'],
+	OnAccept = function(self) DisableAddOn(E.PopupDialogs['INCOMPATIBLE_ADDON'].addon); ReloadUI(); end,
+	OnCancel = function(self) E.private[string.lower(E.PopupDialogs['INCOMPATIBLE_ADDON'].module)].enable = false; ReloadUI(); end,
+	timeout = 0,
+	whileDead = 1,	
+	hideOnEscape = false,	
+	OnHide = function()
+		E.PopupDialogs['INCOMPATIBLE_ADDON'].addon = nil;
+		E.PopupDialogs['INCOMPATIBLE_ADDON'].module = nil;
+	end,	
+}
+
 E.PopupDialogs['PIXELPERFECT_CHANGED'] = {
 	text = L["You have changed the pixel perfect option. You will have to complete the installation process to remove any graphical bugs."],
 	button1 = ACCEPT,
