@@ -387,6 +387,7 @@ function TT:GetTalentSpec(unit)
 			end
 		else
 			local _, name = GetSpecializationInfo(spec)
+
 			return name
 		end
 	end
