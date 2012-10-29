@@ -83,7 +83,7 @@ function E:PostAlertMove(pos)
 	MissingLootFrame:ClearAllPoints()
 	MissingLootFrame:SetPoint(POSITION, AlertFrame, ANCHOR_POINT)
 	
-	if pos == 'TOP' or pos == 'BOTTOM' then
+	if pos then
 		AlertFrame_FixAnchors()
 	end
 end
