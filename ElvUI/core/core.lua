@@ -380,11 +380,11 @@ function E:CheckIncompatible()
 		E:IncompatibleAddOn('Chatter', 'Chat')
 	end
 	
-	if IsAddOnLoaded('Bartender4') and E.private.actionbar.enable then
+	--[[if IsAddOnLoaded('Bartender4') and E.private.actionbar.enable then
 		E:IncompatibleAddOn('Bartender4', 'ActionBar')
 	elseif IsAddOnLoaded('Dominos') and E.private.actionbar.enable then
 		E:IncompatibleAddOn('Dominos', 'ActionBar')
-	end	
+	end]]
 	
 	if IsAddOnLoaded('TidyPlates') and E.private.nameplate.enable then
 		E:IncompatibleAddOn('TidyPlates', 'NamePlate')
@@ -392,7 +392,7 @@ function E:CheckIncompatible()
 		E:IncompatibleAddOn('Aloft', 'NamePlate')
 	end	
 	
-	if IsAddOnLoaded('ArkInventory') and E.private.bags.enable then
+	--[[if IsAddOnLoaded('ArkInventory') and E.private.bags.enable then
 		E:IncompatibleAddOn('ArkInventory', 'Bags')
 	elseif IsAddOnLoaded('Bagnon') and E.private.bags.enable then
 		E:IncompatibleAddOn('Bagnon', 'Bags')
@@ -400,7 +400,7 @@ function E:CheckIncompatible()
 		E:IncompatibleAddOn('OneBag3', 'Bags')
 	elseif IsAddOnLoaded('OneBank3') and E.private.bags.enable then
 		E:IncompatibleAddOn('OneBank3', 'Bags')
-	end
+	end]]
 end
 
 function E:IsFoolsDay()
