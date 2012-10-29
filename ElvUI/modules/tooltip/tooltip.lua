@@ -357,8 +357,11 @@ function TT:GetItemLvL(unit)
 	for i in pairs(SlotName) do
 		local slot = GetInventoryItemLink(unit, GetInventorySlotInfo(SlotName[i].."Slot"))
 		if (slot ~= nil) then
-			item = item + 1
-			total = total + select(4, GetItemInfo(slot))
+			local _, _, _, ilvl = GetItemInfo(slot)
+			if ilvl ~= nil then
+				item = item + 1
+				total = total + ilvl
+			end
 		end
 	end
 	if (total < 1 or item < 1) then
@@ -369,11 +372,21 @@ function TT:GetItemLvL(unit)
 end
 
 function TT:GetTalentSpec(unit)
-	local spec = GetInspectSpecialization(unit)
+	local spec
+	if not unit then
+		spec = GetSpecialization()
+	else
+		spec = GetInspectSpecialization(unit)
+	end
 	if(spec ~= nil and spec > 0) then
-		local role = GetSpecializationRoleByID(spec);
-		if(role ~= nil) then
-			local _, name = GetSpecializationInfoByID(spec);
+		if unit ~= nil then 
+			local role = GetSpecializationRoleByID(spec);
+			if(role ~= nil) then
+				local _, name = GetSpecializationInfoByID(spec);
+				return name
+			end
+		else
+			local _, name = GetSpecializationInfo(spec)
 			return name
 		end
 	end
@@ -443,22 +456,27 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		self.currentGUID = GUID
 		self.currentName = name
 		self.currentUnit = unit
-		for index, _ in pairs(self.InspectCache) do
-			local inspectCache = self.InspectCache[index]
-			if inspectCache.GUID == GUID then
-				iLevel = inspectCache.ItemLevel or 0
-				talentSpec = inspectCache.TalentSpec or ""
-				lastUpdate = inspectCache.LastUpdate and math.abs(inspectCache.LastUpdate - math.floor(GetTime())) or 30
-			end
+		if (UnitIsUnit(unit,"player")) then
+			iLevel = TT:GetItemLvL('player') or 0
+			talentSpec = TT:GetTalentSpec() or ''
+		else
+			for index, _ in pairs(self.InspectCache) do
+				local inspectCache = self.InspectCache[index]
+				if inspectCache.GUID == GUID then
+					iLevel = inspectCache.ItemLevel or 0
+					talentSpec = inspectCache.TalentSpec or ""
+					lastUpdate = inspectCache.LastUpdate and math.abs(inspectCache.LastUpdate - math.floor(GetTime())) or 30
+				end
+			end	
+			
+			-- Queue an inspect request
+			if unit and (CanInspect(unit)) and (not self:IsInspectFrameOpen()) then
+				local lastInspectTime = (GetTime() - self.lastInspectRequest);
+				self.UpdateInspect.nextUpdate = (lastInspectTime > INSPECT_FREQ) and INSPECT_DELAY or (INSPECT_FREQ - lastInspectTime + INSPECT_DELAY);
+				self.UpdateInspect:Show();
+			end			
 		end
 		
-		-- Queue an inspect request
-		if unit and (CanInspect(unit)) and (not self:IsInspectFrameOpen()) then
-			local lastInspectTime = (GetTime() - self.lastInspectRequest);
-			self.UpdateInspect.nextUpdate = (lastInspectTime > INSPECT_FREQ) and INSPECT_DELAY or (INSPECT_FREQ - lastInspectTime + INSPECT_DELAY);
-			self.UpdateInspect:Show();
-		end
-
 		if UnitIsAFK(unit) then
 			tt:AppendText((" %s"):format("[|cffFF0000"..L['AFK'].."|r]"))
 		elseif UnitIsDND(unit) then 
