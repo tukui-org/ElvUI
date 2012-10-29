@@ -126,13 +126,16 @@ local function PrimarySort(a, b)
 	local aName, _, _, aLvl, _, _, _, _, _, _, aPrice = GetItemInfo(bagIDs[a])
 	local bName, _, _, bLvl, _, _, _, _, _, _, bPrice = GetItemInfo(bagIDs[b])
 	
-	if aLvl ~= bLvl then
+	if aLvl ~= bLvl and aLvl and bLvl then
 		return aLvl > bLvl
 	end
-	if aPrice ~= bPrice then
+	if aPrice ~= bPrice and aPrice and bPrice then
 		return aPrice > bPrice
 	end
-	return aName < bName
+	
+	if aName and bName then
+		return aName < bName
+	end
 end
 
 local function DefaultSort(a, b)
@@ -145,11 +148,11 @@ local function DefaultSort(a, b)
 		local aName, _, aType = C_PetJournal.GetPetInfoBySpeciesID(aID);
 		local bName, _, bType = C_PetJournal.GetPetInfoBySpeciesID(bID);
 
-		if aType ~= bType then
+		if aType and bType and aType ~= bType then
 			return aType > bType
 		end
 		
-		if aName ~= bName then
+		if aName and bName and aName ~= bName then
 			return aName < bName
 		end
 	end		
@@ -160,9 +163,9 @@ local function DefaultSort(a, b)
 	if aID == bID then
 		local aCount = bagStacks[a]
 		local bCount = bagStacks[b]
-		if aCount == bCount then
+		if aCount and bCount and aCount == bCount then
 			return aOrder < bOrder
-		else
+		elseif aCount and bCount then
 			return aCount < bCount
 		end
 	end
@@ -192,11 +195,15 @@ local function DefaultSort(a, b)
 		if aEquipLoc == bEquipLoc then
 			return PrimarySort(a, b)
 		end
-		return aEquipLoc < bEquipLoc
+		
+		if aEquipLoc and bEquipLoc then
+			return aEquipLoc < bEquipLoc
+		end
 	end
 	if aSubType == bSubType then
 		return PrimarySort(a, b)
 	end
+	
 	return ((itemSubTypes[aType] or {})[aSubType] or 99) < ((itemSubTypes[bType] or {})[bSubType] or 99)
 end
 
