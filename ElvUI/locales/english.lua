@@ -177,6 +177,10 @@ L['Wrap After'] = true;
 L['Your Auras First'] = true;
 
 --Chat
+L['Chat EditBox Position'] = true;
+L['Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat.'] = true;
+L['Below Chat'] = true;
+L['Above Chat'] = true;
 L['Lock Positions'] = true;
 L['Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish.'] = true;
 L["AFK"] = true; --Also used in datatexts and tooltip

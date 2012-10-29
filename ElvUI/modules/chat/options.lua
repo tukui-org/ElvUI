@@ -123,6 +123,18 @@ E.Options.args.chat = {
 						["%H:%M:%S "] =	"15:27:32"					
 					},
 				},
+				editBoxPosition = {
+					order = 9,
+					type = 'select',
+					name = L['Chat EditBox Position'],
+					desc = L['Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat.'],
+					values = {
+						['BELOW_CHAT'] = L['Below Chat'],
+						['ABOVE_CHAT'] = L['Above Chat'],
+					},
+					set = function(info, value) E.db.chat[ info[#info] ] = value; CH:UpdateAnchors() end,
+					disabled = function() return not E.db.datatexts.leftChatPanel end,
+				},				
 				whisperSound = {
 					order = 14,
 					type = 'select', dialogControl = 'LSM30_Sound',
