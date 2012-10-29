@@ -1159,6 +1159,7 @@ function CH:Initialize()
 		
 	
 	local S = E:GetModule('Skins')
+	S:HandleNextPrevButton(CombatLogQuickButtonFrame_CustomAdditionalFilterButton, true)
 	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)
 	frame:SetTemplate('Transparent')
 	frame:Size(700, 200)
