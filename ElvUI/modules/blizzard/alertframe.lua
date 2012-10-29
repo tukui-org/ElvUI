@@ -29,16 +29,18 @@ end
 SLASH_TEST_ACHIEVEMENT1 = "/testalerts"
 
 function E:PostAlertMove(pos)
-	POSITION = pos or POSITION
-	
-	if POSITION == 'TOP' then
+	local _, y = AlertFrameMover:GetCenter();
+	local screenHeight = E.UIParent:GetTop();
+	if y > (screenHeight / 2) then
+		POSITION = 'TOP'
 		ANCHOR_POINT = 'BOTTOM'
 		YOFFSET = -10
 	else
+		POSITION = 'BOTTOM'
 		ANCHOR_POINT = 'TOP'
 		YOFFSET = 10
 	end
-	
+
 	local rollBars = E:GetModule('Misc').RollBars
 	if E.private.general.lootRoll then
 		local lastframe, lastShownFrame
