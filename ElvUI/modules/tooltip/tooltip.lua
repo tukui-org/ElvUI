@@ -660,6 +660,18 @@ function TT:MODIFIER_STATE_CHANGED(event, key)
 	GameTooltip:SetUnit('mouseover')
 end
 
+function TT:GameTooltip_ShowStatusBar(tt, min, max, value, text)
+	local index = tt.shownStatusBars;
+	local name = tt:GetName().."StatusBar"..index;
+	local statusBar = _G[name];
+	if statusBar and not statusBar.skinned then
+		statusBar:StripTextures()
+		statusBar:SetStatusBarTexture(E['media'].normTex)
+		statusBar:CreateBackdrop('Default')
+		statusBar.skinned = true;
+	end
+end
+
 function TT:Initialize()
 	self.db = E.db["tooltip"]
 	if E.private["tooltip"].enable ~= true then return end
@@ -685,6 +697,7 @@ function TT:Initialize()
 	
 	self:SecureHook('GameTooltip_SetDefaultAnchor')
 	self:SecureHook('GameTooltip_ShowCompareItem')
+	self:SecureHook('GameTooltip_ShowStatusBar')
 	self:HookScript(GameTooltip, 'OnUpdate', 'GameTooltip_OnUpdate')
 	self:HookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
 	self:HookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
