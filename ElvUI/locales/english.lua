@@ -621,6 +621,9 @@ L['Transmogrify Frame'] = true;
 L["World Map"] = true;
 
 --Static Popups
+L['I Swear'] = true;
+L['Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?'] = true;
+L['Disable Warning'] = true;
 L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."] = true;
 L["Are you sure you want to delete all your gray items?"] = true;
 L["Are you sure you want to disband the group?"] = true;

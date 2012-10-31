@@ -3,17 +3,29 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 E.PopupDialogs = {};
 E.StaticPopup_DisplayedFrames = {};
 
+E.PopupDialogs['DISABLE_INCOMPATIBLE_ADDON'] = {
+	text = L['Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?'],
+	OnAccept = function() E.global.ignoreIncompatible = true; end,
+	OnCancel = function() E:StaticPopup_Hide('DISABLE_INCOMPATIBLE_ADDON'); E:StaticPopup_Show('INCOMPATIBLE_ADDON', E.PopupDialogs['INCOMPATIBLE_ADDON'].addon, E.PopupDialogs['INCOMPATIBLE_ADDON'].module) end,
+	button1 = L['I Swear'],
+	button2 = DECLINE,	
+	timeout = 0,
+	whileDead = 1,	
+	hideOnEscape = false,		
+}
+
 E.PopupDialogs['INCOMPATIBLE_ADDON'] = {
 	text = L['INCOMPATIBLE_ADDON'],
 	OnAccept = function(self) DisableAddOn(E.PopupDialogs['INCOMPATIBLE_ADDON'].addon); ReloadUI(); end,
 	OnCancel = function(self) E.private[string.lower(E.PopupDialogs['INCOMPATIBLE_ADDON'].module)].enable = false; ReloadUI(); end,
+	button3 = L['Disable Warning'],
+	OnAlt = function ()
+		E:StaticPopup_Hide('INCOMPATIBLE_ADDON')
+		E:StaticPopup_Show('DISABLE_INCOMPATIBLE_ADDON');
+	end,	
 	timeout = 0,
 	whileDead = 1,	
 	hideOnEscape = false,	
-	OnHide = function()
-		E.PopupDialogs['INCOMPATIBLE_ADDON'].addon = nil;
-		E.PopupDialogs['INCOMPATIBLE_ADDON'].module = nil;
-	end,	
 }
 
 E.PopupDialogs['PIXELPERFECT_CHANGED'] = {

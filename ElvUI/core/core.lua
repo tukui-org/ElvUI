@@ -374,6 +374,7 @@ function E:IncompatibleAddOn(addon, module)
 end
 
 function E:CheckIncompatible()
+	if E.global.ignoreIncompatible then return; end
 	if IsAddOnLoaded('Prat-3.0') and E.private.chat.enable then
 		E:IncompatibleAddOn('Prat-3.0', 'Chat')
 	elseif IsAddOnLoaded('Chatter') and E.private.chat.enable then
