@@ -28,8 +28,14 @@ function M:SetLargeWorldMap()
 		WorldMapFrame:EnableMouse(false)
 		WorldMapFrame:EnableKeyboard(false)
 		WorldMapFrame:SetScale(1)
-		SetUIPanelAttribute(WorldMapFrame, "area", "center");
-		SetUIPanelAttribute(WorldMapFrame, "allowOtherPanels", true)	
+		
+		if WorldMapFrame:GetAttribute('UIPanelLayout-area') ~= 'center' then
+			SetUIPanelAttribute(WorldMapFrame, "area", "center");
+		end
+		
+		if WorldMapFrame:GetAttribute('UIPanelLayout-allowOtherPanels') ~= true then
+			SetUIPanelAttribute(WorldMapFrame, "allowOtherPanels", true)	
+		end
 	end
 	
 	WorldMapFrameSizeUpButton:Hide()
@@ -43,8 +49,13 @@ function M:SetQuestWorldMap()
 		WorldMapFrame:SetParent(E.UIParent)
 		WorldMapFrame:EnableMouse(false)
 		WorldMapFrame:EnableKeyboard(false)
-		SetUIPanelAttribute(WorldMapFrame, "area", "center");
-		SetUIPanelAttribute(WorldMapFrame, "allowOtherPanels", true)
+		if WorldMapFrame:GetAttribute('UIPanelLayout-area') ~= 'center' then
+			SetUIPanelAttribute(WorldMapFrame, "area", "center");
+		end
+		
+		if WorldMapFrame:GetAttribute('UIPanelLayout-allowOtherPanels') ~= true then
+			SetUIPanelAttribute(WorldMapFrame, "allowOtherPanels", true)	
+		end
 	end
 	
 	WorldMapFrameSizeUpButton:Hide()

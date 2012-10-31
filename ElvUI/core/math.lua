@@ -182,7 +182,7 @@ end
 
 function E:ShortenString(string, numChars, dots)
 	assert(string, 'You need to provide a string to shorten. Usage: E:ShortenString(string, numChars, includeDots)')
-	assert(string, 'You need to provide a length to shorten the string to. Usage: E:ShortenString(string, numChars, includeDots)')
+	assert(numChars, 'You need to provide a length to shorten the string to. Usage: E:ShortenString(string, numChars, includeDots)')
 	
 	local bytes = string:len()
 	if (bytes <= numChars) then
