@@ -365,7 +365,7 @@ function CH:UpdateAnchors()
 	for _, frameName in pairs(CHAT_FRAMES) do
 		local frame = _G[frameName..'EditBox']
 		if not frame then break; end
-		if E.db.datatexts.leftChatPanel then
+		if E.db.datatexts.leftChatPanel and E.db.chat.editBoxPosition == 'BELOW_CHAT' then
 			frame:SetAllPoints(LeftChatDataPanel)
 		else
 			frame:SetAllPoints(LeftChatTab)
@@ -1159,6 +1159,7 @@ function CH:Initialize()
 		
 	
 	local S = E:GetModule('Skins')
+	S:HandleNextPrevButton(CombatLogQuickButtonFrame_CustomAdditionalFilterButton, true)
 	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)
 	frame:SetTemplate('Transparent')
 	frame:Size(700, 200)

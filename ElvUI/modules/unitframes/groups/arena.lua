@@ -339,9 +339,9 @@ function UF:Update_ArenaFrames(frame, db)
 		local specIcon = frame.PVPSpecIcon
 		specIcon.bg:Point("TOPRIGHT", frame, "TOPRIGHT")
 		if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET then
-			specIcon.bg:SetPoint("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", SPACING, 0)
+			specIcon.bg:SetPoint("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)
 		else
-			specIcon.bg:SetPoint("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", SPACING, 0)	
+			specIcon.bg:SetPoint("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)	
 		end
 		
 		if db.pvpSpecIcon and not frame:IsElementEnabled('PVPSpecIcon') then

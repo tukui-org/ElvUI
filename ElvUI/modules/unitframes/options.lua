@@ -7454,6 +7454,7 @@ E.Options.args.unitframe.args.arena = {
 					desc = L['What to attach the buff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
+						['TRINKET'] = L['PVP Trinket'],
 						['DEBUFFS'] = L['Debuffs'],
 					},
 				},
@@ -7694,6 +7695,7 @@ E.Options.args.unitframe.args.arena = {
 					desc = L['What to attach the debuff anchor frame to.'],
 					values = {
 						['FRAME'] = L['Frame'],
+						['TRINKET'] = L['PVP Trinket'],
 						['BUFFS'] = L['Buffs'],
 					},
 				},

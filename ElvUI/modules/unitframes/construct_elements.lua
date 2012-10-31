@@ -167,15 +167,6 @@ function UF:Construct_AuraIcon(button)
 	button.overlay:SetTexture(nil)
 	button.stealable:SetTexture(nil)
 
-	button:HookScript('OnEnter', function(self)
-		GameTooltip.auraBarLine = true;
-	end)	
-	
-	button:HookScript('OnLeave', function(self)
-		GameTooltip.auraBarLine = nil;
-		GameTooltip.numLines = nil
-	end)		
-
 	button:RegisterForClicks('RightButtonUp')
 	button:SetScript('OnClick', function(self)
 		if not IsShiftKeyDown() then return; end
@@ -703,20 +694,12 @@ function UF:Construct_AuraBars()
 	
 	bar.spellname:ClearAllPoints()
 	bar.spellname:SetPoint('LEFT', bar, 'LEFT', 2, 0)
+	bar.spellname:SetPoint('RIGHT', bar.spelltime, 'LEFT', -4, 0)
 	
 	bar.iconHolder:SetTemplate('Default')
 	bar.icon:SetInside(bar.iconHolder)
 	bar.icon:SetDrawLayer('OVERLAY')
 	
-	
-	bar.iconHolder:HookScript('OnEnter', function(self)
-		GameTooltip.auraBarLine = true;
-	end)	
-	
-	bar.iconHolder:HookScript('OnLeave', function(self)
-		GameTooltip.auraBarLine = nil;
-		GameTooltip.numLines = nil
-	end)		
 	
 	bar.iconHolder:RegisterForClicks('RightButtonUp')
 	bar.iconHolder:SetScript('OnClick', function(self)

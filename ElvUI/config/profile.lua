@@ -165,9 +165,10 @@ P['chat'] = {
 	['panelWidth'] = 385,
 	['panelHeight'] = 200,
 	['panelBackdropNameLeft'] = '',
-	['panelBackdropNameRight'] = 'Interface\\AddOns\\ElvUI\\media\\textures\\aegislogo.tga',
-	['panelBackdrop'] = 'SHOWBOTH',	
-	
+	['panelBackdropNameRight'] = '',
+	['panelBackdrop'] = 'SHOWBOTH',
+	['editBoxPosition'] = 'BELOW_CHAT',
+
 	['tabFont'] = 'Friz Quadrata TT',
 	['tabFontSize'] = 11,
 	['tabFontOutline'] = 'NONE',

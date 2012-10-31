@@ -4,7 +4,7 @@ local B = E:GetModule('Blizzard');
 local AlertFrameHolder = CreateFrame("Frame", "AlertFrameHolder", E.UIParent)
 AlertFrameHolder:SetWidth(180)
 AlertFrameHolder:SetHeight(20)
-AlertFrameHolder:SetPoint("TOP", E.UIParent, "TOP", 0, -70)
+AlertFrameHolder:SetPoint("TOP", E.UIParent, "TOP", 0, -18)
 
 local POSITION, ANCHOR_POINT, YOFFSET = "TOP", "BOTTOM", -10
 
@@ -29,16 +29,18 @@ end
 SLASH_TEST_ACHIEVEMENT1 = "/testalerts"
 
 function E:PostAlertMove(pos)
-	POSITION = pos or POSITION
-	
-	if POSITION == 'TOP' then
+	local _, y = AlertFrameMover:GetCenter();
+	local screenHeight = E.UIParent:GetTop();
+	if y > (screenHeight / 2) then
+		POSITION = 'TOP'
 		ANCHOR_POINT = 'BOTTOM'
 		YOFFSET = -10
 	else
+		POSITION = 'BOTTOM'
 		ANCHOR_POINT = 'TOP'
 		YOFFSET = 10
 	end
-	
+
 	local rollBars = E:GetModule('Misc').RollBars
 	if E.private.general.lootRoll then
 		local lastframe, lastShownFrame
@@ -81,7 +83,7 @@ function E:PostAlertMove(pos)
 	MissingLootFrame:ClearAllPoints()
 	MissingLootFrame:SetPoint(POSITION, AlertFrame, ANCHOR_POINT)
 	
-	if pos == 'TOP' or pos == 'BOTTOM' then
+	if pos then
 		AlertFrame_FixAnchors()
 	end
 end

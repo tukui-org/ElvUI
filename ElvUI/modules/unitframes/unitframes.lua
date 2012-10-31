@@ -119,6 +119,12 @@ function UF:GetAuraAnchorFrame(frame, attachTo, isConflict)
 	
 	if isConflict or attachTo == 'FRAME' then
 		return frame
+	elseif attachTo == 'TRINKET' then
+		if select(2, IsInInstance()) == "arena" then
+			return frame.Trinket
+		else
+			return frame.PVPSpecIcon
+		end	
 	elseif attachTo == 'BUFFS' then
 		return frame.Buffs
 	elseif attachTo == 'DEBUFFS' then
@@ -352,7 +358,12 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 	
 	self[group].Update = function()
 		local db = self.db['units'][group]
-		if db.enable ~= true then return end
+		if db.enable ~= true then 
+			self[group]:SetAttribute("showParty", false)
+			self[group]:SetAttribute("showRaid", false)
+			self[group]:SetAttribute("showSolo", false)			
+			return
+		end
 		UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
 		
 		for i=1, self[group]:GetNumChildren() do
@@ -368,14 +379,8 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 			end			
 		end			
 	end	
-
-	if self.db['units'][group].enable then
-		self[group].Update()
-	else
-		self[group]:SetAttribute("showParty", false)
-		self[group]:SetAttribute("showRaid", false)
-		self[group]:SetAttribute("showSolo", false)	
-	end
+	
+	self[group].Update()
 end
 
 function UF:PLAYER_REGEN_ENABLED()
@@ -650,6 +655,7 @@ function UF:Initialize()
 		end				
 
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', 'DisableBlizzard')
+		UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE') --This may fuck shit up.. we'll see...
 	else
 		CompactUnitFrameProfiles:RegisterEvent('VARIABLES_LOADED')
 	end

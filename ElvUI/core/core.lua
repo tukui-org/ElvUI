@@ -365,34 +365,42 @@ function E:CheckRole()
 	end
 end
 
+function E:IncompatibleAddOn(addon, module)
+	E.PopupDialogs['INCOMPATIBLE_ADDON'].button1 = addon
+	E.PopupDialogs['INCOMPATIBLE_ADDON'].button2 = 'ElvUI '..module
+	E.PopupDialogs['INCOMPATIBLE_ADDON'].addon = addon
+	E.PopupDialogs['INCOMPATIBLE_ADDON'].module = module
+	E:StaticPopup_Show('INCOMPATIBLE_ADDON', addon, module)
+end
+
 function E:CheckIncompatible()
 	if IsAddOnLoaded('Prat-3.0') and E.private.chat.enable then
-		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Prat', 'Chat'))
+		E:IncompatibleAddOn('Prat-3.0', 'Chat')
 	elseif IsAddOnLoaded('Chatter') and E.private.chat.enable then
-		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Chatter', 'Chat'))
+		E:IncompatibleAddOn('Chatter', 'Chat')
 	end
 	
-	if IsAddOnLoaded('Bartender4') and E.private.actionbar.enable then
-		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Bartender', 'ActionBar'))
+	--[[if IsAddOnLoaded('Bartender4') and E.private.actionbar.enable then
+		E:IncompatibleAddOn('Bartender4', 'ActionBar')
 	elseif IsAddOnLoaded('Dominos') and E.private.actionbar.enable then
-		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Dominos', 'ActionBar'))
-	end	
+		E:IncompatibleAddOn('Dominos', 'ActionBar')
+	end]]
 	
 	if IsAddOnLoaded('TidyPlates') and E.private.nameplate.enable then
-		E:Print(format(L['INCOMPATIBLE_ADDON'], 'TidyPlates', 'NamePlate'))
+		E:IncompatibleAddOn('TidyPlates', 'NamePlate')
 	elseif IsAddOnLoaded('Aloft') and E.private.nameplate.enable then
-		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Aloft', 'NamePlate'))
+		E:IncompatibleAddOn('Aloft', 'NamePlate')
 	end	
 	
-	if IsAddOnLoaded('ArkInventory') and E.private.bags.enable then
-		E:Print(format(L['INCOMPATIBLE_ADDON'], 'ArkInventory', 'Bags'))
+	--[[if IsAddOnLoaded('ArkInventory') and E.private.bags.enable then
+		E:IncompatibleAddOn('ArkInventory', 'Bags')
 	elseif IsAddOnLoaded('Bagnon') and E.private.bags.enable then
-		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Bagnon', 'Bags'))
+		E:IncompatibleAddOn('Bagnon', 'Bags')
 	elseif IsAddOnLoaded('OneBag3') and E.private.bags.enable then
-		E:Print(format(L['INCOMPATIBLE_ADDON'], 'OneBag3', 'Bags'))
+		E:IncompatibleAddOn('OneBag3', 'Bags')
 	elseif IsAddOnLoaded('OneBank3') and E.private.bags.enable then
-		E:Print(format(L['INCOMPATIBLE_ADDON'], 'OneBank3', 'Bags'))
-	end
+		E:IncompatibleAddOn('OneBank3', 'Bags')
+	end]]
 end
 
 function E:IsFoolsDay()
