@@ -542,6 +542,14 @@ function UF:Construct_RaidDebuffs(frame)
 	rdebuff:Point('BOTTOM', frame, 'BOTTOM', 0, 2)
 	rdebuff:SetTemplate("Default")
 	
+	if E.PixelMode then
+		rdebuff.border = rdebuff:CreateTexture(nil, "BACKGROUND");
+		rdebuff.border:Point("TOPLEFT", -E.mult, E.mult);
+		rdebuff.border:Point("BOTTOMRIGHT", E.mult, -E.mult);
+		rdebuff.border:SetTexture(E["media"].blankTex);
+		rdebuff.border:SetVertexColor(0, 0, 0);
+	end	
+	
 	rdebuff.icon = rdebuff:CreateTexture(nil, 'OVERLAY')
 	rdebuff.icon:SetTexCoord(unpack(E.TexCoords))
 	rdebuff.icon:SetInside()
