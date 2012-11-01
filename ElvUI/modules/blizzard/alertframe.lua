@@ -8,37 +8,19 @@ AlertFrameHolder:SetPoint("TOP", E.UIParent, "TOP", 0, -18)
 
 local POSITION, ANCHOR_POINT, YOFFSET = "TOP", "BOTTOM", -10
 
-SlashCmdList.TEST_ACHIEVEMENT = function()
-	PlaySound("LFG_Rewards")
-	AchievementFrame_LoadUI()
-	AchievementAlertFrame_ShowAlert(5780)
-	AchievementAlertFrame_ShowAlert(5000)
-	GuildChallengeAlertFrame_ShowAlert(3, 2, 5)
-	ChallengeModeAlertFrame_ShowAlert()
-	CriteriaAlertFrame_GetAlertFrame()
-	AlertFrame_AnimateIn(CriteriaAlertFrame1)
-	AlertFrame_AnimateIn(DungeonCompletionAlertFrame1)
-	AlertFrame_AnimateIn(ScenarioAlertFrame1)
-	
-	local _, itemLink = GetItemInfo(6948)
-	LootWonAlertFrame_ShowAlert(itemLink, -1, 1, 1)
-	MoneyWonAlertFrame_ShowAlert(1)
-	
-	AlertFrame_FixAnchors()
-end
-SLASH_TEST_ACHIEVEMENT1 = "/testalerts"
-
-function E:PostAlertMove(pos)
+function E:PostAlertMove(screenQuadrant)
 	local _, y = AlertFrameMover:GetCenter();
 	local screenHeight = E.UIParent:GetTop();
 	if y > (screenHeight / 2) then
 		POSITION = 'TOP'
 		ANCHOR_POINT = 'BOTTOM'
 		YOFFSET = -10
+		AlertFrameMover:SetText(AlertFrameMover.textString..' (Grow Down)')
 	else
 		POSITION = 'BOTTOM'
 		ANCHOR_POINT = 'TOP'
 		YOFFSET = 10
+		AlertFrameMover:SetText(AlertFrameMover.textString..' (Grow Up)')
 	end
 
 	local rollBars = E:GetModule('Misc').RollBars
@@ -77,14 +59,23 @@ function E:PostAlertMove(pos)
 		AlertFrame:SetAllPoints(AlertFrameHolder)
 	end
 
-	GroupLootContainer:ClearAllPoints()
-	GroupLootContainer:SetPoint(POSITION, AlertFrame, ANCHOR_POINT)
-	
-	MissingLootFrame:ClearAllPoints()
-	MissingLootFrame:SetPoint(POSITION, AlertFrame, ANCHOR_POINT)
-	
-	if pos then
+	if screenQuadrant then
 		AlertFrame_FixAnchors()
+	end
+end
+
+function B:AlertFrame_SetLootAnchors(alertAnchor)
+	--This is a bit of reverse logic to get it to work properly because blizzard was a bit lazy..
+	if ( MissingLootFrame:IsShown() ) then
+		MissingLootFrame:ClearAllPoints()
+		MissingLootFrame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT)
+		if ( GroupLootContainer:IsShown() ) then
+			GroupLootContainer:ClearAllPoints()
+			GroupLootContainer:SetPoint(POSITION, MissingLootFrame, ANCHOR_POINT, 0, YOFFSET)
+		end		
+	elseif ( GroupLootContainer:IsShown() ) then
+		GroupLootContainer:ClearAllPoints()
+		GroupLootContainer:SetPoint(POSITION, alertAnchor, ANCHOR_POINT)	
 	end
 end
 
@@ -94,7 +85,6 @@ function B:AlertFrame_SetLootWonAnchors(alertAnchor)
 		if ( frame:IsShown() ) then
 			frame:ClearAllPoints()
 			frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
-			alertAnchor = frame
 		end
 	end
 end
@@ -105,7 +95,6 @@ function B:AlertFrame_SetMoneyWonAnchors(alertAnchor)
 		if ( frame:IsShown() ) then
 			frame:ClearAllPoints()
 			frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
-			alertAnchor = frame
 		end
 	end
 end
@@ -117,7 +106,6 @@ function B:AlertFrame_SetAchievementAnchors(alertAnchor)
 			if ( frame and frame:IsShown() ) then
 				frame:ClearAllPoints()
 				frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
-				alertAnchor = frame
 			end
 		end
 	end
@@ -130,7 +118,6 @@ function B:AlertFrame_SetCriteriaAnchors(alertAnchor)
 			if ( frame and frame:IsShown() ) then
 				frame:ClearAllPoints()
 				frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
-				alertAnchor = frame
 			end
 		end
 	end
@@ -170,6 +157,7 @@ end
 
 function B:AlertMovers()
 	self:SecureHook('AlertFrame_FixAnchors', E.PostAlertMove)
+	self:SecureHook('AlertFrame_SetLootAnchors')
 	self:SecureHook('AlertFrame_SetLootWonAnchors')
 	self:SecureHook('AlertFrame_SetMoneyWonAnchors')
 	self:SecureHook('AlertFrame_SetAchievementAnchors')
