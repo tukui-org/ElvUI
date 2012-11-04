@@ -85,6 +85,7 @@ function B:AlertFrame_SetLootWonAnchors(alertAnchor)
 		if ( frame:IsShown() ) then
 			frame:ClearAllPoints()
 			frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
+			alertAnchor = frame
 		end
 	end
 end
@@ -95,6 +96,7 @@ function B:AlertFrame_SetMoneyWonAnchors(alertAnchor)
 		if ( frame:IsShown() ) then
 			frame:ClearAllPoints()
 			frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
+			alertAnchor = frame
 		end
 	end
 end
@@ -106,6 +108,7 @@ function B:AlertFrame_SetAchievementAnchors(alertAnchor)
 			if ( frame and frame:IsShown() ) then
 				frame:ClearAllPoints()
 				frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
+				alertAnchor = frame
 			end
 		end
 	end
@@ -118,6 +121,7 @@ function B:AlertFrame_SetCriteriaAnchors(alertAnchor)
 			if ( frame and frame:IsShown() ) then
 				frame:ClearAllPoints()
 				frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
+				alertAnchor = frame
 			end
 		end
 	end
