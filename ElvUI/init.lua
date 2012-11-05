@@ -60,27 +60,28 @@ function AddOn:OnInitialize()
 			self:CopyTable(self.db, ElvData.profiles[profileKey])
 		end
 	end
-	
-	if self.db.install_complete then 
-		if not self.global.newTheme then
-			self.privateVars.profile.general.pixelPerfect = false;
-			self.__showMessage = true;
-		end
-	elseif not self.db.theme then
-		self.__setupTheme = true;
-	end	
-	
+
 	self.private = table.copy(self.privateVars.profile, true);
 	if ElvPrivateData then
 		local profileKey
 		if ElvPrivateData.profileKeys then
 			profileKey = ElvPrivateData.profileKeys[self.myname..' - '..self.myrealm]
 		end
-		
-		if profileKey and ElvPrivateData.profiles and ElvPrivateData.profiles[profileKey] then
+				
+		if profileKey and ElvPrivateData.profiles and ElvPrivateData.profiles[profileKey] then		
 			self:CopyTable(self.private, ElvPrivateData.profiles[profileKey])
 		end
 	end	
+	
+	if self.db.install_complete and not self.global.newTheme and self.db.theme ~= 'pixelPerfect' then
+		self.private.general.pixelPerfect = false;
+	end
+	
+	if self.db.install_complete and not self.global.newTheme and not self.private.general.pixelPerfect then 
+		self.__showMessage = true;
+	elseif not self.db.theme then
+		self.__setupTheme = true;
+	end		
 	
 	if self.private.general.pixelPerfect then
 		self.Border = 1;
