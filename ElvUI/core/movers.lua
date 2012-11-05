@@ -70,7 +70,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	f:SetHeight(parent:GetHeight())
 	f.parent = parent
 	f.name = name
-	f.textSting = text
+	f.textString = text
 	f.postdrag = postdrag
 	f.overlay = overlay
 	f.snapOffset = snapOffset or -2
