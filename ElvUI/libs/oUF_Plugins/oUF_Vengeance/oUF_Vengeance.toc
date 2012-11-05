@@ -1,0 +1,9 @@
+## Interface: 50001
+## Title: oUF Vengeance
+## Notes: Adds support for a vengeance bar to oUF.
+## Author: Elv
+## Version: 1.00
+## X-Category: oUF
+## Dependencies: oUF
+
+oUF_Vengeance.lua
