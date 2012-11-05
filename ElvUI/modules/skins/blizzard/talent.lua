@@ -88,7 +88,7 @@ local function LoadSkin()
 	
 	hooksecurefunc('PlayerTalentFrame_UpdateSpecs', function()
 		local point, relatedTo, point2, x, y = PlayerSpecTab1:GetPoint()
-		PlayerSpecTab1:Point(point, relatedTo, point2, 1, y)	
+		PlayerSpecTab1:Point(point, relatedTo, point2, E.PixelMode and -1 or 1, y)	
 	end)
 
 	for i = 1, MAX_NUM_TALENT_TIERS do
