@@ -7,7 +7,6 @@ local VENG_NAME = (GetSpellInfo(93098))
 
 local function CalculateVengeanceMax(self)
 	local _, stamina = UnitStat("player", STAMINA_INDEX);
-	self.Stamina = stamina;
 	local basehp = (UnitHealthMax("player") or 0) - stamina*(UnitHPPerStamina("player") or 10);
 
 	if self.BaseHealth > 0 then
@@ -17,26 +16,32 @@ local function CalculateVengeanceMax(self)
 	end
 
 	self.VengeanceMax = self.BaseHealth * .1 + stamina;
-	self:SetMinMaxValues(0, self.VengeanceMax);
 end
 
 local Update = function(self, event, unit)
 	local bar = self.Vengeance
 
 	if(bar.PreUpdate) then bar:PreUpdate(event) end
-	local value = select(14, UnitBuff("player", VENG_NAME));
+	local value = select(14, UnitBuff("player", VENG_NAME)) or 0;
+	if value == nil then value = 0 end
 	
-	if not value or value == 0 then
+	if value == 0 then
 		bar:Hide()
 	elseif not bar:IsShown() or event ~= 'UNIT_AURA' then
 		bar:Show()
-		CalculateVengeanceMax(bar);
+		CalculateVengeanceMax(bar, value);
 	end
 	
 	
-	bar:SetValue(value or 0);
-	print('Vengeance: '..(value or 0)..'/'..bar.VengeanceMax..'  '..(((value or 0) > bar.VengeanceMax) and 'BAD!' or 'GOOD!'))
-	if(bar.PostUpdate) then bar:PostUpdate(event, value or 0) end
+	if value > bar.VengeanceMax then
+		bar.VengeanceMax = value
+	end
+	
+	bar:SetMinMaxValues(0, bar.VengeanceMax);	
+	
+	bar:SetValue(value);
+
+	if(bar.PostUpdate) then bar:PostUpdate(event, value) end
 end
 
 local Enable = function(self)
@@ -48,7 +53,6 @@ local Enable = function(self)
 		self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", Update, true);
 		self:RegisterEvent("PLAYER_TALENT_UPDATE", Update, true);
 		bar.BaseHealth = 0;
-		bar.Stamina = 0;
 		bar.VengeanceMax = 1;
 	
 		bar:Show()
