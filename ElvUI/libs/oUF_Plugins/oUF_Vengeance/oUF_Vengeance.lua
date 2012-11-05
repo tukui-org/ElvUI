@@ -7,9 +7,17 @@ local VENG_NAME = (GetSpellInfo(93098))
 
 local function CalculateVengeanceMax(self)
 	local _, stamina = UnitStat("player", STAMINA_INDEX);
-	local basehp = (UnitHealthMax("player") or 0) - stamina * (UnitHPPerStamina("player") or 10);
+	self.Stamina = stamina;
+	local basehp = (UnitHealthMax("player") or 0) - stamina*(UnitHPPerStamina("player") or 10);
 
-	self:SetMinMaxValues(0, basehp * .1 + stamina);
+	if self.BaseHealth > 0 then
+		self.BaseHealth = min(self.BaseHealth, basehp);
+	else
+		self.BaseHealth = basehp;
+	end
+
+	self.VengeanceMax = self.BaseHealth * .1 + stamina;
+	self:SetMinMaxValues(0, self.VengeanceMax);
 end
 
 local Update = function(self, event, unit)
@@ -27,7 +35,7 @@ local Update = function(self, event, unit)
 	
 	
 	bar:SetValue(value or 0);
-
+	print('Vengeance: '..(value or 0)..'/'..bar.VengeanceMax..'  '..(((value or 0) > bar.VengeanceMax) and 'BAD!' or 'GOOD!'))
 	if(bar.PostUpdate) then bar:PostUpdate(event, value or 0) end
 end
 
@@ -39,7 +47,10 @@ local Enable = function(self)
 		self:RegisterEvent("PLAYER_LEVEL_UP", Update, true);
 		self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", Update, true);
 		self:RegisterEvent("PLAYER_TALENT_UPDATE", Update, true);
-
+		bar.BaseHealth = 0;
+		bar.Stamina = 0;
+		bar.VengeanceMax = 1;
+	
 		bar:Show()
 		if(bar:IsObjectType'StatusBar' and not bar:GetStatusBarTexture()) then
 			bar:SetStatusBarTexture[[Interface\TargetingFrame\UI-StatusBar]]
