@@ -96,6 +96,7 @@ E.Options.args.datatexts = {
 				end
 				E:GetModule('Chat'):UpdateAnchors()
 				E:GetModule('Layout'):ToggleChatPanels()
+				E:GetModule('Bags'):PositionBagFrames()
 			end,					
 		},		
 		rightChatPanel = {
@@ -111,6 +112,7 @@ E.Options.args.datatexts = {
 				end		
 				E:GetModule('Chat'):UpdateAnchors()
 				E:GetModule('Layout'):ToggleChatPanels()
+				E:GetModule('Bags'):PositionBagFrames()
 			end,					
 		},				
 		panels = {

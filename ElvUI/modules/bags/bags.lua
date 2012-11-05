@@ -824,12 +824,20 @@ end
 function B:PositionBagFrames()
 	if self.BagFrame then
 		self.BagFrame:ClearAllPoints()
-		self.BagFrame:Point('BOTTOMRIGHT', RightChatToggleButton, 'TOPRIGHT', 0 - E.db.bags.xOffset, 4 + E.db.bags.yOffset);
+		if E.db.datatexts.rightChatPanel then
+			self.BagFrame:Point('BOTTOMRIGHT', RightChatToggleButton, 'TOPRIGHT', 0 - E.db.bags.xOffset, 4 + E.db.bags.yOffset);
+		else
+			self.BagFrame:Point('BOTTOMRIGHT', RightChatToggleButton, 'BOTTOMRIGHT', 0 - E.db.bags.xOffset, 0 + E.db.bags.yOffset);
+		end
 	end
 	
 	if self.BankFrame then
 		self.BankFrame:ClearAllPoints()
-		self.BankFrame:Point('BOTTOMLEFT', LeftChatToggleButton, 'TOPLEFT', 0 + E.db.bags.xOffset, 4 + E.db.bags.yOffset);
+		if E.db.datatexts.leftChatPanel then
+			self.BankFrame:Point('BOTTOMLEFT', LeftChatToggleButton, 'TOPLEFT', 0 + E.db.bags.xOffset, 4 + E.db.bags.yOffset);
+		else
+			self.BankFrame:Point('BOTTOMLEFT', LeftChatToggleButton, 'BOTTOMLEFT', 0 + E.db.bags.xOffset, 0 + E.db.bags.yOffset);
+		end		
 	end
 end
 
