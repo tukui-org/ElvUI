@@ -1020,7 +1020,13 @@ function UF:Update_PlayerFrame(frame, db)
 			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', attachTo == frame and POWERBAR_OFFSET * (anchorTo == 'BOTTOM' and 0 or -1) or 0, E.PixelMode and -1 or yOffset)
 
 			auraBars.buffColor = {buffColor.r, buffColor.g, buffColor.b}
-			auraBars.debuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
+			if UF.db.colors.auraBarByType then
+				auraBars.debuffColor = nil;
+				auraBars.defaultDebuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
+			else
+				auraBars.debuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
+				auraBars.defaultDebuffColor = nil;
+			end
 			auraBars.down = db.aurabar.anchorPoint == 'BELOW'
 			auraBars:SetAnchors()
 		else

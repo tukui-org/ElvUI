@@ -864,37 +864,7 @@ E.Options.args.unitframe = {
 					name = L['Colors'],
 					get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
 					set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,					
-					args = {
-						healthclass = {
-							order = 1,
-							type = 'toggle',
-							name = L['Class Health'],
-							desc = L['Color health by classcolor or reaction.'],
-						},
-						powerclass = {
-							order = 2,
-							type = 'toggle',
-							name = L['Class Power'],
-							desc = L['Color power by classcolor or reaction.'],
-						},		
-						colorhealthbyvalue = {
-							order = 3,
-							type = 'toggle',
-							name = L['Health By Value'],
-							desc = L['Color health by amount remaining.'],				
-						},
-						customhealthbackdrop = {
-							order = 4,
-							type = 'toggle',
-							name = L['Custom Health Backdrop'],
-							desc = L['Use the custom health backdrop color instead of a multiple of the main health color.'],						
-						},
-						classbackdrop = {
-							order = 5,
-							type = 'toggle',
-							name = L['Class Backdrop'],
-							desc = L['Color the health backdrop by class or reaction.'],
-						},					
+					args = {				
 						colorsGroup = {
 							order = 7,
 							type = 'group',
@@ -911,23 +881,55 @@ E.Options.args.unitframe = {
 								UF:Update_AllFrames()
 							end,
 							args = {
-								health = {
+								healthclass = {
 									order = 1,
+									type = 'toggle',
+									name = L['Class Health'],
+									desc = L['Color health by classcolor or reaction.'],
+									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
+									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,											
+								},	
+								colorhealthbyvalue = {
+									order = 3,
+									type = 'toggle',
+									name = L['Health By Value'],
+									desc = L['Color health by amount remaining.'],	
+									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
+									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,										
+								},
+								customhealthbackdrop = {
+									order = 4,
+									type = 'toggle',
+									name = L['Custom Health Backdrop'],
+									desc = L['Use the custom health backdrop color instead of a multiple of the main health color.'],
+									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
+									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,										
+								},
+								classbackdrop = {
+									order = 5,
+									type = 'toggle',
+									name = L['Class Backdrop'],
+									desc = L['Color the health backdrop by class or reaction.'],
+									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
+									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,										
+								},								
+								health = {
+									order = 10,
 									type = 'color',
 									name = L['Health'],
 								},
 								health_backdrop = {
-									order = 2,
+									order = 11,
 									type = 'color',
 									name = L['Health Backdrop'],
 								},			
 								tapped = {
-									order = 3,
+									order = 12,
 									type = 'color',
 									name = L['Tapped'],
 								},
 								disconnected = {
-									order = 4,
+									order = 13,
 									type = 'color',
 									name = L['Disconnected'],
 								},	
@@ -949,6 +951,14 @@ E.Options.args.unitframe = {
 								UF:Update_AllFrames()
 							end,	
 							args = {
+								powerclass = {
+									order = 0,
+									type = 'toggle',
+									name = L['Class Power'],
+									desc = L['Color power by classcolor or reaction.'],
+									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
+									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,										
+								},								
 								MANA = {
 									order = 1,
 									name = MANA,
@@ -1043,8 +1053,14 @@ E.Options.args.unitframe = {
 							guiInline = true,
 							name = L['Aura Bars'],
 							args = {
-								BUFFS = {
+								auraBarByType = {
 									order = 1,
+									name = L['By Type'],
+									desc = L['Color aurabar debuffs by type.'],
+									type = 'toggle',
+								},
+								BUFFS = {
+									order = 10,
 									name = L['Buffs'],
 									type = 'color',
 									get = function(info)
@@ -1059,7 +1075,7 @@ E.Options.args.unitframe = {
 									end,										
 								},	
 								DEBUFFS = {
-									order = 2,
+									order = 11,
 									name = L['Debuffs'],
 									type = 'color',
 									get = function(info)
@@ -1072,7 +1088,7 @@ E.Options.args.unitframe = {
 										t.r, t.g, t.b = r, g, b
 										UF:Update_AllFrames()
 									end,										
-								},									
+								},
 							},
 						},							
 					},

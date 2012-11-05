@@ -351,6 +351,7 @@ function UF:Update_FocusFrame(frame, db)
 			
 			local buffColor = UF.db.colors.auraBarBuff
 			local debuffColor = UF.db.colors.auraBarDebuff
+			
 			local attachTo = frame
 			
 			if db.aurabar.attachTo == 'BUFFS' then
@@ -378,7 +379,13 @@ function UF:Update_FocusFrame(frame, db)
 			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', -POWERBAR_OFFSET, yOffset)
 
 			auraBars.buffColor = {buffColor.r, buffColor.g, buffColor.b}
-			auraBars.debuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
+			if UF.db.colors.auraBarByType then
+				auraBars.debuffColor = nil;
+				auraBars.defaultDebuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
+			else
+				auraBars.debuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
+				auraBars.defaultDebuffColor = nil;
+			end
 			auraBars.down = db.aurabar.anchorPoint == 'BELOW'
 			auraBars:SetAnchors()
 		else

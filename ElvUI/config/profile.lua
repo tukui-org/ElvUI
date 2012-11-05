@@ -230,6 +230,7 @@ P['unitframe'] = {
 		['colorhealthbyvalue'] = true,
 		['customhealthbackdrop'] = false,
 		['classbackdrop'] = false,
+		['auraBarByType'] = true,
 		
 		['castColor'] = P.general.bordercolor,
 		['castNoInterrupt'] = { r = 0.78, g = 0.25, b = 0.25 },
