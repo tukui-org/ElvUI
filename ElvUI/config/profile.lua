@@ -392,7 +392,7 @@ P['unitframe'] = {
 				['yOffset'] = 10,
 			},
 			['vengeance'] = {
-				['enable'] = true,
+				['enable'] = false,
 				['width'] = 10,
 			},
 		},	
