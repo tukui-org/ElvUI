@@ -18,16 +18,17 @@ local Update = function(self, event, unit)
 	if(bar.PreUpdate) then bar:PreUpdate(event) end
 	local value = select(14, UnitBuff("player", VENG_NAME));
 	
-	if not value then
+	if not value or value == 0 then
 		bar:Hide()
 	elseif not bar:IsShown() or event ~= 'UNIT_AURA' then
 		bar:Show()
 		CalculateVengeanceMax(bar);
 	end
+	
+	
+	bar:SetValue(value or 0);
 
-	bar:SetValue(value);
-
-	if(bar.PostUpdate) then bar:PostUpdate(event) end
+	if(bar.PostUpdate) then bar:PostUpdate(event, value or 0) end
 end
 
 local Enable = function(self)
