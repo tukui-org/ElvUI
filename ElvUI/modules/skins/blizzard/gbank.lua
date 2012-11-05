@@ -7,6 +7,7 @@ local function LoadSkin()
 	GuildBankFrame:SetTemplate("Transparent")
 	GuildBankEmblemFrame:StripTextures(true)
 	GuildBankMoneyFrameBackground:Kill()
+	S:HandleScrollBar(GuildBankPopupScrollFrameScrollBar)
 	
 	--Close button doesn't have a fucking name, extreme hackage
 	for i=1, GuildBankFrame:GetNumChildren() do

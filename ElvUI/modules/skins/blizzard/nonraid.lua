@@ -41,7 +41,7 @@ local function LoadSkin()
 	RaidInfoFrame.backdrop:Point( "TOPLEFT", RaidInfoFrame, "TOPLEFT")
 	RaidInfoFrame.backdrop:Point( "BOTTOMRIGHT", RaidInfoFrame, "BOTTOMRIGHT")
 	S:HandleCloseButton(RaidInfoCloseButton,RaidInfoFrame)
-	
+	S:HandleScrollBar(RaidInfoScrollFrameScrollBar)
 	S:HandleButton(RaidFrameRaidBrowserButton)
 	S:HandleCheckBox(RaidFrameAllAssistCheckButton)	
 end
