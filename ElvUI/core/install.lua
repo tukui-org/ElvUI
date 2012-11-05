@@ -169,14 +169,14 @@ function E:GetColor(r, b, g, a)
 	return { r = r, b = b, g = g, a = a }
 end
 
-function E:SetupTheme(theme, noDisplayMsg)
+function E:SetupTheme(theme, noDisplayMsg, noPopup)
 	local classColor = RAID_CLASS_COLORS[E.myclass]
 	E.db.theme = theme
 
-	if (not E.PixelMode and theme == 'pixelPerfect') or (E.PixelMode and theme ~= 'pixelPerfect') then
+	if not noPopup and ((not E.PixelMode and theme == 'pixelPerfect') or (E.PixelMode and theme ~= 'pixelPerfect')) then
 		E:StaticPopup_Show('PIXELPERFECT_CHANGED')
 	end
-	
+
 	E.private.general.pixelPerfect = false;
 	
 	if not noDisplayMsg then
@@ -193,6 +193,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 	
 	--Set colors
 	if theme == 'pixelPerfect' then
+		E.global.newTheme = true;
 		E.private.general.pixelPerfect = true;
 		E.db.general.bordercolor = E:GetColor(0, 0, 0)
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
@@ -238,7 +239,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.bags.bankSize = 34;
 		E.private.auras.size = 30;
 		
-		if not noDisplayMsg then
+		if not noDisplayMsg or noPopup then
 			if not E.db.movers then E.db.movers = {}; end
 			E.db.movers["ElvUF_PetMover"] = "BOTTOMElvUIParentBOTTOM0104"
 			E.db.movers["AurasMover"] = "TOPRIGHTElvUIParentTOPRIGHT-221-5"

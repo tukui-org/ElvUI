@@ -377,7 +377,7 @@ end
 
 function CH:PositionChat(override)
 	if not self.db.lockPositions or ((InCombatLockdown() and not override and self.initialMove) or (IsMouseButtonDown("LeftButton") and not override)) then return end
-	
+	if not RightChatPanel or not LeftChatPanel then return; end
 	RightChatPanel:Size(E.db.chat.panelWidth, E.db.chat.panelHeight)
 	LeftChatPanel:Size(E.db.chat.panelWidth, E.db.chat.panelHeight)	
 	

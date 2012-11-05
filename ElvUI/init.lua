@@ -61,6 +61,14 @@ function AddOn:OnInitialize()
 		end
 	end
 	
+	if self.db.install_complete then 
+		if not self.global.newTheme then
+			self.privateVars.profile.general.pixelPerfect = false;
+			self.__showMessage = true;
+		end
+	elseif not self.db.theme then
+		self.__setupTheme = true;
+	end	
 	
 	self.private = table.copy(self.privateVars.profile, true);
 	if ElvPrivateData then
@@ -86,7 +94,7 @@ function AddOn:OnInitialize()
 	
 	self:RegisterEvent('PLAYER_REGEN_DISABLED')
 	self:RegisterEvent('PLAYER_LOGIN', 'Initialize')
-	self:Contruct_StaticPopups()
+	self:Contruct_StaticPopups()	
 	self:InitializeInitialModules()
 end
 

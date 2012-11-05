@@ -253,6 +253,7 @@ Example: Interface\AddOns\ElvUI\media\textures\copy
 Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = true;
 
 --Config / Install
+L['A new theme called Pixel Perfect has been added for ElvUI! This theme will increase overall performance and provides a cleaner appearance to all of ElvUI. Unfortionatly to apply this theme it will require some settings getting reset. Would you like to try the Pixel Perfect theme?'] = true;
 L['Dark'] = true;
 L["Auras Set"] = true;
 L["Auras System"] = true;
