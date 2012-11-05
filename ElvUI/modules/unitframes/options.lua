@@ -8046,7 +8046,7 @@ E.Options.args.unitframe.args.party = {
 					type = 'range',
 					name = L['Column Spacing'],
 					desc = L['The amount of space (in pixels) between the columns.'],
-					min = 3, max = 10, step = 1,
+					min = 0, max = 10, step = 1,
 				},		
 				xOffset = {
 					order = 9,
@@ -8818,7 +8818,7 @@ for i=10, 40, 15 do
 						type = 'range',
 						name = L['Column Spacing'],
 						desc = L['The amount of space (in pixels) between the columns.'],
-						min = 3, max = 10, step = 1,
+						min = 0, max = 10, step = 1,
 					},		
 					xOffset = {
 						order = 9,
