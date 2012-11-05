@@ -87,9 +87,9 @@ function RU:Initialize()
 	E.FrameLocks['RaidUtilityPanel'] = true
 	
 	--Show Button
-	self:CreateUtilButton("RaidUtility_ShowButton", E.UIParent, "UIMenuButtonStretchTemplate, SecureHandlerClickTemplate", 136, 18, "TOP", E.UIParent, "TOP", -400, 2, RAID_CONTROL, nil)
+	self:CreateUtilButton("RaidUtility_ShowButton", E.UIParent, "UIMenuButtonStretchTemplate, SecureHandlerClickTemplate", 136, 18, "TOP", E.UIParent, "TOP", -400, E.Border, RAID_CONTROL, nil)
 	RaidUtility_ShowButton:SetFrameRef("RaidUtilityPanel", RaidUtilityPanel)
-	RaidUtility_ShowButton:SetAttribute("_onclick", [=[
+	RaidUtility_ShowButton:SetAttribute("_onclick", ([=[
 		local raidUtil = self:GetFrameRef("RaidUtilityPanel")
 		local closeButton = raidUtil:GetFrameRef("RaidUtility_CloseButton")
 		self:Hide(); 
@@ -107,11 +107,13 @@ function RU:Initialize()
 			yOffset = -1			
 		end
 		
+		yOffset = yOffset * (tonumber(%d))
+		
 		raidUtil:ClearAllPoints()
 		closeButton:ClearAllPoints()
 		raidUtil:SetPoint(raidUtilPoint, self, raidUtilPoint)
 		closeButton:SetPoint(raidUtilPoint, raidUtil, closeButtonPoint, 0, yOffset)
-	]=])
+	]=]):format(E.PixelMode and -1 or 1))
 	RaidUtility_ShowButton:SetScript("OnMouseUp", function(self) RaidUtilityPanel.toggled = true end)
 	RaidUtility_ShowButton:SetMovable(true)
 	RaidUtility_ShowButton:SetClampedToScreen(true)
