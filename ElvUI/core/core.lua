@@ -769,6 +769,10 @@ function E:DBConversions()
 			end
 		end
 	end	
+	
+	if self.db.install_complete and not self.global.newThemePrompt and self.db.theme ~= 'pixelPerfect' then
+		self.private.general.pixelPerfect = false;
+	end
 end
 
 function E:Initialize()
@@ -846,7 +850,7 @@ function E:Initialize()
 	
 	if self.__showMessage then
 		if self.private.general.pixelPerfect then
-			self.global.newTheme = true;
+			self.global.newThemePrompt = true;
 		else
 			self:StaticPopup_Show('NEW_THEME');
 		end

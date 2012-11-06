@@ -193,7 +193,7 @@ function E:SetupTheme(theme, noDisplayMsg, noPopup)
 	
 	--Set colors
 	if theme == 'pixelPerfect' then
-		E.global.newTheme = true;
+		E.global.newThemePrompt = true;
 		E.private.general.pixelPerfect = true;
 		E.db.general.bordercolor = E:GetColor(0, 0, 0)
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
@@ -287,8 +287,7 @@ function E:SetupTheme(theme, noDisplayMsg, noPopup)
 	if not noDisplayMsg then
 		E:UpdateAll(true)
 	end
-	
-	
+
 	if InstallStatus then
 		InstallStatus:SetStatusBarColor(unpack(E['media'].rgbvaluecolor))
 		

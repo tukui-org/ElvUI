@@ -9,7 +9,7 @@ E.PopupDialogs['NEW_THEME'] = {
 		E:Install()
 		ElvUIInstallFrame.SetPage(4); 
 	end,
-	OnCancel = function() E.global.newTheme = true; end,
+	OnCancel = function() E.global.newThemePrompt = true; end,
 	button1 = ACCEPT,
 	button2 = DECLINE,	
 	timeout = 0,
