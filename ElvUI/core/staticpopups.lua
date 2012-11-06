@@ -3,6 +3,20 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 E.PopupDialogs = {};
 E.StaticPopup_DisplayedFrames = {};
 
+E.PopupDialogs['NEW_THEME'] = {
+	text = L['A new theme called Pixel Perfect has been added for ElvUI! This theme will increase overall performance and provides a cleaner appearance to all of ElvUI. Unfortionatly to apply this theme it will require some settings getting reset. Would you like to try the Pixel Perfect theme?'],
+	OnAccept = function() 
+		E:Install()
+		ElvUIInstallFrame.SetPage(4); 
+	end,
+	OnCancel = function() E.global.newThemePrompt = true; end,
+	button1 = ACCEPT,
+	button2 = DECLINE,	
+	timeout = 0,
+	whileDead = 1,	
+	hideOnEscape = false,		
+}
+
 E.PopupDialogs['DISABLE_INCOMPATIBLE_ADDON'] = {
 	text = L['Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?'],
 	OnAccept = function() E.global.ignoreIncompatible = true; end,

@@ -60,19 +60,28 @@ function AddOn:OnInitialize()
 			self:CopyTable(self.db, ElvData.profiles[profileKey])
 		end
 	end
-	
-	
+
 	self.private = table.copy(self.privateVars.profile, true);
 	if ElvPrivateData then
 		local profileKey
 		if ElvPrivateData.profileKeys then
 			profileKey = ElvPrivateData.profileKeys[self.myname..' - '..self.myrealm]
 		end
-		
-		if profileKey and ElvPrivateData.profiles and ElvPrivateData.profiles[profileKey] then
+				
+		if profileKey and ElvPrivateData.profiles and ElvPrivateData.profiles[profileKey] then		
 			self:CopyTable(self.private, ElvPrivateData.profiles[profileKey])
 		end
 	end	
+	
+	if self.db.install_complete and not self.global.newThemePrompt and self.db.theme ~= 'pixelPerfect' then
+		self.private.general.pixelPerfect = false;
+	end
+	
+	if self.db.install_complete and not self.global.newThemePrompt and not self.private.general.pixelPerfect then 
+		self.__showMessage = true;
+	elseif not self.db.theme and not self.db.install_complete then
+		self.__setupTheme = true;
+	end		
 	
 	if self.private.general.pixelPerfect then
 		self.Border = 1;
@@ -86,7 +95,7 @@ function AddOn:OnInitialize()
 	
 	self:RegisterEvent('PLAYER_REGEN_DISABLED')
 	self:RegisterEvent('PLAYER_LOGIN', 'Initialize')
-	self:Contruct_StaticPopups()
+	self:Contruct_StaticPopups()	
 	self:InitializeInitialModules()
 end
 

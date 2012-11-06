@@ -346,7 +346,7 @@ function B:IsSpecialtyBag(bagID)
 	if not bag then return false end
 	
 	local family = GetItemFamily(bag)
-	if family == 0 then return false end
+	if family == 0 or family == nil then return false end
 	
 	return family
 end
@@ -361,7 +361,11 @@ function B:CanItemGoInBag(bag, slot, targetBag)
 		end
 	end
 	local bagFamily = select(2, GetContainerNumFreeSlots(targetBag))
-	return bagFamily == 0 or bit.band(itemFamily, bagFamily) > 0
+	if itemFamily then
+		return (bagFamily == 0) or bit.band(itemFamily, bagFamily) > 0
+	else
+		return false;
+	end
 end
 
 function B.Compress(...)

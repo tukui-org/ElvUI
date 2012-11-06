@@ -28,7 +28,7 @@ E.FrameLocks = {}
 E.CreditsList = {};
 E.Spacing = 1;
 E.Border = 2;
-E.PixelMode = tr;
+E.PixelMode = false;
 
 E.InversePoints = {
 	TOP = 'BOTTOM',
@@ -769,6 +769,10 @@ function E:DBConversions()
 			end
 		end
 	end	
+	
+	if self.db.install_complete and not self.global.newThemePrompt and self.db.theme ~= 'pixelPerfect' then
+		self.private.general.pixelPerfect = false;
+	end
 end
 
 function E:Initialize()
@@ -841,5 +845,16 @@ function E:Initialize()
 	
 	if self.db.general.loginmessage then
 		print(select(2, E:GetModule('Chat'):FindURL(nil, format(L['LOGIN_MSG'], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version)))..'.')
+	end	
+
+	
+	if self.__showMessage then
+		if self.private.general.pixelPerfect then
+			self.global.newThemePrompt = true;
+		else
+			self:StaticPopup_Show('NEW_THEME');
+		end
+	elseif self.__setupTheme then
+		self:SetupTheme('pixelPerfect', nil, true);
 	end	
 end

@@ -508,6 +508,11 @@ function UF:PostCastNotInterruptible(unit)
 	self:SetStatusBarColor(unpack(ElvUF.colors.castNoInterrupt))
 end
 
+function UF:VengeanceUpdate(event, value)
+	local frame = self:GetParent();
+	UF:UpdatePlayerFrameAnchors(frame, (frame.ClassBar and frame.ClassBar:IsShown()))
+end
+
 function UF:UpdateHoly(event, unit, powerType)
 	if(self.unit ~= unit or (powerType and powerType ~= 'HOLY_POWER')) then return end
 	local db = self.db
@@ -567,7 +572,8 @@ function UF:UpdateHoly(event, unit, powerType)
 			self.HolyPower[i]:Show()
 			self.HolyPower[i].backdrop:SetAlpha(1)
 		end		
-	end	
+	end
+
 end	
 
 function UF:UpdateShadowOrbs(event, unit, powerType)

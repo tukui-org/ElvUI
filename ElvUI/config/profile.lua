@@ -241,7 +241,8 @@ P['unitframe'] = {
 		['colorhealthbyvalue'] = false,
 		['customhealthbackdrop'] = true,
 		['classbackdrop'] = false,
-
+		['auraBarByType'] = true,
+		
 		['castColor'] = { r = .66,g = .66,b = .66 },
 		['castNoInterrupt'] = { r = 0.78, g = 0.25, b = 0.25 },
 		
@@ -400,6 +401,10 @@ P['unitframe'] = {
 				['attachTo'] = 'TOP',
 				['xOffset'] = 0,
 				['yOffset'] = 10,
+			},
+			['vengeance'] = {
+				['enable'] = false,
+				['width'] = 10,
 			},
 		},	
 		['target'] = {

@@ -50,6 +50,7 @@ function UF:Construct_PlayerFrame(frame)
 	frame.PvPText = self:Construct_PvPIndicator(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
+	frame.Vengeance = self:Construct_VengeanceBar(frame)
 
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 		
@@ -63,6 +64,8 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	local db = E.db['unitframe']['units'].player
 	local health = frame.Health
 	local threat = frame.Threat
+	local power = frame.Power
+	local vengeance = frame.Vengeance
 	local PORTRAIT_WIDTH = db.portrait.width
 	local USE_PORTRAIT = db.portrait.enable
 	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
@@ -77,6 +80,12 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	local SPACING = E.Spacing;
 	local BORDER = E.Border;
 	local SHADOW_SPACING = E.PixelMode and 3 or 4
+	local VENGEANCE_WIDTH = db.vengeance.width + (BORDER*2);
+	local USE_VENGEANCE = frame.Vengeance:IsShown();
+	
+	if not USE_VENGEANCE then
+		VENGEANCE_WIDTH = 0;
+	end
 	
 	if not USE_POWERBAR then
 		POWERBAR_HEIGHT = 0
@@ -90,11 +99,23 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 		CLASSBAR_HEIGHT = CLASSBAR_HEIGHT / 2
 	end
 	
+	if USE_VENGEANCE then
+		vengeance:Point('BOTTOMLEFT', power, 'BOTTOMRIGHT', BORDER*2 + (E.PixelMode and -1 or SPACING), 0)
+		vengeance:Point('TOPRIGHT', health, 'TOPRIGHT', VENGEANCE_WIDTH, 0)
+		
+		
+		if not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR then
+			power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER - VENGEANCE_WIDTH, BORDER)
+		end
+	elseif not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR then
+		power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER, BORDER)
+	end
+	
 	if isShown then
 		if db.power.offset ~= 0 then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+db.power.offset), -(BORDER + CLASSBAR_HEIGHT + SPACING))
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+db.power.offset) - VENGEANCE_WIDTH, -(BORDER + CLASSBAR_HEIGHT + SPACING))
 		else
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -(BORDER + CLASSBAR_HEIGHT + SPACING))
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER - VENGEANCE_WIDTH, -(BORDER + CLASSBAR_HEIGHT + SPACING))
 		end
 		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + BORDER, -(BORDER + CLASSBAR_HEIGHT + SPACING))	
 
@@ -137,9 +158,9 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 		end
 	else
 		if db.power.offset ~= 0 then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER + db.power.offset), -BORDER)
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER + db.power.offset) - VENGEANCE_WIDTH, -BORDER)
 		else
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER - VENGEANCE_WIDTH, -BORDER)
 		end
 		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + BORDER, -BORDER)	
 
@@ -611,6 +632,7 @@ function UF:Update_PlayerFrame(frame, db)
 	do
 		if E.myclass == "PALADIN" then
 			local bars = frame.HolyPower
+			frame.ClassBar = bars
 			bars:ClearAllPoints()
 			
 			local MAX_HOLY_POWER = 5
@@ -665,6 +687,7 @@ function UF:Update_PlayerFrame(frame, db)
 			end		
 		elseif E.myclass == 'PRIEST' then
 			local bars = frame.ShadowOrbs
+			frame.ClassBar = bars
 			bars:ClearAllPoints()
 			if USE_MINI_CLASSBAR then
 				CLASSBAR_WIDTH = CLASSBAR_WIDTH * (PRIEST_BAR_NUM_ORBS - 1) / PRIEST_BAR_NUM_ORBS
@@ -715,6 +738,7 @@ function UF:Update_PlayerFrame(frame, db)
 			end
 		elseif E.myclass == 'MAGE' then
 			local bars = frame.ArcaneChargeBar
+			frame.ClassBar = bars
 			bars:ClearAllPoints()
 			if USE_MINI_CLASSBAR then
 				CLASSBAR_WIDTH = CLASSBAR_WIDTH * (UF['classMaxResourceBar'][E.myclass] - 1) / UF['classMaxResourceBar'][E.myclass]
@@ -767,6 +791,7 @@ function UF:Update_PlayerFrame(frame, db)
 			end		
 		elseif E.myclass == "WARLOCK" then
 			local bars = frame.ShardBar
+			frame.ClassBar = bars
 			bars:ClearAllPoints()
 			if USE_MINI_CLASSBAR then
 				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 2 / 3
@@ -793,6 +818,7 @@ function UF:Update_PlayerFrame(frame, db)
 			end					
 		elseif E.myclass == 'MONK' then
 			local bars = frame.Harmony
+			frame.ClassBar = bars
 			bars:ClearAllPoints()
 			if USE_MINI_CLASSBAR then
 				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
@@ -819,6 +845,7 @@ function UF:Update_PlayerFrame(frame, db)
 			end				
 		elseif E.myclass == "DEATHKNIGHT" then
 			local runes = frame.Runes
+			frame.ClassBar = runes
 			runes:ClearAllPoints()
 			if USE_MINI_CLASSBAR then
 				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 4/5
@@ -878,7 +905,7 @@ function UF:Update_PlayerFrame(frame, db)
 			end
 		elseif E.myclass == "DRUID" then
 			local eclipseBar = frame.EclipseBar
-
+			frame.ClassBar = eclipseBar
 			eclipseBar:ClearAllPoints()
 			if not USE_MINI_CLASSBAR then
 				eclipseBar:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, (E.PixelMode and 0 or (BORDER + SPACING)))
@@ -1020,7 +1047,13 @@ function UF:Update_PlayerFrame(frame, db)
 			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', attachTo == frame and POWERBAR_OFFSET * (anchorTo == 'BOTTOM' and 0 or -1) or 0, E.PixelMode and -1 or yOffset)
 
 			auraBars.buffColor = {buffColor.r, buffColor.g, buffColor.b}
-			auraBars.debuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
+			if UF.db.colors.auraBarByType then
+				auraBars.debuffColor = nil;
+				auraBars.defaultDebuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
+			else
+				auraBars.debuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
+				auraBars.defaultDebuffColor = nil;
+			end
 			auraBars.down = db.aurabar.anchorPoint == 'BELOW'
 			auraBars:SetAnchors()
 		else
@@ -1029,6 +1062,24 @@ function UF:Update_PlayerFrame(frame, db)
 				auraBars:Hide()
 			end		
 		end
+	end
+	
+	--Vengeance Bar
+	do
+		local bar = frame.Vengeance;
+		bar:SetPoint('CENTER', UIParent, 'CENTER')
+		bar:Size(20, 50)
+		
+		if db.vengeance.enable then
+			if not frame:IsElementEnabled('Vengeance') then
+				frame:EnableElement('Vengeance')
+			end
+
+		else
+			if frame:IsElementEnabled('Vengeance') then
+				frame:DisableElement('Vengeance')
+			end		
+		end	
 	end
 
 	if db.customTexts then
